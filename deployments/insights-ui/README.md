@@ -7,9 +7,9 @@ parallel roll-out. Full rationale: [`docs/insights-ui/aws-migration-plan.md`](..
 
 | Phase | What runs | Gates |
 |---|---|---|
-| **A — now (parallel)** | AWS app reachable directly at **`prod.koalagains.com`** (no CloudFront). Vercel keeps serving `koalagains.com`. Crons stay on Vercel. | `manage_cloudfront=false`, `enable_crons=false` |
+| **A — now (parallel)** | AWS app reachable directly at **`prod.koalagains.com`** (no CloudFront). Vercel keeps serving `koalagains.com`. **Crons run from AWS** (EventBridge) and are removed from `vercel.json` in this PR. | `manage_cloudfront=false`, `enable_crons=true` |
 | **B — CloudFront** | Point CloudFront at the Lightsail service once Phase A is verified. | `manage_cloudfront=true` |
-| **C — cut-over** | Move crons to EventBridge, decommission Vercel. | `enable_crons=true` |
+| **C — cut-over** | Decommission Vercel. | — |
 
 ## Architecture (Phase A)
 
@@ -52,10 +52,14 @@ docker push "$ECR_REGISTRY/insights-ui:$(git rev-parse --short HEAD)"
 aws s3 sync ./_assets/static "s3://insights-ui-static-assets/_next/static" \
   --cache-control "public,max-age=31536000,immutable"
 
-# 4. full apply (creates the Lightsail deployment version), secrets from Secrets Manager
-terraform apply \
-  -var "image_tag=$(git rev-parse --short HEAD)" \
-  -var "app_secrets=$(aws secretsmanager get-secret-value --secret-id insights-ui/app-env --query SecretString --output text)"
+# 4. full apply (creates the Lightsail deployment version). Secrets go through a
+#    *.auto.tfvars.json file — NOT inline -var (a JSON object can't parse into map(string) via
+#    -var, and inline would leak secrets into the process table).
+SECRETS_JSON=$(aws secretsmanager get-secret-value --secret-id insights-ui/app-env --query SecretString --output text)
+jq -n --argjson s "$SECRETS_JSON" --arg tag "$(git rev-parse --short HEAD)" \
+  '{app_secrets: $s, image_tag: $tag}' > secrets.auto.tfvars.json
+terraform apply           # auto-loads *.auto.tfvars.json
+rm -f secrets.auto.tfvars.json
 ```
 
 **Never commit** `terraform.tfvars`, `*.tfstate`, or secret values.
@@ -65,7 +69,13 @@ terraform apply \
 - The Lightsail cert for `prod.koalagains.com` must reach **ISSUED** (DNS validation) before it
   attaches to the service — if the first apply errors on that, re-run after the validation
   records propagate (~minutes).
-- During coexistence keep `enable_crons=false` so the 3-minute generators don't double-run
-  against the shared RDS (Vercel still owns them).
+- Crons run from AWS (`enable_crons=true`) and are removed from `vercel.json` in this PR, so AWS
+  is the single owner — no double-run against the shared RDS. Deploy AWS before/with merging the
+  `vercel.json` change so there's no gap (and avoid merging right before the `23:00 UTC` daily
+  jobs).
+- The AWS app sets `CLOUDFRONT_DISTRIBUTION_ID=EZI5H8FKNE9R1` so cron/save writes invalidate the
+  CloudFront that still fronts the live `koalagains.com` (no stale-until-TTL for apex users).
+- Schema migrations must be **expand-only** while Vercel + AWS share the RDS.
 - Add `prod.koalagains.com` to the Google/Discord/Twitter OAuth redirect URIs so auth works on
   the direct host.
+- Remote Terraform state (S3 backend in `versions.tf`) must be bootstrapped once before `init`.

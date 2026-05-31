@@ -96,21 +96,46 @@ jobs:
           docker cp "$CID:/app/insights-ui/.next/static" ./_assets/static
           docker cp "$CID:/app/insights-ui/public" ./_assets/public
           docker rm "$CID"
+          # Only /_next/static is served from S3 (via assetPrefix). /public is served by the
+          # Next server at the site root, so it is NOT uploaded here.
           aws s3 sync ./_assets/static "s3://$STATIC_BUCKET/_next/static" --cache-control "public,max-age=31536000,immutable"
-          aws s3 sync ./_assets/public "s3://$STATIC_BUCKET/public" --cache-control "public,max-age=3600"
 
       # Full apply registers a new Lightsail deployment version pointing at the new image and
-      # injects secrets (read here from Secrets Manager) into its env. DATABASE_URL inside the
-      # secret points at the existing public RDS.
+      # injects secrets (from Secrets Manager) into its env. DATABASE_URL inside the secret
+      # points at the existing public RDS.
+      #
+      # Secrets are written to a *.auto.tfvars.json file (NOT passed inline via -var): a JSON
+      # object does not parse into a map(string) through `-var`, and an inline -var would also
+      # leak the secret into the process table / unmasked logs. Terraform auto-loads *.auto.tfvars.json.
       - name: Terraform apply (Lightsail)
         working-directory: ${{ env.TF_DIR }}
         env:
           TAG: ${{ steps.build.outputs.tag }}
         run: |
           SECRETS_JSON=$(aws secretsmanager get-secret-value --secret-id "$APP_SECRETS_ID" --query SecretString --output text)
+          jq -n --argjson s "$SECRETS_JSON" --arg tag "$TAG" '{app_secrets: $s, image_tag: $tag}' > secrets.auto.tfvars.json
+          # First apply can fail while the Lightsail cert is still PENDING_VALIDATION — retry once
+          # after a wait for DNS validation to propagate.
           terraform apply -input=false -auto-approve \
-            -var "image_tag=$TAG" \
-            -var "app_secrets=$SECRETS_JSON"
+            || (echo "retrying after cert validation wait..."; sleep 120; terraform apply -input=false -auto-approve)
+          rm -f secrets.auto.tfvars.json
+
+      # Wait for the new deployment version to roll to ACTIVE before smoke-testing, otherwise we
+      # hit the old version (or a still-deploying container).
+      - name: Wait for Lightsail deployment to be ACTIVE
+        run: |
+          for i in $(seq 1 40); do
+            state=$(aws lightsail get-container-services --service-name "$ECR_REPOSITORY" \
+              --query 'containerServices[0].state' --output text)
+            echo "Lightsail state: $state"
+            [ "$state" = "ACTIVE" ] && break
+            sleep 15
+          done
 
       - name: Smoke check (direct host)
-        run: curl -fsS "https://$DIRECT_HOST/api/health"
+        run: |
+          for i in $(seq 1 10); do
+            curl -fsS "https://$DIRECT_HOST/api/health" && exit 0
+            echo "health not ready, retrying..."; sleep 15
+          done
+          exit 1

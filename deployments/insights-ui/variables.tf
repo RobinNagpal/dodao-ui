@@ -88,7 +88,17 @@ variable "existing_cloudfront_distribution_id" {
 variable "cacheable_path_patterns" {
   description = "Path prefixes served with the long-TTL cache behavior (Phase B)."
   type        = list(string)
-  default     = ["/stocks/*", "/etfs/*", "/industry-tariff-report/*", "/tariff-reports*"]
+  # Pages AND the per-stocks-page GET API endpoints the existing distribution caches
+  # (deploy-skew doc Phase 5). Keep in lockstep with CACHED_PATH_PREFIXES in
+  # src/utils/cloudfront-cache-utils.ts so the import reconcile doesn't drop live behaviors.
+  default = [
+    "/stocks/*",
+    "/etfs/*",
+    "/industry-tariff-report/*",
+    "/tariff-reports*",
+    "/api/koala_gains/tickers-v1/exchange/*",
+    "/api/koala_gains/tickers-v1/country/*",
+  ]
 }
 
 variable "cloudfront_default_ttl" {
@@ -111,6 +121,11 @@ variable "app_env" {
     PUPPETEER_EXECUTABLE_PATH = "/usr/bin/chromium"
     # Vercel-named host vars the code reads. VERCEL_ENV gates auth-cookie security.
     VERCEL_ENV = "production"
+    # So AWS cron/save writes invalidate the SAME CloudFront that fronts Vercel today — without
+    # this, koalagains.com users see stale content for up to the 6-day TTL after each cron run.
+    CLOUDFRONT_DISTRIBUTION_ID = "EZI5H8FKNE9R1"
+    # Lambda report-generation callbacks should return to this AWS host in Phase A.
+    REPORT_GENERATION_CALLBACK_BASE_URL = "https://prod.koalagains.com"
   }
 }
 

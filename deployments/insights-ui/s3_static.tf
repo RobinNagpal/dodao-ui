@@ -19,11 +19,13 @@ resource "aws_s3_bucket_public_access_block" "assets" {
   restrict_public_buckets = false
 }
 
+# Only /_next/static/* is served from S3 (via assetPrefix). Files in /public are served by the
+# Next server at the site root — assetPrefix does NOT rewrite them — so they don't belong here.
 data "aws_iam_policy_document" "assets_public_read" {
   statement {
     sid       = "PublicReadStatic"
     actions   = ["s3:GetObject"]
-    resources = ["${aws_s3_bucket.assets.arn}/_next/static/*", "${aws_s3_bucket.assets.arn}/public/*"]
+    resources = ["${aws_s3_bucket.assets.arn}/_next/static/*"]
     principals {
       type        = "*"
       identifiers = ["*"]
@@ -56,8 +58,11 @@ resource "aws_s3_bucket_lifecycle_configuration" "assets" {
   rule {
     id     = "expire-old-build-assets"
     status = "Enabled"
+    # Comfortably exceed the 6-day CloudFront HTML TTL + deploy cadence (object age based, so
+    # leave wide margin). There is no Vercel-Skew-Protection equivalent — chunk retention is the
+    # only safeguard against a cached page referencing an expired chunk.
     expiration {
-      days = 14
+      days = 30
     }
   }
 }

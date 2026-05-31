@@ -12,6 +12,9 @@
 FROM node:22-bookworm-slim AS base
 ENV PNPM_HOME=/pnpm
 ENV PATH="$PNPM_HOME:$PATH"
+# Don't download puppeteer's bundled Chromium during install/build — the runtime stage uses
+# the system chromium via PUPPETEER_EXECUTABLE_PATH instead (saves ~150MB + avoids version churn).
+ENV PUPPETEER_SKIP_DOWNLOAD=true
 RUN corepack enable
 WORKDIR /app
 

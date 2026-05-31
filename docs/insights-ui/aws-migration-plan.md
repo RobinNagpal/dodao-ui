@@ -7,7 +7,7 @@ deployment using **AWS Lightsail Containers** (single node) behind the existing 
 Covers the target architecture, Terraform layout, every app/code change required, secrets,
 the cron replacement, CI/CD, the long-running-route handling, the cut-over runbook, rollback,
 and cost. The heavier **ECS Fargate** topology is retained as a documented scale-up path in
-[Appendix A](#appendix-a-ecs-fargate-scale-up-path).
+[Appendix A](#appendix-a--ecs-fargate-scale-up-path).
 
 > **Companion reading.** [`cloudfront-deploy-skew.md`](./cloudfront-deploy-skew.md) describes the
 > current CloudFront-in-front-of-Vercel caching architecture. The migration **keeps CloudFront**
@@ -23,17 +23,17 @@ and cost. The heavier **ECS Fargate** topology is retained as a documented scale
 4. [Terraform layout](#4-terraform-layout)
 5. [Application & code changes](#5-application--code-changes)
 6. [Secrets & environment variables](#6-secrets--environment-variables)
-7. [Replacing Vercel crons](#7-replacing-vercel-crons)
+7. [Crons moved to AWS (done in this PR)](#7-crons-moved-to-aws-done-in-this-pr)
 8. [CI/CD changes](#8-cicd-changes)
 9. [Long-running generation routes](#9-long-running-generation-routes)
 10. [Static assets & deploy-skew](#10-static-assets--deploy-skew)
 11. [Database — already on RDS](#11-database--already-on-rds)
-12. [Cut-over runbook](#12-cut-over-runbook)
+12. [Rollout & cut-over runbook](#12-rollout--cut-over-runbook)
 13. [Rollback plan](#13-rollback-plan)
 14. [Cost](#14-cost)
 15. [Phased delivery checklist](#15-phased-delivery-checklist)
 16. [Open questions](#16-open-questions)
-- [Appendix A — ECS Fargate scale-up path](#appendix-a-ecs-fargate-scale-up-path)
+- [Appendix A — ECS Fargate scale-up path](#appendix-a--ecs-fargate-scale-up-path)
 
 ---
 
@@ -74,9 +74,9 @@ because the app needs it. Two facts make a single node the right default for Koa
 2. **One process ⇒ one coherent cache.** With a single instance, `unstable_cache` /
    `revalidateTag` (10 + 62 usages) stay coherent with **zero extra infrastructure** — no
    ElastiCache, no custom `cacheHandler`. (Multi-instance would break this; see
-   [Appendix A](#appendix-a-ecs-fargate-scale-up-path).)
+   [Appendix A](#appendix-a--ecs-fargate-scale-up-path).)
 
-| | Lightsail Containers (chosen) | ECS Fargate ([Appendix A](#appendix-a-ecs-fargate-scale-up-path)) |
+| | Lightsail Containers (chosen) | ECS Fargate ([Appendix A](#appendix-a--ecs-fargate-scale-up-path)) |
 |---|---|---|
 | Load balancer + TLS | **Bundled** in the service price | Separate ALB (~$16+/mo) |
 | Networking | AWS-managed (no VPC/NAT to run) | Full VPC + NAT (~$32+/mo) |
@@ -125,7 +125,7 @@ move happen only after we're happy. This is the **Phase A** picture:
 ```
 
 In **Phase B** the existing CloudFront (`EZI5H8FKNE9R1`) is pointed at `prod.koalagains.com`
-(Lightsail) as its origin; in **Phase C** crons move to EventBridge and Vercel is retired.
+(Lightsail) as its origin; in **Phase C** Vercel is retired (crons already moved to AWS in this PR).
 
 **Component summary**
 
@@ -136,7 +136,7 @@ In **Phase B** the existing CloudFront (`EZI5H8FKNE9R1`) is pointed at `prod.koa
 | Image registry | ECR | Image built in CI, pulled via the service's ECR image-puller role |
 | Database | **Existing RDS Postgres** (public access + SSL; not provisioned here) | App connects via `DATABASE_URL` from `app_secrets` ([§11](#11-database--already-on-rds)) |
 | Secrets | Lightsail deployment `environment` (sourced from Secrets Manager in CI) | Lightsail has no native Secrets Manager mount; CI reads SM and injects values ([§6](#6-secrets--environment-variables)) |
-| Crons | EventBridge Scheduler + invoker Lambda (gated off in Phase A) | One rule per current Vercel cron; enabled at cut-over |
+| Crons | EventBridge Scheduler + invoker Lambda (**active in this PR**, `enable_crons=true`) | Removed from `vercel.json` so AWS is the single owner; GET `prod.koalagains.com` in Phase A |
 | Edge / CDN | CloudFront (**Phase B only**) | Reuse `EZI5H8FKNE9R1`; point its origin at `prod.koalagains.com`; keep cacheable behaviors + 6-day TTL |
 | DNS / TLS | Route 53 + Lightsail-managed cert (direct host); ACM in us-east-1 for CloudFront (Phase B) | |
 | Observability | Lightsail metrics + container logs; CloudWatch for the cron Lambda | |
@@ -164,13 +164,14 @@ deployments/insights-ui/
 └── outputs.tf
 ```
 
-**Rollout gates.** Two booleans, both default **off**, keep Phase A minimal:
-`manage_cloudfront` (Phase B) and `enable_crons` (Phase C). See [§12](#12-rollout--cut-over-runbook).
+**Rollout gates.** `manage_cloudfront` (default **off**) creates the CloudFront resources for
+Phase B; `enable_crons` (default **on**) creates the EventBridge cron schedules now (crons are
+removed from `vercel.json` in this PR). See [§12](#12-rollout--cut-over-runbook).
 
 **State backend.** S3 + DynamoDB lock. Never commit `*.tfstate` or `terraform.tfvars`
 (holds secret values) — only `terraform.tfvars.example`.
 
-The Fargate scale-up path ([Appendix A](#appendix-a-ecs-fargate-scale-up-path)) is documented
+The Fargate scale-up path ([Appendix A](#appendix-a--ecs-fargate-scale-up-path)) is documented
 but not scaffolded — add it only if/when the app outgrows a single node.
 
 ---
@@ -185,7 +186,7 @@ Most are additive and Vercel-safe, so they can merge before cut-over.
 2. **Re-home `vercel.json` behavior** (ignored off Vercel):
    - **CORS** (`/api/*`) and **`noindex`** (`/_next/static/*`, `/public-equities*`) → move into
      `next.config.ts` `async headers()` (host-agnostic).
-   - **Crons** → EventBridge ([§7](#7-replacing-vercel-crons)); delete from `vercel.json` at cut-over.
+   - **Crons** → EventBridge ([§7](#7-crons-moved-to-aws-done-in-this-pr)); delete from `vercel.json` at cut-over.
 
 3. **Health endpoint.** Add `GET /api/health` → `200` for the Lightsail public-endpoint health
    check (and the container `HEALTHCHECK`). Reuse an existing route if one already exists.
@@ -202,13 +203,22 @@ Most are additive and Vercel-safe, so they can merge before cut-over.
 
 6. **Env vars that gate auth & base-URL — set them, don't rename.** Both confirmed in code:
    - `getBaseUrl()` (shared `@dodao/web-core`) reads **`NEXT_PUBLIC_VERCEL_URL`** +
-     **`NEXT_PUBLIC_VERCEL_ENV`**. Set `NEXT_PUBLIC_VERCEL_URL=koalagains.com` and
-     `NEXT_PUBLIC_VERCEL_ENV=production` as **Docker build args** (they're `NEXT_PUBLIC_*` →
-     build-time). Renaming would mean editing shared web-core used by other apps.
+     **`NEXT_PUBLIC_VERCEL_ENV`**. These are baked at build (`NEXT_PUBLIC_*`), and `getBaseUrl()`
+     returns `https://$NEXT_PUBLIC_VERCEL_URL` **server-side**. So in **Phase A build with
+     `NEXT_PUBLIC_VERCEL_URL=prod.koalagains.com`** (so server-side absolute URLs resolve to the
+     AWS host); **switch to `koalagains.com` at Phase B** once CloudFront fronts the apex.
+     `NEXT_PUBLIC_VERCEL_ENV=production` in both. Renaming would mean editing shared web-core.
+   - **Heads-up:** `src/utils/getBaseUrlForServerSidePages.ts` **hardcodes
+     `https://koalagains.com`** for production regardless of the above — fine for SEO canonicals
+     (we want the public apex indexed, not `prod.`), but be aware server-side page URLs from that
+     helper point at the apex during Phase A.
    - `authOptions.ts` reads the non-public **`process.env.VERCEL_ENV`** to set cookie
      `secure: true` + apply `COOKIE_DOMAIN`. Undefined on AWS → insecure cookies, no domain,
-     **auth breaks.** Set **`VERCEL_ENV=production` as a runtime container env** (or refactor to
-     a host-neutral flag). **Auth-blocking — do not skip.**
+     **auth breaks.** Set **`VERCEL_ENV=production` as a runtime container env**. **Auth-blocking.**
+   - **Cross-host cookie note:** `COOKIE_DOMAIN=.koalagains.com` is shared with the live Vercel
+     `koalagains.com` during Phase A, so a session set on `prod.` is also sent to the apex (and
+     vice-versa). Harmless for testing, but use a separate browser/incognito to avoid disturbing
+     live sessions; or set `COOKIE_DOMAIN` host-only during Phase A.
 
 7. **Data cache stays coherent for free (single node).** With `scale=1` the 10 `unstable_cache`
    reads + 62 `revalidateTag` calls share one process — no shared cache handler required. **This
@@ -241,7 +251,9 @@ build-time and go in as Docker build args.
 | Category | Vars | Handling |
 |---|---|---|
 | Database | `DATABASE_URL` | SM → TF var → deployment env (points at the existing RDS endpoint) |
-| Auth | `NEXTAUTH_URL=https://koalagains.com`, `NEXTAUTH_SECRET`, `DODAO_AUTH_SECRET`, `EMAIL_TOKEN_SECRET`, `COOKIE_DOMAIN=.koalagains.com` | deployment env |
+| Auth | `NEXTAUTH_URL=https://prod.koalagains.com` (Phase A; apex at Phase B), `NEXTAUTH_SECRET`, `DODAO_AUTH_SECRET`, `EMAIL_TOKEN_SECRET`, `COOKIE_DOMAIN=.koalagains.com` | deployment env |
+| Edge invalidation | `CLOUDFRONT_DISTRIBUTION_ID=EZI5H8FKNE9R1` | deployment env — so AWS cron/save writes invalidate the **same** CloudFront that fronts Vercel today (else apex users see stale content up to the 6-day TTL after each cron run) |
+| Report callbacks | `REPORT_GENERATION_CALLBACK_BASE_URL=https://prod.koalagains.com` | deployment env — the daily-mover route builds Lambda callback URLs from this; point it at the AWS host in Phase A |
 | **Vercel-named host vars** | `VERCEL_ENV=production` (runtime), `NEXT_PUBLIC_VERCEL_URL`, `NEXT_PUBLIC_VERCEL_ENV` (build args) | [§5.6](#5-application--code-changes) — keep names, set values |
 | OAuth | `GOOGLE_*`, `DISCORD_*`, `TWITTER_*` | deployment env; keep redirect URLs on `koalagains.com` |
 | AI providers | `OPENAI_API_KEY`, `GOOGLE_API_KEY`, `GEMINI_MODEL`, `LLM_PROVIDER` | deployment env |
@@ -305,7 +317,10 @@ cut-over):
 The workflow targets **AWS only** — Vercel keeps deploying through its own flow during Phase A.
 The lint/typecheck/build gates in `main.yml` (`insights_ui_job`) are unchanged.
 
-The lint/typecheck/build gates in `main.yml` (`insights_ui_job`) are unchanged.
+Secrets are written to a `*.auto.tfvars.json` file (not passed inline via `-var`, which can't
+parse a JSON object into a `map(string)` and would leak values into the process table). The
+first apply may fail while the Lightsail cert is still validating — the workflow retries once
+after a wait, then polls the service to `ACTIVE` before the smoke check.
 
 ---
 
@@ -343,12 +358,18 @@ raise the ALB timeout). It is also a better design on any platform, so it is wor
   AWS image points at S3. Safe to merge.
 - CI uploads each build's `.next/static` to S3 **without deleting prior builds** (hashed names
   never collide), so any cached HTML referencing an older build's chunks keeps resolving them.
-  Lifecycle expiry at 14 days bounds storage while exceeding any cache window → **this is the
-  deploy-skew protection** (replaces Vercel Skew Protection).
+  Lifecycle expiry at **30 days** bounds storage while comfortably exceeding the 6-day CloudFront
+  HTML TTL → **this is the deploy-skew protection** (there is no Vercel-Skew-Protection
+  equivalent, so chunk retention is the only safeguard).
 - **Lightsail rolling deploys** keep the previous deployment version serving until the new one
   is healthy, so SSR has no hard cut gap either.
-- Bucket is public-read on `/_next/static/*` + `/public/*` with CORS for the app origins. When
-  CloudFront arrives (Phase B) nothing changes — the browser still goes straight to S3 for
+- **CORS is mandatory, not optional.** Cross-origin `/_next/static` means chunks are loaded with
+  `crossorigin`, and `next/font` + CSS are fetched with CORS — the S3 bucket **must** return
+  `Access-Control-Allow-Origin` for the app origins (`prod.koalagains.com`, then the apex) or the
+  app renders unstyled/non-interactive. The bucket CORS rule in `s3_static.tf` covers this.
+- **`/public` is NOT served from S3** — `assetPrefix` only rewrites `/_next/*`; files in `public/`
+  are served by the Next server at the site root. So the bucket only needs `/_next/static/*`.
+- When CloudFront arrives (Phase B) nothing changes — the browser still goes straight to S3 for
   static, so CloudFront needs no S3 origin/behavior.
 
 ---
@@ -368,6 +389,16 @@ none of it blocking:
   are dynamic, so lean primarily on SSL + strong credentials).
 - Keep `connection_limit` modest in `DATABASE_URL` (today `=5`) — one container, one small pool.
 
+> **Freeze schema migrations during the parallel window.** Vercel and AWS run the *same* app
+> against the *same* RDS in Phase A, so any Prisma migration must be **expand-only** (add
+> nullable columns; no drops/renames) until Vercel is retired — a destructive migration would
+> break whichever deployment hasn't shipped the matching code.
+
+> **Cron writes & the apex cache.** Because the AWS app sets `CLOUDFRONT_DISTRIBUTION_ID`
+> ([§6](#6-secrets--environment-variables)), its cron/save-triggered `invalidateCloudFrontPaths()`
+> purges the same CloudFront that fronts the live `koalagains.com` — so apex users see fresh
+> content after each cron run, not stale-until-TTL.
+
 ---
 
 ## 12. Rollout & cut-over runbook
@@ -383,12 +414,17 @@ Phase B.
    RDS, `NEXTAUTH_URL=https://prod.koalagains.com`.
 3. **Add `prod.koalagains.com` to the Google/Discord/Twitter OAuth redirect URIs** so auth works
    on the direct host.
-4. **Deploy** (CI or manual, `manage_cloudfront=false`, `enable_crons=false`): create ECR + S3,
-   build/push image, upload static, `terraform apply` the Lightsail service + `prod.koalagains.com`
-   cert/DNS. (If the cert is still validating on first apply, re-run after it issues.)
+4. **Deploy** (CI or manual; `manage_cloudfront=false`, `enable_crons=true`): create ECR + S3,
+   build/push image (`NEXT_PUBLIC_VERCEL_URL=prod.koalagains.com`), upload static, `terraform
+   apply` the Lightsail service + `prod.koalagains.com` cert/DNS + the EventBridge crons. (If the
+   cert is still validating on first apply, the CI retries; manually, re-run after it issues.)
+   **Sequencing:** because the crons are removed from `vercel.json` in the same PR, merge this so
+   AWS is live first; the `*/3` jobs resume next tick after a brief gap, but avoid merging right
+   before the `23:00 UTC` daily-mover window so that once-a-day job isn't missed.
 5. **Verify directly at `https://prod.koalagains.com`**: auth + cookies, `/stocks/*`, `/etfs/*`,
-   tariff pages, an async generator (202 + completion), Puppeteer scrape, S3 upload, static
-   assets loading from S3, DB reads/writes against RDS. Vercel is untouched throughout.
+   tariff pages, an async generator (202 + completion), Puppeteer scrape, static assets loading
+   from S3 (check no CORS errors in the console), DB reads/writes against RDS, and that a cron
+   actually fired (EventBridge → Lambda → GET). Vercel is untouched throughout.
 
 ### Phase B — put CloudFront in front (when Phase A looks good)
 6. Set `manage_cloudfront=true` and `terraform import 'aws_cloudfront_distribution.main[0]'
@@ -433,7 +469,7 @@ Indicative monthly (illustrative — confirm with the AWS calculator):
 | Lightsail container service | `power` × `scale` | `medium` (1 vCPU / 4 GB) **$40**, includes LB + TLS; `small` (2 GB) **$20** if Puppeteer headroom allows |
 | Database | existing RDS | $0 incremental — already running |
 | CloudFront | unchanged | already in use |
-| S3 assets (optional) | tiny | static chunks only |
+| S3 assets | tiny | static chunks only |
 | Lambda + EventBridge | negligible | cron invokers |
 | ECR | tiny | image storage |
 | **Ballpark** | | **~$40–50/mo on top of the existing RDS** (vs. ~$120–200 + RDS for Fargate) |

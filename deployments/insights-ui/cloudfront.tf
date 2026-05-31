@@ -54,11 +54,14 @@ resource "aws_acm_certificate_validation" "cloudfront" {
 }
 
 resource "aws_cloudfront_cache_policy" "long_ttl" {
-  count       = local.cf_count
-  name        = "${var.name_prefix}-long-ttl"
+  count = local.cf_count
+  name  = "${var.name_prefix}-long-ttl"
+  # min == default == max so CloudFront caches even though the force-dynamic origin sends
+  # `Cache-Control: no-store, max-age=0`. min_ttl=0 would honor that header and cache NOTHING
+  # (see cloudfront-deploy-skew.md) — the whole point of the 6-day edge cache would evaporate.
   default_ttl = var.cloudfront_default_ttl
   max_ttl     = var.cloudfront_default_ttl
-  min_ttl     = 0
+  min_ttl     = var.cloudfront_default_ttl
 
   parameters_in_cache_key_and_forwarded_to_origin {
     cookies_config { cookie_behavior = "none" }
@@ -108,7 +111,7 @@ resource "aws_cloudfront_distribution" "main" {
   }
 
   dynamic "ordered_cache_behavior" {
-    for_each = var.cacheable_path_patterns
+    for_each = toset(var.cacheable_path_patterns)
     content {
       path_pattern             = ordered_cache_behavior.value
       target_origin_id         = local.lightsail_origin
@@ -136,11 +139,15 @@ resource "aws_cloudfront_distribution" "main" {
 
 # Apex/www → CloudFront (Phase B). Until then, koalagains.com keeps resolving to Vercel's
 # CloudFront via the existing (unmanaged) records.
+# allow_overwrite repoints the EXISTING apex/www records (today → Vercel's CloudFront) to the
+# new distribution. This is the actual production cut-over moment — applying Phase B flips the
+# live site. Without allow_overwrite, Route53 CREATE fails (records already exist).
 resource "aws_route53_record" "apex" {
-  count   = local.cf_count
-  zone_id = data.aws_route53_zone.main.zone_id
-  name    = var.domain_name
-  type    = "A"
+  count           = local.cf_count
+  zone_id         = data.aws_route53_zone.main.zone_id
+  name            = var.domain_name
+  type            = "A"
+  allow_overwrite = true
   alias {
     name                   = aws_cloudfront_distribution.main[0].domain_name
     zone_id                = aws_cloudfront_distribution.main[0].hosted_zone_id
@@ -149,10 +156,11 @@ resource "aws_route53_record" "apex" {
 }
 
 resource "aws_route53_record" "www" {
-  count   = local.cf_count
-  zone_id = data.aws_route53_zone.main.zone_id
-  name    = "www.${var.domain_name}"
-  type    = "A"
+  count           = local.cf_count
+  zone_id         = data.aws_route53_zone.main.zone_id
+  name            = "www.${var.domain_name}"
+  type            = "A"
+  allow_overwrite = true
   alias {
     name                   = aws_cloudfront_distribution.main[0].domain_name
     zone_id                = aws_cloudfront_distribution.main[0].hosted_zone_id

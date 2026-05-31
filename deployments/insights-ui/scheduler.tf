@@ -34,9 +34,10 @@ data "archive_file" "cron_invoker" {
   output_path = "${path.module}/.build/cron-invoker.zip"
 
   source {
-    filename = "index.mjs"
+    filename = "index.js"
     content  = <<-JS
-      export const handler = async (event) => {
+      // CommonJS handler (matches handler="index.handler"); Node 22 has global fetch.
+      exports.handler = async (event) => {
         const url = process.env.BASE_URL + event.path;
         const r = await fetch(url, { method: "GET" });
         if (!r.ok) throw new Error(`cron ${event.path} -> ${r.status}`);
