@@ -5,9 +5,6 @@ import DeleteConfirmationModal from '@/app/admin-v1/industry-management/DeleteCo
 import { FavouriteTickerResponse, UserListResponse, UserTickerTagResponse } from '@/types/ticker-user';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { KoalaGainsSession } from '@/types/auth';
-import { TagIcon, ListBulletIcon } from '@heroicons/react/24/outline';
-import { HeartIcon } from '@heroicons/react/24/solid';
-import Link from 'next/link';
 import React, { useState, useEffect, useMemo } from 'react';
 import { useDeleteData } from '@dodao/web-core/ui/hooks/fetch/useDeleteData';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
@@ -15,15 +12,16 @@ import ManageListsModal from '@/components/favourites/ManageListsModal';
 import ManageTagsModal from '@/components/favourites/ManageTagsModal';
 import BulkAddTagsModal from '@/components/favourites/BulkAddTagsModal';
 import BulkAddListsModal from '@/components/favourites/BulkAddListsModal';
-import FavouriteItem from '@/components/favourites/FavouriteItem';
-import Button from '@dodao/web-core/components/core/buttons/Button';
+import FavouritesPageHeader from '@/components/favourites/FavouritesPageHeader';
+import FavouritesToolbar from '@/components/favourites/FavouritesToolbar';
+import FavouritesEmptyState from '@/components/favourites/FavouritesEmptyState';
+import FavouritesAccordionSection from '@/components/favourites/FavouritesAccordionSection';
+import BulkActionBar from '@/components/favourites/BulkActionBar';
+import FavouritesLoadingSkeleton from '@/components/favourites/FavouritesLoadingSkeleton';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
-import FullPageLoader from '@dodao/web-core/components/core/loaders/FullPageLoading';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import Accordion from '@dodao/web-core/utils/accordion/Accordion';
-import ToggleWithIcon from '@dodao/web-core/components/core/toggles/ToggleWithIcon';
 
 type ModalView = 'manage-lists' | 'manage-tags' | 'bulk-add-tags' | 'bulk-add-lists';
 
@@ -190,9 +188,13 @@ export default function FavouritesPage() {
     toggleList(listId);
   };
 
-  // Show loading screen only when loading data
+  // Show a skeleton that mirrors the page layout while data loads
   if (favouritesLoading) {
-    return <FullPageLoader message="Loading your favourites..." />;
+    return (
+      <PageWrapper>
+        <FavouritesLoadingSkeleton />
+      </PageWrapper>
+    );
   }
 
   const handleDelete = async () => {
@@ -256,133 +258,76 @@ export default function FavouritesPage() {
     return null; // Will redirect in useEffect
   }
 
+  const listCount = listsWithFavourites.length + (unlistedFavourites.length > 0 ? 1 : 0);
+
+  const handleEditFavourite = (e: React.MouseEvent, fav: FavouriteTickerResponse) => {
+    e.stopPropagation();
+    setEditingFavourite(fav);
+  };
+
+  const handleDeleteFavourite = (e: React.MouseEvent, fav: FavouriteTickerResponse) => {
+    e.stopPropagation();
+    setDeletingFavourite(fav);
+  };
+
   return (
     <PageWrapper>
-      <div className="max-w-7xl mx-auto">
+      <div className="max-w-7xl mx-auto px-1 sm:px-2">
         <div className="py-6">
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
-            <div>
-              <h1 className="text-3xl font-bold text-white flex items-center gap-2">
-                <HeartIcon className="w-8 h-8 text-red-500" />
-                My Favourites
-              </h1>
-              <p className="text-gray-400 mt-1">
-                {favourites.length} favourite {favourites.length === 1 ? 'stock' : 'stocks'} across{' '}
-                {listsWithFavourites.length + (unlistedFavourites.length > 0 ? 1 : 0)}{' '}
-                {listsWithFavourites.length + (unlistedFavourites.length > 0 ? 1 : 0) === 1 ? 'list' : 'lists'}
-              </p>
-            </div>
+          <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-8 gap-4">
+            <FavouritesPageHeader favouritesCount={favourites.length} listsCount={listCount} />
 
-            <div className="flex items-center gap-4">
-              <div className="flex items-center mb-2">
-                <ToggleWithIcon label="Show Business Summary" enabled={showBusinessAnalysis} setEnabled={handleToggleBusinessAnalysis} onClickOnLabel={true} />
-              </div>
-              <div className="flex gap-2">
-                {bulkActionMode ? (
-                  <>
-                    <Button onClick={toggleBulkActionMode} variant="outlined" className="inline-flex items-center">
-                      Cancel Selection
-                    </Button>
-                    <Button onClick={selectAllFavourites} variant="outlined" className="inline-flex items-center">
-                      Select All
-                    </Button>
-                    <Button onClick={deselectAllFavourites} variant="outlined" className="inline-flex items-center" disabled={selectedFavourites.size === 0}>
-                      Deselect All
-                    </Button>
-                  </>
-                ) : (
-                  <>
-                    <Button onClick={toggleBulkActionMode} variant="outlined" className="inline-flex items-center">
-                      Select Multiple
-                    </Button>
-                    <Button onClick={() => setManageModalView('manage-lists')} variant="outlined" className="inline-flex items-center">
-                      <ListBulletIcon className="w-4 h-4 mr-2" />
-                      Manage Lists
-                    </Button>
-                    <Button onClick={() => setManageModalView('manage-tags')} variant="outlined" className="inline-flex items-center">
-                      <TagIcon className="w-4 h-4 mr-2" />
-                      Manage Tags
-                    </Button>
-                  </>
-                )}
-              </div>
-            </div>
+            <FavouritesToolbar
+              showBusinessAnalysis={showBusinessAnalysis}
+              onToggleBusinessAnalysis={handleToggleBusinessAnalysis}
+              bulkActionMode={bulkActionMode}
+              onToggleBulkActionMode={toggleBulkActionMode}
+              onSelectAll={selectAllFavourites}
+              onDeselectAll={deselectAllFavourites}
+              selectedCount={selectedFavourites.size}
+              onManageLists={() => setManageModalView('manage-lists')}
+              onManageTags={() => setManageModalView('manage-tags')}
+            />
           </div>
 
           {/* Lists with Favourites */}
           {favourites.length === 0 ? (
-            <div className="bg-gray-800 rounded-lg p-8 text-center">
-              <HeartIcon className="w-16 h-16 text-gray-600 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold mb-2">No favourites yet</h3>
-              <p className="text-gray-400 mb-4">Start adding stocks to your favourites to see them here.</p>
-              <Link href="/stocks" className="inline-block px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg text-white font-medium">
-                Browse Stocks
-              </Link>
-            </div>
+            <FavouritesEmptyState />
           ) : (
-            <div className="space-y-4">
+            <div className="space-y-4 pb-24">
               {/* Lists with favourites */}
-              {listsWithFavourites.map(({ list, favourites: listFavourites }) => {
-                const isOpen = openListIds.has(list.id);
-                const tickerSymbols = listFavourites.map((f) => f.ticker.symbol).join(', ');
-                const label = isOpen ? list.name : `${list.name} (${tickerSymbols})`;
-
-                return (
-                  <Accordion key={list.id} isOpen={isOpen} label={label} onClick={(e) => handleAccordionClick(e, list.id)}>
-                    <div className="space-y-3">
-                      {listFavourites.map((favourite) => (
-                        <FavouriteItem
-                          key={favourite.id}
-                          favourite={favourite}
-                          showBusinessAnalysis={showBusinessAnalysis}
-                          onEdit={(e: React.MouseEvent, fav) => {
-                            e.stopPropagation();
-                            setEditingFavourite(fav);
-                          }}
-                          onDelete={(e: React.MouseEvent, fav) => {
-                            e.stopPropagation();
-                            setDeletingFavourite(fav);
-                          }}
-                          selectable={bulkActionMode}
-                          isSelected={selectedFavourites.has(favourite.id)}
-                          onSelectChange={handleFavouriteSelection}
-                        />
-                      ))}
-                    </div>
-                  </Accordion>
-                );
-              })}
+              {listsWithFavourites.map(({ list, favourites: listFavourites }) => (
+                <FavouritesAccordionSection
+                  key={list.id}
+                  sectionId={list.id}
+                  name={list.name}
+                  favourites={listFavourites}
+                  isOpen={openListIds.has(list.id)}
+                  onToggle={handleAccordionClick}
+                  showBusinessAnalysis={showBusinessAnalysis}
+                  onEdit={handleEditFavourite}
+                  onDelete={handleDeleteFavourite}
+                  selectable={bulkActionMode}
+                  selectedFavouriteIds={selectedFavourites}
+                  onSelectChange={handleFavouriteSelection}
+                />
+              ))}
 
               {/* Unlisted Favourites */}
               {unlistedFavourites.length > 0 && (
-                <Accordion
+                <FavouritesAccordionSection
+                  sectionId="unlisted"
+                  name="Unlisted Favourites"
+                  favourites={unlistedFavourites}
                   isOpen={openListIds.has('unlisted')}
-                  label={
-                    openListIds.has('unlisted') ? 'Unlisted Favourites' : `Unlisted Favourites (${unlistedFavourites.map((f) => f.ticker.symbol).join(', ')})`
-                  }
-                  onClick={(e) => handleAccordionClick(e, 'unlisted')}
-                >
-                  <div className="space-y-3">
-                    {unlistedFavourites.map((favourite) => (
-                      <FavouriteItem
-                        key={favourite.id}
-                        favourite={favourite}
-                        showBusinessAnalysis={showBusinessAnalysis}
-                        onEdit={(e: React.MouseEvent, fav) => {
-                          e.stopPropagation();
-                          setEditingFavourite(fav);
-                        }}
-                        onDelete={(e: React.MouseEvent, fav) => {
-                          e.stopPropagation();
-                          setDeletingFavourite(fav);
-                        }}
-                        selectable={bulkActionMode}
-                        isSelected={selectedFavourites.has(favourite.id)}
-                        onSelectChange={handleFavouriteSelection}
-                      />
-                    ))}
-                  </div>
-                </Accordion>
+                  onToggle={handleAccordionClick}
+                  showBusinessAnalysis={showBusinessAnalysis}
+                  onEdit={handleEditFavourite}
+                  onDelete={handleDeleteFavourite}
+                  selectable={bulkActionMode}
+                  selectedFavouriteIds={selectedFavourites}
+                  onSelectChange={handleFavouriteSelection}
+                />
               )}
             </div>
           )}
@@ -460,23 +405,11 @@ export default function FavouritesPage() {
 
         {/* Bulk Action Bar - Fixed at bottom when items are selected */}
         {bulkActionMode && selectedFavourites.size > 0 && (
-          <div className="fixed bottom-0 left-0 right-0 bg-gray-800 border-t border-gray-700 p-4 shadow-lg z-50">
-            <div className="max-w-7xl mx-auto flex items-center justify-between">
-              <div className="text-white">
-                <span className="font-medium">{selectedFavourites.size}</span> {selectedFavourites.size === 1 ? 'item' : 'items'} selected
-              </div>
-              <div className="flex gap-2">
-                <Button onClick={() => setManageModalView('bulk-add-tags')} variant="contained" primary className="inline-flex items-center">
-                  <TagIcon className="w-4 h-4 mr-2" />
-                  Add Tags
-                </Button>
-                <Button onClick={() => setManageModalView('bulk-add-lists')} variant="contained" primary className="inline-flex items-center">
-                  <ListBulletIcon className="w-4 h-4 mr-2" />
-                  Add to Lists
-                </Button>
-              </div>
-            </div>
-          </div>
+          <BulkActionBar
+            selectedCount={selectedFavourites.size}
+            onAddTags={() => setManageModalView('bulk-add-tags')}
+            onAddLists={() => setManageModalView('bulk-add-lists')}
+          />
         )}
       </div>
     </PageWrapper>
