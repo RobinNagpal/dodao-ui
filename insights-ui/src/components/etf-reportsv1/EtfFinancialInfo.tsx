@@ -1,7 +1,7 @@
 import type { EtfFinancialInfoResponse } from '@/types/etf/etf-detail-response-types';
 import { FinancialCard } from '@/components/ticker-reportsv1/FinancialInfo';
-import CardSection from '@/components/ui/CardSection';
-import MetricGrid from '@/components/ui/MetricGrid';
+import CardSection from '@/components/ui/sections/CardSection';
+import MetricGrid from '@/components/ui/containers/MetricGrid';
 import { formatNumber, formatPercentageDecimal, formatVolume } from '@/components/reportsv1/financialFormatters';
 import { formatCompactAmount, formatCompactMillions } from '@/utils/etf-display-format-utils';
 

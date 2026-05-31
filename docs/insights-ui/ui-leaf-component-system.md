@@ -22,12 +22,26 @@ Why:
 ## Where things live
 
 - **Leaf layer (the ONLY place `className` / Tailwind is allowed):**
-  `insights-ui/src/components/ui/**`
+  `insights-ui/src/components/ui/**`. Organized into:
+  - `ui/containers/**` — page/section **layout** primitives (`Stack`,
+    `MetricGrid`, `SplitColumns`).
+  - `ui/sections/**` — **surfaces & report-section chrome** (`CardSection`,
+    `InlineCard`, `RelatedSectionsNav`, `ReportArticleShell`,
+    `ReportSectionHeader`, `SectionHeading`, `ReportSection`, `ReportFooter`,
+    `Prose`, `MarkdownContent`).
+  - `ui/*` (flat) — typography (`Heading`, `Text`), data/badges/feedback
+    (`MetricCell`, `StatusBadge`, …), and wrapped controls (`Breadcrumbs`, …).
+  - The ESLint `src/components/ui/**` globs cover these subfolders (the `**`
+    recurses), so nested leaves stay in the "Tailwind-allowed" zone with no
+    config change.
 - **Shared design-system primitives (reuse first):**
   `shared/web-core/src/components/core/**` (`Button`, `Input`, `StyledSelect`,
   modals, `Grid2–5Cols`, `Table`, loaders, `Breadcrumbs`, `EllipsisDropdown`,
   `PageWrapper`, error/warning panels). **Do not edit web-core for insights-ui
-  styling work** — wrap it from the insights-ui leaf layer instead.
+  styling work** — wrap it from the insights-ui leaf layer instead. Note: the
+  centered page gutter already lives in web-core `PageWrapper` /
+  `MainContainer` (`mx-auto max-w-7xl …`) — **do not recreate a `PageContainer`**
+  that duplicates it.
 - **High-level components (must be style-free):** everything else under
   `src/app/**` and `src/components/**`.
 
@@ -76,23 +90,35 @@ Rules for leaves:
 
 ## Current leaf inventory
 
-**Layout / surfaces**
+**Containers (`ui/containers/`) — layout**
 
 | Component | Responsibility |
 |---|---|
-| `Stack` | Flex container; owns `gap` + optional block margins (`mt`/`mb`). |
+| `Stack` | Flex container; owns `gap` + optional block margins (`mt`/`mb`); `as` for `ul`/`section`/etc. |
 | `MetricGrid` | Responsive grid for metric cells; `columns` presets + `gap`. |
-| `CardSection` | Dark report-section surface (`bg-gray-900 rounded-lg shadow-sm`) with padding presets. |
-| `InlineCard` | Lightweight filled box (`bg-gray-800 rounded-md`) for small grouped content. |
-| `RelatedSectionsNav` | Top-bordered "more analyses" nav: heading + responsive grid of pill links. |
-| `PageContainer`* | Centered max-width page gutter (`mx-auto max-w-7xl px-6 lg:px-8`). |
+| `SplitColumns` | Two-column responsive split (`lg:w-1/2` halves) with a `gap` variant. |
 
-**Typography**
+**Sections (`ui/sections/`) — surfaces & report chrome**
 
 | Component | Responsibility |
 |---|---|
-| `Heading` | Semantic heading; `as` (h1–h6) decoupled from visual `size`/`weight`/`tone`. |
-| `Text` | Body/inline text; `size`/`weight`/`tone`/`leading`. |
+| `CardSection` | Dark report-section surface (`bg-gray-900 rounded-lg shadow-sm`) with padding presets. |
+| `InlineCard` | Lightweight filled box (`bg-gray-800 rounded-md`); `padding` presets incl. `factor`; `as` for `li`. |
+| `RelatedSectionsNav` | Top-bordered "more analyses" nav: heading + responsive grid of pill links. |
+| `ReportArticleShell` | Outer `<article>` card chrome + schema.org microdata + optional `datePublished`; `padding` variant. |
+| `ReportSectionHeader` | Bordered report header: title (+ `symbol`), exchange/score/date meta row, metadata slot, action link. |
+| `SectionHeading` | In-article H2/H3 (`text-xl font-semibold text-color`); `size`/`weight`/`bordered`. |
+| `ReportSection` | `<section>` with standardized vertical rhythm (`spacing`) + optional `itemProp`. |
+| `ReportFooter` | "Last updated by KoalaGains" + category tag pills (`tone` vocabulary). |
+| `Prose` | `prose prose-invert max-w-none` long-form body wrapper. |
+| `MarkdownContent` | Renders sanitized markdown HTML with `summary`/`body`/`plain` style variants. |
+
+**Typography (flat `ui/`)**
+
+| Component | Responsibility |
+|---|---|
+| `Heading` | Semantic heading; `as` (h1–h6) decoupled from visual `size`/`weight`/`tone` (incl. `inherit`). |
+| `Text` | Body/inline text; `size`/`weight`/`tone`/`leading` (+ `itemProp`). |
 
 **Data / badges / feedback**
 
@@ -104,9 +130,6 @@ Rules for leaves:
 | `ScenarioOutlookBadge` | Probability / Direction / Timeframe scenario pills. |
 | `AppliedFilterChip` | Removable filter chip. |
 | `EmptyStateCard` | "No data" placeholder (`card` / `inline`). |
-
-\* `PageContainer` may be (re)introduced as the canonical gutter; confirm it
-exists before reusing.
 
 Plus the shadcn-style `Card`, `Input`, `Label`, `Tabs` already in
 `components/ui/`. **Always grep the leaf layer + web-core before creating a new

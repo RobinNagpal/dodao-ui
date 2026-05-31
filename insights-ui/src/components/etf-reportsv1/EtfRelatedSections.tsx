@@ -2,7 +2,7 @@ import { prisma } from '@/prisma';
 import { getEtfWhereClause } from '@/app/api/[spaceId]/etfs-v1/etfApiUtils';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { EtfAnalysisCategory } from '@/types/etf/etf-analysis-types';
-import RelatedSectionsNav from '@/components/ui/RelatedSectionsNav';
+import RelatedSectionsNav from '@/components/ui/sections/RelatedSectionsNav';
 
 const SECTIONS: ReadonlyArray<{ slug: string; label: string }> = [
   { slug: 'performance-returns', label: 'Past Returns' },

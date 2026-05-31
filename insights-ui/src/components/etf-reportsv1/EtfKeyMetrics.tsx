@@ -1,9 +1,9 @@
 import type { EtfKeyMetricsResponse } from '@/app/api/[spaceId]/etfs-v1/exchange/[exchange]/[etf]/full-render/route';
 import Heading from '@/components/ui/Heading';
-import InlineCard from '@/components/ui/InlineCard';
+import InlineCard from '@/components/ui/sections/InlineCard';
 import MetricCell from '@/components/ui/MetricCell';
-import MetricGrid from '@/components/ui/MetricGrid';
-import Stack from '@/components/ui/Stack';
+import MetricGrid from '@/components/ui/containers/MetricGrid';
+import Stack from '@/components/ui/containers/Stack';
 import Text from '@/components/ui/Text';
 
 interface EtfKeyMetricsProps {
