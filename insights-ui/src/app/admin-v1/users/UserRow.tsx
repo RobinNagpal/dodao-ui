@@ -8,6 +8,7 @@ interface UserRowProps {
     email: string | null;
     username: string;
     role: UserRole;
+    authProvider: string;
     createdAt: string;
     hasPortfolioManagerProfile: boolean;
     favouriteItemsCount: number;
@@ -15,6 +16,33 @@ interface UserRowProps {
   onEdit: (user: UserRowProps['user']) => void;
   onDelete: (userId: string) => void;
   onPortfolioProfile: (user: UserRowProps['user']) => void;
+}
+
+const authProviderLabels: Record<string, string> = {
+  'custom-email': 'Custom Email',
+  email: 'Custom Email',
+  google: 'Google',
+  discord: 'Discord',
+  twitter: 'Twitter',
+  crypto: 'Crypto',
+};
+
+function getAuthProviderBadgeClasses(authProvider: string): string {
+  switch (authProvider) {
+    case 'google':
+      return 'bg-red-900 text-red-200';
+    case 'custom-email':
+    case 'email':
+      return 'bg-amber-900 text-amber-200';
+    case 'discord':
+      return 'bg-indigo-900 text-indigo-200';
+    case 'twitter':
+      return 'bg-sky-900 text-sky-200';
+    case 'crypto':
+      return 'bg-emerald-900 text-emerald-200';
+    default:
+      return 'bg-gray-700 text-gray-200';
+  }
 }
 
 export default function UserRow({ user, onEdit, onDelete, onPortfolioProfile }: UserRowProps): JSX.Element {
@@ -36,6 +64,11 @@ export default function UserRow({ user, onEdit, onDelete, onPortfolioProfile }: 
             {user.role}
           </span>
         </div>
+      </td>
+      <td className="px-6 py-4">
+        <span className={`text-xs font-medium px-2 py-1 rounded-full ${getAuthProviderBadgeClasses(user.authProvider)}`}>
+          {authProviderLabels[user.authProvider] || user.authProvider || 'N/A'}
+        </span>
       </td>
       <td className="px-6 py-4">
         <div className="text-sm text-gray-400">{new Date(user.createdAt).toLocaleDateString()}</div>
