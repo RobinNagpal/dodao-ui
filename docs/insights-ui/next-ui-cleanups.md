@@ -46,7 +46,7 @@ reusing web-core (`Table`, `Grid2–5Cols`, `Button`, `Input`, modals) where it 
 | ⬜ `SymbolBadge` | ticker/ETF symbol pill | listing cards |
 | ⬜ `FilterButton` | active/inactive pill filter toggle | `BlogsGrid`, admin filters |
 | ⬜ `LoadingSkeleton` / `SkeletonGrid` | `animate-pulse` placeholders | Suspense fallbacks, `SubIndustryCardSkeleton` |
-| ⬜ `RelatedSectionsNav` | "jump to section" pill nav | `EtfRelatedSections` |
+| ✅ `RelatedSectionsNav` | "jump to section" pill nav | `EtfRelatedSections` (done); stock-side `TickerRelatedSections` (todo) |
 | ⬜ `ViewMoreLink` | right-aligned "View more →" link | `EtfHoldings`, `RelatedBlogs` |
 | ⬜ `Divider` | horizontal separator | scattered |
 
@@ -72,7 +72,7 @@ once clean.
 | Target | Why | Status |
 |---|---|---|
 | `ticker-reportsv1/FinancialInfo`, `etf-reportsv1/EtfKeyMetrics` | proof slice | ✅ |
-| `etf-reportsv1/**` report sections | high Tailwind density, shared leaves ready | ⬜ |
+| `etf-reportsv1/**` report sections | high Tailwind density, shared leaves ready | 🟡 `EtfFinancialInfo`, `EtfRelatedSections` done; `EtfMorInfo`/`EtfHoldings`/tables need `DataTable`/`ListingCard` |
 | `ticker-reportsv1/**` report sections | mirrors ETF | ⬜ |
 | `admin-v1/missing-reports/page.tsx` | worst offender (~89 classNames) — needs `DataTable` first | ⬜ |
 | `admin-v1/stock-scenarios`, `admin-v1/etf-scenarios`, `admin-v1/users` | table-heavy admin (~35–39) | ⬜ |

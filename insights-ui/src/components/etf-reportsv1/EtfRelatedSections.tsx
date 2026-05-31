@@ -2,7 +2,7 @@ import { prisma } from '@/prisma';
 import { getEtfWhereClause } from '@/app/api/[spaceId]/etfs-v1/etfApiUtils';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { EtfAnalysisCategory } from '@/types/etf/etf-analysis-types';
-import Link from 'next/link';
+import RelatedSectionsNav from '@/components/ui/RelatedSectionsNav';
 
 const SECTIONS: ReadonlyArray<{ slug: string; label: string }> = [
   { slug: 'performance-returns', label: 'Past Returns' },
@@ -83,23 +83,14 @@ export default function EtfRelatedSections({ availableSlugs, exchange, symbol, e
   if (others.length === 0) return null;
 
   return (
-    <nav aria-label={`More ${etfName} (${sym}) analyses`} className="mt-10 pt-6 border-t border-color">
-      <h2 className="text-lg font-semibold mb-3">
-        More {etfName} ({sym}) analyses
-      </h2>
-      <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
-        {others.map((s) => (
-          <li key={s.slug} className="h-full">
-            <Link
-              href={`/etfs/${ex}/${sym}/${s.slug}`}
-              prefetch={false}
-              className="flex h-full items-center rounded-md px-3 py-2 text-sm bg-gray-800 hover:bg-gray-700 text-gray-200 hover:text-white transition-colors"
-            >
-              {s.label} &rarr;
-            </Link>
-          </li>
-        ))}
-      </ul>
-    </nav>
+    <RelatedSectionsNav
+      ariaLabel={`More ${etfName} (${sym}) analyses`}
+      heading={
+        <>
+          More {etfName} ({sym}) analyses
+        </>
+      }
+      items={others.map((s) => ({ href: `/etfs/${ex}/${sym}/${s.slug}`, label: `${s.label} →` }))}
+    />
   );
 }

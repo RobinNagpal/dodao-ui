@@ -84,6 +84,7 @@ Rules for leaves:
 | `MetricGrid` | Responsive grid for metric cells; `columns` presets + `gap`. |
 | `CardSection` | Dark report-section surface (`bg-gray-900 rounded-lg shadow-sm`) with padding presets. |
 | `InlineCard` | Lightweight filled box (`bg-gray-800 rounded-md`) for small grouped content. |
+| `RelatedSectionsNav` | Top-bordered "more analyses" nav: heading + responsive grid of pill links. |
 | `PageContainer`* | Centered max-width page gutter (`mx-auto max-w-7xl px-6 lg:px-8`). |
 
 **Typography**
