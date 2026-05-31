@@ -43,6 +43,20 @@ jobs:
           role-to-assume: ${{ secrets.AWS_DEPLOY_ROLE_ARN }}
           aws-region: ${{ env.AWS_REGION }}
 
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      # ECR repo is a Terraform resource — create it first so `docker push` has a target.
+      - name: Terraform init + ensure ECR repo
+        working-directory: ${{ env.TF_DIR }}
+        run: |
+          terraform init -input=false
+          # app_secrets is required but irrelevant to the ECR resource — pass an empty map so
+          # the targeted apply doesn't prompt. The full apply below passes the real secret.
+          terraform apply -input=false -auto-approve -target=aws_ecr_repository.app \
+            -var "image_tag=$(git rev-parse --short HEAD)" \
+            -var 'app_secrets={}'
+
       - name: Login to Amazon ECR
         id: ecr
         uses: aws-actions/amazon-ecr-login@v2
@@ -81,18 +95,15 @@ jobs:
           aws s3 sync ./_assets/static "s3://$STATIC_BUCKET/_next/static" --cache-control "public,max-age=31536000,immutable"
           aws s3 sync ./_assets/public "s3://$STATIC_BUCKET/public"
 
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v3
-
       # Deploy = terraform apply, which registers a new Lightsail deployment version pointing at
       # the new image and injects secrets (read here from Secrets Manager) into its environment.
+      # DATABASE_URL inside the secret points at the existing RDS instance.
       - name: Terraform apply (Lightsail)
         working-directory: ${{ env.TF_DIR }}
         env:
           TAG: ${{ steps.build.outputs.tag }}
         run: |
           SECRETS_JSON=$(aws secretsmanager get-secret-value --secret-id "$APP_SECRETS_ID" --query SecretString --output text)
-          terraform init -input=false
           terraform apply -input=false -auto-approve \
             -var "image_tag=$TAG" \
             -var "app_secrets=$SECRETS_JSON"

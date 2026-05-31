@@ -53,23 +53,9 @@ variable "service_scale" {
 }
 
 # ---- Database ----------------------------------------------------------------------------
-variable "create_managed_db" {
-  description = "Create a Lightsail managed Postgres. false = use an existing DB via database_url."
-  type        = bool
-  default     = false
-}
-
-variable "db_blueprint_id" {
-  description = "Lightsail managed DB blueprint (engine version)."
-  type        = string
-  default     = "postgres_16"
-}
-
-variable "db_bundle_id" {
-  description = "Lightsail managed DB bundle (size)."
-  type        = string
-  default     = "micro_2_0"
-}
+# Postgres already lives in RDS — Terraform does not provision it. Pass the full DATABASE_URL
+# (pointing at the existing RDS endpoint, with sslmode) via app_secrets. The only migration
+# concern is network reachability from Lightsail → RDS (see plan §10).
 
 # ---- CloudFront --------------------------------------------------------------------------
 variable "existing_cloudfront_distribution_id" {

@@ -1,6 +1,11 @@
 # Reuse the existing distribution (EZI5H8FKNE9R1) — import it before the first apply:
 #   terraform import aws_cloudfront_distribution.main EZI5H8FKNE9R1
 # then reconcile until `plan` is clean. See plan §3 / §12.
+#
+# IMPORTANT: the live distribution also has cache behaviors for the per-stocks-page GET API
+# endpoints (deploy-skew doc, Phase 5: /api/koala_gains/tickers-v1/exchange/* and /country/*).
+# Replicate ALL existing behaviors here before applying, or the import reconcile will try to
+# DELETE them and regress that caching.
 
 locals {
   # The Lightsail service URL is "https://<host>/" — CloudFront needs the bare host.

@@ -1,8 +1,28 @@
 # Lightsail container service: the single-node compute for insights-ui.
 # Modeled on ai-agents/crowd-fund-analysis/terraform/main.tf.
 
-data "aws_ecr_repository" "app" {
-  name = var.ecr_repository_name
+# ECR repo for the app image. Self-managed so the stack is complete.
+# First-run ordering: CI runs `terraform apply -target=aws_ecr_repository.app` to create the
+# repo, then builds/pushes the image, then the full apply creates the deployment version.
+resource "aws_ecr_repository" "app" {
+  name                 = var.ecr_repository_name
+  image_tag_mutability = "IMMUTABLE"
+
+  image_scanning_configuration {
+    scan_on_push = true
+  }
+}
+
+resource "aws_ecr_lifecycle_policy" "app" {
+  repository = aws_ecr_repository.app.name
+  policy = jsonencode({
+    rules = [{
+      rulePriority = 1
+      description  = "Keep last 20 images"
+      selection    = { tagStatus = "any", countType = "imageCountMoreThan", countNumber = 20 }
+      action       = { type = "expire" }
+    }]
+  })
 }
 
 resource "aws_lightsail_container_service" "app" {
@@ -36,17 +56,8 @@ data "aws_iam_policy_document" "ecr_pull" {
 }
 
 resource "aws_ecr_repository_policy" "pull" {
-  repository = data.aws_ecr_repository.app.name
+  repository = aws_ecr_repository.app.name
   policy     = data.aws_iam_policy_document.ecr_pull.json
-}
-
-locals {
-  # Merge non-secret + secret env, plus the managed-DB URL when Terraform creates the DB.
-  db_env = var.create_managed_db ? {
-    DATABASE_URL = "postgresql://${aws_lightsail_database.app[0].master_username}:${random_password.db[0].result}@${aws_lightsail_database.app[0].master_endpoint_address}:${aws_lightsail_database.app[0].master_endpoint_port}/${aws_lightsail_database.app[0].master_database_name}?sslmode=require&connection_limit=5"
-  } : {}
-
-  container_env = merge(var.app_env, var.app_secrets, local.db_env)
 }
 
 resource "aws_lightsail_container_service_deployment_version" "app" {
@@ -54,8 +65,9 @@ resource "aws_lightsail_container_service_deployment_version" "app" {
 
   container {
     container_name = "app"
-    image          = "${data.aws_ecr_repository.app.repository_url}:${var.image_tag}"
-    environment    = local.container_env
+    image          = "${aws_ecr_repository.app.repository_url}:${var.image_tag}"
+    # DATABASE_URL (pointing at the existing RDS instance) is supplied via app_secrets.
+    environment = merge(var.app_env, var.app_secrets)
     ports = {
       "3000" = "HTTP"
     }

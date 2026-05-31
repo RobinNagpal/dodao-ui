@@ -13,19 +13,15 @@ image_tag           = "REPLACE_WITH_GIT_SHA"
 service_power = "medium" # 1 vCPU / 4 GB (Puppeteer headroom); "small" = 2 GB if it fits
 service_scale = 1
 
-# Database: keep an existing managed DB (pass DATABASE_URL in app_secrets) ...
-create_managed_db = false
-# ... or set true to provision Lightsail managed Postgres:
-# create_managed_db = true
-# db_blueprint_id   = "postgres_16"
-# db_bundle_id      = "micro_2_0"
+# Database already lives in RDS — not provisioned here. Pass DATABASE_URL (pointing at the
+# existing RDS endpoint) in app_secrets below.
 
 existing_cloudfront_distribution_id = "EZI5H8FKNE9R1"
 enable_static_asset_offload         = true
 
 # Secret env — example only. In CI, build this map from Secrets Manager and pass via -var.
 # app_secrets = {
-#   DATABASE_URL          = "postgresql://user:pw@host:5432/insights_ui_db?sslmode=require&connection_limit=5"
+#   DATABASE_URL          = "postgresql://user:pw@<existing-rds-endpoint>:5432/insights_ui_db?sslmode=require&connection_limit=5"
 #   NEXTAUTH_SECRET       = "..."
 #   DODAO_AUTH_SECRET     = "..."
 #   EMAIL_TOKEN_SECRET    = "..."

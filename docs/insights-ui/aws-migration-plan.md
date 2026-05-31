@@ -84,7 +84,7 @@ because the app needs it. Two facts make a single node the right default for Koa
 | Scaling | Manual `power` × `scale` | Autoscaling + Multi-AZ HA |
 | Terraform surface | **Small** (1 service + deployment) | Large (VPC/ALB/ECS/ElastiCache/…) |
 | Repo precedent | `ai-agents/crowd-fund-analysis/terraform` | none |
-| ~Monthly cost | **~$55–70 all-in** | ~$120–200 |
+| ~Monthly cost | **~$40–50** (DB already on RDS) | ~$120–200 + RDS |
 | Trade-offs | No autoscaling; no horizontal HA; bundled-LB request timeout (see [§9](#9-long-running-generation-routes)) | More infra to own + cost |
 
 **When to graduate to Fargate:** when origin load outgrows one node, or true HA / autoscaling
@@ -120,9 +120,10 @@ for this app.
                                        └───────────────┬───────────────────┘
                                                        │
                                     ┌──────────────────▼─────────────────┐
-                                    │ PostgreSQL                          │
-                                    │ (existing managed DB, or Lightsail  │
-                                    │  managed Postgres) — DATABASE_URL   │
+                                    │ Existing RDS PostgreSQL             │
+                                    │ (not provisioned here) — DATABASE_URL│
+                                    │  via app_secrets; see §11 for the   │
+                                    │  Lightsail→RDS connectivity choice  │
                                     └─────────────────────────────────────┘
 
    ⚡ maxDuration=300 tariff generators → return 202 + run in background on the persistent
@@ -140,10 +141,10 @@ for this app.
 | Compute | **Lightsail Container Service** (`power=medium`, `scale=1`) | `next start` (standalone) + Chromium; bundled load balancer + managed TLS + custom-domain support; SSR/RSC, API routes, server actions, Puppeteer |
 | Image registry | ECR | Image built in CI, pulled via the service's ECR image-puller role |
 | Static assets (optional) | S3 + CloudFront origin | Offload `/_next/static` for deploy-skew safety ([§10](#10-deploy-skew-handling)) |
-| Database | Existing managed Postgres **or** Lightsail managed Postgres | App connects via `DATABASE_URL` (SSL) |
+| Database | **Existing RDS Postgres** (not provisioned by this stack) | App connects via `DATABASE_URL` (SSL); see [§11](#11-database) for Lightsail→RDS connectivity |
 | Secrets | Lightsail deployment `environment` (sourced from Secrets Manager in CI) | Lightsail has no native Secrets Manager mount; CI reads SM and passes values into the deployment ([§6](#6-secrets--environment-variables)) |
 | Crons | EventBridge Scheduler + invoker Lambda | One rule per current Vercel cron |
-| DNS / TLS | Route 53 + ACM (CloudFront, us-east-1) + Lightsail managed cert | |
+| DNS / TLS | Route 53 + ACM (CloudFront cert, us-east-1) | CloudFront → Lightsail uses the Lightsail default domain's own TLS cert (no custom cert to manage) |
 | Observability | Lightsail metrics + container logs; CloudWatch for the cron Lambda | |
 
 > **CloudFront reuse.** Keep `EZI5H8FKNE9R1` and the `flush-cloudfront-cache` workflow as-is —
@@ -167,8 +168,7 @@ insights-ui/deploy/aws/
 │   ├── providers.tf                 # aws (region) + aws.us_east_1 (CloudFront/ACM)
 │   ├── variables.tf                 # region, domain, image_tag, power/scale, secret vars
 │   ├── terraform.tfvars.example
-│   ├── container.tf                 # lightsail_container_service + deployment_version + ECR puller policy
-│   ├── database.tf                  # OPTIONAL lightsail managed Postgres (flag-gated)
+│   ├── container.tf                 # ECR repo + lightsail_container_service + deployment_version + puller policy
 │   ├── cloudfront.tf                # import EZI5H8FKNE9R1; origin → Lightsail; S3 static behavior
 │   ├── s3_assets.tf                 # OPTIONAL static-asset bucket (skew safety)
 │   ├── scheduler.tf                 # EventBridge Scheduler + invoker Lambda + its IAM
@@ -250,7 +250,7 @@ build-time and go in as Docker build args.
 
 | Category | Vars | Handling |
 |---|---|---|
-| Database | `DATABASE_URL` | SM → TF var → deployment env (point at the chosen Postgres) |
+| Database | `DATABASE_URL` | SM → TF var → deployment env (points at the existing RDS endpoint) |
 | Auth | `NEXTAUTH_URL=https://koalagains.com`, `NEXTAUTH_SECRET`, `DODAO_AUTH_SECRET`, `EMAIL_TOKEN_SECRET`, `COOKIE_DOMAIN=.koalagains.com` | deployment env |
 | **Vercel-named host vars** | `VERCEL_ENV=production` (runtime), `NEXT_PUBLIC_VERCEL_URL`, `NEXT_PUBLIC_VERCEL_ENV` (build args) | [§5.6](#5-application--code-changes) — keep names, set values |
 | OAuth | `GOOGLE_*`, `DISCORD_*`, `TWITTER_*` | deployment env; keep redirect URLs on `koalagains.com` |
@@ -349,17 +349,29 @@ HTML (referencing build N's hashed chunks) keeps working after a deploy to N+1. 
 
 ---
 
-## 11. Database
+## 11. Database — already on RDS
 
-- **Keep the existing managed Postgres** if there is one — only `DATABASE_URL` (and network
-  reachability + SSL) needs confirming. Lowest-risk.
-- **Or provision Lightsail managed Postgres** (`database.tf`, flag-gated) for an all-in-Lightsail
-  setup. Note: a Lightsail container service reaching a Lightsail managed DB uses the DB's
-  endpoint with SSL — validate connectivity (public-with-SSL vs. private) during staging.
-- **Or RDS** if you want VPC-private Postgres (this nudges toward the Fargate topology, since
-  Lightsail containers aren't in your VPC).
-- Migrate via `pg_dump` → restore (or `prisma migrate deploy` for a fresh schema), verify row
-  counts on the largest tables, repoint `DATABASE_URL`, keep the old DB read-only until sign-off.
+**Postgres already lives in RDS, so Terraform provisions nothing for it.** The app just needs
+`DATABASE_URL` (pointing at the existing RDS endpoint, with `sslmode`) injected via
+`app_secrets`. No data migration, no schema change, no DB resources in the stack.
+
+The **one thing to settle** is network reachability: **a Lightsail container service is not in
+your VPC**, so it cannot reach a private RDS instance over the VPC's internal network the way a
+Fargate task can. Pick one:
+
+| Option | What it means | Trade-off |
+|---|---|---|
+| **A. RDS publicly accessible + SG allowlist** (simplest) | Set RDS `publicly_accessible=true`; restrict the DB security group to known sources; require SSL (`sslmode=verify-full`) | Lightsail container egress IPs are dynamic/not easily pinned, so the SG can't tightly IP-lock the container — lean on SSL + strong creds. Easiest to stand up. |
+| **B. Lightsail VPC peering** | Enable Lightsail's account-level peering with the AWS **default** VPC in the region (`aws lightsail peer-vpc`, a one-time CLI/console step — no Terraform resource), then reach RDS privately **if RDS is in / reachable from the default VPC** | No public DB exposure; but only works cleanly when RDS sits in the default VPC, and peering isn't Terraform-managed |
+| **C. Move compute to Fargate** | Fargate runs in your VPC → RDS access is a security-group rule, fully private | Heavier infra ([Appendix A](#appendix-a-ecs-fargate-scale-up-path)); choose this if private DB access is a hard requirement |
+
+**Recommendation:** if RDS already accepts SSL connections from outside the VPC (or can be made
+to), **Option A** keeps this simple. If the DB must stay private, that's the strongest single
+reason to prefer **Fargate**. This is the main place Lightsail trades a little networking
+elegance for operational simplicity — confirm the choice in [§16](#16-open-questions).
+
+> Confirm `connection_limit` in `DATABASE_URL` is modest (today `=5`) — one container holds one
+> small pool, well within RDS `max_connections`.
 
 ---
 
@@ -370,27 +382,30 @@ never moves.
 
 1. **Merge §5 app prep** (standalone output, headers, `/api/health`, `waitUntil`→`after()`,
    async generators, `VERCEL_ENV` handling) — all Vercel-safe.
-2. **`terraform apply` the Lightsail stack** (service `scale=1`, crons disabled): ECR, container
-   service + first deployment, optional DB, optional S3 assets, CloudFront cert.
-3. **Build & push the image**, confirm the service goes healthy, run DB migration ([§11](#11-database)).
-4. **Smoke test the Lightsail public URL directly** (or a `staging.koalagains.com` record):
+2. **Settle Lightsail→RDS connectivity** ([§11](#11-database)) and confirm the existing RDS
+   accepts a connection from the Lightsail service (no schema change — the DB is already live).
+3. **`terraform apply` the Lightsail stack** (service `scale=1`, crons disabled): ECR, container
+   service + first deployment, optional S3 assets, CloudFront cert.
+4. **Build & push the image**; confirm the service goes healthy and can reach RDS via
+   `/api/health` (DB ping).
+5. **Smoke test the Lightsail public URL directly** (or a `staging.koalagains.com` record):
    auth + cookies, `/stocks/*`, `/etfs/*`, tariff pages, an async generator (202 + completion),
    Puppeteer scrape, S3 upload, CloudFront invalidation helper.
-5. **Import the production CloudFront** (`terraform import aws_cloudfront_distribution.main
+6. **Import the production CloudFront** (`terraform import aws_cloudfront_distribution.main
    EZI5H8FKNE9R1`); reconcile until `plan` is clean.
-6. **Swap the origin** to the Lightsail service (default behavior) + S3 (static behavior). Apply.
+7. **Swap the origin** to the Lightsail service (default behavior) + S3 (static behavior). Apply.
    CloudFront keeps serving cached pages throughout.
-7. **Enable EventBridge crons**; remove crons from `vercel.json`.
-8. **Monitor** Lightsail metrics, container logs, DB connections for 24–48h.
-9. **Decommission Vercel** once stable: delete the project/cron, remove the Vercel workflow,
-   drop `@vercel/*` deps.
+8. **Enable EventBridge crons**; remove crons from `vercel.json`.
+9. **Monitor** Lightsail metrics, container logs, DB connections for 24–48h.
+10. **Decommission Vercel** once stable: delete the project/cron, remove the Vercel workflow,
+    drop `@vercel/*` deps.
 
 ---
 
 ## 13. Rollback plan
 
 - **Fast rollback (origin):** repoint the CloudFront default behavior back to the Vercel origin
-  (kept warm until step 9). Minutes to propagate.
+  (kept warm until step 10). Minutes to propagate.
 - **App rollback:** redeploy the **previous Lightsail deployment version** (Lightsail retains
   prior versions) or the previous ECR tag.
 - **DB rollback:** old DB kept read-only until sign-off; repoint `DATABASE_URL` back.
@@ -405,15 +420,15 @@ Indicative monthly (illustrative — confirm with the AWS calculator):
 | Item | Driver | Note |
 |---|---|---|
 | Lightsail container service | `power` × `scale` | `medium` (1 vCPU / 4 GB) **$40**, includes LB + TLS; `small` (2 GB) **$20** if Puppeteer headroom allows |
-| Database | managed Postgres | existing DB = $0 incremental; Lightsail managed Postgres ~$15–30 |
+| Database | existing RDS | $0 incremental — already running |
 | CloudFront | unchanged | already in use |
 | S3 assets (optional) | tiny | static chunks only |
 | Lambda + EventBridge | negligible | cron invokers |
 | ECR | tiny | image storage |
-| **Ballpark** | | **~$55–70 all-in** (vs. ~$120–200 for Fargate) |
+| **Ballpark** | | **~$40–50/mo on top of the existing RDS** (vs. ~$120–200 + RDS for Fargate) |
 
-No NAT gateway, no ALB line item, no ElastiCache — the bundled Lightsail LB and single-process
-cache remove the three biggest cost adders of the Fargate design.
+No NAT gateway, no ALB line item, no ElastiCache, no new DB — the bundled Lightsail LB,
+single-process cache, and existing RDS remove the biggest cost adders of the Fargate design.
 
 ---
 
@@ -423,13 +438,14 @@ cache remove the three biggest cost adders of the Fargate design.
       into `next.config.ts`; add `/api/health`; `waitUntil`→`after()`; convert `maxDuration=300`
       routes to async/202 ([§9](#9-long-running-generation-routes)); set `VERCEL_ENV` cookie
       handling ([§5.6](#5-application--code-changes)); align Node version; Dockerfile + local run.
-- [ ] **Phase 1 — Lightsail foundation:** ECR, container service + first deployment, DB
-      decision, optional S3 assets bucket, CloudFront cert.
+- [ ] **Phase 1 — Lightsail foundation:** ECR, container service + first deployment, settle
+      Lightsail→RDS connectivity ([§11](#11-database)), optional S3 assets bucket, CloudFront cert.
 - [ ] **Phase 2 — Crons & CI:** EventBridge Scheduler + invoker Lambda; GitHub Actions
       build/push + `terraform apply` workflow (secrets sourced from Secrets Manager).
 - [ ] **Phase 3 — Edge:** import CloudFront, point origin at Lightsail, add S3 static behavior,
       validate on a staging host.
-- [ ] **Phase 4 — DB migration & staging validation:** dump/restore, full smoke test.
+- [ ] **Phase 4 — Staging validation:** confirm RDS connectivity + full smoke test (auth,
+      pages, async generator, Puppeteer, S3, CloudFront invalidation).
 - [ ] **Phase 5 — Cut-over:** swap CloudFront origin, enable AWS crons, disable Vercel crons,
       monitor.
 - [ ] **Phase 6 — Decommission Vercel:** delete project, remove Vercel workflow & deps.
@@ -442,8 +458,9 @@ cache remove the three biggest cost adders of the Fargate design.
    `us-east-1`.)
 2. **Node size:** `small` (2 GB) vs. `medium` (4 GB) — driven by Puppeteer memory headroom.
    Default `medium`.
-3. **Database:** keep the existing managed Postgres, or move to Lightsail managed Postgres
-   ([§11](#11-database))?
+3. **Lightsail → RDS connectivity** ([§11](#11-database)): RDS public + SSL + SG allowlist
+   (Option A, simplest), Lightsail VPC peering (Option B), or move to Fargate for private VPC
+   access (Option C)? This is the one networking decision the Lightsail choice forces.
 4. **Long-running routes** ([§9](#9-long-running-generation-routes)): commit to the async/202
    refactor (recommended), or run those generations via CLI scripts for now?
 5. **CloudFront:** confirm import & reuse of `EZI5H8FKNE9R1`.
