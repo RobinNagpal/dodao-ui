@@ -18,7 +18,7 @@ export default function CompactEtfGroupingCard({ title, href, totalCount, etfs, 
 
   return (
     <div className="bg-block-bg-color rounded-lg border border-color overflow-hidden">
-      <Link href={href} className="block px-3 py-1.5 bg-surface-2 hover:bg-surface-2 transition-colors">
+      <Link href={href} className="block px-3 py-1.5 bg-surface-2 hover:bg-surface-3 transition-colors">
         <h3 className="text-sm font-semibold heading-color leading-snug mb-0.5 text-left flex justify-between items-start gap-2" title={title}>
           <span className="whitespace-normal break-words">{title}</span>
           {typeof totalCount === 'number' && totalCount > 0 && <span className="text-xs font-normal text-body shrink-0">{totalCount} ETFs</span>}
@@ -36,7 +36,7 @@ export default function CompactEtfGroupingCard({ title, href, totalCount, etfs, 
                 <li key={etf.id}>
                   <Link
                     href={`/etfs/${etf.exchange}/${etf.symbol}`}
-                    className="flex items-center gap-1.5 py-1 hover:bg-surface-2 transition-colors rounded px-1 -mx-1"
+                    className="flex items-center gap-1.5 py-1 hover:bg-surface-3 transition-colors rounded px-1 -mx-1"
                   >
                     <p className={`${textColorClass} px-1 rounded-md ${bgColorClass} bg-opacity-15 hover:bg-opacity-25 w-[46px] text-right shrink-0`}>
                       <span className={`${textColorClass} text-xs font-mono`}>{scoreLabel}</span>

@@ -49,12 +49,12 @@ export default function ReportLeftNavigation({
           <h2 className="text-xl font-bold">Explore Report</h2>
           <div className="flex items-center gap-2">
             {showToggle && onToggle && (
-              <button onClick={onToggle} className="p-1 rounded-md hover:bg-muted transition-colors" title="Hide navigation">
+              <button onClick={onToggle} className="p-1 rounded-md hover:bg-surface-2 transition-colors" title="Hide navigation">
                 <X className="h-5 w-5" />
               </button>
             )}
             {isMobile && (
-              <Link href={basePath} className="p-1 rounded-full hover:bg-muted link-color" onClick={handleNavClick}>
+              <Link href={basePath} className="p-1 rounded-full hover:bg-surface-2 link-color" onClick={handleNavClick}>
                 <Home className="h-5 w-5" />
               </Link>
             )}

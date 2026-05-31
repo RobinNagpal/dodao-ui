@@ -306,7 +306,7 @@ export default function FloatingNavigation(props: FloatingNavigationProps): JSX.
       {/* Header */}
       <div className="flex items-center justify-between p-4 border-b border-border">
         <h2 className="text-lg font-semibold">{title}</h2>
-        <button type="button" aria-label="Close navigation" onClick={close} className="p-2 hover:bg-surface-2 rounded-lg transition-colors">
+        <button type="button" aria-label="Close navigation" onClick={close} className="p-2 hover:bg-surface-3 rounded-lg transition-colors">
           <XMarkIcon className="h-5 w-5" />
         </button>
       </div>
@@ -325,7 +325,7 @@ export default function FloatingNavigation(props: FloatingNavigationProps): JSX.
                   onClick={(): void => scrollToId(s.id)}
                   className={cx(
                     'w-full text-left px-3 py-2 rounded-lg transition-colors duration-200 flex items-center justify-between group',
-                    isSectionActive ? 'bg-blue-600 text-heading' : 'hover:bg-surface-2 text-body hover:text-heading'
+                    isSectionActive ? 'bg-blue-600 text-heading' : 'hover:bg-surface-3 text-body hover:text-heading'
                   )}
                   aria-current={activeId === s.id ? 'true' : undefined}
                 >
@@ -342,7 +342,7 @@ export default function FloatingNavigation(props: FloatingNavigationProps): JSX.
                           onClick={(): void => scrollToId(sub.id)}
                           className={cx(
                             'w-full text-left px-3 py-1.5 rounded-md text-sm transition-colors duration-200 flex items-center justify-between group',
-                            activeId === sub.id ? 'bg-blue-500 text-heading' : 'hover:bg-surface-2 text-muted hover:text-body'
+                            activeId === sub.id ? 'bg-blue-500 text-heading' : 'hover:bg-surface-3 text-muted hover:text-body'
                           )}
                           aria-current={activeId === sub.id ? 'true' : undefined}
                         >

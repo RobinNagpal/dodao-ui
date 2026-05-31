@@ -4,7 +4,7 @@ export function SubIndustryCardSkeleton() {
   return (
     <div className="bg-block-bg-color rounded-lg shadow-lg border border-color overflow-hidden flex flex-col">
       <div className="px-3 py-2 sm:px-4 border-b border-color bg-surface-2">
-        <div className="h-4 w-40 rounded bg-surface-2 animate-pulse" />
+        <div className="h-4 w-40 rounded bg-surface-3 animate-pulse" />
       </div>
       <ul className="divide-y divide-color p-2">
         <li className="py-2">

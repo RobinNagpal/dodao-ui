@@ -4,7 +4,7 @@ export function RadarSkeleton(): JSX.Element {
   return (
     <div className="w-full max-w-lg mx-auto" style={{ minHeight: '360px' }}>
       {/* Match the actual radar container dimensions: max-w-lg and ~360px height */}
-      <div className="w-full aspect-square max-w-[360px] mx-auto rounded-full bg-surface-2 relative overflow-hidden">
+      <div className="w-full aspect-square max-w-[360px] mx-auto rounded-full bg-surface relative overflow-hidden">
         <div className="absolute inset-0 animate-pulse" />
         {/* simple rings + spokes for a "radar-ish" look */}
         <div className="absolute inset-[10%] rounded-full border border-border" />

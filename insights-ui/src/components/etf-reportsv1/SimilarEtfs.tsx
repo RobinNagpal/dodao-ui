@@ -69,7 +69,7 @@ function SimilarEtfMobileCard({ etf }: { etf: SimilarEtf }): JSX.Element {
       </Link>
       <dl className="mt-3 grid grid-cols-2 gap-x-4 gap-y-2 text-xs">
         {COLUMNS.map((col) => (
-          <div key={col.key} className="flex justify-between border-b border-border/60 pb-1">
+          <div key={col.key} className="flex justify-between border-b border-border pb-1">
             <dt className="text-muted">{col.label}</dt>
             <dd className="text-heading font-mono tabular-nums text-right ml-2 truncate">{col.render(etf)}</dd>
           </div>
@@ -106,8 +106,8 @@ export default function SimilarEtfs({ data: similarEtfs }: SimilarEtfsProps): JS
           </thead>
           <tbody className="divide-y divide-border">
             {similarEtfs.map((etf) => (
-              <tr key={etf.id} className="hover:bg-surface-2 transition-colors">
-                <td className="sticky left-0 z-10 bg-surface hover:bg-surface-2 transition-colors px-3 py-2 whitespace-nowrap">
+              <tr key={etf.id} className="hover:bg-surface-3 transition-colors">
+                <td className="sticky left-0 z-10 bg-surface hover:bg-surface-3 transition-colors px-3 py-2 whitespace-nowrap">
                   <Link href={`/etfs/${etf.exchange.toUpperCase()}/${etf.symbol.toUpperCase()}`} className="group inline-flex items-center gap-1.5">
                     <span className="font-medium bg-primary text-primary-text text-xs px-1.5 py-0.5 rounded">{etf.symbol}</span>
                     <span className="text-link group-hover:text-link transition-colors max-w-[16rem] truncate">{etf.name}</span>

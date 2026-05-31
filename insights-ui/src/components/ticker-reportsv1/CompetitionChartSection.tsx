@@ -57,7 +57,7 @@ export default function CompetitionChartSection({ dataPromise, exchange, ticker 
 
   return (
     <section id="competition">
-      <div className="bg-surface rounded-lg shadow-sm p-3 sm:p-6">
+      <div className="bg-surface-2 rounded-lg shadow-sm p-3 sm:p-6">
         <div className="flex flex-wrap items-center justify-between gap-2 mb-4 pb-2 border-b border-border">
           <h2 className="text-xl font-bold">Competition</h2>
           <Link

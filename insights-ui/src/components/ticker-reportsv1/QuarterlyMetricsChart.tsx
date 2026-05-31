@@ -145,7 +145,7 @@ export default function QuarterlyMetricsChart({ data }: QuarterlyMetricsChartPro
               key={metric}
               onClick={() => setSelectedMetric(metric)}
               className={`px-3 py-1.5 text-xs font-medium rounded-md transition-colors ${
-                selectedMetric === metric ? 'text-heading' : 'bg-surface-2 text-body hover:bg-surface-2 hover:text-heading'
+                selectedMetric === metric ? 'text-heading' : 'bg-surface-2 text-body hover:bg-surface-3 hover:text-heading'
               }`}
               style={selectedMetric === metric ? { backgroundColor: METRIC_COLORS[metric].border } : {}}
             >

@@ -154,7 +154,7 @@ function ReturnsTable({ title, rows }: { title: string; rows: any }): JSX.Elemen
             </thead>
             <tbody className="divide-y divide-border bg-surface-2">
               {tableRows.map((r, idx) => (
-                <tr key={idx} className="hover:bg-surface-2">
+                <tr key={idx} className="hover:bg-surface-3">
                   {columns.map((c) => {
                     const cellValue = (r as any)[c];
                     return (

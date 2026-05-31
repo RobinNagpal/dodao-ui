@@ -164,7 +164,7 @@ export default function PriceChart({ data, embedded = false, range, hideRangeBut
           key={r}
           onClick={() => setSelectedRange(r)}
           className={`px-3 py-1.5 text-xs font-medium rounded-md transition-colors ${
-            selectedRange === r ? 'text-heading' : 'bg-surface-2 text-body hover:bg-surface-2 hover:text-heading'
+            selectedRange === r ? 'text-heading' : 'bg-surface-2 text-body hover:bg-surface-3 hover:text-heading'
           }`}
           style={selectedRange === r ? { backgroundColor: LINE_COLOR.border } : {}}
         >

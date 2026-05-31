@@ -29,7 +29,7 @@ export default function SubIndustryCard({ subIndustry, subIndustryName, tickers,
       {/* ----- LIST ----- */}
       <ul className="divide-y divide-color flex-1">
         {tickers.map((ticker) => (
-          <li key={ticker.symbol} className="px-3 sm:px-4 py-1.5 hover:bg-surface-2 transition-colors">
+          <li key={ticker.symbol} className="px-3 sm:px-4 py-1.5 hover:bg-surface-3 transition-colors">
             <div className="min-w-0 w-full">
               <StockTickerItem
                 symbol={ticker.symbol}

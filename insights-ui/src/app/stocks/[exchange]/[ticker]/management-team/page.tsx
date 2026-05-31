@@ -82,7 +82,7 @@ function getVerdictBadgeClasses(verdict: ManagementTeamAlignmentVerdict): string
     case ManagementTeamAlignmentVerdict.MISALIGNED:
       return 'bg-red-500/15 text-red-300 border border-red-500/40';
     default:
-      return 'bg-surface-2 text-body';
+      return 'bg-gray-500/15 text-gray-300 border border-gray-500/40';
   }
 }
 

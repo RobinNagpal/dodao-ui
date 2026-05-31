@@ -13,7 +13,7 @@ export default function BookContent({ report, activePage }: BookContentProps) {
       <div className="mx-auto max-w-4xl">
         <div className="relative min-h-[calc(100vh-16rem)] rounded-lg block-bg-color p-8 shadow-md">
           {/* Page corner fold effect */}
-          <div className="absolute right-0 top-0 h-12 w-12 bg-muted/20">
+          <div className="absolute right-0 top-0 h-12 w-12 bg-surface-2">
             <div className="absolute right-0 top-0 h-0 w-0 border-l-[48px] border-b-[48px] border-l-transparent border-b-[var(--block-bg)]"></div>
           </div>
 

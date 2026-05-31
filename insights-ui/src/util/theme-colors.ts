@@ -22,6 +22,7 @@ export const themeColors = {
   '--bg-color': '#111827', // Page background (gray-900)
   '--surface': '#1f2937', // Cards / report sections (gray-800)
   '--surface-2': '#374151', // Inset / inline rows / chips track (gray-700)
+  '--surface-3': '#4b5563', // Raised / hover state — one step above surface-2 (gray-600)
   '--block-bg': '#1f2937', // Legacy alias → surface
 
   // Text

@@ -97,7 +97,7 @@ export default function SelectableSubIndustryCard({
           // Regular display mode (original behavior)
           <ul className="divide-y divide-color">
             {tickers.map((ticker) => (
-              <li key={`${ticker.exchange}-${ticker.symbol}`} className="px-3 sm:px-4 py-1.5 hover:bg-surface-2 transition-colors">
+              <li key={`${ticker.exchange}-${ticker.symbol}`} className="px-3 sm:px-4 py-1.5 hover:bg-surface-3 transition-colors">
                 <div className="min-w-0 w-full">
                   <StockTickerItem symbol={ticker.symbol} name={ticker.name} exchange={ticker.exchange} score={ticker.cachedScoreEntry?.finalScore ?? 0} />
                 </div>
@@ -126,7 +126,7 @@ export default function SelectableSubIndustryCard({
         )}
       </div>
 
-      {tickers.length === 0 && <div className="px-3 sm:px-4 py-8 text-center text-muted dark:text-muted">No tickers found for this sub-industry.</div>}
+      {tickers.length === 0 && <div className="px-3 sm:px-4 py-8 text-center text-muted">No tickers found for this sub-industry.</div>}
     </div>
   );
 }

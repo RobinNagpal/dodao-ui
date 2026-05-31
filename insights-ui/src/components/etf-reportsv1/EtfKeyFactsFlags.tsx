@@ -24,7 +24,7 @@ export default function EtfKeyFactsFlags({ greenFlags, redFlags }: EtfKeyFactsFl
     <section id="key-facts-flags" className="mb-8">
       <div className="bg-surface p-3 sm:p-4 rounded-md shadow-sm">
         <h3 className="text-lg font-semibold text-color mb-3">Key Facts</h3>
-        <ul className="divide-y divide-gray-800">
+        <ul className="divide-y divide-border">
           {flags.map((f, i) => {
             const explanation = f.explanation?.trim() || [f.oneLineExplanation, f.detailedExplanation].filter(Boolean).join(' ').trim();
             return (

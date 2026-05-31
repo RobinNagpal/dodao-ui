@@ -130,7 +130,7 @@ export function TickerComparison({ comparisonTickers, removeTicker, isModal = fa
             {getCategoryFactorRows().map((row, rowIndex) => (
               <div
                 key={`${row.category}-${row.factorIndex}`}
-                className={`grid ${row.isCategoryHeader ? 'bg-surface-2' : 'hover:bg-surface-2'}`}
+                className={`grid ${row.isCategoryHeader ? 'bg-surface-2' : 'hover:bg-surface-3'}`}
                 style={{ gridTemplateColumns: `minmax(140px, 1fr) repeat(${comparisonTickers.length}, minmax(130px, 1fr))` }}
               >
                 <div className={`px-2 py-3 sticky left-0 text-left min-w-0 bg-surface`}>
@@ -143,7 +143,7 @@ export function TickerComparison({ comparisonTickers, removeTicker, isModal = fa
                 {comparisonTickers.map((ticker) => {
                   if (row.isCategoryHeader) {
                     return (
-                      <div key={`${ticker.symbol}-header`} className="px-1 py-3 text-left" style={{ backgroundColor: 'rgb(17 24 39)' }}>
+                      <div key={`${ticker.symbol}-header`} className="px-1 py-3 text-left" style={{ backgroundColor: 'var(--surface-2)' }}>
                         <span className="text-muted text-sm">-</span>
                       </div>
                     );

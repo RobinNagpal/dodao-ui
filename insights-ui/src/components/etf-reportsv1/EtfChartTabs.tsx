@@ -91,7 +91,7 @@ export default function EtfChartTabs({ priceHistory, performanceMetrics, etfSymb
                   type="button"
                   onClick={() => setPriceRange(r)}
                   className={`px-2.5 py-1 text-xs font-medium rounded-md transition-colors ${
-                    priceRange === r ? 'text-heading' : 'text-body hover:bg-surface-2/60 hover:text-heading'
+                    priceRange === r ? 'text-heading' : 'text-body hover:bg-surface-3 hover:text-heading'
                   }`}
                   style={priceRange === r ? { backgroundColor: ACCENT_COLOR } : {}}
                   aria-pressed={priceRange === r}
@@ -110,7 +110,7 @@ export default function EtfChartTabs({ priceHistory, performanceMetrics, etfSymb
               type="button"
               onClick={() => setActiveTab(tab)}
               className={`px-3 py-1.5 text-xs font-medium rounded-md transition-colors ${
-                safeTab === tab ? 'text-heading' : 'bg-surface-2 text-body hover:bg-surface-2 hover:text-heading'
+                safeTab === tab ? 'text-heading' : 'bg-surface-2 text-body hover:bg-surface-3 hover:text-heading'
               }`}
               style={safeTab === tab ? { backgroundColor: ACCENT_COLOR } : {}}
             >

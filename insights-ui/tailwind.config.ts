@@ -28,6 +28,7 @@ export default {
         bg: 'var(--bg-color)',
         surface: 'var(--surface)',
         'surface-2': 'var(--surface-2)',
+        'surface-3': 'var(--surface-3)',
 
         // Text — `text-heading` / `text-body` / `text-muted`
         heading: 'var(--heading-color)',
