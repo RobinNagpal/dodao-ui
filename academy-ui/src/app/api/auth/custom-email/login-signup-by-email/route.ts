@@ -4,7 +4,7 @@ import { prisma } from '@/prisma';
 import { User } from 'next-auth/core/types';
 import { headers } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
-import { defaultNormalizer, randomString, sendVerificationRequest } from '@dodao/web-core/api/auth/custom-email/send-verification';
+import { defaultNormalizer, isLikelySpamEmail, randomString, sendVerificationRequest } from '@dodao/web-core/api/auth/custom-email/send-verification';
 import { PredefinedSpaces } from '@dodao/web-core/utils/constants/constants';
 import { LoginSignupByEmailRequestBody } from '@/types/request/LoginSignupByEmailRequest';
 
@@ -60,6 +60,14 @@ async function postHandler(req: NextRequest) {
   console.log('request', JSON.stringify(req.cookies.getAll()));
 
   const userEmail = defaultNormalizer(email);
+
+  // Silently drop likely-abusive sign-ups (e.g. four or more dots) before touching the database
+  // or sending any email. We return the normal empty success so the UI still shows "email sent"
+  // and the spammer cannot tell the request was a no-op.
+  if (isLikelySpamEmail(userEmail)) {
+    console.log('Detected likely spam email, skipping all server-side actions:', userEmail);
+    return NextResponse.json({});
+  }
 
   const defaultUser = { id: crypto.randomUUID(), email: userEmail, emailVerified: null };
 

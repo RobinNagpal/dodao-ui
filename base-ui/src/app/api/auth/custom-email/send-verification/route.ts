@@ -1,6 +1,6 @@
 import { prisma } from '@/prisma';
 import { createHash } from '@dodao/web-core/api/auth/createHash';
-import { defaultNormalizer, randomString, sendVerificationRequest } from '@dodao/web-core/api/auth/custom-email/send-verification';
+import { defaultNormalizer, isLikelySpamEmail, randomString, sendVerificationRequest } from '@dodao/web-core/api/auth/custom-email/send-verification';
 import { BaseUser } from '@prisma/client';
 import { headers } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
@@ -58,6 +58,14 @@ async function POST(req: NextRequest) {
 
   const normalizer = defaultNormalizer;
   const userEmail = normalizer(email);
+
+  // Silently drop likely-abusive sign-ups (e.g. four or more dots) before touching the database
+  // or sending any email. We return the normal empty success so the UI still shows "email sent"
+  // and the spammer cannot tell the request was a no-op.
+  if (isLikelySpamEmail(userEmail)) {
+    console.log('Detected likely spam email, skipping all server-side actions:', userEmail);
+    return NextResponse.json({});
+  }
 
   const defaultUser = { id: crypto.randomUUID(), email: userEmail, emailVerified: null };
   const user = ((await prisma.baseUser.findUnique({ where: { email_spaceId: { email: userEmail, spaceId } } })) ?? defaultUser) as BaseUser & { email: string };
