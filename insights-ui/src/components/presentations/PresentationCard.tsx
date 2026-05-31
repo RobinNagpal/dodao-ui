@@ -4,6 +4,7 @@ import Card from '@dodao/web-core/components/core/card/Card';
 import Link from 'next/link';
 import React from 'react';
 import { PresentationSummary } from '@/types/presentation/presentation-types';
+import StatusBadge from '@/components/ui/StatusBadge';
 
 interface PresentationCardProps {
   presentation: PresentationSummary;
@@ -20,15 +21,7 @@ const PresentationCard: React.FC<PresentationCardProps> = ({ presentation }) => 
             <h3 className="text-lg font-semibold text-color truncate" title={presentationId}>
               {presentationId}
             </h3>
-            <span
-              className={`px-2 py-1 text-xs rounded-full ${
-                hasPreferences
-                  ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200'
-                  : 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200'
-              }`}
-            >
-              {hasPreferences ? 'Ready' : 'Draft'}
-            </span>
+            <StatusBadge variant={hasPreferences ? 'success' : 'warning'} label={hasPreferences ? 'Ready' : 'Draft'} />
           </div>
 
           <div className="flex-1">

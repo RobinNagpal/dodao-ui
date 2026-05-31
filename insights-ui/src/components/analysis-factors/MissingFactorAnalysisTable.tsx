@@ -1,6 +1,7 @@
 'use client';
 
 import { MissingFactorAnalysisForIndustry } from '@/app/api/[spaceId]/tickers-v1/missing-factor-analysis/route';
+import PassFailBadge from '@/components/ui/PassFailBadge';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
@@ -37,45 +38,39 @@ function MissingFactorAnalysisTable({ rows }: MissingFactorAnalysisTableProps): 
                 <div className="text-xs text-gray-400">{row.subIndustryKey}</div>
               </td>
               <td className="px-6 py-4 whitespace-nowrap text-sm text-center">
-                <span
-                  className={`px-2 py-1 rounded-full text-xs ${
-                    row.businessAndMoatFactorsCount >= 5 ? 'bg-green-900 text-green-200' : 'bg-red-900 text-red-200'
-                  }`}
-                >
-                  {row.businessAndMoatFactorsCount}
-                </span>
+                <PassFailBadge
+                  passed={row.businessAndMoatFactorsCount >= 5}
+                  size="xs"
+                  passLabel={row.businessAndMoatFactorsCount}
+                  failLabel={row.businessAndMoatFactorsCount}
+                />
               </td>
               <td className="px-6 py-4 whitespace-nowrap text-sm text-center">
-                <span
-                  className={`px-2 py-1 rounded-full text-xs ${
-                    row.financialAnalysisFactorsCount >= 5 ? 'bg-green-900 text-green-200' : 'bg-red-900 text-red-200'
-                  }`}
-                >
-                  {row.financialAnalysisFactorsCount}
-                </span>
+                <PassFailBadge
+                  passed={row.financialAnalysisFactorsCount >= 5}
+                  size="xs"
+                  passLabel={row.financialAnalysisFactorsCount}
+                  failLabel={row.financialAnalysisFactorsCount}
+                />
               </td>
               <td className="px-6 py-4 whitespace-nowrap text-sm text-center">
-                <span
-                  className={`px-2 py-1 rounded-full text-xs ${
-                    row.pastPerformanceFactorsCount >= 5 ? 'bg-green-900 text-green-200' : 'bg-red-900 text-red-200'
-                  }`}
-                >
-                  {row.pastPerformanceFactorsCount}
-                </span>
+                <PassFailBadge
+                  passed={row.pastPerformanceFactorsCount >= 5}
+                  size="xs"
+                  passLabel={row.pastPerformanceFactorsCount}
+                  failLabel={row.pastPerformanceFactorsCount}
+                />
               </td>
               <td className="px-6 py-4 whitespace-nowrap text-sm text-center">
-                <span
-                  className={`px-2 py-1 rounded-full text-xs ${row.futureGrowthFactorsCount >= 5 ? 'bg-green-900 text-green-200' : 'bg-red-900 text-red-200'}`}
-                >
-                  {row.futureGrowthFactorsCount}
-                </span>
+                <PassFailBadge
+                  passed={row.futureGrowthFactorsCount >= 5}
+                  size="xs"
+                  passLabel={row.futureGrowthFactorsCount}
+                  failLabel={row.futureGrowthFactorsCount}
+                />
               </td>
               <td className="px-6 py-4 whitespace-nowrap text-sm text-center">
-                <span
-                  className={`px-2 py-1 rounded-full text-xs ${row.fairValueFactorsCount >= 5 ? 'bg-green-900 text-green-200' : 'bg-red-900 text-red-200'}`}
-                >
-                  {row.fairValueFactorsCount}
-                </span>
+                <PassFailBadge passed={row.fairValueFactorsCount >= 5} size="xs" passLabel={row.fairValueFactorsCount} failLabel={row.fairValueFactorsCount} />
               </td>
             </tr>
           ))}

@@ -15,23 +15,7 @@ import ImportEtfScenariosModal from './ImportEtfScenariosModal';
 import ManageLinksModal from './ManageLinksModal';
 import UpsertEtfScenarioModal from './UpsertEtfScenarioModal';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
-
-const PROBABILITY_BADGE: Record<string, string> = {
-  HIGH: 'bg-red-500/15 text-red-300 border-red-500/40',
-  MEDIUM: 'bg-amber-500/15 text-amber-300 border-amber-500/40',
-  LOW: 'bg-emerald-500/15 text-emerald-300 border-emerald-500/40',
-};
-
-const DIRECTION_BADGE: Record<string, string> = {
-  UPSIDE: 'bg-sky-500/15 text-sky-300 border-sky-500/40',
-  DOWNSIDE: 'bg-fuchsia-500/15 text-fuchsia-300 border-fuchsia-500/40',
-};
-
-const TIMEFRAME_BADGE: Record<string, string> = {
-  FUTURE: 'bg-indigo-500/15 text-indigo-300 border-indigo-500/40',
-  IN_PROGRESS: 'bg-yellow-500/15 text-yellow-300 border-yellow-500/40',
-  PAST: 'bg-gray-500/15 text-gray-300 border-gray-500/40',
-};
+import { DirectionBadge, ProbabilityBadge, TimeframeBadge } from '@/components/ui/ScenarioOutlookBadge';
 
 export default function EtfScenariosAdminPage(): JSX.Element {
   const [showUpsert, setShowUpsert] = useState<boolean>(false);
@@ -144,16 +128,13 @@ export default function EtfScenariosAdminPage(): JSX.Element {
                     </Link>
                   </td>
                   <td className="px-3 py-2">
-                    <span className={`inline-block border rounded-full px-2 py-0.5 text-xs ${DIRECTION_BADGE[s.direction] ?? ''}`}>{s.direction}</span>
+                    <DirectionBadge direction={s.direction} />
                   </td>
                   <td className="px-3 py-2">
-                    <span className={`inline-block border rounded-full px-2 py-0.5 text-xs ${PROBABILITY_BADGE[s.probabilityBucket] ?? ''}`}>
-                      {s.probabilityBucket}
-                      {typeof s.probabilityPercentage === 'number' ? ` · ~${s.probabilityPercentage}%` : ''}
-                    </span>
+                    <ProbabilityBadge bucket={s.probabilityBucket} percentage={s.probabilityPercentage} />
                   </td>
                   <td className="px-3 py-2">
-                    <span className={`inline-block border rounded-full px-2 py-0.5 text-xs ${TIMEFRAME_BADGE[s.timeframe] ?? ''}`}>{s.timeframe}</span>
+                    <TimeframeBadge timeframe={s.timeframe} />
                   </td>
                   <td className="px-3 py-2 text-gray-400">{s.outlookAsOfDate.slice(0, 10)}</td>
                   <td className="px-3 py-2 text-gray-400">{s.archived ? 'Yes' : 'No'}</td>

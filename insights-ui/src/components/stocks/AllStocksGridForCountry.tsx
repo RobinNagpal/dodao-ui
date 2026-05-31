@@ -1,3 +1,4 @@
+import EmptyStateCard from '@/components/ui/EmptyStateCard';
 import { getTickerScore, TickerWithIndustryNames } from '@/types/ticker-typesv1';
 import { formatExchangeWithCountry } from '@/utils/countryExchangeUtils';
 import StockTickerItem from './StockTickerItem';
@@ -14,12 +15,7 @@ export default function AllStocksGridForCountry({ stocks, stocksPromise, country
   const resolvedStocks = stocksPromise ? use(stocksPromise) : stocks;
 
   if (!resolvedStocks || resolvedStocks.length === 0) {
-    return (
-      <div className="text-center py-12">
-        <p className="text-[#E5E7EB] text-lg">No {countryName} stocks found.</p>
-        <p className="text-[#E5E7EB] text-sm mt-2">Please try again later.</p>
-      </div>
-    );
+    return <EmptyStateCard variant="inline" title={`No ${countryName} stocks found.`} description="Please try again later." />;
   }
 
   // Sort stocks alphabetically by symbol

@@ -2,6 +2,7 @@
 
 import { TickerIdentifier } from '@/app/api/[spaceId]/tickers-v1/generation-requests/route';
 import AdminNav from '@/app/admin-v1/AdminNav';
+import PassFailBadge from '@/components/ui/PassFailBadge';
 import { useGenerateReports } from '@/hooks/useGenerateReports';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { ReportType } from '@/types/ticker-typesv1';
@@ -219,90 +220,59 @@ function MissingReportsTable({ rows, selectedRows, onSelectRow, onUrlUpdate }: M
                   <EditableUrlCell ticker={ticker} onUpdate={onUrlUpdate} />
                 </td>
                 <td className="px-3 py-4 whitespace-nowrap text-sm text-center">
-                  <span
-                    className={`px-2 py-1 rounded-full text-xs ${!ticker.isMissingFinancialData ? 'bg-green-900 text-green-200' : 'bg-red-900 text-red-200'}`}
-                  >
-                    {!ticker.isMissingFinancialData ? 'Yes' : 'No'}
-                  </span>
+                  <PassFailBadge passed={!ticker.isMissingFinancialData} size="xs" passLabel="Yes" failLabel="No" />
                 </td>
                 <td className="px-3 py-4 whitespace-nowrap text-sm text-center">
-                  <span
-                    className={`px-2 py-1 rounded-full text-xs ${
-                      ticker.businessAndMoatFactorResultsCount > 0 ? 'bg-green-900 text-green-200' : 'bg-red-900 text-red-200'
-                    }`}
-                  >
-                    {ticker.businessAndMoatFactorResultsCount}
-                  </span>
+                  <PassFailBadge
+                    passed={ticker.businessAndMoatFactorResultsCount > 0}
+                    size="xs"
+                    passLabel={ticker.businessAndMoatFactorResultsCount}
+                    failLabel={ticker.businessAndMoatFactorResultsCount}
+                  />
                 </td>
                 <td className="px-3 py-4 whitespace-nowrap text-sm text-center">
-                  <span
-                    className={`px-2 py-1 rounded-full text-xs ${
-                      ticker.financialAnalysisFactorsResultsCount > 0 ? 'bg-green-900 text-green-200' : 'bg-red-900 text-red-200'
-                    }`}
-                  >
-                    {ticker.financialAnalysisFactorsResultsCount}
-                  </span>
+                  <PassFailBadge
+                    passed={ticker.financialAnalysisFactorsResultsCount > 0}
+                    size="xs"
+                    passLabel={ticker.financialAnalysisFactorsResultsCount}
+                    failLabel={ticker.financialAnalysisFactorsResultsCount}
+                  />
                 </td>
                 <td className="px-3 py-4 whitespace-nowrap text-sm text-center">
-                  <span
-                    className={`px-2 py-1 rounded-full text-xs ${
-                      ticker.pastPerformanceFactorsResultsCount > 0 ? 'bg-green-900 text-green-200' : 'bg-red-900 text-red-200'
-                    }`}
-                  >
-                    {ticker.pastPerformanceFactorsResultsCount}
-                  </span>
+                  <PassFailBadge
+                    passed={ticker.pastPerformanceFactorsResultsCount > 0}
+                    size="xs"
+                    passLabel={ticker.pastPerformanceFactorsResultsCount}
+                    failLabel={ticker.pastPerformanceFactorsResultsCount}
+                  />
                 </td>
                 <td className="px-3 py-4 whitespace-nowrap text-sm text-center">
-                  <span
-                    className={`px-2 py-1 rounded-full text-xs ${
-                      ticker.futureGrowthFactorsResultsCount > 0 ? 'bg-green-900 text-green-200' : 'bg-red-900 text-red-200'
-                    }`}
-                  >
-                    {ticker.futureGrowthFactorsResultsCount}
-                  </span>
+                  <PassFailBadge
+                    passed={ticker.futureGrowthFactorsResultsCount > 0}
+                    size="xs"
+                    passLabel={ticker.futureGrowthFactorsResultsCount}
+                    failLabel={ticker.futureGrowthFactorsResultsCount}
+                  />
                 </td>
                 <td className="px-3 py-4 whitespace-nowrap text-sm text-center">
-                  <span
-                    className={`px-2 py-1 rounded-full text-xs ${
-                      ticker.fairValueFactorsResultsCount > 0 ? 'bg-green-900 text-green-200' : 'bg-red-900 text-red-200'
-                    }`}
-                  >
-                    {ticker.fairValueFactorsResultsCount}
-                  </span>
+                  <PassFailBadge
+                    passed={ticker.fairValueFactorsResultsCount > 0}
+                    size="xs"
+                    passLabel={ticker.fairValueFactorsResultsCount}
+                    failLabel={ticker.fairValueFactorsResultsCount}
+                  />
                 </td>
                 <td className="px-3 py-4 whitespace-nowrap text-sm text-center">
-                  <span
-                    className={`px-2 py-1 rounded-full text-xs ${
-                      !ticker.isMissingFinalSummaryReport ? 'bg-green-900 text-green-200' : 'bg-red-900 text-red-200'
-                    }`}
-                  >
-                    {!ticker.isMissingFinalSummaryReport ? 'Yes' : 'No'}
-                  </span>
+                  <PassFailBadge passed={!ticker.isMissingFinalSummaryReport} size="xs" passLabel="Yes" failLabel="No" />
                 </td>
                 <td className="px-3 py-4 whitespace-nowrap text-sm text-center">
-                  <span
-                    className={`px-2 py-1 rounded-full text-xs ${!ticker.isMissingAboutReport ? 'bg-green-900 text-green-200' : 'bg-red-900 text-red-200'}`}
-                  >
-                    {!ticker.isMissingAboutReport ? 'Yes' : 'No'}
-                  </span>
+                  <PassFailBadge passed={!ticker.isMissingAboutReport} size="xs" passLabel="Yes" failLabel="No" />
                 </td>
                 <td className="px-3 py-4 whitespace-nowrap text-sm text-center">
-                  <span
-                    className={`px-2 py-1 rounded-full text-xs ${
-                      !ticker.isMissingCompetitionReport ? 'bg-green-900 text-green-200' : 'bg-red-900 text-red-200'
-                    }`}
-                  >
-                    {!ticker.isMissingCompetitionReport ? 'Yes' : 'No'}
-                  </span>
+                  <PassFailBadge passed={!ticker.isMissingCompetitionReport} size="xs" passLabel="Yes" failLabel="No" />
                 </td>
                 <td className="px-3 py-4 whitespace-nowrap text-sm text-center">
-                  <span
-                    className={`px-2 py-1 rounded-full text-xs ${
-                      !ticker.isMissingMetaDescriptionReport ? 'bg-green-900 text-green-200' : 'bg-red-900 text-red-200'
-                    }`}
-                  >
-                    {!ticker.isMissingMetaDescriptionReport ? 'Yes' : 'No'}
-                  </span>
+                  <PassFailBadge passed={!ticker.isMissingMetaDescriptionReport} size="xs" passLabel="Yes" failLabel="No" />
                 </td>
               </tr>
             );

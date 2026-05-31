@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { StockScenarioListingItem } from '@/app/api/[spaceId]/stock-scenarios/listing/route';
 import { StockScenarioDirectionBadge, StockScenarioProbabilityBadge, StockScenarioTimeframeBadge } from './StockScenarioOutlookBadge';
+import StatusBadge from '@/components/ui/StatusBadge';
 
 // Tolerate `null` / `undefined` so the listing page renders cleanly during the
 // summary-field rollout window — production's old API may still respond
@@ -21,7 +22,7 @@ export default function StockScenarioCard({ scenario }: { scenario: StockScenari
     >
       <div className="flex items-center justify-between mb-3 gap-2">
         <span className="bg-gradient-to-r from-[#F59E0B] to-[#FBBF24] text-black text-xs font-bold px-2 py-0.5 rounded">#{scenario.scenarioNumber}</span>
-        {scenario.archived && <span className="text-xs text-gray-400 bg-gray-800 border border-gray-700 px-2 py-0.5 rounded">Archived</span>}
+        {scenario.archived && <StatusBadge variant="archived" size="sm" label="Archived" />}
       </div>
 
       <div className="flex flex-wrap gap-1.5 mb-4">

@@ -9,6 +9,7 @@ import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import Image from 'next/image';
 import React, { useState, useEffect, useRef } from 'react';
 import { SlideStatus, GenerateArtifactResponse, RenderStatusResponse, UploadImageResponse } from '@/types/presentation/presentation-types';
+import StatusBadge from '@/components/ui/StatusBadge';
 
 interface SlideRowProps {
   slideStatus: SlideStatus;
@@ -132,12 +133,12 @@ const SlideRow: React.FC<SlideRowProps> = ({ slideStatus, presentationId, onView
 
   const getStatusBadge = (exists: boolean, status?: string) => {
     if (status === 'rendering') {
-      return <span className="px-2 py-1 text-xs rounded-full bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200">Rendering...</span>;
+      return <StatusBadge variant="warning" label="Rendering..." />;
     }
     if (exists) {
-      return <span className="px-2 py-1 text-xs rounded-full bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">Ready</span>;
+      return <StatusBadge variant="success" label="Ready" />;
     }
-    return <span className="px-2 py-1 text-xs rounded-full bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300">Not generated</span>;
+    return <StatusBadge variant="neutral" label="Not generated" />;
   };
 
   const dropdownActions: EllipsisDropdownItem[] = [

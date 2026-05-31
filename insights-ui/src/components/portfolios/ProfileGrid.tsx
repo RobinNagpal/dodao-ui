@@ -1,4 +1,5 @@
 import { PortfolioManagerProfileWithUser } from '@/app/api/[spaceId]/portfolio-managers/type/[type]/route';
+import EmptyStateCard from '@/components/ui/EmptyStateCard';
 import { UserIcon, AcademicCapIcon } from '@heroicons/react/24/outline';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -15,14 +16,7 @@ interface ProfileGridProps {
 
 export default function ProfileGrid({ profiles, emptyStateConfig, showCollegeAmbassadorBadge = false }: ProfileGridProps) {
   if (profiles.length === 0) {
-    const EmptyIcon = emptyStateConfig.icon;
-    return (
-      <div className="bg-gray-800 rounded-lg p-8 text-center">
-        <EmptyIcon className="w-16 h-16 text-gray-600 mx-auto mb-4" />
-        <h3 className="text-xl font-semibold mb-2">{emptyStateConfig.title}</h3>
-        <p className="text-gray-400">{emptyStateConfig.description}</p>
-      </div>
-    );
+    return <EmptyStateCard icon={emptyStateConfig.icon} title={emptyStateConfig.title} description={emptyStateConfig.description} />;
   }
 
   return (

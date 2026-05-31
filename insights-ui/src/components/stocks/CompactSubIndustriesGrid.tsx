@@ -1,3 +1,4 @@
+import EmptyStateCard from '@/components/ui/EmptyStateCard';
 import { IndustriesResponse } from '@/types/api/ticker-industries';
 import Link from 'next/link';
 import React, { use } from 'react';
@@ -22,20 +23,10 @@ export default function CompactSubIndustriesGrid({
 
   // Show empty state if no industries have displayable tickers
   if (industriesWithTickers.length === 0) {
-    return (
-      <div className="text-center py-12">
-        {resolvedData.filtersApplied ? (
-          <>
-            <p className="text-[#E5E7EB] text-lg">No US stocks match the current filters.</p>
-            <p className="text-[#E5E7EB] text-sm mt-2">Try adjusting your filter criteria to see more results.</p>
-          </>
-        ) : (
-          <>
-            <p className="text-[#E5E7EB] text-lg">No US stocks found.</p>
-            <p className="text-[#E5E7EB] text-sm mt-2">Please try again later.</p>
-          </>
-        )}
-      </div>
+    return resolvedData.filtersApplied ? (
+      <EmptyStateCard variant="inline" title="No US stocks match the current filters." description="Try adjusting your filter criteria to see more results." />
+    ) : (
+      <EmptyStateCard variant="inline" title="No US stocks found." description="Please try again later." />
     );
   }
 

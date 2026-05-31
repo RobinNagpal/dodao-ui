@@ -2,8 +2,8 @@
 
 import React, { useMemo } from 'react';
 import { useRouter, useSearchParams, usePathname, ReadonlyURLSearchParams } from 'next/navigation';
-import { XMarkIcon } from '@heroicons/react/20/solid';
 
+import AppliedFilterChip from '@/components/ui/AppliedFilterChip';
 import { getAppliedEtfFilters, removeEtfFilterFromParams, clearAllEtfFilterParams, type AppliedEtfFilter } from '@/utils/etf-filter-utils';
 
 interface EtfAppliedFilterChipsProps {
@@ -45,20 +45,7 @@ export default function EtfAppliedFilterChips({ className = '', showClearAll = t
   return (
     <div className={['flex flex-wrap items-center gap-3 mb-6', className].join(' ')}>
       {currentFilters.map((filter, idx) => (
-        <div
-          key={`${filter.type}-${idx}`}
-          className="inline-flex items-center gap-2 text-black px-3 py-1.5 rounded-full text-sm bg-gradient-to-r from-[#F59E0B] to-[#FBBF24] hover:from-[#F97316] hover:to-[#F59E0B]"
-        >
-          <span>{filter.label}</span>
-          <button
-            onClick={() => handleRemove(filter)}
-            className="hover:bg-white hover:bg-opacity-20 rounded-full p-0.5"
-            aria-label={`Remove ${filter.label}`}
-            type="button"
-          >
-            <XMarkIcon className="h-4 w-4" />
-          </button>
-        </div>
+        <AppliedFilterChip key={`${filter.type}-${idx}`} label={filter.label} onRemove={() => handleRemove(filter)} />
       ))}
 
       {showClearAll && currentFilters.length > 1 && (
