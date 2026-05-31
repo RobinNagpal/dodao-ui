@@ -18,6 +18,10 @@ import PriceChart from '@/components/ticker-reportsv1/PriceChartLazy';
 import QuarterlyMetricsChart from '@/components/ticker-reportsv1/QuarterlyMetricsChartLazy';
 import SimilarTickers from '@/components/ticker-reportsv1/SimilarTickers';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
+import CardSection from '@/components/ui/sections/CardSection';
+import ReportFooter from '@/components/ui/sections/ReportFooter';
+import SectionHeading from '@/components/ui/sections/SectionHeading';
+import SplitColumns from '@/components/ui/containers/SplitColumns';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { SpiderGraphForTicker, SpiderGraphPie } from '@/types/public-equity/ticker-report-types';
 import {
@@ -306,7 +310,7 @@ export async function generateMetadata({ params }: { params: RouteParams }): Pro
 ============================================================================= */
 function FinancialInfoSkeleton(): JSX.Element {
   return (
-    <section id="financial-info" className="bg-surface rounded-lg shadow-sm px-2 py-2 sm:p-3 mt-6">
+    <CardSection id="financial-info" padding="compact" mt="md">
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
         <FinancialCard label="Current Price" isLoading={true} />
         <FinancialCard label="52 Week Range" isLoading={true} />
@@ -321,13 +325,13 @@ function FinancialInfoSkeleton(): JSX.Element {
         <FinancialCard label="Annual Dividend" isLoading={true} />
         <FinancialCard label="Dividend Yield" isLoading={true} />
       </div>
-    </section>
+    </CardSection>
   );
 }
 
 function QuarterlyChartSkeleton(): JSX.Element {
   return (
-    <section id="quarterly-metrics-chart" className="bg-surface rounded-lg shadow-sm px-2 py-3 sm:p-4 mt-6">
+    <CardSection id="quarterly-metrics-chart" padding="chart" mt="md">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
         <div>
           <div className="h-6 w-48 rounded bg-surface-2 animate-pulse" />
@@ -340,13 +344,13 @@ function QuarterlyChartSkeleton(): JSX.Element {
         </div>
       </div>
       <div className="h-64 sm:h-72 rounded bg-surface-2 animate-pulse" />
-    </section>
+    </CardSection>
   );
 }
 
 function PriceChartSkeleton(): JSX.Element {
   return (
-    <section id="price-chart" className="bg-surface rounded-lg shadow-sm px-2 py-3 sm:p-4 mt-6">
+    <CardSection id="price-chart" padding="chart" mt="md">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
         <div>
           <div className="h-6 w-36 rounded bg-surface-2 animate-pulse" />
@@ -359,7 +363,7 @@ function PriceChartSkeleton(): JSX.Element {
         </div>
       </div>
       <div className="h-64 sm:h-72 rounded bg-surface-2 animate-pulse" />
-    </section>
+    </CardSection>
   );
 }
 
@@ -368,22 +372,24 @@ function ChartsInfoSkeleton(): JSX.Element {
   return (
     <section className="mb-8">
       {/* Financial Info (left) and Spider Chart (right) side by side */}
-      <div className="flex flex-col lg:flex-row gap-8">
-        {/* Left: Financial Information Skeleton */}
-        <div className="lg:w-1/2" style={{ minHeight: '340px' }}>
-          <FinancialInfoSkeleton />
-        </div>
-
-        {/* Right: Spider Chart Skeleton */}
-        <div className="lg:w-1/2 flex justify-center">
-          <div className="w-full max-w-lg relative pb-4" style={{ minHeight: '400px', contain: 'layout size' }}>
-            <div className="absolute top-20 right-0 flex space-x-2" style={{ zIndex: 10 }}>
-              <div className="h-8 w-12 rounded bg-surface-2 animate-pulse" />
-            </div>
-            <RadarSkeleton />
+      <SplitColumns
+        gap="flat"
+        left={
+          <div style={{ minHeight: '340px' }}>
+            <FinancialInfoSkeleton />
           </div>
-        </div>
-      </div>
+        }
+        right={
+          <div className="flex justify-center">
+            <div className="w-full max-w-lg relative pb-4" style={{ minHeight: '400px', contain: 'layout size' }}>
+              <div className="absolute top-20 right-0 flex space-x-2" style={{ zIndex: 10 }}>
+                <div className="h-8 w-12 rounded bg-surface-2 animate-pulse" />
+              </div>
+              <RadarSkeleton />
+            </div>
+          </div>
+        }
+      />
 
       {/* Price Chart Skeleton (rendered above the quarterly chart) */}
       <div style={{ minHeight: '320px' }}>
@@ -524,28 +530,29 @@ function TickerChartsInfo({
   return (
     <section className="mb-8">
       {/* Financial Info (left) and Spider Chart (right) side by side */}
-      <div className="flex flex-col lg:flex-row gap-8">
-        {/* Left: Financial Information - Always reserve space to prevent layout shift */}
-        <div className="lg:w-1/2" style={{ minHeight: '340px' }}>
-          {financialData ? <FinancialInfo data={financialData} /> : <FinancialInfoSkeleton />}
-        </div>
-
-        {/* Right: Spider Chart */}
-        <div className="lg:w-1/2 flex justify-center">
-          <div className="w-full max-w-lg relative pb-4" style={{ minHeight: '400px', contain: 'layout size' }}>
-            <div className="absolute top-20 right-0 flex space-x-2" style={{ zIndex: 10 }}>
-              <div className="text-2xl font-bold" style={{ color: 'var(--primary-color, blue)' }}>
-                {score.toFixed(0)}%
+      <SplitColumns
+        gap="flat"
+        left={
+          // Always reserve space to prevent layout shift
+          <div style={{ minHeight: '340px' }}>{financialData ? <FinancialInfo data={financialData} /> : <FinancialInfoSkeleton />}</div>
+        }
+        right={
+          <div className="flex justify-center">
+            <div className="w-full max-w-lg relative pb-4" style={{ minHeight: '400px', contain: 'layout size' }}>
+              <div className="absolute top-20 right-0 flex space-x-2" style={{ zIndex: 10 }}>
+                <div className="text-2xl font-bold" style={{ color: 'var(--primary-color, blue)' }}>
+                  {score.toFixed(0)}%
+                </div>
+                <SpiderChartFlyoutMenu />
               </div>
-              <SpiderChartFlyoutMenu />
+              {/* Suspense needed here for dynamic import of TickerRadarChart */}
+              <Suspense fallback={<RadarSkeleton />}>
+                <TickerRadarChart data={spiderGraph} scorePercentage={score} />
+              </Suspense>
             </div>
-            {/* Suspense needed here for dynamic import of TickerRadarChart */}
-            <Suspense fallback={<RadarSkeleton />}>
-              <TickerRadarChart data={spiderGraph} scorePercentage={score} />
-            </Suspense>
           </div>
-        </div>
-      </div>
+        }
+      />
 
       {/* Price Chart (rendered above Quarterly Metrics) */}
       {priceHistoryData && <PriceChart data={priceHistoryData} />}
@@ -646,7 +653,9 @@ function TickerAnalysisInfo({
 
   return (
     <section id="summary-analysis" className="mb-4 sm:py-6" itemProp="abstract">
-      <h2 className="text-xl font-bold mb-4 pb-2 border-b border-border">Summary Analysis</h2>
+      <SectionHeading as="h2" weight="bold" bordered>
+        Summary Analysis
+      </SectionHeading>
       <div className="space-y-4">
         <CategorySummaryCard categoryKey={TickerAnalysisCategory.BusinessAndMoat} d={d} />
 
@@ -702,28 +711,14 @@ function TickerAnalysisInfo({
 
 function TickerArticleFooter({ modifiedDate, formattedModifiedDate }: { modifiedDate: Date; formattedModifiedDate: string }): JSX.Element {
   return (
-    <footer className="mt-8 pt-6 border-t border-border">
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-        <div className="text-sm text-muted-foreground">
-          <span>Last updated by </span>
-          <span itemProp="author" itemScope itemType="https://schema.org/Organization">
-            <span itemProp="name">KoalaGains</span>
-          </span>
-          <span> on </span>
-          <time dateTime={modifiedDate.toISOString()} itemProp="dateModified">
-            {formattedModifiedDate}
-          </time>
-        </div>
-        <div className="flex gap-2">
-          <span className="inline-flex items-center rounded-full bg-sky-500/15 border border-sky-500/40 px-2.5 py-0.5 text-xs font-medium text-sky-300">
-            Stock Analysis
-          </span>
-          <span className="inline-flex items-center rounded-full bg-indigo-500/15 border border-indigo-500/40 px-2.5 py-0.5 text-xs font-medium text-indigo-300">
-            Investment Report
-          </span>
-        </div>
-      </div>
-    </footer>
+    <ReportFooter
+      modifiedDate={modifiedDate}
+      formattedModifiedDate={formattedModifiedDate}
+      tags={[
+        { label: 'Stock Analysis', tone: 'family' },
+        { label: 'Investment Report', tone: 'competitive' },
+      ]}
+    />
   );
 }
 /** PAGE */

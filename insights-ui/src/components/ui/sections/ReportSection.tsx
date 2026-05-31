@@ -15,12 +15,14 @@ const reportSection = cva('', {
 export type ReportSectionProps = VariantProps<typeof reportSection> & {
   children: React.ReactNode;
   itemProp?: string;
+  /** Optional anchor id (e.g. for in-page navigation). */
+  id?: string;
   className?: string;
 };
 
-export default function ReportSection({ children, spacing, itemProp, className }: ReportSectionProps): React.JSX.Element {
+export default function ReportSection({ children, spacing, itemProp, id, className }: ReportSectionProps): React.JSX.Element {
   return (
-    <section className={cn(reportSection({ spacing }), className)} itemProp={itemProp}>
+    <section id={id} className={cn(reportSection({ spacing }), className)} itemProp={itemProp}>
       {children}
     </section>
   );

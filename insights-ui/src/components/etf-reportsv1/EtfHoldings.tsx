@@ -1,5 +1,7 @@
 import { EtfMorPortfolioHoldingRow, EtfMorPortfolioHoldings } from '@/types/prismaTypes';
 import { buildEtfHoldingColumnDefs } from '@/utils/etf-holdings-utils';
+import CardSection from '@/components/ui/sections/CardSection';
+import SectionHeading from '@/components/ui/sections/SectionHeading';
 import Link from 'next/link';
 import { ReactNode } from 'react';
 
@@ -28,10 +30,12 @@ export default function EtfHoldings({ data, maxRows, viewMoreHref, title, relate
   const resolvedTitle = title ?? (typeof maxRows === 'number' && list.length > maxRows ? `Top ${displayRows.length} Holdings` : 'Holdings');
 
   return (
-    <section id="etf-holdings" className="bg-surface rounded-lg shadow-sm px-3 py-6 sm:p-6 mt-6 mb-8">
+    <CardSection id="etf-holdings" padding="normal" mt="md" mb="lg">
       <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-2 pb-2 border-b border-border">
         <div>
-          <h2 className="text-xl font-bold text-heading">{resolvedTitle}</h2>
+          <SectionHeading as="h2" weight="bold" className="text-heading mb-0">
+            {resolvedTitle}
+          </SectionHeading>
           {subtitle ? <p className="text-xs text-muted mt-1">{subtitle}</p> : null}
         </div>
         <div className="text-xs text-muted">
@@ -77,6 +81,6 @@ export default function EtfHoldings({ data, maxRows, viewMoreHref, title, relate
       ) : null}
 
       {relatedSections}
-    </section>
+    </CardSection>
   );
 }

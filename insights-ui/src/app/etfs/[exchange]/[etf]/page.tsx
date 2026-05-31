@@ -17,6 +17,11 @@ import EtfKeyFactsFlags from '@/components/etf-reportsv1/EtfKeyFactsFlags';
 import EtfApplicableInvestorGoals from '@/components/etf-reportsv1/EtfApplicableInvestorGoals';
 import { FinancialCard } from '@/components/ticker-reportsv1/FinancialInfo';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
+import CardSection from '@/components/ui/sections/CardSection';
+import ReportFooter from '@/components/ui/sections/ReportFooter';
+import ReportSection from '@/components/ui/sections/ReportSection';
+import SectionHeading from '@/components/ui/sections/SectionHeading';
+import SplitColumns from '@/components/ui/containers/SplitColumns';
 import { EtfKeyFactsFlagAssessment } from '@/types/etf/etf-analysis-types';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { getCountryByExchange, SupportedCountries, formatExchangeWithCountry, toExchange } from '@/utils/countryExchangeUtils';
@@ -88,7 +93,7 @@ export async function generateMetadata({ params }: { params: RouteParams }): Pro
 
 function EtfFinancialInfoSkeleton(): JSX.Element {
   return (
-    <section id="etf-financial-info" className="bg-surface rounded-lg shadow-sm px-2 py-2 sm:p-3 mt-6">
+    <CardSection id="etf-financial-info" padding="compact" mt="md">
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
         <FinancialCard label="AUM" isLoading={true} />
         <FinancialCard label="Expense Ratio" isLoading={true} />
@@ -103,7 +108,7 @@ function EtfFinancialInfoSkeleton(): JSX.Element {
         <FinancialCard label="Beta" isLoading={true} />
         <FinancialCard label="Holdings" isLoading={true} />
       </div>
-    </section>
+    </CardSection>
   );
 }
 
@@ -246,32 +251,41 @@ export default async function EtfDetailsPage({ params }: { params: RouteParams }
 
           {keyFactsHead && (
             <div className="mb-2">
-              <h3 className="text-lg font-semibold text-color mb-3">About This ETF</h3>
+              <SectionHeading as="h3" size="sm">
+                About This ETF
+              </SectionHeading>
               <div className="markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(keyFactsHead) }} />
             </div>
           )}
         </section>
 
-        <section className="mb-8">
-          <div className="flex flex-col lg:flex-row gap-4 lg:gap-8">
-            <div className="lg:w-1/2" style={{ minHeight: '340px' }}>
-              {data.financialInfo ? <EtfFinancialInfo data={data.financialInfo} /> : <EtfFinancialInfoSkeleton />}
-            </div>
-            <div className="lg:w-1/2 flex justify-center">
-              <Suspense fallback={<RadarSkeleton />}>
-                <EtfRadarChart scores={data.scores} analysis={data.analysis} />
-              </Suspense>
-            </div>
-          </div>
+        <ReportSection spacing="lg">
+          <SplitColumns
+            gap="tight"
+            left={
+              <div style={{ minHeight: '340px' }}>
+                {data.financialInfo ? <EtfFinancialInfo data={data.financialInfo} /> : <EtfFinancialInfoSkeleton />}
+              </div>
+            }
+            right={
+              <div className="flex justify-center">
+                <Suspense fallback={<RadarSkeleton />}>
+                  <EtfRadarChart scores={data.scores} analysis={data.analysis} />
+                </Suspense>
+              </div>
+            }
+          />
 
           <EtfChartTabs priceHistory={data.priceHistory} performanceMetrics={data.performanceMetrics} etfSymbol={etfData.symbol} />
-        </section>
+        </ReportSection>
 
         {keyFactsTail && (
-          <section id="key-facts-tail" className="mb-8">
-            <h3 className="text-lg font-semibold text-color mb-3">ETF Summary</h3>
+          <ReportSection id="key-facts-tail" spacing="lg">
+            <SectionHeading as="h3" size="sm">
+              ETF Summary
+            </SectionHeading>
             <div className="markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(keyFactsTail) }} />
-          </section>
+          </ReportSection>
         )}
 
         <EtfKeyFactsFlags greenFlags={keyFactsGreenFlags} redFlags={keyFactsRedFlags} />
@@ -288,34 +302,18 @@ export default async function EtfDetailsPage({ params }: { params: RouteParams }
           futureOutlookTop={<EtfKeyMetrics metrics={data.keyMetrics} />}
         />
 
-        <div className="mx-auto max-w-7xl">
-          <section className="mb-6">
-            <SimilarEtfs data={data.similarEtfs} />
-          </section>
-        </div>
+        <ReportSection spacing="md">
+          <SimilarEtfs data={data.similarEtfs} />
+        </ReportSection>
 
-        <footer className="mt-8 pt-6 border-t border-color">
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-            <div className="text-sm text-muted-foreground">
-              <span>Last updated by </span>
-              <span itemProp="author" itemScope itemType="https://schema.org/Organization">
-                <span itemProp="name">KoalaGains</span>
-              </span>
-              <span> on </span>
-              <time dateTime={modifiedDate.toISOString()} itemProp="dateModified">
-                {formattedModifiedDate}
-              </time>
-            </div>
-            <div className="flex gap-2">
-              <span className="inline-flex items-center rounded-full bg-blue-100 dark:bg-blue-900 px-2.5 py-0.5 text-xs font-medium text-blue-800 dark:text-blue-300">
-                ETF Analysis
-              </span>
-              <span className="inline-flex items-center rounded-full bg-purple-100 dark:bg-purple-900 px-2.5 py-0.5 text-xs font-medium text-purple-800 dark:text-purple-300">
-                Investment Report
-              </span>
-            </div>
-          </div>
-        </footer>
+        <ReportFooter
+          modifiedDate={modifiedDate}
+          formattedModifiedDate={formattedModifiedDate}
+          tags={[
+            { label: 'ETF Analysis', tone: 'category' },
+            { label: 'Investment Report', tone: 'competitive' },
+          ]}
+        />
       </article>
     </PageWrapper>
   );

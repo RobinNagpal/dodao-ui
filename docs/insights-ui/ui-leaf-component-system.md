@@ -56,17 +56,33 @@ tokens below may appear — never raw `bg-gray-*` / `text-gray-*` / hex.**
 
 | Token (utility) | Role | Var |
 |---|---|---|
-| `bg-bg` | page background (darkest) | `--bg-color` |
-| `bg-surface` | cards / report sections | `--surface` |
-| `bg-surface-2` | inset / inline boxes / hovers | `--surface-2` |
+| `bg-bg` | page background (darkest) | `--bg-color` (`#111827`) |
+| `bg-surface` | cards / report sections | `--surface` (`#1f2937`) |
+| `bg-surface-2` | inset / inline boxes / chip track | `--surface-2` (`#374151`) |
+| `bg-surface-3` | raised / hover state (one step above `surface-2`) | `--surface-3` (`#4b5563`) |
 | `text-heading` | headings (white) | `--heading-color` |
-| `text-body` | body text | `--text-color` |
-| `text-muted` | secondary / muted text | `--text-muted` |
+| `text-body` | body text (brightened to `#f3f4f6` for dark-surface readability) | `--text-color` |
+| `text-muted` | secondary / muted text (brightened to `#cbd5e1`) | `--text-muted` |
 | `border-border` | borders / dividers | `--border-color` |
 | `text-primary` / `bg-primary` / `text-primary-text` | brand / primary actions | `--primary-color` |
 | `text-link` | links | `--link-color` |
 
-The surfaces form a deliberate 3-tier dark ramp: `bg` < `surface` < `surface-2`.
+The surfaces form a deliberate dark ramp: `bg` < `surface` < `surface-2` < `surface-3`.
+`surface-3` exists so a collapsed hover (where base and hover both landed on
+`surface-2` after tokenization) still has somewhere to go — route hovers on a
+`surface-2` element to `hover:bg-surface-3`. `text-body`/`text-muted` were
+brightened (from `#e5e7eb`/`#9ca3af`) so report bodies read clearly on the dark
+surfaces. **Do not** apply opacity modifiers to var-backed tokens
+(`bg-surface-2/60`, `border-border/60`): under Tailwind 3.4 they render via
+`color-mix` but violate the no-`<alpha-value>` contract — use the solid token.
+
+**Section surfaces vs. transparent wrappers.** A "Summary Analysis" container
+that only groups sub-cards should be **transparent** (no `bg-*`) so the inner
+`bg-surface` cards read as the panels — wrapping a surface section inside another
+surface produces a muddy box-in-a-box. The main stock/ETF detail pages follow
+this: the summary `<section>` carries no background; its `CategorySummaryCard` /
+competition / management sub-cards carry `bg-surface`.
+
 Legacy aliases (`bg-block`, `bg-background`, `border-block-border`) and bridged
 shadcn names (`text-muted-foreground`→muted, `bg-card`→surface, `text-foreground`,
 `border-input`, `ring`) all resolve to the same vars so older call-sites stay
@@ -142,13 +158,13 @@ Rules for leaves:
 
 | Component | Responsibility |
 |---|---|
-| `CardSection` | Dark report-section surface (`bg-gray-900 rounded-lg shadow-sm`) with padding presets. |
+| `CardSection` | Dark report-section surface (`bg-surface rounded-lg shadow-sm`); `padding` presets (`compact`/`chart`/`cozy`/`normal`/`flush`) + `mt`/`mb` + `id` anchor. |
 | `InlineCard` | Lightweight filled box (`bg-gray-800 rounded-md`); `padding` presets incl. `factor`; `as` for `li`. |
 | `RelatedSectionsNav` | Top-bordered "more analyses" nav: heading + responsive grid of pill links. |
 | `ReportArticleShell` | Outer `<article>` card chrome + schema.org microdata + optional `datePublished`; `padding` variant. |
 | `ReportSectionHeader` | Bordered report header: title (+ `symbol`), exchange/score/date meta row, metadata slot, action link. |
 | `SectionHeading` | In-article H2/H3 (`text-xl font-semibold text-color`); `size`/`weight`/`bordered`. |
-| `ReportSection` | `<section>` with standardized vertical rhythm (`spacing`) + optional `itemProp`. |
+| `ReportSection` | `<section>` with standardized vertical rhythm (`spacing`) + optional `itemProp` + `id` anchor. |
 | `ReportFooter` | "Last updated by KoalaGains" + category tag pills (`tone` vocabulary). |
 | `Prose` | `prose prose-invert max-w-none` long-form body wrapper. |
 | `MarkdownContent` | Renders sanitized markdown HTML with `summary`/`body`/`plain` style variants. |

@@ -1,6 +1,10 @@
 import AdminTimestamp from '@/components/auth/AdminTimestamp';
 import TickerRelatedSections, { getAvailableSiblingSlugs } from '@/components/ticker-reportsv1/TickerRelatedSections';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
+import ReportArticleShell from '@/components/ui/sections/ReportArticleShell';
+import ReportFooter from '@/components/ui/sections/ReportFooter';
+import ReportSection from '@/components/ui/sections/ReportSection';
+import SectionHeading from '@/components/ui/sections/SectionHeading';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { MANAGEMENT_TEAM_ALIGNMENT_VERDICT_LABELS, ManagementTeamAlignmentVerdict } from '@/types/ticker-typesv1';
 import { getCountryByExchange, USExchanges, CanadaExchanges, IndiaExchanges, UKExchanges, SupportedCountries } from '@/utils/countryExchangeUtils';
@@ -218,16 +222,18 @@ export default async function ManagementTeamPage({ params }: { params: RoutePara
 
       <Breadcrumbs breadcrumbs={breadcrumbs} hideHomeIcon={true} />
 
-      <article className="bg-surface rounded-lg shadow-sm border border-color p-3 sm:p-6 md:p-8" itemScope itemType="https://schema.org/Article">
-        <section className="mb-6">
+      <ReportArticleShell>
+        <ReportSection spacing="md">
           <h1 className="text-pretty text-2xl font-semibold tracking-tight sm:text-4xl" itemProp="headline">
             {tickerData.name} ({tickerData.symbol}) — Management Team Experience &amp; Alignment
           </h1>
-        </section>
+        </ReportSection>
 
-        <section className="mb-8" itemProp="articleBody">
+        <ReportSection spacing="lg" itemProp="articleBody">
           <div className="flex items-center gap-2 mb-4 pb-2 border-b border-border">
-            <h2 className="text-xl font-bold">Alignment Verdict</h2>
+            <SectionHeading as="h2" weight="bold" className="mb-0">
+              Alignment Verdict
+            </SectionHeading>
             <span className={`inline-flex items-center justify-center rounded-full px-2.5 py-1 text-xs font-medium ${getVerdictBadgeClasses(verdict)}`}>
               {verdictLabel}
             </span>
@@ -235,15 +241,19 @@ export default async function ManagementTeamPage({ params }: { params: RoutePara
           </div>
 
           <div className="mb-6">
-            <h3 className="text-lg font-semibold mb-2">Summary</h3>
+            <SectionHeading as="h3" size="sm" className="mb-2">
+              Summary
+            </SectionHeading>
             <div className="markdown markdown-body text-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(report.summary) }} />
           </div>
 
           <div>
-            <h3 className="text-lg font-semibold mb-2">Detailed Analysis</h3>
+            <SectionHeading as="h3" size="sm" className="mb-2">
+              Detailed Analysis
+            </SectionHeading>
             <div className="markdown markdown-body text-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(report.detailedAnalysis) }} />
           </div>
-        </section>
+        </ReportSection>
 
         <Suspense fallback={null}>
           <TickerRelatedSections
@@ -255,29 +265,15 @@ export default async function ManagementTeamPage({ params }: { params: RoutePara
           />
         </Suspense>
 
-        <footer className="mt-8 pt-6 border-t border-color">
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-            <div className="text-sm text-muted-foreground">
-              <span>Last updated by </span>
-              <span itemProp="author" itemScope itemType="https://schema.org/Organization">
-                <span itemProp="name">KoalaGains</span>
-              </span>
-              <span> on </span>
-              <time dateTime={modifiedDate.toISOString()} itemProp="dateModified">
-                {formattedModifiedDate}
-              </time>
-            </div>
-            <div className="flex gap-2">
-              <span className="inline-flex items-center rounded-full bg-sky-500/15 border border-sky-500/40 px-2.5 py-0.5 text-xs font-medium text-sky-300">
-                Stock Analysis
-              </span>
-              <span className="inline-flex items-center rounded-full bg-amber-500/15 border border-amber-500/40 px-2.5 py-0.5 text-xs font-medium text-amber-300">
-                Management Team
-              </span>
-            </div>
-          </div>
-        </footer>
-      </article>
+        <ReportFooter
+          modifiedDate={modifiedDate}
+          formattedModifiedDate={formattedModifiedDate}
+          tags={[
+            { label: 'Stock Analysis', tone: 'family' },
+            { label: 'Management Team', tone: 'category' },
+          ]}
+        />
+      </ReportArticleShell>
     </PageWrapper>
   );
 }

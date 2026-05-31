@@ -3,6 +3,8 @@ import { EtfFastResponse } from '@/app/api/[spaceId]/etfs-v1/exchange/[exchange]
 import EtfHoldings from '@/components/etf-reportsv1/EtfHoldings';
 import EtfRelatedSections, { fetchEtfAvailableSlugs } from '@/components/etf-reportsv1/EtfRelatedSections';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
+import CardSection from '@/components/ui/sections/CardSection';
+import ReportFooter from '@/components/ui/sections/ReportFooter';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { etfHoldingsTag } from '@/utils/etf-cache-utils';
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
@@ -86,20 +88,7 @@ export default async function EtfHoldingsPage({ params }: { params: RouteParams 
   const lastUpdatedDate = new Date(holdingsUpdatedAt ?? etfData.updatedAt ?? new Date());
   const formattedLastUpdated = lastUpdatedDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
 
-  const footer = (
-    <footer className="mt-8 pt-6 border-t border-color">
-      <div className="text-sm text-muted-foreground">
-        <span>Last updated by </span>
-        <span itemProp="author" itemScope itemType="https://schema.org/Organization">
-          <span itemProp="name">KoalaGains</span>
-        </span>
-        <span> on </span>
-        <time dateTime={lastUpdatedDate.toISOString()} itemProp="dateModified">
-          {formattedLastUpdated}
-        </time>
-      </div>
-    </footer>
-  );
+  const footer = <ReportFooter modifiedDate={lastUpdatedDate} formattedModifiedDate={formattedLastUpdated} />;
 
   const relatedSections = (
     <>
@@ -127,10 +116,10 @@ export default async function EtfHoldingsPage({ params }: { params: RouteParams 
         {totalHoldings > 0 ? (
           <EtfHoldings data={holdings} title="Top Holdings" relatedSections={relatedSections} />
         ) : (
-          <section className="bg-surface rounded-lg shadow-sm px-3 py-6 sm:p-6 mt-6">
+          <CardSection mt="md">
             <p className="text-sm text-muted">No holdings data available for this ETF.</p>
             {relatedSections}
-          </section>
+          </CardSection>
         )}
       </article>
     </PageWrapper>

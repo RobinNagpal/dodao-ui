@@ -1,5 +1,7 @@
 import { getScoreColorClasses } from '@/utils/score-utils';
 import type { SimilarTicker } from '@/utils/ticker-v1-model-utils';
+import CardSection from '@/components/ui/sections/CardSection';
+import SectionHeading from '@/components/ui/sections/SectionHeading';
 import { ArrowTopRightOnSquareIcon } from '@heroicons/react/20/solid';
 import Link from 'next/link';
 import { use } from 'react';
@@ -16,8 +18,10 @@ export default function SimilarTickers({ dataPromise }: SimilarTickersProps): JS
   }
 
   return (
-    <div id="similar-tickers" className="bg-surface rounded-lg shadow-sm p-3 sm:p-6 mb-8">
-      <h2 className="text-xl font-bold mb-4 pb-2 border-b border-border">Top Similar Companies</h2>
+    <CardSection id="similar-tickers" padding="cozy" mb="lg">
+      <SectionHeading as="h2" weight="bold" bordered>
+        Top Similar Companies
+      </SectionHeading>
       <p className="text-body mb-4">Based on industry classification and performance score:</p>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {similarTickers.map((similarTicker) => {
@@ -34,7 +38,7 @@ export default function SimilarTickers({ dataPromise }: SimilarTickersProps): JS
               <div className="flex flex-col gap-y-2">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-x-2">
-                    <h3 className="font-semibold text-lg  text-link group-hover:text-heading transition-colors">{similarTicker.name}</h3>
+                    <h3 className="font-semibold text-lg text-link group-hover:text-heading transition-colors">{similarTicker.name}</h3>
                     <ArrowTopRightOnSquareIcon className="size-4 text-muted group-hover:text-link transition-colors" />
                   </div>
                 </div>
@@ -52,6 +56,6 @@ export default function SimilarTickers({ dataPromise }: SimilarTickersProps): JS
           );
         })}
       </div>
-    </div>
+    </CardSection>
   );
 }

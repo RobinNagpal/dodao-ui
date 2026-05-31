@@ -85,10 +85,11 @@ once clean.
 |---|---|---|
 | `ticker-reportsv1/FinancialInfo`, `etf-reportsv1/EtfKeyMetrics` | proof slice | ✅ |
 | `TickerCategoryReport` + `EtfCategoryReport` | shared report chrome (article/header/section/footer) — kills the ~95% duplication | ✅ (zero className except heroicons → pending `Icon` leaf) |
-| `Competition` + `EtfCompetitionFullView` | re-roll the same shell; normalize gutter (`PageWrapper`) + padding when migrating | ⬜ next — leaves ready |
-| `management-team/page.tsx`, `daily-stock-movers/StockMoverDetails.tsx` | hand-roll the same shell a 3rd/4th time | ⬜ leaves ready |
-| `etf-reportsv1/**` report sections | high Tailwind density, shared leaves ready | 🟡 `EtfFinancialInfo`, `EtfRelatedSections` done; `EtfMorInfo`/`EtfHoldings`/tables need `DataTable`/`ListingCard` |
-| `ticker-reportsv1/**` report sections | mirrors ETF | ⬜ |
+| `Competition` + `EtfCompetitionFullView` | re-roll the same shell; normalize gutter (`PageWrapper`) + padding when migrating | 🟡 `Competition` ✅ (composes `ReportArticleShell`/`ReportSectionHeader`/`ReportSection`/`SplitColumns`/`Prose`/`MarkdownContent`/`ReportFooter`, dropped its redundant gutter); `EtfCompetitionFullView` ⬜ |
+| `management-team/page.tsx`, `daily-stock-movers/StockMoverDetails.tsx` | hand-roll the same shell a 3rd/4th time | 🟡 `management-team` ✅ (`ReportArticleShell` + `ReportSection` + `SectionHeading` + `ReportFooter`); `StockMoverDetails` ⬜ |
+| `etf-reportsv1/**` report sections | high Tailwind density, shared leaves ready | 🟡 `EtfFinancialInfo`, `EtfRelatedSections`, `EtfHoldings` (→`CardSection`) done; `EtfMorInfo`/tables need `DataTable`/`ListingCard` |
+| `ticker-reportsv1/**` report sections | mirrors ETF | 🟡 `CompetitionChartSection`, `SimilarTickers` → `CardSection`/`SectionHeading`/`SplitColumns`; rest ⬜ |
+| Main detail pages + sub-pages (`stocks/[…]/page.tsx`, `etfs/[…]/page.tsx`, `holdings`, `financial-data`) | composed their own surfaces/footers/headings | ✅ skeletons + summary cards → `CardSection`; footers → `ReportFooter`; splits → `SplitColumns`; headings → `SectionHeading`; section rhythm → `ReportSection` |
 | `admin-v1/missing-reports/page.tsx` | worst offender (~89 classNames) — needs `DataTable` first | ⬜ |
 | `admin-v1/stock-scenarios`, `admin-v1/etf-scenarios`, `admin-v1/users` | table-heavy admin (~35–39) | ⬜ |
 | stock/ETF listing cards (`CompactIndustryCard`, `EtfCategoryCard`, …) | needs `ListingCard`/`ScoreDisplay`/`SymbolBadge` | ⬜ |
@@ -104,14 +105,31 @@ The color system is now tokenized (see the "Color system" section in
 - ✅ Leaf layer tokenized (surfaces/text/border → tokens) and chips consolidated
   into the 6-tone `badgeTone` vocabulary (PassFailBadge, StatusBadge,
   ReportFooter, header exchange pill; EmptyStateCard CTA → `bg-primary`).
-- ⬜ **Remaining chips:** route `ScenarioOutlookBadge` (8 ad-hoc tones),
-  `EtfMetadataBadges` (5-hue quartets → `info`/`accent`), and `AppliedFilterChip`
-  (amber gradient → `warning`) through `badgeTone`.
-- ⬜ **Component migrations (report pages → tokens + leaves):** the bulk. Replace
-  raw `bg-gray-*`/`text-gray-*`/hand-written headings with tokens + the
-  `Heading`/`SectionHeading`/`Text` leaves across: Competition pair,
-  management-team, StockMoverDetails, the two main `page.tsx`, EtfMorInfo,
-  EtfHoldings, charts (inline hex → token map), and the ~50 hand-written headings.
+- 🟡 **Remaining chips:** `EtfMetadataBadges` ✅ (Asset Class→`info`, Group→`neutral`,
+  Category/Index→`accent`, Provider→`success`). Still TODO: `ScenarioOutlookBadge`
+  (8 ad-hoc tones) and `AppliedFilterChip` (amber gradient → `warning`).
+- 🟡 **Component migrations (report pages → tokens + leaves):** report chrome on
+  the two main `page.tsx`, the ETF `holdings`/`financial-data` sub-pages,
+  `Competition`, `management-team`, `CompetitionChartSection`, `SimilarTickers`,
+  and `EtfHoldings` now compose the shared containers/sections
+  (`CardSection`/`ReportArticleShell`/`ReportSectionHeader`/`ReportSection`/
+  `SplitColumns`/`SectionHeading`/`ReportFooter`) — hand-rolled `bg-surface`
+  surfaces, duplicate footers (incl. raw blue/purple pills), and ad-hoc headings
+  are gone there. Still TODO: `EtfCompetitionFullView`, `StockMoverDetails`,
+  `EtfMorInfo`, charts (inline hex → token map), and the remaining hand-written
+  headings.
+- ⬜ **Listing / index pages (`app/etfs/**`, `app/stocks/**` excluding detail):**
+  a 5-agent audit found the index pages are thin wrappers but their shared
+  layout/grid/card components hand-roll structure: `EtfPageLayout` /
+  `IndustryWithStocksPageLayout` (raw `text-white` H1 + inline-hex `text-[#E5E7EB]`
+  body), the amber-gradient "Show all" pill (`from-[#F59E0B] to-[#FBBF24]`,
+  duplicated 5×), an ad-hoc `grid-cols-1 sm:2 md:3 lg:4` listing grid (3×) and a
+  `1-2-3` grid (3×), and the `bg-block-bg-color`/`border-color`/`divide-color`/
+  `heading-color` legacy aliases across `EtfCategoryCard`/`SubIndustryCard`/
+  `CompactEtfGroupingCard`/`CompactSubIndustryCard`/`AllStocksGridForCountry`.
+  Needs new leaves first: a shared accent/"show all" pill, a card-grid leaf (extend
+  `MetricGrid` `columns` or add one), and a listing-card surface — then sweep the
+  aliases to `bg-surface`/`border-border`/`text-heading`.
 - ⬜ **New leaves needed by those migrations:** `SummaryCard`, `ScoreChip`
   (primary `x/total` pill), `CardSection` `chart` padding variant, `DeferredBlock`
   (`content-visibility`), a ticker-side `CompetitionQuadrantWithLegend`, a

@@ -9,7 +9,7 @@ import React from 'react';
  */
 const cardSection = cva('bg-surface rounded-lg shadow-sm', {
   variants: {
-    padding: { compact: 'px-2 py-2 sm:p-3', normal: 'px-3 py-6 sm:p-6', flush: '' },
+    padding: { compact: 'px-2 py-2 sm:p-3', chart: 'px-2 py-3 sm:p-4', cozy: 'p-3 sm:p-6', normal: 'px-3 py-6 sm:p-6', flush: '' },
     mt: { none: '', md: 'mt-6' },
     mb: { none: '', lg: 'mb-8' },
   },

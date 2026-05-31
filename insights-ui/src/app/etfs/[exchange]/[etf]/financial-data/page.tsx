@@ -2,6 +2,8 @@ import { EtfFastResponse } from '@/app/api/[spaceId]/etfs-v1/exchange/[exchange]
 import { EtfMorInfoOptionalWrapper } from '@/app/api/[spaceId]/etfs-v1/exchange/[exchange]/[etf]/mor-info/route';
 import EtfMorInfo from '@/components/etf-reportsv1/EtfMorInfo';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
+import ReportSection from '@/components/ui/sections/ReportSection';
+import SectionHeading from '@/components/ui/sections/SectionHeading';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { buildEtfReportSubpageBreadcrumbs } from '@/utils/etf-breadcrumbs-utils';
 import { etfAndExchangeTag } from '@/utils/etf-cache-utils';
@@ -37,15 +39,19 @@ async function fetchMorInfo(exchange: string, etf: string): Promise<EtfMorInfoOp
 function JsonSection({ title, data }: { title: string; data: unknown }) {
   if (!data)
     return (
-      <div className="mb-6">
-        <h3 className="text-lg font-semibold mb-2 text-red-400">{title} — No Data</h3>
-      </div>
+      <ReportSection>
+        <SectionHeading as="h3" size="sm" className="text-red-400 mb-2">
+          {title} — No Data
+        </SectionHeading>
+      </ReportSection>
     );
   return (
-    <div className="mb-6">
-      <h3 className="text-lg font-semibold mb-2 text-green-400">{title}</h3>
+    <ReportSection>
+      <SectionHeading as="h3" size="sm" className="text-green-400 mb-2">
+        {title}
+      </SectionHeading>
       <pre className="bg-surface p-4 rounded-lg overflow-x-auto text-xs text-body max-h-96 overflow-y-auto">{JSON.stringify(data, null, 2)}</pre>
-    </div>
+    </ReportSection>
   );
 }
 
@@ -53,8 +59,10 @@ function FieldTable({ title, fields }: { title: string; fields: Record<string, u
   const entries = Object.entries(fields).filter(([k]) => !['id', 'etfId', 'createdAt', 'updatedAt'].includes(k));
   if (entries.length === 0) return null;
   return (
-    <div className="mb-6">
-      <h3 className="text-lg font-semibold mb-2">{title}</h3>
+    <ReportSection>
+      <SectionHeading as="h3" size="sm" className="mb-2">
+        {title}
+      </SectionHeading>
       <div className="overflow-x-auto">
         <table className="min-w-full divide-y divide-border">
           <thead className="bg-surface-2">
@@ -81,7 +89,7 @@ function FieldTable({ title, fields }: { title: string; fields: Record<string, u
           </tbody>
         </table>
       </div>
-    </div>
+    </ReportSection>
   );
 }
 
@@ -130,7 +138,9 @@ export default async function EtfFinancialDataPage({ params }: { params: RoutePa
 
       <EtfMorInfo data={morData} />
 
-      <h2 className="text-xl font-bold mt-8 mb-4">Raw JSON Data</h2>
+      <SectionHeading as="h2" weight="bold" className="mt-8 mb-4">
+        Raw JSON Data
+      </SectionHeading>
       <JsonSection title="EtfMorAnalyzerInfo" data={morData.morAnalyzerInfo} />
       <JsonSection title="EtfMorRiskInfo" data={morData.morRiskInfo} />
       <JsonSection title="EtfMorPeopleInfo" data={morData.morPeopleInfo} />
