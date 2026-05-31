@@ -12,6 +12,20 @@ export default {
   safelist: ['text-orange-500', 'bg-orange-500', 'text-yellow-500'],
   theme: {
     extend: {
+      // Semantic color tokens backed by the CSS variables in
+      // `src/util/theme-colors.ts`. Leaf UI components should prefer these
+      // (e.g. `bg-block`, `text-body`) over ad-hoc `bg-gray-*` so theming /
+      // dark-mode stays centralized. Additive: the default palette is unchanged.
+      colors: {
+        primary: 'var(--primary-color)',
+        'primary-text': 'var(--primary-text-color)',
+        background: 'var(--bg-color)',
+        body: 'var(--text-color)',
+        heading: 'var(--heading-color)',
+        link: 'var(--link-color)',
+        block: 'var(--block-bg)',
+        'block-border': 'var(--border-color)',
+      },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
         'gradient-conic': 'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',

@@ -1,8 +1,16 @@
 import type { EtfKeyMetricsResponse } from '@/app/api/[spaceId]/etfs-v1/exchange/[exchange]/[etf]/full-render/route';
+import Heading from '@/components/ui/Heading';
+import InlineCard from '@/components/ui/InlineCard';
+import MetricCell from '@/components/ui/MetricCell';
+import MetricGrid from '@/components/ui/MetricGrid';
+import Stack from '@/components/ui/Stack';
+import Text from '@/components/ui/Text';
 
 interface EtfKeyMetricsProps {
   metrics: EtfKeyMetricsResponse;
 }
+
+type MetricSentiment = 'positive' | 'negative' | 'neutral';
 
 function formatRatio(value: number | null): string | undefined {
   return value === null ? undefined : value.toFixed(2);
@@ -13,18 +21,9 @@ function formatPercent(value: number | null): string | undefined {
 }
 
 /** Green for positive returns, red for negative; neutral when absent. */
-function returnValueClass(value: number | null): string {
-  if (value === null) return 'text-gray-100';
-  return value >= 0 ? 'text-green-400' : 'text-red-400';
-}
-
-function MetricCell({ label, value, valueClass = 'text-gray-100' }: { label: string; value: string | undefined; valueClass?: string }): JSX.Element {
-  return (
-    <div className="bg-gray-800 px-2 py-1.5 rounded-md">
-      <div className="text-xs text-gray-400 mb-1">{label}</div>
-      <div className={`text-sm font-semibold ${valueClass}`}>{value ?? '—'}</div>
-    </div>
-  );
+function returnSentiment(value: number | null): MetricSentiment {
+  if (value === null) return 'neutral';
+  return value >= 0 ? 'positive' : 'negative';
 }
 
 /**
@@ -33,14 +32,14 @@ function MetricCell({ label, value, valueClass = 'text-gray-100' }: { label: str
  * returns (and their reasons) come from the future report's EtfFutureReturns row.
  */
 export default function EtfKeyMetrics({ metrics }: EtfKeyMetricsProps): JSX.Element | null {
-  const figures: Array<{ label: string; value: string | undefined; valueClass?: string }> = [
-    { label: 'Sharpe Ratio', value: formatRatio(metrics.sharpe) },
-    { label: 'Sortino Ratio', value: formatRatio(metrics.sortino) },
-    { label: 'Beta (5Y)', value: formatRatio(metrics.beta5y) },
-    { label: 'Max Drawdown', value: formatPercent(metrics.maxDrawdown), valueClass: returnValueClass(metrics.maxDrawdown) },
-    { label: 'Exp. Return (1Y)', value: formatPercent(metrics.expectedNext1YrReturns), valueClass: returnValueClass(metrics.expectedNext1YrReturns) },
-    { label: 'Exp. Return (3Y)', value: formatPercent(metrics.expectedNext3YrReturns), valueClass: returnValueClass(metrics.expectedNext3YrReturns) },
-    { label: 'Exp. Return (5Y)', value: formatPercent(metrics.expectedNext5YrReturns), valueClass: returnValueClass(metrics.expectedNext5YrReturns) },
+  const figures: Array<{ label: string; value: string | undefined; sentiment: MetricSentiment }> = [
+    { label: 'Sharpe Ratio', value: formatRatio(metrics.sharpe), sentiment: 'neutral' },
+    { label: 'Sortino Ratio', value: formatRatio(metrics.sortino), sentiment: 'neutral' },
+    { label: 'Beta (5Y)', value: formatRatio(metrics.beta5y), sentiment: 'neutral' },
+    { label: 'Max Drawdown', value: formatPercent(metrics.maxDrawdown), sentiment: returnSentiment(metrics.maxDrawdown) },
+    { label: 'Exp. Return (1Y)', value: formatPercent(metrics.expectedNext1YrReturns), sentiment: returnSentiment(metrics.expectedNext1YrReturns) },
+    { label: 'Exp. Return (3Y)', value: formatPercent(metrics.expectedNext3YrReturns), sentiment: returnSentiment(metrics.expectedNext3YrReturns) },
+    { label: 'Exp. Return (5Y)', value: formatPercent(metrics.expectedNext5YrReturns), sentiment: returnSentiment(metrics.expectedNext5YrReturns) },
   ];
 
   const reasons: Array<{ label: string; reason: string }> = [
@@ -52,24 +51,32 @@ export default function EtfKeyMetrics({ metrics }: EtfKeyMetricsProps): JSX.Elem
   if (figures.every((f) => f.value === undefined) && reasons.length === 0) return null;
 
   return (
-    <div className="mb-4">
-      <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-2">
+    <Stack gap="md" mb="md">
+      <MetricGrid columns="2-4-7" gap="sm">
         {figures.map((f) => (
-          <MetricCell key={f.label} label={f.label} value={f.value} valueClass={f.valueClass} />
+          <MetricCell key={f.label} label={f.label} value={f.value} sentiment={f.sentiment} size="sm" />
         ))}
-      </div>
+      </MetricGrid>
 
       {reasons.length > 0 && (
-        <div className="mt-3 space-y-2">
-          <h4 className="text-sm font-semibold text-gray-200">Why these expected returns</h4>
+        <Stack gap="sm">
+          <Heading as="h4" size="sm" weight="semibold" tone="bright">
+            Why these expected returns
+          </Heading>
           {reasons.map((r) => (
-            <div key={r.label} className="bg-gray-800 rounded-md px-3 py-2">
-              <div className="text-xs font-semibold text-gray-300 mb-0.5">{r.label}</div>
-              <p className="text-xs leading-snug text-gray-400">{r.reason}</p>
-            </div>
+            <InlineCard key={r.label}>
+              <Stack gap="xxs">
+                <Text as="div" size="xs" weight="semibold" tone="body">
+                  {r.label}
+                </Text>
+                <Text as="p" size="xs" tone="muted" leading="snug">
+                  {r.reason}
+                </Text>
+              </Stack>
+            </InlineCard>
           ))}
-        </div>
+        </Stack>
       )}
-    </div>
+    </Stack>
   );
 }
