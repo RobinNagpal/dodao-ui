@@ -583,7 +583,8 @@ copy the public URL.
 A public dashboard exposes whatever its widget queries return. Mitigate:
 - **Scrub PII / secrets / tokens at the log layer** — never log `DATABASE_URL`, API keys, auth
   tokens, or full request bodies.
-- Keep the widget queries **scoped to this one log group**, keep **retention short** (14 days),
+- Keep the widget queries **scoped to this one log group**, keep **retention short** (3 days —
+  the log group auto-deletes anything older),
   and treat the URL as a **public data export**.
 - The public-share link is unguessable but unauthenticated — rotate/disable it if leaked.
 

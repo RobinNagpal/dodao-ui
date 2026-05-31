@@ -121,9 +121,9 @@ variable "log_group_name" {
 }
 
 variable "log_retention_days" {
-  description = "CloudWatch Logs retention."
+  description = "CloudWatch Logs retention — logs older than this are auto-deleted. Valid CW values: 1,3,5,7,14,30,...; we keep just 3 days."
   type        = number
-  default     = 14
+  default     = 3
 }
 
 variable "log_dashboard_name" {
