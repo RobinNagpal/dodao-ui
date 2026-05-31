@@ -95,19 +95,19 @@ export default function FavouritesPage() {
   } = useFetchData<{ favouriteTickers: FavouriteTickerResponse[] }>(
     `${getBaseUrl()}/api/${KoalaGainsSpaceId}/users/favourite-tickers`,
     { skipInitialFetch: !session },
-    'Failed to fetch favourites',
+    'Failed to fetch favourites'
   );
 
   const { data: listsData, reFetchData: refetchLists } = useFetchData<{ lists: UserListResponse[] }>(
     `${getBaseUrl()}/api/${KoalaGainsSpaceId}/users/user-lists`,
     { skipInitialFetch: !session },
-    'Failed to fetch lists',
+    'Failed to fetch lists'
   );
 
   const { data: tagsData, reFetchData: refetchTags } = useFetchData<{ tags: UserTickerTagResponse[] }>(
     `${getBaseUrl()}/api/${KoalaGainsSpaceId}/users/user-ticker-tags`,
     { skipInitialFetch: !session },
-    'Failed to fetch tags',
+    'Failed to fetch tags'
   );
 
   const { deleteData: deleteFavourite, loading: isDeleting } = useDeleteData({
