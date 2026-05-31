@@ -33,11 +33,22 @@ Status legend: ⬜ not started · 🟡 in progress · ✅ done
 ## 2. Leaf components still to build
 
 From the leaf-taxonomy audit (~28 total; badges, empty state, layout/typography
-primitives already exist). Build these in `src/components/ui/` using `cva` + `cn`,
-reusing web-core (`Table`, `Grid2–5Cols`, `Button`, `Input`, modals) where it fits.
+primitives already exist). Build these in `src/components/ui/{containers,sections}/`
+using `cva` + `cn`, reusing web-core (`Table`, `Grid2–5Cols`, `Button`, `Input`,
+modals) where it fits.
+
+**Report-chrome containers/sections — DONE** (built + proven via the
+`TickerCategoryReport` / `EtfCategoryReport` migration): `ReportArticleShell`,
+`ReportSectionHeader`, `SectionHeading`, `ReportSection`, `ReportFooter`, `Prose`,
+`MarkdownContent` (`ui/sections/`), and `SplitColumns` (`ui/containers/`). `Stack`
+gained an `as` prop; `InlineCard` gained a `factor` padding + `as`; `Heading`/`Text`
+gained `inherit`/`theme` tones.
+
+**Still to build:**
 
 | Leaf | Absorbs | Notable current call-sites |
 |---|---|---|
+| ⬜ `Icon` | heroicon sizing (`h-6 w-6 … flex-shrink-0`) | factor rows in the CategoryReports (the only `className` left there) |
 | ⬜ `DataTable` (+ `TableHeaderCell` / `TableDataCell`) | striped/bordered table chrome, header cells, data cells | `EtfReturnsTable`, `EtfHoldings`, all `admin-v1` tables |
 | ⬜ `TableSection` | table wrapper w/ border + header separator | report + admin tables |
 | ⬜ `ListingCard` | dark card w/ header + item list | `CompactIndustryCard`, `EtfCategoryCard`, `SubIndustryCard` |
@@ -46,7 +57,7 @@ reusing web-core (`Table`, `Grid2–5Cols`, `Button`, `Input`, modals) where it 
 | ⬜ `SymbolBadge` | ticker/ETF symbol pill | listing cards |
 | ⬜ `FilterButton` | active/inactive pill filter toggle | `BlogsGrid`, admin filters |
 | ⬜ `LoadingSkeleton` / `SkeletonGrid` | `animate-pulse` placeholders | Suspense fallbacks, `SubIndustryCardSkeleton` |
-| ⬜ `RelatedSectionsNav` | "jump to section" pill nav | `EtfRelatedSections` |
+| ✅ `RelatedSectionsNav` | "jump to section" pill nav | `EtfRelatedSections` (done); stock-side `TickerRelatedSections` (todo) |
 | ⬜ `ViewMoreLink` | right-aligned "View more →" link | `EtfHoldings`, `RelatedBlogs` |
 | ⬜ `Divider` | horizontal separator | scattered |
 
@@ -56,13 +67,14 @@ forcing them into one component (risk of visual drift):
 - ⬜ `HeroHeader` — centered hero title+description (8 sites: `RelatedBlogs`,
   `ServiceNavigation`, `KoalaGainsPlatform`, …). Sites differ in font
   weight/size/color/margin — needs a normalization decision.
-- ⬜ `SectionHeader` — bordered report-section header (3 structural sub-variants:
-  plain `text-xl font-bold mb-4 pb-2 border-b`, flex-end with subtitle, flex-center
-  with action link). Could be one component with a `layout` variant.
+- ✅ `SectionHeading` (the in-article `text-xl font-semibold text-color mb-3` H2,
+  with a `bordered`/`weight`/`size` variant set) — built. The page-level bordered
+  "Summary Analysis" header on the main detail pages can reuse it (`bordered`).
 - ⬜ `PageHeader` — page title + description + right action (admin/listing pages).
-- ⬜ `GridResponsive` / `PageContainer` — the `grid-cols-1 md:2 lg:3` and
-  `mx-auto max-w-7xl px-6 lg:px-8` wrappers (exact-match, low-risk, but low value;
-  do alongside a directory migration rather than as churn).
+- ⬜ `GridResponsive` — the `grid-cols-1 md:2 lg:3` wrapper. (No `PageContainer`:
+  the gutter already lives in web-core `PageWrapper`/`MainContainer` — do not
+  duplicate it. `Competition.tsx` re-rolls its own gutter and should be normalized
+  onto `PageWrapper` when it migrates.)
 
 ## 3. Migration order (high-level components → zero className)
 
@@ -72,7 +84,10 @@ once clean.
 | Target | Why | Status |
 |---|---|---|
 | `ticker-reportsv1/FinancialInfo`, `etf-reportsv1/EtfKeyMetrics` | proof slice | ✅ |
-| `etf-reportsv1/**` report sections | high Tailwind density, shared leaves ready | ⬜ |
+| `TickerCategoryReport` + `EtfCategoryReport` | shared report chrome (article/header/section/footer) — kills the ~95% duplication | ✅ (zero className except heroicons → pending `Icon` leaf) |
+| `Competition` + `EtfCompetitionFullView` | re-roll the same shell; normalize gutter (`PageWrapper`) + padding when migrating | ⬜ next — leaves ready |
+| `management-team/page.tsx`, `daily-stock-movers/StockMoverDetails.tsx` | hand-roll the same shell a 3rd/4th time | ⬜ leaves ready |
+| `etf-reportsv1/**` report sections | high Tailwind density, shared leaves ready | 🟡 `EtfFinancialInfo`, `EtfRelatedSections` done; `EtfMorInfo`/`EtfHoldings`/tables need `DataTable`/`ListingCard` |
 | `ticker-reportsv1/**` report sections | mirrors ETF | ⬜ |
 | `admin-v1/missing-reports/page.tsx` | worst offender (~89 classNames) — needs `DataTable` first | ⬜ |
 | `admin-v1/stock-scenarios`, `admin-v1/etf-scenarios`, `admin-v1/users` | table-heavy admin (~35–39) | ⬜ |

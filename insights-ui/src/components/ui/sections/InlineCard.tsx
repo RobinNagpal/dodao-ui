@@ -8,16 +8,21 @@ import React from 'react';
  */
 const inlineCard = cva('bg-gray-800 rounded-md', {
   variants: {
-    padding: { snug: 'px-3 py-2', cozy: 'px-3 py-3', roomy: 'p-4' },
+    padding: { snug: 'px-3 py-2', cozy: 'px-3 py-3', roomy: 'p-4', factor: 'px-2 py-4 sm:p-4' },
   },
   defaultVariants: { padding: 'snug' },
 });
 
+type InlineCardElement = 'div' | 'li';
+
 export type InlineCardProps = VariantProps<typeof inlineCard> & {
   children: React.ReactNode;
+  /** Element to render (e.g. `li` inside a list). Defaults to `div`. */
+  as?: InlineCardElement;
   className?: string;
 };
 
-export default function InlineCard({ children, padding, className }: InlineCardProps): React.JSX.Element {
-  return <div className={cn(inlineCard({ padding }), className)}>{children}</div>;
+export default function InlineCard({ children, padding, as = 'div', className }: InlineCardProps): React.JSX.Element {
+  const Tag = as;
+  return <Tag className={cn(inlineCard({ padding }), className)}>{children}</Tag>;
 }

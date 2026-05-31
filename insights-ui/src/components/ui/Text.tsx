@@ -10,7 +10,7 @@ const text = cva('', {
   variants: {
     size: { inherit: '', xs: 'text-xs', sm: 'text-sm', base: 'text-base', lg: 'text-lg' },
     weight: { normal: '', medium: 'font-medium', semibold: 'font-semibold', bold: 'font-bold' },
-    tone: { body: 'text-gray-300', muted: 'text-gray-400', subtle: 'text-gray-500', bright: 'text-gray-200', white: 'text-white' },
+    tone: { body: 'text-gray-300', muted: 'text-gray-400', subtle: 'text-gray-500', bright: 'text-gray-200', white: 'text-white', theme: 'text-color' },
     leading: { normal: '', snug: 'leading-snug', relaxed: 'leading-relaxed' },
   },
   defaultVariants: { size: 'sm', weight: 'normal', tone: 'body', leading: 'normal' },
@@ -21,10 +21,16 @@ type TextElement = 'p' | 'span' | 'div';
 export type TextProps = VariantProps<typeof text> & {
   children: React.ReactNode;
   as?: TextElement;
+  /** Optional schema.org itemprop (e.g. `description`). */
+  itemProp?: string;
   className?: string;
 };
 
-export default function Text({ children, as = 'p', size, weight, tone, leading, className }: TextProps): React.JSX.Element {
+export default function Text({ children, as = 'p', size, weight, tone, leading, itemProp, className }: TextProps): React.JSX.Element {
   const Tag = as;
-  return <Tag className={cn(text({ size, weight, tone, leading }), className)}>{children}</Tag>;
+  return (
+    <Tag className={cn(text({ size, weight, tone, leading }), className)} itemProp={itemProp}>
+      {children}
+    </Tag>
+  );
 }

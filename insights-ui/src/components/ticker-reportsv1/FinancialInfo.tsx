@@ -1,8 +1,8 @@
 import { FinancialInfoResponse } from '@/app/api/[spaceId]/tickers-v1/exchange/[exchange]/[ticker]/financial-info/route';
 import { formatCurrency, formatNumber, formatPercentageDecimal, formatVolume } from '@/components/reportsv1/financialFormatters';
-import CardSection from '@/components/ui/CardSection';
+import CardSection from '@/components/ui/sections/CardSection';
 import MetricCell from '@/components/ui/MetricCell';
-import MetricGrid from '@/components/ui/MetricGrid';
+import MetricGrid from '@/components/ui/containers/MetricGrid';
 
 interface FinancialInfoProps {
   data: FinancialInfoResponse;

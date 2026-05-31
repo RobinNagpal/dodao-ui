@@ -1,5 +1,7 @@
 import type { EtfFinancialInfoResponse } from '@/types/etf/etf-detail-response-types';
 import { FinancialCard } from '@/components/ticker-reportsv1/FinancialInfo';
+import CardSection from '@/components/ui/sections/CardSection';
+import MetricGrid from '@/components/ui/containers/MetricGrid';
 import { formatNumber, formatPercentageDecimal, formatVolume } from '@/components/reportsv1/financialFormatters';
 import { formatCompactAmount, formatCompactMillions } from '@/utils/etf-display-format-utils';
 
@@ -18,8 +20,8 @@ export default function EtfFinancialInfo({ data }: EtfFinancialInfoProps): JSX.E
   const hasDividends = data.dividendTtm !== null && data.dividendTtm !== 0;
 
   return (
-    <section id="etf-financial-info" className="bg-gray-900 rounded-lg shadow-sm px-2 py-2 sm:p-3 mt-6">
-      <div className="grid grid-cols-2 gap-2">
+    <CardSection id="etf-financial-info" padding="compact" mt="md">
+      <MetricGrid columns="2" gap="sm">
         <FinancialCard label="AUM" value={formatCompactAmount(data.aum)} />
         <FinancialCard label="Expense Ratio" value={data.expenseRatio ? `${data.expenseRatio}%` : 'N/A'} />
         <FinancialCard label="P/E Ratio" value={formatNumber(data.pe)} />
@@ -32,7 +34,7 @@ export default function EtfFinancialInfo({ data }: EtfFinancialInfoProps): JSX.E
         <FinancialCard label="52 Week Range" value={`${formatNumber(data.yearLow)} - ${formatNumber(data.yearHigh)}`} />
         <FinancialCard label="Beta" value={formatNumber(data.beta)} />
         <FinancialCard label="Holdings" value={formatInteger(data.holdings)} />
-      </div>
-    </section>
+      </MetricGrid>
+    </CardSection>
   );
 }

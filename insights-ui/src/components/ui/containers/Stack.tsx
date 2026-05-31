@@ -31,11 +31,16 @@ const stack = cva('flex', {
   defaultVariants: { direction: 'col', gap: 'none', wrap: false, mt: 'none', mb: 'none' },
 });
 
+type StackElement = 'div' | 'ul' | 'ol' | 'section' | 'header' | 'footer';
+
 export type StackProps = VariantProps<typeof stack> & {
   children: React.ReactNode;
+  /** Element to render (e.g. `ul` for a flex list). Defaults to `div`. */
+  as?: StackElement;
   className?: string;
 };
 
-export default function Stack({ children, className, direction, gap, align, justify, wrap, mt, mb }: StackProps): React.JSX.Element {
-  return <div className={cn(stack({ direction, gap, align, justify, wrap, mt, mb }), className)}>{children}</div>;
+export default function Stack({ children, className, as = 'div', direction, gap, align, justify, wrap, mt, mb }: StackProps): React.JSX.Element {
+  const Tag = as;
+  return <Tag className={cn(stack({ direction, gap, align, justify, wrap, mt, mb }), className)}>{children}</Tag>;
 }

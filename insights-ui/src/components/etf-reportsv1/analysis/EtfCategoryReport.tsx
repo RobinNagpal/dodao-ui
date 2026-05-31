@@ -1,12 +1,22 @@
 import { EtfCategoryAnalysisResultResponse } from '@/app/api/[spaceId]/etfs-v1/exchange/[exchange]/[etf]/analysis/route';
 import EtfMetadataBadges from '@/components/etf-reportsv1/EtfMetadataBadges';
 import EtfRelatedSections from '@/components/etf-reportsv1/EtfRelatedSections';
+import Heading from '@/components/ui/Heading';
 import PassFailBadge from '@/components/ui/PassFailBadge';
+import Text from '@/components/ui/Text';
+import Stack from '@/components/ui/containers/Stack';
+import InlineCard from '@/components/ui/sections/InlineCard';
+import MarkdownContent from '@/components/ui/sections/MarkdownContent';
+import Prose from '@/components/ui/sections/Prose';
+import ReportArticleShell from '@/components/ui/sections/ReportArticleShell';
+import ReportFooter from '@/components/ui/sections/ReportFooter';
+import ReportSection from '@/components/ui/sections/ReportSection';
+import ReportSectionHeader from '@/components/ui/sections/ReportSectionHeader';
+import SectionHeading from '@/components/ui/sections/SectionHeading';
 import { EtfAnalysisCategory } from '@/types/etf/etf-analysis-types';
 import { findFactorDefinition } from '@/utils/etf-analysis-reports/etf-analysis-factor-utils';
 import { parseMarkdown } from '@/util/parse-markdown';
 import { CheckCircleIcon, XCircleIcon } from '@heroicons/react/24/solid';
-import Link from 'next/link';
 import { ReactNode } from 'react';
 
 const PASS_RESULT = 'Pass';
@@ -64,120 +74,85 @@ export default function EtfCategoryReport({
   const totalCount = categoryResult.factorResults?.length || 0;
 
   return (
-    <div className="py-4">
-      <article className="bg-gray-900 rounded-lg shadow-sm border border-color p-3 sm:p-6 md:p-8" itemScope itemType="https://schema.org/Article">
-        <header className="mb-6 pb-4 border-b border-color">
-          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
-            <div className="flex-1">
-              <h1 className="text-2xl md:text-3xl font-bold tracking-tight text-color mb-2" itemProp="headline">
-                {etfName} <span className="text-muted-foreground">({symbol})</span>
-              </h1>
-              <div className="flex flex-wrap items-center gap-2 md:gap-3 text-sm">
-                <span className="inline-flex items-center rounded-full bg-blue-100 dark:bg-blue-900 px-2.5 py-0.5 text-xs font-medium text-blue-800 dark:text-blue-300">
-                  {exchange}
-                </span>
-                <span className="text-muted-foreground">•</span>
-                <div
-                  className="inline-flex items-center justify-center rounded-full px-2.5 py-1 text-xs font-medium"
-                  style={{ backgroundColor: 'var(--primary-color, #3b82f6)', color: 'white' }}
-                >
-                  {passCount}/{totalCount}
-                </div>
-                <span className="text-muted-foreground">•</span>
-                <time dateTime={modifiedDate.toISOString()} className="text-muted-foreground text-sm" itemProp="dateModified">
-                  {formattedModifiedDate}
-                </time>
-              </div>
-              <EtfMetadataBadges exchange={exchange} assetClass={assetClass} category={fundCategory} issuer={issuer} indexName={indexName} className="mt-3" />
-            </div>
-            <Link href={`/etfs/${exchange}/${symbol}`} className="link-color hover:underline text-sm font-medium whitespace-nowrap flex items-center gap-1">
-              View Full Report →
-            </Link>
-          </div>
-        </header>
+    <ReportArticleShell datePublished={modifiedDate}>
+      <ReportSectionHeader
+        title={etfName}
+        symbol={symbol}
+        exchange={exchange}
+        score={{ pass: passCount, total: totalCount }}
+        modifiedDate={modifiedDate}
+        formattedModifiedDate={formattedModifiedDate}
+        actionHref={`/etfs/${exchange}/${symbol}`}
+      >
+        <EtfMetadataBadges exchange={exchange} assetClass={assetClass} category={fundCategory} issuer={issuer} indexName={indexName} className="mt-3" />
+      </ReportSectionHeader>
 
-        <div className="prose prose-invert max-w-none">
-          <section className="mb-6">
-            <h2 className="text-xl font-semibold text-color mb-3">Analysis Title</h2>
-            <p className="text-color" itemProp="description">
-              {analysisTitle}
-            </p>
-          </section>
+      <Prose>
+        <ReportSection>
+          <SectionHeading>Analysis Title</SectionHeading>
+          <Text as="p" size="inherit" tone="theme" itemProp="description">
+            {analysisTitle}
+          </Text>
+        </ReportSection>
 
-          <section className="mb-6">
-            <h2 className="text-xl font-semibold text-color mb-3">Executive Summary</h2>
-            {categoryResult.summary ? (
-              <div className="text-color leading-relaxed" itemProp="abstract" dangerouslySetInnerHTML={{ __html: parseMarkdown(categoryResult.summary) }} />
-            ) : (
-              <p className="text-color leading-relaxed" itemProp="abstract" />
-            )}
-          </section>
+        <ReportSection>
+          <SectionHeading>Executive Summary</SectionHeading>
+          <MarkdownContent variant="summary" itemProp="abstract" html={categoryResult.summary ? parseMarkdown(categoryResult.summary) : ''} />
+        </ReportSection>
 
-          {afterSummaryContent}
+        {afterSummaryContent}
 
-          {categoryResult.overallAnalysisDetails && (
-            <section className="mb-6" itemProp="articleBody">
-              <h2 className="text-xl font-semibold text-color mb-3">Comprehensive Analysis</h2>
-              <div
-                className="markdown markdown-body prose-headings:text-color prose-p:text-color prose-strong:text-color prose-code:text-color prose-a:text-primary hover:prose-a:text-primary/80"
-                dangerouslySetInnerHTML={{ __html: parseMarkdown(categoryResult.overallAnalysisDetails) }}
-              />
-            </section>
-          )}
-
-          {categoryResult.factorResults && categoryResult.factorResults.length > 0 && (
-            <section className="mb-6">
-              <h2 className="text-xl font-semibold text-color mb-3">Factor Analysis</h2>
-              <ul className="space-y-3 mt-2">
-                {categoryResult.factorResults.map((factor) => (
-                  <li key={factor.factorKey} className="bg-gray-800 px-2 py-4 sm:p-4 rounded-md">
-                    <div className="flex flex-col gap-y-2">
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-2">
-                          {factor.result === PASS_RESULT ? (
-                            <CheckCircleIcon className="h-6 w-6 text-green-500 flex-shrink-0" />
-                          ) : (
-                            <XCircleIcon className="h-6 w-6 text-red-500 flex-shrink-0" />
-                          )}
-                          <h3 className="font-semibold">{getFactorTitle(categoryResult.categoryKey, factor.factorKey)}</h3>
-                        </div>
-                        <PassFailBadge passed={factor.result === PASS_RESULT} className="font-medium" passLabel={factor.result} failLabel={factor.result} />
-                      </div>
-                      <p className="text-sm text-gray-400">{factor.oneLineExplanation}</p>
-                      <div className="markdown markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(factor.detailedExplanation) }} />
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            </section>
-          )}
-        </div>
-
-        {currentSlug && availableSlugs && (
-          <EtfRelatedSections availableSlugs={availableSlugs} exchange={exchange} symbol={symbol} etfName={etfName} currentSlug={currentSlug} />
+        {categoryResult.overallAnalysisDetails && (
+          <ReportSection itemProp="articleBody">
+            <SectionHeading>Comprehensive Analysis</SectionHeading>
+            <MarkdownContent variant="body" html={parseMarkdown(categoryResult.overallAnalysisDetails)} />
+          </ReportSection>
         )}
 
-        <footer className="mt-8 pt-6 border-t border-color">
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-            <div className="text-sm text-muted-foreground">
-              <span>Last updated by </span>
-              <span itemProp="author" itemScope itemType="https://schema.org/Organization">
-                <span itemProp="name">KoalaGains</span>
-              </span>
-              <span> on </span>
-              <time dateTime={modifiedDate.toISOString()} itemProp="dateModified">
-                {formattedModifiedDate}
-              </time>
-            </div>
-            <div className="flex gap-2">
-              <span className="inline-flex items-center rounded-full bg-blue-100 dark:bg-blue-900 px-2.5 py-0.5 text-xs font-medium text-blue-800 dark:text-blue-300">
-                ETF Analysis
-              </span>
-              <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${categoryBadgeClassName}`}>{categoryBadgeText}</span>
-            </div>
-          </div>
-        </footer>
-      </article>
-    </div>
+        {categoryResult.factorResults && categoryResult.factorResults.length > 0 && (
+          <ReportSection>
+            <SectionHeading>Factor Analysis</SectionHeading>
+            <Stack as="ul" gap="md" mt="sm">
+              {categoryResult.factorResults.map((factor) => (
+                <InlineCard as="li" key={factor.factorKey} padding="factor">
+                  <Stack gap="sm">
+                    <Stack direction="row" align="center" justify="between">
+                      <Stack direction="row" align="center" gap="sm">
+                        {factor.result === PASS_RESULT ? (
+                          <CheckCircleIcon className="h-6 w-6 text-green-500 flex-shrink-0" />
+                        ) : (
+                          <XCircleIcon className="h-6 w-6 text-red-500 flex-shrink-0" />
+                        )}
+                        <Heading as="h3" size="inherit" weight="semibold" tone="inherit">
+                          {getFactorTitle(categoryResult.categoryKey, factor.factorKey)}
+                        </Heading>
+                      </Stack>
+                      <PassFailBadge passed={factor.result === PASS_RESULT} className="font-medium" passLabel={factor.result} failLabel={factor.result} />
+                    </Stack>
+                    <Text size="sm" tone="muted">
+                      {factor.oneLineExplanation}
+                    </Text>
+                    <MarkdownContent variant="plain" html={parseMarkdown(factor.detailedExplanation)} />
+                  </Stack>
+                </InlineCard>
+              ))}
+            </Stack>
+          </ReportSection>
+        )}
+      </Prose>
+
+      {currentSlug && availableSlugs && (
+        <EtfRelatedSections availableSlugs={availableSlugs} exchange={exchange} symbol={symbol} etfName={etfName} currentSlug={currentSlug} />
+      )}
+
+      <ReportFooter
+        modifiedDate={modifiedDate}
+        formattedModifiedDate={formattedModifiedDate}
+        tags={[
+          { label: 'ETF Analysis', tone: 'family' },
+          { label: categoryBadgeText, className: categoryBadgeClassName },
+        ]}
+      />
+    </ReportArticleShell>
   );
 }
