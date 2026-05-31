@@ -65,14 +65,12 @@ export default function EtfKeyMetrics({ metrics }: EtfKeyMetricsProps): JSX.Elem
           </Heading>
           {reasons.map((r) => (
             <InlineCard key={r.label}>
-              <Stack gap="xxs">
-                <Text as="div" size="xs" weight="semibold" tone="body">
+              <Text as="p" size="xs" tone="muted" leading="snug">
+                <Text as="span" size="inherit" weight="semibold" tone="body">
                   {r.label}
-                </Text>
-                <Text as="p" size="xs" tone="muted" leading="snug">
-                  {r.reason}
-                </Text>
-              </Stack>
+                </Text>{' '}
+                - {r.reason}
+              </Text>
             </InlineCard>
           ))}
         </Stack>

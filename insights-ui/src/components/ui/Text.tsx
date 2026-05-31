@@ -8,7 +8,7 @@ import React from 'react';
  */
 const text = cva('', {
   variants: {
-    size: { xs: 'text-xs', sm: 'text-sm', base: 'text-base', lg: 'text-lg' },
+    size: { inherit: '', xs: 'text-xs', sm: 'text-sm', base: 'text-base', lg: 'text-lg' },
     weight: { normal: '', medium: 'font-medium', semibold: 'font-semibold', bold: 'font-bold' },
     tone: { body: 'text-gray-300', muted: 'text-gray-400', subtle: 'text-gray-500', bright: 'text-gray-200', white: 'text-white' },
     leading: { normal: '', snug: 'leading-snug', relaxed: 'leading-relaxed' },
