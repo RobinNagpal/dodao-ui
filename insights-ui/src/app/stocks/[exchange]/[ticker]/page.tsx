@@ -599,7 +599,7 @@ function CategorySummaryCard({ categoryKey, d }: { categoryKey: TickerAnalysisCa
   const categoryResult: FullTickerV1CategoryAnalysisResult | undefined = d.categoryAnalysisResults?.find((r) => r.categoryKey === categoryKey);
   const link = CATEGORY_DETAIL_LINKS[categoryKey];
   return (
-    <div className="bg-surface-2 p-3 sm:p-4 rounded-md shadow-sm">
+    <div className="bg-surface p-3 sm:p-4 rounded-md shadow-sm">
       <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
         <div className="flex flex-wrap items-center gap-2">
           <h3 className="text-lg font-semibold">{CATEGORY_MAPPINGS[categoryKey]}</h3>
@@ -645,7 +645,7 @@ function TickerAnalysisInfo({
   const managementTeamReport = d.managementTeamReports?.[0];
 
   return (
-    <section id="summary-analysis" className="bg-surface rounded-lg shadow-sm mb-4 sm:py-6" itemProp="abstract">
+    <section id="summary-analysis" className="mb-4 sm:py-6" itemProp="abstract">
       <h2 className="text-xl font-bold mb-4 pb-2 border-b border-border">Summary Analysis</h2>
       <div className="space-y-4">
         <CategorySummaryCard categoryKey={TickerAnalysisCategory.BusinessAndMoat} d={d} />
@@ -660,7 +660,7 @@ function TickerAnalysisInfo({
           <CompetitionChartSection dataPromise={competitionPromise} exchange={exchange} ticker={ticker} />
 
           {managementTeamReport && (
-            <div className="bg-surface-2 p-3 sm:p-4 rounded-md shadow-sm">
+            <div className="bg-surface p-3 sm:p-4 rounded-md shadow-sm">
               <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
                 <div className="flex flex-wrap items-center gap-2">
                   <h3 className="text-lg font-semibold">Management Team Experience &amp; Alignment</h3>

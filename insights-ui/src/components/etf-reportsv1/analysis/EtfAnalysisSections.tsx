@@ -43,7 +43,7 @@ export default function EtfAnalysisSections({
   }
 
   return (
-    <section id="summary-analysis" className="bg-surface-2 rounded-lg shadow-sm mb-4 sm:py-6" itemProp="abstract">
+    <section id="summary-analysis" className="mb-4 sm:py-6" itemProp="abstract">
       <h2 className="text-xl font-bold mb-4 pb-2 border-b border-border">Summary Analysis</h2>
       <div className="space-y-4">
         {CATEGORY_ORDER.map((categoryKey) => {
