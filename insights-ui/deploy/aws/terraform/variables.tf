@@ -109,6 +109,19 @@ variable "db_username" {
   default     = "insights_admin"
 }
 
+# ---- ElastiCache (shared Next.js cache handler) ------------------------------------------
+variable "cache_node_type" {
+  description = "ElastiCache node type for the shared cache handler."
+  type        = string
+  default     = "cache.t4g.micro"
+}
+
+variable "cache_multi_az" {
+  description = "Enable Multi-AZ (replica + automatic failover) for ElastiCache."
+  type        = bool
+  default     = true
+}
+
 # ---- CloudFront --------------------------------------------------------------------------
 variable "existing_cloudfront_distribution_id" {
   description = "Existing CloudFront distribution to import & reuse (EZI5H8FKNE9R1). Empty = create new."

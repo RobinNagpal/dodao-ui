@@ -34,6 +34,10 @@ resource "aws_lb" "app" {
   load_balancer_type = "application"
   security_groups    = [aws_security_group.alb.id]
   subnets            = module.vpc.public_subnets
+
+  # The maxDuration=300 tariff-generation routes hold a request open up to 5 min and reach the
+  # ALB directly (they bypass CloudFront, whose origin timeout caps at 60s). See plan §5.11.
+  idle_timeout = 300
 }
 
 resource "aws_lb_target_group" "app" {

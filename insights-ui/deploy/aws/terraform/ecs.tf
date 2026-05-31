@@ -55,6 +55,11 @@ resource "aws_ecs_task_definition" "app" {
         { name = "PORT", value = "3000" },
         { name = "AWS_REGION", value = var.aws_region },
         { name = "PUPPETEER_EXECUTABLE_PATH", value = "/usr/bin/chromium" },
+        # authOptions.ts gates cookie `secure` + COOKIE_DOMAIN on this Vercel-injected var.
+        # Undefined on AWS → insecure cookies, broken auth. Set it explicitly. See plan §5.6.
+        { name = "VERCEL_ENV", value = var.environment },
+        # Shared cache handler endpoint for unstable_cache/revalidateTag coherence (§5.10).
+        { name = "REDIS_URL", value = "redis://${aws_elasticache_replication_group.cache.primary_endpoint_address}:6379" },
       ]
 
       # Secrets pulled from Secrets Manager. Each maps a JSON key from the app_env secret.

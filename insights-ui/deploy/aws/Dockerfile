@@ -31,10 +31,12 @@ FROM base AS build
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 # NEXT_PUBLIC_* are inlined at build time — pass them as build args in CI.
-ARG NEXT_PUBLIC_APP_URL
-ARG NEXT_PUBLIC_APP_ENV
-ENV NEXT_PUBLIC_APP_URL=${NEXT_PUBLIC_APP_URL}
-ENV NEXT_PUBLIC_APP_ENV=${NEXT_PUBLIC_APP_ENV}
+# NOTE: keep the existing var names — shared @dodao/web-core getBaseUrl() reads exactly these
+# (renaming would mean editing shared web-core used by other apps). See migration plan §5.6.
+ARG NEXT_PUBLIC_VERCEL_URL
+ARG NEXT_PUBLIC_VERCEL_ENV
+ENV NEXT_PUBLIC_VERCEL_URL=${NEXT_PUBLIC_VERCEL_URL}
+ENV NEXT_PUBLIC_VERCEL_ENV=${NEXT_PUBLIC_VERCEL_ENV}
 RUN pnpm --filter insights-ui exec prisma generate \
     && pnpm --filter insights-ui build
 

@@ -55,10 +55,12 @@ jobs:
           TAG="$(git rev-parse --short HEAD)"
           IMAGE="$REGISTRY/$ECR_REPOSITORY:$TAG"
           # Build context = repo root (workspace dependency @dodao/web-core).
+          # Var names match what shared getBaseUrl() reads (plan §5.6). NEXT_PUBLIC_VERCEL_URL
+          # is a bare host (no scheme) — getBaseUrl() prepends https://.
           docker build \
             -f insights-ui/deploy/aws/Dockerfile \
-            --build-arg NEXT_PUBLIC_APP_URL="https://koalagains.com" \
-            --build-arg NEXT_PUBLIC_APP_ENV="production" \
+            --build-arg NEXT_PUBLIC_VERCEL_URL="koalagains.com" \
+            --build-arg NEXT_PUBLIC_VERCEL_ENV="production" \
             -t "$IMAGE" .
           docker push "$IMAGE"
           echo "tag=$TAG" >> "$GITHUB_OUTPUT"

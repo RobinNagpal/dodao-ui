@@ -89,12 +89,16 @@ Secrets Manager, and EventBridge Scheduler for crons. Everything below is Terraf
                                           │  Next.js `next start`      │
                                           │  (standalone) + Chromium   │
                                           │  rolling deploy, 2+ tasks  │
-                                          └───┬───────────────┬────────┘
-                                              │               │
-                            ┌─────────────────▼──┐     ┌──────▼───────────────┐
-                            │ RDS PostgreSQL      │     │ Secrets Manager       │
-                            │ (private subnets)   │     │ (DATABASE_URL, keys)  │
-                            └─────────────────────┘     └───────────────────────┘
+                                          └──┬─────────┬─────────┬────────┘
+                                             │         │         │
+                       ┌─────────────────────▼─┐ ┌─────▼──────┐ ┌▼──────────────────┐
+                       │ RDS PostgreSQL         │ │ ElastiCache│ │ Secrets Manager    │
+                       │ (private subnets)      │ │ (Redis):   │ │ (DATABASE_URL,     │
+                       │                        │ │ shared     │ │  keys, REDIS_URL)  │
+                       │                        │ │ cacheHandler│ │                   │
+                       └────────────────────────┘ └────────────┘ └────────────────────┘
+
+   ⚡ /api/industry-tariff-reports/.../* (maxDuration=300) → origin.koalagains.com → ALB (bypasses CloudFront)
 
         EventBridge Scheduler (4 rules)  ──►  invoker Lambda  ──►  HTTPS POST to app cron endpoints
                                                                    (Authorization: AUTOMATION_SECRET)
@@ -109,6 +113,7 @@ Secrets Manager, and EventBridge Scheduler for crons. Everything below is Terraf
 | Compute | ECS Fargate | `next start` from `output: 'standalone'`; 2+ tasks; handles SSR/RSC, API routes, server actions, Puppeteer |
 | Load balancing | ALB (internal) | Only CloudFront may reach it (custom header + SG); ACM cert for TLS |
 | Database | RDS for PostgreSQL (or Aurora Serverless v2) | Private subnets; Multi-AZ in prod |
+| **Shared cache** | **ElastiCache (Redis/Valkey)** | **Backs the Next.js `cacheHandler` so `unstable_cache`/`revalidateTag` stay coherent across tasks ([§5.10](#5-application--code-changes)). Omit only if option (b) — drop `unstable_cache` — is chosen.** |
 | Secrets | Secrets Manager | Injected into the task definition as `secrets` |
 | Crons | EventBridge Scheduler + small invoker Lambda | One rule per current Vercel cron |
 | Container registry | ECR | Image built in CI, tagged with git SHA |
@@ -122,6 +127,11 @@ Secrets Manager, and EventBridge Scheduler for crons. Everything below is Terraf
 > will `terraform import` the existing distribution into state rather than recreating it (a
 > recreate would change the distribution domain and break Route 53 + cached invalidation
 > history). See [§11](#11-cut-over-runbook).
+
+> **Direct-to-origin path.** The `maxDuration = 300` tariff-generation routes
+> ([§5.11](#5-application--code-changes)) cannot pass through CloudFront (60s origin cap).
+> They reach the ALB directly via `origin.koalagains.com`, which the Terraform already
+> provisions. The ALB `idle_timeout` is raised to 300s for them.
 
 ---
 
@@ -160,7 +170,8 @@ insights-ui/deploy/aws/
     ├── ecr.tf                  # ECR repository + lifecycle policy
     ├── secrets.tf              # Secrets Manager secret(s) + versions (values injected out-of-band)
     ├── rds.tf                  # RDS Postgres (or Aurora Serverless v2), subnet group, SG, params
-    ├── alb.tf                  # internal ALB, target group, listener (ACM), SGs
+    ├── elasticache.tf          # Redis/Valkey for the shared Next.js cacheHandler (§5.10)
+    ├── alb.tf                  # internal ALB (idle_timeout 300 for maxDuration routes), TG, listener, SGs
     ├── ecs.tf                  # cluster, task def, service, autoscaling, CloudWatch log group
     ├── iam.tf                  # task execution role, task role, scheduler role, invoker Lambda role
     ├── s3_assets.tf            # S3 bucket for static/public assets + bucket policy (OAC)
@@ -218,14 +229,25 @@ they can merge before cut-over):
    `puppeteer` full download). Set `PUPPETEER_EXECUTABLE_PATH` / launch `--no-sandbox` in the
    container. Validate scraping in staging.
 
-5. **`@vercel/functions` usage.** Grep for `@vercel/functions` and `@vercel/*` imports
-   (e.g. `waitUntil`, geolocation). Replace with framework-native equivalents or no-ops; the
-   package won't behave off-Vercel.
+5. **`@vercel/functions` `waitUntil` → `after()`.** The **only** `@vercel/functions` use is
+   `waitUntil()` in `src/utils/cloudfront-cache-utils.ts` (the fire-and-forget CloudFront
+   invalidation in `invalidateCloudFrontPaths()`). It already falls back to an orphaned
+   promise off-Vercel, but the robust replacement is Next.js 15's `import { after } from
+   'next/server'`. Swap it and drop the `@vercel/functions` dependency. **This is the live
+   save-flow cache-invalidation path — verify it still fires after the swap.**
 
-6. **`NEXT_PUBLIC_VERCEL_*` env vars.** The app reads `NEXT_PUBLIC_VERCEL_URL`,
-   `NEXT_PUBLIC_VERCEL_ENV`. Introduce host-neutral equivalents (e.g.
-   `NEXT_PUBLIC_APP_URL`, `NEXT_PUBLIC_APP_ENV`) and map the old names to them during
-   transition so nothing breaks. Grep all usages before renaming.
+6. **Env vars that gate auth & base-URL (DO NOT rename — set them).** Two couplings, both
+   confirmed in code:
+   - `getBaseUrl()` (shared `@dodao/web-core`, used by other apps too) derives the absolute
+     URL purely from **`NEXT_PUBLIC_VERCEL_URL`** + **`NEXT_PUBLIC_VERCEL_ENV`**. Renaming
+     would mean editing shared web-core. **Simplest correct path: keep the names and set
+     `NEXT_PUBLIC_VERCEL_URL=koalagains.com`, `NEXT_PUBLIC_VERCEL_ENV=production` as Docker
+     build args** (they're `NEXT_PUBLIC_*`, so build-time, not runtime).
+   - **`authOptions.ts` reads the non-public `process.env.VERCEL_ENV`** to decide cookie
+     `secure: true` and to apply `COOKIE_DOMAIN` (`.koalagains.com`). On AWS this is undefined
+     → **cookies become non-secure with no domain and auth/SSO breaks.** Set **`VERCEL_ENV=production`
+     as a runtime task env var** (or refactor `authOptions.ts` to a host-neutral flag). This is
+     an auth-blocking item — do not skip it.
 
 7. **Skew protection replacement.** Vercel Skew Protection goes away. Implement the
    static-asset retention strategy in [§9](#9-deploy-skew-on-aws) and set a stable
@@ -239,6 +261,52 @@ they can merge before cut-over):
    `connection_limit` in `DATABASE_URL` is sized for `tasks × connection_limit < RDS
    max_connections`. (Today it's `connection_limit=5` per the example.) Consider RDS Proxy if
    task count grows.
+
+10. **Shared Next.js cache handler (multi-instance coherence) — REQUIRED.** The codebase
+    uses **`unstable_cache` in 10 places** (home-page industries/posts, `/tariff-reports`
+    listing, HTS chapter refs) and **`revalidateTag` in 62 places**. On Vercel the Data Cache
+    is a single shared store, so `revalidateTag()` invalidates it globally. **Self-hosted
+    Next.js defaults to a per-instance filesystem cache** — with `desired_count ≥ 2` Fargate
+    tasks, a `revalidateTag()` executed on task A does **not** invalidate task B, so B keeps
+    serving stale `unstable_cache` data until its own TTL. Options:
+    - **(a) Shared cache handler backed by Redis/ElastiCache** (`cacheHandler` in
+      `next.config.ts`, e.g. `@neshca/cache-handler` or Next 15's native Redis handler). Correct
+      production answer; adds an ElastiCache node (see [§2](#2-target-architecture)).
+    - **(b)** Drop `unstable_cache` for these reads and rely solely on CloudFront + explicit
+      `invalidateCloudFrontPaths()` (which already runs alongside `revalidateTag`).
+    - **(c)** Run a single task — rejected (no HA, no autoscaling).
+    Pages themselves are `force-dynamic` (64 occurrences) so there are **no ISR HTML writes**
+    to coordinate — this is purely about the Data Cache behind `unstable_cache`. Pick (a) or
+    (b) before going multi-task. **This was the biggest gap in the first draft of this plan.**
+
+11. **Long-running routes (`maxDuration = 300`) vs. edge/LB timeouts — REQUIRED.** ~10 tariff
+    report-generation routes under `/api/industry-tariff-reports/chapters/[chapterSlug]/*`
+    export `maxDuration = 300` (5-minute synchronous LLM generation). On AWS:
+    - **ALB idle timeout defaults to 60s** → must be raised (`idle_timeout = 300+`; AWS allows
+      up to 4000s).
+    - **CloudFront origin response timeout caps at 60s** (extendable to 180s via a quota
+      request, still < 300s). So these routes **cannot be served through CloudFront** for a
+      full 5-minute response — they must reach the **ALB origin directly** (e.g. the
+      `origin.koalagains.com` hostname the Terraform already provisions, or an `admin.`/`api.`
+      host that bypasses the CDN).
+    - **Better long-term:** convert these admin-triggered generators to an async job pattern
+      (enqueue → 202 → poll/webhook) so no HTTP request is held open for minutes. Minimal
+      cut-over path = direct-to-ALB + raised idle timeout; flag the async refactor as
+      follow-up.
+
+12. **Runtime filesystem is ephemeral (not a runtime issue here).** `reports-out/` and other
+    `writeFileSync` paths live only in `src/scripts/*` (CLI/local tooling), not in request
+    handlers — so the ephemeral container FS is fine. Confirmed: no API route writes to local
+    disk expecting persistence. (Anything that did would need S3 instead.)
+
+13. **Node version alignment.** `package.json` `engines` says `>=22`, the README says
+    `>=23.11.0`, the Dockerfile pins `node:22`. Pick one (22 LTS is fine for Next 15) and make
+    the three consistent to avoid build/runtime drift.
+
+14. **Sitemaps / robots are dynamic route handlers.** `src/app/**/sitemap.xml` (stocks, blogs,
+    tariff, scenarios, etc.) and `robots.ts` query the DB at request time. They work unchanged
+    in-container, but the `stocks` sitemap can be large/slow — add a CloudFront cache behavior
+    for `*/sitemap.xml` (and `/robots.txt`) so crawlers don't hammer the origin.
 
 ---
 
@@ -255,6 +323,8 @@ into the ECS task definition via the `secrets` block (never baked into the image
 | AI providers | `OPENAI_API_KEY`, `GOOGLE_API_KEY`, `GEMINI_MODEL`, `LLM_PROVIDER` | Secrets Manager |
 | AWS access | `AWS_REGION`, `KOALA_AWS_*`, `PPT_GENERATION_AWS_*` | Prefer the **ECS task IAM role** over static keys for S3/CloudFront/Lambda; keep keys only where a separate account/identity is genuinely required |
 | Lambdas | `STOCK_ANALYZER_LAMBDA_URL`, `ETF_ANALYZER_LAMBDA_URL`, `ETF_MORN_LAMBDA_URL`, `REMOTION_LAMBDA_URL`, `FFMPEG_LAMBDA_NAME`, `SCREENER_API_URL` | Secrets Manager / plain env |
+| **Vercel-named host vars** | `VERCEL_ENV`, `NEXT_PUBLIC_VERCEL_URL`, `NEXT_PUBLIC_VERCEL_ENV` | **Keep the names, set the values** ([§5.6](#5-application--code-changes)). `VERCEL_ENV=production` is a **runtime task env** (gates auth-cookie `secure`+domain in `authOptions.ts`). `NEXT_PUBLIC_VERCEL_URL=koalagains.com` + `NEXT_PUBLIC_VERCEL_ENV=production` are **build args** (consumed by shared `getBaseUrl()`). |
+| Cache | `REDIS_URL` (new) | ElastiCache endpoint for the shared `cacheHandler` ([§5.10](#5-application--code-changes)); Secrets Manager / plain env |
 | Misc | `POLYGON_API_KEY`, `AUTOMATION_SECRET`, `NEXT_PUBLIC_*` | `NEXT_PUBLIC_*` are build-time (baked at `next build`); set them in CI build args, not the task |
 
 **Key win:** replace static `AWS_ACCESS_KEY_ID/SECRET` for the app's own S3/CloudFront/Lambda
@@ -412,6 +482,7 @@ committing):
 | RDS Postgres | instance class + storage | `db.t4g.micro/small` Multi-AZ; biggest knob |
 | NAT Gateway | hours + GB | ~$32/mo/AZ — consider 1 NAT or VPC endpoints to cut cost |
 | CloudFront | unchanged | already in use; no new cost |
+| ElastiCache | node-hrs | `cache.t4g.micro` for the shared cache handler (skip if option (b) chosen) |
 | S3 assets | tiny | static chunks only |
 | Lambda + EventBridge | negligible | cron invokers |
 | Secrets Manager | $0.40/secret/mo | a handful |
@@ -426,10 +497,12 @@ cost — Fargate gives predictable flat compute cost instead of per-invocation b
 ## 14. Phased delivery checklist
 
 - [ ] **Phase 0 — App prep (Vercel-safe, mergeable now):** `output: 'standalone'`, move
-      `vercel.json` headers into `next.config.ts`, add `/api/health`, audit `@vercel/*` and
-      `NEXT_PUBLIC_VERCEL_*` usage, Dockerfile + local container run.
+      `vercel.json` headers into `next.config.ts`, add `/api/health`, swap `waitUntil`→`after()`
+      ([§5.5](#5-application--code-changes)), wire the shared `cacheHandler`
+      ([§5.10](#5-application--code-changes)), confirm `VERCEL_ENV` cookie handling
+      ([§5.6](#5-application--code-changes)), align Node version, Dockerfile + local container run.
 - [ ] **Phase 1 — Terraform foundation:** state backend, VPC, ECR, Secrets Manager, RDS,
-      IAM roles.
+      **ElastiCache**, IAM roles.
 - [ ] **Phase 2 — Compute:** ALB, ECS cluster/service/task def, autoscaling, CloudWatch,
       S3 assets bucket, first image deploy to staging.
 - [ ] **Phase 3 — Edge:** import CloudFront, add S3 + ALB origins/behaviors, OAC, ACM,
@@ -460,6 +533,11 @@ These need product/platform answers before the Terraform skeleton becomes `apply
 6. **Static-asset/skew strategy:** confirm the S3-retained-assets approach in
    [§9](#9-deploy-skew-on-aws) vs. accepting a brief skew window on deploy.
 7. **NAT vs. VPC endpoints** for egress cost.
+8. **Multi-instance cache** ([§5.10](#5-application--code-changes)): shared ElastiCache
+   `cacheHandler` (option a) vs. dropping `unstable_cache` (option b)? Required before running
+   `desired_count ≥ 2`.
+9. **Long-running generation routes** ([§5.11](#5-application--code-changes)): minimal
+   direct-to-ALB-with-300s-timeout now, or invest in the async-job refactor?
 
 ---
 
