@@ -4,6 +4,7 @@ import { withLoggedInUser } from '@dodao/web-core/api/helpers/middlewares/withEr
 import { prisma } from '@/prisma';
 import { FavouriteEtfResponse, UpdateFavouriteEtfRequest } from '@/types/etf-user';
 import { verifyUserRecordOwnership } from '@/utils/user-record-verification-utils';
+import { ETF_MAX_SCORE, validateScore } from '@/utils/score-validation-utils';
 
 // PUT /api/favourite-etfs/[favouriteId] - Update a single favourite ETF
 async function putHandler(
@@ -19,6 +20,9 @@ async function putHandler(
 
   const updateBody: UpdateFavouriteEtfRequest = await req.json();
 
+  // Never trust the client-supplied score — the UI bounds it, the API must too.
+  const myScore = validateScore(updateBody.myScore, ETF_MAX_SCORE);
+
   // Update the favourite ETF
   const updatedFavourite = await prisma.favouriteEtf.update({
     where: {
@@ -26,7 +30,7 @@ async function putHandler(
     },
     data: {
       myNotes: updateBody.myNotes !== undefined ? updateBody.myNotes : undefined,
-      myScore: updateBody.myScore !== undefined ? updateBody.myScore : undefined,
+      myScore: myScore !== undefined ? myScore : undefined,
     },
     include: {
       etf: {

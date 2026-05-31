@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import Input from '@dodao/web-core/components/core/input/Input';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import { usePutData } from '@dodao/web-core/ui/hooks/fetch/usePutData';
@@ -15,6 +14,8 @@ import DeleteConfirmationModal from '@/app/admin-v1/industry-management/DeleteCo
 import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
 import MarkdownEditor from '@/components/Markdown/MarkdownEditor';
 import { parseMarkdown } from '@/util/parse-markdown';
+import ScoreInput from '@/components/favourites/ScoreInput';
+import { ETF_MAX_SCORE } from '@/utils/score-validation-utils';
 
 interface AddEditEtfNotesModalProps {
   isOpen: boolean;
@@ -138,11 +139,15 @@ export default function AddEditEtfNotesModal({
           {viewOnly ? (
             <div>
               <label className="text-sm font-medium block mb-2">Notes:</label>
-              <div className="markdown markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(notes) }} />
+              {notes ? (
+                <div className="markdown markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(notes) }} />
+              ) : (
+                <p className="text-gray-500 text-sm">No notes added.</p>
+              )}
             </div>
           ) : (
             <MarkdownEditor
-              id="etf-notes"
+              id={`etf-note-${etfId}`}
               objectId={etfId}
               modelValue={notes}
               onUpdate={(value) => setNotes(value)}
@@ -158,21 +163,7 @@ export default function AddEditEtfNotesModal({
         </div>
 
         {/* Score */}
-        <div className="flex items-center gap-3">
-          <label className="text-sm font-medium whitespace-nowrap">My Score (0-25):</label>
-          <div className="flex-1 max-w-xs">
-            <Input
-              modelValue={score}
-              onUpdate={(value) => setScore(value?.toString() || '')}
-              number={true}
-              min={0}
-              max={25}
-              placeholder="0-25"
-              className="bg-gray-800 border-gray-700 text-white w-full"
-              disabled={viewOnly}
-            />
-          </div>
-        </div>
+        <ScoreInput value={score} onChange={setScore} max={ETF_MAX_SCORE} disabled={viewOnly} />
 
         {/* Action Buttons */}
         <div className="flex justify-between gap-3 pt-5 mt-2 border-t border-gray-700">

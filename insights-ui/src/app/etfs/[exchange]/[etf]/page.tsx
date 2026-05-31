@@ -208,7 +208,7 @@ export default async function EtfDetailsPage({ params }: { params: RouteParams }
         breadcrumbs={breadcrumbs}
         hideHomeIcon={true}
         rightButton={
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2">
             <EtfFavouriteButton etfId={etfData.id} etfSymbol={etfData.symbol} etfName={etfData.name} />
             <EtfNotesButton etfId={etfData.id} etfSymbol={etfData.symbol} etfName={etfData.name} />
             <EtfActions etf={{ symbol: etf, exchange }} />

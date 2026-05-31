@@ -4,6 +4,7 @@ import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { withLoggedInUser } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { prisma } from '@/prisma';
 import { EtfNote } from '@prisma/client';
+import { ETF_MAX_SCORE, validateScore } from '@/utils/score-validation-utils';
 
 export type EtfNotesResponse = {
   etfNotes: EtfNote[];
@@ -37,6 +38,9 @@ async function postHandler(req: NextRequest, userContext: DoDaoJwtTokenPayload):
   const { userId } = userContext;
   const body: CreateEtfNoteRequest = await req.json();
 
+  // Never trust the client-supplied score — the UI bounds it, the API must too.
+  const score = validateScore(body.score, ETF_MAX_SCORE);
+
   // Check if the ETF exists
   const etf = await prisma.etf.findUnique({
     where: {
@@ -68,7 +72,7 @@ async function postHandler(req: NextRequest, userContext: DoDaoJwtTokenPayload):
       etfId: body.etfId,
       spaceId: KoalaGainsSpaceId,
       notes: body.notes,
-      score: body.score,
+      score: score,
       createdBy: userId,
     },
   });

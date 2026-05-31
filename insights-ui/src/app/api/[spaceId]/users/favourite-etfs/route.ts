@@ -4,6 +4,7 @@ import { withLoggedInUser } from '@dodao/web-core/api/helpers/middlewares/withEr
 import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
 import { NextRequest } from 'next/server';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
+import { ETF_MAX_SCORE, validateScore } from '@/utils/score-validation-utils';
 
 // GET /api/favourite-etfs - Get all favourite ETFs for the logged-in user
 async function getHandler(req: NextRequest, userContext: DoDaoJwtTokenPayload): Promise<FavouriteEtfsResponse> {
@@ -33,6 +34,9 @@ async function getHandler(req: NextRequest, userContext: DoDaoJwtTokenPayload): 
 async function postHandler(req: NextRequest, userContext: DoDaoJwtTokenPayload): Promise<FavouriteEtfResponse> {
   const { userId } = userContext;
   const body: CreateFavouriteEtfRequest = await req.json();
+
+  // Never trust the client-supplied score — the UI bounds it, the API must too.
+  const myScore = validateScore(body.myScore, ETF_MAX_SCORE);
 
   // Check if the ETF exists
   const etf = await prisma.etf.findUnique({
@@ -65,7 +69,7 @@ async function postHandler(req: NextRequest, userContext: DoDaoJwtTokenPayload):
       etfId: body.etfId,
       spaceId: KoalaGainsSpaceId,
       myNotes: body.myNotes,
-      myScore: body.myScore,
+      myScore: myScore,
       createdBy: userId,
     },
     include: {
@@ -77,6 +81,11 @@ async function postHandler(req: NextRequest, userContext: DoDaoJwtTokenPayload):
     },
   });
 
+  // NOTE: unlike the ticker routes we intentionally do NOT call
+  // revalidatePortfolioProfileIfExists here. ETF favourites/notes are fetched
+  // client-side and are not surfaced on any server-cached page yet (e.g. the
+  // /favourites listing), so there is no cached consumer to invalidate. Revisit
+  // if a server-rendered ETF favourites view is added.
   return favouriteEtf as unknown as FavouriteEtfResponse;
 }
 

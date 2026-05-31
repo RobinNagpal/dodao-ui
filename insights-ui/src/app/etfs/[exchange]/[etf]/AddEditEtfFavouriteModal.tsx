@@ -3,7 +3,6 @@
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { CreateFavouriteEtfRequest, FavouriteEtfResponse, UpdateFavouriteEtfRequest } from '@/types/etf-user';
 import Button from '@dodao/web-core/components/core/buttons/Button';
-import Input from '@dodao/web-core/components/core/input/Input';
 import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import { usePutData } from '@dodao/web-core/ui/hooks/fetch/usePutData';
@@ -12,6 +11,8 @@ import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { useEffect, useState } from 'react';
 import MarkdownEditor from '@/components/Markdown/MarkdownEditor';
 import { parseMarkdown } from '@/util/parse-markdown';
+import ScoreInput from '@/components/favourites/ScoreInput';
+import { ETF_MAX_SCORE } from '@/utils/score-validation-utils';
 import DeleteConfirmationModal from '@/app/admin-v1/industry-management/DeleteConfirmationModal';
 
 interface AddEditEtfFavouriteModalProps {
@@ -80,7 +81,7 @@ export default function AddEditEtfFavouriteModal({
     if (favouriteEtf) {
       // Update existing favourite
       const updateData: UpdateFavouriteEtfRequest = {
-        myNotes: myNotes === '' ? null : myNotes || undefined,
+        myNotes: myNotes === '' ? null : myNotes,
         myScore: myScore === '' ? null : scoreValue,
       };
 
@@ -140,7 +141,7 @@ export default function AddEditEtfFavouriteModal({
             </div>
           ) : (
             <MarkdownEditor
-              id="my-etf-notes"
+              id={`etf-favourite-notes-${etfId}`}
               objectId={etfId}
               modelValue={myNotes}
               onUpdate={(value) => setMyNotes(value)}
@@ -152,21 +153,7 @@ export default function AddEditEtfFavouriteModal({
         </div>
 
         {/* My Score */}
-        <div className="flex items-center gap-3">
-          <label className="text-sm font-medium whitespace-nowrap">My Score (0-25):</label>
-          <div className="flex-1 max-w-xs">
-            <Input
-              modelValue={myScore}
-              onUpdate={(value) => setMyScore(value?.toString() || '')}
-              number={true}
-              min={0}
-              max={25}
-              placeholder="0-25"
-              className="bg-gray-800 border-gray-700 text-white w-full"
-              disabled={viewOnly}
-            />
-          </div>
-        </div>
+        <ScoreInput value={myScore} onChange={setMyScore} max={ETF_MAX_SCORE} disabled={viewOnly} />
 
         {/* Action Buttons */}
         <div className="flex justify-between gap-3 pt-5 mt-2 border-t border-gray-700">

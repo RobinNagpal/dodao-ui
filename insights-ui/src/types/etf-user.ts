@@ -1,7 +1,10 @@
 import { Etf, EtfCachedScore, FavouriteEtf } from '@prisma/client';
 
 // FavouriteEtf types
-export interface FavouriteEtfResponse extends Omit<FavouriteEtf, 'etf'> {
+// The base Prisma `FavouriteEtf` type only carries scalar columns (relations
+// are not included), so we extend it directly and add the hydrated `etf`
+// relation that the GET/POST handlers include.
+export interface FavouriteEtfResponse extends FavouriteEtf {
   etf: Etf & {
     cachedScore?: EtfCachedScore | null;
   };

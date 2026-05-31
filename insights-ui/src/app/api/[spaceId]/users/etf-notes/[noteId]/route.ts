@@ -4,6 +4,7 @@ import { withLoggedInUser } from '@dodao/web-core/api/helpers/middlewares/withEr
 import { prisma } from '@/prisma';
 import { EtfNote } from '@prisma/client';
 import { verifyUserRecordOwnership } from '@/utils/user-record-verification-utils';
+import { ETF_MAX_SCORE, validateScore } from '@/utils/score-validation-utils';
 
 export type UpdateEtfNoteRequest = {
   notes?: string;
@@ -20,6 +21,9 @@ async function putHandler(req: NextRequest, userContext: DoDaoJwtTokenPayload, {
 
   const updateBody: UpdateEtfNoteRequest = await req.json();
 
+  // Never trust the client-supplied score — the UI bounds it, the API must too.
+  const score = validateScore(updateBody.score, ETF_MAX_SCORE);
+
   // Update the ETF note
   const updatedNote = await prisma.etfNote.update({
     where: {
@@ -27,7 +31,7 @@ async function putHandler(req: NextRequest, userContext: DoDaoJwtTokenPayload, {
     },
     data: {
       notes: updateBody.notes !== undefined ? updateBody.notes : undefined,
-      score: updateBody.score !== undefined ? updateBody.score : undefined,
+      score: score !== undefined ? score : undefined,
     },
   });
 
