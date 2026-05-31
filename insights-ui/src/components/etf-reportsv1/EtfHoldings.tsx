@@ -28,37 +28,37 @@ export default function EtfHoldings({ data, maxRows, viewMoreHref, title, relate
   const resolvedTitle = title ?? (typeof maxRows === 'number' && list.length > maxRows ? `Top ${displayRows.length} Holdings` : 'Holdings');
 
   return (
-    <section id="etf-holdings" className="bg-gray-900 rounded-lg shadow-sm px-3 py-6 sm:p-6 mt-6 mb-8">
-      <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-2 pb-2 border-b border-gray-700">
+    <section id="etf-holdings" className="bg-surface rounded-lg shadow-sm px-3 py-6 sm:p-6 mt-6 mb-8">
+      <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-2 pb-2 border-b border-border">
         <div>
-          <h2 className="text-xl font-bold text-gray-100">{resolvedTitle}</h2>
-          {subtitle ? <p className="text-xs text-gray-400 mt-1">{subtitle}</p> : null}
+          <h2 className="text-xl font-bold text-heading">{resolvedTitle}</h2>
+          {subtitle ? <p className="text-xs text-muted mt-1">{subtitle}</p> : null}
         </div>
-        <div className="text-xs text-gray-400">
+        <div className="text-xs text-muted">
           Showing {displayRows.length} of {list.length}
         </div>
       </div>
 
-      <div className="mt-4 overflow-x-auto rounded-lg border border-gray-700">
+      <div className="mt-4 overflow-x-auto rounded-lg border border-border">
         <table className="min-w-full">
-          <thead className="bg-gray-800">
+          <thead className="bg-surface-2">
             <tr>
               {colDefs.map((c) => (
-                <th key={c.field} className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider whitespace-nowrap">
+                <th key={c.field} className="px-4 py-3 text-left text-xs font-medium text-body uppercase tracking-wider whitespace-nowrap">
                   {c.label}
                 </th>
               ))}
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-700">
+          <tbody className="divide-y divide-border">
             {displayRows.map((row, idx) => (
-              <tr key={idx} className={idx % 2 === 0 ? 'bg-gray-900' : 'bg-gray-800/50'}>
+              <tr key={idx} className={idx % 2 === 0 ? 'bg-surface' : 'bg-surface-2'}>
                 {colDefs.map((c) => {
                   const cellValue = row[c.field];
                   const isEmpty = cellValue === null || cellValue === undefined || String(cellValue).trim() === '';
                   return (
-                    <td key={c.field} className="px-4 py-3 text-sm text-gray-300 whitespace-nowrap">
-                      {isEmpty ? <span className="text-gray-500">&mdash;</span> : String(cellValue)}
+                    <td key={c.field} className="px-4 py-3 text-sm text-body whitespace-nowrap">
+                      {isEmpty ? <span className="text-muted">&mdash;</span> : String(cellValue)}
                     </td>
                   );
                 })}

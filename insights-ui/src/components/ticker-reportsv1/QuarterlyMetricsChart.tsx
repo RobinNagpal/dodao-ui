@@ -132,14 +132,12 @@ export default function QuarterlyMetricsChart({ data }: QuarterlyMetricsChartPro
   }
 
   return (
-    <section id="quarterly-metrics-chart" className="bg-gray-900 rounded-lg shadow-sm px-2 py-3 sm:p-4 mb-6">
+    <section id="quarterly-metrics-chart" className="bg-surface rounded-lg shadow-sm px-2 py-3 sm:p-4 mb-6">
       {/* min-h locks the header height so swapping the lazy skeleton with the rendered chart causes no layout shift. */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4 min-h-[44px]">
         <div>
-          <h3 className="text-lg font-semibold text-gray-100">
-            {data.dataFrequency === 'annual' ? 'Annual Financial Metrics' : 'Quarterly Financial Metrics'}
-          </h3>
-          {metaInfo.length > 0 && <p className="text-xs text-gray-400 mt-1">{metaInfo.join(' • ')}</p>}
+          <h3 className="text-lg font-semibold text-heading">{data.dataFrequency === 'annual' ? 'Annual Financial Metrics' : 'Quarterly Financial Metrics'}</h3>
+          {metaInfo.length > 0 && <p className="text-xs text-muted mt-1">{metaInfo.join(' • ')}</p>}
         </div>
         <div className="flex flex-wrap gap-2">
           {data.availableMetrics.map((metric) => (
@@ -147,7 +145,7 @@ export default function QuarterlyMetricsChart({ data }: QuarterlyMetricsChartPro
               key={metric}
               onClick={() => setSelectedMetric(metric)}
               className={`px-3 py-1.5 text-xs font-medium rounded-md transition-colors ${
-                selectedMetric === metric ? 'text-white' : 'bg-gray-800 text-gray-300 hover:bg-gray-700 hover:text-gray-100'
+                selectedMetric === metric ? 'text-heading' : 'bg-surface-2 text-body hover:bg-surface-3 hover:text-heading'
               }`}
               style={selectedMetric === metric ? { backgroundColor: METRIC_COLORS[metric].border } : {}}
             >

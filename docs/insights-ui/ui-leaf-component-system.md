@@ -45,6 +45,46 @@ Why:
 - **High-level components (must be style-free):** everything else under
   `src/app/**` and `src/components/**`.
 
+## Color system (tiny, tokenized)
+
+All color is externalized into a small semantic token set backed by CSS
+variables in `src/util/theme-colors.ts` and surfaced as Tailwind tokens in
+`tailwind.config.ts`. **Outside chips/badges and buttons, only the structural
+tokens below may appear — never raw `bg-gray-*` / `text-gray-*` / hex.**
+
+**Structural tokens (the only colors in 99% of the UI)**
+
+| Token (utility) | Role | Var |
+|---|---|---|
+| `bg-bg` | page background (darkest) | `--bg-color` |
+| `bg-surface` | cards / report sections | `--surface` |
+| `bg-surface-2` | inset / inline boxes / hovers | `--surface-2` |
+| `text-heading` | headings (white) | `--heading-color` |
+| `text-body` | body text | `--text-color` |
+| `text-muted` | secondary / muted text | `--text-muted` |
+| `border-border` | borders / dividers | `--border-color` |
+| `text-primary` / `bg-primary` / `text-primary-text` | brand / primary actions | `--primary-color` |
+| `text-link` | links | `--link-color` |
+
+The surfaces form a deliberate 3-tier dark ramp: `bg` < `surface` < `surface-2`.
+Legacy aliases (`bg-block`, `bg-background`, `border-block-border`) and bridged
+shadcn names (`text-muted-foreground`→muted, `bg-card`→surface, `text-foreground`,
+`border-input`, `ring`) all resolve to the same vars so older call-sites stay
+consistent during migration.
+
+**Chips / badges — the ONE place color variety lives**
+
+Every badge routes color through the single 6-tone vocabulary in
+`src/components/ui/badges/badgeTone.ts` (`success`/`danger`/`warning`/`info`/
+`accent`/`neutral`, one translucent `…/15 + border …/40` recipe each). Map the
+domain meaning onto a tone — do **not** invent new color pairs per component.
+`PassFailBadge`, `StatusBadge`, `ReportFooter` tags, and the header exchange pill
+already use it. Buttons route through `var(--primary-color)` (web-core `Button`
+or `bg-primary`).
+
+When adding a leaf: use the structural tokens for surfaces/text/border, and
+`badgeTone` for any chip. Adding a raw gray or a new hue is a review red flag.
+
 ## Authoring a leaf component
 
 Use [`class-variance-authority`](https://cva.style) (`cva`) for variants plus the

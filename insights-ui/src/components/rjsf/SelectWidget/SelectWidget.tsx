@@ -74,14 +74,14 @@ export default function SelectWidget<T = any, S extends StrictRJSFSchema = RJSFS
       aria-describedby={ariaDescribedByIds<T>(id)}
     >
       {!multiple && schema.default === undefined && (
-        <option value="" className="bg-muted">
+        <option value="" className="bg-surface-2">
           {placeholder}
         </option>
       )}
       {(enumOptions as any).map(({ value, label }: any, i: number) => {
         const disabled: any = Array.isArray(enumDisabled) && (enumDisabled as any).indexOf(value) != -1;
         return (
-          <option key={i} id={label} value={String(i)} disabled={disabled} className="bg-muted">
+          <option key={i} id={label} value={String(i)} disabled={disabled} className="bg-surface-2">
             {label}
           </option>
         );

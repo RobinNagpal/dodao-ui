@@ -46,7 +46,7 @@ export default function EtfCompetitionFullView({ data, availableSlugs }: EtfComp
 
   return (
     <div className="py-4">
-      <article className="bg-gray-900 rounded-lg shadow-sm border border-color p-3 sm:p-6 md:p-8" itemScope itemType="https://schema.org/Article">
+      <article className="bg-surface rounded-lg shadow-sm border border-color p-3 sm:p-6 md:p-8" itemScope itemType="https://schema.org/Article">
         <meta itemProp="datePublished" content={publishedDate.toISOString()} />
 
         <header className="mb-6 pb-4 border-b border-color">
@@ -56,7 +56,7 @@ export default function EtfCompetitionFullView({ data, availableSlugs }: EtfComp
                 {etf.name} <span className="text-muted-foreground">({etf.symbol})</span>
               </h1>
               <div className="flex flex-wrap items-center gap-2 md:gap-3 text-sm">
-                <span className="inline-flex items-center rounded-full bg-blue-100 dark:bg-blue-900 px-2.5 py-0.5 text-xs font-medium text-blue-800 dark:text-blue-300">
+                <span className="inline-flex items-center rounded-full bg-sky-500/15 border border-sky-500/40 px-2.5 py-0.5 text-xs font-medium text-sky-300">
                   {etf.exchange}
                 </span>
                 <span className="text-muted-foreground">•</span>
@@ -140,10 +140,10 @@ export default function EtfCompetitionFullView({ data, availableSlugs }: EtfComp
               </time>
             </div>
             <div className="flex gap-2">
-              <span className="inline-flex items-center rounded-full bg-blue-100 dark:bg-blue-900 px-2.5 py-0.5 text-xs font-medium text-blue-800 dark:text-blue-300">
+              <span className="inline-flex items-center rounded-full bg-sky-500/15 border border-sky-500/40 px-2.5 py-0.5 text-xs font-medium text-sky-300">
                 ETF Analysis
               </span>
-              <span className="inline-flex items-center rounded-full bg-purple-100 dark:bg-purple-900 px-2.5 py-0.5 text-xs font-medium text-purple-800 dark:text-purple-300">
+              <span className="inline-flex items-center rounded-full bg-indigo-500/15 border border-indigo-500/40 px-2.5 py-0.5 text-xs font-medium text-indigo-300">
                 Competitive Analysis
               </span>
             </div>

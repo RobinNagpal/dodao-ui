@@ -66,12 +66,12 @@ function EtfCard({ etf }: { etf: EtfListingItem }): JSX.Element {
   return (
     <Link
       href={`/etfs/${etf.exchange}/${etf.symbol}`}
-      className="block bg-gray-900 border border-[#374151] rounded-lg p-4 hover:border-[#F59E0B] hover:shadow-lg transition-all duration-200"
+      className="block bg-surface border border-border rounded-lg p-4 hover:border-primary hover:shadow-lg transition-all duration-200"
     >
       <div className="flex items-center justify-between mb-3 gap-2">
         <div className="flex items-center gap-2 min-w-0">
           <span className="bg-gradient-to-r from-[#F59E0B] to-[#FBBF24] text-black text-xs font-bold px-2 py-0.5 rounded">{etf.symbol}</span>
-          <span className="text-xs text-gray-400">{etf.exchange}</span>
+          <span className="text-xs text-muted">{etf.exchange}</span>
         </div>
         <div className="flex items-center gap-2 shrink-0">
           {showScore && (
@@ -82,28 +82,30 @@ function EtfCard({ etf }: { etf: EtfListingItem }): JSX.Element {
               {score}/20
             </span>
           )}
-          {etf.payoutFrequency && <span className="text-xs text-gray-400 bg-[#374151] px-2 py-0.5 rounded">{etf.payoutFrequency}</span>}
+          {etf.payoutFrequency && <span className="text-xs text-muted bg-surface-2 px-2 py-0.5 rounded">{etf.payoutFrequency}</span>}
         </div>
       </div>
 
-      <h3 className="text-white text-sm font-medium mb-3 line-clamp-2 min-h-[2.5rem]">{etf.name}</h3>
+      <h3 className="text-heading text-sm font-medium mb-3 line-clamp-2 min-h-[2.5rem]">{etf.name}</h3>
 
       <div className="grid grid-cols-2 gap-2 text-xs">
         <div>
-          <span className="text-gray-400">AUM</span>
-          <p className="text-white font-medium">{formatCompactAmount(etf.aum)}</p>
+          <span className="text-muted">AUM</span>
+          <p className="text-heading font-medium">{formatCompactAmount(etf.aum)}</p>
         </div>
         <div>
-          <span className="text-gray-400">Expense Ratio</span>
-          <p className="text-white font-medium">{etf.expenseRatio !== null ? `${etf.expenseRatio}%` : 'N/A'}</p>
+          <span className="text-muted">Expense Ratio</span>
+          <p className="text-heading font-medium">{etf.expenseRatio !== null ? `${etf.expenseRatio}%` : 'N/A'}</p>
         </div>
         <div>
-          <span className="text-gray-400">{third.label}</span>
-          <p className="text-white font-medium">{third.value}</p>
+          <span className="text-muted">{third.label}</span>
+          <p className="text-heading font-medium">{third.value}</p>
         </div>
         <div>
-          <span className="text-gray-400">Dividend Yield</span>
-          <p className="text-white font-medium">{etf.dividendYield !== null && etf.dividendYield !== 0 ? formatPercentageDecimal(etf.dividendYield) : '--'}</p>
+          <span className="text-muted">Dividend Yield</span>
+          <p className="text-heading font-medium">
+            {etf.dividendYield !== null && etf.dividendYield !== 0 ? formatPercentageDecimal(etf.dividendYield) : '--'}
+          </p>
         </div>
       </div>
     </Link>
@@ -134,7 +136,7 @@ export default function EtfListingGrid({
   return (
     <div>
       <div className="flex items-center justify-between mb-4">
-        <p className="text-sm text-gray-400">
+        <p className="text-sm text-muted">
           Showing {resolvedData.etfs.length} of {totalCount.toLocaleString()} ETF{totalCount !== 1 ? 's' : ''}
           {totalPages > 1 && ` (Page ${page} of ${totalPages})`}
         </p>

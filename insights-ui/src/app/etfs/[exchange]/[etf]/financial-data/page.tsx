@@ -44,7 +44,7 @@ function JsonSection({ title, data }: { title: string; data: unknown }) {
   return (
     <div className="mb-6">
       <h3 className="text-lg font-semibold mb-2 text-green-400">{title}</h3>
-      <pre className="bg-gray-900 p-4 rounded-lg overflow-x-auto text-xs text-gray-300 max-h-96 overflow-y-auto">{JSON.stringify(data, null, 2)}</pre>
+      <pre className="bg-surface p-4 rounded-lg overflow-x-auto text-xs text-body max-h-96 overflow-y-auto">{JSON.stringify(data, null, 2)}</pre>
     </div>
   );
 }
@@ -56,20 +56,20 @@ function FieldTable({ title, fields }: { title: string; fields: Record<string, u
     <div className="mb-6">
       <h3 className="text-lg font-semibold mb-2">{title}</h3>
       <div className="overflow-x-auto">
-        <table className="min-w-full divide-y divide-gray-700">
-          <thead className="bg-gray-800">
+        <table className="min-w-full divide-y divide-border">
+          <thead className="bg-surface-2">
             <tr>
-              <th className="px-4 py-2 text-left text-xs font-medium text-gray-400 uppercase">Field</th>
-              <th className="px-4 py-2 text-left text-xs font-medium text-gray-400 uppercase">Value</th>
+              <th className="px-4 py-2 text-left text-xs font-medium text-muted uppercase">Field</th>
+              <th className="px-4 py-2 text-left text-xs font-medium text-muted uppercase">Value</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-700">
+          <tbody className="divide-y divide-border">
             {entries.map(([key, value]) => (
               <tr key={key}>
-                <td className="px-4 py-2 text-sm font-mono text-gray-300">{key}</td>
-                <td className="px-4 py-2 text-sm text-gray-200">
+                <td className="px-4 py-2 text-sm font-mono text-body">{key}</td>
+                <td className="px-4 py-2 text-sm text-body">
                   {value === null ? (
-                    <span className="text-gray-500 italic">null</span>
+                    <span className="text-muted italic">null</span>
                   ) : typeof value === 'object' ? (
                     <span className="text-blue-400">[JSON]</span>
                   ) : (
@@ -111,7 +111,7 @@ export default async function EtfFinancialDataPage({ params }: { params: RoutePa
         <h1 className="text-2xl font-bold">
           {etfData.name} ({etfData.symbol}) — Raw Financial Data
         </h1>
-        <p className="text-sm text-gray-400 mt-1">
+        <p className="text-sm text-muted mt-1">
           Exchange: {etfData.exchange} | Inception: {etfData.inception || 'N/A'} | ID: {etfData.id}
         </p>
       </div>

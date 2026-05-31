@@ -72,11 +72,11 @@ export default function EtfChartTabs({ priceHistory, performanceMetrics, etfSymb
       : null;
 
   return (
-    <section id="etf-chart-tabs" className="bg-gray-900 rounded-lg shadow-sm px-2 py-3 sm:p-4 mb-6">
+    <section id="etf-chart-tabs" className="bg-surface rounded-lg shadow-sm px-2 py-3 sm:p-4 mb-6">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
         <div className="sm:flex-shrink-0 min-w-0">
-          <h3 className="text-lg font-semibold text-gray-100">{TAB_HEADINGS[safeTab]}</h3>
-          {metaLine && <p className="text-xs text-gray-400 mt-1 truncate">{metaLine}</p>}
+          <h3 className="text-lg font-semibold text-heading">{TAB_HEADINGS[safeTab]}</h3>
+          {metaLine && <p className="text-xs text-muted mt-1 truncate">{metaLine}</p>}
         </div>
 
         {/* Center: range pill (Price tab only). Sits in its own segmented-
@@ -84,14 +84,14 @@ export default function EtfChartTabs({ priceHistory, performanceMetrics, etfSymb
            distinct from the main Price/Returns/CAGR tabs on the right. */}
         {safeTab === 'price' && (
           <div className="sm:flex-1 flex sm:justify-center">
-            <div className="inline-flex items-center gap-1 rounded-lg bg-gray-800/70 p-1 ring-1 ring-gray-700/70">
+            <div className="inline-flex items-center gap-1 rounded-lg bg-surface-2 p-1 ring-1 ring-border">
               {PRICE_CHART_RANGES.map((r) => (
                 <button
                   key={r}
                   type="button"
                   onClick={() => setPriceRange(r)}
                   className={`px-2.5 py-1 text-xs font-medium rounded-md transition-colors ${
-                    priceRange === r ? 'text-white' : 'text-gray-300 hover:bg-gray-700/60 hover:text-white'
+                    priceRange === r ? 'text-heading' : 'text-body hover:bg-surface-3 hover:text-heading'
                   }`}
                   style={priceRange === r ? { backgroundColor: ACCENT_COLOR } : {}}
                   aria-pressed={priceRange === r}
@@ -110,7 +110,7 @@ export default function EtfChartTabs({ priceHistory, performanceMetrics, etfSymb
               type="button"
               onClick={() => setActiveTab(tab)}
               className={`px-3 py-1.5 text-xs font-medium rounded-md transition-colors ${
-                safeTab === tab ? 'text-white' : 'bg-gray-800 text-gray-300 hover:bg-gray-700 hover:text-gray-100'
+                safeTab === tab ? 'text-heading' : 'bg-surface-2 text-body hover:bg-surface-3 hover:text-heading'
               }`}
               style={safeTab === tab ? { backgroundColor: ACCENT_COLOR } : {}}
             >
@@ -139,7 +139,7 @@ function PerformanceBars({ series, etfSymbol }: PerformanceBarsProps): JSX.Eleme
   const hasCategoryAverage = visible.some((v) => v.categoryAverage !== null);
 
   if (visible.length === 0) {
-    return <div className="h-64 sm:h-72 flex items-center justify-center text-sm text-gray-400">No data available for this ETF.</div>;
+    return <div className="h-64 sm:h-72 flex items-center justify-center text-sm text-muted">No data available for this ETF.</div>;
   }
 
   const labels = visible.map((v) => {

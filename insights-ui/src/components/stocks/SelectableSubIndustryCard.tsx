@@ -52,7 +52,7 @@ export default function SelectableSubIndustryCard({
   return (
     <div className="relative bg-block-bg-color rounded-lg border border-color overflow-hidden flex flex-col">
       {/* Header */}
-      <div className={`px-3 py-2 sm:px-4 border-b border-color bg-[#374151]`}>
+      <div className={`px-3 py-2 sm:px-4 border-b border-color bg-surface-2`}>
         <div className="flex items-center justify-between">
           <h3 className={`text-sm font-semibold heading-color leading-snug break-words ${selectionMode ? 'pr-8' : 'pr-28'}`} title={displayName}>
             {displayName}
@@ -73,20 +73,20 @@ export default function SelectableSubIndustryCard({
       </div>
 
       {/* Company count badge */}
-      <div className="absolute top-2 right-2 z-10 text-[13px] text-white bg-[#4F46E5] px-2 py-0.5 rounded-full" aria-label={companyLabel} title={companyLabel}>
+      <div className="absolute top-2 right-2 z-10 text-[13px] text-heading bg-primary px-2 py-0.5 rounded-full" aria-label={companyLabel} title={companyLabel}>
         {companyLabel}
       </div>
 
       {/* Selection summary (when in selection mode) */}
       {selectionMode && (
-        <div className="px-3 sm:px-4 py-2 bg-gray-100 dark:bg-gray-700 border-b border-color">
+        <div className="px-3 sm:px-4 py-2 bg-surface-2 border-b border-color">
           <div className="flex items-center justify-between text-sm">
-            <span className="text-gray-600 dark:text-gray-300">
+            <span className="text-muted">
               {selectedTickerIds.length === 0 && 'No tickers selected'}
               {selectedTickerIds.length > 0 && `${selectedTickerIds.length} of ${tickers.length} selected`}
             </span>
-            {someSelected && <span className="text-blue-600 dark:text-blue-400 font-medium">Partial Selection</span>}
-            {allSelected && <span className="text-green-600 dark:text-green-400 font-medium">All Selected</span>}
+            {someSelected && <span className="text-sky-300 font-medium">Partial Selection</span>}
+            {allSelected && <span className="text-emerald-300 font-medium">All Selected</span>}
           </div>
         </div>
       )}
@@ -97,7 +97,7 @@ export default function SelectableSubIndustryCard({
           // Regular display mode (original behavior)
           <ul className="divide-y divide-color">
             {tickers.map((ticker) => (
-              <li key={`${ticker.exchange}-${ticker.symbol}`} className="px-3 sm:px-4 py-1.5 hover:bg-[#2D3748] transition-colors">
+              <li key={`${ticker.exchange}-${ticker.symbol}`} className="px-3 sm:px-4 py-1.5 hover:bg-surface-3 transition-colors">
                 <div className="min-w-0 w-full">
                   <StockTickerItem symbol={ticker.symbol} name={ticker.name} exchange={ticker.exchange} score={ticker.cachedScoreEntry?.finalScore ?? 0} />
                 </div>
@@ -126,7 +126,7 @@ export default function SelectableSubIndustryCard({
         )}
       </div>
 
-      {tickers.length === 0 && <div className="px-3 sm:px-4 py-8 text-center text-gray-500 dark:text-gray-400">No tickers found for this sub-industry.</div>}
+      {tickers.length === 0 && <div className="px-3 sm:px-4 py-8 text-center text-muted">No tickers found for this sub-industry.</div>}
     </div>
   );
 }

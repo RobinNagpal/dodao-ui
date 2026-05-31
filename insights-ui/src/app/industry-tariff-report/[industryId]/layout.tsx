@@ -87,7 +87,7 @@ export default async function IndustryTariffReportLayout({ children, params }: {
               <div className="flex-1 bg-background p-2 sm:p-3">
                 <div className="mx-auto max-w-4xl">
                   <div className="relative min-h-[calc(100vh-10rem)] rounded-lg block-bg-color p-2 sm:p-2 shadow-md">
-                    <div className="absolute right-0 top-0 h-12 w-12 bg-muted/20">
+                    <div className="absolute right-0 top-0 h-12 w-12 bg-surface-2">
                       <div className="absolute right-0 top-0 h-0 w-0 border-l-[48px] border-b-[48px] border-l-transparent border-b-[var(--block-bg)]"></div>
                     </div>
 

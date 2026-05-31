@@ -57,21 +57,21 @@ const COLUMNS: ColumnDef[] = [
 
 function SimilarEtfMobileCard({ etf }: { etf: SimilarEtf }): JSX.Element {
   return (
-    <div className="bg-gray-800 border border-gray-700 rounded-md p-4">
+    <div className="bg-surface-2 border border-border rounded-md p-4">
       <Link href={`/etfs/${etf.exchange.toUpperCase()}/${etf.symbol.toUpperCase()}`} className="flex items-start justify-between gap-2 group">
         <div className="min-w-0">
-          <h3 className="font-semibold text-[#F59E0B] group-hover:text-[#F97316] transition-colors truncate">{etf.name}</h3>
-          <div className="text-xs text-gray-400 mt-0.5">
+          <h3 className="font-semibold text-link group-hover:text-link transition-colors truncate">{etf.name}</h3>
+          <div className="text-xs text-muted mt-0.5">
             {etf.symbol} • {etf.exchange.toUpperCase()}
           </div>
         </div>
-        <ArrowTopRightOnSquareIcon className="size-4 text-gray-400 group-hover:text-[#F59E0B] transition-colors flex-shrink-0 mt-1" />
+        <ArrowTopRightOnSquareIcon className="size-4 text-muted group-hover:text-link transition-colors flex-shrink-0 mt-1" />
       </Link>
       <dl className="mt-3 grid grid-cols-2 gap-x-4 gap-y-2 text-xs">
         {COLUMNS.map((col) => (
-          <div key={col.key} className="flex justify-between border-b border-gray-700/60 pb-1">
-            <dt className="text-gray-400">{col.label}</dt>
-            <dd className="text-white font-mono tabular-nums text-right ml-2 truncate">{col.render(etf)}</dd>
+          <div key={col.key} className="flex justify-between border-b border-border pb-1">
+            <dt className="text-muted">{col.label}</dt>
+            <dd className="text-heading font-mono tabular-nums text-right ml-2 truncate">{col.render(etf)}</dd>
           </div>
         ))}
       </dl>
@@ -85,16 +85,16 @@ export default function SimilarEtfs({ data: similarEtfs }: SimilarEtfsProps): JS
   }
 
   return (
-    <div id="similar-etfs" className="bg-gray-900 rounded-lg shadow-sm p-4 sm:p-6 mb-8">
-      <h2 className="text-xl font-bold mb-4 pb-2 border-b border-gray-700">Similar ETFs</h2>
-      <p className="text-gray-300 mb-4">True peers tracking the same or a very similar index in the same category:</p>
+    <div id="similar-etfs" className="bg-surface rounded-lg shadow-sm p-4 sm:p-6 mb-8">
+      <h2 className="text-xl font-bold mb-4 pb-2 border-b border-border">Similar ETFs</h2>
+      <p className="text-body mb-4">True peers tracking the same or a very similar index in the same category:</p>
 
       {/* Desktop / tablet — horizontally-scrollable table. */}
-      <div className="hidden md:block overflow-x-auto rounded-md border border-gray-700">
+      <div className="hidden md:block overflow-x-auto rounded-md border border-border">
         <table className="min-w-full text-sm">
-          <thead className="bg-gray-800 text-gray-300">
+          <thead className="bg-surface-2 text-body">
             <tr>
-              <th scope="col" className="sticky left-0 z-10 bg-gray-800 px-3 py-2 text-left font-semibold whitespace-nowrap">
+              <th scope="col" className="sticky left-0 z-10 bg-surface-2 px-3 py-2 text-left font-semibold whitespace-nowrap">
                 ETF
               </th>
               {COLUMNS.map((col) => (
@@ -104,20 +104,20 @@ export default function SimilarEtfs({ data: similarEtfs }: SimilarEtfsProps): JS
               ))}
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-700">
+          <tbody className="divide-y divide-border">
             {similarEtfs.map((etf) => (
-              <tr key={etf.id} className="hover:bg-gray-800/60 transition-colors">
-                <td className="sticky left-0 z-10 bg-gray-900 hover:bg-gray-800/60 transition-colors px-3 py-2 whitespace-nowrap">
+              <tr key={etf.id} className="hover:bg-surface-3 transition-colors">
+                <td className="sticky left-0 z-10 bg-surface hover:bg-surface-3 transition-colors px-3 py-2 whitespace-nowrap">
                   <Link href={`/etfs/${etf.exchange.toUpperCase()}/${etf.symbol.toUpperCase()}`} className="group inline-flex items-center gap-1.5">
-                    <span className="font-medium bg-[#4F46E5] text-white text-xs px-1.5 py-0.5 rounded">{etf.symbol}</span>
-                    <span className="text-[#F59E0B] group-hover:text-[#F97316] transition-colors max-w-[16rem] truncate">{etf.name}</span>
-                    <ArrowTopRightOnSquareIcon className="size-3.5 text-gray-400 group-hover:text-[#F59E0B] transition-colors flex-shrink-0" />
+                    <span className="font-medium bg-primary text-primary-text text-xs px-1.5 py-0.5 rounded">{etf.symbol}</span>
+                    <span className="text-link group-hover:text-link transition-colors max-w-[16rem] truncate">{etf.name}</span>
+                    <ArrowTopRightOnSquareIcon className="size-3.5 text-muted group-hover:text-link transition-colors flex-shrink-0" />
                   </Link>
                 </td>
                 {COLUMNS.map((col) => (
                   <td
                     key={col.key}
-                    className={`px-3 py-2 whitespace-nowrap font-mono tabular-nums text-white ${col.align === 'right' ? 'text-right' : 'text-left'}`}
+                    className={`px-3 py-2 whitespace-nowrap font-mono tabular-nums text-heading ${col.align === 'right' ? 'text-right' : 'text-left'}`}
                   >
                     {col.render(etf)}
                   </td>

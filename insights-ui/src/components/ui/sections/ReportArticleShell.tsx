@@ -8,7 +8,7 @@ import React from 'react';
  * border, and responsive padding, plus the schema.org `Article` microdata and
  * the optional `datePublished` meta tag (so SEO can't be omitted per call-site).
  */
-const article = cva('bg-gray-900 rounded-lg shadow-sm border border-color', {
+const article = cva('bg-surface rounded-lg shadow-sm border border-border', {
   variants: {
     // `default` is the normalized standard; `lg` is the wider competition/mover layout.
     padding: { default: 'p-3 sm:p-6 md:p-8', lg: 'p-6 md:p-8' },

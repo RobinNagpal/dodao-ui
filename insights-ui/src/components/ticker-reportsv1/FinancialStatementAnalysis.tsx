@@ -24,7 +24,7 @@ export default function FinancialStatementAnalysis({ tickerData, data }: Financi
       categoryResult={categoryResult}
       analysisTitle={analysisTitle}
       categoryBadgeText="Financial Statements"
-      categoryBadgeClassName="bg-amber-100 dark:bg-amber-900 text-amber-800 dark:text-amber-300"
+      categoryBadgeClassName="bg-amber-500/15 border border-amber-500/40 text-amber-300"
       pageSlug="financial-statement-analysis"
     />
   );

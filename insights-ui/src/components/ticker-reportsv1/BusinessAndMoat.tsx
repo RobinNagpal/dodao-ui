@@ -24,7 +24,7 @@ export default function BusinessAndMoat({ tickerData, data }: BusinessAndMoatPro
       categoryResult={categoryResult}
       analysisTitle={analysisTitle}
       categoryBadgeText="Business & Moat"
-      categoryBadgeClassName="bg-cyan-100 dark:bg-cyan-900 text-cyan-800 dark:text-cyan-300"
+      categoryBadgeClassName="bg-sky-500/15 border border-sky-500/40 text-sky-300"
       pageSlug="business-and-moat"
     />
   );

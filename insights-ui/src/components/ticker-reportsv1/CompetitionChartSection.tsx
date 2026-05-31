@@ -57,13 +57,13 @@ export default function CompetitionChartSection({ dataPromise, exchange, ticker 
 
   return (
     <section id="competition">
-      <div className="bg-gray-900 rounded-lg shadow-sm p-3 sm:p-6">
-        <div className="flex flex-wrap items-center justify-between gap-2 mb-4 pb-2 border-b border-gray-700">
+      <div className="bg-surface rounded-lg shadow-sm p-3 sm:p-6">
+        <div className="flex flex-wrap items-center justify-between gap-2 mb-4 pb-2 border-b border-border">
           <h2 className="text-xl font-bold">Competition</h2>
           <Link
             href={`/stocks/${exchange}/${ticker}/competition`}
             prefetch={false}
-            className="inline-flex items-center gap-1 rounded-md px-3 py-1.5 text-xs font-semibold text-white shadow-sm hover:opacity-90 transition-opacity whitespace-nowrap"
+            className="inline-flex items-center gap-1 rounded-md px-3 py-1.5 text-xs font-semibold text-heading shadow-sm hover:opacity-90 transition-opacity whitespace-nowrap"
             style={{ backgroundColor: 'var(--primary-color, #3b82f6)' }}
           >
             View Full Analysis →
@@ -73,7 +73,7 @@ export default function CompetitionChartSection({ dataPromise, exchange, ticker 
         <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
           <div className="lg:w-1/2">
             <h3 className="text-lg font-semibold text-color mb-3">Quality vs Value Comparison</h3>
-            <p className="text-sm text-gray-400 mb-4">
+            <p className="text-sm text-muted mb-4">
               Compare {tickerData.name} ({tickerData.symbol}) against key competitors on quality and value metrics.
             </p>
 
@@ -99,12 +99,12 @@ export default function CompetitionChartSection({ dataPromise, exchange, ticker 
                     />
                     <div className="min-w-0">
                       <div className="flex items-baseline gap-2 flex-wrap">
-                        <span className={dp.isMainTicker ? 'font-semibold text-amber-400' : 'text-gray-200 group-hover:text-[#F59E0B] transition-colors'}>
+                        <span className={dp.isMainTicker ? 'font-semibold text-amber-400' : 'text-body group-hover:text-link transition-colors'}>
                           {dp.companyName}
                         </span>
-                        <span className={dp.isMainTicker ? 'text-amber-400 text-xs' : 'text-gray-500 text-xs'}>({dp.ticker})</span>
+                        <span className={dp.isMainTicker ? 'text-amber-400 text-xs' : 'text-muted text-xs'}>({dp.ticker})</span>
                       </div>
-                      <div className="flex items-center gap-2 text-xs text-gray-500 mt-0.5">
+                      <div className="flex items-center gap-2 text-xs text-muted mt-0.5">
                         <span>{dp.classification}</span>
                         <span>·</span>
                         <span>Quality {dp.qualityScore.toFixed(0)}%</span>

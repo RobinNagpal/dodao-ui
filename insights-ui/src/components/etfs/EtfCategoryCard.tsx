@@ -20,12 +20,12 @@ export default function EtfCategoryCard({ categoryName, href, etfs, total }: Etf
 
   return (
     <div className="relative bg-block-bg-color rounded-lg border border-color overflow-hidden flex flex-col">
-      <Link href={href} className="block px-3 py-2 sm:px-4 border-b border-color bg-[#374151] hover:bg-[#2D3748] transition-colors">
+      <Link href={href} className="block px-3 py-2 sm:px-4 border-b border-color bg-surface-2 hover:bg-surface-3 transition-colors">
         <h3 className="text-sm font-semibold heading-color leading-snug break-words pr-24" title={categoryName}>
           {categoryName}
         </h3>
       </Link>
-      <div className="absolute top-2 right-2 z-10 text-[13px] text-white bg-[#4F46E5] px-2 py-0.5 rounded-full" aria-label={etfLabel} title={etfLabel}>
+      <div className="absolute top-2 right-2 z-10 text-[13px] text-heading bg-primary px-2 py-0.5 rounded-full" aria-label={etfLabel} title={etfLabel}>
         {etfLabel}
       </div>
       <ul className="divide-y divide-color flex-1">
@@ -33,7 +33,7 @@ export default function EtfCategoryCard({ categoryName, href, etfs, total }: Etf
           const { textColorClass, bgColorClass } = getEtfScoreColorClasses(etf.finalScore);
           const scoreLabel = etf.finalScore !== null ? `${etf.finalScore}/20` : '—';
           return (
-            <li key={etf.id} className="px-3 sm:px-4 py-1.5 hover:bg-[#2D3748] transition-colors">
+            <li key={etf.id} className="px-3 sm:px-4 py-1.5 hover:bg-surface-3 transition-colors">
               <Link
                 href={`/etfs/${etf.exchange}/${etf.symbol}`}
                 className="flex gap-1.5 items-center min-w-0 w-full"
@@ -43,10 +43,10 @@ export default function EtfCategoryCard({ categoryName, href, etfs, total }: Etf
                 <p className={`${textColorClass} px-1 rounded-md ${bgColorClass} bg-opacity-15 hover:bg-opacity-25 w-[46px] text-right shrink-0`}>
                   <span className={`${textColorClass} font-mono tabular-nums text-right text-xs`}>{scoreLabel}</span>
                 </p>
-                <p className="whitespace-nowrap rounded-md px-2 py-0.5 text-sm font-medium bg-[#4F46E5] text-white self-center shadow-sm shrink-0">
+                <p className="whitespace-nowrap rounded-md px-2 py-0.5 text-sm font-medium bg-primary text-primary-text self-center shadow-sm shrink-0">
                   {etf.symbol}
                 </p>
-                <p className="text-sm font-medium text-break break-words text-white truncate min-w-0 flex-1">{etf.name}</p>
+                <p className="text-sm font-medium text-break break-words text-heading truncate min-w-0 flex-1">{etf.name}</p>
               </Link>
             </li>
           );

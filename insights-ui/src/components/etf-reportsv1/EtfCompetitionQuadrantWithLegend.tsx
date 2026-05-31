@@ -49,7 +49,7 @@ export default function EtfCompetitionQuadrantWithLegend({
             <h3 className="text-lg font-semibold text-color mb-3">{heading}</h3>
           )}
 
-          <p className={headingAs === 'h2' ? 'text-color leading-relaxed mb-5' : 'text-sm text-gray-400 mb-4'} {...descriptionProps}>
+          <p className={headingAs === 'h2' ? 'text-color leading-relaxed mb-5' : 'text-sm text-muted mb-4'} {...descriptionProps}>
             {description}
           </p>
 
@@ -63,15 +63,12 @@ export default function EtfCompetitionQuadrantWithLegend({
                   <span className="inline-block w-2.5 h-2.5 rounded-full flex-shrink-0 mt-1.5" style={{ backgroundColor: dotColor(dp) }} />
                   <div className="min-w-0">
                     <div className="flex items-baseline gap-2 flex-wrap">
-                      <span
-                        className={dp.isMainEtf ? 'font-semibold text-amber-400' : 'text-gray-200 group-hover:text-[#F59E0B] transition-colors'}
-                        itemProp="name"
-                      >
+                      <span className={dp.isMainEtf ? 'font-semibold text-amber-400' : 'text-body group-hover:text-link transition-colors'} itemProp="name">
                         {dp.name}
                       </span>
-                      <span className={dp.isMainEtf ? 'text-amber-400 text-xs' : 'text-gray-500 text-xs'}>({dp.symbol})</span>
+                      <span className={dp.isMainEtf ? 'text-amber-400 text-xs' : 'text-muted text-xs'}>({dp.symbol})</span>
                     </div>
-                    <div className="flex items-center gap-2 text-xs text-gray-500 mt-0.5">
+                    <div className="flex items-center gap-2 text-xs text-muted mt-0.5">
                       <span>{dp.classification}</span>
                       <span>·</span>
                       <span>Returns {dp.returnsScore.toFixed(0)}%</span>

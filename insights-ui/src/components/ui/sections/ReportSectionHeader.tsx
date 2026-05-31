@@ -42,15 +42,15 @@ export default function ReportSectionHeader({
   className,
 }: ReportSectionHeaderProps): React.JSX.Element {
   return (
-    <header className={cn('mb-6 pb-4 border-b border-color', className)}>
+    <header className={cn('mb-6 pb-4 border-b border-border', className)}>
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
         <div className="flex-1">
-          <h1 className="text-2xl md:text-3xl font-bold tracking-tight text-color mb-2" itemProp="headline">
+          <h1 className="text-2xl md:text-3xl font-bold tracking-tight text-body mb-2" itemProp="headline">
             {title}
             {symbol && <span className="text-muted-foreground"> ({symbol})</span>}
           </h1>
           <div className="flex flex-wrap items-center gap-2 md:gap-3 text-sm">
-            <span className="inline-flex items-center rounded-full bg-blue-100 dark:bg-blue-900 px-2.5 py-0.5 text-xs font-medium text-blue-800 dark:text-blue-300">
+            <span className="inline-flex items-center rounded-full bg-sky-500/15 border border-sky-500/40 px-2.5 py-0.5 text-xs font-medium text-sky-300">
               {exchange}
             </span>
             {score && (

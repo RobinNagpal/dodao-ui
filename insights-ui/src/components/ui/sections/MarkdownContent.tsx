@@ -7,15 +7,15 @@ import React from 'react';
  * Centralizes the `markdown markdown-body …` class recipes that report
  * sections otherwise hand-write next to every `dangerouslySetInnerHTML`.
  *
- * - `summary` — the executive-summary body (`text-color leading-relaxed`).
+ * - `summary` — the executive-summary body (`text-body leading-relaxed`).
  * - `body` — full prose-styled analysis body.
  * - `plain` — bare markdown body (e.g. per-factor detail).
  */
 const markdown = cva('', {
   variants: {
     variant: {
-      summary: 'text-color leading-relaxed',
-      body: 'markdown markdown-body prose-headings:text-color prose-p:text-color prose-strong:text-color prose-code:text-color prose-a:text-primary hover:prose-a:text-primary/80',
+      summary: 'text-body leading-relaxed',
+      body: 'markdown markdown-body prose-headings:text-body prose-p:text-body prose-strong:text-body prose-code:text-body prose-a:text-primary hover:prose-a:text-primary/80',
       plain: 'markdown markdown-body',
     },
   },
