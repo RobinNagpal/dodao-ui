@@ -94,14 +94,44 @@ once clean.
 | stock/ETF listing cards (`CompactIndustryCard`, `EtfCategoryCard`, …) | needs `ListingCard`/`ScoreDisplay`/`SymbolBadge` | ⬜ |
 | `blogs/**`, `home-page/**` | needs `HeroHeader`/`FilterButton`/`GridResponsive` | ⬜ |
 
-## 4. Token adoption
+## 4. Token adoption / color externalization (PR #1564)
 
-- ⬜ Migrate existing leaves from ad-hoc `bg-gray-*` to the semantic tokens
-  (`bg-block`, `text-body`, `text-primary`, …) where it does not change the
-  rendered color, so theming is centralized. Do this deliberately (the tokens
-  resolve to specific grays; verify no visual change before switching).
-- ⬜ Audit ad-hoc theme classes already in the codebase (`text-color`,
-  `bg-block-bg-color`) and fold them into the token set.
+The color system is now tokenized (see the "Color system" section in
+`ui-leaf-component-system.md`). Rollout status:
+
+- ✅ Token foundation: retuned 3-tier palette in `theme-colors.ts` +
+  `tailwind.config.ts` tokens + shadcn-name bridge.
+- ✅ Leaf layer tokenized (surfaces/text/border → tokens) and chips consolidated
+  into the 6-tone `badgeTone` vocabulary (PassFailBadge, StatusBadge,
+  ReportFooter, header exchange pill; EmptyStateCard CTA → `bg-primary`).
+- ⬜ **Remaining chips:** route `ScenarioOutlookBadge` (8 ad-hoc tones),
+  `EtfMetadataBadges` (5-hue quartets → `info`/`accent`), and `AppliedFilterChip`
+  (amber gradient → `warning`) through `badgeTone`.
+- ⬜ **Component migrations (report pages → tokens + leaves):** the bulk. Replace
+  raw `bg-gray-*`/`text-gray-*`/hand-written headings with tokens + the
+  `Heading`/`SectionHeading`/`Text` leaves across: Competition pair,
+  management-team, StockMoverDetails, the two main `page.tsx`, EtfMorInfo,
+  EtfHoldings, charts (inline hex → token map), and the ~50 hand-written headings.
+- ⬜ **New leaves needed by those migrations:** `SummaryCard`, `ScoreChip`
+  (primary `x/total` pill), `CardSection` `chart` padding variant, `DeferredBlock`
+  (`content-visibility`), a ticker-side `CompetitionQuadrantWithLegend`, a
+  sentiment text/badge leaf (verdict + price-change), and `ReportSectionHeader`/
+  `ReportFooter` slot extensions (sentiment meta, `verb`/`timeItemProp`).
+- ⬜ **Legacy vocabulary sweep:** migrate remaining `text-color`/`border-color`/
+  `block-bg-color` SCSS classes → `text-body`/`border-border`/`bg-surface`.
+
+### Typography consistency (same PR)
+Headings/body text are inconsistent (6 h1 variants, h2 `font-bold`+`border-gray-700`
+vs `font-semibold`+`border-border`, h3 `text-gray-100 mb-4` vs `text-body mb-3`, 3
+muted tokens). Canonicalize via the leaves:
+- h1 report title → `text-2xl md:text-3xl font-bold text-body mb-2` (a title leaf/variant).
+- h2 section → `SectionHeading` (default), bordered → `SectionHeading bordered`.
+- h3 sub → `SectionHeading size="sm"` / `Heading as="h3" size="lg"`.
+- body/muted → `Text` tones (`body`/`muted`); markdown → `MarkdownContent`.
+
+### Out of scope (separate follow-ups, flagged by the audit)
+- `markdown.scss` hardcodes a *light* GitHub theme; report bodies render on dark.
+- `@tailwindcss/typography` is not installed, so `prose prose-invert` is inert.
 
 ## 5. Verification discipline
 
