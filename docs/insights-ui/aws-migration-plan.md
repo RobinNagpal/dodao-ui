@@ -65,7 +65,13 @@ crons, NextAuth on `.koalagains.com`, Puppeteer support, S3 access, and the exis
 
 ## 2. Target architecture
 
-Recommended target: **containerized Next.js on ECS Fargate, behind an internal ALB, behind
+> **Two flavors of the same container.** The architecture below is the **horizontally-scaled
+> ECS Fargate** topology (full HA, autoscaling). For the initial migration a **single-node
+> Lightsail** variant is recommended as cheaper and simpler — it drops the ALB and ElastiCache
+> entirely (see [§3a](#3a-the-single-node-simplification)). Read this section as the "scale-up"
+> target; the Lightsail variant is a strict subset of it.
+
+Scaled target: **containerized Next.js on ECS Fargate, behind an internal ALB, behind
 the existing CloudFront**, with static assets offloaded to S3+CloudFront, RDS Postgres,
 Secrets Manager, and EventBridge Scheduler for crons. Everything below is Terraform-managed.
 
@@ -135,20 +141,57 @@ Secrets Manager, and EventBridge Scheduler for crons. Everything below is Terraf
 
 ---
 
-## 3. Why containers (ECS Fargate) over OpenNext/Amplify
+## 3. Compute model: ECS Fargate vs. Lightsail vs. OpenNext/Amplify
 
-Three viable AWS targets were considered. Recommendation: **ECS Fargate container**.
+Four AWS targets were considered. Both container options (Fargate, Lightsail) suit the app;
+**the right pick hinges on one decision: single node vs. horizontally-scaled.**
 
 | Option | Pros | Cons | Verdict |
 |---|---|---|---|
-| **ECS Fargate container** (recommended) | Runs the exact `next start` server we already build in CI; native **Puppeteer/Chromium** support; long-running report generation OK; no per-route serverless cold starts; Terraform-first; mirrors existing repo patterns (ECR + Lightsail container in `ai-agents/`) | We own scaling, the ALB, and the deploy-skew static-asset story | **Chosen** |
-| **OpenNext + AWS (Lambda/CloudFront)** | Closest to Vercel's serverless/ISR model; cheapest at low traffic | Puppeteer in Lambda needs `@sparticuz/chromium` rework; 15s–15min Lambda limits awkward for report jobs; OpenNext adapter is another moving part; less Terraform-native (SST/CDK-oriented) | Alternative if we later want to drop containers |
-| **AWS Amplify Hosting** | Managed Next.js SSR, least ops | Weak Terraform story; limited control over CloudFront behaviors we depend on; Puppeteer unsupported | Rejected |
+| **Lightsail Containers** (recommended for **single-node**) | Cheapest; bundles load balancer + managed TLS + custom domain; **far less Terraform** (no VPC/NAT/ALB/target-groups); matches an existing repo pattern (`ai-agents/crowd-fund-analysis/terraform`); single node ⇒ **no shared cache handler needed** ([§3a](#3a-the-single-node-simplification)) | No autoscaling (fixed `power`×`scale`); no managed Redis; **bundled LB request timeout may not allow the 300s routes** ([§5.11](#5-application--code-changes)); scale>1 reintroduces the cache-coherence problem with no managed Redis to solve it | **Recommended if origin load fits one node + the 300s timeout is resolved** |
+| **ECS Fargate container** | Runs the exact `next start` server we build in CI; native Puppeteer; autoscaling + Multi-AZ HA; full VPC control (private RDS/ElastiCache); raisable ALB timeout for the 300s routes | Most infrastructure to own (VPC, NAT, ALB, ElastiCache for multi-task); higher fixed cost (~$120–200/mo) | **Recommended when HA / autoscaling / >1 node is required** |
+| **OpenNext + AWS (Lambda/CloudFront)** | Closest to Vercel's serverless/ISR model; cheapest at very low traffic | Puppeteer in Lambda needs `@sparticuz/chromium` rework; 15-min Lambda cap awkward for 300s+ jobs; OpenNext adapter is another moving part; less Terraform-native | Alternative if we later drop containers |
+| **AWS Amplify Hosting** | Managed Next.js SSR, least ops | Weak Terraform story; limited CloudFront-behavior control; Puppeteer unsupported | Rejected |
 
-The deciding factors are **Puppeteer** (needs a real Chromium runtime) and the desire for a
-**Terraform-first, container-based** deploy consistent with the rest of the repo. The
-container also makes the Prisma/Postgres connection model (persistent connections, no
-serverless connection-pool churn) simpler.
+### 3a. The single-node simplification
+
+Most of this plan's moving parts (ElastiCache, the shared `cacheHandler`, a multi-task ALB)
+exist **only because of running 2+ instances**. They are the cost of horizontal scale, not of
+the app. Two facts make a **single larger node** realistic for KoalaGains:
+
+1. **Origin load is low by design.** Per `cloudfront-deploy-skew.md`, CloudFront absorbs the
+   hot `/stocks/*`, `/etfs/*`, and tariff traffic at the edge; the origin mostly serves
+   cache-misses + API calls. That is the load a single node must carry — not raw user traffic.
+2. **One process ⇒ one cache.** With a single instance, `unstable_cache`/`revalidateTag`
+   ([§5.10](#5-application--code-changes)) are coherent again with **zero extra infrastructure**
+   — no Redis, no custom cache handler.
+
+So a single Lightsail `medium` (1 vCPU / 4 GB — headroom for Puppeteer) **behind the existing
+CloudFront** is the cheapest, lowest-Terraform path and collapses §5.10 entirely. Indicative
+cost: Lightsail `medium` $40 (LB+TLS included) + managed/existing Postgres ≈ **$55–70/mo
+all-in**, vs. ~$120–200 for the Fargate design.
+
+**Before choosing Lightsail, resolve two things:**
+
+- **The 300s tariff-generation routes** ([§5.11](#5-application--code-changes)). Lightsail's
+  bundled LB request timeout is not freely tunable — **verify a 5-minute request survives**, or
+  move those admin generators to an async job pattern (the better fix on any platform). This is
+  the single biggest reason to prefer Fargate (raisable ALB `idle_timeout`).
+- **HA expectations.** `scale=1` has no horizontal redundancy and a brief deploy-swap window
+  (Lightsail does health-checked rolling deploys, so it's modest). If you need true HA or
+  autoscaling later, move to Fargate — going to Lightsail `scale>1` reopens cache coherence
+  with no managed Redis to lean on.
+
+**Recommendation.** Default to **Lightsail single-node** for the initial migration (cheaper,
+simpler, repo-consistent) once the 300s-route question is answered; keep the **Fargate** tree
+in `deploy/aws/terraform/` as the documented scale-up path. The decision is tracked in
+[§15 open questions](#15-open-questions).
+
+> The Terraform skeleton in `deploy/aws/terraform/` currently targets the **Fargate** option.
+> A Lightsail variant is far smaller — a `aws_lightsail_container_service` +
+> `aws_lightsail_container_service_deployment_version` (env from Secrets Manager) + a managed
+> DB, modeled on `ai-agents/crowd-fund-analysis/terraform/main.tf`. It can be added under
+> `deploy/aws/terraform-lightsail/` once the compute model is confirmed.
 
 ---
 
@@ -520,8 +563,10 @@ cost — Fargate gives predictable flat compute cost instead of per-invocation b
 
 These need product/platform answers before the Terraform skeleton becomes `apply`-ready:
 
-1. **Compute model final call:** ECS Fargate container (this plan) vs. OpenNext serverless?
-   Affects the entire Terraform tree.
+1. **Compute model final call:** **Lightsail single-node** ([§3a](#3a-the-single-node-simplification),
+   cheapest/simplest) vs. **ECS Fargate** (HA/autoscaling, current skeleton) vs. OpenNext
+   serverless? Gated by the 300s-route timeout (Q9) and HA needs. Affects the entire Terraform
+   tree and whether ElastiCache (Q8) is needed at all.
 2. **AWS account & region:** which account/region hosts this? (CloudFront/ACM certs must be in
    `us-east-1`.) Is there an existing networking/landing-zone to slot into?
 3. **Database:** is Postgres already on AWS, or do we migrate ([§10](#10-database-migration))?
