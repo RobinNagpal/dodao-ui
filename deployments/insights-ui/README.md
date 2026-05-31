@@ -31,7 +31,13 @@ browser ──(assetPrefix)──► S3 (/_next/static)    └──► existing
 `cloudfront.tf` (Phase B, gated), `scheduler.tf` (crons, gated), `outputs.tf`. Plus the
 `Dockerfile` (build context = repo root).
 
-## Deploy (what CI does)
+## Deploy
+
+CI (`.github/workflows/insights-ui-deploy-aws.yml`) **auto-deploys on merge to `main`** when
+`insights-ui/**` or `shared/web-core/**` changes (also runnable manually). It runs the steps
+below; Vercel keeps deploying via its own flow until cut-over.
+
+### What CI does
 
 ```bash
 # 1. create ECR repo + S3 bucket first

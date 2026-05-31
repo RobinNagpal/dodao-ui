@@ -299,8 +299,9 @@ is the **single cron owner** — no double-run against the shared RDS.
 
 ## 8. CI/CD changes
 
-New workflow **`.github/workflows/insights-ui-deploy-aws.yml`** (replaces the Vercel deploy at
-cut-over):
+New workflow **`.github/workflows/insights-ui-deploy-aws.yml`**. It **auto-deploys on merge to
+`main`** whenever `insights-ui/**` or `shared/web-core/**` changes (web-core is a build dep of
+insights-ui), and is also runnable manually via `workflow_dispatch`. Steps:
 
 1. **Auth to AWS** via GitHub OIDC (preferred) or `KOALA_AWS_*`.
 2. **Create ECR repo + S3 bucket first** (`terraform apply -target`) so the push/upload have

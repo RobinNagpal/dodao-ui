@@ -7,8 +7,18 @@ name: Deploy insights-ui (AWS / Lightsail)
 # Phase A: the app is reachable directly at https://prod.koalagains.com (no CloudFront), running
 # in parallel with Vercel. This deploys to AWS only — Vercel keeps deploying via its own flow
 # until cut-over.
+#
+# Auto-deploys on merge to `main` whenever the insights-ui app or the shared web-core package
+# changes (web-core is a build dependency of insights-ui). Also runnable manually.
 
 on:
+  push:
+    branches: [main]
+    paths:
+      - 'insights-ui/**'
+      - 'shared/web-core/**'
+      - 'deployments/insights-ui/**'
+      - '.github/workflows/insights-ui-deploy-aws.yml'
   workflow_dispatch:
     inputs:
       environment:
