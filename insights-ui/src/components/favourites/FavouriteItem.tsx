@@ -37,9 +37,9 @@ export default function FavouriteItem({
   };
 
   return (
-    <div className="bg-gray-900 rounded-lg p-4 border border-gray-700 hover:border-gray-600 transition-colors">
-      <div className="flex justify-between items-start gap-2 mb-3">
-        <div className="flex-1 flex items-center gap-2 flex-wrap">
+    <div className="bg-gray-900 rounded-lg p-3 border border-gray-700 hover:border-gray-600 transition-colors">
+      <div className="flex justify-between items-center gap-2 mb-2">
+        <div className="flex-1 flex items-center gap-x-2 gap-y-1 flex-wrap">
           {selectable && (
             <div className="mr-1" onClick={(e) => e.stopPropagation()}>
               <Checkboxes
@@ -64,7 +64,7 @@ export default function FavouriteItem({
             rel="noopener noreferrer"
             onClick={(e) => e.stopPropagation()}
           >
-            <h4 className="text-base font-bold">
+            <h4 className="text-sm font-semibold tracking-tight text-gray-100 leading-tight">
               {favourite.ticker.name} ({favourite.ticker.symbol})
             </h4>
           </Link>
@@ -73,7 +73,7 @@ export default function FavouriteItem({
               {(() => {
                 const { textColorClass, bgColorClass } = getScoreColorClasses(favourite.ticker.cachedScoreEntry.finalScore);
                 return (
-                  <span className={`${textColorClass} px-1.5 py-0.5 rounded-md ${bgColorClass} bg-opacity-15 font-semibold text-xs`}>
+                  <span className={`${textColorClass} px-1.5 rounded ${bgColorClass} bg-opacity-15 font-semibold text-xs leading-5`}>
                     {favourite.ticker.cachedScoreEntry.finalScore}/25
                   </span>
                 );
@@ -81,16 +81,16 @@ export default function FavouriteItem({
             </>
           )}
           {favourite.myScore !== null && favourite.myScore !== undefined && (
-            <span className="font-bold text-xs" style={{ color: 'var(--primary-color, #3B82F6)' }}>
+            <span className="font-semibold text-xs tracking-tight" style={{ color: 'var(--primary-color, #3B82F6)' }}>
               My Score: {favourite.myScore % 1 === 0 ? favourite.myScore.toString() : favourite.myScore.toFixed(1)}
             </span>
           )}
         </div>
-        <div className="flex gap-1">
-          <button onClick={(e) => onEdit(e, favourite)} className="text-blue-400 hover:text-blue-300 p-1" title="Edit">
+        <div className="flex gap-0.5">
+          <button onClick={(e) => onEdit(e, favourite)} className="text-blue-400 hover:text-blue-300 p-0.5" title="Edit">
             <PencilIcon className="w-4 h-4" />
           </button>
-          <button onClick={(e) => onDelete(e, favourite)} className="text-red-400 hover:text-red-300 p-1" title="Delete">
+          <button onClick={(e) => onDelete(e, favourite)} className="text-red-400 hover:text-red-300 p-0.5" title="Delete">
             <TrashIcon className="w-4 h-4" />
           </button>
         </div>
