@@ -33,6 +33,7 @@ and cost. The heavier **ECS Fargate** topology is retained as a documented scale
 14. [Cost](#14-cost)
 15. [Phased delivery checklist](#15-phased-delivery-checklist)
 16. [Open questions](#16-open-questions)
+17. [Logs & observability — public CloudWatch dashboard](#17-logs--observability--public-cloudwatch-dashboard)
 - [Appendix A — ECS Fargate scale-up path](#appendix-a--ecs-fargate-scale-up-path)
 
 ---
@@ -161,6 +162,7 @@ deployments/insights-ui/
 ├── s3_static.tf              # public S3 bucket for /_next/static (served via assetPrefix)
 ├── cloudfront.tf             # PHASE B (gated by manage_cloudfront): distribution → Lightsail, apex/www, CF cert
 ├── scheduler.tf              # EventBridge crons (gated by enable_crons) + invoker Lambda + IAM
+├── observability.tf          # CloudWatch log group + public log dashboard + app log policy (§17)
 └── outputs.tf
 ```
 
@@ -512,6 +514,85 @@ single-process cache, and existing RDS remove the biggest cost adders of the Far
 
 > Resolved: **DB stays on the existing public RDS** (connect over SSL — no VPC peering/Fargate);
 > **static is served from S3** via `assetPrefix`; **crons move to AWS in this PR**.
+
+---
+
+## 17. Logs & observability — public CloudWatch dashboard
+
+**Goal:** a URL where anyone (no login) can view the app's logs and filter by level
+(error / warn / info / debug) — **without standing up a second Lightsail/EC2 instance**.
+
+**Chosen approach (AWS-native, no extra instance):** the app ships **structured JSON logs**
+(with a `level` field) to a **CloudWatch Log Group**, and a **CloudWatch Dashboard** — with a
+**Logs Insights widget + a `level` dropdown variable** — renders them. CloudWatch dashboards can
+be **shared publicly** (anyone with the link, no login).
+
+This came out of a 5-agent research spike: the agents' top pick was self-hosted Grafana+Loki,
+but that needs a host (a second Lightsail/EC2 box). Their **runner-up — a public CloudWatch
+dashboard — meets every requirement with zero extra compute**, so with the "no second instance"
+constraint it becomes the right choice. (Grafana+Loki remains the option if you later want a
+richer UI and are willing to run a host — see end of section.)
+
+### Architecture
+
+```
+  app container ──pino (JSON, {level,msg,...}) ──► CloudWatch Log Group  /insights-ui/app
+                  (AWS SDK PutLogEvents, KOALA_AWS_* creds + logs policy)        │
+                                                                                 ▼
+                                              CloudWatch Dashboard "insights-ui-logs"
+                                              - Logs Insights table, filter level = "$level"
+                                              - $level dropdown: error|warn|info|debug
+                                                                                 │
+                                              Actions → "Share publicly" → public URL (no login)
+```
+
+### Requirement fit
+
+| # | Requirement | How |
+|---|---|---|
+| 1 | Web UI | CloudWatch dashboard Logs Insights table + a count-by-level bar |
+| 2 | Filter by level | App logs JSON with `level`; a dashboard **variable** (`error/warn/info/debug` dropdown) is substituted into the Logs Insights query `filter level = "…"` |
+| 3 | No-login URL | CloudWatch **public dashboard sharing** — anyone with the link, no AWS login |
+| 4 | Cheap | No instance. Pay only for Logs ingest (~$0.50/GB) + storage (~$0.03/GB-mo) + ~$3/dashboard-mo (first 3 free) + a small public-share fee. For this app's low volume: a few $/mo at most |
+| 5 | Easy / AWS-native | One log group + one dashboard in the Terraform; public-share is one console click |
+
+### App-side change (required)
+
+The app uses ad-hoc `console.*`. Add a structured logger (**pino**) that emits one JSON object
+per line with a `level` field, and ship it to CloudWatch. Two ways:
+- **Direct (recommended):** a `pino` → CloudWatch transport (e.g. `pino-cloudwatch`, or a small
+  custom transport using `@aws-sdk/client-cloudwatch-logs` — already a dependency) that writes to
+  `CLOUDWATCH_LOG_GROUP`. Needs the `logs:PutLogEvents` policy (this stack outputs its ARN —
+  attach it to the `KOALA_AWS_*` IAM user).
+- **Decoupled (alternative, no app creds):** keep app logging to stdout (JSON) and run a tiny
+  scheduled **Lambda** that polls `aws lightsail get-container-log` and `PutLogEvents` into the
+  group. Serverless, still no Lightsail/EC2.
+
+Either way the lines must be **JSON with a `level` field** so Logs Insights can filter on it.
+
+### Terraform
+
+`deployments/insights-ui/observability.tf` (gated by `enable_observability`, default **on**)
+creates the log group, the dashboard (with the `level` dropdown), and the IAM policy for the app
+to ship logs. **Public sharing has no Terraform resource** — enable it once in the console:
+*CloudWatch → Dashboards → `insights-ui-logs` → Actions → Share dashboard → Share publicly* →
+copy the public URL.
+
+### Security — the dashboard is public
+
+A public dashboard exposes whatever its widget queries return. Mitigate:
+- **Scrub PII / secrets / tokens at the log layer** — never log `DATABASE_URL`, API keys, auth
+  tokens, or full request bodies.
+- Keep the widget queries **scoped to this one log group**, keep **retention short** (14 days),
+  and treat the URL as a **public data export**.
+- The public-share link is unguessable but unauthenticated — rotate/disable it if leaked.
+
+### If you later want a richer UI (optional, needs a host)
+
+Self-hosted **Grafana OSS (anonymous) + Loki (S3 chunks)** gives live tail, ad-hoc LogQL, and a
+nicer Explore — but it needs a host (a second Lightsail container service or an EC2/Lightsail
+instance), which we're explicitly avoiding here. Revisit only if the CloudWatch UX proves too
+limiting.
 
 ---
 

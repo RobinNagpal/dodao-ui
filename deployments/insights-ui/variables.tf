@@ -107,6 +107,37 @@ variable "cloudfront_default_ttl" {
   default     = 518400
 }
 
+# ---- Observability (public CloudWatch dashboard, §17 — no extra instance) ------------------
+variable "enable_observability" {
+  description = "Create the CloudWatch log group + public log dashboard."
+  type        = bool
+  default     = true
+}
+
+variable "log_group_name" {
+  description = "CloudWatch Log Group the app ships structured JSON logs to."
+  type        = string
+  default     = "/insights-ui/app"
+}
+
+variable "log_retention_days" {
+  description = "CloudWatch Logs retention."
+  type        = number
+  default     = 14
+}
+
+variable "log_dashboard_name" {
+  description = "Name of the CloudWatch dashboard (shared publicly via the console)."
+  type        = string
+  default     = "insights-ui-logs"
+}
+
+variable "app_iam_user_name" {
+  description = "IAM user (the KOALA_AWS_* identity) to attach the log-shipping policy to. Empty = attach manually via the output policy ARN."
+  type        = string
+  default     = ""
+}
+
 # ---- App runtime config (NON-secret) -----------------------------------------------------
 # NEXTAUTH_URL points at the DIRECT host during Phase A. Switch to https://koalagains.com when
 # CloudFront fronts the app at cut-over (and add prod.koalagains.com to OAuth redirect URIs).
@@ -126,6 +157,9 @@ variable "app_env" {
     CLOUDFRONT_DISTRIBUTION_ID = "EZI5H8FKNE9R1"
     # Lambda report-generation callbacks should return to this AWS host in Phase A.
     REPORT_GENERATION_CALLBACK_BASE_URL = "https://prod.koalagains.com"
+    # The app's pino→CloudWatch transport ships structured JSON logs here (§17).
+    CLOUDWATCH_LOG_GROUP = "/insights-ui/app"
+    AWS_REGION_LOGS      = "us-east-1"
   }
 }
 
