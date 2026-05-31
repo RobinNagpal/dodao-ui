@@ -74,15 +74,15 @@ function getVerdictBadgeClasses(verdict: ManagementTeamAlignmentVerdict): string
   switch (verdict) {
     case ManagementTeamAlignmentVerdict.OWNER_OPERATOR:
     case ManagementTeamAlignmentVerdict.STRONGLY_ALIGNED:
-      return 'bg-green-900 text-green-200';
+      return 'bg-emerald-500/15 text-emerald-300 border border-emerald-500/40';
     case ManagementTeamAlignmentVerdict.ALIGNED:
-      return 'bg-blue-900 text-blue-200';
+      return 'bg-sky-500/15 text-sky-300 border border-sky-500/40';
     case ManagementTeamAlignmentVerdict.WEAKLY_ALIGNED:
-      return 'bg-yellow-900 text-yellow-200';
+      return 'bg-amber-500/15 text-amber-300 border border-amber-500/40';
     case ManagementTeamAlignmentVerdict.MISALIGNED:
-      return 'bg-red-900 text-red-200';
+      return 'bg-red-500/15 text-red-300 border border-red-500/40';
     default:
-      return 'bg-gray-800 text-gray-200';
+      return 'bg-gray-500/15 text-gray-300 border border-gray-500/40';
   }
 }
 
@@ -218,7 +218,7 @@ export default async function ManagementTeamPage({ params }: { params: RoutePara
 
       <Breadcrumbs breadcrumbs={breadcrumbs} hideHomeIcon={true} />
 
-      <article className="bg-gray-900 rounded-lg shadow-sm border border-color p-3 sm:p-6 md:p-8" itemScope itemType="https://schema.org/Article">
+      <article className="bg-surface rounded-lg shadow-sm border border-color p-3 sm:p-6 md:p-8" itemScope itemType="https://schema.org/Article">
         <section className="mb-6">
           <h1 className="text-pretty text-2xl font-semibold tracking-tight sm:text-4xl" itemProp="headline">
             {tickerData.name} ({tickerData.symbol}) — Management Team Experience &amp; Alignment
@@ -226,7 +226,7 @@ export default async function ManagementTeamPage({ params }: { params: RoutePara
         </section>
 
         <section className="mb-8" itemProp="articleBody">
-          <div className="flex items-center gap-2 mb-4 pb-2 border-b border-gray-700">
+          <div className="flex items-center gap-2 mb-4 pb-2 border-b border-border">
             <h2 className="text-xl font-bold">Alignment Verdict</h2>
             <span className={`inline-flex items-center justify-center rounded-full px-2.5 py-1 text-xs font-medium ${getVerdictBadgeClasses(verdict)}`}>
               {verdictLabel}
@@ -236,12 +236,12 @@ export default async function ManagementTeamPage({ params }: { params: RoutePara
 
           <div className="mb-6">
             <h3 className="text-lg font-semibold mb-2">Summary</h3>
-            <div className="markdown markdown-body text-gray-300" dangerouslySetInnerHTML={{ __html: parseMarkdown(report.summary) }} />
+            <div className="markdown markdown-body text-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(report.summary) }} />
           </div>
 
           <div>
             <h3 className="text-lg font-semibold mb-2">Detailed Analysis</h3>
-            <div className="markdown markdown-body text-gray-300" dangerouslySetInnerHTML={{ __html: parseMarkdown(report.detailedAnalysis) }} />
+            <div className="markdown markdown-body text-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(report.detailedAnalysis) }} />
           </div>
         </section>
 
@@ -268,10 +268,10 @@ export default async function ManagementTeamPage({ params }: { params: RoutePara
               </time>
             </div>
             <div className="flex gap-2">
-              <span className="inline-flex items-center rounded-full bg-blue-100 dark:bg-blue-900 px-2.5 py-0.5 text-xs font-medium text-blue-800 dark:text-blue-300">
+              <span className="inline-flex items-center rounded-full bg-sky-500/15 border border-sky-500/40 px-2.5 py-0.5 text-xs font-medium text-sky-300">
                 Stock Analysis
               </span>
-              <span className="inline-flex items-center rounded-full bg-amber-100 dark:bg-amber-900 px-2.5 py-0.5 text-xs font-medium text-amber-800 dark:text-amber-300">
+              <span className="inline-flex items-center rounded-full bg-amber-500/15 border border-amber-500/40 px-2.5 py-0.5 text-xs font-medium text-amber-300">
                 Management Team
               </span>
             </div>

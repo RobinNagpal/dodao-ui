@@ -119,7 +119,7 @@ export default async function EtfHoldingsPage({ params }: { params: RouteParams 
           <h1 className="text-pretty text-2xl font-semibold tracking-tight sm:text-3xl" itemProp="headline">
             {etfData.name} ({symbol}) &mdash; Holdings
           </h1>
-          <p className="text-sm text-gray-400 mt-1" itemProp="description">
+          <p className="text-sm text-muted mt-1" itemProp="description">
             Top holdings reported by this ETF.
           </p>
         </header>
@@ -127,8 +127,8 @@ export default async function EtfHoldingsPage({ params }: { params: RouteParams 
         {totalHoldings > 0 ? (
           <EtfHoldings data={holdings} title="Top Holdings" relatedSections={relatedSections} />
         ) : (
-          <section className="bg-gray-900 rounded-lg shadow-sm px-3 py-6 sm:p-6 mt-6">
-            <p className="text-sm text-gray-400">No holdings data available for this ETF.</p>
+          <section className="bg-surface rounded-lg shadow-sm px-3 py-6 sm:p-6 mt-6">
+            <p className="text-sm text-muted">No holdings data available for this ETF.</p>
             {relatedSections}
           </section>
         )}

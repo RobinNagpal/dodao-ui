@@ -24,7 +24,7 @@ export default function PastPerformance({ tickerData, data }: PastPerformancePro
       categoryResult={categoryResult}
       analysisTitle={analysisTitle}
       categoryBadgeText="Past Performance"
-      categoryBadgeClassName="bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-300"
+      categoryBadgeClassName="bg-emerald-500/15 border border-emerald-500/40 text-emerald-300"
       pageSlug="past-performance"
     />
   );

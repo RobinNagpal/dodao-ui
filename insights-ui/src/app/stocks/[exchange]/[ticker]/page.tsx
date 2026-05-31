@@ -306,7 +306,7 @@ export async function generateMetadata({ params }: { params: RouteParams }): Pro
 ============================================================================= */
 function FinancialInfoSkeleton(): JSX.Element {
   return (
-    <section id="financial-info" className="bg-gray-900 rounded-lg shadow-sm px-2 py-2 sm:p-3 mt-6">
+    <section id="financial-info" className="bg-surface rounded-lg shadow-sm px-2 py-2 sm:p-3 mt-6">
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
         <FinancialCard label="Current Price" isLoading={true} />
         <FinancialCard label="52 Week Range" isLoading={true} />
@@ -327,38 +327,38 @@ function FinancialInfoSkeleton(): JSX.Element {
 
 function QuarterlyChartSkeleton(): JSX.Element {
   return (
-    <section id="quarterly-metrics-chart" className="bg-gray-900 rounded-lg shadow-sm px-2 py-3 sm:p-4 mt-6">
+    <section id="quarterly-metrics-chart" className="bg-surface rounded-lg shadow-sm px-2 py-3 sm:p-4 mt-6">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
         <div>
-          <div className="h-6 w-48 rounded bg-gray-800 animate-pulse" />
-          <div className="h-4 w-32 rounded bg-gray-800 animate-pulse mt-1" />
+          <div className="h-6 w-48 rounded bg-surface-2 animate-pulse" />
+          <div className="h-4 w-32 rounded bg-surface-2 animate-pulse mt-1" />
         </div>
         <div className="flex flex-wrap gap-2">
           {[1, 2, 3, 4].map((i) => (
-            <div key={i} className="h-8 w-20 rounded-md bg-gray-800 animate-pulse" />
+            <div key={i} className="h-8 w-20 rounded-md bg-surface-2 animate-pulse" />
           ))}
         </div>
       </div>
-      <div className="h-64 sm:h-72 rounded bg-gray-800 animate-pulse" />
+      <div className="h-64 sm:h-72 rounded bg-surface-2 animate-pulse" />
     </section>
   );
 }
 
 function PriceChartSkeleton(): JSX.Element {
   return (
-    <section id="price-chart" className="bg-gray-900 rounded-lg shadow-sm px-2 py-3 sm:p-4 mt-6">
+    <section id="price-chart" className="bg-surface rounded-lg shadow-sm px-2 py-3 sm:p-4 mt-6">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
         <div>
-          <div className="h-6 w-36 rounded bg-gray-800 animate-pulse" />
-          <div className="h-4 w-24 rounded bg-gray-800 animate-pulse mt-1" />
+          <div className="h-6 w-36 rounded bg-surface-2 animate-pulse" />
+          <div className="h-4 w-24 rounded bg-surface-2 animate-pulse mt-1" />
         </div>
         <div className="flex flex-wrap gap-2">
           {['1M', '6M', '1Y', '3Y', '5Y'].map((label) => (
-            <div key={label} className="h-8 w-12 rounded-md bg-gray-800 animate-pulse" />
+            <div key={label} className="h-8 w-12 rounded-md bg-surface-2 animate-pulse" />
           ))}
         </div>
       </div>
-      <div className="h-64 sm:h-72 rounded bg-gray-800 animate-pulse" />
+      <div className="h-64 sm:h-72 rounded bg-surface-2 animate-pulse" />
     </section>
   );
 }
@@ -378,7 +378,7 @@ function ChartsInfoSkeleton(): JSX.Element {
         <div className="lg:w-1/2 flex justify-center">
           <div className="w-full max-w-lg relative pb-4" style={{ minHeight: '400px', contain: 'layout size' }}>
             <div className="absolute top-20 right-0 flex space-x-2" style={{ zIndex: 10 }}>
-              <div className="h-8 w-12 rounded bg-gray-800 animate-pulse" />
+              <div className="h-8 w-12 rounded bg-surface-2 animate-pulse" />
             </div>
             <RadarSkeleton />
           </div>
@@ -462,7 +462,7 @@ function TickerSummaryInfo({ data }: { data: Promise<TickerV1FastResponse> }): J
   return (
     <section id="introduction" className="text-left mb-2">
       {/* About Report - displayed above the main heading */}
-      {d.aboutReport && <div className="text-gray-400 markdown-body text-sm pb-4" dangerouslySetInnerHTML={{ __html: parseMarkdown(d.aboutReport) }} />}
+      {d.aboutReport && <div className="text-muted markdown-body text-sm pb-4" dangerouslySetInnerHTML={{ __html: parseMarkdown(d.aboutReport) }} />}
 
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-4 mb-4">
         <h1 className="text-pretty text-2xl font-semibold tracking-tight sm:text-4xl min-w-0" itemProp="headline">
@@ -474,7 +474,7 @@ function TickerSummaryInfo({ data }: { data: Promise<TickerV1FastResponse> }): J
           )}
         </h1>
         <div className="flex items-center gap-3 flex-shrink-0">
-          <span className="text-sm font-medium text-gray-400">{formatExchangeWithCountry(d.exchange)}</span>
+          <span className="text-sm font-medium text-muted">{formatExchangeWithCountry(d.exchange)}</span>
           <CompetitionAnalysisButton exchange={d.exchange.toUpperCase()} ticker={d.symbol.toUpperCase()} />
         </div>
       </div>
@@ -560,15 +560,15 @@ function getManagementTeamVerdictBadgeClasses(verdict: ManagementTeamAlignmentVe
   switch (verdict) {
     case ManagementTeamAlignmentVerdict.OWNER_OPERATOR:
     case ManagementTeamAlignmentVerdict.STRONGLY_ALIGNED:
-      return 'bg-green-900 text-green-200';
+      return 'bg-emerald-500/15 text-emerald-300 border border-emerald-500/40';
     case ManagementTeamAlignmentVerdict.ALIGNED:
-      return 'bg-blue-900 text-blue-200';
+      return 'bg-sky-500/15 text-sky-300 border border-sky-500/40';
     case ManagementTeamAlignmentVerdict.WEAKLY_ALIGNED:
-      return 'bg-yellow-900 text-yellow-200';
+      return 'bg-amber-500/15 text-amber-300 border border-amber-500/40';
     case ManagementTeamAlignmentVerdict.MISALIGNED:
-      return 'bg-red-900 text-red-200';
+      return 'bg-red-500/15 text-red-300 border border-red-500/40';
     default:
-      return 'bg-gray-800 text-gray-200';
+      return 'bg-gray-500/15 text-body border border-gray-500/40';
   }
 }
 
@@ -599,7 +599,7 @@ function CategorySummaryCard({ categoryKey, d }: { categoryKey: TickerAnalysisCa
   const categoryResult: FullTickerV1CategoryAnalysisResult | undefined = d.categoryAnalysisResults?.find((r) => r.categoryKey === categoryKey);
   const link = CATEGORY_DETAIL_LINKS[categoryKey];
   return (
-    <div className="bg-gray-900 p-3 sm:p-4 rounded-md shadow-sm">
+    <div className="bg-surface p-3 sm:p-4 rounded-md shadow-sm">
       <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
         <div className="flex flex-wrap items-center gap-2">
           <h3 className="text-lg font-semibold">{CATEGORY_MAPPINGS[categoryKey]}</h3>
@@ -623,7 +623,7 @@ function CategorySummaryCard({ categoryKey, d }: { categoryKey: TickerAnalysisCa
         </Link>
       </div>
       <div
-        className="text-gray-300 markdown markdown-body"
+        className="text-body markdown markdown-body"
         dangerouslySetInnerHTML={{ __html: parseMarkdown(categoryResult?.overallAnalysisDetails || 'No summary available.') }}
       />
     </div>
@@ -645,8 +645,8 @@ function TickerAnalysisInfo({
   const managementTeamReport = d.managementTeamReports?.[0];
 
   return (
-    <section id="summary-analysis" className="bg-gray-800 rounded-lg shadow-sm mb-4 sm:py-6" itemProp="abstract">
-      <h2 className="text-xl font-bold mb-4 pb-2 border-b border-gray-700">Summary Analysis</h2>
+    <section id="summary-analysis" className="mb-4 sm:py-6" itemProp="abstract">
+      <h2 className="text-xl font-bold mb-4 pb-2 border-b border-border">Summary Analysis</h2>
       <div className="space-y-4">
         <CategorySummaryCard categoryKey={TickerAnalysisCategory.BusinessAndMoat} d={d} />
 
@@ -660,7 +660,7 @@ function TickerAnalysisInfo({
           <CompetitionChartSection dataPromise={competitionPromise} exchange={exchange} ticker={ticker} />
 
           {managementTeamReport && (
-            <div className="bg-gray-900 p-3 sm:p-4 rounded-md shadow-sm">
+            <div className="bg-surface p-3 sm:p-4 rounded-md shadow-sm">
               <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
                 <div className="flex flex-wrap items-center gap-2">
                   <h3 className="text-lg font-semibold">Management Team Experience &amp; Alignment</h3>
@@ -684,7 +684,7 @@ function TickerAnalysisInfo({
                 </Link>
               </div>
               <div
-                className="text-gray-300 markdown markdown-body"
+                className="text-body markdown markdown-body"
                 dangerouslySetInnerHTML={{ __html: parseMarkdown(managementTeamReport.summary || 'No summary available.') }}
               />
             </div>
@@ -702,7 +702,7 @@ function TickerAnalysisInfo({
 
 function TickerArticleFooter({ modifiedDate, formattedModifiedDate }: { modifiedDate: Date; formattedModifiedDate: string }): JSX.Element {
   return (
-    <footer className="mt-8 pt-6 border-t border-color">
+    <footer className="mt-8 pt-6 border-t border-border">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div className="text-sm text-muted-foreground">
           <span>Last updated by </span>
@@ -715,10 +715,10 @@ function TickerArticleFooter({ modifiedDate, formattedModifiedDate }: { modified
           </time>
         </div>
         <div className="flex gap-2">
-          <span className="inline-flex items-center rounded-full bg-blue-100 dark:bg-blue-900 px-2.5 py-0.5 text-xs font-medium text-blue-800 dark:text-blue-300">
+          <span className="inline-flex items-center rounded-full bg-sky-500/15 border border-sky-500/40 px-2.5 py-0.5 text-xs font-medium text-sky-300">
             Stock Analysis
           </span>
-          <span className="inline-flex items-center rounded-full bg-purple-100 dark:bg-purple-900 px-2.5 py-0.5 text-xs font-medium text-purple-800 dark:text-purple-300">
+          <span className="inline-flex items-center rounded-full bg-indigo-500/15 border border-indigo-500/40 px-2.5 py-0.5 text-xs font-medium text-indigo-300">
             Investment Report
           </span>
         </div>

@@ -35,7 +35,7 @@ export interface EtfReturnsTableProps {
  * none of the visible rows have a real value — so a fund with only YTD
  * data does not show ten empty year columns.
  *
- * Designed to render inside an existing `bg-gray-900` card (e.g. the ETF
+ * Designed to render inside an existing `bg-surface` card (e.g. the ETF
  * category article), so it carries no outer card chrome of its own.
  */
 export default function EtfReturnsTable({ rows, title = 'Returns', subtitle }: EtfReturnsTableProps): JSX.Element | null {
@@ -65,35 +65,35 @@ export default function EtfReturnsTable({ rows, title = 'Returns', subtitle }: E
 
   return (
     <section id="etf-returns" className="mb-6">
-      <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-2 pb-2 border-b border-gray-700">
+      <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-2 pb-2 border-b border-border">
         <div>
           <h2 className="text-xl font-semibold text-color">{title}</h2>
-          {subtitle ? <p className="text-xs text-gray-400 mt-1">{subtitle}</p> : null}
+          {subtitle ? <p className="text-xs text-muted mt-1">{subtitle}</p> : null}
         </div>
       </div>
 
-      <div className="mt-4 overflow-x-auto rounded-lg border border-gray-700">
+      <div className="mt-4 overflow-x-auto rounded-lg border border-border">
         <table className="min-w-full">
-          <thead className="bg-gray-800">
+          <thead className="bg-surface-2">
             <tr>
-              <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider whitespace-nowrap">Label</th>
+              <th className="px-4 py-3 text-left text-xs font-medium text-body uppercase tracking-wider whitespace-nowrap">Label</th>
               {visiblePeriods.map((p) => (
-                <th key={p} className="px-4 py-3 text-right text-xs font-medium text-gray-300 uppercase tracking-wider whitespace-nowrap">
+                <th key={p} className="px-4 py-3 text-right text-xs font-medium text-body uppercase tracking-wider whitespace-nowrap">
                   {p}
                 </th>
               ))}
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-700">
+          <tbody className="divide-y divide-border">
             {visibleRows.map((row, idx) => (
-              <tr key={`${row.label}-${idx}`} className={idx % 2 === 0 ? 'bg-gray-900' : 'bg-gray-800/50'}>
-                <td className="px-4 py-3 text-sm text-gray-200 font-medium whitespace-nowrap">{renameLabel(row.label)}</td>
+              <tr key={`${row.label}-${idx}`} className={idx % 2 === 0 ? 'bg-surface' : 'bg-surface-2'}>
+                <td className="px-4 py-3 text-sm text-body font-medium whitespace-nowrap">{renameLabel(row.label)}</td>
                 {visiblePeriods.map((p) => {
                   const cell = row.values?.[p];
                   const empty = isPlaceholder(cell);
                   return (
-                    <td key={p} className="px-4 py-3 text-sm text-gray-300 text-right whitespace-nowrap">
-                      {empty ? <span className="text-gray-500">&mdash;</span> : String(cell)}
+                    <td key={p} className="px-4 py-3 text-sm text-body text-right whitespace-nowrap">
+                      {empty ? <span className="text-muted">&mdash;</span> : String(cell)}
                     </td>
                   );
                 })}

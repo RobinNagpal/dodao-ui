@@ -3,11 +3,11 @@ import { cn } from '@/lib/utils';
 import React from 'react';
 
 /**
- * Dark "report section" surface (`bg-gray-900 rounded-lg shadow-sm`) with
+ * Dark "report section" surface (`bg-surface rounded-lg shadow-sm`) with
  * preset padding. Use instead of hand-writing the card chrome on report
  * sections (financial info, holdings, competition, etc.).
  */
-const cardSection = cva('bg-gray-900 rounded-lg shadow-sm', {
+const cardSection = cva('bg-surface rounded-lg shadow-sm', {
   variants: {
     padding: { compact: 'px-2 py-2 sm:p-3', normal: 'px-3 py-6 sm:p-6', flush: '' },
     mt: { none: '', md: 'mt-6' },

@@ -10,7 +10,7 @@ const text = cva('', {
   variants: {
     size: { inherit: '', xs: 'text-xs', sm: 'text-sm', base: 'text-base', lg: 'text-lg' },
     weight: { normal: '', medium: 'font-medium', semibold: 'font-semibold', bold: 'font-bold' },
-    tone: { body: 'text-gray-300', muted: 'text-gray-400', subtle: 'text-gray-500', bright: 'text-gray-200', white: 'text-white', theme: 'text-color' },
+    tone: { body: 'text-body', muted: 'text-muted', subtle: 'text-muted', bright: 'text-body', white: 'text-heading', theme: 'text-body' },
     leading: { normal: '', snug: 'leading-snug', relaxed: 'leading-relaxed' },
   },
   defaultVariants: { size: 'sm', weight: 'normal', tone: 'body', leading: 'normal' },

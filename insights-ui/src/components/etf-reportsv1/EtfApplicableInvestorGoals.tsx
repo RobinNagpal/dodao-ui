@@ -67,7 +67,7 @@ export default function EtfApplicableInvestorGoals({ investorGoals }: EtfApplica
 
   return (
     <section id="applicable-investor-goals" className="mb-8">
-      <div className="bg-gray-900 p-3 sm:p-4 rounded-md shadow-sm">
+      <div className="bg-surface p-3 sm:p-4 rounded-md shadow-sm">
         <h3 className="text-lg font-semibold text-color mb-3">Who This ETF Suits</h3>
         <div className="space-y-4">
           {groups.map(({ investor, goals }) => {
@@ -77,13 +77,13 @@ export default function EtfApplicableInvestorGoals({ investorGoals }: EtfApplica
                 <div className="mb-2">
                   <HoverTooltip text={investor.shortDescription}>
                     <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-color">
-                      <Icon className="h-5 w-5 flex-shrink-0 text-gray-400" aria-hidden="true" />
+                      <Icon className="h-5 w-5 flex-shrink-0 text-muted" aria-hidden="true" />
                       {investor.name}
                     </span>
                   </HoverTooltip>
                 </div>
                 <div className="flex flex-wrap items-center gap-1.5">
-                  <span className="mr-1 text-xs font-medium uppercase tracking-wide text-gray-400">Goals</span>
+                  <span className="mr-1 text-xs font-medium uppercase tracking-wide text-muted">Goals</span>
                   {goals.map((goal) => (
                     <HoverTooltip key={goal.key} text={goal.shortDescription}>
                       <span className="inline-flex rounded-full border border-color block-bg-color px-2.5 py-1 text-xs font-medium text-color transition-colors hover:border-primary-color">

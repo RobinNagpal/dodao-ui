@@ -9,10 +9,10 @@ export type ReportTagTone = 'family' | 'competitive' | 'category' | 'movers' | '
 const tag = cva('inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium', {
   variants: {
     tone: {
-      family: 'bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-300',
-      competitive: 'bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-300',
-      category: 'bg-amber-100 dark:bg-amber-900 text-amber-800 dark:text-amber-300',
-      movers: 'bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-300',
+      family: 'bg-sky-500/15 text-sky-300 border border-sky-500/40',
+      competitive: 'bg-indigo-500/15 text-indigo-300 border border-indigo-500/40',
+      category: 'bg-amber-500/15 text-amber-300 border border-amber-500/40',
+      movers: 'bg-emerald-500/15 text-emerald-300 border border-emerald-500/40',
       none: '',
     },
   },
@@ -40,7 +40,7 @@ export interface ReportFooterProps {
  */
 export default function ReportFooter({ modifiedDate, formattedModifiedDate, tags, className }: ReportFooterProps): React.JSX.Element {
   return (
-    <footer className={cn('mt-8 pt-6 border-t border-color', className)}>
+    <footer className={cn('mt-8 pt-6 border-t border-border', className)}>
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div className="text-sm text-muted-foreground">
           <span>Last updated by </span>

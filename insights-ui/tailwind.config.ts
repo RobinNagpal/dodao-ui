@@ -13,18 +13,47 @@ export default {
   theme: {
     extend: {
       // Semantic color tokens backed by the CSS variables in
-      // `src/util/theme-colors.ts`. Leaf UI components should prefer these
-      // (e.g. `bg-block`, `text-body`) over ad-hoc `bg-gray-*` so theming /
-      // dark-mode stays centralized. Additive: the default palette is unchanged.
+      // `src/util/theme-colors.ts`. Components MUST prefer these
+      // (e.g. `bg-surface`, `text-muted`, `border-border`) over ad-hoc
+      // `bg-gray-*` so the palette stays tiny and theming is centralized.
+      // Outside chips/badges/buttons, only these structural tokens should appear.
       colors: {
+        // Brand
         primary: 'var(--primary-color)',
         'primary-text': 'var(--primary-text-color)',
-        background: 'var(--bg-color)',
-        body: 'var(--text-color)',
-        heading: 'var(--heading-color)',
+        'primary-foreground': 'var(--primary-text-color)',
         link: 'var(--link-color)',
-        block: 'var(--block-bg)',
+
+        // Surfaces (3-tier ramp): bg (page) < surface (cards) < surface-2 (inset)
+        bg: 'var(--bg-color)',
+        surface: 'var(--surface)',
+        'surface-2': 'var(--surface-2)',
+        'surface-3': 'var(--surface-3)',
+
+        // Text — `text-heading` / `text-body` / `text-muted`
+        heading: 'var(--heading-color)',
+        body: 'var(--text-color)',
+        muted: 'var(--text-muted)',
+
+        // Lines — `border-border`
+        border: 'var(--border-color)',
+
+        // Legacy aliases (kept so existing `bg-block`/`bg-background` usages
+        // keep resolving while call-sites migrate to the canonical names).
+        background: 'var(--bg-color)',
+        block: 'var(--surface)',
         'block-border': 'var(--border-color)',
+
+        // Bridge previously-orphaned shadcn token names to the same vars so
+        // `text-muted-foreground`, `bg-card`, etc. resolve consistently instead
+        // of rendering nothing.
+        card: 'var(--surface)',
+        'card-foreground': 'var(--text-color)',
+        foreground: 'var(--text-color)',
+        'muted-foreground': 'var(--text-muted)',
+        input: 'var(--border-color)',
+        ring: 'var(--primary-color)',
+        destructive: '#ef4444',
       },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',

@@ -95,56 +95,56 @@ export function TickerComparison({ comparisonTickers, removeTicker, isModal = fa
   };
 
   return (
-    <div className="bg-gray-900 rounded-lg overflow-hidden">
+    <div className="bg-surface rounded-lg overflow-hidden">
       <div className="overflow-x-auto">
-        <div className="min-w-full divide-y divide-gray-700">
+        <div className="min-w-full divide-y divide-border">
           {/* Header */}
-          <div className="bg-gray-800 grid" style={{ gridTemplateColumns: `minmax(140px, 1fr) repeat(${comparisonTickers.length}, minmax(130px, 1fr))` }}>
-            <div className="px-2 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider sticky left-0 bg-gray-800">Factors</div>
+          <div className="bg-surface-2 grid" style={{ gridTemplateColumns: `minmax(140px, 1fr) repeat(${comparisonTickers.length}, minmax(130px, 1fr))` }}>
+            <div className="px-2 py-3 text-left text-xs font-medium text-body uppercase tracking-wider sticky left-0 bg-surface-2">Factors</div>
             {comparisonTickers.map((ticker) => (
-              <div key={ticker.symbol} className="px-1 py-3 text-left text-xs font-medium text-gray-300 tracking-wider">
+              <div key={ticker.symbol} className="px-1 py-3 text-left text-xs font-medium text-body tracking-wider">
                 <div className="flex flex-col space-y-1">
                   <div className="flex items-center space-x-1">
                     {ticker.cachedScoreEntry?.finalScore !== undefined ? (
                       <span className={getScoreColorClasses(ticker.cachedScoreEntry.finalScore).textColorClass}>{ticker.cachedScoreEntry.finalScore}/25</span>
                     ) : (
-                      <span className="text-gray-400">-/25</span>
+                      <span className="text-muted">-/25</span>
                     )}
                     <span className="ml-1 font-bold">{ticker.symbol}</span>
                     <button
                       onClick={() => removeTicker(ticker.symbol)}
-                      className="text-gray-400 hover:text-red-400 flex-shrink-0"
+                      className="text-muted hover:text-red-400 flex-shrink-0"
                       disabled={comparisonTickers.length === 1}
                     >
                       <XMarkIcon className="h-3 w-3" />
                     </button>
                   </div>
-                  <div className="text-xs text-gray-400 truncate">{ticker.name}</div>
+                  <div className="text-xs text-muted truncate">{ticker.name}</div>
                 </div>
               </div>
             ))}
           </div>
 
           {/* Body */}
-          <div className="bg-gray-900 divide-y divide-gray-700">
+          <div className="bg-surface divide-y divide-border">
             {getCategoryFactorRows().map((row, rowIndex) => (
               <div
                 key={`${row.category}-${row.factorIndex}`}
-                className={`grid ${row.isCategoryHeader ? 'bg-gray-800' : 'hover:bg-gray-800'}`}
+                className={`grid ${row.isCategoryHeader ? 'bg-surface-2' : 'hover:bg-surface-3'}`}
                 style={{ gridTemplateColumns: `minmax(140px, 1fr) repeat(${comparisonTickers.length}, minmax(130px, 1fr))` }}
               >
-                <div className={`px-2 py-3 sticky left-0 text-left min-w-0 bg-gray-900`}>
+                <div className={`px-2 py-3 sticky left-0 text-left min-w-0 bg-surface`}>
                   {row.isCategoryHeader ? (
-                    <div className="font-bold text-gray-100 text-base">{row.categoryName}</div>
+                    <div className="font-bold text-heading text-base">{row.categoryName}</div>
                   ) : (
-                    <div className="text-gray-300 text-sm leading-tight pl-4 break-words overflow-wrap-anywhere">{row.factorTitle}</div>
+                    <div className="text-body text-sm leading-tight pl-4 break-words overflow-wrap-anywhere">{row.factorTitle}</div>
                   )}
                 </div>
                 {comparisonTickers.map((ticker) => {
                   if (row.isCategoryHeader) {
                     return (
-                      <div key={`${ticker.symbol}-header`} className="px-1 py-3 text-left" style={{ backgroundColor: 'rgb(17 24 39)' }}>
-                        <span className="text-gray-400 text-sm">-</span>
+                      <div key={`${ticker.symbol}-header`} className="px-1 py-3 text-left" style={{ backgroundColor: 'var(--surface-2)' }}>
+                        <span className="text-muted text-sm">-</span>
                       </div>
                     );
                   }
@@ -165,10 +165,10 @@ export function TickerComparison({ comparisonTickers, removeTicker, isModal = fa
                               {factorResult.result}
                             </span>
                           </div>
-                          <div className="text-xs text-gray-400 leading-tight break-words">{factorResult.explanation}</div>
+                          <div className="text-xs text-muted leading-tight break-words">{factorResult.explanation}</div>
                         </div>
                       ) : (
-                        <span className="text-gray-500 text-sm">-</span>
+                        <span className="text-muted text-sm">-</span>
                       )}
                     </div>
                   );

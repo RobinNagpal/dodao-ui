@@ -29,12 +29,12 @@ export default function EtfCompetitionChartSection({ data, exchange, etf }: EtfC
 
   return (
     <section id="competition">
-      <div className="bg-gray-900 rounded-lg shadow-sm p-6">
-        <div className="flex items-center justify-between mb-4 pb-2 border-b border-gray-700">
+      <div className="bg-surface rounded-lg shadow-sm p-6">
+        <div className="flex items-center justify-between mb-4 pb-2 border-b border-border">
           <h2 className="text-xl font-bold">Competition</h2>
           <Link
             href={`/etfs/${exchange}/${etf}/competition`}
-            className="inline-flex items-center gap-1 rounded-md px-3 py-1.5 text-xs font-semibold text-white shadow-sm hover:opacity-90 transition-opacity whitespace-nowrap"
+            className="inline-flex items-center gap-1 rounded-md px-3 py-1.5 text-xs font-semibold text-heading shadow-sm hover:opacity-90 transition-opacity whitespace-nowrap"
             style={{ backgroundColor: 'var(--primary-color, #3b82f6)' }}
           >
             View Full Analysis →

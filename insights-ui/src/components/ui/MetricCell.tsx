@@ -9,7 +9,7 @@ import React from 'react';
  * `sentiment` drives the value color: positive (green) / negative (red) /
  * neutral (gray-100) / none (inherit the surrounding text color).
  */
-const cellBox = cva('rounded-md bg-gray-800', {
+const cellBox = cva('rounded-md bg-surface-2', {
   variants: {
     size: { sm: 'px-2 py-1.5', xs: 'px-2 py-1' },
   },
@@ -19,7 +19,7 @@ const cellBox = cva('rounded-md bg-gray-800', {
 const cellValue = cva('font-semibold', {
   variants: {
     size: { sm: 'text-sm', xs: 'text-xs' },
-    sentiment: { positive: 'text-green-400', negative: 'text-red-400', neutral: 'text-gray-100', none: '' },
+    sentiment: { positive: 'text-emerald-400', negative: 'text-red-400', neutral: 'text-body', none: '' },
   },
   defaultVariants: { size: 'sm', sentiment: 'none' },
 });
@@ -35,7 +35,7 @@ export type MetricCellProps = VariantProps<typeof cellBox> & {
 export default function MetricCell({ label, value, size, sentiment, loading = false, className }: MetricCellProps): React.JSX.Element {
   return (
     <div className={cn(cellBox({ size }), className)}>
-      <div className="text-xs text-gray-400 mb-1">{label}</div>
+      <div className="text-xs text-muted mb-1">{label}</div>
       {loading ? <div className="rounded animate-pulse">--</div> : <div className={cn(cellValue({ size, sentiment }))}>{value ?? '—'}</div>}
     </div>
   );
