@@ -29,18 +29,17 @@ export default {
         surface: 'var(--surface)',
         'surface-2': 'var(--surface-2)',
 
-        // Text
+        // Text — `text-heading` / `text-body` / `text-muted`
         heading: 'var(--heading-color)',
-        text: 'var(--text-color)',
-        'text-muted': 'var(--text-muted)',
+        body: 'var(--text-color)',
+        muted: 'var(--text-muted)',
 
-        // Lines
+        // Lines — `border-border`
         border: 'var(--border-color)',
 
-        // Legacy aliases (kept so existing `bg-block`/`text-body`/`bg-background`
-        // usages keep resolving while call-sites migrate to the canonical names).
+        // Legacy aliases (kept so existing `bg-block`/`bg-background` usages
+        // keep resolving while call-sites migrate to the canonical names).
         background: 'var(--bg-color)',
-        body: 'var(--text-color)',
         block: 'var(--surface)',
         'block-border': 'var(--border-color)',
 
@@ -50,7 +49,6 @@ export default {
         card: 'var(--surface)',
         'card-foreground': 'var(--text-color)',
         foreground: 'var(--text-color)',
-        muted: 'var(--surface-2)',
         'muted-foreground': 'var(--text-muted)',
         input: 'var(--border-color)',
         ring: 'var(--primary-color)',

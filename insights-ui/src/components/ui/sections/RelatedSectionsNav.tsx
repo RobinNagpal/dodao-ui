@@ -26,7 +26,7 @@ export interface RelatedSectionsNavProps {
  */
 export default function RelatedSectionsNav({ ariaLabel, heading, items, className }: RelatedSectionsNavProps): React.JSX.Element {
   return (
-    <nav aria-label={ariaLabel} className={cn('mt-10 pt-6 border-t border-color', className)}>
+    <nav aria-label={ariaLabel} className={cn('mt-10 pt-6 border-t border-border', className)}>
       <h2 className="text-lg font-semibold mb-3">{heading}</h2>
       <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
         {items.map((item) => (
@@ -34,7 +34,7 @@ export default function RelatedSectionsNav({ ariaLabel, heading, items, classNam
             <Link
               href={item.href}
               prefetch={false}
-              className="flex h-full items-center rounded-md px-3 py-2 text-sm bg-gray-800 hover:bg-gray-700 text-gray-200 hover:text-white transition-colors"
+              className="flex h-full items-center rounded-md px-3 py-2 text-sm bg-surface hover:bg-surface-2 text-body hover:text-heading transition-colors"
             >
               {item.label}
             </Link>
