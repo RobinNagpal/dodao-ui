@@ -3,21 +3,21 @@
 export function SubIndustryCardSkeleton() {
   return (
     <div className="bg-block-bg-color rounded-lg shadow-lg border border-color overflow-hidden flex flex-col">
-      <div className="px-3 py-2 sm:px-4 border-b border-color bg-gradient-to-r from-[#374151] to-[#2D3748]">
-        <div className="h-4 w-40 rounded bg-[#4B5563] animate-pulse" />
+      <div className="px-3 py-2 sm:px-4 border-b border-color bg-surface-2">
+        <div className="h-4 w-40 rounded bg-surface-2 animate-pulse" />
       </div>
       <ul className="divide-y divide-color p-2">
         <li className="py-2">
-          <div className="h-5 w-full rounded bg-[#374151] animate-pulse" />
+          <div className="h-5 w-full rounded bg-surface-2 animate-pulse" />
         </li>
         <li className="py-2">
-          <div className="h-5 w-11/12 rounded bg-[#374151] animate-pulse" />
+          <div className="h-5 w-11/12 rounded bg-surface-2 animate-pulse" />
         </li>
         <li className="py-2">
-          <div className="h-5 w-10/12 rounded bg-[#374151] animate-pulse" />
+          <div className="h-5 w-10/12 rounded bg-surface-2 animate-pulse" />
         </li>
         <li className="py-2">
-          <div className="h-5 w-9/12 rounded bg-[#374151] animate-pulse" />
+          <div className="h-5 w-9/12 rounded bg-surface-2 animate-pulse" />
         </li>
       </ul>
     </div>

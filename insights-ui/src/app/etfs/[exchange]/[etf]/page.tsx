@@ -88,7 +88,7 @@ export async function generateMetadata({ params }: { params: RouteParams }): Pro
 
 function EtfFinancialInfoSkeleton(): JSX.Element {
   return (
-    <section id="etf-financial-info" className="bg-gray-900 rounded-lg shadow-sm px-2 py-2 sm:p-3 mt-6">
+    <section id="etf-financial-info" className="bg-surface rounded-lg shadow-sm px-2 py-2 sm:p-3 mt-6">
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
         <FinancialCard label="AUM" isLoading={true} />
         <FinancialCard label="Expense Ratio" isLoading={true} />
@@ -225,7 +225,7 @@ export default async function EtfDetailsPage({ params }: { params: RouteParams }
               {etfData.name} ({etfData.symbol})
             </h1>
             <div className="flex items-center gap-3 flex-shrink-0">
-              <span className="text-sm font-medium text-gray-400">{formatExchangeWithCountry(etfData.exchange)}</span>
+              <span className="text-sm font-medium text-muted">{formatExchangeWithCountry(etfData.exchange)}</span>
             </div>
           </div>
 

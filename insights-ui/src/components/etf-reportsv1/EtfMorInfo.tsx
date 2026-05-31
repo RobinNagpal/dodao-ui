@@ -16,9 +16,9 @@ import { buildEtfHoldingColumnDefs } from '@/utils/etf-holdings-utils';
 
 function SectionHeading({ title, subtitle }: { title: string; subtitle?: string }): JSX.Element {
   return (
-    <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-2 pb-2 border-b border-gray-700">
-      <h2 className="text-xl font-bold text-gray-100">{title}</h2>
-      {subtitle ? <div className="text-xs text-gray-400">{subtitle}</div> : null}
+    <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-2 pb-2 border-b border-border">
+      <h2 className="text-xl font-bold text-heading">{title}</h2>
+      {subtitle ? <div className="text-xs text-muted">{subtitle}</div> : null}
     </div>
   );
 }
@@ -28,9 +28,9 @@ function MetricCard({ label, value }: { label: string; value?: string | null }):
   const isNA = displayValue === 'N/A';
 
   return (
-    <div className="bg-gray-800 px-3 py-2 rounded-md">
-      <div className="text-xs text-gray-400 mb-1">{label}</div>
-      <div className={`text-sm font-medium ${isNA ? 'text-gray-500' : 'text-gray-200'}`}>{displayValue}</div>
+    <div className="bg-surface-2 px-3 py-2 rounded-md">
+      <div className="text-xs text-muted mb-1">{label}</div>
+      <div className={`text-sm font-medium ${isNA ? 'text-muted' : 'text-body'}`}>{displayValue}</div>
     </div>
   );
 }
@@ -38,24 +38,24 @@ function MetricCard({ label, value }: { label: string; value?: string | null }):
 function TextCard({ title, content, className = '' }: { title: string; content?: string | null; className?: string }): JSX.Element {
   if (!content || String(content).trim() === '') {
     return (
-      <div className={`bg-gray-800 rounded-md p-4 ${className}`}>
-        <h3 className="text-sm font-medium text-gray-200 mb-2">{title}</h3>
-        <p className="text-sm text-gray-500">No {title.toLowerCase()} available.</p>
+      <div className={`bg-surface-2 rounded-md p-4 ${className}`}>
+        <h3 className="text-sm font-medium text-body mb-2">{title}</h3>
+        <p className="text-sm text-muted">No {title.toLowerCase()} available.</p>
       </div>
     );
   }
 
   return (
-    <div className={`bg-gray-800 rounded-md p-4 ${className}`}>
-      <h3 className="text-sm font-medium text-gray-200 mb-3">{title}</h3>
-      <p className="text-sm text-gray-300 leading-relaxed whitespace-pre-wrap">{String(content)}</p>
+    <div className={`bg-surface-2 rounded-md p-4 ${className}`}>
+      <h3 className="text-sm font-medium text-body mb-3">{title}</h3>
+      <p className="text-sm text-body leading-relaxed whitespace-pre-wrap">{String(content)}</p>
     </div>
   );
 }
 
 function MetricGrid({ items }: { items: Array<{ label: string; value: unknown }> }): JSX.Element {
   const visible = items.filter((i) => i.value !== null && i.value !== undefined && String(i.value).trim() !== '');
-  if (!visible.length) return <div className="text-sm text-gray-400">No data available.</div>;
+  if (!visible.length) return <div className="text-sm text-muted">No data available.</div>;
 
   return (
     <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2">
@@ -69,36 +69,36 @@ function MetricGrid({ items }: { items: Array<{ label: string; value: unknown }>
 function DataTable({ columns, rows, title }: { columns: string[]; rows: Array<Record<string, unknown>>; title?: string }): JSX.Element {
   if (!rows.length) {
     return (
-      <div className="bg-gray-800 rounded-md p-4 mt-4">
-        {title && <h4 className="text-sm font-medium text-gray-200 mb-2">{title}</h4>}
-        <p className="text-sm text-gray-500">No data available.</p>
+      <div className="bg-surface-2 rounded-md p-4 mt-4">
+        {title && <h4 className="text-sm font-medium text-body mb-2">{title}</h4>}
+        <p className="text-sm text-muted">No data available.</p>
       </div>
     );
   }
 
   return (
     <div className="mt-4">
-      {title && <h4 className="text-sm font-medium text-gray-200 mb-3">{title}</h4>}
-      <div className="overflow-x-auto rounded-lg border border-gray-700">
+      {title && <h4 className="text-sm font-medium text-body mb-3">{title}</h4>}
+      <div className="overflow-x-auto rounded-lg border border-border">
         <table className="min-w-full">
-          <thead className="bg-gray-800">
+          <thead className="bg-surface-2">
             <tr>
               {columns.map((c) => (
-                <th key={c} className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider whitespace-nowrap">
+                <th key={c} className="px-4 py-3 text-left text-xs font-medium text-body uppercase tracking-wider whitespace-nowrap">
                   {c}
                 </th>
               ))}
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-700">
+          <tbody className="divide-y divide-border">
             {rows.map((r, idx) => (
-              <tr key={idx} className={idx % 2 === 0 ? 'bg-gray-900' : 'bg-gray-800/50'}>
+              <tr key={idx} className={idx % 2 === 0 ? 'bg-surface' : 'bg-surface-2'}>
                 {columns.map((c) => {
                   const cellValue = (r as any)[c];
                   return (
-                    <td key={c} className="px-4 py-3 text-sm text-gray-300 whitespace-nowrap">
+                    <td key={c} className="px-4 py-3 text-sm text-body whitespace-nowrap">
                       {cellValue === null || cellValue === undefined || String(cellValue).trim() === '' ? (
-                        <span className="text-gray-500">&mdash;</span>
+                        <span className="text-muted">&mdash;</span>
                       ) : (
                         String(cellValue)
                       )}
@@ -118,12 +118,12 @@ function ReturnsTable({ title, rows }: { title: string; rows: any }): JSX.Elemen
   const r = (Array.isArray(rows) ? rows : []) as Array<{ label: string; values: Record<string, string> }>;
   if (!r.length) {
     return (
-      <div className="mt-4 rounded-lg border border-gray-700 bg-gray-900 overflow-hidden">
-        <div className="px-4 py-3 border-b border-gray-700">
-          <h4 className="text-sm font-medium text-gray-200">{title}</h4>
+      <div className="mt-4 rounded-lg border border-border bg-surface overflow-hidden">
+        <div className="px-4 py-3 border-b border-border">
+          <h4 className="text-sm font-medium text-body">{title}</h4>
         </div>
         <div className="px-4 py-4">
-          <p className="text-sm text-gray-400">No {title.toLowerCase()} data available.</p>
+          <p className="text-sm text-muted">No {title.toLowerCase()} data available.</p>
         </div>
       </div>
     );
@@ -137,30 +137,30 @@ function ReturnsTable({ title, rows }: { title: string; rows: any }): JSX.Elemen
 
   return (
     <div className="mt-4">
-      <div className="rounded-lg border border-gray-700 bg-gray-900 shadow-sm overflow-hidden">
-        <div className="px-4 py-3 border-b border-gray-700 sm:px-6">
-          <h4 className="text-sm font-medium text-gray-100">{title}</h4>
+      <div className="rounded-lg border border-border bg-surface shadow-sm overflow-hidden">
+        <div className="px-4 py-3 border-b border-border sm:px-6">
+          <h4 className="text-sm font-medium text-heading">{title}</h4>
         </div>
         <div className="overflow-x-auto">
-          <table className="min-w-full divide-y divide-gray-700">
-            <thead className="bg-gray-800">
+          <table className="min-w-full divide-y divide-border">
+            <thead className="bg-surface-2">
               <tr>
                 {columns.map((c) => (
-                  <th key={c} className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider whitespace-nowrap sm:px-6">
+                  <th key={c} className="px-4 py-3 text-left text-xs font-medium text-body uppercase tracking-wider whitespace-nowrap sm:px-6">
                     {c}
                   </th>
                 ))}
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-700 bg-gray-800">
+            <tbody className="divide-y divide-border bg-surface-2">
               {tableRows.map((r, idx) => (
-                <tr key={idx} className="hover:bg-gray-700">
+                <tr key={idx} className="hover:bg-surface-2">
                   {columns.map((c) => {
                     const cellValue = (r as any)[c];
                     return (
-                      <td key={c} className="px-4 py-3 text-sm text-gray-300 whitespace-nowrap sm:px-6">
+                      <td key={c} className="px-4 py-3 text-sm text-body whitespace-nowrap sm:px-6">
                         {cellValue === null || cellValue === undefined || String(cellValue).trim() === '' ? (
-                          <span className="text-gray-500">&mdash;</span>
+                          <span className="text-muted">&mdash;</span>
                         ) : (
                           String(cellValue)
                         )}
@@ -180,8 +180,8 @@ function ReturnsTable({ title, rows }: { title: string; rows: any }): JSX.Elemen
 function MorAnalysis({ analysis }: { analysis: EtfMorAnalysis | null }): JSX.Element {
   if (!analysis || !analysis.available) {
     return (
-      <div className="bg-gray-800 rounded-md p-4">
-        <p className="text-sm text-gray-400">No analysis available.</p>
+      <div className="bg-surface-2 rounded-md p-4">
+        <p className="text-sm text-muted">No analysis available.</p>
       </div>
     );
   }
@@ -198,18 +198,18 @@ function MorAnalysis({ analysis }: { analysis: EtfMorAnalysis | null }): JSX.Ele
           {analysis.sections.map((s, idx) => {
             const meta = [s.date, s.author, s.rating].filter(Boolean).join(' \u2022 ');
             return (
-              <div key={idx} className="bg-gray-800 rounded-md px-4 py-3">
+              <div key={idx} className="bg-surface-2 rounded-md px-4 py-3">
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 mb-2">
-                  <h5 className="text-sm font-semibold text-gray-200">{s.pillar}</h5>
-                  {meta && <div className="text-xs text-gray-400">{meta}</div>}
+                  <h5 className="text-sm font-semibold text-body">{s.pillar}</h5>
+                  {meta && <div className="text-xs text-muted">{meta}</div>}
                 </div>
-                <div className="text-sm text-gray-300 leading-relaxed whitespace-pre-wrap">{s.content}</div>
+                <div className="text-sm text-body leading-relaxed whitespace-pre-wrap">{s.content}</div>
               </div>
             );
           })}
         </div>
       ) : (
-        <div className="text-sm text-gray-400">No analysis sections available.</div>
+        <div className="text-sm text-muted">No analysis sections available.</div>
       )}
     </div>
   );
@@ -218,8 +218,8 @@ function MorAnalysis({ analysis }: { analysis: EtfMorAnalysis | null }): JSX.Ele
 function MorHoldings({ holdings }: { holdings: EtfMorHoldings | null }): JSX.Element {
   if (!holdings) {
     return (
-      <div className="bg-gray-800 rounded-md p-4">
-        <p className="text-sm text-gray-400">No holdings data available.</p>
+      <div className="bg-surface-2 rounded-md p-4">
+        <p className="text-sm text-muted">No holdings data available.</p>
       </div>
     );
   }
@@ -251,8 +251,8 @@ function MorHoldings({ holdings }: { holdings: EtfMorHoldings | null }): JSX.Ele
 function MorRisk({ riskPeriods }: { riskPeriods: EtfMorRiskPeriods | null }): JSX.Element {
   if (!riskPeriods) {
     return (
-      <div className="bg-gray-800 rounded-md p-4">
-        <p className="text-sm text-gray-400">No risk data available.</p>
+      <div className="bg-surface-2 rounded-md p-4">
+        <p className="text-sm text-muted">No risk data available.</p>
       </div>
     );
   }
@@ -260,8 +260,8 @@ function MorRisk({ riskPeriods }: { riskPeriods: EtfMorRiskPeriods | null }): JS
   const periods = (['3-Yr', '5-Yr', '10-Yr'] as const).filter((p) => (riskPeriods as any)?.[p]);
   if (!periods.length) {
     return (
-      <div className="bg-gray-800 rounded-md p-4">
-        <p className="text-sm text-gray-400">No risk periods available.</p>
+      <div className="bg-surface-2 rounded-md p-4">
+        <p className="text-sm text-muted">No risk periods available.</p>
       </div>
     );
   }
@@ -280,10 +280,10 @@ function MorRisk({ riskPeriods }: { riskPeriods: EtfMorRiskPeriods | null }): JS
         ];
 
         return (
-          <div key={p} className="bg-gray-800 rounded-md p-4">
-            <div className="flex items-center justify-between gap-3 mb-4 pb-2 border-b border-gray-700">
-              <h4 className="text-sm font-semibold text-gray-200">{p} Risk Analysis</h4>
-              {d?.period && <div className="text-xs text-gray-400">{d.period}</div>}
+          <div key={p} className="bg-surface-2 rounded-md p-4">
+            <div className="flex items-center justify-between gap-3 mb-4 pb-2 border-b border-border">
+              <h4 className="text-sm font-semibold text-body">{p} Risk Analysis</h4>
+              {d?.period && <div className="text-xs text-muted">{d.period}</div>}
             </div>
 
             <MetricGrid
@@ -490,10 +490,10 @@ function MorPortfolioHoldingsBlock({ data }: { data: EtfMorPortfolioHoldings | n
     <div className="space-y-4">
       {hasSummary ? <MetricGrid items={metaItems} /> : null}
       {hasList ? (
-        <div className="rounded-lg border border-gray-700 overflow-hidden">
-          <div className="px-4 py-3 border-b border-gray-700 bg-gray-800">
-            <h4 className="text-sm font-medium text-gray-200">Holdings detail ({holdingRows.length})</h4>
-            <p className="text-xs text-gray-500 mt-1">{detailSubtitle}</p>
+        <div className="rounded-lg border border-border overflow-hidden">
+          <div className="px-4 py-3 border-b border-border bg-surface-2">
+            <h4 className="text-sm font-medium text-body">Holdings detail ({holdingRows.length})</h4>
+            <p className="text-xs text-muted mt-1">{detailSubtitle}</p>
           </div>
           <div className="max-h-[32rem] overflow-auto -mt-4">
             <DataTable columns={colDefs.map((c) => c.label)} rows={holdingRows} />
@@ -588,18 +588,18 @@ export default function EtfMorInfo({ data }: { data: EtfMorInfoOptionalWrapper }
   const updatedLabel = updatedAt ? `Last updated: ${new Date(updatedAt as any).toLocaleString('en-US')}` : undefined;
 
   return (
-    <section id="etf-mor-info" className="bg-gray-900 rounded-lg shadow-sm px-3 py-6 sm:p-6 mt-6">
+    <section id="etf-mor-info" className="bg-surface rounded-lg shadow-sm px-3 py-6 sm:p-6 mt-6">
       <SectionHeading title="Detailed Financial Data" subtitle={updatedLabel} />
 
       {!hasAny ? (
-        <div className="mt-6 bg-gray-800 rounded-md p-6 text-center">
-          <p className="text-gray-400">No detailed financial data saved yet.</p>
-          <p className="text-sm text-gray-500 mt-1">Use the admin panel to trigger data collection.</p>
+        <div className="mt-6 bg-surface-2 rounded-md p-6 text-center">
+          <p className="text-muted">No detailed financial data saved yet.</p>
+          <p className="text-sm text-muted mt-1">Use the admin panel to trigger data collection.</p>
         </div>
       ) : (
         <div className="mt-6 space-y-8">
           <div>
-            <h3 className="text-lg font-semibold text-gray-100 mb-4">Overview</h3>
+            <h3 className="text-lg font-semibold text-heading mb-4">Overview</h3>
             <MetricGrid
               items={[
                 { label: 'NAV', value: analyzer?.overviewNav },
@@ -631,41 +631,41 @@ export default function EtfMorInfo({ data }: { data: EtfMorInfoOptionalWrapper }
           </div>
 
           <div>
-            <h3 className="text-lg font-semibold text-gray-100 mb-4">Analysis</h3>
+            <h3 className="text-lg font-semibold text-heading mb-4">Analysis</h3>
             <MorAnalysis analysis={analysis} />
           </div>
 
           <div>
-            <h3 className="text-lg font-semibold text-gray-100 mb-4">Returns</h3>
+            <h3 className="text-lg font-semibold text-heading mb-4">Returns</h3>
             <ReturnsTable title="Annual Returns" rows={returnsAnnual} />
             <ReturnsTable title="Trailing Returns" rows={returnsTrailing} />
           </div>
 
           <div>
-            <h3 className="text-lg font-semibold text-gray-100 mb-4">Holdings</h3>
+            <h3 className="text-lg font-semibold text-heading mb-4">Holdings</h3>
             <MorHoldings holdings={holdings} />
           </div>
 
           <div>
-            <h3 className="text-lg font-semibold text-gray-100 mb-4">Portfolio breakdown</h3>
-            <p className="text-xs text-gray-500 mb-4">Asset mix, style and sector exposure, bond quality views, and full holdings page.</p>
+            <h3 className="text-lg font-semibold text-heading mb-4">Portfolio breakdown</h3>
+            <p className="text-xs text-muted mb-4">Asset mix, style and sector exposure, bond quality views, and full holdings page.</p>
             {portfolio && morPortfolioHasContent(portfolio) ? (
               <MorPortfolio portfolio={portfolio} />
             ) : (
-              <div className="bg-gray-800 rounded-md p-4">
-                <p className="text-sm text-gray-400">No portfolio breakdown saved yet.</p>
-                <p className="text-sm text-gray-500 mt-1">Trigger &quot;Mor Portfolio&quot; from the admin ETF reports tool to collect this data.</p>
+              <div className="bg-surface-2 rounded-md p-4">
+                <p className="text-sm text-muted">No portfolio breakdown saved yet.</p>
+                <p className="text-sm text-muted mt-1">Trigger &quot;Mor Portfolio&quot; from the admin ETF reports tool to collect this data.</p>
               </div>
             )}
           </div>
 
           <div>
-            <h3 className="text-lg font-semibold text-gray-100 mb-4">Risk Analysis</h3>
+            <h3 className="text-lg font-semibold text-heading mb-4">Risk Analysis</h3>
             <MorRisk riskPeriods={riskPeriods} />
           </div>
 
           <div>
-            <h3 className="text-lg font-semibold text-gray-100 mb-4">Management</h3>
+            <h3 className="text-lg font-semibold text-heading mb-4">Management</h3>
             <MetricGrid
               items={[
                 { label: 'Inception Date', value: people?.inceptionDate },

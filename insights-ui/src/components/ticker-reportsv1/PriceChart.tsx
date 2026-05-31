@@ -164,7 +164,7 @@ export default function PriceChart({ data, embedded = false, range, hideRangeBut
           key={r}
           onClick={() => setSelectedRange(r)}
           className={`px-3 py-1.5 text-xs font-medium rounded-md transition-colors ${
-            selectedRange === r ? 'text-white' : 'bg-gray-800 text-gray-300 hover:bg-gray-700 hover:text-gray-100'
+            selectedRange === r ? 'text-heading' : 'bg-surface-2 text-body hover:bg-surface-2 hover:text-heading'
           }`}
           style={selectedRange === r ? { backgroundColor: LINE_COLOR.border } : {}}
         >
@@ -179,7 +179,7 @@ export default function PriceChart({ data, embedded = false, range, hideRangeBut
       {hasData ? (
         <Line data={chartData} options={options} />
       ) : (
-        <div className="h-full flex items-center justify-center text-sm text-gray-400">No price data available for this range.</div>
+        <div className="h-full flex items-center justify-center text-sm text-muted">No price data available for this range.</div>
       )}
     </div>
   );
@@ -199,12 +199,12 @@ export default function PriceChart({ data, embedded = false, range, hideRangeBut
   }
 
   return (
-    <section id="price-chart" className="bg-gray-900 rounded-lg shadow-sm px-2 py-3 sm:p-4 mb-6">
+    <section id="price-chart" className="bg-surface rounded-lg shadow-sm px-2 py-3 sm:p-4 mb-6">
       {/* min-h locks the header height so swapping the lazy skeleton with the rendered chart causes no layout shift. */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4 min-h-[44px]">
         <div>
-          <h3 className="text-lg font-semibold text-gray-100">Price History</h3>
-          {metaLine && <p className="text-xs text-gray-400 mt-1">{metaLine}</p>}
+          <h3 className="text-lg font-semibold text-heading">Price History</h3>
+          {metaLine && <p className="text-xs text-muted mt-1">{metaLine}</p>}
         </div>
         {rangeButtons}
       </div>

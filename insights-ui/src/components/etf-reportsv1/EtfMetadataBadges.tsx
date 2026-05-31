@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { getEtfGroupName, getEtfGroupKey, slugifyEtfCategory } from '@/utils/etf-categorization-utils';
 import { getCountryByExchange, SupportedCountries, toExchange } from '@/utils/countryExchangeUtils';
 import { slugifyEtfTag } from '@/utils/etf-tag-slug-utils';
+import { badgeTone, type BadgeTone } from '@/components/ui/badges/badgeTone';
 
 export interface EtfMetadataBadgesProps {
   exchange?: string | null;
@@ -16,14 +17,8 @@ interface BadgeItem {
   label: string;
   value: string;
   href: string | null;
-  colorClasses: string;
+  tone: BadgeTone;
 }
-
-const ASSET_CLASS_COLORS = 'bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-300 hover:bg-blue-200 dark:hover:bg-blue-800';
-const GROUP_COLORS = 'bg-cyan-100 dark:bg-cyan-900 text-cyan-800 dark:text-cyan-300 hover:bg-cyan-200 dark:hover:bg-cyan-800';
-const CATEGORY_COLORS = 'bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-300 hover:bg-purple-200 dark:hover:bg-purple-800';
-const PROVIDER_COLORS = 'bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-300 hover:bg-green-200 dark:hover:bg-green-800';
-const INDEX_COLORS = 'bg-indigo-100 dark:bg-indigo-900 text-indigo-800 dark:text-indigo-300';
 
 function getCountryPathPrefix(exchange: string | null | undefined): string {
   if (!exchange) return '/etfs';
@@ -48,7 +43,7 @@ export default function EtfMetadataBadges({ exchange, assetClass, category, issu
       label: 'Asset Class',
       value: assetClass,
       href: `${prefix}/asset-classes/${slugifyEtfTag(assetClass)}`,
-      colorClasses: ASSET_CLASS_COLORS,
+      tone: 'info',
     });
   }
   if (groupName && groupKey) {
@@ -56,7 +51,7 @@ export default function EtfMetadataBadges({ exchange, assetClass, category, issu
       label: 'Group',
       value: groupName,
       href: `${prefix}/groups/${groupKey}`,
-      colorClasses: GROUP_COLORS,
+      tone: 'neutral',
     });
   }
   if (category) {
@@ -64,7 +59,7 @@ export default function EtfMetadataBadges({ exchange, assetClass, category, issu
       label: 'Category',
       value: category,
       href: groupKey ? `${prefix}/groups/${groupKey}/categories/${slugifyEtfCategory(category)}` : null,
-      colorClasses: CATEGORY_COLORS,
+      tone: 'accent',
     });
   }
   if (trimmedIssuer) {
@@ -72,7 +67,7 @@ export default function EtfMetadataBadges({ exchange, assetClass, category, issu
       label: 'Provider',
       value: trimmedIssuer,
       href: `${prefix}/providers/${slugifyEtfTag(trimmedIssuer)}`,
-      colorClasses: PROVIDER_COLORS,
+      tone: 'success',
     });
   }
   if (trimmedIndexName) {
@@ -80,7 +75,7 @@ export default function EtfMetadataBadges({ exchange, assetClass, category, issu
       label: 'Index',
       value: trimmedIndexName,
       href: null,
-      colorClasses: INDEX_COLORS,
+      tone: 'accent',
     });
   }
 
@@ -93,7 +88,7 @@ export default function EtfMetadataBadges({ exchange, assetClass, category, issu
           <Link
             key={item.label}
             href={item.href}
-            className={`inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-medium transition-colors ${item.colorClasses}`}
+            className={`inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-medium transition-colors ${badgeTone({ tone: item.tone })}`}
             aria-label={`View all ETFs in ${item.label}: ${item.value}`}
           >
             <span className="opacity-80">{item.label}:</span>
@@ -102,7 +97,7 @@ export default function EtfMetadataBadges({ exchange, assetClass, category, issu
         ) : (
           <span
             key={item.label}
-            className={`inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-medium ${item.colorClasses}`}
+            className={`inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-medium ${badgeTone({ tone: item.tone })}`}
             aria-label={`${item.label}: ${item.value}`}
           >
             <span className="opacity-80">{item.label}:</span>

@@ -22,7 +22,7 @@ export default function EtfKeyFactsFlags({ greenFlags, redFlags }: EtfKeyFactsFl
 
   return (
     <section id="key-facts-flags" className="mb-8">
-      <div className="bg-gray-900 p-3 sm:p-4 rounded-md shadow-sm">
+      <div className="bg-surface p-3 sm:p-4 rounded-md shadow-sm">
         <h3 className="text-lg font-semibold text-color mb-3">Key Facts</h3>
         <ul className="divide-y divide-gray-800">
           {flags.map((f, i) => {
@@ -42,7 +42,7 @@ export default function EtfKeyFactsFlags({ greenFlags, redFlags }: EtfKeyFactsFl
                     <PassFailBadge passed={f.result === 'Pass'} className="py-0.5 font-medium flex-shrink-0" passLabel={f.result} failLabel={f.result} />
                   </div>
                   {explanation && (
-                    <div className="markdown markdown-body text-sm text-gray-400" dangerouslySetInnerHTML={{ __html: parseMarkdown(explanation) }} />
+                    <div className="markdown markdown-body text-sm text-muted" dangerouslySetInnerHTML={{ __html: parseMarkdown(explanation) }} />
                   )}
                 </div>
               </li>

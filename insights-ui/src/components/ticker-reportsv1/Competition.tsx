@@ -95,7 +95,7 @@ export default function Competition({ tickerData, data }: CompetitionProps): JSX
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-      <article className="bg-gray-900 rounded-lg shadow-sm border border-color p-6 md:p-8" itemScope itemType="https://schema.org/Article">
+      <article className="bg-surface rounded-lg shadow-sm border border-color p-6 md:p-8" itemScope itemType="https://schema.org/Article">
         {/* Hidden datePublished for schema - machine readable only */}
         <meta itemProp="datePublished" content={publishedDate.toISOString()} />
 
@@ -107,7 +107,7 @@ export default function Competition({ tickerData, data }: CompetitionProps): JSX
                 {analysisTitle}
               </h1>
               <div className="flex flex-wrap items-center gap-2 md:gap-3 text-sm">
-                <span className="inline-flex items-center rounded-full bg-blue-100 dark:bg-blue-900 px-2.5 py-0.5 text-xs font-medium text-blue-800 dark:text-blue-300">
+                <span className="inline-flex items-center rounded-full bg-sky-500/15 border border-sky-500/40 px-2.5 py-0.5 text-xs font-medium text-sky-300">
                   {tickerData.exchange}
                 </span>
                 <span className="text-muted-foreground">•</span>
@@ -161,12 +161,12 @@ export default function Competition({ tickerData, data }: CompetitionProps): JSX
                           />
                           <div className="min-w-0">
                             <div className="flex items-baseline gap-2 flex-wrap">
-                              <span className={dp.isMainTicker ? 'font-semibold text-amber-400' : 'text-gray-200 group-hover:text-[#F59E0B] transition-colors'}>
+                              <span className={dp.isMainTicker ? 'font-semibold text-amber-400' : 'text-body group-hover:text-link transition-colors'}>
                                 {dp.companyName}
                               </span>
-                              <span className={dp.isMainTicker ? 'text-amber-400 text-xs' : 'text-gray-500 text-xs'}>({dp.ticker})</span>
+                              <span className={dp.isMainTicker ? 'text-amber-400 text-xs' : 'text-muted text-xs'}>({dp.ticker})</span>
                             </div>
-                            <div className="flex items-center gap-2 text-xs text-gray-500 mt-0.5">
+                            <div className="flex items-center gap-2 text-xs text-muted mt-0.5">
                               <span>{dp.classification}</span>
                               <span>·</span>
                               <span>Quality {dp.qualityScore.toFixed(0)}%</span>
@@ -291,10 +291,10 @@ export default function Competition({ tickerData, data }: CompetitionProps): JSX
               </time>
             </div>
             <div className="flex gap-2">
-              <span className="inline-flex items-center rounded-full bg-blue-100 dark:bg-blue-900 px-2.5 py-0.5 text-xs font-medium text-blue-800 dark:text-blue-300">
+              <span className="inline-flex items-center rounded-full bg-sky-500/15 border border-sky-500/40 px-2.5 py-0.5 text-xs font-medium text-sky-300">
                 Stock Analysis
               </span>
-              <span className="inline-flex items-center rounded-full bg-purple-100 dark:bg-purple-900 px-2.5 py-0.5 text-xs font-medium text-purple-800 dark:text-purple-300">
+              <span className="inline-flex items-center rounded-full bg-indigo-500/15 border border-indigo-500/40 px-2.5 py-0.5 text-xs font-medium text-indigo-300">
                 Competitive Analysis
               </span>
             </div>

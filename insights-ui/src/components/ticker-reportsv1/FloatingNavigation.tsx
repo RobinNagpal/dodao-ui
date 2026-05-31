@@ -277,7 +277,7 @@ export default function FloatingNavigation(props: FloatingNavigationProps): JSX.
         aria-label="Open navigation"
         onClick={open}
         className={cx(
-          'fixed z-10 bg-blue-600 hover:bg-blue-700 text-white px-4 py-3 rounded-full shadow-lg transition-all duration-200 hover:scale-105 flex items-center gap-2',
+          'fixed z-10 bg-blue-600 hover:bg-blue-700 text-heading px-4 py-3 rounded-full shadow-lg transition-all duration-200 hover:scale-105 flex items-center gap-2',
           isXL ? 'top-3 right-2' : 'bottom-2 left-2'
         )}
       >
@@ -296,7 +296,7 @@ export default function FloatingNavigation(props: FloatingNavigationProps): JSX.
       aria-label={title}
       aria-modal={panelAriaModal}
       className={cx(
-        'z-50 bg-gray-900 text-white border-l border-gray-700 shadow-xl',
+        'z-50 bg-surface text-heading border-l border-border shadow-xl',
         'w-96 max-w-md', // keep in sync with width prop
         isDocked ? 'fixed top-24 right-0 bottom-6' : 'fixed inset-y-0 right-0 transform transition-transform duration-300 ease-in-out',
         isDocked ? (isOpen ? '' : 'pointer-events-none invisible') : isOpen ? 'translate-x-0' : 'translate-x-full'
@@ -304,9 +304,9 @@ export default function FloatingNavigation(props: FloatingNavigationProps): JSX.
       style={{ width: dockWidthPxXL }}
     >
       {/* Header */}
-      <div className="flex items-center justify-between p-4 border-b border-gray-700">
+      <div className="flex items-center justify-between p-4 border-b border-border">
         <h2 className="text-lg font-semibold">{title}</h2>
-        <button type="button" aria-label="Close navigation" onClick={close} className="p-2 hover:bg-gray-800 rounded-lg transition-colors">
+        <button type="button" aria-label="Close navigation" onClick={close} className="p-2 hover:bg-surface-2 rounded-lg transition-colors">
           <XMarkIcon className="h-5 w-5" />
         </button>
       </div>
@@ -325,7 +325,7 @@ export default function FloatingNavigation(props: FloatingNavigationProps): JSX.
                   onClick={(): void => scrollToId(s.id)}
                   className={cx(
                     'w-full text-left px-3 py-2 rounded-lg transition-colors duration-200 flex items-center justify-between group',
-                    isSectionActive ? 'bg-blue-600 text-white' : 'hover:bg-gray-800 text-gray-300 hover:text-white'
+                    isSectionActive ? 'bg-blue-600 text-heading' : 'hover:bg-surface-2 text-body hover:text-heading'
                   )}
                   aria-current={activeId === s.id ? 'true' : undefined}
                 >
@@ -342,7 +342,7 @@ export default function FloatingNavigation(props: FloatingNavigationProps): JSX.
                           onClick={(): void => scrollToId(sub.id)}
                           className={cx(
                             'w-full text-left px-3 py-1.5 rounded-md text-sm transition-colors duration-200 flex items-center justify-between group',
-                            activeId === sub.id ? 'bg-blue-500 text-white' : 'hover:bg-gray-800 text-gray-400 hover:text-gray-200'
+                            activeId === sub.id ? 'bg-blue-500 text-heading' : 'hover:bg-surface-2 text-muted hover:text-body'
                           )}
                           aria-current={activeId === sub.id ? 'true' : undefined}
                         >
@@ -359,8 +359,8 @@ export default function FloatingNavigation(props: FloatingNavigationProps): JSX.
         </ul>
       </nav>
       {/* Footer hint */}
-      <div className="p-4 border-t border-gray-700">
-        <p className="text-sm text-gray-400 text-center">Click a section to jump</p>
+      <div className="p-4 border-t border-border">
+        <p className="text-sm text-muted text-center">Click a section to jump</p>
       </div>
     </div>
   );

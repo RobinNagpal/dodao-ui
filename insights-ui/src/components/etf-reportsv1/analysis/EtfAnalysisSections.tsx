@@ -43,15 +43,15 @@ export default function EtfAnalysisSections({
   }
 
   return (
-    <section id="summary-analysis" className="bg-gray-800 rounded-lg shadow-sm mb-4 sm:py-6" itemProp="abstract">
-      <h2 className="text-xl font-bold mb-4 pb-2 border-b border-gray-700">Summary Analysis</h2>
+    <section id="summary-analysis" className="bg-surface-2 rounded-lg shadow-sm mb-4 sm:py-6" itemProp="abstract">
+      <h2 className="text-xl font-bold mb-4 pb-2 border-b border-border">Summary Analysis</h2>
       <div className="space-y-4">
         {CATEGORY_ORDER.map((categoryKey) => {
           const categoryResult = data.categories.find((r) => r.categoryKey === categoryKey);
           const display = CATEGORY_DISPLAY[categoryKey] || { name: categoryKey, order: 99, slug: '' };
           return (
             <Fragment key={categoryKey}>
-              <div className="bg-gray-900 p-3 sm:p-4 rounded-md shadow-sm">
+              <div className="bg-surface p-3 sm:p-4 rounded-md shadow-sm">
                 <div className="flex items-center justify-between gap-2 mb-2">
                   <div className="flex items-center gap-2">
                     <h3 className="text-lg font-semibold">{display.name}</h3>
@@ -68,7 +68,7 @@ export default function EtfAnalysisSections({
                   {categoryResult && display.slug && (
                     <Link
                       href={`/etfs/${exchange}/${symbol}/${display.slug}`}
-                      className="inline-flex items-center gap-1 rounded-md px-3 py-1.5 text-xs font-semibold text-white shadow-sm hover:opacity-90 transition-opacity whitespace-nowrap"
+                      className="inline-flex items-center gap-1 rounded-md px-3 py-1.5 text-xs font-semibold text-heading shadow-sm hover:opacity-90 transition-opacity whitespace-nowrap"
                       style={{ backgroundColor: 'var(--primary-color, #3b82f6)' }}
                     >
                       View Detailed Analysis →
@@ -77,7 +77,7 @@ export default function EtfAnalysisSections({
                 </div>
                 {categoryKey === EtfAnalysisCategory.FuturePerformanceOutlook && futureOutlookTop}
                 <div
-                  className="text-gray-300 markdown markdown-body"
+                  className="text-body markdown markdown-body"
                   dangerouslySetInnerHTML={{ __html: parseMarkdown(categoryResult?.overallAnalysisDetails || 'No summary available.') }}
                 />
               </div>
