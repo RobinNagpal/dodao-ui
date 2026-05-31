@@ -27,8 +27,8 @@ export const themeColors = {
 
   // Text
   '--heading-color': '#ffffff', // Headings
-  '--text-color': '#e5e7eb', // Body text (gray-200)
-  '--text-muted': '#9ca3af', // Secondary / muted text (gray-400)
+  '--text-color': '#f3f4f6', // Body text (gray-100) — brightened for readability on dark surfaces
+  '--text-muted': '#cbd5e1', // Secondary / muted text (slate-300) — brightened for readability
 
   // Lines
   '--border-color': '#374151', // Borders / dividers (gray-700)
