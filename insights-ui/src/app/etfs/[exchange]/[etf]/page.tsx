@@ -1,6 +1,8 @@
 import type { EtfFullRenderResponse } from '@/app/api/[spaceId]/etfs-v1/exchange/[exchange]/[etf]/full-render/route';
 import { EtfFastResponse } from '@/app/api/[spaceId]/etfs-v1/exchange/[exchange]/[etf]/route';
 import EtfActions from '@/app/etfs/[exchange]/[etf]/EtfActions';
+import EtfFavouriteButton from '@/app/etfs/[exchange]/[etf]/EtfFavouriteButton';
+import EtfNotesButton from '@/app/etfs/[exchange]/[etf]/EtfNotesButton';
 import { getEtfFundCategoryHierarchy } from '@/utils/etf-categorization-utils';
 import EtfAnalysisSections from '@/components/etf-reportsv1/analysis/EtfAnalysisSections';
 import EtfRadarChart from '@/components/etf-reportsv1/analysis/EtfRadarChart';
@@ -202,7 +204,17 @@ export default async function EtfDetailsPage({ params }: { params: RouteParams }
         }}
       />
 
-      <Breadcrumbs breadcrumbs={breadcrumbs} hideHomeIcon={true} rightButton={<EtfActions etf={{ symbol: etf, exchange }} />} />
+      <Breadcrumbs
+        breadcrumbs={breadcrumbs}
+        hideHomeIcon={true}
+        rightButton={
+          <div className="flex items-center gap-2">
+            <EtfFavouriteButton etfId={etfData.id} etfSymbol={etfData.symbol} etfName={etfData.name} />
+            <EtfNotesButton etfId={etfData.id} etfSymbol={etfData.symbol} etfName={etfData.name} />
+            <EtfActions etf={{ symbol: etf, exchange }} />
+          </div>
+        }
+      />
 
       <article itemScope itemType="https://schema.org/Article">
         <meta itemProp="datePublished" content={publishedDate.toISOString()} />

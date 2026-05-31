@@ -48,6 +48,10 @@ model User {
   favouriteTickers FavouriteTicker[]
   tickerNotes      TickerV1Notes[]
 
+  // User ETF related relations
+  favouriteEtfs FavouriteEtf[]
+  etfNotes      EtfNote[]
+
   // Portfolio related relations
   portfolioManagerProfile PortfolioManagerProfile?
 
@@ -1335,10 +1339,54 @@ model Etf {
   vsCompetition                 EtfVsCompetition?
   keyFactsReport                EtfKeyFactsReport?
   futureReturns                 EtfFutureReturns?
+  favourites                    FavouriteEtf[]
+  notes                         EtfNote[]
 
   @@unique([spaceId, symbol, exchange])
   @@index([symbol])
   @@map("etfs")
+}
+
+model FavouriteEtf {
+  id        String   @id @default(uuid())
+  userId    String   @map("user_id")
+  etfId     String   @map("etf_id")
+  spaceId   String   @default("koala_gains") @map("space_id")
+  myNotes   String?  @map("my_notes")
+  myScore   Float?   @map("my_score")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  createdBy String   @map("created_by")
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  etf  Etf  @relation(fields: [etfId], references: [id], onDelete: Cascade)
+
+  @@unique([spaceId, userId, etfId])
+  @@index([userId])
+  @@index([etfId])
+  @@map("favourite_etfs")
+}
+
+model EtfNote {
+  id        String   @id @default(uuid())
+  userId    String   @map("user_id")
+  etfId     String   @map("etf_id")
+  notes     String   @map("notes")
+  score     Float?   @map("score")
+  spaceId   String   @default("koala_gains") @map("space_id")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  createdBy String   @map("created_by")
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  etf  Etf  @relation(fields: [etfId], references: [id], onDelete: Cascade)
+
+  @@unique([spaceId, userId, etfId])
+  @@index([userId])
+  @@index([etfId])
+  @@map("etf_notes")
 }
 
 /// Key Facts report for an ETF (the "important things to know" paragraphs plus
