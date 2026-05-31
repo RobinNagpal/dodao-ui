@@ -64,8 +64,9 @@ export default function EtfKeyMetrics({ metrics }: EtfKeyMetricsProps): JSX.Elem
           <h4 className="text-sm font-semibold text-gray-200">Why these expected returns</h4>
           {reasons.map((r) => (
             <div key={r.label} className="bg-gray-800 rounded-md px-3 py-2">
-              <div className="text-xs font-semibold text-gray-300 mb-0.5">{r.label}</div>
-              <p className="text-xs leading-snug text-gray-400">{r.reason}</p>
+              <p className="text-xs leading-snug text-gray-400">
+                <span className="font-semibold text-gray-300">{r.label}</span> - {r.reason}
+              </p>
             </div>
           ))}
         </div>
