@@ -113,19 +113,25 @@ leaf** (see "Reuse Before Creating" in the root `CLAUDE.md`).
 
 ## Enforcement
 
-`insights-ui/eslint.config.mjs` bans the `className` JSX attribute outside the
-leaf layer via `no-restricted-syntax`:
+A `no-restricted-syntax` rule bans the `className` JSX attribute outside the
+leaf layer:
 
-- `error`/`warn` for `src/app/**` + `src/components/**`
-- `off` for `src/components/ui/**` (a later flat-config block wins)
+- `warn` for `src/app/**` + `src/components/**`
+- `off` for `src/components/ui/**` (later block wins)
+
+It is configured in **both** ESLint configs on purpose: `.eslintrc.json` (the
+config `next lint` actually consumes under the pinned ESLint 8, where flat config
+is opt-in) and `eslint.config.mjs` (the flat config, ready for when ESLint/Next
+default to flat). Keep them in sync until the configs are consolidated.
 
 It is currently set to **`warn`** so the build stays green while the codebase is
-migrated. The rollout is a **per-directory ratchet to `error`**: as a directory
+migrated (CI does not run `--max-warnings`, and `next build` does not fail on
+warnings). The rollout is a **per-directory ratchet to `error`**: as a directory
 is fully migrated to leaves, move its glob into an `error`-level block.
 
-Planned follow-ups (not yet done): consolidate to a single ESLint config (drop
-`.eslintrc.json`), bump `eslint-config-next` to match Next 15, and optionally
-restrict the leaf layer to semantic tokens only.
+Planned follow-ups (see [next-ui-cleanups.md](next-ui-cleanups.md)): consolidate
+to a single ESLint config, bump `eslint-config-next` to match Next 15, and
+optionally restrict the leaf layer to semantic tokens only.
 
 ## Process for future updates
 

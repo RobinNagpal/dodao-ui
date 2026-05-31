@@ -1,3 +1,21 @@
 {
-  "extends": "next/core-web-vitals"
+  "extends": "next/core-web-vitals",
+  "overrides": [
+    {
+      "files": ["src/app/**/*.{ts,tsx}", "src/components/**/*.{ts,tsx}"],
+      "rules": {
+        "no-restricted-syntax": [
+          "warn",
+          {
+            "selector": "JSXAttribute[name.name='className']",
+            "message": "Tailwind className is only allowed in leaf UI components under src/components/ui/**. Compose a styled UI component (or extend one) instead of inlining Tailwind here. See docs/insights-ui/ui-leaf-component-system.md."
+          }
+        ]
+      }
+    },
+    {
+      "files": ["src/components/ui/**/*.{ts,tsx}"],
+      "rules": { "no-restricted-syntax": "off" }
+    }
+  ]
 }
