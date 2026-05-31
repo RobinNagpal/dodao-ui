@@ -7,21 +7,21 @@ provider "aws" {
       App         = "koalagains"
       Environment = var.environment
       ManagedBy   = "terraform"
+      Compute     = "lightsail"
     }
   }
 }
 
-# CloudFront and its ACM certificate must live in us-east-1, regardless of app region.
+# CloudFront + its ACM certificate must live in us-east-1 (only used in Phase B).
 provider "aws" {
   alias  = "us_east_1"
   region = "us-east-1"
 
   default_tags {
     tags = {
-      Project     = "insights-ui"
-      App         = "koalagains"
-      Environment = var.environment
-      ManagedBy   = "terraform"
+      Project   = "insights-ui"
+      App       = "koalagains"
+      ManagedBy = "terraform"
     }
   }
 }

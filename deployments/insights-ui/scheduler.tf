@@ -1,8 +1,11 @@
-# Replacement for the 4 Vercel crons. EventBridge Scheduler → invoker Lambda → authenticated
-# HTTPS POST to the app cron endpoints. See plan §7.
+# Replacement for the 4 Vercel crons. The invoker Lambda is always created, but the SCHEDULES
+# are gated by enable_crons (default false) so they don't double-run against the shared RDS
+# while Vercel still owns the crons. Flip enable_crons=true at cut-over (and remove the crons
+# from vercel.json). See the plan.
 
 locals {
-  cron_base_url = "https://${var.domain_name}"
+  # During coexistence, point crons at the direct host; at cut-over they can target the apex.
+  cron_base_url = var.manage_cloudfront ? "https://${var.domain_name}" : "https://${var.direct_domain_name}"
 
   crons = {
     ticker_request = {
@@ -24,7 +27,8 @@ locals {
   }
 }
 
-# --- Invoker Lambda ---
+# The cron endpoints are GET handlers (matching how Vercel crons invoked them). They are
+# currently unauthenticated — see the plan §7 for the optional AUTOMATION_SECRET hardening.
 data "archive_file" "cron_invoker" {
   type        = "zip"
   output_path = "${path.module}/.build/cron-invoker.zip"
@@ -34,10 +38,7 @@ data "archive_file" "cron_invoker" {
     content  = <<-JS
       export const handler = async (event) => {
         const url = process.env.BASE_URL + event.path;
-        const r = await fetch(url, {
-          method: "POST",
-          headers: { "Authorization": process.env.AUTOMATION_SECRET, "Content-Type": "application/json" },
-        });
+        const r = await fetch(url, { method: "GET" });
         if (!r.ok) throw new Error(`cron ${event.path} -> ${r.status}`);
         return { status: r.status };
       };
@@ -72,18 +73,15 @@ resource "aws_lambda_function" "cron_invoker" {
   handler          = "index.handler"
   filename         = data.archive_file.cron_invoker.output_path
   source_code_hash = data.archive_file.cron_invoker.output_base64sha256
-  timeout          = 60
+  timeout          = 120
 
   environment {
     variables = {
       BASE_URL = local.cron_base_url
-      # The cron endpoints validate this. Sourced from app_secrets (same value as the app).
-      AUTOMATION_SECRET = lookup(var.app_secrets, "AUTOMATION_SECRET", "")
     }
   }
 }
 
-# --- EventBridge Scheduler ---
 data "aws_iam_policy_document" "scheduler_assume" {
   statement {
     actions = ["sts:AssumeRole"]
@@ -113,7 +111,7 @@ resource "aws_iam_role_policy" "scheduler_invoke" {
 }
 
 resource "aws_scheduler_schedule" "cron" {
-  for_each = local.crons
+  for_each = var.enable_crons ? local.crons : {}
   name     = "${var.name_prefix}-${each.key}"
 
   flexible_time_window {

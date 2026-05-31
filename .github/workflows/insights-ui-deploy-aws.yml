@@ -1,9 +1,12 @@
 name: Deploy insights-ui (AWS / Lightsail)
 
-# Builds the insights-ui container, pushes it to ECR, (optionally) uploads static assets to S3
-# for deploy-skew safety, and rolls the Lightsail container service to the new image via
-# `terraform apply` against deploy/aws/terraform-lightsail. See docs/insights-ui/aws-migration-plan.md.
-# REPLACES koalagains-deploy-full-ssg.yml at cut-over; until then it is opt-in via dispatch.
+# Builds the insights-ui container, pushes it to ECR, uploads static assets to S3, and rolls
+# the Lightsail container service to the new image via `terraform apply` against
+# deployments/insights-ui. See docs/insights-ui/aws-migration-plan.md.
+#
+# Phase A: the app is reachable directly at https://prod.koalagains.com (no CloudFront), running
+# in parallel with Vercel. This deploys to AWS only — Vercel keeps deploying via its own flow
+# until cut-over.
 
 on:
   workflow_dispatch:
@@ -26,8 +29,9 @@ env:
   AWS_REGION: us-east-1
   ECR_REPOSITORY: insights-ui
   STATIC_BUCKET: insights-ui-static-assets
-  TF_DIR: insights-ui/deploy/aws/terraform-lightsail
+  TF_DIR: deployments/insights-ui
   APP_SECRETS_ID: insights-ui/app-env # Secrets Manager JSON consumed as the app_secrets map
+  DIRECT_HOST: prod.koalagains.com
 
 jobs:
   deploy:
@@ -46,16 +50,15 @@ jobs:
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
 
-      # ECR repo is a Terraform resource — create it first so `docker push` has a target.
-      - name: Terraform init + ensure ECR repo
+      # ECR repo + S3 bucket are Terraform resources — create them first so `docker push` and
+      # the static upload have targets. app_secrets defaults to {} so the targeted apply runs.
+      - name: Terraform init + ensure ECR repo and S3 bucket
         working-directory: ${{ env.TF_DIR }}
         run: |
           terraform init -input=false
-          # app_secrets is required but irrelevant to the ECR resource — pass an empty map so
-          # the targeted apply doesn't prompt. The full apply below passes the real secret.
-          terraform apply -input=false -auto-approve -target=aws_ecr_repository.app \
-            -var "image_tag=$(git rev-parse --short HEAD)" \
-            -var 'app_secrets={}'
+          terraform apply -input=false -auto-approve \
+            -target=aws_ecr_repository.app -target=aws_s3_bucket.assets \
+            -var "image_tag=$(git rev-parse --short HEAD)"
 
       - name: Login to Amazon ECR
         id: ecr
@@ -68,21 +71,22 @@ jobs:
         run: |
           TAG="$(git rev-parse --short HEAD)"
           IMAGE="$REGISTRY/$ECR_REPOSITORY:$TAG"
+          ASSET_PREFIX="https://$STATIC_BUCKET.s3.$AWS_REGION.amazonaws.com"
           # Build context = repo root (workspace dependency @dodao/web-core).
-          # NEXT_PUBLIC_VERCEL_URL is a bare host — shared getBaseUrl() prepends https:// (plan §5.6).
+          # Phase A: base URL is the direct host; static assets are served from S3.
           docker build \
-            -f insights-ui/deploy/aws/Dockerfile \
-            --build-arg NEXT_PUBLIC_VERCEL_URL="koalagains.com" \
+            -f deployments/insights-ui/Dockerfile \
+            --build-arg NEXT_PUBLIC_VERCEL_URL="$DIRECT_HOST" \
             --build-arg NEXT_PUBLIC_VERCEL_ENV="production" \
+            --build-arg NEXT_PUBLIC_ASSET_PREFIX="$ASSET_PREFIX" \
             -t "$IMAGE" .
           docker push "$IMAGE"
           echo "tag=$TAG" >> "$GITHUB_OUTPUT"
 
-      # Optional: upload this build's static assets to S3 WITHOUT deleting prior builds (skew
-      # safety, plan §10). Hashed filenames never collide, so old chunks stay fetchable for
-      # CloudFront-cached HTML from previous builds. No-op if the bucket isn't in use.
+      # Upload this build's static assets to S3 WITHOUT deleting prior builds (skew safety).
+      # Hashed filenames never collide → CloudFront/browser-cached HTML from older builds keeps
+      # resolving its chunks. Extracted from the freshly built image.
       - name: Extract & upload static assets to S3
-        continue-on-error: true
         env:
           TAG: ${{ steps.build.outputs.tag }}
           REGISTRY: ${{ steps.ecr.outputs.registry }}
@@ -93,11 +97,11 @@ jobs:
           docker cp "$CID:/app/insights-ui/public" ./_assets/public
           docker rm "$CID"
           aws s3 sync ./_assets/static "s3://$STATIC_BUCKET/_next/static" --cache-control "public,max-age=31536000,immutable"
-          aws s3 sync ./_assets/public "s3://$STATIC_BUCKET/public"
+          aws s3 sync ./_assets/public "s3://$STATIC_BUCKET/public" --cache-control "public,max-age=3600"
 
-      # Deploy = terraform apply, which registers a new Lightsail deployment version pointing at
-      # the new image and injects secrets (read here from Secrets Manager) into its environment.
-      # DATABASE_URL inside the secret points at the existing RDS instance.
+      # Full apply registers a new Lightsail deployment version pointing at the new image and
+      # injects secrets (read here from Secrets Manager) into its env. DATABASE_URL inside the
+      # secret points at the existing public RDS.
       - name: Terraform apply (Lightsail)
         working-directory: ${{ env.TF_DIR }}
         env:
@@ -108,5 +112,5 @@ jobs:
             -var "image_tag=$TAG" \
             -var "app_secrets=$SECRETS_JSON"
 
-      - name: Smoke check
-        run: curl -fsS https://koalagains.com/api/health
+      - name: Smoke check (direct host)
+        run: curl -fsS "https://$DIRECT_HOST/api/health"

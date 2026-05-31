@@ -19,7 +19,7 @@ terraform {
   # Remote state — bootstrap the bucket + lock table once, then uncomment.
   # backend "s3" {
   #   bucket         = "koalagains-terraform-state"
-  #   key            = "insights-ui/lightsail/terraform.tfstate"
+  #   key            = "insights-ui/terraform.tfstate"
   #   region         = "us-east-1"
   #   dynamodb_table = "koalagains-terraform-locks"
   #   encrypt        = true

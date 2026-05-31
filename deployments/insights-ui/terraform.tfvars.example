@@ -1,0 +1,44 @@
+# Copy to terraform.tfvars and fill in. DO NOT COMMIT terraform.tfvars.
+# Secret VALUES (app_secrets) should be sourced from Secrets Manager by CI and passed as
+# `-var` at apply time, NOT written to a committed file.
+
+aws_region         = "us-east-1"
+environment        = "production"
+domain_name        = "koalagains.com"
+direct_domain_name = "prod.koalagains.com"
+
+# Set per-deploy (CI passes -var image_tag=<git sha>)
+image_tag = "REPLACE_WITH_GIT_SHA"
+
+service_power = "medium" # 1 vCPU / 4 GB (Puppeteer headroom); "small" = 2 GB if it fits
+service_scale = 1
+
+# ---- Rollout gates ----
+# Phase A (now): direct prod.koalagains.com, parallel with Vercel. Both OFF.
+manage_cloudfront = false # Phase B: flip true to put CloudFront in front of the app
+enable_crons      = false # crons stay on Vercel during coexistence; flip true at cut-over
+
+# Phase B reuse target:
+existing_cloudfront_distribution_id = "EZI5H8FKNE9R1"
+
+# Database lives in existing RDS (public access + SSL). Pass DATABASE_URL in app_secrets:
+#   "postgresql://user:pw@<rds-endpoint>:5432/insights_ui_db?sslmode=require&connection_limit=5"
+#
+# app_secrets is injected by CI from Secrets Manager — example shape only, DO NOT COMMIT values:
+# app_secrets = {
+#   DATABASE_URL          = "postgresql://...sslmode=require..."
+#   NEXTAUTH_SECRET       = "..."
+#   DODAO_AUTH_SECRET     = "..."
+#   EMAIL_TOKEN_SECRET    = "..."
+#   OPENAI_API_KEY        = "..."
+#   GOOGLE_API_KEY        = "..."
+#   GOOGLE_CLIENT_ID      = "..."
+#   GOOGLE_CLIENT_SECRET  = "..."
+#   POLYGON_API_KEY       = "..."
+#   AUTOMATION_SECRET     = "..."
+#   KOALA_AWS_ACCESS_KEY_ID     = "..."
+#   KOALA_AWS_SECRET_ACCESS_KEY = "..."
+#   STOCK_ANALYZER_LAMBDA_URL   = "..."
+#   ETF_ANALYZER_LAMBDA_URL     = "..."
+#   # …remaining lambda URLs, DISCORD_/TWITTER_ OAuth, GEMINI_MODEL, LLM_PROVIDER, SCREENER_API_URL…
+# }

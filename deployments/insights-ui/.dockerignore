@@ -10,5 +10,6 @@
 !**/.env.example
 **/cypress
 **/.vercel
-**/terraform
+**/.terraform
 **/*.tfstate*
+deployments/**/.build

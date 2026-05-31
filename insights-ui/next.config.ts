@@ -6,6 +6,11 @@ import bundleAnalyzer from '@next/bundle-analyzer';
 const withBundleAnalyzer = bundleAnalyzer({ enabled: process.env.ANALYZE === 'true' });
 
 const nextConfig: NextConfig = {
+  // Emit a self-contained server build for the AWS/Lightsail container deploy. Inert on Vercel.
+  output: 'standalone',
+  // When set (AWS build), the browser loads /_next/static/* from this S3 base URL. Unset on
+  // Vercel → normal same-origin asset serving. Build-time only (NEXT_PUBLIC_*).
+  assetPrefix: process.env.NEXT_PUBLIC_ASSET_PREFIX || undefined,
   compiler: {
     // Enables the styled-components SWC transform so components from @dodao/web-core work correctly
     styledComponents: true,

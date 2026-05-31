@@ -1,9 +1,6 @@
-# Lightsail container service: the single-node compute for insights-ui.
-# Modeled on ai-agents/crowd-fund-analysis/terraform/main.tf.
-
 # ECR repo for the app image. Self-managed so the stack is complete.
-# First-run ordering: CI runs `terraform apply -target=aws_ecr_repository.app` to create the
-# repo, then builds/pushes the image, then the full apply creates the deployment version.
+# First-run ordering: CI runs `terraform apply -target=aws_ecr_repository.app` (and the S3
+# bucket) before the docker build/push, then the full apply creates the deployment version.
 resource "aws_ecr_repository" "app" {
   name                 = var.ecr_repository_name
   image_tag_mutability = "IMMUTABLE"
@@ -31,7 +28,17 @@ resource "aws_lightsail_container_service" "app" {
   scale       = var.service_scale
   is_disabled = false
 
-  # Lets the service pull from a private ECR repository.
+  # Serve the app directly on prod.koalagains.com over HTTPS (no CloudFront in Phase A).
+  # NOTE: the certificate must be ISSUED (DNS-validated) before it attaches here. If the first
+  # apply errors because the cert is still PENDING_VALIDATION, re-run apply once the validation
+  # records (domains.tf) have propagated (~minutes).
+  public_domain_names {
+    certificate {
+      certificate_name = aws_lightsail_certificate.app.name
+      domain_names     = [var.direct_domain_name]
+    }
+  }
+
   private_registry_access {
     ecr_image_puller_role {
       is_active = true
@@ -41,6 +48,8 @@ resource "aws_lightsail_container_service" "app" {
   tags = {
     Environment = var.environment
   }
+
+  depends_on = [aws_route53_record.lightsail_cert_validation]
 }
 
 # Allow the service's ECR puller role to read the app repository.
@@ -66,7 +75,7 @@ resource "aws_lightsail_container_service_deployment_version" "app" {
   container {
     container_name = "app"
     image          = "${aws_ecr_repository.app.repository_url}:${var.image_tag}"
-    # DATABASE_URL (pointing at the existing RDS instance) is supplied via app_secrets.
+    # DATABASE_URL (existing public RDS, sslmode=require) is supplied via app_secrets.
     environment = merge(var.app_env, var.app_secrets)
     ports = {
       "3000" = "HTTP"
