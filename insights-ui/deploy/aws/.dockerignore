@@ -1,0 +1,14 @@
+**/node_modules
+**/.next
+**/.git
+**/.turbo
+**/dist
+**/coverage
+**/*.log
+**/.env
+**/.env.*
+!**/.env.example
+**/cypress
+**/.vercel
+**/terraform
+**/*.tfstate*

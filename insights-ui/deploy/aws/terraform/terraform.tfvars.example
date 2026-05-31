@@ -1,0 +1,28 @@
+# Copy to terraform.tfvars and fill in. DO NOT COMMIT terraform.tfvars.
+
+aws_region   = "us-east-1"
+environment  = "production"
+domain_name  = "koalagains.com"
+
+# Set per-deploy (CI passes -var image_tag=<git sha>)
+image_tag = "REPLACE_WITH_GIT_SHA"
+
+# Networking
+vpc_cidr           = "10.40.0.0/16"
+az_count           = 2
+single_nat_gateway = true
+
+# ECS sizing
+task_cpu      = 1024
+task_memory   = 2048
+desired_count = 2
+min_capacity  = 2
+max_capacity  = 6
+
+# RDS
+db_instance_class    = "db.t4g.small"
+db_allocated_storage = 50
+db_multi_az          = true
+
+# CloudFront — reuse the existing distribution by importing it (see plan §11)
+existing_cloudfront_distribution_id = "EZI5H8FKNE9R1"

@@ -1,0 +1,110 @@
+name: Deploy insights-ui (AWS)
+
+# Builds the insights-ui container, pushes it to ECR, uploads static assets to S3 (retained
+# across builds for deploy-skew safety), and rolls the ECS Fargate service to the new image.
+# See docs/insights-ui/aws-migration-plan.md. This REPLACES koalagains-deploy-full-ssg.yml at
+# cut-over; until then it is opt-in via workflow_dispatch.
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment to deploy'
+        type: choice
+        default: production
+        options: [production]
+
+permissions:
+  id-token: write # GitHub OIDC → AWS role
+  contents: read
+
+concurrency:
+  group: insights-ui-aws-deploy
+  cancel-in-progress: false
+
+env:
+  AWS_REGION: us-east-1
+  ECR_REPOSITORY: insights-ui
+  ECS_CLUSTER: insights-ui-cluster
+  ECS_SERVICE: insights-ui-svc
+  STATIC_BUCKET: insights-ui-static-assets
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_DEPLOY_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        id: ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Build & push image
+        id: build
+        env:
+          REGISTRY: ${{ steps.ecr.outputs.registry }}
+        run: |
+          TAG="$(git rev-parse --short HEAD)"
+          IMAGE="$REGISTRY/$ECR_REPOSITORY:$TAG"
+          # Build context = repo root (workspace dependency @dodao/web-core).
+          docker build \
+            -f insights-ui/deploy/aws/Dockerfile \
+            --build-arg NEXT_PUBLIC_APP_URL="https://koalagains.com" \
+            --build-arg NEXT_PUBLIC_APP_ENV="production" \
+            -t "$IMAGE" .
+          docker push "$IMAGE"
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+
+      # Upload this build's static assets to S3 WITHOUT deleting prior builds (skew safety).
+      # Hashed filenames never collide, so old chunks remain fetchable for CloudFront-cached
+      # HTML from previous builds. Extract them from the freshly built image.
+      - name: Extract & upload static assets to S3
+        env:
+          TAG: ${{ steps.build.outputs.tag }}
+          REGISTRY: ${{ steps.ecr.outputs.registry }}
+        run: |
+          CID=$(docker create "$REGISTRY/$ECR_REPOSITORY:$TAG")
+          rm -rf ./_assets && mkdir -p ./_assets
+          docker cp "$CID:/app/insights-ui/.next/static" ./_assets/static
+          docker cp "$CID:/app/insights-ui/public" ./_assets/public
+          docker rm "$CID"
+          # NOTE: no --delete — we intentionally retain old build assets.
+          aws s3 sync ./_assets/static "s3://$STATIC_BUCKET/_next/static" --cache-control "public,max-age=31536000,immutable"
+          aws s3 sync ./_assets/public "s3://$STATIC_BUCKET/public"
+
+      # Register a new task-definition revision pointing at the new immutable image tag, then
+      # roll the service onto it. (Alternatively run `terraform apply -var image_tag=$TAG`,
+      # which is the canonical path in docs/insights-ui/aws-migration-plan.md §8.)
+      - name: Render new task definition
+        id: taskdef
+        env:
+          TAG: ${{ steps.build.outputs.tag }}
+          REGISTRY: ${{ steps.ecr.outputs.registry }}
+        run: |
+          aws ecs describe-task-definition --task-definition "$ECR_REPOSITORY" \
+            --query 'taskDefinition' --output json > taskdef.json
+          # Swap the container image to the new tag.
+          jq --arg IMG "$REGISTRY/$ECR_REPOSITORY:$TAG" \
+            '.containerDefinitions[0].image = $IMG
+             | del(.taskDefinitionArn,.revision,.status,.requiresAttributes,.compatibilities,.registeredAt,.registeredBy)' \
+            taskdef.json > new-taskdef.json
+          echo "file=new-taskdef.json" >> "$GITHUB_OUTPUT"
+
+      - name: Deploy to ECS (rolling)
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v2
+        with:
+          task-definition: ${{ steps.taskdef.outputs.file }}
+          service: ${{ env.ECS_SERVICE }}
+          cluster: ${{ env.ECS_CLUSTER }}
+          wait-for-service-stability: true
+
+      - name: Smoke check
+        run: curl -fsS https://koalagains.com/api/health
