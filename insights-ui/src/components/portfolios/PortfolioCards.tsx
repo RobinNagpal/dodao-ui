@@ -1,6 +1,7 @@
 import { FolderIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import TickerBadge from '@/components/favourites/TickerBadge';
+import EmptyStateCard from '@/components/ui/EmptyStateCard';
 import { PortfolioWithTickers } from '@/types/portfolio';
 
 interface PortfolioCardsProps {
@@ -12,11 +13,7 @@ export default function PortfolioCards({ portfolios, portfolioManagerId }: Portf
   const totalHoldings = portfolios.reduce((sum, p) => sum + (p.portfolioTickers?.length || 0), 0);
 
   const renderEmptyState = () => (
-    <div className="bg-gray-800 rounded-lg p-8 text-center">
-      <FolderIcon className="w-16 h-16 text-gray-600 mx-auto mb-4" />
-      <h3 className="text-xl font-semibold mb-2">No portfolios yet</h3>
-      <p className="text-gray-400 mb-4">This portfolio manager hasn’t published any portfolios yet.</p>
-    </div>
+    <EmptyStateCard icon={FolderIcon} title="No portfolios yet" description="This portfolio manager hasn’t published any portfolios yet." />
   );
 
   const renderPortfolioCard = (portfolio: PortfolioWithTickers) => {

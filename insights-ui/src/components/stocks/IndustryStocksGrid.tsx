@@ -1,4 +1,5 @@
 import SubIndustryCard from '@/components/stocks/SubIndustryCard';
+import EmptyStateCard from '@/components/ui/EmptyStateCard';
 import { SubIndustriesResponse, TickerMinimal } from '@/types/api/ticker-industries';
 import { use } from 'react';
 
@@ -57,20 +58,14 @@ export default function IndustryStocksGrid({
   const { subIndustries, filtersApplied } = resolvedData;
 
   if (!subIndustries || subIndustries.flatMap((si) => si.tickers).length === 0) {
-    return (
-      <div className="text-center py-12">
-        {filtersApplied ? (
-          <>
-            <p className="text-[#E5E7EB] text-lg">No {industryName ? `${industryName} ` : ''}stocks match the current filters.</p>
-            <p className="text-[#E5E7EB] text-sm mt-2">Try adjusting your filter criteria to see more results.</p>
-          </>
-        ) : (
-          <>
-            <p className="text-[#E5E7EB] text-lg">No {industryName ? `${industryName} ` : ''}stocks found.</p>
-            <p className="text-[#E5E7EB] text-sm mt-2">Please try again later.</p>
-          </>
-        )}
-      </div>
+    return filtersApplied ? (
+      <EmptyStateCard
+        variant="inline"
+        title={`No ${industryName ? `${industryName} ` : ''}stocks match the current filters.`}
+        description="Try adjusting your filter criteria to see more results."
+      />
+    ) : (
+      <EmptyStateCard variant="inline" title={`No ${industryName ? `${industryName} ` : ''}stocks found.`} description="Please try again later." />
     );
   }
 

@@ -1,6 +1,7 @@
 import { EtfCategoryAnalysisResultResponse } from '@/app/api/[spaceId]/etfs-v1/exchange/[exchange]/[etf]/analysis/route';
 import EtfMetadataBadges from '@/components/etf-reportsv1/EtfMetadataBadges';
 import EtfRelatedSections from '@/components/etf-reportsv1/EtfRelatedSections';
+import PassFailBadge from '@/components/ui/PassFailBadge';
 import { EtfAnalysisCategory } from '@/types/etf/etf-analysis-types';
 import { findFactorDefinition } from '@/utils/etf-analysis-reports/etf-analysis-factor-utils';
 import { parseMarkdown } from '@/util/parse-markdown';
@@ -140,13 +141,7 @@ export default function EtfCategoryReport({
                           )}
                           <h3 className="font-semibold">{getFactorTitle(categoryResult.categoryKey, factor.factorKey)}</h3>
                         </div>
-                        <span
-                          className={`px-2 py-1 rounded-full text-sm font-medium ${
-                            factor.result === PASS_RESULT ? 'bg-green-900 text-green-200' : 'bg-red-900 text-red-200'
-                          }`}
-                        >
-                          {factor.result}
-                        </span>
+                        <PassFailBadge passed={factor.result === PASS_RESULT} className="font-medium" passLabel={factor.result} failLabel={factor.result} />
                       </div>
                       <p className="text-sm text-gray-400">{factor.oneLineExplanation}</p>
                       <div className="markdown markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(factor.detailedExplanation) }} />

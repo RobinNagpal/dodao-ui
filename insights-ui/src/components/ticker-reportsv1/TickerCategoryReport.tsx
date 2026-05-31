@@ -1,4 +1,5 @@
 import TickerRelatedSections, { getAvailableSiblingSlugs } from '@/components/ticker-reportsv1/TickerRelatedSections';
+import PassFailBadge from '@/components/ui/PassFailBadge';
 import { parseMarkdown } from '@/util/parse-markdown';
 import { CheckCircleIcon, XCircleIcon } from '@heroicons/react/24/solid';
 import Link from 'next/link';
@@ -149,13 +150,12 @@ export default function TickerCategoryReport({
                           )}
                           <h3 className="font-semibold">{factor.analysisCategoryFactor?.factorAnalysisTitle}</h3>
                         </div>
-                        <span
-                          className={`px-2 py-1 rounded-full text-sm font-medium ${
-                            String(factor.result) === PASS_RESULT ? 'bg-green-900 text-green-200' : 'bg-red-900 text-red-200'
-                          }`}
-                        >
-                          {String(factor.result)}
-                        </span>
+                        <PassFailBadge
+                          passed={String(factor.result) === PASS_RESULT}
+                          className="font-medium"
+                          passLabel={String(factor.result)}
+                          failLabel={String(factor.result)}
+                        />
                       </div>
                       <p className="text-sm text-gray-400">{factor.oneLineExplanation}</p>
                       <div className="markdown markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(factor.detailedExplanation) }} />

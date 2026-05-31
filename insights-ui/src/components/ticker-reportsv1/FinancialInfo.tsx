@@ -1,5 +1,8 @@
 import { FinancialInfoResponse } from '@/app/api/[spaceId]/tickers-v1/exchange/[exchange]/[ticker]/financial-info/route';
 import { formatCurrency, formatNumber, formatPercentageDecimal, formatVolume } from '@/components/reportsv1/financialFormatters';
+import CardSection from '@/components/ui/CardSection';
+import MetricCell from '@/components/ui/MetricCell';
+import MetricGrid from '@/components/ui/MetricGrid';
 
 interface FinancialInfoProps {
   data: FinancialInfoResponse;
@@ -12,12 +15,7 @@ interface FinancialCardProps {
 }
 
 export function FinancialCard({ label, value, isLoading = false }: FinancialCardProps): JSX.Element {
-  return (
-    <div className="bg-gray-800 px-2 py-1 rounded-md">
-      <div className="text-xs text-gray-400 mb-1">{label}</div>
-      {isLoading ? <div className="rounded animate-pulse">--</div> : <div className="text-xs font-semibold">{value}</div>}
-    </div>
-  );
+  return <MetricCell label={label} value={value} loading={isLoading} size="xs" />;
 }
 
 export default function FinancialInfo({ data }: FinancialInfoProps): JSX.Element {
@@ -25,8 +23,8 @@ export default function FinancialInfo({ data }: FinancialInfoProps): JSX.Element
   const hasDividends = data.annualDividend !== null && data.annualDividend !== 0;
 
   return (
-    <section id="financial-info" className="bg-gray-900 rounded-lg shadow-sm px-2 py-2 sm:p-3 mt-6">
-      <div className="grid grid-cols-2 gap-2">
+    <CardSection id="financial-info" padding="compact" mt="md">
+      <MetricGrid columns="2" gap="sm">
         <FinancialCard label="Current Price" value={formatCurrency(data.price, data.currency)} />
         <FinancialCard label="52 Week Range" value={`${formatCurrency(data.yearLow, data.currency)} - ${formatCurrency(data.yearHigh, data.currency)}`} />
         <FinancialCard label="Market Cap" value={data.marketCap || 'N/A'} />
@@ -39,7 +37,7 @@ export default function FinancialInfo({ data }: FinancialInfoProps): JSX.Element
         <FinancialCard label="Net Income (TTM)" value={data.netIncome || 'N/A'} />
         <FinancialCard label="Annual Dividend" value={hasDividends ? formatCurrency(data.annualDividend, data.currency) : '--'} />
         <FinancialCard label="Dividend Yield" value={hasDividends ? formatPercentageDecimal(data.dividendYield) : '--'} />
-      </div>
-    </section>
+      </MetricGrid>
+    </CardSection>
   );
 }

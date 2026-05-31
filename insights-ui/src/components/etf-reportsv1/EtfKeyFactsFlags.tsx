@@ -1,3 +1,4 @@
+import PassFailBadge from '@/components/ui/PassFailBadge';
 import { EtfKeyFactsFlagAssessment } from '@/types/etf/etf-analysis-types';
 import { parseMarkdown } from '@/util/parse-markdown';
 import { CheckCircleIcon, XCircleIcon } from '@heroicons/react/24/solid';
@@ -38,13 +39,7 @@ export default function EtfKeyFactsFlags({ greenFlags, redFlags }: EtfKeyFactsFl
                       )}
                       <h4 className="font-semibold">{f.flag}</h4>
                     </div>
-                    <span
-                      className={`px-2 py-0.5 rounded-full text-sm font-medium flex-shrink-0 ${
-                        f.result === 'Pass' ? 'bg-green-900 text-green-200' : 'bg-red-900 text-red-200'
-                      }`}
-                    >
-                      {f.result}
-                    </span>
+                    <PassFailBadge passed={f.result === 'Pass'} className="py-0.5 font-medium flex-shrink-0" passLabel={f.result} failLabel={f.result} />
                   </div>
                   {explanation && (
                     <div className="markdown markdown-body text-sm text-gray-400" dangerouslySetInnerHTML={{ __html: parseMarkdown(explanation) }} />

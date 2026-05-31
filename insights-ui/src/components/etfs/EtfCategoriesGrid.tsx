@@ -1,4 +1,5 @@
 import EtfCategoryCard from '@/components/etfs/EtfCategoryCard';
+import EmptyStateCard from '@/components/ui/EmptyStateCard';
 import type { EtfGroupingPreviewItem } from '@/types/etf/etf-listings-types';
 import React from 'react';
 
@@ -44,11 +45,7 @@ interface EtfCategoriesGridProps {
  */
 export default function EtfCategoriesGrid({ categories, emptyMessage }: EtfCategoriesGridProps): React.JSX.Element {
   if (categories.length === 0) {
-    return (
-      <div className="text-center py-12">
-        <p className="text-[#E5E7EB] text-lg">{emptyMessage ?? 'No ETFs available.'}</p>
-      </div>
-    );
+    return <EmptyStateCard variant="inline" title={emptyMessage ?? 'No ETFs available.'} />;
   }
 
   const items = categories.map((c) => ({ ...c, estH: estimateCardHeight(c.etfs.length) }));

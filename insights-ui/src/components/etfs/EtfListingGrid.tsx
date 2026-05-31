@@ -1,5 +1,6 @@
 import { EtfListingResponse, EtfListingItem } from '@/app/api/[spaceId]/etfs-v1/listing/route';
 import { formatPercentageDecimal } from '@/components/reportsv1/financialFormatters';
+import EmptyStateCard from '@/components/ui/EmptyStateCard';
 import { getEtfGroupKey } from '@/utils/etf-categorization-utils';
 import { getEtfScoreColorClasses } from '@/utils/score-utils';
 import Link from 'next/link';
@@ -121,20 +122,10 @@ export default function EtfListingGrid({
   if (!resolvedData) return null;
 
   if (resolvedData.etfs.length === 0) {
-    return (
-      <div className="text-center py-12">
-        {resolvedData.filtersApplied ? (
-          <>
-            <p className="text-[#E5E7EB] text-lg">No ETFs match the current filters.</p>
-            <p className="text-[#E5E7EB] text-sm mt-2">Try adjusting your filter criteria to see more results.</p>
-          </>
-        ) : (
-          <>
-            <p className="text-[#E5E7EB] text-lg">No ETFs found.</p>
-            <p className="text-[#E5E7EB] text-sm mt-2">Please try again later.</p>
-          </>
-        )}
-      </div>
+    return resolvedData.filtersApplied ? (
+      <EmptyStateCard variant="inline" title="No ETFs match the current filters." description="Try adjusting your filter criteria to see more results." />
+    ) : (
+      <EmptyStateCard variant="inline" title="No ETFs found." description="Please try again later." />
     );
   }
 
