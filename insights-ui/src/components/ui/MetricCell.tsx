@@ -36,11 +36,7 @@ export default function MetricCell({ label, value, size, sentiment, loading = fa
   return (
     <div className={cn(cellBox({ size }), className)}>
       <div className="text-xs text-gray-400 mb-1">{label}</div>
-      {loading ? (
-        <div className="rounded animate-pulse">--</div>
-      ) : (
-        <div className={cn(cellValue({ size, sentiment }))}>{value ?? '—'}</div>
-      )}
+      {loading ? <div className="rounded animate-pulse">--</div> : <div className={cn(cellValue({ size, sentiment }))}>{value ?? '—'}</div>}
     </div>
   );
 }
