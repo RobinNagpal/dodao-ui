@@ -5,6 +5,18 @@ import { createCacheFilter, createTickerFilter, hasFiltersAppliedServer, parseFi
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { TickerV1CachedScore } from '@prisma/client';
 import { NextRequest } from 'next/server';
+import { validate as isValidUuid } from 'uuid';
+
+/**
+ * Builds an error that the shared error-handling middleware maps to a clean 404 response
+ * (it returns 404 when `error.name === 'NotFoundError'`). Using this keeps internal Prisma
+ * details out of the response body and avoids leaking model/method names to clients.
+ */
+function notFoundError(message: string): Error {
+  const error = new Error(message);
+  error.name = 'NotFoundError';
+  return error;
+}
 
 async function getHandler(
   req: NextRequest,
@@ -13,11 +25,22 @@ async function getHandler(
   const { spaceId, country: countryParam, industryKey, profileId } = await context.params;
   const country = toSupportedCountry(countryParam);
 
+  // Validate the profileId before touching the database. The id always comes from the URL path,
+  // so reject anything that isn't a well-formed UUID up front. This short-circuits malformed input
+  // (e.g. automated scanner probes) with a clean 404 instead of a Prisma "record not found" error.
+  if (!isValidUuid(profileId)) {
+    throw notFoundError('Portfolio manager profile not found');
+  }
+
   // Get userId from profileId
-  const profile = await prisma.portfolioManagerProfile.findUniqueOrThrow({
+  const profile = await prisma.portfolioManagerProfile.findUnique({
     where: { id: profileId },
     select: { userId: true },
   });
+
+  if (!profile) {
+    throw notFoundError('Portfolio manager profile not found');
+  }
 
   const userId = profile.userId;
 
@@ -165,7 +188,7 @@ async function getHandler(
 
   // Check if any filters are applied
   const filtersApplied = hasFiltersAppliedServer(cacheFilter, filters);
-  const industry = await prisma.tickerV1Industry.findUniqueOrThrow({
+  const industry = await prisma.tickerV1Industry.findUnique({
     where: {
       industryKey,
     },
@@ -177,6 +200,10 @@ async function getHandler(
       },
     },
   });
+
+  if (!industry) {
+    throw notFoundError('Industry not found');
+  }
 
   return {
     ...industry,
