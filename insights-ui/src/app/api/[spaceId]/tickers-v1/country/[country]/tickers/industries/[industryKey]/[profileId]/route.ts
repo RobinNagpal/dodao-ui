@@ -2,21 +2,11 @@ import { prisma } from '@/prisma';
 import { SubIndustriesResponse, SubIndustryWithAllTickers, TickerMinimal } from '@/types/api/ticker-industries';
 import { getExchangeFilterClause, toSupportedCountry } from '@/utils/countryExchangeUtils';
 import { createCacheFilter, createTickerFilter, hasFiltersAppliedServer, parseFilterParams } from '@/utils/ticker-filter-utils';
+import { notFoundError } from '@dodao/web-core/api/errors/notFoundError';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { TickerV1CachedScore } from '@prisma/client';
 import { NextRequest } from 'next/server';
 import { validate as isValidUuid } from 'uuid';
-
-/**
- * Builds an error that the shared error-handling middleware maps to a clean 404 response
- * (it returns 404 when `error.name === 'NotFoundError'`). Using this keeps internal Prisma
- * details out of the response body and avoids leaking model/method names to clients.
- */
-function notFoundError(message: string): Error {
-  const error = new Error(message);
-  error.name = 'NotFoundError';
-  return error;
-}
 
 async function getHandler(
   req: NextRequest,
