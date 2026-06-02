@@ -2,9 +2,11 @@ import { prisma } from '@/prisma';
 import { SubIndustriesResponse, SubIndustryWithAllTickers, TickerMinimal } from '@/types/api/ticker-industries';
 import { getExchangeFilterClause, toSupportedCountry } from '@/utils/countryExchangeUtils';
 import { createCacheFilter, createTickerFilter, hasFiltersAppliedServer, parseFilterParams } from '@/utils/ticker-filter-utils';
+import { notFoundError } from '@dodao/web-core/api/errors/notFoundError';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { TickerV1CachedScore } from '@prisma/client';
 import { NextRequest } from 'next/server';
+import { validate as isValidUuid } from 'uuid';
 
 async function getHandler(
   req: NextRequest,
@@ -13,11 +15,22 @@ async function getHandler(
   const { spaceId, country: countryParam, industryKey, profileId } = await context.params;
   const country = toSupportedCountry(countryParam);
 
+  // Validate the profileId before touching the database. The id always comes from the URL path,
+  // so reject anything that isn't a well-formed UUID up front. This short-circuits malformed input
+  // (e.g. automated scanner probes) with a clean 404 instead of a Prisma "record not found" error.
+  if (!isValidUuid(profileId)) {
+    throw notFoundError('Portfolio manager profile not found');
+  }
+
   // Get userId from profileId
-  const profile = await prisma.portfolioManagerProfile.findUniqueOrThrow({
+  const profile = await prisma.portfolioManagerProfile.findUnique({
     where: { id: profileId },
     select: { userId: true },
   });
+
+  if (!profile) {
+    throw notFoundError('Portfolio manager profile not found');
+  }
 
   const userId = profile.userId;
 
@@ -165,7 +178,7 @@ async function getHandler(
 
   // Check if any filters are applied
   const filtersApplied = hasFiltersAppliedServer(cacheFilter, filters);
-  const industry = await prisma.tickerV1Industry.findUniqueOrThrow({
+  const industry = await prisma.tickerV1Industry.findUnique({
     where: {
       industryKey,
     },
@@ -177,6 +190,10 @@ async function getHandler(
       },
     },
   });
+
+  if (!industry) {
+    throw notFoundError('Industry not found');
+  }
 
   return {
     ...industry,
