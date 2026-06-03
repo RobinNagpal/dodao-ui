@@ -14,9 +14,9 @@ service_power = "medium" # 1 vCPU / 4 GB (Puppeteer headroom); "small" = 2 GB if
 service_scale = 1
 
 # ---- Rollout gates ----
-# Phase A (now): direct prod.koalagains.com, parallel with Vercel. Both OFF.
+# Phase A (now): direct prod.koalagains.com, parallel with Vercel.
 manage_cloudfront = false # Phase B: flip true to put CloudFront in front of the app
-enable_crons      = false # crons stay on Vercel during coexistence; flip true at cut-over
+enable_crons      = true  # AWS owns the crons in Phase A (removed from vercel.json); single owner vs shared RDS
 
 # Phase B reuse target:
 existing_cloudfront_distribution_id = "EZI5H8FKNE9R1"
