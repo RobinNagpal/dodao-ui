@@ -1,22 +1,4 @@
 {
-  "crons": [
-    {
-      "path": "/api/koala_gains/tickers-v1/generate-ticker-v1-request",
-      "schedule": "*/3 * * * *"
-    },
-    {
-      "path": "/api/koala_gains/tickers-v1/generate-daily-top-gainers",
-      "schedule": "0 23 * * 1-5"
-    },
-    {
-      "path": "/api/koala_gains/tickers-v1/generate-daily-top-losers",
-      "schedule": "0 23 * * 1-5"
-    },
-    {
-      "path": "/api/koala_gains/etfs-v1/generate-etf-v1-request",
-      "schedule": "*/3 * * * *"
-    }
-  ],
   "headers": [
     {
       "source": "/api/(.*)",

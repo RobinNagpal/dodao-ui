@@ -1,0 +1,8 @@
+# Terraform state, vars with secret values, and build artifacts — never commit.
+.terraform/
+.terraform.lock.hcl
+*.tfstate
+*.tfstate.*
+terraform.tfvars
+*.auto.tfvars.json
+.build/

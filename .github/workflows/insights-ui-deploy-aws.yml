@@ -1,0 +1,151 @@
+name: Deploy insights-ui (AWS / Lightsail)
+
+# Builds the insights-ui container, pushes it to ECR, uploads static assets to S3, and rolls
+# the Lightsail container service to the new image via `terraform apply` against
+# deployments/insights-ui. See docs/insights-ui/aws-migration-plan.md.
+#
+# Phase A: the app is reachable directly at https://prod.koalagains.com (no CloudFront), running
+# in parallel with Vercel. This deploys to AWS only — Vercel keeps deploying via its own flow
+# until cut-over.
+#
+# Auto-deploys on merge to `main` whenever the insights-ui app or the shared web-core package
+# changes (web-core is a build dependency of insights-ui). Also runnable manually.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'insights-ui/**'
+      - 'shared/web-core/**'
+      - 'deployments/insights-ui/**'
+      - '.github/workflows/insights-ui-deploy-aws.yml'
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment to deploy'
+        type: choice
+        default: production
+        options: [production]
+
+permissions:
+  id-token: write # GitHub OIDC → AWS role
+  contents: read
+
+concurrency:
+  group: insights-ui-aws-deploy
+  cancel-in-progress: false
+
+env:
+  AWS_REGION: us-east-1
+  ECR_REPOSITORY: insights-ui
+  STATIC_BUCKET: insights-ui-static-assets
+  TF_DIR: deployments/insights-ui
+  APP_SECRETS_ID: insights-ui/app-env # Secrets Manager JSON consumed as the app_secrets map
+  DIRECT_HOST: prod.koalagains.com
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_DEPLOY_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      # ECR repo + S3 bucket are Terraform resources — create them first so `docker push` and
+      # the static upload have targets. app_secrets defaults to {} so the targeted apply runs.
+      - name: Terraform init + ensure ECR repo and S3 bucket
+        working-directory: ${{ env.TF_DIR }}
+        run: |
+          terraform init -input=false
+          terraform apply -input=false -auto-approve \
+            -target=aws_ecr_repository.app -target=aws_s3_bucket.assets \
+            -var "image_tag=$(git rev-parse --short HEAD)"
+
+      - name: Login to Amazon ECR
+        id: ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Build & push image
+        id: build
+        env:
+          REGISTRY: ${{ steps.ecr.outputs.registry }}
+        run: |
+          TAG="$(git rev-parse --short HEAD)"
+          IMAGE="$REGISTRY/$ECR_REPOSITORY:$TAG"
+          ASSET_PREFIX="https://$STATIC_BUCKET.s3.$AWS_REGION.amazonaws.com"
+          # Build context = repo root (workspace dependency @dodao/web-core).
+          # Phase A: base URL is the direct host; static assets are served from S3.
+          docker build \
+            -f deployments/insights-ui/Dockerfile \
+            --build-arg NEXT_PUBLIC_VERCEL_URL="$DIRECT_HOST" \
+            --build-arg NEXT_PUBLIC_VERCEL_ENV="production" \
+            --build-arg NEXT_PUBLIC_ASSET_PREFIX="$ASSET_PREFIX" \
+            -t "$IMAGE" .
+          docker push "$IMAGE"
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+
+      # Upload this build's static assets to S3 WITHOUT deleting prior builds (skew safety).
+      # Hashed filenames never collide → CloudFront/browser-cached HTML from older builds keeps
+      # resolving its chunks. Extracted from the freshly built image.
+      - name: Extract & upload static assets to S3
+        env:
+          TAG: ${{ steps.build.outputs.tag }}
+          REGISTRY: ${{ steps.ecr.outputs.registry }}
+        run: |
+          CID=$(docker create "$REGISTRY/$ECR_REPOSITORY:$TAG")
+          rm -rf ./_assets && mkdir -p ./_assets
+          docker cp "$CID:/app/insights-ui/.next/static" ./_assets/static
+          docker cp "$CID:/app/insights-ui/public" ./_assets/public
+          docker rm "$CID"
+          # Only /_next/static is served from S3 (via assetPrefix). /public is served by the
+          # Next server at the site root, so it is NOT uploaded here.
+          aws s3 sync ./_assets/static "s3://$STATIC_BUCKET/_next/static" --cache-control "public,max-age=31536000,immutable"
+
+      # Full apply registers a new Lightsail deployment version pointing at the new image and
+      # injects secrets (from Secrets Manager) into its env. DATABASE_URL inside the secret
+      # points at the existing public RDS.
+      #
+      # Secrets are written to a *.auto.tfvars.json file (NOT passed inline via -var): a JSON
+      # object does not parse into a map(string) through `-var`, and an inline -var would also
+      # leak the secret into the process table / unmasked logs. Terraform auto-loads *.auto.tfvars.json.
+      - name: Terraform apply (Lightsail)
+        working-directory: ${{ env.TF_DIR }}
+        env:
+          TAG: ${{ steps.build.outputs.tag }}
+        run: |
+          SECRETS_JSON=$(aws secretsmanager get-secret-value --secret-id "$APP_SECRETS_ID" --query SecretString --output text)
+          jq -n --argjson s "$SECRETS_JSON" --arg tag "$TAG" '{app_secrets: $s, image_tag: $tag}' > secrets.auto.tfvars.json
+          # First apply can fail while the Lightsail cert is still PENDING_VALIDATION — retry once
+          # after a wait for DNS validation to propagate.
+          terraform apply -input=false -auto-approve \
+            || (echo "retrying after cert validation wait..."; sleep 120; terraform apply -input=false -auto-approve)
+          rm -f secrets.auto.tfvars.json
+
+      # Wait for the new deployment version to roll to ACTIVE before smoke-testing, otherwise we
+      # hit the old version (or a still-deploying container).
+      - name: Wait for Lightsail deployment to be ACTIVE
+        run: |
+          for i in $(seq 1 40); do
+            state=$(aws lightsail get-container-services --service-name "$ECR_REPOSITORY" \
+              --query 'containerServices[0].state' --output text)
+            echo "Lightsail state: $state"
+            [ "$state" = "ACTIVE" ] && break
+            sleep 15
+          done
+
+      - name: Smoke check (direct host)
+        run: |
+          for i in $(seq 1 10); do
+            curl -fsS "https://$DIRECT_HOST/api/health" && exit 0
+            echo "health not ready, retrying..."; sleep 15
+          done
+          exit 1
