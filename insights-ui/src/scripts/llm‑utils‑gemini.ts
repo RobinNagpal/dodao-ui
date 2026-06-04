@@ -5,11 +5,20 @@ import { zodToJsonSchema } from 'zod-to-json-schema';
 import { GeminiModel, LLMProvider, getDefaultGeminiModel, getDefaultLLMProvider } from '@/types/llmConstants';
 import { getGroundedResponse, getGroundedStructuredResponse } from '@/util/llm-grounding-utils';
 
-export const geminiModel = new ChatGoogleGenerativeAI({
-  model: GeminiModel.GEMINI_2_5_PRO,
-  apiKey: process.env.GOOGLE_API_KEY,
-  temperature: 1,
-});
+// Lazily construct the client. Building it at module load throws when GOOGLE_API_KEY is unset,
+// which breaks `next build` (route page-data collection imports this module). The key is only
+// needed at runtime when getLlmResponse() actually invokes the model.
+let _geminiModel: ChatGoogleGenerativeAI | undefined;
+function getGeminiModel(): ChatGoogleGenerativeAI {
+  if (!_geminiModel) {
+    _geminiModel = new ChatGoogleGenerativeAI({
+      model: GeminiModel.GEMINI_2_5_PRO,
+      apiKey: process.env.GOOGLE_API_KEY,
+      temperature: 1,
+    });
+  }
+  return _geminiModel;
+}
 
 export const outputInstructions = `
 #  For output content:
@@ -63,7 +72,7 @@ export async function getLlmResponse<T extends Record<string, any>>(
 
             // Step 2: Convert grounded text to structured output using LangChain
             const structuredPrompt = `Please convert the given information into the given schema format.\n\n${searchResult.text}`;
-            const client = geminiModel;
+            const client = getGeminiModel();
             const llmWithSchema = client.withStructuredOutput<T>(schema);
             const res = await llmWithSchema.invoke(structuredPrompt);
             console.log('✅ Structured output conversion completed');
@@ -79,7 +88,7 @@ export async function getLlmResponse<T extends Record<string, any>>(
 
           // Now convert the search result to structured output using schema
           const structuredPrompt = `Please convert the given information into the given schema format.\n\n${searchResult.text}`;
-          const client = geminiModel;
+          const client = getGeminiModel();
           const llmWithSchema = client.withStructuredOutput<T>(schema);
           const res = await llmWithSchema.invoke(structuredPrompt);
           console.log('✅ Structured output conversion completed');
@@ -87,7 +96,7 @@ export async function getLlmResponse<T extends Record<string, any>>(
         }
       } else {
         // Use existing LangChain approach for regular gemini-2.5-pro
-        const client = geminiModel;
+        const client = getGeminiModel();
         const llmWithSchema = client.withStructuredOutput<T>(schema);
         const res = await llmWithSchema.invoke(prompt);
         console.log('✅ Gemini response received');
