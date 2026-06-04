@@ -19,3 +19,23 @@ overrides:
   react: 18.3.1
   react-dom: 18.3.1
   '@apollo/client': ^3.7.12
+
+# Dependency build scripts pnpm is allowed to run. pnpm >= 10 blocks dependency
+# postinstall/build scripts by default and errors in CI (ERR_PNPM_IGNORED_BUILDS) until
+# they're explicitly approved here. These are all first-class app deps that genuinely need
+# their build step (prisma client generation, native addons, etc.). Not tracked in
+# pnpm-lock.yaml, so this does not affect the frozen-lockfile check.
+onlyBuiltDependencies:
+  - '@parcel/watcher'
+  - '@prisma/client'
+  - '@prisma/engines'
+  - '@reown/appkit'
+  - bufferutil
+  - esbuild
+  - keccak
+  - prisma
+  - protobufjs
+  - puppeteer
+  - sharp
+  - unrs-resolver
+  - utf-8-validate
