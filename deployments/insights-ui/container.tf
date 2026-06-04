@@ -28,14 +28,20 @@ resource "aws_lightsail_container_service" "app" {
   scale       = var.service_scale
   is_disabled = false
 
-  # Serve the app directly on prod.koalagains.com over HTTPS (no CloudFront in Phase A).
-  # NOTE: the certificate must be ISSUED (DNS-validated) before it attaches here. If the first
-  # apply errors because the cert is still PENDING_VALIDATION, re-run apply once the validation
+  # Serve the app on the direct host (prod.koalagains.com) AND the apex/www (koalagains.com,
+  # www.koalagains.com). Apex+www are needed so CloudFront → Lightsail works: AllViewer forwards
+  # the viewer Host, and awselb 404s any vhost not in this list.
+  # NOTE: each certificate must be ISSUED (DNS-validated) before it attaches here. If the first
+  # apply errors because a cert is still PENDING_VALIDATION, re-run apply once the validation
   # records (domains.tf) have propagated (~minutes).
   public_domain_names {
     certificate {
       certificate_name = aws_lightsail_certificate.app.name
       domain_names     = [var.direct_domain_name]
+    }
+    certificate {
+      certificate_name = aws_lightsail_certificate.app_apex.name
+      domain_names     = [var.domain_name, "www.${var.domain_name}"]
     }
   }
 
@@ -49,7 +55,11 @@ resource "aws_lightsail_container_service" "app" {
     Environment = var.environment
   }
 
-  depends_on = [aws_route53_record.lightsail_cert_validation]
+  depends_on = [
+    aws_route53_record.lightsail_cert_validation,
+    aws_route53_record.lightsail_cert_validation_apex,
+    aws_route53_record.lightsail_cert_validation_www,
+  ]
 }
 
 # Allow the service's ECR puller role to read the app repository.
