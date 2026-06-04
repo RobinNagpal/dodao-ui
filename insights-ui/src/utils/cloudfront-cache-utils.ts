@@ -18,6 +18,9 @@ import { waitUntil } from '@vercel/functions';
  *   - Stocks API: `/api/koala_gains/tickers-v1/exchange/{e}/{t}/*` (the 8
  *     per-ticker GET endpoints that back the /stocks/[exchange]/[ticker] page
  *     tree) and `/api/koala_gains/tickers-v1/country/{c}/tickers/industries[/...]`
+ *   - ETF API: `/api/koala_gains/etfs-v1/exchange/{e}/{t}/{full-render,analysis,
+ *     mor-info,portfolio-holdings}` (the per-ETF GET endpoints that back the
+ *     /etfs/[exchange]/[etf] page tree)
  *
  * Calls for any other path are filtered out before reaching the AWS API — they
  * would not have a cache entry to purge and would just consume the monthly
@@ -44,6 +47,7 @@ const CACHED_PATH_PREFIXES = [
   '/tariff-reports', // matches the bare `/tariff-reports` listing and `/tariff-reports/...`
   '/api/koala_gains/tickers-v1/exchange/',
   '/api/koala_gains/tickers-v1/country/',
+  '/api/koala_gains/etfs-v1/exchange/',
 ] as const;
 
 let client: CloudFrontClient | null = null;
