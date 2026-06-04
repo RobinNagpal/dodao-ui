@@ -3,6 +3,11 @@
 
 generator client {
   provider = "prisma-client-js"
+  // The runtime image (node:22-bookworm-slim + libssl3) uses OpenSSL 3.0.x, but the slim build
+  // stage has no openssl binary so `prisma generate` mis-detects and defaults to 1.1.x. Pin both
+  // engines so the debian-openssl-3.0.x query engine is generated and present at runtime,
+  // otherwise the container crashes on startup with PrismaClientInitializationError.
+  binaryTargets = ["native", "debian-openssl-3.0.x"]
 }
 
 generator json {
