@@ -5,12 +5,15 @@ properties:
   finalSummary:
     type: string
     description: >-
-      Plain text, two paragraphs of 3–4 lines each. Paragraph 1: describe the
-      company's business model and rate its current state (excellent / very good /
-      good / fair / bad / very bad) with a brief supporting reason. Paragraph 2:
-      how the company compares with its competition and a conservative, actionable
-      investor takeaway sentence (e.g. "Suitable for long-term investors seeking
-      growth" or "High risk — best to avoid until profitability improves").
+      Markdown, two paragraphs of 3–4 lines each separated by a blank line (a
+      double newline "\n\n" in the JSON string value) so each renders as a distinct
+      paragraph. Do NOT use literal "Paragraph 1:" / "Paragraph 2:" labels. The first
+      paragraph describes the company's business model and rates its current state
+      (excellent / very good / good / fair / bad / very bad) with a brief supporting
+      reason. The second paragraph covers how the company compares with its competition
+      and ends with a conservative, actionable investor takeaway sentence (e.g.
+      "Suitable for long-term investors seeking growth" or "High risk — best to avoid
+      until profitability improves").
   metaDescription:
     type: string
     description: >-
