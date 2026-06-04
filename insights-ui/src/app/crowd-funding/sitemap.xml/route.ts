@@ -1,6 +1,6 @@
 import { REPORT_TYPES_TO_DISPLAY } from '@/types/project/project';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
+import { getCanonicalUrl } from '@/utils/getBaseUrlForServerSidePages';
 import { NextResponse } from 'next/server';
 import { SitemapStream, streamToPromise } from 'sitemap';
 import crowdFundingLastmod from '@/utils/lastmod/crowd-funding-lastmod.json';
@@ -62,7 +62,7 @@ async function generateCrowdFundingUrls(): Promise<SiteMapUrl[]> {
 async function GET(): Promise<NextResponse<Buffer>> {
   try {
     const urls = await generateCrowdFundingUrls();
-    const smStream = new SitemapStream({ hostname: getBaseUrlForServerSidePages() });
+    const smStream = new SitemapStream({ hostname: getCanonicalUrl() });
 
     for (const url of urls) {
       smStream.write(url);
