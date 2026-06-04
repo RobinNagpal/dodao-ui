@@ -20,8 +20,10 @@ overrides:
   react-dom: 18.3.1
   '@apollo/client': ^3.7.12
 
-# NOTE on dependency build scripts: pnpm >= 10 blocks them by default and errors in CI
-# (ERR_PNPM_IGNORED_BUILDS). The insights-ui Docker build opts in via
-# `--config.dangerouslyAllowAllBuilds=true` on the install command (scoped to the container
-# build, not local dev). An `onlyBuiltDependencies` allow-list here did NOT suppress the error
-# under pnpm 11.5.1, so it is intentionally not used.
+# Allow dependency build scripts to run. pnpm >= 10 blocks them by default and errors in CI
+# (ERR_PNPM_IGNORED_BUILDS); the insights-ui Docker build runs prisma generate, sharp, puppeteer,
+# native addons, etc., which need their build step. An `onlyBuiltDependencies` allow-list did NOT
+# suppress the error under pnpm 11.5.1. This setting must live here (not a CLI flag) because the
+# Docker build stage also triggers an implicit install (verify-deps-before-run) that a flag on the
+# deps-stage command can't reach. This is a trusted first-party dependency tree.
+dangerouslyAllowAllBuilds: true

@@ -23,13 +23,10 @@ FROM base AS deps
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 COPY insights-ui/package.json insights-ui/
 COPY shared/web-core/package.json shared/web-core/
-# pnpm >= 10 blocks dependency build scripts by default and errors in CI
-# (ERR_PNPM_IGNORED_BUILDS). This is a trusted first-party dependency tree that needs those
-# scripts (prisma client generation, sharp/native addons, puppeteer, …), so allow them. Scoped
-# to this image build via the flag — not the shared pnpm-workspace.yaml — so local dev is
-# unaffected. (An `onlyBuiltDependencies` allow-list did not suppress the error under pnpm 11.5.1.)
+# Dependency build scripts are allowed via `dangerouslyAllowAllBuilds: true` in
+# pnpm-workspace.yaml (applies to this install AND the build stage's implicit install).
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store \
-    pnpm install --frozen-lockfile --filter insights-ui... --config.dangerouslyAllowAllBuilds=true
+    pnpm install --frozen-lockfile --filter insights-ui...
 
 # ---- Build -------------------------------------------------------------------------------
 FROM base AS build
