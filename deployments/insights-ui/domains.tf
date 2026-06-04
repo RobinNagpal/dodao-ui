@@ -17,20 +17,20 @@ resource "aws_lightsail_certificate" "app" {
   domain_name = var.direct_domain_name
 }
 
-# DNS validation records for the Lightsail certificate.
-resource "aws_route53_record" "lightsail_cert_validation" {
-  for_each = {
-    for o in aws_lightsail_certificate.app.domain_validation_options : o.domain_name => {
-      name   = o.resource_record_name
-      type   = o.resource_record_type
-      record = o.resource_record_value
-    }
-  }
+# DNS validation record for the Lightsail certificate. The cert covers exactly one domain
+# (var.direct_domain_name), so there is exactly one validation option. We index it directly
+# rather than using for_each: for_each keys derived from the cert's *computed*
+# domain_validation_options aren't known until apply, which fails the first apply with
+# "Invalid for_each argument" (keys cannot be determined until apply).
+locals {
+  lightsail_cert_dvo = tolist(aws_lightsail_certificate.app.domain_validation_options)[0]
+}
 
+resource "aws_route53_record" "lightsail_cert_validation" {
   zone_id         = data.aws_route53_zone.main.zone_id
-  name            = each.value.name
-  type            = each.value.type
-  records         = [each.value.record]
+  name            = local.lightsail_cert_dvo.resource_record_name
+  type            = local.lightsail_cert_dvo.resource_record_type
+  records         = [local.lightsail_cert_dvo.resource_record_value]
   ttl             = 60
   allow_overwrite = true
 }
