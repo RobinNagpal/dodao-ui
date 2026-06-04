@@ -1,6 +1,7 @@
 import { prisma } from '@/prisma';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
-import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
+import { withAdminOrToken } from '@/app/api/helpers/withAdminOrToken';
+import { KoalaGainsJwtTokenPayload } from '@/types/auth';
 import { Ticker } from '@prisma/client';
 import { NextRequest } from 'next/server';
 import { SaveTickerNewsRequest } from '@/types/public-equity/ticker-request-response';
@@ -8,7 +9,11 @@ import { invokePrompt } from '@/util/run-prompt';
 import { getTodayDateAsMonthDDYYYYFormat } from '@/util/get-date';
 import { safeParseJsonString } from '@/util/safe-parse-json-string';
 
-async function saveTickerNews(req: NextRequest, { params }: { params: Promise<{ tickerKey: string }> }): Promise<Ticker> {
+async function saveTickerNews(
+  req: NextRequest,
+  _userContext: KoalaGainsJwtTokenPayload | null,
+  { params }: { params: Promise<{ tickerKey: string }> }
+): Promise<Ticker> {
   const { tickerKey } = await params;
 
   const existingTicker = await prisma.ticker.findUnique({
@@ -47,7 +52,11 @@ async function saveTickerNews(req: NextRequest, { params }: { params: Promise<{ 
   return updatedTicker;
 }
 
-async function upsertTickerNews(req: NextRequest, { params }: { params: Promise<{ tickerKey: string }> }): Promise<Ticker> {
+async function upsertTickerNews(
+  req: NextRequest,
+  _userContext: KoalaGainsJwtTokenPayload | null,
+  { params }: { params: Promise<{ tickerKey: string }> }
+): Promise<Ticker> {
   const { tickerKey } = await params;
   const { tickerNews }: SaveTickerNewsRequest = await req.json();
 
@@ -87,5 +96,5 @@ async function upsertTickerNews(req: NextRequest, { params }: { params: Promise<
   return updatedTicker;
 }
 
-export const PUT = withErrorHandlingV2<Ticker>(upsertTickerNews);
-export const POST = withErrorHandlingV2<Ticker>(saveTickerNews);
+export const PUT = withAdminOrToken<Ticker>(upsertTickerNews);
+export const POST = withAdminOrToken<Ticker>(saveTickerNews);

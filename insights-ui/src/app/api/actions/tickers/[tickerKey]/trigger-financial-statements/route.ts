@@ -1,12 +1,17 @@
+import { withAdminOrToken } from '@/app/api/helpers/withAdminOrToken';
 import { prisma } from '@/prisma';
+import { KoalaGainsJwtTokenPayload } from '@/types/auth';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { ProcessingStatus } from '@/types/public-equity/ticker-report-types';
-import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { Ticker } from '@prisma/client';
 import { NextRequest } from 'next/server';
 import fetch from 'node-fetch';
 
-const triggerFinancialStatementsForTicker = async (req: NextRequest, { params }: { params: Promise<{ tickerKey: string }> }): Promise<string> => {
+const triggerFinancialStatementsForTicker = async (
+  req: NextRequest,
+  _userContext: KoalaGainsJwtTokenPayload | null,
+  { params }: { params: Promise<{ tickerKey: string }> }
+): Promise<string> => {
   const { tickerKey } = await params;
 
   const tickerRecord = await prisma.ticker.findUnique({
@@ -48,4 +53,4 @@ const triggerFinancialStatementsForTicker = async (req: NextRequest, { params }:
   return financialStatements.data;
 };
 
-export const POST = withErrorHandlingV2<string>(triggerFinancialStatementsForTicker);
+export const POST = withAdminOrToken<string>(triggerFinancialStatementsForTicker);

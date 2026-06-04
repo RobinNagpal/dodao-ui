@@ -2,11 +2,16 @@ import { prisma } from '@/prisma';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { ProcessingStatus } from '@/types/public-equity/ticker-report-types';
 import { SaveCriteriaMatchesOfLatest10QRequest, SaveLatest10QFinancialStatementsRequest } from '@/types/public-equity/ticker-request-response';
-import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
+import { withAdminOrToken } from '@/app/api/helpers/withAdminOrToken';
+import { KoalaGainsJwtTokenPayload } from '@/types/auth';
 import { CriteriaMatchesOfLatest10Q, Ticker } from '@prisma/client';
 import { NextRequest } from 'next/server';
 
-async function saveLatest10QFinancialStatements(req: NextRequest, { params }: { params: Promise<{ tickerKey: string }> }): Promise<Ticker> {
+async function saveLatest10QFinancialStatements(
+  req: NextRequest,
+  _userContext: KoalaGainsJwtTokenPayload | null,
+  { params }: { params: Promise<{ tickerKey: string }> }
+): Promise<Ticker> {
   const { tickerKey } = await params;
   const { latest10QFinancialStatements }: SaveLatest10QFinancialStatementsRequest = await req.json();
 
@@ -33,4 +38,4 @@ async function saveLatest10QFinancialStatements(req: NextRequest, { params }: { 
   return newCriteriaMatches;
 }
 
-export const POST = withErrorHandlingV2<Ticker>(saveLatest10QFinancialStatements);
+export const POST = withAdminOrToken<Ticker>(saveLatest10QFinancialStatements);

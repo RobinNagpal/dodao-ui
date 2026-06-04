@@ -4,6 +4,8 @@ import { Latest10QInfoResponse } from '@/types/public-equity/ticker-report-types
 import { TickerCreateRequest } from '@/types/public-equity/ticker-request-response';
 import { getTodayDateAsMonthDDYYYYFormat } from '@/util/get-date';
 import { invokePrompt } from '@/util/run-prompt';
+import { withAdminOrToken } from '@/app/api/helpers/withAdminOrToken';
+import { KoalaGainsJwtTokenPayload } from '@/types/auth';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { Ticker } from '@prisma/client';
 import { NextRequest, NextResponse } from 'next/server';
@@ -64,7 +66,7 @@ async function getHandler(req: NextRequest): Promise<PaginatedTickersResponse> {
   };
 }
 
-async function postHandler(req: NextRequest): Promise<Ticker> {
+async function postHandler(req: NextRequest, _userContext: KoalaGainsJwtTokenPayload | null): Promise<Ticker> {
   const { sectorId, industryGroupId, tickerKey, companyName, shortDescription }: TickerCreateRequest = await req.json();
 
   const existingTicker = await prisma.ticker.findUnique({
@@ -142,4 +144,4 @@ async function postHandler(req: NextRequest): Promise<Ticker> {
 }
 
 export const GET = withErrorHandlingV2<PaginatedTickersResponse>(getHandler);
-export const POST = withErrorHandlingV2<Ticker>(postHandler);
+export const POST = withAdminOrToken<Ticker>(postHandler);

@@ -1,4 +1,4 @@
-import { withLoggedInAdmin } from '@/app/api/helpers/withLoggedInAdmin';
+import { withAdminOrToken } from '@/app/api/helpers/withAdminOrToken';
 import { prisma } from '@/prisma';
 import { KoalaGainsJwtTokenPayload } from '@/types/auth';
 import { GenerationRequestStatus } from '@/types/ticker-typesv1';
@@ -20,7 +20,7 @@ export interface GenerationRequestPayload {
 
 async function postHandler(
   req: NextRequest,
-  _userContext: KoalaGainsJwtTokenPayload,
+  _userContext: KoalaGainsJwtTokenPayload | null,
   { params }: { params: Promise<{ spaceId: string; ticker: string }> }
 ): Promise<TickerV1GenerationRequest> {
   const { spaceId, ticker } = await params;
@@ -138,5 +138,5 @@ async function getHandler(req: NextRequest, { params }: { params: Promise<{ spac
   return latestRequest;
 }
 
-export const POST = withLoggedInAdmin<TickerV1GenerationRequest>(postHandler);
+export const POST = withAdminOrToken<TickerV1GenerationRequest>(postHandler);
 export const GET = withErrorHandlingV2<TickerV1GenerationRequest>(getHandler);

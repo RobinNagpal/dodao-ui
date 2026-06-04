@@ -1,9 +1,11 @@
-import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
+import { withAdminOrToken } from '@/app/api/helpers/withAdminOrToken';
+import { KoalaGainsJwtTokenPayload } from '@/types/auth';
 import { NextRequest } from 'next/server';
 import fetch from 'node-fetch';
 
 const getCriteriaMatchingForManagementDiscussion = async (
   req: NextRequest,
+  _userContext: KoalaGainsJwtTokenPayload | null,
   { params }: { params: Promise<{ tickerKey: string; criterionKey: string }> }
 ): Promise<string> => {
   const { tickerKey, criterionKey } = await params;
@@ -24,4 +26,4 @@ const getCriteriaMatchingForManagementDiscussion = async (
   return managementDiscussion.data;
 };
 
-export const POST = withErrorHandlingV2<string>(getCriteriaMatchingForManagementDiscussion);
+export const POST = withAdminOrToken<string>(getCriteriaMatchingForManagementDiscussion);

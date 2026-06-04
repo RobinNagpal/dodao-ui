@@ -1,7 +1,9 @@
 // app/api/[spaceId]/prompts/[promptId]/versions/route.ts
 import { NextRequest } from 'next/server';
 import { prisma } from '@/prisma';
+import { withAdminOrToken } from '@/app/api/helpers/withAdminOrToken';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
+import { KoalaGainsJwtTokenPayload } from '@/types/auth';
 
 interface CreatePromptVersionRequest {
   version: number;
@@ -26,7 +28,11 @@ async function getVersions(req: NextRequest, context: { params: Promise<{ spaceI
 }
 
 // POST /api/[spaceId]/prompts/[promptId]/versions
-async function createVersion(req: NextRequest, context: { params: Promise<{ spaceId: string; promptId: string }> }) {
+async function createVersion(
+  req: NextRequest,
+  _userContext: KoalaGainsJwtTokenPayload | null,
+  context: { params: Promise<{ spaceId: string; promptId: string }> }
+) {
   const { spaceId, promptId } = await context.params;
   const body: CreatePromptVersionRequest = await req.json();
 
@@ -57,4 +63,4 @@ async function createVersion(req: NextRequest, context: { params: Promise<{ spac
 }
 
 export const GET = withErrorHandlingV2(getVersions);
-export const POST = withErrorHandlingV2(createVersion);
+export const POST = withAdminOrToken(createVersion);

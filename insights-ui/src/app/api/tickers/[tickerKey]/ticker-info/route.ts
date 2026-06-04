@@ -1,6 +1,7 @@
 import { prisma } from '@/prisma';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
-import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
+import { withAdminOrToken } from '@/app/api/helpers/withAdminOrToken';
+import { KoalaGainsJwtTokenPayload } from '@/types/auth';
 import { Ticker } from '@prisma/client';
 import { NextRequest } from 'next/server';
 import { SaveTickerInfoRequest } from '@/types/public-equity/ticker-request-response';
@@ -8,7 +9,11 @@ import { invokePrompt } from '@/util/run-prompt';
 import { getTodayDateAsMonthDDYYYYFormat } from '@/util/get-date';
 import { safeParseJsonString } from '@/util/safe-parse-json-string';
 
-async function saveTickerInfo(req: NextRequest, { params }: { params: Promise<{ tickerKey: string }> }): Promise<Ticker> {
+async function saveTickerInfo(
+  req: NextRequest,
+  _userContext: KoalaGainsJwtTokenPayload | null,
+  { params }: { params: Promise<{ tickerKey: string }> }
+): Promise<Ticker> {
   const { tickerKey } = await params;
 
   const existingTicker = await prisma.ticker.findUnique({
@@ -56,7 +61,11 @@ async function saveTickerInfo(req: NextRequest, { params }: { params: Promise<{ 
   return updatedTicker;
 }
 
-async function upsertTickerInfo(req: NextRequest, { params }: { params: Promise<{ tickerKey: string }> }): Promise<Ticker> {
+async function upsertTickerInfo(
+  req: NextRequest,
+  _userContext: KoalaGainsJwtTokenPayload | null,
+  { params }: { params: Promise<{ tickerKey: string }> }
+): Promise<Ticker> {
   const { tickerKey } = await params;
   const { tickerInfo }: SaveTickerInfoRequest = await req.json();
 
@@ -83,5 +92,5 @@ async function upsertTickerInfo(req: NextRequest, { params }: { params: Promise<
   return newCriteriaMatches;
 }
 
-export const PUT = withErrorHandlingV2<Ticker>(upsertTickerInfo);
-export const POST = withErrorHandlingV2<Ticker>(saveTickerInfo);
+export const PUT = withAdminOrToken<Ticker>(upsertTickerInfo);
+export const POST = withAdminOrToken<Ticker>(saveTickerInfo);

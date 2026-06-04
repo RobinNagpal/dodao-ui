@@ -1,4 +1,6 @@
 import { prisma } from '@/prisma';
+import { withAdminOrToken } from '@/app/api/helpers/withAdminOrToken';
+import { KoalaGainsJwtTokenPayload } from '@/types/auth';
 import { AllExchanges } from '@/utils/countryExchangeUtils';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { Prisma, TickerV1, TickerV1Industry, TickerV1SubIndustry, TickerV1VsCompetition } from '@prisma/client';
@@ -66,7 +68,11 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
   return competitionRecords;
 }
 
-async function createTickerFomCompetition(req: NextRequest, context: { params: Promise<{ spaceId: string; ticker: string }> }): Promise<TickerV1> {
+async function createTickerFomCompetition(
+  req: NextRequest,
+  _userContext: KoalaGainsJwtTokenPayload | null,
+  context: { params: Promise<{ spaceId: string; ticker: string }> }
+): Promise<TickerV1> {
   const { spaceId, ticker } = await context.params;
 
   const body: NewTickerSubmission = await req.json();
@@ -124,6 +130,6 @@ async function createTickerFomCompetition(req: NextRequest, context: { params: P
   return tickerRecord;
 }
 
-export const POST = withErrorHandlingV2<TickerV1>(createTickerFomCompetition);
+export const POST = withAdminOrToken<TickerV1>(createTickerFomCompetition);
 
 export const GET = withErrorHandlingV2<TickerV1VsCompetitionWithRelations[]>(getHandler);

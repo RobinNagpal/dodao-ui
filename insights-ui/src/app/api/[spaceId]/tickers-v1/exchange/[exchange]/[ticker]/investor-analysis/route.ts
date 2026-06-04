@@ -3,11 +3,13 @@ import { getLLMResponseForPromptViaInvocation } from '@/util/get-llm-response';
 import { fetchTickerRecordBySymbolAndExchangeWithIndustryAndSubIndustry, getCompetitionAnalysisArray } from '@/utils/analysis-reports/get-report-data-utils';
 import { saveInvestorAnalysisResponse } from '@/utils/analysis-reports/save-report-utils';
 import { prepareInvestorAnalysisInputJson } from '@/utils/analysis-reports/report-input-json-utils';
-import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
+import { withAdminOrToken } from '@/app/api/helpers/withAdminOrToken';
+import { KoalaGainsJwtTokenPayload } from '@/types/auth';
 import { NextRequest } from 'next/server';
 
 async function postHandler(
   req: NextRequest,
+  _userContext: KoalaGainsJwtTokenPayload | null,
   { params }: { params: Promise<{ spaceId: string; ticker: string; exchange: string }> }
 ): Promise<TickerAnalysisResponse> {
   const { spaceId, ticker, exchange } = await params;
@@ -50,4 +52,4 @@ async function postHandler(
   };
 }
 
-export const POST = withErrorHandlingV2<TickerAnalysisResponse>(postHandler);
+export const POST = withAdminOrToken<TickerAnalysisResponse>(postHandler);

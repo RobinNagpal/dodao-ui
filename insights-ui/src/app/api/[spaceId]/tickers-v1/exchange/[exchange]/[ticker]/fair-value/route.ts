@@ -3,13 +3,15 @@ import { fetchAnalysisFactors, fetchTickerRecordBySymbolAndExchangeWithAnalysisD
 import { saveFairValueFactorAnalysisResponse } from '@/utils/analysis-reports/save-report-utils';
 import { prepareFairValueInputJson } from '@/utils/analysis-reports/report-input-json-utils';
 import { loadFairValueValuationSnapshot } from '@/utils/stock-analyzer-scraper-utils';
-import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
+import { withAdminOrToken } from '@/app/api/helpers/withAdminOrToken';
+import { KoalaGainsJwtTokenPayload } from '@/types/auth';
 import { NextRequest } from 'next/server';
 import { LLMFactorAnalysisResponse, TickerAnalysisResponse } from '@/types/public-equity/analysis-factors-types';
 import { TickerAnalysisCategory } from '@/types/ticker-typesv1';
 
 async function postHandler(
   req: NextRequest,
+  _userContext: KoalaGainsJwtTokenPayload | null,
   { params }: { params: Promise<{ spaceId: string; ticker: string; exchange: string }> }
 ): Promise<TickerAnalysisResponse> {
   const { spaceId, ticker, exchange } = await params;
@@ -48,4 +50,4 @@ async function postHandler(
   };
 }
 
-export const POST = withErrorHandlingV2<TickerAnalysisResponse>(postHandler);
+export const POST = withAdminOrToken<TickerAnalysisResponse>(postHandler);

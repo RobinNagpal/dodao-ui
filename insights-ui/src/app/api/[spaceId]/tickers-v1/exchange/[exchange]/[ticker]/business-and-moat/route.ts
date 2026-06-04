@@ -5,11 +5,13 @@ import { fetchAnalysisFactors, fetchTickerRecordBySymbolAndExchangeWithIndustryA
 import { saveBusinessAndMoatFactorAnalysisResponse } from '@/utils/analysis-reports/save-report-utils';
 import { prepareBusinessAndMoatInputJson } from '@/utils/analysis-reports/report-input-json-utils';
 import { ensureStockAnalyzerDataIsFresh, extractKpisDataForAnalysis } from '@/utils/stock-analyzer-scraper-utils';
-import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
+import { withAdminOrToken } from '@/app/api/helpers/withAdminOrToken';
+import { KoalaGainsJwtTokenPayload } from '@/types/auth';
 import { NextRequest } from 'next/server';
 
 async function postHandler(
   req: NextRequest,
+  _userContext: KoalaGainsJwtTokenPayload | null,
   { params }: { params: Promise<{ spaceId: string; ticker: string; exchange: string }> }
 ): Promise<TickerAnalysisResponse> {
   const { spaceId, ticker, exchange } = await params;
@@ -52,4 +54,4 @@ async function postHandler(
   };
 }
 
-export const POST = withErrorHandlingV2<TickerAnalysisResponse>(postHandler);
+export const POST = withAdminOrToken<TickerAnalysisResponse>(postHandler);

@@ -1,5 +1,6 @@
 import { prisma } from '@/prisma';
-import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
+import { withAdminOrToken } from '@/app/api/helpers/withAdminOrToken';
+import { KoalaGainsJwtTokenPayload } from '@/types/auth';
 import { Prisma } from '@prisma/client';
 import { NextRequest } from 'next/server';
 import { validateStockAnalyzeUrl } from '@/utils/stockAnalyzeUrlValidation';
@@ -26,7 +27,11 @@ interface BulkCsvResponse {
 
 /** ---------- POST ---------- */
 
-async function postHandler(req: NextRequest, context: { params: Promise<{ spaceId: string }> }): Promise<BulkCsvResponse> {
+async function postHandler(
+  req: NextRequest,
+  _userContext: KoalaGainsJwtTokenPayload | null,
+  context: { params: Promise<{ spaceId: string }> }
+): Promise<BulkCsvResponse> {
   const { spaceId } = await context.params;
   const body = await req.json();
 
@@ -164,4 +169,4 @@ async function postHandler(req: NextRequest, context: { params: Promise<{ spaceI
   };
 }
 
-export const POST = withErrorHandlingV2<BulkCsvResponse>(postHandler);
+export const POST = withAdminOrToken<BulkCsvResponse>(postHandler);

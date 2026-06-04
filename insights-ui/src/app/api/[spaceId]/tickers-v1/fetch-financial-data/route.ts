@@ -1,4 +1,4 @@
-import { withLoggedInAdmin } from '@/app/api/helpers/withLoggedInAdmin';
+import { withAdminOrToken } from '@/app/api/helpers/withAdminOrToken';
 import { KoalaGainsJwtTokenPayload } from '@/types/auth';
 import { fetchAndUpdateStockAnalyzerData } from '@/utils/stock-analyzer-scraper-utils';
 import { revalidateTickerAndExchangeTag } from '@/utils/ticker-v1-cache-utils';
@@ -17,7 +17,7 @@ export interface FetchFinancialDataResponse {
 
 const postHandler = async (
   req: NextRequest,
-  _userContext: KoalaGainsJwtTokenPayload,
+  _userContext: KoalaGainsJwtTokenPayload | null,
   { params }: { params: Promise<{ spaceId: string }> }
 ): Promise<FetchFinancialDataResponse> => {
   const { spaceId } = await params;
@@ -78,4 +78,4 @@ const postHandler = async (
   };
 };
 
-export const POST = withLoggedInAdmin<FetchFinancialDataResponse>(postHandler);
+export const POST = withAdminOrToken<FetchFinancialDataResponse>(postHandler);

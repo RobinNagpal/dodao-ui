@@ -1,7 +1,8 @@
+import { withAdminOrToken } from '@/app/api/helpers/withAdminOrToken';
 import { generateEtfPromptForReportType } from '@/utils/etf-analysis-reports/etf-prompt-generator-utils';
 import { EtfReportType } from '@/types/etf/etf-analysis-types';
+import { KoalaGainsJwtTokenPayload } from '@/types/auth';
 import { NextRequest } from 'next/server';
-import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 
 interface RouteParams {
   params: Promise<{
@@ -21,7 +22,7 @@ export interface EtfGeneratePromptResponse {
   promptKey: string;
 }
 
-async function handler(request: NextRequest, { params }: RouteParams): Promise<EtfGeneratePromptResponse> {
+async function handler(request: NextRequest, _userContext: KoalaGainsJwtTokenPayload | null, { params }: RouteParams): Promise<EtfGeneratePromptResponse> {
   const { exchange, etf } = await params;
   const body: EtfGeneratePromptRequest = await request.json();
   const { reportType } = body;
@@ -42,4 +43,4 @@ async function handler(request: NextRequest, { params }: RouteParams): Promise<E
   };
 }
 
-export const POST = withErrorHandlingV2<EtfGeneratePromptResponse>(handler);
+export const POST = withAdminOrToken<EtfGeneratePromptResponse>(handler);

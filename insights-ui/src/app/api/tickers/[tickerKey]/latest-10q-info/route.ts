@@ -1,11 +1,16 @@
 import { prisma } from '@/prisma';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { Latest10QInfoResponse } from '@/types/public-equity/ticker-report-types';
-import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
+import { withAdminOrToken } from '@/app/api/helpers/withAdminOrToken';
+import { KoalaGainsJwtTokenPayload } from '@/types/auth';
 import { Ticker } from '@prisma/client';
 import { NextRequest } from 'next/server';
 
-async function postHandler(req: NextRequest, { params }: { params: Promise<{ tickerKey: string }> }): Promise<Ticker> {
+async function postHandler(
+  req: NextRequest,
+  _userContext: KoalaGainsJwtTokenPayload | null,
+  { params }: { params: Promise<{ tickerKey: string }> }
+): Promise<Ticker> {
   const { tickerKey } = await params;
 
   const ticker = await prisma.ticker.findUnique({ where: { tickerKey } });
@@ -53,4 +58,4 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ tic
   return ticker;
 }
 
-export const POST = withErrorHandlingV2<Ticker>(postHandler);
+export const POST = withAdminOrToken<Ticker>(postHandler);

@@ -1,5 +1,6 @@
+import { withAdminOrToken } from '@/app/api/helpers/withAdminOrToken';
 import { prisma } from '@/prisma';
-import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
+import { KoalaGainsJwtTokenPayload } from '@/types/auth';
 import { SecFiling } from '@prisma/client';
 import { NextRequest } from 'next/server';
 
@@ -141,7 +142,11 @@ async function fetchAndSaveFilings(tickerKey: string, page: number): Promise<voi
   return fetchAndSaveFilings(tickerKey, page + 1);
 }
 
-async function rePopulateSecFilings(req: NextRequest, { params }: { params: Promise<{ tickerKey: string }> }): Promise<SecFiling[]> {
+async function rePopulateSecFilings(
+  req: NextRequest,
+  _userContext: KoalaGainsJwtTokenPayload | null,
+  { params }: { params: Promise<{ tickerKey: string }> }
+): Promise<SecFiling[]> {
   const { tickerKey } = await params;
 
   await fetchAndSaveFilings(tickerKey, 0);
@@ -156,4 +161,4 @@ async function rePopulateSecFilings(req: NextRequest, { params }: { params: Prom
   return listOfFilings;
 }
 
-export const POST = withErrorHandlingV2<SecFiling[]>(rePopulateSecFilings);
+export const POST = withAdminOrToken<SecFiling[]>(rePopulateSecFilings);

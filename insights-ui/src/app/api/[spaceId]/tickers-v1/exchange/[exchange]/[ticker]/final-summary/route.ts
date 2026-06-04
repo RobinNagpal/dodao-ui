@@ -1,6 +1,7 @@
 import { getLLMResponseForPromptViaInvocation } from '@/util/get-llm-response';
 import { fetchTickerRecordBySymbolAndExchangeWithAnalysisData } from '@/utils/analysis-reports/get-report-data-utils';
-import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
+import { withAdminOrToken } from '@/app/api/helpers/withAdminOrToken';
+import { KoalaGainsJwtTokenPayload } from '@/types/auth';
 import { NextRequest } from 'next/server';
 import { TickerAnalysisResponse } from '@/types/public-equity/analysis-factors-types';
 import { saveFinalSummaryResponse } from '@/utils/analysis-reports/save-report-utils';
@@ -14,6 +15,7 @@ export interface FinalSummaryResponse {
 
 async function postHandler(
   req: NextRequest,
+  _userContext: KoalaGainsJwtTokenPayload | null,
   { params }: { params: Promise<{ spaceId: string; ticker: string; exchange: string }> }
 ): Promise<TickerAnalysisResponse> {
   const { spaceId, ticker, exchange } = await params;
@@ -47,4 +49,4 @@ async function postHandler(
   };
 }
 
-export const POST = withErrorHandlingV2<TickerAnalysisResponse>(postHandler);
+export const POST = withAdminOrToken<TickerAnalysisResponse>(postHandler);
