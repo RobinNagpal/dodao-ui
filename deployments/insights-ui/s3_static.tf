@@ -58,6 +58,10 @@ resource "aws_s3_bucket_lifecycle_configuration" "assets" {
   rule {
     id     = "expire-old-build-assets"
     status = "Enabled"
+    # Empty filter = apply to every object (the bucket holds only /_next/static build assets).
+    # Required by the provider; without it the rule emits a deprecation warning that becomes a
+    # hard error in a future AWS provider version.
+    filter {}
     # Comfortably exceed the 6-day CloudFront HTML TTL + deploy cadence (object age based, so
     # leave wide margin). There is no Vercel-Skew-Protection equivalent — chunk retention is the
     # only safeguard against a cached page referencing an expired chunk.

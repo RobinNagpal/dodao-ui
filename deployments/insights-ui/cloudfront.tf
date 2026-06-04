@@ -11,8 +11,8 @@
 # from S3 via assetPrefix, so there is no S3 origin/behavior here.
 
 locals {
-  cf_count          = var.manage_cloudfront ? 1 : 0
-  lightsail_origin  = "lightsail-app"
+  cf_count         = var.manage_cloudfront ? 1 : 0
+  lightsail_origin = "lightsail-app"
 }
 
 # CloudFront cert (us-east-1) for the apex once CloudFront fronts the app.

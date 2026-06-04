@@ -1,7 +1,7 @@
-# Replacement for the 4 Vercel crons. The invoker Lambda is always created, but the SCHEDULES
-# are gated by enable_crons (default false) so they don't double-run against the shared RDS
-# while Vercel still owns the crons. Flip enable_crons=true at cut-over (and remove the crons
-# from vercel.json). See the plan.
+# Replacement for the 4 Vercel crons. The invoker Lambda is always created; the SCHEDULES are
+# gated by enable_crons (default true — AWS owns the crons in Phase A and they are removed from
+# vercel.json, so there's a single owner against the shared RDS). Set enable_crons=false only if
+# you intentionally hand cron ownership back to Vercel during coexistence. See the plan.
 
 locals {
   # During coexistence, point crons at the direct host; at cut-over they can target the apex.
@@ -40,7 +40,7 @@ data "archive_file" "cron_invoker" {
       exports.handler = async (event) => {
         const url = process.env.BASE_URL + event.path;
         const r = await fetch(url, { method: "GET" });
-        if (!r.ok) throw new Error(`cron ${event.path} -> ${r.status}`);
+        if (!r.ok) throw new Error(`cron $${event.path} -> $${r.status}`);
         return { status: r.status };
       };
     JS

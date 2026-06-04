@@ -31,7 +31,10 @@ variable "direct_domain_name" {
   default     = "prod.koalagains.com"
 }
 
-# ---- Rollout gates — both default OFF so Phase A is just the parallel, direct deployment ----
+# ---- Rollout gates ----------------------------------------------------------------------
+# manage_cloudfront defaults OFF (Phase A is the parallel, direct deployment — Vercel still
+# fronts koalagains.com). enable_crons defaults ON: AWS owns the crons in Phase A and they are
+# removed from vercel.json, so there is a single owner against the shared RDS.
 variable "manage_cloudfront" {
   description = "Phase B: manage CloudFront and point it at the Lightsail service. Keep false while running in parallel with Vercel."
   type        = bool

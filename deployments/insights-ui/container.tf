@@ -95,4 +95,9 @@ resource "aws_lightsail_container_service_deployment_version" "app" {
       success_codes       = "200-299"
     }
   }
+
+  # The puller role's ECR access (aws_ecr_repository_policy.pull) is only graph-linked through the
+  # service, not this resource — without an explicit dep Terraform can create this deployment (and
+  # have Lightsail try to pull the image) before the grant exists → "access denied" image pull.
+  depends_on = [aws_ecr_repository_policy.pull]
 }

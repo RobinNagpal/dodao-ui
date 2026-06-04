@@ -10,10 +10,6 @@ terraform {
       source  = "hashicorp/archive"
       version = "~> 2.4"
     }
-    random = {
-      source  = "hashicorp/random"
-      version = "~> 3.6"
-    }
   }
 
   # Remote state is REQUIRED — without it, CI starts from empty local state every run and
