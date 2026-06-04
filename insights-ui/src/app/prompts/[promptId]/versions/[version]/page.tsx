@@ -6,14 +6,22 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import Block from '@dodao/web-core/components/app/Block';
-import Editor from '@monaco-editor/react';
+import Editor, { DiffEditor } from '@monaco-editor/react';
 import Handlebars from 'handlebars';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
+import EmptyStateCard from '@/components/ui/EmptyStateCard';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import Link from 'next/link';
 
+interface PromptVersionListItem {
+  version: number;
+  promptTemplate: string;
+  commitMessage?: string | null;
+}
+
 export default function ViewPromptVersionPage(): JSX.Element {
   const { promptId, version } = useParams() as { promptId: string; version: string };
+  const currentVersionNumber = Number(version);
   const [sampleData, setSampleData] = useState<any>({});
   const [promptVersion, setPromptVersion] = useState<{
     promptTemplate: string;
@@ -35,6 +43,17 @@ export default function ViewPromptVersionPage(): JSX.Element {
     error: parentPromptError,
     loading: parentPromptLoading,
   } = useFetchData<any>(`/api/koala_gains/prompts/${promptId}`, { cache: 'no-cache' }, 'Failed to fetch prompt data');
+
+  // Fetch every version so we can diff the current one against its neighbours.
+  const { data: allVersions } = useFetchData<PromptVersionListItem[]>(
+    `/api/koala_gains/prompts/${promptId}/versions`,
+    { cache: 'no-cache' },
+    'Failed to fetch prompt versions'
+  );
+
+  const versionsLoaded = Array.isArray(allVersions);
+  const previousVersion = allVersions?.find((v) => v.version === currentVersionNumber - 1);
+  const nextVersion = allVersions?.find((v) => v.version === currentVersionNumber + 1);
 
   useEffect(() => {
     if (promptVersionData) {
@@ -140,6 +159,50 @@ export default function ViewPromptVersionPage(): JSX.Element {
             <p className="mt-4">
               <strong>Commit Message:</strong> {promptVersion.commitMessage}
             </p>
+
+            <div className="mt-8">
+              <h2 className="text-xl heading-color mb-2">Diff with Previous Version (v{currentVersionNumber - 1})</h2>
+              {!versionsLoaded ? (
+                <p className="text-color">Loading previous version…</p>
+              ) : previousVersion ? (
+                <DiffEditor
+                  height="300px"
+                  language="handlebars"
+                  original={previousVersion.promptTemplate}
+                  modified={promptVersion.promptTemplate}
+                  theme="vs-dark"
+                  options={{ readOnly: true, renderSideBySide: true }}
+                />
+              ) : (
+                <EmptyStateCard
+                  variant="inline"
+                  title="No previous version to compare"
+                  description={`Version ${currentVersionNumber} is the first version of this prompt.`}
+                />
+              )}
+            </div>
+
+            <div className="mt-8">
+              <h2 className="text-xl heading-color mb-2">Diff with Next Version (v{currentVersionNumber + 1})</h2>
+              {!versionsLoaded ? (
+                <p className="text-color">Loading next version…</p>
+              ) : nextVersion ? (
+                <DiffEditor
+                  height="300px"
+                  language="handlebars"
+                  original={promptVersion.promptTemplate}
+                  modified={nextVersion.promptTemplate}
+                  theme="vs-dark"
+                  options={{ readOnly: true, renderSideBySide: true }}
+                />
+              ) : (
+                <EmptyStateCard
+                  variant="inline"
+                  title="No next version to compare"
+                  description={`Version ${currentVersionNumber} is the latest version of this prompt.`}
+                />
+              )}
+            </div>
           </div>
         ) : (
           <FullPageLoader />
