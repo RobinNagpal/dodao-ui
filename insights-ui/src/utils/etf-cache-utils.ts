@@ -21,7 +21,12 @@ import { CloudFrontInvalidationResult, invalidateCloudFrontPaths, invalidateClou
  * pages (main + the one subpage) instead of all seven.
  *
  * Each `revalidate*` helper also purges the CloudFront edge cache for the
- * corresponding URL — see `cloudfront-cache-utils.ts`.
+ * corresponding page URL AND the per-ETF GET API endpoint(s) that page renders
+ * from. CloudFront caches both layers (6-day TTL); purging only the page would
+ * leave the next render to re-fetch a stale API response from the edge. See
+ * `cloudfront-cache-utils.ts` (and `ticker-v1-cache-utils.ts` for the stocks
+ * equivalent). The cached per-ETF endpoints are enumerated in
+ * `dodao-api-v2-deployment/cloudfront.tf`.
  */
 const ETF_EXCHANGE_TAG_PREFIX = 'etf_exchange:' as const;
 
@@ -33,12 +38,27 @@ const ETF_CATEGORY_TO_PATH: Record<EtfAnalysisCategory, string> = {
   [EtfAnalysisCategory.FuturePerformanceOutlook]: 'future-performance-outlook',
 };
 
+/**
+ * Maps the analysis-category enum to the CloudFront-cached GET API endpoint that serves it:
+ * the Performance & Returns subpage renders from `/mor-info`, the other three from `/analysis`.
+ */
+const ETF_CATEGORY_TO_API: Record<EtfAnalysisCategory, string> = {
+  [EtfAnalysisCategory.PerformanceAndReturns]: 'mor-info',
+  [EtfAnalysisCategory.CostEfficiencyAndTeam]: 'analysis',
+  [EtfAnalysisCategory.RiskAnalysis]: 'analysis',
+  [EtfAnalysisCategory.FuturePerformanceOutlook]: 'analysis',
+};
+
+/** Base path for the per-ETF GET API endpoints that back `/etfs/[exchange]/[etf]/*` (CloudFront-cached). */
+const etfApiBase = (symbol: string, exchange: string) => `/api/koala_gains/etfs-v1/exchange/${exchange.toUpperCase()}/${symbol.toUpperCase()}`;
+
 export const etfAndExchangeTag = (symbol: string, exchange: string): `${typeof ETF_EXCHANGE_TAG_PREFIX}${string}` =>
   `${ETF_EXCHANGE_TAG_PREFIX}_${symbol.toUpperCase()}_${exchange.toUpperCase()}`;
 
 export const revalidateEtfAndExchangeTag = (symbol: string, exchange: string) => {
   revalidateTag(etfAndExchangeTag(symbol, exchange));
-  invalidateCloudFrontPaths([`/etfs/${exchange}/${symbol}`]);
+  // Main page renders from the consolidated `/full-render` endpoint.
+  invalidateCloudFrontPaths([`/etfs/${exchange}/${symbol}`, `${etfApiBase(symbol, exchange)}/full-render`]);
 };
 
 /** Per-category subpage tag — used by the 4 `EtfAnalysisCategory` subpages. */
@@ -47,7 +67,12 @@ export const etfCategoryReportTag = (symbol: string, exchange: string, category:
 
 export const revalidateEtfCategoryReportTag = (symbol: string, exchange: string, category: EtfAnalysisCategory) => {
   revalidateTag(etfCategoryReportTag(symbol, exchange, category));
-  invalidateCloudFrontPaths([`/etfs/${exchange}/${symbol}/${ETF_CATEGORY_TO_PATH[category]}`]);
+  // Subpage URL slug + its API endpoint (`/analysis` or `/mor-info`). The umbrella tag, fired
+  // alongside by the saver, separately purges the main page's `/full-render`.
+  invalidateCloudFrontPaths([
+    `/etfs/${exchange}/${symbol}/${ETF_CATEGORY_TO_PATH[category]}`,
+    `${etfApiBase(symbol, exchange)}/${ETF_CATEGORY_TO_API[category]}`,
+  ]);
 };
 
 /** Competition subpage tag — used by `/competition`. */
@@ -55,6 +80,9 @@ export const etfCompetitionTag = (symbol: string, exchange: string): string => `
 
 export const revalidateEtfCompetitionTag = (symbol: string, exchange: string) => {
   revalidateTag(etfCompetitionTag(symbol, exchange));
+  // The competition subpage renders from the base `/exchange/{e}/{t}` ETF route, which is NOT
+  // one of the CloudFront-cached per-ETF endpoints (mirrors stocks — the base route is uncached),
+  // so only the page URL needs purging here.
   invalidateCloudFrontPaths([`/etfs/${exchange}/${symbol}/competition`]);
 };
 
@@ -63,13 +91,13 @@ export const etfHoldingsTag = (symbol: string, exchange: string): string => `etf
 
 export const revalidateEtfHoldingsTag = (symbol: string, exchange: string) => {
   revalidateTag(etfHoldingsTag(symbol, exchange));
-  invalidateCloudFrontPaths([`/etfs/${exchange}/${symbol}/holdings`]);
+  invalidateCloudFrontPaths([`/etfs/${exchange}/${symbol}/holdings`, `${etfApiBase(symbol, exchange)}/portfolio-holdings`]);
 };
 
 /**
  * Invalidate every per-ETF cache. Use from admin "Invalidate cache" / bulk reset paths.
- * Uses a single CloudFront wildcard invalidation (`/etfs/{e}/{s}*`) so it
- * counts as 1 billable path against the monthly free quota.
+ * Uses two CloudFront wildcard invalidations (one for pages, one for the per-ETF API
+ * endpoints) so it counts as 2 billable paths against the monthly free quota.
  */
 export const revalidateAllEtfTags = (symbol: string, exchange: string) => {
   revalidateTag(etfAndExchangeTag(symbol, exchange));
@@ -78,7 +106,7 @@ export const revalidateAllEtfTags = (symbol: string, exchange: string) => {
   for (const category of Object.values(EtfAnalysisCategory)) {
     revalidateTag(etfCategoryReportTag(symbol, exchange, category));
   }
-  invalidateCloudFrontPaths([`/etfs/${exchange}/${symbol}*`]);
+  invalidateCloudFrontPaths([`/etfs/${exchange}/${symbol}*`, `${etfApiBase(symbol, exchange)}*`]);
 };
 
 /**
@@ -94,7 +122,7 @@ export const revalidateAllEtfTagsAwaited = async (symbol: string, exchange: stri
   for (const category of Object.values(EtfAnalysisCategory)) {
     revalidateTag(etfCategoryReportTag(symbol, exchange, category));
   }
-  return invalidateCloudFrontPathsAwaited([`/etfs/${exchange}/${symbol}*`]);
+  return invalidateCloudFrontPathsAwaited([`/etfs/${exchange}/${symbol}*`, `${etfApiBase(symbol, exchange)}*`]);
 };
 
 /**
