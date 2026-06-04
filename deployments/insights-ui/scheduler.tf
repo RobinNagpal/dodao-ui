@@ -40,7 +40,7 @@ data "archive_file" "cron_invoker" {
       exports.handler = async (event) => {
         const url = process.env.BASE_URL + event.path;
         const r = await fetch(url, { method: "GET" });
-        if (!r.ok) throw new Error(`cron ${event.path} -> ${r.status}`);
+        if (!r.ok) throw new Error(`cron $${event.path} -> $${r.status}`);
         return { status: r.status };
       };
     JS
