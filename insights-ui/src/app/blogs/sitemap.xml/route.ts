@@ -1,5 +1,5 @@
 import { getPostsData } from '@/util/blog-utils';
-import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
+import { getCanonicalUrl } from '@/utils/getBaseUrlForServerSidePages';
 import { NextResponse } from 'next/server';
 import { SitemapStream, streamToPromise } from 'sitemap';
 
@@ -38,7 +38,7 @@ async function generateBlogUrls(): Promise<SiteMapUrl[]> {
 async function GET(): Promise<NextResponse<Buffer>> {
   try {
     const urls = await generateBlogUrls();
-    const smStream = new SitemapStream({ hostname: getBaseUrlForServerSidePages() });
+    const smStream = new SitemapStream({ hostname: getCanonicalUrl() });
 
     for (const url of urls) {
       smStream.write(url);

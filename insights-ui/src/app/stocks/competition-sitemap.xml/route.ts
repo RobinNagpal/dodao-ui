@@ -1,6 +1,6 @@
 import { prisma } from '@/prisma';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
-import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
+import { getCanonicalUrl } from '@/utils/getBaseUrlForServerSidePages';
 import { NextResponse } from 'next/server';
 import { SitemapStream, streamToPromise } from 'sitemap';
 
@@ -52,7 +52,7 @@ async function generateCompetitionUrls(): Promise<SiteMapUrl[]> {
 async function GET(): Promise<NextResponse<Buffer>> {
   try {
     const urls = await generateCompetitionUrls();
-    const smStream = new SitemapStream({ hostname: getBaseUrlForServerSidePages() });
+    const smStream = new SitemapStream({ hostname: getCanonicalUrl() });
 
     for (const url of urls) {
       smStream.write(url);

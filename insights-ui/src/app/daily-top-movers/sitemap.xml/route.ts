@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { SitemapStream, streamToPromise } from 'sitemap';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
-import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
+import { getCanonicalUrl } from '@/utils/getBaseUrlForServerSidePages';
 
 export const dynamic = 'force-dynamic';
 
@@ -80,7 +80,7 @@ async function generateDailyTopMoversUrls(): Promise<SiteMapUrl[]> {
 async function GET(): Promise<NextResponse<Buffer>> {
   try {
     const urls = await generateDailyTopMoversUrls();
-    const smStream = new SitemapStream({ hostname: getBaseUrlForServerSidePages() });
+    const smStream = new SitemapStream({ hostname: getCanonicalUrl() });
 
     for (const url of urls) {
       smStream.write(url);
