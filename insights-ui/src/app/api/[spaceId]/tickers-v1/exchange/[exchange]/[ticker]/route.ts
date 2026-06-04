@@ -3,7 +3,7 @@ import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { getMissingReportsForTicker } from '@/utils/missing-reports-utils';
 import { tickerV1IncludeWithRelations, TickerV1FastResponse, TickerV1WithRelations } from '@/utils/ticker-v1-model-utils';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
-import { withLoggedInAdmin } from '@/app/api/helpers/withLoggedInAdmin';
+import { withAdminOrToken } from '@/app/api/helpers/withAdminOrToken';
 import { KoalaGainsJwtTokenPayload } from '@/types/auth';
 import { Prisma, TickerV1Industry, TickerV1SubIndustry, TickerV1 } from '@prisma/client';
 import { NextRequest } from 'next/server';
@@ -54,7 +54,7 @@ export interface UpdateStockAnalyzeUrlRequest {
 
 async function putHandler(
   req: NextRequest,
-  _userContext: KoalaGainsJwtTokenPayload,
+  _userContext: KoalaGainsJwtTokenPayload | null,
   context: { params: Promise<{ spaceId: string; ticker: string; exchange: string }> }
 ): Promise<TickerV1> {
   const { spaceId, ticker, exchange } = await context.params;
@@ -200,4 +200,4 @@ async function putHandler(
 }
 
 export const GET = withErrorHandlingV2<TickerV1FastResponse | null>(getHandler);
-export const PUT = withLoggedInAdmin<TickerV1>(putHandler);
+export const PUT = withAdminOrToken<TickerV1>(putHandler);

@@ -3,12 +3,14 @@ import { prisma } from '@/prisma';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { CriterionEvaluation, PredefinedReports, ProcessingStatus } from '@/types/public-equity/ticker-report-types';
 import { CreateSingleCriterionReportRequest } from '@/types/public-equity/ticker-request-response';
-import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
+import { withAdminOrToken } from '@/app/api/helpers/withAdminOrToken';
+import { KoalaGainsJwtTokenPayload } from '@/types/auth';
 
 import { NextRequest } from 'next/server';
 
 const triggerSingleCriterionReport = async (
   req: NextRequest,
+  _userContext: KoalaGainsJwtTokenPayload | null,
   { params }: { params: Promise<{ tickerKey: string; criterionKey: string }> }
 ): Promise<CriterionEvaluation> => {
   const { tickerKey, criterionKey } = await params;
@@ -178,4 +180,4 @@ const triggerSingleCriterionReport = async (
     return updatedCriterionEvaluation;
   }
 };
-export const POST = withErrorHandlingV2<CriterionEvaluation>(triggerSingleCriterionReport);
+export const POST = withAdminOrToken<CriterionEvaluation>(triggerSingleCriterionReport);

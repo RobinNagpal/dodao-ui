@@ -1,7 +1,8 @@
 import { generatePromptForReportType } from '@/utils/analysis-reports/prompt-generator-utils';
 import { ReportType } from '@/types/ticker-typesv1';
 import { NextRequest, NextResponse } from 'next/server';
-import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
+import { withAdminOrToken } from '@/app/api/helpers/withAdminOrToken';
+import { KoalaGainsJwtTokenPayload } from '@/types/auth';
 
 interface RouteParams {
   params: Promise<{
@@ -21,7 +22,7 @@ export interface GeneratePromptResponse {
   schema: string;
 }
 
-async function handler(request: NextRequest, { params }: RouteParams): Promise<GeneratePromptResponse> {
+async function handler(request: NextRequest, _userContext: KoalaGainsJwtTokenPayload | null, { params }: RouteParams): Promise<GeneratePromptResponse> {
   const { exchange, ticker } = await params;
   const body: GeneratePromptRequest = await request.json();
   const { reportType } = body;
@@ -39,4 +40,4 @@ async function handler(request: NextRequest, { params }: RouteParams): Promise<G
   };
 }
 
-export const POST = withErrorHandlingV2<GeneratePromptResponse>(handler);
+export const POST = withAdminOrToken<GeneratePromptResponse>(handler);

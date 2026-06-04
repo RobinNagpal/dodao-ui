@@ -1,4 +1,4 @@
-import { withLoggedInAdmin } from '@/app/api/helpers/withLoggedInAdmin';
+import { withAdminOrToken } from '@/app/api/helpers/withAdminOrToken';
 import { prisma } from '@/prisma';
 import { KoalaGainsJwtTokenPayload } from '@/types/auth';
 import { revalidateEtfAndExchangeTag } from '@/utils/etf-cache-utils';
@@ -51,7 +51,7 @@ function parsePercentToFloat(v: string | undefined): Num {
 
 async function postHandler(
   _req: NextRequest,
-  _userContext: KoalaGainsJwtTokenPayload,
+  _userContext: KoalaGainsJwtTokenPayload | null,
   { params }: { params: Promise<{ spaceId: string; exchange: string; etf: string }> }
 ): Promise<FetchEtfFinancialInfoResponse> {
   if (!LAMBDA_BASE_URL) {
@@ -124,4 +124,4 @@ async function postHandler(
   return { success: true, etfUrl: json?.etfUrl ?? etfUrl, errors };
 }
 
-export const POST = withLoggedInAdmin<FetchEtfFinancialInfoResponse>(postHandler);
+export const POST = withAdminOrToken<FetchEtfFinancialInfoResponse>(postHandler);

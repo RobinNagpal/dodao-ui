@@ -1,7 +1,9 @@
 // app/api/[spaceId]/prompts/[promptId]/route.ts
 import { NextRequest } from 'next/server';
 import { prisma } from '@/prisma';
+import { withAdminOrToken } from '@/app/api/helpers/withAdminOrToken';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
+import { KoalaGainsJwtTokenPayload } from '@/types/auth';
 import { Prisma, Prompt, PromptVersion } from '@prisma/client';
 
 export interface UpdatePromptRequest {
@@ -37,7 +39,11 @@ async function getPrompt(req: NextRequest, context: { params: Promise<{ spaceId:
 }
 
 // PUT /api/[spaceId]/prompts/[promptId]
-async function updatePrompt(req: NextRequest, context: { params: Promise<{ spaceId: string; promptId: string }> }) {
+async function updatePrompt(
+  req: NextRequest,
+  _userContext: KoalaGainsJwtTokenPayload | null,
+  context: { params: Promise<{ spaceId: string; promptId: string }> }
+) {
   const { spaceId, promptId } = await context.params;
   const body: UpdatePromptRequest = await req.json();
 
@@ -60,7 +66,11 @@ async function updatePrompt(req: NextRequest, context: { params: Promise<{ space
 }
 
 // DELETE /api/[spaceId]/prompts/[promptId]
-async function deletePrompt(req: NextRequest, context: { params: Promise<{ spaceId: string; promptId: string }> }) {
+async function deletePrompt(
+  req: NextRequest,
+  _userContext: KoalaGainsJwtTokenPayload | null,
+  context: { params: Promise<{ spaceId: string; promptId: string }> }
+) {
   const { spaceId, promptId } = await context.params;
 
   // Could do business logic checks here (e.g., if versions exist, etc.)
@@ -71,5 +81,5 @@ async function deletePrompt(req: NextRequest, context: { params: Promise<{ space
 }
 
 export const GET = withErrorHandlingV2(getPrompt);
-export const PUT = withErrorHandlingV2(updatePrompt);
-export const DELETE = withErrorHandlingV2(deletePrompt);
+export const PUT = withAdminOrToken(updatePrompt);
+export const DELETE = withAdminOrToken(deletePrompt);

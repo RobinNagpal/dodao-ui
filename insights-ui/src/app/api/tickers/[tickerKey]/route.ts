@@ -1,5 +1,7 @@
 import { prisma } from '@/prisma';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
+import { withAdminOrToken } from '@/app/api/helpers/withAdminOrToken';
+import { KoalaGainsJwtTokenPayload } from '@/types/auth';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { Ticker } from '@prisma/client';
 import { NextRequest } from 'next/server';
@@ -42,7 +44,11 @@ async function getHandler(req: NextRequest, { params }: { params: Promise<{ tick
   return ticker;
 }
 
-async function deleteHandler(req: NextRequest, { params }: { params: Promise<{ tickerKey: string }> }): Promise<Ticker> {
+async function deleteHandler(
+  req: NextRequest,
+  _userContext: KoalaGainsJwtTokenPayload | null,
+  { params }: { params: Promise<{ tickerKey: string }> }
+): Promise<Ticker> {
   const { tickerKey } = await params;
 
   const deletedTicker = await prisma.ticker.delete({
@@ -52,7 +58,11 @@ async function deleteHandler(req: NextRequest, { params }: { params: Promise<{ t
   return deletedTicker;
 }
 
-async function putHandler(req: NextRequest, { params }: { params: Promise<{ tickerKey: string }> }): Promise<Ticker> {
+async function putHandler(
+  req: NextRequest,
+  _userContext: KoalaGainsJwtTokenPayload | null,
+  { params }: { params: Promise<{ tickerKey: string }> }
+): Promise<Ticker> {
   const { tickerKey } = await params;
   const { tickerKey: newTickerKey, sectorId, industryGroupId, companyName, shortDescription } = await req.json();
 
@@ -76,5 +86,5 @@ async function putHandler(req: NextRequest, { params }: { params: Promise<{ tick
 }
 
 export const GET = withErrorHandlingV2<Ticker>(getHandler);
-export const DELETE = withErrorHandlingV2<Ticker>(deleteHandler);
-export const PUT = withErrorHandlingV2<Ticker>(putHandler);
+export const DELETE = withAdminOrToken<Ticker>(deleteHandler);
+export const PUT = withAdminOrToken<Ticker>(putHandler);

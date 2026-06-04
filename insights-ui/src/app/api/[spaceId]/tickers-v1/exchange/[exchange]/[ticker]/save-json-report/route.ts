@@ -11,7 +11,8 @@ import {
   savePastPerformanceFactorAnalysisResponse,
 } from '@/utils/analysis-reports/save-report-utils';
 import { fetchAnalysisFactors, fetchTickerRecordBySymbolAndExchangeWithIndustryAndSubIndustry } from '@/utils/analysis-reports/get-report-data-utils';
-import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
+import { withAdminOrToken } from '@/app/api/helpers/withAdminOrToken';
+import { KoalaGainsJwtTokenPayload } from '@/types/auth';
 import { NextRequest } from 'next/server';
 import { loadSchema, validateData } from '@/util/get-llm-response';
 import path from 'path';
@@ -69,7 +70,11 @@ async function validateAnalysisFactors(
   }
 }
 
-async function postHandler(req: NextRequest, { params }: { params: Promise<{ spaceId: string; exchange: string; ticker: string }> }) {
+async function postHandler(
+  req: NextRequest,
+  _userContext: KoalaGainsJwtTokenPayload | null,
+  { params }: { params: Promise<{ spaceId: string; exchange: string; ticker: string }> }
+) {
   const { spaceId, exchange, ticker } = await params;
   const { llmResponse, reportType }: SaveJsonReportRequest = await req.json();
 
@@ -177,4 +182,4 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ spa
   };
 }
 
-export const POST = withErrorHandlingV2<{ success: boolean; message: string }>(postHandler);
+export const POST = withAdminOrToken<{ success: boolean; message: string }>(postHandler);

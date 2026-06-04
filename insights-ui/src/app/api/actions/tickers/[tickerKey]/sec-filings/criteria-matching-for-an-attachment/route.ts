@@ -1,9 +1,14 @@
 import { CriterionMatchResponse, GetSingleCriteriaMatchingRequest } from '@/types/public-equity/ticker-request-response';
-import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
+import { withAdminOrToken } from '@/app/api/helpers/withAdminOrToken';
+import { KoalaGainsJwtTokenPayload } from '@/types/auth';
 import { NextRequest } from 'next/server';
 import fetch from 'node-fetch';
 
-const getCriteriaMatchingForAttachment = async (req: NextRequest, { params }: { params: Promise<{ tickerKey: string }> }): Promise<CriterionMatchResponse> => {
+const getCriteriaMatchingForAttachment = async (
+  req: NextRequest,
+  _userContext: KoalaGainsJwtTokenPayload | null,
+  { params }: { params: Promise<{ tickerKey: string }> }
+): Promise<CriterionMatchResponse> => {
   const { tickerKey } = await params;
   const body = (await req.json()) as GetSingleCriteriaMatchingRequest;
   if (!body.sequenceNumber) {
@@ -25,4 +30,4 @@ const getCriteriaMatchingForAttachment = async (req: NextRequest, { params }: { 
   return criteriaMatch as CriterionMatchResponse;
 };
 
-export const POST = withErrorHandlingV2<CriterionMatchResponse>(getCriteriaMatchingForAttachment);
+export const POST = withAdminOrToken<CriterionMatchResponse>(getCriteriaMatchingForAttachment);

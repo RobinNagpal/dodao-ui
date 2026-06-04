@@ -3,11 +3,11 @@ import { revalidateEtfScenarioBySlugTag, revalidateEtfScenarioListingTag } from 
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { EtfSupportedCountry, isEtfExchange } from '@/utils/etfCountryExchangeUtils';
 import { etfScenarioLinkCountryMismatch, serializeEtfLinkMismatches } from '@/utils/etf-scenario-country-validation';
-import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
+import { KoalaGainsJwtTokenPayload } from '@/types/auth';
 import { EtfScenarioEtfLink } from '@prisma/client';
 import { EtfScenarioRole } from '@/types/etfScenarioEnums';
 import { NextRequest } from 'next/server';
-import { withLoggedInAdmin } from '../../../helpers/withLoggedInAdmin';
+import { withAdminOrToken } from '@/app/api/helpers/withAdminOrToken';
 import { z } from 'zod';
 
 const addLinkSchema = z.object({
@@ -32,7 +32,7 @@ export type AddEtfScenarioLinkRequest = z.infer<typeof addLinkSchema>;
 
 async function postHandler(
   request: NextRequest,
-  _userContext: DoDaoJwtTokenPayload,
+  _userContext: KoalaGainsJwtTokenPayload | null,
   { params }: { params: Promise<{ id: string }> }
 ): Promise<EtfScenarioEtfLink> {
   const { id: scenarioId } = await params;
@@ -99,7 +99,7 @@ async function postHandler(
 
 async function deleteHandler(
   request: NextRequest,
-  _userContext: DoDaoJwtTokenPayload,
+  _userContext: KoalaGainsJwtTokenPayload | null,
   { params }: { params: Promise<{ id: string }> }
 ): Promise<{ success: boolean }> {
   const { id: scenarioId } = await params;
@@ -130,5 +130,5 @@ async function deleteHandler(
   return { success: true };
 }
 
-export const POST = withLoggedInAdmin<EtfScenarioEtfLink>(postHandler);
-export const DELETE = withLoggedInAdmin<{ success: boolean }>(deleteHandler);
+export const POST = withAdminOrToken<EtfScenarioEtfLink>(postHandler);
+export const DELETE = withAdminOrToken<{ success: boolean }>(deleteHandler);

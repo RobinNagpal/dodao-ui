@@ -5,10 +5,10 @@ import { SupportedCountries } from '@/utils/countryExchangeUtils';
 import { scenarioLinkCountryMismatch, serializeLinkMismatches } from '@/utils/scenario-country-validation';
 import { parseStockScenariosMarkdown } from '@/utils/stock-scenario-markdown-parser';
 import { revalidateStockScenarioBySlugTag, revalidateStockScenarioListingTag } from '@/utils/stock-scenario-cache-utils';
-import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
+import { KoalaGainsJwtTokenPayload } from '@/types/auth';
 import { NextRequest } from 'next/server';
 import { z } from 'zod';
-import { withLoggedInAdmin } from '../../helpers/withLoggedInAdmin';
+import { withAdminOrToken } from '@/app/api/helpers/withAdminOrToken';
 
 const importScenariosSchema = z.object({
   markdown: z.string().min(10),
@@ -34,7 +34,7 @@ export interface ImportStockScenariosResponse {
   }>;
 }
 
-async function postHandler(request: NextRequest, _userContext: DoDaoJwtTokenPayload): Promise<ImportStockScenariosResponse> {
+async function postHandler(request: NextRequest, _userContext: KoalaGainsJwtTokenPayload | null): Promise<ImportStockScenariosResponse> {
   const body = importScenariosSchema.parse(await request.json());
   const fallbackDate = body.fallbackOutlookDate ? new Date(body.fallbackOutlookDate) : new Date();
 
@@ -193,4 +193,4 @@ async function postHandler(request: NextRequest, _userContext: DoDaoJwtTokenPayl
   };
 }
 
-export const POST = withLoggedInAdmin<ImportStockScenariosResponse>(postHandler);
+export const POST = withAdminOrToken<ImportStockScenariosResponse>(postHandler);

@@ -2,9 +2,9 @@ import { prisma } from '@/prisma';
 import { revalidateEtfScenarioBySlugTag, revalidateEtfScenarioListingTag } from '@/utils/etf-scenario-cache-utils';
 import { parseScenariosMarkdown } from '@/utils/etf-scenario-markdown-parser';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
-import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
+import { KoalaGainsJwtTokenPayload } from '@/types/auth';
 import { NextRequest } from 'next/server';
-import { withLoggedInAdmin } from '../../helpers/withLoggedInAdmin';
+import { withAdminOrToken } from '@/app/api/helpers/withAdminOrToken';
 import { z } from 'zod';
 
 const importScenariosSchema = z.object({
@@ -23,7 +23,7 @@ export interface ImportEtfScenariosResponse {
   scenarios: Array<{ scenarioNumber: number; title: string; slug: string; action: 'created' | 'updated' }>;
 }
 
-async function postHandler(request: NextRequest, _userContext: DoDaoJwtTokenPayload): Promise<ImportEtfScenariosResponse> {
+async function postHandler(request: NextRequest, _userContext: KoalaGainsJwtTokenPayload | null): Promise<ImportEtfScenariosResponse> {
   const body = importScenariosSchema.parse(await request.json());
   const fallbackDate = body.fallbackOutlookDate ? new Date(body.fallbackOutlookDate) : new Date();
 
@@ -141,4 +141,4 @@ async function postHandler(request: NextRequest, _userContext: DoDaoJwtTokenPayl
   };
 }
 
-export const POST = withLoggedInAdmin<ImportEtfScenariosResponse>(postHandler);
+export const POST = withAdminOrToken<ImportEtfScenariosResponse>(postHandler);

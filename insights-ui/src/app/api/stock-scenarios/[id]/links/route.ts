@@ -4,11 +4,11 @@ import { ScenarioPricedInBucket, ScenarioRole } from '@/types/scenarioEnums';
 import { isExchange, SupportedCountries } from '@/utils/countryExchangeUtils';
 import { scenarioLinkCountryMismatch, serializeLinkMismatches } from '@/utils/scenario-country-validation';
 import { revalidateStockScenarioBySlugTag, revalidateStockScenarioListingTag } from '@/utils/stock-scenario-cache-utils';
-import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
+import { KoalaGainsJwtTokenPayload } from '@/types/auth';
 import { StockScenarioStockLink } from '@prisma/client';
 import { NextRequest } from 'next/server';
 import { z } from 'zod';
-import { withLoggedInAdmin } from '../../../helpers/withLoggedInAdmin';
+import { withAdminOrToken } from '@/app/api/helpers/withAdminOrToken';
 
 const addLinkSchema = z.object({
   symbol: z.string().min(1),
@@ -31,7 +31,7 @@ export type AddStockScenarioLinkRequest = z.infer<typeof addLinkSchema>;
 
 async function postHandler(
   request: NextRequest,
-  _userContext: DoDaoJwtTokenPayload,
+  _userContext: KoalaGainsJwtTokenPayload | null,
   { params }: { params: Promise<{ id: string }> }
 ): Promise<StockScenarioStockLink> {
   const { id: scenarioId } = await params;
@@ -100,7 +100,7 @@ function isScenarioRole(value: string | null): value is ScenarioRole {
 
 async function deleteHandler(
   request: NextRequest,
-  _userContext: DoDaoJwtTokenPayload,
+  _userContext: KoalaGainsJwtTokenPayload | null,
   { params }: { params: Promise<{ id: string }> }
 ): Promise<{ success: boolean }> {
   const { id: scenarioId } = await params;
@@ -136,5 +136,5 @@ async function deleteHandler(
   return { success: true };
 }
 
-export const POST = withLoggedInAdmin<StockScenarioStockLink>(postHandler);
-export const DELETE = withLoggedInAdmin<{ success: boolean }>(deleteHandler);
+export const POST = withAdminOrToken<StockScenarioStockLink>(postHandler);
+export const DELETE = withAdminOrToken<{ success: boolean }>(deleteHandler);

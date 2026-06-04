@@ -1,12 +1,17 @@
+import { withAdminOrToken } from '@/app/api/helpers/withAdminOrToken';
 import { prisma } from '@/prisma';
+import { KoalaGainsJwtTokenPayload } from '@/types/auth';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { ProcessingStatus } from '@/types/public-equity/ticker-report-types';
-import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { Ticker } from '@prisma/client';
 import { NextRequest } from 'next/server';
 import fetch from 'node-fetch';
 
-const triggerCriteriaMatchingForTicker = async (req: NextRequest, { params }: { params: Promise<{ tickerKey: string }> }): Promise<Ticker> => {
+const triggerCriteriaMatchingForTicker = async (
+  req: NextRequest,
+  _userContext: KoalaGainsJwtTokenPayload | null,
+  { params }: { params: Promise<{ tickerKey: string }> }
+): Promise<Ticker> => {
   const { tickerKey } = await params;
   const pythonBackendBaseUrl = process.env.NEXT_PUBLIC_AGENT_APP_URL?.toString() || 'https://ai-insights.dodao.io';
   const updatedTicker = await prisma.ticker.update({
@@ -65,4 +70,4 @@ const triggerCriteriaMatchingForTicker = async (req: NextRequest, { params }: { 
   return updatedTicker;
 };
 
-export const POST = withErrorHandlingV2<Ticker>(triggerCriteriaMatchingForTicker);
+export const POST = withAdminOrToken<Ticker>(triggerCriteriaMatchingForTicker);

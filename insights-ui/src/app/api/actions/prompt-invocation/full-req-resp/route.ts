@@ -1,5 +1,6 @@
+import { withAdminOrToken } from '@/app/api/helpers/withAdminOrToken';
 import { getLLMResponseForPromptViaInvocation } from '@/util/get-llm-response';
-import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
+import { KoalaGainsJwtTokenPayload } from '@/types/auth';
 import { NextRequest } from 'next/server';
 import { LLMProvider, GeminiModel } from '@/types/llmConstants';
 
@@ -20,7 +21,7 @@ export interface PromptInvocationResponse {
   invocationId: string;
 }
 
-async function postHandler(req: NextRequest): Promise<any> {
+async function postHandler(req: NextRequest, _userContext: KoalaGainsJwtTokenPayload | null): Promise<any> {
   const request = await req.json();
   const { promptKey, llmProvider, model, bodyToAppend, requestFrom = 'ui' } = request as PromptInvocationRequest;
 
@@ -41,4 +42,4 @@ async function postHandler(req: NextRequest): Promise<any> {
   });
 }
 
-export const POST = withErrorHandlingV2<any>(postHandler);
+export const POST = withAdminOrToken<any>(postHandler);

@@ -1,8 +1,7 @@
 import { prisma } from '@/prisma';
-import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
-import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
+import { withAdminOrToken } from '@/app/api/helpers/withAdminOrToken';
+import { KoalaGainsJwtTokenPayload } from '@/types/auth';
 import { NextRequest } from 'next/server';
-import { withLoggedInAdmin } from '../../../helpers/withLoggedInAdmin';
 
 export interface MoveTickersRequest {
   tickerIds: string[]; // Array of ticker IDs to move
@@ -20,7 +19,7 @@ export interface MoveTickersResponse {
 
 async function postHandler(
   request: NextRequest,
-  _userContext: DoDaoJwtTokenPayload,
+  _userContext: KoalaGainsJwtTokenPayload | null,
   { params }: { params: Promise<{ spaceId: string }> }
 ): Promise<MoveTickersResponse> {
   const { spaceId } = await params;
@@ -128,4 +127,4 @@ async function postHandler(
   });
 }
 
-export const POST = withLoggedInAdmin<MoveTickersResponse>(postHandler);
+export const POST = withAdminOrToken<MoveTickersResponse>(postHandler);

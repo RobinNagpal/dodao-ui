@@ -1,7 +1,9 @@
 // app/api/[spaceId]/prompts/[promptId]/versions/[version]/route.ts
 import { NextRequest } from 'next/server';
 import { prisma } from '@/prisma';
+import { withAdminOrToken } from '@/app/api/helpers/withAdminOrToken';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
+import { KoalaGainsJwtTokenPayload } from '@/types/auth';
 
 interface UpdatePromptVersionRequest {
   promptTemplate?: string;
@@ -21,7 +23,11 @@ async function getPromptVersion(req: NextRequest, context: { params: Promise<{ s
 }
 
 // PUT /api/[spaceId]/prompts/[promptId]/versions/[version]
-async function updatePromptVersion(req: NextRequest, context: { params: Promise<{ spaceId: string; promptId: string; version: string }> }) {
+async function updatePromptVersion(
+  req: NextRequest,
+  _userContext: KoalaGainsJwtTokenPayload | null,
+  context: { params: Promise<{ spaceId: string; promptId: string; version: string }> }
+) {
   const { spaceId, promptId, version } = await context.params;
   const intVersion = parseInt(version, 10);
   const body: UpdatePromptVersionRequest = await req.json();
@@ -38,7 +44,11 @@ async function updatePromptVersion(req: NextRequest, context: { params: Promise<
 }
 
 // DELETE /api/[spaceId]/prompts/[promptId]/versions/[version]
-async function deletePromptVersion(req: NextRequest, context: { params: Promise<{ spaceId: string; promptId: string; version: string }> }) {
+async function deletePromptVersion(
+  req: NextRequest,
+  _userContext: KoalaGainsJwtTokenPayload | null,
+  context: { params: Promise<{ spaceId: string; promptId: string; version: string }> }
+) {
   const { spaceId, promptId, version } = await context.params;
   const intVersion = parseInt(version, 10);
 
@@ -49,5 +59,5 @@ async function deletePromptVersion(req: NextRequest, context: { params: Promise<
 }
 
 export const GET = withErrorHandlingV2(getPromptVersion);
-export const PUT = withErrorHandlingV2(updatePromptVersion);
-export const DELETE = withErrorHandlingV2(deletePromptVersion);
+export const PUT = withAdminOrToken(updatePromptVersion);
+export const DELETE = withAdminOrToken(deletePromptVersion);

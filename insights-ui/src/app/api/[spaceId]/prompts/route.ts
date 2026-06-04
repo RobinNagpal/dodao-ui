@@ -1,7 +1,9 @@
 // app/api/[spaceId]/prompts/route.ts
 import { NextRequest } from 'next/server';
 import { prisma } from '@/prisma';
+import { withAdminOrToken } from '@/app/api/helpers/withAdminOrToken';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
+import { KoalaGainsJwtTokenPayload } from '@/types/auth';
 import { Prisma, Prompt, PromptVersion } from '@prisma/client';
 
 // Type for the body when creating a prompt
@@ -35,7 +37,7 @@ async function getPrompts(req: NextRequest, context: { params: Promise<{ spaceId
 }
 
 // POST /api/[spaceId]/prompts
-async function createPrompt(req: NextRequest, context: { params: Promise<{ spaceId: string }> }) {
+async function createPrompt(req: NextRequest, _userContext: KoalaGainsJwtTokenPayload | null, context: { params: Promise<{ spaceId: string }> }) {
   const { spaceId } = await context.params;
   const body: CreatePromptRequest = await req.json();
 
@@ -77,4 +79,4 @@ async function createPrompt(req: NextRequest, context: { params: Promise<{ space
 }
 
 export const GET = withErrorHandlingV2(getPrompts);
-export const POST = withErrorHandlingV2(createPrompt);
+export const POST = withAdminOrToken(createPrompt);

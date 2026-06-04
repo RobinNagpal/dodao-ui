@@ -1,9 +1,10 @@
+import { withAdminOrToken } from '@/app/api/helpers/withAdminOrToken';
 import { prisma } from '@/prisma';
+import { KoalaGainsJwtTokenPayload } from '@/types/auth';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { LinkedinProfile } from '@/types/public-equity/ticker-report-types';
 import { getTodayDateAsMonthDDYYYYFormat } from '@/util/get-date';
 import { invokePrompt } from '@/util/run-prompt';
-import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { Ticker } from '@prisma/client';
 import { NextRequest } from 'next/server';
 import fetch from 'node-fetch';
@@ -17,7 +18,11 @@ interface TickerTeamInfo {
   members: SingleMemberInfo[];
 }
 
-const saveTeamLinkedInProfilesForTicker = async (req: NextRequest, { params }: { params: Promise<{ tickerKey: string }> }): Promise<Ticker> => {
+const saveTeamLinkedInProfilesForTicker = async (
+  req: NextRequest,
+  _userContext: KoalaGainsJwtTokenPayload | null,
+  { params }: { params: Promise<{ tickerKey: string }> }
+): Promise<Ticker> => {
   const { tickerKey } = await params;
 
   const existingTicker = await prisma.ticker.findUnique({
@@ -110,8 +115,12 @@ interface DeleteMemberBody {
   publicIdentifier: string;
 }
 
-const deleteTeamMember = async (req: NextRequest, { params }: { params: { tickerKey: string } }): Promise<Ticker> => {
-  const { tickerKey } = params;
+const deleteTeamMember = async (
+  req: NextRequest,
+  _userContext: KoalaGainsJwtTokenPayload | null,
+  { params }: { params: Promise<{ tickerKey: string }> }
+): Promise<Ticker> => {
+  const { tickerKey } = await params;
   const body = (await req.json()) as DeleteMemberBody;
   const { publicIdentifier } = body;
 
@@ -148,8 +157,12 @@ interface AddMemberBody {
   position: string;
 }
 
-const addTeamMember = async (req: NextRequest, { params }: { params: { tickerKey: string } }): Promise<Ticker> => {
-  const { tickerKey } = params;
+const addTeamMember = async (
+  req: NextRequest,
+  _userContext: KoalaGainsJwtTokenPayload | null,
+  { params }: { params: Promise<{ tickerKey: string }> }
+): Promise<Ticker> => {
+  const { tickerKey } = await params;
   const { name, position } = (await req.json()) as AddMemberBody;
 
   const existingTicker = await prisma.ticker.findUnique({
@@ -196,6 +209,6 @@ const addTeamMember = async (req: NextRequest, { params }: { params: { tickerKey
   return updatedTicker;
 };
 
-export const POST = withErrorHandlingV2<Ticker>(saveTeamLinkedInProfilesForTicker);
-export const DELETE = withErrorHandlingV2<Ticker>(deleteTeamMember);
-export const PUT = withErrorHandlingV2<Ticker>(addTeamMember);
+export const POST = withAdminOrToken<Ticker>(saveTeamLinkedInProfilesForTicker);
+export const DELETE = withAdminOrToken<Ticker>(deleteTeamMember);
+export const PUT = withAdminOrToken<Ticker>(addTeamMember);

@@ -1,4 +1,6 @@
 import { prisma } from '@/prisma';
+import { withAdminOrToken } from '@/app/api/helpers/withAdminOrToken';
+import { KoalaGainsJwtTokenPayload } from '@/types/auth';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { Prisma, TickerV1 } from '@prisma/client';
 import { NextRequest } from 'next/server';
@@ -135,7 +137,11 @@ function toKey(spaceId: string, symbol: string, exchange: string): string {
 
 /** ---------- POST (batch-friendly) ---------- */
 
-async function postHandler(req: NextRequest, context: { params: Promise<{ spaceId: string }> }): Promise<BulkNewTickersResponse> {
+async function postHandler(
+  req: NextRequest,
+  _userContext: KoalaGainsJwtTokenPayload | null,
+  context: { params: Promise<{ spaceId: string }> }
+): Promise<BulkNewTickersResponse> {
   const { spaceId } = await context.params;
   const body = await req.json();
 
@@ -278,7 +284,11 @@ async function postHandler(req: NextRequest, context: { params: Promise<{ spaceI
 
 /** ---------- PUT (supports stockAnalyzeUrl) ---------- */
 
-async function putHandler(req: NextRequest, context: { params: Promise<{ spaceId: string }> }): Promise<UpdateTickersResponse> {
+async function putHandler(
+  req: NextRequest,
+  _userContext: KoalaGainsJwtTokenPayload | null,
+  context: { params: Promise<{ spaceId: string }> }
+): Promise<UpdateTickersResponse> {
   const { spaceId } = await context.params;
   const body = await req.json();
   const { tickers } = body as UpdateTickersRequest;
@@ -347,5 +357,5 @@ async function putHandler(req: NextRequest, context: { params: Promise<{ spaceId
 }
 
 export const GET = withErrorHandlingV2<TickerWithIndustryNames[]>(getHandler);
-export const POST = withErrorHandlingV2<BulkNewTickersResponse>(postHandler);
-export const PUT = withErrorHandlingV2<UpdateTickersResponse>(putHandler);
+export const POST = withAdminOrToken<BulkNewTickersResponse>(postHandler);
+export const PUT = withAdminOrToken<UpdateTickersResponse>(putHandler);
