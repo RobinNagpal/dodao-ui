@@ -142,15 +142,17 @@ variable "app_iam_user_name" {
 }
 
 # ---- App runtime config (NON-secret) -----------------------------------------------------
-# NEXTAUTH_URL points at the DIRECT host during Phase A. Switch to https://koalagains.com when
-# CloudFront fronts the app at cut-over (and add prod.koalagains.com to OAuth redirect URIs).
+# NEXTAUTH_URL points at the public apex now that CloudFront fronts Lightsail. The viewer Host
+# header arrives as koalagains.com (CloudFront's AllViewer policy forwards it), so NextAuth's
+# OAuth redirect_uri must use the same host. Direct hits to prod.koalagains.com still work —
+# OAuth redirects just land users on koalagains.com (cookies are scoped to .koalagains.com).
 variable "app_env" {
   description = "Non-secret runtime env injected into the Lightsail deployment."
   type        = map(string)
   default = {
     NODE_ENV                  = "production"
     PORT                      = "3000"
-    NEXTAUTH_URL              = "https://prod.koalagains.com"
+    NEXTAUTH_URL              = "https://koalagains.com"
     COOKIE_DOMAIN             = ".koalagains.com"
     PUPPETEER_EXECUTABLE_PATH = "/usr/bin/chromium"
     # Vercel-named host vars the code reads. VERCEL_ENV gates auth-cookie security.
