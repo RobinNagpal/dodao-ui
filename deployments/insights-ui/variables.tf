@@ -61,9 +61,9 @@ variable "image_tag" {
 
 # ---- Lightsail sizing --------------------------------------------------------------------
 variable "service_power" {
-  description = "Lightsail container service power. medium = 1 vCPU / 4 GB (Puppeteer headroom)."
+  description = "Lightsail container service power. large = 2 vCPU / 8 GB (extra Puppeteer + SSR headroom)."
   type        = string
-  default     = "medium"
+  default     = "large"
 }
 
 variable "service_scale" {
