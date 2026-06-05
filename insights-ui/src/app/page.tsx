@@ -132,12 +132,25 @@ async function fetchTopIndustriesWithTickers(): Promise<IndustryWithTopTickers[]
     const res = await fetch(url, { next: { tags: [getStocksPageTag(SupportedCountries.US)] } });
     if (!res.ok) return [];
 
+    // On Vercel the build self-fetches the production origin (getBaseUrlForServerSidePages()
+    // falls back to https://koalagains.com). If that origin momentarily serves an HTML
+    // error/redirect page instead of JSON, `res.json()` throws "Unexpected token '<'" and,
+    // because this runs during the static export of "/", aborts the entire build. Guard on the
+    // content-type and degrade to an empty list — the same intent as the `!res.ok` branch above.
+    const contentType = res.headers.get('content-type') ?? '';
+    if (!contentType.includes('application/json')) {
+      console.error(`Expected JSON from ${url} but received content-type "${contentType}" — rendering home page without top industries`);
+      return [];
+    }
+
     const resp: OnlyIndustriesResponse = await res.json();
 
     return resp.industries;
   } catch (e) {
-    console.error(e);
-    throw e;
+    // Transient network/parse failures must not fail the build: render the home page without
+    // the top-industries section and let the next revalidation backfill it.
+    console.error('Failed to fetch top industries for home page:', e);
+    return [];
   }
 }
 
