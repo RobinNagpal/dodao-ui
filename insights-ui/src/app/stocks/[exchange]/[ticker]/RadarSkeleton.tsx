@@ -1,10 +1,13 @@
 /** Radar chart is client-only so it never blocks the first paint */
 
+import RadarChartFrame from '@/components/ui/containers/RadarChartFrame';
+
 export function RadarSkeleton(): JSX.Element {
   return (
-    <div className="w-full max-w-lg mx-auto" style={{ minHeight: '360px' }}>
-      {/* Match the actual radar container dimensions: max-w-lg and ~360px height */}
-      <div className="w-full aspect-square max-w-[360px] mx-auto rounded-full bg-surface relative overflow-hidden">
+    // Same fixed square box as the live chart (RadarChartFrame) so swapping the
+    // skeleton for the real radar causes zero layout shift.
+    <RadarChartFrame>
+      <div className="w-full h-full rounded-full bg-surface relative overflow-hidden">
         <div className="absolute inset-0 animate-pulse" />
         {/* simple rings + spokes for a "radar-ish" look */}
         <div className="absolute inset-[10%] rounded-full border border-border" />
@@ -15,6 +18,6 @@ export function RadarSkeleton(): JSX.Element {
           <div key={i} className="absolute left-1/2 top-1/2 h-1/2 w-[1px] bg-surface-2 origin-top" style={{ transform: `rotate(${(360 / 8) * i}deg)` }} />
         ))}
       </div>
-    </div>
+    </RadarChartFrame>
   );
 }
