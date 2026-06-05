@@ -16,7 +16,7 @@ yet (that's Phase B). Apex/Vercel is untouched.
 ## 1. What's deployed
 
 ```
-prod.koalagains.com ──(Route53 CNAME)──► Lightsail Container Service "insights-ui" (1 node, medium)
+prod.koalagains.com ──(Route53 CNAME)──► Lightsail Container Service "insights-ui" (1 node, large)
                                                 │  next start + system Chromium (Puppeteer)
 browser ──(assetPrefix)──► S3 insights-ui-static-assets/_next/static   └──► existing RDS Postgres (public + SSL)
 EventBridge Scheduler (4 crons) ──► Lambda insights-ui-cron-invoker ──► GET prod.koalagains.com/api/...
