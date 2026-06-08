@@ -3,48 +3,40 @@
 import { Dialog, DialogPanel, Disclosure, DisclosureButton, DisclosurePanel, Popover, PopoverButton, PopoverGroup, PopoverPanel } from '@headlessui/react';
 import { ChevronDownIcon, PhoneIcon, PlayCircleIcon } from '@heroicons/react/20/solid';
 import {
-  AcademicCapIcon,
   Bars3Icon,
-  ClipboardIcon,
-  FingerPrintIcon,
+  BeakerIcon,
   XMarkIcon,
   CodeBracketIcon,
-  WrenchScrewdriverIcon,
   ChartBarIcon,
   CpuChipIcon,
   PresentationChartLineIcon,
   ComputerDesktopIcon,
   BuildingOfficeIcon,
-  GlobeAltIcon,
   UserGroupIcon,
   LifebuoyIcon,
   ChatBubbleLeftEllipsisIcon,
   ShieldCheckIcon,
+  CogIcon,
+  EyeIcon,
 } from '@heroicons/react/24/outline';
 import { useState } from 'react';
 
 const products = [
   {
     name: 'KoalaGains',
-    description: 'Use AI Agents to get deeper investing insights on crowdfunding and REITs',
+    description: 'Use AI Agents to get deeper investing insights on crowdfunding and REITs.',
     href: '/home-section/dodao-io/products/koalagains',
     icon: ChartBarIcon,
   },
   {
-    name: 'Tidbits Hub',
-    description: 'Empower your customers with quick educational tidbits.',
-    href: '/home-section/dodao-io/products/tidbitshub',
-    icon: ClipboardIcon,
-  },
-  {
-    name: 'Academy Sites',
-    description: 'Build immersive educational platforms for your audience.',
-    href: '/home-section/dodao-io/products/academy-sites',
-    icon: AcademicCapIcon,
+    name: 'Robotics — HPLC Autosampler',
+    description: 'Simulation-first robotic arm that loads chemistry sample vials into HPLC autosampler trays.',
+    href: '/home-section/dodao-io/projects/hplc-autosampler',
+    icon: BeakerIcon,
   },
   {
     name: 'DeFi Alerts',
-    description: 'Receive real-time alerts for yield, rates, and position health across DeFi protocol.',
+    description: 'Receive real-time alerts for yield, rates, and position health across DeFi protocols.',
     href: '/home-section/dodao-io/products/defi-alerts',
     icon: ShieldCheckIcon,
   },
@@ -92,39 +84,57 @@ const researchAreas = [
   },
 ];
 
-const aiAgentServices = [
+const financeServices = [
   {
-    name: 'Custom AI Agent Development',
-    description: 'Create powerful, personalized AI agent solutions for your business.',
+    name: 'Smart Contracts & DeFi Tooling',
+    description: 'Secure smart contracts and custom DeFi tooling for protocols, DAOs, and dApps.',
+    href: '/home-section/dodao-io/services/smart-contract',
+    icon: CodeBracketIcon,
+  },
+  {
+    name: 'DeFi Analytics',
+    description: 'Dashboards and analytics that turn on-chain data into decisions.',
+    href: '/home-section/dodao-io/services/defi-analytics',
+    icon: ChartBarIcon,
+  },
+  {
+    name: 'AI Agent Development',
+    description: 'Custom, production-grade AI agents that automate finance and ops workflows.',
     href: '/home-section/dodao-io/services/custom-ai-agent-dev',
     icon: CpuChipIcon,
   },
   {
-    name: 'Maintenance and Support',
-    description: 'Optimize and sustain your AI agents with expert maintenance and support.',
+    name: 'Maintenance & Support',
+    description: 'Ongoing maintenance, monitoring, and support for AI and DeFi systems.',
     href: '/home-section/dodao-io/services/maintenance-support',
     icon: LifebuoyIcon,
   },
 ];
 
-const blockchainServices = [
+const roboticsServices = [
   {
-    name: 'Smart Contract Development',
-    description: 'Craft secure and efficient decentralized applications.',
-    href: '/home-section/dodao-io/services/smart-contract',
-    icon: CodeBracketIcon,
+    name: 'Robotics Software Engineering',
+    description: 'ROS 2 stacks, motion planning, control, and system integration for robotic arms and mobile robots.',
+    href: '/home-section/dodao-io/services/robotics#software',
+    icon: CpuChipIcon,
   },
   {
-    name: 'Custom DeFi Tooling',
-    description: 'Enhance your development process with cutting-edge tools.',
-    href: '/home-section/dodao-io/services/defi-tooling',
-    icon: WrenchScrewdriverIcon,
+    name: 'Computer Vision & Perception',
+    description: '6-DoF pose, 3D scene understanding, and grasp estimation built on modern vision foundation models.',
+    href: '/home-section/dodao-io/services/robotics#perception',
+    icon: EyeIcon,
   },
   {
-    name: 'DeFi Analytics',
-    description: 'Gain deep insights with advanced DeFi analytics.',
-    href: '/home-section/dodao-io/services/defi-analytics',
-    icon: ChartBarIcon,
+    name: 'Simulation & Digital Twins',
+    description: 'Gazebo / Isaac Sim environments, synthetic data, and Sim2Real bring-up before you commit to hardware.',
+    href: '/home-section/dodao-io/services/robotics#simulation',
+    icon: BeakerIcon,
+  },
+  {
+    name: 'Robotics Hardware',
+    description: 'Arm, gripper, sensor, and compute selection plus mechanical bring-up of a working robot cell.',
+    href: '/home-section/dodao-io/services/robotics#hardware',
+    icon: CogIcon,
   },
 ];
 
@@ -202,8 +212,8 @@ export default function DoDAOHomeTopNav() {
               <div className="w-screen max-w-3xl flex-auto overflow-hidden rounded-3xl bg-white text-sm/6 shadow-lg ring-1 ring-gray-900/5">
                 <div className="grid grid-cols-1 gap-6 p-4 lg:grid-cols-2">
                   <div>
-                    <h3 className="mb-2 text-base font-semibold text-gray-900 text-center">Blockchain Services</h3>
-                    {blockchainServices.map((item) => (
+                    <h3 className="mb-2 text-base font-semibold text-gray-900 text-center">Robotics</h3>
+                    {roboticsServices.map((item) => (
                       <div key={item.name} className="group relative mb-2 flex gap-x-4 rounded-lg p-4 hover:bg-gray-50">
                         <div className="mt-1 flex h-10 w-10 flex-none items-center justify-center rounded-lg bg-gray-50 group-hover:bg-white">
                           <item.icon aria-hidden="true" className="h-6 w-6 text-gray-600 group-hover:text-indigo-600" />
@@ -220,8 +230,8 @@ export default function DoDAOHomeTopNav() {
                   </div>
 
                   <div>
-                    <h3 className="mb-2 text-base font-semibold text-gray-900 text-center">AI Agent Services</h3>
-                    {aiAgentServices.map((item) => (
+                    <h3 className="mb-2 text-base font-semibold text-gray-900 text-center">Finance (AI &amp; DeFi)</h3>
+                    {financeServices.map((item) => (
                       <div key={item.name} className="group relative mb-2 flex gap-x-4 rounded-lg p-4 hover:bg-gray-50">
                         <div className="mt-1 flex h-10 w-10 flex-none items-center justify-center rounded-lg bg-gray-50 group-hover:bg-white">
                           <item.icon aria-hidden="true" className="h-6 w-6 text-gray-600 group-hover:text-indigo-600" />
@@ -348,8 +358,8 @@ export default function DoDAOHomeTopNav() {
                     <ChevronDownIcon aria-hidden="true" className="h-5 w-5 flex-none group-data-[open]:rotate-180" />
                   </DisclosureButton>
                   <DisclosurePanel className="mt-2 space-y-2">
-                    <div className="px-3 pb-2 pt-2 text-sm font-semibold text-gray-900">AI Agent Services</div>
-                    {aiAgentServices.map((item) => (
+                    <div className="px-3 pb-2 pt-2 text-sm font-semibold text-gray-900">Robotics</div>
+                    {roboticsServices.map((item) => (
                       <DisclosureButton
                         key={item.name}
                         as="a"
@@ -360,8 +370,8 @@ export default function DoDAOHomeTopNav() {
                       </DisclosureButton>
                     ))}
 
-                    <div className="px-3 pb-2 pt-2 text-sm font-semibold text-gray-900">Blockchain Services</div>
-                    {blockchainServices.map((item) => (
+                    <div className="px-3 pb-2 pt-2 text-sm font-semibold text-gray-900">Finance (AI &amp; DeFi)</div>
+                    {financeServices.map((item) => (
                       <DisclosureButton
                         key={item.name}
                         as="a"
