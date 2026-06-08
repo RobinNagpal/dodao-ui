@@ -19,8 +19,9 @@ export async function generateMetadata(): Promise<Metadata> {
     return getMetaTags(space);
   }
   return {
-    title: 'DoDAO – Building AI Agents & DeFi Tools',
-    description: 'DoDAO helps teams build, deploy, and train AI Agents and DeFi tools for real-world use cases in finance, education, and Web3.',
+    title: 'DoDAO – Robotics, AI Agents & DeFi',
+    description:
+      'DoDAO is a simulation-first robotics services company. We design perception, motion planning, and embodied-AI systems for labs and industry, alongside the AI Agent and DeFi tooling we have shipped for years.',
   };
 }
 

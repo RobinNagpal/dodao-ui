@@ -1,9 +1,10 @@
-import NewServicesGrid from '@/components/home/DoDAOHome/components/NewServicesGrid';
 import CoreOfferings from './components/CoreOfferings';
 import DoDAOHelpButton from './components/DoDAOHelpButton';
 import DoDAOHomeHero from './components/DoDAOHomeHero';
 import DoDAOProducts from './components/DoDAOProducts';
 import { Footer } from './components/Footer';
+import HplcAutosamplerFeature from './components/HplcAutosamplerFeature';
+import RoboticsOfferings from './components/RoboticsOfferings';
 import { TrustedBy } from './components/TrustedBy';
 
 export default function DoDAOHome() {
@@ -17,7 +18,13 @@ export default function DoDAOHome() {
         <TrustedBy />
       </div>
 
-      {/* Core Offerings - already has gradient */}
+      {/* Robotics — primary offering, four-pillar services overview */}
+      <RoboticsOfferings />
+
+      {/* Featured robotics project — HPLC autosampler case study teaser */}
+      <HplcAutosamplerFeature />
+
+      {/* AI Agents + DeFi — secondary offerings, kept for continuity */}
       <CoreOfferings />
 
       {/* Help Button */}
@@ -28,10 +35,6 @@ export default function DoDAOHome() {
       {/* Products section */}
       <div className="from-blue-50 via-indigo-50 to-blue-100">
         <DoDAOProducts />
-      </div>
-
-      <div className="bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-800">
-        <NewServicesGrid />
       </div>
 
       {/* Footer */}

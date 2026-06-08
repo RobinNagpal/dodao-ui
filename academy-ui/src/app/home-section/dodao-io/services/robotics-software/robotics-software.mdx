@@ -1,0 +1,49 @@
+### **DoDAO's Robotics Software Engineering: The Brain of Your Robot**
+
+At DoDAO, we build the software that turns a robot from a bag of motors and sensors into a useful product. Our team works in ROS 2, MoveIt 2, and Behavior Trees to design and ship the software stack for arms and mobile robots. Here is what we offer under our Robotics Software Engineering service.
+
+---
+
+#### **1. ROS 2 Stack Design**
+
+- **What It Does:** We design ROS 2 node graphs, write custom packages, and tune the DDS middleware so messages flow reliably between hardware, perception, and motion code.
+- **How It Helps:** A clean stack is easier to debug, easier to extend later, and much cheaper to maintain over the life of the robot.
+- **Example:** For a lab cell that picks vials from a rack and places them in a tray, we build a ROS 2 graph that ties the arm, the wrist camera, the gripper, and the safety scanner into one coherent system.
+
+---
+
+#### **2. Motion Planning with MoveIt 2**
+
+- **What It Does:** We write motion planning code on MoveIt 2 with OMPL and CHOMP planners, plus trajectory optimization for smooth and safe motion.
+- **How It Helps:** Good motion planning is the difference between a robot that jerks through space and a robot that moves smoothly around obstacles without hitting anything.
+- **Example:** A pick-and-place arm needs to reach into a crowded bench, grab one specific vial, and pull it out without bumping nearby glassware. MoveIt 2 plans that path.
+
+---
+
+#### **3. Behavior Trees for Task Orchestration**
+
+- **What It Does:** We design behavior trees with BehaviorTree.CPP for high-level task control. We define what the robot should do, in what order, and how to react when something goes wrong.
+- **How It Helps:** Behavior trees keep complex task logic readable and reusable. They make it much easier to add new task variations later without rewriting the whole flow.
+- **Example:** "Pick vial, scan barcode, look up slot, place vial, log result" becomes one behavior tree with clear fallback steps for any failure.
+
+---
+
+#### **4. Controls and ros2_control**
+
+- **What It Does:** We set up joint controllers, Cartesian controllers, and admittance controllers under the controller_manager framework so the arm responds the right way to commands and forces.
+- **How It Helps:** Picking the right controller for the job means safer contact, better tracking, and cleaner motion at the tool tip.
+- **Example:** A vial-capping motion needs gentle, force-aware contact rather than raw position control. We pick and tune the controller for that step.
+
+---
+
+#### **5. SDK and Driver Integration**
+
+- **What It Does:** We integrate vendor SDKs and drivers, including Universal Robots, Franka, myCobot, and Robotiq grippers, into one consistent ROS 2 graph.
+- **How It Helps:** Your team works with one interface for the whole cell, instead of jumping between five different vendor tools.
+- **Example:** A UR cobot, a Robotiq gripper, and a RealSense camera each ship with their own SDK. We pull them all into one clean ROS 2 stack.
+
+---
+
+### **Why Choose DoDAO for Robotics Software?**
+
+Choosing DoDAO means working with a team that has shipped real robot software, not just lab demos. We are simulation-first, open-source by default, and careful with the audit log so regulated environments can trust the system. From the first ROS 2 graph to the deployed cell on your bench, we are with you every step of the way.

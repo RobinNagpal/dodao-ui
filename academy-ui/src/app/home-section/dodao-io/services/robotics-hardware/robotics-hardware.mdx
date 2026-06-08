@@ -1,0 +1,57 @@
+### **DoDAO's Robotics Hardware: Pick the Right Parts, Bring Up the Cell**
+
+At DoDAO, we help you pick and integrate the right arm, gripper, sensors, compute, and power for the task. Then we walk the cell through bring-up to a working setup on a real bench. We focus on commercially available, well-supported parts so the system stays maintainable. Here is what we offer under our Robotics Hardware service.
+
+---
+
+#### **1. Arm Selection**
+
+- **What It Does:** We help you choose the right collaborative arm for the task, across cobot tiers such as the myCobot 280, Universal Robots cobots, and Franka research arms.
+- **How It Helps:** The wrong arm wastes money on capabilities you do not need, or fails on a task it was never sized for. Picking the right one first saves both.
+- **Example:** For a vial-handling lab cell, a 6-axis cobot with a 250 mm reach is enough. A full UR10 would be overkill and would not fit on the bench.
+
+---
+
+#### **2. Gripper Selection**
+
+- **What It Does:** We pick the right gripper for the job, including parallel-jaw, suction, or a custom three-finger top-down tool for vial-style tasks.
+- **How It Helps:** The gripper is what actually touches the work. A poor gripper choice limits everything the arm can do, no matter how good the software is.
+- **Example:** A standard parallel jaw works fine on most objects, but slim glass vials need a custom three-finger tool that grasps from the top without crushing the body.
+
+---
+
+#### **3. Sensor Selection**
+
+- **What It Does:** We pick the right sensors, including RGB-D cameras such as Intel RealSense or ZED, wrist force-torque sensors, joint encoders, and safety scanners.
+- **How It Helps:** The right sensors give the perception and control stack the data they need, without drowning the compute budget in noise.
+- **Example:** A wrist RGB-D camera plus an ATI force-torque sensor is enough for most lab tasks. A second overhead camera adds value only for specific bin-picking jobs.
+
+---
+
+#### **4. Compute and Edge Selection**
+
+- **What It Does:** We pick the right compute, including NVIDIA Jetson modules and Intel NUCs, and lay out the ROS 2 graph across edge and workstation nodes.
+- **How It Helps:** A clean compute split keeps perception fast, keeps the safety-critical loop responsive, and keeps the bill of materials reasonable.
+- **Example:** Wrist-camera perception runs on a Jetson at the arm. Higher-level planning runs on a NUC under the bench. The two talk over a private wired network.
+
+---
+
+#### **5. Mechanical Mounting and Power**
+
+- **What It Does:** We design and build mounts, base plates, and power and cable management for the cell.
+- **How It Helps:** A robot that vibrates on a wobbly mount or trips a circuit at peak draw is unusable. Mechanical and power work is what makes a demo a real product.
+- **Example:** A bench-top cobot needs a rigid base plate that is bolted, not clamped, to the bench. We design and source that plate as part of the bring-up.
+
+---
+
+#### **6. Bring-Up to Working Cell**
+
+- **What It Does:** We bring the cell up from box-open to a working pick-and-place setup, including operator HMI, networking, and safety configuration.
+- **How It Helps:** Bring-up is where most projects stall. Having a team that has done this many times shortens that stage from months to weeks.
+- **Example:** From the day the arm and the camera arrive, we plan a two-to-three-week bring-up that ends with a working pick-and-place loop and a documented operator workflow.
+
+---
+
+### **Why Choose DoDAO for Robotics Hardware?**
+
+Choosing DoDAO means working with a team that has integrated arms, grippers, sensors, and compute into real working cells, not just slide decks. We pick commercially available, well-supported parts so your team can maintain the cell long after we ship it. From the first spec sheet to a running pick-and-place loop, we own the path end-to-end.
