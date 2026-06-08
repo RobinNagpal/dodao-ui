@@ -122,7 +122,6 @@ function HplcAutosamplerCaseStudy() {
           <main className="mx-auto mt-8 max-w-7xl px-6 sm:mt-16 lg:mt-24">
             <div className="lg:grid lg:grid-cols-12 lg:gap-8">
               <div className="sm:text-center md:mx-auto md:max-w-2xl lg:col-span-6 lg:text-left">
-                <p className="text-sm font-semibold tracking-wide text-emerald-600 uppercase">Robotics · Featured Project</p>
                 <h1>
                   <span className="mt-1 block text-4xl font-bold tracking-tight sm:text-6xl">
                     <span className="block text-indigo-600">HPLC Autosampler</span>
@@ -170,15 +169,15 @@ function HplcAutosamplerCaseStudy() {
                   <rect x={118} fill="url(#hplc-pattern-mobile)" width={404} height={784} />
                 </svg>
                 <div className="relative mx-auto w-full rounded-lg shadow-lg">
-                  <div className="relative block w-full overflow-hidden rounded-lg bg-gradient-to-br from-emerald-50 via-teal-50 to-cyan-50">
+                  <div className="relative block w-full overflow-hidden rounded-lg bg-white">
                     <div className="aspect-[4/3] flex items-center justify-center px-6 py-10 text-center">
                       <div>
-                        <p className="text-xs uppercase tracking-widest text-emerald-700 font-semibold">Simulation Preview</p>
+                        <p className="text-xs uppercase tracking-widest text-indigo-600 font-semibold">Simulation Preview</p>
                         <p className="mt-2 text-lg font-semibold text-gray-900">myCobot 280 Pi in Gazebo Harmonic</p>
-                        <p className="mt-3 text-sm text-gray-600 max-w-sm mx-auto">
+                        <p className="mt-3 text-sm text-gray-500 max-w-sm mx-auto">
                           A 6-DoF cobot picks vials from a rack, reads barcodes with a wrist camera, and loads each vial into the right slot of an HPLC tray.
                         </p>
-                        <p className="mt-4 text-xs italic text-gray-500">A short Gazebo simulation clip will be added here as we progress.</p>
+                        <p className="mt-4 text-xs italic text-gray-400">A short Gazebo simulation clip will be added here as we progress.</p>
                       </div>
                     </div>
                   </div>
@@ -251,10 +250,10 @@ function HplcAutosamplerCaseStudy() {
             {workflowSteps.map((step) => (
               <li key={step.num} className="flex flex-col rounded-xl bg-white border border-gray-200 p-5 shadow-sm">
                 <div className="flex items-center gap-x-3">
-                  <span className="inline-flex h-9 w-9 items-center justify-center rounded-lg bg-emerald-100 text-emerald-700 text-sm font-semibold">
+                  <span className="inline-flex h-9 w-9 items-center justify-center rounded-lg bg-indigo-100 text-indigo-700 text-sm font-semibold">
                     {step.num}
                   </span>
-                  <step.icon className="h-5 w-5 text-emerald-600" aria-hidden="true" />
+                  <step.icon className="h-5 w-5 text-indigo-600" aria-hidden="true" />
                 </div>
                 <p className="mt-3 text-base font-semibold text-gray-900">{step.title}</p>
                 <p className="mt-1 text-xs uppercase tracking-wide text-gray-500">{step.tool}</p>
@@ -300,30 +299,6 @@ function HplcAutosamplerCaseStudy() {
             ))}
           </div>
         </section>
-      </div>
-
-      <div className="bg-white pb-20">
-        <div className="mx-auto max-w-3xl text-center px-6">
-          <h2 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">Want to talk about your lab workflow?</h2>
-          <p className="mt-4 text-base text-gray-600">
-            Reach out and tell us what your team does every day. We will share how we would approach it and what is realistic in v1.
-          </p>
-          <div className="mt-8 flex justify-center gap-x-3">
-            <button
-              type="button"
-              onClick={() => setShowContactModal(true)}
-              className="inline-flex items-center justify-center rounded-md bg-indigo-600 px-6 py-3 text-base font-semibold text-white hover:bg-indigo-700"
-            >
-              Get started
-            </button>
-            <a
-              href="/home-section/dodao-io/services/robotics"
-              className="inline-flex items-center justify-center rounded-md border border-indigo-200 px-6 py-3 text-base font-semibold text-indigo-700 hover:bg-indigo-50"
-            >
-              See robotics services
-            </a>
-          </div>
-        </div>
       </div>
     </div>
   );
