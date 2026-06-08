@@ -87,26 +87,26 @@ const researchAreas = [
 const roboticsServices = [
   {
     name: 'Robotics Software Engineering',
-    description: 'ROS 2 stacks, motion planning, controls, and full system integration. The software that turns a robot into a useful product.',
-    href: '/home-section/dodao-io/services/robotics#software',
+    description: 'ROS 2 stacks, motion planning, and controls. The brain of a working robot cell.',
+    href: '/home-section/dodao-io/services/robotics-software',
     icon: CpuChipIcon,
   },
   {
     name: 'Computer Vision & Perception',
-    description: '6-DoF pose, scene understanding, and grasp estimation. Built on modern open-source vision and foundation models.',
-    href: '/home-section/dodao-io/services/robotics#perception',
+    description: '6-DoF pose, segmentation, SLAM, and grasps. The eyes of the robot.',
+    href: '/home-section/dodao-io/services/computer-vision',
     icon: EyeIcon,
   },
   {
     name: 'Simulation & Digital Twins',
-    description: 'Gazebo and Isaac Sim environments, synthetic data, and Sim2Real bring-up. We prove every project in simulation first.',
-    href: '/home-section/dodao-io/services/robotics#simulation',
+    description: 'Gazebo and Isaac Sim worlds. We prove every motion before hardware.',
+    href: '/home-section/dodao-io/services/simulation-digital-twins',
     icon: BeakerIcon,
   },
   {
     name: 'Robotics Hardware',
-    description: 'Arm, gripper, sensor, and compute selection. Mechanical mounting, power, and bring-up of a working robot cell.',
-    href: '/home-section/dodao-io/services/robotics#hardware',
+    description: 'Arm, gripper, sensors, and compute. We pick the parts and bring the cell up.',
+    href: '/home-section/dodao-io/services/robotics-hardware',
     icon: CogIcon,
   },
 ];
@@ -114,25 +114,25 @@ const roboticsServices = [
 const financeServices = [
   {
     name: 'Smart Contracts & DeFi Tooling',
-    description: 'Secure smart contracts and custom DeFi tools for protocols, DAOs, and dApps. Built to be safe, gas-efficient, and easy to operate.',
+    description: 'Secure smart contracts and custom DeFi tooling for protocols and DAOs.',
     href: '/home-section/dodao-io/services/smart-contract',
     icon: CodeBracketIcon,
   },
   {
     name: 'DeFi Analytics',
-    description: 'Dashboards and analytics that turn on-chain data into clear decisions. Real-time views of yields, risks, and positions across chains.',
+    description: 'Dashboards that turn on-chain data into clear, real-time decisions.',
     href: '/home-section/dodao-io/services/defi-analytics',
     icon: ChartBarIcon,
   },
   {
     name: 'AI Agent Development',
-    description: 'Production-grade AI agents that automate finance, ops, and customer workflows. Designed and trained on your domain knowledge.',
+    description: 'Production-grade AI agents that automate finance and ops workflows.',
     href: '/home-section/dodao-io/services/custom-ai-agent-dev',
     icon: CpuChipIcon,
   },
   {
     name: 'Maintenance & Support',
-    description: 'Ongoing maintenance, monitoring, and support for AI and DeFi systems. We keep production running so your team can focus on new work.',
+    description: 'Ongoing monitoring and support for AI and DeFi systems in production.',
     href: '/home-section/dodao-io/services/maintenance-support',
     icon: LifebuoyIcon,
   },

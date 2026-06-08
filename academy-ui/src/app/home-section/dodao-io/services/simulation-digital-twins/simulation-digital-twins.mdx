@@ -1,0 +1,57 @@
+### **DoDAO's Simulation and Digital Twins: Prove It in Sim Before Hardware**
+
+At DoDAO, simulation is the first step on every project. We build high-fidelity Gazebo and Isaac Sim worlds, generate synthetic training data, and run Sim2Real bring-up so customer hardware lands on a stack that already works. Here is what we offer under our Simulation and Digital Twins service.
+
+---
+
+#### **1. Gazebo Harmonic Worlds**
+
+- **What It Does:** We build Gazebo Harmonic simulation worlds from your URDF assets, with realistic physics, sensors, and lighting.
+- **How It Helps:** A good Gazebo world lets your team iterate on motion and perception code every day, without booking time on a real robot.
+- **Example:** Before any vial-handling hardware ships, we model the bench, the rack, the gripper, and the camera in Gazebo so the team can test the full pick-and-place loop in software.
+
+---
+
+#### **2. Isaac Sim and Isaac Lab Environments**
+
+- **What It Does:** We build Isaac Sim and Isaac Lab scenes from USD assets, with photorealistic rendering and GPU-accelerated physics for large training runs.
+- **How It Helps:** Isaac is the right tool when you need lots of parallel environments for reinforcement learning or domain randomization at scale.
+- **Example:** Training a grasp policy across a thousand variations of a vial and lighting condition is a one-night job in Isaac Lab. Doing the same on real hardware would take months.
+
+---
+
+#### **3. Synthetic Data Generation**
+
+- **What It Does:** We generate large synthetic datasets with domain randomization, using NVIDIA Replicator or custom Gazebo pipelines, then label them automatically for downstream training.
+- **How It Helps:** Synthetic data is the only realistic way to get balanced, fully labeled training sets for rare objects or rare events.
+- **Example:** Training a vial detector on real photos means hand-labeling thousands of images. Generating ten thousand synthetic vials, in every pose and lighting condition, is a one-line config change.
+
+---
+
+#### **4. Sim2Real Transfer**
+
+- **What It Does:** We run reinforcement learning loops in simulation (PPO, SAC, and similar), then transfer the learned policy to real hardware with the right randomization and calibration.
+- **How It Helps:** Sim2Real lets you ship policies that would be unsafe or far too slow to train directly on a real arm.
+- **Example:** A contact-rich vial-capping skill can be trained in simulation against thousands of variations, then transferred to the real arm with a short calibration pass.
+
+---
+
+#### **5. Digital Twins of Customer Cells**
+
+- **What It Does:** We build digital twins of your existing or planned cells, so your team can run what-if studies and regression tests against a virtual copy of the hardware.
+- **How It Helps:** A digital twin catches problems early. Layout changes, new tooling, or new tasks can be tested in software before any real downtime.
+- **Example:** Before reorganizing a lab bench, you can move the rack in the digital twin and see whether the arm still reaches every slot.
+
+---
+
+#### **6. CI-Style Policy Regression Runs**
+
+- **What It Does:** We set up nightly policy regression runs across a fixed suite of scenarios, so every code change is automatically tested in simulation.
+- **How It Helps:** A regression suite catches behaviour changes that would otherwise only show up later on real hardware.
+- **Example:** A change to the motion planner triggers a 200-scenario nightly run. If success rate drops on any scenario, the team sees it the next morning.
+
+---
+
+### **Why Choose DoDAO for Robotics Simulation?**
+
+Choosing DoDAO means working with a team that treats simulation as a first-class part of the engineering process, not a marketing demo. Every motion is proven in sim before it touches a real arm. Every release is tested against a fixed scenario suite. That is the only way to build robot software you can trust.

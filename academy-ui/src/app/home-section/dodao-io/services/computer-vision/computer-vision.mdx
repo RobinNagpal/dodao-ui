@@ -1,0 +1,57 @@
+### **DoDAO's Computer Vision and Perception: Let Your Robot See and Understand**
+
+At DoDAO, we build perception pipelines that let robots make sense of cluttered, real-world scenes. We combine classical computer vision, deep models, and modern vision foundation models so the robot knows what it is looking at and where things are. Here is what we offer under our Computer Vision and Perception service.
+
+---
+
+#### **1. 6-DoF Object Pose Estimation**
+
+- **What It Does:** We estimate the full 6-DoF pose of objects using models like FoundationPose and MegaPose, so the arm knows both the position and the orientation of the part it needs to handle.
+- **How It Helps:** A pose-aware robot can pick a part the right way every time, instead of relying on perfectly placed jigs.
+- **Example:** A vial sitting in a rack can be tilted by a few degrees. Pose estimation tells the arm the real orientation so the gripper closes cleanly.
+
+---
+
+#### **2. Instance Segmentation**
+
+- **What It Does:** We use Mask R-CNN and SAM 2 to cut out individual objects from busy scenes, even when parts overlap or sit close together.
+- **How It Helps:** Clean instance masks make grasp planning and bin-picking far more reliable.
+- **Example:** A tray full of vials looks like one big blob to a basic detector. Instance segmentation gives the arm one mask per vial so it can pick them one by one.
+
+---
+
+#### **3. SLAM and Localization**
+
+- **What It Does:** We build visual and visual-inertial SLAM pipelines, plus AprilTag-based localization, so the robot always knows where it is relative to the workspace.
+- **How It Helps:** Reliable localization is the foundation of any motion plan. If the robot does not know where it is, no amount of planning will help.
+- **Example:** A mobile robot moving between two benches needs to keep its map in sync. A wrist-camera SLAM stack gives it that, with AprilTags on the bench as a fallback.
+
+---
+
+#### **4. Depth Fusion and Point Clouds**
+
+- **What It Does:** We process RGB-D data, fuse depth from multiple frames, and clean point clouds with Open3D so downstream planners get a usable scene.
+- **How It Helps:** Raw depth from a single frame is noisy. Fusion turns it into a reliable 3D view of the workspace.
+- **Example:** A wrist RealSense camera sees one noisy frame of a beaker. Fusion combines several frames into a clean point cloud the planner can trust.
+
+---
+
+#### **5. Grasp Estimation**
+
+- **What It Does:** We estimate grasp points and grasp quality on cleaned point clouds, so the gripper picks the right spot on the right object.
+- **How It Helps:** A good grasp is the whole game for a manipulation robot. Better grasps mean fewer drops and fewer re-tries.
+- **Example:** For a slim glass vial, the grasp point is mid-body, not the cap and not the base. Our grasp estimator picks that point automatically.
+
+---
+
+#### **6. Hand-Eye and Camera Calibration**
+
+- **What It Does:** We run hand-eye calibration and camera-intrinsics workflows for new cells, so the camera and the arm agree on coordinates.
+- **How It Helps:** Without calibration, every visual detection lands in the wrong place in the arm's frame. With it, the perception output is directly usable.
+- **Example:** When a customer adds a second wrist camera to an existing arm, we re-run hand-eye calibration so the new camera maps cleanly into the arm's world.
+
+---
+
+### **Why Choose DoDAO for Robotics Perception?**
+
+Choosing DoDAO means working with a team that pairs classical computer vision with modern foundation models. We pick the right tool for each problem, instead of forcing one approach on every task. The result is perception that holds up in the messy reality of a lab bench or a factory cell, not just in a clean demo.

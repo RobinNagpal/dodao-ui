@@ -18,7 +18,7 @@ const offerings: Offering[] = [
     description:
       'We build production robot software for arms and mobile robots. ROS 2 nodes, MoveIt 2 motion planning, controllers, and behavior trees. The software that turns hardware into a working product.',
     stack: 'ROS 2 · MoveIt 2 · OMPL · BehaviorTree.CPP',
-    href: '/home-section/dodao-io/services/robotics#software',
+    href: '/home-section/dodao-io/services/robotics-software',
     icon: CpuChipIcon,
     gradient: 'from-emerald-500 to-teal-500',
     accent: 'text-emerald-300',
@@ -29,7 +29,7 @@ const offerings: Offering[] = [
     description:
       'Perception pipelines that let robots make sense of cluttered, real-world scenes. We work on 6-DoF pose, instance segmentation, grasp estimation, SLAM, and depth fusion.',
     stack: 'OpenCV · Open3D · FoundationPose · SAM 2 · DINOv2 · YOLO',
-    href: '/home-section/dodao-io/services/robotics#perception',
+    href: '/home-section/dodao-io/services/computer-vision',
     icon: EyeIcon,
     gradient: 'from-teal-500 to-cyan-500',
     accent: 'text-cyan-300',
@@ -40,7 +40,7 @@ const offerings: Offering[] = [
     description:
       'High-fidelity simulation worlds and digital twins of your cell. Train policies, validate behavior, and catch problems before any robot arrives on the bench.',
     stack: 'Gazebo Harmonic · Isaac Sim / Lab · MuJoCo · Sim2Real domain randomization',
-    href: '/home-section/dodao-io/services/robotics#simulation',
+    href: '/home-section/dodao-io/services/simulation-digital-twins',
     icon: BeakerIcon,
     gradient: 'from-cyan-500 to-sky-500',
     accent: 'text-sky-300',
@@ -51,7 +51,7 @@ const offerings: Offering[] = [
     description:
       'We help you pick and integrate the right arm, gripper, sensors, compute, and power. Then we walk the cell through bring-up to a working production setup.',
     stack: 'myCobot 280 · UR / Franka · RealSense · ATI F/T · Jetson / NUC',
-    href: '/home-section/dodao-io/services/robotics#hardware',
+    href: '/home-section/dodao-io/services/robotics-hardware',
     icon: CogIcon,
     gradient: 'from-sky-500 to-blue-500',
     accent: 'text-blue-300',
