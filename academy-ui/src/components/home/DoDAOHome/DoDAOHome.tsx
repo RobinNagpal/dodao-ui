@@ -1,6 +1,7 @@
 import CoreOfferings from './components/CoreOfferings';
 import DoDAOHelpButton from './components/DoDAOHelpButton';
 import DoDAOHomeHero from './components/DoDAOHomeHero';
+import DoDAOProducts from './components/DoDAOProducts';
 import { Footer } from './components/Footer';
 import HplcAutosamplerFeature from './components/HplcAutosamplerFeature';
 import RoboticsOfferings from './components/RoboticsOfferings';
@@ -29,6 +30,11 @@ export default function DoDAOHome() {
       {/* Help Button */}
       <div className="bg-white">
         <DoDAOHelpButton />
+      </div>
+
+      {/* Products section */}
+      <div className="from-blue-50 via-indigo-50 to-blue-100">
+        <DoDAOProducts />
       </div>
 
       {/* Footer */}

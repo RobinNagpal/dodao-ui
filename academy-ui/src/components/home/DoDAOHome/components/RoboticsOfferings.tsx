@@ -14,9 +14,9 @@ type Offering = {
 const offerings: Offering[] = [
   {
     name: 'Robotics Software Engineering',
-    tagline: 'ROS 2, motion planning, control',
+    tagline: 'ROS 2, motion planning, controls',
     description:
-      'We build production-grade robot software — ROS 2 nodes, MoveIt 2 motion planning, controllers, and behavior trees — for robotic arms and mobile robots. The plumbing that turns hardware into a useful system.',
+      'We build production robot software for arms and mobile robots. ROS 2 nodes, MoveIt 2 motion planning, controllers, and behavior trees. The software that turns hardware into a working product.',
     stack: 'ROS 2 · MoveIt 2 · OMPL · BehaviorTree.CPP',
     href: '/home-section/dodao-io/services/robotics#software',
     icon: CpuChipIcon,
@@ -25,9 +25,9 @@ const offerings: Offering[] = [
   },
   {
     name: 'Computer Vision & Perception',
-    tagline: 'See, localize, understand',
+    tagline: 'See, locate, and understand',
     description:
-      'From SLAM and depth fusion to 6-DoF pose, instance segmentation, and grasp estimation — perception pipelines that let robots understand cluttered, dynamic, real-world scenes.',
+      'Perception pipelines that let robots make sense of cluttered, real-world scenes. We work on 6-DoF pose, instance segmentation, grasp estimation, SLAM, and depth fusion.',
     stack: 'OpenCV · Open3D · FoundationPose · SAM 2 · DINOv2 · YOLO',
     href: '/home-section/dodao-io/services/robotics#perception',
     icon: EyeIcon,
@@ -38,7 +38,7 @@ const offerings: Offering[] = [
     name: 'Simulation & Digital Twins',
     tagline: 'Prove it in sim before hardware',
     description:
-      'High-fidelity simulation environments and digital twins so teams can train policies, validate behavior, and iterate on a robot cell long before the hardware lands on the bench.',
+      'High-fidelity simulation worlds and digital twins of your cell. Train policies, validate behavior, and catch problems before any robot arrives on the bench.',
     stack: 'Gazebo Harmonic · Isaac Sim / Lab · MuJoCo · Sim2Real domain randomization',
     href: '/home-section/dodao-io/services/robotics#simulation',
     icon: BeakerIcon,
@@ -49,7 +49,7 @@ const offerings: Offering[] = [
     name: 'Robotics Hardware',
     tagline: 'Arm, gripper, sensors, compute',
     description:
-      'Help you pick and integrate the right arm, gripper, sensors (RGB-D, force/torque, encoders), compute, and power — then walk the cell through bring-up to a working production setup.',
+      'We help you pick and integrate the right arm, gripper, sensors, compute, and power. Then we walk the cell through bring-up to a working production setup.',
     stack: 'myCobot 280 · UR / Franka · RealSense · ATI F/T · Jetson / NUC',
     href: '/home-section/dodao-io/services/robotics#hardware',
     icon: CogIcon,
@@ -73,8 +73,8 @@ export default function RoboticsOfferings() {
             <span className="block">The Four Layers We Build</span>
           </p>
           <p className="mt-4 text-lg leading-7 text-gray-300 max-w-3xl mx-auto">
-            Most robotics projects need the same four things to ship. We work across all of them — software, perception, simulation, and hardware — so you can
-            engage us for one layer or the whole stack.
+            Most robotics projects need the same four things to ship. Software, perception, simulation, and hardware. We work on all four. You can engage us for
+            one layer or the whole stack.
           </p>
         </div>
 

@@ -2,9 +2,9 @@ import { ArrowRightIcon } from '@heroicons/react/24/outline';
 import { CheckCircleIcon } from '@heroicons/react/20/solid';
 
 const highlights = [
-  'Picks capped sample vials from an inbound rack and reads each barcode label.',
-  'Looks up the correct slot in LIMS and places each vial in the autosampler tray.',
-  'Logs the barcode-to-slot mapping for a clean audit trail (pharma / clinical-grade).',
+  'Helps lab staff handle the slow, manual part of HPLC sample prep.',
+  'Covers vial transfer, capping, labeling, and loading into the autosampler tray.',
+  'Logs every step so labs get a clean audit trail for QC and compliance work.',
 ];
 
 const stack = [
@@ -31,8 +31,8 @@ export default function HplcAutosamplerFeature() {
               HPLC Autosampler <span className="bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 bg-clip-text text-transparent">Tray Loader</span>
             </p>
             <p className="mt-4 text-lg leading-7 text-gray-600">
-              HPLC is one of the most common chemistry-lab instruments on earth. A technician spends hours every day loading sample vials into the autosampler
-              tray by hand. We are building the robot that takes over that step — accurately, repeatably, and with a full audit log.
+              HPLC is one of the most common chemistry-lab instruments in the world. Lab technicians spend hours every day preparing samples and loading vials
+              by hand. We are building the robot arm that takes that work off their plate, accurately and with a full audit trail.
             </p>
 
             <ul className="mt-6 space-y-3">
@@ -77,7 +77,7 @@ export default function HplcAutosamplerFeature() {
                     A 6-DoF cobot picks vials from a rack, reads barcodes with a wrist camera, and places each vial in the correct 12×32 mm slot of the
                     autosampler tray.
                   </p>
-                  <p className="mt-4 text-xs italic text-gray-500">A Gazebo GIF of the working sim will land here in the next release.</p>
+                  <p className="mt-4 text-xs italic text-gray-500">A short Gazebo simulation clip will be added here as we progress.</p>
                 </div>
               </div>
             </div>

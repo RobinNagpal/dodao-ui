@@ -36,8 +36,8 @@ export default function DoDAOHomeHero() {
           </h1>
 
           <p className="mt-6 text-xl leading-8 text-gray-300 max-w-3xl mx-auto">
-            DoDAO is a simulation-first robotics services company. We design perception, motion planning, and embodied-AI systems — and continue to ship the AI
-            Agent and DeFi tools we are known for.
+            DoDAO is a robotics services company. We prove every project in simulation first, then move to hardware. We also build AI Agents and DeFi tools that
+            teams use every day.
           </p>
 
           <div className="mt-10 flex justify-center">
@@ -48,35 +48,6 @@ export default function DoDAOHomeHero() {
 
           {/* Services and Products Cards */}
           <div className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-3 lg:gap-8 max-w-5xl mx-auto">
-            <a
-              href="/home-section/dodao-io/services/robotics"
-              className="relative overflow-hidden rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 p-6"
-            >
-              <div className="relative">
-                <div className="flex items-center justify-between mb-4">
-                  <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-emerald-500/20">
-                    <svg className="w-6 h-6 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M9 17.25v1.007a3 3 0 01-.879 2.122L7.5 21h9l-.621-.621A3 3 0 0115 18.257V17.25m6-12V15a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 15V5.25m18 0A2.25 2.25 0 0018.75 3H5.25A2.25 2.25 0 003 5.25m18 0V12a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 12V5.25"
-                      />
-                    </svg>
-                  </div>
-                  <span className="text-emerald-400 text-sm font-medium">Robotics</span>
-                </div>
-                <h3 className="text-lg font-semibold text-white mb-2">Robotics Software</h3>
-                <p className="text-sm text-gray-300">ROS 2, MoveIt 2, and modern perception for arms and mobile robots — simulation-first.</p>
-                <div className="mt-4 inline-flex items-center text-emerald-400 text-sm font-medium">
-                  Explore More
-                  <svg className="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                  </svg>
-                </div>
-              </div>
-            </a>
-
             <a
               href="/home-section/dodao-io/services/custom-ai-agent-dev"
               className="relative overflow-hidden rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 p-6"
@@ -98,6 +69,35 @@ export default function DoDAOHomeHero() {
                 <h3 className="text-lg font-semibold text-white mb-2">AI Agent Development</h3>
                 <p className="text-sm text-gray-300">Custom AI agents that automate workflows and solve complex business problems.</p>
                 <div className="mt-4 inline-flex items-center text-blue-400 text-sm font-medium">
+                  Explore More
+                  <svg className="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </div>
+              </div>
+            </a>
+
+            <a
+              href="/home-section/dodao-io/services/robotics"
+              className="relative overflow-hidden rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 p-6"
+            >
+              <div className="relative">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-emerald-500/20">
+                    <svg className="w-6 h-6 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M9 17.25v1.007a3 3 0 01-.879 2.122L7.5 21h9l-.621-.621A3 3 0 0115 18.257V17.25m6-12V15a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 15V5.25m18 0A2.25 2.25 0 0018.75 3H5.25A2.25 2.25 0 003 5.25m18 0V12a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 12V5.25"
+                      />
+                    </svg>
+                  </div>
+                  <span className="text-emerald-400 text-sm font-medium">Robotics</span>
+                </div>
+                <h3 className="text-lg font-semibold text-white mb-2">Robotics Software</h3>
+                <p className="text-sm text-gray-300">ROS 2, MoveIt 2, and modern perception for robot arms and mobile robots. Proven in simulation first.</p>
+                <div className="mt-4 inline-flex items-center text-emerald-400 text-sm font-medium">
                   Explore More
                   <svg className="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
@@ -178,7 +178,7 @@ export default function DoDAOHomeHero() {
                 </div>
                 <h3 className="text-lg font-semibold text-white mb-2">HPLC Autosampler</h3>
                 <p className="text-sm text-gray-300">
-                  Our flagship robotics project: a simulation-first robot arm that loads sample vials into HPLC autosampler trays for chemistry labs.
+                  Our flagship robotics project. A robot arm that helps chemistry labs prepare and load sample vials into the HPLC autosampler.
                 </p>
                 <div className="mt-4 inline-flex items-center text-emerald-400 text-sm font-medium">
                   Read the case study
@@ -215,14 +215,15 @@ export default function DoDAOHomeHero() {
           </div>
 
           <div className="mt-12 flex flex-col sm:flex-row items-center justify-center gap-4">
-            <div className="-mt-4">
-              <a href="/contact" className="rounded-md bg-indigo-500 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm">
-                Contact Us
-              </a>
-            </div>
+            <a
+              href="/contact"
+              className="inline-flex items-center justify-center px-6 py-3 rounded-lg text-sm font-semibold text-white bg-indigo-500 hover:bg-indigo-400 shadow-sm transition-colors"
+            >
+              Contact Us
+            </a>
             <a
               href="#products"
-              className="inline-flex items-center px-6 py-3 rounded-lg text-sm font-semibold text-gray-300 border border-white/20 backdrop-blur-sm"
+              className="inline-flex items-center justify-center px-6 py-3 rounded-lg text-sm font-semibold text-gray-300 border border-white/20 backdrop-blur-sm hover:bg-white/5 transition-colors"
             >
               Explore Our Work
               <svg className="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

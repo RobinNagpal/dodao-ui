@@ -16,15 +16,15 @@ const sections: Section[] = [
   {
     id: 'software',
     name: 'Robotics Software Engineering',
-    tagline: 'ROS 2 stacks, motion planning, controls, and system integration.',
+    tagline: 'ROS 2 stacks, motion planning, controls, and full system integration.',
     description:
-      'The plumbing that turns a robot from a bag of motors into a useful system. We architect ROS 2 stacks, write motion-planning code on top of MoveIt 2, design behavior trees for task orchestration, and integrate sensors, controllers, and grippers into a working cell.',
+      'The software that turns a robot from a bag of motors into a useful product. We architect ROS 2 stacks, write motion-planning code on MoveIt 2, design behavior trees for task orchestration, and integrate sensors, controllers, and grippers into a working cell.',
     whatWeDo: [
       'ROS 2 architecture, package design, and DDS tuning',
       'Motion planning with MoveIt 2 (OMPL, CHOMP) and trajectory optimization',
       'Behavior trees for task-level orchestration (BehaviorTree.CPP)',
-      'Joint, Cartesian, and admittance control — and the controller_manager around them',
-      'Integration of vendor SDKs (UR, Franka, myCobot, robotiq grippers) under one ROS 2 graph',
+      'Joint, Cartesian, and admittance control with controller_manager',
+      'Integration of vendor SDKs (UR, Franka, myCobot, Robotiq grippers) under one ROS 2 graph',
     ],
     stack: ['ROS 2 (Humble / Jazzy)', 'MoveIt 2', 'OMPL', 'BehaviorTree.CPP', 'ros2_control', 'Cyclone DDS'],
     icon: CpuChipIcon,
@@ -34,14 +34,14 @@ const sections: Section[] = [
   {
     id: 'perception',
     name: 'Computer Vision & Perception',
-    tagline: 'See, localize, understand — for cluttered, real-world scenes.',
+    tagline: 'See, locate, and understand objects in cluttered real-world scenes.',
     description:
-      'Robots need to know what they are looking at and where it is. We build perception pipelines combining classical CV, deep models, and modern vision foundation models — for 6-DoF pose estimation, instance segmentation, grasp estimation, SLAM, and depth fusion.',
+      'Robots need to know what they are looking at and where it is. We build perception pipelines that combine classical computer vision, deep models, and modern vision foundation models. The output is reliable detections, poses, and grasps that the motion layer can use.',
     whatWeDo: [
       '6-DoF object pose estimation with FoundationPose / MegaPose for industrial parts',
       'Instance segmentation (Mask R-CNN, SAM 2) for clutter and bin-pick scenes',
-      'Visual / visual-inertial SLAM and AprilTag-based localization',
-      'RGB-D depth fusion, point-cloud filtering, and centroid / grasp-point estimation',
+      'Visual and visual-inertial SLAM, plus AprilTag-based localization',
+      'RGB-D depth fusion, point-cloud filtering, and grasp-point estimation',
       'Hand-eye calibration and camera-intrinsics workflows for new cells',
     ],
     stack: ['OpenCV', 'Open3D', 'PyTorch', 'FoundationPose', 'SAM 2', 'DINOv2', 'Depth-Anything', 'YOLO'],
@@ -52,15 +52,15 @@ const sections: Section[] = [
   {
     id: 'simulation',
     name: 'Simulation & Digital Twins',
-    tagline: 'Prove it in sim before you commit to hardware.',
+    tagline: 'Prove every motion in simulation before you commit to hardware.',
     description:
-      'The fastest-growing layer of the robotics stack and the one with the cleanest ROI — simulation lets us iterate on perception, motion, and policy work without burning a robot. We build high-fidelity Gazebo and Isaac Sim environments, generate synthetic training data, and run Sim2Real bring-up so customer hardware lands on a known-working stack.',
+      'Simulation lets us iterate on perception, motion, and policy work without burning a robot. We build high-fidelity Gazebo and Isaac Sim environments, generate synthetic training data, and run Sim2Real bring-up so customer hardware lands on a stack that already works.',
     whatWeDo: [
-      'Gazebo Harmonic worlds and Isaac Sim / Lab environments from your URDF / USD assets',
+      'Gazebo Harmonic worlds and Isaac Sim / Lab environments from your URDF or USD assets',
       'Synthetic data generation with domain randomization for vision-model training',
       'Reinforcement-learning training loops (PPO, SAC) and Sim2Real transfer',
       'Digital-twin views of customer cells for what-if and regression testing',
-      'CI-style nightly policy regression harnesses across scenario suites',
+      'CI-style nightly policy regression runs across a fixed scenario suite',
     ],
     stack: ['Gazebo Harmonic', 'Isaac Sim / Isaac Lab', 'MuJoCo', 'Stable-Baselines3', 'LeRobot', 'NVIDIA Replicator'],
     icon: BeakerIcon,
@@ -72,12 +72,12 @@ const sections: Section[] = [
     name: 'Robotics Hardware',
     tagline: 'Arm, gripper, sensors, compute, and the bring-up that ties it together.',
     description:
-      'We help you pick the right hardware for the task — collaborative arm, gripper, sensors, compute — and bring the cell up from box-open to working pick-and-place. We focus on commercially available, well-supported parts so the system is maintainable.',
+      'We help you pick the right collaborative arm, gripper, sensors, and compute for the task. Then we bring the cell up from box-open to working pick-and-place. We focus on commercially available, well-supported parts so the system stays maintainable.',
     whatWeDo: [
       'Arm selection across cobot tiers (myCobot 280, UR cobots, Franka research arms)',
-      'Gripper selection — parallel-jaw, suction, custom 3-finger top-down for vial-style tasks',
-      'Sensor selection: RGB-D cameras (RealSense, Zed), wrist F/T, encoders, safety scanners',
-      'Compute and edge selection (Jetson, Intel NUC, ROS 2 deployment targets)',
+      'Gripper selection: parallel-jaw, suction, or a custom 3-finger top-down tool for vial-style tasks',
+      'Sensor selection: RGB-D cameras (RealSense, ZED), wrist F/T, encoders, safety scanners',
+      'Compute and edge selection (Jetson, Intel NUC) for ROS 2 deployment',
       'Mechanical mounting, power, networking, and operator HMI bring-up',
     ],
     stack: ['Elephant Robotics myCobot 280', 'Universal Robots / Franka', 'Intel RealSense', 'ATI F/T', 'NVIDIA Jetson', 'Custom mounts and base plates'],
@@ -95,8 +95,8 @@ export default function RoboticsServicesContent() {
           Robotics <span className="bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 bg-clip-text text-transparent">Services</span>
         </h1>
         <p className="mt-4 text-lg leading-7 text-gray-600 max-w-3xl">
-          We work across the four layers most robotics projects need to ship — software, perception, simulation, and hardware. You can engage us for one layer
-          or the whole stack. Below: what we do in each area, and the open-source / commercial stack we work with.
+          Most robotics projects need the same four things to ship. Software, perception, simulation, and hardware. We work on all four. You can engage us for
+          one layer or the whole stack. Below is what we do in each area, and the open-source and commercial tools we use.
         </p>
 
         <nav className="mt-6 flex flex-wrap gap-2">
@@ -110,6 +110,19 @@ export default function RoboticsServicesContent() {
             </a>
           ))}
         </nav>
+
+        <div className="mt-6 rounded-2xl bg-emerald-50 border border-emerald-200 p-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <div>
+            <p className="text-sm font-semibold text-emerald-900">New here? Read how we approach a robotics project.</p>
+            <p className="text-sm text-emerald-800 mt-1">Requirements first, then hardware, then software, then bring-up. One clear order, every project.</p>
+          </div>
+          <a
+            href="/home-section/dodao-io/services/robotics/approach"
+            className="inline-flex items-center justify-center rounded-md bg-emerald-700 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-800 transition-colors"
+          >
+            Our approach
+          </a>
+        </div>
       </header>
 
       <div className="space-y-16">
