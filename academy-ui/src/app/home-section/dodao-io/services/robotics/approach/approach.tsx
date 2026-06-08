@@ -273,7 +273,7 @@ function RoboticsApproachContent() {
               Get started
             </button>
             <a
-              href="/home-section/dodao-io/projects/hplc-autosampler"
+              href="/home-section/dodao-io/products/hplc-autosampler"
               className="inline-flex items-center justify-center rounded-md border border-indigo-200 bg-white px-6 py-3 text-base font-semibold text-indigo-700 hover:bg-indigo-50"
             >
               <PlayCircleIcon className="h-5 w-5 mr-2" aria-hidden="true" />

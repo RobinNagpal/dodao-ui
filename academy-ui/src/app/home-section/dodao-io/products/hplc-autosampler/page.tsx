@@ -10,12 +10,12 @@ export const metadata: Metadata = {
   authors: [{ name: 'DoDAO' }],
   robots: { index: true, follow: true },
   alternates: {
-    canonical: 'https://dodao.io/home-section/dodao-io/projects/hplc-autosampler',
+    canonical: 'https://dodao.io/home-section/dodao-io/products/hplc-autosampler',
   },
   openGraph: {
     title: 'HPLC Autosampler — Robotics Case Study | DoDAO',
     description: 'A simulation-first robotic arm that loads sample vials into HPLC autosampler trays for chemistry labs.',
-    url: 'https://dodao.io/home-section/dodao-io/projects/hplc-autosampler',
+    url: 'https://dodao.io/home-section/dodao-io/products/hplc-autosampler',
     type: 'website',
     siteName: 'DoDAO',
   },
@@ -31,9 +31,7 @@ export const metadata: Metadata = {
 export default function HplcAutosamplerPage() {
   return (
     <PageWrapper>
-      <div className="mx-auto max-w-5xl px-6 py-10 lg:py-14">
-        <HplcAutosamplerCaseStudy />
-      </div>
+      <HplcAutosamplerCaseStudy />
     </PageWrapper>
   );
 }

@@ -58,7 +58,7 @@ export default function HplcAutosamplerFeature() {
 
             <div className="mt-8">
               <a
-                href="/home-section/dodao-io/projects/hplc-autosampler"
+                href="/home-section/dodao-io/products/hplc-autosampler"
                 className="inline-flex items-center gap-x-2 rounded-xl bg-gradient-to-r from-emerald-600 to-cyan-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm hover:from-emerald-500 hover:to-cyan-500 transition-colors"
               >
                 Read the full case study

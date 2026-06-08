@@ -159,7 +159,7 @@ export default function DoDAOHomeHero() {
             </a>
 
             <a
-              href="/home-section/dodao-io/projects/hplc-autosampler"
+              href="/home-section/dodao-io/products/hplc-autosampler"
               className="relative overflow-hidden rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 p-6"
             >
               <div className="relative">

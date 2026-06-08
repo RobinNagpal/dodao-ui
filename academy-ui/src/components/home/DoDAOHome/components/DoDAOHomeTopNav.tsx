@@ -31,7 +31,7 @@ const products = [
   {
     name: 'HPLC Autosampler',
     description: 'A robot arm that helps chemistry labs prepare and load sample vials. Built simulation-first on ROS 2 and MoveIt 2.',
-    href: '/home-section/dodao-io/projects/hplc-autosampler',
+    href: '/home-section/dodao-io/products/hplc-autosampler',
     icon: BeakerIcon,
   },
   {

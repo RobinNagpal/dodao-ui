@@ -177,7 +177,7 @@ export default function RoboticsServicesContent() {
           Read our flagship robotics case study — a simulation-first robotic arm that loads sample vials into HPLC autosampler trays for chemistry labs.
         </p>
         <a
-          href="/home-section/dodao-io/projects/hplc-autosampler"
+          href="/home-section/dodao-io/products/hplc-autosampler"
           className="mt-5 inline-flex items-center gap-x-2 rounded-xl bg-gradient-to-r from-emerald-600 to-cyan-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm hover:from-emerald-500 hover:to-cyan-500 transition-colors"
         >
           HPLC Autosampler case study
