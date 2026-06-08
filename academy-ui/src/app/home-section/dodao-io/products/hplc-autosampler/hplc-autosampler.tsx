@@ -18,13 +18,13 @@ const incentives = [
     name: 'Goal and Objectives',
     description:
       'We want to take the slow, manual sample-prep work off the lab technician. Most chemistry labs run HPLC every day to test products, drugs, and food. The instrument is already automatic. The hours of work before each run are not. Our goal is a small robot arm that handles that human-intensive part safely and with a full audit trail.',
-    imageSrc: 'https://cdn-icons-png.flaticon.com/512/1828/1828884.png',
+    imageSrc: 'https://cdn-icons-png.flaticon.com/512/1270/1270380.png',
   },
   {
     name: 'The Solution',
     description:
       'A 6-axis cobot sits on the lab bench and takes over the prep steps a general-purpose arm can do well. Transfer, filter, cap, label, and load vials into the autosampler tray in the right order. We prove every motion in Gazebo first, then move to hardware. Every action is logged so QC and pharma teams can defend the result later.',
-    imageSrc: 'https://cdn-icons-png.flaticon.com/512/2784/2784065.png',
+    imageSrc: 'https://cdn-icons-png.flaticon.com/512/8787/8787168.png',
   },
 ];
 
@@ -124,7 +124,7 @@ function HplcAutosamplerCaseStudy() {
               <div className="sm:text-center md:mx-auto md:max-w-2xl lg:col-span-6 lg:text-left">
                 <h1>
                   <span className="mt-1 block text-4xl font-bold tracking-tight sm:text-6xl">
-                    <span className="block text-indigo-600">HPLC Autosampler</span>
+                    <span className="block text-indigo-600">VialBot</span>
                   </span>
                 </h1>
                 <p className="mt-3 text-lg leading-8 text-gray-500">
