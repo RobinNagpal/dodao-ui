@@ -4,7 +4,7 @@ import DoDAOHomeHero from './components/DoDAOHomeHero';
 import DoDAOProducts from './components/DoDAOProducts';
 import { Footer } from './components/Footer';
 import HplcAutosamplerFeature from './components/HplcAutosamplerFeature';
-import RoboticsOfferings from './components/RoboticsOfferings';
+import RoboticsServicesTwo from './components/RoboticsServicesTwo';
 import { TrustedBy } from './components/TrustedBy';
 
 export default function DoDAOHome() {
@@ -18,8 +18,8 @@ export default function DoDAOHome() {
         <TrustedBy />
       </div>
 
-      {/* Robotics — primary offering, four-pillar services overview */}
-      <RoboticsOfferings />
+      {/* Robotics — primary offering, the two services we run today */}
+      <RoboticsServicesTwo />
 
       {/* Featured robotics project — HPLC autosampler case study teaser */}
       <HplcAutosamplerFeature />

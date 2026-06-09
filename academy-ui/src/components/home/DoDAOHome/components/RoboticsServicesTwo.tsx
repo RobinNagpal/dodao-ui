@@ -1,0 +1,120 @@
+import { ArrowRightIcon, BeakerIcon, EyeIcon } from '@heroicons/react/24/outline';
+
+type Offering = {
+  name: string;
+  tagline: string;
+  description: string;
+  bullets: string[];
+  stack: string;
+  href: string;
+  icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
+  gradient: string;
+  accent: string;
+};
+
+const offerings: Offering[] = [
+  {
+    name: 'Simulation Setup',
+    tagline: 'Built first, before any movement or perception code.',
+    description:
+      'We set up the Gazebo and Isaac Sim world for your project. The robot, the bench, the parts, the cameras and the lighting are all modeled to match the real setup, so your team can start working on the actual problem from day one.',
+    bullets: [
+      'Robot model from your URDF or USD assets',
+      'Bench, table, racks and parts for your usecase',
+      'Camera and sensor placements that match real hardware',
+      'Lighting and material settings tuned to the real conditions',
+    ],
+    stack: 'Gazebo Harmonic · Isaac Sim · Isaac Lab · URDF · USD',
+    href: '/home-section/dodao-io/services/simulation-setup',
+    icon: BeakerIcon,
+    gradient: 'from-cyan-500 to-sky-500',
+    accent: 'text-sky-300',
+  },
+  {
+    name: 'Synthetic Data',
+    tagline: 'Labeled training data from your simulation, by the thousand.',
+    description:
+      'Once the simulation is ready, the same scene can produce labeled images for your vision models. Object detection, segmentation, pose, depth and more. Useful when real data is rare, slow to collect or expensive to label.',
+    bullets: [
+      'Datasets for YOLO and other detection models',
+      'Segmentation, pose and grasp datasets',
+      'Domain randomization on lighting, color and clutter',
+      'Labels written in the format your training code expects',
+    ],
+    stack: 'NVIDIA Replicator · Isaac Sim · Gazebo Harmonic · YOLO · PyTorch',
+    href: '/home-section/dodao-io/services/synthetic-data',
+    icon: EyeIcon,
+    gradient: 'from-emerald-500 to-teal-500',
+    accent: 'text-emerald-300',
+  },
+];
+
+export default function RoboticsServicesTwo() {
+  return (
+    <section className="relative overflow-hidden bg-gradient-to-br from-gray-900 via-slate-900 to-emerald-950 py-16 sm:py-20" id="robotics-services">
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute -top-40 -right-40 w-80 h-80 bg-emerald-500/10 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-cyan-500/10 rounded-full blur-3xl animate-pulse delay-1000"></div>
+      </div>
+
+      <div className="relative mx-auto max-w-7xl px-6 lg:px-8">
+        <div className="text-center mb-12">
+          <h2 className="text-base font-semibold leading-7 text-emerald-400 mb-4">Robotics Services</h2>
+          <p className="text-2xl font-bold tracking-tight text-white sm:text-3xl lg:text-4xl">
+            <span className="block">Two Services We Offer Today</span>
+          </p>
+          <p className="mt-4 text-lg leading-7 text-gray-300 max-w-3xl mx-auto">
+            Every robotics project we ship starts with a careful simulation. We build that world for you and we turn it into the labeled data your vision models
+            need. You can engage us for one or both.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+          {offerings.map((offering) => (
+            <div
+              key={offering.name}
+              className="group relative flex flex-col overflow-hidden rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10 transition-colors duration-300"
+            >
+              <div className={`h-1.5 bg-gradient-to-r ${offering.gradient}`}></div>
+              <div className="p-6 flex flex-col h-full">
+                <div className="flex items-start space-x-4">
+                  <div className={`flex h-12 w-12 flex-none items-center justify-center rounded-xl bg-gradient-to-br ${offering.gradient}`}>
+                    <offering.icon className="h-6 w-6 text-white" aria-hidden="true" />
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-semibold text-white">{offering.name}</h3>
+                    <p className={`text-sm font-medium ${offering.accent}`}>{offering.tagline}</p>
+                  </div>
+                </div>
+
+                <p className="mt-4 text-sm leading-6 text-gray-300">{offering.description}</p>
+
+                <ul className="mt-4 space-y-2">
+                  {offering.bullets.map((bullet) => (
+                    <li key={bullet} className="flex items-start gap-x-2 text-sm text-gray-300">
+                      <span className={`mt-1.5 inline-block h-1.5 w-1.5 flex-none rounded-full bg-gradient-to-r ${offering.gradient}`}></span>
+                      <span>{bullet}</span>
+                    </li>
+                  ))}
+                </ul>
+
+                <p className="mt-5 text-xs uppercase tracking-wide text-gray-400">Tools</p>
+                <p className="mt-1 text-sm text-gray-200">{offering.stack}</p>
+
+                <div className="mt-6">
+                  <a
+                    href={offering.href}
+                    className={`inline-flex items-center gap-x-2 rounded-xl bg-gradient-to-r ${offering.gradient} px-4 py-2 text-sm font-semibold text-white shadow-sm hover:opacity-90 transition-opacity`}
+                  >
+                    Read the {offering.name} page
+                    <ArrowRightIcon className="h-4 w-4" aria-hidden="true" />
+                  </a>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}

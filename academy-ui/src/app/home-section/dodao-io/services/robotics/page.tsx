@@ -4,14 +4,13 @@ import RoboticsServicesContent from './robotics';
 
 export const metadata: Metadata = {
   title: 'Robotics Services | DoDAO',
-  description:
-    'DoDAO robotics services across four layers: robotics software engineering, computer vision & perception, simulation & digital twins, and robotics hardware bring-up.',
+  description: 'DoDAO robotics services: simulation setup in Gazebo and Isaac Sim, and synthetic data generation for vision models like YOLO.',
   alternates: {
     canonical: 'https://dodao.io/home-section/dodao-io/services/robotics',
   },
   openGraph: {
     title: 'Robotics Services | DoDAO',
-    description: 'Software, perception, simulation, and hardware services for robotic arm and mobile-robot projects — simulation-first.',
+    description: 'Simulation setup and synthetic data generation for robotics projects.',
     url: 'https://dodao.io/home-section/dodao-io/services/robotics',
     type: 'website',
     siteName: 'DoDAO',
@@ -21,7 +20,7 @@ export const metadata: Metadata = {
 export default function RoboticsServicesPage() {
   return (
     <PageWrapper>
-      <div className="mx-auto max-w-5xl px-6 py-10 lg:py-14">
+      <div className="mx-auto max-w-5xl px-6 py-2 lg:py-4">
         <RoboticsServicesContent />
       </div>
     </PageWrapper>
