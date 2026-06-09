@@ -133,7 +133,7 @@ export default function DoDAOHomeHero() {
 
           <h3 className="mt-16 text-xl font-semibold text-white text-center">Our Products</h3>
 
-          <div className="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-3 lg:gap-8 max-w-5xl mx-auto">
+          <div className="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:gap-8 max-w-3xl mx-auto">
             <a
               href="/home-section/dodao-io/products/koalagains"
               className="relative overflow-hidden rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 p-6"
@@ -151,37 +151,6 @@ export default function DoDAOHomeHero() {
                 <p className="text-sm text-gray-300">AI-powered investment analysis platform for detailed financial insights and reports.</p>
                 <div className="mt-4 inline-flex items-center text-blue-400 text-sm font-medium">
                   Explore More
-                  <svg className="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                  </svg>
-                </div>
-              </div>
-            </a>
-
-            <a
-              href="/home-section/dodao-io/products/hplc-autosampler"
-              className="relative overflow-hidden rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 p-6"
-            >
-              <div className="relative">
-                <div className="flex items-center justify-between mb-4">
-                  <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-emerald-500/20">
-                    <svg className="w-6 h-6 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M9.75 3.104v5.714a2.25 2.25 0 01-.659 1.591L5 14.5M9.75 3.104a2.25 2.25 0 01-.659 1.591L5 8.818m4.75-5.714a48.13 48.13 0 014.5 0M14.25 3.104v5.714a2.25 2.25 0 00.659 1.591L19 14.5m-4.75-11.396a2.25 2.25 0 00.659 1.591L19 8.818m0 0a2.25 2.25 0 011.591 3.84L13.5 19.5l-3 2.25-3-2.25L.91 12.658a2.25 2.25 0 011.59-3.84m0 0c.413 0 .825.124 1.173.371L5 8.818"
-                      />
-                    </svg>
-                  </div>
-                  <span className="text-emerald-400 text-sm font-medium">Robotics</span>
-                </div>
-                <h3 className="text-lg font-semibold text-white mb-2">HPLC Autosampler</h3>
-                <p className="text-sm text-gray-300">
-                  Our flagship robotics project. A robot arm that helps chemistry labs prepare and load sample vials into the HPLC autosampler.
-                </p>
-                <div className="mt-4 inline-flex items-center text-emerald-400 text-sm font-medium">
-                  Read the case study
                   <svg className="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                   </svg>

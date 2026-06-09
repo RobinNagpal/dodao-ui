@@ -28,9 +28,9 @@ const products = [
     icon: ChartBarIcon,
   },
   {
-    name: 'HPLC Autosampler',
-    description: 'A robot arm that helps chemistry labs prepare and load sample vials. Built simulation-first on ROS 2 and MoveIt 2.',
-    href: '/home-section/dodao-io/products/hplc-autosampler',
+    name: 'Ketchup HPLC Workflow',
+    description: 'Gazebo simulation of the HPLC sample prep workflow for ketchup, a much harder usecase than the standard paracetamol case.',
+    href: '/home-section/dodao-io/products/ketchup-hplc-workflow',
     icon: BeakerIcon,
   },
   {
