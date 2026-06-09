@@ -1,18 +1,11 @@
 import { ArrowRightIcon } from '@heroicons/react/24/outline';
 import { CheckCircleIcon, ExclamationTriangleIcon } from '@heroicons/react/20/solid';
 
-const highlights = [
-  'Models the HPLC sample prep workflow for ketchup, a much harder usecase than the standard paracetamol example.',
-  'Five of the eight workflow steps run end to end in Gazebo Harmonic today.',
-  'Three steps that need tight tolerance hardware moves are honestly left out for now.',
-];
+const highlights = ['Models the HPLC sample prep workflow for ketchup.', 'Five of the eight workflow steps run end to end in Gazebo Harmonic today.'];
 
 const stack = [
   { label: 'Sim', value: 'Gazebo Harmonic' },
   { label: 'Next', value: 'Isaac Sim port' },
-  { label: 'Middleware', value: 'ROS 2' },
-  { label: 'Motion', value: 'MoveIt 2' },
-  { label: 'Arm', value: 'myCobot 280 Pi' },
 ];
 
 type StepPreview = {

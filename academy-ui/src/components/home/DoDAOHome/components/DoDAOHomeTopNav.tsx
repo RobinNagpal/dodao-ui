@@ -29,7 +29,7 @@ const products = [
   },
   {
     name: 'Ketchup HPLC Workflow',
-    description: 'Gazebo simulation of the HPLC sample prep workflow for ketchup, a much harder usecase than the standard paracetamol case.',
+    description: 'Gazebo simulation of the HPLC sample prep workflow for ketchup',
     href: '/home-section/dodao-io/products/ketchup-hplc-workflow',
     icon: BeakerIcon,
   },

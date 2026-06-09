@@ -165,12 +165,6 @@ function KetchupHplcWorkflowCaseStudy() {
                   >
                     See our Simulation Setup service
                   </a>
-                  <a
-                    href="/home-section/dodao-io/products/hplc-autosampler"
-                    className="inline-flex items-center justify-center rounded-md bg-white px-5 py-2.5 text-sm font-semibold text-indigo-700 ring-1 ring-indigo-200 hover:bg-indigo-50 transition-colors"
-                  >
-                    Read the original HPLC autosampler concept
-                  </a>
                 </div>
               </div>
 
@@ -180,7 +174,7 @@ function KetchupHplcWorkflowCaseStudy() {
                     <div className="aspect-[4/3] flex items-center justify-center px-6 py-10 text-center">
                       <div>
                         <p className="text-xs uppercase tracking-widest text-indigo-600 font-semibold">Simulation Preview</p>
-                        <p className="mt-2 text-lg font-semibold text-gray-900">myCobot 280 Pi in Gazebo Harmonic</p>
+                        <p className="mt-2 text-lg font-semibold text-gray-900">Gazebo Harmonic</p>
                         <p className="mt-3 text-sm text-gray-600 max-w-sm mx-auto">
                           A 6 axis cobot runs the ketchup sample prep workflow through dissolution, dilution, filtering, transfer and final autosampler
                           placement.
@@ -193,45 +187,6 @@ function KetchupHplcWorkflowCaseStudy() {
               </div>
             </div>
           </main>
-        </div>
-      </div>
-
-      <div className="bg-gray-50 py-20 sm:py-24">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="mx-auto max-w-3xl text-center">
-            <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Why Ketchup, Not Paracetamol</h2>
-            <p className="mt-4 text-base text-gray-600">
-              Paracetamol is the clean, easy case every HPLC training walks through. Ketchup is what real food labs deal with. We built the simulation around
-              ketchup on purpose, so the work would surface every messy detail we will hit later in the lab.
-            </p>
-          </div>
-
-          <div className="mt-12 overflow-hidden rounded-2xl bg-white ring-1 ring-gray-200">
-            <table className="w-full text-sm text-left">
-              <thead className="bg-gray-50 text-xs uppercase tracking-wide text-gray-500">
-                <tr>
-                  <th scope="col" className="px-6 py-3 font-semibold">
-                    What changes
-                  </th>
-                  <th scope="col" className="px-6 py-3 font-semibold">
-                    Paracetamol
-                  </th>
-                  <th scope="col" className="px-6 py-3 font-semibold">
-                    Ketchup
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-100">
-                {differences.map((row) => (
-                  <tr key={row.title} className="align-top">
-                    <td className="px-6 py-4 font-semibold text-gray-900">{row.title}</td>
-                    <td className="px-6 py-4 text-gray-700">{row.paracetamol}</td>
-                    <td className="px-6 py-4 text-gray-700">{row.ketchup}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
         </div>
       </div>
 
