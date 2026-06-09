@@ -1,0 +1,39 @@
+### Simulation Setup
+
+When you start a robotics project, the first step is building a clean simulation world. Without a good simulation you cannot safely test motion, perception or control code. At DoDAO we set up the simulation for you from day one, so your team can focus on the actual problem instead of spending weeks modeling parts, sensors and the workbench.
+
+We focus on the setup part on purpose. Things like movement, arm control, sensors and perception are layered on top later. If the world is wrong, every piece built on top of it is wrong too. So we put a lot of care into getting this base right.
+
+### What We Build
+
+For every usecase we build the full set of objects you need:
+
+- The robot model with the correct joints and frames
+- The bench, table or floor layout where the work happens
+- The parts you pick, place, scan or work with
+- The sensors and cameras you plan to use later
+- Lighting and material settings that match the real conditions
+
+You tell us the usecase and we deliver a working scene that loads cleanly and matches the real setup.
+
+### Tools We Use
+
+We work in both of the main robotics simulators:
+
+- **Gazebo** for fast iteration and ROS 2 work. Good for daily development and integration testing.
+- **Isaac Sim** for photoreal rendering and large parallel runs. Good when you need data generation or training jobs at scale.
+
+If your team uses only one of them, we can stick to that. If you want both, we keep one source of truth for the assets and ship scenes for each.
+
+### What You Get
+
+- A clean project folder with the simulation files
+- Models for every object in your scene
+- A short readme so any engineer on your team can run the world
+- Help bringing the scene into your existing code base
+
+Once the world is ready, your team can focus on planning, perception and policies. You skip the slow part and start where the real engineering begins.
+
+### Why Start Here
+
+Every robotics product we have shipped started with a careful simulation pass. Teams that try to skip this step end up redoing weeks of work later. Setting up a clean simulation is the cheapest way to find out what is wrong with a plan, a part choice or a layout, long before any hardware shows up on the bench.

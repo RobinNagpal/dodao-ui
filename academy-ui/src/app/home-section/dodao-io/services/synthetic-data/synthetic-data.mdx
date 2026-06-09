@@ -1,0 +1,44 @@
+### Synthetic Data
+
+Vision and perception models need a lot of labeled images to learn well. Collecting and labeling that data from the real world is slow and expensive. With a working simulation we can produce labeled images, depth maps and bounding boxes by the thousands, with very little extra effort.
+
+### What We Do
+
+We use the simulation we have already set up for your project to produce training data. The same scene that runs your robot can also render images for a perception model. Every object has a known position and class, so labels come out automatically.
+
+We can produce data for:
+
+- Object detection models like YOLO
+- Segmentation models
+- Pose and grasp estimation models
+- Depth and stereo models
+- Custom models your team is training
+
+### How It Works
+
+- We pick the camera placements that match your real sensor setup
+- We vary lighting, color, texture and clutter to cover the cases your model will see
+- We render large batches of frames in the background
+- Labels are written next to every frame, in the format your training pipeline expects
+
+For Isaac Sim users we can use NVIDIA Replicator to drive the runs. For Gazebo users we use a similar pipeline built around the world we already have.
+
+### When It Helps
+
+Synthetic data is useful when:
+
+- You do not have enough real images yet
+- The objects are rare or hard to collect
+- You need a balanced dataset across many cases
+- You want to add edge cases that almost never show up in the wild
+
+It is not a magic fix. A model trained only on simulation can struggle on real images. We usually mix synthetic and real data so the model learns both.
+
+### What You Get
+
+- A script that produces fresh data on demand
+- Sample datasets in the format your training code uses
+- Notes on what settings we varied and why
+- Help wiring the dataset into your training run
+
+If you want to try synthetic data without buying into a full pipeline, we can start with a small batch and let your team test it against a real validation set.
