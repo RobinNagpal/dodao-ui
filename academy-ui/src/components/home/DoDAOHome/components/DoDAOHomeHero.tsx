@@ -89,14 +89,16 @@ export default function DoDAOHomeHero() {
                         strokeLinecap="round"
                         strokeLinejoin="round"
                         strokeWidth={2}
-                        d="M9 17.25v1.007a3 3 0 01-.879 2.122L7.5 21h9l-.621-.621A3 3 0 0115 18.257V17.25m6-12V15a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 15V5.25m18 0A2.25 2.25 0 0018.75 3H5.25A2.25 2.25 0 003 5.25m18 0V12a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 12V5.25"
+                        d="M9.75 3.104v5.714a2.25 2.25 0 01-.659 1.591L5 14.5M9.75 3.104a2.25 2.25 0 01-.659 1.591L5 8.818m4.75-5.714a48.13 48.13 0 014.5 0M14.25 3.104v5.714a2.25 2.25 0 00.659 1.591L19 14.5m-4.75-11.396a2.25 2.25 0 00.659 1.591L19 8.818m0 0a2.25 2.25 0 011.591 3.84L13.5 19.5l-3 2.25-3-2.25L.91 12.658a2.25 2.25 0 011.59-3.84m0 0c.413 0 .825.124 1.173.371L5 8.818"
                       />
                     </svg>
                   </div>
                   <span className="text-emerald-400 text-sm font-medium">Robotics</span>
                 </div>
-                <h3 className="text-lg font-semibold text-white mb-2">Robotics Software</h3>
-                <p className="text-sm text-gray-300">ROS 2, MoveIt 2, and modern perception for robot arms and mobile robots. Proven in simulation first.</p>
+                <h3 className="text-lg font-semibold text-white mb-2">Simulation Setup & Synthetic Data</h3>
+                <p className="text-sm text-gray-300">
+                  Gazebo and Isaac Sim worlds modeled for your usecase, plus labeled synthetic data to train YOLO and other vision models.
+                </p>
                 <div className="mt-4 inline-flex items-center text-emerald-400 text-sm font-medium">
                   Explore More
                   <svg className="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -159,7 +161,7 @@ export default function DoDAOHomeHero() {
             </a>
 
             <a
-              href="/home-section/dodao-io/products/hplc-autosampler"
+              href="/home-section/dodao-io/products/ketchup-hplc-workflow"
               className="relative overflow-hidden rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 p-6"
             >
               <div className="relative">
@@ -176,9 +178,9 @@ export default function DoDAOHomeHero() {
                   </div>
                   <span className="text-emerald-400 text-sm font-medium">Robotics</span>
                 </div>
-                <h3 className="text-lg font-semibold text-white mb-2">HPLC Autosampler</h3>
+                <h3 className="text-lg font-semibold text-white mb-2">Ketchup HPLC Simulation</h3>
                 <p className="text-sm text-gray-300">
-                  Our flagship robotics project. A robot arm that helps chemistry labs prepare and load sample vials into the HPLC autosampler.
+                  Gazebo simulation of the HPLC sample prep workflow for ketchup. Five of eight steps running today, Isaac Sim port next.
                 </p>
                 <div className="mt-4 inline-flex items-center text-emerald-400 text-sm font-medium">
                   Read the case study
