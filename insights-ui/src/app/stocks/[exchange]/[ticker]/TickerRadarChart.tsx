@@ -1,6 +1,7 @@
 'use client';
 
 import { RadarSkeleton } from '@/app/stocks/[exchange]/[ticker]/RadarSkeleton';
+import RadarChartFrame from '@/components/ui/containers/RadarChartFrame';
 import { SpiderGraphForTicker } from '@/types/public-equity/ticker-report-types';
 import { useInView } from '@/util/use-in-view';
 import dynamic from 'next/dynamic';
@@ -19,5 +20,18 @@ const RadarChartImpl = dynamic<RadarChartProps>(() => import('@/components/visua
 // what pushes chart.js eval (~1.1s in the field) off the TBT window.
 export const TickerRadarChart = function TickerRadarChart(props: RadarChartProps): JSX.Element {
   const { ref, inView } = useInView<HTMLDivElement>();
-  return <div ref={ref}>{inView ? <RadarChartImpl {...props} /> : <RadarSkeleton />}</div>;
+  // The live chart is rendered into the same RadarChartFrame box as the
+  // skeleton, so the canvas (drawn at a 1:1 ratio) fills exactly the space the
+  // skeleton reserved — no jump when chart.js mounts.
+  return (
+    <div ref={ref}>
+      {inView ? (
+        <RadarChartFrame>
+          <RadarChartImpl {...props} />
+        </RadarChartFrame>
+      ) : (
+        <RadarSkeleton />
+      )}
+    </div>
+  );
 };

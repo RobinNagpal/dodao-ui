@@ -8,6 +8,7 @@ import { SpiderGraphForTicker } from '@/types/public-equity/ticker-report-types'
 import { getSpiderGraphScorePercentage } from '@/util/radar-chart-utils';
 import SpiderChartFlyoutMenu from '@/app/public-equities/tickers/[tickerKey]/SpiderChartFlyoutMenu';
 import { RadarSkeleton } from '@/app/stocks/[exchange]/[ticker]/RadarSkeleton';
+import RadarChartFrame from '@/components/ui/containers/RadarChartFrame';
 import dynamic from 'next/dynamic';
 
 const RadarChart = dynamic(() => import('@/components/visualizations/RadarChart'), {
@@ -81,7 +82,11 @@ export default function EtfRadarChart({ scores, analysis }: EtfRadarChartProps):
         </div>
         <SpiderChartFlyoutMenu />
       </div>
-      <RadarChart data={spiderGraph} scorePercentage={scorePercentage} />
+      {/* Same fixed square box as RadarSkeleton (the Suspense fallback) so the
+          chart fills exactly the reserved space — zero layout shift on load. */}
+      <RadarChartFrame>
+        <RadarChart data={spiderGraph} scorePercentage={scorePercentage} />
+      </RadarChartFrame>
     </div>
   );
 }

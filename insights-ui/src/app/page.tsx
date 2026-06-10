@@ -5,12 +5,12 @@ import { Hero } from '@/components/home-page/Hero';
 import KoalagainsOfferings from '@/components/home-page/KoalagainsOfferings';
 import KoalaGainsPlatform from '@/components/home-page/KoalaGainsPlatform';
 import ServiceNavigation from '@/components/home-page/ServiceNavigation';
-import { IndustryWithTopTickers, OnlyIndustriesResponse } from '@/types/api/ticker-industries';
+import { IndustryWithTopTickers } from '@/types/api/ticker-industries';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { getPostsData } from '@/util/blog-utils';
 import { themeColors } from '@/util/theme-colors';
 import { SupportedCountries } from '@/utils/countryExchangeUtils';
-import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
+import { getTopIndustriesWithTickers } from '@/utils/home-page/top-industries';
 import { getStocksPageTag, getHomePagePostsTag } from '@/utils/ticker-v1-cache-utils';
 import type { Metadata } from 'next';
 import { unstable_cache } from 'next/cache';
@@ -123,22 +123,12 @@ export const metadata: Metadata = {
 const WEEK = 60 * 60 * 24 * 7;
 
 async function fetchTopIndustriesWithTickers(): Promise<IndustryWithTopTickers[]> {
-  const baseUrl = getBaseUrlForServerSidePages();
-
-  const url = `${baseUrl}/api/${KoalaGainsSpaceId}/tickers-v1/country/${SupportedCountries.US}/tickers/only-industries`;
-
-  // Also tag the underlying fetch so any manual tag revalidation hits this too
-  try {
-    const res = await fetch(url, { next: { tags: [getStocksPageTag(SupportedCountries.US)] } });
-    if (!res.ok) return [];
-
-    const resp: OnlyIndustriesResponse = await res.json();
-
-    return resp.industries;
-  } catch (e) {
-    console.error(e);
-    throw e;
-  }
+  // Read the DB directly (server-only) instead of self-fetching our own /api over HTTP. During
+  // `next build` that self-fetch resolved to the public canonical origin (https://koalagains.com,
+  // now CloudFront→AWS), which could return an HTML error page and crash `res.json()`, aborting the
+  // static export of "/". A direct query always returns fresh data on every platform.
+  const { industries } = await getTopIndustriesWithTickers(KoalaGainsSpaceId, SupportedCountries.US);
+  return industries;
 }
 
 // Cache + tag BOTH data sources for 7 days
