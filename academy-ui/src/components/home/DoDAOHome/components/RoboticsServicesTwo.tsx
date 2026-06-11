@@ -8,8 +8,6 @@ type Offering = {
   stack: string;
   href: string;
   icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
-  gradient: string;
-  accent: string;
 };
 
 const offerings: Offering[] = [
@@ -25,10 +23,8 @@ const offerings: Offering[] = [
       'Lighting and material settings tuned to the real conditions',
     ],
     stack: 'Gazebo Harmonic · Isaac Sim · Isaac Lab · URDF · USD',
-    href: '/home-section/dodao-io/services/simulation-setup',
+    href: '/robotics',
     icon: BeakerIcon,
-    gradient: 'from-cyan-500 to-sky-500',
-    accent: 'text-sky-300',
   },
   {
     name: 'Synthetic Data',
@@ -42,24 +38,22 @@ const offerings: Offering[] = [
       'Labels written in the format your training code expects',
     ],
     stack: 'NVIDIA Replicator · Isaac Sim · Gazebo Harmonic · YOLO · PyTorch',
-    href: '/home-section/dodao-io/services/synthetic-data',
+    href: '/robotics',
     icon: EyeIcon,
-    gradient: 'from-emerald-500 to-teal-500',
-    accent: 'text-emerald-300',
   },
 ];
 
 export default function RoboticsServicesTwo() {
   return (
-    <section className="relative overflow-hidden bg-gradient-to-br from-gray-900 via-slate-900 to-emerald-950 py-16 sm:py-20" id="robotics-services">
+    <section className="relative overflow-hidden bg-gradient-to-br from-gray-900 via-blue-900 to-indigo-900 py-16 sm:py-20" id="robotics-services">
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-40 -right-40 w-80 h-80 bg-emerald-500/10 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-cyan-500/10 rounded-full blur-3xl animate-pulse delay-1000"></div>
+        <div className="absolute -top-40 -right-40 w-80 h-80 bg-blue-500/10 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-indigo-500/10 rounded-full blur-3xl animate-pulse delay-1000"></div>
       </div>
 
       <div className="relative mx-auto max-w-7xl px-6 lg:px-8">
         <div className="text-center mb-12">
-          <h2 className="text-base font-semibold leading-7 text-emerald-400 mb-4">Robotics Services</h2>
+          <h2 className="text-base font-semibold leading-7 text-blue-400 mb-4">Robotics Services</h2>
           <p className="text-2xl font-bold tracking-tight text-white sm:text-3xl lg:text-4xl">
             <span className="block">Two Services We Offer Today</span>
           </p>
@@ -75,15 +69,15 @@ export default function RoboticsServicesTwo() {
               key={offering.name}
               className="group relative flex flex-col overflow-hidden rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10 transition-colors duration-300"
             >
-              <div className={`h-1.5 bg-gradient-to-r ${offering.gradient}`}></div>
+              <div className="h-1.5 bg-gradient-to-r from-blue-500 to-indigo-500"></div>
               <div className="p-6 flex flex-col h-full">
                 <div className="flex items-start space-x-4">
-                  <div className={`flex h-12 w-12 flex-none items-center justify-center rounded-xl bg-gradient-to-br ${offering.gradient}`}>
+                  <div className="flex h-12 w-12 flex-none items-center justify-center rounded-xl bg-gradient-to-br from-blue-500 to-indigo-500">
                     <offering.icon className="h-6 w-6 text-white" aria-hidden="true" />
                   </div>
                   <div>
                     <h3 className="text-lg font-semibold text-white">{offering.name}</h3>
-                    <p className={`text-sm font-medium ${offering.accent}`}>{offering.tagline}</p>
+                    <p className="text-sm font-medium text-blue-300">{offering.tagline}</p>
                   </div>
                 </div>
 
@@ -92,7 +86,7 @@ export default function RoboticsServicesTwo() {
                 <ul className="mt-4 space-y-2">
                   {offering.bullets.map((bullet) => (
                     <li key={bullet} className="flex items-start gap-x-2 text-sm text-gray-300">
-                      <span className={`mt-1.5 inline-block h-1.5 w-1.5 flex-none rounded-full bg-gradient-to-r ${offering.gradient}`}></span>
+                      <span className="mt-1.5 inline-block h-1.5 w-1.5 flex-none rounded-full bg-blue-400"></span>
                       <span>{bullet}</span>
                     </li>
                   ))}
@@ -104,7 +98,7 @@ export default function RoboticsServicesTwo() {
                 <div className="mt-6">
                   <a
                     href={offering.href}
-                    className={`inline-flex items-center gap-x-2 rounded-xl bg-gradient-to-r ${offering.gradient} px-4 py-2 text-sm font-semibold text-white shadow-sm hover:opacity-90 transition-opacity`}
+                    className="inline-flex items-center gap-x-2 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:from-blue-500 hover:to-indigo-500 transition-colors"
                   >
                     Read the {offering.name} page
                     <ArrowRightIcon className="h-4 w-4" aria-hidden="true" />

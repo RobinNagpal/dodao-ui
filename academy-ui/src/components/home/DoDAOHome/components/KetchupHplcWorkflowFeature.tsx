@@ -1,5 +1,5 @@
 import { ArrowRightIcon } from '@heroicons/react/24/outline';
-import { CheckCircleIcon, ExclamationTriangleIcon } from '@heroicons/react/20/solid';
+import { CheckCircleIcon, MinusCircleIcon } from '@heroicons/react/20/solid';
 
 const highlights = ['Models the HPLC sample prep workflow for ketchup.', 'Five of the eight workflow steps run end to end in Gazebo Harmonic today.'];
 
@@ -29,8 +29,8 @@ export default function KetchupHplcWorkflowFeature() {
   return (
     <section className="relative overflow-hidden bg-white py-16 sm:py-20" id="featured-project">
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-32 -right-32 w-72 h-72 bg-indigo-100 rounded-full blur-3xl"></div>
-        <div className="absolute -bottom-32 -left-32 w-72 h-72 bg-emerald-100 rounded-full blur-3xl"></div>
+        <div className="absolute -top-32 -right-32 w-72 h-72 bg-blue-100 rounded-full blur-3xl"></div>
+        <div className="absolute -bottom-32 -left-32 w-72 h-72 bg-indigo-100 rounded-full blur-3xl"></div>
       </div>
 
       <div className="relative mx-auto max-w-7xl px-6 lg:px-8">
@@ -38,8 +38,7 @@ export default function KetchupHplcWorkflowFeature() {
           <div>
             <h2 className="text-base font-semibold leading-7 text-indigo-700 mb-3">Featured Robotics Project</h2>
             <p className="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl lg:text-4xl">
-              Ketchup HPLC Workflow{' '}
-              <span className="bg-gradient-to-r from-indigo-600 via-violet-600 to-emerald-600 bg-clip-text text-transparent">in Simulation</span>
+              Ketchup HPLC Workflow <span className="text-indigo-600">in Simulation</span>
             </p>
             <p className="mt-4 text-lg leading-7 text-gray-600">
               HPLC sample prep is an eight step workflow. Most training material uses paracetamol because it is clean and easy. We built our simulation around
@@ -71,7 +70,7 @@ export default function KetchupHplcWorkflowFeature() {
             <div className="mt-8">
               <a
                 href="/home-section/dodao-io/products/ketchup-hplc-workflow"
-                className="inline-flex items-center gap-x-2 rounded-xl bg-gradient-to-r from-indigo-600 via-violet-600 to-emerald-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm hover:opacity-90 transition-opacity"
+                className="inline-flex items-center gap-x-2 rounded-xl bg-indigo-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 transition-colors"
               >
                 Read the case study
                 <ArrowRightIcon className="h-4 w-4" aria-hidden="true" />
@@ -80,8 +79,8 @@ export default function KetchupHplcWorkflowFeature() {
           </div>
 
           <div className="relative">
-            <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-indigo-100 via-violet-100 to-emerald-100 p-1 ring-1 ring-indigo-200">
-              <div className="relative overflow-hidden rounded-xl bg-white/80 backdrop-blur-sm p-6">
+            <div className="relative overflow-hidden rounded-2xl bg-indigo-50 p-1 ring-1 ring-indigo-200">
+              <div className="relative overflow-hidden rounded-xl bg-white p-6">
                 <p className="text-xs uppercase tracking-widest text-indigo-700 font-semibold text-center">Workflow Status</p>
                 <p className="mt-2 text-lg font-semibold text-gray-900 text-center">5 of 8 steps in Gazebo</p>
 
@@ -90,13 +89,13 @@ export default function KetchupHplcWorkflowFeature() {
                     <li
                       key={step.num}
                       className={`flex items-center gap-x-2 rounded-lg px-3 py-2 text-xs ${
-                        step.done ? 'bg-emerald-50 text-emerald-900 ring-1 ring-emerald-200' : 'bg-amber-50 text-amber-900 ring-1 ring-amber-200'
+                        step.done ? 'bg-indigo-50 text-indigo-900 ring-1 ring-indigo-200' : 'bg-slate-50 text-slate-700 ring-1 ring-slate-200'
                       }`}
                     >
                       {step.done ? (
-                        <CheckCircleIcon className="h-4 w-4 flex-none text-emerald-600" aria-hidden="true" />
+                        <CheckCircleIcon className="h-4 w-4 flex-none text-indigo-600" aria-hidden="true" />
                       ) : (
-                        <ExclamationTriangleIcon className="h-4 w-4 flex-none text-amber-600" aria-hidden="true" />
+                        <MinusCircleIcon className="h-4 w-4 flex-none text-slate-400" aria-hidden="true" />
                       )}
                       <span className="font-mono text-[10px] opacity-70">{step.num}</span>
                       <span className="font-medium">{step.title}</span>

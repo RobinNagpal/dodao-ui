@@ -30,7 +30,7 @@ export default function DoDAOHomeHero() {
         <div className="text-center">
           <h1 className="text-3xl font-bold tracking-tight text-white sm:text-5xl lg:text-6xl">
             <span className="block">Building the Future with</span>
-            <span className="block bg-gradient-to-r from-emerald-400 via-cyan-400 to-blue-400 bg-clip-text text-transparent pb-1.5">
+            <span className="block bg-gradient-to-r from-blue-300 via-blue-400 to-indigo-400 bg-clip-text text-transparent pb-1.5">
               Robotics, AI Agents &amp; DeFi
             </span>
           </h1>
@@ -77,14 +77,11 @@ export default function DoDAOHomeHero() {
               </div>
             </a>
 
-            <a
-              href="/home-section/dodao-io/services/robotics"
-              className="relative overflow-hidden rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 p-6"
-            >
+            <a href="/robotics" className="relative overflow-hidden rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 p-6">
               <div className="relative">
                 <div className="flex items-center justify-between mb-4">
-                  <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-emerald-500/20">
-                    <svg className="w-6 h-6 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-blue-500/20">
+                    <svg className="w-6 h-6 text-blue-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path
                         strokeLinecap="round"
                         strokeLinejoin="round"
@@ -93,13 +90,13 @@ export default function DoDAOHomeHero() {
                       />
                     </svg>
                   </div>
-                  <span className="text-emerald-400 text-sm font-medium">Robotics</span>
+                  <span className="text-blue-300 text-sm font-medium">Robotics</span>
                 </div>
                 <h3 className="text-lg font-semibold text-white mb-2">Simulation Setup & Synthetic Data</h3>
                 <p className="text-sm text-gray-300">
                   Gazebo and Isaac Sim worlds modeled for your usecase, plus labeled synthetic data to train YOLO and other vision models.
                 </p>
-                <div className="mt-4 inline-flex items-center text-emerald-400 text-sm font-medium">
+                <div className="mt-4 inline-flex items-center text-blue-300 text-sm font-medium">
                   Explore More
                   <svg className="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
@@ -166,8 +163,8 @@ export default function DoDAOHomeHero() {
             >
               <div className="relative">
                 <div className="flex items-center justify-between mb-4">
-                  <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-emerald-500/20">
-                    <svg className="w-6 h-6 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-blue-500/20">
+                    <svg className="w-6 h-6 text-blue-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path
                         strokeLinecap="round"
                         strokeLinejoin="round"
@@ -176,13 +173,13 @@ export default function DoDAOHomeHero() {
                       />
                     </svg>
                   </div>
-                  <span className="text-emerald-400 text-sm font-medium">Robotics</span>
+                  <span className="text-blue-300 text-sm font-medium">Robotics</span>
                 </div>
                 <h3 className="text-lg font-semibold text-white mb-2">Ketchup HPLC Simulation</h3>
                 <p className="text-sm text-gray-300">
                   Gazebo simulation of the HPLC sample prep workflow for ketchup. Five of eight steps running today, Isaac Sim port next.
                 </p>
-                <div className="mt-4 inline-flex items-center text-emerald-400 text-sm font-medium">
+                <div className="mt-4 inline-flex items-center text-blue-300 text-sm font-medium">
                   Read the case study
                   <svg className="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
