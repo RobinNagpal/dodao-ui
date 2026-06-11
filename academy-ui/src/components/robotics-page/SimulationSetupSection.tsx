@@ -138,7 +138,7 @@ export default function SimulationSetupSection() {
             <div className="mt-4 space-y-3">
               {tools.map((tool) => (
                 <div key={tool.name} className="flex items-center gap-3 rounded-xl border border-border bg-surface/60 p-4">
-                  <div className="flex h-12 w-12 flex-none items-center justify-center rounded-lg bg-surface-2 p-2">
+                  <div className="flex h-12 w-12 flex-none items-center justify-center rounded-lg">
                     <Image src={tool.logo} alt={`${tool.name} logo`} width={40} height={40} className="h-full w-full object-contain" />
                   </div>
                   <div className="min-w-0">
