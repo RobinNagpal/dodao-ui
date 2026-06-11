@@ -27,20 +27,20 @@ const stepPreview: StepPreview[] = [
 
 export default function KetchupHplcWorkflowFeature() {
   return (
-    <section className="relative overflow-hidden bg-white py-16 sm:py-20" id="featured-project">
+    <section className="relative overflow-hidden bg-bg py-16 sm:py-20" id="featured-project">
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-32 -right-32 w-72 h-72 bg-blue-100 rounded-full blur-3xl"></div>
-        <div className="absolute -bottom-32 -left-32 w-72 h-72 bg-indigo-100 rounded-full blur-3xl"></div>
+        <div className="absolute -top-32 -right-32 w-72 h-72 bg-primary/10 rounded-full blur-3xl"></div>
+        <div className="absolute -bottom-32 -left-32 w-72 h-72 bg-primary/10 rounded-full blur-3xl"></div>
       </div>
 
       <div className="relative mx-auto max-w-7xl px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           <div>
-            <h2 className="text-base font-semibold leading-7 text-indigo-700 mb-3">Featured Robotics Project</h2>
-            <p className="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl lg:text-4xl">
-              Ketchup HPLC Workflow <span className="text-indigo-600">in Simulation</span>
+            <h2 className="text-base font-semibold leading-7 text-primary mb-3">Featured Robotics Project</h2>
+            <p className="text-2xl font-bold tracking-tight text-heading sm:text-3xl lg:text-4xl">
+              Ketchup HPLC Workflow <span className="text-primary">in Simulation</span>
             </p>
-            <p className="mt-4 text-lg leading-7 text-gray-600">
+            <p className="mt-4 text-lg leading-7 text-body">
               HPLC sample prep is an eight step workflow. Most training material uses paracetamol because it is clean and easy. We built our simulation around
               ketchup instead. The chemistry is messier, the simulation has to handle more state, and the gaps show up sooner. Five steps run in Gazebo today.
               The Isaac Sim port comes next.
@@ -49,8 +49,8 @@ export default function KetchupHplcWorkflowFeature() {
             <ul className="mt-6 space-y-3">
               {highlights.map((line) => (
                 <li key={line} className="flex items-start gap-x-3">
-                  <CheckCircleIcon className="h-5 w-5 flex-none text-indigo-600 mt-0.5" aria-hidden="true" />
-                  <span className="text-sm leading-6 text-gray-700">{line}</span>
+                  <CheckCircleIcon className="h-5 w-5 flex-none text-primary mt-0.5" aria-hidden="true" />
+                  <span className="text-sm leading-6 text-body">{line}</span>
                 </li>
               ))}
             </ul>
@@ -59,9 +59,9 @@ export default function KetchupHplcWorkflowFeature() {
               {stack.map((item) => (
                 <span
                   key={item.label}
-                  className="inline-flex items-center rounded-full bg-indigo-50 px-3 py-1 text-xs font-medium text-indigo-800 ring-1 ring-indigo-200"
+                  className="inline-flex items-center rounded-full bg-primary/15 px-3 py-1 text-xs font-medium text-primary ring-1 ring-primary/40"
                 >
-                  <span className="text-indigo-500 mr-1.5">{item.label}:</span>
+                  <span className="text-link mr-1.5">{item.label}:</span>
                   {item.value}
                 </span>
               ))}
@@ -70,7 +70,7 @@ export default function KetchupHplcWorkflowFeature() {
             <div className="mt-8">
               <a
                 href="/home-section/dodao-io/products/ketchup-hplc-workflow"
-                className="inline-flex items-center gap-x-2 rounded-xl bg-indigo-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 transition-colors"
+                className="inline-flex items-center gap-x-2 rounded-xl bg-primary px-5 py-2.5 text-sm font-semibold text-primary-text shadow-sm hover:bg-primary/85 transition-colors"
               >
                 Read the case study
                 <ArrowRightIcon className="h-4 w-4" aria-hidden="true" />
@@ -79,23 +79,23 @@ export default function KetchupHplcWorkflowFeature() {
           </div>
 
           <div className="relative">
-            <div className="relative overflow-hidden rounded-2xl bg-indigo-50 p-1 ring-1 ring-indigo-200">
-              <div className="relative overflow-hidden rounded-xl bg-white p-6">
-                <p className="text-xs uppercase tracking-widest text-indigo-700 font-semibold text-center">Workflow Status</p>
-                <p className="mt-2 text-lg font-semibold text-gray-900 text-center">5 of 8 steps in Gazebo</p>
+            <div className="relative overflow-hidden rounded-2xl bg-primary/15 p-1 ring-1 ring-primary/40">
+              <div className="relative overflow-hidden rounded-xl bg-surface p-6">
+                <p className="text-xs uppercase tracking-widest text-primary font-semibold text-center">Workflow Status</p>
+                <p className="mt-2 text-lg font-semibold text-heading text-center">5 of 8 steps in Gazebo</p>
 
                 <ul className="mt-6 grid grid-cols-2 gap-2">
                   {stepPreview.map((step) => (
                     <li
                       key={step.num}
                       className={`flex items-center gap-x-2 rounded-lg px-3 py-2 text-xs ${
-                        step.done ? 'bg-indigo-50 text-indigo-900 ring-1 ring-indigo-200' : 'bg-slate-50 text-slate-700 ring-1 ring-slate-200'
+                        step.done ? 'bg-primary/15 text-primary ring-1 ring-primary/40' : 'bg-surface-2 text-body ring-1 ring-border'
                       }`}
                     >
                       {step.done ? (
-                        <CheckCircleIcon className="h-4 w-4 flex-none text-indigo-600" aria-hidden="true" />
+                        <CheckCircleIcon className="h-4 w-4 flex-none text-primary" aria-hidden="true" />
                       ) : (
-                        <MinusCircleIcon className="h-4 w-4 flex-none text-slate-400" aria-hidden="true" />
+                        <MinusCircleIcon className="h-4 w-4 flex-none text-muted" aria-hidden="true" />
                       )}
                       <span className="font-mono text-[10px] opacity-70">{step.num}</span>
                       <span className="font-medium">{step.title}</span>
@@ -103,7 +103,7 @@ export default function KetchupHplcWorkflowFeature() {
                   ))}
                 </ul>
 
-                <p className="mt-4 text-xs italic text-gray-500 text-center">A short Gazebo simulation clip will be added here.</p>
+                <p className="mt-4 text-xs italic text-muted text-center">A short Gazebo simulation clip will be added here.</p>
               </div>
             </div>
           </div>

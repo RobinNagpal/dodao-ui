@@ -35,34 +35,34 @@ const steps = [
 
 export default function HowItWorksSection() {
   return (
-    <section id="how-it-works" className="relative py-20 bg-gray-800">
+    <section id="how-it-works" className="relative py-20 bg-surface">
       <div className="relative mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto max-w-3xl text-center">
-          <h2 className="text-base font-semibold leading-7 text-blue-400">How Our Engagements Work</h2>
-          <p className="mt-2 text-3xl font-bold tracking-tight text-white sm:text-4xl">From discovery call to handoff</p>
-          <p className="mt-4 text-lg text-gray-300">
+          <h2 className="text-base font-semibold leading-7 text-primary">How Our Engagements Work</h2>
+          <p className="mt-2 text-3xl font-bold tracking-tight text-heading sm:text-4xl">From discovery call to handoff</p>
+          <p className="mt-4 text-lg text-body">
             Every engagement runs through the same five steps. The order is what keeps the timeline honest and the deliverables sharp.
           </p>
         </div>
 
         <div className="relative mt-16 max-w-4xl mx-auto">
-          <div className="absolute left-8 top-0 bottom-0 w-0.5 bg-gradient-to-b from-blue-500/40 to-indigo-500/40 hidden sm:block" />
+          <div className="absolute left-8 top-0 bottom-0 w-0.5 bg-gradient-to-b from-primary/40 to-link/40 hidden sm:block" />
           <ul className="space-y-8">
             {steps.map((step) => (
               <li key={step.step} className="relative flex items-start gap-6">
                 <div className="relative flex-shrink-0">
-                  <div className="w-16 h-16 rounded-full bg-gradient-to-br from-blue-500 to-indigo-500 flex items-center justify-center text-white font-bold text-lg shadow-lg">
+                  <div className="w-16 h-16 rounded-full bg-gradient-to-br from-primary to-link flex items-center justify-center text-primary-text font-bold text-lg shadow-lg">
                     {step.step}
                   </div>
                 </div>
-                <div className="flex-1 rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm p-6">
+                <div className="flex-1 rounded-2xl border border-border bg-surface/60 backdrop-blur-sm p-6">
                   <div className="flex items-start gap-4">
-                    <div className="hidden sm:inline-flex items-center justify-center w-10 h-10 flex-none rounded-lg bg-gradient-to-br from-blue-500 to-indigo-500">
-                      <step.icon className="h-5 w-5 text-white" />
+                    <div className="hidden sm:inline-flex items-center justify-center w-10 h-10 flex-none rounded-lg bg-gradient-to-br from-primary to-link">
+                      <step.icon className="h-5 w-5 text-primary-text" />
                     </div>
                     <div className="flex-1">
-                      <h3 className="text-xl font-semibold text-white">{step.title}</h3>
-                      <p className="mt-2 text-base leading-relaxed text-gray-300">{step.desc}</p>
+                      <h3 className="text-xl font-semibold text-heading">{step.title}</h3>
+                      <p className="mt-2 text-base leading-relaxed text-body">{step.desc}</p>
                     </div>
                   </div>
                 </div>

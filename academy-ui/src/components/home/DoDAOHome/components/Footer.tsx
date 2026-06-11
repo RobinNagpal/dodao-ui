@@ -32,16 +32,16 @@ export function Footer() {
         Footer
       </h2>
       <div className="mx-auto max-w-7xl px-6 pb-8 lg:px-8">
-        <div className="border-t border-gray-900/10 pt-8 md:flex md:items-center md:justify-between">
+        <div className="border-t border-border pt-8 md:flex md:items-center md:justify-between">
           <div className="flex space-x-6 md:order-2">
             {navigation.social.map((item) => (
-              <a key={item.name} href={item.href} target="_blank" className="text-gray-400 hover:text-gray-500">
+              <a key={item.name} href={item.href} target="_blank" className="text-muted hover:text-body">
                 <span className="sr-only">{item.name}</span>
                 <item.icon className="h-6 w-6" aria-hidden="true" />
               </a>
             ))}
           </div>
-          <p className="mt-8 text-xs leading-5 text-gray-500 md:order-1 md:mt-0">
+          <p className="mt-8 text-xs leading-5 text-muted md:order-1 md:mt-0">
             Copyright &copy; {new Date().getFullYear()} Echofex Inc, Canada. All rights reserved.
           </p>
         </div>

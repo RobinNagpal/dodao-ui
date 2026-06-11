@@ -44,7 +44,7 @@ export function AcademySites() {
   ];
   return (
     <section id="academy-sites" aria-labelledby="academy-sites-title" className="scroll-mt-14 sm:scroll-mt-32 pb-20">
-      <Container size="lg" className="bg-gray-50 pt-8">
+      <Container size="lg" className="bg-surface pt-8">
         <div className="mx-auto lg:mx-0">
           <SectionHeading number="2" id="academy-sites-title">
             Academy Sites
@@ -54,7 +54,7 @@ export function AcademySites() {
           <div className="mx-auto max-w-7xl px-6 lg:px-8">
             <div className="mx-auto max-w-3xl sm:text-center">
               <p className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">Academy Sites</p>
-              <p className="mt-6 text-lg leading-8 text-gray-500">
+              <p className="mt-6 text-lg leading-8 text-muted">
                 Companies rely heavily on extensive technical documentation that can be overwhelming and time-consuming for users to review and comprehend. We
                 have created academy sites which utilize a combination of different innovative formats for educating your users.
               </p>
@@ -62,18 +62,18 @@ export function AcademySites() {
           </div>
           <div className="relative pt-16">
             <div className="mx-auto max-w-7xl px-6 lg:px-8">
-              <Image src={Academy_site} alt="Academy Site Gif" className="mb-[-12%] rounded-xl ring-1 ring-gray-900/10" width={2432} height={1442} />
+              <Image src={Academy_site} alt="Academy Site Gif" className="mb-[-12%] rounded-xl ring-1 ring-border" width={2432} height={1442} />
             </div>
           </div>
           <div className="mx-auto mt-16 max-w-7xl px-6 sm:mt-28 md:mt-32 lg:mt-44 lg:px-8">
             <dl className="mt-24 mx-auto grid max-w-2xl grid-cols-1 gap-x-6 gap-y-10 text-base leading-7 sm:grid-cols-2 lg:mx-0 lg:max-w-none lg:grid-cols-3 lg:gap-x-8 lg:gap-y-16">
               {features.map((feature) => (
                 <div key={feature.name} className="relative pl-9">
-                  <dt className="inline font-semibold text-gray-900">
-                    <feature.icon className="absolute left-1 top-1 h-5 w-5 text-indigo-600" aria-hidden="true" />
+                  <dt className="inline font-semibold text-heading">
+                    <feature.icon className="absolute left-1 top-1 h-5 w-5 text-primary" aria-hidden="true" />
                     {feature.name}
                   </dt>{' '}
-                  <dd className="inline text-gray-500">{feature.description}</dd>
+                  <dd className="inline text-muted">{feature.description}</dd>
                 </div>
               ))}
             </dl>
