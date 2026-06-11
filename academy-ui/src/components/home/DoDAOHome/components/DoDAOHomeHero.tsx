@@ -1,10 +1,10 @@
 export default function DoDAOHomeHero() {
   return (
-    <div className="relative isolate overflow-hidden bg-gradient-to-br from-gray-900 via-blue-900 to-indigo-900">
+    <div className="relative isolate overflow-hidden bg-gradient-to-br from-bg to-surface">
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute -top-40 -right-40 w-80 h-80 bg-blue-500/20 rounded-full blur-3xl"></div>
-        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-indigo-500/20 rounded-full blur-3xl"></div>
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl"></div>
+        <div className="absolute -top-40 -right-40 w-80 h-80 bg-primary/20 rounded-full blur-3xl"></div>
+        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-primary/20 rounded-full blur-3xl"></div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-primary/10 rounded-full blur-3xl"></div>
       </div>
 
       <div
@@ -16,11 +16,11 @@ export default function DoDAOHomeHero() {
 
       <div className="relative mx-auto max-w-7xl px-6 py-8 sm:py-12 lg:py-16 lg:px-8">
         <div className="mb-8 flex justify-center">
-          <div className="relative rounded-full px-4 py-2 text-sm leading-6 text-gray-300 ring-1 ring-white/20 backdrop-blur-sm bg-white/5">
+          <div className="relative rounded-full px-4 py-2 text-sm leading-6 text-body ring-1 ring-border backdrop-blur-sm bg-surface/60">
             <span className="inline-flex items-center">
-              <span className="h-2 w-2 bg-green-400 rounded-full mr-2"></span>
+              <span className="h-2 w-2 bg-success rounded-full mr-2"></span>
               Latest Product Launch:{' '}
-              <a href="https://koalagains.com/" target="_blank" className="font-semibold text-white ml-1" rel="noreferrer">
+              <a href="https://koalagains.com/" target="_blank" className="font-semibold text-heading ml-1" rel="noreferrer">
                 KoalaGains <span aria-hidden="true">&rarr;</span>
               </a>
             </span>
@@ -28,21 +28,21 @@ export default function DoDAOHomeHero() {
         </div>
 
         <div className="text-center">
-          <h1 className="text-3xl font-bold tracking-tight text-white sm:text-5xl lg:text-6xl">
+          <h1 className="text-3xl font-bold tracking-tight text-heading sm:text-5xl lg:text-6xl">
             <span className="block">Building the Future with</span>
-            <span className="block bg-gradient-to-r from-blue-300 via-blue-400 to-indigo-400 bg-clip-text text-transparent pb-1.5">
+            <span className="block bg-gradient-to-r from-link to-primary bg-clip-text text-transparent pb-1.5">
               Robotics, AI Agents &amp; DeFi
             </span>
           </h1>
 
-          <p className="mt-6 text-xl leading-8 text-gray-300 max-w-3xl mx-auto">
+          <p className="mt-6 text-xl leading-8 text-body max-w-3xl mx-auto">
             DoDAO is a robotics services company. We prove every project in simulation first, then move to hardware. We also build AI Agents and DeFi tools that
             teams use every day.
           </p>
 
           <div className="mt-10 flex justify-center">
-            <div className="inline-flex rounded-md p-1 bg-white/10 backdrop-blur-sm">
-              <div className="px-4 py-2 text-sm font-medium rounded-md bg-indigo-600 text-white">Our Services & Products</div>
+            <div className="inline-flex rounded-md p-1 bg-surface/60 backdrop-blur-sm">
+              <div className="px-4 py-2 text-sm font-medium rounded-md bg-primary text-primary-text">Our Services & Products</div>
             </div>
           </div>
 
@@ -50,12 +50,12 @@ export default function DoDAOHomeHero() {
           <div className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-3 lg:gap-8 max-w-5xl mx-auto">
             <a
               href="/home-section/dodao-io/services/custom-ai-agent-dev"
-              className="group relative overflow-hidden rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 p-6 transition-all duration-300 hover:-translate-y-1 hover:bg-white/15 hover:border-white/30 hover:shadow-xl hover:shadow-blue-500/20"
+              className="group relative overflow-hidden rounded-2xl bg-surface/60 backdrop-blur-md border border-border p-6 transition-all duration-300 hover:-translate-y-1 hover:bg-surface/80 hover:border-primary/40 hover:shadow-xl hover:shadow-primary/20"
             >
               <div className="relative">
                 <div className="flex items-center justify-between mb-4">
-                  <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-blue-500/20">
-                    <svg className="w-6 h-6 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-primary/20">
+                    <svg className="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path
                         strokeLinecap="round"
                         strokeLinejoin="round"
@@ -64,13 +64,13 @@ export default function DoDAOHomeHero() {
                       />
                     </svg>
                   </div>
-                  <span className="inline-flex items-center rounded-full bg-blue-500/20 px-2.5 py-0.5 text-xs font-semibold uppercase tracking-wider text-blue-100 ring-1 ring-inset ring-blue-400/40">
+                  <span className="inline-flex items-center rounded-full bg-primary/20 px-2.5 py-0.5 text-xs font-semibold uppercase tracking-wider text-primary ring-1 ring-inset ring-primary/40">
                     AI Agent
                   </span>
                 </div>
-                <h3 className="text-lg font-semibold text-white mb-2">AI Agent Development</h3>
-                <p className="text-sm text-gray-300">Custom AI agents that automate workflows and solve complex business problems.</p>
-                <div className="mt-4 inline-flex items-center text-blue-400 text-sm font-medium">
+                <h3 className="text-lg font-semibold text-heading mb-2">AI Agent Development</h3>
+                <p className="text-sm text-body">Custom AI agents that automate workflows and solve complex business problems.</p>
+                <div className="mt-4 inline-flex items-center text-link text-sm font-medium">
                   Explore More
                   <svg className="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
@@ -81,12 +81,12 @@ export default function DoDAOHomeHero() {
 
             <a
               href="/robotics"
-              className="group relative overflow-hidden rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 p-6 transition-all duration-300 hover:-translate-y-1 hover:bg-white/15 hover:border-white/30 hover:shadow-xl hover:shadow-blue-500/20"
+              className="group relative overflow-hidden rounded-2xl bg-surface/60 backdrop-blur-md border border-border p-6 transition-all duration-300 hover:-translate-y-1 hover:bg-surface/80 hover:border-primary/40 hover:shadow-xl hover:shadow-primary/20"
             >
               <div className="relative">
                 <div className="flex items-center justify-between mb-4">
-                  <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-blue-500/20">
-                    <svg className="w-6 h-6 text-blue-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-primary/20">
+                    <svg className="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path
                         strokeLinecap="round"
                         strokeLinejoin="round"
@@ -95,15 +95,15 @@ export default function DoDAOHomeHero() {
                       />
                     </svg>
                   </div>
-                  <span className="inline-flex items-center rounded-full bg-blue-500/20 px-2.5 py-0.5 text-xs font-semibold uppercase tracking-wider text-blue-100 ring-1 ring-inset ring-blue-400/40">
+                  <span className="inline-flex items-center rounded-full bg-primary/20 px-2.5 py-0.5 text-xs font-semibold uppercase tracking-wider text-primary ring-1 ring-inset ring-primary/40">
                     Robotics
                   </span>
                 </div>
-                <h3 className="text-lg font-semibold text-white mb-2">Simulation Setup & Synthetic Data</h3>
-                <p className="text-sm text-gray-300">
+                <h3 className="text-lg font-semibold text-heading mb-2">Simulation Setup & Synthetic Data</h3>
+                <p className="text-sm text-body">
                   Gazebo and Isaac Sim worlds modeled for your usecase, plus labeled synthetic data to train YOLO and other vision models.
                 </p>
-                <div className="mt-4 inline-flex items-center text-blue-300 text-sm font-medium">
+                <div className="mt-4 inline-flex items-center text-link text-sm font-medium">
                   Explore More
                   <svg className="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
@@ -114,22 +114,22 @@ export default function DoDAOHomeHero() {
 
             <a
               href="/home-section/dodao-io/services/defi-tooling"
-              className="group relative overflow-hidden rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 p-6 transition-all duration-300 hover:-translate-y-1 hover:bg-white/15 hover:border-white/30 hover:shadow-xl hover:shadow-blue-500/20"
+              className="group relative overflow-hidden rounded-2xl bg-surface/60 backdrop-blur-md border border-border p-6 transition-all duration-300 hover:-translate-y-1 hover:bg-surface/80 hover:border-primary/40 hover:shadow-xl hover:shadow-primary/20"
             >
               <div className="relative">
                 <div className="flex items-center justify-between mb-4">
-                  <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-indigo-500/20">
-                    <svg className="w-6 h-6 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-primary/20">
+                    <svg className="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                     </svg>
                   </div>
-                  <span className="inline-flex items-center rounded-full bg-indigo-500/20 px-2.5 py-0.5 text-xs font-semibold uppercase tracking-wider text-indigo-100 ring-1 ring-inset ring-indigo-400/40">
+                  <span className="inline-flex items-center rounded-full bg-primary/20 px-2.5 py-0.5 text-xs font-semibold uppercase tracking-wider text-primary ring-1 ring-inset ring-primary/40">
                     DeFi Tool
                   </span>
                 </div>
-                <h3 className="text-lg font-semibold text-white mb-2">DeFi Development & Tools</h3>
-                <p className="text-sm text-gray-300">Advanced tooling, dashboards, and smart contracts for leading DeFi protocols.</p>
-                <div className="mt-4 inline-flex items-center text-indigo-400 text-sm font-medium">
+                <h3 className="text-lg font-semibold text-heading mb-2">DeFi Development & Tools</h3>
+                <p className="text-sm text-body">Advanced tooling, dashboards, and smart contracts for leading DeFi protocols.</p>
+                <div className="mt-4 inline-flex items-center text-link text-sm font-medium">
                   Explore More
                   <svg className="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
@@ -139,27 +139,27 @@ export default function DoDAOHomeHero() {
             </a>
           </div>
 
-          <h3 className="mt-16 text-xl font-semibold text-white text-center">Our Products</h3>
+          <h3 className="mt-16 text-xl font-semibold text-heading text-center">Our Products</h3>
 
           <div className="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-3 lg:gap-8 max-w-5xl mx-auto">
             <a
               href="/home-section/dodao-io/products/koalagains"
-              className="group relative overflow-hidden rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 p-6 transition-all duration-300 hover:-translate-y-1 hover:bg-white/15 hover:border-white/30 hover:shadow-xl hover:shadow-blue-500/20"
+              className="group relative overflow-hidden rounded-2xl bg-surface/60 backdrop-blur-md border border-border p-6 transition-all duration-300 hover:-translate-y-1 hover:bg-surface/80 hover:border-primary/40 hover:shadow-xl hover:shadow-primary/20"
             >
               <div className="relative">
                 <div className="flex items-center justify-between mb-4">
-                  <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-blue-500/20">
-                    <svg className="w-6 h-6 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-primary/20">
+                    <svg className="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
                     </svg>
                   </div>
-                  <span className="inline-flex items-center rounded-full bg-blue-500/20 px-2.5 py-0.5 text-xs font-semibold uppercase tracking-wider text-blue-100 ring-1 ring-inset ring-blue-400/40">
+                  <span className="inline-flex items-center rounded-full bg-primary/20 px-2.5 py-0.5 text-xs font-semibold uppercase tracking-wider text-primary ring-1 ring-inset ring-primary/40">
                     AI Agent
                   </span>
                 </div>
-                <h3 className="text-lg font-semibold text-white mb-2">KoalaGains Platform</h3>
-                <p className="text-sm text-gray-300">AI-powered investment analysis platform for detailed financial insights and reports.</p>
-                <div className="mt-4 inline-flex items-center text-blue-400 text-sm font-medium">
+                <h3 className="text-lg font-semibold text-heading mb-2">KoalaGains Platform</h3>
+                <p className="text-sm text-body">AI-powered investment analysis platform for detailed financial insights and reports.</p>
+                <div className="mt-4 inline-flex items-center text-link text-sm font-medium">
                   Explore More
                   <svg className="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
@@ -170,12 +170,12 @@ export default function DoDAOHomeHero() {
 
             <a
               href="/home-section/dodao-io/products/ketchup-hplc-workflow"
-              className="group relative overflow-hidden rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 p-6 transition-all duration-300 hover:-translate-y-1 hover:bg-white/15 hover:border-white/30 hover:shadow-xl hover:shadow-blue-500/20"
+              className="group relative overflow-hidden rounded-2xl bg-surface/60 backdrop-blur-md border border-border p-6 transition-all duration-300 hover:-translate-y-1 hover:bg-surface/80 hover:border-primary/40 hover:shadow-xl hover:shadow-primary/20"
             >
               <div className="relative">
                 <div className="flex items-center justify-between mb-4">
-                  <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-blue-500/20">
-                    <svg className="w-6 h-6 text-blue-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-primary/20">
+                    <svg className="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path
                         strokeLinecap="round"
                         strokeLinejoin="round"
@@ -184,15 +184,15 @@ export default function DoDAOHomeHero() {
                       />
                     </svg>
                   </div>
-                  <span className="inline-flex items-center rounded-full bg-blue-500/20 px-2.5 py-0.5 text-xs font-semibold uppercase tracking-wider text-blue-100 ring-1 ring-inset ring-blue-400/40">
+                  <span className="inline-flex items-center rounded-full bg-primary/20 px-2.5 py-0.5 text-xs font-semibold uppercase tracking-wider text-primary ring-1 ring-inset ring-primary/40">
                     Robotics
                   </span>
                 </div>
-                <h3 className="text-lg font-semibold text-white mb-2">Ketchup HPLC Simulation</h3>
-                <p className="text-sm text-gray-300">
+                <h3 className="text-lg font-semibold text-heading mb-2">Ketchup HPLC Simulation</h3>
+                <p className="text-sm text-body">
                   Gazebo simulation of the HPLC sample prep workflow for ketchup. Five of eight steps running today, Isaac Sim port next.
                 </p>
-                <div className="mt-4 inline-flex items-center text-blue-300 text-sm font-medium">
+                <div className="mt-4 inline-flex items-center text-link text-sm font-medium">
                   Read the case study
                   <svg className="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
@@ -203,22 +203,22 @@ export default function DoDAOHomeHero() {
 
             <a
               href="/home-section/dodao-io/products/defi-alerts"
-              className="group relative overflow-hidden rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 p-6 transition-all duration-300 hover:-translate-y-1 hover:bg-white/15 hover:border-white/30 hover:shadow-xl hover:shadow-blue-500/20"
+              className="group relative overflow-hidden rounded-2xl bg-surface/60 backdrop-blur-md border border-border p-6 transition-all duration-300 hover:-translate-y-1 hover:bg-surface/80 hover:border-primary/40 hover:shadow-xl hover:shadow-primary/20"
             >
               <div className="relative">
                 <div className="flex items-center justify-between mb-4">
-                  <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-indigo-500/20">
-                    <svg className="w-6 h-6 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-primary/20">
+                    <svg className="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-5 5v-5zM9 9l3-3m0 0l3 3m-3-3v12" />
                     </svg>
                   </div>
-                  <span className="inline-flex items-center rounded-full bg-indigo-500/20 px-2.5 py-0.5 text-xs font-semibold uppercase tracking-wider text-indigo-100 ring-1 ring-inset ring-indigo-400/40">
+                  <span className="inline-flex items-center rounded-full bg-primary/20 px-2.5 py-0.5 text-xs font-semibold uppercase tracking-wider text-primary ring-1 ring-inset ring-primary/40">
                     DeFi Tool
                   </span>
                 </div>
-                <h3 className="text-lg font-semibold text-white mb-2">DeFi Alerts</h3>
-                <p className="text-sm text-gray-300">Get real-time DeFi alerts for yields, position health, and market changes with custom thresholds.</p>
-                <div className="mt-4 inline-flex items-center text-indigo-400 text-sm font-medium">
+                <h3 className="text-lg font-semibold text-heading mb-2">DeFi Alerts</h3>
+                <p className="text-sm text-body">Get real-time DeFi alerts for yields, position health, and market changes with custom thresholds.</p>
+                <div className="mt-4 inline-flex items-center text-link text-sm font-medium">
                   Explore More
                   <svg className="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
@@ -231,13 +231,13 @@ export default function DoDAOHomeHero() {
           <div className="mt-12 flex flex-col sm:flex-row items-center justify-center gap-4">
             <a
               href="/contact"
-              className="inline-flex items-center justify-center px-6 py-3 rounded-lg text-sm font-semibold text-white bg-indigo-500 hover:bg-indigo-400 shadow-sm transition-colors"
+              className="inline-flex items-center justify-center px-6 py-3 rounded-lg text-sm font-semibold text-primary-text bg-primary hover:bg-primary/85 shadow-sm transition-colors"
             >
               Contact Us
             </a>
             <a
               href="#products"
-              className="inline-flex items-center justify-center px-6 py-3 rounded-lg text-sm font-semibold text-gray-300 border border-white/20 backdrop-blur-sm hover:bg-white/5 transition-colors"
+              className="inline-flex items-center justify-center px-6 py-3 rounded-lg text-sm font-semibold text-body border border-border backdrop-blur-sm hover:bg-surface/60 transition-colors"
             >
               Explore Our Work
               <svg className="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

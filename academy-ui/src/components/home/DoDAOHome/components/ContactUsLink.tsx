@@ -7,7 +7,7 @@ export default function ContactUsLink() {
   return (
     <div className="flex justify-center text-center align-center">
       {showContactModal && <ContactModal open={showContactModal} onClose={() => setShowContactModal(false)} />}
-      <div className="text-gray-900 cursor-pointer hover:underline" onClick={() => setShowContactModal(true)}>
+      <div className="text-link cursor-pointer hover:underline" onClick={() => setShowContactModal(true)}>
         Contact Us <span aria-hidden="true">→</span>
       </div>
     </div>

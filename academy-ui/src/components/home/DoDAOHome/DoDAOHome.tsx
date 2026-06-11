@@ -14,7 +14,7 @@ export default function DoDAOHome() {
       <DoDAOHomeHero />
 
       {/* Trusted By section */}
-      <div className="bg-gradient-to-br bg-white">
+      <div className="bg-bg">
         <TrustedBy />
       </div>
 
@@ -28,12 +28,12 @@ export default function DoDAOHome() {
       <CoreOfferings />
 
       {/* Help Button */}
-      <div className="bg-white">
+      <div className="bg-bg">
         <DoDAOHelpButton />
       </div>
 
       {/* Products section */}
-      <div className="from-blue-50 via-indigo-50 to-blue-100">
+      <div className="bg-surface">
         <DoDAOProducts />
       </div>
 

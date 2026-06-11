@@ -132,7 +132,7 @@ export default function DoDAOHomeTopNav() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <header className="bg-white">
+    <header className="bg-bg">
       <nav aria-label="Global" className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8">
         <div className="flex lg:flex-1">
           <a href="/" className="-m-1.5 p-1.5">
@@ -148,7 +148,7 @@ export default function DoDAOHomeTopNav() {
           <button
             type="button"
             onClick={() => setMobileMenuOpen(true)}
-            className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700"
+            className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-body"
           >
             <span className="sr-only">Open main menu</span>
             <Bars3Icon aria-hidden="true" className="h-6 w-6" />
@@ -156,30 +156,30 @@ export default function DoDAOHomeTopNav() {
         </div>
         <PopoverGroup className="hidden lg:flex lg:gap-x-12">
           <Popover className="relative">
-            <PopoverButton className="flex items-center gap-x-1 text-sm font-semibold leading-6 text-gray-900 p-1 data-[open]:text-indigo-600 data-[open]:bg-gray-50 rounded-md transition-colors duration-200">
+            <PopoverButton className="flex items-center gap-x-1 text-sm font-semibold leading-6 text-heading p-1 data-[open]:text-primary data-[open]:bg-surface rounded-md transition-colors duration-200">
               Products
               <ChevronDownIcon
                 aria-hidden="true"
-                className="h-5 w-5 flex-none text-gray-400 data-[open]:text-indigo-600 data-[open]:rotate-180 transition-all duration-200"
+                className="h-5 w-5 flex-none text-muted data-[open]:text-primary data-[open]:rotate-180 transition-all duration-200"
               />
             </PopoverButton>
 
             <PopoverPanel
               transition
-              className="absolute -left-8 top-full z-10 mt-3 w-screen max-w-md overflow-hidden rounded-3xl bg-white shadow-lg ring-1 ring-gray-900/5 transition data-[closed]:translate-y-1 data-[closed]:opacity-0 data-[enter]:duration-200 data-[leave]:duration-150 data-[enter]:ease-out data-[leave]:ease-in"
+              className="absolute -left-8 top-full z-10 mt-3 w-screen max-w-md overflow-hidden rounded-3xl bg-surface shadow-lg ring-1 ring-border transition data-[closed]:translate-y-1 data-[closed]:opacity-0 data-[enter]:duration-200 data-[leave]:duration-150 data-[enter]:ease-out data-[leave]:ease-in"
             >
               <div className="p-4">
                 {products.map((item) => (
-                  <div key={item.name} className="group relative flex gap-x-6 rounded-lg p-4 text-sm leading-6 hover:bg-gray-50">
-                    <div className="mt-1 flex h-11 w-11 flex-none items-center justify-center rounded-lg bg-gray-50 group-hover:bg-white">
-                      <item.icon aria-hidden="true" className="h-6 w-6 text-gray-600 group-hover:text-indigo-600" />
+                  <div key={item.name} className="group relative flex gap-x-6 rounded-lg p-4 text-sm leading-6 hover:bg-surface-2">
+                    <div className="mt-1 flex h-11 w-11 flex-none items-center justify-center rounded-lg bg-surface-2 group-hover:bg-surface-3">
+                      <item.icon aria-hidden="true" className="h-6 w-6 text-muted group-hover:text-primary" />
                     </div>
                     <div className="flex-auto">
-                      <a href={item.href} className="block font-semibold text-gray-900">
+                      <a href={item.href} className="block font-semibold text-heading">
                         {item.name}
                         <span className="absolute inset-0" />
                       </a>
-                      <p className="mt-1 text-gray-600">{item.description}</p>
+                      <p className="mt-1 text-body">{item.description}</p>
                     </div>
                   </div>
                 ))}
@@ -187,11 +187,11 @@ export default function DoDAOHomeTopNav() {
             </PopoverPanel>
           </Popover>
           <Popover className="relative">
-            <PopoverButton className="flex items-center gap-x-1 text-sm font-semibold leading-6 text-gray-900 p-1 data-[open]:text-indigo-600 data-[open]:bg-gray-50 rounded-md transition-colors duration-200">
+            <PopoverButton className="flex items-center gap-x-1 text-sm font-semibold leading-6 text-heading p-1 data-[open]:text-primary data-[open]:bg-surface rounded-md transition-colors duration-200">
               Services
               <ChevronDownIcon
                 aria-hidden="true"
-                className="h-5 w-5 flex-none text-gray-400 data-[open]:text-indigo-600 data-[open]:rotate-180 transition-all duration-200"
+                className="h-5 w-5 flex-none text-muted data-[open]:text-primary data-[open]:rotate-180 transition-all duration-200"
               />
             </PopoverButton>
             <PopoverPanel
@@ -199,61 +199,61 @@ export default function DoDAOHomeTopNav() {
               className="absolute left-1/2 z-10 mt-3 flex w-screen max-w-max -translate-x-1/2 px-4
                          data-[closed]:translate-y-1 data-[closed]:opacity-0 data-[enter]:duration-200 data-[leave]:duration-150 data-[enter]:ease-out data-[leave]:ease-in"
             >
-              <div className="w-screen max-w-5xl flex-auto overflow-hidden rounded-3xl bg-white text-sm/6 shadow-lg ring-1 ring-gray-900/5">
+              <div className="w-screen max-w-5xl flex-auto overflow-hidden rounded-3xl bg-surface text-sm/6 shadow-lg ring-1 ring-border">
                 <div className="grid grid-cols-1 gap-6 p-4 lg:grid-cols-3">
                   <div>
-                    <h3 className="mb-2 text-base font-semibold text-gray-900 text-center">
-                      <a href="/robotics" className="hover:text-indigo-600 transition-colors">
+                    <h3 className="mb-2 text-base font-semibold text-heading text-center">
+                      <a href="/robotics" className="hover:text-primary transition-colors">
                         Robotics
                       </a>
                     </h3>
                     {roboticsServices.map((item) => (
-                      <div key={item.name} className="group relative mb-2 flex gap-x-4 rounded-lg p-4 hover:bg-gray-50">
-                        <div className="mt-1 flex h-10 w-10 flex-none items-center justify-center rounded-lg bg-gray-50 group-hover:bg-white">
-                          <item.icon aria-hidden="true" className="h-6 w-6 text-gray-600 group-hover:text-indigo-600" />
+                      <div key={item.name} className="group relative mb-2 flex gap-x-4 rounded-lg p-4 hover:bg-surface-2">
+                        <div className="mt-1 flex h-10 w-10 flex-none items-center justify-center rounded-lg bg-surface-2 group-hover:bg-surface-3">
+                          <item.icon aria-hidden="true" className="h-6 w-6 text-muted group-hover:text-primary" />
                         </div>
                         <div>
-                          <a href={item.href} className="font-semibold text-gray-900">
+                          <a href={item.href} className="font-semibold text-heading">
                             {item.name}
                             <span className="absolute inset-0" />
                           </a>
-                          <p className="mt-1 text-gray-600">{item.description}</p>
+                          <p className="mt-1 text-body">{item.description}</p>
                         </div>
                       </div>
                     ))}
                   </div>
 
                   <div>
-                    <h3 className="mb-2 text-base font-semibold text-gray-900 text-center">AI Agents</h3>
+                    <h3 className="mb-2 text-base font-semibold text-heading text-center">AI Agents</h3>
                     {aiAgentServices.map((item) => (
-                      <div key={item.name} className="group relative mb-2 flex gap-x-4 rounded-lg p-4 hover:bg-gray-50">
-                        <div className="mt-1 flex h-10 w-10 flex-none items-center justify-center rounded-lg bg-gray-50 group-hover:bg-white">
-                          <item.icon aria-hidden="true" className="h-6 w-6 text-gray-600 group-hover:text-indigo-600" />
+                      <div key={item.name} className="group relative mb-2 flex gap-x-4 rounded-lg p-4 hover:bg-surface-2">
+                        <div className="mt-1 flex h-10 w-10 flex-none items-center justify-center rounded-lg bg-surface-2 group-hover:bg-surface-3">
+                          <item.icon aria-hidden="true" className="h-6 w-6 text-muted group-hover:text-primary" />
                         </div>
                         <div>
-                          <a href={item.href} className="font-semibold text-gray-900">
+                          <a href={item.href} className="font-semibold text-heading">
                             {item.name}
                             <span className="absolute inset-0" />
                           </a>
-                          <p className="mt-1 text-gray-600">{item.description}</p>
+                          <p className="mt-1 text-body">{item.description}</p>
                         </div>
                       </div>
                     ))}
                   </div>
 
                   <div>
-                    <h3 className="mb-2 text-base font-semibold text-gray-900 text-center">Blockchain</h3>
+                    <h3 className="mb-2 text-base font-semibold text-heading text-center">Blockchain</h3>
                     {blockchainServices.map((item) => (
-                      <div key={item.name} className="group relative mb-2 flex gap-x-4 rounded-lg p-4 hover:bg-gray-50">
-                        <div className="mt-1 flex h-10 w-10 flex-none items-center justify-center rounded-lg bg-gray-50 group-hover:bg-white">
-                          <item.icon aria-hidden="true" className="h-6 w-6 text-gray-600 group-hover:text-indigo-600" />
+                      <div key={item.name} className="group relative mb-2 flex gap-x-4 rounded-lg p-4 hover:bg-surface-2">
+                        <div className="mt-1 flex h-10 w-10 flex-none items-center justify-center rounded-lg bg-surface-2 group-hover:bg-surface-3">
+                          <item.icon aria-hidden="true" className="h-6 w-6 text-muted group-hover:text-primary" />
                         </div>
                         <div>
-                          <a href={item.href} className="font-semibold text-gray-900">
+                          <a href={item.href} className="font-semibold text-heading">
                             {item.name}
                             <span className="absolute inset-0" />
                           </a>
-                          <p className="mt-1 text-gray-600">{item.description}</p>
+                          <p className="mt-1 text-body">{item.description}</p>
                         </div>
                       </div>
                     ))}
@@ -263,29 +263,29 @@ export default function DoDAOHomeTopNav() {
             </PopoverPanel>
           </Popover>
           <Popover className="relative">
-            <PopoverButton className="flex items-center gap-x-1 text-sm font-semibold leading-6 text-gray-900 p-1 data-[open]:text-indigo-600 data-[open]:bg-gray-50 rounded-md transition-colors duration-200">
+            <PopoverButton className="flex items-center gap-x-1 text-sm font-semibold leading-6 text-heading p-1 data-[open]:text-primary data-[open]:bg-surface rounded-md transition-colors duration-200">
               Education
               <ChevronDownIcon
                 aria-hidden="true"
-                className="h-5 w-5 flex-none text-gray-400 data-[open]:text-indigo-600 data-[open]:rotate-180 transition-all duration-200"
+                className="h-5 w-5 flex-none text-muted data-[open]:text-primary data-[open]:rotate-180 transition-all duration-200"
               />
             </PopoverButton>
             <PopoverPanel
               transition
-              className="absolute -left-8 top-full z-10 mt-3 w-screen max-w-md overflow-hidden rounded-3xl bg-white shadow-lg ring-1 ring-gray-900/5 transition data-[closed]:translate-y-1 data-[closed]:opacity-0 data-[enter]:duration-200 data-[leave]:duration-150 data-[enter]:ease-out data-[leave]:ease-in"
+              className="absolute -left-8 top-full z-10 mt-3 w-screen max-w-md overflow-hidden rounded-3xl bg-surface shadow-lg ring-1 ring-border transition data-[closed]:translate-y-1 data-[closed]:opacity-0 data-[enter]:duration-200 data-[leave]:duration-150 data-[enter]:ease-out data-[leave]:ease-in"
             >
               <div className="p-4">
                 {educationAreas.map((item) => (
-                  <div key={item.name} className="group relative flex gap-x-6 rounded-lg p-4 text-sm leading-6 hover:bg-gray-50">
-                    <div className="mt-1 flex h-11 w-11 flex-none items-center justify-center rounded-lg bg-gray-50 group-hover:bg-white">
-                      <item.icon aria-hidden="true" className="h-6 w-6 text-gray-600 group-hover:text-indigo-600" />
+                  <div key={item.name} className="group relative flex gap-x-6 rounded-lg p-4 text-sm leading-6 hover:bg-surface-2">
+                    <div className="mt-1 flex h-11 w-11 flex-none items-center justify-center rounded-lg bg-surface-2 group-hover:bg-surface-3">
+                      <item.icon aria-hidden="true" className="h-6 w-6 text-muted group-hover:text-primary" />
                     </div>
                     <div className="flex-auto">
-                      <a href={item.href} className="block font-semibold text-gray-900">
+                      <a href={item.href} className="block font-semibold text-heading">
                         {item.name}
                         <span className="absolute inset-0" />
                       </a>
-                      <p className="mt-1 text-gray-600">{item.description}</p>
+                      <p className="mt-1 text-body">{item.description}</p>
                     </div>
                   </div>
                 ))}
@@ -293,30 +293,30 @@ export default function DoDAOHomeTopNav() {
             </PopoverPanel>
           </Popover>
           <Popover className="relative">
-            <PopoverButton className="flex items-center gap-x-1 text-sm font-semibold leading-6 text-gray-900 p-1 data-[open]:text-indigo-600 data-[open]:bg-gray-50 rounded-md transition-colors duration-200">
+            <PopoverButton className="flex items-center gap-x-1 text-sm font-semibold leading-6 text-heading p-1 data-[open]:text-primary data-[open]:bg-surface rounded-md transition-colors duration-200">
               Research
               <ChevronDownIcon
                 aria-hidden="true"
-                className="h-5 w-5 flex-none text-gray-400 data-[open]:text-indigo-600 data-[open]:rotate-180 transition-all duration-200"
+                className="h-5 w-5 flex-none text-muted data-[open]:text-primary data-[open]:rotate-180 transition-all duration-200"
               />
             </PopoverButton>
 
             <PopoverPanel
               transition
-              className="absolute -left-8 top-full z-10 mt-3 w-screen max-w-md overflow-hidden rounded-3xl bg-white shadow-lg ring-1 ring-gray-900/5 transition data-[closed]:translate-y-1 data-[closed]:opacity-0 data-[enter]:duration-200 data-[leave]:duration-150 data-[enter]:ease-out data-[leave]:ease-in"
+              className="absolute -left-8 top-full z-10 mt-3 w-screen max-w-md overflow-hidden rounded-3xl bg-surface shadow-lg ring-1 ring-border transition data-[closed]:translate-y-1 data-[closed]:opacity-0 data-[enter]:duration-200 data-[leave]:duration-150 data-[enter]:ease-out data-[leave]:ease-in"
             >
               <div className="p-4">
                 {researchAreas.map((item) => (
-                  <div key={item.name} className="group relative flex gap-x-6 rounded-lg p-4 text-sm leading-6 hover:bg-gray-50">
-                    <div className="mt-1 flex h-11 w-11 flex-none items-center justify-center rounded-lg bg-gray-50 group-hover:bg-white">
-                      <item.icon aria-hidden="true" className="h-6 w-6 text-gray-600 group-hover:text-indigo-600" />
+                  <div key={item.name} className="group relative flex gap-x-6 rounded-lg p-4 text-sm leading-6 hover:bg-surface-2">
+                    <div className="mt-1 flex h-11 w-11 flex-none items-center justify-center rounded-lg bg-surface-2 group-hover:bg-surface-3">
+                      <item.icon aria-hidden="true" className="h-6 w-6 text-muted group-hover:text-primary" />
                     </div>
                     <div className="flex-auto">
-                      <a href={item.href} className="block font-semibold text-gray-900">
+                      <a href={item.href} className="block font-semibold text-heading">
                         {item.name}
                         <span className="absolute inset-0" />
                       </a>
-                      <p className="mt-1 text-gray-600">{item.description}</p>
+                      <p className="mt-1 text-body">{item.description}</p>
                     </div>
                   </div>
                 ))}
@@ -328,7 +328,7 @@ export default function DoDAOHomeTopNav() {
       </nav>
       <Dialog open={mobileMenuOpen} onClose={setMobileMenuOpen} className="lg:hidden">
         <div className="fixed inset-0 z-10" />
-        <DialogPanel className="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
+        <DialogPanel className="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-surface px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-border">
           <div className="flex items-center justify-between">
             <a href="#" className="-m-1.5 p-1.5">
               <span className="sr-only">DoDAO</span>
@@ -338,16 +338,16 @@ export default function DoDAOHomeTopNav() {
                 className="h-8 w-auto"
               />
             </a>
-            <button type="button" onClick={() => setMobileMenuOpen(false)} className="-m-2.5 rounded-md p-2.5 text-gray-700">
+            <button type="button" onClick={() => setMobileMenuOpen(false)} className="-m-2.5 rounded-md p-2.5 text-body">
               <span className="sr-only">Close menu</span>
               <XMarkIcon aria-hidden="true" className="h-6 w-6" />
             </button>
           </div>
           <div className="mt-6 flow-root">
-            <div className="-my-6 divide-y divide-gray-500/10">
+            <div className="-my-6 divide-y divide-border">
               <div className="space-y-2 py-6">
                 <Disclosure as="div" className="-mx-3">
-                  <DisclosureButton className="group flex w-full items-center justify-between rounded-lg py-2 pl-3 pr-3.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">
+                  <DisclosureButton className="group flex w-full items-center justify-between rounded-lg py-2 pl-3 pr-3.5 text-base font-semibold leading-7 text-heading hover:bg-surface-2">
                     Product
                     <ChevronDownIcon aria-hidden="true" className="h-5 w-5 flex-none group-data-[open]:rotate-180" />
                   </DisclosureButton>
@@ -357,7 +357,7 @@ export default function DoDAOHomeTopNav() {
                         key={item.name}
                         as="a"
                         href={item.href}
-                        className="block rounded-lg py-2 pl-6 pr-3 text-sm font-semibold leading-7 text-gray-900 hover:bg-gray-50"
+                        className="block rounded-lg py-2 pl-6 pr-3 text-sm font-semibold leading-7 text-heading hover:bg-surface-2"
                       >
                         {item.name}
                       </DisclosureButton>
@@ -365,12 +365,12 @@ export default function DoDAOHomeTopNav() {
                   </DisclosurePanel>
                 </Disclosure>
                 <Disclosure as="div" className="-mx-3">
-                  <DisclosureButton className="group flex w-full items-center justify-between rounded-lg py-2 pl-3 pr-3.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">
+                  <DisclosureButton className="group flex w-full items-center justify-between rounded-lg py-2 pl-3 pr-3.5 text-base font-semibold leading-7 text-heading hover:bg-surface-2">
                     Services
                     <ChevronDownIcon aria-hidden="true" className="h-5 w-5 flex-none group-data-[open]:rotate-180" />
                   </DisclosureButton>
                   <DisclosurePanel className="mt-2 space-y-2">
-                    <DisclosureButton as="a" href="/robotics" className="block rounded-lg px-3 pb-2 pt-2 text-sm font-semibold text-gray-900 hover:bg-gray-50">
+                    <DisclosureButton as="a" href="/robotics" className="block rounded-lg px-3 pb-2 pt-2 text-sm font-semibold text-heading hover:bg-surface-2">
                       Robotics
                     </DisclosureButton>
                     {roboticsServices.map((item) => (
@@ -378,31 +378,31 @@ export default function DoDAOHomeTopNav() {
                         key={item.name}
                         as="a"
                         href={item.href}
-                        className="block rounded-lg py-1 pl-6 pr-3 text-sm leading-7 text-gray-900 hover:bg-gray-50"
+                        className="block rounded-lg py-1 pl-6 pr-3 text-sm leading-7 text-body hover:bg-surface-2"
                       >
                         {item.name}
                       </DisclosureButton>
                     ))}
 
-                    <div className="px-3 pb-2 pt-2 text-sm font-semibold text-gray-900">AI Agents</div>
+                    <div className="px-3 pb-2 pt-2 text-sm font-semibold text-heading">AI Agents</div>
                     {aiAgentServices.map((item) => (
                       <DisclosureButton
                         key={item.name}
                         as="a"
                         href={item.href}
-                        className="block rounded-lg py-1 pl-6 pr-3 text-sm leading-7 text-gray-900 hover:bg-gray-50"
+                        className="block rounded-lg py-1 pl-6 pr-3 text-sm leading-7 text-body hover:bg-surface-2"
                       >
                         {item.name}
                       </DisclosureButton>
                     ))}
 
-                    <div className="px-3 pb-2 pt-2 text-sm font-semibold text-gray-900">Blockchain</div>
+                    <div className="px-3 pb-2 pt-2 text-sm font-semibold text-heading">Blockchain</div>
                     {blockchainServices.map((item) => (
                       <DisclosureButton
                         key={item.name}
                         as="a"
                         href={item.href}
-                        className="block rounded-lg py-1 pl-6 pr-3 text-sm leading-7 text-gray-900 hover:bg-gray-50"
+                        className="block rounded-lg py-1 pl-6 pr-3 text-sm leading-7 text-body hover:bg-surface-2"
                       >
                         {item.name}
                       </DisclosureButton>
@@ -410,7 +410,7 @@ export default function DoDAOHomeTopNav() {
                   </DisclosurePanel>
                 </Disclosure>
                 <Disclosure as="div" className="-mx-3">
-                  <DisclosureButton className="group flex w-full items-center justify-between rounded-lg py-2 pl-3 pr-3.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">
+                  <DisclosureButton className="group flex w-full items-center justify-between rounded-lg py-2 pl-3 pr-3.5 text-base font-semibold leading-7 text-heading hover:bg-surface-2">
                     Education
                     <ChevronDownIcon aria-hidden="true" className="h-5 w-5 flex-none group-data-[open]:rotate-180" />
                   </DisclosureButton>
@@ -420,7 +420,7 @@ export default function DoDAOHomeTopNav() {
                         key={item.name}
                         as="a"
                         href={item.href}
-                        className="block rounded-lg py-2 pl-6 pr-3 text-sm font-semibold leading-7 text-gray-900 hover:bg-gray-50"
+                        className="block rounded-lg py-2 pl-6 pr-3 text-sm font-semibold leading-7 text-heading hover:bg-surface-2"
                       >
                         {item.name}
                       </DisclosureButton>
@@ -428,7 +428,7 @@ export default function DoDAOHomeTopNav() {
                   </DisclosurePanel>
                 </Disclosure>
                 <Disclosure as="div" className="-mx-3">
-                  <DisclosureButton className="group flex w-full items-center justify-between rounded-lg py-2 pl-3 pr-3.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">
+                  <DisclosureButton className="group flex w-full items-center justify-between rounded-lg py-2 pl-3 pr-3.5 text-base font-semibold leading-7 text-heading hover:bg-surface-2">
                     Research
                     <ChevronDownIcon aria-hidden="true" className="h-5 w-5 flex-none group-data-[open]:rotate-180" />
                   </DisclosureButton>
@@ -438,7 +438,7 @@ export default function DoDAOHomeTopNav() {
                         key={item.name}
                         as="a"
                         href={item.href}
-                        className="block rounded-lg py-2 pl-6 pr-3 text-sm font-semibold leading-7 text-gray-900 hover:bg-gray-50"
+                        className="block rounded-lg py-2 pl-6 pr-3 text-sm font-semibold leading-7 text-heading hover:bg-surface-2"
                       >
                         {item.name}
                       </DisclosureButton>
@@ -447,7 +447,7 @@ export default function DoDAOHomeTopNav() {
                 </Disclosure>
               </div>
               <div className="py-6">
-                <a href="#" className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">
+                <a href="#" className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-heading hover:bg-surface-2">
                   Log in
                 </a>
               </div>
