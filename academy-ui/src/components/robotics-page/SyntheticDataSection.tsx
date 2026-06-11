@@ -1,4 +1,5 @@
 import { CameraIcon, CodeBracketIcon, CubeTransparentIcon, DocumentTextIcon, EyeIcon, ExclamationTriangleIcon, SignalIcon } from '@heroicons/react/24/outline';
+import Image from 'next/image';
 
 type Produced = {
   title: string;
@@ -59,7 +60,33 @@ export default function SyntheticDataSection() {
           </p>
         </div>
 
-        <div className="mt-14">
+        <div className="mt-12 mx-auto max-w-4xl">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <div className="overflow-hidden rounded-2xl border border-border bg-surface/60 backdrop-blur-sm">
+              <Image
+                src="/robotics/sim_robot.png"
+                alt="Universal Robots arm picking a can in NVIDIA Isaac Sim — the simulated training scene"
+                width={561}
+                height={565}
+                className="block w-full h-auto"
+              />
+            </div>
+            <div className="overflow-hidden rounded-2xl border border-border bg-surface/60 backdrop-blur-sm">
+              <Image
+                src="/robotics/real_robot.png"
+                alt="The same Universal Robots arm picking the same can on real hardware"
+                width={562}
+                height={562}
+                className="block w-full h-auto"
+              />
+            </div>
+          </div>
+          <p className="mt-4 text-center text-sm text-muted">
+            Same robot, same task — left side is the simulation we build, right side is the real cell. Policies trained on the left run on the right.
+          </p>
+        </div>
+
+        <div className="mt-16">
           <p className="text-base font-semibold text-primary mb-8 text-center">What We Produce</p>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {produced.map((item) => (
