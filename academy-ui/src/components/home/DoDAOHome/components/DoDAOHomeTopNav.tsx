@@ -202,7 +202,11 @@ export default function DoDAOHomeTopNav() {
               <div className="w-screen max-w-5xl flex-auto overflow-hidden rounded-3xl bg-white text-sm/6 shadow-lg ring-1 ring-gray-900/5">
                 <div className="grid grid-cols-1 gap-6 p-4 lg:grid-cols-3">
                   <div>
-                    <h3 className="mb-2 text-base font-semibold text-gray-900 text-center">Robotics</h3>
+                    <h3 className="mb-2 text-base font-semibold text-gray-900 text-center">
+                      <a href="/robotics" className="hover:text-indigo-600 transition-colors">
+                        Robotics
+                      </a>
+                    </h3>
                     {roboticsServices.map((item) => (
                       <div key={item.name} className="group relative mb-2 flex gap-x-4 rounded-lg p-4 hover:bg-gray-50">
                         <div className="mt-1 flex h-10 w-10 flex-none items-center justify-center rounded-lg bg-gray-50 group-hover:bg-white">
@@ -366,7 +370,9 @@ export default function DoDAOHomeTopNav() {
                     <ChevronDownIcon aria-hidden="true" className="h-5 w-5 flex-none group-data-[open]:rotate-180" />
                   </DisclosureButton>
                   <DisclosurePanel className="mt-2 space-y-2">
-                    <div className="px-3 pb-2 pt-2 text-sm font-semibold text-gray-900">Robotics</div>
+                    <DisclosureButton as="a" href="/robotics" className="block rounded-lg px-3 pb-2 pt-2 text-sm font-semibold text-gray-900 hover:bg-gray-50">
+                      Robotics
+                    </DisclosureButton>
                     {roboticsServices.map((item) => (
                       <DisclosureButton
                         key={item.name}
