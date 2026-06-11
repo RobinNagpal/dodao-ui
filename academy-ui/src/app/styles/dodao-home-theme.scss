@@ -58,6 +58,14 @@ html:has(body.dodao-home-theme) {
   scroll-behavior: smooth;
 }
 
+/* Decorative dot texture (hero) — replaces the old data-URI SVG so no color
+   literal lives in JSX; the dots are the muted text color at 5% alpha. */
+body.dodao-home-theme .dodao-dot-pattern {
+  background-image: radial-gradient(rgb(var(--text-muted-rgb) / 0.05) 1.5px, transparent 1.5px);
+  background-size: 60px 60px;
+  background-position: 30px 30px;
+}
+
 /*
  * Markdown overrides for the MDX service/education/research pages: re-point
  * the light-theme hardcodes in the shared `markdown.scss` at the theme

@@ -1,10 +1,6 @@
-'use client';
 import Image from 'next/image';
 import { Container } from './Container';
 import { SectionHeading } from './SectionHeading';
-import { useState } from 'react';
-import { PDFViewModal } from './PDFViewModal';
-import { navbarToggleEvent } from './NavbarToggle';
 import aiAgent from '@/images/DoDAOHomePage/aiAgent.png';
 
 interface HeroEducationCardProps {
@@ -14,10 +10,10 @@ interface HeroEducationCardProps {
   imageSrc: any;
   imageAlt: string;
   buttonText: string;
-  onButtonClick: () => void;
+  href: string;
 }
 
-function HeroEducationCardImageLeft({ title, subtitle, description, imageSrc, imageAlt, buttonText, onButtonClick }: HeroEducationCardProps) {
+function HeroEducationCardImageLeft({ title, subtitle, description, imageSrc, imageAlt, buttonText, href }: HeroEducationCardProps) {
   return (
     <div className="relative bg-surface-2 min-h-[500px]">
       <div className="relative h-80 overflow-hidden bg-primary md:absolute md:left-0 md:h-full md:w-1/3 lg:w-1/2">
@@ -42,12 +38,14 @@ function HeroEducationCardImageLeft({ title, subtitle, description, imageSrc, im
           <p className="mt-2 text-4xl font-semibold tracking-tight text-heading sm:text-5xl">{title}</p>
           <p className="mt-6 text-base/7 text-body">{description}</p>
           <div className="mt-8">
-            <button
-              onClick={onButtonClick}
+            <a
+              href={href}
+              target="_blank"
+              rel="noreferrer"
               className="inline-flex rounded-md bg-surface-2 px-3.5 py-2.5 text-sm font-semibold text-heading shadow-sm hover:bg-surface-2/60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary cursor-pointer"
             >
               {buttonText}
-            </button>
+            </a>
           </div>
         </div>
       </div>
@@ -56,18 +54,6 @@ function HeroEducationCardImageLeft({ title, subtitle, description, imageSrc, im
 }
 
 export function Education() {
-  const [isClickedAIPDF, setIsClickedAIPDF] = useState(false);
-
-  const handleClickAIPDF = () => {
-    setIsClickedAIPDF(true);
-    window.dispatchEvent(navbarToggleEvent);
-  };
-
-  const handleCloseAIPDF = () => {
-    setIsClickedAIPDF(false);
-    window.dispatchEvent(navbarToggleEvent);
-  };
-
   return (
     <section id="education" aria-labelledby="education-title" className="scroll-mt-14 sm:scroll-mt-32 pb-20">
       <Container size="lg" className="bg-surface pt-8">
@@ -93,19 +79,11 @@ export function Education() {
                 imageSrc={aiAgent}
                 imageAlt="AI Agent Bootcamp"
                 buttonText="View Bootcamp Details"
-                onButtonClick={handleClickAIPDF}
+                href="https://dodao-prod-public-assets.s3.us-east-1.amazonaws.com/dodao-io/Koala_AI_Agent_bootcamp.pdf"
               />
             </div>
           </div>
         </div>
-
-        {isClickedAIPDF && (
-          <PDFViewModal
-            onClose={handleCloseAIPDF}
-            title="AI Agent Bootcamp"
-            pdfUrl="https://dodao-prod-public-assets.s3.us-east-1.amazonaws.com/dodao-io/Koala_AI_Agent_bootcamp.pdf"
-          />
-        )}
       </Container>
     </section>
   );

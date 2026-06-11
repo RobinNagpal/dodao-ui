@@ -1,7 +1,4 @@
-'use client';
-
 import { LightBulbIcon, WrenchIcon, ArrowTrendingUpIcon, RocketLaunchIcon, AcademicCapIcon, ChevronDownIcon } from '@heroicons/react/24/outline';
-import { useState } from 'react';
 import Image from 'next/image';
 import aiAgent from '@/images/DoDAOHomePage/aiAgent.webp';
 import defiImage from '@/images/DoDAOHomePage/defi.jpeg';
@@ -43,17 +40,6 @@ const defiValues = [
 ];
 
 export default function CoreOfferings() {
-  const [openAiItem, setOpenAiItem] = useState<number | null>(null);
-  const [openDefiItem, setOpenDefiItem] = useState<number | null>(null);
-
-  const toggleAiItem = (index: number) => {
-    setOpenAiItem(openAiItem === index ? null : index);
-  };
-
-  const toggleDefiItem = (index: number) => {
-    setOpenDefiItem(openDefiItem === index ? null : index);
-  };
-
   return (
     <div className="relative overflow-hidden bg-gradient-to-br from-bg to-surface">
       <div className="absolute inset-0 overflow-hidden">
@@ -102,23 +88,23 @@ export default function CoreOfferings() {
             </div>
 
             <div className="space-y-3">
-              {aiValues.map((value, index) => (
+              {aiValues.map((value) => (
                 <div key={value.name} className="group relative">
                   <div className="rounded-xl bg-surface/60 backdrop-blur-sm border border-border hover:bg-surface/80 transition-all duration-300">
-                    <button onClick={() => toggleAiItem(index)} className="w-full flex items-center justify-between p-4 text-left">
-                      <div className="flex items-center space-x-3">
-                        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-primary to-link">
-                          <value.icon aria-hidden="true" className="h-4 w-4 text-primary-text" />
+                    <details className="group">
+                      <summary className="list-none [&::-webkit-details-marker]:hidden cursor-pointer w-full flex items-center justify-between p-4 text-left">
+                        <div className="flex items-center space-x-3">
+                          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-primary to-link">
+                            <value.icon aria-hidden="true" className="h-4 w-4 text-primary-text" />
+                          </div>
+                          <h4 className="text-base font-semibold text-heading group-hover:text-primary transition-colors">{value.name}</h4>
                         </div>
-                        <h4 className="text-base font-semibold text-heading group-hover:text-primary transition-colors">{value.name}</h4>
-                      </div>
-                      <ChevronDownIcon className={`h-5 w-5 text-muted transition-transform duration-200 ${openAiItem === index ? 'rotate-180' : ''}`} />
-                    </button>
-                    {openAiItem === index && (
+                        <ChevronDownIcon className="h-5 w-5 text-muted transition-transform duration-200 group-open:rotate-180" />
+                      </summary>
                       <div className="px-4 pb-4">
                         <p className="text-body text-sm leading-relaxed pl-11">{value.description}</p>
                       </div>
-                    )}
+                    </details>
                   </div>
                 </div>
               ))}
@@ -134,23 +120,23 @@ export default function CoreOfferings() {
             </div>
 
             <div className="space-y-3">
-              {defiValues.map((value, index) => (
+              {defiValues.map((value) => (
                 <div key={value.name} className="group relative">
                   <div className="rounded-xl bg-surface/60 backdrop-blur-sm border border-border hover:bg-surface/80 transition-all duration-300">
-                    <button onClick={() => toggleDefiItem(index)} className="w-full flex items-center justify-between p-4 text-left">
-                      <div className="flex items-center space-x-3">
-                        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-primary to-link">
-                          <value.icon aria-hidden="true" className="h-4 w-4 text-primary-text" />
+                    <details className="group">
+                      <summary className="list-none [&::-webkit-details-marker]:hidden cursor-pointer w-full flex items-center justify-between p-4 text-left">
+                        <div className="flex items-center space-x-3">
+                          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-primary to-link">
+                            <value.icon aria-hidden="true" className="h-4 w-4 text-primary-text" />
+                          </div>
+                          <h4 className="text-base font-semibold text-heading group-hover:text-primary transition-colors">{value.name}</h4>
                         </div>
-                        <h4 className="text-base font-semibold text-heading group-hover:text-primary transition-colors">{value.name}</h4>
-                      </div>
-                      <ChevronDownIcon className={`h-5 w-5 text-muted transition-transform duration-200 ${openDefiItem === index ? 'rotate-180' : ''}`} />
-                    </button>
-                    {openDefiItem === index && (
+                        <ChevronDownIcon className="h-5 w-5 text-muted transition-transform duration-200 group-open:rotate-180" />
+                      </summary>
                       <div className="px-4 pb-4">
                         <p className="text-body text-sm leading-relaxed pl-11">{value.description}</p>
                       </div>
-                    )}
+                    </details>
                   </div>
                 </div>
               ))}

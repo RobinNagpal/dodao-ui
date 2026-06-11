@@ -223,7 +223,11 @@ export default function DoDAOHomeTopNav() {
                     </summary>
                     <div className="mt-2 space-y-2">
                       {products.map((item) => (
-                        <a key={item.name} href={item.href} className="block rounded-lg py-2 pl-6 pr-3 text-sm font-semibold leading-7 text-heading hover:bg-surface-2">
+                        <a
+                          key={item.name}
+                          href={item.href}
+                          className="block rounded-lg py-2 pl-6 pr-3 text-sm font-semibold leading-7 text-heading hover:bg-surface-2"
+                        >
                           {item.name}
                         </a>
                       ))}
@@ -266,7 +270,11 @@ export default function DoDAOHomeTopNav() {
                     </summary>
                     <div className="mt-2 space-y-2">
                       {educationAreas.map((item) => (
-                        <a key={item.name} href={item.href} className="block rounded-lg py-2 pl-6 pr-3 text-sm font-semibold leading-7 text-heading hover:bg-surface-2">
+                        <a
+                          key={item.name}
+                          href={item.href}
+                          className="block rounded-lg py-2 pl-6 pr-3 text-sm font-semibold leading-7 text-heading hover:bg-surface-2"
+                        >
                           {item.name}
                         </a>
                       ))}
@@ -279,7 +287,11 @@ export default function DoDAOHomeTopNav() {
                     </summary>
                     <div className="mt-2 space-y-2">
                       {researchAreas.map((item) => (
-                        <a key={item.name} href={item.href} className="block rounded-lg py-2 pl-6 pr-3 text-sm font-semibold leading-7 text-heading hover:bg-surface-2">
+                        <a
+                          key={item.name}
+                          href={item.href}
+                          className="block rounded-lg py-2 pl-6 pr-3 text-sm font-semibold leading-7 text-heading hover:bg-surface-2"
+                        >
                           {item.name}
                         </a>
                       ))}
