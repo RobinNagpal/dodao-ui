@@ -134,8 +134,7 @@ function KetchupHplcWorkflowCaseStudy() {
               <div className="sm:text-center md:mx-auto md:max-w-2xl lg:col-span-7 lg:text-left">
                 <p className="text-xs uppercase tracking-widest font-semibold text-primary">Robotics Case Study</p>
                 <h1 className="mt-2 text-4xl font-bold tracking-tight text-heading sm:text-5xl">
-                  Ketchup HPLC Workflow{' '}
-                  <span className="block bg-gradient-to-r from-link to-primary bg-clip-text text-transparent">in Simulation</span>
+                  Ketchup HPLC Workflow <span className="block bg-gradient-to-r from-link to-primary bg-clip-text text-transparent">in Simulation</span>
                 </h1>
                 <p className="mt-5 text-lg leading-8 text-body">
                   HPLC sample prep is an eight step workflow. We built a Gazebo simulation of five of those steps for ketchup, which is the much harder usecase

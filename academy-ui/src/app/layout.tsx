@@ -46,16 +46,16 @@ export default async function RootLayout({ children }: RootLayoutProps) {
   const style = isDodaoHome
     ? dodaoHomeThemeStyles
     : ({
-          '--primary-color': themeValue.primaryColor,
-          '--primary-text-color': themeValue.primaryTextColor,
-          '--bg-color': themeValue.bgColor,
-          '--text-color': themeValue.textColor,
-          '--link-color': themeValue.linkColor,
-          '--heading-color': themeValue.headingColor,
-          '--border-color': themeValue.borderColor,
-          '--block-bg': themeValue.blockBg,
-          '--swiper-theme-color': themeValue.primaryColor,
-        } as CSSProperties);
+        '--primary-color': themeValue.primaryColor,
+        '--primary-text-color': themeValue.primaryTextColor,
+        '--bg-color': themeValue.bgColor,
+        '--text-color': themeValue.textColor,
+        '--link-color': themeValue.linkColor,
+        '--heading-color': themeValue.headingColor,
+        '--border-color': themeValue.borderColor,
+        '--block-bg': themeValue.blockBg,
+        '--swiper-theme-color': themeValue.primaryColor,
+      } as CSSProperties);
 
   return (
     <html lang="en" className="h-full">

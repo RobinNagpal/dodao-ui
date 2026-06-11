@@ -37,8 +37,8 @@ const products: Product[] = [
     ctaText: 'Try KoalaGains',
     ctaLink: 'https://koalagains.com/',
     category: 'AI Agent',
-    categoryColor: 'from-blue-500 to-cyan-500',
-    bgGradient: 'from-blue-50 to-cyan-50',
+    categoryColor: 'from-primary to-link',
+    bgGradient: 'bg-surface',
   },
   {
     id: 'tidbits-hub',
@@ -54,8 +54,8 @@ const products: Product[] = [
     ctaText: 'Explore Tidbits',
     ctaLink: 'https://tidbitshub.org/',
     category: 'Education',
-    categoryColor: 'from-violet-500 to-purple-500',
-    bgGradient: 'from-violet-50 to-purple-50',
+    categoryColor: 'from-primary to-link',
+    bgGradient: 'bg-surface',
   },
   {
     id: 'defi-alerts',
@@ -71,8 +71,8 @@ const products: Product[] = [
     ctaText: 'Get Alerts',
     ctaLink: 'https://www.defialerts.xyz/',
     category: 'DeFi Tool',
-    categoryColor: 'from-green-500 to-teal-500',
-    bgGradient: 'from-green-50 to-teal-50',
+    categoryColor: 'from-primary to-link',
+    bgGradient: 'bg-surface',
   },
   {
     id: 'academy-sites',
@@ -88,8 +88,8 @@ const products: Product[] = [
     ctaText: 'Build Academy',
     ctaLink: '/home-section/dodao-io/products/academy-sites',
     category: 'Education',
-    categoryColor: 'from-indigo-500 to-blue-500',
-    bgGradient: 'from-indigo-50 to-blue-50',
+    categoryColor: 'from-primary to-link',
+    bgGradient: 'bg-surface',
   },
 ];
 
@@ -98,62 +98,64 @@ export default function DoDAOProducts() {
     <section className="py-16 sm:py-20" id="products">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto max-w-3xl text-center mb-12">
-          <h2 className="mt-2 text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl lg:text-4xl">
-            Products That <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent">Solve Real Problems</span>
+          <h2 className="mt-2 text-2xl font-bold tracking-tight text-heading sm:text-3xl lg:text-4xl">
+            Products That <span className="bg-gradient-to-r from-link to-primary bg-clip-text text-transparent">Solve Real Problems</span>
           </h2>
-          <p className="mt-4 text-lg leading-7 text-gray-600">
+          <p className="mt-4 text-lg leading-7 text-body">
             From AI-powered investment insights to comprehensive learning platforms, our products transform how businesses operate and users learn.
           </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {products.map((product) => (
-            <div key={product.id} className="bg-white rounded-3xl shadow-lg border border-gray-100 overflow-hidden">
+            <div key={product.id} className="bg-surface rounded-3xl shadow-lg border border-border overflow-hidden">
               <div className={`h-2 bg-gradient-to-r ${product.categoryColor}`}></div>
 
               <div className="p-6">
                 <div className="flex flex-wrap items-start mb-4">
-                  <h3 className="text-xl font-bold text-gray-900 mr-3">{product.name}</h3>
-                  <div className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold text-white bg-gradient-to-r ${product.categoryColor}`}>
+                  <h3 className="text-xl font-bold text-heading mr-3">{product.name}</h3>
+                  <div
+                    className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold text-primary-text bg-gradient-to-r ${product.categoryColor}`}
+                  >
                     {product.category}
                   </div>
                 </div>
 
-                <p className="text-lg font-semibold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-3">{product.tagline}</p>
+                <p className="text-lg font-semibold bg-gradient-to-r from-link to-primary bg-clip-text text-transparent mb-3">{product.tagline}</p>
 
-                <p className="text-gray-600 text-sm mb-6">{product.description}</p>
+                <p className="text-body text-sm mb-6">{product.description}</p>
 
                 <div className="mb-6">
-                  <h4 className="text-xs font-bold text-gray-900 mb-3 uppercase tracking-wide">Key Features</h4>
+                  <h4 className="text-xs font-bold text-heading mb-3 uppercase tracking-wide">Key Features</h4>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                     {product.features.slice(0, 4).map((feature) => (
-                      <div key={feature} className="flex items-center space-x-2 p-2 rounded-lg bg-gray-50 border border-gray-100">
+                      <div key={feature} className="flex items-center space-x-2 p-2 rounded-lg bg-surface-2 border border-border">
                         <div className={`w-2 h-2 rounded-full bg-gradient-to-r ${product.categoryColor}`}></div>
-                        <span className="text-gray-700 text-sm font-medium">{feature}</span>
+                        <span className="text-body text-sm font-medium">{feature}</span>
                       </div>
                     ))}
                   </div>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
-                  <div className="relative p-4 rounded-xl bg-gradient-to-br from-red-50 to-orange-50 border border-red-100">
+                  <div className="relative p-4 rounded-xl bg-danger/15 border border-danger/40">
                     <div className="flex items-center space-x-2 mb-2">
-                      <div className="p-1 bg-red-100 rounded-lg">
-                        <ExclamationTriangleIcon className="w-4 h-4 text-red-600" />
+                      <div className="p-1 bg-danger/15 rounded-lg">
+                        <ExclamationTriangleIcon className="w-4 h-4 text-danger" />
                       </div>
-                      <h4 className="text-xs font-bold text-red-800 uppercase tracking-wide">Challenge</h4>
+                      <h4 className="text-xs font-bold text-danger uppercase tracking-wide">Challenge</h4>
                     </div>
-                    <p className="text-gray-700 text-xs">{product.problem}</p>
+                    <p className="text-body text-xs">{product.problem}</p>
                   </div>
 
-                  <div className="relative p-4 rounded-xl bg-gradient-to-br from-green-50 to-emerald-50 border border-green-100">
+                  <div className="relative p-4 rounded-xl bg-success/15 border border-success/40">
                     <div className="flex items-center space-x-2 mb-2">
-                      <div className="p-1 bg-green-100 rounded-lg">
-                        <CheckCircleIcon className="w-4 h-4 text-green-600" />
+                      <div className="p-1 bg-success/15 rounded-lg">
+                        <CheckCircleIcon className="w-4 h-4 text-success" />
                       </div>
-                      <h4 className="text-xs font-bold text-green-800 uppercase tracking-wide">Solution</h4>
+                      <h4 className="text-xs font-bold text-success uppercase tracking-wide">Solution</h4>
                     </div>
-                    <p className="text-gray-700 text-xs font-medium">{product.solution}</p>
+                    <p className="text-body text-xs font-medium">{product.solution}</p>
                   </div>
                 </div>
 
@@ -166,7 +168,7 @@ export default function DoDAOProducts() {
                     href={product.ctaLink}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className={`inline-flex items-center px-5 py-2 rounded-xl bg-gradient-to-r ${product.categoryColor} text-white font-medium text-sm`}
+                    className={`inline-flex items-center px-5 py-2 rounded-xl bg-gradient-to-r ${product.categoryColor} text-primary-text font-medium text-sm`}
                   >
                     <PlayIcon className="w-4 h-4 mr-2" />
                     {product.ctaText}

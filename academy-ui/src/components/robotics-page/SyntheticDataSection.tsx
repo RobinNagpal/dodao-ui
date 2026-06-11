@@ -54,8 +54,8 @@ export default function SyntheticDataSection() {
           </div>
           <h2 className="mt-4 text-3xl font-bold tracking-tight text-heading sm:text-4xl">Synthetic Data</h2>
           <p className="mt-4 text-lg text-body">
-            Real-world data is <span className="font-semibold text-primary">slow and expensive</span> to label. Synthetic data is rendered inside the
-            simulator, where the system already knows the ground truth of every pose, every contact force, and every pixel.
+            Real-world data is <span className="font-semibold text-primary">slow and expensive</span> to label. Synthetic data is rendered inside the simulator,
+            where the system already knows the ground truth of every pose, every contact force, and every pixel.
           </p>
         </div>
 

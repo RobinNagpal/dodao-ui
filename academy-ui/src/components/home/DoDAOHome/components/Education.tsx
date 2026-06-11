@@ -19,8 +19,8 @@ interface HeroEducationCardProps {
 
 function HeroEducationCardImageLeft({ title, subtitle, description, imageSrc, imageAlt, buttonText, onButtonClick }: HeroEducationCardProps) {
   return (
-    <div className="relative bg-gray-900 min-h-[500px]">
-      <div className="relative h-80 overflow-hidden bg-indigo-600 md:absolute md:left-0 md:h-full md:w-1/3 lg:w-1/2">
+    <div className="relative bg-surface-2 min-h-[500px]">
+      <div className="relative h-80 overflow-hidden bg-primary md:absolute md:left-0 md:h-full md:w-1/3 lg:w-1/2">
         <Image alt={imageAlt} src={imageSrc} className="size-full object-cover" width={800} height={600} />
         <svg viewBox="0 0 926 676" aria-hidden="true" className="absolute -bottom-24 left-24 w-[57.875rem] transform-gpu blur-[118px]">
           <path
@@ -30,21 +30,21 @@ function HeroEducationCardImageLeft({ title, subtitle, description, imageSrc, im
           />
           <defs>
             <linearGradient id="ai-gradient-left" x1="926.392" x2="-109.635" y1=".176" y2="321.024" gradientUnits="userSpaceOnUse">
-              <stop stopColor="#776FFF" />
-              <stop offset={1} stopColor="#FF4694" />
+              <stop stopColor="rgb(var(--primary-rgb))" />
+              <stop offset={1} stopColor="rgb(var(--link-rgb))" />
             </linearGradient>
           </defs>
         </svg>
       </div>
       <div className="relative mx-auto max-w-7xl py-24 sm:py-32 lg:px-8 lg:py-40">
         <div className="pl-6 md:ml-auto md:w-2/3 md:pl-8 lg:w-1/2 lg:pl-12 lg:pr-2 xl:pl-12 xl:pr-4">
-          <h2 className="text-base/7 font-semibold text-indigo-400">{subtitle}</h2>
-          <p className="mt-2 text-4xl font-semibold tracking-tight text-white sm:text-5xl">{title}</p>
-          <p className="mt-6 text-base/7 text-gray-300">{description}</p>
+          <h2 className="text-base/7 font-semibold text-primary">{subtitle}</h2>
+          <p className="mt-2 text-4xl font-semibold tracking-tight text-heading sm:text-5xl">{title}</p>
+          <p className="mt-6 text-base/7 text-body">{description}</p>
           <div className="mt-8">
             <button
               onClick={onButtonClick}
-              className="inline-flex rounded-md bg-white/10 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-white/20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white cursor-pointer"
+              className="inline-flex rounded-md bg-surface-3 px-3.5 py-2.5 text-sm font-semibold text-heading shadow-sm hover:bg-surface-3/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary cursor-pointer"
             >
               {buttonText}
             </button>
@@ -70,7 +70,7 @@ export function Education() {
 
   return (
     <section id="education" aria-labelledby="education-title" className="scroll-mt-14 sm:scroll-mt-32 pb-20">
-      <Container size="lg" className="bg-gray-50 pt-8">
+      <Container size="lg" className="bg-surface pt-8">
         <SectionHeading number="3" id="education-title">
           Education
         </SectionHeading>
@@ -79,7 +79,7 @@ export function Education() {
           <div className="mx-auto max-w-2xl lg:max-w-none">
             <div className="mx-auto max-w-3xl text-center">
               <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">Education</h2>
-              <p className="mt-4 text-base text-gray-500">
+              <p className="mt-4 text-base text-muted">
                 At DoDAO, we empower teams with comprehensive AI Agent training. Our immersive bootcamp covers LLM fundamentals, prompt engineering, and
                 real-world agent deployment—so your team masters intelligent automation and stays ahead in the AI revolution.
               </p>

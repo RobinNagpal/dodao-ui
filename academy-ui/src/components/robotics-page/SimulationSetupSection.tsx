@@ -88,8 +88,8 @@ export default function SimulationSetupSection() {
           </div>
           <h2 className="mt-4 text-3xl font-bold tracking-tight text-heading sm:text-4xl">Simulation Setup</h2>
           <p className="mt-4 text-lg text-body">
-            When you start a robotics project, the first step is building a <span className="font-semibold text-primary">clean simulation world</span>. We
-            build that world for you so your team can focus on the parts that are unique to your product.
+            When you start a robotics project, the first step is building a <span className="font-semibold text-primary">clean simulation world</span>. We build
+            that world for you so your team can focus on the parts that are unique to your product.
           </p>
         </div>
 

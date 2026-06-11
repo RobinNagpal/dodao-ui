@@ -39,15 +39,15 @@ const aiagent = [
 export default function Services() {
   return (
     <section className="sm:pb-20" id="services">
-      <Container size="lg" className="bg-gray-50 pt-8">
+      <Container size="lg" className="bg-surface pt-8">
         <SectionHeading number="2" id="services-title">
           Development Services
         </SectionHeading>
         <div className="mx-auto max-w-7xl px-6 lg:px-8 mt-8">
           <div className="mx-auto max-w-2xl sm:text-center">
-            <p className="text-base font-semibold leading-7 text-indigo-600">Everything you need</p>
+            <p className="text-base font-semibold leading-7 text-primary">Everything you need</p>
             <h2 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">AI Agent Services</h2>
-            <p className="mt-4 text-base text-gray-500">
+            <p className="mt-4 text-base text-muted">
               At DoDAO, we provide AI Agent services designed to empower your business with intelligent solutions, streamline operations, and drive smarter
               decision-making.
             </p>
@@ -57,13 +57,13 @@ export default function Services() {
           <dl className="flex flex-wrap justify-center gap-y-10">
             {aiagent.map((value, index) => (
               <div key={value.name} className={`relative px-16 w-full sm:w-1/2 ${index === aiagent.length - 1 ? 'sm:mx-auto' : ''}`}>
-                <dt className="text-base font-semibold text-gray-900">
-                  <div className="absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded-lg bg-indigo-600">
-                    <value.icon aria-hidden="true" className="h-6 w-6 text-white" />
+                <dt className="text-base font-semibold text-heading">
+                  <div className="absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded-lg bg-primary">
+                    <value.icon aria-hidden="true" className="h-6 w-6 text-primary-text" />
                   </div>
                   {value.name}
                 </dt>
-                <dd className="mt-2 text-gray-500 text-base">{value.description}</dd>
+                <dd className="mt-2 text-muted text-base">{value.description}</dd>
               </div>
             ))}
           </dl>
@@ -72,7 +72,7 @@ export default function Services() {
         <div className="mx-auto max-w-7xl px-6 lg:px-8 mt-8">
           <div className="mx-auto max-w-2xl sm:text-center">
             <h2 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">DeFi Services</h2>
-            <p className="mt-4 text-base text-gray-500">
+            <p className="mt-4 text-base text-muted">
               At DoDAO, we offer specialized DeFi development services designed to help you build secure, scalable solutions in the decentralized finance space.
             </p>
           </div>
@@ -81,13 +81,13 @@ export default function Services() {
           <dl className="flex flex-wrap justify-center gap-y-10">
             {blockchain.map((value, index) => (
               <div key={value.name} className={`relative px-16 w-full sm:w-1/2 ${index === blockchain.length - 1 ? 'sm:mx-auto' : ''}`}>
-                <dt className="text-base font-semibold text-gray-900">
-                  <div className="absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded-lg bg-indigo-600">
-                    <value.icon aria-hidden="true" className="h-6 w-6 text-white" />
+                <dt className="text-base font-semibold text-heading">
+                  <div className="absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded-lg bg-primary">
+                    <value.icon aria-hidden="true" className="h-6 w-6 text-primary-text" />
                   </div>
                   {value.name}
                 </dt>
-                <dd className="mt-2 text-gray-500 text-base">{value.description}</dd>
+                <dd className="mt-2 text-muted text-base">{value.description}</dd>
               </div>
             ))}
           </dl>

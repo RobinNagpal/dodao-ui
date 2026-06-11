@@ -55,7 +55,7 @@ const creditUnion = [
 export default function Research() {
   return (
     <section id="research" aria-labelledby="research-title" className="pb-20">
-      <Container size="lg" className="bg-gray-50 pt-8">
+      <Container size="lg" className="bg-surface pt-8">
         <div className="mx-auto lg:mx-0">
           <SectionHeading number="4" id="research-title">
             Research
@@ -65,7 +65,7 @@ export default function Research() {
           <div className="mx-auto max-w-2xl lg:max-w-none">
             <div className="mx-auto max-w-3xl text-center">
               <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">Real-World Assets on Blockchain</h2>
-              <p className="mt-4 text-base text-gray-500">
+              <p className="mt-4 text-base text-muted">
                 At DoDAO, we specialize in simplifying the complex world of Real World Assets (RWAs) for builders and investors. Our expertise spans research,
                 consulting, and business development, helping companies navigate regulatory hurdles, find strategic partners, and optimize their asset
                 portfolios.
@@ -75,13 +75,13 @@ export default function Research() {
               <dl className="flex flex-wrap justify-center gap-y-10">
                 {rwa.map((value, index) => (
                   <div key={value.name} className={`relative px-16 w-full sm:w-1/2 ${index === rwa.length - 1 ? 'sm:mx-auto' : ''}`}>
-                    <dt className="text-base font-semibold text-gray-900">
-                      <div className="absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded-lg bg-indigo-600">
-                        <value.icon aria-hidden="true" className="h-6 w-6 text-white" />
+                    <dt className="text-base font-semibold text-heading">
+                      <div className="absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded-lg bg-primary">
+                        <value.icon aria-hidden="true" className="h-6 w-6 text-primary-text" />
                       </div>
                       {value.name}
                     </dt>
-                    <dd className="mt-2 text-base text-gray-500">{value.description}</dd>
+                    <dd className="mt-2 text-base text-muted">{value.description}</dd>
                   </div>
                 ))}
               </dl>
@@ -93,7 +93,7 @@ export default function Research() {
           <div className="mx-auto max-w-2xl lg:max-w-none">
             <div className="mx-auto max-w-3xl text-center">
               <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">How Credit Unions Can Attract Gen Z</h2>
-              <p className="mt-4 text-base text-gray-500">
+              <p className="mt-4 text-base text-muted">
                 At DoDAO, we explore strategies to help credit unions engage and attract Generation Z. By modernizing social media approaches and understanding
                 the unique preferences of this tech-savvy generation, credit unions can build lasting relationships and secure future growth.
               </p>
@@ -102,13 +102,13 @@ export default function Research() {
               <dl className="flex flex-wrap justify-center gap-y-10">
                 {creditUnion.map((value, index) => (
                   <div key={value.name} className={`relative px-16 w-full sm:w-1/2 ${index === creditUnion.length - 1 ? 'sm:mx-auto' : ''}`}>
-                    <dt className="text-base font-semibold text-gray-900">
-                      <div className="absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded-lg bg-indigo-600">
-                        <value.icon aria-hidden="true" className="h-6 w-6 text-white" />
+                    <dt className="text-base font-semibold text-heading">
+                      <div className="absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded-lg bg-primary">
+                        <value.icon aria-hidden="true" className="h-6 w-6 text-primary-text" />
                       </div>
                       {value.name}
                     </dt>
-                    <dd className="mt-2 text-base text-gray-500">{value.description}</dd>
+                    <dd className="mt-2 text-base text-muted">{value.description}</dd>
                   </div>
                 ))}
               </dl>

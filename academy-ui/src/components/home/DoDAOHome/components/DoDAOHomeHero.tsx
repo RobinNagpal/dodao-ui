@@ -30,9 +30,7 @@ export default function DoDAOHomeHero() {
         <div className="text-center">
           <h1 className="text-3xl font-bold tracking-tight text-heading sm:text-5xl lg:text-6xl">
             <span className="block">Building the Future with</span>
-            <span className="block bg-gradient-to-r from-link to-primary bg-clip-text text-transparent pb-1.5">
-              Robotics, AI Agents &amp; DeFi
-            </span>
+            <span className="block bg-gradient-to-r from-link to-primary bg-clip-text text-transparent pb-1.5">Robotics, AI Agents &amp; DeFi</span>
           </h1>
 
           <p className="mt-6 text-xl leading-8 text-body max-w-3xl mx-auto">
