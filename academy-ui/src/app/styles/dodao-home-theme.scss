@@ -1,0 +1,59 @@
+/*
+ * dodao.io (DoDAO Home) theme overrides.
+ *
+ * The palette itself lives in ONE place —
+ * `src/components/home/DoDAOHome/dodaoHomeThemeColors.ts` — and is injected
+ * on `<body>` (together with the `dodao-home-theme` class) in
+ * `src/app/layout.tsx` when the DODAO_HOME space is served.
+ *
+ * This file contains NO color literals: it only re-points the handful of
+ * light-theme hardcodes in the shared `markdown.scss` (used by the MDX
+ * service/education/research pages on dodao.io) at the theme variables, so
+ * those pages render correctly on the dark palette.
+ */
+body.dodao-home-theme .markdown-body {
+  color: var(--text-color);
+
+  a {
+    color: var(--link-color);
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5 {
+    color: var(--heading-color);
+  }
+
+  h2 {
+    border-bottom-color: var(--border-color);
+  }
+
+  h6 {
+    color: var(--text-muted);
+  }
+
+  blockquote {
+    color: var(--text-muted);
+    border-left-color: var(--border-color);
+  }
+
+  table th,
+  table td {
+    border-color: var(--border-color);
+  }
+
+  table tr {
+    border-top-color: var(--border-color);
+  }
+
+  h1 .octicon-link,
+  h2 .octicon-link,
+  h3 .octicon-link,
+  h4 .octicon-link,
+  h5 .octicon-link,
+  h6 .octicon-link {
+    color: var(--heading-color);
+  }
+}
