@@ -73,7 +73,7 @@ const tools = [
   },
   {
     name: 'MuJoCo',
-    note: 'Best contact and friction model. Great for grasping work.',
+    note: 'Best contact and friction model.',
   },
 ];
 

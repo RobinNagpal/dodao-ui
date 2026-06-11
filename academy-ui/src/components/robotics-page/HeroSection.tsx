@@ -25,7 +25,7 @@ export default function HeroSection() {
       <div className="relative mx-auto max-w-7xl px-6 py-16 sm:py-20 lg:py-24 lg:px-8">
         <div className="text-center max-w-4xl mx-auto">
           <div className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-1.5 text-xs font-semibold text-blue-200 ring-1 ring-inset ring-white/20 backdrop-blur-sm">
-            <span className="h-1.5 w-1.5 rounded-full bg-blue-300"></span>
+            <span className="h-2 w-2 rounded-full bg-green-400"></span>
             Two services for robotics teams
           </div>
 
