@@ -50,7 +50,7 @@ export default function DoDAOHomeHero() {
           <div className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-3 lg:gap-8 max-w-5xl mx-auto">
             <a
               href="/home-section/dodao-io/services/custom-ai-agent-dev"
-              className="relative overflow-hidden rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 p-6"
+              className="group relative overflow-hidden rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 p-6 transition-all duration-300 hover:-translate-y-1 hover:bg-white/15 hover:border-white/30 hover:shadow-xl hover:shadow-blue-500/20"
             >
               <div className="relative">
                 <div className="flex items-center justify-between mb-4">
@@ -64,7 +64,9 @@ export default function DoDAOHomeHero() {
                       />
                     </svg>
                   </div>
-                  <span className="text-blue-400 text-sm font-medium">AI Agent</span>
+                  <span className="inline-flex items-center rounded-full bg-blue-500/20 px-2.5 py-0.5 text-xs font-semibold uppercase tracking-wider text-blue-100 ring-1 ring-inset ring-blue-400/40">
+                    AI Agent
+                  </span>
                 </div>
                 <h3 className="text-lg font-semibold text-white mb-2">AI Agent Development</h3>
                 <p className="text-sm text-gray-300">Custom AI agents that automate workflows and solve complex business problems.</p>
@@ -77,7 +79,10 @@ export default function DoDAOHomeHero() {
               </div>
             </a>
 
-            <a href="/robotics" className="relative overflow-hidden rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 p-6">
+            <a
+              href="/robotics"
+              className="group relative overflow-hidden rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 p-6 transition-all duration-300 hover:-translate-y-1 hover:bg-white/15 hover:border-white/30 hover:shadow-xl hover:shadow-blue-500/20"
+            >
               <div className="relative">
                 <div className="flex items-center justify-between mb-4">
                   <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-blue-500/20">
@@ -90,7 +95,9 @@ export default function DoDAOHomeHero() {
                       />
                     </svg>
                   </div>
-                  <span className="text-blue-300 text-sm font-medium">Robotics</span>
+                  <span className="inline-flex items-center rounded-full bg-blue-500/20 px-2.5 py-0.5 text-xs font-semibold uppercase tracking-wider text-blue-100 ring-1 ring-inset ring-blue-400/40">
+                    Robotics
+                  </span>
                 </div>
                 <h3 className="text-lg font-semibold text-white mb-2">Simulation Setup & Synthetic Data</h3>
                 <p className="text-sm text-gray-300">
@@ -107,7 +114,7 @@ export default function DoDAOHomeHero() {
 
             <a
               href="/home-section/dodao-io/services/defi-tooling"
-              className="relative overflow-hidden rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 p-6"
+              className="group relative overflow-hidden rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 p-6 transition-all duration-300 hover:-translate-y-1 hover:bg-white/15 hover:border-white/30 hover:shadow-xl hover:shadow-blue-500/20"
             >
               <div className="relative">
                 <div className="flex items-center justify-between mb-4">
@@ -116,7 +123,9 @@ export default function DoDAOHomeHero() {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                     </svg>
                   </div>
-                  <span className="text-indigo-400 text-sm font-medium">DeFi Tool</span>
+                  <span className="inline-flex items-center rounded-full bg-indigo-500/20 px-2.5 py-0.5 text-xs font-semibold uppercase tracking-wider text-indigo-100 ring-1 ring-inset ring-indigo-400/40">
+                    DeFi Tool
+                  </span>
                 </div>
                 <h3 className="text-lg font-semibold text-white mb-2">DeFi Development & Tools</h3>
                 <p className="text-sm text-gray-300">Advanced tooling, dashboards, and smart contracts for leading DeFi protocols.</p>
@@ -135,7 +144,7 @@ export default function DoDAOHomeHero() {
           <div className="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-3 lg:gap-8 max-w-5xl mx-auto">
             <a
               href="/home-section/dodao-io/products/koalagains"
-              className="relative overflow-hidden rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 p-6"
+              className="group relative overflow-hidden rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 p-6 transition-all duration-300 hover:-translate-y-1 hover:bg-white/15 hover:border-white/30 hover:shadow-xl hover:shadow-blue-500/20"
             >
               <div className="relative">
                 <div className="flex items-center justify-between mb-4">
@@ -144,7 +153,9 @@ export default function DoDAOHomeHero() {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
                     </svg>
                   </div>
-                  <span className="text-blue-400 text-sm font-medium">AI Agent</span>
+                  <span className="inline-flex items-center rounded-full bg-blue-500/20 px-2.5 py-0.5 text-xs font-semibold uppercase tracking-wider text-blue-100 ring-1 ring-inset ring-blue-400/40">
+                    AI Agent
+                  </span>
                 </div>
                 <h3 className="text-lg font-semibold text-white mb-2">KoalaGains Platform</h3>
                 <p className="text-sm text-gray-300">AI-powered investment analysis platform for detailed financial insights and reports.</p>
@@ -159,7 +170,7 @@ export default function DoDAOHomeHero() {
 
             <a
               href="/home-section/dodao-io/products/ketchup-hplc-workflow"
-              className="relative overflow-hidden rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 p-6"
+              className="group relative overflow-hidden rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 p-6 transition-all duration-300 hover:-translate-y-1 hover:bg-white/15 hover:border-white/30 hover:shadow-xl hover:shadow-blue-500/20"
             >
               <div className="relative">
                 <div className="flex items-center justify-between mb-4">
@@ -173,7 +184,9 @@ export default function DoDAOHomeHero() {
                       />
                     </svg>
                   </div>
-                  <span className="text-blue-300 text-sm font-medium">Robotics</span>
+                  <span className="inline-flex items-center rounded-full bg-blue-500/20 px-2.5 py-0.5 text-xs font-semibold uppercase tracking-wider text-blue-100 ring-1 ring-inset ring-blue-400/40">
+                    Robotics
+                  </span>
                 </div>
                 <h3 className="text-lg font-semibold text-white mb-2">Ketchup HPLC Simulation</h3>
                 <p className="text-sm text-gray-300">
@@ -190,7 +203,7 @@ export default function DoDAOHomeHero() {
 
             <a
               href="/home-section/dodao-io/products/defi-alerts"
-              className="relative overflow-hidden rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 p-6"
+              className="group relative overflow-hidden rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 p-6 transition-all duration-300 hover:-translate-y-1 hover:bg-white/15 hover:border-white/30 hover:shadow-xl hover:shadow-blue-500/20"
             >
               <div className="relative">
                 <div className="flex items-center justify-between mb-4">
@@ -199,7 +212,9 @@ export default function DoDAOHomeHero() {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-5 5v-5zM9 9l3-3m0 0l3 3m-3-3v12" />
                     </svg>
                   </div>
-                  <span className="text-indigo-400 text-sm font-medium">DeFi Tool</span>
+                  <span className="inline-flex items-center rounded-full bg-indigo-500/20 px-2.5 py-0.5 text-xs font-semibold uppercase tracking-wider text-indigo-100 ring-1 ring-inset ring-indigo-400/40">
+                    DeFi Tool
+                  </span>
                 </div>
                 <h3 className="text-lg font-semibold text-white mb-2">DeFi Alerts</h3>
                 <p className="text-sm text-gray-300">Get real-time DeFi alerts for yields, position health, and market changes with custom thresholds.</p>

@@ -78,11 +78,11 @@ export default function SyntheticDataSection() {
 
         <div className="mt-16">
           <p className="text-base font-semibold text-blue-400 mb-4 text-center">How We Generate It</p>
-          <div className="flex flex-wrap justify-center gap-3 max-w-3xl mx-auto">
+          <div className="mx-auto grid max-w-4xl grid-cols-2 gap-3 sm:grid-cols-4">
             {methods.map((m) => (
               <span
                 key={m}
-                className="inline-flex items-center rounded-full border border-white/20 bg-white/5 px-4 py-2 text-sm font-medium text-gray-200 backdrop-blur-sm"
+                className="inline-flex items-center justify-center rounded-full border border-white/20 bg-white/5 px-4 py-2 text-center text-sm font-medium text-gray-200 backdrop-blur-sm"
               >
                 {m}
               </span>

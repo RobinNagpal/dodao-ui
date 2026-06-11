@@ -17,14 +17,14 @@ const methods: Method[] = [
   {
     num: '02',
     title: 'Procedural Scene Generation',
-    what: 'Code generates the whole scene every time — random objects on random shelves with random clutter. Opposite of one hand-built world rendered many ways.',
+    what: 'Code generates the whole scene every time. Random objects on random shelves with random clutter, instead of one hand-built world rendered many ways.',
     best: 'NVIDIA Replicator, Google Kubric',
     usedBy: 'Google DeepMind (RT-2), Tortuga AgTech, Cognex',
   },
   {
     num: '03',
     title: 'Photo-Real Rendering',
-    what: 'Ray-traced images with physically based materials — looks close to a real photograph. Critical when a sim-trained vision model has to run on a real camera.',
+    what: 'Ray-traced images with physically based materials. The output looks close to a real photograph, which matters when a sim-trained vision model has to run on a real camera.',
     best: 'Isaac Sim (RTX), Unreal Engine 5',
     usedBy: 'Mercedes-Benz, BMW, every AV company, Foxconn',
   },

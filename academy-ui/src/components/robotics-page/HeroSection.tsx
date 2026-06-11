@@ -57,9 +57,12 @@ export default function HeroSection() {
 
         <div className="mt-14 grid grid-cols-1 gap-6 sm:grid-cols-2 max-w-4xl mx-auto">
           {services.map((service) => (
-            <div key={service.title} className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm p-6">
+            <div
+              key={service.title}
+              className="group rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm p-6 transition-all duration-300 hover:-translate-y-1 hover:border-white/30 hover:bg-white/10 hover:shadow-xl hover:shadow-blue-500/20"
+            >
               <div className="flex items-center gap-x-4">
-                <div className="flex h-12 w-12 flex-none items-center justify-center rounded-xl bg-gradient-to-br from-blue-500 to-indigo-500">
+                <div className="flex h-12 w-12 flex-none items-center justify-center rounded-xl bg-gradient-to-br from-blue-500 to-indigo-500 transition-transform duration-300 group-hover:scale-110">
                   <service.icon className="h-6 w-6 text-white" aria-hidden="true" />
                 </div>
                 <h3 className="text-lg font-semibold text-white">{service.title}</h3>

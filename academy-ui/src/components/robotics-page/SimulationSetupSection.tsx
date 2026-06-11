@@ -71,6 +71,10 @@ const tools = [
     name: 'Isaac Sim',
     note: 'Realistic images. Built for AI training.',
   },
+  {
+    name: 'MuJoCo',
+    note: 'Best contact and friction model. Great for grasping work.',
+  },
 ];
 
 export default function SimulationSetupSection() {
