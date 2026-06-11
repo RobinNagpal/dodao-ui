@@ -1,6 +1,9 @@
+<<<<<<< HEAD
 'use client';
 
 import { useEffect } from 'react';
+=======
+>>>>>>> 6115279d181e8293b6e2501ed4253d6624d39a17
 import {
   CTASection,
   HeroSection,
@@ -12,6 +15,7 @@ import {
 } from '@/components/robotics-page';
 
 export default function RoboticsPageWrapper() {
+<<<<<<< HEAD
   useEffect(() => {
     const previous = document.documentElement.style.scrollBehavior;
     document.documentElement.style.scrollBehavior = 'smooth';
@@ -22,6 +26,10 @@ export default function RoboticsPageWrapper() {
 
   return (
     <main className="bg-gray-900">
+=======
+  return (
+    <main className="bg-bg">
+>>>>>>> 6115279d181e8293b6e2501ed4253d6624d39a17
       <HeroSection />
       <ServicesOverviewSection />
       <HowItWorksSection />

@@ -10,15 +10,15 @@ const baseStyles = {
 const variantStyles = {
   solid: {
     slate:
-      'bg-slate-900 text-white hover:bg-slate-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-900 active:bg-slate-700 active:text-white/80 disabled:opacity-30 disabled:hover:bg-slate-900',
-    blue: 'bg-blue-600 text-white hover:bg-blue-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 active:bg-blue-700 active:text-white/80 disabled:opacity-30 disabled:hover:bg-blue-600',
+      'bg-surface-2 text-heading hover:bg-surface-2/80 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-border active:bg-surface-2 active:text-heading/80 disabled:opacity-30 disabled:hover:bg-surface-2',
+    blue: 'bg-primary text-primary-text hover:bg-primary/85 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary active:bg-primary/75 active:text-primary-text/80 disabled:opacity-30 disabled:hover:bg-primary',
     white:
-      'bg-white text-blue-600 hover:text-blue-700 focus-visible:text-blue-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white active:bg-blue-50 active:text-blue-900/80 disabled:opacity-40 disabled:hover:text-blue-600',
+      'bg-primary-text text-primary hover:text-primary/80 focus-visible:text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-text active:bg-primary-text/90 active:text-primary/80 disabled:opacity-40 disabled:hover:text-primary',
   },
   outline: {
     slate:
-      'border-slate-200 text-slate-900 hover:border-slate-300 hover:bg-slate-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-600 active:border-slate-200 active:bg-slate-50 active:text-slate-900/70 disabled:opacity-40 disabled:hover:border-slate-200 disabled:hover:bg-transparent',
-    blue: 'border-blue-300 text-blue-600 hover:border-blue-400 hover:bg-blue-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 active:text-blue-600/70 disabled:opacity-40 disabled:hover:border-blue-300 disabled:hover:bg-transparent',
+      'border-border text-heading hover:border-border hover:bg-surface focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-border active:border-border active:bg-surface active:text-heading/70 disabled:opacity-40 disabled:hover:border-border disabled:hover:bg-transparent',
+    blue: 'border-primary/40 text-primary hover:border-primary hover:bg-primary/15 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary active:text-primary/70 disabled:opacity-40 disabled:hover:border-primary/40 disabled:hover:bg-transparent',
   },
 };
 

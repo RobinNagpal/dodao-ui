@@ -20,8 +20,8 @@ const offerings: Offering[] = [
     stack: 'ROS 2 · MoveIt 2 · OMPL · BehaviorTree.CPP',
     href: '/home-section/dodao-io/services/robotics-software',
     icon: CpuChipIcon,
-    gradient: 'from-emerald-500 to-teal-500',
-    accent: 'text-emerald-300',
+    gradient: 'from-primary to-link',
+    accent: 'text-primary',
   },
   {
     name: 'Computer Vision & Perception',
@@ -31,8 +31,8 @@ const offerings: Offering[] = [
     stack: 'OpenCV · Open3D · FoundationPose · SAM 2 · DINOv2 · YOLO',
     href: '/home-section/dodao-io/services/computer-vision',
     icon: EyeIcon,
-    gradient: 'from-teal-500 to-cyan-500',
-    accent: 'text-cyan-300',
+    gradient: 'from-primary to-link',
+    accent: 'text-primary',
   },
   {
     name: 'Simulation & Digital Twins',
@@ -42,8 +42,8 @@ const offerings: Offering[] = [
     stack: 'Gazebo Harmonic · Isaac Sim / Lab · MuJoCo · Sim2Real domain randomization',
     href: '/home-section/dodao-io/services/simulation-digital-twins',
     icon: BeakerIcon,
-    gradient: 'from-cyan-500 to-sky-500',
-    accent: 'text-sky-300',
+    gradient: 'from-primary to-link',
+    accent: 'text-primary',
   },
   {
     name: 'Robotics Hardware',
@@ -53,26 +53,26 @@ const offerings: Offering[] = [
     stack: 'myCobot 280 · UR / Franka · RealSense · ATI F/T · Jetson / NUC',
     href: '/home-section/dodao-io/services/robotics-hardware',
     icon: CogIcon,
-    gradient: 'from-sky-500 to-blue-500',
-    accent: 'text-blue-300',
+    gradient: 'from-primary to-link',
+    accent: 'text-primary',
   },
 ];
 
 export default function RoboticsOfferings() {
   return (
-    <section className="relative overflow-hidden bg-gradient-to-br from-gray-900 via-slate-900 to-emerald-950 py-16 sm:py-20" id="robotics-services">
+    <section className="relative overflow-hidden bg-gradient-to-br from-bg to-surface py-16 sm:py-20" id="robotics-services">
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-40 -right-40 w-80 h-80 bg-emerald-500/10 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-cyan-500/10 rounded-full blur-3xl animate-pulse delay-1000"></div>
+        <div className="absolute -top-40 -right-40 w-80 h-80 bg-primary/10 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-primary/10 rounded-full blur-3xl animate-pulse delay-1000"></div>
       </div>
 
       <div className="relative mx-auto max-w-7xl px-6 lg:px-8">
         <div className="text-center mb-12">
-          <h2 className="text-base font-semibold leading-7 text-emerald-400 mb-4">Robotics Services</h2>
-          <p className="text-2xl font-bold tracking-tight text-white sm:text-3xl lg:text-4xl">
+          <h2 className="text-base font-semibold leading-7 text-primary mb-4">Robotics Services</h2>
+          <p className="text-2xl font-bold tracking-tight text-heading sm:text-3xl lg:text-4xl">
             <span className="block">The Four Layers We Build</span>
           </p>
-          <p className="mt-4 text-lg leading-7 text-gray-300 max-w-3xl mx-auto">
+          <p className="mt-4 text-lg leading-7 text-body max-w-3xl mx-auto">
             Most robotics projects need the same four things to ship. Software, perception, simulation, and hardware. We work on all four. You can engage us for
             one layer or the whole stack.
           </p>
@@ -83,22 +83,22 @@ export default function RoboticsOfferings() {
             <a
               key={offering.name}
               href={offering.href}
-              className="group relative flex flex-col overflow-hidden rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10 transition-colors duration-300"
+              className="group relative flex flex-col overflow-hidden rounded-2xl bg-surface/60 backdrop-blur-sm border border-border hover:bg-surface/80 transition-colors duration-300"
             >
               <div className={`h-1.5 bg-gradient-to-r ${offering.gradient}`}></div>
               <div className="p-6 flex flex-col h-full">
                 <div className="flex items-start space-x-4">
                   <div className={`flex h-12 w-12 flex-none items-center justify-center rounded-xl bg-gradient-to-br ${offering.gradient}`}>
-                    <offering.icon className="h-6 w-6 text-white" aria-hidden="true" />
+                    <offering.icon className="h-6 w-6 text-primary-text" aria-hidden="true" />
                   </div>
                   <div>
-                    <h3 className="text-lg font-semibold text-white">{offering.name}</h3>
+                    <h3 className="text-lg font-semibold text-heading">{offering.name}</h3>
                     <p className={`text-sm font-medium ${offering.accent}`}>{offering.tagline}</p>
                   </div>
                 </div>
-                <p className="mt-4 text-sm leading-6 text-gray-300">{offering.description}</p>
-                <p className="mt-4 text-xs uppercase tracking-wide text-gray-400">Stack</p>
-                <p className="mt-1 text-sm text-gray-200">{offering.stack}</p>
+                <p className="mt-4 text-sm leading-6 text-body">{offering.description}</p>
+                <p className="mt-4 text-xs uppercase tracking-wide text-muted">Stack</p>
+                <p className="mt-1 text-sm text-body">{offering.stack}</p>
               </div>
             </a>
           ))}

@@ -1,4 +1,3 @@
-'use client';
 import {
   BeakerIcon,
   ClipboardDocumentCheckIcon,
@@ -10,8 +9,6 @@ import {
   Squares2X2Icon,
   WrenchScrewdriverIcon,
 } from '@heroicons/react/24/outline';
-import ContactModal from '../../../../../components/home/DoDAOHome/components/ContactModal';
-import { useState } from 'react';
 
 const incentives = [
   {
@@ -100,20 +97,17 @@ const workflowSteps = [
 ];
 
 function HplcAutosamplerCaseStudy() {
-  const [showContactModal, setShowContactModal] = useState(false);
   return (
     <div>
-      {showContactModal && <ContactModal open={showContactModal} onClose={() => setShowContactModal(false)} />}
-
-      <div className="relative overflow-hidden bg-white">
+      <div className="relative overflow-hidden bg-bg">
         <div aria-hidden="true" className="hidden lg:absolute lg:inset-0 lg:block">
           <svg fill="none" width={640} height={784} viewBox="0 0 640 784" className="absolute left-1/2 top-0 -translate-y-8 translate-x-64 transform">
             <defs>
               <pattern x={118} y={0} id="hplc-pattern-desktop" width={20} height={20} patternUnits="userSpaceOnUse">
-                <rect x={0} y={0} fill="currentColor" width={4} height={4} className="text-gray-200" />
+                <rect x={0} y={0} fill="currentColor" width={4} height={4} className="text-border" />
               </pattern>
             </defs>
-            <rect y={72} fill="currentColor" width={640} height={640} className="text-gray-50" />
+            <rect y={72} fill="currentColor" width={640} height={640} className="text-surface" />
             <rect x={118} fill="url(#hplc-pattern-desktop)" width={404} height={784} />
           </svg>
         </div>
@@ -124,18 +118,18 @@ function HplcAutosamplerCaseStudy() {
               <div className="sm:text-center md:mx-auto md:max-w-2xl lg:col-span-6 lg:text-left">
                 <h1>
                   <span className="mt-1 block text-4xl font-bold tracking-tight sm:text-6xl">
-                    <span className="block text-indigo-600">VialBot</span>
+                    <span className="block text-primary">VialBot</span>
                   </span>
                 </h1>
-                <p className="mt-3 text-lg leading-8 text-gray-500">
+                <p className="mt-3 text-lg leading-8 text-body">
                   A small robot arm that helps chemistry labs prepare and load sample vials for HPLC. It takes over the slow, manual prep steps that happen
                   before the instrument runs, and keeps a clean audit log of every move.
                 </p>
                 <div className="mt-10 sm:flex sm:justify-center lg:justify-start">
                   <div className="rounded-md shadow">
                     <a
-                      onClick={() => setShowContactModal(true)}
-                      className="flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white cursor-pointer hover:bg-indigo-700 md:px-10 md:py-4 md:text-lg"
+                      href="mailto:info@dodao.com"
+                      className="flex w-full items-center justify-center rounded-md border border-transparent bg-primary px-8 py-3 text-base font-medium text-primary-text cursor-pointer hover:bg-primary/85 md:px-10 md:py-4 md:text-lg"
                     >
                       Get started
                     </a>
@@ -144,7 +138,7 @@ function HplcAutosamplerCaseStudy() {
                     <span
                       aria-disabled="true"
                       title="Live demo coming soon"
-                      className="flex w-full items-center justify-center rounded-md border border-transparent bg-white px-8 py-3 text-base font-medium text-indigo-600 cursor-not-allowed opacity-70 md:px-10 md:py-4 md:text-lg"
+                      className="flex w-full items-center justify-center rounded-md border border-transparent bg-surface px-8 py-3 text-base font-medium text-primary cursor-not-allowed opacity-70 md:px-10 md:py-4 md:text-lg"
                     >
                       Live demo
                     </span>
@@ -162,22 +156,22 @@ function HplcAutosamplerCaseStudy() {
                 >
                   <defs>
                     <pattern x={118} y={0} id="hplc-pattern-mobile" width={20} height={20} patternUnits="userSpaceOnUse">
-                      <rect x={0} y={0} fill="currentColor" width={4} height={4} className="text-gray-200" />
+                      <rect x={0} y={0} fill="currentColor" width={4} height={4} className="text-border" />
                     </pattern>
                   </defs>
-                  <rect y={72} fill="currentColor" width={640} height={640} className="text-gray-50" />
+                  <rect y={72} fill="currentColor" width={640} height={640} className="text-surface" />
                   <rect x={118} fill="url(#hplc-pattern-mobile)" width={404} height={784} />
                 </svg>
                 <div className="relative mx-auto w-full rounded-lg shadow-lg">
-                  <div className="relative block w-full overflow-hidden rounded-lg bg-white">
+                  <div className="relative block w-full overflow-hidden rounded-lg bg-surface">
                     <div className="aspect-[4/3] flex items-center justify-center px-6 py-10 text-center">
                       <div>
-                        <p className="text-xs uppercase tracking-widest text-indigo-600 font-semibold">Simulation Preview</p>
-                        <p className="mt-2 text-lg font-semibold text-gray-900">myCobot 280 Pi in Gazebo Harmonic</p>
-                        <p className="mt-3 text-sm text-gray-500 max-w-sm mx-auto">
+                        <p className="text-xs uppercase tracking-widest text-primary font-semibold">Simulation Preview</p>
+                        <p className="mt-2 text-lg font-semibold text-heading">myCobot 280 Pi in Gazebo Harmonic</p>
+                        <p className="mt-3 text-sm text-muted max-w-sm mx-auto">
                           A 6-DoF cobot picks vials from a rack, reads barcodes with a wrist camera, and loads each vial into the right slot of an HPLC tray.
                         </p>
-                        <p className="mt-4 text-xs italic text-gray-400">A short Gazebo simulation clip will be added here as we progress.</p>
+                        <p className="mt-4 text-xs italic text-muted">A short Gazebo simulation clip will be added here as we progress.</p>
                       </div>
                     </div>
                   </div>
@@ -188,7 +182,7 @@ function HplcAutosamplerCaseStudy() {
         </div>
       </div>
 
-      <div className="bg-gray-50">
+      <div className="bg-surface">
         <div className="mx-auto max-w-7xl py-24 sm:px-2 sm:py-20 lg:px-4 mt-12">
           <div className="mx-auto grid max-w-2xl grid-cols-1 gap-x-8 gap-y-10 px-4 lg:max-w-none lg:grid-cols-2">
             {incentives.map((incentive) => (
@@ -199,8 +193,8 @@ function HplcAutosamplerCaseStudy() {
                   </div>
                 </div>
                 <div className="mt-3 sm:ml-3 sm:mt-0 lg:ml-0 lg:mt-3">
-                  <h3 className="text-lg font-semibold text-gray-900">{incentive.name}</h3>
-                  <p className="mt-2 text-base text-gray-500">{incentive.description}</p>
+                  <h3 className="text-lg font-semibold text-heading">{incentive.name}</h3>
+                  <p className="mt-2 text-base text-body">{incentive.description}</p>
                 </div>
               </div>
             ))}
@@ -208,10 +202,10 @@ function HplcAutosamplerCaseStudy() {
         </div>
       </div>
 
-      <div className="relative bg-white py-20 sm:py-28 lg:py-36">
+      <div className="relative bg-bg py-20 sm:py-28 lg:py-36">
         <div className="mx-auto max-w-md px-6 text-center sm:max-w-3xl lg:max-w-7xl lg:px-8">
-          <h2 className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-5xl">Features of the Robot Arm</h2>
-          <p className="mx-auto mt-5 max-w-prose text-base text-gray-500">
+          <h2 className="mt-2 text-3xl font-bold tracking-tight text-heading sm:text-5xl">Features of the Robot Arm</h2>
+          <p className="mx-auto mt-5 max-w-prose text-base text-body">
             The cell is built around a small collaborative arm, modern perception, and a simulation-first workflow. It is designed to fit on a normal lab bench
             and to be safe near a human technician.
           </p>
@@ -219,15 +213,15 @@ function HplcAutosamplerCaseStudy() {
             <div className="grid grid-cols-1 gap-12 sm:grid-cols-2 lg:grid-cols-3">
               {features.map((feature) => (
                 <div key={feature.name} className="pt-6">
-                  <div className="flow-root rounded-lg bg-gray-50 px-6 pb-8">
+                  <div className="flow-root rounded-lg bg-surface px-6 pb-8">
                     <div className="-mt-6">
                       <div>
-                        <span className="inline-flex items-center justify-center rounded-xl bg-indigo-500 p-3 shadow-lg">
-                          <feature.icon aria-hidden="true" className="h-6 w-6 text-white" />
+                        <span className="inline-flex items-center justify-center rounded-xl bg-primary p-3 shadow-lg">
+                          <feature.icon aria-hidden="true" className="h-6 w-6 text-primary-text" />
                         </span>
                       </div>
-                      <h3 className="mt-8 text-lg/8 font-semibold tracking-tight text-gray-900">{feature.name}</h3>
-                      <p className="mt-5 text-base/7 text-gray-600">{feature.description}</p>
+                      <h3 className="mt-8 text-lg/8 font-semibold tracking-tight text-heading">{feature.name}</h3>
+                      <p className="mt-5 text-base/7 text-body">{feature.description}</p>
                     </div>
                   </div>
                 </div>
@@ -237,48 +231,48 @@ function HplcAutosamplerCaseStudy() {
         </div>
       </div>
 
-      <div className="bg-gray-50 py-20 sm:py-24">
+      <div className="bg-surface py-20 sm:py-24">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="mx-auto max-w-3xl text-center">
-            <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">The Sample-Prep Workflow</h2>
-            <p className="mt-4 text-base text-gray-600">
+            <h2 className="text-3xl font-bold tracking-tight text-heading sm:text-4xl">The Sample-Prep Workflow</h2>
+            <p className="mt-4 text-base text-body">
               The HPLC instrument runs itself once a vial is in. The eight steps before that are manual today. The arm focuses on the steps where positioning
               and choreography matter, and the harder fluid-handling steps are done with the right tool.
             </p>
           </div>
           <ol className="mt-12 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {workflowSteps.map((step) => (
-              <li key={step.num} className="flex flex-col rounded-xl bg-white border border-gray-200 p-5 shadow-sm">
+              <li key={step.num} className="flex flex-col rounded-xl bg-surface-2 border border-border p-5 shadow-sm">
                 <div className="flex items-center gap-x-3">
-                  <span className="inline-flex h-9 w-9 items-center justify-center rounded-lg bg-indigo-100 text-indigo-700 text-sm font-semibold">
+                  <span className="inline-flex h-9 w-9 items-center justify-center rounded-lg bg-primary/15 text-primary text-sm font-semibold">
                     {step.num}
                   </span>
-                  <step.icon className="h-5 w-5 text-indigo-600" aria-hidden="true" />
+                  <step.icon className="h-5 w-5 text-primary" aria-hidden="true" />
                 </div>
-                <p className="mt-3 text-base font-semibold text-gray-900">{step.title}</p>
-                <p className="mt-1 text-xs uppercase tracking-wide text-gray-500">{step.tool}</p>
+                <p className="mt-3 text-base font-semibold text-heading">{step.title}</p>
+                <p className="mt-1 text-xs uppercase tracking-wide text-muted">{step.tool}</p>
               </li>
             ))}
           </ol>
-          <p className="mt-6 text-center text-xs italic text-gray-500">
+          <p className="mt-6 text-center text-xs italic text-muted">
             “Arm-led” steps are the ones the robot drives directly. “Tool-assisted” steps use a dedicated lab tool (balance, pipette) under arm control.
           </p>
         </div>
       </div>
 
-      <div className="bg-white">
-        <div className="relative bg-gray-800 pb-32">
+      <div className="bg-bg">
+        <div className="relative bg-surface pb-32">
           <div className="absolute inset-0">
             <img
               alt=""
               src="https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=60&sat=-100"
               className="size-full object-cover h-80"
             />
-            <div aria-hidden="true" className="absolute inset-0 bg-gray-800 mix-blend-multiply" />
+            <div aria-hidden="true" className="absolute inset-0 bg-surface mix-blend-multiply" />
           </div>
           <div className="relative mx-auto max-w-7xl px-6 py-20 sm:py-28 lg:px-8">
-            <h1 className="text-3xl font-bold tracking-tight text-white sm:text-5xl">Why the Robot Arm Helps You</h1>
-            <p className="mt-6 max-w-3xl text-base text-gray-300">
+            <h1 className="text-3xl font-bold tracking-tight text-heading sm:text-5xl">Why the Robot Arm Helps You</h1>
+            <p className="mt-6 max-w-3xl text-base text-body">
               The HPLC sample-prep job is repetitive, exact, and slow. People are good at thinking, not at running the same motion for the hundredth time. The
               arm handles the repetition so your team can focus on the science.
             </p>
@@ -287,13 +281,13 @@ function HplcAutosamplerCaseStudy() {
         <section aria-labelledby="contact-heading" className="relative z-10 mx-auto -mt-32 max-w-7xl px-6 pb-32 lg:px-8">
           <div className="grid grid-cols-1 gap-y-20 lg:grid-cols-3 lg:gap-x-8 lg:gap-y-0">
             {benefits.map((link) => (
-              <div key={link.name} className="flex flex-col rounded-2xl bg-white shadow-xl">
+              <div key={link.name} className="flex flex-col rounded-2xl bg-surface-2 shadow-xl">
                 <div className="relative flex-1 px-6 pb-8 pt-16 md:px-8">
-                  <div className="absolute top-0 inline-block -translate-y-1/2 transform rounded-xl bg-indigo-600 p-5 shadow-lg">
-                    <link.icon aria-hidden="true" className="h-6 w-6 text-white" />
+                  <div className="absolute top-0 inline-block -translate-y-1/2 transform rounded-xl bg-primary p-5 shadow-lg">
+                    <link.icon aria-hidden="true" className="h-6 w-6 text-primary-text" />
                   </div>
-                  <h3 className="text-lg font-semibold text-gray-900">{link.name}</h3>
-                  <p className="mt-4 text-base text-gray-500">{link.description}</p>
+                  <h3 className="text-lg font-semibold text-heading">{link.name}</h3>
+                  <p className="mt-4 text-base text-body">{link.description}</p>
                 </div>
               </div>
             ))}

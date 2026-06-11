@@ -1,5 +1,4 @@
 import CoreOfferings from './components/CoreOfferings';
-import DoDAOHelpButton from './components/DoDAOHelpButton';
 import DoDAOHomeHero from './components/DoDAOHomeHero';
 import DoDAOProducts from './components/DoDAOProducts';
 import { Footer } from './components/Footer';
@@ -14,7 +13,7 @@ export default function DoDAOHome() {
       <DoDAOHomeHero />
 
       {/* Trusted By section */}
-      <div className="bg-gradient-to-br bg-white">
+      <div className="bg-bg">
         <TrustedBy />
       </div>
 
@@ -27,13 +26,8 @@ export default function DoDAOHome() {
       {/* AI Agents + DeFi — secondary offerings, kept for continuity */}
       <CoreOfferings />
 
-      {/* Help Button */}
-      <div className="bg-white">
-        <DoDAOHelpButton />
-      </div>
-
       {/* Products section */}
-      <div className="from-blue-50 via-indigo-50 to-blue-100">
+      <div className="bg-surface">
         <DoDAOProducts />
       </div>
 
