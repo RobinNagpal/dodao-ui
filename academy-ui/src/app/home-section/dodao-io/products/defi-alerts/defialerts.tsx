@@ -156,7 +156,7 @@ function DeFiAlertsComponent() {
                         href="https://compound.defialerts.xyz/"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex w-full items-center justify-center rounded-md border border-transparent bg-surface px-8 py-3 text-base font-medium text-primary hover:bg-surface-3 md:px-10 md:py-4 md:text-lg"
+                        className="flex w-full items-center justify-center rounded-md border border-transparent bg-surface px-8 py-3 text-base font-medium text-primary hover:bg-surface-2 md:px-10 md:py-4 md:text-lg"
                       >
                         Live demo
                       </a>

@@ -1,5 +1,4 @@
 import { authOptions } from '@/app/api/auth/[...nextauth]/authOptions';
-import { dodaoHomeThemeStyles } from '@/components/home/DoDAOHome/dodaoHomeThemeColors';
 import { ChildLayout } from '@/components/layout/ChildLayout';
 import { SpaceTypes } from '@/types/space/SpaceDto';
 import { getSpaceServerSide } from '@/utils/space/getSpaceServerSide';
@@ -39,12 +38,13 @@ export default async function RootLayout({ children }: RootLayoutProps) {
 
   const themeValue = space?.themeColors || GlobalThemeColors;
 
-  // dodao.io always uses the centralized DoDAO Home palette (shared with
-  // insights-ui) instead of space-configured colors. All other spaces keep
-  // their configured/default theme.
+  // dodao.io's palette is defined entirely in CSS — see
+  // `src/app/styles/dodao-home-theme.scss`, activated by the
+  // `dodao-home-theme` class below — so no inline style vars are set for it.
+  // All other spaces keep their configured/default theme.
   const isDodaoHome = space?.id === PredefinedSpaces.DODAO_HOME;
   const style = isDodaoHome
-    ? dodaoHomeThemeStyles
+    ? undefined
     : ({
         '--primary-color': themeValue.primaryColor,
         '--primary-text-color': themeValue.primaryTextColor,

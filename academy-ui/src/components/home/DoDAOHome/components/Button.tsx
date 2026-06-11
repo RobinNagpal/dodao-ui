@@ -10,7 +10,7 @@ const baseStyles = {
 const variantStyles = {
   solid: {
     slate:
-      'bg-surface-3 text-heading hover:bg-surface-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-border active:bg-surface-2 active:text-heading/80 disabled:opacity-30 disabled:hover:bg-surface-3',
+      'bg-surface-2 text-heading hover:bg-surface-2/80 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-border active:bg-surface-2 active:text-heading/80 disabled:opacity-30 disabled:hover:bg-surface-2',
     blue: 'bg-primary text-primary-text hover:bg-primary/85 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary active:bg-primary/75 active:text-primary-text/80 disabled:opacity-30 disabled:hover:bg-primary',
     white:
       'bg-primary-text text-primary hover:text-primary/80 focus-visible:text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-text active:bg-primary-text/90 active:text-primary/80 disabled:opacity-40 disabled:hover:text-primary',

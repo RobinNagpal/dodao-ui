@@ -124,7 +124,7 @@ function AcademySitesComponent() {
                     <div className="mt-3 rounded-md shadow sm:ml-3 sm:mt-0">
                       <a
                         href="https://uniswap.university/"
-                        className="flex w-full items-center justify-center rounded-md border border-transparent bg-surface px-8 py-3 text-base font-medium text-primary hover:bg-surface-3 md:px-10 md:py-4 md:text-lg"
+                        className="flex w-full items-center justify-center rounded-md border border-transparent bg-surface px-8 py-3 text-base font-medium text-primary hover:bg-surface-2 md:px-10 md:py-4 md:text-lg"
                       >
                         Live demo
                       </a>

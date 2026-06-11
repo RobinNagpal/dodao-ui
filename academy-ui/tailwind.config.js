@@ -7,8 +7,8 @@ module.exports = {
     extend: {
       // Semantic color tokens for the dodao.io (DoDAO Home) pages, backed by
       // the CSS variables defined once in
-      // `src/components/home/DoDAOHome/dodaoHomeThemeColors.ts` (the palette
-      // shared with insights-ui). DoDAO Home components MUST use these tokens
+      // `src/app/styles/dodao-home-theme.scss` (the palette shared with
+      // insights-ui). DoDAO Home components MUST use these tokens
       // (`bg-bg`, `bg-surface`, `text-heading`, `text-muted`, `border-border`,
       // `bg-primary/20`, …) instead of raw palette classes like `bg-gray-900`.
       // The `rgb(var(...) / <alpha-value>)` form keeps Tailwind opacity
@@ -23,7 +23,6 @@ module.exports = {
         bg: 'rgb(var(--bg-rgb) / <alpha-value>)',
         surface: 'rgb(var(--surface-rgb) / <alpha-value>)',
         'surface-2': 'rgb(var(--surface-2-rgb) / <alpha-value>)',
-        'surface-3': 'rgb(var(--surface-3-rgb) / <alpha-value>)',
 
         // Text — `text-heading` / `text-body` / `text-muted`
         heading: 'rgb(var(--heading-rgb) / <alpha-value>)',
@@ -37,7 +36,6 @@ module.exports = {
         success: 'rgb(var(--success-rgb) / <alpha-value>)',
         warning: 'rgb(var(--warning-rgb) / <alpha-value>)',
         danger: 'rgb(var(--danger-rgb) / <alpha-value>)',
-        info: 'rgb(var(--info-rgb) / <alpha-value>)',
       },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',

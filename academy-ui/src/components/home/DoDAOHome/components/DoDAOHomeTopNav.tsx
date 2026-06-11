@@ -167,7 +167,7 @@ export default function DoDAOHomeTopNav() {
               <div className="p-4">
                 {products.map((item) => (
                   <div key={item.name} className="group relative flex gap-x-6 rounded-lg p-4 text-sm leading-6 hover:bg-surface-2">
-                    <div className="mt-1 flex h-11 w-11 flex-none items-center justify-center rounded-lg bg-surface-2 group-hover:bg-surface-3">
+                    <div className="mt-1 flex h-11 w-11 flex-none items-center justify-center rounded-lg bg-surface-2 group-hover:bg-primary/20">
                       <item.icon aria-hidden="true" className="h-6 w-6 text-muted group-hover:text-primary" />
                     </div>
                     <div className="flex-auto">
@@ -205,7 +205,7 @@ export default function DoDAOHomeTopNav() {
                     </h3>
                     {roboticsServices.map((item) => (
                       <div key={item.name} className="group relative mb-2 flex gap-x-4 rounded-lg p-4 hover:bg-surface-2">
-                        <div className="mt-1 flex h-10 w-10 flex-none items-center justify-center rounded-lg bg-surface-2 group-hover:bg-surface-3">
+                        <div className="mt-1 flex h-10 w-10 flex-none items-center justify-center rounded-lg bg-surface-2 group-hover:bg-primary/20">
                           <item.icon aria-hidden="true" className="h-6 w-6 text-muted group-hover:text-primary" />
                         </div>
                         <div>
@@ -223,7 +223,7 @@ export default function DoDAOHomeTopNav() {
                     <h3 className="mb-2 text-base font-semibold text-heading text-center">AI Agents</h3>
                     {aiAgentServices.map((item) => (
                       <div key={item.name} className="group relative mb-2 flex gap-x-4 rounded-lg p-4 hover:bg-surface-2">
-                        <div className="mt-1 flex h-10 w-10 flex-none items-center justify-center rounded-lg bg-surface-2 group-hover:bg-surface-3">
+                        <div className="mt-1 flex h-10 w-10 flex-none items-center justify-center rounded-lg bg-surface-2 group-hover:bg-primary/20">
                           <item.icon aria-hidden="true" className="h-6 w-6 text-muted group-hover:text-primary" />
                         </div>
                         <div>
@@ -241,7 +241,7 @@ export default function DoDAOHomeTopNav() {
                     <h3 className="mb-2 text-base font-semibold text-heading text-center">Blockchain</h3>
                     {blockchainServices.map((item) => (
                       <div key={item.name} className="group relative mb-2 flex gap-x-4 rounded-lg p-4 hover:bg-surface-2">
-                        <div className="mt-1 flex h-10 w-10 flex-none items-center justify-center rounded-lg bg-surface-2 group-hover:bg-surface-3">
+                        <div className="mt-1 flex h-10 w-10 flex-none items-center justify-center rounded-lg bg-surface-2 group-hover:bg-primary/20">
                           <item.icon aria-hidden="true" className="h-6 w-6 text-muted group-hover:text-primary" />
                         </div>
                         <div>
@@ -273,7 +273,7 @@ export default function DoDAOHomeTopNav() {
               <div className="p-4">
                 {educationAreas.map((item) => (
                   <div key={item.name} className="group relative flex gap-x-6 rounded-lg p-4 text-sm leading-6 hover:bg-surface-2">
-                    <div className="mt-1 flex h-11 w-11 flex-none items-center justify-center rounded-lg bg-surface-2 group-hover:bg-surface-3">
+                    <div className="mt-1 flex h-11 w-11 flex-none items-center justify-center rounded-lg bg-surface-2 group-hover:bg-primary/20">
                       <item.icon aria-hidden="true" className="h-6 w-6 text-muted group-hover:text-primary" />
                     </div>
                     <div className="flex-auto">
@@ -304,7 +304,7 @@ export default function DoDAOHomeTopNav() {
               <div className="p-4">
                 {researchAreas.map((item) => (
                   <div key={item.name} className="group relative flex gap-x-6 rounded-lg p-4 text-sm leading-6 hover:bg-surface-2">
-                    <div className="mt-1 flex h-11 w-11 flex-none items-center justify-center rounded-lg bg-surface-2 group-hover:bg-surface-3">
+                    <div className="mt-1 flex h-11 w-11 flex-none items-center justify-center rounded-lg bg-surface-2 group-hover:bg-primary/20">
                       <item.icon aria-hidden="true" className="h-6 w-6 text-muted group-hover:text-primary" />
                     </div>
                     <div className="flex-auto">

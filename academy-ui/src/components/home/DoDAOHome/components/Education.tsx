@@ -44,7 +44,7 @@ function HeroEducationCardImageLeft({ title, subtitle, description, imageSrc, im
           <div className="mt-8">
             <button
               onClick={onButtonClick}
-              className="inline-flex rounded-md bg-surface-3 px-3.5 py-2.5 text-sm font-semibold text-heading shadow-sm hover:bg-surface-3/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary cursor-pointer"
+              className="inline-flex rounded-md bg-surface-2 px-3.5 py-2.5 text-sm font-semibold text-heading shadow-sm hover:bg-surface-2/60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary cursor-pointer"
             >
               {buttonText}
             </button>

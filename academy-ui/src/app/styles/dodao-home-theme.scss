@@ -1,15 +1,67 @@
 /*
- * dodao.io (DoDAO Home) theme overrides.
+ * dodao.io (DoDAO Home) theme — the SINGLE place where every color of the
+ * site is defined. The palette matches insights-ui (KoalaGains):
+ * a dark surface ramp, white headings, brightened body text, and the indigo
+ * brand primary.
  *
- * The palette itself lives in ONE place —
- * `src/components/home/DoDAOHome/dodaoHomeThemeColors.ts` — and is injected
- * on `<body>` (together with the `dodao-home-theme` class) in
- * `src/app/layout.tsx` when the DODAO_HOME space is served.
+ * `src/app/layout.tsx` puts the `dodao-home-theme` class on `<body>` when the
+ * DODAO_HOME space is served, so every page on dodao.io — home, robotics,
+ * products, services, education, research — picks these variables up. No
+ * JavaScript is involved; theming is pure CSS.
  *
- * This file contains NO color literals: it only re-points the handful of
- * light-theme hardcodes in the shared `markdown.scss` (used by the MDX
- * service/education/research pages on dodao.io) at the theme variables, so
- * those pages render correctly on the dark palette.
+ * The palette is intentionally tiny: 7 base colors + 1 link accent +
+ * 3 status tones = 11 colors total. Do not add more.
+ *
+ * Each color is an RGB triplet so the Tailwind tokens in `tailwind.config.js`
+ * (`bg-bg`, `bg-surface`, `text-heading`, `text-primary/20`, …) can support
+ * opacity modifiers. Components must use those tokens — never raw palette
+ * classes like `bg-gray-900` or hex values.
+ */
+body.dodao-home-theme {
+  /* ---- Base palette (7) ---- */
+  --bg-rgb: 17 24 39; /* #111827 — page background */
+  --surface-rgb: 31 41 55; /* #1f2937 — cards / sections */
+  --surface-2-rgb: 55 65 81; /* #374151 — inset elements; doubles as the border color */
+  --heading-rgb: 255 255 255; /* #ffffff — headings; doubles as text on primary buttons */
+  --text-rgb: 243 244 246; /* #f3f4f6 — body text */
+  --text-muted-rgb: 203 213 225; /* #cbd5e1 — secondary / muted text */
+  --primary-rgb: 127 120 255; /* #7f78ff — indigo, primary actions */
+
+  /* ---- Accent (1) ---- */
+  --link-rgb: 160 155 255; /* #a09bff — links, light end of brand gradients */
+
+  /* ---- Status tones (3) — chips, badges, indicators only ---- */
+  --success-rgb: 52 211 153; /* emerald */
+  --warning-rgb: 251 191 36; /* amber */
+  --danger-rgb: 248 113 113; /* red */
+
+  /* ---- Role aliases (no new colors) ---- */
+  --border-rgb: var(--surface-2-rgb);
+  --primary-text-rgb: var(--heading-rgb);
+
+  /* ---- Legacy var names used by shared web-core components, the
+     theme-styles.scss utility classes, markdown styles, and swiper ---- */
+  --primary-color: rgb(var(--primary-rgb));
+  --primary-text-color: rgb(var(--primary-text-rgb));
+  --bg-color: rgb(var(--bg-rgb));
+  --text-color: rgb(var(--text-rgb));
+  --text-muted: rgb(var(--text-muted-rgb));
+  --link-color: rgb(var(--link-rgb));
+  --heading-color: rgb(var(--heading-rgb));
+  --border-color: rgb(var(--border-rgb));
+  --block-bg: rgb(var(--surface-rgb));
+  --swiper-theme-color: rgb(var(--primary-rgb));
+}
+
+/* Smooth anchor scrolling (CSS replacement for the old JS scroll handler). */
+html:has(body.dodao-home-theme) {
+  scroll-behavior: smooth;
+}
+
+/*
+ * Markdown overrides for the MDX service/education/research pages: re-point
+ * the light-theme hardcodes in the shared `markdown.scss` at the theme
+ * variables. No color literals here.
  */
 body.dodao-home-theme .markdown-body {
   color: var(--text-color);
