@@ -21,7 +21,7 @@ export default function RoboticsPageWrapper() {
   }, []);
 
   return (
-    <main className="bg-gray-900">
+    <main className="bg-bg">
       <HeroSection />
       <ServicesOverviewSection />
       <HowItWorksSection />

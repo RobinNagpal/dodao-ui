@@ -50,12 +50,12 @@ const services: Service[] = [
 
 export default function ServicesOverviewSection() {
   return (
-    <section id="services" className="relative py-20 bg-gradient-to-b from-gray-900 to-gray-800">
+    <section id="services" className="relative py-20 bg-gradient-to-b from-bg to-surface">
       <div className="relative mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto max-w-3xl text-center">
-          <h2 className="text-base font-semibold leading-7 text-blue-400">What We Offer</h2>
-          <p className="mt-2 text-3xl font-bold tracking-tight text-white sm:text-4xl">Two services. One foundation.</p>
-          <p className="mt-4 text-lg text-gray-300">
+          <h2 className="text-base font-semibold leading-7 text-primary">What We Offer</h2>
+          <p className="mt-2 text-3xl font-bold tracking-tight text-heading sm:text-4xl">Two services. One foundation.</p>
+          <p className="mt-4 text-lg text-body">
             Both services build on the same careful simulation of your cell. Engage us for one or both — most teams start with the simulation and add the data
             pipeline once the world is solid.
           </p>
@@ -65,40 +65,40 @@ export default function ServicesOverviewSection() {
           {services.map((service, idx) => (
             <div
               key={service.id}
-              className="group relative flex flex-col overflow-hidden rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm hover:border-white/20 transition-colors"
+              className="group relative flex flex-col overflow-hidden rounded-2xl border border-border bg-surface/60 backdrop-blur-sm hover:border-primary/40 transition-colors"
             >
-              <div className="h-1.5 bg-gradient-to-r from-blue-500 to-indigo-500"></div>
+              <div className="h-1.5 bg-gradient-to-r from-primary to-link"></div>
               <div className="flex flex-col h-full p-8">
                 <div className="flex items-start gap-x-4">
-                  <div className="flex h-12 w-12 flex-none items-center justify-center rounded-xl bg-gradient-to-br from-blue-500 to-indigo-500">
-                    {idx === 0 ? <BeakerIcon className="h-6 w-6 text-white" /> : <EyeIcon className="h-6 w-6 text-white" />}
+                  <div className="flex h-12 w-12 flex-none items-center justify-center rounded-xl bg-gradient-to-br from-primary to-link">
+                    {idx === 0 ? <BeakerIcon className="h-6 w-6 text-primary-text" /> : <EyeIcon className="h-6 w-6 text-primary-text" />}
                   </div>
                   <div>
-                    <h3 className="text-xl font-semibold text-white">{service.name}</h3>
-                    <p className="mt-1 text-sm text-blue-300">{service.tagline}</p>
+                    <h3 className="text-xl font-semibold text-heading">{service.name}</h3>
+                    <p className="mt-1 text-sm text-primary">{service.tagline}</p>
                   </div>
                 </div>
 
-                <p className="mt-5 text-sm leading-6 text-gray-300">{service.description}</p>
+                <p className="mt-5 text-sm leading-6 text-body">{service.description}</p>
 
                 <ul className="mt-5 space-y-2">
                   {service.bullets.map((bullet) => (
-                    <li key={bullet} className="flex items-start gap-x-2 text-sm text-gray-300">
-                      <span className="mt-1.5 inline-block h-1.5 w-1.5 flex-none rounded-full bg-blue-400"></span>
+                    <li key={bullet} className="flex items-start gap-x-2 text-sm text-body">
+                      <span className="mt-1.5 inline-block h-1.5 w-1.5 flex-none rounded-full bg-primary"></span>
                       <span>{bullet}</span>
                     </li>
                   ))}
                 </ul>
 
-                <div className="mt-6 rounded-xl border border-white/10 bg-white/5 px-4 py-3">
-                  <p className="text-xs font-semibold uppercase tracking-wide text-blue-300">{service.builtWith.label}</p>
-                  <p className="mt-1 text-sm text-gray-200">{service.builtWith.tools}</p>
+                <div className="mt-6 rounded-xl border border-border bg-surface-2 px-4 py-3">
+                  <p className="text-xs font-semibold uppercase tracking-wide text-primary">{service.builtWith.label}</p>
+                  <p className="mt-1 text-sm text-body">{service.builtWith.tools}</p>
                 </div>
 
                 <div className="mt-auto pt-6">
                   <a
                     href={`#${service.id}`}
-                    className="inline-flex items-center gap-x-2 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm hover:from-blue-500 hover:to-indigo-500 transition-colors"
+                    className="inline-flex items-center gap-x-2 rounded-xl bg-primary px-5 py-2.5 text-sm font-semibold text-primary-text shadow-sm hover:bg-primary/85 transition-colors"
                   >
                     See the details
                     <ArrowRightIcon className="h-4 w-4" aria-hidden="true" />
