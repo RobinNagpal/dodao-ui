@@ -42,7 +42,7 @@ const produced: Produced[] = [
 
 const methods = ['Domain Randomization', 'Procedural Scenes', 'Photo-Real Rendering', 'Sensor Noise Modelling'];
 
-const formats = ['LeRobot', 'Robomimic', 'RLDS', 'COCO JSON', 'Custom HDF5', 'MCAP rosbags', 'YOLO labels'];
+const formats = ['LeRobot', 'COCO JSON', 'Custom HDF5', 'MCAP rosbags', 'YOLO labels'];
 
 export default function SyntheticDataSection() {
   return (
