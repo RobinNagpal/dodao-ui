@@ -1,6 +1,3 @@
-'use client';
-
-import { Dialog, DialogPanel, Disclosure, DisclosureButton, DisclosurePanel, Popover, PopoverButton, PopoverGroup, PopoverPanel } from '@headlessui/react';
 import { ChevronDownIcon } from '@heroicons/react/20/solid';
 import {
   Bars3Icon,
@@ -18,7 +15,6 @@ import {
   ShieldCheckIcon,
   EyeIcon,
 } from '@heroicons/react/24/outline';
-import { useState } from 'react';
 
 const products = [
   {
@@ -128,9 +124,63 @@ const blockchainServices = [
   },
 ];
 
-export default function DoDAOHomeTopNav() {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+interface MenuItem {
+  name: string;
+  description: string;
+  href: string;
+  icon: React.ComponentType<React.ComponentProps<'svg'>>;
+}
 
+function DesktopMenuItem({ item }: { item: MenuItem }) {
+  return (
+    <div className="group relative flex gap-x-6 rounded-lg p-4 text-sm leading-6 hover:bg-surface-2">
+      <div className="mt-1 flex h-11 w-11 flex-none items-center justify-center rounded-lg bg-surface-2 group-hover:bg-primary/20">
+        <item.icon aria-hidden="true" className="h-6 w-6 text-muted group-hover:text-primary" />
+      </div>
+      <div className="flex-auto">
+        <a href={item.href} className="block font-semibold text-heading">
+          {item.name}
+          <span className="absolute inset-0" />
+        </a>
+        <p className="mt-1 text-body">{item.description}</p>
+      </div>
+    </div>
+  );
+}
+
+function DesktopServiceItem({ item }: { item: MenuItem }) {
+  return (
+    <div className="group relative mb-2 flex gap-x-4 rounded-lg p-4 hover:bg-surface-2">
+      <div className="mt-1 flex h-10 w-10 flex-none items-center justify-center rounded-lg bg-surface-2 group-hover:bg-primary/20">
+        <item.icon aria-hidden="true" className="h-6 w-6 text-muted group-hover:text-primary" />
+      </div>
+      <div>
+        <a href={item.href} className="font-semibold text-heading">
+          {item.name}
+          <span className="absolute inset-0" />
+        </a>
+        <p className="mt-1 text-body">{item.description}</p>
+      </div>
+    </div>
+  );
+}
+
+function DesktopDropdownTrigger({ label }: { label: string }) {
+  return (
+    <button
+      type="button"
+      className="flex items-center gap-x-1 rounded-md p-1 text-sm font-semibold leading-6 text-heading transition-colors duration-200 group-hover/nav:bg-surface group-hover/nav:text-primary group-focus-within/nav:bg-surface group-focus-within/nav:text-primary"
+    >
+      {label}
+      <ChevronDownIcon
+        aria-hidden="true"
+        className="h-5 w-5 flex-none text-muted transition-all duration-200 group-hover/nav:rotate-180 group-hover/nav:text-primary group-focus-within/nav:rotate-180 group-focus-within/nav:text-primary"
+      />
+    </button>
+  );
+}
+
+export default function DoDAOHomeTopNav() {
   return (
     <header className="bg-bg">
       <nav aria-label="Global" className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8">
@@ -144,57 +194,126 @@ export default function DoDAOHomeTopNav() {
             />
           </a>
         </div>
-        <div className="flex lg:hidden">
-          <button type="button" onClick={() => setMobileMenuOpen(true)} className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-body">
-            <span className="sr-only">Open main menu</span>
-            <Bars3Icon aria-hidden="true" className="h-6 w-6" />
-          </button>
-        </div>
-        <PopoverGroup className="hidden lg:flex lg:gap-x-12">
-          <Popover className="relative">
-            <PopoverButton className="flex items-center gap-x-1 text-sm font-semibold leading-6 text-heading p-1 data-[open]:text-primary data-[open]:bg-surface rounded-md transition-colors duration-200">
-              Products
-              <ChevronDownIcon
-                aria-hidden="true"
-                className="h-5 w-5 flex-none text-muted data-[open]:text-primary data-[open]:rotate-180 transition-all duration-200"
-              />
-            </PopoverButton>
 
-            <PopoverPanel
-              transition
-              className="absolute -left-8 top-full z-10 mt-3 w-screen max-w-md overflow-hidden rounded-3xl bg-surface shadow-lg ring-1 ring-border transition data-[closed]:translate-y-1 data-[closed]:opacity-0 data-[enter]:duration-200 data-[leave]:duration-150 data-[enter]:ease-out data-[leave]:ease-in"
-            >
-              <div className="p-4">
-                {products.map((item) => (
-                  <div key={item.name} className="group relative flex gap-x-6 rounded-lg p-4 text-sm leading-6 hover:bg-surface-2">
-                    <div className="mt-1 flex h-11 w-11 flex-none items-center justify-center rounded-lg bg-surface-2 group-hover:bg-primary/20">
-                      <item.icon aria-hidden="true" className="h-6 w-6 text-muted group-hover:text-primary" />
+        {/* Mobile menu (CSS-only via native <details>) */}
+        <details className="group/mobile flex lg:hidden">
+          <summary className="relative z-20 -m-2.5 inline-flex cursor-pointer list-none items-center justify-center rounded-md p-2.5 text-body [&::-webkit-details-marker]:hidden">
+            <span className="sr-only">Open main menu</span>
+            <Bars3Icon aria-hidden="true" className="h-6 w-6 group-open/mobile:hidden" />
+            <XMarkIcon aria-hidden="true" className="hidden h-6 w-6 group-open/mobile:block" />
+          </summary>
+          <div className="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-surface px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-border">
+            <div className="flex items-center justify-between">
+              <a href="#" className="-m-1.5 p-1.5">
+                <span className="sr-only">DoDAO</span>
+                <img
+                  alt="DoDAO logo"
+                  src="https://d31h13bdjwgzxs.cloudfront.net/academy/tidbitshub/Space/tidbitshub/1711618687477_dodao_logo%2Btext%20rectangle.png"
+                  className="h-8 w-auto"
+                />
+              </a>
+            </div>
+            <div className="mt-6 flow-root">
+              <div className="-my-6 divide-y divide-border">
+                <div className="space-y-2 py-6">
+                  <details className="group -mx-3">
+                    <summary className="flex w-full cursor-pointer list-none items-center justify-between rounded-lg py-2 pl-3 pr-3.5 text-base font-semibold leading-7 text-heading hover:bg-surface-2 [&::-webkit-details-marker]:hidden">
+                      Product
+                      <ChevronDownIcon aria-hidden="true" className="h-5 w-5 flex-none group-open:rotate-180" />
+                    </summary>
+                    <div className="mt-2 space-y-2">
+                      {products.map((item) => (
+                        <a key={item.name} href={item.href} className="block rounded-lg py-2 pl-6 pr-3 text-sm font-semibold leading-7 text-heading hover:bg-surface-2">
+                          {item.name}
+                        </a>
+                      ))}
                     </div>
-                    <div className="flex-auto">
-                      <a href={item.href} className="block font-semibold text-heading">
-                        {item.name}
-                        <span className="absolute inset-0" />
+                  </details>
+                  <details className="group -mx-3">
+                    <summary className="flex w-full cursor-pointer list-none items-center justify-between rounded-lg py-2 pl-3 pr-3.5 text-base font-semibold leading-7 text-heading hover:bg-surface-2 [&::-webkit-details-marker]:hidden">
+                      Services
+                      <ChevronDownIcon aria-hidden="true" className="h-5 w-5 flex-none group-open:rotate-180" />
+                    </summary>
+                    <div className="mt-2 space-y-2">
+                      <a href="/robotics" className="block rounded-lg px-3 pb-2 pt-2 text-sm font-semibold text-heading hover:bg-surface-2">
+                        Robotics
                       </a>
-                      <p className="mt-1 text-body">{item.description}</p>
+                      {roboticsServices.map((item) => (
+                        <a key={item.name} href={item.href} className="block rounded-lg py-1 pl-6 pr-3 text-sm leading-7 text-body hover:bg-surface-2">
+                          {item.name}
+                        </a>
+                      ))}
+
+                      <div className="px-3 pb-2 pt-2 text-sm font-semibold text-heading">AI Agents</div>
+                      {aiAgentServices.map((item) => (
+                        <a key={item.name} href={item.href} className="block rounded-lg py-1 pl-6 pr-3 text-sm leading-7 text-body hover:bg-surface-2">
+                          {item.name}
+                        </a>
+                      ))}
+
+                      <div className="px-3 pb-2 pt-2 text-sm font-semibold text-heading">Blockchain</div>
+                      {blockchainServices.map((item) => (
+                        <a key={item.name} href={item.href} className="block rounded-lg py-1 pl-6 pr-3 text-sm leading-7 text-body hover:bg-surface-2">
+                          {item.name}
+                        </a>
+                      ))}
                     </div>
-                  </div>
-                ))}
+                  </details>
+                  <details className="group -mx-3">
+                    <summary className="flex w-full cursor-pointer list-none items-center justify-between rounded-lg py-2 pl-3 pr-3.5 text-base font-semibold leading-7 text-heading hover:bg-surface-2 [&::-webkit-details-marker]:hidden">
+                      Education
+                      <ChevronDownIcon aria-hidden="true" className="h-5 w-5 flex-none group-open:rotate-180" />
+                    </summary>
+                    <div className="mt-2 space-y-2">
+                      {educationAreas.map((item) => (
+                        <a key={item.name} href={item.href} className="block rounded-lg py-2 pl-6 pr-3 text-sm font-semibold leading-7 text-heading hover:bg-surface-2">
+                          {item.name}
+                        </a>
+                      ))}
+                    </div>
+                  </details>
+                  <details className="group -mx-3">
+                    <summary className="flex w-full cursor-pointer list-none items-center justify-between rounded-lg py-2 pl-3 pr-3.5 text-base font-semibold leading-7 text-heading hover:bg-surface-2 [&::-webkit-details-marker]:hidden">
+                      Research
+                      <ChevronDownIcon aria-hidden="true" className="h-5 w-5 flex-none group-open:rotate-180" />
+                    </summary>
+                    <div className="mt-2 space-y-2">
+                      {researchAreas.map((item) => (
+                        <a key={item.name} href={item.href} className="block rounded-lg py-2 pl-6 pr-3 text-sm font-semibold leading-7 text-heading hover:bg-surface-2">
+                          {item.name}
+                        </a>
+                      ))}
+                    </div>
+                  </details>
+                </div>
+                <div className="py-6">
+                  <a href="#" className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-heading hover:bg-surface-2">
+                    Log in
+                  </a>
+                </div>
               </div>
-            </PopoverPanel>
-          </Popover>
-          <Popover className="relative">
-            <PopoverButton className="flex items-center gap-x-1 text-sm font-semibold leading-6 text-heading p-1 data-[open]:text-primary data-[open]:bg-surface rounded-md transition-colors duration-200">
-              Services
-              <ChevronDownIcon
-                aria-hidden="true"
-                className="h-5 w-5 flex-none text-muted data-[open]:text-primary data-[open]:rotate-180 transition-all duration-200"
-              />
-            </PopoverButton>
-            <PopoverPanel
-              transition
-              className="absolute left-1/2 z-10 mt-3 flex w-screen max-w-max -translate-x-1/2 px-4
-                         data-[closed]:translate-y-1 data-[closed]:opacity-0 data-[enter]:duration-200 data-[leave]:duration-150 data-[enter]:ease-out data-[leave]:ease-in"
-            >
+            </div>
+          </div>
+        </details>
+
+        {/* Desktop dropdowns (CSS-only via hover / focus-within) */}
+        <div className="hidden lg:flex lg:gap-x-12">
+          <div className="group/nav relative">
+            <DesktopDropdownTrigger label="Products" />
+            <div className="absolute -left-8 top-full z-10 hidden w-screen max-w-md pt-3 group-hover/nav:block group-focus-within/nav:block">
+              <div className="overflow-hidden rounded-3xl bg-surface shadow-lg ring-1 ring-border">
+                <div className="p-4">
+                  {products.map((item) => (
+                    <DesktopMenuItem key={item.name} item={item} />
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="group/nav relative">
+            <DesktopDropdownTrigger label="Services" />
+            <div className="absolute left-1/2 top-full z-10 hidden w-screen max-w-max -translate-x-1/2 px-4 pt-3 group-hover/nav:flex group-focus-within/nav:flex">
               <div className="w-screen max-w-5xl flex-auto overflow-hidden rounded-3xl bg-surface text-sm/6 shadow-lg ring-1 ring-border">
                 <div className="grid grid-cols-1 gap-6 p-4 lg:grid-cols-3">
                   <div>
@@ -204,253 +323,57 @@ export default function DoDAOHomeTopNav() {
                       </a>
                     </h3>
                     {roboticsServices.map((item) => (
-                      <div key={item.name} className="group relative mb-2 flex gap-x-4 rounded-lg p-4 hover:bg-surface-2">
-                        <div className="mt-1 flex h-10 w-10 flex-none items-center justify-center rounded-lg bg-surface-2 group-hover:bg-primary/20">
-                          <item.icon aria-hidden="true" className="h-6 w-6 text-muted group-hover:text-primary" />
-                        </div>
-                        <div>
-                          <a href={item.href} className="font-semibold text-heading">
-                            {item.name}
-                            <span className="absolute inset-0" />
-                          </a>
-                          <p className="mt-1 text-body">{item.description}</p>
-                        </div>
-                      </div>
+                      <DesktopServiceItem key={item.name} item={item} />
                     ))}
                   </div>
 
                   <div>
                     <h3 className="mb-2 text-base font-semibold text-heading text-center">AI Agents</h3>
                     {aiAgentServices.map((item) => (
-                      <div key={item.name} className="group relative mb-2 flex gap-x-4 rounded-lg p-4 hover:bg-surface-2">
-                        <div className="mt-1 flex h-10 w-10 flex-none items-center justify-center rounded-lg bg-surface-2 group-hover:bg-primary/20">
-                          <item.icon aria-hidden="true" className="h-6 w-6 text-muted group-hover:text-primary" />
-                        </div>
-                        <div>
-                          <a href={item.href} className="font-semibold text-heading">
-                            {item.name}
-                            <span className="absolute inset-0" />
-                          </a>
-                          <p className="mt-1 text-body">{item.description}</p>
-                        </div>
-                      </div>
+                      <DesktopServiceItem key={item.name} item={item} />
                     ))}
                   </div>
 
                   <div>
                     <h3 className="mb-2 text-base font-semibold text-heading text-center">Blockchain</h3>
                     {blockchainServices.map((item) => (
-                      <div key={item.name} className="group relative mb-2 flex gap-x-4 rounded-lg p-4 hover:bg-surface-2">
-                        <div className="mt-1 flex h-10 w-10 flex-none items-center justify-center rounded-lg bg-surface-2 group-hover:bg-primary/20">
-                          <item.icon aria-hidden="true" className="h-6 w-6 text-muted group-hover:text-primary" />
-                        </div>
-                        <div>
-                          <a href={item.href} className="font-semibold text-heading">
-                            {item.name}
-                            <span className="absolute inset-0" />
-                          </a>
-                          <p className="mt-1 text-body">{item.description}</p>
-                        </div>
-                      </div>
+                      <DesktopServiceItem key={item.name} item={item} />
                     ))}
                   </div>
                 </div>
               </div>
-            </PopoverPanel>
-          </Popover>
-          <Popover className="relative">
-            <PopoverButton className="flex items-center gap-x-1 text-sm font-semibold leading-6 text-heading p-1 data-[open]:text-primary data-[open]:bg-surface rounded-md transition-colors duration-200">
-              Education
-              <ChevronDownIcon
-                aria-hidden="true"
-                className="h-5 w-5 flex-none text-muted data-[open]:text-primary data-[open]:rotate-180 transition-all duration-200"
-              />
-            </PopoverButton>
-            <PopoverPanel
-              transition
-              className="absolute -left-8 top-full z-10 mt-3 w-screen max-w-md overflow-hidden rounded-3xl bg-surface shadow-lg ring-1 ring-border transition data-[closed]:translate-y-1 data-[closed]:opacity-0 data-[enter]:duration-200 data-[leave]:duration-150 data-[enter]:ease-out data-[leave]:ease-in"
-            >
-              <div className="p-4">
-                {educationAreas.map((item) => (
-                  <div key={item.name} className="group relative flex gap-x-6 rounded-lg p-4 text-sm leading-6 hover:bg-surface-2">
-                    <div className="mt-1 flex h-11 w-11 flex-none items-center justify-center rounded-lg bg-surface-2 group-hover:bg-primary/20">
-                      <item.icon aria-hidden="true" className="h-6 w-6 text-muted group-hover:text-primary" />
-                    </div>
-                    <div className="flex-auto">
-                      <a href={item.href} className="block font-semibold text-heading">
-                        {item.name}
-                        <span className="absolute inset-0" />
-                      </a>
-                      <p className="mt-1 text-body">{item.description}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </PopoverPanel>
-          </Popover>
-          <Popover className="relative">
-            <PopoverButton className="flex items-center gap-x-1 text-sm font-semibold leading-6 text-heading p-1 data-[open]:text-primary data-[open]:bg-surface rounded-md transition-colors duration-200">
-              Research
-              <ChevronDownIcon
-                aria-hidden="true"
-                className="h-5 w-5 flex-none text-muted data-[open]:text-primary data-[open]:rotate-180 transition-all duration-200"
-              />
-            </PopoverButton>
-
-            <PopoverPanel
-              transition
-              className="absolute -left-8 top-full z-10 mt-3 w-screen max-w-md overflow-hidden rounded-3xl bg-surface shadow-lg ring-1 ring-border transition data-[closed]:translate-y-1 data-[closed]:opacity-0 data-[enter]:duration-200 data-[leave]:duration-150 data-[enter]:ease-out data-[leave]:ease-in"
-            >
-              <div className="p-4">
-                {researchAreas.map((item) => (
-                  <div key={item.name} className="group relative flex gap-x-6 rounded-lg p-4 text-sm leading-6 hover:bg-surface-2">
-                    <div className="mt-1 flex h-11 w-11 flex-none items-center justify-center rounded-lg bg-surface-2 group-hover:bg-primary/20">
-                      <item.icon aria-hidden="true" className="h-6 w-6 text-muted group-hover:text-primary" />
-                    </div>
-                    <div className="flex-auto">
-                      <a href={item.href} className="block font-semibold text-heading">
-                        {item.name}
-                        <span className="absolute inset-0" />
-                      </a>
-                      <p className="mt-1 text-body">{item.description}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </PopoverPanel>
-          </Popover>
-        </PopoverGroup>
-        <div className="hidden lg:flex lg:flex-1 lg:justify-end"></div>
-      </nav>
-      <Dialog open={mobileMenuOpen} onClose={setMobileMenuOpen} className="lg:hidden">
-        <div className="fixed inset-0 z-10" />
-        <DialogPanel className="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-surface px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-border">
-          <div className="flex items-center justify-between">
-            <a href="#" className="-m-1.5 p-1.5">
-              <span className="sr-only">DoDAO</span>
-              <img
-                alt="DoDAO logo"
-                src="https://d31h13bdjwgzxs.cloudfront.net/academy/tidbitshub/Space/tidbitshub/1711618687477_dodao_logo%2Btext%20rectangle.png"
-                className="h-8 w-auto"
-              />
-            </a>
-            <button type="button" onClick={() => setMobileMenuOpen(false)} className="-m-2.5 rounded-md p-2.5 text-body">
-              <span className="sr-only">Close menu</span>
-              <XMarkIcon aria-hidden="true" className="h-6 w-6" />
-            </button>
+            </div>
           </div>
-          <div className="mt-6 flow-root">
-            <div className="-my-6 divide-y divide-border">
-              <div className="space-y-2 py-6">
-                <Disclosure as="div" className="-mx-3">
-                  <DisclosureButton className="group flex w-full items-center justify-between rounded-lg py-2 pl-3 pr-3.5 text-base font-semibold leading-7 text-heading hover:bg-surface-2">
-                    Product
-                    <ChevronDownIcon aria-hidden="true" className="h-5 w-5 flex-none group-data-[open]:rotate-180" />
-                  </DisclosureButton>
-                  <DisclosurePanel className="mt-2 space-y-2">
-                    {products.map((item) => (
-                      <DisclosureButton
-                        key={item.name}
-                        as="a"
-                        href={item.href}
-                        className="block rounded-lg py-2 pl-6 pr-3 text-sm font-semibold leading-7 text-heading hover:bg-surface-2"
-                      >
-                        {item.name}
-                      </DisclosureButton>
-                    ))}
-                  </DisclosurePanel>
-                </Disclosure>
-                <Disclosure as="div" className="-mx-3">
-                  <DisclosureButton className="group flex w-full items-center justify-between rounded-lg py-2 pl-3 pr-3.5 text-base font-semibold leading-7 text-heading hover:bg-surface-2">
-                    Services
-                    <ChevronDownIcon aria-hidden="true" className="h-5 w-5 flex-none group-data-[open]:rotate-180" />
-                  </DisclosureButton>
-                  <DisclosurePanel className="mt-2 space-y-2">
-                    <DisclosureButton as="a" href="/robotics" className="block rounded-lg px-3 pb-2 pt-2 text-sm font-semibold text-heading hover:bg-surface-2">
-                      Robotics
-                    </DisclosureButton>
-                    {roboticsServices.map((item) => (
-                      <DisclosureButton
-                        key={item.name}
-                        as="a"
-                        href={item.href}
-                        className="block rounded-lg py-1 pl-6 pr-3 text-sm leading-7 text-body hover:bg-surface-2"
-                      >
-                        {item.name}
-                      </DisclosureButton>
-                    ))}
 
-                    <div className="px-3 pb-2 pt-2 text-sm font-semibold text-heading">AI Agents</div>
-                    {aiAgentServices.map((item) => (
-                      <DisclosureButton
-                        key={item.name}
-                        as="a"
-                        href={item.href}
-                        className="block rounded-lg py-1 pl-6 pr-3 text-sm leading-7 text-body hover:bg-surface-2"
-                      >
-                        {item.name}
-                      </DisclosureButton>
-                    ))}
-
-                    <div className="px-3 pb-2 pt-2 text-sm font-semibold text-heading">Blockchain</div>
-                    {blockchainServices.map((item) => (
-                      <DisclosureButton
-                        key={item.name}
-                        as="a"
-                        href={item.href}
-                        className="block rounded-lg py-1 pl-6 pr-3 text-sm leading-7 text-body hover:bg-surface-2"
-                      >
-                        {item.name}
-                      </DisclosureButton>
-                    ))}
-                  </DisclosurePanel>
-                </Disclosure>
-                <Disclosure as="div" className="-mx-3">
-                  <DisclosureButton className="group flex w-full items-center justify-between rounded-lg py-2 pl-3 pr-3.5 text-base font-semibold leading-7 text-heading hover:bg-surface-2">
-                    Education
-                    <ChevronDownIcon aria-hidden="true" className="h-5 w-5 flex-none group-data-[open]:rotate-180" />
-                  </DisclosureButton>
-                  <DisclosurePanel className="mt-2 space-y-2">
-                    {educationAreas.map((item) => (
-                      <DisclosureButton
-                        key={item.name}
-                        as="a"
-                        href={item.href}
-                        className="block rounded-lg py-2 pl-6 pr-3 text-sm font-semibold leading-7 text-heading hover:bg-surface-2"
-                      >
-                        {item.name}
-                      </DisclosureButton>
-                    ))}
-                  </DisclosurePanel>
-                </Disclosure>
-                <Disclosure as="div" className="-mx-3">
-                  <DisclosureButton className="group flex w-full items-center justify-between rounded-lg py-2 pl-3 pr-3.5 text-base font-semibold leading-7 text-heading hover:bg-surface-2">
-                    Research
-                    <ChevronDownIcon aria-hidden="true" className="h-5 w-5 flex-none group-data-[open]:rotate-180" />
-                  </DisclosureButton>
-                  <DisclosurePanel className="mt-2 space-y-2">
-                    {researchAreas.map((item) => (
-                      <DisclosureButton
-                        key={item.name}
-                        as="a"
-                        href={item.href}
-                        className="block rounded-lg py-2 pl-6 pr-3 text-sm font-semibold leading-7 text-heading hover:bg-surface-2"
-                      >
-                        {item.name}
-                      </DisclosureButton>
-                    ))}
-                  </DisclosurePanel>
-                </Disclosure>
-              </div>
-              <div className="py-6">
-                <a href="#" className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-heading hover:bg-surface-2">
-                  Log in
-                </a>
+          <div className="group/nav relative">
+            <DesktopDropdownTrigger label="Education" />
+            <div className="absolute -left-8 top-full z-10 hidden w-screen max-w-md pt-3 group-hover/nav:block group-focus-within/nav:block">
+              <div className="overflow-hidden rounded-3xl bg-surface shadow-lg ring-1 ring-border">
+                <div className="p-4">
+                  {educationAreas.map((item) => (
+                    <DesktopMenuItem key={item.name} item={item} />
+                  ))}
+                </div>
               </div>
             </div>
           </div>
-        </DialogPanel>
-      </Dialog>
+
+          <div className="group/nav relative">
+            <DesktopDropdownTrigger label="Research" />
+            <div className="absolute -left-8 top-full z-10 hidden w-screen max-w-md pt-3 group-hover/nav:block group-focus-within/nav:block">
+              <div className="overflow-hidden rounded-3xl bg-surface shadow-lg ring-1 ring-border">
+                <div className="p-4">
+                  {researchAreas.map((item) => (
+                    <DesktopMenuItem key={item.name} item={item} />
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="hidden lg:flex lg:flex-1 lg:justify-end"></div>
+      </nav>
     </header>
   );
 }
