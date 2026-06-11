@@ -20,7 +20,7 @@ export const RenderContent = () => {
       <div className="markdown-body w-full">
         <CreditUnion />
       </div>
-      <p onClick={handleClickReport} className="mt-2 text-base font-medium text-indigo-600 hover:text-indigo-500 cursor-pointer">
+      <p onClick={handleClickReport} className="mt-2 text-base font-medium text-link hover:text-primary cursor-pointer">
         See Report →
       </p>
 
