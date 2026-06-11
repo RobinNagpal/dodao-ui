@@ -1,4 +1,3 @@
-'use client';
 import {
   BeakerIcon,
   ClipboardDocumentCheckIcon,
@@ -10,8 +9,6 @@ import {
   Squares2X2Icon,
   WrenchScrewdriverIcon,
 } from '@heroicons/react/24/outline';
-import ContactModal from '../../../../../components/home/DoDAOHome/components/ContactModal';
-import { useState } from 'react';
 
 const incentives = [
   {
@@ -100,11 +97,8 @@ const workflowSteps = [
 ];
 
 function HplcAutosamplerCaseStudy() {
-  const [showContactModal, setShowContactModal] = useState(false);
   return (
     <div>
-      {showContactModal && <ContactModal open={showContactModal} onClose={() => setShowContactModal(false)} />}
-
       <div className="relative overflow-hidden bg-bg">
         <div aria-hidden="true" className="hidden lg:absolute lg:inset-0 lg:block">
           <svg fill="none" width={640} height={784} viewBox="0 0 640 784" className="absolute left-1/2 top-0 -translate-y-8 translate-x-64 transform">
@@ -134,7 +128,7 @@ function HplcAutosamplerCaseStudy() {
                 <div className="mt-10 sm:flex sm:justify-center lg:justify-start">
                   <div className="rounded-md shadow">
                     <a
-                      onClick={() => setShowContactModal(true)}
+                      href="mailto:info@dodao.com"
                       className="flex w-full items-center justify-center rounded-md border border-transparent bg-primary px-8 py-3 text-base font-medium text-primary-text cursor-pointer hover:bg-primary/85 md:px-10 md:py-4 md:text-lg"
                     >
                       Get started

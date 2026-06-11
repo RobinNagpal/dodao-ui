@@ -1,15 +1,9 @@
-'use client';
-import ContactModal from './ContactModal';
-import { useState } from 'react';
-
 export default function ContactUsLink() {
-  const [showContactModal, setShowContactModal] = useState(false);
   return (
     <div className="flex justify-center text-center align-center">
-      {showContactModal && <ContactModal open={showContactModal} onClose={() => setShowContactModal(false)} />}
-      <div className="text-link cursor-pointer hover:underline" onClick={() => setShowContactModal(true)}>
+      <a href="mailto:info@dodao.com" className="text-link hover:underline">
         Contact Us <span aria-hidden="true">→</span>
-      </div>
+      </a>
     </div>
   );
 }
