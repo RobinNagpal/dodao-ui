@@ -83,13 +83,13 @@ const roboticsServices = [
   {
     name: 'Simulation Setup',
     description: 'Gazebo and Isaac Sim worlds, modeled for your exact usecase.',
-    href: '/home-section/dodao-io/services/simulation-setup',
+    href: '/robotics#simulation-setup',
     icon: BeakerIcon,
   },
   {
     name: 'Synthetic Data',
     description: 'Labeled images from simulation to train YOLO and other vision models.',
-    href: '/home-section/dodao-io/services/synthetic-data',
+    href: '/robotics#synthetic-data',
     icon: EyeIcon,
   },
 ];
