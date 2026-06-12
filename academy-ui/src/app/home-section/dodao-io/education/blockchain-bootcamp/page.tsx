@@ -1,5 +1,5 @@
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
-import BlockchainBootcamp from './blockchain-bootcamp.mdx';
+import BlockchainBootcamp from './blockchain-bootcamp';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -48,9 +48,7 @@ export const metadata: Metadata = {
 function BlockchainBootcampPage() {
   return (
     <PageWrapper>
-      <div className="markdown-body w-full">
-        <BlockchainBootcamp />
-      </div>
+      <BlockchainBootcamp />
     </PageWrapper>
   );
 }

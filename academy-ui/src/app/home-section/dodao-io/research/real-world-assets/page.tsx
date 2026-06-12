@@ -1,5 +1,5 @@
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
-import RealWorldAssets from './real-world-assets.mdx';
+import RealWorldAssets from './real-world-assets';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -48,9 +48,7 @@ export const metadata: Metadata = {
 function RealWorldAssetsPage() {
   return (
     <PageWrapper>
-      <div className="markdown-body w-full">
-        <RealWorldAssets />
-      </div>
+      <RealWorldAssets />
     </PageWrapper>
   );
 }

@@ -1,5 +1,5 @@
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
-import SmartContract from './smart-contract.mdx';
+import SmartContract from './smart-contract';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -49,9 +49,7 @@ export const metadata: Metadata = {
 function SmartContractPage() {
   return (
     <PageWrapper>
-      <div className="markdown-body w-full">
-        <SmartContract />
-      </div>
+      <SmartContract />
     </PageWrapper>
   );
 }

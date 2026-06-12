@@ -1,5 +1,5 @@
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
-import EducationalContent from './educational-content.mdx';
+import EducationalContent from './educational-content';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -47,9 +47,7 @@ export const metadata: Metadata = {
 function EducationalContentPage() {
   return (
     <PageWrapper>
-      <div className="markdown-body w-full">
-        <EducationalContent />
-      </div>
+      <EducationalContent />
     </PageWrapper>
   );
 }
