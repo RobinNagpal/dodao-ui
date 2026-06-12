@@ -1,10 +1,15 @@
 import {
+  AdjustmentsHorizontalIcon,
+  ArrowPathIcon,
+  ArrowPathRoundedSquareIcon,
   BeakerIcon,
+  CameraIcon,
   CheckCircleIcon,
   ClipboardDocumentCheckIcon,
   CogIcon,
   ExclamationTriangleIcon,
   EyeIcon,
+  FunnelIcon,
   Squares2X2Icon,
   WrenchScrewdriverIcon,
 } from '@heroicons/react/24/outline';
@@ -82,14 +87,64 @@ const steps: WorkflowStep[] = [
   },
 ];
 
-const sceneObjects = [
-  'Ketchup beaker, stir bar and solvent reservoir',
-  'Mock dispenser station that pours a measured solvent volume',
-  'Mock mixer station with a heat and dwell flag',
-  'Centrifuge mock for clarifying the cloudy extract',
-  'Syringe filter and a clean receiving vessel',
-  'Empty HPLC vial and the autosampler tray with numbered slots',
-  'Overhead camera, wrist camera, AprilTag markers and the workcell table',
+type SceneObject = {
+  name: string;
+  tag: string;
+  description: string;
+  detail: string;
+  icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
+};
+
+const sceneObjects: SceneObject[] = [
+  {
+    name: 'Ketchup Beaker',
+    tag: 'Sample',
+    description: 'Holds the raw paste before any solvent is added.',
+    detail: 'Comes with a stir bar and a solvent reservoir so the dissolution step can be triggered from the behavior tree.',
+    icon: BeakerIcon,
+  },
+  {
+    name: 'Mock Dispenser',
+    tag: 'Mock station',
+    description: 'Pours a measured volume of solvent on cue.',
+    detail: 'Exposes a simple ROS 2 topic for volume and flow rate, so the workflow can call it just like a real lab dispenser.',
+    icon: FunnelIcon,
+  },
+  {
+    name: 'Mock Mixer',
+    tag: 'Mock station',
+    description: 'Stands in for the real lab mixer.',
+    detail: 'Drives a heat flag and a dwell flag instead of physically stirring, but keeps the same control interface as the hardware mixer.',
+    icon: ArrowPathRoundedSquareIcon,
+  },
+  {
+    name: 'Centrifuge Mock',
+    tag: 'Mock station',
+    description: 'Clarifies the cloudy ketchup extract.',
+    detail: 'Models a spin and settle cycle so the downstream filter sees a clean liquid, the same way it would after a real centrifuge run.',
+    icon: ArrowPathIcon,
+  },
+  {
+    name: 'Syringe Filter',
+    tag: 'Lab tool',
+    description: 'Final cleanup before the HPLC vial.',
+    detail: 'Pushes the extract through a fine filter into a clean receiving vessel, removing the last traces of tomato pulp.',
+    icon: AdjustmentsHorizontalIcon,
+  },
+  {
+    name: 'HPLC Vial Tray',
+    tag: 'Output',
+    description: 'Empty vials in a numbered autosampler tray.',
+    detail: 'Each slot has a fixed pose so the cobot can drop a capped, labeled vial into the right position for the HPLC run.',
+    icon: Squares2X2Icon,
+  },
+  {
+    name: 'Cameras + AprilTags',
+    tag: 'Perception',
+    description: 'Overhead and wrist cameras with markers.',
+    detail: 'AprilTag markers on the workcell table give the perception stack a stable reference frame for every pick and place.',
+    icon: CameraIcon,
+  },
 ];
 
 const differences = [
@@ -244,26 +299,45 @@ function KetchupHplcWorkflowCaseStudy() {
 
       <div className="bg-surface py-20 sm:py-24">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="lg:grid lg:grid-cols-2 lg:gap-12">
-            <div>
-              <h2 className="text-3xl font-bold tracking-tight text-heading sm:text-4xl">What Lives in the Scene</h2>
-              <p className="mt-4 text-base text-body">
-                A clean simulation is mostly about getting the right objects into the world. For the ketchup workflow the scene carries the cobot, the cell
-                fixtures and a set of mock stations that stand in for the real lab instruments.
-              </p>
-              <p className="mt-4 text-base text-body">
-                The mock dispenser and mock mixer expose simple ROS 2 topics so we can drive them from a behavior tree and watch the workflow advance step by
-                step.
-              </p>
+          <div className="mx-auto max-w-3xl text-center">
+            <h2 className="text-3xl font-bold tracking-tight text-heading sm:text-4xl">What Lives in the Scene</h2>
+            <p className="mt-4 text-base text-body">
+              A clean simulation is mostly about getting the right objects into the world. The ketchup workflow ships with the cobot, the cell fixtures and the
+              mock stations below — all wired up over ROS 2 so a behavior tree can run the workflow end to end.
+            </p>
+          </div>
+
+          <div className="relative mx-auto mt-16 max-w-4xl">
+            <div aria-hidden="true" className="absolute left-1/2 top-0 bottom-0 hidden w-0.5 -translate-x-1/2 bg-primary/20 md:block" />
+
+            <div className="relative space-y-10 md:space-y-12">
+              {sceneObjects.map((item, index) => {
+                const isLeft = index % 2 === 0;
+                return (
+                  <div key={item.name} className="flex flex-col items-center gap-4 md:flex-row md:gap-6">
+                    <div className={`md:w-1/2 ${isLeft ? 'md:order-first md:text-right' : 'md:order-last'}`}>
+                      <h3 className="text-xl font-semibold text-heading">{item.name}</h3>
+                      <p className="mt-1 text-sm text-body">{item.description}</p>
+                      <span
+                        className={`mt-3 inline-flex items-center rounded-full bg-primary/15 px-2.5 py-1 text-xs font-medium text-primary ring-1 ring-primary/40 ${
+                          isLeft ? 'md:ml-auto' : ''
+                        }`}
+                      >
+                        {item.tag}
+                      </span>
+                    </div>
+
+                    <div className="relative z-10 flex h-16 w-16 flex-none items-center justify-center rounded-full bg-bg ring-4 ring-primary/20">
+                      <item.icon className="h-8 w-8 text-primary" aria-hidden="true" />
+                    </div>
+
+                    <div className={`md:w-1/2 ${isLeft ? 'md:order-last' : 'md:order-first md:text-right'}`}>
+                      <p className="text-sm text-body">{item.detail}</p>
+                    </div>
+                  </div>
+                );
+              })}
             </div>
-            <ul className="mt-10 grid grid-cols-1 gap-3 lg:mt-0">
-              {sceneObjects.map((item) => (
-                <li key={item} className="flex items-start gap-x-3 rounded-xl bg-surface-2 p-4 ring-1 ring-border">
-                  <CheckCircleIcon className="h-5 w-5 flex-none text-primary mt-0.5" aria-hidden="true" />
-                  <span className="text-sm leading-6 text-body">{item}</span>
-                </li>
-              ))}
-            </ul>
           </div>
         </div>
       </div>

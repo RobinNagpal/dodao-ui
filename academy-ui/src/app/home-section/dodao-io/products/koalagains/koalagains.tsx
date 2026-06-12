@@ -1,11 +1,15 @@
 import {
   ArrowPathRoundedSquareIcon,
+  ArrowTrendingUpIcon,
+  ChartBarSquareIcon,
+  CheckCircleIcon,
   ClipboardDocumentCheckIcon,
   CpuChipIcon,
   DocumentChartBarIcon,
   ScaleIcon,
   ShieldCheckIcon,
   ShieldExclamationIcon,
+  SparklesIcon,
   UserGroupIcon,
 } from '@heroicons/react/24/outline';
 import Chatbot from '@/images/DoDAOHomePage/koala_gains.gif';
@@ -13,20 +17,17 @@ import Chatbot from '@/images/DoDAOHomePage/koala_gains.gif';
 const benefits = [
   {
     name: 'Better Investment Choices',
-    href: '#',
-    description: 'KoalaGains uses smart AI Agents to study data and show you clear facts, helping you invest wisely and see where the best chances are.',
+    description: 'KoalaGains turns raw filings and market data into clear facts, so you can see where the best chances are and act on them.',
     icon: ScaleIcon,
   },
   {
     name: 'Less Risk',
-    href: '#',
-    description: 'Our platform offers detailed reports on key investment factors, helping you make informed choices and avoid risky decisions.',
+    description: 'Each report flags weaknesses, red flags and unresolved questions up front, so you avoid the deals that look good only at first glance.',
     icon: ShieldCheckIcon,
   },
   {
     name: 'Complete Analysis',
-    href: '#',
-    description: 'KoalaGains looks at everything that matters—like company performance and finances—to give you a full view of each project.',
+    description: 'Company performance, financials, team and market signals all show up in one place, so nothing important slips through.',
     icon: ClipboardDocumentCheckIcon,
   },
 ];
@@ -34,29 +35,33 @@ const benefits = [
 const features = [
   {
     name: 'All-in-One Reports',
-    description:
-      'KoalaGains collects key details such as cash flow, debts, and market standing. It then creates reports that show you the big picture of a project.',
+    description: 'Cash flow, debt, market standing and team data are pulled together into a single report that shows the full picture of a project.',
     icon: DocumentChartBarIcon,
   },
   {
     name: 'Risk Checks',
-    description: 'Our system tags the good and bad aspects, so you can quickly see strengths and weaknesses of any crowdfunded or REIT project.',
+    description: 'Strong and weak signals are tagged side by side, so you can see the good and the bad of a crowdfunded project or REIT at a glance.',
     icon: ShieldExclamationIcon,
   },
   {
     name: 'Team Performance',
-    description: 'KoalaGains looks at the team’s background and past work, giving you insights into their ability to grow and handle challenges.',
+    description: 'The team’s background and track record are scored, so you know whether they can actually deliver what the deck promises.',
     icon: UserGroupIcon,
   },
   {
-    name: 'Up-to-Date Information',
-    description: 'We bring in the latest sec filings data, so you always have the most current view of any investment.',
+    name: 'Up-to-Date Filings',
+    description: 'KoalaGains continuously pulls in the latest SEC filings, so the view of any investment is current, not months out of date.',
     icon: ArrowPathRoundedSquareIcon,
   },
   {
     name: 'AI-Powered Insights',
-    description: 'Our AI Agents processes large amounts of data and sums it up in easy-to-read summaries that fit your specific needs.',
+    description: 'Our AI agents read large volumes of filings and summarise them into short, focused notes tailored to what you care about.',
     icon: CpuChipIcon,
+  },
+  {
+    name: 'Side-by-Side Comparison',
+    description: 'Compare projects on the same dimensions in one view, so the strongest opportunities stand out without spreadsheet juggling.',
+    icon: ChartBarSquareIcon,
   },
 ];
 
@@ -64,143 +69,119 @@ const incentives = [
   {
     name: 'Goal and Objectives',
     description:
-      'KoalaGains aims to help you handle crowdfunded projects and REITs by using smart AI. Many of these investments can be risky if you don’t have full information. We decided to solve this problem by building a platform that shows clear, simple data.',
-    imageSrc: 'https://cdn-icons-png.flaticon.com/512/1270/1270380.png',
+      'Crowdfunded projects and REITs are risky to invest in without full information. KoalaGains exists to close that information gap and surface the data that actually matters before you commit capital.',
+    icon: SparklesIcon,
   },
   {
     name: 'The Solution',
     description:
-      'Our AI studies each project’s filings, market signals, and team details. Then it turns that data into easy-to-understand reports. By showing strong points, risks, and potential growth, KoalaGains helps you invest with more confidence and clarity.',
-    imageSrc: 'https://cdn-icons-png.flaticon.com/512/8787/8787168.png',
+      'Our AI agents read each project’s filings, market signals and team details and turn that raw data into easy-to-read reports. You get strong points, risks and growth potential in one place, so decisions are faster and more confident.',
+    icon: CpuChipIcon,
   },
 ];
 
 function KoalaGainsComponent() {
   return (
     <div>
-      <div>
-        <div className="relative overflow-hidden bg-bg">
-          <div aria-hidden="true" className="hidden lg:absolute lg:inset-0 lg:block">
-            <svg fill="none" width={640} height={784} viewBox="0 0 640 784" className="absolute left-1/2 top-0 -translate-y-8 translate-x-64 transform">
-              <defs>
-                <pattern x={118} y={0} id="9ebea6f4-a1f5-4d96-8c4e-4c2abf658047" width={20} height={20} patternUnits="userSpaceOnUse">
-                  <rect x={0} y={0} fill="currentColor" width={4} height={4} className="text-border" />
-                </pattern>
-              </defs>
-              <rect y={72} fill="currentColor" width={640} height={640} className="text-surface" />
-              <rect x={118} fill="url(#9ebea6f4-a1f5-4d96-8c4e-4c2abf658047)" width={404} height={784} />
-            </svg>
-          </div>
+      <div className="relative overflow-hidden bg-bg">
+        <div className="relative pb-4 sm:pb-12 lg:pb-20">
+          <main className="mx-auto mt-8 max-w-7xl px-6 sm:mt-16 lg:mt-24">
+            <div className="lg:grid lg:grid-cols-12 lg:gap-8">
+              <div className="sm:text-center md:mx-auto md:max-w-2xl lg:col-span-6 lg:text-left">
+                <p className="text-xs uppercase tracking-widest font-semibold text-primary">AI Agents · Investment Insights</p>
+                <h1 className="mt-2 text-4xl font-bold tracking-tight text-primary sm:text-6xl">KoalaGains</h1>
+                <p className="mt-5 text-lg leading-8 text-body">
+                  KoalaGains is an AI-powered platform that takes the slow, manual side of investment research off your plate. It reads filings on stocks and
+                  REITs, scores risks and opportunities and shows the strengths and weaknesses of every deal in plain language.
+                </p>
 
-          <div className="relative pb-4 sm:pb-12 lg:pb-20">
-            <main className="mx-auto mt-8 max-w-7xl px-6 sm:mt-16 lg:mt-24">
-              <div className="lg:grid lg:grid-cols-12 lg:gap-8">
-                <div className="sm:text-center md:mx-auto md:max-w-2xl lg:col-span-6 lg:text-left">
-                  <h1>
-                    <span className="mt-1 block text-4xl font-bold tracking-tight sm:text-6xl">
-                      <span className="block text-primary">KoalaGains</span>
-                    </span>
-                  </h1>
-                  <p className="mt-3 text-lg leading-8 text-muted">
-                    KoalaGains is an AI-powered platform that simplifies investment research on crowdfunding projects and REITs. It shows important details,
-                    checks risks, and helps you see both the strengths and weaknesses parts of every opportunity.
-                  </p>
-                  <div className="mt-10 sm:flex sm:justify-center lg:justify-start">
-                    <div className="rounded-md shadow">
-                      <a
-                        href="mailto:info@dodao.com"
-                        className="flex w-full items-center justify-center rounded-md border border-transparent bg-primary px-8 py-3 text-base font-medium text-primary-text cursor-pointer hover:bg-primary/85 md:px-10 md:py-4 md:text-lg"
-                      >
-                        Get started
-                      </a>
-                    </div>
-                    <div className="mt-3 rounded-md shadow sm:ml-3 sm:mt-0">
-                      <a
-                        href="https://koalagains.com/"
-                        className="flex w-full items-center justify-center rounded-md border border-transparent bg-surface px-8 py-3 text-base font-medium text-primary hover:bg-surface-2 md:px-10 md:py-4 md:text-lg"
-                      >
-                        Live demo
-                      </a>
-                    </div>
-                  </div>
+                <div className="mt-6 flex flex-wrap gap-2 sm:flex-nowrap">
+                  <span className="inline-flex items-center gap-x-1.5 whitespace-nowrap rounded-full bg-success/15 px-3 py-1 text-sm font-medium text-success ring-1 ring-success/40">
+                    <CheckCircleIcon className="h-4 w-4" aria-hidden="true" />
+                    Auto-parsed filings
+                  </span>
+                  <span className="inline-flex items-center gap-x-1.5 whitespace-nowrap rounded-full bg-primary/15 px-3 py-1 text-sm font-medium text-primary ring-1 ring-primary/40">
+                    <SparklesIcon className="h-4 w-4" aria-hidden="true" />
+                    Risk + opp scoring
+                  </span>
+                  <span className="inline-flex items-center gap-x-1.5 whitespace-nowrap rounded-full bg-warning/15 px-3 py-1 text-sm font-medium text-warning ring-1 ring-warning/40">
+                    <ArrowTrendingUpIcon className="h-4 w-4" aria-hidden="true" />
+                    Stocks + REITs
+                  </span>
                 </div>
-                <div className="relative mt-12 sm:mx-auto sm:max-w-lg lg:col-span-6 lg:mx-0 lg:mt-0 lg:flex lg:max-w-none lg:items-center">
-                  <svg
-                    fill="none"
-                    width={640}
-                    height={784}
-                    viewBox="0 0 640 784"
-                    aria-hidden="true"
-                    className="absolute left-1/2 top-0 origin-top -translate-x-1/2 -translate-y-8 scale-75 transform sm:scale-100 lg:hidden"
+
+                <div className="mt-8 flex flex-wrap gap-3">
+                  <a
+                    href="mailto:info@dodao.com"
+                    className="inline-flex items-center justify-center rounded-md bg-primary px-5 py-2.5 text-sm font-semibold text-primary-text hover:bg-primary/85 transition-colors"
                   >
-                    <defs>
-                      <pattern x={118} y={0} id="4f4f415c-a0e9-44c2-9601-6ded5a34a13e" width={20} height={20} patternUnits="userSpaceOnUse">
-                        <rect x={0} y={0} fill="currentColor" width={4} height={4} className="text-border" />
-                      </pattern>
-                    </defs>
-                    <rect y={72} fill="currentColor" width={640} height={640} className="text-surface" />
-                    <rect x={118} fill="url(#4f4f415c-a0e9-44c2-9601-6ded5a34a13e)" width={404} height={784} />
-                  </svg>
-                  <div className="relative mx-auto w-full rounded-lg shadow-lg">
-                    <button
-                      type="button"
-                      className="relative block w-full overflow-hidden rounded-lg bg-surface focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
-                    >
-                      <span className="sr-only">Picture for ai Chatbot</span>
-                      <img alt="Picture for ai Chatbot" src={Chatbot.src} className="w-full" />
-                    </button>
-                  </div>
+                    Get started
+                  </a>
+                  <a
+                    href="https://koalagains.com/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center justify-center rounded-md bg-surface px-5 py-2.5 text-sm font-semibold text-primary ring-1 ring-border hover:bg-surface-2 transition-colors"
+                  >
+                    Live demo
+                  </a>
                 </div>
               </div>
-            </main>
-          </div>
+
+              <div className="relative mt-12 sm:mx-auto sm:max-w-lg lg:col-span-6 lg:mx-0 lg:mt-0 lg:flex lg:max-w-none lg:items-center">
+                <div className="relative mx-auto w-full overflow-hidden rounded-lg shadow-lg">
+                  <img alt="KoalaGains AI investment platform preview" src={Chatbot.src} className="w-full" />
+                </div>
+              </div>
+            </div>
+          </main>
         </div>
       </div>
 
-      <div className="bg-surface">
-        <div className="mx-auto max-w-7xl py-24 sm:px-2 sm:py-20 lg:px-4 mt-12">
-          <div className="mx-auto grid max-w-2xl grid-cols-1 gap-x-8 gap-y-10 px-4 lg:max-w-none lg:grid-cols-2">
+      <div className="bg-surface py-20 sm:py-24">
+        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+          <div className="mx-auto max-w-3xl text-center">
+            <h2 className="text-3xl font-bold tracking-tight text-heading sm:text-4xl">Why We Built KoalaGains</h2>
+            <p className="mt-4 text-base text-body">
+              The problem and the answer in one page — so you know what the platform is for before you dig into the features.
+            </p>
+          </div>
+
+          <div className="mt-12 grid grid-cols-1 gap-6 lg:grid-cols-2">
             {incentives.map((incentive) => (
-              <div key={incentive.name} className="text-center sm:flex sm:text-left lg:block lg:text-center">
-                <div className="sm:shrink-0">
-                  <div className="flow-root">
-                    <img alt="" src={incentive.imageSrc} className="mx-auto h-24 w-28" />
-                  </div>
-                </div>
-                <div className="mt-3 sm:ml-3 sm:mt-0 lg:ml-0 lg:mt-3">
+              <div key={incentive.name} className="rounded-2xl bg-bg p-6 ring-1 ring-border">
+                <div className="flex items-center gap-x-3">
+                  <span className="inline-flex h-10 w-10 items-center justify-center rounded-lg bg-primary/15 text-primary">
+                    <incentive.icon className="h-5 w-5" aria-hidden="true" />
+                  </span>
                   <h3 className="text-lg font-semibold text-heading">{incentive.name}</h3>
-                  <p className="mt-2 text-base text-muted">{incentive.description}</p>
                 </div>
+                <p className="mt-4 text-base text-body">{incentive.description}</p>
               </div>
             ))}
           </div>
         </div>
       </div>
 
-      <div className="relative bg-bg py-20 sm:py-28 lg:py-36">
-        <div className="mx-auto max-w-md px-6 text-center sm:max-w-3xl lg:max-w-7xl lg:px-8">
-          <h2 className="mt-2 text-3xl font-bold tracking-tight text-heading sm:text-5xl">Features of KoalaGains</h2>
-          <p className="mx-auto mt-5 max-w-prose text-base text-muted">
-            Each feature is made to help you quickly understand key points about any crowdfunded project or REIT. It saves you time and reduces uncertainty.
-          </p>
-          <div className="mt-16">
-            <div className="grid grid-cols-1 gap-12 sm:grid-cols-2 lg:grid-cols-3">
-              {features.map((feature) => (
-                <div key={feature.name} className="pt-6">
-                  <div className="flow-root rounded-lg bg-surface px-6 pb-8">
-                    <div className="-mt-6">
-                      <div>
-                        <span className="inline-flex items-center justify-center rounded-xl bg-primary p-3 shadow-lg">
-                          <feature.icon aria-hidden="true" className="h-6 w-6 text-primary-text" />
-                        </span>
-                      </div>
-                      <h3 className="mt-8 text-lg/8 font-semibold tracking-tight text-heading">{feature.name}</h3>
-                      <p className="mt-5 text-base/7 text-body">{feature.description}</p>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
+      <div className="bg-bg py-20 sm:py-24">
+        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+          <div className="mx-auto max-w-3xl text-center">
+            <h2 className="text-3xl font-bold tracking-tight text-heading sm:text-4xl">Features of KoalaGains</h2>
+            <p className="mt-4 text-base text-body">
+              Each feature is built to help you understand the key points of a crowdfunded project or REIT in minutes, not days.
+            </p>
+          </div>
+
+          <div className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {features.map((feature) => (
+              <div key={feature.name} className="flex flex-col rounded-2xl bg-surface p-6 ring-1 ring-border">
+                <span className="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-primary text-primary-text shadow-lg">
+                  <feature.icon aria-hidden="true" className="h-6 w-6" />
+                </span>
+                <h3 className="mt-5 text-lg font-semibold tracking-tight text-heading">{feature.name}</h3>
+                <p className="mt-2 text-base text-body">{feature.description}</p>
+              </div>
+            ))}
           </div>
         </div>
       </div>
@@ -218,21 +199,20 @@ function KoalaGainsComponent() {
           <div className="relative mx-auto max-w-7xl px-6 py-20 sm:py-28 lg:px-8">
             <h1 className="text-3xl font-bold tracking-tight text-heading sm:text-5xl">Why KoalaGains Helps You</h1>
             <p className="mt-6 max-w-3xl text-base text-body">
-              KoalaGains sifts through large sets of data for you. It uncovers essential details, shows you clear visuals, and helps you take quick and smart
-              steps without guesswork.
+              The platform sifts through large data sets, uncovers what matters and shows you clear visuals so you can move with confidence, not guesswork.
             </p>
           </div>
         </div>
         <section aria-labelledby="contact-heading" className="relative z-10 mx-auto -mt-32 max-w-7xl px-6 pb-32 lg:px-8">
           <div className="grid grid-cols-1 gap-y-20 lg:grid-cols-3 lg:gap-x-8 lg:gap-y-0">
-            {benefits.map((link) => (
-              <div key={link.name} className="flex flex-col rounded-2xl bg-surface shadow-xl">
+            {benefits.map((benefit) => (
+              <div key={benefit.name} className="flex flex-col rounded-2xl bg-surface shadow-xl">
                 <div className="relative flex-1 px-6 pb-8 pt-16 md:px-8">
                   <div className="absolute top-0 inline-block -translate-y-1/2 transform rounded-xl bg-primary p-5 shadow-lg">
-                    <link.icon aria-hidden="true" className="h-6 w-6 text-primary-text" />
+                    <benefit.icon aria-hidden="true" className="h-6 w-6 text-primary-text" />
                   </div>
-                  <h3 className="text-lg font-semibold text-heading">{link.name}</h3>
-                  <p className="mt-4 text-base text-muted">{link.description}</p>
+                  <h3 className="text-lg font-semibold text-heading">{benefit.name}</h3>
+                  <p className="mt-4 text-base text-muted">{benefit.description}</p>
                 </div>
               </div>
             ))}
