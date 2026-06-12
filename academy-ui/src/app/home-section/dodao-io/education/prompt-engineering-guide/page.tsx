@@ -1,5 +1,5 @@
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
-import PromptEngineeringGuide from './prompt-engineering-guide.mdx';
+import PromptEngineeringGuide from './prompt-engineering-guide';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -36,9 +36,7 @@ export const metadata: Metadata = {
 function PromptEngineeringPage() {
   return (
     <PageWrapper>
-      <div className="markdown-body w-full">
-        <PromptEngineeringGuide />
-      </div>
+      <PromptEngineeringGuide />
     </PageWrapper>
   );
 }

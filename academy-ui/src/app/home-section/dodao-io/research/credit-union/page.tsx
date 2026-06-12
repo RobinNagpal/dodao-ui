@@ -1,5 +1,6 @@
+import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { Metadata } from 'next';
-import { RenderContent } from './RenderContent';
+import CreditUnion from './credit-union';
 
 export const metadata: Metadata = {
   title: 'How Credit Unions Can Attract Gen Z - Strategies for Engagement | DoDAO',
@@ -45,7 +46,11 @@ export const metadata: Metadata = {
 };
 
 function CreditUnionPage() {
-  return <RenderContent />;
+  return (
+    <PageWrapper>
+      <CreditUnion />
+    </PageWrapper>
+  );
 }
 
 export default CreditUnionPage;

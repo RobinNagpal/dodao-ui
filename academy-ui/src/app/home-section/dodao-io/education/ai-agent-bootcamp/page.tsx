@@ -1,5 +1,5 @@
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
-import AiAgentBootcamp from './ai-agent-bootcamp.mdx';
+import AiAgentBootcamp from './ai-agent-bootcamp';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -36,9 +36,7 @@ export const metadata: Metadata = {
 function AiAgentBootcampPage() {
   return (
     <PageWrapper>
-      <div className="markdown-body w-full">
-        <AiAgentBootcamp />
-      </div>
+      <AiAgentBootcamp />
     </PageWrapper>
   );
 }
