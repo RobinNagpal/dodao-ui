@@ -46,6 +46,22 @@ export default function DoDAOHomeHero() {
           </div>
         </div>
 
+        {/* Headline still: a robot arm working inside a simulated cell */}
+        <div className="mt-14 mx-auto max-w-5xl">
+          <div className="relative overflow-hidden rounded-2xl border border-border bg-surface/60 shadow-2xl shadow-primary/20 backdrop-blur-sm">
+            <Image
+              src="/robotics/robotics_sim.jpg"
+              alt="A robot arm working inside a simulation scene — Gazebo or Isaac Sim world built for the robot, before any hardware moves"
+              width={1280}
+              height={720}
+              className="block w-full h-auto"
+            />
+          </div>
+          <p className="mt-4 text-center text-sm text-muted">
+            A robot arm inside a simulated cell — the kind of Gazebo or Isaac Sim world we build for your project before any hardware moves.
+          </p>
+        </div>
+
         {/* Centerpiece video — domain randomization across six renders of the same scene */}
         <div className="mt-14 mx-auto max-w-5xl">
           <div className="relative overflow-hidden rounded-2xl border border-border bg-surface/60 shadow-2xl shadow-primary/20 backdrop-blur-sm">
@@ -93,6 +109,26 @@ export default function DoDAOHomeHero() {
             </div>
           </div>
           <p className="mt-3 text-center text-sm text-muted">Left: the simulated cell we build. Right: the matching real-world setup the policy runs on.</p>
+        </div>
+
+        {/* Second sim-to-real clip — in motion this time, not just stills */}
+        <div className="mt-14 mx-auto max-w-5xl">
+          <div className="relative overflow-hidden rounded-2xl border border-border bg-surface/60 shadow-2xl shadow-primary/20 backdrop-blur-sm">
+            <video
+              autoPlay
+              loop
+              muted
+              playsInline
+              preload="metadata"
+              aria-label="The same robot motion shown in simulation and on real hardware, side by side"
+              className="block w-full h-auto"
+            >
+              <source src="/robotics/robotics_video_2.mp4" type="video/mp4" />
+            </video>
+          </div>
+          <p className="mt-4 text-center text-sm text-muted">
+            The same robot motion in simulation and on real hardware — the policy is trained in sim, then runs unchanged on the real cell.
+          </p>
         </div>
       </div>
     </div>
