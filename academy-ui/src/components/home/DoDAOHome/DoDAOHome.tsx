@@ -9,13 +9,8 @@ import { TrustedBy } from './components/TrustedBy';
 export default function DoDAOHome() {
   return (
     <div>
-      {/* Hero section - already has gradient */}
+      {/* Hero — robotics-first */}
       <DoDAOHomeHero />
-
-      {/* Trusted By section */}
-      <div className="bg-bg">
-        <TrustedBy />
-      </div>
 
       {/* Robotics — primary offering, the two services we run today */}
       <RoboticsServicesTwo />
@@ -25,6 +20,11 @@ export default function DoDAOHome() {
 
       {/* AI Agents + DeFi — secondary offerings, kept for continuity */}
       <CoreOfferings />
+
+      {/* Trusted By — moved to the bottom alongside Products */}
+      <div className="bg-bg">
+        <TrustedBy />
+      </div>
 
       {/* Products section */}
       <div className="bg-surface">

@@ -49,7 +49,7 @@ export default function CoreOfferings() {
 
       <div className="relative mx-auto max-w-7xl px-6 py-8 sm:py-12 lg:py-16">
         <div className="text-center mb-16">
-          <h2 className="text-base font-semibold leading-7 text-primary mb-4">What We Do</h2>
+          <h2 className="text-base font-semibold leading-7 text-primary mb-4">Beyond Robotics</h2>
           <p className="text-2xl font-bold tracking-tight text-heading sm:text-3xl lg:text-4xl">
             <span className="block">AI Agents & DeFi Tools</span>
           </p>

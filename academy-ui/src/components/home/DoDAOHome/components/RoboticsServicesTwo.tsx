@@ -23,7 +23,7 @@ const offerings: Offering[] = [
       'Lighting and material settings tuned to the real conditions',
     ],
     stack: 'Gazebo Harmonic · Isaac Sim · Isaac Lab · URDF · USD',
-    href: '/robotics',
+    href: '/robotics#simulation-setup',
     icon: BeakerIcon,
   },
   {
@@ -38,7 +38,7 @@ const offerings: Offering[] = [
       'Labels written in the format your training code expects',
     ],
     stack: 'NVIDIA Replicator · Isaac Sim · Gazebo Harmonic · YOLO · PyTorch',
-    href: '/robotics',
+    href: '/robotics#synthetic-data',
     icon: EyeIcon,
   },
 ];
