@@ -95,9 +95,9 @@ export function getMetaTags(space: SpaceWithIntegrationsDto): Metadata {
   }
   if (space?.id === PredefinedSpaces.DODAO_HOME) {
     return {
-      title: 'DoDAO – Simulation-First Robotics Services',
+      title: 'DoDAO – Robotics, AI Agents & DeFi',
       description:
-        'DoDAO is a robotics services company. We build Gazebo and Isaac Sim worlds for robotics teams, plus the labeled synthetic data their vision and policy models learn from.',
+        'DoDAO is a simulation-first robotics services company. We build Gazebo and Isaac Sim worlds and the labeled synthetic data robotics teams need, alongside the AI Agent and DeFi tooling we have shipped for years.',
       keywords: [
         'dodao',
         'DoDAO',
@@ -120,9 +120,9 @@ export function getMetaTags(space: SpaceWithIntegrationsDto): Metadata {
         canonical: 'https://dodao.io/',
       },
       openGraph: {
-        title: 'DoDAO – Simulation-First Robotics Services',
+        title: 'DoDAO – Robotics, AI Agents & DeFi',
         description:
-          'DoDAO is a robotics services company. We build Gazebo and Isaac Sim worlds for robotics teams, plus the labeled synthetic data their vision and policy models learn from.',
+          'DoDAO is a simulation-first robotics services company. We build Gazebo and Isaac Sim worlds and the labeled synthetic data robotics teams need, alongside the AI Agent and DeFi tooling we have shipped for years.',
         url: 'https://dodao.io/',
         type: 'website',
         images: ['https://d31h13bdjwgzxs.cloudfront.net/academy/tidbitshub/Space/tidbitshub/1711618687477_dodao_logo%2Btext%20rectangle.png'],
@@ -130,9 +130,9 @@ export function getMetaTags(space: SpaceWithIntegrationsDto): Metadata {
       },
       twitter: {
         card: 'summary_large_image',
-        title: 'DoDAO – Simulation-First Robotics Services',
+        title: 'DoDAO – Robotics, AI Agents & DeFi',
         description:
-          'DoDAO is a robotics services company. We build Gazebo and Isaac Sim worlds for robotics teams, plus the labeled synthetic data their vision and policy models learn from.',
+          'DoDAO is a simulation-first robotics services company. We build Gazebo and Isaac Sim worlds and the labeled synthetic data robotics teams need, alongside the AI Agent and DeFi tooling we have shipped for years.',
         images: ['https://d31h13bdjwgzxs.cloudfront.net/academy/tidbitshub/Space/tidbitshub/1711618687477_dodao_logo%2Btext%20rectangle.png'],
         site: '@dodao_io',
         creator: '@dodao_io',

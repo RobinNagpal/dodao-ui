@@ -1,12 +1,6 @@
 import { ArrowRightIcon } from '@heroicons/react/24/outline';
 import Image from 'next/image';
 
-const tools = [
-  { name: 'Gazebo Harmonic', logo: '/robotics/gazebo.png' },
-  { name: 'NVIDIA Isaac Sim', logo: '/robotics/nvidia-isaac.webp' },
-  { name: 'MuJoCo', logo: '/robotics/mujoco.png' },
-];
-
 export default function DoDAOHomeHero() {
   return (
     <div className="relative isolate overflow-hidden bg-gradient-to-br from-bg to-surface">
@@ -52,7 +46,7 @@ export default function DoDAOHomeHero() {
           </div>
         </div>
 
-        {/* Centerpiece video — six randomized renders of the same robot motion */}
+        {/* Centerpiece video — domain randomization across six renders of the same scene */}
         <div className="mt-14 mx-auto max-w-5xl">
           <div className="relative overflow-hidden rounded-2xl border border-border bg-surface/60 shadow-2xl shadow-primary/20 backdrop-blur-sm">
             <video
@@ -61,14 +55,15 @@ export default function DoDAOHomeHero() {
               muted
               playsInline
               preload="metadata"
-              aria-label="Six parallel renders of the same robot motion with different lighting, textures and objects"
+              aria-label="Six parallel renders of the same scene with different lighting, textures and colors — domain randomization for synthetic data"
               className="block w-full h-auto"
             >
               <source src="/robotics/robotics_video_1.mp4" type="video/mp4" />
             </video>
           </div>
           <p className="mt-4 text-center text-sm text-muted">
-            Same robot motion, six randomized scenes — a quick look at the synthetic data we generate for vision and policy training.
+            Same scene rendered six times — domain randomization changes lighting, textures and colors so vision models trained on this data generalize to real
+            cameras.
           </p>
         </div>
 
@@ -98,21 +93,6 @@ export default function DoDAOHomeHero() {
             </div>
           </div>
           <p className="mt-3 text-center text-sm text-muted">Left: the simulated cell we build. Right: the matching real-world setup the policy runs on.</p>
-        </div>
-
-        {/* Tool logos strip */}
-        <div className="mt-14 mx-auto max-w-4xl">
-          <p className="text-center text-xs font-semibold uppercase tracking-widest text-muted">Tools we work with</p>
-          <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-3">
-            {tools.map((tool) => (
-              <div key={tool.name} className="flex items-center justify-center gap-3 rounded-xl border border-border bg-surface/60 backdrop-blur-sm p-4">
-                <div className="flex h-10 w-10 flex-none items-center justify-center">
-                  <Image src={tool.logo} alt={`${tool.name} logo`} width={40} height={40} className="h-full w-full object-contain" />
-                </div>
-                <span className="text-sm font-semibold text-heading">{tool.name}</span>
-              </div>
-            ))}
-          </div>
         </div>
       </div>
     </div>

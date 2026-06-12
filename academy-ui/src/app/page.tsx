@@ -19,9 +19,9 @@ export async function generateMetadata(): Promise<Metadata> {
     return getMetaTags(space);
   }
   return {
-    title: 'DoDAO – Simulation-First Robotics Services',
+    title: 'DoDAO – Robotics, AI Agents & DeFi',
     description:
-      'DoDAO is a robotics services company. We build Gazebo and Isaac Sim worlds for robotics teams, plus the labeled synthetic data their vision and policy models learn from.',
+      'DoDAO is a simulation-first robotics services company. We build Gazebo and Isaac Sim worlds and the labeled synthetic data robotics teams need, alongside the AI Agent and DeFi tooling we have shipped for years.',
   };
 }
 
