@@ -201,6 +201,9 @@ jobs:
           echo "KOALA_AWS_ACCESS_KEY_ID=${{ secrets.KOALA_AWS_ACCESS_KEY_ID }}" >> $GITHUB_ENV
           echo "AWS_REGION=${{ secrets.AWS_REGION }}" >> $GITHUB_ENV
           echo "NEXTAUTH_SECRET=${{ secrets.NEXTAUTH_SECRET }}" >> $GITHUB_ENV
+          # Required since the home page reads top industries from the DB at build time
+          # (prerender of "/" calls prisma directly — see src/utils/home-page/top-industries.ts).
+          echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> $GITHUB_ENV
 
       - name: Shared Web Core - Install dependencies
         run: cd shared/web-core && pnpm install --filter @dodao/web-core

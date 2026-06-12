@@ -82,6 +82,11 @@ jobs:
           TAG="$(git rev-parse --short HEAD)"
           IMAGE="$REGISTRY/$ECR_REPOSITORY:$TAG"
           ASSET_PREFIX="https://$STATIC_BUCKET.s3.$AWS_REGION.amazonaws.com"
+          # `next build` prerenders "/" which reads top industries from the DB, so the build
+          # needs DATABASE_URL. Pass it as a BuildKit secret (not a build-arg) so it is never
+          # baked into image layers. Sourced from the same Secrets Manager JSON terraform uses.
+          DATABASE_URL=$(aws secretsmanager get-secret-value --secret-id "$APP_SECRETS_ID" --query SecretString --output text | jq -r '.DATABASE_URL // empty')
+          export DATABASE_URL
           # Build context = repo root (workspace dependency @dodao/web-core).
           # Phase A: base URL is the direct host; static assets are served from S3.
           docker build \
@@ -89,6 +94,7 @@ jobs:
             --build-arg NEXT_PUBLIC_VERCEL_URL="$DIRECT_HOST" \
             --build-arg NEXT_PUBLIC_VERCEL_ENV="production" \
             --build-arg NEXT_PUBLIC_ASSET_PREFIX="$ASSET_PREFIX" \
+            --secret id=database_url,env=DATABASE_URL \
             -t "$IMAGE" .
           docker push "$IMAGE"
           echo "tag=$TAG" >> "$GITHUB_OUTPUT"
