@@ -55,6 +55,25 @@ export default function HeroSection() {
           </div>
         </div>
 
+        <div className="mt-14 mx-auto max-w-5xl">
+          <div className="relative overflow-hidden rounded-2xl border border-border bg-surface/60 shadow-2xl shadow-primary/20 backdrop-blur-sm">
+            <video
+              autoPlay
+              loop
+              muted
+              playsInline
+              preload="metadata"
+              aria-label="Six parallel renders of the same robot motion with different lighting, textures and objects"
+              className="block w-full h-auto"
+            >
+              <source src="/robotics/robotics_video_1.mp4" type="video/mp4" />
+            </video>
+          </div>
+          <p className="mt-4 text-center text-sm text-muted">
+            Same robot motion, six randomized scenes — one short example of the synthetic data we generate for vision and policy training.
+          </p>
+        </div>
+
         <div className="mt-14 grid grid-cols-1 gap-6 sm:grid-cols-2 max-w-4xl mx-auto">
           {services.map((service) => (
             <div

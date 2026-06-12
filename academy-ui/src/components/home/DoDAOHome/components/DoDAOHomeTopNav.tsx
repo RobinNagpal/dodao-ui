@@ -187,11 +187,7 @@ export default function DoDAOHomeTopNav() {
         <div className="flex lg:flex-1">
           <a href="/" className="-m-1.5 p-1.5">
             <span className="sr-only">DoDAO</span>
-            <img
-              alt="DoDAO logo"
-              src="https://d31h13bdjwgzxs.cloudfront.net/academy/tidbitshub/Space/tidbitshub/1711618687477_dodao_logo%2Btext%20rectangle.png"
-              className="h-8 w-auto"
-            />
+            <img alt="DoDAO logo" src="/dodao_2.png" className="h-10 w-auto" />
           </a>
         </div>
 
@@ -206,11 +202,7 @@ export default function DoDAOHomeTopNav() {
             <div className="flex items-center justify-between">
               <a href="#" className="-m-1.5 p-1.5">
                 <span className="sr-only">DoDAO</span>
-                <img
-                  alt="DoDAO logo"
-                  src="https://d31h13bdjwgzxs.cloudfront.net/academy/tidbitshub/Space/tidbitshub/1711618687477_dodao_logo%2Btext%20rectangle.png"
-                  className="h-8 w-auto"
-                />
+                <img alt="DoDAO logo" src="/dodao_2.png" className="h-8 w-auto" />
               </a>
             </div>
             <div className="mt-6 flow-root">

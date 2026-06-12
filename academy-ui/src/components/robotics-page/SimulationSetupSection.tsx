@@ -7,6 +7,7 @@ import {
   RectangleStackIcon,
   VideoCameraIcon,
 } from '@heroicons/react/24/outline';
+import Image from 'next/image';
 
 type Piece = {
   title: string;
@@ -66,14 +67,17 @@ const tools = [
   {
     name: 'Gazebo',
     note: 'ROS 2 native. Free. Quick to iterate.',
+    logo: '/robotics/gazebo.png',
   },
   {
-    name: 'Isaac Sim',
+    name: 'NVIDIA Isaac Sim',
     note: 'Realistic images. Built for AI training.',
+    logo: '/robotics/nvidia-isaac.webp',
   },
   {
     name: 'MuJoCo',
     note: 'Best contact and friction model.',
+    logo: '/robotics/mujoco.png',
   },
 ];
 
@@ -133,9 +137,14 @@ export default function SimulationSetupSection() {
             <p className="text-base font-semibold text-primary">Tools We Use</p>
             <div className="mt-4 space-y-3">
               {tools.map((tool) => (
-                <div key={tool.name} className="rounded-xl border border-border bg-surface/60 p-4">
-                  <p className="font-semibold text-heading">{tool.name}</p>
-                  <p className="mt-1 text-sm text-body">{tool.note}</p>
+                <div key={tool.name} className="flex items-center gap-3 rounded-xl border border-border bg-surface/60 p-4">
+                  <div className="flex h-12 w-12 flex-none items-center justify-center rounded-lg">
+                    <Image src={tool.logo} alt={`${tool.name} logo`} width={40} height={40} className="h-full w-full object-contain" />
+                  </div>
+                  <div className="min-w-0">
+                    <p className="font-semibold text-heading">{tool.name}</p>
+                    <p className="mt-1 text-sm text-body">{tool.note}</p>
+                  </div>
                 </div>
               ))}
             </div>
