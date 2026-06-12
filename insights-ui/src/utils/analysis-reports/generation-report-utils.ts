@@ -338,7 +338,7 @@ export async function triggerGenerationOfAReportSimplified(symbol: string, excha
             id: generationRequest.id,
           },
           data: {
-            failedSteps: Array.from(new Set(failedStep)), // Remove duplicates
+            failedSteps: Array.from(new Set(failedSteps)), // Remove duplicates
             inProgressStep: null,
             updatedAt: new Date(),
           },
