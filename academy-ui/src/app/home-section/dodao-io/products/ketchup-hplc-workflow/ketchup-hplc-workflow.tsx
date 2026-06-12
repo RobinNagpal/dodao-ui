@@ -308,7 +308,7 @@ function KetchupHplcWorkflowCaseStudy() {
           </div>
 
           <div className="relative mx-auto mt-16 max-w-4xl">
-            <div aria-hidden="true" className="absolute left-1/2 top-0 bottom-0 hidden w-0.5 -translate-x-1/2 bg-success/20 md:block" />
+            <div aria-hidden="true" className="absolute left-1/2 top-0 bottom-0 hidden w-0.5 -translate-x-1/2 bg-primary/20 md:block" />
 
             <div className="relative space-y-10 md:space-y-12">
               {sceneObjects.map((item, index) => {
@@ -319,7 +319,7 @@ function KetchupHplcWorkflowCaseStudy() {
                       <h3 className="text-xl font-semibold text-heading">{item.name}</h3>
                       <p className="mt-1 text-sm text-body">{item.description}</p>
                       <span
-                        className={`mt-3 inline-flex items-center rounded-full bg-success/15 px-2.5 py-1 text-xs font-medium text-success ring-1 ring-success/40 ${
+                        className={`mt-3 inline-flex items-center rounded-full bg-primary/15 px-2.5 py-1 text-xs font-medium text-primary ring-1 ring-primary/40 ${
                           isLeft ? 'md:ml-auto' : ''
                         }`}
                       >
@@ -327,8 +327,8 @@ function KetchupHplcWorkflowCaseStudy() {
                       </span>
                     </div>
 
-                    <div className="relative z-10 flex h-16 w-16 flex-none items-center justify-center rounded-full bg-bg ring-4 ring-success/20">
-                      <item.icon className="h-8 w-8 text-success" aria-hidden="true" />
+                    <div className="relative z-10 flex h-16 w-16 flex-none items-center justify-center rounded-full bg-bg ring-4 ring-primary/20">
+                      <item.icon className="h-8 w-8 text-primary" aria-hidden="true" />
                     </div>
 
                     <div className={`md:w-1/2 ${isLeft ? 'md:order-last' : 'md:order-first md:text-right'}`}>

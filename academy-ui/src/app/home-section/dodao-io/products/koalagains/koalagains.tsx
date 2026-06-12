@@ -85,30 +85,28 @@ function KoalaGainsComponent() {
     <div>
       <div className="relative overflow-hidden bg-bg">
         <div className="relative pb-4 sm:pb-12 lg:pb-20">
-          <main className="mx-auto mt-8 max-w-7xl px-6 sm:mt-16 lg:mt-20">
+          <main className="mx-auto mt-8 max-w-7xl px-6 sm:mt-16 lg:mt-24">
             <div className="lg:grid lg:grid-cols-12 lg:gap-8">
-              <div className="sm:text-center md:mx-auto md:max-w-2xl lg:col-span-7 lg:text-left">
+              <div className="sm:text-center md:mx-auto md:max-w-2xl lg:col-span-6 lg:text-left">
                 <p className="text-xs uppercase tracking-widest font-semibold text-primary">AI Agents · Investment Insights</p>
-                <h1 className="mt-2 text-4xl font-bold tracking-tight text-heading sm:text-5xl">
-                  KoalaGains <span className="block bg-gradient-to-r from-link to-primary bg-clip-text text-transparent">Investment Research, Automated</span>
-                </h1>
+                <h1 className="mt-2 text-4xl font-bold tracking-tight text-primary sm:text-6xl">KoalaGains</h1>
                 <p className="mt-5 text-lg leading-8 text-body">
-                  KoalaGains is an AI-powered platform that takes the slow, manual side of investment research off your plate. It reads filings on crowdfunding
-                  projects and REITs, scores risks and opportunities and shows the strengths and weaknesses of every deal in plain language.
+                  KoalaGains is an AI-powered platform that takes the slow, manual side of investment research off your plate. It reads filings on stocks and
+                  REITs, scores risks and opportunities and shows the strengths and weaknesses of every deal in plain language.
                 </p>
 
-                <div className="mt-6 flex flex-wrap gap-3">
-                  <span className="inline-flex items-center gap-x-1.5 rounded-full bg-success/15 px-3 py-1 text-sm font-medium text-success ring-1 ring-success/40">
+                <div className="mt-6 flex flex-wrap gap-2 sm:flex-nowrap">
+                  <span className="inline-flex items-center gap-x-1.5 whitespace-nowrap rounded-full bg-success/15 px-3 py-1 text-sm font-medium text-success ring-1 ring-success/40">
                     <CheckCircleIcon className="h-4 w-4" aria-hidden="true" />
-                    Filings parsed automatically
+                    Auto-parsed filings
                   </span>
-                  <span className="inline-flex items-center gap-x-1.5 rounded-full bg-primary/15 px-3 py-1 text-sm font-medium text-primary ring-1 ring-primary/40">
+                  <span className="inline-flex items-center gap-x-1.5 whitespace-nowrap rounded-full bg-primary/15 px-3 py-1 text-sm font-medium text-primary ring-1 ring-primary/40">
                     <SparklesIcon className="h-4 w-4" aria-hidden="true" />
-                    Risk & opportunity scoring
+                    Risk + opp scoring
                   </span>
-                  <span className="inline-flex items-center gap-x-1.5 rounded-full bg-warning/15 px-3 py-1 text-sm font-medium text-warning ring-1 ring-warning/40">
+                  <span className="inline-flex items-center gap-x-1.5 whitespace-nowrap rounded-full bg-warning/15 px-3 py-1 text-sm font-medium text-warning ring-1 ring-warning/40">
                     <ArrowTrendingUpIcon className="h-4 w-4" aria-hidden="true" />
-                    Crowdfunding + REITs
+                    Stocks + REITs
                   </span>
                 </div>
 
@@ -130,8 +128,8 @@ function KoalaGainsComponent() {
                 </div>
               </div>
 
-              <div className="relative mt-12 sm:mx-auto sm:max-w-lg lg:col-span-5 lg:mx-0 lg:mt-0 lg:flex lg:max-w-none lg:items-center">
-                <div className="relative mx-auto w-full overflow-hidden rounded-2xl bg-gradient-to-br from-surface to-surface-2 ring-1 ring-border shadow-lg">
+              <div className="relative mt-12 sm:mx-auto sm:max-w-lg lg:col-span-6 lg:mx-0 lg:mt-0 lg:flex lg:max-w-none lg:items-center">
+                <div className="relative mx-auto w-full overflow-hidden rounded-lg shadow-lg">
                   <img alt="KoalaGains AI investment platform preview" src={Chatbot.src} className="w-full" />
                 </div>
               </div>
@@ -188,42 +186,38 @@ function KoalaGainsComponent() {
         </div>
       </div>
 
-      <div className="bg-surface py-20 sm:py-24">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="mx-auto max-w-3xl text-center">
-            <h2 className="text-3xl font-bold tracking-tight text-heading sm:text-4xl">Why KoalaGains Helps You</h2>
-            <p className="mt-4 text-base text-body">
+      <div className="bg-bg">
+        <div className="relative bg-surface pb-32">
+          <div className="absolute inset-0">
+            <img
+              alt=""
+              src="https://images.unsplash.com/photo-1525130413817-d45c1d127c42?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1920&q=60&&sat=-100"
+              className="size-full object-cover h-80"
+            />
+            <div aria-hidden="true" className="absolute inset-0 bg-surface mix-blend-multiply" />
+          </div>
+          <div className="relative mx-auto max-w-7xl px-6 py-20 sm:py-28 lg:px-8">
+            <h1 className="text-3xl font-bold tracking-tight text-heading sm:text-5xl">Why KoalaGains Helps You</h1>
+            <p className="mt-6 max-w-3xl text-base text-body">
               The platform sifts through large data sets, uncovers what matters and shows you clear visuals so you can move with confidence, not guesswork.
             </p>
           </div>
-
-          <div className="mt-12 grid grid-cols-1 gap-6 lg:grid-cols-3">
+        </div>
+        <section aria-labelledby="contact-heading" className="relative z-10 mx-auto -mt-32 max-w-7xl px-6 pb-32 lg:px-8">
+          <div className="grid grid-cols-1 gap-y-20 lg:grid-cols-3 lg:gap-x-8 lg:gap-y-0">
             {benefits.map((benefit) => (
-              <div key={benefit.name} className="rounded-2xl bg-bg p-6 ring-1 ring-border">
-                <span className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-primary text-primary-text shadow-lg">
-                  <benefit.icon aria-hidden="true" className="h-6 w-6" />
-                </span>
-                <h3 className="mt-5 text-lg font-semibold text-heading">{benefit.name}</h3>
-                <p className="mt-3 text-base text-body">{benefit.description}</p>
+              <div key={benefit.name} className="flex flex-col rounded-2xl bg-surface shadow-xl">
+                <div className="relative flex-1 px-6 pb-8 pt-16 md:px-8">
+                  <div className="absolute top-0 inline-block -translate-y-1/2 transform rounded-xl bg-primary p-5 shadow-lg">
+                    <benefit.icon aria-hidden="true" className="h-6 w-6 text-primary-text" />
+                  </div>
+                  <h3 className="text-lg font-semibold text-heading">{benefit.name}</h3>
+                  <p className="mt-4 text-base text-muted">{benefit.description}</p>
+                </div>
               </div>
             ))}
           </div>
-
-          <div className="mt-16 rounded-2xl bg-gradient-to-br from-primary to-link p-8 text-center">
-            <p className="text-base font-semibold text-primary-text">Ready to see KoalaGains in action?</p>
-            <p className="mt-2 text-sm text-primary-text/80 max-w-2xl mx-auto">
-              Try the live platform and see how AI-powered reports change the way you research crowdfunding projects and REITs.
-            </p>
-            <a
-              href="https://koalagains.com/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-5 inline-flex items-center gap-x-2 rounded-xl bg-heading px-5 py-2.5 text-sm font-semibold text-primary shadow-sm hover:bg-heading/90 transition-colors"
-            >
-              Open KoalaGains
-            </a>
-          </div>
-        </div>
+        </section>
       </div>
     </div>
   );
