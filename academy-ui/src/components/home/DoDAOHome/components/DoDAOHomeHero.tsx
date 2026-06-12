@@ -62,55 +62,6 @@ export default function DoDAOHomeHero() {
           </p>
         </div>
 
-        {/* Centerpiece video — domain randomization across six renders of the same scene */}
-        <div className="mt-14 mx-auto max-w-5xl">
-          <div className="relative overflow-hidden rounded-2xl border border-border bg-surface/60 shadow-2xl shadow-primary/20 backdrop-blur-sm">
-            <video
-              autoPlay
-              loop
-              muted
-              playsInline
-              preload="metadata"
-              aria-label="Six parallel renders of the same scene with different lighting, textures and colors — domain randomization for synthetic data"
-              className="block w-full h-auto"
-            >
-              <source src="/robotics/robotics_video_1.mp4" type="video/mp4" />
-            </video>
-          </div>
-          <p className="mt-4 text-center text-sm text-muted">
-            Same scene rendered six times — domain randomization changes lighting, textures and colors so vision models trained on this data generalize to real
-            cameras.
-          </p>
-        </div>
-
-        {/* Sim-to-real strip — visual proof that sim policies run on real hardware */}
-        <div className="mt-14 mx-auto max-w-5xl">
-          <p className="text-center text-xs font-semibold uppercase tracking-widest text-primary">Built in simulation, run on hardware</p>
-          <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
-            <div className="overflow-hidden rounded-2xl border border-border bg-surface/60 backdrop-blur-sm">
-              <Image
-                src="/robotics/sim_robot.png"
-                alt="Universal Robots arm picking a can in NVIDIA Isaac Sim — the simulated training scene"
-                width={561}
-                height={565}
-                className="block w-full h-auto"
-              />
-              <p className="px-4 py-2 text-center text-[11px] uppercase tracking-widest text-muted">Sim</p>
-            </div>
-            <div className="overflow-hidden rounded-2xl border border-border bg-surface/60 backdrop-blur-sm">
-              <Image
-                src="/robotics/real_robot.png"
-                alt="The same Universal Robots arm picking the same can on real hardware"
-                width={562}
-                height={562}
-                className="block w-full h-auto"
-              />
-              <p className="px-4 py-2 text-center text-[11px] uppercase tracking-widest text-muted">Real</p>
-            </div>
-          </div>
-          <p className="mt-3 text-center text-sm text-muted">Left: the simulated cell we build. Right: the matching real-world setup the policy runs on.</p>
-        </div>
-
         {/* Second sim-to-real clip — in motion this time, not just stills */}
         <div className="mt-14 mx-auto max-w-5xl">
           <div className="relative overflow-hidden rounded-2xl border border-border bg-surface/60 shadow-2xl shadow-primary/20 backdrop-blur-sm">
