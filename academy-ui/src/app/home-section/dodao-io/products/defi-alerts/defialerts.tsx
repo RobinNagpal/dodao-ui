@@ -106,30 +106,28 @@ function DeFiAlertsComponent() {
     <div>
       <div className="relative overflow-hidden bg-bg">
         <div className="relative pb-4 sm:pb-12 lg:pb-20">
-          <main className="mx-auto mt-8 max-w-7xl px-6 sm:mt-16 lg:mt-20">
+          <main className="mx-auto mt-8 max-w-7xl px-6 sm:mt-16 lg:mt-24">
             <div className="lg:grid lg:grid-cols-12 lg:gap-8">
-              <div className="sm:text-center md:mx-auto md:max-w-2xl lg:col-span-7 lg:text-left">
+              <div className="sm:text-center md:mx-auto md:max-w-2xl lg:col-span-6 lg:text-left">
                 <p className="text-xs uppercase tracking-widest font-semibold text-primary">DeFi Tool · Real-Time Intelligence</p>
-                <h1 className="mt-2 text-4xl font-bold tracking-tight text-heading sm:text-5xl">
-                  DeFi Alerts <span className="block bg-gradient-to-r from-link to-primary bg-clip-text text-transparent">For Lending Markets</span>
-                </h1>
+                <h1 className="mt-2 text-4xl font-bold tracking-tight text-primary sm:text-6xl">DeFi Alerts</h1>
                 <p className="mt-5 text-lg leading-8 text-body">
                   Monitor Compound rates, compare them with Aave, Spark and Morpho and get personalised alerts on every active position. Originally built for
                   Compound, the platform extends cleanly to all major DeFi lending protocols.
                 </p>
 
-                <div className="mt-6 flex flex-wrap gap-3">
-                  <span className="inline-flex items-center gap-x-1.5 rounded-full bg-success/15 px-3 py-1 text-sm font-medium text-success ring-1 ring-success/40">
+                <div className="mt-6 flex flex-wrap gap-2 sm:flex-nowrap">
+                  <span className="inline-flex items-center gap-x-1.5 whitespace-nowrap rounded-full bg-success/15 px-3 py-1 text-sm font-medium text-success ring-1 ring-success/40">
                     <CheckCircleIcon className="h-4 w-4" aria-hidden="true" />
-                    Compound · Aave · Spark · Morpho
+                    Compound · Aave · Morpho
                   </span>
-                  <span className="inline-flex items-center gap-x-1.5 rounded-full bg-primary/15 px-3 py-1 text-sm font-medium text-primary ring-1 ring-primary/40">
+                  <span className="inline-flex items-center gap-x-1.5 whitespace-nowrap rounded-full bg-primary/15 px-3 py-1 text-sm font-medium text-primary ring-1 ring-primary/40">
                     <BoltIcon className="h-4 w-4" aria-hidden="true" />
                     Real-time rate alerts
                   </span>
-                  <span className="inline-flex items-center gap-x-1.5 rounded-full bg-warning/15 px-3 py-1 text-sm font-medium text-warning ring-1 ring-warning/40">
+                  <span className="inline-flex items-center gap-x-1.5 whitespace-nowrap rounded-full bg-warning/15 px-3 py-1 text-sm font-medium text-warning ring-1 ring-warning/40">
                     <EnvelopeIcon className="h-4 w-4" aria-hidden="true" />
-                    Email + webhook delivery
+                    Email delivery
                   </span>
                 </div>
 
@@ -151,8 +149,8 @@ function DeFiAlertsComponent() {
                 </div>
               </div>
 
-              <div className="relative mt-12 sm:mx-auto sm:max-w-lg lg:col-span-5 lg:mx-0 lg:mt-0 lg:flex lg:max-w-none lg:items-center">
-                <div className="relative mx-auto w-full overflow-hidden rounded-2xl bg-gradient-to-br from-surface to-surface-2 ring-1 ring-border shadow-lg">
+              <div className="relative mt-12 sm:mx-auto sm:max-w-lg lg:col-span-6 lg:mx-0 lg:mt-0 lg:flex lg:max-w-none lg:items-center">
+                <div className="relative mx-auto w-full overflow-hidden rounded-lg shadow-lg">
                   <img alt="DeFi Alerts platform preview" src={DefiGif.src} className="w-full" />
                 </div>
               </div>
@@ -209,22 +207,21 @@ function DeFiAlertsComponent() {
         </div>
       </div>
 
-      <div className="bg-surface py-20 sm:py-24">
+      <div className="bg-surface py-20">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="mx-auto max-w-3xl text-center">
+          <div className="mx-auto max-w-2xl text-center">
             <h2 className="text-3xl font-bold tracking-tight text-heading sm:text-4xl">Perfect for Every DeFi User</h2>
-            <p className="mt-4 text-base text-body">
-              Whether you’re optimising yields, managing positions or building DeFi products, the alerts keep you informed and ahead of the market.
+            <p className="mt-4 text-lg leading-8 text-body">
+              Whether you’re optimising yields, managing positions, or building DeFi products, our alerts keep you informed and ahead of the market.
             </p>
           </div>
-
-          <div className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-8 sm:grid-cols-2 lg:max-w-none lg:grid-cols-4">
             {useCases.map((useCase) => (
-              <div key={useCase.title} className="flex flex-col rounded-2xl bg-bg p-6 ring-1 ring-border">
-                <span className="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-primary/15 text-primary">
-                  <useCase.icon aria-hidden="true" className="h-6 w-6" />
-                </span>
-                <h3 className="mt-5 text-lg font-semibold text-heading">{useCase.title}</h3>
+              <div key={useCase.title} className="flex flex-col items-center text-center">
+                <div className="flex h-16 w-16 items-center justify-center rounded-lg bg-primary/15">
+                  <useCase.icon className="h-8 w-8 text-primary" aria-hidden="true" />
+                </div>
+                <h3 className="mt-6 text-lg font-semibold text-heading">{useCase.title}</h3>
                 <p className="mt-2 text-sm text-body">{useCase.description}</p>
               </div>
             ))}
@@ -232,43 +229,39 @@ function DeFiAlertsComponent() {
         </div>
       </div>
 
-      <div className="bg-bg py-20 sm:py-24">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="mx-auto max-w-3xl text-center">
-            <h2 className="text-3xl font-bold tracking-tight text-heading sm:text-4xl">Stay Ahead of DeFi Markets</h2>
-            <p className="mt-4 text-base text-body">
-              DeFi moves fast. Rates change by the minute, positions can become unhealthy quickly and opportunities disappear in seconds. The alerts keep you
-              informed and your positions safe, without you watching dashboards all day.
+      <div className="bg-bg">
+        <div className="relative bg-surface pb-32">
+          <div className="absolute inset-0">
+            <img
+              alt=""
+              src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"
+              className="size-full object-cover"
+            />
+            <div aria-hidden="true" className="absolute inset-0 bg-surface mix-blend-multiply" />
+          </div>
+          <div className="relative mx-auto max-w-7xl px-6 py-20 sm:py-28 lg:px-8">
+            <h1 className="text-3xl font-bold tracking-tight text-heading sm:text-5xl">Stay Ahead of DeFi Markets</h1>
+            <p className="mt-6 max-w-3xl text-base text-body">
+              DeFi moves fast. Rates change by the minute, positions can become unhealthy quickly, and opportunities disappear in seconds. Don’t rely on manual
+              checking — let our intelligent alerts keep you informed and your positions safe.
             </p>
           </div>
-
-          <div className="mt-12 grid grid-cols-1 gap-6 lg:grid-cols-3">
+        </div>
+        <section aria-labelledby="contact-heading" className="relative z-10 mx-auto -mt-32 max-w-7xl px-6 pb-32 lg:px-8">
+          <div className="grid grid-cols-1 gap-y-20 lg:grid-cols-3 lg:gap-x-8 lg:gap-y-0">
             {benefits.map((benefit) => (
-              <div key={benefit.name} className="rounded-2xl bg-surface p-6 ring-1 ring-border">
-                <span className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-primary text-primary-text shadow-lg">
-                  <benefit.icon aria-hidden="true" className="h-6 w-6" />
-                </span>
-                <h3 className="mt-5 text-lg font-semibold text-heading">{benefit.name}</h3>
-                <p className="mt-3 text-base text-body">{benefit.description}</p>
+              <div key={benefit.name} className="flex flex-col rounded-2xl bg-surface shadow-xl">
+                <div className="relative flex-1 px-6 pb-8 pt-16 md:px-8">
+                  <div className="absolute top-0 inline-block -translate-y-1/2 transform rounded-xl bg-primary p-5 shadow-lg">
+                    <benefit.icon aria-hidden="true" className="h-6 w-6 text-primary-text" />
+                  </div>
+                  <h3 className="text-lg font-semibold text-heading">{benefit.name}</h3>
+                  <p className="mt-4 text-base text-muted">{benefit.description}</p>
+                </div>
               </div>
             ))}
           </div>
-
-          <div className="mt-16 rounded-2xl bg-gradient-to-br from-primary to-link p-8 text-center">
-            <p className="text-base font-semibold text-primary-text">Ready to stay ahead of DeFi markets?</p>
-            <p className="mt-2 text-sm text-primary-text/80 max-w-2xl mx-auto">
-              Try the live platform and see how real-time alerts change the way you manage positions across Compound, Aave, Spark and Morpho.
-            </p>
-            <a
-              href="https://compound.defialerts.xyz/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-5 inline-flex items-center gap-x-2 rounded-xl bg-heading px-5 py-2.5 text-sm font-semibold text-primary shadow-sm hover:bg-heading/90 transition-colors"
-            >
-              Open DeFi Alerts
-            </a>
-          </div>
-        </div>
+        </section>
       </div>
     </div>
   );
