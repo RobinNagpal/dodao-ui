@@ -230,15 +230,8 @@ function DeFiAlertsComponent() {
       </div>
 
       <div className="bg-bg">
-        <div className="relative bg-surface pb-32">
-          <div className="absolute inset-0">
-            <img
-              alt=""
-              src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"
-              className="size-full object-cover"
-            />
-            <div aria-hidden="true" className="absolute inset-0 bg-surface mix-blend-multiply" />
-          </div>
+        <div className="relative overflow-hidden bg-gradient-to-br from-primary/25 via-surface to-link/15 pb-32">
+          <div aria-hidden="true" className="dodao-dot-pattern absolute inset-0" />
           <div className="relative mx-auto max-w-7xl px-6 py-20 sm:py-28 lg:px-8">
             <h1 className="text-3xl font-bold tracking-tight text-heading sm:text-5xl">Stay Ahead of DeFi Markets</h1>
             <p className="mt-6 max-w-3xl text-base text-body">
