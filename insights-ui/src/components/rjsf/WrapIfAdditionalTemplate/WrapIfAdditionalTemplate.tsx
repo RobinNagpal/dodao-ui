@@ -1,5 +1,5 @@
 import { ADDITIONAL_PROPERTY_FLAG, FormContextType, RJSFSchema, StrictRJSFSchema, TranslatableString, WrapIfAdditionalTemplateProps } from '@rjsf/utils';
-import { FocusEvent } from 'react';
+import { CSSProperties, FocusEvent } from 'react';
 
 export default function WrapIfAdditionalTemplate<T = any, S extends StrictRJSFSchema = RJSFSchema, F extends FormContextType = any>({
   classNames,
@@ -24,7 +24,8 @@ export default function WrapIfAdditionalTemplate<T = any, S extends StrictRJSFSc
 
   if (!additional) {
     return (
-      <div className={classNames} style={style}>
+      // @rjsf/utils mistypes `style` as StyleHTMLAttributes; it is a CSS style object at runtime.
+      <div className={classNames} style={style as CSSProperties | undefined}>
         {children}
       </div>
     );
@@ -34,7 +35,7 @@ export default function WrapIfAdditionalTemplate<T = any, S extends StrictRJSFSc
   const keyId = `${id}-key`;
 
   return (
-    <div className={`flex ${classNames}`} style={style}>
+    <div className={`flex ${classNames}`} style={style as CSSProperties | undefined}>
       <div className="w-1/2 flex-none p-2">
         <label htmlFor={keyId} className="block text-sm font-medium text-muted-foreground">
           {keyLabel}
