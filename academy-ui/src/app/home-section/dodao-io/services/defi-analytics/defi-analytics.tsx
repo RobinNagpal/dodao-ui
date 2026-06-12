@@ -1,6 +1,7 @@
 import {
   ArrowDownTrayIcon,
   ArrowsRightLeftIcon,
+  ArrowTopRightOnSquareIcon,
   BellAlertIcon,
   BoltIcon,
   ChartBarIcon,
@@ -195,10 +196,13 @@ function DefiAnalytics() {
                     Scope a dashboard
                   </a>
                   <a
-                    href="/home-section/dodao-io/services/smart-contract"
-                    className="inline-flex items-center justify-center rounded-md bg-surface px-5 py-2.5 text-sm font-semibold text-primary ring-1 ring-border hover:bg-surface-2 transition-colors"
+                    href="https://dune.com/dodao/asset-analysis"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center justify-center gap-x-2 rounded-md bg-surface px-5 py-2.5 text-sm font-semibold text-primary ring-1 ring-border hover:bg-surface-2 transition-colors"
                   >
-                    Need smart contracts too?
+                    See our live Dune board
+                    <ArrowTopRightOnSquareIcon className="h-4 w-4" aria-hidden="true" />
                   </a>
                 </div>
               </div>
@@ -243,6 +247,16 @@ function DefiAnalytics() {
                   </div>
 
                   <p className="mt-3 text-[10px] italic text-muted">Illustrative preview. Your dashboard is bespoke to your protocol.</p>
+
+                  <a
+                    href="https://dune.com/dodao/asset-analysis"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-3 inline-flex items-center gap-1.5 text-xs font-semibold text-link hover:text-primary transition-colors"
+                  >
+                    See our live Asset Analysis on Dune
+                    <ArrowTopRightOnSquareIcon className="h-3.5 w-3.5" aria-hidden="true" />
+                  </a>
                 </div>
               </div>
             </div>

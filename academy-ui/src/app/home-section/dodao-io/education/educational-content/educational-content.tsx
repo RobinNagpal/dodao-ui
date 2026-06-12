@@ -242,10 +242,10 @@ function EducationalContent() {
             </p>
           </div>
 
-          <div className="mt-14 grid grid-cols-1 gap-6 md:grid-cols-4">
+          <div className="mt-14 grid grid-cols-1 gap-6 md:grid-cols-4 md:items-stretch">
             {process.map((step, i) => (
-              <div key={step.num} className="relative">
-                <div className="flex flex-col items-start rounded-2xl bg-surface p-6 ring-1 ring-border">
+              <div key={step.num} className="relative flex h-full">
+                <div className="flex h-full w-full flex-col items-start rounded-2xl bg-surface p-6 ring-1 ring-border">
                   <div className="flex w-full items-center justify-between">
                     <span className="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-link text-bg shadow-lg">
                       <step.icon className="h-5 w-5" aria-hidden="true" />
@@ -256,8 +256,11 @@ function EducationalContent() {
                   <p className="mt-1 text-sm text-body">{step.description}</p>
                 </div>
                 {i < process.length - 1 && (
-                  <div className="absolute top-1/2 -right-3 hidden h-6 w-6 -translate-y-1/2 items-center justify-center md:flex">
-                    <ArrowRightIcon className="h-5 w-5 text-link" aria-hidden="true" />
+                  <div
+                    className="absolute top-1/2 -right-5 hidden h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full bg-bg ring-1 ring-link/30 md:flex"
+                    aria-hidden="true"
+                  >
+                    <ArrowRightIcon className="h-4 w-4 text-link" />
                   </div>
                 )}
               </div>

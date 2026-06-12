@@ -96,8 +96,8 @@ const supportCycle: SupportStep[] = [
 
 const promises = [
   { stat: '24/7', label: 'Live monitoring', description: 'Your agent does not get to fail quietly overnight.' },
-  { stat: 'Same-day', label: 'Triage on incidents', description: 'You hear back from us before the next user complains.' },
-  { stat: 'Quarterly', label: 'Planned upgrades', description: 'Roadmapped improvements, not just reactive fixes.' },
+  { stat: '<24h', label: 'Triage on incidents', description: 'You hear back from us before the next user complains.' },
+  { stat: '90d', label: 'Planned upgrade cadence', description: 'Roadmapped improvements every quarter, not just reactive fixes.' },
 ];
 
 function MaintenanceSupport() {
@@ -152,19 +152,16 @@ function MaintenanceSupport() {
 
               <div className="relative mt-12 sm:mx-auto sm:max-w-lg lg:col-span-5 lg:mx-0 lg:mt-0 lg:flex lg:max-w-none lg:items-center">
                 <div className="relative w-full rounded-2xl bg-gradient-to-br from-surface to-surface-2 p-6 ring-1 ring-border shadow-lg">
-                  <div className="grid grid-cols-3 gap-3">
+                  <p className="text-xs uppercase tracking-widest font-semibold text-primary">Our promise</p>
+                  <div className="mt-4 space-y-3">
                     {promises.map((p) => (
-                      <div key={p.label} className="rounded-xl bg-bg/60 p-3 ring-1 ring-border text-center">
-                        <p className="text-2xl font-bold text-primary">{p.stat}</p>
-                        <p className="mt-1 text-[10px] font-semibold uppercase tracking-wide text-heading">{p.label}</p>
+                      <div key={p.label} className="flex items-center gap-4 rounded-xl bg-bg/60 p-3 ring-1 ring-border">
+                        <p className="w-16 flex-none text-2xl font-bold text-primary text-center">{p.stat}</p>
+                        <div className="flex-1">
+                          <p className="text-xs font-semibold uppercase tracking-wide text-heading">{p.label}</p>
+                          <p className="mt-0.5 text-xs text-body">{p.description}</p>
+                        </div>
                       </div>
-                    ))}
-                  </div>
-                  <div className="mt-4 space-y-2">
-                    {promises.map((p) => (
-                      <p key={p.label} className="text-xs text-body">
-                        <span className="font-semibold text-heading">{p.label}:</span> {p.description}
-                      </p>
                     ))}
                   </div>
                 </div>
@@ -237,10 +234,10 @@ function MaintenanceSupport() {
             </p>
           </div>
 
-          <div className="mt-14 grid grid-cols-1 gap-6 md:grid-cols-4">
+          <div className="mt-14 grid grid-cols-1 gap-6 md:grid-cols-4 md:items-stretch">
             {supportCycle.map((step, i) => (
-              <div key={step.num} className="relative">
-                <div className="flex flex-col items-start rounded-2xl bg-surface p-6 ring-1 ring-border">
+              <div key={step.num} className="relative flex h-full">
+                <div className="flex h-full w-full flex-col items-start rounded-2xl bg-surface p-6 ring-1 ring-border">
                   <div className="flex w-full items-center justify-between">
                     <span className="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-primary text-primary-text shadow-lg">
                       <step.icon className="h-5 w-5" aria-hidden="true" />
@@ -251,8 +248,11 @@ function MaintenanceSupport() {
                   <p className="mt-1 text-sm text-body">{step.description}</p>
                 </div>
                 {i < supportCycle.length - 1 && (
-                  <div className="absolute top-1/2 -right-3 hidden h-6 w-6 -translate-y-1/2 items-center justify-center md:flex">
-                    <ArrowRightIcon className="h-5 w-5 text-primary" aria-hidden="true" />
+                  <div
+                    className="absolute top-1/2 -right-5 hidden h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full bg-bg ring-1 ring-primary/30 md:flex"
+                    aria-hidden="true"
+                  >
+                    <ArrowRightIcon className="h-4 w-4 text-primary" />
                   </div>
                 )}
               </div>

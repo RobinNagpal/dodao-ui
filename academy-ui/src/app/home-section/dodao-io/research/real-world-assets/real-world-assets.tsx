@@ -1,5 +1,6 @@
 import {
   ArrowsRightLeftIcon,
+  ArrowTopRightOnSquareIcon,
   BookOpenIcon,
   BuildingLibraryIcon,
   BuildingOfficeIcon,
@@ -131,16 +132,19 @@ function RealWorldAssets() {
 
                 <div className="mt-8 flex flex-wrap gap-3">
                   <a
-                    href="mailto:info@dodao.com"
-                    className="inline-flex items-center justify-center rounded-md bg-primary px-5 py-2.5 text-sm font-semibold text-primary-text hover:bg-primary/85 transition-colors"
+                    href="https://chainedassets.com/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center justify-center gap-x-2 rounded-md bg-primary px-5 py-2.5 text-sm font-semibold text-primary-text hover:bg-primary/85 transition-colors"
                   >
-                    Request a research call
+                    Visit ChainedAssets
+                    <ArrowTopRightOnSquareIcon className="h-4 w-4" aria-hidden="true" />
                   </a>
                   <a
-                    href="/home-section/dodao-io/research/credit-union"
+                    href="mailto:info@dodao.com"
                     className="inline-flex items-center justify-center rounded-md bg-surface px-5 py-2.5 text-sm font-semibold text-primary ring-1 ring-border hover:bg-surface-2 transition-colors"
                   >
-                    See other research
+                    Request a research call
                   </a>
                 </div>
               </div>
@@ -228,6 +232,36 @@ function RealWorldAssets() {
                 </div>
               );
             })}
+          </div>
+
+          {/* ChainedAssets callout — research turned into a real product */}
+          <div className="mt-16 rounded-2xl bg-gradient-to-br from-link/15 to-primary/10 p-8 ring-1 ring-link/30">
+            <div className="grid grid-cols-1 gap-6 lg:grid-cols-12 lg:items-center">
+              <div className="lg:col-span-2 flex justify-center">
+                <span className="inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-link/20 text-link ring-1 ring-link/40">
+                  <BuildingLibraryIcon className="h-8 w-8" aria-hidden="true" />
+                </span>
+              </div>
+              <div className="lg:col-span-7">
+                <p className="text-xs uppercase tracking-widest font-semibold text-link">Research, shipped as a product</p>
+                <h3 className="mt-1 text-xl font-semibold text-heading">We built ChainedAssets on top of this research</h3>
+                <p className="mt-2 text-sm text-body">
+                  ChainedAssets is our own RWA platform — the place where the regulatory mapping, the asset-category analysis, and the integration playbooks
+                  show up as something builders and investors can actually use. It is the proof that the research is operational, not academic.
+                </p>
+              </div>
+              <div className="lg:col-span-3">
+                <a
+                  href="https://chainedassets.com/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex w-full items-center justify-center gap-x-2 rounded-md bg-link px-4 py-2.5 text-sm font-semibold text-bg shadow-sm hover:bg-link/85 transition-colors"
+                >
+                  Visit ChainedAssets
+                  <ArrowTopRightOnSquareIcon className="h-4 w-4" aria-hidden="true" />
+                </a>
+              </div>
+            </div>
           </div>
         </div>
       </div>

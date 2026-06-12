@@ -13,6 +13,7 @@ import {
   CpuChipIcon,
   CurrencyDollarIcon,
   LightBulbIcon,
+  PlayCircleIcon,
   PuzzlePieceIcon,
   RectangleStackIcon,
   SparklesIcon,
@@ -145,11 +146,11 @@ function PromptEngineeringGuide() {
               <div className="sm:text-center md:mx-auto md:max-w-2xl lg:col-span-7 lg:text-left">
                 <p className="text-xs uppercase tracking-widest font-semibold text-primary">Education · Prompt Engineering</p>
                 <h1 className="mt-2 text-4xl font-bold tracking-tight text-heading sm:text-5xl">
-                  Prompt engineering, <span className="block bg-gradient-to-r from-link to-primary bg-clip-text text-transparent">demystified</span>
+                  <span className="block bg-gradient-to-r from-link to-primary bg-clip-text text-transparent">Prompt Engineering</span>
                 </h1>
                 <p className="mt-5 text-lg leading-8 text-body">
                   Five modules that take you from “the AI ignored my instructions again” to writing clear, structured, cost-aware prompts that get usable output
-                  the first time — every time.
+                  the first time — every time. The full video walkthrough is on YouTube too.
                 </p>
 
                 <div className="mt-6 flex flex-wrap gap-2 sm:flex-nowrap">
@@ -168,16 +169,19 @@ function PromptEngineeringGuide() {
 
                 <div className="mt-8 flex flex-wrap gap-3">
                   <a
-                    href="mailto:info@dodao.com"
-                    className="inline-flex items-center justify-center rounded-md bg-primary px-5 py-2.5 text-sm font-semibold text-primary-text hover:bg-primary/85 transition-colors"
+                    href="https://www.youtube.com/playlist?list=PL0ptoOsWb_euCM93DfIfNdHpR0UlppuXP"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center justify-center gap-x-2 rounded-md bg-primary px-5 py-2.5 text-sm font-semibold text-primary-text hover:bg-primary/85 transition-colors"
                   >
-                    Get the guide
+                    <PlayCircleIcon className="h-4 w-4" aria-hidden="true" />
+                    Watch the YouTube series
                   </a>
                   <a
-                    href="/home-section/dodao-io/education/ai-agent-bootcamp"
+                    href="mailto:info@dodao.com"
                     className="inline-flex items-center justify-center rounded-md bg-surface px-5 py-2.5 text-sm font-semibold text-primary ring-1 ring-border hover:bg-surface-2 transition-colors"
                   >
-                    See AI Agent Bootcamp
+                    Get the written guide
                   </a>
                 </div>
               </div>
@@ -351,15 +355,17 @@ function PromptEngineeringGuide() {
           <div className="mt-16 rounded-2xl bg-gradient-to-br from-primary to-link p-8 text-center">
             <p className="text-base font-semibold text-primary-text">Ready to write prompts your future self will not have to rewrite?</p>
             <p className="mt-2 text-sm text-primary-text/80 max-w-2xl mx-auto">
-              Dive into the modules, run the labs, and start shipping AI features that hold up under real usage.
+              Watch the full YouTube series, run the labs, and start shipping AI features that hold up under real usage.
             </p>
             <div className="mt-5 flex flex-wrap items-center justify-center gap-3">
               <a
-                href="mailto:info@dodao.com"
+                href="https://www.youtube.com/playlist?list=PL0ptoOsWb_euCM93DfIfNdHpR0UlppuXP"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="inline-flex items-center gap-x-2 rounded-xl bg-heading px-5 py-2.5 text-sm font-semibold text-primary shadow-sm hover:bg-heading/90 transition-colors"
               >
-                <BookOpenIcon className="h-4 w-4" aria-hidden="true" />
-                Get access
+                <PlayCircleIcon className="h-4 w-4" aria-hidden="true" />
+                Watch on YouTube
               </a>
               <a
                 href="/home-section/dodao-io/education/ai-agent-bootcamp"

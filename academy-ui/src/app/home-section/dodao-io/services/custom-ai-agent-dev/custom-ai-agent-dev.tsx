@@ -336,6 +336,38 @@ function CustomAiAgentDev() {
         </div>
       </div>
 
+      {/* KoalaGains callout — we use this on our own product */}
+      <div className="bg-bg py-16 sm:py-20">
+        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+          <div className="rounded-2xl bg-gradient-to-br from-link/15 to-primary/10 p-8 ring-1 ring-link/30">
+            <div className="grid grid-cols-1 gap-6 lg:grid-cols-12 lg:items-center">
+              <div className="lg:col-span-2 flex justify-center">
+                <span className="inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-link/20 text-link ring-1 ring-link/40">
+                  <ChartBarIcon className="h-8 w-8" aria-hidden="true" />
+                </span>
+              </div>
+              <div className="lg:col-span-7">
+                <p className="text-xs uppercase tracking-widest font-semibold text-link">Built on our own playbook</p>
+                <h3 className="mt-1 text-xl font-semibold text-heading">KoalaGains is one of our agents in production</h3>
+                <p className="mt-2 text-sm text-body">
+                  KoalaGains — our flagship AI investment platform — runs the same seven-stage loop you just read about. Agents read SEC filings, score risks,
+                  and surface insights for investors every day. The agents we ship for you go through the same engineering bar.
+                </p>
+              </div>
+              <div className="lg:col-span-3">
+                <a
+                  href="/home-section/dodao-io/products/koalagains"
+                  className="inline-flex w-full items-center justify-center gap-x-2 rounded-md bg-link px-4 py-2.5 text-sm font-semibold text-bg shadow-sm hover:bg-link/85 transition-colors"
+                >
+                  <ChartBarIcon className="h-4 w-4" aria-hidden="true" />
+                  See KoalaGains
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* Why integrate — benefits */}
       <div className="bg-bg py-20 sm:py-24">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
