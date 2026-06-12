@@ -26,6 +26,7 @@ import {
   EvaluationResult,
   MANAGEMENT_TEAM_ALIGNMENT_VERDICT_LABELS,
   ManagementTeamAlignmentVerdict,
+  ReportType,
   TickerAnalysisCategory,
 } from '@/types/ticker-typesv1';
 import { parseMarkdown } from '@/util/parse-markdown';
@@ -531,7 +532,7 @@ function TickerChartsInfo({
         </div>
 
         {/* Right: Spider Chart */}
-        <div className="lg:w-1/2 flex justify-center">
+        <div id="spider-chart" className="lg:w-1/2 flex justify-center">
           <div className="w-full max-w-lg relative pb-4" style={{ minHeight: '400px', contain: 'layout size' }}>
             <div className="absolute top-20 right-0 flex space-x-2" style={{ zIndex: 10 }}>
               <div className="text-2xl font-bold" style={{ color: 'var(--primary-color, blue)' }}>
@@ -572,24 +573,29 @@ function getManagementTeamVerdictBadgeClasses(verdict: ManagementTeamAlignmentVe
   }
 }
 
-const CATEGORY_DETAIL_LINKS: Record<TickerAnalysisCategory, { href: (exchange: string, symbol: string) => string; label: string }> = {
+const CATEGORY_DETAIL_LINKS: Record<TickerAnalysisCategory, { id: ReportType; href: (exchange: string, symbol: string) => string; label: string }> = {
   [TickerAnalysisCategory.BusinessAndMoat]: {
+    id: ReportType.BUSINESS_AND_MOAT,
     href: (exchange, symbol) => `/stocks/${exchange}/${symbol}/business-and-moat`,
     label: 'View Detailed Analysis →',
   },
   [TickerAnalysisCategory.FinancialStatementAnalysis]: {
+    id: ReportType.FINANCIAL_ANALYSIS,
     href: (exchange, symbol) => `/stocks/${exchange}/${symbol}/financial-statement-analysis`,
     label: 'View Detailed Analysis →',
   },
   [TickerAnalysisCategory.PastPerformance]: {
+    id: ReportType.PAST_PERFORMANCE,
     href: (exchange, symbol) => `/stocks/${exchange}/${symbol}/past-performance`,
     label: 'View Detailed Analysis →',
   },
   [TickerAnalysisCategory.FutureGrowth]: {
+    id: ReportType.FUTURE_GROWTH,
     href: (exchange, symbol) => `/stocks/${exchange}/${symbol}/future-performance`,
     label: 'Show Detailed Future Analysis →',
   },
   [TickerAnalysisCategory.FairValue]: {
+    id: ReportType.FAIR_VALUE,
     href: (exchange, symbol) => `/stocks/${exchange}/${symbol}/fair-value`,
     label: 'View Detailed Fair Value →',
   },
@@ -599,7 +605,7 @@ function CategorySummaryCard({ categoryKey, d }: { categoryKey: TickerAnalysisCa
   const categoryResult: FullTickerV1CategoryAnalysisResult | undefined = d.categoryAnalysisResults?.find((r) => r.categoryKey === categoryKey);
   const link = CATEGORY_DETAIL_LINKS[categoryKey];
   return (
-    <div className="bg-surface p-3 sm:p-4 rounded-md shadow-sm">
+    <div id={link.id} className="bg-surface p-3 sm:p-4 rounded-md shadow-sm">
       <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
         <div className="flex flex-wrap items-center gap-2">
           <h3 className="text-lg font-semibold">{CATEGORY_MAPPINGS[categoryKey]}</h3>
@@ -660,7 +666,7 @@ function TickerAnalysisInfo({
           <CompetitionChartSection dataPromise={competitionPromise} exchange={exchange} ticker={ticker} />
 
           {managementTeamReport && (
-            <div className="bg-surface p-3 sm:p-4 rounded-md shadow-sm">
+            <div id={ReportType.MANAGEMENT_TEAM} className="bg-surface p-3 sm:p-4 rounded-md shadow-sm">
               <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
                 <div className="flex flex-wrap items-center gap-2">
                   <h3 className="text-lg font-semibold">Management Team Experience &amp; Alignment</h3>
