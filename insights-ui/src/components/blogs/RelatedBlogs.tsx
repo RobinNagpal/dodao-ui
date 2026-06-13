@@ -13,7 +13,7 @@ export default function RelatedBlogs({ posts }: RelatedBlogsProps) {
   }
 
   return (
-    <section className="bg-gray-800 pt-12 pb-12 sm:pt-16 sm:pb-16">
+    <section className="mt-8 bg-gray-800 pt-12 pb-12 sm:pt-16 sm:pb-16">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto max-w-2xl sm:text-center">
           <h2 className="text-3xl font-semibold tracking-tight text-white sm:text-4xl">Related Articles</h2>
