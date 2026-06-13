@@ -246,16 +246,19 @@ export default function GenerationRequestsPage(): JSX.Element {
   useEffect(() => {
     if (!data) return;
 
-    if (inProgressPagination.skip === 0) setAccumulatedInProgress(data.inProgress || []);
-    if (failedPagination.skip === 0) setAccumulatedFailed(data.failed || []);
-    if (notStartedPagination.skip === 0) setAccumulatedNotStarted(data.notStarted || []);
-    if (completedPagination.skip === 0) setAccumulatedCompleted(data.completed || []);
+    // Merge based on the skip echoed back in the response (not local pagination state, which
+    // updates before the matching fetch resolves and would re-append the previous batch).
+    const mergeRows = (prev: GenerationRequestWithFlags[], rows: GenerationRequestWithFlags[], skip: number): GenerationRequestWithFlags[] => {
+      const base: GenerationRequestWithFlags[] = skip === 0 ? [] : prev.slice(0, skip);
+      const seenIds = new Set<string>(base.map((row) => row.id));
+      return [...base, ...rows.filter((row) => !seenIds.has(row.id))];
+    };
 
-    if (inProgressPagination.skip > 0 && data.inProgress) setAccumulatedInProgress((p) => [...p, ...data.inProgress]);
-    if (failedPagination.skip > 0 && data.failed) setAccumulatedFailed((p) => [...p, ...data.failed]);
-    if (notStartedPagination.skip > 0 && data.notStarted) setAccumulatedNotStarted((p) => [...p, ...data.notStarted]);
-    if (completedPagination.skip > 0 && data.completed) setAccumulatedCompleted((p) => [...p, ...data.completed]);
-  }, [data, inProgressPagination.skip, failedPagination.skip, notStartedPagination.skip, completedPagination.skip]);
+    setAccumulatedInProgress((p) => mergeRows(p, data.inProgress || [], data.pagination.inProgress.skip));
+    setAccumulatedFailed((p) => mergeRows(p, data.failed || [], data.pagination.failed.skip));
+    setAccumulatedNotStarted((p) => mergeRows(p, data.notStarted || [], data.pagination.notStarted.skip));
+    setAccumulatedCompleted((p) => mergeRows(p, data.completed || [], data.pagination.completed.skip));
+  }, [data]);
 
   const hasActive: boolean = (data?.notStarted?.length ?? 0) > 0 || (data?.inProgress?.length ?? 0) > 0;
 
