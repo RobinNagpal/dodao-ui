@@ -41,7 +41,13 @@ ARG NEXT_PUBLIC_ASSET_PREFIX
 ENV NEXT_PUBLIC_VERCEL_URL=${NEXT_PUBLIC_VERCEL_URL}
 ENV NEXT_PUBLIC_VERCEL_ENV=${NEXT_PUBLIC_VERCEL_ENV}
 ENV NEXT_PUBLIC_ASSET_PREFIX=${NEXT_PUBLIC_ASSET_PREFIX}
-RUN pnpm --filter insights-ui exec prisma generate \
+# DATABASE_URL is needed at build time because `next build` prerenders "/" which reads top
+# industries from the DB. Mounted as a BuildKit secret so it never lands in an image layer;
+# the mount is optional so local builds without the secret still run (and fail only at the
+# prerender step, same as before).
+RUN --mount=type=secret,id=database_url \
+    if [ -s /run/secrets/database_url ]; then export DATABASE_URL="$(cat /run/secrets/database_url)"; fi \
+    && pnpm --filter insights-ui exec prisma generate \
     && pnpm --filter insights-ui build
 
 # ---- Runtime -----------------------------------------------------------------------------

@@ -78,6 +78,11 @@ jobs:
         id: build
         env:
           REGISTRY: ${{ steps.ecr.outputs.registry }}
+          # `next build` prerenders "/" which reads top industries from the DB, so the build
+          # needs DATABASE_URL. Sourced from the GitHub repo secret (the Secrets Manager
+          # app-env JSON is not guaranteed to hold it). Passed to docker as a BuildKit
+          # secret (not a build-arg) so it is never baked into image layers.
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
         run: |
           TAG="$(git rev-parse --short HEAD)"
           IMAGE="$REGISTRY/$ECR_REPOSITORY:$TAG"
@@ -89,6 +94,7 @@ jobs:
             --build-arg NEXT_PUBLIC_VERCEL_URL="$DIRECT_HOST" \
             --build-arg NEXT_PUBLIC_VERCEL_ENV="production" \
             --build-arg NEXT_PUBLIC_ASSET_PREFIX="$ASSET_PREFIX" \
+            --secret id=database_url,env=DATABASE_URL \
             -t "$IMAGE" .
           docker push "$IMAGE"
           echo "tag=$TAG" >> "$GITHUB_OUTPUT"
