@@ -91,8 +91,40 @@ export default async function PostPage({ params }: { params: Promise<{ blogSlug:
 
   const relatedPosts = await getRelatedPosts(data.category.slug, slug, 3);
 
+  const canonicalUrl = `https://koalagains.com/blogs/${slug}`;
+  const ogImageUrl = 'https://koalagains.com/koalagain_logo.png';
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    headline: data.title,
+    description: data.abstract,
+    image: ogImageUrl,
+    datePublished: data.datetime,
+    dateModified: data.datetime,
+    author: {
+      '@type': 'Organization',
+      name: 'KoalaGains',
+      url: 'https://koalagains.com',
+    },
+    publisher: {
+      '@type': 'Organization',
+      name: 'KoalaGains',
+      logo: {
+        '@type': 'ImageObject',
+        url: ogImageUrl,
+      },
+    },
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': canonicalUrl,
+    },
+    articleSection: data.category.title,
+    keywords: data.seoKeywords?.join(', '),
+  };
+
   return (
     <PageWrapper>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <Breadcrumbs breadcrumbs={breadcrumbs} />
       <div className="px-6 pt-4 lg:px-8 text-color">
         <div className="mx-auto max-w-6xl text-base/7">
