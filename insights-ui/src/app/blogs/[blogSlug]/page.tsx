@@ -1,6 +1,5 @@
 import { BlogInterface } from '@/types/blog';
 import { getMarkedRenderer } from '@dodao/web-core/utils/ui/getMarkedRenderer';
-import { newKatexExtension } from '@dodao/web-core/utils/ui/newKatexMarketExtension';
 import fs from 'fs';
 import matter from 'gray-matter';
 import { marked } from 'marked';
@@ -83,7 +82,10 @@ export default async function PostPage({ params }: { params: Promise<{ blogSlug:
     },
   ];
 
-  const renderer = getMarkedRenderer(newKatexExtension());
+  // No KaTeX: marked is a process-wide singleton, so registering the single-$ math
+  // extension here leaked into every other page's markdown (stock summaries with
+  // dollar amounts rendered as MathML). See src/util/parse-markdown.ts.
+  const renderer = getMarkedRenderer({});
 
   const blogContents = marked.parse(content, { renderer });
 

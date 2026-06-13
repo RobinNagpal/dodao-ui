@@ -2,8 +2,13 @@ import { recursivelyCleanOpenAiUrls } from '@/scripts/llm-utils';
 import { getMarkedRenderer } from '@dodao/web-core/utils/ui/getMarkedRenderer';
 import { marked } from 'marked';
 
-const renderer = getMarkedRenderer();
-
+// KaTeX is intentionally disabled across insights-ui. Report text is full of plain
+// dollar amounts ("$24.60B revenue backlog ... $1.1B cash reserve"), and any
+// registered `$...$` math extension turns the text between two amounts into italic
+// MathML garbage. marked is a module-level singleton, so a math extension registered
+// by ANY page in the app leaks into every other marked.parse call in the process —
+// passing an empty extension here keeps getMarkedRenderer from registering one.
+const renderer = getMarkedRenderer({});
 // GFM treats ~text~ / ~~text~~ as strikethrough. Tildes show up in our content
 // (math approximations like ~$5B, file paths, etc.) and shouldn't be struck
 // through. Swap them for the numeric HTML entity before parsing so marked
