@@ -9,6 +9,15 @@ import { marked } from 'marked';
 // by ANY page in the app leaks into every other marked.parse call in the process —
 // passing an empty extension here keeps getMarkedRenderer from registering one.
 const renderer = getMarkedRenderer({});
+// Some stored reports contain literal "\n" two-character sequences instead of real
+// newlines (the string was JSON-escaped somewhere in an older generation/save path,
+// e.g. NYSE/AMCR's summary). Markdown assigns no meaning to a literal backslash-n,
+// so "\n\n" renders as visible text inside one paragraph instead of a paragraph
+// break. Convert them to real newlines before parsing.
+function unescapeLiteralNewlines(text: string): string {
+  return text.replace(/\\r\\n/g, '\n').replace(/\\n/g, '\n');
+}
+
 // GFM treats ~text~ / ~~text~~ as strikethrough. Tildes show up in our content
 // (math approximations like ~$5B, file paths, etc.) and shouldn't be struck
 // through. Swap them for the numeric HTML entity before parsing so marked
@@ -40,7 +49,7 @@ function demoteInlineHeadings(text: string): string {
 // out of a Server Component and tripping the production error boundary.
 export function parseMarkdown(text: string | null | undefined) {
   if (typeof text !== 'string' || text.length === 0) return '';
-  return marked.parse(normalizeParagraphLabels(escapeTildes(recursivelyCleanOpenAiUrls(text))), { renderer });
+  return marked.parse(normalizeParagraphLabels(escapeTildes(unescapeLiteralNewlines(recursivelyCleanOpenAiUrls(text)))), { renderer });
 }
 
 // Tariff chapter body fields render under a React-controlled section heading,
@@ -50,5 +59,5 @@ export function parseMarkdown(text: string | null | undefined) {
 // inner headings intact.
 export function parseChapterBodyMarkdown(text: string | null | undefined) {
   if (typeof text !== 'string' || text.length === 0) return '';
-  return marked.parse(demoteInlineHeadings(normalizeParagraphLabels(escapeTildes(recursivelyCleanOpenAiUrls(text)))), { renderer });
+  return marked.parse(demoteInlineHeadings(normalizeParagraphLabels(escapeTildes(unescapeLiteralNewlines(recursivelyCleanOpenAiUrls(text))))), { renderer });
 }
