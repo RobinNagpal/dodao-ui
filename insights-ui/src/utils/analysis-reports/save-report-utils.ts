@@ -9,7 +9,7 @@ import {
 import { CATEGORY_MAPPINGS, InvestorTypes, ManagementTeamAlignmentVerdict, TickerAnalysisCategory } from '@/types/ticker-typesv1';
 import { fetchAnalysisFactors, fetchTickerRecordBySymbolAndExchangeWithIndustryAndSubIndustry } from '@/utils/analysis-reports/get-report-data-utils';
 import { revalidateTickerAndExchangeTag } from '@/utils/ticker-v1-cache-utils';
-import { bumpUpdatedAtAndInvalidateCache, TickerCacheSlice, updateTickerCachedScore } from '@/utils/ticker-v1-model-utils';
+import { bumpUpdatedAtAndInvalidateCache, recomputeTickerCachedScore, TickerCacheSlice } from '@/utils/ticker-v1-model-utils';
 import { TickerV1 } from '@prisma/client';
 
 /**
@@ -86,11 +86,11 @@ export async function saveFactorAnalysisResponse(
     }
   }
 
-  // Calculate score (number of passed factors out of total)
-  const score = response.factors.filter((factor) => factor.result && factor.result.toLowerCase().includes('pass')).length;
-
-  // Update cached score using the utility function
-  await updateTickerCachedScore(tickerRecord, tickerAnalysisCategory, score);
+  // Recompute the cached score from the factor results now stored in the DB
+  // (the upserts above have already landed). Recomputing the whole score — rather
+  // than incrementally bumping just this category — keeps the denormalized cache
+  // in sync even when a category is regenerated to fewer/zero factors.
+  await recomputeTickerCachedScore(tickerRecord);
 
   const slice: TickerCacheSlice = { kind: 'category', category: tickerAnalysisCategory };
   await bumpUpdatedAtAndInvalidateCache(tickerRecord, slice, options);

@@ -102,6 +102,15 @@ async function postHandler(
       },
     });
 
+    // The cached score is derived from the factor results we just deleted, so it
+    // is now stale. Remove it so the listing/competition pages fall back to 0
+    // until the reports are regenerated for the new industry (which recomputes it).
+    await tx.tickerV1CachedScore.deleteMany({
+      where: {
+        tickerId: { in: tickerIds },
+      },
+    });
+
     // 5) Update tickers with new industry and sub-industry
     const updateResult = await tx.tickerV1.updateMany({
       where: {

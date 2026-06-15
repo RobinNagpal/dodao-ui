@@ -11,6 +11,7 @@ import {
   revalidateTickerManagementTeamTag,
 } from '@/utils/ticker-v1-cache-utils';
 import {
+  EvaluationResult,
   Prisma,
   TickerV1,
   TickerV1AnalysisCategoryFactorResult,
@@ -261,64 +262,83 @@ export async function getTickerWithAllDetails(tickerRecord: TickerV1WithRelation
   };
 }
 
-export const updateTickerCachedScore = async (tickerRecord: TickerV1, categoryType: TickerAnalysisCategory, categoryScore: number) => {
-  // Get or create cached score record
-  const existingCachedScore = await prisma.tickerV1CachedScore.findUnique({
-    where: { tickerId: tickerRecord.id },
+/**
+ * Recomputes the ticker's cached score from the factor results currently stored
+ * in the DB and upserts the cached row.
+ *
+ * This is the source of truth for the score shown on the stock listing and
+ * competition pages. Run it whenever any category's factor results are created,
+ * updated, or deleted so the denormalized cache never drifts from the underlying
+ * data. The previous incremental approach only ever bumped the category that was
+ * being saved, so deleting/regenerating a category's factor results (e.g. moving
+ * a ticker, or regenerating a report to fewer/zero factors) left stale points in
+ * the cache and inflated the final score.
+ *
+ * Each category score = number of factors with result === Pass; the final score
+ * is the sum across all five categories. Categories with no factor results
+ * contribute 0.
+ */
+export const recomputeTickerCachedScore = async (tickerRecord: TickerV1): Promise<void> => {
+  const categoryResults = await prisma.tickerV1CategoryAnalysisResult.findMany({
+    where: { spaceId: KoalaGainsSpaceId, tickerId: tickerRecord.id },
+    include: { factorResults: { select: { result: true } } },
   });
 
-  // Get scores from other categories if they exist
-  const businessAndMoatExisting = existingCachedScore?.businessAndMoatScore || 0;
-  const financialStatementAnalysisExisting = existingCachedScore?.financialStatementAnalysisScore || 0;
-  const pastPerformanceExisting = existingCachedScore?.pastPerformanceScore || 0;
-  const futureGrowthExisting = existingCachedScore?.futureGrowthScore || 0;
-  const fairValueExisting = existingCachedScore?.fairValueScore || 0;
-
-  // Create score mapping for upsert
-  const scoreUpdates: Partial<TickerV1CachedScore> = {
-    updatedAt: new Date(),
+  const categoryScores = {
+    businessAndMoat: 0,
+    financialStatementAnalysis: 0,
+    pastPerformance: 0,
+    futureGrowth: 0,
+    fairValue: 0,
   };
 
-  // Update the specific category score
-  switch (categoryType) {
-    case TickerAnalysisCategory.BusinessAndMoat:
-      scoreUpdates.businessAndMoatScore = categoryScore;
-      break;
-    case TickerAnalysisCategory.FinancialStatementAnalysis:
-      scoreUpdates.financialStatementAnalysisScore = categoryScore;
-      break;
-    case TickerAnalysisCategory.PastPerformance:
-      scoreUpdates.pastPerformanceScore = categoryScore;
-      break;
-    case TickerAnalysisCategory.FutureGrowth:
-      scoreUpdates.futureGrowthScore = categoryScore;
-      break;
-    case TickerAnalysisCategory.FairValue:
-      scoreUpdates.fairValueScore = categoryScore;
-      break;
+  for (const categoryResult of categoryResults) {
+    const passedFactors = categoryResult.factorResults.filter((factor) => factor.result === EvaluationResult.Pass).length;
+
+    switch (categoryResult.categoryKey) {
+      case TickerAnalysisCategory.BusinessAndMoat:
+        categoryScores.businessAndMoat = passedFactors;
+        break;
+      case TickerAnalysisCategory.FinancialStatementAnalysis:
+        categoryScores.financialStatementAnalysis = passedFactors;
+        break;
+      case TickerAnalysisCategory.PastPerformance:
+        categoryScores.pastPerformance = passedFactors;
+        break;
+      case TickerAnalysisCategory.FutureGrowth:
+        categoryScores.futureGrowth = passedFactors;
+        break;
+      case TickerAnalysisCategory.FairValue:
+        categoryScores.fairValue = passedFactors;
+        break;
+    }
   }
 
-  // Calculate final score (sum of all category scores)
-  // Use the new categoryScore for the category being updated, existing scores for others
   const finalScore =
-    (categoryType === TickerAnalysisCategory.BusinessAndMoat ? categoryScore : businessAndMoatExisting) +
-    (categoryType === TickerAnalysisCategory.FinancialStatementAnalysis ? categoryScore : financialStatementAnalysisExisting) +
-    (categoryType === TickerAnalysisCategory.PastPerformance ? categoryScore : pastPerformanceExisting) +
-    (categoryType === TickerAnalysisCategory.FutureGrowth ? categoryScore : futureGrowthExisting) +
-    (categoryType === TickerAnalysisCategory.FairValue ? categoryScore : fairValueExisting);
-  scoreUpdates.finalScore = finalScore;
+    categoryScores.businessAndMoat +
+    categoryScores.financialStatementAnalysis +
+    categoryScores.pastPerformance +
+    categoryScores.futureGrowth +
+    categoryScores.fairValue;
 
-  // Update or create cached score record
   await prisma.tickerV1CachedScore.upsert({
     where: { tickerId: tickerRecord.id },
-    update: scoreUpdates,
+    update: {
+      businessAndMoatScore: categoryScores.businessAndMoat,
+      financialStatementAnalysisScore: categoryScores.financialStatementAnalysis,
+      pastPerformanceScore: categoryScores.pastPerformance,
+      futureGrowthScore: categoryScores.futureGrowth,
+      fairValueScore: categoryScores.fairValue,
+      finalScore,
+      updatedAt: new Date(),
+    },
     create: {
       tickerId: tickerRecord.id,
-      businessAndMoatScore: categoryType === TickerAnalysisCategory.BusinessAndMoat ? categoryScore : 0,
-      financialStatementAnalysisScore: categoryType === TickerAnalysisCategory.FinancialStatementAnalysis ? categoryScore : 0,
-      pastPerformanceScore: categoryType === TickerAnalysisCategory.PastPerformance ? categoryScore : 0,
-      futureGrowthScore: categoryType === TickerAnalysisCategory.FutureGrowth ? categoryScore : 0,
-      fairValueScore: categoryType === TickerAnalysisCategory.FairValue ? categoryScore : 0,
+      businessAndMoatScore: categoryScores.businessAndMoat,
+      financialStatementAnalysisScore: categoryScores.financialStatementAnalysis,
+      pastPerformanceScore: categoryScores.pastPerformance,
+      futureGrowthScore: categoryScores.futureGrowth,
+      fairValueScore: categoryScores.fairValue,
       finalScore,
     },
   });
