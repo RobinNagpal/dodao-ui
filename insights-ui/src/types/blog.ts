@@ -7,6 +7,7 @@ export interface BlogInterface {
   seoKeywords: string[];
   seoImage?: string;
   bannerImage?: string;
+  author?: string;
 }
 
 export interface BlogInterfaceWithId extends BlogInterface {
