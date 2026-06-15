@@ -3,6 +3,19 @@ import fs from 'fs';
 import matter from 'gray-matter';
 import path from 'path';
 
+const MONTH_NAMES = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+export const DEFAULT_BLOG_AUTHOR = 'KoalaGains Team';
+
+export function formatBlogDate(datetime: string): string {
+  const match = /^(\d{4})-(\d{2})-(\d{2})/.exec(datetime);
+  if (!match) return datetime;
+  const [, yearStr, monthStr, dayStr] = match;
+  const monthIdx = Number(monthStr) - 1;
+  if (monthIdx < 0 || monthIdx > 11) return datetime;
+  return `${MONTH_NAMES[monthIdx]} ${Number(dayStr)}, ${yearStr}`;
+}
+
 export async function getPostsData(length?: number): Promise<BlogInterfaceWithId[]> {
   const postsDirectory = path.join(process.cwd(), 'blogs');
   const fileNames = fs.readdirSync(postsDirectory);
@@ -17,12 +30,14 @@ export async function getPostsData(length?: number): Promise<BlogInterfaceWithId
     const { data } = matter(fileContents);
     const postMetadata = data as BlogInterface;
 
+    const datetime = postMetadata.datetime || postMetadata.date || 'Unknown Date';
+
     return {
       id: id, // using the slug as a unique id
       title: postMetadata.title || 'Untitled Post',
       abstract: postMetadata.abstract || 'No description available.',
-      date: postMetadata.date || 'Unknown Date',
-      datetime: postMetadata.datetime || postMetadata.date || 'Unknown Date',
+      date: formatBlogDate(datetime),
+      datetime,
       category: {
         title: postMetadata.category.title || 'General',
         slug: postMetadata.category.slug || 'general',
@@ -30,6 +45,7 @@ export async function getPostsData(length?: number): Promise<BlogInterfaceWithId
       seoImage: postMetadata.seoImage,
       bannerImage: postMetadata.bannerImage,
       seoKeywords: postMetadata.seoKeywords || [],
+      author: postMetadata.author,
     };
   });
 

@@ -9,7 +9,7 @@ import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import { Metadata } from 'next';
-import { getRelatedPosts } from '@/util/blog-utils';
+import { DEFAULT_BLOG_AUTHOR, formatBlogDate, getRelatedPosts } from '@/util/blog-utils';
 import RelatedBlogs from '@/components/blogs/RelatedBlogs';
 import { notFound } from 'next/navigation';
 
@@ -25,6 +25,7 @@ export async function generateMetadata({ params }: { params: Promise<{ blogSlug:
     const title = blogData.title ?? 'Untitled Blog';
     const description = blogData.abstract ?? 'Explore the latest insights on KoalaGains.';
     const canonicalUrl = `https://koalagains.com/blogs/${blogSlug}`;
+    const authorName = blogData.author ?? DEFAULT_BLOG_AUTHOR;
 
     return {
       title: `${title}`,
@@ -38,6 +39,11 @@ export async function generateMetadata({ params }: { params: Promise<{ blogSlug:
         url: canonicalUrl,
         images: ['https://koalagains.com/koalagain_logo.png'],
         type: 'article',
+        publishedTime: blogData.datetime,
+        modifiedTime: blogData.datetime,
+        authors: [authorName],
+        section: blogData.category?.title,
+        tags: blogData.seoKeywords,
       },
       twitter: {
         card: 'summary_large_image',
@@ -45,6 +51,7 @@ export async function generateMetadata({ params }: { params: Promise<{ blogSlug:
         description,
         images: ['https://koalagains.com/koalagain_logo.png'],
       },
+      authors: [{ name: authorName }],
       keywords: blogData.seoKeywords,
     };
   } catch (error) {
@@ -91,8 +98,38 @@ export default async function PostPage({ params }: { params: Promise<{ blogSlug:
 
   const relatedPosts = await getRelatedPosts(data.category.slug, slug, 3);
 
+  const canonicalUrl = `https://koalagains.com/blogs/${slug}`;
+  const ogImageUrl = 'https://koalagains.com/koalagain_logo.png';
+  const authorName = data.author ?? DEFAULT_BLOG_AUTHOR;
+  const formattedDate = formatBlogDate(data.datetime);
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    headline: data.title,
+    description: data.abstract,
+    image: ogImageUrl,
+    datePublished: data.datetime,
+    dateModified: data.datetime,
+    author: data.author ? { '@type': 'Person', name: data.author } : { '@type': 'Organization', name: 'KoalaGains', url: 'https://koalagains.com' },
+    publisher: {
+      '@type': 'Organization',
+      name: 'KoalaGains',
+      logo: {
+        '@type': 'ImageObject',
+        url: ogImageUrl,
+      },
+    },
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': canonicalUrl,
+    },
+    articleSection: data.category.title,
+    keywords: data.seoKeywords?.join(', '),
+  };
+
   return (
     <PageWrapper>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <Breadcrumbs breadcrumbs={breadcrumbs} />
       <div className="px-6 pt-4 lg:px-8 text-color">
         <div className="mx-auto max-w-6xl text-base/7">
@@ -100,6 +137,11 @@ export default async function PostPage({ params }: { params: Promise<{ blogSlug:
             <span className="relative z-10 rounded-full py-1.5 font-medium">{data.category.title}</span>
           </p>
           <h1 className="mt-2 text-4xl font-semibold tracking-tight text-pretty  sm:text-3xl">{data.title}</h1>
+          <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-gray-400">
+            <span>By {authorName}</span>
+            <span aria-hidden="true">·</span>
+            <time dateTime={data.datetime}>{formattedDate}</time>
+          </div>
           <div className="mt-10 max-w-6xl text-md">
             <article className="mx-auto text-color">
               {data.bannerImage && (
