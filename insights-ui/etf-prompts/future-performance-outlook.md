@@ -18,7 +18,7 @@ Categories in this group: {{groupCategories}} — some are very similar; treat t
 - Stay inside this category. Do NOT re-do the historical returns report (→ Performance & Returns), cost/liquidity report (→ Cost, Efficiency & Team), or backward-looking risk deep dive (→ Risk Analysis).
 - Treat the provided data blocks as the latest ETF snapshot. Never invent numbers.
 - **Missing-field rule**: if a field/metric is missing, **do not mention it** (no “not available”, “N/A”, “missing data”). Use only what’s present, plus what you can quickly source via lookup.
-- Every meaningful claim needs at least one concrete anchor: a number, a named indicator, a dated event, or a cited market-implied expectation. Avoid hype adjectives.
+- Every meaningful claim needs at least one concrete anchor: a number, a named indicator, a dated event, or a cited market-implied expectation. Drop hype / dramatic adjectives — this is a non-exhaustive banned list: **massive, blistering, staggering, spectacular, exceptional / exceptionally, violently, effortlessly, incredibly, insatiable, euphoric, unmatched, supercharging, pristine**. If a word adds drama rather than information, drop it — the numbers and named catalysts do the talking.
 - Do not repeat the same number in more than one paragraph. State it once, then build on it.
 - **Do not duplicate the factor description.** Each factor entry below already contains its judging logic and edge cases. Apply it — do not restate it.
 
@@ -79,7 +79,7 @@ Keep paragraphs tight. Do not pad. Apply factor logic; do not restate factor def
 1. **Positioning snapshot.** What the fund owns / targets, what that implies (sector / credit / rate / vol exposure), and what the market is currently paying attention to in that exposure. Use top holdings / sector / duration / credit tier where relevant.
 2. **Macro regime fit — short and long horizon.** Name the current macro regime (growth / inflation / policy / financial conditions) with 2-3 indicators. Explain why that regime helps or hurts this ETF's exposure profile over the next 6-12 months AND over a 3-5 year secular horizon. Name the 2-4 most relevant near-term catalysts (Fed meetings, CPI prints, OPEC+, elections, earnings windows) with approximate dates and whether each is a tailwind or headwind. If this is a rate / credit fund, make the rate-path / duration or credit-spread lens explicit.
 3. **Valuation + cycle position (or group-specific lens).** Apply the factor that fits this group: for equity / allocation / fixed-income funds, one valuation / yield framing combined with the fundamental or credit trajectory. For broad-equity, sector-thematic-equity, leveraged-inverse, and commodities-and-digital-assets, also place the exposure in its cycle (accumulation / markup / distribution / markdown). For commodities-and-digital-assets, add the supply / demand or adoption read for the underlying asset. For leveraged-inverse, add the next-few-weeks vol / trend / binary-event read for the underlying. Be disciplined: technicals are secondary for long-horizon bond / allocation funds.
-4. **Verdict, watch-list trigger, and what would change your view.** Close with "Favorable / Mixed / Unfavorable because …".
+4. **Verdict, watch-list trigger, and what would change your view.** Close with "Favorable / Mixed / Unfavorable because …". **Verdict-vs-factor-balance rule:** the summary verdict must agree with the balance of factor verdicts — do not label the outlook `Favorable` while two or more factors `Fail`, and do not label it `Unfavorable` while only one factor (or none) `Fail`s. A `Mixed` verdict over four or five `Fail`s reads as a contradiction to a retail reader scanning the factor row; if the factors are genuinely that negative, the verdict is `Unfavorable`, and if the verdict is right, re-examine whether the borderline factors are truly Fails. The narrative verdict and the factor verdicts must tell the same story.
 
 **Decisiveness of the verdict (mandatory in paragraph 4).** Whatever the verdict, finish with one actionable line that helps the retail reader make a decision:
 
@@ -125,7 +125,7 @@ If a factor’s core metric is missing, use the lookup rule first; otherwise jud
 ## 5. Writing rules
 
 - Markdown. Wrap numbers, yields, spreads, dates, RSI/MAs, and percentages in backticks.
-- Use simple, direct English. No hype. No certainty language.
+- Use simple, direct English. No hype (see the banned list in Scope). No certainty language.
 - Attribute external facts inline with source + as-of date (e.g., “CBOE VIX at `18` (CBOE, Apr 2026)”).
 - Do not paste long URLs. Do not mention missing data.
 - **Whitespace is non-negotiable.** Every sentence must be ordinary readable prose with real spaces between words. Do not emit sequences of words without spaces, and do not wrap multi-word phrases in underscore/italic markup that suppresses spaces (e.g. `_Thefundtradesat..._` is wrong — write it as `_The fund trades at …_` or plain prose). This applies to the entire report, especially the `oneLineExplanation` and `detailedExplanation` in each factor block. If unsure, omit the underscore italics and use plain prose.
