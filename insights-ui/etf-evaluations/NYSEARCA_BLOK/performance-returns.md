@@ -1,0 +1,15 @@
+# BLOK (NYSEARCA) — Performance & Returns
+
+_The performance profile for BLOK is mixed, functioning as a highly tactical instrument rather than a stable wealth-builder. While the fund has amassed $1.43B in total assets and survives multiple crypto winters, its long-term compound growth is severely bottlenecked by extreme volatility and structural tracking error. It captures explosive upside during sector rallies but currently suffers from poor short-term momentum and alarming trading friction. Overall, this ETF presents a mixed investment case, suited only for highly risk-tolerant investors looking for a strictly limited portfolio diversifier._
+
+## Categories
+
+- **Historical Long Term Returns** _(result: Fail)_: The fund's multi-year returns have wildly outpaced broad market indices during sector booms but show massive compound drag over full cycles.
+- **Historical Short Term Returns** _(result: Fail)_: The fund has suffered a severe short-term breakdown, plunging well below key long-term moving averages and lagging the broader equity market.
+- **Historical Returns Consistency** _(result: Pass)_: Calendar-year returns show extreme, leverage-like swings that fit the chaotic nature of the digital asset category but demand strong investor stomachs.
+- **Aum Size** _(result: Fail)_: The fund boasts sufficient scale for a thematic ETF, but an extraordinarily wide quoted bid-ask spread makes retail trading dangerous.
+- **Within Category Comparison** _(result: Fail)_: The fund dominates the longest time horizons but has slipped into the bottom half of its peer group over recent windows.
+
+## Report
+
+BLOK operates within the highly volatile digital asset equity space, capturing the explosive upside of blockchain equities during sector rallies. The fund has amassed $1.43B in total assets, showing strong early adoption and survival through multiple brutal crypto winters. Because the fund holds operating equities rather than direct spot coins, its return profile frequently diverges from pure crypto benchmarks, leading to structural tracking errors that investors must understand. Recent momentum has broken down completely across short-term windows, with the fund down -10.97% YTD and extending a slide that includes a -27.46% contraction over the past six months. The fund's technical posture is currently trapped in a clear downtrend, trading at $50.62, which is -6.48% below its 50-day moving average. This broad-based weakness is exacerbated as spot-crypto alternative products capture more direct market upside, leaving BLOK lagging in immediate momentum. Long-term performance is dominated by the mathematical drag of massive historical drawdowns, amplified by a high beta of 2.08 that magnifies market swings significantly. While its 3-year CAGR sits at 42.62% reflecting violent cyclical rebounds, its overall standing within its category has fluctuated, dropping to the 53rd percentile in 2024. Retail investors must brace for brutal cyclical resets, such as its -62.36% collapse in 2022, making this a challenging holding for anything beyond a tactical 1-5% portfolio allocation.

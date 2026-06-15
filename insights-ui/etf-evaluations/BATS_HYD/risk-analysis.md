@@ -1,0 +1,21 @@
+# HYD (BATS) — Risk Analysis
+
+_The risk profile for this ETF is Mixed. The fund carries a low equity beta of `0.36`, indicating lower correlation to stock markets, but its five-year maximum drawdown of `-19.8%` was deeper than the category average loss of `-17.8%`. Risk-adjusted returns lag slightly over the long term, with a ten-year Sharpe ratio of `-0.02` falling below the category norm of `0.06`, while its five-year downside capture ratio of `120` is higher than the peer median of `116`. Overall, this is an income-generating allocation that requires patience through interest rate shocks and credit stress, making it suitable as a specialized portfolio slice rather than a core defensive bond holding._
+
+## Categories
+
+- **Group Specific Structural Risk** _(result: Pass)_: The strategy faces structural liquidity risks common to lower-tier municipal bonds during market panics.
+- **Macro Environment Risk** _(result: Pass)_: The portfolio is highly exposed to simultaneous interest rate hikes and municipal credit spread widening.
+- **Overall Volatility** _(result: Pass)_: The fund experiences standard volatility for its bond class but has suffered deeper maximum losses than its peers during rate shocks.
+- **Risk Adjusted Return** _(result: Fail)_: The fund consistently trails its category in risk-adjusted performance across multiple timeframes.
+- **Risk Management Within Category** _(result: Pass)_: The fund maintains a disciplined risk posture relative to its peers, though this caution results in below-average returns.
+
+## Report
+
+Looking at volatility and return efficiency, the fund behaves as expected for a high yield municipal portfolio, though it struggles to maximize risk-adjusted performance. Its short-term price swings are relatively contained, posting a three-year standard deviation of `6.0%`, which is slightly better than the High Yield Muni category average of `6.4%`. However, the fund has difficulty converting its risk into leading excess returns. Its five-year Sharpe ratio sits at `-0.46`, trailing the category median of `-0.36`, and a Sortino ratio of `0.77`, falling below the standard 1.0 threshold of adequate downside compensation, confirms that downside variation has historically dragged on its profile.
+
+During major stress windows, the ETF has shown vulnerability compared to its peers. The 2022 rate shock pushed the fund into an extended decline, bottoming out in October of that year. During this recent three-year period, the portfolio registered a `Below Avg.` risk rating within its category, yet its five-year upside capture ratio of `107` lagged the peer group's `113`. Over ten years, the fund experienced an elevated downside capture ratio of `131` compared to the category's `123`, indicating it absorbs more of the benchmark's pain during broad market selloffs despite taking less absolute risk.
+
+The primary macro drivers for this strategy are interest rate sensitivity and municipal credit cycles. Because high-yield municipal bonds often carry longer durations and lower credit quality, the fund is exposed to simultaneous spread-widening and rate hikes. This dual threat materialized sharply during the 2020 COVID panic, when the fund hit its all-time low on `2020-03-19` before staging a volatile `22.5%` recovery rally just to stabilize from the shock. Structurally, the portfolio faces liquidity risk during municipal market panics, where lower-rated issues can become difficult to trade without steep discounts.
+
+The fund offers distinct strengths, namely an overall Morningstar risk score of `21` (categorized as Conservative) and a three-year upside capture ratio of `105` that trails the peer group's `111` but comes with disciplined recent volatility. Red flags include its weaker historical recovery metrics and a ten-year standard deviation of `7.4%` that exceeds the category's `7.1%`. As a retail decision pair, moving from investment-grade munis to this high-yield variant adds material credit and duration risk, demanding a longer holding period to ride out inevitable drawdowns. Overall, this ETF's risk profile looks mixed because its lower short-term volatility is consistently offset by deeper peer-relative drawdowns and lagging long-term risk-adjusted returns.

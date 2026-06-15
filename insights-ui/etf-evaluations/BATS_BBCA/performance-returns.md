@@ -1,0 +1,15 @@
+# BBCA (BATS) — Performance & Returns
+
+_The JPMorgan BetaBuilders Canada ETF (BBCA) offers strong, highly liquid exposure to the Canadian equity market with an impressive $10.58 billion in assets. Its standout strength is its ability to consistently outperform its target index over long horizons, while limiting downside risk compared to broader global markets. However, investors must be mindful of its heavy concentration in Canada's bank and commodity sectors, which exposes the fund to localized economic and currency swings. Overall, the investor takeaway is positive, as this ETF serves as a highly efficient, low-friction diversifier for non-US developed market exposure._
+
+## Categories
+
+- **Aum Size** _(result: Pass)_: The fund operates at a massive scale of $10.58 billion, eliminating any liquidity or closure concerns.
+- **Historical Long Term Returns** _(result: Pass)_: BBCA has consistently outpaced its target index across longer horizons, delivering strong annualized returns.
+- **Historical Returns Consistency** _(result: Pass)_: The fund limits severe downside while regularly participating in global rallies, posting positive returns in six of the last seven years.
+- **Historical Short Term Returns** _(result: Pass)_: The fund boasts strong 1-year trailing gains that rival and even beat broader US equities.
+- **Within Category Comparison** _(result: Pass)_: Despite omitted category ranks, the fund's ability to structurally beat its index puts it in very strong standing.
+
+## Report
+
+Over the past year, the ETF returned an impressive 28.33%, matching the Morningstar Canada Target Market Exposure Index and outpacing the S&P 500's 24.09% gain. While momentum has moderated slightly in the near term with a 1-month gain of 1.23%, the fund remains up 9.19% year-to-date. Although it currently trails the Canadian benchmark's year-to-date mark due to standard passive drag and withholding differences, the 12-month trajectory confirms broad participation in global equity strength. BBCA holds a stellar long-term record, generating an 11.53% 5-year annualized return that actively bests the index's 8.42% print over the same window. Over three years, it produced a 21.72% annualized return, also ahead of the index. This structural outperformance versus the stated passive benchmark suggests efficient management and effective dividend reclamation, making it highly competitive against active managers in the space who carry a higher tracking-cost headwind. From a technical perspective, the fund holds a neutral but healthy stance, trading just below its 50-day moving average but firmly above its 200-day moving average. The main risk to consider is the fund's country-specific concentration; it is tied closely to Canada's bank-heavy and commodity-linked economy, meaning currency swings and sector fluctuations will dominate returns. However, with a 0.88 beta and a history of limiting deep downside during bear markets, evidenced by a moderate -12.33% loss in 2022 compared to the S&P 500's -18.1% decline, this fund fits exceptionally well as a portfolio diversifier for retail investors.

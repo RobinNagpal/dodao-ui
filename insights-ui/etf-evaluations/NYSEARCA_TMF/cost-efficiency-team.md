@@ -1,0 +1,21 @@
+# TMF (NYSEARCA) — Cost, Efficiency & Team
+
+_The cost and efficiency profile for TMF is mixed. While the fund perfectly matches the pricing standard for 3x leveraged products and boasts massive scale, its trading friction is notably high for a day-trading vehicle. Investors face immense structural holding costs and a surprisingly wide bid-ask spread that degrades short-term execution. Ultimately, it is a highly functional but expensive tactical tool._
+
+## Categories
+
+- **Expense Ratio Vs Competition** _(result: Pass)_: The fund's fee perfectly matches the baseline expectations for triple-leveraged tactical instruments.
+- **Expense Ratio Vs Expected Returns** _(result: Pass)_: The fee is justified by the precise execution of its daily 3x objective, even though long-term returns suffer structural decay.
+- **Bid Ask Spread And Trading Cost** _(result: Fail)_: The execution spread is noticeably wide for a heavily traded instrument, creating recurring friction for day traders.
+- **Management Quality And Track Record** _(result: Pass)_: Direxion brings elite institutional credibility and the fund has survived flawlessly since 2009.
+- **Tax Efficiency** _(result: Fail)_: Mechanical swap resets trigger constant turnover, making the fund highly tax-inefficient for non-retirement accounts.
+
+## Report
+
+TMF charges an expense ratio of `0.90%`, which sits exactly in line with the `0.90–1.00%` category norm for triple-leveraged ETFs, though it is drastically more expensive than passive unleveraged bond trackers. The fund commands a massive `$2.9B` in assets under management and trades a deep `$71.7M` in daily dollar volume, ensuring the absolute liquidity necessary for institutional-scale positioning. However, its median bid-ask spread of `0.18%` is surprisingly wide compared to the tight `0.01–0.03%` spreads typical of mega-cap leveraged equity peers, meaning retail traders face a noticeable execution penalty on every round-trip trade. The portfolio provides 3x daily leveraged exposure to the ICE U.S. Treasury 20+ Year Bond Index via total return swaps.
+
+Portfolio turnover runs at `142.00%`, a mechanically high but fully expected rate for a strategy requiring daily swap resets. For this leveraged-inverse category, the headline fee drastically understates the true cost of ownership. Because the fund must borrow heavily to achieve its 3x multiplier, investors absorb an all-in structural cost stack consisting of the headline fee, overnight financing rates (roughly `5%` SOFR applied to the `2x` borrowed exposure, adding ~`10%`), and a daily volatility drag of `1–3%` in normal regimes. This translates to a real annualized holding cost of roughly `12–14%`. Furthermore, the constant swap realization makes the fund highly tax-inefficient, regularly spinning off short-term capital gains that drag on returns if held in taxable brokerage accounts.
+
+Direxion is a Tier-1 issuer with deep, specialized expertise in managing complex swap books, entirely mitigating the operational risks seen at smaller derivative-based issuers. TMF is extremely mature for a tactical instrument, boasting an inception date of April 2009. The lead manager's tenure of `17.1 years` matches the fund's exact age, demonstrating perfect mandate continuity since launch, though the mechanical daily-reset nature of the product relies on institutional counterparty management rather than discretionary alpha generation.
+
+The fund's primary strengths are Direxion's elite derivative-management infrastructure and its heavy asset base, which effectively eliminates closure risk. The glaring red flags are the `0.18%` execution spread on a fund meant for rapid trading, combined with the catastrophic structural decay inherent to borrowing at high overnight rates. Retail investors simply looking for long-duration Treasury exposure without this punishing cost stack should buy the iShares 20+ Year Treasury Bond ETF (TLT, `0.15%`), accepting a 1x unleveraged return to permanently bypass the financing costs, daily volatility decay, and wide transaction spreads. Overall, this ETF's cost profile is mixed because it executes a complex mandate reliably, but forces users to navigate heavy embedded borrowing costs and subpar spread friction.
