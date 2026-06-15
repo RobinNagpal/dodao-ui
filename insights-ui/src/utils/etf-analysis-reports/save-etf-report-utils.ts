@@ -9,7 +9,7 @@ import {
   EtfKeyFactsSimilarEtf,
 } from '@/types/etf/etf-analysis-types';
 import { CompetitionAnalysis } from '@/types/public-equity/analysis-factors-types';
-import { findFactorDefinition } from '@/utils/etf-analysis-reports/etf-analysis-factor-utils';
+import { findFactorDefinition, getEtfAnalysisFactorsForCategory } from '@/utils/etf-analysis-reports/etf-analysis-factor-utils';
 import { fetchEtfBySymbolAndExchange } from '@/utils/etf-analysis-reports/get-etf-report-data-utils';
 import { revalidateEtfAndExchangeTag, revalidateEtfCategoryReportTag, revalidateEtfCompetitionTag } from '@/utils/etf-cache-utils';
 import { USExchanges } from '@/utils/countryExchangeUtils';
@@ -37,6 +37,22 @@ export async function saveEtfFactorAnalysisResponse(
     }
     return [{ ...factor, factorAnalysisKey: factorDef.factorAnalysisKey }];
   });
+
+  // Guard: the LLM must return exactly the factor set that was sent for this
+  // fund's group. A short or empty response (the model dropped the factor array,
+  // or every returned key was unrecognized and filtered out above) would persist
+  // an incomplete report — abort the save so the step fails loudly and can be
+  // re-run, rather than silently storing a report with missing factor verdicts.
+  const analyzerInfo = await prisma.etfStockAnalyzerInfo.findUnique({
+    where: { etfId: etfRecord.id },
+    select: { category: true },
+  });
+  const expectedFactorCount = getEtfAnalysisFactorsForCategory(categoryKey, { fundCategory: analyzerInfo?.category ?? undefined }).length;
+  if (validFactors.length !== expectedFactorCount) {
+    throw new Error(
+      `ETF ${symbol} (${exchange}) ${categoryKey}: expected ${expectedFactorCount} factor result(s) but got ${validFactors.length} valid (LLM returned ${response.factors.length}). Aborting save to avoid persisting an incomplete report.`
+    );
+  }
 
   // Replace the category's factor results atomically: the current prompt
   // invocation is the source of truth, so any factor rows from a previous run

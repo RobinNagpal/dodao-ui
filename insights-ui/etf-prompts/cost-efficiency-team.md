@@ -92,7 +92,7 @@ If a factor's core metric is absent, first try the "Factor-metric lookup" rule. 
 ## 5. Writing rules
 
 - Markdown. Wrap fees, AUM, volume, bid-ask, turnover percentages, tenure, inception dates, and percentages in backticks. Use abbreviated units (`B`/`M`/`K`) per the number-formatting rule above — never raw integers.
-- Simple, direct English. No dramatic adjectives (see banned list above), no filler, no repetition of numbers.
+- Simple, direct English. No filler, no repetition of numbers. Drop dramatic / promotional adjectives — re-read your draft and remove any of these before returning it: `elite`, `exceptional` / `exceptionally`, `flawless`, `incredibly`, `astronomically`, `remarkable` / `remarkably`, `stellar`, `standout`, `top-tier` (as praise rather than a measured rank), `punishing`, `glaring`, `easily` (e.g. "easily clears"), `comfortably` (when dramatising a routine number). If a word adds drama rather than information, drop it — the numbers do the talking.
 - Name the issuer and the fund category when referencing them. Name the benchmark index when quoted from `strategyText`.
 - Do not invent context beyond what the data supports. If a data point isn't present (and you couldn't source it via the lookup rule), omit it silently.
 
