@@ -5,9 +5,12 @@ import { getMarkdownContentForIndustryAreas } from '@/scripts/industry-tariff-re
 import type { IndustryTariffReport } from '@/scripts/industry-tariff-reports/tariff-types';
 import { parseMarkdown } from '@/util/parse-markdown';
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
+import { chapterSectionHref } from '@/utils/tariff-reports/chapter-route-helpers';
 import { fetchIndustryAreasMetadata } from '@/utils/tariff-reports/industry-metadata';
+import { getChapterSlugForOldUrl } from '@/utils/tariff-reports/seeded-chapter-reports';
 import { tariffReportTag } from '@/utils/tariff-report-tags';
 import { Metadata } from 'next';
+import { permanentRedirect } from 'next/navigation';
 
 export async function generateMetadata({ params }: { params: Promise<{ industryId: string }> }): Promise<Metadata> {
   const { industryId } = await params;
@@ -16,6 +19,15 @@ export async function generateMetadata({ params }: { params: Promise<{ industryI
 
 export default async function IndustryAreasPage({ params }: { params: Promise<{ industryId: string }> }) {
   const { industryId } = await params;
+
+  // Industry-areas and final-conclusion legacy URLs were the two sections GSC kept flagging as
+  // duplicates of the chapter route — the canonical-only consolidation wasn't strong enough. 308 to
+  // the chapter URL when a mapping exists; non-mapped industries (rare; usually new ones) still
+  // render the legacy page until they get a chapter row.
+  const chapterSlug = await getChapterSlugForOldUrl(industryId);
+  if (chapterSlug) {
+    permanentRedirect(chapterSectionHref(chapterSlug, 'industry-areas'));
+  }
 
   // Fetch the report data
   const reportResponse = await fetch(`${getBaseUrlForServerSidePages()}/api/industry-tariff-reports/${industryId}`, {
