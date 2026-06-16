@@ -36,10 +36,12 @@ investigation — see the existing item under
 - **OG / Twitter / `image` in Article schema** is the static `/koalagain_logo.png` for
   every page. There is no per-ticker hero image anywhere on the page.
 
-## 2. Per-URL teardown (10 URLs in the failed-revalidation set)
+## 2. Per-URL teardown (20 URLs in the failed-revalidation set)
 
 Numbers below come from a server-rendered curl of each URL on 2026-06-16. "Visible
-words" is the page text after stripping `<script>`/`<style>`/tags.
+words" is the page text after stripping `<script>`/`<style>`/tags. Rows 1–10 are the
+first batch the user sent; rows 11–20 were sent in a follow-up message and all sit in
+the same failed-revalidation bucket.
 
 | # | URL                  | Industry (from breadcrumb)               | datePublished           | dateModified            | Age since modify | Visible words | HTML size | Mgmt-team section |
 |---|----------------------|------------------------------------------|-------------------------|-------------------------|------------------|---------------|-----------|-------------------|
@@ -53,6 +55,16 @@ words" is the page text after stripping `<script>`/`<style>`/tags.
 | 8 | NASDAQ/CBRS          | `Technology Hardware & Semiconductors ` (trailing space) | 2026-06-12T20:35:11.531Z | 2026-06-12T22:52:43.568Z |   3 days        | 7,788         | 1,285 KB  | yes               |
 | 9 | NASDAQ/NHP           | Real Estate                              | 2026-06-12T20:43:20.529Z | 2026-06-12T22:20:31.199Z |   3 days        | 7,655         | 1,291 KB  | yes               |
 |10 | NASDAQ/MMED          | `Healthcare: Technology & Equipment ` (trailing space)    | 2026-06-12T20:43:20.564Z | 2026-06-12T21:55:25.988Z |   3 days        | 6,917         | 1,282 KB  | yes               |
+|11 | ASX/AHX              | Healthcare: Biopharma & Life Sciences    | 2026-02-20T14:31:35.349Z | 2026-02-20T21:24:24.484Z | 115 days        | 5,702         | 1,242 KB  | no                |
+|12 | ASX/ELD              | Agribusiness & Farming                   | 2026-02-20T12:46:01.484Z | 2026-02-21T01:51:15.418Z | 114 days        | 5,174         | 1,295 KB  | no                |
+|13 | NASDAQ/CAI           | Healthcare: Biopharma & Life Sciences    | 2025-11-03T15:27:52.470Z | 2025-11-07T11:02:17.184Z | 220 days        | 2,547         | 1,224 KB  | no                |
+|14 | KOSDAQ/092040        | Healthcare: Biopharma & Life Sciences    | 2025-12-01T14:34:20.089Z | 2025-12-01T16:06:43.242Z | 196 days        | 2,297         | 1,242 KB  | no                |
+|15 | KOSDAQ/261780        | Healthcare: Biopharma & Life Sciences    | 2025-12-01T14:35:53.724Z | 2025-12-01T18:36:01.360Z | 196 days        | 2,465         | 1,240 KB  | no                |
+|16 | KOSPI/017180         | Healthcare: Biopharma & Life Sciences    | 2025-12-01T14:42:49.956Z | 2026-03-19T17:46:06.057Z |  88 days        | 2,442         | 1,238 KB  | no                |
+|17 | NASDAQ/MOBI          | `Healthcare: Technology & Equipment ` (trailing space)    | 2026-06-12T20:43:20.482Z | 2026-06-12T21:09:33.579Z |   3 days        | 7,182         | 1,273 KB  | yes               |
+|18 | NASDAQ/ODTX          | Healthcare: Biopharma & Life Sciences    | 2026-06-12T20:43:20.486Z | 2026-06-12T21:11:13.095Z |   3 days        | 8,713         | 1,299 KB  | yes               |
+|19 | NASDAQ/ALMR          | `Healthcare: Technology & Equipment ` (trailing space)    | 2026-06-12T20:43:20.540Z | 2026-06-12T22:12:15.036Z |   3 days        | 7,318         | 1,282 KB  | yes               |
+|20 | NASDAQ/PICS          | Software Infrastructure & Applications   | 2026-06-12T20:43:20.593Z | 2026-06-12T21:38:24.832Z |   3 days        | 9,319         | 1,314 KB  | yes               |
 
 ### Per-URL likely contributing reason
 
@@ -86,39 +98,88 @@ in §3.
    author, identical OG image, and three of them share `datePublished` to the **second**
    (20:43:20.524, .529, .564). When the GSC report fingers a same-batch cluster, Google
    often treats them collectively as low-trust mass-published content.
+11. **ASX/AHX** — Australian small-cap animal-health business, 5.7k words, ~4 months
+    old. Same shape as the ASX miners in rows 1–2: visible content is fine, but the
+    ticker is microcap-obscure and our internal link graph to Australian biopharma is
+    thin. Shares `datePublished` (2026-02-20T14:31:35.349Z) **to the millisecond** with
+    ASX/VTX — confirms the ASX cron-batch fingerprint (§3.D).
+12. **ASX/ELD** — Australian agribusiness, 5.2k words, ~4 months old. Shares
+    `datePublished` (2026-02-20T12:46:01.484Z) **to the millisecond** with ASX/CTM,
+    again confirming the ASX batch fingerprint. Sole "Agribusiness & Farming" example
+    in the 20-URL sample so far.
+13. **NASDAQ/CAI** — Caris Life Sciences, 2.5k words, ~7 months old. Same thin-content
+    pattern as KNSL / STAG / TVRD: long enough in the sitemap to have been indexed,
+    but visible word count sits at the same ~2.5k floor. Reinforces the "older +
+    missing Management Team" cluster (§3.A).
+14–16. **KOSDAQ/092040, KOSDAQ/261780, KOSPI/017180** — three Korean Healthcare
+    Biopharma tickers all published on 2025-12-01 within 8 minutes of each other
+    (14:34:20, 14:35:53, 14:42:49). Combined with KOSDAQ/260660 from the first batch
+    (also 2025-12-01T14:42:50), this is a **4-URL Korean batch** all in the same
+    industry, with visible word counts at the floor (2,297–2,465). This is the
+    sharpest single cluster in the 20-URL sample — every Korean URL in the sample
+    is microcap Healthcare Biopharma, from the same cron batch, with the thinnest
+    visible content.
+17–20. **NASDAQ/MOBI, NASDAQ/ODTX, NASDAQ/ALMR, NASDAQ/PICS** — same June-12 cohort
+    as rows 7–10. Likely just not yet crawled, but they tighten the
+    `datePublished`-cluster fingerprint considerably: combined with rows 7, 9, 10
+    we now have **seven NASDAQ URLs** published within a **111 ms window** at
+    2026-06-12T20:43:20.* (.482, .486, .524, .529, .540, .564, .593). MOBI / ALMR
+    also share the "Healthcare: Technology & Equipment " trailing-whitespace industry
+    name with MMED — three rows in the sample carry the same bad data.
 
-### Date-published batch cluster (June-12 cohort)
+### Date-published batch cluster (expanded across both batches)
 
 ```
-2026-06-12T20:35:*  → NASDAQ/CBRS
-2026-06-12T20:43:20.524Z → NASDAQ/ELMT
-2026-06-12T20:43:20.529Z → NASDAQ/NHP
-2026-06-12T20:43:20.564Z → NASDAQ/MMED
+ASX cron @ 2026-02-20T12:46:01.484Z (identical to ms): ASX/CTM, ASX/ELD
+ASX cron @ 2026-02-20T14:31:35.349Z (identical to ms): ASX/VTX, ASX/AHX
+Korean cron @ 2025-12-01T14:3*-14:4*: KOSDAQ/092040, KOSDAQ/261780, KOSPI/017180, KOSDAQ/260660
+NASDAQ cron @ 2026-06-12T20:43:20.* (111 ms window):
+  .482Z → NASDAQ/MOBI
+  .486Z → NASDAQ/ODTX
+  .524Z → NASDAQ/ELMT
+  .529Z → NASDAQ/NHP
+  .540Z → NASDAQ/ALMR
+  .564Z → NASDAQ/MMED
+  .593Z → NASDAQ/PICS
+NASDAQ outlier  @ 2026-06-12T20:35:11.531Z → NASDAQ/CBRS (8 min before the main NASDAQ batch)
 ```
 
-Three URLs published within **40 milliseconds of each other**. The cron is fine, but
-exposing the cron clock as `datePublished` in Article schema is a footprint Google
-clusters on.
+Three independent crons (ASX cohort, Korean cohort, NASDAQ June-12 cohort) each
+emit `datePublished` at the same instant across multiple URLs. The two ASX pairs
+even share `datePublished` to the **millisecond**. The NASDAQ June-12 cron fires
+seven URLs inside 111 ms. The cron schedules are fine; what's wrong is that we
+*expose the cron's clock* as the per-Article `datePublished` and as the OG
+`publishedTime` in `generateMetadata` (`createdTime = data.createdAt?.toISOString()`).
+Across thousands of URLs, this becomes a structural mass-publication footprint that
+Google can cluster on.
 
 ## 3. Cross-URL patterns (root-cause candidates)
 
 ### A. Thin visible content on older pages
 
-Of the **6 pages that have been live ≥ 3 months**, 4 sit at ~2,450–2,540 visible words:
+Across the 20 URLs, **the 12 pages that have been live ≥ 3 months** split cleanly
+into two tiers:
 
-- NYSE/KNSL (223 d) — 2,541
-- NYSE/STAG (232 d) — 2,474
-- KOSDAQ/260660 (88 d) — 2,457
-- NASDAQ/TVRD (88 d) — 2,454
+| Tier | Visible words | Count | URLs |
+|------|---------------|-------|------|
+| Thin (≤ 2,550 words) | 2,297–2,547 | 8 | NYSE/KNSL, NYSE/STAG, KOSDAQ/260660, NASDAQ/TVRD, NASDAQ/CAI, KOSDAQ/092040, KOSDAQ/261780, KOSPI/017180 |
+| ASX cohort (4.9k–5.7k words) | 4,913–5,702 | 4 | ASX/CTM, ASX/VTX, ASX/AHX, ASX/ELD |
 
-The two ASX miners are bigger (~5k words) but still in the "small for a financial
-analysis page" range. Pages generated *more recently* (the June-12 cohort) are
-6.9–8.2k words because they include the Management Team section. Older pages predate
-that section.
+Pages generated *more recently* (the June-12 cohort, rows 7–10 and 17–20) are
+6.9–9.3k words because they include the Management Team section. None of the older
+pages have it.
+
+The thin-tier word count is suspiciously consistent: 8 URLs land in a ~250-word
+band (2,297–2,547). That looks like a **structural ceiling** — without Management
+Team, the page is just (Summary + Business & Moat + Financial Statement Analysis +
+Past Performance + Future Growth + Fair Value) summary cards, and the LLM tends to
+produce roughly the same word budget for each. Adding Management Team lifts pages
+straight into the 6.9–9.3k range.
 
 **Implication**: legacy stock reports are at the thin-content boundary; the missing
 Management Team section is one of the cuts that pushes them under. Backfilling the
-section on older reports is plausibly the highest-impact lever.
+section on every pre-June-12 report is the single highest-impact lever the sample
+points to.
 
 ### B. HTML weight ≫ visible content (every page)
 
@@ -131,57 +192,89 @@ pages, but the ratio is a CWV / page-experience signal and a duplicate-template 
 ### C. Identical OG / Twitter / Article-schema image on every URL
 
 `https://koalagains.com/koalagain_logo.png` is the only image in `openGraph.images`,
-`twitter.images`, and the Article-schema `image` array on all 10 URLs. From Google's
+`twitter.images`, and the Article-schema `image` array on all 20 URLs. From Google's
 crawl, every stock URL on the site has the same image identifier. No image search
 discovery, no per-URL uniqueness signal, and `Article` schema with no per-article
 image is a weak structured-data signal.
 
-### D. `datePublished` exposed at second-level cron precision
+### D. `datePublished` exposed at sub-second cron precision
 
-3 of the 4 newest URLs share `datePublished` to the second. Once GSC starts seeing
-hundreds of URLs with the same `datePublished` timestamp, mass-publication patterns
-become measurable. Same problem will repeat each time the batch generator runs.
+Confirmed strongly across the 20-URL sample (see expanded cluster table in §2):
 
-### E. Industry / exchange skew in the failing 10
+- ASX/CTM and ASX/ELD share `datePublished` **to the millisecond**.
+- ASX/VTX and ASX/AHX share `datePublished` **to the millisecond**.
+- 7 of the 8 NASDAQ June-12 URLs share `datePublished` to the **same second**
+  (2026-06-12T20:43:20.\*Z, inside a 111 ms window).
+- 4 Korean URLs share `datePublished` inside an 8-minute window on 2025-12-01.
 
-- **NASDAQ**: 5/10 (CBRS, ELMT, MMED, NHP, TVRD)
-- **NYSE**: 2/10 (KNSL, STAG)
-- **ASX**: 2/10 (CTM, VTX)
-- **KOSDAQ**: 1/10 (260660)
+`generateMetadata` writes `publishedTime: createdTime ?? updatedTime`, where
+`createdTime = data.createdAt?.toISOString()`. That value is the cron tick — not the
+report's actual publication time. Once GSC sees the full ~95 URL set, the
+mass-publication pattern is unambiguous. Fix: either round `datePublished` /
+`publishedTime` to date-only, or derive it from the report's logical "first
+published" timestamp instead of the row's `createdAt`.
 
-Industries repeat inside just this 10-URL sample:
+### E. Industry / exchange skew in the failing 20
 
-- **Real Estate**: 2 (STAG, NHP)
-- **Healthcare: Biopharma & Life Sciences**: 2 (TVRD, 260660)
-- **Metals, Minerals & Mining**: 2 (CTM, VTX)
+Exchange split (20-URL sample):
 
-A 10-URL sample isn't statistically meaningful on its own — but if the same industry
-clusters hold across the ~95 failing main-stock URLs, that's a signal that *some
-sub-set of industries* (likely the ones where competitor finance portals dominate
-SERPs) are taking a disproportionate hit. **Action**: pull the full ~95-URL failed
-list and bucket by `(exchange, industryKey)`.
+- **NASDAQ**: 10/20 (CBRS, ELMT, MMED, NHP, TVRD, MOBI, ODTX, ALMR, PICS, CAI)
+- **NYSE**: 2/20 (KNSL, STAG)
+- **ASX**: 4/20 (CTM, VTX, AHX, ELD)
+- **KOSDAQ**: 3/20 (260660, 092040, 261780)
+- **KOSPI**: 1/20 (017180)
+
+Industry distribution:
+
+- **Healthcare: Biopharma & Life Sciences**: 8/20 (TVRD, 260660, AHX, CAI, 092040,
+  261780, 017180, ODTX) — **the single largest cluster, by a wide margin.**
+- **Healthcare: Technology & Equipment** (with trailing space): 3/20 (MMED, MOBI,
+  ALMR) — same trailing-whitespace industry record (§3.F) on all three rows.
+- **Real Estate**: 2/20 (STAG, NHP)
+- **Metals, Minerals & Mining**: 2/20 (CTM, VTX)
+- **Insurance & Risk Management**, **Aerospace and Defense**, **Technology Hardware
+  & Semiconductors** (trailing space), **Agribusiness & Farming**, **Software
+  Infrastructure & Applications**: 1 each.
+
+**Healthcare verticals account for 11/20 (55%) of the failing sample.** Combined
+with the thin-content pattern (§3.A) and the Korean batch cluster (§2 rows 14–16),
+the dominant failing archetype is **small/micro-cap Healthcare Biopharma**.
+
+Every Korean URL in the sample is Healthcare Biopharma microcap. Every Australian
+URL (4/4) is a microcap; 2 are miners and 1 is animal health and 1 is agribusiness.
+
+**Action**: pull the full ~95-URL failed list and bucket by `(exchange, industryKey)`.
+The 20-sample hypothesis is that Healthcare Biopharma + small-cap-microcap + non-US
+together cover most of the failing set. If the full bucket confirms it, the fix path
+narrows considerably: prioritize Management Team backfill + image schema + internal
+linking on the Healthcare Biopharma + non-US slices first.
 
 ### F. Data-quality bug: trailing whitespace in industry names
 
-`"Technology Hardware & Semiconductors "` (CBRS) and `"Healthcare: Technology &
-Equipment "` (MMED) both carry a trailing space that leaks into:
+Two industry records leak a trailing space into the rendered breadcrumb and the
+BreadcrumbList JSON-LD `name` field:
 
-- The visible breadcrumb text
-- The BreadcrumbList JSON-LD `name` field
-- The `/stocks/industries/{industryKey}` link target (if `industryKey` was derived
-  from `name`)
+- `"Technology Hardware & Semiconductors "` — 1 URL (CBRS).
+- `"Healthcare: Technology & Equipment "` — 3 URLs (MMED, MOBI, ALMR).
 
-A trailing space won't cause a 404, but it's the kind of low-quality data signal that
-correlates with indexing demotion. Easy fix; the root data is in either the industry
-seed or the `TickerV1.industry.name` column.
+So 4 of 20 sample URLs (20%) carry visibly broken industry names. The trailing
+space also flows into the `/stocks/industries/{industryKey}` link target if
+`industryKey` was derived from `name`. A trailing space won't cause a 404, but
+it's the kind of low-quality data signal that correlates with indexing demotion.
+Easy fix; the root data is in either the industry seed or the `TickerV1.industry
+.name` column.
 
 ### G. Non-US tickers are under-linked from the rest of the site
 
-Three of the ten (`ASX/CTM`, `ASX/VTX`, `KOSDAQ/260660`) are non-US. The breadcrumb
+8 of 20 (`ASX/CTM`, `ASX/VTX`, `ASX/AHX`, `ASX/ELD`, `KOSDAQ/260660`, `KOSDAQ/092040`,
+`KOSDAQ/261780`, `KOSPI/017180`) are non-US — 40% of the sample. The breadcrumb
 links go to `/stocks/countries/Australia` and `/stocks/countries/Korea`. We do not
 yet have data on how many *internal* links flow into those country pages from the
 homepage / nav / featured rails. Hypothesis: non-US tickers receive a tiny fraction
 of the link equity that US tickers do, which is a direct indexing-priority signal.
+The 4 ASX tickers in the sample fall into 3 different industries
+(Mining, Biopharma, Agribusiness) so the cluster isn't industry-specific — country
+under-linking is the more likely common factor for the ASX cohort.
 
 ### H. `lastmod` granularity is one day (good) — but never re-stamped on content edits
 
@@ -198,11 +291,12 @@ time.
 ## 4. Recommended next steps (before changing code)
 
 The patterns above are hypotheses; turning them into a fix requires more data than
-10 URLs.
+20 URLs.
 
 1. **Pull the full failed-revalidation list** (~682 URLs from GSC). Bucket by
    `(category, exchange, industryKey, ageInDays, visibleWords, hasMgmtTeam)`. Decide
-   the actual dominant cluster — it might not be the same as the 10-URL sample.
+   the actual dominant cluster — the 20-URL sample points strongly at small-cap
+   Healthcare Biopharma + non-US, but a 20-URL sample isn't enough to commit a fix to.
 2. **Re-run the same teardown on a confirmed-indexed control group** (10 URLs that
    *are* indexed). The diff between "indexed" and "not indexed" is the real signal —
    the absolute numbers in §2 above don't tell us anything until we have a baseline.
@@ -234,5 +328,5 @@ The patterns above are hypotheses; turning them into a fix requires more data th
 
 ---
 
-*Last updated: 2026-06-16. Sample of 10 URLs from the ~95 main-stock URLs that
-failed the most recent GSC revalidation run.*
+*Last updated: 2026-06-16. Sample of 20 URLs (two 10-URL batches from the user) out
+of the ~95 main-stock URLs that failed the most recent GSC revalidation run.*
