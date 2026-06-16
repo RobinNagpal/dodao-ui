@@ -244,46 +244,77 @@ export async function generateMetadata({ params }: { params: RouteParams }): Pro
   const { exchange, ticker } = { exchange: routeParams.exchange.toUpperCase(), ticker: routeParams.ticker.toUpperCase() };
 
   let companyName: string = ticker;
-  let summary: string = `Financial analysis and reports for ${ticker}. Explore key metrics, insights, and evaluations.`;
+  let summary: string = `Financial analysis and reports for ${ticker}.`;
   let metaDescription: string = '';
   let createdTime: string | undefined;
   let updatedTime: string | undefined;
+  let industryLabel: string | undefined;
+  let countryTag: string = '';
 
   try {
     const data = await fetchTickerByExchange(exchange, ticker);
     if (data) {
       companyName = data.name ?? companyName;
-      summary = data.summary ?? summary;
       metaDescription = data.metaDescription ?? '';
       createdTime = data.createdAt?.toISOString();
       updatedTime = data.updatedAt?.toISOString() ?? createdTime;
+
+      // sub-industry is more specific than industry; prefer it when populated. This
+      // is what the title and the fallback description differentiate on across
+      // the ~5k-page set so two arbitrary stock pages no longer share a
+      // byte-identical title or description shape.
+      const industryDescriptor = data.subIndustry?.name || data.industry?.name;
+      if (industryDescriptor) industryLabel = industryDescriptor;
+
+      if (data.summary) {
+        summary = data.summary;
+      } else {
+        // Build a per-ticker fallback so rows with no `summary` don't all collapse
+        // to one shared generic string — that's the single biggest "near-duplicate
+        // template" signal Google parks pages on in "Crawled — currently not indexed".
+        const industryClause = industryDescriptor ? `${industryDescriptor} stock` : 'stock';
+        summary =
+          `${companyName} (${ticker}) is a ${industryClause} listed on ${data.exchange.toUpperCase()}. ` +
+          `KoalaGains' investor analysis covers Business & Moat, Financial Statements, Past & Future Performance, Fair Value, and Management Team alignment.`;
+      }
+
+      // Non-US country suffix in the title so titles differ across exchanges.
+      // Silently skip on unknown exchange (defensive — never block metadata on it).
+      try {
+        const country = getCountryByExchange(data.exchange as USExchanges | CanadaExchanges | IndiaExchanges | UKExchanges);
+        if (country && country !== 'US') countryTag = ` | ${country}`;
+      } catch {
+        /* unknown exchange — leave countryTag empty */
+      }
     }
   } catch {
     /* keep generic */
   }
 
-  const year = new Date().getFullYear();
+  // Derive the year from the report's modified date so the title's freshness signal
+  // always matches `dateModified` in the JSON-LD. Falling back to `new Date()` only
+  // when no row was found means we stop labelling 2025-vintage reports as "(2026)".
+  const yearForTitle = updatedTime ? new Date(updatedTime).getFullYear() : new Date().getFullYear();
 
   // Use metaDescription if available, otherwise truncate summary
   const shortDesc: string = metaDescription || truncateForMeta(summary);
   const canonicalUrl: string = `https://koalagains.com/stocks/${exchange}/${ticker}`;
-  const keywords: string[] = [
-    companyName,
-    `Analysis on ${companyName}`,
-    `Financial Analysis on ${companyName}`,
-    `Reports on ${companyName}`,
-    `${companyName} analysis`,
-    'investment insights',
-    'public equities',
-    'KoalaGains',
-  ];
+
+  // Title shape leads with the company name + ticker (what users search for) and
+  // when available appends the industry, year, and non-US country — three signals
+  // that together break the duplicate-title pattern across the catalogue without
+  // pushing past SERP truncation.
+  const titleBase = industryLabel
+    ? `${companyName} (${ticker}) — ${industryLabel} Stock Analysis (${yearForTitle})${countryTag}`
+    : `${companyName} (${ticker}) Stock Analysis & Key Metrics (${yearForTitle})${countryTag}`;
+  const ogTwitterTitle = `${titleBase} | KoalaGains`;
 
   return {
-    title: `${companyName} (${ticker}) Stock Analysis & Key Metrics (${year})`,
+    title: titleBase,
     description: shortDesc,
     alternates: { canonical: canonicalUrl },
     openGraph: {
-      title: `${companyName} (${ticker}) Stock Analysis & Key Metrics | KoalaGains`,
+      title: ogTwitterTitle,
       description: shortDesc,
       url: canonicalUrl,
       siteName: 'KoalaGains',
@@ -294,11 +325,10 @@ export async function generateMetadata({ params }: { params: RouteParams }): Pro
     },
     twitter: {
       card: 'summary_large_image',
-      title: `${companyName} (${ticker}) Stock Analysis & Key Metrics | KoalaGains`,
+      title: ogTwitterTitle,
       description: shortDesc,
       images: ['https://koalagains.com/koalagain_logo.png'],
     },
-    keywords,
   };
 }
 
@@ -706,20 +736,22 @@ function TickerAnalysisInfo({
   );
 }
 
-function TickerArticleFooter({ modifiedDate, formattedModifiedDate }: { modifiedDate: Date; formattedModifiedDate: string }): JSX.Element {
+function TickerArticleFooter({ modifiedDate, formattedModifiedDate }: { modifiedDate: Date | null; formattedModifiedDate: string | null }): JSX.Element {
   return (
     <footer className="mt-8 pt-6 border-t border-border">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-        <div className="text-sm text-muted-foreground">
-          <span>Last updated by </span>
-          <span itemProp="author" itemScope itemType="https://schema.org/Organization">
-            <span itemProp="name">KoalaGains</span>
-          </span>
-          <span> on </span>
-          <time dateTime={modifiedDate.toISOString()} itemProp="dateModified">
-            {formattedModifiedDate}
-          </time>
-        </div>
+        {modifiedDate && formattedModifiedDate && (
+          <div className="text-sm text-muted-foreground">
+            <span>Last updated by </span>
+            <span itemProp="author" itemScope itemType="https://schema.org/Organization">
+              <span itemProp="name">KoalaGains</span>
+            </span>
+            <span> on </span>
+            <time dateTime={modifiedDate.toISOString()} itemProp="dateModified">
+              {formattedModifiedDate}
+            </time>
+          </div>
+        )}
         <div className="flex gap-2">
           <span className="inline-flex items-center rounded-full bg-sky-500/15 border border-sky-500/40 px-2.5 py-0.5 text-xs font-medium text-sky-300">
             Stock Analysis
@@ -768,16 +800,20 @@ export default async function TickerDetailsPage({ params }: { params: RouteParam
   const priceHistoryPromise = retryWithCanonical(fetchPriceHistory);
   const competitionPromise = retryWithCanonical(fetchCompetitionData);
 
-  // Derive dates for semantic footer (based solely on tickerData)
-  const createdAtRaw = tickerData.createdAt || new Date();
-  const updatedAtRaw = tickerData.updatedAt || tickerData.createdAt || new Date();
-  const publishedDate = new Date(createdAtRaw);
-  const modifiedDate = new Date(updatedAtRaw);
-  const formattedModifiedDate = modifiedDate.toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-  });
+  // Derive dates for semantic footer (based solely on tickerData). Do NOT synthesize
+  // `new Date()` when createdAt/updatedAt are absent — that would publish a "today"
+  // datePublished signal that conflicts with the JSON-LD `datePublished` /
+  // `dateModified` (which gracefully omit when null). Inconsistent date signals
+  // across the same HTML are one of the things Google's freshness heuristic distrusts.
+  const publishedDate: Date | null = tickerData.createdAt ? new Date(tickerData.createdAt) : null;
+  const modifiedDate: Date | null = tickerData.updatedAt ? new Date(tickerData.updatedAt) : tickerData.createdAt ? new Date(tickerData.createdAt) : null;
+  const formattedModifiedDate: string | null = modifiedDate
+    ? modifiedDate.toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+      })
+    : null;
 
   return (
     <PageWrapper>
@@ -793,8 +829,10 @@ export default async function TickerDetailsPage({ params }: { params: RouteParam
       <BreadcrumbsFromData data={tickerInfo} />
 
       <article itemScope itemType="https://schema.org/Article">
-        {/* Hidden datePublished for schema - machine readable only */}
-        <meta itemProp="datePublished" content={publishedDate.toISOString()} />
+        {/* Hidden datePublished for schema - machine readable only. Only emitted
+            when we actually have a createdAt on the row — see the date derivation
+            above for why we don't fall back to "today". */}
+        {publishedDate && <meta itemProp="datePublished" content={publishedDate.toISOString()} />}
 
         {/* Summary info - server rendered, no skeleton needed */}
         <TickerSummaryInfo data={tickerInfo} />
