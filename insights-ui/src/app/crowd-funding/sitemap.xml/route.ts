@@ -1,4 +1,4 @@
-import { REPORT_TYPES_TO_DISPLAY } from '@/types/project/project';
+import { ProcessingStatus, ProjectDetails, REPORT_TYPES_TO_DISPLAY } from '@/types/project/project';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { getCanonicalUrl } from '@/utils/getBaseUrlForServerSidePages';
 import { NextResponse } from 'next/server';
@@ -21,7 +21,29 @@ async function getAllProjects(): Promise<string[]> {
   return data.projectIds || [];
 }
 
-// Generate sitemap URLs
+async function getProjectDetails(projectId: string): Promise<ProjectDetails | undefined> {
+  try {
+    const response = await fetch(`${getBaseUrl()}/api/crowd-funding/projects/${projectId}`);
+    if (!response.ok) return undefined;
+    const data: { projectDetails: ProjectDetails } = await response.json();
+    return data.projectDetails;
+  } catch (error) {
+    console.warn(`Failed to fetch details for project ${projectId} while building sitemap:`, error);
+    return undefined;
+  }
+}
+
+function isReportIndexable(details: ProjectDetails | undefined, reportType: string): boolean {
+  const report = details?.reports?.[reportType];
+  if (!report) return false;
+  if (report.status !== ProcessingStatus.COMPLETED) return false;
+  return (report.summary?.trim()?.length ?? 0) > 0;
+}
+
+// Generate sitemap URLs — only include URLs whose reports are complete + non-empty.
+// Incomplete URLs still resolve, but are emitted with `robots: noindex` from the pages
+// themselves and are kept out of the sitemap so Google doesn't churn crawl budget on
+// thin/"Empty" report pages (the main driver of the "Discovered — currently not indexed" bucket).
 async function generateCrowdFundingUrls(): Promise<SiteMapUrl[]> {
   const projectIds = await getAllProjects();
   const urls: SiteMapUrl[] = [];
@@ -37,7 +59,16 @@ async function generateCrowdFundingUrls(): Promise<SiteMapUrl[]> {
     return urls; // Return at least the home page URL
   }
 
-  for (const projectId of projectIds) {
+  const projectDetailsList = await Promise.all(projectIds.map(async (projectId) => ({ projectId, details: await getProjectDetails(projectId) })));
+
+  for (const { projectId, details } of projectDetailsList) {
+    const indexableReportTypes = REPORT_TYPES_TO_DISPLAY.filter((reportType) => isReportIndexable(details, reportType));
+    if (indexableReportTypes.length === 0) {
+      // Skip projects with no indexable reports — pages still resolve via direct URL,
+      // and `generateMetadata` flips them to `noindex` so Google can drop them.
+      continue;
+    }
+
     const lastmod = (crowdFundingLastmod as Record<string, string>)[projectId] || undefined;
     urls.push({
       url: `/crowd-funding/projects/${projectId}`,
@@ -46,7 +77,7 @@ async function generateCrowdFundingUrls(): Promise<SiteMapUrl[]> {
       lastmod,
     });
 
-    for (const reportType of REPORT_TYPES_TO_DISPLAY) {
+    for (const reportType of indexableReportTypes) {
       urls.push({
         url: `/crowd-funding/projects/${projectId}/reports/${reportType}`,
         changefreq: 'weekly',
