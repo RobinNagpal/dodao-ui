@@ -25,18 +25,22 @@ export default function Competition({ tickerData, data }: CompetitionProps): JSX
   // The Promise is unwrapped via `use()` inside <TickerRelatedSections>, suspended by the boundary below.
   const availableSlugsPromise = getAvailableSiblingSlugs(tickerData.id);
 
-  // Derive dates from competition/ticker data
-  const createdAtRaw = vsCompetition?.createdAt || data.ticker?.createdAt || new Date();
-  const updatedAtRaw = vsCompetition?.updatedAt || data.ticker?.updatedAt || new Date();
+  // Derive dates from competition/ticker data. Keep them nullable end-to-end —
+  // falling back to `new Date()` would push "today" into `<meta itemProp="datePublished">`
+  // and `<time itemProp="dateModified">`, contradicting the JSON-LD and the sitemap
+  // `<lastmod>` and sending the duplicate-template freshness signal Google demotes on.
+  const createdAtRaw: string | Date | null | undefined = vsCompetition?.createdAt ?? data.ticker?.createdAt;
+  const updatedAtRaw: string | Date | null | undefined = vsCompetition?.updatedAt ?? data.ticker?.updatedAt ?? createdAtRaw;
 
-  const publishedDate = new Date(createdAtRaw);
-  const modifiedDate = new Date(updatedAtRaw);
+  const publishedDate: Date | null = createdAtRaw ? new Date(createdAtRaw) : null;
+  const modifiedDate: Date | null = updatedAtRaw ? new Date(updatedAtRaw) : null;
 
-  const formattedModifiedDate = modifiedDate.toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-  });
+  const formattedModifiedDate: string | null =
+    modifiedDate?.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    }) ?? null;
 
   const ticker = tickerData.symbol;
   const exchange = tickerData.exchange;
@@ -97,7 +101,7 @@ export default function Competition({ tickerData, data }: CompetitionProps): JSX
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
       <article className="bg-surface rounded-lg shadow-sm border border-color p-6 md:p-8" itemScope itemType="https://schema.org/Article">
         {/* Hidden datePublished for schema - machine readable only */}
-        <meta itemProp="datePublished" content={publishedDate.toISOString()} />
+        {publishedDate && <meta itemProp="datePublished" content={publishedDate.toISOString()} />}
 
         {/* Article Header */}
         <header className="mb-6 pb-4 border-b border-color">
@@ -110,10 +114,14 @@ export default function Competition({ tickerData, data }: CompetitionProps): JSX
                 <span className="inline-flex items-center rounded-full bg-sky-500/15 border border-sky-500/40 px-2.5 py-0.5 text-xs font-medium text-sky-300">
                   {tickerData.exchange}
                 </span>
-                <span className="text-muted-foreground">•</span>
-                <time dateTime={modifiedDate.toISOString()} className="text-muted-foreground text-sm" itemProp="dateModified">
-                  {formattedModifiedDate}
-                </time>
+                {modifiedDate && formattedModifiedDate && (
+                  <>
+                    <span className="text-muted-foreground">•</span>
+                    <time dateTime={modifiedDate.toISOString()} className="text-muted-foreground text-sm" itemProp="dateModified">
+                      {formattedModifiedDate}
+                    </time>
+                  </>
+                )}
               </div>
             </div>
 
@@ -281,14 +289,18 @@ export default function Competition({ tickerData, data }: CompetitionProps): JSX
         <footer className="mt-8 pt-6 border-t border-color">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div className="text-sm text-muted-foreground">
-              <span>Last updated by </span>
+              <span>Analysis by </span>
               <span itemProp="author" itemScope itemType="https://schema.org/Organization">
                 <span itemProp="name">KoalaGains</span>
               </span>
-              <span> on </span>
-              <time dateTime={modifiedDate.toISOString()} itemProp="dateModified">
-                {formattedModifiedDate}
-              </time>
+              {modifiedDate && formattedModifiedDate && (
+                <>
+                  <span> · last updated </span>
+                  <time dateTime={modifiedDate.toISOString()} itemProp="dateModified">
+                    {formattedModifiedDate}
+                  </time>
+                </>
+              )}
             </div>
             <div className="flex gap-2">
               <span className="inline-flex items-center rounded-full bg-sky-500/15 border border-sky-500/40 px-2.5 py-0.5 text-xs font-medium text-sky-300">

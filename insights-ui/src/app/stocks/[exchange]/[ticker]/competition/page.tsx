@@ -90,74 +90,97 @@ export async function generateMetadata({ params }: { params: RouteParams }): Pro
   const { exchange, ticker } = { exchange: routeParams.exchange.toUpperCase(), ticker: routeParams.ticker.toUpperCase() };
 
   let companyName: string = ticker;
-  let industryName: string = '';
-  let competitionCreatedTime: string;
-  let competitionUpdatedTime: string;
+  let industryLabel: string = '';
+  let topCompetitorNames: string[] = [];
+  let countryTag: string = '';
+  let competitionCreatedTime: string | undefined;
+  let competitionUpdatedTime: string | undefined;
 
   try {
     const data = await fetchCompetitionByExchange(exchange, ticker);
     companyName = data.ticker?.name ?? companyName;
-    industryName = data.ticker?.industry?.name || data.ticker?.industryKey || '';
 
-    // Use competition table dates
-    const createdAt = data.vsCompetition?.createdAt || data.ticker?.createdAt || new Date();
-    const updatedAt = data.vsCompetition?.updatedAt || data.ticker?.updatedAt || new Date();
-    competitionCreatedTime = new Date(createdAt).toISOString();
-    competitionUpdatedTime = new Date(updatedAt).toISOString();
+    // Prefer sub-industry — it's more specific and usually shorter than industry,
+    // which matters because industry names like "Building Systems, Materials & Infrastructure"
+    // alone push past Google's ~70-char SERP cutoff.
+    industryLabel = data.ticker?.subIndustry?.name || data.ticker?.industry?.name || '';
+
+    topCompetitorNames = (data.competitorTickers ?? [])
+      .map((c) => c.companyName)
+      .filter((n): n is string => Boolean(n))
+      .slice(0, 3);
+
+    // Non-US country tag for title — gives same-industry pages a per-exchange differentiator
+    // without lengthening the title for the US majority. Defensive try around unknown exchanges.
+    try {
+      const country = getCountryByExchange(data.ticker?.exchange as USExchanges | CanadaExchanges | IndiaExchanges | UKExchanges);
+      if (country && country !== 'US') countryTag = ` | ${country}`;
+    } catch {
+      /* unknown exchange — leave countryTag empty */
+    }
+
+    competitionCreatedTime = data.vsCompetition?.createdAt
+      ? new Date(data.vsCompetition.createdAt).toISOString()
+      : data.ticker?.createdAt
+      ? new Date(data.ticker.createdAt).toISOString()
+      : undefined;
+    competitionUpdatedTime = data.vsCompetition?.updatedAt
+      ? new Date(data.vsCompetition.updatedAt).toISOString()
+      : data.ticker?.updatedAt
+      ? new Date(data.ticker.updatedAt).toISOString()
+      : competitionCreatedTime;
   } catch {
-    // Fallback if API fails
-    const now = new Date().toISOString();
-    competitionCreatedTime = now;
-    competitionUpdatedTime = now;
+    // Network error — leave fields empty rather than synthesizing today's date,
+    // which would push a false freshness signal into the page.
   }
 
-  const year = new Date().getFullYear();
+  // Year from the report's modified date so the title doesn't claim "2026" on a
+  // 2025-vintage page — that contradiction is one of the freshness signals Google
+  // uses to demote pages into "Crawled — currently not indexed".
+  const yearForTitle = competitionUpdatedTime ? new Date(competitionUpdatedTime).getFullYear() : new Date().getFullYear();
 
+  // Per-ticker fallback description so two competition pages don't share a
+  // byte-identical meta description. Even when the company name is the only
+  // varying token, mixing in the top competitor names breaks the template.
+  const competitorPhrase = topCompetitorNames.length > 0 ? `vs ${topCompetitorNames.join(', ')}` : 'against key industry peers';
+  const industryPhrase = industryLabel ? ` in ${industryLabel}` : '';
   const shortDesc: string = truncateForMeta(
-    `Detailed competitive analysis of ${companyName} (${ticker})${
-      industryName ? ` in the ${industryName} industry` : ''
-    }. Compare ${companyName} against its key competitors across market position, financials, and growth prospects.`
+    `${companyName} (${ticker}) ${competitorPhrase}${industryPhrase} — quality vs value scores, market position, ` + `and competitive strengths on ${exchange}.`
   );
 
   const canonicalUrl: string = `https://koalagains.com/stocks/${exchange}/${ticker}/competition`;
 
-  const keywords: string[] = [
-    `${companyName} competitors`,
-    `${companyName} competitive analysis`,
-    `${ticker} competition`,
-    `${companyName} vs competitors`,
-    `${companyName} market position`,
-    `${ticker} competitor comparison`,
-    `${companyName} stock comparison`,
-    'competitive analysis',
-    'stock comparison',
-    'investment insights',
-    'KoalaGains',
-  ];
+  // Build the most-differentiated title that still fits Google's ~70-char SERP
+  // cutoff. Industry-bearing form first; if it would be truncated we drop the
+  // industry from the title (still present in description + h1 + JSON-LD).
+  const TITLE_MAX = 70;
+  const titleWithIndustry = industryLabel ? `${companyName} (${ticker}) Competitors in ${industryLabel} (${yearForTitle})${countryTag}` : '';
+  const titleWithoutIndustry = `${companyName} (${ticker}) Competitive Analysis (${yearForTitle})${countryTag}`;
+  const titleBase = titleWithIndustry && titleWithIndustry.length <= TITLE_MAX ? titleWithIndustry : titleWithoutIndustry;
+  const ogTwitterTitle = `${titleBase} | KoalaGains`;
 
   return {
-    title: `${companyName} (${ticker}) Competitive Analysis & Comparison (${year})`,
+    title: titleBase,
     description: shortDesc,
     alternates: { canonical: canonicalUrl },
     openGraph: {
-      title: `${companyName} (${ticker}) Competitive Analysis & Comparison | KoalaGains`,
+      title: ogTwitterTitle,
       description: shortDesc,
       url: canonicalUrl,
       siteName: 'KoalaGains',
       type: 'article',
       publishedTime: competitionCreatedTime,
-      modifiedTime: competitionUpdatedTime,
+      modifiedTime: competitionUpdatedTime ?? competitionCreatedTime,
       images: ['https://koalagains.com/koalagain_logo.png'],
     },
     twitter: {
       card: 'summary_large_image',
-      title: `${companyName} (${ticker}) Competitive Analysis & Comparison | KoalaGains`,
+      title: ogTwitterTitle,
       description: shortDesc,
       site: '@koalagains',
       creator: '@koalagains',
       images: ['https://koalagains.com/koalagain_logo.png'],
     },
-    keywords,
   };
 }
 
