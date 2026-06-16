@@ -159,9 +159,25 @@ export async function generateMetadata({ params }: { params: RouteParams }): Pro
   const titleBase = titleWithIndustry && titleWithIndustry.length <= TITLE_MAX ? titleWithIndustry : titleWithoutIndustry;
   const ogTwitterTitle = `${titleBase} | KoalaGains`;
 
+  // Keywords kept (other surfaces consume them), but every entry must encode
+  // ticker- or competitor-specific tokens — generic phrases like "competitive
+  // analysis" would just re-introduce the duplicate-template signal.
+  const keywords: string[] = [
+    `${companyName} competitors`,
+    `${ticker} competitors`,
+    `${companyName} vs competitors`,
+    `${ticker} competitive analysis ${yearForTitle}`,
+    `${companyName} market position`,
+    `${companyName} ${exchange} competitors`,
+    ...topCompetitorNames.map((name) => `${companyName} vs ${name}`),
+    industryLabel ? `${industryLabel} competitors` : undefined,
+    industryLabel ? `${ticker} ${industryLabel} comparison` : undefined,
+  ].filter((k): k is string => Boolean(k));
+
   return {
     title: titleBase,
     description: shortDesc,
+    keywords,
     alternates: { canonical: canonicalUrl },
     openGraph: {
       title: ogTwitterTitle,

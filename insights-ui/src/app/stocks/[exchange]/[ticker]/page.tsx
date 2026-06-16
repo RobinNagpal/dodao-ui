@@ -249,6 +249,8 @@ export async function generateMetadata({ params }: { params: RouteParams }): Pro
   let createdTime: string | undefined;
   let updatedTime: string | undefined;
   let industryLabel: string | undefined;
+  let industryName: string | undefined;
+  let subIndustryName: string | undefined;
   let countryTag: string = '';
 
   try {
@@ -263,7 +265,9 @@ export async function generateMetadata({ params }: { params: RouteParams }): Pro
       // is what the title and the fallback description differentiate on across
       // the ~5k-page set so two arbitrary stock pages no longer share a
       // byte-identical title or description shape.
-      const industryDescriptor = data.subIndustry?.name || data.industry?.name;
+      industryName = data.industry?.name ?? undefined;
+      subIndustryName = data.subIndustry?.name ?? undefined;
+      const industryDescriptor = subIndustryName || industryName;
       if (industryDescriptor) industryLabel = industryDescriptor;
 
       if (data.summary) {
@@ -309,9 +313,26 @@ export async function generateMetadata({ params }: { params: RouteParams }): Pro
     : `${companyName} (${ticker}) Stock Analysis & Key Metrics (${yearForTitle})${countryTag}`;
   const ogTwitterTitle = `${titleBase} | KoalaGains`;
 
+  // Keywords are kept (other surfaces consume them), but every entry must encode
+  // ticker- or industry-specific tokens — a generic list would just re-introduce
+  // the duplicate-template signal we're trying to remove.
+  const keywords: string[] = [
+    `${companyName} stock`,
+    `${companyName} (${ticker})`,
+    `${ticker} stock analysis`,
+    `${ticker} fundamental analysis`,
+    `${ticker} fair value ${yearForTitle}`,
+    `${ticker} financial report`,
+    `${companyName} ${exchange} stock`,
+    subIndustryName ? `${subIndustryName} stocks` : undefined,
+    industryName && industryName !== subIndustryName ? `${industryName} stocks` : undefined,
+    industryLabel ? `${ticker} ${industryLabel}` : undefined,
+  ].filter((k): k is string => Boolean(k));
+
   return {
     title: titleBase,
     description: shortDesc,
+    keywords,
     alternates: { canonical: canonicalUrl },
     openGraph: {
       title: ogTwitterTitle,
