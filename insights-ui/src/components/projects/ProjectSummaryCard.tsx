@@ -4,6 +4,7 @@ import { shorten } from '@dodao/web-core/utils/utils';
 import Link from 'next/link';
 import React from 'react';
 import { InsightsConstants } from '@/util/insights-constants';
+import { formatProjectName } from '@/util/report-utils';
 import ProjectActionsDropdown from './ProjectActionsDropdown';
 import PrivateWrapper from '../auth/PrivateWrapper';
 
@@ -12,13 +13,6 @@ interface ProjectSummaryCardProps {
 }
 
 const ProjectSummaryCard: React.FC<ProjectSummaryCardProps> = ({ projectId }) => {
-  function formatProjectName(projectId: string): string {
-    return projectId
-      .trim() // Remove extra spaces
-      .replace(/_/g, ' ') // Replace underscores with spaces
-      .replace(/\b\w/g, (char) => char.toUpperCase()); // Capitalize each word
-  }
-
   return (
     <Card>
       <Link href={`/crowd-funding/projects/${projectId}`} className="card blog-card w-inline-block h-full w-full">
