@@ -23,7 +23,11 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
       const exchange = exchangeData.exchange;
 
       if (exchange) {
-        permanentRedirect(`/stocks/${exchange}/${tickerKey}`);
+        // Uppercase both segments so the 308 destination matches the canonical
+        // shape /stocks/[exchange]/[ticker] advertises — otherwise a lowercase
+        // legacy URL lands on a mixed-case /stocks/AIM/pmp, which serves the
+        // same content as /stocks/AIM/PMP and fragments canonical signals.
+        permanentRedirect(`/stocks/${exchange.toUpperCase()}/${tickerKey.toUpperCase()}`);
       } else {
         // Ticker not found in database
         notFound();

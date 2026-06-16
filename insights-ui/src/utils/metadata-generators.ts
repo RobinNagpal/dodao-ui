@@ -397,7 +397,9 @@ export const generateCountryMoversBreadcrumbSchema = (country: string, type: Dai
 
 // Generate Report schema for stock analysis pages
 export const generateStockReportArticleSchema = (ticker: TickerWithOptionalIndustry) => {
-  const canonicalUrl = `https://koalagains.com/stocks/${ticker.exchange}/${ticker.symbol}`;
+  // Uppercase to match the <link rel="canonical"> in page metadata — when the two
+  // disagree, GSC reports "Duplicate without user-selected canonical".
+  const canonicalUrl = `https://koalagains.com/stocks/${ticker.exchange.toUpperCase()}/${ticker.symbol.toUpperCase()}`;
 
   return {
     '@context': 'https://schema.org',
@@ -462,7 +464,8 @@ export const generateStockReportArticleSchema = (ticker: TickerWithOptionalIndus
 };
 
 export const generateStockReportBreadcrumbSchema = (ticker: TickerWithOptionalIndustry, country: string) => {
-  const canonicalUrl = `https://koalagains.com/stocks/${ticker.exchange}/${ticker.symbol}`;
+  // Uppercase to match the <link rel="canonical"> — see generateStockReportArticleSchema.
+  const canonicalUrl = `https://koalagains.com/stocks/${ticker.exchange.toUpperCase()}/${ticker.symbol.toUpperCase()}`;
   const industryName = ticker.industry?.name || ticker.industryKey;
 
   const breadcrumbItems = [
