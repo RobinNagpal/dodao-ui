@@ -39,6 +39,22 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  // Tell Googlebot it can fetch /_next/static/* (it needs them to render pages) but should
+  // not index the assets themselves. Mirrors the legacy vercel.json rule for the Lightsail/
+  // CloudFront prod path, which doesn't pick up vercel.json headers. Without this, CSS/JS
+  // URLs end up in Search Console's "Crawled — currently not indexed" bucket.
+  async headers() {
+    return [
+      {
+        source: '/_next/static/:path*',
+        headers: [{ key: 'X-Robots-Tag', value: 'noindex' }],
+      },
+      {
+        source: '/_next/image',
+        headers: [{ key: 'X-Robots-Tag', value: 'noindex' }],
+      },
+    ];
+  },
   async redirects() {
     return [
       {
