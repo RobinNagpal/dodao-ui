@@ -59,6 +59,11 @@ Single source of truth for active KoalaGains work. Completed items live in
 - [ ] **Phased rollout**: P0 schema + admin templates → P1 list/detail/from-template modal → P2 free-form behind flag + quota → P3 streaming + web-search citations + history diff.
 - [ ] Open: streaming vs spinner (default spinner); free-form at launch (default behind flag); citations design; cross-ticker reports out of scope.
 
+### Daily top movers — dedupe historical duplicates + harden ingest
+
+- [ ] **De-duplicate `daily_top_losers` / `daily_top_gainers`** — historical bug wrote multiple near-identical rows for the same ticker across weekends + US market holidays (~23% of loser rows belong to a `(symbol, %change)` cluster; 140 clusters, 344 rows). Each row got its own UUID, its own sitemap entry, and its own LLM-rewritten article, so GSC reports them as "Duplicate without user-selected canonical". Approach: add a nullable `canonicalId` self-FK to both tables; backfill the earliest-`createdAt` row per `(spaceId, symbol, percentageChange)` cluster as canonical, point the rest at it; in `app/daily-top-movers/top-(losers|gainers)/details/[id]/page.tsx` `permanentRedirect()` when `canonicalId` is set; filter `sitemap.xml/route.ts` and the list APIs feeding `RelatedDailyMovers` on `canonicalId IS NULL`. Validate with sitemap row-count drop + GSC duplicate-bucket shrink over 2–4 weeks.
+- [ ] **Stop creating new duplicates on US market holidays** — Mon-Fri cron (`deployments/insights-ui/scheduler.tf`) still fires on Good Friday / Presidents' Day / Memorial Day etc.; screener returns the prior trading day's data, callback writes a new row. Fix in `app/api/[spaceId]/tickers-v1/screener-callback/route.ts`: skip writes when a row already exists for `(spaceId, symbol)` with the same `percentageChange` within the last ~3 days. Or upgrade the unique constraint from `@@unique([spaceId, symbol, createdAt])` to a derived `marketDate` column so it's idempotent by definition.
+
 ### Login improvements
 
 - [ ] Add **LinkedIn** SSO + **Yahoo** SSO; account-linking when a new provider matches an existing email; keep login sheet tidy (top 3–4 most-used).
