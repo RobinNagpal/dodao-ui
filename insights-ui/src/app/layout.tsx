@@ -1,4 +1,5 @@
 import TopNav from '@/components/core/TopNav/TopNav';
+import { LoginPopupAutoPrompt } from '@/components/login/login-popup-auto-prompt';
 import { themeColors } from '@/util/theme-colors';
 import 'tailwindcss/tailwind.css';
 import './globals.scss';
@@ -63,6 +64,7 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
         <Providers>
           <TopNav />
           {children}
+          <LoginPopupAutoPrompt />
         </Providers>
 
         {/* --- Analytics / Monitoring (non-blocking) --- */}

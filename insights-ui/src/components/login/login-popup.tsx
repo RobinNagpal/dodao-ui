@@ -76,12 +76,27 @@ export function LoginPopup({ open, onClose }: LoginPopupProps): JSX.Element {
   };
 
   return (
-    <FullPageModal open={open} onClose={onClose} title="" showCloseButton={true}>
+    <FullPageModal open={open} onClose={onClose} title="" showCloseButton={false}>
       {step === 1 ? (
         <UserLogin onLogin={handleEmailSubmit} onGoogleSignIn={handleGoogleSignIn} errorMessage={errorMessage} />
       ) : (
         <EmailSentMessage email={email} onChangeEmail={handleUseAnotherEmail} />
       )}
+      <MaybeLaterLink onClick={onClose} />
     </FullPageModal>
+  );
+}
+
+function MaybeLaterLink({ onClick }: { onClick: () => void }): JSX.Element {
+  return (
+    <div className="mt-4 text-center">
+      <button
+        type="button"
+        onClick={onClick}
+        className="text-sm font-medium text-muted hover:text-link transition-colors duration-200 underline-offset-2 hover:underline"
+      >
+        Maybe later
+      </button>
+    </div>
   );
 }

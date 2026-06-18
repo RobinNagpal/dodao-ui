@@ -1,6 +1,5 @@
 'use client';
 
-import { LoginPopup } from '@/components/login/login-popup';
 import { KoalaGainsSession } from '@/types/auth';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
@@ -19,24 +18,8 @@ interface UserProfileProps {
 export function UserProfile({ isMobile = false, onMenuToggle }: UserProfileProps): JSX.Element {
   const { data: koalaSession } = useSession();
   const [userMenuOpen, setUserMenuOpen] = useState<boolean>(false);
-  const [loginPopupOpen, setLoginPopupOpen] = useState<boolean>(false);
   const userMenuRef = useRef<HTMLDivElement | null>(null);
   const session: KoalaGainsSession | null = koalaSession as KoalaGainsSession | null;
-
-  const openLoginPopup = (): void => {
-    setLoginPopupOpen(true);
-  };
-
-  const closeLoginPopup = (): void => {
-    setLoginPopupOpen(false);
-  };
-
-  const handleMobileLoginClick = (): void => {
-    openLoginPopup();
-    if (onMenuToggle) {
-      onMenuToggle();
-    }
-  };
 
   const { data: portfolioProfile, loading: isLoadingProfile } = useFetchData<{ id: string }>(
     session?.userId ? `${getBaseUrl()}/api/${KoalaGainsSpaceId}/users/portfolio-manager-profiles/by-user/${session.userId}` : '',
@@ -100,7 +83,6 @@ export function UserProfile({ isMobile = false, onMenuToggle }: UserProfileProps
   if (isMobile) {
     return (
       <>
-        <LoginPopup open={loginPopupOpen} onClose={closeLoginPopup} />
         {session ? (
           <>
             {session.role === 'Admin' && (
@@ -155,13 +137,9 @@ export function UserProfile({ isMobile = false, onMenuToggle }: UserProfileProps
             </button>
           </>
         ) : (
-          <button
-            type="button"
-            onClick={handleMobileLoginClick}
-            className="-mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-semibold text-gray-300 hover:bg-gray-700 w-full text-left"
-          >
+          <Link href="/login" className="-mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-semibold text-gray-300 hover:bg-gray-700 w-full text-left">
             Log in
-          </button>
+          </Link>
         )}
       </>
     );
@@ -169,7 +147,6 @@ export function UserProfile({ isMobile = false, onMenuToggle }: UserProfileProps
 
   return (
     <>
-      <LoginPopup open={loginPopupOpen} onClose={closeLoginPopup} />
       {session ? (
         <div className="relative" ref={userMenuRef}>
           <div>
@@ -231,13 +208,9 @@ export function UserProfile({ isMobile = false, onMenuToggle }: UserProfileProps
           )}
         </div>
       ) : (
-        <button
-          type="button"
-          onClick={openLoginPopup}
-          className="text-sm/6 font-semibold text-color cursor-pointer hover:text-indigo-400 transition-colors duration-200"
-        >
+        <Link href="/login" className="text-sm/6 font-semibold text-color cursor-pointer hover:text-indigo-400 transition-colors duration-200">
           Log in <span aria-hidden="true">&rarr;</span>
-        </button>
+        </Link>
       )}
     </>
   );
