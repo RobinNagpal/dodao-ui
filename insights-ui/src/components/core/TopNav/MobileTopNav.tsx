@@ -2,19 +2,18 @@
 
 import SearchBar from '@/components/core/SearchBar';
 import { IndustryWithSubIndustriesAndCounts } from '@/types/ticker-typesv1';
-import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
-import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { Dialog, DialogPanel, Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/react';
 import { ChevronDownIcon } from '@heroicons/react/20/solid';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useEffect } from 'react';
 
 interface MobileTopNavProps {
   mobileMenuOpen: boolean;
   setMobileMenuOpen: (open: boolean) => void;
+  industries: IndustryWithSubIndustriesAndCounts[] | undefined;
+  industriesLoading: boolean;
   reportsDropdown: Array<{
     name: string;
     href: string;
@@ -28,24 +27,10 @@ interface MobileTopNavProps {
   }>;
 }
 
-export default function MobileTopNav({ mobileMenuOpen, setMobileMenuOpen, reportsDropdown, genaiDropdown }: MobileTopNavProps) {
+export default function MobileTopNav({ mobileMenuOpen, setMobileMenuOpen, industries, industriesLoading, reportsDropdown, genaiDropdown }: MobileTopNavProps) {
   const pathname = usePathname() ?? '';
   const isStocksRoute = pathname.startsWith('/stocks');
   const isEtfsRoute = pathname.startsWith('/etfs');
-
-  // Lazily fetch industries: only when the mobile menu is opened on a /stocks route,
-  // so non-stocks pages and unopened menus don't trigger the network call.
-  const {
-    data: industries,
-    loading,
-    reFetchData: fetchIndustries,
-  } = useFetchData<IndustryWithSubIndustriesAndCounts[]>(`${getBaseUrl()}/api/industries`, { skipInitialFetch: true }, 'Failed to load industries');
-
-  useEffect(() => {
-    if (mobileMenuOpen && isStocksRoute && !industries && !loading) {
-      fetchIndustries();
-    }
-  }, [mobileMenuOpen, isStocksRoute, industries, loading, fetchIndustries]);
 
   return (
     <Dialog open={mobileMenuOpen} onClose={setMobileMenuOpen} className="lg:hidden">
@@ -74,7 +59,7 @@ export default function MobileTopNav({ mobileMenuOpen, setMobileMenuOpen, report
                 <div>
                   <h3 className="text-base font-semibold text-gray-900 dark:text-white mb-3">Industries</h3>
 
-                  {loading ? (
+                  {industriesLoading ? (
                     <div className="text-center">
                       <div
                         className="inline-block h-6 w-6 animate-spin rounded-full border-2 border-solid border-current border-r-transparent motion-reduce:animate-[spin_1.5s_linear_infinite] text-gray-500 dark:text-gray-400"

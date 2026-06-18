@@ -3,6 +3,9 @@
 import SearchBar from '@/components/core/SearchBar';
 import { UserProfile } from '@/components/core/UserProfile/UserProfile';
 import MobileTopNav from '@/components/core/TopNav/MobileTopNav';
+import { IndustryWithSubIndustriesAndCounts } from '@/types/ticker-typesv1';
+import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { Popover, PopoverButton, PopoverGroup, PopoverPanel } from '@headlessui/react';
 import { ChevronDownIcon } from '@heroicons/react/20/solid';
 import { Bars3Icon } from '@heroicons/react/24/outline';
@@ -49,6 +52,23 @@ export default function TopNav() {
   const isEtfsRoute = pathname.startsWith('/etfs');
   const isHomeRoute = pathname === '/';
 
+  // Lazily fetch industries: only when the mobile menu is actually opened on a
+  // /stocks route. Firing from the click handler (instead of a useEffect that
+  // reacts to `mobileMenuOpen`) avoids re-firing during render churn — see
+  // useFetchData's setLoading(false)→setData(...) gap.
+  const {
+    data: industries,
+    loading: industriesLoading,
+    reFetchData: fetchIndustries,
+  } = useFetchData<IndustryWithSubIndustriesAndCounts[]>(`${getBaseUrl()}/api/industries`, { skipInitialFetch: true }, 'Failed to load industries');
+
+  const openMobileMenu = () => {
+    setMobileMenuOpen(true);
+    if (isStocksRoute && !industries && !industriesLoading) {
+      fetchIndustries();
+    }
+  };
+
   // Wrap the whole header in a parent with className="dark" to force dark mode here
   return (
     <div className="dark">
@@ -74,7 +94,7 @@ export default function TopNav() {
           <div className="flex lg:hidden">
             <button
               type="button"
-              onClick={() => setMobileMenuOpen(true)}
+              onClick={openMobileMenu}
               className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700 dark:text-gray-400"
             >
               <span className="sr-only">Open main menu</span>
@@ -171,7 +191,14 @@ export default function TopNav() {
           </div>
         </nav>
 
-        <MobileTopNav mobileMenuOpen={mobileMenuOpen} setMobileMenuOpen={setMobileMenuOpen} reportsDropdown={reportsDropdown} genaiDropdown={genaiDropdown} />
+        <MobileTopNav
+          mobileMenuOpen={mobileMenuOpen}
+          setMobileMenuOpen={setMobileMenuOpen}
+          industries={industries}
+          industriesLoading={industriesLoading}
+          reportsDropdown={reportsDropdown}
+          genaiDropdown={genaiDropdown}
+        />
       </header>
     </div>
   );
