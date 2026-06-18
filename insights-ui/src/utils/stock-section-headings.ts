@@ -37,12 +37,18 @@ function pickVariant<T>(variants: readonly T[], seed: string, salt: string): T {
   return variants[idx];
 }
 
+const NAME_PLACEHOLDER = /\{name\}/g;
+const SYMBOL_PLACEHOLDER = /\{symbol\}/g;
+const FACTOR_LIST_PLACEHOLDER = /\{factorList\}/g;
+const COMPETITOR_LIST_PLACEHOLDER = /\{competitorList\}/g;
+const COMPETITOR_LIST_TOKEN = '{competitorList}';
+
 function fill(template: string, name: string, symbol: string, factorList?: string, competitorList?: string): string {
   return template
-    .replace(/\{name\}/g, name)
-    .replace(/\{symbol\}/g, symbol)
-    .replace(/\{factorList\}/g, factorList ?? '')
-    .replace(/\{competitorList\}/g, competitorList ?? '');
+    .replace(NAME_PLACEHOLDER, name)
+    .replace(SYMBOL_PLACEHOLDER, symbol)
+    .replace(FACTOR_LIST_PLACEHOLDER, factorList ?? '')
+    .replace(COMPETITOR_LIST_PLACEHOLDER, competitorList ?? '');
 }
 
 function joinList(items: readonly string[]): string {
@@ -64,7 +70,7 @@ function pickFillableIntro(intros: readonly string[], seed: string, salt: string
   const start = hashString(`${seed}|${salt}`) % intros.length;
   for (let i = 0; i < intros.length; i += 1) {
     const candidate = intros[(start + i) % intros.length];
-    if (!hasCompetitorList && candidate.includes('{competitorList}')) continue;
+    if (!hasCompetitorList && candidate.includes(COMPETITOR_LIST_TOKEN)) continue;
     return candidate;
   }
   return intros[start];
