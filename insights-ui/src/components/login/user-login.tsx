@@ -49,8 +49,8 @@ export function UserLogin({ onLogin, onGoogleSignIn, errorMessage, compact = fal
   );
 
   return (
-    <div className={compact ? '' : 'overflow-hidden bg-gray-800 rounded-xl py-8'}>
-      <div className={compact ? 'mx-auto max-w-md' : 'mx-auto max-w-md px-6'}>
+    <div className="overflow-hidden bg-gray-800 rounded-xl py-8">
+      <div className="mx-auto max-w-md px-6">
         <div className="relative isolate">
           <div className="mx-auto max-w-4xl">
             {!compact && (
@@ -149,23 +149,17 @@ export function UserLogin({ onLogin, onGoogleSignIn, errorMessage, compact = fal
               </Card>
             </div>
 
-            <div className={compact ? 'mt-5 grid grid-cols-3 gap-3' : 'mt-8 grid grid-cols-3 gap-4 sm:gap-6'}>
+            <div className="mt-8 grid grid-cols-3 gap-4 sm:gap-6">
               {[
                 { icon: BarChart3, label: 'Save Favorite Stocks', color: 'from-emerald-500 to-teal-600' },
                 { icon: LineChart, label: 'Add Notes to Tickers', color: 'from-blue-500 to-cyan-600' },
                 { icon: ShieldCheck, label: 'View Stock Analysis', color: 'from-indigo-500 to-purple-600' },
               ].map((item, index) => (
                 <div key={index} className="flex flex-col items-center gap-1.5 group transition-all duration-300">
-                  <div
-                    className={`rounded-md bg-gradient-to-r ${item.color} group-hover:scale-110 transition-transform duration-300 shadow-md ${
-                      compact ? 'p-1.5' : 'p-2'
-                    }`}
-                  >
-                    <item.icon className={compact ? 'h-4 w-4 text-white' : 'h-5 w-5 text-white sm:h-6 sm:w-6'} aria-hidden />
+                  <div className={`rounded-md bg-gradient-to-r ${item.color} group-hover:scale-110 transition-transform duration-300 shadow-md p-2`}>
+                    <item.icon className="h-5 w-5 text-white sm:h-6 sm:w-6" aria-hidden />
                   </div>
-                  <span className={compact ? 'text-[11px] leading-tight text-gray-300 text-center' : 'text-xs text-gray-300 text-center sm:text-sm'}>
-                    {item.label}
-                  </span>
+                  <span className="text-xs text-gray-300 text-center sm:text-sm">{item.label}</span>
                 </div>
               ))}
             </div>
