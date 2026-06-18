@@ -1,0 +1,96 @@
+{
+  "description": "Per-ticker variant copy for the six headline sections on the stock detail page. The variant is picked deterministically from a hash of the ticker symbol so the same ticker always renders the same heading (crawler-stable, cache-friendly) while different tickers across the ~9k stock pages get different headings. Each heading embeds the company name or symbol so every page carries at least one piece of ticker-unique copy in its H2/H3 chrome. Each section also has line-1 intro variants ('what we evaluate') plus a line-2 factor-list intro ('we evaluated X on: factor 1, factor 2, ...') — the factor names come from the ticker's per-sub-industry factor results, which already vary across ~150 GICS sub-industries.",
+  "placeholders": "{name} = full company name, {symbol} = uppercased ticker symbol.",
+  "sections": {
+    "BusinessAndMoat": {
+      "headings": [
+        "How Wide Is {name}'s Economic Moat?",
+        "Does {name} Have a Durable Competitive Advantage?",
+        "Is {symbol}'s Business Built to Last?",
+        "Can {name} Defend Its Market Position?",
+        "What Makes {name} Hard to Disrupt?"
+      ],
+      "intros": [
+        "This section assesses {name}'s competitive moat — the structural advantages that protect its margins and market share over the long run.",
+        "We dig into how defensible {name}'s business model is and whether {symbol} can keep competitors at bay.",
+        "Below we evaluate the strength and durability of {name}'s business — and what could threaten its position over the next decade."
+      ],
+      "factorIntroTemplate": "We evaluated {symbol} on {factorList}."
+    },
+    "Competition": {
+      "headings": [
+        "How Does {name} Stack Up Against Its Competitors?",
+        "Who Are {symbol}'s Closest Rivals — and Who's Winning?",
+        "{name} vs. Its Peers on Quality and Value",
+        "Where Does {name} Rank Among Industry Peers?",
+        "Is {symbol} a Leader or a Laggard in Its Industry?"
+      ],
+      "intros": [
+        "Here we compare {name} ({symbol}) against its closest sector peers on quality and value scores.",
+        "This view places {name} on a quality-versus-value map alongside its competitors so you can see who leads, who lags, and where {symbol} sits in the mix.",
+        "Below, {name} is benchmarked against direct competitors using our quality and value composite scores."
+      ],
+      "factorIntroTemplate": ""
+    },
+    "FinancialStatementAnalysis": {
+      "headings": [
+        "How Healthy Are {name}'s Financial Statements?",
+        "Inside {symbol}'s Balance Sheet, Cash Flow, and Margins",
+        "What Do {name}'s Books Say About Business Quality?",
+        "Are {symbol}'s Financials Strong Enough to Trust?",
+        "A Statement-by-Statement Look at {name}'s Financials"
+      ],
+      "intros": [
+        "We assess {name}'s financial health across the balance sheet, income statement, and cash-flow statement.",
+        "This section examines whether {symbol}'s financial structure can support its growth plans without straining liquidity or solvency.",
+        "Below we look at how clean and durable {name}'s reported financials are — and what they imply about underlying business quality."
+      ],
+      "factorIntroTemplate": "We evaluated {symbol} on {factorList}."
+    },
+    "PastPerformance": {
+      "headings": [
+        "How Has {name} Performed Over the Past Decade?",
+        "Reviewing {symbol}'s Track Record of Returns",
+        "Has {name} Rewarded Shareholders Historically?",
+        "What Does {symbol}'s Past Performance Tell Us?",
+        "{name}'s Performance Through Cycles: A Historical Review"
+      ],
+      "intros": [
+        "We grade {name}'s historical track record on growth, returns, and capital allocation.",
+        "This section looks back at how {symbol} has compounded value for shareholders through different market environments.",
+        "Below we examine the track record {name} has built — what worked, what didn't, and how consistent the results have been."
+      ],
+      "factorIntroTemplate": "We evaluated {symbol} on {factorList}."
+    },
+    "FutureGrowth": {
+      "headings": [
+        "What's Next for {name}? The Growth Outlook",
+        "Where Will {symbol}'s Future Growth Come From?",
+        "How Big Could {name} Be in 5–10 Years?",
+        "The Growth Drivers Behind {symbol}",
+        "Is {name} Positioned for Long-Term Expansion?"
+      ],
+      "intros": [
+        "We project {name}'s forward growth potential — the drivers that could compound earnings over the next several years.",
+        "This section sizes up where incremental growth for {symbol} is most likely to come from and what could derail it.",
+        "Below we look at the catalysts, runway, and constraints that will shape {name}'s next phase of growth."
+      ],
+      "factorIntroTemplate": "We evaluated {symbol} on {factorList}."
+    },
+    "FairValue": {
+      "headings": [
+        "Is {name} Stock Undervalued, Overvalued, or Fairly Priced?",
+        "What Is {symbol} Really Worth?",
+        "A Fair-Value Take on {name}",
+        "How Does Today's Price Compare to {name}'s Intrinsic Value?",
+        "Putting a Number on {symbol}'s True Worth"
+      ],
+      "intros": [
+        "We model {name}'s intrinsic value to compare it against today's market price.",
+        "This section asks whether buying {symbol} at the current price gives you a meaningful margin of safety.",
+        "Below we estimate what {name} is worth on a fundamentals basis and what kind of return that implies from here."
+      ],
+      "factorIntroTemplate": "We evaluated {symbol} on {factorList}."
+    }
+  }
+}

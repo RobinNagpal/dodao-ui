@@ -31,6 +31,7 @@ import {
 } from '@/types/ticker-typesv1';
 import { parseMarkdown } from '@/util/parse-markdown';
 import { getSpiderGraphScorePercentage } from '@/util/radar-chart-utils';
+import { getStockSectionCopy } from '@/utils/stock-section-headings';
 import {
   getCountryByExchange,
   USExchanges,
@@ -604,11 +605,15 @@ const CATEGORY_DETAIL_LINKS: Record<TickerAnalysisCategory, { id: ReportType; hr
 function CategorySummaryCard({ categoryKey, d }: { categoryKey: TickerAnalysisCategory; d: TickerV1FastResponse }): JSX.Element {
   const categoryResult: FullTickerV1CategoryAnalysisResult | undefined = d.categoryAnalysisResults?.find((r) => r.categoryKey === categoryKey);
   const link = CATEGORY_DETAIL_LINKS[categoryKey];
+  const factorTitles: string[] = (categoryResult?.factorResults ?? [])
+    .map((fr) => fr.analysisCategoryFactor?.factorAnalysisTitle ?? '')
+    .filter((t) => t.length > 0);
+  const sectionCopy = getStockSectionCopy(categoryKey, d.symbol, d.name, factorTitles);
   return (
     <div id={link.id} className="bg-surface p-3 sm:p-4 rounded-md shadow-sm">
       <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
         <div className="flex flex-wrap items-center gap-2">
-          <h3 className="text-lg font-semibold">{CATEGORY_MAPPINGS[categoryKey]}</h3>
+          <h3 className="text-lg font-semibold">{sectionCopy.heading}</h3>
           {categoryResult && (
             <div
               className="inline-flex items-center justify-center rounded-full px-2.5 py-1 text-xs font-medium"
@@ -628,6 +633,8 @@ function CategorySummaryCard({ categoryKey, d }: { categoryKey: TickerAnalysisCa
           {link.label}
         </Link>
       </div>
+      <p className="text-sm text-muted mb-1">{sectionCopy.introLine}</p>
+      {sectionCopy.factorLine && <p className="text-sm text-muted mb-3">{sectionCopy.factorLine}</p>}
       <div
         className="text-body markdown markdown-body"
         dangerouslySetInnerHTML={{ __html: parseMarkdown(categoryResult?.overallAnalysisDetails || 'No summary available.') }}

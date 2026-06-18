@@ -1,6 +1,7 @@
 import { computeQuadrantScores, classifyStock, QuadrantDataPoint } from '@/util/quadrant-chart-utils';
 import CompetitionQuadrantChart from '@/components/ticker-reportsv1/CompetitionQuadrantChart';
 import type { CompetitionResponse } from '@/types/ticker-typesv1';
+import { getStockSectionCopy } from '@/utils/stock-section-headings';
 import Link from 'next/link';
 import { use } from 'react';
 
@@ -55,11 +56,13 @@ export default function CompetitionChartSection({ dataPromise, exchange, ticker 
     return null;
   }
 
+  const competitionCopy = getStockSectionCopy('Competition', tickerData.symbol, tickerData.name);
+
   return (
     <section id="competition">
       <div className="bg-surface rounded-lg shadow-sm p-3 sm:p-6">
-        <div className="flex flex-wrap items-center justify-between gap-2 mb-4 pb-2 border-b border-border">
-          <h2 className="text-xl font-bold">Competition</h2>
+        <div className="flex flex-wrap items-center justify-between gap-2 mb-2 pb-2 border-b border-border">
+          <h2 className="text-xl font-bold">{competitionCopy.heading}</h2>
           <Link
             href={`/stocks/${exchange}/${ticker}/competition`}
             prefetch={false}
@@ -69,6 +72,7 @@ export default function CompetitionChartSection({ dataPromise, exchange, ticker 
             View Full Analysis →
           </Link>
         </div>
+        <p className="text-sm text-muted mb-4">{competitionCopy.introLine}</p>
 
         <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
           <div className="lg:w-1/2">
