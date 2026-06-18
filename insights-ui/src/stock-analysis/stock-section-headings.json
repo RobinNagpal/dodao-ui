@@ -1,5 +1,5 @@
 {
-  "description": "Per-ticker variant copy for the six headline sections on the stock detail page. Picked deterministically from a hash of the ticker symbol so the same ticker always renders the same heading (crawler-stable, cache-friendly) while different tickers across the ~9k stock pages get different headings. Each heading embeds the company name or symbol so every page carries at least one piece of ticker-unique copy in its H2/H3 chrome. Intros are plain English aimed at retail investors. No em dashes, no marketing words, no AI-sounding tropes.",
+  "description": "Per-ticker variant copy for the six headline sections on the stock detail page. Picked deterministically from a hash of the ticker symbol so the same ticker always renders the same heading (crawler-stable, cache-friendly) while different tickers across the ~9k stock pages get different headings. Each heading embeds the company name or symbol so every page carries at least one piece of ticker-unique copy in its H2/H3 chrome. Intros are plain English aimed at retail investors. No em dashes, no marketing words, no AI-sounding tropes. Headings reflect what the underlying analysis prompt actually covers (moat sources for Business & Moat; current-quarter health for Financial Statement Analysis; 5-year track record for Past Performance; 3-5 year outlook for Future Growth; price-versus-value for Fair Value; quality-versus-value vs peers for Competition).",
   "placeholders": "{name} = full company name, {symbol} = uppercased ticker symbol, {factorList} = comma-joined factor titles for that ticker's sub-industry, {competitorList} = comma-joined top competitor symbols (Competition section only). Variants that reference {competitorList} are skipped if no competitors are available.",
   "sections": {
     "BusinessAndMoat": {
@@ -13,14 +13,26 @@
         "Is {name} Built to Keep Winning Customers?",
         "How Safe Is {name}'s Position in Its Industry?",
         "What Makes {name} Different From Other Companies?",
-        "Does {symbol} Have Real Advantages Over Competitors?"
+        "Does {symbol} Have Real Advantages Over Competitors?",
+        "How Wide Is {name}'s Moat?",
+        "Does {name} Have a Strong Moat?",
+        "How Durable Is {name}'s Competitive Edge?",
+        "What Is {name}'s Moat Made Of?",
+        "Is {name}'s Moat Getting Wider or Narrower?",
+        "Does {name} Have a Real Moat?",
+        "How Hard Is It to Compete With {name}?",
+        "What Keeps Customers Coming Back to {name}?",
+        "Is {name} Protected From New Competitors?",
+        "What Gives {name} Its Edge Over Other Companies?"
       ],
       "intros": [
         "We look at how strong {name}'s business is and what gives it an edge over other companies.",
         "This section checks whether {name} can keep making good profits for many years to come.",
         "Here we study what makes {symbol} hard for other companies to copy or beat.",
         "We review the parts of {name}'s business that protect it from new and existing competitors.",
-        "Below we check how well placed {name} is to keep its customers and market share."
+        "Below we check how well placed {name} is to keep its customers and market share.",
+        "We check how wide {name}'s moat is and what makes its main products hard for competitors to copy.",
+        "Here we look at the brand, switching costs, scale, and network effects that protect {name}'s long term profits."
       ],
       "factorIntroTemplate": "We evaluated {symbol} on {factorList}."
     },
@@ -55,16 +67,19 @@
         "How Good Is {name}'s Balance Sheet, Income, and Cash Flow?",
         "Does {symbol} Make Real Money?",
         "How Much Cash Does {name} Generate?",
-        "Is {name} Carrying Too Much Debt?",
         "Are {symbol}'s Profit Margins Healthy?",
-        "What Do {name}'s Financial Statements Show?"
+        "What Do {name}'s Financial Statements Show?",
+        "How Strong Is {name}'s Current Financial Position?",
+        "Is {name}'s Business in Good Financial Shape Right Now?",
+        "How Stable Are {name}'s Profits and Cash Flow?",
+        "What Do the Recent Quarters Say About {name}?"
       ],
       "intros": [
         "We check {name}'s balance sheet, income statement, and cash flow to see how healthy the business is.",
-        "This section looks at whether {symbol} earns real cash and keeps its debt under control.",
+        "This section looks at whether {symbol} earns real cash and keeps its finances under control.",
         "Here we review the numbers behind {name} to see if the business is well run.",
         "Below we check how strong {name}'s profit margins, cash flow, and balance sheet are.",
-        "We look at {symbol}'s reported numbers to see if the business is in good shape."
+        "We look at {symbol}'s reported numbers to see if the business is in good shape today."
       ],
       "factorIntroTemplate": "We evaluated {symbol} on {factorList}."
     },
@@ -79,7 +94,12 @@
         "How Steady Has {name}'s Growth Been?",
         "Has {symbol} Beaten the Market in the Past?",
         "How Did {name} Perform Through Good and Bad Times?",
-        "What Is {name}'s Long Term Track Record?"
+        "What Is {name}'s Long Term Track Record?",
+        "How Consistent Has {name}'s Growth Been Over the Last 5 Years?",
+        "Has {name} Grown Revenue and Profit Steadily?",
+        "What Do the Last 5 Years Tell Us About {name}?",
+        "How Reliable Has {name}'s Cash Flow Been?",
+        "Has {name} Rewarded Shareholders With Dividends or Buybacks?"
       ],
       "intros": [
         "We look at how {name} has grown its revenue, profits, and shareholder returns over time.",
@@ -101,14 +121,19 @@
         "Is {name} Ready for Long Term Growth?",
         "Can {symbol} Grow Faster Than the Market?",
         "What Could Help or Hurt {name}'s Future Growth?",
-        "How Strong Is {name}'s Future Outlook?"
+        "How Strong Is {name}'s Future Outlook?",
+        "What Could Drive {name}'s Growth Over the Next 3 to 5 Years?",
+        "How Big Could {name}'s Markets Get?",
+        "Are There New Markets {name} Can Expand Into?",
+        "What Outside Factors Will Shape {name}'s Future Growth?",
+        "Where Could {name}'s Next Wave of Revenue Come From?"
       ],
       "intros": [
         "We look at where {name}'s future growth could come from over the next few years.",
         "This section checks if {symbol} can keep growing earnings, cash flow, and revenue.",
         "Here we review the main drivers and risks that will shape {name}'s future growth.",
         "Below we look at how much room {name} still has to grow and what could slow it down.",
-        "We check {symbol}'s future outlook based on its market, products, and plans."
+        "We check {symbol}'s future outlook based on its main products, markets, and industry shifts."
       ],
       "factorIntroTemplate": "We evaluated {symbol} on {factorList}."
     },
@@ -123,14 +148,19 @@
         "What Is the Fair Price for {name} Stock?",
         "Is Today's Price for {symbol} a Bargain?",
         "Does {name} Offer a Good Margin of Safety?",
-        "Is {symbol} Trading Above or Below Its True Value?"
+        "Is {symbol} Trading Above or Below Its True Value?",
+        "How Does {name}'s P/E Compare to Its Peers?",
+        "Does {name}'s Price Match Its Earnings and Cash Flow?",
+        "Is the Market Pricing {name} Correctly?",
+        "Is {name}'s Dividend Yield Attractive at Today's Price?",
+        "Where Are the Buy, Watch, and Wait Price Zones for {name}?"
       ],
       "intros": [
         "We estimate how much {name} is really worth and compare it to today's market price.",
         "This section checks if {symbol} is cheap, expensive, or fairly priced right now.",
         "Here we look at whether buying {name} at today's price gives investors room for safety.",
         "Below we estimate {name}'s value based on its business and compare it to the stock price.",
-        "We check what {symbol} is worth based on the company's earnings and growth outlook."
+        "We check what {symbol} is worth based on the company's earnings, cash flow, and growth outlook."
       ],
       "factorIntroTemplate": "We evaluated {symbol} on {factorList}."
     }
