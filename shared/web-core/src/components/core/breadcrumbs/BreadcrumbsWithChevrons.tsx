@@ -80,9 +80,7 @@ export default function BreadcrumbsWithChevrons({ breadcrumbs, rightButton, hide
                   return (
                     <li key={breadcrumb.name} className="min-w-0">
                       <div className="flex items-center min-w-0">
-                        {(!hideHomeIcon || !isFirstBreadcrumb) && (
-                          <ChevronRightIcon className="h-4 w-4 flex-shrink-0 mr-1" aria-hidden="true" />
-                        )}
+                        {(!hideHomeIcon || !isFirstBreadcrumb) && <ChevronRightIcon className="h-4 w-4 flex-shrink-0 mr-1" aria-hidden="true" />}
                         <Link
                           href={breadcrumb.href}
                           className={`text-xs font-medium break-words ${breadcrumb.current ? 'cursor-default' : 'cursor-pointer link-color'}`}
