@@ -1,6 +1,5 @@
 import TopNav from '@/components/core/TopNav/TopNav';
 import { themeColors } from '@/util/theme-colors';
-import 'tailwindcss/tailwind.css';
 import './globals.scss';
 import type { Metadata } from 'next';
 import Script from 'next/script';
