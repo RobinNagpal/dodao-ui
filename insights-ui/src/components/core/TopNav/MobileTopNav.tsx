@@ -10,6 +10,7 @@ import { XMarkIcon } from '@heroicons/react/24/outline';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useEffect } from 'react';
 
 interface MobileTopNavProps {
   mobileMenuOpen: boolean;
@@ -32,8 +33,19 @@ export default function MobileTopNav({ mobileMenuOpen, setMobileMenuOpen, report
   const isStocksRoute = pathname.startsWith('/stocks');
   const isEtfsRoute = pathname.startsWith('/etfs');
 
-  // Fetch industries data when on stocks page
-  const { data: industries, loading } = useFetchData<IndustryWithSubIndustriesAndCounts[]>(`${getBaseUrl()}/api/industries`, {}, 'Failed to load industries');
+  // Lazily fetch industries: only when the mobile menu is opened on a /stocks route,
+  // so non-stocks pages and unopened menus don't trigger the network call.
+  const {
+    data: industries,
+    loading,
+    reFetchData: fetchIndustries,
+  } = useFetchData<IndustryWithSubIndustriesAndCounts[]>(`${getBaseUrl()}/api/industries`, { skipInitialFetch: true }, 'Failed to load industries');
+
+  useEffect(() => {
+    if (mobileMenuOpen && isStocksRoute && !industries && !loading) {
+      fetchIndustries();
+    }
+  }, [mobileMenuOpen, isStocksRoute, industries, loading, fetchIndustries]);
 
   return (
     <Dialog open={mobileMenuOpen} onClose={setMobileMenuOpen} className="lg:hidden">
