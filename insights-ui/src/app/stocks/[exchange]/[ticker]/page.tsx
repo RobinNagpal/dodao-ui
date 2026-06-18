@@ -608,7 +608,7 @@ function CategorySummaryCard({ categoryKey, d }: { categoryKey: TickerAnalysisCa
   const factorTitles: string[] = (categoryResult?.factorResults ?? [])
     .map((fr) => fr.analysisCategoryFactor?.factorAnalysisTitle ?? '')
     .filter((t) => t.length > 0);
-  const sectionCopy = getStockSectionCopy(categoryKey, d.symbol, d.name, factorTitles);
+  const sectionCopy = getStockSectionCopy(categoryKey, d.symbol, d.name, { factorTitles });
   return (
     <div id={link.id} className="bg-surface p-3 sm:p-4 rounded-md shadow-sm">
       <div className="flex flex-wrap items-center justify-between gap-2 mb-2">

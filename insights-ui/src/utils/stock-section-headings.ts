@@ -19,10 +19,10 @@ const SECTION_CONTENT: Readonly<Record<StockSectionKey, SectionContent>> = headi
 
 /**
  * Deterministic 32-bit string hash (djb2 variant). Same input → same output
- * across every server render and every crawl, which is what we want — the goal
- * is for one specific ticker (e.g. AAPL) to always pick the same heading
- * variant so Google sees a stable page, while a different ticker (MSFT) picks
- * a different variant so the corpus of ~9k pages has more headline diversity.
+ * across every server render and every crawl, which is what we want: a given
+ * ticker (e.g. AAPL) always picks the same heading variant so Google sees a
+ * stable page, while a different ticker (MSFT) picks a different variant so
+ * the corpus of ~9k pages has more headline diversity.
  */
 function hashString(input: string): number {
   let hash = 5381;
@@ -37,25 +37,48 @@ function pickVariant<T>(variants: readonly T[], seed: string, salt: string): T {
   return variants[idx];
 }
 
-function fill(template: string, name: string, symbol: string, factorList?: string): string {
+function fill(template: string, name: string, symbol: string, factorList?: string, competitorList?: string): string {
   return template
     .replace(/\{name\}/g, name)
     .replace(/\{symbol\}/g, symbol)
-    .replace(/\{factorList\}/g, factorList ?? '');
+    .replace(/\{factorList\}/g, factorList ?? '')
+    .replace(/\{competitorList\}/g, competitorList ?? '');
 }
 
-function joinFactorTitles(factorTitles: readonly string[]): string {
-  const titles = factorTitles.filter((t) => t.trim().length > 0);
-  if (titles.length === 0) return '';
-  if (titles.length === 1) return titles[0];
-  if (titles.length === 2) return `${titles[0]} and ${titles[1]}`;
-  return `${titles.slice(0, -1).join(', ')}, and ${titles[titles.length - 1]}`;
+function joinList(items: readonly string[]): string {
+  const cleaned = items.filter((t) => t.trim().length > 0);
+  if (cleaned.length === 0) return '';
+  if (cleaned.length === 1) return cleaned[0];
+  if (cleaned.length === 2) return `${cleaned[0]} and ${cleaned[1]}`;
+  return `${cleaned.slice(0, -1).join(', ')}, and ${cleaned[cleaned.length - 1]}`;
+}
+
+/**
+ * Pick the deterministic-by-seed intro, but if that variant references a
+ * placeholder we can't fill (e.g. `{competitorList}` when no competitor
+ * symbols are available), walk forward through the list until we find one
+ * whose required placeholders are all satisfied. Falls back to the first
+ * variant if no candidate is fillable (shouldn't happen in practice).
+ */
+function pickFillableIntro(intros: readonly string[], seed: string, salt: string, hasCompetitorList: boolean): string {
+  const start = hashString(`${seed}|${salt}`) % intros.length;
+  for (let i = 0; i < intros.length; i += 1) {
+    const candidate = intros[(start + i) % intros.length];
+    if (!hasCompetitorList && candidate.includes('{competitorList}')) continue;
+    return candidate;
+  }
+  return intros[start];
 }
 
 export interface StockSectionCopy {
   heading: string;
   introLine: string;
   factorLine: string | null;
+}
+
+export interface GetStockSectionCopyOptions {
+  factorTitles?: readonly string[];
+  competitorSymbols?: readonly string[];
 }
 
 /**
@@ -65,20 +88,28 @@ export interface StockSectionCopy {
  * used to score this ticker. Variant pick is seeded by `symbol + sectionKey`
  * so each ticker carries a consistent set of variants across its sections.
  */
-export function getStockSectionCopy(sectionKey: StockSectionKey, symbol: string, companyName: string, factorTitles: readonly string[] = []): StockSectionCopy {
+export function getStockSectionCopy(
+  sectionKey: StockSectionKey,
+  symbol: string,
+  companyName: string,
+  options: GetStockSectionCopyOptions = {}
+): StockSectionCopy {
+  const { factorTitles = [], competitorSymbols = [] } = options;
   const content = SECTION_CONTENT[sectionKey];
   const name = companyName || symbol;
   const upperSymbol = symbol.toUpperCase();
 
   const headingTemplate = pickVariant(content.headings, upperSymbol, `${sectionKey}:heading`);
-  const introTemplate = pickVariant(content.intros, upperSymbol, `${sectionKey}:intro`);
 
-  const factorList = joinFactorTitles(factorTitles);
+  const competitorList = joinList(competitorSymbols.slice(0, 3).map((s) => s.toUpperCase()));
+  const introTemplate = pickFillableIntro(content.intros, upperSymbol, `${sectionKey}:intro`, competitorList.length > 0);
+
+  const factorList = joinList(factorTitles);
   const factorLine = content.factorIntroTemplate && factorList ? fill(content.factorIntroTemplate, name, upperSymbol, factorList) : null;
 
   return {
     heading: fill(headingTemplate, name, upperSymbol),
-    introLine: fill(introTemplate, name, upperSymbol),
+    introLine: fill(introTemplate, name, upperSymbol, undefined, competitorList),
     factorLine,
   };
 }

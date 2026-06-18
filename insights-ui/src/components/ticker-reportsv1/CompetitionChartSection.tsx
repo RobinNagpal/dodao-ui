@@ -56,7 +56,8 @@ export default function CompetitionChartSection({ dataPromise, exchange, ticker 
     return null;
   }
 
-  const competitionCopy = getStockSectionCopy('Competition', tickerData.symbol, tickerData.name);
+  const competitorSymbols: string[] = competitorTickers.filter((c) => c.existsInSystem && c.tickerData?.symbol).map((c) => c.tickerData!.symbol);
+  const competitionCopy = getStockSectionCopy('Competition', tickerData.symbol, tickerData.name, { competitorSymbols });
 
   return (
     <section id="competition">
