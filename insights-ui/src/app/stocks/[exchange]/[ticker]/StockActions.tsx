@@ -1,6 +1,7 @@
 'use client';
 
 import { TickerIdentifier } from '@/app/api/[spaceId]/tickers-v1/generation-requests/route';
+import MobileStockActionsMenu, { MobileStockActionsMenuProps } from '@/app/stocks/[exchange]/[ticker]/MobileStockActionsMenu';
 import PrivateWrapper from '@/components/auth/PrivateWrapper';
 import { KoalaGainsSession } from '@/types/auth';
 import dynamic from 'next/dynamic';
@@ -16,16 +17,29 @@ interface StockActionsProps {
   ticker: TickerIdentifier;
   session?: KoalaGainsSession;
   children?: ReactNode;
+  mobileActions: MobileStockActionsMenuProps;
   movedExchange?: string | null;
   movedSymbol?: string | null;
   isDeleted?: boolean;
   websiteUrl?: string | null;
 }
 
-export default function StockActions({ ticker, children, session, movedExchange, movedSymbol, isDeleted, websiteUrl }: StockActionsProps): JSX.Element {
+export default function StockActions({
+  ticker,
+  children,
+  session,
+  mobileActions,
+  movedExchange,
+  movedSymbol,
+  isDeleted,
+  websiteUrl,
+}: StockActionsProps): JSX.Element {
   return (
-    <div className="flex flex-wrap items-center gap-2 z-10">
-      {children}
+    <div className="flex items-center gap-2 z-10">
+      <div className="hidden sm:flex flex-wrap items-center gap-2">{children}</div>
+      <div className="sm:hidden">
+        <MobileStockActionsMenu {...mobileActions} />
+      </div>
       <PrivateWrapper session={session}>
         <StockActionsAdminPanel ticker={ticker} movedExchange={movedExchange} movedSymbol={movedSymbol} isDeleted={isDeleted} websiteUrl={websiteUrl} />
       </PrivateWrapper>
