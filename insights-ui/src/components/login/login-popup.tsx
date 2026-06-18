@@ -3,6 +3,7 @@
 import { EmailSentMessage } from '@/components/login/email-sent-message';
 import { UserLogin } from '@/components/login/user-login';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
+import Button from '@dodao/web-core/components/core/buttons/Button';
 import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import { Contexts } from '@dodao/web-core/utils/constants/constants';
@@ -76,27 +77,17 @@ export function LoginPopup({ open, onClose }: LoginPopupProps): JSX.Element {
   };
 
   return (
-    <FullPageModal open={open} onClose={onClose} title="" showCloseButton={false}>
+    <FullPageModal open={open} onClose={onClose} title="" showCloseButton={false} className="w-full max-w-md px-4">
       {step === 1 ? (
-        <UserLogin onLogin={handleEmailSubmit} onGoogleSignIn={handleGoogleSignIn} errorMessage={errorMessage} />
+        <UserLogin onLogin={handleEmailSubmit} onGoogleSignIn={handleGoogleSignIn} errorMessage={errorMessage} compact />
       ) : (
-        <EmailSentMessage email={email} onChangeEmail={handleUseAnotherEmail} />
+        <EmailSentMessage email={email} onChangeEmail={handleUseAnotherEmail} compact />
       )}
-      <MaybeLaterLink onClick={onClose} />
+      <div className="mt-4 flex justify-center">
+        <Button type="button" variant="outlined" primary={false} onClick={onClose} className="px-5 text-white border-gray-600 hover:border-gray-400">
+          Maybe later
+        </Button>
+      </div>
     </FullPageModal>
-  );
-}
-
-function MaybeLaterLink({ onClick }: { onClick: () => void }): JSX.Element {
-  return (
-    <div className="mt-4 text-center">
-      <button
-        type="button"
-        onClick={onClick}
-        className="text-sm font-medium text-muted hover:text-link transition-colors duration-200 underline-offset-2 hover:underline"
-      >
-        Maybe later
-      </button>
-    </div>
   );
 }

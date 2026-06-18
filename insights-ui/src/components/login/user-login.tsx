@@ -13,9 +13,10 @@ interface UserLoginProps {
   onLogin: (email: string) => void;
   onGoogleSignIn?: () => void;
   errorMessage?: string;
+  compact?: boolean;
 }
 
-export function UserLogin({ onLogin, onGoogleSignIn, errorMessage }: UserLoginProps): JSX.Element {
+export function UserLogin({ onLogin, onGoogleSignIn, errorMessage, compact = false }: UserLoginProps): JSX.Element {
   const [email, setEmail] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [localError, setLocalError] = useState<string | null>(null);
@@ -48,19 +49,21 @@ export function UserLogin({ onLogin, onGoogleSignIn, errorMessage }: UserLoginPr
   );
 
   return (
-    <div className="overflow-hidden bg-gray-800 rounded-xl">
+    <div className="overflow-hidden bg-gray-800 rounded-xl py-8">
       <div className="mx-auto max-w-md px-6">
         <div className="relative isolate">
           <div className="mx-auto max-w-4xl">
-            <div className="text-center">
-              <h1 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
-                KoalaGains <span className="text-indigo-400">Insights</span>
-              </h1>
+            {!compact && (
+              <div className="text-center">
+                <h1 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
+                  KoalaGains <span className="text-indigo-400">Insights</span>
+                </h1>
 
-              <p className="mt-3 text-base leading-7 text-gray-300 max-w-2xl mx-auto">Institutional‑grade, value‑driven stock insights for everyone.</p>
-            </div>
+                <p className="mt-3 text-base leading-7 text-gray-300 max-w-2xl mx-auto">Institutional‑grade, value‑driven stock insights for everyone.</p>
+              </div>
+            )}
 
-            <div className="mt-6">
+            <div className={compact ? '' : 'mt-6'}>
               <Card className="bg-gray-700/40 backdrop-blur-sm rounded-xl border border-gray-600/40 hover:border-indigo-500/50 transition-all duration-300 shadow-lg">
                 <CardHeader>
                   <CardTitle className="text-xl font-semibold text-white text-center">Sign in</CardTitle>
@@ -146,20 +149,22 @@ export function UserLogin({ onLogin, onGoogleSignIn, errorMessage }: UserLoginPr
               </Card>
             </div>
 
-            <div className="mt-8 grid grid-cols-3 gap-4 sm:gap-6">
-              {[
-                { icon: BarChart3, label: 'Save Favorite Stocks', color: 'from-emerald-500 to-teal-600' },
-                { icon: LineChart, label: 'Add Notes to Tickers', color: 'from-blue-500 to-cyan-600' },
-                { icon: ShieldCheck, label: 'View Stock Analysis', color: 'from-indigo-500 to-purple-600' },
-              ].map((item, index) => (
-                <div key={index} className="flex flex-col items-center gap-2 group transition-all duration-300">
-                  <div className={`rounded-lg p-2 bg-gradient-to-r ${item.color} group-hover:scale-110 transition-transform duration-300 shadow-lg`}>
-                    <item.icon className="h-5 w-5 text-white sm:h-6 sm:w-6" aria-hidden />
+            {!compact && (
+              <div className="mt-8 grid grid-cols-3 gap-4 sm:gap-6">
+                {[
+                  { icon: BarChart3, label: 'Save Favorite Stocks', color: 'from-emerald-500 to-teal-600' },
+                  { icon: LineChart, label: 'Add Notes to Tickers', color: 'from-blue-500 to-cyan-600' },
+                  { icon: ShieldCheck, label: 'View Stock Analysis', color: 'from-indigo-500 to-purple-600' },
+                ].map((item, index) => (
+                  <div key={index} className="flex flex-col items-center gap-2 group transition-all duration-300">
+                    <div className={`rounded-lg p-2 bg-gradient-to-r ${item.color} group-hover:scale-110 transition-transform duration-300 shadow-lg`}>
+                      <item.icon className="h-5 w-5 text-white sm:h-6 sm:w-6" aria-hidden />
+                    </div>
+                    <span className="text-xs text-gray-300 text-center sm:text-sm">{item.label}</span>
                   </div>
-                  <span className="text-xs text-gray-300 text-center sm:text-sm">{item.label}</span>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       </div>
