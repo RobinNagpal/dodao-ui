@@ -68,6 +68,7 @@ export default function EtfCompetitionFullView({ data, availableSlugs }: EtfComp
 
             <Link
               href={`/etfs/${etf.exchange}/${etf.symbol}`}
+              prefetch={false}
               className="link-color hover:underline text-sm font-medium whitespace-nowrap flex items-center gap-1"
             >
               View Full Report →

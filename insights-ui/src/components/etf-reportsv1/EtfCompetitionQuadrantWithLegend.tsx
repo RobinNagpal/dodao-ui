@@ -83,6 +83,7 @@ export default function EtfCompetitionQuadrantWithLegend({
                 <Link
                   key={dp.symbol}
                   href={href}
+                  prefetch={false}
                   className="flex items-start gap-2.5 text-sm group"
                   itemProp="itemListElement"
                   itemScope

@@ -66,6 +66,7 @@ function EtfCard({ etf }: { etf: EtfListingItem }): JSX.Element {
   return (
     <Link
       href={`/etfs/${etf.exchange}/${etf.symbol}`}
+      prefetch={false}
       className="block bg-surface border border-border rounded-lg p-4 hover:border-primary hover:shadow-lg transition-all duration-200"
     >
       <div className="flex items-center justify-between mb-3 gap-2">
