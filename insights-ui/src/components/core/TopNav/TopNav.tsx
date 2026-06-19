@@ -91,7 +91,17 @@ export default function TopNav() {
                   </Link>
                 </PopoverGroup>
               )}
-              {!isStocksRoute && (
+              {isEtfsRoute && session && (
+                <PopoverGroup className="flex gap-x-6">
+                  <Link
+                    href="/etf-favourites"
+                    className="text-sm/6 font-semibold text-gray-900 dark:text-white hover:text-indigo-600 dark:hover:text-indigo-400"
+                  >
+                    My Favourite ETFs
+                  </Link>
+                </PopoverGroup>
+              )}
+              {!isStocksRoute && !isEtfsRoute && (
                 <PopoverGroup className="hidden lg:flex lg:gap-x-6">
                   <Popover className="relative">
                     {({ close }) => (
