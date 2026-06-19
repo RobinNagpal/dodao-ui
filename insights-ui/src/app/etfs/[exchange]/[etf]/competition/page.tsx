@@ -97,7 +97,7 @@ export default async function EtfCompetitionPage({ params }: { params: RoutePara
   return (
     <PageWrapper>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify([articleJsonLd, breadcrumbJsonLd]) }} />
-      <Breadcrumbs breadcrumbs={breadcrumbs} hideHomeIcon={true} />
+      <Breadcrumbs breadcrumbs={breadcrumbs} hideHomeIcon={true} mobileBackOnly={true} />
       <EtfCompetitionFullView data={data} availableSlugsPromise={availableSlugsPromise} />
     </PageWrapper>
   );

@@ -110,7 +110,7 @@ export default async function EtfHoldingsPage({ params }: { params: RouteParams 
   return (
     <PageWrapper>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
-      <Breadcrumbs breadcrumbs={breadcrumbs} hideHomeIcon={true} />
+      <Breadcrumbs breadcrumbs={breadcrumbs} hideHomeIcon={true} mobileBackOnly={true} />
 
       <article className="py-4" itemScope itemType="https://schema.org/Article">
         <meta itemProp="datePublished" content={lastUpdatedDate.toISOString()} />

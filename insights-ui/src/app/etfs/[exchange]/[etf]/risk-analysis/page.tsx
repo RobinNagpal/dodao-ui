@@ -114,7 +114,7 @@ export default async function RiskAnalysisPage({ params }: { params: RouteParams
   return (
     <PageWrapper>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify([articleSchema, breadcrumbSchema]) }} />
-      <Breadcrumbs breadcrumbs={breadcrumbs} hideHomeIcon={true} />
+      <Breadcrumbs breadcrumbs={breadcrumbs} hideHomeIcon={true} mobileBackOnly={true} />
       <EtfCategoryReport
         etfName={etf.name}
         symbol={symbol}
