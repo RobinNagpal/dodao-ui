@@ -123,7 +123,7 @@ export default async function BusinessAndMoatPage({ params }: { params: RoutePar
         }}
       />
 
-      <Breadcrumbs breadcrumbs={breadcrumbs} hideHomeIcon={true} />
+      <Breadcrumbs breadcrumbs={breadcrumbs} hideHomeIcon={true} mobileBackOnly={true} />
 
       <BusinessAndMoat tickerData={tickerData} data={bmData} />
     </PageWrapper>

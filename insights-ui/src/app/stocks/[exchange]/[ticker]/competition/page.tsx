@@ -212,7 +212,7 @@ export default async function CompetitionPage({ params }: { params: RouteParams 
         }}
       />
 
-      <Breadcrumbs breadcrumbs={breadcrumbs} hideHomeIcon={true} />
+      <Breadcrumbs breadcrumbs={breadcrumbs} hideHomeIcon={true} mobileBackOnly={true} />
 
       <Competition tickerData={tickerData} data={competitionData} />
     </PageWrapper>

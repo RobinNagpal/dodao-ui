@@ -128,7 +128,7 @@ export default async function FinancialStatementAnalysisPage({ params }: { param
         }}
       />
 
-      <Breadcrumbs breadcrumbs={breadcrumbs} hideHomeIcon={true} />
+      <Breadcrumbs breadcrumbs={breadcrumbs} hideHomeIcon={true} mobileBackOnly={true} />
 
       <FinancialStatementAnalysis tickerData={tickerData} data={financialStatementData} />
     </PageWrapper>

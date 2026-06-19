@@ -127,7 +127,7 @@ export default async function FairValuePage({ params }: { params: RouteParams })
         }}
       />
 
-      <Breadcrumbs breadcrumbs={breadcrumbs} hideHomeIcon={true} />
+      <Breadcrumbs breadcrumbs={breadcrumbs} hideHomeIcon={true} mobileBackOnly={true} />
 
       <FairValue tickerData={tickerData} data={fairValueData} />
     </PageWrapper>

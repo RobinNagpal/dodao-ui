@@ -127,7 +127,7 @@ export default async function PastPerformancePage({ params }: { params: RoutePar
         }}
       />
 
-      <Breadcrumbs breadcrumbs={breadcrumbs} hideHomeIcon={true} />
+      <Breadcrumbs breadcrumbs={breadcrumbs} hideHomeIcon={true} mobileBackOnly={true} />
 
       <PastPerformance tickerData={tickerData} data={pastPerformanceData} />
     </PageWrapper>

@@ -127,7 +127,7 @@ export default async function FuturePerformancePage({ params }: { params: RouteP
         }}
       />
 
-      <Breadcrumbs breadcrumbs={breadcrumbs} hideHomeIcon={true} />
+      <Breadcrumbs breadcrumbs={breadcrumbs} hideHomeIcon={true} mobileBackOnly={true} />
 
       <FuturePerformance tickerData={tickerData} data={futurePerformanceData} />
     </PageWrapper>
