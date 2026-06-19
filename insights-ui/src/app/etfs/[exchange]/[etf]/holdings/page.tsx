@@ -16,11 +16,9 @@ export const dynamic = 'force-dynamic';
 
 type RouteParams = Promise<Readonly<{ exchange: string; etf: string }>>;
 
-const WEEK_IN_SECONDS = 7 * 24 * 60 * 60;
-
 async function fetchEtf(exchange: string, etf: string): Promise<EtfFastResponse | null> {
   const url = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/etfs-v1/exchange/${exchange}/${etf}?allowNull=true`;
-  const res = await fetch(url, { next: { revalidate: WEEK_IN_SECONDS, tags: [etfHoldingsTag(etf, exchange)] } });
+  const res = await fetch(url, { next: { tags: [etfHoldingsTag(etf, exchange)] } });
   if (!res.ok) return null;
   return (await res.json()) as EtfFastResponse | null;
 }
@@ -28,7 +26,7 @@ async function fetchEtf(exchange: string, etf: string): Promise<EtfFastResponse 
 async function fetchHoldings(exchange: string, etf: string): Promise<EtfPortfolioHoldingsResponse> {
   const url = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/etfs-v1/exchange/${exchange}/${etf}/portfolio-holdings`;
   try {
-    const res = await fetch(url, { next: { revalidate: WEEK_IN_SECONDS, tags: [etfHoldingsTag(etf, exchange)] } });
+    const res = await fetch(url, { next: { tags: [etfHoldingsTag(etf, exchange)] } });
     if (!res.ok) return { holdings: null, updatedAt: null };
     return (await res.json()) as EtfPortfolioHoldingsResponse;
   } catch {

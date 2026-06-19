@@ -14,11 +14,9 @@ export const dynamic = 'force-dynamic';
 
 type RouteParams = Promise<Readonly<{ exchange: string; etf: string }>>;
 
-const WEEK_IN_SECONDS = 7 * 24 * 60 * 60;
-
 async function fetchEtfData(exchange: string, etf: string): Promise<EtfFastResponse | null> {
   const url = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/etfs-v1/exchange/${exchange}/${etf}?allowNull=true`;
-  const res = await fetch(url, { next: { revalidate: WEEK_IN_SECONDS, tags: [etfAndExchangeTag(etf, exchange)] } });
+  const res = await fetch(url, { next: { tags: [etfAndExchangeTag(etf, exchange)] } });
   if (!res.ok) return null;
   return (await res.json()) as EtfFastResponse | null;
 }
@@ -26,7 +24,7 @@ async function fetchEtfData(exchange: string, etf: string): Promise<EtfFastRespo
 async function fetchMorInfo(exchange: string, etf: string): Promise<EtfMorInfoOptionalWrapper> {
   const url = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/etfs-v1/exchange/${exchange}/${etf}/mor-info`;
   try {
-    const res = await fetch(url, { next: { revalidate: WEEK_IN_SECONDS, tags: [etfAndExchangeTag(etf, exchange)] } });
+    const res = await fetch(url, { next: { tags: [etfAndExchangeTag(etf, exchange)] } });
     if (!res.ok) return { morAnalyzerInfo: null, morRiskInfo: null, morPeopleInfo: null, morPortfolioInfo: null };
     return (await res.json()) as EtfMorInfoOptionalWrapper;
   } catch {

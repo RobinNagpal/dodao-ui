@@ -23,11 +23,9 @@ export const dynamic = 'force-dynamic';
 
 type RouteParams = Promise<Readonly<{ exchange: string; etf: string }>>;
 
-const WEEK_IN_SECONDS = 7 * 24 * 60 * 60;
-
 async function fetchEtf(exchange: string, etf: string): Promise<EtfFastResponse | null> {
   const url = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/etfs-v1/exchange/${exchange}/${etf}?allowNull=true`;
-  const res = await fetch(url, { next: { revalidate: WEEK_IN_SECONDS, tags: [etfCategoryReportTag(etf, exchange, CATEGORY_KEY)] } });
+  const res = await fetch(url, { next: { tags: [etfCategoryReportTag(etf, exchange, CATEGORY_KEY)] } });
   if (!res.ok) return null;
   return (await res.json()) as EtfFastResponse | null;
 }
@@ -35,7 +33,7 @@ async function fetchEtf(exchange: string, etf: string): Promise<EtfFastResponse 
 async function fetchAnalysis(exchange: string, etf: string): Promise<EtfAnalysisResponse> {
   const url = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/etfs-v1/exchange/${exchange}/${etf}/analysis`;
   try {
-    const res = await fetch(url, { next: { revalidate: WEEK_IN_SECONDS, tags: [etfCategoryReportTag(etf, exchange, CATEGORY_KEY)] } });
+    const res = await fetch(url, { next: { tags: [etfCategoryReportTag(etf, exchange, CATEGORY_KEY)] } });
     if (!res.ok) return { categories: [] };
     return (await res.json()) as EtfAnalysisResponse;
   } catch {
