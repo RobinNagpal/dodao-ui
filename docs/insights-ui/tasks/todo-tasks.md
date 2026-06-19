@@ -158,6 +158,14 @@ Remaining:
 
 - [ ] **Audit + fix UI issues across the ETF listing surfaces** — `/etfs` (index), `/etfs/categories` (+ `[category]`), `/etfs/countries` (+ `[country]`), `/etfs/asset-classes` (+ `[assetClass]`), `/etfs/groups` (+ `[group]`), `/etfs/providers` (+ `[provider]`). Walk each page on desktop + mobile and capture concrete issues here as sub-bullets before scheduling fixes: layout/spacing, card alignment, header + breadcrumb consistency across the sub-listing variants, empty/loading/error states, sort + filter UX, pagination, and dark/light theme rendering. Cross-check against the `isComplete` filter behavior once that lands.
 
+### Mobile view support for ETF screens
+
+- [ ] **Mobile layout audit across every ETF surface** — detail page (`/etfs/[exchange]/[etf]`) + all sub-pages (`analysis`, `mor-info`, `portfolio-holdings`, per-category analysis pages: `risk-analysis`, `cost-efficiency-team`, `performance-returns`, `future-performance-outlook`, `index-strategy`, `final-summary`, `competition`, `scenarios`) and the listing surfaces (`/etfs`, `/etfs/categories[/...]`, `/etfs/countries[/...]`, `/etfs/asset-classes[/...]`, `/etfs/groups[/...]`, `/etfs/providers[/...]`). Capture concrete issues — overflow tables, cut-off charts (radar, price/returns/CAGR tabs, competition quadrant), font sizes, spacing, sticky-header behavior, tap-target sizing, breadcrumb + section-nav usability, image/holding row wrapping — as sub-bullets before scheduling fixes.
+- [ ] **Charts must render on phones** — verify the lazy-loaded chart.js components (`EtfRadarChart`, `EtfChartTabs`, `EtfCompetitionQuadrantChart`) size correctly inside narrow viewports, legend doesn't push the canvas off-screen, and the viewport-gated `useInView` trigger still fires on first scroll on mobile.
+- [ ] **Tables → mobile-friendly layouts** — holdings list, performance/returns metrics, sibling-ETF comparison, and competition rankings switch to card or stacked-row layouts under the mobile breakpoint instead of horizontal scroll where readability suffers.
+- [ ] **Verify after each per-slice streaming change** — re-test mobile every time a `<Suspense>` boundary in the detail page is re-cut (see ETF performance optimization tasks), since shell-vs-body splits can land different content above the fold on mobile vs desktop.
+- [ ] Cross-link with the stocks-side **Mobile layout audit** task — share patterns where the two surfaces converge (sticky headers, tap targets, chart sizing) and reuse leaf components rather than forking per-surface mobile styles.
+
 ### Known limitations in the new 8-group taxonomy (follow-up cleanups)
 
 - [ ] **Split strategy funds back out of `derivative-income`** — managed-futures / market-neutral / long-short (~50 funds) don't share a decision framework with the ~600 option-engineered payoff funds; prompt has to branch internally. Highest-impact follow-up.
