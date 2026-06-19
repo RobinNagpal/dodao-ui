@@ -9,29 +9,32 @@ import * as React from 'react';
 interface EmailSentMessageProps {
   email: string;
   onChangeEmail: () => void;
+  compact?: boolean;
 }
 
-export function EmailSentMessage({ email, onChangeEmail }: EmailSentMessageProps): JSX.Element {
+export function EmailSentMessage({ email, onChangeEmail, compact = false }: EmailSentMessageProps): JSX.Element {
   return (
-    <div className="overflow-hidden bg-gray-800 rounded-xl">
+    <div className="overflow-hidden bg-gray-800 rounded-xl py-8">
       <div className="mx-auto max-w-md px-6">
         <div className="relative isolate">
           <div className="mx-auto max-w-4xl">
-            <div className="text-center">
-              <div className="flex justify-center mb-6">
-                <div className="inline-flex items-center justify-center w-16 h-16 rounded-xl bg-gradient-to-r from-indigo-500 to-purple-600 shadow-lg transition-transform duration-300">
-                  <Mail className="h-8 w-8 text-white" aria-hidden="true" />
+            {!compact && (
+              <div className="text-center">
+                <div className="flex justify-center mb-6">
+                  <div className="inline-flex items-center justify-center w-16 h-16 rounded-xl bg-gradient-to-r from-indigo-500 to-purple-600 shadow-lg transition-transform duration-300">
+                    <Mail className="h-8 w-8 text-white" aria-hidden="true" />
+                  </div>
                 </div>
+
+                <h1 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
+                  Check your <span className="text-indigo-400">email</span>
+                </h1>
+
+                <p className="mt-4 text-base leading-7 text-gray-300 max-w-2xl mx-auto">We just sent you a secure sign‑in link.</p>
               </div>
+            )}
 
-              <h1 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
-                Check your <span className="text-indigo-400">email</span>
-              </h1>
-
-              <p className="mt-4 text-base leading-7 text-gray-300 max-w-2xl mx-auto">We just sent you a secure sign‑in link.</p>
-            </div>
-
-            <div className="mt-8">
+            <div className={compact ? '' : 'mt-8'}>
               <Card className="bg-gray-700/40 backdrop-blur-sm rounded-xl border border-gray-600/40 hover:border-indigo-500/50 transition-all duration-300 shadow-lg">
                 <CardHeader className="space-y-1 pb-2">
                   <div className="flex items-center justify-center">

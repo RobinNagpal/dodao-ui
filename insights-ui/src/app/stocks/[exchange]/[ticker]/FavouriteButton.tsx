@@ -5,7 +5,6 @@ import { HeartIcon as HeartOutline } from '@heroicons/react/24/outline';
 import { HeartIcon as HeartSolid } from '@heroicons/react/24/solid';
 import dynamic from 'next/dynamic';
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import { FavouriteTickerResponse, UserListResponse, UserTickerTagResponse } from '@/types/ticker-user';
@@ -17,6 +16,7 @@ import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 const AddEditFavouriteModal = dynamic(() => import('@/app/stocks/[exchange]/[ticker]/AddEditFavouriteModal'), { ssr: false });
 const ManageListsModal = dynamic(() => import('@/components/favourites/ManageListsModal'), { ssr: false });
 const ManageTagsModal = dynamic(() => import('@/components/favourites/ManageTagsModal'), { ssr: false });
+const LoginPopup = dynamic(() => import('@/components/login/login-popup').then((m) => ({ default: m.LoginPopup })), { ssr: false });
 
 export interface FavouriteButtonProps {
   tickerId: string;
@@ -30,9 +30,9 @@ export default function FavouriteButton({ tickerId, tickerSymbol, tickerName }: 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [hasMountedModal, setHasMountedModal] = useState(false);
   const [manageModalView, setManageModalView] = useState<ModalView | null>(null);
+  const [isLoginPopupOpen, setIsLoginPopupOpen] = useState(false);
   const { data: koalaSession } = useSession();
   const session: KoalaGainsSession | null = koalaSession as KoalaGainsSession | null;
-  const router = useRouter();
 
   // Fetch lists and tags
   const { data: listsData, reFetchData: refetchLists } = useFetchData<{ lists: UserListResponse[] }>(
@@ -61,7 +61,7 @@ export default function FavouriteButton({ tickerId, tickerSymbol, tickerName }: 
 
   const handleFavouriteClick = () => {
     if (!session) {
-      router.push('/login');
+      setIsLoginPopupOpen(true);
       return;
     }
     setHasMountedModal(true);
@@ -129,6 +129,7 @@ export default function FavouriteButton({ tickerId, tickerSymbol, tickerName }: 
           <ManageTagsModal isOpen={manageModalView === 'manage-tags'} onClose={() => setManageModalView(null)} tags={tags} onTagsChange={handleTagsChange} />
         </>
       )}
+      {!session && <LoginPopup open={isLoginPopupOpen} onClose={() => setIsLoginPopupOpen(false)} />}
     </div>
   );
 }
