@@ -5,7 +5,6 @@ import { DocumentTextIcon as DocumentTextOutline } from '@heroicons/react/24/out
 import { DocumentTextIcon as DocumentTextSolid } from '@heroicons/react/24/solid';
 import dynamic from 'next/dynamic';
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
@@ -15,6 +14,7 @@ import { TickerV1Notes } from '@prisma/client';
 
 // Modal only opens when the user clicks Notes — defer its 225-line chunk.
 const AddEditNotesModal = dynamic(() => import('@/app/stocks/[exchange]/[ticker]/AddEditNotesModal'), { ssr: false });
+const LoginPopup = dynamic(() => import('@/components/login/login-popup').then((m) => ({ default: m.LoginPopup })), { ssr: false });
 
 export interface NotesButtonProps {
   tickerId: string;
@@ -25,9 +25,9 @@ export interface NotesButtonProps {
 export default function NotesButton({ tickerId, tickerSymbol, tickerName }: NotesButtonProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [hasMountedModal, setHasMountedModal] = useState(false);
+  const [isLoginPopupOpen, setIsLoginPopupOpen] = useState(false);
   const { data: koalaSession } = useSession();
   const session: KoalaGainsSession | null = koalaSession as KoalaGainsSession | null;
-  const router = useRouter();
 
   // Fetch ticker notes
   const { data: notesData, reFetchData: refetchNotes } = useFetchData<TickerNotesResponse>(
@@ -40,7 +40,7 @@ export default function NotesButton({ tickerId, tickerSymbol, tickerName }: Note
 
   const handleNotesClick = () => {
     if (!session) {
-      router.push('/login');
+      setIsLoginPopupOpen(true);
       return;
     }
     setHasMountedModal(true);
@@ -83,6 +83,7 @@ export default function NotesButton({ tickerId, tickerSymbol, tickerName }: Note
           onUpsert={handleUpsert}
         />
       )}
+      {!session && <LoginPopup open={isLoginPopupOpen} onClose={() => setIsLoginPopupOpen(false)} />}
     </div>
   );
 }
