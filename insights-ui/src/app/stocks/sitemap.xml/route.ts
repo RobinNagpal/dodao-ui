@@ -57,6 +57,11 @@ interface SitemapTicker {
 // 404, and tickers with movedExchange/movedSymbol set 308 away — neither
 // should appear in the sitemap. The destination of a move is a separate row
 // (created when the move is applied) and lands in the sitemap on its own.
+//
+// Also require genuinely unique content (`summary` OR `metaDescription`). The
+// detail page sets `robots: noindex` until one of these is populated, so a
+// thin ticker in the sitemap would be a conflicting signal (sitemap says
+// "index" while the page says "don't"). Gating here keeps the two aligned.
 async function getAllTickers(): Promise<SitemapTicker[]> {
   return prisma.tickerV1.findMany({
     where: {
@@ -64,6 +69,7 @@ async function getAllTickers(): Promise<SitemapTicker[]> {
       isDeleted: false,
       movedExchange: null,
       movedSymbol: null,
+      OR: [{ summary: { not: null, notIn: [''] } }, { metaDescription: { not: null, notIn: [''] } }],
     },
     select: {
       symbol: true,
