@@ -1,15 +1,35 @@
 'use client';
 
+/**
+ * Lightweight shell for the ETF Price / Returns / CAGR tabbed chart section.
+ *
+ * The actual chart rendering (PriceChart line + Bar chart + chart.js +
+ * react-chartjs-2) lives in `EtfChartTabsChartBody.tsx` and is loaded via the
+ * stock-side two-layer deferral pattern (see PriceChartLazy.tsx for the
+ * original rationale):
+ *
+ *   1. `dynamic({ ssr: false })` keeps the chart.js chunk out of the server
+ *      render and the main client bundle.
+ *   2. `useInView` keeps the dynamic import from firing until the section is
+ *      near the viewport — without this Next.js still fetches + evaluates the
+ *      chunk right after hydration even though `ssr: false` skipped SSR. That
+ *      hydration burst was the dominant TBT contributor on mobile.
+ *
+ * The shell still owns tab state + range pill UI so users can toggle Price /
+ * Returns / CAGR / range while the chart body is still loading; the active
+ * selection is just passed down once the body mounts.
+ */
+
 import type { PriceHistoryResponse, PriceRangeKey } from '@/app/api/[spaceId]/tickers-v1/exchange/[exchange]/[ticker]/price-history/route';
-import PriceChart, { PRICE_CHART_RANGES } from '@/components/ticker-reportsv1/PriceChart';
-import { BarElement, CategoryScale, Chart as ChartJS, type ChartData, type ChartOptions, Legend, LinearScale, Tooltip } from 'chart.js';
+import dynamic from 'next/dynamic';
 import { useMemo, useState } from 'react';
-import { Bar } from 'react-chartjs-2';
-import { ETF_PERFORMANCE_PERIODS, type EtfPerformanceMetricsPayload } from '@/utils/etf-performance-metrics-utils';
+import type { EtfPerformanceMetricsPayload } from '@/utils/etf-performance-metrics-utils';
+import { useInView } from '@/util/use-in-view';
+import type { EtfChartTabKey, EtfChartTabsChartBodyProps } from './EtfChartTabsChartBody';
 
-ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
-
-type ChartTabKey = 'price' | 'return' | 'cagr';
+// Local copy of the range list so the shell doesn't have to import PriceChart
+// (which would side-effect-import chart.js + react-chartjs-2 at module load).
+const PRICE_CHART_RANGES: ReadonlyArray<PriceRangeKey> = ['1M', '6M', '1Y', '3Y', '5Y'] as const;
 
 interface EtfChartTabsProps {
   priceHistory: PriceHistoryResponse | null;
@@ -17,7 +37,7 @@ interface EtfChartTabsProps {
   etfSymbol: string;
 }
 
-const TAB_LABELS: Record<ChartTabKey, string> = {
+const TAB_LABELS: Record<EtfChartTabKey, string> = {
   price: 'Price',
   return: 'Returns',
   cagr: 'CAGR',
@@ -27,39 +47,44 @@ const TAB_LABELS: Record<ChartTabKey, string> = {
 // standalone PriceChart's familiar "Price History" label so users moving
 // between standalone (stocks) and embedded (ETFs) chart UIs don't have to
 // re-learn it.
-const TAB_HEADINGS: Record<ChartTabKey, string> = {
+const TAB_HEADINGS: Record<EtfChartTabKey, string> = {
   price: 'Price History',
   return: 'Returns',
   cagr: 'CAGR',
 };
 
 const ACCENT_COLOR = '#10b981';
-const CATEGORY_COLOR = '#7f78ff';
 
-function formatPct(value: number | null): string {
-  if (value === null) return 'N/A';
-  const sign = value > 0 ? '+' : '';
-  return `${sign}${value.toFixed(2)}%`;
+function ChartBodySkeleton(): JSX.Element {
+  // Matches the live chart's `h-64 sm:h-72` height so swapping in the real
+  // chart causes zero layout shift.
+  return <div className="h-64 sm:h-72 rounded bg-surface-2 animate-pulse" />;
 }
+
+const EtfChartTabsChartBody = dynamic<EtfChartTabsChartBodyProps>(() => import('./EtfChartTabsChartBody'), {
+  ssr: false,
+  loading: () => <ChartBodySkeleton />,
+});
 
 export default function EtfChartTabs({ priceHistory, performanceMetrics, etfSymbol }: EtfChartTabsProps): JSX.Element | null {
   const hasReturnsData = useMemo(() => !!performanceMetrics?.returns.values.some((v) => v.etf !== null), [performanceMetrics]);
   const hasCagrData = useMemo(() => !!performanceMetrics?.cagr.values.some((v) => v.etf !== null), [performanceMetrics]);
   const hasPriceData = !!priceHistory;
 
-  const availableTabs: ChartTabKey[] = [];
+  const availableTabs: EtfChartTabKey[] = [];
   if (hasPriceData) availableTabs.push('price');
   if (hasReturnsData) availableTabs.push('return');
   if (hasCagrData) availableTabs.push('cagr');
 
-  const [activeTab, setActiveTab] = useState<ChartTabKey>(availableTabs[0] ?? 'price');
+  const [activeTab, setActiveTab] = useState<EtfChartTabKey>(availableTabs[0] ?? 'price');
   // Range state lives here (not inside PriceChart) so the range pill can sit
   // in the section header row alongside the main tabs.
   const [priceRange, setPriceRange] = useState<PriceRangeKey>('5Y');
+  const { ref, inView } = useInView<HTMLDivElement>();
 
   if (availableTabs.length === 0) return null;
 
-  const safeTab: ChartTabKey = availableTabs.includes(activeTab) ? activeTab : availableTabs[0];
+  const safeTab: EtfChartTabKey = availableTabs.includes(activeTab) ? activeTab : availableTabs[0];
 
   // Meta line shown under the heading. Drop the daily/weekly hint that the
   // standalone chart shows — it adds vertical noise and the user can infer
@@ -72,7 +97,7 @@ export default function EtfChartTabs({ priceHistory, performanceMetrics, etfSymb
       : null;
 
   return (
-    <section id="etf-chart-tabs" className="bg-surface rounded-lg shadow-sm px-2 py-3 sm:p-4 mb-6">
+    <section ref={ref} id="etf-chart-tabs" className="bg-surface rounded-lg shadow-sm px-2 py-3 sm:p-4 mb-6">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
         <div className="sm:flex-shrink-0 min-w-0">
           <h3 className="text-lg font-semibold text-heading">{TAB_HEADINGS[safeTab]}</h3>
@@ -120,111 +145,17 @@ export default function EtfChartTabs({ priceHistory, performanceMetrics, etfSymb
         </div>
       </div>
 
-      {safeTab === 'price' && priceHistory && <PriceChart data={priceHistory} embedded range={priceRange} hideRangeButtons />}
-      {safeTab === 'return' && performanceMetrics && <PerformanceBars series={performanceMetrics.returns.values} etfSymbol={etfSymbol} />}
-      {safeTab === 'cagr' && performanceMetrics && <PerformanceBars series={performanceMetrics.cagr.values} etfSymbol={etfSymbol} />}
+      {inView ? (
+        <EtfChartTabsChartBody
+          activeTab={safeTab}
+          priceHistory={priceHistory}
+          performanceMetrics={performanceMetrics}
+          etfSymbol={etfSymbol}
+          priceRange={priceRange}
+        />
+      ) : (
+        <ChartBodySkeleton />
+      )}
     </section>
-  );
-}
-
-interface PerformanceBarsProps {
-  series: EtfPerformanceMetricsPayload['returns']['values'];
-  etfSymbol: string;
-}
-
-function PerformanceBars({ series, etfSymbol }: PerformanceBarsProps): JSX.Element {
-  // Hide individual periods where the focal ETF has no value — a bare
-  // category bar without an ETF counterpart is misleading.
-  const visible = series.filter((v) => v.etf !== null);
-  const hasCategoryAverage = visible.some((v) => v.categoryAverage !== null);
-
-  if (visible.length === 0) {
-    return <div className="h-64 sm:h-72 flex items-center justify-center text-sm text-muted">No data available for this ETF.</div>;
-  }
-
-  const labels = visible.map((v) => {
-    const period = ETF_PERFORMANCE_PERIODS.find((p) => p.key === v.periodKey);
-    return period ? period.label : v.periodKey;
-  });
-
-  const datasets: ChartData<'bar'>['datasets'] = [
-    {
-      label: etfSymbol,
-      data: visible.map((v) => v.etf),
-      backgroundColor: ACCENT_COLOR,
-      borderColor: ACCENT_COLOR,
-      borderWidth: 0,
-      borderRadius: 4,
-      categoryPercentage: 0.7,
-      barPercentage: 0.9,
-    },
-  ];
-
-  if (hasCategoryAverage) {
-    datasets.push({
-      label: 'Category Average',
-      data: visible.map((v) => v.categoryAverage),
-      backgroundColor: CATEGORY_COLOR,
-      borderColor: CATEGORY_COLOR,
-      borderWidth: 0,
-      borderRadius: 4,
-      categoryPercentage: 0.7,
-      barPercentage: 0.9,
-    });
-  }
-
-  const chartData: ChartData<'bar'> = { labels, datasets };
-
-  const options: ChartOptions<'bar'> = {
-    responsive: true,
-    maintainAspectRatio: false,
-    interaction: { mode: 'index', intersect: false },
-    plugins: {
-      legend: {
-        display: hasCategoryAverage,
-        position: 'top',
-        align: 'end',
-        labels: {
-          color: '#d1d5db',
-          font: { size: 11 },
-          boxWidth: 12,
-          boxHeight: 12,
-          padding: 12,
-          usePointStyle: true,
-          pointStyle: 'rectRounded',
-        },
-      },
-      tooltip: {
-        backgroundColor: 'rgba(17, 24, 39, 0.95)',
-        titleColor: '#f3f4f6',
-        bodyColor: '#d1d5db',
-        borderColor: '#374151',
-        borderWidth: 1,
-        padding: 12,
-        callbacks: {
-          label: (item) => `${item.dataset.label}: ${formatPct(item.raw as number | null)}`,
-        },
-      },
-    },
-    scales: {
-      x: {
-        grid: { display: false },
-        ticks: { color: '#9ca3af', font: { size: 11 } },
-      },
-      y: {
-        grid: { color: 'rgba(55, 65, 81, 0.5)' },
-        ticks: {
-          color: '#9ca3af',
-          font: { size: 11 },
-          callback: (value) => (typeof value === 'number' ? `${value}%` : value),
-        },
-      },
-    },
-  };
-
-  return (
-    <div className="h-64 sm:h-72">
-      <Bar data={chartData} options={options} />
-    </div>
   );
 }
