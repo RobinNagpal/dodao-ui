@@ -70,7 +70,7 @@ export default function EtfHoldings({ data, maxRows, viewMoreHref, title, relate
 
       {showViewMore && viewMoreHref ? (
         <div className="mt-4 flex justify-end">
-          <Link href={viewMoreHref} className="text-sm font-medium link-color hover:underline">
+          <Link href={viewMoreHref} prefetch={false} className="text-sm font-medium link-color hover:underline">
             View more holdings &rarr;
           </Link>
         </div>

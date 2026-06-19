@@ -17,7 +17,7 @@ import { EtfAnalysisCategory } from '@/types/etf/etf-analysis-types';
 import { findFactorDefinition } from '@/utils/etf-analysis-reports/etf-analysis-factor-utils';
 import { parseMarkdown } from '@/util/parse-markdown';
 import { CheckCircleIcon, XCircleIcon } from '@heroicons/react/24/solid';
-import { ReactNode } from 'react';
+import { ReactNode, Suspense } from 'react';
 
 const PASS_RESULT = 'Pass';
 
@@ -42,8 +42,8 @@ export interface EtfCategoryReportProps {
   indexName?: string | null;
   /** Slug of the current sibling page (e.g. "performance-returns"). When set, renders a related-sections nav before the footer. */
   currentSlug?: string;
-  /** Slugs of sibling pages with publishable content, resolved upstream. */
-  availableSlugs?: string[];
+  /** Promise of sibling-page slugs with publishable content. Unwrapped via Suspense so first paint isn't blocked on it. */
+  availableSlugsPromise?: Promise<string[]>;
   /** Optional content rendered immediately after the Executive Summary section. */
   afterSummaryContent?: ReactNode;
 }
@@ -62,7 +62,7 @@ export default function EtfCategoryReport({
   issuer,
   indexName,
   currentSlug,
-  availableSlugs,
+  availableSlugsPromise,
   afterSummaryContent,
 }: EtfCategoryReportProps): JSX.Element | null {
   if (!categoryResult) return null;
@@ -141,8 +141,10 @@ export default function EtfCategoryReport({
         )}
       </Prose>
 
-      {currentSlug && availableSlugs && (
-        <EtfRelatedSections availableSlugs={availableSlugs} exchange={exchange} symbol={symbol} etfName={etfName} currentSlug={currentSlug} />
+      {currentSlug && availableSlugsPromise && (
+        <Suspense fallback={null}>
+          <EtfRelatedSections availableSlugsPromise={availableSlugsPromise} exchange={exchange} symbol={symbol} etfName={etfName} currentSlug={currentSlug} />
+        </Suspense>
       )}
 
       <ReportFooter

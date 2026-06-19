@@ -17,11 +17,9 @@ export const dynamic = 'force-dynamic';
 
 export type RouteParams = Promise<Readonly<{ exchange: string; etf: string }>>;
 
-const WEEK_IN_SECONDS = 7 * 24 * 60 * 60;
-
 async function fetchEtfCompetition(exchange: string, etf: string): Promise<EtfCompetitionResponse | null> {
   const url = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/etfs-v1/exchange/${exchange.toUpperCase()}/${etf.toUpperCase()}/competition`;
-  const res = await fetch(url, { next: { revalidate: WEEK_IN_SECONDS, tags: [etfCompetitionTag(etf, exchange)] } });
+  const res = await fetch(url, { next: { tags: [etfCompetitionTag(etf, exchange)] } });
   if (!res.ok) return null;
   return (await res.json()) as EtfCompetitionResponse | null;
 }
@@ -29,7 +27,7 @@ async function fetchEtfCompetition(exchange: string, etf: string): Promise<EtfCo
 async function fetchEtfFast(exchange: string, etf: string): Promise<EtfFastResponse | null> {
   const url = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/etfs-v1/exchange/${exchange.toUpperCase()}/${etf.toUpperCase()}?allowNull=true`;
   try {
-    const res = await fetch(url, { next: { revalidate: WEEK_IN_SECONDS, tags: [etfCompetitionTag(etf, exchange)] } });
+    const res = await fetch(url, { next: { tags: [etfCompetitionTag(etf, exchange)] } });
     if (!res.ok) return null;
     return (await res.json()) as EtfFastResponse | null;
   } catch {
@@ -62,14 +60,12 @@ export default async function EtfCompetitionPage({ params }: { params: RoutePara
   const exchangeUpper = exchange.toUpperCase();
   const etfUpper = etf.toUpperCase();
 
-  const [data, availableSlugs, etfFast] = await Promise.all([
-    fetchEtfCompetition(exchangeUpper, etfUpper),
-    fetchEtfAvailableSlugs(exchangeUpper, etfUpper),
-    fetchEtfFast(exchangeUpper, etfUpper),
-  ]);
+  const [data, etfFast] = await Promise.all([fetchEtfCompetition(exchangeUpper, etfUpper), fetchEtfFast(exchangeUpper, etfUpper)]);
   if (!data || !data.etf) {
     notFound();
   }
+
+  const availableSlugsPromise = fetchEtfAvailableSlugs(exchangeUpper, etfUpper);
 
   const breadcrumbs = buildEtfReportSubpageBreadcrumbs({
     exchange: exchangeUpper,
@@ -102,7 +98,7 @@ export default async function EtfCompetitionPage({ params }: { params: RoutePara
     <PageWrapper>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify([articleJsonLd, breadcrumbJsonLd]) }} />
       <Breadcrumbs breadcrumbs={breadcrumbs} hideHomeIcon={true} />
-      <EtfCompetitionFullView data={data} availableSlugs={availableSlugs} />
+      <EtfCompetitionFullView data={data} availableSlugsPromise={availableSlugsPromise} />
     </PageWrapper>
   );
 }

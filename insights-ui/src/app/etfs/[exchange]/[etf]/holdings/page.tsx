@@ -11,16 +11,15 @@ import { generateBreadcrumbJsonLdFromCrumbs, generateEtfHoldingsMetadata } from 
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
+import { Suspense } from 'react';
 
 export const dynamic = 'force-dynamic';
 
 type RouteParams = Promise<Readonly<{ exchange: string; etf: string }>>;
 
-const WEEK_IN_SECONDS = 7 * 24 * 60 * 60;
-
 async function fetchEtf(exchange: string, etf: string): Promise<EtfFastResponse | null> {
   const url = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/etfs-v1/exchange/${exchange}/${etf}?allowNull=true`;
-  const res = await fetch(url, { next: { revalidate: WEEK_IN_SECONDS, tags: [etfHoldingsTag(etf, exchange)] } });
+  const res = await fetch(url, { next: { tags: [etfHoldingsTag(etf, exchange)] } });
   if (!res.ok) return null;
   return (await res.json()) as EtfFastResponse | null;
 }
@@ -28,7 +27,7 @@ async function fetchEtf(exchange: string, etf: string): Promise<EtfFastResponse 
 async function fetchHoldings(exchange: string, etf: string): Promise<EtfPortfolioHoldingsResponse> {
   const url = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/etfs-v1/exchange/${exchange}/${etf}/portfolio-holdings`;
   try {
-    const res = await fetch(url, { next: { revalidate: WEEK_IN_SECONDS, tags: [etfHoldingsTag(etf, exchange)] } });
+    const res = await fetch(url, { next: { tags: [etfHoldingsTag(etf, exchange)] } });
     if (!res.ok) return { holdings: null, updatedAt: null };
     return (await res.json()) as EtfPortfolioHoldingsResponse;
   } catch {
@@ -63,12 +62,10 @@ export default async function EtfHoldingsPage({ params }: { params: RouteParams 
   const exchange = rawExchange.toUpperCase();
   const symbol = rawEtf.toUpperCase();
 
-  const [etfData, holdingsResponse, availableSlugs] = await Promise.all([
-    fetchEtf(exchange, symbol),
-    fetchHoldings(exchange, symbol),
-    fetchEtfAvailableSlugs(exchange, symbol),
-  ]);
+  const [etfData, holdingsResponse] = await Promise.all([fetchEtf(exchange, symbol), fetchHoldings(exchange, symbol)]);
   if (!etfData) notFound();
+
+  const availableSlugsPromise = fetchEtfAvailableSlugs(exchange, symbol);
 
   const { holdings, updatedAt: holdingsUpdatedAt } = holdingsResponse;
 
@@ -103,7 +100,9 @@ export default async function EtfHoldingsPage({ params }: { params: RouteParams 
 
   const relatedSections = (
     <>
-      <EtfRelatedSections availableSlugs={availableSlugs} exchange={exchange} symbol={symbol} etfName={etfData.name} currentSlug="holdings" />
+      <Suspense fallback={null}>
+        <EtfRelatedSections availableSlugsPromise={availableSlugsPromise} exchange={exchange} symbol={symbol} etfName={etfData.name} currentSlug="holdings" />
+      </Suspense>
       {footer}
     </>
   );

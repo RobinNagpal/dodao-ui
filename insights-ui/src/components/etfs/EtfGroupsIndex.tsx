@@ -51,6 +51,7 @@ export default function EtfGroupsIndex({ country, data, title, description, swit
               <h2 className="text-xl font-bold text-white">{group.name}</h2>
               <Link
                 href={groupHref}
+                prefetch={false}
                 className="text-sm bg-gradient-to-r from-[#F59E0B] to-[#FBBF24] hover:from-[#F97316] hover:to-[#F59E0B] text-black font-medium px-3 py-1 rounded-lg shadow-md flex items-center whitespace-nowrap"
               >
                 Show all {totalEtfsInGroup.toLocaleString()} ETFs
@@ -79,6 +80,7 @@ export default function EtfGroupsIndex({ country, data, title, description, swit
             <h2 className="text-xl font-bold text-white">{ETF_OTHERS_GROUP.name}</h2>
             <Link
               href={etfBrowseDetailPath(country, 'groups', ETF_OTHERS_GROUP.key)}
+              prefetch={false}
               className="text-sm bg-gradient-to-r from-[#F59E0B] to-[#FBBF24] hover:from-[#F97316] hover:to-[#F59E0B] text-black font-medium px-3 py-1 rounded-lg shadow-md flex items-center whitespace-nowrap"
             >
               Show all {others.count.toLocaleString()} ETFs

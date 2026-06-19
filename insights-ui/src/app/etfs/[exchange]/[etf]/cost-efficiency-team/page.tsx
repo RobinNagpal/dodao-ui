@@ -1,5 +1,3 @@
-import { EtfAnalysisResponse } from '@/app/api/[spaceId]/etfs-v1/exchange/[exchange]/[etf]/analysis/route';
-import { EtfFastResponse } from '@/app/api/[spaceId]/etfs-v1/exchange/[exchange]/[etf]/route';
 import EtfCategoryReport from '@/components/etf-reportsv1/analysis/EtfCategoryReport';
 import { fetchEtfAvailableSlugs } from '@/components/etf-reportsv1/EtfRelatedSections';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
@@ -8,6 +6,7 @@ import { EtfAnalysisCategory } from '@/types/etf/etf-analysis-types';
 import { generateEtfCategoryMetadata, generateEtfCategoryArticleJsonLd, generateEtfCategoryBreadcrumbJsonLd } from '@/utils/etf-metadata-generators';
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
 import { etfCategoryReportTag } from '@/utils/etf-cache-utils';
+import { EtfCategoryDataResponse } from '@/utils/etf-category-api-utils';
 import { buildEtfReportSubpageBreadcrumbs } from '@/utils/etf-breadcrumbs-utils';
 import { getEtfFundCategoryHierarchy } from '@/utils/etf-categorization-utils';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
@@ -17,29 +16,21 @@ import { notFound } from 'next/navigation';
 const CATEGORY_KEY = EtfAnalysisCategory.CostEfficiencyAndTeam;
 const CATEGORY_NAME = 'Cost, Efficiency & Team';
 const CATEGORY_SLUG = 'cost-efficiency-team';
+const DATA_SLUG = 'cost-efficiency-team-data';
 const BADGE_CLASS = 'bg-amber-100 dark:bg-amber-900 text-amber-800 dark:text-amber-300';
 
 export const dynamic = 'force-dynamic';
 
 type RouteParams = Promise<Readonly<{ exchange: string; etf: string }>>;
 
-const WEEK_IN_SECONDS = 7 * 24 * 60 * 60;
-
-async function fetchEtf(exchange: string, etf: string): Promise<EtfFastResponse | null> {
-  const url = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/etfs-v1/exchange/${exchange}/${etf}?allowNull=true`;
-  const res = await fetch(url, { next: { revalidate: WEEK_IN_SECONDS, tags: [etfCategoryReportTag(etf, exchange, CATEGORY_KEY)] } });
-  if (!res.ok) return null;
-  return (await res.json()) as EtfFastResponse | null;
-}
-
-async function fetchAnalysis(exchange: string, etf: string): Promise<EtfAnalysisResponse> {
-  const url = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/etfs-v1/exchange/${exchange}/${etf}/analysis`;
+async function fetchCategoryData(exchange: string, etf: string): Promise<EtfCategoryDataResponse> {
+  const url = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/etfs-v1/exchange/${exchange}/${etf}/${DATA_SLUG}`;
   try {
-    const res = await fetch(url, { next: { revalidate: WEEK_IN_SECONDS, tags: [etfCategoryReportTag(etf, exchange, CATEGORY_KEY)] } });
-    if (!res.ok) return { categories: [] };
-    return (await res.json()) as EtfAnalysisResponse;
+    const res = await fetch(url, { next: { tags: [etfCategoryReportTag(etf, exchange, CATEGORY_KEY)] } });
+    if (!res.ok) return { categoryResult: null, etf: null };
+    return (await res.json()) as EtfCategoryDataResponse;
   } catch {
-    return { categories: [] };
+    return { categoryResult: null, etf: null };
   }
 }
 
@@ -53,11 +44,11 @@ export async function generateMetadata({ params }: { params: RouteParams }): Pro
   let updatedTime: string | undefined;
 
   try {
-    const data = await fetchEtf(exchange, symbol);
-    if (data) {
-      etfName = data.name ?? etfName;
-      createdTime = data.createdAt?.toISOString();
-      updatedTime = data.updatedAt?.toISOString();
+    const { etf } = await fetchCategoryData(exchange, symbol);
+    if (etf) {
+      etfName = etf.name ?? etfName;
+      createdTime = etf.createdAt;
+      updatedTime = etf.updatedAt;
     }
   } catch {
     /* keep generic */
@@ -81,22 +72,18 @@ export default async function CostEfficiencyTeamPage({ params }: { params: Route
   const exchange = rawExchange.toUpperCase();
   const symbol = rawEtf.toUpperCase();
 
-  const [etfData, analysisData, availableSlugs] = await Promise.all([
-    fetchEtf(exchange, symbol),
-    fetchAnalysis(exchange, symbol),
-    fetchEtfAvailableSlugs(exchange, symbol),
-  ]);
-  if (!etfData) notFound();
-
-  const categoryResult = analysisData.categories.find((c) => c.categoryKey === CATEGORY_KEY);
+  const { categoryResult, etf } = await fetchCategoryData(exchange, symbol);
+  if (!etf) notFound();
   if (!categoryResult) notFound();
 
+  const availableSlugsPromise = fetchEtfAvailableSlugs(exchange, symbol);
+
   const now = new Date().toISOString();
-  const publishedDate = etfData.createdAt?.toISOString?.() || now;
-  const modifiedDate = etfData.updatedAt?.toISOString?.() || now;
+  const publishedDate = etf.createdAt || now;
+  const modifiedDate = etf.updatedAt || now;
 
   const articleSchema = generateEtfCategoryArticleJsonLd({
-    etfName: etfData.name,
+    etfName: etf.name,
     symbol,
     exchange,
     categoryName: CATEGORY_NAME,
@@ -105,18 +92,18 @@ export default async function CostEfficiencyTeamPage({ params }: { params: Route
     modifiedDate,
   });
   const breadcrumbSchema = generateEtfCategoryBreadcrumbJsonLd({
-    etfName: etfData.name,
+    etfName: etf.name,
     symbol,
     exchange,
     categoryName: CATEGORY_NAME,
     categorySlug: CATEGORY_SLUG,
-    ...getEtfFundCategoryHierarchy(etfData.stockAnalyzerInfo?.category),
+    ...getEtfFundCategoryHierarchy(etf.stockAnalyzerInfo?.category),
   });
 
   const breadcrumbs = buildEtfReportSubpageBreadcrumbs({
     exchange,
     symbol,
-    fundCategory: etfData.stockAnalyzerInfo?.category,
+    fundCategory: etf.stockAnalyzerInfo?.category,
     sectionName: CATEGORY_NAME,
     sectionSlug: CATEGORY_SLUG,
   });
@@ -126,20 +113,20 @@ export default async function CostEfficiencyTeamPage({ params }: { params: Route
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify([articleSchema, breadcrumbSchema]) }} />
       <Breadcrumbs breadcrumbs={breadcrumbs} hideHomeIcon={true} />
       <EtfCategoryReport
-        etfName={etfData.name}
+        etfName={etf.name}
         symbol={symbol}
         exchange={exchange}
         categoryResult={categoryResult}
-        analysisTitle={`${etfData.name} (${symbol}) ${CATEGORY_NAME} Analysis`}
+        analysisTitle={`${etf.name} (${symbol}) ${CATEGORY_NAME} Analysis`}
         categoryBadgeText={CATEGORY_NAME}
         categoryBadgeClassName={BADGE_CLASS}
         updatedAt={modifiedDate}
-        assetClass={etfData.stockAnalyzerInfo?.assetClass}
-        fundCategory={etfData.stockAnalyzerInfo?.category}
-        issuer={etfData.stockAnalyzerInfo?.issuer}
-        indexName={etfData.stockAnalyzerInfo?.indexName}
+        assetClass={etf.stockAnalyzerInfo?.assetClass}
+        fundCategory={etf.stockAnalyzerInfo?.category}
+        issuer={etf.stockAnalyzerInfo?.issuer}
+        indexName={etf.stockAnalyzerInfo?.indexName}
         currentSlug={CATEGORY_SLUG}
-        availableSlugs={availableSlugs}
+        availableSlugsPromise={availableSlugsPromise}
       />
     </PageWrapper>
   );

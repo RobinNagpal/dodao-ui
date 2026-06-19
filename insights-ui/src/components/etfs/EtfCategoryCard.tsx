@@ -20,7 +20,7 @@ export default function EtfCategoryCard({ categoryName, href, etfs, total }: Etf
 
   return (
     <div className="relative bg-block-bg-color rounded-lg border border-color overflow-hidden flex flex-col">
-      <Link href={href} className="block px-3 py-2 sm:px-4 border-b border-color bg-surface-2 hover:bg-surface-3 transition-colors">
+      <Link href={href} prefetch={false} className="block px-3 py-2 sm:px-4 border-b border-color bg-surface-2 hover:bg-surface-3 transition-colors">
         <h3 className="text-sm font-semibold heading-color leading-snug break-words pr-24" title={categoryName}>
           {categoryName}
         </h3>
@@ -36,6 +36,7 @@ export default function EtfCategoryCard({ categoryName, href, etfs, total }: Etf
             <li key={etf.id} className="px-3 sm:px-4 py-1.5 hover:bg-surface-3 transition-colors">
               <Link
                 href={`/etfs/${etf.exchange}/${etf.symbol}`}
+                prefetch={false}
                 className="flex gap-1.5 items-center min-w-0 w-full"
                 aria-label={`View ${etf.name}`}
                 title={etf.name}

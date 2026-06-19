@@ -39,7 +39,11 @@ function EtfRecommendationCard({ etf }: { etf: EtfInvestorGoalEtf }): JSX.Elemen
   return (
     <div className="bg-[#111827] border border-[#374151] rounded-md p-3 flex flex-col gap-2">
       <div className="flex items-center justify-between gap-2">
-        <Link href={`/etfs/${etf.exchange}/${etf.symbol}`} className="inline-flex items-center gap-1 text-white hover:text-[#FBBF24] transition-colors">
+        <Link
+          href={`/etfs/${etf.exchange}/${etf.symbol}`}
+          prefetch={false}
+          className="inline-flex items-center gap-1 text-white hover:text-[#FBBF24] transition-colors"
+        >
           <span className="text-xs font-bold bg-[#4F46E5] text-white px-1.5 py-0.5 rounded">{etf.symbol}</span>
           <span className="text-xs text-gray-400">· {etf.exchange}</span>
         </Link>

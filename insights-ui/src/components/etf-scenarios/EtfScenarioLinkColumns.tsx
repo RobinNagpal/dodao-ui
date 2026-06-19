@@ -63,6 +63,7 @@ function LinkCard({ link }: { link: EtfScenarioLinkDto }): JSX.Element {
     return (
       <Link
         href={`/etfs/${link.exchange}/${link.symbol}`}
+        prefetch={false}
         className="block bg-[#111827] border border-[#374151] rounded-md p-2.5 hover:border-blue-500 hover:bg-[#0f1623] transition-colors"
       >
         {body}

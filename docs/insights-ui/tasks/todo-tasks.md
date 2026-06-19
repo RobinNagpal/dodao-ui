@@ -90,6 +90,27 @@ Single source of truth for active KoalaGains work. Completed items live in
   - Stock detail → ETF reports: list top-N (by weight) ETFs that hold the ticker.
   - Revisit cross-links from category / scenario / trends pages so the link graph is dense.
 
+### Performance optimization (parity with stock-page perf work)
+
+> Stocks had a multi-PR perf pass — cache fan-out (#1472, #1473), `force-dynamic` ISR-off migration (#1499), CloudFront page+API caching (#1501, #1504), the `/full-render` consolidation that hurt Lighthouse and got reverted in favor of per-slice Suspense streaming (#1486 → #1507), and a 1w→2w revalidate bump (#1423). ETFs got partial parity at the CloudFront-API layer via #1581 (enumerates `/full-render`, `/analysis`, `/mor-info`, `/portfolio-holdings`) and at the ISR-off layer via #1499 (all 22 ETF pages now carry `force-dynamic`). Tracked in PR #1618. **Do not revert `force-dynamic` or add `generateStaticParams` — that is the model #1499 chose, with CloudFront in front absorbing hot traffic.**
+
+Done in #1618:
+
+- [x] **Lazy-load chart.js on ETF pages** — `EtfRadarChart` (spider) + `EtfChartTabs` (price/returns/CAGR) now use the stocks-side two-layer pattern: outer `dynamic({ ssr:false })` + viewport-gated `useInView`. chart.js no longer lands in the main bundle.
+- [x] **`prefetch={false}` on every ETF-bound `<Link>`** — 14 components covered (listing grids, `SimilarEtfs`, holdings, badges, analysis/competition sections, scenarios, investor-goal cards).
+- [x] **Drop `revalidate:` from ETF detail subpages** (Option A — chose tag-only over 1w→2w bump; reports aren't regenerated on a fixed cadence). Matches the stocks model.
+- [x] **Per-slice Suspense streaming on main detail page** (partial — shell awaits one lightweight fetch, body sections stream via `<Suspense>`; all 4 boundaries share the single `/full-render` promise so they unsuspend together). True per-slice streaming is still pending — see below.
+- [x] **ETF subpages match stocks' one-fetch shape** — new per-category endpoints (`risk-analysis-data`, `cost-efficiency-team-data`, `performance-returns-data`, `future-performance-outlook-data`) wrap a shared util that filters by `categoryKey` and bundles a trimmed ETF (no `financialInfo`). Sibling slugs are now a Suspense'd promise instead of an awaited Prisma call. Replaces 2-3 awaited fetches per subpage with 1.
+
+Remaining:
+
+- [ ] **Baseline measurement** — for 3 representative ETFs (popular passive, active, thin) + 2 listing URLs, capture median Lighthouse (FCP/LCP/TBT/SI/CLS), Vercel Cache Writes:Reads, CloudFront `x-cache` hit-rate. Persist to `docs/insights-ui/etf-page-caching.md` so each follow-up PR can append a delta row.
+- [ ] **True per-slice streaming on `/etfs/[exchange]/[etf]`** — current shell-vs-body split still shares one `/full-render` promise so all 4 boundaries unsuspend together. Add per-slice ETF API endpoints (`priceHistory`, `performanceMetrics`, `similarEtfs`, `keyFacts`, `keyMetrics`) and rewrite each `<Suspense>` block to own its own fetch — mirror of the post-#1507 stock page. Then decide whether to remove `/full-render` + `etf-full-render-utils.ts` + the CloudFront cache behavior added by #1581, or leave as harmless dead weight.
+- [ ] **Gate `EtfCompetitionQuadrantChart` on `useInView`** — has `ssr:false` but no viewport gate, so chart.js fires immediately on competition page. Apply the same two-layer pattern used for `EtfRadarChart` / `EtfChartTabs`.
+- [ ] **Audit ETF cache-tag fan-out** (mirror of #1472 parts 1+2 and #1473). Confirm `etf-cache-utils.ts` follows the umbrella + per-subpage narrow-tag split: a partial regen touching one category should NOT invalidate every other subpage. Verify no read-path utility calls `revalidate*` while serving an API request. Document findings in `etf-page-caching.md`.
+- [ ] **Validate `force-dynamic` + CloudFront edge are paying off** — confirm via Vercel metrics that Cache Writes on `/etfs/*` are flat and via response headers that CloudFront `x-cache: Hit from cloudfront` fires on a warm second hit for the detail page and the four cached API endpoints. If hit-rate is low, follow `docs/insights-ui/cloudfront-deploy-skew.md`.
+- [ ] **Re-measure + document gains** — after each PR lands, re-run the baseline harness and append a delta row to `etf-page-caching.md`. Stop pulling levers once LCP < 5s on the detail page and CloudFront hit-rate on the cached API paths is healthy.
+
 ### Active-ETF management team — LinkedIn-sourced info (ETF-side parallel to stock task)
 
 - [ ] Filter to active ETFs only via `Etf.isActive` (or `managementStyle` enum); suppress entirely for passive/index.

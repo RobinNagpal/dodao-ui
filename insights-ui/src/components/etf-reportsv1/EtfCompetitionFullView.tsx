@@ -5,18 +5,19 @@ import type { EtfCompetitionResponse } from '@/types/etf/etf-analysis-types';
 import { parseMarkdown } from '@/util/parse-markdown';
 import { buildEtfQuadrantDataPoints } from '@/utils/etf-competition-utils';
 import Link from 'next/link';
+import { Suspense } from 'react';
 
 export interface EtfCompetitionFullViewProps {
   data: EtfCompetitionResponse;
-  /** Slugs of sibling pages with publishable content, resolved upstream. When set, the related-sections nav renders before the footer. */
-  availableSlugs?: string[];
+  /** Promise of sibling-page slugs with publishable content. Unwrapped via Suspense so first paint isn't blocked on it. */
+  availableSlugsPromise?: Promise<string[]>;
 }
 
 /**
  * Full Competition view rendered on the dedicated `/etfs/.../competition` page.
  * Shows the quadrant chart, the long-form markdown analysis, and per-peer cards.
  */
-export default function EtfCompetitionFullView({ data, availableSlugs }: EtfCompetitionFullViewProps): JSX.Element | null {
+export default function EtfCompetitionFullView({ data, availableSlugsPromise }: EtfCompetitionFullViewProps): JSX.Element | null {
   const { vsCompetition, competitors, etf } = data;
 
   if (!etf || (!vsCompetition && (!competitors || competitors.length === 0))) {
@@ -68,6 +69,7 @@ export default function EtfCompetitionFullView({ data, availableSlugs }: EtfComp
 
             <Link
               href={`/etfs/${etf.exchange}/${etf.symbol}`}
+              prefetch={false}
               className="link-color hover:underline text-sm font-medium whitespace-nowrap flex items-center gap-1"
             >
               View Full Report →
@@ -123,8 +125,16 @@ export default function EtfCompetitionFullView({ data, availableSlugs }: EtfComp
           )}
         </div>
 
-        {availableSlugs && (
-          <EtfRelatedSections availableSlugs={availableSlugs} exchange={etf.exchange} symbol={etf.symbol} etfName={etf.name} currentSlug="competition" />
+        {availableSlugsPromise && (
+          <Suspense fallback={null}>
+            <EtfRelatedSections
+              availableSlugsPromise={availableSlugsPromise}
+              exchange={etf.exchange}
+              symbol={etf.symbol}
+              etfName={etf.name}
+              currentSlug="competition"
+            />
+          </Suspense>
         )}
 
         <footer className="mt-8 pt-6 border-t border-color">

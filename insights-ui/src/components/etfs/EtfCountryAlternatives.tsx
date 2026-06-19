@@ -24,7 +24,7 @@ export default function EtfCountryAlternatives({ currentCountry, section, classN
           const href = section ? etfSectionIndexPath(country, section) : etfBasePath(country);
           return (
             <span key={country} className="inline-flex items-center">
-              <Link href={href} className="text-blue-400 hover:text-blue-300 transition-colors duration-200 font-semibold">
+              <Link href={href} prefetch={false} className="text-blue-400 hover:text-blue-300 transition-colors duration-200 font-semibold">
                 {etfCountryDisplayName(country)} ETFs
               </Link>
               {index < alternatives.length - 1 && <span className="text-gray-500 ml-2 hidden sm:inline">•</span>}

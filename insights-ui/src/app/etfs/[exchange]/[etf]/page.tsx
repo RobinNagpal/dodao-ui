@@ -17,7 +17,7 @@ import EtfKeyFactsFlags from '@/components/etf-reportsv1/EtfKeyFactsFlags';
 import EtfApplicableInvestorGoals from '@/components/etf-reportsv1/EtfApplicableInvestorGoals';
 import { FinancialCard } from '@/components/ticker-reportsv1/FinancialInfo';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
-import { EtfKeyFactsFlagAssessment } from '@/types/etf/etf-analysis-types';
+import type { EtfFinancialInfoResponse } from '@/types/etf/etf-detail-response-types';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { getCountryByExchange, SupportedCountries, formatExchangeWithCountry, toExchange } from '@/utils/countryExchangeUtils';
 import { generateEtfDetailMetadata, generateEtfDetailArticleJsonLd, generateEtfDetailBreadcrumbJsonLd } from '@/utils/etf-metadata-generators';
@@ -30,19 +30,33 @@ import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/B
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { Suspense, type ReactNode } from 'react';
+import { Suspense, use } from 'react';
 
 /**
- * Static-by-default with on-demand invalidation. The 8 separate fetches the
- * page used to make are now consolidated into a single tagged fetch against
- * `/etfs-v1/exchange/<E>/<T>/full-render`, so one rebuild = 1 HTML + 1 Data
- * Cache write (down from 9 writes). The umbrella tag `etfAndExchangeTag` is
- * read by THIS page only — subpages have their own narrow tags and don't see
- * umbrella invalidations.
+ * Render dynamically per request — ISR is off across the ETF tree, CloudFront
+ * absorbs hot-path traffic at the edge.
+ *
+ * Streaming pattern: await only the lightweight `EtfFastResponse` for the page
+ * shell (header, breadcrumbs, metadata badges, summary, financial-info card,
+ * footer) and JSON-LD. Kick off the heavier `/full-render` fetch as a promise
+ * and pass it into `<Suspense>`-wrapped children that call `use(promise)`. The
+ * shell streams to the browser immediately while `/full-render` is still
+ * in-flight — FCP/LCP land on the shell instead of on the slowest data slice.
+ *
+ * Per-slice streaming (each below-fold block on its own promise, like stocks'
+ * 5 separate fetchers) would need per-slice API endpoints that don't exist
+ * yet on the ETF side. Tracked as follow-up.
  */
 export const dynamic = 'force-dynamic';
 
 export type RouteParams = Promise<Readonly<{ exchange: string; etf: string }>>;
+
+async function fetchEtfFast(exchange: string, etf: string): Promise<EtfFastResponse | null> {
+  const url = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/etfs-v1/exchange/${exchange.toUpperCase()}/${etf.toUpperCase()}?allowNull=true`;
+  const res = await fetch(url, { next: { tags: [etfAndExchangeTag(etf, exchange)] } });
+  if (!res.ok) return null;
+  return (await res.json()) as EtfFastResponse | null;
+}
 
 async function fetchEtfFullRender(exchange: string, etf: string): Promise<EtfFullRenderResponse> {
   const url = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/etfs-v1/exchange/${exchange.toUpperCase()}/${etf.toUpperCase()}/full-render`;
@@ -51,14 +65,6 @@ async function fetchEtfFullRender(exchange: string, etf: string): Promise<EtfFul
     throw new Error(`fetchEtfFullRender failed (${res.status}): ${url}`);
   }
   return (await res.json()) as EtfFullRenderResponse;
-}
-
-/** Metadata uses only the basic ETF fields — keep a tiny standalone fetch for it. */
-async function fetchEtfForMetadata(exchange: string, etf: string): Promise<EtfFastResponse | null> {
-  const url = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/etfs-v1/exchange/${exchange.toUpperCase()}/${etf.toUpperCase()}?allowNull=true`;
-  const res = await fetch(url, { next: { tags: [etfAndExchangeTag(etf, exchange)] } });
-  if (!res.ok) return null;
-  return (await res.json()) as EtfFastResponse | null;
 }
 
 export async function generateMetadata({ params }: { params: RouteParams }): Promise<Metadata> {
@@ -71,7 +77,7 @@ export async function generateMetadata({ params }: { params: RouteParams }): Pro
   let updatedTime: string | undefined;
 
   try {
-    const data = await fetchEtfForMetadata(exchange, etf);
+    const data = await fetchEtfFast(exchange, etf);
     if (data) {
       etfName = data.name ?? etfName;
       createdTime = data.createdAt?.toISOString();
@@ -107,6 +113,52 @@ function EtfFinancialInfoSkeleton(): JSX.Element {
   );
 }
 
+function ChartTabsSkeleton(): JSX.Element {
+  // Matches the live chart tabs section's outer wrapper + chart-body height so
+  // swapping the real component in causes zero layout shift.
+  return (
+    <section id="etf-chart-tabs" className="bg-surface rounded-lg shadow-sm px-2 py-3 sm:p-4 mb-6">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4 min-h-[44px]">
+        <div className="h-6 w-32 rounded bg-surface-2 animate-pulse" />
+      </div>
+      <div className="h-64 sm:h-72 rounded bg-surface-2 animate-pulse" />
+    </section>
+  );
+}
+
+function BelowFoldSkeleton(): JSX.Element {
+  // Reserves vertical space for the below-the-fold body (keyFactsTail, flags,
+  // goals, holdings preview, analysis sections, competition, similar etfs) so
+  // the page doesn't jump as the consolidated /full-render payload arrives.
+  return (
+    <div className="mb-8">
+      <div className="bg-surface rounded-lg shadow-sm p-4 sm:p-6 mb-8 h-48 animate-pulse" />
+      <div className="bg-surface rounded-lg shadow-sm p-4 sm:p-6 mb-8 h-64 animate-pulse" />
+    </div>
+  );
+}
+
+function buildEtfFinancialInfoResponse(etfData: EtfFastResponse): EtfFinancialInfoResponse | null {
+  const fi = etfData.financialInfo;
+  if (!fi) return null;
+  return {
+    symbol: etfData.symbol,
+    aum: fi.aum,
+    expenseRatio: fi.expenseRatio,
+    pe: fi.pe,
+    sharesOut: fi.sharesOut,
+    dividendTtm: fi.dividendTtm,
+    dividendYield: fi.dividendYield,
+    payoutFrequency: fi.payoutFrequency,
+    payoutRatio: fi.payoutRatio,
+    volume: fi.volume,
+    yearHigh: fi.yearHigh,
+    yearLow: fi.yearLow,
+    beta: fi.beta,
+    holdings: fi.holdings,
+  };
+}
+
 function buildBreadcrumbs(etfData: EtfFastResponse): BreadcrumbsOjbect[] {
   const exchange = etfData.exchange.toUpperCase();
   const etf = etfData.symbol.toUpperCase();
@@ -139,15 +191,81 @@ function buildBreadcrumbs(etfData: EtfFastResponse): BreadcrumbsOjbect[] {
 
 const HOLDINGS_PREVIEW_LIMIT = 10;
 
+/* ----- Suspense'd children — each `use(promise)` to suspend on /full-render ----- */
+
+function EtfAboutSection({ promise }: { promise: Promise<EtfFullRenderResponse> }): JSX.Element | null {
+  const data = use(promise);
+  const { head: keyFactsHead } = splitMarkdownAtParagraph(data.keyFacts?.keyFacts ?? null, 2);
+  if (!keyFactsHead) return null;
+  return (
+    <div className="mb-2">
+      <h3 className="text-lg font-semibold text-color mb-3">About This ETF</h3>
+      <div className="markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(keyFactsHead) }} />
+    </div>
+  );
+}
+
+function EtfRadarFromPromise({ promise }: { promise: Promise<EtfFullRenderResponse> }): JSX.Element {
+  const data = use(promise);
+  return <EtfRadarChart scores={data.scores} analysis={data.analysis} />;
+}
+
+function EtfChartTabsFromPromise({ promise, etfSymbol }: { promise: Promise<EtfFullRenderResponse>; etfSymbol: string }): JSX.Element {
+  const data = use(promise);
+  return <EtfChartTabs priceHistory={data.priceHistory} performanceMetrics={data.performanceMetrics} etfSymbol={etfSymbol} />;
+}
+
+function EtfBelowFoldBody({ promise, exchange, etf }: { promise: Promise<EtfFullRenderResponse>; exchange: string; etf: string }): JSX.Element {
+  const data = use(promise);
+  const { tail: keyFactsTail } = splitMarkdownAtParagraph(data.keyFacts?.keyFacts ?? null, 2);
+  const competitionAfter = data.competition ? <EtfCompetitionChartSection data={data.competition} exchange={exchange} etf={etf} /> : null;
+
+  return (
+    <>
+      {keyFactsTail && (
+        <section id="key-facts-tail" className="mb-8">
+          <h3 className="text-lg font-semibold text-color mb-3">ETF Summary</h3>
+          <div className="markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(keyFactsTail) }} />
+        </section>
+      )}
+
+      <EtfKeyFactsFlags greenFlags={data.keyFacts?.greenFlags ?? []} redFlags={data.keyFacts?.redFlags ?? []} />
+
+      <EtfApplicableInvestorGoals investorGoals={data.keyFacts?.applicableInvestorGoals} />
+
+      <EtfHoldings data={data.portfolioHoldings.holdings} maxRows={HOLDINGS_PREVIEW_LIMIT} viewMoreHref={`/etfs/${exchange}/${etf}/holdings`} />
+
+      <EtfAnalysisSections
+        data={data.analysis}
+        exchange={exchange}
+        symbol={etf}
+        afterPerformanceReturns={competitionAfter}
+        futureOutlookTop={<EtfKeyMetrics metrics={data.keyMetrics} />}
+      />
+
+      <div className="mx-auto max-w-7xl">
+        <section className="mb-6">
+          <SimilarEtfs data={data.similarEtfs} />
+        </section>
+      </div>
+    </>
+  );
+}
+
 /** Page */
 export default async function EtfDetailsPage({ params }: { params: RouteParams }): Promise<JSX.Element> {
   const routeParams = await params;
   const exchange = routeParams.exchange.toUpperCase();
   const etf = routeParams.etf.toUpperCase();
 
-  const data = await fetchEtfFullRender(exchange, etf);
-  const etfData = data.etf;
+  // Await only the lightweight fetch so the shell can render + redirect logic
+  // can fire. The heavier /full-render is kicked off in parallel and passed as
+  // a promise to Suspense'd children below — server streams the shell HTML
+  // first, then streams the body once /full-render resolves.
+  const etfData = await fetchEtfFast(exchange, etf);
   if (!etfData) notFound();
+
+  const fullRenderPromise = fetchEtfFullRender(exchange, etf);
 
   const safeDate = (dateValue: any): Date => {
     if (dateValue instanceof Date && !isNaN(dateValue.getTime())) return dateValue;
@@ -168,11 +286,7 @@ export default async function EtfDetailsPage({ params }: { params: RouteParams }
   });
 
   const breadcrumbs = buildBreadcrumbs(etfData);
-  const { head: keyFactsHead, tail: keyFactsTail } = splitMarkdownAtParagraph(data.keyFacts?.keyFacts ?? null, 2);
-  const keyFactsGreenFlags: EtfKeyFactsFlagAssessment[] = data.keyFacts?.greenFlags ?? [];
-  const keyFactsRedFlags: EtfKeyFactsFlagAssessment[] = data.keyFacts?.redFlags ?? [];
-
-  const competitionAfter: ReactNode = data.competition ? <EtfCompetitionChartSection data={data.competition} exchange={exchange} etf={etf} /> : null;
+  const financialInfo = buildEtfFinancialInfoResponse(etfData);
 
   return (
     <PageWrapper>
@@ -244,55 +358,31 @@ export default async function EtfDetailsPage({ params }: { params: RouteParams }
             </div>
           )}
 
-          {keyFactsHead && (
-            <div className="mb-2">
-              <h3 className="text-lg font-semibold text-color mb-3">About This ETF</h3>
-              <div className="markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(keyFactsHead) }} />
-            </div>
-          )}
+          <Suspense fallback={null}>
+            <EtfAboutSection promise={fullRenderPromise} />
+          </Suspense>
         </section>
 
         <section className="mb-8">
           <div className="flex flex-col lg:flex-row gap-4 lg:gap-8">
             <div className="lg:w-1/2" style={{ minHeight: '340px' }}>
-              {data.financialInfo ? <EtfFinancialInfo data={data.financialInfo} /> : <EtfFinancialInfoSkeleton />}
+              {financialInfo ? <EtfFinancialInfo data={financialInfo} /> : <EtfFinancialInfoSkeleton />}
             </div>
             <div className="lg:w-1/2 flex justify-center">
               <Suspense fallback={<RadarSkeleton />}>
-                <EtfRadarChart scores={data.scores} analysis={data.analysis} />
+                <EtfRadarFromPromise promise={fullRenderPromise} />
               </Suspense>
             </div>
           </div>
 
-          <EtfChartTabs priceHistory={data.priceHistory} performanceMetrics={data.performanceMetrics} etfSymbol={etfData.symbol} />
+          <Suspense fallback={<ChartTabsSkeleton />}>
+            <EtfChartTabsFromPromise promise={fullRenderPromise} etfSymbol={etfData.symbol} />
+          </Suspense>
         </section>
 
-        {keyFactsTail && (
-          <section id="key-facts-tail" className="mb-8">
-            <h3 className="text-lg font-semibold text-color mb-3">ETF Summary</h3>
-            <div className="markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(keyFactsTail) }} />
-          </section>
-        )}
-
-        <EtfKeyFactsFlags greenFlags={keyFactsGreenFlags} redFlags={keyFactsRedFlags} />
-
-        <EtfApplicableInvestorGoals investorGoals={data.keyFacts?.applicableInvestorGoals} />
-
-        <EtfHoldings data={data.portfolioHoldings.holdings} maxRows={HOLDINGS_PREVIEW_LIMIT} viewMoreHref={`/etfs/${exchange}/${etf}/holdings`} />
-
-        <EtfAnalysisSections
-          data={data.analysis}
-          exchange={exchange}
-          symbol={etf}
-          afterPerformanceReturns={competitionAfter}
-          futureOutlookTop={<EtfKeyMetrics metrics={data.keyMetrics} />}
-        />
-
-        <div className="mx-auto max-w-7xl">
-          <section className="mb-6">
-            <SimilarEtfs data={data.similarEtfs} />
-          </section>
-        </div>
+        <Suspense fallback={<BelowFoldSkeleton />}>
+          <EtfBelowFoldBody promise={fullRenderPromise} exchange={exchange} etf={etf} />
+        </Suspense>
 
         <footer className="mt-8 pt-6 border-t border-color">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">

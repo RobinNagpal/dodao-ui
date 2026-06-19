@@ -3,6 +3,7 @@ import { getEtfWhereClause } from '@/app/api/[spaceId]/etfs-v1/etfApiUtils';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { EtfAnalysisCategory } from '@/types/etf/etf-analysis-types';
 import RelatedSectionsNav from '@/components/ui/sections/RelatedSectionsNav';
+import { use } from 'react';
 
 const SECTIONS: ReadonlyArray<{ slug: string; label: string }> = [
   { slug: 'performance-returns', label: 'Past Returns' },
@@ -25,6 +26,10 @@ const ANALYSIS_CATEGORY_TO_SLUG: Readonly<Record<string, string>> = {
  * call rides the per-page ISR cache (no separate fetch-cache entry → no shared
  * cache tag that would force all subpages to invalidate together). Mirrors the
  * stocks-side `getAvailableSiblingSlugs` in `TickerRelatedSections.tsx`.
+ *
+ * Kick this off in a parent server component (without `await`) and pass the
+ * returned Promise to {@link EtfRelatedSections}, wrapped in `<Suspense>`. The
+ * sibling lookup then runs in parallel with the rest of the report render.
  */
 export async function fetchEtfAvailableSlugs(exchange: string, symbol: string): Promise<string[]> {
   const where = getEtfWhereClause({ spaceId: KoalaGainsSpaceId, exchange, etf: symbol });
@@ -65,8 +70,8 @@ export async function fetchEtfAvailableSlugs(exchange: string, symbol: string): 
 }
 
 export interface EtfRelatedSectionsProps {
-  /** Slugs known to have publishable content; resolved upstream so this stays a sync render. */
-  availableSlugs: string[];
+  /** Promise returned by {@link fetchEtfAvailableSlugs}. Unwrapped with `use()` inside a `<Suspense>` boundary. */
+  availableSlugsPromise: Promise<string[]>;
   exchange: string;
   symbol: string;
   etfName: string;
@@ -74,10 +79,10 @@ export interface EtfRelatedSectionsProps {
   currentSlug: string;
 }
 
-export default function EtfRelatedSections({ availableSlugs, exchange, symbol, etfName, currentSlug }: EtfRelatedSectionsProps): JSX.Element | null {
+export default function EtfRelatedSections({ availableSlugsPromise, exchange, symbol, etfName, currentSlug }: EtfRelatedSectionsProps): JSX.Element | null {
   const ex = exchange.toUpperCase();
   const sym = symbol.toUpperCase();
-  const available = new Set(availableSlugs);
+  const available = new Set(use(availableSlugsPromise));
   const others = SECTIONS.filter((s) => s.slug !== currentSlug && available.has(s.slug));
 
   if (others.length === 0) return null;

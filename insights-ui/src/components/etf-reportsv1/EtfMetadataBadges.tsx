@@ -88,6 +88,7 @@ export default function EtfMetadataBadges({ exchange, assetClass, category, issu
           <Link
             key={item.label}
             href={item.href}
+            prefetch={false}
             className={`inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-medium transition-colors ${badgeTone({ tone: item.tone })}`}
             aria-label={`View all ETFs in ${item.label}: ${item.value}`}
           >
