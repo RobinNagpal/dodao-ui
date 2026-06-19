@@ -60,14 +60,12 @@ export default async function EtfCompetitionPage({ params }: { params: RoutePara
   const exchangeUpper = exchange.toUpperCase();
   const etfUpper = etf.toUpperCase();
 
-  const [data, availableSlugs, etfFast] = await Promise.all([
-    fetchEtfCompetition(exchangeUpper, etfUpper),
-    fetchEtfAvailableSlugs(exchangeUpper, etfUpper),
-    fetchEtfFast(exchangeUpper, etfUpper),
-  ]);
+  const [data, etfFast] = await Promise.all([fetchEtfCompetition(exchangeUpper, etfUpper), fetchEtfFast(exchangeUpper, etfUpper)]);
   if (!data || !data.etf) {
     notFound();
   }
+
+  const availableSlugsPromise = fetchEtfAvailableSlugs(exchangeUpper, etfUpper);
 
   const breadcrumbs = buildEtfReportSubpageBreadcrumbs({
     exchange: exchangeUpper,
@@ -100,7 +98,7 @@ export default async function EtfCompetitionPage({ params }: { params: RoutePara
     <PageWrapper>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify([articleJsonLd, breadcrumbJsonLd]) }} />
       <Breadcrumbs breadcrumbs={breadcrumbs} hideHomeIcon={true} />
-      <EtfCompetitionFullView data={data} availableSlugs={availableSlugs} />
+      <EtfCompetitionFullView data={data} availableSlugsPromise={availableSlugsPromise} />
     </PageWrapper>
   );
 }

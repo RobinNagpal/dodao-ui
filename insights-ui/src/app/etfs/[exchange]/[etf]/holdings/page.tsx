@@ -11,6 +11,7 @@ import { generateBreadcrumbJsonLdFromCrumbs, generateEtfHoldingsMetadata } from 
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
+import { Suspense } from 'react';
 
 export const dynamic = 'force-dynamic';
 
@@ -61,12 +62,10 @@ export default async function EtfHoldingsPage({ params }: { params: RouteParams 
   const exchange = rawExchange.toUpperCase();
   const symbol = rawEtf.toUpperCase();
 
-  const [etfData, holdingsResponse, availableSlugs] = await Promise.all([
-    fetchEtf(exchange, symbol),
-    fetchHoldings(exchange, symbol),
-    fetchEtfAvailableSlugs(exchange, symbol),
-  ]);
+  const [etfData, holdingsResponse] = await Promise.all([fetchEtf(exchange, symbol), fetchHoldings(exchange, symbol)]);
   if (!etfData) notFound();
+
+  const availableSlugsPromise = fetchEtfAvailableSlugs(exchange, symbol);
 
   const { holdings, updatedAt: holdingsUpdatedAt } = holdingsResponse;
 
@@ -101,7 +100,9 @@ export default async function EtfHoldingsPage({ params }: { params: RouteParams 
 
   const relatedSections = (
     <>
-      <EtfRelatedSections availableSlugs={availableSlugs} exchange={exchange} symbol={symbol} etfName={etfData.name} currentSlug="holdings" />
+      <Suspense fallback={null}>
+        <EtfRelatedSections availableSlugsPromise={availableSlugsPromise} exchange={exchange} symbol={symbol} etfName={etfData.name} currentSlug="holdings" />
+      </Suspense>
       {footer}
     </>
   );
