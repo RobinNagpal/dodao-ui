@@ -158,6 +158,16 @@ Remaining:
 
 - [ ] **Audit + fix UI issues across the ETF listing surfaces** — `/etfs` (index), `/etfs/categories` (+ `[category]`), `/etfs/countries` (+ `[country]`), `/etfs/asset-classes` (+ `[assetClass]`), `/etfs/groups` (+ `[group]`), `/etfs/providers` (+ `[provider]`). Walk each page on desktop + mobile and capture concrete issues here as sub-bullets before scheduling fixes: layout/spacing, card alignment, header + breadcrumb consistency across the sub-listing variants, empty/loading/error states, sort + filter UX, pagination, and dark/light theme rendering. Cross-check against the `isComplete` filter behavior once that lands.
 
+### ETF detail-page buttons — logic + UX audit
+
+- [ ] **Audit the ETF detail-page button row** (`Favourite`, `Notes`, admin three-dots `EtfActions`) on `app/etfs/[exchange]/[etf]/page.tsx`. Walk each button as logged-out, logged-in non-admin, and admin; capture concrete issues here as sub-bullets before scheduling fixes. Things to verify explicitly:
+  - **Logged-out flow** — `EtfFavouriteButton` / `EtfNotesButton` currently `router.push('/login')` on click. Now that #1617 introduced the navbar login popup, decide whether these buttons should open the same popup instead of a full-page redirect, and whether the "Add to favourites / Add note" tooltip should change to "Log in to save" before click.
+  - **Solid vs outline icon state** — confirm the solid heart / solid document icon only renders when an `EtfFavourite` / `EtfNote` actually exists for the current user (no flash of solid state during the initial `useFetchData` load; correct empty-state when fetch fails).
+  - **`skipInitialFetch: !session`** — both buttons skip the favourites/notes fetch when there is no session, but the underlying state still defaults to "not favourited / no note". Verify nothing in the modal or downstream UI silently assumes the fetch ran.
+  - **Cross-page consistency** — the same Favourite + Notes buttons render on detail subpages (`risk-analysis`, `performance-returns`, `cost-efficiency-team`, `future-performance-outlook`, `competition`, `holdings`, `financial-data`). Confirm the favourited/noted state shows correctly on every subpage and that clicking either button does not lose subpage context (no unintended `router.refresh` / navigation away).
+  - **Admin `EtfActions` dropdown** — `generate-report` opens a modal, `invalidate-cache` flushes the per-ETF cache tag. Verify the "Invalidating…" disabled state actually clears after success/failure, the modal closes after a generation request is queued, and the redirect to `/admin-v1/etf-generation-requests` does not fire if the POST fails (currently the `try/catch` redirects even on a swallowed failure path — check this).
+  - **Leaf-component compliance** — the three button components carry inline Tailwind (`bg-blue-700`, `bg-green-700`, `bg-gray-800`, etc.). Once the logic audit lands, follow up by routing the visuals through the leaf layer per `docs/insights-ui/ui-leaf-component-system.md`.
+
 ### Known limitations in the new 8-group taxonomy (follow-up cleanups)
 
 - [ ] **Split strategy funds back out of `derivative-income`** — managed-futures / market-neutral / long-short (~50 funds) don't share a decision framework with the ~600 option-engineered payoff funds; prompt has to branch internally. Highest-impact follow-up.
