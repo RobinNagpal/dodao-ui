@@ -1,4 +1,3 @@
-import { cn } from '@/lib/utils';
 import { getEtfScoreColorClasses } from '@/utils/score-utils';
 import { cva } from 'class-variance-authority';
 import React from 'react';
@@ -27,8 +26,15 @@ export default function EtfScoreBadge({ score, variant = 'row', className }: Etf
   const label = score !== null ? `${score}/20` : '—';
   const title = score !== null ? `KoalaGains score: ${score}/20` : undefined;
 
+  // NOTE: do NOT route these classes through `cn`/tailwind-merge. The faint-pill
+  // look relies on `bg-opacity-15` sitting alongside a dynamic `bg-{color}`;
+  // tailwind-merge treats them as conflicting and drops `bg-opacity-15`, which
+  // makes the pill fully opaque and hides the same-colored text until hover.
+  // Plain concatenation preserves the original (and JIT-safe) class pairing.
+  const classes = [etfScoreBadge({ variant }), textColorClass, bgColorClass, className].filter(Boolean).join(' ');
+
   return (
-    <span title={title} className={cn(etfScoreBadge({ variant }), textColorClass, bgColorClass, className)}>
+    <span title={title} className={classes}>
       {label}
     </span>
   );
