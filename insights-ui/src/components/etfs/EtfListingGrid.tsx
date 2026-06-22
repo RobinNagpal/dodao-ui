@@ -1,8 +1,8 @@
 import { EtfListingResponse, EtfListingItem } from '@/app/api/[spaceId]/etfs-v1/listing/route';
 import { formatPercentageDecimal } from '@/components/reportsv1/financialFormatters';
 import EmptyStateCard from '@/components/ui/EmptyStateCard';
+import EtfScoreBadge from '@/components/ui/badges/EtfScoreBadge';
 import { getEtfGroupKey } from '@/utils/etf-categorization-utils';
-import { getEtfScoreColorClasses } from '@/utils/score-utils';
 import Link from 'next/link';
 import React, { use } from 'react';
 import EtfPagination from './EtfPagination';
@@ -60,8 +60,6 @@ function pickThirdMetric(etf: EtfListingItem): ThirdMetric {
 function EtfCard({ etf }: { etf: EtfListingItem }): JSX.Element {
   const third = pickThirdMetric(etf);
   const score = etf.finalScore;
-  const { textColorClass, bgColorClass } = getEtfScoreColorClasses(score);
-  const showScore = score !== null;
 
   return (
     <Link
@@ -75,14 +73,7 @@ function EtfCard({ etf }: { etf: EtfListingItem }): JSX.Element {
           <span className="text-xs text-muted">{etf.exchange}</span>
         </div>
         <div className="flex items-center gap-2 shrink-0">
-          {showScore && (
-            <span
-              className={`${textColorClass} px-1.5 rounded-md ${bgColorClass} bg-opacity-15 text-xs font-mono tabular-nums`}
-              title={`KoalaGains score: ${score}/20`}
-            >
-              {score}/20
-            </span>
-          )}
+          {score !== null && <EtfScoreBadge score={score} variant="inline" />}
           {etf.payoutFrequency && <span className="text-xs text-muted bg-surface-2 px-2 py-0.5 rounded">{etf.payoutFrequency}</span>}
         </div>
       </div>

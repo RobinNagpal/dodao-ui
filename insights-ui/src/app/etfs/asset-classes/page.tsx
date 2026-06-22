@@ -2,7 +2,8 @@ import type { EtfAssetClassesIndexResponse } from '@/app/api/[spaceId]/etfs-v1/l
 import EtfAssetClassesIndex from '@/components/etfs/EtfAssetClassesIndex';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { SupportedCountries } from '@/utils/countryExchangeUtils';
-import { getEtfAssetClassesIndexTag, TWO_WEEKS_IN_SECONDS } from '@/utils/etf-cache-utils';
+import { getEtfAssetClassesIndexTag } from '@/utils/etf-cache-utils';
+import { fetchEtfListingsIndex } from '@/utils/etf-listing-visibility';
 import { generateEtfAssetClassesIndexBreadcrumbJsonLd, generateEtfAssetClassesIndexMetadata } from '@/utils/etf-metadata-generators';
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
 
@@ -18,7 +19,7 @@ const EMPTY_ASSET_CLASSES: EtfAssetClassesIndexResponse = { values: {}, counts: 
 async function fetchAssetClassesIndex(country: SupportedCountries): Promise<EtfAssetClassesIndexResponse> {
   const url = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/etfs-v1/listings/asset-classes-index?country=${encodeURIComponent(country)}`;
   try {
-    const res = await fetch(url, { next: { revalidate: TWO_WEEKS_IN_SECONDS, tags: [getEtfAssetClassesIndexTag(country)] } });
+    const res = await fetchEtfListingsIndex(url, getEtfAssetClassesIndexTag(country));
     if (!res.ok) {
       console.error(`fetchAssetClassesIndex failed (${res.status}): ${url}`);
       return EMPTY_ASSET_CLASSES;

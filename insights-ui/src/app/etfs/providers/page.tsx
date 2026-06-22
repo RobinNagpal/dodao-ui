@@ -2,7 +2,8 @@ import type { EtfProvidersIndexResponse } from '@/app/api/[spaceId]/etfs-v1/list
 import EtfProvidersIndex from '@/components/etfs/EtfProvidersIndex';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { SupportedCountries } from '@/utils/countryExchangeUtils';
-import { getEtfProvidersIndexTag, TWO_WEEKS_IN_SECONDS } from '@/utils/etf-cache-utils';
+import { getEtfProvidersIndexTag } from '@/utils/etf-cache-utils';
+import { fetchEtfListingsIndex } from '@/utils/etf-listing-visibility';
 import { generateEtfProvidersIndexBreadcrumbJsonLd, generateEtfProvidersIndexMetadata } from '@/utils/etf-metadata-generators';
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
 
@@ -18,7 +19,7 @@ const EMPTY_PROVIDERS_INDEX: EtfProvidersIndexResponse = { providers: [], values
 async function fetchProvidersIndex(country: SupportedCountries): Promise<EtfProvidersIndexResponse> {
   const url = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/etfs-v1/listings/providers-index?country=${encodeURIComponent(country)}`;
   try {
-    const res = await fetch(url, { next: { revalidate: TWO_WEEKS_IN_SECONDS, tags: [getEtfProvidersIndexTag(country)] } });
+    const res = await fetchEtfListingsIndex(url, getEtfProvidersIndexTag(country));
     if (!res.ok) {
       console.error(`fetchProvidersIndex failed (${res.status}): ${url}`);
       return EMPTY_PROVIDERS_INDEX;

@@ -14,6 +14,14 @@ export type { EtfGroupingPreview, EtfGroupingPreviewItem, EtfProvidersPreview, E
 
 const TOP_N_PER_GROUPING = 5;
 
+/**
+ * A "populated" ETF has a generated report, signalled by the presence of an
+ * `EtfCachedScore` row (the score is the last artifact the generation pipeline
+ * writes). AND-ed into every listing query unless the caller is an admin asking
+ * to include unpopulated ETFs. See `etf-listing-visibility.ts`.
+ */
+const POPULATED_ETF_WHERE = { cachedScore: { isNot: null } } as const;
+
 type GroupingMode = 'category' | 'assetClass';
 
 interface RawEtfRow {
@@ -27,7 +35,13 @@ interface RawEtfRow {
   aum: string | null;
 }
 
-async function loadRawEtfRows(spaceId: string, mode: GroupingMode, dbValues: string[], country?: EtfSupportedCountry): Promise<RawEtfRow[]> {
+async function loadRawEtfRows(
+  spaceId: string,
+  mode: GroupingMode,
+  dbValues: string[],
+  country?: EtfSupportedCountry,
+  includeUnpopulated = false
+): Promise<RawEtfRow[]> {
   if (dbValues.length === 0) return [];
 
   const baseWhere =
@@ -35,7 +49,11 @@ async function loadRawEtfRows(spaceId: string, mode: GroupingMode, dbValues: str
       ? { spaceId, stockAnalyzerInfo: { is: { category: { in: dbValues } } } }
       : { spaceId, stockAnalyzerInfo: { is: { assetClass: { in: dbValues } } } };
 
-  const where = country ? { ...baseWhere, exchange: { in: getEtfExchangesByCountry(country) } } : baseWhere;
+  const where = {
+    ...baseWhere,
+    ...(country ? { exchange: { in: getEtfExchangesByCountry(country) } } : {}),
+    ...(includeUnpopulated ? {} : POPULATED_ETF_WHERE),
+  };
 
   const etfs = await prisma.etf.findMany({
     where,
@@ -93,7 +111,8 @@ export async function fetchEtfsForGroupings(
   spaceId: string,
   mode: GroupingMode,
   valueToKey: Map<string, string>,
-  country?: EtfSupportedCountry
+  country?: EtfSupportedCountry,
+  includeUnpopulated = false
 ): Promise<EtfGroupingPreview> {
   if (mode === 'category') {
     const canonicalToBucket = new Map(valueToKey);
@@ -106,7 +125,7 @@ export async function fetchEtfsForGroupings(
   }
 
   const dbValues = Array.from(valueToKey.keys());
-  const rawRows = await loadRawEtfRows(spaceId, mode, dbValues, country);
+  const rawRows = await loadRawEtfRows(spaceId, mode, dbValues, country, includeUnpopulated);
 
   const rowsByKey = new Map<string, RawEtfRow[]>();
   const counts: Record<string, number> = {};
@@ -135,7 +154,12 @@ export async function fetchEtfsForGroupings(
  * Every ETF (no top-N cap) bucketed by category. Used by the group detail page,
  * which lists every ETF in each category packed into columns.
  */
-export async function fetchAllEtfsByCategory(spaceId: string, categoryNames: string[], country?: EtfSupportedCountry): Promise<EtfGroupingPreview> {
+export async function fetchAllEtfsByCategory(
+  spaceId: string,
+  categoryNames: string[],
+  country?: EtfSupportedCountry,
+  includeUnpopulated = false
+): Promise<EtfGroupingPreview> {
   const valueToKey = new Map<string, string>();
   for (const name of categoryNames) valueToKey.set(name, name);
 
@@ -148,7 +172,7 @@ export async function fetchAllEtfsByCategory(spaceId: string, categoryNames: str
   }
 
   const dbValues = Array.from(valueToKey.keys());
-  const rawRows = await loadRawEtfRows(spaceId, 'category', dbValues, country);
+  const rawRows = await loadRawEtfRows(spaceId, 'category', dbValues, country, includeUnpopulated);
 
   const rowsByKey = new Map<string, RawEtfRow[]>();
   const counts: Record<string, number> = {};
@@ -173,12 +197,20 @@ export async function fetchAllEtfsByCategory(spaceId: string, categoryNames: str
 }
 
 /** ETFs whose category is null or whose stockAnalyzerInfo row is missing entirely. */
-export async function fetchUncategorizedEtfPreview(spaceId: string, country?: EtfSupportedCountry): Promise<EtfUncategorizedPreview> {
+export async function fetchUncategorizedEtfPreview(
+  spaceId: string,
+  country?: EtfSupportedCountry,
+  includeUnpopulated = false
+): Promise<EtfUncategorizedPreview> {
   const baseWhere = {
     spaceId,
     OR: [{ stockAnalyzerInfo: { is: null } }, { stockAnalyzerInfo: { is: { category: null } } }],
   };
-  const where = country ? { ...baseWhere, exchange: { in: getEtfExchangesByCountry(country) } } : baseWhere;
+  const where = {
+    ...baseWhere,
+    ...(country ? { exchange: { in: getEtfExchangesByCountry(country) } } : {}),
+    ...(includeUnpopulated ? {} : POPULATED_ETF_WHERE),
+  };
 
   const etfs = await prisma.etf.findMany({
     where,
@@ -208,9 +240,13 @@ export async function fetchUncategorizedEtfPreview(spaceId: string, country?: Et
 }
 
 /** Bucketed by issuer (provider). */
-export async function fetchEtfProvidersForCountry(spaceId: string, country?: EtfSupportedCountry): Promise<EtfProvidersPreview> {
+export async function fetchEtfProvidersForCountry(spaceId: string, country?: EtfSupportedCountry, includeUnpopulated = false): Promise<EtfProvidersPreview> {
   const baseWhere = { spaceId, stockAnalyzerInfo: { is: { issuer: { not: null } } } };
-  const where = country ? { ...baseWhere, exchange: { in: getEtfExchangesByCountry(country) } } : baseWhere;
+  const where = {
+    ...baseWhere,
+    ...(country ? { exchange: { in: getEtfExchangesByCountry(country) } } : {}),
+    ...(includeUnpopulated ? {} : POPULATED_ETF_WHERE),
+  };
 
   const etfs = await prisma.etf.findMany({
     where,

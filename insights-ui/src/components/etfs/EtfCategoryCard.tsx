@@ -1,5 +1,5 @@
+import EtfScoreBadge from '@/components/ui/badges/EtfScoreBadge';
 import type { EtfGroupingPreviewItem } from '@/types/etf/etf-listings-types';
-import { getEtfScoreColorClasses } from '@/utils/score-utils';
 import Link from 'next/link';
 import React from 'react';
 
@@ -29,29 +29,23 @@ export default function EtfCategoryCard({ categoryName, href, etfs, total }: Etf
         {etfLabel}
       </div>
       <ul className="divide-y divide-color flex-1">
-        {etfs.map((etf) => {
-          const { textColorClass, bgColorClass } = getEtfScoreColorClasses(etf.finalScore);
-          const scoreLabel = etf.finalScore !== null ? `${etf.finalScore}/20` : '—';
-          return (
-            <li key={etf.id} className="px-3 sm:px-4 py-1.5 hover:bg-surface-3 transition-colors">
-              <Link
-                href={`/etfs/${etf.exchange}/${etf.symbol}`}
-                prefetch={false}
-                className="flex gap-1.5 items-center min-w-0 w-full"
-                aria-label={`View ${etf.name}`}
-                title={etf.name}
-              >
-                <p className={`${textColorClass} px-1 rounded-md ${bgColorClass} bg-opacity-15 hover:bg-opacity-25 w-[46px] text-right shrink-0`}>
-                  <span className={`${textColorClass} font-mono tabular-nums text-right text-xs`}>{scoreLabel}</span>
-                </p>
-                <p className="whitespace-nowrap rounded-md px-2 py-0.5 text-sm font-medium bg-primary text-primary-text self-center shadow-sm shrink-0">
-                  {etf.symbol}
-                </p>
-                <p className="text-sm font-medium text-break break-words text-heading truncate min-w-0 flex-1">{etf.name}</p>
-              </Link>
-            </li>
-          );
-        })}
+        {etfs.map((etf) => (
+          <li key={etf.id} className="px-3 sm:px-4 py-1.5 hover:bg-surface-3 transition-colors">
+            <Link
+              href={`/etfs/${etf.exchange}/${etf.symbol}`}
+              prefetch={false}
+              className="flex gap-1.5 items-center min-w-0 w-full"
+              aria-label={`View ${etf.name}`}
+              title={etf.name}
+            >
+              <EtfScoreBadge score={etf.finalScore} />
+              <p className="whitespace-nowrap rounded-md px-2 py-0.5 text-sm font-medium bg-primary text-primary-text self-center shadow-sm shrink-0">
+                {etf.symbol}
+              </p>
+              <p className="text-sm font-medium text-break break-words text-heading truncate min-w-0 flex-1">{etf.name}</p>
+            </Link>
+          </li>
+        ))}
       </ul>
     </div>
   );

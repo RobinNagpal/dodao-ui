@@ -5,6 +5,7 @@ import {
   fetchUncategorizedEtfPreview,
 } from '@/app/api/[spaceId]/etfs-v1/listings/listings-prisma';
 import { getCategoriesForGroupKey, getAllEtfGroups } from '@/utils/etf-categorization-utils';
+import { shouldIncludeUnpopulatedForRequest } from '@/utils/etf-listing-visibility';
 import { isEtfSupportedCountry } from '@/utils/etfCountryExchangeUtils';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';
@@ -21,6 +22,7 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
   const { searchParams } = new URL(req.url);
   const countryParam = searchParams.get('country')?.trim();
   const country = countryParam && isEtfSupportedCountry(countryParam) ? countryParam : undefined;
+  const includeUnpopulated = await shouldIncludeUnpopulatedForRequest(req);
 
   const groups = getAllEtfGroups();
 
@@ -34,9 +36,9 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
   }
 
   const [byCategory, byGroup, others] = await Promise.all([
-    fetchEtfsForGroupings(spaceId, 'category', categoryValueToKey, country),
-    fetchEtfsForGroupings(spaceId, 'category', groupValueToKey, country),
-    fetchUncategorizedEtfPreview(spaceId, country),
+    fetchEtfsForGroupings(spaceId, 'category', categoryValueToKey, country, includeUnpopulated),
+    fetchEtfsForGroupings(spaceId, 'category', groupValueToKey, country, includeUnpopulated),
+    fetchUncategorizedEtfPreview(spaceId, country, includeUnpopulated),
   ]);
 
   return {

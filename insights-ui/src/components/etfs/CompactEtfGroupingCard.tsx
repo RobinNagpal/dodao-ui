@@ -1,5 +1,5 @@
+import EtfScoreBadge from '@/components/ui/badges/EtfScoreBadge';
 import type { EtfGroupingPreviewItem } from '@/types/etf/etf-listings-types';
-import { getEtfScoreColorClasses } from '@/utils/score-utils';
 import Link from 'next/link';
 import React from 'react';
 
@@ -28,26 +28,19 @@ export default function CompactEtfGroupingCard({ title, href, totalCount, etfs, 
       {displayedEtfs.length > 0 ? (
         <div className="px-3 py-1">
           <ul className="space-y-1">
-            {displayedEtfs.map((etf) => {
-              const { textColorClass, bgColorClass } = getEtfScoreColorClasses(etf.finalScore);
-              const scoreLabel = etf.finalScore !== null ? `${etf.finalScore}/20` : '—';
-
-              return (
-                <li key={etf.id}>
-                  <Link
-                    href={`/etfs/${etf.exchange}/${etf.symbol}`}
-                    prefetch={false}
-                    className="flex items-center gap-1.5 py-1 hover:bg-surface-3 transition-colors rounded px-1 -mx-1"
-                  >
-                    <p className={`${textColorClass} px-1 rounded-md ${bgColorClass} bg-opacity-15 hover:bg-opacity-25 w-[46px] text-right shrink-0`}>
-                      <span className={`${textColorClass} text-xs font-mono`}>{scoreLabel}</span>
-                    </p>
-                    <span className="text-xs font-medium bg-primary text-primary-text ml-1.5 px-1.5 py-0.5 rounded">{etf.symbol}</span>
-                    <span className="text-xs text-heading truncate">{etf.name}</span>
-                  </Link>
-                </li>
-              );
-            })}
+            {displayedEtfs.map((etf) => (
+              <li key={etf.id}>
+                <Link
+                  href={`/etfs/${etf.exchange}/${etf.symbol}`}
+                  prefetch={false}
+                  className="flex items-center gap-1.5 py-1 hover:bg-surface-3 transition-colors rounded px-1 -mx-1"
+                >
+                  <EtfScoreBadge score={etf.finalScore} />
+                  <span className="text-xs font-medium bg-primary text-primary-text ml-1.5 px-1.5 py-0.5 rounded">{etf.symbol}</span>
+                  <span className="text-xs text-heading truncate">{etf.name}</span>
+                </Link>
+              </li>
+            ))}
           </ul>
         </div>
       ) : (
