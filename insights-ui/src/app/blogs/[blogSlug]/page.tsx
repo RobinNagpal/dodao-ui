@@ -11,6 +11,7 @@ import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/B
 import { Metadata } from 'next';
 import { DEFAULT_BLOG_AUTHOR, formatBlogDate, getRelatedPosts } from '@/util/blog-utils';
 import RelatedBlogs from '@/components/blogs/RelatedBlogs';
+import { BlogScrollLoginTrigger } from '@/components/login/blog-scroll-login-trigger';
 import { notFound } from 'next/navigation';
 
 export async function generateMetadata({ params }: { params: Promise<{ blogSlug: string }> }): Promise<Metadata> {
@@ -154,6 +155,7 @@ export default async function PostPage({ params }: { params: Promise<{ blogSlug:
         </div>
       </div>
 
+      <BlogScrollLoginTrigger />
       <RelatedBlogs posts={relatedPosts} />
     </PageWrapper>
   );
