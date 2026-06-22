@@ -2,7 +2,8 @@ import type { EtfGroupDetailResponse } from '@/app/api/[spaceId]/etfs-v1/listing
 import EtfGroupDetail from '@/components/etfs/EtfGroupDetail';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { SupportedCountries } from '@/utils/countryExchangeUtils';
-import { getEtfGroupDetailTag, TWO_WEEKS_IN_SECONDS } from '@/utils/etf-cache-utils';
+import { getEtfGroupDetailTag } from '@/utils/etf-cache-utils';
+import { fetchEtfListingsIndex } from '@/utils/etf-listing-visibility';
 import { getEtfGroupByKey } from '@/utils/etf-categorization-utils';
 import { generateEtfGroupDetailBreadcrumbJsonLd, generateEtfGroupDetailMetadata } from '@/utils/etf-metadata-generators';
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
@@ -24,7 +25,7 @@ async function fetchGroupDetail(country: SupportedCountries, groupKey: string): 
     country
   )}&groupKey=${encodeURIComponent(groupKey)}`;
   try {
-    const res = await fetch(url, { next: { revalidate: TWO_WEEKS_IN_SECONDS, tags: [getEtfGroupDetailTag(country, groupKey)] } });
+    const res = await fetchEtfListingsIndex(url, getEtfGroupDetailTag(country, groupKey));
     if (!res.ok) {
       console.error(`fetchGroupDetail failed (${res.status}): ${url}`);
       return EMPTY_GROUP_DETAIL;

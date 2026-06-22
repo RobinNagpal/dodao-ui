@@ -21,6 +21,7 @@ import {
   EtfSortField,
   MOR_ADVANCED_FILTERS,
 } from '@/utils/etf-filter-utils';
+import { shouldIncludeUnpopulatedForRequest } from '@/utils/etf-listing-visibility';
 import { getEtfExchangesByCountry, isEtfSupportedCountry } from '@/utils/etfCountryExchangeUtils';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { Prisma } from '@prisma/client';
@@ -153,7 +154,13 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
   const cachedScoreFilter = createEtfCachedScoreFilter(filters);
   const hasCachedScoreFilter = Object.keys(cachedScoreFilter).length > 0;
   if (hasCachedScoreFilter) {
+    // A score filter (`{ is: ... }`) already requires the row to exist, so it
+    // implicitly restricts to populated ETFs.
     etfWhere.cachedScore = { is: cachedScoreFilter };
+  } else if (!(await shouldIncludeUnpopulatedForRequest(req))) {
+    // Default: only list ETFs that have a generated report (an EtfCachedScore
+    // row). Admins requesting includeUnpopulated=true bypass this and see all.
+    etfWhere.cachedScore = { isNot: null };
   }
 
   const futureReturnsFilter = createEtfFutureReturnsFilter(filters);
