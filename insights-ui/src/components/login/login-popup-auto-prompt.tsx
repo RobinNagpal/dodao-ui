@@ -6,7 +6,7 @@ import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 const NAV_THRESHOLD = 3;
-const SHOW_DELAY_MS = 1200;
+const SHOW_DELAY_MS = 1500;
 const RESHOW_COOLDOWN_MS = 3 * 24 * 60 * 60 * 1000;
 
 const NAV_COUNT_KEY = 'loginPopupNavCount';
@@ -24,6 +24,7 @@ const EXCLUDED_PATH_PREFIXES: readonly string[] = [
   '/public-equities',
   '/generate-ppt',
   '/api',
+  '/blogs',
 ];
 
 const BOT_UA_PATTERN =
