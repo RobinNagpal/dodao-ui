@@ -1,3 +1,4 @@
+import EtfSubPageActions from '@/app/etfs/[exchange]/[etf]/EtfSubPageActions';
 import EtfCategoryReport from '@/components/etf-reportsv1/analysis/EtfCategoryReport';
 import { fetchEtfAvailableSlugs } from '@/components/etf-reportsv1/EtfRelatedSections';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
@@ -111,7 +112,12 @@ export default async function CostEfficiencyTeamPage({ params }: { params: Route
   return (
     <PageWrapper>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify([articleSchema, breadcrumbSchema]) }} />
-      <Breadcrumbs breadcrumbs={breadcrumbs} hideHomeIcon={true} mobileBackOnly={true} />
+      <Breadcrumbs
+        breadcrumbs={breadcrumbs}
+        hideHomeIcon={true}
+        mobileBackOnly={true}
+        rightButton={<EtfSubPageActions etfId={etf.id} etfSymbol={etf.symbol} etfName={etf.name} />}
+      />
       <EtfCategoryReport
         etfName={etf.name}
         symbol={symbol}
