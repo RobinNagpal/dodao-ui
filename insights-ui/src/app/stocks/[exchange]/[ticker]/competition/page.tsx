@@ -1,3 +1,4 @@
+import StockSubPageActions from '@/app/stocks/[exchange]/[ticker]/StockSubPageActions';
 import Competition from '@/components/ticker-reportsv1/Competition';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
@@ -212,7 +213,12 @@ export default async function CompetitionPage({ params }: { params: RouteParams 
         }}
       />
 
-      <Breadcrumbs breadcrumbs={breadcrumbs} hideHomeIcon={true} />
+      <Breadcrumbs
+        breadcrumbs={breadcrumbs}
+        hideHomeIcon={true}
+        mobileBackOnly={true}
+        rightButton={<StockSubPageActions tickerId={tickerData.id} tickerSymbol={tickerData.symbol} tickerName={tickerData.name} />}
+      />
 
       <Competition tickerData={tickerData} data={competitionData} />
     </PageWrapper>

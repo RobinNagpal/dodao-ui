@@ -1,3 +1,4 @@
+import StockSubPageActions from '@/app/stocks/[exchange]/[ticker]/StockSubPageActions';
 import AdminTimestamp from '@/components/auth/AdminTimestamp';
 import TickerRelatedSections, { getAvailableSiblingSlugs } from '@/components/ticker-reportsv1/TickerRelatedSections';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
@@ -216,7 +217,12 @@ export default async function ManagementTeamPage({ params }: { params: RoutePara
         }}
       />
 
-      <Breadcrumbs breadcrumbs={breadcrumbs} hideHomeIcon={true} />
+      <Breadcrumbs
+        breadcrumbs={breadcrumbs}
+        hideHomeIcon={true}
+        mobileBackOnly={true}
+        rightButton={<StockSubPageActions tickerId={tickerData.id} tickerSymbol={tickerData.symbol} tickerName={tickerData.name} />}
+      />
 
       <article className="bg-surface rounded-lg shadow-sm border border-color p-3 sm:p-6 md:p-8" itemScope itemType="https://schema.org/Article">
         <section className="mb-6">

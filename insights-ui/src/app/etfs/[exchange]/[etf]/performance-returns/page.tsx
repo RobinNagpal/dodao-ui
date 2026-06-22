@@ -1,4 +1,5 @@
 import { EtfMorInfoOptionalWrapper } from '@/app/api/[spaceId]/etfs-v1/exchange/[exchange]/[etf]/mor-info/route';
+import EtfSubPageActions from '@/app/etfs/[exchange]/[etf]/EtfSubPageActions';
 import EtfCategoryReport from '@/components/etf-reportsv1/analysis/EtfCategoryReport';
 import { fetchEtfAvailableSlugs } from '@/components/etf-reportsv1/EtfRelatedSections';
 import EtfReturnsTable from '@/components/etf-reportsv1/EtfReturnsTable';
@@ -128,7 +129,12 @@ export default async function PerformanceReturnsPage({ params }: { params: Route
   return (
     <PageWrapper>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify([articleSchema, breadcrumbSchema]) }} />
-      <Breadcrumbs breadcrumbs={breadcrumbs} hideHomeIcon={true} />
+      <Breadcrumbs
+        breadcrumbs={breadcrumbs}
+        hideHomeIcon={true}
+        mobileBackOnly={true}
+        rightButton={<EtfSubPageActions etfId={etf.id} etfSymbol={etf.symbol} etfName={etf.name} />}
+      />
       <EtfCategoryReport
         etfName={etf.name}
         symbol={symbol}

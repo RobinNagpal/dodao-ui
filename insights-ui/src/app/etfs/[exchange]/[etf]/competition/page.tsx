@@ -1,4 +1,5 @@
 import { EtfFastResponse } from '@/app/api/[spaceId]/etfs-v1/exchange/[exchange]/[etf]/route';
+import EtfSubPageActions from '@/app/etfs/[exchange]/[etf]/EtfSubPageActions';
 import EtfCompetitionFullView from '@/components/etf-reportsv1/EtfCompetitionFullView';
 import { fetchEtfAvailableSlugs } from '@/components/etf-reportsv1/EtfRelatedSections';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
@@ -97,7 +98,12 @@ export default async function EtfCompetitionPage({ params }: { params: RoutePara
   return (
     <PageWrapper>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify([articleJsonLd, breadcrumbJsonLd]) }} />
-      <Breadcrumbs breadcrumbs={breadcrumbs} hideHomeIcon={true} />
+      <Breadcrumbs
+        breadcrumbs={breadcrumbs}
+        hideHomeIcon={true}
+        mobileBackOnly={true}
+        rightButton={<EtfSubPageActions etfId={data.etf.id} etfSymbol={data.etf.symbol} etfName={data.etf.name} />}
+      />
       <EtfCompetitionFullView data={data} availableSlugsPromise={availableSlugsPromise} />
     </PageWrapper>
   );

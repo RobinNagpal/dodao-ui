@@ -1,5 +1,6 @@
 import { EtfPortfolioHoldingsResponse } from '@/app/api/[spaceId]/etfs-v1/exchange/[exchange]/[etf]/portfolio-holdings/route';
 import { EtfFastResponse } from '@/app/api/[spaceId]/etfs-v1/exchange/[exchange]/[etf]/route';
+import EtfSubPageActions from '@/app/etfs/[exchange]/[etf]/EtfSubPageActions';
 import EtfHoldings from '@/components/etf-reportsv1/EtfHoldings';
 import EtfRelatedSections, { fetchEtfAvailableSlugs } from '@/components/etf-reportsv1/EtfRelatedSections';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
@@ -110,7 +111,12 @@ export default async function EtfHoldingsPage({ params }: { params: RouteParams 
   return (
     <PageWrapper>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
-      <Breadcrumbs breadcrumbs={breadcrumbs} hideHomeIcon={true} />
+      <Breadcrumbs
+        breadcrumbs={breadcrumbs}
+        hideHomeIcon={true}
+        mobileBackOnly={true}
+        rightButton={<EtfSubPageActions etfId={etfData.id} etfSymbol={etfData.symbol} etfName={etfData.name} />}
+      />
 
       <article className="py-4" itemScope itemType="https://schema.org/Article">
         <meta itemProp="datePublished" content={lastUpdatedDate.toISOString()} />

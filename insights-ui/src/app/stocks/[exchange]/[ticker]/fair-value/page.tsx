@@ -1,3 +1,4 @@
+import StockSubPageActions from '@/app/stocks/[exchange]/[ticker]/StockSubPageActions';
 import FairValue from '@/components/ticker-reportsv1/FairValue';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { TickerAnalysisCategory } from '@/types/ticker-typesv1';
@@ -127,7 +128,12 @@ export default async function FairValuePage({ params }: { params: RouteParams })
         }}
       />
 
-      <Breadcrumbs breadcrumbs={breadcrumbs} hideHomeIcon={true} />
+      <Breadcrumbs
+        breadcrumbs={breadcrumbs}
+        hideHomeIcon={true}
+        mobileBackOnly={true}
+        rightButton={<StockSubPageActions tickerId={tickerData.id} tickerSymbol={tickerData.symbol} tickerName={tickerData.name} />}
+      />
 
       <FairValue tickerData={tickerData} data={fairValueData} />
     </PageWrapper>
