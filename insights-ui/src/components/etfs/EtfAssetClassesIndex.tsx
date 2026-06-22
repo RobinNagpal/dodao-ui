@@ -1,5 +1,5 @@
 import EtfPageLayout from '@/components/etfs/EtfPageLayout';
-import CompactEtfGroupingCard from '@/components/etfs/CompactEtfGroupingCard';
+import EtfGroupingCardGrid from '@/components/etfs/EtfGroupingCardGrid';
 import type { EtfAssetClassesIndexResponse } from '@/app/api/[spaceId]/etfs-v1/listings/asset-classes-index/route';
 import { ETF_ASSET_CLASS_OPTIONS } from '@/utils/etf-filter-utils';
 import { EtfSupportedCountry } from '@/utils/etfCountryExchangeUtils';
@@ -24,17 +24,16 @@ export default function EtfAssetClassesIndex({ country, data }: EtfAssetClassesI
       switcherSection="asset-classes"
       extraBreadcrumbs={[{ name: 'Asset Classes', href: assetClassesPath, current: true }]}
     >
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 mb-6">
-        {assetClasses.map((opt) => (
-          <CompactEtfGroupingCard
-            key={opt.value}
-            title={opt.label}
-            href={etfBrowseDetailPath(country, 'asset-classes', slugifyEtfTag(opt.value))}
-            totalCount={data.counts[opt.value] ?? 0}
-            etfs={data.values[opt.value] ?? []}
-          />
-        ))}
-      </div>
+      <EtfGroupingCardGrid
+        columns={3}
+        items={assetClasses.map((opt) => ({
+          key: opt.value,
+          title: opt.label,
+          href: etfBrowseDetailPath(country, 'asset-classes', slugifyEtfTag(opt.value)),
+          totalCount: data.counts[opt.value] ?? 0,
+          etfs: data.values[opt.value] ?? [],
+        }))}
+      />
     </EtfPageLayout>
   );
 }

@@ -1,5 +1,5 @@
 import EtfPageLayout from '@/components/etfs/EtfPageLayout';
-import CompactEtfGroupingCard from '@/components/etfs/CompactEtfGroupingCard';
+import EtfGroupingCardGrid from '@/components/etfs/EtfGroupingCardGrid';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import type { EtfGroupsIndexResponse } from '@/app/api/[spaceId]/etfs-v1/listings/groups-index/route';
 import { ETF_OTHERS_GROUP, getAllEtfGroups, getCategoriesForGroupKey } from '@/utils/etf-categorization-utils';
@@ -59,17 +59,16 @@ export default function EtfGroupsIndex({ country, data, title, description, swit
               </Link>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 mb-6">
-              {categoriesWithEtfs.map((cat) => (
-                <CompactEtfGroupingCard
-                  key={cat.name}
-                  title={cat.name}
-                  href={etfGroupCategoryPath(country, group.key, cat.name)}
-                  totalCount={categoryCounts[cat.name] ?? 0}
-                  etfs={categoryValues[cat.name] ?? []}
-                />
-              ))}
-            </div>
+            <EtfGroupingCardGrid
+              columns={4}
+              items={categoriesWithEtfs.map((cat) => ({
+                key: cat.name,
+                title: cat.name,
+                href: etfGroupCategoryPath(country, group.key, cat.name),
+                totalCount: categoryCounts[cat.name] ?? 0,
+                etfs: categoryValues[cat.name] ?? [],
+              }))}
+            />
           </div>
         );
       })}
@@ -87,15 +86,18 @@ export default function EtfGroupsIndex({ country, data, title, description, swit
               <span className="ml-1">→</span>
             </Link>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 mb-6">
-            <CompactEtfGroupingCard
-              key={ETF_OTHERS_GROUP.key}
-              title={ETF_OTHERS_GROUP.name}
-              href={etfBrowseDetailPath(country, 'groups', ETF_OTHERS_GROUP.key)}
-              totalCount={others.count}
-              etfs={others.items}
-            />
-          </div>
+          <EtfGroupingCardGrid
+            columns={4}
+            items={[
+              {
+                key: ETF_OTHERS_GROUP.key,
+                title: ETF_OTHERS_GROUP.name,
+                href: etfBrowseDetailPath(country, 'groups', ETF_OTHERS_GROUP.key),
+                totalCount: others.count,
+                etfs: others.items,
+              },
+            ]}
+          />
         </div>
       )}
     </EtfPageLayout>

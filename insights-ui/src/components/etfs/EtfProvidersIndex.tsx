@@ -1,5 +1,5 @@
 import EtfPageLayout from '@/components/etfs/EtfPageLayout';
-import CompactEtfGroupingCard from '@/components/etfs/CompactEtfGroupingCard';
+import EtfGroupingCardGrid from '@/components/etfs/EtfGroupingCardGrid';
 import type { EtfProvidersIndexResponse } from '@/app/api/[spaceId]/etfs-v1/listings/providers-index/route';
 import { EtfSupportedCountry } from '@/utils/etfCountryExchangeUtils';
 import { etfBrowseDetailPath, etfBrowsePath, etfCountryDisplayName } from '@/utils/etf-country-route-utils';
@@ -26,17 +26,16 @@ export default function EtfProvidersIndex({ country, data }: EtfProvidersIndexPr
       {providers.length === 0 ? (
         <p className="text-[#E5E7EB] text-md">No providers available for {displayName} ETFs.</p>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 mb-6">
-          {providers.map((provider) => (
-            <CompactEtfGroupingCard
-              key={provider}
-              title={provider}
-              href={etfBrowseDetailPath(country, 'providers', slugifyEtfTag(provider))}
-              totalCount={counts[provider] ?? 0}
-              etfs={values[provider] ?? []}
-            />
-          ))}
-        </div>
+        <EtfGroupingCardGrid
+          columns={3}
+          items={providers.map((provider) => ({
+            key: provider,
+            title: provider,
+            href: etfBrowseDetailPath(country, 'providers', slugifyEtfTag(provider)),
+            totalCount: counts[provider] ?? 0,
+            etfs: values[provider] ?? [],
+          }))}
+        />
       )}
     </EtfPageLayout>
   );
