@@ -1,3 +1,4 @@
+import StockSubPageActions from '@/app/stocks/[exchange]/[ticker]/StockSubPageActions';
 import PastPerformance from '@/components/ticker-reportsv1/PastPerformance';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { TickerAnalysisCategory } from '@/types/ticker-typesv1';
@@ -127,7 +128,12 @@ export default async function PastPerformancePage({ params }: { params: RoutePar
         }}
       />
 
-      <Breadcrumbs breadcrumbs={breadcrumbs} hideHomeIcon={true} mobileBackOnly={true} />
+      <Breadcrumbs
+        breadcrumbs={breadcrumbs}
+        hideHomeIcon={true}
+        mobileBackOnly={true}
+        rightButton={<StockSubPageActions tickerId={tickerData.id} tickerSymbol={tickerData.symbol} tickerName={tickerData.name} />}
+      />
 
       <PastPerformance tickerData={tickerData} data={pastPerformanceData} />
     </PageWrapper>
