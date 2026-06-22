@@ -4,8 +4,9 @@
 # you intentionally hand cron ownership back to Vercel during coexistence. See the plan.
 
 locals {
-  # During coexistence, point crons at the direct host; at cut-over they can target the apex.
-  cron_base_url = var.manage_cloudfront ? "https://${var.domain_name}" : "https://${var.direct_domain_name}"
+  # Crons target the Lightsail direct host (not the apex) so they bypass CloudFront — no edge
+  # cache value for these and one less hop. Matches behavior since Phase A.
+  cron_base_url = "https://${var.direct_domain_name}"
 
   crons = {
     ticker_request = {

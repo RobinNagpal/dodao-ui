@@ -24,6 +24,11 @@ output "static_assets_bucket" {
 }
 
 output "cloudfront_domain" {
-  description = "CloudFront domain (null until Phase B)."
-  value       = var.manage_cloudfront ? aws_cloudfront_distribution.main[0].domain_name : null
+  description = "CloudFront distribution domain (apex koalagains.com edge)."
+  value       = aws_cloudfront_distribution.koalagains.domain_name
+}
+
+output "cloudfront_distribution_id" {
+  description = "CloudFront distribution ID — used by the running app for CreateInvalidation."
+  value       = aws_cloudfront_distribution.koalagains.id
 }

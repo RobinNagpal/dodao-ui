@@ -32,15 +32,8 @@ variable "direct_domain_name" {
 }
 
 # ---- Rollout gates ----------------------------------------------------------------------
-# manage_cloudfront defaults OFF (Phase A is the parallel, direct deployment — Vercel still
-# fronts koalagains.com). enable_crons defaults ON: AWS owns the crons in Phase A and they are
-# removed from vercel.json, so there is a single owner against the shared RDS.
-variable "manage_cloudfront" {
-  description = "Phase B: manage CloudFront and point it at the Lightsail service. Keep false while running in parallel with Vercel."
-  type        = bool
-  default     = false
-}
-
+# enable_crons defaults ON: AWS owns the crons (removed from vercel.json), so there is a single
+# owner against the shared RDS.
 variable "enable_crons" {
   description = "Create the EventBridge cron schedules. On by default — crons are owned by AWS now and removed from vercel.json, so there is a single owner (no double-run against the shared RDS)."
   type        = bool
@@ -81,33 +74,27 @@ variable "service_scale" {
 # Postgres already lives in RDS (public access + SSL). Terraform provisions nothing for it —
 # pass the full DATABASE_URL (with sslmode) via app_secrets.
 
-# ---- CloudFront (Phase B only) -----------------------------------------------------------
-variable "existing_cloudfront_distribution_id" {
-  description = "Existing CloudFront distribution to import & reuse in Phase B."
+# ---- CloudFront -------------------------------------------------------------------------
+# Cache behavior path patterns live in cloudfront.tf locals (stocks_api_cached_paths,
+# etfs_api_cached_paths) — keep them in lockstep with CACHED_PATH_PREFIXES in
+# src/utils/cloudfront-cache-utils.ts. TTL is hardcoded at 518400s (6 days) in the
+# aws_cloudfront_cache_policy.koalagains_one_week resource.
+variable "aws_origin_hostname" {
+  description = "Hostname CloudFront uses as the origin. The Lightsail container service direct host (var.direct_domain_name) — kept as a distinct variable so a rollback to a different origin is a one-line change."
   type        = string
-  default     = "EZI5H8FKNE9R1"
+  default     = "prod.koalagains.com"
 }
 
-variable "cacheable_path_patterns" {
-  description = "Path prefixes served with the long-TTL cache behavior (Phase B)."
+variable "cloudfront_aliases" {
+  description = "CloudFront distribution aliases. First entry is the canonical (ACM primary domain + www-redirect target). Default matches production (apex + www)."
   type        = list(string)
-  # Pages AND the per-stocks-page GET API endpoints the existing distribution caches
-  # (deploy-skew doc Phase 5). Keep in lockstep with CACHED_PATH_PREFIXES in
-  # src/utils/cloudfront-cache-utils.ts so the import reconcile doesn't drop live behaviors.
-  default = [
-    "/stocks/*",
-    "/etfs/*",
-    "/industry-tariff-report/*",
-    "/tariff-reports*",
-    "/api/koala_gains/tickers-v1/exchange/*",
-    "/api/koala_gains/tickers-v1/country/*",
-  ]
+  default     = ["koalagains.com", "www.koalagains.com"]
 }
 
-variable "cloudfront_default_ttl" {
-  description = "Default TTL (seconds) for cacheable behaviors. 6 days."
-  type        = number
-  default     = 518400
+variable "enable_www_redirect" {
+  description = "Attach a CloudFront viewer function that 301-redirects www.<canonical> -> <canonical>, and own the www CNAME record. On in production."
+  type        = bool
+  default     = true
 }
 
 # ---- Observability (public CloudWatch dashboard, §17 — no extra instance) ------------------
