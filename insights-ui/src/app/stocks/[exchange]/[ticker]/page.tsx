@@ -440,6 +440,15 @@ function BreadcrumbsFromData({ data }: { data: Promise<TickerV1FastResponse> }):
           movedSymbol={d.movedSymbol ?? null}
           isDeleted={d.isDeleted ?? false}
           websiteUrl={d.websiteUrl ?? null}
+          mobileActions={{
+            tickerId: d.id,
+            tickerSymbol: d.symbol,
+            tickerName: d.name,
+            tickerIndustryKey: d.industryKey,
+            tickerSubIndustryKey: d.subIndustryKey,
+            tickerIndustryName: industryName,
+            tickerSubIndustryName: subIndustryName,
+          }}
         >
           <FavouriteButton tickerId={d.id} tickerSymbol={d.symbol} tickerName={d.name} />
           <NotesButton tickerId={d.id} tickerSymbol={d.symbol} tickerName={d.name} />
@@ -454,6 +463,7 @@ function BreadcrumbsFromData({ data }: { data: Promise<TickerV1FastResponse> }):
         </StockActions>
       }
       hideHomeIcon={true}
+      mobileBackOnly={true}
     />
   );
 }
