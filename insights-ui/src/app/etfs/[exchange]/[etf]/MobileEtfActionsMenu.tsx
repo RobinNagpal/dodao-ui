@@ -10,13 +10,13 @@ import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { EtfNote } from '@prisma/client';
 import { useSession } from 'next-auth/react';
 import dynamic from 'next/dynamic';
-import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 // Same dynamic chunks used by the desktop buttons — Next.js dedupes the
 // chunk, so loading them here adds no bundle cost when desktop buttons render.
 const AddEditEtfFavouriteModal = dynamic(() => import('@/app/etfs/[exchange]/[etf]/AddEditEtfFavouriteModal'), { ssr: false });
 const AddEditEtfNotesModal = dynamic(() => import('@/app/etfs/[exchange]/[etf]/AddEditEtfNotesModal'), { ssr: false });
+const LoginPopup = dynamic(() => import('@/components/login/login-popup').then((m) => ({ default: m.LoginPopup })), { ssr: false });
 
 export interface MobileEtfActionsMenuProps {
   etfId: string;
@@ -25,7 +25,6 @@ export interface MobileEtfActionsMenuProps {
 }
 
 export default function MobileEtfActionsMenu({ etfId, etfSymbol, etfName }: MobileEtfActionsMenuProps): JSX.Element {
-  const router = useRouter();
   const { data: koalaSession } = useSession();
   const session: KoalaGainsSession | null = koalaSession as KoalaGainsSession | null;
 
@@ -34,6 +33,8 @@ export default function MobileEtfActionsMenu({ etfId, etfSymbol, etfName }: Mobi
 
   const [isNotesOpen, setIsNotesOpen] = useState(false);
   const [notesMounted, setNotesMounted] = useState(false);
+
+  const [isLoginPopupOpen, setIsLoginPopupOpen] = useState(false);
 
   const { data: favouritesData, reFetchData: refetchFavourites } = useFetchData<FavouriteEtfsResponse>(
     `${getBaseUrl()}/api/${KoalaGainsSpaceId}/users/favourite-etfs`,
@@ -57,7 +58,7 @@ export default function MobileEtfActionsMenu({ etfId, etfSymbol, etfName }: Mobi
 
   const handleSelect = (key: string) => {
     if (!session) {
-      router.push('/login');
+      setIsLoginPopupOpen(true);
       return;
     }
     if (key === 'favourite') {
@@ -98,6 +99,8 @@ export default function MobileEtfActionsMenu({ etfId, etfSymbol, etfName }: Mobi
           onUpsert={refetchNotes}
         />
       )}
+
+      {!session && <LoginPopup open={isLoginPopupOpen} onClose={() => setIsLoginPopupOpen(false)} />}
     </div>
   );
 }

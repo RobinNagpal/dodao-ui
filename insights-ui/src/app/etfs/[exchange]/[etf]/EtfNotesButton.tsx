@@ -5,7 +5,6 @@ import { DocumentTextIcon as DocumentTextOutline } from '@heroicons/react/24/out
 import { DocumentTextIcon as DocumentTextSolid } from '@heroicons/react/24/solid';
 import dynamic from 'next/dynamic';
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
@@ -15,6 +14,7 @@ import { EtfNote } from '@prisma/client';
 
 // Modal only opens when the user clicks Notes — defer its chunk.
 const AddEditEtfNotesModal = dynamic(() => import('@/app/etfs/[exchange]/[etf]/AddEditEtfNotesModal'), { ssr: false });
+const LoginPopup = dynamic(() => import('@/components/login/login-popup').then((m) => ({ default: m.LoginPopup })), { ssr: false });
 
 export interface EtfNotesButtonProps {
   etfId: string;
@@ -25,9 +25,9 @@ export interface EtfNotesButtonProps {
 export default function EtfNotesButton({ etfId, etfSymbol, etfName }: EtfNotesButtonProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [hasMountedModal, setHasMountedModal] = useState(false);
+  const [isLoginPopupOpen, setIsLoginPopupOpen] = useState(false);
   const { data: koalaSession } = useSession();
   const session: KoalaGainsSession | null = koalaSession as KoalaGainsSession | null;
-  const router = useRouter();
 
   // Fetch ETF notes
   const { data: notesData, reFetchData: refetchNotes } = useFetchData<EtfNotesResponse>(
@@ -40,7 +40,7 @@ export default function EtfNotesButton({ etfId, etfSymbol, etfName }: EtfNotesBu
 
   const handleNotesClick = () => {
     if (!session) {
-      router.push('/login');
+      setIsLoginPopupOpen(true);
       return;
     }
     setHasMountedModal(true);
@@ -83,6 +83,7 @@ export default function EtfNotesButton({ etfId, etfSymbol, etfName }: EtfNotesBu
           onUpsert={handleUpsert}
         />
       )}
+      {!session && <LoginPopup open={isLoginPopupOpen} onClose={() => setIsLoginPopupOpen(false)} />}
     </div>
   );
 }
