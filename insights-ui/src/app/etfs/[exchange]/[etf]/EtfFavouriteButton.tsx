@@ -5,7 +5,6 @@ import { HeartIcon as HeartOutline } from '@heroicons/react/24/outline';
 import { HeartIcon as HeartSolid } from '@heroicons/react/24/solid';
 import dynamic from 'next/dynamic';
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import { FavouriteEtfResponse, FavouriteEtfsResponse } from '@/types/etf-user';
@@ -14,6 +13,7 @@ import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 
 // Modal only opens after the user clicks Favourite — defer its chunk.
 const AddEditEtfFavouriteModal = dynamic(() => import('@/app/etfs/[exchange]/[etf]/AddEditEtfFavouriteModal'), { ssr: false });
+const LoginPopup = dynamic(() => import('@/components/login/login-popup').then((m) => ({ default: m.LoginPopup })), { ssr: false });
 
 export interface EtfFavouriteButtonProps {
   etfId: string;
@@ -24,9 +24,9 @@ export interface EtfFavouriteButtonProps {
 export default function EtfFavouriteButton({ etfId, etfSymbol, etfName }: EtfFavouriteButtonProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [hasMountedModal, setHasMountedModal] = useState(false);
+  const [isLoginPopupOpen, setIsLoginPopupOpen] = useState(false);
   const { data: koalaSession } = useSession();
   const session: KoalaGainsSession | null = koalaSession as KoalaGainsSession | null;
-  const router = useRouter();
 
   // Fetch favourite ETFs
   const { data: favouritesData, reFetchData: refetchFavourites } = useFetchData<FavouriteEtfsResponse>(
@@ -39,7 +39,7 @@ export default function EtfFavouriteButton({ etfId, etfSymbol, etfName }: EtfFav
 
   const handleFavouriteClick = () => {
     if (!session) {
-      router.push('/login');
+      setIsLoginPopupOpen(true);
       return;
     }
     setHasMountedModal(true);
@@ -78,6 +78,7 @@ export default function EtfFavouriteButton({ etfId, etfSymbol, etfName }: EtfFav
           onUpsert={handleUpsert}
         />
       )}
+      {!session && <LoginPopup open={isLoginPopupOpen} onClose={() => setIsLoginPopupOpen(false)} />}
     </div>
   );
 }

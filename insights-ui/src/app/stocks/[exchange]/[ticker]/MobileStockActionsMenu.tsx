@@ -10,7 +10,6 @@ import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { TickerV1Notes } from '@prisma/client';
 import { useSession } from 'next-auth/react';
 import dynamic from 'next/dynamic';
-import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 // Same dynamic chunks used by the desktop buttons — Next.js only fetches each
@@ -20,6 +19,7 @@ const ManageListsModal = dynamic(() => import('@/components/favourites/ManageLis
 const ManageTagsModal = dynamic(() => import('@/components/favourites/ManageTagsModal'), { ssr: false });
 const AddEditNotesModal = dynamic(() => import('@/app/stocks/[exchange]/[ticker]/AddEditNotesModal'), { ssr: false });
 const ComparisonModal = dynamic(() => import('@/app/stocks/[exchange]/[ticker]/ComparisonModal'), { ssr: false });
+const LoginPopup = dynamic(() => import('@/components/login/login-popup').then((m) => ({ default: m.LoginPopup })), { ssr: false });
 
 export interface MobileStockActionsMenuProps {
   tickerId: string;
@@ -42,7 +42,6 @@ export default function MobileStockActionsMenu({
   tickerIndustryName,
   tickerSubIndustryName,
 }: MobileStockActionsMenuProps): JSX.Element {
-  const router = useRouter();
   const { data: koalaSession } = useSession();
   const session: KoalaGainsSession | null = koalaSession as KoalaGainsSession | null;
 
@@ -55,6 +54,8 @@ export default function MobileStockActionsMenu({
 
   const [isComparisonOpen, setIsComparisonOpen] = useState(false);
   const [comparisonMounted, setComparisonMounted] = useState(false);
+
+  const [isLoginPopupOpen, setIsLoginPopupOpen] = useState(false);
 
   const { data: listsData, reFetchData: refetchLists } = useFetchData<{ lists: UserListResponse[] }>(
     `${getBaseUrl()}/api/${KoalaGainsSpaceId}/users/user-lists`,
@@ -94,7 +95,7 @@ export default function MobileStockActionsMenu({
   const handleSelect = (key: string) => {
     if (key === 'favourite' || key === 'notes') {
       if (!session) {
-        router.push('/login');
+        setIsLoginPopupOpen(true);
         return;
       }
     }
@@ -169,6 +170,8 @@ export default function MobileStockActionsMenu({
           }}
         />
       )}
+
+      {!session && <LoginPopup open={isLoginPopupOpen} onClose={() => setIsLoginPopupOpen(false)} />}
     </div>
   );
 }
