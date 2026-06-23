@@ -71,7 +71,7 @@ export default function KoalaGainsPlatform() {
           ))}
         </dl>
       </div>
-      <div className="mt-16 sm:mt-20"></div>
+      <div className="mt-16 sm:mt-20 border-b border-gray-600"></div>
     </section>
   );
 }
