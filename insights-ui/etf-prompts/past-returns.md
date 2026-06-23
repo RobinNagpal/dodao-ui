@@ -115,11 +115,12 @@ When the factor carries a `factorAnalysisGroupInstructions` string, treat it as 
 
 {{#each factorAnalysisArray}}
 
-- {{factorAnalysisKey}} — **{{factorAnalysisTitle}}**
-  {{factorAnalysisDescription}}
-  {{#if factorAnalysisGroupInstructions}}Group-specific perspective ({{../groupKey}}): {{factorAnalysisGroupInstructions}}
-  {{/if}}Metrics: {{factorAnalysisMetrics}}
-  {{/each}}
+#### Title: {{factorAnalysisTitle}}
+- Key: {{factorAnalysisKey}}
+- Description: {{factorAnalysisDescription}}
+{{#if factorAnalysisGroupInstructions}}- Group-specific perspective ({{../groupKey}}): {{factorAnalysisGroupInstructions}}
+{{/if}}- Metrics (if available): {{factorAnalysisMetrics}}
+{{/each}}
 
 ### Data
 
