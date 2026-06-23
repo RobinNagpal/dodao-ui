@@ -71,15 +71,24 @@ export default function BreadcrumbsWithChevrons({ breadcrumbs, rightButton, hide
     return (
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between w-full gap-4">
         <div className="flex sm:contents items-center justify-between min-w-0 w-full gap-2">
-          {parentCrumb && (
-            <Link href={parentCrumb.href} className="flex sm:hidden items-center text-sm font-medium link-color min-w-0 flex-1">
-              <ChevronLeftIcon className="h-5 w-5 flex-shrink-0 mr-1" aria-hidden="true" />
-              <span className="truncate">{parentCrumb.name}</span>
-            </Link>
+          {parentCrumb ? (
+            <>
+              {/* Mobile: collapse the chain to a single truncated back link to the parent. */}
+              <Link href={parentCrumb.href} className="flex sm:hidden items-center text-sm font-medium link-color min-w-0 flex-1">
+                <ChevronLeftIcon className="h-5 w-5 flex-shrink-0 mr-1" aria-hidden="true" />
+                <span className="truncate">{parentCrumb.name}</span>
+              </Link>
+              {/* Desktop: full chain. Still server-rendered on mobile (CSS-hidden) so all crumb links stay in the HTML. */}
+              <nav className="hidden sm:flex min-w-0" aria-label="Breadcrumb">
+                <FullBreadcrumbChain breadcrumbs={breadcrumbs} hideHomeIcon={hideHomeIcon} />
+              </nav>
+            </>
+          ) : (
+            // Single crumb: nothing to collapse, so keep the chain inline with rightButton on mobile too.
+            <nav className="flex min-w-0" aria-label="Breadcrumb">
+              <FullBreadcrumbChain breadcrumbs={breadcrumbs} hideHomeIcon={hideHomeIcon} />
+            </nav>
           )}
-          <nav className="hidden sm:flex min-w-0" aria-label="Breadcrumb">
-            <FullBreadcrumbChain breadcrumbs={breadcrumbs} hideHomeIcon={hideHomeIcon} />
-          </nav>
           {rightButton && <div className="flex-shrink-0">{rightButton}</div>}
         </div>
       </div>

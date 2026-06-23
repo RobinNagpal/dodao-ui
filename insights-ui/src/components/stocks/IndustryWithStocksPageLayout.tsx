@@ -68,6 +68,7 @@ export default function IndustryWithStocksPageLayout({
       <div className="overflow-x-auto">
         <Breadcrumbs
           breadcrumbs={breadcrumbs}
+          mobileBackOnly={true}
           rightButton={
             <div className="flex">
               <FiltersButton />
