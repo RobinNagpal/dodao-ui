@@ -23,7 +23,7 @@ Categories in this group: {{groupCategories}} — some are very similar; treat t
 - **No forward-looking phrasing.** Do not write "investors will / would lag", "the fund's future trajectory", "recovery will be …", "going forward", or any form of prediction. Stay in the past and present tense on the data in front of you.
 - **No-repeat-numbers rule spans the whole report.** If a number (drawdown, beta, Sharpe, capture ratio, date) appears in `overallSummary`, do not also place it in `overallAnalysisDetails`, and do not also place it in a factor block. State it in the most load-bearing slot once, then refer back with framing ("the same drawdown", "the 2022 drop") — never restate the digits. Exception: the numeric anchor inside a factor's own `detailedExplanation` may cite the key metric again when that factor is the primary owner of the metric (e.g., `worst_drawdown` carries the drawdown number; do not then also quote it in summary and in the main paragraph).
 - **Decimal precision.** Round to what a retail reader actually uses: beta / Sharpe / Sortino / alpha → 2 decimals (`0.59`, not `0.59149`). ATR → 2 decimals. Standard deviation and drawdown percentages → 1 decimal or whole (`7.3%`, `-23.9%`, not `7.33%` unless the source is already 2dp). Capture ratios and risk scores → whole numbers. Never paste raw 4–5-decimal DB values.
-- **Backticks are required, not optional.** Every beta, Sharpe, Sortino, alpha, R², drawdown percentage, capture ratio, risk score, standard deviation, ATR, date, and percentage goes inside backticks. A number without backticks is an error — apply this rule to `overallSummary`, every paragraph of `overallAnalysisDetails`, and every `detailedExplanation`.
+- **Backticks are required, not optional.** Every beta, Sharpe, Sortino, alpha, R², drawdown percentage, capture ratio, risk score, standard deviation, ATR, date, and percentage goes inside backticks. A number without backticks is an error — apply this rule to `overallSummary`, every paragraph of `overallAnalysisDetails`, and every `detailedExplanation`. This applies to numeric values only — the `factorAnalysisKey` field is a raw identifier and must be output with no backticks.
 - **Paragraph breaks are real blank lines.** The four paragraphs of `overallAnalysisDetails` must be separated by a blank line in the output. Do not emit them as one run-on block. Do not emit literal `\n\n` or `<br>` separators — use an actual newline.
 - **Do not duplicate the factor description.** Each factor entry below already contains its own thresholds, edge cases, and Pass/Fail bars. Use them as judging rules — do not restate them in `overallAnalysisDetails` or at the top of a `detailedExplanation`. Go straight to the evidence.
 - **Every cited number needs a good / bad / average frame for THIS kind of fund.** Do not leave a Sharpe, Sortino, beta, drawdown, capture ratio, standard deviation, alpha, R², ATR, or risk score stranded. Every number must sit next to a peer / category / index comparison number AND a plain-English direction word (`better than`, `in line with`, `worse than`, `higher than`, `lower than`, `above`, `below`). Abstract labels — Mornstar risk score of `15`, portfolio risk score of `246`, risk level `Extreme` / `Above Avg.` / `Conservative` — must be translated into retail language on first mention (e.g. `15 → Conservative`, `246 → Extreme`, `Above Avg.` risk → `takes more risk than the typical peer`). A number without its good / bad / average frame is an error.
@@ -83,14 +83,14 @@ If a factor's core metric is absent, first try the "Factor-metric lookup" rule. 
 
 ## 4. For each item in `factorAnalysisArray` produce
 
-- `factorAnalysisKey` — the exact snake_case key from the input (the value wrapped in backticks at the start of each factor block below, e.g. `risk_adjusted_return`). Use the backticked key, NOT the bolded title and NOT any rephrased form.
+- `factorAnalysisKey` — use the exact snake_case key from the matching input factor block (for example: risk_adjusted_return). Output the raw key as plain text — no backticks or other markdown, and never the bolded title or a rephrased form.
 - `oneLineExplanation` — one sentence with the clearest takeaway, stated in terms a retail reader can act on (not a metric definition).
 - `detailedExplanation` — one short paragraph. Use the metrics listed in `factorAnalysisMetrics` and any other strongly relevant input field. Every conclusion needs a numeric anchor. Every cited metric must sit next to a peer / category / benchmark comparison number plus a plain-English direction word (`better than`, `in line with`, `worse than`, `above`, `below`) — never leave a Sharpe, drawdown, capture, or risk score stranded. Close with one clause translating the `Pass` / `Fail` into what it means for an investor holding this fund (e.g. "Pass here means the fund is delivering the promised decorrelation", "Fail here means the fund's fate is tethered to a handful of mega-cap names"). If the factor is a weak fit for this ETF, say so and judge on the closest relevant evidence rather than forcing a Fail.
 - `result` — `"Pass"` or `"Fail"` per the factor's own description and Section 3.
 
 ## 5. Writing rules
 
-- Markdown. Wrap every beta, Sharpe, Sortino, alpha, R², ATR, standard deviation, drawdown, capture ratio, risk score, date, and percentage in backticks — in the summary, the paragraphs, AND the factor explanations. Numbers without backticks are an error.
+- Markdown. Wrap every beta, Sharpe, Sortino, alpha, R², ATR, standard deviation, drawdown, capture ratio, risk score, date, and percentage in backticks — in the summary, the paragraphs, AND the factor explanations. Numbers without backticks are an error. Exception: `factorAnalysisKey` is an identifier, not a number — output it raw, with no backticks.
 - Simple, direct English. No dramatic adjectives (see Scope for the banned list), no filler, no self-praise of the fund's ride ("smooth", "frictionless", "textbook"). The numbers do the talking.
 - Round ratios to 2 decimals, percentages to 1 decimal or whole, capture ratios / risk scores to whole numbers. Never paste raw 4–5-decimal DB values.
 - State each number once in the report. See the no-repeat-numbers rule in Scope.
@@ -106,11 +106,12 @@ If a factor's core metric is absent, first try the "Factor-metric lookup" rule. 
 
 {{#each factorAnalysisArray}}
 
-- `{{factorAnalysisKey}}` — **{{factorAnalysisTitle}}**
-  {{factorAnalysisDescription}}
-  {{#if factorAnalysisGroupInstructions}}Group-specific perspective ({{../groupKey}}): {{factorAnalysisGroupInstructions}}
-  {{/if}}Metrics: {{factorAnalysisMetrics}}
-  {{/each}}
+#### Title: {{factorAnalysisTitle}}
+- Key: {{factorAnalysisKey}}
+- Description: {{factorAnalysisDescription}}
+{{#if factorAnalysisGroupInstructions}}- Group-specific perspective ({{../groupKey}}): {{factorAnalysisGroupInstructions}}
+{{/if}}- Metrics (if available): {{factorAnalysisMetrics}}
+{{/each}}
 
 ### Data
 

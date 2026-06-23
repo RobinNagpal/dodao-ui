@@ -74,7 +74,7 @@ Two cross-cutting reminders that apply on top of every factor:
 
 ## 4. For each item in `factorAnalysisArray` produce
 
-- `factorAnalysisKey` — the exact snake_case key from the input (the value wrapped in backticks at the start of each factor block below, e.g. `historical_long_term_returns`). Use the backticked key, NOT the bolded title and NOT any rephrased form.
+- `factorAnalysisKey` — use the exact snake_case key from the matching input factor block (for example: historical_long_term_returns). Output the raw key as plain text — no backticks or other markdown, and never the bolded title or a rephrased form.
 - `oneLineExplanation` — one sentence with the clearest takeaway.
 - `detailedExplanation` — one short paragraph. Use the metrics listed in `factorAnalysisMetrics` and any other strongly relevant input field. Every conclusion needs a numeric anchor. If the factor is a weak fit for this ETF, say so and judge on the closest relevant evidence rather than forcing a Fail.
 - `result` — `"Pass"` or `"Fail"` per Section 3.
@@ -83,7 +83,7 @@ When the factor carries a `factorAnalysisGroupInstructions` string, treat it as 
 
 ## 5. Writing rules
 
-- Markdown. Wrap numbers, percentages, prices, RSI, moving averages, yields, and asset figures in backticks.
+- Markdown. Wrap numbers, percentages, prices, RSI, moving averages, yields, and asset figures in backticks. Exception: `factorAnalysisKey` is an identifier, not a number — output it raw, with no backticks.
 - Simple, direct English. No dramatic adjectives, no filler, no repetition. Banned words and phrases — re-read your draft and remove any of these before returning it: `elite`, `exceptional`, `remarkable` / `remarkably`, `stellar`, `crushing` / `crushed`, `decisively`, `decisive win`, `thoroughly` (as praise), `flawless`, `definitively`, `standout`, `top-tier` (when used as praise instead of a measured rank claim), `easily`, `vastly`, `comfortably` (when used to dramatise a routine number).
 - Pick one value per metric and use it everywhere. If AUM is `$591.78M` in the summary, it must be `$591.78M` in every factor block — not `$3.0B` in one place and `$3.82B` in another. Same rule for `1Y` return, peer count, AUM, beta, etc. — one number, used consistently.
 - Annotate the time-base on every multi-period number: write `3Y annualized` or `3Y cumulative`, never bare `3Y` for a return number. When you compare to a benchmark, the fund number and the benchmark number must be on the SAME time-base.
@@ -115,11 +115,12 @@ When the factor carries a `factorAnalysisGroupInstructions` string, treat it as 
 
 {{#each factorAnalysisArray}}
 
-- `{{factorAnalysisKey}}` — **{{factorAnalysisTitle}}**
-  {{factorAnalysisDescription}}
-  {{#if factorAnalysisGroupInstructions}}Group-specific perspective ({{../groupKey}}): {{factorAnalysisGroupInstructions}}
-  {{/if}}Metrics: {{factorAnalysisMetrics}}
-  {{/each}}
+#### Title: {{factorAnalysisTitle}}
+- Key: {{factorAnalysisKey}}
+- Description: {{factorAnalysisDescription}}
+{{#if factorAnalysisGroupInstructions}}- Group-specific perspective ({{../groupKey}}): {{factorAnalysisGroupInstructions}}
+{{/if}}- Metrics (if available): {{factorAnalysisMetrics}}
+{{/each}}
 
 ### Data
 

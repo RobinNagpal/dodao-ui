@@ -117,14 +117,14 @@ If a factor’s core metric is missing, use the lookup rule first; otherwise jud
 
 ## 4. For each item in `factorAnalysisArray` produce
 
-- `factorAnalysisKey` — the exact snake_case key from the input (the value wrapped in backticks at the start of each factor block below, e.g. `short_term_hold_outlook`). Use the backticked key, NOT the bolded title and NOT any rephrased form.
+- `factorAnalysisKey` — use the exact snake_case key from the matching input factor block (for example: short_term_hold_outlook). Output the raw key as plain text — no backticks or other markdown, and never the bolded title or a rephrased form.
 - `oneLineExplanation` — one sentence with the clearest investor takeaway.
 - `detailedExplanation` — one short paragraph that applies the factor’s bar to THIS ETF. Use the listed metrics and any strongly relevant input field or lookup result. Anchor conclusions with at least one concrete detail.
 - `result` — `"Pass"` or `"Fail"` per Section 3 and the factor’s own description.
 
 ## 5. Writing rules
 
-- Markdown. Wrap numbers, yields, spreads, dates, RSI/MAs, and percentages in backticks.
+- Markdown. Wrap numbers, yields, spreads, dates, RSI/MAs, and percentages in backticks. Exception: `factorAnalysisKey` is an identifier, not a number — output it raw, with no backticks.
 - Use simple, direct English. No hype (see the banned list in Scope). No certainty language.
 - Attribute external facts inline with source + as-of date (e.g., “CBOE VIX at `18` (CBOE, Apr 2026)”).
 - Do not paste long URLs. Do not mention missing data.
@@ -154,11 +154,12 @@ Shorter horizons are inherently less certain than the 5-year figure — be more 
 
 {{#each factorAnalysisArray}}
 
-- `{{factorAnalysisKey}}` — **{{factorAnalysisTitle}}**
-  {{factorAnalysisDescription}}
-  {{#if factorAnalysisGroupInstructions}}Group-specific perspective ({{../groupKey}}): {{factorAnalysisGroupInstructions}}
-  {{/if}}Metrics: {{factorAnalysisMetrics}}
-  {{/each}}
+#### Title: {{factorAnalysisTitle}}
+- Key: {{factorAnalysisKey}}
+- Description: {{factorAnalysisDescription}}
+{{#if factorAnalysisGroupInstructions}}- Group-specific perspective ({{../groupKey}}): {{factorAnalysisGroupInstructions}}
+{{/if}}- Metrics (if available): {{factorAnalysisMetrics}}
+{{/each}}
 
 ### Data
 

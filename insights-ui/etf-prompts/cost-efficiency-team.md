@@ -84,14 +84,14 @@ If a factor's core metric is absent, first try the "Factor-metric lookup" rule. 
 
 ## 4. For each item in `factorAnalysisArray` produce
 
-- `factorAnalysisKey` — the exact snake_case key from the input (the value wrapped in backticks at the start of each factor block below, e.g. `expense_ratio_vs_competition`). Use the backticked key, NOT the bolded title and NOT any rephrased form.
+- `factorAnalysisKey` — use the exact snake_case key from the matching input factor block (for example: expense_ratio_vs_competition). Output the raw key as plain text — no backticks or other markdown, and never the bolded title or a rephrased form.
 - `oneLineExplanation` — one sentence with the clearest takeaway.
 - `detailedExplanation` — one short paragraph. Use the metrics listed in `factorAnalysisMetrics` and any other strongly relevant input field. Every conclusion needs a numeric anchor. If the factor is a weak fit for this ETF, say so and judge on the closest relevant evidence rather than forcing a Fail.
 - `result` — `"Pass"` or `"Fail"` per the factor's own description and Section 3.
 
 ## 5. Writing rules
 
-- Markdown. Wrap fees, AUM, volume, bid-ask, turnover percentages, tenure, inception dates, and percentages in backticks. Use abbreviated units (`B`/`M`/`K`) per the number-formatting rule above — never raw integers.
+- Markdown. Wrap fees, AUM, volume, bid-ask, turnover percentages, tenure, inception dates, and percentages in backticks. Use abbreviated units (`B`/`M`/`K`) per the number-formatting rule above — never raw integers. Exception: `factorAnalysisKey` is an identifier, not a number — output it raw, with no backticks.
 - Simple, direct English. No filler, no repetition of numbers. Drop dramatic / promotional adjectives — re-read your draft and remove any of these before returning it: `elite`, `exceptional` / `exceptionally`, `flawless`, `incredibly`, `astronomically`, `remarkable` / `remarkably`, `stellar`, `standout`, `top-tier` (as praise rather than a measured rank), `punishing`, `glaring`, `easily` (e.g. "easily clears"), `comfortably` (when dramatising a routine number). If a word adds drama rather than information, drop it — the numbers do the talking.
 - Name the issuer and the fund category when referencing them. Name the benchmark index when quoted from `strategyText`.
 - Do not invent context beyond what the data supports. If a data point isn't present (and you couldn't source it via the lookup rule), omit it silently.
@@ -102,11 +102,12 @@ If a factor's core metric is absent, first try the "Factor-metric lookup" rule. 
 
 {{#each factorAnalysisArray}}
 
-- `{{factorAnalysisKey}}` — **{{factorAnalysisTitle}}**
-  {{factorAnalysisDescription}}
-  {{#if factorAnalysisGroupInstructions}}Group-specific perspective ({{../groupKey}}): {{factorAnalysisGroupInstructions}}
-  {{/if}}Metrics: {{factorAnalysisMetrics}}
-  {{/each}}
+#### Title: {{factorAnalysisTitle}}
+- Key: {{factorAnalysisKey}}
+- Description: {{factorAnalysisDescription}}
+{{#if factorAnalysisGroupInstructions}}- Group-specific perspective ({{../groupKey}}): {{factorAnalysisGroupInstructions}}
+{{/if}}- Metrics (if available): {{factorAnalysisMetrics}}
+{{/each}}
 
 ### Data
 
