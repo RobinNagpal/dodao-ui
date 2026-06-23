@@ -39,7 +39,6 @@ const etfMgmtSection: AdminNavSection = {
   items: [
     { name: 'ETF Reports', href: '/admin-v1/etf-reports' },
     { name: 'ETF Generation Requests', href: '/admin-v1/etf-generation-requests' },
-    { name: 'ETF Failed Requests', href: '/admin-v1/etf-failed-requests' },
     { name: 'ETF Scenarios', href: '/admin-v1/etf-scenarios' },
   ],
 };
