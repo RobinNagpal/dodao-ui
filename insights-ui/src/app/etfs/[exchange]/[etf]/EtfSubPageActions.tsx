@@ -4,7 +4,6 @@ import { EtfNotesResponse } from '@/app/api/[spaceId]/users/etf-notes/route';
 import { KoalaGainsSession } from '@/types/auth';
 import { FavouriteEtfResponse, FavouriteEtfsResponse } from '@/types/etf-user';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
-import EllipsisDropdown, { EllipsisDropdownItem } from '@dodao/web-core/components/core/dropdowns/EllipsisDropdown';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { DocumentTextIcon as DocumentTextOutline, HeartIcon as HeartOutline } from '@heroicons/react/24/outline';
@@ -72,16 +71,6 @@ export default function EtfSubPageActions({ etfId, etfSymbol, etfName }: EtfSubP
     setIsNotesOpen(true);
   };
 
-  const mobileItems: EllipsisDropdownItem[] = [
-    { key: 'favourite', label: favouriteEtf ? 'Edit favourite' : 'Add to favourites' },
-    { key: 'notes', label: existingNote ? 'Edit note' : 'Add note' },
-  ];
-
-  const handleMobileSelect = (key: string) => {
-    if (key === 'favourite') openFavourite();
-    else if (key === 'notes') openNotes();
-  };
-
   return (
     <div className="flex items-center gap-2 relative z-10">
       <div className="hidden sm:flex flex-wrap items-center gap-2">
@@ -115,8 +104,36 @@ export default function EtfSubPageActions({ etfId, etfSymbol, etfName }: EtfSubP
         </button>
       </div>
 
-      <div className="sm:hidden">
-        <EllipsisDropdown items={mobileItems} onSelect={handleMobileSelect} className="px-2 py-2" />
+      {/* Inline icon actions (mobile) — surfaced directly instead of hidden in a
+          3-dot menu so logged-out visitors are more likely to tap and hit the
+          login prompt. Same handlers/modals as the desktop buttons above. */}
+      <div className="flex items-center gap-1.5 sm:hidden">
+        <button
+          type="button"
+          onClick={openFavourite}
+          aria-label={favouriteEtf ? 'Edit favourite' : 'Add to favourites'}
+          title={!session ? 'Login to add to favourites' : favouriteEtf ? 'Edit favourite' : 'Add to favourites'}
+          className={`inline-flex items-center justify-center p-2 text-white border rounded-lg shadow-md ${
+            favouriteEtf ? 'bg-blue-700 hover:bg-blue-600 border-blue-600' : 'bg-gray-700 hover:bg-gray-600 border-gray-600'
+          }`}
+        >
+          {favouriteEtf ? <HeartSolid className="w-5 h-5 text-red-400" aria-hidden="true" /> : <HeartOutline className="w-5 h-5" aria-hidden="true" />}
+        </button>
+        <button
+          type="button"
+          onClick={openNotes}
+          aria-label={existingNote ? 'Edit note' : 'Add note'}
+          title={!session ? 'Login to add notes' : existingNote ? 'Edit note' : 'Add note'}
+          className={`inline-flex items-center justify-center p-2 text-white border rounded-lg shadow-md ${
+            existingNote ? 'bg-green-700 hover:bg-green-600 border-green-600' : 'bg-gray-700 hover:bg-gray-600 border-gray-600'
+          }`}
+        >
+          {existingNote ? (
+            <DocumentTextSolid className="w-5 h-5 text-green-300" aria-hidden="true" />
+          ) : (
+            <DocumentTextOutline className="w-5 h-5" aria-hidden="true" />
+          )}
+        </button>
       </div>
 
       {session && favouriteMounted && (
