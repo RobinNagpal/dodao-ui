@@ -8,6 +8,7 @@ import { fetchIndustryTariffUpdatesMetadata } from '@/utils/tariff-reports/indus
 import { tariffReportTag } from '@/utils/tariff-report-tags';
 import { Metadata } from 'next';
 import { CountryTariffRenderer } from '@/components/industry-tariff/renderers/CountryTariffRenderer';
+import { TariffScrollLoginTrigger } from '@/components/login/tariff-scroll-login-trigger';
 
 export async function generateMetadata({ params }: { params: Promise<{ industryId: string }> }): Promise<Metadata> {
   const { industryId } = await params;
@@ -42,54 +43,57 @@ export default async function TariffUpdatesPage({ params }: { params: Promise<{ 
   const countrySpecificTariffs = Array.isArray(tariffUpdates?.countrySpecificTariffs) ? tariffUpdates?.countrySpecificTariffs ?? [] : [];
 
   return (
-    <div className="mx-auto max-w-7xl py-2">
-      {/* Title and Actions */}
-      <div className="mb-4 pb-4 border-b border-gray-200">
-        <div className="flex justify-between items-center">
-          <h1 className="text-3xl font-bold heading-color">Top 5 Trade Partners - {definition.name} Industry</h1>
-          <PrivateWrapper>
-            <TariffUpdatesActions industryId={industryId} />
-          </PrivateWrapper>
+    <>
+      <div className="mx-auto max-w-7xl py-2">
+        {/* Title and Actions */}
+        <div className="mb-4 pb-4 border-b border-gray-200">
+          <div className="flex justify-between items-center">
+            <h1 className="text-3xl font-bold heading-color">Top 5 Trade Partners - {definition.name} Industry</h1>
+            <PrivateWrapper>
+              <TariffUpdatesActions industryId={industryId} />
+            </PrivateWrapper>
+          </div>
         </div>
-      </div>
 
-      {/* SEO Warning Banner for Admins */}
-      {tariffUpdates && isSeoMissing && (
-        <PrivateWrapper>
-          <div className="mb-8 p-4 bg-amber-100 border border-amber-300 rounded-md text-amber-800 shadow-sm">
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-              <div className="flex items-center">
-                <span className="font-medium">SEO metadata is missing for this page</span>
+        {/* SEO Warning Banner for Admins */}
+        {tariffUpdates && isSeoMissing && (
+          <PrivateWrapper>
+            <div className="mb-8 p-4 bg-amber-100 border border-amber-300 rounded-md text-amber-800 shadow-sm">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                <div className="flex items-center">
+                  <span className="font-medium">SEO metadata is missing for this page</span>
+                </div>
               </div>
             </div>
-          </div>
-        </PrivateWrapper>
-      )}
-
-      <div className="space-y-4">
-        {countryNames.length > 0 && <CountryNavigation countries={countryNames} />}
-
-        {countrySpecificTariffs.length > 0 ? (
-          countrySpecificTariffs.map((countryTariff, index) => {
-            const countryName = typeof countryTariff?.countryName === 'string' ? countryTariff.countryName : '';
-            const sectionId = `country-${countryName.toLowerCase().replace(/\s+/g, '-')}`;
-            return (
-              <div key={index} className="mb-6">
-                <div className="flex justify-end mb-4">
-                  <PrivateWrapper>
-                    <TariffUpdatesActions industryId={industryId} tariffIndex={index} countryName={countryName} />
-                  </PrivateWrapper>
-                </div>
-                <CountryTariffRenderer countryTariff={countryTariff} sectionId={sectionId} />
-              </div>
-            );
-          })
-        ) : (
-          <div className="bg-gray-900 rounded-lg p-6 shadow-sm">
-            <h2 className="text-xl font-semibold">No tariff updates available</h2>
-          </div>
+          </PrivateWrapper>
         )}
+
+        <div className="space-y-4">
+          {countryNames.length > 0 && <CountryNavigation countries={countryNames} />}
+
+          {countrySpecificTariffs.length > 0 ? (
+            countrySpecificTariffs.map((countryTariff, index) => {
+              const countryName = typeof countryTariff?.countryName === 'string' ? countryTariff.countryName : '';
+              const sectionId = `country-${countryName.toLowerCase().replace(/\s+/g, '-')}`;
+              return (
+                <div key={index} className="mb-6">
+                  <div className="flex justify-end mb-4">
+                    <PrivateWrapper>
+                      <TariffUpdatesActions industryId={industryId} tariffIndex={index} countryName={countryName} />
+                    </PrivateWrapper>
+                  </div>
+                  <CountryTariffRenderer countryTariff={countryTariff} sectionId={sectionId} />
+                </div>
+              );
+            })
+          ) : (
+            <div className="bg-gray-900 rounded-lg p-6 shadow-sm">
+              <h2 className="text-xl font-semibold">No tariff updates available</h2>
+            </div>
+          )}
+        </div>
       </div>
-    </div>
+      <TariffScrollLoginTrigger />
+    </>
   );
 }

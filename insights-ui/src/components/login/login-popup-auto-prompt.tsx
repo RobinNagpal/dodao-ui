@@ -1,6 +1,7 @@
 'use client';
 
 import { LoginPopup } from '@/components/login/login-popup';
+import { isInCooldown, isLikelyBot, safeGetSession, safeSetLocal, safeSetSession } from '@/components/login/login-popup-utils';
 import { useSession } from 'next-auth/react';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -27,56 +28,15 @@ const EXCLUDED_PATH_PREFIXES: readonly string[] = [
   '/blogs',
 ];
 
-const BOT_UA_PATTERN =
-  /bot|crawler|spider|crawling|slurp|bingpreview|mediapartners|adsbot|googlebot|baiduspider|yandex|duckduckbot|facebot|facebookexternalhit|twitterbot|linkedinbot|embedly|quora link preview|pinterest|whatsapp|telegrambot|applebot|petalbot|semrush|ahrefs|mj12bot|dotbot|seznambot|sogou|exabot|gigabot|ia_archiver|chrome-lighthouse|headlesschrome|phantomjs|prerender/i;
-
 function isExcludedPath(pathname: string): boolean {
   return EXCLUDED_PATH_PREFIXES.some((prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`));
 }
 
-function isLikelyBot(): boolean {
-  if (typeof navigator === 'undefined') return true;
-  if (navigator.webdriver === true) return true;
-  return BOT_UA_PATTERN.test(navigator.userAgent || '');
-}
-
-function isInCooldown(): boolean {
-  try {
-    const raw = localStorage.getItem(DISMISSED_AT_KEY);
-    if (!raw) return false;
-    const dismissedAt = Number.parseInt(raw, 10);
-    if (Number.isNaN(dismissedAt)) return false;
-    return Date.now() - dismissedAt < RESHOW_COOLDOWN_MS;
-  } catch {
-    return false;
-  }
-}
-
 function readNavCount(): number {
-  try {
-    const raw = sessionStorage.getItem(NAV_COUNT_KEY);
-    if (!raw) return 0;
-    const n = Number.parseInt(raw, 10);
-    return Number.isNaN(n) ? 0 : n;
-  } catch {
-    return 0;
-  }
-}
-
-function safeSetSession(key: string, value: string): void {
-  try {
-    sessionStorage.setItem(key, value);
-  } catch {
-    // sessionStorage may be unavailable (Safari private mode, etc.)
-  }
-}
-
-function safeSetLocal(key: string, value: string): void {
-  try {
-    localStorage.setItem(key, value);
-  } catch {
-    // localStorage may be unavailable
-  }
+  const raw = safeGetSession(NAV_COUNT_KEY);
+  if (!raw) return 0;
+  const n = Number.parseInt(raw, 10);
+  return Number.isNaN(n) ? 0 : n;
 }
 
 export function LoginPopupAutoPrompt(): JSX.Element | null {
@@ -94,24 +54,13 @@ export function LoginPopupAutoPrompt(): JSX.Element | null {
     if (isLikelyBot()) return;
     if (isExcludedPath(pathname)) return;
 
-    let lastPath: string | null = null;
-    try {
-      lastPath = sessionStorage.getItem(LAST_PATH_KEY);
-    } catch {
-      lastPath = null;
-    }
+    const lastPath = safeGetSession(LAST_PATH_KEY);
     if (lastPath === pathname) return;
     safeSetSession(LAST_PATH_KEY, pathname);
 
-    let alreadyShown = false;
-    try {
-      alreadyShown = sessionStorage.getItem(SHOWN_KEY) === '1';
-    } catch {
-      alreadyShown = false;
-    }
-    if (alreadyShown) return;
+    if (safeGetSession(SHOWN_KEY) === '1') return;
 
-    if (isInCooldown()) return;
+    if (isInCooldown(DISMISSED_AT_KEY, RESHOW_COOLDOWN_MS)) return;
 
     const nextCount = readNavCount() + 1;
     safeSetSession(NAV_COUNT_KEY, String(nextCount));
