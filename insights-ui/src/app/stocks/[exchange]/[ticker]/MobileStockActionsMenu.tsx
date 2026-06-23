@@ -4,9 +4,10 @@ import { TickerNotesResponse } from '@/app/api/[spaceId]/users/ticker-notes/rout
 import { KoalaGainsSession } from '@/types/auth';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { FavouriteTickerResponse, UserListResponse, UserTickerTagResponse } from '@/types/ticker-user';
-import EllipsisDropdown, { EllipsisDropdownItem } from '@dodao/web-core/components/core/dropdowns/EllipsisDropdown';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
+import { DocumentTextIcon as DocumentTextOutline, HeartIcon as HeartOutline, ScaleIcon } from '@heroicons/react/24/outline';
+import { DocumentTextIcon as DocumentTextSolid, HeartIcon as HeartSolid } from '@heroicons/react/24/solid';
 import { TickerV1Notes } from '@prisma/client';
 import { useSession } from 'next-auth/react';
 import dynamic from 'next/dynamic';
@@ -86,12 +87,6 @@ export default function MobileStockActionsMenu({
   const favouriteTicker = favouritesData?.favouriteTickers.find((f) => f.tickerId === tickerId) || null;
   const existingNote: TickerV1Notes | null = notesData?.tickerNotes.find((n) => n.tickerId === tickerId) || null;
 
-  const items: EllipsisDropdownItem[] = [
-    { key: 'favourite', label: favouriteTicker ? 'Edit favourite' : 'Add to favourites' },
-    { key: 'notes', label: existingNote ? 'Edit note' : 'Add note' },
-    { key: 'compare', label: 'Compare with others' },
-  ];
-
   const handleSelect = (key: string) => {
     if (key === 'favourite' || key === 'notes') {
       if (!session) {
@@ -113,7 +108,46 @@ export default function MobileStockActionsMenu({
 
   return (
     <div className="relative z-10">
-      <EllipsisDropdown items={items} onSelect={handleSelect} className="px-2 py-2" />
+      {/* Inline icon actions (mobile) — surfaced directly instead of hidden in a
+          3-dot menu so logged-out visitors are more likely to tap and hit the
+          login prompt. Same handlers/modals as desktop; compare always opens. */}
+      <div className="flex items-center gap-1.5">
+        <button
+          type="button"
+          onClick={() => handleSelect('favourite')}
+          aria-label={favouriteTicker ? 'Edit favourite' : 'Add to favourites'}
+          title={!session ? 'Login to add to favourites' : favouriteTicker ? 'Edit favourite' : 'Add to favourites'}
+          className={`inline-flex items-center justify-center p-2 text-white border rounded-lg shadow-md ${
+            favouriteTicker ? 'bg-blue-700 hover:bg-blue-600 border-blue-600' : 'bg-gray-700 hover:bg-gray-600 border-gray-600'
+          }`}
+        >
+          {favouriteTicker ? <HeartSolid className="w-5 h-5 text-red-400" aria-hidden="true" /> : <HeartOutline className="w-5 h-5" aria-hidden="true" />}
+        </button>
+        <button
+          type="button"
+          onClick={() => handleSelect('notes')}
+          aria-label={existingNote ? 'Edit note' : 'Add note'}
+          title={!session ? 'Login to add notes' : existingNote ? 'Edit note' : 'Add note'}
+          className={`inline-flex items-center justify-center p-2 text-white border rounded-lg shadow-md ${
+            existingNote ? 'bg-green-700 hover:bg-green-600 border-green-600' : 'bg-gray-700 hover:bg-gray-600 border-gray-600'
+          }`}
+        >
+          {existingNote ? (
+            <DocumentTextSolid className="w-5 h-5 text-green-300" aria-hidden="true" />
+          ) : (
+            <DocumentTextOutline className="w-5 h-5" aria-hidden="true" />
+          )}
+        </button>
+        <button
+          type="button"
+          onClick={() => handleSelect('compare')}
+          aria-label="Compare with others"
+          title="Compare with others"
+          className="inline-flex items-center justify-center p-2 text-black border border-transparent rounded-lg shadow-md bg-gradient-to-r from-[#F59E0B] to-[#FBBF24] hover:from-[#F97316] hover:to-[#F59E0B]"
+        >
+          <ScaleIcon className="w-5 h-5" aria-hidden="true" />
+        </button>
+      </div>
 
       {session && favouriteMounted && (
         <>
