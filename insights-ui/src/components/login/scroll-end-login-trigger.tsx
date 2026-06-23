@@ -7,11 +7,20 @@ import { useEffect, useRef, useState } from 'react';
 
 const RESHOW_COOLDOWN_MS = 3 * 24 * 60 * 60 * 1000;
 
+// Default observation region: top 90% of the viewport. Suitable when the sentinel has more content
+// below it (e.g. the blog article's "Related Articles" section), so the sentinel scrolls up into
+// view before the very bottom of the page is reached.
+const DEFAULT_ROOT_MARGIN = '0px 0px -10% 0px';
+
 interface ScrollEndLoginTriggerProps {
   // sessionStorage flag — popup is shown at most once per browser session for this surface.
   shownKey: string;
   // localStorage timestamp — suppresses re-showing for a few days after the reader dismisses it.
   dismissedAtKey: string;
+  // IntersectionObserver rootMargin. Pages whose sentinel is the very last DOM node MUST pass a
+  // non-negative bottom margin: a negative one (the default) shrinks the root so an end-of-page
+  // sentinel sits in the cropped bottom band and can never intersect — the popup would never open.
+  rootMargin?: string;
 }
 
 /**
@@ -29,7 +38,7 @@ interface ScrollEndLoginTriggerProps {
  * budget (blogs) or share the global login-popup budget with the nav-count auto-prompt (tariff),
  * which prevents two login popups firing on the same page.
  */
-export function ScrollEndLoginTrigger({ shownKey, dismissedAtKey }: ScrollEndLoginTriggerProps): JSX.Element {
+export function ScrollEndLoginTrigger({ shownKey, dismissedAtKey, rootMargin = DEFAULT_ROOT_MARGIN }: ScrollEndLoginTriggerProps): JSX.Element {
   const { status } = useSession();
   const sentinelRef = useRef<HTMLDivElement | null>(null);
   const [open, setOpen] = useState<boolean>(false);
@@ -53,7 +62,7 @@ export function ScrollEndLoginTrigger({ shownKey, dismissedAtKey }: ScrollEndLog
           observer.disconnect();
         }
       },
-      { rootMargin: '0px 0px -10% 0px' }
+      { rootMargin }
     );
 
     observer.observe(sentinel);
@@ -61,7 +70,7 @@ export function ScrollEndLoginTrigger({ shownKey, dismissedAtKey }: ScrollEndLog
     return () => {
       observer.disconnect();
     };
-  }, [status, shownKey, dismissedAtKey]);
+  }, [status, shownKey, dismissedAtKey, rootMargin]);
 
   const handleClose = (): void => {
     setOpen(false);

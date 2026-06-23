@@ -29,7 +29,13 @@ const EXCLUDED_PATH_PREFIXES: readonly string[] = [
 ];
 
 function isExcludedPath(pathname: string): boolean {
-  return EXCLUDED_PATH_PREFIXES.some((prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`));
+  if (EXCLUDED_PATH_PREFIXES.some((prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`))) return true;
+  // `tariff-updates` report pages (both `/industry-tariff-report/<industryId>/tariff-updates` and
+  // `/industry-tariff-report/chapters/<chapterSlug>/tariff-updates`) run their own scroll-end login
+  // trigger, so they must not count toward the 3-navigation budget, and this auto-prompt must never
+  // fire while on them. The shared cooldown key still links the two surfaces.
+  if (pathname.startsWith('/industry-tariff-report/') && pathname.endsWith('/tariff-updates')) return true;
+  return false;
 }
 
 function readNavCount(): number {
