@@ -82,7 +82,7 @@ async function postHandler(req: NextRequest, userContext: DoDaoJwtTokenPayload):
   });
 
   // NOTE: unlike the ticker routes we intentionally do NOT call
-  // revalidatePortfolioProfileIfExists here. ETF favourites/notes are fetched
+  // revalidatePortfolioProfileIfExists here. ETF favourites are fetched
   // client-side and are not surfaced on any server-cached page yet (e.g. the
   // /favourites listing), so there is no cached consumer to invalidate. Revisit
   // if a server-rendered ETF favourites view is added.
