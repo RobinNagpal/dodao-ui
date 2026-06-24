@@ -32,6 +32,7 @@ export default async function EtfAssetClassDetail({ country, assetClass, searchP
       description={`Explore ${displayCountry} ETFs in the ${displayAssetClass} asset class with detailed financial metrics, expense ratios, dividend analysis, and AI-driven insights.`}
       currentCountry={country}
       switcherSection="asset-classes"
+      switcherHref={(c) => etfBrowseDetailPath(c, 'asset-classes', slugifyEtfTag(filterValue))}
       extraBreadcrumbs={[
         { name: 'All Asset Classes', href: etfBrowsePath(country, 'asset-classes'), current: false },
         { name: displayAssetClass, href: etfBrowseDetailPath(country, 'asset-classes', slugifyEtfTag(filterValue)), current: true },

@@ -18,6 +18,8 @@ interface EtfPageLayoutProps {
   extraBreadcrumbs?: BreadcrumbsOjbect[];
   currentCountry?: EtfSupportedCountry;
   switcherSection?: EtfBrowseSection;
+  /** Builds the country-switcher href for a given country; lets detail pages keep the active listing when switching countries. */
+  switcherHref?: (country: EtfSupportedCountry) => string;
   children: ReactNode;
 }
 
@@ -37,6 +39,7 @@ export default function EtfPageLayout({
   extraBreadcrumbs,
   currentCountry = SupportedCountries.US,
   switcherSection,
+  switcherHref,
   children,
 }: EtfPageLayoutProps) {
   const breadcrumbs = buildBreadcrumbs(currentCountry, extraBreadcrumbs);
@@ -64,7 +67,7 @@ export default function EtfPageLayout({
         <h1 className="text-2xl font-bold text-white mb-4">{title}</h1>
         <p className="text-[#E5E7EB] text-md mb-4">{description}</p>
         <div className="mt-2 mb-2">
-          <EtfCountryAlternatives currentCountry={currentCountry} section={switcherSection} className="text-sm" />
+          <EtfCountryAlternatives currentCountry={currentCountry} section={switcherSection} buildHref={switcherHref} className="text-sm" />
         </div>
       </div>
 

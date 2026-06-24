@@ -53,6 +53,7 @@ export default function EtfGroupDetail({ country, groupKey, data }: EtfGroupDeta
       description={groupObj.description}
       currentCountry={country}
       switcherSection="groups"
+      switcherHref={(c) => etfBrowseDetailPath(c, 'groups', groupObj.key)}
       extraBreadcrumbs={[{ name: groupObj.name, href: etfBrowseDetailPath(country, 'groups', groupObj.key), current: true }]}
     >
       <EtfCategoriesGrid categories={cardSpecs} emptyMessage={`No ${displayCountry} ETFs found in the ${groupObj.name} group.`} />
