@@ -208,19 +208,6 @@ Remaining:
 
 ## Tariffs
 
-### Document the tariff report generation workflow
-
-> The tariffs README points at [`../tariffs/tariffs-functionality.md`](../tariffs/tariffs-functionality.md)
-> as the "comprehensive overview … pipeline … multi-step report-generation flow," but that file
-> does not exist yet. Goal: write it down end-to-end so the generation flow is understood and
-> maintainable, then create the missing reference doc.
-
-- [ ] **Map the section pipeline + ordering** — a tariff chapter report is built section-by-section by the scripts in `insights-ui/src/scripts/industry-tariff-reports/` (`00-industry-main-headings` → `01-industry-cover` / `02-executive-summary` / `03-industry-tariffs` / `04-understand-industry` / `05-industry-areas` / `06-tariff-engineering` / `07-final-conclusion` / `08-report-seo-info`). Document each section's input dependencies (headings are generated/required first; SEO details run last so they can summarize every section), the `ReportType` enum + step list in `insights-ui/src/utils/tariff-reports/chapter-generate-sections.ts` (`CHAPTER_GENERATE_STEPS`), and how `init-tariff-updates` discovers top trading-partner countries before per-country tariff-update generation.
-- [ ] **Document the two trigger paths** — CLI `yarn generate:tariff <chapter-slug>` (orchestrator `insights-ui/src/scripts/run-tariff-report.ts`, which loops every `ReportType` for `ALL`) vs the admin "generate all"/per-section flow at `/admin-v1/tariff-reports` (`insights-ui/src/app/admin-v1/tariff-reports/`) backed by the per-section API routes under `insights-ui/src/app/api/industry-tariff-reports/chapters/[chapterSlug]/` (shared `chapter-generate-handler.ts`). Note that both end with the SEO-info step.
-- [ ] **Capture the data model + storage** — section types in `insights-ui/src/scripts/industry-tariff-reports/tariff-types.ts`, the `TariffChapterReport` Prisma model (per-section JSONB columns, `(spaceId, slug)` / `(spaceId, chapterId)` / `(spaceId, oldUrl)` uniqueness, `oldUrl` legacy-route mapping), and read/write via `tariff-report-repository.ts`.
-- [ ] **Capture caching/invalidation + rendering** — cache tags in `insights-ui/src/utils/tariff-report-tags.ts` (`tariff_report:<SLUG>` + listing tag) and revalidation in `insights-ui/src/utils/tariff-report-cache-utils.ts` (chapter / legacy-industry / listing + CloudFront path purge); public render routes `insights-ui/src/app/industry-tariff-report/chapters/[chapterSlug]/{,tariff-updates,industry-areas,understand-industry,tariff-engineering,final-conclusion}` and listing `/tariff-reports`.
-- [ ] **Write `../tariffs/tariffs-functionality.md`** with the above (an ordered "how a report is generated" walkthrough + the file-path map), then confirm the tariffs README link resolves and cross-link it from this task list.
-
 ### Refresh + simplify reports
 
 - [ ] **Top-of-page snapshot block** (above the fold): industry + countries headline; headline tariff numbers (current rate, rate N months ago, delta); "Last updated YYYY-MM-DD"; 3 bullets ("What's new", "Who's affected", "What to watch").
