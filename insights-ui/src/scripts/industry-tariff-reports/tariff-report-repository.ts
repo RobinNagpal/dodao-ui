@@ -10,8 +10,6 @@ import type {
   ReportCover,
   TariffEngineering,
   TariffReportSeoDetails,
-  TariffSectionGenerationStatus,
-  TariffSectionStatusMap,
   TariffUpdatesForIndustry,
   UnderstandIndustry,
 } from '@/scripts/industry-tariff-reports/tariff-types';
@@ -348,55 +346,4 @@ export async function writeSeoDetails(slug: string, value: TariffReportSeoDetail
   };
 
   await writeSection(slug, { seoDetails: toJsonField<'seoDetails'>(normalized) });
-}
-
-// ---------------------------------------------------------------------------
-// Per-section generation status (tariff_chapter_reports.section_status)
-//
-// These power the async generation flow: a route flips a section to
-// `InProgress`, runs the generator in the background, then flips it to
-// `Completed`/`Failed`. The admin reads `readSectionStatuses` (via the table's
-// Refresh button) to see each section's state. Status writes deliberately do
-// NOT revalidate the public report caches (status is admin-only and changes
-// frequently).
-// ---------------------------------------------------------------------------
-
-export async function readSectionStatuses(slug: string): Promise<TariffSectionStatusMap> {
-  const row = await prisma.tariffChapterReport.findUnique({
-    where: { spaceId_slug: { spaceId: KoalaGainsSpaceId, slug } },
-    select: { sectionStatus: true },
-  });
-  return (row?.sectionStatus as TariffSectionStatusMap | null) ?? {};
-}
-
-/**
- * Merge a single section's status into the `section_status` map.
- *
- * Read-modify-write keeps the other sections' entries intact. The whole entry
- * is rebuilt each call (not spread from the previous one) so a stale `error`
- * is cleared whenever a section moves back to `InProgress`/`Completed`.
- * `startedAt` is stamped on the `InProgress` transition and preserved through
- * the terminal write so the UI can show elapsed time.
- */
-export async function setSectionStatus(slug: string, section: string, status: TariffSectionGenerationStatus, error?: string): Promise<void> {
-  const current = await readSectionStatuses(slug);
-  const now = new Date().toISOString();
-  const previous = current[section];
-  const startedAt = status === 'InProgress' ? now : previous?.startedAt;
-
-  const next: TariffSectionStatusMap = {
-    ...current,
-    [section]: {
-      status,
-      ...(error ? { error } : {}),
-      ...(startedAt ? { startedAt } : {}),
-      updatedAt: now,
-    },
-  };
-
-  await prisma.tariffChapterReport.update({
-    where: { spaceId_slug: { spaceId: KoalaGainsSpaceId, slug } },
-    data: { sectionStatus: toJsonField<'sectionStatus'>(next) },
-    select: { id: true },
-  });
 }

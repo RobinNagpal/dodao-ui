@@ -160,30 +160,3 @@ export enum ReportType {
   TARIFF_ENGINEERING = 'TARIFF_ENGINEERING',
   ALL = 'ALL',
 }
-
-/**
- * Per-section generation status, persisted on `tariff_chapter_reports.section_status`.
- *
- * Each chapter row stores a map keyed by the section's JSONB column name (the
- * same `ChapterReportField` keys the admin UI iterates), e.g.
- * `{ "understandIndustry": { "status": "Completed", "updatedAt": "..." } }`.
- *
- * Sections are generated asynchronously and regenerated in place: a re-run
- * overwrites that section's entry (flipping it back to `InProgress`, then
- * `Completed`/`Failed`), so the map always reflects the latest attempt — never
- * a historical log. The admin re-reads this (via the table's Refresh button) to
- * see each section's latest state.
- */
-export type TariffSectionGenerationStatus = 'NotStarted' | 'InProgress' | 'Completed' | 'Failed';
-
-export interface TariffSectionStatusEntry {
-  status: TariffSectionGenerationStatus;
-  // Only present when `status === 'Failed'`; cleared on the next attempt.
-  error?: string;
-  // ISO timestamps. `startedAt` is set when the section flips to `InProgress`
-  // and preserved across the terminal transition; `updatedAt` is every write.
-  startedAt?: string;
-  updatedAt?: string;
-}
-
-export type TariffSectionStatusMap = Record<string, TariffSectionStatusEntry>;

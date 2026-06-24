@@ -18,15 +18,13 @@ export interface InitTariffUpdatesResponse {
 // BACKGROUND mode (flag true): run the WHOLE section (all countries) as a single
 // background task — there's no HTTP timeout to dodge, so no chunking is needed.
 // We return an empty country list so the UI's per-country loop is a no-op; the
-// background task does everything and progress lands on `section_status`.
+// background task does everything and the content lands in the DB when it finishes.
 export const POST = withErrorHandlingV2<InitTariffUpdatesResponse>(async (_req: NextRequest, { params }: { params: Promise<{ chapterSlug: string }> }) => {
   const { chapterSlug } = await params;
   if (!chapterSlug) throw new Error('chapterSlug is required');
 
   if (isLambdaTariffGenerationEnabled()) {
-    await startTariffSectionGeneration(chapterSlug, 'tariffUpdates', () =>
-      getTariffUpdatesForIndustryAndSaveToFile(chapterSlug, getTodayDateAsMonthDDYYYYFormat())
-    );
+    startTariffSectionGeneration(chapterSlug, 'tariffUpdates', () => getTariffUpdatesForIndustryAndSaveToFile(chapterSlug, getTodayDateAsMonthDDYYYYFormat()));
     return { countries: [] };
   }
 
