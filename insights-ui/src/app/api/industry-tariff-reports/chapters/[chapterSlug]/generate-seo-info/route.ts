@@ -13,8 +13,6 @@ import { readSeoDetails, writeSeoDetails } from '@/scripts/industry-tariff-repor
 import { IndustryTariffReport, PageSeoDetails, ReportType, TariffReportSeoDetails } from '@/scripts/industry-tariff-reports/tariff-types';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 
-export const maxDuration = 300;
-
 const VALID_SECTION_VALUES = Object.values(ReportType);
 
 async function regenerateOneSection(slug: string, section: ReportType, existing: TariffReportSeoDetails): Promise<void> {
@@ -66,5 +64,5 @@ export const POST = withErrorHandlingV2<IndustryTariffReport>(
 
     const existing: TariffReportSeoDetails = (await readSeoDetails(slug)) ?? {};
     await regenerateOneSection(slug, sectionParam, existing);
-  })
+  }),
 );

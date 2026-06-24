@@ -8,8 +8,6 @@ import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/wit
 // per-country tariff query). The default Vercel timeout (60s) is well under the
 // realistic worst-case latency, and a mid-flight timeout previously left us with
 // nothing persisted. Raise to the Pro-plan max so the chain has room to finish.
-export const maxDuration = 300;
-
 interface GenerateTariffUpdatesBody {
   date?: string;
   countryName?: string;
@@ -19,5 +17,5 @@ export const POST = withErrorHandlingV2<IndustryTariffReport>(
   chapterGenerateRoute(async (slug, body) => {
     const { date, countryName } = (body as GenerateTariffUpdatesBody) ?? {};
     await getTariffUpdatesForIndustryAndSaveToFile(slug, date ?? getTodayDateAsMonthDDYYYYFormat(), countryName);
-  })
+  }),
 );

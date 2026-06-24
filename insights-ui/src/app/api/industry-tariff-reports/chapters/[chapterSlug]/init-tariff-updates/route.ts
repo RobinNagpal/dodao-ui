@@ -2,8 +2,6 @@ import { initTariffUpdatesAndSaveToFile } from '@/scripts/industry-tariff-report
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';
 
-export const maxDuration = 300;
-
 export interface InitTariffUpdatesResponse {
   countries: string[];
 }
