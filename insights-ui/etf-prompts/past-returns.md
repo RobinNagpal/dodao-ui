@@ -72,7 +72,7 @@ Two cross-cutting reminders that apply on top of every factor:
 - **Missing-data discipline**: if a factor's core metric is absent, first try the “Factor-metric lookup” section. If still unavailable, make a conservative call using the closest related evidence from the provided data blocks. Do not Fail a factor only because one secondary data point is missing.
 - **Young funds (< 3 years)**: only judge on the periods actually available; don't Fail for missing long-window metrics.
 
-## 4. For each item in `factorAnalysisArray` produce
+## 4. For each item in `factorAnalysisArray` produce (VERY IMPORTANT AND MANDATORY)
 
 - `factorAnalysisKey` — use the exact snake_case key from the matching input factor block (for example: historical_long_term_returns). Output the raw key as plain text — no backticks or other markdown, and never the bolded title or a rephrased form.
 - `oneLineExplanation` — one sentence with the clearest takeaway.
