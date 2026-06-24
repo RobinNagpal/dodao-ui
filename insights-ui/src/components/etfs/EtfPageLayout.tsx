@@ -50,8 +50,16 @@ export default function EtfPageLayout({
     <PageWrapper>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
       <div className="overflow-x-auto">
+        {/*
+          On mobile keep the breadcrumb and the Filters + Sort buttons on one
+          row. Deeper pages (groups / categories / providers / asset classes)
+          collapse the multi-level chain to a single back link; the root pages
+          (`/etfs`, `/etfs/countries/{country}`) have a single crumb that stays
+          inline. Same behavior as the stocks listing pages.
+        */}
         <Breadcrumbs
           breadcrumbs={breadcrumbs}
+          mobileBackOnly={true}
           rightButton={
             <div className="flex items-center gap-2">
               <EtfFiltersButton />
