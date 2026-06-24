@@ -355,9 +355,10 @@ export async function writeSeoDetails(slug: string, value: TariffReportSeoDetail
 //
 // These power the async generation flow: a route flips a section to
 // `InProgress`, runs the generator in the background, then flips it to
-// `Completed`/`Failed`. The admin UI polls `readSectionStatuses` to advance
-// its "Generate all" sequence. Status writes deliberately do NOT revalidate
-// the public report caches (status is admin-only and changes frequently).
+// `Completed`/`Failed`. The admin reads `readSectionStatuses` (via the table's
+// Refresh button) to see each section's state. Status writes deliberately do
+// NOT revalidate the public report caches (status is admin-only and changes
+// frequently).
 // ---------------------------------------------------------------------------
 
 export async function readSectionStatuses(slug: string): Promise<TariffSectionStatusMap> {

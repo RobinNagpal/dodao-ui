@@ -171,8 +171,8 @@ export enum ReportType {
  * Sections are generated asynchronously and regenerated in place: a re-run
  * overwrites that section's entry (flipping it back to `InProgress`, then
  * `Completed`/`Failed`), so the map always reflects the latest attempt — never
- * a historical log. The admin "Generate all" flow polls this to learn when a
- * section has finished before moving on to the next (dependency-ordered) step.
+ * a historical log. The admin re-reads this (via the table's Refresh button) to
+ * see each section's latest state.
  */
 export type TariffSectionGenerationStatus = 'NotStarted' | 'InProgress' | 'Completed' | 'Failed';
 

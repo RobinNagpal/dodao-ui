@@ -6,8 +6,12 @@ import type { ChapterReportField } from '@/utils/tariff-reports/chapter-generate
  * callback Lambda (the same machinery the stock/ETF flows use). Default `false`
  * runs the LLM call + DB write in-process. The flag name carries the `TARIFF`
  * keyword so it's unambiguous this gates tariff generation only.
+ *
+ * NOTE: deliberately NOT named `use…` — ESLint's `react-hooks/rules-of-hooks`
+ * treats any `use`-prefixed function as a React hook and errors when it's
+ * called outside a component/hook.
  */
-export function useLambdaForTariffGeneration(): boolean {
+export function isLambdaTariffGenerationEnabled(): boolean {
   return process.env.USE_LAMBDA_FOR_TARIFF_LLM_RESPONSE === 'true';
 }
 
@@ -25,8 +29,9 @@ function errorMessage(err: unknown): string {
  * called us returns right away, so a multi-minute Gemini call no longer holds
  * the request open past the CloudFront origin timeout (the cause of the 504 on
  * `understandIndustry`). No callback is needed: the background task already has
- * the Prisma client and saves directly. The admin UI polls `section_status` to
- * learn when the section lands.
+ * the Prisma client and saves directly. `section_status` records progress
+ * (InProgress → Completed/Failed); the admin re-fetches via the table's Refresh
+ * button to see when a section lands (we deliberately don't auto-poll).
  *
  * Caveat (intentional, documented): an in-process background task lives only in
  * this process's memory, so a redeploy/crash mid-run leaves the section stuck
@@ -36,7 +41,7 @@ function errorMessage(err: unknown): string {
  * exist yet — so that branch throws a clear error for now.)
  */
 export async function startTariffSectionGeneration(slug: string, section: ChapterReportField, generate: () => Promise<void>): Promise<void> {
-  if (useLambdaForTariffGeneration()) {
+  if (isLambdaTariffGenerationEnabled()) {
     throw new Error(
       'Lambda-based tariff generation (USE_LAMBDA_FOR_TARIFF_LLM_RESPONSE=true) is not wired for tariffs yet. ' +
         'Unset the flag to generate sections in-app.',

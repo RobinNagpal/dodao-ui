@@ -30,7 +30,8 @@ export function chapterGenerateRoute(
 }
 
 // Response of the async generate routes — the section was kicked off in the
-// background; the client polls `section-status` to learn when it finishes.
+// background; progress is tracked on `section_status` (read via the
+// `section-status` route / the admin table's Refresh button).
 export interface ChapterGenerateStartedResponse {
   status: 'started';
   section: ChapterReportField;

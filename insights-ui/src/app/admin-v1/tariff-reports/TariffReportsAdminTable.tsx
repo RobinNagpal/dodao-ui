@@ -1,56 +1,26 @@
 'use client';
 
-import type { SectionStatusResponse } from '@/app/api/industry-tariff-reports/chapters/[chapterSlug]/section-status/route';
 import type { InitTariffUpdatesResponse } from '@/app/api/industry-tariff-reports/chapters/[chapterSlug]/init-tariff-updates/route';
 import type { ChapterReportAdminListResponse, ChapterReportAdminRow } from '@/app/api/industry-tariff-reports/chapters/route';
-import { CHAPTER_GENERATE_STEPS, ChapterGenerateStep, ChapterReportField } from '@/utils/tariff-reports/chapter-generate-sections';
+import { CHAPTER_GENERATE_STEPS, ChapterGenerateStep } from '@/utils/tariff-reports/chapter-generate-sections';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { useState } from 'react';
 
-// Most section routes now generate asynchronously: the POST returns `{ status:
-// 'started' }` immediately and the work runs in the background on the server
-// (so a multi-minute Gemini call no longer 504s at the CloudFront origin). The
-// UI polls `section-status` to learn when each section lands before advancing
-// to the next (dependency-ordered) step.
-const SECTION_POLL_INTERVAL_MS = 4000;
-const SECTION_POLL_TIMEOUT_MS = 12 * 60 * 1000;
-
-async function waitForSection(slug: string, field: ChapterReportField): Promise<{ done: boolean; error?: string }> {
-  const statusUrl = `${getBaseUrl()}/api/industry-tariff-reports/chapters/${slug}/section-status`;
-  const deadline = Date.now() + SECTION_POLL_TIMEOUT_MS;
-
-  while (Date.now() < deadline) {
-    await new Promise((resolve) => setTimeout(resolve, SECTION_POLL_INTERVAL_MS));
-
-    let res: Response;
-    try {
-      res = await fetch(statusUrl, { cache: 'no-store' });
-    } catch {
-      continue; // transient network blip — keep polling until the deadline
-    }
-    if (!res.ok) continue;
-
-    const json = (await res.json()) as SectionStatusResponse;
-    const entry = json.sectionStatus?.[field];
-    if (entry?.status === 'Completed') return { done: true };
-    if (entry?.status === 'Failed') return { done: false, error: entry.error ?? 'Generation failed' };
-  }
-
-  return { done: false, error: 'Timed out waiting for the section to finish generating' };
-}
-
-// Tracks per-row run progress. `currentStep` is the index of the running step in
-// `CHAPTER_GENERATE_STEPS`; `error` is set if a step fails. `localStatus` overlays
-// the server-fetched `fields` so completed steps flip to ✓ before the next refetch.
+// Tracks per-row run progress. `currentStep` is the index of the step currently
+// being kicked off in `CHAPTER_GENERATE_STEPS`; `error` is set if a step fails
+// to start. Most section routes generate ASYNCHRONOUSLY — the POST returns
+// `{ status: 'started' }` immediately and the work runs in the background on the
+// server (so a multi-minute Gemini call no longer 504s at the CloudFront
+// origin). We intentionally do NOT poll for completion; the admin clicks
+// "Refresh" to re-fetch and see which sections have landed.
 interface RowRunState {
   currentStep: number | null;
   error: string | null;
-  localStatus: Partial<Record<ChapterReportField, boolean>>;
 }
 
-const EMPTY_RUN: RowRunState = { currentStep: null, error: null, localStatus: {} };
+const EMPTY_RUN: RowRunState = { currentStep: null, error: null };
 
 function StatusPill({ filled }: { filled: boolean }): JSX.Element {
   return (
@@ -88,7 +58,10 @@ function ChapterRow({ row, runState, onGenerateAll }: RowProps): JSX.Element {
         <div className="text-xs text-gray-400">oldUrl: {row.oldUrl ?? '—'}</div>
       </td>
       {CHAPTER_GENERATE_STEPS.map((step, idx) => {
-        const populated = runState.localStatus[step.field] ?? row.fields[step.field];
+        // Pills reflect whether the section has content in the DB (from the last
+        // fetch). Because generation is async and we don't poll, a section that
+        // is still running shows "—" until the admin clicks Refresh.
+        const populated = row.fields[step.field];
         const stepRunning = runState.currentStep === idx;
         return (
           <td key={step.field} className="px-2 py-3 align-top text-center">
@@ -103,7 +76,7 @@ function ChapterRow({ row, runState, onGenerateAll }: RowProps): JSX.Element {
           disabled={isRunning}
           className="px-3 py-1.5 rounded-md bg-blue-600 hover:bg-blue-700 disabled:bg-gray-600 disabled:cursor-not-allowed text-white text-xs font-medium"
         >
-          {isRunning ? `Running ${(runState.currentStep ?? 0) + 1}/${CHAPTER_GENERATE_STEPS.length}` : 'Generate all'}
+          {isRunning ? `Starting ${(runState.currentStep ?? 0) + 1}/${CHAPTER_GENERATE_STEPS.length}` : 'Generate all'}
         </button>
         {runState.error && <div className="mt-1 text-xs text-red-400">{runState.error}</div>}
       </td>
@@ -160,7 +133,7 @@ export default function TariffReportsAdminTable(): JSX.Element {
   };
 
   const generateAll = async (slug: string): Promise<void> => {
-    updateRun(slug, { currentStep: 0, error: null, localStatus: {} });
+    updateRun(slug, { currentStep: 0, error: null });
     try {
       for (let i = 0; i < CHAPTER_GENERATE_STEPS.length; i++) {
         const step = CHAPTER_GENERATE_STEPS[i] as ChapterGenerateStep;
@@ -169,25 +142,19 @@ export default function TariffReportsAdminTable(): JSX.Element {
         let succeeded: boolean;
         if (step.field === 'tariffUpdates') {
           // Still synchronous: the two-phase init + per-country fan-out is
-          // already chunked into single LLM calls that finish within the
-          // request, so it doesn't go through the async/poll path.
+          // already chunked into single LLM calls that finish within the request.
           succeeded = await runTariffUpdatesStep(slug);
         } else {
-          // These routes now kick the section off in the background and return
+          // These routes kick the section off in the background and return
           // `{ status: 'started' }` immediately. `postData` resolves to
           // `undefined` (without throwing) on a non-2xx, which here means the
-          // section failed to even start. Otherwise we poll until it lands so
-          // we don't fire the next (dependency-ordered) step too early.
+          // section failed to even *start*. We do NOT wait for completion — the
+          // sections are fired in dependency order and the admin clicks Refresh
+          // to see when they land.
           const startResult = await postData(`${getBaseUrl()}/api/industry-tariff-reports/chapters/${slug}/${step.apiPath}`, {});
-          if (startResult === undefined) {
+          succeeded = startResult !== undefined;
+          if (!succeeded) {
             updateRun(slug, { currentStep: null, error: `Step "${step.label}" failed to start — see server logs.` });
-            succeeded = false;
-          } else {
-            const outcome = await waitForSection(slug, step.field);
-            succeeded = outcome.done;
-            if (!succeeded) {
-              updateRun(slug, { currentStep: null, error: `Step "${step.label}" failed: ${outcome.error}` });
-            }
           }
         }
 
@@ -195,12 +162,6 @@ export default function TariffReportsAdminTable(): JSX.Element {
           await reFetchData();
           return;
         }
-
-        // Mark this field as filled in the local overlay so the pill flips to ✓.
-        setRunStates((prev) => {
-          const cur = prev[slug] ?? EMPTY_RUN;
-          return { ...prev, [slug]: { ...cur, localStatus: { ...cur.localStatus, [step.field]: true } } };
-        });
       }
       updateRun(slug, { currentStep: null });
       await reFetchData();
@@ -214,25 +175,37 @@ export default function TariffReportsAdminTable(): JSX.Element {
   if (!data || data.rows.length === 0) return <div className="py-4 text-sm">No tariff chapter reports found.</div>;
 
   return (
-    <div className="overflow-x-auto rounded-lg border border-gray-700">
-      <table className="min-w-full divide-y divide-gray-700">
-        <thead className="bg-gray-800">
-          <tr>
-            <th className="px-3 py-2 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Chapter</th>
-            {CHAPTER_GENERATE_STEPS.map((step) => (
-              <th key={step.field} className="px-2 py-2 text-center text-xs font-medium text-gray-300 tracking-wider">
-                {step.label}
-              </th>
+    <div>
+      <div className="mb-3 flex items-center justify-between gap-3">
+        <p className="text-xs text-gray-400">Sections generate in the background. Click “Refresh” to update the statuses below.</p>
+        <button
+          type="button"
+          onClick={() => reFetchData()}
+          className="px-3 py-1.5 rounded-md bg-gray-700 hover:bg-gray-600 text-white text-xs font-medium whitespace-nowrap"
+        >
+          Refresh
+        </button>
+      </div>
+      <div className="overflow-x-auto rounded-lg border border-gray-700">
+        <table className="min-w-full divide-y divide-gray-700">
+          <thead className="bg-gray-800">
+            <tr>
+              <th className="px-3 py-2 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Chapter</th>
+              {CHAPTER_GENERATE_STEPS.map((step) => (
+                <th key={step.field} className="px-2 py-2 text-center text-xs font-medium text-gray-300 tracking-wider">
+                  {step.label}
+                </th>
+              ))}
+              <th className="px-3 py-2 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Action</th>
+            </tr>
+          </thead>
+          <tbody className="bg-gray-900 text-gray-200">
+            {data.rows.map((row) => (
+              <ChapterRow key={row.slug} row={row} runState={runStates[row.slug] ?? EMPTY_RUN} onGenerateAll={generateAll} />
             ))}
-            <th className="px-3 py-2 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Action</th>
-          </tr>
-        </thead>
-        <tbody className="bg-gray-900 text-gray-200">
-          {data.rows.map((row) => (
-            <ChapterRow key={row.slug} row={row} runState={runStates[row.slug] ?? EMPTY_RUN} onGenerateAll={generateAll} />
-          ))}
-        </tbody>
-      </table>
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }
