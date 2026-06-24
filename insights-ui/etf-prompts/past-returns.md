@@ -116,7 +116,7 @@ When the factor carries a `factorAnalysisGroupInstructions` string, treat it as 
 {{#each factorAnalysisArray}}
 
 #### Title: {{factorAnalysisTitle}}
-- Key: {{factorAnalysisKey}}
+- Key: {{factorAnalysisKey}} (VERY IMPORTANT AND MANDATORY)
 - Description: {{factorAnalysisDescription}}
 {{#if factorAnalysisGroupInstructions}}- Group-specific perspective ({{../groupKey}}): {{factorAnalysisGroupInstructions}}
 {{/if}}- Metrics (if available): {{factorAnalysisMetrics}}

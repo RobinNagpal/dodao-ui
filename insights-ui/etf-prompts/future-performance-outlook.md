@@ -155,7 +155,7 @@ Shorter horizons are inherently less certain than the 5-year figure — be more 
 {{#each factorAnalysisArray}}
 
 #### Title: {{factorAnalysisTitle}}
-- Key: {{factorAnalysisKey}}
+- Key: {{factorAnalysisKey}} (VERY IMPORTANT AND MANDATORY)
 - Description: {{factorAnalysisDescription}}
 {{#if factorAnalysisGroupInstructions}}- Group-specific perspective ({{../groupKey}}): {{factorAnalysisGroupInstructions}}
 {{/if}}- Metrics (if available): {{factorAnalysisMetrics}}
