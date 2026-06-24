@@ -25,7 +25,7 @@ export const POST = withErrorHandlingV2<InitTariffUpdatesResponse>(async (_req: 
 
   if (isLambdaTariffGenerationEnabled()) {
     await startTariffSectionGeneration(chapterSlug, 'tariffUpdates', () =>
-      getTariffUpdatesForIndustryAndSaveToFile(chapterSlug, getTodayDateAsMonthDDYYYYFormat()),
+      getTariffUpdatesForIndustryAndSaveToFile(chapterSlug, getTodayDateAsMonthDDYYYYFormat())
     );
     return { countries: [] };
   }

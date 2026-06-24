@@ -37,7 +37,7 @@ export type ChapterGenerateResponse = IndustryTariffReport | ChapterGenerateStar
 // is tracked under in background mode.
 export function chapterGenerateRoute(
   section: ChapterReportField,
-  generate: (slug: string, body: unknown) => Promise<void>,
+  generate: (slug: string, body: unknown) => Promise<void>
 ): (req: NextRequest, ctx: { params: Promise<{ chapterSlug: string }> }) => Promise<ChapterGenerateResponse> {
   return async (req, { params }) => {
     const { chapterSlug } = await params;

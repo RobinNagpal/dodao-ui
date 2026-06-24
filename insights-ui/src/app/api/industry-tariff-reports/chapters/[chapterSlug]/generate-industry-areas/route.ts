@@ -3,5 +3,5 @@ import { getAndWriteIndustryAreaSectionToJsonFile } from '@/scripts/industry-tar
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 
 export const POST = withErrorHandlingV2<ChapterGenerateResponse>(
-  chapterGenerateRoute('industryAreasSections', (slug) => getAndWriteIndustryAreaSectionToJsonFile(slug)),
+  chapterGenerateRoute('industryAreasSections', (slug) => getAndWriteIndustryAreaSectionToJsonFile(slug))
 );

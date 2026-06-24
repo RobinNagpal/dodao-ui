@@ -64,5 +64,5 @@ export const POST = withErrorHandlingV2<ChapterGenerateResponse>(
 
     const existing: TariffReportSeoDetails = (await readSeoDetails(slug)) ?? {};
     await regenerateOneSection(slug, sectionParam, existing);
-  }),
+  })
 );

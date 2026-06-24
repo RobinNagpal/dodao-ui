@@ -18,5 +18,5 @@ export const POST = withErrorHandlingV2<ChapterGenerateResponse>(
   chapterGenerateRoute('tariffUpdates', async (slug, body) => {
     const { date, countryName } = (body as GenerateTariffUpdatesBody) ?? {};
     await getTariffUpdatesForIndustryAndSaveToFile(slug, date ?? getTodayDateAsMonthDDYYYYFormat(), countryName);
-  }),
+  })
 );
