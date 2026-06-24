@@ -115,7 +115,7 @@ Cross-cutting rules:
 
 If a factor’s core metric is missing, use the lookup rule first; otherwise judge conservatively using the closest related evidence.
 
-## 4. For each item in `factorAnalysisArray` produce
+## 4. For each item in `factorAnalysisArray` produce (VERY IMPORTANT AND MANDATORY)
 
 - `factorAnalysisKey` — use the exact snake_case key from the matching input factor block (for example: short_term_hold_outlook). Output the raw key as plain text — no backticks or other markdown, and never the bolded title or a rephrased form.
 - `oneLineExplanation` — one sentence with the clearest investor takeaway.

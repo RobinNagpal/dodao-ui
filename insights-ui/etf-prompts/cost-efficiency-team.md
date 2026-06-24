@@ -82,7 +82,7 @@ The per-factor description carries the generic measurement principle and Pass/Fa
 
 If a factor's core metric is absent, first try the "Factor-metric lookup" rule. If still unavailable, judge from the closest related evidence — do not Fail on one missing secondary data point.
 
-## 4. For each item in `factorAnalysisArray` produce
+## 4. For each item in `factorAnalysisArray` produce (VERY IMPORTANT AND MANDATORY)
 
 - `factorAnalysisKey` — use the exact snake_case key from the matching input factor block (for example: expense_ratio_vs_competition). Output the raw key as plain text — no backticks or other markdown, and never the bolded title or a rephrased form.
 - `oneLineExplanation` — one sentence with the clearest takeaway.
