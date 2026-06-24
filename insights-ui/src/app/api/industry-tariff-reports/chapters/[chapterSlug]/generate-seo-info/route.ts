@@ -1,4 +1,4 @@
-import { chapterAsyncGenerateRoute, ChapterGenerateStartedResponse } from '@/app/api/industry-tariff-reports/chapters/[chapterSlug]/chapter-generate-handler';
+import { chapterGenerateRoute, ChapterGenerateResponse } from '@/app/api/industry-tariff-reports/chapters/[chapterSlug]/chapter-generate-handler';
 import {
   generateAndSaveAllSeoDetails,
   generateExecutiveSummarySeo,
@@ -50,8 +50,8 @@ async function regenerateOneSection(slug: string, section: ReportType, existing:
   await writeSeoDetails(slug, existing);
 }
 
-export const POST = withErrorHandlingV2<ChapterGenerateStartedResponse>(
-  chapterAsyncGenerateRoute('seoDetails', async (slug, body) => {
+export const POST = withErrorHandlingV2<ChapterGenerateResponse>(
+  chapterGenerateRoute('seoDetails', async (slug, body) => {
     const sectionParam = ((body as { section?: string } | null)?.section as ReportType | undefined) ?? ReportType.ALL;
     if (!VALID_SECTION_VALUES.includes(sectionParam)) {
       throw new Error(`Invalid section: ${sectionParam}. Valid sections are: ${VALID_SECTION_VALUES.join(', ')}`);

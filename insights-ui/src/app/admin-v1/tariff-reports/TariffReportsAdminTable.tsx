@@ -118,11 +118,14 @@ export default function TariffReportsAdminTable(): JSX.Element {
       if (countryResult === undefined) failures.push(country);
     }
 
-    // Match the server-side rule (`generateAllCountryTariffs` throws only if
-    // zero countries land): treat the step as a failure only when nothing
-    // was persisted. Partial success keeps the chain alive — downstream
-    // sections only need at least one country in `tariffUpdates` to read.
-    if (failures.length === initResult.countries.length) {
+    // In BACKGROUND mode `init` returns an empty country list (it kicks the
+    // whole section off as one background task), so there's nothing to fan out
+    // and this is a success. In SYNCHRONOUS mode, match the server-side rule
+    // (`generateAllCountryTariffs` throws only if zero countries land): treat
+    // the step as a failure only when nothing was persisted. Partial success
+    // keeps the chain alive — downstream sections only need at least one
+    // country in `tariffUpdates` to read.
+    if (initResult.countries.length > 0 && failures.length === initResult.countries.length) {
       updateRun(slug, { currentStep: null, error: `Step "tariffUpdates" failed for all countries: ${failures.join(', ')}` });
       return false;
     }

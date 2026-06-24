@@ -1,7 +1,5 @@
-import { chapterAsyncGenerateRoute, ChapterGenerateStartedResponse } from '@/app/api/industry-tariff-reports/chapters/[chapterSlug]/chapter-generate-handler';
+import { chapterGenerateRoute, ChapterGenerateResponse } from '@/app/api/industry-tariff-reports/chapters/[chapterSlug]/chapter-generate-handler';
 import { getAndWriteIndustryHeadings } from '@/scripts/industry-tariff-reports/00-industry-main-headings';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 
-export const POST = withErrorHandlingV2<ChapterGenerateStartedResponse>(
-  chapterAsyncGenerateRoute('industryAreas', (slug) => getAndWriteIndustryHeadings(slug)),
-);
+export const POST = withErrorHandlingV2<ChapterGenerateResponse>(chapterGenerateRoute('industryAreas', (slug) => getAndWriteIndustryHeadings(slug)));
