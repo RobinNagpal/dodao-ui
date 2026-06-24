@@ -2197,6 +2197,14 @@ model TariffChapterReport {
   /// [TariffReportSeoDetails]
   seoDetails Json? @map("seo_details")
 
+  // Per-section generation status, keyed by the section's column name above
+  // (e.g. `understandIndustry`). Sections generate asynchronously and overwrite
+  // their own entry on each (re)generation; the admin reads this map (Refresh
+  // button) to see when a section has finished. See `TariffSectionStatusMap`
+  // in tariff-types.ts.
+  /// [TariffSectionStatusMap]
+  sectionStatus Json? @map("section_status")
+
   spaceId   String   @default("koala_gains") @map("space_id")
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
