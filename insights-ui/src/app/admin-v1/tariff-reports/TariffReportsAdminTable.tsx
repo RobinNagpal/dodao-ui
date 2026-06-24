@@ -42,9 +42,10 @@ interface RowProps {
   row: ChapterReportAdminRow;
   runState: RowRunState;
   onGenerateAll: (slug: string) => Promise<void>;
+  onGenerateSection: (slug: string, step: ChapterGenerateStep, idx: number) => Promise<void>;
 }
 
-function ChapterRow({ row, runState, onGenerateAll }: RowProps): JSX.Element {
+function ChapterRow({ row, runState, onGenerateAll, onGenerateSection }: RowProps): JSX.Element {
   const padded = row.chapter.number.toString().padStart(2, '0');
   const isRunning = runState.currentStep !== null;
 
@@ -63,9 +64,30 @@ function ChapterRow({ row, runState, onGenerateAll }: RowProps): JSX.Element {
         // is still running shows "—" until the admin clicks Refresh.
         const populated = row.fields[step.field];
         const stepRunning = runState.currentStep === idx;
+        // Per-section "Gen" generates just this section via its own route. It's
+        // disabled until every prerequisite section has content (so admins can't
+        // generate out of dependency order) — generate a prerequisite, click
+        // Refresh, then its dependents unlock.
+        const missingDeps = step.requires.filter((dep) => !row.fields[dep]);
+        const blocked = missingDeps.length > 0;
         return (
           <td key={step.field} className="px-2 py-3 align-top text-center">
-            {stepRunning ? <RunningPill /> : <StatusPill filled={populated} />}
+            <div className="flex flex-col items-center gap-1">
+              {stepRunning ? <RunningPill /> : <StatusPill filled={populated} />}
+              <button
+                type="button"
+                onClick={() => onGenerateSection(row.slug, step, idx)}
+                disabled={isRunning || blocked}
+                title={
+                  step.requires.length === 0
+                    ? 'No prerequisites'
+                    : `Requires: ${step.requires.join(', ')}${blocked ? ` — missing: ${missingDeps.join(', ')}` : ''}`
+                }
+                className="px-1.5 py-0.5 rounded bg-gray-700 hover:bg-gray-600 disabled:bg-gray-800 disabled:text-gray-500 disabled:cursor-not-allowed text-white text-[10px]"
+              >
+                Gen
+              </button>
+            </div>
           </td>
         );
       })}
@@ -173,6 +195,29 @@ export default function TariffReportsAdminTable(): JSX.Element {
     }
   };
 
+  // Generate a single section via its own route — the "generate one, then wait"
+  // flow. Same per-mode behavior as a step inside `generateAll`: background mode
+  // returns immediately (refresh later to see it land), synchronous mode waits.
+  const generateSection = async (slug: string, step: ChapterGenerateStep, idx: number): Promise<void> => {
+    updateRun(slug, { currentStep: idx, error: null });
+    try {
+      let succeeded: boolean;
+      if (step.field === 'tariffUpdates') {
+        succeeded = await runTariffUpdatesStep(slug);
+      } else {
+        const startResult = await postData(`${getBaseUrl()}/api/industry-tariff-reports/chapters/${slug}/${step.apiPath}`, {});
+        succeeded = startResult !== undefined;
+        if (!succeeded) {
+          updateRun(slug, { error: `Step "${step.label}" failed to start — see server logs.` });
+        }
+      }
+      updateRun(slug, { currentStep: null });
+      await reFetchData();
+    } catch (err) {
+      updateRun(slug, { currentStep: null, error: err instanceof Error ? err.message : 'Generation failed' });
+    }
+  };
+
   if (loading) return <div className="py-8 text-sm">Loading tariff chapter reports...</div>;
   if (error) return <div className="py-4 text-sm text-red-500">Error: {error}</div>;
   if (!data || data.rows.length === 0) return <div className="py-4 text-sm">No tariff chapter reports found.</div>;
@@ -180,7 +225,9 @@ export default function TariffReportsAdminTable(): JSX.Element {
   return (
     <div>
       <div className="mb-3 flex items-center justify-between gap-3">
-        <p className="text-xs text-gray-400">Sections generate in the background. Click “Refresh” to update the statuses below.</p>
+        <p className="text-xs text-gray-400">
+          “Generate all” runs every section; per-column “Gen” runs one section. Generation is async — click “Refresh” to update the statuses below.
+        </p>
         <button
           type="button"
           onClick={() => reFetchData()}
@@ -189,6 +236,25 @@ export default function TariffReportsAdminTable(): JSX.Element {
           Refresh
         </button>
       </div>
+
+      <details className="mb-3 rounded-md border border-gray-700 bg-gray-800/40 p-3 text-xs text-gray-400">
+        <summary className="cursor-pointer text-gray-300">
+          Generation order &amp; dependencies — generate a section only after its prerequisites show ✓ (its “Gen” button stays disabled until then)
+        </summary>
+        <ul className="mt-2 list-disc space-y-0.5 pl-5">
+          {CHAPTER_GENERATE_STEPS.map((step) => (
+            <li key={step.field}>
+              <span className="text-gray-200">{step.label}</span>
+              {step.requires.length === 0 ? ' — no prerequisites' : ` — needs ${step.requires.join(', ')}`}
+            </li>
+          ))}
+        </ul>
+        <ul className="mt-2 list-disc space-y-0.5 pl-5">
+          <li>industryAreas is the headings tree — generate it first; every section needs it.</li>
+          <li>tariffEngineering uses tariffUpdates if present, but does not require it.</li>
+          <li>seoDetails should be generated last — it summarizes every other section.</li>
+        </ul>
+      </details>
       <div className="overflow-x-auto rounded-lg border border-gray-700">
         <table className="min-w-full divide-y divide-gray-700">
           <thead className="bg-gray-800">
@@ -204,7 +270,13 @@ export default function TariffReportsAdminTable(): JSX.Element {
           </thead>
           <tbody className="bg-gray-900 text-gray-200">
             {data.rows.map((row) => (
-              <ChapterRow key={row.slug} row={row} runState={runStates[row.slug] ?? EMPTY_RUN} onGenerateAll={generateAll} />
+              <ChapterRow
+                key={row.slug}
+                row={row}
+                runState={runStates[row.slug] ?? EMPTY_RUN}
+                onGenerateAll={generateAll}
+                onGenerateSection={generateSection}
+              />
             ))}
           </tbody>
         </table>
