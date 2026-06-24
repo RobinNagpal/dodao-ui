@@ -29,6 +29,7 @@ export default async function EtfProviderDetail({ country, provider, searchParam
       description={`Explore ${displayCountry} ETFs issued by ${provider} with detailed financial metrics, expense ratios, dividend analysis, and AI-driven insights.`}
       currentCountry={country}
       switcherSection="providers"
+      switcherHref={(c) => etfBrowseDetailPath(c, 'providers', slugifyEtfTag(provider))}
       extraBreadcrumbs={[
         { name: 'All Providers', href: etfBrowsePath(country, 'providers'), current: false },
         { name: provider, href: etfBrowseDetailPath(country, 'providers', slugifyEtfTag(provider)), current: true },

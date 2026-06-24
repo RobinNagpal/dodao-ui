@@ -178,6 +178,10 @@ Remaining:
 
 ## Stocks & ETFs common
 
+### SEO — soft 404 on empty country listing pages
+
+- [ ] Empty country+industry (stocks) and country+group/category, asset-class, provider (ETFs) listing pages return 200 + thin content → soft 404 in GSC. Emit `robots: { index: false, follow: true }` when the listing has zero results (pattern: `crowd-funding/projects/[projectId]/page.tsx`). Low priority — currently mitigated by dropping these URLs from the sitemap.
+
 ### Trends page
 
 > Decide once: shared `Trend` model linked to both stock and ETF join tables, or parallel

@@ -43,6 +43,7 @@ export default async function EtfGroupCategoryDetail({ country, groupKey, catego
       description={`Explore ${displayCountry} ETFs in the ${knownCategory.name} category (part of ${groupObj.name}) with detailed financial metrics, expense ratios, dividend analysis, and AI-driven insights.`}
       currentCountry={country}
       switcherSection="groups"
+      switcherHref={(c) => etfGroupCategoryPath(c, groupObj.key, knownCategory.name)}
       extraBreadcrumbs={[
         { name: groupObj.name, href: etfBrowseDetailPath(country, 'groups', groupObj.key), current: false },
         { name: knownCategory.name, href: etfGroupCategoryPath(country, groupObj.key, knownCategory.name), current: true },
