@@ -1,5 +1,6 @@
 'use client';
 
+import type { SectionStatusResponse } from '@/app/api/industry-tariff-reports/chapters/[chapterSlug]/section-status/route';
 import type { InitTariffUpdatesResponse } from '@/app/api/industry-tariff-reports/chapters/[chapterSlug]/init-tariff-updates/route';
 import type { ChapterReportAdminListResponse, ChapterReportAdminRow } from '@/app/api/industry-tariff-reports/chapters/route';
 import { CHAPTER_GENERATE_STEPS, ChapterGenerateStep, ChapterReportField } from '@/utils/tariff-reports/chapter-generate-sections';
@@ -7,6 +8,38 @@ import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { useState } from 'react';
+
+// Most section routes now generate asynchronously: the POST returns `{ status:
+// 'started' }` immediately and the work runs in the background on the server
+// (so a multi-minute Gemini call no longer 504s at the CloudFront origin). The
+// UI polls `section-status` to learn when each section lands before advancing
+// to the next (dependency-ordered) step.
+const SECTION_POLL_INTERVAL_MS = 4000;
+const SECTION_POLL_TIMEOUT_MS = 12 * 60 * 1000;
+
+async function waitForSection(slug: string, field: ChapterReportField): Promise<{ done: boolean; error?: string }> {
+  const statusUrl = `${getBaseUrl()}/api/industry-tariff-reports/chapters/${slug}/section-status`;
+  const deadline = Date.now() + SECTION_POLL_TIMEOUT_MS;
+
+  while (Date.now() < deadline) {
+    await new Promise((resolve) => setTimeout(resolve, SECTION_POLL_INTERVAL_MS));
+
+    let res: Response;
+    try {
+      res = await fetch(statusUrl, { cache: 'no-store' });
+    } catch {
+      continue; // transient network blip — keep polling until the deadline
+    }
+    if (!res.ok) continue;
+
+    const json = (await res.json()) as SectionStatusResponse;
+    const entry = json.sectionStatus?.[field];
+    if (entry?.status === 'Completed') return { done: true };
+    if (entry?.status === 'Failed') return { done: false, error: entry.error ?? 'Generation failed' };
+  }
+
+  return { done: false, error: 'Timed out waiting for the section to finish generating' };
+}
 
 // Tracks per-row run progress. `currentStep` is the index of the running step in
 // `CHAPTER_GENERATE_STEPS`; `error` is set if a step fails. `localStatus` overlays
@@ -135,16 +168,26 @@ export default function TariffReportsAdminTable(): JSX.Element {
 
         let succeeded: boolean;
         if (step.field === 'tariffUpdates') {
+          // Still synchronous: the two-phase init + per-country fan-out is
+          // already chunked into single LLM calls that finish within the
+          // request, so it doesn't go through the async/poll path.
           succeeded = await runTariffUpdatesStep(slug);
         } else {
-          // `postData` resolves to `undefined` (without throwing) when the API
-          // returns a non-2xx. Treat that as a hard stop so we don't paint later
-          // steps green while the chain has already broken — and so cascading
-          // failures (e.g. tariffUpdates → executiveSummary) surface immediately.
-          const result = await postData(`${getBaseUrl()}/api/industry-tariff-reports/chapters/${slug}/${step.apiPath}`, {});
-          succeeded = result !== undefined;
-          if (!succeeded) {
-            updateRun(slug, { currentStep: null, error: `Step "${step.label}" failed — see server logs.` });
+          // These routes now kick the section off in the background and return
+          // `{ status: 'started' }` immediately. `postData` resolves to
+          // `undefined` (without throwing) on a non-2xx, which here means the
+          // section failed to even start. Otherwise we poll until it lands so
+          // we don't fire the next (dependency-ordered) step too early.
+          const startResult = await postData(`${getBaseUrl()}/api/industry-tariff-reports/chapters/${slug}/${step.apiPath}`, {});
+          if (startResult === undefined) {
+            updateRun(slug, { currentStep: null, error: `Step "${step.label}" failed to start — see server logs.` });
+            succeeded = false;
+          } else {
+            const outcome = await waitForSection(slug, step.field);
+            succeeded = outcome.done;
+            if (!succeeded) {
+              updateRun(slug, { currentStep: null, error: `Step "${step.label}" failed: ${outcome.error}` });
+            }
           }
         }
 
