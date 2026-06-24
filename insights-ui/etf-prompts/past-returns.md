@@ -74,7 +74,7 @@ Two cross-cutting reminders that apply on top of every factor:
 
 ## 4. For each item in `factorAnalysisArray` produce (VERY IMPORTANT AND MANDATORY)
 
-- `factorAnalysisKey` — use the exact snake_case key from the matching input factor block (for example: historical_long_term_returns). Output the raw key as plain text — no backticks or other markdown, and never the bolded title or a rephrased form.
+- `factorAnalysisKey` — use the exact snake_case key from the matching input factor block (for example: historical_long_term_returns). Output the raw key as plain text — no backticks or other markdown, and never the bolded title or a rephrased form. (VERY IMPORTANT AND MANDATORY)
 - `oneLineExplanation` — one sentence with the clearest takeaway.
 - `detailedExplanation` — one short paragraph. Use the metrics listed in `factorAnalysisMetrics` and any other strongly relevant input field. Every conclusion needs a numeric anchor. If the factor is a weak fit for this ETF, say so and judge on the closest relevant evidence rather than forcing a Fail.
 - `result` — `"Pass"` or `"Fail"` per Section 3.

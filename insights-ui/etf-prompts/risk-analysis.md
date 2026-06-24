@@ -83,7 +83,7 @@ If a factor's core metric is absent, first try the "Factor-metric lookup" rule. 
 
 ## 4. For each item in `factorAnalysisArray` produce (VERY IMPORTANT AND MANDATORY)
 
-- `factorAnalysisKey` — use the exact snake_case key from the matching input factor block (for example: risk_adjusted_return). Output the raw key as plain text — no backticks or other markdown, and never the bolded title or a rephrased form.
+- `factorAnalysisKey` — use the exact snake_case key from the matching input factor block (for example: risk_adjusted_return). Output the raw key as plain text — no backticks or other markdown, and never the bolded title or a rephrased form. (VERY IMPORTANT AND MANDATORY)
 - `oneLineExplanation` — one sentence with the clearest takeaway, stated in terms a retail reader can act on (not a metric definition).
 - `detailedExplanation` — one short paragraph. Use the metrics listed in `factorAnalysisMetrics` and any other strongly relevant input field. Every conclusion needs a numeric anchor. Every cited metric must sit next to a peer / category / benchmark comparison number plus a plain-English direction word (`better than`, `in line with`, `worse than`, `above`, `below`) — never leave a Sharpe, drawdown, capture, or risk score stranded. Close with one clause translating the `Pass` / `Fail` into what it means for an investor holding this fund (e.g. "Pass here means the fund is delivering the promised decorrelation", "Fail here means the fund's fate is tethered to a handful of mega-cap names"). If the factor is a weak fit for this ETF, say so and judge on the closest relevant evidence rather than forcing a Fail.
 - `result` — `"Pass"` or `"Fail"` per the factor's own description and Section 3.

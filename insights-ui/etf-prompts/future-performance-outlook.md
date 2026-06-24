@@ -117,7 +117,7 @@ If a factor’s core metric is missing, use the lookup rule first; otherwise jud
 
 ## 4. For each item in `factorAnalysisArray` produce (VERY IMPORTANT AND MANDATORY)
 
-- `factorAnalysisKey` — use the exact snake_case key from the matching input factor block (for example: short_term_hold_outlook). Output the raw key as plain text — no backticks or other markdown, and never the bolded title or a rephrased form.
+- `factorAnalysisKey` — use the exact snake_case key from the matching input factor block (for example: short_term_hold_outlook). Output the raw key as plain text — no backticks or other markdown, and never the bolded title or a rephrased form. (VERY IMPORTANT AND MANDATORY)
 - `oneLineExplanation` — one sentence with the clearest investor takeaway.
 - `detailedExplanation` — one short paragraph that applies the factor’s bar to THIS ETF. Use the listed metrics and any strongly relevant input field or lookup result. Anchor conclusions with at least one concrete detail.
 - `result` — `"Pass"` or `"Fail"` per Section 3 and the factor’s own description.
