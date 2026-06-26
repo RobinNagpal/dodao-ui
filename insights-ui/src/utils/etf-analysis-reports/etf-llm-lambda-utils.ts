@@ -4,6 +4,7 @@ import { EtfReportType } from '@/types/etf/etf-analysis-types';
 import { getDefaultGeminiModel, getDefaultLLMProvider } from '@/types/llmConstants';
 import { compileTemplate, createPromptInvocation, loadSchema, updateInvocationStatus, validateData } from '@/util/get-llm-response';
 import { callLambdaForLLMResponseViaCallback, LLMResponseViaLambdaRequest } from '@/utils/analysis-reports/llm-callback-lambda-utils';
+import { processEtfReportLLMResponseInBackground } from '@/utils/etf-analysis-reports/background-etf-llm-generation-utils';
 import { resolveEtfOutputSchema, resolveEtfPromptTemplate } from '@/utils/etf-analysis-reports/etf-prompt-template-utils';
 import path from 'path';
 import { PromptInvocationStatus } from '@prisma/client';
@@ -16,6 +17,24 @@ export interface EtfLLMRequest {
   promptKey: string;
   spaceId: string;
   reportType: EtfReportType;
+}
+
+/**
+ * Whether an ETF report's LLM call should be offloaded to the AWS Lambda, read
+ * from the `USE_LAMBDA_FOR_LLM_RESPONSE` env var (the SAME flag the stock path
+ * uses). In-process background generation is now the DEFAULT (we run on a
+ * long-lived AWS server, not time-limited Vercel), so the Lambda is opt-in:
+ *   - unset        → background (in-process) — default.
+ *   - `false`      → background (in-process).
+ *   - `true`       → call the AWS Lambda (the original behavior).
+ *
+ * The generation-request workflow is untouched either way — both paths create
+ * the same invocation, save via the same `saveEtfReportAndAdvanceGeneration`
+ * function, and chain the next step the same way; only the LLM-call mechanism
+ * differs.
+ */
+function shouldUseLambdaForLLMResponse(): boolean {
+  return process.env.USE_LAMBDA_FOR_LLM_RESPONSE === 'true';
 }
 
 async function updateEtfLastInvocationTime(generationRequestId: string, reportType: EtfReportType): Promise<void> {
@@ -96,7 +115,25 @@ export async function callEtfLambdaForLLMResponse(args: EtfLLMRequest): Promise<
       },
     };
 
-    await callLambdaForLLMResponseViaCallback(lambdaRequest);
+    if (shouldUseLambdaForLLMResponse()) {
+      await callLambdaForLLMResponseViaCallback(lambdaRequest);
+    } else {
+      // Detach the heavy LLM call from the request so this returns immediately,
+      // mirroring the lambda's instant ack. The background task runs the LLM
+      // in-process and then saves + chains the next step directly (no callback
+      // round-trip).
+      void processEtfReportLLMResponseInBackground({
+        symbol,
+        exchange,
+        reportType,
+        generationRequestId,
+        invocationId: invocation.id,
+        llmProvider,
+        model,
+        prompt: finalPrompt,
+        outputSchema,
+      });
+    }
 
     await updateEtfLastInvocationTime(generationRequestId, reportType);
   } catch (e) {

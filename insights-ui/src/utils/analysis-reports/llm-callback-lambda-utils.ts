@@ -88,7 +88,7 @@ export async function callLambdaForLLMResponseViaCallback<Input>(request: LLMRes
  * treats any `use`-prefixed function as a React hook and errors when it's
  * called outside a component/hook.
  */
-function isBackgroundLLMGenerationEnabled(): boolean {
+function shouldUseLambdaForLLMResponse(): boolean {
   return process.env.USE_LAMBDA_FOR_LLM_RESPONSE === 'true';
 }
 
@@ -215,7 +215,7 @@ export async function getLLMResponseForPromptViaInvocationViaLambda<Input>(args:
     // generation, which always carries both a `reportType` and an `exchange`.
     // Daily movers (no `reportType`) continue to go through the lambda
     // regardless of the flag.
-    if (reportType && exchange && isBackgroundLLMGenerationEnabled()) {
+    if (reportType && exchange && !shouldUseLambdaForLLMResponse()) {
       // Detach the heavy LLM call from the request so this returns immediately,
       // mirroring the lambda's instant ack. The background task runs the LLM
       // in-process and then saves + chains the next step directly (no callback
