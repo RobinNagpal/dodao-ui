@@ -128,7 +128,7 @@ export const revalidateAllEtfTagsAwaited = async (symbol: string, exchange: stri
 /**
  * Listing-page cache tags. One tag per (page-type, country) tuple so each
  * listing surface invalidates independently. ETF report saves do NOT fire
- * these — listings refresh on the 2-week TTL or on explicit admin action.
+ * these — listings refresh on the 1-week TTL or on explicit admin action.
  */
 const ETF_LISTINGS_PREFIX = 'etf_listings' as const;
 

@@ -20,7 +20,8 @@ export async function saveEtfFactorAnalysisResponse(
   symbol: string,
   exchange: string,
   response: EtfCategoryAnalysisResponse,
-  categoryKey: EtfAnalysisCategory
+  categoryKey: EtfAnalysisCategory,
+  options?: { skipRevalidation?: boolean }
 ): Promise<void> {
   const spaceId = KoalaGainsSpaceId;
   const etfRecord = await fetchEtfBySymbolAndExchange(symbol, exchange);
@@ -108,14 +109,24 @@ export async function saveEtfFactorAnalysisResponse(
   const score = validFactors.filter((f) => f.result && f.result.toLowerCase().includes('pass')).length;
   await updateEtfCachedScore(etfRecord.id, categoryKey, score);
 
-  // Narrow tag for the specific category subpage + umbrella for the main page.
-  // Listing pages have their own 2-week TTL cache and intentionally do NOT
+  // Always invalidate the narrow tag for the specific category subpage. The
+  // umbrella (main page) is deferred during a multi-step generation and fired
+  // only on the LAST step (see `saveEtfReportAndAdvanceGeneration`), so a full
+  // generation invalidates the main report once instead of once per step.
+  // Listing pages have their own 1-week TTL cache and intentionally do NOT
   // depend on per-ETF report saves to refresh.
   revalidateEtfCategoryReportTag(symbol, exchange, categoryKey);
-  revalidateEtfAndExchangeTag(symbol, exchange);
+  if (!options?.skipRevalidation) {
+    revalidateEtfAndExchangeTag(symbol, exchange);
+  }
 }
 
-export async function saveEtfFinalSummaryResponse(symbol: string, exchange: string, response: EtfFinalSummaryResponse): Promise<void> {
+export async function saveEtfFinalSummaryResponse(
+  symbol: string,
+  exchange: string,
+  response: EtfFinalSummaryResponse,
+  options?: { skipRevalidation?: boolean }
+): Promise<void> {
   const etfRecord = await fetchEtfBySymbolAndExchange(symbol, exchange);
 
   await prisma.etf.update({
@@ -126,7 +137,12 @@ export async function saveEtfFinalSummaryResponse(symbol: string, exchange: stri
     },
   });
 
-  revalidateEtfAndExchangeTag(symbol, exchange);
+  // Final-summary content lives on the main page only, so it has no narrow tag;
+  // the umbrella is its tag. As the normal last step, `skipRevalidation` is
+  // false here and this fires the main-page tag + CloudFront purge once.
+  if (!options?.skipRevalidation) {
+    revalidateEtfAndExchangeTag(symbol, exchange);
+  }
 }
 
 /**
@@ -139,7 +155,12 @@ export interface EtfCompetitionLlmResponse {
   competitionAnalysisArray: CompetitionAnalysis[];
 }
 
-export async function saveEtfCompetitionResponse(symbol: string, exchange: string, response: EtfCompetitionLlmResponse): Promise<void> {
+export async function saveEtfCompetitionResponse(
+  symbol: string,
+  exchange: string,
+  response: EtfCompetitionLlmResponse,
+  options?: { skipRevalidation?: boolean }
+): Promise<void> {
   const spaceId = KoalaGainsSpaceId;
   const etfRecord = await fetchEtfBySymbolAndExchange(symbol, exchange);
 
@@ -165,12 +186,19 @@ export async function saveEtfCompetitionResponse(symbol: string, exchange: strin
     },
   });
 
-  // Competition subpage + main-page umbrella.
+  // Competition subpage tag always; main-page umbrella deferred to the last step.
   revalidateEtfCompetitionTag(symbol, exchange);
-  revalidateEtfAndExchangeTag(symbol, exchange);
+  if (!options?.skipRevalidation) {
+    revalidateEtfAndExchangeTag(symbol, exchange);
+  }
 }
 
-export async function saveEtfKeyFactsResponse(symbol: string, exchange: string, response: EtfKeyFactsResponse): Promise<void> {
+export async function saveEtfKeyFactsResponse(
+  symbol: string,
+  exchange: string,
+  response: EtfKeyFactsResponse,
+  options?: { skipRevalidation?: boolean }
+): Promise<void> {
   const etfRecord = await fetchEtfBySymbolAndExchange(symbol, exchange);
 
   await prisma.etfKeyFactsReport.upsert({
@@ -194,7 +222,11 @@ export async function saveEtfKeyFactsResponse(symbol: string, exchange: string, 
 
   await replaceEtfSimilarEtfs(etfRecord.id, etfRecord.spaceId, symbol, exchange, response.similarEtfs ?? []);
 
-  revalidateEtfAndExchangeTag(symbol, exchange);
+  // Key facts + similar ETFs render on the main page only (no narrow subpage tag),
+  // so the umbrella is its tag; deferred to the last step during a full generation.
+  if (!options?.skipRevalidation) {
+    revalidateEtfAndExchangeTag(symbol, exchange);
+  }
 }
 
 /**
@@ -202,7 +234,12 @@ export async function saveEtfKeyFactsResponse(symbol: string, exchange: string, 
  * Outlook report. The category analysis itself is saved separately via
  * {@link saveEtfFactorAnalysisResponse}; this only persists the extra return fields.
  */
-export async function saveEtfFutureReturns(symbol: string, exchange: string, response: EtfFutureReturnsResponse): Promise<void> {
+export async function saveEtfFutureReturns(
+  symbol: string,
+  exchange: string,
+  response: EtfFutureReturnsResponse,
+  options?: { skipRevalidation?: boolean }
+): Promise<void> {
   const etfRecord = await fetchEtfBySymbolAndExchange(symbol, exchange);
 
   const data = {
@@ -220,7 +257,12 @@ export async function saveEtfFutureReturns(symbol: string, exchange: string, res
     create: { spaceId: etfRecord.spaceId, etfId: etfRecord.id, ...data },
   });
 
-  revalidateEtfAndExchangeTag(symbol, exchange);
+  // Saved in the same step as the Future Performance Outlook category (whose
+  // narrow tag is already invalidated by that saver). These extra return fields
+  // surface on the main page, so the umbrella is deferred to the last step too.
+  if (!options?.skipRevalidation) {
+    revalidateEtfAndExchangeTag(symbol, exchange);
+  }
 }
 
 /**
