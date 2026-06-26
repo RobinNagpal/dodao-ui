@@ -218,7 +218,11 @@ export default function TariffReportsAdminTable(): JSX.Element {
     }
   };
 
-  if (loading) return <div className="py-8 text-sm">Loading tariff chapter reports...</div>;
+  // Only show the full-screen placeholder on the FIRST load (no data yet). A
+  // "Gen"/"Refresh" re-fetch flips `loading` back to true, but we keep the
+  // table mounted so the admin doesn't lose their scroll position while the
+  // statuses update in place.
+  if (loading && !data) return <div className="py-8 text-sm">Loading tariff chapter reports...</div>;
   if (error) return <div className="py-4 text-sm text-red-500">Error: {error}</div>;
   if (!data || data.rows.length === 0) return <div className="py-4 text-sm">No tariff chapter reports found.</div>;
 
