@@ -10,6 +10,7 @@ import {
   updateInvocationStatus,
   validateData,
 } from '@/util/get-llm-response';
+import { processStockReportLLMResponseInBackground } from '@/utils/analysis-reports/background-llm-generation-utils';
 import path from 'path';
 import { PromptInvocationStatus } from '@prisma/client';
 import { DailyMoverType } from '@/types/daily-mover-constants';
@@ -72,6 +73,23 @@ export async function callLambdaForLLMResponseViaCallback<Input>(request: LLMRes
     console.error('Error calling lambda:', error);
     throw error;
   }
+}
+
+/**
+ * Master switch for HOW a stock report's LLM call is run, read from the
+ * `USE_LAMBDA_FOR_LLM_RESPONSE` env var (mirrors the tariff side's
+ * `USE_LAMBDA_FOR_TARIFF_LLM_RESPONSE` convention):
+ *   - `true`        → run the LLM call in-process in the BACKGROUND on this
+ *                     server (no AWS Lambda hop). Now safe because we run on a
+ *                     long-lived Lightsail server instead of time-limited Vercel.
+ *   - unset/`false` → call the AWS Lambda (the original behavior).
+ *
+ * NOTE: deliberately NOT named `use…` — ESLint's `react-hooks/rules-of-hooks`
+ * treats any `use`-prefixed function as a React hook and errors when it's
+ * called outside a component/hook.
+ */
+function isBackgroundLLMGenerationEnabled(): boolean {
+  return process.env.USE_LAMBDA_FOR_LLM_RESPONSE === 'true';
 }
 
 export interface LLMResponseForPromptViaInvocationViaLambda<Input> {
@@ -193,7 +211,29 @@ export async function getLLMResponseForPromptViaInvocationViaLambda<Input>(args:
       additionalData,
     };
 
-    await callLambdaForLLMResponseViaCallback<Input>(lambdaRequest);
+    // Background generation is currently limited to stock (ticker V1) report
+    // generation, which always carries both a `reportType` and an `exchange`.
+    // Daily movers (no `reportType`) continue to go through the lambda
+    // regardless of the flag.
+    if (reportType && exchange && isBackgroundLLMGenerationEnabled()) {
+      // Detach the heavy LLM call from the request so this returns immediately,
+      // mirroring the lambda's instant ack. The background task runs the LLM
+      // in-process and then saves + chains the next step directly (no callback
+      // round-trip).
+      void processStockReportLLMResponseInBackground({
+        symbol,
+        exchange,
+        reportType,
+        generationRequestId,
+        invocationId: invocation.id,
+        llmProvider,
+        model,
+        prompt: finalPrompt,
+        outputSchema,
+      });
+    } else {
+      await callLambdaForLLMResponseViaCallback<Input>(lambdaRequest);
+    }
 
     // Update lastInvocationTime only for ticker V1 generation requests (when reportType is provided)
     if (reportType) {

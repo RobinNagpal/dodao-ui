@@ -149,11 +149,13 @@ variable "app_env" {
     CLOUDFRONT_DISTRIBUTION_ID = "EZI5H8FKNE9R1"
     # Lambda report-generation callbacks should return to this AWS host in Phase A.
     REPORT_GENERATION_CALLBACK_BASE_URL = "https://prod.koalagains.com"
-    # "true" runs stock + ETF report generation in-process in the background on this
-    # AWS server (no AWS Lambda hop, no CloudFront-origin timeout); the LLM call is
-    # detached and saves directly. unset/"false" keeps offloading to the
-    # llm-call-with-callback Lambda. See src/utils/etf-analysis-reports/background-etf-llm-generation-utils.ts.
-    USE_LAMBDA_FOR_LLM_RESPONSE = "true"
+    # Controls HOW stock + ETF report LLM calls run. "false" (the default here) runs
+    # them in-process in the BACKGROUND on this AWS server — no AWS Lambda hop, no
+    # CloudFront-origin timeout; the LLM call is detached and saves directly. "true"
+    # offloads to the llm-call-with-callback Lambda (old behavior). unset also means
+    # background. See src/utils/etf-analysis-reports/background-etf-llm-generation-utils.ts
+    # and src/utils/analysis-reports/background-llm-generation-utils.ts.
+    USE_LAMBDA_FOR_LLM_RESPONSE = "false"
     # The app's pino→CloudWatch transport ships structured JSON logs here (§17).
     CLOUDWATCH_LOG_GROUP = "/insights-ui/app"
     AWS_REGION_LOGS      = "us-east-1"
