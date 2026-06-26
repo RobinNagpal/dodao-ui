@@ -1,4 +1,4 @@
-import { isLambdaTariffGenerationEnabled, startTariffSectionGeneration } from '@/scripts/industry-tariff-reports/tariff-generation-runner';
+import { isSyncTariffGenerationEnabled, startTariffSectionGeneration } from '@/scripts/industry-tariff-reports/tariff-generation-runner';
 import { readIndustryTariffReportBySlug } from '@/scripts/industry-tariff-reports/tariff-report-repository';
 import type { IndustryTariffReport } from '@/scripts/industry-tariff-reports/tariff-types';
 import type { ChapterReportField } from '@/utils/tariff-reports/chapter-generate-sections';
@@ -27,11 +27,11 @@ export type ChapterGenerateResponse = IndustryTariffReport | ChapterGenerateStar
 
 // Shared handler used by every `/api/industry-tariff-reports/chapters/[chapterSlug]/generate-*` route.
 //
-// `USE_LAMBDA_FOR_TARIFF_LLM_RESPONSE` gates HOW the section is generated:
-//   - flag ON  → run `generate` in the BACKGROUND (return immediately, no 504);
-//                the content lands in the DB when the task finishes — admin
-//                refreshes to see it.
-//   - flag OFF → run `generate` SYNCHRONOUSLY and return the full report — the
+// `GENERATE_TARIFF_SECTIONS_SYNCHRONOUSLY` gates HOW the section is generated:
+//   - flag OFF/unset → run `generate` in the BACKGROUND (return immediately, no
+//                504); the content lands in the DB when the task finishes —
+//                admin refreshes to see it. This is the default.
+//   - flag ON  → run `generate` SYNCHRONOUSLY and return the full report — the
 //                original behavior (the request waits for the LLM call).
 //
 // `section` is the JSONB column the generator populates.
@@ -45,12 +45,12 @@ export function chapterGenerateRoute(
 
     const body = await parseBody(req);
 
-    if (isLambdaTariffGenerationEnabled()) {
-      startTariffSectionGeneration(chapterSlug, section, () => generate(chapterSlug, body));
-      return { status: 'started', section };
+    if (isSyncTariffGenerationEnabled()) {
+      await generate(chapterSlug, body);
+      return readIndustryTariffReportBySlug(chapterSlug);
     }
 
-    await generate(chapterSlug, body);
-    return readIndustryTariffReportBySlug(chapterSlug);
+    startTariffSectionGeneration(chapterSlug, section, () => generate(chapterSlug, body));
+    return { status: 'started', section };
   };
 }

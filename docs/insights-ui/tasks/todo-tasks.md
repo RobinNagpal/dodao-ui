@@ -250,11 +250,11 @@ Remaining:
 
 ### Update the tariff generation VAR (env variable / value)
 
-> The tariff generation mode is gated by the `USE_LAMBDA_FOR_TARIFF_LLM_RESPONSE` env var, read in `insights-ui/src/scripts/industry-tariff-reports/tariff-generation-runner.ts` (`isLambdaTariffGenerationEnabled()`). Stocks just moved to in-process background generation behind `USE_LAMBDA_FOR_LLM_RESPONSE` (#1638) — bring the tariff flag in line.
+> The tariff generation mode is gated by the OPTIONAL `GENERATE_TARIFF_SECTIONS_SYNCHRONOUSLY` env var, read in `insights-ui/src/scripts/industry-tariff-reports/tariff-generation-runner.ts` (`isSyncTariffGenerationEnabled()`). Renamed from `USE_LAMBDA_FOR_TARIFF_LLM_RESPONSE` (the old name implied an AWS Lambda hop that never existed) and the default was inverted: absent/`false` → BACKGROUND generation (the proven default), `true` → the old SYNCHRONOUS behavior.
 
-- [ ] Decide the target value/behavior: confirm whether tariff generation should default to background (`true`) now that the in-process path is proven, and update `.env.example` (line 41) + the deployed env accordingly.
-- [ ] Audit naming consistency between `USE_LAMBDA_FOR_TARIFF_LLM_RESPONSE` (tariffs) and `USE_LAMBDA_FOR_LLM_RESPONSE` (stocks, #1638); decide whether the tariff flag should be renamed/consolidated or stay distinct (it carries `TARIFF` deliberately so it only gates tariff generation).
-- [ ] Verify every read site of the flag and the synchronous-vs-background branch in `chapterGenerateRoute` / `startTariffSectionGeneration` still behaves correctly after the value change; watch for the CloudFront 504 on long synchronous sections.
+- [x] Default tariff generation to background: env var is now optional, defaults to background when unset, and is set to `false` in `.env.example` + `deployments/insights-ui/variables.tf`.
+- [x] Rename the flag to `GENERATE_TARIFF_SECTIONS_SYNCHRONOUSLY` (dropping the misleading `LAMBDA` term) and invert the gate so `true` forces the old synchronous path.
+- [x] Update every read site + the synchronous-vs-background branch in `chapterGenerateRoute` / `init-tariff-updates` / `generate-tariff-updates`.
 - [ ] Document the chosen default + rollout in `../tariffs/` so the operational behavior is discoverable.
 
 ---
