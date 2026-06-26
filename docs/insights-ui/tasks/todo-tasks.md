@@ -216,6 +216,10 @@ Remaining:
 - [ ] **Mobile pass** — verify headline numbers, charts, snapshot block render cleanly on a phone before shipping.
 - [ ] **Reader actions** — "subscribe for updates on this industry/country" CTA tied into the click-count login gate; "share" / "copy link" affordance for the most-shared sections.
 
+### Admin page — live generation progress (`/admin-v1/tariff-reports`)
+
+- [ ] **Auto-refresh section status without a manual "Refresh" click.** Section generators now run asynchronously (the POST returns `{ status: 'started' }` and the work continues server-side), but `TariffReportsAdminTable` "intentionally do NOT poll for completion" — so a section that is still running shows `—` until the admin manually clicks Refresh and can't tell "not started" from "running in the background." Add lightweight polling (or a per-row re-fetch) that flips the status pill from running (`…`) to filled (`✓`) once the JSONB section lands, without the admin reloading. Keep the existing manual Refresh as a fallback; poll only while at least one row has a step in flight, and stop polling when nothing is running.
+
 ### Internal linking pass (standalone single PR)
 
 - [ ] Confirm home + hub surfaces link to `/tariff-reports` and a curated set of high-traffic industry covers (one click from home to the most popular tariff reports).
