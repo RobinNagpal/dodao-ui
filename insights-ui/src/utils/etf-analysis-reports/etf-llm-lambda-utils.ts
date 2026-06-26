@@ -21,12 +21,12 @@ export interface EtfLLMRequest {
 
 /**
  * Master switch for HOW an ETF report's LLM call is run, read from the
- * `USE_LAMBDA_FOR_LLM_RESPONSE` env var (the SAME flag the stock path uses, and
- * mirroring the tariff side's `USE_LAMBDA_FOR_TARIFF_LLM_RESPONSE` convention):
- *   - `true`        → run the LLM call in-process in the BACKGROUND on this
- *                     server (no AWS Lambda hop). Now safe because we run on a
- *                     long-lived AWS server instead of time-limited Vercel.
- *   - unset/`false` → call the AWS Lambda (the original behavior).
+ * `USE_LAMBDA_FOR_LLM_RESPONSE` env var (the SAME flag the stock path uses).
+ * Background generation is now the DEFAULT (we run on a long-lived AWS server,
+ * not time-limited Vercel), so the Lambda is opt-in:
+ *   - unset        → run the LLM call in-process in the BACKGROUND (default).
+ *   - `false`      → run the LLM call in-process in the BACKGROUND.
+ *   - `true`       → call the AWS Lambda (the original behavior).
  *
  * The generation-request workflow is untouched either way — both paths create
  * the same invocation, save via the same `saveEtfReportAndAdvanceGeneration`
@@ -38,7 +38,7 @@ export interface EtfLLMRequest {
  * called outside a component/hook.
  */
 function isBackgroundLLMGenerationEnabled(): boolean {
-  return process.env.USE_LAMBDA_FOR_LLM_RESPONSE === 'true';
+  return process.env.USE_LAMBDA_FOR_LLM_RESPONSE !== 'true';
 }
 
 async function updateEtfLastInvocationTime(generationRequestId: string, reportType: EtfReportType): Promise<void> {

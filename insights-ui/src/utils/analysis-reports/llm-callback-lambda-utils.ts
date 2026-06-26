@@ -77,19 +77,19 @@ export async function callLambdaForLLMResponseViaCallback<Input>(request: LLMRes
 
 /**
  * Master switch for HOW a stock report's LLM call is run, read from the
- * `USE_LAMBDA_FOR_LLM_RESPONSE` env var (mirrors the tariff side's
- * `USE_LAMBDA_FOR_TARIFF_LLM_RESPONSE` convention):
- *   - `true`        → run the LLM call in-process in the BACKGROUND on this
- *                     server (no AWS Lambda hop). Now safe because we run on a
- *                     long-lived Lightsail server instead of time-limited Vercel.
- *   - unset/`false` → call the AWS Lambda (the original behavior).
+ * `USE_LAMBDA_FOR_LLM_RESPONSE` env var. Background generation is now the
+ * DEFAULT (we run on a long-lived AWS server, not time-limited Vercel), so the
+ * Lambda is opt-in:
+ *   - unset        → run the LLM call in-process in the BACKGROUND (default).
+ *   - `false`      → run the LLM call in-process in the BACKGROUND.
+ *   - `true`       → call the AWS Lambda (the original behavior).
  *
  * NOTE: deliberately NOT named `use…` — ESLint's `react-hooks/rules-of-hooks`
  * treats any `use`-prefixed function as a React hook and errors when it's
  * called outside a component/hook.
  */
 function isBackgroundLLMGenerationEnabled(): boolean {
-  return process.env.USE_LAMBDA_FOR_LLM_RESPONSE === 'true';
+  return process.env.USE_LAMBDA_FOR_LLM_RESPONSE !== 'true';
 }
 
 export interface LLMResponseForPromptViaInvocationViaLambda<Input> {
