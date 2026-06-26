@@ -77,8 +77,8 @@ export async function callLambdaForLLMResponseViaCallback<Input>(request: LLMRes
 
 /**
  * Master switch for HOW a stock report's LLM call is run, read from the
- * `USE_LAMBDA_FOR_LLM_RESPONSE` env var (mirrors the tariff side's
- * `USE_LAMBDA_FOR_TARIFF_LLM_RESPONSE` convention):
+ * `USE_LAMBDA_FOR_LLM_RESPONSE` env var (the tariff side has its own switch,
+ * `GENERATE_TARIFF_SECTIONS_SYNCHRONOUSLY`, with inverted default):
  *   - `true`        → run the LLM call in-process in the BACKGROUND on this
  *                     server (no AWS Lambda hop). Now safe because we run on a
  *                     long-lived Lightsail server instead of time-limited Vercel.

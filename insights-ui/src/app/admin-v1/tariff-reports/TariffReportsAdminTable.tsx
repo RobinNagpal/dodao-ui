@@ -197,7 +197,11 @@ export default function TariffReportsAdminTable(): JSX.Element {
 
   // Generate a single section via its own route — the "generate one, then wait"
   // flow. Same per-mode behavior as a step inside `generateAll`: background mode
-  // returns immediately (refresh later to see it land), synchronous mode waits.
+  // returns immediately, synchronous mode waits. We intentionally do NOT
+  // re-fetch afterward: re-fetching flips `loading` back on and re-renders the
+  // whole table (resetting the admin's scroll position), which is jarring after
+  // a single "Gen" click. The admin clicks "Refresh" when they want to pull the
+  // latest generation status.
   const generateSection = async (slug: string, step: ChapterGenerateStep, idx: number): Promise<void> => {
     updateRun(slug, { currentStep: idx, error: null });
     try {
@@ -212,7 +216,6 @@ export default function TariffReportsAdminTable(): JSX.Element {
         }
       }
       updateRun(slug, { currentStep: null });
-      await reFetchData();
     } catch (err) {
       updateRun(slug, { currentStep: null, error: err instanceof Error ? err.message : 'Generation failed' });
     }

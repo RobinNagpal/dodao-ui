@@ -1,13 +1,13 @@
 import type { ChapterReportField } from '@/utils/tariff-reports/chapter-generate-sections';
 
 /**
- * Master switch for HOW tariff sections are generated, read from the
- * `USE_LAMBDA_FOR_TARIFF_LLM_RESPONSE` env var:
- *   - `true`  → run the new BACKGROUND logic (`startTariffSectionGeneration`):
- *               kick the LLM call off as a fire-and-forget task, return right
- *               away, no CloudFront 504.
- *   - unset/`false` → run the OLD synchronous logic (the request awaits the LLM
- *               call and returns the full report).
+ * Master switch for HOW tariff sections are generated, read from the OPTIONAL
+ * `GENERATE_TARIFF_SECTIONS_SYNCHRONOUSLY` env var:
+ *   - unset/`false` → run the BACKGROUND logic (`startTariffSectionGeneration`),
+ *               the default: kick the LLM call off as a fire-and-forget task,
+ *               return right away, no CloudFront 504.
+ *   - `true`  → run the OLD SYNCHRONOUS logic (the request awaits the LLM call
+ *               and returns the full report).
  *
  * The flag name carries the `TARIFF` keyword so it's unambiguous this gates
  * tariff generation only.
@@ -16,8 +16,8 @@ import type { ChapterReportField } from '@/utils/tariff-reports/chapter-generate
  * treats any `use`-prefixed function as a React hook and errors when it's
  * called outside a component/hook.
  */
-export function isLambdaTariffGenerationEnabled(): boolean {
-  return process.env.USE_LAMBDA_FOR_TARIFF_LLM_RESPONSE === 'true';
+export function isSyncTariffGenerationEnabled(): boolean {
+  return process.env.GENERATE_TARIFF_SECTIONS_SYNCHRONOUSLY === 'true';
 }
 
 function errorMessage(err: unknown): string {
@@ -26,7 +26,7 @@ function errorMessage(err: unknown): string {
 
 /**
  * Runs one tariff report section in the BACKGROUND and returns immediately.
- * Only called when `isLambdaTariffGenerationEnabled()` is true (the route
+ * Only called when `isSyncTariffGenerationEnabled()` is false (the route
  * wrapper decides); the synchronous path lives in `chapterGenerateRoute`.
  *
  * Runs `generate` (the existing `getAndWrite*` function — Gemini call + direct

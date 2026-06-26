@@ -1,23 +1,16 @@
+import { IndustryGenerateResponse, industryGenerateRoute } from '@/app/api/industry-tariff-reports/[industry]/industry-generate-handler';
 import { getTariffUpdatesForIndustryAndSaveToFile } from '@/scripts/industry-tariff-reports/03-industry-tariffs';
-import { findReportSlugByOldUrl, readIndustryTariffReportByOldUrl } from '@/scripts/industry-tariff-reports/tariff-report-repository';
-import { IndustryTariffReport } from '@/scripts/industry-tariff-reports/tariff-types';
+import { getTodayDateAsMonthDDYYYYFormat } from '@/util/get-date';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
-import { NextRequest } from 'next/server';
 
 interface GenerateTariffUpdatesRequest {
-  date: string;
+  date?: string;
   countryName?: string;
 }
 
-async function postHandler(req: NextRequest, { params }: { params: Promise<{ industry: string }> }): Promise<IndustryTariffReport> {
-  const { industry } = await params;
-  const { date, countryName } = (await req.json()) as GenerateTariffUpdatesRequest;
-
-  if (!industry || !date) throw new Error('Industry and date are required');
-
-  const slug = await findReportSlugByOldUrl(industry);
-  await getTariffUpdatesForIndustryAndSaveToFile(slug, date, countryName);
-  return readIndustryTariffReportByOldUrl(industry);
-}
-
-export const POST = withErrorHandlingV2<IndustryTariffReport>(postHandler);
+export const POST = withErrorHandlingV2<IndustryGenerateResponse>(
+  industryGenerateRoute('tariffUpdates', (slug, body) => {
+    const { date, countryName } = (body as GenerateTariffUpdatesRequest) ?? {};
+    return getTariffUpdatesForIndustryAndSaveToFile(slug, date ?? getTodayDateAsMonthDDYYYYFormat(), countryName);
+  })
+);
