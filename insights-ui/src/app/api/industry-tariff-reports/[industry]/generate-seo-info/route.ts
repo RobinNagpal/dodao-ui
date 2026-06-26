@@ -1,3 +1,4 @@
+import { IndustryGenerateResponse } from '@/app/api/industry-tariff-reports/[industry]/industry-generate-handler';
 import {
   generateAndSaveAllSeoDetails,
   generateExecutiveSummarySeo,
@@ -7,19 +8,20 @@ import {
   generateTariffUpdatesSeo,
   generateUnderstandIndustrySeo,
 } from '@/scripts/industry-tariff-reports/08-report-seo-info';
+import { isSyncTariffGenerationEnabled, startTariffSectionGeneration } from '@/scripts/industry-tariff-reports/tariff-generation-runner';
 import {
   findReportSlugByOldUrl,
   readIndustryTariffReportByOldUrl,
   readSeoDetails,
   writeSeoDetails,
 } from '@/scripts/industry-tariff-reports/tariff-report-repository';
-import { IndustryTariffReport, PageSeoDetails, ReportType, TariffReportSeoDetails } from '@/scripts/industry-tariff-reports/tariff-types';
+import { PageSeoDetails, ReportType, TariffReportSeoDetails } from '@/scripts/industry-tariff-reports/tariff-types';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';
 
 const VALID_SECTION_VALUES = Object.values(ReportType);
 
-async function postHandler(req: NextRequest, { params }: { params: Promise<{ industry: string }> }): Promise<IndustryTariffReport> {
+async function postHandler(req: NextRequest, { params }: { params: Promise<{ industry: string }> }): Promise<IndustryGenerateResponse> {
   const { industry } = await params;
   if (!industry) throw new Error('Industry is required');
 
@@ -32,11 +34,15 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ ind
 
   const slug = await findReportSlugByOldUrl(industry);
 
-  console.log(`Generating SEO info for ${section === ReportType.ALL ? 'all sections' : section}...`);
+  // The actual SEO generation work — either all sections or a single one.
+  const generate = async (): Promise<void> => {
+    console.log(`Generating SEO info for ${section === ReportType.ALL ? 'all sections' : section}...`);
 
-  if (section === ReportType.ALL) {
-    await generateAndSaveAllSeoDetails(slug);
-  } else {
+    if (section === ReportType.ALL) {
+      await generateAndSaveAllSeoDetails(slug);
+      return;
+    }
+
     const existingSeoDetails: TariffReportSeoDetails = (await readSeoDetails(slug)) ?? {};
     let seoDetails: PageSeoDetails | undefined;
 
@@ -68,9 +74,17 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ ind
     }
 
     await writeSeoDetails(slug, existingSeoDetails);
+  };
+
+  // Same gate as the other section routes: background by default (no CloudFront
+  // 504 on a long SEO run), synchronous only when GENERATE_TARIFF_SECTIONS_SYNCHRONOUSLY=true.
+  if (isSyncTariffGenerationEnabled()) {
+    await generate();
+    return readIndustryTariffReportByOldUrl(industry);
   }
 
-  return readIndustryTariffReportByOldUrl(industry);
+  startTariffSectionGeneration(slug, 'seoDetails', generate);
+  return { status: 'started', section: 'seoDetails' };
 }
 
-export const POST = withErrorHandlingV2<IndustryTariffReport>(postHandler);
+export const POST = withErrorHandlingV2<IndustryGenerateResponse>(postHandler);
