@@ -248,15 +248,6 @@ Remaining:
 - [ ] **Scenario simulator lite** — choose baseline + alternative source lanes → tariff delta + shipping + pass-through % → sensitivity plot + narrative.
 - [ ] **Rules-of-origin assistant layer** (rolls up #16) — guided rules narrative across agreements, not raw legal text.
 
-### Update the tariff generation VAR (env variable / value)
-
-> The tariff generation mode is gated by the OPTIONAL `GENERATE_TARIFF_SECTIONS_SYNCHRONOUSLY` env var, read in `insights-ui/src/scripts/industry-tariff-reports/tariff-generation-runner.ts` (`isSyncTariffGenerationEnabled()`). Renamed from `USE_LAMBDA_FOR_TARIFF_LLM_RESPONSE` (the old name implied an AWS Lambda hop that never existed) and the default was inverted: absent/`false` → BACKGROUND generation (the proven default), `true` → the old SYNCHRONOUS behavior.
-
-- [x] Default tariff generation to background: env var is now optional, defaults to background when unset, and is set to `false` in `.env.example` + `deployments/insights-ui/variables.tf`.
-- [x] Rename the flag to `GENERATE_TARIFF_SECTIONS_SYNCHRONOUSLY` (dropping the misleading `LAMBDA` term) and invert the gate so `true` forces the old synchronous path.
-- [x] Update every read site + the synchronous-vs-background branch in `chapterGenerateRoute` / `init-tariff-updates` / `generate-tariff-updates`.
-- [ ] Document the chosen default + rollout in `../tariffs/` so the operational behavior is discoverable.
-
 ---
 
 ## Site-wide / Other
