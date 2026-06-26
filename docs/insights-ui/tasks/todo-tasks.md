@@ -208,6 +208,10 @@ Remaining:
 
 ## Tariffs
 
+### Sitemap generation
+
+- [ ] **Generate a tariff sitemap and wire it into the parent sitemap index** — the per-report sitemap lives at `insights-ui/src/app/industry-tariff-report/sitemap.xml/route.ts` (enumerates chapter covers + the `tariff-updates` / `understand-industry` / `industry-areas` / `final-conclusion` / conditional `tariff-engineering` sections for seeded chapters). Confirm it is referenced by the root sitemap index so search engines discover it; add the tariff listing/hub URLs (`/tariff-reports`, industry/country cover pages) that aren't currently enumerated; set `lastmod` from report refresh time (not build time) and only advertise URLs above the `isComplete`-style quality bar. Cross-check overlap with the **Sitemap hygiene** item under _Operational + measurement_ so the two don't diverge.
+
 ### Refresh + simplify reports
 
 - [ ] **Top-of-page snapshot block** (above the fold): industry + countries headline; headline tariff numbers (current rate, rate N months ago, delta); "Last updated YYYY-MM-DD"; 3 bullets ("What's new", "Who's affected", "What to watch").
