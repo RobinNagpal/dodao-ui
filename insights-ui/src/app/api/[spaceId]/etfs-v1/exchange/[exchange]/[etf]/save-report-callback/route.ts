@@ -1,66 +1,26 @@
-import { prisma } from '@/prisma';
-import { EtfReportType, ETF_REPORT_TYPE_TO_CATEGORY } from '@/types/etf/etf-analysis-types';
-import { triggerEtfGenerationOfAReport } from '@/utils/etf-analysis-reports/etf-generation-report-utils';
-import {
-  saveEtfCompetitionResponse,
-  saveEtfFactorAnalysisResponse,
-  saveEtfFinalSummaryResponse,
-  saveEtfFutureReturns,
-  saveEtfKeyFactsResponse,
-} from '@/utils/etf-analysis-reports/save-etf-report-utils';
+import { EtfReportType } from '@/types/etf/etf-analysis-types';
+import { saveEtfReportAndAdvanceGeneration } from '@/utils/etf-analysis-reports/save-etf-report-callback-utils';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';
 
 async function postHandler(req: NextRequest, { params }: { params: Promise<{ spaceId: string; exchange: string; etf: string }> }) {
-  const { spaceId, exchange, etf } = await params;
+  const { exchange, etf } = await params;
 
   const { llmResponse, additionalData } = await req.json();
   const { reportType, generationRequestId } = additionalData as { reportType: EtfReportType; generationRequestId: string };
 
   console.log('ETF save-report-callback received:', { reportType, generationRequestId, exchange, etf });
 
-  if (reportType === EtfReportType.FINAL_SUMMARY) {
-    await saveEtfFinalSummaryResponse(etf, exchange, llmResponse);
-  } else if (reportType === EtfReportType.KEY_FACTS) {
-    await saveEtfKeyFactsResponse(etf, exchange, llmResponse);
-  } else if (reportType === EtfReportType.COMPETITION) {
-    await saveEtfCompetitionResponse(etf, exchange, llmResponse);
-  } else {
-    const categoryKey = ETF_REPORT_TYPE_TO_CATEGORY[reportType];
-    if (!categoryKey) {
-      throw new Error(`Unsupported ETF report type: ${reportType}`);
-    }
-
-    await saveEtfFactorAnalysisResponse(etf, exchange, llmResponse, categoryKey);
-
-    // The Future Performance Outlook report returns the standard category analysis
-    // plus expected forward returns; persist the latter in their own table.
-    if (reportType === EtfReportType.FUTURE_PERFORMANCE_OUTLOOK) {
-      await saveEtfFutureReturns(etf, exchange, llmResponse);
-    }
-  }
-
-  if (generationRequestId) {
-    const generationRequest = await prisma.etfGenerationRequest.findUniqueOrThrow({
-      where: { id: generationRequestId },
-    });
-
-    const updatedCompletedSteps = [...generationRequest.completedSteps];
-    if (!updatedCompletedSteps.includes(reportType)) {
-      updatedCompletedSteps.push(reportType);
-    }
-
-    await prisma.etfGenerationRequest.update({
-      where: { id: generationRequestId },
-      data: {
-        completedSteps: updatedCompletedSteps,
-        inProgressStep: null,
-        lastInvocationTime: null,
-      },
-    });
-
-    await triggerEtfGenerationOfAReport(etf, exchange, generationRequestId);
-  }
+  // All the save + generation-request advancement logic lives in a shared util
+  // so the in-process background path (processEtfReportLLMResponseInBackground)
+  // runs the exact same code without going back over HTTP.
+  await saveEtfReportAndAdvanceGeneration({
+    exchange,
+    etf,
+    reportType,
+    llmResponse,
+    generationRequestId,
+  });
 
   return { success: true };
 }
