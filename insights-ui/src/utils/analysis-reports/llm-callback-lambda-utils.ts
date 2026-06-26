@@ -5,12 +5,12 @@ import { ReportType } from '@/types/ticker-typesv1';
 import {
   compileTemplate,
   createPromptInvocation,
-  getLLMResponse,
   LLMResponseViaInvocationRequest,
   loadSchema,
   updateInvocationStatus,
   validateData,
 } from '@/util/get-llm-response';
+import { processStockReportLLMResponseInBackground } from '@/utils/analysis-reports/background-llm-generation-utils';
 import path from 'path';
 import { PromptInvocationStatus } from '@prisma/client';
 import { DailyMoverType } from '@/types/daily-mover-constants';
@@ -90,63 +90,6 @@ export async function callLambdaForLLMResponseViaCallback<Input>(request: LLMRes
  */
 function isBackgroundLLMGenerationEnabled(): boolean {
   return process.env.USE_LAMBDA_FOR_LLM_RESPONSE === 'true';
-}
-
-/**
- * In-process, fire-and-forget equivalent of the AWS Lambda
- * (`lambdas/llm-call-with-callback`): runs the LLM with the SAME invocation row,
- * prompt, provider/model, and output schema the lambda would have received, then
- * POSTs `{ llmResponse, additionalData }` to the SAME `callbackUrl`
- * (`save-report-callback`). That callback persists the report and chains the
- * next step exactly as before — so generation-request, prompt/invocation, and
- * storage logic are all reused untouched; only the execution location changes.
- *
- * The heavy work is detached from the request (`void` at the call site) so the
- * triggering route returns immediately, just like the lambda's instant ack. The
- * `.catch`-equivalent try/catch here is mandatory — an unhandled rejection in a
- * detached promise can take down the Node process.
- *
- * On failure `getLLMResponse` already marks the PromptInvocation `Failed`; we
- * deliberately leave the generation request's `inProgressStep`/`lastInvocationTime`
- * as-is so the existing 5-minute stale-step guard in
- * `triggerGenerationOfAReportSimplified` recovers the step on the next tick.
- *
- * Caveat (same as the tariff background path): an in-process task lives only in
- * this process's memory, so a redeploy/crash mid-run leaves the step
- * `InProgress` until the stale-step guard reclaims it.
- */
-export async function processLLMResponseInBackgroundViaCallback<Input>(request: LLMResponseViaLambdaRequest<Input>): Promise<void> {
-  const { invocationId, callbackUrl, promptStringToSendToLLM, outputSchemaString, llmProvider, model, additionalData } = request;
-  const reportType = additionalData?.reportType || 'unknown';
-  const symbol = additionalData?.symbol || 'unknown';
-  const generationRequestId = additionalData?.generationRequestId || 'unknown';
-
-  try {
-    console.log(`[${reportType}] [${symbol}] [${generationRequestId}] Running LLM in background (in-process), skipping lambda`);
-
-    const { result } = await getLLMResponse({
-      invocationId,
-      llmProvider,
-      modelName: model,
-      prompt: promptStringToSendToLLM,
-      outputSchema: JSON.parse(outputSchemaString),
-      maxRetries: 2,
-    });
-
-    const response = await fetch(callbackUrl, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ llmResponse: result, additionalData }),
-    });
-
-    if (!response.ok) {
-      const errorText = await response.text();
-      throw new Error(`Callback POST failed with status ${response.status}: ${errorText}`);
-    }
-    console.log(`[${reportType}] [${symbol}] [${generationRequestId}] Background LLM response saved via callback`);
-  } catch (error) {
-    console.error(`[${reportType}] [${symbol}] [${generationRequestId}] Background LLM processing failed:`, error);
-  }
 }
 
 export interface LLMResponseForPromptViaInvocationViaLambda<Input> {
@@ -269,13 +212,25 @@ export async function getLLMResponseForPromptViaInvocationViaLambda<Input>(args:
     };
 
     // Background generation is currently limited to stock (ticker V1) report
-    // generation, which always carries a `reportType`. Daily movers (no
-    // `reportType`) continue to go through the lambda regardless of the flag.
-    if (reportType && isBackgroundLLMGenerationEnabled()) {
+    // generation, which always carries both a `reportType` and an `exchange`.
+    // Daily movers (no `reportType`) continue to go through the lambda
+    // regardless of the flag.
+    if (reportType && exchange && isBackgroundLLMGenerationEnabled()) {
       // Detach the heavy LLM call from the request so this returns immediately,
-      // mirroring the lambda's instant ack. The background task saves via the
-      // same callback and chains the next step.
-      void processLLMResponseInBackgroundViaCallback<Input>(lambdaRequest);
+      // mirroring the lambda's instant ack. The background task runs the LLM
+      // in-process and then saves + chains the next step directly (no callback
+      // round-trip).
+      void processStockReportLLMResponseInBackground({
+        symbol,
+        exchange,
+        reportType,
+        generationRequestId,
+        invocationId: invocation.id,
+        llmProvider,
+        model,
+        prompt: finalPrompt,
+        outputSchema,
+      });
     } else {
       await callLambdaForLLMResponseViaCallback<Input>(lambdaRequest);
     }
