@@ -76,20 +76,16 @@ export async function callLambdaForLLMResponseViaCallback<Input>(request: LLMRes
 }
 
 /**
- * Master switch for HOW a stock report's LLM call is run, read from the
- * `USE_LAMBDA_FOR_LLM_RESPONSE` env var. Background generation is now the
- * DEFAULT (we run on a long-lived AWS server, not time-limited Vercel), so the
- * Lambda is opt-in:
- *   - unset        → run the LLM call in-process in the BACKGROUND (default).
- *   - `false`      → run the LLM call in-process in the BACKGROUND.
+ * Whether a stock report's LLM call should be offloaded to the AWS Lambda, read
+ * from the `USE_LAMBDA_FOR_LLM_RESPONSE` env var. In-process background
+ * generation is now the DEFAULT (we run on a long-lived AWS server, not
+ * time-limited Vercel), so the Lambda is opt-in:
+ *   - unset        → background (in-process) — default.
+ *   - `false`      → background (in-process).
  *   - `true`       → call the AWS Lambda (the original behavior).
- *
- * NOTE: deliberately NOT named `use…` — ESLint's `react-hooks/rules-of-hooks`
- * treats any `use`-prefixed function as a React hook and errors when it's
- * called outside a component/hook.
  */
-function isBackgroundLLMGenerationEnabled(): boolean {
-  return process.env.USE_LAMBDA_FOR_LLM_RESPONSE !== 'true';
+function shouldUseLambdaForLLMResponse(): boolean {
+  return process.env.USE_LAMBDA_FOR_LLM_RESPONSE === 'true';
 }
 
 export interface LLMResponseForPromptViaInvocationViaLambda<Input> {
@@ -215,7 +211,7 @@ export async function getLLMResponseForPromptViaInvocationViaLambda<Input>(args:
     // generation, which always carries both a `reportType` and an `exchange`.
     // Daily movers (no `reportType`) continue to go through the lambda
     // regardless of the flag.
-    if (reportType && exchange && isBackgroundLLMGenerationEnabled()) {
+    if (reportType && exchange && !shouldUseLambdaForLLMResponse()) {
       // Detach the heavy LLM call from the request so this returns immediately,
       // mirroring the lambda's instant ack. The background task runs the LLM
       // in-process and then saves + chains the next step directly (no callback
