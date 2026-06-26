@@ -1,16 +1,7 @@
+import { IndustryGenerateResponse, industryGenerateRoute } from '@/app/api/industry-tariff-reports/[industry]/industry-generate-handler';
 import { getAndWriteIndustryAreaSectionToJsonFile } from '@/scripts/industry-tariff-reports/05-industry-areas';
-import { findReportSlugByOldUrl, readIndustryTariffReportByOldUrl } from '@/scripts/industry-tariff-reports/tariff-report-repository';
-import { IndustryTariffReport } from '@/scripts/industry-tariff-reports/tariff-types';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
-import { NextRequest } from 'next/server';
 
-async function postHandler(req: NextRequest, { params }: { params: Promise<{ industry: string }> }): Promise<IndustryTariffReport> {
-  const { industry } = await params;
-  if (!industry) throw new Error('Industry is required');
-
-  const slug = await findReportSlugByOldUrl(industry);
-  await getAndWriteIndustryAreaSectionToJsonFile(slug);
-  return readIndustryTariffReportByOldUrl(industry);
-}
-
-export const POST = withErrorHandlingV2<IndustryTariffReport>(postHandler);
+export const POST = withErrorHandlingV2<IndustryGenerateResponse>(
+  industryGenerateRoute('industryAreasSections', (slug) => getAndWriteIndustryAreaSectionToJsonFile(slug))
+);
