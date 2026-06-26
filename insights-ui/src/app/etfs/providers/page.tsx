@@ -14,7 +14,7 @@ export const metadata = generateEtfProvidersIndexMetadata(SupportedCountries.US)
 const EMPTY_PROVIDERS_INDEX: EtfProvidersIndexResponse = { providers: [], values: {}, counts: {} };
 
 // Fail-soft so the first preview/prod build after introducing the listings
-// API routes can still prerender. The 2-week tag + ISR repopulates the page
+// API routes can still prerender. The 1-week tag + ISR repopulates the page
 // on the first real request once the new route is live in the target env.
 async function fetchProvidersIndex(country: SupportedCountries): Promise<EtfProvidersIndexResponse> {
   const url = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/etfs-v1/listings/providers-index?country=${encodeURIComponent(country)}`;

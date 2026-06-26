@@ -1,6 +1,6 @@
 import { authOptions } from '@/app/api/auth/[...nextauth]/authOptions';
 import { KoalaGainsSession } from '@/types/auth';
-import { TWO_WEEKS_IN_SECONDS } from '@/utils/etf-cache-utils';
+import { ONE_WEEK_IN_SECONDS } from '@/utils/etf-cache-utils';
 import { getServerSession } from 'next-auth/next';
 import { headers } from 'next/headers';
 import { NextRequest } from 'next/server';
@@ -36,7 +36,7 @@ export async function isEtfAdminViewer(): Promise<boolean> {
 
 /**
  * Admin-aware fetch for the cached ETF listings index/grouping endpoints.
- * - Non-admin: the existing cached fetch (2-week revalidate + cache tag), which
+ * - Non-admin: the existing cached fetch (1-week revalidate + cache tag), which
  *   returns populated-only data.
  * - Admin: an uncached, cookie-authenticated fetch with `includeUnpopulated=true`
  *   so the full set is never cached under the public key.
@@ -50,7 +50,7 @@ export async function fetchEtfListingsIndex(url: string, tag: string): Promise<R
       headers: cookieHeader ? { cookie: cookieHeader } : {},
     });
   }
-  return fetch(url, { next: { revalidate: TWO_WEEKS_IN_SECONDS, tags: [tag] } });
+  return fetch(url, { next: { revalidate: ONE_WEEK_IN_SECONDS, tags: [tag] } });
 }
 
 /**

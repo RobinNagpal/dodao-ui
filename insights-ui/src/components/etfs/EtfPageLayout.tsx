@@ -4,12 +4,14 @@ import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import EtfFiltersButton from '@/components/etfs/EtfFiltersButton';
 import EtfSortButton from '@/components/etfs/EtfSortButton';
+import EtfListingPageActions from '@/components/etfs/EtfListingPageActions';
 import EtfAppliedFilterChips from '@/components/etfs/EtfAppliedFilterChips';
 import EtfCountryAlternatives from '@/components/etfs/EtfCountryAlternatives';
 import { EtfSupportedCountry } from '@/utils/etfCountryExchangeUtils';
 import { SupportedCountries } from '@/utils/countryExchangeUtils';
 import { EtfBrowseSection, etfBasePath, etfCountryDisplayName } from '@/utils/etf-country-route-utils';
 import { generateBreadcrumbJsonLdFromCrumbs } from '@/utils/etf-metadata-generators';
+import type { EtfListingCacheTag } from '@/utils/etf-cache-utils';
 
 interface EtfPageLayoutProps {
   title: string;
@@ -20,6 +22,8 @@ interface EtfPageLayoutProps {
   switcherSection?: EtfBrowseSection;
   /** Builds the country-switcher href for a given country; lets detail pages keep the active listing when switching countries. */
   switcherHref?: (country: EtfSupportedCountry) => string;
+  /** Next.js Data Cache tag backing this listing surface, for the admin "Revalidate This Listing" action. Omitted on uncached filter-detail pages (CloudFront-only purge). */
+  revalidateTag?: EtfListingCacheTag;
   children: ReactNode;
 }
 
@@ -40,6 +44,7 @@ export default function EtfPageLayout({
   currentCountry = SupportedCountries.US,
   switcherSection,
   switcherHref,
+  revalidateTag,
   children,
 }: EtfPageLayoutProps) {
   const breadcrumbs = buildBreadcrumbs(currentCountry, extraBreadcrumbs);
@@ -64,6 +69,7 @@ export default function EtfPageLayout({
             <div className="flex items-center gap-2">
               <EtfFiltersButton />
               <EtfSortButton />
+              <EtfListingPageActions tag={revalidateTag} />
             </div>
           }
         />

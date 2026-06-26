@@ -1,7 +1,7 @@
 import { EtfListingResponse } from '@/app/api/[spaceId]/etfs-v1/listing/route';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { hasEtfFiltersApplied, hasEtfSortApplied, etfToSortedQueryString, EtfSearchParams } from '@/utils/etf-filter-utils';
-import { getEtfListingFilterableTag, TWO_WEEKS_IN_SECONDS } from '@/utils/etf-cache-utils';
+import { getEtfListingFilterableTag, ONE_WEEK_IN_SECONDS } from '@/utils/etf-cache-utils';
 import { INCLUDE_UNPOPULATED_PARAM, isEtfAdminViewer } from '@/utils/etf-listing-visibility';
 import { EtfSupportedCountry } from '@/utils/etfCountryExchangeUtils';
 import { SupportedCountries } from '@/utils/countryExchangeUtils';
@@ -10,7 +10,7 @@ import { headers } from 'next/headers';
 
 /**
  * Fetch the filter-aware listing data for category/asset-class/provider/country-root
- * pages. Cached by country with a 2-week TTL when no filters/page params are
+ * pages. Cached by country with a 1-week TTL when no filters/page params are
  * applied. With filters applied, the fetch is intentionally uncached so chip
  * combinations don't fill the data cache with per-filter entries.
  */
@@ -41,7 +41,7 @@ export async function fetchEtfListingData(searchParams?: EtfSearchParams, countr
   } else if (hasPageOrFilters) {
     cacheConfig = { next: { revalidate: 0 } };
   } else {
-    cacheConfig = { next: { revalidate: TWO_WEEKS_IN_SECONDS, tags: [getEtfListingFilterableTag(tagCountry)] } };
+    cacheConfig = { next: { revalidate: ONE_WEEK_IN_SECONDS, tags: [getEtfListingFilterableTag(tagCountry)] } };
   }
 
   try {

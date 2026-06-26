@@ -18,7 +18,7 @@ type PageProps = {
 const EMPTY_GROUP_DETAIL: EtfGroupDetailResponse = { found: false, values: {}, counts: {}, others: null };
 
 // Fail-soft so the first preview/prod build after introducing the listings
-// API routes can still prerender. The 2-week tag + ISR repopulates the page
+// API routes can still prerender. The 1-week tag + ISR repopulates the page
 // on the first real request once the new route is live in the target env.
 async function fetchGroupDetail(country: SupportedCountries, groupKey: string): Promise<EtfGroupDetailResponse> {
   const url = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/etfs-v1/listings/group?country=${encodeURIComponent(

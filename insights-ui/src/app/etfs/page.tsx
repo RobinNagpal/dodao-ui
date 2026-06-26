@@ -19,7 +19,7 @@ const EMPTY_GROUPS_INDEX: EtfGroupsIndexResponse = {
 };
 
 // Fail-soft so the first preview/prod build after introducing the listings
-// API routes can still prerender. The 2-week tag + ISR repopulates the page
+// API routes can still prerender. The 1-week tag + ISR repopulates the page
 // on the first real request once the new route is live in the target env.
 async function fetchGroupsIndex(country: SupportedCountries): Promise<EtfGroupsIndexResponse> {
   const url = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/etfs-v1/listings/groups-index?country=${encodeURIComponent(country)}`;
