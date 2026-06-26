@@ -14,7 +14,7 @@ export const metadata = generateEtfAssetClassesIndexMetadata(SupportedCountries.
 const EMPTY_ASSET_CLASSES: EtfAssetClassesIndexResponse = { values: {}, counts: {} };
 
 // Fail-soft so the first preview/prod build after introducing the listings
-// API routes can still prerender. The 2-week tag + ISR repopulates the page
+// API routes can still prerender. The 1-week tag + ISR repopulates the page
 // on the first real request once the new route is live in the target env.
 async function fetchAssetClassesIndex(country: SupportedCountries): Promise<EtfAssetClassesIndexResponse> {
   const url = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/etfs-v1/listings/asset-classes-index?country=${encodeURIComponent(country)}`;

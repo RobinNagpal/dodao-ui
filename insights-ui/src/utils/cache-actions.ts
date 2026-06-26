@@ -7,7 +7,7 @@ import {
   revalidatePortfolioManagersByTypeTag,
   revalidatePortfolioProfileTag,
 } from '@/utils/ticker-v1-cache-utils';
-import { revalidateAllEtfTagsAwaited } from '@/utils/etf-cache-utils';
+import { revalidateAllEtfTagsAwaited, revalidateEtfListingTagOnly, type EtfListingCacheTag } from '@/utils/etf-cache-utils';
 import {
   CacheFlushResult,
   classifyCloudFrontPaths,
@@ -70,6 +70,22 @@ export async function revalidateEtfCache(symbol: string, exchange: string): Prom
   // Awaited so the UI sees the real CloudFront outcome (see comment above).
   const cf = await revalidateAllEtfTagsAwaited(symbol, exchange);
   return formatCloudFrontResult(`ETF ${exchange.toUpperCase()}:${symbol.toUpperCase()}`, cf);
+}
+
+/**
+ * Admin-facing "Revalidate This Listing" for any ETF listing page. Clears BOTH
+ * cache layers for just the current page:
+ *  - Next.js Data Cache: the tag backing this listing surface (index + group
+ *    pages). Filter-based detail pages (provider / asset-class / category) are
+ *    uncached in Next, so `tag` is omitted and only the edge is purged.
+ *  - CloudFront: the exact page path the admin is viewing.
+ * Awaited so the UI gets the real CloudFront outcome (env-missing / IAM-denied
+ * surface instead of a blanket success).
+ */
+export async function revalidateEtfListingPageCache(pathname: string, tag?: EtfListingCacheTag): Promise<CacheFlushResult> {
+  if (tag) revalidateEtfListingTagOnly(tag);
+  const cf = await invalidateCloudFrontPathsAwaited([pathname]);
+  return formatCloudFrontResult(pathname, cf);
 }
 
 export async function revalidateEtfScenariosListingCache() {

@@ -23,6 +23,7 @@ export default function EtfAssetClassesIndex({ country, data }: EtfAssetClassesI
       currentCountry={country}
       switcherSection="asset-classes"
       extraBreadcrumbs={[{ name: 'Asset Classes', href: assetClassesPath, current: true }]}
+      revalidateTag={{ kind: 'asset-classes-index', country }}
     >
       <EtfGroupingCardGrid
         columns={3}

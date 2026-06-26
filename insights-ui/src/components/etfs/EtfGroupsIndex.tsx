@@ -35,6 +35,7 @@ export default function EtfGroupsIndex({ country, data, title, description, swit
       currentCountry={country}
       switcherSection={switcherSection}
       extraBreadcrumbs={extraBreadcrumbs}
+      revalidateTag={{ kind: 'groups-index', country }}
     >
       {headSlot}
       {groups.map((group) => {

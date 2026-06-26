@@ -22,6 +22,7 @@ export default function EtfProvidersIndex({ country, data }: EtfProvidersIndexPr
       currentCountry={country}
       switcherSection="providers"
       extraBreadcrumbs={[{ name: 'Providers', href: providersPath, current: true }]}
+      revalidateTag={{ kind: 'providers-index', country }}
     >
       {providers.length === 0 ? (
         <p className="text-[#E5E7EB] text-md">No providers available for {displayName} ETFs.</p>

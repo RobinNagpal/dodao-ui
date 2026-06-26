@@ -132,7 +132,10 @@ export const revalidateAllEtfTagsAwaited = async (symbol: string, exchange: stri
  */
 const ETF_LISTINGS_PREFIX = 'etf_listings' as const;
 
-export const TWO_WEEKS_IN_SECONDS = 14 * 24 * 60 * 60;
+// ETF listing pages cache their data for one week in the Next.js Data Cache,
+// matching the stock listing pages (which use the same 7-day window). The
+// CloudFront edge caches the same routes for 6 days (see `cloudfront.tf`).
+export const ONE_WEEK_IN_SECONDS = 7 * 24 * 60 * 60;
 
 export const getEtfGroupsIndexTag = (country: string): string => `${ETF_LISTINGS_PREFIX}:groups-index:${country.toUpperCase()}`;
 export const getEtfGroupDetailTag = (country: string, groupKey: string): string => `${ETF_LISTINGS_PREFIX}:group:${country.toUpperCase()}:${groupKey}`;
@@ -169,4 +172,39 @@ export const revalidateEtfProvidersIndexTag = (country: string) => {
 export const revalidateEtfListingFilterableTag = (country: string) => {
   revalidateTag(getEtfListingFilterableTag(country));
   invalidateCloudFrontPaths([`/etfs/countries/${country}`]);
+};
+
+/**
+ * Identifies which Next.js Data Cache tag backs a given ETF listing surface, so
+ * the admin "Revalidate This Listing" action can refresh the right one. Only the
+ * index + group pages are tag-cached; the filter-based detail pages
+ * (provider / asset-class / category) are uncached (`revalidate: 0`) and have no
+ * tag, so they pass `undefined` and rely solely on the CloudFront page purge.
+ */
+export type EtfListingCacheTag =
+  | { kind: 'groups-index'; country: string }
+  | { kind: 'group-detail'; country: string; groupKey: string }
+  | { kind: 'asset-classes-index'; country: string }
+  | { kind: 'providers-index'; country: string };
+
+/**
+ * Revalidate ONLY the Next.js Data Cache tag for a listing surface. The caller is
+ * responsible for the CloudFront edge purge (the two cache layers are
+ * independent — clearing one without the other still serves stale content).
+ */
+export const revalidateEtfListingTagOnly = (tag: EtfListingCacheTag): void => {
+  switch (tag.kind) {
+    case 'groups-index':
+      revalidateTag(getEtfGroupsIndexTag(tag.country));
+      return;
+    case 'group-detail':
+      revalidateTag(getEtfGroupDetailTag(tag.country, tag.groupKey));
+      return;
+    case 'asset-classes-index':
+      revalidateTag(getEtfAssetClassesIndexTag(tag.country));
+      return;
+    case 'providers-index':
+      revalidateTag(getEtfProvidersIndexTag(tag.country));
+      return;
+  }
 };
