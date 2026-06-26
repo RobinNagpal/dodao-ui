@@ -152,6 +152,12 @@ variable "app_env" {
     # The app's pino→CloudWatch transport ships structured JSON logs here (§17).
     CLOUDWATCH_LOG_GROUP = "/insights-ui/app"
     AWS_REGION_LOGS      = "us-east-1"
+    # Generate tariff report sections in the BACKGROUND (fire-and-forget) instead
+    # of synchronously, so multi-minute Gemini calls don't hit the CloudFront
+    # origin timeout. The background task is in-process on this single Lightsail
+    # container, so generate reports only while the container is NOT being
+    # redeployed (a redeploy/crash mid-run drops the in-flight work).
+    USE_LAMBDA_FOR_TARIFF_LLM_RESPONSE = "true"
   }
 }
 

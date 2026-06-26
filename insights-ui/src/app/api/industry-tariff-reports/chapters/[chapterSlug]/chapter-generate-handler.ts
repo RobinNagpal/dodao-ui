@@ -13,9 +13,9 @@ async function parseBody(req: NextRequest): Promise<unknown> {
   }
 }
 
-// Returned when the section was kicked off in the BACKGROUND (env flag on);
-// progress is tracked on `section_status` (read via the `section-status` route
-// / the admin table's Refresh button).
+// Returned when the section was kicked off in the BACKGROUND (env flag on); the
+// generated content lands in the DB when the task finishes (the admin table's
+// Refresh button re-reads it).
 export interface ChapterGenerateStartedResponse {
   status: 'started';
   section: ChapterReportField;
@@ -29,12 +29,12 @@ export type ChapterGenerateResponse = IndustryTariffReport | ChapterGenerateStar
 //
 // `USE_LAMBDA_FOR_TARIFF_LLM_RESPONSE` gates HOW the section is generated:
 //   - flag ON  → run `generate` in the BACKGROUND (return immediately, no 504);
-//                progress lands on `section_status`, admin refreshes to see it.
+//                the content lands in the DB when the task finishes — admin
+//                refreshes to see it.
 //   - flag OFF → run `generate` SYNCHRONOUSLY and return the full report — the
 //                original behavior (the request waits for the LLM call).
 //
-// `section` is the JSONB column the generator populates and the key its status
-// is tracked under in background mode.
+// `section` is the JSONB column the generator populates.
 export function chapterGenerateRoute(
   section: ChapterReportField,
   generate: (slug: string, body: unknown) => Promise<void>
@@ -46,7 +46,7 @@ export function chapterGenerateRoute(
     const body = await parseBody(req);
 
     if (isLambdaTariffGenerationEnabled()) {
-      await startTariffSectionGeneration(chapterSlug, section, () => generate(chapterSlug, body));
+      startTariffSectionGeneration(chapterSlug, section, () => generate(chapterSlug, body));
       return { status: 'started', section };
     }
 

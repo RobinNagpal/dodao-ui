@@ -6,7 +6,6 @@ import type {
   IndustryAreasWrapper as TariffIndustryAreasType,
   ReportCover as TariffReportCoverType,
   TariffReportSeoDetails as TariffReportSeoDetailsType,
-  TariffSectionStatusMap as TariffSectionStatusMapType,
   TariffUpdatesForIndustry as TariffUpdatesForIndustryType,
   UnderstandIndustry as TariffUnderstandIndustryType,
 } from '@/scripts/industry-tariff-reports/tariff-types';
@@ -473,6 +472,5 @@ declare global {
     type TariffIndustryAreaSection = TariffIndustryAreaSectionType;
     type TariffFinalConclusion = TariffFinalConclusionType;
     type TariffReportSeoDetails = TariffReportSeoDetailsType;
-    type TariffSectionStatusMap = TariffSectionStatusMapType;
   }
 }
