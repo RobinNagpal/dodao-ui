@@ -45,4 +45,25 @@
   <sitemap>
     <loc>https://koalagains.com/stock-scenarios/sitemap.xml</loc>
   </sitemap>
+  <sitemap>
+    <loc>https://koalagains.com/etfs/sitemap.xml</loc>
+  </sitemap>
+  <sitemap>
+    <loc>https://koalagains.com/etfs/competition-sitemap.xml</loc>
+  </sitemap>
+  <sitemap>
+    <loc>https://koalagains.com/etfs/risk-analysis-sitemap.xml</loc>
+  </sitemap>
+  <sitemap>
+    <loc>https://koalagains.com/etfs/performance-returns-sitemap.xml</loc>
+  </sitemap>
+  <sitemap>
+    <loc>https://koalagains.com/etfs/cost-efficiency-team-sitemap.xml</loc>
+  </sitemap>
+  <sitemap>
+    <loc>https://koalagains.com/etfs/holdings-sitemap.xml</loc>
+  </sitemap>
+  <sitemap>
+    <loc>https://koalagains.com/etfs/future-performance-outlook-sitemap.xml</loc>
+  </sitemap>
 </sitemapindex>
