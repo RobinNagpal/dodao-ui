@@ -58,18 +58,6 @@ Single source of truth for active KoalaGains work. Completed items live in
 - [ ] **Phased rollout**: P0 schema + admin templates → P1 list/detail/from-template modal → P2 free-form behind flag + quota → P3 streaming + web-search citations + history diff.
 - [ ] Open: streaming vs spinner (default spinner); free-form at launch (default behind flag); citations design; cross-ticker reports out of scope.
 
-### Daily top movers — dedupe historical duplicates + harden ingest
-
-- [ ] **De-duplicate `daily_top_losers` / `daily_top_gainers`** — historical bug wrote multiple near-identical rows for the same ticker across weekends + US market holidays (~23% of loser rows belong to a `(symbol, %change)` cluster; 140 clusters, 344 rows). Each row got its own UUID, its own sitemap entry, and its own LLM-rewritten article, so GSC reports them as "Duplicate without user-selected canonical". Approach: add a nullable `canonicalId` self-FK to both tables; backfill the earliest-`createdAt` row per `(spaceId, symbol, percentageChange)` cluster as canonical, point the rest at it; in `app/daily-top-movers/top-(losers|gainers)/details/[id]/page.tsx` `permanentRedirect()` when `canonicalId` is set; filter `sitemap.xml/route.ts` and the list APIs feeding `RelatedDailyMovers` on `canonicalId IS NULL`. Validate with sitemap row-count drop + GSC duplicate-bucket shrink over 2–4 weeks.
-- [ ] **Stop creating new duplicates on US market holidays** — Mon-Fri cron (`deployments/insights-ui/scheduler.tf`) still fires on Good Friday / Presidents' Day / Memorial Day etc.; screener returns the prior trading day's data, callback writes a new row. Fix in `app/api/[spaceId]/tickers-v1/screener-callback/route.ts`: skip writes when a row already exists for `(spaceId, symbol)` with the same `percentageChange` within the last ~3 days. Or upgrade the unique constraint from `@@unique([spaceId, symbol, createdAt])` to a derived `marketDate` column so it's idempotent by definition.
-
-### Login improvements
-
-- [ ] Add **LinkedIn** SSO + **Yahoo** SSO; account-linking when a new provider matches an existing email; keep login sheet tidy (top 3–4 most-used).
-- [ ] Post-login resume — after sign-in from the click-count gate, complete the action the user was taking.
-- [ ] Telemetry — events for click counted / gate shown / gate→login / gate dismissed; admin dashboard for conversion rate.
-- [ ] Open: gate threshold (2 vs 3) behind a config flag for A/B; soft banner before hard gate; never re-show gate to logged-in users.
-
 ---
 
 ## ETFs
@@ -150,6 +138,30 @@ Remaining:
 - [ ] **Reverse links** — both stock and ETF detail pages link to the trends that reference them (do not defer the reverse link).
 - [ ] Open: trend taxonomy beyond scenario fields (macro/demographic/generational/technological/regulatory)?
 
+---
+
+## Daily movers
+
+### Dedupe historical duplicates + harden ingest
+
+- [ ] **De-duplicate `daily_top_losers` / `daily_top_gainers`** — historical bug wrote multiple near-identical rows for the same ticker across weekends + US market holidays (~23% of loser rows belong to a `(symbol, %change)` cluster; 140 clusters, 344 rows). Each row got its own UUID, its own sitemap entry, and its own LLM-rewritten article, so GSC reports them as "Duplicate without user-selected canonical". Approach: add a nullable `canonicalId` self-FK to both tables; backfill the earliest-`createdAt` row per `(spaceId, symbol, percentageChange)` cluster as canonical, point the rest at it; in `app/daily-top-movers/top-(losers|gainers)/details/[id]/page.tsx` `permanentRedirect()` when `canonicalId` is set; filter `sitemap.xml/route.ts` and the list APIs feeding `RelatedDailyMovers` on `canonicalId IS NULL`. Validate with sitemap row-count drop + GSC duplicate-bucket shrink over 2–4 weeks.
+- [ ] **Stop creating new duplicates on US market holidays** — Mon-Fri cron (`deployments/insights-ui/scheduler.tf`) still fires on Good Friday / Presidents' Day / Memorial Day etc.; screener returns the prior trading day's data, callback writes a new row. Fix in `app/api/[spaceId]/tickers-v1/screener-callback/route.ts`: skip writes when a row already exists for `(spaceId, symbol)` with the same `percentageChange` within the last ~3 days. Or upgrade the unique constraint from `@@unique([spaceId, symbol, createdAt])` to a derived `marketDate` column so it's idempotent by definition.
+
+---
+
+## Overall site
+
+- [ ] **Dark/light theme toggle** — some users find current dark theme reports unreadable. Decide: global header vs per-report toggle; default theme for first-time visitors; persist per user (cookie / localStorage); print-friendly variant separate from light theme?
+- [ ] **Traffic from AI platforms** (ChatGPT, Gemini, Perplexity) — content, structured data, brand/citation presence; track inbound referrals.
+- [ ] **Search & analytics research** — export / summarize Google Search Console + Google Analytics (key reports, date range, segments) and run structured research (e.g. with Claude) on what to try next for overall traffic + quality users.
+
+### Login improvements
+
+- [ ] Add **LinkedIn** SSO + **Yahoo** SSO; account-linking when a new provider matches an existing email; keep login sheet tidy (top 3–4 most-used).
+- [ ] Post-login resume — after sign-in from the click-count gate, complete the action the user was taking.
+- [ ] Telemetry — events for click counted / gate shown / gate→login / gate dismissed; admin dashboard for conversion rate.
+- [ ] Open: gate threshold (2 vs 3) behind a config flag for A/B; soft banner before hard gate; never re-show gate to logged-in users.
+
 ### Social media content pipeline
 
 - [ ] **Sources to mine**: stock + ETF scenarios, 10-bagger shortlist, founder + PM profiles, off-hours-refreshed reports (verdict / fair-value diffs), trends.
@@ -159,11 +171,3 @@ Remaining:
 - [ ] **Cadence + governance**: weekly minimum mixing stock + ETF; one weekly queue owner; compliance pass on every post (no advice phrasing, disclaimers, claims grounded in reports).
 - [ ] **Measurement**: per-platform impressions/engagement/clicks + per-source-artifact attribution; high engagement feeds off-hours refresh prioritization so winning posts don't link to stale reports.
 - [ ] Open: build vs buy scheduler; single voice vs platform-tailored; share queue + templates with ETF pipeline (only input adapter differs).
-
----
-
-## Site-wide / Other
-
-- [ ] **Dark/light theme toggle** — some users find current dark theme reports unreadable. Decide: global header vs per-report toggle; default theme for first-time visitors; persist per user (cookie / localStorage); print-friendly variant separate from light theme?
-- [ ] **Traffic from AI platforms** (ChatGPT, Gemini, Perplexity) — content, structured data, brand/citation presence; track inbound referrals.
-- [ ] **Search & analytics research** — export / summarize Google Search Console + Google Analytics (key reports, date range, segments) and run structured research (e.g. with Claude) on what to try next for overall traffic + quality users.
