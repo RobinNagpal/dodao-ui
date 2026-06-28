@@ -256,3 +256,7 @@ Remaining:
 - [ ] **Logged-in user growth + daily-returning retention** — baseline ~300 logged-in / ~1k DAU / ~80 returning. Define hypotheses + experiments; tie to login gate, watchlists, alert digests.
 - [ ] **Traffic from AI platforms** (ChatGPT, Gemini, Perplexity) — content, structured data, brand/citation presence; track inbound referrals.
 - [ ] **Search & analytics research** — export / summarize Google Search Console + Google Analytics (key reports, date range, segments) and run structured research (e.g. with Claude) on what to try next for overall traffic + quality users.
+
+### Task-list housekeeping
+
+- [ ] **Finalize the task list** — do a full pass over [`todo-tasks.md`](./todo-tasks.md) and [`closed-tasks.md`](./closed-tasks.md) to keep both files accurate and actionable: verify each open item against the current codebase (drop or move anything already shipped to `closed-tasks.md` with a verifying note), de-duplicate overlapping entries, confirm every referenced file path / PR number / route still exists, ensure each item has a clear definition of done, regroup stragglers under the right top-level heading, and resolve or split out the dangling "Open:" questions so they don't accumulate. Run this as a recurring grooming pass (e.g. before each planning cycle) so the open list stays the single source of truth.
