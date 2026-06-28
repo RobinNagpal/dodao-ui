@@ -118,11 +118,6 @@ Remaining:
 - [ ] Storage: `insights-ui/src/etf-analysis-data/etf-comparison-bases.json` keyed by group with `{ primary: { symbol, name, source }, secondary?, rationale }`; injected into generation pipeline.
 - [ ] Prompt impact: every "vs. category" claim paired with "vs. {comparisonBase.name} ({comparisonBase.symbol})".
 
-### Phase 4 — SEO, metadata, sitemap
-
-- [ ] SEO/metadata review after new sections — titles/descriptions cover comparison + competition keywords; JSON-LD remains valid and updated.
-- [ ] Daily generation + sitemap updates — generate 5–10 ETFs daily; push generated URLs to sitemap (or sitemap index) automatically.
-
 ### Suggestion — Connect ETFs to the home page + categorization
 
 > ETF category pages and country pages exist (see closed-tasks). Remaining:
