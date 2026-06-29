@@ -56,3 +56,12 @@ export async function fetchIndustryStocksData(
     return null;
   }
 }
+
+/**
+ * True when an industry listing has no stocks to show — either the fetch failed/returned nothing
+ * or every sub-industry is empty. Mirrors the empty-state check in `IndustryStocksGrid`. Used to
+ * mark these thin pages `noindex` so they don't get reported as soft 404s.
+ */
+export function isIndustryStocksResponseEmpty(data: SubIndustriesResponse | null): boolean {
+  return !data || !data.subIndustries || data.subIndustries.flatMap((subIndustry) => subIndustry.tickers).length === 0;
+}

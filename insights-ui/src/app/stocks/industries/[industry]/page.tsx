@@ -17,6 +17,9 @@ export const dynamic = 'force-dynamic';
 export async function generateMetadata(props: { params: Promise<{ industry: string }> }): Promise<Metadata> {
   const { industry } = await props.params;
   const industryKey = decodeURIComponent(industry);
+
+  // US industry listings always have stocks, so they stay indexable — no need for the empty-check
+  // fetch here. The noindex-when-empty guard is only applied to the per-country leaf pages.
   return generateCountryIndustryStocksMetadata('US', industryKey);
 }
 
