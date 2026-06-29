@@ -88,7 +88,12 @@ export function withErrorHandlingV2<T>(handler: Handler2<T> | Handler2WithReq<T>
 
       const userMessage = (error as any)?.response?.data || (error as any)?.message || 'An unknown error occurred';
 
-      const statusCode = isJwtError(error) ? 401 : isPrismaNotFound ? 404 : 500;
+      // Handlers can throw an error carrying an explicit `statusCode` (e.g. 404
+      // for "resource not found") so an expected user error doesn't surface as a
+      // generic 500. Falls back to the JWT/Prisma/500 detection below.
+      const customStatusCode = typeof (error as any)?.statusCode === 'number' ? (error as any).statusCode : undefined;
+
+      const statusCode = customStatusCode ?? (isJwtError(error) ? 401 : isPrismaNotFound ? 404 : 500);
       console.log(`[withErrorHandlingV2] Returning user-friendly error message with status ${statusCode}:`, userMessage);
       return NextResponse.json({ error: userMessage }, { status: statusCode });
     }

@@ -112,8 +112,10 @@ export default function CalculatorClient(): JSX.Element {
         body: JSON.stringify(body),
       });
       if (!res.ok) {
-        const payload = (await res.json().catch(() => ({}))) as { message?: string; errorMessage?: string };
-        throw new Error(payload.errorMessage ?? payload.message ?? `Calculation failed (HTTP ${res.status})`);
+        // The error middleware returns `{ error }`; fall back to the other
+        // shapes and finally a generic message so the user always sees text.
+        const payload = (await res.json().catch(() => ({}))) as { error?: string; message?: string; errorMessage?: string };
+        throw new Error(payload.error ?? payload.errorMessage ?? payload.message ?? `Calculation failed (HTTP ${res.status})`);
       }
       const data = (await res.json()) as CalculatorResult;
       if (seq !== requestSeqRef.current) return;
