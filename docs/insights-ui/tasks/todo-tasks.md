@@ -106,12 +106,6 @@ Remaining:
 - [ ] Storage: `insights-ui/src/etf-analysis-data/etf-comparison-bases.json` keyed by group with `{ primary: { symbol, name, source }, secondary?, rationale }`; injected into generation pipeline.
 - [ ] Prompt impact: every "vs. category" claim paired with "vs. {comparisonBase.name} ({comparisonBase.symbol})".
 
-### Suggestion — Connect ETFs to the home page + categorization
-
-> ETF category pages and country pages exist (see closed-tasks). Remaining:
-
-- [ ] **Add an ETF section on the home page** — mirror stocks-by-industry; group by `category` (Morningstar), cards link to category pages.
-
 ### Known limitations in the new 8-group taxonomy (follow-up cleanups)
 
 - [ ] **Split strategy funds back out of `derivative-income`** — managed-futures / market-neutral / long-short (~50 funds) don't share a decision framework with the ~600 option-engineered payoff funds; prompt has to branch internally. Highest-impact follow-up.
@@ -156,12 +150,9 @@ Remaining:
 
 ### Login improvements
 
-- [ ] Add **LinkedIn** SSO + **Yahoo** SSO; account-linking when a new provider matches an existing email; keep login sheet tidy (top 3–4 most-used).
-- [ ] Post-login resume — after sign-in from the click-count gate, complete the action the user was taking.
-- [ ] Telemetry — events for click counted / gate shown / gate→login / gate dismissed; admin dashboard for conversion rate.
-- [ ] Open: gate threshold (2 vs 3) behind a config flag for A/B; soft banner before hard gate; never re-show gate to logged-in users.
+- [ ] Add **LinkedIn** SSO + **Yahoo** SSO
 
 ### Social media content pipeline
 
-- [ ] **Start with LinkedIn** — pick one ETF, share its results, tag its manager or provider where possible, write a few lines about it, and attach a picture/poster.
+- [ ] **Start with LinkedIn** — pick one ETF or stock, share its results, tag its manager or provider where possible, write a few lines about it, and attach a picture/poster.
 - [ ] **Then move to X (Twitter)** — repeat the same simple post format once the LinkedIn flow is working.
