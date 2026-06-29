@@ -48,12 +48,12 @@ export function groupsIndexRobots(data: EtfGroupsIndexResponse | null): Pick<Met
 
 export function assetClassesIndexRobots(data: EtfAssetClassesIndexResponse | null): Pick<Metadata, 'robots'> {
   if (!data) return INDEXABLE;
-  return etfListingRobots(allCountsZero(data.counts));
+  return etfListingRobots(allCountsZero(data.counts) && (data.others?.count ?? 0) === 0);
 }
 
 export function providersIndexRobots(data: EtfProvidersIndexResponse | null): Pick<Metadata, 'robots'> {
   if (!data) return INDEXABLE;
-  return etfListingRobots(data.providers.length === 0);
+  return etfListingRobots(data.providers.length === 0 && (data.others?.count ?? 0) === 0);
 }
 
 /** Group detail page. `found:false` means an unknown key (the page 404s anyway)

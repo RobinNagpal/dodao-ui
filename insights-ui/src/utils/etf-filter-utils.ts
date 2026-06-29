@@ -1265,7 +1265,9 @@ export function createEtfStockAnalyzerFilter(filters: EtfFilterParams): Prisma.E
 
   const assetClass = filters[EtfFilterParamKey.ASSET_CLASS]?.trim();
   if (assetClass) {
-    where.assetClass = { equals: assetClass, mode: 'insensitive' };
+    // The synthetic "others" asset class means "assetClass is null"; the listing
+    // route then OR-s in ETFs that lack a stockAnalyzerInfo relation entirely.
+    where.assetClass = assetClass === ETF_OTHERS_GROUP_KEY ? null : { equals: assetClass, mode: 'insensitive' };
   }
 
   const category = filters[EtfFilterParamKey.CATEGORY]?.trim();
@@ -1296,7 +1298,9 @@ export function createEtfStockAnalyzerFilter(filters: EtfFilterParams): Prisma.E
 
   const issuer = filters[EtfFilterParamKey.ISSUER]?.trim();
   if (issuer) {
-    where.issuer = { contains: issuer, mode: 'insensitive' };
+    // The synthetic "others" issuer means "issuer is null"; the listing route
+    // then OR-s in ETFs that lack a stockAnalyzerInfo relation entirely.
+    where.issuer = issuer === ETF_OTHERS_GROUP_KEY ? null : { contains: issuer, mode: 'insensitive' };
   }
 
   return where;

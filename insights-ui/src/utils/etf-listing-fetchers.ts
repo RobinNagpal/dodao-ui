@@ -31,9 +31,9 @@ export const EMPTY_ETF_GROUPS_INDEX: EtfGroupsIndexResponse = {
   others: { items: [], count: 0 },
 };
 
-export const EMPTY_ETF_ASSET_CLASSES_INDEX: EtfAssetClassesIndexResponse = { values: {}, counts: {} };
+export const EMPTY_ETF_ASSET_CLASSES_INDEX: EtfAssetClassesIndexResponse = { values: {}, counts: {}, others: { items: [], count: 0 } };
 
-export const EMPTY_ETF_PROVIDERS_INDEX: EtfProvidersIndexResponse = { providers: [], values: {}, counts: {} };
+export const EMPTY_ETF_PROVIDERS_INDEX: EtfProvidersIndexResponse = { providers: [], values: {}, counts: {}, others: { items: [], count: 0 } };
 
 export const EMPTY_ETF_GROUP_DETAIL: EtfGroupDetailResponse = { found: false, values: {}, counts: {}, others: null };
 
