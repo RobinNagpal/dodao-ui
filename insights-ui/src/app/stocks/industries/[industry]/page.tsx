@@ -5,6 +5,7 @@ import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { SupportedCountries } from '@/utils/countryExchangeUtils';
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
 import { commonViewport, generateCountryIndustryStocksMetadata } from '@/utils/metadata-generators';
+import { fetchIndustryStocksData, isIndustryStocksResponseEmpty } from '@/utils/stocks-data-utils';
 import { getIndustryPageTag } from '@/utils/ticker-v1-cache-utils';
 import type { Metadata } from 'next';
 import { permanentRedirect } from 'next/navigation';
@@ -17,7 +18,10 @@ export const dynamic = 'force-dynamic';
 export async function generateMetadata(props: { params: Promise<{ industry: string }> }): Promise<Metadata> {
   const { industry } = await props.params;
   const industryKey = decodeURIComponent(industry);
-  return generateCountryIndustryStocksMetadata('US', industryKey);
+
+  // noindex empty industry listings (thin content → soft 404 in Google Search Console).
+  const data = await fetchIndustryStocksData(industryKey.toUpperCase(), SupportedCountries.US, {});
+  return generateCountryIndustryStocksMetadata('US', industryKey, { noIndex: isIndustryStocksResponseEmpty(data) });
 }
 
 const WEEK = 60 * 60 * 24 * 7;

@@ -58,7 +58,7 @@ export const generateCountryStocksMetadata = (countryName: string): Metadata => 
 // Country industry stocks metadata generator
 // ────────────────────────────────────────────────────────────────────────────────
 
-export const generateCountryIndustryStocksMetadata = async (countryName: string, industryKey: string): Promise<Metadata> => {
+export const generateCountryIndustryStocksMetadata = async (countryName: string, industryKey: string, options?: { noIndex?: boolean }): Promise<Metadata> => {
   const isUS = countryName === 'US';
 
   // Normalize to uppercase — generateMetadata runs before page-level permanentRedirect,
@@ -100,6 +100,10 @@ export const generateCountryIndustryStocksMetadata = async (countryName: string,
   return {
     title,
     description: industrySummary,
+    // Empty industry listings (common for non-US countries where many industries have no
+    // matching stocks) are thin content → Google flags them as soft 404s. Keep them out of the
+    // index but let crawlers follow the links back to populated pages.
+    robots: options?.noIndex ? { index: false, follow: true } : { index: true, follow: true },
     alternates: {
       canonical: base,
     },
