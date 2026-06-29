@@ -33,7 +33,7 @@ function toMorEtfExchangeSegment(exchange: AllExchanges): MorEtfExchangeSegment 
       return 'xtse';
     case CanadaExchanges.NEO:
       return 'neoe';
-    // Australia — Morningstar uses the ASX MIC code (e.g. /etfs/xasx/vas/quote).
+    // Australia — the provider uses the ASX MIC code segment (e.g. /etfs/xasx/vas/quote).
     case AustraliaExchanges.ASX:
       return 'xasx';
     default:

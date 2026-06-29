@@ -5,7 +5,7 @@ import { KoalaGainsJwtTokenPayload } from '@/types/auth';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { EtfScenario } from '@prisma/client';
 import { EtfScenarioDirection, EtfScenarioPricedInBucket, EtfScenarioProbabilityBucket, EtfScenarioTimeframe } from '@/types/etfScenarioEnums';
-import { isEtfSupportedCountry } from '@/utils/etfCountryExchangeUtils';
+import { ETF_SUPPORTED_COUNTRIES, isEtfSupportedCountry } from '@/utils/etfCountryExchangeUtils';
 import { NextRequest } from 'next/server';
 import { withAdminOrToken } from '../../helpers/withAdminOrToken';
 import { z } from 'zod';
@@ -35,7 +35,7 @@ const updateEtfScenarioSchema = z.object({
   // the scope (e.g. dropping US) should expect existing US links to start
   // throwing on subsequent edits until they're cleaned up.
   countries: z
-    .array(z.string().refine((v) => isEtfSupportedCountry(v), 'country must be one of the supported ETF countries (US / Canada)'))
+    .array(z.string().refine((v) => isEtfSupportedCountry(v), `country must be one of the supported ETF countries (${ETF_SUPPORTED_COUNTRIES.join(' / ')})`))
     .min(1)
     .optional(),
 });

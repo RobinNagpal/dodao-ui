@@ -236,7 +236,7 @@ export default function UpsertEtfScenarioModal({ isOpen, onClose, onSuccess, sce
         />
 
         <div>
-          <p className="text-sm text-gray-300 mb-1">Countries in scope (US / Canada — at least one required)</p>
+          <p className="text-sm text-gray-300 mb-1">Countries in scope ({ETF_SUPPORTED_COUNTRIES.join(' / ')} — at least one required)</p>
           <Checkboxes items={countryItems} selectedItemIds={countries} onChange={(ids: string[]) => setCountries(ids as EtfSupportedCountry[])} />
         </div>
 

@@ -43,7 +43,7 @@ const GROUP_CATEGORY_FLAGS: Record<string, EtfCategoryFlagsFile> = {
  * a fund category, or undefined. The stored category is the raw per-country
  * label, so it is canonicalized (e.g. Canada's "Information Technology" ->
  * "Technology") before resolving the group and the slug key, so lookups resolve
- * for both US and Canada funds.
+ * across all supported ETF countries (US, Canada, Australia).
  */
 function getCategoryInstructionEntry(fundCategory: string | null | undefined): EtfMorCategoryInstructionEntry | undefined {
   const groupKey = getEtfGroupKeyForCategory(fundCategory);
