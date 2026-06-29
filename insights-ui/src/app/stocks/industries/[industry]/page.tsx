@@ -5,7 +5,6 @@ import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { SupportedCountries } from '@/utils/countryExchangeUtils';
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
 import { commonViewport, generateCountryIndustryStocksMetadata } from '@/utils/metadata-generators';
-import { fetchIndustryStocksData, isIndustryStocksResponseEmpty } from '@/utils/stocks-data-utils';
 import { getIndustryPageTag } from '@/utils/ticker-v1-cache-utils';
 import type { Metadata } from 'next';
 import { permanentRedirect } from 'next/navigation';
@@ -19,9 +18,9 @@ export async function generateMetadata(props: { params: Promise<{ industry: stri
   const { industry } = await props.params;
   const industryKey = decodeURIComponent(industry);
 
-  // noindex empty industry listings (thin content → soft 404 in Google Search Console).
-  const data = await fetchIndustryStocksData(industryKey.toUpperCase(), SupportedCountries.US, {});
-  return generateCountryIndustryStocksMetadata('US', industryKey, { noIndex: isIndustryStocksResponseEmpty(data) });
+  // US industry listings always have stocks, so they stay indexable — no need for the empty-check
+  // fetch here. The noindex-when-empty guard is only applied to the per-country leaf pages.
+  return generateCountryIndustryStocksMetadata('US', industryKey);
 }
 
 const WEEK = 60 * 60 * 24 * 7;
