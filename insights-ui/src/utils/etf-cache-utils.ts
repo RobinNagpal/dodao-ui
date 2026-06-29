@@ -57,8 +57,9 @@ export const etfAndExchangeTag = (symbol: string, exchange: string): `${typeof E
 
 export const revalidateEtfAndExchangeTag = (symbol: string, exchange: string) => {
   revalidateTag(etfAndExchangeTag(symbol, exchange));
-  // Main page renders from the consolidated `/full-render` endpoint.
-  invalidateCloudFrontPaths([`/etfs/${exchange}/${symbol}`, `${etfApiBase(symbol, exchange)}/full-render`]);
+  // Main page renders from `/full-render` (report body) + `/chart-data` (price chart slice).
+  // Both fetches carry this umbrella tag, so purge both at the edge.
+  invalidateCloudFrontPaths([`/etfs/${exchange}/${symbol}`, `${etfApiBase(symbol, exchange)}/full-render`, `${etfApiBase(symbol, exchange)}/chart-data`]);
 };
 
 /** Per-category subpage tag — used by the 4 `EtfAnalysisCategory` subpages. */

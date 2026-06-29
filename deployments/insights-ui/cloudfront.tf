@@ -43,6 +43,7 @@ locals {
   # mor-info; holdings → portfolio-holdings.
   etfs_api_cached_paths = [
     "/api/koala_gains/etfs-v1/exchange/*/*/full-render",
+    "/api/koala_gains/etfs-v1/exchange/*/*/chart-data",
     "/api/koala_gains/etfs-v1/exchange/*/*/analysis",
     "/api/koala_gains/etfs-v1/exchange/*/*/mor-info",
     "/api/koala_gains/etfs-v1/exchange/*/*/portfolio-holdings",

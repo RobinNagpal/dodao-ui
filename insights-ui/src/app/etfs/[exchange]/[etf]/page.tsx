@@ -1,4 +1,5 @@
 import type { EtfFullRenderResponse } from '@/app/api/[spaceId]/etfs-v1/exchange/[exchange]/[etf]/full-render/route';
+import type { EtfChartDataResponse } from '@/app/api/[spaceId]/etfs-v1/exchange/[exchange]/[etf]/chart-data/route';
 import { EtfFastResponse } from '@/app/api/[spaceId]/etfs-v1/exchange/[exchange]/[etf]/route';
 import EtfActions from '@/app/etfs/[exchange]/[etf]/EtfActions';
 import EtfFavouriteButton from '@/app/etfs/[exchange]/[etf]/EtfFavouriteButton';
@@ -43,9 +44,14 @@ import { Suspense, use } from 'react';
  * shell streams to the browser immediately while `/full-render` is still
  * in-flight — FCP/LCP land on the shell instead of on the slowest data slice.
  *
- * Per-slice streaming (each below-fold block on its own promise, like stocks'
- * 5 separate fetchers) would need per-slice API endpoints that don't exist
- * yet on the ETF side. Tracked as follow-up.
+ * The price chart + performance-metrics slice is fetched from its own
+ * `/chart-data` endpoint (not `/full-render`) because the price-history refresh
+ * can hit Yahoo over the network — keeping it separate means the report body
+ * (analysis, holdings, competition) streams as soon as the DB read finishes
+ * instead of waiting on that network call, and the chart streams independently.
+ * The remaining slices (about, radar, below-fold body) share `/full-render`
+ * since they all read from one ETF-row + analysis query — splitting them
+ * further would just duplicate that query for no streaming gain.
  */
 export const dynamic = 'force-dynamic';
 
@@ -65,6 +71,18 @@ async function fetchEtfFullRender(exchange: string, etf: string): Promise<EtfFul
     throw new Error(`fetchEtfFullRender failed (${res.status}): ${url}`);
   }
   return (await res.json()) as EtfFullRenderResponse;
+}
+
+// Price chart + performance metrics are fetched separately so the report body
+// (analysis, holdings, competition) doesn't wait on the price-history refresh,
+// which can hit Yahoo over the network. Same umbrella cache tag as /full-render.
+async function fetchEtfChartData(exchange: string, etf: string): Promise<EtfChartDataResponse> {
+  const url = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/etfs-v1/exchange/${exchange.toUpperCase()}/${etf.toUpperCase()}/chart-data`;
+  const res = await fetch(url, { next: { tags: [etfAndExchangeTag(etf, exchange)] } });
+  if (!res.ok) {
+    throw new Error(`fetchEtfChartData failed (${res.status}): ${url}`);
+  }
+  return (await res.json()) as EtfChartDataResponse;
 }
 
 export async function generateMetadata({ params }: { params: RouteParams }): Promise<Metadata> {
@@ -210,7 +228,7 @@ function EtfRadarFromPromise({ promise }: { promise: Promise<EtfFullRenderRespon
   return <EtfRadarChart scores={data.scores} analysis={data.analysis} />;
 }
 
-function EtfChartTabsFromPromise({ promise, etfSymbol }: { promise: Promise<EtfFullRenderResponse>; etfSymbol: string }): JSX.Element {
+function EtfChartTabsFromPromise({ promise, etfSymbol }: { promise: Promise<EtfChartDataResponse>; etfSymbol: string }): JSX.Element {
   const data = use(promise);
   return <EtfChartTabs priceHistory={data.priceHistory} performanceMetrics={data.performanceMetrics} etfSymbol={etfSymbol} />;
 }
@@ -266,6 +284,7 @@ export default async function EtfDetailsPage({ params }: { params: RouteParams }
   if (!etfData) notFound();
 
   const fullRenderPromise = fetchEtfFullRender(exchange, etf);
+  const chartDataPromise = fetchEtfChartData(exchange, etf);
 
   const safeDate = (dateValue: any): Date => {
     if (dateValue instanceof Date && !isNaN(dateValue.getTime())) return dateValue;
@@ -381,7 +400,7 @@ export default async function EtfDetailsPage({ params }: { params: RouteParams }
           </div>
 
           <Suspense fallback={<ChartTabsSkeleton />}>
-            <EtfChartTabsFromPromise promise={fullRenderPromise} etfSymbol={etfData.symbol} />
+            <EtfChartTabsFromPromise promise={chartDataPromise} etfSymbol={etfData.symbol} />
           </Suspense>
         </section>
 
