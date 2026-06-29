@@ -1,43 +1,19 @@
-import type { EtfGroupsIndexResponse } from '@/app/api/[spaceId]/etfs-v1/listings/groups-index/route';
 import EtfGroupsIndex from '@/components/etfs/EtfGroupsIndex';
-import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { SupportedCountries } from '@/utils/countryExchangeUtils';
-import { getEtfGroupsIndexTag } from '@/utils/etf-cache-utils';
-import { fetchEtfListingsIndex } from '@/utils/etf-listing-visibility';
+import { EMPTY_ETF_GROUPS_INDEX, fetchEtfGroupsIndex } from '@/utils/etf-listing-fetchers';
+import { groupsIndexRobots } from '@/utils/etf-listing-noindex';
 import { generateEtfListingBreadcrumbJsonLd, generateEtfListingJsonLd, generateEtfListingMetadata } from '@/utils/etf-metadata-generators';
-import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
+import type { Metadata } from 'next';
 
 export const dynamic = 'force-dynamic';
 
-export const metadata = generateEtfListingMetadata();
-
-const EMPTY_GROUPS_INDEX: EtfGroupsIndexResponse = {
-  categoryValues: {},
-  categoryCounts: {},
-  groupCounts: {},
-  others: { items: [], count: 0 },
-};
-
-// Fail-soft so the first preview/prod build after introducing the listings
-// API routes can still prerender. The 1-week tag + ISR repopulates the page
-// on the first real request once the new route is live in the target env.
-async function fetchGroupsIndex(country: SupportedCountries): Promise<EtfGroupsIndexResponse> {
-  const url = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/etfs-v1/listings/groups-index?country=${encodeURIComponent(country)}`;
-  try {
-    const res = await fetchEtfListingsIndex(url, getEtfGroupsIndexTag(country));
-    if (!res.ok) {
-      console.error(`fetchGroupsIndex failed (${res.status}): ${url}`);
-      return EMPTY_GROUPS_INDEX;
-    }
-    return (await res.json()) as EtfGroupsIndexResponse;
-  } catch (e) {
-    console.error('fetchGroupsIndex error:', e);
-    return EMPTY_GROUPS_INDEX;
-  }
+export async function generateMetadata(): Promise<Metadata> {
+  const data = await fetchEtfGroupsIndex(SupportedCountries.US);
+  return { ...generateEtfListingMetadata(), ...groupsIndexRobots(data) };
 }
 
 export default async function EtfsPage() {
-  const data = await fetchGroupsIndex(SupportedCountries.US);
+  const data = (await fetchEtfGroupsIndex(SupportedCountries.US)) ?? EMPTY_ETF_GROUPS_INDEX;
   return (
     <EtfGroupsIndex
       country={SupportedCountries.US}

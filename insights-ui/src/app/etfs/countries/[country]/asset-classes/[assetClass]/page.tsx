@@ -3,6 +3,8 @@ import { EtfSearchParams, ETF_ASSET_CLASS_OPTIONS } from '@/utils/etf-filter-uti
 import { etfBrowseDetailPath, resolveEtfCountryParam } from '@/utils/etf-country-route-utils';
 import { getEtfAssetClassBySlug, slugifyEtfTag } from '@/utils/etf-tag-slug-utils';
 import { SupportedCountries } from '@/utils/countryExchangeUtils';
+import { fetchEtfAssetClassesIndex } from '@/utils/etf-listing-fetchers';
+import { assetClassDetailRobots } from '@/utils/etf-listing-noindex';
 import { generateEtfAssetClassDetailBreadcrumbJsonLd, generateEtfAssetClassDetailMetadata } from '@/utils/etf-metadata-generators';
 import { notFound, permanentRedirect } from 'next/navigation';
 import type { Metadata } from 'next';
@@ -30,11 +32,15 @@ export async function generateMetadata(props: { params: Promise<{ country: strin
   const canonical = resolved?.canonical ?? decodeURIComponent(assetClass);
   const slug = resolved?.slug ?? slugifyEtfTag(canonical);
   const decodedCountry = resolveEtfCountryParam(country, etfBrowseDetailPath(SupportedCountries.US, 'asset-classes', slug));
-  return generateEtfAssetClassDetailMetadata({
+  const base = generateEtfAssetClassDetailMetadata({
     country: decodedCountry,
     assetClass: canonical,
     assetClassSlug: slug,
   });
+  // Unknown asset class → the page 404s, so there's nothing to index either way.
+  if (!resolved) return base;
+  const index = await fetchEtfAssetClassesIndex(decodedCountry);
+  return { ...base, ...assetClassDetailRobots(index, resolved.slug) };
 }
 
 export default async function CountryEtfsByAssetClassPage({ params, searchParams: searchParamsPromise }: PageProps) {

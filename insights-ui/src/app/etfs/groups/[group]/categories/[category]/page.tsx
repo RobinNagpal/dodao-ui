@@ -3,6 +3,8 @@ import { EtfSearchParams } from '@/utils/etf-filter-utils';
 import { getEtfCategoryByName, getEtfCategoryBySlug, getEtfGroupByKey, slugifyEtfCategory } from '@/utils/etf-categorization-utils';
 import { etfGroupCategoryPath } from '@/utils/etf-country-route-utils';
 import { SupportedCountries } from '@/utils/countryExchangeUtils';
+import { fetchEtfGroupDetail } from '@/utils/etf-listing-fetchers';
+import { groupCategoryDetailRobots } from '@/utils/etf-listing-noindex';
 import { generateEtfGroupCategoryListingBreadcrumbJsonLd, generateEtfGroupCategoryListingMetadata } from '@/utils/etf-metadata-generators';
 import { notFound, permanentRedirect } from 'next/navigation';
 import type { Metadata } from 'next';
@@ -20,12 +22,16 @@ export async function generateMetadata(props: { params: Promise<{ group: string;
   const decodedCategory = decodeURIComponent(category);
   const groupObj = getEtfGroupByKey(decodedGroup);
   const cat = getEtfCategoryBySlug(decodedCategory) ?? getEtfCategoryByName(decodedCategory);
-  return generateEtfGroupCategoryListingMetadata({
+  const base = generateEtfGroupCategoryListingMetadata({
     country: SupportedCountries.US,
     groupKey: cat?.group ?? decodedGroup,
     groupName: groupObj?.name ?? decodedGroup,
     categoryName: cat?.name ?? decodedCategory,
   });
+  // Unknown category → the page 404s, so there's nothing to index either way.
+  if (!cat) return base;
+  const groupData = await fetchEtfGroupDetail(SupportedCountries.US, cat.group);
+  return { ...base, ...groupCategoryDetailRobots(groupData, cat.name) };
 }
 
 export default async function EtfGroupCategoryPage({ params, searchParams: searchParamsPromise }: PageProps) {
