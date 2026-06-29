@@ -1,4 +1,4 @@
-import { fetchEtfProvidersForCountry, fetchEtfsForGroupings } from '@/app/api/[spaceId]/etfs-v1/listings/listings-prisma';
+import { fetchEtfProvidersForCountry, fetchEtfsForGroupings, fetchUncategorizedEtfPreview } from '@/app/api/[spaceId]/etfs-v1/listings/listings-prisma';
 import { prisma } from '@/prisma';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { getAllEtfGroups, getCategoriesForGroupKey } from '@/utils/etf-categorization-utils';
@@ -38,22 +38,25 @@ async function generateEtfUrls(): Promise<SiteMapUrl[]> {
     // Counts come from the same bucketing the index pages use, so a group/category/asset-class page
     // only enters the sitemap when at least one populated ETF lands in it. Providers are already
     // populated-only and content-derived.
-    const [byGroup, byCategory, byAssetClass, providers] = await Promise.all([
+    const [byGroup, byCategory, byAssetClass, providers, others] = await Promise.all([
       fetchEtfsForGroupings(KoalaGainsSpaceId, 'category', groupValueToKey, country),
       fetchEtfsForGroupings(KoalaGainsSpaceId, 'category', categoryValueToKey, country),
       fetchEtfsForGroupings(KoalaGainsSpaceId, 'assetClass', assetClassValueToKey, country),
       fetchEtfProvidersForCountry(KoalaGainsSpaceId, country),
+      fetchUncategorizedEtfPreview(KoalaGainsSpaceId, country),
     ]);
 
     // Section index pages. The groups index collapses onto the country root (/etfs for US,
     // /etfs/countries/<country> otherwise), so use etfSectionIndexPath for it. Each section index
-    // enters the sitemap only when it has content — mirroring the `noindex` that the empty listing
-    // pages now return (see etf-listing-noindex.ts) so we never submit a URL that resolves to
-    // `noindex` (which Search Console would flag as "Submitted URL marked noindex").
+    // enters the sitemap only when it has content — mirroring EXACTLY the `noindex` that the empty
+    // listing pages now return (see etf-listing-noindex.ts) so we never submit a URL that resolves
+    // to `noindex` (which Search Console would flag as "Submitted URL marked noindex"). The groups
+    // index / country root renders only group buckets + the uncategorized "others" bucket, so its
+    // gate mirrors `groupsIndexRobots` (groups OR others) — not asset-class / provider counts.
     const hasGroups = Object.values(byGroup.counts).some((count) => count > 0);
     const hasAssetClasses = Object.values(byAssetClass.counts).some((count) => count > 0);
     const hasProviders = providers.providers.length > 0;
-    if (hasGroups || hasAssetClasses || hasProviders) {
+    if (hasGroups || others.count > 0) {
       urls.push({ url: etfSectionIndexPath(country, 'groups'), changefreq: 'daily', priority: 0.8 });
     }
     if (hasAssetClasses) {
