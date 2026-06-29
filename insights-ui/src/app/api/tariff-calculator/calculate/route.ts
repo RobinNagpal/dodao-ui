@@ -11,8 +11,25 @@ import { NextRequest } from 'next/server';
 // candidate-codes feed for the requested HTS 10-digit line if we don't
 // already have it, then runs the duty engine and returns the breakdown.
 
+// Thrown for the two "we don't have this code" cases in loadCandidates(). The
+// error middleware reads `statusCode` and returns a 404 (instead of a 500), so a
+// typo'd or unknown HTS code reads as "not found" to the user and to crawlers
+// rather than logging a server error. The message is shown directly in the UI,
+// so keep it plain-English and free of internal hints.
+class HtsLookupError extends Error {
+  readonly statusCode = 404;
+  constructor(message: string) {
+    super(message);
+    this.name = 'HtsLookupError';
+  }
+}
+
 function isObject(v: unknown): v is Record<string, unknown> {
   return typeof v === 'object' && v !== null && !Array.isArray(v);
+}
+
+function formatHts10(hts10: string): string {
+  return hts10.replace(/(\d{4})(\d{2})(\d{2})(\d{2})/, '$1.$2.$3.$4');
 }
 
 function parseHts10(raw: unknown): string {
@@ -93,7 +110,7 @@ async function loadCandidates(hts10: string): Promise<CandidateCodeListItem[]> {
     select: { id: true },
   });
   if (!htsRow) {
-    throw new Error(`HTS code ${hts10} is not in the HTSUS catalog. Ingest the chapter first.`);
+    throw new HtsLookupError(`We couldn't find HTS code ${formatHts10(hts10)} in the US tariff schedule. Double-check the 10-digit code and try again.`);
   }
 
   const fetchLinks = () =>
@@ -112,7 +129,7 @@ async function loadCandidates(hts10: string): Promise<CandidateCodeListItem[]> {
 
   let links = await fetchLinks();
   if (links.length === 0) {
-    throw new Error(`No candidate codes found for HTS ${hts10}. Ingest candidate codes into the DB before running the calculator.`);
+    throw new HtsLookupError(`We don't have duty data for HTS code ${formatHts10(hts10)} yet. Try a different code or check back later.`);
   }
 
   return links
