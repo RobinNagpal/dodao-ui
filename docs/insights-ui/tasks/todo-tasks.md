@@ -11,11 +11,11 @@ Single source of truth for active KoalaGains work. Completed items live in
 
 - [ ] **Mobile layout audit** — fix overflow tables, cut-off charts, font/spacing/sticky-header/tap-target issues; verify after any restructure.
 - [ ] **Move competition chart** directly under the Business & Moat section, with the competitors list adjacent.
-- [ ] **SEO — "Crawled — currently not indexed" on `business-and-moat-sitemap.xml`** — export affected URLs, audit for thin/duplicative content, weak canonicals, render-blocked content, slow CWV, duplicate titles, sitemap hygiene; fix in priority order (unique per-ticker content → titles/meta → internal linking → SSR/canonical); re-submit validation; add weekly indexed-URL delta report and a pre-publish content-completeness gate; generalize fix to the other per-section sitemaps.
+- [ ] **SEO — "Crawled — currently not indexed" on `business-and-moat-sitemap.xml`** — check why these pages are not getting indexed.
 
 ### Off-hours Claude Code automation
 
-- [ ] **Off-hours report-refresh cron** (10 PM – 5 AM, local TZ documented) — pick oldest reports, batch + per-tick timeout, skip recently-refreshed, hard stop at window end, retry cap on failure, per-run log + admin failure surface, env-configurable window/batch/threshold/enable flag. Decide which report categories are in scope.
+- [ ] **Off-hours report-refresh cron** — pick the oldest stock reports and regenerate them.
 - [ ] **Off-hours recategorization** — separate scheduled job that sweeps every ticker, feeds taxonomy + company profile to Claude, applies high-confidence `changeTo` decisions, flags low-confidence for review, triggers report generation for new (sub)categories; cap recategorizations per run; per-stock audit trail; hysteresis guard against thrashing.
 
 ### Stock scenarios — finish + roll out
@@ -64,7 +64,7 @@ Single source of truth for active KoalaGains work. Completed items live in
 
 ### Top priorities
 
-- [ ] **Claude-Code Sonnet pipeline** — off-hours runner where Claude Code (Sonnet) generates stock + ETF reports through the existing prompt/`PromptInvocation` infra; one shared runner drains both queues. DOD: scheduled run produces a night's worth of refreshed reports without human in the loop.
+- [ ] **Claude-Code Sonnet pipeline** — same idea as the off-hours stock refresh, but for ETFs: pick the ETFs whose reports are not generated yet and generate the whole ETF report.
 - [ ] **ETF discoverability + internal linking** (after the list page lands):
   - Home page → ETFs: pick entry points (hero / nav / featured rail / "browse by category-group") so first-time visitors reach the ETFs list and representative detail pages in one click.
   - ETF detail → stock reports: link each covered holding's ticker through; plain text otherwise.
@@ -144,8 +144,7 @@ Remaining:
 
 ### Dedupe historical duplicates + harden ingest
 
-- [ ] **De-duplicate `daily_top_losers` / `daily_top_gainers`** — historical bug wrote multiple near-identical rows for the same ticker across weekends + US market holidays (~23% of loser rows belong to a `(symbol, %change)` cluster; 140 clusters, 344 rows). Each row got its own UUID, its own sitemap entry, and its own LLM-rewritten article, so GSC reports them as "Duplicate without user-selected canonical". Approach: add a nullable `canonicalId` self-FK to both tables; backfill the earliest-`createdAt` row per `(spaceId, symbol, percentageChange)` cluster as canonical, point the rest at it; in `app/daily-top-movers/top-(losers|gainers)/details/[id]/page.tsx` `permanentRedirect()` when `canonicalId` is set; filter `sitemap.xml/route.ts` and the list APIs feeding `RelatedDailyMovers` on `canonicalId IS NULL`. Validate with sitemap row-count drop + GSC duplicate-bucket shrink over 2–4 weeks.
-- [ ] **Stop creating new duplicates on US market holidays** — Mon-Fri cron (`deployments/insights-ui/scheduler.tf`) still fires on Good Friday / Presidents' Day / Memorial Day etc.; screener returns the prior trading day's data, callback writes a new row. Fix in `app/api/[spaceId]/tickers-v1/screener-callback/route.ts`: skip writes when a row already exists for `(spaceId, symbol)` with the same `percentageChange` within the last ~3 days. Or upgrade the unique constraint from `@@unique([spaceId, symbol, createdAt])` to a derived `marketDate` column so it's idempotent by definition.
+- [ ] In the past we may have mistakenly generated daily movers on weekends, which created duplicate entries — and the same thing will keep happening on future US holidays. Clean up the existing duplicates and stop creating new ones on non-trading days.
 
 ---
 
@@ -164,10 +163,5 @@ Remaining:
 
 ### Social media content pipeline
 
-- [ ] **Sources to mine**: stock + ETF scenarios, 10-bagger shortlist, founder + PM profiles, off-hours-refreshed reports (verdict / fair-value diffs), trends.
-- [ ] **Templates**: scenario card post; top-N post; founder / PM spotlight; verdict-change post; trend post.
-- [ ] **Platforms**: start LinkedIn + X (primary); Reddit (relevant subs), Threads, YouTube Shorts / IG Reels (secondary, after the first two are humming).
-- [ ] **Pipeline**: post-draft generator via existing prompt infra; lightweight admin content queue (review, edit, platforms, schedule); push to a scheduling tool (Buffer / Hootsuite / Hypefury, or in-house thin scheduler); UTM-tagged links back to KoalaGains.
-- [ ] **Cadence + governance**: weekly minimum mixing stock + ETF; one weekly queue owner; compliance pass on every post (no advice phrasing, disclaimers, claims grounded in reports).
-- [ ] **Measurement**: per-platform impressions/engagement/clicks + per-source-artifact attribution; high engagement feeds off-hours refresh prioritization so winning posts don't link to stale reports.
-- [ ] Open: build vs buy scheduler; single voice vs platform-tailored; share queue + templates with ETF pipeline (only input adapter differs).
+- [ ] **Start with LinkedIn** — pick one ETF, share its results, tag its manager or provider where possible, write a few lines about it, and attach a picture/poster.
+- [ ] **Then move to X (Twitter)** — repeat the same simple post format once the LinkedIn flow is working.
