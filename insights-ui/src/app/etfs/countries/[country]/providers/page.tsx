@@ -1,12 +1,8 @@
-import type { EtfProvidersIndexResponse } from '@/app/api/[spaceId]/etfs-v1/listings/providers-index/route';
 import EtfProvidersIndex from '@/components/etfs/EtfProvidersIndex';
-import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
-import { getEtfProvidersIndexTag } from '@/utils/etf-cache-utils';
-import { fetchEtfListingsIndex } from '@/utils/etf-listing-visibility';
 import { resolveEtfCountryParam } from '@/utils/etf-country-route-utils';
-import { EtfSupportedCountry } from '@/utils/etfCountryExchangeUtils';
+import { EMPTY_ETF_PROVIDERS_INDEX, fetchEtfProvidersIndex } from '@/utils/etf-listing-fetchers';
+import { providersIndexRobots } from '@/utils/etf-listing-noindex';
 import { generateEtfProvidersIndexBreadcrumbJsonLd, generateEtfProvidersIndexMetadata } from '@/utils/etf-metadata-generators';
-import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
 import type { Metadata } from 'next';
 
 export const dynamic = 'force-dynamic';
@@ -15,36 +11,17 @@ type PageProps = {
   params: Promise<{ country: string }>;
 };
 
-const EMPTY_PROVIDERS_INDEX: EtfProvidersIndexResponse = { providers: [], values: {}, counts: {} };
-
-// Fail-soft so the first preview/prod build after introducing the listings
-// API routes can still prerender. The 1-week tag + ISR repopulates the page
-// on the first real request once the new route is live in the target env.
-async function fetchProvidersIndex(country: EtfSupportedCountry): Promise<EtfProvidersIndexResponse> {
-  const url = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/etfs-v1/listings/providers-index?country=${encodeURIComponent(country)}`;
-  try {
-    const res = await fetchEtfListingsIndex(url, getEtfProvidersIndexTag(country));
-    if (!res.ok) {
-      console.error(`fetchProvidersIndex failed (${res.status}): ${url}`);
-      return EMPTY_PROVIDERS_INDEX;
-    }
-    return (await res.json()) as EtfProvidersIndexResponse;
-  } catch (e) {
-    console.error('fetchProvidersIndex error:', e);
-    return EMPTY_PROVIDERS_INDEX;
-  }
-}
-
 export async function generateMetadata(props: PageProps): Promise<Metadata> {
   const { country } = await props.params;
   const decoded = resolveEtfCountryParam(country, '/etfs/providers');
-  return generateEtfProvidersIndexMetadata(decoded);
+  const data = await fetchEtfProvidersIndex(decoded);
+  return { ...generateEtfProvidersIndexMetadata(decoded), ...providersIndexRobots(data) };
 }
 
 export default async function CountryEtfsProvidersIndexPage({ params }: PageProps) {
   const { country } = await params;
   const decoded = resolveEtfCountryParam(country, '/etfs/providers');
-  const data = await fetchProvidersIndex(decoded);
+  const data = (await fetchEtfProvidersIndex(decoded)) ?? EMPTY_ETF_PROVIDERS_INDEX;
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(generateEtfProvidersIndexBreadcrumbJsonLd(decoded)) }} />

@@ -35,12 +35,6 @@ async function generateEtfUrls(): Promise<SiteMapUrl[]> {
   }
 
   for (const country of ETF_SUPPORTED_COUNTRIES) {
-    // Section index pages. The groups index collapses onto the country root (/etfs for US,
-    // /etfs/countries/<country> otherwise), so use etfSectionIndexPath for it.
-    urls.push({ url: etfSectionIndexPath(country, 'groups'), changefreq: 'daily', priority: 0.8 });
-    urls.push({ url: etfBrowsePath(country, 'asset-classes'), changefreq: 'weekly', priority: 0.7 });
-    urls.push({ url: etfBrowsePath(country, 'providers'), changefreq: 'weekly', priority: 0.7 });
-
     // Counts come from the same bucketing the index pages use, so a group/category/asset-class page
     // only enters the sitemap when at least one populated ETF lands in it. Providers are already
     // populated-only and content-derived.
@@ -50,6 +44,24 @@ async function generateEtfUrls(): Promise<SiteMapUrl[]> {
       fetchEtfsForGroupings(KoalaGainsSpaceId, 'assetClass', assetClassValueToKey, country),
       fetchEtfProvidersForCountry(KoalaGainsSpaceId, country),
     ]);
+
+    // Section index pages. The groups index collapses onto the country root (/etfs for US,
+    // /etfs/countries/<country> otherwise), so use etfSectionIndexPath for it. Each section index
+    // enters the sitemap only when it has content — mirroring the `noindex` that the empty listing
+    // pages now return (see etf-listing-noindex.ts) so we never submit a URL that resolves to
+    // `noindex` (which Search Console would flag as "Submitted URL marked noindex").
+    const hasGroups = Object.values(byGroup.counts).some((count) => count > 0);
+    const hasAssetClasses = Object.values(byAssetClass.counts).some((count) => count > 0);
+    const hasProviders = providers.providers.length > 0;
+    if (hasGroups || hasAssetClasses || hasProviders) {
+      urls.push({ url: etfSectionIndexPath(country, 'groups'), changefreq: 'daily', priority: 0.8 });
+    }
+    if (hasAssetClasses) {
+      urls.push({ url: etfBrowsePath(country, 'asset-classes'), changefreq: 'weekly', priority: 0.7 });
+    }
+    if (hasProviders) {
+      urls.push({ url: etfBrowsePath(country, 'providers'), changefreq: 'weekly', priority: 0.7 });
+    }
 
     for (const group of groups) {
       if ((byGroup.counts[group.key] ?? 0) > 0) {
