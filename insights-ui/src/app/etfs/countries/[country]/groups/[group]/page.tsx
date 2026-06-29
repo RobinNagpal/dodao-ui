@@ -9,6 +9,7 @@ import { EtfSupportedCountry } from '@/utils/etfCountryExchangeUtils';
 import { generateEtfGroupDetailBreadcrumbJsonLd, generateEtfGroupDetailMetadata } from '@/utils/etf-metadata-generators';
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
 import type { Metadata } from 'next';
+import { notFound } from 'next/navigation';
 
 export const dynamic = 'force-dynamic';
 
@@ -54,12 +55,16 @@ export default async function CountryEtfsByGroupPage({ params }: PageProps) {
   const { country, group } = await params;
   const decodedGroupKey = decodeURIComponent(group);
   const decodedCountry = resolveEtfCountryParam(country, `/etfs/groups/${encodeURIComponent(decodedGroupKey)}`);
-  const data = await fetchGroupDetail(decodedCountry, decodedGroupKey);
+  // Reject unknown group keys with a real 404 instead of rendering an empty
+  // listing (a soft 404). Uses the local category config so transient API
+  // failures on a valid key still fail-soft via EMPTY_GROUP_DETAIL.
   const groupObj = getEtfGroupByKey(decodedGroupKey);
+  if (!groupObj) notFound();
+  const data = await fetchGroupDetail(decodedCountry, decodedGroupKey);
   const breadcrumb = generateEtfGroupDetailBreadcrumbJsonLd({
     country: decodedCountry,
     groupKey: decodedGroupKey,
-    groupName: groupObj?.name ?? decodedGroupKey,
+    groupName: groupObj.name,
   });
   return (
     <>
