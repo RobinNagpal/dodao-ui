@@ -1,4 +1,9 @@
-import { EtfGroupingPreview, fetchEtfsForGroupings } from '@/app/api/[spaceId]/etfs-v1/listings/listings-prisma';
+import {
+  EtfGroupingPreview,
+  EtfUncategorizedPreview,
+  fetchEtfsForGroupings,
+  fetchEtfsWithoutAssetClass,
+} from '@/app/api/[spaceId]/etfs-v1/listings/listings-prisma';
 import { ETF_ASSET_CLASS_OPTIONS } from '@/utils/etf-filter-utils';
 import { shouldIncludeUnpopulatedForRequest } from '@/utils/etf-listing-visibility';
 import { isEtfSupportedCountry } from '@/utils/etfCountryExchangeUtils';
@@ -8,6 +13,8 @@ import { NextRequest } from 'next/server';
 export interface EtfAssetClassesIndexResponse {
   values: EtfGroupingPreview['values'];
   counts: EtfGroupingPreview['counts'];
+  /** ETFs with no asset class, surfaced as an "Others" bucket. */
+  others: EtfUncategorizedPreview;
 }
 
 async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId: string }> }): Promise<EtfAssetClassesIndexResponse> {
@@ -22,7 +29,12 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
     if (opt.value !== '') valueToKey.set(opt.value, opt.value);
   }
 
-  return fetchEtfsForGroupings(spaceId, 'assetClass', valueToKey, country, includeUnpopulated);
+  const [grouped, others] = await Promise.all([
+    fetchEtfsForGroupings(spaceId, 'assetClass', valueToKey, country, includeUnpopulated),
+    fetchEtfsWithoutAssetClass(spaceId, country, includeUnpopulated),
+  ]);
+
+  return { values: grouped.values, counts: grouped.counts, others };
 }
 
 export const GET = withErrorHandlingV2<EtfAssetClassesIndexResponse>(getHandler);

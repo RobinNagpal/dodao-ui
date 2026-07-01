@@ -1,6 +1,7 @@
 import EtfPageLayout from '@/components/etfs/EtfPageLayout';
 import WithSuspenseEtfListingGrid from '@/components/etfs/WithSuspenseEtfListingGrid';
 import { fetchEtfListingData } from '@/utils/etf-data-utils';
+import { ETF_OTHERS_GROUP, ETF_OTHERS_GROUP_KEY } from '@/utils/etf-categorization-utils';
 import { EtfFilterParamKey, EtfSearchParams, ETF_ASSET_CLASS_OPTIONS } from '@/utils/etf-filter-utils';
 import { EtfSupportedCountry } from '@/utils/etfCountryExchangeUtils';
 import { etfBrowseDetailPath, etfBrowsePath, etfCountryDisplayName } from '@/utils/etf-country-route-utils';
@@ -13,9 +14,12 @@ interface EtfAssetClassDetailProps {
 }
 
 export default async function EtfAssetClassDetail({ country, assetClass, searchParams }: EtfAssetClassDetailProps) {
+  // "Others" = ETFs with no asset class. Pass the sentinel through to the listing
+  // API, which interprets assetClass=others as "assetClass is null / no row".
+  const isOthers = slugifyEtfTag(assetClass) === ETF_OTHERS_GROUP_KEY;
   const matchingOption = ETF_ASSET_CLASS_OPTIONS.find((o) => o.value.toLowerCase() === assetClass.toLowerCase());
-  const displayAssetClass = matchingOption?.label ?? assetClass;
-  const filterValue = matchingOption?.value ?? assetClass;
+  const displayAssetClass = isOthers ? ETF_OTHERS_GROUP.name : matchingOption?.label ?? assetClass;
+  const filterValue = isOthers ? ETF_OTHERS_GROUP_KEY : matchingOption?.value ?? assetClass;
   const displayCountry = etfCountryDisplayName(country);
 
   const dataPromise = fetchEtfListingData(

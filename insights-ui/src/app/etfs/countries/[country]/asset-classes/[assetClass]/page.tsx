@@ -1,4 +1,5 @@
 import EtfAssetClassDetail from '@/components/etfs/EtfAssetClassDetail';
+import { ETF_OTHERS_GROUP, ETF_OTHERS_GROUP_KEY } from '@/utils/etf-categorization-utils';
 import { EtfSearchParams, ETF_ASSET_CLASS_OPTIONS } from '@/utils/etf-filter-utils';
 import { etfBrowseDetailPath, resolveEtfCountryParam } from '@/utils/etf-country-route-utils';
 import { getEtfAssetClassBySlug, slugifyEtfTag } from '@/utils/etf-tag-slug-utils';
@@ -19,6 +20,8 @@ type PageProps = {
 function resolveAssetClass(rawParam: string): { canonical: string; slug: string } | null {
   const decoded = decodeURIComponent(rawParam);
   const slugCandidate = slugifyEtfTag(decoded);
+  // "Others" = ETFs with no asset class (mirrors the groups "Others" bucket).
+  if (slugCandidate === ETF_OTHERS_GROUP_KEY) return { canonical: ETF_OTHERS_GROUP.name, slug: ETF_OTHERS_GROUP_KEY };
   const fromSlug = getEtfAssetClassBySlug(slugCandidate);
   if (fromSlug) return { canonical: fromSlug, slug: slugifyEtfTag(fromSlug) };
   const fromValue = ETF_ASSET_CLASS_OPTIONS.find((o) => o.value !== '' && o.value.toLowerCase() === decoded.toLowerCase());

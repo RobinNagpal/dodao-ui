@@ -9,6 +9,7 @@ const COUNTRY_DISPLAY_NAME: Record<EtfSupportedCountry, string> = {
   [SupportedCountries.US]: 'US',
   [SupportedCountries.Canada]: 'Canadian',
   [SupportedCountries.UK]: 'UK',
+  [SupportedCountries.Australia]: 'Australian',
 };
 
 export function etfCountryDisplayName(country: EtfSupportedCountry): string {

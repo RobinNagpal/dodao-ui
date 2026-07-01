@@ -1,6 +1,7 @@
 import EtfPageLayout from '@/components/etfs/EtfPageLayout';
 import WithSuspenseEtfListingGrid from '@/components/etfs/WithSuspenseEtfListingGrid';
 import { fetchEtfListingData } from '@/utils/etf-data-utils';
+import { ETF_OTHERS_GROUP_KEY } from '@/utils/etf-categorization-utils';
 import { EtfFilterParamKey, EtfSearchParams } from '@/utils/etf-filter-utils';
 import { EtfSupportedCountry } from '@/utils/etfCountryExchangeUtils';
 import { etfBrowseDetailPath, etfBrowsePath, etfCountryDisplayName } from '@/utils/etf-country-route-utils';
@@ -15,10 +16,15 @@ interface EtfProviderDetailProps {
 export default async function EtfProviderDetail({ country, provider, searchParams }: EtfProviderDetailProps) {
   const displayCountry = etfCountryDisplayName(country);
 
+  // "Others" = ETFs with no issuer. Pass the sentinel through to the listing
+  // API, which interprets issuer=others as "issuer is null / no row".
+  const isOthers = slugifyEtfTag(provider) === ETF_OTHERS_GROUP_KEY;
+  const issuerFilter = isOthers ? ETF_OTHERS_GROUP_KEY : provider;
+
   const dataPromise = fetchEtfListingData(
     {
       ...searchParams,
-      [EtfFilterParamKey.ISSUER]: provider,
+      [EtfFilterParamKey.ISSUER]: issuerFilter,
     },
     country
   );
