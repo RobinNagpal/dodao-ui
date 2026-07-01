@@ -9,8 +9,6 @@ Single source of truth for active KoalaGains work. Completed items live in
 
 ### Detail page
 
-- [ ] **Mobile layout audit** — fix overflow tables, cut-off charts, font/spacing/sticky-header/tap-target issues; verify after any restructure.
-- [ ] **Move competition chart** directly under the Business & Moat section, with the competitors list adjacent.
 - [ ] **SEO — "Crawled — currently not indexed" on `business-and-moat-sitemap.xml`** — check why these pages are not getting indexed.
 
 ### Off-hours Claude Code automation
@@ -67,15 +65,7 @@ Single source of truth for active KoalaGains work. Completed items live in
 - [ ] **Claude-Code Sonnet pipeline** — same idea as the off-hours stock refresh, but for ETFs: pick the ETFs whose reports are not generated yet and generate the whole ETF report.
 - [ ] **ETF discoverability + internal linking** (after the list page lands):
   - Home page → ETFs: pick entry points (hero / nav / featured rail / "browse by category-group") so first-time visitors reach the ETFs list and representative detail pages in one click.
-  - ETF detail → stock reports: link each covered holding's ticker through; plain text otherwise.
-  - Stock detail → ETF reports: list top-N (by weight) ETFs that hold the ticker.
-  - Revisit cross-links from category / scenario / trends pages so the link graph is dense.
 
-### Performance optimization (parity with stock-page perf work)
-
-Remaining:
-
-- [ ] **True per-slice streaming on `/etfs/[exchange]/[etf]`** — current shell-vs-body split still shares one `/full-render` promise so all 4 boundaries unsuspend together. Add per-slice ETF API endpoints (`priceHistory`, `performanceMetrics`, `similarEtfs`, `keyFacts`, `keyMetrics`) and rewrite each `<Suspense>` block to own its own fetch — mirror of the post-#1507 stock page. Then decide whether to remove `/full-render` + `etf-full-render-utils.ts` + the CloudFront cache behavior added by #1581, or leave as harmless dead weight.
 
 ### Active-ETF management team — LinkedIn-sourced info (ETF-side parallel to stock task)
 
@@ -114,13 +104,7 @@ Remaining:
 
 ---
 
-## Stocks & ETFs common
-
-### SEO — soft 404 on empty country listing pages
-
-- [ ] Empty country+industry (stocks) and country+group/category, asset-class, provider (ETFs) listing pages return 200 + thin content → soft 404 in GSC. Emit `robots: { index: false, follow: true }` when the listing has zero results (pattern: `crowd-funding/projects/[projectId]/page.tsx`). Low priority — currently mitigated by dropping these URLs from the sitemap.
-
-### Trends page
+## Trends page
 
 > Decide once: shared `Trend` model linked to both stock and ETF join tables, or parallel
 > `StockTrend` / `EtfTrend` models. Leaning shared (same underlying cause / analog).
