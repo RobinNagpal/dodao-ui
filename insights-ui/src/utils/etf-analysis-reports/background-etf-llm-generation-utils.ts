@@ -1,7 +1,8 @@
 import { EtfReportType } from '@/types/etf/etf-analysis-types';
 import { GeminiModel, LLMProvider } from '@/types/llmConstants';
 import { saveEtfReportAndAdvanceGeneration } from '@/utils/etf-analysis-reports/save-etf-report-callback-utils';
-import { getLLMResponse } from '@/util/get-llm-response';
+import { getLLMResponse, updateInvocationStatus } from '@/util/get-llm-response';
+import { PromptInvocationStatus } from '@prisma/client';
 
 export interface BackgroundEtfReportArgs {
   symbol: string;
@@ -34,8 +35,13 @@ export interface BackgroundEtfReportArgs {
  *
  * Call this detached (`void`) so the triggering request returns immediately,
  * mirroring the lambda's instant ack. The try/catch is mandatory: an unhandled
- * rejection in a detached promise can take down the Node process. On failure
- * `getLLMResponse` has already marked the PromptInvocation `Failed`; we
+ * rejection in a detached promise can take down the Node process. On failure we
+ * mark the PromptInvocation `Failed` with the error message here — mirroring the
+ * lambda's `getLLMResponseInLamnda` wrapper — because `getLLMResponse` only
+ * persists the `Failed` status when the call produced a result that failed
+ * validation; when it throws before producing any result (e.g. a Gemini 429 /
+ * quota error) it re-throws without touching the row, which would otherwise
+ * leave the invocation stuck `InProgress` with no error recorded. We
  * deliberately leave the generation request's `inProgressStep` /
  * `lastInvocationTime` untouched so the 5-minute stale-step guard in
  * `triggerEtfGenerationOfAReport` reclaims the step on the next tick.
@@ -70,5 +76,8 @@ export async function processEtfReportLLMResponseInBackground(args: BackgroundEt
     console.log(`[${reportType}] [${symbol}] [${generationRequestId}] Background ETF report saved and next step triggered`);
   } catch (error) {
     console.error(`[${reportType}] [${symbol}] [${generationRequestId}] Background ETF report generation failed:`, error);
+    await updateInvocationStatus(invocationId, PromptInvocationStatus.Failed, {
+      error: error instanceof Error ? error.message : String(error),
+    });
   }
 }
