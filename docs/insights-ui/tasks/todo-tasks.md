@@ -90,22 +90,6 @@ Single source of truth for active KoalaGains work. Completed items live in
   - Stock detail → ETF reports: list top-N (by weight) ETFs that hold the ticker.
   - Revisit cross-links from category / scenario / trends pages so the link graph is dense.
 
-### LSE-listed ETFs (London Stock Exchange coverage)
-
-> Expand ETF coverage beyond US venues to ETFs listed on the London Stock Exchange (LSE).
-> The data model already accommodates this — `Etf` keys on `(spaceId, symbol, exchange)` and
-> routes through `/etfs/[exchange]/[etf]`, so LSE ETFs are a new `exchange` value, not a schema
-> change. The work is seeding the universe cleanly and making the pipeline/UI London-aware.
-
-- [ ] **Confirm the canonical exchange code** for LSE listings (e.g. `LSE` vs `LON`) and use it consistently across ingest, `yarn etfs:trigger --exchange <code>`, the `Etf.exchange` column, the `/etfs/[exchange]/[etf]` route, and sitemaps. Document the chosen code alongside the existing `NYSEARCA`/`NASDAQ` conventions.
-- [ ] **Source a seed universe** of LSE-listed ETFs (issuer/provider fund lists + the data provider's screener) and generate reports via the existing flow: `yarn etfs:add` / `yarn etfs:trigger --exchange <code> --all`, then `yarn etfs:wait`. Start with a representative set (a large passive UCITS tracker, an active fund, a thin/niche fund) before a bulk run.
-- [ ] **Handle multiple listing lines / share classes.** LSE ETFs (predominantly UCITS) frequently list several lines for the same fund — GBP (`.L`), GBp pence-denominated, and USD lines, plus distributing vs accumulating classes. Decide a canonical-listing rule so we don't create near-duplicate `Etf` rows / duplicate detail pages / duplicate sitemap entries (mirror the daily-top-movers `canonicalId` lesson).
-- [ ] **Currency + pence-vs-pounds handling.** Price history, expense/cost fields, and charts must not assume USD. Verify GBP and GBp (pence, ÷100) are scaled correctly and labelled; confirm CAGR/return/comparison math is currency-consistent (don't mix a GBP price series with a USD base).
-- [ ] **Map issuers + taxonomy.** UK/EU issuers differ (iShares UCITS, Vanguard UCITS, Invesco, Xtrackers, HSBC, L&G, Amundi). Map them into the existing provider / category-group / asset-class taxonomies rather than inventing parallel ones; fold LSE funds into the existing `/etfs/providers`, `/etfs/categories`, `/etfs/asset-classes` listings.
-- [ ] **Make prompts + comparison bases London-aware.** The analysis prompts and `etf-comparison-bases.json` lean US (S&P 500 base, USD, US tax treatment). Ensure LSE/UCITS funds compare against appropriate UK/European bases (e.g. FTSE All-Share / FTSE 100, MSCI World in GBP) and that Cost & Team / Risk / Future Outlook prompts don't emit US-specific framing (e.g. 40 Act, US tax) for UCITS products.
-- [ ] **Routing, country page, SEO wiring.** Surface LSE funds through the existing UK entry on `/etfs/countries/[country]`, add the LSE exchange into the listing + sitemap, and confirm the `isComplete` filter and noindex-empty-listing behaviour apply to the new venue.
-- [ ] Open: canonical exchange code (`LSE`/`LON`); how to model dual-listed / multi-currency lines (one canonical `Etf` with alternate lines vs separate rows); dedicated LSE/UK hub vs folding into existing country + provider pages; UCITS/tax disclosure wording for a UK/EU audience; whether comparison bases need a per-region override keyed on `exchange`.
-
 ### Performance optimization (parity with stock-page perf work)
 
 > Stocks had a multi-PR perf pass — cache fan-out (#1472, #1473), `force-dynamic` ISR-off migration (#1499), CloudFront page+API caching (#1501, #1504), the `/full-render` consolidation that hurt Lighthouse and got reverted in favor of per-slice Suspense streaming (#1486 → #1507), and a 1w→2w revalidate bump (#1423). ETFs got partial parity at the CloudFront-API layer via #1581 (enumerates `/full-render`, `/analysis`, `/mor-info`, `/portfolio-holdings`) and at the ISR-off layer via #1499 (all 22 ETF pages now carry `force-dynamic`). Tracked in PR #1618. **Do not revert `force-dynamic` or add `generateStaticParams` — that is the model #1499 chose, with CloudFront in front absorbing hot traffic.**
