@@ -54,7 +54,7 @@ export default function TopEtfAssetClassesShowcase({ country, data }: TopEtfAsse
 
   return (
     <section className="bg-gray-800">
-      <div className="w-full mx-auto max-w-7xl sm:px-2 lg:px-8 px-6 py-12 sm:py-16">
+      <div className="w-full mx-auto max-w-7xl sm:px-2 lg:px-8 px-6 py-8 sm:py-12">
         <div className="mb-6 text-center">
           <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-white">
             Explore <span className="text-indigo-400">{displayName} ETFs</span> by Asset Class

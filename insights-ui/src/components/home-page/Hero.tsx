@@ -32,10 +32,10 @@ export function Hero({ industries }: HeroProps = { industries: [] }) {
 
                   <div className="text-left">
                     <h2 className="text-2xl sm:text-3xl font-semibold text-white leading-tight">
-                      Search Our <span className="text-indigo-400">5000+ Stock Analysis Reports</span>
+                      Search <span className="text-indigo-400">5000+ Stock &amp; ETF Analysis Reports</span>
                     </h2>
                     <p className="text-gray-300 text-sm sm:text-base lg:text-lg mt-1 max-w-2xl">
-                      Get instant access to detailed investment analysis for your favorite stocks
+                      Get detailed investment analysis for your favorite stocks &amp; ETFs
                     </p>
                   </div>
                 </div>
