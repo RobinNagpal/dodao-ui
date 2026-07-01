@@ -41,8 +41,8 @@ export function Hero({ industries }: HeroProps = { industries: [] }) {
                 </div>
               </div>
 
-              {/* Search bar */}
-              <SearchBar placeholder="Search by company name or stock symbol" variant="hero" />
+              {/* Search bar — searches stocks and ETFs together */}
+              <SearchBar placeholder="Search stocks & ETFs by name or symbol" variant="hero" kind="combined" />
               <div className="flex justify-center">
                 <Link
                   href="/stocks"

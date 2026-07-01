@@ -10,7 +10,13 @@ import * as Tooltip from '@radix-ui/react-tooltip';
 import Link from 'next/link';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-export type SearchKind = 'stocks' | 'etfs';
+/** A concrete result type — one backend table. */
+export type ResultKind = 'stocks' | 'etfs';
+/**
+ * `combined` searches stocks + ETFs together (used on the home hero). It fans out to both
+ * single-kind endpoints in parallel and merges the results. The navbar bars stay single-kind.
+ */
+export type SearchKind = ResultKind | 'combined';
 
 export interface SearchResult {
   id: string;
@@ -24,6 +30,11 @@ export interface SearchResult {
   cachedScoreEntry: {
     finalScore: number;
   } | null;
+}
+
+/** A result carrying the kind of table it came from, so a combined list can render/route each row. */
+interface RankedResult extends SearchResult {
+  resultKind: ResultKind;
 }
 
 export interface SearchBarProps {
@@ -52,7 +63,7 @@ interface KindConfig {
   ariaLabel: string;
 }
 
-const KIND_CONFIG: Record<SearchKind, KindConfig> = {
+const KIND_CONFIG: Record<ResultKind, KindConfig> = {
   stocks: {
     apiPath: 'tickers-v1/search',
     detailHref: (r) => `/stocks/${r.exchange}/${r.symbol}`,
@@ -71,6 +82,42 @@ const KIND_CONFIG: Record<SearchKind, KindConfig> = {
   },
 };
 
+// How closely a result matches the query, mirroring the priority tiers the two search APIs use.
+// Lower = better. Used only to merge the already-relevance-sorted stock and ETF lists so an exact
+// ticker match floats to the top regardless of which table it came from.
+function matchRank(result: SearchResult, term: string): number {
+  const symbol = result.symbol.toUpperCase();
+  const name = result.name.toLowerCase();
+  const upper = term.toUpperCase();
+  const lower = term.toLowerCase();
+  if (symbol === upper) return 0;
+  if (symbol.startsWith(upper)) return 1;
+  if (name.startsWith(lower)) return 2;
+  if (symbol.includes(upper)) return 3;
+  return 4;
+}
+
+// Merge the two single-kind result lists for combined search. We interleave stock/ETF rows so both
+// types stay visible, then stable-sort by match rank (Array.sort is stable) so the interleaving is
+// preserved within a tier while stronger matches surface first. Finally cap at `limit` total rows.
+function mergeCombinedResults(stocks: SearchResult[], etfs: SearchResult[], term: string, limit: number): RankedResult[] {
+  const interleaved: RankedResult[] = [];
+  const max = Math.max(stocks.length, etfs.length);
+  for (let i = 0; i < max; i++) {
+    if (i < stocks.length) interleaved.push({ ...stocks[i], resultKind: 'stocks' });
+    if (i < etfs.length) interleaved.push({ ...etfs[i], resultKind: 'etfs' });
+  }
+  interleaved.sort((a, b) => matchRank(a, term) - matchRank(b, term));
+  return interleaved.slice(0, limit);
+}
+
+async function fetchResults(apiPath: string, searchQuery: string, limit: number): Promise<SearchResult[]> {
+  const response = await fetch(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/${apiPath}?q=${encodeURIComponent(searchQuery)}&limit=${limit}`);
+  if (!response.ok) return [];
+  const data: { results?: SearchResult[] } = await response.json();
+  return Array.isArray(data.results) ? data.results : [];
+}
+
 export default function SearchBar({
   placeholder = 'Search stocks by symbol or company name...',
   variant = 'hero',
@@ -78,9 +125,12 @@ export default function SearchBar({
   onResultClick,
   className = '',
 }: SearchBarProps): JSX.Element {
-  const config = KIND_CONFIG[kind];
+  // Single-kind config (detail/view-all hrefs, aria label, no-results copy). Undefined in combined mode.
+  const singleConfig = kind === 'combined' ? undefined : KIND_CONFIG[kind];
+  const ariaLabel = singleConfig ? singleConfig.ariaLabel : 'Search stocks and ETFs';
+
   const [query, setQuery] = useState<string>('');
-  const [results, setResults] = useState<SearchResult[]>([]);
+  const [results, setResults] = useState<RankedResult[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [highlightedIndex, setHighlightedIndex] = useState<number>(-1);
@@ -114,16 +164,20 @@ export default function SearchBar({
       setIsLoading(true);
 
       try {
-        const response = await fetch(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/${config.apiPath}?q=${encodeURIComponent(searchQuery)}&limit=8`);
-
-        if (response.ok) {
-          const data: { results?: SearchResult[] } = await response.json();
-          setResults(Array.isArray(data.results) ? data.results : []);
-          setIsOpen(true);
+        let merged: RankedResult[];
+        if (kind === 'combined') {
+          // Fan out to both endpoints in parallel and merge — one search bar, both tables.
+          const [stocks, etfs] = await Promise.all([
+            fetchResults(KIND_CONFIG.stocks.apiPath, searchQuery, 8),
+            fetchResults(KIND_CONFIG.etfs.apiPath, searchQuery, 8),
+          ]);
+          merged = mergeCombinedResults(stocks, etfs, searchQuery.trim(), 8);
         } else {
-          setResults([]);
-          setIsOpen(false);
+          const single = await fetchResults(KIND_CONFIG[kind].apiPath, searchQuery, 8);
+          merged = single.map((r) => ({ ...r, resultKind: kind }));
         }
+        setResults(merged);
+        setIsOpen(true);
       } catch (error) {
         // eslint-disable-next-line no-console
         console.error('Search error:', error);
@@ -133,7 +187,7 @@ export default function SearchBar({
         setIsLoading(false);
       }
     },
-    [config.apiPath]
+    [kind]
   );
 
   // Handle input change with debouncing
@@ -183,7 +237,7 @@ export default function SearchBar({
   };
 
   // Handle result selection
-  const handleResultClick = (result: SearchResult): void => {
+  const handleResultClick = (result: RankedResult): void => {
     setQuery('');
     setIsOpen(false);
     setHighlightedIndex(-1);
@@ -191,7 +245,8 @@ export default function SearchBar({
     if (onResultClick) {
       onResultClick(result);
     } else if (typeof window !== 'undefined') {
-      window.location.href = config.detailHref(result);
+      // Route by the row's own kind so a combined list sends stocks to /stocks and ETFs to /etfs.
+      window.location.href = KIND_CONFIG[result.resultKind].detailHref(result);
     }
   };
 
@@ -247,9 +302,9 @@ export default function SearchBar({
   // Inline renderer used when we can't (or don't want to) defer to a per-row Link
   // component — i.e. when `onResultClick` is provided, or for ETF results where
   // we don't have a stock-specific ticker item with notes/favourites.
-  const renderInlineRow = (result: SearchResult): JSX.Element => {
+  const renderInlineRow = (result: RankedResult): JSX.Element => {
     const score = result.cachedScoreEntry?.finalScore ?? 0;
-    const isEtf = kind === 'etfs';
+    const isEtf = result.resultKind === 'etfs';
     const { textColorClass, bgColorClass } = isEtf ? getEtfScoreColorClasses(score) : getScoreColorClasses(score);
     const scoreDenominator = isEtf ? 20 : 25;
 
@@ -282,7 +337,7 @@ export default function SearchBar({
           className={styles.input}
           autoComplete="off"
           autoFocus={variant === 'hero'}
-          aria-label={config.ariaLabel}
+          aria-label={ariaLabel}
         />
 
         {query && (
@@ -328,7 +383,7 @@ export default function SearchBar({
                     aria-selected={index === highlightedIndex}
                   >
                     <div className="px-3 py-2">
-                      {onResultClick || kind === 'etfs' ? (
+                      {onResultClick || result.resultKind === 'etfs' ? (
                         renderInlineRow(result)
                       ) : (
                         <StockTickerItem
@@ -343,10 +398,10 @@ export default function SearchBar({
                   </div>
                 ))}
 
-                {results.length >= 8 && (
+                {singleConfig && results.length >= 8 && (
                   <div className="p-3 text-center border-t border-gray-700/50">
                     <Link
-                      href={config.viewAllHref(query)}
+                      href={singleConfig.viewAllHref(query)}
                       className="text-indigo-400 hover:text-indigo-300 text-sm transition-colors duration-200"
                       onClick={(): void => setIsOpen(false)}
                     >
@@ -358,8 +413,8 @@ export default function SearchBar({
             </Tooltip.Provider>
           ) : query.trim() && !isLoading ? (
             <div className="p-4 text-center text-gray-400">
-              <div className="text-sm">{config.noResultsTitle(query)}</div>
-              <div className="text-xs mt-1 opacity-75">{config.noResultsHint}</div>
+              <div className="text-sm">{singleConfig ? singleConfig.noResultsTitle(query) : `No stocks or ETFs found for “${query}”`}</div>
+              <div className="text-xs mt-1 opacity-75">{singleConfig ? singleConfig.noResultsHint : 'Try searching by name or ticker symbol'}</div>
             </div>
           ) : null}
         </div>
