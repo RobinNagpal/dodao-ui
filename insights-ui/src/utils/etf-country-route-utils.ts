@@ -8,6 +8,7 @@ export type EtfBrowseSection = 'groups' | 'asset-classes' | 'providers';
 const COUNTRY_DISPLAY_NAME: Record<EtfSupportedCountry, string> = {
   [SupportedCountries.US]: 'US',
   [SupportedCountries.Canada]: 'Canadian',
+  [SupportedCountries.UK]: 'UK',
 };
 
 export function etfCountryDisplayName(country: EtfSupportedCountry): string {

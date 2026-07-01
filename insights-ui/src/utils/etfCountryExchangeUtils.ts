@@ -1,19 +1,20 @@
 /**
  * ETF-specific country & exchange constants — kept separate from
  * `countryExchangeUtils.ts` (stocks) because:
- *  - ETF coverage is currently US + Canada only; reusing the 10-country stock
- *    list would let admins create scenarios in markets we have no ETF data for.
- *  - ETF venues (NYSEARCA, BATS, NEO) don't all overlap with the stock
+ *  - ETF coverage is currently US + Canada + UK only; reusing the 10-country
+ *    stock list would let admins create scenarios in markets we have no ETF
+ *    data for.
+ *  - ETF venues (NYSEARCA, BATS, NEO, LSE) don't all overlap with the stock
  *    exchange list.
  *
  * Country code values are reused from `SupportedCountries` so the strings
- * stored in the DB match the stock side ("US", "Canada").
+ * stored in the DB match the stock side ("US", "Canada", "UK").
  */
 import { SupportedCountries } from '@/utils/countryExchangeUtils';
 
-export type EtfSupportedCountry = SupportedCountries.US | SupportedCountries.Canada;
+export type EtfSupportedCountry = SupportedCountries.US | SupportedCountries.Canada | SupportedCountries.UK;
 
-export const ETF_SUPPORTED_COUNTRIES: EtfSupportedCountry[] = [SupportedCountries.US, SupportedCountries.Canada];
+export const ETF_SUPPORTED_COUNTRIES: EtfSupportedCountry[] = [SupportedCountries.US, SupportedCountries.Canada, SupportedCountries.UK];
 
 export const isEtfSupportedCountry = (val: string): val is EtfSupportedCountry => {
   return (ETF_SUPPORTED_COUNTRIES as readonly string[]).includes(val);
@@ -32,7 +33,11 @@ export enum EtfCanadaExchanges {
   NEO = 'NEO',
 }
 
-export type AllEtfExchanges = EtfUSExchanges | EtfCanadaExchanges;
+export enum EtfUKExchanges {
+  LSE = 'LSE',
+}
+
+export type AllEtfExchanges = EtfUSExchanges | EtfCanadaExchanges | EtfUKExchanges;
 
 export const ETF_EXCHANGES: ReadonlyArray<AllEtfExchanges> = [
   EtfUSExchanges.NYSEARCA,
@@ -42,6 +47,7 @@ export const ETF_EXCHANGES: ReadonlyArray<AllEtfExchanges> = [
   EtfCanadaExchanges.TSX,
   EtfCanadaExchanges.TSXV,
   EtfCanadaExchanges.NEO,
+  EtfUKExchanges.LSE,
 ] as const;
 
 export const ETF_EXCHANGE_TO_COUNTRY: Record<AllEtfExchanges, EtfSupportedCountry> = {
@@ -52,6 +58,7 @@ export const ETF_EXCHANGE_TO_COUNTRY: Record<AllEtfExchanges, EtfSupportedCountr
   [EtfCanadaExchanges.TSX]: SupportedCountries.Canada,
   [EtfCanadaExchanges.TSXV]: SupportedCountries.Canada,
   [EtfCanadaExchanges.NEO]: SupportedCountries.Canada,
+  [EtfUKExchanges.LSE]: SupportedCountries.UK,
 };
 
 export const isEtfExchange = (val: string): val is AllEtfExchanges => {
