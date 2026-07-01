@@ -10,9 +10,6 @@ import { slugifyEtfTag } from '@/utils/etf-tag-slug-utils';
 import Link from 'next/link';
 import React from 'react';
 
-/** Home-page anchor id — the "New: ETF Reports" hero pill links here. */
-export const ETF_SHOWCASE_ANCHOR_ID = 'etf-analysis';
-
 export interface TopEtfAssetClassesShowcaseProps {
   country: EtfSupportedCountry;
   data: EtfAssetClassesIndexResponse;
@@ -58,14 +55,14 @@ export default function TopEtfAssetClassesShowcase({ country, data }: TopEtfAsse
   const displayName = etfCountryDisplayName(country);
 
   return (
-    <section id={ETF_SHOWCASE_ANCHOR_ID} className="scroll-mt-24 bg-gray-800">
+    <section className="bg-gray-800">
       <div className="w-full mx-auto max-w-7xl sm:px-2 lg:px-8 px-6 py-12 sm:py-16">
         <div className="mb-4 text-center">
           <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-white">
             Explore <span className="text-indigo-400">{displayName} ETFs</span> by Asset Class
           </h2>
           <p className="mt-3 text-base sm:text-lg leading-7 text-gray-300 max-w-2xl mx-auto">
-            AI-generated investment analysis and scoring across {displayName} ETFs — browse by asset class.
+            AI-generated investment analysis and scoring across {displayName} ETFs.
           </p>
         </div>
 
@@ -73,12 +70,7 @@ export default function TopEtfAssetClassesShowcase({ country, data }: TopEtfAsse
             this below-the-fold bar can't steal focus/scroll from the hero search on load. */}
         <SearchBar kind="etfs" variant="hero" autoFocus={false} placeholder="Search ETFs by name or ticker symbol" />
 
-        <div className="flex justify-center mb-8">
-          <EtfCountryAlternatives currentCountry={country} />
-        </div>
-
-        <EtfGroupingCardGrid columns={3} items={items} />
-
+        {/* CTA directly under the search bar, mirroring the stocks hero layout */}
         <div className="flex justify-center">
           <Link
             href={etfBasePath(country)}
@@ -94,7 +86,16 @@ export default function TopEtfAssetClassesShowcase({ country, data }: TopEtfAsse
             Browse all {displayName} ETFs <span aria-hidden>→</span>
           </Link>
         </div>
+
+        <div className="flex justify-center mt-4 mb-8">
+          <EtfCountryAlternatives currentCountry={country} />
+        </div>
+
+        <EtfGroupingCardGrid columns={3} items={items} />
       </div>
+
+      {/* Separator between the ETF section and "Explore Our Insights" */}
+      <div className="border-b border-gray-600"></div>
     </section>
   );
 }
