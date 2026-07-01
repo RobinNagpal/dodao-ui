@@ -13,11 +13,16 @@ interface EtfCountryAlternativesProps {
    * instead of just the section index. When omitted we fall back to the section index path.
    */
   buildHref?: (country: EtfSupportedCountry) => string;
+  /**
+   * Include `currentCountry` in the list instead of filtering it out. Used on the home page, which
+   * isn't "on" any one country, so every supported country (including the US) is shown as a link.
+   */
+  includeCurrent?: boolean;
   className?: string;
 }
 
-export default function EtfCountryAlternatives({ currentCountry, section, buildHref, className = '' }: EtfCountryAlternativesProps) {
-  const alternatives = ALL_ETF_COUNTRIES.filter((c) => c !== currentCountry);
+export default function EtfCountryAlternatives({ currentCountry, section, buildHref, includeCurrent = false, className = '' }: EtfCountryAlternativesProps) {
+  const alternatives = includeCurrent ? [...ALL_ETF_COUNTRIES] : ALL_ETF_COUNTRIES.filter((c) => c !== currentCountry);
   if (alternatives.length === 0) return null;
 
   return (

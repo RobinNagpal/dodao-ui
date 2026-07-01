@@ -1,13 +1,11 @@
 import type { EtfAssetClassesIndexResponse } from '@/app/api/[spaceId]/etfs-v1/listings/asset-classes-index/route';
-import SearchBar from '@/components/core/SearchBar';
 import EtfCountryAlternatives from '@/components/etfs/EtfCountryAlternatives';
 import EtfGroupingCardGrid, { EtfGroupingCardSpec } from '@/components/etfs/EtfGroupingCardGrid';
 import { ETF_OTHERS_GROUP } from '@/utils/etf-categorization-utils';
-import { etfBasePath, etfBrowseDetailPath, etfCountryDisplayName } from '@/utils/etf-country-route-utils';
+import { etfBrowseDetailPath, etfCountryDisplayName } from '@/utils/etf-country-route-utils';
 import { ETF_ASSET_CLASS_OPTIONS } from '@/utils/etf-filter-utils';
 import { EtfSupportedCountry } from '@/utils/etfCountryExchangeUtils';
 import { slugifyEtfTag } from '@/utils/etf-tag-slug-utils';
-import Link from 'next/link';
 import React from 'react';
 
 export interface TopEtfAssetClassesShowcaseProps {
@@ -57,7 +55,7 @@ export default function TopEtfAssetClassesShowcase({ country, data }: TopEtfAsse
   return (
     <section className="bg-gray-800">
       <div className="w-full mx-auto max-w-7xl sm:px-2 lg:px-8 px-6 py-12 sm:py-16">
-        <div className="mb-4 text-center">
+        <div className="mb-6 text-center">
           <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-white">
             Explore <span className="text-indigo-400">{displayName} ETFs</span> by Asset Class
           </h2>
@@ -66,29 +64,9 @@ export default function TopEtfAssetClassesShowcase({ country, data }: TopEtfAsse
           </p>
         </div>
 
-        {/* Dedicated ETF search — reuses the dual-mode SearchBar (kind="etfs"). autoFocus is off so
-            this below-the-fold bar can't steal focus/scroll from the hero search on load. */}
-        <SearchBar kind="etfs" variant="hero" autoFocus={false} placeholder="Search ETFs by name or ticker symbol" />
-
-        {/* CTA directly under the search bar, mirroring the stocks hero layout */}
-        <div className="flex justify-center">
-          <Link
-            href={etfBasePath(country)}
-            aria-label={`Browse all ${displayName} ETFs`}
-            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-xl px-5 py-3
-                       text-sm sm:text-base font-semibold text-gray-900
-                       bg-gradient-to-r from-[#F59E0B] to-[#FBBF24]
-                       hover:from-[#FBBF24] hover:to-[#F59E0B]
-                       focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500
-                       focus-visible:ring-offset-2 focus-visible:ring-offset-gray-800
-                       shadow-md hover:shadow-lg transition-all"
-          >
-            Browse all {displayName} ETFs <span aria-hidden>→</span>
-          </Link>
-        </div>
-
-        <div className="flex justify-center mt-4 mb-8">
-          <EtfCountryAlternatives currentCountry={country} />
+        {/* "Also view" country links — includes the US so it doubles as the entry point to all US ETFs */}
+        <div className="flex justify-center mb-8">
+          <EtfCountryAlternatives currentCountry={country} includeCurrent />
         </div>
 
         <EtfGroupingCardGrid columns={3} items={items} />
