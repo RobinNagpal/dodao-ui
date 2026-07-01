@@ -1,5 +1,7 @@
 import SearchBar from '@/components/core/SearchBar';
+import NewFeaturePill from '@/components/home-page/NewFeaturePill';
 import TopIndustriesShowcase from '@/components/home-page/TopIndustriesShowcase';
+import { ETF_SHOWCASE_ANCHOR_ID } from '@/components/home-page/TopEtfAssetClassesShowcase';
 import CountryAlternatives from '@/components/stocks/CountryAlternatives';
 import coverImage from '@/images/koala.png';
 import { IndustryWithTopTickers } from '@/types/api/ticker-industries';
@@ -16,6 +18,11 @@ export function Hero({ industries }: HeroProps = { industries: [] }) {
       <div>
         <div className="w-full mx-auto max-w-7xl sm:px-2 lg:px-8 px-6 relative isolate pt-2 lg:pt-2">
           <div className="py-2 sm:py-4 lg:py-8">
+            {/* New-feature pill: jumps to the ETF showcase further down the page */}
+            <div className="flex justify-center mb-4">
+              <NewFeaturePill label="New: ETF Reports" href={`#${ETF_SHOWCASE_ANCHOR_ID}`} />
+            </div>
+
             {/* Stock Search Section */}
             <div className="mb-8 sm:mb-8">
               <div className="mb-2 sm:mb-4 flex w-full justify-center">

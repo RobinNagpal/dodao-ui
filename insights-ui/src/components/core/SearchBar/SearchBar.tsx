@@ -32,6 +32,12 @@ export interface SearchBarProps {
   kind?: SearchKind;
   onResultClick?: (result: SearchResult) => void;
   className?: string;
+  /**
+   * Autofocus the input on mount. Defaults to `true` for the hero variant. Set `false` when a
+   * hero-variant bar renders below the fold (e.g. the ETF section on the home page) so it can't
+   * steal focus and scroll the viewport away from the primary hero search on load.
+   */
+  autoFocus?: boolean;
 }
 
 type VariantStyles = {
@@ -77,7 +83,9 @@ export default function SearchBar({
   kind = 'stocks',
   onResultClick,
   className = '',
+  autoFocus,
 }: SearchBarProps): JSX.Element {
+  const shouldAutoFocus = autoFocus ?? variant === 'hero';
   const config = KIND_CONFIG[kind];
   const [query, setQuery] = useState<string>('');
   const [results, setResults] = useState<SearchResult[]>([]);
@@ -281,7 +289,7 @@ export default function SearchBar({
           placeholder={placeholder}
           className={styles.input}
           autoComplete="off"
-          autoFocus={variant === 'hero'}
+          autoFocus={shouldAutoFocus}
           aria-label={config.ariaLabel}
         />
 

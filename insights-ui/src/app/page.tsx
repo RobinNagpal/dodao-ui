@@ -5,11 +5,15 @@ import { Hero } from '@/components/home-page/Hero';
 import KoalagainsOfferings from '@/components/home-page/KoalagainsOfferings';
 import KoalaGainsPlatform from '@/components/home-page/KoalaGainsPlatform';
 import ServiceNavigation from '@/components/home-page/ServiceNavigation';
+import TopEtfAssetClassesShowcase from '@/components/home-page/TopEtfAssetClassesShowcase';
+import type { EtfAssetClassesIndexResponse } from '@/app/api/[spaceId]/etfs-v1/listings/asset-classes-index/route';
 import { IndustryWithTopTickers } from '@/types/api/ticker-industries';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { getPostsData } from '@/util/blog-utils';
 import { themeColors } from '@/util/theme-colors';
 import { SupportedCountries } from '@/utils/countryExchangeUtils';
+import { getEtfAssetClassesIndexTag } from '@/utils/etf-cache-utils';
+import { getTopEtfAssetClasses } from '@/utils/home-page/top-etf-asset-classes';
 import { getTopIndustriesWithTickers } from '@/utils/home-page/top-industries';
 import { getStocksPageTag, getHomePagePostsTag } from '@/utils/ticker-v1-cache-utils';
 import type { Metadata } from 'next';
@@ -131,6 +135,12 @@ async function fetchTopIndustriesWithTickers(): Promise<IndustryWithTopTickers[]
   return industries;
 }
 
+async function fetchTopEtfAssetClasses(): Promise<EtfAssetClassesIndexResponse> {
+  // Same build-safe, direct-DB approach as the industries fetch above (no HTTP self-fetch) so the
+  // ETF showcase never breaks the static export of "/". See getTopEtfAssetClasses.
+  return getTopEtfAssetClasses(KoalaGainsSpaceId, SupportedCountries.US);
+}
+
 // Cache + tag BOTH data sources for 7 days
 // Industries use stocks page tag so revalidateStocksPageTag() can invalidate it
 const getIndustriesCached = unstable_cache(async () => fetchTopIndustriesWithTickers(), ['home-page-industries'], {
@@ -141,12 +151,19 @@ const getIndustriesCached = unstable_cache(async () => fetchTopIndustriesWithTic
 // Posts have their own tag for independent revalidation
 const getPostsCached = unstable_cache(async () => getPostsData(6), ['home-page-posts'], { revalidate: WEEK, tags: [getHomePagePostsTag()] });
 
+// ETF asset classes reuse the US asset-classes-index tag so revalidating the ETF listings also refreshes the home-page showcase
+const getEtfAssetClassesCached = unstable_cache(async () => fetchTopEtfAssetClasses(), ['home-page-etf-asset-classes'], {
+  revalidate: WEEK,
+  tags: [getEtfAssetClassesIndexTag(SupportedCountries.US)],
+});
+
 export default async function Home() {
-  const [industries, posts] = await Promise.all([getIndustriesCached(), getPostsCached()]);
+  const [industries, posts, etfAssetClasses] = await Promise.all([getIndustriesCached(), getPostsCached(), getEtfAssetClassesCached()]);
 
   return (
     <div style={{ ...themeColors }}>
       <Hero industries={industries} />
+      <TopEtfAssetClassesShowcase country={SupportedCountries.US} data={etfAssetClasses} />
       <ServiceNavigation />
       <KoalagainsOfferings />
       <KoalaGainsPlatform />
