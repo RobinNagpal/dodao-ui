@@ -1,6 +1,7 @@
 import EtfPageLayout from '@/components/etfs/EtfPageLayout';
-import EtfGroupingCardGrid from '@/components/etfs/EtfGroupingCardGrid';
+import EtfGroupingCardGrid, { EtfGroupingCardSpec } from '@/components/etfs/EtfGroupingCardGrid';
 import type { EtfAssetClassesIndexResponse } from '@/app/api/[spaceId]/etfs-v1/listings/asset-classes-index/route';
+import { ETF_OTHERS_GROUP } from '@/utils/etf-categorization-utils';
 import { ETF_ASSET_CLASS_OPTIONS } from '@/utils/etf-filter-utils';
 import { EtfSupportedCountry } from '@/utils/etfCountryExchangeUtils';
 import { etfBrowseDetailPath, etfBrowsePath, etfCountryDisplayName } from '@/utils/etf-country-route-utils';
@@ -16,6 +17,25 @@ export default function EtfAssetClassesIndex({ country, data }: EtfAssetClassesI
   const displayName = etfCountryDisplayName(country);
   const assetClassesPath = etfBrowsePath(country, 'asset-classes');
 
+  const items: EtfGroupingCardSpec[] = assetClasses.map((opt) => ({
+    key: opt.value,
+    title: opt.label,
+    href: etfBrowseDetailPath(country, 'asset-classes', slugifyEtfTag(opt.value)),
+    totalCount: data.counts[opt.value] ?? 0,
+    etfs: data.values[opt.value] ?? [],
+  }));
+
+  // Append an "Others" bucket for ETFs with no asset class — only when some exist.
+  if (data.others.count > 0) {
+    items.push({
+      key: ETF_OTHERS_GROUP.key,
+      title: ETF_OTHERS_GROUP.name,
+      href: etfBrowseDetailPath(country, 'asset-classes', ETF_OTHERS_GROUP.key),
+      totalCount: data.others.count,
+      etfs: data.others.items,
+    });
+  }
+
   return (
     <EtfPageLayout
       title={`${displayName} ETFs by Asset Class`}
@@ -25,16 +45,7 @@ export default function EtfAssetClassesIndex({ country, data }: EtfAssetClassesI
       extraBreadcrumbs={[{ name: 'Asset Classes', href: assetClassesPath, current: true }]}
       revalidateTag={{ kind: 'asset-classes-index', country }}
     >
-      <EtfGroupingCardGrid
-        columns={3}
-        items={assetClasses.map((opt) => ({
-          key: opt.value,
-          title: opt.label,
-          href: etfBrowseDetailPath(country, 'asset-classes', slugifyEtfTag(opt.value)),
-          totalCount: data.counts[opt.value] ?? 0,
-          etfs: data.values[opt.value] ?? [],
-        }))}
-      />
+      <EtfGroupingCardGrid columns={3} items={items} />
     </EtfPageLayout>
   );
 }

@@ -6,7 +6,7 @@ import { KoalaGainsJwtTokenPayload } from '@/types/auth';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { EtfScenario } from '@prisma/client';
 import { EtfScenarioDirection, EtfScenarioPricedInBucket, EtfScenarioProbabilityBucket, EtfScenarioRole, EtfScenarioTimeframe } from '@/types/etfScenarioEnums';
-import { EtfSupportedCountry, isEtfExchange, isEtfSupportedCountry } from '@/utils/etfCountryExchangeUtils';
+import { ETF_SUPPORTED_COUNTRIES, EtfSupportedCountry, isEtfExchange, isEtfSupportedCountry } from '@/utils/etfCountryExchangeUtils';
 import { etfScenarioLinkCountryMismatch, serializeEtfLinkMismatches } from '@/utils/etf-scenario-country-validation';
 import { NextRequest } from 'next/server';
 import { withAdminOrToken } from '../helpers/withAdminOrToken';
@@ -29,12 +29,11 @@ const createEtfScenarioSchema = z.object({
   outlookAsOfDate: z.string().refine((s) => !isNaN(Date.parse(s)), 'outlookAsOfDate must be an ISO date'),
   metaDescription: z.string().nullable().optional(),
   archived: z.boolean().optional(),
-  // Countries the scenario is scoped to. ETF coverage is currently US + Canada;
-  // we validate against ETF_SUPPORTED_COUNTRIES (a subset of stock's
-  // SupportedCountries) so admins can't create scenarios in markets we don't
-  // ship ETF data for.
+  // Countries the scenario is scoped to. We validate against
+  // ETF_SUPPORTED_COUNTRIES (a subset of stock's SupportedCountries) so admins
+  // can't create scenarios in markets we don't ship ETF data for.
   countries: z
-    .array(z.string().refine((v) => isEtfSupportedCountry(v), 'country must be one of the supported ETF countries (US / Canada)'))
+    .array(z.string().refine((v) => isEtfSupportedCountry(v), `country must be one of the supported ETF countries (${ETF_SUPPORTED_COUNTRIES.join(' / ')})`))
     .min(1, 'at least one country must be declared'),
   links: z
     .array(

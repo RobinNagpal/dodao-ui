@@ -239,6 +239,68 @@ export async function fetchUncategorizedEtfPreview(
   return { items: selectTopFive(rows), count: rows.length };
 }
 
+/**
+ * ETFs that have no value for a given stockAnalyzer text field — the value is
+ * null/empty, or the whole stockAnalyzerInfo row is missing. Powers the "Others"
+ * bucket on the asset-class and provider index pages, mirroring
+ * `fetchUncategorizedEtfPreview` for the groups index, so the index totals
+ * account for every populated ETF — not just the ones that carry an asset class
+ * or issuer.
+ */
+async function fetchEtfsMissingStockAnalyzerField(
+  spaceId: string,
+  field: 'assetClass' | 'issuer',
+  country?: EtfSupportedCountry,
+  includeUnpopulated = false
+): Promise<EtfUncategorizedPreview> {
+  const missing =
+    field === 'assetClass'
+      ? [{ stockAnalyzerInfo: { is: { assetClass: null } } }, { stockAnalyzerInfo: { is: { assetClass: '' } } }]
+      : [{ stockAnalyzerInfo: { is: { issuer: null } } }, { stockAnalyzerInfo: { is: { issuer: '' } } }];
+
+  const where = {
+    spaceId,
+    OR: [{ stockAnalyzerInfo: { is: null } }, ...missing],
+    ...(country ? { exchange: { in: getEtfExchangesByCountry(country) } } : {}),
+    ...(includeUnpopulated ? {} : POPULATED_ETF_WHERE),
+  };
+
+  const etfs = await prisma.etf.findMany({
+    where,
+    select: {
+      id: true,
+      symbol: true,
+      name: true,
+      exchange: true,
+      financialInfo: { select: { aum: true } },
+      cachedScore: { select: { finalScore: true } },
+    },
+  });
+
+  const rows: RawEtfRow[] = etfs.map((etf) => ({
+    id: etf.id,
+    symbol: etf.symbol,
+    name: etf.name,
+    exchange: etf.exchange,
+    assetClass: null,
+    category: null,
+    finalScore: etf.cachedScore?.finalScore ?? null,
+    aum: etf.financialInfo?.aum ?? null,
+  }));
+
+  return { items: selectTopFive(rows), count: rows.length };
+}
+
+/** ETFs with no asset class — the "Others" bucket for the asset-class index. */
+export function fetchEtfsWithoutAssetClass(spaceId: string, country?: EtfSupportedCountry, includeUnpopulated = false): Promise<EtfUncategorizedPreview> {
+  return fetchEtfsMissingStockAnalyzerField(spaceId, 'assetClass', country, includeUnpopulated);
+}
+
+/** ETFs with no issuer — the "Others" bucket for the provider index. */
+export function fetchEtfsWithoutIssuer(spaceId: string, country?: EtfSupportedCountry, includeUnpopulated = false): Promise<EtfUncategorizedPreview> {
+  return fetchEtfsMissingStockAnalyzerField(spaceId, 'issuer', country, includeUnpopulated);
+}
+
 /** Bucketed by issuer (provider). */
 export async function fetchEtfProvidersForCountry(spaceId: string, country?: EtfSupportedCountry, includeUnpopulated = false): Promise<EtfProvidersPreview> {
   const baseWhere = { spaceId, stockAnalyzerInfo: { is: { issuer: { not: null } } } };

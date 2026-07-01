@@ -170,13 +170,19 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
 
   const stockAnalyzerFilter = createEtfStockAnalyzerFilter(filters);
   const hasStockAnalyzerFilter = Object.keys(stockAnalyzerFilter).length > 0;
-  const isOthersGroup = filters[EtfFilterParamKey.GROUP]?.trim() === ETF_OTHERS_GROUP_KEY;
-  if (isOthersGroup) {
+  // "Others" detail pages exist for groups (category null), asset classes
+  // (assetClass null) and providers (issuer null). createEtfStockAnalyzerFilter
+  // has already set the relevant field to null when its param === 'others'.
+  const isOthersBucket =
+    filters[EtfFilterParamKey.GROUP]?.trim() === ETF_OTHERS_GROUP_KEY ||
+    filters[EtfFilterParamKey.ASSET_CLASS]?.trim() === ETF_OTHERS_GROUP_KEY ||
+    filters[EtfFilterParamKey.ISSUER]?.trim() === ETF_OTHERS_GROUP_KEY;
+  if (isOthersBucket) {
     // "Others" must also pick up ETFs that have no EtfStockAnalyzerInfo row at
-    // all. createEtfStockAnalyzerFilter has already set category: null for the
-    // case where a row exists; OR that with `is: null` for the no-row case.
-    // Wrapped in AND so it composes with any etfWhere.OR set by the search
-    // filter, which would otherwise be overwritten.
+    // all. createEtfStockAnalyzerFilter has already set the relevant field to
+    // null for the case where a row exists; OR that with `is: null` for the
+    // no-row case. Wrapped in AND so it composes with any etfWhere.OR set by the
+    // search filter, which would otherwise be overwritten.
     const othersOr: Prisma.EtfWhereInput[] = [{ stockAnalyzerInfo: { is: null } }, { stockAnalyzerInfo: { is: stockAnalyzerFilter } }];
     const existingAnd = Array.isArray(etfWhere.AND) ? etfWhere.AND : etfWhere.AND ? [etfWhere.AND] : [];
     etfWhere.AND = [...existingAnd, { OR: othersOr }];
