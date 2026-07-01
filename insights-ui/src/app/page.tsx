@@ -5,15 +5,11 @@ import { Hero } from '@/components/home-page/Hero';
 import KoalagainsOfferings from '@/components/home-page/KoalagainsOfferings';
 import KoalaGainsPlatform from '@/components/home-page/KoalaGainsPlatform';
 import ServiceNavigation from '@/components/home-page/ServiceNavigation';
-import TopEtfsShowcase from '@/components/home-page/TopEtfsShowcase';
 import { IndustryWithTopTickers } from '@/types/api/ticker-industries';
-import type { EtfGroupingPreview } from '@/types/etf/etf-listings-types';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { getPostsData } from '@/util/blog-utils';
 import { themeColors } from '@/util/theme-colors';
 import { SupportedCountries } from '@/utils/countryExchangeUtils';
-import { getEtfGroupsIndexTag } from '@/utils/etf-cache-utils';
-import { getTopEtfCategories } from '@/utils/home-page/top-etf-groups';
 import { getTopIndustriesWithTickers } from '@/utils/home-page/top-industries';
 import { getStocksPageTag, getHomePagePostsTag } from '@/utils/ticker-v1-cache-utils';
 import type { Metadata } from 'next';
@@ -126,13 +122,6 @@ export const metadata: Metadata = {
 
 const WEEK = 60 * 60 * 24 * 7;
 
-async function fetchTopEtfCategories(): Promise<EtfGroupingPreview> {
-  // Read the DB directly (server-only) rather than self-fetching our own /api over HTTP — the same
-  // build-time crash the industries fetch avoids (a self-fetch to the canonical CloudFront→AWS origin
-  // can return an HTML error page and abort the static export of "/"). See getTopEtfCategories.
-  return getTopEtfCategories(KoalaGainsSpaceId, SupportedCountries.US);
-}
-
 async function fetchTopIndustriesWithTickers(): Promise<IndustryWithTopTickers[]> {
   // Read the DB directly (server-only) instead of self-fetching our own /api over HTTP. During
   // `next build` that self-fetch resolved to the public canonical origin (https://koalagains.com,
@@ -152,20 +141,13 @@ const getIndustriesCached = unstable_cache(async () => fetchTopIndustriesWithTic
 // Posts have their own tag for independent revalidation
 const getPostsCached = unstable_cache(async () => getPostsData(6), ['home-page-posts'], { revalidate: WEEK, tags: [getHomePagePostsTag()] });
 
-// ETF categories reuse the US groups-index tag so revalidating the ETF listings also refreshes the home-page showcase
-const getEtfCategoriesCached = unstable_cache(async () => fetchTopEtfCategories(), ['home-page-etf-categories'], {
-  revalidate: WEEK,
-  tags: [getEtfGroupsIndexTag(SupportedCountries.US)],
-});
-
 export default async function Home() {
-  const [industries, posts, etfCategories] = await Promise.all([getIndustriesCached(), getPostsCached(), getEtfCategoriesCached()]);
+  const [industries, posts] = await Promise.all([getIndustriesCached(), getPostsCached()]);
 
   return (
     <div style={{ ...themeColors }}>
       <Hero industries={industries} />
       <ServiceNavigation />
-      <TopEtfsShowcase country={SupportedCountries.US} categories={etfCategories} />
       <KoalagainsOfferings />
       <KoalaGainsPlatform />
       <BlogsGrid posts={posts} showViewAllButton={true} showCategoryButtons={false} />
