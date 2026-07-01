@@ -153,6 +153,9 @@ function buildStatementsForRow(row: CsvRow, errors: string[], rowIdx: number): B
 
   const etfId = randomUUID();
   const lastDivSql = sqlFloat(row['Last Dividend ($)'] ?? row['Last Div.']);
+  // Per-share (annual) dividend — used for the "Dividend TTM" card on the report page.
+  // "Last Div." is a single distribution, so it under-reports TTM for quarterly/monthly funds.
+  const dividendPerShareSql = sqlFloat(row['Dividend Per Share ($)'] ?? row['Div. ($)']);
 
   const etfSql =
     `INSERT INTO etfs (id, space_id, symbol, name, exchange, inception, created_at, updated_at) VALUES (` +
@@ -168,7 +171,7 @@ function buildStatementsForRow(row: CsvRow, errors: string[], rowIdx: number): B
       sqlFloat(row['Expense Ratio'] ?? row['Exp. Ratio']),
       sqlFloat(row['PE Ratio']),
       sqlString(row['Shares Out'] ?? row['Shares']),
-      lastDivSql,
+      dividendPerShareSql,
       sqlFloat(row['Dividend Yield'] ?? row['Div. Yield']),
       sqlString(row['Dividend Payout Frequency'] ?? row['Payout Freq.']),
       sqlFloat(row['Payout Ratio']),
@@ -249,7 +252,7 @@ function buildStatementsForRow(row: CsvRow, errors: string[], rowIdx: number): B
     ['div_gr_years', sqlInt(row['Dividend Growth Years'] ?? row['Div. Gr. Years'])],
     ['div_growth', sqlString(row['Dividend Growth'] ?? row['Div. Growth'])],
     ['last_div', lastDivSql],
-    ['div_dollars', sqlFloat(row['Dividend Per Share ($)'] ?? row['Div. ($)'])],
+    ['div_dollars', dividendPerShareSql],
     ['sortino', sqlFloat(row['Sortino Ratio'] ?? row['Sortino'])],
     ['atr', sqlFloat(row['Average True Range (ATR)'] ?? row['ATR'])],
     ['sharpe', sqlFloat(row['Sharpe Ratio'] ?? row['Sharpe'])],
