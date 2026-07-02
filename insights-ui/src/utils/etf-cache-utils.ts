@@ -26,7 +26,7 @@ import { CloudFrontInvalidationResult, invalidateCloudFrontPaths, invalidateClou
  * leave the next render to re-fetch a stale API response from the edge. See
  * `cloudfront-cache-utils.ts` (and `ticker-v1-cache-utils.ts` for the stocks
  * equivalent). The cached per-ETF endpoints are enumerated in
- * `dodao-api-v2-deployment/cloudfront.tf`.
+ * `deployments/insights-ui/cloudfront.tf`.
  */
 const ETF_EXCHANGE_TAG_PREFIX = 'etf_exchange:' as const;
 
