@@ -1,7 +1,9 @@
 import CompetitorCard from '@/components/competition/CompetitorCard';
 import EtfCompetitionQuadrantWithLegend from '@/components/etf-reportsv1/EtfCompetitionQuadrantWithLegend';
 import EtfRelatedSections from '@/components/etf-reportsv1/EtfRelatedSections';
+import SimilarEtfs from '@/components/etf-reportsv1/SimilarEtfs';
 import type { EtfCompetitionResponse } from '@/types/etf/etf-analysis-types';
+import type { SimilarEtf } from '@/types/etf/etf-detail-response-types';
 import { parseMarkdown } from '@/util/parse-markdown';
 import { buildEtfQuadrantDataPoints } from '@/utils/etf-competition-utils';
 import Link from 'next/link';
@@ -11,13 +13,15 @@ export interface EtfCompetitionFullViewProps {
   data: EtfCompetitionResponse;
   /** Promise of sibling-page slugs with publishable content. Unwrapped via Suspense so first paint isn't blocked on it. */
   availableSlugsPromise?: Promise<string[]>;
+  /** Peer ETFs (from the `/similar-etfs` endpoint). When non-empty, a "Similar ETFs" table renders before the related-sections nav. */
+  similarEtfs?: ReadonlyArray<SimilarEtf>;
 }
 
 /**
  * Full Competition view rendered on the dedicated `/etfs/.../competition` page.
  * Shows the quadrant chart, the long-form markdown analysis, and per-peer cards.
  */
-export default function EtfCompetitionFullView({ data, availableSlugsPromise }: EtfCompetitionFullViewProps): JSX.Element | null {
+export default function EtfCompetitionFullView({ data, availableSlugsPromise, similarEtfs }: EtfCompetitionFullViewProps): JSX.Element | null {
   const { vsCompetition, competitors, etf } = data;
 
   if (!etf || (!vsCompetition && (!competitors || competitors.length === 0))) {
@@ -124,6 +128,8 @@ export default function EtfCompetitionFullView({ data, availableSlugsPromise }: 
             </section>
           )}
         </div>
+
+        {similarEtfs && similarEtfs.length > 0 && <SimilarEtfs data={similarEtfs} linkSlug="competition" />}
 
         {availableSlugsPromise && (
           <Suspense fallback={null}>

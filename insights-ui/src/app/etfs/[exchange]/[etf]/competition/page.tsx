@@ -6,6 +6,7 @@ import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import type { EtfCompetitionResponse } from '@/types/etf/etf-analysis-types';
 import { etfCompetitionTag } from '@/utils/etf-cache-utils';
+import { fetchEtfSimilarEtfs } from '@/utils/etf-similar-etfs-utils';
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
 import { buildEtfReportSubpageBreadcrumbs } from '@/utils/etf-breadcrumbs-utils';
 import { generateBreadcrumbJsonLdFromCrumbs, generateEtfCompetitionArticleJsonLd, generateEtfCompetitionMetadata } from '@/utils/etf-metadata-generators';
@@ -61,7 +62,11 @@ export default async function EtfCompetitionPage({ params }: { params: RoutePara
   const exchangeUpper = exchange.toUpperCase();
   const etfUpper = etf.toUpperCase();
 
-  const [data, etfFast] = await Promise.all([fetchEtfCompetition(exchangeUpper, etfUpper), fetchEtfFast(exchangeUpper, etfUpper)]);
+  const [data, etfFast, similarEtfs] = await Promise.all([
+    fetchEtfCompetition(exchangeUpper, etfUpper),
+    fetchEtfFast(exchangeUpper, etfUpper),
+    fetchEtfSimilarEtfs(exchangeUpper, etfUpper, [etfCompetitionTag(etfUpper, exchangeUpper)]),
+  ]);
   if (!data || !data.etf) {
     notFound();
   }
@@ -104,7 +109,7 @@ export default async function EtfCompetitionPage({ params }: { params: RoutePara
         mobileBackOnly={true}
         rightButton={<EtfSubPageActions etfId={data.etf.id} etfSymbol={data.etf.symbol} etfName={data.etf.name} />}
       />
-      <EtfCompetitionFullView data={data} availableSlugsPromise={availableSlugsPromise} />
+      <EtfCompetitionFullView data={data} availableSlugsPromise={availableSlugsPromise} similarEtfs={similarEtfs} />
     </PageWrapper>
   );
 }
