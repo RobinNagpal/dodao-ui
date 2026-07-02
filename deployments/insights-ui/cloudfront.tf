@@ -14,39 +14,55 @@ locals {
   # caches POST/PUT/PATCH/DELETE responses, so these pass through uncached automatically.
   all_viewer_methods = ["GET", "HEAD", "OPTIONS", "PUT", "POST", "PATCH", "DELETE"]
 
-  # Explicit allow-list of GET API endpoints that back the public /stocks/* pages.
-  # Enumerated (not a broad /api/.../tickers-v1/* wildcard) because that prefix
-  # also hosts admin-protected GETs (e.g. /generation-requests, /missing-reports);
-  # the koalagains_one_week cache policy strips cookies, so an admin GET would
-  # return 401 and CloudFront would cache that 401 publicly. Each pattern is one
-  # of the data sources fetched by a /stocks/* page render — see
-  # docs/insights-ui/cloudfront-deploy-skew.md.
+  # Explicit allow-list of the PUBLIC GET API endpoints that a /stocks/* page render
+  # actually fetches (verified against the page source — see the page->API audit in
+  # docs/insights-ui/cloudfront-api-caching.md). Enumerated (not a broad
+  # /api/.../tickers-v1/* wildcard) for two reasons: (1) that prefix also hosts
+  # admin-protected GETs (e.g. /generation-requests, /missing-reports); each cached
+  # pattern must be a public `withErrorHandlingV2` GET so the cookie-stripping
+  # koalagains_one_week policy can't cache an admin 401/response publicly. (2) The
+  # per-ticker mutating routes (business-and-moat, competition, management-team, …)
+  # are POST+withAdmin under this same /exchange/{e}/{t}/ prefix, so a segment-
+  # anchored wildcard is impossible in CloudFront — hence the base /exchange/{e}/{t}
+  # fast route is deliberately NOT cached (a "/exchange/*/*" catch-all would swallow
+  # that admin/mutation subtree). Every entry below is a leaf GET a page fetches.
   stocks_api_cached_paths = [
-    "/api/koala_gains/tickers-v1/exchange/*/*/full-render",
+    # Per-ticker report subpages — each renders from its `{category}-data` GET.
+    "/api/koala_gains/tickers-v1/exchange/*/*/business-and-moat-data",
+    "/api/koala_gains/tickers-v1/exchange/*/*/financial-statement-analysis-data",
     "/api/koala_gains/tickers-v1/exchange/*/*/past-performance-data",
     "/api/koala_gains/tickers-v1/exchange/*/*/future-performance-data",
-    "/api/koala_gains/tickers-v1/exchange/*/*/financial-statement-analysis-data",
-    "/api/koala_gains/tickers-v1/exchange/*/*/business-and-moat-data",
     "/api/koala_gains/tickers-v1/exchange/*/*/fair-value-data",
-    "/api/koala_gains/tickers-v1/exchange/*/*/competition",
-    "/api/koala_gains/tickers-v1/exchange/*/*/management-team",
+    # Main `/stocks/{e}/{t}` page slices (per-slice streaming — the `/full-render`
+    # consolidation was reverted, so the page fetches these individually).
+    "/api/koala_gains/tickers-v1/exchange/*/*/financial-info",
+    "/api/koala_gains/tickers-v1/exchange/*/*/quarterly-chart-data",
+    "/api/koala_gains/tickers-v1/exchange/*/*/price-history",
+    "/api/koala_gains/tickers-v1/exchange/*/*/competition-tickers",
+    # Country listing + industry pages.
     "/api/koala_gains/tickers-v1/country/*/tickers/industries",
     "/api/koala_gains/tickers-v1/country/*/tickers/industries/*",
   ]
 
   # ETF per-ETF GET API endpoints that back the public /etfs/[exchange]/[etf] page tree. Same
   # rationale as stocks_api_cached_paths above: enumerated (not a broad /api/.../etfs-v1/*
-  # wildcard) because that prefix also hosts admin-protected GETs (e.g. /generation-requests,
-  # /listing, /listings/*) — and the cookie-stripping koalagains_one_week policy would otherwise
-  # cache a 401 publicly. Each is a public (`withErrorHandlingV2`) GET fetched by an
-  # /etfs/[exchange]/[etf] subpage render: main → full-render; category subpages → analysis /
-  # mor-info; holdings → portfolio-holdings.
+  # wildcard) because that prefix also hosts admin-protected GETs, and the base /exchange/{e}/{t}
+  # fast route is deliberately left uncached (CloudFront can't segment-anchor a wildcard, so a
+  # catch-all would swallow the POST+withAdmin subtree). Each entry is a public
+  # (`withErrorHandlingV2`) GET a page render actually fetches (verified — see the page->API audit
+  # in docs/insights-ui/cloudfront-api-caching.md): main → full-render + chart-data; the four
+  # category subpages → their `{category}-data` GET (performance-returns also reads mor-info);
+  # competition → competition; holdings → portfolio-holdings.
   etfs_api_cached_paths = [
     "/api/koala_gains/etfs-v1/exchange/*/*/full-render",
     "/api/koala_gains/etfs-v1/exchange/*/*/chart-data",
-    "/api/koala_gains/etfs-v1/exchange/*/*/analysis",
     "/api/koala_gains/etfs-v1/exchange/*/*/mor-info",
     "/api/koala_gains/etfs-v1/exchange/*/*/portfolio-holdings",
+    "/api/koala_gains/etfs-v1/exchange/*/*/competition",
+    "/api/koala_gains/etfs-v1/exchange/*/*/performance-returns-data",
+    "/api/koala_gains/etfs-v1/exchange/*/*/cost-efficiency-team-data",
+    "/api/koala_gains/etfs-v1/exchange/*/*/risk-analysis-data",
+    "/api/koala_gains/etfs-v1/exchange/*/*/future-performance-outlook-data",
   ]
 
   # Combined cached GET API endpoints (stocks + ETFs) — one ordered_cache_behavior per pattern.

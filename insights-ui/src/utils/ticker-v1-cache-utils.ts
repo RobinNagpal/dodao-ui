@@ -43,8 +43,13 @@ export const tickerAndExchangeTag = (t: string, exchange: string): `${typeof TIC
 
 export const revalidateTickerAndExchangeTag = (ticker: string, exchange: string) => {
   revalidateTag(tickerAndExchangeTag(ticker, exchange));
-  // Main page renders from the consolidated `/full-render` endpoint.
-  invalidateCloudFrontPaths([`/stocks/${exchange}/${ticker}`, `${tickerApiBase(ticker, exchange)}/full-render`]);
+  // The main `/stocks/{e}/{t}` page streams per-slice from several GET endpoints
+  // (`financial-info`, `quarterly-chart-data`, `price-history`, `competition-tickers`) — the
+  // `/full-render` consolidation was reverted. This umbrella fires both on report/core saves and
+  // on market-data refreshes (`fetch-financial-data`), so purge the whole per-ticker API subtree
+  // with one wildcard (1 billable path) to cover every slice regardless of which one changed. The
+  // base `/exchange/{e}/{t}` fast route it also fetches is not CloudFront-cached (see cloudfront.tf).
+  invalidateCloudFrontPaths([`/stocks/${exchange}/${ticker}`, `${tickerApiBase(ticker, exchange)}*`]);
 };
 
 /** Per-category report tag — used by `/business-and-moat`, `/financial-statement-analysis`, `/past-performance`, `/future-performance`, `/fair-value` subpages. */
@@ -63,7 +68,9 @@ export const tickerCompetitionTag = (ticker: string, exchange: string): string =
 
 export const revalidateTickerCompetitionTag = (ticker: string, exchange: string) => {
   revalidateTag(tickerCompetitionTag(ticker, exchange));
-  invalidateCloudFrontPaths([`/stocks/${exchange}/${ticker}/competition`, `${tickerApiBase(ticker, exchange)}/competition`]);
+  // The `/competition` subpage renders from the public `/competition-tickers` GET (the bare
+  // `/competition` route is POST+admin and not cached).
+  invalidateCloudFrontPaths([`/stocks/${exchange}/${ticker}/competition`, `${tickerApiBase(ticker, exchange)}/competition-tickers`]);
 };
 
 /** Management-team subpage tag — used by `/management-team`. */
@@ -72,7 +79,10 @@ export const tickerManagementTeamTag = (ticker: string, exchange: string): strin
 
 export const revalidateTickerManagementTeamTag = (ticker: string, exchange: string) => {
   revalidateTag(tickerManagementTeamTag(ticker, exchange));
-  invalidateCloudFrontPaths([`/stocks/${exchange}/${ticker}/management-team`, `${tickerApiBase(ticker, exchange)}/management-team`]);
+  // The `/management-team` subpage renders from the base `/exchange/{e}/{t}` fast route, which is
+  // NOT CloudFront-cached (the bare `/management-team` route is POST+admin), so only the page URL
+  // needs purging here.
+  invalidateCloudFrontPaths([`/stocks/${exchange}/${ticker}/management-team`]);
 };
 
 /**

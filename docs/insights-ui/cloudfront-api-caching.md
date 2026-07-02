@@ -16,120 +16,135 @@ This is the API-layer companion to the broader caching docs:
 
 ## 1. TL;DR
 
-- CloudFront caches **two families of GET API endpoints** for 6 days, not just page HTML:
-  - **Stocks — 10 endpoints** under `/api/koala_gains/tickers-v1/…` (the 8 per-ticker report GETs + 2 country-listing GETs).
-  - **ETFs — 5 endpoints** under `/api/koala_gains/etfs-v1/exchange/…` (`full-render`, `chart-data`, `analysis`, `mor-info`, `portfolio-holdings`).
+- CloudFront caches **two families of GET API endpoints** for 6 days, not just page HTML. The
+  cached list was **realigned** (this PR) to match exactly the public GET endpoints each page
+  render actually fetches — see the [Alignment audit](#alignment-audit--configured-cache-vs-what-pages-actually-fetch-verified):
+  - **Stocks — 11 endpoints** under `/api/koala_gains/tickers-v1/…` (9 per-ticker GETs + 2 country-listing GETs).
+  - **ETFs — 9 endpoints** under `/api/koala_gains/etfs-v1/exchange/…`.
 - Both families use the same `koalagains_one_week` cache policy (6-day TTL, cookies + headers stripped from the key, all query strings in the key) and the `Managed-AllViewer` origin-request policy.
-- Each endpoint is **enumerated as its own `ordered_cache_behavior`** — never a broad `/api/…/*` wildcard — because the same prefixes also host admin-protected GETs, and the cookie-stripping policy would otherwise cache a public `401` and serve it to admins.
+- Each endpoint is **enumerated as its own `ordered_cache_behavior`** — never a broad `/api/…/*` wildcard — because the same prefixes also host admin-protected GETs/mutations, and the cookie-stripping policy would otherwise cache a public `401` and serve it to admins. Every cached pattern is a verified **public `withErrorHandlingV2` GET**.
+- **The base `/exchange/{e}/{t}` fast route is deliberately NOT cached.** CloudFront path patterns can't anchor the final segment, so a `/exchange/*/*` catch-all would swallow the per-ticker/ETF POST+`withAdmin` mutation subtree. Its content is a cheap DB read; the heavy report/data slices are the ones cached.
 - **Why cache the API at all:** the pages are `force-dynamic`, so a CloudFront page miss triggers an SSR on the Lightsail origin, and that SSR self-fetches its data through CloudFront. Caching the API endpoints means those data fetches hit the edge instead of fanning back into the origin.
-- **Invalidation is wired end-to-end** for the endpoints that *are* correctly cached: each save-flow `revalidate*` helper purges the page URL **and** the matching API URL in lockstep (`ticker-v1-cache-utils.ts`, `etf-cache-utils.ts`).
-- **⚠️ Net assessment — the cached API list does NOT match what the pages actually fetch.** A page-by-page trace (see the [Alignment audit](#alignment-audit--configured-cache-vs-what-pages-actually-fetch-verified)) shows several **configured-but-dead** endpoints (nothing fetches them) and several **fetched-but-uncached** endpoints (every SSR fans them out to the origin). Most importantly, the highest-traffic page — `/stocks/{e}/{t}` — has **zero** of its 5 API fetches cached. This is a real caching gap, not just doc drift. What works: the 5 stock `-data` subpage endpoints and the 4 ETF endpoints `full-render`/`chart-data`/`mor-info`/`portfolio-holdings`.
+- **Invalidation is wired end-to-end:** each save-flow `revalidate*` helper purges the page URL **and** the matching (now-correct) API URL in lockstep (`ticker-v1-cache-utils.ts`, `etf-cache-utils.ts`).
 
 ---
 
 ## 2. What is configured in `cloudfront.tf`
 
-The distribution has **23 cache behaviors**: 1 default + 7 literal ordered + 15 generated
+The distribution has **28 cache behaviors**: 1 default + 7 literal ordered + 20 generated
 (`dynamic "ordered_cache_behavior"` over `local.api_cached_paths = concat(stocks_api_cached_paths, etfs_api_cached_paths)`).
 
-> The **"Fetched by a page render?"** column below is the result of the code trace in the
-> [Alignment audit](#alignment-audit--configured-cache-vs-what-pages-actually-fetch-verified). It
-> is **not** all ✅ — the cached list was built around an assumed `/full-render` consolidation
-> (stocks) and an `/analysis`/`/mor-info` split (ETFs) that the current pages don't actually use.
+> Every row below is now a public GET a page render actually fetches (verified — see the
+> [Alignment audit](#alignment-audit--configured-cache-vs-what-pages-actually-fetch-verified)).
+> The pre-realignment list had 3 dead stock behaviors (`/full-render`, `/competition`,
+> `/management-team`) and 1 dead ETF behavior (`/analysis`), and was missing the endpoints the
+> main + category + competition pages fetch; both are corrected here.
 
-### 2.1 Stocks API — `local.stocks_api_cached_paths` (10)
+### 2.1 Stocks API — `local.stocks_api_cached_paths` (11)
 
-| CloudFront path pattern (configured) | Fetched by a page render? |
+| CloudFront path pattern | Fetched by |
 |---|---|
-| `/api/koala_gains/tickers-v1/exchange/*/*/full-render` | ❌ **dead** — no page fetches it (only type imports); the main page reverted to per-slice fetches |
-| `/api/koala_gains/tickers-v1/exchange/*/*/past-performance-data` | ✅ `/stocks/{e}/{t}/past-performance` |
-| `/api/koala_gains/tickers-v1/exchange/*/*/future-performance-data` | ✅ `/stocks/{e}/{t}/future-performance` |
-| `/api/koala_gains/tickers-v1/exchange/*/*/financial-statement-analysis-data` | ✅ `/stocks/{e}/{t}/financial-statement-analysis` |
-| `/api/koala_gains/tickers-v1/exchange/*/*/business-and-moat-data` | ✅ `/stocks/{e}/{t}/business-and-moat` |
-| `/api/koala_gains/tickers-v1/exchange/*/*/fair-value-data` | ✅ `/stocks/{e}/{t}/fair-value` |
-| `/api/koala_gains/tickers-v1/exchange/*/*/competition` | ❌ **dead** — the `/competition` page fetches `/competition-tickers`, not `/competition` |
-| `/api/koala_gains/tickers-v1/exchange/*/*/management-team` | ❌ **dead** — the `/management-team` page fetches the base `/exchange/{e}/{t}` route |
-| `/api/koala_gains/tickers-v1/country/*/tickers/industries` | ➖ country-listing (not re-audited here — outside the per-ticker page set the user listed) |
-| `/api/koala_gains/tickers-v1/country/*/tickers/industries/*` | ➖ country-listing (not re-audited) |
+| `/api/koala_gains/tickers-v1/exchange/*/*/business-and-moat-data` | `/stocks/{e}/{t}/business-and-moat` |
+| `/api/koala_gains/tickers-v1/exchange/*/*/financial-statement-analysis-data` | `/stocks/{e}/{t}/financial-statement-analysis` |
+| `/api/koala_gains/tickers-v1/exchange/*/*/past-performance-data` | `/stocks/{e}/{t}/past-performance` |
+| `/api/koala_gains/tickers-v1/exchange/*/*/future-performance-data` | `/stocks/{e}/{t}/future-performance` |
+| `/api/koala_gains/tickers-v1/exchange/*/*/fair-value-data` | `/stocks/{e}/{t}/fair-value` |
+| `/api/koala_gains/tickers-v1/exchange/*/*/financial-info` | `/stocks/{e}/{t}` (main) |
+| `/api/koala_gains/tickers-v1/exchange/*/*/quarterly-chart-data` | `/stocks/{e}/{t}` (main) |
+| `/api/koala_gains/tickers-v1/exchange/*/*/price-history` | `/stocks/{e}/{t}` (main) |
+| `/api/koala_gains/tickers-v1/exchange/*/*/competition-tickers` | `/stocks/{e}/{t}` (main) + `/competition` |
+| `/api/koala_gains/tickers-v1/country/*/tickers/industries` | `/stocks/countries/{c}` |
+| `/api/koala_gains/tickers-v1/country/*/tickers/industries/*` | `/stocks/countries/{c}/industries/{k}`, `/stocks/industries/{k}` |
 
-### 2.2 ETF API — `local.etfs_api_cached_paths` (5)
+### 2.2 ETF API — `local.etfs_api_cached_paths` (9)
 
-| CloudFront path pattern (configured) | Fetched by a page render? |
+| CloudFront path pattern | Fetched by |
 |---|---|
-| `/api/koala_gains/etfs-v1/exchange/*/*/full-render` | ✅ `/etfs/{e}/{t}` (main report body) |
-| `/api/koala_gains/etfs-v1/exchange/*/*/chart-data` | ✅ `/etfs/{e}/{t}` (price-chart slice) |
-| `/api/koala_gains/etfs-v1/exchange/*/*/analysis` | ❌ **dead** — fetched only by the `scripts/etfs/fetch-analysis.ts` CLI, never by a page; the category subpages fetch `/{category}-data` |
-| `/api/koala_gains/etfs-v1/exchange/*/*/mor-info` | ✅ `/etfs/{e}/{t}/performance-returns` (alongside its uncached `-data` sibling) |
-| `/api/koala_gains/etfs-v1/exchange/*/*/portfolio-holdings` | ✅ `/etfs/{e}/{t}/holdings` |
+| `/api/koala_gains/etfs-v1/exchange/*/*/full-render` | `/etfs/{e}/{t}` (main report body) |
+| `/api/koala_gains/etfs-v1/exchange/*/*/chart-data` | `/etfs/{e}/{t}` (price-chart slice) |
+| `/api/koala_gains/etfs-v1/exchange/*/*/mor-info` | `/etfs/{e}/{t}/performance-returns` |
+| `/api/koala_gains/etfs-v1/exchange/*/*/portfolio-holdings` | `/etfs/{e}/{t}/holdings` |
+| `/api/koala_gains/etfs-v1/exchange/*/*/competition` | `/etfs/{e}/{t}/competition` |
+| `/api/koala_gains/etfs-v1/exchange/*/*/performance-returns-data` | `/etfs/{e}/{t}/performance-returns` |
+| `/api/koala_gains/etfs-v1/exchange/*/*/cost-efficiency-team-data` | `/etfs/{e}/{t}/cost-efficiency-team` |
+| `/api/koala_gains/etfs-v1/exchange/*/*/risk-analysis-data` | `/etfs/{e}/{t}/risk-analysis` |
+| `/api/koala_gains/etfs-v1/exchange/*/*/future-performance-outlook-data` | `/etfs/{e}/{t}/future-performance-outlook` |
 
-**Not cached** (pass through the `Managed-CachingDisabled` default): mutating routes
-(`PUT /exchange/{e}/{t}`, `POST /save-report-callback`, etc.), admin GETs under the same prefixes
-(`/generation-requests`, `/missing-reports`, `/listing`, …), and everything under other API trees
-(scenarios, tariff-calculator, hts-codes, auth, portfolio-managers, daily-movers). **Note:** this
-"not cached" set *also* unintentionally includes several endpoints the report pages *do* fetch on
-every render — see the audit below.
+**Not cached** (pass through the `Managed-CachingDisabled` default): the base `/exchange/{e}/{t}`
+fast route (see the TL;DR for why), mutating routes (`PUT /exchange/{e}/{t}`,
+`POST /save-report-callback`, the per-ticker/ETF `withAdmin` POSTs, etc.), admin GETs under the
+same prefixes (`/generation-requests`, `/missing-reports`, `/listing`, …), and everything under
+other API trees (scenarios, tariff-calculator, hts-codes, auth, portfolio-managers, daily-movers).
 
 ---
 
 ## Alignment audit — configured cache vs. what pages actually fetch (VERIFIED)
 
 Traced every per-ticker and per-ETF report page's server-side `fetch()` calls
-(`getBaseUrlForServerSidePages()` self-fetches) against the configured cache behaviors. Legend:
-✅ cached & fetched (working), ❌ fetched but **not** cached (every SSR hits the origin),
-💀 configured cached but **never** fetched by a page (dead behavior).
+(`getBaseUrlForServerSidePages()` self-fetches) against the cache behaviors. Legend:
+✅ cached & fetched (working), ⬜ deliberately uncached (base fast route — see TL;DR).
+The **Cached?** column reflects the **post-realignment** state (this PR).
 
 ### Stocks — `/stocks/[exchange]/[ticker]` tree
 
 | Page | Endpoint(s) it actually fetches (SSR) | Cached? |
 |---|---|---|
-| `…/[ticker]` (main) | base `/exchange/{e}/{t}?allowNull=true` | ❌ |
-| | `…/exchange/{e}/{t}/financial-info` | ❌ |
-| | `…/exchange/{e}/{t}/quarterly-chart-data` | ❌ |
-| | `…/exchange/{e}/{t}/price-history` | ❌ |
-| | `…/exchange/{e}/{t}/competition-tickers` | ❌ |
+| `…/[ticker]` (main) | base `/exchange/{e}/{t}?allowNull=true` | ⬜ |
+| | `…/exchange/{e}/{t}/financial-info` | ✅ |
+| | `…/exchange/{e}/{t}/quarterly-chart-data` | ✅ |
+| | `…/exchange/{e}/{t}/price-history` | ✅ |
+| | `…/exchange/{e}/{t}/competition-tickers` | ✅ |
 | `…/business-and-moat` | `…/exchange/{e}/{t}/business-and-moat-data` | ✅ |
 | `…/fair-value` | `…/exchange/{e}/{t}/fair-value-data` | ✅ |
 | `…/financial-statement-analysis` | `…/exchange/{e}/{t}/financial-statement-analysis-data` | ✅ |
 | `…/future-performance` | `…/exchange/{e}/{t}/future-performance-data` | ✅ |
 | `…/past-performance` | `…/exchange/{e}/{t}/past-performance-data` | ✅ |
-| `…/competition` | `…/exchange/{e}/{t}/competition-tickers` | ❌ (cached path is `/competition`) |
-| `…/management-team` | base `/exchange/{e}/{t}?allowNull=true` | ❌ (cached path is `/management-team`) |
+| `…/competition` | `…/exchange/{e}/{t}/competition-tickers` | ✅ |
+| `…/management-team` | base `/exchange/{e}/{t}?allowNull=true` | ⬜ (page URL cached; no separate data endpoint) |
 
-- **Configured but dead (💀):** `/full-render`, `/competition`, `/management-team`.
-- **Fetched but uncached (❌):** base `/exchange/{e}/{t}`, `/financial-info`, `/quarterly-chart-data`, `/price-history`, `/competition-tickers`.
-- **Impact:** the main `/stocks/{e}/{t}` page — the single most-hit stock URL — has **0 of its 5** API fetches cached; every CloudFront page miss fans out 5 uncached API calls to the origin. `/management-team` and `/competition` subpages are also fully uncached at the API layer.
+- **Removed as dead:** `/full-render` (page reverted to per-slice fetches), `/competition` and `/management-team` (both are POST+`withAdmin` routes — never valid GET-cache targets).
+- **Added:** `/financial-info`, `/quarterly-chart-data`, `/price-history`, `/competition-tickers`.
+- **Result:** the main `/stocks/{e}/{t}` page's 4 cached slices now hit the edge; only its base fast route stays uncached (by design).
 
 ### ETFs — `/etfs/[exchange]/[etf]` tree
 
 | Page | Endpoint(s) it actually fetches (SSR) | Cached? |
 |---|---|---|
-| `…/[etf]` (main) | base `/exchange/{e}/{t}?allowNull=true` | ❌ |
+| `…/[etf]` (main) | base `/exchange/{e}/{t}?allowNull=true` | ⬜ |
 | | `…/exchange/{e}/{t}/full-render` | ✅ |
 | | `…/exchange/{e}/{t}/chart-data` | ✅ |
-| `…/performance-returns` | `…/exchange/{e}/{t}/performance-returns-data` | ❌ |
+| `…/performance-returns` | `…/exchange/{e}/{t}/performance-returns-data` | ✅ |
 | | `…/exchange/{e}/{t}/mor-info` | ✅ |
-| `…/cost-efficiency-team` | `…/exchange/{e}/{t}/cost-efficiency-team-data` | ❌ |
-| `…/future-performance-outlook` | `…/exchange/{e}/{t}/future-performance-outlook-data` | ❌ |
-| `…/risk-analysis` | `…/exchange/{e}/{t}/risk-analysis-data` | ❌ |
-| `…/competition` | `…/exchange/{e}/{t}/competition` + base `?allowNull=true` | ❌ |
-| `…/holdings` | `…/exchange/{e}/{t}/portfolio-holdings` + base `?allowNull=true` | ✅ holdings; ❌ base |
+| `…/cost-efficiency-team` | `…/exchange/{e}/{t}/cost-efficiency-team-data` | ✅ |
+| `…/future-performance-outlook` | `…/exchange/{e}/{t}/future-performance-outlook-data` | ✅ |
+| `…/risk-analysis` | `…/exchange/{e}/{t}/risk-analysis-data` | ✅ |
+| `…/competition` | `…/exchange/{e}/{t}/competition` + base `?allowNull=true` | ✅ competition; ⬜ base |
+| `…/holdings` | `…/exchange/{e}/{t}/portfolio-holdings` + base `?allowNull=true` | ✅ holdings; ⬜ base |
 
-- **Configured but dead (💀):** `/analysis` (only the `fetch-analysis.ts` CLI hits it).
-- **Fetched but uncached (❌):** base `/exchange/{e}/{t}`, `/performance-returns-data`, `/cost-efficiency-team-data`, `/future-performance-outlook-data`, `/risk-analysis-data`, `/competition`.
-- **Impact:** the 4 ETF category subpages plus the ETF `/competition` page are fully uncached at the API layer; the ETF main + holdings pages cache their report body but still miss the base `/exchange/{e}/{t}` fetch.
+- **Removed as dead:** `/analysis` (only the `fetch-analysis.ts` CLI hits it — never a page).
+- **Added:** the four `{category}-data` endpoints + `/competition`.
+- **Result:** every ETF subpage's data endpoint is now cached; only the base fast route stays uncached (by design).
 
 ### Answer to "are we adding all necessary APIs there?"
 
-**No.** The stock `-data` subpages (5) and the ETF `full-render`/`chart-data`/`mor-info`/`portfolio-holdings` (4) are correct. Everything else is misaligned: 3 dead stock behaviors + 1 dead ETF behavior, and ~11 distinct endpoints that pages fetch on every render are not cached (most consequentially the base `/exchange/{e}/{t}` route on both trees and all four ETF `-data` category endpoints).
+**Now yes** — every public GET a report page fetches is cached, and the endpoints nothing fetches
+were removed. The single intentional exception is the base `/exchange/{e}/{t}` fast route on both
+trees, left uncached because CloudFront can't segment-anchor a wildcard without swallowing the
+admin/mutation subtree (its payload is a cheap DB read anyway).
 
-### Recommended fix (follow-up — infra + security review required, NOT applied here)
+### What was changed (applied in this PR)
 
-Each addition must first be confirmed a **public, cookie-independent GET** (the cookie-stripping
-policy would cache a `401` publicly otherwise — the same footgun that forced enumeration):
+Each added endpoint was first confirmed a **public `withErrorHandlingV2` GET** (the cookie-stripping
+policy would cache a `401`/admin response publicly otherwise):
 
-- **Stocks — add** `…/exchange/*/*/financial-info`, `…/quarterly-chart-data`, `…/price-history`, `…/competition-tickers`, and the base `…/exchange/*/*` fast route (needs an exact-match pattern so it doesn't wildcard-swallow the admin/mutating sub-routes such as `save-report-callback`, `generate-prompt`, `investor-analysis`). **Remove or repurpose** the dead `/full-render`, `/competition`, `/management-team` behaviors.
-- **ETFs — add** `…/exchange/*/*/{cost-efficiency-team,risk-analysis,future-performance-outlook,performance-returns}-data`, `…/competition`, and the base route. **Remove** the dead `/analysis` behavior.
-- **Then rewire** `CACHED_PATH_PREFIXES` (already prefix-level, so mostly covered) and the per-save `revalidate*` helpers so each newly-cached endpoint is purged on save — otherwise it would be cached 6 days with no invalidation path.
+- **`cloudfront.tf`** — `stocks_api_cached_paths`: removed `/full-render`, `/competition`, `/management-team`; added `/financial-info`, `/quarterly-chart-data`, `/price-history`, `/competition-tickers`. `etfs_api_cached_paths`: removed `/analysis`; added the four `{category}-data` endpoints + `/competition`.
+- **`ticker-v1-cache-utils.ts`** — umbrella `revalidateTickerAndExchangeTag` now purges the per-ticker API subtree via one wildcard (covers all main-page slices); `revalidateTickerCompetitionTag` → `/competition-tickers`; `revalidateTickerManagementTeamTag` → page URL only (its data lives in the uncached base route).
+- **`etf-cache-utils.ts`** — category helper now purges `/{slug}-data` (+ `/mor-info` for performance-returns); `revalidateEtfCompetitionTag` now also purges `/competition`.
+- **`cloudfront-cache-utils.ts`** — `CACHED_PATH_PREFIXES` already covered the new endpoints at the prefix level; only its header comment was updated.
+
+> **Deploy note:** the `cloudfront.tf` change only takes effect after a `terraform apply` of the
+> `deployments/insights-ui` stack. Adding/removing `ordered_cache_behavior` blocks is an in-place
+> distribution update (no recreate); allow a few minutes for the distribution to redeploy.
 
 ---
 
@@ -195,10 +210,11 @@ endpoint *is* cached (the diagram uses `/business-and-moat-data`, which is), a p
 popular ticker resolves its data from the already-warm **API** cache, so the origin does DB/S3
 work once per ~6 days per region instead of on every page miss.
 
-**This benefit only materialises for the endpoints a page actually fetches.** As the
-[Alignment audit](#alignment-audit--configured-cache-vs-what-pages-actually-fetch-verified) shows,
-the main `/stocks/{e}/{t}` render fetches 5 endpoints that are **not** cached, so its SSR still
-fans out 5 origin calls on every page miss — the API cache buys it nothing today.
+**This benefit only materialises for the endpoints a page actually fetches**, which is why the
+cached list was realigned to the pages' real fetches (see the
+[Alignment audit](#alignment-audit--configured-cache-vs-what-pages-actually-fetch-verified)). The
+main `/stocks/{e}/{t}` render fetches 5 endpoints; 4 are now cached, and only its base fast route
+(a cheap DB read) still reaches the origin on each page miss.
 
 ---
 
@@ -225,13 +241,15 @@ awaited variant for real success/failure feedback.
 
 | Helper (module) | Page path purged | API path purged |
 |---|---|---|
-| `revalidateTickerAndExchangeTag` (`ticker-v1-cache-utils.ts`) | `/stocks/{e}/{t}` | `…/tickers-v1/exchange/{e}/{t}/full-render` |
+| `revalidateTickerAndExchangeTag` (`ticker-v1-cache-utils.ts`) | `/stocks/{e}/{t}` | `…/tickers-v1/exchange/{e}/{t}*` (wildcard — covers all main-page slices) |
 | `revalidateTickerCategoryReportTag` | `/stocks/{e}/{t}/{slug}` | `…/exchange/{e}/{t}/{slug}-data` |
-| `revalidateTickerCompetitionTag` / `…ManagementTeamTag` | `/stocks/{e}/{t}/{competition,management-team}` | `…/exchange/{e}/{t}/{competition,management-team}` |
+| `revalidateTickerCompetitionTag` | `/stocks/{e}/{t}/competition` | `…/exchange/{e}/{t}/competition-tickers` |
+| `revalidateTickerManagementTeamTag` | `/stocks/{e}/{t}/management-team` | — (data is in the uncached base route) |
 | `revalidateAllTickerTags` | `/stocks/{e}/{t}*` (wildcard) | `…/exchange/{e}/{t}*` (wildcard) |
 | `revalidateStocksPageTag` / `revalidateIndustryPageTag` | `/stocks/countries/{c}*`, industry pages | `…/country/{c}*`, `…/country/{c}/tickers/industries/{k}` |
 | `revalidateEtfAndExchangeTag` (`etf-cache-utils.ts`) | `/etfs/{e}/{t}` | `…/etfs-v1/exchange/{e}/{t}/full-render` **and** `/chart-data` |
-| `revalidateEtfCategoryReportTag` | `/etfs/{e}/{t}/{slug}` | `…/exchange/{e}/{t}/{analysis\|mor-info}` |
+| `revalidateEtfCategoryReportTag` | `/etfs/{e}/{t}/{slug}` | `…/exchange/{e}/{t}/{slug}-data` (+ `/mor-info` for performance-returns) |
+| `revalidateEtfCompetitionTag` | `/etfs/{e}/{t}/competition` | `…/exchange/{e}/{t}/competition` |
 | `revalidateEtfHoldingsTag` | `/etfs/{e}/{t}/holdings` | `…/exchange/{e}/{t}/portfolio-holdings` |
 | `revalidateAllEtfTags` / `…Awaited` | `/etfs/{e}/{t}*` (wildcard) | `…/etfs-v1/exchange/{e}/{t}*` (wildcard) |
 
@@ -240,14 +258,10 @@ Next Data Cache to invalidate) but is kept as free future-proofing. The `invalid
 half is the live one. The `flush-cloudfront-cache` GitHub workflow's `flush_stocks` box wipes
 `/stocks/*` + `/api/…/tickers-v1/exchange/*` + `/api/…/tickers-v1/country/*` in one run.
 
-> **⚠️ The API-path column above targets the *configured* endpoints, several of which are the
-> dead ones** (`/full-render`, `/competition`, `/management-team`, ETF `/analysis`) — so those
-> purges hit nothing (harmless: the pages never populate them). Conversely, the endpoints the
-> pages *do* fetch (base route, `financial-info`, `*-data` ETF categories, `competition-tickers`)
-> are neither cached nor purged. Net correctness is fine **because uncached ≡ always-fresh**, but
-> the intended edge-cache benefit is absent. See the audit's recommended fix; note the wildcard
-> rows (`revalidateAllTickerTags` → `…/exchange/{e}/{t}*`, `revalidateAllEtfTags`) *would* correctly
-> purge the real endpoints once they're added to `cloudfront.tf`, since they cover the whole subtree.
+Each API purge target now matches a cached endpoint that its page actually fetches (post-realignment).
+The umbrella `revalidateTickerAndExchangeTag` uses a single `…/exchange/{e}/{t}*` wildcard so it
+covers every main-page slice (and any market-data refresh via `fetch-financial-data`) at 1 billable
+path.
 
 **To add a new cached API endpoint you must edit two places** (they are not generated from a single
 source): (1) add the path pattern to `stocks_api_cached_paths` / `etfs_api_cached_paths` in
@@ -258,22 +272,21 @@ helper to purge it. Omitting (2) means the endpoint is cached for 6 days but nev
 
 ## 6. Discrepancies found during this investigation
 
-**Headline finding (functional): the configured API cache is misaligned with actual page fetches.**
-The [Alignment audit](#alignment-audit--configured-cache-vs-what-pages-actually-fetch-verified) is
-the full record — in short, 3 stock behaviors (`/full-render`, `/competition`, `/management-team`)
-and 1 ETF behavior (`/analysis`) are dead, while ~11 endpoints the report pages fetch on every
-render (the base `/exchange/{e}/{t}` route on both trees, the 4 ETF `-data` category endpoints,
-`financial-info` / `quarterly-chart-data` / `price-history` / `competition-tickers` on stocks) are
-uncached. This is not a correctness bug (uncached ≡ always-fresh) but it means the main stock/ETF
-pages get little-to-no API edge-cache benefit. Recommended fix is in the audit; it is an infra +
-security-review change and was **not** applied in this pass.
+**Headline finding (functional): the configured API cache was misaligned with actual page fetches —
+now FIXED in this PR.** The [Alignment audit](#alignment-audit--configured-cache-vs-what-pages-actually-fetch-verified)
+is the full record — in short, 3 stock behaviors (`/full-render`, `/competition`, `/management-team`)
+and 1 ETF behavior (`/analysis`) were dead, while the endpoints the report pages fetch on every
+render (the 4 ETF `-data` category endpoints + `/competition`, and stocks `financial-info` /
+`quarterly-chart-data` / `price-history` / `competition-tickers`) were uncached. The cached list and
+the `revalidate*` helpers were realigned to the verified page fetches; the base `/exchange/{e}/{t}`
+route remains intentionally uncached (CloudFront can't segment-anchor a wildcard).
 
 The remaining items are documentation/comment drift from before the Lightsail migration and the
 ETF-API-caching work — recorded so the next reader trusts the code over the older prose:
 
 1. **`cloudfront-deploy-skew.md` says ETF API endpoints are *not* cached** ("ETF API endpoints are not yet behind CloudFront — candidate for a future phase"; "Scope: stocks only for now"). **Now false** — 5 ETF API behaviors exist in `cloudfront.tf`, are in `CACHED_PATH_PREFIXES`, and are purged by `etf-cache-utils.ts`.
 2. **That doc describes the origin as Vercel** (`dodao-ui-insights-ui.vercel.app`) with Vercel Skew Protection as the deploy-skew safeguard. The distribution now fronts the **AWS Lightsail** origin (`var.aws_origin_hostname`); Skew Protection is Vercel-specific and no longer applies. (Deploy-skew for the API layer is a non-issue regardless — JSON responses reference no build-hashed chunks. For pages, chunk coherence now rests on S3 retaining old hashed assets — see `s3_static.tf` — not on Skew Protection.)
-3. **Behavior count is stale** — that doc says "Fifteen cache behaviors (one default + fourteen ordered)". Actual: **23** (1 default + 7 literal ordered + 15 generated API). The doc also omits the `/` homepage behavior (now edge-cached with the 6-day policy, not `CachingDisabled` as the doc states) and the two admin carve-outs routed to `CachingDisabled` before the broad patterns: `/stocks/*/create` and `/etfs/*/financial-data`.
+3. **Behavior count is stale** — that doc says "Fifteen cache behaviors (one default + fourteen ordered)". Actual after this PR: **28** (1 default + 7 literal ordered + 20 generated API). The doc also omits the `/` homepage behavior (now edge-cached with the 6-day policy, not `CachingDisabled` as the doc states) and the two admin carve-outs routed to `CachingDisabled` before the broad patterns: `/stocks/*/create` and `/etfs/*/financial-data`.
 4. **Stale Terraform path in code comments** — `cloudfront-cache-utils.ts` and `etf-cache-utils.ts` referenced `dodao-api-v2-deployment/cloudfront.tf`; corrected to `deployments/insights-ui/cloudfront.tf` alongside this investigation. (`cloudfront-error-caching.md` still carries the old path in its prose header.)
 5. **`cloudfront-cache-utils.ts` header comment listed only 4 ETF endpoints** (omitted `chart-data`); corrected to match the 5 in Terraform.
 
@@ -293,13 +306,12 @@ curl -sI 'https://koalagains.com/api/koala_gains/tickers-v1/exchange/NYSE/RTX/bu
 curl -sI 'https://koalagains.com/api/koala_gains/etfs-v1/exchange/NYSEARCA/VOO/full-render' \
   | grep -iE 'HTTP|x-cache|age'
 
-# Demonstrates the gap: the main stock page fetches these, but they are NOT cached today —
-# expect `x-cache: Miss from cloudfront` on every request:
+# Newly cached in this PR — the main stock page's slices (after terraform apply + warm, expect Hit):
 curl -sI 'https://koalagains.com/api/koala_gains/tickers-v1/exchange/NYSE/RTX/financial-info' | grep -iE 'HTTP|x-cache'
 curl -sI 'https://koalagains.com/api/koala_gains/tickers-v1/exchange/NYSE/RTX/competition-tickers' | grep -iE 'HTTP|x-cache'
 
-# A configured-but-dead behavior: nothing populates it, so it stays a Miss in practice:
-curl -sI 'https://koalagains.com/api/koala_gains/tickers-v1/exchange/NYSE/RTX/full-render' | grep -iE 'HTTP|x-cache'
+# The base fast route is intentionally NOT cached — expect Miss on every request:
+curl -sI 'https://koalagains.com/api/koala_gains/tickers-v1/exchange/NYSE/RTX' | grep -iE 'HTTP|x-cache'
 
 # An admin GET under the same prefix must NOT be cached (default CachingDisabled)
 curl -sI 'https://koalagains.com/api/koala_gains/tickers-v1/generation-requests' \
