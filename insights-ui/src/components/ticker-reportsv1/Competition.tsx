@@ -94,7 +94,7 @@ export default function Competition({ tickerData, data }: CompetitionProps): JSX
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+    <div className="py-4">
       <article className="bg-surface rounded-lg shadow-sm border border-color p-6 md:p-8" itemScope itemType="https://schema.org/Article">
         {/* Hidden datePublished for schema - machine readable only */}
         <meta itemProp="datePublished" content={publishedDate.toISOString()} />

@@ -284,9 +284,11 @@ export default async function ManagementTeamPage({ params }: { params: RoutePara
             </div>
           </div>
         </footer>
-
-        <SimilarTickersSection exchange={tickerData.exchange} ticker={tickerData.symbol} subPageSlug="management-team" />
       </article>
+
+      <div className="py-4">
+        <SimilarTickersSection exchange={tickerData.exchange} ticker={tickerData.symbol} subPageSlug="management-team" />
+      </div>
     </PageWrapper>
   );
 }
