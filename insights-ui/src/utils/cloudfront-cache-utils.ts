@@ -13,8 +13,11 @@ import { waitUntil } from '@vercel/functions';
  * users can see stale pages even after a successful save.
  *
  * Only the following paths are cached at CloudFront today (see
- * `dodao-api-v2-deployment/cloudfront.tf`):
+ * `deployments/insights-ui/cloudfront.tf`):
+ *   - Home: `/` (statically generated + weekly ISR)
  *   - Pages: `/stocks/*`, `/etfs/*`, `/industry-tariff-report/*`, `/tariff-reports*`
+ *     EXCEPT the admin-only `/stocks/*/create` and `/etfs/*/financial-data`, which are
+ *     explicitly routed to CachingDisabled and never edge-cached.
  *   - Stocks API: `/api/koala_gains/tickers-v1/exchange/{e}/{t}/*` (the 8
  *     per-ticker GET endpoints that back the /stocks/[exchange]/[ticker] page
  *     tree) and `/api/koala_gains/tickers-v1/country/{c}/tickers/industries[/...]`
@@ -36,9 +39,13 @@ import { waitUntil } from '@vercel/functions';
 const DISTRIBUTION_ID = process.env.CLOUDFRONT_DISTRIBUTION_ID;
 
 /**
- * Literal mirror of the cached prefixes in `dodao-api-v2-deployment/cloudfront.tf`.
+ * Literal mirror of the cached prefixes in `deployments/insights-ui/cloudfront.tf`.
  * An invalidation path is forwarded to AWS only if it starts with one of these.
  * Add a new entry here whenever a new `ordered_cache_behavior` is added there.
+ *
+ * Note: the homepage `/` is edge-cached but intentionally omitted here — a `'/'`
+ * prefix would match every path and defeat the filter. Home refreshes on its own
+ * weekly ISR cycle; purge it explicitly by distribution if a manual flush is ever needed.
  */
 const CACHED_PATH_PREFIXES = [
   '/stocks/',

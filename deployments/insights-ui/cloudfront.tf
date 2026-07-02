@@ -197,6 +197,55 @@ resource "aws_cloudfront_distribution" "koalagains" {
     }
   }
 
+  # Homepage (`/`) — statically generated at build time + weekly ISR, so it's safe and fast to
+  # serve from the edge. This pattern matches ONLY the root document; every other path falls
+  # through to the behaviors below or to the CachingDisabled default. Same 6-day policy as
+  # /stocks/* and /etfs/*.
+  ordered_cache_behavior {
+    path_pattern           = "/"
+    target_origin_id       = local.vercel_origin_id
+    viewer_protocol_policy = "redirect-to-https"
+    allowed_methods        = local.all_viewer_methods
+    cached_methods         = ["GET", "HEAD"]
+    compress               = true
+
+    cache_policy_id          = aws_cloudfront_cache_policy.koalagains_one_week.id
+    origin_request_policy_id = "216adef6-5c7f-47e4-b989-5492eafa07d3"
+
+    dynamic "function_association" {
+      for_each = var.enable_www_redirect ? [1] : []
+      content {
+        event_type   = "viewer-request"
+        function_arn = aws_cloudfront_function.www_redirect[0].arn
+      }
+    }
+  }
+
+  # Admin-only stock "create" page (/stocks/[exchange]/[ticker]/create) must NOT be edge-cached.
+  # This more-specific pattern is ordered BEFORE /stocks/* so CloudFront's first-match rule routes
+  # it to Managed-CachingDisabled — otherwise the cookie-stripping 6-day policy would cache the
+  # admin shell publicly. `*` spans the exchange + ticker segments.
+  ordered_cache_behavior {
+    path_pattern           = "/stocks/*/create"
+    target_origin_id       = local.vercel_origin_id
+    viewer_protocol_policy = "redirect-to-https"
+    allowed_methods        = local.all_viewer_methods
+    cached_methods         = ["GET", "HEAD"]
+    compress               = true
+
+    # Managed-CachingDisabled — never cache the admin create page at the edge.
+    cache_policy_id          = "4135ea2d-6df8-44a3-9df3-4b5a84be39ad"
+    origin_request_policy_id = "216adef6-5c7f-47e4-b989-5492eafa07d3"
+
+    dynamic "function_association" {
+      for_each = var.enable_www_redirect ? [1] : []
+      content {
+        event_type   = "viewer-request"
+        function_arn = aws_cloudfront_function.www_redirect[0].arn
+      }
+    }
+  }
+
   ordered_cache_behavior {
     path_pattern           = "/stocks/*"
     target_origin_id       = local.vercel_origin_id
@@ -206,6 +255,30 @@ resource "aws_cloudfront_distribution" "koalagains" {
     compress               = true
 
     cache_policy_id          = aws_cloudfront_cache_policy.koalagains_one_week.id
+    origin_request_policy_id = "216adef6-5c7f-47e4-b989-5492eafa07d3"
+
+    dynamic "function_association" {
+      for_each = var.enable_www_redirect ? [1] : []
+      content {
+        event_type   = "viewer-request"
+        function_arn = aws_cloudfront_function.www_redirect[0].arn
+      }
+    }
+  }
+
+  # Admin-only ETF "financial-data" subpage (/etfs/[exchange]/[etf]/financial-data) must NOT be
+  # edge-cached. Ordered BEFORE /etfs/* so first-match routes it to Managed-CachingDisabled. Same
+  # rationale as /stocks/*/create above; `*` spans the exchange + etf segments.
+  ordered_cache_behavior {
+    path_pattern           = "/etfs/*/financial-data"
+    target_origin_id       = local.vercel_origin_id
+    viewer_protocol_policy = "redirect-to-https"
+    allowed_methods        = local.all_viewer_methods
+    cached_methods         = ["GET", "HEAD"]
+    compress               = true
+
+    # Managed-CachingDisabled — never cache the admin financial-data page at the edge.
+    cache_policy_id          = "4135ea2d-6df8-44a3-9df3-4b5a84be39ad"
     origin_request_policy_id = "216adef6-5c7f-47e4-b989-5492eafa07d3"
 
     dynamic "function_association" {
