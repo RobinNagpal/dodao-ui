@@ -25,8 +25,6 @@ export default function EditTickerView({ gicsData, ticker }: EditTickerViewProps
   const [tickerKey, setTickerKey] = useState(ticker?.tickerKey || '');
 
   const initialSector = sectors.find((s) => s.id === ticker?.sectorId) || sectors[0];
-  console.log('initialSector', initialSector);
-  console.log('sectors', sectors);
 
   const [tickerForm, setTickerForm] = useState<TickerCreateRequest>({
     tickerKey: ticker?.tickerKey || '',
