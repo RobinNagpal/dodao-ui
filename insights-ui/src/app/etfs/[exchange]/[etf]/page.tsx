@@ -6,7 +6,7 @@ import EtfFavouriteButton from '@/app/etfs/[exchange]/[etf]/EtfFavouriteButton';
 import MobileEtfActionsMenu from '@/app/etfs/[exchange]/[etf]/MobileEtfActionsMenu';
 import { getEtfFundCategoryHierarchy } from '@/utils/etf-categorization-utils';
 import EtfAnalysisSections from '@/components/etf-reportsv1/analysis/EtfAnalysisSections';
-import EtfRadarChart from '@/components/etf-reportsv1/analysis/EtfRadarChart';
+import EtfRadarChartSvg from '@/components/etf-reportsv1/analysis/EtfRadarChartSvg';
 import EtfCompetitionChartSection from '@/components/etf-reportsv1/EtfCompetitionChartSection';
 import EtfChartTabs from '@/components/etf-reportsv1/EtfChartTabs';
 import EtfFinancialInfo from '@/components/etf-reportsv1/EtfFinancialInfo';
@@ -225,7 +225,9 @@ function EtfAboutSection({ promise }: { promise: Promise<EtfFullRenderResponse> 
 
 function EtfRadarFromPromise({ promise }: { promise: Promise<EtfFullRenderResponse> }): JSX.Element {
   const data = use(promise);
-  return <EtfRadarChart scores={data.scores} analysis={data.analysis} />;
+  // Server-rendered SVG radar (no chart.js). Still Suspense'd on the /full-render
+  // fetch above, since the ETF spider data lives in that streamed response.
+  return <EtfRadarChartSvg scores={data.scores} analysis={data.analysis} />;
 }
 
 function EtfChartTabsFromPromise({ promise, etfSymbol }: { promise: Promise<EtfChartDataResponse>; etfSymbol: string }): JSX.Element {

@@ -2,10 +2,8 @@
 
 import type { EtfScoresResponse } from '@/types/etf/etf-detail-response-types';
 import { EtfAnalysisResponse } from '@/app/api/[spaceId]/etfs-v1/exchange/[exchange]/[etf]/analysis/route';
-import { EtfAnalysisCategory } from '@/types/etf/etf-analysis-types';
-import { findFactorDefinition } from '@/utils/etf-analysis-reports/etf-analysis-factor-utils';
-import { SpiderGraphForTicker } from '@/types/public-equity/ticker-report-types';
 import { getSpiderGraphScorePercentage } from '@/util/radar-chart-utils';
+import { buildEtfSpiderGraph } from '@/utils/etf-analysis-reports/etf-spider-graph';
 import SpiderChartFlyoutMenu from '@/app/public-equities/tickers/[tickerKey]/SpiderChartFlyoutMenu';
 import { RadarSkeleton } from '@/app/stocks/[exchange]/[ticker]/RadarSkeleton';
 import RadarChartFrame from '@/components/ui/containers/RadarChartFrame';
@@ -18,54 +16,13 @@ import dynamic from 'next/dynamic';
 //   2. `useInView` keeps the dynamic import from firing during hydration so
 //      chart.js eval doesn't land in the TBT window on mobile-throttled CPUs
 //      (see TickerRadarChart.tsx for the original rationale).
+// NOTE: this legacy client radar is kept for rollback; the ETF page now renders
+// the server-side EtfRadarChartSvg. `buildEtfSpiderGraph` moved to a shared util
+// so both can use it.
 const RadarChart = dynamic(() => import('@/components/visualizations/RadarChart'), {
   ssr: false,
   loading: () => <RadarSkeleton />,
 });
-
-const CATEGORY_NAMES: Record<string, string> = {
-  [EtfAnalysisCategory.PerformanceAndReturns]: 'Performance & Returns',
-  [EtfAnalysisCategory.CostEfficiencyAndTeam]: 'Cost & Team',
-  [EtfAnalysisCategory.RiskAnalysis]: 'Risk Analysis',
-  [EtfAnalysisCategory.FuturePerformanceOutlook]: 'Future Outlook',
-};
-
-function getFactorTitle(categoryKey: string, factorKey: string): string {
-  const category = categoryKey as EtfAnalysisCategory;
-  const factor = findFactorDefinition(category, factorKey);
-  return factor?.factorAnalysisTitle || factorKey;
-}
-
-export function buildEtfSpiderGraph(scores: EtfScoresResponse | null, analysis: EtfAnalysisResponse | null): SpiderGraphForTicker | null {
-  if (!scores && (!analysis || analysis.categories.length === 0)) return null;
-
-  const graph: SpiderGraphForTicker = {};
-  const categories = [
-    EtfAnalysisCategory.PerformanceAndReturns,
-    EtfAnalysisCategory.CostEfficiencyAndTeam,
-    EtfAnalysisCategory.RiskAnalysis,
-    EtfAnalysisCategory.FuturePerformanceOutlook,
-  ];
-
-  for (const cat of categories) {
-    const categoryResult = analysis?.categories.find((c) => c.categoryKey === cat);
-    const factorScores = categoryResult
-      ? categoryResult.factorResults.map((f) => ({
-          score: f.result === 'Pass' ? 1 : 0,
-          comment: `${getFactorTitle(cat, f.factorKey)}: ${f.oneLineExplanation}`,
-        }))
-      : [];
-
-    graph[cat] = {
-      key: cat,
-      name: CATEGORY_NAMES[cat] || cat,
-      summary: categoryResult?.summary || '',
-      scores: factorScores,
-    };
-  }
-
-  return graph;
-}
 
 interface EtfRadarChartProps {
   scores: EtfScoresResponse | null;
