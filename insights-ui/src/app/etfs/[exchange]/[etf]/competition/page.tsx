@@ -2,6 +2,7 @@ import { EtfFastResponse } from '@/app/api/[spaceId]/etfs-v1/exchange/[exchange]
 import EtfSubPageActions from '@/app/etfs/[exchange]/[etf]/EtfSubPageActions';
 import EtfCompetitionFullView from '@/components/etf-reportsv1/EtfCompetitionFullView';
 import { fetchEtfAvailableSlugs } from '@/components/etf-reportsv1/EtfRelatedSections';
+import SimilarEtfs from '@/components/etf-reportsv1/SimilarEtfs';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import type { EtfCompetitionResponse } from '@/types/etf/etf-analysis-types';
@@ -109,7 +110,12 @@ export default async function EtfCompetitionPage({ params }: { params: RoutePara
         mobileBackOnly={true}
         rightButton={<EtfSubPageActions etfId={data.etf.id} etfSymbol={data.etf.symbol} etfName={data.etf.name} />}
       />
-      <EtfCompetitionFullView data={data} availableSlugsPromise={availableSlugsPromise} similarEtfs={similarEtfs} />
+      <EtfCompetitionFullView data={data} availableSlugsPromise={availableSlugsPromise} />
+      {similarEtfs.length > 0 && (
+        <div className="py-4">
+          <SimilarEtfs data={similarEtfs} linkSlug="competition" />
+        </div>
+      )}
     </PageWrapper>
   );
 }

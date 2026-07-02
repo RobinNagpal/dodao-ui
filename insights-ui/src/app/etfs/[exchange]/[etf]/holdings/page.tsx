@@ -107,7 +107,6 @@ export default async function EtfHoldingsPage({ params }: { params: RouteParams 
 
   const relatedSections = (
     <>
-      {similarEtfs.length > 0 && <SimilarEtfs data={similarEtfs} linkSlug="holdings" />}
       <Suspense fallback={null}>
         <EtfRelatedSections availableSlugsPromise={availableSlugsPromise} exchange={exchange} symbol={symbol} etfName={etfData.name} currentSlug="holdings" />
       </Suspense>
@@ -144,6 +143,8 @@ export default async function EtfHoldingsPage({ params }: { params: RouteParams 
             {relatedSections}
           </section>
         )}
+
+        {similarEtfs.length > 0 && <SimilarEtfs data={similarEtfs} linkSlug="holdings" />}
       </article>
     </PageWrapper>
   );
