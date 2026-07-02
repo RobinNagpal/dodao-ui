@@ -182,17 +182,6 @@ Remaining:
 
 - [ ] Empty country+industry (stocks) and country+group/category, asset-class, provider (ETFs) listing pages return 200 + thin content → soft 404 in GSC. Emit `robots: { index: false, follow: true }` when the listing has zero results (pattern: `crowd-funding/projects/[projectId]/page.tsx`). Low priority — currently mitigated by dropping these URLs from the sitemap.
 
-### Charts — server-side rendering (SEO + first-paint)
-
-> Every chart is currently client-only. `PriceChartLazy`, `QuarterlyMetricsChartLazy`, `TickerRadarChart`, `CompetitionQuadrantChart` (stocks) and `EtfChartTabs`, `EtfRadarChart`, `EtfCompetitionQuadrantChart` (ETFs) all wrap chart.js / react-chartjs-2 in `dynamic({ ssr: false })` + `useInView`. That was a deliberate perf choice (keep the ~260 KB chart.js chunk out of the main bundle — see the ETF "Performance optimization" section and #1618), but it means the initial HTML ships **zero chart content**: crawlers never see the price/returns/spider data, and the chart pops in only after hydration + viewport gating, hurting LCP on the pages where a chart is the largest above-the-fold element.
-
-- [ ] **Decide the SSR approach** — render a static first-paint chart on the server that appears in the HTML, then hydrate to the existing interactive chart.js chart. chart.js is canvas-only and cannot render on the server, so evaluate: (a) an SSR-friendly SVG chart lib (Recharts / visx / `@nivo/*` server render) for the static layer, (b) generating a lightweight inline `<svg>` from the same series data on the server (no new heavy dep), or (c) a build/request-time chart image. Prefer whichever keeps the interactive layer unchanged and adds the least bundle weight.
-- [ ] **Preserve the lazy/perf model** — SSR must not pull chart.js back into the main bundle or defeat the `useInView` gate. The server renders the static layer only; chart.js still loads client-side, lazily, when the interactive chart mounts. Keep the skeleton → static-SSR → interactive swap free of layout shift (reuse the existing skeleton dimensions in `PriceChartLazy` et al.).
-- [ ] **Scope which charts get SSR first** — start with the highest-SEO / above-the-fold charts (stock + ETF price/returns line charts on the main detail pages); radar/quadrant/competition charts are lower priority and can stay client-only initially. Capture the decision per chart.
-- [ ] **SEO/accessibility payload** — ensure the server-rendered chart (or an adjacent server-rendered summary table / `<figure>` + caption + `aria` description) exposes the underlying numbers to crawlers and screen readers, not just pixels. Confirm the data lands in the initial HTML response (view-source, not just the hydrated DOM).
-- [ ] **Measure** — baseline then re-measure LCP/CLS/TBT on the 3 representative stock + 3 representative ETF detail pages (reuse the harness from the ETF perf task), and verify chart data now appears in the raw HTML. Append a delta row to `docs/insights-ui/etf-page-caching.md`.
-- [ ] Open: is a static SVG server layer worth a new charting dependency, or is a hand-rolled inline SVG from the series data enough for the line charts? Do we SSR on stocks and ETFs in the same PR or stage stocks first? Does SSR interact with the `force-dynamic` + CloudFront caching model (static chart markup is cacheable — confirm it doesn't bloat the cached payload)?
-
 ### Trends page
 
 > Decide once: shared `Trend` model linked to both stock and ETF join tables, or parallel
