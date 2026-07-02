@@ -11,6 +11,7 @@ import {
   truncateForMeta,
 } from '@/utils/performance-page-utils';
 import { getCountryByExchange, USExchanges, CanadaExchanges, IndiaExchanges, UKExchanges } from '@/utils/countryExchangeUtils';
+import SimilarTickersSection from '@/components/ticker-reportsv1/SimilarTickersSection';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
@@ -137,6 +138,8 @@ export default async function FinancialStatementAnalysisPage({ params }: { param
       />
 
       <FinancialStatementAnalysis tickerData={tickerData} data={financialStatementData} />
+
+      <SimilarTickersSection exchange={tickerData.exchange} ticker={tickerData.symbol} />
     </PageWrapper>
   );
 }

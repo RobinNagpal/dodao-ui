@@ -13,6 +13,7 @@ import { generateManagementTeamArticleSchema, generateManagementTeamBreadcrumbSc
 import { TickerV1FastResponse } from '@/utils/ticker-v1-model-utils';
 import { parseMarkdown } from '@/util/parse-markdown';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
+import SimilarTickersSection from '@/components/ticker-reportsv1/SimilarTickersSection';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { Metadata } from 'next';
 import { unstable_noStore as noStore } from 'next/cache';
@@ -283,6 +284,8 @@ export default async function ManagementTeamPage({ params }: { params: RoutePara
             </div>
           </div>
         </footer>
+
+        <SimilarTickersSection exchange={tickerData.exchange} ticker={tickerData.symbol} />
       </article>
     </PageWrapper>
   );
