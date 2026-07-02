@@ -2,6 +2,7 @@ import { EtfMorInfoOptionalWrapper } from '@/app/api/[spaceId]/etfs-v1/exchange/
 import EtfSubPageActions from '@/app/etfs/[exchange]/[etf]/EtfSubPageActions';
 import EtfCategoryReport from '@/components/etf-reportsv1/analysis/EtfCategoryReport';
 import { fetchEtfAvailableSlugs } from '@/components/etf-reportsv1/EtfRelatedSections';
+import { fetchSimilarEtfsForEtf } from '@/utils/etf-similar-etfs-utils';
 import EtfReturnsTable from '@/components/etf-reportsv1/EtfReturnsTable';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
@@ -92,6 +93,7 @@ export default async function PerformanceReturnsPage({ params }: { params: Route
   if (!categoryResult) notFound();
 
   const availableSlugsPromise = fetchEtfAvailableSlugs(exchange, symbol);
+  const similarEtfsPromise = fetchSimilarEtfsForEtf(exchange, symbol);
 
   const returnsAnnual = (morInfo?.morAnalyzerInfo?.returnsAnnual ?? null) as EtfMorReturnsRow[] | null;
   const returnsTable = returnsAnnual ? <EtfReturnsTable rows={returnsAnnual} title="Annual Returns" /> : null;
@@ -150,6 +152,7 @@ export default async function PerformanceReturnsPage({ params }: { params: Route
         indexName={etf.stockAnalyzerInfo?.indexName}
         currentSlug={CATEGORY_SLUG}
         availableSlugsPromise={availableSlugsPromise}
+        similarEtfsPromise={similarEtfsPromise}
         afterSummaryContent={returnsTable}
       />
     </PageWrapper>

@@ -1,6 +1,7 @@
 import { EtfCategoryAnalysisResultResponse } from '@/app/api/[spaceId]/etfs-v1/exchange/[exchange]/[etf]/analysis/route';
 import EtfMetadataBadges from '@/components/etf-reportsv1/EtfMetadataBadges';
 import EtfRelatedSections from '@/components/etf-reportsv1/EtfRelatedSections';
+import EtfSimilarEtfsSection from '@/components/etf-reportsv1/EtfSimilarEtfsSection';
 import Heading from '@/components/ui/Heading';
 import PassFailBadge from '@/components/ui/PassFailBadge';
 import Text from '@/components/ui/Text';
@@ -14,6 +15,7 @@ import ReportSection from '@/components/ui/sections/ReportSection';
 import ReportSectionHeader from '@/components/ui/sections/ReportSectionHeader';
 import SectionHeading from '@/components/ui/sections/SectionHeading';
 import { EtfAnalysisCategory } from '@/types/etf/etf-analysis-types';
+import type { SimilarEtf } from '@/types/etf/etf-detail-response-types';
 import { findFactorDefinition } from '@/utils/etf-analysis-reports/etf-analysis-factor-utils';
 import { parseMarkdown } from '@/util/parse-markdown';
 import { CheckCircleIcon, XCircleIcon } from '@heroicons/react/24/solid';
@@ -46,6 +48,12 @@ export interface EtfCategoryReportProps {
   availableSlugsPromise?: Promise<string[]>;
   /** Optional content rendered immediately after the Executive Summary section. */
   afterSummaryContent?: ReactNode;
+  /**
+   * Promise of peer ETFs (from `fetchSimilarEtfsForEtf`). When set, a "Similar ETFs"
+   * comparison table renders after the report body, unwrapped via Suspense so first
+   * paint isn't blocked on the peer lookup.
+   */
+  similarEtfsPromise?: Promise<ReadonlyArray<SimilarEtf>>;
 }
 
 export default function EtfCategoryReport({
@@ -64,6 +72,7 @@ export default function EtfCategoryReport({
   currentSlug,
   availableSlugsPromise,
   afterSummaryContent,
+  similarEtfsPromise,
 }: EtfCategoryReportProps): JSX.Element | null {
   if (!categoryResult) return null;
 
@@ -140,6 +149,12 @@ export default function EtfCategoryReport({
           </ReportSection>
         )}
       </Prose>
+
+      {similarEtfsPromise && (
+        <Suspense fallback={null}>
+          <EtfSimilarEtfsSection similarEtfsPromise={similarEtfsPromise} linkSlug={currentSlug} />
+        </Suspense>
+      )}
 
       {currentSlug && availableSlugsPromise && (
         <Suspense fallback={null}>

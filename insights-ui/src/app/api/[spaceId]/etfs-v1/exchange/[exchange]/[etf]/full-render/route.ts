@@ -19,6 +19,7 @@ import type { EtfApplicableInvestorGoals, EtfCompetitionResponse, EtfCompetitor,
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { CompetitionAnalysis } from '@/types/public-equity/analysis-factors-types';
 import { parsePercentString } from '@/utils/etf-performance-metrics-utils';
+import { hydrateSimilarEtfs } from '@/utils/etf-similar-etfs-utils';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';
 
@@ -274,48 +275,6 @@ function extractMaxDrawdown(riskPeriods: unknown): number | null {
     if (parsed !== null) return parsed;
   }
   return null;
-}
-
-async function hydrateSimilarEtfs(spaceId: string, stored: Array<{ id: string; symbol: string; exchange: string; sortOrder: number }>): Promise<SimilarEtf[]> {
-  if (stored.length === 0) return [];
-
-  const etfs = await prisma.etf.findMany({
-    where: {
-      spaceId,
-      OR: stored.map((s) => ({ symbol: s.symbol, exchange: s.exchange })),
-    },
-    select: {
-      symbol: true,
-      exchange: true,
-      name: true,
-      financialInfo: true,
-    },
-  });
-  const byKey = new Map(etfs.map((e) => [`${e.symbol}|${e.exchange}`, e]));
-
-  return stored.map((s) => {
-    const match = byKey.get(`${s.symbol}|${s.exchange}`);
-    const fi = match?.financialInfo ?? null;
-    return {
-      id: s.id,
-      symbol: s.symbol,
-      exchange: s.exchange,
-      name: match?.name ?? s.symbol,
-      aum: fi?.aum ?? null,
-      expenseRatio: fi?.expenseRatio ?? null,
-      pe: fi?.pe ?? null,
-      sharesOut: fi?.sharesOut ?? null,
-      dividendTtm: fi?.dividendTtm ?? null,
-      dividendYield: fi?.dividendYield ?? null,
-      payoutFrequency: fi?.payoutFrequency ?? null,
-      payoutRatio: fi?.payoutRatio ?? null,
-      volume: fi?.volume ?? null,
-      yearHigh: fi?.yearHigh ?? null,
-      yearLow: fi?.yearLow ?? null,
-      beta: fi?.beta ?? null,
-      holdings: fi?.holdings ?? null,
-    };
-  });
 }
 
 async function hydrateCompetitors(competitionArray: CompetitionAnalysis[] | undefined): Promise<EtfCompetitor[]> {

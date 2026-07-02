@@ -1,6 +1,7 @@
 import EtfSubPageActions from '@/app/etfs/[exchange]/[etf]/EtfSubPageActions';
 import EtfCategoryReport from '@/components/etf-reportsv1/analysis/EtfCategoryReport';
 import { fetchEtfAvailableSlugs } from '@/components/etf-reportsv1/EtfRelatedSections';
+import { fetchSimilarEtfsForEtf } from '@/utils/etf-similar-etfs-utils';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { EtfAnalysisCategory } from '@/types/etf/etf-analysis-types';
@@ -78,6 +79,7 @@ export default async function CostEfficiencyTeamPage({ params }: { params: Route
   if (!categoryResult) notFound();
 
   const availableSlugsPromise = fetchEtfAvailableSlugs(exchange, symbol);
+  const similarEtfsPromise = fetchSimilarEtfsForEtf(exchange, symbol);
 
   const now = new Date().toISOString();
   const publishedDate = etf.createdAt || now;
@@ -133,6 +135,7 @@ export default async function CostEfficiencyTeamPage({ params }: { params: Route
         indexName={etf.stockAnalyzerInfo?.indexName}
         currentSlug={CATEGORY_SLUG}
         availableSlugsPromise={availableSlugsPromise}
+        similarEtfsPromise={similarEtfsPromise}
       />
     </PageWrapper>
   );
