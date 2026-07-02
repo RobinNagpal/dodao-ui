@@ -2,9 +2,15 @@ import { getEtfWhereClause } from '@/app/api/[spaceId]/etfs-v1/etfApiUtils';
 import { prisma } from '@/prisma';
 import type { SimilarEtf } from '@/types/etf/etf-detail-response-types';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
+import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
 
 /** Max number of similar ETFs surfaced anywhere (matches the main detail page). */
 export const SIMILAR_ETFS_LIMIT = 6;
+
+/** Response shape of the `/similar-etfs` per-ETF endpoint. */
+export interface EtfSimilarEtfsResponse {
+  similarEtfs: SimilarEtf[];
+}
 
 interface StoredSimilarEtf {
   id: string;
@@ -16,8 +22,8 @@ interface StoredSimilarEtf {
 /**
  * Hydrate the lightweight `EtfSimilarEtf` rows (symbol + exchange only) with the
  * peer's name and financial info so a full comparison table can be rendered.
- * Shared by the main detail page's `/full-render` endpoint and the category
- * sub-report pages (see {@link fetchSimilarEtfsForEtf}).
+ * Shared by the main detail page's `/full-render` endpoint and the dedicated
+ * `/similar-etfs` endpoint (see {@link getSimilarEtfsForEtf}).
  */
 export async function hydrateSimilarEtfs(spaceId: string, stored: ReadonlyArray<StoredSimilarEtf>): Promise<SimilarEtf[]> {
   if (stored.length === 0) return [];
@@ -62,16 +68,11 @@ export async function hydrateSimilarEtfs(spaceId: string, stored: ReadonlyArray<
 }
 
 /**
- * Server-side helper for ETF category sub-report pages. Hits Prisma directly so
- * the call rides the per-page ISR cache (no separate fetch-cache entry). Mirrors
- * {@link fetchEtfAvailableSlugs} in `EtfRelatedSections.tsx`.
- *
- * Kick this off in a parent server component (without `await`) and pass the
- * returned Promise to the report, unwrapped inside a `<Suspense>` boundary, so
- * the peer lookup runs in parallel with the rest of the report render.
+ * Prisma-side loader behind the `/similar-etfs` route: reads the source ETF's
+ * stored peers (ordered, capped) and hydrates them with name + financial info.
  */
-export async function fetchSimilarEtfsForEtf(exchange: string, symbol: string): Promise<SimilarEtf[]> {
-  const where = getEtfWhereClause({ spaceId: KoalaGainsSpaceId, exchange, etf: symbol });
+export async function getSimilarEtfsForEtf(spaceId: string, exchange: string, etf: string): Promise<SimilarEtf[]> {
+  const where = getEtfWhereClause({ spaceId, exchange, etf });
   if (!where.symbol || !where.exchange) return [];
 
   const etfRecord = await prisma.etf.findFirst({
@@ -88,4 +89,24 @@ export async function fetchSimilarEtfsForEtf(exchange: string, symbol: string): 
   if (!etfRecord) return [];
 
   return hydrateSimilarEtfs(etfRecord.spaceId, etfRecord.similarEtfs);
+}
+
+/**
+ * Server-component fetcher for the category sub-report pages. Hits the
+ * `/similar-etfs` API over HTTP (same style as the pages' `fetchCategoryData` /
+ * `fetchMorInfo`) so the response rides Next's Data Cache. Pass the page's own
+ * cache tag(s) so the peer slice invalidates in lockstep with the rest of the
+ * subpage — keeping the "one cache tag per subpage" topology intact. Returns an
+ * empty list (never throws) so a peer-lookup hiccup can't fail the whole page.
+ */
+export async function fetchEtfSimilarEtfs(exchange: string, symbol: string, cacheTags: string[]): Promise<SimilarEtf[]> {
+  const url = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/etfs-v1/exchange/${exchange.toUpperCase()}/${symbol.toUpperCase()}/similar-etfs`;
+  try {
+    const res = await fetch(url, { next: { tags: cacheTags } });
+    if (!res.ok) return [];
+    const json = (await res.json()) as EtfSimilarEtfsResponse;
+    return json.similarEtfs ?? [];
+  } catch {
+    return [];
+  }
 }

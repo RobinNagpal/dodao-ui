@@ -1,7 +1,7 @@
 import { EtfCategoryAnalysisResultResponse } from '@/app/api/[spaceId]/etfs-v1/exchange/[exchange]/[etf]/analysis/route';
 import EtfMetadataBadges from '@/components/etf-reportsv1/EtfMetadataBadges';
 import EtfRelatedSections from '@/components/etf-reportsv1/EtfRelatedSections';
-import EtfSimilarEtfsSection from '@/components/etf-reportsv1/EtfSimilarEtfsSection';
+import SimilarEtfs from '@/components/etf-reportsv1/SimilarEtfs';
 import Heading from '@/components/ui/Heading';
 import PassFailBadge from '@/components/ui/PassFailBadge';
 import Text from '@/components/ui/Text';
@@ -49,11 +49,12 @@ export interface EtfCategoryReportProps {
   /** Optional content rendered immediately after the Executive Summary section. */
   afterSummaryContent?: ReactNode;
   /**
-   * Promise of peer ETFs (from `fetchSimilarEtfsForEtf`). When set, a "Similar ETFs"
-   * comparison table renders after the report body, unwrapped via Suspense so first
-   * paint isn't blocked on the peer lookup.
+   * Peer ETFs (from the `/similar-etfs` endpoint). When non-empty, a "Similar ETFs"
+   * comparison table renders after the report body. Fetched alongside the category
+   * data on the page — no Suspense here, since the page already awaits its primary
+   * data as a unit (unlike the main detail page, which streams `/full-render`).
    */
-  similarEtfsPromise?: Promise<ReadonlyArray<SimilarEtf>>;
+  similarEtfs?: ReadonlyArray<SimilarEtf>;
 }
 
 export default function EtfCategoryReport({
@@ -72,7 +73,7 @@ export default function EtfCategoryReport({
   currentSlug,
   availableSlugsPromise,
   afterSummaryContent,
-  similarEtfsPromise,
+  similarEtfs,
 }: EtfCategoryReportProps): JSX.Element | null {
   if (!categoryResult) return null;
 
@@ -150,11 +151,7 @@ export default function EtfCategoryReport({
         )}
       </Prose>
 
-      {similarEtfsPromise && (
-        <Suspense fallback={null}>
-          <EtfSimilarEtfsSection similarEtfsPromise={similarEtfsPromise} linkSlug={currentSlug} />
-        </Suspense>
-      )}
+      {similarEtfs && similarEtfs.length > 0 && <SimilarEtfs data={similarEtfs} linkSlug={currentSlug} />}
 
       {currentSlug && availableSlugsPromise && (
         <Suspense fallback={null}>

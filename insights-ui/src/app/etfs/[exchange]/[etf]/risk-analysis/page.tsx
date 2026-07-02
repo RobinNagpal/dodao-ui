@@ -1,7 +1,7 @@
 import EtfSubPageActions from '@/app/etfs/[exchange]/[etf]/EtfSubPageActions';
 import EtfCategoryReport from '@/components/etf-reportsv1/analysis/EtfCategoryReport';
 import { fetchEtfAvailableSlugs } from '@/components/etf-reportsv1/EtfRelatedSections';
-import { fetchSimilarEtfsForEtf } from '@/utils/etf-similar-etfs-utils';
+import { fetchEtfSimilarEtfs } from '@/utils/etf-similar-etfs-utils';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { EtfAnalysisCategory } from '@/types/etf/etf-analysis-types';
@@ -74,7 +74,10 @@ export default async function RiskAnalysisPage({ params }: { params: RouteParams
   const exchange = rawExchange.toUpperCase();
   const symbol = rawEtf.toUpperCase();
 
-  const { categoryResult, etf } = await fetchCategoryData(exchange, symbol);
+  const [{ categoryResult, etf }, similarEtfs] = await Promise.all([
+    fetchCategoryData(exchange, symbol),
+    fetchEtfSimilarEtfs(exchange, symbol, [etfCategoryReportTag(symbol, exchange, CATEGORY_KEY)]),
+  ]);
   if (!etf) notFound();
   if (!categoryResult) notFound();
 
@@ -82,7 +85,6 @@ export default async function RiskAnalysisPage({ params }: { params: RouteParams
   // boundary inside EtfCategoryReport so the related-sections nav streams in
   // after the report itself paints. Mirrors stocks' TickerCategoryReport.
   const availableSlugsPromise = fetchEtfAvailableSlugs(exchange, symbol);
-  const similarEtfsPromise = fetchSimilarEtfsForEtf(exchange, symbol);
 
   const now = new Date().toISOString();
   const publishedDate = etf.createdAt || now;
@@ -138,7 +140,7 @@ export default async function RiskAnalysisPage({ params }: { params: RouteParams
         indexName={etf.stockAnalyzerInfo?.indexName}
         currentSlug={CATEGORY_SLUG}
         availableSlugsPromise={availableSlugsPromise}
-        similarEtfsPromise={similarEtfsPromise}
+        similarEtfs={similarEtfs}
       />
     </PageWrapper>
   );
