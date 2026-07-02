@@ -56,7 +56,7 @@ import { notFound, permanentRedirect } from 'next/navigation';
 import Link from 'next/link';
 import { Suspense, use } from 'react';
 
-import { TickerRadarChart } from './TickerRadarChart';
+import TickerRadarChartSvg from '@/components/visualizations/TickerRadarChartSvg';
 
 /**
  * Render dynamically per request. Pages were flipped from `force-static` to
@@ -551,10 +551,10 @@ function TickerChartsInfo({
               </div>
               <SpiderChartFlyoutMenu />
             </div>
-            {/* Suspense needed here for dynamic import of TickerRadarChart */}
-            <Suspense fallback={<RadarSkeleton />}>
-              <TickerRadarChart data={spiderGraph} scorePercentage={score} />
-            </Suspense>
+            {/* Server-rendered SVG radar — no chart.js, no client JS, drawn into the
+                initial HTML (crawlable + CloudFront-cacheable). The old client
+                TickerRadarChart is kept for the ETF side / rollback. */}
+            <TickerRadarChartSvg data={spiderGraph} scorePercentage={score} />
           </div>
         </div>
       </div>
