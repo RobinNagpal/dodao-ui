@@ -26,7 +26,7 @@ import { CloudFrontInvalidationResult, invalidateCloudFrontPaths, invalidateClou
  * leave the next render to re-fetch a stale API response from the edge. See
  * `cloudfront-cache-utils.ts` (and `ticker-v1-cache-utils.ts` for the stocks
  * equivalent). The cached per-ETF endpoints are enumerated in
- * `dodao-api-v2-deployment/cloudfront.tf`.
+ * `deployments/insights-ui/cloudfront.tf`.
  */
 const ETF_EXCHANGE_TAG_PREFIX = 'etf_exchange:' as const;
 
@@ -36,17 +36,6 @@ const ETF_CATEGORY_TO_PATH: Record<EtfAnalysisCategory, string> = {
   [EtfAnalysisCategory.CostEfficiencyAndTeam]: 'cost-efficiency-team',
   [EtfAnalysisCategory.RiskAnalysis]: 'risk-analysis',
   [EtfAnalysisCategory.FuturePerformanceOutlook]: 'future-performance-outlook',
-};
-
-/**
- * Maps the analysis-category enum to the CloudFront-cached GET API endpoint that serves it:
- * the Performance & Returns subpage renders from `/mor-info`, the other three from `/analysis`.
- */
-const ETF_CATEGORY_TO_API: Record<EtfAnalysisCategory, string> = {
-  [EtfAnalysisCategory.PerformanceAndReturns]: 'mor-info',
-  [EtfAnalysisCategory.CostEfficiencyAndTeam]: 'analysis',
-  [EtfAnalysisCategory.RiskAnalysis]: 'analysis',
-  [EtfAnalysisCategory.FuturePerformanceOutlook]: 'analysis',
 };
 
 /** Base path for the per-ETF GET API endpoints that back `/etfs/[exchange]/[etf]/*` (CloudFront-cached). */
@@ -68,12 +57,15 @@ export const etfCategoryReportTag = (symbol: string, exchange: string, category:
 
 export const revalidateEtfCategoryReportTag = (symbol: string, exchange: string, category: EtfAnalysisCategory) => {
   revalidateTag(etfCategoryReportTag(symbol, exchange, category));
-  // Subpage URL slug + its API endpoint (`/analysis` or `/mor-info`). The umbrella tag, fired
-  // alongside by the saver, separately purges the main page's `/full-render`.
-  invalidateCloudFrontPaths([
-    `/etfs/${exchange}/${symbol}/${ETF_CATEGORY_TO_PATH[category]}`,
-    `${etfApiBase(symbol, exchange)}/${ETF_CATEGORY_TO_API[category]}`,
-  ]);
+  // Each category subpage renders from its `{slug}-data` GET endpoint; Performance & Returns also
+  // reads `/mor-info`. (The umbrella tag, fired alongside by the saver, separately purges the main
+  // page's `/full-render` + `/chart-data`.)
+  const slug = ETF_CATEGORY_TO_PATH[category];
+  const apiPaths = [`${etfApiBase(symbol, exchange)}/${slug}-data`];
+  if (category === EtfAnalysisCategory.PerformanceAndReturns) {
+    apiPaths.push(`${etfApiBase(symbol, exchange)}/mor-info`);
+  }
+  invalidateCloudFrontPaths([`/etfs/${exchange}/${symbol}/${slug}`, ...apiPaths]);
 };
 
 /** Competition subpage tag — used by `/competition`. */
@@ -81,10 +73,9 @@ export const etfCompetitionTag = (symbol: string, exchange: string): string => `
 
 export const revalidateEtfCompetitionTag = (symbol: string, exchange: string) => {
   revalidateTag(etfCompetitionTag(symbol, exchange));
-  // The competition subpage renders from the base `/exchange/{e}/{t}` ETF route, which is NOT
-  // one of the CloudFront-cached per-ETF endpoints (mirrors stocks — the base route is uncached),
-  // so only the page URL needs purging here.
-  invalidateCloudFrontPaths([`/etfs/${exchange}/${symbol}/competition`]);
+  // The competition subpage renders from the public `/competition` GET (plus the uncached base
+  // `/exchange/{e}/{t}` fast route). Purge the page URL and the cached `/competition` endpoint.
+  invalidateCloudFrontPaths([`/etfs/${exchange}/${symbol}/competition`, `${etfApiBase(symbol, exchange)}/competition`]);
 };
 
 /** Holdings subpage tag — used by `/holdings`. Fired only when `EtfMorPortfolioInfo` is written. */

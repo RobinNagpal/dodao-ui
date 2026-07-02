@@ -13,14 +13,18 @@ import { waitUntil } from '@vercel/functions';
  * users can see stale pages even after a successful save.
  *
  * Only the following paths are cached at CloudFront today (see
- * `dodao-api-v2-deployment/cloudfront.tf`):
- *   - Pages: `/stocks/*`, `/etfs/*`, `/industry-tariff-report/*`, `/tariff-reports*`
- *   - Stocks API: `/api/koala_gains/tickers-v1/exchange/{e}/{t}/*` (the 8
- *     per-ticker GET endpoints that back the /stocks/[exchange]/[ticker] page
- *     tree) and `/api/koala_gains/tickers-v1/country/{c}/tickers/industries[/...]`
- *   - ETF API: `/api/koala_gains/etfs-v1/exchange/{e}/{t}/{full-render,analysis,
- *     mor-info,portfolio-holdings}` (the per-ETF GET endpoints that back the
- *     /etfs/[exchange]/[etf] page tree)
+ * `deployments/insights-ui/cloudfront.tf`):
+ *   - Pages: `/`, `/stocks/*`, `/etfs/*`, `/industry-tariff-report/*`, `/tariff-reports*`
+ *   - Stocks API: the public GET endpoints under
+ *     `/api/koala_gains/tickers-v1/exchange/{e}/{t}/` that a /stocks/* render fetches —
+ *     `{business-and-moat,financial-statement-analysis,past-performance,future-performance,
+ *     fair-value}-data`, `financial-info`, `quarterly-chart-data`, `price-history`,
+ *     `competition-tickers` — plus `/api/koala_gains/tickers-v1/country/{c}/tickers/industries[/...]`.
+ *     (The base `/exchange/{e}/{t}` fast route is intentionally NOT cached.)
+ *   - ETF API: `/api/koala_gains/etfs-v1/exchange/{e}/{t}/{full-render,chart-data,mor-info,
+ *     portfolio-holdings,competition,performance-returns-data,cost-efficiency-team-data,
+ *     risk-analysis-data,future-performance-outlook-data}` (the per-ETF GET endpoints that back
+ *     the /etfs/[exchange]/[etf] page tree)
  *
  * Calls for any other path are filtered out before reaching the AWS API — they
  * would not have a cache entry to purge and would just consume the monthly
@@ -36,7 +40,7 @@ import { waitUntil } from '@vercel/functions';
 const DISTRIBUTION_ID = process.env.CLOUDFRONT_DISTRIBUTION_ID;
 
 /**
- * Literal mirror of the cached prefixes in `dodao-api-v2-deployment/cloudfront.tf`.
+ * Literal mirror of the cached prefixes in `deployments/insights-ui/cloudfront.tf`.
  * An invalidation path is forwarded to AWS only if it starts with one of these.
  * Add a new entry here whenever a new `ordered_cache_behavior` is added there.
  */
