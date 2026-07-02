@@ -4,7 +4,6 @@ import { PriceHistoryResponse } from '@/app/api/[spaceId]/tickers-v1/exchange/[e
 import { QuarterlyChartDataResponse } from '@/app/api/[spaceId]/tickers-v1/exchange/[exchange]/[ticker]/quarterly-chart-data/route';
 import { TickerIdentifier } from '@/app/api/[spaceId]/tickers-v1/generation-requests/route';
 import SpiderChartFlyoutMenu from '@/app/public-equities/tickers/[tickerKey]/SpiderChartFlyoutMenu';
-import { RadarSkeleton } from '@/app/stocks/[exchange]/[ticker]/RadarSkeleton';
 import StockActions from '@/app/stocks/[exchange]/[ticker]/StockActions';
 import CompetitionAnalysisButton from '@/app/stocks/[exchange]/[ticker]/CompetitionAnalysisButton';
 import TickerComparisonButton from '@/app/stocks/[exchange]/[ticker]/TickerComparisonButton';
@@ -56,7 +55,7 @@ import { notFound, permanentRedirect } from 'next/navigation';
 import Link from 'next/link';
 import { Suspense, use } from 'react';
 
-import { TickerRadarChart } from './TickerRadarChart';
+import TickerRadarChartSvg from '@/components/visualizations/TickerRadarChartSvg';
 
 /**
  * Render dynamically per request. Pages were flipped from `force-static` to
@@ -365,41 +364,6 @@ function PriceChartSkeleton(): JSX.Element {
   );
 }
 
-/** Skeleton for TickerChartsInfo: Financial table (left) + Radar chart (right) + Quarterly chart (below) */
-function ChartsInfoSkeleton(): JSX.Element {
-  return (
-    <section className="mb-8">
-      {/* Financial Info (left) and Spider Chart (right) side by side */}
-      <div className="flex flex-col lg:flex-row gap-8">
-        {/* Left: Financial Information Skeleton */}
-        <div className="lg:w-1/2" style={{ minHeight: '340px' }}>
-          <FinancialInfoSkeleton />
-        </div>
-
-        {/* Right: Spider Chart Skeleton */}
-        <div className="lg:w-1/2 flex justify-center">
-          <div className="w-full max-w-lg relative pb-4" style={{ minHeight: '400px', contain: 'layout size' }}>
-            <div className="absolute top-20 right-0 flex space-x-2" style={{ zIndex: 10 }}>
-              <div className="h-8 w-12 rounded bg-surface-2 animate-pulse" />
-            </div>
-            <RadarSkeleton />
-          </div>
-        </div>
-      </div>
-
-      {/* Price Chart Skeleton (rendered above the quarterly chart) */}
-      <div style={{ minHeight: '320px' }}>
-        <PriceChartSkeleton />
-      </div>
-
-      {/* Quarterly Metrics Chart Skeleton */}
-      <div style={{ minHeight: '320px' }}>
-        <QuarterlyChartSkeleton />
-      </div>
-    </section>
-  );
-}
-
 /* =============================================================================
    CHILD SERVER COMPONENTS (strictly typed, minimal)
 ============================================================================= */
@@ -499,6 +463,24 @@ function TickerSummaryInfo({ data }: { data: Promise<TickerV1FastResponse> }): J
   );
 }
 
+/** Financial table (left column) — streams in behind its own Suspense. */
+function FinancialInfoSlice({ promise }: { promise: Promise<FinancialInfoResponse | null> }): JSX.Element {
+  const financialData: FinancialInfoResponse | null = use(promise);
+  return financialData ? <FinancialInfo data={financialData} /> : <FinancialInfoSkeleton />;
+}
+
+/** Price chart — streams in behind its own Suspense; still client-side chart.js. */
+function PriceChartSlice({ promise }: { promise: Promise<PriceHistoryResponse | null> }): JSX.Element | null {
+  const priceHistoryData: PriceHistoryResponse | null = use(promise);
+  return priceHistoryData ? <PriceChart data={priceHistoryData} /> : null;
+}
+
+/** Quarterly metrics chart — streams in behind its own Suspense; still client-side chart.js. */
+function QuarterlyChartSlice({ promise }: { promise: Promise<QuarterlyChartDataResponse | null> }): JSX.Element | null {
+  const quarterlyChartData: QuarterlyChartDataResponse | null = use(promise);
+  return quarterlyChartData ? <QuarterlyMetricsChart data={quarterlyChartData} /> : null;
+}
+
 function TickerChartsInfo({
   data,
   financialInfoPromise,
@@ -510,10 +492,12 @@ function TickerChartsInfo({
   quarterlyChartPromise: Promise<QuarterlyChartDataResponse | null>;
   priceHistoryPromise: Promise<PriceHistoryResponse | null>;
 }): JSX.Element {
+  // This component depends ONLY on the already-resolved fast ticker `data`, so it
+  // renders synchronously with the page shell — the server-rendered SVG radar
+  // lands in the initial HTML instead of waiting behind the financial / price /
+  // quarterly fetches. Those three each stream independently behind their own
+  // Suspense skeleton (rather than one combined boundary that gated the radar).
   const d: TickerV1FastResponse = use(data);
-  const financialData: FinancialInfoResponse | null = use(financialInfoPromise);
-  const quarterlyChartData: QuarterlyChartDataResponse | null = use(quarterlyChartPromise);
-  const priceHistoryData: PriceHistoryResponse | null = use(priceHistoryPromise);
 
   const spiderGraph: SpiderGraphForTicker = Object.fromEntries(
     Object.entries(CATEGORY_MAPPINGS).map(([categoryKey, categoryTitle]: [string, string]) => {
@@ -537,12 +521,14 @@ function TickerChartsInfo({
     <section className="mb-8">
       {/* Financial Info (left) and Spider Chart (right) side by side */}
       <div className="flex flex-col lg:flex-row gap-8">
-        {/* Left: Financial Information - Always reserve space to prevent layout shift */}
+        {/* Left: Financial Information streams in; skeleton reserves space to prevent layout shift */}
         <div className="lg:w-1/2" style={{ minHeight: '340px' }}>
-          {financialData ? <FinancialInfo data={financialData} /> : <FinancialInfoSkeleton />}
+          <Suspense fallback={<FinancialInfoSkeleton />}>
+            <FinancialInfoSlice promise={financialInfoPromise} />
+          </Suspense>
         </div>
 
-        {/* Right: Spider Chart */}
+        {/* Right: Spider Chart — server-rendered SVG in the initial HTML, no skeleton needed */}
         <div id="spider-chart" className="lg:w-1/2 flex justify-center">
           <div className="w-full max-w-lg relative pb-4" style={{ minHeight: '400px', contain: 'layout size' }}>
             <div className="absolute top-20 right-0 flex space-x-2" style={{ zIndex: 10 }}>
@@ -551,19 +537,32 @@ function TickerChartsInfo({
               </div>
               <SpiderChartFlyoutMenu />
             </div>
-            {/* Suspense needed here for dynamic import of TickerRadarChart */}
-            <Suspense fallback={<RadarSkeleton />}>
-              <TickerRadarChart data={spiderGraph} scorePercentage={score} />
-            </Suspense>
+            <TickerRadarChartSvg data={spiderGraph} scorePercentage={score} />
           </div>
         </div>
       </div>
 
-      {/* Price Chart (rendered above Quarterly Metrics) */}
-      {priceHistoryData && <PriceChart data={priceHistoryData} />}
+      {/* Price Chart (rendered above Quarterly Metrics) — streams independently */}
+      <Suspense
+        fallback={
+          <div style={{ minHeight: '320px' }}>
+            <PriceChartSkeleton />
+          </div>
+        }
+      >
+        <PriceChartSlice promise={priceHistoryPromise} />
+      </Suspense>
 
-      {/* Quarterly Metrics Chart - skeleton handles CLS during streaming; once resolved, only render when data exists */}
-      {quarterlyChartData && <QuarterlyMetricsChart data={quarterlyChartData} />}
+      {/* Quarterly Metrics Chart — streams independently */}
+      <Suspense
+        fallback={
+          <div style={{ minHeight: '320px' }}>
+            <QuarterlyChartSkeleton />
+          </div>
+        }
+      >
+        <QuarterlyChartSlice promise={quarterlyChartPromise} />
+      </Suspense>
     </section>
   );
 }
@@ -816,14 +815,15 @@ export default async function TickerDetailsPage({ params }: { params: RouteParam
         {/* Summary info - server rendered, no skeleton needed */}
         <TickerSummaryInfo data={tickerInfo} />
 
-        <Suspense fallback={<ChartsInfoSkeleton />}>
-          <TickerChartsInfo
-            data={tickerInfo}
-            financialInfoPromise={financialInfoPromise}
-            quarterlyChartPromise={quarterlyChartPromise}
-            priceHistoryPromise={priceHistoryPromise}
-          />
-        </Suspense>
+        {/* No outer Suspense: TickerChartsInfo only needs the resolved fast `data`,
+            so the SVG radar renders with the shell. Financial / price / quarterly
+            each stream behind their own Suspense inside it. */}
+        <TickerChartsInfo
+          data={tickerInfo}
+          financialInfoPromise={financialInfoPromise}
+          quarterlyChartPromise={quarterlyChartPromise}
+          priceHistoryPromise={priceHistoryPromise}
+        />
 
         {/* Analysis info - server rendered, no skeleton needed */}
         <TickerAnalysisInfo data={tickerInfo} competitionPromise={competitionPromise} exchange={exchange} ticker={ticker} />
