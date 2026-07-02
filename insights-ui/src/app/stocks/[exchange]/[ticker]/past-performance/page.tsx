@@ -138,7 +138,7 @@ export default async function PastPerformancePage({ params }: { params: RoutePar
 
       <PastPerformance tickerData={tickerData} data={pastPerformanceData} />
 
-      <SimilarTickersSection exchange={tickerData.exchange} ticker={tickerData.symbol} />
+      <SimilarTickersSection exchange={tickerData.exchange} ticker={tickerData.symbol} subPageSlug="past-performance" />
     </PageWrapper>
   );
 }

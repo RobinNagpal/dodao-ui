@@ -138,7 +138,7 @@ export default async function FairValuePage({ params }: { params: RouteParams })
 
       <FairValue tickerData={tickerData} data={fairValueData} />
 
-      <SimilarTickersSection exchange={tickerData.exchange} ticker={tickerData.symbol} />
+      <SimilarTickersSection exchange={tickerData.exchange} ticker={tickerData.symbol} subPageSlug="fair-value" />
     </PageWrapper>
   );
 }

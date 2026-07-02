@@ -139,7 +139,7 @@ export default async function FinancialStatementAnalysisPage({ params }: { param
 
       <FinancialStatementAnalysis tickerData={tickerData} data={financialStatementData} />
 
-      <SimilarTickersSection exchange={tickerData.exchange} ticker={tickerData.symbol} />
+      <SimilarTickersSection exchange={tickerData.exchange} ticker={tickerData.symbol} subPageSlug="financial-statement-analysis" />
     </PageWrapper>
   );
 }

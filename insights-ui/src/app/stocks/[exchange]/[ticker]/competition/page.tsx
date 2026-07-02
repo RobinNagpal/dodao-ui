@@ -223,7 +223,7 @@ export default async function CompetitionPage({ params }: { params: RouteParams 
 
       <Competition tickerData={tickerData} data={competitionData} />
 
-      <SimilarTickersSection exchange={tickerData.exchange} ticker={tickerData.symbol} />
+      <SimilarTickersSection exchange={tickerData.exchange} ticker={tickerData.symbol} subPageSlug="competition" />
     </PageWrapper>
   );
 }

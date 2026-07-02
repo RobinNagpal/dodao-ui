@@ -138,7 +138,7 @@ export default async function FuturePerformancePage({ params }: { params: RouteP
 
       <FuturePerformance tickerData={tickerData} data={futurePerformanceData} />
 
-      <SimilarTickersSection exchange={tickerData.exchange} ticker={tickerData.symbol} />
+      <SimilarTickersSection exchange={tickerData.exchange} ticker={tickerData.symbol} subPageSlug="future-performance" />
     </PageWrapper>
   );
 }

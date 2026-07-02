@@ -7,9 +7,16 @@ import { use } from 'react';
 export interface SimilarTickersProps {
   /** Promise-based fetch (resolved via `use()` to keep Suspense at the caller). */
   dataPromise: Promise<SimilarTicker[]>;
+  /**
+   * Optional sub-page slug (e.g. `competition`, `fair-value`). When set, each
+   * peer links to that same sub-page for the peer instead of its main report,
+   * so navigating from a sub-page keeps the reader on the same section. When
+   * omitted (main report page), peers link to the main report.
+   */
+  subPageSlug?: string;
 }
 
-export default function SimilarTickers({ dataPromise }: SimilarTickersProps): JSX.Element | null {
+export default function SimilarTickers({ dataPromise, subPageSlug }: SimilarTickersProps): JSX.Element | null {
   const similarTickers: ReadonlyArray<SimilarTicker> = use(dataPromise);
   if (!similarTickers || similarTickers.length === 0) {
     return null;
@@ -24,10 +31,13 @@ export default function SimilarTickers({ dataPromise }: SimilarTickersProps): JS
           const scoreValue: number | '-' = similarTicker.cachedScoreEntry?.finalScore ?? '-';
           const { textColorClass } = typeof scoreValue === 'number' ? getScoreColorClasses(scoreValue) : { textColorClass: 'text-muted' };
 
+          const tickerBasePath = `/stocks/${similarTicker.exchange.toUpperCase()}/${similarTicker.symbol.toUpperCase()}`;
+          const href = subPageSlug ? `${tickerBasePath}/${subPageSlug}` : tickerBasePath;
+
           return (
             <Link
               key={similarTicker.id}
-              href={`/stocks/${similarTicker.exchange.toUpperCase()}/${similarTicker.symbol.toUpperCase()}`}
+              href={href}
               prefetch={false}
               className="block bg-surface-2 p-3 sm:p-4 rounded-md border border-border hover:border-primary transition-colors group"
             >

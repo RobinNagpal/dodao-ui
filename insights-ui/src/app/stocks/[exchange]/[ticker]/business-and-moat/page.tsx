@@ -134,7 +134,7 @@ export default async function BusinessAndMoatPage({ params }: { params: RoutePar
 
       <BusinessAndMoat tickerData={tickerData} data={bmData} />
 
-      <SimilarTickersSection exchange={tickerData.exchange} ticker={tickerData.symbol} />
+      <SimilarTickersSection exchange={tickerData.exchange} ticker={tickerData.symbol} subPageSlug="business-and-moat" />
     </PageWrapper>
   );
 }
