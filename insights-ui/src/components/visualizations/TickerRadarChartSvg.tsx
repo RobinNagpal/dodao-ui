@@ -28,8 +28,11 @@ const SIZE = 384;
 const CENTER = SIZE / 2;
 const OUTER_RADIUS = 112; // radius at the outermost ring (axis max)
 const LABEL_RADIUS = 128; // where category labels sit, just outside the rings
-const LABEL_FONT = 12;
-const LABEL_MAX_WIDTH = 66; // ~chart.js "20% of chart width" wrap budget
+const LABEL_FONT = 15;
+// Wrap budget wide enough to keep two-word labels on one line (e.g. "Moat
+// Analysis", "Future Growth") so "Business & Moat Analysis" wraps to 2 lines,
+// not 3. The svg uses overflow: visible so wider labels are never clipped.
+const LABEL_MAX_WIDTH = 112;
 const SCORE_OFFSET = 0.5; // matches chart.js: give zero-score categories a little reach
 const TENSION = 0.45; // matches chart.js lineTension on the data polygon
 
@@ -159,7 +162,14 @@ export default function TickerRadarChartSvg({ data, scorePercentage }: TickerRad
 
   return (
     <RadarChartFrame>
-      <svg viewBox={`0 0 ${SIZE} ${SIZE}`} width="100%" height="100%" role="img" aria-label={`Spider chart — overall score ${Math.round(scorePercentage)}%`}>
+      <svg
+        viewBox={`0 0 ${SIZE} ${SIZE}`}
+        width="100%"
+        height="100%"
+        role="img"
+        aria-label={`Spider chart — overall score ${Math.round(scorePercentage)}%`}
+        style={{ overflow: 'visible' }}
+      >
         {/* Pure-CSS hover: reveal the highlight slice + tooltip while its wedge group is hovered. */}
         <style>{`
           [data-radar-hl] { opacity: 0; transition: opacity 120ms ease; }
@@ -216,11 +226,13 @@ export default function TickerRadarChartSvg({ data, scorePercentage }: TickerRad
           const wedge = wedgePath(angle, step);
           const pie = data[key];
           const cos = Math.cos(angle);
-          const tipW = 176;
-          const tipH = 168;
+          const tipW = 240;
+          const tipH = 190;
           const anchorPoint = polar(OUTER_RADIUS + 4, angle);
-          const tipX = clamp(anchorPoint.x - (cos < -0.35 ? tipW : cos > 0.35 ? 0 : tipW / 2), 4, SIZE - tipW - 4);
-          const tipY = clamp(anchorPoint.y - tipH / 2, 4, SIZE - tipH - 4);
+          // svg has overflow: visible, so allow the tooltip to sit a little
+          // outside the viewBox rather than cramming it into a corner.
+          const tipX = clamp(anchorPoint.x - (cos < -0.35 ? tipW : cos > 0.35 ? 0 : tipW / 2), -40, SIZE - tipW + 40);
+          const tipY = clamp(anchorPoint.y - tipH / 2, -20, SIZE - tipH + 20);
           return (
             <g key={`slice-${index}`} data-radar-slice="">
               {/* Highlight pizza-slice (revealed on hover via CSS) */}
@@ -241,15 +253,15 @@ export default function TickerRadarChartSvg({ data, scorePercentage }: TickerRad
                     borderRadius: 6,
                     backgroundColor: 'rgba(0, 0, 0, 0.9)',
                     color: '#ffffff',
-                    padding: '8px 10px',
+                    padding: '10px 12px',
                     boxShadow: '0 4px 12px rgba(0,0,0,0.4)',
                     textAlign: 'left',
                   }}
                 >
-                  <div style={{ fontSize: 13, fontWeight: 700, marginBottom: 4 }}>{pie.name}</div>
+                  <div style={{ fontSize: 15, fontWeight: 700, marginBottom: 5 }}>{pie.name}</div>
                   <ul style={{ listStyle: 'none', margin: 0, padding: 0 }}>
                     {pie.scores.map((factor, factorIndex) => (
-                      <li key={factorIndex} style={{ display: 'flex', gap: 4, fontSize: 11, lineHeight: 1.3, marginBottom: 1 }}>
+                      <li key={factorIndex} style={{ display: 'flex', gap: 6, fontSize: 13, lineHeight: 1.35, marginBottom: 2 }}>
                         <span>{factor.score === 1 ? '✅' : '❌'}</span>
                         <span>{factor.comment.split(':')[0]}</span>
                       </li>
