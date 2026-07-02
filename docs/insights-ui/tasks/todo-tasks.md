@@ -178,6 +178,27 @@ Remaining:
 
 ## Stocks & ETFs common
 
+### Server-side rendering (SSR) of charts
+
+> Today every chart is client-only. All chart components wrap chart.js (canvas) in the two-layer
+> defer pattern — `dynamic(..., { ssr: false })` + `useInView` gating (`src/util/use-in-view.ts`) —
+> so nothing renders until the browser hydrates and the chart scrolls into view. Crawlers and the
+> initial HTML payload see only skeleton placeholders (`RadarSkeleton.tsx`, inline `*Skeleton`
+> functions). This hurts SEO (charts are invisible to bots — feeds the "Crawled — currently not
+> indexed" work above), LCP on chart-above-the-fold pages, and social/OG previews. Goal: render an
+> initial chart on the server so the first paint (and the crawler) sees a real chart, with the
+> interactive chart.js canvas hydrating on top for zoom/tooltip/range-toggle.
+
+- [ ] **Pick a rendering strategy** and record the decision:
+  - **Static SVG on the server** — port each chart to an SVG renderer that runs in a React Server Component (the `WaterfallChart` already renders SVG via `d3-scale`/`d3-array`, so this is the lowest-risk precedent). Server emits SVG in the HTML; chart.js canvas hydrates over it client-side for interactivity. No headless browser, no binary deps.
+  - **Rasterized image** — pre-render PNG at data-generation time (node-canvas / `@napi-rs/canvas` / Puppeteer — Puppeteer is already installed for scraping) and store the URL on the report; serve `<img>` in SSR, swap to interactive chart on hydrate. Adds a build/data-pipeline step + storage.
+  - Recommend SVG-first: keeps everything in-request, avoids canvas native deps and image storage, and degrades gracefully when JS is disabled.
+- [ ] **Scope which charts get SSR first.** Prioritize charts that are above the fold / SEO-relevant on the main detail pages over deep interactive ones. Candidate order: stock `PriceChart` + `TickerRadarChart`; ETF `EtfRadarChart` + `EtfChartTabs` (price tab); then competition quadrants (`CompetitionQuadrantChart` / `EtfCompetitionQuadrantChart`) and `QuarterlyMetricsChart`. Reuse the shared visualization layer (`src/components/visualizations/RadarChart.tsx`, `QualityVsValueQuadrant.tsx`, `EtfReturnsVsEfficiencyQuadrant.tsx`, `PieChart.tsx`, `DoughnutChart.tsx`) so a fix lands once for both asset classes.
+- [ ] **Build a server/client split** that keeps the current defer pattern for interactivity but ships a real first paint: server renders the static (SVG/img) chart from the same data the client hook fetches; `useInView` + `dynamic({ ssr:false })` still gates the _interactive_ chart.js layer, which mounts over the server chart. No flash of empty skeleton where a server chart exists.
+- [ ] **Keep the leaf-component-system rules** — new SVG/chart markup routes Tailwind through the leaf layer (`docs/insights-ui/ui-leaf-component-system.md`); the skeleton components stay for slices that remain client-only.
+- [ ] **Verify** — view-source (or curl) the stock + ETF detail pages and confirm a real chart is in the initial HTML; re-check Lighthouse LCP/TBT on a chart-above-the-fold page; confirm interactivity (range toggle, tooltips) still works after hydration; confirm no double-render / layout shift between server chart and hydrated canvas.
+- [ ] Open: SVG port vs rasterized image per chart type (radar + line port cleanly to SVG; scatter/quadrant and waterfall already SVG-friendly; bar charts easy); whether to drop chart.js entirely for the static charts once SVG parity is proven, or keep it only for interactive overlays; theming parity (dark/light) between the server SVG and the hydrated canvas.
+
 ### SEO — soft 404 on empty country listing pages
 
 - [ ] Empty country+industry (stocks) and country+group/category, asset-class, provider (ETFs) listing pages return 200 + thin content → soft 404 in GSC. Emit `robots: { index: false, follow: true }` when the listing has zero results (pattern: `crowd-funding/projects/[projectId]/page.tsx`). Low priority — currently mitigated by dropping these URLs from the sitemap.
