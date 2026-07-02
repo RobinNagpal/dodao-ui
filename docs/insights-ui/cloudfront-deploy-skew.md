@@ -1,15 +1,5 @@
 # Caching Architecture for koalagains.com (CloudFront + Vercel + Next.js)
 
-> **⚠️ Partially superseded (post-Lightsail-migration).** This doc predates two changes and is
-> stale on them: (1) CloudFront now fronts the **AWS Lightsail** origin, not Vercel — Vercel Skew
-> Protection no longer applies (see [`aws-deployment.md`](aws-deployment.md)); (2) the **ETF GET
-> API endpoints are now cached** at CloudFront (this doc still says "stocks only / not yet"). For
-> the current, verified state of **API-response caching** read
-> [`cloudfront-api-caching.md`](cloudfront-api-caching.md), whose §6 lists every point this doc now
-> gets wrong (origin, ETF API scope, behavior count, homepage caching, Terraform path). The
-> Terraform lives at `deployments/insights-ui/cloudfront.tf`, not `dodao-api-v2-deployment/`. The
-> journey/deploy-skew narrative below is still useful history.
-
 The single reference for everything cache-related on koalagains.com: how each layer works today, why the architecture looks the way it does, the deploy-skew bug that nearly broke the site and how it was fixed, where CloudFront is still slow, what constraints we operate under, what the now-inert ISR tag plumbing in the code is for (and why it's safe to ignore), and the three options for the next iteration.
 
 > **Scope.** This doc supersedes the cache content in [stock-page-caching.md](stock-page-caching.md). That file is preserved as a historical record of the pre-`force-dynamic` ISR tag map — useful when reading legacy code that still references those tags — but its mental model is no longer current. If you only have time to read one doc, read this one.
