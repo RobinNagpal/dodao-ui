@@ -15,8 +15,7 @@ locals {
   all_viewer_methods = ["GET", "HEAD", "OPTIONS", "PUT", "POST", "PATCH", "DELETE"]
 
   # Explicit allow-list of the PUBLIC GET API endpoints that a /stocks/* page render
-  # actually fetches (verified against the page source — see the page->API audit in
-  # docs/insights-ui/cloudfront-api-caching.md). Enumerated (not a broad
+  # actually fetches (verified against the page source). Enumerated (not a broad
   # /api/.../tickers-v1/* wildcard) for two reasons: (1) that prefix also hosts
   # admin-protected GETs (e.g. /generation-requests, /missing-reports); each cached
   # pattern must be a public `withErrorHandlingV2` GET so the cookie-stripping
@@ -49,8 +48,8 @@ locals {
   # wildcard) because that prefix also hosts admin-protected GETs, and the base /exchange/{e}/{t}
   # fast route is deliberately left uncached (CloudFront can't segment-anchor a wildcard, so a
   # catch-all would swallow the POST+withAdmin subtree). Each entry is a public
-  # (`withErrorHandlingV2`) GET a page render actually fetches (verified — see the page->API audit
-  # in docs/insights-ui/cloudfront-api-caching.md): main → full-render + chart-data; the four
+  # (`withErrorHandlingV2`) GET a page render actually fetches (verified against the page source):
+  # main → full-render + chart-data; the four
   # category subpages → their `{category}-data` GET (performance-returns also reads mor-info);
   # competition → competition; holdings → portfolio-holdings.
   etfs_api_cached_paths = [
