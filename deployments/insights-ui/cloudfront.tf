@@ -8,6 +8,12 @@ locals {
   koalagains_www       = "www.${var.cloudfront_aliases[0]}"
   vercel_origin_id     = "vercel-insights-ui"
 
+  # Second origin: the public /_next/static/* asset bucket (s3_static.tf). Fronting it with
+  # CloudFront adds edge caching + on-the-fly gzip/brotli — S3's REST endpoint serves objects
+  # uncompressed and with no CDN, which was the dominant Core Web Vitals cost on /stocks/* and
+  # /etfs/* (render-blocking CSS shipped at ~5x its compressed size straight from us-east-1).
+  static_assets_origin_id = "s3-insights-ui-static-assets"
+
   # CloudFront only accepts three allowed_methods sets: [GET,HEAD], [GET,HEAD,OPTIONS],
   # or all seven. The ordered behaviors below match cacheable URLs but must still let
   # writes through to the origin. cached_methods stays [GET,HEAD] — CloudFront never
@@ -174,6 +180,18 @@ resource "aws_cloudfront_distribution" "koalagains" {
     }
   }
 
+  # Static-asset origin — the public /_next/static/* bucket. The bucket policy already grants
+  # anonymous s3:GetObject on /_next/static/* (s3_static.tf), so a plain REST origin works with an
+  # empty origin_access_identity. (Optional future hardening: switch to OAC + a private bucket.)
+  origin {
+    domain_name = aws_s3_bucket.assets.bucket_regional_domain_name
+    origin_id   = local.static_assets_origin_id
+
+    s3_origin_config {
+      origin_access_identity = ""
+    }
+  }
+
   default_cache_behavior {
     target_origin_id       = local.vercel_origin_id
     viewer_protocol_policy = "redirect-to-https"
@@ -195,6 +213,25 @@ resource "aws_cloudfront_distribution" "koalagains" {
         function_arn = aws_cloudfront_function.www_redirect[0].arn
       }
     }
+  }
+
+  # /_next/static/* — content-hashed, immutable build assets, served from S3 through CloudFront so
+  # they're edge-cached AND compressed. compress = true → gzip/brotli on the fly, which is LOSSLESS:
+  # the browser inflates them back to byte-identical CSS/JS before parsing, so nothing about the
+  # rendered layout changes (same mechanism already compresses the HTML via koalagains_one_week).
+  # Managed-CachingOptimized has brotli+gzip enabled and a 1-year TTL — safe because the filenames
+  # are content-hashed (a new build emits new names; old ones live 30 days in S3, see s3_static.tf).
+  # No origin_request_policy: an S3 REST origin must NOT receive the viewer Host header.
+  ordered_cache_behavior {
+    path_pattern           = "/_next/static/*"
+    target_origin_id       = local.static_assets_origin_id
+    viewer_protocol_policy = "redirect-to-https"
+    allowed_methods        = ["GET", "HEAD"]
+    cached_methods         = ["GET", "HEAD"]
+    compress               = true
+
+    # Managed-CachingOptimized
+    cache_policy_id = "658327ea-f89d-4fab-a63d-7e88639e58f6"
   }
 
   # Homepage (`/`) — statically generated at build time + weekly ISR, so it's safe and fast to
