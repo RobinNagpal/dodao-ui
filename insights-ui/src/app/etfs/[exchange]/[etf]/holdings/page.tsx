@@ -3,9 +3,11 @@ import { EtfFastResponse } from '@/app/api/[spaceId]/etfs-v1/exchange/[exchange]
 import EtfSubPageActions from '@/app/etfs/[exchange]/[etf]/EtfSubPageActions';
 import EtfHoldings from '@/components/etf-reportsv1/EtfHoldings';
 import EtfRelatedSections, { fetchEtfAvailableSlugs } from '@/components/etf-reportsv1/EtfRelatedSections';
+import SimilarEtfs from '@/components/etf-reportsv1/SimilarEtfs';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { etfHoldingsTag } from '@/utils/etf-cache-utils';
+import { fetchEtfSimilarEtfs } from '@/utils/etf-similar-etfs-utils';
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
 import { buildEtfReportSubpageBreadcrumbs } from '@/utils/etf-breadcrumbs-utils';
 import { generateBreadcrumbJsonLdFromCrumbs, generateEtfHoldingsMetadata } from '@/utils/etf-metadata-generators';
@@ -63,7 +65,11 @@ export default async function EtfHoldingsPage({ params }: { params: RouteParams 
   const exchange = rawExchange.toUpperCase();
   const symbol = rawEtf.toUpperCase();
 
-  const [etfData, holdingsResponse] = await Promise.all([fetchEtf(exchange, symbol), fetchHoldings(exchange, symbol)]);
+  const [etfData, holdingsResponse, similarEtfs] = await Promise.all([
+    fetchEtf(exchange, symbol),
+    fetchHoldings(exchange, symbol),
+    fetchEtfSimilarEtfs(exchange, symbol, [etfHoldingsTag(symbol, exchange)]),
+  ]);
   if (!etfData) notFound();
 
   const availableSlugsPromise = fetchEtfAvailableSlugs(exchange, symbol);
@@ -137,6 +143,8 @@ export default async function EtfHoldingsPage({ params }: { params: RouteParams 
             {relatedSections}
           </section>
         )}
+
+        {similarEtfs.length > 0 && <SimilarEtfs data={similarEtfs} linkSlug="holdings" />}
       </article>
     </PageWrapper>
   );

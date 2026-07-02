@@ -84,89 +84,95 @@ export default function EtfCategoryReport({
   const totalCount = categoryResult.factorResults?.length || 0;
 
   return (
-    <ReportArticleShell datePublished={modifiedDate}>
-      <ReportSectionHeader
-        title={etfName}
-        symbol={symbol}
-        exchange={exchange}
-        score={{ pass: passCount, total: totalCount }}
-        modifiedDate={modifiedDate}
-        formattedModifiedDate={formattedModifiedDate}
-        actionHref={`/etfs/${exchange}/${symbol}`}
-      >
-        <EtfMetadataBadges exchange={exchange} assetClass={assetClass} category={fundCategory} issuer={issuer} indexName={indexName} className="mt-3" />
-      </ReportSectionHeader>
+    <>
+      <ReportArticleShell datePublished={modifiedDate}>
+        <ReportSectionHeader
+          title={etfName}
+          symbol={symbol}
+          exchange={exchange}
+          score={{ pass: passCount, total: totalCount }}
+          modifiedDate={modifiedDate}
+          formattedModifiedDate={formattedModifiedDate}
+          actionHref={`/etfs/${exchange}/${symbol}`}
+        >
+          <EtfMetadataBadges exchange={exchange} assetClass={assetClass} category={fundCategory} issuer={issuer} indexName={indexName} className="mt-3" />
+        </ReportSectionHeader>
 
-      <Prose>
-        <ReportSection>
-          <SectionHeading>Analysis Title</SectionHeading>
-          <Text as="p" size="inherit" tone="theme" itemProp="description">
-            {analysisTitle}
-          </Text>
-        </ReportSection>
-
-        <ReportSection>
-          <SectionHeading>Executive Summary</SectionHeading>
-          <MarkdownContent variant="summary" itemProp="abstract" html={categoryResult.summary ? parseMarkdown(categoryResult.summary) : ''} />
-        </ReportSection>
-
-        {afterSummaryContent}
-
-        {categoryResult.overallAnalysisDetails && (
-          <ReportSection itemProp="articleBody">
-            <SectionHeading>Comprehensive Analysis</SectionHeading>
-            <MarkdownContent variant="body" html={parseMarkdown(categoryResult.overallAnalysisDetails)} />
-          </ReportSection>
-        )}
-
-        {categoryResult.factorResults && categoryResult.factorResults.length > 0 && (
+        <Prose>
           <ReportSection>
-            <SectionHeading>Factor Analysis</SectionHeading>
-            <Stack as="ul" gap="md" mt="sm">
-              {categoryResult.factorResults.map((factor) => (
-                <InlineCard as="li" key={factor.factorKey} padding="factor">
-                  <Stack gap="sm">
-                    <Stack direction="row" align="center" justify="between">
-                      <Stack direction="row" align="center" gap="sm">
-                        {factor.result === PASS_RESULT ? (
-                          <CheckCircleIcon className="h-6 w-6 text-green-500 flex-shrink-0" />
-                        ) : (
-                          <XCircleIcon className="h-6 w-6 text-red-500 flex-shrink-0" />
-                        )}
-                        <Heading as="h3" size="inherit" weight="semibold" tone="inherit">
-                          {getFactorTitle(categoryResult.categoryKey, factor.factorKey)}
-                        </Heading>
-                      </Stack>
-                      <PassFailBadge passed={factor.result === PASS_RESULT} className="font-medium" passLabel={factor.result} failLabel={factor.result} />
-                    </Stack>
-                    <Text size="sm" tone="muted">
-                      {factor.oneLineExplanation}
-                    </Text>
-                    <MarkdownContent variant="plain" html={parseMarkdown(factor.detailedExplanation)} />
-                  </Stack>
-                </InlineCard>
-              ))}
-            </Stack>
+            <SectionHeading>Analysis Title</SectionHeading>
+            <Text as="p" size="inherit" tone="theme" itemProp="description">
+              {analysisTitle}
+            </Text>
           </ReportSection>
+
+          <ReportSection>
+            <SectionHeading>Executive Summary</SectionHeading>
+            <MarkdownContent variant="summary" itemProp="abstract" html={categoryResult.summary ? parseMarkdown(categoryResult.summary) : ''} />
+          </ReportSection>
+
+          {afterSummaryContent}
+
+          {categoryResult.overallAnalysisDetails && (
+            <ReportSection itemProp="articleBody">
+              <SectionHeading>Comprehensive Analysis</SectionHeading>
+              <MarkdownContent variant="body" html={parseMarkdown(categoryResult.overallAnalysisDetails)} />
+            </ReportSection>
+          )}
+
+          {categoryResult.factorResults && categoryResult.factorResults.length > 0 && (
+            <ReportSection>
+              <SectionHeading>Factor Analysis</SectionHeading>
+              <Stack as="ul" gap="md" mt="sm">
+                {categoryResult.factorResults.map((factor) => (
+                  <InlineCard as="li" key={factor.factorKey} padding="factor">
+                    <Stack gap="sm">
+                      <Stack direction="row" align="center" justify="between">
+                        <Stack direction="row" align="center" gap="sm">
+                          {factor.result === PASS_RESULT ? (
+                            <CheckCircleIcon className="h-6 w-6 text-green-500 flex-shrink-0" />
+                          ) : (
+                            <XCircleIcon className="h-6 w-6 text-red-500 flex-shrink-0" />
+                          )}
+                          <Heading as="h3" size="inherit" weight="semibold" tone="inherit">
+                            {getFactorTitle(categoryResult.categoryKey, factor.factorKey)}
+                          </Heading>
+                        </Stack>
+                        <PassFailBadge passed={factor.result === PASS_RESULT} className="font-medium" passLabel={factor.result} failLabel={factor.result} />
+                      </Stack>
+                      <Text size="sm" tone="muted">
+                        {factor.oneLineExplanation}
+                      </Text>
+                      <MarkdownContent variant="plain" html={parseMarkdown(factor.detailedExplanation)} />
+                    </Stack>
+                  </InlineCard>
+                ))}
+              </Stack>
+            </ReportSection>
+          )}
+        </Prose>
+
+        {currentSlug && availableSlugsPromise && (
+          <Suspense fallback={null}>
+            <EtfRelatedSections availableSlugsPromise={availableSlugsPromise} exchange={exchange} symbol={symbol} etfName={etfName} currentSlug={currentSlug} />
+          </Suspense>
         )}
-      </Prose>
 
-      {similarEtfs && similarEtfs.length > 0 && <SimilarEtfs data={similarEtfs} linkSlug={currentSlug} />}
+        <ReportFooter
+          modifiedDate={modifiedDate}
+          formattedModifiedDate={formattedModifiedDate}
+          tags={[
+            { label: 'ETF Analysis', tone: 'family' },
+            { label: categoryBadgeText, className: categoryBadgeClassName },
+          ]}
+        />
+      </ReportArticleShell>
 
-      {currentSlug && availableSlugsPromise && (
-        <Suspense fallback={null}>
-          <EtfRelatedSections availableSlugsPromise={availableSlugsPromise} exchange={exchange} symbol={symbol} etfName={etfName} currentSlug={currentSlug} />
-        </Suspense>
+      {similarEtfs && similarEtfs.length > 0 && (
+        <div className="py-4">
+          <SimilarEtfs data={similarEtfs} linkSlug={currentSlug} />
+        </div>
       )}
-
-      <ReportFooter
-        modifiedDate={modifiedDate}
-        formattedModifiedDate={formattedModifiedDate}
-        tags={[
-          { label: 'ETF Analysis', tone: 'family' },
-          { label: categoryBadgeText, className: categoryBadgeClassName },
-        ]}
-      />
-    </ReportArticleShell>
+    </>
   );
 }

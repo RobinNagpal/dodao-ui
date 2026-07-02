@@ -2,10 +2,12 @@ import { EtfFastResponse } from '@/app/api/[spaceId]/etfs-v1/exchange/[exchange]
 import EtfSubPageActions from '@/app/etfs/[exchange]/[etf]/EtfSubPageActions';
 import EtfCompetitionFullView from '@/components/etf-reportsv1/EtfCompetitionFullView';
 import { fetchEtfAvailableSlugs } from '@/components/etf-reportsv1/EtfRelatedSections';
+import SimilarEtfs from '@/components/etf-reportsv1/SimilarEtfs';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import type { EtfCompetitionResponse } from '@/types/etf/etf-analysis-types';
 import { etfCompetitionTag } from '@/utils/etf-cache-utils';
+import { fetchEtfSimilarEtfs } from '@/utils/etf-similar-etfs-utils';
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
 import { buildEtfReportSubpageBreadcrumbs } from '@/utils/etf-breadcrumbs-utils';
 import { generateBreadcrumbJsonLdFromCrumbs, generateEtfCompetitionArticleJsonLd, generateEtfCompetitionMetadata } from '@/utils/etf-metadata-generators';
@@ -61,7 +63,11 @@ export default async function EtfCompetitionPage({ params }: { params: RoutePara
   const exchangeUpper = exchange.toUpperCase();
   const etfUpper = etf.toUpperCase();
 
-  const [data, etfFast] = await Promise.all([fetchEtfCompetition(exchangeUpper, etfUpper), fetchEtfFast(exchangeUpper, etfUpper)]);
+  const [data, etfFast, similarEtfs] = await Promise.all([
+    fetchEtfCompetition(exchangeUpper, etfUpper),
+    fetchEtfFast(exchangeUpper, etfUpper),
+    fetchEtfSimilarEtfs(exchangeUpper, etfUpper, [etfCompetitionTag(etfUpper, exchangeUpper)]),
+  ]);
   if (!data || !data.etf) {
     notFound();
   }
@@ -105,6 +111,11 @@ export default async function EtfCompetitionPage({ params }: { params: RoutePara
         rightButton={<EtfSubPageActions etfId={data.etf.id} etfSymbol={data.etf.symbol} etfName={data.etf.name} />}
       />
       <EtfCompetitionFullView data={data} availableSlugsPromise={availableSlugsPromise} />
+      {similarEtfs.length > 0 && (
+        <div className="py-4">
+          <SimilarEtfs data={similarEtfs} linkSlug="competition" />
+        </div>
+      )}
     </PageWrapper>
   );
 }
