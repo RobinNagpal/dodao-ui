@@ -2,6 +2,7 @@ import { EtfMorInfoOptionalWrapper } from '@/app/api/[spaceId]/etfs-v1/exchange/
 import EtfSubPageActions from '@/app/etfs/[exchange]/[etf]/EtfSubPageActions';
 import EtfCategoryReport from '@/components/etf-reportsv1/analysis/EtfCategoryReport';
 import { fetchEtfAvailableSlugs } from '@/components/etf-reportsv1/EtfRelatedSections';
+import { fetchEtfSimilarEtfs } from '@/utils/etf-similar-etfs-utils';
 import EtfReturnsTable from '@/components/etf-reportsv1/EtfReturnsTable';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
@@ -87,7 +88,11 @@ export default async function PerformanceReturnsPage({ params }: { params: Route
   const exchange = rawExchange.toUpperCase();
   const symbol = rawEtf.toUpperCase();
 
-  const [{ categoryResult, etf }, morInfo] = await Promise.all([fetchCategoryData(exchange, symbol), fetchMorInfo(exchange, symbol)]);
+  const [{ categoryResult, etf }, morInfo, similarEtfs] = await Promise.all([
+    fetchCategoryData(exchange, symbol),
+    fetchMorInfo(exchange, symbol),
+    fetchEtfSimilarEtfs(exchange, symbol, [etfCategoryReportTag(symbol, exchange, CATEGORY_KEY)]),
+  ]);
   if (!etf) notFound();
   if (!categoryResult) notFound();
 
@@ -150,6 +155,7 @@ export default async function PerformanceReturnsPage({ params }: { params: Route
         indexName={etf.stockAnalyzerInfo?.indexName}
         currentSlug={CATEGORY_SLUG}
         availableSlugsPromise={availableSlugsPromise}
+        similarEtfs={similarEtfs}
         afterSummaryContent={returnsTable}
       />
     </PageWrapper>
