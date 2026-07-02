@@ -11,6 +11,7 @@ import {
   truncateForMeta,
 } from '@/utils/performance-page-utils';
 import { getCountryByExchange, USExchanges, CanadaExchanges, IndiaExchanges, UKExchanges } from '@/utils/countryExchangeUtils';
+import SimilarTickersSection from '@/components/ticker-reportsv1/SimilarTickersSection';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
@@ -136,6 +137,8 @@ export default async function FuturePerformancePage({ params }: { params: RouteP
       />
 
       <FuturePerformance tickerData={tickerData} data={futurePerformanceData} />
+
+      <SimilarTickersSection exchange={tickerData.exchange} ticker={tickerData.symbol} subPageSlug="future-performance" />
     </PageWrapper>
   );
 }

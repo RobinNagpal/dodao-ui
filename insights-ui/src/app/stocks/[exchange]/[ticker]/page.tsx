@@ -16,6 +16,7 @@ import FinancialInfo, { FinancialCard } from '@/components/ticker-reportsv1/Fina
 import PriceChart from '@/components/ticker-reportsv1/PriceChartLazy';
 import QuarterlyMetricsChart from '@/components/ticker-reportsv1/QuarterlyMetricsChartLazy';
 import SimilarTickers from '@/components/ticker-reportsv1/SimilarTickers';
+import { fetchSimilarTickers } from '@/utils/fetchSimilarTickers';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { SpiderGraphForTicker, SpiderGraphPie } from '@/types/public-equity/ticker-report-types';
@@ -45,7 +46,7 @@ import { tickerAndExchangeTag } from '@/utils/ticker-v1-cache-utils';
 import { generateStockReportArticleSchema, generateStockReportBreadcrumbSchema } from '@/utils/metadata-generators';
 import { enforceMovedRedirect } from '@/utils/ticker-moved-redirect';
 import { enforceDeletedTicker } from '@/utils/ticker-deleted-handler';
-import { FullTickerV1CategoryAnalysisResult, SimilarTicker, TickerV1FastResponse } from '@/utils/ticker-v1-model-utils';
+import { FullTickerV1CategoryAnalysisResult, TickerV1FastResponse } from '@/utils/ticker-v1-model-utils';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { ArrowTopRightOnSquareIcon } from '@heroicons/react/20/solid';
@@ -157,16 +158,6 @@ async function getTickerOrRedirect(params: RouteParams): Promise<TickerV1FastRes
 const EIGHT_DAYS_IN_SECONDS = 8 * 24 * 60 * 60;
 
 /** Similar + financial fetchers (promise-based for Suspense) */
-async function fetchSimilar(exchange: string, ticker: string): Promise<SimilarTicker[]> {
-  const url: string = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/tickers-v1/exchange/${exchange.toUpperCase()}/${ticker.toUpperCase()}/similar-tickers`;
-
-  const res: Response = await fetch(url, { next: { tags: [tickerAndExchangeTag(ticker, exchange)] } });
-  if (!res.ok) throw new Error(`fetchSimilar failed (${res.status}): ${url}`);
-
-  const arr = (await res.json()) as SimilarTicker[];
-  return arr;
-}
-
 async function fetchFinancialInfo(exchange: string, ticker: string): Promise<FinancialInfoResponse | null> {
   const url: string = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/tickers-v1/exchange/${exchange.toUpperCase()}/${ticker.toUpperCase()}/financial-info`;
 
@@ -778,7 +769,7 @@ export default async function TickerDetailsPage({ params }: { params: RouteParam
     })();
 
   // Promises consumed by child components via `use()` under Suspense
-  const similarPromise = retryWithCanonical(fetchSimilar);
+  const similarPromise = retryWithCanonical(fetchSimilarTickers);
   const financialInfoPromise = retryWithCanonical(fetchFinancialInfo);
   const quarterlyChartPromise = retryWithCanonical(fetchQuarterlyChartData);
   const priceHistoryPromise = retryWithCanonical(fetchPriceHistory);

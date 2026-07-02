@@ -10,6 +10,7 @@ import { enforceMovedRedirect } from '@/utils/ticker-moved-redirect';
 import { enforceDeletedTicker } from '@/utils/ticker-deleted-handler';
 import { generateCompetitionArticleSchema, generateCompetitionBreadcrumbSchema } from '@/utils/metadata-generators';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
+import SimilarTickersSection from '@/components/ticker-reportsv1/SimilarTickersSection';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { Metadata } from 'next';
 import { unstable_noStore as noStore } from 'next/cache';
@@ -221,6 +222,8 @@ export default async function CompetitionPage({ params }: { params: RouteParams 
       />
 
       <Competition tickerData={tickerData} data={competitionData} />
+
+      <SimilarTickersSection exchange={tickerData.exchange} ticker={tickerData.symbol} subPageSlug="competition" />
     </PageWrapper>
   );
 }
