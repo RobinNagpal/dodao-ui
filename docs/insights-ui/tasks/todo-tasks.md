@@ -252,15 +252,6 @@ Remaining:
 
 ## Site-wide / Other
 
-### Audit build-time (statically generated) pages
-
-> Stocks + ETFs were deliberately flipped to `force-dynamic` in the ISR-off migration (#1499), with CloudFront absorbing hot traffic — see the ETF "Performance optimization" note. But most non-stock/ETF routes carry no explicit `dynamic` export, so Next.js still decides SSG vs SSR per route at build time. Nothing tracks which pages actually get baked at `next build`, so a data-driven page can silently ship stale build-time HTML (or fail the build fetching data). Baseline at time of writing: ~149 `page.tsx`, ~72 with `force-dynamic`, the rest with no `dynamic` export.
-
-- [ ] **Enumerate what actually renders statically** — run `next build` and capture the route table (the `○ (Static)` / `● (SSG)` / `ƒ (Dynamic)` markers) into `docs/insights-ui/static-pages-audit.md` as the source-of-truth list. Don't infer from source alone; the build output is authoritative.
-- [ ] **Classify each static route** as (a) intentionally static (truly static marketing/legal/auth-shell pages — fine), or (b) data-driven pages that should not be frozen at build time (tariff reports, `crowd-funding/projects/[projectId]`, `public-equities/tickers`, admin lists, anything reading Prisma/APIs). Record the verdict per route in the audit doc.
-- [ ] **Fix the mis-classified ones** — add `export const dynamic = 'force-dynamic'` (matching the stocks/ETF model) to data-driven pages that are being statically generated, so they render per-request behind CloudFront. Do NOT add `generateStaticParams` and do NOT revert existing `force-dynamic` — stay consistent with the #1499 decision.
-- [ ] **Guard against regressions** — decide whether to make the intended rendering mode explicit on every `page.tsx` (an ESLint rule or a small `next build` output check in CI that flags a data-driven route silently going static), so the next new page can't accidentally bake data at build time. Document the chosen convention in the audit doc + `docs/code-knowledge/`.
-
 - [ ] **Dark/light theme toggle** — some users find current dark theme reports unreadable. Decide: global header vs per-report toggle; default theme for first-time visitors; persist per user (cookie / localStorage); print-friendly variant separate from light theme?
 - [ ] **Logged-in user growth + daily-returning retention** — baseline ~300 logged-in / ~1k DAU / ~80 returning. Define hypotheses + experiments; tie to login gate, watchlists, alert digests.
 - [ ] **Traffic from AI platforms** (ChatGPT, Gemini, Perplexity) — content, structured data, brand/citation presence; track inbound referrals.
