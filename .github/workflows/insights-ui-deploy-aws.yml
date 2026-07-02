@@ -86,9 +86,13 @@ jobs:
         run: |
           TAG="$(git rev-parse --short HEAD)"
           IMAGE="$REGISTRY/$ECR_REPOSITORY:$TAG"
-          ASSET_PREFIX="https://$STATIC_BUCKET.s3.$AWS_REGION.amazonaws.com"
+          # Load /_next/static/* through CloudFront (edge-cached + gzip/brotli) rather than the raw
+          # S3 URL (uncompressed, no CDN). koalagains.com is the CloudFront alias and routes
+          # /_next/static/* to the S3 asset origin (see deployments/insights-ui/cloudfront.tf).
+          # NOT DIRECT_HOST — that hits the Lightsail origin directly and bypasses CloudFront.
+          ASSET_PREFIX="https://koalagains.com"
           # Build context = repo root (workspace dependency @dodao/web-core).
-          # Phase A: base URL is the direct host; static assets are served from S3.
+          # Phase A: base URL is the direct host; static assets are served from S3 via CloudFront.
           docker build \
             -f deployments/insights-ui/Dockerfile \
             --build-arg NEXT_PUBLIC_VERCEL_URL="$DIRECT_HOST" \

@@ -1,10 +1,12 @@
-# Static assets bucket. The app's next.config sets `assetPrefix` to this bucket's URL, so the
-# browser loads /_next/static/* directly from S3 — works WITHOUT CloudFront (Phase A) and keeps
-# working once CloudFront fronts the app (Phase B). CI uploads each build's assets here WITHOUT
+# Static assets bucket. This bucket is the ORIGIN for /_next/static/*; the browser reaches it
+# through CloudFront (koalagains.com), which edge-caches + gzip/brotli-compresses the assets —
+# `assetPrefix` is set to the CloudFront domain, and cloudfront.tf routes /_next/static/* here via
+# a dedicated ordered_cache_behavior + s3 origin. CI uploads each build's assets here WITHOUT
 # deleting prior builds (hashed names never collide → deploy-skew safety).
 #
-# assetPrefix value (set as a build arg in CI):
-#   https://<name_prefix>-static-assets.s3.<region>.amazonaws.com
+# assetPrefix value (set as a build arg in CI): https://koalagains.com  (was the raw S3 URL —
+# switched to CloudFront so assets are compressed + edge-cached instead of served uncompressed
+# straight from the S3 REST endpoint in us-east-1).
 
 resource "aws_s3_bucket" "assets" {
   bucket = "${var.name_prefix}-static-assets"
