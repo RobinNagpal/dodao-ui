@@ -1,4 +1,5 @@
 import SearchBar from '@/components/core/SearchBar';
+import NewFeaturePill from '@/components/home-page/NewFeaturePill';
 import TopIndustriesShowcase from '@/components/home-page/TopIndustriesShowcase';
 import CountryAlternatives from '@/components/stocks/CountryAlternatives';
 import coverImage from '@/images/koala.png';
@@ -16,6 +17,11 @@ export function Hero({ industries }: HeroProps = { industries: [] }) {
       <div>
         <div className="w-full mx-auto max-w-7xl sm:px-2 lg:px-8 px-6 relative isolate pt-2 lg:pt-2">
           <div className="py-2 sm:py-4 lg:py-8">
+            {/* New-feature pill: links straight to the ETF reports page */}
+            <div className="flex justify-center mb-4">
+              <NewFeaturePill label="New: ETF Reports" href="/etfs" />
+            </div>
+
             {/* Stock Search Section */}
             <div className="mb-8 sm:mb-8">
               <div className="mb-2 sm:mb-4 flex w-full justify-center">
@@ -26,17 +32,17 @@ export function Hero({ industries }: HeroProps = { industries: [] }) {
 
                   <div className="text-left">
                     <h2 className="text-2xl sm:text-3xl font-semibold text-white leading-tight">
-                      Search Our <span className="text-indigo-400">5000+ Stock Analysis Reports</span>
+                      Search <span className="text-indigo-400">5000+ Stock &amp; ETF Analysis Reports</span>
                     </h2>
                     <p className="text-gray-300 text-sm sm:text-base lg:text-lg mt-1 max-w-2xl">
-                      Get instant access to detailed investment analysis for your favorite stocks
+                      Get instant access to investment analysis for your favorite stocks &amp; ETFs
                     </p>
                   </div>
                 </div>
               </div>
 
-              {/* Search bar */}
-              <SearchBar placeholder="Search by company name or stock symbol" variant="hero" />
+              {/* Search bar — searches stocks and ETFs together */}
+              <SearchBar placeholder="Search stocks & ETFs by name or symbol" variant="hero" kind="combined" />
               <div className="flex justify-center">
                 <Link
                   href="/stocks"
@@ -61,8 +67,6 @@ export function Hero({ industries }: HeroProps = { industries: [] }) {
             <TopIndustriesShowcase industries={industries} />
           </div>
         </div>
-
-        <div className="mt-12 sm:mt-16 border-b border-gray-600"></div>
       </div>
     </section>
   );

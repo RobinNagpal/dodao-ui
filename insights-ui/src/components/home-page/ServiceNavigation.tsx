@@ -1,4 +1,11 @@
-import { CurrencyDollarIcon, ChartBarIcon, DocumentTextIcon, ArrowTrendingUpIcon, ArrowTrendingDownIcon, UserGroupIcon } from '@heroicons/react/24/outline';
+import {
+  CurrencyDollarIcon,
+  ChartBarIcon,
+  DocumentTextIcon,
+  ArrowTrendingUpIcon,
+  ArrowTrendingDownIcon,
+  RectangleGroupIcon,
+} from '@heroicons/react/24/outline';
 import Link from 'next/link';
 
 const services = [
@@ -38,10 +45,10 @@ const services = [
     color: 'from-red-500 to-rose-600',
   },
   {
-    name: 'Professional Managers',
-    description: 'Discover top portfolio managers and their investment strategies.',
-    href: '/portfolio-managers/professional-managers',
-    icon: UserGroupIcon,
+    name: 'ETF Analysis',
+    description: 'AI-generated investment analysis and scoring across ETFs and asset classes.',
+    href: '/etfs',
+    icon: RectangleGroupIcon,
     color: 'from-purple-500 to-indigo-600',
   },
 ];

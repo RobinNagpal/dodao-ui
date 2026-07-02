@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { CurrencyDollarIcon, HomeIcon, NewspaperIcon, ChartBarIcon } from '@heroicons/react/20/solid';
+import { CurrencyDollarIcon, HomeIcon, NewspaperIcon, ChartBarIcon, RectangleGroupIcon } from '@heroicons/react/20/solid';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
@@ -78,6 +78,14 @@ const reports = [
       'Institutional-style company reports: financial statements, unit economics, competitive dynamics, catalysts, and risks to support confident stock decisions.',
     link: '/stocks',
     icon: ChartBarIcon,
+    isNew: true,
+  },
+  {
+    title: 'ETF Reports',
+    description:
+      'AI-generated ETF analysis and scoring across asset classes—compare funds by holdings, cost efficiency, risk, and performance to pick the right ETF.',
+    link: '/etfs',
+    icon: RectangleGroupIcon,
     isNew: true,
   },
 ];
