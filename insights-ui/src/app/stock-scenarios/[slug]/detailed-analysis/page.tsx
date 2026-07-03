@@ -57,14 +57,14 @@ export default async function StockScenarioDetailedAnalysisPage({ params }: { pa
 
   return (
     <StockScenarioPageLayout breadcrumbs={breadcrumbs}>
-      <article className="text-[#E5E7EB]">
+      <article className="text-body">
         <header className="mb-6">
-          <h1 className="text-3xl font-bold text-white mb-2">{scenario.title}</h1>
-          <p className="text-sm text-gray-400">Detailed analysis</p>
+          <h1 className="text-3xl font-bold text-heading mb-2">{scenario.title}</h1>
+          <p className="text-sm text-muted">Detailed analysis</p>
         </header>
 
         <section
-          className="markdown-body prose prose-invert max-w-none bg-gray-900 rounded-lg shadow-sm px-3 py-6 sm:p-6"
+          className="markdown-body prose prose-invert max-w-none bg-bg rounded-lg shadow-sm px-3 py-6 sm:p-6"
           dangerouslySetInnerHTML={{ __html: parseMarkdown(scenario.detailedAnalysis) as string }}
         />
 
