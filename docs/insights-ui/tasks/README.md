@@ -5,6 +5,7 @@ sections before starting work in that surface area.
 
 - **[todo-tasks.md](todo-tasks.md)** — All open work across stocks, ETFs, scenarios, tariffs, and site-wide concerns, grouped under top-level headings.
 - **[closed-tasks.md](closed-tasks.md)** — Completed work moved out of `todo-tasks.md` so the open list stays focused. Each entry is verified against the current codebase.
+- **[research-add-new-report.md](research-add-new-report.md)** — Architecture map for "add a new report": the four report families, the runtime "Create New Report" flow, and the file checklist for adding a brand-new report _type_.
 
 ## Prompt-tuning + verification artifacts
 

@@ -48,6 +48,7 @@ Single source of truth for active KoalaGains work. Completed items live in
 ### Custom Reports ("random reports") per stock
 
 > Source: PR #1318 description has full spec.
+> Architecture map for how reports are added today (report families, the "Create New Report" flow, and the file checklist for adding a brand-new report _type_): [`research-add-new-report.md`](./research-add-new-report.md).
 
 - [ ] **Data model**: `TickerV1CustomReport` (title, userQuestion, optional `templateKey`, denormalized latest answer markdown/JSON/sources/runId, status, archived, audit); `TickerV1CustomReportRun` linked to `PromptInvocation`; optional `TickerV1CustomReportTemplate` for curated templates.
 - [ ] **API** under `/api/[spaceId]/tickers-v1/exchange/[exchange]/[ticker]/custom-reports`: `GET` list, `POST` create (kicks off first Run), `GET /[reportId]` with all Runs, `POST /[reportId]/regenerate`, `PATCH /[reportId]`; admin templates route; thin handlers, work in `src/utils/analysis-reports/custom-report-utils.ts`.
