@@ -55,6 +55,7 @@ dark UI is unchanged; dim greys/accents normalize to the token ramp.
 | 6 | Stocks — comparison page | `app/stocks/comparison/ComparisonPageClient.tsx` |
 | 7 | ETFs | `app/etfs/[exchange]/[etf]/{EtfActions, AddEditEtfFavouriteModal}.tsx` |
 | 8 | Stock-scenarios / stocks-filtered | `app/stock-scenarios/[slug]/detailed-analysis/page.tsx` |
+| 9 | ETF sub-surfaces | `app/etf-scenarios/[slug]/detailed-analysis/page.tsx` (etfs-filtered / etf-favourites / etf-investors had no hardcoded colors) |
 
 Within `app/stocks/**`, the ticker report pages (`page.tsx`,
 `management-team/page.tsx`) needed **no** changes — their remaining colors are
