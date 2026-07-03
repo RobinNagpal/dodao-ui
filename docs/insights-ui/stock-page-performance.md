@@ -37,30 +37,5 @@ real cost. Splitting it further is optional and low priority.
 
 ---
 
-## What the bundle analyzer showed (Jul 2026)
-
-We ran `pnpm analyze`. Note: the **server** report (`nodejs.html`) does **not** matter for page
-speed — those big boxes (API routes, admin `create` pages) run on the server and are never sent to
-the browser. Only the **browser** report (`client.html`) counts. Its heavy pieces:
-
-- **Two big shared JS chunks** ("index.js + 580 modules" and "index.js + 320 modules", ~1 MB and
-  ~0.6 MB) — the bundled vendor code. This is issue #2. Needs a closer look at what's inside.
-- **chart.js** — shows up, but it's already loaded lazily (only when you scroll to a chart), so it's
-  **not** in the first load. Leave it.
-- **katex** (`katex.mjs`, a math-rendering library) — bundled into the browser even though KaTeX is
-  **intentionally turned off** in insights-ui. It gets pulled in for free through the markdown helper
-  (`parseMarkdown` → `getMarkedRenderer` → the katex extension → `import katex`), and some `'use
-  client'` components import `parseMarkdown`, so it lands in the browser. This is dead weight — a few
-  hundred KB we download and never use.
-  **Next step:** stop importing katex when the extension isn't registered (a small change in
-  `shared/web-core`'s `getMarkedRenderer` / `katexMarketExtension`, e.g. lazy/`import type`), or keep
-  the markdown rendering server-side so it never ships to the browser.
-
-So the two concrete JavaScript wins are: **(a)** drop the unused **katex** from the client bundle, and
-**(b)** open the two big shared chunks to see which other libraries can be lazy-loaded.
-
----
-
 **In short:** #1 (the biggest problem) is fixed. #2 and #3 are the next wins — both are about
-sending and running less JavaScript (the analyzer points at unused **katex** and two big shared
-chunks). #4 is a quick, cheap improvement. #5 is basically handled.
+sending and running less JavaScript. #4 is a quick, cheap improvement. #5 is basically handled.
