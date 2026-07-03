@@ -15,8 +15,8 @@ export default function CommodityRadarChart({ categoryResults }: { categoryResul
   const scorePercentage = getSpiderGraphScorePercentage(spiderGraph);
 
   return (
-    <div className="w-full max-w-lg relative pb-4" style={{ minHeight: '400px', contain: 'layout size' }}>
-      <div className="absolute top-20 right-0 flex space-x-2" style={{ zIndex: 10 }}>
+    <div className="w-full max-w-lg relative" style={{ minHeight: '340px', contain: 'layout size' }}>
+      <div className="absolute top-8 right-0 flex space-x-2" style={{ zIndex: 10 }}>
         <div className="text-2xl font-bold" style={{ color: 'var(--primary-color, blue)' }}>
           {scorePercentage.toFixed(0)}%
         </div>

@@ -2642,10 +2642,40 @@ model Commodity {
   analysisCategoryFactorResults CommodityAnalysisCategoryFactorResult[]
   cachedScore                   CommodityCachedScore?
   generationRequests            CommodityGenerationRequest[]
+  priceHistory                  CommodityPriceHistory?
 
   @@unique([spaceId, slug])
   @@index([slug])
   @@map("commodities")
+}
+
+// Yahoo Finance OHLC price history for a commodity's front-month contract.
+// Mirrors `EtfPriceHistory` / `TickerV1PriceHistory` — daily series feeds the
+// 1M/6M range tabs, weekly series feeds 1Y/3Y/5Y. Refreshed on-demand when
+// stale (see `commodity-price-history-utils.ts`). Keyed 1:1 by commodity.
+model CommodityPriceHistory {
+  id          String @id @default(uuid())
+  commodityId String @unique @map("commodity_id")
+
+  // Daily OHLC for short-range views (1M, 6M). Array of PriceHistoryPoint.
+  /// [PriceHistoryPointArray]
+  dailyData          Json     @map("daily_data")
+  lastUpdatedAtDaily DateTime @map("last_updated_at_daily")
+
+  // Weekly OHLC for long-range views (1Y, 3Y, 5Y). Array of PriceHistoryPoint.
+  /// [PriceHistoryPointArray]
+  weeklyData          Json     @map("weekly_data")
+  lastUpdatedAtWeekly DateTime @map("last_updated_at_weekly")
+
+  currency String? @map("currency")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  commodity Commodity @relation(fields: [commodityId], references: [id], onDelete: Cascade)
+
+  @@index([commodityId])
+  @@map("commodity_price_history")
 }
 
 // Overview / Key Facts section + green/red flags. One row per commodity.
