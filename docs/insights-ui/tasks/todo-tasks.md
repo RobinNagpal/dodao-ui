@@ -250,6 +250,41 @@ Remaining:
 
 ---
 
+## New report types
+
+> Research map for adding a brand-new stock/ETF analysis section end-to-end lives in
+> [`../add-new-report-type.md`](../add-new-report-type.md) — the design-time companion to
+> `automated-report-generation.md` (which only covers *running* existing reports). Read it
+> before scoping any of the below.
+
+- [ ] **Pick the shape first** — a new report is either a **factor-based category report**
+  (reuses `TickerV1CategoryAnalysisResult` / `EtfCategoryAnalysisResult`, the shared output
+  schema, and the enum-driven cache-tag loop — cheapest) or a **standalone report** (its own
+  Prisma table, bespoke output schema, dedicated save branch + cache-tag helpers, like
+  `competition` / `management-team` / `key-facts`). The shape decides how many files change.
+- [ ] **ETF category path is the cheapest** — ~60% config: enum + mappings in
+  `src/types/etf/etf-analysis-types.ts` (`EtfReportType`, `EtfAnalysisCategory`,
+  `ETF_REPORT_TYPE_TO_CATEGORY`, `ETF_PROMPT_KEYS`), a factors JSON in `src/etf-analysis/`
+  registered in `CATEGORY_CONFIGS`, an `etf-prompts/*.md` template, an input-JSON preparer +
+  dispatch case, a `<slug>-data` route, a sub-page, a `SECTIONS` entry, an `ETF_CATEGORY_TO_PATH`
+  entry, a sitemap route, CLI + admin-regenerate wiring. See the doc's 14-step checklist.
+- [ ] **Stock category path** — same shape but **factors and prompts are DB-seeded**, not
+  committed JSON/markdown (add the prompt copy under `docs/insights-ui/stock-prompts/` and seed
+  `US/public-equities-v1/<slug>`); touches `ticker-typesv1.ts`, `report-input-json-utils.ts` +
+  `prompt-generator-utils.ts`, a `schemas/analysis-factors/**` schema, `TickerAnalysisCategory`
+  in Prisma, `save-report-utils.ts`, `<slug>-data` route, sub-page, `TickerRelatedSections.tsx`,
+  `TICKER_CATEGORY_TO_PATH`, sitemap, `src/scripts/tickers/*`, admin.
+- [ ] **Consolidation opportunity** — a report type's identity is currently spread across
+  enums, constant maps, switch/dispatch cases, and per-slug route folders; there is no single
+  "register a report type" entry point. Evaluate a **data-driven report-type registry** keyed by
+  slug (report shape, prompt key, factors source, output schema, label, sitemap inclusion) that
+  the pages, cache tags, sitemaps, CLI, and admin all read from — collapsing most of the
+  checklist into one config edit + a prompt/factor definition. Scope: which layers can be made
+  registry-driven (cache-tag loop and enums already are) vs. which inherently need code (input
+  preparer, page render).
+
+---
+
 ## Site-wide / Other
 
 - [ ] **Dark/light theme toggle** — some users find current dark theme reports unreadable. Decide: global header vs per-report toggle; default theme for first-time visitors; persist per user (cookie / localStorage); print-friendly variant separate from light theme?
