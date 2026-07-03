@@ -5,7 +5,6 @@ sections before starting work in that surface area.
 
 - **[todo-tasks.md](todo-tasks.md)** — All open work across stocks, ETFs, scenarios, tariffs, and site-wide concerns, grouped under top-level headings.
 - **[closed-tasks.md](closed-tasks.md)** — Completed work moved out of `todo-tasks.md` so the open list stays focused. Each entry is verified against the current codebase.
-- **[commodities-report.md](commodities-report.md)** — Starting plan for a Commodities report type: sections, analysis factors, charts, the data we need + where to source it, and where to get the commodity list.
 
 ## Prompt-tuning + verification artifacts
 
