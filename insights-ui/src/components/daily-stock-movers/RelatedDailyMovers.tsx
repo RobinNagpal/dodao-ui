@@ -18,15 +18,15 @@ export default function RelatedDailyMovers({ movers, type }: RelatedDailyMoversP
   const changeColorClass = isGainer ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400';
 
   return (
-    <div className="bg-gray-900 rounded-lg shadow-sm p-6 mb-8">
-      <h2 className="text-xl font-bold mb-4 pb-2 border-b border-gray-700">{title}</h2>
-      <p className="text-gray-300 mb-4">Explore other {isGainer ? 'top gainers' : 'top losers'} from the same trading day:</p>
+    <div className="bg-bg rounded-lg shadow-sm p-6 mb-8">
+      <h2 className="text-xl font-bold mb-4 pb-2 border-b border-border">{title}</h2>
+      <p className="text-muted mb-4">Explore other {isGainer ? 'top gainers' : 'top losers'} from the same trading day:</p>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {movers.map((mover) => (
           <Link
             key={mover.id}
             href={`${detailsPath}/${mover.id}`}
-            className="block bg-gray-800 p-4 rounded-md border border-gray-700 hover:border-[#F97316] transition-colors group"
+            className="block bg-surface p-4 rounded-md border border-border hover:border-[#F97316] transition-colors group"
           >
             <div className="flex flex-col gap-y-2">
               <div className="flex items-center justify-between">
@@ -35,7 +35,7 @@ export default function RelatedDailyMovers({ movers, type }: RelatedDailyMoversP
                 </div>
               </div>
               <div className="flex items-center justify-between">
-                <div className="text-sm text-gray-400">
+                <div className="text-sm text-muted">
                   {mover.ticker.symbol} • {mover.ticker.exchange.toUpperCase()}
                 </div>
                 <span className={`text-sm font-bold ${changeColorClass}`}>

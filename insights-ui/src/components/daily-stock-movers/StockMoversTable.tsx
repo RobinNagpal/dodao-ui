@@ -98,7 +98,7 @@ export default function StockMoversTable({ movers, type, country, availableDates
               </thead>
               <tbody className="divide-y border-color">
                 {displayedMovers.map((mover) => (
-                  <tr key={mover.id} className="bg-gray-900 transition-colors">
+                  <tr key={mover.id} className="bg-bg transition-colors">
                     <td className="px-6 py-4 whitespace-nowrap">
                       <Link
                         href={`/stocks/${mover.ticker.exchange}/${mover.ticker.symbol}`}

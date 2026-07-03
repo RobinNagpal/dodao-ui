@@ -1,19 +1,19 @@
 /* DatePicker custom styles for dark mode */
 .react-datepicker {
-  @apply border-gray-700 bg-gray-800 text-white;
+  @apply border-border bg-surface text-heading;
 }
 
 .react-datepicker__header {
-  @apply bg-gray-700 border-b border-gray-600;
+  @apply bg-surface-2 border-b border-surface-3;
 }
 
 .react-datepicker__current-month,
 .react-datepicker__day-name {
-  @apply text-white;
+  @apply text-heading;
 }
 
 .react-datepicker__day {
-  @apply text-gray-300 hover:bg-gray-600;
+  @apply text-muted hover:bg-surface-3;
 }
 
 .react-datepicker__day--selected,
