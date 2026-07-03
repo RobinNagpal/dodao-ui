@@ -7,6 +7,7 @@ import MarkdownContent from '@/components/ui/sections/MarkdownContent';
 import Prose from '@/components/ui/sections/Prose';
 import ReportArticleShell from '@/components/ui/sections/ReportArticleShell';
 import ReportFooter from '@/components/ui/sections/ReportFooter';
+import RelatedSectionsNav from '@/components/ui/sections/RelatedSectionsNav';
 import ReportSection from '@/components/ui/sections/ReportSection';
 import ReportSectionHeader from '@/components/ui/sections/ReportSectionHeader';
 import SectionHeading from '@/components/ui/sections/SectionHeading';
@@ -15,7 +16,6 @@ import { getCommodityFactorTitle } from '@/utils/commodity-analysis-reports/comm
 import { CommodityCategoryResultWithFactors } from '@/utils/commodity-analysis-reports/commodity-spider-graph';
 import { parseMarkdown } from '@/util/parse-markdown';
 import { CheckCircleIcon, XCircleIcon } from '@heroicons/react/24/solid';
-import Link from 'next/link';
 
 const PASS_RESULT = 'Pass';
 
@@ -122,18 +122,16 @@ export default function CommodityCategoryReport({
             </Stack>
           </ReportSection>
         )}
-
-        <ReportSection>
-          <SectionHeading>Other Sections</SectionHeading>
-          <Stack direction="row" gap="sm" mt="sm" wrap>
-            {ALL_CATEGORIES.filter((c) => c !== categoryKey).map((c) => (
-              <Link key={c} href={`/commodities/${slug}/${COMMODITY_CATEGORY_TO_PATH[c]}`} className="link-color hover:underline text-sm">
-                {COMMODITY_CATEGORY_NAMES[c]} →
-              </Link>
-            ))}
-          </Stack>
-        </ReportSection>
       </Prose>
+
+      <RelatedSectionsNav
+        ariaLabel={`More ${commodityName} analyses`}
+        heading={<>More {commodityName} analyses</>}
+        items={ALL_CATEGORIES.filter((c) => c !== categoryKey).map((c) => ({
+          href: `/commodities/${slug}/${COMMODITY_CATEGORY_TO_PATH[c]}`,
+          label: `${COMMODITY_CATEGORY_NAMES[c]} →`,
+        }))}
+      />
 
       <ReportFooter
         modifiedDate={modifiedDate}
