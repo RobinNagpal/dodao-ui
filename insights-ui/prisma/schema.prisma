@@ -2624,7 +2624,7 @@ model Commodity {
   slug           String  @map("slug") // url id: "crude-oil", "gold"
   name           String  @map("name") // "Crude Oil (WTI)"
   commodityGroup String  @map("commodity_group") // Energy | Metals | Agriculture | Livestock
-  priceSymbol    String  @map("price_symbol") // front-month price ticker, e.g. "CL=F", "GC=F"
+  priceSymbol    String? @map("price_symbol") // front-month price ticker, e.g. "CL=F", "GC=F"
   exchange       String? @map("exchange") // "NYMEX", "COMEX", "CBOT" — some sources list it, some don't
   unit           String? @map("unit") // "barrel", "troy ounce", "bushel", "MMBtu"
   currency       String  @default("USD") @map("currency")
@@ -2642,7 +2642,6 @@ model Commodity {
   analysisCategoryFactorResults CommodityAnalysisCategoryFactorResult[]
   cachedScore                   CommodityCachedScore?
   generationRequests            CommodityGenerationRequest[]
-  similarCommodities            CommoditySimilarCommodity[]             @relation("CommoditySimilarSource")
 
   @@unique([spaceId, slug])
   @@index([slug])
@@ -2742,7 +2741,6 @@ model CommodityGenerationRequest {
   regenerateVolatilityAndRisk Boolean @default(false) @map("regenerate_volatility_and_risk")
   regenerateFutureOutlook     Boolean @default(false) @map("regenerate_future_outlook")
   regenerateKeyFacts          Boolean @default(false) @map("regenerate_key_facts")
-  regenerateSimilar           Boolean @default(false) @map("regenerate_similar")
   regenerateFinalSummary      Boolean @default(false) @map("regenerate_final_summary")
 
   status         String   @default("NotStarted") @map("status")
@@ -2760,21 +2758,4 @@ model CommodityGenerationRequest {
   @@index([commodityId])
   @@index([status])
   @@map("commodity_generation_requests")
-}
-
-// "Similar commodities" cards (gold↔silver, WTI↔Brent) — mirrors EtfSimilarEtf.
-model CommoditySimilarCommodity {
-  id                String   @id @default(uuid())
-  sourceCommodityId String   @map("source_commodity_id")
-  slug              String   @map("slug") // peer's slug
-  sortOrder         Int      @default(0) @map("sort_order")
-  spaceId           String   @default("koala_gains") @map("space_id")
-  createdAt         DateTime @default(now()) @map("created_at")
-  updatedAt         DateTime @updatedAt @map("updated_at")
-
-  sourceCommodity Commodity @relation("CommoditySimilarSource", fields: [sourceCommodityId], references: [id], onDelete: Cascade)
-
-  @@unique([sourceCommodityId, slug])
-  @@index([sourceCommodityId])
-  @@map("commodity_similar_commodities")
 }

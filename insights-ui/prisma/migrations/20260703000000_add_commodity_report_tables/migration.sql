@@ -10,7 +10,7 @@ CREATE TABLE "commodities" (
     "slug" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "commodity_group" TEXT NOT NULL,
-    "price_symbol" TEXT NOT NULL,
+    "price_symbol" TEXT,
     "exchange" TEXT,
     "unit" TEXT,
     "currency" TEXT NOT NULL DEFAULT 'USD',
@@ -95,7 +95,6 @@ CREATE TABLE "commodity_generation_requests" (
     "regenerate_volatility_and_risk" BOOLEAN NOT NULL DEFAULT false,
     "regenerate_future_outlook" BOOLEAN NOT NULL DEFAULT false,
     "regenerate_key_facts" BOOLEAN NOT NULL DEFAULT false,
-    "regenerate_similar" BOOLEAN NOT NULL DEFAULT false,
     "regenerate_final_summary" BOOLEAN NOT NULL DEFAULT false,
     "status" TEXT NOT NULL DEFAULT 'NotStarted',
     "in_progress_step" TEXT,
@@ -107,19 +106,6 @@ CREATE TABLE "commodity_generation_requests" (
     "completed_at" TIMESTAMP(3),
 
     CONSTRAINT "commodity_generation_requests_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
-CREATE TABLE "commodity_similar_commodities" (
-    "id" TEXT NOT NULL,
-    "source_commodity_id" TEXT NOT NULL,
-    "slug" TEXT NOT NULL,
-    "sort_order" INTEGER NOT NULL DEFAULT 0,
-    "space_id" TEXT NOT NULL DEFAULT 'koala_gains',
-    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updated_at" TIMESTAMP(3) NOT NULL,
-
-    CONSTRAINT "commodity_similar_commodities_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex
@@ -155,12 +141,6 @@ CREATE INDEX "commodity_generation_requests_commodity_id_idx" ON "commodity_gene
 -- CreateIndex
 CREATE INDEX "commodity_generation_requests_status_idx" ON "commodity_generation_requests"("status");
 
--- CreateIndex
-CREATE INDEX "commodity_similar_commodities_source_commodity_id_idx" ON "commodity_similar_commodities"("source_commodity_id");
-
--- CreateIndex
-CREATE UNIQUE INDEX "commodity_similar_commodities_source_commodity_id_slug_key" ON "commodity_similar_commodities"("source_commodity_id", "slug");
-
 -- AddForeignKey
 ALTER TABLE "commodity_key_facts_reports" ADD CONSTRAINT "commodity_key_facts_reports_commodity_id_fkey" FOREIGN KEY ("commodity_id") REFERENCES "commodities"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
@@ -178,6 +158,3 @@ ALTER TABLE "commodity_cached_scores" ADD CONSTRAINT "commodity_cached_scores_co
 
 -- AddForeignKey
 ALTER TABLE "commodity_generation_requests" ADD CONSTRAINT "commodity_generation_requests_commodity_id_fkey" FOREIGN KEY ("commodity_id") REFERENCES "commodities"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "commodity_similar_commodities" ADD CONSTRAINT "commodity_similar_commodities_source_commodity_id_fkey" FOREIGN KEY ("source_commodity_id") REFERENCES "commodities"("id") ON DELETE CASCADE ON UPDATE CASCADE;
