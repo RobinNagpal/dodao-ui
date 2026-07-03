@@ -44,9 +44,9 @@ export default async function StockTickerNotFound() {
       </div>
 
       <section className="w-full mb-8 text-center py-10 sm:py-14">
-        <p className="inline-block rounded-full px-4 py-1 text-sm font-semibold tracking-wider text-white bg-gray-800 ring-1 ring-gray-700">404</p>
-        <h1 className="mt-4 text-3xl sm:text-4xl font-bold text-white">Stock not found</h1>
-        <p className="mt-3 text-base text-[#E5E7EB] max-w-2xl mx-auto">
+        <p className="inline-block rounded-full px-4 py-1 text-sm font-semibold tracking-wider text-heading bg-surface ring-1 ring-border">404</p>
+        <h1 className="mt-4 text-3xl sm:text-4xl font-bold text-heading">Stock not found</h1>
+        <p className="mt-3 text-base text-body max-w-2xl mx-auto">
           We couldn&apos;t find a stock matching this URL. It may have been delisted, the ticker may have changed, or the link may be mistyped. Browse our list
           of US stocks by industry below to find what you&apos;re looking for.
         </p>
@@ -64,8 +64,8 @@ export default async function StockTickerNotFound() {
       </section>
 
       <div className="w-full mb-8">
-        <h2 className="text-xl font-bold text-white mb-2">Explore US Stocks by Industry</h2>
-        <p className="text-[#E5E7EB] text-md mb-4">
+        <h2 className="text-xl font-bold text-heading mb-2">Explore US Stocks by Industry</h2>
+        <p className="text-body text-md mb-4">
           Top companies across NASDAQ, NYSE, and AMEX organized by industry. Pick an industry to dive into detailed financial reports and AI-driven analysis.
         </p>
       </div>
