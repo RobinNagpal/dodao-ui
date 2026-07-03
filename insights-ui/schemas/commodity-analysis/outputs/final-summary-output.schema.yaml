@@ -1,0 +1,14 @@
+$schema: 'http://json-schema.org/draft-07/schema#'
+type: object
+additionalProperties: false
+properties:
+  summary:
+    type: string
+    description: >-
+      The final commodity summary text. 6–7 short lines, each a clear sentence.
+      The first line gives the overall stance (Positive, Negative, or Mixed).
+      The following lines synthesize the four scored sections, name the strongest
+      bullish and bearish points, and say who the commodity suits. Keep language
+      simple and suitable for retail investors.
+required:
+  - summary

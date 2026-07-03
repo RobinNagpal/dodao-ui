@@ -43,6 +43,14 @@ const etfMgmtSection: AdminNavSection = {
   ],
 };
 
+const commodityMgmtSection: AdminNavSection = {
+  label: 'Commodity Mgmt',
+  items: [
+    { name: 'Commodity Reports', href: '/admin-v1/commodity-reports' },
+    { name: 'Commodity Generation Requests', href: '/admin-v1/commodity-generation-requests' },
+  ],
+};
+
 const analysisTemplatesSection: AdminNavSection = {
   label: 'Analysis Templates',
   items: [
@@ -96,6 +104,7 @@ export default function AdminNav() {
         <AdminNavDropdown section={stocksReportsSection} />
         <AdminNavDropdown section={stockIndustryMgmtSection} />
         <AdminNavDropdown section={etfMgmtSection} />
+        <AdminNavDropdown section={commodityMgmtSection} />
         <AdminNavDropdown section={analysisTemplatesSection} />
         <AdminNavDropdown section={tariffReportsSection} />
         <Link href="/admin-v1/users" className="bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-4 rounded-md">

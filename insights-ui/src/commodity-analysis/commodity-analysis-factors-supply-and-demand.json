@@ -1,0 +1,37 @@
+{
+  "categoryKey": "SupplyAndDemand",
+  "categoryName": "Supply & Demand",
+  "categoryDescription": "What actually moves this commodity's price: the balance between how much is produced and how much is consumed, the buffer of inventories, and the forces pulling demand up or down. Pass/Fail is judged from the investor's angle — a tightening balance (demand outrunning supply, inventories drawing down) is supportive; a loosening balance (new supply, building stockpiles, softening demand) is a headwind.",
+  "factors": [
+    {
+      "factorKey": "production_output_trend",
+      "factorTitle": "Production / Output Trend",
+      "factorDescription": "Is global production of this commodity rising, flat, or falling, and why? Look at the largest producing countries/regions, capacity additions or closures, and depletion trends. Pass when the production trend is supportive of prices (flat-to-falling output into steady demand); Fail when a clear supply glut is building.",
+      "factorMetrics": "annual production, YoY output change, top-producer output, capacity utilization"
+    },
+    {
+      "factorKey": "global_inventories_stockpiles",
+      "factorTitle": "Global Inventories & Stockpiles",
+      "factorDescription": "How full are the world's storage tanks / warehouses / silos relative to their 5-year average and to days-of-demand cover? Drawing inventories are bullish; building inventories above normal are bearish. Pass when inventories are at or below the 5-year average and drawing; Fail when they are well above normal and building.",
+      "factorMetrics": "inventory level vs 5yr avg, days of cover, storage utilization, warehouse stocks"
+    },
+    {
+      "factorKey": "demand_drivers",
+      "factorTitle": "Demand Drivers",
+      "factorDescription": "What drives demand for this commodity (industrial use, energy, food, jewelry/investment, green transition) and is that demand strengthening or weakening? Pass when structural demand is growing or resilient; Fail when a major demand pillar is in secular decline (e.g. substitution away from the commodity).",
+      "factorMetrics": "end-use demand growth, consumption trend, key sector demand, substitution risk"
+    },
+    {
+      "factorKey": "spare_capacity_new_supply",
+      "factorTitle": "Spare Capacity / New Supply Coming",
+      "factorDescription": "How much idle capacity or new supply could come online quickly if prices rise, capping the upside? Consider OPEC spare capacity, mine expansions, new fields, planted acreage. Pass when spare capacity and the new-supply pipeline are thin (prices can run); Fail when abundant spare capacity or a wave of new supply is set to arrive.",
+      "factorMetrics": "spare capacity, project pipeline, planned mine/field startups, planted acreage"
+    },
+    {
+      "factorKey": "seasonality",
+      "factorTitle": "Seasonality",
+      "factorDescription": "Does this commodity have a repeatable seasonal supply/demand pattern (heating-season gas, driving-season gasoline, harvest cycles) and where are we in that cycle now? Pass when seasonality is currently supportive or neutral; Fail when we are heading into a seasonally weak window that the price has not yet reflected.",
+      "factorMetrics": "seasonal price pattern, current position in cycle, harvest/consumption calendar"
+    }
+  ]
+}
