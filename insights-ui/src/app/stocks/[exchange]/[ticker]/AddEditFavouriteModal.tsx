@@ -219,7 +219,7 @@ export default function AddEditFavouriteModal({
             {myNotes ? (
               <div className="markdown markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(myNotes) }} />
             ) : (
-              <p className="text-gray-500 text-sm">No notes added.</p>
+              <p className="text-muted text-sm">No notes added.</p>
             )}
           </div>
         ) : (
@@ -246,7 +246,7 @@ export default function AddEditFavouriteModal({
             min={0}
             max={25}
             placeholder="0-25"
-            className="bg-gray-800 border-gray-700 text-white w-full"
+            className="bg-surface border-border text-heading w-full"
             disabled={viewOnly}
           />
         </div>
@@ -265,8 +265,8 @@ export default function AddEditFavouriteModal({
 
           {/* Selected competitors */}
           {competitorsConsidered.length > 0 && (
-            <div className="bg-gray-900 rounded-md p-3">
-              <div className="text-sm text-gray-400 mb-2">Selected competitors:</div>
+            <div className="bg-bg rounded-md p-3">
+              <div className="text-sm text-muted mb-2">Selected competitors:</div>
               <div className="flex flex-wrap gap-2">
                 {competitorsConsidered.map((competitor) => (
                   <TickerBadge
@@ -296,8 +296,8 @@ export default function AddEditFavouriteModal({
 
           {/* Selected alternatives */}
           {betterAlternatives.length > 0 && (
-            <div className="bg-gray-900 rounded-md p-3">
-              <div className="text-sm text-gray-400 mb-2">Selected alternatives:</div>
+            <div className="bg-bg rounded-md p-3">
+              <div className="text-sm text-muted mb-2">Selected alternatives:</div>
               <div className="flex flex-wrap gap-2">
                 {betterAlternatives.map((alternative) => (
                   <TickerBadge
@@ -325,11 +325,11 @@ export default function AddEditFavouriteModal({
             </Button>
           )}
         </div>
-        <div className="space-y-1 max-h-40 overflow-y-auto bg-gray-900 rounded-md p-1">
+        <div className="space-y-1 max-h-40 overflow-y-auto bg-bg rounded-md p-1">
           {viewOnly && selectedTagIds.length === 0 ? (
-            <p className="text-gray-500 text-sm p-2">No tags selected.</p>
+            <p className="text-muted text-sm p-2">No tags selected.</p>
           ) : tags.length === 0 && !viewOnly ? (
-            <p className="text-gray-500 text-sm p-2">No tags available. Create one to get started.</p>
+            <p className="text-muted text-sm p-2">No tags available. Create one to get started.</p>
           ) : (
             <div className="ml-2">
               <Checkboxes
@@ -367,11 +367,11 @@ export default function AddEditFavouriteModal({
             </Button>
           )}
         </div>
-        <div className="space-y-1 max-h-40 overflow-y-auto bg-gray-900 rounded-md p-1">
+        <div className="space-y-1 max-h-40 overflow-y-auto bg-bg rounded-md p-1">
           {viewOnly && selectedListIds.length === 0 ? (
-            <p className="text-gray-500 text-sm p-2">No lists selected.</p>
+            <p className="text-muted text-sm p-2">No lists selected.</p>
           ) : lists.length === 0 && !viewOnly ? (
-            <p className="text-gray-500 text-sm p-2">No lists available. Create one to get started.</p>
+            <p className="text-muted text-sm p-2">No lists available. Create one to get started.</p>
           ) : (
             <div className="ml-2">
               <Checkboxes
@@ -396,7 +396,7 @@ export default function AddEditFavouriteModal({
         </div>
       </div>
       {/* Action Buttons */}
-      <div className="flex justify-between gap-3 pt-5 mt-2 border-t border-gray-700">
+      <div className="flex justify-between gap-3 pt-5 mt-2 border-t border-border">
         {viewOnly ? (
           <div />
         ) : (
