@@ -13,6 +13,42 @@ Single source of truth for active KoalaGains work. Completed items live in
 - [ ] **Move competition chart** directly under the Business & Moat section, with the competitors list adjacent.
 - [ ] **SEO — "Crawled — currently not indexed" on `business-and-moat-sitemap.xml`** — export affected URLs, audit for thin/duplicative content, weak canonicals, render-blocked content, slow CWV, duplicate titles, sitemap hygiene; fix in priority order (unique per-ticker content → titles/meta → internal linking → SSR/canonical); re-submit validation; add weekly indexed-URL delta report and a pre-publish content-completeness gate; generalize fix to the other per-section sitemaps.
 
+### Add a new stock report type
+
+> Full runbook with the verified touch-point checklist:
+> [`../stock-analysis/add-new-report-type.md`](../stock-analysis/add-new-report-type.md).
+> Report types are `ReportType` enum values driven through a generation-request state
+> machine; adding one is a cross-cutting change, not a single file.
+
+- [ ] **Decide the flavor first** — (A) factor-based category report (reuses
+  `TickerV1CategoryAnalysisResult`, add a `TickerAnalysisCategory` + factors JSON, no new
+  table; mirror `FAIR_VALUE`) vs (B) bespoke report with its own Prisma model + `save…Response`
+  (mirror `MANAGEMENT_TEAM` / `TickerV1ManagementTeamReport`). Prefer A when the report is
+  "N scored factors under one category."
+- [ ] **Wire the type through every `ReportType` switch/map** — enum + `analysisTypes`
+  (`ticker-typesv1.ts`); `regenerate<Type>` flag on `TickerV1GenerationRequest` + both the
+  create and update blocks of `generation-requests/route.ts`; the step/status utils
+  (`report-steps-statuses.ts`, `report-status-utils.ts`, `report-generator-utils.ts`,
+  `oldest-reports-utils.ts`); the generate + prompt utils (`generation-report-utils.ts`
+  dependency map + order + generate fn + dispatch, `prompt-generator-utils.ts` schema path +
+  case, `report-input-json-utils.ts` input builder); the save path
+  (`save-report-callback-utils.ts` case + a `save<Type>Response`); and the UI
+  (`useGenerateReports.ts` list + payload switches). The `default:` in the save switch throws
+  only at run time — a missed case will not fail `yarn compile`.
+- [ ] **Prompt + schema** — create the Prompt DB record under key
+  `US/public-equities-v1/<slug>` with an active version, add the output YAML schema under
+  `insights-ui/schemas/analysis-factors/`, and capture the source-of-truth prompt text under
+  [`../stock-prompts/`](../stock-prompts/) (model: the `management-team` entry).
+- [ ] **Detail sub-page + linking** — add
+  `app/stocks/[exchange]/[ticker]/<slug>/page.tsx` (mirror `management-team/page.tsx`),
+  surface a section/link on the main detail page, and add to the relevant sitemap if the
+  report should be crawlable.
+- [ ] **Verify** — `yarn lint && yarn prettier-check && yarn compile`, then enqueue for one
+  ticker via `/admin-v1/create-reports`, watch it advance on `/admin-v1/generation-requests`,
+  and confirm the result persists and the sub-page renders.
+- [ ] Open: does the new type feed the Final Summary prompt / the 10-bagger score, and
+  should it participate in the off-hours refresh (`oldest-reports-utils.ts` mapping)?
+
 ### Off-hours Claude Code automation
 
 - [ ] **Off-hours report-refresh cron** (10 PM – 5 AM, local TZ documented) — pick oldest reports, batch + per-tick timeout, skip recently-refreshed, hard stop at window end, retry cap on failure, per-run log + admin failure surface, env-configurable window/batch/threshold/enable flag. Decide which report categories are in scope.
