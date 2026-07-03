@@ -53,6 +53,8 @@ dark UI is unchanged; dim greys/accents normalize to the token ramp.
 | 4 | Stocks — not-found page | `app/stocks/[exchange]/[ticker]/not-found.tsx` |
 | 5 | Stocks — action modals | `app/stocks/[exchange]/[ticker]/{AddEditFavouriteModal, AddEditNotesModal, ComparisonModal}.tsx` (chrome only) |
 | 6 | Stocks — comparison page | `app/stocks/comparison/ComparisonPageClient.tsx` |
+| 7 | ETFs | `app/etfs/[exchange]/[etf]/{EtfActions, AddEditEtfFavouriteModal}.tsx` |
+| 8 | Stock-scenarios / stocks-filtered | `app/stock-scenarios/[slug]/detailed-analysis/page.tsx` |
 
 Within `app/stocks/**`, the ticker report pages (`page.tsx`,
 `management-team/page.tsx`) needed **no** changes — their remaining colors are
@@ -61,13 +63,18 @@ all semantic score badges. The favourite/notes action buttons
 `MobileStockActionsMenu`) are **buttons** → exempt. `StockActionsAdminPanel`,
 `EditStockDetailsModal`, and `create/TickerCreationPage` are **admin** → de-scoped.
 
+Within `app/etfs/**`, the report/listing pages were already token-based (their
+only remaining `dark:` variants are semantic category badges), and the ETF
+favourite-toggle buttons (`EtfFavouriteButton`, `EtfSubPageActions`,
+`MobileEtfActionsMenu`) are **buttons** → exempt. `app/stocks-filtered/**` had no
+hardcoded colors.
+
 > Note: covered files may still appear in a raw `grep dark:` — that's the
 > intentionally-exempt status colors / overlays above, not un-migrated
 > structural greys.
 
 ## Remaining
 
-- `src/app/etfs/[exchange]/[etf]/*` report pages.
 - `src/app/generate-ppt/*`, `src/app/invocations/page.tsx`,
   `src/app/prompts/[promptId]/invocations/page.tsx`, `src/app/ticker-reports/page.tsx`.
 - `src/app/public-equitiesv1/*` forms (AddTickersForm, EditTickersForm, TickerFields).
