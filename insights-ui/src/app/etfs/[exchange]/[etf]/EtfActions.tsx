@@ -108,9 +108,9 @@ export default function EtfActions({ etf, session }: EtfActionsProps): JSX.Eleme
                 key={item.key}
                 onClick={() => handleModalSelect(item.key)}
                 disabled={creatingGenRequest}
-                className="text-left px-3 py-2 bg-gray-800 hover:bg-gray-700 rounded-md transition-colors duration-200 border border-gray-600 text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+                className="text-left px-3 py-2 bg-surface hover:bg-surface-2 rounded-md transition-colors duration-200 border border-surface-3 text-sm disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                <span className="text-white">{item.label}</span>
+                <span className="text-heading">{item.label}</span>
               </button>
             ))}
           </div>
