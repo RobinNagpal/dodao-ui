@@ -105,7 +105,7 @@ function ChapterArticleHeader({ chapter, pageTitle, actions }: ChapterArticleHea
 }
 
 // Outer article wrapper shared by the chapter cover and every chapter section page. Mirrors the
-// stock-detail card on /stocks/<EX>/<TK>/<section> — single `bg-gray-900` card with related-section
+// stock-detail card on /stocks/<EX>/<TK>/<section> — single `bg-bg` card with related-section
 // navigation + tools bar at the top, the section body in the middle, and a "Last updated …" footer
 // at the bottom.
 interface ChapterArticleProps {
@@ -154,7 +154,7 @@ export function ChapterArticle({
 
   return (
     <div className="py-4">
-      <article className="bg-gray-900 rounded-lg shadow-sm border border-color p-3 sm:p-6 md:p-8" itemScope itemType="https://schema.org/Article">
+      <article className="bg-bg rounded-lg shadow-sm border border-color p-3 sm:p-6 md:p-8" itemScope itemType="https://schema.org/Article">
         {publishedDate && <meta itemProp="datePublished" content={publishedDate.toISOString()} />}
         {toolsCrossLinks}
         <ChapterRelatedSections chapter={chapter} currentSlug={currentSlug} />
