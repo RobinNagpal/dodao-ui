@@ -2,6 +2,7 @@ import CommodityCategoryReport from '@/components/commodity-reports/CommodityCat
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { CommodityAnalysisCategory, COMMODITY_CATEGORY_NAMES, COMMODITY_CATEGORY_TO_PATH } from '@/types/commodity/commodity-analysis-types';
 import { fetchCommodityWithAllData } from '@/utils/commodity-analysis-reports/get-commodity-report-data-utils';
+import { fetchSimilarCommodities } from '@/utils/commodity-analysis-reports/get-similar-commodities-utils';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { Metadata } from 'next';
@@ -57,6 +58,8 @@ export default async function CommodityCategoryPageContent({
   const categoryResult = commodity.categoryAnalysisResults.find((r) => r.categoryKey === categoryKey);
   if (!categoryResult) notFound();
 
+  const similarCommodities = await fetchSimilarCommodities(slug);
+
   const categoryName = COMMODITY_CATEGORY_NAMES[categoryKey];
   const breadcrumbs: BreadcrumbsOjbect[] = [
     { name: 'Commodities', href: '/commodities', current: false },
@@ -77,6 +80,7 @@ export default async function CommodityCategoryPageContent({
         categoryBadgeText={categoryName}
         categoryBadgeClassName={CATEGORY_BADGE_CLASS[categoryKey]}
         updatedAt={categoryResult.updatedAt.toISOString()}
+        similarCommodities={similarCommodities}
       />
     </PageWrapper>
   );

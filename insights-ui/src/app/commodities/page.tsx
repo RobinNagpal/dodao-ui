@@ -1,11 +1,7 @@
-import Heading from '@/components/ui/Heading';
-import Text from '@/components/ui/Text';
-import Stack from '@/components/ui/containers/Stack';
-import InlineCard from '@/components/ui/sections/InlineCard';
-import ReportSection from '@/components/ui/sections/ReportSection';
-import SectionHeading from '@/components/ui/sections/SectionHeading';
+import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { prisma } from '@/prisma';
+import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { Metadata } from 'next';
 import Link from 'next/link';
@@ -27,42 +23,45 @@ export default async function CommoditiesIndexPage(): Promise<JSX.Element> {
 
   const groups = Array.from(new Set(commodities.map((c) => c.commodityGroup)));
 
+  const breadcrumbs: BreadcrumbsOjbect[] = [{ name: 'Commodities', href: '/commodities', current: true }];
+
   return (
     <PageWrapper>
-      <ReportSection>
-        <Heading as="h1" size="2xl" weight="bold">
-          Commodities
-        </Heading>
-        <Text tone="muted" size="sm">
+      <Breadcrumbs breadcrumbs={breadcrumbs} hideHomeIcon={true} mobileBackOnly={true} />
+
+      <div className="w-full mb-8">
+        <h1 className="text-2xl font-bold text-heading mb-4">Commodities</h1>
+        <p className="text-body text-md mb-4">
           Supply &amp; demand, price &amp; value, volatility &amp; risk, and future outlook — analyzed for each commodity.
-        </Text>
-      </ReportSection>
+        </p>
+      </div>
 
       {commodities.length === 0 ? (
-        <Text tone="muted">No commodities are available yet.</Text>
+        <p className="text-muted">No commodities are available yet.</p>
       ) : (
         groups.map((group) => (
-          <ReportSection key={group}>
-            <SectionHeading>{group}</SectionHeading>
-            <Stack as="ul" gap="sm" mt="sm">
+          <div key={group} className="mb-8">
+            <div className="flex items-center justify-between mb-4 gap-4">
+              <h2 className="text-xl font-bold text-heading">{group}</h2>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
               {commodities
                 .filter((c) => c.commodityGroup === group)
                 .map((c) => (
-                  <InlineCard as="li" key={c.id} padding="factor">
-                    <Stack direction="row" align="center" justify="between">
-                      <Link href={`/commodities/${c.slug}`} className="link-color hover:underline">
-                        {c.name}
-                      </Link>
-                      {c.cachedScore && (
-                        <Text size="sm" tone="muted">
-                          Score {c.cachedScore.finalScore}
-                        </Text>
-                      )}
-                    </Stack>
-                  </InlineCard>
+                  <Link
+                    key={c.id}
+                    href={`/commodities/${c.slug}`}
+                    prefetch={false}
+                    className="flex items-center justify-between gap-2 bg-block-bg-color rounded-lg border border-color hover:border-primary transition-colors px-3 py-2.5"
+                  >
+                    <span className="text-sm font-semibold heading-color break-words">{c.name}</span>
+                    {c.cachedScore && (
+                      <span className="text-xs font-medium bg-primary text-primary-text px-1.5 py-0.5 rounded shrink-0">{c.cachedScore.finalScore}</span>
+                    )}
+                  </Link>
                 ))}
-            </Stack>
-          </ReportSection>
+            </div>
+          </div>
         ))
       )}
     </PageWrapper>

@@ -1,3 +1,4 @@
+import CommoditySimilar from '@/components/commodity-reports/CommoditySimilar';
 import Heading from '@/components/ui/Heading';
 import PassFailBadge from '@/components/ui/PassFailBadge';
 import Text from '@/components/ui/Text';
@@ -14,6 +15,7 @@ import SectionHeading from '@/components/ui/sections/SectionHeading';
 import { CommodityAnalysisCategory, COMMODITY_CATEGORY_NAMES, COMMODITY_CATEGORY_TO_PATH } from '@/types/commodity/commodity-analysis-types';
 import { getCommodityFactorTitle } from '@/utils/commodity-analysis-reports/commodity-analysis-factor-utils';
 import { CommodityCategoryResultWithFactors } from '@/utils/commodity-analysis-reports/commodity-spider-graph';
+import { SimilarCommodity } from '@/utils/commodity-analysis-reports/get-similar-commodities-utils';
 import { parseMarkdown } from '@/util/parse-markdown';
 import { CheckCircleIcon, XCircleIcon } from '@heroicons/react/24/solid';
 
@@ -36,6 +38,7 @@ export interface CommodityCategoryReportProps {
   categoryBadgeText: string;
   categoryBadgeClassName: string;
   updatedAt?: string;
+  similarCommodities: SimilarCommodity[];
 }
 
 /**
@@ -54,6 +57,7 @@ export default function CommodityCategoryReport({
   categoryBadgeText,
   categoryBadgeClassName,
   updatedAt,
+  similarCommodities,
 }: CommodityCategoryReportProps): JSX.Element {
   const modifiedDate = new Date(updatedAt || new Date());
   const formattedModifiedDate = modifiedDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
@@ -132,6 +136,8 @@ export default function CommodityCategoryReport({
           label: `${COMMODITY_CATEGORY_NAMES[c]} →`,
         }))}
       />
+
+      <CommoditySimilar similar={similarCommodities} subPageSlug={COMMODITY_CATEGORY_TO_PATH[categoryKey]} />
 
       <ReportFooter
         modifiedDate={modifiedDate}
