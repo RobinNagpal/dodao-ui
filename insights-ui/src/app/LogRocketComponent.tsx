@@ -2,7 +2,10 @@
 
 import { useEffect } from 'react';
 import { usePathname } from 'next/navigation';
-import LogRocket from 'logrocket';
+// NOTE: `logrocket` is intentionally NOT imported statically — a top-level import
+// pulls the SDK into the shared client bundle that loads on every page. It's
+// dynamically imported inside `connectAndIdentify` (which only runs after the
+// user is engaged), so the SDK chunk is fetched on demand, not up front.
 
 const PROJECT_ID = 'm3ahri/koalagains';
 const MIN_CLICKS = 2; // Require at least 2 clicks in the current session
@@ -145,7 +148,10 @@ function hasMinSessionClicks(): boolean {
 
 /* ----------------- LogRocket connect/identify ----------------- */
 
-function connectAndIdentify(country: string | null): void {
+async function connectAndIdentify(country: string | null): Promise<void> {
+  // Load the SDK on demand (keeps it out of the initial/shared bundle).
+  const LogRocket = (await import('logrocket')).default;
+
   // init once per session (StrictMode-safe)
   if (!window.__LR_INIT__ && ssOnce(SS.inited)) {
     LogRocket.init(PROJECT_ID);
@@ -175,7 +181,7 @@ function connectAndIdentify(country: string | null): void {
  */
 function gateConnectionOnSessionClicks(country: string | null): () => void {
   if (hasMinSessionClicks()) {
-    connectAndIdentify(country);
+    void connectAndIdentify(country);
     return () => {};
   }
 
@@ -185,7 +191,7 @@ function gateConnectionOnSessionClicks(country: string | null): () => void {
 
     const { session } = incrementSessionClickCount();
     if (session >= MIN_CLICKS) {
-      connectAndIdentify(country);
+      void connectAndIdentify(country);
       document.removeEventListener('click', onClick, { capture: true } as AddEventListenerOptions);
     }
   };
