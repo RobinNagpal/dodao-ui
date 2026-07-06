@@ -1,4 +1,5 @@
 import CommodityCategoryReport from '@/components/commodity-reports/CommodityCategoryReport';
+import CommoditySimilarSection from '@/components/commodity-reports/CommoditySimilarSection';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { CommodityAnalysisCategory, COMMODITY_CATEGORY_NAMES, COMMODITY_CATEGORY_TO_PATH } from '@/types/commodity/commodity-analysis-types';
 import { fetchCommodityReport } from '@/utils/commodity-analysis-reports/commodity-report-fetchers';
@@ -78,6 +79,8 @@ export default async function CommodityCategoryPageContent({
         categoryBadgeClassName={CATEGORY_BADGE_CLASS[categoryKey]}
         updatedAt={categoryResult.updatedAt.toISOString()}
       />
+
+      <CommoditySimilarSection slug={slug} subPageSlug={COMMODITY_CATEGORY_TO_PATH[categoryKey]} />
     </PageWrapper>
   );
 }

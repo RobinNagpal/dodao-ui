@@ -31,7 +31,7 @@ async function getHandler(
 /**
  * Upsert a batch of commodities by (spaceId, slug). Lets an admin seed/curate
  * the ~20-30 commodity universe without a DB migration. Report generation is a
- * separate step (the generation-requests endpoint).
+ * separate step (the per-report-type `[slug]/generate` endpoint).
  */
 async function postHandler(
   req: NextRequest,

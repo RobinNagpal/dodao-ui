@@ -17,7 +17,6 @@ export interface CommodityAdminReportRow {
   hasFinalSummary: boolean;
   categories: Record<CommodityAnalysisCategory, boolean>;
   finalScore: number | null;
-  latestRequestStatus: string | null;
   updatedAt: string;
 }
 
@@ -40,7 +39,6 @@ async function getHandler(
       keyFactsReport: { select: { id: true } },
       cachedScore: { select: { finalScore: true } },
       categoryAnalysisResults: { select: { categoryKey: true } },
-      generationRequests: { select: { status: true }, orderBy: { updatedAt: 'desc' }, take: 1 },
     },
   });
 
@@ -64,7 +62,6 @@ async function getHandler(
         [CommodityAnalysisCategory.FutureOutlook]: generatedCategories.has(CommodityAnalysisCategory.FutureOutlook),
       },
       finalScore: c.cachedScore?.finalScore ?? null,
-      latestRequestStatus: c.generationRequests[0]?.status ?? null,
       updatedAt: c.updatedAt.toISOString(),
     };
   });

@@ -1,4 +1,3 @@
-import CommoditySimilarSection from '@/components/commodity-reports/CommoditySimilarSection';
 import Heading from '@/components/ui/Heading';
 import PassFailBadge from '@/components/ui/PassFailBadge';
 import Text from '@/components/ui/Text';
@@ -133,8 +132,6 @@ export default function CommodityCategoryReport({
           label: `${COMMODITY_CATEGORY_NAMES[c]} →`,
         }))}
       />
-
-      <CommoditySimilarSection slug={slug} subPageSlug={COMMODITY_CATEGORY_TO_PATH[categoryKey]} />
 
       <ReportFooter
         modifiedDate={modifiedDate}

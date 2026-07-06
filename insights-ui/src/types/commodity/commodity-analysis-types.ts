@@ -30,13 +30,6 @@ export enum CommodityReportType {
   FINAL_SUMMARY = 'final-summary',
 }
 
-export enum CommodityGenerationRequestStatus {
-  NotStarted = 'NotStarted',
-  InProgress = 'InProgress',
-  Completed = 'Completed',
-  Failed = 'Failed',
-}
-
 /**
  * Maps a scored report step to its category key. KEY_FACTS / FINAL_SUMMARY are
  * NOT category analyses and are intentionally excluded — callers must handle

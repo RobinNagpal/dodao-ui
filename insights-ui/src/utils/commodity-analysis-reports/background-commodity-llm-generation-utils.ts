@@ -1,13 +1,12 @@
 import { CommodityReportType } from '@/types/commodity/commodity-analysis-types';
 import { GeminiModel, LLMProvider } from '@/types/llmConstants';
-import { saveCommodityReportAndAdvanceGeneration } from '@/utils/commodity-analysis-reports/save-commodity-report-callback-utils';
+import { saveCommodityReport } from '@/utils/commodity-analysis-reports/save-commodity-report-callback-utils';
 import { getLLMResponse, updateInvocationStatus } from '@/util/get-llm-response';
 import { PromptInvocationStatus } from '@prisma/client';
 
 export interface BackgroundCommodityReportArgs {
   slug: string;
   reportType: CommodityReportType;
-  generationRequestId: string;
   invocationId: string;
   llmProvider: LLMProvider;
   model: GeminiModel;
@@ -18,15 +17,15 @@ export interface BackgroundCommodityReportArgs {
 }
 
 /**
- * In-process, fire-and-forget LLM runner for commodity report generation — the
+ * In-process, fire-and-forget LLM runner for one commodity report type — the
  * commodity parallel to `processEtfReportLLMResponseInBackground`. Runs the LLM,
- * then persists + advances by calling `saveCommodityReportAndAdvanceGeneration`
- * directly (no HTTP callback round-trip). Call detached (`void`) so the
- * triggering request returns immediately; the try/catch is mandatory because an
- * unhandled rejection in a detached promise can take the process down.
+ * then persists via `saveCommodityReport` directly (no HTTP callback, no request
+ * queue). Call detached (`void`) so the triggering request returns immediately;
+ * the try/catch is mandatory because an unhandled rejection in a detached promise
+ * can take the process down.
  */
 export async function processCommodityReportLLMResponseInBackground(args: BackgroundCommodityReportArgs): Promise<void> {
-  const { slug, reportType, generationRequestId, invocationId, llmProvider, model, prompt, outputSchema } = args;
+  const { slug, reportType, invocationId, llmProvider, model, prompt, outputSchema } = args;
 
   try {
     const { result } = await getLLMResponse({
@@ -38,16 +37,11 @@ export async function processCommodityReportLLMResponseInBackground(args: Backgr
       maxRetries: 2,
     });
 
-    await saveCommodityReportAndAdvanceGeneration({
-      slug,
-      reportType,
-      llmResponse: result,
-      generationRequestId,
-    });
+    await saveCommodityReport({ slug, reportType, llmResponse: result });
 
-    console.log(`[${reportType}] [${slug}] [${generationRequestId}] Background commodity report saved and next step triggered`);
+    console.log(`[${reportType}] [${slug}] Background commodity report generated and saved`);
   } catch (error) {
-    console.error(`[${reportType}] [${slug}] [${generationRequestId}] Background commodity report generation failed:`, error);
+    console.error(`[${reportType}] [${slug}] Background commodity report generation failed:`, error);
     await updateInvocationStatus(invocationId, PromptInvocationStatus.Failed, {
       error: error instanceof Error ? error.message : String(error),
     });

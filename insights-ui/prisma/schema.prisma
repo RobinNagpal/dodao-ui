@@ -2641,7 +2641,6 @@ model Commodity {
   categoryAnalysisResults       CommodityCategoryAnalysisResult[]
   analysisCategoryFactorResults CommodityAnalysisCategoryFactorResult[]
   cachedScore                   CommodityCachedScore?
-  generationRequests            CommodityGenerationRequest[]
   priceHistory                  CommodityPriceHistory?
 
   @@unique([spaceId, slug])
@@ -2758,34 +2757,4 @@ model CommodityCachedScore {
 
   @@unique([commodityId])
   @@map("commodity_cached_scores")
-}
-
-// Tracks a generation run + per-section regenerate flags (mirrors EtfGenerationRequest).
-model CommodityGenerationRequest {
-  id          String @id @default(uuid())
-  commodityId String @map("commodity_id")
-  spaceId     String @default("koala_gains") @map("space_id")
-
-  regenerateSupplyAndDemand   Boolean @default(false) @map("regenerate_supply_and_demand")
-  regeneratePriceAndValue     Boolean @default(false) @map("regenerate_price_and_value")
-  regenerateVolatilityAndRisk Boolean @default(false) @map("regenerate_volatility_and_risk")
-  regenerateFutureOutlook     Boolean @default(false) @map("regenerate_future_outlook")
-  regenerateKeyFacts          Boolean @default(false) @map("regenerate_key_facts")
-  regenerateFinalSummary      Boolean @default(false) @map("regenerate_final_summary")
-
-  status         String   @default("NotStarted") @map("status")
-  inProgressStep String?  @map("in_progress_step")
-  completedSteps String[] @default([]) @map("completed_steps")
-  failedSteps    String[] @default([]) @map("failed_steps")
-
-  createdAt   DateTime  @default(now()) @map("created_at")
-  updatedAt   DateTime  @updatedAt @map("updated_at")
-  startedAt   DateTime? @map("started_at")
-  completedAt DateTime? @map("completed_at")
-
-  commodity Commodity @relation(fields: [commodityId], references: [id], onDelete: Cascade)
-
-  @@index([commodityId])
-  @@index([status])
-  @@map("commodity_generation_requests")
 }

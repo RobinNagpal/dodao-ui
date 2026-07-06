@@ -14,7 +14,6 @@ import { Prompt, PromptInvocationStatus, PromptVersion } from '@prisma/client';
 
 export interface CommodityLLMRequest {
   slug: string;
-  generationRequestId: string;
   inputJson: Record<string, unknown>;
   promptKey: string;
   spaceId: string;
@@ -87,7 +86,7 @@ async function ensureCommodityPrompt(
  * lambda branch.
  */
 export async function callCommodityLLMResponse(args: CommodityLLMRequest): Promise<void> {
-  const { slug, generationRequestId, inputJson, promptKey, spaceId, reportType } = args;
+  const { slug, inputJson, promptKey, spaceId, reportType } = args;
 
   const resolvedSpaceId = spaceId || KoalaGainsSpaceId;
   const llmProvider = getDefaultLLMProvider();
@@ -127,7 +126,6 @@ export async function callCommodityLLMResponse(args: CommodityLLMRequest): Promi
     void processCommodityReportLLMResponseInBackground({
       slug,
       reportType,
-      generationRequestId,
       invocationId: invocation.id,
       llmProvider,
       model,

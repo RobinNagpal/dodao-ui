@@ -45,10 +45,7 @@ const etfMgmtSection: AdminNavSection = {
 
 const commodityMgmtSection: AdminNavSection = {
   label: 'Commodity Mgmt',
-  items: [
-    { name: 'Commodity Reports', href: '/admin-v1/commodity-reports' },
-    { name: 'Commodity Generation Requests', href: '/admin-v1/commodity-generation-requests' },
-  ],
+  items: [{ name: 'Commodity Reports', href: '/admin-v1/commodity-reports' }],
 };
 
 const analysisTemplatesSection: AdminNavSection = {
