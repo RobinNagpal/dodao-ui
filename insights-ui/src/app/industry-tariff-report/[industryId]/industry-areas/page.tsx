@@ -53,7 +53,7 @@ export default async function IndustryAreasPage({ params }: { params: Promise<{ 
   return (
     <div className="mx-auto max-w-7xl py-2">
       {/* Title and Actions */}
-      <div className="mb-8 pb-4 border-b border-gray-200">
+      <div className="mb-8 pb-4 border-b border-hairline">
         <div className="flex justify-between items-center">
           <h1 className="text-3xl font-bold heading-color">Industry Areas</h1>
           <PrivateWrapper>
@@ -76,12 +76,12 @@ export default async function IndustryAreasPage({ params }: { params: Promise<{ 
       )}
 
       <div className="space-y-12">
-        <div className="bg-gray-900 rounded-lg p-2 shadow-sm">
+        <div className="bg-bg rounded-lg p-2 shadow-sm">
           <div className="markdown-body prose max-w-none px-2">
             {content ? (
               <div className="markdown markdown-body" dangerouslySetInnerHTML={{ __html: content }} />
             ) : (
-              <p className="text-gray-500 italic p-4">No content available</p>
+              <p className="text-muted-3 italic p-4">No content available</p>
             )}
           </div>
         </div>

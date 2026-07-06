@@ -128,7 +128,7 @@ export default async function ChapterCoverPage({ params }: { params: Promise<{ c
               dangerouslySetInnerHTML={{ __html: parseChapterBodyMarkdown(report.reportCover.reportCoverContent) }}
             />
           ) : (
-            <p className="text-gray-500 italic">No content available</p>
+            <p className="text-muted-3 italic">No content available</p>
           )}
         </section>
 
@@ -142,7 +142,7 @@ export default async function ChapterCoverPage({ params }: { params: Promise<{ c
             </div>
             <div className="space-y-4">
               {tariffUpdatesSummary.map((tariff, index) => (
-                <div key={index} className="bg-gray-800 rounded-md p-4">
+                <div key={index} className="bg-surface rounded-md p-4">
                   <h3 className="font-bold text-lg mb-2">{tariff.countryName}</h3>
                   <div dangerouslySetInnerHTML={{ __html: parseChapterBodyMarkdown(tariff.newChangesFirstSentence) }} className="markdown markdown-body" />
                 </div>

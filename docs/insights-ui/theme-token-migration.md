@@ -83,6 +83,7 @@ hairlines with **no** `dark:` variant kept their light value
 | 10 | **Dark-fidelity fix** (all slices 1–9) | Split the earlier `text-muted` grey-collapse into the exact `text-muted-1..4` ramp; restored light `border-hairline`/`border-muted-1` hairlines, the `text-link-blue`/`text-link-blue-hover` blue link, and `hover:bg-white/5` nav hovers — so dark is byte-for-byte identical. Tokens added in `util/theme-colors.ts` + `tailwind.config.ts`. |
 | 11 | Tariff pages | `app/tariff-calculator/CalculatorClient.tsx` (added `bg-well` for `gray-950` inputs), `app/tariff-reports/page.tsx`, `app/genai-business/page.tsx` |
 | 12 | Portfolio-managers | `app/portfolio-managers/**` (college-ambassadors industry-analysis + client, profile-details `[id]` + portfolios pages) and all of `components/portfolios/*` (StockTable, ProfileHeader, PortfolioCards/Stats/Holdings/Details, FavoritesByLists, IndustryAnalysisGrid, ProfileGrid, AnalysisTabsSection, PortfolioManagersPageComponent, AddEdit{Portfolio,PortfolioProfile,PortfolioTicker}Modal) |
+| 13 | Industry-tariff-report page shells | `app/industry-tariff-report/{[industryId]/understand-industry, [industryId]/industry-areas, [industryId]/final-conclusion, [industryId]/tariff-updates, chapters/[chapterSlug]}/page.tsx` — the card wrappers, header hairlines, and "No content" empty states (`gray-900`→`bg-bg`, `gray-800`→`bg-surface`, `gray-200`→`border-hairline`, `gray-500`→`text-muted-3`). `generate-all/GenerateAllSections.tsx` is `PrivateWrapper`-gated (admin) → de-scoped. |
 
 Slices 11–12 are **dark-authored** (no `dark:` variants), so the grey→token map
 is a clean 1:1 exact-hex swap. **Blue is left as each section's accent theme**
@@ -111,13 +112,14 @@ hardcoded colors.
 
 ## Remaining
 
-Client-facing pages are now covered. Left (lower priority / internal):
+All client-facing pages are now covered. Left (lower priority / internal only):
 
-- `src/app/industry-tariff-report/*` page wrappers (the `components/industry-tariff/*`
-  pieces are done — slice 3 — but these page shells still have hardcoded colors).
 - `src/app/public-equitiesv1/*` forms (AddTickersForm, EditTickersForm, TickerFields).
 - `src/components/ui/{input,tabs}.tsx` — shadcn leaves whose `dark:` variants are
   legitimate dual-theme handling; review **last**.
+
+Once these are done (or judged out of scope), the migration is complete and the
+light-palette + `next-themes` toggle can go in (see below).
 
 ## Explicitly de-scoped (per product decision)
 
