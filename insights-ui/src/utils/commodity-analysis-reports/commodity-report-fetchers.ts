@@ -1,7 +1,7 @@
 import type { CommodityListItem } from '@/app/api/[spaceId]/commodities-v1/listing/route';
 import type { PriceHistoryResponse } from '@/app/api/[spaceId]/tickers-v1/exchange/[exchange]/[ticker]/price-history/route';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
-import { commoditySlugTag, COMMODITIES_LISTING_TAG, ONE_DAY_IN_SECONDS, ONE_WEEK_IN_SECONDS } from '@/utils/commodity-analysis-reports/commodity-cache-utils';
+import { commoditySlugTag, COMMODITIES_LISTING_TAG, ONE_WEEK_IN_SECONDS } from '@/utils/commodity-analysis-reports/commodity-cache-utils';
 import type { CommodityWithAllData } from '@/utils/commodity-analysis-reports/get-commodity-report-data-utils';
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
 
@@ -13,8 +13,9 @@ import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePag
  *
  * Caching (mirrors ETF/stock fetchers): each per-slug fetch carries the
  * `commoditySlugTag(slug)` Next.js Data Cache tag so a commodity's pages can be
- * purged together. The listing fetch carries the listing tag plus a 1-week
- * time-based revalidate; the live price history carries a 1-day revalidate.
+ * purged together. The main + sub report fetches are tag-only (no time-based
+ * revalidation). The listing and the live price history each carry a 1-week
+ * time-based revalidate on top of their tag.
  */
 
 const apiBase = (): string => `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/commodities-v1`;
@@ -55,7 +56,7 @@ export async function fetchCommodityReport(slug: string): Promise<CommodityWithA
 /** On-demand price history (daily + weekly) for the report page's price chart. */
 export async function fetchCommodityPriceHistory(slug: string): Promise<PriceHistoryResponse | null> {
   const url = `${apiBase()}/${encodeURIComponent(slug)}/price-history`;
-  const res = await fetch(url, { next: { tags: [commoditySlugTag(slug)], revalidate: ONE_DAY_IN_SECONDS } });
+  const res = await fetch(url, { next: { tags: [commoditySlugTag(slug)], revalidate: ONE_WEEK_IN_SECONDS } });
   if (!res.ok) throw new Error(`fetchCommodityPriceHistory failed (${res.status}): ${url}`);
   return (await res.json()) as PriceHistoryResponse | null;
 }

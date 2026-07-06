@@ -42,7 +42,7 @@ function parseInputToPaths(raw: string): ParsedInput {
 }
 
 function ResultPanel({ result }: { result: AdminInvalidateCacheResult }): JSX.Element {
-  const { cloudfront, cachedPaths, uncachedPaths } = result;
+  const { cloudfront, cachedPaths, uncachedPaths, revalidatedTags } = result;
 
   const headline: { tone: 'success' | 'error' | 'warning'; text: string } = (() => {
     switch (cloudfront.status) {
@@ -99,6 +99,19 @@ function ResultPanel({ result }: { result: AdminInvalidateCacheResult }): JSX.El
           </ul>
         </div>
       )}
+
+      {revalidatedTags.length > 0 && (
+        <div>
+          <p className="text-sm font-medium text-gray-200">Next.js Data Cache tags revalidated ({revalidatedTags.length}):</p>
+          <ul className="mt-1 text-sm text-gray-300 list-disc list-inside space-y-0.5">
+            {revalidatedTags.map((t) => (
+              <li key={`tag-${t}`} className="font-mono break-all">
+                {t}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
     </div>
   );
 }
@@ -140,8 +153,11 @@ export default function InvalidateCachePage(): JSX.Element {
 
       <div className="bg-gray-800 -mx-6 px-6 py-6 mb-6 border-b border-gray-700/60">
         <div>
-          <h1 className="text-2xl font-semibold text-white">Invalidate CloudFront Cache</h1>
-          <p className="text-gray-300 mt-1">Paste one or more URLs (or absolute paths) — one per line — to purge them from the CloudFront edge cache.</p>
+          <h1 className="text-2xl font-semibold text-white">Invalidate Cache</h1>
+          <p className="text-gray-300 mt-1">
+            Paste one or more URLs (or absolute paths) — one per line — to purge them from the CloudFront edge cache. Commodity paths (
+            <span className="font-mono">/commodities</span>…) also revalidate their Next.js Data Cache tag, so both layers are cleared.
+          </p>
         </div>
       </div>
 
@@ -171,7 +187,8 @@ export default function InvalidateCachePage(): JSX.Element {
             a commodity&apos;s whole page tree). Only paths under CloudFront-cached prefixes (<span className="font-mono">/stocks</span>,{' '}
             <span className="font-mono">/etfs</span>, <span className="font-mono">/commodities</span>,{' '}
             <span className="font-mono">/industry-tariff-report</span>, <span className="font-mono">/tariff-reports</span>, and their backing APIs) are
-            forwarded to AWS; the rest are ignored as no-ops.
+            forwarded to AWS; the rest are ignored as no-ops. Commodity paths additionally revalidate the matching Next.js Data Cache tag (
+            <span className="font-mono">/commodities</span> → listing tag, <span className="font-mono">/commodities/&lt;slug&gt;</span> → per-slug tag).
           </p>
         </div>
 

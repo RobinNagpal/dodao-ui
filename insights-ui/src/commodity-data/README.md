@@ -39,7 +39,9 @@ The TypeScript shapes are the source of truth — see
 - A commodity's **final score** is computed on read as the number of `Pass`
   factors across its categories (max 20 = 4 categories × 5 factors). It is not
   stored. Commodities with no report JSON show a neutral placeholder.
-- The listing rides a 1-week Next.js `revalidate`; per-commodity pages carry a
-  `commodity:<slug>` cache tag and the price chart (live Yahoo data) rides a
-  1-day `revalidate`. After publishing a new report, redeploy or purge the tags
-  via the admin **Invalidate cache** page.
+- The listing rides a 1-week Next.js `revalidate`; the main + sub report pages
+  are tag-only (`commodity:<slug>`, no time-based revalidation); the price chart
+  (live Yahoo data) rides a 1-week `revalidate`. After publishing a new report,
+  redeploy or purge via the admin **Invalidate cache** page — pasting a
+  `/commodities...` path there clears BOTH the CloudFront edge and the matching
+  Next.js Data Cache tag.

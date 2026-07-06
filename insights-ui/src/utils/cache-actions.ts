@@ -15,6 +15,7 @@ import {
   formatCloudFrontResult,
   invalidateCloudFrontPathsAwaited,
 } from '@/utils/cloudfront-cache-utils';
+import { revalidateCommodityTagsForPaths } from '@/utils/commodity-analysis-reports/commodity-cache-utils';
 import { revalidateEtfScenarioBySlugTag, revalidateEtfScenarioListingTag } from '@/utils/etf-scenario-cache-utils';
 import { revalidateStockScenarioBySlugTag, revalidateStockScenarioListingTag } from '@/utils/stock-scenario-cache-utils';
 import { revalidateTariffReportsListing } from '@/utils/tariff-report-cache-utils';
@@ -124,17 +125,23 @@ export interface AdminInvalidateCacheResult {
   cloudfront: CloudFrontInvalidationResult;
   cachedPaths: string[];
   uncachedPaths: string[];
+  /** Next.js Data Cache tags revalidated for the recognized commodity paths. */
+  revalidatedTags: string[];
 }
 
 /**
- * Admin-facing CloudFront invalidation. Accepts arbitrary paths the operator
- * pasted on the `/admin-v1/invalidate-cache` page, classifies them against the
- * cached-prefix allowlist so the UI can show which entries were actually sent
- * to AWS vs which were ignored as no-ops, and forwards the cached subset to
- * CloudFront.
+ * Admin-facing cache invalidation. Accepts arbitrary paths the operator pasted
+ * on the `/admin-v1/invalidate-cache` page and purges BOTH cache layers:
+ *  - CloudFront: classifies the paths against the cached-prefix allowlist (so
+ *    the UI can show which were sent to AWS vs ignored as no-ops) and forwards
+ *    the cached subset.
+ *  - Next.js Data Cache: revalidates the tag behind any commodity path
+ *    (`/commodities` → listing tag, `/commodities/<slug>...` → per-slug tag),
+ *    since commodity report content is tag-only with no time-based revalidation.
  */
 export async function invalidateCloudFrontPathsForAdmin(paths: string[]): Promise<AdminInvalidateCacheResult> {
   const { cached, uncached } = classifyCloudFrontPaths(paths);
+  const revalidatedTags = revalidateCommodityTagsForPaths(paths);
   const cloudfront = await invalidateCloudFrontPathsAwaited(paths);
-  return { cloudfront, cachedPaths: cached, uncachedPaths: uncached };
+  return { cloudfront, cachedPaths: cached, uncachedPaths: uncached, revalidatedTags };
 }
