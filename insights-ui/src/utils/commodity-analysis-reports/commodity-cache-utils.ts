@@ -1,15 +1,11 @@
-import { revalidateTag } from 'next/cache';
-
 /**
- * Cache-tag + TTL constants (and manual-purge helper) for the commodity report
- * pages.
+ * Cache-tag + TTL constants for the commodity report pages.
  *
- * Commodity report content is static JSON (no generation flow), so there is
- * nothing to invalidate on a save. Commodity pages are NOT CloudFront-cached —
- * only the Next.js Data Cache applies. Two things matter for caching:
- *   1. The per-slug/listing Next.js Data Cache tags below, so the pages can be
- *      purged manually from the admin "Invalidate cache" page — e.g. after
- *      publishing a new report JSON.
+ * Commodity report content is static JSON (no generation flow) and commodity
+ * pages are NOT CloudFront-cached — only the Next.js Data Cache applies. Two
+ * things matter for caching:
+ *   1. The per-slug/listing Data Cache tags below, which the fetchers attach so
+ *      a redeploy (or a future manual purge) can refresh a commodity's pages.
  *   2. The time-based `revalidate` windows the fetchers apply — the listing and
  *      the live (Yahoo-sourced) price history both ride a 1-week TTL; the main
  *      and sub report pages are tag-only (no time-based revalidation).
@@ -29,27 +25,3 @@ export const commoditySlugTag = (slug: string): `${typeof COMMODITY_TAG_PREFIX}$
 
 /** Listing-page tag — the `/commodities` index otherwise rides its 1-week TTL. */
 export const COMMODITIES_LISTING_TAG = 'commodities:listing' as const;
-
-/** Matches `/commodities` (listing) or `/commodities/<slug>[/...]` (a commodity page tree). */
-const COMMODITY_PATH_RE = /^\/commodities(?:\/([^/]+))?(?:\/|$)/;
-
-/**
- * Given the paths pasted into the admin "Invalidate cache" page, revalidate the
- * matching Next.js Data Cache tags. Commodity pages are not CloudFront-cached, so
- * this Next.js layer is the only cache to purge for them. `/commodities` → the
- * listing tag; `/commodities/<slug>...` (or `<slug>*`) → the per-slug tag.
- * Returns the distinct tags revalidated so the UI can report them.
- */
-export function revalidateCommodityTagsForPaths(paths: ReadonlyArray<string>): string[] {
-  const tags = new Set<string>();
-  for (const raw of paths) {
-    // Drop any query/hash and a trailing wildcard before matching.
-    const path = raw.split(/[?#]/)[0].replace(/\*+$/, '');
-    const match = COMMODITY_PATH_RE.exec(path);
-    if (!match) continue;
-    const slug = match[1];
-    tags.add(slug ? commoditySlugTag(slug) : COMMODITIES_LISTING_TAG);
-  }
-  for (const tag of tags) revalidateTag(tag);
-  return [...tags];
-}

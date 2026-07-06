@@ -26,9 +26,6 @@ import { waitUntil } from '@vercel/functions';
  *     risk-analysis-data,future-performance-outlook-data}` (the per-ETF GET endpoints that back
  *     the /etfs/[exchange]/[etf] page tree)
  *
- * (Commodity pages/APIs are intentionally NOT CloudFront-cached for now — they
- * serve from the Vercel origin and rely only on the Next.js Data Cache.)
- *
  * Calls for any other path are filtered out before reaching the AWS API — they
  * would not have a cache entry to purge and would just consume the monthly
  * invalidation quota.
@@ -57,6 +54,14 @@ const CACHED_PATH_PREFIXES = [
   '/api/koala_gains/etfs-v1/exchange/',
 ] as const;
 
+/**
+ * Exact paths CloudFront caches — matched by equality, NOT prefix. The homepage
+ * behavior in `cloudfront.tf` is `path_pattern = "/"`, which matches only the root
+ * document. It can't live in `CACHED_PATH_PREFIXES` because `startsWith('/')` is
+ * true for every path, which would wrongly forward all paths to AWS.
+ */
+const CACHED_EXACT_PATHS: readonly string[] = ['/'];
+
 let client: CloudFrontClient | null = null;
 
 function getClient(): CloudFrontClient | null {
@@ -69,6 +74,7 @@ function getClient(): CloudFrontClient | null {
 }
 
 function isCloudFrontCachedPath(path: string): boolean {
+  if (CACHED_EXACT_PATHS.includes(path)) return true;
   return CACHED_PATH_PREFIXES.some((prefix) => path.startsWith(prefix));
 }
 

@@ -71,8 +71,6 @@ locals {
   ]
 
   # Combined cached GET API endpoints (stocks + ETFs) — one ordered_cache_behavior per pattern.
-  # (Commodity pages/APIs are intentionally NOT CloudFront-cached for now — they serve from the
-  # Vercel origin and rely only on the Next.js Data Cache.)
   api_cached_paths = concat(local.stocks_api_cached_paths, local.etfs_api_cached_paths)
 
   # Environment tag kept literal ("prod") to match the value the distribution + cert + IAM
