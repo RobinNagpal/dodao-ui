@@ -256,3 +256,13 @@ Remaining:
 - [ ] **Logged-in user growth + daily-returning retention** — baseline ~300 logged-in / ~1k DAU / ~80 returning. Define hypotheses + experiments; tie to login gate, watchlists, alert digests.
 - [ ] **Traffic from AI platforms** (ChatGPT, Gemini, Perplexity) — content, structured data, brand/citation presence; track inbound referrals.
 - [ ] **Search & analytics research** — export / summarize Google Search Console + Google Analytics (key reports, date range, segments) and run structured research (e.g. with Claude) on what to try next for overall traffic + quality users.
+
+### Claude (Anthropic) API integration
+
+> Add Claude as a first-class LLM provider alongside the existing Gemini / OpenAI path so report generation and prompt invocations can run on `claude-opus-4-8`. The LLM layer already abstracts providers behind LangChain `BaseChatModel` (`src/util/get-llm-response.ts` `initializeLLM()`), so this is an additive provider, not a rewrite.
+
+- [ ] **Provider plumbing** — add `ANTHROPIC` to the `LLMProvider` enum and a `ClaudeModel` enum (default `claude-opus-4-8`, env-overridable via `CLAUDE_MODEL` mirroring `getDefaultGeminiModel()`) in `src/types/llmConstants.ts`; widen the `modelName` typings on `LLMResponseOptions` / the invocation request interfaces (currently hard-typed to `GeminiModel`) so a Claude model id is accepted.
+- [ ] **Model init branch** — add `@langchain/anthropic` and return `new ChatAnthropic({ model, apiKey: process.env.ANTHROPIC_API_KEY })` from `initializeLLM()`; extend the provider-validation guard at the top of that function to allow the new provider. Set `max_tokens` generously and stream long outputs (Claude requires streaming above ~16K output tokens) — reuse the existing retry/validation loop in `getLLMResponse()`.
+- [ ] **Structured output parity** — verify the JSON-schema → validated-object flow (Ajv + `jsonpatch` repair loop) works for Claude; prefer LangChain `withStructuredOutput` / Anthropic structured outputs over prompt-only JSON so the schema is enforced. Confirm `GEMINI_WITH_GROUNDING`-style web grounding either has a Claude equivalent (Anthropic web search tool) or the provider is documented as non-grounded.
+- [ ] **Admin UI wiring** — surface the provider + Claude models in the prompt provider/model dropdowns (`src/app/prompts/[promptId]/test-invocations/page.tsx`, `.../invocations/create/page.tsx`), which currently hardcode Gemini/OpenAI options.
+- [ ] **Config + docs** — add `ANTHROPIC_API_KEY` (and optional `CLAUDE_MODEL`) to env config + Vercel; note the switch path (`LLM_PROVIDER=anthropic`) so a single report type can be A/B'd on Claude vs Gemini; capture a short cost/quality comparison before making it a default anywhere.
