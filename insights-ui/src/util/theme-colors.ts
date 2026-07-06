@@ -30,8 +30,22 @@ export const themeColors = {
   '--text-color': '#f3f4f6', // Body text (gray-100) — brightened for readability on dark surfaces
   '--text-muted': '#cbd5e1', // Secondary / muted text (slate-300) — brightened for readability
 
+  // Exact-gray muted ramp — kept DISTINCT from `--text-muted` so the current
+  // dark UI stays byte-for-byte identical. Each equals its Tailwind gray, so
+  // dimmer tiers (captions, placeholders, empty states) are not brightened.
+  '--text-muted-1': '#d1d5db', // gray-300 — brightest muted (near-body secondary)
+  '--text-muted-2': '#9ca3af', // gray-400 — standard secondary / icon muted
+  '--text-muted-3': '#6b7280', // gray-500 — faint tertiary (hints, empty states)
+  '--text-muted-4': '#4b5563', // gray-600 — dimmest muted (rare, low-contrast labels)
+
   // Lines
   '--border-color': '#374151', // Borders / dividers (gray-700)
+  '--hairline': '#e5e7eb', // gray-200 — light hairline on legacy light-authored surfaces
+
+  // Secondary link (blue) — distinct from the violet `--link-color` so blue
+  // links keep their exact blue in dark. Two link colors coexist by design.
+  '--link-blue-color': '#60a5fa', // blue-400
+  '--link-blue-hover-color': '#93c5fd', // blue-300
 
   '--swiper-theme-color': '#7f78ff',
 } as CSSProperties;

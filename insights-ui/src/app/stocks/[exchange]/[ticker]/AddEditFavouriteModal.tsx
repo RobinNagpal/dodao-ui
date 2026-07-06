@@ -219,7 +219,7 @@ export default function AddEditFavouriteModal({
             {myNotes ? (
               <div className="markdown markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(myNotes) }} />
             ) : (
-              <p className="text-muted text-sm">No notes added.</p>
+              <p className="text-muted-3 text-sm">No notes added.</p>
             )}
           </div>
         ) : (
@@ -266,7 +266,7 @@ export default function AddEditFavouriteModal({
           {/* Selected competitors */}
           {competitorsConsidered.length > 0 && (
             <div className="bg-bg rounded-md p-3">
-              <div className="text-sm text-muted mb-2">Selected competitors:</div>
+              <div className="text-sm text-muted-2 mb-2">Selected competitors:</div>
               <div className="flex flex-wrap gap-2">
                 {competitorsConsidered.map((competitor) => (
                   <TickerBadge
@@ -297,7 +297,7 @@ export default function AddEditFavouriteModal({
           {/* Selected alternatives */}
           {betterAlternatives.length > 0 && (
             <div className="bg-bg rounded-md p-3">
-              <div className="text-sm text-muted mb-2">Selected alternatives:</div>
+              <div className="text-sm text-muted-2 mb-2">Selected alternatives:</div>
               <div className="flex flex-wrap gap-2">
                 {betterAlternatives.map((alternative) => (
                   <TickerBadge
@@ -327,9 +327,9 @@ export default function AddEditFavouriteModal({
         </div>
         <div className="space-y-1 max-h-40 overflow-y-auto bg-bg rounded-md p-1">
           {viewOnly && selectedTagIds.length === 0 ? (
-            <p className="text-muted text-sm p-2">No tags selected.</p>
+            <p className="text-muted-3 text-sm p-2">No tags selected.</p>
           ) : tags.length === 0 && !viewOnly ? (
-            <p className="text-muted text-sm p-2">No tags available. Create one to get started.</p>
+            <p className="text-muted-3 text-sm p-2">No tags available. Create one to get started.</p>
           ) : (
             <div className="ml-2">
               <Checkboxes
@@ -369,9 +369,9 @@ export default function AddEditFavouriteModal({
         </div>
         <div className="space-y-1 max-h-40 overflow-y-auto bg-bg rounded-md p-1">
           {viewOnly && selectedListIds.length === 0 ? (
-            <p className="text-muted text-sm p-2">No lists selected.</p>
+            <p className="text-muted-3 text-sm p-2">No lists selected.</p>
           ) : lists.length === 0 && !viewOnly ? (
-            <p className="text-muted text-sm p-2">No lists available. Create one to get started.</p>
+            <p className="text-muted-3 text-sm p-2">No lists available. Create one to get started.</p>
           ) : (
             <div className="ml-2">
               <Checkboxes

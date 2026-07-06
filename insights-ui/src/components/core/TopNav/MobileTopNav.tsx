@@ -42,7 +42,7 @@ export default function MobileTopNav({ mobileMenuOpen, setMobileMenuOpen, indust
             {/* Mobile: app icon */}
             <Image alt="KoalaGains icon" src="/images/android-icon-512x512.png" className="h-8 w-auto" width={32} height={32} />
           </Link>
-          <button type="button" onClick={() => setMobileMenuOpen(false)} className="-m-2.5 rounded-md p-2.5 text-muted">
+          <button type="button" onClick={() => setMobileMenuOpen(false)} className="-m-2.5 rounded-md p-2.5 text-muted-2">
             <span className="sr-only">Close menu</span>
             <XMarkIcon aria-hidden="true" className="size-6" />
           </button>
@@ -62,19 +62,19 @@ export default function MobileTopNav({ mobileMenuOpen, setMobileMenuOpen, indust
                   {industriesLoading ? (
                     <div className="text-center">
                       <div
-                        className="inline-block h-6 w-6 animate-spin rounded-full border-2 border-solid border-current border-r-transparent motion-reduce:animate-[spin_1.5s_linear_infinite] text-muted"
+                        className="inline-block h-6 w-6 animate-spin rounded-full border-2 border-solid border-current border-r-transparent motion-reduce:animate-[spin_1.5s_linear_infinite] text-muted-2"
                         role="status"
                       >
                         <span className="sr-only">Loading...</span>
                       </div>
-                      <p className="mt-2 text-sm text-muted">Loading industries...</p>
+                      <p className="mt-2 text-sm text-muted-2">Loading industries...</p>
                     </div>
                   ) : !industries || industries.length === 0 ? (
                     <div className="text-center">
-                      <p className="text-sm text-muted">No industries found.</p>
+                      <p className="text-sm text-muted-2">No industries found.</p>
                       <Link
                         href="/stocks"
-                        className="mt-2 inline-block text-sm font-medium text-link hover:text-primary"
+                        className="mt-2 inline-block text-sm font-medium text-link-blue hover:text-link-blue-hover"
                         onClick={() => setMobileMenuOpen(false)}
                       >
                         View all stocks
@@ -89,7 +89,7 @@ export default function MobileTopNav({ mobileMenuOpen, setMobileMenuOpen, indust
                           <Link
                             key={industry.industryKey}
                             href={`/stocks/industries/${encodeURIComponent(industry.industryKey)}`}
-                            className="flex items-center rounded-lg py-2 px-3 text-sm/7 font-semibold text-heading hover:bg-surface-2"
+                            className="flex items-center rounded-lg py-2 px-3 text-sm/7 font-semibold text-heading hover:bg-white/5"
                             onClick={() => setMobileMenuOpen(false)}
                           >
                             <span className="truncate text-[#F59E0B]">
@@ -106,7 +106,7 @@ export default function MobileTopNav({ mobileMenuOpen, setMobileMenuOpen, indust
               ) : (
                 <div>
                   <Disclosure as="div" className="-mx-3">
-                    <DisclosureButton className="group flex w-full items-center justify-between rounded-lg py-2 pl-3 pr-3.5 text-base/7 font-semibold text-heading hover:bg-surface-2">
+                    <DisclosureButton className="group flex w-full items-center justify-between rounded-lg py-2 pl-3 pr-3.5 text-base/7 font-semibold text-heading hover:bg-white/5">
                       KoalaGains Insights
                       <ChevronDownIcon aria-hidden="true" className="size-5 flex-none group-data-[open]:rotate-180" />
                     </DisclosureButton>
@@ -116,7 +116,7 @@ export default function MobileTopNav({ mobileMenuOpen, setMobileMenuOpen, indust
                           key={item.name}
                           as={Link}
                           href={item.href}
-                          className="block rounded-lg py-2 pl-6 pr-3 text-sm/7 font-semibold text-heading hover:bg-surface-2"
+                          className="block rounded-lg py-2 pl-6 pr-3 text-sm/7 font-semibold text-heading hover:bg-white/5"
                         >
                           {item.name}
                         </DisclosureButton>
@@ -125,7 +125,7 @@ export default function MobileTopNav({ mobileMenuOpen, setMobileMenuOpen, indust
                   </Disclosure>
 
                   <Disclosure as="div" className="-mx-3">
-                    <DisclosureButton className="group flex w-full items-center justify-between rounded-lg py-2 pl-3 pr-3.5 text-base/7 font-semibold text-heading hover:bg-surface-2">
+                    <DisclosureButton className="group flex w-full items-center justify-between rounded-lg py-2 pl-3 pr-3.5 text-base/7 font-semibold text-heading hover:bg-white/5">
                       Gen AI Adoption
                       <ChevronDownIcon aria-hidden="true" className="size-5 flex-none group-data-[open]:rotate-180" />
                     </DisclosureButton>
@@ -135,7 +135,7 @@ export default function MobileTopNav({ mobileMenuOpen, setMobileMenuOpen, indust
                           key={item.name}
                           as={Link}
                           href={item.href}
-                          className="block rounded-lg py-2 pl-6 pr-3 text-sm/7 font-semibold text-heading hover:bg-surface-2"
+                          className="block rounded-lg py-2 pl-6 pr-3 text-sm/7 font-semibold text-heading hover:bg-white/5"
                         >
                           {item.name}
                         </DisclosureButton>

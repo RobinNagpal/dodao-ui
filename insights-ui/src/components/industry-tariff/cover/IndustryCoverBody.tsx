@@ -99,7 +99,7 @@ export async function renderIndustryCoverBody(industryId: string): Promise<JSX.E
               dangerouslySetInnerHTML={{ __html: parseMarkdown(report.reportCover.reportCoverContent) }}
             />
           ) : (
-            <p className="text-muted italic">No content available</p>
+            <p className="text-muted-3 italic">No content available</p>
           )
         )}
 

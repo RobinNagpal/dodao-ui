@@ -175,7 +175,7 @@ export default function ComparisonModal({ isOpen, onClose, currentTicker }: Comp
                         className="p-2 bg-surface hover:bg-surface-2 rounded-md transition-colors disabled:opacity-50 text-left font-medium text-sm w-full"
                       >
                         <div className="flex items-center">
-                          <PlusIcon className="h-5 w-5 text-muted flex-shrink-0 mr-2" />
+                          <PlusIcon className="h-5 w-5 text-muted-2 flex-shrink-0 mr-2" />
                           <div className="flex-1 min-w-0">
                             <div className="flex items-center">
                               <span
@@ -188,7 +188,7 @@ export default function ComparisonModal({ isOpen, onClose, currentTicker }: Comp
                                 {ticker.cachedScoreEntry?.finalScore !== undefined ? ticker.cachedScoreEntry.finalScore : '-'}/25
                               </span>
                               <span className="font-medium ml-1 mr-1">{ticker.symbol}</span>
-                              <span className="text-xs text-muted truncate">{ticker.name}</span>
+                              <span className="text-xs text-muted-2 truncate">{ticker.name}</span>
                             </div>
                           </div>
                         </div>
@@ -206,7 +206,7 @@ export default function ComparisonModal({ isOpen, onClose, currentTicker }: Comp
             <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
               <div className="bg-surface rounded-lg p-6 flex items-center space-x-3">
                 <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-500"></div>
-                <span className="text-muted">Loading ticker data...</span>
+                <span className="text-muted-1">Loading ticker data...</span>
               </div>
             </div>
           )}

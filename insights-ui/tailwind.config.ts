@@ -23,6 +23,9 @@ export default {
         'primary-text': 'var(--primary-text-color)',
         'primary-foreground': 'var(--primary-text-color)',
         link: 'var(--link-color)',
+        // Secondary (blue) link — coexists with the violet `link`.
+        'link-blue': 'var(--link-blue-color)',
+        'link-blue-hover': 'var(--link-blue-hover-color)',
 
         // Surfaces (3-tier ramp): bg (page) < surface (cards) < surface-2 (inset)
         bg: 'var(--bg-color)',
@@ -34,9 +37,16 @@ export default {
         heading: 'var(--heading-color)',
         body: 'var(--text-color)',
         muted: 'var(--text-muted)',
+        // Exact-gray muted ramp (see theme-colors.ts) — usable as `text-*`,
+        // and `border-*`/`divide-*` where a matching hairline is needed.
+        'muted-1': 'var(--text-muted-1)', // gray-300
+        'muted-2': 'var(--text-muted-2)', // gray-400
+        'muted-3': 'var(--text-muted-3)', // gray-500
+        'muted-4': 'var(--text-muted-4)', // gray-600
 
         // Lines — `border-border`
         border: 'var(--border-color)',
+        hairline: 'var(--hairline)', // gray-200 light hairline (`border-hairline`)
 
         // Legacy aliases (kept so existing `bg-block`/`bg-background` usages
         // keep resolving while call-sites migrate to the canonical names).

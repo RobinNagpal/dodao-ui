@@ -136,7 +136,7 @@ export default function AddEditEtfFavouriteModal({
               {myNotes ? (
                 <div className="markdown markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(myNotes) }} />
               ) : (
-                <p className="text-muted text-sm">No notes added.</p>
+                <p className="text-muted-3 text-sm">No notes added.</p>
               )}
             </div>
           ) : (

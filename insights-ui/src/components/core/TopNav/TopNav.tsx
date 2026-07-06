@@ -93,7 +93,7 @@ export default function TopNav() {
           </div>
 
           <div className="flex lg:hidden">
-            <button type="button" onClick={openMobileMenu} className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-muted">
+            <button type="button" onClick={openMobileMenu} className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-muted-2">
               <span className="sr-only">Open main menu</span>
               <Bars3Icon aria-hidden="true" className="size-6" />
             </button>
@@ -122,7 +122,7 @@ export default function TopNav() {
                       <>
                         <PopoverButton className="flex items-center gap-x-1 text-sm/6 font-semibold text-heading data-[open]:text-primary">
                           KoalaGains Insights
-                          <ChevronDownIcon aria-hidden="true" className="size-5 flex-none text-muted data-[open]:text-primary" />
+                          <ChevronDownIcon aria-hidden="true" className="size-5 flex-none text-muted-3 data-[open]:text-primary" />
                         </PopoverButton>
 
                         <PopoverPanel
@@ -131,13 +131,13 @@ export default function TopNav() {
                         >
                           <div className="p-2.5">
                             {reportsDropdown.map((item) => (
-                              <div key={item.name} className="group relative flex items-center gap-x-6 rounded-lg p-3 text-sm/6 hover:bg-surface-2">
+                              <div key={item.name} className="group relative flex items-center gap-x-6 rounded-lg p-3 text-sm/6 hover:bg-white/5">
                                 <div className="flex-auto">
                                   <Link href={item.href} className="block font-semibold text-heading" onClick={() => close()}>
                                     {item.name}
                                     <span className="absolute inset-0" />
                                   </Link>
-                                  <p className="mt-1 text-xs text-muted">{item.description}</p>
+                                  <p className="mt-1 text-xs text-muted-2">{item.description}</p>
                                 </div>
                               </div>
                             ))}
@@ -152,7 +152,7 @@ export default function TopNav() {
                       <>
                         <PopoverButton className="flex items-center gap-x-1 text-sm/6 font-semibold text-heading data-[open]:text-primary">
                           Gen AI Adoption
-                          <ChevronDownIcon aria-hidden="true" className="size-5 flex-none text-muted data-[open]:text-primary" />
+                          <ChevronDownIcon aria-hidden="true" className="size-5 flex-none text-muted-3 data-[open]:text-primary" />
                         </PopoverButton>
 
                         <PopoverPanel
@@ -161,13 +161,13 @@ export default function TopNav() {
                         >
                           <div className="p-3">
                             {genaiDropdown.map((item) => (
-                              <div key={item.name} className="group relative flex items-center gap-x-6 rounded-lg p-3 text-sm/6 hover:bg-surface-2">
+                              <div key={item.name} className="group relative flex items-center gap-x-6 rounded-lg p-3 text-sm/6 hover:bg-white/5">
                                 <div className="flex-auto">
                                   <Link href={item.href} className="block font-semibold text-heading" onClick={() => close()}>
                                     {item.name}
                                     <span className="absolute inset-0" />
                                   </Link>
-                                  <p className="mt-1 text-muted">{item.description}</p>
+                                  <p className="mt-1 text-muted-2">{item.description}</p>
                                 </div>
                               </div>
                             ))}

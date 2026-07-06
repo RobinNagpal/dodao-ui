@@ -271,7 +271,7 @@ export default function ComparisonPageClient() {
                     setSelectedStocks([]);
                   }
                 }}
-                className="w-full border border-border bg-surface rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full border border-muted-1 bg-surface rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
                 <option value="">{loadingIndustries ? 'Loading industries...' : 'All Industries'}</option>
                 {activeIndustries.map((industry) => (
@@ -288,7 +288,7 @@ export default function ComparisonPageClient() {
                 value={selectedSubIndustry}
                 onChange={(e) => setSelectedSubIndustry(e.target.value)}
                 disabled={!selectedIndustry || loadingSubIndustries}
-                className="w-full border bg-surface border-border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-surface"
+                className="w-full border bg-surface border-muted-1 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-surface"
               >
                 <option value="">{loadingSubIndustries ? 'Loading sub-industries...' : 'All Sub-Industries'}</option>
                 {activeSubIndustries.map((subIndustry) => (
@@ -302,13 +302,13 @@ export default function ComparisonPageClient() {
             <div>
               <label className="block text-sm font-medium mb-1">Search</label>
               <div className="relative">
-                <MagnifyingGlassIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted" />
+                <MagnifyingGlassIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-2" />
                 <input
                   type="text"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="Search by name or symbol..."
-                  className="w-full pl-10 border bg-surface border-border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full pl-10 border bg-surface border-muted-1 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
             </div>
@@ -328,7 +328,7 @@ export default function ComparisonPageClient() {
                     key={ticker.symbol}
                     onClick={() => addStock(ticker)}
                     disabled={selectedStocks.length >= 5}
-                    className="text-left p-3 border bg-surface border-border rounded-md text-muted hover:bg-surface-3 hover:text-heading disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                    className="text-left p-3 border bg-surface border-hairline rounded-md text-muted-1 hover:bg-surface-3 hover:text-heading disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                   >
                     <div className="font-medium">{ticker.name}</div>
                     <div className="text-sm">{ticker.symbol}</div>
@@ -336,7 +336,7 @@ export default function ComparisonPageClient() {
                   </button>
                 ))}
             </div>
-            {filteredTickers.length > 20 && <p className="text-sm text-muted mt-2">Showing first 20 results. Use search to find specific stocks.</p>}
+            {filteredTickers.length > 20 && <p className="text-sm text-muted-3 mt-2">Showing first 20 results. Use search to find specific stocks.</p>}
           </div>
         </div>
 
@@ -354,7 +354,7 @@ export default function ComparisonPageClient() {
                     className={`p-4 rounded-lg border transition-all ${
                       selectedCategory === categoryKey
                         ? 'border-blue-500 bg-blue-100 text-blue-800'
-                        : 'border-border bg-surface text-muted hover:bg-surface-3 hover:text-heading'
+                        : 'border-hairline bg-surface text-muted-1 hover:bg-surface-3 hover:text-heading'
                     }`}
                   >
                     <div className="font-medium text-sm">{categoryName}</div>
@@ -365,10 +365,10 @@ export default function ComparisonPageClient() {
 
             {/* Comparison Results */}
             {loading ? (
-              <div className="bg-surface rounded-lg shadow-sm border border-border p-8">
+              <div className="bg-surface rounded-lg shadow-sm border border-hairline p-8">
                 <div className="flex items-center justify-center">
                   <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
-                  <span className="ml-3 text-muted">Loading comparison data...</span>
+                  <span className="ml-3 text-muted-4">Loading comparison data...</span>
                 </div>
               </div>
             ) : (
@@ -376,11 +376,11 @@ export default function ComparisonPageClient() {
                 <div className="space-y-6">
                   {/* Summary Table */}
                   <div className="bg-bg rounded-lg shadow-sm  overflow-hidden">
-                    <div className="px-6 py-4 border-b border-border">
+                    <div className="px-6 py-4 border-b border-hairline">
                       <h3 className="text-lg font-semibold">{CATEGORY_MAPPINGS[selectedCategory]} - Summary</h3>
                     </div>
                     <div className="overflow-x-auto">
-                      <table className="min-w-full divide-y divide-border">
+                      <table className="min-w-full divide-y divide-hairline">
                         <thead className="bg-surface">
                           <tr>
                             <th className="px-6 py-3 text-left text-xs font-medium text-heading uppercase tracking-wider">Stock</th>
@@ -390,7 +390,7 @@ export default function ComparisonPageClient() {
                             <th className="px-6 py-3 text-center text-xs font-medium text-heading uppercase tracking-wider">Score</th>
                           </tr>
                         </thead>
-                        <tbody className="bg-surface divide-y divide-border">
+                        <tbody className="bg-surface divide-y divide-hairline">
                           {comparisonData.map((stock) => {
                             const categoryData = stock.categoryResults[selectedCategory];
                             const score = categoryData.totalCount > 0 ? (categoryData.passCount / categoryData.totalCount) * 100 : 0;
@@ -399,7 +399,7 @@ export default function ComparisonPageClient() {
                               <tr key={stock.ticker} className="hover:bg-surface-2">
                                 <td className="px-6 py-4 whitespace-nowrap">
                                   <div className="font-medium text-body">{stock.name}</div>
-                                  <div className="text-sm text-muted">{stock.ticker}</div>
+                                  <div className="text-sm text-muted-2">{stock.ticker}</div>
                                 </td>
                                 <td className="px-6 py-4 whitespace-nowrap text-center">
                                   <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-green-900 text-green-200">
@@ -411,7 +411,7 @@ export default function ComparisonPageClient() {
                                     {categoryData.failCount}
                                   </span>
                                 </td>
-                                <td className="px-6 py-4 whitespace-nowrap text-center text-sm text-muted">{categoryData.totalCount}</td>
+                                <td className="px-6 py-4 whitespace-nowrap text-center text-sm text-muted-1">{categoryData.totalCount}</td>
                                 <td className="px-6 py-4 whitespace-nowrap text-center">
                                   <span
                                     className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold ${
@@ -447,10 +447,10 @@ export default function ComparisonPageClient() {
           <div className="bg-bg rounded-lg shadow-sm p-12 text-center">
             <div className="max-w-md mx-auto">
               <h3 className="text-lg font-medium mb-2">Start Comparing Tickers</h3>
-              <p className="text-muted mb-6">
+              <p className="text-muted-3 mb-6">
                 Select tickers from the same industry above to begin comparing their performance across different analysis categories.
               </p>
-              <div className="text-sm text-muted">
+              <div className="text-sm text-muted-2">
                 • Compare up to 5 tickers at once
                 <br />
                 • All stocks must be from the same industry

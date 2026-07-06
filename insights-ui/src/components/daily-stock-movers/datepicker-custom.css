@@ -13,7 +13,7 @@
 }
 
 .react-datepicker__day {
-  @apply text-muted hover:bg-surface-3;
+  @apply text-muted-1 hover:bg-surface-3;
 }
 
 .react-datepicker__day--selected,

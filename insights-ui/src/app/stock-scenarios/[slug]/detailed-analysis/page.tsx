@@ -60,7 +60,7 @@ export default async function StockScenarioDetailedAnalysisPage({ params }: { pa
       <article className="text-body">
         <header className="mb-6">
           <h1 className="text-3xl font-bold text-heading mb-2">{scenario.title}</h1>
-          <p className="text-sm text-muted">Detailed analysis</p>
+          <p className="text-sm text-muted-2">Detailed analysis</p>
         </header>
 
         <section
