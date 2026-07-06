@@ -4,8 +4,8 @@ import { SimilarCommodity } from '@/utils/commodity-analysis-reports/get-similar
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';
 
-/** How many peers to surface. Commodities are few, so a small grid is plenty. */
-const SIMILAR_COMMODITIES_LIMIT = 6;
+/** How many peers to surface — capped at 3, matching the stock similar section. */
+const SIMILAR_COMMODITIES_LIMIT = 3;
 
 /**
  * Peers for a commodity: other commodities in the same `commodityGroup`, ordered
