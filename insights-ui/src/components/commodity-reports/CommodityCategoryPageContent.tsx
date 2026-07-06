@@ -2,6 +2,11 @@ import CommodityCategoryReport from '@/components/commodity-reports/CommodityCat
 import CommoditySimilarSection from '@/components/commodity-reports/CommoditySimilarSection';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { CommodityAnalysisCategory, COMMODITY_CATEGORY_NAMES, COMMODITY_CATEGORY_TO_PATH } from '@/types/commodity/commodity-analysis-types';
+import {
+  generateCommodityCategoryArticleJsonLd,
+  generateCommodityCategoryBreadcrumbJsonLd,
+  generateCommodityCategoryMetadata,
+} from '@/utils/commodity-analysis-reports/commodity-metadata-generators';
 import { fetchCommodityReport } from '@/utils/commodity-analysis-reports/commodity-report-fetchers';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
@@ -17,22 +22,21 @@ const CATEGORY_BADGE_CLASS: Record<CommodityAnalysisCategory, string> = {
 };
 
 export async function buildCommodityCategoryMetadata(slug: string, categoryKey: CommodityAnalysisCategory): Promise<Metadata> {
-  const categoryName = COMMODITY_CATEGORY_NAMES[categoryKey];
   let name = slug;
+  let commodityGroup = 'Commodity';
+  let createdTime: string | undefined;
+  let updatedTime: string | undefined;
   try {
     const commodity = await fetchCommodityReport(slug);
     name = commodity.name;
+    commodityGroup = commodity.commodityGroup;
+    const categoryResult = commodity.categoryAnalysisResults.find((r) => r.categoryKey === categoryKey);
+    createdTime = (categoryResult?.createdAt ?? commodity.createdAt).toISOString();
+    updatedTime = (categoryResult?.updatedAt ?? commodity.updatedAt).toISOString();
   } catch {
     /* keep generic */
   }
-  const title = `${name} — ${categoryName} | KoalaGains`;
-  const description = `${categoryName} analysis for the commodity ${name}.`;
-  return {
-    title,
-    description,
-    alternates: { canonical: `/commodities/${slug}/${COMMODITY_CATEGORY_TO_PATH[categoryKey]}` },
-    openGraph: { title, description, url: `/commodities/${slug}/${COMMODITY_CATEGORY_TO_PATH[categoryKey]}` },
-  };
+  return generateCommodityCategoryMetadata({ name, slug, commodityGroup, categoryKey, createdTime, updatedTime });
 }
 
 /**
@@ -65,8 +69,22 @@ export default async function CommodityCategoryPageContent({
     { name: categoryName, href: `/commodities/${slug}/${COMMODITY_CATEGORY_TO_PATH[categoryKey]}`, current: true },
   ];
 
+  const publishedDate = (categoryResult.createdAt ?? commodity.createdAt).toISOString();
+  const modifiedDate = (categoryResult.updatedAt ?? commodity.updatedAt).toISOString();
+
   return (
     <PageWrapper>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(generateCommodityCategoryArticleJsonLd({ name: commodity.name, slug, categoryKey, publishedDate, modifiedDate })),
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(generateCommodityCategoryBreadcrumbJsonLd({ name: commodity.name, slug, categoryKey })) }}
+      />
+
       <Breadcrumbs breadcrumbs={breadcrumbs} hideHomeIcon={true} mobileBackOnly={true} />
       <CommodityCategoryReport
         commodityName={commodity.name}

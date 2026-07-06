@@ -1,5 +1,10 @@
 import CommodityGroupCard from '@/components/commodity-reports/CommodityGroupCard';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
+import {
+  generateCommodityListingBreadcrumbJsonLd,
+  generateCommodityListingJsonLd,
+  generateCommodityListingMetadata,
+} from '@/utils/commodity-analysis-reports/commodity-metadata-generators';
 import { fetchCommodityListing } from '@/utils/commodity-analysis-reports/commodity-report-fetchers';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
@@ -7,11 +12,7 @@ import { Metadata } from 'next';
 
 export const dynamic = 'force-dynamic';
 
-export const metadata: Metadata = {
-  title: 'Commodities — Analysis | KoalaGains',
-  description: 'Plain-English analysis of commodities: supply & demand, price & value, volatility & risk, and future outlook.',
-  alternates: { canonical: '/commodities' },
-};
+export const metadata: Metadata = generateCommodityListingMetadata();
 
 const COMMODITIES_DESCRIPTION =
   'Explore commodities across Energy, Metals, Agriculture, and Livestock. Each one is scored on supply & demand, price & value, volatility & risk, and future outlook — ' +
@@ -26,6 +27,9 @@ export default async function CommoditiesIndexPage(): Promise<JSX.Element> {
 
   return (
     <PageWrapper>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(generateCommodityListingJsonLd()) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(generateCommodityListingBreadcrumbJsonLd()) }} />
+
       <div className="overflow-x-auto">
         <Breadcrumbs breadcrumbs={breadcrumbs} hideHomeIcon={true} mobileBackOnly={true} />
       </div>

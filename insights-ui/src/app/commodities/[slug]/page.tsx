@@ -13,6 +13,11 @@ import ReportFooter from '@/components/ui/sections/ReportFooter';
 import ReportSection from '@/components/ui/sections/ReportSection';
 import SectionHeading from '@/components/ui/sections/SectionHeading';
 import { CommodityKeyFactsFlag, CommodityKeyFactsProducer, CommodityKeyFactsWayToInvest } from '@/types/commodity/commodity-analysis-types';
+import {
+  generateCommodityDetailArticleJsonLd,
+  generateCommodityDetailBreadcrumbJsonLd,
+  generateCommodityDetailMetadata,
+} from '@/utils/commodity-analysis-reports/commodity-metadata-generators';
 import { fetchCommodityPriceHistory, fetchCommodityReport } from '@/utils/commodity-analysis-reports/commodity-report-fetchers';
 import { parseMarkdown } from '@/util/parse-markdown';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
@@ -36,15 +41,15 @@ async function loadCommodity(slug: string) {
 export async function generateMetadata({ params }: { params: RouteParams }): Promise<Metadata> {
   const { slug } = await params;
   const commodity = await loadCommodity(slug);
-  const name = commodity?.name ?? slug;
-  const title = `${name} — Commodity Analysis | KoalaGains`;
-  const description = commodity?.metaDescription || `Supply & demand, price & value, volatility & risk, and future outlook analysis for ${name}.`;
-  return {
-    title,
-    description,
-    alternates: { canonical: `/commodities/${slug}` },
-    openGraph: { title, description, url: `/commodities/${slug}` },
-  };
+  return generateCommodityDetailMetadata({
+    name: commodity?.name ?? slug,
+    slug,
+    commodityGroup: commodity?.commodityGroup ?? 'Commodity',
+    exchange: commodity?.exchange,
+    metaDescription: commodity?.metaDescription,
+    createdTime: commodity?.createdAt?.toISOString(),
+    updatedTime: commodity?.updatedAt?.toISOString(),
+  });
 }
 
 export default async function CommodityDetailPage({ params }: { params: RouteParams }): Promise<JSX.Element> {
@@ -52,6 +57,7 @@ export default async function CommodityDetailPage({ params }: { params: RoutePar
   const commodity = await loadCommodity(slug);
   if (!commodity) notFound();
 
+  const publishedDate = commodity.createdAt;
   const modifiedDate = commodity.updatedAt;
   const formattedModifiedDate = modifiedDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
 
@@ -70,6 +76,25 @@ export default async function CommodityDetailPage({ params }: { params: RoutePar
 
   return (
     <PageWrapper>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            generateCommodityDetailArticleJsonLd({
+              name: commodity.name,
+              slug,
+              commodityGroup: commodity.commodityGroup,
+              publishedDate: publishedDate.toISOString(),
+              modifiedDate: modifiedDate.toISOString(),
+            })
+          ),
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(generateCommodityDetailBreadcrumbJsonLd({ name: commodity.name, slug })) }}
+      />
+
       <Breadcrumbs breadcrumbs={breadcrumbs} hideHomeIcon={true} mobileBackOnly={true} />
 
       <ReportSection>
