@@ -1,4 +1,5 @@
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
+import { commoditySlugTag } from '@/utils/commodity-analysis-reports/commodity-cache-utils';
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
 
 /** Lightweight peer commodity shown in the "Similar Commodities" section. */
@@ -20,7 +21,9 @@ export interface SimilarCommodity {
 export async function fetchSimilarCommodities(slug: string): Promise<SimilarCommodity[]> {
   const url = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/commodities-v1/${encodeURIComponent(slug)}/similar-commodities`;
 
-  const res = await fetch(url, { cache: 'no-store' });
+  // Same per-slug tag as the report fetch — a report generation for this
+  // commodity revalidates its similar section along with the rest of its pages.
+  const res = await fetch(url, { next: { tags: [commoditySlugTag(slug)] } });
   if (!res.ok) throw new Error(`fetchSimilarCommodities failed (${res.status}): ${url}`);
 
   return (await res.json()) as SimilarCommodity[];

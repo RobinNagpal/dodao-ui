@@ -70,8 +70,21 @@ locals {
     "/api/koala_gains/etfs-v1/exchange/*/*/future-performance-outlook-data",
   ]
 
-  # Combined cached GET API endpoints (stocks + ETFs) — one ordered_cache_behavior per pattern.
-  api_cached_paths = concat(local.stocks_api_cached_paths, local.etfs_api_cached_paths)
+  # Per-commodity public GET API endpoints that back the /commodities/[slug] page tree. Same
+  # rationale as the stocks/ETF lists: enumerated (not a broad /api/.../commodities-v1/* wildcard)
+  # because that prefix also hosts admin-protected GETs (`/commodities`, `/commodity-admin-reports`).
+  # The main + four scored sub-reports all render from `/report`; the main page also fetches
+  # `/price-history` (chart) and both main + sub-reports fetch `/similar-commodities`. The
+  # `/listing` GET backs the `/commodities` index. Each is a public (`withErrorHandlingV2`) GET.
+  commodities_api_cached_paths = [
+    "/api/koala_gains/commodities-v1/listing",
+    "/api/koala_gains/commodities-v1/*/report",
+    "/api/koala_gains/commodities-v1/*/price-history",
+    "/api/koala_gains/commodities-v1/*/similar-commodities",
+  ]
+
+  # Combined cached GET API endpoints (stocks + ETFs + commodities) — one ordered_cache_behavior per pattern.
+  api_cached_paths = concat(local.stocks_api_cached_paths, local.etfs_api_cached_paths, local.commodities_api_cached_paths)
 
   # Environment tag kept literal ("prod") to match the value the distribution + cert + IAM
   # policy were created with in dodao-api-v2-deployment (where local.environment derived from
@@ -384,6 +397,29 @@ resource "aws_cloudfront_distribution" "koalagains" {
 
   ordered_cache_behavior {
     path_pattern           = "/tariff-reports*"
+    target_origin_id       = local.vercel_origin_id
+    viewer_protocol_policy = "redirect-to-https"
+    allowed_methods        = local.all_viewer_methods
+    cached_methods         = ["GET", "HEAD"]
+    compress               = true
+
+    cache_policy_id          = aws_cloudfront_cache_policy.koalagains_one_week.id
+    origin_request_policy_id = "216adef6-5c7f-47e4-b989-5492eafa07d3"
+
+    dynamic "function_association" {
+      for_each = var.enable_www_redirect ? [1] : []
+      content {
+        event_type   = "viewer-request"
+        function_arn = aws_cloudfront_function.www_redirect[0].arn
+      }
+    }
+  }
+
+  # `/commodities*` covers the bare `/commodities` listing plus every `/commodities/<slug>` main
+  # and scored sub-report page (same 6-day edge window as the other page trees). The listing
+  # refreshes on its 1-week Next.js TTL; per-commodity pages are purged on report generation.
+  ordered_cache_behavior {
+    path_pattern           = "/commodities*"
     target_origin_id       = local.vercel_origin_id
     viewer_protocol_policy = "redirect-to-https"
     allowed_methods        = local.all_viewer_methods

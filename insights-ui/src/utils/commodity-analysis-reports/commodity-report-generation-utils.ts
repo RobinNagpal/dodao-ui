@@ -1,6 +1,7 @@
 import { CommodityReportType, getCommodityOutputSchema } from '@/types/commodity/commodity-analysis-types';
 import { getLlmResponse } from '@/scripts/llm‑utils‑gemini';
 import { compileTemplate } from '@/util/get-llm-response';
+import { revalidateCommodity } from '@/utils/commodity-analysis-reports/commodity-cache-utils';
 import { prepareCommodityInputJson } from '@/utils/commodity-analysis-reports/commodity-report-input-json-utils';
 import { resolveCommodityPromptTemplate } from '@/utils/commodity-analysis-reports/commodity-prompt-template-utils';
 import { fetchCommodityWithAllData } from '@/utils/commodity-analysis-reports/get-commodity-report-data-utils';
@@ -27,7 +28,11 @@ export function startCommodityReportGeneration(slug: string, reportType: Commodi
       const prompt = compileTemplate(resolveCommodityPromptTemplate(reportType), inputJson);
       const llmResponse = await getLlmResponse(prompt, getCommodityOutputSchema(reportType));
       await saveCommodityReport({ slug, reportType, llmResponse });
-      console.log(`[${reportType}] [${slug}] commodity report generated and saved`);
+      // Purge both cache layers for just this commodity (Next.js slug tag +
+      // CloudFront page subtree + per-slug API endpoints). The `/commodities`
+      // listing is intentionally left alone — it rides its 1-week TTL.
+      revalidateCommodity(slug);
+      console.log(`[${reportType}] [${slug}] commodity report generated, saved, and cache invalidated`);
     } catch (err) {
       console.error(`Commodity report "${reportType}" generation failed for "${slug}":`, err);
     }

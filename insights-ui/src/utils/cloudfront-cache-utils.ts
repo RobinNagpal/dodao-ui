@@ -14,7 +14,7 @@ import { waitUntil } from '@vercel/functions';
  *
  * Only the following paths are cached at CloudFront today (see
  * `deployments/insights-ui/cloudfront.tf`):
- *   - Pages: `/`, `/stocks/*`, `/etfs/*`, `/industry-tariff-report/*`, `/tariff-reports*`
+ *   - Pages: `/`, `/stocks/*`, `/etfs/*`, `/industry-tariff-report/*`, `/tariff-reports*`, `/commodities*`
  *   - Stocks API: the public GET endpoints under
  *     `/api/koala_gains/tickers-v1/exchange/{e}/{t}/` that a /stocks/* render fetches —
  *     `{business-and-moat,financial-statement-analysis,past-performance,future-performance,
@@ -25,6 +25,10 @@ import { waitUntil } from '@vercel/functions';
  *     portfolio-holdings,competition,performance-returns-data,cost-efficiency-team-data,
  *     risk-analysis-data,future-performance-outlook-data}` (the per-ETF GET endpoints that back
  *     the /etfs/[exchange]/[etf] page tree)
+ *   - Commodity API: `/api/koala_gains/commodities-v1/{listing, {slug}/report,
+ *     {slug}/price-history, {slug}/similar-commodities}` (the public GET endpoints that back the
+ *     /commodities page tree). The admin GETs (`/commodities`, `/commodity-admin-reports`) are
+ *     not among the cloudfront.tf behaviors, so an invalidation for them is a harmless no-op.
  *
  * Calls for any other path are filtered out before reaching the AWS API — they
  * would not have a cache entry to purge and would just consume the monthly
@@ -49,9 +53,11 @@ const CACHED_PATH_PREFIXES = [
   '/etfs/',
   '/industry-tariff-report/',
   '/tariff-reports', // matches the bare `/tariff-reports` listing and `/tariff-reports/...`
+  '/commodities', // matches the bare `/commodities` listing and `/commodities/<slug>...`
   '/api/koala_gains/tickers-v1/exchange/',
   '/api/koala_gains/tickers-v1/country/',
   '/api/koala_gains/etfs-v1/exchange/',
+  '/api/koala_gains/commodities-v1/', // the per-commodity GET endpoints (report, price-history, similar-commodities, listing)
 ] as const;
 
 let client: CloudFrontClient | null = null;

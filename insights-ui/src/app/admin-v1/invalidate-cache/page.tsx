@@ -153,7 +153,7 @@ export default function InvalidateCachePage(): JSX.Element {
             if (typeof v === 'string') setInput(v);
           }}
           minHeight={200}
-          placeholder={'https://koalagains.com/stocks/NYSE/RTX\n/stocks/management-team-sitemap.xml'}
+          placeholder={'https://koalagains.com/stocks/NYSE/RTX\n/commodities/gold\n/commodities/crude-oil*\n/commodities'}
         />
 
         <div className="text-sm text-gray-300 space-y-1">
@@ -167,8 +167,11 @@ export default function InvalidateCachePage(): JSX.Element {
             </p>
           )}
           <p className="text-gray-400">
-            Wildcards are supported (e.g. <span className="font-mono">/stocks/NYSE/RTX*</span>). Only paths under CloudFront-cached prefixes are forwarded to
-            AWS; the rest are ignored as no-ops.
+            Wildcards are supported (e.g. <span className="font-mono">/stocks/NYSE/RTX*</span> or <span className="font-mono">/commodities/gold*</span> to purge
+            a commodity&apos;s whole page tree). Only paths under CloudFront-cached prefixes (<span className="font-mono">/stocks</span>,{' '}
+            <span className="font-mono">/etfs</span>, <span className="font-mono">/commodities</span>,{' '}
+            <span className="font-mono">/industry-tariff-report</span>, <span className="font-mono">/tariff-reports</span>, and their backing APIs) are
+            forwarded to AWS; the rest are ignored as no-ops.
           </p>
         </div>
 
