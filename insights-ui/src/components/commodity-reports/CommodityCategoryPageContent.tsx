@@ -1,7 +1,7 @@
 import CommodityCategoryReport from '@/components/commodity-reports/CommodityCategoryReport';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { CommodityAnalysisCategory, COMMODITY_CATEGORY_NAMES, COMMODITY_CATEGORY_TO_PATH } from '@/types/commodity/commodity-analysis-types';
-import { fetchCommodityWithAllData } from '@/utils/commodity-analysis-reports/get-commodity-report-data-utils';
+import { fetchCommodityReport } from '@/utils/commodity-analysis-reports/commodity-report-fetchers';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { Metadata } from 'next';
@@ -19,7 +19,7 @@ export async function buildCommodityCategoryMetadata(slug: string, categoryKey: 
   const categoryName = COMMODITY_CATEGORY_NAMES[categoryKey];
   let name = slug;
   try {
-    const commodity = await fetchCommodityWithAllData(slug);
+    const commodity = await fetchCommodityReport(slug);
     name = commodity.name;
   } catch {
     /* keep generic */
@@ -49,7 +49,7 @@ export default async function CommodityCategoryPageContent({
 }): Promise<JSX.Element> {
   let commodity;
   try {
-    commodity = await fetchCommodityWithAllData(slug);
+    commodity = await fetchCommodityReport(slug);
   } catch {
     notFound();
   }

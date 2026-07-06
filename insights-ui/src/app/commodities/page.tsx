@@ -1,6 +1,5 @@
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
-import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
-import { prisma } from '@/prisma';
+import { fetchCommodityListing } from '@/utils/commodity-analysis-reports/commodity-report-fetchers';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { Metadata } from 'next';
@@ -15,11 +14,7 @@ export const metadata: Metadata = {
 };
 
 export default async function CommoditiesIndexPage(): Promise<JSX.Element> {
-  const commodities = await prisma.commodity.findMany({
-    where: { spaceId: KoalaGainsSpaceId },
-    orderBy: [{ commodityGroup: 'asc' }, { name: 'asc' }],
-    include: { cachedScore: { select: { finalScore: true } } },
-  });
+  const commodities = await fetchCommodityListing();
 
   const groups = Array.from(new Set(commodities.map((c) => c.commodityGroup)));
 
@@ -55,8 +50,8 @@ export default async function CommoditiesIndexPage(): Promise<JSX.Element> {
                     className="flex items-center justify-between gap-2 bg-block-bg-color rounded-lg border border-color hover:border-primary transition-colors px-3 py-2.5"
                   >
                     <span className="text-sm font-semibold heading-color break-words">{c.name}</span>
-                    {c.cachedScore && (
-                      <span className="text-xs font-medium bg-primary text-primary-text px-1.5 py-0.5 rounded shrink-0">{c.cachedScore.finalScore}</span>
+                    {c.finalScore !== null && (
+                      <span className="text-xs font-medium bg-primary text-primary-text px-1.5 py-0.5 rounded shrink-0">{c.finalScore}</span>
                     )}
                   </Link>
                 ))}

@@ -13,8 +13,7 @@ import ReportFooter from '@/components/ui/sections/ReportFooter';
 import ReportSection from '@/components/ui/sections/ReportSection';
 import SectionHeading from '@/components/ui/sections/SectionHeading';
 import { CommodityKeyFactsFlag, CommodityKeyFactsProducer, CommodityKeyFactsWayToInvest } from '@/types/commodity/commodity-analysis-types';
-import { fetchCommodityWithAllData } from '@/utils/commodity-analysis-reports/get-commodity-report-data-utils';
-import { loadCommodityPriceHistory } from '@/utils/commodity-price-history-utils';
+import { fetchCommodityPriceHistory, fetchCommodityReport } from '@/utils/commodity-analysis-reports/commodity-report-fetchers';
 import { parseMarkdown } from '@/util/parse-markdown';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
@@ -28,7 +27,7 @@ type RouteParams = Promise<Readonly<{ slug: string }>>;
 
 async function loadCommodity(slug: string) {
   try {
-    return await fetchCommodityWithAllData(slug);
+    return await fetchCommodityReport(slug);
   } catch {
     return null;
   }
@@ -109,7 +108,7 @@ export default async function CommodityDetailPage({ params }: { params: RoutePar
         </div>
 
         <Suspense fallback={null}>
-          <CommodityPriceChart promise={loadCommodityPriceHistory(commodity)} />
+          <CommodityPriceChart promise={fetchCommodityPriceHistory(slug)} />
         </Suspense>
       </ReportSection>
 
