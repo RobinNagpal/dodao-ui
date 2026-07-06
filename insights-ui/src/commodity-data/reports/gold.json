@@ -1,0 +1,207 @@
+{
+  "slug": "gold",
+  "name": "Gold",
+  "commodityGroup": "Metals",
+  "priceSymbol": "GC=F",
+  "exchange": "COMEX",
+  "unit": "troy ounce",
+  "currency": "USD",
+  "metaDescription": "A plain-English investor read on gold — what drives its price, its supply and demand balance, valuation, volatility and risk, and the forward outlook.",
+  "updatedAt": "2026-07-06",
+  "summary": "Overall stance: Positive.\n\nGold remains the deepest, most liquid safe-haven asset, backed by steady central-bank buying and resilient jewelry and investment demand. Supply is slow-moving, so price is set mostly by demand and by real interest rates. Valuation looks full versus its long-term real-price range, which tempers the upside. Volatility is moderate for a commodity, and gold's low correlation to equities makes it a useful portfolio diversifier. The forward outlook is constructive but hinges on the path of real rates and the US dollar. Best suited to investors who want a long-horizon hedge rather than a short-term trade.",
+  "keyFacts": {
+    "keyFacts": "Gold is a precious metal held primarily as a store of value rather than for industrial consumption. It trades globally around the clock, with the COMEX front-month future (GC=F) and the London spot market setting the reference price per troy ounce in US dollars.\n\nFor a retail investor, the two things that matter most are real interest rates and the US dollar: gold tends to rise when real yields fall and the dollar weakens, and to struggle when the opposite holds. Because mine supply grows only slowly, swings in investment and central-bank demand — not production — drive most of the price action.",
+    "greenFlags": [
+      {
+        "flag": "Sustained central-bank accumulation",
+        "explanation": "Central banks have been net buyers of gold for over a decade, adding a durable, price-insensitive source of demand that supports the market. This buying tends to persist regardless of short-term price moves.",
+        "result": "Pass"
+      },
+      {
+        "flag": "Deep liquidity and safe-haven status",
+        "explanation": "Gold is one of the most liquid assets in the world and is the reference safe-haven during market stress. That liquidity lowers the cost of getting in and out and makes it a reliable hedge.",
+        "result": "Pass"
+      },
+      {
+        "flag": "Low correlation to equities",
+        "explanation": "Gold has historically shown low-to-negative correlation with stocks, so it can cushion a portfolio during equity drawdowns. This diversification benefit is a core reason investors hold it.",
+        "result": "Pass"
+      }
+    ],
+    "redFlags": [
+      {
+        "flag": "No yield or cash flow",
+        "explanation": "Gold pays no dividend or interest, so its entire return depends on price appreciation. When real rates are high, the opportunity cost of holding it rises.",
+        "result": "Fail"
+      },
+      {
+        "flag": "Full valuation versus real-price history",
+        "explanation": "In inflation-adjusted terms gold sits in the upper part of its multi-decade range, which limits the margin of safety for new buyers. A mean-reversion move would pressure returns.",
+        "result": "Fail"
+      }
+    ],
+    "mainUses": ["Investment and store of value", "Central-bank reserves", "Jewelry", "Electronics and industrial (minor)"],
+    "topProducers": [
+      { "country": "China", "share": "~10%" },
+      { "country": "Australia", "share": "~9%" },
+      { "country": "Russia", "share": "~9%" },
+      { "country": "United States", "share": "~5%" }
+    ],
+    "waysToInvest": [
+      { "type": "ETF", "name": "GLD / IAU", "note": "Physically-backed spot gold ETFs" },
+      { "type": "Futures", "name": "GC=F", "note": "COMEX front-month contract" },
+      { "type": "Physical", "name": "Bullion / coins", "note": "Direct ownership, storage costs apply" },
+      { "type": "Equities", "name": "Gold miners (e.g. GDX)", "note": "Leveraged, operational exposure to the price" }
+    ]
+  },
+  "categories": [
+    {
+      "categoryKey": "SupplyAndDemand",
+      "summary": "Gold's supply is slow-moving and its demand is broad and resilient, anchored by central banks, jewelry and investment. The balance currently favors demand, which is supportive of price.",
+      "overallAnalysisDetails": "Mine production grows only about 1-2% per year and is geographically diversified, so supply is inelastic to price in the short run. Above-ground stocks are enormous relative to annual flow, meaning gold rarely faces the kind of physical shortages that move industrial commodities.\n\nOn the demand side, central-bank buying has been the standout driver, adding a large, price-insensitive bid. Jewelry demand (led by India and China) is seasonal but steady, and investment demand via ETFs and bars ebbs and flows with macro sentiment. With central banks accumulating and mine supply flat, the net balance leans supportive.",
+      "factors": [
+        {
+          "factorKey": "production_output_trend",
+          "oneLineExplanation": "Mine output grows slowly (~1-2%/yr) and is diversified.",
+          "detailedExplanation": "Global mine production has plateaued, with new discoveries and grades declining. This slow, inelastic supply means demand shifts dominate price. Net positive for holders.",
+          "result": "Pass"
+        },
+        {
+          "factorKey": "global_inventories_stockpiles",
+          "oneLineExplanation": "Huge above-ground stocks, but tightly held.",
+          "detailedExplanation": "Most gold ever mined still exists, but a large share sits in central-bank vaults and long-term investment hands that rarely sell. Available float is smaller than headline stocks suggest.",
+          "result": "Pass"
+        },
+        {
+          "factorKey": "demand_drivers",
+          "oneLineExplanation": "Central banks, jewelry and investment all contribute.",
+          "detailedExplanation": "Demand is unusually diversified for a commodity. Central-bank reserve buying provides a durable floor, while investment demand adds cyclical upside during stress or falling real rates.",
+          "result": "Pass"
+        },
+        {
+          "factorKey": "spare_capacity_new_supply",
+          "oneLineExplanation": "Little near-term new supply to cap price.",
+          "detailedExplanation": "New mines take a decade to develop and few large projects are coming online, so there is limited spare capacity to blunt a demand-driven rally.",
+          "result": "Pass"
+        },
+        {
+          "factorKey": "seasonality",
+          "oneLineExplanation": "Mild seasonality tied to jewelry buying.",
+          "detailedExplanation": "There is some seasonal strength around Indian wedding and festival demand and Chinese New Year, but the effect is modest and easily overwhelmed by macro drivers.",
+          "result": "Fail"
+        }
+      ]
+    },
+    {
+      "categoryKey": "PriceAndValue",
+      "summary": "Gold looks fully valued against its long-term real-price range and sits near record nominal highs, so the margin of safety for new buyers is thin.",
+      "overallAnalysisDetails": "On an inflation-adjusted basis, gold trades in the upper portion of its multi-decade range, which historically has preceded periods of flat-to-lower real returns. There is no cash-flow-based valuation anchor, so 'value' is judged against its own history and against substitutes.\n\nAgainst silver and other stores of value, gold is not obviously cheap. The lack of a production-cost floor that meaningfully constrains price on the downside (as it can for oil or agriculture) means valuation discipline matters more here.",
+      "factors": [
+        {
+          "factorKey": "price_vs_range",
+          "oneLineExplanation": "Trading in the top of its 5/10-year range.",
+          "detailedExplanation": "Gold sits near the high end of its recent range, leaving less room for multiple expansion and more vulnerability to pullbacks if real rates rise.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "inflation_adjusted_price",
+          "oneLineExplanation": "Elevated in real terms versus history.",
+          "detailedExplanation": "Adjusted for inflation, gold is in the upper part of its multi-decade band. Prior periods at similar real levels saw muted forward returns.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "cost_of_production_floor",
+          "oneLineExplanation": "Production cost sits well below spot.",
+          "detailedExplanation": "All-in sustaining costs are far below the current price, so the cost floor offers little downside protection at today's levels.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "price_vs_substitute",
+          "oneLineExplanation": "Not clearly cheap versus silver/other havens.",
+          "detailedExplanation": "The gold/silver ratio and comparisons to other safe havens do not flag gold as unusually cheap, tempering the relative-value case.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "distance_from_all_time_high",
+          "oneLineExplanation": "At or near all-time highs.",
+          "detailedExplanation": "Gold is close to record nominal levels. Momentum can persist, but buying at highs raises the risk of poor entry timing.",
+          "result": "Fail"
+        }
+      ]
+    },
+    {
+      "categoryKey": "VolatilityAndRisk",
+      "summary": "Gold is moderately volatile for a commodity, with shallow drawdowns relative to equities and a low correlation that makes it a genuine diversifier. Its main risk is sensitivity to real rates and the dollar.",
+      "overallAnalysisDetails": "Realized volatility is lower than energy or agriculture and its worst drawdowns have generally been shallower and shorter than equity bear markets. The dominant risk factors are macro: rising real yields and a stronger dollar are the classic headwinds.\n\nBecause gold's correlation to stocks is low, it tends to help portfolio-level risk even though it is volatile on its own. Geopolitical and weather risks are minimal for a metal held as a store of value.",
+      "factors": [
+        {
+          "factorKey": "historical_volatility",
+          "oneLineExplanation": "Moderate volatility, below energy/ags.",
+          "detailedExplanation": "Gold's realized volatility is meaningful but lower than most commodities, making position sizing easier for a diversified investor.",
+          "result": "Pass"
+        },
+        {
+          "factorKey": "worst_drawdowns",
+          "oneLineExplanation": "Drawdowns shallower than equities.",
+          "detailedExplanation": "Historic peak-to-trough declines, while real, have generally been less severe and shorter-lived than equity bear markets.",
+          "result": "Pass"
+        },
+        {
+          "factorKey": "geopolitical_weather_risk",
+          "oneLineExplanation": "Minimal supply-disruption risk.",
+          "detailedExplanation": "As a durable, non-perishable store of value with diversified supply, gold is largely insulated from the weather and single-region geopolitical shocks that hit ags and energy.",
+          "result": "Pass"
+        },
+        {
+          "factorKey": "us_dollar_sensitivity",
+          "oneLineExplanation": "Inverse to the US dollar.",
+          "detailedExplanation": "Gold typically falls when the dollar strengthens. A sustained dollar bull market is the clearest single risk to the price.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "correlation_to_inflation_and_stocks",
+          "oneLineExplanation": "Low equity correlation, imperfect inflation hedge.",
+          "detailedExplanation": "Gold diversifies equity risk well but is an inconsistent short-term inflation hedge; its real driver is real yields rather than headline inflation.",
+          "result": "Pass"
+        }
+      ]
+    },
+    {
+      "categoryKey": "FutureOutlook",
+      "summary": "The forward outlook is constructive, supported by central-bank demand and the prospect of falling real rates, but full valuation caps the upside. The path of real yields and the dollar is the swing factor.",
+      "overallAnalysisDetails": "If real rates ease and the dollar softens, gold has a clear tailwind and could extend gains, especially with central banks still buying. The bear case is a durable rise in real yields that raises the opportunity cost of holding a zero-yield asset.\n\nOfficial forecasts and analyst targets cluster around modest further upside rather than a dramatic move, reflecting the tension between strong structural demand and stretched valuation. Watch real yields, central-bank reserve data, and dollar trends as the key catalysts.",
+      "factors": [
+        {
+          "factorKey": "forward_supply_demand_balance",
+          "oneLineExplanation": "Demand-led balance stays supportive.",
+          "detailedExplanation": "With flat mine supply and continued official-sector buying, the forward balance leans supportive absent a demand shock.",
+          "result": "Pass"
+        },
+        {
+          "factorKey": "official_agency_forecast",
+          "oneLineExplanation": "Forecasts point to modest upside.",
+          "detailedExplanation": "Official and institutional forecasts generally see gold holding or grinding higher rather than a sharp move in either direction.",
+          "result": "Pass"
+        },
+        {
+          "factorKey": "analyst_price_targets",
+          "oneLineExplanation": "Targets cluster near current levels.",
+          "detailedExplanation": "Sell-side targets imply limited upside from here, consistent with a fully-valued but well-supported market.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "bull_vs_bear_scenario",
+          "oneLineExplanation": "Bull case on falling real rates; bear on rising ones.",
+          "detailedExplanation": "The outcome hinges on real yields: falling real rates and a weaker dollar drive the bull case, while a rate/dollar bull market anchors the bear case.",
+          "result": "Pass"
+        },
+        {
+          "factorKey": "key_catalysts_to_watch",
+          "oneLineExplanation": "Real yields, the dollar, and central-bank buying.",
+          "detailedExplanation": "The clearest catalysts are the direction of real interest rates, the US dollar trend, and the pace of central-bank reserve accumulation.",
+          "result": "Pass"
+        }
+      ]
+    }
+  ]
+}

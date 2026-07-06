@@ -1,9 +1,9 @@
 import { CommodityAnalysisCategory, COMMODITY_CATEGORY_NAMES } from '@/types/commodity/commodity-analysis-types';
 import { getCommodityFactorTitle } from '@/utils/commodity-analysis-reports/commodity-analysis-factor-utils';
 import { SpiderGraphForTicker } from '@/types/public-equity/ticker-report-types';
-import { CommodityAnalysisCategoryFactorResult, CommodityCategoryAnalysisResult } from '@prisma/client';
+import { CommodityAllDataCategoryResult } from '@/utils/commodity-analysis-reports/get-commodity-report-data-utils';
 
-export type CommodityCategoryResultWithFactors = CommodityCategoryAnalysisResult & { factorResults: CommodityAnalysisCategoryFactorResult[] };
+export type CommodityCategoryResultWithFactors = CommodityAllDataCategoryResult;
 
 /**
  * Build the shared spider-graph shape (reused by `TickerRadarChartSvg`) from a

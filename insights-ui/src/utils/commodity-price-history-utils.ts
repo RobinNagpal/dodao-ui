@@ -1,103 +1,45 @@
 import { PriceHistoryResponse } from '@/app/api/[spaceId]/tickers-v1/exchange/[exchange]/[ticker]/price-history/route';
-import { prisma } from '@/prisma';
-import { Commodity, CommodityPriceHistory } from '@prisma/client';
-import { PriceHistoryPoint } from '@/types/prismaTypes';
-import {
-  DAILY_LOOKBACK_DAYS,
-  ONE_DAY_MS,
-  WEEKLY_LOOKBACK_DAYS,
-  YahooPriceHistoryResult,
-  fetchPriceHistoryFromYahoo,
-  isDataStale,
-} from '@/utils/yahoo-price-history';
+import { CommodityBasicInfo } from '@/types/commodity/commodity-analysis-types';
+import { DAILY_LOOKBACK_DAYS, ONE_DAY_MS, WEEKLY_LOOKBACK_DAYS, fetchPriceHistoryFromYahoo } from '@/utils/yahoo-price-history';
 
 /**
- * Ensure price history is available and fresh for a commodity.
+ * Resolve a commodity's price history into the shared `PriceHistoryResponse`
+ * shape consumed by the price chart (reused from stocks/ETFs).
  *
- * Mirrors `ensureEtfPriceHistoryIsFresh` — Yahoo Finance serves commodity
- * futures OHLC history via the same `chart` endpoint used for equities/ETFs.
- * A commodity's `priceSymbol` (e.g. "GC=F", "CL=F") is already a Yahoo Finance
- * ticker, so it is passed through directly with no exchange-based conversion.
+ * Commodity report content is now static JSON, but the price chart still shows
+ * *live* market data, so this fetches OHLC history directly from Yahoo Finance on
+ * demand. A commodity's `priceSymbol` (e.g. "GC=F", "CL=F") is already a Yahoo
+ * ticker, so it is passed through with no exchange conversion. Freshness is
+ * handled by the caller's Next.js data-cache `revalidate` window rather than a
+ * database snapshot.
  *
  * - Daily series: last ~6.5 months (covers the 1M and 6M range tabs).
  * - Weekly series: last ~5 years (covers the 1Y, 3Y and 5Y range tabs).
  *
- * Returns null when the commodity has no `priceSymbol` to fetch.
+ * Returns null when the commodity has no `priceSymbol` or when Yahoo returns no
+ * usable data. Kick this off (without awaiting) in the report page and unwrap it
+ * inside a `<Suspense>` boundary so the fetch streams in without blocking render.
  */
-export async function ensureCommodityPriceHistoryIsFresh(commodity: Commodity): Promise<CommodityPriceHistory | null> {
-  if (!commodity.priceSymbol) return null;
-
-  const existing = await prisma.commodityPriceHistory.findUnique({
-    where: { commodityId: commodity.id },
-  });
-
-  const needsDaily = !existing || isDataStale(existing.lastUpdatedAtDaily);
-  const needsWeekly = !existing || isDataStale(existing.lastUpdatedAtWeekly);
-
-  if (existing && !needsDaily && !needsWeekly) {
-    return existing;
-  }
-
-  const yahooSymbol = commodity.priceSymbol;
-  const now = new Date();
+export async function loadCommodityPriceHistory(
+  commodity: Pick<CommodityBasicInfo, 'slug' | 'priceSymbol' | 'currency'>
+): Promise<PriceHistoryResponse | null> {
+  const symbol = commodity.priceSymbol;
+  if (!symbol) return null;
 
   try {
     const [dailyResult, weeklyResult] = await Promise.all([
-      needsDaily
-        ? fetchPriceHistoryFromYahoo(yahooSymbol, '1d', new Date(Date.now() - DAILY_LOOKBACK_DAYS * ONE_DAY_MS))
-        : Promise.resolve<YahooPriceHistoryResult | null>(null),
-      needsWeekly
-        ? fetchPriceHistoryFromYahoo(yahooSymbol, '1wk', new Date(Date.now() - WEEKLY_LOOKBACK_DAYS * ONE_DAY_MS))
-        : Promise.resolve<YahooPriceHistoryResult | null>(null),
+      fetchPriceHistoryFromYahoo(symbol, '1d', new Date(Date.now() - DAILY_LOOKBACK_DAYS * ONE_DAY_MS)),
+      fetchPriceHistoryFromYahoo(symbol, '1wk', new Date(Date.now() - WEEKLY_LOOKBACK_DAYS * ONE_DAY_MS)),
     ]);
 
-    const dailyData = dailyResult?.points ?? (existing?.dailyData as unknown as PriceHistoryPoint[] | undefined) ?? [];
-    const weeklyData = weeklyResult?.points ?? (existing?.weeklyData as unknown as PriceHistoryPoint[] | undefined) ?? [];
-    const currency = dailyResult?.currency ?? weeklyResult?.currency ?? existing?.currency ?? null;
+    const daily = dailyResult?.points ?? [];
+    const weekly = weeklyResult?.points ?? [];
+    if (daily.length === 0 && weekly.length === 0) return null;
 
-    const saved = await prisma.commodityPriceHistory.upsert({
-      where: { commodityId: commodity.id },
-      update: {
-        dailyData: dailyData as unknown as object,
-        lastUpdatedAtDaily: needsDaily ? now : existing!.lastUpdatedAtDaily,
-        weeklyData: weeklyData as unknown as object,
-        lastUpdatedAtWeekly: needsWeekly ? now : existing!.lastUpdatedAtWeekly,
-        currency,
-      },
-      create: {
-        commodity: { connect: { id: commodity.id } },
-        dailyData: dailyData as unknown as object,
-        lastUpdatedAtDaily: now,
-        weeklyData: weeklyData as unknown as object,
-        lastUpdatedAtWeekly: now,
-        currency,
-      },
-    });
-
-    return saved;
+    const currency = dailyResult?.currency ?? weeklyResult?.currency ?? commodity.currency ?? null;
+    return { symbol, currency, daily, weekly };
   } catch (error) {
-    console.error(`Failed to refresh price history for commodity ${commodity.slug} (${commodity.priceSymbol}):`, error);
-    // Fall back to prior snapshot if available so the UI still renders.
-    return existing;
+    console.error(`Failed to load price history for commodity ${commodity.slug} (${symbol}):`, error);
+    return null;
   }
-}
-
-/**
- * Resolve a commodity's price history into the shared `PriceHistoryResponse`
- * shape consumed by the price chart (reused from stocks/ETFs). Returns null when
- * there is no symbol or no usable data. Kick this off (without awaiting) in the
- * report page and unwrap it inside a `<Suspense>` boundary so the on-demand
- * Yahoo fetch streams in without blocking the rest of the render.
- */
-export async function loadCommodityPriceHistory(commodity: Commodity): Promise<PriceHistoryResponse | null> {
-  if (!commodity.priceSymbol) return null;
-
-  const priceInfo = await ensureCommodityPriceHistoryIsFresh(commodity);
-  if (!priceInfo) return null;
-
-  const daily = (priceInfo.dailyData as unknown as PriceHistoryPoint[] | null) ?? [];
-  const weekly = (priceInfo.weeklyData as unknown as PriceHistoryPoint[] | null) ?? [];
-  if (daily.length === 0 && weekly.length === 0) return null;
-
-  return { symbol: commodity.priceSymbol, currency: priceInfo.currency ?? null, daily, weekly };
 }

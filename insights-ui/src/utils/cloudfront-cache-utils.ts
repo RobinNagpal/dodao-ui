@@ -27,8 +27,7 @@ import { waitUntil } from '@vercel/functions';
  *     the /etfs/[exchange]/[etf] page tree)
  *   - Commodity API: `/api/koala_gains/commodities-v1/{listing, {slug}/report,
  *     {slug}/price-history, {slug}/similar-commodities}` (the public GET endpoints that back the
- *     /commodities page tree). The admin GETs (`/commodities`, `/commodity-admin-reports`) are
- *     not among the cloudfront.tf behaviors, so an invalidation for them is a harmless no-op.
+ *     /commodities page tree; commodity report content is served from static JSON).
  *
  * Calls for any other path are filtered out before reaching the AWS API — they
  * would not have a cache entry to purge and would just consume the monthly

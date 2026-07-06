@@ -1,5 +1,8 @@
-import { prisma } from '@/prisma';
-import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
+import {
+  computeCommodityFinalScore,
+  getAllCommodityBasicInfo,
+  getCommodityReportJson,
+} from '@/utils/commodity-analysis-reports/get-commodity-report-data-utils';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';
 
@@ -13,32 +16,18 @@ export interface CommodityListItem {
 }
 
 /**
- * Public listing of every commodity in the space, ordered by group then name,
- * with each commodity's final score. Backs the `/commodities` index page so it
- * fetches through the API instead of querying prisma directly — the commodity
- * parallel of the stock/ETF listing endpoints.
+ * Public listing of every commodity, ordered by group then name, with each
+ * commodity's final score. Backs the `/commodities` index page so it fetches
+ * through the API — data now comes from the static `commodity-data` JSON instead
+ * of the database. `finalScore` is null until a report JSON is published.
  */
-async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId: string }> }): Promise<CommodityListItem[]> {
-  const { spaceId } = await context.params;
-
-  const commodities = await prisma.commodity.findMany({
-    where: { spaceId: spaceId || KoalaGainsSpaceId },
-    orderBy: [{ commodityGroup: 'asc' }, { name: 'asc' }],
-    select: {
-      id: true,
-      slug: true,
-      name: true,
-      commodityGroup: true,
-      cachedScore: { select: { finalScore: true } },
-    },
-  });
-
-  return commodities.map((c) => ({
-    id: c.id,
+async function getHandler(_req: NextRequest): Promise<CommodityListItem[]> {
+  return getAllCommodityBasicInfo().map((c) => ({
+    id: c.slug,
     slug: c.slug,
     name: c.name,
     commodityGroup: c.commodityGroup,
-    finalScore: c.cachedScore?.finalScore ?? null,
+    finalScore: computeCommodityFinalScore(getCommodityReportJson(c.slug)),
   }));
 }
 
