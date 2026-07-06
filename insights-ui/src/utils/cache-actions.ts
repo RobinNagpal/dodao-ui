@@ -131,13 +131,14 @@ export interface AdminInvalidateCacheResult {
 
 /**
  * Admin-facing cache invalidation. Accepts arbitrary paths the operator pasted
- * on the `/admin-v1/invalidate-cache` page and purges BOTH cache layers:
+ * on the `/admin-v1/invalidate-cache` page and purges the relevant cache layer(s):
  *  - CloudFront: classifies the paths against the cached-prefix allowlist (so
  *    the UI can show which were sent to AWS vs ignored as no-ops) and forwards
- *    the cached subset.
+ *    the cached subset. (Commodity paths are NOT CloudFront-cached, so they fall
+ *    into the ignored/no-op bucket here.)
  *  - Next.js Data Cache: revalidates the tag behind any commodity path
- *    (`/commodities` → listing tag, `/commodities/<slug>...` → per-slug tag),
- *    since commodity report content is tag-only with no time-based revalidation.
+ *    (`/commodities` → listing tag, `/commodities/<slug>...` → per-slug tag) —
+ *    the only cache layer that applies to commodity pages.
  */
 export async function invalidateCloudFrontPathsForAdmin(paths: string[]): Promise<AdminInvalidateCacheResult> {
   const { cached, uncached } = classifyCloudFrontPaths(paths);

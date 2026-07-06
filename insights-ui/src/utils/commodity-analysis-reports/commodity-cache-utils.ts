@@ -5,16 +5,17 @@ import { revalidateTag } from 'next/cache';
  * pages.
  *
  * Commodity report content is static JSON (no generation flow), so there is
- * nothing to invalidate on a save. Two things still matter for caching:
+ * nothing to invalidate on a save. Commodity pages are NOT CloudFront-cached —
+ * only the Next.js Data Cache applies. Two things matter for caching:
  *   1. The per-slug/listing Next.js Data Cache tags below, so the pages can be
- *      purged manually from the admin "Invalidate cache" page (which also purges
- *      CloudFront) — e.g. after publishing a new report JSON.
+ *      purged manually from the admin "Invalidate cache" page — e.g. after
+ *      publishing a new report JSON.
  *   2. The time-based `revalidate` windows the fetchers apply — the listing and
  *      the live (Yahoo-sourced) price history both ride a 1-week TTL; the main
  *      and sub report pages are tag-only (no time-based revalidation).
  */
 
-/** One week — listing TTL + live price-history TTL; CloudFront caches the edge for 6 days. */
+/** One week — listing TTL + live price-history TTL. */
 export const ONE_WEEK_IN_SECONDS = 7 * 24 * 60 * 60;
 
 const COMMODITY_TAG_PREFIX = 'commodity:' as const;
@@ -34,14 +35,15 @@ const COMMODITY_PATH_RE = /^\/commodities(?:\/([^/]+))?(?:\/|$)/;
 
 /**
  * Given the paths pasted into the admin "Invalidate cache" page, revalidate the
- * matching Next.js Data Cache tags so that layer is purged alongside CloudFront.
- * `/commodities` → the listing tag; `/commodities/<slug>...` (or `<slug>*`) → the
- * per-slug tag. Returns the distinct tags revalidated so the UI can report them.
+ * matching Next.js Data Cache tags. Commodity pages are not CloudFront-cached, so
+ * this Next.js layer is the only cache to purge for them. `/commodities` → the
+ * listing tag; `/commodities/<slug>...` (or `<slug>*`) → the per-slug tag.
+ * Returns the distinct tags revalidated so the UI can report them.
  */
 export function revalidateCommodityTagsForPaths(paths: ReadonlyArray<string>): string[] {
   const tags = new Set<string>();
   for (const raw of paths) {
-    // Drop any query/hash and a trailing CloudFront wildcard before matching.
+    // Drop any query/hash and a trailing wildcard before matching.
     const path = raw.split(/[?#]/)[0].replace(/\*+$/, '');
     const match = COMMODITY_PATH_RE.exec(path);
     if (!match) continue;

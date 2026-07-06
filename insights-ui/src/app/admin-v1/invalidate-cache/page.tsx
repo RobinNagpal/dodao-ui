@@ -156,7 +156,7 @@ export default function InvalidateCachePage(): JSX.Element {
           <h1 className="text-2xl font-semibold text-white">Invalidate Cache</h1>
           <p className="text-gray-300 mt-1">
             Paste one or more URLs (or absolute paths) — one per line — to purge them from the CloudFront edge cache. Commodity paths (
-            <span className="font-mono">/commodities</span>…) also revalidate their Next.js Data Cache tag, so both layers are cleared.
+            <span className="font-mono">/commodities</span>…) are not CloudFront-cached, so they instead revalidate their Next.js Data Cache tag.
           </p>
         </div>
       </div>
@@ -183,12 +183,12 @@ export default function InvalidateCachePage(): JSX.Element {
             </p>
           )}
           <p className="text-gray-400">
-            Wildcards are supported (e.g. <span className="font-mono">/stocks/NYSE/RTX*</span> or <span className="font-mono">/commodities/gold*</span> to purge
-            a commodity&apos;s whole page tree). Only paths under CloudFront-cached prefixes (<span className="font-mono">/stocks</span>,{' '}
-            <span className="font-mono">/etfs</span>, <span className="font-mono">/commodities</span>,{' '}
+            Wildcards are supported (e.g. <span className="font-mono">/stocks/NYSE/RTX*</span> to purge a stock&apos;s whole page tree). Only paths under
+            CloudFront-cached prefixes (<span className="font-mono">/stocks</span>, <span className="font-mono">/etfs</span>,{' '}
             <span className="font-mono">/industry-tariff-report</span>, <span className="font-mono">/tariff-reports</span>, and their backing APIs) are
-            forwarded to AWS; the rest are ignored as no-ops. Commodity paths additionally revalidate the matching Next.js Data Cache tag (
-            <span className="font-mono">/commodities</span> → listing tag, <span className="font-mono">/commodities/&lt;slug&gt;</span> → per-slug tag).
+            forwarded to AWS; the rest are ignored as no-ops. Commodity paths are not CloudFront-cached — they instead revalidate the matching Next.js Data
+            Cache tag (<span className="font-mono">/commodities</span> → listing tag, <span className="font-mono">/commodities/&lt;slug&gt;</span> → per-slug
+            tag).
           </p>
         </div>
 

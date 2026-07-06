@@ -41,7 +41,8 @@ The TypeScript shapes are the source of truth — see
   stored. Commodities with no report JSON show a neutral placeholder.
 - The listing rides a 1-week Next.js `revalidate`; the main + sub report pages
   are tag-only (`commodity:<slug>`, no time-based revalidation); the price chart
-  (live Yahoo data) rides a 1-week `revalidate`. After publishing a new report,
-  redeploy or purge via the admin **Invalidate cache** page — pasting a
-  `/commodities...` path there clears BOTH the CloudFront edge and the matching
-  Next.js Data Cache tag.
+  (live Yahoo data) rides a 1-week `revalidate`. Commodity pages are **not**
+  CloudFront-cached (for now) — only the Next.js Data Cache applies. After
+  publishing a new report, redeploy or purge via the admin **Invalidate cache**
+  page — pasting a `/commodities...` path there revalidates the matching Next.js
+  Data Cache tag.
