@@ -13,12 +13,10 @@ import ReportFooter from '@/components/ui/sections/ReportFooter';
 import ReportSection from '@/components/ui/sections/ReportSection';
 import SectionHeading from '@/components/ui/sections/SectionHeading';
 import { CommodityKeyFactsFlag, CommodityKeyFactsProducer, CommodityKeyFactsWayToInvest } from '@/types/commodity/commodity-analysis-types';
-import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { fetchCommodityWithAllData } from '@/utils/commodity-analysis-reports/get-commodity-report-data-utils';
 import { fetchSimilarCommodities } from '@/utils/commodity-analysis-reports/get-similar-commodities-utils';
 import { loadCommodityPriceHistory } from '@/utils/commodity-price-history-utils';
 import { parseMarkdown } from '@/util/parse-markdown';
-import { prisma } from '@/prisma';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { Metadata } from 'next';
@@ -49,11 +47,6 @@ export async function generateMetadata({ params }: { params: RouteParams }): Pro
     alternates: { canonical: `/commodities/${slug}` },
     openGraph: { title, description, url: `/commodities/${slug}` },
   };
-}
-
-export async function generateStaticParams(): Promise<{ slug: string }[]> {
-  const commodities = await prisma.commodity.findMany({ where: { spaceId: KoalaGainsSpaceId }, select: { slug: true } });
-  return commodities.map((c) => ({ slug: c.slug }));
 }
 
 export default async function CommodityDetailPage({ params }: { params: RouteParams }): Promise<JSX.Element> {
