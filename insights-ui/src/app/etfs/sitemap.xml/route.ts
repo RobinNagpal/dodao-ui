@@ -5,8 +5,9 @@ import { getAllEtfGroups, getCategoriesForGroupKey } from '@/utils/etf-categoriz
 import { etfBrowseDetailPath, etfBrowsePath, etfGroupCategoryPath, etfSectionIndexPath } from '@/utils/etf-country-route-utils';
 import { ETF_ASSET_CLASS_OPTIONS } from '@/utils/etf-filter-utils';
 import { slugifyEtfTag } from '@/utils/etf-tag-slug-utils';
+import { SupportedCountries } from '@/utils/countryExchangeUtils';
 import { ETF_SUPPORTED_COUNTRIES } from '@/utils/etfCountryExchangeUtils';
-import { buildEtfSitemapResponse, SiteMapUrl } from '@/utils/etfSitemapUtils';
+import { buildEtfSitemapResponse, SITEMAP_EXCLUDED_ETF_EXCHANGES, SiteMapUrl } from '@/utils/etfSitemapUtils';
 import { NextResponse } from 'next/server';
 
 export const dynamic = 'force-dynamic';
@@ -34,7 +35,11 @@ async function generateEtfUrls(): Promise<SiteMapUrl[]> {
     if (option.value !== '') assetClassValueToKey.set(option.value, option.value);
   }
 
-  for (const country of ETF_SUPPORTED_COUNTRIES) {
+  // UK ETF pages stay live but are kept out of the sitemap so Google stops rediscovering them
+  // (see SITEMAP_EXCLUDED_ETF_EXCHANGES) — skip the UK listing/browse section here.
+  const sitemapCountries = ETF_SUPPORTED_COUNTRIES.filter((country) => country !== SupportedCountries.UK);
+
+  for (const country of sitemapCountries) {
     // Section index pages. The groups index collapses onto the country root (/etfs for US,
     // /etfs/countries/<country> otherwise), so use etfSectionIndexPath for it.
     urls.push({ url: etfSectionIndexPath(country, 'groups'), changefreq: 'daily', priority: 0.8 });
@@ -80,6 +85,7 @@ async function generateEtfUrls(): Promise<SiteMapUrl[]> {
     where: {
       spaceId: KoalaGainsSpaceId,
       cachedScore: { isNot: null },
+      exchange: { notIn: SITEMAP_EXCLUDED_ETF_EXCHANGES },
     },
     select: {
       symbol: true,

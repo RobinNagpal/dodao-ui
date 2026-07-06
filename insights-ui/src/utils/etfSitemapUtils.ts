@@ -1,6 +1,8 @@
 import { prisma } from '@/prisma';
 import { EtfAnalysisCategory } from '@/types/etf/etf-analysis-types';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
+import { SupportedCountries } from '@/utils/countryExchangeUtils';
+import { getEtfExchangesByCountry } from '@/utils/etfCountryExchangeUtils';
 import { getCanonicalUrl } from '@/utils/getBaseUrlForServerSidePages';
 import { Prisma } from '@prisma/client';
 import { NextResponse } from 'next/server';
@@ -12,6 +14,14 @@ export interface SiteMapUrl {
   priority?: number;
   lastmod?: string;
 }
+
+/**
+ * ETF exchanges excluded from every sitemap. UK ETFs (LSE) are being retired from search: the UK
+ * pages stay live (HTTP 200) so already-indexed URLs don't 404, but we no longer want Google to
+ * (re)discover them via the sitemaps. Used as a Prisma `exchange notIn` filter across every ETF
+ * sitemap query. The main sitemap (`etfs/sitemap.xml`) additionally drops the UK listing/browse pages.
+ */
+export const SITEMAP_EXCLUDED_ETF_EXCHANGES: string[] = getEtfExchangesByCountry(SupportedCountries.UK);
 
 /** Stream a list of URLs into an XML sitemap response — shared by every ETF sitemap route. */
 export async function buildEtfSitemapResponse(urls: SiteMapUrl[]): Promise<NextResponse<Buffer>> {
@@ -54,6 +64,7 @@ export async function buildEtfCategoryReportSitemap(categoryKey: EtfAnalysisCate
       categoryKey,
       // The sub-page renders overallAnalysisDetails; an empty body is a thin page.
       overallAnalysisDetails: { not: '' },
+      etf: { is: { exchange: { notIn: SITEMAP_EXCLUDED_ETF_EXCHANGES } } },
     },
     select: {
       updatedAt: true,
@@ -81,6 +92,7 @@ export async function buildEtfCompetitionSitemap(): Promise<NextResponse<Buffer>
     where: {
       spaceId: KoalaGainsSpaceId,
       overallAnalysisDetails: { not: '' },
+      etf: { is: { exchange: { notIn: SITEMAP_EXCLUDED_ETF_EXCHANGES } } },
     },
     select: {
       updatedAt: true,
@@ -108,6 +120,7 @@ export async function buildEtfHoldingsSitemap(): Promise<NextResponse<Buffer>> {
     where: {
       spaceId: KoalaGainsSpaceId,
       morPortfolioInfo: { is: { holdings: { not: Prisma.DbNull } } },
+      exchange: { notIn: SITEMAP_EXCLUDED_ETF_EXCHANGES },
     },
     select: {
       symbol: true,

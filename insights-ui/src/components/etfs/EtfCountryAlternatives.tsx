@@ -1,7 +1,16 @@
 import Link from 'next/link';
 import { GlobeAltIcon } from '@heroicons/react/24/outline';
+import { SupportedCountries } from '@/utils/countryExchangeUtils';
 import { EtfSupportedCountry } from '@/utils/etfCountryExchangeUtils';
 import { ALL_ETF_COUNTRIES, EtfBrowseSection, etfBasePath, etfCountryDisplayName, etfSectionIndexPath } from '@/utils/etf-country-route-utils';
+
+/**
+ * Countries we still cross-link to from the "Also view" switcher. UK is intentionally excluded:
+ * the UK ETF pages stay live (they don't 404), but we no longer surface them from other listing
+ * pages or the home page, so Google stops rediscovering them via internal links. The UK pages are
+ * also dropped from the sitemaps (see `etfSitemapUtils.ts` / `etfs/sitemap.xml`).
+ */
+const SWITCHER_ETF_COUNTRIES = ALL_ETF_COUNTRIES.filter((c) => c !== SupportedCountries.UK);
 
 interface EtfCountryAlternativesProps {
   currentCountry: EtfSupportedCountry;
@@ -22,7 +31,7 @@ interface EtfCountryAlternativesProps {
 }
 
 export default function EtfCountryAlternatives({ currentCountry, section, buildHref, includeCurrent = false, className = '' }: EtfCountryAlternativesProps) {
-  const alternatives = includeCurrent ? [...ALL_ETF_COUNTRIES] : ALL_ETF_COUNTRIES.filter((c) => c !== currentCountry);
+  const alternatives = includeCurrent ? [...SWITCHER_ETF_COUNTRIES] : SWITCHER_ETF_COUNTRIES.filter((c) => c !== currentCountry);
   if (alternatives.length === 0) return null;
 
   return (
