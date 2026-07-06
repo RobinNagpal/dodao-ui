@@ -61,8 +61,8 @@ export default function MobileEtfActionsMenu({ etfId, etfSymbol, etfName }: Mobi
           onClick={() => handleSelect('favourite')}
           aria-label={favouriteEtf ? 'Edit favourite' : 'Add to favourites'}
           title={!session ? 'Login to add to favourites' : favouriteEtf ? 'Edit favourite' : 'Add to favourites'}
-          className={`inline-flex items-center justify-center p-2 text-white border rounded-lg shadow-md ${
-            favouriteEtf ? 'bg-blue-700 hover:bg-blue-600 border-blue-600' : 'bg-gray-700 hover:bg-gray-600 border-gray-600'
+          className={`inline-flex items-center justify-center p-2 text-heading border rounded-lg shadow-md ${
+            favouriteEtf ? 'bg-primary hover:opacity-90 border-primary' : 'bg-surface-2 hover:bg-surface-3 border-border'
           }`}
         >
           {favouriteEtf ? <HeartSolid className="w-5 h-5 text-red-400" aria-hidden="true" /> : <HeartOutline className="w-5 h-5" aria-hidden="true" />}

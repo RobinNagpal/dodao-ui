@@ -49,7 +49,7 @@ export default function EtfGroupsIndex({ country, data, title, description, swit
         return (
           <div key={group.key} className="mb-8">
             <div className="flex items-center justify-between mb-4 gap-4">
-              <h2 className="text-xl font-bold text-white">{group.name}</h2>
+              <h2 className="text-xl font-bold text-heading">{group.name}</h2>
               <Link
                 href={groupHref}
                 prefetch={false}
@@ -77,7 +77,7 @@ export default function EtfGroupsIndex({ country, data, title, description, swit
       {others.count > 0 && (
         <div className="mb-8">
           <div className="flex items-center justify-between mb-4 gap-4">
-            <h2 className="text-xl font-bold text-white">{ETF_OTHERS_GROUP.name}</h2>
+            <h2 className="text-xl font-bold text-heading">{ETF_OTHERS_GROUP.name}</h2>
             <Link
               href={etfBrowseDetailPath(country, 'groups', ETF_OTHERS_GROUP.key)}
               prefetch={false}

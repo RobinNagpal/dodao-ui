@@ -46,7 +46,7 @@ export default function EtfSortButton(): JSX.Element {
         <ArrowsUpDownIcon className="h-5 w-5" />
         Sort
         {applied && (
-          <span className="inline-flex items-center gap-1 bg-blue-500 text-white px-2 py-0.5 font-semibold rounded-full text-xs">
+          <span className="inline-flex items-center gap-1 bg-primary text-heading px-2 py-0.5 font-semibold rounded-full text-xs">
             {applied.def.label}
             {applied.order === 'asc' ? <ArrowUpIcon className="h-3 w-3" /> : <ArrowDownIcon className="h-3 w-3" />}
           </span>
@@ -57,9 +57,9 @@ export default function EtfSortButton(): JSX.Element {
       <MenuItems
         portal={true}
         anchor={{ to: 'bottom end', gap: 8 }}
-        className="z-30 w-60 rounded-lg bg-[#1F2937] border border-[#374151] shadow-xl focus:outline-none p-2"
+        className="z-30 w-60 rounded-lg bg-surface border border-border shadow-xl focus:outline-none p-2"
       >
-        <div className="px-2 py-1.5 text-gray-400 text-[11px] font-semibold uppercase tracking-wider">Sort by</div>
+        <div className="px-2 py-1.5 text-muted text-[11px] font-semibold uppercase tracking-wider">Sort by</div>
         {ETF_SORT_FIELD_DEFS.map((def) => {
           const isActive = applied?.field === def.field;
           return (
@@ -67,8 +67,8 @@ export default function EtfSortButton(): JSX.Element {
               <button
                 type="button"
                 onClick={() => handleSelect(def.field)}
-                className={`flex w-full items-center justify-between rounded-md px-3 py-2 text-sm data-[focus]:bg-[#374151] ${
-                  isActive ? 'bg-[#374151] text-white' : 'text-[#E5E7EB]'
+                className={`flex w-full items-center justify-between rounded-md px-3 py-2 text-sm data-[focus]:bg-surface-2 ${
+                  isActive ? 'bg-surface-2 text-heading' : 'text-body'
                 }`}
               >
                 <span className="flex items-center gap-2">
@@ -76,7 +76,7 @@ export default function EtfSortButton(): JSX.Element {
                   {def.label}
                 </span>
                 {isActive && (
-                  <span className="inline-flex items-center gap-1 text-xs text-gray-300">
+                  <span className="inline-flex items-center gap-1 text-xs text-muted">
                     {applied!.order === 'asc' ? (
                       <>
                         <ArrowUpIcon className="h-3.5 w-3.5" />
@@ -96,19 +96,19 @@ export default function EtfSortButton(): JSX.Element {
         })}
         {applied && (
           <>
-            <div className="my-1 border-t border-[#374151]" />
+            <div className="my-1 border-t border-border" />
             <MenuItem>
               <button
                 type="button"
                 onClick={() => navigate(null, 'desc')}
-                className="w-full rounded-md px-3 py-2 text-left text-xs text-gray-400 data-[focus]:bg-[#374151] data-[focus]:text-white"
+                className="w-full rounded-md px-3 py-2 text-left text-xs text-muted data-[focus]:bg-surface-2 data-[focus]:text-heading"
               >
                 Clear sort
               </button>
             </MenuItem>
           </>
         )}
-        <p className="px-3 pt-1 text-[10px] text-gray-500">Click the active field to flip direction.</p>
+        <p className="px-3 pt-1 text-[10px] text-muted">Click the active field to flip direction.</p>
       </MenuItems>
     </Menu>
   );

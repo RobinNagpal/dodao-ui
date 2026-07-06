@@ -13,7 +13,7 @@ interface OperatorSelectProps {
 /** Segmented `<` `=` `>` selector. Reusable wherever a comparator is needed. */
 export function OperatorSelect({ value, onChange }: OperatorSelectProps): JSX.Element {
   return (
-    <div className="inline-flex shrink-0 overflow-hidden rounded border border-[#6B7280]">
+    <div className="inline-flex shrink-0 overflow-hidden rounded border border-border">
       {OPS.map((op) => (
         <button
           key={op}
@@ -22,7 +22,7 @@ export function OperatorSelect({ value, onChange }: OperatorSelectProps): JSX.El
           aria-pressed={value === op}
           onClick={() => onChange(op)}
           className={`w-7 py-1 text-sm font-bold leading-none transition-colors ${
-            value === op ? 'bg-[#F59E0B] text-black' : 'bg-[#4B5563] text-white hover:bg-[#6B7280]'
+            value === op ? 'bg-[#F59E0B] text-black' : 'bg-surface-3 text-heading hover:bg-surface-3'
           }`}
         >
           {NUMERIC_FILTER_OP_SYMBOLS[op]}
@@ -86,21 +86,19 @@ export default function NumericFilterControl({ id, label, value, options, onChan
   };
 
   return (
-    <div className={`rounded p-2 ${isActive ? 'bg-[#3B4252] ring-1 ring-[#F59E0B]' : 'bg-[#374151]'}`}>
+    <div className={`rounded p-2 ${isActive ? 'bg-surface-2 ring-1 ring-[#F59E0B]' : 'bg-surface-2'}`}>
       <div className="mb-1 flex items-center justify-between gap-2">
-        <label htmlFor={id} className="truncate text-xs text-gray-300" title={label}>
+        <label htmlFor={id} className="truncate text-xs text-muted" title={label}>
           {label}
         </label>
-        <div className="inline-flex shrink-0 overflow-hidden rounded bg-[#4B5563] text-[10px]">
+        <div className="inline-flex shrink-0 overflow-hidden rounded bg-surface-3 text-[10px]">
           {(['preset', 'custom'] as Mode[]).map((m) => (
             <button
               key={m}
               type="button"
               aria-pressed={mode === m}
               onClick={() => switchMode(m)}
-              className={`px-1.5 py-0.5 font-medium capitalize transition-colors ${
-                mode === m ? 'bg-[#F59E0B] text-black' : 'text-gray-200 hover:bg-[#6B7280]'
-              }`}
+              className={`px-1.5 py-0.5 font-medium capitalize transition-colors ${mode === m ? 'bg-[#F59E0B] text-black' : 'text-body hover:bg-surface-3'}`}
             >
               {m}
             </button>
@@ -113,7 +111,7 @@ export default function NumericFilterControl({ id, label, value, options, onChan
           id={id}
           value={value}
           onChange={(e) => onChange(e.target.value)}
-          className="w-full rounded border border-[#6B7280] bg-[#4B5563] px-1.5 py-1 text-xs text-white focus:border-transparent focus:ring-1 focus:ring-[#4F46E5]"
+          className="w-full rounded border border-border bg-surface-3 px-1.5 py-1 text-xs text-heading focus:border-transparent focus:ring-1 focus:ring-primary"
         >
           {options.map((option) => (
             <option key={option.value} value={option.value}>
@@ -131,12 +129,12 @@ export default function NumericFilterControl({ id, label, value, options, onChan
             value={num}
             placeholder="Value"
             onChange={(e) => emitCustom(op, e.target.value)}
-            className="w-full min-w-0 rounded border border-[#6B7280] bg-[#4B5563] px-1.5 py-1 text-xs text-white focus:border-transparent focus:ring-1 focus:ring-[#4F46E5]"
+            className="w-full min-w-0 rounded border border-border bg-surface-3 px-1.5 py-1 text-xs text-heading focus:border-transparent focus:ring-1 focus:ring-primary"
           />
         </div>
       )}
 
-      {mode === 'custom' && hint && <p className="mt-1 text-[10px] text-gray-400">{hint}</p>}
+      {mode === 'custom' && hint && <p className="mt-1 text-[10px] text-muted">{hint}</p>}
     </div>
   );
 }

@@ -19,7 +19,7 @@ const CATEGORY_KEY = EtfAnalysisCategory.FuturePerformanceOutlook;
 const CATEGORY_NAME = 'Future Performance Outlook';
 const CATEGORY_SLUG = 'future-performance-outlook';
 const DATA_SLUG = 'future-performance-outlook-data';
-const BADGE_CLASS = 'bg-sky-100 dark:bg-sky-900 text-sky-800 dark:text-sky-300';
+const BADGE_CLASS = 'bg-sky-500/15 text-sky-300 border border-sky-500/40';
 
 export const dynamic = 'force-dynamic';
 

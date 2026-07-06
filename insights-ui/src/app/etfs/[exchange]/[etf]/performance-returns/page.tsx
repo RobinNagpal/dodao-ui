@@ -22,7 +22,7 @@ const CATEGORY_KEY = EtfAnalysisCategory.PerformanceAndReturns;
 const CATEGORY_NAME = 'Performance & Returns';
 const CATEGORY_SLUG = 'performance-returns';
 const DATA_SLUG = 'performance-returns-data';
-const BADGE_CLASS = 'bg-emerald-100 dark:bg-emerald-900 text-emerald-800 dark:text-emerald-300';
+const BADGE_CLASS = 'bg-emerald-500/15 text-emerald-300 border border-emerald-500/40';
 
 export const dynamic = 'force-dynamic';
 

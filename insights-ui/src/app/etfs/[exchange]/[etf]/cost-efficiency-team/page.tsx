@@ -19,7 +19,7 @@ const CATEGORY_KEY = EtfAnalysisCategory.CostEfficiencyAndTeam;
 const CATEGORY_NAME = 'Cost, Efficiency & Team';
 const CATEGORY_SLUG = 'cost-efficiency-team';
 const DATA_SLUG = 'cost-efficiency-team-data';
-const BADGE_CLASS = 'bg-amber-100 dark:bg-amber-900 text-amber-800 dark:text-amber-300';
+const BADGE_CLASS = 'bg-amber-500/15 text-amber-300 border border-amber-500/40';
 
 export const dynamic = 'force-dynamic';
 

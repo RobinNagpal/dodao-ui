@@ -136,7 +136,7 @@ export default function AddEditEtfFavouriteModal({
               {myNotes ? (
                 <div className="markdown markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(myNotes) }} />
               ) : (
-                <p className="text-gray-500 text-sm">No notes added.</p>
+                <p className="text-muted text-sm">No notes added.</p>
               )}
             </div>
           ) : (
@@ -156,7 +156,7 @@ export default function AddEditEtfFavouriteModal({
         <ScoreInput value={myScore} onChange={setMyScore} max={ETF_MAX_SCORE} disabled={viewOnly} />
 
         {/* Action Buttons */}
-        <div className="flex justify-between gap-3 pt-5 mt-2 border-t border-gray-700">
+        <div className="flex justify-between gap-3 pt-5 mt-2 border-t border-border">
           {viewOnly ? (
             <div />
           ) : (

@@ -45,7 +45,7 @@ export default function EtfProvidersIndex({ country, data }: EtfProvidersIndexPr
       revalidateTag={{ kind: 'providers-index', country }}
     >
       {items.length === 0 ? (
-        <p className="text-[#E5E7EB] text-md">No providers available for {displayName} ETFs.</p>
+        <p className="text-body text-md">No providers available for {displayName} ETFs.</p>
       ) : (
         <EtfGroupingCardGrid columns={3} items={items} />
       )}

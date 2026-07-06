@@ -67,7 +67,7 @@ export default function EtfPagination({ currentPage, totalPages }: EtfPagination
       <button
         onClick={() => navigateToPage(currentPage - 1)}
         disabled={currentPage <= 1}
-        className="p-2 rounded-lg text-gray-400 hover:text-white hover:bg-[#374151] disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+        className="p-2 rounded-lg text-muted hover:text-heading hover:bg-surface-2 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
         aria-label="Previous page"
       >
         <ChevronLeftIcon className="h-5 w-5" />
@@ -75,7 +75,7 @@ export default function EtfPagination({ currentPage, totalPages }: EtfPagination
 
       {pages.map((item, idx) =>
         item === 'ellipsis' ? (
-          <span key={`ellipsis-${idx}`} className="px-2 text-gray-500">
+          <span key={`ellipsis-${idx}`} className="px-2 text-muted">
             ...
           </span>
         ) : (
@@ -83,7 +83,7 @@ export default function EtfPagination({ currentPage, totalPages }: EtfPagination
             key={item}
             onClick={() => navigateToPage(item)}
             className={`min-w-[2.25rem] h-9 rounded-lg text-sm font-medium transition-colors ${
-              item === currentPage ? 'bg-gradient-to-r from-[#F59E0B] to-[#FBBF24] text-black' : 'text-gray-400 hover:text-white hover:bg-[#374151]'
+              item === currentPage ? 'bg-gradient-to-r from-[#F59E0B] to-[#FBBF24] text-black' : 'text-muted hover:text-heading hover:bg-surface-2'
             }`}
           >
             {item}
@@ -94,7 +94,7 @@ export default function EtfPagination({ currentPage, totalPages }: EtfPagination
       <button
         onClick={() => navigateToPage(currentPage + 1)}
         disabled={currentPage >= totalPages}
-        className="p-2 rounded-lg text-gray-400 hover:text-white hover:bg-[#374151] disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+        className="p-2 rounded-lg text-muted hover:text-heading hover:bg-surface-2 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
         aria-label="Next page"
       >
         <ChevronRightIcon className="h-5 w-5" />

@@ -19,7 +19,7 @@ const CATEGORY_KEY = EtfAnalysisCategory.RiskAnalysis;
 const CATEGORY_NAME = 'Risk Analysis';
 const CATEGORY_SLUG = 'risk-analysis';
 const DATA_SLUG = 'risk-analysis-data';
-const BADGE_CLASS = 'bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-300';
+const BADGE_CLASS = 'bg-red-500/15 text-red-300 border border-red-500/40';
 
 export const dynamic = 'force-dynamic';
 
