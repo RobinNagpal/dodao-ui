@@ -4,11 +4,11 @@ import { CommodityReportType } from '@/types/commodity/commodity-analysis-types'
 
 /**
  * Commodity prompt templates are file-backed (version-controlled markdown under
- * `insights-ui/commodity-prompts/`) rather than stored in the DB, mirroring the
- * ETF file-backed prompts. The DB `Prompt` row still exists for
- * tracking/invocation, but the template text served at runtime comes from these
- * files. Files are read relative to `process.cwd()` so they ship with the Next
- * app (same runtime-file pattern as `schemas/` and `etf-prompts/`).
+ * `insights-ui/commodity-prompts/`), mirroring the tariff/ETF file-backed prompts.
+ * Generation reads the template from disk, embeds the input, and calls the LLM
+ * directly — nothing is stored in the `Prompt` / `PromptInvocation` tables. Files
+ * are read relative to `process.cwd()` so they ship with the Next app (same
+ * runtime-file pattern as `schemas/` and `etf-prompts/`).
  */
 const COMMODITY_PROMPT_FILES: Record<CommodityReportType, string> = {
   [CommodityReportType.SUPPLY_AND_DEMAND]: 'supply-and-demand.md',

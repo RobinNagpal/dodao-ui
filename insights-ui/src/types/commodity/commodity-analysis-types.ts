@@ -58,21 +58,6 @@ export const COMMODITY_CATEGORY_NAMES: Record<CommodityAnalysisCategory, string>
   [CommodityAnalysisCategory.FutureOutlook]: 'Future Outlook',
 };
 
-/**
- * Prompt keys tracked in the `Prompt` / `PromptInvocation` tables. The template
- * text itself is file-backed (see `commodity-prompts/`), but every invocation is
- * still recorded against these keys so it shows up in the prompt-invocation
- * tooling alongside the stock/ETF ones.
- */
-export const COMMODITY_PROMPT_KEYS: Record<CommodityReportType, string> = {
-  [CommodityReportType.SUPPLY_AND_DEMAND]: 'US/commodities/supply-and-demand',
-  [CommodityReportType.PRICE_AND_VALUE]: 'US/commodities/price-and-value',
-  [CommodityReportType.VOLATILITY_AND_RISK]: 'US/commodities/volatility-and-risk',
-  [CommodityReportType.FUTURE_OUTLOOK]: 'US/commodities/future-outlook',
-  [CommodityReportType.KEY_FACTS]: 'US/commodities/key-facts',
-  [CommodityReportType.FINAL_SUMMARY]: 'US/commodities/final-summary',
-};
-
 /** A single analysis factor definition (flat — commodities have no group logic). */
 export interface CommodityFactorDefinition {
   factorKey: string;
