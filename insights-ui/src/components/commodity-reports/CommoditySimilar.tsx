@@ -1,9 +1,11 @@
 import { SimilarCommodity } from '@/utils/commodity-analysis-reports/get-similar-commodities-utils';
 import { ArrowTopRightOnSquareIcon } from '@heroicons/react/20/solid';
 import Link from 'next/link';
+import { use } from 'react';
 
 export interface CommoditySimilarProps {
-  similar: ReadonlyArray<SimilarCommodity>;
+  /** Promise-based fetch (resolved via `use()` to keep Suspense at the caller). */
+  dataPromise: Promise<SimilarCommodity[]>;
   /**
    * Sub-report slug (e.g. "price-and-value"). When set, each peer links to the
    * *same* sub-report of that commodity instead of its main report — so a reader
@@ -19,8 +21,9 @@ export interface CommoditySimilarProps {
  * the same group as a card grid, reusing the same visual design (semantic color
  * tokens, hover states). Rendered on both the main report and the sub-reports.
  */
-export default function CommoditySimilar({ similar, subPageSlug }: CommoditySimilarProps): JSX.Element | null {
-  if (similar.length === 0) return null;
+export default function CommoditySimilar({ dataPromise, subPageSlug }: CommoditySimilarProps): JSX.Element | null {
+  const similar = use(dataPromise);
+  if (!similar || similar.length === 0) return null;
 
   return (
     <section id="similar-commodities" className="bg-surface rounded-lg shadow-sm p-3 sm:p-6 mb-8">

@@ -1,7 +1,7 @@
 import CommodityKeyFactsFlags from '@/components/commodity-reports/CommodityKeyFactsFlags';
 import CommodityPriceChart from '@/components/commodity-reports/CommodityPriceChart';
 import CommodityRadarChart from '@/components/commodity-reports/CommodityRadarChart';
-import CommoditySimilar from '@/components/commodity-reports/CommoditySimilar';
+import CommoditySimilarSection from '@/components/commodity-reports/CommoditySimilarSection';
 import CommoditySummaryAnalysis from '@/components/commodity-reports/CommoditySummaryAnalysis';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import Heading from '@/components/ui/Heading';
@@ -14,7 +14,6 @@ import ReportSection from '@/components/ui/sections/ReportSection';
 import SectionHeading from '@/components/ui/sections/SectionHeading';
 import { CommodityKeyFactsFlag, CommodityKeyFactsProducer, CommodityKeyFactsWayToInvest } from '@/types/commodity/commodity-analysis-types';
 import { fetchCommodityWithAllData } from '@/utils/commodity-analysis-reports/get-commodity-report-data-utils';
-import { fetchSimilarCommodities } from '@/utils/commodity-analysis-reports/get-similar-commodities-utils';
 import { loadCommodityPriceHistory } from '@/utils/commodity-price-history-utils';
 import { parseMarkdown } from '@/util/parse-markdown';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
@@ -53,8 +52,6 @@ export default async function CommodityDetailPage({ params }: { params: RoutePar
   const { slug } = await params;
   const commodity = await loadCommodity(slug);
   if (!commodity) notFound();
-
-  const similarCommodities = await fetchSimilarCommodities(slug);
 
   const modifiedDate = commodity.updatedAt;
   const formattedModifiedDate = modifiedDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
@@ -152,7 +149,7 @@ export default async function CommodityDetailPage({ params }: { params: RoutePar
 
       <CommoditySummaryAnalysis slug={slug} categoryResults={commodity.categoryAnalysisResults} />
 
-      <CommoditySimilar similar={similarCommodities} />
+      <CommoditySimilarSection slug={slug} />
 
       <ReportFooter
         modifiedDate={modifiedDate}
