@@ -127,17 +127,17 @@ export default function StockTable({ items, type }: StockTableProps) {
 
   if (items.length === 0) {
     return (
-      <div className="bg-gray-900 rounded-lg p-8 text-center border border-gray-800">
-        <p className="text-gray-400">{type === 'favorites' ? 'No favorite stocks found.' : 'No notes found.'}</p>
+      <div className="bg-bg rounded-lg p-8 text-center border border-surface">
+        <p className="text-muted-2">{type === 'favorites' ? 'No favorite stocks found.' : 'No notes found.'}</p>
       </div>
     );
   }
 
   return (
-    <div className="bg-gray-900 rounded-lg border border-gray-800 overflow-hidden">
+    <div className="bg-bg rounded-lg border border-surface overflow-hidden">
       {/* Sort Controls */}
-      <div className="flex items-center gap-4 p-4 border-b border-gray-800 bg-gray-900/50">
-        <span className="text-sm text-gray-400">Sort by:</span>
+      <div className="flex items-center gap-4 p-4 border-b border-surface bg-gray-900/50">
+        <span className="text-sm text-muted-2">Sort by:</span>
         <div className="flex flex-wrap gap-2">
           {sortOptions.map((option) => (
             <button
@@ -145,7 +145,7 @@ export default function StockTable({ items, type }: StockTableProps) {
               onClick={() => handleSortChange(option.value)}
               className={`
                 flex items-center gap-1 px-3 py-1.5 rounded-md text-sm font-medium transition-colors
-                ${sortField === option.value ? 'bg-blue-600 text-white' : 'bg-gray-800 text-gray-300 hover:bg-gray-700 hover:text-white'}
+                ${sortField === option.value ? 'bg-blue-600 text-white' : 'bg-surface text-muted-1 hover:bg-surface-2 hover:text-white'}
               `}
             >
               {option.label}
@@ -160,15 +160,15 @@ export default function StockTable({ items, type }: StockTableProps) {
         <table className="w-full">
           <thead className="bg-gray-800/50">
             <tr>
-              <th className="px-4 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Ticker Details</th>
-              <th className="px-4 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">My Score</th>
-              <th className="px-4 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Industry</th>
-              <th className="px-4 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Sub Industry</th>
-              {type === 'favorites' && <th className="px-4 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Tags</th>}
-              <th className="px-4 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Details</th>
+              <th className="px-4 py-3 text-left text-xs font-medium text-muted-2 uppercase tracking-wider">Ticker Details</th>
+              <th className="px-4 py-3 text-left text-xs font-medium text-muted-2 uppercase tracking-wider">My Score</th>
+              <th className="px-4 py-3 text-left text-xs font-medium text-muted-2 uppercase tracking-wider">Industry</th>
+              <th className="px-4 py-3 text-left text-xs font-medium text-muted-2 uppercase tracking-wider">Sub Industry</th>
+              {type === 'favorites' && <th className="px-4 py-3 text-left text-xs font-medium text-muted-2 uppercase tracking-wider">Tags</th>}
+              <th className="px-4 py-3 text-left text-xs font-medium text-muted-2 uppercase tracking-wider">Details</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-800">
+          <tbody className="divide-y divide-surface">
             {sortedItems.map((item) => {
               const myScore = getMyScore(item);
               const { textColorClass: myScoreTextColor, bgColorClass: myScoreBgColor } = myScore
@@ -198,14 +198,14 @@ export default function StockTable({ items, type }: StockTableProps) {
                         {myScore}/25
                       </span>
                     ) : (
-                      <span className="text-gray-500 text-sm">—</span>
+                      <span className="text-muted-3 text-sm">—</span>
                     )}
                   </td>
                   <td className="px-4 py-4">
-                    <span className="text-sm text-gray-300">{item.ticker.industry?.name ?? '—'}</span>
+                    <span className="text-sm text-muted-1">{item.ticker.industry?.name ?? '—'}</span>
                   </td>
                   <td className="px-4 py-4">
-                    <span className="text-sm text-gray-400">{item.ticker.subIndustry?.name ?? '—'}</span>
+                    <span className="text-sm text-muted-2">{item.ticker.subIndustry?.name ?? '—'}</span>
                   </td>
                   {type === 'favorites' && (
                     <td className="px-4 py-4">
@@ -223,13 +223,13 @@ export default function StockTable({ items, type }: StockTableProps) {
                             setFavouritesModalOpen(true);
                           }
                         }}
-                        className="text-gray-400 hover:text-blue-400 transition-colors p-1 rounded"
+                        className="text-muted-2 hover:text-blue-400 transition-colors p-1 rounded"
                         title={type === 'notes' ? 'View Notes' : 'View Favourite Details'}
                       >
                         <DocumentTextSolid className="w-5 h-5" />
                       </button>
                     ) : (
-                      <span className="text-gray-500 text-sm">—</span>
+                      <span className="text-muted-3 text-sm">—</span>
                     )}
                   </td>
                 </tr>
@@ -240,8 +240,8 @@ export default function StockTable({ items, type }: StockTableProps) {
       </div>
 
       {/* Footer with count */}
-      <div className="px-4 py-3 border-t border-gray-800 bg-gray-900/50">
-        <p className="text-sm text-gray-400">
+      <div className="px-4 py-3 border-t border-surface bg-gray-900/50">
+        <p className="text-sm text-muted-2">
           Showing {items.length} {type === 'favorites' ? 'favorite' : 'noted'} stock{items.length !== 1 ? 's' : ''}
         </p>
       </div>

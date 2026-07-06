@@ -20,13 +20,13 @@ interface PortfolioHoldingsProps {
 
 export default function PortfolioHoldings({ portfolioTickers, listsWithTickers, unlistedTickers, renderTickerActions }: PortfolioHoldingsProps) {
   const renderTickerCard = (ticker: PortfolioTicker, showListName?: string) => (
-    <div key={ticker.id} className="bg-gray-800 rounded-xl p-5 border border-gray-800">
+    <div key={ticker.id} className="bg-surface rounded-xl p-5 border border-surface">
       <div className="flex justify-between items-start">
         <div className="flex-1">
           {/* Header with Name, Symbol, and Score */}
           <div className="flex items-center gap-3 flex-wrap mb-3">
             <Link href={`/stocks/${ticker.ticker?.exchange}/${ticker.ticker?.symbol}`} prefetch={false} className="hover:text-blue-400 transition-colors">
-              <h4 className="text-lg font-bold text-white hover:text-blue-400">
+              <h4 className="text-lg font-bold text-heading hover:text-blue-400">
                 {ticker.ticker?.name} <span>({ticker.ticker?.symbol})</span>
               </h4>
             </Link>
@@ -46,9 +46,9 @@ export default function PortfolioHoldings({ portfolioTickers, listsWithTickers, 
 
           {/* Allocation and List Info */}
           <div className="flex items-center gap-4 mb-4">
-            <div className="flex items-center gap-2 bg-gray-800 px-3 py-1.5 rounded-lg">
-              <span className="text-sm text-gray-400">Allocation:</span>
-              <span className="text-white font-bold text-base">{ticker.allocation}%</span>
+            <div className="flex items-center gap-2 bg-surface px-3 py-1.5 rounded-lg">
+              <span className="text-sm text-muted-2">Allocation:</span>
+              <span className="text-heading font-bold text-base">{ticker.allocation}%</span>
             </div>
           </div>
 
@@ -56,7 +56,7 @@ export default function PortfolioHoldings({ portfolioTickers, listsWithTickers, 
           {ticker.detailedDescription && (
             <div className="mb-4">
               <div
-                className="text-sm text-gray-300 leading-relaxed markdown markdown-body"
+                className="text-sm text-muted-1 leading-relaxed markdown markdown-body"
                 dangerouslySetInnerHTML={{ __html: parseMarkdown(ticker.detailedDescription) }}
               />
             </div>
@@ -80,14 +80,14 @@ export default function PortfolioHoldings({ portfolioTickers, listsWithTickers, 
   );
 
   return (
-    <div className="bg-gray-900 rounded-2xl p-6 border border-gray-800">
+    <div className="bg-bg rounded-2xl p-6 border border-surface">
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold text-white">Portfolio Holdings</h2>
+        <h2 className="text-2xl font-bold text-heading">Portfolio Holdings</h2>
       </div>
 
       {portfolioTickers.length === 0 ? (
         <div className="text-center py-16">
-          <div className="w-20 h-20 text-gray-600 mx-auto mb-4">
+          <div className="w-20 h-20 text-muted-4 mx-auto mb-4">
             <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path
                 strokeLinecap="round"
@@ -97,15 +97,15 @@ export default function PortfolioHoldings({ portfolioTickers, listsWithTickers, 
               />
             </svg>
           </div>
-          <h3 className="text-xl font-bold mb-2 text-white">No holdings yet</h3>
-          <p className="text-gray-400 text-base">Start building your portfolio by adding your first holding.</p>
+          <h3 className="text-xl font-bold mb-2 text-heading">No holdings yet</h3>
+          <p className="text-muted-2 text-base">Start building your portfolio by adding your first holding.</p>
         </div>
       ) : (
         <div className="space-y-6">
           {/* Holdings grouped by lists */}
           {listsWithTickers.map(({ list, tickers }) => (
             <div key={list.id}>
-              <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+              <h3 className="text-lg font-semibold text-heading mb-4 flex items-center gap-2">
                 <span className="w-1 h-6 bg-blue-500 rounded"></span>
                 {list.name}
               </h3>
@@ -116,8 +116,8 @@ export default function PortfolioHoldings({ portfolioTickers, listsWithTickers, 
           {/* Unlisted Holdings */}
           {unlistedTickers.length > 0 && (
             <div>
-              <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
-                <span className="w-1 h-6 bg-gray-500 rounded"></span>
+              <h3 className="text-lg font-semibold text-heading mb-4 flex items-center gap-2">
+                <span className="w-1 h-6 bg-muted-3 rounded"></span>
                 Other Holdings
               </h3>
               <div className="space-y-4">{unlistedTickers.map((ticker) => renderTickerCard(ticker))}</div>

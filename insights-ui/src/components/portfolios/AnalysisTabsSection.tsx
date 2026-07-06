@@ -49,11 +49,11 @@ export default function AnalysisTabsSection({ industriesByCountry, allFavorites,
       {/* Section Header with Dropdown */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
         <div>
-          <h2 className="text-2xl font-bold text-white flex items-center gap-2">
+          <h2 className="text-2xl font-bold text-heading flex items-center gap-2">
             <ChartBarIcon className="w-6 h-6 text-blue-500" />
             Analysis & Favourites
           </h2>
-          <p className="text-gray-400 mt-1">Stocks analyzed, marked as favorites, or with notes by this portfolio manager</p>
+          <p className="text-muted-2 mt-1">Stocks analyzed, marked as favorites, or with notes by this portfolio manager</p>
         </div>
 
         {/* View Type Dropdown */}

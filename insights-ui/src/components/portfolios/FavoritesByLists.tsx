@@ -69,8 +69,8 @@ export default function FavoritesByLists({ allFavorites }: FavoritesByListsProps
 
   if (allFavorites.length === 0) {
     return (
-      <div className="bg-gray-900 rounded-lg p-8 text-center border border-gray-800">
-        <p className="text-gray-400">No favorite stocks found.</p>
+      <div className="bg-bg rounded-lg p-8 text-center border border-surface">
+        <p className="text-muted-2">No favorite stocks found.</p>
       </div>
     );
   }
@@ -80,7 +80,7 @@ export default function FavoritesByLists({ allFavorites }: FavoritesByListsProps
       {/* Favorites grouped by lists */}
       {listsWithFavorites.map(({ list, favorites }) => (
         <div key={list.id}>
-          <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+          <h3 className="text-lg font-semibold text-heading mb-4 flex items-center gap-2">
             <span className="w-1 h-6 bg-blue-500 rounded"></span>
             {list.name} ({favorites.length} {favorites.length === 1 ? 'stock' : 'stocks'})
           </h3>
@@ -91,8 +91,8 @@ export default function FavoritesByLists({ allFavorites }: FavoritesByListsProps
       {/* Unlisted Favorites */}
       {unlisted.length > 0 && (
         <div>
-          <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
-            <span className="w-1 h-6 bg-gray-500 rounded"></span>
+          <h3 className="text-lg font-semibold text-heading mb-4 flex items-center gap-2">
+            <span className="w-1 h-6 bg-muted-3 rounded"></span>
             Other Favorites ({unlisted.length} {unlisted.length === 1 ? 'stock' : 'stocks'})
           </h3>
           <StockTable items={unlisted} type="favorites" />

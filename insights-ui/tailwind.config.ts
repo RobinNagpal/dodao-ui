@@ -28,6 +28,7 @@ export default {
         'link-blue-hover': 'var(--link-blue-hover-color)',
 
         // Surfaces (3-tier ramp): bg (page) < surface (cards) < surface-2 (inset)
+        well: 'var(--well-bg)', // sunken input/well, one step below bg (gray-950)
         bg: 'var(--bg-color)',
         surface: 'var(--surface)',
         'surface-2': 'var(--surface-2)',

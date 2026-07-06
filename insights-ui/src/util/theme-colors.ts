@@ -19,6 +19,7 @@ export const themeColors = {
   '--link-color': '#a09bff', // Links
 
   // Surfaces (3-tier ramp)
+  '--well-bg': '#030712', // Sunken well / input field — one step below bg (gray-950)
   '--bg-color': '#111827', // Page background (gray-900)
   '--surface': '#1f2937', // Cards / report sections (gray-800)
   '--surface-2': '#374151', // Inset / inline rows / chips track (gray-700)

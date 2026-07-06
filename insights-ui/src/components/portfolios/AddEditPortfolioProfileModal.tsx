@@ -168,7 +168,7 @@ export default function AddEditPortfolioProfileModal({
                 modelValue={headline}
                 onUpdate={(value) => setHeadline(value?.toString() || '')}
                 placeholder="Enter professional headline"
-                className="bg-gray-800 border-gray-700 text-white"
+                className="bg-surface border-border text-heading"
               />
             </div>
 
@@ -182,7 +182,7 @@ export default function AddEditPortfolioProfileModal({
                 value={profileSummary}
                 onChange={(e) => setProfileSummary(e.target.value)}
                 rows={3}
-                className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-md text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 bg-surface border border-border rounded-md text-heading placeholder-muted-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="Brief professional summary..."
               />
             </div>
@@ -209,7 +209,7 @@ export default function AddEditPortfolioProfileModal({
                 modelValue={country}
                 onUpdate={(value) => setCountry(value?.toString() || '')}
                 placeholder="Enter country"
-                className="bg-gray-800 border-gray-700 text-white"
+                className="bg-surface border-border text-heading"
               />
             </div>
 
@@ -223,7 +223,7 @@ export default function AddEditPortfolioProfileModal({
                   id="managerType"
                   value={managerType}
                   onChange={(e) => setManagerType(e.target.value as PortfolioManagerType | '')}
-                  className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 bg-surface border border-border rounded-md text-heading focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
                   <option value="">Select manager type</option>
                   {Object.values(PortfolioManagerType).map((type) => (
@@ -245,7 +245,7 @@ export default function AddEditPortfolioProfileModal({
                 modelValue={profileImageUrl}
                 onUpdate={(value) => setProfileImageUrl(value?.toString() || '')}
                 placeholder="Enter profile image URL"
-                className="bg-gray-800 border-gray-700 text-white"
+                className="bg-surface border-border text-heading"
               />
             </div>
 
@@ -257,17 +257,17 @@ export default function AddEditPortfolioProfileModal({
                     type="checkbox"
                     checked={isPublic}
                     onChange={(e) => setIsPublic(e.target.checked)}
-                    className="mr-2 h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                    className="mr-2 h-4 w-4 text-blue-600 focus:ring-blue-500 border-muted-1 rounded"
                   />
                   <span className="text-sm font-medium text-gray-900">Public Profile</span>
                 </label>
-                <p className="text-sm text-gray-500">Make this portfolio manager profile visible to all users</p>
+                <p className="text-sm text-muted-3">Make this portfolio manager profile visible to all users</p>
               </div>
             )}
           </>
 
           {/* Action Buttons */}
-          <div className="flex justify-between items-center pt-5 mt-2 border-t border-gray-700">
+          <div className="flex justify-between items-center pt-5 mt-2 border-t border-border">
             {/* Delete button - only show for existing profiles */}
             <div>
               {currentProfile && onDelete && (

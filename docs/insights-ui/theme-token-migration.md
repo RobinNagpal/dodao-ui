@@ -23,8 +23,9 @@ visual hierarchy (and any future light theme) is preserved.
 
 | Old Tailwind | Hex (dark) | Token utility |
 | --- | --- | --- |
+| `gray-950` | `#030712` | `bg-well` (sunken input) |
 | `gray-900` | `#111827` | `bg-bg` |
-| `gray-800` | `#1f2937` | `bg-surface` |
+| `gray-800` | `#1f2937` | `bg-surface` / `border-surface` / `divide-surface` |
 | `gray-700` | `#374151` | `bg-surface-2` / `border-border` |
 | `gray-600` (bg/border) | `#4b5563` | `bg-surface-3` / `border-surface-3` |
 | `white` | `#ffffff` | `text-heading` |
@@ -80,6 +81,16 @@ hairlines with **no** `dark:` variant kept their light value
 | 8 | Stock-scenarios / stocks-filtered | `app/stock-scenarios/[slug]/detailed-analysis/page.tsx` |
 | 9 | ETF sub-surfaces | `app/etf-scenarios/[slug]/detailed-analysis/page.tsx` (etfs-filtered / etf-favourites / etf-investors had no hardcoded colors) |
 | 10 | **Dark-fidelity fix** (all slices 1–9) | Split the earlier `text-muted` grey-collapse into the exact `text-muted-1..4` ramp; restored light `border-hairline`/`border-muted-1` hairlines, the `text-link-blue`/`text-link-blue-hover` blue link, and `hover:bg-white/5` nav hovers — so dark is byte-for-byte identical. Tokens added in `util/theme-colors.ts` + `tailwind.config.ts`. |
+| 11 | Tariff pages | `app/tariff-calculator/CalculatorClient.tsx` (added `bg-well` for `gray-950` inputs), `app/tariff-reports/page.tsx`, `app/genai-business/page.tsx` |
+| 12 | Portfolio-managers | `app/portfolio-managers/**` (college-ambassadors industry-analysis + client, profile-details `[id]` + portfolios pages) and all of `components/portfolios/*` (StockTable, ProfileHeader, PortfolioCards/Stats/Holdings/Details, FavoritesByLists, IndustryAnalysisGrid, ProfileGrid, AnalysisTabsSection, PortfolioManagersPageComponent, AddEdit{Portfolio,PortfolioProfile,PortfolioTicker}Modal) |
+
+Slices 11–12 are **dark-authored** (no `dark:` variants), so the grey→token map
+is a clean 1:1 exact-hex swap. **Blue is left as each section's accent theme**
+(tariff = blue, calculator = amber) — links/borders/rings/bg-tints in blue are
+not tokenized here; they're accent colors, not structural chrome, so dark is
+unchanged. `text-white` on colored buttons (`bg-blue-600`, gradients) and the
+`text-gray-900` toggle label are left as-is; StockTable's score-scale
+`text-gray-500`/`bg-gray-500` strings stay (semantic).
 
 Within `app/stocks/**`, the ticker report pages (`page.tsx`,
 `management-team/page.tsx`) needed **no** changes — their remaining colors are
@@ -100,16 +111,19 @@ hardcoded colors.
 
 ## Remaining
 
-- `src/app/generate-ppt/*`, `src/app/invocations/page.tsx`,
-  `src/app/prompts/[promptId]/invocations/page.tsx`, `src/app/ticker-reports/page.tsx`.
+Client-facing pages are now covered. Left (lower priority / internal):
+
+- `src/app/industry-tariff-report/*` page wrappers (the `components/industry-tariff/*`
+  pieces are done — slice 3 — but these page shells still have hardcoded colors).
 - `src/app/public-equitiesv1/*` forms (AddTickersForm, EditTickersForm, TickerFields).
 - `src/components/ui/{input,tabs}.tsx` — shadcn leaves whose `dark:` variants are
   legitimate dual-theme handling; review **last**.
 
 ## Explicitly de-scoped (per product decision)
 
-- `src/app/admin-v1/**` — admin-only screens.
+- `src/app/admin-v1/**` and other admin screens (e.g. `StockActionsAdminPanel`).
 - `src/components/presentations/**` — presentation builder.
+- `src/app/generate-ppt/*`, `src/app/invocations/*`, `src/app/prompts/*` — internal tools.
 
 ## After the sweep
 
