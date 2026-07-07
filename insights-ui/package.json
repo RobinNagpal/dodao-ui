@@ -12,7 +12,6 @@
     "lint-fix": "eslint . --ext .ts,.js,.tsx --fix",
     "prettier-fix": "prettier --config .prettierrc 'src/**/*.{js,ts,tsx,json}' --write",
     "prettier-check": "prettier --check 'src/**/*.{js,ts,tsx,json}'",
-    "claude:test-oauth": "tsx src/scripts/claude/test-claude-oauth.ts",
     "generate:tariff": "tsx src/scripts/run-tariff-report.ts",
     "generate:meta-descriptions": "tsx src/scripts/generate-meta-descriptions.ts",
     "import:etf-scenarios": "tsx src/scripts/import-etf-scenarios.ts",
