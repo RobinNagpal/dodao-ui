@@ -78,8 +78,8 @@ export default function EtfPageLayout({
       {showAppliedFilters && <EtfAppliedFilterChips showClearAll={true} />}
 
       <div className="w-full mb-8">
-        <h1 className="text-2xl font-bold text-white mb-4">{title}</h1>
-        <p className="text-[#E5E7EB] text-md mb-4">{description}</p>
+        <h1 className="text-2xl font-bold text-heading mb-4">{title}</h1>
+        <p className="text-body text-md mb-4">{description}</p>
         <div className="mt-2 mb-2">
           <EtfCountryAlternatives currentCountry={currentCountry} section={switcherSection} buildHref={switcherHref} className="text-sm" />
         </div>

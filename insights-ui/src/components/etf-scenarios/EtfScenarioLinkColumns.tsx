@@ -12,9 +12,9 @@ function renderMarkdown(md: string) {
 
 function PillVisual({ link }: { link: EtfScenarioLinkDto }): JSX.Element {
   return (
-    <span className="inline-flex items-center gap-1 bg-[#111827] border border-[#374151] text-xs text-white rounded px-2 py-0.5">
+    <span className="inline-flex items-center gap-1 bg-bg border border-border text-xs text-heading rounded px-2 py-0.5">
       <span className="font-semibold">{link.symbol}</span>
-      {link.exchange && <span className="text-gray-400">· {link.exchange}</span>}
+      {link.exchange && <span className="text-muted">· {link.exchange}</span>}
     </span>
   );
 }
@@ -41,13 +41,13 @@ function LinkCard({ link }: { link: EtfScenarioLinkDto }): JSX.Element {
         <div className="space-y-1 mt-1">
           {link.roleExplanation && (
             <div
-              className="markdown-body prose prose-invert prose-xs max-w-none text-xs text-gray-300"
+              className="markdown-body prose prose-invert prose-xs max-w-none text-xs text-muted"
               dangerouslySetInnerHTML={renderMarkdown(link.roleExplanation)}
             />
           )}
           {link.expectedPriceChangeExplanation && (
             <div
-              className="markdown-body prose prose-invert prose-xs max-w-none text-xs text-gray-400"
+              className="markdown-body prose prose-invert prose-xs max-w-none text-xs text-muted"
               dangerouslySetInnerHTML={renderMarkdown(link.expectedPriceChangeExplanation)}
             />
           )}
@@ -64,14 +64,14 @@ function LinkCard({ link }: { link: EtfScenarioLinkDto }): JSX.Element {
       <Link
         href={`/etfs/${link.exchange}/${link.symbol}`}
         prefetch={false}
-        className="block bg-[#111827] border border-[#374151] rounded-md p-2.5 hover:border-blue-500 hover:bg-[#0f1623] transition-colors"
+        className="block bg-bg border border-border rounded-md p-2.5 hover:border-primary hover:bg-[#0f1623] transition-colors"
       >
         {body}
       </Link>
     );
   }
 
-  return <div className="bg-[#111827] border border-[#374151] rounded-md p-2.5">{body}</div>;
+  return <div className="bg-bg border border-border rounded-md p-2.5">{body}</div>;
 }
 
 function LinkList({
@@ -89,15 +89,15 @@ function LinkList({
 }): JSX.Element {
   return (
     <div>
-      <h3 className="text-sm font-semibold uppercase tracking-wide text-gray-300 mb-2">
+      <h3 className="text-sm font-semibold uppercase tracking-wide text-muted mb-2">
         {title}{' '}
-        <span className="text-xs font-normal text-gray-500">
+        <span className="text-xs font-normal text-muted">
           ({filteredCount}
           {countryFilter !== 'ALL' ? ` in ${countryFilter}` : ''})
         </span>
       </h3>
       {links.length === 0 ? (
-        <p className="text-xs text-gray-500">{emptyLabel}</p>
+        <p className="text-xs text-muted">{emptyLabel}</p>
       ) : (
         <div className="flex flex-col gap-2">
           {links.map((l) => (
@@ -134,13 +134,13 @@ export default function EtfScenarioLinkColumns({ winners, losers, scenarioCountr
   const filteredLosers = filterByCountry(losers);
 
   return (
-    <section className="bg-[#1F2937] border border-[#374151] rounded-lg p-4 space-y-4">
+    <section className="bg-surface border border-border rounded-lg p-4 space-y-4">
       <div className="flex flex-wrap items-center justify-between gap-2">
-        <h2 className="text-xl font-bold text-white">Tagged ETFs</h2>
-        <label className="flex items-center gap-2 text-xs text-gray-300">
-          <span className="uppercase tracking-wide text-[11px] text-gray-400">Filter by country</span>
+        <h2 className="text-xl font-bold text-heading">Tagged ETFs</h2>
+        <label className="flex items-center gap-2 text-xs text-muted">
+          <span className="uppercase tracking-wide text-[11px] text-muted">Filter by country</span>
           <select
-            className="bg-[#111827] border border-[#374151] rounded px-2 py-1 text-xs text-white focus:outline-none focus:border-[#F59E0B]"
+            className="bg-bg border border-border rounded px-2 py-1 text-xs text-heading focus:outline-none focus:border-[#F59E0B]"
             value={countryFilter}
             onChange={(e) => setCountryFilter(e.target.value as EtfSupportedCountry | 'ALL')}
           >

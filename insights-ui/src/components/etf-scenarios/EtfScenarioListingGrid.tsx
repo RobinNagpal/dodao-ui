@@ -36,8 +36,8 @@ export default function EtfScenarioListingGrid({ data }: { data: EtfScenarioList
   if (data.scenarios.length === 0) {
     return (
       <div className="text-center py-12">
-        <p className="text-[#E5E7EB] text-lg">No scenarios yet.</p>
-        <p className="text-[#E5E7EB] text-sm mt-2">An admin can import the market-scenarios document to populate this page.</p>
+        <p className="text-body text-lg">No scenarios yet.</p>
+        <p className="text-body text-sm mt-2">An admin can import the market-scenarios document to populate this page.</p>
       </div>
     );
   }
@@ -58,15 +58,15 @@ export default function EtfScenarioListingGrid({ data }: { data: EtfScenarioList
       />
 
       <div className="flex items-center justify-between mb-4 mt-2">
-        <p className="text-sm text-gray-400">
+        <p className="text-sm text-muted">
           Showing {filtered.length} of {data.totalCount.toLocaleString()} scenario{data.totalCount !== 1 ? 's' : ''}
-          {country !== 'ALL' && <span className="text-gray-500"> · filtered to {country}</span>}
+          {country !== 'ALL' && <span className="text-muted"> · filtered to {country}</span>}
         </p>
       </div>
 
       {filtered.length === 0 ? (
         <div className="text-center py-12">
-          <p className="text-[#E5E7EB] text-lg">No scenarios match the current filters.</p>
+          <p className="text-body text-lg">No scenarios match the current filters.</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">

@@ -56,8 +56,8 @@ export default function EtfSubPageActions({ etfId, etfSymbol, etfName }: EtfSubP
       <div className="hidden sm:flex flex-wrap items-center gap-2">
         <button
           onClick={openFavourite}
-          className={`inline-flex items-center px-4 py-2 text-sm font-medium text-white ${
-            favouriteEtf ? 'bg-blue-700 hover:bg-blue-600 border-blue-600' : 'bg-gray-700 hover:bg-gray-600 border-gray-600'
+          className={`inline-flex items-center px-4 py-2 text-sm font-medium text-heading ${
+            favouriteEtf ? 'bg-primary hover:opacity-90 border-primary' : 'bg-surface-2 hover:bg-surface-3 border-border'
           } border rounded-lg shadow-md`}
           title={!session ? 'Login to add to favourites' : favouriteEtf ? 'Edit favourite' : 'Add to favourites'}
         >
@@ -79,8 +79,8 @@ export default function EtfSubPageActions({ etfId, etfSymbol, etfName }: EtfSubP
           onClick={openFavourite}
           aria-label={favouriteEtf ? 'Edit favourite' : 'Add to favourites'}
           title={!session ? 'Login to add to favourites' : favouriteEtf ? 'Edit favourite' : 'Add to favourites'}
-          className={`inline-flex items-center justify-center p-2 text-white border rounded-lg shadow-md ${
-            favouriteEtf ? 'bg-blue-700 hover:bg-blue-600 border-blue-600' : 'bg-gray-700 hover:bg-gray-600 border-gray-600'
+          className={`inline-flex items-center justify-center p-2 text-heading border rounded-lg shadow-md ${
+            favouriteEtf ? 'bg-primary hover:opacity-90 border-primary' : 'bg-surface-2 hover:bg-surface-3 border-border'
           }`}
         >
           {favouriteEtf ? <HeartSolid className="w-5 h-5 text-red-400" aria-hidden="true" /> : <HeartOutline className="w-5 h-5" aria-hidden="true" />}

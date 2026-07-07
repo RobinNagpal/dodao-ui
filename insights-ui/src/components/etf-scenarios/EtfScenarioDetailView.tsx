@@ -21,7 +21,7 @@ export default function EtfScenarioDetailView({ scenario }: { scenario: EtfScena
     scenario.pricedInBucket || scenario.expectedPriceChange !== null || scenario.expectedPriceChangeExplanation || scenario.priceChangeTimeframeExplanation;
 
   return (
-    <article className="text-[#E5E7EB]" itemScope itemType="https://schema.org/Article">
+    <article className="text-body" itemScope itemType="https://schema.org/Article">
       <header className="mb-6 sm:mb-8">
         <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 mb-3 sm:mb-4">
           <span className="bg-gradient-to-r from-[#F59E0B] to-[#FBBF24] text-black text-xs sm:text-sm font-bold px-2 sm:px-2.5 py-0.5 rounded">
@@ -30,14 +30,14 @@ export default function EtfScenarioDetailView({ scenario }: { scenario: EtfScena
           <EtfScenarioDirectionBadge direction={scenario.direction} />
           <EtfScenarioProbabilityBadge bucket={scenario.probabilityBucket} percentage={scenario.probabilityPercentage} asOfDate={scenario.outlookAsOfDate} />
           <EtfScenarioTimeframeBadge timeframe={scenario.timeframe} />
-          {scenario.archived && <span className="text-xs text-gray-300 bg-gray-800 border border-gray-700 px-2 py-0.5 rounded">Archived</span>}
+          {scenario.archived && <span className="text-xs text-muted bg-surface border border-border px-2 py-0.5 rounded">Archived</span>}
         </div>
 
-        <h1 className="text-2xl sm:text-3xl font-bold text-white mb-3 leading-tight" itemProp="headline">
+        <h1 className="text-2xl sm:text-3xl font-bold text-heading mb-3 leading-tight" itemProp="headline">
           {scenario.title}
         </h1>
 
-        <p className="text-xs text-gray-400 mb-2">
+        <p className="text-xs text-muted mb-2">
           <span className="sr-only">Scenario summary: </span>
           {directionLabel(scenario.direction)} · {probabilityBucketLabel(scenario.probabilityBucket)} · {timeframeLabel(scenario.timeframe)} ·{' '}
           <span>
@@ -46,13 +46,10 @@ export default function EtfScenarioDetailView({ scenario }: { scenario: EtfScena
         </p>
 
         {scenario.countries.length > 0 && (
-          <p className="text-xs text-gray-400 mb-0">
-            <span className="uppercase tracking-wide text-[11px] text-gray-500 mr-2">Countries in scope</span>
+          <p className="text-xs text-muted mb-0">
+            <span className="uppercase tracking-wide text-[11px] text-muted mr-2">Countries in scope</span>
             {scenario.countries.map((c) => (
-              <span
-                key={c}
-                className="inline-block text-[10px] uppercase tracking-wide text-gray-300 bg-[#111827] border border-[#374151] rounded px-1.5 py-0.5 mr-1"
-              >
+              <span key={c} className="inline-block text-[10px] uppercase tracking-wide text-muted bg-bg border border-border rounded px-1.5 py-0.5 mr-1">
                 {c}
               </span>
             ))}
@@ -60,9 +57,9 @@ export default function EtfScenarioDetailView({ scenario }: { scenario: EtfScena
         )}
       </header>
 
-      <section className="bg-gray-900 rounded-lg shadow-sm px-3 py-5 sm:p-6 mb-6" aria-labelledby="summary-heading">
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4 pb-2 border-b border-gray-700">
-          <h2 id="summary-heading" className="text-lg sm:text-xl font-bold text-white">
+      <section className="bg-bg rounded-lg shadow-sm px-3 py-5 sm:p-6 mb-6" aria-labelledby="summary-heading">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4 pb-2 border-b border-border">
+          <h2 id="summary-heading" className="text-lg sm:text-xl font-bold text-heading">
             Summary
           </h2>
           {scenario.detailedAnalysis && (
@@ -79,29 +76,29 @@ export default function EtfScenarioDetailView({ scenario }: { scenario: EtfScena
       </section>
 
       {hasPricingContext && (
-        <section className="bg-gray-900 rounded-lg shadow-sm px-3 py-5 sm:p-6 mb-6" aria-labelledby="priced-in-heading">
-          <h2 id="priced-in-heading" className="text-lg sm:text-xl font-bold text-white mb-4 pb-2 border-b border-gray-700">
+        <section className="bg-bg rounded-lg shadow-sm px-3 py-5 sm:p-6 mb-6" aria-labelledby="priced-in-heading">
+          <h2 id="priced-in-heading" className="text-lg sm:text-xl font-bold text-heading mb-4 pb-2 border-b border-border">
             Priced-in status &amp; expected move
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
             <div>
-              <p className="text-xs uppercase tracking-wide text-gray-400 mb-1">How much is already priced in</p>
-              <p className="text-sm text-white font-semibold">{pricedInBucketLabel(scenario.pricedInBucket)}</p>
+              <p className="text-xs uppercase tracking-wide text-muted mb-1">How much is already priced in</p>
+              <p className="text-sm text-heading font-semibold">{pricedInBucketLabel(scenario.pricedInBucket)}</p>
             </div>
             <div>
-              <p className="text-xs uppercase tracking-wide text-gray-400 mb-1">Expected average price change (still to move)</p>
-              <p className="text-sm text-white font-semibold">{formatExpectedPriceChange(scenario.expectedPriceChange)}</p>
+              <p className="text-xs uppercase tracking-wide text-muted mb-1">Expected average price change (still to move)</p>
+              <p className="text-sm text-heading font-semibold">{formatExpectedPriceChange(scenario.expectedPriceChange)}</p>
             </div>
           </div>
           {scenario.expectedPriceChangeExplanation && (
             <div className="mb-3">
-              <p className="text-xs uppercase tracking-wide text-gray-400 mb-1">Range &amp; reasoning</p>
+              <p className="text-xs uppercase tracking-wide text-muted mb-1">Range &amp; reasoning</p>
               <div className="markdown-body prose prose-invert max-w-none" dangerouslySetInnerHTML={renderMarkdown(scenario.expectedPriceChangeExplanation)} />
             </div>
           )}
           {scenario.priceChangeTimeframeExplanation && (
             <div>
-              <p className="text-xs uppercase tracking-wide text-gray-400 mb-1">When the move plays out</p>
+              <p className="text-xs uppercase tracking-wide text-muted mb-1">When the move plays out</p>
               <div className="markdown-body prose prose-invert max-w-none" dangerouslySetInnerHTML={renderMarkdown(scenario.priceChangeTimeframeExplanation)} />
             </div>
           )}

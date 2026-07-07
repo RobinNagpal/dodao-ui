@@ -58,7 +58,7 @@ export default function EtfFiltersButton(): JSX.Element {
       >
         <AdjustmentsHorizontalIcon className="h-5 w-5" />
         Filters
-        {currentFilters.length > 0 && <span className="bg-blue-500 px-2 py-0.5 font-bold rounded-full text-xs animate-pulse">{currentFilters.length}</span>}
+        {currentFilters.length > 0 && <span className="bg-primary px-2 py-0.5 font-bold rounded-full text-xs animate-pulse">{currentFilters.length}</span>}
       </button>
       {isModalOpen && (
         <FullPageModal open={isModalOpen} onClose={() => setIsModalOpen(false)} title="Filter ETFs" fullWidth={false} className="max-w-6xl">
@@ -82,15 +82,15 @@ interface FilterDropdownProps {
 function FilterDropdown({ id, label, value, options, onChange }: FilterDropdownProps): JSX.Element {
   const isActive = value !== '';
   return (
-    <div className={`rounded p-2 ${isActive ? 'bg-[#3B4252] ring-1 ring-[#F59E0B]' : 'bg-[#374151]'}`}>
-      <label htmlFor={id} className="block text-gray-300 mb-1 text-xs truncate" title={label}>
+    <div className={`rounded p-2 ${isActive ? 'bg-surface-2 ring-1 ring-[#F59E0B]' : 'bg-surface-2'}`}>
+      <label htmlFor={id} className="block text-muted mb-1 text-xs truncate" title={label}>
         {label}
       </label>
       <select
         id={id}
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="w-full bg-[#4B5563] text-white border border-[#6B7280] rounded px-1.5 py-1 text-xs focus:ring-1 focus:ring-[#4F46E5] focus:border-transparent"
+        className="w-full bg-surface-3 text-heading border border-border rounded px-1.5 py-1 text-xs focus:ring-1 focus:ring-primary focus:border-transparent"
       >
         {options.map((option) => (
           <option key={option.value} value={option.value}>
@@ -116,8 +116,8 @@ interface ScoreTileProps {
 function ScoreTile({ def, value, onChange }: ScoreTileProps): JSX.Element {
   const isActive = value !== '';
   return (
-    <div className={`rounded-lg p-3 ${isActive ? 'bg-[#3B4252] ring-1 ring-[#F59E0B]' : 'bg-[#374151]'}`}>
-      <h4 className="text-white font-medium mb-2 text-sm">{def.label}</h4>
+    <div className={`rounded-lg p-3 ${isActive ? 'bg-surface-2 ring-1 ring-[#F59E0B]' : 'bg-surface-2'}`}>
+      <h4 className="text-heading font-medium mb-2 text-sm">{def.label}</h4>
       <div className="space-y-1">
         {def.options.map((option) => (
           <label key={option.value} className="flex items-center gap-2 cursor-pointer">
@@ -131,9 +131,9 @@ function ScoreTile({ def, value, onChange }: ScoreTileProps): JSX.Element {
                 if (value === option.value) onChange('');
               }}
               onChange={() => onChange(option.value)}
-              className="text-[#4F46E5] focus:ring-[#4F46E5] bg-[#4B5563] border-[#6B7280] w-4 h-4"
+              className="text-primary focus:ring-primary bg-surface-3 border-border w-4 h-4"
             />
-            <span className="text-[#E5E7EB] text-sm">{option.label}</span>
+            <span className="text-body text-sm">{option.label}</span>
           </label>
         ))}
       </div>
@@ -149,7 +149,7 @@ interface SubSectionProps {
 function SubSection({ title, children }: SubSectionProps): JSX.Element {
   return (
     <div>
-      <h4 className="text-gray-300 text-[11px] font-semibold uppercase tracking-wider mb-2">{title}</h4>
+      <h4 className="text-muted text-[11px] font-semibold uppercase tracking-wider mb-2">{title}</h4>
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">{children}</div>
     </div>
   );
@@ -383,23 +383,23 @@ function EtfFilterModalContent({ initialSelected, onClose }: EtfFilterModalConte
         <button
           type="button"
           onClick={() => setAdvancedOpen((v) => !v)}
-          className="relative flex w-full items-center justify-center rounded-md bg-[#374151] hover:bg-[#3B4252] px-3 py-2"
+          className="relative flex w-full items-center justify-center rounded-md bg-surface-2 hover:bg-surface-2 px-3 py-2"
           aria-expanded={advancedOpen}
         >
-          <span className="text-gray-200 text-xs font-semibold uppercase tracking-wider">Advanced — Period-Based Risk Capture</span>
+          <span className="text-body text-xs font-semibold uppercase tracking-wider">Advanced — Period-Based Risk Capture</span>
           <span className="absolute right-3 inline-flex items-center">
-            {advancedOpen ? <ChevronUpIcon className="h-4 w-4 text-gray-300" /> : <ChevronDownIcon className="h-4 w-4 text-gray-300" />}
+            {advancedOpen ? <ChevronUpIcon className="h-4 w-4 text-muted" /> : <ChevronDownIcon className="h-4 w-4 text-muted" />}
           </span>
         </button>
 
         {advancedOpen && (
           <div className="mt-3">
-            <p className="text-[#9CA3AF] text-[11px] mb-2 text-center">
+            <p className="text-muted text-[11px] mb-2 text-center">
               Only ETFs with risk data are shown when these are active. Pick a time period; the three filters below apply to it.
             </p>
 
             <div className="mb-3 flex flex-wrap items-center justify-center gap-2">
-              <span className="text-gray-300 text-[10px] font-medium uppercase tracking-wider">Time Period:</span>
+              <span className="text-muted text-[10px] font-medium uppercase tracking-wider">Time Period:</span>
               <div className="inline-flex gap-1.5">
                 {MOR_PERIODS.map((p) => (
                   <button
@@ -408,7 +408,7 @@ function EtfFilterModalContent({ initialSelected, onClose }: EtfFilterModalConte
                     type="button"
                     aria-pressed={morPeriod === p}
                     className={`px-3 py-1.5 rounded-md text-xs font-medium transition-colors ${
-                      morPeriod === p ? 'bg-[#F59E0B] text-black' : 'bg-[#374151] text-gray-300 hover:bg-[#4B5563]'
+                      morPeriod === p ? 'bg-[#F59E0B] text-black' : 'bg-surface-2 text-muted hover:bg-surface-3'
                     }`}
                   >
                     {p.replace('-', ' ')}
@@ -437,13 +437,13 @@ function EtfFilterModalContent({ initialSelected, onClose }: EtfFilterModalConte
       </div>
 
       {/* Actions */}
-      <div className="flex justify-between items-center pt-3 border-t border-[#374151]">
-        <button onClick={handleClearAll} className="text-[#E5E7EB] hover:text-white text-xs underline" type="button">
+      <div className="flex justify-between items-center pt-3 border-t border-border">
+        <button onClick={handleClearAll} className="text-body hover:text-heading text-xs underline" type="button">
           Clear all filters
         </button>
 
         <div className="flex gap-3">
-          <button onClick={onClose} className="bg-[#374151] hover:bg-[#4B5563] text-white font-medium rounded-lg px-5 py-2 text-xs" type="button">
+          <button onClick={onClose} className="bg-surface-2 hover:bg-surface-3 text-heading font-medium rounded-lg px-5 py-2 text-xs" type="button">
             Cancel
           </button>
           <button

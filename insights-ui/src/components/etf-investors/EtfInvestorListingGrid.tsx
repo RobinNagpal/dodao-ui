@@ -5,7 +5,7 @@ export default function EtfInvestorListingGrid({ investors }: { investors: EtfIn
   if (investors.length === 0) {
     return (
       <div className="text-center py-12">
-        <p className="text-[#E5E7EB] text-lg">No investor types defined yet.</p>
+        <p className="text-body text-lg">No investor types defined yet.</p>
       </div>
     );
   }

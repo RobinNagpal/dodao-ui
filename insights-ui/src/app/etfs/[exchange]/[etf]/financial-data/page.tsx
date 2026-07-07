@@ -69,7 +69,7 @@ function FieldTable({ title, fields }: { title: string; fields: Record<string, u
                   {value === null ? (
                     <span className="text-muted italic">null</span>
                   ) : typeof value === 'object' ? (
-                    <span className="text-blue-400">[JSON]</span>
+                    <span className="text-link">[JSON]</span>
                   ) : (
                     String(value)
                   )}

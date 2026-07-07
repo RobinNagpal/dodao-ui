@@ -26,8 +26,8 @@ export default function EtfInvestorPageLayout({ title, description, breadcrumbs,
       </div>
 
       <div className="w-full mb-8">
-        <h1 className="text-2xl font-bold text-white mb-4">{title}</h1>
-        {description && <p className="text-[#E5E7EB] text-md mb-4">{description}</p>}
+        <h1 className="text-2xl font-bold text-heading mb-4">{title}</h1>
+        {description && <p className="text-body text-md mb-4">{description}</p>}
       </div>
 
       {children}
