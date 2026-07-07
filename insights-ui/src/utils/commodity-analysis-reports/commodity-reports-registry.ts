@@ -12,6 +12,15 @@ import brentCrudeOil from '@/commodity-data/reports/brent-crude-oil.json';
 import naturalGas from '@/commodity-data/reports/natural-gas.json';
 import gasolineRbob from '@/commodity-data/reports/gasoline-rbob.json';
 import heatingOil from '@/commodity-data/reports/heating-oil.json';
+import corn from '@/commodity-data/reports/corn.json';
+import wheat from '@/commodity-data/reports/wheat.json';
+import soybeans from '@/commodity-data/reports/soybeans.json';
+import soybeanMeal from '@/commodity-data/reports/soybean-meal.json';
+import soybeanOil from '@/commodity-data/reports/soybean-oil.json';
+import coffee from '@/commodity-data/reports/coffee.json';
+import sugar from '@/commodity-data/reports/sugar.json';
+import cotton from '@/commodity-data/reports/cotton.json';
+import cocoa from '@/commodity-data/reports/cocoa.json';
 
 /**
  * Registry of authored commodity reports, keyed by slug.
@@ -40,4 +49,13 @@ export const COMMODITY_REPORTS: Record<string, CommodityReportJson> = {
   'natural-gas': naturalGas as unknown as CommodityReportJson,
   'gasoline-rbob': gasolineRbob as unknown as CommodityReportJson,
   'heating-oil': heatingOil as unknown as CommodityReportJson,
+  corn: corn as unknown as CommodityReportJson,
+  wheat: wheat as unknown as CommodityReportJson,
+  soybeans: soybeans as unknown as CommodityReportJson,
+  'soybean-meal': soybeanMeal as unknown as CommodityReportJson,
+  'soybean-oil': soybeanOil as unknown as CommodityReportJson,
+  coffee: coffee as unknown as CommodityReportJson,
+  sugar: sugar as unknown as CommodityReportJson,
+  cotton: cotton as unknown as CommodityReportJson,
+  cocoa: cocoa as unknown as CommodityReportJson,
 };

@@ -1,0 +1,201 @@
+{
+  "slug": "cotton",
+  "name": "Cotton",
+  "commodityGroup": "Agriculture",
+  "priceSymbol": "CT=F",
+  "exchange": "ICE",
+  "unit": "pound",
+  "currency": "USD",
+  "metaDescription": "A plain-English investor read on cotton: near 80 cents a pound in mid-2026, cheap versus history with a tightening supply balance, but pressured by weak textile demand and cheaper polyester. Covers supply and demand, value, risk, and the outlook.",
+  "updatedAt": "2026-07-07",
+  "summary": "Overall stance: Below-average. Cheap and tightening, but demand is the drag.\n\nCotton is a fiber, not a food, so its demand tracks the global economy, consumer spending and apparel/textile demand — which makes it pro-cyclical and recession-sensitive. It also competes with polyester, a cheaper oil-linked synthetic that holds about 71% of the global fiber market, so cotton faces structural share loss on top of cyclical swings. In early July 2026 the ICE Cotton No. 2 future trades near 80 cents a pound, recovered from 2025's multi-year lows in the low-60s but still about 64% below its 2011 record near $2.20.\n\nThe near-term supply story has actually tightened: the June 2026 USDA outlook shows the first global stock drawdown of the cycle, with world ending stocks falling to an 8-year low and mill use projected to exceed production, prompting USDA to raise its US season-average price forecast to 73 cents (from ~61 cents). Cotton is cheap in real terms and near/below many growers' cost, which supports a floor. But the long-term drag is demand: weak global textile spending, recession sensitivity, high volatility (~25-30% a year, with a ~78% peak-to-trough crash on record) and relentless share loss to polyester. A strong dollar also hurts US exporters versus low-cost Brazil. Best viewed as a tactical/speculative trade on cheap valuation and tightening supply, not a buy-and-hold core holding.",
+  "keyFacts": {
+    "keyFacts": "Cotton is a natural fiber traded on ICE as Cotton No. 2 (CT=F) in US cents per pound. In early July 2026 it trades near 80 cents a pound. Unlike food commodities, cotton is used to make clothing and textiles, so its demand rises and falls with the global economy, consumer spending and the apparel industry — mills in China, India, Bangladesh, Vietnam and Turkey.\n\nFor a beginner, two things define cotton. First, it is pro-cyclical and recession-sensitive: people delay buying clothes in downturns, so cotton demand tracks GDP more than a food crop does. Second, it competes directly with polyester — a cheaper synthetic fiber made from oil that now holds about 71% of the global fiber market — so cotton steadily loses share on top of its cyclical swings. Right now cotton is cheap versus history and the supply balance has tightened (world stocks are at an 8-year low, and mill use is projected to exceed production), but the core long-term challenge is soft textile demand and that structural polyester competition.",
+    "greenFlags": [
+      {
+        "flag": "Tightening supply — stocks at an 8-year low",
+        "explanation": "The June 2026 USDA outlook shows the first global stock drawdown of the cycle: world ending stocks fall to about 71 million bales, the lowest since 2018/19, with mill use projected to exceed production. Lower US and global output is tightening the balance.",
+        "result": "Pass"
+      },
+      {
+        "flag": "Cheap versus history and near the cost floor",
+        "explanation": "At about 80 cents, cotton is roughly 64% below its 2011 record near $2.20 and cheap in real terms. US grower breakeven is about 70-80 cents, and many farmers are still near or below cost, which gives the price downside support.",
+        "result": "Pass"
+      }
+    ],
+    "redFlags": [
+      {
+        "flag": "Weak textile demand and polyester share loss",
+        "explanation": "Global textile and apparel demand is soft, and polyester — a cheaper, oil-linked synthetic — holds about 71% of the fiber market and keeps taking share from cotton. This structural demand problem is cotton's biggest long-term drag.",
+        "result": "Fail"
+      },
+      {
+        "flag": "Pro-cyclical, volatile and recession-sensitive",
+        "explanation": "Cotton demand tracks the economy, so it falls in downturns just as stocks do — a poor diversifier. It is volatile (~25-30% a year) with a ~78% peak-to-trough crash on record (from $2.20 in 2011 to ~48 cents in 2020), and a strong dollar hurts US exporters.",
+        "result": "Fail"
+      }
+    ],
+    "mainUses": ["Textiles & apparel (dominant)", "Home furnishings", "Cottonseed (animal feed & cottonseed oil)"],
+    "topProducers": [
+      { "country": "India", "share": "~23%" },
+      { "country": "China", "share": "~23% (also top consumer)" },
+      { "country": "United States", "share": "~12% (top exporter)" },
+      { "country": "Brazil", "share": "~15% (#1 exporter)" }
+    ],
+    "waysToInvest": [
+      { "type": "ETN", "name": "BAL", "note": "iPath Bloomberg Cotton ETN; tracks cotton futures, note issuer credit + roll risk" },
+      { "type": "Futures", "name": "CT=F", "note": "ICE Cotton No. 2 (50,000 lbs, $500 per cent move); leveraged, for experienced traders" },
+      { "type": "ETF", "name": "DBA", "note": "Broad agriculture basket with a small cotton weight; diversified, indirect" }
+    ]
+  },
+  "categories": [
+    {
+      "categoryKey": "SupplyAndDemand",
+      "summary": "The supply balance has tightened — lower US and global output, 8-year-low stocks, mill use above production — and 2026 weather is supportive. But the core problem is weak textile demand, and acreage flexibility plus Brazilian expansion cap rallies. Supply is friendly, demand is the drag.",
+      "overallAnalysisDetails": "The supply side has genuinely improved. USDA's June 2026 outlook projects 2026/27 global production around 116 million bales, below mill use of about 122 million, driving the first stock drawdown of the cycle — world ending stocks fall to about 71 million bales, an 8-year low. US 2026/27 output is down about 600,000 bales, and China cut Xinjiang area over 10%. That is a tighter balance than the market has seen in years.\n\nThe problem is the demand side. Global mill use is still soft historically as textile and apparel spending is weak (China and Turkey slowing) and polyester keeps taking share. Cotton also has high acreage flexibility — farmers switch between cotton and grains/soybeans — and Brazil keeps expanding, so rallies bring more planting. Seasonally, 2026 weather has been supportive (adverse conditions in key regions trimmed output). Netting it out, the supply picture is friendly, but weak demand and easy new supply keep this category mixed rather than clearly bullish.",
+      "factors": [
+        {
+          "factorKey": "production_output_trend",
+          "oneLineExplanation": "Lower US and global output tightening supply.",
+          "detailedExplanation": "USDA projects 2026/27 global production around 116 million bales, below mill use, with US output down about 600,000 bales and China cutting Xinjiang area over 10%. Falling output relative to demand is a supportive production signal — a real change from recent oversupply.",
+          "result": "Pass"
+        },
+        {
+          "factorKey": "global_inventories_stockpiles",
+          "oneLineExplanation": "World stocks at an 8-year low.",
+          "detailedExplanation": "World 2026/27 ending stocks fall to about 71 million bales, the lowest since 2018/19 and down ~7% year-over-year — the first drawdown of the cycle, with mill use exceeding production. Tightening stocks are supportive, though China still holds about half of the world total.",
+          "result": "Pass"
+        },
+        {
+          "factorKey": "demand_drivers",
+          "oneLineExplanation": "Weak global textile and apparel demand.",
+          "detailedExplanation": "Cotton demand depends on textile and apparel spending in China, India, Bangladesh and Vietnam, and it is soft — hurt by a slow global consumer and polyester's rising share. Weak, structurally-challenged demand is cotton's core problem and the clearest negative in its supply-demand picture.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "spare_capacity_new_supply",
+          "oneLineExplanation": "Acreage flexibility and Brazil expansion cap rallies.",
+          "detailedExplanation": "Cotton competes with grains and soybeans for acreage, so farmers can switch in and out quickly, and Brazil keeps expanding cotton area (MATOPIBA region). That ready spare capacity means any price rally tends to bring more planting and new supply, a headwind.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "seasonality",
+          "oneLineExplanation": "2026 weather has been supportive.",
+          "detailedExplanation": "Cotton is planted April-June and harvested September-December, with India's crop monsoon-dependent. In 2026, adverse weather in key regions trimmed output and helped the price recover, so the seasonal/weather backdrop is currently a mild positive.",
+          "result": "Pass"
+        }
+      ]
+    },
+    {
+      "categoryKey": "PriceAndValue",
+      "summary": "Cotton is cheap: in the lower part of its decade range, very cheap in real terms, near/below many growers' cost, and ~64% below its 2011 record. The clear negative is that polyester is cheaper and taking share. Value is broadly supportive.",
+      "overallAnalysisDetails": "On price, cotton is inexpensive. At about 80 cents it has recovered from 2025's low-60s but remains cheap versus its decade range and very cheap in real terms — roughly 64% below its 2011 nominal record near $2.20, and even further below in inflation-adjusted dollars.\n\nThe cost of production supports a floor: US grower breakeven is about 70-80 cents, and many farmers have been near or below cost, which historically limits the downside as acreage shifts away. The clear negative is the substitute: polyester holds about 71% of the fiber market, is cheaper, and is oil-linked, so cotton loses structural share in a long-running 'race to the bottom' on price (2026's polyester price rises only briefly narrowed the gap). Cotton is about 64% below its all-time high, leaving room. Overall the value picture is supportive, with the polyester overhang the one clear blemish.",
+      "factors": [
+        {
+          "factorKey": "price_vs_range",
+          "oneLineExplanation": "Cheap versus its decade range.",
+          "detailedExplanation": "At about 80 cents, cotton is in the mid-to-upper part of its 52-week range (~61-80 cents) after the 2025 recovery, but cheap versus its full decade range. It is a reasonable valuation entry — off the lows but far from expensive.",
+          "result": "Pass"
+        },
+        {
+          "factorKey": "inflation_adjusted_price",
+          "oneLineExplanation": "Very cheap in real terms.",
+          "detailedExplanation": "In inflation-adjusted terms cotton is very cheap — roughly 64% below its 2011 nominal high and far below it in real dollars. Buyers are paying a low real price, which limits valuation risk to the downside.",
+          "result": "Pass"
+        },
+        {
+          "factorKey": "cost_of_production_floor",
+          "oneLineExplanation": "Near/below the ~70-80 cent US breakeven.",
+          "detailedExplanation": "US grower breakeven is about 70-80 cents a pound, and many farmers have been near or below cost (farm-gate around 63 cents in 2025). Prices near the cost of production support a floor, as sustained losses eventually cut acreage — a genuine positive, with Brazil the low-cost competitor.",
+          "result": "Pass"
+        },
+        {
+          "factorKey": "price_vs_substitute",
+          "oneLineExplanation": "Polyester is cheaper and taking share.",
+          "detailedExplanation": "Cotton's main substitute, polyester, holds about 71% of the fiber market, is cheaper, and is oil-linked, so cotton keeps losing structural share in a long-running price war. 2026's polyester price rises only briefly narrowed the gap. On relative value this is a clear negative.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "distance_from_all_time_high",
+          "oneLineExplanation": "About 64% below the 2011 record near $2.20.",
+          "detailedExplanation": "Cotton near 80 cents is about 64% below its 2011 record near $2.20, leaving large theoretical headroom rather than record-high risk. For a cyclical fiber this is normal, but it confirms the price is far from a valuation ceiling.",
+          "result": "Pass"
+        }
+      ]
+    },
+    {
+      "categoryKey": "VolatilityAndRisk",
+      "summary": "Cotton is high-risk on every count here: ~25-30% volatility, a ~78% peak-to-trough crash on record, trade and weather exposure, a strong-dollar export headwind, and — unusually — a pro-cyclical link to stocks that makes it a poor diversifier. All five risk factors fail.",
+      "overallAnalysisDetails": "Cotton's risk profile is unfavorable across the board. Its annualized volatility runs about 25-30% (high for a soft commodity), and its worst drawdown was about 78% — from the 2011 record near $2.20 to about 48 cents in 2020. Its geopolitical exposure is real: US-China trade and tariffs (China is a key buyer), Xinjiang forced-labor import bans (UFLPA), and Texas drought and Asian monsoon weather all move the price.\n\nA strong US dollar compounds the problem by making US cotton less competitive than low-cost Brazil, which recently overtook the US as the top exporter. And unlike food crops, cotton is pro-cyclical: because it is tied to consumer and apparel demand, it tends to fall exactly when the economy and stocks fall, so it is a poor portfolio diversifier and more recession-sensitive than a food commodity. With volatility, drawdown history, trade/weather risk, a currency headwind, and pro-cyclical behavior all working against it, all five risk factors are negative.",
+      "factors": [
+        {
+          "factorKey": "historical_volatility",
+          "oneLineExplanation": "High, ~25-30% a year.",
+          "detailedExplanation": "Cotton's annualized volatility runs about 25-30%, high for a soft commodity, driven by weather, trade and the economic cycle. That makes it a bumpy hold and a real risk for beginners, so this factor is a negative.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "worst_drawdowns",
+          "oneLineExplanation": "About 78% peak-to-trough on record.",
+          "detailedExplanation": "Cotton's worst drawdown was about 78% — from the 2011 record near $2.20 to about 48 cents in 2020. A history of such deep, prolonged declines shows how brutal the downside can be, a clear risk.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "geopolitical_weather_risk",
+          "oneLineExplanation": "Trade, forced-labor bans and weather cut both ways.",
+          "detailedExplanation": "Cotton is exposed to US-China trade and tariffs (China is a key buyer), Xinjiang forced-labor import bans (UFLPA), and Texas drought plus the Asian monsoon. Weather can be supportive, but trade friction and demand risk can push the price down, so this is a two-sided hazard rather than a support.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "us_dollar_sensitivity",
+          "oneLineExplanation": "A strong dollar hurts US exporters versus Brazil.",
+          "detailedExplanation": "Cotton is priced in dollars, and a strong dollar makes US cotton less competitive than low-cost Brazil, which overtook the US as the top exporter. With the US relying on exports, this currency headwind is a clear negative.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "correlation_to_inflation_and_stocks",
+          "oneLineExplanation": "Pro-cyclical — a poor diversifier.",
+          "detailedExplanation": "Unlike food crops, cotton is pro-cyclical: because demand is tied to consumer and apparel spending, it tends to fall when the economy and stocks fall. That makes it a poor portfolio diversifier and more recession-sensitive than a food commodity — a negative in its risk profile.",
+          "result": "Fail"
+        }
+      ]
+    },
+    {
+      "categoryKey": "FutureOutlook",
+      "summary": "The outlook is mixed: the balance is tightening (8-year-low stocks) and USDA raised its price forecast to 73 cents with modest analyst upside, but the bull/bear balance is dominated by weak demand, polyester share loss and recession risk. Two of five factors pass.",
+      "overallAnalysisDetails": "The forward setup is a tug-of-war between a tightening supply balance and a weak demand outlook. On the supportive side, the 2026/27 balance is tightening with stocks at an 8-year low and mill use exceeding production, USDA raised its US season-average farm price to 73 cents (from ~61 cents), and models point to modest upside toward the mid-80s over 12 months.\n\nOn the other side, the bull/bear balance is dominated by the demand problem: soft global textile spending, relentless polyester share loss, recession sensitivity, and a large Chinese reserve overhang, versus a cheap price, a cost floor and tightening supply. The catalysts to watch — the global economy and consumer spending, US-China trade, Texas weather, mill-use data, and polyester/oil prices — are mostly demand-side and two-sided. So while the tightening balance and higher USDA price are genuine positives, the demand-driven bull/bear balance and uncertain catalysts keep the outlook only modestly constructive at best.",
+      "factors": [
+        {
+          "factorKey": "forward_supply_demand_balance",
+          "oneLineExplanation": "Tightening — 8-year-low stocks, mill use above output.",
+          "detailedExplanation": "The 2026/27 balance is tightening: world stocks fall to an 8-year low and mill use is projected to exceed production, the first drawdown of the cycle. A tightening balance is a supportive forward signal, even if demand remains the swing factor.",
+          "result": "Pass"
+        },
+        {
+          "factorKey": "official_agency_forecast",
+          "oneLineExplanation": "USDA raised the US price to 73 cents.",
+          "detailedExplanation": "USDA raised its US 2026/27 season-average farm price to 73 cents (from ~61 cents in 2025/26), and the world price is seen rebounding toward ~90 cents. An official forecast of firmer prices, driven by the tighter balance, is a supportive signal.",
+          "result": "Pass"
+        },
+        {
+          "factorKey": "analyst_price_targets",
+          "oneLineExplanation": "Only modest upside to the mid-80s.",
+          "detailedExplanation": "Models point to about 80.5 cents by quarter-end and ~84.5 cents over 12 months — only modest upside from today's ~80 cents. With targets close to spot, the upside is limited, so this factor is not a strong positive.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "bull_vs_bear_scenario",
+          "oneLineExplanation": "Weak demand and polyester dominate the balance.",
+          "detailedExplanation": "The bull case is a cheap, near-cost price and tightening supply; the bear case is weak textile demand, polyester's structural share gains, recession risk and a big Chinese reserve overhang. The demand-side bear case dominates over a multi-year view, so the scenario balance is not clearly favorable.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "key_catalysts_to_watch",
+          "oneLineExplanation": "Catalysts are mostly demand-side and two-sided.",
+          "detailedExplanation": "Watch the global economy and consumer spending, US-China trade and tariffs, Texas weather, the monthly WASDE and mill-use data, and polyester/oil prices. These are mostly demand-driven and cut both ways — a recession would hit cotton hard — so the catalyst mix is a source of risk rather than a dependable tailwind.",
+          "result": "Fail"
+        }
+      ]
+    }
+  ]
+}

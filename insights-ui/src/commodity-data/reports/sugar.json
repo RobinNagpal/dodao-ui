@@ -1,0 +1,206 @@
+{
+  "slug": "sugar",
+  "name": "Sugar #11",
+  "commodityGroup": "Agriculture",
+  "priceSymbol": "SB=F",
+  "exchange": "ICE",
+  "unit": "pound",
+  "currency": "USD",
+  "metaDescription": "A plain-English investor read on Sugar #11: near 15 cents a pound in mid-2026, cheap and close to the cost of production but pressured by a global surplus. A patient contrarian value play. Covers supply and demand, value, risk, and the outlook.",
+  "updatedAt": "2026-07-07",
+  "summary": "Overall stance: Balanced. Cheap but not yet catalyzed.\n\nSugar #11 is the world benchmark for raw cane sugar, traded on ICE in US cents per pound. In early July 2026 it trades near 15 cents a pound, in the lower part of its 52-week range (about 13.3-17.0 cents), roughly 46% below its late-2023 high near 28 cents and about 77% below its 1974 all-time high near 66 cents.\n\nSugar is unusual: it is both a food and a fuel. In Brazil, the top producer, mills can send cane to make either sugar or ethanol depending on which pays more, which ties sugar to crude oil and ethanol prices. The value case is attractive: sugar is deeply cheap in real terms, sitting near the Brazilian cost of production (~13.5 cents via ethanol parity), and ethanol has recently traded above sugar, pulling cane toward fuel. But the honest picture is that 2025/26 is a global surplus year — record Brazil output, an India rebound, and a Thailand recovery — with stocks rising and demand growth slow. The one bright spot ahead is that agencies see 2026/27 tightening toward balance or a small deficit on El Nino risk to India and Thailand. Sugar is volatile (~30-40% a year) with a history of 50-70% crashes, and a weak Brazilian real keeps a bearish thumb on the price. A patient contrarian value play for investors watching the India monsoon, India export policy, and crude, but not a clear momentum buy.",
+  "keyFacts": {
+    "keyFacts": "Sugar #11 is the world benchmark futures contract for raw cane sugar delivered to a ship for export — the price the global sugar trade runs on. It is traded on ICE in US cents per pound. In early July 2026 it trades near 15 cents a pound.\n\nTwo things make sugar unusual for a beginner. First, it is both a food and a fuel: in Brazil, the world's top producer and exporter, mills can switch cane between making sugar and making ethanol depending on which is more profitable, so sugar is linked to crude oil and ethanol prices. Second, it is heavily policy- and weather-driven: India and Thailand's harvests depend on the monsoon, and India's on-and-off export bans can swing the global balance by millions of tonnes. Prices fell hard from a late-2023 high near 28 cents to around 14 cents by late 2025 as the world moved into surplus, and have since bounced modestly. So sugar is cheap and near the cost of production, but the market is currently well-supplied.",
+    "greenFlags": [
+      {
+        "flag": "Cheap and near the cost of production",
+        "explanation": "At about 15 cents, sugar is deeply cheap in real terms (about 77% below its 1974 high) and near the Brazilian producer cost of roughly 13.5 cents via ethanol parity. Prices dipping near cost gives the market partial downside support.",
+        "result": "Pass"
+      },
+      {
+        "flag": "Ethanol is pulling cane toward fuel",
+        "explanation": "In early 2026 ethanol traded above raw sugar (anhydrous ~19.7 cents, hydrous ~18.0 cents versus sugar ~14.6 cents), so Brazilian mills have an incentive to make fuel instead of sugar — a supportive, supply-diverting force linked to crude oil.",
+        "result": "Pass"
+      },
+      {
+        "flag": "The balance is tightening for 2026/27",
+        "explanation": "Agencies see the 2025/26 surplus shrinking and 2026/27 moving toward balance or a small deficit (the ISO projects a ~0.26 million-tonne deficit) as El Nino threatens India and Thailand. The forward trend is improving even if today is still a surplus.",
+        "result": "Pass"
+      }
+    ],
+    "redFlags": [
+      {
+        "flag": "A global surplus with rising stocks",
+        "explanation": "2025/26 is a surplus year — record Brazil output (~44.7 million tonnes), an India rebound and a Thailand recovery pushed world production to ~189 million tonnes and lifted ending stocks toward 44.5 million tonnes. Ample supply and slow demand growth cap the price.",
+        "result": "Fail"
+      },
+      {
+        "flag": "High volatility and a weak Brazilian real",
+        "explanation": "Sugar swings about 30-40% a year and has crashed 50-70% before (36 to sub-12 cents in 2011-2015). A weak Brazilian real makes Brazilian exports cheaper in dollars, keeping steady bearish pressure on the price.",
+        "result": "Fail"
+      }
+    ],
+    "mainUses": ["Food & beverage sweetener", "Fuel ethanol (large share of Brazil's cane)", "Industrial (minor)"],
+    "topProducers": [
+      { "country": "Brazil", "share": "~22% (export engine)" },
+      { "country": "India", "share": "~18%" },
+      { "country": "EU", "share": "~8% (beet sugar)" },
+      { "country": "Thailand", "share": "~5% (#2 exporter)" }
+    ],
+    "waysToInvest": [
+      { "type": "ETF", "name": "CANE", "note": "Teucrium Sugar Fund; tracks ICE #11 futures — high expense ratio, roll/contango drag" },
+      { "type": "Futures", "name": "SB=F", "note": "ICE raw sugar (112,000 lbs); leveraged, for experienced traders" },
+      { "type": "ETF", "name": "DBA / TAGS", "note": "Broad ag baskets with a sugar weight; diversified, indirect" }
+    ]
+  },
+  "categories": [
+    {
+      "categoryKey": "SupplyAndDemand",
+      "summary": "2025/26 is a global surplus: record Brazil output, an India rebound and a Thailand recovery lifted production and stocks, while demand grows slowly and Brazil's sugar/ethanol flexibility adds swing supply. Only the monsoon/harvest seasonality offers a catalyst. Supply clearly dominates.",
+      "overallAnalysisDetails": "The supply side is heavy. World 2025/26 production is about 189 million tonnes, with a record Brazil crop (~44.7 million tonnes), a big India rebound (~30-33 million tonnes), and a Thailand recovery (~9.5-10 million tonnes). That surplus has lifted global ending stocks toward 44.5 million tonnes. Brazil also has built-in flexibility: mills can shift cane between sugar and ethanol, and India and Thailand hold acreage and export capacity that can add supply if prices rise.\n\nDemand is the weak part. Global consumption (~178 million tonnes) grows only in the low single digits, capped in the West by health and anti-sugar trends, with emerging markets providing the main upside. So the balance is a well-supplied market meeting slow-growing demand. The one catalyst is seasonal/weather: the Brazil harvest runs April-November, India and Thailand October-March, and the June-September Indian monsoon is the key window that can tighten or loosen supply. On the current balance, though, supply dominates.",
+      "factors": [
+        {
+          "factorKey": "production_output_trend",
+          "oneLineExplanation": "Record Brazil crop plus India and Thailand rebounds.",
+          "detailedExplanation": "World 2025/26 production is about 189 million tonnes, with a record Brazil crop (~44.7 million tonnes), an India rebound (~30-33 million) and a Thailand recovery (~9.5-10 million). Ample, record-level output is a bearish production signal that has pushed the market into surplus.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "global_inventories_stockpiles",
+          "oneLineExplanation": "Ending stocks rising to ~44.5 million tonnes.",
+          "detailedExplanation": "The 2025/26 surplus has lifted global ending stocks toward 44.5 million tonnes. A rising stockpile is bearish — it gives the market a comfortable cushion of sugar, which weighs on the price.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "demand_drivers",
+          "oneLineExplanation": "Slow demand growth, capped in the West.",
+          "detailedExplanation": "Global sugar consumption (~178 million tonnes) grows only in the low single digits, held back in the West by health and anti-sugar trends, with emerging markets the main source of growth. Slow, capped demand does little to absorb the surplus, so this factor is a negative.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "spare_capacity_new_supply",
+          "oneLineExplanation": "Brazil's sugar/ethanol swing plus Indian/Thai capacity.",
+          "detailedExplanation": "Brazil can flex cane between sugar and ethanol, and India and Thailand hold acreage and export capacity that can add sugar when prices rise. That ready swing supply caps rallies — a price bounce tends to bring more sugar to market, a headwind.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "seasonality",
+          "oneLineExplanation": "Monsoon and harvest windows offer catalysts.",
+          "detailedExplanation": "Sugar has clear seasonal/weather windows: the Brazil harvest (April-November), the India/Thailand harvest (October-March), and above all the June-September Indian monsoon, which can make or break the Asian crop. These are tradable catalysts, so seasonality is a mild positive.",
+          "result": "Pass"
+        }
+      ]
+    },
+    {
+      "categoryKey": "PriceAndValue",
+      "summary": "Value is sugar's strongest pillar: in the lower part of its range, deeply cheap in real terms, near the ~13.5-cent Brazilian cost floor, supported by ethanol trading above sugar, and about 77% below its all-time high. All five value factors pass.",
+      "overallAnalysisDetails": "On price, sugar is genuinely cheap. At about 15 cents it sits in the lower part of its 52-week range (13.3-17.0 cents), near multi-year lows, and is deeply inexpensive in real terms — the 1974 high near 66 cents dwarfs today's nominal price, and even the 1980 spike is far above.\n\nThe cost of production offers a real floor: Brazil is the low-cost producer, with an effective floor around 13.5 cents a pound via hydrous-ethanol parity, and prices in the low-14s in early 2026 dipped near or below some mills' costs, giving partial support. Ethanol has recently traded above raw sugar (anhydrous ~19.7 cents, hydrous ~18.0 cents versus sugar ~14.6 cents), which pulls Brazilian cane toward fuel and supports sugar's relative value. And at about 77% below its all-time high, there is enormous long-run headroom. Value is clearly the strongest part of the sugar case — the question, as the outlook shows, is timing.",
+      "factors": [
+        {
+          "factorKey": "price_vs_range",
+          "oneLineExplanation": "Lower part of its 52-week range.",
+          "detailedExplanation": "At about 15 cents, sugar sits in the lower part of its 52-week range (13.3-17.0 cents), near multi-year lows and roughly 46% below its late-2023 high near 28 cents. That is a cheap entry on valuation, with limited downside from being 'overpriced.'",
+          "result": "Pass"
+        },
+        {
+          "factorKey": "inflation_adjusted_price",
+          "oneLineExplanation": "Deeply cheap in real terms.",
+          "detailedExplanation": "In inflation-adjusted terms sugar is very cheap — the 1974 high near 66 cents and the 1980 spike are far above today's nominal ~15 cents. Buyers are paying a low real price, which limits valuation risk to the downside.",
+          "result": "Pass"
+        },
+        {
+          "factorKey": "cost_of_production_floor",
+          "oneLineExplanation": "Near the ~13.5-cent Brazilian cost floor.",
+          "detailedExplanation": "Brazil is the low-cost producer, with an effective floor around 13.5 cents a pound via hydrous-ethanol parity. Prices in the low-14s in early 2026 dipped near or below some mills' costs, which tends to divert cane to ethanol and support the sugar price — a genuine floor near current levels.",
+          "result": "Pass"
+        },
+        {
+          "factorKey": "price_vs_substitute",
+          "oneLineExplanation": "Ethanol trading above sugar is supportive.",
+          "detailedExplanation": "In early 2026 ethanol traded above raw sugar (anhydrous ~19.7 cents, hydrous ~18.0 cents versus sugar ~14.6 cents), so Brazilian mills are incentivized to make fuel rather than sugar. That substitute relationship diverts supply away from sugar and is supportive on relative value.",
+          "result": "Pass"
+        },
+        {
+          "factorKey": "distance_from_all_time_high",
+          "oneLineExplanation": "About 77% below the 1974 high near 66 cents.",
+          "detailedExplanation": "Sugar near 15 cents is about 77% below its 1974 all-time high near 66 cents, leaving enormous long-run headroom rather than record-high risk. That deep discount is a clear positive for a patient value investor.",
+          "result": "Pass"
+        }
+      ]
+    },
+    {
+      "categoryKey": "VolatilityAndRisk",
+      "summary": "Sugar is volatile (~30-40% a year) with a history of 50-70% crashes, exposed to India's export policy and a weak Brazilian real. The one positive is its ethanol/energy link plus low correlation to stocks, which adds diversification. Four of five factors fail.",
+      "overallAnalysisDetails": "Sugar is a high-volatility soft commodity. Its annualized volatility runs about 30-40%, and it has crashed hard before — from ~36 cents in 2011 to sub-12 cents by 2015 (~70%), and ~50% from the late-2023 high to late 2025. So the downside can be severe.\n\nThe policy and currency risks are real negatives: India's export bans and allowances can swing the global balance by millions of tonnes, Brazil's weather and fires matter, and a weak Brazilian real makes Brazilian exports cheaper in dollars, a persistent bearish pressure. The redeeming feature is that sugar is linked via ethanol to crude oil and energy, and has low correlation to equities, so it offers diversification and a partial inflation/energy hedge. On balance, though, four of the five risk factors are negative.",
+      "factors": [
+        {
+          "factorKey": "historical_volatility",
+          "oneLineExplanation": "Volatile, ~30-40% a year.",
+          "detailedExplanation": "Sugar's annualized volatility runs about 30-40%, among the more volatile softs, driven by weather, policy and the ethanol link. That makes it a bumpy hold and a real risk for beginners, so this factor is a negative.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "worst_drawdowns",
+          "oneLineExplanation": "History of 50-70% crashes.",
+          "detailedExplanation": "Sugar has crashed hard before: from ~36 cents in 2011 to sub-12 cents by 2015 (~70%), and about 50% from the late-2023 high near 28 cents to ~14 cents in late 2025. A history of deep drawdowns is a serious downside risk.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "geopolitical_weather_risk",
+          "oneLineExplanation": "India policy and monsoon swing the market.",
+          "detailedExplanation": "India's export bans and allowances can shift the global balance by millions of tonnes, and Brazil weather/fires, Thailand drought, the Indian monsoon and crude oil (via ethanol) all move the price. These factors cut both ways and are unpredictable, so they are a source of risk rather than a dependable support.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "us_dollar_sensitivity",
+          "oneLineExplanation": "A weak Brazilian real is bearish.",
+          "detailedExplanation": "Sugar is priced in dollars, and the key currency is the Brazilian real: a weaker real makes Brazilian sugar cheaper in dollar terms and encourages exports, adding supply and pressuring the price. With the real a swing factor, this is a bearish risk.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "correlation_to_inflation_and_stocks",
+          "oneLineExplanation": "Ethanol/energy link plus stock diversification.",
+          "detailedExplanation": "Sugar is linked via ethanol to crude oil and energy, and has low correlation to equities, so it offers portfolio diversification and a partial inflation/energy hedge. That combination is the one clear positive in its risk profile.",
+          "result": "Pass"
+        }
+      ]
+    },
+    {
+      "categoryKey": "FutureOutlook",
+      "summary": "The outlook is improving but not yet bullish: the 2025/26 surplus is shrinking and agencies see 2026/27 near balance or a small deficit, and the cheap, near-cost price gives a genuine contrarian case. But analyst targets cluster near 15 cents with little upside, and the swing catalysts (India policy, monsoon) cut both ways. Three of five factors pass.",
+      "overallAnalysisDetails": "The forward setup is improving from a low base. The 2025/26 surplus is shrinking (the ISO trimmed it to ~1.2 million tonnes), and agencies see 2026/27 moving toward balance or a small deficit — the ISO projects a ~0.26 million-tonne deficit as production dips and El Nino threatens India and Thailand. That tightening trend, combined with a price near the cost of production, is a genuine contrarian value case.\n\nAgainst that, analyst 2026 price forecasts cluster around 15 cents, implying little near-term upside from today's level, and the swing catalysts — the Indian monsoon and India's export policy, plus crude oil and the Brazilian real — can turn either way. The bull case (cheap, near cost, tightening balance, ethanol support, El Nino risk) is real, but the bear case (still-surplus supply, ample Brazil/India/Thailand output, slow demand, weak real) keeps it from being a clear buy. On balance the outlook is modestly constructive for a patient investor, resting on the tightening 2026/27 balance and the value floor.",
+      "factors": [
+        {
+          "factorKey": "forward_supply_demand_balance",
+          "oneLineExplanation": "Surplus shrinking toward a 2026/27 deficit.",
+          "detailedExplanation": "The 2025/26 surplus is shrinking, and agencies see 2026/27 near balance or a small deficit as production dips and El Nino threatens India and Thailand. A balance tightening from surplus toward deficit is a supportive forward signal for a patient buyer.",
+          "result": "Pass"
+        },
+        {
+          "factorKey": "official_agency_forecast",
+          "oneLineExplanation": "ISO sees a small 2026/27 deficit.",
+          "detailedExplanation": "The ISO trimmed the 2025/26 surplus to ~1.2 million tonnes and projects a ~0.26 million-tonne deficit for 2026/27 as global production falls slightly. An official view of a tightening-to-deficit balance is a mild positive.",
+          "result": "Pass"
+        },
+        {
+          "factorKey": "analyst_price_targets",
+          "oneLineExplanation": "Targets cluster near 15 cents — little upside.",
+          "detailedExplanation": "Analyst 2026 price forecasts cluster around 15.4 cents (weakest in Q3), near today's level, with the World Bank around 16.8 cents. With targets close to spot, there is little near-term upside priced in, so this factor is a negative.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "bull_vs_bear_scenario",
+          "oneLineExplanation": "Cheap plus tightening balance is a real contrarian case.",
+          "detailedExplanation": "The bull case is a cheap, near-cost price, a tightening balance toward 2026/27 deficit, ethanol/crude support and El Nino risk. The bear case is still-ample 2025/26 supply, slow demand and a weak real. With value on its side and the balance improving, the scenario skew leans modestly positive for a patient contrarian.",
+          "result": "Pass"
+        },
+        {
+          "factorKey": "key_catalysts_to_watch",
+          "oneLineExplanation": "India policy and monsoon cut both ways.",
+          "detailedExplanation": "Watch the Indian monsoon (June-September) and India's export policy, Brazil's sugar/ethanol mix and cane crush, crude oil, and the Brazilian real. These are the swing factors, but they are two-sided — a good monsoon or freed Indian exports is as likely as a bullish shock — so the catalysts are a source of risk rather than a dependable tailwind.",
+          "result": "Fail"
+        }
+      ]
+    }
+  ]
+}

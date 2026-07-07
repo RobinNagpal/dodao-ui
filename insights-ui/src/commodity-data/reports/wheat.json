@@ -1,0 +1,207 @@
+{
+  "slug": "wheat",
+  "name": "Wheat (KC HRW)",
+  "commodityGroup": "Agriculture",
+  "priceSymbol": "KE=F",
+  "exchange": "CBOT",
+  "unit": "bushel",
+  "currency": "USD",
+  "metaDescription": "A plain-English investor read on Kansas City hard red winter wheat: near $6.35 a bushel in mid-2026 after a Plains drought cut the US crop to its smallest since 1957, colliding with a huge global harvest. Covers supply and demand, value, risk, and the outlook.",
+  "updatedAt": "2026-07-07",
+  "summary": "Overall stance: Tactical. Cheap and geopolitically explosive, with a real US supply scare.\n\nKansas City hard red winter (HRW) wheat is US bread/milling wheat, grown in the Plains and traded as the KE=F future, distinct from Chicago soft red winter (SRW). In early July 2026 it trades near $6.35 a bushel, about 51% below its March 2022 record near $13. The story is a split screen: a severe US Plains drought cut the 2026/27 HRW crop to its smallest since 1957/58 (a bullish scare that rallied the price from a $4.88 low in late 2025 up to $7.50 before cooling), while the world is harvesting its second-largest crop ever, led by cheap Russian wheat.\n\nOn value, wheat is attractive: cheap in real terms, near or just above the ~$5.50-7.00 US farmer breakeven (a 4th straight below-cost year for many growers), and well below its record. Exporter stocks (excluding China, which holds about half of world stocks but keeps them off the market) are structurally tight, which supports price. But wheat is the world's most political grain and the most volatile major grain (~30-35% a year): it is driven by Russia's huge exportable crop, the Black Sea war, export bans and Plains weather, and the US keeps losing market share to cheaper Russian wheat. USDA sees the farm price rising toward $6.00-6.50. Best treated as a tactical, event-driven position rather than a core buy-and-hold.",
+  "keyFacts": {
+    "keyFacts": "Wheat is the world's most widely eaten grain, milled into flour for bread, noodles and pasta. This report covers KC HRW — hard red winter wheat grown in the US Plains, the main US bread wheat — traded as the KE=F future in US cents per 60-pound bushel. It is distinct from Chicago SRW (ZW=F), a softer, lower-protein wheat. In early July 2026 KC HRW trades near $6.35 a bushel.\n\nFor a beginner, wheat is the most geopolitical grain: Russia is the world's #1 exporter and its huge, cheap crop sets the global price, while the EU, Ukraine, Australia, Canada and Argentina all compete for exports. That makes wheat highly sensitive to war (the Black Sea), export taxes and bans, and weather in a handful of key regions. In 2026 a severe US Plains drought cut the HRW crop to its smallest since the 1950s — a genuine supply scare — even as the world harvested one of its largest crops ever. So US wheat is a globally-cheap grain with a domestic supply story layered on top, and it swings hard on headlines.",
+    "greenFlags": [
+      {
+        "flag": "A real US supply scare",
+        "explanation": "A severe Plains drought cut the 2026/27 US HRW crop to about 497-515 million bushels — the smallest since 1957/58 — with 63% of the winter wheat crop in drought versus 15% a year earlier. That tightness rallied KC wheat from a $4.88 low (late 2025) toward $7.50 in spring 2026.",
+        "result": "Pass"
+      },
+      {
+        "flag": "Cheap versus history and near the cost of production",
+        "explanation": "At ~$6.35, wheat is about 51% below its 2022 record near $13, cheap in real terms, and near or just above the ~$5.50-7.00 US HRW breakeven — a 4th straight below-cost year for many Plains growers, which supports a price floor.",
+        "result": "Pass"
+      },
+      {
+        "flag": "Tight exporter stocks and a geopolitical risk premium",
+        "explanation": "China holds about half of world wheat stocks but keeps them off the export market, so the stocks that actually set the price — those held by major exporters — are structurally tight. Add the Black Sea war and export-policy risk and there is a real premium for supply shocks.",
+        "result": "Pass"
+      }
+    ],
+    "redFlags": [
+      {
+        "flag": "Record global supply and cheap Russian wheat",
+        "explanation": "The world is harvesting its second-largest crop ever (~819 million tonnes), led by Russia's ~84 million-tonne exportable crop that undercuts everyone. Cheap Russian wheat is pushing US 2026/27 exports toward ~775 million bushels, among the lowest since 1971/72.",
+        "result": "Fail"
+      },
+      {
+        "flag": "The most volatile major grain",
+        "explanation": "Wheat swings about 30-35% a year — the most of any grain — because it is driven by war and export policy. It has fallen ~62% peak-to-trough (from ~$13 in 2022 to ~$4.88 in 2025), so the downside can be brutal.",
+        "result": "Fail"
+      }
+    ],
+    "mainUses": ["Food — flour for bread, noodles, pasta (inelastic demand)", "Feed wheat (competes with corn)", "Exports", "Seed and industrial (minor)"],
+    "topProducers": [
+      { "country": "China", "share": "~17% (mostly consumed at home)" },
+      { "country": "EU", "share": "~16%" },
+      { "country": "India", "share": "~14%" },
+      { "country": "Russia", "share": "~11% (world's #1 exporter)" }
+    ],
+    "waysToInvest": [
+      { "type": "ETF", "name": "WEAT", "note": "Teucrium Wheat Fund; laddered futures, tactical — watch contango decay" },
+      { "type": "Futures", "name": "KE=F / ZW=F", "note": "KC HRW and Chicago SRW futures; leveraged, for experienced traders" },
+      { "type": "ETF", "name": "DBA", "note": "Broad agriculture basket including wheat; diversified" },
+      { "type": "Equities", "name": "Ag inputs / grain handlers", "note": "Indirect exposure via fertilizer, seed and grain-trading firms" }
+    ]
+  },
+  "categories": [
+    {
+      "categoryKey": "SupplyAndDemand",
+      "summary": "A US Plains drought cut the HRW crop to its smallest since 1957 and exporter stocks are structurally tight (China's half of world stocks are walled off), while food demand is steady and inelastic. Offsetting: Russia's cheap swing supply and Northern Hemisphere harvest pressure. Net leans supportive.",
+      "overallAnalysisDetails": "The supply picture is a split screen. In the US, a severe Plains drought cut the 2026/27 HRW crop to about 497-515 million bushels — the smallest since 1957/58 — with 63% of the winter wheat crop in drought. Globally, though, the world is harvesting one of its largest crops ever (~819 million tonnes), and Russia's ~84 million-tonne exportable crop keeps global supply ample and prices capped.\n\nThe crucial nuance is where the stocks sit. China holds about half of world wheat stocks but keeps them off the export market, so the inventories that actually set the price — those held by major exporters — are structurally tight. Demand is steady and inelastic (people keep eating bread), with feed wheat competing against corn when it gets cheap enough. Russia is the swing supplier that can flood or withhold the market, and the Northern Hemisphere harvest (June-July) brings seasonal selling pressure. On balance, tight exporter stocks and the US scare tip this category to supportive.",
+      "factors": [
+        {
+          "factorKey": "production_output_trend",
+          "oneLineExplanation": "US HRW crop the smallest since 1957 on drought.",
+          "detailedExplanation": "A severe Plains drought cut the 2026/27 US HRW crop to about 497-515 million bushels — the smallest since 1957/58 — with 63% of winter wheat in drought versus 15% a year earlier. A sharp drop in the US bread-wheat crop is a genuinely supportive production signal, even though the global crop is large.",
+          "result": "Pass"
+        },
+        {
+          "factorKey": "global_inventories_stockpiles",
+          "oneLineExplanation": "Exporter stocks tight; China's half is walled off.",
+          "detailedExplanation": "China holds roughly half of world wheat stocks but keeps them off the export market, so the inventories that actually set the price — those held by major exporters — are structurally tight, and world ending stocks fell about 2%. Tight exportable stocks are supportive, even though the headline global stock number looks comfortable.",
+          "result": "Pass"
+        },
+        {
+          "factorKey": "demand_drivers",
+          "oneLineExplanation": "Steady, inelastic food demand.",
+          "detailedExplanation": "Wheat is a food staple with inelastic demand — people keep buying flour and bread through price swings — and feed wheat competes with corn when it gets cheap. Global consumption grows steadily. Dependable, non-cyclical demand is a supportive base for the price.",
+          "result": "Pass"
+        },
+        {
+          "factorKey": "spare_capacity_new_supply",
+          "oneLineExplanation": "Russia's cheap crop is a large swing supply.",
+          "detailedExplanation": "Russia and the wider Black Sea region act as the world's swing supplier, with a huge, low-cost exportable crop that can quickly fill any gap. Acreage is also flexible across regions. That ready supply caps rallies — whenever prices rise, cheap Russian wheat tends to take the export business.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "seasonality",
+          "oneLineExplanation": "Northern Hemisphere harvest brings selling pressure.",
+          "detailedExplanation": "US winter wheat is harvested June-July, and the broader Northern Hemisphere harvest lands over the summer, bringing seasonal selling pressure as new grain hits the market. In early July the calendar is a mild negative, even with the drought-shrunk US crop.",
+          "result": "Fail"
+        }
+      ]
+    },
+    {
+      "categoryKey": "PriceAndValue",
+      "summary": "Wheat is cheap: in the lower-middle of its 10-year range, inexpensive in real terms, near or below the ~$5.50-7.00 US breakeven, and ~51% below its record. The soft spot is that corn is a cheaper feed grain. Value is broadly supportive.",
+      "overallAnalysisDetails": "On price, wheat is inexpensive. At about $6.35 it sits in the lower-middle of its 10-year range and is cheap in real terms, well below the March 2022 record near $13. The 2026 drought rally lifted it off a $4.88 multi-year low, but it remains historically low.\n\nThe cost of production supports the floor: US HRW breakeven runs about $5.50-7.00 a bushel, and 2026 is a 4th straight below-breakeven year for many Plains growers (Capital Press), so at ~$6.35 wheat is near or just above cost, with many farmers still underwater. It is about 51% below its record, leaving headroom. The one soft spot is relative value: corn trades roughly $1 a bushel cheaper, so wheat loses out as a feed grain, and the HRW protein premium only widens when the crop is short. Overall, wheat sits on the cheap side of its history.",
+      "factors": [
+        {
+          "factorKey": "price_vs_range",
+          "oneLineExplanation": "Lower-middle of the 10-year range.",
+          "detailedExplanation": "At about $6.35, wheat sits in the lower-middle of its 10-year range, off its $4.88 late-2025 low but far below the 2022 highs near $13. It is a reasonable valuation entry — cheap versus its own history without being at rock bottom after the drought rally.",
+          "result": "Pass"
+        },
+        {
+          "factorKey": "inflation_adjusted_price",
+          "oneLineExplanation": "Cheap in inflation-adjusted terms.",
+          "detailedExplanation": "In real terms wheat is inexpensive, well below the 2008, 2012 and 2022 spikes once inflation is accounted for. Buyers are not paying an inflated real price, which limits valuation risk.",
+          "result": "Pass"
+        },
+        {
+          "factorKey": "cost_of_production_floor",
+          "oneLineExplanation": "Near or below the ~$5.50-7.00 US breakeven.",
+          "detailedExplanation": "US HRW breakeven runs about $5.50-7.00 a bushel, and 2026 is a 4th straight below-cost year for many Plains growers (Capital Press). At ~$6.35, wheat sits near or just above cost with many farmers still underwater — a condition that supports a price floor as acres shift away.",
+          "result": "Pass"
+        },
+        {
+          "factorKey": "price_vs_substitute",
+          "oneLineExplanation": "Corn is a cheaper feed grain.",
+          "detailedExplanation": "Corn trades roughly $1 a bushel below wheat, so wheat loses the feed-demand battle to cheaper corn, and the HRW protein premium only widens when the crop is short. On relative value versus its main substitute, wheat is not clearly attractive, so this factor is a mild negative.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "distance_from_all_time_high",
+          "oneLineExplanation": "About 51% below the 2022 record near $13.",
+          "detailedExplanation": "Wheat near $6.35 is about 51% below its March 2022 record near $13, leaving large theoretical headroom rather than fresh-record risk. For a volatile, geopolitically-driven grain this is normal, and it confirms the price is far from a ceiling.",
+          "result": "Pass"
+        }
+      ]
+    },
+    {
+      "categoryKey": "VolatilityAndRisk",
+      "summary": "Wheat is the most volatile major grain (~30-35% a year), with a ~62% crash from its 2022 peak, the highest geopolitical exposure of any grain (Russia/Ukraine, export bans, Plains weather), and a strong dollar that is costing the US export share. The one positive is low correlation to stocks.",
+      "overallAnalysisDetails": "Wheat is high-risk. Its annualized volatility is about 30-35% — the most of any grain — because it is driven by war and export policy as much as weather. Its worst drawdown was about 62% (from ~$13 in 2022 to ~$4.88 in 2025), so the downside can be severe.\n\nGeopolitics is wheat's defining risk: the Russia-Ukraine war and Black Sea shipping, Russian export taxes and quotas, Plains drought, and India's on-and-off export bans can all swing the price sharply. A strong US dollar compounds the problem by making US wheat less competitive, and the US keeps losing export share to cheaper Russian wheat — 2026/27 US exports are projected near 775 million bushels, among the lowest since 1971/72. The redeeming feature is diversification: wheat's returns are weather- and geopolitics-driven, so it has low correlation to stocks and can rise during a supply shock when equities are weak.",
+      "factors": [
+        {
+          "factorKey": "historical_volatility",
+          "oneLineExplanation": "The most volatile major grain, ~30-35% a year.",
+          "detailedExplanation": "Wheat's annualized volatility runs about 30-35%, the highest of the major grains, because war and export policy — not just weather — move the price. Such large, headline-driven swings make wheat difficult to hold comfortably for anyone not prepared for the volatility.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "worst_drawdowns",
+          "oneLineExplanation": "Fell about 62% from its 2022 peak.",
+          "detailedExplanation": "Wheat dropped about 62% from its ~$13 March 2022 record to a ~$4.88 low in late 2025 as the war premium faded and big crops arrived. A history of deep, fast drawdowns is a serious downside risk for a long position.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "geopolitical_weather_risk",
+          "oneLineExplanation": "Highest geopolitical exposure of any grain.",
+          "detailedExplanation": "Wheat is the most political grain: the Russia-Ukraine war and Black Sea shipping, Russian export taxes and quotas, Plains drought, and India export bans can all swing the price sharply. These shocks can spike the price up, but they are sources of instability and can also collapse it, so this is a two-sided hazard.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "us_dollar_sensitivity",
+          "oneLineExplanation": "A strong dollar is costing the US export share.",
+          "detailedExplanation": "Wheat is priced in dollars, and a strong dollar makes US wheat less competitive versus Russia and the EU. The US is losing export business to cheap Russian wheat, with 2026/27 exports projected near 775 million bushels — among the lowest since 1971/72. That currency headwind is a clear negative for US-benchmarked wheat.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "correlation_to_inflation_and_stocks",
+          "oneLineExplanation": "Low correlation to stocks — a diversifier.",
+          "detailedExplanation": "Wheat is a core food-security commodity whose returns are driven by weather and geopolitics rather than the business cycle, so it has low correlation to equities. It can rally during a supply shock even when stocks are falling, which is the clearest positive in its risk profile.",
+          "result": "Pass"
+        }
+      ]
+    },
+    {
+      "categoryKey": "FutureOutlook",
+      "summary": "The outlook is constructive-but-two-sided: USDA sees the farm price rising toward $6.00-6.50 (HRW could top $7.50), analysts lean supportive, and the below-cost crop plus thin exporter stocks give genuine upside optionality. But record global supply and cheap Russian wheat keep the forward balance heavy. Modestly positive.",
+      "overallAnalysisDetails": "The forward setup carries real upside optionality on top of a heavy global backdrop. On the bearish side, the world is harvesting its second-largest crop ever, cheap Russian wheat is taking export share, and the forward supply-demand balance is ample. On the bullish side, USDA sees the season-average farm price rising from about $5.00 (2025/26) toward $6.00-6.50 (2026/27), with HRW potentially topping $7.50 given the drought-shrunk crop.\n\nThe bull case is compelling for a tactical trader: prices near or below the cost of production, the smallest US HRW crop since 1957, thin exporter stocks, a standing geopolitical risk premium, and Russia's crop down year-over-year. The bear case is the record global supply, cheap Russian wheat and continued US export losses. Because the swing factors — Russian weather and the war — can turn either way fast, wheat is best viewed as an event-driven position with genuine upside if a supply shock hits, cushioned by a cost floor.",
+      "factors": [
+        {
+          "factorKey": "forward_supply_demand_balance",
+          "oneLineExplanation": "Ample global supply keeps the balance heavy.",
+          "detailedExplanation": "Despite the US scare, the world is harvesting one of its largest crops ever (~819 million tonnes) and Russia's cheap exportable crop keeps global supply abundant. The forward supply-demand balance is ample rather than tight, which is a headwind for a sustained rally.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "official_agency_forecast",
+          "oneLineExplanation": "USDA sees the farm price rising toward $6.00-6.50.",
+          "detailedExplanation": "USDA projects the season-average farm price rising from about $5.00 (2025/26) toward $6.00-6.50 (2026/27), with HRW potentially topping $7.50 given the drought-shrunk crop. An official view of firming prices is a supportive signal for a long position.",
+          "result": "Pass"
+        },
+        {
+          "factorKey": "analyst_price_targets",
+          "oneLineExplanation": "Analysts lean constructive on the US scare.",
+          "detailedExplanation": "With the smallest US HRW crop since 1957, thin exporter stocks and a geopolitical premium, analyst commentary leans rangebound-to-constructive, and USDA's rising price path reinforces that. The tilt is modestly positive for wheat over the next year.",
+          "result": "Pass"
+        },
+        {
+          "factorKey": "bull_vs_bear_scenario",
+          "oneLineExplanation": "Genuine upside optionality from a below-cost crop.",
+          "detailedExplanation": "The bull case is strong: prices near/below cost, the smallest US HRW crop since 1957, thin exporter stocks, a war risk premium, and Russia's crop down year-over-year. The bear case is record global supply and cheap Russian wheat. With real supply-shock optionality and a cost floor, the balance tips modestly in the bulls' favor.",
+          "result": "Pass"
+        },
+        {
+          "factorKey": "key_catalysts_to_watch",
+          "oneLineExplanation": "Russia and the war can turn either way fast.",
+          "detailedExplanation": "Watch Russian weather and crop size, Black Sea/war developments, the monthly WASDE, US Plains weather, export sales, and India's export policy. These are the swing factors, but they cut both ways — a bumper Russian crop is as likely as a shock — so the catalysts are a source of two-sided risk rather than a dependable tailwind.",
+          "result": "Fail"
+        }
+      ]
+    }
+  ]
+}

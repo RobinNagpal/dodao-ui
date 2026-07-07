@@ -1,0 +1,205 @@
+{
+  "slug": "cocoa",
+  "name": "Cocoa",
+  "commodityGroup": "Agriculture",
+  "priceSymbol": "CC=F",
+  "exchange": "ICE",
+  "unit": "metric ton",
+  "currency": "USD",
+  "metaDescription": "A plain-English investor read on cocoa: near $5,600-5,900 a tonne in mid-2026, down ~55% from its 2024 record but still 2-3x the historic norm and far above the cost of production, with supply recovering and demand falling. Covers supply and demand, value, risk, and the outlook.",
+  "updatedAt": "2026-07-07",
+  "summary": "Overall stance: High-risk. An extraordinary boom that is now fading.\n\nCocoa produced the most extreme commodity story of the decade. It went roughly six-fold, from about $2,000 a tonne in 2022 to a record near $12,900 in December 2024, on catastrophic West African harvest failures (disease, aging trees, bad weather, years of underinvestment) after several deficit years. In early July 2026 it has fallen back to about $5,600-5,900 a tonne — down roughly 55% from the record but still 2-3x the pre-2023 norm — and it is whipping violently (up about 50% in a single month on West African weather disrupting the mid-crop).\n\nThe supply picture is still fragile: Ivory Coast and Ghana (together about half of world output) are recovering but output remains below normal, trees take 3-5 years to mature, and disease persists. That fragility, plus stocks that are still historically low, is the bull case. But as a value proposition the price is stretched: it sits far above the ~$2,100-3,700 farmgate cost, chocolate demand is cratering (European grindings hit a decade low), and the market is swinging back toward surplus — analysts (World Bank, ING, J.P. Morgan) mostly forecast mean reversion lower toward $3,800-6,000. Volatility is off the charts (up six-fold, then down 70%, then up 50% in a month). Cocoa is expensive and high-risk with significant downside mean-reversion risk — not a beginner-friendly buy at these levels.",
+  "keyFacts": {
+    "keyFacts": "Cocoa beans are the raw material for chocolate, processed into cocoa liquor, cocoa butter and cocoa powder. There is no true substitute for real cocoa in chocolate. It trades on ICE (US contract, CC=F) in US dollars per metric tonne. In early July 2026 it trades near $5,600-5,900 a tonne, though it is extremely volatile day to day.\n\nFor a beginner, cocoa is defined by two things. First, extreme geographic concentration: Ivory Coast and Ghana together grow about half of the world's cocoa, and West Africa about 70%, so a bad harvest in one region moves the whole market. Second, a slow supply response: cocoa trees take 3-5 years to mature, and disease (swollen shoot, black pod) and aging trees have crippled West African output. That is what drove the historic 2024 spike to a record near $12,900 a tonne — roughly six times its 2022 level. Since then the price has fallen back sharply as supply began to recover and high prices destroyed chocolate demand, but it remains far above its historic norm and whipsaws violently.",
+    "greenFlags": [
+      {
+        "flag": "West African supply is still structurally fragile",
+        "explanation": "Ivory Coast and Ghana are recovering (output up ~8-10%) but production remains roughly 10% below normal, hurt by swollen shoot disease, aging trees and underinvestment. Trees take 3-5 years to mature, so supply cannot bounce back quickly — a genuine, lasting support.",
+        "result": "Pass"
+      },
+      {
+        "flag": "Stocks still historically low",
+        "explanation": "Global stocks are rebuilding but the stocks-to-grindings ratio (about 29%) is still low by historical standards after the multi-year deficits that caused the 2024 spike. Tight inventories give the market some nearby support.",
+        "result": "Pass"
+      }
+    ],
+    "redFlags": [
+      {
+        "flag": "Expensive with heavy mean-reversion risk",
+        "explanation": "At about $5,600-5,900 a tonne, cocoa is 2-3x its pre-2023 norm and far above the ~$2,100-3,700 government-set farmgate cost, so the pull back toward normal is strong. The market is moving toward surplus, and analysts (World Bank ~$3,800, ING, J.P. Morgan) mostly forecast lower prices.",
+        "result": "Fail"
+      },
+      {
+        "flag": "Extreme volatility and demand destruction",
+        "explanation": "Cocoa went up six-fold, then fell ~70%, then jumped ~50% in a single month — off-the-charts volatility. High prices are cratering chocolate demand: European grindings hit a decade low (down ~7.8%), and makers are shrinking bars and using cheaper substitutes.",
+        "result": "Fail"
+      }
+    ],
+    "mainUses": ["Chocolate (cocoa butter, powder, liquor)"],
+    "topProducers": [
+      { "country": "Ivory Coast", "share": "~38%" },
+      { "country": "Ghana", "share": "~14%" },
+      { "country": "Ecuador", "share": "~12% (fastest-growing)" },
+      { "country": "Nigeria / Cameroon", "share": "~6% each" }
+    ],
+    "waysToInvest": [
+      {
+        "type": "ETN",
+        "name": "Cocoa ETN",
+        "note": "Retail note tracking cocoa futures; verify a live product (the old NIB ETN was delisted 2023), note credit + roll risk"
+      },
+      { "type": "Futures", "name": "CC=F", "note": "ICE cocoa (10 tonnes); very high risk, extreme volatility — experienced traders only" },
+      { "type": "Equities", "name": "Chocolate makers", "note": "Indirect; note high cocoa costs squeeze their margins, so not a clean bullish proxy" }
+    ]
+  },
+  "categories": [
+    {
+      "categoryKey": "SupplyAndDemand",
+      "summary": "Supply is still constrained versus normal (West Africa recovering but below par, slow 3-5 year tree response, low stocks), which is supportive, but chocolate demand is cratering and mid-crop weather is adding volatility. A tight-but-recovering supply story against falling demand.",
+      "overallAnalysisDetails": "The supply side is recovering but still fragile. Ivory Coast and Ghana output is up about 8-10% from the crisis lows, but production remains roughly 10% below normal, held back by swollen shoot disease, aging trees and years of underinvestment. Because cocoa trees take 3-5 years to mature and replanting is slow (infected trees must be ripped out and burned), supply cannot bounce back quickly — so the market is still tight versus its history, even as it rebuilds. Global stocks are recovering but the stocks-to-grindings ratio (~29%) remains historically low.\n\nDemand, however, is falling hard. Record prices have caused genuine demand destruction: European grindings (the key demand proxy) fell about 7.8% to a decade low, North America dropped ~3.8%, and chocolate makers are shrinking bars and substituting cheaper cocoa-butter equivalents. Only Asia grew. Seasonally, the current mid-crop (April-September) is being disrupted by heavy West African rains, adding volatility. Net: a tight-but-recovering supply story colliding with cratering demand.",
+      "factors": [
+        {
+          "factorKey": "production_output_trend",
+          "oneLineExplanation": "Recovering but still ~10% below normal.",
+          "detailedExplanation": "Ivory Coast and Ghana output is up about 8-10% from the crisis lows (Ghana ~650,000 tonnes), but production remains roughly 10% below normal, held back by swollen shoot disease, aging trees and underinvestment. Supply is still constrained versus its history, which is supportive for the price even as it rebuilds.",
+          "result": "Pass"
+        },
+        {
+          "factorKey": "global_inventories_stockpiles",
+          "oneLineExplanation": "Stocks rebuilding but still historically low.",
+          "detailedExplanation": "Global stocks ended 2024/25 around 1.35 million tonnes with a stocks-to-grindings ratio near 29% — rebuilding from the multi-decade lows that fueled the 2024 spike, but still low by historical standards. Tight inventories give the nearby price some support.",
+          "result": "Pass"
+        },
+        {
+          "factorKey": "demand_drivers",
+          "oneLineExplanation": "Severe demand destruction from high prices.",
+          "detailedExplanation": "Record prices are cratering chocolate demand: European grindings fell ~7.8% to a decade low, North America ~3.8%, and makers are shrinking bars and substituting cheaper cocoa-butter equivalents. Falling demand is a clear negative and a key reason the market is rebalancing lower.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "spare_capacity_new_supply",
+          "oneLineExplanation": "Trees take 3-5 years — very slow supply response.",
+          "detailedExplanation": "Cocoa's supply response is very slow: trees take 3-5 years to mature, and replanting is hampered by disease (infected trees must be removed and burned) and farmer underinvestment. That means there is no quick new supply to flood the market, which is supportive for a holder in the near term.",
+          "result": "Pass"
+        },
+        {
+          "factorKey": "seasonality",
+          "oneLineExplanation": "Mid-crop weather disruption is adding volatility.",
+          "detailedExplanation": "The main crop runs October-March and the smaller mid-crop April-September, with the Harmattan winds and El Nino as recurring risks. Right now heavy rains are disrupting the mid-crop, which is adding sharp volatility rather than a steady tailwind, so seasonality is a negative here.",
+          "result": "Fail"
+        }
+      ]
+    },
+    {
+      "categoryKey": "PriceAndValue",
+      "summary": "Value is cocoa's weakest pillar: near the top of its historic range, elevated even in real terms, far above the ~$2,100-3,700 farmgate cost, and pushing buyers toward cheaper substitutes. The one positive is that it is ~55% below the 2024 record. Four of five factors fail.",
+      "overallAnalysisDetails": "As a value proposition, cocoa is expensive. At about $5,600-5,900 a tonne it sits near the top of its historic range — 2-3x the $2,000-3,500 norm that held from 2010 to 2023 — and the December 2024 record was elevated even in inflation-adjusted terms, exceeding the real 1977 spike.\n\nThe biggest value problem is the gap to cost. Government-set farmgate prices in Ivory Coast and Ghana — a rough proxy for farmer economics — sit far below the market: Ivory Coast cut its mid-crop farmgate price to about 1,200 CFA/kg (~$2,130 a tonne), and Ghana to about 41,392 cedis (~$3,728 a tonne). That large gap between a ~$5,600 market and a ~$2,100-3,700 farmgate is a strong pull toward mean reversion once supply normalizes. There is no direct substitute for cocoa, but high prices are accelerating cheaper cocoa-butter equivalents and compound chocolate, which caps demand. The one positive is that cocoa is about 55% below its record, giving some cushion versus the peak. On balance, though, value is clearly negative.",
+      "factors": [
+        {
+          "factorKey": "price_vs_range",
+          "oneLineExplanation": "Near the top of its historic range.",
+          "detailedExplanation": "At about $5,600-5,900 a tonne, cocoa is near the top of its historic range and 2-3x the $2,000-3,500 norm that held from 2010 to 2023. That is an expensive starting point on valuation, with more room to fall than to rise as supply recovers.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "inflation_adjusted_price",
+          "oneLineExplanation": "Elevated even in real terms.",
+          "detailedExplanation": "The December 2024 record was a record even in inflation-adjusted terms, exceeding the real 1977 spike, and today's price still approaches that real peak. Cocoa is expensive in real terms, not just nominally, which is a clear negative for a new buyer.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "cost_of_production_floor",
+          "oneLineExplanation": "Far above the ~$2,100-3,700 farmgate cost.",
+          "detailedExplanation": "Government-set farmgate prices sit far below the market — Ivory Coast cut its mid-crop price to ~$2,130 a tonne, Ghana to ~$3,728. The gap between a ~$5,600 market and a ~$2,100-3,700 farmgate is a strong pull toward mean reversion once supply normalizes, so the cost 'floor' is far below current levels.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "price_vs_substitute",
+          "oneLineExplanation": "High prices drive substitution to CBEs.",
+          "detailedExplanation": "There is no direct substitute for cocoa in real chocolate, but record prices are accelerating the use of cheaper cocoa-butter equivalents and compound chocolate. That substitution caps demand and pressures the price, a negative on relative value.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "distance_from_all_time_high",
+          "oneLineExplanation": "About 55% below the 2024 record near $12,900.",
+          "detailedExplanation": "Cocoa near $5,600-5,900 is about 55% below its December 2024 record near $12,900, which gives some cushion versus the peak. That distance is the one mild positive in an otherwise expensive value picture.",
+          "result": "Pass"
+        }
+      ]
+    },
+    {
+      "categoryKey": "VolatilityAndRisk",
+      "summary": "Cocoa is the highest-risk commodity in this group: off-the-charts volatility (up six-fold, down 70%, up 50% in a month), classic boom-bust drawdowns, and extreme concentration/disease risk. The one positive is low correlation to stocks. Four of five factors fail.",
+      "overallAnalysisDetails": "Cocoa's risk profile is extreme. Its realized volatility has been off the charts — a six-fold rise into December 2024, a ~70% collapse into early 2026, and a ~50% jump in a single month mid-2026. It is a classic boom-bust market: the 1977 spike gave way to a multi-decade bear, and the 2024 melt-up is mean-reverting hard.\n\nIts geopolitical and weather risk is among the highest of any commodity: Ivory Coast and Ghana grow about half the world's cocoa, so disease (swollen shoot infects large shares of the crop), the Harmattan winds, El Nino, smuggling, government farmgate-price policy, and the EU deforestation regulation (EUDR, due December 2026) all threaten supply. Dollar sensitivity is modest (it is USD-priced with pegged West African currencies). The one redeeming feature is diversification: cocoa's returns are driven by weather and disease, not the business cycle, so it has low correlation to equities. But with volatility, drawdowns, concentration risk and currency all negative, this is a very high-risk holding.",
+      "factors": [
+        {
+          "factorKey": "historical_volatility",
+          "oneLineExplanation": "Off the charts — up six-fold, down 70%, up 50% in a month.",
+          "detailedExplanation": "Cocoa's volatility has been extreme: a six-fold rise into December 2024, a ~70% collapse into early 2026, and a ~50% jump in a single month mid-2026. That is far beyond typical commodities and makes cocoa a very high-risk hold, so this factor is a clear negative.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "worst_drawdowns",
+          "oneLineExplanation": "Classic boom-bust with huge drawdowns.",
+          "detailedExplanation": "Cocoa is prone to violent boom-bust cycles: the 1977 spike gave way to a multi-decade bear market, and the 2024 melt-up is already down ~70% off its highs. Large, fast drawdowns are typical, a serious downside risk.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "geopolitical_weather_risk",
+          "oneLineExplanation": "Extreme concentration, disease and policy risk.",
+          "detailedExplanation": "Ivory Coast and Ghana grow about half the world's cocoa, so swollen shoot and black pod disease, aging trees, the Harmattan winds, El Nino, smuggling, farmgate-price policy and the EU deforestation regulation (due December 2026) all threaten supply. These risks can spike the price but are sources of shock and instability, so they count as a hazard.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "us_dollar_sensitivity",
+          "oneLineExplanation": "Modest dollar sensitivity.",
+          "detailedExplanation": "Cocoa is priced in dollars, and West African producer currencies (the CFA franc, the cedi) affect farmer economics but the futures price is USD-driven. There is no clear currency tailwind, so this is a neutral-to-negative background factor rather than a support.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "correlation_to_inflation_and_stocks",
+          "oneLineExplanation": "Low correlation to stocks — a diversifier.",
+          "detailedExplanation": "Cocoa's returns are driven by West African weather and disease, not the business cycle, so it has low correlation to equities and can move independently of stocks. That diversification benefit is the one clear positive in its risk profile.",
+          "result": "Pass"
+        }
+      ]
+    },
+    {
+      "categoryKey": "FutureOutlook",
+      "summary": "The forward view is bearish: the market is swinging back toward surplus, ICCO data show stocks rebuilding, and analysts (World Bank, ING, J.P. Morgan) mostly forecast mean reversion lower toward $3,800-6,000. The one offset is a clear set of supply catalysts to watch. Four of five factors fail.",
+      "overallAnalysisDetails": "The forward setup leans clearly bearish for the elevated price. After the multi-year deficits that drove the spike, the market has swung back to surplus — a ~75,000-tonne surplus in 2024/25 (ICCO), a larger ~247,000-tonne surplus estimated for 2025/26, and a further surplus for 2026/27 (StoneX), though each estimate has been trimmed on El Nino risk. Rising supply plus demand destruction is a structural downward force.\n\nAnalyst targets point lower: the World Bank sees about $3,800 a tonne in 2026, ING about $4,400-4,600 (a 'higher new normal'), and J.P. Morgan around $6,000 medium-term — a 2027 base case broadly in the $4,200-5,500 range. The bull case rests on structural West African underinvestment, disease and still-low stocks; the bear case — a price far above cost, supply recovery, deep demand destruction and returning surpluses — is the base case. The one genuine positive is that the catalysts are clear and monitorable (West African weather and port arrivals, ICCO balances, quarterly grindings, disease, the EUDR deadline, farmgate resets), so a sharp weather shock could reignite the bull case. On balance, though, the forward evidence is unfavorable at these levels.",
+      "factors": [
+        {
+          "factorKey": "forward_supply_demand_balance",
+          "oneLineExplanation": "Swinging back toward surplus.",
+          "detailedExplanation": "The market has moved from multi-year deficits to surplus — roughly +75,000 tonnes in 2024/25 and a larger surplus estimated for 2025/26 — as supply recovers and demand falls. A return to surplus is a clear bearish signal for the elevated price, even if each estimate has been trimmed on weather risk.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "official_agency_forecast",
+          "oneLineExplanation": "ICCO shows surplus and rising stocks.",
+          "detailedExplanation": "The ICCO's data show 2024/25 production above grindings, a return to surplus, and stocks rebuilding to about 1.35 million tonnes. An official picture of more supply and rising stocks points lower on price, an unsupportive signal.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "analyst_price_targets",
+          "oneLineExplanation": "Analysts forecast mean reversion lower.",
+          "detailedExplanation": "The World Bank sees about $3,800 a tonne in 2026, ING about $4,400-4,600, and J.P. Morgan around $6,000 medium-term, with a 2027 base case broadly $4,200-5,500. The consensus is mean reversion lower toward a 'higher new normal,' a negative for a long at ~$5,600-5,900.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "bull_vs_bear_scenario",
+          "oneLineExplanation": "Base case is bearish; the bull needs a fresh shock.",
+          "detailedExplanation": "The bull case is structural West African underinvestment, disease and still-low stocks; the bear case is a price far above cost, supply recovery, deep demand destruction and returning surpluses. The bear case is the base case, so the scenario skew is unfavorable unless a fresh weather or disease shock hits.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "key_catalysts_to_watch",
+          "oneLineExplanation": "Clear, monitorable supply catalysts.",
+          "detailedExplanation": "Watch Ivory Coast and Ghana weather and port arrivals, ICCO quarterly balances, quarterly grindings (demand), disease spread, the EUDR December 2026 deadline, and farmgate-price resets. These are clear and monitorable, and a sharp weather or disease shock could reignite the bull case — genuine, if two-sided, optionality.",
+          "result": "Pass"
+        }
+      ]
+    }
+  ]
+}
