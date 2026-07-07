@@ -104,46 +104,6 @@ Single source of truth for active KoalaGains work. Completed items live in
 
 ---
 
-## Commodities
-
-> Today commodity reports are **static JSON, no DB, no LLM generation** — hand-authored files
-> under `insights-ui/src/commodity-data/reports/<slug>.json`, imported through
-> `commodity-reports-registry.ts` and served by the `/api/.../commodities-v1/*` routes. Only
-> `gold.json` is filled in; the other launch commodities show the neutral placeholder. See
-> `insights-ui/src/commodity-data/README.md` and `src/types/commodity/commodity-analysis-types.ts`.
-> The shape already mirrors ETF reports (4 scored categories × 5 Pass/Fail factors + Key Facts +
-> Final Summary), so the generation task is to build the commodity-side parallel of the existing
-> ETF pipeline rather than invent a new model.
-
-### Generate commodity reports (replace static JSON with an LLM pipeline)
-
-- [ ] **Persistence** — add the commodity Prisma models that mirror the ETF report tables
-  (`Commodity` anchor row keyed by `slug`; `CommodityKeyFactsReport`; `CommodityCategoryAnalysisResult`
-  for the 4 scored categories with `categoryKey` as TEXT; `CommodityAnalysisCategoryFactorResult` reusing
-  the existing `EvaluationResult` enum; `CommodityCachedScore`; `CommodityGenerationRequest` mirroring
-  `EtfGenerationRequest`). Seed the anchor rows from `commodities.json`. Migrate `gold.json` into the
-  tables so nothing is lost, then switch the fetchers to read the DB with the static JSON as fallback.
-- [ ] **Prompts** — author the source-of-truth prompt text per scored category
-  (Supply & Demand, Price & Value, Volatility & Risk, Future Outlook) + Key Facts + Final Summary under
-  `docs/insights-ui/` (parallel to `etf-prompts/`); feed the `commodity-analysis-factors-*.json` factor
-  configs as input so each factor gets a grounded Pass/Fail verdict + one-line + detailed explanation.
-- [ ] **Pipeline** — build `commodity-generation-report-utils.ts` (parallel to
-  `etf-analysis-reports/etf-generation-report-utils.ts`) using `getLLMResponseForPromptViaInvocation`
-  with a single `promptKey` per category; per-category status tracking on `CommodityGenerationRequest`;
-  a save-callback that writes categories + factors + key facts + cached score.
-- [ ] **Trigger surfaces** — a `generate-commodity-v1-request` API route (parallel to
-  `etfs-v1/generate-etf-v1-request`) + a per-commodity regenerate route; an admin "Generate report"
-  button on the commodity admin/detail page reusing the ETF report-status UI patterns.
-- [ ] **Off-hours automation** — pick commodities whose reports are not generated yet (or are stale) and
-  generate the whole report on the off-hours Claude-Code runner, same idea as the stock/ETF refresh crons.
-- [ ] **Cache** — on successful generation, revalidate the `commodity:<slug>` tag + the listing tag so a
-  regenerate takes effect without a redeploy (today, publishing new JSON only lands on redeploy).
-- [ ] Open: keep static JSON as an authoring fallback for commodities with no generated report, or drop it
-  once every launch commodity is generated? Where does the price-symbol / futures-curve data come from for
-  the Price & Value + Volatility categories (Yahoo price history is already wired; futures curve is not)?
-
----
-
 ## Trends page
 
 > Decide once: shared `Trend` model linked to both stock and ETF join tables, or parallel
