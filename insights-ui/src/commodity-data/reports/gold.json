@@ -6,46 +6,46 @@
   "exchange": "COMEX",
   "unit": "troy ounce",
   "currency": "USD",
-  "metaDescription": "A plain-English investor read on gold — what drives its price, its supply and demand balance, valuation, volatility and risk, and the forward outlook.",
-  "updatedAt": "2026-07-06",
-  "summary": "Overall stance: Positive.\n\nGold remains the deepest, most liquid safe-haven asset, backed by steady central-bank buying and resilient jewelry and investment demand. Supply is slow-moving, so price is set mostly by demand and by real interest rates. Valuation looks full versus its long-term real-price range, which tempers the upside. Volatility is moderate for a commodity, and gold's low correlation to equities makes it a useful portfolio diversifier. The forward outlook is constructive but hinges on the path of real rates and the US dollar. Best suited to investors who want a long-horizon hedge rather than a short-term trade.",
+  "metaDescription": "A plain-English investor read on gold: near $4,180/oz in mid-2026 after a record $5,602 high in January, with strong central-bank and ETF demand but a full valuation. Covers supply and demand, value, risk, and the outlook.",
+  "updatedAt": "2026-07-07",
+  "summary": "Overall stance: Positive, with a valuation caveat.\n\nGold is the world's deepest, most trusted safe-haven asset. In early July 2026 it trades near $4,180 per ounce, about 25% below the record ~$5,602 it hit on 28 January 2026, but still up roughly a quarter over the past year. Demand is strong and broad: central banks bought 863 tonnes in 2025 and gold ETFs grew by 801 tonnes to a record 4,025 tonnes. Mine supply barely grows (about +1% a year), so the price is set mostly by investment demand and by real interest rates, not by production.\n\nThe main caution is price. Even after the pullback, gold trades near the top of its 10-year range and at roughly 2.5x the industry's ~$1,600/oz mining cost, so the margin of safety for new buyers is thin. Volatility (about 15% a year) is similar to the S&P 500, and gold's low link to stocks makes it a genuine diversifier. Major banks' late-2026 targets ($4,900 at Goldman Sachs, ~$6,000 at JPMorgan) sit above today's price. Best suited to investors who want a long-horizon hedge, not a quick trade.",
   "keyFacts": {
-    "keyFacts": "Gold is a precious metal held primarily as a store of value rather than for industrial consumption. It trades globally around the clock, with the COMEX front-month future (GC=F) and the London spot market setting the reference price per troy ounce in US dollars.\n\nFor a retail investor, the two things that matter most are real interest rates and the US dollar: gold tends to rise when real yields fall and the dollar weakens, and to struggle when the opposite holds. Because mine supply grows only slowly, swings in investment and central-bank demand — not production — drive most of the price action.",
+    "keyFacts": "Gold is a precious metal held mainly as a store of value rather than used up in industry. It trades globally around the clock, with the COMEX front-month future (GC=F) and the London spot market setting the reference price per troy ounce in US dollars. In early July 2026 that price is about $4,180, down from a record ~$5,602 reached on 28 January 2026 during a year that saw 53 all-time highs.\n\nFor a beginner, two forces matter most: real interest rates (the interest rate after inflation) and the US dollar. Gold tends to rise when real yields fall and the dollar weakens, and to struggle when the opposite happens. Right now real 10-year yields are high (about 2.25%), which would normally be a headwind, yet gold has stayed strong because central banks and investors keep buying. Because mine supply grows only about 1% a year, swings in investment and central-bank demand — not production — drive most of the price action.",
     "greenFlags": [
       {
-        "flag": "Sustained central-bank accumulation",
-        "explanation": "Central banks have been net buyers of gold for over a decade, adding a durable, price-insensitive source of demand that supports the market. This buying tends to persist regardless of short-term price moves.",
+        "flag": "Steady central-bank buying",
+        "explanation": "Central banks bought a net 863 tonnes of gold in 2025. That is down from the record 1,136 tonnes in 2022, but still far above the 2010-2021 average of about 473 tonnes a year. Poland alone added 102 tonnes. This is durable, price-insensitive demand that supports the market.",
         "result": "Pass"
       },
       {
-        "flag": "Deep liquidity and safe-haven status",
-        "explanation": "Gold is one of the most liquid assets in the world and is the reference safe-haven during market stress. That liquidity lowers the cost of getting in and out and makes it a reliable hedge.",
+        "flag": "Record investor demand and deep liquidity",
+        "explanation": "Global gold ETFs grew by 801 tonnes in 2025 to an all-time high of 4,025 tonnes, pulling in a record $89 billion. Gold is also one of the most liquid assets on earth, so it is cheap to buy and sell and reliable as a hedge during market stress.",
         "result": "Pass"
       },
       {
-        "flag": "Low correlation to equities",
-        "explanation": "Gold has historically shown low-to-negative correlation with stocks, so it can cushion a portfolio during equity drawdowns. This diversification benefit is a core reason investors hold it.",
+        "flag": "Low correlation to stocks",
+        "explanation": "Gold has historically shown low-to-negative correlation with equities, so it can cushion a portfolio when stocks fall. This diversification benefit is a core reason investors hold it.",
         "result": "Pass"
       }
     ],
     "redFlags": [
       {
-        "flag": "No yield or cash flow",
-        "explanation": "Gold pays no dividend or interest, so its entire return depends on price appreciation. When real rates are high, the opportunity cost of holding it rises.",
+        "flag": "No yield, and cash pays a lot right now",
+        "explanation": "Gold pays no dividend or interest, so its whole return depends on the price going up. With real 10-year yields near 2.25%, the opportunity cost of holding a zero-yield asset instead of bonds is high.",
         "result": "Fail"
       },
       {
-        "flag": "Full valuation versus real-price history",
-        "explanation": "In inflation-adjusted terms gold sits in the upper part of its multi-decade range, which limits the margin of safety for new buyers. A mean-reversion move would pressure returns.",
+        "flag": "Expensive versus history and mining cost",
+        "explanation": "At about $4,180, gold trades near the top of its 10-year range and at roughly 2.5x the industry's ~$1,600/oz all-in cost to mine it. That leaves a thin margin of safety and limited downside protection from the cost floor.",
         "result": "Fail"
       }
     ],
     "mainUses": ["Investment and store of value", "Central-bank reserves", "Jewelry", "Electronics and industrial (minor)"],
     "topProducers": [
       { "country": "China", "share": "~10%" },
-      { "country": "Australia", "share": "~9%" },
       { "country": "Russia", "share": "~9%" },
-      { "country": "United States", "share": "~5%" }
+      { "country": "Australia", "share": "~8%" },
+      { "country": "Canada", "share": "~5%" }
     ],
     "waysToInvest": [
       { "type": "ETF", "name": "GLD / IAU", "note": "Physically-backed spot gold ETFs" },
@@ -57,148 +57,148 @@
   "categories": [
     {
       "categoryKey": "SupplyAndDemand",
-      "summary": "Gold's supply is slow-moving and its demand is broad and resilient, anchored by central banks, jewelry and investment. The balance currently favors demand, which is supportive of price.",
-      "overallAnalysisDetails": "Mine production grows only about 1-2% per year and is geographically diversified, so supply is inelastic to price in the short run. Above-ground stocks are enormous relative to annual flow, meaning gold rarely faces the kind of physical shortages that move industrial commodities.\n\nOn the demand side, central-bank buying has been the standout driver, adding a large, price-insensitive bid. Jewelry demand (led by India and China) is seasonal but steady, and investment demand via ETFs and bars ebbs and flows with macro sentiment. With central banks accumulating and mine supply flat, the net balance leans supportive.",
+      "summary": "Supply barely grows — mine output rose just 1% to a record 3,672 tonnes in 2025 — while total demand topped 5,000 tonnes, led by central banks and ETFs. That imbalance is supportive for the price.",
+      "overallAnalysisDetails": "New gold comes out of the ground slowly. Mine production rose only about 1% in 2025 to a record 3,672 tonnes, and it takes a decade or more to bring a new mine online, so supply cannot respond quickly to higher prices. There is a huge amount of gold already above ground — roughly 216,000 tonnes ever mined — but about 45% of it is jewelry and 22% is bars and coins, and most sits with central banks and long-term holders who rarely sell. So the 'available' float is far smaller than the headline number suggests.\n\nDemand, by contrast, is broad and strong. Central banks bought 863 tonnes in 2025, gold ETFs added 801 tonnes (a record $89 billion of inflows), and consumers in China (~910 tonnes) and India (~780 tonnes) bought jewelry, bars and coins. Total 2025 demand set a record above 5,000 tonnes. With flat supply meeting record, diversified demand, the balance leans supportive.",
       "factors": [
         {
           "factorKey": "production_output_trend",
-          "oneLineExplanation": "Mine output grows slowly (~1-2%/yr) and is diversified.",
-          "detailedExplanation": "Global mine production has plateaued, with new discoveries and grades declining. This slow, inelastic supply means demand shifts dominate price. Net positive for holders.",
+          "oneLineExplanation": "Mine output grew only ~1% to a record 3,672 tonnes in 2025.",
+          "detailedExplanation": "Production is at a record but growing very slowly, and is spread across China (~380t), Russia (~330t) and Australia (~284t), so no single country can flood the market. Grades are falling and big new discoveries are rare. Slow, hard-to-grow supply meeting steady demand is good for holders.",
           "result": "Pass"
         },
         {
           "factorKey": "global_inventories_stockpiles",
-          "oneLineExplanation": "Huge above-ground stocks, but tightly held.",
-          "detailedExplanation": "Most gold ever mined still exists, but a large share sits in central-bank vaults and long-term investment hands that rarely sell. Available float is smaller than headline stocks suggest.",
+          "oneLineExplanation": "About 216,000 tonnes above ground, but tightly held.",
+          "detailedExplanation": "Almost all gold ever mined still exists, but most is locked up as jewelry, central-bank reserves, and long-term investment. Gold ETFs are at a record 4,025 tonnes and central banks keep adding, so the metal available to trade is scarce rather than piling up. No glut is building.",
           "result": "Pass"
         },
         {
           "factorKey": "demand_drivers",
-          "oneLineExplanation": "Central banks, jewelry and investment all contribute.",
-          "detailedExplanation": "Demand is unusually diversified for a commodity. Central-bank reserve buying provides a durable floor, while investment demand adds cyclical upside during stress or falling real rates.",
+          "oneLineExplanation": "Central banks, ETFs and Asian jewelry all buying at once.",
+          "detailedExplanation": "Demand is unusually diversified for a commodity: central banks (863t in 2025), investors via ETFs (+801t), and consumers in China (~910t) and India (~780t). Central-bank buying gives a durable floor, while ETF demand adds upside when real rates fall or markets get nervous. This spread of buyers makes demand resilient.",
           "result": "Pass"
         },
         {
           "factorKey": "spare_capacity_new_supply",
-          "oneLineExplanation": "Little near-term new supply to cap price.",
-          "detailedExplanation": "New mines take a decade to develop and few large projects are coming online, so there is limited spare capacity to blunt a demand-driven rally.",
+          "oneLineExplanation": "Little quick new supply to cap a rally.",
+          "detailedExplanation": "Unlike oil, gold has no 'spare capacity' that can be switched on. New mines take roughly a decade to permit and build, and analysts think mined output may be near a plateau. So a demand-driven rally is hard to cap with fresh supply in the short run.",
           "result": "Pass"
         },
         {
           "factorKey": "seasonality",
-          "oneLineExplanation": "Mild seasonality tied to jewelry buying.",
-          "detailedExplanation": "There is some seasonal strength around Indian wedding and festival demand and Chinese New Year, but the effect is modest and easily overwhelmed by macro drivers.",
+          "oneLineExplanation": "Mild seasonal demand, easily overwhelmed by macro.",
+          "detailedExplanation": "There is some seasonal strength around Indian weddings (which drive 50-60% of India's jewelry demand across ~10-12 million weddings a year) and Chinese New Year. But the effect is small and usually swamped by moves in real rates and the dollar, so it is not a reliable tailwind on its own.",
           "result": "Fail"
         }
       ]
     },
     {
       "categoryKey": "PriceAndValue",
-      "summary": "Gold looks fully valued against its long-term real-price range and sits near record nominal highs, so the margin of safety for new buyers is thin.",
-      "overallAnalysisDetails": "On an inflation-adjusted basis, gold trades in the upper portion of its multi-decade range, which historically has preceded periods of flat-to-lower real returns. There is no cash-flow-based valuation anchor, so 'value' is judged against its own history and against substitutes.\n\nAgainst silver and other stores of value, gold is not obviously cheap. The lack of a production-cost floor that meaningfully constrains price on the downside (as it can for oil or agriculture) means valuation discipline matters more here.",
+      "summary": "Even after falling about 25% from January 2026's record, gold is historically expensive: near the top of its 10-year range and roughly 2.5x its mining cost. The pullback adds some headroom, and it is not dear versus silver, but the margin of safety is still thin.",
+      "overallAnalysisDetails": "Gold has no earnings, so 'value' means comparing today's price to its own history and to what it costs to produce. At about $4,180, gold is far above where it traded five years ago (~$1,800) and ten years ago (~$1,100), and it sits in the upper part of its inflation-adjusted range. Past times gold reached similar real highs (1980, 2011) were followed by years of flat-to-lower returns, which is the main reason for caution.\n\nOn the other hand, gold is about 25% below its 28 January 2026 record of ~$5,602, so there is real headroom to the old high. And compared with silver, gold is not obviously expensive: the gold-to-silver ratio is about 60, a bit below its long-run 65-70 average. The catch is the cost floor — miners' all-in cost is only around $1,600/oz, far below the current price, so the 'cost support' that protects oil or crops when they fall does not really apply to gold here.",
       "factors": [
         {
           "factorKey": "price_vs_range",
-          "oneLineExplanation": "Trading in the top of its 5/10-year range.",
-          "detailedExplanation": "Gold sits near the high end of its recent range, leaving less room for multiple expansion and more vulnerability to pullbacks if real rates rise.",
+          "oneLineExplanation": "Still near the top of its 5- and 10-year range.",
+          "detailedExplanation": "Even after the pullback to ~$4,180, gold is close to the high end of its multi-year range (it was near $1,800 five years ago). That leaves less room to rise on valuation alone and more vulnerability to a fall if real rates climb further.",
           "result": "Fail"
         },
         {
           "factorKey": "inflation_adjusted_price",
-          "oneLineExplanation": "Elevated in real terms versus history.",
-          "detailedExplanation": "Adjusted for inflation, gold is in the upper part of its multi-decade band. Prior periods at similar real levels saw muted forward returns.",
+          "oneLineExplanation": "Elevated in real (inflation-adjusted) terms.",
+          "detailedExplanation": "After adjusting for inflation, gold sits in the upper part of its multi-decade band. Prior peaks at similar real levels (1980 and 2011) were followed by long stretches of weak returns, so today's real price is a headwind for new buyers.",
           "result": "Fail"
         },
         {
           "factorKey": "cost_of_production_floor",
-          "oneLineExplanation": "Production cost sits well below spot.",
-          "detailedExplanation": "All-in sustaining costs are far below the current price, so the cost floor offers little downside protection at today's levels.",
+          "oneLineExplanation": "Price is ~2.5x the ~$1,600/oz mining cost.",
+          "detailedExplanation": "The industry's all-in sustaining cost is around $1,500-1,650 an ounce, while gold trades near $4,180. Miners are making huge margins, and the cost 'floor' is roughly 60% below the price — so it offers almost no downside protection at today's levels.",
           "result": "Fail"
         },
         {
           "factorKey": "price_vs_substitute",
-          "oneLineExplanation": "Not clearly cheap versus silver/other havens.",
-          "detailedExplanation": "The gold/silver ratio and comparisons to other safe havens do not flag gold as unusually cheap, tempering the relative-value case.",
-          "result": "Fail"
+          "oneLineExplanation": "Not expensive versus silver.",
+          "detailedExplanation": "The gold-to-silver ratio is about 60, a little below its long-run 65-70 average, so gold is roughly fair-to-slightly-cheap relative to silver. Gold is not priced at a premium that would push buyers to switch away from it, which is a mild positive on relative value.",
+          "result": "Pass"
         },
         {
           "factorKey": "distance_from_all_time_high",
-          "oneLineExplanation": "At or near all-time highs.",
-          "detailedExplanation": "Gold is close to record nominal levels. Momentum can persist, but buying at highs raises the risk of poor entry timing.",
-          "result": "Fail"
+          "oneLineExplanation": "About 25% below the January 2026 record.",
+          "detailedExplanation": "Gold trades near $4,180 versus its ~$5,602 record on 28 January 2026, so there is meaningful headroom to the old high rather than fresh-record risk. With central banks and ETFs still buying and bank targets above spot, that headroom looks supportable, even if valuation is stretched.",
+          "result": "Pass"
         }
       ]
     },
     {
       "categoryKey": "VolatilityAndRisk",
-      "summary": "Gold is moderately volatile for a commodity, with shallow drawdowns relative to equities and a low correlation that makes it a genuine diversifier. Its main risk is sensitivity to real rates and the dollar.",
-      "overallAnalysisDetails": "Realized volatility is lower than energy or agriculture and its worst drawdowns have generally been shallower and shorter than equity bear markets. The dominant risk factors are macro: rising real yields and a stronger dollar are the classic headwinds.\n\nBecause gold's correlation to stocks is low, it tends to help portfolio-level risk even though it is volatile on its own. Geopolitical and weather risks are minimal for a metal held as a store of value.",
+      "summary": "Gold's price swings (about 15% a year) are similar to the S&P 500, its worst fall (-45% in 2011-2015) was gradual and fully recovered, and its low link to stocks makes it a real diversifier. The clearest single risk today is high real interest rates.",
+      "overallAnalysisDetails": "Gold is less wild than most commodities. Its annualized volatility is about 15% over the last 30 years — close to the S&P 500's ~14% — and roughly 19% over 2004-2024, again similar to stocks. Its deepest drawdown was a 45% slide from the 2011 peak to the 2015 low, but that fall was gradual and the price eventually recovered and went on to new highs, unlike equity crashes of 2000-2002 and 2007-2009 that each topped 50%.\n\nThe main risk is macro, not supply. Gold usually falls when the US dollar strengthens and when real yields rise; the long-run link to real yields is strongly negative (about -0.82). Right now real 10-year yields are high (~2.25%), which has been a headwind that gold has so far shrugged off thanks to central-bank buying — but if that support fades, the high-real-yield backdrop could reassert itself. Weather and single-country supply shocks, which hit oil and crops, barely matter for a durable, widely-held metal like gold.",
       "factors": [
         {
           "factorKey": "historical_volatility",
-          "oneLineExplanation": "Moderate volatility, below energy/ags.",
-          "detailedExplanation": "Gold's realized volatility is meaningful but lower than most commodities, making position sizing easier for a diversified investor.",
+          "oneLineExplanation": "About 15% a year — similar to the S&P 500.",
+          "detailedExplanation": "Gold's annualized volatility is roughly 15% over 30 years and ~19% over the last two decades, close to US stocks and below energy or agricultural commodities. That makes position sizing manageable for a diversified investor.",
           "result": "Pass"
         },
         {
           "factorKey": "worst_drawdowns",
-          "oneLineExplanation": "Drawdowns shallower than equities.",
-          "detailedExplanation": "Historic peak-to-trough declines, while real, have generally been less severe and shorter-lived than equity bear markets.",
+          "oneLineExplanation": "Worst fall -45% (2011-2015), and it recovered.",
+          "detailedExplanation": "Gold's deepest peak-to-trough drop was about 45% from 2011 to 2015. That is painful but was gradual and fully recovered, versus equity bear markets that exceeded 50% in 2000-2002 and 2007-2009. Drawdowns here are survivable.",
           "result": "Pass"
         },
         {
           "factorKey": "geopolitical_weather_risk",
-          "oneLineExplanation": "Minimal supply-disruption risk.",
-          "detailedExplanation": "As a durable, non-perishable store of value with diversified supply, gold is largely insulated from the weather and single-region geopolitical shocks that hit ags and energy.",
+          "oneLineExplanation": "Very little supply-disruption risk.",
+          "detailedExplanation": "Gold does not rot, spoil, or depend on one fragile region or shipping chokepoint. Supply is diversified across China, Russia, Australia and Canada, and above-ground stocks are enormous, so weather and single-country shocks barely move it. Geopolitics tend to help gold (safe-haven buying) rather than hurt it.",
           "result": "Pass"
         },
         {
           "factorKey": "us_dollar_sensitivity",
-          "oneLineExplanation": "Inverse to the US dollar.",
-          "detailedExplanation": "Gold typically falls when the dollar strengthens. A sustained dollar bull market is the clearest single risk to the price.",
+          "oneLineExplanation": "High real yields and a firm dollar are the key headwind.",
+          "detailedExplanation": "Gold is priced in dollars and normally falls when the dollar strengthens and real yields rise (historical correlation to real yields around -0.82). Real 10-year yields are currently high at ~2.25%. Gold has climbed anyway, but that 'decoupling' is itself a risk: if the classic relationship reasserts, a strong-dollar, high-real-yield regime could pressure the price.",
           "result": "Fail"
         },
         {
           "factorKey": "correlation_to_inflation_and_stocks",
-          "oneLineExplanation": "Low equity correlation, imperfect inflation hedge.",
-          "detailedExplanation": "Gold diversifies equity risk well but is an inconsistent short-term inflation hedge; its real driver is real yields rather than headline inflation.",
+          "oneLineExplanation": "Good stock diversifier; only a rough inflation hedge.",
+          "detailedExplanation": "Gold's low-to-negative correlation with equities means it tends to hold up when stocks fall, which is its main portfolio benefit. It is a less reliable short-term inflation hedge, because its real driver is real interest rates rather than headline inflation, but the diversification case is genuine.",
           "result": "Pass"
         }
       ]
     },
     {
       "categoryKey": "FutureOutlook",
-      "summary": "The forward outlook is constructive, supported by central-bank demand and the prospect of falling real rates, but full valuation caps the upside. The path of real yields and the dollar is the swing factor.",
-      "overallAnalysisDetails": "If real rates ease and the dollar softens, gold has a clear tailwind and could extend gains, especially with central banks still buying. The bear case is a durable rise in real yields that raises the opportunity cost of holding a zero-yield asset.\n\nOfficial forecasts and analyst targets cluster around modest further upside rather than a dramatic move, reflecting the tension between strong structural demand and stretched valuation. Watch real yields, central-bank reserve data, and dollar trends as the key catalysts.",
+      "summary": "The outlook is constructive: mine supply stays flat, central banks and ETFs keep buying, and major banks' late-2026 targets ($4,900-$6,000) sit above today's ~$4,180. The swing factor is the path of real interest rates and the dollar.",
+      "overallAnalysisDetails": "The forward setup is supportive on supply and demand: production is flat-to-plateauing while central banks and ETFs keep accumulating, and the World Gold Council sees the structural case for gold still intact. The bull case is falling real rates plus a weaker dollar plus continued official-sector buying, which could push gold back toward its highs. The bear case is real yields staying high (around 2.25% today) or the dollar strengthening, which raises the cost of holding a zero-yield asset.\n\nBank forecasts lean positive but have been trimmed. JPMorgan sees gold averaging about $6,000/oz by Q4 2026 and pushing $6,300 in 2027, while Goldman Sachs cut its year-end 2026 target to $4,900 (from $5,400) as it pushed expected Fed rate cuts into 2027. Both targets are above the current ~$4,180, so the consensus skew is to the upside, though full valuation caps how far. Watch the Fed's rate path, monthly central-bank reserve data, and the dollar as the key catalysts.",
       "factors": [
         {
           "factorKey": "forward_supply_demand_balance",
-          "oneLineExplanation": "Demand-led balance stays supportive.",
-          "detailedExplanation": "With flat mine supply and continued official-sector buying, the forward balance leans supportive absent a demand shock.",
+          "oneLineExplanation": "Flat supply plus ongoing central-bank and ETF buying.",
+          "detailedExplanation": "With mine output growing only ~1% a year and official-sector plus ETF demand still strong, the forward balance leans supportive. It would take a sharp drop in investment demand to tip it, and central-bank buying provides a floor.",
           "result": "Pass"
         },
         {
           "factorKey": "official_agency_forecast",
-          "oneLineExplanation": "Forecasts point to modest upside.",
-          "detailedExplanation": "Official and institutional forecasts generally see gold holding or grinding higher rather than a sharp move in either direction.",
+          "oneLineExplanation": "World Gold Council sees the structural case intact.",
+          "detailedExplanation": "The World Gold Council notes that although central-bank buying cooled 21% in 2025, long-term strategic demand for gold remains firmly in place, and total demand hit a record. Official commentary is constructive rather than warning of weakness.",
           "result": "Pass"
         },
         {
           "factorKey": "analyst_price_targets",
-          "oneLineExplanation": "Targets cluster near current levels.",
-          "detailedExplanation": "Sell-side targets imply limited upside from here, consistent with a fully-valued but well-supported market.",
-          "result": "Fail"
+          "oneLineExplanation": "Bank targets ($4,900-$6,000) sit above spot.",
+          "detailedExplanation": "JPMorgan targets about $6,000/oz by late 2026 and Goldman Sachs $4,900 (trimmed from $5,400). Both are above today's ~$4,180, implying roughly +17% to +44% upside. The consensus points meaningfully higher, which is a positive.",
+          "result": "Pass"
         },
         {
           "factorKey": "bull_vs_bear_scenario",
-          "oneLineExplanation": "Bull case on falling real rates; bear on rising ones.",
-          "detailedExplanation": "The outcome hinges on real yields: falling real rates and a weaker dollar drive the bull case, while a rate/dollar bull market anchors the bear case.",
+          "oneLineExplanation": "Skew leans up, but valuation caps the upside.",
+          "detailedExplanation": "Bull case: falling real rates, a softer dollar and continued central-bank buying take gold back toward its record. Bear case: real yields stay high and the dollar firms, pressuring a zero-yield asset. With bank targets above spot and a durable demand floor, the balance modestly favors the upside, though a full valuation limits how far.",
           "result": "Pass"
         },
         {
           "factorKey": "key_catalysts_to_watch",
-          "oneLineExplanation": "Real yields, the dollar, and central-bank buying.",
-          "detailedExplanation": "The clearest catalysts are the direction of real interest rates, the US dollar trend, and the pace of central-bank reserve accumulation.",
+          "oneLineExplanation": "Fed rate path, dollar, and central-bank buying.",
+          "detailedExplanation": "The clearest catalysts are the Federal Reserve's rate decisions (rate cuts have been pushed toward 2027, a near-term headwind but a longer-term tailwind), the monthly central-bank reserve data, and the US dollar trend. These are watchable and, on balance, lean supportive over a multi-year horizon.",
           "result": "Pass"
         }
       ]
