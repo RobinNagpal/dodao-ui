@@ -1,0 +1,37 @@
+{
+  "categoryKey": "PriceAndValue",
+  "categoryName": "Price & Value",
+  "categoryDescription": "Is this commodity cheap or expensive relative to its own history and to the cost of producing it? Commodities have no earnings, so 'value' means position within long-run price ranges, the real (inflation-adjusted) price, and the marginal cost of production that tends to act as a floor. Pass/Fail is judged on whether the current price offers a favorable entry.",
+  "factors": [
+    {
+      "factorKey": "price_vs_range",
+      "factorTitle": "Price vs 5/10-Year Range",
+      "factorDescription": "Where does the current spot price sit within its 5- and 10-year range (percentile)? Pass when the price sits in the lower half of its multi-year range (relatively cheap); Fail when it is near the top of the range with no structural reason.",
+      "factorMetrics": "current price, 5yr range, 10yr range, price percentile"
+    },
+    {
+      "factorKey": "inflation_adjusted_price",
+      "factorTitle": "Inflation-Adjusted (Real) Price",
+      "factorDescription": "How does today's price compare to history AFTER adjusting for inflation? A commodity can look expensive nominally but cheap in real terms. Pass when the real price is at or below its long-run real average; Fail when the real price is stretched well above history.",
+      "factorMetrics": "real price index, real price vs long-run avg, nominal vs real gap"
+    },
+    {
+      "factorKey": "cost_of_production_floor",
+      "factorTitle": "Cost-of-Production Floor",
+      "factorDescription": "Where is the marginal cost of production (the price below which high-cost producers shut in)? This tends to act as a soft floor. Pass when the price is near or below the marginal cost (downside is limited, supply will respond); Fail when the price is far above the cost curve, inviting new supply.",
+      "factorMetrics": "marginal cost, breakeven price, cost-curve position, producer margins"
+    },
+    {
+      "factorKey": "price_vs_substitute",
+      "factorTitle": "Price vs Substitute Commodity",
+      "factorDescription": "How does the price compare to close substitutes buyers can switch to (gas vs coal, corn vs wheat for feed, platinum vs palladium)? Pass when the commodity is cheap vs its substitutes (demand should rotate toward it); Fail when it is priced at a premium that encourages switching away.",
+      "factorMetrics": "price ratio vs substitute, historical spread, switching economics"
+    },
+    {
+      "factorKey": "distance_from_all_time_high",
+      "factorTitle": "Distance From All-Time High",
+      "factorDescription": "How far is the price below (or above) its all-time high, and is that gap justified? Pass when there is meaningful headroom to prior highs with supportive fundamentals; Fail when the price is at/near an all-time high on stretched fundamentals.",
+      "factorMetrics": "all-time high, drawdown from ATH, time since ATH"
+    }
+  ]
+}

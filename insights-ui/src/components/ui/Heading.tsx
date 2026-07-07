@@ -9,7 +9,16 @@ import React from 'react';
  */
 const heading = cva('', {
   variants: {
-    size: { inherit: '', xs: 'text-xs', sm: 'text-sm', md: 'text-base', lg: 'text-lg', xl: 'text-xl', '2xl': 'text-2xl' },
+    size: {
+      inherit: '',
+      xs: 'text-xs',
+      sm: 'text-sm',
+      md: 'text-base',
+      lg: 'text-lg',
+      xl: 'text-xl',
+      '2xl': 'text-2xl',
+      display: 'text-2xl sm:text-4xl tracking-tight',
+    },
     weight: { medium: 'font-medium', semibold: 'font-semibold', bold: 'font-bold' },
     tone: { inherit: '', default: 'text-body', bright: 'text-body', white: 'text-heading', muted: 'text-muted', themed: 'text-body' },
   },

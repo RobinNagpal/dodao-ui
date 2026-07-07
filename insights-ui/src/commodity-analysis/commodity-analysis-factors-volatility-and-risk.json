@@ -1,0 +1,37 @@
+{
+  "categoryKey": "VolatilityAndRisk",
+  "categoryName": "Volatility & Risk",
+  "categoryDescription": "How wild is this commodity's price and what can shock it? Covers realized volatility, worst historical drawdowns, exposure to geopolitical/weather events, sensitivity to the US dollar, and how it correlates with inflation and with stocks. Pass/Fail is judged on whether the risk is understood and reasonable for the role a commodity plays in a portfolio.",
+  "factors": [
+    {
+      "factorKey": "historical_volatility",
+      "factorTitle": "Historical Volatility",
+      "factorDescription": "How volatile is this commodity vs other commodities and vs equities (annualized standard deviation)? Pass when volatility is in a normal band for the commodity's type and is understood; Fail when volatility is extreme and unpredictable relative to the return on offer.",
+      "factorMetrics": "annualized volatility, vol vs equities, vol percentile"
+    },
+    {
+      "factorKey": "worst_drawdowns",
+      "factorTitle": "Worst Drawdowns",
+      "factorDescription": "What are the deepest peak-to-trough falls this commodity has suffered and how long did recovery take? Pass when historical drawdowns, though real, recovered and are survivable; Fail when drawdowns have been catastrophic with very long or no recoveries.",
+      "factorMetrics": "max drawdown, drawdown duration, recovery time"
+    },
+    {
+      "factorKey": "geopolitical_weather_risk",
+      "factorTitle": "Geopolitical / Weather Risk",
+      "factorDescription": "How exposed is supply to geopolitics (OPEC, sanctions, chokepoints) or weather (droughts, freezes, hurricanes)? These cut both ways — they can spike or crater prices. Pass when the exposure is understood and roughly symmetric; Fail when the commodity is a hostage to a single fragile source of supply.",
+      "factorMetrics": "supply concentration, chokepoint exposure, weather sensitivity, event history"
+    },
+    {
+      "factorKey": "us_dollar_sensitivity",
+      "factorTitle": "US-Dollar Sensitivity",
+      "factorDescription": "Most commodities are priced in USD and move inversely to the dollar. How strong is that relationship and what does the current dollar trend imply? Pass when the dollar backdrop is neutral-to-supportive; Fail when a strong-dollar regime is a persistent headwind that the price ignores.",
+      "factorMetrics": "correlation to USD index, dollar trend, currency beta"
+    },
+    {
+      "factorKey": "correlation_to_inflation_and_stocks",
+      "factorTitle": "Correlation to Inflation & to Stocks",
+      "factorDescription": "Does this commodity hedge inflation and diversify a stock portfolio, or does it move with equities when it matters least? Pass when it offers genuine inflation-hedge / diversification value; Fail when the diversification case has broken down (it fell with stocks in the last equity drawdown).",
+      "factorMetrics": "correlation to CPI, correlation to S&P 500, behavior in equity drawdowns"
+    }
+  ]
+}

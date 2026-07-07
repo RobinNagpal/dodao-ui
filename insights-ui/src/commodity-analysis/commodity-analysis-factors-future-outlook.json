@@ -1,0 +1,37 @@
+{
+  "categoryKey": "FutureOutlook",
+  "categoryName": "Future Outlook",
+  "categoryDescription": "Where do supply, demand, and forecasts point next for this commodity? Combines the forward supply/demand balance, official agency forecasts, analyst price targets, an explicit bull-vs-bear framing, and the specific catalysts worth watching. Pass/Fail is judged on whether the forward setup favors the investor.",
+  "factors": [
+    {
+      "factorKey": "forward_supply_demand_balance",
+      "factorTitle": "Forward Supply/Demand Balance",
+      "factorDescription": "Over the next 1-3 years, is the market projected to be in deficit (bullish), balanced, or surplus (bearish)? Pass when the forward balance is tightening; Fail when a persistent surplus is projected.",
+      "factorMetrics": "projected balance, deficit/surplus estimate, forward demand growth vs supply growth"
+    },
+    {
+      "factorKey": "official_agency_forecast",
+      "factorTitle": "Official Agency Forecast",
+      "factorDescription": "What do the authoritative bodies (EIA for energy, USDA for agriculture, World Gold Council/USGS for metals) project for supply, demand, and price? Pass when official forecasts are constructive; Fail when they point to weakness the market has not priced.",
+      "factorMetrics": "agency demand forecast, agency supply forecast, agency price outlook"
+    },
+    {
+      "factorKey": "analyst_price_targets",
+      "factorTitle": "Analyst Price Targets",
+      "factorDescription": "Where do major bank/research analysts see the price in 6-24 months relative to spot? Pass when the consensus target is meaningfully above spot with sound reasoning; Fail when consensus points lower.",
+      "factorMetrics": "consensus target, target vs spot, range of estimates"
+    },
+    {
+      "factorKey": "bull_vs_bear_scenario",
+      "factorTitle": "Bull vs Bear Scenario",
+      "factorDescription": "Lay out the realistic bull case and bear case and weigh which is more probable and better-compensated. Pass when the skew favors the upside (asymmetric payoff); Fail when the downside scenario is both more likely and more damaging.",
+      "factorMetrics": "bull-case price, bear-case price, probability-weighted skew"
+    },
+    {
+      "factorKey": "key_catalysts_to_watch",
+      "factorTitle": "Key Catalysts to Watch",
+      "factorDescription": "What concrete, dated catalysts (OPEC meetings, WASDE reports, Fed decisions, elections, mine startups) could move the price, and do they lean supportive? Pass when the upcoming catalyst calendar leans supportive or is watchable/actionable; Fail when the calendar is loaded with likely negative events.",
+      "factorMetrics": "catalyst calendar, event dates, expected direction"
+    }
+  ]
+}
