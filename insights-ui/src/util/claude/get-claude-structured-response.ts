@@ -1,37 +1,35 @@
 import { getDefaultClaudeModel } from '@/types/llmConstants';
 import { callClaudeWithOAuth } from '@/util/claude/claude-oauth-client';
-import { updateInvocationStatus, validateData } from '@/util/get-llm-response';
-import { PromptInvocationStatus } from '@prisma/client';
 
 /**
- * Claude counterpart of `getLLMResponse` (the Gemini/OpenAI structured-output
- * runner). It is intentionally provider-agnostic in its inputs — it takes an
- * already-compiled prompt + the parsed output JSON schema + the invocation id —
- * so the SAME helper can back stock, ETF, tariff, etc. report generation. Only
- * the "call the model, get the answer, store it" step differs from the existing
- * flow; prompts, invocation rows, schemas, and downstream saving stay the same.
+ * Claude structured-output helper used by `getLLMResponse` when
+ * `LLM_PROVIDER=claude`. Given an already-compiled prompt and the parsed output
+ * JSON schema, it asks Claude (via the subscription OAuth path) to emit raw JSON
+ * for that schema and returns the parsed object.
  *
- * Claude is called through the subscription OAuth path (`callClaudeWithOAuth`).
+ * It is intentionally a THIN, pure helper: it does NOT touch invocation status
+ * or validate the result — `getLLMResponse` owns the retry loop, Ajv
+ * validation (`validateData`), and Completed/Failed bookkeeping, shared with the
+ * Gemini/OpenAI path. Keeping those out here also avoids an import cycle with
+ * `get-llm-response.ts`.
+ *
+ * Being provider-agnostic in its inputs (prompt + schema), the same helper backs
+ * stock, ETF, tariff, etc. report generation.
+ *
  * We don't use Anthropic structured-outputs (`output_config.format`) because the
- * dereferenced report schemas contain constructs it doesn't support; instead we
- * instruct Claude to emit raw JSON for the schema and validate it with the same
- * Ajv `validateData` the Gemini path uses, retrying on parse/validation failure.
+ * dereferenced report schemas contain constructs it doesn't support and it isn't
+ * available on every model; prompting for raw JSON + validating downstream works
+ * on any model and with the existing schemas unchanged.
  */
 
 /** Non-streaming output cap for report JSON. Generous, since report sections can be large. */
 const REPORT_MAX_TOKENS = 32000;
 
-/**
- * Master switch for generating reports with Claude (subscription OAuth) instead
- * of the existing Gemini/lambda workflow. Read from `GENERATE_WITH_CLAUDE`:
- *   - `true`        → call Claude via `getClaudeStructuredResponse`.
- *   - unset/`false` → keep the previous workflow (`getLLMResponse`).
- *
- * NOTE: not named `use…` — ESLint's `react-hooks/rules-of-hooks` treats any
- * `use`-prefixed function as a React hook.
- */
-export function shouldUseClaudeForReports(): boolean {
-  return process.env.GENERATE_WITH_CLAUDE === 'true';
+export interface ClaudeStructuredResultOptions {
+  /** Override the Claude model. Defaults to `getDefaultClaudeModel()` (LLM_MODEL / claude-opus-4-7). */
+  model?: string;
+  /** Override the output token cap. Defaults to 32000. */
+  maxTokens?: number;
 }
 
 /**
@@ -52,29 +50,12 @@ function extractJson(text: string): string {
   return candidate;
 }
 
-export interface ClaudeStructuredResponseOptions {
-  invocationId: string;
-  /** The fully-compiled prompt string (already built by the caller). */
-  prompt: string;
-  /** The parsed output JSON schema object the response is validated against. */
-  outputSchema: object;
-  maxRetries?: number;
-  isTestInvocation?: boolean;
-}
-
 /**
- * Runs the Claude call for a report, validates the JSON against `outputSchema`,
- * marks the PromptInvocation Completed/Failed (same as `getLLMResponse`), and
- * returns the parsed result. Throws after exhausting `maxRetries`.
+ * Calls Claude for a report prompt and returns the parsed JSON object. Throws on
+ * a failed API call or unparseable JSON — the caller's retry loop handles it.
  */
-export async function getClaudeStructuredResponse<Output>({
-  invocationId,
-  prompt,
-  outputSchema,
-  maxRetries = 2,
-  isTestInvocation = false,
-}: ClaudeStructuredResponseOptions): Promise<{ result: Output }> {
-  const model = getDefaultClaudeModel();
+export async function getClaudeStructuredResult<Output>(prompt: string, outputSchema: object, options: ClaudeStructuredResultOptions = {}): Promise<Output> {
+  const model = options.model ?? getDefaultClaudeModel();
 
   const finalPrompt =
     `${prompt}\n\n` +
@@ -82,43 +63,14 @@ export async function getClaudeStructuredResponse<Output>({
     `Do not include any explanation, prose, comments, or markdown code fences — output raw JSON only.\n\n` +
     `JSON schema:\n${JSON.stringify(outputSchema)}`;
 
-  let lastError: unknown = null;
+  const { text } = await callClaudeWithOAuth({
+    prompt: finalPrompt,
+    system: 'You are a precise data generator for financial reports. Output only valid JSON matching the requested schema — no prose, no markdown.',
+    model,
+    maxTokens: options.maxTokens ?? REPORT_MAX_TOKENS,
+    // "high" effort per request; if a model/plan doesn't support it the call errors and the caller retries.
+    effort: 'high',
+  });
 
-  for (let attempt = 0; attempt <= maxRetries; attempt++) {
-    try {
-      const { text } = await callClaudeWithOAuth({
-        prompt: finalPrompt,
-        system: 'You are a precise data generator for financial reports. Output only valid JSON matching the requested schema — no prose, no markdown.',
-        model,
-        maxTokens: REPORT_MAX_TOKENS,
-        // "high" effort per request; if a model/plan doesn't support it the call errors and we retry.
-        effort: 'high',
-      });
-
-      const result = JSON.parse(extractJson(text)) as Output;
-
-      const { valid, errors } = validateData(outputSchema, result);
-      if (!valid) {
-        throw new Error(`Claude output failed schema validation: ${JSON.stringify(errors)}`);
-      }
-
-      await updateInvocationStatus(invocationId, PromptInvocationStatus.Completed, { outputJson: JSON.stringify(result) }, isTestInvocation);
-      return { result };
-    } catch (err) {
-      lastError = err;
-      console.error(`[claude-structured] attempt ${attempt + 1}/${maxRetries + 1} failed:`, err);
-      if (attempt === maxRetries) {
-        await updateInvocationStatus(
-          invocationId,
-          PromptInvocationStatus.Failed,
-          { error: err instanceof Error ? err.message : String(err) },
-          isTestInvocation
-        );
-        throw err instanceof Error ? err : new Error(String(err));
-      }
-    }
-  }
-
-  // Unreachable (the loop either returns or throws), but keeps TS happy.
-  throw lastError instanceof Error ? lastError : new Error('Claude structured response failed');
+  return JSON.parse(extractJson(text)) as Output;
 }

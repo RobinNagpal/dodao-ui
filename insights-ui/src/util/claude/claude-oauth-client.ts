@@ -35,7 +35,7 @@ export interface CallClaudeOAuthOptions {
   prompt: string;
   /** Optional extra system instructions, appended AFTER the required identity block. */
   system?: string;
-  /** Model id. Defaults to `ANTHROPIC_MODEL` env, else `claude-opus-4-7`. */
+  /** Model id. Defaults to `LLM_MODEL` env, else `claude-opus-4-7`. */
   model?: string;
   /** Response length cap. Defaults to 1024. */
   maxTokens?: number;
@@ -86,7 +86,7 @@ export async function callClaudeWithOAuth(options: CallClaudeOAuthOptions): Prom
     throw new Error('callClaudeWithOAuth requires a non-empty prompt.');
   }
 
-  const model = options.model ?? process.env.ANTHROPIC_MODEL ?? DEFAULT_MODEL;
+  const model = options.model ?? process.env.LLM_MODEL ?? DEFAULT_MODEL;
   const baseUrl = (options.baseUrl ?? process.env.ANTHROPIC_BASE_URL ?? DEFAULT_BASE_URL).replace(/\/+$/, '');
   const ccVersion = process.env.CLAUDE_CODE_VERSION ?? DEFAULT_CC_VERSION;
 
