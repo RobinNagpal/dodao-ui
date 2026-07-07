@@ -4,6 +4,9 @@ import silver from '@/commodity-data/reports/silver.json';
 import platinum from '@/commodity-data/reports/platinum.json';
 import palladium from '@/commodity-data/reports/palladium.json';
 import copper from '@/commodity-data/reports/copper.json';
+import liveCattle from '@/commodity-data/reports/live-cattle.json';
+import leanHogs from '@/commodity-data/reports/lean-hogs.json';
+import feederCattle from '@/commodity-data/reports/feeder-cattle.json';
 
 /**
  * Registry of authored commodity reports, keyed by slug.
@@ -24,4 +27,7 @@ export const COMMODITY_REPORTS: Record<string, CommodityReportJson> = {
   platinum: platinum as unknown as CommodityReportJson,
   palladium: palladium as unknown as CommodityReportJson,
   copper: copper as unknown as CommodityReportJson,
+  'live-cattle': liveCattle as unknown as CommodityReportJson,
+  'lean-hogs': leanHogs as unknown as CommodityReportJson,
+  'feeder-cattle': feederCattle as unknown as CommodityReportJson,
 };

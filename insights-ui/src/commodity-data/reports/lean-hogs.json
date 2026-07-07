@@ -1,0 +1,210 @@
+{
+  "slug": "lean-hogs",
+  "name": "Lean Hogs",
+  "commodityGroup": "Livestock",
+  "priceSymbol": "HE=F",
+  "exchange": "CME",
+  "unit": "pound",
+  "currency": "USD",
+  "metaDescription": "A plain-English investor read on lean hogs: about 93 cents/lb ($93/cwt) in mid-2026, ~30% below the 2014 record. A cyclical, mean-reverting, high-volatility meat market dominated by China and by African Swine Fever. Covers global supply, value, risk, and the outlook.",
+  "updatedAt": "2026-07-07",
+  "summary": "Overall stance: Neutral / Cautious — cheap versus beef, but cyclical, volatile, and near a seasonal peak.\n\nLean hogs are the futures market for pork — the value of a market-weight hog's lean meat. The contract (HE=F) is quoted in US cents per pound; the industry says dollars per hundredweight ('cwt' = 100 lb). In early July 2026 lean hogs trade around 93 cents/lb (about $93/cwt), roughly 30% below the record 133.80 set in July 2014, and down about 13% over the past year. Unlike cattle, hogs are strongly cyclical and mean-reverting — they swing around a long-run average rather than trending to ever-higher records.\n\nThis is a global story dominated by two forces. China produces and eats about half the world's pork, so its herd decisions and imports swing the market; and African Swine Fever (ASF) — a deadly, vaccine-less pig disease now flaring in Europe and Asia — is the single biggest wildcard, catastrophic if it ever reaches the US. Today the picture is mixed: the US breeding herd is the smallest since 2014, yet record productivity (more pigs per litter) keeps pork output growing anyway, so there is no cattle-style shortage. Hogs are cheap relative to record-priced beef, and producers are profitable on cheap feed — but prices sit near a seasonal summer high with official forecasts pointing lower. Best understood as a volatile, cyclical trade with real disease tail-risk, not a buy-and-hold.",
+  "keyFacts": {
+    "keyFacts": "Lean hogs are the futures market for pork. The price reflects how much a market-weight hog's meat is worth, driven by how many hogs are being raised, how much pork people want at home and abroad, and the cost of feed (corn and soybean meal, together ~60-70% of a hog's cost). The contract (HE=F) is quoted in cents per pound; 93 cents/lb is $93 per hundredweight ('cwt' = 100 lb).\n\nIn early July 2026 lean hogs are around 93 cents/lb, well below the July 2014 record of 133.80. A crucial difference from cattle: hogs are cyclical and mean-reverting — they do not trend to permanent new highs, because pigs breed fast (a sow can produce two litters a year), so supply responds quickly. Two global forces dominate: China, which produces and consumes about half the world's pork, and African Swine Fever (ASF), a deadly pig disease with no widely used vaccine. ASF abroad is bullish for US pork (it tightens global supply and lifts exports); ASF in the US would be a disaster (it would trigger export bans and crash prices). For a beginner, hogs are best seen as a fast-moving, disease-sensitive market.",
+    "greenFlags": [
+      {
+        "flag": "Cheap versus record-priced beef",
+        "explanation": "Retail beef has hit records around $9-10/lb while retail pork is roughly flat near $4.89/lb. That wide, growing price gap pushes budget-conscious shoppers toward pork, a real demand tailwind — and US pork exports are running near record volumes (Mexico is the top market).",
+        "result": "Pass"
+      },
+      {
+        "flag": "Producers profitable on cheap feed",
+        "explanation": "Feed is ~60-70% of a hog's cost, and with corn cheap (~$4.25/bushel) the hog-to-corn ratio is comfortably profitable — producers are earning roughly $15-25 per head. Cheap feed and tight pork cold-storage stocks support the market.",
+        "result": "Pass"
+      }
+    ],
+    "redFlags": [
+      {
+        "flag": "US ASF outbreak is a catastrophic tail risk",
+        "explanation": "African Swine Fever has no widely deployed vaccine and is spreading in Europe (Spain saw its first case since 1994) and Asia. Because exports are ~25%+ of US production, a US outbreak would slam export markets shut and crash prices — a low-probability but devastating risk unique to hogs.",
+        "result": "Fail"
+      },
+      {
+        "flag": "Productivity keeps output growing despite a smaller herd",
+        "explanation": "The US breeding herd is the smallest since 2014, yet record pigs-per-litter (11.9) push total pork production higher anyway. Unlike cattle, hogs have no genuine supply shortage — output grinds up on productivity, capping prices.",
+        "result": "Fail"
+      }
+    ],
+    "mainUses": [
+      "Fresh pork (chops, loin, ribs)",
+      "Processed pork (bacon, ham, sausage)",
+      "Pork exports (Mexico, Japan, Korea, China)",
+      "Byproducts (lard, gelatin, pharmaceuticals)"
+    ],
+    "topProducers": [
+      { "country": "China", "share": "~48%" },
+      { "country": "European Union", "share": "~19%" },
+      { "country": "United States", "share": "~11%" },
+      { "country": "Brazil", "share": "~4%" }
+    ],
+    "waysToInvest": [
+      { "type": "Futures", "name": "HE=F", "note": "CME lean hogs contract (cents per pound); the main direct exposure" },
+      { "type": "ETN", "name": "COW", "note": "iPath Series B Bloomberg Livestock ETN — a basket of lean hogs + live cattle futures" },
+      {
+        "type": "Equities",
+        "name": "Pork processors (e.g. Tyson Foods, WH Group/Smithfield)",
+        "note": "Indirect; processor margins can move opposite to hog prices"
+      }
+    ]
+  },
+  "categories": [
+    {
+      "categoryKey": "SupplyAndDemand",
+      "summary": "Unlike cattle, hogs have no real shortage: a smaller US breeding herd is more than offset by record productivity, so pork output keeps growing. Demand is a bright spot — cheap versus beef, strong exports, tight cold storage — but supply and seasonality lean against prices.",
+      "overallAnalysisDetails": "The hog supply story is very different from cattle. The US breeding herd is the smallest since 2014, which sounds bullish, but record productivity — a record 11.9 pigs saved per litter — means the pig crop and total pork production keep rising anyway. Pigs also breed fast (a sow farrows about twice a year, with large litters), so supply can respond within about a year, which is why hogs are cyclical and mean-reverting rather than prone to lasting shortages. Globally, China (about half of world pork) is deliberately cutting its sow herd to fight oversupply, the EU herd is shrinking, and Brazil is expanding as the world's number-three exporter.\n\nDemand is the stronger side of the ledger. US pork is cheap relative to record-priced beef, driving substitution toward pork; exports are near record volumes (Mexico is the top market, with Japan and Korea rebounding); and pork in cold storage is unusually tight. The offsets: China's own supply is ample so its import demand is soft, and the US market is heading out of its summer-demand peak into the seasonally weaker fall.",
+      "factors": [
+        {
+          "factorKey": "production_output_trend",
+          "oneLineExplanation": "Output grinds higher on productivity despite a smaller herd.",
+          "detailedExplanation": "The US breeding herd is the smallest since 2014, but record pigs-per-litter push total pork production up about 1-2% anyway. Because supply is adequate and growing rather than shrinking, there is no shortage to lift prices, so this factor fails.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "global_inventories_stockpiles",
+          "oneLineExplanation": "Pork cold-storage stocks are unusually tight.",
+          "detailedExplanation": "Pork in US cold storage has run below the prior year every month and hit the lowest August since 2010, roughly 17% under the five-year average. Low, drawing stocks are a genuinely supportive signal, so this factor passes.",
+          "result": "Pass"
+        },
+        {
+          "factorKey": "demand_drivers",
+          "oneLineExplanation": "Cheap versus beef, with strong exports.",
+          "detailedExplanation": "Record beef prices are pushing consumers toward much cheaper pork, and US exports are near record volumes led by Mexico, Japan and Korea. Resilient, growing demand is a real support, so this factor passes — though soft Chinese import demand is a limiting factor.",
+          "result": "Pass"
+        },
+        {
+          "factorKey": "spare_capacity_new_supply",
+          "oneLineExplanation": "Fast breeding cycle means supply can grow quickly.",
+          "detailedExplanation": "Hogs reproduce quickly and productivity keeps rising, so the industry can add pork supply within about a year if prices rise. That ready spare capacity caps the upside, unlike cattle's multi-year lag, so this factor fails.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "seasonality",
+          "oneLineExplanation": "Heading out of the summer peak into weaker months.",
+          "detailedExplanation": "Hog prices typically peak in summer on grilling demand and lighter supply, then fall into autumn and winter as marketings get heavy. In July the market sits near its seasonal high and is heading into the weaker window, so this factor fails.",
+          "result": "Fail"
+        }
+      ]
+    },
+    {
+      "categoryKey": "PriceAndValue",
+      "summary": "Hogs are mid-range and mean-reverting — well below their 2014 record and cheap versus beef, but sitting above their cost of production and in the upper part of their recent range. Not stretched like cattle, but not a bargain either.",
+      "overallAnalysisDetails": "Hog value is a middle-of-the-road picture, which is normal for a mean-reverting market. At ~93 cents/lb, hogs are about 30% below their 2014 record and, in inflation-adjusted terms, well below past real peaks — so they are not stretched the way cattle are. Against beef they look genuinely cheap: retail pork near $4.89/lb versus record beef around $9-10/lb, a gap that supports pork demand.\n\nThe less favorable side: hogs sit in the upper part of their recent five-year range (roughly 14% above the five-year average) and comfortably above their cost of production. Producer breakeven is around $61/cwt liveweight while hogs trade near $93, so producers are profitable — but that also means the price has room to fall back toward cost if demand softens, and the protective 'floor' is well below the current level. The hog-to-corn ratio is favorable and packer margins (the pork 'cutout' trades above the live-hog price) are healthy, both supportive, but none of this makes hogs cheap in absolute terms.",
+      "factors": [
+        {
+          "factorKey": "price_vs_range",
+          "oneLineExplanation": "Upper part of its recent range, ~14% above the 5-year average.",
+          "detailedExplanation": "At ~93 cents/lb, hogs sit in the upper portion of their five-year range and about 14% above the five-year average, near a seasonal high. On this measure they are not cheap, so this factor fails.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "inflation_adjusted_price",
+          "oneLineExplanation": "Well below its real (inflation-adjusted) peaks.",
+          "detailedExplanation": "The nominal record was set back in 2014, so in real terms today's ~93 cents/lb is well below past peaks, and hogs have no long-term real uptrend. On this long-run measure the price is not stretched, so this factor passes.",
+          "result": "Pass"
+        },
+        {
+          "factorKey": "cost_of_production_floor",
+          "oneLineExplanation": "Trading well above the ~$61/cwt breakeven.",
+          "detailedExplanation": "Producer breakeven is roughly $61/cwt liveweight while hogs trade near $93, so the price sits well above cost with producers profitable. Because the price is not near its floor, downside is less protected, so this factor fails.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "price_vs_substitute",
+          "oneLineExplanation": "Very cheap versus beef.",
+          "detailedExplanation": "Retail pork (~$4.89/lb) is roughly half the price of record beef ($9-10/lb), so demand should keep rotating toward the cheaper protein. Being inexpensive versus its main substitute is a favorable relative-value point, so this factor passes.",
+          "result": "Pass"
+        },
+        {
+          "factorKey": "distance_from_all_time_high",
+          "oneLineExplanation": "About 30% below the 2014 record.",
+          "detailedExplanation": "Hogs trade ~30% below their 2014 all-time high, so there is no fresh-record risk, and tight cold storage plus cheap-versus-beef pricing offer some support. That headroom (with no imminent record) earns a pass, though hogs' mean-reverting nature limits how meaningful the old high is.",
+          "result": "Pass"
+        }
+      ]
+    },
+    {
+      "categoryKey": "VolatilityAndRisk",
+      "summary": "Hogs are among the most volatile agricultural commodities, with a history of catastrophic crashes (COVID 2020, 1998) and a unique, devastating tail risk in African Swine Fever. The low correlation to stocks is the main redeeming feature.",
+      "overallAnalysisDetails": "Lean hogs are a high-risk market. They are among the most volatile agricultural commodities, whipsawed by seasonality, a fixed ~10-month biological production lag (which causes over- and under-shooting), and disease. Their history includes truly catastrophic crashes: in 2020 COVID shut meatpacking plants, cash prices collapsed and some producers had to euthanize hogs; in 1998 a sudden loss of packing capacity drove live hog prices to roughly 8 cents/lb, the lowest in US history in real terms.\n\nThe defining risk is African Swine Fever. It has no widely deployed vaccine and is a double-edged sword: an outbreak abroad (as in Spain, Vietnam and the Philippines) is bullish for US pork by tightening global supply, but an outbreak inside the US would immediately shut export markets — which take more than a quarter of US production — and crater prices. Add California's Prop 12 housing rules disrupting the supply chain, plus trade frictions with China and Mexico. The one clear positive is that hog prices move on their own supply/disease fundamentals, giving a low correlation to the stock market.",
+      "factors": [
+        {
+          "factorKey": "historical_volatility",
+          "oneLineExplanation": "Among the most volatile ag commodities.",
+          "detailedExplanation": "Hogs swing hard on seasonality, the fixed production lag and disease shocks, far more than equities and more than cattle. That high, hard-to-predict volatility fails the factor on a risk-adjusted basis.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "worst_drawdowns",
+          "oneLineExplanation": "Catastrophic crashes in 2020 and 1998.",
+          "detailedExplanation": "Hogs crashed in 2020 (plant shutdowns forced euthanasia and cash prices near collapse) and in 1998 (live prices near 8 cents/lb, a real-terms record low). These are among the most severe drawdowns in commodities, so this factor fails.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "geopolitical_weather_risk",
+          "oneLineExplanation": "African Swine Fever is a catastrophic, asymmetric tail risk.",
+          "detailedExplanation": "ASF has no widely used vaccine and is spreading in Europe and Asia. A US outbreak would ban exports (25%+ of production) and crash prices — a low-probability but devastating, hog-specific risk. That asymmetric danger fails the factor.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "us_dollar_sensitivity",
+          "oneLineExplanation": "Export-sensitive, but supply and disease dominate.",
+          "detailedExplanation": "Exports are a big share of US pork, so a strong dollar can hurt competitiveness versus the EU and Brazil. But the price is driven far more by domestic supply, China and disease than by the dollar, so the dollar is not the binding constraint and this factor passes.",
+          "result": "Pass"
+        },
+        {
+          "factorKey": "correlation_to_inflation_and_stocks",
+          "oneLineExplanation": "Low correlation to stocks.",
+          "detailedExplanation": "Hog prices move on protein-supply, disease and trade fundamentals rather than with equities, giving a low correlation to the stock market and some diversification value as a food commodity. That genuine diversification earns a pass.",
+          "result": "Pass"
+        }
+      ]
+    },
+    {
+      "categoryKey": "FutureOutlook",
+      "summary": "The near-term setup is soft: prices sit near a seasonal peak while USDA forecasts averages well below current levels, and productivity keeps output growing. The real upside is optional — an ASF flare-up abroad or a China restock — rather than a base case.",
+      "overallAnalysisDetails": "The forward picture is cautious. USDA projects hog prices averaging around $69/cwt in 2026 and easing to ~$66.50 in 2027 as productivity and heavier weights push pork production higher — both well below the current ~$93 summer-peak price, which reflects seasonal strength that typically fades. Rabobank is similarly guarded, seeing global sow-herd contraction but a stalled US rebuild and prices subdued in the first half of 2026 before a tighter-supply rebound later.\n\nThe bull case is mostly optionality rather than a base case: an ASF flare-up in Europe or Asia (or a Chinese herd shortfall) could suddenly lift US export demand, cheap feed is keeping producers profitable, and beef-to-pork substitution is a steady tailwind. The bear case is the base case: productivity-driven output growth, soft Chinese demand amid its own oversupply, Prop 12 disruption, and the ever-present US ASF tail risk. Watch the quarterly Hogs & Pigs report, the WASDE, China import data and sow-herd policy, ASF headlines, corn and soybean-meal prices, and weekly export sales.",
+      "factors": [
+        {
+          "factorKey": "forward_supply_demand_balance",
+          "oneLineExplanation": "Output grows on productivity — balance not tightening.",
+          "detailedExplanation": "US pork production is forecast to keep rising on record productivity and heavier weights, so the forward balance is roughly adequate rather than tightening in the producer's favor. That caps prices, so this factor fails.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "official_agency_forecast",
+          "oneLineExplanation": "USDA sees prices averaging below current levels.",
+          "detailedExplanation": "USDA forecasts 2026 hog prices averaging ~$69/cwt and 2027 ~$66.50 — well below the current ~$93 summer-peak — as production rises. An official forecast pointing lower fails the factor, even allowing for seasonality.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "analyst_price_targets",
+          "oneLineExplanation": "Forecasts sit below the current seasonal-peak price.",
+          "detailedExplanation": "With current futures near $93 at the summer peak and USDA/analyst averages nearer $69, the consensus expects prices to ease back toward the long-run average rather than rise. Because targets point lower, this factor fails.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "bull_vs_bear_scenario",
+          "oneLineExplanation": "Base case is mean-reversion; upside is optional.",
+          "detailedExplanation": "The near-term skew is to the downside from a seasonal peak, with productivity-driven supply and soft China demand as the base case. The bull drivers (ASF abroad, China restock) are real but optional wildcards rather than the central path, so this factor fails.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "key_catalysts_to_watch",
+          "oneLineExplanation": "ASF headlines and China are watchable, potentially bullish wildcards.",
+          "detailedExplanation": "There are genuinely actionable catalysts: an ASF flare-up abroad or a shift in Chinese import policy could quickly tighten global supply and lift US exports, alongside the quarterly Hogs & Pigs report, WASDE and feed prices. These watchable, potentially supportive events earn a pass even within a cautious outlook.",
+          "result": "Pass"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,204 @@
+{
+  "slug": "feeder-cattle",
+  "name": "Feeder Cattle",
+  "commodityGroup": "Livestock",
+  "priceSymbol": "GF=F",
+  "exchange": "CME",
+  "unit": "pound",
+  "currency": "USD",
+  "metaDescription": "A plain-English investor read on feeder cattle: about 360 cents/lb ($360/cwt) in mid-2026, near record highs on the tightest US calf supply since 1941. The young cattle that feedlots fatten — leveraged to corn prices and finished-cattle prices. Covers supply, value, risk, and the outlook.",
+  "updatedAt": "2026-07-07",
+  "summary": "Overall stance: Tight supply, but the most expensive and most volatile part of the cattle complex.\n\nFeeder cattle are young cattle (roughly 500-850 lb) that ranchers sell to feedlots, where they are fattened on grain into finished 'live' cattle for slaughter. The futures (GF=F) settle against a cash index and are quoted in US cents per pound; the industry says dollars per hundredweight ('cwt' = 100 lb). In early July 2026 feeder cattle trade around 360 cents/lb (about $360/cwt, with the cash index near $371), only ~3-5% below the record ~$381/cwt set in October 2025 — and roughly 2 to 2.5 times their levels of five and ten years ago.\n\nFeeder prices are driven by three things: how many young cattle exist (right now, very few — the 2025 US calf crop was the smallest since 1941), the price of corn (cheap corn lets feedlots pay more, and corn is cheap today at ~$4.25/bushel), and the price of finished cattle (also at records). The same screwworm border closure that hit live cattle bites harder here, because it cut off the ~1.2 million young cattle the US imports from Mexico. The risk is that feeders are the most leveraged, most volatile link in the chain: they sit at all-time highs, feedlots lose money on some purchases, and a jump in corn prices would hit them hard. Attractive scarcity story, but an expensive and jumpy entry.",
+  "keyFacts": {
+    "keyFacts": "Feeder cattle are weaned young cattle that are not yet ready for slaughter. Feedlots buy them and fatten them for several months on grain (mostly corn) until they become finished 'live' cattle. So a feeder's value is really a bet on margins: what a feedlot can pay depends on the cost of corn to fatten the animal and the price it will fetch as finished cattle. The futures (GF=F) trade in cents per pound; 360 cents/lb equals $360 per hundredweight ('cwt' = 100 lb).\n\nIn early July 2026 feeder cattle are around 360 cents/lb, near October 2025's record of ~$381/cwt. Two forces have pushed them to records: the tightest supply of young cattle in generations (the 2025 US calf crop was the lowest since 1941, and the herd is at a 75-year low), and cheap corn (~$4.25/bushel), which lets feedlots afford to bid up. A third factor made it worse: a screwworm outbreak in Mexico closed the border to the ~1.2 million feeder cattle the US imports each year. For a beginner, the key point is that feeder cattle are more volatile than finished cattle, because they are leveraged to both feed costs and finished-cattle prices — a rise in corn would squeeze them quickly.",
+    "greenFlags": [
+      {
+        "flag": "Smallest US calf crop since 1941",
+        "explanation": "The 2025 US calf crop fell to about 32.9 million head — the lowest since 1941 — and the overall herd is at a 75-year low. Fewer calves means fewer feeder cattle, an extreme scarcity that has driven prices to records.",
+        "result": "Pass"
+      },
+      {
+        "flag": "Cheap corn supports high feeder prices",
+        "explanation": "Corn — the feed used to fatten cattle — is comparatively cheap at ~$4.25/bushel, far below its 2022 peak near $8. Cheap feed lowers a feedlot's cost of gain, so it can afford to pay more for feeder cattle, directly supporting feeder prices.",
+        "result": "Pass"
+      }
+    ],
+    "redFlags": [
+      {
+        "flag": "Record prices near the limit of what feedlots can pay",
+        "explanation": "At ~$360/cwt, feeders sit ~3-5% below their October 2025 record and at the top of their history. Feedlots already lose money on some purchases at these prices, betting that finished-cattle prices keep rising to bail them out — a stretched, risky setup.",
+        "result": "Fail"
+      },
+      {
+        "flag": "Highly leveraged to corn prices",
+        "explanation": "Because feeder value is a residual between feed cost and finished-cattle price, a spike in corn would raise the cost of fattening and crush feeder prices fast. Today's cheap corn is a key prop that could be knocked away by a poor US corn harvest.",
+        "result": "Fail"
+      }
+    ],
+    "mainUses": [
+      "Fattened in feedlots into finished (slaughter) cattle",
+      "Stocker/backgrounding operations (grazed before the feedlot)",
+      "Ultimately beef and byproducts"
+    ],
+    "topProducers": [
+      { "country": "United States", "share": "~94%" },
+      { "country": "Mexico", "share": "~5%" },
+      { "country": "Canada", "share": "~1%" }
+    ],
+    "waysToInvest": [
+      { "type": "Futures", "name": "GF=F", "note": "CME feeder cattle contract, cash-settled to the CME Feeder Cattle Index; the main direct exposure" },
+      { "type": "Options", "name": "Options on GF=F", "note": "Used by ranchers/feedlots to hedge; no major pure feeder-cattle ETF exists" },
+      { "type": "Equities", "name": "Cattle / beef companies", "note": "Indirect exposure to the broader cattle cycle" }
+    ]
+  },
+  "categories": [
+    {
+      "categoryKey": "SupplyAndDemand",
+      "summary": "Feeder supply is the tightest in generations — the smallest calf crop since 1941, heifers being held back to rebuild the herd, and Mexican imports cut off by screwworm. Feedlot demand is strong thanks to cheap corn and record finished-cattle prices.",
+      "overallAnalysisDetails": "The supply of feeder cattle is extraordinarily tight. The 2025 US calf crop was the smallest since 1941, following years of drought-driven herd liquidation that left the overall herd at a 75-year low. There is a further twist: as ranchers begin, tentatively, to hold back young female cattle (heifers) to rebuild the herd, those heifers are pulled out of the feeder pipeline — so the early stage of a herd rebuild actually makes feeder supply even tighter before it gets looser. The screwworm border closure compounds it by cutting off the ~1.2 million young cattle the US imports from Mexico each year (about 5% of feedlot placements).\n\nDemand from feedlots has stayed strong because the economics still work: finished-cattle prices are at records, and corn (the main cost of fattening) is cheap, so feedlots can afford to bid aggressively for the few feeders available. Good grazing conditions in parts of the Plains have added stocker demand. The result is a market where very tight supply meets willing buyers — a recipe for the record prices seen.",
+      "factors": [
+        {
+          "factorKey": "production_output_trend",
+          "oneLineExplanation": "Smallest US calf crop since 1941.",
+          "detailedExplanation": "The supply of new feeder cattle depends on the calf crop, which fell to its lowest since 1941 in 2025 as the herd hit a 75-year low. Sharply falling production into strong feedlot demand is very supportive for price, so this factor passes.",
+          "result": "Pass"
+        },
+        {
+          "factorKey": "global_inventories_stockpiles",
+          "oneLineExplanation": "Heifer retention and closed border shrink availability.",
+          "detailedExplanation": "Available feeder supply is squeezed on two fronts: ranchers keeping heifers back to breed (pulling them out of the feeder pool) and the screwworm border closure cutting off Mexican imports. With placements down, the pool of feeders is thin, which supports prices — a pass.",
+          "result": "Pass"
+        },
+        {
+          "factorKey": "demand_drivers",
+          "oneLineExplanation": "Feedlots bid strongly on cheap corn and record fed prices.",
+          "detailedExplanation": "Feedlot demand is driven by the profitability of fattening cattle. With finished-cattle prices at records and corn cheap, feedlots can afford to pay up for feeders, keeping demand strong. That supports the market, so this factor passes.",
+          "result": "Pass"
+        },
+        {
+          "factorKey": "spare_capacity_new_supply",
+          "oneLineExplanation": "Supply gets tighter before it loosens.",
+          "detailedExplanation": "There is no quick new supply: heifers retained now won't produce feeder cattle until roughly 2028-2029, and the border remains closed to Mexican cattle. If anything, the start of a herd rebuild tightens near-term feeder supply, so this factor passes.",
+          "result": "Pass"
+        },
+        {
+          "factorKey": "seasonality",
+          "oneLineExplanation": "Fall 'run' of calves is a mild seasonal pattern.",
+          "detailedExplanation": "Feeder markets see a seasonal autumn 'run' when spring-born calves are weaned and sold, which can pressure prices, but the effect is modest against the overwhelming supply shortage and feed dynamics. It is not a reliable edge right now.",
+          "result": "Fail"
+        }
+      ]
+    },
+    {
+      "categoryKey": "PriceAndValue",
+      "summary": "Feeder cattle are the most expensive part of the cattle complex — at all-time records, roughly 2 to 2.5 times their levels of a decade ago, and priced so high that feedlots lose money on some purchases. There is little value cushion at these levels.",
+      "overallAnalysisDetails": "By almost every value measure, feeder cattle are stretched. At ~$360/cwt they are near October 2025's record and roughly 2 to 2.5 times their five- and ten-year levels, exceeding even the prior-cycle peak of ~$241/cwt in real terms. The clearest warning sign is feedlot economics: at these prices, feedlots lose money on a meaningful share of the feeders they buy, effectively betting that record finished-cattle prices will climb even higher to cover the cost. When buyers are already underwater on the input, the price is testing the ceiling of what the chain can bear.\n\nRelative to finished cattle, feeders trade at an unusually wide premium (about $360/cwt versus ~$250/cwt for fed cattle), another sign the young-cattle price is stretched. The one genuine support is cheap corn, which keeps the cost of gain low and lets feedlots justify high feeder bids — but that support is exactly what a poor corn harvest could remove.",
+      "factors": [
+        {
+          "factorKey": "price_vs_range",
+          "oneLineExplanation": "At all-time records — top of its range.",
+          "detailedExplanation": "At ~$360/cwt, feeder cattle are near their October 2025 record and at the very top of their historical range, well above prior cycle peaks. On this measure they are as expensive as they have ever been, so this factor fails.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "inflation_adjusted_price",
+          "oneLineExplanation": "Record even after adjusting for inflation.",
+          "detailedExplanation": "Feeder prices exceed the prior-cycle peak (~$241/cwt in 2014-15) even in real, inflation-adjusted terms — genuine record territory. A price this stretched versus history offers no value cushion, so this factor fails.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "cost_of_production_floor",
+          "oneLineExplanation": "Priced above feedlot breakeven on many purchases.",
+          "detailedExplanation": "Rather than sitting near a protective cost floor, feeders are priced so high that feedlots lose money on a meaningful share of buys, betting fed-cattle prices rise further. Because the price is above sustainable feedlot economics, downside is not well protected, so this factor fails.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "price_vs_substitute",
+          "oneLineExplanation": "Very wide premium over finished cattle.",
+          "detailedExplanation": "Feeders trade at an unusually large premium to the finished (live) cattle they become — about $360/cwt versus ~$250/cwt. That stretched relationship signals the young-cattle price is rich relative to the end product, so this factor fails.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "distance_from_all_time_high",
+          "oneLineExplanation": "Only ~3-5% below the October 2025 record.",
+          "detailedExplanation": "Feeder cattle sit just ~3-5% below their all-time high on fundamentals that are fully recognized. Buying essentially at the record carries high poor-entry-timing risk, so this factor fails.",
+          "result": "Fail"
+        }
+      ]
+    },
+    {
+      "categoryKey": "VolatilityAndRisk",
+      "summary": "Feeder cattle are more volatile than finished cattle because they are leveraged to both feed costs and finished-cattle prices, and they have suffered sharp limit-down moves. Deep past drawdowns recovered, but the disease, drought and corn-price risks are all live.",
+      "overallAnalysisDetails": "Feeder cattle are the jumpiest link in the cattle chain. Their price is a residual — what's left after subtracting the cost of feed from the expected finished-cattle price — so small changes in corn prices or fed-cattle prices swing feeders more than either. That leverage showed up in late 2025, when a trade-policy surprise triggered multiple limit-down sessions. Their worst historical drawdown, the 2015-2016 collapse, exceeded 50%, deeper than finished cattle, though it eventually recovered.\n\nThe risk list is the full livestock set plus an extra: alongside screwworm, H5N1 bird flu and drought (which stress pastures and the herd), feeders carry direct corn-crop-weather risk — a drought-driven corn spike would raise the cost of gain and hit feeder prices hard. As with cattle generally, the US dollar is a secondary factor and the correlation to stocks is low, so feeders can diversify a portfolio even as they carry these commodity-specific hazards.",
+      "factors": [
+        {
+          "factorKey": "historical_volatility",
+          "oneLineExplanation": "More volatile than finished cattle; prone to limit moves.",
+          "detailedExplanation": "Because feeders are leveraged to both feed costs and fed-cattle prices, they swing more than live cattle and have hit multiple limit-down sessions recently. That elevated, margin-driven volatility — especially at record prices — earns a fail on a risk-adjusted basis.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "worst_drawdowns",
+          "oneLineExplanation": "Fell 50%+ in 2015-16, but recovered.",
+          "detailedExplanation": "Feeder cattle dropped more than 50% in the 2015-2016 downturn — deeper than finished cattle — and fell hard in 2020, but recovered from both. The drawdowns are severe yet survivable, so this factor passes.",
+          "result": "Pass"
+        },
+        {
+          "factorKey": "geopolitical_weather_risk",
+          "oneLineExplanation": "Disease, drought, and corn-crop weather all bite.",
+          "detailedExplanation": "Feeders face the livestock disease risks (screwworm, H5N1, foot-and-mouth tail risk) plus drought that stresses pastures and, uniquely, corn-crop weather — a bad corn year would spike feed costs and hit feeder prices. This broad, hard-to-predict risk set fails the factor.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "us_dollar_sensitivity",
+          "oneLineExplanation": "A domestic market; the dollar is secondary.",
+          "detailedExplanation": "Feeder prices are set by domestic supply, corn and fed-cattle prices, not the dollar, which matters only indirectly through the broader beef trade. The dollar is not a binding headwind, so this factor passes.",
+          "result": "Pass"
+        },
+        {
+          "factorKey": "correlation_to_inflation_and_stocks",
+          "oneLineExplanation": "Low stock correlation; a real-asset play.",
+          "detailedExplanation": "Feeder cattle move with agricultural fundamentals rather than the stock market, giving low equity correlation and some inflation-hedge character as a food commodity. The diversification value is genuine, so this factor passes.",
+          "result": "Pass"
+        }
+      ]
+    },
+    {
+      "categoryKey": "FutureOutlook",
+      "summary": "Supply stays exceptionally tight into 2028, and USDA sees record average prices — but with feeders already at all-time highs, feedlots stretched, and corn-spike risk overhead, the risk/reward from here is not clearly favorable.",
+      "overallAnalysisDetails": "The supply squeeze has a long runway. Heifers retained now won't calve until 2027, and their calves won't reach feeder weight until 2028-2029, so feeder supply gets tighter before it loosens. USDA projects 750-800 lb feeder steers averaging ~$364/cwt in 2026, up about 13% year over year and a fresh record, and Rabobank and CattleFax see new highs in 2026 and 2027.\n\nThe catch is the entry point. The bull case — record-tight supply, closed Mexican border, cheap corn, record fed-cattle prices — is already reflected in all-time-high prices. The bear case is potent: any rise in corn prices would squeeze feeder economics fast, feedlots are already losing money on some purchases, an eventual herd rebuild will loosen supply from 2028, and consumer beef-demand fatigue is a risk. Watch USDA Cattle on Feed placements, the corn crop and WASDE, the screwworm/Mexican border situation, and the January heifer-retention data.",
+      "factors": [
+        {
+          "factorKey": "forward_supply_demand_balance",
+          "oneLineExplanation": "Tighter before looser — squeeze runs into 2028.",
+          "detailedExplanation": "Because retained heifers won't produce feeder cattle until 2028-2029, the supply shortage intensifies near term before easing. A forward balance this tight is supportive for price, so this factor passes.",
+          "result": "Pass"
+        },
+        {
+          "factorKey": "official_agency_forecast",
+          "oneLineExplanation": "USDA projects record ~$364/cwt for 2026.",
+          "detailedExplanation": "USDA forecasts feeder steers averaging ~$364/cwt in 2026 (+13% year over year), a record, and Rabobank/CattleFax see new highs in 2026-2027. The official view is constructive, so this factor passes.",
+          "result": "Pass"
+        },
+        {
+          "factorKey": "analyst_price_targets",
+          "oneLineExplanation": "Forecasts at or above current record levels.",
+          "detailedExplanation": "USDA's ~$364/cwt 2026 average is around current futures, and CattleFax/Rabobank see further highs — so the consensus points to at least holding, and likely exceeding, today's levels. That earns a pass, albeit with limited upside from a record.",
+          "result": "Pass"
+        },
+        {
+          "factorKey": "bull_vs_bear_scenario",
+          "oneLineExplanation": "Record prices plus corn-spike risk cap the reward.",
+          "detailedExplanation": "The tight-supply bull case is well known and fully priced at all-time highs. Against it, a corn-price spike, stretched feedlot margins, and an eventual herd rebuild are real downside risks. At record prices the payoff is not clearly skewed up, so this factor fails.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "key_catalysts_to_watch",
+          "oneLineExplanation": "Placements, corn/WASDE, screwworm, heifer retention.",
+          "detailedExplanation": "The clearest catalysts are USDA Cattle on Feed placements, corn prices and the WASDE, the screwworm/Mexican border situation, and heifer-retention data. These are watchable and near-term lean supportive, so this factor passes.",
+          "result": "Pass"
+        }
+      ]
+    }
+  ]
+}

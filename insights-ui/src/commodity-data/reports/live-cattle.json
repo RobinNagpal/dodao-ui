@@ -1,0 +1,211 @@
+{
+  "slug": "live-cattle",
+  "name": "Live Cattle",
+  "commodityGroup": "Livestock",
+  "priceSymbol": "LE=F",
+  "exchange": "CME",
+  "unit": "pound",
+  "currency": "USD",
+  "metaDescription": "A plain-English investor read on live cattle: about 239 cents/lb ($239/cwt) in mid-2026, near record highs as the US herd sits at a 75-year low. Covers the cattle cycle, global beef trade (Brazil, Australia), the screwworm border closure, value, risk, and the outlook.",
+  "updatedAt": "2026-07-07",
+  "summary": "Overall stance: Positive on supply, but prices are at record highs — a late-cycle caution.\n\nLive cattle are finished, market-weight cattle (around 1,200-1,400 lb) ready for slaughter into beef. The futures (LE=F) are quoted in US cents per pound; the industry usually talks in dollars per hundredweight ('cwt', or 100 lb). In early July 2026 live cattle trade around 239 cents/lb (about $239/cwt), only ~7-8% below the record ~$258/cwt set in June 2026, and up about 11% over the past year.\n\nThe reason is a genuine, historic supply squeeze: the US cattle herd has shrunk to about 86 million head — the smallest since 1951 — after years of drought forced ranchers to sell off animals. On top of that, a New World screwworm outbreak in Mexico has closed the US border to the ~1.2 million feeder cattle it normally imports each year. Beef demand has stayed surprisingly strong despite record retail prices. The catch is that all of this good news is already in the price: cattle sit near all-time highs, beef packers are losing money and closing plants, and once ranchers start rebuilding the herd (a slow, multi-year process) supply will eventually loosen. Best understood as a tight-supply story that is already richly priced — attractive fundamentals, expensive entry.",
+  "keyFacts": {
+    "keyFacts": "Live cattle are fully-grown cattle ready to be processed into beef. Their price is set by how many cattle are available (supply), how much beef people want (demand), and the cost of the feed used to fatten them. The futures contract (LE=F) trades in US cents per pound; the industry usually quotes dollars per hundredweight ('cwt' = 100 lb), so 239 cents/lb is the same as $239/cwt.\n\nIn early July 2026 live cattle are around 239 cents/lb, just below June 2026's record of ~$258/cwt. The dominant fact is scarcity: the US cattle herd is at its smallest since 1951, the result of years of drought-driven herd 'liquidation.' Cattle also breed slowly — it takes two to three years to expand a herd — so supply cannot bounce back quickly. For a beginner, three things matter: the cattle cycle (long swings between herd shrinking and rebuilding), the cost of feed (corn), and animal-disease and trade events (like the screwworm outbreak that closed the Mexican border). This is also a global market: Brazil is now the world's largest beef producer and exporter, with Australia at record output.",
+    "greenFlags": [
+      {
+        "flag": "US herd at a 75-year low",
+        "explanation": "The total US cattle herd fell to about 86.2 million head as of January 2026 — the smallest since 1951 — and the beef-cow herd (27.6 million) is the lowest since 1961, the seventh straight annual decline. Because cattle take years to breed and raise, this scarcity supports prices for a long time.",
+        "result": "Pass"
+      },
+      {
+        "flag": "Screwworm has cut off Mexican cattle imports",
+        "explanation": "A New World screwworm (a flesh-eating parasite) outbreak in Mexico has kept the US border closed to live Mexican cattle for much of 2025-2026. The US normally imports ~1.2 million cattle a year from Mexico, so removing that supply tightens an already-short market.",
+        "result": "Pass"
+      },
+      {
+        "flag": "Beef demand has stayed strong despite record prices",
+        "explanation": "Even with retail beef at record highs (ground beef near $6.70/lb), US beef consumption held up — per-person consumption was actually revised slightly higher for 2026. Resilient demand into tight supply is a supportive combination.",
+        "result": "Pass"
+      }
+    ],
+    "redFlags": [
+      {
+        "flag": "Prices are at all-time records",
+        "explanation": "Live cattle sit only ~7-8% below June 2026's record, in the top few percent of their entire price history. Most of the bullish supply story is already reflected in the price, leaving a thin margin of safety and real risk of poor entry timing.",
+        "result": "Fail"
+      },
+      {
+        "flag": "Packers are losing money and closing plants",
+        "explanation": "At record cattle costs, beef processors ('packers') are deeply unprofitable — Tyson guided to a $400-600 million beef-segment loss for its fiscal 2026 and has closed plants. Less slaughter capacity ultimately means weaker demand for live cattle, a headwind building beneath the record prices.",
+        "result": "Fail"
+      }
+    ],
+    "mainUses": [
+      "Beef for domestic consumption",
+      "Beef exports (Japan, Korea, China)",
+      "Ground beef (blended with lean imported trim)",
+      "Byproducts (hides/leather, tallow)"
+    ],
+    "topProducers": [
+      { "country": "Brazil", "share": "~17%" },
+      { "country": "United States", "share": "~16%" },
+      { "country": "China", "share": "~10%" },
+      { "country": "European Union", "share": "~9%" }
+    ],
+    "waysToInvest": [
+      { "type": "Futures", "name": "LE=F", "note": "CME live cattle contract (cents per pound); the main direct exposure" },
+      { "type": "ETN", "name": "COW", "note": "iPath Series B Bloomberg Livestock ETN — a basket of live cattle + lean hogs futures" },
+      { "type": "Equities", "name": "Meatpackers (e.g. Tyson Foods)", "note": "Indirect and imperfect — packer margins move opposite to cattle prices" }
+    ]
+  },
+  "categories": [
+    {
+      "categoryKey": "SupplyAndDemand",
+      "summary": "Supply is historically tight — the US herd is at a 75-year low, the border is closed to Mexican cattle, and rebuilding takes years — while beef demand has held up despite record prices. The balance strongly favors demand.",
+      "overallAnalysisDetails": "This is one of the tightest cattle-supply pictures in living memory. Years of drought dried out pastures and pushed ranchers to sell off breeding animals, shrinking the US herd to about 86 million head — the smallest since 1951 — with the 2025 calf crop the lowest since 1941. Cattle also reproduce slowly (a cow produces one calf a year, and it takes two to three years to expand a herd), so supply cannot respond quickly. A New World screwworm outbreak in Mexico has closed the US border to the ~1.2 million cattle it usually imports each year, tightening things further.\n\nDemand has been the pleasant surprise: despite record retail beef prices, US consumption held up and even ticked higher. Globally the market is shifting — Brazil is now the world's largest beef producer and exporter and Australia is at record output, and the US has swung from a net exporter toward importing more lean beef trim (from Brazil and Australia) to stretch its short domestic supply. But for the US-based futures, the story is clear: record-tight supply meeting resilient demand.",
+      "factors": [
+        {
+          "factorKey": "production_output_trend",
+          "oneLineExplanation": "US herd at its smallest since 1951 and still shrinking.",
+          "detailedExplanation": "The US cattle herd fell to ~86 million head in 2026 (smallest since 1951), the seventh straight yearly decline, and the calf crop is the lowest since 1941. Falling production into steady demand is strongly supportive for price, so this factor passes.",
+          "result": "Pass"
+        },
+        {
+          "factorKey": "global_inventories_stockpiles",
+          "oneLineExplanation": "Cattle-on-feed and available supply are tight.",
+          "detailedExplanation": "Cattle on feed have edged down and the pipeline of animals is thin, squeezed further by the screwworm border closure cutting off Mexican imports. There is no glut building; the buffer of available cattle is small, which supports prices.",
+          "result": "Pass"
+        },
+        {
+          "factorKey": "demand_drivers",
+          "oneLineExplanation": "Beef demand resilient despite record prices.",
+          "detailedExplanation": "US per-person beef consumption held up (and was nudged higher for 2026) even as retail prices hit records, and global import demand (led by China) is firm. Consumers are trading down within beef rather than abandoning it. Resilient demand is a pass.",
+          "result": "Pass"
+        },
+        {
+          "factorKey": "spare_capacity_new_supply",
+          "oneLineExplanation": "No quick new supply — herds take years to rebuild.",
+          "detailedExplanation": "Unlike a factory, a cattle herd cannot be switched back on. Even if ranchers start keeping more heifers today, those calves take two to three years to reach market. With the border still cutting off Mexican cattle, there is little near-term supply to cap prices, so this factor passes.",
+          "result": "Pass"
+        },
+        {
+          "factorKey": "seasonality",
+          "oneLineExplanation": "Mild grilling-season demand, not a strong signal.",
+          "detailedExplanation": "Beef demand rises modestly around the summer grilling season and holidays, but the effect is small next to the herd cycle, feed costs and trade events. It is not a reliable edge for an investor right now.",
+          "result": "Fail"
+        }
+      ]
+    },
+    {
+      "categoryKey": "PriceAndValue",
+      "summary": "Cattle are historically expensive — near all-time records and in the top few percent of their price range. The one cushion is that the cost to raise them (record-priced feeder cattle plus feed) is also very high, which underpins the price. Beef is now dear versus pork and chicken.",
+      "overallAnalysisDetails": "On value, live cattle look stretched. At ~$239/cwt they are near June 2026's record and in the top few percent of their entire history, and in inflation-adjusted terms they are also at record levels. Beef has become expensive relative to its substitutes — retail beef is roughly double the price of pork — which encourages budget-conscious shoppers to switch to cheaper proteins, a headwind to demand.\n\nThe supportive nuance is the cost floor. A finished animal's cost is mostly the young 'feeder' cattle that go into the feedlot plus the feed to fatten them. Feeder cattle are themselves at record highs (~$364/cwt), so the breakeven cost of producing a finished animal is very high — which puts a high, relatively close floor under the live-cattle price. Feed (corn) is comparatively cheap, keeping feedlots roughly profitable, but the packers who buy the finished cattle are losing money, a sign the price is testing the ceiling of what the supply chain can bear.",
+      "factors": [
+        {
+          "factorKey": "price_vs_range",
+          "oneLineExplanation": "Near record highs — top of its multi-decade range.",
+          "detailedExplanation": "At ~$239/cwt, live cattle sit just below June 2026's record and in the top few percent of their historical range. On this measure they are expensive, with limited room to rise on valuation alone, so this factor fails.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "inflation_adjusted_price",
+          "oneLineExplanation": "At record levels even after adjusting for inflation.",
+          "detailedExplanation": "Cattle prices are at records not just in nominal terms but in real (inflation-adjusted) terms too, and beef is a leading driver of food inflation. A price this stretched versus history is a headwind for new buyers, so this factor fails.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "cost_of_production_floor",
+          "oneLineExplanation": "Record feeder and feed costs underpin the price.",
+          "detailedExplanation": "The cost of producing a finished animal — record-priced feeder cattle (~$364/cwt) plus feed and yardage — is very high, so the breakeven floor sits close beneath the live-cattle price. That high cost base genuinely limits how far prices can fall in the near term, so this factor passes.",
+          "result": "Pass"
+        },
+        {
+          "factorKey": "price_vs_substitute",
+          "oneLineExplanation": "Beef is expensive versus pork and chicken.",
+          "detailedExplanation": "Retail beef is roughly twice the price of pork and far above chicken, which pushes cost-conscious consumers toward cheaper proteins. Being the premium meat at record prices encourages switching away, a demand headwind, so this factor fails.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "distance_from_all_time_high",
+          "oneLineExplanation": "Only ~7-8% below the June 2026 record.",
+          "detailedExplanation": "Live cattle trade just ~7-8% below their all-time high on fundamentals that are already widely understood. Buying so close to a record raises poor-entry-timing risk, so this factor fails.",
+          "result": "Fail"
+        }
+      ]
+    },
+    {
+      "categoryKey": "VolatilityAndRisk",
+      "summary": "Live cattle are one of the calmer commodities — relatively low volatility, drawdowns that have recovered, and a low correlation to stocks that makes them a diversifier. The defining risk is biological: animal disease (screwworm, bird flu, foot-and-mouth) and drought.",
+      "overallAnalysisDetails": "For a commodity, live cattle are comparatively steady: annualized volatility around 15% is well below energy and grains, and cattle have a low correlation to the stock market, so they can diversify a portfolio. Their worst falls — a roughly 40% slide in 2015-2016 and the sharp COVID-2020 crash when meatpacking plants shut down — were painful but recovered.\n\nThe risks that set livestock apart from metals are biological and weather-driven. A New World screwworm outbreak is already disrupting trade; H5N1 bird flu has spread into US dairy cattle (with limited beef impact so far); and the tail risk is a foot-and-mouth disease (FMD) outbreak, which would slam export markets shut and crater prices. Drought is a constant threat to pastures and feed. These shocks cut both ways — a supply scare can spike prices, but a demand-side disease event can be devastating — so they are the key thing a cattle investor must watch. The US dollar matters only modestly, mainly through beef export and import competitiveness versus Brazil and Australia.",
+      "factors": [
+        {
+          "factorKey": "historical_volatility",
+          "oneLineExplanation": "About 15% a year — low for a commodity.",
+          "detailedExplanation": "Live cattle's annualized volatility of roughly 15% is among the lowest in the commodity world, well below energy and grains. That relative steadiness makes it easier to size and hold, so this factor passes.",
+          "result": "Pass"
+        },
+        {
+          "factorKey": "worst_drawdowns",
+          "oneLineExplanation": "Fell ~40% in 2015-16 and in 2020, but recovered.",
+          "detailedExplanation": "Cattle dropped about 40% in the 2015-2016 downturn and crashed when COVID shut meatpacking plants in 2020, but recovered from both. The drawdowns are real but have been survivable, so this factor passes.",
+          "result": "Pass"
+        },
+        {
+          "factorKey": "geopolitical_weather_risk",
+          "oneLineExplanation": "Disease and drought are the defining risks.",
+          "detailedExplanation": "Livestock live and die by biology: the active screwworm outbreak, H5N1 bird flu in dairy cattle, the foot-and-mouth-disease tail risk (which would shut export markets), and recurring drought all threaten supply and trade. These shocks can be sudden and hard to predict, so this factor fails despite the diversified production base.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "us_dollar_sensitivity",
+          "oneLineExplanation": "Mostly a domestic market; the dollar is secondary.",
+          "detailedExplanation": "Cattle prices are driven far more by domestic supply and demand than by the US dollar, which matters mainly at the margin for beef exports and imports. The dollar is not a binding headwind here, so this factor passes.",
+          "result": "Pass"
+        },
+        {
+          "factorKey": "correlation_to_inflation_and_stocks",
+          "oneLineExplanation": "Low stock correlation; tracks food inflation.",
+          "detailedExplanation": "Live cattle have a low correlation to equities, so they diversify a stock portfolio, and beef is a large, visible part of food inflation, giving cattle some inflation-hedge character. The diversification case is genuine, so this factor passes.",
+          "result": "Pass"
+        }
+      ]
+    },
+    {
+      "categoryKey": "FutureOutlook",
+      "summary": "The near-term outlook stays tight — the herd rebuild is slow and supply won't recover for 18-24 months — and analysts see new highs. But at record prices, with packers losing money and a rebuild eventually coming, the risk/reward is no longer clearly skewed up.",
+      "overallAnalysisDetails": "Supply will stay tight for a while. Even with the first small signs of ranchers holding back heifers to rebuild, those animals won't produce market cattle for two to three years, so most analysts expect another 18-24 months of tight supply and firm prices, with meaningful herd growth only from 2027 onward. Forecasters like Rabobank see new market highs in 2026 and 2027, and USDA has raised its price projections.\n\nThe balance of the argument, though, is finely poised. The bull case is the record-low herd, the closed Mexican border, and resilient demand. The bear case is real too: demand could finally crack at record retail prices, packers are losing money and closing plants (reducing slaughter demand for live cattle), cheaper pork and chicken are pulling some consumers away, and the eventual herd rebuild will add supply. Key things to watch: USDA's monthly Cattle on Feed and semi-annual inventory reports, the WASDE, corn prices, screwworm and the Mexican border, and any H5N1 or foot-and-mouth developments.",
+      "factors": [
+        {
+          "factorKey": "forward_supply_demand_balance",
+          "oneLineExplanation": "Tight for another 18-24 months.",
+          "detailedExplanation": "Because herd rebuilding is slow and cattle take years to raise, the supply shortage is expected to persist well into 2027. A forward balance that stays tight is supportive, so this factor passes.",
+          "result": "Pass"
+        },
+        {
+          "factorKey": "official_agency_forecast",
+          "oneLineExplanation": "USDA and Rabobank see continued strength.",
+          "detailedExplanation": "USDA raised its cattle price forecasts and Rabobank projects new market highs in 2026 and 2027 before prices ease as the herd rebuilds. The authoritative view is constructive, so this factor passes.",
+          "result": "Pass"
+        },
+        {
+          "factorKey": "analyst_price_targets",
+          "oneLineExplanation": "Analysts point to further record highs.",
+          "detailedExplanation": "Rabobank and CattleFax see new highs in 2026 and 2027, implying upside from current levels on continued tight supply. Because the consensus points higher, this factor passes — though the upside is more limited from record levels.",
+          "result": "Pass"
+        },
+        {
+          "factorKey": "bull_vs_bear_scenario",
+          "oneLineExplanation": "Tight supply, but buying at record highs caps the reward.",
+          "detailedExplanation": "The bull case (record-low herd, closed border, firm demand) is well known and largely priced. Against it, packer losses and plant closures, cheaper substitute meats, and the eventual herd rebuild are building risks. At all-time-high prices the payoff is no longer clearly skewed to the upside, so this factor fails.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "key_catalysts_to_watch",
+          "oneLineExplanation": "Cattle on Feed, inventory reports, screwworm, and corn.",
+          "detailedExplanation": "The clearest catalysts are USDA's Cattle on Feed and inventory reports, the WASDE, corn/feed prices, the screwworm situation and Mexican border, and H5N1 or foot-and-mouth news. These are watchable and, near term, lean supportive, so this factor passes.",
+          "result": "Pass"
+        }
+      ]
+    }
+  ]
+}
