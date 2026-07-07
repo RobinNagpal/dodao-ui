@@ -1,5 +1,17 @@
 import { CommodityReportJson } from '@/types/commodity/commodity-analysis-types';
 import gold from '@/commodity-data/reports/gold.json';
+import silver from '@/commodity-data/reports/silver.json';
+import platinum from '@/commodity-data/reports/platinum.json';
+import palladium from '@/commodity-data/reports/palladium.json';
+import copper from '@/commodity-data/reports/copper.json';
+import liveCattle from '@/commodity-data/reports/live-cattle.json';
+import leanHogs from '@/commodity-data/reports/lean-hogs.json';
+import feederCattle from '@/commodity-data/reports/feeder-cattle.json';
+import wtiCrudeOil from '@/commodity-data/reports/wti-crude-oil.json';
+import brentCrudeOil from '@/commodity-data/reports/brent-crude-oil.json';
+import naturalGas from '@/commodity-data/reports/natural-gas.json';
+import gasolineRbob from '@/commodity-data/reports/gasoline-rbob.json';
+import heatingOil from '@/commodity-data/reports/heating-oil.json';
 
 /**
  * Registry of authored commodity reports, keyed by slug.
@@ -16,4 +28,16 @@ import gold from '@/commodity-data/reports/gold.json';
  */
 export const COMMODITY_REPORTS: Record<string, CommodityReportJson> = {
   gold: gold as unknown as CommodityReportJson,
+  silver: silver as unknown as CommodityReportJson,
+  platinum: platinum as unknown as CommodityReportJson,
+  palladium: palladium as unknown as CommodityReportJson,
+  copper: copper as unknown as CommodityReportJson,
+  'live-cattle': liveCattle as unknown as CommodityReportJson,
+  'lean-hogs': leanHogs as unknown as CommodityReportJson,
+  'feeder-cattle': feederCattle as unknown as CommodityReportJson,
+  'wti-crude-oil': wtiCrudeOil as unknown as CommodityReportJson,
+  'brent-crude-oil': brentCrudeOil as unknown as CommodityReportJson,
+  'natural-gas': naturalGas as unknown as CommodityReportJson,
+  'gasoline-rbob': gasolineRbob as unknown as CommodityReportJson,
+  'heating-oil': heatingOil as unknown as CommodityReportJson,
 };

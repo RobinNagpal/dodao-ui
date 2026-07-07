@@ -1,0 +1,207 @@
+{
+  "slug": "wti-crude-oil",
+  "name": "Crude Oil (WTI)",
+  "commodityGroup": "Energy",
+  "priceSymbol": "CL=F",
+  "exchange": "NYMEX",
+  "unit": "barrel",
+  "currency": "USD",
+  "metaDescription": "A plain-English investor read on WTI crude oil: near $69 a barrel in mid-2026 after a Middle East spike to $119, but cheap versus history and facing a looming 2027 oversupply. Covers supply and demand, value, risk, and the outlook.",
+  "updatedAt": "2026-07-07",
+  "summary": "Overall stance: Cautious. Cheap price, but the fundamentals point down.\n\nWTI is the main US oil benchmark, priced in dollars per barrel and set at Cushing, Oklahoma. In early July 2026 it trades near $69, roughly halfway down a wild 52-week range of about $55 to $119 that was driven by a Strait of Hormuz crisis earlier in the year. It sits about 53% below its 2008 record of $147.\n\nOn value, oil looks fair-to-cheap: it is low in its multi-year range, cheap in inflation-adjusted terms, and sitting right on top of the roughly $65 cost to drill a new US shale well, which limits how far it can fall. But almost every forward-looking signal is negative. US output is at a record ~13.7 million barrels a day, OPEC+ is adding barrels back, and the group holds about 5 million barrels a day of spare capacity that caps rallies. Global demand is actually shrinking slightly, and both the US Energy Information Administration and major banks expect prices to drift into the low $60s (some see the $50s) by 2027. The main thing holding prices up — Middle East conflict — is exactly what forecasters expect to fade. Oil is also very volatile (~36% a year) with a history of brutal crashes, including going negative in 2020. Best treated as a tactical, high-risk position rather than a buy-and-hold.",
+  "keyFacts": {
+    "keyFacts": "West Texas Intermediate (WTI) is a light, low-sulfur ('sweet') crude oil that is easy to refine into gasoline and diesel. It is the benchmark for US oil, priced per 42-gallon barrel in US dollars, with the NYMEX front-month future (CL=F) setting the reference price. In early July 2026 that price is about $69 a barrel.\n\nFor a beginner, the key is that oil is a global, politically-charged commodity. Its price is a tug-of-war between OPEC+ (a group led by Saudi Arabia and Russia that manages output), booming US shale production, the health of the world economy (which sets demand), and geopolitics. 2026 has been extreme: a Strait of Hormuz crisis — the waterway that carries about a fifth of the world's oil — spiked WTI to about $119 in March before it fell back toward $69 by July as tankers started moving again. Unlike gold, oil is consumed, storable, and cyclical, so its price swings hard with the economy and with events in the Middle East.",
+    "greenFlags": [
+      {
+        "flag": "Cheap versus its own history",
+        "explanation": "At about $69, WTI is low in its 5- and 10-year range and, adjusted for inflation, far below the 2008 peak (worth over $200 in today's dollars) and the $100+ era of 2011-2014. On a pure value basis, oil is not expensive.",
+        "result": "Pass"
+      },
+      {
+        "flag": "A real cost floor under the price",
+        "explanation": "New US shale wells need roughly $65 a barrel to be profitable (Dallas Fed 2026 survey), and Saudi Arabia needs a high-$60s price to balance its budget. With WTI near $69, prices are sitting right on that cost floor, which historically slows or stops further falls.",
+        "result": "Pass"
+      },
+      {
+        "flag": "Inventories are currently tight",
+        "explanation": "Developed-world (OECD) commercial oil stocks are below their five-year average, and the US Strategic Petroleum Reserve is at its lowest since 1983 after big drawdowns. Low inventories give the current price near-term support even as a future surplus looms.",
+        "result": "Pass"
+      }
+    ],
+    "redFlags": [
+      {
+        "flag": "A large surplus is expected in 2027",
+        "explanation": "Record US supply, OPEC+ adding barrels back, and new production from Brazil and Guyana are set to outrun weak demand. The IEA and EIA both expect the market to swing into oversupply into 2027, and bank forecasts see WTI drifting to the low $60s or even $50s.",
+        "result": "Fail"
+      },
+      {
+        "flag": "Extreme volatility and crash history",
+        "explanation": "Oil's price swings about 36% a year, roughly twice the stock market. Its history includes a 77% crash in 2008 and a famous plunge to minus $37 a barrel in April 2020. This is a high-risk asset that can move violently on a single OPEC meeting or geopolitical headline.",
+        "result": "Fail"
+      }
+    ],
+    "mainUses": ["Transportation fuels (gasoline, diesel, jet fuel)", "Petrochemicals and plastics", "Heating oil", "Lubricants and asphalt"],
+    "topProducers": [
+      { "country": "United States", "share": "~16%" },
+      { "country": "Russia", "share": "~11%" },
+      { "country": "Saudi Arabia", "share": "~11%" },
+      { "country": "Canada", "share": "~6%" }
+    ],
+    "waysToInvest": [
+      { "type": "ETF", "name": "USO", "note": "Tracks WTI futures; suffers roll/contango decay over long holds" },
+      { "type": "Futures", "name": "CL=F / MCL", "note": "NYMEX WTI (1,000 bbl) and Micro WTI; leveraged, high-risk" },
+      { "type": "Equities", "name": "XLE / XOP", "note": "Energy and E&P stock ETFs; indirect, pay dividends, less roll risk" },
+      { "type": "Equities", "name": "Majors (XOM, CVX)", "note": "Integrated oil companies with company-specific exposure" }
+    ]
+  },
+  "categories": [
+    {
+      "categoryKey": "SupplyAndDemand",
+      "summary": "Supply is abundant and growing — record US output, OPEC+ adding barrels, and about 5 million barrels a day of idle spare capacity — while global demand is actually shrinking slightly in 2026. Only tight current inventories and summer seasonality lean supportive. On balance, bearish.",
+      "overallAnalysisDetails": "The supply side is heavy. US crude production is at a record of about 13.7 million barrels a day in 2026 (EIA), OPEC+ is unwinding its earlier cuts at roughly 180,000-190,000 barrels a day each month, and new non-OPEC supply from Brazil, Guyana and Canada keeps growing. On top of that, OPEC+ holds around 5 million barrels a day of spare capacity — the most since 2009 — which acts like a lid on prices: any rally invites those idle barrels back into the market.\n\nDemand, unusually, is not helping. The IEA sees global oil demand around 104 million barrels a day but actually contracting slightly in 2026, as high prices, the 2026 conflict's hit to jet and petrochemical use, and the steady grind of EVs and efficiency all bite. The two positives are near-term: OECD inventories are below their five-year average right now, and we are in the peak summer driving and hurricane season. But those are short-term supports against a structurally well-supplied backdrop.",
+      "factors": [
+        {
+          "factorKey": "production_output_trend",
+          "oneLineExplanation": "Record US output plus OPEC+ adding barrels back.",
+          "detailedExplanation": "US crude production is at a record ~13.7 million barrels a day in 2026 (EIA), and OPEC+ is unwinding its 2.2-million-barrel voluntary cut at about 180,000-190,000 barrels a day per month. Brazil, Guyana and Canada add more non-OPEC supply. Rising, record-level supply is a headwind for prices, not a support.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "global_inventories_stockpiles",
+          "oneLineExplanation": "Inventories are tight and drawing right now.",
+          "detailedExplanation": "Developed-world (OECD) commercial oil stocks sit below their five-year average, and the US Strategic Petroleum Reserve is near its lowest since 1983. The EIA expects OECD stocks to fall to their lowest since 2003 by late 2026. Low, drawing inventories give the current price genuine near-term support, even though a surplus is expected to build later.",
+          "result": "Pass"
+        },
+        {
+          "factorKey": "demand_drivers",
+          "oneLineExplanation": "Global demand is shrinking slightly in 2026.",
+          "detailedExplanation": "The IEA sees world oil demand near 104 million barrels a day but contracting modestly in 2026, hurt by high prices, weaker jet and petrochemical use, and slower Chinese growth. Longer term, EVs and efficiency steadily erode gasoline demand. A commodity whose demand is flat-to-falling has a weak fundamental base.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "spare_capacity_new_supply",
+          "oneLineExplanation": "About 5 million barrels a day of idle supply caps rallies.",
+          "detailedExplanation": "OPEC+ holds roughly 5 million barrels a day of spare capacity — the most since 2009 — with Saudi Arabia alone able to add about 3 million. US shale can also respond within 6-12 months. This large cushion of ready supply acts as a ceiling: every price rally tends to bring idle barrels back, limiting the upside.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "seasonality",
+          "oneLineExplanation": "Peak summer driving and hurricane season is supportive.",
+          "detailedExplanation": "June to August is the peak driving season, lifting gasoline demand, and the Atlantic hurricane season (June-November) can knock out Gulf of Mexico production and refining, causing bullish spikes. In early July, this seasonal backdrop is a modest positive for the price, though it is easily overwhelmed by OPEC and macro news.",
+          "result": "Pass"
+        }
+      ]
+    },
+    {
+      "categoryKey": "PriceAndValue",
+      "summary": "On value, oil looks attractive: near $69 it is low in its multi-year range, cheap in inflation-adjusted terms, sitting on its ~$65 shale cost floor, at a normal discount to Brent, and about 53% below its all-time high. Value is the one clearly positive pillar.",
+      "overallAnalysisDetails": "Judged purely on price, WTI is not expensive. At about $69 it sits in the lower-middle of its 5- and 10-year range and is far below its inflation-adjusted highs — the 2008 peak of $147 would be worth over $200 in today's money. That means the downside from 'overvaluation' is limited.\n\nThe most important support is the cost of production. New US shale wells need roughly $65 a barrel to be profitable, and Saudi Arabia needs a high-$60s price to balance its budget. With WTI hovering right at that level, producers start to slow drilling if prices fall much further, which historically puts a floor under the market. WTI also trades at its normal ~$3 discount to Brent (no unusual dislocation), and it is about 53% below its record. The catch: 'cheap' does not mean 'going up' — a well-supplied commodity can sit near its cost floor for a long time.",
+      "factors": [
+        {
+          "factorKey": "price_vs_range",
+          "oneLineExplanation": "Low-to-mid in its 5- and 10-year range.",
+          "detailedExplanation": "At about $69, WTI sits in the lower-middle of its recent range (roughly $55-$120 over the past year) and well below the $100+ levels of 2011-2014. It is not stretched or frothy, so there is limited valuation risk to the downside and room to rise if demand or geopolitics surprise.",
+          "result": "Pass"
+        },
+        {
+          "factorKey": "inflation_adjusted_price",
+          "oneLineExplanation": "Historically cheap after adjusting for inflation.",
+          "detailedExplanation": "In today's dollars, the 2008 peak of $147 would be worth over $200 a barrel, and the 2011-2014 era well over $120. At about $69, WTI is cheap in real terms versus its own history. Oil is not a case of buying at an inflated real price.",
+          "result": "Pass"
+        },
+        {
+          "factorKey": "cost_of_production_floor",
+          "oneLineExplanation": "Sitting right on the ~$65 shale cost floor.",
+          "detailedExplanation": "New US shale wells need roughly $65 a barrel to be profitable (Dallas Fed 2026), and Saudi Arabia's budget needs a high-$60s price. With WTI near $69, prices are at that marginal cost, which historically slows drilling and supports the market on dips. It is a genuine floor, even if it leaves little margin above cost.",
+          "result": "Pass"
+        },
+        {
+          "factorKey": "price_vs_substitute",
+          "oneLineExplanation": "Normal ~$3 discount to Brent, no distortion.",
+          "detailedExplanation": "WTI trades about $3 a barrel below Brent, its usual structural discount (WTI is landlocked at Cushing; Brent is the global waterborne benchmark). There is no unusual gap that would push buyers to switch. Versus natural gas, oil remains expensive per unit of energy, but the WTI-Brent relationship looks normal and fair.",
+          "result": "Pass"
+        },
+        {
+          "factorKey": "distance_from_all_time_high",
+          "oneLineExplanation": "About 53% below the 2008 record of $147.",
+          "detailedExplanation": "WTI trades near $69 versus its all-time high of $147.27 in July 2008, so there is a lot of theoretical headroom rather than fresh-record risk. For a mean-reverting, cyclical commodity this is normal, but it does mean the price is nowhere near a valuation ceiling.",
+          "result": "Pass"
+        }
+      ]
+    },
+    {
+      "categoryKey": "VolatilityAndRisk",
+      "summary": "Oil is high-risk on every measure: about 36% annual volatility (roughly twice stocks), a history of catastrophic crashes including going negative in 2020, extreme geopolitical exposure through the Strait of Hormuz, an inverse link to the dollar, and pro-cyclical behavior that offers little diversification. All five risk factors fail.",
+      "overallAnalysisDetails": "Crude oil is one of the riskier assets an investor can hold. Its annualized volatility is about 36% — roughly double the S&P 500 — and 2026 has been a vivid example, swinging from the $50s to $119 and back to $69 within months. Its drawdown history is severe: a 77% collapse in 2008, another deep slide in 2014-2016, and the historic first-ever negative price of minus $37 in April 2020 when storage ran out.\n\nThe biggest single risk is geopolitics. Oil is priced globally and moves violently on Middle East events; the 2026 Strait of Hormuz crisis, through which about a fifth of the world's oil flows, is the current example. Oil is also priced in dollars (so a strong dollar is a headwind) and is pro-cyclical — it tends to fall exactly when the economy and stocks fall, so it is a poor diversifier and its inflation-hedge value is undercut by the risk of demand destruction. This is a commodity for investors who can stomach large, fast losses.",
+      "factors": [
+        {
+          "factorKey": "historical_volatility",
+          "oneLineExplanation": "About 36% a year — roughly twice the stock market.",
+          "detailedExplanation": "WTI's annualized volatility is around 36%, about double the S&P 500's. 2026 proved it, swinging from the mid-$50s to $119 and back to $69 within a few months. High volatility means positions can move against you fast, which makes oil hard to hold comfortably for a beginner.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "worst_drawdowns",
+          "oneLineExplanation": "History of -77% crashes, and even negative prices in 2020.",
+          "detailedExplanation": "Oil's deepest falls are brutal: about -77% in 2008 ($147 to $34), a long slide in 2014-2016, and a historic first when the front-month future went to minus $37.63 on 20 April 2020 as storage overflowed. Unlike gold, oil's crashes can be sudden and severe, so downside risk is a real concern.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "geopolitical_weather_risk",
+          "oneLineExplanation": "Extreme exposure to Middle East and the Strait of Hormuz.",
+          "detailedExplanation": "Oil is intensely geopolitical. About a fifth of the world's oil passes through the Strait of Hormuz, and the 2026 crisis there sent WTI to $119 before it fell back. Russia sanctions, Middle East conflict and Gulf hurricanes all add uncertainty. This risk can spike the price up, but it is a source of instability, not a dependable support.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "us_dollar_sensitivity",
+          "oneLineExplanation": "Priced in dollars, so a strong dollar is a headwind.",
+          "detailedExplanation": "Oil is bought and sold in US dollars and tends to move inversely to the dollar: when the dollar strengthens, oil gets more expensive for foreign buyers and demand softens. With no clear dollar tailwind today, this standard inverse relationship is a background risk rather than a help.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "correlation_to_inflation_and_stocks",
+          "oneLineExplanation": "Pro-cyclical — falls when the economy and stocks fall.",
+          "detailedExplanation": "Oil is pro-cyclical: it rises with economic growth and tends to fall when a recession hits, which is exactly when stocks fall too. So it offers little diversification against an equity portfolio. It is a direct inflation input, but its hedge value is undercut because an oil spike can trigger the demand destruction and rate hikes that then crash the price.",
+          "result": "Fail"
+        }
+      ]
+    },
+    {
+      "categoryKey": "FutureOutlook",
+      "summary": "The forward view is bearish. The IEA and EIA both expect a surplus building into 2027, the EIA sees WTI averaging around $61 in 2027, and banks (Goldman, JPMorgan) forecast prices at or below today's level. The one prop — Middle East conflict — is what forecasters expect to fade. All five outlook factors fail.",
+      "overallAnalysisDetails": "The forward setup is the weakest part of the oil story. Both the IEA and EIA expect the market to move into oversupply into 2027 as Hormuz flows normalize, OPEC+ keeps adding barrels, and US and non-OPEC supply grows into flat-to-falling demand. The EIA's June 2026 outlook sees Brent averaging about $95 in 2026 (conflict-inflated) but falling to about $79 in 2027, with WTI around $61.\n\nBank targets tell the same story. After the mid-2026 truce, Goldman Sachs and JPMorgan cut their forecasts to roughly $70-$80 Brent for late 2026 and the mid-$60s for 2027, with some analysts warning of the $30s in a full glut. In other words, the consensus points flat-to-lower from today's $69. The bull case — renewed Middle East disruption, OPEC+ discipline, a demand surprise — is real but rests largely on geopolitics that agencies expect to resolve. On balance, the forward-looking evidence leans clearly bearish.",
+      "factors": [
+        {
+          "factorKey": "forward_supply_demand_balance",
+          "oneLineExplanation": "Surplus expected to build into 2027.",
+          "detailedExplanation": "Before the 2026 conflict, the IEA saw a large 2026 surplus; the crisis flipped it to a temporary deficit, but both the IEA and EIA expect the market to swing back into oversupply into 2027 as flows normalize and OPEC+/shale add barrels into weak demand. A structural surplus is a clear negative for future prices.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "official_agency_forecast",
+          "oneLineExplanation": "EIA sees WTI falling to around $61 in 2027.",
+          "detailedExplanation": "The EIA's June 2026 outlook expects Brent to fall from a conflict-inflated ~$95 average in 2026 to about $79 in 2027, with WTI around $61 — below today's ~$69. The official agency view is explicitly for lower prices ahead, which is a headwind for a long position.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "analyst_price_targets",
+          "oneLineExplanation": "Bank targets sit at or below today's price.",
+          "detailedExplanation": "After the mid-2026 truce, Goldman Sachs and JPMorgan cut targets to roughly $70-$80 Brent for late 2026 and the mid-$60s for 2027, and some see the $30s in a glut. With WTI near $69, the consensus implies flat-to-down, not upside. Analyst views lean bearish.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "bull_vs_bear_scenario",
+          "oneLineExplanation": "Bear case is the consensus; bull case rests on geopolitics.",
+          "detailedExplanation": "The bull case is renewed Hormuz escalation, OPEC+ discipline and a demand surprise pushing oil to $90-$110. The bear case — resolved conflict, OPEC+ and shale flooding the market, weak demand — has more institutional backing and points to the $50s-$60s. The balance of evidence favors the bears, so the skew is unfavorable.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "key_catalysts_to_watch",
+          "oneLineExplanation": "Catalysts are two-sided but lean bearish.",
+          "detailedExplanation": "Watch the monthly OPEC+ meetings (output policy), the weekly EIA inventory report, Strait of Hormuz and Iran developments, China demand data, and hurricanes. These make oil highly tradable, but the base case — normalizing supply into soft demand — means most catalysts point toward lower prices rather than higher.",
+          "result": "Fail"
+        }
+      ]
+    }
+  ]
+}

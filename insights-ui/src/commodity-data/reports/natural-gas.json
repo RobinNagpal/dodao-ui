@@ -1,0 +1,217 @@
+{
+  "slug": "natural-gas",
+  "name": "Natural Gas",
+  "commodityGroup": "Energy",
+  "priceSymbol": "NG=F",
+  "exchange": "NYMEX",
+  "unit": "MMBtu",
+  "currency": "USD",
+  "metaDescription": "A plain-English investor read on US natural gas (Henry Hub): near $3.20/MMBtu in mid-2026, historically cheap with a real LNG and AI-data-center demand story, but the most volatile major commodity. Covers supply and demand, value, risk, and the outlook.",
+  "updatedAt": "2026-07-07",
+  "summary": "Overall stance: High-risk. A good value story wrapped in brutal volatility.\n\nUS natural gas (Henry Hub) trades near $3.20 per MMBtu in early July 2026. It is historically cheap in real terms, comfortably above the roughly $2.00 cost to produce it, and about 78% below its 2005 record of ~$14.49. There is a genuine multi-year demand story: the US LNG export boom (new terminals like Plaquemines, Corpus Christi and Golden Pass ramping up) and surging electricity demand from AI data centers are structurally lifting the demand floor. US gas also trades at roughly one-fifth the price of European (~$16) and Asian (~$18) gas, which is what drives the export machine.\n\nBut natural gas is the single most volatile major commodity — nicknamed 'the widowmaker.' Its volatility hit 179% in early 2022, and 80-90% crashes are routine, not rare (it fell 64% in just three months in early 2026). Supply is a wall of cheap, price-elastic shale that floods every rally, and US storage currently sits about 6% above its five-year average. It is also a poor inflation hedge — it crashed 80% during the 2022 inflation spike. For a beginner the retail vehicles are dangerous (the UNG ETF suffers heavy roll decay; futures are highly leveraged). The value case is fine, but the risk profile dominates — producer or LNG-infrastructure equities are a more prudent way to play the bullish thesis than the commodity itself.",
+  "keyFacts": {
+    "keyFacts": "Natural gas is the fuel that generates about 40% of US electricity and heats most US homes. In the US it is priced per MMBtu (one million British thermal units, a unit of energy) at the Henry Hub in Louisiana, with the NYMEX front-month future (NG=F) as the benchmark. In early July 2026 that price is about $3.20 per MMBtu.\n\nTwo things make gas unusual for a beginner. First, it is extremely local and weather-driven: unlike oil, it is hard to ship, so a cold snap or a hot summer can double or halve the price in weeks. That is why it is the most volatile major commodity. Second, it is slowly 'globalizing' through liquefied natural gas (LNG) exports — the US now ships gas by sea to Europe and Asia, where prices are about five times higher (~$16 in Europe, ~$18 in Asia versus ~$3.20 at home). That export boom, plus new electricity demand from AI data centers, is the core bullish story. Against it stands a wall of cheap US shale supply that can be switched on fast and floods every rally.",
+    "greenFlags": [
+      {
+        "flag": "A real structural demand story (LNG + AI data centers)",
+        "explanation": "US LNG exports are set to rise from about 17 to 18.6 billion cubic feet a day as new terminals ramp up, and AI data centers are adding a genuinely new source of electricity demand (gas is ~40% of US power). Both are durable, multi-year demand drivers that lift the price floor over time.",
+        "result": "Pass"
+      },
+      {
+        "flag": "Historically cheap with a cost floor",
+        "explanation": "At about $3.20, gas is cheap in real terms (the 2005 peak would be over $22 in today's dollars) and comfortably above the ~$2.00 cost to produce the best Appalachian gas. Cheap-versus-history plus a cost floor limits how far it can fall.",
+        "result": "Pass"
+      },
+      {
+        "flag": "Very cheap per unit of energy versus oil",
+        "explanation": "At ~$65 oil and ~$3.20 gas, oil costs roughly 3.5x more per unit of energy than the historical 6:1 parity. That wide gap makes gas attractive for power, industry and export, underwriting the demand story.",
+        "result": "Pass"
+      }
+    ],
+    "redFlags": [
+      {
+        "flag": "The most volatile major commodity",
+        "explanation": "Natural gas is nicknamed 'the widowmaker.' Its volatility hit 179% in February 2022, and 80-90% crashes are routine — it fell 64% in just three months in early 2026 ($7.72 to $2.77). This is a market that can wipe out leveraged positions overnight on a weather forecast.",
+        "result": "Fail"
+      },
+      {
+        "flag": "A wall of cheap supply and a storage surplus",
+        "explanation": "US production is at a record (~111 billion cubic feet a day and rising), much of it near-costless 'associated' gas from oil wells, and storage sits about 6% above its five-year average. Shale can be switched on within weeks, so every rally invites a supply flood that caps the upside.",
+        "result": "Fail"
+      }
+    ],
+    "mainUses": [
+      "Electric power generation (~40% of US electricity)",
+      "Heating (homes, business, industry)",
+      "Industrial feedstock and process heat",
+      "LNG export",
+      "Fertilizer (ammonia/nitrogen)"
+    ],
+    "topProducers": [
+      { "country": "United States", "share": "~26%" },
+      { "country": "Russia", "share": "~14%" },
+      { "country": "Iran", "share": "~6%" },
+      { "country": "China", "share": "~5%" }
+    ],
+    "waysToInvest": [
+      { "type": "ETF", "name": "UNG", "note": "Tracks front-month gas futures; SEVERE contango/roll decay — a trading tool, not a hold" },
+      { "type": "Futures", "name": "NG=F", "note": "Direct but highly leveraged; the 'widowmaker' — experienced traders only" },
+      { "type": "Equities", "name": "Gas producers / E&Ps", "note": "Appalachia-focused producers; cyclical but avoids roll decay" },
+      {
+        "type": "Equities",
+        "name": "LNG / midstream infrastructure",
+        "note": "Fee-based cash flows less tied to spot price; a steadier way to play the thesis"
+      }
+    ]
+  },
+  "categories": [
+    {
+      "categoryKey": "SupplyAndDemand",
+      "summary": "A genuine demand story (LNG exports + AI data centers) and strong seasonality are offset by record price-elastic production, a storage surplus (~6% above the five-year average), and a huge shale cushion that floods every rally. On balance, supply pressure wins.",
+      "overallAnalysisDetails": "The demand side is the bullish part. US LNG exports are projected to rise from about 17.2 to 18.6 billion cubic feet a day as Plaquemines, Corpus Christi Stage 3 and Golden Pass ramp up, and AI data centers are adding a new, structural source of electricity demand (gas generates ~40% of US power). Total US consumption is forecast to climb toward 95 billion cubic feet a day in 2027.\n\nBut supply overwhelms it. US dry-gas production is at a record — about 111 billion cubic feet a day in 2026 and rising toward 114 in 2027 — much of it near-costless 'associated' gas that comes out of oil wells regardless of the gas price. Storage sits about 6% above its five-year average (a surplus), and shale is highly price-elastic: a backlog of drilled-but-uncompleted wells can be turned on within weeks, so every rally invites a supply flood. Seasonality is strong and tradable (winter heating, summer cooling), but the underlying balance is loose.",
+      "factors": [
+        {
+          "factorKey": "production_output_trend",
+          "oneLineExplanation": "Record production, much of it near-costless associated gas.",
+          "detailedExplanation": "US dry-gas output is at a record ~111 billion cubic feet a day in 2026 and forecast to rise toward 114 in 2027 (EIA). A lot of it is 'associated' gas produced as a byproduct of Permian oil wells, so it keeps flowing regardless of the gas price. Record, rising supply is a persistent headwind for prices.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "global_inventories_stockpiles",
+          "oneLineExplanation": "Storage is about 6% above the five-year average.",
+          "detailedExplanation": "US gas in storage sits roughly 6% above its five-year average after larger-than-expected injections, and the EIA expects inventories to stay above average through 2026. A storage surplus is bearish — it means there is a comfortable cushion of gas, which weighs on prices, especially heading into a mild season.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "demand_drivers",
+          "oneLineExplanation": "Real structural growth from LNG exports and AI data centers.",
+          "detailedExplanation": "Two durable, multi-year demand drivers are genuinely new: LNG exports rising from ~17.2 to 18.6 billion cubic feet a day as terminals ramp, and AI data centers adding electricity demand (gas is ~40% of US power). This is the strongest part of the gas case and the main reason the market could tighten over time.",
+          "result": "Pass"
+        },
+        {
+          "factorKey": "spare_capacity_new_supply",
+          "oneLineExplanation": "A huge, fast shale cushion caps every rally.",
+          "detailedExplanation": "Natural gas supply is highly price-elastic: shale wells drill and complete in weeks, and a backlog of drilled-but-uncompleted wells can be switched on quickly when prices rise. Near-costless associated gas adds more. This 'shale cushion' means rallies are quickly met with new supply, capping the upside.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "seasonality",
+          "oneLineExplanation": "Strong, tradable seasonal pattern.",
+          "detailedExplanation": "Gas has a powerful seasonal rhythm: winter heating spikes demand (a polar vortex can double prices in days), summer cooling adds a secondary peak, and the storage cycle (inject April-October, withdraw November-March) drives trading. Used carefully, this seasonality is a genuine, exploitable feature.",
+          "result": "Pass"
+        }
+      ]
+    },
+    {
+      "categoryKey": "PriceAndValue",
+      "summary": "On value gas looks good: near $3.20 it is in the lower third of its range, historically cheap in real terms, comfortably above its ~$2.00 cost floor, very cheap per unit of energy versus oil, and about 78% below its all-time high. Value is the strongest pillar.",
+      "overallAnalysisDetails": "Judged on price, gas is inexpensive. At about $3.20 it sits in the lower third of its five-year range and is historically cheap in real terms — the 2005 peak of ~$14.49 would be well over $22 in today's dollars, and the shale revolution structurally lowered real prices after 2008.\n\nThere is a real cost floor: the best Appalachian dry gas breaks even around $2.00 per MMBtu, so today's $3.20 sits comfortably above it, and prices below ~$2 quickly shut in supply. Gas is also very cheap per unit of energy versus oil (roughly 3.5x cheaper than the historical parity), and it competes with coal in power generation. It is about 78% below its all-time high, leaving huge theoretical headroom. The value case is clearly supportive — the problem, as the risk section shows, is not the price level but the volatility around it.",
+      "factors": [
+        {
+          "factorKey": "price_vs_range",
+          "oneLineExplanation": "Lower third of its five-year range.",
+          "detailedExplanation": "At about $3.20, gas sits in the lower third of its five-year range (roughly $1.50-$9 over 2020-2025) and near the middle-low of its 52-week range ($2.48-$7.83). It is not cheap versus the last two years' floors, but it is far from frothy — a reasonable valuation entry zone.",
+          "result": "Pass"
+        },
+        {
+          "factorKey": "inflation_adjusted_price",
+          "oneLineExplanation": "Historically cheap in real terms.",
+          "detailedExplanation": "After adjusting for inflation, gas is cheap. The 2005 peak of ~$14.49 would be over $22 per MMBtu in today's dollars, and the shale revolution structurally lowered real prices after 2008. Today's low-$3s are a fraction of pre-shale real prices, so buyers are not paying an inflated real price.",
+          "result": "Pass"
+        },
+        {
+          "factorKey": "cost_of_production_floor",
+          "oneLineExplanation": "Comfortably above the ~$2.00 breakeven.",
+          "detailedExplanation": "The best Appalachian dry gas breaks even around $2.00 per MMBtu, and wells go uneconomic below that, which tends to shut in supply and support the price. At about $3.20, gas sits comfortably above that floor — enough margin to cushion the downside without being expensive.",
+          "result": "Pass"
+        },
+        {
+          "factorKey": "price_vs_substitute",
+          "oneLineExplanation": "Very cheap per unit of energy versus oil.",
+          "detailedExplanation": "At ~$65 oil and ~$3.20 gas, oil costs roughly 3.5x more per unit of energy than the historical 6:1 parity, so gas is very cheap per BTU. Gas also competes with coal in power generation. This wide value gap versus substitutes underwrites the LNG and gas-to-power demand story.",
+          "result": "Pass"
+        },
+        {
+          "factorKey": "distance_from_all_time_high",
+          "oneLineExplanation": "About 78% below the 2005 record of ~$14.49.",
+          "detailedExplanation": "Gas near $3.20 is about 78% below its ~$14.49 all-time high (December 2005) and ~64% below the 2022 peak. That leaves enormous theoretical headroom rather than record-high risk, though gas's history shows it can stay cheap for years between weather- or supply-driven spikes.",
+          "result": "Pass"
+        }
+      ]
+    },
+    {
+      "categoryKey": "VolatilityAndRisk",
+      "summary": "This is where gas fails hardest: the highest volatility of any major commodity (179% in early 2022), routine 80-90% crashes, extreme weather and hurricane exposure, and a poor inflation-hedge record (it crashed during the 2022 inflation spike). The one plus is low sensitivity to the US dollar. Four of five factors fail.",
+      "overallAnalysisDetails": "Natural gas is the riskiest of the major commodities. Its 30-day historical volatility averaged 124% in early 2022 and hit 179% in February 2022 — a 20-year high — and even 'normal' annualized volatility runs 50-80%+. Crashes of 80-90% are routine, not tail events: from ~$14 in 2005 to ~$2 in 2012, from ~$10 in 2022 to ~$2 in 2023, and a 64% fall in just three months in early 2026.\n\nThe core risk is weather. Cold snaps spike heating demand and cause 'freeze-offs' that physically shut in wells just as demand peaks, while Gulf hurricanes threaten both production and LNG export terminals (the 2022 Freeport LNG outage moved global prices for months). Gas is also a poor inflation hedge — it crashed about 80% during the highest inflation in 40 years in 2022-23 — and has low correlation to stocks, so its diversification value is undercut by its crash risk. The one bright spot is that gas is still largely a domestic market with limited US-dollar sensitivity. Overall, this is a high-risk commodity best sized small.",
+      "factors": [
+        {
+          "factorKey": "historical_volatility",
+          "oneLineExplanation": "The highest volatility of any major commodity.",
+          "detailedExplanation": "Gas volatility hit 179% in February 2022 (a 20-year high) and normally runs 50-80%+ a year — far above oil, metals or stocks. This is why it is called 'the widowmaker.' Such extreme volatility makes it dangerous to hold, especially with leverage.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "worst_drawdowns",
+          "oneLineExplanation": "80-90% crashes are routine, not rare.",
+          "detailedExplanation": "Gas regularly loses 80-90% of its value: ~$14 (2005) to ~$2 (2012), ~$10 (2022) to ~$2 (2023), and a 64% fall in three months in early 2026. These are not tail events — they are a normal feature of the market — so downside risk is severe.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "geopolitical_weather_risk",
+          "oneLineExplanation": "Extreme weather and hurricane exposure.",
+          "detailedExplanation": "Gas is intensely weather-driven: polar vortex cold snaps spike demand and freeze wells ('freeze-offs'), while Gulf hurricanes threaten production and LNG export terminals (the 2022 Freeport outage moved prices for months). European and Russian supply geopolitics now feed in via LNG. This unpredictability is a major risk.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "us_dollar_sensitivity",
+          "oneLineExplanation": "Low dollar sensitivity — a domestic market.",
+          "detailedExplanation": "Unlike oil, gas is still largely a domestic US market where local supply, demand and storage set the price, so its sensitivity to the US dollar is weak. That relative insulation from currency swings is a modest positive — the one bright spot in an otherwise high-risk profile — though the LNG boom is slowly globalizing it.",
+          "result": "Pass"
+        },
+        {
+          "factorKey": "correlation_to_inflation_and_stocks",
+          "oneLineExplanation": "A poor inflation hedge that crashed during 2022 inflation.",
+          "detailedExplanation": "Gas has low correlation to stocks, but it is a poor inflation hedge: it crashed about 80% in 2022-23, during the highest inflation in 40 years, because its price is set by weather and storage, not the macro cycle. So it cannot be relied on for portfolio inflation protection, and its low stock correlation is offset by its crash risk.",
+          "result": "Fail"
+        }
+      ]
+    },
+    {
+      "categoryKey": "FutureOutlook",
+      "summary": "The forward balance is modestly tightening as LNG and data-center demand grow, but record production offsets much of it, the EIA sees only ~$3.34-$3.46 (and recently cut its 2027 view), bank targets are widely dispersed with bearish 2028 tails, and the bull case is matched by an equally live glut case. Only the tightening balance passes.",
+      "overallAnalysisDetails": "The forward setup is a genuine tug-of-war. On the bullish side, LNG export capacity (+~1.4 billion cubic feet a day) and AI data-center power demand are set to tighten the balance into 2027 — a real, structural demand-growth thesis. On the bearish side, record production (+~2.6 billion cubic feet a day from 2026 to 2027) and rising associated gas from oil wells offset much of that growth, so the market tightens only modestly.\n\nForecasts are muted. The EIA's June 2026 outlook sees Henry Hub averaging about $3.34 in the second half of 2026 and $3.46 in 2027 — flat-to-slightly-up — and it actually cut its 2027 view by more than $1 versus January, citing more associated-gas supply. Bank targets are widely dispersed: Goldman around $4.15 for 2026-27 but ~$2.70 for 2028-29, Morgan Stanley up to $5 if a winter deficit emerges, S&P around $3.75. The bull case (LNG + data centers lift the floor, a cold winter drains storage to $5+) is matched by an equally credible bear case (shale floods the market, mild weather leaves a glut, prices sink toward $2 with 60-90% drawdowns). Watchable catalysts are clear, but the risk-reward is balanced at best.",
+      "factors": [
+        {
+          "factorKey": "forward_supply_demand_balance",
+          "oneLineExplanation": "Modestly tightening on LNG and data-center demand.",
+          "detailedExplanation": "The forward balance tightens into 2027 as LNG export capacity and AI data-center power demand grow — a genuine, structural demand story. Record production and rising associated gas offset much of it, so the market tightens modestly rather than sharply, but the direction of the balance is the one clear positive in the outlook.",
+          "result": "Pass"
+        },
+        {
+          "factorKey": "official_agency_forecast",
+          "oneLineExplanation": "EIA sees only ~$3.34-$3.46 and recently cut 2027.",
+          "detailedExplanation": "The EIA's June 2026 outlook sees Henry Hub averaging about $3.34 in the second half of 2026 and $3.46 in 2027 — barely above today's ~$3.20 — and it cut its 2027 forecast by more than $1 versus January on higher associated-gas supply. A flat, recently-downgraded official view is not a supportive signal.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "analyst_price_targets",
+          "oneLineExplanation": "Widely dispersed targets with bearish 2028 tails.",
+          "detailedExplanation": "Bank targets range widely: Goldman around $4.15 for 2026-27 but ~$2.70 for 2028-29, Morgan Stanley up to $5 in a winter-deficit scenario, S&P around $3.75. The wide dispersion and bearish longer-tail forecasts reflect low conviction rather than a clear upside signal.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "bull_vs_bear_scenario",
+          "oneLineExplanation": "Credible bull case, but an equally live glut case.",
+          "detailedExplanation": "The bull case is LNG plus data centers lifting the demand floor and a cold winter draining storage to $5+. The bear case — shale and associated gas flooding the market, mild weather leaving a glut, prices sinking toward the ~$2 breakeven with 60-90% drawdowns — is equally credible. With no margin of safety on the risk, the scenario balance does not favor a long holder.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "key_catalysts_to_watch",
+          "oneLineExplanation": "Clear catalysts, but they cut both ways.",
+          "detailedExplanation": "Watch weather forecasts (the #1 short-term driver), the weekly EIA storage report, LNG terminal startups and outages, data-center power deals, and oil prices (which drive associated gas). These are clear and monitorable, but in a loose, oversupplied market they are as likely to trigger a sell-off as a rally, so they are not a dependable tailwind.",
+          "result": "Fail"
+        }
+      ]
+    }
+  ]
+}
