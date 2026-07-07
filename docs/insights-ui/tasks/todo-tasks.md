@@ -104,6 +104,31 @@ Single source of truth for active KoalaGains work. Completed items live in
 
 ---
 
+## Commodities
+
+> The Commodities report type ships as **static hand-authored JSON** — no database, no
+> LLM generation pipeline, no admin generate UI. The universe (22 commodities) lives in
+> `src/commodity-data/commodities.json`; each report is `src/commodity-data/reports/<slug>.json`
+> and must be registered in `src/utils/commodity-analysis-reports/commodity-reports-registry.ts`.
+> See `src/commodity-data/README.md` for the authoring steps and `reports/gold.json` for the
+> worked example. A commodity with no report JSON renders a neutral placeholder in the listing.
+
+### Author the remaining commodity reports
+
+- [ ] **Generate reports for the other 21 commodities** — only `gold.json` exists so far. Author a `reports/<slug>.json` (following the `CommodityReportJson` shape) for the remaining commodities and register each in `commodity-reports-registry.ts`:
+  - **Energy** (5): `wti-crude-oil`, `brent-crude-oil`, `natural-gas`, `gasoline-rbob`, `heating-oil`
+  - **Metals** (5): `silver`, `platinum`, `palladium`, `copper` (`gold` ✅ done)
+  - **Agriculture** (9): `corn`, `wheat`, `soybeans`, `soybean-meal`, `soybean-oil`, `coffee`, `sugar`, `cotton`, `cocoa`
+  - **Livestock** (3): `live-cattle`, `lean-hogs`, `feeder-cattle`
+- [ ] Each report needs `summary`, `metaDescription`, `keyFacts` (overview + green/red flags), and all **four scored categories** — `SupplyAndDemand`, `PriceAndValue`, `VolatilityAndRisk`, `FutureOutlook` — with every factor's `factorKey` matching the factor configs in `src/commodity-analysis/` (e.g. `commodity-analysis-factors-supply-and-demand.json`). Pull fundamentals from the right source per group (EIA for energy, WGC/CFTC for metals, USDA WASDE for ag/livestock).
+- [ ] Draft a consistent, source-cited authoring prompt so each report is written to the same depth as `gold.json`; batch by group (energy → metals → ag → livestock) so peer/"Similar Commodities" comparisons stay coherent.
+
+### Follow-ups (optional)
+
+- [ ] **Decide whether to keep authoring by hand or add a lightweight generation path** — if the 22-report authoring load proves too heavy, revisit an LLM-assisted draft step (Gemini, like the tariff scripts) that emits the `CommodityReportJson` JSON for human review before it's committed. Deferred by design in #1678; only pick up if hand-authoring stalls.
+
+---
+
 ## Trends page
 
 > Decide once: shared `Trend` model linked to both stock and ETF join tables, or parallel
