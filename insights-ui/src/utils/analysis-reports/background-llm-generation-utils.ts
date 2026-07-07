@@ -1,5 +1,6 @@
 import { GeminiModel, LLMProvider } from '@/types/llmConstants';
 import { ReportType } from '@/types/ticker-typesv1';
+import { getClaudeStructuredResponse, shouldUseClaudeForReports } from '@/util/claude/get-claude-structured-response';
 import { saveTickerReportAndAdvanceGeneration } from '@/utils/analysis-reports/save-report-callback-utils';
 import { getLLMResponse, updateInvocationStatus } from '@/util/get-llm-response';
 import { PromptInvocationStatus } from '@prisma/client';
@@ -56,14 +57,29 @@ export async function processStockReportLLMResponseInBackground(args: Background
   try {
     console.log(`[${reportType}] [${symbol}] [${generationRequestId}] Running stock report LLM in background (in-process), skipping lambda`);
 
-    const { result } = await getLLMResponse({
-      invocationId,
-      llmProvider,
-      modelName: model,
-      prompt,
-      outputSchema,
-      maxRetries: 2,
-    });
+    // When GENERATE_WITH_CLAUDE=true, call Claude via the subscription OAuth
+    // path; otherwise keep the existing Gemini/OpenAI runner. Everything else —
+    // the prompt, invocation row, output schema, and downstream saving — is
+    // identical. `getClaudeStructuredResponse` is provider-agnostic so ETF /
+    // tariff generation can reuse the same branch later.
+    const useClaude = shouldUseClaudeForReports();
+    console.log(`[${reportType}] [${symbol}] [${generationRequestId}] LLM path: ${useClaude ? 'claude (oauth)' : 'default'}`);
+
+    const { result } = useClaude
+      ? await getClaudeStructuredResponse({
+          invocationId,
+          prompt,
+          outputSchema,
+          maxRetries: 2,
+        })
+      : await getLLMResponse({
+          invocationId,
+          llmProvider,
+          modelName: model,
+          prompt,
+          outputSchema,
+          maxRetries: 2,
+        });
 
     await saveTickerReportAndAdvanceGeneration({
       exchange,

@@ -34,6 +34,21 @@ export function getDefaultGeminiModel(): GeminiModel {
 }
 
 /**
+ * Default Claude model used when generating reports via the Claude
+ * subscription OAuth path (see `getClaudeStructuredResponse`).
+ */
+export const DEFAULT_CLAUDE_MODEL = 'claude-opus-4-8';
+
+/**
+ * Gets the Claude model from environment variable ANTHROPIC_MODEL, defaulting
+ * to DEFAULT_CLAUDE_MODEL when unset. Mirrors `getDefaultGeminiModel()` — set
+ * `ANTHROPIC_MODEL` to override, otherwise the default is used.
+ */
+export function getDefaultClaudeModel(): string {
+  return process.env.ANTHROPIC_MODEL?.trim() || DEFAULT_CLAUDE_MODEL;
+}
+
+/**
  * Gets the default LLM provider from environment variable LLM_PROVIDER,
  * defaults to GEMINI if not set or invalid
  */

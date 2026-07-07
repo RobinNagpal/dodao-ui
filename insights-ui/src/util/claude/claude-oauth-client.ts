@@ -27,6 +27,9 @@ const DEFAULT_CC_VERSION = '2.1.80';
 /** Beta flags Claude Code sends; `oauth-2025-04-20` is the one that matters for OAuth. */
 const ANTHROPIC_BETA = 'oauth-2025-04-20,claude-code-20250219,interleaved-thinking-2025-05-14,prompt-caching-scope-2026-01-05';
 
+/** Effort levels supported by `output_config.effort` on Opus-tier models. */
+export type ClaudeEffort = 'low' | 'medium' | 'high' | 'xhigh' | 'max';
+
 export interface CallClaudeOAuthOptions {
   /** The user prompt to send. */
   prompt: string;
@@ -40,6 +43,8 @@ export interface CallClaudeOAuthOptions {
   oauthToken?: string;
   /** API base URL. Defaults to `ANTHROPIC_BASE_URL` env, else the real API. */
   baseUrl?: string;
+  /** Optional `output_config.effort` (thinking/spend depth). Omit to leave it unset. */
+  effort?: ClaudeEffort;
 }
 
 export interface CallClaudeOAuthResult {
@@ -91,12 +96,18 @@ export async function callClaudeWithOAuth(options: CallClaudeOAuthOptions): Prom
     system.push({ type: 'text', text: options.system.trim() });
   }
 
-  const body = {
+  const body: Record<string, unknown> = {
     model,
     max_tokens: options.maxTokens ?? 1024,
     system,
     messages: [{ role: 'user', content: prompt }],
   };
+
+  // Effort is GA on Opus-tier models and is what Claude Code itself sends.
+  // Only include it when asked so simple calls stay minimal.
+  if (options.effort) {
+    body.output_config = { effort: options.effort };
+  }
 
   const response = await fetch(`${baseUrl}/v1/messages`, {
     method: 'POST',
