@@ -1,6 +1,6 @@
 import { prisma } from '@/prisma';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
-import { GeminiModel, LLMProvider, getDefaultGeminiModel, getDefaultLLMProvider } from '@/types/llmConstants';
+import { LLMModel, LLMProvider, getDefaultGeminiModel, getDefaultLLMProvider, getStockLLMProviderOverride } from '@/types/llmConstants';
 import { ReportType } from '@/types/ticker-typesv1';
 import {
   compileTemplate,
@@ -22,7 +22,7 @@ export interface LLMResponseViaLambdaRequest<Input> {
   promptStringToSendToLLM: string;
   inputSchemaString: string;
   llmProvider: LLMProvider;
-  model: GeminiModel;
+  model: LLMModel;
   outputSchemaString: string;
   additionalData: Record<string, string>;
 }
@@ -105,9 +105,14 @@ export async function getLLMResponseForPromptViaInvocationViaLambda<Input>(args:
   const { symbol, exchange, generationRequestId, params, reportType, moverType } = args;
   const { promptKey, llmProvider: providedLlmProvider, model: providedModel, spaceId, inputJson, bodyToAppend, requestFrom } = params;
 
-  // Use provided values or defaults
-  const llmProvider = providedLlmProvider || getDefaultLLMProvider();
-  const model = providedModel || getDefaultGeminiModel();
+  // Stocks-only opt-in to Claude: STOCK report generation (identified by reportType + exchange)
+  // can be routed to the Claude Agent SDK via STOCK_LLM_PROVIDER=anthropic, unless the caller
+  // already pinned a provider explicitly. ETFs / tariffs / daily movers are unaffected.
+  const stockOverride = reportType && exchange && !providedLlmProvider ? getStockLLMProviderOverride() : undefined;
+
+  // Use provided values, then the stock override, then defaults.
+  const llmProvider = providedLlmProvider || stockOverride?.llmProvider || getDefaultLLMProvider();
+  const model = providedModel || stockOverride?.model || getDefaultGeminiModel();
 
   // Validate required fields
   if (!promptKey) {

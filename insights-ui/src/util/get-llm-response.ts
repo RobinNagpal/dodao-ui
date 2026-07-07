@@ -1,6 +1,16 @@
 import { prisma } from '@/prisma';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
-import { GeminiModel, LLMProvider, getDefaultGeminiModel, getDefaultLLMProvider } from '@/types/llmConstants';
+import {
+  ClaudeModel,
+  GeminiModel,
+  LLMModel,
+  LLMProvider,
+  getDefaultClaudeModel,
+  getDefaultGeminiModel,
+  getDefaultLLMProvider,
+  isClaudeModel,
+} from '@/types/llmConstants';
+import { getClaudeAgentStructuredResponse } from '@/util/claude-agent-utils';
 import $RefParser from '@apidevtools/json-schema-ref-parser';
 import { BaseChatModel } from '@langchain/core/language_models/chat_models';
 import { ChatGoogleGenerativeAI } from '@langchain/google-genai';
@@ -25,7 +35,7 @@ export interface ValidationResult {
 export interface LLMResponseOptions {
   invocationId: string;
   llmProvider?: LLMProvider;
-  modelName?: GeminiModel;
+  modelName?: LLMModel;
   prompt: string;
   outputSchema: object;
   maxRetries?: number;
@@ -37,7 +47,7 @@ export interface LLMResponseViaInvocationRequest<Input> {
   inputJson?: Input;
   promptKey: string;
   llmProvider?: LLMProvider;
-  model?: GeminiModel;
+  model?: LLMModel;
   bodyToAppend?: string;
   requestFrom: RequestSource;
 }
@@ -47,7 +57,7 @@ export interface LLMResponseViaTestInvocationRequest {
   promptId: string;
   promptTemplate: string;
   llmProvider?: LLMProvider;
-  model?: GeminiModel;
+  model?: LLMModel;
   bodyToAppend?: string;
   inputJsonString?: string;
 }
@@ -81,7 +91,9 @@ export function validateData(schema: object, data: unknown): ValidationResult {
 /**
  * Initializes an LLM model based on provider and model name
  */
-function initializeLLM(provider: LLMProvider, modelName: GeminiModel): BaseChatModel {
+function initializeLLM(provider: LLMProvider, modelName: LLMModel): BaseChatModel {
+  // NOTE: Claude (LLMProvider.ANTHROPIC) is handled separately in getLLMResponse via the
+  // Claude Agent SDK — it is not a LangChain BaseChatModel and never reaches this function.
   if (provider !== LLMProvider.OPENAI && provider !== LLMProvider.GEMINI && provider !== LLMProvider.GEMINI_WITH_GROUNDING) {
     throw new Error(`Unsupported LLM provider: ${provider}`);
   }
@@ -135,7 +147,7 @@ export async function updateInvocationStatus(
 interface BaseInvocationData {
   spaceId: string;
   llmProvider: LLMProvider;
-  model: GeminiModel;
+  model: LLMModel;
   bodyToAppend?: string;
 }
 
@@ -271,7 +283,8 @@ export async function getLLMResponse<Output>({
           console.log('Using Gemini with grounding - 2-step approach for model:', modelName);
 
           // Step 1: Get grounded response from Gemini with Google Search
-          const groundedResponse: GroundedResponse = await getGroundedResponse(prompt, modelName);
+          // (grounding is Gemini-only; modelName is a GeminiModel on this branch)
+          const groundedResponse: GroundedResponse = await getGroundedResponse(prompt, modelName as GeminiModel);
 
           // Store source links
           sourceLinks = groundedResponse.sources;
@@ -287,6 +300,13 @@ export async function getLLMResponse<Output>({
       let result: Output;
       if (singleCallGroundedResult !== null) {
         result = singleCallGroundedResult;
+      } else if (llmProvider === LLMProvider.ANTHROPIC) {
+        // Claude via the Agent SDK (subscription-backed). It is not a LangChain model and has
+        // no withStructuredOutput — the helper embeds the schema in the prompt and parses JSON.
+        // A malformed/incomplete reply is recovered by this function's retry loop + validation.
+        const claudeModel: ClaudeModel = isClaudeModel(modelName) ? modelName : getDefaultClaudeModel();
+        result = await getClaudeAgentStructuredResponse<Output>(finalPrompt, claudeModel, outputSchema);
+        console.log('Response from Claude Agent SDK:', result);
       } else {
         // Initialize LLM for structured output
         const llm = initializeLLM(llmProvider === LLMProvider.GEMINI_WITH_GROUNDING ? LLMProvider.GEMINI : llmProvider, modelName);
