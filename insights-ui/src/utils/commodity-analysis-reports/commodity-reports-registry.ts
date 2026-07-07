@@ -1,5 +1,9 @@
 import { CommodityReportJson } from '@/types/commodity/commodity-analysis-types';
 import gold from '@/commodity-data/reports/gold.json';
+import silver from '@/commodity-data/reports/silver.json';
+import platinum from '@/commodity-data/reports/platinum.json';
+import palladium from '@/commodity-data/reports/palladium.json';
+import copper from '@/commodity-data/reports/copper.json';
 
 /**
  * Registry of authored commodity reports, keyed by slug.
@@ -16,4 +20,8 @@ import gold from '@/commodity-data/reports/gold.json';
  */
 export const COMMODITY_REPORTS: Record<string, CommodityReportJson> = {
   gold: gold as unknown as CommodityReportJson,
+  silver: silver as unknown as CommodityReportJson,
+  platinum: platinum as unknown as CommodityReportJson,
+  palladium: palladium as unknown as CommodityReportJson,
+  copper: copper as unknown as CommodityReportJson,
 };
