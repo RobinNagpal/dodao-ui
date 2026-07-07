@@ -1,0 +1,210 @@
+{
+  "slug": "gasoline-rbob",
+  "name": "RBOB Gasoline",
+  "commodityGroup": "Energy",
+  "priceSymbol": "RB=F",
+  "exchange": "NYMEX",
+  "unit": "gallon",
+  "currency": "USD",
+  "metaDescription": "A plain-English investor read on RBOB gasoline: near $2.95 a gallon wholesale in mid-2026, supported by refinery closures and tight inventories but facing a long-term EV demand decline. Covers supply and demand, value, risk, and the outlook.",
+  "updatedAt": "2026-07-07",
+  "summary": "Overall stance: Mixed. A decent tactical trade, not a long-term hold.\n\nRBOB is wholesale gasoline before ethanol is blended in — a refined product, so buying it is essentially a bet on crude oil price plus the refining margin (the 'crack spread') plus US summer driving demand. In early July 2026 it trades near $2.95 a gallon wholesale (the AAA pump price of ~$3.84 adds ethanol, taxes and retail margin), about 30% below its June 2022 record of $4.33.\n\nThe near-term picture is supportive. US refining capacity is shrinking — LyondellBasell's Houston refinery closed in 2025 and Phillips 66's Los Angeles plant closed in late 2025, removing ~400,000 barrels a day — while inventories sit about 7% below their five-year average and refining margins have been elevated. Strong summer seasonality helps too. But gasoline carries a structural problem crude does not: US demand already peaked in 2018 and is slowly declining as EVs (now over 10% of new sales), efficiency and remote work eat into it. The EIA officially forecasts lower gasoline prices in 2026, and volatility is high with a history of near-total collapses (2008, 2020). Best treated as a cyclical or crack-spread trade — often expressed through refiner equities — rather than a buy-and-hold, because it faces a permanent demand-destruction overhang.",
+  "keyFacts": {
+    "keyFacts": "RBOB stands for 'Reformulated Blendstock for Oxygenate Blending' — it is wholesale gasoline before ethanol is blended in. It is priced per gallon in US dollars, with the NYMEX front-month future (RB=F) as the benchmark. In early July 2026 that wholesale price is about $2.95 a gallon. Note this is not the pump price: the AAA national average of about $3.84 adds ethanol, federal and state taxes (~$0.50-0.60), distribution and retailer margin.\n\nFor a beginner, the key is that RBOB is a refined product, one step downstream of crude oil. Its price is really crude oil plus the 'crack spread' — the profit margin refiners earn turning crude into gasoline. So RBOB moves with crude, but it also swings on refining margins and on US driving demand, which peaks in summer. It carries one extra long-term risk that crude does not: gasoline demand is being slowly eroded by electric vehicles and fuel efficiency. In 2026 the market was distorted by a Strait of Hormuz crisis that spiked crude and refining margins in the spring before normalizing.",
+    "greenFlags": [
+      {
+        "flag": "US refining capacity is shrinking",
+        "explanation": "The US lost about 400,000 barrels a day of refining capacity as LyondellBasell's Houston plant closed in 2025 and Phillips 66's Los Angeles refinery closed in late 2025, with no major new US refineries being built. Tighter refining supports gasoline prices and refining margins even as demand slowly falls.",
+        "result": "Pass"
+      },
+      {
+        "flag": "Tight inventories and elevated crack spreads",
+        "explanation": "US gasoline inventories sit about 7% below their five-year average — tight for the season — and the 3-2-1 crack spread (the refining margin) spiked to multi-decade highs in spring 2026 and remains healthy. Both support the wholesale price and reward refiner exposure.",
+        "result": "Pass"
+      },
+      {
+        "flag": "Strong, tradable summer seasonality",
+        "explanation": "Gasoline is one of the most seasonal commodities: the spring switch to summer-grade fuel and the Memorial Day-to-Labor Day driving season reliably lift prices, while the autumn switch to cheaper winter-grade pressures them. This pattern is exploitable with good timing.",
+        "result": "Pass"
+      }
+    ],
+    "redFlags": [
+      {
+        "flag": "US gasoline demand has already peaked and is declining",
+        "explanation": "US gasoline demand peaked at about 9.3 million barrels a day in 2018 and has drifted to ~9.0 million despite population growth, as EVs (over 10% of new sales), efficiency and remote work erode it. This is a permanent, structural headwind that crude oil does not face to the same degree.",
+        "result": "Fail"
+      },
+      {
+        "flag": "Official forecasts point to lower prices, with brutal crash history",
+        "explanation": "The EIA expects retail gasoline to fall about 6% in 2026 as crude drops to its lowest annual average since 2020. Gasoline is also volatile (~35-45% a year) with a history of near-total collapses — over 80% in 2008 and a plunge to well under $1 a gallon in the 2020 COVID demand shock.",
+        "result": "Fail"
+      }
+    ],
+    "mainUses": ["Transportation fuel for light-duty vehicles"],
+    "topProducers": [
+      { "country": "United States", "share": "Largest refiner (~18.2 mb/d capacity)" },
+      { "country": "China", "share": "Major refiner" },
+      { "country": "India", "share": "Major refiner/exporter" },
+      { "country": "Note", "share": "'Producers' here means refiners, not oil fields" }
+    ],
+    "waysToInvest": [
+      { "type": "ETF", "name": "UGA", "note": "United States Gasoline Fund; tracks RBOB futures — watch roll/contango cost" },
+      { "type": "Futures", "name": "RB=F", "note": "NYMEX RBOB (42,000 gal); leveraged, advanced traders only" },
+      {
+        "type": "Equities",
+        "name": "Refiners (VLO, MPC, PSX)",
+        "note": "The crack-spread play; profit from refining margins, pay dividends, carry equity risk"
+      }
+    ]
+  },
+  "categories": [
+    {
+      "categoryKey": "SupplyAndDemand",
+      "summary": "The supply side is genuinely tight — shrinking US refining capacity, high utilization, and inventories ~7% below the five-year average — and summer seasonality helps. The one clear negative is demand: US gasoline use peaked in 2018 and is slowly declining. On balance, supportive near-term.",
+      "overallAnalysisDetails": "The supply picture is the bullish part of gasoline. US refining capacity is shrinking — down about 1% in 2025 to 18.2 million barrels a day, with LyondellBasell's Houston plant (~264,000 barrels a day) closing in 2025 and Phillips 66's Los Angeles refinery (~139,000) closing in late 2025 — and no major new US refineries are being built. Refineries are running hard (utilization around 90-92%, above seasonal norms), and gasoline inventories sit about 7% below their five-year average, which is tight for the season. Add strong summer seasonality and the near-term supply-demand setup is genuinely supportive.\n\nThe exception, and it is an important one, is demand. US gasoline demand peaked at about 9.3 million barrels a day in 2018 and has drifted to roughly 9.0 million even as population grew, because EVs (over 10% of new sales), better fuel efficiency and remote work steadily erode it. So while the current balance is tight, the long-run demand trend is down — a structural headwind that separates gasoline from crude oil.",
+      "factors": [
+        {
+          "factorKey": "production_output_trend",
+          "oneLineExplanation": "Shrinking US refining capacity tightens supply.",
+          "detailedExplanation": "US refining capacity fell about 1% in 2025 to 18.2 million barrels a day, with the Houston and Los Angeles refinery closures removing ~400,000 barrels a day and no major new US plants being built. Refineries run at 90-92% utilization. Shrinking, high-run capacity is supportive for gasoline prices and refining margins.",
+          "result": "Pass"
+        },
+        {
+          "factorKey": "global_inventories_stockpiles",
+          "oneLineExplanation": "Inventories about 7% below the five-year average.",
+          "detailedExplanation": "US gasoline inventories sit roughly 7% below their five-year average, which is tight for the season. Low stocks mean less cushion against a refinery outage or a demand spike, which supports the price and leaves the market prone to bullish squeezes.",
+          "result": "Pass"
+        },
+        {
+          "factorKey": "demand_drivers",
+          "oneLineExplanation": "US demand peaked in 2018 and is slowly declining.",
+          "detailedExplanation": "US gasoline demand peaked at about 9.3 million barrels a day in 2018 and has drifted to ~9.0 million despite population growth, as EVs (over 10% of new sales), efficiency and remote work erode it. A commodity whose core demand has already peaked and is structurally declining has a weak long-run base — the clearest negative in the gasoline story.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "spare_capacity_new_supply",
+          "oneLineExplanation": "Tight spare capacity after refinery closures.",
+          "detailedExplanation": "With US refineries closing and none being built, domestic spare refining capacity is tight, and the gap is filled by imports and elevated run rates. Limited slack means a refinery outage can quickly tighten the market, which is supportive for prices and margins.",
+          "result": "Pass"
+        },
+        {
+          "factorKey": "seasonality",
+          "oneLineExplanation": "Strong, tradable summer-driving seasonality.",
+          "detailedExplanation": "Gasoline is highly seasonal: the spring switch to more expensive summer-grade fuel plus the peak Memorial Day-to-Labor Day driving season lift prices, while the autumn switch to cheaper winter-grade pressures them. This reliable pattern is a genuine, exploitable feature with the right timing.",
+          "result": "Pass"
+        }
+      ]
+    },
+    {
+      "categoryKey": "PriceAndValue",
+      "summary": "On value gasoline looks reasonable: near $2.95 it is in the upper-middle of its range, below its inflation-adjusted high, supported by a crude-plus-margin cost floor, with elevated crack spreads rewarding refiner exposure, and about 30% below its 2022 record. Value is broadly supportive.",
+      "overallAnalysisDetails": "Judged on price, RBOB is not expensive. At about $2.95 a gallon it sits in the upper-middle of its 52-week range ($1.68-$3.76) and is well below its 2022 record of $4.33 — which, adjusted for inflation, is even higher. So the price is elevated versus last year but not at an extreme.\n\nBecause RBOB is a refined product, its value floor is crude cost plus the refining margin. With WTI near $68 (about $1.63 a gallon of crude) plus a healthy crack spread, $2.95 implies a solid but off-peak margin, and crude sets the floor. The crack spread itself — the refining margin — spiked to multi-decade highs (~$56 a barrel on a 3-2-1 basis) during the spring 2026 Hormuz crisis and remains elevated, which is the core reason to own gasoline or refiners now. At about 30% below its all-time high, there is headroom. The value pillar is supportive, though it rides on crude, which forecasters expect to ease.",
+      "factors": [
+        {
+          "factorKey": "price_vs_range",
+          "oneLineExplanation": "Upper-middle of its 52-week range.",
+          "detailedExplanation": "At about $2.95, RBOB sits in the upper-middle of its 52-week range ($1.68-$3.76) — elevated versus a year ago (up ~37%) but not at an extreme. There is room in the range without the price being stretched to a ceiling.",
+          "result": "Pass"
+        },
+        {
+          "factorKey": "inflation_adjusted_price",
+          "oneLineExplanation": "Below its inflation-adjusted all-time high.",
+          "detailedExplanation": "The 2022 record of $4.33 a gallon is even higher in today's dollars, so at about $2.95 RBOB is well below its real all-time high. Long-run real gasoline prices are not at extremes, so buyers are not paying an inflated real price.",
+          "result": "Pass"
+        },
+        {
+          "factorKey": "cost_of_production_floor",
+          "oneLineExplanation": "Crude-plus-margin floor sits near current levels.",
+          "detailedExplanation": "RBOB is priced as crude cost plus refining margin. With WTI near $68 (~$1.63 a gallon) plus a crack spread, the ~$2.95 price implies a healthy but off-peak margin, and crude provides the floor. If crude holds, the cost floor cushions the downside; if crude falls, gasoline follows.",
+          "result": "Pass"
+        },
+        {
+          "factorKey": "price_vs_substitute",
+          "oneLineExplanation": "Elevated crack spread rewards refiner exposure.",
+          "detailedExplanation": "The key relative-value measure for a refined product is the crack spread — the margin over crude. It spiked to multi-decade highs (~$56 a barrel on a 3-2-1 basis) during the spring 2026 Hormuz crisis and remains elevated. A wide crack rewards owning gasoline (or refiners) versus crude, a mild positive on relative value.",
+          "result": "Pass"
+        },
+        {
+          "factorKey": "distance_from_all_time_high",
+          "oneLineExplanation": "About 30% below the 2022 record of $4.33.",
+          "detailedExplanation": "RBOB near $2.95 is about 30% below its all-time high of $4.33 a gallon (June 2022), leaving headroom rather than record-high risk. For a cyclical, crude-linked product this is normal, but it means the price is not near a valuation ceiling.",
+          "result": "Pass"
+        }
+      ]
+    },
+    {
+      "categoryKey": "VolatilityAndRisk",
+      "summary": "Gasoline is high-risk: ~35-45% annual volatility (crude plus refining-margin swings), a history of near-total collapses (2008, 2020), and heavy hurricane exposure to Gulf Coast refineries, plus dollar sensitivity. The one plus is that it is a real inflation and pro-cyclical hedge. Four of five factors fail.",
+      "overallAnalysisDetails": "RBOB is a volatile, event-driven product. Its annualized volatility runs about 35-45% — often more than crude itself, because it swings on both crude prices and independent refining-margin moves. Its drawdown history is severe: over 80% in the 2008 financial crisis, and a plunge to well under $1 a gallon in the 2020 COVID demand collapse.\n\nThe standout risk is weather: Gulf Coast hurricanes (like Harvey in 2017) can knock out a big chunk of US refining and spike RBOB overnight, and refinery fires and outages do the same. Crude geopolitics feed straight through, as the 2026 Hormuz crisis showed. RBOB is priced off crude in dollars, so a strong dollar is a modest headwind. The redeeming feature is that gasoline is a core consumer and inflation item and is pro-cyclical — strong in expansions — so it offers a genuine inflation hedge, which earns the one Pass here. But overall this is a commodity that can move violently, and the retail futures are not beginner-friendly.",
+      "factors": [
+        {
+          "factorKey": "historical_volatility",
+          "oneLineExplanation": "High, ~35-45% a year — often more than crude.",
+          "detailedExplanation": "RBOB's annualized volatility runs about 35-45%, frequently exceeding crude's because it swings on both crude prices and independent refining-margin (crack-spread) moves. That makes it a fast-moving, risky instrument for anyone not actively watching it.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "worst_drawdowns",
+          "oneLineExplanation": "Near-total collapses in 2008 and 2020.",
+          "detailedExplanation": "Gasoline fell over 80% in the 2008 financial crisis and crashed to well under $1 a gallon in the 2020 COVID demand collapse. These deep, fast drawdowns show how brutally the price can fall in a recession or demand shock — a serious downside risk.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "geopolitical_weather_risk",
+          "oneLineExplanation": "Heavy hurricane exposure to Gulf Coast refineries.",
+          "detailedExplanation": "Gasoline supply is concentrated in Gulf Coast refineries, so hurricanes (like Harvey in 2017), refinery fires and outages can spike RBOB overnight, and crude geopolitics (the 2026 Hormuz crisis) feed straight through. This can push the price up, but it is a source of shock and instability, so it counts as a risk.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "us_dollar_sensitivity",
+          "oneLineExplanation": "Crude-linked and priced in dollars.",
+          "detailedExplanation": "RBOB is priced off crude oil in US dollars, so a stronger dollar is a modest headwind (it softens crude and global fuel demand). It is not the primary driver, but the standard inverse dollar link adds a background risk rather than a support.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "correlation_to_inflation_and_stocks",
+          "oneLineExplanation": "A genuine inflation and pro-cyclical hedge.",
+          "detailedExplanation": "Gasoline is a core consumer and inflation item (it shows up directly in CPI and consumer sentiment) and is pro-cyclical — demand is strong in economic expansions. For an investor worried about fuel-price inflation, RBOB exposure is one of the more direct hedges, the clearest positive in its risk profile, though it also means gasoline falls in recessions.",
+          "result": "Pass"
+        }
+      ]
+    },
+    {
+      "categoryKey": "FutureOutlook",
+      "summary": "The near-term balance is supportive (tight refining), but the forward view is capped: the EIA expects gasoline prices to fall in 2026 as crude eases, targets are muted, and the long-term outlook is dominated by a structural EV-driven demand decline. Only the near-term tight-refining balance passes.",
+      "overallAnalysisDetails": "The forward setup is a tension between a tight refining market and a shrinking demand base. On the supportive side, refinery closures and tight inventories could keep refining margins (crack spreads) elevated even as gasoline volumes slowly fall — a genuine near-term prop. That is the one clear positive in the outlook.\n\nBut most forward signals are soft. The EIA expects retail gasoline to fall about 6% in 2026 (roughly $0.20 a gallon) as crude drops to its lowest annual average since 2020, with a wholesale forecast near $2.98 in 2026 easing to ~$2.61 in 2027. Analyst attention is really on refiner equities (Valero, Marathon, Phillips 66) as a crack-spread play rather than on gasoline itself rising. And the dominant long-term force is structural: EVs, efficiency and remote work are permanently eroding gasoline demand, which caps the multi-year upside. The net is a commodity that can work tactically on tight refining, but faces a lower ceiling than crude because of the EV overhang.",
+      "factors": [
+        {
+          "factorKey": "forward_supply_demand_balance",
+          "oneLineExplanation": "Tight refining can support margins near-term.",
+          "detailedExplanation": "Refinery closures and tight inventories could keep refining margins elevated even as gasoline volumes slowly decline, so the near-term supply-demand balance is genuinely supportive for the wholesale price and for refiners. This tight-refining dynamic is the one clear positive in the forward outlook.",
+          "result": "Pass"
+        },
+        {
+          "factorKey": "official_agency_forecast",
+          "oneLineExplanation": "EIA expects gasoline prices to fall in 2026.",
+          "detailedExplanation": "The EIA expects retail gasoline to fall about 6% in 2026 (roughly $0.20 a gallon) as crude drops to its lowest annual average since 2020, with wholesale easing from ~$2.98 (2026) to ~$2.61 (2027). An official forecast for lower prices is a headwind for a long position.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "analyst_price_targets",
+          "oneLineExplanation": "Focus is on refiner equities, not gasoline rising.",
+          "detailedExplanation": "Analyst attention centers on refiners (Valero, Marathon, Phillips 66) as a crack-spread play — capturing refining margins — rather than on the gasoline price itself climbing. That reflects a view that the opportunity is in margins, not in higher outright prices, so the outright price outlook is muted.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "bull_vs_bear_scenario",
+          "oneLineExplanation": "Bull case is tight refining; bear case is structural decline.",
+          "detailedExplanation": "The bull case is refinery closures and tight inventories keeping cracks elevated, with hurricanes spiking prices. The bear case — structural demand decline from EVs and efficiency, plus gasoline following crude lower into a supply glut — is a permanent overhang crude does not share to the same degree. The balance is roughly even-to-negative over a multi-year view.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "key_catalysts_to_watch",
+          "oneLineExplanation": "EV adoption is a structural headwind over time.",
+          "detailedExplanation": "Near-term catalysts (driving season, hurricanes, refinery outages, crude and OPEC+) can move the price both ways, but the dominant multi-year catalyst is EV adoption and efficiency steadily eroding gasoline demand. That structural headwind caps the long-run upside, so the catalyst mix leans unfavorable for a buy-and-hold.",
+          "result": "Fail"
+        }
+      ]
+    }
+  ]
+}
