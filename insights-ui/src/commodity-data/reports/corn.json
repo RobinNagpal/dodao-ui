@@ -1,0 +1,207 @@
+{
+  "slug": "corn",
+  "name": "Corn",
+  "commodityGroup": "Agriculture",
+  "priceSymbol": "ZC=F",
+  "exchange": "CBOT",
+  "unit": "bushel",
+  "currency": "USD",
+  "metaDescription": "A plain-English investor read on corn: near $4.42 a bushel in mid-2026 after a record US harvest, sitting close to the cost of production. Cheap but oversupplied. Covers supply and demand, value, risk, and the outlook.",
+  "updatedAt": "2026-07-07",
+  "summary": "Overall stance: Cheap but heavy. A patient value play, not a momentum buy.\n\nCorn is the largest US crop and a global feed, fuel and food staple. In early July 2026 the CBOT front-month trades near $4.42 a bushel, in the lower third of its 10-year range and about 47% below its 2022 record near $8.24. A record 2025 US harvest (~16.7-17.0 billion bushels) pushed US ending stocks to a 7-year high, and global stocks are ample — a bearish supply picture.\n\nThe value case is real: corn is cheap in real terms, and at ~$4.42 it sits between the ~$3.35 non-land and ~$4.71 full-cost breakevens, so many growers lose money on a full-cost basis — historically a floor. Demand is strong (record exports, ~5.6 billion bushels into ethanol), and USDA sees the price rising from $4.15 to $4.40 in 2026/27. But the near-term skew is supply: the biggest upside is a July-August weather scare. Corn swings hard (~25-30% a year) and has crashed 50%+ after past gluts — best sized as a patient, diversifying position.",
+  "keyFacts": {
+    "keyFacts": "Corn (field corn, not sweet corn) is traded on the CBOT in US cents per 56-pound bushel, with the front-month future (ZC=F) as the benchmark. In early July 2026 that price is about $4.42 a bushel. The US is the world's #1 producer and exporter, but Brazil, Argentina, China and Ukraine all matter to the global price.\n\nFor a beginner, the three big demand buckets are animal feed (the largest global use), ethanol/fuel (about 40% of the US crop), and exports plus food/industrial uses (sweeteners, starch, cereals). Because corn is planted once a year, the price is driven heavily by weather during the US growing season — especially the July pollination window — and by the size of the South American crop. Right now the market is well-supplied: a record 2025 US harvest and ample global stocks have pushed prices down near the cost of production, so corn is cheap but lacks an obvious upside catalyst other than a weather shock or a demand surprise.",
+    "greenFlags": [
+      {
+        "flag": "Priced near the cost of production",
+        "explanation": "University of Illinois 2026 budgets show about $3.35 a bushel covers non-land costs and $4.71 covers all costs. At ~$4.42, many farmers are losing money on a full-cost basis for a 4th straight year, which historically forms a price floor as acres eventually shift away.",
+        "result": "Pass"
+      },
+      {
+        "flag": "Strong, record demand",
+        "explanation": "Demand is the bright spot: record exports near 2.9 billion bushels (Mexico is the #1 buyer at ~1 billion), about 5.6 billion bushels into ethanol, and solid feed use. Strong demand is slowly working against the surplus.",
+        "result": "Pass"
+      },
+      {
+        "flag": "Cheap versus history with USDA seeing higher prices",
+        "explanation": "Corn is in the lower third of its 10-year range and ~47% below its 2022 record. USDA forecasts the season-average farm price rising from $4.15 (2025/26) to $4.40 (2026/27), and 2026/27 output is projected lower on reduced acreage.",
+        "result": "Pass"
+      }
+    ],
+    "redFlags": [
+      {
+        "flag": "Record supply and multi-year-high stocks",
+        "explanation": "The 2025 US crop was a record ~16.7-17.0 billion bushels at a record ~186 bu/acre yield, pushing US ending stocks to a 7-year high (~2.145 billion bushels) and lifting global stocks. Ample supply caps rallies.",
+        "result": "Fail"
+      },
+      {
+        "flag": "High volatility and a history of deep crashes",
+        "explanation": "Corn swings about 25-30% a year on weather, and after past supply gluts it fell 50-60% (e.g. the 2012/13 peak of ~$6.89 farm price collapsed to ~$3.70 by 2014/15). Downside risk is real when supply is heavy.",
+        "result": "Fail"
+      }
+    ],
+    "mainUses": ["Animal feed (largest global use)", "Ethanol / fuel (~40% of US crop)", "Exports", "Food & industrial (sweeteners, starch, cereals)"],
+    "topProducers": [
+      { "country": "United States", "share": "~31%" },
+      { "country": "China", "share": "~22%" },
+      { "country": "Brazil", "share": "~10%" },
+      { "country": "Argentina", "share": "~4%" }
+    ],
+    "waysToInvest": [
+      { "type": "ETF", "name": "CORN", "note": "Teucrium Corn Fund; direct futures exposure, watch roll/contango drag" },
+      { "type": "Futures", "name": "ZC=F", "note": "CBOT corn (5,000 bu); leveraged, for experienced traders" },
+      { "type": "ETF", "name": "DBA", "note": "Broad agriculture basket including corn; diversified, less single-crop risk" },
+      { "type": "Equities", "name": "Ag inputs / processors", "note": "Seed, fertilizer, equipment and grain-handling firms; indirect, pay dividends" }
+    ]
+  },
+  "categories": [
+    {
+      "categoryKey": "SupplyAndDemand",
+      "summary": "Record US and global supply with stocks at a 7-year high is bearish, and easy acreage switching plus Brazil's second crop cap rallies. Demand is genuinely strong (record exports + ethanol), the one clear positive. Harvest-season pressure lies ahead.",
+      "overallAnalysisDetails": "The supply side is heavy. The 2025 US corn crop was a record ~16.7-17.0 billion bushels at a record yield near 186 bushels per acre, pushing US ending stocks to a 7-year high around 2.145 billion bushels, and world 2025/26 output is a record ~1,297 million tonnes. Corn also has fast supply flexibility: US farmers shift several million acres a year between corn and soybeans, and Brazil's 'safrinha' second crop adds a large swing supply, so rallies bring more planting.\n\nDemand is the bright spot. Exports are a record near 2.9 billion bushels (Mexico is the #1 buyer at about 1 billion), ethanol uses roughly 5.6 billion bushels, and feed demand is solid. But even strong demand has not drained the surplus. Seasonally, the market is heading into harvest pressure (September-November), when new supply weighs on price; the main upside window is July-August pollination weather.",
+      "factors": [
+        {
+          "factorKey": "production_output_trend",
+          "oneLineExplanation": "Record 2025 US crop plus ample global output.",
+          "detailedExplanation": "The 2025 US corn crop hit a record ~16.7-17.0 billion bushels at a record ~186 bu/acre yield, and world output is a record ~1,297 million tonnes with big crops in Brazil (~132 mmt), Argentina (~52 mmt) and Ukraine (~31 mmt). Record, rising supply is a headwind for prices even though 2026/27 US output is projected slightly lower on reduced acreage.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "global_inventories_stockpiles",
+          "oneLineExplanation": "US stocks at a 7-year high; global stocks ample.",
+          "detailedExplanation": "US 2025/26 ending stocks are about 2.145 billion bushels — a 7-year high — with a stocks-to-use ratio around 12%, and global ending stocks were raised to about 293 million tonnes. A rising cushion of grain in storage is bearish and gives the market plenty of supply to absorb shocks.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "demand_drivers",
+          "oneLineExplanation": "Record exports plus solid ethanol and feed.",
+          "detailedExplanation": "Demand is genuinely strong: record exports near 2.9 billion bushels (Mexico #1 at ~1 billion), about 5.6 billion bushels into ethanol, and rising feed use. This broad, growing demand is the main force working against the surplus, even if it is not yet enough to drain elevated stocks.",
+          "result": "Pass"
+        },
+        {
+          "factorKey": "spare_capacity_new_supply",
+          "oneLineExplanation": "Acreage switching and Brazil's second crop add supply fast.",
+          "detailedExplanation": "Corn has quick supply flexibility: US farmers move several million acres a year between corn and soybeans, and Brazil's safrinha second crop adds a large annual swing supply. That means any price rally tends to bring more planting and new supply, capping the upside.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "seasonality",
+          "oneLineExplanation": "Heading into harvest pressure; July weather is the upside.",
+          "detailedExplanation": "Corn is planted April-May, pollinates in July (the critical weather window for yield), and is harvested September-November, when new supply seasonally pressures prices. In early July the market sits just before harvest pressure, with the main upside coming only from a genuine summer weather scare.",
+          "result": "Fail"
+        }
+      ]
+    },
+    {
+      "categoryKey": "PriceAndValue",
+      "summary": "Corn is cheap: in the lower third of its 10-year range, inexpensive in real terms, sitting near the cost of production, and ~47% below its record. The one soft spot is the corn-soybean price ratio slightly favoring beans for acreage. Value is the strongest pillar.",
+      "overallAnalysisDetails": "Judged on price, corn is inexpensive. At about $4.42 it sits in the lower third of its 10-year range (which spans roughly $3.20 to $8.24) and is cheap in inflation-adjusted terms, far below the 2012 and 2022 spikes in real dollars.\n\nThe key support is the cost of production. University of Illinois 2026 budgets show about $3.35 a bushel covers non-land costs and $4.71 covers all costs, so at ~$4.42 many farmers are losing money on a full-cost basis — a condition that historically forms a floor as acres eventually shift away. Corn is about 47% below its record, leaving room to rise. The one soft spot is relative value: the soybean-to-corn price ratio near 2.4 slightly favors planting soybeans, a mild negative for corn acreage economics. Overall, though, corn is clearly on the cheap side.",
+      "factors": [
+        {
+          "factorKey": "price_vs_range",
+          "oneLineExplanation": "Lower third of the 10-year range.",
+          "detailedExplanation": "At about $4.42, corn sits in the lower third of its 10-year range (roughly $3.20 to $8.24) and well below the 2021-22 highs. That makes it a cheap entry on valuation, with limited downside from being 'overpriced' and room to rise if supply tightens.",
+          "result": "Pass"
+        },
+        {
+          "factorKey": "inflation_adjusted_price",
+          "oneLineExplanation": "Cheap in inflation-adjusted terms.",
+          "detailedExplanation": "In real (inflation-adjusted) terms, corn is inexpensive — far below the 2012 drought and 2022 spikes once you account for inflation. Buyers today are not paying an inflated real price, which limits valuation risk.",
+          "result": "Pass"
+        },
+        {
+          "factorKey": "cost_of_production_floor",
+          "oneLineExplanation": "Below the ~$4.71 full-cost breakeven.",
+          "detailedExplanation": "University of Illinois 2026 budgets put non-land costs at ~$3.35 and all-in costs at ~$4.71 a bushel. At ~$4.42, corn is below full-cost breakeven for a 4th straight year, so farmers are losing money on a full-cost basis — historically a floor-forming condition, even if acres shift only slowly.",
+          "result": "Pass"
+        },
+        {
+          "factorKey": "price_vs_substitute",
+          "oneLineExplanation": "Soybean-corn ratio slightly favors beans.",
+          "detailedExplanation": "The soybean-to-corn price ratio near 2.4 is roughly neutral but leans slightly toward planting soybeans over corn, a mild negative for corn's relative acreage economics. Against feed wheat, corn remains a cheap feed grain, but the headline relative-value signal is not a clear positive.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "distance_from_all_time_high",
+          "oneLineExplanation": "About 47% below the 2022 record near $8.24.",
+          "detailedExplanation": "Corn near $4.42 is about 47% below its record near $8.24 (2022) and its 2012 drought peak near $8.49, leaving large theoretical headroom rather than fresh-record risk. For a cyclical crop this is normal, but it confirms the price is nowhere near a valuation ceiling.",
+          "result": "Pass"
+        }
+      ]
+    },
+    {
+      "categoryKey": "VolatilityAndRisk",
+      "summary": "Corn is a volatile, weather-whipsawed commodity (~25-30% a year) with a history of 50-60% multi-year crashes after gluts, and a strong dollar hurts US export competitiveness. The one positive is low correlation to stocks, making it a genuine portfolio diversifier.",
+      "overallAnalysisDetails": "Corn carries real risk. Its annualized volatility is about 25-30%, driven by weather, and it has a history of brutal multi-year drawdowns after supply gluts — the 2012/13 farm price of ~$6.89 fell to ~$3.70 by 2014/15 (over 45%), with futures down 50-60% peak-to-trough. That is precisely the kind of well-supplied regime the market is in now.\n\nThe other risks are geopolitical and currency-driven: US Midwest drought, La Nina/El Nino swings, the Ukraine war's effect on Black Sea corn exports, and China/Mexico trade friction all move the price, and a strong US dollar erodes US export competitiveness versus Brazil and Argentina. The redeeming feature is that corn returns are driven by weather rather than the business cycle, so it has low correlation to equities and works as a portfolio diversifier — the one clear positive in its risk profile.",
+      "factors": [
+        {
+          "factorKey": "historical_volatility",
+          "oneLineExplanation": "About 25-30% a year, weather-driven.",
+          "detailedExplanation": "Corn's annualized volatility runs about 25-30%, with sharp spikes around USDA report days and summer weather. Prices can move fast on a single forecast, which makes corn a bumpy hold for anyone not prepared for weather-driven swings.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "worst_drawdowns",
+          "oneLineExplanation": "History of 50-60% multi-year crashes after gluts.",
+          "detailedExplanation": "After past supply gluts corn has fallen hard: the 2012/13 farm price of ~$6.89 dropped to ~$3.70 by 2014/15, and futures fell 50-60% peak-to-trough. With supply record-large now, that drawdown history is a real downside risk.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "geopolitical_weather_risk",
+          "oneLineExplanation": "Weather and trade risk cut both ways.",
+          "detailedExplanation": "Corn is exposed to US Midwest drought and derechos, La Nina/El Nino swings, the Ukraine war's effect on Black Sea exports (~30 million tonnes), and China/Mexico trade friction. A drought can spike the price, but trade disruruption and ample global supply can push it down, so this is a two-sided risk rather than a dependable support.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "us_dollar_sensitivity",
+          "oneLineExplanation": "A strong dollar erodes US export competitiveness.",
+          "detailedExplanation": "Corn is priced in US dollars, so a stronger dollar makes US corn more expensive for foreign buyers and shifts demand toward Brazil and Argentina. With the US relying on record exports, this currency sensitivity is a background headwind rather than a help.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "correlation_to_inflation_and_stocks",
+          "oneLineExplanation": "Low correlation to stocks — a diversifier.",
+          "detailedExplanation": "Corn is a food-inflation input, but its returns are driven by weather and harvests, not the business cycle, so it has low correlation to equities. That diversification benefit — corn can rise when stocks fall on a supply shock — is the clearest positive in its risk profile.",
+          "result": "Pass"
+        }
+      ]
+    },
+    {
+      "categoryKey": "FutureOutlook",
+      "summary": "The outlook is mixed-to-constructive: 2026/27 is projected tighter on lower acreage, USDA sees the price rising to $4.40, and weather remains a live upside catalyst. But analyst targets imply limited near-term upside and the bull/bear balance still leans on supply. Modestly positive.",
+      "overallAnalysisDetails": "The forward setup is less bearish than the current glut suggests. USDA projects 2026/27 US output lower at about 16.0 billion bushels on reduced acreage (95.3 million acres planted, down 3%), with ending stocks tightening to about 1.96 billion bushels — a modestly friendlier balance. USDA also sees the season-average farm price rising from $4.15 (2025/26) to $4.40 (2026/27).\n\nAgainst that, private models cluster around $4.10 for nearby new-crop futures with an upper selling range of $4.55-4.90, implying limited near-term upside from ~$4.42. The bull case is a July-August weather scare, a China buying spree, or an ethanol/E15 tailwind; the bear case is the record supply carryover, prices stuck below cost, big global stocks and a strong dollar. On balance the outlook is modestly positive, resting on a tighter 2026/27 balance and a durable cost-of-production floor, with weather the key swing factor.",
+      "factors": [
+        {
+          "factorKey": "forward_supply_demand_balance",
+          "oneLineExplanation": "2026/27 projected tighter on lower acreage.",
+          "detailedExplanation": "USDA projects 2026/27 US production lower at about 16.0 billion bushels on reduced acreage, with ending stocks tightening to about 1.96 billion bushels and a stocks-to-use ratio near 12%. That is a modestly friendlier balance than the record-supply 2025/26, a mild positive for the forward price.",
+          "result": "Pass"
+        },
+        {
+          "factorKey": "official_agency_forecast",
+          "oneLineExplanation": "USDA sees the price rising to $4.40.",
+          "detailedExplanation": "USDA forecasts the season-average farm price rising from $4.15 (2025/26) to $4.40 (2026/27). An official view of firming prices, driven by lower acreage and tighter stocks, is a supportive signal for a long position from ~$4.42.",
+          "result": "Pass"
+        },
+        {
+          "factorKey": "analyst_price_targets",
+          "oneLineExplanation": "Targets imply limited near-term upside.",
+          "detailedExplanation": "Private models cluster around $4.10 for nearby new-crop futures with an upper selling range of $4.55-4.90. With corn already near $4.42, that implies only modest upside and some downside to the base case, so analyst targets are not a strong positive.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "bull_vs_bear_scenario",
+          "oneLineExplanation": "Balanced, but the bear (supply) case is heavier now.",
+          "detailedExplanation": "The bull case is a July-August drought scare, a China buying spree, or an ethanol/E15 and RFS tailwind. The bear case is the record supply carryover, prices below cost, ample global stocks and a strong dollar. Both are credible, but the near-term weight sits with supply, so the scenario balance is not clearly favorable.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "key_catalysts_to_watch",
+          "oneLineExplanation": "Summer weather is a genuine upside catalyst.",
+          "detailedExplanation": "Watch the monthly USDA WASDE, July pollination weather (the biggest single swing factor), China purchases, the Prospective Plantings/Acreage and Grain Stocks reports, and ethanol/RFS policy. With supply heavy, a real weather scare is the clearest path to meaningful upside — a genuine, monitorable catalyst that favors patient longs.",
+          "result": "Pass"
+        }
+      ]
+    }
+  ]
+}

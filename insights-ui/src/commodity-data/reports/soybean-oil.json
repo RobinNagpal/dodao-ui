@@ -1,0 +1,211 @@
+{
+  "slug": "soybean-oil",
+  "name": "Soybean Oil",
+  "commodityGroup": "Agriculture",
+  "priceSymbol": "ZL=F",
+  "exchange": "CBOT",
+  "unit": "pound",
+  "currency": "USD",
+  "metaDescription": "A plain-English investor read on soybean oil: near 65 cents a pound in mid-2026 after a ~63% rally, driven by US biofuel policy that has made it the #1 renewable-diesel feedstock. A policy-driven, high-volatility bull story. Covers supply and demand, value, risk, and the outlook.",
+  "updatedAt": "2026-07-07",
+  "summary": "Overall stance: Constructive. The bullish half of the soy complex, but policy-dependent.\n\nSoybean oil is the vegetable oil squeezed out when soybeans are crushed. Its story has shifted from food to fuel: it is now the #1 US feedstock for biodiesel and renewable diesel, so its price is tied to US energy and tax policy — the RFS/RVO mandates and the 45Z credit — as much as to cooking-oil demand. In early July 2026 the CBOT front-month trades near 65 cents a pound, up ~63% year-to-date and about 25-28% below its 2022 record near 90 cents.\n\nThe bull case is real: the EPA's March 2026 final rule set record biomass-based diesel mandates (a ~60-70% jump), and 45Z favors domestic soybean oil over imports. USDA keeps raising its price forecast (58 to 64 to 70 cents), and biofuel is set to become soybean oil's single largest use. The catch is that this same policy dependence is the biggest risk — rules can be delayed or reversed — the price is already elevated after a 63% run, and cheaper, abundant palm oil is a real counterweight. An attractive, well-supported theme, but not a low-risk one.",
+  "keyFacts": {
+    "keyFacts": "Soybean oil is the vegetable oil extracted when soybeans are crushed — roughly 19% of each crushed bushel (the other ~80% is protein meal). It is traded on the CBOT in US cents per pound, with the front-month future (ZL=F) as the benchmark. In early July 2026 that price is about 65 cents a pound.\n\nThe key idea for a beginner is that soybean oil is now mainly a fuel story. It used to be mostly a cooking oil, but it is now the #1 US feedstock for biodiesel and renewable diesel, and USDA projects biofuel will become its single largest use. That means its price is driven by US energy and tax policy — the RFS/RVO blending mandates that require fuel makers to use biofuel, and the 45Z tax credit that rewards using domestic feedstocks. So soybean oil trades partly like an energy commodity, moving with crude oil and biofuel rules, and it competes globally with cheaper palm oil (from Indonesia and Malaysia). Policy is the swing factor: a strong mandate can send it up, and a rule delay can send it down.",
+    "greenFlags": [
+      {
+        "flag": "Record biofuel mandates and a domestic-feedstock rule",
+        "explanation": "The EPA's March 2026 final rule set record biomass-based diesel mandates — roughly a 60-70% increase in biodiesel/renewable-diesel use versus 2025 — and the 45Z credit favors US-grown soybean oil over imported feedstocks. That is a large, policy-guaranteed demand boost.",
+        "result": "Pass"
+      },
+      {
+        "flag": "Biofuel becoming the #1 use, with USDA raising forecasts",
+        "explanation": "USDA projects biofuel will overtake food and feed as the largest use of US soybean oil, with biofuel use rising toward ~17.8 billion pounds in 2026/27 (+~17-25%). USDA has repeatedly raised its price forecast, from 58 to 64 to 70 cents a pound.",
+        "result": "Pass"
+      },
+      {
+        "flag": "A policy-backed demand floor",
+        "explanation": "Mandated RVO volumes guarantee a large, price-inelastic biofuel buyer for soybean oil, effectively setting a demand floor. That policy support is unusual among crops and underpins the price.",
+        "result": "Pass"
+      }
+    ],
+    "redFlags": [
+      {
+        "flag": "Policy dependence cuts both ways",
+        "explanation": "The same biofuel policy that drives the price up is the biggest risk: EPA mandate rules and 45Z guidance can be delayed, waived or reversed, and rule uncertainty already pressured prices in late 2025. A policy that giveth can taketh away.",
+        "result": "Fail"
+      },
+      {
+        "flag": "Cheaper palm oil and an already-elevated price",
+        "explanation": "Palm oil (from Indonesia and Malaysia) is cheaper and abundant — Malaysian stocks near a 7-year high — and soybean oil trades at a wide premium to it, so food buyers can switch. After a ~63% year-to-date rally, soybean oil is already in the upper half of its range.",
+        "result": "Fail"
+      }
+    ],
+    "mainUses": [
+      "Biofuel feedstock — biodiesel & renewable diesel (largest, fastest-growing)",
+      "Edible/cooking oil (frying, salad oils)",
+      "Processed food ingredients",
+      "Industrial (minor)"
+    ],
+    "topProducers": [
+      { "country": "China", "share": "Largest crusher (~22 Mt oil)" },
+      { "country": "United States", "share": "Major producer & biofuel user" },
+      { "country": "Brazil", "share": "Major producer/exporter" },
+      { "country": "Argentina", "share": "Top oil exporter" }
+    ],
+    "waysToInvest": [
+      { "type": "Futures", "name": "ZL=F", "note": "CBOT soybean oil (60,000 lbs); no clean retail ETF, for experienced traders" },
+      { "type": "ETF", "name": "DBA / soy complex", "note": "Broad ag baskets give indirect soybean-complex exposure" },
+      { "type": "Equities", "name": "Biofuel / crush firms", "note": "Renewable-diesel refiners and crushers/processors track the same theme" }
+    ]
+  },
+  "categories": [
+    {
+      "categoryKey": "SupplyAndDemand",
+      "summary": "Record biofuel-driven demand, tightening US soybean stocks and steady year-round consumption support the price, while rising crush output and cheaper palm oil push back. Demand growth is outrunning net supply, so the balance leans supportive.",
+      "overallAnalysisDetails": "Demand is the engine here, and it is strong. Soybean oil use in biofuel is forecast to rise toward 17.3-17.8 billion pounds in 2026/27 (up ~17-25%), driven by record EPA blending mandates, and USDA projects biofuel will overtake food and feed as the single largest use. Because those mandates are law, this is durable, price-inelastic demand — a demand floor.\n\nSupply is rising too: US crush is at a record (built for oil/biofuel), lifting soybean oil output, and global vegetable-oil supply is ample with heavy palm-oil stocks. But US soybean ending stocks are tightening (340 down to 310 million bushels), and biofuel demand is set to grow faster than net oil supply. The main pressure valve is cheaper palm oil, which can take food-market share. Consumption is steady year-round (biofuel does not have a strong season), and supply follows the harvest. On balance, demand growth outpacing net supply tips this category to supportive.",
+      "factors": [
+        {
+          "factorKey": "production_output_trend",
+          "oneLineExplanation": "Record crush lifts soybean oil supply.",
+          "detailedExplanation": "US crush is at a record ~2.75 billion bushels (built for oil/biofuel), lifting soybean oil output, and global soybean oil production is a record ~70.8 million tonnes. Rising oil supply is a headwind — the bullish case rests on demand growing even faster, not on tight production.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "global_inventories_stockpiles",
+          "oneLineExplanation": "US soybean stocks tightening as demand outruns supply.",
+          "detailedExplanation": "US soybean ending stocks are tightening from 340 to 310 million bushels as record biofuel demand pulls oil out of the pipeline. Even with heavy global palm-oil stocks, the domestic soybean/oil balance is drawing down, which is supportive for the price.",
+          "result": "Pass"
+        },
+        {
+          "factorKey": "demand_drivers",
+          "oneLineExplanation": "Record biofuel demand, set to be the #1 use.",
+          "detailedExplanation": "Biofuel is the growth engine: soybean oil use in biodiesel/renewable diesel is forecast toward 17.3-17.8 billion pounds in 2026/27 (+~17-25%) on record EPA mandates, and USDA sees it overtaking food and feed as the largest single use. Strong, policy-backed demand growth is the core positive.",
+          "result": "Pass"
+        },
+        {
+          "factorKey": "spare_capacity_new_supply",
+          "oneLineExplanation": "Cheaper palm oil is the pressure valve.",
+          "detailedExplanation": "The main source of extra supply is palm oil — cheaper and abundant, with Malaysian stocks near a 7-year high — plus rising crush capacity and, until 2028, imported feedstocks like used cooking oil and tallow. That cheaper substitute caps how far soybean oil can run in the food market, a negative.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "seasonality",
+          "oneLineExplanation": "Steady year-round biofuel demand.",
+          "detailedExplanation": "Biofuel demand is fairly steady through the year, which smooths out the seasonal swings that hit purely food or feed commodities. Supply follows the soybean harvest (US in autumn, South America in spring), but the demand side's steadiness is a mild positive.",
+          "result": "Pass"
+        }
+      ]
+    },
+    {
+      "categoryKey": "PriceAndValue",
+      "summary": "Soybean oil is a mixed value case: elevated after a ~63% rally and trading at a wide premium to cheaper palm oil, but still below its inflation-adjusted 2022 high, backed by a policy demand floor, and ~25-28% below its record. Value is neutral-to-slightly-supportive.",
+      "overallAnalysisDetails": "On price, soybean oil is no longer cheap. At about 65 cents a pound it sits in the upper half of its range after a ~63% year-to-date rally, well above the 35-45 cent mid-cycle levels of 2018-2020 and 2024. So the easy valuation upside is gone.\n\nThat said, it is still below its inflation-adjusted 2022 peak near 90 cents, and its value is underpinned by policy: mandated biofuel volumes create a guaranteed demand floor, and USDA cites favorable crush margins. The clear negative is the substitute: soybean oil trades at a wide, historically unusual premium to palm oil, which is cheaper and abundant, so food buyers have every incentive to switch. It is about 25-28% below its record. Netting the elevated price and palm-oil premium against the policy floor and real-terms discount, value is roughly neutral — supportive enough not to derail the demand story, but not a bargain.",
+      "factors": [
+        {
+          "factorKey": "price_vs_range",
+          "oneLineExplanation": "Elevated — upper half of its range after a 63% rally.",
+          "detailedExplanation": "At about 65 cents, soybean oil is in the upper half of its range after a ~63% year-to-date rally, well above the 35-45 cent levels of recent years. The price is already elevated, so the easy valuation upside is gone and there is more room to fall if the policy story wobbles.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "inflation_adjusted_price",
+          "oneLineExplanation": "Below its inflation-adjusted 2022 peak.",
+          "detailedExplanation": "Even after the rally, soybean oil at ~65 cents is below its inflation-adjusted 2022 record near 90 cents. It is elevated but not at a real all-time high, so it is not egregiously overvalued in real terms — a mild positive.",
+          "result": "Pass"
+        },
+        {
+          "factorKey": "cost_of_production_floor",
+          "oneLineExplanation": "A policy-backed demand floor supports the price.",
+          "detailedExplanation": "Soybean oil is a co-product of the crush, so its price is bounded by how a crushed bean's value splits between oil and meal. Crucially, mandated biofuel (RVO) volumes create a guaranteed, price-inelastic demand floor, and USDA cites favorable crush margins. That policy floor is a genuine support beneath the price.",
+          "result": "Pass"
+        },
+        {
+          "factorKey": "price_vs_substitute",
+          "oneLineExplanation": "Wide, unusual premium to cheaper palm oil.",
+          "detailedExplanation": "Soybean oil trades at a wide, historically unusual premium to palm oil, which is forecast to average lower in 2026 and is abundant (Malaysian stocks near a 7-year high). Food buyers can switch to cheaper palm, which caps soybean oil's upside in the food market — a clear negative on relative value.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "distance_from_all_time_high",
+          "oneLineExplanation": "About 25-28% below the 2022 record near 90 cents.",
+          "detailedExplanation": "Soybean oil near 65 cents is about 25-28% below its 2022 record near 90 cents, leaving some headroom to the old high rather than fresh-record risk. With the biofuel demand story intact, that headroom is a mild positive.",
+          "result": "Pass"
+        }
+      ]
+    },
+    {
+      "categoryKey": "VolatilityAndRisk",
+      "summary": "Soybean oil is high-risk: ~30%+ volatility amplified by policy and energy swings, a ~50-55% drawdown in 2022-24, and policy as the dominant, two-way risk. The positives are manageable dollar sensitivity and an energy link that adds diversification. Two of five factors pass.",
+      "overallAnalysisDetails": "Soybean oil is one of the more volatile parts of the crop complex. Its annualized volatility regularly runs 30%+, now amplified by both energy prices and policy swings — it is up ~63% in 2026 alone, after a ~50-55% drawdown from the 2022 peak (~90 cents) to the 2024 lows (~38-45 cents).\n\nThe dominant risk is policy. US biofuel rules — EPA blending mandates and 45Z guidance — can swing the price sharply in either direction: 45Z uncertainty pressured prices in late 2025, then the strong final mandate rallied them. Palm-oil supply and Indonesian policy (Indonesia scrapped a planned B50 mandate for 2026, a mild bearish surprise) and US/South American soybean weather add more risk. On the positive side, dollar sensitivity is moderate, and the biofuel link gives soybean oil a higher correlation to crude oil than other grains — which actually adds diversification versus a grain-heavy or stock-heavy portfolio. Two of five risk factors are positive, better than most commodities in this group, but the policy dependence keeps the overall risk high.",
+      "factors": [
+        {
+          "factorKey": "historical_volatility",
+          "oneLineExplanation": "High, ~30%+ and rising with policy/energy swings.",
+          "detailedExplanation": "Soybean oil's annualized volatility runs 30%+ and is amplified by both energy prices and biofuel-policy swings — it is up ~63% in 2026 alone. Such large moves make it a fast, risky instrument, so this factor is a negative.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "worst_drawdowns",
+          "oneLineExplanation": "Fell ~50-55% from its 2022 peak.",
+          "detailedExplanation": "Soybean oil dropped about 50-55% from its ~90-cent 2022 peak to the ~38-45 cent area by 2024 before this year's rally. A history of deep, fast drawdowns is a real downside risk, especially now that the price is elevated again.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "geopolitical_weather_risk",
+          "oneLineExplanation": "US biofuel policy is the dominant, two-way risk.",
+          "detailedExplanation": "The biggest risk is US biofuel policy: EPA mandate rules and 45Z guidance can swing the price sharply either way (rule uncertainty hurt prices in late 2025; the strong final mandate then rallied them). Palm-oil supply/policy and soybean weather add more. This policy dependence is a significant, two-sided hazard.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "us_dollar_sensitivity",
+          "oneLineExplanation": "Moderate dollar sensitivity, not the main driver.",
+          "detailedExplanation": "Soybean oil is globally traded and competes with palm and canola, so a stronger dollar is a modest headwind for US exports, but policy and biofuel demand matter far more to the price. That relatively contained currency exposure is a mild positive.",
+          "result": "Pass"
+        },
+        {
+          "factorKey": "correlation_to_inflation_and_stocks",
+          "oneLineExplanation": "Energy link adds diversification.",
+          "detailedExplanation": "Because biofuel ties soybean oil to crude oil and diesel, it is more correlated to energy than other grains and has low correlation to stocks. That energy linkage plus food-inflation exposure makes it a useful diversifier — a genuine positive in its risk profile.",
+          "result": "Pass"
+        }
+      ]
+    },
+    {
+      "categoryKey": "FutureOutlook",
+      "summary": "The outlook is the most bullish in the crop complex: a demand-led tightening balance, USDA repeatedly raising its forecast (to 70 cents), broadly bullish analysts, a bull case that outweighs the palm-oil bear case, and clear policy catalysts to watch. All five factors pass.",
+      "overallAnalysisDetails": "The forward setup is genuinely constructive. The 2026/27 balance tilts bullish: strong RVO-driven biofuel demand (+~17-25%) is set to outpace rising crush supply, with soybean ending stocks tightening to 310 million bushels. USDA has repeatedly raised its season-average price forecast — from 58 cents (February) to 64 (2025/26) to 70 (2026/27) — a clear signal of firming expectations.\n\nAnalyst sentiment is broadly bullish on the record mandates and the 45Z rule favoring domestic soybean oil, and the bull case (locked-in mandates through 2027, 45Z rewarding US feedstock, an import-feedstock penalty coming in 2028) outweighs the bear case (cheaper palm oil, possible rule slippage, record crush supply). The catalysts are clear and monitorable: EPA RFS/RVO rulemakings, 45Z final guidance, the 2028 import-feedstock penalty, palm-oil prices and crush rates. With demand growth, rising official forecasts, supportive analysts and a favorable scenario balance, all five outlook factors are positive — the strongest forward setup among the agricultural commodities here, tempered only by the policy dependence flagged under risk.",
+      "factors": [
+        {
+          "factorKey": "forward_supply_demand_balance",
+          "oneLineExplanation": "Demand-led tightening into 2026/27.",
+          "detailedExplanation": "Strong RVO-driven biofuel demand (+~17-25%) is set to outpace rising crush supply, tightening the balance and drawing soybean ending stocks down to 310 million bushels. A demand-led tightening is a clear positive for the forward price.",
+          "result": "Pass"
+        },
+        {
+          "factorKey": "official_agency_forecast",
+          "oneLineExplanation": "USDA repeatedly raising its forecast to 70 cents.",
+          "detailedExplanation": "USDA has raised its season-average soybean oil price forecast from 58 cents (February) to 64 (2025/26) to 70 (2026/27). A pattern of upward revisions, driven by the biofuel demand story, is a strongly supportive official signal.",
+          "result": "Pass"
+        },
+        {
+          "factorKey": "analyst_price_targets",
+          "oneLineExplanation": "Broadly bullish on mandates and 45Z.",
+          "detailedExplanation": "Analyst sentiment is broadly bullish on the record RVO mandates and the 45Z rule favoring domestic soybean oil, echoed by USDA's upward revisions. A constructive target set is a positive for a long position.",
+          "result": "Pass"
+        },
+        {
+          "factorKey": "bull_vs_bear_scenario",
+          "oneLineExplanation": "Policy bull case outweighs the palm-oil bear case.",
+          "detailedExplanation": "The bull case — mandates locked in through 2027, 45Z rewarding US feedstock, an import-feedstock penalty from 2028 — outweighs the bear case of cheaper palm oil, possible rule slippage and record crush supply. On balance the scenario skew favors the upside.",
+          "result": "Pass"
+        },
+        {
+          "factorKey": "key_catalysts_to_watch",
+          "oneLineExplanation": "Clear, monitorable policy catalysts.",
+          "detailedExplanation": "The catalysts are clear: EPA RFS/RVO rulemakings, 45Z final guidance, the 2028 import-feedstock penalty, palm-oil prices and Indonesian policy, crush rates and crude oil. Most current catalysts point toward tighter supply and stronger demand for domestic soybean oil, so they lean supportive.",
+          "result": "Pass"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,212 @@
+{
+  "slug": "soybeans",
+  "name": "Soybeans",
+  "commodityGroup": "Agriculture",
+  "priceSymbol": "ZS=F",
+  "exchange": "CBOT",
+  "unit": "bushel",
+  "currency": "USD",
+  "metaDescription": "A plain-English investor read on soybeans: near $11.90 a bushel in mid-2026, supported by a strong US crush and renewable-diesel demand and a China trade deal, but capped by a record Brazilian crop and live trade-war risk. Covers supply and demand, value, risk, and the outlook.",
+  "updatedAt": "2026-07-07",
+  "summary": "Overall stance: Balanced. Fairly valued, with a bull case and a bear case that roughly cancel.\n\nSoybeans are the world's #1 protein-and-oil crop and the largest US farm export. Most beans are crushed into meal (~80%, the dominant protein feed) and oil (~19%, used in food and, increasingly, renewable diesel). In early July 2026 the CBOT front-month trades near $11.90 a bushel, about 33% below the 2012 record near $17.90 and near the top of its 52-week range.\n\nThe bull case is demand: a record US crush (capacity up ~13% since 2022 for renewable-diesel oil) and China resuming US purchases under an October 2025 trade deal (at least 25 million tonnes a year). USDA raised its 2026/27 price to $11.40, and the price sits near the ~$10.80 farmer breakeven. The bear case is supply and politics: Brazil harvested a record ~177-182 million tonnes and keeps expanding, global stocks are at a record, and the US-China trade war drove a ~55% drawdown in 2018-19. An event-driven commodity — it rises on a durable China deal or weather shock, and falls on a trade-war relapse or a perfect Brazilian harvest.",
+  "keyFacts": {
+    "keyFacts": "Soybeans are traded on the CBOT in US cents per 60-pound bushel, with the front-month future (ZS=F) as the benchmark. In early July 2026 that price is about $11.90 a bushel. Brazil is now the world's #1 producer and exporter, followed by the US and Argentina.\n\nFor a beginner, the key is that soybeans are mostly 'crushed' into two products: soybean meal (~80% by weight, the world's main protein animal feed) and soybean oil (~19%, used in cooking and, increasingly, renewable diesel). So the soybean price reflects demand for both. The single biggest swing factor is China, which buys about 60% of all globally traded soybeans; the US and Brazil compete to supply it, and US-China trade tension can shift that business overnight. The other big forces are the size of Brazil's record crop, US weather during the August pod-fill window, and US biofuel policy, which drives demand for soybean oil.",
+    "greenFlags": [
+      {
+        "flag": "Strong crush and renewable-diesel demand",
+        "explanation": "US soybean crush capacity is up about 13% since 2022 (ten new plants), built to make soybean oil for renewable diesel. Soybean oil use in biofuel is set to jump toward ~17.8 billion pounds in 2026/27 (+~22%), a durable demand tailwind for the whole bean.",
+        "result": "Pass"
+      },
+      {
+        "flag": "China buying again under the trade deal",
+        "explanation": "Under an October 2025 deal, China committed to buying at least 25 million tonnes of US soybeans a year through 2028 and resumed purchases, with US exports to China up ~57% year-over-year in early 2026. China is ~60% of world trade, so this is the demand that matters most.",
+        "result": "Pass"
+      },
+      {
+        "flag": "Priced near the cost of production",
+        "explanation": "At about $11.90, soybeans sit near or above the ~$10.80 US farmer breakeven (University of Illinois), and USDA raised its 2026/27 season-average price to $11.40. Trading near cost gives the price downside support.",
+        "result": "Pass"
+      }
+    ],
+    "redFlags": [
+      {
+        "flag": "A record Brazilian crop and record global stocks",
+        "explanation": "Brazil harvested a record ~177-182 million tonnes and is still expanding acreage, pushing global ending stocks to a record ~124-125 million tonnes. Abundant supply, much of it in Brazil, caps how far US prices can rise.",
+        "result": "Fail"
+      },
+      {
+        "flag": "Live US-China trade-war risk",
+        "explanation": "China can shift purchases to Brazil almost overnight — in 2018-19 it cut US buying ~75% and US soybean prices fell, driving a ~55% peak-to-trough drawdown. US beans still carry a 13% Chinese duty versus ~3% for Brazil, so any trade-war relapse is a serious downside risk.",
+        "result": "Fail"
+      }
+    ],
+    "mainUses": [
+      "Crush into meal (protein feed) + oil",
+      "Animal feed (soybean meal)",
+      "Biofuel feedstock (soybean oil for renewable diesel)",
+      "Food (tofu, soy foods, cooking oil)"
+    ],
+    "topProducers": [
+      { "country": "Brazil", "share": "~42%" },
+      { "country": "United States", "share": "~28%" },
+      { "country": "Argentina", "share": "~12%" },
+      { "country": "China", "share": "~4% (biggest importer)" }
+    ],
+    "waysToInvest": [
+      { "type": "ETF", "name": "SOYB", "note": "Teucrium Soybean Fund; simplest direct exposure, watch roll/contango" },
+      { "type": "Futures", "name": "ZS=F", "note": "CBOT soybeans (5,000 bu); leveraged, for experienced traders" },
+      { "type": "Equities", "name": "ADM / BG", "note": "Crushers/processors leveraged to crush margins; pay dividends" },
+      { "type": "ETF", "name": "DBA", "note": "Broad agriculture basket including soybeans; diversified" }
+    ]
+  },
+  "categories": [
+    {
+      "categoryKey": "SupplyAndDemand",
+      "summary": "A record Brazilian crop, record global stocks and expandable South American acreage make supply the heavy side, but demand is strong (record US crush for renewable diesel plus China buying again). August US weather adds a seasonal premium. Roughly balanced, leaning supply-heavy.",
+      "overallAnalysisDetails": "Supply is abundant and concentrated in Brazil, which harvested a record ~177-182 million tonnes and keeps expanding acreage in the cerrado. Global ending stocks are at a record ~124-125 million tonnes, and Brazil and Argentina can respond within one season, so the world is well-supplied. US 2026/27 output is projected up ~5% on higher acreage, adding to the pile.\n\nDemand, though, is genuinely strong. US crush capacity is up ~13% since 2022 (ten new plants) to make soybean oil for renewable diesel, and China — which buys ~60% of world soybean trade — resumed US purchases under an October 2025 deal, with early-2026 US exports to China up ~57% year-over-year. US 2026/27 ending stocks are projected to tighten to 310 million bushels. Seasonally, the August US pod-fill window can add a weather premium. The net is a market where strong demand roughly offsets record supply, tilting slightly supply-heavy.",
+      "factors": [
+        {
+          "factorKey": "production_output_trend",
+          "oneLineExplanation": "Record Brazilian crop and rising US output.",
+          "detailedExplanation": "Brazil harvested a record ~177-182 million tonnes and keeps expanding acreage, while US 2026/27 output is projected up ~5% on higher planted area. Record global production, much of it in Brazil, is a bearish supply signal that caps how far US prices can rise.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "global_inventories_stockpiles",
+          "oneLineExplanation": "Global stocks at a record, Brazil-heavy.",
+          "detailedExplanation": "Global ending stocks are at a record ~124-125 million tonnes, concentrated in Brazil, even though US stocks are mildly tighter (310 million bushels for 2026/27). A record global cushion is bearish and gives the market ample supply to absorb shocks.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "demand_drivers",
+          "oneLineExplanation": "Record crush plus China buying again.",
+          "detailedExplanation": "Demand is the bull pillar: US crush capacity is up ~13% since 2022 for renewable-diesel soybean oil, and China (~60% of world trade) resumed US purchases under the October 2025 deal, with early-2026 US exports to China up ~57%. Strong, growing demand from both biofuel and China is a genuine positive.",
+          "result": "Pass"
+        },
+        {
+          "factorKey": "spare_capacity_new_supply",
+          "oneLineExplanation": "Brazil and Argentina can add supply fast.",
+          "detailedExplanation": "Brazil is still expanding acreage in the cerrado, and Brazil plus Argentina can respond within a single season; Argentina's 2026/27 area is rising. This abundant spare capacity means any US-driven rally tends to bring more South American supply, capping the upside.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "seasonality",
+          "oneLineExplanation": "August US pod-fill weather can add a premium.",
+          "detailedExplanation": "The key US yield driver is August pod-fill weather, which can inject a risk premium into summer prices, and the opposite-hemisphere Brazil harvest (February-April) spreads supply through the year. In early July the market sits just before its key US weather window, a modest potential positive.",
+          "result": "Pass"
+        }
+      ]
+    },
+    {
+      "categoryKey": "PriceAndValue",
+      "summary": "Soybeans are fairly-to-attractively valued: below their 5- and 10-year highs, cheap in real terms, near the ~$10.80 US breakeven, and ~33% below the 2012 record. The soft spot is a balanced soybean-corn ratio and shifting oil/meal split. Value is a mild positive.",
+      "overallAnalysisDetails": "On price, soybeans are reasonable. At about $11.90 they sit below the 2021-22 highs (~$14-17) but above the 2019 trade-war lows (~$8), and are cheap in inflation-adjusted terms — the 2012 record of ~$17.90 would be well over $20 in today's dollars.\n\nThe cost of production supports the floor: University of Illinois budgets put the all-in US breakeven around $10.80 a bushel, so at ~$11.90 soybeans trade near or just above cost, with margins thin for many growers. They are about 33% below the 2012 record, leaving headroom. The soft spot is relative value: the soybean-to-corn price ratio near 2.4 is balanced (it governs the acreage battle), and the split of the crushed bean's value between meal and oil is shifting toward oil. Overall the value picture is a mild positive rather than a standout.",
+      "factors": [
+        {
+          "factorKey": "price_vs_range",
+          "oneLineExplanation": "Below the 5- and 10-year highs.",
+          "detailedExplanation": "At about $11.90, soybeans are in the upper half of their 52-week range but below the 2021-22 highs of ~$14-17 and above the 2019 lows near $8. That is a reasonable valuation level — not cheap, not expensive — with room to rise if demand or weather surprises.",
+          "result": "Pass"
+        },
+        {
+          "factorKey": "inflation_adjusted_price",
+          "oneLineExplanation": "Cheap in inflation-adjusted terms.",
+          "detailedExplanation": "In real terms soybeans are well below their historical peaks — the 2012 record of ~$17.90 would be over $20 in today's dollars. Buyers are not paying an inflated real price, which limits valuation risk.",
+          "result": "Pass"
+        },
+        {
+          "factorKey": "cost_of_production_floor",
+          "oneLineExplanation": "Near the ~$10.80 US breakeven.",
+          "detailedExplanation": "University of Illinois budgets put the all-in US soybean breakeven around $10.80 a bushel. At ~$11.90, soybeans trade near or just above cost, with thin margins for many growers — a condition that supports a price floor because sustained losses eventually cut acreage.",
+          "result": "Pass"
+        },
+        {
+          "factorKey": "price_vs_substitute",
+          "oneLineExplanation": "Balanced soybean-corn ratio; shifting oil/meal split.",
+          "detailedExplanation": "The soybean-to-corn price ratio near 2.4 is balanced, giving no clear acreage edge, and the split of the crushed bean's value is shifting toward oil (bullish for oil) and away from meal (bearish for meal). With no strong relative-value signal in soybeans' favor, this factor is a mild negative.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "distance_from_all_time_high",
+          "oneLineExplanation": "About 33% below the 2012 record near $17.90.",
+          "detailedExplanation": "Soybeans near $11.90 are about 33% below their 2012 record of ~$17.90, leaving room to rise if a supply shock or demand surge hits, rather than fresh-record risk. That headroom is a mild positive for a long position.",
+          "result": "Pass"
+        }
+      ]
+    },
+    {
+      "categoryKey": "VolatilityAndRisk",
+      "summary": "Soybeans are moderately volatile (~20-25%, lower than wheat) but carry a large, live US-China trade-war risk that has driven ~55% drawdowns, plus a strong-dollar headwind versus Brazil. The positives: manageable volatility and low correlation to stocks. Two of five factors pass.",
+      "overallAnalysisDetails": "Soybeans are less wild than wheat — annualized volatility is about 20-25%, moderate for a commodity — but the tail risk is large and political. The US-China trade war is the dominant hazard: China can shift purchases to Brazil almost overnight, as it did in 2018-19 when it cut US buying ~75% and US prices fell, driving a ~55% peak-to-trough drawdown. US beans still carry a 13% Chinese duty versus ~3% for Brazil, so a relapse would hit US prices hard.\n\nA strong US dollar (and a weak Brazilian real) compounds the problem by letting Brazil undercut US export prices. On the positive side, the moderate volatility makes position sizing easier than for wheat, and soybeans have low correlation to equities (with a biofuel link that ties soybean oil to energy), so they add diversification. The net is a commodity with manageable day-to-day risk but a serious, headline-driven downside tail.",
+      "factors": [
+        {
+          "factorKey": "historical_volatility",
+          "oneLineExplanation": "Moderate, ~20-25% a year.",
+          "detailedExplanation": "Soybeans' annualized volatility runs about 20-25% — moderate for a commodity and lower than wheat or energy. Prices still move on weather and China headlines, but the day-to-day swings are manageable enough for careful position sizing, so this factor is a relative positive.",
+          "result": "Pass"
+        },
+        {
+          "factorKey": "worst_drawdowns",
+          "oneLineExplanation": "History of ~55% trade-war drawdowns.",
+          "detailedExplanation": "Soybeans fell about 55% from the 2012 peak (~$17.90) to the 2019 trade-war lows (~$8). In 2018 China cut US purchases ~75%, and USDA estimated ~$9.4 billion in annualized farmer losses. A history of deep, politically-driven drawdowns is a real downside risk.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "geopolitical_weather_risk",
+          "oneLineExplanation": "US-China trade war is a large, live risk.",
+          "detailedExplanation": "The US-China trade war is the dominant risk: China can shift demand to Brazil overnight (Brazilian beans reached >70% of China's imports in 2025, US share fell to ~21%), and US beans carry a 13% Chinese duty versus ~3% for Brazil. Add South American weather and US biofuel policy, and this is a large, live downside hazard.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "us_dollar_sensitivity",
+          "oneLineExplanation": "Strong dollar favors Brazil over US beans.",
+          "detailedExplanation": "A strong US dollar and a weak Brazilian real let Brazil undercut US export prices, structurally favoring Brazilian beans in the battle for Chinese demand. That currency dynamic is a persistent headwind for US-benchmarked soybean prices.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "correlation_to_inflation_and_stocks",
+          "oneLineExplanation": "Low correlation to stocks; a biofuel/energy link.",
+          "detailedExplanation": "Soybeans have low correlation to equities, and the renewable-diesel demand for soybean oil ties part of their value to energy prices. That combination — a food/feed diversifier with an energy link — is a genuine positive for portfolio diversification.",
+          "result": "Pass"
+        }
+      ]
+    },
+    {
+      "categoryKey": "FutureOutlook",
+      "summary": "The outlook is balanced: USDA raised its 2026/27 price to $11.40 and analysts cluster at $11-12 (near/above spot), but the forward balance is a standoff between record Brazilian supply and uncertain China demand, and trade-war risk keeps the bull/bear scenario even. Two of five factors pass.",
+      "overallAnalysisDetails": "The forward setup is a genuine standoff. On the supportive side, USDA raised its 2026/27 season-average price to $11.40 (from $10.40 in 2025/26), new-crop futures hit a 3-year high above $12, and analysts cluster around $11-12 — near or above today's ~$11.90. The renewable-diesel pull on soybean oil (a ~49-cent-per-gallon 45Z credit for soy oil, a rising biofuel mandate) is a real demand lever.\n\nAgainst that, the forward supply-demand balance pits a record Brazilian mega-crop and ample global stocks against uncertain Chinese demand, and the biggest swing factor is the US-China trade relationship, which can shift Chinese buying to Brazil overnight. The bull case (biofuel demand, a durable China deal, a weather scare) roughly offsets the bear case (Brazil's mega-crop, a trade-war relapse, China's push for self-sufficiency). The net is a balanced outlook where official forecasts and analyst targets lean supportive, but the scenario risk keeps it from being clearly bullish.",
+      "factors": [
+        {
+          "factorKey": "forward_supply_demand_balance",
+          "oneLineExplanation": "Record Brazilian supply versus uncertain China demand.",
+          "detailedExplanation": "The forward balance is a standoff: a record Brazilian crop and ample global stocks on one side, uncertain Chinese demand and a renewable-diesel pull on soybean oil on the other. US 2026/27 ending stocks tighten modestly to 310 million bushels, but the global picture is well-supplied, so the balance is not clearly favorable.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "official_agency_forecast",
+          "oneLineExplanation": "USDA raised the 2026/27 price to $11.40.",
+          "detailedExplanation": "USDA raised its 2026/27 season-average farm price to $11.40 (from $10.40 in 2025/26). An official forecast of firmer prices, supported by the crush and biofuel demand story, is a supportive signal for a long position from ~$11.90.",
+          "result": "Pass"
+        },
+        {
+          "factorKey": "analyst_price_targets",
+          "oneLineExplanation": "Analysts cluster at $11-12, near/above spot.",
+          "detailedExplanation": "New-crop futures hit a 3-year high above $12, and analyst consensus clusters around $11-12 — near or above today's ~$11.90 — citing the crush and China deal as support. Targets sitting at or above spot are a mild positive.",
+          "result": "Pass"
+        },
+        {
+          "factorKey": "bull_vs_bear_scenario",
+          "oneLineExplanation": "Biofuel/China bull offsets Brazil/trade-war bear.",
+          "detailedExplanation": "The bull case is renewable-diesel demand for soybean oil, China honoring the 25-million-tonne deal, and a weather scare. The bear case is Brazil's mega-crop, a trade-war relapse and China's self-sufficiency push. The two roughly cancel, so the scenario balance is even rather than favorable.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "key_catalysts_to_watch",
+          "oneLineExplanation": "Trade talks and Brazil weather cut both ways.",
+          "detailedExplanation": "Watch US-China trade talks and deal compliance, Brazil weather and final crop size, the monthly WASDE, US crush and biofuel policy (45Z/RFS), and August US pod-fill weather. These are the swing factors, but they are two-sided — a trade breakdown or a bumper Brazilian crop is as likely as a bullish surprise — so the catalysts are a source of risk, not a dependable tailwind.",
+          "result": "Fail"
+        }
+      ]
+    }
+  ]
+}

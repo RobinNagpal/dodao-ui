@@ -1,0 +1,201 @@
+{
+  "slug": "soybean-meal",
+  "name": "Soybean Meal",
+  "commodityGroup": "Agriculture",
+  "priceSymbol": "ZM=F",
+  "exchange": "CBOT",
+  "unit": "short ton",
+  "currency": "USD",
+  "metaDescription": "A plain-English investor read on soybean meal: near $305 a short ton in mid-2026, cheap versus history but structurally oversupplied because the renewable-diesel crush boom floods the market with meal. Covers supply and demand, value, risk, and the outlook.",
+  "updatedAt": "2026-07-07",
+  "summary": "Overall stance: Bearish. Cheap, but caught in a structural oversupply.\n\nSoybean meal is the high-protein powder left after soybeans are crushed for their oil — the world's dominant protein feed for poultry, hogs, cattle and fish. In early July 2026 the CBOT front-month trades near $305 a short ton, near multi-year lows and about 43-45% below its 2014/2022 highs around $540-550.\n\nThe defining problem is a byproduct glut. Because the US built new crushing plants to make soybean OIL for renewable diesel, crushers run at record rates — and every bushel crushed for oil also produces meal. That flood has pushed meal down and lifted oil's share of the crushed bean's value toward 50% (from ~35%). USDA sees the meal price near $310-315 a ton through 2026/27 — flat and low. The one genuine support is long-run global protein demand, and meal is cheap versus history. But with record supply, flat US herds and Argentina competing hard, the base case is a market that stays oversupplied and weak — cheap but structurally pressured, not a clear long.",
+  "keyFacts": {
+    "keyFacts": "Soybean meal is what remains after soybeans are crushed and their oil is removed — a high-protein meal (about 80% of each crushed bushel by weight) that is the world's main protein ingredient in animal feed. It is traded on the CBOT in US dollars per short ton (2,000 lbs), with the front-month future (ZM=F) as the benchmark. In early July 2026 that price is about $305 a short ton.\n\nThe crucial idea for a beginner is that meal is a byproduct of the crush, so its price depends heavily on how much soybean is being crushed and why. Right now the driver is soybean OIL: the US is crushing record volumes to make oil for renewable diesel, and all that crushing produces a flood of meal as a side product. When oil is in high demand, crushers run hard and meal supply rises — which pushes meal prices DOWN. That meal-versus-oil tug-of-war is the central story: strong oil demand is bearish for meal. Meal's own demand comes from animal feed, which grows slowly with global meat consumption.",
+    "greenFlags": [
+      {
+        "flag": "Cheap versus its own history",
+        "explanation": "At about $305 a ton, meal sits near multi-year lows and roughly 43-45% below its 2014/2022 highs around $540-550. For a buyer, the starting price is low, which limits how much further it can fall on valuation alone.",
+        "result": "Pass"
+      },
+      {
+        "flag": "Long-run global protein demand grows",
+        "explanation": "Soybean meal is the world's main protein feed, and demand rises steadily as emerging-market diets add more poultry, pork and farmed fish. That structural growth is the one durable support under the meal market.",
+        "result": "Pass"
+      }
+    ],
+    "redFlags": [
+      {
+        "flag": "A structural meal glut from the crush boom",
+        "explanation": "The US built new crushing plants to make soybean oil for renewable diesel, so record crush (~2.75 billion bushels in 2026/27, meal output ~65 million short tons) floods the market with meal as a byproduct. That oversupply is the core reason meal is stuck at low prices.",
+        "result": "Fail"
+      },
+      {
+        "flag": "Flat prices and tough export competition",
+        "explanation": "USDA sees the meal price near $310-315 a ton for both 2025/26 and 2026/27 — flat and low — while Argentina, the world's #1 meal exporter (~29 million tonnes), competes aggressively and US animal herds are roughly flat. Little points to higher prices.",
+        "result": "Fail"
+      }
+    ],
+    "mainUses": ["Protein animal feed — poultry, hogs, cattle, aquaculture"],
+    "topProducers": [
+      { "country": "Argentina", "share": "#1 exporter (~29 Mt)" },
+      { "country": "Brazil", "share": "Major crusher/exporter (>30% of trade)" },
+      { "country": "United States", "share": "Rising exporter (mid-teens Mt)" },
+      { "country": "China", "share": "Largest crusher (feeds its own herd)" }
+    ],
+    "waysToInvest": [
+      { "type": "Futures", "name": "ZM=F", "note": "CBOT soybean meal (100 short tons); no clean retail ETF, for experienced traders" },
+      { "type": "ETF", "name": "DBA / soy complex", "note": "Broad ag baskets give indirect soybean-complex exposure" },
+      { "type": "Equities", "name": "ADM / BG", "note": "Crushers/processors; meal is part of their crush-margin business" }
+    ]
+  },
+  "categories": [
+    {
+      "categoryKey": "SupplyAndDemand",
+      "summary": "The renewable-diesel crush boom floods the market with meal as a byproduct, and new crush capacity keeps coming — a structural oversupply. Long-run global feed demand is the one support. With flat herds and Argentine competition, supply dominates.",
+      "overallAnalysisDetails": "Supply is the whole story here, and it is heavy. The US built a wave of new crushing plants to make soybean oil for renewable diesel, and because crushing a bushel for oil also yields meal, record crush (about 2.75 billion bushels in 2026/27, roughly 65 million short tons of meal) is flooding the market with meal as a byproduct. More crush capacity is still ramping, so the meal glut is structural, not temporary.\n\nDemand grows only slowly. Meal is the world's main protein feed, and global consumption rises with meat and aquaculture demand — a genuine but gradual tailwind. In the US, though, animal herds are roughly flat, and on the export side Argentina (the #1 meal exporter at ~29 million tonnes) and Brazil compete hard for buyers. With supply rising faster than demand, and no strong seasonal pull, the balance is clearly oversupplied.",
+      "factors": [
+        {
+          "factorKey": "production_output_trend",
+          "oneLineExplanation": "Record crush floods the market with meal.",
+          "detailedExplanation": "US soybean crush is at a record (~2.75 billion bushels in 2026/27, ~65 million short tons of meal) because plants were built to make oil for renewable diesel — and every bushel crushed for oil also produces meal. That byproduct flood is rising, structurally bearish supply for meal.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "global_inventories_stockpiles",
+          "oneLineExplanation": "Ample meal supply from record crush and bean stocks.",
+          "detailedExplanation": "With record crush and abundant soybeans feeding the pipeline, meal supply is plentiful and stocks are comfortable. There is no scarcity to support the price; if anything, the surplus of meal coming off the crush weighs on the market.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "demand_drivers",
+          "oneLineExplanation": "Global feed demand grows, but only slowly.",
+          "detailedExplanation": "Meal demand comes from animal feed — poultry, hogs, cattle and fish — and grows steadily as global meat and aquaculture consumption rise. That long-run growth is a genuine support and the one clear positive in the meal picture, even if it is too gradual to absorb the current crush-driven glut.",
+          "result": "Pass"
+        },
+        {
+          "factorKey": "spare_capacity_new_supply",
+          "oneLineExplanation": "New crush capacity keeps adding meal.",
+          "detailedExplanation": "More US crush capacity is still ramping up (built for oil/biofuel), and Argentina crushes large volumes too. That means meal supply keeps growing structurally regardless of meal's own price, a persistent headwind that caps any rally.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "seasonality",
+          "oneLineExplanation": "Mild seasonality, no strong pull.",
+          "detailedExplanation": "Meal has some seasonal demand tied to the soybean harvest and winter feeding, but the effect is mild and easily swamped by the crush-driven supply flood. There is no reliable seasonal tailwind to lean on.",
+          "result": "Fail"
+        }
+      ]
+    },
+    {
+      "categoryKey": "PriceAndValue",
+      "summary": "Meal is cheap in absolute and real terms and ~43-45% below its highs, but its value floor is being pushed down by crush economics (oil takes a bigger share) and it is not clearly cheap versus rival protein feeds. A mixed picture — cheap, but for structural reasons.",
+      "overallAnalysisDetails": "On a headline basis, meal is cheap. At about $305 a ton it sits near multi-year lows and roughly 43-45% below its 2014/2022 highs around $540-550, and it is inexpensive in inflation-adjusted terms.\n\nBut the 'value' is a symptom of the glut, not a bargain waiting to reverse. Meal's price is set by crush economics — it is the leftover value after the oil is sold — and because soybean oil now commands a much larger share of the crushed bean's value (toward 50% versus a historical ~35%) thanks to renewable-diesel demand, meal is being pushed below its normal range. Against rival protein feeds (DDGS, canola meal, fishmeal), meal is competitively priced but not obviously the cheapest. So while the absolute price is low and ~43-45% below the highs, the cheapness reflects a structural squeeze rather than a coiled spring.",
+      "factors": [
+        {
+          "factorKey": "price_vs_range",
+          "oneLineExplanation": "Near multi-year lows.",
+          "detailedExplanation": "At about $305 a ton, meal is near the bottom of its multi-year range (52-week range roughly $266-343). A low starting price limits how much further it can fall on valuation alone, which is a mild positive for a buyer even amid the glut.",
+          "result": "Pass"
+        },
+        {
+          "factorKey": "inflation_adjusted_price",
+          "oneLineExplanation": "Cheap in inflation-adjusted terms.",
+          "detailedExplanation": "In real terms meal is inexpensive, well below its 2014 and 2022 peaks once inflation is accounted for. Buyers are not paying an inflated real price, so valuation risk to the downside is limited.",
+          "result": "Pass"
+        },
+        {
+          "factorKey": "cost_of_production_floor",
+          "oneLineExplanation": "Crush economics push the meal floor down.",
+          "detailedExplanation": "Meal has no independent cost floor — it is the residual value of a crushed bean after the oil is sold. Because renewable-diesel demand has lifted oil's share of the bean's value toward 50% (from a historical ~35%), meal is being pushed below its normal range. So the usual cost-of-production support is weak here.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "price_vs_substitute",
+          "oneLineExplanation": "Not clearly cheap versus rival protein feeds.",
+          "detailedExplanation": "Meal competes with other protein feeds like distillers' grains (DDGS), canola meal and fishmeal. It is competitively priced but not obviously the cheapest option, and abundant supply keeps it from commanding a premium. The relative-value signal is neutral-to-negative.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "distance_from_all_time_high",
+          "oneLineExplanation": "About 43-45% below the ~$540-550 highs.",
+          "detailedExplanation": "Meal near $305 is about 43-45% below its 2014/2022 highs around $540-550, leaving large theoretical headroom. That distance is a mild positive, though the structural glut means the gap could persist for a long time.",
+          "result": "Pass"
+        }
+      ]
+    },
+    {
+      "categoryKey": "VolatilityAndRisk",
+      "summary": "Meal is volatile (~25-30% a year) with a history of deep falls from its peaks, exposed to soybean weather, Argentine export policy and a strong dollar. The one positive is low correlation to stocks. Four of five factors fail.",
+      "overallAnalysisDetails": "Meal carries typical grain-complex risk. Its annualized volatility runs about 25-30%, and it has fallen hard from past peaks (the 2014 and 2022 highs near $540-550 both gave way to big declines). Because meal tracks soybeans, it is exposed to US, Brazilian and Argentine weather, and to Argentina's export policy — Argentina being the world's #1 meal exporter, its taxes and currency moves swing the global market.\n\nA strong US dollar hurts US meal's export competitiveness against Argentina and Brazil. The one redeeming feature is diversification: meal is a feed-cost input whose returns are driven by harvests and crush economics rather than the business cycle, so it has low correlation to equities. But on balance the risk profile is unfavorable, with four of five factors negative.",
+      "factors": [
+        {
+          "factorKey": "historical_volatility",
+          "oneLineExplanation": "Volatile, ~25-30% a year.",
+          "detailedExplanation": "Meal's annualized volatility runs about 25-30%, moving with soybean prices, crush margins and weather. That is meaningful volatility for a feed ingredient, making it a bumpy hold, so this factor is a negative.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "worst_drawdowns",
+          "oneLineExplanation": "Deep falls from its 2014 and 2022 peaks.",
+          "detailedExplanation": "Meal has dropped sharply from its highs before — both the 2014 and 2022 peaks near $540-550 gave way to large declines to today's ~$305. A history of deep drawdowns from elevated levels is a real downside risk.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "geopolitical_weather_risk",
+          "oneLineExplanation": "Soybean weather and Argentine policy swing it.",
+          "detailedExplanation": "Because meal tracks soybeans, it is exposed to US, Brazilian and Argentine weather, and to Argentina's export taxes and policy (Argentina is the #1 meal exporter). These factors can move the price sharply either way, so they are a source of risk rather than a dependable support.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "us_dollar_sensitivity",
+          "oneLineExplanation": "A strong dollar hurts US meal exports.",
+          "detailedExplanation": "Meal is priced in dollars, so a stronger dollar makes US meal less competitive against Argentina and Brazil in export markets. With those competitors already aggressive, this currency headwind is a negative for US-benchmarked meal prices.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "correlation_to_inflation_and_stocks",
+          "oneLineExplanation": "Low correlation to stocks — a diversifier.",
+          "detailedExplanation": "Meal is a feed-cost input (it feeds into meat prices) whose returns are driven by harvests and crush economics rather than the business cycle, so it has low correlation to equities. That diversification benefit is the one clear positive in its risk profile.",
+          "result": "Pass"
+        }
+      ]
+    },
+    {
+      "categoryKey": "FutureOutlook",
+      "summary": "The outlook is bearish: the crush-driven meal glut is structural, USDA sees flat prices near $310-315, and analysts are unenthusiastic. The one offset is that long-run global feed demand keeps growing, which underpins the bull case over time. Only that scenario factor passes.",
+      "overallAnalysisDetails": "The forward setup is weak. The meal glut is structural, not cyclical: the US built crush capacity for renewable-diesel oil, so record crush keeps producing surplus meal regardless of meal's own price, and more capacity is still coming. USDA sees the meal price near $315 a ton for 2025/26 and $310 for 2026/27 — essentially flat and low — and analyst commentary is unenthusiastic given the oversupply.\n\nThe one genuine positive is the long game: global feed and protein demand keeps rising as emerging-market diets add more meat and farmed fish, and meal is cheap versus its history, so a patient investor is buying a structurally-growing demand story at a low price. But for the foreseeable future the crush-driven supply flood and aggressive Argentine competition dominate, so the base case is a market that stays oversupplied and weak. Watch US crush rates, biofuel policy (which drives the oil share and thus meal supply), soybean prices and Argentina.",
+      "factors": [
+        {
+          "factorKey": "forward_supply_demand_balance",
+          "oneLineExplanation": "Structural meal glut from the crush boom.",
+          "detailedExplanation": "The forward balance is oversupplied: renewable-diesel-driven crush expansion keeps producing surplus meal as a byproduct, faster than slowly-growing feed demand can absorb it. A structural glut is a clear negative for future meal prices.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "official_agency_forecast",
+          "oneLineExplanation": "USDA sees flat, low prices near $310-315.",
+          "detailedExplanation": "USDA forecasts the meal price near $315 a ton for 2025/26 and $310 for 2026/27 — essentially flat and low. An official view of stagnant prices, reflecting the oversupply, is an unsupportive signal for a long position.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "analyst_price_targets",
+          "oneLineExplanation": "Analysts unenthusiastic on the glut.",
+          "detailedExplanation": "With record crush flooding the market and oil taking a bigger share of the bean's value, analyst commentary on meal is muted, pointing to continued low prices. There is no clear upside target to justify a long, so this factor is a negative.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "bull_vs_bear_scenario",
+          "oneLineExplanation": "Long-run protein demand cushions the bear case.",
+          "detailedExplanation": "The bear case (crush-driven glut, Argentine competition, flat herds) dominates today, but the bull case is real over time: global feed and protein demand keeps rising, and meal is cheap versus history. For a patient investor that structural demand growth cushions the downside, so the scenario balance carries a genuine long-term positive.",
+          "result": "Pass"
+        },
+        {
+          "factorKey": "key_catalysts_to_watch",
+          "oneLineExplanation": "Catalysts mostly point to more supply.",
+          "detailedExplanation": "Watch US crush rates, renewable-diesel/biofuel policy (which drives the oil share and thus meal supply), soybean prices, Argentine export policy and the WASDE. In an oversupplied market most of these catalysts point toward more meal supply rather than higher prices, so they lean unfavorable.",
+          "result": "Fail"
+        }
+      ]
+    }
+  ]
+}

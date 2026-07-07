@@ -1,0 +1,205 @@
+{
+  "slug": "coffee",
+  "name": "Coffee",
+  "commodityGroup": "Agriculture",
+  "priceSymbol": "KC=F",
+  "exchange": "ICE",
+  "unit": "pound",
+  "currency": "USD",
+  "metaDescription": "A plain-English investor read on Arabica coffee: near $3.24 a pound in mid-2026, still ~24% below its 2025 record but 2-3x the cost of production, with a record Brazil crop set to flip the market into surplus. Covers supply and demand, value, risk, and the outlook.",
+  "updatedAt": "2026-07-07",
+  "summary": "Overall stance: Cautious. Tight supply today, but an expensive, mean-reversion-prone price.\n\nCoffee has been one of the decade's hottest commodities. Arabica (ICE 'Coffee C', KC=F) hit an all-time record near $4.41 a pound in February 2025 on Brazil drought and a global shortage. In early July 2026 it has cooled to about $3.24 a pound — still historically very expensive (roughly 2-3x farmers' cost) but about 24% below the record.\n\nThe fundamentals are genuinely tight: five straight years of global deficit, ICE stocks near multi-year lows, resilient demand, and trees that take 3-4 years to mature. But the price is stretched. A record Brazil crop (2026/27 is an 'on' year) is forecast to flip the market into surplus, banks (Rabobank, World Bank) project double-digit declines, and the price sits far above the ~$1-2 cost of production. Coffee is also extremely volatile (~40%+ a year) with a history of 50-80% crashes. The biggest wildcard is a June-August Brazil frost, which could reignite the bull case overnight. Best viewed as a weather-driven tactical exposure, not a value buy here.",
+  "keyFacts": {
+    "keyFacts": "This report covers Arabica coffee — the higher-quality bean used in roast-and-ground and specialty coffee, grown mainly in Brazil, Colombia and Central America. It trades on ICE as 'Coffee C' (KC=F) in US cents per pound. It is distinct from Robusta (a cheaper, more caffeinated bean used in instant coffee, traded in London and dominated by Vietnam). In early July 2026 Arabica trades near $3.24 a pound.\n\nFor a beginner, coffee is a weather-and-Brazil story. Brazil grows about a third of the world's coffee, so one country's weather moves the global price, and Arabica trees bear heavily every other year (a natural 'on/off' cycle). Demand is remarkably steady — people keep drinking coffee — so prices are driven mostly by supply shocks: frost (the key risk in the June-August Brazilian winter), drought, and the size of the Brazil crop. Coffee just came off an all-time record near $4.41 a pound (February 2025) after drought and a multi-year global shortage; it has since cooled but remains historically expensive, and a record Brazil crop is now expected to ease the shortage.",
+    "greenFlags": [
+      {
+        "flag": "Genuinely tight supply right now",
+        "explanation": "The market has run five straight years of global deficit, ICE certified Arabica stocks are near multi-year lows (about half of a year earlier), and world ending stocks keep falling. That tightness is real and is what kept prices elevated.",
+        "result": "Pass"
+      },
+      {
+        "flag": "Slow supply response and resilient demand",
+        "explanation": "Coffee trees take 3-4 years to mature, so supply cannot respond quickly to high prices, and demand is inelastic — global consumption hit a record ~174 million bags. That combination supports prices in the near term.",
+        "result": "Pass"
+      }
+    ],
+    "redFlags": [
+      {
+        "flag": "Expensive and mean-reversion-prone",
+        "explanation": "At about $3.24 a pound, coffee is only ~24% below its all-time record and roughly 2-3x the ~$1-2 cost of production, so the downside support is thin. A record Brazil crop is forecast to flip the market into surplus, and Rabobank and the World Bank project double-digit declines.",
+        "result": "Fail"
+      },
+      {
+        "flag": "Extreme volatility and crash history",
+        "explanation": "Coffee swings about 40%+ a year and has a history of 50-80% crashes after price spikes (e.g. down 80%+ from the late-1990s peak). Near record highs, the risk of a sharp fall is elevated.",
+        "result": "Fail"
+      }
+    ],
+    "mainUses": ["Beverage (roast & ground, plus instant)"],
+    "topProducers": [
+      { "country": "Brazil", "share": "~35% (Arabica leader)" },
+      { "country": "Vietnam", "share": "~17% (mostly Robusta)" },
+      { "country": "Colombia", "share": "~8% (Arabica)" },
+      { "country": "Ethiopia", "share": "~6% (Arabica)" }
+    ],
+    "waysToInvest": [
+      {
+        "type": "ETN",
+        "name": "Coffee ETN",
+        "note": "Retail note tracking coffee futures; verify a live product (the old JO ETN was delisted 2023) and note issuer credit + roll risk"
+      },
+      { "type": "Futures", "name": "KC=F", "note": "ICE Arabica (37,500 lbs); high leverage and volatility, not for beginners" },
+      { "type": "Equities", "name": "Coffee companies", "note": "Roasters/retailers (e.g. large chains); note high bean prices can hurt their margins" }
+    ]
+  },
+  "categories": [
+    {
+      "categoryKey": "SupplyAndDemand",
+      "summary": "Supply is tight today — multi-year-low ICE stocks, five straight deficit years, a slow 3-4 year tree response, and frost-season risk — with resilient demand. The one clear negative is a record Brazil crop coming in 2026/27. On the near-term balance, supportive.",
+      "overallAnalysisDetails": "The current supply-demand picture is genuinely tight, which is why coffee is expensive. The market has run five straight years of global deficit, ICE certified Arabica stocks are near multi-year lows (roughly half of a year ago), and coffee trees take 3-4 years to mature, so supply cannot respond quickly. Demand is resilient — world consumption hit a record ~174 million bags — though very high prices are starting to cause some downtrading to cheaper Robusta.\n\nThe big offset is looming: 2026/27 is an 'on' year in Arabica's two-year bearing cycle, and USDA forecasts a record Brazil crop (arabica up ~25%), which follows the drought-damaged 2025/26. That record harvest is what is expected to ease the shortage. Seasonally, the June-August Brazilian winter frost window is the key upside risk — a frost could tighten supply overnight. So the near-term balance is supportive (tight stocks, slow supply, frost risk), even though the incoming record crop is a clear medium-term negative.",
+      "factors": [
+        {
+          "factorKey": "production_output_trend",
+          "oneLineExplanation": "A record Brazil crop is coming in 2026/27.",
+          "detailedExplanation": "2026/27 is an 'on' year in Arabica's biennial cycle, and USDA forecasts a record Brazil crop (arabica up ~25%, total Brazil ~72 million bags), recovering from the drought-hit 2025/26. A record harvest of the world's dominant supplier is a bearish production signal that is expected to ease the shortage.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "global_inventories_stockpiles",
+          "oneLineExplanation": "ICE stocks near multi-year lows.",
+          "detailedExplanation": "ICE certified Arabica stocks are near multi-year lows — roughly half of a year earlier — and world ending stocks have fallen for five straight years. Genuinely tight, drawn-down inventories are supportive for the nearby price, the clearest bullish fact in coffee today.",
+          "result": "Pass"
+        },
+        {
+          "factorKey": "demand_drivers",
+          "oneLineExplanation": "Resilient, record consumption.",
+          "detailedExplanation": "Global coffee consumption hit a record ~174 million bags and grows about 1-2% a year, and demand is inelastic — people keep drinking coffee through price swings. High prices are causing some downtrading to Robusta, but the demand base is durable and supportive.",
+          "result": "Pass"
+        },
+        {
+          "factorKey": "spare_capacity_new_supply",
+          "oneLineExplanation": "Trees take 3-4 years — slow supply response.",
+          "detailedExplanation": "Coffee trees take 3-4 years to mature and about five to reach a full crop, so supply cannot respond quickly to high prices. That slow response is why a shortage can persist for years and is supportive for a holder in the near term.",
+          "result": "Pass"
+        },
+        {
+          "factorKey": "seasonality",
+          "oneLineExplanation": "June-August frost season is the key upside risk.",
+          "detailedExplanation": "The Brazilian winter (roughly June-August) is frost season, the single biggest upside catalyst — a frost in the growing regions can damage the crop and spike prices overnight, as in 1977 and 2021. Flowering in September-November then sets the next crop. In early July the calendar sits right in the frost-risk window, a potential positive.",
+          "result": "Pass"
+        }
+      ]
+    },
+    {
+      "categoryKey": "PriceAndValue",
+      "summary": "Coffee is expensive: near the top of its multi-decade range, 2-3x the cost of production with thin downside support, near record highs, and its substitute Robusta is also elevated. The one mild positive is that it is below its inflation-adjusted 1977 peak. Value is the weakest pillar.",
+      "overallAnalysisDetails": "As a value proposition, coffee is stretched. At about $3.24 a pound it sits near the top of its multi-decade range and roughly 2-3x the 2018-2020 lows. The one nuance is that, in inflation-adjusted terms, today's price is still below the real 1977 frost peak — so it is less extreme in real terms than the nominal record suggests.\n\nBut the downside support is thin. Growers' cost of production is roughly $1-2 a pound (Colombia washed-Arabica cultivation cost is about $1.03), so at ~$3.24 the price is far above cost, giving huge grower margins but little cost 'floor' near current levels — the real floor is far below. The substitute, Robusta, also hit records (around $2.41 a pound), so there is no cheap alternative pulling coffee down, but nor is coffee cheap relative to it. And the price is only about 24% below its all-time record. Netting it out, value is the weakest part of the coffee case: this is not a cheap entry point.",
+      "factors": [
+        {
+          "factorKey": "price_vs_range",
+          "oneLineExplanation": "Near the top of its multi-decade range.",
+          "detailedExplanation": "At about $3.24 a pound, coffee sits near the upper part of its multi-decade range and roughly 2-3x its 2018-2020 lows. That is an expensive starting point on valuation, with more room to fall than to rise if the shortage eases.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "inflation_adjusted_price",
+          "oneLineExplanation": "Below its inflation-adjusted 1977 peak.",
+          "detailedExplanation": "Although it set a nominal record in 2025, coffee is still below its inflation-adjusted 1977 frost peak. In real terms today's price is elevated but not an all-time extreme, which is a mild reassurance versus the headline nominal record.",
+          "result": "Pass"
+        },
+        {
+          "factorKey": "cost_of_production_floor",
+          "oneLineExplanation": "2-3x the ~$1-2 cost, thin downside support.",
+          "detailedExplanation": "Growers' cost of production is roughly $1-2 a pound (Colombia washed-Arabica cultivation cost ~$1.03). At ~$3.24, the price is 2-3x cost, so margins are huge but the cost 'floor' is far below current levels, offering almost no downside protection at these prices.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "price_vs_substitute",
+          "oneLineExplanation": "Robusta is also near records — no cheap alternative.",
+          "detailedExplanation": "The main substitute, Robusta, also hit records (around $2.41 a pound), driving some downtrading. That means there is no cheap alternative dragging Arabica down, but coffee is not cheap relative to its substitute either — a neutral-to-negative relative-value picture given how elevated both are.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "distance_from_all_time_high",
+          "oneLineExplanation": "Only ~24% below the 2025 record near $4.41.",
+          "detailedExplanation": "Coffee near $3.24 is only about 24% below its all-time record of ~$4.41 (February 2025). Being that close to a record high is not a value entry — it signals an elevated, stretched price with meaningful downside if the shortage eases, so this factor is a negative.",
+          "result": "Fail"
+        }
+      ]
+    },
+    {
+      "categoryKey": "VolatilityAndRisk",
+      "summary": "Coffee is extremely volatile (~40%+ a year) with a history of 50-80% crashes, and a weak Brazilian real is bearish. The positives: its weather risk genuinely cuts in favor of holders (frost = supply cut = higher prices), and it has low correlation to stocks. Two of five factors pass.",
+      "overallAnalysisDetails": "Coffee is a high-risk asset. Its annualized volatility is roughly 40%+, and it reprices violently on any credible weather threat. It is boom-bust prone: it fell 80%+ from the late-1990s peak to 2001, and doubled then crashed after 2014. Near record highs, that crash history is a live concern.\n\nTwo risks are genuine negatives: the volatility/drawdown history, and the Brazilian real — a weaker real encourages Brazilian farmers to sell more (they earn in dollars), which is bearish for the price. But coffee's weather risk is unusual in that it mostly favors a holder: the dominant weather event is frost, which cuts supply and pushes prices up, so 'weather risk' here is asymmetric to the upside. And coffee has low correlation to equities, making it a genuine diversifier. So while this is a volatile commodity, two of the five risk factors actually lean positive for a long.",
+      "factors": [
+        {
+          "factorKey": "historical_volatility",
+          "oneLineExplanation": "Extremely volatile, ~40%+ a year.",
+          "detailedExplanation": "Coffee's annualized volatility is roughly 40%+, among the highest of any commodity, because it reprices violently on weather threats. Such large swings make it a high-risk hold, especially near record highs, so this factor is a negative.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "worst_drawdowns",
+          "oneLineExplanation": "History of 50-80% crashes after spikes.",
+          "detailedExplanation": "Coffee is boom-bust prone: it fell 80%+ from the late-1990s peak to 2001 and crashed after the 2014 spike. Near a record high with a record crop coming, the risk of a large, fast drawdown is elevated — a clear negative.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "geopolitical_weather_risk",
+          "oneLineExplanation": "Frost risk mostly favors a holder.",
+          "detailedExplanation": "Coffee's key weather risk is Brazilian frost, which cuts supply and drives prices UP — so unlike most commodities, weather risk here is asymmetric to the upside for a holder. Brazil's supply concentration (about a third of the world) amplifies this. In the June-August frost window that supply-shock optionality is a genuine positive for a long.",
+          "result": "Pass"
+        },
+        {
+          "factorKey": "us_dollar_sensitivity",
+          "oneLineExplanation": "A weak Brazilian real is bearish.",
+          "detailedExplanation": "Coffee is priced in dollars, and the key currency is the Brazilian real: a weaker real encourages Brazilian farmers (who earn in dollars) to sell more, adding supply and pushing prices down. With the real a swing factor, this currency sensitivity is a bearish risk.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "correlation_to_inflation_and_stocks",
+          "oneLineExplanation": "Low correlation to stocks — a diversifier.",
+          "detailedExplanation": "Coffee has low correlation to equities — its returns are driven by weather and Brazilian harvests, not the business cycle — so it can rise when stocks fall. It is also a food-inflation input (retail coffee prices soared). That diversification benefit is a genuine positive.",
+          "result": "Pass"
+        }
+      ]
+    },
+    {
+      "categoryKey": "FutureOutlook",
+      "summary": "The forward view is bearish: a record Brazil crop is set to flip the market into surplus after five deficit years, USDA/ICO data point lower, and Rabobank and the World Bank forecast double-digit declines. The one offset is a clear frost catalyst that could reignite the bull case. Four of five factors fail.",
+      "overallAnalysisDetails": "The forward setup leans clearly bearish for the elevated price. After five straight deficit years, the consensus is that 2026/27 flips to a surplus of roughly 7-10 million bags (Rabobank, StoneX) on the record Brazil crop — the tightness breaks once that harvest lands. USDA data show a record global crop and stocks starting to rebuild, and the ICO price index fell to a six-month low in early 2026 on improved supply.\n\nAnalyst targets point lower: Rabobank sees Arabica down roughly a third by late 2026 (settling $2.50-3.00), and the World Bank projects a ~13% decline in 2026 after 2025's surge. The bull case rests on tight stocks and frost risk; the bear case — a record crop, a price 2-3x cost, and consensus forecasts for declines — outweighs it. The single biggest wildcard is a June-August Brazil frost, which could reignite the bull case overnight, so the catalyst to watch is a genuine two-way (but mostly bullish-if-triggered) event. On balance, though, the forward evidence is unfavorable for a new buyer at these levels.",
+      "factors": [
+        {
+          "factorKey": "forward_supply_demand_balance",
+          "oneLineExplanation": "Surplus returning in 2026/27 after five deficits.",
+          "detailedExplanation": "After five straight deficit years, the consensus is that 2026/27 flips to a surplus of roughly 7-10 million bags on the record Brazil crop (Rabobank, StoneX). A market moving from shortage to surplus is a clear bearish signal for the elevated price.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "official_agency_forecast",
+          "oneLineExplanation": "USDA record crop; ICO price at a 6-month low.",
+          "detailedExplanation": "USDA data show a record global crop with stocks beginning to rebuild, and the ICO composite price index fell to a six-month low in early 2026 on improved supply. Official data pointing to more supply and softening prices is an unsupportive signal.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "analyst_price_targets",
+          "oneLineExplanation": "Rabobank and the World Bank forecast declines.",
+          "detailedExplanation": "Rabobank sees Arabica falling roughly a third by late 2026 (settling $2.50-3.00), and the World Bank projects a ~13% decline in 2026 and a further ~5% in 2027. A consensus of double-digit declines is a clear negative for a long position near $3.24.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "bull_vs_bear_scenario",
+          "oneLineExplanation": "Bear case (surplus, cost gap) outweighs the bull.",
+          "detailedExplanation": "The bull case is low stocks and frost risk; the bear case is the record crop flipping the market to surplus, a price 2-3x cost, and consensus forecasts for declines. On balance the bear case is heavier, so the scenario skew is unfavorable for a new buyer at these levels.",
+          "result": "Fail"
+        },
+        {
+          "factorKey": "key_catalysts_to_watch",
+          "oneLineExplanation": "A June-August frost could reignite the bull case.",
+          "detailedExplanation": "Watch Brazil frost (June-August), the ICE certified-stock rebuild, the Brazilian real, and USDA/ICO/CONAB crop reports confirming the surplus. The single biggest wildcard is a Brazil frost, which could spike prices overnight — a clear, monitorable catalyst that gives the bull case genuine (if weather-dependent) optionality.",
+          "result": "Pass"
+        }
+      ]
+    }
+  ]
+}
