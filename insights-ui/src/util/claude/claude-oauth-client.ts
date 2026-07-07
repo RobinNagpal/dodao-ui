@@ -21,7 +21,7 @@
 export const CLAUDE_CODE_IDENTITY = "You are Claude Code, Anthropic's official CLI for Claude.";
 
 const DEFAULT_BASE_URL = 'https://api.anthropic.com';
-const DEFAULT_MODEL = 'claude-opus-4-8';
+const DEFAULT_MODEL = 'claude-opus-4-7';
 const DEFAULT_CC_VERSION = '2.1.80';
 
 /** Beta flags Claude Code sends; `oauth-2025-04-20` is the one that matters for OAuth. */
@@ -35,7 +35,7 @@ export interface CallClaudeOAuthOptions {
   prompt: string;
   /** Optional extra system instructions, appended AFTER the required identity block. */
   system?: string;
-  /** Model id. Defaults to `ANTHROPIC_MODEL` env, else `claude-opus-4-8`. */
+  /** Model id. Defaults to `ANTHROPIC_MODEL` env, else `claude-opus-4-7`. */
   model?: string;
   /** Response length cap. Defaults to 1024. */
   maxTokens?: number;

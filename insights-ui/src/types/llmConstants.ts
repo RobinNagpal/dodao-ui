@@ -37,7 +37,7 @@ export function getDefaultGeminiModel(): GeminiModel {
  * Default Claude model used when generating reports via the Claude
  * subscription OAuth path (see `getClaudeStructuredResponse`).
  */
-export const DEFAULT_CLAUDE_MODEL = 'claude-opus-4-8';
+export const DEFAULT_CLAUDE_MODEL = 'claude-opus-4-7';
 
 /**
  * Gets the Claude model from environment variable ANTHROPIC_MODEL, defaulting
