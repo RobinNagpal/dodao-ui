@@ -251,7 +251,7 @@ function CodePicker({ onSelect, manualCode, setManualCode, manualError, onManual
           onChange={(e) => setManualCode(e.target.value)}
           placeholder="0901.90.20.00"
           aria-label="HTS code"
-          className="flex-1 h-11 rounded-lg border border-border bg-bg px-4 text-sm text-heading placeholder:text-muted font-mono focus:outline-none focus:ring-2 focus:ring-amber-300/40 focus:border-amber-300/60"
+          className="flex-1 h-11 rounded-lg border border-border bg-gray-950 px-4 text-sm text-heading placeholder-gray-500 font-mono focus:outline-none focus:ring-2 focus:ring-amber-300/40 focus:border-amber-300/60"
         />
         <button
           type="submit"
@@ -314,7 +314,7 @@ function ShipmentForm({ form, updateForm, submitting, hideQuantityInputs, primar
           step="0.01"
           value={form.shipmentValueUsd}
           onChange={(e) => updateForm('shipmentValueUsd', e.target.value)}
-          className="block w-full rounded-md border border-border bg-bg px-3 py-2 text-sm text-heading shadow-xs focus:outline-none focus:ring-2 focus:ring-amber-300/40 focus:border-amber-300/60"
+          className="block w-full rounded-md border border-border bg-gray-950 px-3 py-2 text-sm text-heading shadow-xs focus:outline-none focus:ring-2 focus:ring-amber-300/40 focus:border-amber-300/60"
         />
       </Field>
 
@@ -323,7 +323,7 @@ function ShipmentForm({ form, updateForm, submitting, hideQuantityInputs, primar
           id="countryOfOrigin"
           value={form.countryOfOrigin}
           onChange={(e) => updateForm('countryOfOrigin', e.target.value)}
-          className="block w-full rounded-md border border-border bg-bg px-3 py-2 text-sm text-heading shadow-xs focus:outline-none focus:ring-2 focus:ring-amber-300/40 focus:border-amber-300/60"
+          className="block w-full rounded-md border border-border bg-gray-950 px-3 py-2 text-sm text-heading shadow-xs focus:outline-none focus:ring-2 focus:ring-amber-300/40 focus:border-amber-300/60"
         >
           {COUNTRY_OPTIONS.map((c) => (
             <option key={c.code} value={c.code}>
@@ -338,7 +338,7 @@ function ShipmentForm({ form, updateForm, submitting, hideQuantityInputs, primar
           id="modeOfTransport"
           value={form.modeOfTransport}
           onChange={(e) => updateForm('modeOfTransport', e.target.value as TransportMode)}
-          className="block w-full rounded-md border border-border bg-bg px-3 py-2 text-sm text-heading shadow-xs focus:outline-none focus:ring-2 focus:ring-amber-300/40 focus:border-amber-300/60"
+          className="block w-full rounded-md border border-border bg-gray-950 px-3 py-2 text-sm text-heading shadow-xs focus:outline-none focus:ring-2 focus:ring-amber-300/40 focus:border-amber-300/60"
         >
           {TRANSPORT_MODES.map((m) => (
             <option key={m} value={m}>
@@ -355,7 +355,7 @@ function ShipmentForm({ form, updateForm, submitting, hideQuantityInputs, primar
             type="date"
             value={form.entryDate}
             onChange={(e) => updateForm('entryDate', e.target.value)}
-            className="block w-full rounded-md border border-border bg-bg px-3 py-2 text-sm text-heading shadow-xs focus:outline-none focus:ring-2 focus:ring-amber-300/40 focus:border-amber-300/60"
+            className="block w-full rounded-md border border-border bg-gray-950 px-3 py-2 text-sm text-heading shadow-xs focus:outline-none focus:ring-2 focus:ring-amber-300/40 focus:border-amber-300/60"
           />
         </Field>
         <Field label="Date of Loading" htmlFor="dateOfLoading">
@@ -364,7 +364,7 @@ function ShipmentForm({ form, updateForm, submitting, hideQuantityInputs, primar
             type="date"
             value={form.dateOfLoading}
             onChange={(e) => updateForm('dateOfLoading', e.target.value)}
-            className="block w-full rounded-md border border-border bg-bg px-3 py-2 text-sm text-heading shadow-xs focus:outline-none focus:ring-2 focus:ring-amber-300/40 focus:border-amber-300/60"
+            className="block w-full rounded-md border border-border bg-gray-950 px-3 py-2 text-sm text-heading shadow-xs focus:outline-none focus:ring-2 focus:ring-amber-300/40 focus:border-amber-300/60"
           />
         </Field>
       </div>
@@ -381,14 +381,14 @@ function ShipmentForm({ form, updateForm, submitting, hideQuantityInputs, primar
                   type="text"
                   value={primaryUoms[0]}
                   readOnly
-                  className="block w-full rounded-md border border-border bg-bg px-3 py-2 text-sm text-heading shadow-xs uppercase opacity-80"
+                  className="block w-full rounded-md border border-border bg-gray-950 px-3 py-2 text-sm text-heading shadow-xs uppercase opacity-80"
                 />
               ) : primaryUoms.length > 1 ? (
                 <select
                   id="unitOfMeasure"
                   value={form.unitOfMeasure}
                   onChange={(e) => updateForm('unitOfMeasure', e.target.value)}
-                  className="block w-full rounded-md border border-border bg-bg px-3 py-2 text-sm text-heading shadow-xs uppercase focus:outline-none focus:ring-2 focus:ring-amber-300/40 focus:border-amber-300/60"
+                  className="block w-full rounded-md border border-border bg-gray-950 px-3 py-2 text-sm text-heading shadow-xs uppercase focus:outline-none focus:ring-2 focus:ring-amber-300/40 focus:border-amber-300/60"
                 >
                   {primaryUoms.map((u) => (
                     <option key={u} value={u}>
@@ -403,7 +403,7 @@ function ShipmentForm({ form, updateForm, submitting, hideQuantityInputs, primar
                   value={form.unitOfMeasure}
                   onChange={(e) => updateForm('unitOfMeasure', e.target.value)}
                   placeholder="—"
-                  className="block w-full rounded-md border border-border bg-bg px-3 py-2 text-sm text-heading shadow-xs uppercase focus:outline-none focus:ring-2 focus:ring-amber-300/40 focus:border-amber-300/60"
+                  className="block w-full rounded-md border border-border bg-gray-950 px-3 py-2 text-sm text-heading shadow-xs uppercase focus:outline-none focus:ring-2 focus:ring-amber-300/40 focus:border-amber-300/60"
                 />
               )}
             </Field>
@@ -415,7 +415,7 @@ function ShipmentForm({ form, updateForm, submitting, hideQuantityInputs, primar
                 step="0.01"
                 value={form.quantity}
                 onChange={(e) => updateForm('quantity', e.target.value)}
-                className="block w-full rounded-md border border-border bg-bg px-3 py-2 text-sm text-heading shadow-xs focus:outline-none focus:ring-2 focus:ring-amber-300/40 focus:border-amber-300/60"
+                className="block w-full rounded-md border border-border bg-gray-950 px-3 py-2 text-sm text-heading shadow-xs focus:outline-none focus:ring-2 focus:ring-amber-300/40 focus:border-amber-300/60"
               />
             </Field>
           </div>
@@ -453,7 +453,7 @@ function Field({ label, htmlFor, children }: { label: string; htmlFor: string; c
 
 function EmptyResultState(): JSX.Element {
   return (
-    <div className="rounded-xl border border-dashed border-border bg-bg/40 p-8 text-center text-sm opacity-70">
+    <div className="rounded-xl border border-dashed border-border bg-gray-900/40 p-8 text-center text-sm opacity-70">
       Fill in your shipment details and click <strong>Calculate duties</strong> to see what each line will cost.
     </div>
   );
@@ -504,7 +504,7 @@ function ResultPanel({ result, submitting, onToggleExclusion }: ResultPanelProps
                 </tr>
               )}
               {lines.map((line) => (
-                <tr key={line.candidateId} className="border-b border-border/60 last:border-0 align-top">
+                <tr key={line.candidateId} className="border-b border-gray-800/60 last:border-0 align-top">
                   <td className="px-4 py-3">
                     <div className="font-mono text-xs text-amber-200">
                       {line.code}

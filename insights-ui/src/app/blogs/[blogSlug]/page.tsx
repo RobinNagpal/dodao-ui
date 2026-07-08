@@ -138,7 +138,7 @@ export default async function PostPage({ params }: { params: Promise<{ blogSlug:
             <span className="relative z-10 rounded-full py-1.5 font-medium">{data.category.title}</span>
           </p>
           <h1 className="mt-2 text-4xl font-semibold tracking-tight text-pretty  sm:text-3xl">{data.title}</h1>
-          <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-gray-400">
+          <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-muted">
             <span>By {authorName}</span>
             <span aria-hidden="true">·</span>
             <time dateTime={data.datetime}>{formattedDate}</time>

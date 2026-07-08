@@ -240,7 +240,7 @@ export default function TariffReportsAdminTable(): JSX.Element {
         </button>
       </div>
 
-      <details className="mb-3 rounded-md border border-border bg-surface/40 p-3 text-xs text-muted">
+      <details className="mb-3 rounded-md border border-border bg-gray-800/40 p-3 text-xs text-muted">
         <summary className="cursor-pointer text-muted">
           Generation order &amp; dependencies — generate a section only after its prerequisites show ✓ (its “Gen” button stays disabled until then)
         </summary>

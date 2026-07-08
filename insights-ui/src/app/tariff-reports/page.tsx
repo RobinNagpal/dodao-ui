@@ -91,7 +91,7 @@ function ChapterCard({ chapterNumber, chapterTitle, chapterSlug, lastModified }:
   return (
     <article className="group flex flex-col rounded-2xl bg-bg border border-border transition-all hover:border-primary p-6">
       <div className="mb-4 flex items-center justify-between text-xs">
-        <span className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-2.5 py-1 font-medium text-primary ring-1 ring-inset ring-primary/20">
+        <span className="inline-flex items-center gap-1.5 rounded-full bg-blue-500/10 px-2.5 py-1 font-medium text-blue-400 ring-1 ring-inset ring-blue-500/20">
           <Layers className="h-3 w-3" />
           HTS Chapter {padded}
         </span>
@@ -111,7 +111,7 @@ function ChapterCard({ chapterNumber, chapterTitle, chapterSlug, lastModified }:
           <Link
             key={section.slug}
             href={chapterSectionHref(chapterSlug, section.slug)}
-            className="inline-flex items-center rounded-md border border-border px-2 py-1 text-xs font-medium text-muted transition-colors hover:border-primary hover:bg-primary/5 hover:text-primary"
+            className="inline-flex items-center rounded-md border border-border px-2 py-1 text-xs font-medium text-muted transition-colors hover:border-primary hover:bg-blue-500/5 hover:text-primary"
           >
             {section.label}
           </Link>

@@ -177,7 +177,9 @@ export function ChapterArticle({
               <div />
             )}
             <div className="flex gap-2">
-              <span className="inline-flex items-center rounded-full bg-primary/10 px-2.5 py-0.5 text-xs font-medium text-primary">Tariff Report</span>
+              <span className="inline-flex items-center rounded-full bg-blue-100 dark:bg-blue-900 px-2.5 py-0.5 text-xs font-medium text-blue-800 dark:text-blue-300">
+                Tariff Report
+              </span>
               <span className="inline-flex items-center rounded-full bg-teal-100 dark:bg-teal-900 px-2.5 py-0.5 text-xs font-medium text-teal-800 dark:text-teal-300">
                 {sectionLabel}
               </span>

@@ -47,7 +47,7 @@ function ClassificationLeversTable({ levers, flat }: { levers: ClassificationLev
   return (
     <div className="overflow-x-auto">
       <table className="min-w-full divide-y divide-border text-sm">
-        <thead className="bg-surface/60">
+        <thead className="bg-gray-800/60">
           <tr>
             <th className="px-3 py-2 text-left font-semibold">Lever</th>
             <th className="px-3 py-2 text-left font-semibold">Current Classification</th>
@@ -107,7 +107,7 @@ function StrategyCard({ strategy, flat }: { strategy: Strategy; flat: boolean })
   const precedent = typeof strategy?.precedent === 'string' ? strategy.precedent : '';
 
   // Flat variant uses bg-gray-800 inner card (factor-analysis style); legacy uses border + bg-gray-900/40.
-  const cardClass = flat ? 'rounded-md bg-surface p-4' : 'rounded-lg border border-border bg-bg/40 p-4';
+  const cardClass = flat ? 'rounded-md bg-surface p-4' : 'rounded-lg border border-border bg-gray-900/40 p-4';
 
   return (
     <div className={cardClass}>
