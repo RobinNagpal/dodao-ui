@@ -23,6 +23,7 @@ export enum ClaudeModel {
   CLAUDE_OPUS_4_8 = 'claude-opus-4-8',
   CLAUDE_OPUS_4_7 = 'claude-opus-4-7',
   CLAUDE_SONNET_4_6 = 'claude-sonnet-4-6',
+  CLAUDE_HAIKU_4_5 = 'claude-haiku-4-5',
 }
 
 /**
@@ -96,6 +97,7 @@ export function getModelSelectItemsForProvider(provider: LLMProvider): LlmSelect
       { id: ClaudeModel.CLAUDE_OPUS_4_8, label: 'Claude Opus 4.8' },
       { id: ClaudeModel.CLAUDE_OPUS_4_7, label: 'Claude Opus 4.7' },
       { id: ClaudeModel.CLAUDE_SONNET_4_6, label: 'Claude Sonnet 4.6' },
+      { id: ClaudeModel.CLAUDE_HAIKU_4_5, label: 'Claude Haiku 4.5' },
     ];
   }
   // Gemini and Gemini-with-grounding share the same Gemini model list.

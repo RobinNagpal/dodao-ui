@@ -2,6 +2,7 @@
 
 import { TickerIdentifier } from '@/app/api/[spaceId]/tickers-v1/generation-requests/route';
 import AdminNav from '@/app/admin-v1/AdminNav';
+import LlmProviderModelSelector, { getDefaultLlmProviderModelSelection, LlmProviderModelSelection } from '@/components/llm/LlmProviderModelSelector';
 import PassFailBadge from '@/components/ui/PassFailBadge';
 import { useGenerateReports } from '@/hooks/useGenerateReports';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
@@ -308,6 +309,9 @@ export default function MissingReportsPage(): JSX.Element {
 
   const { generateAllReportsInBackground, generateSpecificReportsInBackground, isGenerating: hookGenerating } = useGenerateReports();
 
+  // LLM provider/model to use for the background generation requests created here.
+  const [llmSelection, setLlmSelection] = useState<LlmProviderModelSelection>(getDefaultLlmProviderModelSelection());
+
   const { postData: fetchFinancialData, loading: fetchingFinancialData } = usePostData<FetchFinancialDataResponse, FetchFinancialDataRequest>({
     successMessage: 'Financial data fetch started successfully!',
     errorMessage: 'Failed to fetch financial data',
@@ -368,7 +372,7 @@ export default function MissingReportsPage(): JSX.Element {
         .map((ticker) => ({ symbol: ticker.symbol, exchange: ticker.exchange as TickerIdentifier['exchange'] }));
 
       // Check if any selected tickers have missing financial data
-      await handleFinancialDataValidationAndGenerate(selectedTickers, () => generateAllReportsInBackground(selectedTickers));
+      await handleFinancialDataValidationAndGenerate(selectedTickers, () => generateAllReportsInBackground(selectedTickers, llmSelection));
     } catch (err) {
       console.error('Error generating all reports for selected tickers:', err);
     } finally {
@@ -431,7 +435,7 @@ export default function MissingReportsPage(): JSX.Element {
         await handleFinancialDataValidationAndGenerate(selectedTickers, async () => {
           // Generate individual requests for each ticker with their specific missing reports
           for (const { ticker, reportTypes } of tickersWithReportTypes) {
-            await generateSpecificReportsInBackground([ticker], reportTypes);
+            await generateSpecificReportsInBackground([ticker], reportTypes, llmSelection);
           }
         });
       }
@@ -557,6 +561,14 @@ export default function MissingReportsPage(): JSX.Element {
                 Clear Selection
               </Button>
               <span className="ml-auto text-sm text-gray-400 self-center">{selectedRows.size} tickers selected</span>
+            </div>
+          )}
+
+          {/* LLM provider/model selector */}
+          {data && data.length > 0 && (
+            <div className="mb-4 max-w-2xl">
+              <h4 className="text-sm font-medium text-gray-300 mb-1">LLM Provider &amp; Model</h4>
+              <LlmProviderModelSelector selection={llmSelection} onChange={setLlmSelection} />
             </div>
           )}
 
