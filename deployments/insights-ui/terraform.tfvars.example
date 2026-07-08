@@ -40,5 +40,5 @@ existing_cloudfront_distribution_id = "EZI5H8FKNE9R1"
 #   KOALA_AWS_SECRET_ACCESS_KEY = "..."
 #   STOCK_ANALYZER_LAMBDA_URL   = "..."
 #   ETF_ANALYZER_LAMBDA_URL     = "..."
-#   # …remaining lambda URLs, DISCORD_/TWITTER_ OAuth, LLM_MODEL, LLM_PROVIDER, SCREENER_API_URL…
+#   # …remaining lambda URLs, DISCORD_/TWITTER_ OAuth, SCREENER_API_URL…
 # }
