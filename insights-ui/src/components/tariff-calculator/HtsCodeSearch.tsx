@@ -106,7 +106,7 @@ export default function HtsCodeSearch({ onSelect, className }: HtsCodeSearchProp
           onChange={onChange}
           onFocus={() => query.trim().length >= 2 && setOpen(true)}
           placeholder="Search what you ship — like frozen shrimp, lithium battery, cotton t-shirt"
-          className="w-full h-12 rounded-lg border border-amber-300/25 bg-gray-800/60 pl-11 pr-10 text-sm text-white placeholder-gray-400 shadow-sm focus:outline-none focus:ring-2 focus:ring-amber-300/40 focus:border-amber-300/60"
+          className="w-full h-12 rounded-lg border border-amber-300/25 bg-surface/60 pl-11 pr-10 text-sm text-heading placeholder:text-muted shadow-sm focus:outline-none focus:ring-2 focus:ring-amber-300/40 focus:border-amber-300/60"
           aria-label="Search HTS codes"
           autoComplete="off"
         />
@@ -114,7 +114,7 @@ export default function HtsCodeSearch({ onSelect, className }: HtsCodeSearchProp
           <button
             type="button"
             onClick={handleClear}
-            className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white"
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-muted hover:text-heading"
             aria-label="Clear search"
           >
             <XMarkIcon className="h-5 w-5" />
@@ -123,12 +123,9 @@ export default function HtsCodeSearch({ onSelect, className }: HtsCodeSearchProp
       </div>
 
       {open && (state.loading || state.results.length > 0 || state.error || state.query.length >= 2) && (
-        <div
-          className="absolute left-0 right-0 z-30 mt-2 max-h-[28rem] overflow-y-auto rounded-lg border border-gray-700 bg-gray-900 shadow-2xl"
-          role="listbox"
-        >
+        <div className="absolute left-0 right-0 z-30 mt-2 max-h-[28rem] overflow-y-auto rounded-lg border border-border bg-bg shadow-2xl" role="listbox">
           {state.loading && state.results.length === 0 && (
-            <div className="p-4 text-center text-sm text-gray-400">
+            <div className="p-4 text-center text-sm text-muted">
               <div className="mx-auto mb-2 h-5 w-5 animate-spin rounded-full border-b-2 border-amber-400" />
               Searching HTSUS catalog…
             </div>
@@ -137,14 +134,14 @@ export default function HtsCodeSearch({ onSelect, className }: HtsCodeSearchProp
           {state.error && <div className="p-4 text-center text-sm text-red-400">{state.error}</div>}
 
           {!state.loading && !state.error && state.results.length === 0 && state.query.length >= 2 && (
-            <div className="p-4 text-center text-sm text-gray-400">
+            <div className="p-4 text-center text-sm text-muted">
               <div>No HTS codes match &ldquo;{state.query}&rdquo;.</div>
               <div className="mt-1 text-xs opacity-75">Try a more general term, or paste a 4–10 digit HTS code.</div>
             </div>
           )}
 
           {state.results.length > 0 && (
-            <ul className="divide-y divide-gray-800">
+            <ul className="divide-y divide-border">
               {state.results.map((result) => (
                 <li key={result.id}>
                   <button
@@ -154,15 +151,15 @@ export default function HtsCodeSearch({ onSelect, className }: HtsCodeSearchProp
                   >
                     <div className="flex items-baseline justify-between gap-3">
                       <span className="font-mono text-sm font-semibold text-amber-300">{formatHts10(result.htsCode10)}</span>
-                      <span className="text-[11px] uppercase tracking-wide text-gray-500">
+                      <span className="text-[11px] uppercase tracking-wide text-muted">
                         Ch. {String(result.chapterNumber).padStart(2, '0')} · {result.chapterTitle}
                       </span>
                     </div>
-                    <ol className="mt-2 space-y-0.5 text-xs text-gray-300">
+                    <ol className="mt-2 space-y-0.5 text-xs text-muted">
                       {result.hierarchy.map((node, idx) => {
                         const isLeaf = idx === result.hierarchy.length - 1;
                         return (
-                          <li key={node.id} className={isLeaf ? 'text-white font-medium' : 'text-gray-400'} style={{ paddingLeft: `${node.indent * 12}px` }}>
+                          <li key={node.id} className={isLeaf ? 'text-heading font-medium' : 'text-muted'} style={{ paddingLeft: `${node.indent * 12}px` }}>
                             <span className="opacity-60">{isLeaf ? '└─ ' : '├─ '}</span>
                             {node.htsNumber && <span className="font-mono mr-2 text-amber-200/80">{node.htsNumber}</span>}
                             <span>{node.description}</span>

@@ -13,9 +13,9 @@ interface ChapterToolsBarProps {
 export default function ChapterToolsBar({ links }: ChapterToolsBarProps): JSX.Element | null {
   if (links.length === 0) return null;
   return (
-    <div className="mb-6 flex flex-wrap items-center gap-2 rounded-lg border border-gray-700/60 bg-gray-800/40 px-3 py-2">
-      <span className="text-xs font-semibold uppercase tracking-wider text-gray-400">Tools for this chapter</span>
-      <span aria-hidden className="text-gray-600">
+    <div className="mb-6 flex flex-wrap items-center gap-2 rounded-lg border border-border/60 bg-surface/40 px-3 py-2">
+      <span className="text-xs font-semibold uppercase tracking-wider text-muted">Tools for this chapter</span>
+      <span aria-hidden className="text-muted">
         ·
       </span>
       <ToolPills links={links} />

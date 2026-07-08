@@ -145,9 +145,7 @@ export default function GenerateWholeReport({ industryId }: { industryId: string
     <PrivateWrapper>
       <div className="max-w-xl mx-auto p-6">
         <h1 className="text-2xl font-bold mb-4">Generate Full Tariff Report</h1>
-        <p className="text-gray-600 mb-6">
-          This will generate all sections of the tariff report sequentially. The process may take several minutes to complete.
-        </p>
+        <p className="text-muted mb-6">This will generate all sections of the tariff report sequentially. The process may take several minutes to complete.</p>
         <div className="mt-4 border-t border-blue-100 pt-4">
           <h3 className="text-sm font-medium text-blue-800 mb-2">API Calls Status:</h3>
 
@@ -158,8 +156,8 @@ export default function GenerateWholeReport({ industryId }: { industryId: string
               {topLevelApiCalls.map((call) => (
                 <li key={call.id} className="flex items-center text-sm">
                   <div
-                    className={`w-4 h-4 rounded-full flex items-center justify-center text-white text-xs mr-2 ${
-                      call.status === 'completed' ? 'bg-green-500' : call.status === 'loading' ? 'bg-blue-500' : 'bg-gray-300'
+                    className={`w-4 h-4 rounded-full flex items-center justify-center text-heading text-xs mr-2 ${
+                      call.status === 'completed' ? 'bg-green-500' : call.status === 'loading' ? 'bg-primary' : 'bg-surface-3'
                     }`}
                   >
                     {call.status === 'completed' ? (
@@ -183,8 +181,8 @@ export default function GenerateWholeReport({ industryId }: { industryId: string
               {finalApiCalls.map((call) => (
                 <li key={call.id} className="flex items-center text-sm">
                   <div
-                    className={`w-4 h-4 rounded-full flex items-center justify-center text-white text-xs mr-2 ${
-                      call.status === 'completed' ? 'bg-green-500' : call.status === 'loading' ? 'bg-blue-500' : 'bg-gray-300'
+                    className={`w-4 h-4 rounded-full flex items-center justify-center text-heading text-xs mr-2 ${
+                      call.status === 'completed' ? 'bg-green-500' : call.status === 'loading' ? 'bg-primary' : 'bg-surface-3'
                     }`}
                   >
                     {call.status === 'completed' ? (
@@ -203,7 +201,7 @@ export default function GenerateWholeReport({ industryId }: { industryId: string
         </div>
 
         {!running && !error && (
-          <button className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold transition-colors" onClick={run}>
+          <button className="px-6 py-3 bg-primary hover:bg-primary text-heading rounded-lg font-semibold transition-colors" onClick={run}>
             Start Generation
           </button>
         )}
@@ -228,20 +226,20 @@ export default function GenerateWholeReport({ industryId }: { industryId: string
 
               <div className="mb-3">
                 <div className="flex justify-between text-sm mb-1">
-                  <span className="text-gray-600">Progress</span>
-                  <span className="text-gray-800 font-medium">{progress}%</span>
+                  <span className="text-muted">Progress</span>
+                  <span className="text-body font-medium">{progress}%</span>
                 </div>
-                <div className="h-2 rounded-full bg-gray-200">
-                  <div className="h-2 bg-blue-600 rounded-full transition-all duration-300" style={{ width: `${progress}%` }} />
+                <div className="h-2 rounded-full bg-surface-2">
+                  <div className="h-2 bg-primary rounded-full transition-all duration-300" style={{ width: `${progress}%` }} />
                 </div>
               </div>
 
-              <p className="text-sm text-gray-700 mb-4">
+              <p className="text-sm text-muted mb-4">
                 <strong>Current:</strong> {currentStep}
               </p>
             </div>
 
-            <div className="text-sm text-gray-500 bg-yellow-50 border border-yellow-200 rounded-lg p-3">
+            <div className="text-sm text-muted bg-yellow-50 border border-yellow-200 rounded-lg p-3">
               ⚠️ <strong>Important:</strong> Keep this tab open during generation. The process will continue in the background.
             </div>
           </div>
@@ -250,7 +248,7 @@ export default function GenerateWholeReport({ industryId }: { industryId: string
         {!running && progress === 100 && !error && (
           <div className="bg-green-50 border border-green-200 rounded-lg p-4">
             <div className="flex items-center">
-              <div className="w-4 h-4 bg-green-500 rounded-full flex items-center justify-center text-white text-xs mr-3">✓</div>
+              <div className="w-4 h-4 bg-green-500 rounded-full flex items-center justify-center text-heading text-xs mr-3">✓</div>
               <span className="text-green-800 font-medium">Report Generation Complete!</span>
             </div>
             <p className="text-green-700 text-sm mt-2">All sections have been generated successfully. You can now view the complete report.</p>

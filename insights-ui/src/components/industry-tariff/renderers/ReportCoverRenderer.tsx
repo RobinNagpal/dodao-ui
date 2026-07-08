@@ -12,7 +12,7 @@ interface ReportCoverRendererProps {
  */
 export const ReportCoverRenderer: React.FC<ReportCoverRendererProps> = ({ reportCover }) => {
   return (
-    <div className="bg-white dark:bg-gray-900 rounded-lg shadow-sm overflow-hidden">
+    <div className="bg-bg rounded-lg shadow-sm overflow-hidden">
       <div className="p-4">
         <div className="prose max-w-none" dangerouslySetInnerHTML={{ __html: parseMarkdown(reportCover.reportCoverContent) }} />
       </div>

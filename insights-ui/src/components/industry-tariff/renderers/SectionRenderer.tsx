@@ -6,8 +6,8 @@ import React from 'react';
  */
 export const renderSection = (title: string, content: JSX.Element, sectionId?: string) => (
   <div id={sectionId} className="mb-12">
-    <div className="bg-gray-900 rounded-lg shadow-sm overflow-hidden">
-      <div className="bg-gray-800 p-4 border-b border-gray-700">
+    <div className="bg-bg rounded-lg shadow-sm overflow-hidden">
+      <div className="bg-surface p-4 border-b border-border">
         <h2 className="text-xl font-semibold heading-color">{title}</h2>
       </div>
       <div className="p-4">{content}</div>

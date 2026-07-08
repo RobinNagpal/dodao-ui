@@ -25,15 +25,15 @@ export default function TariffCrossLinks({ links }: TariffCrossLinksProps) {
             <Link
               href={link.href}
               title={link.description}
-              className="group inline-flex max-w-full items-center gap-2 rounded-lg border border-color block-bg-color px-3 py-2 text-sm font-medium text-white transition-colors hover:border-indigo-400 hover:bg-block-bg-color"
+              className="group inline-flex max-w-full items-center gap-2 rounded-lg border border-color block-bg-color px-3 py-2 text-sm font-medium text-heading transition-colors hover:border-primary hover:bg-block-bg-color"
             >
               {link.icon && (
-                <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-indigo-500/10 text-indigo-400 ring-1 ring-inset ring-indigo-500/20 group-hover:bg-indigo-500/20 [&_svg]:!size-4">
+                <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-primary/10 text-primary ring-1 ring-inset ring-primary/20 group-hover:bg-primary/20 [&_svg]:!size-4">
                   {link.icon}
                 </span>
               )}
               <span className="min-w-0 truncate">{link.title}</span>
-              <ChevronRight className="h-4 w-4 shrink-0 text-muted-foreground transition group-hover:translate-x-px group-hover:text-indigo-300" aria-hidden />
+              <ChevronRight className="h-4 w-4 shrink-0 text-muted-foreground transition group-hover:translate-x-px group-hover:text-primary" aria-hidden />
             </Link>
           </li>
         ))}

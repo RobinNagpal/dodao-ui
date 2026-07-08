@@ -24,7 +24,7 @@ export default function CollapsibleLayout({ children, basePath, lastModified }: 
       {!isSidebarOpen && (
         <button
           onClick={toggleSidebar}
-          className="fixed bottom-6 left-6 z-50 bg-blue-600 hover:bg-blue-700 text-white px-4 py-3 rounded-full shadow-lg transition-all duration-200 hover:scale-105 flex items-center gap-2"
+          className="fixed bottom-6 left-6 z-50 bg-primary hover:bg-primary text-heading px-4 py-3 rounded-full shadow-lg transition-all duration-200 hover:scale-105 flex items-center gap-2"
           aria-label="Show navigation"
         >
           <Menu className="h-5 w-5" />

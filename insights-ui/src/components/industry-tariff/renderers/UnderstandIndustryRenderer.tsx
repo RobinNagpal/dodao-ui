@@ -19,11 +19,11 @@ export const UnderstandIndustryRenderer: React.FC<UnderstandIndustryRendererProp
 
   if (!title && sections.length === 0) {
     if (flat) {
-      return <p className="text-gray-500 italic">No content available</p>;
+      return <p className="text-muted italic">No content available</p>;
     }
     return (
-      <div className="bg-gray-900 rounded-lg p-6 shadow-sm">
-        <p className="text-gray-500 italic">No content available</p>
+      <div className="bg-bg rounded-lg p-6 shadow-sm">
+        <p className="text-muted italic">No content available</p>
       </div>
     );
   }
@@ -55,8 +55,8 @@ export const UnderstandIndustryRenderer: React.FC<UnderstandIndustryRendererProp
   return (
     <div className="space-y-8">
       {title && (
-        <div className="bg-gray-900 rounded-lg shadow-sm overflow-hidden">
-          <div className="bg-gray-800 p-4 border-b border-gray-700">
+        <div className="bg-bg rounded-lg shadow-sm overflow-hidden">
+          <div className="bg-surface p-4 border-b border-border">
             <h2 className="text-2xl font-bold heading-color">{title}</h2>
           </div>
         </div>
@@ -67,9 +67,9 @@ export const UnderstandIndustryRenderer: React.FC<UnderstandIndustryRendererProp
         const sectionTitle = typeof section?.title === 'string' ? section.title : '';
         if (!sectionTitle && paragraphs.length === 0) return null;
         return (
-          <div key={index} className="bg-gray-900 rounded-lg shadow-sm overflow-hidden">
+          <div key={index} className="bg-bg rounded-lg shadow-sm overflow-hidden">
             {sectionTitle && (
-              <div className="bg-gray-800 p-4 border-b border-gray-700">
+              <div className="bg-surface p-4 border-b border-border">
                 <h3 className="text-xl font-semibold heading-color">{sectionTitle}</h3>
               </div>
             )}

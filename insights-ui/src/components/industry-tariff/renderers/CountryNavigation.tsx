@@ -21,7 +21,7 @@ export const CountryNavigation: React.FC<CountryNavigationProps> = ({ countries 
           <button
             key={countryName}
             onClick={() => scrollToCountry(countryName)}
-            className="px-3 py-2 text-sm font-medium primary-color hover:text-white hover:bg-primary-color rounded-md transition-colors"
+            className="px-3 py-2 text-sm font-medium primary-color hover:text-heading hover:bg-primary-color rounded-md transition-colors"
           >
             {countryName}
           </button>

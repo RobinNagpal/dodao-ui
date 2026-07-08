@@ -50,13 +50,13 @@ function ChapterRow({ row, runState, onGenerateAll, onGenerateSection }: RowProp
   const isRunning = runState.currentStep !== null;
 
   return (
-    <tr className="border-b border-gray-700">
+    <tr className="border-b border-border">
       <td className="px-3 py-3 align-top whitespace-nowrap text-sm">
         <div className="font-medium">
           {padded} — {row.chapter.title}
         </div>
-        <div className="text-xs text-gray-400">slug: {row.slug}</div>
-        <div className="text-xs text-gray-400">oldUrl: {row.oldUrl ?? '—'}</div>
+        <div className="text-xs text-muted">slug: {row.slug}</div>
+        <div className="text-xs text-muted">oldUrl: {row.oldUrl ?? '—'}</div>
       </td>
       {CHAPTER_GENERATE_STEPS.map((step, idx) => {
         // Pills reflect whether the section has content in the DB (from the last
@@ -83,7 +83,7 @@ function ChapterRow({ row, runState, onGenerateAll, onGenerateSection }: RowProp
                     ? 'No prerequisites'
                     : `Requires: ${step.requires.join(', ')}${blocked ? ` — missing: ${missingDeps.join(', ')}` : ''}`
                 }
-                className="px-1.5 py-0.5 rounded bg-gray-700 hover:bg-gray-600 disabled:bg-gray-800 disabled:text-gray-500 disabled:cursor-not-allowed text-white text-[10px]"
+                className="px-1.5 py-0.5 rounded bg-surface-2 hover:bg-surface-3 disabled:bg-surface disabled:text-muted disabled:cursor-not-allowed text-heading text-[10px]"
               >
                 Gen
               </button>
@@ -96,7 +96,7 @@ function ChapterRow({ row, runState, onGenerateAll, onGenerateSection }: RowProp
           type="button"
           onClick={() => onGenerateAll(row.slug)}
           disabled={isRunning}
-          className="px-3 py-1.5 rounded-md bg-blue-600 hover:bg-blue-700 disabled:bg-gray-600 disabled:cursor-not-allowed text-white text-xs font-medium"
+          className="px-3 py-1.5 rounded-md bg-primary hover:bg-primary disabled:bg-surface-3 disabled:cursor-not-allowed text-heading text-xs font-medium"
         >
           {isRunning ? `Starting ${(runState.currentStep ?? 0) + 1}/${CHAPTER_GENERATE_STEPS.length}` : 'Generate all'}
         </button>
@@ -228,26 +228,26 @@ export default function TariffReportsAdminTable(): JSX.Element {
   return (
     <div>
       <div className="mb-3 flex items-center justify-between gap-3">
-        <p className="text-xs text-gray-400">
+        <p className="text-xs text-muted">
           “Generate all” runs every section; per-column “Gen” runs one section. Generation is async — click “Refresh” to update the statuses below.
         </p>
         <button
           type="button"
           onClick={() => reFetchData()}
-          className="px-3 py-1.5 rounded-md bg-gray-700 hover:bg-gray-600 text-white text-xs font-medium whitespace-nowrap"
+          className="px-3 py-1.5 rounded-md bg-surface-2 hover:bg-surface-3 text-heading text-xs font-medium whitespace-nowrap"
         >
           Refresh
         </button>
       </div>
 
-      <details className="mb-3 rounded-md border border-gray-700 bg-gray-800/40 p-3 text-xs text-gray-400">
-        <summary className="cursor-pointer text-gray-300">
+      <details className="mb-3 rounded-md border border-border bg-surface/40 p-3 text-xs text-muted">
+        <summary className="cursor-pointer text-muted">
           Generation order &amp; dependencies — generate a section only after its prerequisites show ✓ (its “Gen” button stays disabled until then)
         </summary>
         <ul className="mt-2 list-disc space-y-0.5 pl-5">
           {CHAPTER_GENERATE_STEPS.map((step) => (
             <li key={step.field}>
-              <span className="text-gray-200">{step.label}</span>
+              <span className="text-body">{step.label}</span>
               {step.requires.length === 0 ? ' — no prerequisites' : ` — needs ${step.requires.join(', ')}`}
             </li>
           ))}
@@ -258,20 +258,20 @@ export default function TariffReportsAdminTable(): JSX.Element {
           <li>seoDetails should be generated last — it summarizes every other section.</li>
         </ul>
       </details>
-      <div className="overflow-x-auto rounded-lg border border-gray-700">
-        <table className="min-w-full divide-y divide-gray-700">
-          <thead className="bg-gray-800">
+      <div className="overflow-x-auto rounded-lg border border-border">
+        <table className="min-w-full divide-y divide-border">
+          <thead className="bg-surface">
             <tr>
-              <th className="px-3 py-2 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Chapter</th>
+              <th className="px-3 py-2 text-left text-xs font-medium text-muted uppercase tracking-wider">Chapter</th>
               {CHAPTER_GENERATE_STEPS.map((step) => (
-                <th key={step.field} className="px-2 py-2 text-center text-xs font-medium text-gray-300 tracking-wider">
+                <th key={step.field} className="px-2 py-2 text-center text-xs font-medium text-muted tracking-wider">
                   {step.label}
                 </th>
               ))}
-              <th className="px-3 py-2 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Action</th>
+              <th className="px-3 py-2 text-left text-xs font-medium text-muted uppercase tracking-wider">Action</th>
             </tr>
           </thead>
-          <tbody className="bg-gray-900 text-gray-200">
+          <tbody className="bg-bg text-body">
             {data.rows.map((row) => (
               <ChapterRow
                 key={row.slug}

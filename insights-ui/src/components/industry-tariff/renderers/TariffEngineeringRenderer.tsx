@@ -17,8 +17,8 @@ function MarkdownBlock({ markdown, flat = false }: { markdown: string; flat?: bo
 
 function SectionCard({ heading, children }: { heading: string; children: React.ReactNode }): JSX.Element {
   return (
-    <div className="bg-gray-900 rounded-lg shadow-sm overflow-hidden">
-      <div className="bg-gray-800 p-4 border-b border-gray-700">
+    <div className="bg-bg rounded-lg shadow-sm overflow-hidden">
+      <div className="bg-surface p-4 border-b border-border">
         <h2 className="text-xl font-semibold heading-color">{heading}</h2>
       </div>
       <div className="p-4">{children}</div>
@@ -46,8 +46,8 @@ interface ClassificationLever {
 function ClassificationLeversTable({ levers, flat }: { levers: ClassificationLever[]; flat: boolean }): JSX.Element {
   return (
     <div className="overflow-x-auto">
-      <table className="min-w-full divide-y divide-gray-700 text-sm">
-        <thead className="bg-gray-800/60">
+      <table className="min-w-full divide-y divide-border text-sm">
+        <thead className="bg-surface/60">
           <tr>
             <th className="px-3 py-2 text-left font-semibold">Lever</th>
             <th className="px-3 py-2 text-left font-semibold">Current Classification</th>
@@ -56,7 +56,7 @@ function ClassificationLeversTable({ levers, flat }: { levers: ClassificationLev
             <th className="px-3 py-2 text-left font-semibold">Duty Delta</th>
           </tr>
         </thead>
-        <tbody className="divide-y divide-gray-700">
+        <tbody className="divide-y divide-border">
           {levers.map((lever, idx) => {
             const leverTitle = typeof lever?.leverTitle === 'string' ? lever.leverTitle : '';
             const currentClassification = typeof lever?.currentClassification === 'string' ? lever.currentClassification : '';
@@ -107,7 +107,7 @@ function StrategyCard({ strategy, flat }: { strategy: Strategy; flat: boolean })
   const precedent = typeof strategy?.precedent === 'string' ? strategy.precedent : '';
 
   // Flat variant uses bg-gray-800 inner card (factor-analysis style); legacy uses border + bg-gray-900/40.
-  const cardClass = flat ? 'rounded-md bg-gray-800 p-4' : 'rounded-lg border border-gray-700 bg-gray-900/40 p-4';
+  const cardClass = flat ? 'rounded-md bg-surface p-4' : 'rounded-lg border border-border bg-bg/40 p-4';
 
   return (
     <div className={cardClass}>
@@ -119,19 +119,19 @@ function StrategyCard({ strategy, flat }: { strategy: Strategy; flat: boolean })
       )}
       {applicability && (
         <div className="mb-3">
-          <div className="text-xs uppercase tracking-wider text-gray-400 mb-1">Applicability to chapter</div>
+          <div className="text-xs uppercase tracking-wider text-muted mb-1">Applicability to chapter</div>
           <MarkdownBlock markdown={applicability} flat={flat} />
         </div>
       )}
       {dutyImpact && (
         <div className="mb-3">
-          <div className="text-xs uppercase tracking-wider text-gray-400 mb-1">Potential duty impact</div>
+          <div className="text-xs uppercase tracking-wider text-muted mb-1">Potential duty impact</div>
           <MarkdownBlock markdown={dutyImpact} flat={flat} />
         </div>
       )}
       {steps.length > 0 && (
         <div className="mb-3">
-          <div className="text-xs uppercase tracking-wider text-gray-400 mb-1">Implementation steps</div>
+          <div className="text-xs uppercase tracking-wider text-muted mb-1">Implementation steps</div>
           <ol className="list-decimal list-inside space-y-1">
             {steps.map((step, sIdx) => {
               const parse = flat ? parseChapterBodyMarkdown : parseMarkdown;
@@ -146,13 +146,13 @@ function StrategyCard({ strategy, flat }: { strategy: Strategy; flat: boolean })
       )}
       {risks && (
         <div className="mb-3">
-          <div className="text-xs uppercase tracking-wider text-gray-400 mb-1">Risks &amp; caveats</div>
+          <div className="text-xs uppercase tracking-wider text-muted mb-1">Risks &amp; caveats</div>
           <MarkdownBlock markdown={risks} flat={flat} />
         </div>
       )}
       {precedent && (
         <div>
-          <div className="text-xs uppercase tracking-wider text-gray-400 mb-1">Precedent</div>
+          <div className="text-xs uppercase tracking-wider text-muted mb-1">Precedent</div>
           <MarkdownBlock markdown={precedent} flat={flat} />
         </div>
       )}
@@ -184,11 +184,11 @@ export const TariffEngineeringRenderer: React.FC<TariffEngineeringRendererProps>
 
   if (!hasAnyContent) {
     if (flat) {
-      return <p className="text-gray-500 italic">No content available</p>;
+      return <p className="text-muted italic">No content available</p>;
     }
     return (
-      <div className="bg-gray-900 rounded-lg p-6 shadow-sm">
-        <p className="text-gray-500 italic">No content available</p>
+      <div className="bg-bg rounded-lg p-6 shadow-sm">
+        <p className="text-muted italic">No content available</p>
       </div>
     );
   }
@@ -249,9 +249,9 @@ export const TariffEngineeringRenderer: React.FC<TariffEngineeringRendererProps>
   return (
     <div className="space-y-8">
       {(title || overview) && (
-        <div className="bg-gray-900 rounded-lg shadow-sm overflow-hidden">
+        <div className="bg-bg rounded-lg shadow-sm overflow-hidden">
           {title && (
-            <div className="bg-gray-800 p-4 border-b border-gray-700">
+            <div className="bg-surface p-4 border-b border-border">
               <h2 className="text-2xl font-bold heading-color">{title}</h2>
             </div>
           )}
