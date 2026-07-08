@@ -1,8 +1,8 @@
 // Definitions of every section step in the chapter-report generation pipeline.
 // The admin UI iterates this list to render per-row status pills, the per-section
 // "Gen" buttons, and the "Generate all" sequence; the listing API uses the same
-// `field` keys to compute per-field populated/empty status. Order matches
-// `run-tariff-report.ts`'s ALL flow — headings first, every other section, SEO last.
+// `field` keys to compute per-field populated/empty status. Order matches the
+// full chapter generation flow — headings first, every other section, SEO last.
 //
 // Dependency graph (`requires`) — a section's generator reads these sections and
 // THROWS ("<X> not found") if any is missing, so they must be generated first:
