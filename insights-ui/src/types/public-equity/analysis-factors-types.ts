@@ -1,3 +1,4 @@
+import { LLMProvider } from '@/types/llmConstants';
 import { InvestorKey, InvestorTypes, ManagementTeamAlignmentVerdict, TickerAnalysisCategory } from '@/types/ticker-typesv1';
 import { TickerV1GenerationRequest } from '@prisma/client';
 import { TopCompaniesToConsider } from '../prismaTypes';
@@ -30,26 +31,6 @@ export interface CompetitionAnalysis {
 
 export type CompetitionAnalysisArray = CompetitionAnalysis[];
 
-/** Shape of a generated competition report (used when importing/saving a report JSON). */
-export interface CompetitionAnalysisResponse {
-  summary: string;
-  overallAnalysisDetails: string;
-  competitionAnalysisArray: Array<{
-    companyName: string;
-    companySymbol?: string;
-    exchangeSymbol?: string;
-    exchangeName?: string;
-    detailedComparison: string;
-  }>;
-}
-
-/** Shape of a generated final-summary report (used when importing/saving a report JSON). */
-export interface FinalSummaryResponse {
-  finalSummary: string;
-  metaDescription: string;
-  aboutReport: string;
-}
-
 export interface TickerAnalysisResponse {
   success: boolean;
   invocationId: string;
@@ -57,6 +38,10 @@ export interface TickerAnalysisResponse {
 
 export interface AnalysisRequest {
   investorKey?: InvestorTypes;
+  /** Optional LLM provider override selected in the report-generation UI. */
+  llmProvider?: LLMProvider;
+  /** Optional provider-specific model id selected in the report-generation UI. */
+  model?: string;
 }
 
 export interface LLMFactorAnalysisResponse {
