@@ -108,7 +108,6 @@ export default function EtfActions({ etf, session }: EtfActionsProps): JSX.Eleme
       <FullPageModal open={isModalOpen} onClose={() => setIsModalOpen(false)} title="Generate Report">
         <div className="p-4">
           <div className="mb-4 max-w-2xl mx-auto text-left">
-            <h4 className="text-sm font-medium text-heading mb-1">LLM Provider &amp; Model</h4>
             <LlmProviderModelSelector selection={llmSelection} onChange={setLlmSelection} />
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
