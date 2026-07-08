@@ -1,10 +1,10 @@
 import { TickerIdentifier } from '@/app/api/[spaceId]/tickers-v1/generation-requests/route';
+import LlmProviderModelSelector, { getDefaultLlmProviderModelSelection, LlmProviderModelSelection } from '@/components/llm/LlmProviderModelSelector';
 import { reportTypes, useGenerateReports } from '@/hooks/useGenerateReports';
 import { ReportType } from '@/types/ticker-typesv1';
 import { getMissingReportTypes, TickerWithMissingReportInfo } from '@/utils/analysis-reports/report-steps-statuses';
 import Block from '@dodao/web-core/components/app/Block';
 import Button from '@dodao/web-core/components/core/buttons/Button';
-import FullScreenModal from '@dodao/web-core/components/core/modals/FullScreenModal';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 
@@ -18,56 +18,31 @@ export default function ReportGenerator({ selectedTickers, tickerReports, onRepo
   const router = useRouter();
   const [loadingStates] = useState<Record<string, boolean>>({});
   const [isGeneratingAll, setIsGeneratingAll] = useState<boolean>(false);
-  const [showGenerationModal, setShowGenerationModal] = useState<boolean>(false);
-  const [pendingTickers, setPendingTickers] = useState<TickerIdentifier[]>([]);
 
   const [selectedReportTypes, setSelectedReportTypes] = useState<ReportType[]>([]);
-  const [showSpecificGenerationModal, setShowSpecificGenerationModal] = useState<boolean>(false);
+
+  // LLM provider/model to use for this round of generation.
+  const [llmSelection, setLlmSelection] = useState<LlmProviderModelSelection>(getDefaultLlmProviderModelSelection());
 
   React.useEffect(() => {
     const allReportTypeKeys: ReportType[] = reportTypes.map((rt) => rt.key);
     setSelectedReportTypes(allReportTypeKeys);
   }, []);
 
-  const { generateAllReportsForTicker, generateReportsSynchronously, generateSpecificReportsInBackground, createFullBackgroundGenerationRequests } =
-    useGenerateReports();
+  const { generateSpecificReportsInBackground, createFullBackgroundGenerationRequests } = useGenerateReports();
 
-  const handleGenerateAll = async (ticker: TickerIdentifier): Promise<void> => {
-    if (!ticker || !ticker.symbol || !ticker.exchange) return;
-    await generateAllReportsForTicker(ticker, onReportGenerated);
-  };
-
-  const handleGenerateAllForAllTickers = (): void => {
+  // Generation now always runs in the background: it creates generation requests
+  // (with the chosen provider/model) and redirects to the requests page. There is
+  // no synchronous option anymore.
+  const handleGenerateAllForAllTickers = async (): Promise<void> => {
     if (selectedTickers.length === 0) return;
-    setPendingTickers([...selectedTickers]);
-    setShowGenerationModal(true);
-  };
-
-  const handleSynchronousGeneration = async (): Promise<void> => {
-    setShowGenerationModal(false);
-    if (pendingTickers.length === 0) return;
 
     setIsGeneratingAll(true);
     try {
-      await Promise.all(pendingTickers.map((t) => handleGenerateAll(t)));
-    } finally {
-      setIsGeneratingAll(false);
-      setPendingTickers([]);
-    }
-  };
-
-  /** Background path now uses a single BATCH request for all tickers */
-  const handleBackgroundGeneration = async (): Promise<void> => {
-    setShowGenerationModal(false);
-    if (pendingTickers.length === 0) return;
-
-    setIsGeneratingAll(true);
-    try {
-      await createFullBackgroundGenerationRequests(pendingTickers);
+      await createFullBackgroundGenerationRequests(selectedTickers, llmSelection);
       router.push('/admin-v1/generation-requests');
     } finally {
       setIsGeneratingAll(false);
-      setPendingTickers([]);
     }
   };
 
@@ -84,38 +59,15 @@ export default function ReportGenerator({ selectedTickers, tickerReports, onRepo
     setSelectedReportTypes((prev) => (prev.includes(reportTypeKey) ? prev.filter((k) => k !== reportTypeKey) : [...prev, reportTypeKey]));
   };
 
-  const handleGenerateSpecificReportTypes = (): void => {
+  const handleGenerateSpecificReportTypes = async (): Promise<void> => {
     if (selectedTickers.length === 0 || selectedReportTypes.length === 0) return;
-    setPendingTickers([...selectedTickers]);
-    setShowSpecificGenerationModal(true);
-  };
-
-  const handleSynchronousSpecificGeneration = async (): Promise<void> => {
-    setShowSpecificGenerationModal(false);
-    if (pendingTickers.length === 0 || selectedReportTypes.length === 0) return;
 
     setIsGeneratingAll(true);
     try {
-      await generateReportsSynchronously(pendingTickers, selectedReportTypes, (ticker) => {
-        onReportGenerated(ticker);
-      });
-    } finally {
-      setIsGeneratingAll(false);
-      setPendingTickers([]);
-    }
-  };
-
-  const handleBackgroundSpecificGeneration = async (): Promise<void> => {
-    setShowSpecificGenerationModal(false);
-    if (pendingTickers.length === 0 || selectedReportTypes.length === 0) return;
-
-    setIsGeneratingAll(true);
-    try {
-      await generateSpecificReportsInBackground(pendingTickers, selectedReportTypes);
+      await generateSpecificReportsInBackground(selectedTickers, selectedReportTypes, llmSelection);
       router.push('/admin-v1/generation-requests');
     } finally {
       setIsGeneratingAll(false);
-      setPendingTickers([]);
     }
   };
 
@@ -192,6 +144,12 @@ export default function ReportGenerator({ selectedTickers, tickerReports, onRepo
     return (
       <div className="space-y-4 my-4">
         <div className="bg-gray-800 rounded-lg p-4">
+          <h3 className="text-lg font-medium text-white mb-4">Select LLM Provider &amp; Model</h3>
+          <LlmProviderModelSelector selection={llmSelection} onChange={setLlmSelection} />
+          <div className="text-sm text-gray-400 mt-2">All selected reports will be generated with this provider and model.</div>
+        </div>
+
+        <div className="bg-gray-800 rounded-lg p-4">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-lg font-medium text-white">Select Report Types</h3>
             <div className="flex gap-2">
@@ -217,7 +175,7 @@ export default function ReportGenerator({ selectedTickers, tickerReports, onRepo
             loading={isGeneratingAll}
             className="px-8 py-3 text-lg font-semibold"
           >
-            {isGeneratingAll ? 'Generating All Reports...' : 'Generate All Reports for All Tickers'}
+            {isGeneratingAll ? 'Creating Requests...' : 'Generate All Reports for All Tickers'}
           </Button>
 
           <Button
@@ -227,77 +185,13 @@ export default function ReportGenerator({ selectedTickers, tickerReports, onRepo
             loading={isGeneratingAll}
             className="px-8 py-3 text-lg font-semibold"
           >
-            {isGeneratingAll ? 'Generating Selected Reports...' : 'Generate for Specific Report Type'}
+            {isGeneratingAll ? 'Creating Requests...' : 'Generate for Specific Report Type'}
           </Button>
         </div>
+        <div className="text-sm text-gray-400 text-center">
+          Reports are generated in the background. You will be redirected to the generation requests page.
+        </div>
       </div>
-    );
-  };
-
-  const renderGenerationModal = (): JSX.Element => {
-    return (
-      <FullScreenModal open={showGenerationModal} onClose={() => setShowGenerationModal(false)} title="Select Report Generation Mode">
-        <div className="p-6 flex flex-col items-center space-y-8">
-          <div className="text-lg text-center mb-4">How would you like to generate reports for the selected tickers?</div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-4xl">
-            <div className="bg-gray-800 p-6 rounded-lg border border-gray-700 flex flex-col items-center">
-              <h3 className="text-xl font-semibold mb-4">Synchronous Generation</h3>
-              <p className="text-center mb-6">Generate reports immediately and stay on this page. This may take some time to complete.</p>
-              <Button variant="contained" primary onClick={handleSynchronousGeneration} className="mt-auto w-full">
-                Generate Synchronously
-              </Button>
-            </div>
-
-            <div className="bg-gray-800 p-6 rounded-lg border border-gray-700 flex flex-col items-center">
-              <h3 className="text-xl font-semibold mb-4">Background Generation</h3>
-              <p className="text-center mb-6">Create batch generation requests to be processed in the background and redirect to the requests page.</p>
-              <Button variant="contained" primary onClick={handleBackgroundGeneration} className="mt-auto w-full">
-                Generate in Background
-              </Button>
-            </div>
-          </div>
-        </div>
-      </FullScreenModal>
-    );
-  };
-
-  const renderSpecificGenerationModal = (): JSX.Element => {
-    return (
-      <FullScreenModal
-        open={showSpecificGenerationModal}
-        onClose={() => setShowSpecificGenerationModal(false)}
-        title="Select Report Generation Mode for Selected Types"
-      >
-        <div className="p-6 flex flex-col items-center space-y-8">
-          <div className="text-lg text-center mb-4">How would you like to generate the selected report types for the selected tickers?</div>
-
-          <div className="text-center mb-4">
-            <p className="text-gray-300">Selected Report Types: {selectedReportTypes.length}</p>
-            <p className="text-gray-300">Selected Tickers: {pendingTickers.length}</p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-4xl">
-            <div className="bg-gray-800 p-6 rounded-lg border border-gray-700 flex flex-col items-center">
-              <h3 className="text-xl font-semibold mb-4">Synchronous Generation</h3>
-              <p className="text-center mb-6">Generate selected report types immediately and stay on this page. This may take some time to complete.</p>
-              <Button variant="contained" primary onClick={handleSynchronousSpecificGeneration} className="mt-auto w-full">
-                Generate Synchronously
-              </Button>
-            </div>
-
-            <div className="bg-gray-800 p-6 rounded-lg border border-gray-700 flex flex-col items-center">
-              <h3 className="text-xl font-semibold mb-4">Background Generation</h3>
-              <p className="text-center mb-6">
-                Create batch generation requests for selected report types to be processed in the background and redirect to the requests page.
-              </p>
-              <Button variant="contained" primary onClick={handleBackgroundSpecificGeneration} className="mt-auto w-full">
-                Generate in Background
-              </Button>
-            </div>
-          </div>
-        </div>
-      </FullScreenModal>
     );
   };
 
@@ -307,8 +201,6 @@ export default function ReportGenerator({ selectedTickers, tickerReports, onRepo
         <>
           {renderGenerateAllButtons()}
           {renderReportsGrid()}
-          {renderGenerationModal()}
-          {renderSpecificGenerationModal()}
         </>
       ) : (
         <div className="text-center py-8">Select one or more tickers to generate reports</div>

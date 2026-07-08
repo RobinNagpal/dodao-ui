@@ -2,6 +2,7 @@ import { withAdminOrToken } from '@/app/api/helpers/withAdminOrToken';
 import { withLoggedInAdmin } from '@/app/api/helpers/withLoggedInAdmin';
 import { prisma } from '@/prisma';
 import { KoalaGainsJwtTokenPayload } from '@/types/auth';
+import { LLMProvider } from '@/types/llmConstants';
 import { GenerationRequestStatus, ReportType } from '@/types/ticker-typesv1';
 import { calculatePendingSteps } from '@/utils/analysis-reports/report-steps-statuses';
 import { AllExchanges } from '@/utils/countryExchangeUtils';
@@ -23,6 +24,10 @@ export interface GenerationRequestPayload {
   regenerateFairValue: boolean;
   regenerateManagementTeam: boolean;
   regenerateFinalSummary: boolean;
+  /** Optional LLM provider override chosen in the report-generation UI. */
+  llmProvider?: LLMProvider;
+  /** Optional provider-specific model id chosen in the report-generation UI. */
+  llmModel?: string;
 }
 
 export interface TickerV1GenerationRequestWithTicker extends TickerV1GenerationRequest {
@@ -240,6 +245,9 @@ async function postHandler(
           regenerateFairValue: regenerateOptions.regenerateFairValue || existingRequest.regenerateFairValue,
           regenerateManagementTeam: regenerateOptions.regenerateManagementTeam || existingRequest.regenerateManagementTeam,
           regenerateFinalSummary: regenerateOptions.regenerateFinalSummary || existingRequest.regenerateFinalSummary,
+          // A newly-supplied provider/model overrides the pending request; otherwise keep the existing choice.
+          llmProvider: payload.llmProvider ?? existingRequest.llmProvider,
+          llmModel: payload.llmModel ?? existingRequest.llmModel,
           updatedAt: new Date(),
         },
       });
@@ -256,6 +264,8 @@ async function postHandler(
           regenerateFairValue: regenerateOptions.regenerateFairValue,
           regenerateManagementTeam: regenerateOptions.regenerateManagementTeam,
           regenerateFinalSummary: regenerateOptions.regenerateFinalSummary,
+          llmProvider: payload.llmProvider ?? null,
+          llmModel: payload.llmModel ?? null,
         },
       });
     }

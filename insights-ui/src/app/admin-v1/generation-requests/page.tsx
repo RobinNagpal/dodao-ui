@@ -154,6 +154,11 @@ function RequestsTable({ rows, regenerateFields, onReloadRequest }: RequestsTabl
                     </div>
                     <div className="text-xs text-gray-400">{latestRequest.ticker.name}</div>
                   </Link>
+                  <div className="text-[11px] text-gray-500 mt-1 whitespace-nowrap" title="LLM provider · model used for this request">
+                    {latestRequest.llmProvider || latestRequest.llmModel
+                      ? `${latestRequest.llmProvider ?? '—'} · ${latestRequest.llmModel ?? '—'}`
+                      : 'default LLM'}
+                  </div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm">
                   <div className="text-xs text-gray-400">

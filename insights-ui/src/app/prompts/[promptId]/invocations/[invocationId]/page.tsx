@@ -119,6 +119,9 @@ export default function PromptInvocationDetailsPage() {
         </div>
         <p className="mb-4">Prompt: {invocation.prompt.name}</p>
         <p className="mb-4">Status: {invocation.status}</p>
+        <p className="mb-4">
+          LLM Provider: {invocation.llmProvider || '—'} &nbsp;|&nbsp; Model: {invocation.model || '—'}
+        </p>
         <p className="mb-4">Updated At: {new Date(invocation.updatedAt).toLocaleString()}</p>
         <p className="mb-4">Updated By: {invocation.updatedBy}</p>
         <div className="mb-4">

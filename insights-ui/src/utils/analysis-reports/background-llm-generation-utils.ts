@@ -1,4 +1,4 @@
-import { GeminiModel, LLMProvider } from '@/types/llmConstants';
+import { LLMProvider } from '@/types/llmConstants';
 import { ReportType } from '@/types/ticker-typesv1';
 import { saveTickerReportAndAdvanceGeneration } from '@/utils/analysis-reports/save-report-callback-utils';
 import { getLLMResponse, updateInvocationStatus } from '@/util/get-llm-response';
@@ -11,7 +11,8 @@ export interface BackgroundStockReportArgs {
   generationRequestId: string;
   invocationId: string;
   llmProvider: LLMProvider;
-  model: GeminiModel;
+  /** Provider-specific model id (Gemini or Claude). */
+  model: string;
   /** The fully-compiled prompt string (already built by the caller). */
   prompt: string;
   /** The parsed output JSON schema object the response is validated against. */

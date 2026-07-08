@@ -1,4 +1,5 @@
 import { getLLMResponseForPromptViaInvocation } from '@/util/get-llm-response';
+import { parseLlmSelectionFromRequest } from '@/utils/analysis-reports/llm-selection-utils';
 import { withAdminOrToken } from '@/app/api/helpers/withAdminOrToken';
 import { KoalaGainsJwtTokenPayload } from '@/types/auth';
 import { NextRequest } from 'next/server';
@@ -26,6 +27,9 @@ async function postHandler(
 ): Promise<TickerAnalysisResponse> {
   const { spaceId, ticker, exchange } = await params;
 
+  // Optional LLM provider/model chosen in the report-generation UI (falls back to defaults).
+  const { llmProvider, model } = await parseLlmSelectionFromRequest(req);
+
   // Get ticker from DB
   const tickerRecord = await fetchTickerRecordBySymbolAndExchangeWithIndustryAndSubIndustry(ticker.toUpperCase(), exchange.toUpperCase());
 
@@ -38,6 +42,8 @@ async function postHandler(
     inputJson,
     promptKey: 'US/public-equities-v1/competition',
     requestFrom: 'ui',
+    llmProvider,
+    model,
   });
 
   if (!result) {

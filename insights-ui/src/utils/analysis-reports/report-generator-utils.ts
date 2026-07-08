@@ -1,4 +1,5 @@
 import { GenerationRequestPayload, TickerIdentifier } from '@/app/api/[spaceId]/tickers-v1/generation-requests/route';
+import { ReportLlmSelection } from '@/hooks/useGenerateReports';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { InvestorKey, ReportType } from '@/types/ticker-typesv1';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
@@ -6,7 +7,8 @@ import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 // Helper function to create a background generation request for a ticker
 export const createBackgroundGenerationRequest = async (
   ticker: TickerIdentifier,
-  postRequest: (url: string, data: GenerationRequestPayload[]) => Promise<any>
+  postRequest: (url: string, data: GenerationRequestPayload[]) => Promise<any>,
+  llmSelection?: ReportLlmSelection
 ): Promise<void> => {
   if (!ticker || !ticker.symbol || !ticker.exchange) return;
 
@@ -20,6 +22,8 @@ export const createBackgroundGenerationRequest = async (
     regenerateFairValue: true,
     regenerateManagementTeam: true,
     regenerateFinalSummary: true,
+    llmProvider: llmSelection?.llmProvider,
+    llmModel: llmSelection?.model,
   };
 
   await postRequest(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/generation-requests`, [payload]);
@@ -29,7 +33,8 @@ export const createBackgroundGenerationRequest = async (
 export const createSingleAnalysisBackgroundRequest = async (
   reportType: ReportType,
   ticker: TickerIdentifier,
-  postRequest: (url: string, data: GenerationRequestPayload[]) => Promise<any>
+  postRequest: (url: string, data: GenerationRequestPayload[]) => Promise<any>,
+  llmSelection?: ReportLlmSelection
 ): Promise<void> => {
   if (!ticker || !ticker.symbol || !ticker.exchange) return;
 
@@ -44,6 +49,8 @@ export const createSingleAnalysisBackgroundRequest = async (
     regenerateFairValue: false,
     regenerateManagementTeam: false,
     regenerateFinalSummary: false,
+    llmProvider: llmSelection?.llmProvider,
+    llmModel: llmSelection?.model,
   };
 
   // Set the specific analysis type to true using constants

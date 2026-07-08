@@ -1,6 +1,7 @@
 'use client';
 
 import { GenerationRequestPayload, TickerIdentifier } from '@/app/api/[spaceId]/tickers-v1/generation-requests/route';
+import LlmProviderModelSelector, { getDefaultLlmProviderModelSelection, LlmProviderModelSelection } from '@/components/llm/LlmProviderModelSelector';
 import { analysisTypes, ReportType } from '@/types/ticker-typesv1';
 import { createBackgroundGenerationRequest, createSingleAnalysisBackgroundRequest } from '@/utils/analysis-reports/report-generator-utils';
 import EllipsisDropdown, { EllipsisDropdownItem } from '@dodao/web-core/components/core/dropdowns/EllipsisDropdown';
@@ -38,6 +39,9 @@ export default function StockActionsAdminPanel({ ticker, movedExchange, movedSym
   const [importedJson, setImportedJson] = useState<string>('');
   const [jsonContent, setJsonContent] = useState<LLMResponse | null>(null);
   const [isEditDetailsOpen, setIsEditDetailsOpen] = useState(false);
+
+  // LLM provider/model to use for the background generation request created from this modal.
+  const [llmSelection, setLlmSelection] = useState<LlmProviderModelSelection>(getDefaultLlmProviderModelSelection());
 
   // Post hook for background generation requests
   const { postData: postRequest } = usePostData<any, GenerationRequestPayload[]>({
@@ -101,9 +105,9 @@ export default function StockActionsAdminPanel({ ticker, movedExchange, movedSym
     setIsModalOpen(false);
     try {
       if (key === 'generate-all') {
-        await createBackgroundGenerationRequest(ticker, postRequest);
+        await createBackgroundGenerationRequest(ticker, postRequest, llmSelection);
       } else {
-        await createSingleAnalysisBackgroundRequest(key as ReportType, ticker, postRequest);
+        await createSingleAnalysisBackgroundRequest(key as ReportType, ticker, postRequest, llmSelection);
       }
 
       // Redirect to generation requests page after any generation is initiated
@@ -246,6 +250,10 @@ export default function StockActionsAdminPanel({ ticker, movedExchange, movedSym
 
       <FullPageModal open={isModalOpen} onClose={() => setIsModalOpen(false)} title="Generate Report">
         <div className="p-4">
+          <div className="mb-4 max-w-2xl mx-auto">
+            <h3 className="text-sm font-medium text-gray-300 mb-1">LLM Provider &amp; Model</h3>
+            <LlmProviderModelSelector selection={llmSelection} onChange={setLlmSelection} />
+          </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
             {reportGenerationItems.map((item) => (
               <button

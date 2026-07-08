@@ -1,4 +1,5 @@
 import { getLLMResponseForPromptViaInvocation } from '@/util/get-llm-response';
+import { parseLlmSelectionFromRequest } from '@/utils/analysis-reports/llm-selection-utils';
 import { fetchAnalysisFactors, fetchTickerRecordBySymbolAndExchangeWithAnalysisData } from '@/utils/analysis-reports/get-report-data-utils';
 import { saveFairValueFactorAnalysisResponse } from '@/utils/analysis-reports/save-report-utils';
 import { prepareFairValueInputJson } from '@/utils/analysis-reports/report-input-json-utils';
@@ -15,6 +16,9 @@ async function postHandler(
   { params }: { params: Promise<{ spaceId: string; ticker: string; exchange: string }> }
 ): Promise<TickerAnalysisResponse> {
   const { spaceId, ticker, exchange } = await params;
+
+  // Optional LLM provider/model chosen in the report-generation UI (falls back to defaults).
+  const { llmProvider, model } = await parseLlmSelectionFromRequest(req);
 
   // Get ticker from DB
   const tickerRecord = await fetchTickerRecordBySymbolAndExchangeWithAnalysisData(ticker.toUpperCase(), exchange.toUpperCase());
@@ -33,6 +37,8 @@ async function postHandler(
     inputJson,
     promptKey: 'US/public-equities-v1/fair-value',
     requestFrom: 'ui',
+    llmProvider,
+    model,
   });
 
   if (!result) {

@@ -1,5 +1,6 @@
 import { TickerAnalysisCategory } from '@/types/ticker-typesv1';
 import { getLLMResponseForPromptViaInvocation } from '@/util/get-llm-response';
+import { parseLlmSelectionFromRequest } from '@/utils/analysis-reports/llm-selection-utils';
 import {
   fetchAnalysisFactors,
   fetchBusinessMoatAnalysisData,
@@ -19,6 +20,9 @@ async function postHandler(
   { params }: { params: Promise<{ spaceId: string; ticker: string; exchange: string }> }
 ): Promise<TickerAnalysisResponse> {
   const { spaceId, ticker, exchange } = await params;
+
+  // Optional LLM provider/model chosen in the report-generation UI (falls back to defaults).
+  const { llmProvider, model } = await parseLlmSelectionFromRequest(req);
 
   // Get ticker from DB
   const tickerRecord = await fetchTickerRecordBySymbolAndExchangeWithIndustryAndSubIndustry(ticker.toUpperCase(), exchange.toUpperCase());
@@ -44,6 +48,8 @@ async function postHandler(
     inputJson,
     promptKey: 'US/public-equities-v1/future-growth',
     requestFrom: 'ui',
+    llmProvider,
+    model,
   });
 
   if (!result) {
