@@ -308,14 +308,17 @@ export async function triggerGenerationOfAReportSimplified(symbol: string, excha
         },
       });
     } else {
-      // Check if it's been more than 5 minutes since the last invocation time
-      const fiveMinutes = 5 * 60 * 1000;
+      // Check if it's been more than 10 minutes since the last invocation time.
+      // Bumped from 5 -> 10 min because the Claude (OAuth) report path can run
+      // several minutes per step; a 5-min window risked reclaiming a step while
+      // it was still generating.
+      const tenMinutes = 10 * 60 * 1000;
 
-      if (Date.now() - lastInvocationTime.getTime() < fiveMinutes) {
+      if (Date.now() - lastInvocationTime.getTime() < tenMinutes) {
         console.log(`Waiting for ${inProgressStep}  of ${symbol} to finish.... It was started at ${lastInvocationTime}`);
         return;
       } else {
-        // Add the step to failedSteps if it's been more than 5 minutes
+        // Add the step to failedSteps if it's been more than 10 minutes
         const failedSteps = generationRequest.failedSteps;
         const failedStep = inProgressStep;
 

@@ -162,6 +162,13 @@ variable "app_env" {
     # Optional. "true" = generate tariff report sections synchronously (request waits for the LLM call);
     # unset/"false" (default) = generate them in the background (returns immediately, avoids the CloudFront 504).
     GENERATE_TARIFF_SECTIONS_SYNCHRONOUSLY = "false"
+    # LLM provider for report generation. "claude" runs the in-process background
+    # report LLM call through the Claude subscription OAuth path instead of Gemini;
+    # requires the background path (USE_LAMBDA_FOR_LLM_RESPONSE = "false") and the
+    # ANTHROPIC_OAUTH_TOKEN secret (added via app_secrets / Secrets Manager — NOT
+    # here, since app_env is non-secret). LLM_MODEL is optional (defaults per
+    # provider; claude -> claude-opus-4-7). See src/util/get-llm-response.ts.
+    LLM_PROVIDER = "claude"
   }
 }
 

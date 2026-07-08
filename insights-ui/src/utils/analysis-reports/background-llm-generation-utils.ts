@@ -56,6 +56,10 @@ export async function processStockReportLLMResponseInBackground(args: Background
   try {
     console.log(`[${reportType}] [${symbol}] [${generationRequestId}] Running stock report LLM in background (in-process), skipping lambda`);
 
+    // getLLMResponse picks the provider from `llmProvider` (LLM_PROVIDER). When
+    // it's `claude` the call goes through the Claude subscription OAuth path;
+    // otherwise the existing Gemini/OpenAI runner. Prompt, invocation row,
+    // output schema, and downstream saving are identical either way.
     const { result } = await getLLMResponse({
       invocationId,
       llmProvider,

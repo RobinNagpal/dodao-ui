@@ -1,6 +1,7 @@
 import { prisma } from '@/prisma';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { GeminiModel, LLMProvider, getDefaultGeminiModel, getDefaultLLMProvider } from '@/types/llmConstants';
+import { getClaudeStructuredResult } from '@/util/claude/get-claude-structured-response';
 import $RefParser from '@apidevtools/json-schema-ref-parser';
 import { BaseChatModel } from '@langchain/core/language_models/chat_models';
 import { ChatGoogleGenerativeAI } from '@langchain/google-genai';
@@ -285,7 +286,14 @@ export async function getLLMResponse<Output>({
       // If single-call succeeded, we already have Output.
       // Otherwise, we use LangChain structured output (normal path or fallback path).
       let result: Output;
-      if (singleCallGroundedResult !== null) {
+      if (llmProvider === LLMProvider.CLAUDE) {
+        // Generate with Claude via the subscription OAuth path. The Ajv
+        // validation, invocation-status bookkeeping, and retry loop below are
+        // shared with the Gemini/OpenAI path — only how we obtain `result`
+        // differs.
+        result = await getClaudeStructuredResult<Output>(finalPrompt, outputSchema);
+        console.log('Response from Claude (oauth):', result);
+      } else if (singleCallGroundedResult !== null) {
         result = singleCallGroundedResult;
       } else {
         // Initialize LLM for structured output
