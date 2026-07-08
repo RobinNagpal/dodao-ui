@@ -1,5 +1,10 @@
 import { ReportType, TickerAnalysisCategory } from '@/types/ticker-typesv1';
-import { LLMFactorAnalysisResponse, LLMManagementTeamResponse } from '@/types/public-equity/analysis-factors-types';
+import {
+  CompetitionAnalysisResponse,
+  FinalSummaryResponse,
+  LLMFactorAnalysisResponse,
+  LLMManagementTeamResponse,
+} from '@/types/public-equity/analysis-factors-types';
 import {
   saveBusinessAndMoatFactorAnalysisResponse,
   saveCompetitionAnalysisResponse,
@@ -16,8 +21,6 @@ import { KoalaGainsJwtTokenPayload } from '@/types/auth';
 import { NextRequest } from 'next/server';
 import { loadSchema, validateData } from '@/util/get-llm-response';
 import path from 'path';
-import { FinalSummaryResponse } from '../final-summary/route';
-import { CompetitionAnalysisResponse } from '../competition/route';
 
 // Union type for all possible LLM responses
 export type LLMResponse =
