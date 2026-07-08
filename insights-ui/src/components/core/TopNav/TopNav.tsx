@@ -32,6 +32,7 @@ const reportsDropdown: ReportItem[] = [
   { name: 'Crowdfunding Reports', href: '/crowd-funding', description: 'Detailed crowdfunding analysis', isNew: false },
   { name: 'Stock Reports', href: '/stocks', description: 'Value investing insights', isNew: true },
   { name: 'ETF Reports', href: '/etfs', description: 'ETF investment analysis by asset class', isNew: true },
+  { name: 'Commodities', href: '/commodities', description: 'Energy, metals, agriculture & livestock analysis', isNew: true },
   { name: 'Stock Scenarios', href: '/stock-scenarios', description: 'Stocks that win or lose per scenario', isNew: true },
   { name: 'Tariff Reports', href: '/tariff-reports', description: 'Trade tariff impact analysis', isNew: false },
   { name: 'Daily Top Gainers', href: '/daily-top-movers/top-gainers/country/US', description: 'Top performing stocks today', isNew: true },
