@@ -1799,6 +1799,11 @@ model EtfGenerationRequest {
   completedAt        DateTime? @map("completed_at")
   lastInvocationTime DateTime? @map("last_invocation_time")
 
+  // Optional LLM provider/model override chosen in the report-generation UI.
+  // NULL = fall back to the configured (env/provider) defaults at generation time.
+  llmProvider String? @map("llm_provider")
+  llmModel    String? @map("llm_model")
+
   etf Etf @relation(fields: [etfId], references: [id], onDelete: Cascade)
 
   @@index([etfId])

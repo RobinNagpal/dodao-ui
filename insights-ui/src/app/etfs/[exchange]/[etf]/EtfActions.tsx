@@ -2,6 +2,7 @@
 
 import { EtfGenerationRequestPayload, EtfIdentifier } from '@/app/api/[spaceId]/etfs-v1/generation-requests/route';
 import PrivateWrapper from '@/components/auth/PrivateWrapper';
+import LlmProviderModelSelector, { getDefaultLlmProviderModelSelection, LlmProviderModelSelection } from '@/components/llm/LlmProviderModelSelector';
 import { KoalaGainsSession } from '@/types/auth';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { revalidateEtfCache } from '@/utils/cache-actions';
@@ -39,7 +40,7 @@ const REPORT_OPTIONS: Array<{ key: GenerateKey; label: string }> = [
   { key: 'final-summary', label: 'Generate Final Summary' },
 ];
 
-function buildPayload(etf: EtfIdentifier, key: GenerateKey): EtfGenerationRequestPayload {
+function buildPayload(etf: EtfIdentifier, key: GenerateKey, llmSelection: LlmProviderModelSelection): EtfGenerationRequestPayload {
   const all = key === 'generate-all';
   return {
     etf,
@@ -50,6 +51,8 @@ function buildPayload(etf: EtfIdentifier, key: GenerateKey): EtfGenerationReques
     regenerateKeyFacts: all || key === 'key-facts',
     regenerateCompetition: all || key === 'competition',
     regenerateFinalSummary: all || key === 'final-summary',
+    llmProvider: llmSelection.llmProvider,
+    llmModel: llmSelection.model,
   };
 }
 
@@ -58,6 +61,8 @@ export default function EtfActions({ etf, session }: EtfActionsProps): JSX.Eleme
   const { showNotification } = useNotificationContext();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [flushing, setFlushing] = useState(false);
+  // LLM provider/model to use for the generation request created from this modal.
+  const [llmSelection, setLlmSelection] = useState<LlmProviderModelSelection>(getDefaultLlmProviderModelSelection());
 
   const { postData: createGenerationRequest, loading: creatingGenRequest } = usePostData<unknown, EtfGenerationRequestPayload[]>({
     successMessage: 'Analysis generation request created!',
@@ -87,7 +92,7 @@ export default function EtfActions({ etf, session }: EtfActionsProps): JSX.Eleme
   const handleModalSelect = async (key: GenerateKey) => {
     setIsModalOpen(false);
     try {
-      await createGenerationRequest(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/etfs-v1/generation-requests`, [buildPayload(etf, key)]);
+      await createGenerationRequest(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/etfs-v1/generation-requests`, [buildPayload(etf, key, llmSelection)]);
       router.push('/admin-v1/etf-generation-requests');
     } catch (error) {
       console.error('Error generating ETF report:', error);
@@ -102,6 +107,10 @@ export default function EtfActions({ etf, session }: EtfActionsProps): JSX.Eleme
 
       <FullPageModal open={isModalOpen} onClose={() => setIsModalOpen(false)} title="Generate Report">
         <div className="p-4">
+          <div className="mb-4 max-w-2xl mx-auto text-left">
+            <h4 className="text-sm font-medium text-heading mb-1">LLM Provider &amp; Model</h4>
+            <LlmProviderModelSelector selection={llmSelection} onChange={setLlmSelection} />
+          </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
             {REPORT_OPTIONS.map((item) => (
               <button

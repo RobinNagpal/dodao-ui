@@ -1,6 +1,7 @@
 'use client';
 
 import { EtfReportRow } from '@/app/api/[spaceId]/etfs-v1/etf-admin-reports/route';
+import LlmProviderModelSelector, { getDefaultLlmProviderModelSelection, LlmProviderModelSelection } from '@/components/llm/LlmProviderModelSelector';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { revalidateEtfCache } from '@/utils/cache-actions';
 import { EtfGenerationRequestPayload } from '@/app/api/[spaceId]/etfs-v1/generation-requests/route';
@@ -19,6 +20,9 @@ export interface BulkActionsBarProps {
 
 export default function BulkActionsBar({ selectedEtfs, onClearSelection, onRefresh }: BulkActionsBarProps): JSX.Element {
   const [progress, setProgress] = useState<{ done: number; total: number } | null>(null);
+
+  // LLM provider/model applied to every generation request created from this bar.
+  const [llmSelection, setLlmSelection] = useState<LlmProviderModelSelection>(getDefaultLlmProviderModelSelection());
 
   const { postData: fetchFinancialInfo, loading: fetchingFinancialInfo } = usePostData<FetchResponse, unknown>({
     successMessage: 'Fetched financial info successfully!',
@@ -56,6 +60,8 @@ export default function BulkActionsBar({ selectedEtfs, onClearSelection, onRefre
       regenerateKeyFacts: allTypes || (options?.keyFacts ?? false),
       regenerateCompetition: allTypes || (options?.competition ?? false),
       regenerateFinalSummary: allTypes || (options?.finalSummary ?? false),
+      llmProvider: llmSelection.llmProvider,
+      llmModel: llmSelection.model,
     }));
     await createGenerationRequests(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/etfs-v1/generation-requests`, payloads);
     onRefresh();
@@ -98,67 +104,73 @@ export default function BulkActionsBar({ selectedEtfs, onClearSelection, onRefre
     'px-3 py-1.5 text-xs font-medium rounded-md transition-colors disabled:opacity-40 disabled:cursor-not-allowed bg-gray-700 text-gray-200 hover:bg-gray-600';
 
   return (
-    <div className="flex items-center gap-3 px-6 py-3 bg-indigo-900/40 border-b border-indigo-700/50">
-      <span className="text-sm font-medium text-indigo-200">{selectedEtfs.length} selected</span>
+    <div className="bg-indigo-900/40 border-b border-indigo-700/50">
+      <div className="flex items-center gap-3 px-6 py-3 border-b border-indigo-700/30">
+        <span className="text-sm font-medium text-indigo-200">LLM</span>
+        <LlmProviderModelSelector selection={llmSelection} onChange={setLlmSelection} className="w-full max-w-lg" />
+      </div>
+      <div className="flex flex-wrap items-center gap-3 px-6 py-3">
+        <span className="text-sm font-medium text-indigo-200">{selectedEtfs.length} selected</span>
 
-      <div className="h-4 w-px bg-indigo-700/60" />
+        <div className="h-4 w-px bg-indigo-700/60" />
 
-      <button className={`${buttonClass} !bg-indigo-700 !text-indigo-100 hover:!bg-indigo-600`} disabled={isBusy} onClick={() => handleGenerateAnalysis()}>
-        Generate All Analysis
-      </button>
-      <button className={buttonClass} disabled={isBusy} onClick={() => handleGenerateAnalysis({ performanceAndReturns: true })}>
-        Past Returns
-      </button>
-      <button className={buttonClass} disabled={isBusy} onClick={() => handleGenerateAnalysis({ costEfficiencyAndTeam: true })}>
-        Cost, Efficiency & Team
-      </button>
-      <button className={buttonClass} disabled={isBusy} onClick={() => handleGenerateAnalysis({ riskAnalysis: true })}>
-        Risk Analysis
-      </button>
-      <button className={buttonClass} disabled={isBusy} onClick={() => handleGenerateAnalysis({ futurePerformanceOutlook: true })}>
-        Future Outlook
-      </button>
-      <button className={buttonClass} disabled={isBusy} onClick={() => handleGenerateAnalysis({ keyFacts: true })}>
-        Key Facts
-      </button>
-      <button className={buttonClass} disabled={isBusy} onClick={() => handleGenerateAnalysis({ competition: true })}>
-        Competition
-      </button>
-      <button className={buttonClass} disabled={isBusy} onClick={() => handleGenerateAnalysis({ finalSummary: true })}>
-        Final Summary
-      </button>
-
-      <div className="h-4 w-px bg-indigo-700/60" />
-
-      <button className={buttonClass} disabled={isBusy} onClick={() => runBulk('financial')}>
-        Financial Info
-      </button>
-      <button className={buttonClass} disabled={isBusy} onClick={() => runBulk('morAnalyzer')}>
-        Mor Analyzer
-      </button>
-      <button className={buttonClass} disabled={isBusy} onClick={() => runBulk('morRisk')}>
-        Mor Risk
-      </button>
-      <button className={buttonClass} disabled={isBusy} onClick={() => runBulk('morPeople')}>
-        Mor People
-      </button>
-      <button className={buttonClass} disabled={isBusy} onClick={() => runBulk('morPortfolio')}>
-        Mor Portfolio
-      </button>
-      <button className={buttonClass} disabled={isBusy} onClick={() => runBulk('flushCache')}>
-        Flush Cache
-      </button>
-
-      {progress && (
-        <span className="text-xs text-indigo-300 ml-2">
-          {progress.done}/{progress.total} done…
-        </span>
-      )}
-
-      <div className="ml-auto">
-        <button className="text-xs text-gray-400 hover:text-gray-200 transition-colors" disabled={isBusy} onClick={onClearSelection}>
-          Clear selection
+        <button className={`${buttonClass} !bg-indigo-700 !text-indigo-100 hover:!bg-indigo-600`} disabled={isBusy} onClick={() => handleGenerateAnalysis()}>
+          Generate All Analysis
         </button>
+        <button className={buttonClass} disabled={isBusy} onClick={() => handleGenerateAnalysis({ performanceAndReturns: true })}>
+          Past Returns
+        </button>
+        <button className={buttonClass} disabled={isBusy} onClick={() => handleGenerateAnalysis({ costEfficiencyAndTeam: true })}>
+          Cost, Efficiency & Team
+        </button>
+        <button className={buttonClass} disabled={isBusy} onClick={() => handleGenerateAnalysis({ riskAnalysis: true })}>
+          Risk Analysis
+        </button>
+        <button className={buttonClass} disabled={isBusy} onClick={() => handleGenerateAnalysis({ futurePerformanceOutlook: true })}>
+          Future Outlook
+        </button>
+        <button className={buttonClass} disabled={isBusy} onClick={() => handleGenerateAnalysis({ keyFacts: true })}>
+          Key Facts
+        </button>
+        <button className={buttonClass} disabled={isBusy} onClick={() => handleGenerateAnalysis({ competition: true })}>
+          Competition
+        </button>
+        <button className={buttonClass} disabled={isBusy} onClick={() => handleGenerateAnalysis({ finalSummary: true })}>
+          Final Summary
+        </button>
+
+        <div className="h-4 w-px bg-indigo-700/60" />
+
+        <button className={buttonClass} disabled={isBusy} onClick={() => runBulk('financial')}>
+          Financial Info
+        </button>
+        <button className={buttonClass} disabled={isBusy} onClick={() => runBulk('morAnalyzer')}>
+          Mor Analyzer
+        </button>
+        <button className={buttonClass} disabled={isBusy} onClick={() => runBulk('morRisk')}>
+          Mor Risk
+        </button>
+        <button className={buttonClass} disabled={isBusy} onClick={() => runBulk('morPeople')}>
+          Mor People
+        </button>
+        <button className={buttonClass} disabled={isBusy} onClick={() => runBulk('morPortfolio')}>
+          Mor Portfolio
+        </button>
+        <button className={buttonClass} disabled={isBusy} onClick={() => runBulk('flushCache')}>
+          Flush Cache
+        </button>
+
+        {progress && (
+          <span className="text-xs text-indigo-300 ml-2">
+            {progress.done}/{progress.total} done…
+          </span>
+        )}
+
+        <div className="ml-auto">
+          <button className="text-xs text-gray-400 hover:text-gray-200 transition-colors" disabled={isBusy} onClick={onClearSelection}>
+            Clear selection
+          </button>
+        </div>
       </div>
     </div>
   );

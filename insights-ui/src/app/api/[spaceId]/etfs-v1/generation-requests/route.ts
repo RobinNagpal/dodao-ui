@@ -1,6 +1,7 @@
 import { withAdminOrToken } from '@/app/api/helpers/withAdminOrToken';
 import { prisma } from '@/prisma';
 import { KoalaGainsJwtTokenPayload } from '@/types/auth';
+import { LLMProvider } from '@/types/llmConstants';
 import { EtfGenerationRequestStatus, EtfReportType } from '@/types/etf/etf-analysis-types';
 import { ensureMorDataForAnalysis } from '@/utils/etf-analysis-reports/mor-scrape-utils';
 import { calculateEtfPendingSteps } from '@/utils/etf-analysis-reports/etf-report-steps-statuses';
@@ -21,6 +22,10 @@ export interface EtfGenerationRequestPayload {
   regenerateKeyFacts?: boolean;
   regenerateCompetition?: boolean;
   regenerateFinalSummary?: boolean;
+  /** Optional LLM provider override chosen in the report-generation UI. */
+  llmProvider?: LLMProvider;
+  /** Optional provider-specific model id chosen in the report-generation UI. */
+  llmModel?: string;
 }
 
 export interface EtfGenerationRequestWithEtf extends EtfGenerationRequest {
@@ -218,6 +223,9 @@ async function postHandler(
           regenerateKeyFacts: regenerateOptions.regenerateKeyFacts || existingRequest.regenerateKeyFacts,
           regenerateCompetition: regenerateOptions.regenerateCompetition || existingRequest.regenerateCompetition,
           regenerateFinalSummary: regenerateOptions.regenerateFinalSummary || existingRequest.regenerateFinalSummary,
+          // A newly-supplied provider/model overrides the pending request; otherwise keep the existing choice.
+          llmProvider: payload.llmProvider ?? existingRequest.llmProvider,
+          llmModel: payload.llmModel ?? existingRequest.llmModel,
           updatedAt: new Date(),
         },
       });
@@ -233,6 +241,8 @@ async function postHandler(
           regenerateKeyFacts: regenerateOptions.regenerateKeyFacts ?? true,
           regenerateCompetition: regenerateOptions.regenerateCompetition ?? true,
           regenerateFinalSummary: regenerateOptions.regenerateFinalSummary ?? true,
+          llmProvider: payload.llmProvider ?? null,
+          llmModel: payload.llmModel ?? null,
         },
       });
     }

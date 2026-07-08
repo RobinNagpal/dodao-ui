@@ -1,5 +1,6 @@
 import { prisma } from '@/prisma';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
+import { LLMProvider } from '@/types/llmConstants';
 import { EtfAnalysisCategory, EtfGenerationRequestStatus, EtfReportType, ETF_PROMPT_KEYS, ETF_REPORT_TYPE_TO_CATEGORY } from '@/types/etf/etf-analysis-types';
 import { fetchEtfWithAllData, EtfWithAllData } from '@/utils/etf-analysis-reports/get-etf-report-data-utils';
 import {
@@ -14,6 +15,16 @@ import {
 import { markEtfRequestAsCompleted, markEtfRequestAsInProgress } from '@/utils/etf-analysis-reports/etf-report-status-utils';
 import { calculateEtfPendingSteps } from '@/utils/etf-analysis-reports/etf-report-steps-statuses';
 import { callEtfLambdaForLLMResponse } from '@/utils/etf-analysis-reports/etf-llm-lambda-utils';
+
+/**
+ * Optional LLM provider/model override for an ETF background generation run,
+ * read from the `EtfGenerationRequest`. Empty fields fall back to the configured
+ * `LLM_PROVIDER` / `LLM_MODEL` defaults inside `callEtfLambdaForLLMResponse`.
+ */
+export interface EtfLlmSelection {
+  llmProvider?: LLMProvider;
+  model?: string;
+}
 
 export const etfReportDependencyMap: Record<EtfReportType, EtfReportType[]> = {
   [EtfReportType.PERFORMANCE_AND_RETURNS]: [],
@@ -59,7 +70,13 @@ function prepareInputJsonForReportType(etf: EtfWithAllData, reportType: EtfRepor
   }
 }
 
-async function generateEtfCategoryAnalysis(spaceId: string, etf: EtfWithAllData, generationRequestId: string, reportType: EtfReportType): Promise<void> {
+async function generateEtfCategoryAnalysis(
+  spaceId: string,
+  etf: EtfWithAllData,
+  generationRequestId: string,
+  reportType: EtfReportType,
+  selection: EtfLlmSelection
+): Promise<void> {
   const inputJson = prepareInputJsonForReportType(etf, reportType);
   const promptKey = ETF_PROMPT_KEYS[reportType];
 
@@ -71,6 +88,8 @@ async function generateEtfCategoryAnalysis(spaceId: string, etf: EtfWithAllData,
     promptKey,
     spaceId,
     reportType,
+    llmProvider: selection.llmProvider,
+    model: selection.model,
   });
 }
 
@@ -82,6 +101,15 @@ export async function triggerEtfGenerationOfAReport(symbol: string, exchange: st
 
   const etfRecord = await fetchEtfWithAllData(symbol, exchange);
   const spaceId = KoalaGainsSpaceId;
+
+  // Provider/model chosen in the UI for this ETF generation request. Empty
+  // fields fall back to the configured LLM_PROVIDER / LLM_MODEL env defaults in
+  // callEtfLambdaForLLMResponse, so requests created before this feature (or via
+  // callers that don't pass a choice) behave exactly as before.
+  const selection: EtfLlmSelection = {
+    llmProvider: (generationRequest.llmProvider as LLMProvider | null) ?? undefined,
+    model: generationRequest.llmModel ?? undefined,
+  };
 
   if (generationRequest.status === EtfGenerationRequestStatus.Completed) {
     console.log('ETF generation request is already completed - skipping', symbol, 'on exchange', exchange);
@@ -100,8 +128,11 @@ export async function triggerEtfGenerationOfAReport(symbol: string, exchange: st
     const lastInvocationTime = generationRequest.lastInvocationTime;
 
     if (inProgressStep && lastInvocationTime) {
-      const fiveMinutes = 5 * 60 * 1000;
-      if (Date.now() - lastInvocationTime.getTime() < fiveMinutes) {
+      // 10-minute stale-step guard (raised from 5): Claude-provider runs take
+      // noticeably longer, so a shorter window was reclaiming steps that were
+      // still legitimately in flight.
+      const tenMinutes = 10 * 60 * 1000;
+      if (Date.now() - lastInvocationTime.getTime() < tenMinutes) {
         console.log(`Waiting for ${inProgressStep} of ETF ${symbol} to finish...`);
         return;
       }
@@ -140,7 +171,7 @@ export async function triggerEtfGenerationOfAReport(symbol: string, exchange: st
   await markEtfRequestAsInProgress(generationRequest, nextStep);
 
   try {
-    await generateEtfCategoryAnalysis(spaceId, etfRecord, generationRequest.id, nextStep);
+    await generateEtfCategoryAnalysis(spaceId, etfRecord, generationRequest.id, nextStep, selection);
   } catch (error) {
     console.error(`Error generating ETF ${nextStep} for ${symbol}:`, error);
     await prisma.etfGenerationRequest.update({

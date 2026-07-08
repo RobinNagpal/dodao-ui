@@ -1,7 +1,7 @@
 import { prisma } from '@/prisma';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { EtfReportType } from '@/types/etf/etf-analysis-types';
-import { getDefaultGeminiModel, getDefaultLLMProvider } from '@/types/llmConstants';
+import { getDefaultLLMProvider, getDefaultModelForProvider, LLMProvider } from '@/types/llmConstants';
 import { compileTemplate, createPromptInvocation, loadSchema, updateInvocationStatus, validateData } from '@/util/get-llm-response';
 import { callLambdaForLLMResponseViaCallback, LLMResponseViaLambdaRequest } from '@/utils/analysis-reports/llm-callback-lambda-utils';
 import { processEtfReportLLMResponseInBackground } from '@/utils/etf-analysis-reports/background-etf-llm-generation-utils';
@@ -17,6 +17,10 @@ export interface EtfLLMRequest {
   promptKey: string;
   spaceId: string;
   reportType: EtfReportType;
+  /** Optional provider override; falls back to the LLM_PROVIDER env default. */
+  llmProvider?: LLMProvider;
+  /** Optional provider-specific model id; falls back to the provider default. */
+  model?: string;
 }
 
 /**
@@ -50,8 +54,10 @@ async function updateEtfLastInvocationTime(generationRequestId: string, reportTy
 export async function callEtfLambdaForLLMResponse(args: EtfLLMRequest): Promise<void> {
   const { symbol, exchange, generationRequestId, inputJson, promptKey, spaceId, reportType } = args;
 
-  const llmProvider = getDefaultLLMProvider();
-  const model = getDefaultGeminiModel();
+  // Use the provider/model chosen in the UI when present; otherwise keep the
+  // previous behavior and fall back to the LLM_PROVIDER / LLM_MODEL env defaults.
+  const llmProvider = args.llmProvider ?? getDefaultLLMProvider();
+  const model = args.model ?? getDefaultModelForProvider(llmProvider);
 
   const prompt = await prisma.prompt.findFirstOrThrow({
     where: {

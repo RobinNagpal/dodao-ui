@@ -159,6 +159,9 @@ function EtfRequestsTable({
                     </div>
                     <div className="text-xs text-gray-400">{request.etf.name}</div>
                   </Link>
+                  <div className="text-[11px] text-gray-500 mt-1 whitespace-nowrap" title="LLM provider · model used for this request">
+                    {request.llmProvider || request.llmModel ? `${request.llmProvider ?? '—'} · ${request.llmModel ?? '—'}` : 'default LLM'}
+                  </div>
                 </td>
                 {ETF_REGENERATE_FIELDS.map((field) => {
                   const stepName = ETF_FIELD_TO_STEP_MAP[field];
