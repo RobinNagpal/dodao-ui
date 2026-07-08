@@ -41,16 +41,12 @@ export function getDefaultGeminiModel(): GeminiModel {
 }
 
 /**
- * Default Claude model used for the Claude provider when no explicit model is
- * selected (see getClaudeStructuredResult).
- */
-export const DEFAULT_CLAUDE_MODEL = 'claude-opus-4-7';
-
-/**
- * The single default Claude model used when no explicit model is selected.
+ * The single default Claude model used when no explicit model is selected
+ * (see getClaudeStructuredResult). Tied to the typed ClaudeModel enum so there
+ * is one source of truth for the id.
  */
 export function getDefaultClaudeModel(): string {
-  return DEFAULT_CLAUDE_MODEL;
+  return ClaudeModel.CLAUDE_OPUS_4_7;
 }
 
 /**
