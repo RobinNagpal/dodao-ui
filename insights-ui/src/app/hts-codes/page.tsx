@@ -113,7 +113,7 @@ export default async function HtsCodesIndexPage() {
               return (
                 <section key={section.id}>
                   <div className="border-b border-color pb-2 mb-4">
-                    <h2 className="text-xl font-semibold text-indigo-400">
+                    <h2 className="text-xl font-semibold text-primary">
                       <span className="font-mono tabular-nums mr-3">Section {section.romanNumeral}</span>
                       {section.title}
                     </h2>
@@ -127,13 +127,13 @@ export default async function HtsCodesIndexPage() {
                         <li key={chapter.id}>
                           <Link
                             href={chapterDetailHref(section.number, chapter.number, chapter.title)}
-                            className="group flex items-center gap-3 rounded-lg border border-color background-color px-4 py-3 transition hover:border-indigo-400 hover:bg-block-bg-color hover:shadow-md"
+                            className="group flex items-center gap-3 rounded-lg border border-color background-color px-4 py-3 transition hover:border-primary hover:bg-block-bg-color hover:shadow-md"
                           >
-                            <span className="font-mono text-sm text-muted-foreground tabular-nums w-8 shrink-0 group-hover:text-indigo-300">
+                            <span className="font-mono text-sm text-muted-foreground tabular-nums w-8 shrink-0 group-hover:text-primary">
                               {chapter.number.toString().padStart(2, '0')}
                             </span>
-                            <span className="font-medium flex-1 group-hover:text-indigo-300">{chapter.title}</span>
-                            <ChevronRight className="h-4 w-4 shrink-0 text-muted-foreground transition group-hover:translate-x-1 group-hover:text-indigo-300" />
+                            <span className="font-medium flex-1 group-hover:text-primary">{chapter.title}</span>
+                            <ChevronRight className="h-4 w-4 shrink-0 text-muted-foreground transition group-hover:translate-x-1 group-hover:text-primary" />
                           </Link>
                         </li>
                       ))}
