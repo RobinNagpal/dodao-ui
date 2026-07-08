@@ -37,7 +37,7 @@ export default async function UnderstandIndustryPage({ params }: { params: Promi
   return (
     <div className="mx-auto max-w-7xl py-2">
       {/* Title and Actions */}
-      <div className="mb-8 pb-4 border-b border-gray-200">
+      <div className="mb-8 pb-4 border-b border-border">
         <div className="flex justify-between items-center">
           <h1 className="text-3xl font-bold heading-color">Understand Industry</h1>
           <PrivateWrapper>
@@ -63,8 +63,8 @@ export default async function UnderstandIndustryPage({ params }: { params: Promi
         {report.understandIndustry ? (
           <UnderstandIndustryRenderer understandIndustry={report.understandIndustry} />
         ) : (
-          <div className="bg-gray-900 rounded-lg p-6 shadow-sm">
-            <p className="text-gray-500 italic">No content available</p>
+          <div className="bg-bg rounded-lg p-6 shadow-sm">
+            <p className="text-muted italic">No content available</p>
           </div>
         )}
       </div>

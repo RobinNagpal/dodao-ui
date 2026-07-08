@@ -89,36 +89,36 @@ function ChapterCard({ chapterNumber, chapterTitle, chapterSlug, lastModified }:
   );
 
   return (
-    <article className="group flex flex-col rounded-2xl bg-gray-900 border border-gray-800 transition-all hover:border-blue-500 p-6">
+    <article className="group flex flex-col rounded-2xl bg-bg border border-border transition-all hover:border-primary p-6">
       <div className="mb-4 flex items-center justify-between text-xs">
-        <span className="inline-flex items-center gap-1.5 rounded-full bg-blue-500/10 px-2.5 py-1 font-medium text-blue-400 ring-1 ring-inset ring-blue-500/20">
+        <span className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-2.5 py-1 font-medium text-primary ring-1 ring-inset ring-primary/20">
           <Layers className="h-3 w-3" />
           HTS Chapter {padded}
         </span>
-        {lastModified && <span className="text-gray-400">Updated {formatDate(lastModified)}</span>}
+        {lastModified && <span className="text-muted">Updated {formatDate(lastModified)}</span>}
       </div>
 
-      <h3 className="mb-2 text-xl font-semibold leading-snug text-white">
-        <Link href={href} className="transition-colors group-hover:text-blue-400 focus-visible:text-blue-400 focus-visible:outline-none">
+      <h3 className="mb-2 text-xl font-semibold leading-snug text-heading">
+        <Link href={href} className="transition-colors group-hover:text-link focus-visible:text-link focus-visible:outline-none">
           {title}
         </Link>
       </h3>
 
-      <p className="mb-5 line-clamp-3 flex-1 text-sm text-gray-300">{description}</p>
+      <p className="mb-5 line-clamp-3 flex-1 text-sm text-muted">{description}</p>
 
       <div className="mb-5 flex flex-wrap gap-1.5">
         {orderedSections.map((section) => (
           <Link
             key={section.slug}
             href={chapterSectionHref(chapterSlug, section.slug)}
-            className="inline-flex items-center rounded-md border border-gray-800 px-2 py-1 text-xs font-medium text-gray-400 transition-colors hover:border-blue-500 hover:bg-blue-500/5 hover:text-blue-400"
+            className="inline-flex items-center rounded-md border border-border px-2 py-1 text-xs font-medium text-muted transition-colors hover:border-primary hover:bg-primary/5 hover:text-primary"
           >
             {section.label}
           </Link>
         ))}
       </div>
 
-      <Link href={href} className="mt-auto inline-flex items-center gap-1.5 text-sm font-medium text-blue-400 transition-colors group-hover:text-blue-300">
+      <Link href={href} className="mt-auto inline-flex items-center gap-1.5 text-sm font-medium text-link transition-colors group-hover:text-link">
         Open report
         <ArrowRight className="h-4 w-4" />
       </Link>
@@ -171,16 +171,16 @@ export default async function TariffReportsPage() {
         </header>
 
         {rows.length === 0 ? (
-          <div className="rounded-2xl border border-gray-800 bg-gray-900 py-12 text-center">
-            <FileText className="mx-auto h-12 w-12 text-gray-500" />
-            <h3 className="mt-4 text-lg font-medium text-white">No tariff reports available</h3>
-            <p className="mt-2 text-sm text-gray-400">Tariff reports will appear here once they are created.</p>
+          <div className="rounded-2xl border border-border bg-bg py-12 text-center">
+            <FileText className="mx-auto h-12 w-12 text-muted" />
+            <h3 className="mt-4 text-lg font-medium text-heading">No tariff reports available</h3>
+            <p className="mt-2 text-sm text-muted">Tariff reports will appear here once they are created.</p>
           </div>
         ) : (
           <section className="mb-14">
-            <div className="mb-6 flex items-baseline justify-between border-b border-gray-800 pb-2">
-              <h2 className="text-2xl font-semibold text-white">All Chapters</h2>
-              <span className="text-sm text-gray-400">{rows.length} chapters</span>
+            <div className="mb-6 flex items-baseline justify-between border-b border-border pb-2">
+              <h2 className="text-2xl font-semibold text-heading">All Chapters</h2>
+              <span className="text-sm text-muted">{rows.length} chapters</span>
             </div>
             <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {rows.map((row) => (

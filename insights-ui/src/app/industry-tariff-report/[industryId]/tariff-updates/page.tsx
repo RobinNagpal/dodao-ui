@@ -46,7 +46,7 @@ export default async function TariffUpdatesPage({ params }: { params: Promise<{ 
     <>
       <div className="mx-auto max-w-7xl py-2">
         {/* Title and Actions */}
-        <div className="mb-4 pb-4 border-b border-gray-200">
+        <div className="mb-4 pb-4 border-b border-border">
           <div className="flex justify-between items-center">
             <h1 className="text-3xl font-bold heading-color">Top 5 Trade Partners - {definition.name} Industry</h1>
             <PrivateWrapper>
@@ -87,7 +87,7 @@ export default async function TariffUpdatesPage({ params }: { params: Promise<{ 
               );
             })
           ) : (
-            <div className="bg-gray-900 rounded-lg p-6 shadow-sm">
+            <div className="bg-bg rounded-lg p-6 shadow-sm">
               <h2 className="text-xl font-semibold">No tariff updates available</h2>
             </div>
           )}
