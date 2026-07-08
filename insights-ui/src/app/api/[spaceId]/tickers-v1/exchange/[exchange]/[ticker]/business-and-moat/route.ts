@@ -1,6 +1,7 @@
 import { LLMFactorAnalysisResponse, TickerAnalysisResponse } from '@/types/public-equity/analysis-factors-types';
 import { TickerAnalysisCategory } from '@/types/ticker-typesv1';
 import { getLLMResponseForPromptViaInvocation } from '@/util/get-llm-response';
+import { parseLlmSelectionFromRequest } from '@/utils/analysis-reports/llm-selection-utils';
 import { fetchAnalysisFactors, fetchTickerRecordBySymbolAndExchangeWithIndustryAndSubIndustry } from '@/utils/analysis-reports/get-report-data-utils';
 import { saveBusinessAndMoatFactorAnalysisResponse } from '@/utils/analysis-reports/save-report-utils';
 import { prepareBusinessAndMoatInputJson } from '@/utils/analysis-reports/report-input-json-utils';
@@ -15,6 +16,9 @@ async function postHandler(
   { params }: { params: Promise<{ spaceId: string; ticker: string; exchange: string }> }
 ): Promise<TickerAnalysisResponse> {
   const { spaceId, ticker, exchange } = await params;
+
+  // Optional LLM provider/model chosen in the report-generation UI (falls back to defaults).
+  const { llmProvider, model } = await parseLlmSelectionFromRequest(req);
 
   // Get ticker from DB
   const tickerRecord = await fetchTickerRecordBySymbolAndExchangeWithIndustryAndSubIndustry(ticker.toUpperCase(), exchange.toUpperCase());
@@ -37,6 +41,8 @@ async function postHandler(
     inputJson,
     promptKey: 'US/public-equities-v1/business-moat',
     requestFrom: 'ui',
+    llmProvider,
+    model,
   });
 
   if (!result) {

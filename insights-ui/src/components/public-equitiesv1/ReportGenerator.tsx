@@ -1,4 +1,5 @@
 import { TickerIdentifier } from '@/app/api/[spaceId]/tickers-v1/generation-requests/route';
+import LlmProviderModelSelector, { getDefaultLlmProviderModelSelection, LlmProviderModelSelection } from '@/components/llm/LlmProviderModelSelector';
 import { reportTypes, useGenerateReports } from '@/hooks/useGenerateReports';
 import { ReportType } from '@/types/ticker-typesv1';
 import { getMissingReportTypes, TickerWithMissingReportInfo } from '@/utils/analysis-reports/report-steps-statuses';
@@ -24,6 +25,9 @@ export default function ReportGenerator({ selectedTickers, tickerReports, onRepo
   const [selectedReportTypes, setSelectedReportTypes] = useState<ReportType[]>([]);
   const [showSpecificGenerationModal, setShowSpecificGenerationModal] = useState<boolean>(false);
 
+  // LLM provider/model to use for this round of generation.
+  const [llmSelection, setLlmSelection] = useState<LlmProviderModelSelection>(getDefaultLlmProviderModelSelection());
+
   React.useEffect(() => {
     const allReportTypeKeys: ReportType[] = reportTypes.map((rt) => rt.key);
     setSelectedReportTypes(allReportTypeKeys);
@@ -34,7 +38,7 @@ export default function ReportGenerator({ selectedTickers, tickerReports, onRepo
 
   const handleGenerateAll = async (ticker: TickerIdentifier): Promise<void> => {
     if (!ticker || !ticker.symbol || !ticker.exchange) return;
-    await generateAllReportsForTicker(ticker, onReportGenerated);
+    await generateAllReportsForTicker(ticker, onReportGenerated, llmSelection);
   };
 
   const handleGenerateAllForAllTickers = (): void => {
@@ -63,7 +67,7 @@ export default function ReportGenerator({ selectedTickers, tickerReports, onRepo
 
     setIsGeneratingAll(true);
     try {
-      await createFullBackgroundGenerationRequests(pendingTickers);
+      await createFullBackgroundGenerationRequests(pendingTickers, llmSelection);
       router.push('/admin-v1/generation-requests');
     } finally {
       setIsGeneratingAll(false);
@@ -96,9 +100,14 @@ export default function ReportGenerator({ selectedTickers, tickerReports, onRepo
 
     setIsGeneratingAll(true);
     try {
-      await generateReportsSynchronously(pendingTickers, selectedReportTypes, (ticker) => {
-        onReportGenerated(ticker);
-      });
+      await generateReportsSynchronously(
+        pendingTickers,
+        selectedReportTypes,
+        (ticker) => {
+          onReportGenerated(ticker);
+        },
+        llmSelection
+      );
     } finally {
       setIsGeneratingAll(false);
       setPendingTickers([]);
@@ -111,7 +120,7 @@ export default function ReportGenerator({ selectedTickers, tickerReports, onRepo
 
     setIsGeneratingAll(true);
     try {
-      await generateSpecificReportsInBackground(pendingTickers, selectedReportTypes);
+      await generateSpecificReportsInBackground(pendingTickers, selectedReportTypes, llmSelection);
       router.push('/admin-v1/generation-requests');
     } finally {
       setIsGeneratingAll(false);
@@ -191,6 +200,12 @@ export default function ReportGenerator({ selectedTickers, tickerReports, onRepo
 
     return (
       <div className="space-y-4 my-4">
+        <div className="bg-gray-800 rounded-lg p-4">
+          <h3 className="text-lg font-medium text-white mb-4">Select LLM Provider &amp; Model</h3>
+          <LlmProviderModelSelector selection={llmSelection} onChange={setLlmSelection} />
+          <div className="text-sm text-gray-400 mt-2">All selected reports will be generated with this provider and model.</div>
+        </div>
+
         <div className="bg-gray-800 rounded-lg p-4">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-lg font-medium text-white">Select Report Types</h3>

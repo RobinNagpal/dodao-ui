@@ -1,6 +1,6 @@
 import { prisma } from '@/prisma';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
-import { GeminiModel, LLMProvider, getDefaultGeminiModel, getDefaultLLMProvider } from '@/types/llmConstants';
+import { GeminiModel, LLMProvider, getDefaultLLMProvider, getDefaultModelForProvider } from '@/types/llmConstants';
 import { getClaudeStructuredResult } from '@/util/claude/get-claude-structured-response';
 import $RefParser from '@apidevtools/json-schema-ref-parser';
 import { BaseChatModel } from '@langchain/core/language_models/chat_models';
@@ -26,7 +26,9 @@ export interface ValidationResult {
 export interface LLMResponseOptions {
   invocationId: string;
   llmProvider?: LLMProvider;
-  modelName?: GeminiModel;
+  // Provider-specific model id (a Gemini model id for gemini/openai, a Claude
+  // model id for claude). Kept as a plain string so any provider's model flows through.
+  modelName?: string;
   prompt: string;
   outputSchema: object;
   maxRetries?: number;
@@ -38,7 +40,8 @@ export interface LLMResponseViaInvocationRequest<Input> {
   inputJson?: Input;
   promptKey: string;
   llmProvider?: LLMProvider;
-  model?: GeminiModel;
+  // Provider-specific model id (Gemini or Claude). Plain string so any provider's model works.
+  model?: string;
   bodyToAppend?: string;
   requestFrom: RequestSource;
 }
@@ -48,7 +51,8 @@ export interface LLMResponseViaTestInvocationRequest {
   promptId: string;
   promptTemplate: string;
   llmProvider?: LLMProvider;
-  model?: GeminiModel;
+  // Provider-specific model id (Gemini or Claude). Plain string so any provider's model works.
+  model?: string;
   bodyToAppend?: string;
   inputJsonString?: string;
 }
@@ -136,7 +140,8 @@ export async function updateInvocationStatus(
 interface BaseInvocationData {
   spaceId: string;
   llmProvider: LLMProvider;
-  model: GeminiModel;
+  // Provider-specific model id (Gemini or Claude); stored as a string column on the invocation.
+  model: string;
   bodyToAppend?: string;
 }
 
@@ -226,12 +231,14 @@ export function compileTemplate(template: string, inputData: Record<string, unkn
 export async function getLLMResponse<Output>({
   invocationId,
   llmProvider = getDefaultLLMProvider(),
-  modelName = getDefaultGeminiModel(),
+  modelName,
   prompt,
   outputSchema,
   maxRetries = 1,
   isTestInvocation,
 }: LLMResponseOptions): Promise<{ result: Output; sourceLinks?: Array<{ uri: string; title?: string }> }> {
+  // Resolve the model provider-aware so a claude provider never falls back to a Gemini id.
+  const resolvedModel = modelName || getDefaultModelForProvider(llmProvider);
   let lastResult: unknown | null = null;
   let sourceLinks: Array<{ uri: string; title?: string }> | undefined;
 
@@ -243,11 +250,11 @@ export async function getLLMResponse<Output>({
       // Handle Gemini with grounding
       if (llmProvider === LLMProvider.GEMINI_WITH_GROUNDING) {
         // Only use single-call grounded structured output for GEMINI_3_1_PRO_PREVIEW
-        if (modelName === GeminiModel.GEMINI_3_1_PRO_PREVIEW) {
+        if (resolvedModel === GeminiModel.GEMINI_3_1_PRO_PREVIEW) {
           console.log('Using Gemini 3.1 Pro Preview with grounding - trying single-call grounded structured output...');
 
           try {
-            const groundedStructured = await getGroundedStructuredResponse<Output>(prompt, modelName, outputSchema);
+            const groundedStructured = await getGroundedStructuredResponse<Output>(prompt, resolvedModel as GeminiModel, outputSchema);
 
             sourceLinks = groundedStructured.sources;
             singleCallGroundedResult = groundedStructured.result;
@@ -258,7 +265,7 @@ export async function getLLMResponse<Output>({
             console.warn('⚠️ Single-call grounded structured output failed; falling back to 2-step...', singleCallErr);
 
             // Step 1: Get grounded response from Gemini with Google Search
-            const groundedResponse: GroundedResponse = await getGroundedResponse(prompt, modelName);
+            const groundedResponse: GroundedResponse = await getGroundedResponse(prompt, resolvedModel as GeminiModel);
 
             // Store source links
             sourceLinks = groundedResponse.sources;
@@ -269,10 +276,10 @@ export async function getLLMResponse<Output>({
           }
         } else {
           // For other models (like GEMINI_2_5_PRO), always use 2-step approach
-          console.log('Using Gemini with grounding - 2-step approach for model:', modelName);
+          console.log('Using Gemini with grounding - 2-step approach for model:', resolvedModel);
 
           // Step 1: Get grounded response from Gemini with Google Search
-          const groundedResponse: GroundedResponse = await getGroundedResponse(prompt, modelName);
+          const groundedResponse: GroundedResponse = await getGroundedResponse(prompt, resolvedModel as GeminiModel);
 
           // Store source links
           sourceLinks = groundedResponse.sources;
@@ -291,13 +298,13 @@ export async function getLLMResponse<Output>({
         // validation, invocation-status bookkeeping, and retry loop below are
         // shared with the Gemini/OpenAI path — only how we obtain `result`
         // differs.
-        result = await getClaudeStructuredResult<Output>(finalPrompt, outputSchema);
+        result = await getClaudeStructuredResult<Output>(finalPrompt, outputSchema, { model: resolvedModel });
         console.log('Response from Claude (oauth):', result);
       } else if (singleCallGroundedResult !== null) {
         result = singleCallGroundedResult;
       } else {
         // Initialize LLM for structured output
-        const llm = initializeLLM(llmProvider === LLMProvider.GEMINI_WITH_GROUNDING ? LLMProvider.GEMINI : llmProvider, modelName);
+        const llm = initializeLLM(llmProvider === LLMProvider.GEMINI_WITH_GROUNDING ? LLMProvider.GEMINI : llmProvider, resolvedModel as GeminiModel);
         const structured = llm.withStructuredOutput(outputSchema);
 
         // Get response from LLM
@@ -350,7 +357,9 @@ export async function getLLMResponse<Output>({
 export async function getLLMResponseForPromptViaInvocation<Input, Output>(
   params: LLMResponseViaInvocationRequest<Input>
 ): Promise<LLMResponseObject<Input, Output>> {
-  const { promptKey, llmProvider = getDefaultLLMProvider(), model = getDefaultGeminiModel(), spaceId, inputJson, bodyToAppend, requestFrom } = params;
+  const { promptKey, llmProvider = getDefaultLLMProvider(), spaceId, inputJson, bodyToAppend, requestFrom } = params;
+  // Resolve the model provider-aware so a claude provider never falls back to a Gemini id.
+  const model = params.model || getDefaultModelForProvider(llmProvider);
 
   // Validate required fields
   if (!promptKey) {
@@ -472,7 +481,9 @@ export async function getLLMResponseForPromptViaTestInvocation<Output>(
   params: LLMResponseViaTestInvocationRequest
 ): Promise<TestPromptInvocationResponse<Output>> {
   console.log('getLLMResponseForPromptViaTestInvocation', JSON.stringify(params, null, 2));
-  const { promptId, promptTemplate, llmProvider = getDefaultLLMProvider(), model = getDefaultGeminiModel(), spaceId, bodyToAppend, inputJsonString } = params;
+  const { promptId, promptTemplate, llmProvider = getDefaultLLMProvider(), spaceId, bodyToAppend, inputJsonString } = params;
+  // Resolve the model provider-aware so a claude provider never falls back to a Gemini id.
+  const model = params.model || getDefaultModelForProvider(llmProvider);
 
   // Validate required fields
   if (!promptId || !promptTemplate) {

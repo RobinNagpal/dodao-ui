@@ -1,5 +1,6 @@
 import { GenerationRequestPayload, TickerIdentifier } from '@/app/api/[spaceId]/tickers-v1/generation-requests/route';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
+import { LLMProvider } from '@/types/llmConstants';
 import { AnalysisRequest, TickerAnalysisResponse } from '@/types/public-equity/analysis-factors-types';
 import { InvestorKey, InvestorTypes, ReportType } from '@/types/ticker-typesv1';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
@@ -10,6 +11,15 @@ export interface ReportTypeInfo {
   key: ReportType;
   label: string;
   reportType: ReportType;
+}
+
+/**
+ * Optional LLM provider/model chosen in the report-generation UI. When omitted
+ * (or its fields are undefined) the backend falls back to the configured defaults.
+ */
+export interface ReportLlmSelection {
+  llmProvider?: LLMProvider;
+  model?: string;
 }
 
 /** Analysis types (moved from utils) */
@@ -53,11 +63,12 @@ export const useGenerateReports = () => {
   const generateAnalysis = async (
     analysisType: ReportType,
     ticker: TickerIdentifier,
-    onReportGenerated?: (ticker: TickerIdentifier) => void
+    onReportGenerated?: (ticker: TickerIdentifier) => void,
+    llmSelection?: ReportLlmSelection
   ): Promise<void> => {
     if (!ticker || !ticker.symbol || !ticker.exchange) return;
     try {
-      const payload: AnalysisRequest = {};
+      const payload: AnalysisRequest = { llmProvider: llmSelection?.llmProvider, model: llmSelection?.model };
       const result = await postAnalysisTo(
         `${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/exchange/${ticker.exchange}/${ticker.symbol}/${analysisType}`,
         payload
@@ -73,7 +84,11 @@ export const useGenerateReports = () => {
   /**
    * Generate all reports for a single ticker (synchronously, respecting dependencies).
    */
-  const generateAllReportsForTicker = async (ticker: TickerIdentifier, onReportGenerated?: (ticker: TickerIdentifier) => void): Promise<void> => {
+  const generateAllReportsForTicker = async (
+    ticker: TickerIdentifier,
+    onReportGenerated?: (ticker: TickerIdentifier) => void,
+    llmSelection?: ReportLlmSelection
+  ): Promise<void> => {
     if (!ticker || !ticker.symbol || !ticker.exchange) return;
 
     setIsGenerating(true);
@@ -89,7 +104,7 @@ export const useGenerateReports = () => {
       ];
 
       for (const step of sequence) {
-        await generateAnalysis(step, ticker, onReportGenerated);
+        await generateAnalysis(step, ticker, onReportGenerated, llmSelection);
         await new Promise((r) => setTimeout(r, 1_000));
       }
     } finally {
@@ -104,7 +119,8 @@ export const useGenerateReports = () => {
   const generateReportsSynchronously = async (
     tickers: TickerIdentifier[],
     selectedReportTypes: ReportType[],
-    onReportGenerated?: (ticker: TickerIdentifier) => void
+    onReportGenerated?: (ticker: TickerIdentifier) => void,
+    llmSelection?: ReportLlmSelection
   ): Promise<void> => {
     if (tickers.length === 0 || selectedReportTypes.length === 0) return;
 
@@ -112,7 +128,7 @@ export const useGenerateReports = () => {
     try {
       const perTicker = tickers.map(async (ticker) => {
         for (const reportType of selectedReportTypes) {
-          await generateAnalysis(reportType, ticker, onReportGenerated);
+          await generateAnalysis(reportType, ticker, onReportGenerated, llmSelection);
           await new Promise((r) => setTimeout(r, 1_000));
         }
       });
@@ -126,7 +142,11 @@ export const useGenerateReports = () => {
    * Batch background generation for specific report types and tickers.
    * Always sends a single POST with an array of payloads (batch), even when length === 1.
    */
-  const generateSpecificReportsInBackground = async (tickers: TickerIdentifier[], selectedReportTypes: ReportType[]): Promise<void> => {
+  const generateSpecificReportsInBackground = async (
+    tickers: TickerIdentifier[],
+    selectedReportTypes: ReportType[],
+    llmSelection?: ReportLlmSelection
+  ): Promise<void> => {
     if (tickers.length === 0 || selectedReportTypes.length === 0) return;
 
     setIsGenerating(true);
@@ -142,6 +162,8 @@ export const useGenerateReports = () => {
           regenerateFairValue: false,
           regenerateManagementTeam: false,
           regenerateFinalSummary: false,
+          llmProvider: llmSelection?.llmProvider,
+          llmModel: llmSelection?.model,
         };
 
         selectedReportTypes.forEach((rt) => {
@@ -168,7 +190,7 @@ export const useGenerateReports = () => {
    * Batch background generation for all report types for tickers with many missing reports.
    * Always sends a single POST with an array of payloads (batch), even when length === 1.
    */
-  const generateAllReportsInBackground = async (tickers: TickerIdentifier[]): Promise<void> => {
+  const generateAllReportsInBackground = async (tickers: TickerIdentifier[], llmSelection?: ReportLlmSelection): Promise<void> => {
     if (tickers.length === 0) return;
 
     setIsGenerating(true);
@@ -183,6 +205,8 @@ export const useGenerateReports = () => {
         regenerateFairValue: true,
         regenerateManagementTeam: true,
         regenerateFinalSummary: true,
+        llmProvider: llmSelection?.llmProvider,
+        llmModel: llmSelection?.model,
       }));
 
       await postRequest(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/generation-requests`, payloads);
@@ -195,7 +219,7 @@ export const useGenerateReports = () => {
    * Batch generate "full" background requests for a list of tickers.
    * Replaces the old single-ticker helper. Always batched.
    */
-  const createFullBackgroundGenerationRequests = async (tickers: TickerIdentifier[]): Promise<void> => {
+  const createFullBackgroundGenerationRequests = async (tickers: TickerIdentifier[], llmSelection?: ReportLlmSelection): Promise<void> => {
     if (tickers.length === 0) return;
 
     setIsGenerating(true);
@@ -210,6 +234,8 @@ export const useGenerateReports = () => {
         regenerateFairValue: true,
         regenerateManagementTeam: true,
         regenerateFinalSummary: true,
+        llmProvider: llmSelection?.llmProvider,
+        llmModel: llmSelection?.model,
       }));
 
       await postRequest(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/generation-requests`, payloads);
@@ -222,7 +248,10 @@ export const useGenerateReports = () => {
    * Batch create background requests where each item enables only its failed steps.
    * Accepts an array to keep this strictly batch-only even for a single ticker.
    */
-  const createFailedPartsOnlyGenerationRequests = async (items: { ticker: TickerIdentifier; failedSteps: ReportType[] }[]): Promise<void> => {
+  const createFailedPartsOnlyGenerationRequests = async (
+    items: { ticker: TickerIdentifier; failedSteps: ReportType[] }[],
+    llmSelection?: ReportLlmSelection
+  ): Promise<void> => {
     if (items.length === 0) return;
 
     setIsGenerating(true);
@@ -240,6 +269,8 @@ export const useGenerateReports = () => {
             regenerateFairValue: false,
             regenerateManagementTeam: false,
             regenerateFinalSummary: false,
+            llmProvider: llmSelection?.llmProvider,
+            llmModel: llmSelection?.model,
           };
 
           it.failedSteps.forEach((step) => {

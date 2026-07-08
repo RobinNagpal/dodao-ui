@@ -1,6 +1,6 @@
 import { prisma } from '@/prisma';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
-import { GeminiModel, LLMProvider, getDefaultGeminiModel, getDefaultLLMProvider } from '@/types/llmConstants';
+import { LLMProvider, getDefaultLLMProvider, getDefaultModelForProvider } from '@/types/llmConstants';
 import { ReportType } from '@/types/ticker-typesv1';
 import {
   compileTemplate,
@@ -22,7 +22,8 @@ export interface LLMResponseViaLambdaRequest<Input> {
   promptStringToSendToLLM: string;
   inputSchemaString: string;
   llmProvider: LLMProvider;
-  model: GeminiModel;
+  // Provider-specific model id (Gemini or Claude).
+  model: string;
   outputSchemaString: string;
   additionalData: Record<string, string>;
 }
@@ -105,9 +106,9 @@ export async function getLLMResponseForPromptViaInvocationViaLambda<Input>(args:
   const { symbol, exchange, generationRequestId, params, reportType, moverType } = args;
   const { promptKey, llmProvider: providedLlmProvider, model: providedModel, spaceId, inputJson, bodyToAppend, requestFrom } = params;
 
-  // Use provided values or defaults
+  // Use provided values or provider-aware defaults
   const llmProvider = providedLlmProvider || getDefaultLLMProvider();
-  const model = providedModel || getDefaultGeminiModel();
+  const model = providedModel || getDefaultModelForProvider(llmProvider);
 
   // Validate required fields
   if (!promptKey) {

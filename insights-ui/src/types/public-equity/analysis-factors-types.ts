@@ -1,3 +1,4 @@
+import { LLMProvider } from '@/types/llmConstants';
 import { InvestorKey, InvestorTypes, ManagementTeamAlignmentVerdict, TickerAnalysisCategory } from '@/types/ticker-typesv1';
 import { TickerV1GenerationRequest } from '@prisma/client';
 import { TopCompaniesToConsider } from '../prismaTypes';
@@ -37,6 +38,10 @@ export interface TickerAnalysisResponse {
 
 export interface AnalysisRequest {
   investorKey?: InvestorTypes;
+  /** Optional LLM provider override selected in the report-generation UI. */
+  llmProvider?: LLMProvider;
+  /** Optional provider-specific model id selected in the report-generation UI. */
+  model?: string;
 }
 
 export interface LLMFactorAnalysisResponse {

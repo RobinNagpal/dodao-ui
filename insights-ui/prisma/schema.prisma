@@ -834,6 +834,11 @@ model TickerV1GenerationRequest {
   // Final steps
   regenerateFinalSummary Boolean @default(false) @map("regenerate_final_summary")
 
+  // Optional LLM provider/model override chosen in the report-generation UI.
+  // Null means "use the configured (env/provider) defaults".
+  llmProvider String? @map("llm_provider")
+  llmModel    String? @map("llm_model")
+
   // Request status
   status String @default("NotStarted") @map("status")
 

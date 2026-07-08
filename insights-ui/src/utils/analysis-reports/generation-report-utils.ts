@@ -1,5 +1,6 @@
 import { prisma } from '@/prisma';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
+import { GeminiModel, LLMProvider } from '@/types/llmConstants';
 import { GenerationRequestStatus, ReportType, TickerAnalysisCategory, TickerV1WithIndustryAndSubIndustry } from '@/types/ticker-typesv1';
 import {
   fetchAnalysisFactors,
@@ -69,7 +70,22 @@ export const dependencyBasedReportOrder: ReportType[] = [
   ReportType.FINAL_SUMMARY,
 ];
 
-async function generateCompetitionAnalysis(spaceId: string, tickerRecord: TickerV1WithIndustryAndSubIndustry, generationRequestId: string): Promise<void> {
+/**
+ * Optional LLM provider/model override for a background generation run, read
+ * from the `TickerV1GenerationRequest`. Empty fields fall back to the configured
+ * defaults inside `getLLMResponseForPromptViaInvocationViaLambda`.
+ */
+export interface ReportLlmSelection {
+  llmProvider?: LLMProvider;
+  model?: string;
+}
+
+async function generateCompetitionAnalysis(
+  spaceId: string,
+  tickerRecord: TickerV1WithIndustryAndSubIndustry,
+  generationRequestId: string,
+  selection: ReportLlmSelection
+): Promise<void> {
   // Prepare input for the prompt
   const inputJson = prepareBaseTickerInputJson(tickerRecord);
 
@@ -83,12 +99,19 @@ async function generateCompetitionAnalysis(spaceId: string, tickerRecord: Ticker
       inputJson,
       promptKey: 'US/public-equities-v1/competition',
       requestFrom: 'ui',
+      llmProvider: selection.llmProvider,
+      model: selection.model,
     },
     reportType: ReportType.COMPETITION,
   });
 }
 
-async function generateFinancialAnalysis(spaceId: string, tickerRecord: TickerV1WithIndustryAndSubIndustry, generationRequestId: string): Promise<void> {
+async function generateFinancialAnalysis(
+  spaceId: string,
+  tickerRecord: TickerV1WithIndustryAndSubIndustry,
+  generationRequestId: string,
+  selection: ReportLlmSelection
+): Promise<void> {
   // Ensure stock analyzer data is fresh
   const scraperInfo = await ensureStockAnalyzerDataIsFresh(tickerRecord);
 
@@ -111,12 +134,19 @@ async function generateFinancialAnalysis(spaceId: string, tickerRecord: TickerV1
       inputJson,
       promptKey: 'US/public-equities-v1/financial-statements',
       requestFrom: 'ui',
+      llmProvider: selection.llmProvider,
+      model: selection.model,
     },
     reportType: ReportType.FINANCIAL_ANALYSIS,
   });
 }
 
-async function generateBusinessAndMoatAnalysis(spaceId: string, tickerRecord: TickerV1WithIndustryAndSubIndustry, generationRequestId: string): Promise<void> {
+async function generateBusinessAndMoatAnalysis(
+  spaceId: string,
+  tickerRecord: TickerV1WithIndustryAndSubIndustry,
+  generationRequestId: string,
+  selection: ReportLlmSelection
+): Promise<void> {
   // Ensure stock analyzer data is fresh
   const scraperInfo = await ensureStockAnalyzerDataIsFresh(tickerRecord);
 
@@ -139,12 +169,19 @@ async function generateBusinessAndMoatAnalysis(spaceId: string, tickerRecord: Ti
       inputJson,
       promptKey: 'US/public-equities-v1/business-moat',
       requestFrom: 'ui',
+      llmProvider: selection.llmProvider,
+      model: selection.model,
     },
     reportType: ReportType.BUSINESS_AND_MOAT,
   });
 }
 
-async function generatePastPerformanceAnalysis(spaceId: string, tickerRecord: TickerV1WithIndustryAndSubIndustry, generationRequestId: string): Promise<void> {
+async function generatePastPerformanceAnalysis(
+  spaceId: string,
+  tickerRecord: TickerV1WithIndustryAndSubIndustry,
+  generationRequestId: string,
+  selection: ReportLlmSelection
+): Promise<void> {
   // Ensure stock analyzer data is fresh
   const scraperInfo = await ensureStockAnalyzerDataIsFresh(tickerRecord);
 
@@ -167,12 +204,19 @@ async function generatePastPerformanceAnalysis(spaceId: string, tickerRecord: Ti
       inputJson,
       promptKey: 'US/public-equities-v1/past-performance',
       requestFrom: 'ui',
+      llmProvider: selection.llmProvider,
+      model: selection.model,
     },
     reportType: ReportType.PAST_PERFORMANCE,
   });
 }
 
-async function generateFutureGrowthAnalysis(spaceId: string, tickerRecord: TickerV1WithIndustryAndSubIndustry, generationRequestId: string): Promise<void> {
+async function generateFutureGrowthAnalysis(
+  spaceId: string,
+  tickerRecord: TickerV1WithIndustryAndSubIndustry,
+  generationRequestId: string,
+  selection: ReportLlmSelection
+): Promise<void> {
   // Ensure stock analyzer data is fresh
   const scraperInfo = await ensureStockAnalyzerDataIsFresh(tickerRecord);
 
@@ -197,12 +241,19 @@ async function generateFutureGrowthAnalysis(spaceId: string, tickerRecord: Ticke
       inputJson,
       promptKey: 'US/public-equities-v1/future-growth',
       requestFrom: 'ui',
+      llmProvider: selection.llmProvider,
+      model: selection.model,
     },
     reportType: ReportType.FUTURE_GROWTH,
   });
 }
 
-async function generateFairValueAnalysis(spaceId: string, tickerRecord: TickerV1WithIndustryAndSubIndustry, generationRequestId: string): Promise<void> {
+async function generateFairValueAnalysis(
+  spaceId: string,
+  tickerRecord: TickerV1WithIndustryAndSubIndustry,
+  generationRequestId: string,
+  selection: ReportLlmSelection
+): Promise<void> {
   // Fetch existing category analyses to feed into Fair Value
   const tickerWithAnalysisData = await fetchTickerRecordBySymbolAndExchangeWithAnalysisData(tickerRecord.symbol, tickerRecord.exchange);
 
@@ -225,12 +276,19 @@ async function generateFairValueAnalysis(spaceId: string, tickerRecord: TickerV1
       inputJson,
       promptKey: 'US/public-equities-v1/fair-value',
       requestFrom: 'ui',
+      llmProvider: selection.llmProvider,
+      model: selection.model,
     },
     reportType: ReportType.FAIR_VALUE,
   });
 }
 
-async function generateManagementTeamAnalysis(spaceId: string, tickerRecord: TickerV1WithIndustryAndSubIndustry, generationRequestId: string): Promise<void> {
+async function generateManagementTeamAnalysis(
+  spaceId: string,
+  tickerRecord: TickerV1WithIndustryAndSubIndustry,
+  generationRequestId: string,
+  selection: ReportLlmSelection
+): Promise<void> {
   // Prepare base input JSON
   const inputJson = prepareBaseTickerInputJson(tickerRecord);
 
@@ -244,12 +302,19 @@ async function generateManagementTeamAnalysis(spaceId: string, tickerRecord: Tic
       inputJson,
       promptKey: 'US/public-equities-v1/management-team',
       requestFrom: 'ui',
+      llmProvider: selection.llmProvider,
+      model: selection.model,
     },
     reportType: ReportType.MANAGEMENT_TEAM,
   });
 }
 
-async function generateFinalSummary(spaceId: string, tickerRecord: TickerV1WithIndustryAndSubIndustry, generationRequestId: string): Promise<void> {
+async function generateFinalSummary(
+  spaceId: string,
+  tickerRecord: TickerV1WithIndustryAndSubIndustry,
+  generationRequestId: string,
+  selection: ReportLlmSelection
+): Promise<void> {
   // Get ticker from DB with all related analysis data
   const tickerWithAnalysis = await fetchTickerRecordBySymbolAndExchangeWithAnalysisData(tickerRecord.symbol, tickerRecord.exchange);
 
@@ -266,6 +331,8 @@ async function generateFinalSummary(spaceId: string, tickerRecord: TickerV1WithI
       inputJson,
       promptKey: 'US/public-equities-v1/final-summary',
       requestFrom: 'ui',
+      llmProvider: selection.llmProvider,
+      model: selection.model,
     },
     reportType: ReportType.FINAL_SUMMARY,
   });
@@ -279,6 +346,15 @@ export async function triggerGenerationOfAReportSimplified(symbol: string, excha
   // Get ticker from DB
   const tickerRecord: TickerV1WithIndustryAndSubIndustry = await fetchTickerRecordBySymbolAndExchangeWithIndustryAndSubIndustry(symbol, exchange);
   const spaceId = KoalaGainsSpaceId;
+
+  // Provider/model chosen in the UI for this stock generation request. Stock
+  // generation no longer reads the LLM_PROVIDER / LLM_MODEL env vars (those stay
+  // for ETFs/tariffs); a request with no stored choice falls back to the same
+  // llmConstants defaults the UI pre-selects: Gemini + Gemini 2.5 Pro.
+  const selection: ReportLlmSelection = {
+    llmProvider: (generationRequest.llmProvider as LLMProvider | null) ?? LLMProvider.GEMINI,
+    model: generationRequest.llmModel ?? GeminiModel.GEMINI_2_5_PRO,
+  };
 
   if (generationRequest.status === GenerationRequestStatus.Completed) {
     console.log('Generation request is already completed - skipping ', symbol, ' on exchange ', exchange);
@@ -369,7 +445,7 @@ export async function triggerGenerationOfAReportSimplified(symbol: string, excha
   await markAsInProgress(generationRequest, nextStep);
 
   if (nextStep === ReportType.COMPETITION) {
-    await generateCompetitionAnalysis(spaceId, tickerRecord, generationRequest.id);
+    await generateCompetitionAnalysis(spaceId, tickerRecord, generationRequest.id, selection);
     return;
   }
 
@@ -385,25 +461,25 @@ export async function triggerGenerationOfAReportSimplified(symbol: string, excha
   try {
     switch (nextStep) {
       case ReportType.BUSINESS_AND_MOAT:
-        await generateBusinessAndMoatAnalysis(spaceId, tickerRecord, generationRequest.id);
+        await generateBusinessAndMoatAnalysis(spaceId, tickerRecord, generationRequest.id, selection);
         break;
       case ReportType.FINANCIAL_ANALYSIS:
-        await generateFinancialAnalysis(spaceId, tickerRecord, generationRequest.id);
+        await generateFinancialAnalysis(spaceId, tickerRecord, generationRequest.id, selection);
         break;
       case ReportType.PAST_PERFORMANCE:
-        await generatePastPerformanceAnalysis(spaceId, tickerRecord, generationRequest.id);
+        await generatePastPerformanceAnalysis(spaceId, tickerRecord, generationRequest.id, selection);
         break;
       case ReportType.FUTURE_GROWTH:
-        await generateFutureGrowthAnalysis(spaceId, tickerRecord, generationRequest.id);
+        await generateFutureGrowthAnalysis(spaceId, tickerRecord, generationRequest.id, selection);
         break;
       case ReportType.FAIR_VALUE:
-        await generateFairValueAnalysis(spaceId, tickerRecord, generationRequest.id);
+        await generateFairValueAnalysis(spaceId, tickerRecord, generationRequest.id, selection);
         break;
       case ReportType.MANAGEMENT_TEAM:
-        await generateManagementTeamAnalysis(spaceId, tickerRecord, generationRequest.id);
+        await generateManagementTeamAnalysis(spaceId, tickerRecord, generationRequest.id, selection);
         break;
       case ReportType.FINAL_SUMMARY:
-        await generateFinalSummary(spaceId, tickerRecord, generationRequestId);
+        await generateFinalSummary(spaceId, tickerRecord, generationRequestId, selection);
         break;
     }
   } catch (error) {
