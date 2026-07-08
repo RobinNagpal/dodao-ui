@@ -10,7 +10,7 @@ export default function TariffReportsAdminPage(): JSX.Element {
       <AdminNav />
       <div className="space-y-4">
         <div className="text-3xl font-bold">Tariff Chapter Reports</div>
-        <p className="text-sm text-gray-400">
+        <p className="text-sm text-muted">
           One row per `tariff_chapter_reports` entry. Each column shows whether that JSONB section is populated. &quot;Generate all&quot; runs every section
           generator in order — same pipeline as `run-tariff-report.ts`, ending with SEO.
         </p>

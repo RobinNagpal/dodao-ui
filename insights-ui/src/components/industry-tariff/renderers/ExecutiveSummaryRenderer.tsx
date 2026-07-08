@@ -12,8 +12,8 @@ interface ExecutiveSummaryRendererProps {
  */
 export const ExecutiveSummaryRenderer: React.FC<ExecutiveSummaryRendererProps> = ({ executiveSummary }) => {
   return (
-    <div className="bg-white dark:bg-gray-900 rounded-lg shadow-sm overflow-hidden">
-      <div className="bg-gray-50 dark:bg-gray-800 p-4 border-b border-gray-200 dark:border-gray-700">
+    <div className="bg-bg rounded-lg shadow-sm overflow-hidden">
+      <div className="bg-surface p-4 border-b border-border">
         <h2 className="text-2xl font-bold heading-color">{executiveSummary.title}</h2>
       </div>
       <div className="p-4">

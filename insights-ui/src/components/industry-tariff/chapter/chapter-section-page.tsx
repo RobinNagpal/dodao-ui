@@ -154,7 +154,7 @@ export function ChapterArticle({
 
   return (
     <div className="py-4">
-      <article className="bg-gray-900 rounded-lg shadow-sm border border-color p-3 sm:p-6 md:p-8" itemScope itemType="https://schema.org/Article">
+      <article className="bg-bg rounded-lg shadow-sm border border-color p-3 sm:p-6 md:p-8" itemScope itemType="https://schema.org/Article">
         {publishedDate && <meta itemProp="datePublished" content={publishedDate.toISOString()} />}
         {toolsCrossLinks}
         <ChapterRelatedSections chapter={chapter} currentSlug={currentSlug} />

@@ -29,11 +29,11 @@ export const FinalConclusionRenderer: React.FC<FinalConclusionRendererProps> = (
 
   if (!hasAnyContent) {
     if (flat) {
-      return <p className="text-gray-500 italic">No content available</p>;
+      return <p className="text-muted italic">No content available</p>;
     }
     return (
-      <div className="bg-gray-900 rounded-lg p-6 shadow-sm">
-        <p className="text-gray-500 italic">No content available</p>
+      <div className="bg-bg rounded-lg p-6 shadow-sm">
+        <p className="text-muted italic">No content available</p>
       </div>
     );
   }
@@ -77,9 +77,9 @@ export const FinalConclusionRenderer: React.FC<FinalConclusionRendererProps> = (
   return (
     <div className="space-y-8">
       {(title || conclusionBrief) && (
-        <div className="bg-gray-900 rounded-lg shadow-sm overflow-hidden">
+        <div className="bg-bg rounded-lg shadow-sm overflow-hidden">
           {title && (
-            <div className="bg-gray-800 p-4 border-b border-gray-700">
+            <div className="bg-surface p-4 border-b border-border">
               <h2 className="text-2xl font-bold heading-color">{title}</h2>
             </div>
           )}
@@ -92,9 +92,9 @@ export const FinalConclusionRenderer: React.FC<FinalConclusionRendererProps> = (
       )}
 
       {(positiveTitle || positiveBody) && (
-        <div className="bg-gray-900 rounded-lg shadow-sm overflow-hidden">
+        <div className="bg-bg rounded-lg shadow-sm overflow-hidden">
           {positiveTitle && (
-            <div className="bg-gray-800 p-4 border-b border-gray-700">
+            <div className="bg-surface p-4 border-b border-border">
               <h2 className="text-xl font-semibold heading-color">{positiveTitle}</h2>
             </div>
           )}
@@ -107,9 +107,9 @@ export const FinalConclusionRenderer: React.FC<FinalConclusionRendererProps> = (
       )}
 
       {(negativeTitle || negativeBody) && (
-        <div className="bg-gray-900 rounded-lg shadow-sm overflow-hidden">
+        <div className="bg-bg rounded-lg shadow-sm overflow-hidden">
           {negativeTitle && (
-            <div className="bg-gray-800 p-4 border-b border-gray-700">
+            <div className="bg-surface p-4 border-b border-border">
               <h2 className="text-xl font-semibold heading-color">{negativeTitle}</h2>
             </div>
           )}
@@ -122,8 +122,8 @@ export const FinalConclusionRenderer: React.FC<FinalConclusionRendererProps> = (
       )}
 
       {finalStatements && (
-        <div className="bg-gray-900 rounded-lg shadow-sm overflow-hidden">
-          <div className="bg-gray-800 p-4 border-b border-gray-700">
+        <div className="bg-bg rounded-lg shadow-sm overflow-hidden">
+          <div className="bg-surface p-4 border-b border-border">
             <h2 className="text-xl font-semibold heading-color">Final Statements</h2>
           </div>
           <div className="p-4">

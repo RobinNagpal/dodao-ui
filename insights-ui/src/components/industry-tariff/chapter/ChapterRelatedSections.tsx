@@ -34,7 +34,7 @@ export default function ChapterRelatedSections({ chapter, currentSlug }: Chapter
           <li key={item.href} className="h-full">
             <Link
               href={item.href}
-              className="flex h-full items-center rounded-md px-3 py-2 text-sm bg-gray-800 hover:bg-gray-700 text-gray-200 hover:text-white transition-colors"
+              className="flex h-full items-center rounded-md px-3 py-2 text-sm bg-surface hover:bg-surface-2 text-body hover:text-heading transition-colors"
             >
               {item.label} &rarr;
             </Link>

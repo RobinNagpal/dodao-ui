@@ -129,7 +129,7 @@ function HtsGroupSection({ group }: { group: HtsGroup }) {
   return (
     <section>
       <h2 className="text-base font-semibold mb-3">
-        {group.header.htsNumber && <span className="font-mono text-indigo-400 mr-2">{group.header.htsNumber}:</span>}
+        {group.header.htsNumber && <span className="font-mono text-primary mr-2">{group.header.htsNumber}:</span>}
         <span>{group.header.description}</span>
       </h2>
 
@@ -163,17 +163,17 @@ function HtsGroupSection({ group }: { group: HtsGroup }) {
                 <tr key={row.id} className="border-t border-color">
                   <td className="px-3 py-2.5 align-top font-mono tabular-nums text-xs whitespace-nowrap">
                     {row.htsCode10 ? (
-                      <Link href={`#${row.htsCode10}`} id={row.htsCode10} className="text-indigo-400 hover:underline">
+                      <Link href={`#${row.htsCode10}`} id={row.htsCode10} className="text-primary hover:underline">
                         {row.htsNumber}
                       </Link>
                     ) : row.htsNumber ? (
-                      <span className="text-indigo-400">{row.htsNumber}</span>
+                      <span className="text-primary">{row.htsNumber}</span>
                     ) : null}
                   </td>
                   <td className="px-4 py-2.5 align-top">
                     <span className="flex items-start" style={{ paddingLeft: `${indentPaddingRem(row.indent)}rem` }}>
                       {row.indent >= 2 && (
-                        <span className="text-gray-400 mr-1 shrink-0">{Array.from({ length: Math.min(row.indent - 1, 3) }, () => '·').join(' ')}</span>
+                        <span className="text-muted mr-1 shrink-0">{Array.from({ length: Math.min(row.indent - 1, 3) }, () => '·').join(' ')}</span>
                       )}
                       <span>{row.description}</span>
                     </span>

@@ -67,7 +67,7 @@ export async function renderIndustryCoverBody(industryId: string): Promise<JSX.E
 
   return (
     <div className="mx-auto max-w-7xl py-2">
-      <div className="mb-8 pb-4 border-b border-gray-200 dark:border-gray-700">
+      <div className="mb-8 pb-4 border-b border-border">
         <div className="flex justify-between items-center">
           <h1 className="text-3xl font-bold heading-color">{report?.reportCover?.title || 'Tariff report for ' + industryId}</h1>
           <PrivateWrapper>
@@ -99,7 +99,7 @@ export async function renderIndustryCoverBody(industryId: string): Promise<JSX.E
               dangerouslySetInnerHTML={{ __html: parseMarkdown(report.reportCover.reportCoverContent) }}
             />
           ) : (
-            <p className="text-gray-500 italic">No content available</p>
+            <p className="text-muted italic">No content available</p>
           )
         )}
 

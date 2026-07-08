@@ -227,7 +227,7 @@ interface CodePickerProps {
 
 function CodePicker({ onSelect, manualCode, setManualCode, manualError, onManualSubmit }: CodePickerProps): JSX.Element {
   return (
-    <div className="rounded-xl bg-gray-900 border border-gray-800 shadow-2xl p-4 sm:p-6 lg:p-8">
+    <div className="rounded-xl bg-bg border border-border shadow-2xl p-4 sm:p-6 lg:p-8">
       <h2 className="text-xl sm:text-2xl font-semibold heading-color">Find your HTS code</h2>
       <p className="mt-2 text-sm opacity-80">
         Type what you ship in plain words. We match it to the official US tariff list and show the full path so you can pick the closest line.
@@ -238,9 +238,9 @@ function CodePicker({ onSelect, manualCode, setManualCode, manualError, onManual
       </div>
 
       <div className="mt-8 flex items-center gap-3 text-xs uppercase tracking-wide opacity-60">
-        <div className="h-px flex-1 bg-gray-700" />
+        <div className="h-px flex-1 bg-surface-2" />
         <span>Or enter a code directly</span>
-        <div className="h-px flex-1 bg-gray-700" />
+        <div className="h-px flex-1 bg-surface-2" />
       </div>
 
       <form onSubmit={onManualSubmit} className="mt-6 flex flex-col sm:flex-row gap-3">
@@ -251,7 +251,7 @@ function CodePicker({ onSelect, manualCode, setManualCode, manualError, onManual
           onChange={(e) => setManualCode(e.target.value)}
           placeholder="0901.90.20.00"
           aria-label="HTS code"
-          className="flex-1 h-11 rounded-lg border border-gray-700 bg-gray-950 px-4 text-sm text-white placeholder-gray-500 font-mono focus:outline-none focus:ring-2 focus:ring-amber-300/40 focus:border-amber-300/60"
+          className="flex-1 h-11 rounded-lg border border-border bg-gray-950 px-4 text-sm text-heading placeholder-gray-500 font-mono focus:outline-none focus:ring-2 focus:ring-amber-300/40 focus:border-amber-300/60"
         />
         <button
           type="submit"
@@ -268,7 +268,7 @@ function CodePicker({ onSelect, manualCode, setManualCode, manualError, onManual
 
 function SelectedCodeBanner({ selected, onChange }: { selected: SelectedCode; onChange: () => void }): JSX.Element {
   return (
-    <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl bg-gray-900 border border-amber-300/25 px-4 sm:px-5 py-4 shadow-lg">
+    <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl bg-bg border border-amber-300/25 px-4 sm:px-5 py-4 shadow-lg">
       <div className="flex items-start gap-3 min-w-0 flex-1">
         <CheckCircleIcon className="mt-0.5 h-5 w-5 shrink-0 text-emerald-400" />
         <div className="min-w-0 flex-1">
@@ -282,7 +282,7 @@ function SelectedCodeBanner({ selected, onChange }: { selected: SelectedCode; on
       <button
         type="button"
         onClick={onChange}
-        className="inline-flex items-center gap-1.5 rounded-md border border-gray-700 bg-gray-800 px-3 py-1.5 text-xs font-medium text-gray-200 hover:bg-gray-700 transition"
+        className="inline-flex items-center gap-1.5 rounded-md border border-border bg-surface px-3 py-1.5 text-xs font-medium text-body hover:bg-surface-2 transition"
       >
         <ArrowPathIcon className="h-3.5 w-3.5" />
         Change product
@@ -303,7 +303,7 @@ interface ShipmentFormProps {
 
 function ShipmentForm({ form, updateForm, submitting, hideQuantityInputs, primaryUoms, onSubmit, error }: ShipmentFormProps): JSX.Element {
   return (
-    <form onSubmit={onSubmit} className="rounded-xl bg-gray-900 border border-gray-800 p-4 sm:p-6 shadow-lg space-y-4">
+    <form onSubmit={onSubmit} className="rounded-xl bg-bg border border-border p-4 sm:p-6 shadow-lg space-y-4">
       <h2 className="text-lg font-semibold heading-color">Shipment details</h2>
 
       <Field label="Shipment Value (USD)" htmlFor="shipmentValueUsd">
@@ -314,7 +314,7 @@ function ShipmentForm({ form, updateForm, submitting, hideQuantityInputs, primar
           step="0.01"
           value={form.shipmentValueUsd}
           onChange={(e) => updateForm('shipmentValueUsd', e.target.value)}
-          className="block w-full rounded-md border border-gray-700 bg-gray-950 px-3 py-2 text-sm text-white shadow-xs focus:outline-none focus:ring-2 focus:ring-amber-300/40 focus:border-amber-300/60"
+          className="block w-full rounded-md border border-border bg-gray-950 px-3 py-2 text-sm text-heading shadow-xs focus:outline-none focus:ring-2 focus:ring-amber-300/40 focus:border-amber-300/60"
         />
       </Field>
 
@@ -323,7 +323,7 @@ function ShipmentForm({ form, updateForm, submitting, hideQuantityInputs, primar
           id="countryOfOrigin"
           value={form.countryOfOrigin}
           onChange={(e) => updateForm('countryOfOrigin', e.target.value)}
-          className="block w-full rounded-md border border-gray-700 bg-gray-950 px-3 py-2 text-sm text-white shadow-xs focus:outline-none focus:ring-2 focus:ring-amber-300/40 focus:border-amber-300/60"
+          className="block w-full rounded-md border border-border bg-gray-950 px-3 py-2 text-sm text-heading shadow-xs focus:outline-none focus:ring-2 focus:ring-amber-300/40 focus:border-amber-300/60"
         >
           {COUNTRY_OPTIONS.map((c) => (
             <option key={c.code} value={c.code}>
@@ -338,7 +338,7 @@ function ShipmentForm({ form, updateForm, submitting, hideQuantityInputs, primar
           id="modeOfTransport"
           value={form.modeOfTransport}
           onChange={(e) => updateForm('modeOfTransport', e.target.value as TransportMode)}
-          className="block w-full rounded-md border border-gray-700 bg-gray-950 px-3 py-2 text-sm text-white shadow-xs focus:outline-none focus:ring-2 focus:ring-amber-300/40 focus:border-amber-300/60"
+          className="block w-full rounded-md border border-border bg-gray-950 px-3 py-2 text-sm text-heading shadow-xs focus:outline-none focus:ring-2 focus:ring-amber-300/40 focus:border-amber-300/60"
         >
           {TRANSPORT_MODES.map((m) => (
             <option key={m} value={m}>
@@ -355,7 +355,7 @@ function ShipmentForm({ form, updateForm, submitting, hideQuantityInputs, primar
             type="date"
             value={form.entryDate}
             onChange={(e) => updateForm('entryDate', e.target.value)}
-            className="block w-full rounded-md border border-gray-700 bg-gray-950 px-3 py-2 text-sm text-white shadow-xs focus:outline-none focus:ring-2 focus:ring-amber-300/40 focus:border-amber-300/60"
+            className="block w-full rounded-md border border-border bg-gray-950 px-3 py-2 text-sm text-heading shadow-xs focus:outline-none focus:ring-2 focus:ring-amber-300/40 focus:border-amber-300/60"
           />
         </Field>
         <Field label="Date of Loading" htmlFor="dateOfLoading">
@@ -364,7 +364,7 @@ function ShipmentForm({ form, updateForm, submitting, hideQuantityInputs, primar
             type="date"
             value={form.dateOfLoading}
             onChange={(e) => updateForm('dateOfLoading', e.target.value)}
-            className="block w-full rounded-md border border-gray-700 bg-gray-950 px-3 py-2 text-sm text-white shadow-xs focus:outline-none focus:ring-2 focus:ring-amber-300/40 focus:border-amber-300/60"
+            className="block w-full rounded-md border border-border bg-gray-950 px-3 py-2 text-sm text-heading shadow-xs focus:outline-none focus:ring-2 focus:ring-amber-300/40 focus:border-amber-300/60"
           />
         </Field>
       </div>
@@ -381,14 +381,14 @@ function ShipmentForm({ form, updateForm, submitting, hideQuantityInputs, primar
                   type="text"
                   value={primaryUoms[0]}
                   readOnly
-                  className="block w-full rounded-md border border-gray-700 bg-gray-950 px-3 py-2 text-sm text-white shadow-xs uppercase opacity-80"
+                  className="block w-full rounded-md border border-border bg-gray-950 px-3 py-2 text-sm text-heading shadow-xs uppercase opacity-80"
                 />
               ) : primaryUoms.length > 1 ? (
                 <select
                   id="unitOfMeasure"
                   value={form.unitOfMeasure}
                   onChange={(e) => updateForm('unitOfMeasure', e.target.value)}
-                  className="block w-full rounded-md border border-gray-700 bg-gray-950 px-3 py-2 text-sm text-white shadow-xs uppercase focus:outline-none focus:ring-2 focus:ring-amber-300/40 focus:border-amber-300/60"
+                  className="block w-full rounded-md border border-border bg-gray-950 px-3 py-2 text-sm text-heading shadow-xs uppercase focus:outline-none focus:ring-2 focus:ring-amber-300/40 focus:border-amber-300/60"
                 >
                   {primaryUoms.map((u) => (
                     <option key={u} value={u}>
@@ -403,7 +403,7 @@ function ShipmentForm({ form, updateForm, submitting, hideQuantityInputs, primar
                   value={form.unitOfMeasure}
                   onChange={(e) => updateForm('unitOfMeasure', e.target.value)}
                   placeholder="—"
-                  className="block w-full rounded-md border border-gray-700 bg-gray-950 px-3 py-2 text-sm text-white shadow-xs uppercase focus:outline-none focus:ring-2 focus:ring-amber-300/40 focus:border-amber-300/60"
+                  className="block w-full rounded-md border border-border bg-gray-950 px-3 py-2 text-sm text-heading shadow-xs uppercase focus:outline-none focus:ring-2 focus:ring-amber-300/40 focus:border-amber-300/60"
                 />
               )}
             </Field>
@@ -415,7 +415,7 @@ function ShipmentForm({ form, updateForm, submitting, hideQuantityInputs, primar
                 step="0.01"
                 value={form.quantity}
                 onChange={(e) => updateForm('quantity', e.target.value)}
-                className="block w-full rounded-md border border-gray-700 bg-gray-950 px-3 py-2 text-sm text-white shadow-xs focus:outline-none focus:ring-2 focus:ring-amber-300/40 focus:border-amber-300/60"
+                className="block w-full rounded-md border border-border bg-gray-950 px-3 py-2 text-sm text-heading shadow-xs focus:outline-none focus:ring-2 focus:ring-amber-300/40 focus:border-amber-300/60"
               />
             </Field>
           </div>
@@ -453,7 +453,7 @@ function Field({ label, htmlFor, children }: { label: string; htmlFor: string; c
 
 function EmptyResultState(): JSX.Element {
   return (
-    <div className="rounded-xl border border-dashed border-gray-700 bg-gray-900/40 p-8 text-center text-sm opacity-70">
+    <div className="rounded-xl border border-dashed border-border bg-gray-900/40 p-8 text-center text-sm opacity-70">
       Fill in your shipment details and click <strong>Calculate duties</strong> to see what each line will cost.
     </div>
   );
@@ -470,7 +470,7 @@ function ResultPanel({ result, submitting, onToggleExclusion }: ResultPanelProps
 
   return (
     <>
-      <div className="rounded-xl bg-gray-900 border border-gray-800 p-4 sm:p-6 shadow-lg">
+      <div className="rounded-xl bg-bg border border-border p-4 sm:p-6 shadow-lg">
         <div className="flex flex-wrap items-baseline justify-between gap-3">
           <div className="min-w-0">
             <h2 className="text-lg font-semibold heading-color">Result</h2>
@@ -485,11 +485,11 @@ function ResultPanel({ result, submitting, onToggleExclusion }: ResultPanelProps
         </div>
       </div>
 
-      <div className="rounded-xl bg-gray-900 border border-gray-800 overflow-hidden shadow-lg">
+      <div className="rounded-xl bg-bg border border-border overflow-hidden shadow-lg">
         <div className="overflow-x-auto">
           <table className="w-full text-sm min-w-[480px]">
             <thead>
-              <tr className="border-b border-gray-800 text-left text-xs uppercase tracking-wide opacity-60">
+              <tr className="border-b border-border text-left text-xs uppercase tracking-wide opacity-60">
                 <th className="px-4 py-3">Code</th>
                 <th className="px-4 py-3">Rate</th>
                 <th className="px-4 py-3 text-right">Duty</th>
@@ -532,7 +532,7 @@ function ResultPanel({ result, submitting, onToggleExclusion }: ResultPanelProps
 
       {potentialExclusions.length > 0 && <PotentialExclusionsPanel exclusions={potentialExclusions} submitting={submitting} onToggle={onToggleExclusion} />}
 
-      <div className="rounded-xl bg-gray-900 border border-gray-800 p-4 sm:p-6 shadow-lg">
+      <div className="rounded-xl bg-bg border border-border p-4 sm:p-6 shadow-lg">
         <h3 className="text-xs font-semibold uppercase tracking-wide opacity-60 mb-3">Cost breakdown</h3>
         <dl className="space-y-2 text-sm">
           <Row label="Shipment value" value={formatCurrency(totals.baseCost)} />
@@ -554,7 +554,7 @@ interface PotentialExclusionsPanelProps {
 
 function PotentialExclusionsPanel({ exclusions, submitting, onToggle }: PotentialExclusionsPanelProps): JSX.Element {
   return (
-    <div className="rounded-xl bg-gray-900 border border-gray-800 p-4 sm:p-6 shadow-lg">
+    <div className="rounded-xl bg-bg border border-border p-4 sm:p-6 shadow-lg">
       <h3 className="text-xs font-semibold uppercase tracking-wide opacity-60 mb-1">Possible exclusions</h3>
       <p className="text-xs opacity-70 mb-4">
         These extra codes are not added by default. The importer has to claim them. Tick one to see how the duty changes.
@@ -603,7 +603,7 @@ function PotentialExclusionsPanel({ exclusions, submitting, onToggle }: Potentia
 
 function Row({ label, value, bold }: { label: string; value: string; bold?: boolean }): JSX.Element {
   return (
-    <div className={`flex justify-between ${bold ? 'font-semibold border-t border-gray-800 pt-2 mt-2 text-amber-200' : ''}`}>
+    <div className={`flex justify-between ${bold ? 'font-semibold border-t border-border pt-2 mt-2 text-amber-200' : ''}`}>
       <dt>{label}</dt>
       <dd className="font-mono">{value}</dd>
     </div>
