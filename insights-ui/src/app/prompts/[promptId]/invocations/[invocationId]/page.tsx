@@ -37,22 +37,6 @@ function CopyButton({ text }: { text: string }) {
 }
 
 function InvocationOutput({ invocation }: { invocation: FullPromptInvocationResponse }) {
-  if (invocation.prompt.outputSchema === 'public-equities/outputs/reports/common/message-response.schema.yaml') {
-    if (invocation.outputJson) {
-      const parsedOutput = JSON.parse(invocation.outputJson as any);
-      const message = parsedOutput?.message;
-      if (message) {
-        return (
-          <div className="block-bg-color w-full py-4 px-2">
-            <div
-              className="whitespace-pre-wrap break-words overflow-x-auto max-h-[400px] overflow-y-auto text-xs markdown-body"
-              dangerouslySetInnerHTML={{ __html: (message && parseMarkdown(message)) || '' }}
-            />
-          </div>
-        );
-      }
-    }
-  }
   return invocation.outputJson ? (
     <pre className="whitespace-pre-wrap break-words overflow-x-auto max-h-[400px] overflow-y-auto text-xs">
       {JSON.stringify(JSON.parse(invocation.outputJson as any), null, 2)}
