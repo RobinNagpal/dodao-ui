@@ -1,5 +1,5 @@
 import { EtfReportType } from '@/types/etf/etf-analysis-types';
-import { GeminiModel, LLMProvider } from '@/types/llmConstants';
+import { LLMProvider } from '@/types/llmConstants';
 import { saveEtfReportAndAdvanceGeneration } from '@/utils/etf-analysis-reports/save-etf-report-callback-utils';
 import { getLLMResponse, updateInvocationStatus } from '@/util/get-llm-response';
 import { PromptInvocationStatus } from '@prisma/client';
@@ -11,7 +11,8 @@ export interface BackgroundEtfReportArgs {
   generationRequestId: string;
   invocationId: string;
   llmProvider: LLMProvider;
-  model: GeminiModel;
+  // Provider-specific model id (Gemini or Claude); string so Claude ids flow through.
+  model: string;
   /** The fully-compiled prompt string (already built by the caller). */
   prompt: string;
   /** The parsed output JSON schema object the response is validated against. */
@@ -43,7 +44,7 @@ export interface BackgroundEtfReportArgs {
  * quota error) it re-throws without touching the row, which would otherwise
  * leave the invocation stuck `InProgress` with no error recorded. We
  * deliberately leave the generation request's `inProgressStep` /
- * `lastInvocationTime` untouched so the 5-minute stale-step guard in
+ * `lastInvocationTime` untouched so the 10-minute stale-step guard in
  * `triggerEtfGenerationOfAReport` reclaims the step on the next tick.
  *
  * Caveat (same as the stock/tariff background paths): an in-process task lives
