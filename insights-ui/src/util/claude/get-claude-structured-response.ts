@@ -1,6 +1,5 @@
 import { getDefaultClaudeModel } from '@/types/llmConstants';
 import { callClaudeWithOAuth } from '@/util/claude/claude-oauth-client';
-import { assertClaudeUsageLimitNotExceeded } from '@/util/claude/claude-usage-limit';
 
 /**
  * Claude structured-output helper used by `getLLMResponse` when
@@ -58,12 +57,10 @@ function extractJson(text: string): string {
 export async function getClaudeStructuredResult<Output>(prompt: string, outputSchema: object, options: ClaudeStructuredResultOptions = {}): Promise<Output> {
   const model = options.model ?? getDefaultClaudeModel();
 
-  // Verify the Claude subscription usage limit isn't already (near) exhausted
-  // before spending a large, high-effort generation call. Throws
-  // ClaudeUsageLimitExceededError if a usage window is at/above the hard-stop;
-  // the read is cached briefly so the sequential section calls in one report run
-  // don't each re-fetch. Gate on the per-model weekly window matching `model`.
-  await assertClaudeUsageLimitNotExceeded({ model: model.includes('sonnet') ? 'sonnet' : 'opus' });
+  // Note: usage-limit pacing for auto-generated reports lives in the stock
+  // generation processor (see `auto-stock-generation-utils.ts`), not here. This
+  // path stays a thin generator — admin-triggered Claude requests intentionally
+  // just surface a 429 if the subscription limit is full.
 
   const finalPrompt =
     `${prompt}\n\n` +
