@@ -1,5 +1,6 @@
 import IndustryStocksGrid from '@/components/stocks/IndustryStocksGrid';
 import IndustryWithStocksPageLayout from '@/components/stocks/IndustryWithStocksPageLayout';
+import StockThemeProvider from '@/components/stocks/StockThemeProvider';
 import { SubIndustriesResponse } from '@/types/api/ticker-industries';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { SupportedCountries } from '@/utils/countryExchangeUtils';
@@ -57,24 +58,26 @@ export default async function IndustryStocksPage({ params }: PageProps) {
   const data = (await res.json()) as SubIndustriesResponse | null;
 
   return (
-    <IndustryWithStocksPageLayout
-      title={`${data?.name || industryKey} Stocks`}
-      description={`Explore ${data?.name || industryKey} companies listed on US exchanges (NASDAQ, NYSE, AMEX). ${
-        data?.summary || 'View detailed reports and AI-driven insights.'
-      }`}
-      currentCountry="US"
-      industryKey={industryKey}
-      industryName={data?.name}
-      hasAnalysis={data?.hasAnalysis}
-    >
-      {!data ? (
-        <>
-          <p className="text-[#E5E7EB] text-lg">{`No ${industryKey} stocks found.`}</p>
-          <p className="text-[#E5E7EB] text-sm mt-2">Please try again later.</p>
-        </>
-      ) : (
-        <IndustryStocksGrid data={data} industryName={data?.name || industryKey} />
-      )}
-    </IndustryWithStocksPageLayout>
+    <StockThemeProvider>
+      <IndustryWithStocksPageLayout
+        title={`${data?.name || industryKey} Stocks`}
+        description={`Explore ${data?.name || industryKey} companies listed on US exchanges (NASDAQ, NYSE, AMEX). ${
+          data?.summary || 'View detailed reports and AI-driven insights.'
+        }`}
+        currentCountry="US"
+        industryKey={industryKey}
+        industryName={data?.name}
+        hasAnalysis={data?.hasAnalysis}
+      >
+        {!data ? (
+          <>
+            <p className="text-[#E5E7EB] text-lg">{`No ${industryKey} stocks found.`}</p>
+            <p className="text-[#E5E7EB] text-sm mt-2">Please try again later.</p>
+          </>
+        ) : (
+          <IndustryStocksGrid data={data} industryName={data?.name || industryKey} />
+        )}
+      </IndustryWithStocksPageLayout>
+    </StockThemeProvider>
   );
 }

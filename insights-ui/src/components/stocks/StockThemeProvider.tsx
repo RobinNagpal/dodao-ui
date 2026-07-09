@@ -5,31 +5,33 @@ import { MoonIcon, SunIcon } from '@heroicons/react/24/outline';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState, type CSSProperties, type ReactNode } from 'react';
 
-type StockReportTheme = 'dark' | 'light';
+type StockTheme = 'dark' | 'light';
 
 const STORAGE_KEY = 'koalagains-stock-report-theme';
 
 /**
- * Scoped light/dark switcher for the stock report pages
- * (`/stocks/[exchange]/[ticker]/**`, excluding the admin-only `create` route).
+ * Scoped light/dark switcher for the stocks section — the report pages
+ * (`/stocks/[exchange]/[ticker]/**`, excluding the admin-only `create` route)
+ * and the listing pages (`/stocks`, `/stocks/industries/[industry]`,
+ * `/stocks/countries/**`).
  *
  * It flips ONLY the semantic color tokens defined in `src/util/theme-colors.ts`
  * (`--bg-color`, `--surface`, `--text-color`, `--border-color`, …) by spreading
  * the light or dark palette onto a wrapping element — the tokens cascade to
  * every descendant that reads `var(--…)` via the Tailwind color tokens. Any
  * hardcoded / `dark:` colors on these pages are intentionally left untouched for
- * now; those are handled in a later pass.
+ * now; those are handled page by page.
  *
- * The theme is scoped to this subtree (not the whole app) so the rollout can
- * proceed page by page. It defaults to `dark`, so the pages render exactly as
- * before until a user opts into light mode, and the choice is remembered in
- * `localStorage`.
+ * The theme is scoped to whatever subtree this wraps (not the whole app) so the
+ * rollout can proceed page by page. It defaults to `dark`, so the pages render
+ * exactly as before until a user opts into light mode, and the choice is shared
+ * across the stocks section via `localStorage`.
  */
-export default function StockReportThemeProvider({ children }: { children: ReactNode }): JSX.Element {
+export default function StockThemeProvider({ children }: { children: ReactNode }): JSX.Element {
   const pathname = usePathname() ?? '';
   const isAdminCreate = pathname.endsWith('/create');
 
-  const [theme, setTheme] = useState<StockReportTheme>('dark');
+  const [theme, setTheme] = useState<StockTheme>('dark');
 
   useEffect(() => {
     const stored = window.localStorage.getItem(STORAGE_KEY);
@@ -40,7 +42,7 @@ export default function StockReportThemeProvider({ children }: { children: React
 
   const toggleTheme = (): void => {
     setTheme((prev) => {
-      const next: StockReportTheme = prev === 'dark' ? 'light' : 'dark';
+      const next: StockTheme = prev === 'dark' ? 'light' : 'dark';
       window.localStorage.setItem(STORAGE_KEY, next);
       return next;
     });
@@ -59,8 +61,8 @@ export default function StockReportThemeProvider({ children }: { children: React
 
   // `text-color` re-establishes the base text color from THIS wrapper's
   // (overridden) `--text-color`, so elements that don't set their own color —
-  // the page's main heading, section headings and summary — inherit the themed
-  // value instead of the near-white color already computed on <body>.
+  // page/section headings and summaries — inherit the themed value instead of
+  // the near-white color already computed on <body>.
   return (
     <div style={paletteStyle} className="text-color min-h-screen">
       {children}
