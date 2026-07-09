@@ -20,12 +20,14 @@
 /** Anthropic rejects OAuth requests unless this is the first system block. */
 export const CLAUDE_CODE_IDENTITY = "You are Claude Code, Anthropic's official CLI for Claude.";
 
-const DEFAULT_BASE_URL = 'https://api.anthropic.com';
+/** Default Anthropic API host; also used for the OAuth usage endpoint. */
+export const DEFAULT_BASE_URL = 'https://api.anthropic.com';
 const DEFAULT_MODEL = 'claude-opus-4-7';
-const DEFAULT_CC_VERSION = '2.1.80';
+/** Claude Code version string sent in the CLI-spoofing headers. */
+export const DEFAULT_CC_VERSION = '2.1.80';
 
 /** Beta flags Claude Code sends; `oauth-2025-04-20` is the one that matters for OAuth. */
-const ANTHROPIC_BETA = 'oauth-2025-04-20,claude-code-20250219,interleaved-thinking-2025-05-14,prompt-caching-scope-2026-01-05';
+export const ANTHROPIC_BETA = 'oauth-2025-04-20,claude-code-20250219,interleaved-thinking-2025-05-14,prompt-caching-scope-2026-01-05';
 
 /** Effort levels supported by `output_config.effort` on Opus-tier models. */
 export type ClaudeEffort = 'low' | 'medium' | 'high' | 'xhigh' | 'max';

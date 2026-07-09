@@ -58,11 +58,12 @@ function extractJson(text: string): string {
 export async function getClaudeStructuredResult<Output>(prompt: string, outputSchema: object, options: ClaudeStructuredResultOptions = {}): Promise<Output> {
   const model = options.model ?? getDefaultClaudeModel();
 
-  // Verify the Claude subscription usage limit isn't already exhausted before
-  // spending a large, high-effort generation call. Throws
-  // ClaudeUsageLimitExceededError if the limit is hit; the result is cached
-  // briefly so the sequential section calls in one report run don't each probe.
-  await assertClaudeUsageLimitNotExceeded({ model });
+  // Verify the Claude subscription usage limit isn't already (near) exhausted
+  // before spending a large, high-effort generation call. Throws
+  // ClaudeUsageLimitExceededError if a usage window is at/above the hard-stop;
+  // the read is cached briefly so the sequential section calls in one report run
+  // don't each re-fetch. Gate on the per-model weekly window matching `model`.
+  await assertClaudeUsageLimitNotExceeded({ model: model.includes('sonnet') ? 'sonnet' : 'opus' });
 
   const finalPrompt =
     `${prompt}\n\n` +

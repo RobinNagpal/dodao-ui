@@ -1,111 +1,148 @@
-import { getDefaultClaudeModel } from '@/types/llmConstants';
-import { ClaudeOAuthApiError, callClaudeWithOAuth } from '@/util/claude/claude-oauth-client';
+import { CLAUDE_USAGE_HARD_STOP_PCT } from '@/util/claude/claude-usage-constants';
+import { ClaudeSubscriptionUsage, ClaudeUsageWindow, getClaudeSubscriptionUsage } from '@/util/claude/claude-usage';
 
 /**
  * Pre-flight check for the Claude **subscription** usage limit, so report
  * generation can fail fast with a clear message instead of erroring partway
- * through when the account's limit is already exhausted.
+ * through when the account's limit is nearly exhausted.
  *
- * There is no cheap dedicated "usage" endpoint for a subscription OAuth token —
- * the mechanism Claude Code itself uses is the rate-limit headers Anthropic
- * returns on any Messages request:
- *   - `anthropic-ratelimit-unified-status: rejected` means the limit is hit, and
- *   - once the limit is exhausted even a tiny request returns HTTP 429.
- * So we send a minimal 1-token probe and inspect the response. The probe is
- * negligible next to a real report call (a single 32k-token, high-effort
- * generation), and its result is cached briefly so the many sequential section
- * calls in one generation run don't each re-probe.
+ * Usage is read from Anthropic's OAuth usage endpoint (see
+ * {@link getClaudeSubscriptionUsage}) — the same numeric data Claude Code's
+ * `/usage` shows. We block when any relevant window (the shared 5-hour session,
+ * the combined weekly, or the per-model weekly for the model we generate with)
+ * is at/above {@link CLAUDE_USAGE_HARD_STOP_PCT}, or when Anthropic marks a
+ * window's severity `rejected`. The read costs no message quota and its result
+ * is cached briefly so the sequential section calls in one report run don't each
+ * re-fetch.
+ *
+ * Fails **open**: if the usage endpoint can't be reached, generation proceeds
+ * (the real generation call still surfaces a 429 as a last resort).
  */
 
-/** How long an "allowed" result is trusted before we probe again. */
-const ALLOWED_CACHE_TTL_MS = 60_000;
+/** How long a usage read is trusted before we fetch again. */
+const USAGE_CACHE_TTL_MS = 30_000;
 
 export interface ClaudeUsageLimitStatus {
-  /** True when the subscription usage limit is exhausted (probe rejected or 429). */
+  /** True when a relevant window is at/above the hard-stop threshold (or rejected). */
   exceeded: boolean;
-  /** Raw `anthropic-ratelimit-unified-status` value, when available. */
-  unifiedStatus: string | null;
-  /** When the limit resets, if Anthropic reported it. */
+  /** 5-hour session utilization (%), if known. */
+  fiveHourPct: number | null;
+  /** Combined weekly utilization (%), if known. */
+  weeklyAllPct: number | null;
+  /** Per-model weekly utilization (%) for the generation model, if the plan scopes it. */
+  weeklyModelPct: number | null;
+  /** Which window is the binding constraint (e.g. `five_hour` / `weekly_all` / `weekly_model`). */
+  bindingWindow: string | null;
+  /** Utilization (%) of the binding window. */
+  bindingPct: number | null;
+  /** When the binding window resets, if known. */
   resetsAt: string | null;
-  /** Seconds to wait before retrying, from the `retry-after` header on a 429. */
-  retryAfterSeconds: number | null;
 }
 
-/** Thrown by {@link assertClaudeUsageLimitNotExceeded} when the limit is exhausted. */
+/** Thrown by {@link assertClaudeUsageLimitNotExceeded} when a limit window is exhausted. */
 export class ClaudeUsageLimitExceededError extends Error {
+  readonly bindingWindow: string | null;
+  readonly bindingPct: number | null;
   readonly resetsAt: string | null;
-  readonly retryAfterSeconds: number | null;
 
   constructor(status: ClaudeUsageLimitStatus) {
-    const resetHint = status.resetsAt
-      ? ` It resets at ${status.resetsAt}.`
-      : status.retryAfterSeconds
-      ? ` Try again in about ${status.retryAfterSeconds}s.`
-      : '';
-    super(`Claude subscription usage limit reached; cannot generate reports right now.${resetHint}`);
+    const where = status.bindingWindow ? ` (${status.bindingWindow} at ${status.bindingPct ?? '?'}%)` : '';
+    const resetHint = status.resetsAt ? ` It resets at ${status.resetsAt}.` : '';
+    super(`Claude subscription usage limit reached${where}; cannot generate reports right now.${resetHint}`);
     this.name = 'ClaudeUsageLimitExceededError';
+    this.bindingWindow = status.bindingWindow;
+    this.bindingPct = status.bindingPct;
     this.resetsAt = status.resetsAt;
-    this.retryAfterSeconds = status.retryAfterSeconds;
   }
 }
 
 export interface CheckClaudeUsageLimitOptions {
-  /** Model to probe with. Defaults to `getDefaultClaudeModel()`. */
-  model?: string;
   /** OAuth token override; defaults to `ANTHROPIC_OAUTH_TOKEN`. */
   oauthToken?: string;
-  /** Skip the short-lived "allowed" cache and always probe. */
+  /**
+   * Which per-model weekly window to also gate on. `opus` (default) matches the
+   * model reports are generated with; pass `sonnet` when generating with Sonnet.
+   */
+  model?: 'opus' | 'sonnet';
+  /** Skip the short-lived cache and always fetch fresh usage. */
   force?: boolean;
 }
 
-let allowedCacheExpiresAt = 0;
+interface CandidateWindow {
+  name: string;
+  window: ClaudeUsageWindow | null;
+}
+
+let cached: { status: ClaudeUsageLimitStatus; expiresAt: number } | null = null;
+
+/** Picks the per-model weekly window matching the model we generate with. */
+function modelWeeklyWindow(usage: ClaudeSubscriptionUsage, model: 'opus' | 'sonnet'): ClaudeUsageWindow | null {
+  return model === 'sonnet' ? usage.weeklySonnet : usage.weeklyOpus;
+}
+
+function evaluate(usage: ClaudeSubscriptionUsage, model: 'opus' | 'sonnet'): ClaudeUsageLimitStatus {
+  const modelWeekly = modelWeeklyWindow(usage, model);
+  const candidates: CandidateWindow[] = [
+    { name: 'five_hour', window: usage.fiveHour },
+    { name: 'weekly_all', window: usage.weeklyAll },
+    { name: 'weekly_model', window: modelWeekly },
+  ];
+
+  // The binding constraint is the window with the highest utilization.
+  let binding: { name: string; window: ClaudeUsageWindow } | null = null;
+  for (const { name, window } of candidates) {
+    if (!window || window.utilizationPct === null) continue;
+    if (!binding || window.utilizationPct > (binding.window.utilizationPct ?? 0)) {
+      binding = { name, window };
+    }
+  }
+
+  const rejected = candidates.some(({ window }) => window?.severity === 'rejected');
+  const overThreshold = binding !== null && (binding.window.utilizationPct ?? 0) >= CLAUDE_USAGE_HARD_STOP_PCT;
+
+  return {
+    exceeded: rejected || overThreshold,
+    fiveHourPct: usage.fiveHour.utilizationPct,
+    weeklyAllPct: usage.weeklyAll.utilizationPct,
+    weeklyModelPct: modelWeekly?.utilizationPct ?? null,
+    bindingWindow: binding?.name ?? null,
+    bindingPct: binding?.window.utilizationPct ?? null,
+    resetsAt: binding?.window.resetsAt ?? null,
+  };
+}
 
 /**
- * Probes Claude and reports whether the subscription usage limit is exhausted.
- * Returns `exceeded: true` on an `anthropic-ratelimit-unified-status: rejected`
- * header or an HTTP 429. Non-limit API errors (bad token, connectivity) are
- * re-thrown so real misconfiguration surfaces rather than silently passing.
+ * Reports whether the Claude subscription usage limit is (near) exhausted.
+ * Reads the OAuth usage endpoint; on any failure, logs and reports not-exceeded
+ * (fail-open) so a usage-endpoint hiccup doesn't block generation.
  */
 export async function checkClaudeUsageLimit(options: CheckClaudeUsageLimitOptions = {}): Promise<ClaudeUsageLimitStatus> {
-  if (!options.force && Date.now() < allowedCacheExpiresAt) {
-    return { exceeded: false, unifiedStatus: 'allowed', resetsAt: null, retryAfterSeconds: null };
+  if (!options.force && cached && Date.now() < cached.expiresAt) {
+    return cached.status;
   }
 
   try {
-    const { rateLimit } = await callClaudeWithOAuth({
-      prompt: 'ping',
-      model: options.model ?? getDefaultClaudeModel(),
-      maxTokens: 1,
-      oauthToken: options.oauthToken,
-    });
-
-    const exceeded = rateLimit.unifiedStatus === 'rejected';
-    if (!exceeded) {
-      allowedCacheExpiresAt = Date.now() + ALLOWED_CACHE_TTL_MS;
-    }
-    return {
-      exceeded,
-      unifiedStatus: rateLimit.unifiedStatus,
-      resetsAt: rateLimit.resetsAt,
-      retryAfterSeconds: rateLimit.retryAfterSeconds,
-    };
+    const usage = await getClaudeSubscriptionUsage({ oauthToken: options.oauthToken });
+    const status = evaluate(usage, options.model ?? 'opus');
+    cached = { status, expiresAt: Date.now() + USAGE_CACHE_TTL_MS };
+    return status;
   } catch (err) {
-    if (err instanceof ClaudeOAuthApiError && err.status === 429) {
-      return {
-        exceeded: true,
-        unifiedStatus: err.rateLimit.unifiedStatus ?? 'rejected',
-        resetsAt: err.rateLimit.resetsAt,
-        retryAfterSeconds: err.rateLimit.retryAfterSeconds,
-      };
-    }
-    // Not a usage-limit signal (e.g. auth/connectivity) — let the caller see it.
-    throw err;
+    console.warn('Could not read Claude subscription usage; proceeding without the limit check.', err);
+    return {
+      exceeded: false,
+      fiveHourPct: null,
+      weeklyAllPct: null,
+      weeklyModelPct: null,
+      bindingWindow: null,
+      bindingPct: null,
+      resetsAt: null,
+    };
   }
 }
 
 /**
  * Throws {@link ClaudeUsageLimitExceededError} if the Claude subscription usage
- * limit is exhausted. Call this before kicking off Claude report generation.
+ * limit is (near) exhausted. Call this before kicking off Claude report generation.
  */
 export async function assertClaudeUsageLimitNotExceeded(options: CheckClaudeUsageLimitOptions = {}): Promise<void> {
   const status = await checkClaudeUsageLimit(options);
