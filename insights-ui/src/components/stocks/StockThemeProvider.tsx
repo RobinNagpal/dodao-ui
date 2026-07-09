@@ -10,6 +10,30 @@ type StockTheme = 'dark' | 'light';
 const STORAGE_KEY = 'koalagains-stock-report-theme';
 
 /**
+ * Apply a theme change with CSS transitions momentarily disabled, so the palette
+ * swap is atomic — every color flips in the same frame. Without this, elements
+ * carrying `transition-colors` (e.g. the sub-industry card headers) animate their
+ * background over ~150ms while text color snaps instantly, briefly leaving dark
+ * text on a still-dark background (a "black blink"). Mirrors next-themes'
+ * `disableTransitionOnChange`; transitions are restored after the next paint so
+ * hover animations keep working.
+ */
+function applyThemeWithoutTransition(apply: () => void): void {
+  const style = document.createElement('style');
+  style.appendChild(document.createTextNode('*,*::before,*::after{transition:none !important}'));
+  document.head.appendChild(style);
+
+  apply();
+
+  // Restore transitions once the new palette has painted (two frames to be safe).
+  window.requestAnimationFrame(() => {
+    window.requestAnimationFrame(() => {
+      style.parentNode?.removeChild(style);
+    });
+  });
+}
+
+/**
  * Scoped light/dark switcher for the stocks section — the report pages
  * (`/stocks/[exchange]/[ticker]/**`, excluding the admin-only `create` route)
  * and the listing pages (`/stocks`, `/stocks/industries/[industry]`,
@@ -35,16 +59,20 @@ export default function StockThemeProvider({ children }: { children: ReactNode }
 
   useEffect(() => {
     const stored = window.localStorage.getItem(STORAGE_KEY);
-    if (stored === 'light' || stored === 'dark') {
-      setTheme(stored);
+    // Default state is already `dark`; only a stored `light` is a real change,
+    // and we apply it without a transition so there's no flash on initial load.
+    if (stored === 'light') {
+      applyThemeWithoutTransition(() => setTheme('light'));
     }
   }, []);
 
   const toggleTheme = (): void => {
-    setTheme((prev) => {
-      const next: StockTheme = prev === 'dark' ? 'light' : 'dark';
-      window.localStorage.setItem(STORAGE_KEY, next);
-      return next;
+    applyThemeWithoutTransition(() => {
+      setTheme((prev) => {
+        const next: StockTheme = prev === 'dark' ? 'light' : 'dark';
+        window.localStorage.setItem(STORAGE_KEY, next);
+        return next;
+      });
     });
   };
 
