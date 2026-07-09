@@ -2,12 +2,19 @@ import { CSSProperties } from 'react';
 
 /**
  * Single source of truth for the KoalaGains color system. These CSS variables
- * are injected once on `<body>` (see `src/app/layout.tsx`) and surfaced as
+ * are injected onto a wrapping element (see `src/app/layout.tsx` for the global
+ * dark default, and the scoped stock-report switcher below) and surfaced as
  * Tailwind color tokens in `tailwind.config.ts`. Components should use the
  * tokens (`bg-surface`, `text-muted`, `border-border`, …) — NOT raw `bg-gray-*`.
  *
- * Structural palette is a deliberate 3-tier dark ramp:
- *   bg (page) < surface (cards) < surface-2 (inset/inline)
+ * The dark palette (`themeColors`) is the historical default and must stay
+ * pixel-identical to production. The light palette (`lightThemeColors`) mirrors
+ * the same structural roles with inverted values. Because both objects use the
+ * exact same variable names, swapping which one is spread onto a wrapper flips
+ * every token underneath it — no per-component `dark:` variants required.
+ *
+ * Structural palette is a deliberate 3-tier ramp:
+ *   bg (page) < surface (cards) < surface-2 (inset/inline) < surface-3 (raised)
  * with two text levels (text / text-muted), one heading, one border, one link,
  * and the brand primary. Everything outside chips/badges/buttons should resolve
  * to one of these.
@@ -32,6 +39,40 @@ export const themeColors = {
 
   // Lines
   '--border-color': '#374151', // Borders / dividers (gray-700)
+
+  '--swiper-theme-color': '#7f78ff',
+} as CSSProperties;
+
+/**
+ * Light palette — same variable names as `themeColors`, inverted values. The
+ * 3-tier surface ramp goes light→lighter here (white page, gray-50/100/200
+ * surfaces); text roles go dark. Brand primary is kept for continuity, and the
+ * link color is darkened (indigo-600) so it stays legible on light backgrounds.
+ *
+ * Currently applied only by the scoped stock-report switcher
+ * (`src/app/stocks/[exchange]/[ticker]/StockReportThemeProvider.tsx`); other
+ * pages keep the dark palette until they are migrated one by one.
+ */
+export const lightThemeColors = {
+  // Brand — kept identical to dark so buttons/accents don't shift between modes.
+  '--primary-color': '#7f78ff', // Indigo — primary actions (kept for brand continuity)
+  '--primary-text-color': '#ffffff', // Text on primary elements
+  '--link-color': '#4f46e5', // Links (indigo-600) — darkened for contrast on light
+
+  // Surfaces (3-tier ramp)
+  '--bg-color': '#ffffff', // Page background (white)
+  '--surface': '#f9fafb', // Cards / report sections (gray-50)
+  '--surface-2': '#f3f4f6', // Inset / inline rows / chips track (gray-100)
+  '--surface-3': '#e5e7eb', // Raised / hover state (gray-200)
+  '--block-bg': '#f9fafb', // Legacy alias → surface
+
+  // Text
+  '--heading-color': '#111827', // Headings (gray-900)
+  '--text-color': '#1f2937', // Body text (gray-800)
+  '--text-muted': '#4b5563', // Secondary / muted text (gray-600)
+
+  // Lines
+  '--border-color': '#e5e7eb', // Borders / dividers (gray-200)
 
   '--swiper-theme-color': '#7f78ff',
 } as CSSProperties;
