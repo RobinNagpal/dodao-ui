@@ -23,7 +23,11 @@ export default function SubIndustryCard({ subIndustry, subIndustryName, tickers,
           {displayName}
         </h3>
       </div>
-      <div className="absolute top-2 right-2 z-10 text-[13px] text-heading bg-primary px-2 py-0.5 rounded-full" aria-label={companyLabel} title={companyLabel}>
+      <div
+        className="absolute top-2 right-2 z-10 text-[13px] text-primary-text bg-primary px-2 py-0.5 rounded-full"
+        aria-label={companyLabel}
+        title={companyLabel}
+      >
         {companyLabel}
       </div>
       {/* ----- LIST ----- */}

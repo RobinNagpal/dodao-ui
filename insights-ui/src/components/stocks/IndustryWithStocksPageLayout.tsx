@@ -100,7 +100,7 @@ export default function IndustryWithStocksPageLayout({
             )}
           </div>
         </div>
-        <p className="text-[#E5E7EB] text-md mb-4">{description}</p>
+        <p className="text-muted text-md mb-4">{description}</p>
         <div className="mt-2 mb-2">
           <CountryAlternatives currentCountry={currentCountry} industryKey={industryKey} className="flex-shrink-0 text-sm" enhanced={true} compact={true} />
         </div>

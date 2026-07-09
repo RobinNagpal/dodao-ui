@@ -63,8 +63,14 @@ export default function StockThemeProvider({ children }: { children: ReactNode }
   // (overridden) `--text-color`, so elements that don't set their own color —
   // page/section headings and summaries — inherit the themed value instead of
   // the near-white color already computed on <body>.
+  //
+  // `stock-theme-light` (only in light mode) is a hook for the handful of
+  // components whose hardcoded dark-only colors can't be retargeted via tokens
+  // without changing the dark look (e.g. the "Also view" country bar). Scoped
+  // CSS under this class themes them in light while leaving dark untouched —
+  // `dark:` variants can't be used here because <body> always carries `.dark`.
   return (
-    <div style={paletteStyle} className="text-color min-h-screen">
+    <div style={paletteStyle} className={`text-color min-h-screen ${isDark ? '' : 'stock-theme-light'}`}>
       {children}
 
       <button

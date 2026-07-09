@@ -56,3 +56,26 @@
 .border-primary-color {
   border-color: var(--primary-color);
 }
+
+/*
+ * Light-theme overrides for the stocks "Also view" country bar. The bar is
+ * authored with dark-only hardcoded colors (`bg-gray-700/50`, `text-blue-100`,
+ * `text-blue-400`) that read badly on a light page. We can't retarget them with
+ * `dark:` variants because <body> always carries `.dark`, so `StockThemeProvider`
+ * adds `.stock-theme-light` only in light mode and we re-theme the bar here using
+ * the (light) semantic tokens. Dark mode never matches this selector, so its
+ * original appearance is left exactly as-is.
+ */
+.stock-theme-light {
+  .country-alternatives-panel {
+    background-color: var(--surface-2);
+  }
+
+  .country-alternatives-label {
+    color: var(--text-color);
+  }
+
+  .country-alternatives-link {
+    color: var(--link-color);
+  }
+}
