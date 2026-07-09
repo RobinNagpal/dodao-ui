@@ -1,3 +1,5 @@
+import { ClaudeModel } from '@/types/llmConstants';
+
 /**
  * Tunable knobs for the Claude-usage-gated stock report auto-generation job.
  * Kept in one place so the numbers can be adjusted without touching logic.
@@ -7,6 +9,13 @@
  * gates below (5-hour limit + weekly day-curve) ARE checked per request.
  */
 export const CLAUDE_AUTO_GEN = {
+  /**
+   * Claude model used for the auto-generated reports (this job only). Change it
+   * here to switch models without touching the logic; value comes from the shared
+   * ClaudeModel enum. The provider is always Claude (subscription OAuth path).
+   */
+  LLM_MODEL: ClaudeModel.CLAUDE_SONNET_4_6,
+
   /** How many requests to create per batch. A new batch is created ONLY when zero
    *  auto requests are open (we never top up a partial batch), keeping the
    *  concurrent Claude fan-out small. */
