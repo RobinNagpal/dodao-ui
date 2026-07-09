@@ -30,5 +30,5 @@ export const CLAUDE_AUTO_GEN = {
 
   /** Cumulative % of the weekly budget allowed by day-since-weekly-reset
    *  (index 0 = first day, the reset day). Spreads spend across the week. */
-  WEEKLY_CAP_BY_DAY_PCT: [15, 25, 35, 45, 55, 65, 75] as const,
+  WEEKLY_CAP_BY_DAY_PCT: [20, 30, 40, 50, 60, 70, 80] as const,
 } as const;
