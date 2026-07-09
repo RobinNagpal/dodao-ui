@@ -10,53 +10,15 @@ import { getOldestStocksOverall } from '@/utils/oldest-reports-utils';
  * Claude-usage-gated stock report auto-generation (enqueue side).
  *
  * A dedicated cron hits the `enqueue-auto-stock-generation` route on a schedule
- * (e.g. every 15 min, 10 PM–6 AM ET). Each call checks the Claude usage gates and,
+ * (e.g. every 15 min, 10 PM–3 AM ET). Each call checks the Claude usage gates and,
  * when they pass AND no auto requests are currently open, creates one small batch
  * of `BATCH_SIZE` requests for the oldest stocks. The existing ~3-min processor
  * then generates them normally — it needs no changes, because we only add a small
  * batch and only when the previous one is fully done.
  *
- * The off-hours window (10 PM–6 AM) is enforced by the CRON SCHEDULE, not here, so
- * these gates deliberately do NOT check the time-of-day window.
+ * The off-hours window is enforced entirely by the CRON SCHEDULE, so these gates
+ * only cover usage (5-hour limit + weekly day-curve), not the time of day.
  */
-
-/** Hour-of-day (0–23.99) in America/New_York, as a decimal for minute precision. */
-function etHourDecimal(date: Date): number {
-  const parts = new Intl.DateTimeFormat('en-US', {
-    timeZone: 'America/New_York',
-    hour: '2-digit',
-    minute: '2-digit',
-    hour12: false,
-  }).formatToParts(date);
-  const hour = Number(parts.find((p) => p.type === 'hour')?.value ?? '0') % 24;
-  const minute = Number(parts.find((p) => p.type === 'minute')?.value ?? '0');
-  return hour + minute / 60;
-}
-
-/**
- * Maps an ET hour onto a continuous "night" scale where the overnight origin
- * (NIGHT_ORIGIN_HOUR_ET, 22:00) is 22 and the following morning continues past 24
- * (so 07:00 next day is 31). Lets the session-end check compare across midnight
- * without fragile absolute-instant / DST math.
- */
-function nightScaleHour(hourDecimal: number): number {
-  return hourDecimal >= CLAUDE_AUTO_GEN.NIGHT_ORIGIN_HOUR_ET ? hourDecimal : hourDecimal + 24;
-}
-
-/**
- * True when the relevant 5-hour session finishes on/before the 7:00 AM ET cutoff.
- * Uses the active session's reset time if one is running, otherwise a fresh
- * session starting now (now + SESSION_LENGTH_HOURS). Effectively tapers auto-gen
- * off around 2:00 AM so a session never runs into the morning.
- */
-export function sessionEndsBeforeCutoff(now: Date, fiveHourResetsAt: string | null): boolean {
-  const cutoffNight = 24 + CLAUDE_AUTO_GEN.SESSION_MUST_END_BEFORE_HOUR_ET; // 07:00 next day
-  const sessionActive = fiveHourResetsAt !== null && new Date(fiveHourResetsAt).getTime() > now.getTime();
-  const endNight = sessionActive
-    ? nightScaleHour(etHourDecimal(new Date(fiveHourResetsAt as string)))
-    : nightScaleHour(etHourDecimal(now)) + CLAUDE_AUTO_GEN.SESSION_LENGTH_HOURS;
-  return endNight <= cutoffNight;
-}
 
 /** 0-based day index since the weekly window opened (weekly reset − 7 days), clamped to the cap curve. */
 export function weeklyDayIndex(now: Date, weeklyResetsAt: string | null): number {
@@ -77,9 +39,9 @@ export interface AutoGenGateResult {
 }
 
 /**
- * Evaluates the Claude usage gates (5-hour limit, session-end cutoff, weekly
- * day-curve cap). Does NOT check the time-of-day window — the cron schedule owns
- * that. Conservative: blocks when usage is unknown.
+ * Evaluates the Claude usage gates (5-hour limit + weekly day-curve cap). Does
+ * NOT check the time-of-day window — the cron schedule owns that. Conservative:
+ * blocks when usage is unknown.
  */
 export function evaluateAutoGenGates(usage: ClaudeSubscriptionUsage, now: Date): AutoGenGateResult {
   const fiveHourPct = usage.fiveHour.utilizationPct;
@@ -92,9 +54,6 @@ export function evaluateAutoGenGates(usage: ClaudeSubscriptionUsage, now: Date):
   }
   if (fiveHourPct >= CLAUDE_AUTO_GEN.MAX_5H_UTILIZATION_PCT) {
     return { allowed: false, reason: `five-hour-over-${CLAUDE_AUTO_GEN.MAX_5H_UTILIZATION_PCT}`, ...base };
-  }
-  if (!sessionEndsBeforeCutoff(now, usage.fiveHour.resetsAt)) {
-    return { allowed: false, reason: 'session-would-end-past-cutoff', ...base };
   }
   if (weeklyPct !== null && weeklyPct >= weeklyCapPct) {
     return { allowed: false, reason: `weekly-over-day-cap-${weeklyCapPct}`, ...base };
