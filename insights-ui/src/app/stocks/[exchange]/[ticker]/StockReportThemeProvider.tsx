@@ -57,8 +57,12 @@ export default function StockReportThemeProvider({ children }: { children: React
     backgroundColor: 'var(--bg-color)',
   };
 
+  // `text-color` re-establishes the base text color from THIS wrapper's
+  // (overridden) `--text-color`, so elements that don't set their own color —
+  // the page's main heading, section headings and summary — inherit the themed
+  // value instead of the near-white color already computed on <body>.
   return (
-    <div style={paletteStyle} className="min-h-screen">
+    <div style={paletteStyle} className="text-color min-h-screen">
       {children}
 
       <button

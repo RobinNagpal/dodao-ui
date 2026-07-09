@@ -59,12 +59,13 @@ export const lightThemeColors = {
   '--primary-text-color': '#ffffff', // Text on primary elements
   '--link-color': '#4f46e5', // Links (indigo-600) — darkened for contrast on light
 
-  // Surfaces (3-tier ramp)
-  '--bg-color': '#ffffff', // Page background (white)
-  '--surface': '#f9fafb', // Cards / report sections (gray-50)
-  '--surface-2': '#f3f4f6', // Inset / inline rows / chips track (gray-100)
-  '--surface-3': '#e5e7eb', // Raised / hover state (gray-200)
-  '--block-bg': '#f9fafb', // Legacy alias → surface
+  // Surfaces — a soft light-grey base (NOT pure white) with white cards on top,
+  // mirroring how dark uses gray-900 as the base and lighter greys for the ramp.
+  '--bg-color': '#f3f4f6', // Page background (gray-100) — the "not fully white" base
+  '--surface': '#ffffff', // Cards / report sections (white) — lift off the grey base
+  '--surface-2': '#e5e7eb', // Inset / inline rows / chips track (gray-200)
+  '--surface-3': '#d1d5db', // Raised / hover state (gray-300)
+  '--block-bg': '#ffffff', // Legacy alias → surface
 
   // Text
   '--heading-color': '#111827', // Headings (gray-900)
@@ -72,7 +73,7 @@ export const lightThemeColors = {
   '--text-muted': '#4b5563', // Secondary / muted text (gray-600)
 
   // Lines
-  '--border-color': '#e5e7eb', // Borders / dividers (gray-200)
+  '--border-color': '#d1d5db', // Borders / dividers (gray-300) — visible on white cards
 
   '--swiper-theme-color': '#7f78ff',
 } as CSSProperties;
