@@ -8,22 +8,39 @@ locals {
   # cache value for these and one less hop. Matches behavior since Phase A.
   cron_base_url = "https://${var.direct_domain_name}"
 
+  # Every entry carries an explicit `timezone` so the map stays a uniform object
+  # type. Existing crons keep UTC (unchanged behavior); the nightly auto-generation
+  # cron uses America/New_York so its ET window tracks EST/EDT automatically.
   crons = {
     ticker_request = {
       path     = "/api/koala_gains/tickers-v1/generate-ticker-v1-request"
       schedule = "rate(3 minutes)"
+      timezone = "UTC"
     }
     daily_top_gainers = {
       path     = "/api/koala_gains/tickers-v1/generate-daily-top-gainers"
       schedule = "cron(0 23 ? * MON-FRI *)"
+      timezone = "UTC"
     }
     daily_top_losers = {
       path     = "/api/koala_gains/tickers-v1/generate-daily-top-losers"
       schedule = "cron(0 23 ? * MON-FRI *)"
+      timezone = "UTC"
     }
     etf_request = {
       path     = "/api/koala_gains/etfs-v1/generate-etf-v1-request"
       schedule = "rate(3 minutes)"
+      timezone = "UTC"
+    }
+    # Nightly Claude-usage-gated stock report auto-generation. Runs only in the
+    # off-hours window (the code does NOT re-check the time — the schedule owns it).
+    # Every 15 min at 22:00–23:45 and 00:00–02:45 ET (last fire 2:45 AM), so the
+    # final batch finishes before ~3:30 AM. The endpoint checks the Claude usage
+    # gates and only creates a batch when none is in progress.
+    enqueue_auto_stock = {
+      path     = "/api/koala_gains/tickers-v1/enqueue-auto-stock-generation"
+      schedule = "cron(0/15 22-23,0-2 * * ? *)"
+      timezone = "America/New_York"
     }
   }
 }
@@ -121,7 +138,7 @@ resource "aws_scheduler_schedule" "cron" {
   }
 
   schedule_expression          = each.value.schedule
-  schedule_expression_timezone = "UTC"
+  schedule_expression_timezone = each.value.timezone
 
   target {
     arn      = aws_lambda_function.cron_invoker.arn

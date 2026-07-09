@@ -4,6 +4,7 @@ import { prisma } from '@/prisma';
 import { KoalaGainsJwtTokenPayload } from '@/types/auth';
 import { LLMProvider } from '@/types/llmConstants';
 import { GenerationRequestStatus, ReportType } from '@/types/ticker-typesv1';
+import { upsertGenerationRequest } from '@/utils/analysis-reports/generation-request-utils';
 import { calculatePendingSteps } from '@/utils/analysis-reports/report-steps-statuses';
 import { AllExchanges } from '@/utils/countryExchangeUtils';
 import { TickerV1GenerationRequest } from '@prisma/client';
@@ -217,58 +218,24 @@ async function postHandler(
       },
     });
 
-    // Check if there's an existing request for this ticker that is NotStarted
-    const existingRequest = await prisma.tickerV1GenerationRequest.findFirst({
-      where: {
-        tickerId: tickerRecord.id,
-        status: GenerationRequestStatus.NotStarted,
+    // Create the NotStarted request (or OR the sections into an existing one).
+    // Shared with the nightly auto-generation job via upsertGenerationRequest.
+    const result = await upsertGenerationRequest({
+      tickerId: tickerRecord.id,
+      flags: {
+        regenerateCompetition: !!regenerateOptions.regenerateCompetition,
+        regenerateFinancialAnalysis: !!regenerateOptions.regenerateFinancialAnalysis,
+        regenerateBusinessAndMoat: !!regenerateOptions.regenerateBusinessAndMoat,
+        regeneratePastPerformance: !!regenerateOptions.regeneratePastPerformance,
+        regenerateFutureGrowth: !!regenerateOptions.regenerateFutureGrowth,
+        regenerateFairValue: !!regenerateOptions.regenerateFairValue,
+        regenerateManagementTeam: !!regenerateOptions.regenerateManagementTeam,
+        regenerateFinalSummary: !!regenerateOptions.regenerateFinalSummary,
       },
-      orderBy: {
-        createdAt: 'desc',
-      },
+      llmProvider: payload.llmProvider ?? null,
+      llmModel: payload.llmModel ?? null,
+      // Admin path: not auto-generated (default false).
     });
-
-    let result: TickerV1GenerationRequest;
-
-    if (existingRequest) {
-      // If there's an existing NotStarted request, update it
-      result = await prisma.tickerV1GenerationRequest.update({
-        where: {
-          id: existingRequest.id,
-        },
-        data: {
-          regenerateCompetition: regenerateOptions.regenerateCompetition || existingRequest.regenerateCompetition,
-          regenerateFinancialAnalysis: regenerateOptions.regenerateFinancialAnalysis || existingRequest.regenerateFinancialAnalysis,
-          regenerateBusinessAndMoat: regenerateOptions.regenerateBusinessAndMoat || existingRequest.regenerateBusinessAndMoat,
-          regeneratePastPerformance: regenerateOptions.regeneratePastPerformance || existingRequest.regeneratePastPerformance,
-          regenerateFutureGrowth: regenerateOptions.regenerateFutureGrowth || existingRequest.regenerateFutureGrowth,
-          regenerateFairValue: regenerateOptions.regenerateFairValue || existingRequest.regenerateFairValue,
-          regenerateManagementTeam: regenerateOptions.regenerateManagementTeam || existingRequest.regenerateManagementTeam,
-          regenerateFinalSummary: regenerateOptions.regenerateFinalSummary || existingRequest.regenerateFinalSummary,
-          // A newly-supplied provider/model overrides the pending request; otherwise keep the existing choice.
-          llmProvider: payload.llmProvider ?? existingRequest.llmProvider,
-          llmModel: payload.llmModel ?? existingRequest.llmModel,
-          updatedAt: new Date(),
-        },
-      });
-    } else {
-      // If no existing NotStarted request, create a new one
-      result = await prisma.tickerV1GenerationRequest.create({
-        data: {
-          tickerId: tickerRecord.id,
-          regenerateCompetition: regenerateOptions.regenerateCompetition,
-          regenerateFinancialAnalysis: regenerateOptions.regenerateFinancialAnalysis,
-          regenerateBusinessAndMoat: regenerateOptions.regenerateBusinessAndMoat,
-          regeneratePastPerformance: regenerateOptions.regeneratePastPerformance,
-          regenerateFutureGrowth: regenerateOptions.regenerateFutureGrowth,
-          regenerateFairValue: regenerateOptions.regenerateFairValue,
-          regenerateManagementTeam: regenerateOptions.regenerateManagementTeam,
-          regenerateFinalSummary: regenerateOptions.regenerateFinalSummary,
-          llmProvider: payload.llmProvider ?? null,
-          llmModel: payload.llmModel ?? null,
-        },
-      });
-    }
 
     results.push(result);
   }

@@ -57,6 +57,11 @@ function extractJson(text: string): string {
 export async function getClaudeStructuredResult<Output>(prompt: string, outputSchema: object, options: ClaudeStructuredResultOptions = {}): Promise<Output> {
   const model = options.model ?? getDefaultClaudeModel();
 
+  // Note: usage-limit pacing for auto-generated reports lives in the stock
+  // generation processor (see `auto-stock-generation-utils.ts`), not here. This
+  // path stays a thin generator — admin-triggered Claude requests intentionally
+  // just surface a 429 if the subscription limit is full.
+
   const finalPrompt =
     `${prompt}\n\n` +
     `Return ONLY a single valid JSON object that strictly conforms to the following JSON schema. ` +

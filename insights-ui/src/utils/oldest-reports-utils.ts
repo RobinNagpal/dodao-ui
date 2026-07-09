@@ -48,3 +48,34 @@ export async function getOldestStocksByReportType(spaceId: string, reportType: S
     reportLastUpdatedAt: r.updatedAt,
   }));
 }
+
+/**
+ * Returns the stocks whose overall report is the most stale, for the nightly
+ * auto-generation job. "Report date" is anchored on the Final Summary, which is
+ * written back onto the `TickerV1` row (see `saveFinalSummaryResponse`), so we
+ * order tickers by `TickerV1.updatedAt asc`. Only tickers that already have a
+ * generated report (`summary` present) and no open generation request are
+ * eligible — mirroring `getOldestStocksByReportType`'s exclusion.
+ */
+export async function getOldestStocksOverall(spaceId: string, limit: number): Promise<OldestReportRow[]> {
+  const rows = await prisma.tickerV1.findMany({
+    where: {
+      spaceId,
+      summary: { not: null },
+      generationRequests: {
+        none: { status: { in: [GenerationRequestStatus.NotStarted, GenerationRequestStatus.InProgress] } },
+      },
+    },
+    orderBy: { updatedAt: 'asc' },
+    take: limit,
+    select: { id: true, symbol: true, exchange: true, name: true, updatedAt: true },
+  });
+
+  return rows.map((r) => ({
+    tickerId: r.id,
+    symbol: r.symbol,
+    exchange: r.exchange,
+    name: r.name,
+    reportLastUpdatedAt: r.updatedAt,
+  }));
+}
