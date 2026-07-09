@@ -104,6 +104,27 @@ Single source of truth for active KoalaGains work. Completed items live in
 
 ---
 
+## Claude integration
+
+> Provider-level infra shared by stock, ETF, and tariff report generation. The Claude
+> subscription OAuth path (`LLMProvider.CLAUDE`) and the provider/model selection UI
+> (`llmConstants.ts`, `ClaudeModel`) have landed; these are the follow-ups on top of them.
+> Do not add `LLM_PROVIDER`/`LLM_MODEL` env reads back in — defaults are fixed constants
+> in `llmConstants.ts` and UI selections flow through explicitly.
+
+### Surface Anthropic usage / rate-limit headers from the OAuth path
+
+- [ ] **Capture the response headers** in `src/util/claude/claude-oauth-client.ts` — `callClaudeWithOAuth` returns the body-level token `usage` but never reads `response.headers`, so Anthropic's `anthropic-ratelimit-*` headers are discarded. Add a `rateLimit` field to `CallClaudeOAuthResult` (parsed from the headers) without changing the existing `text`/`usage`/`model` callers.
+- [ ] **Confirm the real header names** before building any numeric gauge on top — this is the open blocker for usage pacing. Log the full raw header set from one live OAuth call and record the exact keys (unified vs input/output token buckets, reset timestamps, remaining-percent vs remaining-count) in `docs/insights-ui/` so downstream work isn't guessing.
+- [ ] **Thread the values through** `getClaudeStructuredResult` and `getLLMResponse` so a generation run can read remaining budget after each call, without coupling the thin structured-output helper to bookkeeping.
+
+### Usage-gated off-hours auto-generation
+
+- [ ] **Pace nightly Claude generation against remaining subscription budget** — a scheduled enqueue endpoint (separate from the synchronous per-report path) that reads the surfaced rate-limit headers, stops enqueuing when remaining budget drops below a floor, and resumes after the reset window. Ties together the existing off-hours refresh tasks under Stocks and the ETF Claude-Code pipeline; blocked on the header work above.
+- [ ] Open: per-model vs account-wide budget accounting when a run mixes Opus/Sonnet/Haiku; floor as absolute remaining vs percent; back-off strategy when a `429` is hit despite pacing.
+
+---
+
 ## Trends page
 
 > Decide once: shared `Trend` model linked to both stock and ETF join tables, or parallel
