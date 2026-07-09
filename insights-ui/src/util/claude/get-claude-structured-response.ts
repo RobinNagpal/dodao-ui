@@ -1,5 +1,6 @@
 import { getDefaultClaudeModel } from '@/types/llmConstants';
 import { callClaudeWithOAuth } from '@/util/claude/claude-oauth-client';
+import { assertClaudeUsageLimitNotExceeded } from '@/util/claude/claude-usage-limit';
 
 /**
  * Claude structured-output helper used by `getLLMResponse` when
@@ -56,6 +57,12 @@ function extractJson(text: string): string {
  */
 export async function getClaudeStructuredResult<Output>(prompt: string, outputSchema: object, options: ClaudeStructuredResultOptions = {}): Promise<Output> {
   const model = options.model ?? getDefaultClaudeModel();
+
+  // Verify the Claude subscription usage limit isn't already exhausted before
+  // spending a large, high-effort generation call. Throws
+  // ClaudeUsageLimitExceededError if the limit is hit; the result is cached
+  // briefly so the sequential section calls in one report run don't each probe.
+  await assertClaudeUsageLimitNotExceeded({ model });
 
   const finalPrompt =
     `${prompt}\n\n` +

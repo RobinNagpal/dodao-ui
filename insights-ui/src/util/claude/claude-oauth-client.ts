@@ -47,6 +47,22 @@ export interface CallClaudeOAuthOptions {
   effort?: ClaudeEffort;
 }
 
+/**
+ * Rate-limit / subscription-usage signal Anthropic returns on the OAuth
+ * subscription path. `unifiedStatus` is the `anthropic-ratelimit-unified-status`
+ * header (`allowed` | `allowed_warning` | `rejected`) that Claude Code itself
+ * reads to know whether the account's usage limit has been hit; the rest give
+ * the caller the reset time so it can tell the user when access returns.
+ */
+export interface ClaudeRateLimitInfo {
+  /** `anthropic-ratelimit-unified-status`: `allowed` | `allowed_warning` | `rejected` | null. */
+  unifiedStatus: string | null;
+  /** `anthropic-ratelimit-unified-reset` (RFC3339 or unix seconds), when the limit resets. */
+  resetsAt: string | null;
+  /** `retry-after` header, in seconds, if present (set on 429s). */
+  retryAfterSeconds: number | null;
+}
+
 export interface CallClaudeOAuthResult {
   /** Concatenated text of Claude's answer. */
   text: string;
@@ -54,8 +70,41 @@ export interface CallClaudeOAuthResult {
   model: string;
   stopReason: string | null;
   usage: { inputTokens: number; outputTokens: number };
+  /** Subscription usage / rate-limit headers from the response. */
+  rateLimit: ClaudeRateLimitInfo;
   /** Full parsed JSON body, for inspection during testing. */
   raw: unknown;
+}
+
+/**
+ * Thrown when the Anthropic Messages API returns a non-2xx response. Carries the
+ * HTTP `status` and any rate-limit headers so callers can distinguish a usage-limit
+ * rejection (429) from other failures without string-matching the message.
+ */
+export class ClaudeOAuthApiError extends Error {
+  readonly status: number;
+  readonly rateLimit: ClaudeRateLimitInfo;
+  readonly body: string;
+
+  constructor(status: number, statusText: string, body: string, rateLimit: ClaudeRateLimitInfo) {
+    super(`Anthropic API error ${status} ${statusText}: ${body}`);
+    this.name = 'ClaudeOAuthApiError';
+    this.status = status;
+    this.rateLimit = rateLimit;
+    this.body = body;
+  }
+}
+
+/** Reads the subscription usage / rate-limit headers Anthropic returns on OAuth requests. */
+function parseRateLimitHeaders(headers: Headers): ClaudeRateLimitInfo {
+  const retryAfterRaw = headers.get('retry-after');
+  const retryAfterSeconds = retryAfterRaw !== null && retryAfterRaw.trim() !== '' ? Number(retryAfterRaw) : null;
+
+  return {
+    unifiedStatus: headers.get('anthropic-ratelimit-unified-status'),
+    resetsAt: headers.get('anthropic-ratelimit-unified-reset'),
+    retryAfterSeconds: retryAfterSeconds !== null && Number.isFinite(retryAfterSeconds) ? retryAfterSeconds : null,
+  };
 }
 
 interface AnthropicTextBlock {
@@ -124,8 +173,9 @@ export async function callClaudeWithOAuth(options: CallClaudeOAuthOptions): Prom
   });
 
   const responseText = await response.text();
+  const rateLimit = parseRateLimitHeaders(response.headers);
   if (!response.ok) {
-    throw new Error(`Anthropic API error ${response.status} ${response.statusText}: ${responseText}`);
+    throw new ClaudeOAuthApiError(response.status, response.statusText, responseText, rateLimit);
   }
 
   const json = JSON.parse(responseText) as AnthropicMessageResponse;
@@ -144,6 +194,7 @@ export async function callClaudeWithOAuth(options: CallClaudeOAuthOptions): Prom
       inputTokens: json.usage?.input_tokens ?? 0,
       outputTokens: json.usage?.output_tokens ?? 0,
     },
+    rateLimit,
     raw: json,
   };
 }
