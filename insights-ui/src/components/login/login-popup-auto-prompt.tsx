@@ -22,7 +22,6 @@ const EXCLUDED_PATH_PREFIXES: readonly string[] = [
   '/admin-v1',
   '/prompts',
   '/invocations',
-  '/public-equities',
   '/generate-ppt',
   '/api',
   '/blogs',

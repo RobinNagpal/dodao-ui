@@ -4,7 +4,7 @@ import type { EtfScoresResponse } from '@/types/etf/etf-detail-response-types';
 import { EtfAnalysisResponse } from '@/app/api/[spaceId]/etfs-v1/exchange/[exchange]/[etf]/analysis/route';
 import { getSpiderGraphScorePercentage } from '@/util/radar-chart-utils';
 import { buildEtfSpiderGraph } from '@/utils/etf-analysis-reports/etf-spider-graph';
-import SpiderChartFlyoutMenu from '@/app/public-equities/tickers/[tickerKey]/SpiderChartFlyoutMenu';
+import SpiderChartFlyoutMenu from '@/components/ticker/SpiderChartFlyoutMenu';
 import { RadarSkeleton } from '@/app/stocks/[exchange]/[ticker]/RadarSkeleton';
 import RadarChartFrame from '@/components/ui/containers/RadarChartFrame';
 import { useInView } from '@/util/use-in-view';
