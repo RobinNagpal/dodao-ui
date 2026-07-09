@@ -7,15 +7,17 @@ import { ALL_SECTIONS_REGENERATE_FLAGS, upsertGenerationRequest } from '@/utils/
 import { getOldestStocksOverall } from '@/utils/oldest-reports-utils';
 
 /**
- * Nightly Claude-usage-gated stock report auto-generation.
+ * Claude-usage-gated stock report auto-generation (enqueue side).
  *
- * This does NOT run its own cron. It hooks into the existing stock-generation
- * processor tick (`generate-ticker-v1-request`, already fired every ~3 min).
- * On each tick, if we're inside the off-hours window and under budget, it keeps
- * a single batch of `BATCH_SIZE` auto requests flowing: a fresh batch is created
- * ONLY when zero auto requests are open (we never top up a partial batch, to
- * keep the concurrent Claude fan-out bounded). The processor then drains them;
- * when a gate fails it simply skips auto requests until a later tick.
+ * A dedicated cron hits the `enqueue-auto-stock-generation` route on a schedule
+ * (e.g. every 15 min, 10 PM–6 AM ET). Each call checks the Claude usage gates and,
+ * when they pass AND no auto requests are currently open, creates one small batch
+ * of `BATCH_SIZE` requests for the oldest stocks. The existing ~3-min processor
+ * then generates them normally — it needs no changes, because we only add a small
+ * batch and only when the previous one is fully done.
+ *
+ * The off-hours window (10 PM–6 AM) is enforced by the CRON SCHEDULE, not here, so
+ * these gates deliberately do NOT check the time-of-day window.
  */
 
 /** Hour-of-day (0–23.99) in America/New_York, as a decimal for minute precision. */
@@ -31,19 +33,14 @@ function etHourDecimal(date: Date): number {
   return hour + minute / 60;
 }
 
-/** True when the ET hour is within the [START, END) overnight window (wraps midnight). */
-export function isWithinGenerationWindow(now: Date): boolean {
-  const h = etHourDecimal(now);
-  return h >= CLAUDE_AUTO_GEN.WINDOW_START_HOUR_ET || h < CLAUDE_AUTO_GEN.WINDOW_END_HOUR_ET;
-}
-
 /**
- * Maps an ET hour onto a continuous "night" scale where the window start (22:00)
- * is the origin, so the overnight span 22:00 → next-day 07:00 is monotonic
- * (22..31). Avoids fragile absolute-instant / DST math.
+ * Maps an ET hour onto a continuous "night" scale where the overnight origin
+ * (NIGHT_ORIGIN_HOUR_ET, 22:00) is 22 and the following morning continues past 24
+ * (so 07:00 next day is 31). Lets the session-end check compare across midnight
+ * without fragile absolute-instant / DST math.
  */
 function nightScaleHour(hourDecimal: number): number {
-  return hourDecimal >= CLAUDE_AUTO_GEN.WINDOW_START_HOUR_ET ? hourDecimal : hourDecimal + 24;
+  return hourDecimal >= CLAUDE_AUTO_GEN.NIGHT_ORIGIN_HOUR_ET ? hourDecimal : hourDecimal + 24;
 }
 
 /**
@@ -79,16 +76,17 @@ export interface AutoGenGateResult {
   weeklyCapPct: number | null;
 }
 
-/** Evaluates the off-hours pacing gates against current usage. Conservative (blocks) on unknown usage. */
+/**
+ * Evaluates the Claude usage gates (5-hour limit, session-end cutoff, weekly
+ * day-curve cap). Does NOT check the time-of-day window — the cron schedule owns
+ * that. Conservative: blocks when usage is unknown.
+ */
 export function evaluateAutoGenGates(usage: ClaudeSubscriptionUsage, now: Date): AutoGenGateResult {
   const fiveHourPct = usage.fiveHour.utilizationPct;
   const weeklyPct = usage.weeklyAll.utilizationPct;
   const weeklyCapPct = CLAUDE_AUTO_GEN.WEEKLY_CAP_BY_DAY_PCT[weeklyDayIndex(now, usage.weeklyAll.resetsAt)];
   const base = { fiveHourPct, weeklyPct, weeklyCapPct };
 
-  if (!isWithinGenerationWindow(now)) {
-    return { allowed: false, reason: 'outside-window', ...base };
-  }
   if (fiveHourPct === null) {
     return { allowed: false, reason: 'five-hour-usage-unknown', ...base };
   }
@@ -104,45 +102,32 @@ export function evaluateAutoGenGates(usage: ClaudeSubscriptionUsage, now: Date):
   return { allowed: true, reason: 'ok', ...base };
 }
 
-export interface AutoTickResult {
-  /** Whether the processor may process auto requests on this tick. */
-  autoAllowed: boolean;
-  /** How many new auto requests were created this tick (0 unless a fresh batch started). */
+export interface AutoEnqueueResult {
+  /** How many new auto requests were created this run. */
   created: number;
+  /** Short explanation of the outcome / which gate blocked. */
   reason: string;
   fiveHourPct: number | null;
   weeklyPct: number | null;
 }
 
-const BLOCKED = (reason: string, fiveHourPct: number | null = null, weeklyPct: number | null = null): AutoTickResult => ({
-  autoAllowed: false,
-  created: 0,
-  reason,
-  fiveHourPct,
-  weeklyPct,
-});
-
 /**
- * One auto-generation tick, called at the top of the stock-generation processor.
- * Enqueues a fresh batch when none is open and the gates pass, and reports
- * whether auto requests may be processed this tick. Never throws — on any
- * failure it fails closed (auto not allowed) so admin generation is unaffected.
+ * Checks the Claude usage gates and, if they pass AND no auto requests are open,
+ * creates one small batch (`BATCH_SIZE`) of generate-all Claude requests for the
+ * oldest stocks. Called by the `enqueue-auto-stock-generation` route on a cron.
+ * Never throws — on any failure it creates nothing (fails closed).
  */
-export async function runAutoStockGenerationTick(spaceId: string): Promise<AutoTickResult> {
+export async function enqueueAutoStockGenerationBatch(spaceId: string): Promise<AutoEnqueueResult> {
   const now = new Date();
   try {
-    if (!isWithinGenerationWindow(now)) {
-      return BLOCKED('outside-window');
-    }
-
     const usage = await getClaudeSubscriptionUsage();
     const gate = evaluateAutoGenGates(usage, now);
     if (!gate.allowed) {
-      return BLOCKED(gate.reason, gate.fiveHourPct, gate.weeklyPct);
+      return { created: 0, reason: gate.reason, fiveHourPct: gate.fiveHourPct, weeklyPct: gate.weeklyPct };
     }
 
-    // Gates pass → auto processing is allowed this tick. Create a fresh batch
-    // ONLY when no auto requests are open (never top up a partial batch).
+    // Create a fresh batch ONLY when no auto requests are open (never top up a
+    // partial batch) — this bounds the concurrent Claude fan-out.
     const openAutoCount = await prisma.tickerV1GenerationRequest.count({
       where: {
         spaceId,
@@ -151,30 +136,26 @@ export async function runAutoStockGenerationTick(spaceId: string): Promise<AutoT
       },
     });
 
-    let created = 0;
-    if (openAutoCount === 0) {
-      const oldest = await getOldestStocksOverall(spaceId, CLAUDE_AUTO_GEN.BATCH_SIZE);
-      for (const stock of oldest) {
-        await upsertGenerationRequest({
-          tickerId: stock.tickerId,
-          flags: ALL_SECTIONS_REGENERATE_FLAGS,
-          llmProvider: LLMProvider.CLAUDE,
-          llmModel: ClaudeModel.CLAUDE_OPUS_4_7,
-          autoGenerated: true,
-        });
-        created++;
-      }
+    if (openAutoCount > 0) {
+      return { created: 0, reason: 'batch-in-progress', fiveHourPct: gate.fiveHourPct, weeklyPct: gate.weeklyPct };
     }
 
-    return {
-      autoAllowed: true,
-      created,
-      reason: openAutoCount === 0 ? 'enqueued-batch' : 'batch-in-progress',
-      fiveHourPct: gate.fiveHourPct,
-      weeklyPct: gate.weeklyPct,
-    };
+    const oldest = await getOldestStocksOverall(spaceId, CLAUDE_AUTO_GEN.BATCH_SIZE);
+    let created = 0;
+    for (const stock of oldest) {
+      await upsertGenerationRequest({
+        tickerId: stock.tickerId,
+        flags: ALL_SECTIONS_REGENERATE_FLAGS,
+        llmProvider: LLMProvider.CLAUDE,
+        llmModel: ClaudeModel.CLAUDE_OPUS_4_7,
+        autoGenerated: true,
+      });
+      created++;
+    }
+
+    return { created, reason: 'enqueued-batch', fiveHourPct: gate.fiveHourPct, weeklyPct: gate.weeklyPct };
   } catch (err) {
-    console.warn('runAutoStockGenerationTick failed; skipping auto generation this tick.', err);
-    return BLOCKED('error');
+    console.warn('enqueueAutoStockGenerationBatch failed; created nothing this run.', err);
+    return { created: 0, reason: 'error', fiveHourPct: null, weeklyPct: null };
   }
 }
