@@ -38,7 +38,7 @@ export default function CommodityGroupCard({
         {countLabel}
       </div>
 
-      <ul className="divide-y divide-color flex-1">
+      <ul className="flex-1">
         {displayed.map((commodity) => {
           const hasScore = commodity.finalScore !== null;
           const { textColorClass, bgColorClass } = getScoreColorClasses(commodity.finalScore ?? 0);

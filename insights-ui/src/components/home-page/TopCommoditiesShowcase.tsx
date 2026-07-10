@@ -1,6 +1,5 @@
 import CommodityGroupCard from '@/components/commodity-reports/CommodityGroupCard';
 import type { CommodityListItem } from '@/utils/commodity-analysis-reports/get-commodity-report-data-utils';
-import Link from 'next/link';
 import React from 'react';
 
 export interface TopCommoditiesShowcaseProps {
@@ -42,12 +41,6 @@ export default function TopCommoditiesShowcase({ commodities }: TopCommoditiesSh
           {groups.map((group) => (
             <CommodityGroupCard key={group} group={group} commodities={commodities.filter((c) => c.commodityGroup === group)} limit={TOP_PER_GROUP} />
           ))}
-        </div>
-
-        <div className="mt-8 flex justify-center">
-          <Link href="/commodities" className="text-indigo-400 hover:text-indigo-300 font-semibold transition-colors">
-            View all commodities <span aria-hidden>→</span>
-          </Link>
         </div>
       </div>
 
