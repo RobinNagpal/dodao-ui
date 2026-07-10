@@ -107,4 +107,14 @@
   .radar-highlight {
     fill: rgba(17, 24, 39, 0.08);
   }
+
+  /* Hover tooltip (factor breakdown): the dark card reads as a heavy black box
+     on a light page, so make it a light surface card that sits naturally against
+     the radar + page background. Base dark values live in the SVG's own <style>. */
+  .radar-tooltip {
+    background-color: var(--surface);
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+    box-shadow: 0 4px 12px rgba(17, 24, 39, 0.12);
+  }
 }

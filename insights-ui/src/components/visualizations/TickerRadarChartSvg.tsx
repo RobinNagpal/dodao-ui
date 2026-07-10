@@ -177,6 +177,8 @@ export default function TickerRadarChartSvg({ data, scorePercentage }: TickerRad
           [data-radar-slice]:hover [data-radar-hl] { opacity: 1; }
           [data-radar-tip] { opacity: 0; transition: opacity 120ms ease; }
           [data-radar-slice]:hover [data-radar-tip] { opacity: 1; }
+          /* Dark defaults; light-theme overrides live in theme-styles.scss (.stock-theme-light). */
+          .radar-tooltip { background-color: rgba(0, 0, 0, 0.9); color: #ffffff; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4); }
         `}</style>
 
         {/* Alternating concentric rings */}
@@ -262,12 +264,10 @@ export default function TickerRadarChartSvg({ data, scorePercentage }: TickerRad
                 style={{ pointerEvents: 'none', overflow: 'visible' }}
               >
                 <div
+                  className="radar-tooltip"
                   style={{
                     borderRadius: 6,
-                    backgroundColor: 'rgba(0, 0, 0, 0.9)',
-                    color: '#ffffff',
                     padding: '10px 12px',
-                    boxShadow: '0 4px 12px rgba(0,0,0,0.4)',
                     textAlign: 'left',
                   }}
                 >
