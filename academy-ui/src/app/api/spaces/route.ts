@@ -30,12 +30,15 @@ async function getHandler(req: NextRequest): Promise<NextResponse<SpaceWithInteg
 
   if (domain?.includes('.tidbitshub.org') || domain?.includes('.tidbitshub-localhost.org')) {
     const idFromDomain = domain.split('.')[0];
-    const space = await prisma.space.findFirstOrThrow({
+    // Reserved subdomains (e.g. `sitemap`) have no matching space. Use findFirst so an unknown
+    // subdomain returns an empty list (caller resolves it to "no space") instead of throwing a
+    // Prisma "record not found" error that floods the server logs on every crawler request.
+    const space = await prisma.space.findFirst({
       where: {
         id: idFromDomain,
       },
     });
-    return NextResponse.json([await getWithIntegrations(space)]);
+    return space ? NextResponse.json([await getWithIntegrations(space)]) : NextResponse.json([]);
   }
 
   if (domain === 'dodao-ui-robinnagpal.vercel.app' || domain === 'localhost' || domain?.includes('.vercel.app')) {
