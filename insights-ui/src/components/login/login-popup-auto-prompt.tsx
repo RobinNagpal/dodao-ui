@@ -17,7 +17,6 @@ const DISMISSED_AT_KEY = 'loginPopupDismissedAt';
 
 const EXCLUDED_PATH_PREFIXES: readonly string[] = [
   '/login',
-  '/authenticate',
   '/auth',
   '/admin-v1',
   '/prompts',
