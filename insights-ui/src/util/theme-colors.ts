@@ -37,30 +37,31 @@ export const themeColors = {
 } as CSSProperties;
 
 /**
- * Light mirror of {@link themeColors}. Same CSS-variable names, light values.
- * Spread onto a wrapper element by a scoped theme provider (e.g.
- * `EtfThemeProvider`) to flip every semantic token (`bg-surface`, `text-muted`,
- * `border-border`, …) underneath it to light — no per-component `dark:`
- * variants involved. The three-tier surface ramp is preserved in reverse:
- *   bg (page, lightest) < surface (cards) < surface-2 (inset) < surface-3.
+ * Light palette — same variable names as `themeColors`, inverted values. The
+ * 3-tier surface ramp goes light→lighter here (soft grey page, white cards,
+ * gray-200/300 insets); text roles go dark. Brand primary is kept for continuity,
+ * and the link color is darkened (indigo-600) so it stays legible on light
+ * backgrounds. Because both objects use the exact same variable names, swapping
+ * which one is spread onto a wrapper flips every token underneath it — no
+ * per-component `dark:` variants required.
  *
- * NOTE: this only affects components that read the semantic tokens. Hardcoded
- * palette colors (`bg-gray-*`, chart.js hex, translucent chips) are intentionally
- * left untouched for now and render the same in both themes.
+ * Applied by the scoped ETF switcher (`src/components/etfs/EtfThemeProvider.tsx`);
+ * other pages keep the dark palette until they are migrated one by one. Values
+ * are kept identical to the stock-report switcher's light palette.
  */
 export const lightThemeColors = {
-  // Brand — keep the indigo brand identical across themes; use a darker link
-  // shade so links stay legible on light surfaces.
-  '--primary-color': '#7f78ff', // Indigo — primary actions
+  // Brand — kept identical to dark so buttons/accents don't shift between modes.
+  '--primary-color': '#7f78ff', // Indigo — primary actions (kept for brand continuity)
   '--primary-text-color': '#ffffff', // Text on primary elements
-  '--link-color': '#4f46e5', // Links (indigo-600) — readable on light
+  '--link-color': '#4f46e5', // Links (indigo-600) — darkened for contrast on light
 
-  // Surfaces (3-tier ramp, lightest → darkest)
-  '--bg-color': '#ffffff', // Page background (white)
-  '--surface': '#f9fafb', // Cards / report sections (gray-50)
-  '--surface-2': '#f3f4f6', // Inset / inline rows / chips track (gray-100)
-  '--surface-3': '#e5e7eb', // Raised / hover state (gray-200)
-  '--block-bg': '#f9fafb', // Legacy alias → surface
+  // Surfaces — a soft light-grey base (NOT pure white) with white cards on top,
+  // mirroring how dark uses gray-900 as the base and lighter greys for the ramp.
+  '--bg-color': '#f3f4f6', // Page background (gray-100) — the "not fully white" base
+  '--surface': '#ffffff', // Cards / report sections (white) — lift off the grey base
+  '--surface-2': '#e5e7eb', // Inset / inline rows / chips track (gray-200)
+  '--surface-3': '#d1d5db', // Raised / hover state (gray-300)
+  '--block-bg': '#ffffff', // Legacy alias → surface
 
   // Text
   '--heading-color': '#111827', // Headings (gray-900)
@@ -68,7 +69,7 @@ export const lightThemeColors = {
   '--text-muted': '#4b5563', // Secondary / muted text (gray-600)
 
   // Lines
-  '--border-color': '#e5e7eb', // Borders / dividers (gray-200)
+  '--border-color': '#d1d5db', // Borders / dividers (gray-300) — visible on white cards
 
   '--swiper-theme-color': '#7f78ff',
 } as CSSProperties;

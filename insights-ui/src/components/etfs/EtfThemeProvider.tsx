@@ -37,9 +37,7 @@ function applyWithoutTransition(apply: () => void): void {
 
   apply();
 
-  // Force a reflow, then drop the override on the next frame so real
-  // transitions resume once the swap has painted.
-  window.getComputedStyle(document.body).opacity;
+  // Restore transitions once the new palette has painted (two frames to be safe).
   window.requestAnimationFrame(() => {
     window.requestAnimationFrame(() => {
       style.parentNode?.removeChild(style);

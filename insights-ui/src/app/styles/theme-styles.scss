@@ -56,3 +56,52 @@
 .border-primary-color {
   border-color: var(--primary-color);
 }
+
+/*
+ * Light-theme overrides for the ETF pages. `EtfThemeProvider` adds
+ * `.etf-theme-light` only in light mode (we can't use `dark:` variants because
+ * <body> always carries `.dark`), so anything authored with dark-only hardcoded
+ * colors is re-themed here using the (light) semantic tokens. Dark mode never
+ * matches this selector, so its original appearance is left exactly as-is.
+ *
+ * The ETF "Also view" country bar already uses semantic tokens (`bg-surface-2`,
+ * `text-body`, `text-link`), so it flips with the palette and needs nothing here.
+ * What remains is the server-rendered spider/radar SVG: its rings/spokes/labels
+ * carry dark-only fills as SVG presentation attributes; CSS overrides those (CSS
+ * beats presentation attributes), so only light mode is affected and dark is left
+ * exactly as authored. Alternating rings become two subtle greys, spokes a
+ * hairline, labels readable body text.
+ */
+.etf-theme-light {
+  .radar-ring-odd {
+    fill: var(--surface-3);
+  }
+
+  .radar-ring-even {
+    fill: var(--surface-2);
+  }
+
+  .radar-spoke {
+    stroke: var(--border-color);
+  }
+
+  .radar-label {
+    fill: var(--text-color);
+  }
+
+  /* Hover highlight slice: the light-grey default vanishes on light rings, so
+     tint it dark instead. */
+  .radar-highlight {
+    fill: rgba(17, 24, 39, 0.08);
+  }
+
+  /* Hover tooltip (factor breakdown): the dark card reads as a heavy black box
+     on a light page, so make it a light surface card. Base dark values live in
+     the SVG's own <style>. */
+  .radar-tooltip {
+    background-color: var(--surface);
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+    box-shadow: 0 4px 12px rgba(17, 24, 39, 0.12);
+  }
+}

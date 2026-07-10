@@ -1,5 +1,7 @@
 'use client';
 
+import { useEtfTheme } from '@/components/etfs/etf-theme-context';
+import { chartAxisTheme } from '@/util/chart-theme';
 import type { EtfCompetitorClassification, EtfQuadrantDataPoint } from '@/util/etf-quadrant-chart-utils';
 import { Chart as ChartJS, LinearScale, PointElement, Tooltip, Legend, ChartOptions, ChartData, Plugin, Chart, TooltipItem } from 'chart.js';
 import React, { useMemo } from 'react';
@@ -88,33 +90,40 @@ const QuadrantBackgroundPlugin: Plugin<'scatter'> = {
 
 type GroupedEtfPoint = { x: number; y: number; symbols: string[]; names: string[]; isMainEtf: boolean };
 
-const SymbolLabelPlugin: Plugin<'scatter'> = {
-  id: 'etfSymbolLabels',
-  afterDatasetsDraw: (chart: Chart<'scatter'>) => {
-    const { ctx } = chart;
-    ctx.save();
-    ctx.textAlign = 'center';
-    ctx.font = 'bold 11px Inter, sans-serif';
+// The main-ETF label stays amber (a data highlight); the peer-label color is
+// themed so it stays readable on a light background (`labelColor`).
+function makeSymbolLabelPlugin(labelColor: string): Plugin<'scatter'> {
+  return {
+    id: 'etfSymbolLabels',
+    afterDatasetsDraw: (chart: Chart<'scatter'>) => {
+      const { ctx } = chart;
+      ctx.save();
+      ctx.textAlign = 'center';
+      ctx.font = 'bold 11px Inter, sans-serif';
 
-    chart.data.datasets.forEach((dataset, datasetIndex) => {
-      const meta = chart.getDatasetMeta(datasetIndex);
-      meta.data.forEach((point, index) => {
-        const raw = dataset.data[index] as GroupedEtfPoint;
-        if (!raw?.symbols?.length) return;
+      chart.data.datasets.forEach((dataset, datasetIndex) => {
+        const meta = chart.getDatasetMeta(datasetIndex);
+        meta.data.forEach((point, index) => {
+          const raw = dataset.data[index] as GroupedEtfPoint;
+          if (!raw?.symbols?.length) return;
 
-        const { x, y } = point.getProps(['x', 'y']);
-        const isMain = Boolean(raw.isMainEtf);
+          const { x, y } = point.getProps(['x', 'y']);
+          const isMain = Boolean(raw.isMainEtf);
 
-        ctx.fillStyle = isMain ? '#fbbf24' : '#d1d5db';
-        ctx.fillText(raw.symbols.join(', '), x, y + (isMain ? 22 : 18));
+          ctx.fillStyle = isMain ? '#fbbf24' : labelColor;
+          ctx.fillText(raw.symbols.join(', '), x, y + (isMain ? 22 : 18));
+        });
       });
-    });
 
-    ctx.restore();
-  },
-};
+      ctx.restore();
+    },
+  };
+}
 
 export default function EtfReturnsVsEfficiencyQuadrant({ dataPoints, mainEtfSymbol: _mainEtfSymbol }: EtfReturnsVsEfficiencyQuadrantProps): JSX.Element | null {
+  const axis = chartAxisTheme(useEtfTheme());
+  const symbolLabelPlugin = useMemo(() => makeSymbolLabelPlugin(axis.label), [axis.label]);
+
   const chartData = useMemo((): ChartData<'scatter'> => {
     const groupsByKey = new Map<string, { cls: EtfCompetitorClassification; point: GroupedEtfPoint }>();
 
@@ -177,18 +186,18 @@ export default function EtfReturnsVsEfficiencyQuadrant({ dataPoints, mainEtfSymb
           min: -8,
           max: 108,
           title: { display: false },
-          grid: { color: 'rgba(55, 65, 81, 0.2)' },
+          grid: { color: axis.gridFaint },
           ticks: { display: false },
-          border: { color: 'rgba(55, 65, 81, 0.3)' },
+          border: { color: axis.axisBorder },
         },
         y: {
           type: 'linear',
           min: -8,
           max: 108,
           title: { display: false },
-          grid: { color: 'rgba(55, 65, 81, 0.2)' },
+          grid: { color: axis.gridFaint },
           ticks: { display: false },
-          border: { color: 'rgba(55, 65, 81, 0.3)' },
+          border: { color: axis.axisBorder },
         },
       },
       plugins: {
@@ -224,7 +233,7 @@ export default function EtfReturnsVsEfficiencyQuadrant({ dataPoints, mainEtfSymb
         },
       },
     }),
-    []
+    [axis.gridFaint, axis.axisBorder]
   );
 
   if (dataPoints.length === 0) return null;
@@ -243,7 +252,7 @@ export default function EtfReturnsVsEfficiencyQuadrant({ dataPoints, mainEtfSymb
         </div>
 
         <div className="px-4">
-          <Scatter data={chartData} options={options} plugins={[QuadrantBackgroundPlugin, SymbolLabelPlugin]} />
+          <Scatter data={chartData} options={options} plugins={[QuadrantBackgroundPlugin, symbolLabelPlugin]} />
         </div>
       </div>
 

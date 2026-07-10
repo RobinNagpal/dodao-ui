@@ -25,7 +25,7 @@ export default function EtfCategoryCard({ categoryName, href, etfs, total }: Etf
           {categoryName}
         </h3>
       </Link>
-      <div className="absolute top-2 right-2 z-10 text-[13px] text-heading bg-primary px-2 py-0.5 rounded-full" aria-label={etfLabel} title={etfLabel}>
+      <div className="absolute top-2 right-2 z-10 text-[13px] text-primary-text bg-primary px-2 py-0.5 rounded-full" aria-label={etfLabel} title={etfLabel}>
         {etfLabel}
       </div>
       <ul className="divide-y divide-color flex-1">
