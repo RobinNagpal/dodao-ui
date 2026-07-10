@@ -69,7 +69,7 @@ export default function IndustryAnalysisClient({ industries, prompts }: Industry
 
   const renderPromptContent = (prompt: PromptConfig) => {
     if (!selectedIndustry) {
-      return <p className="text-gray-400 italic">Please select an industry first</p>;
+      return <p className="text-muted italic">Please select an industry first</p>;
     }
 
     // Find the prompt from database
@@ -100,7 +100,7 @@ export default function IndustryAnalysisClient({ industries, prompts }: Industry
     return (
       <div className="space-y-4" onClick={(e) => e.stopPropagation()}>
         <div className="flex justify-between items-center mb-4">
-          <div className="text-sm text-gray-400">
+          <div className="text-sm text-muted">
             <strong>Prompt Name:</strong> {dbPrompt.name}
           </div>
           <Button onClick={(e) => handleCopyPrompt(e, prompt.key, finalPrompt)} variant="outlined" primary className="text-sm">
@@ -108,16 +108,16 @@ export default function IndustryAnalysisClient({ industries, prompts }: Industry
           </Button>
         </div>
 
-        {dbPrompt.excerpt && <div className="text-sm text-gray-400 italic mb-4">{dbPrompt.excerpt}</div>}
+        {dbPrompt.excerpt && <div className="text-sm text-muted italic mb-4">{dbPrompt.excerpt}</div>}
 
-        <div className="text-gray-300 markdown markdown-body bg-gray-800 rounded-lg p-6" dangerouslySetInnerHTML={{ __html: parseMarkdown(finalPrompt) }} />
+        <div className="text-body markdown markdown-body bg-surface-2 rounded-lg p-6" dangerouslySetInnerHTML={{ __html: parseMarkdown(finalPrompt) }} />
       </div>
     );
   };
 
   return (
     <div className="space-y-6">
-      <div className="bg-gray-800 rounded-lg p-6">
+      <div className="bg-surface-2 rounded-lg p-6">
         <h2 className="text-xl font-semibold mb-4">Select Industry</h2>
         <StyledSelect
           label="Industry"

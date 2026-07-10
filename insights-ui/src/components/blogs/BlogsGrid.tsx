@@ -35,14 +35,14 @@ export default function BlogsGrid({
   }, [posts, selectedCategory, showCategoryButtons]);
 
   return (
-    <section className="bg-gray-800 pt-8 pb-6 sm:pt-10 sm:pb-8">
+    <section className="bg-bg pt-8 pb-6 sm:pt-10 sm:pb-8">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         {/* Heading */}
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="mx-auto max-w-2xl sm:text-center">
-            <HeadingTag className="text-4xl font-semibold tracking-tight text-white sm:text-5xl">From Our Blog</HeadingTag>
+            <HeadingTag className="text-4xl font-semibold tracking-tight text-heading sm:text-5xl">From Our Blog</HeadingTag>
 
-            <p className="mt-2 text-lg text-gray-400">
+            <p className="mt-2 text-lg text-muted">
               Explore expert articles on REIT fundamentals, value‑investing techniques, crowdfunding analysis, and GenAI capabilities.
             </p>
           </div>
@@ -57,7 +57,9 @@ export default function BlogsGrid({
                   key={category.slug}
                   onClick={() => setSelectedCategory(category.slug)}
                   className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 whitespace-normal ${
-                    selectedCategory === category.slug ? 'bg-indigo-600 text-white shadow-lg' : 'bg-gray-700 text-gray-300 hover:bg-gray-600 hover:text-white'
+                    selectedCategory === category.slug
+                      ? 'bg-primary text-primary-text shadow-lg'
+                      : 'bg-surface-2 text-body hover:bg-surface-3 hover:text-heading'
                   }`}
                 >
                   {category.title}
@@ -72,19 +74,19 @@ export default function BlogsGrid({
             <article key={post.id} className="flex max-w-xl flex-col justify-between">
               <div className="flex-col items-start">
                 <div className="flex items-center gap-x-4 text-xs">
-                  <time dateTime={post.datetime} className="text-gray-500">
+                  <time dateTime={post.datetime} className="text-muted">
                     {post.date}
                   </time>
-                  <span className="relative z-10 rounded-full bg-gray-700 px-3 py-1.5 font-medium text-gray-300">{post.category.title}</span>
+                  <span className="relative z-10 rounded-full bg-surface-2 px-3 py-1.5 font-medium text-body">{post.category.title}</span>
                 </div>
                 <div className="group relative">
-                  <h3 className="mt-3 text-lg font-semibold text-white group-hover:text-indigo-400">
+                  <h3 className="mt-3 text-lg font-semibold text-heading group-hover:text-primary">
                     <a href={'/blogs/' + post.id} className="group">
                       <span className="absolute inset-0" />
                       {post.title}
                     </a>
                   </h3>
-                  <p className="mt-5 line-clamp-3 text-sm text-gray-400">{post.abstract}</p>
+                  <p className="mt-5 line-clamp-3 text-sm text-body">{post.abstract}</p>
                 </div>
               </div>
               <div>
@@ -99,7 +101,7 @@ export default function BlogsGrid({
           <div className="mt-12 text-center">
             <Link
               href="/blogs"
-              className="inline-flex items-center rounded-md bg-indigo-600 px-6 py-3 text-base font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 transition-colors duration-200"
+              className="inline-flex items-center rounded-md bg-primary px-6 py-3 text-base font-semibold text-primary-text shadow-sm hover:opacity-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 transition-colors duration-200"
             >
               View All Blogs
               <svg className="ml-2 h-4 w-4" fill="currentColor" viewBox="0 0 20 20">

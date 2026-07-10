@@ -1,4 +1,5 @@
 import CalculatorClient from './CalculatorClient';
+import CalculatorThemeScope from '@/components/tariff-calculator/CalculatorThemeScope';
 import BreadcrumbsWithJsonLd from '@/components/ui/BreadcrumbsWithJsonLd';
 import ToolPills from '@/components/tariff-cross-links/ToolPills';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
@@ -70,7 +71,7 @@ export default function TariffCalculatorPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(JSON_LD) }} />
       <BreadcrumbsWithJsonLd breadcrumbs={BREADCRUMBS} />
 
-      <div className="text-color" style={{ colorScheme: 'dark', accentColor: '#fbbf24' }}>
+      <CalculatorThemeScope>
         <header className="mb-8">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
             <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">US Tariff &amp; Duty Calculator</h1>
@@ -100,7 +101,7 @@ export default function TariffCalculatorPage() {
         </header>
 
         <CalculatorClient />
-      </div>
+      </CalculatorThemeScope>
     </PageWrapper>
   );
 }

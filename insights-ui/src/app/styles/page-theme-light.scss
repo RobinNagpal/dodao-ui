@@ -1,0 +1,39 @@
+// Light-mode readability overrides.
+//
+// `PageThemeProvider` adds `.page-theme-light` on its wrapper only when a scoped
+// page section (tariff, blog, …) is in LIGHT mode. Dark mode never carries this
+// class, so everything here is dark-safe by construction. Use this file only for
+// the handful of spots that can't be fixed by the semantic CSS-variable token
+// swap alone — e.g. tinted utility colors that are baked into a component and
+// would otherwise stay tuned for a dark surface.
+.page-theme-light {
+  // ToolPills: the tinted tool pills (Tariff Calculator, HTS browser, …) use
+  // light `-300` text meant for a dark surface, which is unreadable on a light
+  // card. Darken the text per tone; the translucent tint background + ring read
+  // fine on light, so only the text (and its hover) is overridden.
+  .tool-pill {
+    &.tone-indigo {
+      color: #4338ca; // indigo-700
+
+      &:hover {
+        color: #3730a3; // indigo-800
+      }
+    }
+
+    &.tone-emerald {
+      color: #047857; // emerald-700
+
+      &:hover {
+        color: #065f46; // emerald-800
+      }
+    }
+
+    &.tone-amber {
+      color: #b45309; // amber-700
+
+      &:hover {
+        color: #92400e; // amber-800
+      }
+    }
+  }
+}

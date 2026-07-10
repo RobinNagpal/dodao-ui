@@ -41,6 +41,11 @@ export const themeColors = {
   // Lines
   '--border-color': '#374151', // Borders / dividers (gray-700)
 
+  // Accent — the tariff calculator's amber highlight (HTS codes, duty rate).
+  // Bright amber on the dark surface; darkened in the light palette so it stays
+  // readable on white. Scoped to the calculator via `text-tariff-accent`.
+  '--tariff-accent': '#fcd34d', // amber-300
+
   '--swiper-theme-color': '#7f78ff',
 } as CSSProperties;
 
@@ -76,6 +81,10 @@ export const lightThemeColors = {
 
   // Lines
   '--border-color': '#d1d5db', // Borders / dividers (gray-300) — visible on white cards
+
+  // Accent — darker amber so the calculator's HTS codes / duty rate stay
+  // readable on the light surface (the dark palette uses bright amber-300).
+  '--tariff-accent': '#b45309', // amber-700
 
   '--swiper-theme-color': '#7f78ff',
 } as CSSProperties;

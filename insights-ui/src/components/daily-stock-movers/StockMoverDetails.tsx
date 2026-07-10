@@ -22,7 +22,7 @@ export default function StockMoverDetails({ mover, type }: StockMoverDetailsProp
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
       {/* Main Article Content */}
-      <article className="bg-gray-900 rounded-lg shadow-sm border border-color p-6 md:p-8" itemScope itemType="https://schema.org/NewsArticle">
+      <article className="bg-surface rounded-lg shadow-sm border border-color p-6 md:p-8" itemScope itemType="https://schema.org/NewsArticle">
         {/* Article Header */}
         <header className="mb-6 pb-4 border-b border-color">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">

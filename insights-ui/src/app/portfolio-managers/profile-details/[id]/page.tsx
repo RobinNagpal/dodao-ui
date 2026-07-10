@@ -33,9 +33,9 @@ export default async function PortfolioManagerProfilePage({ params: paramsPromis
     return (
       <PageWrapper>
         <div className="max-w-7xl mx-auto py-8">
-          <div className="bg-gray-800 rounded-lg p-8 text-center">
+          <div className="bg-surface rounded-lg p-8 text-center">
             <h2 className="text-xl font-semibold mb-2">Profile not found</h2>
-            <p className="text-gray-400">The portfolio manager profile you’re looking for doesn’t exist.</p>
+            <p className="text-muted">The portfolio manager profile you’re looking for doesn’t exist.</p>
           </div>
         </div>
       </PageWrapper>
@@ -79,7 +79,7 @@ export default async function PortfolioManagerProfilePage({ params: paramsPromis
             <div className="mt-8 text-center">
               <a
                 href={`/portfolio-managers/profile-details/${portfolioManagerId}/portfolios`}
-                className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors duration-200 inline-block"
+                className="px-6 py-3 bg-primary hover:opacity-90 text-primary-text font-medium rounded-lg transition-colors duration-200 inline-block"
               >
                 View All Portfolios ({portfolios.length})
               </a>
