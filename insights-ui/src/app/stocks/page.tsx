@@ -1,6 +1,5 @@
 import CompactSubIndustriesGrid from '@/components/stocks/CompactSubIndustriesGrid';
 import IndustryWithStocksPageLayout from '@/components/stocks/IndustryWithStocksPageLayout';
-import StockThemeProvider from '@/components/stocks/StockThemeProvider';
 import { IndustriesResponse } from '@/types/api/ticker-industries';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { SupportedCountries } from '@/utils/countryExchangeUtils';
@@ -27,14 +26,12 @@ export default async function StocksPage() {
   const data = (await res.json()) as IndustriesResponse;
 
   return (
-    <StockThemeProvider>
-      <IndustryWithStocksPageLayout
-        title="US Stocks by Industry"
-        description="Explore US stocks across NASDAQ, NYSE, and AMEX exchanges organized by industry. View top-performing companies in each sector with detailed financial reports and AI-driven analysis."
-        currentCountry="US"
-      >
-        <CompactSubIndustriesGrid data={data} />
-      </IndustryWithStocksPageLayout>
-    </StockThemeProvider>
+    <IndustryWithStocksPageLayout
+      title="US Stocks by Industry"
+      description="Explore US stocks across NASDAQ, NYSE, and AMEX exchanges organized by industry. View top-performing companies in each sector with detailed financial reports and AI-driven analysis."
+      currentCountry="US"
+    >
+      <CompactSubIndustriesGrid data={data} />
+    </IndustryWithStocksPageLayout>
   );
 }

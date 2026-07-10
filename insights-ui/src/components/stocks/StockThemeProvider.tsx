@@ -1,5 +1,6 @@
 'use client';
 
+import { StockThemeContext } from '@/components/stocks/stock-theme-context';
 import { lightThemeColors, themeColors } from '@/util/theme-colors';
 import { MoonIcon, SunIcon } from '@heroicons/react/24/outline';
 import { usePathname } from 'next/navigation';
@@ -98,18 +99,20 @@ export default function StockThemeProvider({ children }: { children: ReactNode }
   // CSS under this class themes them in light while leaving dark untouched —
   // `dark:` variants can't be used here because <body> always carries `.dark`.
   return (
-    <div style={paletteStyle} className={`text-color min-h-screen ${isDark ? '' : 'stock-theme-light'}`}>
-      {children}
+    <StockThemeContext.Provider value={theme}>
+      <div style={paletteStyle} className={`text-color min-h-screen ${isDark ? '' : 'stock-theme-light'}`}>
+        {children}
 
-      <button
-        type="button"
-        onClick={toggleTheme}
-        aria-label={isDark ? 'Switch to light theme' : 'Switch to dark theme'}
-        title={isDark ? 'Switch to light theme' : 'Switch to dark theme'}
-        className="fixed bottom-6 right-6 z-50 flex h-12 w-12 items-center justify-center rounded-full border border-border bg-surface text-heading shadow-lg transition-colors hover:bg-surface-2"
-      >
-        {isDark ? <SunIcon aria-hidden="true" className="size-6" /> : <MoonIcon aria-hidden="true" className="size-6" />}
-      </button>
-    </div>
+        <button
+          type="button"
+          onClick={toggleTheme}
+          aria-label={isDark ? 'Switch to light theme' : 'Switch to dark theme'}
+          title={isDark ? 'Switch to light theme' : 'Switch to dark theme'}
+          className="fixed bottom-6 right-6 z-50 flex h-12 w-12 items-center justify-center rounded-full border border-border bg-surface text-heading shadow-lg transition-colors hover:bg-surface-2"
+        >
+          {isDark ? <SunIcon aria-hidden="true" className="size-6" /> : <MoonIcon aria-hidden="true" className="size-6" />}
+        </button>
+      </div>
+    </StockThemeContext.Provider>
   );
 }

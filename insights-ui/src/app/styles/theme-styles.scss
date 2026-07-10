@@ -78,4 +78,33 @@
   .country-alternatives-link {
     color: var(--link-color);
   }
+
+  /*
+   * Spider/radar chart (server-rendered SVG). Its rings/spokes/labels carry
+   * dark-only fills as SVG presentation attributes; CSS overrides those (CSS
+   * beats presentation attributes), so only light mode is affected and dark is
+   * left exactly as authored. Alternating rings become two subtle greys, spokes
+   * a hairline, labels readable body text.
+   */
+  .radar-ring-odd {
+    fill: var(--surface-3);
+  }
+
+  .radar-ring-even {
+    fill: var(--surface-2);
+  }
+
+  .radar-spoke {
+    stroke: var(--border-color);
+  }
+
+  .radar-label {
+    fill: var(--text-color);
+  }
+
+  /* Hover highlight slice: the light-grey default vanishes on light rings, so
+     tint it dark instead. */
+  .radar-highlight {
+    fill: rgba(17, 24, 39, 0.08);
+  }
 }
