@@ -15,16 +15,7 @@ const LAST_PATH_KEY = 'loginPopupLastPath';
 const SHOWN_KEY = 'loginPopupShown';
 const DISMISSED_AT_KEY = 'loginPopupDismissedAt';
 
-const EXCLUDED_PATH_PREFIXES: readonly string[] = [
-  '/login',
-  '/auth',
-  '/admin-v1',
-  '/prompts',
-  '/invocations',
-  '/generate-ppt',
-  '/api',
-  '/blogs',
-];
+const EXCLUDED_PATH_PREFIXES: readonly string[] = ['/login', '/auth', '/admin-v1', '/prompts', '/invocations', '/generate-ppt', '/api', '/blogs'];
 
 function isExcludedPath(pathname: string): boolean {
   if (EXCLUDED_PATH_PREFIXES.some((prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`))) return true;
