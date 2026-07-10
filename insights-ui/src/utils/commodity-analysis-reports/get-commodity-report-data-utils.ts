@@ -62,6 +62,30 @@ export function getCommodityBasicInfo(slug: string): CommodityBasicInfo | null {
   return ALL_COMMODITIES.find((c) => c.slug === slug) ?? null;
 }
 
+/** One row in the public commodities listing (grouped by `commodityGroup`). */
+export interface CommodityListItem {
+  id: string;
+  slug: string;
+  name: string;
+  commodityGroup: string;
+  finalScore: number | null;
+}
+
+/**
+ * Every commodity with its final score, ordered by group then name. Backs both
+ * the `/commodities` listing API and the home-page commodities showcase (which
+ * reads it directly, no HTTP self-fetch, so the static export of "/" is safe).
+ */
+export function getCommodityListingItems(): CommodityListItem[] {
+  return getAllCommodityBasicInfo().map((c) => ({
+    id: c.slug,
+    slug: c.slug,
+    name: c.name,
+    commodityGroup: c.commodityGroup,
+    finalScore: computeCommodityFinalScore(getCommodityReportJson(c.slug)),
+  }));
+}
+
 /** The authored report JSON for a slug, or null when none has been published. */
 export function getCommodityReportJson(slug: string): CommodityReportJson | null {
   return COMMODITY_REPORTS[slug] ?? null;
