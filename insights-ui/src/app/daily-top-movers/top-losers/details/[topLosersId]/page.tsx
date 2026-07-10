@@ -34,7 +34,13 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       };
     }
 
-    const data: TopLoserWithRelated = await response.json();
+    const data: TopLoserWithRelated | null = await response.json();
+    if (!data) {
+      return {
+        title: 'Top Loser Details',
+        description: 'Daily top loser stock analysis and insights',
+      };
+    }
     return generateStockMoverMetadata(data.mover, DailyMoverType.LOSER, topLosersId);
   } catch (error) {
     console.error('Error generating metadata for top loser:', error);
@@ -56,7 +62,10 @@ export default async function TopLoserDetailsPage({ params }: PageProps) {
     },
   });
 
-  if (!response.ok) {
+  // A null body (200) means the loser doesn't exist; !response.ok means a real server error.
+  // Both render the same not-found state.
+  const data = response.ok ? await response.json() : null;
+  if (!data) {
     return (
       <PageWrapper>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -71,7 +80,7 @@ export default async function TopLoserDetailsPage({ params }: PageProps) {
     );
   }
 
-  const { mover: topLoser, relatedMovers } = await response.json();
+  const { mover: topLoser, relatedMovers } = data;
 
   // Generate structured data
   const articleSchema = generateStockMoverArticleSchema(topLoser, DailyMoverType.LOSER, topLosersId);
