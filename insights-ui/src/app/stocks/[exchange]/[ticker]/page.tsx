@@ -3,7 +3,7 @@ import { FinancialInfoResponse } from '@/app/api/[spaceId]/tickers-v1/exchange/[
 import { PriceHistoryResponse } from '@/app/api/[spaceId]/tickers-v1/exchange/[exchange]/[ticker]/price-history/route';
 import { QuarterlyChartDataResponse } from '@/app/api/[spaceId]/tickers-v1/exchange/[exchange]/[ticker]/quarterly-chart-data/route';
 import { TickerIdentifier } from '@/app/api/[spaceId]/tickers-v1/generation-requests/route';
-import SpiderChartFlyoutMenu from '@/app/public-equities/tickers/[tickerKey]/SpiderChartFlyoutMenu';
+import SpiderChartFlyoutMenu from '@/components/ticker/SpiderChartFlyoutMenu';
 import StockActions from '@/app/stocks/[exchange]/[ticker]/StockActions';
 import CompetitionAnalysisButton from '@/app/stocks/[exchange]/[ticker]/CompetitionAnalysisButton';
 import TickerComparisonButton from '@/app/stocks/[exchange]/[ticker]/TickerComparisonButton';
