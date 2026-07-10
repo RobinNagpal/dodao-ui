@@ -35,3 +35,40 @@ export const themeColors = {
 
   '--swiper-theme-color': '#7f78ff',
 } as CSSProperties;
+
+/**
+ * Light mirror of {@link themeColors}. Same CSS-variable names, light values.
+ * Spread onto a wrapper element by a scoped theme provider (e.g.
+ * `EtfThemeProvider`) to flip every semantic token (`bg-surface`, `text-muted`,
+ * `border-border`, …) underneath it to light — no per-component `dark:`
+ * variants involved. The three-tier surface ramp is preserved in reverse:
+ *   bg (page, lightest) < surface (cards) < surface-2 (inset) < surface-3.
+ *
+ * NOTE: this only affects components that read the semantic tokens. Hardcoded
+ * palette colors (`bg-gray-*`, chart.js hex, translucent chips) are intentionally
+ * left untouched for now and render the same in both themes.
+ */
+export const lightThemeColors = {
+  // Brand — keep the indigo brand identical across themes; use a darker link
+  // shade so links stay legible on light surfaces.
+  '--primary-color': '#7f78ff', // Indigo — primary actions
+  '--primary-text-color': '#ffffff', // Text on primary elements
+  '--link-color': '#4f46e5', // Links (indigo-600) — readable on light
+
+  // Surfaces (3-tier ramp, lightest → darkest)
+  '--bg-color': '#ffffff', // Page background (white)
+  '--surface': '#f9fafb', // Cards / report sections (gray-50)
+  '--surface-2': '#f3f4f6', // Inset / inline rows / chips track (gray-100)
+  '--surface-3': '#e5e7eb', // Raised / hover state (gray-200)
+  '--block-bg': '#f9fafb', // Legacy alias → surface
+
+  // Text
+  '--heading-color': '#111827', // Headings (gray-900)
+  '--text-color': '#1f2937', // Body text (gray-800)
+  '--text-muted': '#4b5563', // Secondary / muted text (gray-600)
+
+  // Lines
+  '--border-color': '#e5e7eb', // Borders / dividers (gray-200)
+
+  '--swiper-theme-color': '#7f78ff',
+} as CSSProperties;
