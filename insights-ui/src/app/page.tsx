@@ -5,6 +5,7 @@ import { Hero } from '@/components/home-page/Hero';
 import KoalagainsOfferings from '@/components/home-page/KoalagainsOfferings';
 import KoalaGainsPlatform from '@/components/home-page/KoalaGainsPlatform';
 import ServiceNavigation from '@/components/home-page/ServiceNavigation';
+import TopCommoditiesShowcase from '@/components/home-page/TopCommoditiesShowcase';
 import TopEtfAssetClassesShowcase from '@/components/home-page/TopEtfAssetClassesShowcase';
 import type { EtfAssetClassesIndexResponse } from '@/app/api/[spaceId]/etfs-v1/listings/asset-classes-index/route';
 import { IndustryWithTopTickers } from '@/types/api/ticker-industries';
@@ -13,6 +14,8 @@ import { getPostsData } from '@/util/blog-utils';
 import { themeColors } from '@/util/theme-colors';
 import { SupportedCountries } from '@/utils/countryExchangeUtils';
 import { getEtfAssetClassesIndexTag } from '@/utils/etf-cache-utils';
+import { COMMODITIES_LISTING_TAG } from '@/utils/commodity-analysis-reports/commodity-cache-utils';
+import { getCommodityListingItems } from '@/utils/commodity-analysis-reports/get-commodity-report-data-utils';
 import { getTopEtfAssetClasses } from '@/utils/home-page/top-etf-asset-classes';
 import { getTopIndustriesWithTickers } from '@/utils/home-page/top-industries';
 import { getStocksPageTag, getHomePagePostsTag } from '@/utils/ticker-v1-cache-utils';
@@ -157,13 +160,27 @@ const getEtfAssetClassesCached = unstable_cache(async () => fetchTopEtfAssetClas
   tags: [getEtfAssetClassesIndexTag(SupportedCountries.US)],
 });
 
+// Commodities read straight from bundled static JSON (no DB / no HTTP self-fetch), so this is
+// build-safe for the static export of "/". Cached + tagged like the industries/ETF data above so
+// the page is generated once at build time and revalidating the commodities listing refreshes it.
+const getCommoditiesCached = unstable_cache(async () => getCommodityListingItems(), ['home-page-commodities'], {
+  revalidate: WEEK,
+  tags: [COMMODITIES_LISTING_TAG],
+});
+
 export default async function Home() {
-  const [industries, posts, etfAssetClasses] = await Promise.all([getIndustriesCached(), getPostsCached(), getEtfAssetClassesCached()]);
+  const [industries, posts, etfAssetClasses, commodities] = await Promise.all([
+    getIndustriesCached(),
+    getPostsCached(),
+    getEtfAssetClassesCached(),
+    getCommoditiesCached(),
+  ]);
 
   return (
     <div style={{ ...themeColors }}>
       <Hero industries={industries} />
       <TopEtfAssetClassesShowcase country={SupportedCountries.US} data={etfAssetClasses} />
+      <TopCommoditiesShowcase commodities={commodities} />
       <ServiceNavigation />
       <KoalagainsOfferings />
       <KoalaGainsPlatform />
