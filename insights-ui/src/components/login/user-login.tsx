@@ -49,32 +49,32 @@ export function UserLogin({ onLogin, onGoogleSignIn, errorMessage, compact = fal
   );
 
   return (
-    <div className="overflow-hidden bg-gray-800 rounded-xl py-8">
+    <div className="overflow-hidden bg-surface rounded-xl py-8">
       <div className="mx-auto max-w-md px-6">
         <div className="relative isolate">
           <div className="mx-auto max-w-4xl">
             {!compact && (
               <div className="text-center">
-                <h1 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
-                  KoalaGains <span className="text-indigo-400">Insights</span>
+                <h1 className="text-3xl font-bold tracking-tight text-heading sm:text-4xl">
+                  KoalaGains <span className="text-primary">Insights</span>
                 </h1>
 
-                <p className="mt-3 text-base leading-7 text-gray-300 max-w-2xl mx-auto">Institutional‑grade, value‑driven stock insights for everyone.</p>
+                <p className="mt-3 text-base leading-7 text-body max-w-2xl mx-auto">Institutional‑grade, value‑driven stock insights for everyone.</p>
               </div>
             )}
 
             <div className={compact ? '' : 'mt-6'}>
-              <Card className="bg-gray-700/40 backdrop-blur-sm rounded-xl border border-gray-600/40 hover:border-indigo-500/50 transition-all duration-300 shadow-lg">
+              <Card className="bg-surface-2 backdrop-blur-sm rounded-xl border border-border hover:border-indigo-500/50 transition-all duration-300 shadow-lg">
                 <CardHeader>
-                  <CardTitle className="text-xl font-semibold text-white text-center">Sign in</CardTitle>
-                  <CardDescription className="text-center text-gray-300">Access personalized investment insights</CardDescription>
+                  <CardTitle className="text-xl font-semibold text-heading text-center">Sign in</CardTitle>
+                  <CardDescription className="text-center text-body">Access personalized investment insights</CardDescription>
                 </CardHeader>
                 <CardContent>
                   {onGoogleSignIn && (
                     <button
                       type="button"
                       onClick={onGoogleSignIn}
-                      className="w-full h-11 flex items-center justify-center gap-3 rounded-md border border-gray-600 bg-gray-800/60 px-4 text-sm font-medium text-gray-200 hover:bg-gray-700/60 hover:border-gray-500 transition-colors duration-200"
+                      className="w-full h-11 flex items-center justify-center gap-3 rounded-md border border-border bg-surface px-4 text-sm font-medium text-body hover:bg-surface-2 hover:border-border transition-colors duration-200"
                     >
                       <svg className="h-5 w-5" viewBox="0 0 24 24" aria-hidden="true">
                         <path
@@ -101,17 +101,17 @@ export function UserLogin({ onLogin, onGoogleSignIn, errorMessage, compact = fal
                   {onGoogleSignIn && (
                     <div className="relative my-5">
                       <div className="absolute inset-0 flex items-center">
-                        <div className="w-full border-t border-gray-600" />
+                        <div className="w-full border-t border-border" />
                       </div>
                       <div className="relative flex justify-center text-sm">
-                        <span className="bg-gray-700/40 px-3 text-gray-400">or</span>
+                        <span className="bg-surface-2 px-3 text-muted">or</span>
                       </div>
                     </div>
                   )}
 
                   <form onSubmit={handleSubmit} className="space-y-5" noValidate>
                     <div className="space-y-2">
-                      <Label htmlFor="email" className="text-gray-200 font-medium">
+                      <Label htmlFor="email" className="text-body font-medium">
                         Email
                       </Label>
                       <Input
@@ -123,7 +123,7 @@ export function UserLogin({ onLogin, onGoogleSignIn, errorMessage, compact = fal
                         value={email}
                         onChange={(ev: React.ChangeEvent<HTMLInputElement>): void => setEmail(ev.target.value)}
                         required
-                        className="h-11 bg-gray-800/60 border-gray-600 text-gray-100 placeholder:text-gray-500 focus-visible:ring-indigo-500 focus-visible:border-indigo-600 transition-colors duration-200"
+                        className="h-11 bg-surface border-border text-body placeholder:text-muted focus-visible:ring-indigo-500 focus-visible:border-indigo-600 transition-colors duration-200"
                         aria-invalid={Boolean(localError || errorMessage)}
                         aria-describedby={localError || errorMessage ? 'email-error' : undefined}
                       />
@@ -159,7 +159,7 @@ export function UserLogin({ onLogin, onGoogleSignIn, errorMessage, compact = fal
                   <div className={`rounded-md bg-gradient-to-r ${item.color} group-hover:scale-110 transition-transform duration-300 shadow-md p-2`}>
                     <item.icon className="h-5 w-5 text-white sm:h-6 sm:w-6" aria-hidden />
                   </div>
-                  <span className="text-xs text-gray-300 text-center sm:text-sm">{item.label}</span>
+                  <span className="text-xs text-body text-center sm:text-sm">{item.label}</span>
                 </div>
               ))}
             </div>

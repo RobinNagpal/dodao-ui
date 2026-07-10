@@ -2,11 +2,14 @@
 
 import { EmailSentMessage } from '@/components/login/email-sent-message';
 import { UserLogin } from '@/components/login/user-login';
+import { useSectionTheme } from '@/components/theme/useSectionTheme';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
+import { lightThemeColors, themeColors } from '@/util/theme-colors';
 import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import { Contexts } from '@dodao/web-core/utils/constants/constants';
 import { signIn } from 'next-auth/react';
+import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 interface LoginRequest {
@@ -28,6 +31,12 @@ export function LoginPopup({ open, onClose }: LoginPopupProps): JSX.Element {
   const [email, setEmail] = useState<string>('');
   const [step, setStep] = useState<1 | 2>(1);
   const [errorMessage, setErrorMessage] = useState<string | undefined>(undefined);
+  // The modal is portaled from the root layout (outside every section's theme
+  // provider), so it can't inherit the swapped palette. Mirror the theme of the
+  // page it's shown over and re-declare the tokens on the content wrapper below.
+  const pathname = usePathname() ?? '';
+  const modalTheme = useSectionTheme(pathname);
+  const isDark = modalTheme === 'dark';
 
   const { postData: postLogin } = usePostData<LoginResponse, LoginRequest>({
     errorMessage: 'Failed to send login email. Please try again.',
@@ -77,11 +86,13 @@ export function LoginPopup({ open, onClose }: LoginPopupProps): JSX.Element {
 
   return (
     <FullPageModal open={open} onClose={onClose} title="" showCloseButton={false} fullWidth className="w-full max-w-md px-4">
-      {step === 1 ? (
-        <UserLogin onLogin={handleEmailSubmit} onGoogleSignIn={handleGoogleSignIn} errorMessage={errorMessage} compact />
-      ) : (
-        <EmailSentMessage email={email} onChangeEmail={handleUseAnotherEmail} compact />
-      )}
+      <div style={{ ...(isDark ? themeColors : lightThemeColors) }} className={isDark ? '' : 'page-theme-light'}>
+        {step === 1 ? (
+          <UserLogin onLogin={handleEmailSubmit} onGoogleSignIn={handleGoogleSignIn} errorMessage={errorMessage} compact />
+        ) : (
+          <EmailSentMessage email={email} onChangeEmail={handleUseAnotherEmail} compact />
+        )}
+      </div>
     </FullPageModal>
   );
 }

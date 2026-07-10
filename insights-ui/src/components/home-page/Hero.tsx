@@ -13,7 +13,7 @@ export interface HeroProps {
 
 export function Hero({ industries }: HeroProps = { industries: [] }) {
   return (
-    <section className="overflow-hidden bg-gray-800">
+    <section className="overflow-hidden bg-surface">
       <div>
         <div className="w-full mx-auto max-w-7xl sm:px-2 lg:px-8 px-6 relative isolate pt-2 lg:pt-2">
           <div className="py-2 sm:py-4 lg:py-8">
@@ -31,10 +31,10 @@ export function Hero({ industries }: HeroProps = { industries: [] }) {
                   </div>
 
                   <div className="text-left">
-                    <h2 className="text-2xl sm:text-3xl font-semibold text-white leading-tight">
-                      Search <span className="text-indigo-400">5000+ Stock &amp; ETF Analysis Reports</span>
+                    <h2 className="text-2xl sm:text-3xl font-semibold text-heading leading-tight">
+                      Search <span className="text-primary">5000+ Stock &amp; ETF Analysis Reports</span>
                     </h2>
-                    <p className="text-gray-300 text-sm sm:text-base lg:text-lg mt-1 max-w-2xl">
+                    <p className="text-body text-sm sm:text-base lg:text-lg mt-1 max-w-2xl">
                       Get instant access to investment analysis for your favorite stocks &amp; ETFs
                     </p>
                   </div>

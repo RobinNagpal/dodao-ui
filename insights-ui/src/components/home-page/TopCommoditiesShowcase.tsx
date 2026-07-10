@@ -26,13 +26,13 @@ export default function TopCommoditiesShowcase({ commodities }: TopCommoditiesSh
   const groups = Array.from(new Set(commodities.map((c) => c.commodityGroup)));
 
   return (
-    <section className="bg-gray-800">
+    <section className="bg-surface">
       <div className="w-full mx-auto max-w-7xl sm:px-2 lg:px-8 px-6 py-8 sm:py-12">
         <div className="mb-6 text-center">
-          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-white">
-            Explore <span className="text-indigo-400">Commodities</span> by Group
+          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-heading">
+            Explore <span className="text-primary">Commodities</span> by Group
           </h2>
-          <p className="mt-3 text-base sm:text-lg leading-7 text-gray-300 max-w-2xl mx-auto">
+          <p className="mt-3 text-base sm:text-lg leading-7 text-body max-w-2xl mx-auto">
             AI-generated analysis and scoring across Energy, Metals, Agriculture &amp; Livestock.
           </p>
         </div>
@@ -46,7 +46,7 @@ export default function TopCommoditiesShowcase({ commodities }: TopCommoditiesSh
 
       {/* Single divider below the ETF + Commodities block (the ETF section drops its own bottom
           border so Commodities has no "top" line and matches the ETF section's clean look). */}
-      <div className="border-b border-gray-600"></div>
+      <div className="border-b border-border"></div>
     </section>
   );
 }

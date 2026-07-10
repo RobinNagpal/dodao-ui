@@ -2,6 +2,7 @@
 
 import { EmailSentMessage } from '@/components/login/email-sent-message';
 import { UserLogin } from '@/components/login/user-login';
+import PageThemeProvider from '@/components/theme/PageThemeProvider';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import { Contexts } from '@dodao/web-core/utils/constants/constants';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
@@ -63,16 +64,18 @@ export default function LoginPage() {
   };
 
   return (
-    <PageWrapper>
-      <div className="flex items-center justify-center min-h-[calc(100vh-200px)] py-6 px-4 sm:px-6 lg:px-8 mx-auto max-w-7xl">
-        <div className="w-full max-w-md">
-          {step === 1 ? (
-            <UserLogin onLogin={handleEmailSubmit} onGoogleSignIn={handleGoogleSignIn} />
-          ) : (
-            <EmailSentMessage email={email} onChangeEmail={handleUseAnotherEmail} />
-          )}
+    <PageThemeProvider storageKey="koalagains-login-theme">
+      <PageWrapper>
+        <div className="flex items-center justify-center min-h-[calc(100vh-200px)] py-6 px-4 sm:px-6 lg:px-8 mx-auto max-w-7xl">
+          <div className="w-full max-w-md">
+            {step === 1 ? (
+              <UserLogin onLogin={handleEmailSubmit} onGoogleSignIn={handleGoogleSignIn} />
+            ) : (
+              <EmailSentMessage email={email} onChangeEmail={handleUseAnotherEmail} />
+            )}
+          </div>
         </div>
-      </div>
-    </PageWrapper>
+      </PageWrapper>
+    </PageThemeProvider>
   );
 }

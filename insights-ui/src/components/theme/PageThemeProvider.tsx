@@ -1,6 +1,7 @@
 'use client';
 
 import { PageThemeContext, type PageTheme } from '@/components/theme/page-theme-context';
+import { notifyThemeChange } from '@/components/theme/useSectionTheme';
 import { lightThemeColors, themeColors } from '@/util/theme-colors';
 import { MoonIcon, SunIcon } from '@heroicons/react/24/outline';
 import { useEffect, useState, type CSSProperties, type ReactNode } from 'react';
@@ -62,17 +63,20 @@ export default function PageThemeProvider({ children, storageKey }: PageThemePro
     // and we apply it without a transition so there's no flash on initial load.
     if (stored === 'light') {
       applyThemeWithoutTransition(() => setTheme('light'));
+      // Sync global chrome (navbar, login modal) that lives OUTSIDE this
+      // provider's subtree to the restored choice on load.
+      notifyThemeChange(storageKey, 'light');
     }
   }, [storageKey]);
 
   const toggleTheme = (): void => {
-    applyThemeWithoutTransition(() => {
-      setTheme((prev) => {
-        const next: PageTheme = prev === 'dark' ? 'light' : 'dark';
-        window.localStorage.setItem(storageKey, next);
-        return next;
-      });
-    });
+    const next: PageTheme = theme === 'dark' ? 'light' : 'dark';
+    window.localStorage.setItem(storageKey, next);
+    // Broadcast so the top navbar / login modal (rendered in the root layout,
+    // above every section provider) flip in the same interaction — they read
+    // the section theme via `useSectionTheme`, keyed on this `storageKey`.
+    notifyThemeChange(storageKey, next);
+    applyThemeWithoutTransition(() => setTheme(next));
   };
 
   const isDark = theme === 'dark';
