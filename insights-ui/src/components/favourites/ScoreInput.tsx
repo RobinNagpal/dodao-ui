@@ -20,7 +20,7 @@ export default function ScoreInput({ value, onChange, max = 20, disabled = false
   const range = `0-${max}`;
   return (
     <div className="flex items-center gap-2">
-      <label className="text-xs font-medium text-gray-300 whitespace-nowrap">My Score ({range}):</label>
+      <label className="text-xs font-medium text-muted whitespace-nowrap">My Score ({range}):</label>
       <div className="flex-1 max-w-[120px]">
         <Input
           modelValue={value}
@@ -29,7 +29,7 @@ export default function ScoreInput({ value, onChange, max = 20, disabled = false
           min={0}
           max={max}
           placeholder={range}
-          className="bg-gray-800 border-gray-700 text-white w-full"
+          className="bg-surface border-border text-heading w-full"
           disabled={disabled}
         />
       </div>

@@ -8,7 +8,7 @@ interface FavouriteTagsProps {
 export default function FavouriteTags({ tags, showEmptyState = false }: FavouriteTagsProps) {
   if (tags.length === 0) {
     if (showEmptyState) {
-      return <span className="text-gray-500 text-sm">—</span>;
+      return <span className="text-muted text-sm">—</span>;
     }
     return null;
   }

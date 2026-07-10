@@ -55,7 +55,7 @@ export default function AppliedFilterChips({ className = '', showClearAll = true
       ))}
 
       {showClearAll && currentFilters.length > 1 && (
-        <button onClick={handleClearAll} className="text-[#E5E7EB] hover:text-white text-sm underline" type="button">
+        <button onClick={handleClearAll} className="text-body hover:text-heading text-sm underline" type="button">
           Clear all
         </button>
       )}

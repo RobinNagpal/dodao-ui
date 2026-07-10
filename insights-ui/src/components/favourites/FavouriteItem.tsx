@@ -37,7 +37,7 @@ export default function FavouriteItem({
   };
 
   return (
-    <div className="bg-gray-900 rounded-lg p-3 border border-gray-700 hover:border-gray-600 transition-colors">
+    <div className="bg-bg rounded-lg p-3 border border-border hover:border-surface-3 transition-colors">
       <div className="flex justify-between items-center gap-2 mb-2">
         <div className="flex-1 flex items-center gap-x-2 gap-y-1 flex-wrap">
           {selectable && (
@@ -64,7 +64,7 @@ export default function FavouriteItem({
             rel="noopener noreferrer"
             onClick={(e) => e.stopPropagation()}
           >
-            <h4 className="text-sm font-semibold tracking-tight text-gray-100 leading-tight">
+            <h4 className="text-sm font-semibold tracking-tight text-body leading-tight">
               {favourite.ticker.name} ({favourite.ticker.symbol})
             </h4>
           </Link>

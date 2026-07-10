@@ -168,14 +168,14 @@ export default function AddEditNotesModal({
               min={0}
               max={25}
               placeholder="0-25"
-              className="bg-gray-800 border-gray-700 text-white w-full"
+              className="bg-surface border-border text-heading w-full"
               disabled={viewOnly}
             />
           </div>
         </div>
 
         {/* Action Buttons */}
-        <div className="flex justify-between gap-3 pt-5 mt-2 border-t border-gray-700">
+        <div className="flex justify-between gap-3 pt-5 mt-2 border-t border-border">
           {viewOnly ? (
             <div />
           ) : (

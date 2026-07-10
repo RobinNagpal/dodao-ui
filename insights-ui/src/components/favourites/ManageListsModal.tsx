@@ -119,8 +119,8 @@ export default function ManageListsModal({ isOpen, onClose, lists, onListsChange
         <div className="p-4 space-y-4 text-left">
           {/* Create New List Form - Only show when showAddForm is true */}
           {showAddForm && (
-            <div className="bg-gray-800 p-3 rounded-lg space-y-3">
-              <h4 className="text-sm font-semibold text-white flex items-center gap-2 text-left">
+            <div className="bg-surface p-3 rounded-lg space-y-3">
+              <h4 className="text-sm font-semibold text-heading flex items-center gap-2 text-left">
                 <PlusIcon className="w-4 h-4" />
                 Create New List
               </h4>
@@ -128,7 +128,7 @@ export default function ManageListsModal({ isOpen, onClose, lists, onListsChange
                 modelValue={newListName}
                 onUpdate={(value) => setNewListName(value?.toString() || '')}
                 placeholder="Enter list name"
-                className="text-white"
+                className="text-heading"
               >
                 List Name *
               </Input>
@@ -136,7 +136,7 @@ export default function ManageListsModal({ isOpen, onClose, lists, onListsChange
                 modelValue={newListDescription}
                 onUpdate={(value) => setNewListDescription(value?.toString() || '')}
                 placeholder="Enter description (optional)"
-                className="text-white"
+                className="text-heading"
               >
                 Description
               </Input>
@@ -153,8 +153,8 @@ export default function ManageListsModal({ isOpen, onClose, lists, onListsChange
 
           {/* Edit List Form - Show when editing */}
           {editingList && (
-            <div className="bg-gray-800 p-3 rounded-lg space-y-3">
-              <h4 className="text-sm font-semibold text-white flex items-center gap-2 text-left">
+            <div className="bg-surface p-3 rounded-lg space-y-3">
+              <h4 className="text-sm font-semibold text-heading flex items-center gap-2 text-left">
                 <PencilIcon className="w-4 h-4" />
                 Edit List
               </h4>
@@ -162,7 +162,7 @@ export default function ManageListsModal({ isOpen, onClose, lists, onListsChange
                 modelValue={editListName}
                 onUpdate={(value) => setEditListName(value?.toString() || '')}
                 placeholder="Enter list name"
-                className="text-white"
+                className="text-heading"
               >
                 List Name *
               </Input>
@@ -170,7 +170,7 @@ export default function ManageListsModal({ isOpen, onClose, lists, onListsChange
                 modelValue={editListDescription}
                 onUpdate={(value) => setEditListDescription(value?.toString() || '')}
                 placeholder="Enter description (optional)"
-                className="text-white"
+                className="text-heading"
               >
                 Description
               </Input>
@@ -195,7 +195,7 @@ export default function ManageListsModal({ isOpen, onClose, lists, onListsChange
           {/* Existing Lists */}
           <div>
             <div className="flex justify-between items-center mb-2">
-              <h4 className="text-sm font-semibold text-white text-left">Your Lists ({lists.length})</h4>
+              <h4 className="text-sm font-semibold text-heading text-left">Your Lists ({lists.length})</h4>
               {!showAddForm && !editingList && (
                 <Button onClick={() => setShowAddForm(true)} variant="contained" primary className="flex items-center gap-2">
                   <PlusIcon className="w-4 h-4" />
@@ -203,16 +203,16 @@ export default function ManageListsModal({ isOpen, onClose, lists, onListsChange
                 </Button>
               )}
             </div>
-            <div className="space-y-1.5 max-h-80 overflow-y-auto bg-gray-900 rounded-md p-2">
+            <div className="space-y-1.5 max-h-80 overflow-y-auto bg-bg rounded-md p-2">
               {lists.length === 0 ? (
-                <p className="text-gray-400 text-sm px-2 py-3 text-center">No lists created yet.</p>
+                <p className="text-muted text-sm px-2 py-3 text-center">No lists created yet.</p>
               ) : (
                 lists.map((list) => (
-                  <div key={list.id} className="bg-gray-800 px-3 py-2 rounded-lg hover:bg-gray-750">
+                  <div key={list.id} className="bg-surface px-3 py-2 rounded-lg hover:bg-surface-2">
                     <div className="flex items-center justify-between">
                       <div className="flex-1">
                         <p className="font-medium">{list.name}</p>
-                        {list.description && <p className="text-xs text-gray-400 leading-snug">{list.description}</p>}
+                        {list.description && <p className="text-xs text-muted leading-snug">{list.description}</p>}
                       </div>
                       <div className="flex items-center gap-2">
                         <Button onClick={() => handleEditList(list)} variant="text" className="text-blue-400 hover:text-blue-300 p-1">

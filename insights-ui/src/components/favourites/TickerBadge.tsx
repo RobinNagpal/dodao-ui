@@ -17,7 +17,7 @@ export default function TickerBadge({ ticker, showScore = false, showName = fals
   const { textColorClass, bgColorClass } = getScoreColorClasses(score);
 
   const content = (
-    <div className="inline-flex items-center gap-1 px-2 py-0.5 border border-gray-600 rounded hover:border-gray-500 transition-colors">
+    <div className="inline-flex items-center gap-1 px-2 py-0.5 border border-border rounded hover:border-surface-3 transition-colors">
       {showScore && <span className={`${textColorClass} px-1 rounded ${bgColorClass} bg-opacity-15 text-[11px] font-mono`}>{score}/25</span>}
       <span className="text-xs font-semibold bg-primary text-primary-text px-1 rounded shrink-0">{ticker.symbol}</span>
       {showName && <span className={`text-xs text-body ${showFullName ? '' : 'truncate max-w-[130px]'}`}>{ticker.name}</span>}
