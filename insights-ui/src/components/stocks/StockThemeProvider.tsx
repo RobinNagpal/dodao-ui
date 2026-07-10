@@ -3,7 +3,6 @@
 import { StockThemeContext } from '@/components/stocks/stock-theme-context';
 import { lightThemeColors, themeColors } from '@/util/theme-colors';
 import { MoonIcon, SunIcon } from '@heroicons/react/24/outline';
-import { usePathname } from 'next/navigation';
 import { useEffect, useState, type CSSProperties, type ReactNode } from 'react';
 
 type StockTheme = 'dark' | 'light';
@@ -36,9 +35,8 @@ function applyThemeWithoutTransition(apply: () => void): void {
 
 /**
  * Scoped light/dark switcher for the stocks section — the report pages
- * (`/stocks/[exchange]/[ticker]/**`, excluding the admin-only `create` route)
- * and the listing pages (`/stocks`, `/stocks/industries/[industry]`,
- * `/stocks/countries/**`).
+ * (`/stocks/[exchange]/[ticker]/**`) and the listing pages (`/stocks`,
+ * `/stocks/industries/[industry]`, `/stocks/countries/**`).
  *
  * It flips ONLY the semantic color tokens defined in `src/util/theme-colors.ts`
  * (`--bg-color`, `--surface`, `--text-color`, `--border-color`, …) by spreading
@@ -53,9 +51,6 @@ function applyThemeWithoutTransition(apply: () => void): void {
  * across the stocks section via `localStorage`.
  */
 export default function StockThemeProvider({ children }: { children: ReactNode }): JSX.Element {
-  const pathname = usePathname() ?? '';
-  const isAdminCreate = pathname.endsWith('/create');
-
   const [theme, setTheme] = useState<StockTheme>('dark');
 
   useEffect(() => {
@@ -76,11 +71,6 @@ export default function StockThemeProvider({ children }: { children: ReactNode }
       });
     });
   };
-
-  // Admin create page keeps its existing appearance — no palette override, no toggle.
-  if (isAdminCreate) {
-    return <>{children}</>;
-  }
 
   const isDark = theme === 'dark';
   const paletteStyle: CSSProperties = {
