@@ -72,8 +72,8 @@ export default function TopEtfAssetClassesShowcase({ country, data }: TopEtfAsse
         <EtfGroupingCardGrid columns={3} items={items} />
       </div>
 
-      {/* Separator between the ETF section and "Explore Our Insights" */}
-      <div className="border-b border-gray-600"></div>
+      {/* No bottom divider here: the Commodities showcase renders directly below and owns the single
+          separator for the combined ETF + Commodities block, so Commodities has no "top" border. */}
     </section>
   );
 }

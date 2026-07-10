@@ -11,8 +11,21 @@ const COMMODITY_MAX_SCORE = 20;
  * is the header (with a count pill) and each commodity is a scored row, reusing
  * the same score-badge colors as stocks for a consistent look.
  */
-export default function CommodityGroupCard({ group, commodities }: { group: string; commodities: CommodityListItem[] }): JSX.Element {
+export default function CommodityGroupCard({
+  group,
+  commodities,
+  limit,
+}: {
+  group: string;
+  commodities: CommodityListItem[];
+  /** When set (home-page showcase), show only the highest-scored `limit` rows so every group card lines up. Omit on the listing page to show the full group. */
+  limit?: number;
+}): JSX.Element {
   const countLabel = `${commodities.length.toLocaleString()} ${commodities.length === 1 ? 'commodity' : 'commodities'}`;
+
+  // Home page passes a limit → show the top-scored few so all group cards are equal height; the
+  // listing page passes none → keep the full alphabetical group exactly as provided.
+  const displayed = limit != null ? [...commodities].sort((a, b) => (b.finalScore ?? 0) - (a.finalScore ?? 0)).slice(0, limit) : commodities;
 
   return (
     <div className="relative bg-block-bg-color rounded-lg border border-color overflow-hidden flex flex-col">
@@ -26,7 +39,7 @@ export default function CommodityGroupCard({ group, commodities }: { group: stri
       </div>
 
       <ul className="divide-y divide-color flex-1">
-        {commodities.map((commodity) => {
+        {displayed.map((commodity) => {
           const hasScore = commodity.finalScore !== null;
           const { textColorClass, bgColorClass } = getScoreColorClasses(commodity.finalScore ?? 0);
 

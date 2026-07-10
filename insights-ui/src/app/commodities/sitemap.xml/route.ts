@@ -4,7 +4,12 @@ import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { COMMODITIES_LISTING_TAG } from '@/utils/commodity-analysis-reports/commodity-cache-utils';
 import { getCanonicalUrl } from '@/utils/getBaseUrlForServerSidePages';
+import { COMMODITY_CATEGORY_TO_PATH } from '@/types/commodity/commodity-analysis-types';
 import type { CommodityListItem } from '@/app/api/[spaceId]/commodities-v1/listing/route';
+
+// The four per-commodity category sub-report pages (supply-and-demand, price-and-value,
+// volatility-and-risk, future-outlook) — kept in sync with the route folders via the shared map.
+const COMMODITY_CATEGORY_PATHS: string[] = Object.values(COMMODITY_CATEGORY_TO_PATH);
 
 export const dynamic = 'force-dynamic';
 
@@ -43,7 +48,7 @@ async function generateCommodityUrls(): Promise<SiteMapUrl[]> {
     priority: 0.8,
   });
 
-  // Per-commodity overview pages
+  // Per-commodity overview page + its four category sub-report pages
   const commodities = await getAllCommodities();
   for (const commodity of commodities) {
     urls.push({
@@ -51,6 +56,14 @@ async function generateCommodityUrls(): Promise<SiteMapUrl[]> {
       changefreq: 'weekly',
       priority: 0.7,
     });
+
+    for (const categoryPath of COMMODITY_CATEGORY_PATHS) {
+      urls.push({
+        url: `/commodities/${commodity.slug}/${categoryPath}`,
+        changefreq: 'weekly',
+        priority: 0.6,
+      });
+    }
   }
 
   return urls;
