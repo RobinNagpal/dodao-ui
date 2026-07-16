@@ -146,13 +146,13 @@ function FilterModalContent({ initialSelected, onClose }: FilterModalContentProp
   return (
     <div className="space-y-6">
       <div>
-        <p className="text-[#E5E7EB] text-sm mb-4">Select minimum thresholds for category analysis factors and total score</p>
+        <p className="text-body text-sm mb-4">Select minimum thresholds for category analysis factors and total score</p>
 
         <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
           {/* Category Filters */}
           {CATEGORY_OPTIONS.map((category) => (
-            <div key={category.key} className="bg-[#374151] rounded-lg p-3">
-              <h4 className="text-white font-medium mb-2 text-sm">{category.label}</h4>
+            <div key={category.key} className="bg-surface-2 rounded-lg p-3">
+              <h4 className="text-heading font-medium mb-2 text-sm">{category.label}</h4>
               <div className="space-y-1">
                 {CATEGORY_THRESHOLD_OPTIONS.map((threshold) => (
                   <label key={threshold.value} className="flex items-center gap-2 cursor-pointer">
@@ -162,9 +162,9 @@ function FilterModalContent({ initialSelected, onClose }: FilterModalContentProp
                       value={threshold.value}
                       checked={selectedFilters[category.paramKey] === threshold.value}
                       onChange={() => handleCategoryChange(category, threshold.value)}
-                      className="text-[#4F46E5] focus:ring-[#4F46E5] bg-[#4B5563] border-[#6B7280] w-4 h-4"
+                      className="text-[#4F46E5] focus:ring-[#4F46E5] bg-surface-3 border-[#6B7280] w-4 h-4"
                     />
-                    <span className="text-[#E5E7EB] text-sm">{threshold.label}</span>
+                    <span className="text-body text-sm">{threshold.label}</span>
                   </label>
                 ))}
               </div>
@@ -172,8 +172,8 @@ function FilterModalContent({ initialSelected, onClose }: FilterModalContentProp
           ))}
 
           {/* Total Score */}
-          <div className="bg-[#374151] rounded-lg p-3">
-            <h4 className="text-white font-medium mb-2 text-sm">Total Score</h4>
+          <div className="bg-surface-2 rounded-lg p-3">
+            <h4 className="text-heading font-medium mb-2 text-sm">Total Score</h4>
             <div className="space-y-1">
               {TOTAL_SCORE_OPTIONS.map((threshold) => (
                 <label key={threshold.value} className="flex items-center gap-2 cursor-pointer">
@@ -183,9 +183,9 @@ function FilterModalContent({ initialSelected, onClose }: FilterModalContentProp
                     value={threshold.value}
                     checked={selectedFilters[FilterParamKey.TOTAL] === threshold.value}
                     onChange={() => handleTotalChange(threshold.value)}
-                    className="text-[#4F46E5] focus:ring-[#4F46E5] bg-[#4B5563] border-[#6B7280] w-4 h-4"
+                    className="text-[#4F46E5] focus:ring-[#4F46E5] bg-surface-3 border-[#6B7280] w-4 h-4"
                   />
-                  <span className="text-[#E5E7EB] text-sm">{threshold.label}</span>
+                  <span className="text-body text-sm">{threshold.label}</span>
                 </label>
               ))}
             </div>
@@ -195,18 +195,18 @@ function FilterModalContent({ initialSelected, onClose }: FilterModalContentProp
 
       {/* Financial Filters Section */}
       <div>
-        <h3 className="text-[#E5E7EB] text-sm mb-3">Financial Metrics</h3>
+        <h3 className="text-body text-sm mb-3">Financial Metrics</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {/* Market Cap Dropdown */}
-          <div className="bg-[#374151] rounded-lg p-4">
-            <label htmlFor="marketCap" className="block text-white mb-2 text-sm">
+          <div className="bg-surface-2 rounded-lg p-4">
+            <label htmlFor="marketCap" className="block text-heading mb-2 text-sm">
               Market Cap
             </label>
             <select
               id="marketCap"
               value={selectedFilters[FilterParamKey.MARKET_CAP] || ''}
               onChange={(e) => handleMarketCapChange(e.target.value)}
-              className="w-full bg-[#4B5563] text-white border border-[#6B7280] rounded-lg px-2 py-1 text-sm focus:ring-2 focus:ring-[#4F46E5] focus:border-transparent"
+              className="w-full bg-surface-3 text-heading border border-[#6B7280] rounded-lg px-2 py-1 text-sm focus:ring-2 focus:ring-[#4F46E5] focus:border-transparent"
             >
               {MARKET_CAP_OPTIONS.map((option) => (
                 <option key={option.value} value={option.value}>
@@ -217,15 +217,15 @@ function FilterModalContent({ initialSelected, onClose }: FilterModalContentProp
           </div>
 
           {/* PE Ratio Dropdown */}
-          <div className="bg-[#374151] rounded-lg p-4">
-            <label htmlFor="peRatio" className="block text-white mb-2 text-sm">
+          <div className="bg-surface-2 rounded-lg p-4">
+            <label htmlFor="peRatio" className="block text-heading mb-2 text-sm">
               PE Ratio
             </label>
             <select
               id="peRatio"
               value={selectedFilters[FilterParamKey.PE_RATIO] || ''}
               onChange={(e) => handlePERatioChange(e.target.value)}
-              className="w-full bg-[#4B5563] text-white border border-[#6B7280] rounded-lg px-2 py-1 text-sm focus:ring-2 focus:ring-[#4F46E5] focus:border-transparent"
+              className="w-full bg-surface-3 text-heading border border-[#6B7280] rounded-lg px-2 py-1 text-sm focus:ring-2 focus:ring-[#4F46E5] focus:border-transparent"
             >
               {PE_RATIO_OPTIONS.map((option) => (
                 <option key={option.value} value={option.value}>
@@ -238,13 +238,13 @@ function FilterModalContent({ initialSelected, onClose }: FilterModalContentProp
       </div>
 
       {/* Actions */}
-      <div className="flex justify-between items-center pt-4 border-t border-[#374151]">
-        <button onClick={handleClearAll} className="text-[#E5E7EB] hover:text-white text-sm underline" type="button">
+      <div className="flex justify-between items-center pt-4 border-t border-border">
+        <button onClick={handleClearAll} className="text-body hover:text-heading text-sm underline" type="button">
           Clear all filters
         </button>
 
         <div className="flex gap-3">
-          <button onClick={onClose} className="bg-[#374151] hover:bg-[#4B5563] text-white font-medium rounded-lg px-6 py-2.5 text-sm" type="button">
+          <button onClick={onClose} className="bg-surface-2 hover:bg-surface-3 text-heading font-medium rounded-lg px-6 py-2.5 text-sm" type="button">
             Cancel
           </button>
           <button

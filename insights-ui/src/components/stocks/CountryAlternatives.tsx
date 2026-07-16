@@ -49,9 +49,10 @@ export default function CountryAlternatives({
   return (
     <div
       className={`
-      flex flex-col sm:flex-row 
-      items-start sm:items-center 
-      ${enhanced ? `p-${compact ? '1' : '2'} sm:p-${compact ? '2' : '3'} rounded-lg bg-gray-700/50` : ''} 
+      country-alternatives-panel
+      flex flex-col sm:flex-row
+      items-start sm:items-center
+      ${enhanced ? `p-${compact ? '1' : '2'} sm:p-${compact ? '2' : '3'} rounded-lg bg-gray-700/50` : ''}
       ${centerContent ? 'text-center' : ''}
       ${className}
     `}
@@ -63,7 +64,7 @@ export default function CountryAlternatives({
       `}
       >
         <GlobeAltIcon className={`h-4 w-4 ${enhanced ? 'text-blue-400' : 'text-gray-400'}`} />
-        <span className={`ml-2 ${enhanced ? 'text-blue-100 font-semibold' : 'text-gray-400'}`}>Also view:</span>
+        <span className={`country-alternatives-label ml-2 ${enhanced ? 'text-blue-100 font-semibold' : 'text-gray-400'}`}>Also view:</span>
       </div>
       <div className={`flex flex-wrap gap-2 sm:ml-2 ${centerContent ? 'justify-center mx-auto sm:mx-0' : ''}`}>
         {alternativeCountries
@@ -73,7 +74,10 @@ export default function CountryAlternatives({
 
             return (
               <span key={country.code} className="inline-flex items-center">
-                <Link href={href} className={`text-blue-400 hover:text-blue-300 transition-colors duration-200 ${enhanced ? 'font-semibold' : ''}`}>
+                <Link
+                  href={href}
+                  className={`country-alternatives-link text-blue-400 hover:text-blue-300 transition-colors duration-200 ${enhanced ? 'font-semibold' : ''}`}
+                >
                   {country.name} Stocks
                 </Link>
                 {index < alternativeCountries.length - 1 && <span className="text-gray-500 ml-2 hidden sm:inline">•</span>}
