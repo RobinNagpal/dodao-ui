@@ -4,7 +4,7 @@ import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement
 import { Line } from 'react-chartjs-2';
 import { useState } from 'react';
 import { ChartMetricType, QuarterlyChartDataResponse } from '@/app/api/[spaceId]/tickers-v1/exchange/[exchange]/[ticker]/quarterly-chart-data/route';
-import { useStockTheme } from '@/components/stocks/stock-theme-context';
+import { usePageTheme } from '@/components/theme/page-theme-context';
 import { chartAxisTheme } from '@/util/chart-theme';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
@@ -45,7 +45,7 @@ function formatValue(value: number | null, metric: ChartMetricType): string {
 export default function QuarterlyMetricsChart({ data }: QuarterlyMetricsChartProps) {
   const [selectedMetric, setSelectedMetric] = useState<ChartMetricType>(data.availableMetrics[0]);
 
-  const axis = chartAxisTheme(useStockTheme());
+  const axis = chartAxisTheme(usePageTheme());
 
   const metricData = data.data[selectedMetric];
   const labels = metricData.map((d) => d.quarter);

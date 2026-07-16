@@ -1,10 +1,16 @@
 'use client';
 
 import { PageThemeContext, type PageTheme } from '@/components/theme/page-theme-context';
-import { notifyThemeChange } from '@/components/theme/useSectionTheme';
 import { lightThemeColors, themeColors } from '@/util/theme-colors';
 import { MoonIcon, SunIcon } from '@heroicons/react/24/outline';
 import { useEffect, useState, type CSSProperties, type ReactNode } from 'react';
+
+/**
+ * `localStorage` key the app-wide theme choice is remembered under. A single key
+ * (not per-section) because the switcher is now global — one toggle themes the
+ * whole app and the choice persists across every route.
+ */
+const STORAGE_KEY = 'koalagains-theme';
 
 /**
  * Apply a theme change with CSS transitions momentarily disabled, so the palette
@@ -29,53 +35,40 @@ function applyThemeWithoutTransition(apply: () => void): void {
   });
 }
 
-interface PageThemeProviderProps {
-  children: ReactNode;
-  /**
-   * `localStorage` key the theme choice is remembered under. Each page section
-   * passes its own key so sections stay independent (e.g. tariff vs blog),
-   * matching the stock/ETF switchers which use their own keys.
-   */
-  storageKey: string;
-}
-
 /**
- * Scoped light/dark switcher for a page section — identical mechanism to the
- * stock- and ETF-section switchers (#1696 / #1699), generalized so tariff and
- * blog routes can share one implementation.
+ * App-wide light/dark theme switcher, mounted once in the root layout so it wraps
+ * the navbar, page content and portaled overlays (e.g. the login modal, which
+ * still reads the theme through React context even though its DOM is portaled).
  *
- * The app `<body>` is permanently `.dark` and injects the dark palette, so
- * Tailwind `dark:` variants don't work here. Instead we theme by token swap:
- * this wraps its subtree in a `<div>` that re-declares the semantic CSS
- * variables (dark or light) as inline style. Every descendant reading the tokens
- * (`bg-surface`, `text-heading`, `border-border`, …) flips with it. In dark mode
- * the values equal the body's, so dark stays byte-identical.
+ * The `<body>` is permanently `.dark` and injects the dark palette, so Tailwind
+ * `dark:` variants don't work here. Instead we theme by *token swap*: this wraps
+ * everything in a `<div>` that re-declares the semantic CSS variables (dark or
+ * light) as inline style. Every descendant reading the tokens (`bg-surface`,
+ * `text-heading`, `border-border`, …) flips with it. In dark mode the values
+ * equal the body's, so dark stays byte-identical.
  *
- * Defaults to `dark`, so wrapped pages render exactly as before until a user
- * opts into light mode; the choice is remembered in `localStorage`.
+ * Defaults to `dark`, so the app renders exactly as before until a user opts into
+ * light mode; the choice is remembered in `localStorage`.
+ *
+ * Components that can't read the swapped CSS variables — chart.js canvases (which
+ * paint from JS values) and the navbar (which toggles its own `.dark` class) —
+ * read the current theme via `usePageTheme()` instead.
  */
-export default function PageThemeProvider({ children, storageKey }: PageThemeProviderProps): JSX.Element {
+export default function ThemeProvider({ children }: { children: ReactNode }): JSX.Element {
   const [theme, setTheme] = useState<PageTheme>('dark');
 
   useEffect(() => {
-    const stored = window.localStorage.getItem(storageKey);
+    const stored = window.localStorage.getItem(STORAGE_KEY);
     // Default state is already `dark`; only a stored `light` is a real change,
     // and we apply it without a transition so there's no flash on initial load.
     if (stored === 'light') {
       applyThemeWithoutTransition(() => setTheme('light'));
-      // Sync global chrome (navbar, login modal) that lives OUTSIDE this
-      // provider's subtree to the restored choice on load.
-      notifyThemeChange(storageKey, 'light');
     }
-  }, [storageKey]);
+  }, []);
 
   const toggleTheme = (): void => {
     const next: PageTheme = theme === 'dark' ? 'light' : 'dark';
-    window.localStorage.setItem(storageKey, next);
-    // Broadcast so the top navbar / login modal (rendered in the root layout,
-    // above every section provider) flip in the same interaction — they read
-    // the section theme via `useSectionTheme`, keyed on this `storageKey`.
-    notifyThemeChange(storageKey, next);
+    window.localStorage.setItem(STORAGE_KEY, next);
     applyThemeWithoutTransition(() => setTheme(next));
   };
 
@@ -90,10 +83,10 @@ export default function PageThemeProvider({ children, storageKey }: PageThemePro
   // page/section headings and summaries — inherit the themed value instead of
   // the near-white color already computed on <body>.
   //
-  // `page-theme-light` (only in light mode) is a hook for any future components
-  // whose hardcoded dark-only colors can't be retargeted via tokens without
-  // changing the dark look. `dark:` variants can't be used here because <body>
-  // always carries `.dark`.
+  // `page-theme-light` (only in light mode) is a hook for components whose
+  // hardcoded dark-only colors can't be retargeted via tokens without changing
+  // the dark look (see `styles/page-theme-light.scss` + `styles/theme-styles.scss`).
+  // `dark:` variants can't be used here because <body> always carries `.dark`.
   return (
     <PageThemeContext.Provider value={theme}>
       <div style={paletteStyle} className={`text-color min-h-screen ${isDark ? '' : 'page-theme-light'}`}>

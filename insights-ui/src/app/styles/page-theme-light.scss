@@ -1,8 +1,8 @@
 // Light-mode readability overrides.
 //
-// `PageThemeProvider` adds `.page-theme-light` on its wrapper only when a scoped
-// page section (tariff, blog, …) is in LIGHT mode. Dark mode never carries this
-// class, so everything here is dark-safe by construction. Use this file only for
+// The global `ThemeProvider` adds `.page-theme-light` on its wrapper only when
+// the app is in LIGHT mode. Dark mode never carries this class, so everything
+// here is dark-safe by construction. Use this file only for
 // the handful of spots that can't be fixed by the semantic CSS-variable token
 // swap alone — e.g. tinted utility colors that are baked into a component and
 // would otherwise stay tuned for a dark surface.

@@ -1,6 +1,6 @@
 'use client';
 
-import { useEtfTheme } from '@/components/etfs/etf-theme-context';
+import { usePageTheme } from '@/components/theme/page-theme-context';
 import { chartAxisTheme } from '@/util/chart-theme';
 import type { EtfCompetitorClassification, EtfQuadrantDataPoint } from '@/util/etf-quadrant-chart-utils';
 import { Chart as ChartJS, LinearScale, PointElement, Tooltip, Legend, ChartOptions, ChartData, Plugin, Chart, TooltipItem } from 'chart.js';
@@ -121,7 +121,7 @@ function makeSymbolLabelPlugin(labelColor: string): Plugin<'scatter'> {
 }
 
 export default function EtfReturnsVsEfficiencyQuadrant({ dataPoints, mainEtfSymbol: _mainEtfSymbol }: EtfReturnsVsEfficiencyQuadrantProps): JSX.Element | null {
-  const axis = chartAxisTheme(useEtfTheme());
+  const axis = chartAxisTheme(usePageTheme());
   const symbolLabelPlugin = useMemo(() => makeSymbolLabelPlugin(axis.label), [axis.label]);
 
   const chartData = useMemo((): ChartData<'scatter'> => {

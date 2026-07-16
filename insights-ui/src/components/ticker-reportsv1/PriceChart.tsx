@@ -5,7 +5,7 @@ import { Line } from 'react-chartjs-2';
 import { useMemo, useState } from 'react';
 import { PriceHistoryResponse, PriceRangeKey } from '@/app/api/[spaceId]/tickers-v1/exchange/[exchange]/[ticker]/price-history/route';
 import { PriceHistoryPoint } from '@/types/prismaTypes';
-import { useStockTheme } from '@/components/stocks/stock-theme-context';
+import { usePageTheme } from '@/components/theme/page-theme-context';
 import { chartAxisTheme } from '@/util/chart-theme';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler);
@@ -94,7 +94,7 @@ export default function PriceChart({ data, embedded = false, range, hideRangeBut
     return filterByRange(source, selectedRange);
   }, [data, selectedRange]);
 
-  const axis = chartAxisTheme(useStockTheme());
+  const axis = chartAxisTheme(usePageTheme());
 
   const chartData: ChartData<'line'> = {
     labels: series.map((p) => formatDateLabel(p.date, selectedRange)),

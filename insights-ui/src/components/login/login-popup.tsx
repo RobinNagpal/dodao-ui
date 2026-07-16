@@ -2,14 +2,13 @@
 
 import { EmailSentMessage } from '@/components/login/email-sent-message';
 import { UserLogin } from '@/components/login/user-login';
-import { useSectionTheme } from '@/components/theme/useSectionTheme';
+import { usePageTheme } from '@/components/theme/page-theme-context';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { lightThemeColors, themeColors } from '@/util/theme-colors';
 import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import { Contexts } from '@dodao/web-core/utils/constants/constants';
 import { signIn } from 'next-auth/react';
-import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 interface LoginRequest {
@@ -31,11 +30,11 @@ export function LoginPopup({ open, onClose }: LoginPopupProps): JSX.Element {
   const [email, setEmail] = useState<string>('');
   const [step, setStep] = useState<1 | 2>(1);
   const [errorMessage, setErrorMessage] = useState<string | undefined>(undefined);
-  // The modal is portaled from the root layout (outside every section's theme
-  // provider), so it can't inherit the swapped palette. Mirror the theme of the
-  // page it's shown over and re-declare the tokens on the content wrapper below.
-  const pathname = usePathname() ?? '';
-  const modalTheme = useSectionTheme(pathname);
+  // The modal's DOM is portaled to the document body (outside the theme
+  // provider's wrapper), so it can't inherit the swapped palette via the CSS
+  // cascade. React context still reaches it, so read the app-wide theme and
+  // re-declare the tokens on the content wrapper below.
+  const modalTheme = usePageTheme();
   const isDark = modalTheme === 'dark';
 
   const { postData: postLogin } = usePostData<LoginResponse, LoginRequest>({

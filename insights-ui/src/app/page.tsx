@@ -7,7 +7,6 @@ import KoalaGainsPlatform from '@/components/home-page/KoalaGainsPlatform';
 import ServiceNavigation from '@/components/home-page/ServiceNavigation';
 import TopCommoditiesShowcase from '@/components/home-page/TopCommoditiesShowcase';
 import TopEtfAssetClassesShowcase from '@/components/home-page/TopEtfAssetClassesShowcase';
-import PageThemeProvider from '@/components/theme/PageThemeProvider';
 import type { EtfAssetClassesIndexResponse } from '@/app/api/[spaceId]/etfs-v1/listings/asset-classes-index/route';
 import { IndustryWithTopTickers } from '@/types/api/ticker-industries';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
@@ -177,7 +176,7 @@ export default async function Home() {
   ]);
 
   return (
-    <PageThemeProvider storageKey="koalagains-home-theme">
+    <>
       <Hero industries={industries} />
       <TopEtfAssetClassesShowcase country={SupportedCountries.US} data={etfAssetClasses} />
       <TopCommoditiesShowcase commodities={commodities} />
@@ -187,6 +186,6 @@ export default async function Home() {
       <BlogsGrid posts={posts} showViewAllButton={true} showCategoryButtons={false} />
       <Contact />
       <Footer />
-    </PageThemeProvider>
+    </>
   );
 }

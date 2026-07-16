@@ -1,5 +1,6 @@
 import TopNav from '@/components/core/TopNav/TopNav';
 import { LoginPopupAutoPrompt } from '@/components/login/login-popup-auto-prompt';
+import ThemeProvider from '@/components/theme/ThemeProvider';
 import { themeColors } from '@/util/theme-colors';
 import './globals.scss';
 import type { Metadata } from 'next';
@@ -61,9 +62,11 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
     <html lang="en">
       <body className="antialiased text-color dark" style={{ ...themeColors, backgroundColor: 'var(--bg-color)' }}>
         <Providers>
-          <TopNav />
-          {children}
-          <LoginPopupAutoPrompt />
+          <ThemeProvider>
+            <TopNav />
+            {children}
+            <LoginPopupAutoPrompt />
+          </ThemeProvider>
         </Providers>
 
         {/* --- Analytics / Monitoring (non-blocking) --- */}

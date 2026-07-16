@@ -3,7 +3,7 @@
 import SearchBar from '@/components/core/SearchBar';
 import { UserProfile } from '@/components/core/UserProfile/UserProfile';
 import MobileTopNav from '@/components/core/TopNav/MobileTopNav';
-import { useSectionTheme } from '@/components/theme/useSectionTheme';
+import { usePageTheme } from '@/components/theme/page-theme-context';
 import { IndustryWithSubIndustriesAndCounts } from '@/types/ticker-typesv1';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
@@ -51,12 +51,11 @@ export default function TopNav() {
   const { data: session } = useSession();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const pathname = usePathname() ?? ''; // <-- safe for null
-  // The navbar is global (rendered above every section's theme provider), so it
-  // can't inherit the swapped palette. Instead mirror the current section's
-  // light/dark choice and drive the `.dark` toggle below off it. The header
-  // already ships full `bg-white … dark:bg-gray-900` variants, so flipping the
-  // `.dark` ancestor is all that's needed. Unthemed routes resolve to `dark`.
-  const navTheme = useSectionTheme(pathname);
+  // The navbar themes itself by toggling its own `.dark` class rather than by
+  // token swap: it already ships full `bg-white … dark:bg-gray-900` variants, so
+  // flipping the `.dark` ancestor is all that's needed. It reads the app-wide
+  // theme from the global provider it now renders inside.
+  const navTheme = usePageTheme();
   const isStocksRoute = pathname.startsWith('/stocks');
   const isEtfsRoute = pathname.startsWith('/etfs');
   const isHomeRoute = pathname === '/';
@@ -78,9 +77,9 @@ export default function TopNav() {
     }
   };
 
-  // Wrap the header in a parent that carries `.dark` only when the current
-  // section is in dark mode, so on light-themed pages the header renders its
-  // existing light variants instead of being force-darkened.
+  // Wrap the header in a parent that carries `.dark` only in dark mode, so in
+  // light mode the header renders its existing light variants instead of being
+  // force-darkened.
   return (
     <div className={navTheme === 'dark' ? 'dark' : ''}>
       <header className="bg-white dark:bg-gray-900">

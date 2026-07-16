@@ -58,12 +58,11 @@
 }
 
 /*
- * Light-theme overrides for the stocks + ETF pages. Every themed page section
- * is wrapped by `PageThemeProvider`, which adds `.page-theme-light` only in
- * light mode (we can't use `dark:` variants because <body> always carries
- * `.dark`), so anything authored with dark-only hardcoded colors is re-themed
- * here using the (light) semantic tokens. Dark mode never matches this selector,
- * so its original appearance is left exactly as-is.
+ * Light-theme overrides for the stocks + ETF pages. The global `ThemeProvider`
+ * adds `.page-theme-light` only in light mode (we can't use `dark:` variants
+ * because <body> always carries `.dark`), so anything authored with dark-only
+ * hardcoded colors is re-themed here using the (light) semantic tokens. Dark
+ * mode never matches this selector, so its original appearance is left as-is.
  *
  * Selectors target section-specific component classes (`.country-alternatives-*`,
  * `.radar-*`) so these rules only affect the stock/ETF pages that render them.

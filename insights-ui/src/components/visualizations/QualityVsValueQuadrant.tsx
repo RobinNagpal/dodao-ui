@@ -1,6 +1,6 @@
 'use client';
 
-import { useStockTheme } from '@/components/stocks/stock-theme-context';
+import { usePageTheme } from '@/components/theme/page-theme-context';
 import { chartAxisTheme } from '@/util/chart-theme';
 import { QuadrantDataPoint } from '@/util/quadrant-chart-utils';
 import { Chart as ChartJS, LinearScale, PointElement, Tooltip, Legend, ChartOptions, ChartData, Plugin, Chart, TooltipItem } from 'chart.js';
@@ -119,7 +119,7 @@ function makeTickerLabelPlugin(labelColor: string): Plugin<'scatter'> {
 }
 
 export default function QualityVsValueQuadrant({ dataPoints, mainTickerSymbol: _mainTickerSymbol }: QualityVsValueQuadrantProps): JSX.Element | null {
-  const axis = chartAxisTheme(useStockTheme());
+  const axis = chartAxisTheme(usePageTheme());
   const tickerLabelPlugin = useMemo(() => makeTickerLabelPlugin(axis.label), [axis.label]);
 
   const chartData = useMemo((): ChartData<'scatter'> => {

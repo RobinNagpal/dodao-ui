@@ -12,7 +12,7 @@
 
 import type { PriceHistoryResponse, PriceRangeKey } from '@/app/api/[spaceId]/tickers-v1/exchange/[exchange]/[ticker]/price-history/route';
 import PriceChart from '@/components/ticker-reportsv1/PriceChart';
-import { useEtfTheme } from '@/components/etfs/etf-theme-context';
+import { usePageTheme } from '@/components/theme/page-theme-context';
 import { chartAxisTheme } from '@/util/chart-theme';
 import { BarElement, CategoryScale, Chart as ChartJS, type ChartData, type ChartOptions, Legend, LinearScale, Tooltip } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
@@ -64,7 +64,7 @@ interface PerformanceBarsProps {
 }
 
 function PerformanceBars({ series, etfSymbol }: PerformanceBarsProps): JSX.Element {
-  const axis = chartAxisTheme(useEtfTheme());
+  const axis = chartAxisTheme(usePageTheme());
 
   // Hide individual periods where the focal ETF has no value — a bare
   // category bar without an ETF counterpart is misleading.
