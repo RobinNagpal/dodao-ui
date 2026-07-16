@@ -58,15 +58,22 @@
 }
 
 /*
- * Light-theme overrides for the stocks "Also view" country bar. The bar is
- * authored with dark-only hardcoded colors (`bg-gray-700/50`, `text-blue-100`,
- * `text-blue-400`) that read badly on a light page. We can't retarget them with
- * `dark:` variants because <body> always carries `.dark`, so `StockThemeProvider`
- * adds `.stock-theme-light` only in light mode and we re-theme the bar here using
- * the (light) semantic tokens. Dark mode never matches this selector, so its
- * original appearance is left exactly as-is.
+ * Light-theme overrides for the stocks + ETF pages. Every themed page section
+ * is wrapped by `PageThemeProvider`, which adds `.page-theme-light` only in
+ * light mode (we can't use `dark:` variants because <body> always carries
+ * `.dark`), so anything authored with dark-only hardcoded colors is re-themed
+ * here using the (light) semantic tokens. Dark mode never matches this selector,
+ * so its original appearance is left exactly as-is.
+ *
+ * Selectors target section-specific component classes (`.country-alternatives-*`,
+ * `.radar-*`) so these rules only affect the stock/ETF pages that render them.
  */
-.stock-theme-light {
+.page-theme-light {
+  /*
+   * "Also view" country bar. Authored with dark-only hardcoded colors
+   * (`bg-gray-700/50`, `text-blue-100`, `text-blue-400`) that read badly on a
+   * light page; re-themed here to the light semantic tokens for light mode.
+   */
   .country-alternatives-panel {
     background-color: var(--surface-2);
   }

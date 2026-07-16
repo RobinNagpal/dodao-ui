@@ -88,3 +88,41 @@ export const lightThemeColors = {
 
   '--swiper-theme-color': '#7f78ff',
 } as CSSProperties;
+
+/**
+ * Light palette — same variable names as `themeColors`, inverted values. The
+ * 3-tier surface ramp goes light→lighter here (soft grey page, white cards,
+ * gray-200/300 insets); text roles go dark. Brand primary is kept for continuity,
+ * and the link color is darkened (indigo-600) so it stays legible on light
+ * backgrounds. Because both objects use the exact same variable names, swapping
+ * which one is spread onto a wrapper flips every token underneath it — no
+ * per-component `dark:` variants required.
+ *
+ * Applied by the scoped ETF switcher (`src/components/etfs/EtfThemeProvider.tsx`);
+ * other pages keep the dark palette until they are migrated one by one. Values
+ * are kept identical to the stock-report switcher's light palette.
+ */
+export const lightThemeColors = {
+  // Brand — kept identical to dark so buttons/accents don't shift between modes.
+  '--primary-color': '#7f78ff', // Indigo — primary actions (kept for brand continuity)
+  '--primary-text-color': '#ffffff', // Text on primary elements
+  '--link-color': '#4f46e5', // Links (indigo-600) — darkened for contrast on light
+
+  // Surfaces — a soft light-grey base (NOT pure white) with white cards on top,
+  // mirroring how dark uses gray-900 as the base and lighter greys for the ramp.
+  '--bg-color': '#f3f4f6', // Page background (gray-100) — the "not fully white" base
+  '--surface': '#ffffff', // Cards / report sections (white) — lift off the grey base
+  '--surface-2': '#e5e7eb', // Inset / inline rows / chips track (gray-200)
+  '--surface-3': '#d1d5db', // Raised / hover state (gray-300)
+  '--block-bg': '#ffffff', // Legacy alias → surface
+
+  // Text
+  '--heading-color': '#111827', // Headings (gray-900)
+  '--text-color': '#1f2937', // Body text (gray-800)
+  '--text-muted': '#4b5563', // Secondary / muted text (gray-600)
+
+  // Lines
+  '--border-color': '#d1d5db', // Borders / dividers (gray-300) — visible on white cards
+
+  '--swiper-theme-color': '#7f78ff',
+} as CSSProperties;

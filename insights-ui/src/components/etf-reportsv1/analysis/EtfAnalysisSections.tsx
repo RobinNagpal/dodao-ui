@@ -69,7 +69,7 @@ export default function EtfAnalysisSections({
                     <Link
                       href={`/etfs/${exchange}/${symbol}/${display.slug}`}
                       prefetch={false}
-                      className="inline-flex items-center gap-1 rounded-md px-3 py-1.5 text-xs font-semibold text-heading shadow-sm hover:opacity-90 transition-opacity whitespace-nowrap"
+                      className="inline-flex items-center gap-1 rounded-md px-3 py-1.5 text-xs font-semibold text-white shadow-sm hover:opacity-90 transition-opacity whitespace-nowrap"
                       style={{ backgroundColor: 'var(--primary-color, #3b82f6)' }}
                     >
                       View Detailed Analysis →
