@@ -1,4 +1,5 @@
 import { ANTHROPIC_BETA, DEFAULT_BASE_URL, DEFAULT_CC_VERSION } from '@/util/claude/claude-oauth-client';
+import { getClaudeAccessToken, invalidateClaudeAccessToken } from '@/util/claude/claude-token-provider';
 
 /**
  * Reads the Claude **subscription** usage from Anthropic's OAuth usage endpoint
@@ -80,36 +81,44 @@ function toScopedWeekly(window: UsageWindowJson | null | undefined, limit: Usage
 }
 
 export interface GetClaudeUsageOptions {
-  /** OAuth token override; defaults to `ANTHROPIC_OAUTH_TOKEN`. */
+  /**
+   * Explicit OAuth access token. When omitted, the token provider supplies one —
+   * refreshing a long-lived refresh token as needed (see claude-token-provider).
+   */
   oauthToken?: string;
   /** API base URL; defaults to `ANTHROPIC_BASE_URL` env, else the real API. */
   baseUrl?: string;
 }
 
 /**
- * Fetches the current subscription usage. Throws if the OAuth token is missing
- * or the endpoint returns a non-2xx response.
+ * Fetches the current subscription usage. Throws if no OAuth credentials are
+ * configured or the endpoint returns a non-2xx response.
  */
 export async function getClaudeSubscriptionUsage(options: GetClaudeUsageOptions = {}): Promise<ClaudeSubscriptionUsage> {
-  const oauthToken = options.oauthToken ?? process.env.ANTHROPIC_OAUTH_TOKEN;
-  if (!oauthToken) {
-    throw new Error('ANTHROPIC_OAUTH_TOKEN is not set. Export your Claude subscription OAuth token (sk-ant-oat...) before reading usage.');
-  }
-
   const baseUrl = (options.baseUrl ?? process.env.ANTHROPIC_BASE_URL ?? DEFAULT_BASE_URL).replace(/\/+$/, '');
   const ccVersion = process.env.CLAUDE_CODE_VERSION ?? DEFAULT_CC_VERSION;
 
-  const response = await fetch(`${baseUrl}${USAGE_PATH}`, {
-    method: 'GET',
-    headers: {
-      accept: 'application/json',
-      'anthropic-version': '2023-06-01',
-      'anthropic-beta': ANTHROPIC_BETA,
-      authorization: `Bearer ${oauthToken}`,
-      'x-app': 'cli',
-      'user-agent': `claude-cli/${ccVersion} (external, cli)`,
-    },
-  });
+  const sendWithToken = (token: string): Promise<Response> =>
+    fetch(`${baseUrl}${USAGE_PATH}`, {
+      method: 'GET',
+      headers: {
+        accept: 'application/json',
+        'anthropic-version': '2023-06-01',
+        'anthropic-beta': ANTHROPIC_BETA,
+        authorization: `Bearer ${token}`,
+        'x-app': 'cli',
+        'user-agent': `claude-cli/${ccVersion} (external, cli)`,
+      },
+    });
+
+  const usingProvider = !options.oauthToken;
+  let response = await sendWithToken(options.oauthToken ?? (await getClaudeAccessToken()));
+
+  // A managed access token can expire between mint and use; force one refresh + retry on 401.
+  if (response.status === 401 && usingProvider) {
+    invalidateClaudeAccessToken();
+    response = await sendWithToken(await getClaudeAccessToken(true));
+  }
 
   const responseText = await response.text();
   if (!response.ok) {

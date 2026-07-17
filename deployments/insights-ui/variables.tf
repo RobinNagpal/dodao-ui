@@ -164,9 +164,17 @@ variable "app_env" {
     GENERATE_TARIFF_SECTIONS_SYNCHRONOUSLY = "false"
     # LLM provider/model are no longer read from env. They are chosen per run in the
     # report-generation UI and default in code to Gemini + gemini-2.5-pro (claude-opus-4-7
-    # for the Claude provider). The Claude provider still needs the ANTHROPIC_OAUTH_TOKEN
-    # secret (in app_secrets / Secrets Manager) plus the background path
-    # (USE_LAMBDA_FOR_LLM_RESPONSE = "false"). See src/types/llmConstants.ts.
+    # for the Claude provider). The Claude provider authenticates with a Claude subscription
+    # OAuth token via the token provider (src/util/claude/claude-token-provider.ts):
+    #   - PREFERRED: ANTHROPIC_OAUTH_REFRESH_TOKEN (sk-ant-ort..., long-lived) in app_secrets /
+    #     Secrets Manager. The app exchanges it for short-lived access tokens on demand, so the
+    #     deployment is self-sustaining. Rotated refresh tokens are persisted to a PRIVATE S3
+    #     object (s3://<S3_BUCKET_NAME>/internal/claude-oauth/refresh-token.json) so they
+    #     survive restarts — the app user needs s3:GetObject/PutObject on that key.
+    #   - FALLBACK: ANTHROPIC_OAUTH_TOKEN (sk-ant-oat..., a static access token) — works but
+    #     expires in hours and cannot self-refresh; only for local dev / bootstrap.
+    # Also needs the background path (USE_LAMBDA_FOR_LLM_RESPONSE = "false"). See
+    # src/types/llmConstants.ts.
   }
 }
 
