@@ -34,8 +34,12 @@ import { Readable } from 'stream';
 /** Public OAuth client id the Claude Code CLI uses; required on the token exchange. */
 const CLAUDE_OAUTH_CLIENT_ID = '9d1c250a-e61b-44d9-88ed-5944d1962f5e';
 
-/** Claude Code OAuth token endpoint. Overridable for tests via env. */
-const TOKEN_ENDPOINT = process.env.ANTHROPIC_OAUTH_TOKEN_URL ?? 'https://console.anthropic.com/v1/oauth/token';
+/**
+ * Claude Code OAuth token endpoint — note this is the platform host, NOT
+ * api.anthropic.com (which serves the Messages API) and NOT
+ * console.anthropic.com (which 404s). Overridable for tests via env.
+ */
+const TOKEN_ENDPOINT = process.env.ANTHROPIC_OAUTH_TOKEN_URL ?? 'https://platform.claude.com/v1/oauth/token';
 
 /** Refresh a bit BEFORE the real expiry so an in-flight request never races the cutover. */
 const EXPIRY_SKEW_MS = 5 * 60 * 1000;
