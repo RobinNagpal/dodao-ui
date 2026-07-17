@@ -22,6 +22,35 @@ resource "aws_ecr_lifecycle_policy" "app" {
   })
 }
 
+# BuildKit layer cache for the CI docker build (`--cache-to/--cache-from type=registry`).
+# Kept in its OWN repo, deliberately MUTABLE: the cache lives under a single rewritten tag,
+# which the app repo's IMMUTABLE policy would reject on the second push. Keeping app images
+# immutable matters (a git-SHA tag must always mean the same bits) — so the cache goes here
+# instead of relaxing that guarantee. Nothing deploys from this repo; it is CI scratch space.
+resource "aws_ecr_repository" "buildcache" {
+  name                 = "${var.ecr_repository_name}-buildcache"
+  image_tag_mutability = "MUTABLE"
+
+  # Cache blobs are rewritten every build and never deployed — scanning them is pure cost.
+  image_scanning_configuration {
+    scan_on_push = false
+  }
+}
+
+# BuildKit replaces the cache tag each run, orphaning the previous blobs. Without this they
+# accumulate forever (the cache is GBs per build).
+resource "aws_ecr_lifecycle_policy" "buildcache" {
+  repository = aws_ecr_repository.buildcache.name
+  policy = jsonencode({
+    rules = [{
+      rulePriority = 1
+      description  = "Expire untagged cache blobs after 7 days"
+      selection    = { tagStatus = "untagged", countType = "sinceImagePushed", countUnit = "days", countNumber = 7 }
+      action       = { type = "expire" }
+    }]
+  })
+}
+
 resource "aws_lightsail_container_service" "app" {
   name        = var.name_prefix
   power       = var.service_power
