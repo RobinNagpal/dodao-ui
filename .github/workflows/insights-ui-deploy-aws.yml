@@ -60,19 +60,26 @@ jobs:
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
 
-      # ECR repo + S3 bucket are Terraform resources — create them first so `docker push` and
-      # the static upload have targets. app_secrets defaults to {} so the targeted apply runs.
-      - name: Terraform init + ensure ECR repo and S3 bucket
+      # ECR repos + S3 bucket are Terraform resources — create them first so `docker push`, the
+      # BuildKit registry cache, and the static upload have targets. app_secrets defaults to {}
+      # so the targeted apply runs.
+      - name: Terraform init + ensure ECR repos and S3 bucket
         working-directory: ${{ env.TF_DIR }}
         run: |
           terraform init -input=false
           terraform apply -input=false -auto-approve \
-            -target=aws_ecr_repository.app -target=aws_s3_bucket.assets \
+            -target=aws_ecr_repository.app -target=aws_ecr_repository.buildcache \
+            -target=aws_s3_bucket.assets \
             -var "image_tag=$(git rev-parse --short HEAD)"
 
       - name: Login to Amazon ECR
         id: ecr
         uses: aws-actions/amazon-ecr-login@v2
+
+      # Required for `--cache-to/--cache-from type=registry`: the default docker driver cannot
+      # export a registry cache, only the docker-container driver buildx sets up here.
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
 
       - name: Build & push image
         id: build
@@ -86,6 +93,9 @@ jobs:
         run: |
           TAG="$(git rev-parse --short HEAD)"
           IMAGE="$REGISTRY/$ECR_REPOSITORY:$TAG"
+          # Rewritten every run, so it lives in the MUTABLE -buildcache repo (the app repo is
+          # IMMUTABLE and would reject the second push). See container.tf.
+          CACHE="$REGISTRY/$ECR_REPOSITORY-buildcache:cache"
           # Load /_next/static/* through CloudFront (edge-cached + gzip/brotli) rather than the raw
           # S3 URL (uncompressed, no CDN). koalagains.com is the CloudFront alias and routes
           # /_next/static/* to the S3 asset origin (see deployments/insights-ui/cloudfront.tf).
@@ -93,12 +103,21 @@ jobs:
           ASSET_PREFIX="https://koalagains.com"
           # Build context = repo root (workspace dependency @dodao/web-core).
           # Phase A: base URL is the direct host; static assets are served from S3 via CloudFront.
-          docker build \
+          #
+          # `--load` (not `--push`) puts the image in the local daemon so the next step's
+          # `docker create` can extract static assets without re-pulling ~1GB from ECR; the
+          # explicit `docker push` then ships it. `image-manifest/oci-mediatypes` are REQUIRED
+          # for a registry cache on ECR — it rejects BuildKit's default cache manifest type.
+          # A cold cache (first run, or after the 7-day expiry) just builds everything, as before.
+          docker buildx build \
             -f deployments/insights-ui/Dockerfile \
             --build-arg NEXT_PUBLIC_VERCEL_URL="$DIRECT_HOST" \
             --build-arg NEXT_PUBLIC_VERCEL_ENV="production" \
             --build-arg NEXT_PUBLIC_ASSET_PREFIX="$ASSET_PREFIX" \
             --secret id=database_url,env=DATABASE_URL \
+            --cache-from "type=registry,ref=$CACHE" \
+            --cache-to "type=registry,ref=$CACHE,mode=max,image-manifest=true,oci-mediatypes=true" \
+            --load \
             -t "$IMAGE" .
           docker push "$IMAGE"
           echo "tag=$TAG" >> "$GITHUB_OUTPUT"
@@ -142,20 +161,46 @@ jobs:
 
       # Wait for the new deployment version to roll to ACTIVE before smoke-testing, otherwise we
       # hit the old version (or a still-deploying container).
+      #
+      # Poll the DEPLOYMENT, not the container service: a service's state is RUNNING/UPDATING/…
+      # and is NEVER "ACTIVE" (that is a deployment state), so the previous check here could not
+      # match and always burned its full timeout (~10 min) on every deploy before falling
+      # through WITHOUT failing. Combined with a smoke check that the OLD version answers just
+      # as happily, a failed rollout reported success. We now assert the ACTIVE deployment is
+      # running the image tag this run built, and fail on FAILED or on timeout.
       - name: Wait for Lightsail deployment to be ACTIVE
+        env:
+          TAG: ${{ steps.build.outputs.tag }}
         run: |
-          for i in $(seq 1 40); do
-            state=$(aws lightsail get-container-services --service-name "$ECR_REPOSITORY" \
-              --query 'containerServices[0].state' --output text)
-            echo "Lightsail state: $state"
-            [ "$state" = "ACTIVE" ] && break
-            sleep 15
+          for i in $(seq 1 60); do
+            read -r state image <<<"$(aws lightsail get-container-service-deployments \
+              --service-name "$ECR_REPOSITORY" \
+              --query 'deployments[0].[state,containers.app.image]' --output text)"
+            echo "deployment: state=$state image=$image"
+            case "$state" in
+              ACTIVE)
+                case "$image" in
+                  *":$TAG") echo "Deployment ACTIVE on $TAG."; exit 0 ;;
+                  *) echo "ACTIVE but still the previous image; waiting for $TAG..." ;;
+                esac
+                ;;
+              FAILED)
+                echo "::error::Lightsail deployment FAILED for $TAG"
+                exit 1
+                ;;
+            esac
+            sleep 10
           done
+          echo "::error::Timed out waiting for Lightsail deployment $TAG to become ACTIVE"
+          exit 1
 
+      # Belt-and-braces: the wait above already proves the new version is serving, but this
+      # catches an app that rolls out ACTIVE yet 500s on a real request through the public host.
       - name: Smoke check (direct host)
         run: |
           for i in $(seq 1 10); do
             curl -fsS "https://$DIRECT_HOST/api/health" && exit 0
             echo "health not ready, retrying..."; sleep 15
           done
+          echo "::error::Smoke check failed against https://$DIRECT_HOST/api/health"
           exit 1
