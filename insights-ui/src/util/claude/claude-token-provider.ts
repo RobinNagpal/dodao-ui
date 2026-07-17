@@ -137,27 +137,33 @@ async function persistRefreshToken(refreshToken: string): Promise<void> {
   }
 }
 
-/** Resolves the refresh token to use: in-memory rotated value → persisted S3 copy → env bootstrap. */
-async function resolveRefreshToken(): Promise<string | null> {
-  if (currentRefreshToken) return currentRefreshToken;
+/**
+ * Candidate refresh tokens to try, in priority order:
+ *   1. in-memory rotated value (this process's newest),
+ *   2. the persisted S3 copy (newest across restarts),
+ *   3. the `ANTHROPIC_OAUTH_REFRESH_TOKEN` env bootstrap.
+ *
+ * We return a LIST rather than a single token because rotation can happen
+ * out-of-band — an operator re-seeding Secrets Manager, or a redeploy injecting
+ * a newer bootstrap than what S3 holds. A single stale candidate must not take
+ * Claude down when a working one is sitting right behind it.
+ */
+async function candidateRefreshTokens(): Promise<string[]> {
+  const candidates: string[] = [];
+  const add = (token: string | null | undefined): void => {
+    const trimmed = token?.trim();
+    if (trimmed && !candidates.includes(trimmed)) candidates.push(trimmed);
+  };
 
-  const persisted = await loadPersistedRefreshToken();
-  if (persisted) {
-    currentRefreshToken = persisted;
-    return persisted;
-  }
+  add(currentRefreshToken);
+  add(await loadPersistedRefreshToken());
+  add(process.env.ANTHROPIC_OAUTH_REFRESH_TOKEN);
 
-  const envToken = process.env.ANTHROPIC_OAUTH_REFRESH_TOKEN?.trim();
-  if (envToken) {
-    currentRefreshToken = envToken;
-    return envToken;
-  }
-
-  return null;
+  return candidates;
 }
 
-/** Exchanges the refresh token for a fresh access token, caches it, and persists any rotation. */
-async function refreshAccessToken(refreshToken: string): Promise<string> {
+/** One exchange attempt. Caches the access token and persists any rotation on success. */
+async function exchangeRefreshToken(refreshToken: string): Promise<string> {
   const response = await fetch(TOKEN_ENDPOINT, {
     method: 'POST',
     headers: { 'content-type': 'application/json', accept: 'application/json' },
@@ -182,14 +188,41 @@ async function refreshAccessToken(refreshToken: string): Promise<string> {
   const expiresInMs = (json.expires_in ?? 3600) * 1000;
   cachedAccessToken = { token: accessToken, expiresAtMs: Date.now() + expiresInMs - EXPIRY_SKEW_MS };
 
-  // Rotation: if a new refresh token came back, adopt and persist it. The old one is now invalid.
+  // Rotation: the endpoint hands back a NEW refresh token and invalidates the one
+  // we just used. Adopt + persist it, or the next restart replays a dead token.
   const rotated = json.refresh_token?.trim();
   if (rotated && rotated !== refreshToken) {
     currentRefreshToken = rotated;
     await persistRefreshToken(rotated);
+  } else {
+    currentRefreshToken = refreshToken;
   }
 
   return accessToken;
+}
+
+/** Tries each candidate refresh token until one succeeds. Throws the last error if all fail. */
+async function refreshAccessToken(): Promise<string> {
+  const candidates = await candidateRefreshTokens();
+  if (candidates.length === 0) {
+    throw new Error('No Claude refresh token available.');
+  }
+
+  let lastError: unknown;
+  for (const [index, candidate] of candidates.entries()) {
+    try {
+      return await exchangeRefreshToken(candidate);
+    } catch (err) {
+      lastError = err;
+      // This candidate is stale (most likely rotated out-of-band). Drop it from
+      // memory so it isn't retried first next time, and fall through to the next.
+      if (currentRefreshToken === candidate) currentRefreshToken = null;
+      if (index < candidates.length - 1) {
+        console.warn(`[claude-token-provider] refresh candidate ${index + 1}/${candidates.length} rejected; trying the next source.`);
+      }
+    }
+  }
+  throw lastError instanceof Error ? lastError : new Error(String(lastError));
 }
 
 /**
@@ -203,28 +236,31 @@ export async function getClaudeAccessToken(forceRefresh = false): Promise<string
     return cachedAccessToken.token;
   }
 
-  const refreshToken = await resolveRefreshToken();
-
-  if (!refreshToken) {
-    // No refresh token anywhere — fall back to a static access token (local dev / tests).
-    const staticToken = process.env.ANTHROPIC_OAUTH_TOKEN?.trim();
-    if (staticToken) return staticToken;
-    throw new Error(
-      'No Claude OAuth credentials found. Set ANTHROPIC_OAUTH_REFRESH_TOKEN (preferred, self-refreshing) ' + 'or a static ANTHROPIC_OAUTH_TOKEN access token.'
-    );
-  }
-
   if (forceRefresh) {
     cachedAccessToken = null;
   }
 
-  // Collapse concurrent refreshes into one exchange.
+  // Collapse concurrent refreshes into one exchange — a burst of report requests
+  // after expiry must not fire N competing rotations (they would invalidate
+  // each other, since each exchange rotates the refresh token).
   if (!inFlightRefresh) {
-    inFlightRefresh = refreshAccessToken(refreshToken).finally(() => {
+    inFlightRefresh = refreshAccessToken().finally(() => {
       inFlightRefresh = null;
     });
   }
-  return inFlightRefresh;
+
+  try {
+    return await inFlightRefresh;
+  } catch (err) {
+    // No usable refresh token — fall back to a static access token if one is
+    // configured (local dev / bootstrap), otherwise surface the refresh failure.
+    const staticToken = process.env.ANTHROPIC_OAUTH_TOKEN?.trim();
+    if (staticToken) {
+      console.warn('[claude-token-provider] refresh failed; falling back to the static ANTHROPIC_OAUTH_TOKEN.', err);
+      return staticToken;
+    }
+    throw err;
+  }
 }
 
 /** Clears the cached access token so the next call re-exchanges. Call this on a 401. */
