@@ -17,6 +17,8 @@
  * be tested in isolation before being wired into any workflow.
  */
 
+import { getClaudeAccessToken, invalidateClaudeAccessToken } from '@/util/claude/claude-token-provider';
+
 /** Anthropic rejects OAuth requests unless this is the first system block. */
 export const CLAUDE_CODE_IDENTITY = "You are Claude Code, Anthropic's official CLI for Claude.";
 
@@ -41,7 +43,10 @@ export interface CallClaudeOAuthOptions {
   model?: string;
   /** Response length cap. Defaults to 1024. */
   maxTokens?: number;
-  /** OAuth token. Defaults to the `ANTHROPIC_OAUTH_TOKEN` env var. */
+  /**
+   * Explicit OAuth access token. When omitted, the token provider supplies one —
+   * refreshing a long-lived refresh token as needed (see claude-token-provider).
+   */
   oauthToken?: string;
   /** API base URL. Defaults to `ANTHROPIC_BASE_URL` env, else the real API. */
   baseUrl?: string;
@@ -127,11 +132,6 @@ interface AnthropicMessageResponse {
  * upstream error body included.
  */
 export async function callClaudeWithOAuth(options: CallClaudeOAuthOptions): Promise<CallClaudeOAuthResult> {
-  const oauthToken = options.oauthToken ?? process.env.ANTHROPIC_OAUTH_TOKEN;
-  if (!oauthToken) {
-    throw new Error('ANTHROPIC_OAUTH_TOKEN is not set. Export your Claude subscription OAuth token (sk-ant-oat...) before calling.');
-  }
-
   const prompt = options.prompt?.trim();
   if (!prompt) {
     throw new Error('callClaudeWithOAuth requires a non-empty prompt.');
@@ -160,19 +160,31 @@ export async function callClaudeWithOAuth(options: CallClaudeOAuthOptions): Prom
     body.output_config = { effort: options.effort };
   }
 
-  const response = await fetch(`${baseUrl}/v1/messages`, {
-    method: 'POST',
-    headers: {
-      'content-type': 'application/json',
-      'anthropic-version': '2023-06-01',
-      'anthropic-beta': ANTHROPIC_BETA,
-      authorization: `Bearer ${oauthToken}`,
-      'x-app': 'cli',
-      'user-agent': `claude-cli/${ccVersion} (external, cli)`,
-      'x-anthropic-billing-header': `cc_version=${ccVersion}.${model}; cc_entrypoint=cli;`,
-    },
-    body: JSON.stringify(body),
-  });
+  const sendWithToken = (token: string): Promise<Response> =>
+    fetch(`${baseUrl}/v1/messages`, {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json',
+        'anthropic-version': '2023-06-01',
+        'anthropic-beta': ANTHROPIC_BETA,
+        authorization: `Bearer ${token}`,
+        'x-app': 'cli',
+        'user-agent': `claude-cli/${ccVersion} (external, cli)`,
+        'x-anthropic-billing-header': `cc_version=${ccVersion}.${model}; cc_entrypoint=cli;`,
+      },
+      body: JSON.stringify(body),
+    });
+
+  // When the caller supplies an explicit token we use it verbatim (no refresh).
+  // Otherwise the provider hands us a fresh access token and can re-mint one on a 401.
+  const usingProvider = !options.oauthToken;
+  let response = await sendWithToken(options.oauthToken ?? (await getClaudeAccessToken()));
+
+  // A managed access token can expire between mint and use; force one refresh + retry on 401.
+  if (response.status === 401 && usingProvider) {
+    invalidateClaudeAccessToken();
+    response = await sendWithToken(await getClaudeAccessToken(true));
+  }
 
   const responseText = await response.text();
   const rateLimit = parseRateLimitHeaders(response.headers);
