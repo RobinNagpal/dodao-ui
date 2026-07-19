@@ -95,6 +95,27 @@ export async function markAsInProgress(generationRequest: TickerV1GenerationRequ
 }
 
 export async function markAsCompleted(generationRequest: TickerV1GenerationRequest): Promise<void> {
+  // Before finalizing, give each failed step exactly ONE retry: move steps that
+  // haven't been retried yet out of failedSteps (recording them in retriedSteps)
+  // so calculatePendingSteps picks them up again, and keep the request open.
+  // A step that fails again after its retry stays in failedSteps and is terminal.
+  const stepsToRetry = generationRequest.failedSteps.filter((step) => !generationRequest.retriedSteps.includes(step));
+  if (stepsToRetry.length > 0) {
+    console.log('Retrying failed steps once for generation request', generationRequest.id, ':', stepsToRetry);
+    await prisma.tickerV1GenerationRequest.update({
+      where: {
+        id: generationRequest.id,
+      },
+      data: {
+        failedSteps: generationRequest.failedSteps.filter((step) => generationRequest.retriedSteps.includes(step)),
+        retriedSteps: [...generationRequest.retriedSteps, ...stepsToRetry],
+        inProgressStep: null,
+        updatedAt: new Date(),
+      },
+    });
+    return;
+  }
+
   const hasFailed = generationRequest.failedSteps.length > 0;
 
   await prisma.tickerV1GenerationRequest.update({
