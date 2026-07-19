@@ -239,6 +239,12 @@ export async function generateMetadata({ params }: { params: RouteParams }): Pro
   let metaDescription: string = '';
   let createdTime: string | undefined;
   let updatedTime: string | undefined;
+  // A page is "thin" until it has genuinely unique prose (the AI `summary` or a
+  // curated `metaDescription`). Without it the page is just chrome + the generic
+  // fallback description, which GSC clusters as a near-duplicate ("Crawled -
+  // currently not indexed" / "Duplicate, Google chose a different canonical").
+  // Gate indexing on real content; the page flips to indexable once populated.
+  let hasUniqueContent = false;
 
   try {
     const data = await fetchTickerByExchange(exchange, ticker);
@@ -248,6 +254,7 @@ export async function generateMetadata({ params }: { params: RouteParams }): Pro
       metaDescription = data.metaDescription ?? '';
       createdTime = data.createdAt?.toISOString();
       updatedTime = data.updatedAt?.toISOString() ?? createdTime;
+      hasUniqueContent = Boolean(data.summary?.trim()) || Boolean(data.metaDescription?.trim());
     }
   } catch {
     /* keep generic */
@@ -273,6 +280,7 @@ export async function generateMetadata({ params }: { params: RouteParams }): Pro
     title: `${companyName} (${ticker}) Stock Analysis & Key Metrics (${year})`,
     description: shortDesc,
     alternates: { canonical: canonicalUrl },
+    robots: { index: hasUniqueContent, follow: true },
     openGraph: {
       title: `${companyName} (${ticker}) Stock Analysis & Key Metrics | KoalaGains`,
       description: shortDesc,
