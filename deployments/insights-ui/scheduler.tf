@@ -32,26 +32,19 @@ locals {
       schedule = "rate(3 minutes)"
       timezone = "UTC"
     }
-    # Claude-usage-gated stock report auto-generation. Fires every 5 min, 24/7 —
-    # this is just a fine-grained heartbeat; the real cadence is set IN CODE by the
-    # AUTOMATED_GENERATION_MODE App Setting (each mode enforces a min cooldown
-    # between batches, so a low mode still only enqueues ~every 15 min). The run
-    # window (NightShort / NightExtended / DayAndNight) and usage gates are likewise
-    # enforced in code, so all of it can change at runtime without editing this
-    # schedule. Outside the window / during a cooldown the endpoint returns
-    # immediately without touching Claude.
-    enqueue_auto_stock = {
-      path     = "/api/koala_gains/tickers-v1/enqueue-auto-stock-generation"
+    # Automated report generation (stocks + ETFs). This is the ONLY infra piece
+    # left for auto-generation — a generic clock that pokes the app every 5 min,
+    # 24/7. It carries no policy: the single /auto-generation/tick endpoint reads
+    # everything from App Settings and runs whichever jobs are due — which entities
+    # (AUTOMATED_GENERATION_ENTITY), the run window (AUTOMATED_GENERATION_WINDOW),
+    # how often (mode cooldown / AUTOMATED_GENERATION_FREQUENCY_MINUTES) and how
+    # much (mode batch size / AUTOMATED_GENERATION_BATCH_SIZE). All of that changes
+    # at runtime without touching this schedule; outside the window / during a
+    # cooldown the tick returns immediately without touching Claude. The heartbeat
+    # just needs to be fine enough (5 min) that any App-Settings cadence is honored.
+    auto_generation_tick = {
+      path     = "/api/koala_gains/auto-generation/tick"
       schedule = "cron(0/5 * * * ? *)"
-      timezone = "America/New_York"
-    }
-    # ETF report auto-generation. Same 5-min heartbeat + in-code window/mode/gates as
-    # the stock job, but selects ETFs missing their reports (US first, then Canada,
-    # then other). Offset by 2 min from the stock batch so the two don't fan out to
-    # Claude at the exact same minute (they share the usage budget).
-    enqueue_auto_etf = {
-      path     = "/api/koala_gains/etfs-v1/enqueue-auto-etf-generation"
-      schedule = "cron(2/5 * * * ? *)"
       timezone = "America/New_York"
     }
   }

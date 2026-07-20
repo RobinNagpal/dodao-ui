@@ -83,3 +83,13 @@ export interface AutoEnqueueResult {
   fiveHourPct: number | null;
   weeklyPct: number | null;
 }
+
+/**
+ * Result of one auto-generation tick — the single in-app entry point the cron
+ * heartbeat calls. Each entity's job self-gates (entity / window / cooldown /
+ * usage), so the tick always runs both and reports each outcome.
+ */
+export interface AutoGenTickResult {
+  stock: AutoEnqueueResult;
+  etf: AutoEnqueueResult;
+}
