@@ -4,6 +4,8 @@
 
 Development workflow guidelines for the DoDAO UI monorepo. For full architecture and project context, see [docs/README.md](docs/README.md).
 
+**Default project: `insights-ui` (KoalaGains).** Unless a task explicitly names another project, assume it targets `insights-ui`. Run commands (`yarn lint`, `yarn prettier-check`, `yarn compile`, etc.) and look for code, docs, and knowledge under `insights-ui` first. See [`docs/insights-ui/README.md`](docs/insights-ui/README.md) for its topical knowledge index.
+
 ## Required Workflow (Before and After Coding)
 
 ### 1) Run Code Quality Checks
