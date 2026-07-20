@@ -1,9 +1,7 @@
 'use client';
 
-import AdminNav from '@/app/admin-v1/AdminNav';
 import type { IndustryWithSubIndustriesAndCounts } from '@/types/ticker-typesv1';
 import Button from '@dodao/web-core/components/core/buttons/Button';
-import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { useDeleteData } from '@dodao/web-core/ui/hooks/fetch/useDeleteData';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
@@ -104,9 +102,7 @@ export default function IndustryManagementPage(): JSX.Element {
   const loading: boolean = loadingIndustries;
 
   return (
-    <PageWrapper>
-      <AdminNav />
-
+    <>
       <div className="bg-gray-800 -mx-6 px-6 py-6 mb-6 border-b border-gray-700/60">
         <div className="flex items-center justify-between">
           <div>
@@ -181,6 +177,6 @@ export default function IndustryManagementPage(): JSX.Element {
         deleteButtonText={`Delete ${deleteKind === 'industry' ? 'Industry' : 'Sub-industry'}`}
         confirmationText="Archive Me"
       />
-    </PageWrapper>
+    </>
   );
 }

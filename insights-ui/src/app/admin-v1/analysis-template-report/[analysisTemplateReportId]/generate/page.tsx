@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useState, useEffect, use } from 'react';
-import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import StyledSelect from '@dodao/web-core/components/core/select/StyledSelect';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
@@ -141,8 +140,8 @@ export default function GenerateAnalysisTemplateReportPage({ params }: { params:
   }
 
   return (
-    <PageWrapper>
-      <div className="max-w-7xl mx-auto">
+    <>
+      <div>
         <div className="pt-2 pb-6">
           {/* Header */}
           <div className="mb-8">
@@ -269,6 +268,6 @@ export default function GenerateAnalysisTemplateReportPage({ params }: { params:
           </div>
         </div>
       </div>
-    </PageWrapper>
+    </>
   );
 }

@@ -1,9 +1,7 @@
 'use client';
 
-import AdminNav from '@/app/admin-v1/AdminNav';
 import SelectIndustryAndSubIndustry from '@/app/admin-v1/SelectIndustryAndSubIndustry';
 import MissingFactorAnalysisContainer from '@/components/analysis-factors/MissingFactorAnalysisTable';
-import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { TickerV1Industry, TickerV1SubIndustry } from '@prisma/client';
 import dynamic from 'next/dynamic';
 import React, { useState } from 'react';
@@ -25,8 +23,7 @@ const AnalysisFactorsPage = () => {
   };
 
   return (
-    <PageWrapper>
-      <AdminNav />
+    <>
       <div className="space-y-6">
         <div className="text-4xl text-center">Analysis Factors For TickersV1</div>
 
@@ -50,7 +47,7 @@ const AnalysisFactorsPage = () => {
           />
         )}
       </div>
-    </PageWrapper>
+    </>
   );
 };
 

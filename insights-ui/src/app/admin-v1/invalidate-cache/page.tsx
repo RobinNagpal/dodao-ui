@@ -1,9 +1,7 @@
 'use client';
 
-import AdminNav from '@/app/admin-v1/AdminNav';
 import { AdminInvalidateCacheResult, invalidateCloudFrontPathsForAdmin } from '@/utils/cache-actions';
 import Button from '@dodao/web-core/components/core/buttons/Button';
-import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import TextareaAutosize from '@dodao/web-core/components/core/textarea/TextareaAutosize';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import { useMemo, useState } from 'react';
@@ -135,9 +133,7 @@ export default function InvalidateCachePage(): JSX.Element {
   };
 
   return (
-    <PageWrapper>
-      <AdminNav />
-
+    <>
       <div className="bg-gray-800 -mx-6 px-6 py-6 mb-6 border-b border-gray-700/60">
         <div>
           <h1 className="text-2xl font-semibold text-white">Invalidate CloudFront Cache</h1>
@@ -180,6 +176,6 @@ export default function InvalidateCachePage(): JSX.Element {
       </div>
 
       {result && <ResultPanel result={result} />}
-    </PageWrapper>
+    </>
   );
 }

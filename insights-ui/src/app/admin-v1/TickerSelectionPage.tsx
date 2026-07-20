@@ -1,7 +1,6 @@
 'use client';
 
 import { TickerIdentifier } from '@/app/api/[spaceId]/tickers-v1/generation-requests/route';
-import AdminNav from '@/app/admin-v1/AdminNav';
 import AdminCountryFilter, { filterTickersByCountries } from '@/app/admin-v1/AdminCountryFilter';
 import { CountryCode } from '@/utils/countryExchangeUtils';
 import SelectIndustryAndSubIndustry from '@/app/admin-v1/SelectIndustryAndSubIndustry';
@@ -10,7 +9,6 @@ import { ReportTickersResponse } from '@/types/ticker-typesv1';
 import { getMissingReportCount, TickerWithMissingReportInfo } from '@/utils/analysis-reports/report-steps-statuses';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import Checkboxes, { CheckboxItem } from '@dodao/web-core/components/core/checkboxes/Checkboxes';
-import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { useFetchData, UseFetchDataResponse } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { TickerV1Industry, TickerV1SubIndustry } from '@prisma/client';
@@ -98,9 +96,7 @@ export default function TickerSelectionPage({ renderActionComponent, refreshButt
   };
 
   return (
-    <PageWrapper>
-      <AdminNav />
-
+    <>
       <div className="space-y-3">
         {/* Filters (mirroring TickerManagementPage) */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-2"></div>
@@ -279,6 +275,6 @@ export default function TickerSelectionPage({ renderActionComponent, refreshButt
             },
           })}
       </div>
-    </PageWrapper>
+    </>
   );
 }

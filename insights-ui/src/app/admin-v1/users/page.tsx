@@ -1,7 +1,5 @@
 'use client';
 
-import AdminNav from '@/app/admin-v1/AdminNav';
-import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import StyledSelect, { StyledSelectItem } from '@dodao/web-core/components/core/select/StyledSelect';
 import Checkbox from '@dodao/web-core/components/app/Form/Checkbox';
@@ -143,9 +141,7 @@ export default function Page() {
   };
 
   return (
-    <PageWrapper>
-      <AdminNav />
-
+    <>
       <div className="bg-gray-800 -mx-6 px-6 py-6 mb-6 border-b border-gray-700/60">
         <div className="flex items-center justify-between">
           <div>
@@ -277,6 +273,6 @@ export default function Page() {
         confirmationText="Are you sure you want to delete this user? This action cannot be undone."
         askForTextInput={false}
       />
-    </PageWrapper>
+    </>
   );
 }

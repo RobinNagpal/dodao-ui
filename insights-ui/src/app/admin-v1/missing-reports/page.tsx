@@ -1,7 +1,6 @@
 'use client';
 
 import { TickerIdentifier } from '@/app/api/[spaceId]/tickers-v1/generation-requests/route';
-import AdminNav from '@/app/admin-v1/AdminNav';
 import LlmProviderModelSelector, { getDefaultLlmProviderModelSelection, LlmProviderModelSelection } from '@/components/llm/LlmProviderModelSelector';
 import PassFailBadge from '@/components/ui/PassFailBadge';
 import { useGenerateReports } from '@/hooks/useGenerateReports';
@@ -447,9 +446,7 @@ export default function MissingReportsPage(): JSX.Element {
   }
 
   return (
-    <div className="mt-12 px-4 text-color">
-      <AdminNav />
-
+    <>
       <div className="flex flex-wrap gap-3 justify-between items-center mb-4">
         <h2 className="text-2xl font-bold">Missing Reports & Financial Data</h2>
 
@@ -613,6 +610,6 @@ export default function MissingReportsPage(): JSX.Element {
         confirmationText={`Are you sure you want to generate all reports for ${selectedRows.size} selected ticker(s)? This will regenerate all existing reports.`}
         askForTextInput={false}
       />
-    </div>
+    </>
   );
 }

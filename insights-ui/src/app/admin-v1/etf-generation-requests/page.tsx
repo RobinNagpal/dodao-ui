@@ -1,6 +1,5 @@
 'use client';
 
-import AdminNav from '@/app/admin-v1/AdminNav';
 import { useDebouncedValue } from '@/app/admin-v1/etf-reports/useDebouncedValue';
 import { EtfGenerationRequestsResponse, EtfGenerationRequestWithEtf } from '@/app/api/[spaceId]/etfs-v1/generation-requests/route';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
@@ -325,9 +324,7 @@ export default function EtfGenerationRequestsPage(): JSX.Element {
   ];
 
   return (
-    <div className="mt-12 px-4 text-color">
-      <AdminNav />
-
+    <>
       <div className="flex flex-wrap gap-3 justify-between items-center mb-4">
         <h2 className="text-2xl font-bold">ETF Generation Requests</h2>
         <div className="flex items-center gap-3">
@@ -417,6 +414,6 @@ export default function EtfGenerationRequestsPage(): JSX.Element {
           </div>
         </div>
       ))}
-    </div>
+    </>
   );
 }

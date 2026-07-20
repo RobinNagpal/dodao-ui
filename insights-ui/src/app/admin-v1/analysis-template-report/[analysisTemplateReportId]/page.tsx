@@ -2,7 +2,6 @@ import { notFound } from 'next/navigation';
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
 import { AnalysisTemplateReportWithRelations } from '../../../api/analysis-template-reports/route';
 import { AnalysisTemplateParameterReport, AnalysisTemplateParameter, AnalysisTemplateCategory } from '@prisma/client';
-import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { ChartBarIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import AnalysisResultsTable from '@/components/analysis-templates/AnalysisResultsTable';
@@ -64,7 +63,7 @@ export default async function AnalysisTemplateReportPage({ params }: AnalysisTem
   const groupedReports = groupParameterReportsByCategory(report.parameterReports as ParameterReportWithRelations[]);
 
   return (
-    <div className="w-full mx-auto max-w-7xl lg:px-6 py-2 md:py-4 lg:py-8 px-1 sm:px-2">
+    <>
       <div className="pt-2 pb-6">
         {/* Header */}
         <div className="mb-6">
@@ -127,6 +126,6 @@ export default async function AnalysisTemplateReportPage({ params }: AnalysisTem
           </div>
         )}
       </div>
-    </div>
+    </>
   );
 }

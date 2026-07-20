@@ -1,6 +1,5 @@
 'use client';
 
-import AdminNav from '@/app/admin-v1/AdminNav';
 import AdminCountryFilter, { filterTickersByCountries } from '@/app/admin-v1/AdminCountryFilter';
 import AddTickersForm from '@/components/public-equitiesv1/AddTickersForm';
 import EditTickersForm from '@/components/public-equitiesv1/EditTickersForm';
@@ -12,7 +11,6 @@ import { BasicTickersResponse, BasicTickerInfo } from '@/types/ticker-typesv1';
 import Block from '@dodao/web-core/components/app/Block';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import FullPageLoader from '@dodao/web-core/components/core/loaders/FullPageLoading';
-import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { TickerV1Industry, TickerV1SubIndustry } from '@prisma/client';
@@ -80,8 +78,7 @@ export default function TickerManagementPage() {
   const filteredTickers = filterTickersByCountries(tickerInfos?.tickers || [], selectedCountries);
 
   return (
-    <PageWrapper>
-      <AdminNav />
+    <>
       <SelectIndustryAndSubIndustry
         selectedIndustry={selectedIndustry}
         selectedSubIndustry={selectedSubIndustry}
@@ -201,6 +198,6 @@ export default function TickerManagementPage() {
           }}
         />
       </div>
-    </PageWrapper>
+    </>
   );
 }
