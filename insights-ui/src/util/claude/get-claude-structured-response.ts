@@ -1,5 +1,5 @@
-import { getDefaultClaudeModel } from '@/types/llmConstants';
 import { callClaudeWithOAuth } from '@/util/claude/claude-oauth-client';
+import { getConfiguredDefaultClaudeModel } from '@/util/llm-default-config';
 
 /**
  * Claude structured-output helper used by `getLLMResponse` when
@@ -26,7 +26,7 @@ import { callClaudeWithOAuth } from '@/util/claude/claude-oauth-client';
 const REPORT_MAX_TOKENS = 32000;
 
 export interface ClaudeStructuredResultOptions {
-  /** Override the Claude model. Defaults to `getDefaultClaudeModel()` (LLM_MODEL / claude-opus-4-7). */
+  /** Override the Claude model. Defaults to the App Settings `LLM_DEFAULT_CLAUDE_MODEL` (else claude-opus-4-7). */
   model?: string;
   /** Override the output token cap. Defaults to 32000. */
   maxTokens?: number;
@@ -55,7 +55,7 @@ function extractJson(text: string): string {
  * a failed API call or unparseable JSON — the caller's retry loop handles it.
  */
 export async function getClaudeStructuredResult<Output>(prompt: string, outputSchema: object, options: ClaudeStructuredResultOptions = {}): Promise<Output> {
-  const model = options.model ?? getDefaultClaudeModel();
+  const model = options.model ?? (await getConfiguredDefaultClaudeModel());
 
   // Note: usage-limit pacing for auto-generated reports lives in the stock
   // generation processor (see `auto-stock-generation-utils.ts`), not here. This

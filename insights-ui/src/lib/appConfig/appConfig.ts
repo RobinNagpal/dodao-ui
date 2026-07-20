@@ -111,6 +111,9 @@ export async function setAppConfigValue(key: string, value: string): Promise<Upd
     // SSM rejects empty values, and an empty secret would silently wipe a live key.
     return { success: false, message: 'Value cannot be empty.' };
   }
+  if (def.options && !def.options.some((o) => o.value === value)) {
+    return { success: false, message: `Invalid value for ${key}. Allowed: ${def.options.map((o) => o.value).join(', ')}` };
+  }
   if (!isSsmConfigured()) {
     return {
       success: false,

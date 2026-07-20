@@ -23,6 +23,14 @@ For every managed key, the effective value is resolved in this order:
 The admin screen shows each setting's current value and a badge for where it came
 from (**SSM** / **Env var** / **Default**). SSM reads are cached in-process for 60s.
 
+A setting can be a boolean (toggle), a free-text string, or a fixed set of `options`
+(rendered as a dropdown and validated on write). Example: the default LLM
+provider/model — `LLM_DEFAULT_PROVIDER`, `LLM_DEFAULT_GEMINI_MODEL`,
+`LLM_DEFAULT_CLAUDE_MODEL` — are option-typed. These are only the **fallback** default;
+an explicit per-run selection in the report UI always wins. Server code reads them via
+`src/util/llm-default-config.ts` (server-only), which validates against the model enums
+and falls back to the code constant in `llmConstants.ts` if a value is unset or invalid.
+
 ## Secrets
 
 A setting marked `secret: true` in the registry (e.g. API keys, OAuth tokens) is

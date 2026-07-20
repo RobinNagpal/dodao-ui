@@ -14,7 +14,15 @@
  * `appConfigDefaults.json` — that file is committed to a public repo. Secrets
  * resolve from SSM or env only.
  */
+import { ClaudeModel, GeminiModel, LLMProvider } from '@/types/llmConstants';
+
 export type AppConfigValueType = 'boolean' | 'string';
+
+/** One choice for a setting that has a fixed set of allowed values (rendered as a dropdown). */
+export interface AppConfigOption {
+  value: string;
+  label: string;
+}
 
 export interface AppConfigDefinition {
   /** Env-var-style key. Also the SSM parameter name (under the configured prefix). */
@@ -30,6 +38,8 @@ export interface AppConfigDefinition {
    * the server still get the real decrypted value.
    */
   secret?: boolean;
+  /** Fixed set of allowed values. When present the admin UI shows a dropdown and writes are validated against it. */
+  options?: AppConfigOption[];
 }
 
 export const APP_CONFIG_DEFINITIONS: AppConfigDefinition[] = [
@@ -70,6 +80,39 @@ export const APP_CONFIG_DEFINITIONS: AppConfigDefinition[] = [
     label: 'Claude Code version header',
     description: 'Value sent as the claude-cli user-agent version on Claude subscription OAuth calls.',
     type: 'string',
+  },
+  {
+    key: 'LLM_DEFAULT_PROVIDER',
+    label: 'Default LLM provider',
+    description: 'Fallback provider for report generation when a request does not specify one. A per-run selection in the report UI always overrides this.',
+    type: 'string',
+    options: [
+      { value: LLMProvider.GEMINI, label: 'Gemini' },
+      { value: LLMProvider.GEMINI_WITH_GROUNDING, label: 'Gemini (with grounding)' },
+      { value: LLMProvider.CLAUDE, label: 'Claude' },
+    ],
+  },
+  {
+    key: 'LLM_DEFAULT_GEMINI_MODEL',
+    label: 'Default Gemini model',
+    description: 'Fallback Gemini model for report generation when none is specified. A per-run model selection overrides this.',
+    type: 'string',
+    options: [
+      { value: GeminiModel.GEMINI_2_5_PRO, label: 'gemini-2.5-pro' },
+      { value: GeminiModel.GEMINI_3_1_PRO_PREVIEW, label: 'gemini-3.1-pro-preview' },
+    ],
+  },
+  {
+    key: 'LLM_DEFAULT_CLAUDE_MODEL',
+    label: 'Default Claude model',
+    description: 'Fallback Claude model used when the Claude provider runs without an explicit model. A per-run model selection overrides this.',
+    type: 'string',
+    options: [
+      { value: ClaudeModel.CLAUDE_OPUS_4_8, label: 'Claude Opus 4.8' },
+      { value: ClaudeModel.CLAUDE_OPUS_4_7, label: 'Claude Opus 4.7' },
+      { value: ClaudeModel.CLAUDE_SONNET_4_6, label: 'Claude Sonnet 4.6' },
+      { value: ClaudeModel.CLAUDE_HAIKU_4_5, label: 'Claude Haiku 4.5' },
+    ],
   },
   {
     key: 'GOOGLE_API_KEY',

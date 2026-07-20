@@ -1,7 +1,8 @@
 import { getAppConfigBoolean, getAppConfigValue } from '@/lib/appConfig/appConfig';
 import { prisma } from '@/prisma';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
-import { LLMProvider, getDefaultLLMProvider, getDefaultModelForProvider } from '@/types/llmConstants';
+import { LLMProvider } from '@/types/llmConstants';
+import { getConfiguredDefaultModelForProvider, getConfiguredDefaultProvider } from '@/util/llm-default-config';
 import { ReportType } from '@/types/ticker-typesv1';
 import {
   compileTemplate,
@@ -108,9 +109,9 @@ export async function getLLMResponseForPromptViaInvocationViaLambda<Input>(args:
   const { symbol, exchange, generationRequestId, params, reportType, moverType } = args;
   const { promptKey, llmProvider: providedLlmProvider, model: providedModel, spaceId, inputJson, bodyToAppend, requestFrom } = params;
 
-  // Use provided values or provider-aware defaults
-  const llmProvider = providedLlmProvider || getDefaultLLMProvider();
-  const model = providedModel || getDefaultModelForProvider(llmProvider);
+  // Use provided values or provider-aware defaults (per-run selection wins; defaults come from App Settings)
+  const llmProvider = providedLlmProvider || (await getConfiguredDefaultProvider());
+  const model = providedModel || (await getConfiguredDefaultModelForProvider(llmProvider));
 
   // Validate required fields
   if (!promptKey) {
