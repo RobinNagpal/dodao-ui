@@ -7,7 +7,7 @@ import { NextRequest } from 'next/server';
  * Cron endpoint for Claude-usage-gated ETF report auto-generation.
  *
  * On-demand / manual trigger for JUST the ETF job. The scheduled path is the
- * generic `/auto-generation/tick` heartbeat, which calls the same
+ * generic `/cron/heartbeat` job, which calls the same
  * `enqueueAutoEtfGenerationBatch`; this route stays for manual or per-entity runs
  * (e.g. an admin "run now"). The run window, mode, and entity are read from App
  * Settings inside the function: outside the selected window (or when the entity

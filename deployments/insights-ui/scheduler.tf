@@ -12,8 +12,17 @@ locals {
   # type. Existing crons keep UTC (unchanged behavior); the nightly auto-generation
   # cron uses America/New_York so its ET window tracks EST/EDT automatically.
   crons = {
-    ticker_request = {
-      path     = "/api/koala_gains/tickers-v1/generate-ticker-v1-request"
+    # Single KoalaGains report-generation heartbeat. One generic clock (every 3 min)
+    # drives everything: the /cron/heartbeat endpoint first enqueues any due
+    # auto-generation batches, then advances the pending stock and ETF requests by
+    # one step each. It replaces the separate ticker_request, etf_request, and
+    # auto-generation crons. All scheduling policy — which entities
+    # (AUTOMATED_GENERATION_ENTITY), the run window (AUTOMATED_GENERATION_WINDOW), and
+    # how often + how much (AUTOMATED_GENERATION_MODE's cooldown + batch size) — is
+    # read from App Settings, so it changes at runtime without touching this
+    # schedule. Outside the window / during a cooldown the enqueue side does nothing.
+    koala_gains_heartbeat = {
+      path     = "/api/koala_gains/cron/heartbeat"
       schedule = "rate(3 minutes)"
       timezone = "UTC"
     }
@@ -26,26 +35,6 @@ locals {
       path     = "/api/koala_gains/tickers-v1/generate-daily-top-losers"
       schedule = "cron(0 23 ? * MON-FRI *)"
       timezone = "UTC"
-    }
-    etf_request = {
-      path     = "/api/koala_gains/etfs-v1/generate-etf-v1-request"
-      schedule = "rate(3 minutes)"
-      timezone = "UTC"
-    }
-    # Automated report generation (stocks + ETFs). This is the ONLY infra piece
-    # left for auto-generation — a generic clock that pokes the app every 5 min,
-    # 24/7. It carries no policy: the single /auto-generation/tick endpoint reads
-    # everything from App Settings and runs whichever jobs are due — which entities
-    # (AUTOMATED_GENERATION_ENTITY), the run window (AUTOMATED_GENERATION_WINDOW),
-    # and how often + how much (the selected AUTOMATED_GENERATION_MODE's cooldown and
-    # batch size). All of that changes at runtime without touching this schedule;
-    # outside the window / during a cooldown the tick returns immediately without
-    # touching Claude. The heartbeat just needs to be fine enough (5 min) that the
-    # mode's cadence is honored.
-    auto_generation_tick = {
-      path     = "/api/koala_gains/auto-generation/tick"
-      schedule = "cron(0/5 * * * ? *)"
-      timezone = "America/New_York"
     }
   }
 }
