@@ -52,8 +52,8 @@ export async function fetchAllSsmParameters(): Promise<Record<string, string>> {
   return values;
 }
 
-/** Write (or overwrite) a single parameter under the prefix. */
-export async function putSsmParameter(key: string, value: string): Promise<void> {
+/** Write (or overwrite) a single parameter under the prefix. Secrets are stored encrypted (SecureString). */
+export async function putSsmParameter(key: string, value: string, secret: boolean = false): Promise<void> {
   const ssm = getClient();
-  await ssm.send(new PutParameterCommand({ Name: `${getSsmPrefix()}${key}`, Value: value, Type: 'String', Overwrite: true }));
+  await ssm.send(new PutParameterCommand({ Name: `${getSsmPrefix()}${key}`, Value: value, Type: secret ? 'SecureString' : 'String', Overwrite: true }));
 }

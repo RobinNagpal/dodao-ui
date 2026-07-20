@@ -1,13 +1,14 @@
 import { GoogleGenAI } from '@google/genai';
+import { getAppConfigValue } from '@/lib/appConfig/appConfig';
 import { GeminiModel, getDefaultGeminiModel } from '@/types/llmConstants';
 
 // Lazily construct the client. Constructing GoogleGenAI at module load throws when
 // GOOGLE_API_KEY is unset, which breaks `next build` (page-data collection imports this module
 // without runtime secrets). The key is only needed when a function below actually runs.
 let _geminiWithSearchModel: GoogleGenAI | undefined;
-function geminiWithSearchModel(): GoogleGenAI {
+async function geminiWithSearchModel(): Promise<GoogleGenAI> {
   if (!_geminiWithSearchModel) {
-    _geminiWithSearchModel = new GoogleGenAI({ apiKey: process.env.GOOGLE_API_KEY });
+    _geminiWithSearchModel = new GoogleGenAI({ apiKey: await getAppConfigValue('GOOGLE_API_KEY') });
   }
   return _geminiWithSearchModel;
 }
@@ -64,7 +65,9 @@ export async function getGroundedStructuredResponse<Output>(
   modelName: GeminiModel = getDefaultGeminiModel(),
   outputJsonSchema: object
 ): Promise<GroundedStructuredResponse<Output>> {
-  const resp: any = await geminiWithSearchModel().models.generateContent({
+  const resp: any = await (
+    await geminiWithSearchModel()
+  ).models.generateContent({
     model: modelName,
     contents: [
       {
@@ -113,7 +116,9 @@ export async function getGroundedResponse(prompt: string, modelName: GeminiModel
     tools: [groundingTool],
   };
 
-  const searchResponse: any = await geminiWithSearchModel().models.generateContent({
+  const searchResponse: any = await (
+    await geminiWithSearchModel()
+  ).models.generateContent({
     model: modelName,
     contents: [
       {

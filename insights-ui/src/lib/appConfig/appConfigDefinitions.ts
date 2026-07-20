@@ -8,8 +8,21 @@
  * To manage a new value: add its key + metadata here, add a default in
  * `appConfigDefaults.json`, then read it in code via `getAppConfigValue` /
  * `getAppConfigBoolean` instead of `process.env`.
+ *
+ * SECRETS: set `secret: true`. Secret values are stored as SSM `SecureString`,
+ * redacted from the admin UI (write-only), and MUST NOT have a default in
+ * `appConfigDefaults.json` — that file is committed to a public repo. Secrets
+ * resolve from SSM or env only.
  */
+import { ClaudeModel, GeminiModel, LLMProvider } from '@/types/llmConstants';
+
 export type AppConfigValueType = 'boolean' | 'string';
+
+/** One choice for a setting that has a fixed set of allowed values (rendered as a dropdown). */
+export interface AppConfigOption {
+  value: string;
+  label: string;
+}
 
 export interface AppConfigDefinition {
   /** Env-var-style key. Also the SSM parameter name (under the configured prefix). */
@@ -19,6 +32,14 @@ export interface AppConfigDefinition {
   /** What the setting does and the effect of each value. */
   description: string;
   type: AppConfigValueType;
+  /**
+   * When true the value is a secret: stored as an SSM `SecureString` and never
+   * returned to the admin UI (shown as set/not-set, edited write-only). Reads on
+   * the server still get the real decrypted value.
+   */
+  secret?: boolean;
+  /** Fixed set of allowed values. When present the admin UI shows a dropdown and writes are validated against it. */
+  options?: AppConfigOption[];
 }
 
 export const APP_CONFIG_DEFINITIONS: AppConfigDefinition[] = [
@@ -35,6 +56,84 @@ export const APP_CONFIG_DEFINITIONS: AppConfigDefinition[] = [
     description:
       'OFF (default): generate each tariff section in the background and return immediately. ON: the request waits for the full LLM generation (old synchronous behavior).',
     type: 'boolean',
+  },
+  {
+    key: 'LAMBDA_URL_LLM_CALL_WITH_CALLBACK',
+    label: 'LLM-call Lambda URL (callback path)',
+    description: 'Base URL of the AWS Lambda that runs an LLM call and posts the result back via callback. Used only when the Lambda path is enabled.',
+    type: 'string',
+  },
+  {
+    key: 'ANTHROPIC_BASE_URL',
+    label: 'Anthropic API base URL',
+    description: 'Base URL for the Claude Messages / usage API (Claude provider). Defaults to the real Anthropic API; override only to point at a proxy.',
+    type: 'string',
+  },
+  {
+    key: 'ANTHROPIC_OAUTH_TOKEN_URL',
+    label: 'Anthropic OAuth token endpoint',
+    description: 'Endpoint used to exchange the Claude subscription refresh token for a short-lived access token. Change only if the OAuth host moves.',
+    type: 'string',
+  },
+  {
+    key: 'CLAUDE_CODE_VERSION',
+    label: 'Claude Code version header',
+    description: 'Value sent as the claude-cli user-agent version on Claude subscription OAuth calls.',
+    type: 'string',
+  },
+  {
+    key: 'LLM_DEFAULT_PROVIDER',
+    label: 'Default LLM provider',
+    description: 'Fallback provider for report generation when a request does not specify one. A per-run selection in the report UI always overrides this.',
+    type: 'string',
+    options: [
+      { value: LLMProvider.GEMINI, label: 'Gemini' },
+      { value: LLMProvider.GEMINI_WITH_GROUNDING, label: 'Gemini (with grounding)' },
+      { value: LLMProvider.CLAUDE, label: 'Claude' },
+    ],
+  },
+  {
+    key: 'LLM_DEFAULT_GEMINI_MODEL',
+    label: 'Default Gemini model',
+    description: 'Fallback Gemini model for report generation when none is specified. A per-run model selection overrides this.',
+    type: 'string',
+    options: [
+      { value: GeminiModel.GEMINI_2_5_PRO, label: 'gemini-2.5-pro' },
+      { value: GeminiModel.GEMINI_3_1_PRO_PREVIEW, label: 'gemini-3.1-pro-preview' },
+    ],
+  },
+  {
+    key: 'LLM_DEFAULT_CLAUDE_MODEL',
+    label: 'Default Claude model',
+    description: 'Fallback Claude model used when the Claude provider runs without an explicit model. A per-run model selection overrides this.',
+    type: 'string',
+    options: [
+      { value: ClaudeModel.CLAUDE_OPUS_4_8, label: 'Claude Opus 4.8' },
+      { value: ClaudeModel.CLAUDE_OPUS_4_7, label: 'Claude Opus 4.7' },
+      { value: ClaudeModel.CLAUDE_SONNET_4_6, label: 'Claude Sonnet 4.6' },
+      { value: ClaudeModel.CLAUDE_HAIKU_4_5, label: 'Claude Haiku 4.5' },
+    ],
+  },
+  {
+    key: 'GOOGLE_API_KEY',
+    label: 'Google / Gemini API key',
+    description: 'API key for the Gemini provider — report generation and grounded (Google Search) responses.',
+    type: 'string',
+    secret: true,
+  },
+  {
+    key: 'ANTHROPIC_OAUTH_REFRESH_TOKEN',
+    label: 'Claude OAuth refresh token',
+    description: 'Long-lived Claude subscription refresh token (sk-ant-ort…). Exchanged on demand for short-lived access tokens; rotations persist to S3.',
+    type: 'string',
+    secret: true,
+  },
+  {
+    key: 'ANTHROPIC_OAUTH_TOKEN',
+    label: 'Claude OAuth static access token (fallback)',
+    description: 'Static Claude access token (sk-ant-oat…) used only if the refresh flow fails. Short-lived — for bootstrap / dev.',
+    type: 'string',
+    secret: true,
   },
 ];
 

@@ -1,6 +1,8 @@
+import { getAppConfigValue } from '@/lib/appConfig/appConfig';
 import { prisma } from '@/prisma';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
-import { GeminiModel, LLMProvider, getDefaultLLMProvider, getDefaultModelForProvider } from '@/types/llmConstants';
+import { GeminiModel, LLMProvider } from '@/types/llmConstants';
+import { getConfiguredDefaultModelForProvider, getConfiguredDefaultProvider } from '@/util/llm-default-config';
 import { getClaudeStructuredResult } from '@/util/claude/get-claude-structured-response';
 import $RefParser from '@apidevtools/json-schema-ref-parser';
 import { BaseChatModel } from '@langchain/core/language_models/chat_models';
@@ -86,7 +88,7 @@ export function validateData(schema: object, data: unknown): ValidationResult {
 /**
  * Initializes an LLM model based on provider and model name
  */
-function initializeLLM(provider: LLMProvider, modelName: GeminiModel): BaseChatModel {
+async function initializeLLM(provider: LLMProvider, modelName: GeminiModel): Promise<BaseChatModel> {
   if (provider !== LLMProvider.OPENAI && provider !== LLMProvider.GEMINI && provider !== LLMProvider.GEMINI_WITH_GROUNDING) {
     throw new Error(`Unsupported LLM provider: ${provider}`);
   }
@@ -98,7 +100,7 @@ function initializeLLM(provider: LLMProvider, modelName: GeminiModel): BaseChatM
   } else if (provider === LLMProvider.GEMINI || provider === LLMProvider.GEMINI_WITH_GROUNDING) {
     return new ChatGoogleGenerativeAI({
       model: modelName,
-      apiKey: process.env.GOOGLE_API_KEY,
+      apiKey: await getAppConfigValue('GOOGLE_API_KEY'),
       temperature: 1,
     });
   } else {
@@ -230,15 +232,17 @@ export function compileTemplate(template: string, inputData: Record<string, unkn
  */
 export async function getLLMResponse<Output>({
   invocationId,
-  llmProvider = getDefaultLLMProvider(),
+  llmProvider: providedProvider,
   modelName,
   prompt,
   outputSchema,
   maxRetries = 1,
   isTestInvocation,
 }: LLMResponseOptions): Promise<{ result: Output; sourceLinks?: Array<{ uri: string; title?: string }> }> {
-  // Resolve the model provider-aware so a claude provider never falls back to a Gemini id.
-  const resolvedModel = modelName || getDefaultModelForProvider(llmProvider);
+  // Per-run selection wins; otherwise use the App Settings default. Resolve the model
+  // provider-aware so a claude provider never falls back to a Gemini id.
+  const llmProvider = providedProvider ?? (await getConfiguredDefaultProvider());
+  const resolvedModel = modelName || (await getConfiguredDefaultModelForProvider(llmProvider));
   let lastResult: unknown | null = null;
   let sourceLinks: Array<{ uri: string; title?: string }> | undefined;
 
@@ -304,7 +308,7 @@ export async function getLLMResponse<Output>({
         result = singleCallGroundedResult;
       } else {
         // Initialize LLM for structured output
-        const llm = initializeLLM(llmProvider === LLMProvider.GEMINI_WITH_GROUNDING ? LLMProvider.GEMINI : llmProvider, resolvedModel as GeminiModel);
+        const llm = await initializeLLM(llmProvider === LLMProvider.GEMINI_WITH_GROUNDING ? LLMProvider.GEMINI : llmProvider, resolvedModel as GeminiModel);
         const structured = llm.withStructuredOutput(outputSchema);
 
         // Get response from LLM
@@ -357,9 +361,11 @@ export async function getLLMResponse<Output>({
 export async function getLLMResponseForPromptViaInvocation<Input, Output>(
   params: LLMResponseViaInvocationRequest<Input>
 ): Promise<LLMResponseObject<Input, Output>> {
-  const { promptKey, llmProvider = getDefaultLLMProvider(), spaceId, inputJson, bodyToAppend, requestFrom } = params;
-  // Resolve the model provider-aware so a claude provider never falls back to a Gemini id.
-  const model = params.model || getDefaultModelForProvider(llmProvider);
+  const { promptKey, llmProvider: providedProvider, spaceId, inputJson, bodyToAppend, requestFrom } = params;
+  // Per-run selection wins; otherwise use the App Settings default. Resolve the model
+  // provider-aware so a claude provider never falls back to a Gemini id.
+  const llmProvider = providedProvider ?? (await getConfiguredDefaultProvider());
+  const model = params.model || (await getConfiguredDefaultModelForProvider(llmProvider));
 
   // Validate required fields
   if (!promptKey) {
@@ -481,9 +487,11 @@ export async function getLLMResponseForPromptViaTestInvocation<Output>(
   params: LLMResponseViaTestInvocationRequest
 ): Promise<TestPromptInvocationResponse<Output>> {
   console.log('getLLMResponseForPromptViaTestInvocation', JSON.stringify(params, null, 2));
-  const { promptId, promptTemplate, llmProvider = getDefaultLLMProvider(), spaceId, bodyToAppend, inputJsonString } = params;
-  // Resolve the model provider-aware so a claude provider never falls back to a Gemini id.
-  const model = params.model || getDefaultModelForProvider(llmProvider);
+  const { promptId, promptTemplate, llmProvider: providedProvider, spaceId, bodyToAppend, inputJsonString } = params;
+  // Per-run selection wins; otherwise use the App Settings default. Resolve the model
+  // provider-aware so a claude provider never falls back to a Gemini id.
+  const llmProvider = providedProvider ?? (await getConfiguredDefaultProvider());
+  const model = params.model || (await getConfiguredDefaultModelForProvider(llmProvider));
 
   // Validate required fields
   if (!promptId || !promptTemplate) {

@@ -17,6 +17,7 @@
  * be tested in isolation before being wired into any workflow.
  */
 
+import { getAppConfigValue } from '@/lib/appConfig/appConfig';
 import { getClaudeAccessToken, invalidateClaudeAccessToken } from '@/util/claude/claude-token-provider';
 
 /** Anthropic rejects OAuth requests unless this is the first system block. */
@@ -138,8 +139,8 @@ export async function callClaudeWithOAuth(options: CallClaudeOAuthOptions): Prom
   }
 
   const model = options.model ?? DEFAULT_MODEL;
-  const baseUrl = (options.baseUrl ?? process.env.ANTHROPIC_BASE_URL ?? DEFAULT_BASE_URL).replace(/\/+$/, '');
-  const ccVersion = process.env.CLAUDE_CODE_VERSION ?? DEFAULT_CC_VERSION;
+  const baseUrl = (options.baseUrl ?? (await getAppConfigValue('ANTHROPIC_BASE_URL')) ?? DEFAULT_BASE_URL).replace(/\/+$/, '');
+  const ccVersion = (await getAppConfigValue('CLAUDE_CODE_VERSION')) ?? DEFAULT_CC_VERSION;
 
   // Identity block MUST come first; any caller-supplied system prompt follows it.
   const system: AnthropicTextBlock[] = [{ type: 'text', text: CLAUDE_CODE_IDENTITY }];

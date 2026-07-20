@@ -28,6 +28,7 @@
  * point. If this is ever scaled out, move the cache to a shared store.
  */
 
+import { getAppConfigValue } from '@/lib/appConfig/appConfig';
 import { GetObjectCommand, PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import { Readable } from 'stream';
 
@@ -37,9 +38,10 @@ const CLAUDE_OAUTH_CLIENT_ID = '9d1c250a-e61b-44d9-88ed-5944d1962f5e';
 /**
  * Claude Code OAuth token endpoint — note this is the platform host, NOT
  * api.anthropic.com (which serves the Messages API) and NOT
- * console.anthropic.com (which 404s). Overridable for tests via env.
+ * console.anthropic.com (which 404s). Overridable via the `ANTHROPIC_OAUTH_TOKEN_URL`
+ * app-config setting (App Settings screen); this is the fallback default.
  */
-const TOKEN_ENDPOINT = process.env.ANTHROPIC_OAUTH_TOKEN_URL ?? 'https://platform.claude.com/v1/oauth/token';
+const DEFAULT_TOKEN_ENDPOINT = 'https://platform.claude.com/v1/oauth/token';
 
 /** Refresh a bit BEFORE the real expiry so an in-flight request never races the cutover. */
 const EXPIRY_SKEW_MS = 5 * 60 * 1000;
@@ -157,14 +159,15 @@ async function candidateRefreshTokens(): Promise<string[]> {
 
   add(currentRefreshToken);
   add(await loadPersistedRefreshToken());
-  add(process.env.ANTHROPIC_OAUTH_REFRESH_TOKEN);
+  add(await getAppConfigValue('ANTHROPIC_OAUTH_REFRESH_TOKEN'));
 
   return candidates;
 }
 
 /** One exchange attempt. Caches the access token and persists any rotation on success. */
 async function exchangeRefreshToken(refreshToken: string): Promise<string> {
-  const response = await fetch(TOKEN_ENDPOINT, {
+  const tokenEndpoint = (await getAppConfigValue('ANTHROPIC_OAUTH_TOKEN_URL')) ?? DEFAULT_TOKEN_ENDPOINT;
+  const response = await fetch(tokenEndpoint, {
     method: 'POST',
     headers: { 'content-type': 'application/json', accept: 'application/json' },
     body: JSON.stringify({
@@ -254,7 +257,7 @@ export async function getClaudeAccessToken(forceRefresh = false): Promise<string
   } catch (err) {
     // No usable refresh token — fall back to a static access token if one is
     // configured (local dev / bootstrap), otherwise surface the refresh failure.
-    const staticToken = process.env.ANTHROPIC_OAUTH_TOKEN?.trim();
+    const staticToken = (await getAppConfigValue('ANTHROPIC_OAUTH_TOKEN'))?.trim();
     if (staticToken) {
       console.warn('[claude-token-provider] refresh failed; falling back to the static ANTHROPIC_OAUTH_TOKEN.', err);
       return staticToken;

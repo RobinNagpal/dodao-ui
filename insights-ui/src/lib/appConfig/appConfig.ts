@@ -16,6 +16,19 @@ import { fetchAllSsmParameters, isSsmConfigured, putSsmParameter } from './ssmPa
 const CACHE_TTL_MS = 60_000;
 const defaults = bundledDefaults as Record<string, string>;
 
+// Public-repo safeguard: a secret must NEVER carry a committed default value —
+// `appConfigDefaults.json` is checked into a public repo, so a default there would
+// leak the secret. Strip any that slip in and warn loudly. Secrets resolve from
+// SSM or env only.
+for (const def of APP_CONFIG_DEFINITIONS) {
+  if (def.secret && def.key in defaults) {
+    console.error(
+      `[appConfig] SECURITY: secret "${def.key}" has a bundled default in appConfigDefaults.json — ignoring it. Remove that value from the committed file.`
+    );
+    delete defaults[def.key];
+  }
+}
+
 let ssmCache: { values: Record<string, string>; expiresAt: number } | null = null;
 
 async function getSsmValues(): Promise<Record<string, string>> {
@@ -49,7 +62,10 @@ export async function getAppConfigBoolean(key: string): Promise<boolean> {
 export type AppConfigSource = 'ssm' | 'env' | 'default';
 
 export interface ResolvedAppSetting extends AppConfigDefinition {
+  /** Effective value. Always empty for secrets — their value is never sent to the client. */
   value: string;
+  /** Whether a non-empty value is currently configured (used to show set/not-set for secrets). */
+  isSet: boolean;
   /** Where the effective value came from. */
   source: AppConfigSource;
 }
@@ -60,13 +76,23 @@ export interface AppSettingsForAdmin {
   settings: ResolvedAppSetting[];
 }
 
-/** Every managed setting with its resolved value and where that value came from. */
+function resolveRaw(key: string, ssm: Record<string, string>): { value: string; source: AppConfigSource } {
+  if (ssm[key] !== undefined) return { value: ssm[key], source: 'ssm' };
+  if (process.env[key] !== undefined) return { value: process.env[key] as string, source: 'env' };
+  return { value: defaults[key] ?? '', source: 'default' };
+}
+
+/**
+ * Every managed setting with its resolved value and where that value came from.
+ * Admin-facing: secret values are redacted (never leave the server) — only their
+ * set/not-set state is reported.
+ */
 export async function getResolvedAppSettings(): Promise<ResolvedAppSetting[]> {
   const ssm = await getSsmValues();
   return APP_CONFIG_DEFINITIONS.map((def) => {
-    if (ssm[def.key] !== undefined) return { ...def, value: ssm[def.key], source: 'ssm' };
-    if (process.env[def.key] !== undefined) return { ...def, value: process.env[def.key] as string, source: 'env' };
-    return { ...def, value: defaults[def.key] ?? '', source: 'default' };
+    const { value, source } = resolveRaw(def.key, ssm);
+    const isSet = value.trim() !== '';
+    return { ...def, value: def.secret ? '' : value, isSet, source };
   });
 }
 
@@ -77,8 +103,16 @@ export interface UpdateAppSettingResult {
 
 /** Persist a managed value to SSM. Requires SSM to be configured. */
 export async function setAppConfigValue(key: string, value: string): Promise<UpdateAppSettingResult> {
-  if (!APP_CONFIG_DEFINITIONS.some((d) => d.key === key)) {
+  const def = APP_CONFIG_DEFINITIONS.find((d) => d.key === key);
+  if (!def) {
     return { success: false, message: `Unknown setting: ${key}` };
+  }
+  if (value === '') {
+    // SSM rejects empty values, and an empty secret would silently wipe a live key.
+    return { success: false, message: 'Value cannot be empty.' };
+  }
+  if (def.options && !def.options.some((o) => o.value === value)) {
+    return { success: false, message: `Invalid value for ${key}. Allowed: ${def.options.map((o) => o.value).join(', ')}` };
   }
   if (!isSsmConfigured()) {
     return {
@@ -88,7 +122,7 @@ export async function setAppConfigValue(key: string, value: string): Promise<Upd
     };
   }
   try {
-    await putSsmParameter(key, value);
+    await putSsmParameter(key, value, def.secret ?? false);
     ssmCache = null; // force a fresh read on next access
     return { success: true, message: `Saved ${key}` };
   } catch (err) {
