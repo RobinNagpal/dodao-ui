@@ -850,6 +850,9 @@ model TickerV1GenerationRequest {
   inProgressStep String?  @map("in_progress_step")
   completedSteps String[] @default([]) @map("completed_steps")
   failedSteps    String[] @default([]) @map("failed_steps")
+  // Failed steps that were already given their single retry. A step present in
+  // BOTH failedSteps and retriedSteps has failed twice and is terminal.
+  retriedSteps   String[] @default([]) @map("retried_steps")
 
   // Timestamps for tracking
   createdAt          DateTime  @default(now()) @map("created_at")

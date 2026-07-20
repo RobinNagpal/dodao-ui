@@ -1,6 +1,6 @@
 import { prisma } from '@/prisma';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
-import { GeminiModel, LLMProvider } from '@/types/llmConstants';
+import { ClaudeModel, GeminiModel, LLMProvider } from '@/types/llmConstants';
 import { GenerationRequestStatus, ReportType, TickerAnalysisCategory, TickerV1WithIndustryAndSubIndustry } from '@/types/ticker-typesv1';
 import {
   fetchAnalysisFactors,
@@ -445,7 +445,12 @@ export async function triggerGenerationOfAReportSimplified(symbol: string, excha
   await markAsInProgress(generationRequest, nextStep);
 
   if (nextStep === ReportType.COMPETITION) {
-    await generateCompetitionAnalysis(spaceId, tickerRecord, generationRequest.id, selection);
+    // Competition always runs on Claude Opus 4.8, regardless of the
+    // request-level provider/model (which still applies to every other section).
+    await generateCompetitionAnalysis(spaceId, tickerRecord, generationRequest.id, {
+      llmProvider: LLMProvider.CLAUDE,
+      model: ClaudeModel.CLAUDE_OPUS_4_8,
+    });
     return;
   }
 
