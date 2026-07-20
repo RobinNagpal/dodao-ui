@@ -30,10 +30,11 @@ function coerce<T extends string>(value: string | undefined, allowed: readonly T
 }
 
 /**
- * Parses a numeric App Settings override: a positive whole number wins; anything
- * else (`'auto'`, blank, 0, negative, non-numeric) means "use the mode's value"
- * and returns `fallback`. `'auto'` is the documented sentinel because the settings
- * store rejects empty values, so a value can't be cleared to blank.
+ * Parses an optional numeric App Settings override: a positive whole number wins;
+ * anything else (unset, blank, 0, negative, non-numeric) means "use the mode's
+ * value" and returns `fallback`. There is intentionally no default for these keys
+ * in `appConfigDefaults.json` — the mode preset in `auto-gen-config.ts` is the
+ * source of the default, and the override only applies when explicitly set.
  */
 export function resolvePositiveIntOverride(value: string | undefined, fallback: number): number {
   if (value === undefined) return fallback;
@@ -45,15 +46,15 @@ export async function getAutoGenMode(): Promise<AutoGenMode> {
   return coerce(await getAppConfigValue(AUTO_GEN_MODE_KEY), Object.values(AutoGenMode), DEFAULT_AUTO_GEN_MODE);
 }
 
-export async function getAutoGenModePreset(): Promise<AutoGenModePreset> {
+async function getAutoGenModePreset(): Promise<AutoGenModePreset> {
   return AUTO_GEN_MODE_PRESETS[await getAutoGenMode()];
 }
 
 /**
  * Effective throughput = the selected mode's preset, with each value optionally
  * overridden by its own App Setting (`AUTOMATED_GENERATION_BATCH_SIZE` /
- * `..._FREQUENCY_MINUTES`). An override set to `'auto'` (the default) falls back to
- * the mode's value, so admins can tune the exact numbers at runtime or defer to the
+ * `..._FREQUENCY_MINUTES`). When an override is unset (the normal case) the mode's
+ * value is used, so admins can tune the exact numbers at runtime or just pick a
  * mode. Shared by the stock and ETF jobs.
  */
 export async function getAutoGenThroughput(): Promise<AutoGenModePreset> {

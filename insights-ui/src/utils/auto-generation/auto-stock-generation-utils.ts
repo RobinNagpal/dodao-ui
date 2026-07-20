@@ -17,14 +17,16 @@ import { getOldestStocksOverall } from '@/utils/oldest-reports-utils';
 /**
  * Claude-usage-gated stock report auto-generation (enqueue side).
  *
- * A cron hits the `enqueue-auto-stock-generation` route every few minutes, 24/7.
- * Each call is gated by the App Settings controls: the GENERATION_ENTITY must
- * include stocks, the current ET time must fall inside the selected
- * GENERATION_WINDOW, no auto batch may be open, the mode's frequency cooldown must
- * have elapsed since the last batch, and the shared Claude usage gates must pass.
- * When all pass it creates one batch (the mode's batch size) of generate-all
- * requests for the oldest stocks. The existing ~3-min processor then generates
- * them normally. The mode drives BOTH how many per batch and how often batches run.
+ * Called every few minutes by the `/auto-generation/tick` dispatcher (and by the
+ * `enqueue-auto-stock-generation` route for manual runs). Each call is gated by the
+ * App Settings controls: the GENERATION_ENTITY must include stocks, the current ET
+ * time must fall inside the selected GENERATION_WINDOW, no auto batch may be open,
+ * the effective frequency cooldown must have elapsed since the last batch, and the
+ * shared Claude usage gates must pass. When all pass it creates one batch (the
+ * effective batch size) of generate-all requests for the oldest stocks. The
+ * existing ~3-min processor then generates them normally. The mode drives BOTH how
+ * many per batch and how often batches run (each optionally overridden in App
+ * Settings).
  */
 
 /**

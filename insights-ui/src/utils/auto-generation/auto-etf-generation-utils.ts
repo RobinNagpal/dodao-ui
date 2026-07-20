@@ -19,12 +19,13 @@ import { ensureMorDataForAnalysis } from '@/utils/etf-analysis-reports/mor-scrap
  * Claude-usage-gated ETF report auto-generation (enqueue side).
  *
  * Mirrors the stock auto-generation job (`enqueueAutoStockGenerationBatch`) and
- * reuses the same Claude usage gates. The difference is the selection: instead of
- * the OLDEST already-generated reports, this picks ETFs whose reports have NOT
- * been generated/tried yet, prioritized by country — US first, then Canada, then
- * everything else. A cron hits the `enqueue-auto-etf-generation` route on a
- * schedule; the existing ~3-min `generate-etf-v1-request` processor then generates
- * whatever this enqueues.
+ * reuses the same gates. The difference is the selection: instead of the OLDEST
+ * already-generated reports, this picks ETFs whose reports have NOT been
+ * generated/tried yet, prioritized by country — US first, then Canada, then
+ * everything else. Called every few minutes by the `/auto-generation/tick`
+ * dispatcher (and by the `enqueue-auto-etf-generation` route for manual runs); the
+ * existing ~3-min `generate-etf-v1-request` processor then generates whatever this
+ * enqueues.
  */
 
 const US_EXCHANGES: string[] = Object.values(EtfUSExchanges);

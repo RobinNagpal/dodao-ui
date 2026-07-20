@@ -224,10 +224,10 @@ export const APP_CONFIG_DEFINITIONS: AppConfigDefinition[] = [
     key: 'AUTOMATED_GENERATION_BATCH_SIZE',
     label: 'Automated generation batch size (override)',
     description:
-      `Reports created per batch, shared by the stock and ETF jobs. Set a positive whole number to override the selected mode, or "auto" to use the mode's value ` +
+      `Optional override for reports created per batch, shared by the stock and ETF jobs. Leave blank to use the selected mode's value ` +
       `(Low ${AUTO_GEN_MODE_PRESETS[AutoGenMode.Low].batchSize}, Medium ${AUTO_GEN_MODE_PRESETS[AutoGenMode.Medium].batchSize}, High ${
         AUTO_GEN_MODE_PRESETS[AutoGenMode.High].batchSize
-      }).`,
+      }); set a positive whole number to override it.`,
     type: 'string',
     group: 'auto-generation',
   },
@@ -235,12 +235,12 @@ export const APP_CONFIG_DEFINITIONS: AppConfigDefinition[] = [
     key: 'AUTOMATED_GENERATION_FREQUENCY_MINUTES',
     label: 'Automated generation frequency — minutes between batches (override)',
     description:
-      `Minimum minutes between one batch finishing and the next starting, shared by the stock and ETF jobs. Set a positive whole number to override the selected ` +
-      `mode, or "auto" to use the mode's value (Low ${AUTO_GEN_MODE_PRESETS[AutoGenMode.Low].minMinutesBetweenBatches}, Medium ${
+      `Optional override for the minimum minutes between one batch finishing and the next starting, shared by the stock and ETF jobs. Leave blank to use the ` +
+      `selected mode's value (Low ${AUTO_GEN_MODE_PRESETS[AutoGenMode.Low].minMinutesBetweenBatches}, Medium ${
         AUTO_GEN_MODE_PRESETS[AutoGenMode.Medium].minMinutesBetweenBatches
       }, High ${
         AUTO_GEN_MODE_PRESETS[AutoGenMode.High].minMinutesBetweenBatches
-      }). The infra heartbeat polls every 5 min, so values below 5 are effectively 5.`,
+      }); set a positive whole number to override it. The infra heartbeat polls every 5 min, so values below 5 are effectively 5.`,
     type: 'string',
     group: 'auto-generation',
   },
