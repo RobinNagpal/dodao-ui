@@ -36,6 +36,9 @@ export interface TickerV1GenerationRequestWithTicker extends TickerV1GenerationR
     symbol: string;
     exchange: string;
     name: string;
+    cachedScoreEntry: {
+      finalScore: number;
+    } | null;
     industry: {
       name: string;
       industryKey: string;
@@ -84,6 +87,11 @@ async function getRequests(status: GenerationRequestStatus, skip: number = 0, ta
           symbol: true,
           exchange: true,
           name: true,
+          cachedScoreEntry: {
+            select: {
+              finalScore: true,
+            },
+          },
           industry: {
             select: {
               name: true,

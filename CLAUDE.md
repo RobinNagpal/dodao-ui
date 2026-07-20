@@ -4,6 +4,8 @@
 
 Development workflow guidelines for the DoDAO UI monorepo. For full architecture and project context, see [docs/README.md](docs/README.md).
 
+**Default project: `insights-ui` (KoalaGains).** If a task does not specify which project it is about, treat it as an `insights-ui` task. In that case, **before doing anything else, load and use the `insights-ui` knowledge base** — read [`docs/insights-ui/README.md`](docs/insights-ui/README.md) and the relevant subarea docs (ETF pipeline, prompts, tariffs, leaf-component system, etc.) — and scope all commands (`yarn lint`, `yarn prettier-check`, `yarn compile`, etc.), code searches, and doc lookups to `insights-ui`. Only broaden to another project when the task explicitly names one.
+
 ## Required Workflow (Before and After Coding)
 
 ### 1) Run Code Quality Checks
@@ -259,6 +261,7 @@ Use **`docs/insights-ui/`** for topical reference docs about Insights-UI subsyst
 
 ### How to Use the Knowledge Base
 
+0. **When no project is specified:** Default to `insights-ui` and load its knowledge base first — start at [`docs/insights-ui/README.md`](docs/insights-ui/README.md) and read the subarea docs relevant to the task before writing any code.
 1. **Before coding:** Read relevant `code-knowledge` docs
 2. **Before implementing a feature:** Review the project’s `features/`, `requirements.md`, and `todos.md`
 3. **When planning work:** Add detailed plans to `todos/` and update `todos.md`

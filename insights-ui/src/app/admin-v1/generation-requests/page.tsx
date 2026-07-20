@@ -1,233 +1,32 @@
 'use client';
 
 import AdminNav from '@/app/admin-v1/AdminNav';
-import { GenerationRequestsResponse, TickerIdentifier, TickerV1GenerationRequestWithTicker } from '@/app/api/[spaceId]/tickers-v1/generation-requests/route';
-import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
+import { GenerationRequestWithFlags } from '@/app/admin-v1/generation-requests/GenerationRequestsTable';
+import ReloadRequestModal from '@/app/admin-v1/generation-requests/ReloadRequestModal';
+import RequestsSection from '@/app/admin-v1/generation-requests/RequestsSection';
+import StatusLegend from '@/app/admin-v1/generation-requests/StatusLegend';
+import { GenerationRequestsResponse, TickerIdentifier } from '@/app/api/[spaceId]/tickers-v1/generation-requests/route';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useGenerateReports } from '@/hooks/useGenerateReports';
-import { GenerationRequestStatus, ReportType } from '@/types/ticker-typesv1';
-import { calculatePendingSteps } from '@/utils/analysis-reports/report-steps-statuses';
+import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
+import { ReportType } from '@/types/ticker-typesv1';
 import Button from '@dodao/web-core/components/core/buttons/Button';
-import FullScreenModal from '@dodao/web-core/components/core/modals/FullScreenModal';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { ArrowPathIcon, PauseIcon, PlayIcon } from '@heroicons/react/24/outline';
-import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 
-/** Canonical list of flags we render */
-type GenerationReportFields = keyof Pick<
-  TickerV1GenerationRequestWithTicker,
-  | 'regenerateCompetition'
-  | 'regenerateFinancialAnalysis'
-  | 'regenerateBusinessAndMoat'
-  | 'regeneratePastPerformance'
-  | 'regenerateFutureGrowth'
-  | 'regenerateFairValue'
-  | 'regenerateManagementTeam'
-  | 'regenerateFinalSummary'
->;
-const REGENERATE_FIELDS = [
-  'regenerateCompetition',
-  'regenerateFinancialAnalysis',
-  'regenerateBusinessAndMoat',
-  'regeneratePastPerformance',
-  'regenerateFutureGrowth',
-  'regenerateFairValue',
-  'regenerateManagementTeam',
-  'regenerateFinalSummary',
-] as GenerationReportFields[];
-
-type RegenerateField = (typeof REGENERATE_FIELDS)[number];
-
-type GenerationRequestWithFlags = TickerV1GenerationRequestWithTicker;
-
-const FIELD_LABELS: Record<GenerationReportFields, string> = {
-  regenerateCompetition: 'Competition',
-  regenerateFinancialAnalysis: 'Financial Analysis',
-  regenerateBusinessAndMoat: 'Business & Moat',
-  regeneratePastPerformance: 'Past Perf.',
-  regenerateFutureGrowth: 'Future Growth',
-  regenerateFairValue: 'Fair Value',
-  regenerateManagementTeam: 'Management Team',
-  regenerateFinalSummary: 'Summary/Meta/About',
-};
-
-const FIELD_TO_STEP_MAP: Record<RegenerateField, ReportType> = {
-  regenerateCompetition: ReportType.COMPETITION,
-  regenerateFinancialAnalysis: ReportType.FINANCIAL_ANALYSIS,
-  regenerateBusinessAndMoat: ReportType.BUSINESS_AND_MOAT,
-  regeneratePastPerformance: ReportType.PAST_PERFORMANCE,
-  regenerateFutureGrowth: ReportType.FUTURE_GROWTH,
-  regenerateFairValue: ReportType.FAIR_VALUE,
-  regenerateManagementTeam: ReportType.MANAGEMENT_TEAM,
-  regenerateFinalSummary: ReportType.FINAL_SUMMARY,
-};
-
-interface StatusDotProps {
-  isEnabled: boolean;
-  stepName: ReportType;
-  completedSteps: ReportType[];
-  failedSteps: ReportType[];
-  pendingSteps: ReportType[];
-  inProgressStep?: ReportType | null;
-}
-
-function StatusDot({ isEnabled, stepName, completedSteps, failedSteps, inProgressStep }: StatusDotProps): JSX.Element {
-  if (!isEnabled) return <div className="w-3 h-3 rounded-full bg-gray-400" title="Not enabled" />;
-  if (failedSteps.includes(stepName)) return <div className="w-3 h-3 rounded-full bg-red-500" title="Failed" />;
-  if (completedSteps.includes(stepName)) return <div className="w-3 h-3 rounded-full bg-green-500" title="Completed" />;
-  if (inProgressStep && inProgressStep === stepName) return <div className="w-3 h-3 rounded-full bg-yellow-500 animate-pulse" title="In Progress" />;
-
-  return <div className="w-3 h-3 rounded-full bg-blue-500" title="Pending" />;
-}
-
 const REFRESH_SECONDS: number = 30;
+const PAGE_SIZE: number = 15;
 
-/** ---------- helpers ---------- */
+type Pagination = { skip: number; take: number };
+const INITIAL_PAGINATION: Pagination = { skip: 0, take: PAGE_SIZE };
 
-interface SectionHeaderProps {
-  title: string;
-  count: number;
-  totalCount: number;
-  onShowMore?: () => void;
-  hasMore: boolean;
-}
-
-function SectionHeader({ title, count, totalCount, onShowMore, hasMore }: SectionHeaderProps): JSX.Element {
-  return (
-    <div className="flex items-baseline justify-between mb-2">
-      <h3 className="text-xl font-semibold">{title}</h3>
-      <div className="flex items-center gap-4">
-        <span className="text-sm text-gray-400">
-          Showing {count} of {totalCount} • {totalCount} total item{totalCount === 1 ? '' : 's'}
-        </span>
-        {hasMore && onShowMore && (
-          <Button onClick={onShowMore} variant="text" className="text-blue-400 hover:text-blue-300">
-            Show More
-          </Button>
-        )}
-      </div>
-    </div>
-  );
-}
-
-interface RequestsTableProps {
-  rows: GenerationRequestWithFlags[];
-  regenerateFields: RegenerateField[];
-  onReloadRequest: (request: GenerationRequestWithFlags) => void;
-}
-
-function RequestsTable({ rows, regenerateFields, onReloadRequest }: RequestsTableProps): JSX.Element {
-  return (
-    <div className="overflow-x-auto">
-      <table className="min-w-full divide-y divide-gray-200">
-        <thead className="bg-gray-700">
-          <tr>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider sticky left-0 bg-gray-700 z-10">Ticker</th>
-            <th className="px-6 py-3 text-xs font-medium text-gray-300 uppercase tracking-wider">Industry</th>
-            {regenerateFields.map((field: RegenerateField) => (
-              <th key={field} className="px-6 py-3 text-xs font-medium text-gray-300 uppercase tracking-wider">
-                {FIELD_LABELS[field]}
-              </th>
-            ))}
-            <th className="px-6 py-3 text-xs font-medium text-gray-300 uppercase tracking-wider">Status</th>
-            <th className="px-6 py-3 text-xs font-medium text-gray-300 uppercase tracking-wider">Updated At</th>
-            <th className="px-6 py-3 text-xs font-medium text-gray-300 uppercase tracking-wider">Actions</th>
-          </tr>
-        </thead>
-        <tbody className="bg-gray-800 divide-y divide-gray-700">
-          {rows.map((latestRequest: GenerationRequestWithFlags) => {
-            const exchange: string = latestRequest.ticker.exchange;
-            const symbol: string = latestRequest.ticker.symbol;
-            const completedSteps: ReportType[] = (latestRequest.completedSteps as ReportType[] | undefined) ?? [];
-            const failedSteps: ReportType[] = (latestRequest.failedSteps as ReportType[] | undefined) ?? [];
-            const isFailed: boolean = latestRequest.status === GenerationRequestStatus.Failed;
-            const inProgressStep: ReportType | null = (latestRequest.inProgressStep as ReportType | undefined) ?? null;
-            const pendingSteps: ReportType[] = calculatePendingSteps(latestRequest) || [];
-            return (
-              <tr key={latestRequest.id}>
-                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium sticky left-0 bg-gray-800 z-10 link-color">
-                  <Link href={`/stocks/${exchange}/${symbol}`} target="_blank">
-                    <div className="flex items-center gap-2">
-                      <span className="font-semibold">{symbol}</span>
-                      <span className="text-blue-400 text-xs">({exchange})</span>
-                    </div>
-                    <div className="text-xs text-gray-400">{latestRequest.ticker.name}</div>
-                  </Link>
-                  <div className="text-[11px] text-gray-500 mt-1 whitespace-nowrap" title="LLM provider · model used for this request">
-                    {latestRequest.llmProvider || latestRequest.llmModel
-                      ? `${latestRequest.llmProvider ?? '—'} · ${latestRequest.llmModel ?? '—'}`
-                      : 'default LLM'}
-                  </div>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm">
-                  <div className="text-xs text-gray-400">
-                    {latestRequest.ticker.industry?.name || 'Unknown Industry'}
-                    <br />
-                    {latestRequest.ticker.subIndustry?.name || 'Unknown Sub-Industry'}
-                  </div>
-                </td>
-                {regenerateFields.map((field: RegenerateField) => {
-                  const stepName = FIELD_TO_STEP_MAP[field];
-                  return (
-                    <td key={`${symbol}-${field}`} className="px-6 py-4 whitespace-nowrap text-sm text-center">
-                      <div className="flex justify-center">
-                        <StatusDot
-                          isEnabled={Boolean(latestRequest[field])}
-                          stepName={stepName}
-                          completedSteps={completedSteps}
-                          failedSteps={failedSteps}
-                          inProgressStep={inProgressStep}
-                          pendingSteps={pendingSteps}
-                        />
-                      </div>
-                    </td>
-                  );
-                })}
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-center">
-                  <span
-                    className={`px-2 py-1 rounded-full text-xs ${
-                      latestRequest.status === GenerationRequestStatus.InProgress
-                        ? 'bg-blue-900 text-blue-200'
-                        : latestRequest.status === GenerationRequestStatus.NotStarted
-                        ? 'bg-gray-700 text-gray-200'
-                        : latestRequest.status === GenerationRequestStatus.Failed
-                        ? 'bg-red-900 text-red-200'
-                        : 'bg-green-900 text-green-200'
-                    }`}
-                  >
-                    {latestRequest.status}
-                  </span>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-center">
-                  {new Date(latestRequest.updatedAt || latestRequest.createdAt).toLocaleString()}
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-center">
-                  {isFailed && failedSteps.length > 0 && (
-                    <button
-                      onClick={() => onReloadRequest(latestRequest)}
-                      className="text-blue-400 hover:text-blue-300 transition-colors"
-                      title="Reload failed request"
-                    >
-                      <ArrowPathIcon className="w-5 h-5" />
-                    </button>
-                  )}
-                </td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
-    </div>
-  );
-}
-
-/** ---------- component ---------- */
 export default function GenerationRequestsPage(): JSX.Element {
-  const [inProgressPagination, setInProgressPagination] = useState<{ skip: number; take: number }>({ skip: 0, take: 15 });
-  const [failedPagination, setFailedPagination] = useState<{ skip: number; take: number }>({ skip: 0, take: 15 });
-  const [notStartedPagination, setNotStartedPagination] = useState<{ skip: number; take: number }>({ skip: 0, take: 15 });
-  const [completedPagination, setCompletedPagination] = useState<{ skip: number; take: number }>({ skip: 0, take: 15 });
+  const [inProgressPagination, setInProgressPagination] = useState<Pagination>(INITIAL_PAGINATION);
+  const [failedPagination, setFailedPagination] = useState<Pagination>(INITIAL_PAGINATION);
+  const [notStartedPagination, setNotStartedPagination] = useState<Pagination>(INITIAL_PAGINATION);
+  const [completedPagination, setCompletedPagination] = useState<Pagination>(INITIAL_PAGINATION);
 
   const [accumulatedInProgress, setAccumulatedInProgress] = useState<GenerationRequestWithFlags[]>([]);
   const [accumulatedFailed, setAccumulatedFailed] = useState<GenerationRequestWithFlags[]>([]);
@@ -272,6 +71,17 @@ export default function GenerationRequestsPage(): JSX.Element {
   const [selectedRequest, setSelectedRequest] = useState<GenerationRequestWithFlags | null>(null);
   const [isPaused, setIsPaused] = useState<boolean>(false);
 
+  function resetPagination(): void {
+    setInProgressPagination(INITIAL_PAGINATION);
+    setFailedPagination(INITIAL_PAGINATION);
+    setNotStartedPagination(INITIAL_PAGINATION);
+    setCompletedPagination(INITIAL_PAGINATION);
+    setAccumulatedInProgress([]);
+    setAccumulatedFailed([]);
+    setAccumulatedNotStarted([]);
+    setAccumulatedCompleted([]);
+  }
+
   function handleManualRefresh(): void {
     resetPagination();
     reFetchData();
@@ -282,29 +92,9 @@ export default function GenerationRequestsPage(): JSX.Element {
     setIsPaused((prev) => !prev);
   }
 
-  function handleLoadMoreInProgress(): void {
-    setInProgressPagination((prev) => ({ skip: prev.skip + prev.take, take: prev.take }));
-  }
-  function handleLoadMoreFailed(): void {
-    setFailedPagination((prev) => ({ skip: prev.skip + prev.take, take: prev.take }));
-  }
-  function handleLoadMoreNotStarted(): void {
-    setNotStartedPagination((prev) => ({ skip: prev.skip + prev.take, take: prev.take }));
-  }
-  function handleLoadMoreCompleted(): void {
-    setCompletedPagination((prev) => ({ skip: prev.skip + prev.take, take: prev.take }));
-  }
-
-  function resetPagination(): void {
-    setInProgressPagination({ skip: 0, take: 15 });
-    setFailedPagination({ skip: 0, take: 15 });
-    setNotStartedPagination({ skip: 0, take: 15 });
-    setCompletedPagination({ skip: 0, take: 15 });
-    setAccumulatedInProgress([]);
-    setAccumulatedFailed([]);
-    setAccumulatedNotStarted([]);
-    setAccumulatedCompleted([]);
-  }
+  const loadMore = (setPagination: React.Dispatch<React.SetStateAction<Pagination>>) => (): void => {
+    setPagination((prev) => ({ skip: prev.skip + prev.take, take: prev.take }));
+  };
 
   function handleReloadRequest(request: GenerationRequestWithFlags): void {
     setSelectedRequest(request);
@@ -365,12 +155,8 @@ export default function GenerationRequestsPage(): JSX.Element {
     return () => clearInterval(timerId);
   }, [hasActive, isPaused, reFetchData]);
 
-  const inProgressRows: GenerationRequestWithFlags[] = accumulatedInProgress;
-  const notStartedRows: GenerationRequestWithFlags[] = accumulatedNotStarted;
-  const failedRows: GenerationRequestWithFlags[] = accumulatedFailed;
-  const completedRows: GenerationRequestWithFlags[] = accumulatedCompleted;
-
-  const regenerateFields: GenerationReportFields[] = REGENERATE_FIELDS;
+  const counts = data?.counts;
+  const activeCount: number = (counts?.inProgress ?? 0) + (counts?.notStarted ?? 0);
 
   return (
     <div className="mt-12 px-4 text-color">
@@ -411,132 +197,68 @@ export default function GenerationRequestsPage(): JSX.Element {
         </div>
       </div>
 
-      {/* Legend */}
-      <div className="p-2 bg-gray-800 rounded-lg mb-4">
-        <div className="flex items-center gap-6 text-sm">
-          <span className="font-semibold">Legend:</span>
-          <div className="flex items-center gap-2">
-            <div className="w-3 h-3 rounded-full bg-gray-400" />
-            <span>Not Enabled</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <div className="w-3 h-3 rounded-full bg-blue-500" />
-            <span>Pending</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <div className="w-3 h-3 rounded-full bg-green-500" />
-            <span>Completed</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <div className="w-3 h-3 rounded-full bg-red-500" />
-            <span>Failed</span>
-          </div>
-        </div>
-      </div>
+      <StatusLegend />
 
-      {/* Sections */}
-      <div className="mb-6">
-        <div className="bg-gray-800 border border-blue-500 rounded-lg p-4">
-          <SectionHeader
+      <Tabs defaultValue="active">
+        <TabsList className="mb-4">
+          <TabsTrigger value="active">In Progress &amp; Not Started ({activeCount})</TabsTrigger>
+          <TabsTrigger value="failed">Failed ({counts?.failed ?? 0})</TabsTrigger>
+          <TabsTrigger value="completed">Completed ({counts?.completed ?? 0})</TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="active" className="flex flex-col gap-4">
+          <RequestsSection
             title="In Progress Requests"
-            count={inProgressRows.length}
-            totalCount={data?.counts?.inProgress || inProgressRows.length}
-            onShowMore={handleLoadMoreInProgress}
-            hasMore={inProgressRows.length < (data?.counts?.inProgress || 0)}
+            tone="blue"
+            rows={accumulatedInProgress}
+            totalCount={counts?.inProgress ?? accumulatedInProgress.length}
+            loading={loading}
+            onShowMore={loadMore(setInProgressPagination)}
+            onReloadRequest={handleReloadRequest}
           />
-          {loading && inProgressRows.length === 0 ? (
-            <div className="py-8">Loading generation requests...</div>
-          ) : inProgressRows.length === 0 ? (
-            <div className="py-4">No In Progress requests.</div>
-          ) : (
-            <RequestsTable rows={inProgressRows} regenerateFields={regenerateFields} onReloadRequest={handleReloadRequest} />
-          )}
-        </div>
-      </div>
-
-      <div className="mb-6">
-        <div className="bg-gray-800 border border-gray-500 rounded-lg p-4">
-          <SectionHeader
+          <RequestsSection
             title="Not Started Requests"
-            count={notStartedRows.length}
-            totalCount={data?.counts?.notStarted || notStartedRows.length}
-            onShowMore={handleLoadMoreNotStarted}
-            hasMore={notStartedRows.length < (data?.counts?.notStarted || 0)}
+            tone="gray"
+            rows={accumulatedNotStarted}
+            totalCount={counts?.notStarted ?? accumulatedNotStarted.length}
+            loading={loading}
+            onShowMore={loadMore(setNotStartedPagination)}
+            onReloadRequest={handleReloadRequest}
           />
-          {loading && notStartedRows.length === 0 ? (
-            <div className="py-8">Loading generation requests...</div>
-          ) : notStartedRows.length === 0 ? (
-            <div className="py-4">No Not Started requests.</div>
-          ) : (
-            <RequestsTable rows={notStartedRows} regenerateFields={regenerateFields} onReloadRequest={handleReloadRequest} />
-          )}
-        </div>
-      </div>
+        </TabsContent>
 
-      <div className="mb-6">
-        <div className="bg-gray-800 border border-red-500 rounded-lg p-4">
-          <SectionHeader
+        <TabsContent value="failed">
+          <RequestsSection
             title="Failed Requests"
-            count={failedRows.length}
-            totalCount={data?.counts?.failed || failedRows.length}
-            onShowMore={handleLoadMoreFailed}
-            hasMore={failedRows.length < (data?.counts?.failed || 0)}
+            tone="red"
+            rows={accumulatedFailed}
+            totalCount={counts?.failed ?? accumulatedFailed.length}
+            loading={loading}
+            onShowMore={loadMore(setFailedPagination)}
+            onReloadRequest={handleReloadRequest}
           />
-          {loading && failedRows.length === 0 ? (
-            <div className="py-8">Loading generation requests...</div>
-          ) : failedRows.length === 0 ? (
-            <div className="py-4">No Failed requests.</div>
-          ) : (
-            <RequestsTable rows={failedRows} regenerateFields={regenerateFields} onReloadRequest={handleReloadRequest} />
-          )}
-        </div>
-      </div>
+        </TabsContent>
 
-      <div className="mb-6">
-        <div className="bg-gray-800 border border-green-500 rounded-lg p-4">
-          <SectionHeader
+        <TabsContent value="completed">
+          <RequestsSection
             title="Completed Requests"
-            count={completedRows.length}
-            totalCount={data?.counts?.completed || completedRows.length}
-            onShowMore={handleLoadMoreCompleted}
-            hasMore={completedRows.length < (data?.counts?.completed || 0)}
+            tone="green"
+            rows={accumulatedCompleted}
+            totalCount={counts?.completed ?? accumulatedCompleted.length}
+            loading={loading}
+            onShowMore={loadMore(setCompletedPagination)}
+            onReloadRequest={handleReloadRequest}
           />
-          {loading && completedRows.length === 0 ? (
-            <div className="py-8">Loading generation requests...</div>
-          ) : completedRows.length === 0 ? (
-            <div className="py-4">No Completed requests.</div>
-          ) : (
-            <RequestsTable rows={completedRows} regenerateFields={regenerateFields} onReloadRequest={handleReloadRequest} />
-          )}
-        </div>
-      </div>
+        </TabsContent>
+      </Tabs>
 
-      {/* Reload Modal */}
-      <FullScreenModal open={showReloadModal} onClose={handleCloseModal} title="Reload Generation Request">
-        <div className="p-4">
-          {selectedRequest && (
-            <>
-              <p className="mb-4">
-                How would you like to reload the generation request for{' '}
-                <strong>
-                  {selectedRequest.ticker.symbol} <span className="text-blue-400">({selectedRequest.ticker.exchange})</span>
-                </strong>
-                ?
-              </p>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
-                <Button variant="contained" onClick={handleReloadFailedPartsOnly} className="w-full">
-                  Reload Failed Parts Only ({selectedRequest.failedSteps?.length || 0} steps)
-                </Button>
-
-                <Button variant="outlined" onClick={handleReloadFullRequest} className="w-full">
-                  Reload Full Request
-                </Button>
-              </div>
-            </>
-          )}
-        </div>
-      </FullScreenModal>
+      <ReloadRequestModal
+        open={showReloadModal}
+        request={selectedRequest}
+        onClose={handleCloseModal}
+        onReloadFailedPartsOnly={handleReloadFailedPartsOnly}
+        onReloadFullRequest={handleReloadFullRequest}
+      />
     </div>
   );
 }
