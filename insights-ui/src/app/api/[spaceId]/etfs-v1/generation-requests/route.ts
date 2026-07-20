@@ -4,6 +4,7 @@ import { KoalaGainsJwtTokenPayload } from '@/types/auth';
 import { LLMProvider } from '@/types/llmConstants';
 import { EtfGenerationRequestStatus, EtfReportType } from '@/types/etf/etf-analysis-types';
 import { ensureMorDataForAnalysis } from '@/utils/etf-analysis-reports/mor-scrape-utils';
+import { upsertEtfGenerationRequest } from '@/utils/etf-analysis-reports/etf-generation-request-utils';
 import { calculateEtfPendingSteps } from '@/utils/etf-analysis-reports/etf-report-steps-statuses';
 import { EtfGenerationRequest } from '@prisma/client';
 import { NextRequest } from 'next/server';
@@ -202,50 +203,21 @@ async function postHandler(
       });
     }
 
-    const existingRequest = await prisma.etfGenerationRequest.findFirst({
-      where: {
-        etfId: etfRecord.id,
-        status: EtfGenerationRequestStatus.NotStarted,
+    const result = await upsertEtfGenerationRequest({
+      etfId: etfRecord.id,
+      spaceId,
+      flags: {
+        regeneratePerformanceAndReturns: regenerateOptions.regeneratePerformanceAndReturns,
+        regenerateCostEfficiencyAndTeam: regenerateOptions.regenerateCostEfficiencyAndTeam,
+        regenerateRiskAnalysis: regenerateOptions.regenerateRiskAnalysis,
+        regenerateFuturePerformanceOutlook: regenerateOptions.regenerateFuturePerformanceOutlook ?? true,
+        regenerateKeyFacts: regenerateOptions.regenerateKeyFacts ?? true,
+        regenerateCompetition: regenerateOptions.regenerateCompetition ?? true,
+        regenerateFinalSummary: regenerateOptions.regenerateFinalSummary ?? true,
       },
-      orderBy: { createdAt: 'desc' },
+      llmProvider: payload.llmProvider,
+      llmModel: payload.llmModel,
     });
-
-    let result: EtfGenerationRequest;
-
-    if (existingRequest) {
-      result = await prisma.etfGenerationRequest.update({
-        where: { id: existingRequest.id },
-        data: {
-          regeneratePerformanceAndReturns: regenerateOptions.regeneratePerformanceAndReturns || existingRequest.regeneratePerformanceAndReturns,
-          regenerateCostEfficiencyAndTeam: regenerateOptions.regenerateCostEfficiencyAndTeam || existingRequest.regenerateCostEfficiencyAndTeam,
-          regenerateRiskAnalysis: regenerateOptions.regenerateRiskAnalysis || existingRequest.regenerateRiskAnalysis,
-          regenerateFuturePerformanceOutlook: regenerateOptions.regenerateFuturePerformanceOutlook || existingRequest.regenerateFuturePerformanceOutlook,
-          regenerateKeyFacts: regenerateOptions.regenerateKeyFacts || existingRequest.regenerateKeyFacts,
-          regenerateCompetition: regenerateOptions.regenerateCompetition || existingRequest.regenerateCompetition,
-          regenerateFinalSummary: regenerateOptions.regenerateFinalSummary || existingRequest.regenerateFinalSummary,
-          // A newly-supplied provider/model overrides the pending request; otherwise keep the existing choice.
-          llmProvider: payload.llmProvider ?? existingRequest.llmProvider,
-          llmModel: payload.llmModel ?? existingRequest.llmModel,
-          updatedAt: new Date(),
-        },
-      });
-    } else {
-      result = await prisma.etfGenerationRequest.create({
-        data: {
-          etfId: etfRecord.id,
-          spaceId,
-          regeneratePerformanceAndReturns: regenerateOptions.regeneratePerformanceAndReturns,
-          regenerateCostEfficiencyAndTeam: regenerateOptions.regenerateCostEfficiencyAndTeam,
-          regenerateRiskAnalysis: regenerateOptions.regenerateRiskAnalysis,
-          regenerateFuturePerformanceOutlook: regenerateOptions.regenerateFuturePerformanceOutlook ?? true,
-          regenerateKeyFacts: regenerateOptions.regenerateKeyFacts ?? true,
-          regenerateCompetition: regenerateOptions.regenerateCompetition ?? true,
-          regenerateFinalSummary: regenerateOptions.regenerateFinalSummary ?? true,
-          llmProvider: payload.llmProvider ?? null,
-          llmModel: payload.llmModel ?? null,
-        },
-      });
-    }
 
     results.push(result);
   }

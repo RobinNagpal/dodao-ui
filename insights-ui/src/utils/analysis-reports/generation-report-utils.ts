@@ -445,12 +445,11 @@ export async function triggerGenerationOfAReportSimplified(symbol: string, excha
   await markAsInProgress(generationRequest, nextStep);
 
   if (nextStep === ReportType.COMPETITION) {
-    // Competition always runs on Claude Opus 4.8, regardless of the
-    // request-level provider/model (which still applies to every other section).
-    await generateCompetitionAnalysis(spaceId, tickerRecord, generationRequest.id, {
-      llmProvider: LLMProvider.CLAUDE,
-      model: ClaudeModel.CLAUDE_OPUS_4_8,
-    });
+    // When the request uses Claude, competition always runs on Opus 4.8. For any
+    // other provider, competition uses the request's selected provider/model.
+    const competitionSelection: ReportLlmSelection =
+      selection.llmProvider === LLMProvider.CLAUDE ? { llmProvider: LLMProvider.CLAUDE, model: ClaudeModel.CLAUDE_OPUS_4_8 } : selection;
+    await generateCompetitionAnalysis(spaceId, tickerRecord, generationRequest.id, competitionSelection);
     return;
   }
 
