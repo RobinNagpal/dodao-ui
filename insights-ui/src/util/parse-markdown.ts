@@ -22,8 +22,29 @@ function unescapeLiteralNewlines(text: string): string {
 // (math approximations like ~$5B, file paths, etc.) and shouldn't be struck
 // through. Swap them for the numeric HTML entity before parsing so marked
 // leaves them alone but the rendered output still shows a literal "~".
+//
+// BUT only do this OUTSIDE of code spans / code blocks. marked escapes the
+// content of `code` spans and ``` fences with encode=true, which re-escapes the
+// "&" of an already-formed entity — turning "&#126;" into "&amp;#126;" and
+// rendering the visible text "&#126;16.5x" instead of "~16.5x". Tildes inside
+// code are never interpreted as strikethrough anyway, so we leave them as a
+// literal "~" (marked passes it through unchanged) and only entity-escape the
+// tildes in the surrounding prose.
 function escapeTildes(text: string): string {
-  return text.replace(/~/g, '&#126;');
+  // Matches a backtick-delimited region: an opening run of one or more backticks
+  // up to the next run of the same length. Covers both inline code spans
+  // (`x`, ``a`b``) and fenced code blocks (```...```).
+  const codeRegion = /(`+)[\s\S]*?\1/g;
+  let result = '';
+  let lastIndex = 0;
+  let match: RegExpExecArray | null;
+  while ((match = codeRegion.exec(text)) !== null) {
+    result += text.slice(lastIndex, match.index).replace(/~/g, '&#126;');
+    result += match[0]; // leave the code region untouched
+    lastIndex = codeRegion.lastIndex;
+  }
+  result += text.slice(lastIndex).replace(/~/g, '&#126;');
+  return result;
 }
 
 // Some LLM-generated reports label paragraphs inline with literal
