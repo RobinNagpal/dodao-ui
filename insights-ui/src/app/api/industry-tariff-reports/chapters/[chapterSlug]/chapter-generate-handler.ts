@@ -45,7 +45,7 @@ export function chapterGenerateRoute(
 
     const body = await parseBody(req);
 
-    if (isSyncTariffGenerationEnabled()) {
+    if (await isSyncTariffGenerationEnabled()) {
       await generate(chapterSlug, body);
       return readIndustryTariffReportBySlug(chapterSlug);
     }

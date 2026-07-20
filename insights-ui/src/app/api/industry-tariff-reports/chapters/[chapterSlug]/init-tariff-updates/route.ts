@@ -24,7 +24,7 @@ export const POST = withErrorHandlingV2<InitTariffUpdatesResponse>(async (_req: 
   const { chapterSlug } = await params;
   if (!chapterSlug) throw new Error('chapterSlug is required');
 
-  if (isSyncTariffGenerationEnabled()) {
+  if (await isSyncTariffGenerationEnabled()) {
     const countries = await initTariffUpdatesAndSaveToFile(chapterSlug);
     return { countries };
   }

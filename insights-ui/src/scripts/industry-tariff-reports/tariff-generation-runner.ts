@@ -1,8 +1,10 @@
+import { getAppConfigBoolean } from '@/lib/appConfig/appConfig';
 import type { ChapterReportField } from '@/utils/tariff-reports/chapter-generate-sections';
 
 /**
  * Master switch for HOW tariff sections are generated, read from the OPTIONAL
- * `GENERATE_TARIFF_SECTIONS_SYNCHRONOUSLY` env var:
+ * `GENERATE_TARIFF_SECTIONS_SYNCHRONOUSLY` app-config setting (managed on the
+ * admin App Settings screen; resolves SSM → env → default):
  *   - unset/`false` → run the BACKGROUND logic (`startTariffSectionGeneration`),
  *               the default: kick the LLM call off as a fire-and-forget task,
  *               return right away, no CloudFront 504.
@@ -16,8 +18,8 @@ import type { ChapterReportField } from '@/utils/tariff-reports/chapter-generate
  * treats any `use`-prefixed function as a React hook and errors when it's
  * called outside a component/hook.
  */
-export function isSyncTariffGenerationEnabled(): boolean {
-  return process.env.GENERATE_TARIFF_SECTIONS_SYNCHRONOUSLY === 'true';
+export async function isSyncTariffGenerationEnabled(): Promise<boolean> {
+  return getAppConfigBoolean('GENERATE_TARIFF_SECTIONS_SYNCHRONOUSLY');
 }
 
 function errorMessage(err: unknown): string {

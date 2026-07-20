@@ -1,3 +1,4 @@
+import { getAppConfigBoolean } from '@/lib/appConfig/appConfig';
 import { prisma } from '@/prisma';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { LLMProvider, getDefaultLLMProvider, getDefaultModelForProvider } from '@/types/llmConstants';
@@ -78,8 +79,9 @@ export async function callLambdaForLLMResponseViaCallback<Input>(request: LLMRes
 
 /**
  * Master switch for HOW a stock report's LLM call is run, read from the
- * `USE_LAMBDA_FOR_LLM_RESPONSE` env var (the tariff side has its own switch,
- * `GENERATE_TARIFF_SECTIONS_SYNCHRONOUSLY`, with inverted default):
+ * `USE_LAMBDA_FOR_LLM_RESPONSE` app-config setting (managed on the admin App
+ * Settings screen; resolves SSM → env → default). The tariff side has its own
+ * switch, `GENERATE_TARIFF_SECTIONS_SYNCHRONOUSLY`, with inverted default:
  *   - `true`        → run the LLM call in-process in the BACKGROUND on this
  *                     server (no AWS Lambda hop). Now safe because we run on a
  *                     long-lived Lightsail server instead of time-limited Vercel.
@@ -89,8 +91,8 @@ export async function callLambdaForLLMResponseViaCallback<Input>(request: LLMRes
  * treats any `use`-prefixed function as a React hook and errors when it's
  * called outside a component/hook.
  */
-function shouldUseLambdaForLLMResponse(): boolean {
-  return process.env.USE_LAMBDA_FOR_LLM_RESPONSE === 'true';
+async function shouldUseLambdaForLLMResponse(): Promise<boolean> {
+  return getAppConfigBoolean('USE_LAMBDA_FOR_LLM_RESPONSE');
 }
 
 export interface LLMResponseForPromptViaInvocationViaLambda<Input> {
@@ -216,7 +218,7 @@ export async function getLLMResponseForPromptViaInvocationViaLambda<Input>(args:
     // generation, which always carries both a `reportType` and an `exchange`.
     // Daily movers (no `reportType`) continue to go through the lambda
     // regardless of the flag.
-    if (reportType && exchange && !shouldUseLambdaForLLMResponse()) {
+    if (reportType && exchange && !(await shouldUseLambdaForLLMResponse())) {
       // Detach the heavy LLM call from the request so this returns immediately,
       // mirroring the lambda's instant ack. The background task runs the LLM
       // in-process and then saves + chains the next step directly (no callback
