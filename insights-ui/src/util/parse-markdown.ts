@@ -18,33 +18,45 @@ function unescapeLiteralNewlines(text: string): string {
   return text.replace(/\\r\\n/g, '\n').replace(/\\n/g, '\n');
 }
 
-// GFM treats ~text~ / ~~text~~ as strikethrough. Tildes show up in our content
-// (math approximations like ~$5B, file paths, etc.) and shouldn't be struck
-// through. Swap them for the numeric HTML entity before parsing so marked
-// leaves them alone but the rendered output still shows a literal "~".
-//
-// BUT only do this OUTSIDE of code spans / code blocks. marked escapes the
-// content of `code` spans and ``` fences with encode=true, which re-escapes the
-// "&" of an already-formed entity — turning "&#126;" into "&amp;#126;" and
-// rendering the visible text "&#126;16.5x" instead of "~16.5x". Tildes inside
-// code are never interpreted as strikethrough anyway, so we leave them as a
-// literal "~" (marked passes it through unchanged) and only entity-escape the
-// tildes in the surrounding prose.
-function escapeTildes(text: string): string {
-  // Matches a backtick-delimited region: an opening run of one or more backticks
-  // up to the next run of the same length. Covers both inline code spans
-  // (`x`, ``a`b``) and fenced code blocks (```...```).
+// Applies `transform` to every part of `text` that lies OUTSIDE a backtick-delimited
+// code region (inline `code` spans and ``` fenced blocks), leaving the code regions
+// verbatim. Text-level pre-processing that rewrites characters (heading demotion,
+// etc.) must not touch code, where those characters are meant to render literally.
+function transformOutsideCode(text: string, transform: (segment: string) => string): string {
+  // (`+) matches an opening run of one or more backticks; \1 matches the closing run
+  // of the same length. Covers inline spans (`x`, ``a`b``) and ```...``` fences.
   const codeRegion = /(`+)[\s\S]*?\1/g;
   let result = '';
   let lastIndex = 0;
   let match: RegExpExecArray | null;
   while ((match = codeRegion.exec(text)) !== null) {
-    result += text.slice(lastIndex, match.index).replace(/~/g, '&#126;');
+    result += transform(text.slice(lastIndex, match.index));
     result += match[0]; // leave the code region untouched
     lastIndex = codeRegion.lastIndex;
   }
-  result += text.slice(lastIndex).replace(/~/g, '&#126;');
+  result += transform(text.slice(lastIndex));
   return result;
+}
+
+// GFM treats ~text~ / ~~text~~ as strikethrough. Tildes show up in our content
+// (math approximations like ~$5B, file paths, etc.) and shouldn't be struck
+// through. Swap them for the numeric HTML entity before parsing so marked treats
+// them as literal text instead of strikethrough markers. The double-escaping this
+// causes inside code is undone afterwards by restoreEscapedTildes (see below).
+function escapeTildes(text: string): string {
+  return text.replace(/~/g, '&#126;');
+}
+
+// Undo marked's double-escaping of the tilde entity injected by escapeTildes.
+// marked escapes the content of `code` spans and ``` / indented code blocks with
+// encode=true, which re-escapes the "&" of "&#126;" into "&amp;#126;" — rendered as
+// the visible text "&#126;16.5x" instead of "~16.5x". Our pipeline is the only thing
+// that injects "&#126;", and stored content never contains a literal "&#126;", so
+// collapsing "&amp;#126;" back to "&#126;" in the final HTML restores the intended
+// literal "~" in EVERY code context (inline, fenced, and indented) with no false
+// positives.
+function restoreEscapedTildes(html: string): string {
+  return html.replace(/&amp;#126;/g, '&#126;');
 }
 
 // Some LLM-generated reports label paragraphs inline with literal
@@ -59,9 +71,10 @@ function normalizeParagraphLabels(text: string): string {
 // the LLM emits inside a body field break SEO hierarchy and — when written without proper blank
 // lines around them — leak through as literal "### Heading" text instead of being parsed as a
 // heading. Demote any `# … ###### ` heading lines to `**bold**` so the content keeps the visual
-// emphasis without competing with the React-rendered section headings.
+// emphasis without competing with the React-rendered section headings. Only demote OUTSIDE code:
+// a "# comment" line inside a ``` fence is code, not a heading, and must render verbatim.
 function demoteInlineHeadings(text: string): string {
-  return text.replace(/^[ \t]{0,3}#{1,6}[ \t]+(.+?)[ \t]*#*[ \t]*$/gm, '**$1**');
+  return transformOutsideCode(text, (segment) => segment.replace(/^[ \t]{0,3}#{1,6}[ \t]+(.+?)[ \t]*#*[ \t]*$/gm, '**$1**'));
 }
 
 // Section JSON occasionally lands with a missing or non-string leaf (LLM
@@ -70,7 +83,8 @@ function demoteInlineHeadings(text: string): string {
 // out of a Server Component and tripping the production error boundary.
 export function parseMarkdown(text: string | null | undefined) {
   if (typeof text !== 'string' || text.length === 0) return '';
-  return marked.parse(normalizeParagraphLabels(escapeTildes(unescapeLiteralNewlines(recursivelyCleanOpenAiUrls(text)))), { renderer });
+  const html = marked.parse(normalizeParagraphLabels(escapeTildes(unescapeLiteralNewlines(recursivelyCleanOpenAiUrls(text)))), { renderer });
+  return restoreEscapedTildes(html);
 }
 
 // Tariff chapter body fields render under a React-controlled section heading,
@@ -80,5 +94,8 @@ export function parseMarkdown(text: string | null | undefined) {
 // inner headings intact.
 export function parseChapterBodyMarkdown(text: string | null | undefined) {
   if (typeof text !== 'string' || text.length === 0) return '';
-  return marked.parse(demoteInlineHeadings(normalizeParagraphLabels(escapeTildes(unescapeLiteralNewlines(recursivelyCleanOpenAiUrls(text))))), { renderer });
+  const html = marked.parse(demoteInlineHeadings(normalizeParagraphLabels(escapeTildes(unescapeLiteralNewlines(recursivelyCleanOpenAiUrls(text))))), {
+    renderer,
+  });
+  return restoreEscapedTildes(html);
 }
