@@ -17,9 +17,9 @@ import { getOldestStocksOverall } from '@/utils/oldest-reports-utils';
 /**
  * Claude-usage-gated stock report auto-generation (enqueue side).
  *
- * Called every few minutes by the `/cron/heartbeat` job (and by the
- * `enqueue-auto-stock-generation` route for manual runs). Each call is gated by the
- * App Settings controls: the GENERATION_ENTITY must include stocks, the current ET
+ * Called every few minutes by the `/cron/heartbeat` job (via
+ * `runAutoGenerationTick`). Each call is gated by the App Settings controls: the
+ * GENERATION_ENTITY must include stocks, the current ET
  * time must fall inside the selected GENERATION_WINDOW, no auto batch may be open,
  * the mode's frequency cooldown must have elapsed since the last batch, and the
  * shared Claude usage gates must pass. When all pass it creates one batch (the

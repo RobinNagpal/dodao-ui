@@ -22,9 +22,9 @@ import { ensureMorDataForAnalysis } from '@/utils/etf-analysis-reports/mor-scrap
  * reuses the same gates. The difference is the selection: instead of the OLDEST
  * already-generated reports, this picks ETFs whose reports have NOT been
  * generated/tried yet, prioritized by country — US first, then Canada, then
- * everything else. Called every few minutes by the `/cron/heartbeat` job (and by
- * the `enqueue-auto-etf-generation` route for manual runs); the same heartbeat's
- * processor step then generates whatever this enqueues.
+ * everything else. Called every few minutes by the `/cron/heartbeat` job (via
+ * `runAutoGenerationTick`); the same heartbeat's processor step then generates
+ * whatever this enqueues.
  */
 
 const US_EXCHANGES: string[] = Object.values(EtfUSExchanges);
@@ -70,8 +70,8 @@ async function getEtfsMissingReports(spaceId: string, limit: number): Promise<Et
  * When no auto batch is open, the mode's frequency cooldown has elapsed, and the
  * shared Claude usage gates pass, creates one batch (the mode's batch size) of
  * full-report Claude requests for ETFs missing their reports (US → Canada →
- * other). Called by the `enqueue-auto-etf-generation` route on a cron. Never throws
- * — on any failure it creates nothing (fails closed).
+ * other). Called by the heartbeat via `runAutoGenerationTick`. Never throws — on
+ * any failure it creates nothing (fails closed).
  */
 export async function enqueueAutoEtfGenerationBatch(spaceId: string): Promise<AutoEnqueueResult> {
   const now = new Date();
