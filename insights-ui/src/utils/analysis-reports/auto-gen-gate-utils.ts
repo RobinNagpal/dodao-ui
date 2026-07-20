@@ -1,17 +1,18 @@
-import { CLAUDE_AUTO_GEN } from '@/util/claude/claude-usage-constants';
+import { AutoGenModePreset } from '@/utils/analysis-reports/auto-gen-modes';
 import { ClaudeSubscriptionUsage } from '@/util/claude/claude-usage';
 
 /**
  * Claude-usage gates shared by the stock and ETF nightly auto-generation jobs.
  *
  * These are report-type-agnostic: they only look at Claude subscription usage
- * (5-hour limit + weekly day-curve cap), never at the time of day — the off-hours
- * window is enforced entirely by each job's cron schedule.
+ * (5-hour limit + weekly day-curve cap), never at the time of day — the run
+ * window is enforced separately (see `isWithinAutoGenWindow`). The concrete
+ * thresholds come from the selected mode's preset.
  */
 
 /** 0-based day index since the weekly window opened (weekly reset − 7 days), clamped to the cap curve. */
-export function weeklyDayIndex(now: Date, weeklyResetsAt: string | null): number {
-  const lastIndex = CLAUDE_AUTO_GEN.WEEKLY_CAP_BY_DAY_PCT.length - 1;
+export function weeklyDayIndex(now: Date, weeklyResetsAt: string | null, capCurveLength: number): number {
+  const lastIndex = capCurveLength - 1;
   if (!weeklyResetsAt) return 0; // unknown reset → strictest cap
   const dayMs = 24 * 60 * 60 * 1000;
   const weekStart = new Date(weeklyResetsAt).getTime() - 7 * dayMs;
@@ -28,21 +29,21 @@ export interface AutoGenGateResult {
 }
 
 /**
- * Evaluates the Claude usage gates (5-hour limit + weekly day-curve cap). Does
- * NOT check the time-of-day window — the cron schedule owns that. Conservative:
- * blocks when usage is unknown.
+ * Evaluates the Claude usage gates (5-hour limit + weekly day-curve cap) for the
+ * given mode preset. Does NOT check the time-of-day window. Conservative: blocks
+ * when usage is unknown.
  */
-export function evaluateAutoGenGates(usage: ClaudeSubscriptionUsage, now: Date): AutoGenGateResult {
+export function evaluateAutoGenGates(usage: ClaudeSubscriptionUsage, now: Date, preset: AutoGenModePreset): AutoGenGateResult {
   const fiveHourPct = usage.fiveHour.utilizationPct;
   const weeklyPct = usage.weeklyAll.utilizationPct;
-  const weeklyCapPct = CLAUDE_AUTO_GEN.WEEKLY_CAP_BY_DAY_PCT[weeklyDayIndex(now, usage.weeklyAll.resetsAt)];
+  const weeklyCapPct = preset.weeklyCapByDayPct[weeklyDayIndex(now, usage.weeklyAll.resetsAt, preset.weeklyCapByDayPct.length)];
   const base = { fiveHourPct, weeklyPct, weeklyCapPct };
 
   if (fiveHourPct === null) {
     return { allowed: false, reason: 'five-hour-usage-unknown', ...base };
   }
-  if (fiveHourPct >= CLAUDE_AUTO_GEN.MAX_5H_UTILIZATION_PCT) {
-    return { allowed: false, reason: `five-hour-over-${CLAUDE_AUTO_GEN.MAX_5H_UTILIZATION_PCT}`, ...base };
+  if (fiveHourPct >= preset.maxFiveHourUtilizationPct) {
+    return { allowed: false, reason: `five-hour-over-${preset.maxFiveHourUtilizationPct}`, ...base };
   }
   if (weeklyPct !== null && weeklyPct >= weeklyCapPct) {
     return { allowed: false, reason: `weekly-over-day-cap-${weeklyCapPct}`, ...base };

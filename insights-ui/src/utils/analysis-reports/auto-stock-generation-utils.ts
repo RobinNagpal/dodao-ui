@@ -3,6 +3,7 @@ import { LLMProvider } from '@/types/llmConstants';
 import { GenerationRequestStatus } from '@/types/ticker-typesv1';
 import { CLAUDE_AUTO_GEN } from '@/util/claude/claude-usage-constants';
 import { getClaudeSubscriptionUsage } from '@/util/claude/claude-usage';
+import { getAutoGenModePreset, isStockAutoGenEnabled, isWithinAutoGenWindow } from '@/utils/analysis-reports/auto-gen-config';
 import { AutoEnqueueResult, evaluateAutoGenGates } from '@/utils/analysis-reports/auto-gen-gate-utils';
 import { ALL_SECTIONS_REGENERATE_FLAGS, upsertGenerationRequest } from '@/utils/analysis-reports/generation-request-utils';
 import { getOldestStocksOverall } from '@/utils/oldest-reports-utils';
@@ -10,28 +11,31 @@ import { getOldestStocksOverall } from '@/utils/oldest-reports-utils';
 /**
  * Claude-usage-gated stock report auto-generation (enqueue side).
  *
- * A dedicated cron hits the `enqueue-auto-stock-generation` route on a schedule
- * (e.g. every 15 min, 10 PM–3 AM ET). Each call checks the Claude usage gates and,
- * when they pass AND no auto requests are currently open, creates one small batch
- * of `BATCH_SIZE` requests for the oldest stocks. The existing ~3-min processor
- * then generates them normally — it needs no changes, because we only add a small
- * batch and only when the previous one is fully done.
- *
- * The off-hours window is enforced entirely by the CRON SCHEDULE, so these gates
- * only cover usage (5-hour limit + weekly day-curve), not the time of day.
+ * A cron hits the `enqueue-auto-stock-generation` route every 15 min, 24/7. Each
+ * call is gated by the App Settings controls: the GENERATION_ENTITY must include
+ * stocks, the current ET time must fall inside the selected GENERATION_WINDOW, and
+ * the Claude usage gates for the selected GENERATION_MODE must pass. When all pass
+ * AND no auto requests are open, it creates one small batch (the mode's batch size)
+ * of generate-all requests for the oldest stocks. The existing ~3-min processor
+ * then generates them normally.
  */
 
 /**
- * Checks the Claude usage gates and, if they pass AND no auto requests are open,
- * creates one small batch (`BATCH_SIZE`) of generate-all Claude requests for the
- * oldest stocks. Called by the `enqueue-auto-stock-generation` route on a cron.
- * Never throws — on any failure it creates nothing (fails closed).
+ * See the module doc. Never throws — on any failure it creates nothing (fails closed).
  */
 export async function enqueueAutoStockGenerationBatch(spaceId: string): Promise<AutoEnqueueResult> {
   const now = new Date();
   try {
+    if (!(await isStockAutoGenEnabled())) {
+      return { created: 0, reason: 'entity-disabled', fiveHourPct: null, weeklyPct: null };
+    }
+    if (!(await isWithinAutoGenWindow(now))) {
+      return { created: 0, reason: 'outside-window', fiveHourPct: null, weeklyPct: null };
+    }
+
+    const preset = await getAutoGenModePreset();
     const usage = await getClaudeSubscriptionUsage();
-    const gate = evaluateAutoGenGates(usage, now);
+    const gate = evaluateAutoGenGates(usage, now, preset);
     if (!gate.allowed) {
       return { created: 0, reason: gate.reason, fiveHourPct: gate.fiveHourPct, weeklyPct: gate.weeklyPct };
     }
@@ -50,7 +54,7 @@ export async function enqueueAutoStockGenerationBatch(spaceId: string): Promise<
       return { created: 0, reason: 'batch-in-progress', fiveHourPct: gate.fiveHourPct, weeklyPct: gate.weeklyPct };
     }
 
-    const oldest = await getOldestStocksOverall(spaceId, CLAUDE_AUTO_GEN.BATCH_SIZE);
+    const oldest = await getOldestStocksOverall(spaceId, preset.batchSize);
     let created = 0;
     for (const stock of oldest) {
       await upsertGenerationRequest({

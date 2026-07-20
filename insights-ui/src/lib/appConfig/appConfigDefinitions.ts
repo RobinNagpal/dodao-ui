@@ -15,16 +15,31 @@
  * resolve from SSM or env only.
  */
 import { ClaudeModel, GeminiModel, LLMProvider } from '@/types/llmConstants';
+import {
+  AUTO_GEN_ENTITY_INFO,
+  AUTO_GEN_MODE_LABELS,
+  AUTO_GEN_MODE_PRESETS,
+  AUTO_GEN_WINDOWS,
+  AutoGenEntity,
+  AutoGenMode,
+  AutoGenWindow,
+} from '@/utils/analysis-reports/auto-gen-modes';
 
 export type AppConfigValueType = 'boolean' | 'string';
 
 /** Ids of the groups the admin App Settings screen renders settings under, in display order. */
-export type AppConfigGroupId = 'claude-auth' | 'llm-defaults' | 'provider-keys' | 'report-generation' | 'claude-endpoints';
+export type AppConfigGroupId = 'claude-auth' | 'llm-defaults' | 'provider-keys' | 'report-generation' | 'auto-generation' | 'claude-endpoints';
 
 /** One choice for a setting that has a fixed set of allowed values (rendered as a dropdown). */
 export interface AppConfigOption {
   value: string;
   label: string;
+  /**
+   * Optional note shown under the dropdown when THIS option is the current
+   * selection — e.g. the config the value applies, as JSON or prose. Generic:
+   * any option on any dropdown setting can carry one.
+   */
+  helpNote?: string;
 }
 
 export interface AppConfigDefinition {
@@ -79,6 +94,12 @@ export const APP_CONFIG_GROUPS: AppConfigGroup[] = [
     id: 'report-generation',
     label: 'Report Generation Behavior',
     description: 'Toggles and endpoints that control how stock, ETF, and tariff report generation runs.',
+  },
+  {
+    id: 'auto-generation',
+    label: 'Automated Report Generation',
+    description:
+      'Controls for the nightly Claude auto-generation job: how aggressively it spends the Claude budget, when it runs, and which report types it generates.',
   },
   {
     id: 'claude-endpoints',
@@ -167,6 +188,44 @@ export const APP_CONFIG_DEFINITIONS: AppConfigDefinition[] = [
       { value: ClaudeModel.CLAUDE_SONNET_4_6, label: 'Claude Sonnet 4.6' },
       { value: ClaudeModel.CLAUDE_HAIKU_4_5, label: 'Claude Haiku 4.5' },
     ],
+  },
+  {
+    key: 'AUTOMATED_GENERATION_MODE',
+    label: 'Automated generation mode',
+    description:
+      'How aggressively the nightly auto-generation consumes the Claude usage budget. LOW is the current behavior; MEDIUM and HIGH raise the 5-hour / weekly caps and batch size. The selected mode’s exact config is shown below.',
+    type: 'string',
+    group: 'auto-generation',
+    options: Object.values(AutoGenMode).map((mode) => ({
+      value: mode,
+      label: AUTO_GEN_MODE_LABELS[mode],
+      helpNote: JSON.stringify(AUTO_GEN_MODE_PRESETS[mode], null, 2),
+    })),
+  },
+  {
+    key: 'AUTOMATED_GENERATION_WINDOW',
+    label: 'Automated generation window',
+    description:
+      'When the nightly job is allowed to run. The window is enforced in code against the current Eastern time, so it can be changed here without redeploying.',
+    type: 'string',
+    group: 'auto-generation',
+    options: Object.values(AutoGenWindow).map((window) => ({
+      value: window,
+      label: AUTO_GEN_WINDOWS[window].label,
+      helpNote: AUTO_GEN_WINDOWS[window].description,
+    })),
+  },
+  {
+    key: 'AUTOMATED_GENERATION_ENTITY',
+    label: 'Automated generation entity',
+    description: 'Which report types the nightly job generates — stocks, ETFs, or both.',
+    type: 'string',
+    group: 'auto-generation',
+    options: Object.values(AutoGenEntity).map((entity) => ({
+      value: entity,
+      label: AUTO_GEN_ENTITY_INFO[entity].label,
+      helpNote: AUTO_GEN_ENTITY_INFO[entity].description,
+    })),
   },
   {
     key: 'GOOGLE_API_KEY',

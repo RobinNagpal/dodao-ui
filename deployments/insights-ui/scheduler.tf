@@ -32,23 +32,24 @@ locals {
       schedule = "rate(3 minutes)"
       timezone = "UTC"
     }
-    # Nightly Claude-usage-gated stock report auto-generation. Runs only in the
-    # off-hours window (the code does NOT re-check the time — the schedule owns it).
-    # Every 15 min at 22:00–23:45 and 00:00–02:45 ET (last fire 2:45 AM), so the
-    # final batch finishes before ~3:30 AM. The endpoint checks the Claude usage
-    # gates and only creates a batch when none is in progress.
+    # Claude-usage-gated stock report auto-generation. Fires every 15 min, 24/7;
+    # the actual run window (NightShort / NightExtended / DayAndNight) is enforced
+    # IN CODE against the AUTOMATED_GENERATION_WINDOW App Setting, so the window can
+    # be changed at runtime without editing this schedule. Outside the window the
+    # endpoint returns immediately without touching Claude. The endpoint also checks
+    # the usage gates and only creates a batch when none is in progress.
     enqueue_auto_stock = {
       path     = "/api/koala_gains/tickers-v1/enqueue-auto-stock-generation"
-      schedule = "cron(0/15 22-23,0-2 * * ? *)"
+      schedule = "cron(0/15 * * * ? *)"
       timezone = "America/New_York"
     }
-    # Nightly Claude-usage-gated ETF report auto-generation. Same off-hours window
-    # and gates as the stock job, but selects ETFs missing their reports (US first,
-    # then Canada, then other). Offset by 7 min from the stock batch so the two
-    # don't fan out to Claude at the exact same minute (they share the usage budget).
+    # ETF report auto-generation. Same 24/7 cadence + in-code window/gates as the
+    # stock job, but selects ETFs missing their reports (US first, then Canada, then
+    # other). Offset by 7 min from the stock batch so the two don't fan out to
+    # Claude at the exact same minute (they share the usage budget).
     enqueue_auto_etf = {
       path     = "/api/koala_gains/etfs-v1/enqueue-auto-etf-generation"
-      schedule = "cron(7/15 22-23,0-2 * * ? *)"
+      schedule = "cron(7/15 * * * ? *)"
       timezone = "America/New_York"
     }
   }

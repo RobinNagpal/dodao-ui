@@ -3,6 +3,7 @@ import { LLMProvider } from '@/types/llmConstants';
 import { EtfGenerationRequestStatus } from '@/types/etf/etf-analysis-types';
 import { CLAUDE_AUTO_GEN } from '@/util/claude/claude-usage-constants';
 import { getClaudeSubscriptionUsage } from '@/util/claude/claude-usage';
+import { getAutoGenModePreset, isEtfAutoGenEnabled, isWithinAutoGenWindow } from '@/utils/analysis-reports/auto-gen-config';
 import { AutoEnqueueResult, evaluateAutoGenGates } from '@/utils/analysis-reports/auto-gen-gate-utils';
 import { EtfCanadaExchanges, EtfUSExchanges } from '@/utils/etfCountryExchangeUtils';
 import { ALL_ETF_SECTIONS_REGENERATE_FLAGS, upsertEtfGenerationRequest } from '@/utils/etf-analysis-reports/etf-generation-request-utils';
@@ -69,8 +70,16 @@ async function getEtfsMissingReports(spaceId: string, limit: number): Promise<Et
 export async function enqueueAutoEtfGenerationBatch(spaceId: string): Promise<AutoEnqueueResult> {
   const now = new Date();
   try {
+    if (!(await isEtfAutoGenEnabled())) {
+      return { created: 0, reason: 'entity-disabled', fiveHourPct: null, weeklyPct: null };
+    }
+    if (!(await isWithinAutoGenWindow(now))) {
+      return { created: 0, reason: 'outside-window', fiveHourPct: null, weeklyPct: null };
+    }
+
+    const preset = await getAutoGenModePreset();
     const usage = await getClaudeSubscriptionUsage();
-    const gate = evaluateAutoGenGates(usage, now);
+    const gate = evaluateAutoGenGates(usage, now, preset);
     if (!gate.allowed) {
       return { created: 0, reason: gate.reason, fiveHourPct: gate.fiveHourPct, weeklyPct: gate.weeklyPct };
     }
@@ -89,7 +98,7 @@ export async function enqueueAutoEtfGenerationBatch(spaceId: string): Promise<Au
       return { created: 0, reason: 'batch-in-progress', fiveHourPct: gate.fiveHourPct, weeklyPct: gate.weeklyPct };
     }
 
-    const etfs = await getEtfsMissingReports(spaceId, CLAUDE_AUTO_GEN.BATCH_SIZE);
+    const etfs = await getEtfsMissingReports(spaceId, preset.batchSize);
     let created = 0;
     for (const etf of etfs) {
       // The category analyses need Morningstar data (same as the admin flow). If
