@@ -31,6 +31,10 @@ function SettingCard({ setting, onSaved }: { setting: ResolvedAppSetting; onSave
 
   const dirty = isSecret ? draft !== '' : draft !== setting.value;
 
+  // Note attached to the currently-selected dropdown option (e.g. the config a
+  // value applies, as JSON or prose). Generic — shown for any option that has one.
+  const selectedOptionNote = setting.options?.find((opt) => opt.value === draft)?.helpNote;
+
   const handleSave = async (): Promise<void> => {
     setSaving(true);
     try {
@@ -78,12 +82,19 @@ function SettingCard({ setting, onSaved }: { setting: ResolvedAppSetting; onSave
         {setting.type === 'boolean' ? (
           <ToggleWithIcon label={setting.label} enabled={draft === 'true'} setEnabled={(v) => setDraft(v ? 'true' : 'false')} />
         ) : setting.options ? (
-          <StyledSelect
-            label=""
-            selectedItemId={draft}
-            setSelectedItemId={(id) => setDraft(id ?? '')}
-            items={setting.options.map((opt) => ({ id: opt.value, label: opt.label }))}
-          />
+          <div>
+            <StyledSelect
+              label=""
+              selectedItemId={draft}
+              setSelectedItemId={(id) => setDraft(id ?? '')}
+              items={setting.options.map((opt) => ({ id: opt.value, label: opt.label }))}
+            />
+            {selectedOptionNote && (
+              <Text as="div" size="xs" tone="muted" className="mt-2 whitespace-pre-wrap rounded-md border border-border p-2 font-mono">
+                {selectedOptionNote}
+              </Text>
+            )}
+          </div>
         ) : (
           <Input
             modelValue={draft}
