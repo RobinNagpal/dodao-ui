@@ -23,6 +23,30 @@ For every managed key, the effective value is resolved in this order:
 The admin screen shows each setting's current value and a badge for where it came
 from (**SSM** / **Env var** / **Default**). SSM reads are cached in-process for 60s.
 
+## Secrets
+
+A setting marked `secret: true` in the registry (e.g. API keys, OAuth tokens) is
+handled so it is never exposed — important because this is a **public repo**:
+
+- **Encrypted at rest:** stored as an SSM `SecureString` (KMS-encrypted), not plain
+  `String`.
+- **Never sent to the browser:** the admin action redacts secret values — it returns
+  only a set / not-set flag, never the value. The admin field is **write-only**
+  (starts empty; saving replaces the stored value).
+- **Admin-gated:** the read/write server actions require an `Admin` session.
+- **No committed defaults:** secrets must not appear in `appConfigDefaults.json`.
+  `appConfig.ts` enforces this at load — it strips and logs any secret default — so a
+  secret value can never live in the repo. Secrets resolve from **SSM or env only**.
+- **Server-only reads:** `getAppConfigValue` returns the real value only in server
+  code (the config module is never bundled to the client, and non-`NEXT_PUBLIC_` env
+  vars are never inlined into client JS).
+
+KMS note: `SecureString` uses the AWS-managed key `alias/aws/ssm` by default, whose
+key policy already lets the account's principals decrypt/encrypt *via SSM* — so the
+existing `ssm:GetParametersByPath` / `GetParameter` / `PutParameter` grant is enough,
+no extra `kms:*` policy needed. Only a **customer-managed** KMS key would require
+adding `kms:Decrypt` (reads) and `kms:GenerateDataKey` (writes).
+
 ## Code layout
 
 All under `insights-ui/src/lib/appConfig/`:

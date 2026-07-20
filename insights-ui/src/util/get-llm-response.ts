@@ -1,3 +1,4 @@
+import { getAppConfigValue } from '@/lib/appConfig/appConfig';
 import { prisma } from '@/prisma';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { GeminiModel, LLMProvider, getDefaultLLMProvider, getDefaultModelForProvider } from '@/types/llmConstants';
@@ -86,7 +87,7 @@ export function validateData(schema: object, data: unknown): ValidationResult {
 /**
  * Initializes an LLM model based on provider and model name
  */
-function initializeLLM(provider: LLMProvider, modelName: GeminiModel): BaseChatModel {
+async function initializeLLM(provider: LLMProvider, modelName: GeminiModel): Promise<BaseChatModel> {
   if (provider !== LLMProvider.OPENAI && provider !== LLMProvider.GEMINI && provider !== LLMProvider.GEMINI_WITH_GROUNDING) {
     throw new Error(`Unsupported LLM provider: ${provider}`);
   }
@@ -98,7 +99,7 @@ function initializeLLM(provider: LLMProvider, modelName: GeminiModel): BaseChatM
   } else if (provider === LLMProvider.GEMINI || provider === LLMProvider.GEMINI_WITH_GROUNDING) {
     return new ChatGoogleGenerativeAI({
       model: modelName,
-      apiKey: process.env.GOOGLE_API_KEY,
+      apiKey: await getAppConfigValue('GOOGLE_API_KEY'),
       temperature: 1,
     });
   } else {
@@ -304,7 +305,7 @@ export async function getLLMResponse<Output>({
         result = singleCallGroundedResult;
       } else {
         // Initialize LLM for structured output
-        const llm = initializeLLM(llmProvider === LLMProvider.GEMINI_WITH_GROUNDING ? LLMProvider.GEMINI : llmProvider, resolvedModel as GeminiModel);
+        const llm = await initializeLLM(llmProvider === LLMProvider.GEMINI_WITH_GROUNDING ? LLMProvider.GEMINI : llmProvider, resolvedModel as GeminiModel);
         const structured = llm.withStructuredOutput(outputSchema);
 
         // Get response from LLM

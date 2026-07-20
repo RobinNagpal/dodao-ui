@@ -16,17 +16,26 @@ const SOURCE_LABELS: Record<ResolvedAppSetting['source'], { text: string; classN
   default: { text: 'Default', className: 'border-gray-600/50 bg-gray-700/40 text-gray-300' },
 };
 
-function SourceBadge({ source }: { source: ResolvedAppSetting['source'] }): JSX.Element {
-  const { text, className } = SOURCE_LABELS[source];
+function Badge({ text, className }: { text: string; className: string }): JSX.Element {
   return <span className={`inline-block rounded-full border px-2 py-0.5 text-xs font-medium ${className}`}>{text}</span>;
+}
+
+function SecretBadge({ isSet }: { isSet: boolean }): JSX.Element {
+  return isSet ? (
+    <Badge text="Secret · set" className="border-emerald-700/40 bg-emerald-900/30 text-emerald-200" />
+  ) : (
+    <Badge text="Secret · not set" className="border-gray-600/50 bg-gray-700/40 text-gray-300" />
+  );
 }
 
 function SettingRow({ setting, onSaved }: { setting: ResolvedAppSetting; onSaved: (saved: ResolvedAppSetting) => void }): JSX.Element {
   const { showNotification } = useNotificationContext();
-  const [draft, setDraft] = useState<string>(setting.value);
+  const isSecret = setting.secret === true;
+  // Secrets are write-only: the field always starts empty and saving replaces the stored value.
+  const [draft, setDraft] = useState<string>(isSecret ? '' : setting.value);
   const [saving, setSaving] = useState<boolean>(false);
 
-  const dirty = draft !== setting.value;
+  const dirty = isSecret ? draft !== '' : draft !== setting.value;
 
   const handleSave = async (): Promise<void> => {
     setSaving(true);
@@ -34,7 +43,12 @@ function SettingRow({ setting, onSaved }: { setting: ResolvedAppSetting; onSaved
       const res = await updateAppSetting(setting.key, draft);
       if (res.success) {
         showNotification({ type: 'success', message: res.message });
-        onSaved({ ...setting, value: draft, source: 'ssm' });
+        if (isSecret) {
+          setDraft('');
+          onSaved({ ...setting, value: '', isSet: true, source: 'ssm' });
+        } else {
+          onSaved({ ...setting, value: draft, isSet: draft.trim() !== '', source: 'ssm' });
+        }
       } else {
         showNotification({ type: 'error', message: res.message });
       }
@@ -46,6 +60,8 @@ function SettingRow({ setting, onSaved }: { setting: ResolvedAppSetting; onSaved
     }
   };
 
+  const { text, className } = SOURCE_LABELS[setting.source];
+
   return (
     <div className="rounded-lg border border-gray-700/50 bg-gray-900/40 p-4 space-y-3">
       <div className="flex items-start justify-between gap-4">
@@ -53,7 +69,10 @@ function SettingRow({ setting, onSaved }: { setting: ResolvedAppSetting; onSaved
           <p className="font-medium text-white">{setting.label}</p>
           <p className="font-mono text-xs text-gray-400 mt-0.5">{setting.key}</p>
         </div>
-        <SourceBadge source={setting.source} />
+        <div className="flex flex-wrap items-center gap-2">
+          {isSecret && <SecretBadge isSet={setting.isSet} />}
+          {setting.isSet && <Badge text={text} className={className} />}
+        </div>
       </div>
 
       <p className="text-sm text-gray-300">{setting.description}</p>
@@ -61,7 +80,13 @@ function SettingRow({ setting, onSaved }: { setting: ResolvedAppSetting; onSaved
       {setting.type === 'boolean' ? (
         <ToggleWithIcon label={setting.label} enabled={draft === 'true'} setEnabled={(v) => setDraft(v ? 'true' : 'false')} />
       ) : (
-        <Input modelValue={draft} onUpdate={(v) => setDraft(v === undefined ? '' : String(v))} required={false} />
+        <Input
+          modelValue={draft}
+          onUpdate={(v) => setDraft(v === undefined ? '' : String(v))}
+          required={false}
+          password={isSecret}
+          placeholder={isSecret ? (setting.isSet ? 'Enter a new value to replace the current secret' : 'Enter a value') : undefined}
+        />
       )}
 
       <div className="flex justify-end">

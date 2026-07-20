@@ -159,7 +159,7 @@ async function candidateRefreshTokens(): Promise<string[]> {
 
   add(currentRefreshToken);
   add(await loadPersistedRefreshToken());
-  add(process.env.ANTHROPIC_OAUTH_REFRESH_TOKEN);
+  add(await getAppConfigValue('ANTHROPIC_OAUTH_REFRESH_TOKEN'));
 
   return candidates;
 }
@@ -257,7 +257,7 @@ export async function getClaudeAccessToken(forceRefresh = false): Promise<string
   } catch (err) {
     // No usable refresh token — fall back to a static access token if one is
     // configured (local dev / bootstrap), otherwise surface the refresh failure.
-    const staticToken = process.env.ANTHROPIC_OAUTH_TOKEN?.trim();
+    const staticToken = (await getAppConfigValue('ANTHROPIC_OAUTH_TOKEN'))?.trim();
     if (staticToken) {
       console.warn('[claude-token-provider] refresh failed; falling back to the static ANTHROPIC_OAUTH_TOKEN.', err);
       return staticToken;

@@ -8,6 +8,11 @@
  * To manage a new value: add its key + metadata here, add a default in
  * `appConfigDefaults.json`, then read it in code via `getAppConfigValue` /
  * `getAppConfigBoolean` instead of `process.env`.
+ *
+ * SECRETS: set `secret: true`. Secret values are stored as SSM `SecureString`,
+ * redacted from the admin UI (write-only), and MUST NOT have a default in
+ * `appConfigDefaults.json` — that file is committed to a public repo. Secrets
+ * resolve from SSM or env only.
  */
 export type AppConfigValueType = 'boolean' | 'string';
 
@@ -19,6 +24,12 @@ export interface AppConfigDefinition {
   /** What the setting does and the effect of each value. */
   description: string;
   type: AppConfigValueType;
+  /**
+   * When true the value is a secret: stored as an SSM `SecureString` and never
+   * returned to the admin UI (shown as set/not-set, edited write-only). Reads on
+   * the server still get the real decrypted value.
+   */
+  secret?: boolean;
 }
 
 export const APP_CONFIG_DEFINITIONS: AppConfigDefinition[] = [
@@ -59,6 +70,27 @@ export const APP_CONFIG_DEFINITIONS: AppConfigDefinition[] = [
     label: 'Claude Code version header',
     description: 'Value sent as the claude-cli user-agent version on Claude subscription OAuth calls.',
     type: 'string',
+  },
+  {
+    key: 'GOOGLE_API_KEY',
+    label: 'Google / Gemini API key',
+    description: 'API key for the Gemini provider — report generation and grounded (Google Search) responses.',
+    type: 'string',
+    secret: true,
+  },
+  {
+    key: 'ANTHROPIC_OAUTH_REFRESH_TOKEN',
+    label: 'Claude OAuth refresh token',
+    description: 'Long-lived Claude subscription refresh token (sk-ant-ort…). Exchanged on demand for short-lived access tokens; rotations persist to S3.',
+    type: 'string',
+    secret: true,
+  },
+  {
+    key: 'ANTHROPIC_OAUTH_TOKEN',
+    label: 'Claude OAuth static access token (fallback)',
+    description: 'Static Claude access token (sk-ant-oat…) used only if the refresh flow fails. Short-lived — for bootstrap / dev.',
+    type: 'string',
+    secret: true,
   },
 ];
 
