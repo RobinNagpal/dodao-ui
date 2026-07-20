@@ -42,6 +42,15 @@ locals {
       schedule = "cron(0/15 22-23,0-2 * * ? *)"
       timezone = "America/New_York"
     }
+    # Nightly Claude-usage-gated ETF report auto-generation. Same off-hours window
+    # and gates as the stock job, but selects ETFs missing their reports (US first,
+    # then Canada, then other). Offset by 7 min from the stock batch so the two
+    # don't fan out to Claude at the exact same minute (they share the usage budget).
+    enqueue_auto_etf = {
+      path     = "/api/koala_gains/etfs-v1/enqueue-auto-etf-generation"
+      schedule = "cron(7/15 22-23,0-2 * * ? *)"
+      timezone = "America/New_York"
+    }
   }
 }
 

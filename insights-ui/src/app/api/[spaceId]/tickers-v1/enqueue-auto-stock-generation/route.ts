@@ -1,4 +1,5 @@
-import { AutoEnqueueResult, enqueueAutoStockGenerationBatch } from '@/utils/analysis-reports/auto-stock-generation-utils';
+import { AutoEnqueueResult } from '@/utils/analysis-reports/auto-gen-gate-utils';
+import { enqueueAutoStockGenerationBatch } from '@/utils/analysis-reports/auto-stock-generation-utils';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';
 
