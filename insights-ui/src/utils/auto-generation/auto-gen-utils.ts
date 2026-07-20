@@ -1,22 +1,21 @@
+/**
+ * Runtime helpers for the nightly auto-generation: resolvers that read the
+ * admin-selected mode / window / entity from App Settings, the ET run-window
+ * check, and the Claude usage gate. Kept separate from `auto-gen-config.ts` (which
+ * `appConfigDefinitions.ts` imports) so the App-Settings dependency here never
+ * forms an import cycle.
+ */
 import { getAppConfigValue } from '@/lib/appConfig/appConfig';
+import { ClaudeSubscriptionUsage } from '@/util/claude/claude-usage';
 import {
   AUTO_GEN_MODE_PRESETS,
   AUTO_GEN_WINDOWS,
-  AutoGenEntity,
-  AutoGenMode,
-  AutoGenModePreset,
-  AutoGenWindow,
   DEFAULT_AUTO_GEN_ENTITY,
   DEFAULT_AUTO_GEN_MODE,
   DEFAULT_AUTO_GEN_WINDOW,
-} from '@/utils/analysis-reports/auto-gen-modes';
-
-/**
- * App-Settings-backed resolvers for the nightly auto-generation controls. These
- * read the admin-selected values from SSM (via `getAppConfigValue`) and fall back
- * to the defaults. Kept separate from `auto-gen-modes.ts` so the pure definitions
- * can be imported by `appConfigDefinitions.ts` without a circular dependency.
- */
+  WEEKLY_CAP_DAY_KEYS,
+} from '@/utils/auto-generation/auto-gen-config';
+import { AutoGenEntity, AutoGenGateResult, AutoGenMode, AutoGenModePreset, AutoGenWindow } from '@/utils/auto-generation/auto-gen-models';
 
 export const AUTO_GEN_MODE_KEY = 'AUTOMATED_GENERATION_MODE';
 export const AUTO_GEN_WINDOW_KEY = 'AUTOMATED_GENERATION_WINDOW';
@@ -64,4 +63,38 @@ export async function isStockAutoGenEnabled(): Promise<boolean> {
 export async function isEtfAutoGenEnabled(): Promise<boolean> {
   const entity = await getAutoGenEntity();
   return entity === AutoGenEntity.EtfsOnly || entity === AutoGenEntity.StocksAndEtfs;
+}
+
+/** 0-based day index since the weekly window opened (weekly reset − 7 days), clamped to the cap curve. */
+export function weeklyDayIndex(now: Date, weeklyResetsAt: string | null, capCurveLength: number): number {
+  const lastIndex = capCurveLength - 1;
+  if (!weeklyResetsAt) return 0; // unknown reset → strictest cap
+  const dayMs = 24 * 60 * 60 * 1000;
+  const weekStart = new Date(weeklyResetsAt).getTime() - 7 * dayMs;
+  const idx = Math.floor((now.getTime() - weekStart) / dayMs);
+  return Math.min(Math.max(idx, 0), lastIndex);
+}
+
+/**
+ * Evaluates the Claude usage gates (5-hour limit + weekly day-curve cap) for the
+ * given mode preset. Does NOT check the time-of-day window. Conservative: blocks
+ * when usage is unknown.
+ */
+export function evaluateAutoGenGates(usage: ClaudeSubscriptionUsage, now: Date, preset: AutoGenModePreset): AutoGenGateResult {
+  const fiveHourPct = usage.fiveHour.utilizationPct;
+  const weeklyPct = usage.weeklyAll.utilizationPct;
+  const dayKey = WEEKLY_CAP_DAY_KEYS[weeklyDayIndex(now, usage.weeklyAll.resetsAt, WEEKLY_CAP_DAY_KEYS.length)];
+  const weeklyCapPct = preset.weeklyCapByDayPct[dayKey];
+  const base = { fiveHourPct, weeklyPct, weeklyCapPct };
+
+  if (fiveHourPct === null) {
+    return { allowed: false, reason: 'five-hour-usage-unknown', ...base };
+  }
+  if (fiveHourPct >= preset.maxFiveHourUtilizationPct) {
+    return { allowed: false, reason: `five-hour-over-${preset.maxFiveHourUtilizationPct}`, ...base };
+  }
+  if (weeklyPct !== null && weeklyPct >= weeklyCapPct) {
+    return { allowed: false, reason: `weekly-over-day-cap-${weeklyCapPct}`, ...base };
+  }
+  return { allowed: true, reason: 'ok', ...base };
 }

@@ -15,15 +15,8 @@
  * resolve from SSM or env only.
  */
 import { ClaudeModel, GeminiModel, LLMProvider } from '@/types/llmConstants';
-import {
-  AUTO_GEN_ENTITY_INFO,
-  AUTO_GEN_MODE_LABELS,
-  AUTO_GEN_MODE_PRESETS,
-  AUTO_GEN_WINDOWS,
-  AutoGenEntity,
-  AutoGenMode,
-  AutoGenWindow,
-} from '@/utils/analysis-reports/auto-gen-modes';
+import { AUTO_GEN_ENTITY_INFO, AUTO_GEN_MODE_LABELS, AUTO_GEN_MODE_PRESETS, AUTO_GEN_WINDOWS } from '@/utils/auto-generation/auto-gen-config';
+import { AutoGenEntity, AutoGenMode, AutoGenWindow } from '@/utils/auto-generation/auto-gen-models';
 
 export type AppConfigValueType = 'boolean' | 'string';
 
@@ -193,7 +186,7 @@ export const APP_CONFIG_DEFINITIONS: AppConfigDefinition[] = [
     key: 'AUTOMATED_GENERATION_MODE',
     label: 'Automated generation mode',
     description:
-      'How aggressively the nightly auto-generation consumes the Claude usage budget. LOW is the current behavior; MEDIUM and HIGH raise the 5-hour / weekly caps and batch size. The selected mode’s exact config is shown below.',
+      'How aggressively the nightly auto-generation consumes the Claude usage budget. Low keeps the previous behavior; Medium and High raise the 5-hour / weekly caps and batch size. The selected mode’s exact config is shown below.',
     type: 'string',
     group: 'auto-generation',
     options: Object.values(AutoGenMode).map((mode) => ({

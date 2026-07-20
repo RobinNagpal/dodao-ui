@@ -3,8 +3,8 @@ import { LLMProvider } from '@/types/llmConstants';
 import { EtfGenerationRequestStatus } from '@/types/etf/etf-analysis-types';
 import { CLAUDE_AUTO_GEN } from '@/util/claude/claude-usage-constants';
 import { getClaudeSubscriptionUsage } from '@/util/claude/claude-usage';
-import { getAutoGenModePreset, isEtfAutoGenEnabled, isWithinAutoGenWindow } from '@/utils/analysis-reports/auto-gen-config';
-import { AutoEnqueueResult, evaluateAutoGenGates } from '@/utils/analysis-reports/auto-gen-gate-utils';
+import { AutoEnqueueResult } from '@/utils/auto-generation/auto-gen-models';
+import { evaluateAutoGenGates, getAutoGenModePreset, isEtfAutoGenEnabled, isWithinAutoGenWindow } from '@/utils/auto-generation/auto-gen-utils';
 import { EtfCanadaExchanges, EtfUSExchanges } from '@/utils/etfCountryExchangeUtils';
 import { ALL_ETF_SECTIONS_REGENERATE_FLAGS, upsertEtfGenerationRequest } from '@/utils/etf-analysis-reports/etf-generation-request-utils';
 import { ensureMorDataForAnalysis } from '@/utils/etf-analysis-reports/mor-scrape-utils';
@@ -62,7 +62,7 @@ async function getEtfsMissingReports(spaceId: string, limit: number): Promise<Et
 
 /**
  * Checks the Claude usage gates and, if they pass AND no auto requests are open,
- * creates one small batch (`BATCH_SIZE`) of full-report Claude requests for ETFs
+ * creates one small batch (the mode's batch size) of full-report Claude requests for ETFs
  * missing their reports (US → Canada → other). Called by the
  * `enqueue-auto-etf-generation` route on a cron. Never throws — on any failure it
  * creates nothing (fails closed).

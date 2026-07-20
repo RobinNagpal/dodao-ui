@@ -3,8 +3,8 @@ import { LLMProvider } from '@/types/llmConstants';
 import { GenerationRequestStatus } from '@/types/ticker-typesv1';
 import { CLAUDE_AUTO_GEN } from '@/util/claude/claude-usage-constants';
 import { getClaudeSubscriptionUsage } from '@/util/claude/claude-usage';
-import { getAutoGenModePreset, isStockAutoGenEnabled, isWithinAutoGenWindow } from '@/utils/analysis-reports/auto-gen-config';
-import { AutoEnqueueResult, evaluateAutoGenGates } from '@/utils/analysis-reports/auto-gen-gate-utils';
+import { AutoEnqueueResult } from '@/utils/auto-generation/auto-gen-models';
+import { evaluateAutoGenGates, getAutoGenModePreset, isStockAutoGenEnabled, isWithinAutoGenWindow } from '@/utils/auto-generation/auto-gen-utils';
 import { ALL_SECTIONS_REGENERATE_FLAGS, upsertGenerationRequest } from '@/utils/analysis-reports/generation-request-utils';
 import { getOldestStocksOverall } from '@/utils/oldest-reports-utils';
 

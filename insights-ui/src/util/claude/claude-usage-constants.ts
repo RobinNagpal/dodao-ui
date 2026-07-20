@@ -5,7 +5,7 @@ import { ClaudeModel } from '@/types/llmConstants';
  *
  * The usage gates (5-hour limit + weekly day-curve) and the batch size now vary
  * by the `AUTOMATED_GENERATION_MODE` setting — see `AUTO_GEN_MODE_PRESETS` in
- * `auto-gen-modes.ts`. Only the model, which is the same across modes, lives here.
+ * `auto-generation/auto-gen-config.ts`. Only the model, which is the same across modes, lives here.
  */
 export const CLAUDE_AUTO_GEN = {
   /**
