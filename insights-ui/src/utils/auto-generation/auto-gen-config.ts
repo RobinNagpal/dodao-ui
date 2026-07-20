@@ -7,7 +7,7 @@
  * Settings runtime — so `appConfigDefinitions.ts` can import it to build the
  * dropdowns + help notes without an import cycle.
  */
-import { AutoGenEntity, AutoGenMode, AutoGenModePreset, AutoGenWindow, WeeklyCapByDay } from '@/utils/auto-generation/auto-gen-models';
+import { AutoGenEntity, AutoGenMode, AutoGenModePreset, AutoGenUsageCaps, AutoGenWindow, WeeklyCapByDay } from '@/utils/auto-generation/auto-gen-models';
 
 export const DEFAULT_AUTO_GEN_MODE = AutoGenMode.Low;
 export const DEFAULT_AUTO_GEN_WINDOW = AutoGenWindow.NightShort;
@@ -17,25 +17,27 @@ export const DEFAULT_AUTO_GEN_ENTITY = AutoGenEntity.StocksAndEtfs;
 export const WEEKLY_CAP_DAY_KEYS: (keyof WeeklyCapByDay)[] = ['day1', 'day2', 'day3', 'day4', 'day5', 'day6', 'day7'];
 
 /**
- * Low reproduces the previous hardcoded behavior exactly. Medium and High raise
- * the caps and batch size to generate more reports per night at higher spend.
+ * Claude-usage safety caps — identical for EVERY mode (these are the values Low
+ * used before modes existed). The day-curve and 5-hour ceiling are safety limits,
+ * not the throughput lever, so raising the mode does not push the job closer to
+ * the Claude limit; it just generates more within these same caps.
+ */
+export const AUTO_GEN_USAGE_CAPS: AutoGenUsageCaps = {
+  maxFiveHourUtilizationPct: 90,
+  weeklyCapByDayPct: { day1: 20, day2: 30, day3: 40, day4: 50, day5: 60, day6: 70, day7: 80 },
+};
+
+/**
+ * The real consumption levers, per mode: how many reports each batch enqueues
+ * (`batchSize`) and how frequently batches run (`minMinutesBetweenBatches`, the
+ * cooldown after one batch finishes before the next may start). Low reproduces the
+ * previous behavior (5 reports, ~15-min spacing); Medium and High generate more,
+ * more often. All three still obey the shared `AUTO_GEN_USAGE_CAPS`.
  */
 export const AUTO_GEN_MODE_PRESETS: Record<AutoGenMode, AutoGenModePreset> = {
-  [AutoGenMode.Low]: {
-    maxFiveHourUtilizationPct: 90,
-    weeklyCapByDayPct: { day1: 20, day2: 30, day3: 40, day4: 50, day5: 60, day6: 70, day7: 80 },
-    batchSize: 5,
-  },
-  [AutoGenMode.Medium]: {
-    maxFiveHourUtilizationPct: 95,
-    weeklyCapByDayPct: { day1: 40, day2: 50, day3: 60, day4: 70, day5: 80, day6: 90, day7: 95 },
-    batchSize: 8,
-  },
-  [AutoGenMode.High]: {
-    maxFiveHourUtilizationPct: 98,
-    weeklyCapByDayPct: { day1: 70, day2: 80, day3: 90, day4: 95, day5: 98, day6: 100, day7: 100 },
-    batchSize: 12,
-  },
+  [AutoGenMode.Low]: { batchSize: 5, minMinutesBetweenBatches: 15 },
+  [AutoGenMode.Medium]: { batchSize: 10, minMinutesBetweenBatches: 10 },
+  [AutoGenMode.High]: { batchSize: 15, minMinutesBetweenBatches: 5 },
 };
 
 export const AUTO_GEN_MODE_LABELS: Record<AutoGenMode, string> = {
@@ -62,7 +64,7 @@ export const AUTO_GEN_WINDOWS: Record<AutoGenWindow, { label: string; descriptio
   },
   [AutoGenWindow.DayAndNight]: {
     label: 'Day and night',
-    description: 'Runs 24/7 — every 15 minutes, all day and night.',
+    description: 'Runs 24/7, all day and night. How often it actually enqueues within this window is set by the mode.',
     isWithinHourEt: () => true,
   },
 };

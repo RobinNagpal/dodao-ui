@@ -9,6 +9,7 @@ import { getAppConfigValue } from '@/lib/appConfig/appConfig';
 import { ClaudeSubscriptionUsage } from '@/util/claude/claude-usage';
 import {
   AUTO_GEN_MODE_PRESETS,
+  AUTO_GEN_USAGE_CAPS,
   AUTO_GEN_WINDOWS,
   DEFAULT_AUTO_GEN_ENTITY,
   DEFAULT_AUTO_GEN_MODE,
@@ -76,22 +77,34 @@ export function weeklyDayIndex(now: Date, weeklyResetsAt: string | null, capCurv
 }
 
 /**
- * Evaluates the Claude usage gates (5-hour limit + weekly day-curve cap) for the
- * given mode preset. Does NOT check the time-of-day window. Conservative: blocks
- * when usage is unknown.
+ * Whether a new batch must wait, per the mode's frequency lever: true if fewer
+ * than `minMinutes` have passed since the last auto batch (`lastBatchAt`). A null
+ * `lastBatchAt` (no prior auto request) is never throttled. Reusable across the
+ * stock and ETF jobs.
  */
-export function evaluateAutoGenGates(usage: ClaudeSubscriptionUsage, now: Date, preset: AutoGenModePreset): AutoGenGateResult {
+export function isWithinFrequencyCooldown(now: Date, lastBatchAt: Date | null, minMinutes: number): boolean {
+  if (!lastBatchAt) return false;
+  return now.getTime() - lastBatchAt.getTime() < minMinutes * 60_000;
+}
+
+/**
+ * Evaluates the shared Claude usage gates (5-hour limit + weekly day-curve cap).
+ * These caps are the same for every mode — see `AUTO_GEN_USAGE_CAPS`. Does NOT
+ * check the time-of-day window or the mode's throughput. Conservative: blocks when
+ * usage is unknown.
+ */
+export function evaluateAutoGenGates(usage: ClaudeSubscriptionUsage, now: Date): AutoGenGateResult {
   const fiveHourPct = usage.fiveHour.utilizationPct;
   const weeklyPct = usage.weeklyAll.utilizationPct;
   const dayKey = WEEKLY_CAP_DAY_KEYS[weeklyDayIndex(now, usage.weeklyAll.resetsAt, WEEKLY_CAP_DAY_KEYS.length)];
-  const weeklyCapPct = preset.weeklyCapByDayPct[dayKey];
+  const weeklyCapPct = AUTO_GEN_USAGE_CAPS.weeklyCapByDayPct[dayKey];
   const base = { fiveHourPct, weeklyPct, weeklyCapPct };
 
   if (fiveHourPct === null) {
     return { allowed: false, reason: 'five-hour-usage-unknown', ...base };
   }
-  if (fiveHourPct >= preset.maxFiveHourUtilizationPct) {
-    return { allowed: false, reason: `five-hour-over-${preset.maxFiveHourUtilizationPct}`, ...base };
+  if (fiveHourPct >= AUTO_GEN_USAGE_CAPS.maxFiveHourUtilizationPct) {
+    return { allowed: false, reason: `five-hour-over-${AUTO_GEN_USAGE_CAPS.maxFiveHourUtilizationPct}`, ...base };
   }
   if (weeklyPct !== null && weeklyPct >= weeklyCapPct) {
     return { allowed: false, reason: `weekly-over-day-cap-${weeklyCapPct}`, ...base };

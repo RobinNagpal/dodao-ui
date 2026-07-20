@@ -186,7 +186,7 @@ export const APP_CONFIG_DEFINITIONS: AppConfigDefinition[] = [
     key: 'AUTOMATED_GENERATION_MODE',
     label: 'Automated generation mode',
     description:
-      'How aggressively the nightly auto-generation consumes the Claude usage budget. Low keeps the previous behavior; Medium and High raise the 5-hour / weekly caps and batch size. The selected mode’s exact config is shown below.',
+      'How much the nightly auto-generation produces. Each mode sets the batch size (reports per run) and the cooldown between batches (how often it runs) — the two levers that actually drive Claude consumption. Low keeps the previous behavior; Medium and High generate more, more often. The Claude usage safety caps (5-hour + weekly) are the same for every mode. The selected mode’s exact config is shown below.',
     type: 'string',
     group: 'auto-generation',
     options: Object.values(AutoGenMode).map((mode) => ({
