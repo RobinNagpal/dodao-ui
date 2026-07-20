@@ -1,74 +1,32 @@
 'use client';
 
 import { TickerV1GenerationRequestWithTicker } from '@/app/api/[spaceId]/tickers-v1/generation-requests/route';
-import { GenerationRequestStatus, ReportType } from '@/types/ticker-typesv1';
+import { analysisTypes, GenerationRequestStatus, ReportType } from '@/types/ticker-typesv1';
+import { calculatePendingSteps } from '@/utils/analysis-reports/report-steps-statuses';
 import { getScoreColorClasses } from '@/utils/score-utils';
 import { ArrowPathIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import React from 'react';
 
-/** Canonical list of report flags we render, in column order. */
-export type GenerationReportField = keyof Pick<
-  TickerV1GenerationRequestWithTicker,
-  | 'regenerateCompetition'
-  | 'regenerateFinancialAnalysis'
-  | 'regenerateBusinessAndMoat'
-  | 'regeneratePastPerformance'
-  | 'regenerateFutureGrowth'
-  | 'regenerateFairValue'
-  | 'regenerateManagementTeam'
-  | 'regenerateFinalSummary'
->;
-
-export const REGENERATE_FIELDS: GenerationReportField[] = [
-  'regenerateCompetition',
-  'regenerateFinancialAnalysis',
-  'regenerateBusinessAndMoat',
-  'regeneratePastPerformance',
-  'regenerateFutureGrowth',
-  'regenerateFairValue',
-  'regenerateManagementTeam',
-  'regenerateFinalSummary',
-];
-
 export type GenerationRequestWithFlags = TickerV1GenerationRequestWithTicker;
 
-const FIELD_LABELS: Record<GenerationReportField, string> = {
-  regenerateCompetition: 'Competition',
-  regenerateFinancialAnalysis: 'Financial Analysis',
-  regenerateBusinessAndMoat: 'Business & Moat',
-  regeneratePastPerformance: 'Past Perf.',
-  regenerateFutureGrowth: 'Future Growth',
-  regenerateFairValue: 'Fair Value',
-  regenerateManagementTeam: 'Management Team',
-  regenerateFinalSummary: 'Summary/Meta/About',
-};
-
-const FIELD_TO_STEP_MAP: Record<GenerationReportField, ReportType> = {
-  regenerateCompetition: ReportType.COMPETITION,
-  regenerateFinancialAnalysis: ReportType.FINANCIAL_ANALYSIS,
-  regenerateBusinessAndMoat: ReportType.BUSINESS_AND_MOAT,
-  regeneratePastPerformance: ReportType.PAST_PERFORMANCE,
-  regenerateFutureGrowth: ReportType.FUTURE_GROWTH,
-  regenerateFairValue: ReportType.FAIR_VALUE,
-  regenerateManagementTeam: ReportType.MANAGEMENT_TEAM,
-  regenerateFinalSummary: ReportType.FINAL_SUMMARY,
-};
-
 interface StatusDotProps {
-  isEnabled: boolean;
   stepName: ReportType;
   completedSteps: ReportType[];
   failedSteps: ReportType[];
-  inProgressStep?: ReportType | null;
+  pendingSteps: ReportType[];
+  inProgressStep: ReportType | null;
 }
 
-export function StatusDot({ isEnabled, stepName, completedSteps, failedSteps, inProgressStep }: StatusDotProps): JSX.Element {
-  if (!isEnabled) return <div className="w-3 h-3 rounded-full bg-gray-400" title="Not enabled" />;
+// A step is "enabled" (part of this request) when it shows up in one of the step
+// arrays the request already carries — completed, failed, or pending (pending also
+// covers the in-progress step). Anything else was not requested, so it stays gray.
+function StatusDot({ stepName, completedSteps, failedSteps, pendingSteps, inProgressStep }: StatusDotProps): JSX.Element {
   if (failedSteps.includes(stepName)) return <div className="w-3 h-3 rounded-full bg-red-500" title="Failed" />;
   if (completedSteps.includes(stepName)) return <div className="w-3 h-3 rounded-full bg-green-500" title="Completed" />;
-  if (inProgressStep && inProgressStep === stepName) return <div className="w-3 h-3 rounded-full bg-yellow-500 animate-pulse" title="In Progress" />;
-  return <div className="w-3 h-3 rounded-full bg-blue-500" title="Pending" />;
+  if (inProgressStep === stepName) return <div className="w-3 h-3 rounded-full bg-yellow-500 animate-pulse" title="In Progress" />;
+  if (pendingSteps.includes(stepName)) return <div className="w-3 h-3 rounded-full bg-blue-500" title="Pending" />;
+  return <div className="w-3 h-3 rounded-full bg-gray-400" title="Not enabled" />;
 }
 
 /** Total score badge (out of 25) shown next to the ticker symbol. */
@@ -109,9 +67,9 @@ export default function GenerationRequestsTable({ rows, onReloadRequest }: Gener
           <tr>
             <th className={`${HEADER_CELL} text-left sticky left-0 bg-gray-700 z-10`}>Ticker</th>
             <th className={HEADER_CELL}>Industry</th>
-            {REGENERATE_FIELDS.map((field) => (
-              <th key={field} className={HEADER_CELL}>
-                {FIELD_LABELS[field]}
+            {analysisTypes.map(({ key, label }) => (
+              <th key={key} className={HEADER_CELL}>
+                {label}
               </th>
             ))}
             <th className={HEADER_CELL}>Status</th>
@@ -125,6 +83,7 @@ export default function GenerationRequestsTable({ rows, onReloadRequest }: Gener
             const completedSteps: ReportType[] = (request.completedSteps as ReportType[] | undefined) ?? [];
             const failedSteps: ReportType[] = (request.failedSteps as ReportType[] | undefined) ?? [];
             const inProgressStep: ReportType | null = (request.inProgressStep as ReportType | undefined) ?? null;
+            const pendingSteps: ReportType[] = request.pendingSteps ?? calculatePendingSteps(request);
             const isFailed: boolean = request.status === GenerationRequestStatus.Failed;
             return (
               <tr key={request.id}>
@@ -148,14 +107,14 @@ export default function GenerationRequestsTable({ rows, onReloadRequest }: Gener
                     {request.ticker.subIndustry?.name || 'Unknown Sub-Industry'}
                   </div>
                 </td>
-                {REGENERATE_FIELDS.map((field) => (
-                  <td key={`${symbol}-${field}`} className={BODY_CELL}>
+                {analysisTypes.map(({ key }) => (
+                  <td key={`${symbol}-${key}`} className={BODY_CELL}>
                     <div className="flex justify-center">
                       <StatusDot
-                        isEnabled={Boolean(request[field])}
-                        stepName={FIELD_TO_STEP_MAP[field]}
+                        stepName={key}
                         completedSteps={completedSteps}
                         failedSteps={failedSteps}
+                        pendingSteps={pendingSteps}
                         inProgressStep={inProgressStep}
                       />
                     </div>
