@@ -46,33 +46,34 @@ Read a setting in server code with `getAppConfigBoolean('KEY')` /
 3. Replace `process.env.KEY` reads with `getAppConfigValue('KEY')` /
    `getAppConfigBoolean('KEY')`.
 
-## Deployment — does it need updating?
+## Deployment
 
 **Local dev / Vercel:** nothing to do. Leave `APP_CONFIG_SSM_ENABLED` unset; the app
-runs on env vars + defaults exactly as before. The App Settings screen is read-only.
+runs on env vars + defaults exactly as before, and the App Settings screen is read-only.
 
-**AWS Lightsail (to actually store settings in SSM):** two changes, no infra rebuild.
+**AWS Lightsail:** wired in the `deployments/insights-ui/` Terraform — two changes, no
+infra rebuild, both applied by a normal `terraform apply` + redeploy:
 
-1. **Env vars** on the container service:
-   - `APP_CONFIG_SSM_ENABLED=true`
-   - `APP_CONFIG_SSM_PREFIX=/koalagains/insights-ui/` (optional; this is the default)
+1. **Env vars** (`variables.tf`, `app_env`):
+   - `APP_CONFIG_SSM_ENABLED = "true"`
+   - `APP_CONFIG_SSM_PREFIX  = "/koalagains/insights-ui/"`
 
-   The SSM client reuses the existing `AWS_ACCESS_KEY_ID` / `AWS_SECRET_ACCESS_KEY` /
-   `AWS_DEFAULT_REGION` already set for S3 and CloudFront — no new credentials.
+   The SSM client reuses the same env-var AWS credentials already used for S3 and
+   CloudFront — no new credentials. Enabling SSM is safe on its own: until a key is
+   actually set in SSM, each value still resolves to its `app_env` var, so behaviour
+   is unchanged. (The two migrated toggles remain in `app_env` as their fallback.)
 
-2. **IAM permissions** — grant the app's IAM identity (the static key the app runs
-   with) access to the parameter prefix. Add a statement like:
+2. **IAM** (`cloudfront.tf`, `aws_iam_policy.insights_ui_project_policy`): the app's
+   runtime identity gets `ssm:GetParametersByPath` / `GetParameter` / `GetParameters`
+   (reads) and `ssm:PutParameter` (saving edits from the admin screen), scoped to
+   `arn:aws:ssm:<region>:<account>:parameter/koalagains/insights-ui/*`. This is the
+   same policy that already grants the app CloudFront-invalidation rights. Parameters
+   are plain `String` (non-secret toggles), so no KMS permission is needed; if a
+   `SecureString` is ever introduced, also grant `kms:Decrypt`.
 
-   ```json
-   {
-     "Effect": "Allow",
-     "Action": ["ssm:GetParametersByPath", "ssm:GetParameter", "ssm:PutParameter"],
-     "Resource": "arn:aws:ssm:us-east-1:<ACCOUNT_ID>:parameter/koalagains/insights-ui/*"
-   }
-   ```
+   > IAM note: this policy is attached to the `insights-ui-vercel-project` IAM user —
+   > the identity whose access keys back the app's working CloudFront invalidation
+   > today. If the deployed app is ever switched to a different `KOALA_AWS_*` IAM user,
+   > the same SSM statement must move to that user, otherwise saves will 403.
 
-   Parameters are stored as plain `String` (these are non-secret toggles), so no KMS
-   permission is needed. If a `SecureString` is ever used, also grant `kms:Decrypt`.
-
-Until both are in place the app keeps working on env vars / defaults — the only
-missing capability is *saving* from the admin screen, which surfaces a clear message.
+Keep the prefix in `APP_CONFIG_SSM_PREFIX` and the IAM `Resource` ARN in sync.
