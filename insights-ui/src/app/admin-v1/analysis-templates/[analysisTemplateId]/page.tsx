@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useState } from 'react';
-import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import Input from '@dodao/web-core/components/core/input/Input';
 import TextareaAutosize from '@dodao/web-core/components/core/textarea/TextareaAutosize';
@@ -230,20 +229,20 @@ export default function AnalysisTemplateDetailPage() {
 
   if (!template) {
     return (
-      <PageWrapper>
-        <div className="max-w-7xl mx-auto py-8">
+      <>
+        <div className="py-8">
           <div className="bg-gray-800 rounded-lg p-8 text-center">
             <h2 className="text-xl font-semibold mb-2">Template not found</h2>
             <p className="text-gray-400">The analysis template you’re looking for doesn’t exist.</p>
           </div>
         </div>
-      </PageWrapper>
+      </>
     );
   }
 
   return (
-    <PageWrapper>
-      <div className="max-w-7xl mx-auto">
+    <>
+      <div>
         <div className="pt-2 pb-6">
           {/* Header */}
           <div className="mb-8">
@@ -502,6 +501,6 @@ export default function AnalysisTemplateDetailPage() {
           confirmationText="DELETE"
         />
       )}
-    </PageWrapper>
+    </>
   );
 }

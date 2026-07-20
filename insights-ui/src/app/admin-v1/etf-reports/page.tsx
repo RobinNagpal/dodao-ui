@@ -1,6 +1,5 @@
 'use client';
 
-import AdminNav from '@/app/admin-v1/AdminNav';
 import { EtfReportsResponse } from '@/app/api/[spaceId]/etfs-v1/etf-admin-reports/route';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { AllExchanges, EXCHANGES } from '@/utils/countryExchangeUtils';
@@ -8,7 +7,6 @@ import BulkActionsBar from './BulkActionsBar';
 import EtfReportsFilters from './EtfReportsFilters';
 import EtfReportsTable from './EtfReportsTable';
 import SelectMissingBar from './SelectMissingBar';
-import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
@@ -81,9 +79,7 @@ export default function EtfReportsPage(): JSX.Element {
   }, []);
 
   return (
-    <PageWrapper>
-      <AdminNav />
-
+    <>
       <div className="bg-gray-800 -mx-6 px-6 py-6 mb-6 border-b border-gray-700/60">
         <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
           <div>
@@ -152,6 +148,6 @@ export default function EtfReportsPage(): JSX.Element {
           )}
         </div>
       )}
-    </PageWrapper>
+    </>
   );
 }

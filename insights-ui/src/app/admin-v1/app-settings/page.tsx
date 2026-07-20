@@ -1,34 +1,28 @@
 'use client';
 
-import AdminNav from '@/app/admin-v1/AdminNav';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import MetricGrid from '@/components/ui/containers/MetricGrid';
+import Stack from '@/components/ui/containers/Stack';
+import Heading from '@/components/ui/Heading';
+import StatusBadge, { type StatusBadgeVariant } from '@/components/ui/StatusBadge';
+import Text from '@/components/ui/Text';
 import type { AppSettingsForAdmin, ResolvedAppSetting } from '@/lib/appConfig/appConfig';
+import { APP_CONFIG_GROUPS } from '@/lib/appConfig/appConfigDefinitions';
 import { getAppSettingsForAdmin, updateAppSetting } from '@/utils/app-config-actions';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import Input from '@dodao/web-core/components/core/input/Input';
-import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
+import StyledSelect from '@dodao/web-core/components/core/select/StyledSelect';
 import ToggleWithIcon from '@dodao/web-core/components/core/toggles/ToggleWithIcon';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import { useEffect, useState } from 'react';
 
-const SOURCE_LABELS: Record<ResolvedAppSetting['source'], { text: string; className: string }> = {
-  ssm: { text: 'SSM', className: 'border-emerald-700/40 bg-emerald-900/30 text-emerald-200' },
-  env: { text: 'Env var', className: 'border-amber-700/40 bg-amber-900/30 text-amber-200' },
-  default: { text: 'Default', className: 'border-gray-600/50 bg-gray-700/40 text-gray-300' },
+const SOURCE_BADGE: Record<ResolvedAppSetting['source'], { variant: StatusBadgeVariant; label: string }> = {
+  ssm: { variant: 'success', label: 'SSM' },
+  env: { variant: 'warning', label: 'Env var' },
+  default: { variant: 'neutral', label: 'Default' },
 };
 
-function Badge({ text, className }: { text: string; className: string }): JSX.Element {
-  return <span className={`inline-block rounded-full border px-2 py-0.5 text-xs font-medium ${className}`}>{text}</span>;
-}
-
-function SecretBadge({ isSet }: { isSet: boolean }): JSX.Element {
-  return isSet ? (
-    <Badge text="Secret · set" className="border-emerald-700/40 bg-emerald-900/30 text-emerald-200" />
-  ) : (
-    <Badge text="Secret · not set" className="border-gray-600/50 bg-gray-700/40 text-gray-300" />
-  );
-}
-
-function SettingRow({ setting, onSaved }: { setting: ResolvedAppSetting; onSaved: (saved: ResolvedAppSetting) => void }): JSX.Element {
+function SettingCard({ setting, onSaved }: { setting: ResolvedAppSetting; onSaved: (saved: ResolvedAppSetting) => void }): JSX.Element {
   const { showNotification } = useNotificationContext();
   const isSecret = setting.secret === true;
   // Secrets are write-only: the field always starts empty and saving replaces the stored value.
@@ -60,53 +54,53 @@ function SettingRow({ setting, onSaved }: { setting: ResolvedAppSetting; onSaved
     }
   };
 
-  const { text, className } = SOURCE_LABELS[setting.source];
+  const source = SOURCE_BADGE[setting.source];
 
   return (
-    <div className="rounded-lg border border-gray-700/50 bg-gray-900/40 p-4 space-y-3">
-      <div className="flex items-start justify-between gap-4">
-        <div>
-          <p className="font-medium text-white">{setting.label}</p>
-          <p className="font-mono text-xs text-gray-400 mt-0.5">{setting.key}</p>
+    <Card className="gap-3 py-4">
+      <CardHeader className="gap-1">
+        <div className="flex items-start justify-between gap-2">
+          <div>
+            <CardTitle>{setting.label}</CardTitle>
+            <Text as="p" size="xs" tone="muted" className="font-mono mt-0.5">
+              {setting.key}
+            </Text>
+          </div>
+          <div className="flex flex-wrap items-center justify-end gap-1.5">
+            {isSecret && <StatusBadge variant={setting.isSet ? 'success' : 'neutral'} label={setting.isSet ? 'Secret · set' : 'Secret · not set'} />}
+            {setting.isSet && <StatusBadge variant={source.variant} label={source.label} />}
+          </div>
         </div>
-        <div className="flex flex-wrap items-center gap-2">
-          {isSecret && <SecretBadge isSet={setting.isSet} />}
-          {setting.isSet && <Badge text={text} className={className} />}
-        </div>
-      </div>
+        <CardDescription>{setting.description}</CardDescription>
+      </CardHeader>
 
-      <p className="text-sm text-gray-300">{setting.description}</p>
+      <CardContent>
+        {setting.type === 'boolean' ? (
+          <ToggleWithIcon label={setting.label} enabled={draft === 'true'} setEnabled={(v) => setDraft(v ? 'true' : 'false')} />
+        ) : setting.options ? (
+          <StyledSelect
+            label=""
+            selectedItemId={draft}
+            setSelectedItemId={(id) => setDraft(id ?? '')}
+            items={setting.options.map((opt) => ({ id: opt.value, label: opt.label }))}
+          />
+        ) : (
+          <Input
+            modelValue={draft}
+            onUpdate={(v) => setDraft(v === undefined ? '' : String(v))}
+            required={false}
+            password={isSecret}
+            placeholder={isSecret ? (setting.isSet ? 'Enter a new value to replace the current secret' : 'Enter a value') : undefined}
+          />
+        )}
+      </CardContent>
 
-      {setting.type === 'boolean' ? (
-        <ToggleWithIcon label={setting.label} enabled={draft === 'true'} setEnabled={(v) => setDraft(v ? 'true' : 'false')} />
-      ) : setting.options ? (
-        <select
-          value={draft}
-          onChange={(e) => setDraft(e.target.value)}
-          className="w-full max-w-md rounded-md border border-gray-600 bg-gray-800 px-3 py-2 text-sm text-gray-100 focus:border-indigo-500 focus:outline-none"
-        >
-          {setting.options.map((opt) => (
-            <option key={opt.value} value={opt.value}>
-              {opt.label}
-            </option>
-          ))}
-        </select>
-      ) : (
-        <Input
-          modelValue={draft}
-          onUpdate={(v) => setDraft(v === undefined ? '' : String(v))}
-          required={false}
-          password={isSecret}
-          placeholder={isSecret ? (setting.isSet ? 'Enter a new value to replace the current secret' : 'Enter a value') : undefined}
-        />
-      )}
-
-      <div className="flex justify-end">
+      <CardFooter className="mt-auto justify-end">
         <Button onClick={handleSave} loading={saving} disabled={saving || !dirty}>
           Save
         </Button>
-      </div>
-    </div>
+      </CardFooter>
+    </Card>
   );
 }
 
@@ -138,33 +132,54 @@ export default function AppSettingsPage(): JSX.Element {
   };
 
   return (
-    <PageWrapper>
-      <AdminNav />
-
-      <div className="bg-gray-800 -mx-6 px-6 py-6 mb-6 border-b border-gray-700/60">
-        <h1 className="text-2xl font-semibold text-white">App Settings</h1>
-        <p className="text-gray-300 mt-1">
+    <Stack gap="xl">
+      <div className="border-b border-border pb-4">
+        <Heading as="h1" size="2xl" weight="semibold" tone="white">
+          App Settings
+        </Heading>
+        <Text as="p" size="sm" tone="muted" className="mt-1">
           Runtime configuration stored in AWS SSM Parameter Store. Values resolve in order: SSM &rarr; legacy environment variable &rarr; bundled default, so
           the app keeps working even when SSM is not configured.
-        </p>
+        </Text>
       </div>
 
       {data && !data.ssmConfigured && (
-        <div className="mb-6 rounded-lg border border-amber-700/40 bg-amber-900/30 p-4 text-amber-200">
-          SSM Parameter Store is not configured on this server. Settings below are read-only (from environment variables or bundled defaults). To enable
-          editing, set <span className="font-mono">APP_CONFIG_SSM_ENABLED=true</span> and grant the server SSM permissions.
-        </div>
+        <Card className="gap-0 border-amber-500/40 bg-amber-500/10 py-4">
+          <CardContent>
+            <Text as="p" size="sm" tone="body">
+              SSM Parameter Store is not configured on this server. Settings below are read-only (from environment variables or bundled defaults). To enable
+              editing, set <span className="font-mono">APP_CONFIG_SSM_ENABLED=true</span> and grant the server SSM permissions.
+            </Text>
+          </CardContent>
+        </Card>
       )}
 
-      {loading && <p className="text-gray-300">Loading settings…</p>}
-
-      {data && (
-        <div className="space-y-4">
-          {data.settings.map((setting) => (
-            <SettingRow key={setting.key} setting={setting} onSaved={handleSaved} />
-          ))}
-        </div>
+      {loading && (
+        <Text as="p" tone="muted">
+          Loading settings…
+        </Text>
       )}
-    </PageWrapper>
+
+      {data &&
+        APP_CONFIG_GROUPS.map((group) => {
+          const groupSettings = data.settings.filter((s) => s.group === group.id);
+          if (groupSettings.length === 0) return null;
+          return (
+            <section key={group.id}>
+              <Heading as="h2" size="lg" weight="semibold" tone="white">
+                {group.label}
+              </Heading>
+              <Text as="p" size="sm" tone="muted" className="mb-4 mt-1">
+                {group.description}
+              </Text>
+              <MetricGrid columns="1-2-3" gap="lg">
+                {groupSettings.map((setting) => (
+                  <SettingCard key={setting.key} setting={setting} onSaved={handleSaved} />
+                ))}
+              </MetricGrid>
+            </section>
+          );
+        })}
+    </Stack>
   );
 }

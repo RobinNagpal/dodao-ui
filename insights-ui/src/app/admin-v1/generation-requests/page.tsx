@@ -1,6 +1,5 @@
 'use client';
 
-import AdminNav from '@/app/admin-v1/AdminNav';
 import { GenerationRequestWithFlags } from '@/app/admin-v1/generation-requests/GenerationRequestsTable';
 import ReloadRequestModal from '@/app/admin-v1/generation-requests/ReloadRequestModal';
 import RequestsSection from '@/app/admin-v1/generation-requests/RequestsSection';
@@ -159,9 +158,7 @@ export default function GenerationRequestsPage(): JSX.Element {
   const activeCount: number = (counts?.inProgress ?? 0) + (counts?.notStarted ?? 0);
 
   return (
-    <div className="mt-12 px-4 text-color">
-      <AdminNav />
-
+    <>
       <div className="flex flex-wrap gap-3 justify-between items-center mb-4">
         <h2 className="text-2xl font-bold">Generation Requests</h2>
 
@@ -259,6 +256,6 @@ export default function GenerationRequestsPage(): JSX.Element {
         onReloadFailedPartsOnly={handleReloadFailedPartsOnly}
         onReloadFullRequest={handleReloadFullRequest}
       />
-    </div>
+    </>
   );
 }
