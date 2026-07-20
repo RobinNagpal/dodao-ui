@@ -36,6 +36,30 @@ export const APP_CONFIG_DEFINITIONS: AppConfigDefinition[] = [
       'OFF (default): generate each tariff section in the background and return immediately. ON: the request waits for the full LLM generation (old synchronous behavior).',
     type: 'boolean',
   },
+  {
+    key: 'LAMBDA_URL_LLM_CALL_WITH_CALLBACK',
+    label: 'LLM-call Lambda URL (callback path)',
+    description: 'Base URL of the AWS Lambda that runs an LLM call and posts the result back via callback. Used only when the Lambda path is enabled.',
+    type: 'string',
+  },
+  {
+    key: 'ANTHROPIC_BASE_URL',
+    label: 'Anthropic API base URL',
+    description: 'Base URL for the Claude Messages / usage API (Claude provider). Defaults to the real Anthropic API; override only to point at a proxy.',
+    type: 'string',
+  },
+  {
+    key: 'ANTHROPIC_OAUTH_TOKEN_URL',
+    label: 'Anthropic OAuth token endpoint',
+    description: 'Endpoint used to exchange the Claude subscription refresh token for a short-lived access token. Change only if the OAuth host moves.',
+    type: 'string',
+  },
+  {
+    key: 'CLAUDE_CODE_VERSION',
+    label: 'Claude Code version header',
+    description: 'Value sent as the claude-cli user-agent version on Claude subscription OAuth calls.',
+    type: 'string',
+  },
 ];
 
 export const APP_CONFIG_KEYS: string[] = APP_CONFIG_DEFINITIONS.map((d) => d.key);

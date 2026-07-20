@@ -1,4 +1,8 @@
 {
   "USE_LAMBDA_FOR_LLM_RESPONSE": "false",
-  "GENERATE_TARIFF_SECTIONS_SYNCHRONOUSLY": "false"
+  "GENERATE_TARIFF_SECTIONS_SYNCHRONOUSLY": "false",
+  "LAMBDA_URL_LLM_CALL_WITH_CALLBACK": "",
+  "ANTHROPIC_BASE_URL": "https://api.anthropic.com",
+  "ANTHROPIC_OAUTH_TOKEN_URL": "https://platform.claude.com/v1/oauth/token",
+  "CLAUDE_CODE_VERSION": "2.1.80"
 }

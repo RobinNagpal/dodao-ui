@@ -1,3 +1,4 @@
+import { getAppConfigValue } from '@/lib/appConfig/appConfig';
 import { ANTHROPIC_BETA, DEFAULT_BASE_URL, DEFAULT_CC_VERSION } from '@/util/claude/claude-oauth-client';
 import { getClaudeAccessToken, invalidateClaudeAccessToken } from '@/util/claude/claude-token-provider';
 
@@ -95,8 +96,8 @@ export interface GetClaudeUsageOptions {
  * configured or the endpoint returns a non-2xx response.
  */
 export async function getClaudeSubscriptionUsage(options: GetClaudeUsageOptions = {}): Promise<ClaudeSubscriptionUsage> {
-  const baseUrl = (options.baseUrl ?? process.env.ANTHROPIC_BASE_URL ?? DEFAULT_BASE_URL).replace(/\/+$/, '');
-  const ccVersion = process.env.CLAUDE_CODE_VERSION ?? DEFAULT_CC_VERSION;
+  const baseUrl = (options.baseUrl ?? (await getAppConfigValue('ANTHROPIC_BASE_URL')) ?? DEFAULT_BASE_URL).replace(/\/+$/, '');
+  const ccVersion = (await getAppConfigValue('CLAUDE_CODE_VERSION')) ?? DEFAULT_CC_VERSION;
 
   const sendWithToken = (token: string): Promise<Response> =>
     fetch(`${baseUrl}${USAGE_PATH}`, {

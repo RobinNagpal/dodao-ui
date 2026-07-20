@@ -1,4 +1,4 @@
-import { getAppConfigBoolean } from '@/lib/appConfig/appConfig';
+import { getAppConfigBoolean, getAppConfigValue } from '@/lib/appConfig/appConfig';
 import { prisma } from '@/prisma';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { LLMProvider, getDefaultLLMProvider, getDefaultModelForProvider } from '@/types/llmConstants';
@@ -50,9 +50,9 @@ async function updateLastInvocationTime(generationRequestId: string, reportType:
  * Core function to get LLM response
  */
 export async function callLambdaForLLMResponseViaCallback<Input>(request: LLMResponseViaLambdaRequest<Input>): Promise<void> {
-  const baseUrl = process.env.LAMBDA_URL_LLM_CALL_WITH_CALLBACK || '';
+  const baseUrl = (await getAppConfigValue('LAMBDA_URL_LLM_CALL_WITH_CALLBACK')) || '';
   if (!baseUrl) {
-    throw new Error('LAMBDA_URL_LLM_CALL_WITH_CALLBACK environment variable is not set');
+    throw new Error('LAMBDA_URL_LLM_CALL_WITH_CALLBACK is not set (App Settings / env)');
   }
 
   try {
