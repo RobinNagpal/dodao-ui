@@ -15,7 +15,7 @@ export default function CompetitorsAlternatives({ competitorsConsidered, betterA
     <div className="space-y-2 mt-2">
       {competitorsConsidered.length > 0 && (
         <div>
-          <h5 className="text-xs font-semibold text-gray-400 tracking-wider mb-1">Competitors Considered</h5>
+          <h5 className="text-xs font-semibold text-muted tracking-wider mb-1">Competitors Considered</h5>
           <div className="flex flex-wrap gap-1.5">
             {competitorsConsidered.map((ticker) => (
               <TickerBadge key={ticker.id} ticker={ticker} showScore={true} showName={true} linkToStock={true} />
@@ -26,7 +26,7 @@ export default function CompetitorsAlternatives({ competitorsConsidered, betterA
 
       {betterAlternatives.length > 0 && (
         <div>
-          <h5 className="text-xs font-semibold text-gray-400 tracking-wider mb-1">Better Alternatives</h5>
+          <h5 className="text-xs font-semibold text-muted tracking-wider mb-1">Better Alternatives</h5>
           <div className="flex flex-wrap gap-1.5">
             {betterAlternatives.map((ticker) => (
               <TickerBadge key={ticker.id} ticker={ticker} showScore={true} showName={true} linkToStock={true} />

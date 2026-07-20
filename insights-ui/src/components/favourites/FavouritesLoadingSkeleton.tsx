@@ -24,7 +24,7 @@ export default function FavouritesLoadingSkeleton(): React.JSX.Element {
       {/* Collapsed list rows */}
       <div className="space-y-3">
         {Array.from({ length: 4 }).map((_, idx) => (
-          <div key={idx} className="border border-gray-700 rounded-md px-4 py-2.5 flex items-center justify-between">
+          <div key={idx} className="border border-border rounded-md px-4 py-2.5 flex items-center justify-between">
             <div className="h-4 w-1/3 rounded-md shimmer" />
             <div className="h-5 w-5 rounded-md shimmer" />
           </div>

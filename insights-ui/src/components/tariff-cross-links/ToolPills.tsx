@@ -31,7 +31,7 @@ export default function ToolPills({ links, className }: ToolPillsProps): JSX.Ele
             key={link.href}
             href={link.href}
             title={link.description}
-            className={`inline-flex items-center gap-1.5 rounded-md px-2.5 py-1 text-xs font-medium ring-1 ring-inset transition-colors sm:text-sm ${TONE_CLASSES[tone]}`}
+            className={`tool-pill tone-${tone} inline-flex items-center gap-1.5 rounded-md px-2.5 py-1 text-xs font-medium ring-1 ring-inset transition-colors sm:text-sm ${TONE_CLASSES[tone]}`}
           >
             {link.icon && <span className="flex h-4 w-4 shrink-0 items-center justify-center">{link.icon}</span>}
             <span>{link.label}</span>

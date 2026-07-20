@@ -12,6 +12,8 @@
 
 import type { PriceHistoryResponse, PriceRangeKey } from '@/app/api/[spaceId]/tickers-v1/exchange/[exchange]/[ticker]/price-history/route';
 import PriceChart from '@/components/ticker-reportsv1/PriceChart';
+import { usePageTheme } from '@/components/theme/page-theme-context';
+import { chartAxisTheme } from '@/util/chart-theme';
 import { BarElement, CategoryScale, Chart as ChartJS, type ChartData, type ChartOptions, Legend, LinearScale, Tooltip } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
 import { ETF_PERFORMANCE_PERIODS, type EtfPerformanceMetricsPayload } from '@/utils/etf-performance-metrics-utils';
@@ -62,6 +64,8 @@ interface PerformanceBarsProps {
 }
 
 function PerformanceBars({ series, etfSymbol }: PerformanceBarsProps): JSX.Element {
+  const axis = chartAxisTheme(usePageTheme());
+
   // Hide individual periods where the focal ETF has no value — a bare
   // category bar without an ETF counterpart is misleading.
   const visible = series.filter((v) => v.etf !== null);
@@ -114,7 +118,7 @@ function PerformanceBars({ series, etfSymbol }: PerformanceBarsProps): JSX.Eleme
         position: 'top',
         align: 'end',
         labels: {
-          color: '#d1d5db',
+          color: axis.label,
           font: { size: 11 },
           boxWidth: 12,
           boxHeight: 12,
@@ -138,12 +142,12 @@ function PerformanceBars({ series, etfSymbol }: PerformanceBarsProps): JSX.Eleme
     scales: {
       x: {
         grid: { display: false },
-        ticks: { color: '#9ca3af', font: { size: 11 } },
+        ticks: { color: axis.tick, font: { size: 11 } },
       },
       y: {
-        grid: { color: 'rgba(55, 65, 81, 0.5)' },
+        grid: { color: axis.grid },
         ticks: {
-          color: '#9ca3af',
+          color: axis.tick,
           font: { size: 11 },
           callback: (value) => (typeof value === 'number' ? `${value}%` : value),
         },

@@ -56,3 +56,71 @@
 .border-primary-color {
   border-color: var(--primary-color);
 }
+
+/*
+ * Light-theme overrides for the stocks + ETF pages. The global `ThemeProvider`
+ * adds `.page-theme-light` only in light mode (we can't use `dark:` variants
+ * because <body> always carries `.dark`), so anything authored with dark-only
+ * hardcoded colors is re-themed here using the (light) semantic tokens. Dark
+ * mode never matches this selector, so its original appearance is left as-is.
+ *
+ * Selectors target section-specific component classes (`.country-alternatives-*`,
+ * `.radar-*`) so these rules only affect the stock/ETF pages that render them.
+ */
+.page-theme-light {
+  /*
+   * "Also view" country bar. Authored with dark-only hardcoded colors
+   * (`bg-gray-700/50`, `text-blue-100`, `text-blue-400`) that read badly on a
+   * light page; re-themed here to the light semantic tokens for light mode.
+   */
+  .country-alternatives-panel {
+    background-color: var(--surface-2);
+  }
+
+  .country-alternatives-label {
+    color: var(--text-color);
+  }
+
+  .country-alternatives-link {
+    color: var(--link-color);
+  }
+
+  /*
+   * Spider/radar chart (server-rendered SVG). Its rings/spokes/labels carry
+   * dark-only fills as SVG presentation attributes; CSS overrides those (CSS
+   * beats presentation attributes), so only light mode is affected and dark is
+   * left exactly as authored. Alternating rings become two subtle greys, spokes
+   * a hairline, labels readable body text.
+   */
+  .radar-ring-odd {
+    fill: var(--surface-3);
+  }
+
+  .radar-ring-even {
+    fill: var(--surface-2);
+  }
+
+  .radar-spoke {
+    stroke: var(--border-color);
+  }
+
+  .radar-label {
+    fill: var(--text-color);
+  }
+
+  /* Hover highlight slice: the light-grey default vanishes on light rings, so
+     tint it dark instead. */
+  .radar-highlight {
+    fill: rgba(17, 24, 39, 0.08);
+  }
+
+  /* Hover tooltip (factor breakdown): the dark card reads as a heavy black box
+     on a light page, so make it a light surface card that sits naturally against
+     the radar + page background. Base dark values live in the SVG's own <style>. */
+  .radar-tooltip {
+    background-color: var(--surface);
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+    box-shadow: 0 4px 12px rgba(17, 24, 39, 0.12);
+  }
+}

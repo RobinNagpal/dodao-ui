@@ -38,6 +38,9 @@ export default {
         // Lines — `border-border`
         border: 'var(--border-color)',
 
+        // Accent — tariff calculator amber highlight (`text-tariff-accent`).
+        'tariff-accent': 'var(--tariff-accent)',
+
         // Legacy aliases (kept so existing `bg-block`/`bg-background` usages
         // keep resolving while call-sites migrate to the canonical names).
         background: 'var(--bg-color)',

@@ -24,29 +24,29 @@ export default function PortfolioCards({ portfolios, portfolioManagerId }: Portf
       <Link
         key={portfolio.id}
         href={`/portfolio-managers/profile-details/${portfolioManagerId}/portfolios/${portfolio.id}`}
-        className=" bg-gray-900 rounded-lg p-6 transition-all block border border-gray-800 hover:border-blue-500"
+        className=" bg-surface rounded-lg p-6 transition-all block border border-border hover:border-blue-500"
       >
         <div className="mb-4">
           <h3 className="text-xl font-semibold text-blue-400 group-hover:text-blue-300 transition-colors mb-2">{portfolio.name}</h3>
-          <p className="text-gray-300 text-sm mb-3 line-clamp-2">{portfolio.summary}</p>
+          <p className="text-body text-sm mb-3 line-clamp-2">{portfolio.summary}</p>
         </div>
 
         <div className="space-y-3">
           <div className="flex justify-between items-center text-sm">
-            <span className="text-gray-400">Holdings:</span>
-            <span className="text-white font-medium">{portfolio.portfolioTickers?.length || 0}</span>
+            <span className="text-muted">Holdings:</span>
+            <span className="text-body font-medium">{portfolio.portfolioTickers?.length || 0}</span>
           </div>
 
           <div className="flex justify-between items-center text-sm">
-            <span className="text-gray-400">Total Allocation:</span>
+            <span className="text-muted">Total Allocation:</span>
             <span className={`font-medium ${totalAllocation > 100 ? 'text-red-400' : totalAllocation < 100 ? 'text-yellow-400' : 'text-green-400'}`}>
               {totalAllocation.toFixed(1)}%
             </span>
           </div>
 
           {topHoldings.length > 0 && (
-            <div className="pt-3 border-t border-gray-700">
-              <div className="text-sm text-gray-400 mb-2">Top Holdings:</div>
+            <div className="pt-3 border-t border-border">
+              <div className="text-sm text-muted mb-2">Top Holdings:</div>
               <div className="space-y-2">
                 {topHoldings.map((ticker) => (
                   <div key={ticker.id} className="flex justify-between items-center">
@@ -64,17 +64,17 @@ export default function PortfolioCards({ portfolios, portfolioManagerId }: Portf
                         linkToStock={false}
                       />
                     )}
-                    <span className="text-gray-400 text-sm font-medium ml-2">{ticker.allocation}%</span>
+                    <span className="text-muted text-sm font-medium ml-2">{ticker.allocation}%</span>
                   </div>
                 ))}
                 {(portfolio.portfolioTickers?.length || 0) > 3 && (
-                  <div className="text-sm text-gray-500">+{(portfolio.portfolioTickers?.length || 0) - 3} more</div>
+                  <div className="text-sm text-muted">+{(portfolio.portfolioTickers?.length || 0) - 3} more</div>
                 )}
               </div>
             </div>
           )}
 
-          <div className="pt-3 border-t border-gray-700">
+          <div className="pt-3 border-t border-border">
             <span className="text-blue-400 group-hover:text-blue-300 transition-colors text-sm font-medium">View Details →</span>
           </div>
         </div>
@@ -91,11 +91,11 @@ export default function PortfolioCards({ portfolios, portfolioManagerId }: Portf
       {/* Section Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
         <div>
-          <h2 className="text-2xl font-bold text-white flex items-center gap-2">
+          <h2 className="text-2xl font-bold text-heading flex items-center gap-2">
             <FolderIcon className="w-6 h-6 text-blue-500" />
             Portfolios
           </h2>
-          <p className="text-gray-400 mt-1">
+          <p className="text-muted mt-1">
             {portfolios.length} portfolio{portfolios.length !== 1 ? 's' : ''} • {totalHoldings} total holdings
           </p>
         </div>

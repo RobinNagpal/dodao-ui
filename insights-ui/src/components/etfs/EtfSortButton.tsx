@@ -46,7 +46,7 @@ export default function EtfSortButton(): JSX.Element {
         <ArrowsUpDownIcon className="h-5 w-5" />
         Sort
         {applied && (
-          <span className="inline-flex items-center gap-1 bg-primary text-heading px-2 py-0.5 font-semibold rounded-full text-xs">
+          <span className="inline-flex items-center gap-1 bg-primary text-primary-text px-2 py-0.5 font-semibold rounded-full text-xs">
             {applied.def.label}
             {applied.order === 'asc' ? <ArrowUpIcon className="h-3 w-3" /> : <ArrowDownIcon className="h-3 w-3" />}
           </span>

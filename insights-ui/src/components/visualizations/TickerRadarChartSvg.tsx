@@ -154,7 +154,8 @@ export default function TickerRadarChartSvg({ data, scorePercentage }: TickerRad
   // overlays the larger one, leaving an annulus of each colour.
   const bands = [];
   for (let value = axisMax; value >= 1; value--) {
-    bands.push({ r: (value / axisMax) * OUTER_RADIUS, fill: value % 2 === 1 ? RING_LIGHT : RING_DARK });
+    const odd = value % 2 === 1;
+    bands.push({ r: (value / axisMax) * OUTER_RADIUS, fill: odd ? RING_LIGHT : RING_DARK, cls: odd ? 'radar-ring-odd' : 'radar-ring-even' });
   }
 
   const vertices = keys.map((_, index) => polar((plotted[index] / axisMax) * OUTER_RADIUS, angleAt(index)));
@@ -176,17 +177,30 @@ export default function TickerRadarChartSvg({ data, scorePercentage }: TickerRad
           [data-radar-slice]:hover [data-radar-hl] { opacity: 1; }
           [data-radar-tip] { opacity: 0; transition: opacity 120ms ease; }
           [data-radar-slice]:hover [data-radar-tip] { opacity: 1; }
+          /* Dark defaults; light-theme overrides live in theme-styles.scss (.page-theme-light). */
+          .radar-tooltip { background-color: rgba(0, 0, 0, 0.9); color: #ffffff; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4); }
         `}</style>
 
         {/* Alternating concentric rings */}
         {bands.map((band, index) => (
-          <circle key={`band-${index}`} cx={CENTER} cy={CENTER} r={round(band.r)} fill={band.fill} />
+          <circle key={`band-${index}`} className={band.cls} cx={CENTER} cy={CENTER} r={round(band.r)} fill={band.fill} />
         ))}
 
         {/* Radial spokes */}
         {keys.map((_, index) => {
           const end = polar(OUTER_RADIUS, angleAt(index));
-          return <line key={`spoke-${index}`} x1={CENTER} y1={CENTER} x2={round(end.x)} y2={round(end.y)} stroke={SPOKE_COLOR} strokeWidth={3} />;
+          return (
+            <line
+              key={`spoke-${index}`}
+              className="radar-spoke"
+              x1={CENTER}
+              y1={CENTER}
+              x2={round(end.x)}
+              y2={round(end.y)}
+              stroke={SPOKE_COLOR}
+              strokeWidth={3}
+            />
+          );
         })}
 
         {/* Data polygon */}
@@ -204,6 +218,7 @@ export default function TickerRadarChartSvg({ data, scorePercentage }: TickerRad
           return (
             <text
               key={`label-${index}`}
+              className="radar-label"
               x={round(pos.x)}
               y={round(pos.y)}
               textAnchor={anchor}
@@ -236,7 +251,7 @@ export default function TickerRadarChartSvg({ data, scorePercentage }: TickerRad
           return (
             <g key={`slice-${index}`} data-radar-slice="">
               {/* Highlight pizza-slice (revealed on hover via CSS) */}
-              <path d={wedge} fill={HIGHLIGHT_FILL} data-radar-hl="" style={{ pointerEvents: 'none' }} />
+              <path d={wedge} className="radar-highlight" fill={HIGHLIGHT_FILL} data-radar-hl="" style={{ pointerEvents: 'none' }} />
               {/* Transparent hit-area that drives the group's :hover */}
               <path d={wedge} fill="transparent" style={{ pointerEvents: 'all' }} />
               {/* CSS-only tooltip */}
@@ -249,12 +264,10 @@ export default function TickerRadarChartSvg({ data, scorePercentage }: TickerRad
                 style={{ pointerEvents: 'none', overflow: 'visible' }}
               >
                 <div
+                  className="radar-tooltip"
                   style={{
                     borderRadius: 6,
-                    backgroundColor: 'rgba(0, 0, 0, 0.9)',
-                    color: '#ffffff',
                     padding: '10px 12px',
-                    boxShadow: '0 4px 12px rgba(0,0,0,0.4)',
                     textAlign: 'left',
                   }}
                 >

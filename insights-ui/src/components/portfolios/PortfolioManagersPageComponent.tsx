@@ -31,12 +31,12 @@ export default function PortfolioManagersPageComponent({
         <div className="mb-8">
           <div className="flex items-center gap-3 mb-2">
             {Icon && <Icon className="w-8 h-8 text-blue-500" />}
-            <h1 className="text-3xl font-bold text-white">{title}</h1>
+            <h1 className="text-3xl font-bold text-heading">{title}</h1>
             <div className="ml-auto">
               <PortfolioManagersPageActions managerType={managerType} />
             </div>
           </div>
-          <p className="text-gray-400 text-base ml-11">
+          <p className="text-muted text-base ml-11">
             Discover {profiles.length} professional portfolio manager{profiles.length !== 1 ? 's' : ''} and explore their profiles and portfolios
           </p>
         </div>

@@ -42,9 +42,9 @@ export default async function PortfolioDetailPage({ params: paramsPromise, searc
     return (
       <PageWrapper>
         <div className="max-w-7xl mx-auto py-8">
-          <div className="bg-gray-800 rounded-lg p-8 text-center">
+          <div className="bg-surface rounded-lg p-8 text-center">
             <h2 className="text-xl font-semibold mb-2">Portfolio not found</h2>
-            <p className="text-gray-400">The portfolio you’re looking for doesn’t exist.</p>
+            <p className="text-muted">The portfolio you’re looking for doesn’t exist.</p>
           </div>
         </div>
       </PageWrapper>
@@ -103,7 +103,7 @@ export default async function PortfolioDetailPage({ params: paramsPromise, searc
               <div className="p-2 bg-blue-500/10 rounded-xl border border-blue-500/20">
                 <FolderIcon className="w-8 h-8 text-blue-500" />
               </div>
-              <h1 className="text-3xl font-bold text-white">{portfolio.name}</h1>
+              <h1 className="text-3xl font-bold text-heading">{portfolio.name}</h1>
             </div>
 
             <PortfolioDetailActions portfolio={portfolio} portfolioManagerId={portfolioManagerId} portfolioId={portfolioId} />

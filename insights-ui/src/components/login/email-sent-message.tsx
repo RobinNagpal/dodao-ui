@@ -14,7 +14,7 @@ interface EmailSentMessageProps {
 
 export function EmailSentMessage({ email, onChangeEmail, compact = false }: EmailSentMessageProps): JSX.Element {
   return (
-    <div className="overflow-hidden bg-gray-800 rounded-xl py-8">
+    <div className="overflow-hidden bg-surface rounded-xl py-8">
       <div className="mx-auto max-w-md px-6">
         <div className="relative isolate">
           <div className="mx-auto max-w-4xl">
@@ -26,21 +26,21 @@ export function EmailSentMessage({ email, onChangeEmail, compact = false }: Emai
                   </div>
                 </div>
 
-                <h1 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
-                  Check your <span className="text-indigo-400">email</span>
+                <h1 className="text-3xl font-bold tracking-tight text-heading sm:text-4xl">
+                  Check your <span className="text-primary">email</span>
                 </h1>
 
-                <p className="mt-4 text-base leading-7 text-gray-300 max-w-2xl mx-auto">We just sent you a secure sign‑in link.</p>
+                <p className="mt-4 text-base leading-7 text-body max-w-2xl mx-auto">We just sent you a secure sign‑in link.</p>
               </div>
             )}
 
             <div className={compact ? '' : 'mt-8'}>
-              <Card className="bg-gray-700/40 backdrop-blur-sm rounded-xl border border-gray-600/40 hover:border-indigo-500/50 transition-all duration-300 shadow-lg">
+              <Card className="bg-surface-2 backdrop-blur-sm rounded-xl border border-border hover:border-indigo-500/50 transition-all duration-300 shadow-lg">
                 <CardHeader className="space-y-1 pb-2">
                   <div className="flex items-center justify-center">
-                    <CardTitle className="text-xl font-semibold text-white text-center">Verify your inbox</CardTitle>
+                    <CardTitle className="text-xl font-semibold text-heading text-center">Verify your inbox</CardTitle>
                   </div>
-                  <CardDescription className="text-center text-gray-300">Open the link to access KoalaGains Insights.</CardDescription>
+                  <CardDescription className="text-center text-body">Open the link to access KoalaGains Insights.</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="flex flex-col items-center justify-center space-y-5">
@@ -48,13 +48,13 @@ export function EmailSentMessage({ email, onChangeEmail, compact = false }: Emai
                       <Mail className="h-6 w-6 text-white" aria-hidden="true" />
                     </div>
 
-                    <p className="text-center text-sm text-gray-300 sm:text-base">
-                      We have sent a sign‑in link to <span className="font-medium text-white">{email}</span>.
+                    <p className="text-center text-sm text-body sm:text-base">
+                      We have sent a sign‑in link to <span className="font-medium text-heading">{email}</span>.
                       <br />
                       Please check your inbox (and spam) and click the link to continue.
                     </p>
 
-                    <Button type="button" primary={false} variant="outlined" className="w-full h-11 text-white" onClick={onChangeEmail}>
+                    <Button type="button" primary={false} variant="outlined" className="w-full h-11 text-heading" onClick={onChangeEmail}>
                       Use a different email
                     </Button>
                   </div>
@@ -62,7 +62,7 @@ export function EmailSentMessage({ email, onChangeEmail, compact = false }: Emai
               </Card>
             </div>
 
-            <p className="mt-6 text-center text-xs text-gray-400 sm:text-sm">Did not get it? It can take a minute to arrive.</p>
+            <p className="mt-6 text-center text-xs text-muted sm:text-sm">Did not get it? It can take a minute to arrive.</p>
           </div>
         </div>
       </div>

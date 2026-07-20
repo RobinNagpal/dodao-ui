@@ -1,5 +1,7 @@
 'use client';
 
+import { usePageTheme } from '@/components/theme/page-theme-context';
+import { chartAxisTheme } from '@/util/chart-theme';
 import { QuadrantDataPoint } from '@/util/quadrant-chart-utils';
 import { Chart as ChartJS, LinearScale, PointElement, Tooltip, Legend, ChartOptions, ChartData, Plugin, Chart, TooltipItem } from 'chart.js';
 import React, { useMemo } from 'react';
@@ -86,33 +88,40 @@ const QuadrantBackgroundPlugin: Plugin<'scatter'> = {
 
 type GroupedTickerPoint = { x: number; y: number; tickers: string[]; companyNames: string[]; isMainTicker: boolean };
 
-const TickerLabelPlugin: Plugin<'scatter'> = {
-  id: 'tickerLabels',
-  afterDatasetsDraw: (chart: Chart<'scatter'>) => {
-    const { ctx } = chart;
-    ctx.save();
-    ctx.textAlign = 'center';
-    ctx.font = 'bold 11px Inter, sans-serif';
+// The main-ticker label stays amber (a data highlight); the peer-label color is
+// themed so it stays readable on a light background (`labelColor`).
+function makeTickerLabelPlugin(labelColor: string): Plugin<'scatter'> {
+  return {
+    id: 'tickerLabels',
+    afterDatasetsDraw: (chart: Chart<'scatter'>) => {
+      const { ctx } = chart;
+      ctx.save();
+      ctx.textAlign = 'center';
+      ctx.font = 'bold 11px Inter, sans-serif';
 
-    chart.data.datasets.forEach((dataset, datasetIndex) => {
-      const meta = chart.getDatasetMeta(datasetIndex);
-      meta.data.forEach((point, index) => {
-        const raw = dataset.data[index] as GroupedTickerPoint;
-        if (!raw?.tickers?.length) return;
+      chart.data.datasets.forEach((dataset, datasetIndex) => {
+        const meta = chart.getDatasetMeta(datasetIndex);
+        meta.data.forEach((point, index) => {
+          const raw = dataset.data[index] as GroupedTickerPoint;
+          if (!raw?.tickers?.length) return;
 
-        const { x, y } = point.getProps(['x', 'y']);
-        const isMain = raw.isMainTicker;
+          const { x, y } = point.getProps(['x', 'y']);
+          const isMain = raw.isMainTicker;
 
-        ctx.fillStyle = isMain ? '#fbbf24' : '#d1d5db';
-        ctx.fillText(raw.tickers.join(', '), x, y + (isMain ? 22 : 18));
+          ctx.fillStyle = isMain ? '#fbbf24' : labelColor;
+          ctx.fillText(raw.tickers.join(', '), x, y + (isMain ? 22 : 18));
+        });
       });
-    });
 
-    ctx.restore();
-  },
-};
+      ctx.restore();
+    },
+  };
+}
 
 export default function QualityVsValueQuadrant({ dataPoints, mainTickerSymbol: _mainTickerSymbol }: QualityVsValueQuadrantProps): JSX.Element | null {
+  const axis = chartAxisTheme(usePageTheme());
+  const tickerLabelPlugin = useMemo(() => makeTickerLabelPlugin(axis.label), [axis.label]);
+
   const chartData = useMemo((): ChartData<'scatter'> => {
     type Classification = 'High Quality' | 'Investable' | 'Value Play' | 'Underperform';
     const groupsByKey = new Map<string, { cls: Classification; point: GroupedTickerPoint }>();
@@ -178,18 +187,18 @@ export default function QualityVsValueQuadrant({ dataPoints, mainTickerSymbol: _
           min: -8,
           max: 108,
           title: { display: false },
-          grid: { color: 'rgba(55, 65, 81, 0.2)' },
+          grid: { color: axis.gridFaint },
           ticks: { display: false },
-          border: { color: 'rgba(55, 65, 81, 0.3)' },
+          border: { color: axis.axisBorder },
         },
         y: {
           type: 'linear',
           min: -8,
           max: 108,
           title: { display: false },
-          grid: { color: 'rgba(55, 65, 81, 0.2)' },
+          grid: { color: axis.gridFaint },
           ticks: { display: false },
-          border: { color: 'rgba(55, 65, 81, 0.3)' },
+          border: { color: axis.axisBorder },
         },
       },
       plugins: {
@@ -225,7 +234,7 @@ export default function QualityVsValueQuadrant({ dataPoints, mainTickerSymbol: _
         },
       },
     }),
-    []
+    [axis.gridFaint, axis.axisBorder]
   );
 
   if (dataPoints.length === 0) return null;
@@ -244,7 +253,7 @@ export default function QualityVsValueQuadrant({ dataPoints, mainTickerSymbol: _
         </div>
 
         <div className="px-4">
-          <Scatter data={chartData} options={options} plugins={[QuadrantBackgroundPlugin, TickerLabelPlugin]} />
+          <Scatter data={chartData} options={options} plugins={[QuadrantBackgroundPlugin, tickerLabelPlugin]} />
         </div>
       </div>
 

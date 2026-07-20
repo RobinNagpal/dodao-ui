@@ -33,21 +33,21 @@ export default function CompetitorCard({ competitor, href, actionSlot }: Competi
   const nameNode = href ? (
     <Link href={href} prefetch={false} title="View detailed report" className="flex gap-x-2 items-center text-[#F59E0B] hover:text-[#F97316] transition-colors">
       <h3 className="font-semibold">{competitor.companyName}</h3>
-      <ArrowTopRightOnSquareIcon className="size-4 text-primary-text" />
+      <ArrowTopRightOnSquareIcon className="size-4 text-heading" />
     </Link>
   ) : (
     <h3 className="font-semibold">{competitor.companyName}</h3>
   );
 
   return (
-    <li className="bg-gray-800 p-4 rounded-md">
+    <li className="bg-surface p-4 rounded-md">
       <div className="flex flex-col gap-y-2">
         <div className="flex items-center justify-between">
           {nameNode}
           <div className="flex">
             <div className="flex items-center gap-x-2">
               {competitor.companySymbol && (
-                <span className="text-sm text-gray-400">
+                <span className="text-sm text-muted">
                   {competitor.companySymbol}
                   {competitor.exchangeName ? ` • ${competitor.exchangeName.toUpperCase()}` : ''}
                 </span>

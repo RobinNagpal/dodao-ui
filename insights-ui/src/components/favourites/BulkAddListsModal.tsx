@@ -53,14 +53,14 @@ export default function BulkAddListsModal({ isOpen, onClose, lists, selectedFavo
   return (
     <FullPageModal open={isOpen} onClose={handleClose} title="Add to Lists" className="w-full max-w-2xl">
       <div className="p-4 space-y-4 text-left">
-        <div className="bg-gray-800 p-3 rounded-lg">
-          <p className="text-sm text-gray-300 mb-3">
-            You are about to update lists for <span className="font-semibold text-white">{selectedFavouriteIds.size}</span> selected{' '}
+        <div className="bg-surface p-3 rounded-lg">
+          <p className="text-sm text-muted mb-3">
+            You are about to update lists for <span className="font-semibold text-heading">{selectedFavouriteIds.size}</span> selected{' '}
             {selectedFavouriteIds.size === 1 ? 'favourite' : 'favourites'}.
           </p>
 
           <div className="mb-3">
-            <label className="block text-xs font-semibold uppercase tracking-wide text-gray-400 mb-1.5">Update Mode</label>
+            <label className="block text-xs font-semibold uppercase tracking-wide text-muted mb-1.5">Update Mode</label>
             <div className="flex gap-6 text-sm">
               <label className="flex items-center">
                 <input type="radio" name="mode" value="add" checked={mode === 'add'} onChange={() => setMode('add')} className="mr-2" />
@@ -74,10 +74,10 @@ export default function BulkAddListsModal({ isOpen, onClose, lists, selectedFavo
           </div>
 
           <div>
-            <label className="block text-xs font-semibold uppercase tracking-wide text-gray-400 mb-1.5">Select Lists</label>
-            <div className="space-y-0.5 max-h-52 overflow-y-auto bg-gray-900 rounded-md p-1.5">
+            <label className="block text-xs font-semibold uppercase tracking-wide text-muted mb-1.5">Select Lists</label>
+            <div className="space-y-0.5 max-h-52 overflow-y-auto bg-bg rounded-md p-1.5">
               {lists.length === 0 ? (
-                <p className="text-gray-400 text-sm px-2 py-1.5">No lists available. Create lists first.</p>
+                <p className="text-muted text-sm px-2 py-1.5">No lists available. Create lists first.</p>
               ) : (
                 <Checkboxes
                   items={lists.map(
@@ -101,7 +101,7 @@ export default function BulkAddListsModal({ isOpen, onClose, lists, selectedFavo
           </div>
         </div>
 
-        <div className="flex justify-end gap-3 pt-4 border-t border-gray-700">
+        <div className="flex justify-end gap-3 pt-4 border-t border-border">
           <Button onClick={handleClose} disabled={updating} variant="outlined">
             Cancel
           </Button>

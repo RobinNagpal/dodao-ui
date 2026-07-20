@@ -98,7 +98,7 @@ export default function HtsCodeSearch({ onSelect, className }: HtsCodeSearchProp
   return (
     <div ref={wrapperRef} className={`relative ${className ?? ''}`}>
       <div className="relative">
-        <MagnifyingGlassIcon className="pointer-events-none absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-amber-300/70" aria-hidden="true" />
+        <MagnifyingGlassIcon className="pointer-events-none absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-tariff-accent" aria-hidden="true" />
         <input
           ref={inputRef}
           type="text"
@@ -106,7 +106,7 @@ export default function HtsCodeSearch({ onSelect, className }: HtsCodeSearchProp
           onChange={onChange}
           onFocus={() => query.trim().length >= 2 && setOpen(true)}
           placeholder="Search what you ship — like frozen shrimp, lithium battery, cotton t-shirt"
-          className="w-full h-12 rounded-lg border border-amber-300/25 bg-gray-800/60 pl-11 pr-10 text-sm text-heading placeholder-gray-400 shadow-sm focus:outline-none focus:ring-2 focus:ring-amber-300/40 focus:border-amber-300/60"
+          className="w-full h-12 rounded-lg border border-border bg-surface pl-11 pr-10 text-sm text-heading placeholder-gray-400 shadow-sm focus:outline-none focus:ring-2 focus:ring-amber-300/40 focus:border-amber-300/60"
           aria-label="Search HTS codes"
           autoComplete="off"
         />
@@ -147,10 +147,10 @@ export default function HtsCodeSearch({ onSelect, className }: HtsCodeSearchProp
                   <button
                     type="button"
                     onClick={() => handlePick(result)}
-                    className="w-full text-left px-4 py-3 hover:bg-amber-500/10 focus:bg-amber-500/10 focus:outline-none transition-colors"
+                    className="w-full text-left px-4 py-3 hover:bg-surface-2 focus:bg-surface-2 focus:outline-none transition-colors"
                   >
                     <div className="flex items-baseline justify-between gap-3">
-                      <span className="font-mono text-sm font-semibold text-amber-300">{formatHts10(result.htsCode10)}</span>
+                      <span className="font-mono text-sm font-semibold text-tariff-accent">{formatHts10(result.htsCode10)}</span>
                       <span className="text-[11px] uppercase tracking-wide text-muted">
                         Ch. {String(result.chapterNumber).padStart(2, '0')} · {result.chapterTitle}
                       </span>
@@ -161,7 +161,7 @@ export default function HtsCodeSearch({ onSelect, className }: HtsCodeSearchProp
                         return (
                           <li key={node.id} className={isLeaf ? 'text-heading font-medium' : 'text-muted'} style={{ paddingLeft: `${node.indent * 12}px` }}>
                             <span className="opacity-60">{isLeaf ? '└─ ' : '├─ '}</span>
-                            {node.htsNumber && <span className="font-mono mr-2 text-amber-200/80">{node.htsNumber}</span>}
+                            {node.htsNumber && <span className="font-mono mr-2 text-tariff-accent">{node.htsNumber}</span>}
                             <span>{node.description}</span>
                           </li>
                         );

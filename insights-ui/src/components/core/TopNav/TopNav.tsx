@@ -3,6 +3,7 @@
 import SearchBar from '@/components/core/SearchBar';
 import { UserProfile } from '@/components/core/UserProfile/UserProfile';
 import MobileTopNav from '@/components/core/TopNav/MobileTopNav';
+import { usePageTheme } from '@/components/theme/page-theme-context';
 import { IndustryWithSubIndustriesAndCounts } from '@/types/ticker-typesv1';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
@@ -50,6 +51,11 @@ export default function TopNav() {
   const { data: session } = useSession();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const pathname = usePathname() ?? ''; // <-- safe for null
+  // The navbar themes itself by toggling its own `.dark` class rather than by
+  // token swap: it already ships full `bg-white … dark:bg-gray-900` variants, so
+  // flipping the `.dark` ancestor is all that's needed. It reads the app-wide
+  // theme from the global provider it now renders inside.
+  const navTheme = usePageTheme();
   const isStocksRoute = pathname.startsWith('/stocks');
   const isEtfsRoute = pathname.startsWith('/etfs');
   const isHomeRoute = pathname === '/';
@@ -71,9 +77,11 @@ export default function TopNav() {
     }
   };
 
-  // Wrap the whole header in a parent with className="dark" to force dark mode here
+  // Wrap the header in a parent that carries `.dark` only in dark mode, so in
+  // light mode the header renders its existing light variants instead of being
+  // force-darkened.
   return (
-    <div className="dark">
+    <div className={navTheme === 'dark' ? 'dark' : ''}>
       <header className="bg-white dark:bg-gray-900">
         <nav aria-label="Global" className="mx-auto flex max-w-7xl items-center justify-between p-4 lg:px-6">
           <div className="flex lg:flex-1">

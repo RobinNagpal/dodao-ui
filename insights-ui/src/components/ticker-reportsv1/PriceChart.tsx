@@ -5,6 +5,8 @@ import { Line } from 'react-chartjs-2';
 import { useMemo, useState } from 'react';
 import { PriceHistoryResponse, PriceRangeKey } from '@/app/api/[spaceId]/tickers-v1/exchange/[exchange]/[ticker]/price-history/route';
 import { PriceHistoryPoint } from '@/types/prismaTypes';
+import { usePageTheme } from '@/components/theme/page-theme-context';
+import { chartAxisTheme } from '@/util/chart-theme';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler);
 
@@ -92,6 +94,8 @@ export default function PriceChart({ data, embedded = false, range, hideRangeBut
     return filterByRange(source, selectedRange);
   }, [data, selectedRange]);
 
+  const axis = chartAxisTheme(usePageTheme());
+
   const chartData: ChartData<'line'> = {
     labels: series.map((p) => formatDateLabel(p.date, selectedRange)),
     datasets: [
@@ -134,18 +138,18 @@ export default function PriceChart({ data, embedded = false, range, hideRangeBut
     },
     scales: {
       x: {
-        grid: { color: 'rgba(55, 65, 81, 0.5)' },
+        grid: { color: axis.grid },
         ticks: {
-          color: '#9ca3af',
+          color: axis.tick,
           font: { size: 11 },
           maxTicksLimit: 8,
           autoSkip: true,
         },
       },
       y: {
-        grid: { color: 'rgba(55, 65, 81, 0.5)' },
+        grid: { color: axis.grid },
         ticks: {
-          color: '#9ca3af',
+          color: axis.tick,
           font: { size: 11 },
           callback: (value) => (typeof value === 'number' ? value.toLocaleString('en-US', { maximumFractionDigits: 2 }) : value),
         },

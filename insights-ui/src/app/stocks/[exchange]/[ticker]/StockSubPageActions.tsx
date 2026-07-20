@@ -94,8 +94,8 @@ export default function StockSubPageActions({ tickerId, tickerSymbol, tickerName
       <div className="hidden sm:flex flex-wrap items-center gap-2">
         <button
           onClick={openFavourite}
-          className={`inline-flex items-center px-4 py-2 text-sm font-medium text-white ${
-            favouriteTicker ? 'bg-blue-700 hover:bg-blue-600 border-blue-600' : 'bg-gray-700 hover:bg-gray-600 border-gray-600'
+          className={`inline-flex items-center px-4 py-2 text-sm font-medium ${
+            favouriteTicker ? 'bg-blue-700 hover:bg-blue-600 border-blue-600 text-white' : 'bg-surface-2 hover:bg-surface-3 border-surface-3 text-heading'
           } border rounded-lg shadow-md`}
           title={!session ? 'Login to add to favourites' : favouriteTicker ? 'Edit favourite' : 'Add to favourites'}
         >
@@ -108,8 +108,8 @@ export default function StockSubPageActions({ tickerId, tickerSymbol, tickerName
         </button>
         <button
           onClick={openNotes}
-          className={`inline-flex items-center px-4 py-2 text-sm font-medium text-white ${
-            existingNote ? 'bg-green-700 hover:bg-green-600 border-green-600' : 'bg-gray-700 hover:bg-gray-600 border-gray-600'
+          className={`inline-flex items-center px-4 py-2 text-sm font-medium ${
+            existingNote ? 'bg-green-700 hover:bg-green-600 border-green-600 text-white' : 'bg-surface-2 hover:bg-surface-3 border-surface-3 text-heading'
           } border rounded-lg shadow-md`}
           title={!session ? 'Login to add notes' : existingNote ? 'Edit note' : 'Add note'}
         >
@@ -131,8 +131,8 @@ export default function StockSubPageActions({ tickerId, tickerSymbol, tickerName
           onClick={openFavourite}
           aria-label={favouriteTicker ? 'Edit favourite' : 'Add to favourites'}
           title={!session ? 'Login to add to favourites' : favouriteTicker ? 'Edit favourite' : 'Add to favourites'}
-          className={`inline-flex items-center justify-center p-2 text-white border rounded-lg shadow-md ${
-            favouriteTicker ? 'bg-blue-700 hover:bg-blue-600 border-blue-600' : 'bg-gray-700 hover:bg-gray-600 border-gray-600'
+          className={`inline-flex items-center justify-center p-2 border rounded-lg shadow-md ${
+            favouriteTicker ? 'bg-blue-700 hover:bg-blue-600 border-blue-600 text-white' : 'bg-surface-2 hover:bg-surface-3 border-surface-3 text-heading'
           }`}
         >
           {favouriteTicker ? <HeartSolid className="w-5 h-5 text-red-400" aria-hidden="true" /> : <HeartOutline className="w-5 h-5" aria-hidden="true" />}
@@ -142,8 +142,8 @@ export default function StockSubPageActions({ tickerId, tickerSymbol, tickerName
           onClick={openNotes}
           aria-label={existingNote ? 'Edit note' : 'Add note'}
           title={!session ? 'Login to add notes' : existingNote ? 'Edit note' : 'Add note'}
-          className={`inline-flex items-center justify-center p-2 text-white border rounded-lg shadow-md ${
-            existingNote ? 'bg-green-700 hover:bg-green-600 border-green-600' : 'bg-gray-700 hover:bg-gray-600 border-gray-600'
+          className={`inline-flex items-center justify-center p-2 border rounded-lg shadow-md ${
+            existingNote ? 'bg-green-700 hover:bg-green-600 border-green-600 text-white' : 'bg-surface-2 hover:bg-surface-3 border-surface-3 text-heading'
           }`}
         >
           {existingNote ? (

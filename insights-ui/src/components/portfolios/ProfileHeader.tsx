@@ -17,7 +17,7 @@ export default function ProfileHeader({ profile, portfolioManagerId }: ProfileHe
   const totalHoldings = profile.portfolios?.reduce((sum, p) => sum + (p.portfolioTickers?.length || 0), 0) || 0;
 
   return (
-    <div className="bg-gray-900 rounded-2xl overflow-hidden mb-8 border border-gray-800">
+    <div className="bg-surface rounded-2xl overflow-hidden mb-8 border border-border">
       <div className="flex flex-col md:flex-row gap-8 p-8">
         {/* Profile Image and Stats Section */}
         <div className="flex-shrink-0">
@@ -32,32 +32,32 @@ export default function ProfileHeader({ profile, portfolioManagerId }: ProfileHe
               unoptimized
             />
           ) : (
-            <div className="w-48 h-56 bg-gray-700 rounded-xl flex items-center justify-center mb-6">
-              <UserIcon className="w-24 h-24 text-gray-400" />
+            <div className="w-48 h-56 bg-surface-2 rounded-xl flex items-center justify-center mb-6">
+              <UserIcon className="w-24 h-24 text-muted" />
             </div>
           )}
 
           {/* Metadata Stats */}
           <div className="space-y-3 w-48">
             {profile.country && (
-              <div className="flex items-center gap-2 text-xs text-gray-300 bg-gray-800 px-3 py-2 rounded-lg">
+              <div className="flex items-center gap-2 text-xs text-body bg-surface-2 px-3 py-2 rounded-lg">
                 <span className="text-sm">📍</span>
                 <span>{profile.country}</span>
               </div>
             )}
             {profile.managerType && (
-              <div className="flex items-center gap-2 text-xs text-gray-300 bg-gray-800 px-3 py-2 rounded-lg">
+              <div className="flex items-center gap-2 text-xs text-body bg-surface-2 px-3 py-2 rounded-lg">
                 <span className="text-sm">💼</span>
                 <span>{PORTFOLIO_MANAGER_TYPE_LABELS[profile.managerType as PortfolioManagerType] || profile.managerType}</span>
               </div>
             )}
-            <div className="flex items-center gap-2 text-xs text-gray-300 bg-gray-800 px-3 py-2 rounded-lg">
+            <div className="flex items-center gap-2 text-xs text-body bg-surface-2 px-3 py-2 rounded-lg">
               <span className="text-sm">📂</span>
               <span>
                 {totalPortfolios} Portfolio{totalPortfolios !== 1 ? 's' : ''}
               </span>
             </div>
-            <div className="flex items-center gap-2 text-xs text-gray-300 bg-gray-800 px-3 py-2 rounded-lg">
+            <div className="flex items-center gap-2 text-xs text-body bg-surface-2 px-3 py-2 rounded-lg">
               <span className="text-sm">📊</span>
               <span>{totalHoldings} Total Holdings</span>
             </div>
@@ -69,7 +69,7 @@ export default function ProfileHeader({ profile, portfolioManagerId }: ProfileHe
           {/* Header with Name and Actions */}
           <div className="flex justify-between items-start mb-4">
             <div className="flex-1">
-              <h1 className="text-4xl font-bold text-white mb-3">{profile.user.name}</h1>
+              <h1 className="text-4xl font-bold text-heading mb-3">{profile.user.name}</h1>
               <p className="text-xl text-blue-400 font-medium">{profile.headline}</p>
             </div>
             {portfolioManagerId && (
@@ -80,12 +80,12 @@ export default function ProfileHeader({ profile, portfolioManagerId }: ProfileHe
           </div>
 
           {/* Summary */}
-          <p className="text-gray-300 text-sm leading-relaxed mb-5 mt-6">{profile.summary}</p>
+          <p className="text-body text-sm leading-relaxed mb-5 mt-6">{profile.summary}</p>
 
           {/* Detailed Description */}
           {profile.detailedDescription && (
             <div
-              className="text-gray-300 text-sm leading-relaxed markdown markdown-body"
+              className="text-body text-sm leading-relaxed markdown markdown-body"
               dangerouslySetInnerHTML={{ __html: parseMarkdown(profile.detailedDescription) }}
             />
           )}

@@ -59,8 +59,8 @@ export default function NotesButton({ tickerId, tickerSymbol, tickerName }: Note
     <div className="flex-shrink-0 relative z-10">
       <button
         onClick={handleNotesClick}
-        className={`inline-flex items-center px-4 py-2 text-sm font-medium text-white ${
-          existingNote ? 'bg-green-700 hover:bg-green-600 border-green-600' : 'bg-gray-700 hover:bg-gray-600 border-gray-600'
+        className={`inline-flex items-center px-4 py-2 text-sm font-medium ${
+          existingNote ? 'bg-green-700 hover:bg-green-600 border-green-600 text-white' : 'bg-surface-2 hover:bg-surface-3 border-surface-3 text-heading'
         } border rounded-lg shadow-md relative z-10`}
         title={!session ? 'Login to add notes' : existingNote ? 'Edit note' : 'Add note'}
       >

@@ -33,17 +33,17 @@ const koalaGainsServices = [
 
 export default function KoalagainsOfferings() {
   return (
-    <section className="overflow-hidden bg-gray-800">
+    <section className="overflow-hidden bg-surface">
       <div>
         <div className=" w-full mx-auto max-w-7xl sm:px-2 lg:px-8 px-6 relative isolate pt-2 lg:pt-2">
-          <div className="bg-gray-800 pt-12 sm:pt-16">
+          <div className="bg-surface pt-12 sm:pt-16">
             <div className="text-center">
-              <h1 className="text-4xl font-bold tracking-tight text-white">
+              <h1 className="text-4xl font-bold tracking-tight text-heading">
                 AI Solutions for the
-                <span className="text-indigo-400"> Future</span>
+                <span className="text-primary"> Future</span>
               </h1>
             </div>
-            <p className="mt-4 text-lg leading-7 text-gray-300 max-w-3xl mx-auto text-center">
+            <p className="mt-4 text-lg leading-7 text-body max-w-3xl mx-auto text-center">
               KoalaGains: AI-powered investment insights and data reports—crowdfunding, REIT, tariff analysis and more, in minutes.
             </p>
           </div>
@@ -59,7 +59,7 @@ export default function KoalagainsOfferings() {
                   </span>
                 </div>
 
-                <div className="bg-gray-700/40 backdrop-blur-sm rounded-xl p-6 border border-gray-600/40 hover:border-indigo-500/50 transition-all duration-300 group-hover:transform group-hover:scale-[1.02] hover:bg-gray-700/60 relative overflow-hidden">
+                <div className="bg-surface-2 backdrop-blur-sm rounded-xl p-6 border border-border hover:border-indigo-500/50 transition-all duration-300 group-hover:transform group-hover:scale-[1.02] hover:bg-surface-2 relative overflow-hidden">
                   <div className="flex justify-center mb-4">
                     <div
                       className={`inline-flex items-center justify-center w-14 h-14 rounded-xl bg-gradient-to-r ${service.color} group-hover:scale-110 transition-transform duration-300 shadow-lg`}
@@ -69,9 +69,9 @@ export default function KoalagainsOfferings() {
                   </div>
 
                   <div className="text-center">
-                    <h3 className="text-lg font-semibold text-white mb-3 group-hover:text-indigo-400 transition-colors">{service.name}</h3>
+                    <h3 className="text-lg font-semibold text-heading mb-3 group-hover:text-indigo-400 transition-colors">{service.name}</h3>
 
-                    <p className="text-gray-300 text-sm mb-6 leading-relaxed min-h-[3rem]">{service.description}</p>
+                    <p className="text-body text-sm mb-6 leading-relaxed min-h-[3rem]">{service.description}</p>
 
                     <div className="flex items-center justify-center text-indigo-400 group-hover:text-indigo-300 transition-colors">
                       <span className="text-sm font-medium">{service.cta}</span>
@@ -104,7 +104,7 @@ export default function KoalagainsOfferings() {
             </Link>
           </div>
         </div>
-        <div className="mt-16 sm:mt-20 border-b border-gray-600"></div>
+        <div className="mt-16 sm:mt-20 border-b border-border"></div>
       </div>
     </section>
   );

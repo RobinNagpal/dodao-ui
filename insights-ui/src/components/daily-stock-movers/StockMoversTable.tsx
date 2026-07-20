@@ -98,15 +98,15 @@ export default function StockMoversTable({ movers, type, country, availableDates
               </thead>
               <tbody className="divide-y border-color">
                 {displayedMovers.map((mover) => (
-                  <tr key={mover.id} className="bg-gray-900 transition-colors">
+                  <tr key={mover.id} className="bg-surface transition-colors">
                     <td className="px-6 py-4 whitespace-nowrap">
                       <Link
                         href={`/stocks/${mover.ticker.exchange}/${mover.ticker.symbol}`}
                         prefetch={false}
                         className="group inline-flex items-center gap-1 text-sm font-semibold"
                       >
-                        <span className="text-color group-hover:text-[#a09bff] group-hover:underline">{mover.ticker.symbol}</span>
-                        <ArrowTopRightOnSquareIcon className="h-4 w-4 text-muted-foreground group-hover:text-[#a09bff]" aria-hidden="true" />
+                        <span className="text-color group-hover:text-link group-hover:underline">{mover.ticker.symbol}</span>
+                        <ArrowTopRightOnSquareIcon className="h-4 w-4 text-muted-foreground group-hover:text-link" aria-hidden="true" />
                       </Link>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">

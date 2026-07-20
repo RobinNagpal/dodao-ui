@@ -27,19 +27,19 @@ const navigation = {
 
 export function Footer() {
   return (
-    <footer className="relative bg-gray-800 pt-4 pb-4 sm:pt-12 sm:pb-12">
+    <footer className="relative bg-surface pt-4 pb-4 sm:pt-12 sm:pb-12">
       <div className="relative max-w-7xl mx-auto px-6">
-        <div className="border-t border-gray-700 pt-8 md:flex md:items-center md:justify-between">
+        <div className="border-t border-border pt-8 md:flex md:items-center md:justify-between">
           <div className="flex space-x-6 md:order-2">
             {navigation.social.map((item) => (
-              <a key={item.name} href={item.href} target="_blank" className="text-gray-400 hover:text-gray-300">
+              <a key={item.name} href={item.href} target="_blank" className="text-muted hover:text-body">
                 <span className="sr-only">{item.name}</span>
                 <item.icon className="h-6 w-6" aria-hidden="true" />
               </a>
             ))}
           </div>
-          <p className="mt-8 text-sm text-gray-400 md:order-1 md:mt-0 text-center md:text-left">
-            Copyright &copy; {new Date().getFullYear()} <strong className="text-white">KoalaGains.com</strong>. All rights reserved.
+          <p className="mt-8 text-sm text-muted md:order-1 md:mt-0 text-center md:text-left">
+            Copyright &copy; {new Date().getFullYear()} <strong className="text-heading">KoalaGains.com</strong>. All rights reserved.
           </p>
         </div>
       </div>

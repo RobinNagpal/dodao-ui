@@ -128,24 +128,24 @@ export default function ManageTagsModal({ isOpen, onClose, tags, onTagsChange }:
         <div className="p-4 space-y-4 text-left">
           {/* Create New Tag Form - Only show when showAddForm is true */}
           {showAddForm && (
-            <div className="bg-gray-800 p-3 rounded-lg space-y-3">
-              <h4 className="text-sm font-semibold text-white flex items-center gap-2 text-left">
+            <div className="bg-surface p-3 rounded-lg space-y-3">
+              <h4 className="text-sm font-semibold text-heading flex items-center gap-2 text-left">
                 <PlusIcon className="w-4 h-4" />
                 Create New Tag
               </h4>
-              <Input modelValue={newTagName} onUpdate={(value) => setNewTagName(value?.toString() || '')} placeholder="Enter tag name" className="text-white">
+              <Input modelValue={newTagName} onUpdate={(value) => setNewTagName(value?.toString() || '')} placeholder="Enter tag name" className="text-heading">
                 Tag Name *
               </Input>
               <Input
                 modelValue={newTagDescription}
                 onUpdate={(value) => setNewTagDescription(value?.toString() || '')}
                 placeholder="Enter description (optional)"
-                className="text-white"
+                className="text-heading"
               >
                 Description
               </Input>
               <div className="space-y-2">
-                <label htmlFor="tag-color" className="block text-sm font-medium text-white text-left">
+                <label htmlFor="tag-color" className="block text-sm font-medium text-heading text-left">
                   Color
                 </label>
                 <div className="flex items-center gap-3">
@@ -154,9 +154,9 @@ export default function ManageTagsModal({ isOpen, onClose, tags, onTagsChange }:
                     type="color"
                     value={newTagColor}
                     onChange={(e) => setNewTagColor(e.target.value)}
-                    className="w-16 h-10 bg-gray-700 border border-gray-600 rounded-md cursor-pointer"
+                    className="w-16 h-10 bg-surface-2 border border-border rounded-md cursor-pointer"
                   />
-                  <span className="text-sm text-gray-400">{newTagColor}</span>
+                  <span className="text-sm text-muted">{newTagColor}</span>
                 </div>
               </div>
               <div className="flex gap-2">
@@ -172,24 +172,29 @@ export default function ManageTagsModal({ isOpen, onClose, tags, onTagsChange }:
 
           {/* Edit Tag Form - Show when editing */}
           {editingTag && (
-            <div className="bg-gray-800 p-3 rounded-lg space-y-3">
-              <h4 className="text-sm font-semibold text-white flex items-center gap-2 text-left">
+            <div className="bg-surface p-3 rounded-lg space-y-3">
+              <h4 className="text-sm font-semibold text-heading flex items-center gap-2 text-left">
                 <PencilIcon className="w-4 h-4" />
                 Edit Tag
               </h4>
-              <Input modelValue={editTagName} onUpdate={(value) => setEditTagName(value?.toString() || '')} placeholder="Enter tag name" className="text-white">
+              <Input
+                modelValue={editTagName}
+                onUpdate={(value) => setEditTagName(value?.toString() || '')}
+                placeholder="Enter tag name"
+                className="text-heading"
+              >
                 Tag Name *
               </Input>
               <Input
                 modelValue={editTagDescription}
                 onUpdate={(value) => setEditTagDescription(value?.toString() || '')}
                 placeholder="Enter description (optional)"
-                className="text-white"
+                className="text-heading"
               >
                 Description
               </Input>
               <div className="space-y-2">
-                <label htmlFor="edit-tag-color" className="block text-sm font-medium text-white text-left">
+                <label htmlFor="edit-tag-color" className="block text-sm font-medium text-heading text-left">
                   Color
                 </label>
                 <div className="flex items-center gap-3">
@@ -198,9 +203,9 @@ export default function ManageTagsModal({ isOpen, onClose, tags, onTagsChange }:
                     type="color"
                     value={editTagColor}
                     onChange={(e) => setEditTagColor(e.target.value)}
-                    className="w-16 h-10 bg-gray-700 border border-gray-600 rounded-md cursor-pointer"
+                    className="w-16 h-10 bg-surface-2 border border-border rounded-md cursor-pointer"
                   />
-                  <span className="text-sm text-gray-400">{editTagColor}</span>
+                  <span className="text-sm text-muted">{editTagColor}</span>
                 </div>
               </div>
               <div className="flex gap-2">
@@ -217,7 +222,7 @@ export default function ManageTagsModal({ isOpen, onClose, tags, onTagsChange }:
           {/* Existing Tags */}
           <div>
             <div className="flex justify-between items-center mb-2">
-              <h4 className="text-sm font-semibold text-white text-left">Your Tags ({tags.length})</h4>
+              <h4 className="text-sm font-semibold text-heading text-left">Your Tags ({tags.length})</h4>
               {!showAddForm && !editingTag && (
                 <Button onClick={() => setShowAddForm(true)} variant="contained" primary className="flex items-center gap-2">
                   <PlusIcon className="w-4 h-4" />
@@ -225,18 +230,18 @@ export default function ManageTagsModal({ isOpen, onClose, tags, onTagsChange }:
                 </Button>
               )}
             </div>
-            <div className="space-y-1.5 max-h-80 overflow-y-auto bg-gray-900 rounded-md p-2">
+            <div className="space-y-1.5 max-h-80 overflow-y-auto bg-bg rounded-md p-2">
               {tags.length === 0 ? (
-                <p className="text-gray-400 text-sm px-2 py-3 text-center">No tags created yet.</p>
+                <p className="text-muted text-sm px-2 py-3 text-center">No tags created yet.</p>
               ) : (
                 tags.map((tag) => (
-                  <div key={tag.id} className="bg-gray-800 px-3 py-2 rounded-lg hover:bg-gray-750">
+                  <div key={tag.id} className="bg-surface px-3 py-2 rounded-lg hover:bg-surface-2">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-3 flex-1">
                         <span className="w-4 h-4 rounded-full flex-shrink-0" style={{ backgroundColor: tag.colorHex }} />
                         <div className="flex-1">
                           <p className="font-medium">{tag.name}</p>
-                          {tag.description && <p className="text-xs text-gray-400 leading-snug">{tag.description}</p>}
+                          {tag.description && <p className="text-xs text-muted leading-snug">{tag.description}</p>}
                         </div>
                       </div>
                       <div className="flex items-center gap-2">

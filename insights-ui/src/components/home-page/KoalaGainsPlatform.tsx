@@ -39,11 +39,11 @@ const keyFeatures = [
 
 export default function KoalaGainsPlatform() {
   return (
-    <section id="platform" className="bg-gray-800 pt-12 sm:pt-16">
+    <section id="platform" className="bg-surface pt-12 sm:pt-16">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto max-w-2xl sm:text-center">
-          <h2 className="text-4xl font-semibold text-indigo-400">KoalaGains Platform</h2>
-          <p className="mt-4 text-lg text-gray-300">
+          <h2 className="text-4xl font-semibold text-primary">KoalaGains Platform</h2>
+          <p className="mt-4 text-lg text-body">
             Unlock the full potential of your investment research with our advanced AI-driven platform that delivers insights in minutes, not days.
           </p>
         </div>
@@ -59,10 +59,10 @@ export default function KoalaGainsPlatform() {
         </div>
       </div>
       <div className="mx-auto mt-8 max-w-7xl px-6 sm:mt-12 md:mt-16 lg:px-8">
-        <dl className="mx-auto grid max-w-2xl grid-cols-1 gap-x-6 gap-y-10 text-base/7 text-gray-300 sm:grid-cols-2 lg:mx-0 lg:max-w-none lg:grid-cols-3 lg:gap-x-8 lg:gap-y-16">
+        <dl className="mx-auto grid max-w-2xl grid-cols-1 gap-x-6 gap-y-10 text-base/7 text-body sm:grid-cols-2 lg:mx-0 lg:max-w-none lg:grid-cols-3 lg:gap-x-8 lg:gap-y-16">
           {keyFeatures.map((feature) => (
             <div key={feature.name} className="relative pl-9">
-              <dt className="inline font-semibold text-white">
+              <dt className="inline font-semibold text-heading">
                 <feature.icon aria-hidden="true" className="absolute left-1 top-1 h-5 w-5 text-indigo-500" />
                 {feature.name}
               </dt>{' '}
@@ -71,7 +71,7 @@ export default function KoalaGainsPlatform() {
           ))}
         </dl>
       </div>
-      <div className="mt-16 sm:mt-20 border-b border-gray-600"></div>
+      <div className="mt-16 sm:mt-20 border-b border-border"></div>
     </section>
   );
 }

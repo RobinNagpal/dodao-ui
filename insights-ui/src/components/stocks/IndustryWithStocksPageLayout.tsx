@@ -82,7 +82,7 @@ export default function IndustryWithStocksPageLayout({
 
       <div className="w-full mb-8">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
-          <h1 className="text-2xl font-bold text-white">{title}</h1>
+          <h1 className="text-2xl font-bold text-heading">{title}</h1>
           <div className="flex items-center gap-4 flex-wrap">
             {industryKey && hasAnalysis && (
               <Link href={`/stocks/industries/${encodeURIComponent(industryKey)}/analysis`} className="link-color hover:underline text-sm whitespace-nowrap">
@@ -100,7 +100,7 @@ export default function IndustryWithStocksPageLayout({
             )}
           </div>
         </div>
-        <p className="text-[#E5E7EB] text-md mb-4">{description}</p>
+        <p className="text-muted text-md mb-4">{description}</p>
         <div className="mt-2 mb-2">
           <CountryAlternatives currentCountry={currentCountry} industryKey={industryKey} className="flex-shrink-0 text-sm" enhanced={true} compact={true} />
         </div>
