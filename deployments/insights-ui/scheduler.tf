@@ -37,11 +37,11 @@ locals {
     # 24/7. It carries no policy: the single /auto-generation/tick endpoint reads
     # everything from App Settings and runs whichever jobs are due — which entities
     # (AUTOMATED_GENERATION_ENTITY), the run window (AUTOMATED_GENERATION_WINDOW),
-    # how often (mode cooldown / AUTOMATED_GENERATION_FREQUENCY_MINUTES) and how
-    # much (mode batch size / AUTOMATED_GENERATION_BATCH_SIZE). All of that changes
-    # at runtime without touching this schedule; outside the window / during a
-    # cooldown the tick returns immediately without touching Claude. The heartbeat
-    # just needs to be fine enough (5 min) that any App-Settings cadence is honored.
+    # and how often + how much (the selected AUTOMATED_GENERATION_MODE's cooldown and
+    # batch size). All of that changes at runtime without touching this schedule;
+    # outside the window / during a cooldown the tick returns immediately without
+    # touching Claude. The heartbeat just needs to be fine enough (5 min) that the
+    # mode's cadence is honored.
     auto_generation_tick = {
       path     = "/api/koala_gains/auto-generation/tick"
       schedule = "cron(0/5 * * * ? *)"

@@ -21,52 +21,23 @@ import { AutoGenEntity, AutoGenGateResult, AutoGenMode, AutoGenModePreset, AutoG
 export const AUTO_GEN_MODE_KEY = 'AUTOMATED_GENERATION_MODE';
 export const AUTO_GEN_WINDOW_KEY = 'AUTOMATED_GENERATION_WINDOW';
 export const AUTO_GEN_ENTITY_KEY = 'AUTOMATED_GENERATION_ENTITY';
-export const AUTO_GEN_BATCH_SIZE_KEY = 'AUTOMATED_GENERATION_BATCH_SIZE';
-export const AUTO_GEN_FREQUENCY_KEY = 'AUTOMATED_GENERATION_FREQUENCY_MINUTES';
 
 /** Returns `value` if it's one of `allowed`, otherwise `fallback`. */
 function coerce<T extends string>(value: string | undefined, allowed: readonly T[], fallback: T): T {
   return value !== undefined && (allowed as readonly string[]).includes(value) ? (value as T) : fallback;
 }
 
-/**
- * Parses an optional numeric App Settings override: a positive whole number wins;
- * anything else (unset, blank, 0, negative, non-numeric) means "use the mode's
- * value" and returns `fallback`. There is intentionally no default for these keys
- * in `appConfigDefaults.json` — the mode preset in `auto-gen-config.ts` is the
- * source of the default, and the override only applies when explicitly set.
- */
-export function resolvePositiveIntOverride(value: string | undefined, fallback: number): number {
-  if (value === undefined) return fallback;
-  const parsed = Number(value.trim());
-  return Number.isInteger(parsed) && parsed > 0 ? parsed : fallback;
-}
-
 export async function getAutoGenMode(): Promise<AutoGenMode> {
   return coerce(await getAppConfigValue(AUTO_GEN_MODE_KEY), Object.values(AutoGenMode), DEFAULT_AUTO_GEN_MODE);
 }
 
-async function getAutoGenModePreset(): Promise<AutoGenModePreset> {
-  return AUTO_GEN_MODE_PRESETS[await getAutoGenMode()];
-}
-
 /**
- * Effective throughput = the selected mode's preset, with each value optionally
- * overridden by its own App Setting (`AUTOMATED_GENERATION_BATCH_SIZE` /
- * `..._FREQUENCY_MINUTES`). When an override is unset (the normal case) the mode's
- * value is used, so admins can tune the exact numbers at runtime or just pick a
- * mode. Shared by the stock and ETF jobs.
+ * The selected mode's throughput preset — how many reports per batch and the
+ * cooldown between batches. Reads `AUTOMATED_GENERATION_MODE` and looks it up in
+ * `AUTO_GEN_MODE_PRESETS`. Shared by the stock and ETF jobs.
  */
-export async function getAutoGenThroughput(): Promise<AutoGenModePreset> {
-  const [preset, batchRaw, freqRaw] = await Promise.all([
-    getAutoGenModePreset(),
-    getAppConfigValue(AUTO_GEN_BATCH_SIZE_KEY),
-    getAppConfigValue(AUTO_GEN_FREQUENCY_KEY),
-  ]);
-  return {
-    batchSize: resolvePositiveIntOverride(batchRaw, preset.batchSize),
-    minMinutesBetweenBatches: resolvePositiveIntOverride(freqRaw, preset.minMinutesBetweenBatches),
-  };
+export async function getAutoGenModePreset(): Promise<AutoGenModePreset> {
+  return AUTO_GEN_MODE_PRESETS[await getAutoGenMode()];
 }
 
 export async function getAutoGenWindow(): Promise<AutoGenWindow> {

@@ -6,9 +6,9 @@ import { enqueueAutoStockGenerationBatch } from '@/utils/auto-generation/auto-st
  * The single in-app entry point for automated report generation — the only thing
  * the infra heartbeat needs to call. All scheduling policy lives here / in the
  * jobs it calls: which entities run (AUTOMATED_GENERATION_ENTITY), when
- * (AUTOMATED_GENERATION_WINDOW), how often (mode cooldown / frequency override),
- * and how much (mode batch size / batch-size override). The external cron is just
- * a clock — change any of the above from App Settings without touching infra.
+ * (AUTOMATED_GENERATION_WINDOW), and how often + how much (the mode's cooldown and
+ * batch size, AUTOMATED_GENERATION_MODE). The external cron is just a clock —
+ * change any of the above from App Settings without touching infra.
  *
  * Both jobs self-gate (entity → window → open-batch → cooldown → usage), so we
  * always call both and each decides whether to do anything. Run sequentially so
