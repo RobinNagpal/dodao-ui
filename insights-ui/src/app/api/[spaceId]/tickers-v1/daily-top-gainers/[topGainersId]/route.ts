@@ -1,19 +1,10 @@
 import { prisma } from '@/prisma';
 import { TopGainerWithRelated } from '@/types/daily-stock-movers';
-import { notFoundError } from '@dodao/web-core/api/errors/notFoundError';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';
-import { validate as isValidUuid } from 'uuid';
 
-async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId: string; topGainersId: string }> }): Promise<TopGainerWithRelated> {
+async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId: string; topGainersId: string }> }): Promise<TopGainerWithRelated | null> {
   const { spaceId, topGainersId } = await context.params;
-
-  // The id always comes from the URL path, so reject anything that isn't a well-formed UUID up front.
-  // This short-circuits malformed input (e.g. automated scanner probes) with a clean 404 instead of a
-  // Prisma "record not found" error that would otherwise leak internal query details.
-  if (!isValidUuid(topGainersId)) {
-    throw notFoundError('Daily top gainer not found');
-  }
 
   const topGainer = await prisma.dailyTopGainer.findFirst({
     where: {
@@ -24,8 +15,10 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
     },
   });
 
+  // A missing id (e.g. crawler probes) is a quiet 404, not a logged Prisma "record not found"
+  // error. Return null (200) and let the page render its not-found state.
   if (!topGainer) {
-    throw notFoundError('Daily top gainer not found');
+    return null;
   }
 
   // Get the date of this gainer (normalize to date string)
@@ -58,4 +51,4 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
   };
 }
 
-export const GET = withErrorHandlingV2<TopGainerWithRelated>(getHandler);
+export const GET = withErrorHandlingV2<TopGainerWithRelated | null>(getHandler);

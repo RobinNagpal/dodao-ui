@@ -34,7 +34,13 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       };
     }
 
-    const data: TopGainerWithRelated = await response.json();
+    const data: TopGainerWithRelated | null = await response.json();
+    if (!data) {
+      return {
+        title: 'Top Gainer Details',
+        description: 'Daily top gainer stock analysis and insights',
+      };
+    }
     return generateStockMoverMetadata(data.mover, DailyMoverType.GAINER, topGainersId);
   } catch (error) {
     console.error('Error generating metadata for top gainer:', error);
@@ -56,7 +62,10 @@ export default async function TopGainerDetailsPage({ params }: PageProps) {
     },
   });
 
-  if (!response.ok) {
+  // A null body (200) means the gainer doesn't exist; !response.ok means a real server error.
+  // Both render the same not-found state.
+  const data = response.ok ? await response.json() : null;
+  if (!data) {
     return (
       <PageWrapper>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -71,7 +80,7 @@ export default async function TopGainerDetailsPage({ params }: PageProps) {
     );
   }
 
-  const { mover: topGainer, relatedMovers } = await response.json();
+  const { mover: topGainer, relatedMovers } = data;
 
   // Generate structured data
   const articleSchema = generateStockMoverArticleSchema(topGainer, DailyMoverType.GAINER, topGainersId);
