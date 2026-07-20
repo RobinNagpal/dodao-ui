@@ -40,7 +40,7 @@ export function industryGenerateRoute(
     const body = await parseBody(req);
     const slug = await findReportSlugByOldUrl(industry);
 
-    if (isSyncTariffGenerationEnabled()) {
+    if (await isSyncTariffGenerationEnabled()) {
       await generate(slug, body);
       return readIndustryTariffReportByOldUrl(industry);
     }

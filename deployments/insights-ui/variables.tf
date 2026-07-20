@@ -162,6 +162,15 @@ variable "app_env" {
     # Optional. "true" = generate tariff report sections synchronously (request waits for the LLM call);
     # unset/"false" (default) = generate them in the background (returns immediately, avoids the CloudFront 504).
     GENERATE_TARIFF_SECTIONS_SYNCHRONOUSLY = "false"
+    # App Settings (runtime config) — the two toggles above plus any future managed keys are read
+    # through the app-config layer (insights-ui/src/lib/appConfig), which resolves each value:
+    # SSM Parameter Store -> the env var of the same name here -> bundled default. Enabling SSM lets
+    # admins edit values live from /admin-v1/app-settings; until a key is set in SSM the env var above
+    # is used, so turning this on changes nothing on its own. The IAM grant for the app's runtime
+    # identity to read/write this prefix lives in cloudfront.tf (aws_iam_policy.insights_ui_project_policy).
+    # Keep APP_CONFIG_SSM_PREFIX in sync with that policy's parameter ARN.
+    APP_CONFIG_SSM_ENABLED = "true"
+    APP_CONFIG_SSM_PREFIX  = "/koalagains/insights-ui/"
     # LLM provider/model are no longer read from env. They are chosen per run in the
     # report-generation UI and default in code to Gemini + gemini-2.5-pro (claude-opus-4-7
     # for the Claude provider). The Claude provider authenticates with a Claude subscription

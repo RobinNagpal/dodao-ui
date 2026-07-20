@@ -536,6 +536,9 @@ data "aws_iam_user" "insights_ui_vercel_project" {
   user_name = "insights-ui-vercel-project"
 }
 
+# Account id for scoping the SSM parameter ARN below.
+data "aws_caller_identity" "current" {}
+
 resource "aws_iam_user_policy_attachment" "insights_ui_vercel_project_policy_attach" {
   user       = data.aws_iam_user.insights_ui_vercel_project.user_name
   policy_arn = aws_iam_policy.insights_ui_project_policy.arn
@@ -543,7 +546,7 @@ resource "aws_iam_user_policy_attachment" "insights_ui_vercel_project_policy_att
 
 resource "aws_iam_policy" "insights_ui_project_policy" {
   name        = "insights-ui-project-policy"
-  description = "Permissions used by the insights-ui Vercel application (koalagains.com). Currently grants CloudFront invalidation rights on the koalagains distribution so runtime save flows can purge the edge cache alongside Next.js revalidateTag calls."
+  description = "Permissions used by the insights-ui application (koalagains.com): CloudFront invalidation rights on the koalagains distribution so runtime save flows can purge the edge cache alongside Next.js revalidateTag calls, plus read/write on the App Settings SSM parameter prefix so the admin App Settings screen can manage runtime config."
 
   policy = jsonencode({
     Version = "2012-10-17"
@@ -557,6 +560,20 @@ resource "aws_iam_policy" "insights_ui_project_policy" {
           "cloudfront:ListInvalidations",
         ]
         Resource = aws_cloudfront_distribution.koalagains.arn
+      },
+      {
+        # App Settings runtime config (insights-ui/src/lib/appConfig). Read backs the /admin-v1/app-settings
+        # screen and every getAppConfigValue() call; PutParameter lets admins save edits from that screen.
+        # The path MUST match APP_CONFIG_SSM_PREFIX in variables.tf (app_env).
+        Sid    = "AppConfigSsmParameterStore"
+        Effect = "Allow"
+        Action = [
+          "ssm:GetParametersByPath",
+          "ssm:GetParameter",
+          "ssm:GetParameters",
+          "ssm:PutParameter",
+        ]
+        Resource = "arn:aws:ssm:${var.aws_region}:${data.aws_caller_identity.current.account_id}:parameter/koalagains/insights-ui/*"
       },
     ]
   })

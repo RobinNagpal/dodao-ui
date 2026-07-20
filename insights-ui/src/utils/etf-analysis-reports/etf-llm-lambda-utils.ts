@@ -1,3 +1,4 @@
+import { getAppConfigBoolean } from '@/lib/appConfig/appConfig';
 import { prisma } from '@/prisma';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { EtfReportType } from '@/types/etf/etf-analysis-types';
@@ -25,8 +26,9 @@ export interface EtfLLMRequest {
 
 /**
  * Whether an ETF report's LLM call should be offloaded to the AWS Lambda, read
- * from the `USE_LAMBDA_FOR_LLM_RESPONSE` env var (the SAME flag the stock path
- * uses). In-process background generation is now the DEFAULT (we run on a
+ * from the `USE_LAMBDA_FOR_LLM_RESPONSE` app-config setting (the SAME flag the
+ * stock path uses; resolves SSM → env → default). In-process background
+ * generation is now the DEFAULT (we run on a
  * long-lived AWS server, not time-limited Vercel), so the Lambda is opt-in:
  *   - unset        → background (in-process) — default.
  *   - `false`      → background (in-process).
@@ -37,8 +39,8 @@ export interface EtfLLMRequest {
  * function, and chain the next step the same way; only the LLM-call mechanism
  * differs.
  */
-function shouldUseLambdaForLLMResponse(): boolean {
-  return process.env.USE_LAMBDA_FOR_LLM_RESPONSE === 'true';
+async function shouldUseLambdaForLLMResponse(): Promise<boolean> {
+  return getAppConfigBoolean('USE_LAMBDA_FOR_LLM_RESPONSE');
 }
 
 async function updateEtfLastInvocationTime(generationRequestId: string, reportType: EtfReportType): Promise<void> {
@@ -121,7 +123,7 @@ export async function callEtfLambdaForLLMResponse(args: EtfLLMRequest): Promise<
       },
     };
 
-    if (shouldUseLambdaForLLMResponse()) {
+    if (await shouldUseLambdaForLLMResponse()) {
       await callLambdaForLLMResponseViaCallback(lambdaRequest);
     } else {
       // Detach the heavy LLM call from the request so this returns immediately,

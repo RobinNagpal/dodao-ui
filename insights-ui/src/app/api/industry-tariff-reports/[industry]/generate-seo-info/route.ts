@@ -78,7 +78,7 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ ind
 
   // Same gate as the other section routes: background by default (no CloudFront
   // 504 on a long SEO run), synchronous only when GENERATE_TARIFF_SECTIONS_SYNCHRONOUSLY=true.
-  if (isSyncTariffGenerationEnabled()) {
+  if (await isSyncTariffGenerationEnabled()) {
     await generate();
     return readIndustryTariffReportByOldUrl(industry);
   }
