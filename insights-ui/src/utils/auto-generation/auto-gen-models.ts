@@ -43,14 +43,28 @@ export interface WeeklyCapByDay {
   day7: number;
 }
 
-/** The Claude-usage checks a given mode applies. */
-export interface AutoGenModePreset {
+/**
+ * Claude-usage safety caps. These are the SAME for every mode — they bound how
+ * close to the Claude limit the job is ever allowed to run. Modes differ only in
+ * throughput (how much they generate within these caps), not in the caps.
+ */
+export interface AutoGenUsageCaps {
   /** Skip if the shared 5-hour session utilization is at/above this %. */
   maxFiveHourUtilizationPct: number;
   /** Cumulative % of the weekly budget allowed, keyed by day-since-weekly-reset. */
   weeklyCapByDayPct: WeeklyCapByDay;
-  /** How many requests to create per batch. */
+}
+
+/**
+ * Per-mode throughput levers — the knobs that actually drive Claude consumption.
+ * The usage caps (above) are shared; a higher mode simply generates more, more
+ * often, until it hits those shared caps.
+ */
+export interface AutoGenModePreset {
+  /** How many requests to create per batch — the "number of reports" lever. */
   batchSize: number;
+  /** Minimum minutes between one auto batch finishing and the next starting — the "frequency" lever. */
+  minMinutesBetweenBatches: number;
 }
 
 export interface AutoGenGateResult {
@@ -68,4 +82,14 @@ export interface AutoEnqueueResult {
   reason: string;
   fiveHourPct: number | null;
   weeklyPct: number | null;
+}
+
+/**
+ * Result of one auto-generation tick — the single in-app entry point the cron
+ * heartbeat calls. Each entity's job self-gates (entity / window / cooldown /
+ * usage), so the tick always runs both and reports each outcome.
+ */
+export interface AutoGenTickResult {
+  stock: AutoEnqueueResult;
+  etf: AutoEnqueueResult;
 }

@@ -12,8 +12,17 @@ locals {
   # type. Existing crons keep UTC (unchanged behavior); the nightly auto-generation
   # cron uses America/New_York so its ET window tracks EST/EDT automatically.
   crons = {
-    ticker_request = {
-      path     = "/api/koala_gains/tickers-v1/generate-ticker-v1-request"
+    # Single KoalaGains report-generation heartbeat. One generic clock (every 3 min)
+    # drives everything: the /cron/heartbeat endpoint first enqueues any due
+    # auto-generation batches, then advances the pending stock and ETF requests by
+    # one step each. It replaces the separate ticker_request, etf_request, and
+    # auto-generation crons. All scheduling policy — which entities
+    # (AUTOMATED_GENERATION_ENTITY), the run window (AUTOMATED_GENERATION_WINDOW), and
+    # how often + how much (AUTOMATED_GENERATION_MODE's cooldown + batch size) — is
+    # read from App Settings, so it changes at runtime without touching this
+    # schedule. Outside the window / during a cooldown the enqueue side does nothing.
+    koala_gains_heartbeat = {
+      path     = "/api/koala_gains/cron/heartbeat"
       schedule = "rate(3 minutes)"
       timezone = "UTC"
     }
@@ -26,31 +35,6 @@ locals {
       path     = "/api/koala_gains/tickers-v1/generate-daily-top-losers"
       schedule = "cron(0 23 ? * MON-FRI *)"
       timezone = "UTC"
-    }
-    etf_request = {
-      path     = "/api/koala_gains/etfs-v1/generate-etf-v1-request"
-      schedule = "rate(3 minutes)"
-      timezone = "UTC"
-    }
-    # Claude-usage-gated stock report auto-generation. Fires every 15 min, 24/7;
-    # the actual run window (NightShort / NightExtended / DayAndNight) is enforced
-    # IN CODE against the AUTOMATED_GENERATION_WINDOW App Setting, so the window can
-    # be changed at runtime without editing this schedule. Outside the window the
-    # endpoint returns immediately without touching Claude. The endpoint also checks
-    # the usage gates and only creates a batch when none is in progress.
-    enqueue_auto_stock = {
-      path     = "/api/koala_gains/tickers-v1/enqueue-auto-stock-generation"
-      schedule = "cron(0/15 * * * ? *)"
-      timezone = "America/New_York"
-    }
-    # ETF report auto-generation. Same 24/7 cadence + in-code window/gates as the
-    # stock job, but selects ETFs missing their reports (US first, then Canada, then
-    # other). Offset by 7 min from the stock batch so the two don't fan out to
-    # Claude at the exact same minute (they share the usage budget).
-    enqueue_auto_etf = {
-      path     = "/api/koala_gains/etfs-v1/enqueue-auto-etf-generation"
-      schedule = "cron(7/15 * * * ? *)"
-      timezone = "America/New_York"
     }
   }
 }

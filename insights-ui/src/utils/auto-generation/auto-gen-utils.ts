@@ -9,6 +9,7 @@ import { getAppConfigValue } from '@/lib/appConfig/appConfig';
 import { ClaudeSubscriptionUsage } from '@/util/claude/claude-usage';
 import {
   AUTO_GEN_MODE_PRESETS,
+  AUTO_GEN_USAGE_CAPS,
   AUTO_GEN_WINDOWS,
   DEFAULT_AUTO_GEN_ENTITY,
   DEFAULT_AUTO_GEN_MODE,
@@ -17,33 +18,38 @@ import {
 } from '@/utils/auto-generation/auto-gen-config';
 import { AutoGenEntity, AutoGenGateResult, AutoGenMode, AutoGenModePreset, AutoGenWindow } from '@/utils/auto-generation/auto-gen-models';
 
-export const AUTO_GEN_MODE_KEY = 'AUTOMATED_GENERATION_MODE';
-export const AUTO_GEN_WINDOW_KEY = 'AUTOMATED_GENERATION_WINDOW';
-export const AUTO_GEN_ENTITY_KEY = 'AUTOMATED_GENERATION_ENTITY';
+const AUTO_GEN_MODE_KEY = 'AUTOMATED_GENERATION_MODE';
+const AUTO_GEN_WINDOW_KEY = 'AUTOMATED_GENERATION_WINDOW';
+const AUTO_GEN_ENTITY_KEY = 'AUTOMATED_GENERATION_ENTITY';
 
 /** Returns `value` if it's one of `allowed`, otherwise `fallback`. */
 function coerce<T extends string>(value: string | undefined, allowed: readonly T[], fallback: T): T {
   return value !== undefined && (allowed as readonly string[]).includes(value) ? (value as T) : fallback;
 }
 
-export async function getAutoGenMode(): Promise<AutoGenMode> {
+async function getAutoGenMode(): Promise<AutoGenMode> {
   return coerce(await getAppConfigValue(AUTO_GEN_MODE_KEY), Object.values(AutoGenMode), DEFAULT_AUTO_GEN_MODE);
 }
 
+/**
+ * The selected mode's throughput preset — how many reports per batch and the
+ * cooldown between batches. Reads `AUTOMATED_GENERATION_MODE` and looks it up in
+ * `AUTO_GEN_MODE_PRESETS`. Shared by the stock and ETF jobs.
+ */
 export async function getAutoGenModePreset(): Promise<AutoGenModePreset> {
   return AUTO_GEN_MODE_PRESETS[await getAutoGenMode()];
 }
 
-export async function getAutoGenWindow(): Promise<AutoGenWindow> {
+async function getAutoGenWindow(): Promise<AutoGenWindow> {
   return coerce(await getAppConfigValue(AUTO_GEN_WINDOW_KEY), Object.values(AutoGenWindow), DEFAULT_AUTO_GEN_WINDOW);
 }
 
-export async function getAutoGenEntity(): Promise<AutoGenEntity> {
+async function getAutoGenEntity(): Promise<AutoGenEntity> {
   return coerce(await getAppConfigValue(AUTO_GEN_ENTITY_KEY), Object.values(AutoGenEntity), DEFAULT_AUTO_GEN_ENTITY);
 }
 
 /** Current hour (0-23) in America/New_York, DST-aware. */
-export function currentEtHour(now: Date): number {
+function currentEtHour(now: Date): number {
   const formatted = new Intl.DateTimeFormat('en-US', { timeZone: 'America/New_York', hour: 'numeric', hour12: false }).format(now);
   const hour = parseInt(formatted, 10);
   return hour === 24 ? 0 : hour; // some runtimes format midnight as "24"
@@ -66,7 +72,7 @@ export async function isEtfAutoGenEnabled(): Promise<boolean> {
 }
 
 /** 0-based day index since the weekly window opened (weekly reset − 7 days), clamped to the cap curve. */
-export function weeklyDayIndex(now: Date, weeklyResetsAt: string | null, capCurveLength: number): number {
+function weeklyDayIndex(now: Date, weeklyResetsAt: string | null, capCurveLength: number): number {
   const lastIndex = capCurveLength - 1;
   if (!weeklyResetsAt) return 0; // unknown reset → strictest cap
   const dayMs = 24 * 60 * 60 * 1000;
@@ -76,22 +82,34 @@ export function weeklyDayIndex(now: Date, weeklyResetsAt: string | null, capCurv
 }
 
 /**
- * Evaluates the Claude usage gates (5-hour limit + weekly day-curve cap) for the
- * given mode preset. Does NOT check the time-of-day window. Conservative: blocks
- * when usage is unknown.
+ * Whether a new batch must wait, per the mode's frequency lever: true if fewer
+ * than `minMinutes` have passed since the last auto batch (`lastBatchAt`). A null
+ * `lastBatchAt` (no prior auto request) is never throttled. Reusable across the
+ * stock and ETF jobs.
  */
-export function evaluateAutoGenGates(usage: ClaudeSubscriptionUsage, now: Date, preset: AutoGenModePreset): AutoGenGateResult {
+export function isWithinFrequencyCooldown(now: Date, lastBatchAt: Date | null, minMinutes: number): boolean {
+  if (!lastBatchAt) return false;
+  return now.getTime() - lastBatchAt.getTime() < minMinutes * 60_000;
+}
+
+/**
+ * Evaluates the shared Claude usage gates (5-hour limit + weekly day-curve cap).
+ * These caps are the same for every mode — see `AUTO_GEN_USAGE_CAPS`. Does NOT
+ * check the time-of-day window or the mode's throughput. Conservative: blocks when
+ * usage is unknown.
+ */
+export function evaluateAutoGenGates(usage: ClaudeSubscriptionUsage, now: Date): AutoGenGateResult {
   const fiveHourPct = usage.fiveHour.utilizationPct;
   const weeklyPct = usage.weeklyAll.utilizationPct;
   const dayKey = WEEKLY_CAP_DAY_KEYS[weeklyDayIndex(now, usage.weeklyAll.resetsAt, WEEKLY_CAP_DAY_KEYS.length)];
-  const weeklyCapPct = preset.weeklyCapByDayPct[dayKey];
+  const weeklyCapPct = AUTO_GEN_USAGE_CAPS.weeklyCapByDayPct[dayKey];
   const base = { fiveHourPct, weeklyPct, weeklyCapPct };
 
   if (fiveHourPct === null) {
     return { allowed: false, reason: 'five-hour-usage-unknown', ...base };
   }
-  if (fiveHourPct >= preset.maxFiveHourUtilizationPct) {
-    return { allowed: false, reason: `five-hour-over-${preset.maxFiveHourUtilizationPct}`, ...base };
+  if (fiveHourPct >= AUTO_GEN_USAGE_CAPS.maxFiveHourUtilizationPct) {
+    return { allowed: false, reason: `five-hour-over-${AUTO_GEN_USAGE_CAPS.maxFiveHourUtilizationPct}`, ...base };
   }
   if (weeklyPct !== null && weeklyPct >= weeklyCapPct) {
     return { allowed: false, reason: `weekly-over-day-cap-${weeklyCapPct}`, ...base };
