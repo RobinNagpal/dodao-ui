@@ -5,7 +5,7 @@
  * `appConfigDefinitions.ts` imports) so the App-Settings dependency here never
  * forms an import cycle.
  */
-import { getAppConfigValue } from '@/lib/appConfig/appConfig';
+import { getAppConfigBoolean, getAppConfigValue } from '@/lib/appConfig/appConfig';
 import { ClaudeSubscriptionUsage } from '@/util/claude/claude-usage';
 import {
   AUTO_GEN_MODE_PRESETS,
@@ -18,6 +18,7 @@ import {
 } from '@/utils/auto-generation/auto-gen-config';
 import { AutoGenEntity, AutoGenGateResult, AutoGenMode, AutoGenModePreset, AutoGenWindow } from '@/utils/auto-generation/auto-gen-models';
 
+const AUTO_GEN_ENABLED_KEY = 'AUTOMATED_GENERATION_ENABLED';
 const AUTO_GEN_MODE_KEY = 'AUTOMATED_GENERATION_MODE';
 const AUTO_GEN_WINDOW_KEY = 'AUTOMATED_GENERATION_WINDOW';
 const AUTO_GEN_ENTITY_KEY = 'AUTOMATED_GENERATION_ENTITY';
@@ -25,6 +26,15 @@ const AUTO_GEN_ENTITY_KEY = 'AUTOMATED_GENERATION_ENTITY';
 /** Returns `value` if it's one of `allowed`, otherwise `fallback`. */
 function coerce<T extends string>(value: string | undefined, allowed: readonly T[], fallback: T): T {
   return value !== undefined && (allowed as readonly string[]).includes(value) ? (value as T) : fallback;
+}
+
+/**
+ * Master on/off switch for the whole auto-generation job (`AUTOMATED_GENERATION_ENABLED`).
+ * When false, the tick short-circuits before any per-entity work — the mode,
+ * window, and entity controls are irrelevant. Defaults to enabled.
+ */
+export async function isAutoGenEnabled(): Promise<boolean> {
+  return getAppConfigBoolean(AUTO_GEN_ENABLED_KEY);
 }
 
 async function getAutoGenMode(): Promise<AutoGenMode> {

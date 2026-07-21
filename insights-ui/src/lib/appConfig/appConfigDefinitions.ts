@@ -92,7 +92,7 @@ export const APP_CONFIG_GROUPS: AppConfigGroup[] = [
     id: 'auto-generation',
     label: 'Automated Report Generation',
     description:
-      'Controls for the nightly Claude auto-generation job: how aggressively it spends the Claude budget, when it runs, and which report types it generates.',
+      'Controls for the nightly Claude auto-generation job: the master on/off switch, how aggressively it spends the Claude budget, when it runs, and which report types it generates.',
   },
   {
     id: 'claude-endpoints',
@@ -181,6 +181,14 @@ export const APP_CONFIG_DEFINITIONS: AppConfigDefinition[] = [
       { value: ClaudeModel.CLAUDE_SONNET_4_6, label: 'Claude Sonnet 4.6' },
       { value: ClaudeModel.CLAUDE_HAIKU_4_5, label: 'Claude Haiku 4.5' },
     ],
+  },
+  {
+    key: 'AUTOMATED_GENERATION_ENABLED',
+    label: 'Enable automated generation',
+    description:
+      'Master on/off switch for the nightly auto-generation job. When OFF, no stock or ETF reports are auto-generated regardless of the mode, window, or entity below. When ON, the job runs subject to those controls and the Claude usage caps.',
+    type: 'boolean',
+    group: 'auto-generation',
   },
   {
     key: 'AUTOMATED_GENERATION_MODE',
