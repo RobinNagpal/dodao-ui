@@ -15,8 +15,15 @@
  * resolve from SSM or env only.
  */
 import { ClaudeModel, GeminiModel, LLMProvider } from '@/types/llmConstants';
-import { AUTO_GEN_ENTITY_INFO, AUTO_GEN_MODE_LABELS, AUTO_GEN_MODE_PRESETS, AUTO_GEN_WINDOWS } from '@/utils/auto-generation/auto-gen-config';
-import { AutoGenEntity, AutoGenMode, AutoGenWindow } from '@/utils/auto-generation/auto-gen-models';
+import {
+  AUTO_GEN_BUDGET_UTILIZATION_LABELS,
+  AUTO_GEN_ENTITY_INFO,
+  AUTO_GEN_MODE_LABELS,
+  AUTO_GEN_MODE_PRESETS,
+  AUTO_GEN_WINDOWS,
+  HOURS_LEFT_TO_PERCENT_REMAINING,
+} from '@/utils/auto-generation/auto-gen-config';
+import { AutoGenBudgetUtilizationStrategy, AutoGenEntity, AutoGenMode, AutoGenWindow } from '@/utils/auto-generation/auto-gen-models';
 
 export type AppConfigValueType = 'boolean' | 'string';
 
@@ -201,6 +208,19 @@ export const APP_CONFIG_DEFINITIONS: AppConfigDefinition[] = [
       value: mode,
       label: AUTO_GEN_MODE_LABELS[mode],
       helpNote: JSON.stringify(AUTO_GEN_MODE_PRESETS[mode], null, 2),
+    })),
+  },
+  {
+    key: 'AUTOMATED_GENERATION_BUDGET_UTILIZATION',
+    label: 'Weekly budget utilization',
+    description:
+      'How aggressively auto-generation spends the weekly Claude budget as the weekly reset approaches. Each strategy is a curve of “minimum % of the weekly budget that must still remain”, keyed by hours left until the reset — a new batch is skipped when less than that % remains. Counting toward the reset makes it tighten/ease exactly as fresh budget nears. Aggressive reserves the least (spends fastest); Conservative reserves the most. The 5-hour safety ceiling is the same for every strategy. The selected strategy’s exact curve is shown below.',
+    type: 'string',
+    group: 'auto-generation',
+    options: Object.values(AutoGenBudgetUtilizationStrategy).map((strategy) => ({
+      value: strategy,
+      label: AUTO_GEN_BUDGET_UTILIZATION_LABELS[strategy],
+      helpNote: JSON.stringify(HOURS_LEFT_TO_PERCENT_REMAINING[strategy], null, 2),
     })),
   },
   {

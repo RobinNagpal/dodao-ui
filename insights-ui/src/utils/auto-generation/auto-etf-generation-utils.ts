@@ -110,9 +110,17 @@ export async function enqueueAutoEtfGenerationBatch(spaceId: string): Promise<Au
     }
 
     const usage = await getClaudeSubscriptionUsage();
-    const gate = evaluateAutoGenGates(usage, now);
+    const gate = await evaluateAutoGenGates(usage, now);
+    const gateFields = {
+      fiveHourPct: gate.fiveHourPct,
+      weeklyPct: gate.weeklyPct,
+      remainingPct: gate.remainingPct,
+      requiredRemainingPct: gate.requiredRemainingPct,
+      hoursToReset: gate.hoursToReset,
+      strategy: gate.strategy,
+    };
     if (!gate.allowed) {
-      return { created: 0, reason: gate.reason, fiveHourPct: gate.fiveHourPct, weeklyPct: gate.weeklyPct };
+      return { created: 0, reason: gate.reason, ...gateFields };
     }
 
     const etfs = await getEtfsMissingReports(spaceId, batchSize);
@@ -137,7 +145,7 @@ export async function enqueueAutoEtfGenerationBatch(spaceId: string): Promise<Au
       created++;
     }
 
-    return { created, reason: created > 0 ? 'enqueued-batch' : 'no-missing-etfs', fiveHourPct: gate.fiveHourPct, weeklyPct: gate.weeklyPct };
+    return { created, reason: created > 0 ? 'enqueued-batch' : 'no-missing-etfs', ...gateFields };
   } catch (err) {
     console.warn('enqueueAutoEtfGenerationBatch failed; created nothing this run.', err);
     return { created: 0, reason: 'error', fiveHourPct: null, weeklyPct: null };
