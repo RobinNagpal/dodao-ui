@@ -11,17 +11,28 @@ import {
   AUTO_GEN_MODE_PRESETS,
   AUTO_GEN_USAGE_CAPS,
   AUTO_GEN_WINDOWS,
+  DEFAULT_AUTO_GEN_BUDGET_UTILIZATION,
   DEFAULT_AUTO_GEN_ENTITY,
   DEFAULT_AUTO_GEN_MODE,
   DEFAULT_AUTO_GEN_WINDOW,
-  WEEKLY_CAP_DAY_KEYS,
+  HOURS_LEFT_BUCKET_KEYS,
+  HOURS_LEFT_TO_PERCENT_REMAINING,
 } from '@/utils/auto-generation/auto-gen-config';
-import { AutoGenEntity, AutoGenGateResult, AutoGenMode, AutoGenModePreset, AutoGenWindow } from '@/utils/auto-generation/auto-gen-models';
+import {
+  AutoGenBudgetUtilizationStrategy,
+  AutoGenEntity,
+  AutoGenGateResult,
+  AutoGenMode,
+  AutoGenModePreset,
+  AutoGenWindow,
+  HoursLeftToPercentRemaining,
+} from '@/utils/auto-generation/auto-gen-models';
 
 const AUTO_GEN_ENABLED_KEY = 'AUTOMATED_GENERATION_ENABLED';
 const AUTO_GEN_MODE_KEY = 'AUTOMATED_GENERATION_MODE';
 const AUTO_GEN_WINDOW_KEY = 'AUTOMATED_GENERATION_WINDOW';
 const AUTO_GEN_ENTITY_KEY = 'AUTOMATED_GENERATION_ENTITY';
+const AUTO_GEN_BUDGET_UTILIZATION_KEY = 'AUTOMATED_GENERATION_BUDGET_UTILIZATION';
 
 /** Returns `value` if it's one of `allowed`, otherwise `fallback`. */
 function coerce<T extends string>(value: string | undefined, allowed: readonly T[], fallback: T): T {
@@ -58,6 +69,16 @@ async function getAutoGenEntity(): Promise<AutoGenEntity> {
   return coerce(await getAppConfigValue(AUTO_GEN_ENTITY_KEY), Object.values(AutoGenEntity), DEFAULT_AUTO_GEN_ENTITY);
 }
 
+/**
+ * The admin-selected weekly-budget utilization strategy
+ * (`AUTOMATED_GENERATION_BUDGET_UTILIZATION`). Picks which
+ * `HOURS_LEFT_TO_PERCENT_REMAINING` curve the weekly usage gate applies. Defaults
+ * to Aggressive.
+ */
+async function getAutoGenBudgetUtilizationStrategy(): Promise<AutoGenBudgetUtilizationStrategy> {
+  return coerce(await getAppConfigValue(AUTO_GEN_BUDGET_UTILIZATION_KEY), Object.values(AutoGenBudgetUtilizationStrategy), DEFAULT_AUTO_GEN_BUDGET_UTILIZATION);
+}
+
 /** Current hour (0-23) in America/New_York, DST-aware. */
 function currentEtHour(now: Date): number {
   const formatted = new Intl.DateTimeFormat('en-US', { timeZone: 'America/New_York', hour: 'numeric', hour12: false }).format(now);
@@ -81,14 +102,26 @@ export async function isEtfAutoGenEnabled(): Promise<boolean> {
   return entity === AutoGenEntity.EtfsOnly || entity === AutoGenEntity.StocksAndEtfs;
 }
 
-/** 0-based day index since the weekly window opened (weekly reset − 7 days), clamped to the cap curve. */
-function weeklyDayIndex(now: Date, weeklyResetsAt: string | null, capCurveLength: number): number {
-  const lastIndex = capCurveLength - 1;
-  if (!weeklyResetsAt) return 0; // unknown reset → strictest cap
-  const dayMs = 24 * 60 * 60 * 1000;
-  const weekStart = new Date(weeklyResetsAt).getTime() - 7 * dayMs;
-  const idx = Math.floor((now.getTime() - weekStart) / dayMs);
-  return Math.min(Math.max(idx, 0), lastIndex);
+/**
+ * Whole hours until the weekly reset, counting toward the END of the window (more
+ * accurate than deriving a start). null when the reset time is unknown; never
+ * negative (a past reset clamps to 0 → the most permissive final bucket).
+ */
+function hoursUntilReset(now: Date, weeklyResetsAt: string | null): number | null {
+  if (!weeklyResetsAt) return null;
+  const ms = new Date(weeklyResetsAt).getTime() - now.getTime();
+  return Math.max(0, Math.floor(ms / (60 * 60 * 1000)));
+}
+
+/**
+ * Min-remaining-% threshold for the given hours-to-reset, read from a strategy's
+ * curve: the SMALLEST bucket whose hour bound is ≥ `hoursToReset`. A null
+ * `hoursToReset` (unknown reset) falls through to `'168h'`, the strictest bucket.
+ */
+function requiredRemainingPct(curve: HoursLeftToPercentRemaining, hoursToReset: number | null): number {
+  if (hoursToReset === null) return curve['168h'];
+  const key = HOURS_LEFT_BUCKET_KEYS.find((k) => hoursToReset <= parseInt(k, 10)) ?? '168h';
+  return curve[key];
 }
 
 /**
@@ -103,17 +136,23 @@ export function isWithinFrequencyCooldown(now: Date, lastBatchAt: Date | null, m
 }
 
 /**
- * Evaluates the shared Claude usage gates (5-hour limit + weekly day-curve cap).
- * These caps are the same for every mode — see `AUTO_GEN_USAGE_CAPS`. Does NOT
- * check the time-of-day window or the mode's throughput. Conservative: blocks when
- * usage is unknown.
+ * Evaluates the shared Claude usage gates: the 5-hour session ceiling plus the
+ * weekly budget guardrail. The weekly gate compares how much budget is still unused
+ * (`100 − weeklyPct`) against the minimum required for the current hours-to-reset,
+ * read from the selected utilization strategy's `HOURS_LEFT_TO_PERCENT_REMAINING`
+ * curve. Counts toward the reset (end of the window), so it tightens/eases exactly
+ * as fresh budget nears. Does NOT check the time-of-day window or the mode's
+ * throughput. Conservative: blocks when 5-hour usage is unknown, and uses the
+ * strictest bucket when the reset time is unknown.
  */
-export function evaluateAutoGenGates(usage: ClaudeSubscriptionUsage, now: Date): AutoGenGateResult {
+export async function evaluateAutoGenGates(usage: ClaudeSubscriptionUsage, now: Date): Promise<AutoGenGateResult> {
   const fiveHourPct = usage.fiveHour.utilizationPct;
   const weeklyPct = usage.weeklyAll.utilizationPct;
-  const dayKey = WEEKLY_CAP_DAY_KEYS[weeklyDayIndex(now, usage.weeklyAll.resetsAt, WEEKLY_CAP_DAY_KEYS.length)];
-  const weeklyCapPct = AUTO_GEN_USAGE_CAPS.weeklyCapByDayPct[dayKey];
-  const base = { fiveHourPct, weeklyPct, weeklyCapPct };
+  const strategy = await getAutoGenBudgetUtilizationStrategy();
+  const hoursToReset = hoursUntilReset(now, usage.weeklyAll.resetsAt);
+  const requiredPct = requiredRemainingPct(HOURS_LEFT_TO_PERCENT_REMAINING[strategy], hoursToReset);
+  const remainingPct = weeklyPct === null ? null : 100 - weeklyPct;
+  const base = { fiveHourPct, weeklyPct, remainingPct, requiredRemainingPct: requiredPct, hoursToReset, strategy };
 
   if (fiveHourPct === null) {
     return { allowed: false, reason: 'five-hour-usage-unknown', ...base };
@@ -121,8 +160,8 @@ export function evaluateAutoGenGates(usage: ClaudeSubscriptionUsage, now: Date):
   if (fiveHourPct >= AUTO_GEN_USAGE_CAPS.maxFiveHourUtilizationPct) {
     return { allowed: false, reason: `five-hour-over-${AUTO_GEN_USAGE_CAPS.maxFiveHourUtilizationPct}`, ...base };
   }
-  if (weeklyPct !== null && weeklyPct >= weeklyCapPct) {
-    return { allowed: false, reason: `weekly-over-day-cap-${weeklyCapPct}`, ...base };
+  if (remainingPct !== null && remainingPct < requiredPct) {
+    return { allowed: false, reason: `weekly-remaining-${remainingPct}-below-required-${requiredPct}`, ...base };
   }
   return { allowed: true, reason: 'ok', ...base };
 }

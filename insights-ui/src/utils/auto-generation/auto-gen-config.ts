@@ -7,24 +7,78 @@
  * Settings runtime — so `appConfigDefinitions.ts` can import it to build the
  * dropdowns + help notes without an import cycle.
  */
-import { AutoGenEntity, AutoGenMode, AutoGenModePreset, AutoGenUsageCaps, AutoGenWindow, WeeklyCapByDay } from '@/utils/auto-generation/auto-gen-models';
+import {
+  AutoGenBudgetUtilizationStrategy,
+  AutoGenEntity,
+  AutoGenMode,
+  AutoGenModePreset,
+  AutoGenUsageCaps,
+  AutoGenWindow,
+  HoursLeftToPercentRemaining,
+} from '@/utils/auto-generation/auto-gen-models';
 
 export const DEFAULT_AUTO_GEN_MODE = AutoGenMode.Low;
 export const DEFAULT_AUTO_GEN_WINDOW = AutoGenWindow.NightShort;
 export const DEFAULT_AUTO_GEN_ENTITY = AutoGenEntity.StocksAndEtfs;
-
-/** Ordered `WeeklyCapByDay` keys — index i = i days since the weekly reset. */
-export const WEEKLY_CAP_DAY_KEYS: (keyof WeeklyCapByDay)[] = ['day1', 'day2', 'day3', 'day4', 'day5', 'day6', 'day7'];
+export const DEFAULT_AUTO_GEN_BUDGET_UTILIZATION = AutoGenBudgetUtilizationStrategy.Aggressive;
 
 /**
- * Claude-usage safety caps — identical for EVERY mode (these are the values Low
- * used before modes existed). The day-curve and 5-hour ceiling are safety limits,
- * not the throughput lever, so raising the mode does not push the job closer to
- * the Claude limit; it just generates more within these same caps.
+ * `HoursLeftToPercentRemaining` keys, ordered ascending by hours-to-reset. A
+ * reading falls into the FIRST key whose hour bound is ≥ the hours actually left
+ * (anything beyond the last bound uses `'168h'`, the strictest bucket).
+ */
+export const HOURS_LEFT_BUCKET_KEYS: (keyof HoursLeftToPercentRemaining)[] = ['8h', '16h', '24h', '36h', '48h', '72h', '96h', '120h', '144h', '168h'];
+
+/**
+ * Claude-usage safety cap shared by EVERY mode — the 5-hour session ceiling. It is
+ * a safety limit, not a throughput lever, so raising the mode does not push the job
+ * closer to the Claude limit; it just generates more within this same cap. The
+ * weekly budget guardrail is the utilization-strategy curve below.
  */
 export const AUTO_GEN_USAGE_CAPS: AutoGenUsageCaps = {
   maxFiveHourUtilizationPct: 90,
-  weeklyCapByDayPct: { day1: 20, day2: 30, day3: 40, day4: 50, day5: 60, day6: 80, day7: 95 },
+};
+
+/**
+ * Per-strategy weekly-budget curves: the minimum % of the weekly Claude budget that
+ * must still be UNUSED to allow a new batch, keyed by hours left until the weekly
+ * reset. A batch is skipped when less than this % remains. Thresholds ease off as
+ * the reset nears (fresh budget is close), so the job may spend closer to the limit
+ * late in the week. Aggressive reserves the least (anchored to the previous
+ * day6=80% / day7=95% usage caps); Conservative reserves the most.
+ */
+export const HOURS_LEFT_TO_PERCENT_REMAINING: Record<AutoGenBudgetUtilizationStrategy, HoursLeftToPercentRemaining> = {
+  [AutoGenBudgetUtilizationStrategy.Aggressive]: {
+    '168h': 80,
+    '144h': 70,
+    '120h': 60,
+    '96h': 50,
+    '72h': 40,
+    '48h': 20,
+    '36h': 12,
+    '24h': 8,
+    '16h': 5,
+    '8h': 2,
+  },
+  [AutoGenBudgetUtilizationStrategy.Moderate]: { '168h': 84, '144h': 75, '120h': 66, '96h': 56, '72h': 46, '48h': 28, '36h': 18, '24h': 13, '16h': 8, '8h': 5 },
+  [AutoGenBudgetUtilizationStrategy.Conservative]: {
+    '168h': 88,
+    '144h': 80,
+    '120h': 72,
+    '96h': 62,
+    '72h': 52,
+    '48h': 35,
+    '36h': 25,
+    '24h': 18,
+    '16h': 12,
+    '8h': 8,
+  },
+};
+
+export const AUTO_GEN_BUDGET_UTILIZATION_LABELS: Record<AutoGenBudgetUtilizationStrategy, string> = {
+  [AutoGenBudgetUtilizationStrategy.Aggressive]: 'Aggressive — spend the budget faster',
+  [AutoGenBudgetUtilizationStrategy.Moderate]: 'Moderate — balanced',
+  [AutoGenBudgetUtilizationStrategy.Conservative]: 'Conservative — keep more in reserve',
 };
 
 /**
