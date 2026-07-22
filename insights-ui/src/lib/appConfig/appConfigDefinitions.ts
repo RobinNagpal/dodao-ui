@@ -224,6 +224,27 @@ export const APP_CONFIG_DEFINITIONS: AppConfigDefinition[] = [
     })),
   },
   {
+    key: 'AUTOMATED_GENERATION_OPUS_MODEL',
+    label: 'Auto-gen Opus model',
+    description:
+      'The nightly job picks its Claude model automatically: Opus and Sonnet have SEPARATE weekly subscription budgets, so each batch is routed to whichever family has more of its weekly budget still remaining (tapping both pools and self-balancing them). This setting only chooses WHICH Opus model is used when a batch is routed to Opus. Provider is always Claude (subscription OAuth).',
+    type: 'string',
+    group: 'auto-generation',
+    options: [
+      { value: ClaudeModel.CLAUDE_OPUS_4_8, label: 'Claude Opus 4.8' },
+      { value: ClaudeModel.CLAUDE_OPUS_4_7, label: 'Claude Opus 4.7' },
+    ],
+  },
+  {
+    key: 'AUTOMATED_GENERATION_SONNET_MODEL',
+    label: 'Auto-gen Sonnet model',
+    description:
+      'Which Sonnet model the auto-generation balancer uses when a batch is routed to the Sonnet family. See the Opus model setting above for how the family is chosen (whichever of Opus / Sonnet has more of its separate weekly budget remaining).',
+    type: 'string',
+    group: 'auto-generation',
+    options: [{ value: ClaudeModel.CLAUDE_SONNET_4_6, label: 'Claude Sonnet 4.6' }],
+  },
+  {
     key: 'AUTOMATED_GENERATION_WINDOW',
     label: 'Automated generation window',
     description:

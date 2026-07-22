@@ -6,14 +6,19 @@
  * forms an import cycle.
  */
 import { getAppConfigBoolean, getAppConfigValue } from '@/lib/appConfig/appConfig';
+import { ClaudeModel } from '@/types/llmConstants';
 import { ClaudeSubscriptionUsage } from '@/util/claude/claude-usage';
 import {
   AUTO_GEN_MODE_PRESETS,
+  AUTO_GEN_OPUS_MODEL_OPTIONS,
+  AUTO_GEN_SONNET_MODEL_OPTIONS,
   AUTO_GEN_USAGE_CAPS,
   AUTO_GEN_WINDOWS,
   DEFAULT_AUTO_GEN_BUDGET_UTILIZATION,
   DEFAULT_AUTO_GEN_ENTITY,
   DEFAULT_AUTO_GEN_MODE,
+  DEFAULT_AUTO_GEN_OPUS_MODEL,
+  DEFAULT_AUTO_GEN_SONNET_MODEL,
   DEFAULT_AUTO_GEN_WINDOW,
   HOURS_LEFT_BUCKET_KEYS,
   HOURS_LEFT_TO_PERCENT_REMAINING,
@@ -33,6 +38,8 @@ const AUTO_GEN_MODE_KEY = 'AUTOMATED_GENERATION_MODE';
 const AUTO_GEN_WINDOW_KEY = 'AUTOMATED_GENERATION_WINDOW';
 const AUTO_GEN_ENTITY_KEY = 'AUTOMATED_GENERATION_ENTITY';
 const AUTO_GEN_BUDGET_UTILIZATION_KEY = 'AUTOMATED_GENERATION_BUDGET_UTILIZATION';
+const AUTO_GEN_OPUS_MODEL_KEY = 'AUTOMATED_GENERATION_OPUS_MODEL';
+const AUTO_GEN_SONNET_MODEL_KEY = 'AUTOMATED_GENERATION_SONNET_MODEL';
 
 /** Returns `value` if it's one of `allowed`, otherwise `fallback`. */
 function coerce<T extends string>(value: string | undefined, allowed: readonly T[], fallback: T): T {
@@ -67,6 +74,38 @@ async function getAutoGenWindow(): Promise<AutoGenWindow> {
 
 async function getAutoGenEntity(): Promise<AutoGenEntity> {
   return coerce(await getAppConfigValue(AUTO_GEN_ENTITY_KEY), Object.values(AutoGenEntity), DEFAULT_AUTO_GEN_ENTITY);
+}
+
+/** Which Opus model the balancer uses when it routes a batch to the Opus family (`AUTOMATED_GENERATION_OPUS_MODEL`). */
+async function getAutoGenOpusModel(): Promise<ClaudeModel> {
+  return coerce(await getAppConfigValue(AUTO_GEN_OPUS_MODEL_KEY), AUTO_GEN_OPUS_MODEL_OPTIONS, DEFAULT_AUTO_GEN_OPUS_MODEL);
+}
+
+/** Which Sonnet model the balancer uses when it routes a batch to the Sonnet family (`AUTOMATED_GENERATION_SONNET_MODEL`). */
+async function getAutoGenSonnetModel(): Promise<ClaudeModel> {
+  return coerce(await getAppConfigValue(AUTO_GEN_SONNET_MODEL_KEY), AUTO_GEN_SONNET_MODEL_OPTIONS, DEFAULT_AUTO_GEN_SONNET_MODEL);
+}
+
+/**
+ * Chooses the Claude model for a batch automatically. Opus and Sonnet have SEPARATE
+ * weekly subscription buckets (`usage.weeklyOpus` / `usage.weeklySonnet`), so each
+ * batch goes to whichever family has more of its weekly budget still unused — this
+ * taps both pools instead of one and self-balances them (a batch never lands on the
+ * family that's closer to its own weekly cap). The provider is always Claude
+ * (subscription OAuth); this only picks the model.
+ *
+ * When the plan does not expose both per-model weekly windows, there is nothing to
+ * balance against, so it defaults to the Sonnet model — cheapest per token, so it
+ * stretches the shared weekly budget furthest.
+ */
+export async function chooseAutoGenModel(usage: ClaudeSubscriptionUsage): Promise<ClaudeModel> {
+  const opusUsedPct = usage.weeklyOpus?.utilizationPct ?? null;
+  const sonnetUsedPct = usage.weeklySonnet?.utilizationPct ?? null;
+  if (opusUsedPct === null || sonnetUsedPct === null) {
+    return getAutoGenSonnetModel();
+  }
+  // Lower utilization = more of that family's weekly budget left. Tie → Sonnet (cheaper → more throughput).
+  return opusUsedPct < sonnetUsedPct ? getAutoGenOpusModel() : getAutoGenSonnetModel();
 }
 
 /**
