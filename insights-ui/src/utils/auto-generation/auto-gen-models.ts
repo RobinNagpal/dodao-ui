@@ -112,6 +112,8 @@ export interface AutoEnqueueResult {
   requiredRemainingPct?: number;
   hoursToReset?: number | null;
   strategy?: AutoGenBudgetUtilizationStrategy;
+  /** The Claude model the balancer stamped on this batch's requests (set only when a batch is created). */
+  chosenModel?: string;
 }
 
 /**

@@ -7,6 +7,7 @@
  * Settings runtime — so `appConfigDefinitions.ts` can import it to build the
  * dropdowns + help notes without an import cycle.
  */
+import { ClaudeModel } from '@/types/llmConstants';
 import {
   AutoGenBudgetUtilizationStrategy,
   AutoGenEntity,
@@ -21,6 +22,20 @@ export const DEFAULT_AUTO_GEN_MODE = AutoGenMode.Low;
 export const DEFAULT_AUTO_GEN_WINDOW = AutoGenWindow.NightShort;
 export const DEFAULT_AUTO_GEN_ENTITY = AutoGenEntity.StocksAndEtfs;
 export const DEFAULT_AUTO_GEN_BUDGET_UTILIZATION = AutoGenBudgetUtilizationStrategy.Aggressive;
+
+/**
+ * The auto-generation model is chosen automatically per batch: Opus and Sonnet each
+ * have their own separate weekly Claude subscription bucket, so each batch is sent
+ * to whichever family has more of its weekly budget remaining (see
+ * `chooseAutoGenModel`). These are the per-family model choices — the only knob left
+ * is *which* Opus model and *which* Sonnet model the balancer uses. Kept as explicit
+ * per-family option lists so a model can never be assigned to the wrong family's
+ * weekly bucket.
+ */
+export const AUTO_GEN_OPUS_MODEL_OPTIONS: ClaudeModel[] = [ClaudeModel.CLAUDE_OPUS_4_8, ClaudeModel.CLAUDE_OPUS_4_7];
+export const AUTO_GEN_SONNET_MODEL_OPTIONS: ClaudeModel[] = [ClaudeModel.CLAUDE_SONNET_4_6];
+export const DEFAULT_AUTO_GEN_OPUS_MODEL = ClaudeModel.CLAUDE_OPUS_4_7;
+export const DEFAULT_AUTO_GEN_SONNET_MODEL = ClaudeModel.CLAUDE_SONNET_4_6;
 
 /**
  * `HoursLeftToPercentRemaining` keys, ordered ascending by hours-to-reset. A
