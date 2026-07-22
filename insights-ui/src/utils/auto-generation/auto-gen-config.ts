@@ -24,7 +24,7 @@ export const WEEKLY_CAP_DAY_KEYS: (keyof WeeklyCapByDay)[] = ['day1', 'day2', 'd
  */
 export const AUTO_GEN_USAGE_CAPS: AutoGenUsageCaps = {
   maxFiveHourUtilizationPct: 90,
-  weeklyCapByDayPct: { day1: 20, day2: 30, day3: 40, day4: 50, day5: 60, day6: 70, day7: 80 },
+  weeklyCapByDayPct: { day1: 20, day2: 30, day3: 40, day4: 50, day5: 60, day6: 80, day7: 95 },
 };
 
 /**
