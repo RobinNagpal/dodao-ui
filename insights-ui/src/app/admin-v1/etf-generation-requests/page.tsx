@@ -208,6 +208,17 @@ export default function EtfGenerationRequestsPage(): JSX.Element {
   const [secondsLeft, setSecondsLeft] = useState(REFRESH_SECONDS);
   const [isPaused, setIsPaused] = useState(false);
 
+  // A background refresh can drain a bucket below the page the user is on, leaving them on an
+  // out-of-range (empty) page with no way back. Snap each section's page into range when data lands.
+  useEffect(() => {
+    if (!data) return;
+    const clampToRange = (count: number) => (page: number) => Math.min(page, Math.max(1, Math.ceil(count / PAGE_SIZE)));
+    setInProgressPage(clampToRange(data.counts.inProgress));
+    setNotStartedPage(clampToRange(data.counts.notStarted));
+    setFailedPage(clampToRange(data.counts.failed));
+    setCompletedPage(clampToRange(data.counts.completed));
+  }, [data]);
+
   function handleManualRefresh() {
     setInProgressPage(1);
     setFailedPage(1);

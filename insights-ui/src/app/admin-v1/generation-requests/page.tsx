@@ -41,12 +41,23 @@ export default function GenerationRequestsPage(): JSX.Element {
 
   const counts = data?.counts;
   const activeCount: number = (counts?.inProgress ?? 0) + (counts?.notStarted ?? 0);
-  const hasActive: boolean = (data?.notStarted?.length ?? 0) > 0 || (data?.inProgress?.length ?? 0) > 0;
+  const hasActive: boolean = (counts?.inProgress ?? 0) > 0 || (counts?.notStarted ?? 0) > 0;
 
   const [secondsLeft, setSecondsLeft] = useState<number>(REFRESH_SECONDS);
   const [showReloadModal, setShowReloadModal] = useState<boolean>(false);
   const [selectedRequest, setSelectedRequest] = useState<GenerationRequestWithFlags | null>(null);
   const [isPaused, setIsPaused] = useState<boolean>(false);
+
+  // A background refresh can drain a bucket below the page the user is on, leaving them on an
+  // out-of-range (empty) page with no way back. Snap each section's page into range when data lands.
+  useEffect(() => {
+    if (!data) return;
+    const clampToRange = (count: number) => (page: number) => Math.min(page, Math.max(1, Math.ceil(count / PAGE_SIZE)));
+    setInProgressPage(clampToRange(data.counts.inProgress));
+    setNotStartedPage(clampToRange(data.counts.notStarted));
+    setFailedPage(clampToRange(data.counts.failed));
+    setCompletedPage(clampToRange(data.counts.completed));
+  }, [data]);
 
   function resetToFirstPage(): void {
     setInProgressPage(1);
