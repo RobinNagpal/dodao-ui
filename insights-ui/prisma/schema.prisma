@@ -1800,6 +1800,10 @@ model EtfGenerationRequest {
   inProgressStep String?  @map("in_progress_step")
   completedSteps String[] @default([]) @map("completed_steps")
   failedSteps    String[] @default([]) @map("failed_steps")
+  // Failed steps that were already given their single retry. A step present in
+  // BOTH failedSteps and retriedSteps has failed twice and is terminal. Mirrors
+  // the stock TickerV1GenerationRequest retry model.
+  retriedSteps   String[] @default([]) @map("retried_steps")
 
   createdAt          DateTime  @default(now()) @map("created_at")
   updatedAt          DateTime  @updatedAt @map("updated_at")

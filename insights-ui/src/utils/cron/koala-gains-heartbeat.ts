@@ -2,6 +2,7 @@ import { AutoGenTickResult } from '@/utils/auto-generation/auto-gen-models';
 import { runAutoGenerationTick } from '@/utils/auto-generation/auto-generation-tick';
 import { processPendingTickerRequests, ProcessTickerRequestsResult } from '@/utils/analysis-reports/process-ticker-requests';
 import { processPendingEtfRequests, ProcessEtfRequestsResult } from '@/utils/etf-analysis-reports/process-etf-requests';
+import { reclaimStaleInvocations, ReclaimStaleInvocationsResult } from '@/utils/cron/reclaim-stale-invocations';
 
 /** One section of the heartbeat either produced a result or failed (captured, not thrown). */
 type Section<T> = T | { error: string };
@@ -13,6 +14,8 @@ export interface HeartbeatResult {
   tickers: Section<ProcessTickerRequestsResult>;
   /** Process side: advance pending ETF requests by one step. */
   etfs: Section<ProcessEtfRequestsResult>;
+  /** Hygiene: fail invocations orphaned InProgress by a mid-call process restart. */
+  reclaimedInvocations: Section<ReclaimStaleInvocationsResult>;
 }
 
 /** Runs one section, capturing any error so the other sections still run. */
@@ -39,5 +42,6 @@ export async function runKoalaGainsHeartbeat(spaceId: string): Promise<Heartbeat
   const autoGen = await runSection('auto-generation', () => runAutoGenerationTick(spaceId));
   const tickers = await runSection('ticker-requests', () => processPendingTickerRequests(spaceId));
   const etfs = await runSection('etf-requests', () => processPendingEtfRequests(spaceId));
-  return { autoGen, tickers, etfs };
+  const reclaimedInvocations = await runSection('reclaim-stale-invocations', () => reclaimStaleInvocations(spaceId));
+  return { autoGen, tickers, etfs, reclaimedInvocations };
 }

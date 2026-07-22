@@ -74,6 +74,7 @@ Two cross-cutting reminders that apply on top of every factor:
 
 ## 4. For each item in `factorAnalysisArray` produce (VERY IMPORTANT AND MANDATORY)
 
+- **Return exactly one object for EVERY factor in the input `factorAnalysisArray` — same count, same keys, no omissions.** The output factor array length MUST equal the input factor count. Never drop, merge, skip, or deduplicate a factor — not even one that looks esoteric, weakly relevant, or data-poor. If a factor is a weak fit or its data is missing, still include it and apply the relevance / Pass rule above (judge it from the fund's overall quality in its group). Returning fewer factors than were provided is a hard failure — the entire report is rejected and regenerated. (VERY IMPORTANT AND MANDATORY)
 - `factorAnalysisKey` — use the exact snake_case key from the matching input factor block (for example: historical_long_term_returns). Output the raw key as plain text — no backticks or other markdown, and never the bolded title or a rephrased form. (VERY IMPORTANT AND MANDATORY)
 - `oneLineExplanation` — one sentence with the clearest takeaway.
 - `detailedExplanation` — one short paragraph. Use the metrics listed in `factorAnalysisMetrics` and any other strongly relevant input field. Every conclusion needs a numeric anchor. If the factor is a weak fit for this ETF, say so and judge on the closest relevant evidence rather than forcing a Fail.

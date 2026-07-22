@@ -117,6 +117,7 @@ If a factor’s core metric is missing, use the lookup rule first; otherwise jud
 
 ## 4. For each item in `factorAnalysisArray` produce (VERY IMPORTANT AND MANDATORY)
 
+- **Return exactly one object for EVERY factor in the input `factorAnalysisArray` — same count, same keys, no omissions.** The output factor array length MUST equal the input factor count. Never drop, merge, skip, or deduplicate a factor — not even one that looks esoteric, weakly relevant, or data-poor. If a factor is a weak fit or its data is missing, still include it and apply the relevance / Pass rule above (judge it from the fund's overall quality in its group). Returning fewer factors than were provided is a hard failure — the entire report is rejected and regenerated. (VERY IMPORTANT AND MANDATORY)
 - `factorAnalysisKey` — use the exact snake_case key from the matching input factor block (for example: short_term_hold_outlook). Output the raw key as plain text — no backticks or other markdown, and never the bolded title or a rephrased form. (VERY IMPORTANT AND MANDATORY)
 - `oneLineExplanation` — one sentence with the clearest investor takeaway.
 - `detailedExplanation` — one short paragraph that applies the factor’s bar to THIS ETF. Use the listed metrics and any strongly relevant input field or lookup result. Anchor conclusions with at least one concrete detail.
