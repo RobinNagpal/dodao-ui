@@ -79,8 +79,29 @@ async function getAutoGenBudgetUtilizationStrategy(): Promise<AutoGenBudgetUtili
   return coerce(await getAppConfigValue(AUTO_GEN_BUDGET_UTILIZATION_KEY), Object.values(AutoGenBudgetUtilizationStrategy), DEFAULT_AUTO_GEN_BUDGET_UTILIZATION);
 }
 
+/**
+ * The four admin-selected auto-generation controls, resolved and coerced to their
+ * enums in one call. Used by the read-only status endpoint to report exactly which
+ * mode / window / entity / budget strategy the job is running with. The enqueue job
+ * itself reads these through the more specific helpers below.
+ */
+export async function getResolvedAutoGenControls(): Promise<{
+  mode: AutoGenMode;
+  window: AutoGenWindow;
+  entity: AutoGenEntity;
+  budgetStrategy: AutoGenBudgetUtilizationStrategy;
+}> {
+  const [mode, window, entity, budgetStrategy] = await Promise.all([
+    getAutoGenMode(),
+    getAutoGenWindow(),
+    getAutoGenEntity(),
+    getAutoGenBudgetUtilizationStrategy(),
+  ]);
+  return { mode, window, entity, budgetStrategy };
+}
+
 /** Current hour (0-23) in America/New_York, DST-aware. */
-function currentEtHour(now: Date): number {
+export function currentEtHour(now: Date): number {
   const formatted = new Intl.DateTimeFormat('en-US', { timeZone: 'America/New_York', hour: 'numeric', hour12: false }).format(now);
   const hour = parseInt(formatted, 10);
   return hour === 24 ? 0 : hour; // some runtimes format midnight as "24"
