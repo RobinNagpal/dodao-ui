@@ -1,7 +1,5 @@
 'use client';
 
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import MetricGrid from '@/components/ui/containers/MetricGrid';
 import Stack from '@/components/ui/containers/Stack';
 import Heading from '@/components/ui/Heading';
 import StatusBadge, { type StatusBadgeVariant } from '@/components/ui/StatusBadge';
@@ -9,11 +7,13 @@ import Text from '@/components/ui/Text';
 import type { AppSettingsForAdmin, ResolvedAppSetting } from '@/lib/appConfig/appConfig';
 import { APP_CONFIG_GROUPS } from '@/lib/appConfig/appConfigDefinitions';
 import { getAppSettingsForAdmin, updateAppSetting } from '@/utils/app-config-actions';
-import Button from '@dodao/web-core/components/core/buttons/Button';
+import IconButton from '@dodao/web-core/components/core/buttons/IconButton';
+import { IconTypes } from '@dodao/web-core/components/core/icons/IconTypes';
 import Input from '@dodao/web-core/components/core/input/Input';
 import StyledSelect from '@dodao/web-core/components/core/select/StyledSelect';
 import ToggleWithIcon from '@dodao/web-core/components/core/toggles/ToggleWithIcon';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
+import { InformationCircleIcon } from '@heroicons/react/20/solid';
 import { useEffect, useState } from 'react';
 
 const SOURCE_BADGE: Record<ResolvedAppSetting['source'], { variant: StatusBadgeVariant; label: string }> = {
@@ -22,17 +22,19 @@ const SOURCE_BADGE: Record<ResolvedAppSetting['source'], { variant: StatusBadgeV
   default: { variant: 'neutral', label: 'Default' },
 };
 
-function SettingCard({ setting, onSaved }: { setting: ResolvedAppSetting; onSaved: (saved: ResolvedAppSetting) => void }): JSX.Element {
+function SettingRow({ setting, onSaved }: { setting: ResolvedAppSetting; onSaved: (saved: ResolvedAppSetting) => void }): JSX.Element {
   const { showNotification } = useNotificationContext();
   const isSecret = setting.secret === true;
   // Secrets are write-only: the field always starts empty and saving replaces the stored value.
   const [draft, setDraft] = useState<string>(isSecret ? '' : setting.value);
   const [saving, setSaving] = useState<boolean>(false);
+  const [showDetails, setShowDetails] = useState<boolean>(false);
 
   const dirty = isSecret ? draft !== '' : draft !== setting.value;
 
   // Note attached to the currently-selected dropdown option (e.g. the config a
-  // value applies, as JSON or prose). Generic — shown for any option that has one.
+  // value applies) — kept visible inline so a value's effect is never missed
+  // while choosing/updating it.
   const selectedOptionNote = setting.options?.find((opt) => opt.value === draft)?.helpNote;
 
   const handleSave = async (): Promise<void> => {
@@ -61,57 +63,104 @@ function SettingCard({ setting, onSaved }: { setting: ResolvedAppSetting; onSave
   const source = SOURCE_BADGE[setting.source];
 
   return (
-    <Card className="gap-3 py-4">
-      <CardHeader className="gap-1">
-        <div className="flex items-start justify-between gap-2">
-          <div>
-            <CardTitle>{setting.label}</CardTitle>
-            <Text as="p" size="xs" tone="muted" className="font-mono mt-0.5">
-              {setting.key}
-            </Text>
+    <>
+      <tr className="border-t border-border align-top">
+        <td className="py-2 pr-3">
+          <div className="flex items-start gap-2">
+            <button
+              type="button"
+              onClick={() => setShowDetails((v) => !v)}
+              title="Show details"
+              aria-expanded={showDetails}
+              className="mt-0.5 text-muted hover:text-body"
+            >
+              <InformationCircleIcon className="h-4 w-4" />
+            </button>
+            <div>
+              <Text as="div" size="sm" weight="medium" tone="body">
+                {setting.label}
+              </Text>
+              <Text as="div" size="xs" tone="muted" className="font-mono">
+                {setting.key}
+              </Text>
+            </div>
           </div>
-          <div className="flex flex-wrap items-center justify-end gap-1.5">
+        </td>
+
+        <td className="w-[22rem] py-2 pr-3">
+          {setting.type === 'boolean' ? (
+            <ToggleWithIcon label={setting.label} enabled={draft === 'true'} setEnabled={(v) => setDraft(v ? 'true' : 'false')} />
+          ) : setting.options ? (
+            <>
+              <StyledSelect
+                label=""
+                selectedItemId={draft}
+                setSelectedItemId={(id) => setDraft(id ?? '')}
+                items={setting.options.map((opt) => ({ id: opt.value, label: opt.label }))}
+              />
+              {selectedOptionNote && (
+                <Text as="div" size="xs" tone="muted" className="mt-1 whitespace-pre-wrap rounded-md border border-border p-2 font-mono">
+                  {selectedOptionNote}
+                </Text>
+              )}
+            </>
+          ) : (
+            <Input
+              modelValue={draft}
+              onUpdate={(v) => setDraft(v === undefined ? '' : String(v))}
+              required={false}
+              password={isSecret}
+              placeholder={isSecret ? (setting.isSet ? 'Enter a new value to replace the current secret' : 'Enter a value') : undefined}
+            />
+          )}
+        </td>
+
+        <td className="py-2 pr-3">
+          <div className="flex flex-wrap gap-1.5">
             {isSecret && <StatusBadge variant={setting.isSet ? 'success' : 'neutral'} label={setting.isSet ? 'Secret · set' : 'Secret · not set'} />}
             {setting.isSet && <StatusBadge variant={source.variant} label={source.label} />}
           </div>
-        </div>
-        <CardDescription>{setting.description}</CardDescription>
-      </CardHeader>
+        </td>
 
-      <CardContent>
-        {setting.type === 'boolean' ? (
-          <ToggleWithIcon label={setting.label} enabled={draft === 'true'} setEnabled={(v) => setDraft(v ? 'true' : 'false')} />
-        ) : setting.options ? (
-          <div>
-            <StyledSelect
-              label=""
-              selectedItemId={draft}
-              setSelectedItemId={(id) => setDraft(id ?? '')}
-              items={setting.options.map((opt) => ({ id: opt.value, label: opt.label }))}
-            />
-            {selectedOptionNote && (
-              <Text as="div" size="xs" tone="muted" className="mt-2 whitespace-pre-wrap rounded-md border border-border p-2 font-mono">
-                {selectedOptionNote}
-              </Text>
-            )}
-          </div>
-        ) : (
-          <Input
-            modelValue={draft}
-            onUpdate={(v) => setDraft(v === undefined ? '' : String(v))}
-            required={false}
-            password={isSecret}
-            placeholder={isSecret ? (setting.isSet ? 'Enter a new value to replace the current secret' : 'Enter a value') : undefined}
+        <td className="py-2 text-right">
+          <IconButton
+            iconName={IconTypes.ArrowDownTrayIcon}
+            tooltip={dirty ? 'Save' : 'No changes to save'}
+            primary
+            removeBorder
+            disabled={!dirty || saving}
+            loading={saving}
+            onClick={handleSave}
           />
-        )}
-      </CardContent>
+        </td>
+      </tr>
 
-      <CardFooter className="mt-auto justify-end">
-        <Button onClick={handleSave} loading={saving} disabled={saving || !dirty}>
-          Save
-        </Button>
-      </CardFooter>
-    </Card>
+      {showDetails && (
+        <tr>
+          <td colSpan={4} className="pb-3 pl-8 pr-3">
+            <Text as="p" size="sm" tone="muted">
+              {setting.description}
+            </Text>
+            {setting.options && (
+              <div className="mt-2 space-y-1.5">
+                {setting.options.map((opt) => (
+                  <div key={opt.value}>
+                    <Text as="span" size="xs" weight="medium" tone="body" className="font-mono">
+                      {opt.label}
+                    </Text>
+                    {opt.helpNote && (
+                      <Text as="div" size="xs" tone="muted" className="whitespace-pre-wrap font-mono">
+                        {opt.helpNote}
+                      </Text>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
+          </td>
+        </tr>
+      )}
+    </>
   );
 }
 
@@ -143,26 +192,25 @@ export default function AppSettingsPage(): JSX.Element {
   };
 
   return (
-    <Stack gap="xl">
-      <div className="border-b border-border pb-4">
+    <Stack gap="lg">
+      <div className="border-b border-border pb-3">
         <Heading as="h1" size="2xl" weight="semibold" tone="white">
           App Settings
         </Heading>
         <Text as="p" size="sm" tone="muted" className="mt-1">
           Runtime configuration stored in AWS SSM Parameter Store. Values resolve in order: SSM &rarr; legacy environment variable &rarr; bundled default, so
-          the app keeps working even when SSM is not configured.
+          the app keeps working even when SSM is not configured. Click the <InformationCircleIcon className="inline h-4 w-4 align-text-bottom" /> on any row for
+          details.
         </Text>
       </div>
 
       {data && !data.ssmConfigured && (
-        <Card className="gap-0 border-amber-500/40 bg-amber-500/10 py-4">
-          <CardContent>
-            <Text as="p" size="sm" tone="body">
-              SSM Parameter Store is not configured on this server. Settings below are read-only (from environment variables or bundled defaults). To enable
-              editing, set <span className="font-mono">APP_CONFIG_SSM_ENABLED=true</span> and grant the server SSM permissions.
-            </Text>
-          </CardContent>
-        </Card>
+        <div className="rounded-md border border-amber-500/40 bg-amber-500/10 p-3">
+          <Text as="p" size="sm" tone="body">
+            SSM Parameter Store is not configured on this server. Settings below are read-only (from environment variables or bundled defaults). To enable
+            editing, set <span className="font-mono">APP_CONFIG_SSM_ENABLED=true</span> and grant the server SSM permissions.
+          </Text>
+        </div>
       )}
 
       {loading && (
@@ -177,17 +225,21 @@ export default function AppSettingsPage(): JSX.Element {
           if (groupSettings.length === 0) return null;
           return (
             <section key={group.id}>
-              <Heading as="h2" size="lg" weight="semibold" tone="white">
+              <Heading as="h2" size="md" weight="semibold" tone="white">
                 {group.label}
               </Heading>
-              <Text as="p" size="sm" tone="muted" className="mb-4 mt-1">
+              <Text as="p" size="xs" tone="muted" className="mb-2 mt-0.5">
                 {group.description}
               </Text>
-              <MetricGrid columns="1-2-3" gap="lg">
-                {groupSettings.map((setting) => (
-                  <SettingCard key={setting.key} setting={setting} onSaved={handleSaved} />
-                ))}
-              </MetricGrid>
+              <div className="overflow-x-auto">
+                <table className="w-full text-left">
+                  <tbody>
+                    {groupSettings.map((setting) => (
+                      <SettingRow key={setting.key} setting={setting} onSaved={handleSaved} />
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             </section>
           );
         })}
