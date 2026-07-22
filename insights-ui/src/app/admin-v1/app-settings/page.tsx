@@ -22,6 +22,9 @@ const SOURCE_BADGE: Record<ResolvedAppSetting['source'], { variant: StatusBadgeV
   default: { variant: 'neutral', label: 'Default' },
 };
 
+// Alternating surface tint per group table so adjacent sections are easy to tell apart.
+const TABLE_TONES = ['bg-surface', 'bg-surface-2'];
+
 function SettingRow({ setting, onSaved }: { setting: ResolvedAppSetting; onSaved: (saved: ResolvedAppSetting) => void }): JSX.Element {
   const { showNotification } = useNotificationContext();
   const isSecret = setting.secret === true;
@@ -76,18 +79,13 @@ function SettingRow({ setting, onSaved }: { setting: ResolvedAppSetting; onSaved
             >
               <InformationCircleIcon className="h-4 w-4" />
             </button>
-            <div>
-              <Text as="div" size="sm" weight="medium" tone="body">
-                {setting.label}
-              </Text>
-              <Text as="div" size="xs" tone="muted" className="font-mono">
-                {setting.key}
-              </Text>
-            </div>
+            <Text as="div" size="sm" weight="medium" tone="body">
+              {setting.label}
+            </Text>
           </div>
         </td>
 
-        <td className="w-[22rem] py-2 pr-3">
+        <td className="py-2 pr-3">
           {setting.type === 'boolean' ? (
             <ToggleWithIcon label={setting.label} enabled={draft === 'true'} setEnabled={(v) => setDraft(v ? 'true' : 'false')} />
           ) : setting.options ? (
@@ -124,9 +122,9 @@ function SettingRow({ setting, onSaved }: { setting: ResolvedAppSetting; onSaved
 
         <td className="py-2 text-right">
           <IconButton
-            iconName={IconTypes.ArrowDownTrayIcon}
+            iconName={IconTypes.Checkmark}
             tooltip={dirty ? 'Save' : 'No changes to save'}
-            primary
+            primary={dirty}
             removeBorder
             disabled={!dirty || saving}
             loading={saving}
@@ -220,19 +218,25 @@ export default function AppSettingsPage(): JSX.Element {
       )}
 
       {data &&
-        APP_CONFIG_GROUPS.map((group) => {
+        APP_CONFIG_GROUPS.map((group, index) => {
           const groupSettings = data.settings.filter((s) => s.group === group.id);
           if (groupSettings.length === 0) return null;
           return (
-            <section key={group.id}>
+            <section key={group.id} className={`rounded-lg border border-border p-3 sm:p-4 ${TABLE_TONES[index % TABLE_TONES.length]}`}>
               <Heading as="h2" size="md" weight="semibold" tone="white">
                 {group.label}
               </Heading>
-              <Text as="p" size="xs" tone="muted" className="mb-2 mt-0.5">
+              <Text as="p" size="xs" tone="muted" className="mb-3 mt-0.5">
                 {group.description}
               </Text>
               <div className="overflow-x-auto">
-                <table className="w-full text-left">
+                <table className="w-full table-fixed text-left">
+                  <colgroup>
+                    <col className="w-2/5 lg:w-[30%]" />
+                    <col />
+                    <col className="w-36" />
+                    <col className="w-14" />
+                  </colgroup>
                   <tbody>
                     {groupSettings.map((setting) => (
                       <SettingRow key={setting.key} setting={setting} onSaved={handleSaved} />

@@ -9,7 +9,7 @@ import RobotIconSolid from '@dodao/web-core/components/core/icons/RobotIconSolid
 import { ArrowDownTrayIcon } from '@heroicons/react/24/outline';
 import { DocumentPlusIcon, ArrowPathIcon } from '@heroicons/react/24/solid';
 import { ArrowDownIcon, ArrowUpIcon } from '@heroicons/react/20/solid';
-import { PencilSquareIcon, PlusIcon, TrashIcon, ArrowsPointingOutIcon } from '@heroicons/react/20/solid';
+import { PencilSquareIcon, PlusIcon, TrashIcon, ArrowsPointingOutIcon, CheckIcon } from '@heroicons/react/20/solid';
 import styles from './IconButton.module.scss';
 import { ClipboardIcon } from '@heroicons/react/24/outline';
 
@@ -78,6 +78,8 @@ const IconButton: React.FC<IconButtonProps> = ({
         return <ArrowPathIcon width={width} height={height} />;
       case IconTypes.Clipboard:
         return <ClipboardIcon width={width} height={height} />;
+      case IconTypes.Checkmark:
+        return <CheckIcon width={width} height={height} />;
       case IconTypes.Reading:
         return <ReadingIcon />;
       case IconTypes.Summary:
