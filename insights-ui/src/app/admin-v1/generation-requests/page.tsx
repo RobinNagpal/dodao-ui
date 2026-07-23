@@ -13,76 +13,61 @@ import Button from '@dodao/web-core/components/core/buttons/Button';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { ArrowPathIcon, PauseIcon, PlayIcon } from '@heroicons/react/24/outline';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 
 const REFRESH_SECONDS: number = 30;
 const PAGE_SIZE: number = 15;
 
-type Pagination = { skip: number; take: number };
-const INITIAL_PAGINATION: Pagination = { skip: 0, take: PAGE_SIZE };
-
 export default function GenerationRequestsPage(): JSX.Element {
-  const [inProgressPagination, setInProgressPagination] = useState<Pagination>(INITIAL_PAGINATION);
-  const [failedPagination, setFailedPagination] = useState<Pagination>(INITIAL_PAGINATION);
-  const [notStartedPagination, setNotStartedPagination] = useState<Pagination>(INITIAL_PAGINATION);
-  const [completedPagination, setCompletedPagination] = useState<Pagination>(INITIAL_PAGINATION);
+  const [inProgressPage, setInProgressPage] = useState<number>(1);
+  const [notStartedPage, setNotStartedPage] = useState<number>(1);
+  const [failedPage, setFailedPage] = useState<number>(1);
+  const [completedPage, setCompletedPage] = useState<number>(1);
 
-  const [accumulatedInProgress, setAccumulatedInProgress] = useState<GenerationRequestWithFlags[]>([]);
-  const [accumulatedFailed, setAccumulatedFailed] = useState<GenerationRequestWithFlags[]>([]);
-  const [accumulatedNotStarted, setAccumulatedNotStarted] = useState<GenerationRequestWithFlags[]>([]);
-  const [accumulatedCompleted, setAccumulatedCompleted] = useState<GenerationRequestWithFlags[]>([]);
-
-  const baseUrl: string = `${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/generation-requests`;
-  const params = new URLSearchParams();
-  params.append('inProgressSkip', inProgressPagination.skip.toString());
-  params.append('inProgressTake', inProgressPagination.take.toString());
-  params.append('failedSkip', failedPagination.skip.toString());
-  params.append('failedTake', failedPagination.take.toString());
-  params.append('notStartedSkip', notStartedPagination.skip.toString());
-  params.append('notStartedTake', notStartedPagination.take.toString());
-  params.append('completedSkip', completedPagination.skip.toString());
-  params.append('completedTake', completedPagination.take.toString());
-  const apiUrl: string = `${baseUrl}?${params.toString()}`;
+  const apiUrl: string = useMemo(() => {
+    const params = new URLSearchParams();
+    params.append('inProgressSkip', String((inProgressPage - 1) * PAGE_SIZE));
+    params.append('inProgressTake', String(PAGE_SIZE));
+    params.append('failedSkip', String((failedPage - 1) * PAGE_SIZE));
+    params.append('failedTake', String(PAGE_SIZE));
+    params.append('notStartedSkip', String((notStartedPage - 1) * PAGE_SIZE));
+    params.append('notStartedTake', String(PAGE_SIZE));
+    params.append('completedSkip', String((completedPage - 1) * PAGE_SIZE));
+    params.append('completedTake', String(PAGE_SIZE));
+    return `${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/generation-requests?${params.toString()}`;
+  }, [inProgressPage, failedPage, notStartedPage, completedPage]);
 
   const { data, loading, reFetchData } = useFetchData<GenerationRequestsResponse>(apiUrl, {}, 'Failed to fetch generation requests');
 
-  useEffect(() => {
-    if (!data) return;
-
-    // Merge based on the skip echoed back in the response (not local pagination state, which
-    // updates before the matching fetch resolves and would re-append the previous batch).
-    const mergeRows = (prev: GenerationRequestWithFlags[], rows: GenerationRequestWithFlags[], skip: number): GenerationRequestWithFlags[] => {
-      const base: GenerationRequestWithFlags[] = skip === 0 ? [] : prev.slice(0, skip);
-      const seenIds = new Set<string>(base.map((row) => row.id));
-      return [...base, ...rows.filter((row) => !seenIds.has(row.id))];
-    };
-
-    setAccumulatedInProgress((p) => mergeRows(p, data.inProgress || [], data.pagination.inProgress.skip));
-    setAccumulatedFailed((p) => mergeRows(p, data.failed || [], data.pagination.failed.skip));
-    setAccumulatedNotStarted((p) => mergeRows(p, data.notStarted || [], data.pagination.notStarted.skip));
-    setAccumulatedCompleted((p) => mergeRows(p, data.completed || [], data.pagination.completed.skip));
-  }, [data]);
-
-  const hasActive: boolean = (data?.notStarted?.length ?? 0) > 0 || (data?.inProgress?.length ?? 0) > 0;
+  const counts = data?.counts;
+  const activeCount: number = (counts?.inProgress ?? 0) + (counts?.notStarted ?? 0);
+  const hasActive: boolean = (counts?.inProgress ?? 0) > 0 || (counts?.notStarted ?? 0) > 0;
 
   const [secondsLeft, setSecondsLeft] = useState<number>(REFRESH_SECONDS);
   const [showReloadModal, setShowReloadModal] = useState<boolean>(false);
   const [selectedRequest, setSelectedRequest] = useState<GenerationRequestWithFlags | null>(null);
   const [isPaused, setIsPaused] = useState<boolean>(false);
 
-  function resetPagination(): void {
-    setInProgressPagination(INITIAL_PAGINATION);
-    setFailedPagination(INITIAL_PAGINATION);
-    setNotStartedPagination(INITIAL_PAGINATION);
-    setCompletedPagination(INITIAL_PAGINATION);
-    setAccumulatedInProgress([]);
-    setAccumulatedFailed([]);
-    setAccumulatedNotStarted([]);
-    setAccumulatedCompleted([]);
+  // A background refresh can drain a bucket below the page the user is on, leaving them on an
+  // out-of-range (empty) page with no way back. Snap each section's page into range when data lands.
+  useEffect(() => {
+    if (!data) return;
+    const clampToRange = (count: number) => (page: number) => Math.min(page, Math.max(1, Math.ceil(count / PAGE_SIZE)));
+    setInProgressPage(clampToRange(data.counts.inProgress));
+    setNotStartedPage(clampToRange(data.counts.notStarted));
+    setFailedPage(clampToRange(data.counts.failed));
+    setCompletedPage(clampToRange(data.counts.completed));
+  }, [data]);
+
+  function resetToFirstPage(): void {
+    setInProgressPage(1);
+    setNotStartedPage(1);
+    setFailedPage(1);
+    setCompletedPage(1);
   }
 
   function handleManualRefresh(): void {
-    resetPagination();
+    resetToFirstPage();
     reFetchData();
     setSecondsLeft(REFRESH_SECONDS);
   }
@@ -90,10 +75,6 @@ export default function GenerationRequestsPage(): JSX.Element {
   function handleTogglePause(): void {
     setIsPaused((prev) => !prev);
   }
-
-  const loadMore = (setPagination: React.Dispatch<React.SetStateAction<Pagination>>) => (): void => {
-    setPagination((prev) => ({ skip: prev.skip + prev.take, take: prev.take }));
-  };
 
   function handleReloadRequest(request: GenerationRequestWithFlags): void {
     setSelectedRequest(request);
@@ -154,9 +135,6 @@ export default function GenerationRequestsPage(): JSX.Element {
     return () => clearInterval(timerId);
   }, [hasActive, isPaused, reFetchData]);
 
-  const counts = data?.counts;
-  const activeCount: number = (counts?.inProgress ?? 0) + (counts?.notStarted ?? 0);
-
   return (
     <>
       <div className="flex flex-wrap gap-3 justify-between items-center mb-4">
@@ -207,19 +185,23 @@ export default function GenerationRequestsPage(): JSX.Element {
           <RequestsSection
             title="In Progress Requests"
             tone="blue"
-            rows={accumulatedInProgress}
-            totalCount={counts?.inProgress ?? accumulatedInProgress.length}
+            rows={data?.inProgress ?? []}
+            totalCount={counts?.inProgress ?? 0}
             loading={loading}
-            onShowMore={loadMore(setInProgressPagination)}
+            currentPage={inProgressPage}
+            pageSize={PAGE_SIZE}
+            onPageChange={setInProgressPage}
             onReloadRequest={handleReloadRequest}
           />
           <RequestsSection
             title="Not Started Requests"
             tone="gray"
-            rows={accumulatedNotStarted}
-            totalCount={counts?.notStarted ?? accumulatedNotStarted.length}
+            rows={data?.notStarted ?? []}
+            totalCount={counts?.notStarted ?? 0}
             loading={loading}
-            onShowMore={loadMore(setNotStartedPagination)}
+            currentPage={notStartedPage}
+            pageSize={PAGE_SIZE}
+            onPageChange={setNotStartedPage}
             onReloadRequest={handleReloadRequest}
           />
         </TabsContent>
@@ -228,10 +210,12 @@ export default function GenerationRequestsPage(): JSX.Element {
           <RequestsSection
             title="Failed Requests"
             tone="red"
-            rows={accumulatedFailed}
-            totalCount={counts?.failed ?? accumulatedFailed.length}
+            rows={data?.failed ?? []}
+            totalCount={counts?.failed ?? 0}
             loading={loading}
-            onShowMore={loadMore(setFailedPagination)}
+            currentPage={failedPage}
+            pageSize={PAGE_SIZE}
+            onPageChange={setFailedPage}
             onReloadRequest={handleReloadRequest}
           />
         </TabsContent>
@@ -240,10 +224,12 @@ export default function GenerationRequestsPage(): JSX.Element {
           <RequestsSection
             title="Completed Requests"
             tone="green"
-            rows={accumulatedCompleted}
-            totalCount={counts?.completed ?? accumulatedCompleted.length}
+            rows={data?.completed ?? []}
+            totalCount={counts?.completed ?? 0}
             loading={loading}
-            onShowMore={loadMore(setCompletedPagination)}
+            currentPage={completedPage}
+            pageSize={PAGE_SIZE}
+            onPageChange={setCompletedPage}
             onReloadRequest={handleReloadRequest}
           />
         </TabsContent>

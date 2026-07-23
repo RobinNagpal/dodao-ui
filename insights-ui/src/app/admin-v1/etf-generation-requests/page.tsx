@@ -1,13 +1,15 @@
 'use client';
 
+import SectionPagination from '@/app/admin-v1/generation-requests/SectionPagination';
 import { useDebouncedValue } from '@/app/admin-v1/etf-reports/useDebouncedValue';
 import { EtfGenerationRequestsResponse, EtfGenerationRequestWithEtf } from '@/app/api/[spaceId]/etfs-v1/generation-requests/route';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { EtfGenerationRequestStatus, EtfReportType } from '@/types/etf/etf-analysis-types';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import { ArrowPathIcon, ChevronLeftIcon, ChevronRightIcon, PauseIcon, PlayIcon } from '@heroicons/react/24/outline';
+import { ArrowPathIcon, PauseIcon, PlayIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import React, { useEffect, useMemo, useState } from 'react';
 
@@ -61,52 +63,6 @@ function StatusDot({ isEnabled, stepName, completedSteps, failedSteps, inProgres
 
 const REFRESH_SECONDS = 30;
 const PAGE_SIZE = 50;
-
-interface SectionPaginationProps {
-  currentPage: number;
-  totalCount: number;
-  rowsOnPage: number;
-  onPageChange: (page: number) => void;
-}
-
-function SectionPagination({ currentPage, totalCount, rowsOnPage, onPageChange }: SectionPaginationProps): JSX.Element | null {
-  const totalPages = Math.max(1, Math.ceil(totalCount / PAGE_SIZE));
-  if (totalPages <= 1) return null;
-
-  const rangeStart = (currentPage - 1) * PAGE_SIZE + 1;
-  const rangeEnd = (currentPage - 1) * PAGE_SIZE + rowsOnPage;
-
-  return (
-    <div className="flex items-center justify-between px-2 py-3 mt-3 border-t border-gray-700/60">
-      <span className="text-sm text-gray-400">
-        Showing {rangeStart}
-        {'–'}
-        {rangeEnd} of {totalCount}
-      </span>
-      <div className="flex items-center space-x-2">
-        <button
-          onClick={() => onPageChange(Math.max(1, currentPage - 1))}
-          disabled={currentPage === 1}
-          className="p-2 rounded-md text-gray-300 hover:bg-gray-700 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
-          title="Previous page"
-        >
-          <ChevronLeftIcon className="h-5 w-5" />
-        </button>
-        <span className="text-sm text-gray-300">
-          Page {currentPage} of {totalPages}
-        </span>
-        <button
-          onClick={() => onPageChange(Math.min(totalPages, currentPage + 1))}
-          disabled={currentPage === totalPages}
-          className="p-2 rounded-md text-gray-300 hover:bg-gray-700 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
-          title="Next page"
-        >
-          <ChevronRightIcon className="h-5 w-5" />
-        </button>
-      </div>
-    </div>
-  );
-}
 
 function SectionHeader({ title, totalCount }: { title: string; totalCount: number }): JSX.Element {
   return (
@@ -252,6 +208,17 @@ export default function EtfGenerationRequestsPage(): JSX.Element {
   const [secondsLeft, setSecondsLeft] = useState(REFRESH_SECONDS);
   const [isPaused, setIsPaused] = useState(false);
 
+  // A background refresh can drain a bucket below the page the user is on, leaving them on an
+  // out-of-range (empty) page with no way back. Snap each section's page into range when data lands.
+  useEffect(() => {
+    if (!data) return;
+    const clampToRange = (count: number) => (page: number) => Math.min(page, Math.max(1, Math.ceil(count / PAGE_SIZE)));
+    setInProgressPage(clampToRange(data.counts.inProgress));
+    setNotStartedPage(clampToRange(data.counts.notStarted));
+    setFailedPage(clampToRange(data.counts.failed));
+    setCompletedPage(clampToRange(data.counts.completed));
+  }, [data]);
+
   function handleManualRefresh() {
     setInProgressPage(1);
     setFailedPage(1);
@@ -288,40 +255,67 @@ export default function EtfGenerationRequestsPage(): JSX.Element {
     return () => clearInterval(timerId);
   }, [hasActive, isPaused, reFetchData]);
 
-  const sections = [
-    {
-      title: 'In Progress',
-      rows: data?.inProgress ?? [],
-      border: 'border-blue-500',
-      count: data?.counts?.inProgress ?? 0,
-      currentPage: inProgressPage,
-      setPage: setInProgressPage,
-    },
-    {
-      title: 'Not Started',
-      rows: data?.notStarted ?? [],
-      border: 'border-gray-500',
-      count: data?.counts?.notStarted ?? 0,
-      currentPage: notStartedPage,
-      setPage: setNotStartedPage,
-    },
-    {
-      title: 'Failed',
-      rows: data?.failed ?? [],
-      border: 'border-red-500',
-      count: data?.counts?.failed ?? 0,
-      currentPage: failedPage,
-      setPage: setFailedPage,
-    },
-    {
-      title: 'Completed',
-      rows: data?.completed ?? [],
-      border: 'border-green-500',
-      count: data?.counts?.completed ?? 0,
-      currentPage: completedPage,
-      setPage: setCompletedPage,
-    },
-  ];
+  interface Section {
+    title: string;
+    rows: EtfGenerationRequestWithEtf[];
+    border: string;
+    count: number;
+    currentPage: number;
+    setPage: (page: number) => void;
+  }
+
+  const inProgressSection: Section = {
+    title: 'In Progress',
+    rows: data?.inProgress ?? [],
+    border: 'border-blue-500',
+    count: data?.counts?.inProgress ?? 0,
+    currentPage: inProgressPage,
+    setPage: setInProgressPage,
+  };
+  const notStartedSection: Section = {
+    title: 'Not Started',
+    rows: data?.notStarted ?? [],
+    border: 'border-gray-500',
+    count: data?.counts?.notStarted ?? 0,
+    currentPage: notStartedPage,
+    setPage: setNotStartedPage,
+  };
+  const failedSection: Section = {
+    title: 'Failed',
+    rows: data?.failed ?? [],
+    border: 'border-red-500',
+    count: data?.counts?.failed ?? 0,
+    currentPage: failedPage,
+    setPage: setFailedPage,
+  };
+  const completedSection: Section = {
+    title: 'Completed',
+    rows: data?.completed ?? [],
+    border: 'border-green-500',
+    count: data?.counts?.completed ?? 0,
+    currentPage: completedPage,
+    setPage: setCompletedPage,
+  };
+
+  const activeCount: number = (data?.counts?.inProgress ?? 0) + (data?.counts?.notStarted ?? 0);
+
+  function renderSection({ title, rows, border, count, currentPage, setPage }: Section): JSX.Element {
+    return (
+      <div className={`bg-gray-800 border ${border} rounded-lg p-4`}>
+        <SectionHeader title={`${title} Requests`} totalCount={count} />
+        {loading && rows.length === 0 ? (
+          <div className="py-8">Loading...</div>
+        ) : rows.length === 0 ? (
+          <div className="py-4">No {title.toLowerCase()} requests.</div>
+        ) : (
+          <>
+            <EtfRequestsTable rows={rows} onReloadRequest={handleReloadRequest} />
+            <SectionPagination currentPage={currentPage} totalCount={count} rowsOnPage={rows.length} pageSize={PAGE_SIZE} onPageChange={setPage} />
+          </>
+        )}
+      </div>
+    );
+  }
 
   return (
     <>
@@ -397,23 +391,22 @@ export default function EtfGenerationRequestsPage(): JSX.Element {
         </div>
       </div>
 
-      {sections.map(({ title, rows, border, count, currentPage, setPage }) => (
-        <div key={title} className="mb-6">
-          <div className={`bg-gray-800 border ${border} rounded-lg p-4`}>
-            <SectionHeader title={`${title} Requests`} totalCount={count} />
-            {loading && rows.length === 0 ? (
-              <div className="py-8">Loading...</div>
-            ) : rows.length === 0 ? (
-              <div className="py-4">No {title.toLowerCase()} requests.</div>
-            ) : (
-              <>
-                <EtfRequestsTable rows={rows} onReloadRequest={handleReloadRequest} />
-                <SectionPagination currentPage={currentPage} totalCount={count} rowsOnPage={rows.length} onPageChange={setPage} />
-              </>
-            )}
-          </div>
-        </div>
-      ))}
+      <Tabs defaultValue="active">
+        <TabsList className="mb-4">
+          <TabsTrigger value="active">In Progress &amp; Not Started ({activeCount})</TabsTrigger>
+          <TabsTrigger value="failed">Failed ({data?.counts?.failed ?? 0})</TabsTrigger>
+          <TabsTrigger value="completed">Completed ({data?.counts?.completed ?? 0})</TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="active" className="flex flex-col gap-6">
+          {renderSection(inProgressSection)}
+          {renderSection(notStartedSection)}
+        </TabsContent>
+
+        <TabsContent value="failed">{renderSection(failedSection)}</TabsContent>
+
+        <TabsContent value="completed">{renderSection(completedSection)}</TabsContent>
+      </Tabs>
     </>
   );
 }
