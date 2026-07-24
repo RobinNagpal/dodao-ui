@@ -60,6 +60,10 @@ export const metadata: Metadata = {
 export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
+      {/* Server default is the dark palette; ThemeProvider re-syncs body's
+          palette variables + `dark`/`page-theme-light` classes after hydration
+          so portaled overlays (Headless UI dialogs/menus, toasts) follow the
+          user's theme choice. */}
       <body className="antialiased text-color dark" style={{ ...themeColors, backgroundColor: 'var(--bg-color)' }}>
         <Providers>
           <ThemeProvider>

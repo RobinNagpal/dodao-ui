@@ -40,12 +40,21 @@ function applyThemeWithoutTransition(apply: () => void): void {
  * the navbar, page content and portaled overlays (e.g. the login modal, which
  * still reads the theme through React context even though its DOM is portaled).
  *
- * The `<body>` is permanently `.dark` and injects the dark palette, so Tailwind
- * `dark:` variants don't work here. Instead we theme by *token swap*: this wraps
- * everything in a `<div>` that re-declares the semantic CSS variables (dark or
- * light) as inline style. Every descendant reading the tokens (`bg-surface`,
- * `text-heading`, `border-border`, …) flips with it. In dark mode the values
- * equal the body's, so dark stays byte-identical.
+ * Theming happens at two levels:
+ *
+ * 1. **Wrapper token swap** — this wraps everything in a `<div>` that re-declares
+ *    the semantic CSS variables (dark or light) as inline style. Every descendant
+ *    reading the tokens (`bg-surface`, `text-heading`, `border-border`, …) flips
+ *    with it. In dark mode the values equal the body's, so dark stays
+ *    byte-identical.
+ * 2. **`<body>` sync** — Headless UI overlays with `portal` (the mobile-nav
+ *    `Dialog`, web-core `FullPageModal`/`EllipsisDropdown`/`StyledSelect`
+ *    popovers, toasts) mount their DOM into `document.body`, OUTSIDE this
+ *    wrapper, so they resolve the CSS variables from `<body>` — which the server
+ *    renders with the dark palette. An effect below keeps body's palette
+ *    variables and its `dark` / `page-theme-light` classes in sync with the
+ *    selected theme, so portaled overlays (and any `dark:` Tailwind variants)
+ *    follow the toggle too.
  *
  * Defaults to `dark`, so the app renders exactly as before until a user opts into
  * light mode; the choice is remembered in `localStorage`.
@@ -65,6 +74,19 @@ export default function ThemeProvider({ children }: { children: ReactNode }): JS
       applyThemeWithoutTransition(() => setTheme('light'));
     }
   }, []);
+
+  // Keep <body> in sync with the theme (see docblock, point 2). The server
+  // renders body with the dark palette + `.dark`; this re-applies the current
+  // palette after hydration and on every toggle. It runs inside the same
+  // `applyThemeWithoutTransition` window as the wrapper swap (React commits
+  // effects before the restore rAFs fire), so the flip stays atomic.
+  useEffect(() => {
+    const body = document.body;
+    const palette = (theme === 'dark' ? themeColors : lightThemeColors) as Record<string, string>;
+    Object.entries(palette).forEach(([name, value]) => body.style.setProperty(name, value));
+    body.classList.toggle('dark', theme === 'dark');
+    body.classList.toggle('page-theme-light', theme === 'light');
+  }, [theme]);
 
   const toggleTheme = (): void => {
     const next: PageTheme = theme === 'dark' ? 'light' : 'dark';
