@@ -80,7 +80,9 @@ export default function StyledSelect(props: StyledSelectProps) {
                     {items.map((item) => (
                       <Listbox.Option
                         key={item.id} // id is always a string now
-                        className={({ active }) => classNames(active ? 'active text-[var(--primary-text-color)]' : '', 'relative cursor-default select-none py-2 pl-3 pr-9')}
+                        className={({ active }) =>
+                          classNames(active ? 'active text-[var(--primary-text-color)]' : '', 'relative cursor-default select-none py-2 pl-3 pr-9')
+                        }
                         value={item.id}
                       >
                         {({ selected }) => (
