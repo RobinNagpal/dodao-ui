@@ -30,7 +30,7 @@ export default function PortfolioManagersPageComponent({
         {/* Header */}
         <div className="mb-8">
           <div className="flex items-center gap-3 mb-2">
-            {Icon && <Icon className="w-8 h-8 text-blue-500" />}
+            {Icon && <Icon className="w-8 h-8 text-link" />}
             <h1 className="text-3xl font-bold text-heading">{title}</h1>
             <div className="ml-auto">
               <PortfolioManagersPageActions managerType={managerType} />

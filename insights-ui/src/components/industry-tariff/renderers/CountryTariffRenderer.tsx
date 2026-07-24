@@ -5,8 +5,8 @@ import { parseChapterBodyMarkdown, parseMarkdown } from '@/util/parse-markdown';
 interface CountryTariffRendererProps {
   countryTariff: CountrySpecificTariff;
   sectionId?: string;
-  // When true, render as a bg-gray-800 inner card (factor-analysis style) instead of a
-  // standalone bg-gray-900 card — designed to sit inside a single outer article card on the
+  // When true, render as a bg-surface inner card (factor-analysis style) instead of a
+  // standalone bg-bg card — designed to sit inside a single outer article card on the
   // chapter pages.
   flat?: boolean;
 }

@@ -151,7 +151,7 @@ const SlideRow: React.FC<SlideRowProps> = ({ slideStatus, presentationId, onView
   const videoDisabledReason = !slideStatus.hasAudio ? 'Audio required first' : !slideStatus.hasImage ? 'Image required first' : undefined;
 
   return (
-    <div className="border rounded-lg p-4 mb-4 dark:border-gray-700">
+    <div className="border rounded-lg p-4 mb-4 border-border">
       {/* Header */}
       <div className="flex items-center justify-between mb-4">
         <h3 className="text-lg font-semibold">Slide {slideStatus.slideNumber}</h3>
@@ -192,7 +192,7 @@ const SlideRow: React.FC<SlideRowProps> = ({ slideStatus, presentationId, onView
       {/* Content Grid - 5 columns */}
       <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
         {/* Content Column */}
-        <div className="p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+        <div className="p-3 bg-surface rounded-lg">
           <div className="flex items-center justify-between mb-2">
             <span className="text-sm font-medium">Content</span>
             {getStatusBadge(!!slideStatus.slide)}
@@ -203,7 +203,7 @@ const SlideRow: React.FC<SlideRowProps> = ({ slideStatus, presentationId, onView
         </div>
 
         {/* Audio Column */}
-        <div className="p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+        <div className="p-3 bg-surface rounded-lg">
           <div className="flex items-center justify-between mb-2">
             <span className="text-sm font-medium">Audio</span>
             {getStatusBadge(slideStatus.hasAudio)}
@@ -215,7 +215,7 @@ const SlideRow: React.FC<SlideRowProps> = ({ slideStatus, presentationId, onView
               </audio>
             </div>
           ) : (
-            <div className="h-8 mb-2 flex items-center text-xs text-gray-500">No audio</div>
+            <div className="h-8 mb-2 flex items-center text-xs text-muted">No audio</div>
           )}
           <Button
             onClick={() => generateArtifact('audio')}
@@ -230,7 +230,7 @@ const SlideRow: React.FC<SlideRowProps> = ({ slideStatus, presentationId, onView
         </div>
 
         {/* Upload Image Column */}
-        <div className="p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+        <div className="p-3 bg-surface rounded-lg">
           <div className="flex items-center justify-between mb-2">
             <span className="text-sm font-medium">Upload Image</span>
             {slideStatus.hasImage && (
@@ -249,7 +249,7 @@ const SlideRow: React.FC<SlideRowProps> = ({ slideStatus, presentationId, onView
               />
             </div>
           ) : (
-            <div className="h-24 mb-2 flex items-center justify-center text-xs text-gray-500 border-2 border-dashed rounded">No image</div>
+            <div className="h-24 mb-2 flex items-center justify-center text-xs text-muted border-2 border-dashed rounded">No image</div>
           )}
           <input type="file" ref={fileInputRef} onChange={handleImageUpload} accept="image/png,image/jpeg,image/jpg,image/webp,image/gif" className="hidden" />
           <Button
@@ -265,7 +265,7 @@ const SlideRow: React.FC<SlideRowProps> = ({ slideStatus, presentationId, onView
         </div>
 
         {/* Generate Image Column */}
-        <div className="p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+        <div className="p-3 bg-surface rounded-lg">
           <div className="flex items-center justify-between mb-2">
             <span className="text-sm font-medium">Generate Image</span>
             {getStatusBadge(slideStatus.hasImage, slideStatus.imageStatus)}
@@ -282,7 +282,7 @@ const SlideRow: React.FC<SlideRowProps> = ({ slideStatus, presentationId, onView
               />
             </div>
           ) : (
-            <div className="h-24 mb-2 flex items-center justify-center text-xs text-gray-500 border-2 border-dashed rounded">No image</div>
+            <div className="h-24 mb-2 flex items-center justify-center text-xs text-muted border-2 border-dashed rounded">No image</div>
           )}
           <Button
             onClick={() => generateArtifact('image')}
@@ -297,7 +297,7 @@ const SlideRow: React.FC<SlideRowProps> = ({ slideStatus, presentationId, onView
         </div>
 
         {/* Video Column */}
-        <div className="p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+        <div className="p-3 bg-surface rounded-lg">
           <div className="flex items-center justify-between mb-2">
             <span className="text-sm font-medium">Video</span>
             {getStatusBadge(slideStatus.hasVideo, slideStatus.videoStatus)}
@@ -309,7 +309,7 @@ const SlideRow: React.FC<SlideRowProps> = ({ slideStatus, presentationId, onView
               </video>
             </div>
           ) : (
-            <div className="h-24 mb-2 flex items-center justify-center text-xs text-gray-500 border-2 border-dashed rounded">No video</div>
+            <div className="h-24 mb-2 flex items-center justify-center text-xs text-muted border-2 border-dashed rounded">No video</div>
           )}
           <Button
             onClick={() => generateArtifact('video')}

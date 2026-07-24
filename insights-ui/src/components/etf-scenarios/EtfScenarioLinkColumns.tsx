@@ -64,7 +64,7 @@ function LinkCard({ link }: { link: EtfScenarioLinkDto }): JSX.Element {
       <Link
         href={`/etfs/${link.exchange}/${link.symbol}`}
         prefetch={false}
-        className="block bg-bg border border-border rounded-md p-2.5 hover:border-primary hover:bg-[#0f1623] transition-colors"
+        className="block bg-bg border border-border rounded-md p-2.5 hover:border-primary hover:bg-surface-2 transition-colors"
       >
         {body}
       </Link>
@@ -140,7 +140,7 @@ export default function EtfScenarioLinkColumns({ winners, losers, scenarioCountr
         <label className="flex items-center gap-2 text-xs text-muted">
           <span className="uppercase tracking-wide text-[11px] text-muted">Filter by country</span>
           <select
-            className="bg-bg border border-border rounded px-2 py-1 text-xs text-heading focus:outline-none focus:border-[#F59E0B]"
+            className="bg-bg border border-border rounded px-2 py-1 text-xs text-heading focus:outline-none focus:border-amber-500"
             value={countryFilter}
             onChange={(e) => setCountryFilter(e.target.value as EtfSupportedCountry | 'ALL')}
           >

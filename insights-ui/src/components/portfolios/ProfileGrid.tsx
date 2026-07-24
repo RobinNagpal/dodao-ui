@@ -49,8 +49,8 @@ export default function ProfileGrid({ profiles, emptyStateConfig, showCollegeAmb
           <div className="flex-1 flex flex-col min-w-0">
             {/* Name and Headline */}
             <div className="mb-3">
-              <h3 className="text-xl font-semibold text-heading group-hover:text-blue-400 transition-colors mb-1">{profile.user.name}</h3>
-              <p className="text-blue-400 text-sm font-medium">{profile.headline}</p>
+              <h3 className="text-xl font-semibold text-heading group-hover:text-link transition-colors mb-1">{profile.user.name}</h3>
+              <p className="text-link text-sm font-medium">{profile.headline}</p>
             </div>
 
             {/* Summary */}
@@ -66,13 +66,13 @@ export default function ProfileGrid({ profiles, emptyStateConfig, showCollegeAmb
 
               {showCollegeAmbassadorBadge && (
                 <div className="flex items-center gap-1">
-                  <AcademicCapIcon className="w-4 h-4 text-blue-400" />
-                  <span className="text-xs text-blue-400">College Ambassador</span>
+                  <AcademicCapIcon className="w-4 h-4 text-link" />
+                  <span className="text-xs text-link">College Ambassador</span>
                 </div>
               )}
 
               <div className="ml-auto">
-                <span className="text-blue-400 group-hover:text-blue-300 transition-colors text-sm font-medium">View Profile →</span>
+                <span className="text-link group-hover:text-link transition-colors text-sm font-medium">View Profile →</span>
               </div>
             </div>
           </div>

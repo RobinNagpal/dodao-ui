@@ -315,7 +315,7 @@ export default function AnalysisFactorsTable(props: AnalysisFactorsTableProps) {
           </div>
           <div className="text-4xl">
             Analysis Factors
-            <p className="text-lg text-gray-600 mt-1">
+            <p className="text-lg text-muted mt-1">
               {industryKey} → {subIndustryKey}
             </p>
           </div>
@@ -383,7 +383,7 @@ export default function AnalysisFactorsTable(props: AnalysisFactorsTableProps) {
             </table>
 
             {/* Prompt Accordion for when analysis factors exist */}
-            <div className="mt-6 border border-gray-200 rounded-lg overflow-hidden">
+            <div className="mt-6 border border-border rounded-lg overflow-hidden">
               <div className="flex items-center justify-between p-4cursor-pointer" onClick={() => setIsPromptAccordionOpen(!isPromptAccordionOpen)}>
                 <div className="flex items-center p-4">
                   <span className="font-bold text-lg">Analysis Factor Prompt</span>
@@ -395,9 +395,9 @@ export default function AnalysisFactorsTable(props: AnalysisFactorsTableProps) {
                 </div>
               </div>
               {isPromptAccordionOpen && (
-                <div className="p-4 border-t border-gray-200">
+                <div className="p-4 border-t border-border">
                   <p className="mb-2">Use the prompt below to generate analysis factors for this industry and sub-industry:</p>
-                  <pre className="text-xs whitespace-pre-wrap text-left overflow-auto p-4 border border-gray-300 rounded">{getAnalysisFactorPrompt(props)}</pre>
+                  <pre className="text-xs whitespace-pre-wrap text-left overflow-auto p-4 border border-border rounded">{getAnalysisFactorPrompt(props)}</pre>
                 </div>
               )}
             </div>
@@ -413,7 +413,7 @@ export default function AnalysisFactorsTable(props: AnalysisFactorsTableProps) {
                 </tr>
               </thead>
               <tbody>
-                <tr className="hover:bg-gray-50">
+                <tr className="hover:bg-surface">
                   <td colSpan={3} style={{ padding: '24px' }}>
                     <div style={{ textAlign: 'left' }}>
                       <p className="mb-4 font-italic">No analysis factors configured for this industry and sub-industry combination.</p>
@@ -424,7 +424,7 @@ export default function AnalysisFactorsTable(props: AnalysisFactorsTableProps) {
             </table>
 
             {/* Prompt Accordion for when no analysis factors exist */}
-            <div className="mt-6 border border-gray-200 rounded-lg overflow-hidden">
+            <div className="mt-6 border border-border rounded-lg overflow-hidden">
               <div className="flex items-center justify-between p-4 cursor-pointer" onClick={() => setIsPromptAccordionOpen(!isPromptAccordionOpen)}>
                 <div className="flex items-center">
                   <span className="font-medium">Analysis Factor Prompt</span>
@@ -436,11 +436,9 @@ export default function AnalysisFactorsTable(props: AnalysisFactorsTableProps) {
                 </div>
               </div>
               {isPromptAccordionOpen && (
-                <div className="p-4 border-t border-gray-200">
+                <div className="p-4 border-t border-border">
                   <p className="mb-2">Please copy the prompt below to find analysis factors for this industry and sub-industry:</p>
-                  <pre className="text-xs whitespace-pre-wrap text-left overflow-auto p-4  border border-gray-300 rounded">
-                    {getAnalysisFactorPrompt(props)}
-                  </pre>
+                  <pre className="text-xs whitespace-pre-wrap text-left overflow-auto p-4  border border-border rounded">{getAnalysisFactorPrompt(props)}</pre>
                 </div>
               )}
             </div>

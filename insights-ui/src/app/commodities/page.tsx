@@ -35,8 +35,8 @@ export default async function CommoditiesIndexPage(): Promise<JSX.Element> {
       </div>
 
       <div className="w-full mb-8">
-        <h1 className="text-2xl font-bold text-white mb-4">Commodities</h1>
-        <p className="text-[#E5E7EB] text-md mb-4">{COMMODITIES_DESCRIPTION}</p>
+        <h1 className="text-2xl font-bold text-heading mb-4">Commodities</h1>
+        <p className="text-body text-md mb-4">{COMMODITIES_DESCRIPTION}</p>
       </div>
 
       {commodities.length === 0 ? (

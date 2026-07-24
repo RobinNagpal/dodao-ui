@@ -25,8 +25,8 @@ export default function PortfolioHoldings({ portfolioTickers, listsWithTickers, 
         <div className="flex-1">
           {/* Header with Name, Symbol, and Score */}
           <div className="flex items-center gap-3 flex-wrap mb-3">
-            <Link href={`/stocks/${ticker.ticker?.exchange}/${ticker.ticker?.symbol}`} prefetch={false} className="hover:text-blue-400 transition-colors">
-              <h4 className="text-lg font-bold text-heading hover:text-blue-400">
+            <Link href={`/stocks/${ticker.ticker?.exchange}/${ticker.ticker?.symbol}`} prefetch={false} className="hover:text-link transition-colors">
+              <h4 className="text-lg font-bold text-heading hover:text-link">
                 {ticker.ticker?.name} <span>({ticker.ticker?.symbol})</span>
               </h4>
             </Link>

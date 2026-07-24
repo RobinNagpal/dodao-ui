@@ -277,7 +277,7 @@ export default function FloatingNavigation(props: FloatingNavigationProps): JSX.
         aria-label="Open navigation"
         onClick={open}
         className={cx(
-          'fixed z-10 bg-blue-600 hover:bg-blue-700 text-heading px-4 py-3 rounded-full shadow-lg transition-all duration-200 hover:scale-105 flex items-center gap-2',
+          'fixed z-10 bg-primary text-primary-text px-4 py-3 rounded-full shadow-lg transition-all duration-200 hover:scale-105 flex items-center gap-2',
           isXL ? 'top-3 right-2' : 'bottom-2 left-2'
         )}
       >
@@ -325,7 +325,7 @@ export default function FloatingNavigation(props: FloatingNavigationProps): JSX.
                   onClick={(): void => scrollToId(s.id)}
                   className={cx(
                     'w-full text-left px-3 py-2 rounded-lg transition-colors duration-200 flex items-center justify-between group',
-                    isSectionActive ? 'bg-blue-600 text-heading' : 'hover:bg-surface-3 text-body hover:text-heading'
+                    isSectionActive ? 'bg-primary text-primary-text' : 'hover:bg-surface-3 text-body hover:text-heading'
                   )}
                   aria-current={activeId === s.id ? 'true' : undefined}
                 >
@@ -342,7 +342,7 @@ export default function FloatingNavigation(props: FloatingNavigationProps): JSX.
                           onClick={(): void => scrollToId(sub.id)}
                           className={cx(
                             'w-full text-left px-3 py-1.5 rounded-md text-sm transition-colors duration-200 flex items-center justify-between group',
-                            activeId === sub.id ? 'bg-blue-500 text-heading' : 'hover:bg-surface-3 text-muted hover:text-body'
+                            activeId === sub.id ? 'bg-primary text-primary-text' : 'hover:bg-surface-3 text-muted hover:text-body'
                           )}
                           aria-current={activeId === sub.id ? 'true' : undefined}
                         >

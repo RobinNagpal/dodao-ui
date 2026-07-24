@@ -62,11 +62,11 @@ export default function StyledSelect(props: StyledSelectProps) {
             <Listbox.Label className="block text-sm font-semibold leading-6">{props.label}</Listbox.Label>
 
             <div className="relative mt-2">
-              <StyledListboxButton className="relative w-full cursor-default rounded-md py-1.5 pl-3 pr-10 text-left shadow-sm ring-1 ring-inset focus:outline-none focus:ring-2 sm:text-sm sm:leading-6 ring-gray-400">
+              <StyledListboxButton className="relative w-full cursor-default rounded-md py-1.5 pl-3 pr-10 text-left shadow-sm ring-1 ring-inset focus:outline-none focus:ring-2 sm:text-sm sm:leading-6 ring-[var(--border-color)]">
                 {selectedItem ? (
                   <span className="block truncate">{selectedItem.label}</span>
                 ) : (
-                  <span className="block truncate text-gray-500">{props.showPleaseSelect ? 'Please Select' : 'Select…'}</span>
+                  <span className="block truncate text-[var(--text-color)]">{props.showPleaseSelect ? 'Please Select' : 'Select…'}</span>
                 )}
                 <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
                   <ChevronUpDownIcon className="h-5 w-5" aria-hidden="true" />
@@ -76,11 +76,11 @@ export default function StyledSelect(props: StyledSelectProps) {
               {/* Only render options when there are items */}
               {items.length > 0 && (
                 <Transition show={open} as={Fragment} leave="transition ease-in duration-100" leaveFrom="opacity-100" leaveTo="opacity-0">
-                  <StyledListboxOptions className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md py-1 text-base shadow-lg ring-1 ring-opacity-5 focus:outline-none sm:text-sm ring-gray-400">
+                  <StyledListboxOptions className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md py-1 text-base shadow-lg ring-1 ring-opacity-5 focus:outline-none sm:text-sm ring-[var(--border-color)]">
                     {items.map((item) => (
                       <Listbox.Option
                         key={item.id} // id is always a string now
-                        className={({ active }) => classNames(active ? 'active text-white' : '', 'relative cursor-default select-none py-2 pl-3 pr-9')}
+                        className={({ active }) => classNames(active ? 'active text-[var(--primary-text-color)]' : '', 'relative cursor-default select-none py-2 pl-3 pr-9')}
                         value={item.id}
                       >
                         {({ selected }) => (

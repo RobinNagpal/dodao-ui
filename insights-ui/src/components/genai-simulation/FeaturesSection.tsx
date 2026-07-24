@@ -5,8 +5,8 @@ export default function FeaturesSection() {
     <section className="relative py-20">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto max-w-3xl text-center mb-16">
-          <h2 className="text-4xl font-bold text-indigo-400">Features for Students & Professors</h2>
-          <p className="mt-4 text-lg text-gray-300">Specialized tools for both students and professors to enhance the learning experience.</p>
+          <h2 className="text-4xl font-bold text-link">Features for Students & Professors</h2>
+          <p className="mt-4 text-lg text-muted">Specialized tools for both students and professors to enhance the learning experience.</p>
         </div>
 
         <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
@@ -37,12 +37,12 @@ export default function FeaturesSection() {
                   background: `linear-gradient(to right, ${feature.color.split(' ')[1]}, ${feature.color.split(' ')[3]})`,
                 }}
               />
-              <div className="relative rounded-2xl border border-gray-700 bg-gray-800/50 p-8 backdrop-blur-sm hover:border-gray-600 transition-all duration-300 transform hover:scale-105 text-center">
+              <div className="relative rounded-2xl border border-border bg-surface p-8 backdrop-blur-sm hover:border-border transition-all duration-300 transform hover:scale-105 text-center">
                 <div className={`inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-r ${feature.color} mb-6`}>
-                  <feature.icon className="h-8 w-8 text-white" />
+                  <feature.icon className="h-8 w-8 text-heading" />
                 </div>
-                <h3 className="text-xl font-semibold text-white mb-4">{feature.title}</h3>
-                <p className="text-gray-300 leading-relaxed">{feature.desc}</p>
+                <h3 className="text-xl font-semibold text-heading mb-4">{feature.title}</h3>
+                <p className="text-muted leading-relaxed">{feature.desc}</p>
               </div>
             </div>
           ))}

@@ -14,28 +14,28 @@ interface MissingFactorAnalysisTableProps {
 function MissingFactorAnalysisTable({ rows }: MissingFactorAnalysisTableProps): JSX.Element {
   return (
     <div className="overflow-x-auto">
-      <table className="min-w-full divide-y divide-gray-200">
-        <thead className="bg-gray-700">
+      <table className="min-w-full divide-y divide-border">
+        <thead className="bg-surface-2">
           <tr>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider sticky left-0 bg-gray-700 z-10">Industry</th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Sub-Industry</th>
-            <th className="px-6 py-3 text-xs font-medium text-gray-300 uppercase tracking-wider">Business & Moat</th>
-            <th className="px-6 py-3 text-xs font-medium text-gray-300 uppercase tracking-wider">Financial Analysis</th>
-            <th className="px-6 py-3 text-xs font-medium text-gray-300 uppercase tracking-wider">Past Performance</th>
-            <th className="px-6 py-3 text-xs font-medium text-gray-300 uppercase tracking-wider">Future Growth</th>
-            <th className="px-6 py-3 text-xs font-medium text-gray-300 uppercase tracking-wider">Fair Value</th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-muted uppercase tracking-wider sticky left-0 bg-surface-2 z-10">Industry</th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-muted uppercase tracking-wider">Sub-Industry</th>
+            <th className="px-6 py-3 text-xs font-medium text-muted uppercase tracking-wider">Business & Moat</th>
+            <th className="px-6 py-3 text-xs font-medium text-muted uppercase tracking-wider">Financial Analysis</th>
+            <th className="px-6 py-3 text-xs font-medium text-muted uppercase tracking-wider">Past Performance</th>
+            <th className="px-6 py-3 text-xs font-medium text-muted uppercase tracking-wider">Future Growth</th>
+            <th className="px-6 py-3 text-xs font-medium text-muted uppercase tracking-wider">Fair Value</th>
           </tr>
         </thead>
-        <tbody className="bg-gray-800 divide-y divide-gray-700">
+        <tbody className="bg-surface divide-y divide-border">
           {rows.map((row: MissingFactorAnalysisForIndustry, index) => (
             <tr key={`${row.industryKey}-${row.subIndustryKey}`}>
-              <td className="px-6 py-4 whitespace-nowrap text-sm font-medium sticky left-0 bg-gray-800 z-10">
+              <td className="px-6 py-4 whitespace-nowrap text-sm font-medium sticky left-0 bg-surface z-10">
                 <div>{row.industryName}</div>
-                <div className="text-xs text-gray-400">{row.industryKey}</div>
+                <div className="text-xs text-muted">{row.industryKey}</div>
               </td>
               <td className="px-6 py-4 whitespace-nowrap text-sm">
                 <div>{row.subIndustryName}</div>
-                <div className="text-xs text-gray-400">{row.subIndustryKey}</div>
+                <div className="text-xs text-muted">{row.subIndustryKey}</div>
               </td>
               <td className="px-6 py-4 whitespace-nowrap text-sm text-center">
                 <PassFailBadge
@@ -101,10 +101,10 @@ export default function MissingFactorAnalysisContainer(): JSX.Element {
 
   return (
     <div className="mb-6">
-      <div className="bg-gray-800 border border-red-500 rounded-lg p-4">
+      <div className="bg-surface border border-red-500 rounded-lg p-4">
         <div className="flex items-baseline justify-between mb-2">
           <h3 className="text-xl font-semibold">Industries/Subindustries with Less Than 5 Factor Analysis</h3>
-          <span className="text-sm text-gray-400">Showing {data.length} industries/subindustries</span>
+          <span className="text-sm text-muted">Showing {data.length} industries/subindustries</span>
         </div>
         <MissingFactorAnalysisTable rows={data} />
       </div>

@@ -18,10 +18,10 @@ export default function StockScenarioCard({ scenario }: { scenario: StockScenari
   return (
     <Link
       href={`/stock-scenarios/${scenario.slug}`}
-      className="group block bg-gray-900 border border-gray-800 rounded-2xl p-5 hover:border-blue-500 transition-all duration-200 h-full"
+      className="group block bg-bg border border-border rounded-2xl p-5 hover:border-blue-500 transition-all duration-200 h-full"
     >
       <div className="flex items-center justify-between mb-3 gap-2">
-        <span className="bg-gradient-to-r from-[#F59E0B] to-[#FBBF24] text-black text-xs font-bold px-2 py-0.5 rounded">#{scenario.scenarioNumber}</span>
+        <span className="bg-gradient-to-r from-amber-500 to-amber-400 text-black text-xs font-bold px-2 py-0.5 rounded">#{scenario.scenarioNumber}</span>
         {scenario.archived && <StatusBadge variant="archived" size="sm" label="Archived" />}
       </div>
 
@@ -31,14 +31,14 @@ export default function StockScenarioCard({ scenario }: { scenario: StockScenari
         <StockScenarioTimeframeBadge timeframe={scenario.timeframe} />
       </div>
 
-      <h3 className="text-white text-lg font-semibold mb-3 line-clamp-2 min-h-[3.25rem] group-hover:text-blue-400 transition-colors">{scenario.title}</h3>
+      <h3 className="text-heading text-lg font-semibold mb-3 line-clamp-2 min-h-[3.25rem] group-hover:text-link transition-colors">{scenario.title}</h3>
 
-      <p className="text-sm text-gray-300 leading-relaxed line-clamp-3 min-h-[4rem]">{firstSentence(scenario.summary)}</p>
+      <p className="text-sm text-muted leading-relaxed line-clamp-3 min-h-[4rem]">{firstSentence(scenario.summary)}</p>
 
       {scenario.countries.length > 0 && (
-        <div className="flex flex-wrap gap-1 mt-4 pt-3 border-t border-gray-800">
+        <div className="flex flex-wrap gap-1 mt-4 pt-3 border-t border-border">
           {scenario.countries.map((c) => (
-            <span key={c} className="text-[10px] uppercase tracking-wide text-gray-400">
+            <span key={c} className="text-[10px] uppercase tracking-wide text-muted">
               📍 {c}
             </span>
           ))}

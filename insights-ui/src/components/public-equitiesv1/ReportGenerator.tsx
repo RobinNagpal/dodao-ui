@@ -78,26 +78,26 @@ export default function ReportGenerator({ selectedTickers, tickerReports, onRepo
 
     return (
       <div className="overflow-x-auto">
-        <table className="min-w-full divide-y divide-gray-200">
-          <thead className="bg-gray-700">
+        <table className="min-w-full divide-y divide-border">
+          <thead className="bg-surface-2">
             <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Report Type</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-muted uppercase tracking-wider">Report Type</th>
               {selectedTickers.map((ticker, index) => {
                 return (
                   <th
                     key={`${ticker.exchange}-${ticker.symbol}-${index}`}
-                    className="px-6 py-3 text-xs font-medium text-gray-300 uppercase tracking-wider align-top text-center"
+                    className="px-6 py-3 text-xs font-medium text-muted uppercase tracking-wider align-top text-center"
                   >
                     <div className="flex flex-col items-center">
                       <span className="font-semibold">{ticker.symbol}</span>
-                      <span className="text-xs text-gray-400">({ticker.exchange})</span>
+                      <span className="text-xs text-muted">({ticker.exchange})</span>
                     </div>
                   </th>
                 );
               })}
             </tr>
           </thead>
-          <tbody className="bg-gray-800 divide-y divide-gray-700">
+          <tbody className="bg-surface divide-y divide-border">
             {reportTypes.map((reportTypeInfo) => {
               const reportType = reportTypeInfo.key;
               const isSelected: boolean = selectedReportTypes.includes(reportType);
@@ -109,7 +109,7 @@ export default function ReportGenerator({ selectedTickers, tickerReports, onRepo
                         type="checkbox"
                         checked={isSelected}
                         onChange={() => handleReportTypeToggle(reportType)}
-                        className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                        className="h-4 w-4 text-link focus:ring-primary border-border rounded"
                       />
                       <span>{reportTypeInfo.label}</span>
                     </div>
@@ -124,7 +124,9 @@ export default function ReportGenerator({ selectedTickers, tickerReports, onRepo
                     return (
                       <td key={`${tickerKey}-${reportType}-${tickerIndex}`} className="px-6 py-4 whitespace-nowrap text-sm">
                         <div className="flex flex-col items-center space-y-2">
-                          <div className={`h-3 w-3 rounded-full ${isCompleted ? 'bg-green-500' : isLoading ? 'bg-yellow-500 animate-pulse' : 'bg-gray-300'}`} />
+                          <div
+                            className={`h-3 w-3 rounded-full ${isCompleted ? 'bg-green-500' : isLoading ? 'bg-yellow-500 animate-pulse' : 'bg-surface-3'}`}
+                          />
                         </div>
                       </td>
                     );
@@ -143,15 +145,15 @@ export default function ReportGenerator({ selectedTickers, tickerReports, onRepo
 
     return (
       <div className="space-y-4 my-4">
-        <div className="bg-gray-800 rounded-lg p-4">
-          <h3 className="text-lg font-medium text-white mb-4">Select LLM Provider &amp; Model</h3>
+        <div className="bg-surface rounded-lg p-4">
+          <h3 className="text-lg font-medium text-heading mb-4">Select LLM Provider &amp; Model</h3>
           <LlmProviderModelSelector selection={llmSelection} onChange={setLlmSelection} />
-          <div className="text-sm text-gray-400 mt-2">All selected reports will be generated with this provider and model.</div>
+          <div className="text-sm text-muted mt-2">All selected reports will be generated with this provider and model.</div>
         </div>
 
-        <div className="bg-gray-800 rounded-lg p-4">
+        <div className="bg-surface rounded-lg p-4">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-medium text-white">Select Report Types</h3>
+            <h3 className="text-lg font-medium text-heading">Select Report Types</h3>
             <div className="flex gap-2">
               <Button variant="outlined" size="sm" onClick={handleSelectAllReportTypes} disabled={isAnyProcessRunning}>
                 Select All
@@ -161,7 +163,7 @@ export default function ReportGenerator({ selectedTickers, tickerReports, onRepo
               </Button>
             </div>
           </div>
-          <div className="text-sm text-gray-300">
+          <div className="text-sm text-muted">
             {selectedReportTypes.length} of {reportTypes.length} report types selected
           </div>
         </div>
@@ -188,9 +190,7 @@ export default function ReportGenerator({ selectedTickers, tickerReports, onRepo
             {isGeneratingAll ? 'Creating Requests...' : 'Generate for Specific Report Type'}
           </Button>
         </div>
-        <div className="text-sm text-gray-400 text-center">
-          Reports are generated in the background. You will be redirected to the generation requests page.
-        </div>
+        <div className="text-sm text-muted text-center">Reports are generated in the background. You will be redirected to the generation requests page.</div>
       </div>
     );
   };

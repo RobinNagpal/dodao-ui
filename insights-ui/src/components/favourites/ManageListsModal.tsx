@@ -215,7 +215,7 @@ export default function ManageListsModal({ isOpen, onClose, lists, onListsChange
                         {list.description && <p className="text-xs text-muted leading-snug">{list.description}</p>}
                       </div>
                       <div className="flex items-center gap-2">
-                        <Button onClick={() => handleEditList(list)} variant="text" className="text-blue-400 hover:text-blue-300 p-1">
+                        <Button onClick={() => handleEditList(list)} variant="text" className="text-link hover:text-link p-1">
                           <PencilIcon className="w-4 h-4" />
                         </Button>
                         <Button onClick={() => handleDeleteList(list.id)} variant="text" className="text-red-400 hover:text-red-300 p-1">

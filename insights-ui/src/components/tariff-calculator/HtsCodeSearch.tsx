@@ -106,7 +106,7 @@ export default function HtsCodeSearch({ onSelect, className }: HtsCodeSearchProp
           onChange={onChange}
           onFocus={() => query.trim().length >= 2 && setOpen(true)}
           placeholder="Search what you ship — like frozen shrimp, lithium battery, cotton t-shirt"
-          className="w-full h-12 rounded-lg border border-border bg-surface pl-11 pr-10 text-sm text-heading placeholder-gray-400 shadow-sm focus:outline-none focus:ring-2 focus:ring-amber-300/40 focus:border-amber-300/60"
+          className="w-full h-12 rounded-lg border border-border bg-surface pl-11 pr-10 text-sm text-heading placeholder-muted shadow-sm focus:outline-none focus:ring-2 focus:ring-amber-300/40 focus:border-amber-300/60"
           aria-label="Search HTS codes"
           autoComplete="off"
         />

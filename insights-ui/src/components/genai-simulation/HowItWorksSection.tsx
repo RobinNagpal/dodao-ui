@@ -93,8 +93,8 @@ export default function HowItWorksSection() {
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
         >
-          <h2 className="text-4xl font-bold text-indigo-400">Our Two-Part Offering</h2>
-          <p className="mt-4 text-lg text-gray-300">
+          <h2 className="text-4xl font-bold text-link">Our Two-Part Offering</h2>
+          <p className="mt-4 text-lg text-muted">
             A complete learning experience with a Gen AI Prompt Engineering Course and the KoalaGains Simulation Platform
           </p>
         </motion.div>
@@ -150,7 +150,7 @@ function StepItem({ step, index }: { step: any; index: number }) {
       {/* Content */}
       <motion.div
         className={`flex-1 rounded-2xl border backdrop-blur-sm p-6 transition-all duration-500 ${
-          isInView ? 'border-gray-600 bg-gray-800/50' : 'border-gray-700 bg-gray-800/30'
+          isInView ? 'border-border bg-surface' : 'border-border bg-surface'
         }`}
         whileHover={{ scale: 1.02, borderColor: 'rgb(99 102 241)' }}
         transition={{ duration: 0.2 }}
@@ -161,12 +161,12 @@ function StepItem({ step, index }: { step: any; index: number }) {
             whileHover={{ rotate: 360 }}
             transition={{ duration: 0.5 }}
           >
-            <step.icon className="h-5 w-5 text-white" />
+            <step.icon className="h-5 w-5 text-heading" />
           </motion.div>
           <div className="flex-1">
-            <h3 className={`text-xl font-semibold mb-2 transition-colors ${isInView ? 'text-white' : 'text-gray-400'}`}>{step.title}</h3>
-            <p className={`leading-relaxed mb-3 transition-colors ${isInView ? 'text-gray-300' : 'text-gray-500'}`}>{step.desc}</p>
-            <div className={`text-sm font-medium transition-colors ${isInView ? 'text-indigo-300' : 'text-gray-600'}`}>{step.detail}</div>
+            <h3 className={`text-xl font-semibold mb-2 transition-colors ${isInView ? 'text-heading' : 'text-muted'}`}>{step.title}</h3>
+            <p className={`leading-relaxed mb-3 transition-colors ${isInView ? 'text-muted' : 'text-muted'}`}>{step.desc}</p>
+            <div className={`text-sm font-medium transition-colors ${isInView ? 'text-link' : 'text-muted'}`}>{step.detail}</div>
           </div>
         </div>
 

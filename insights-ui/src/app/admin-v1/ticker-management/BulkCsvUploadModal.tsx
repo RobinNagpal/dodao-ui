@@ -149,12 +149,12 @@ export default function BulkCsvUploadModal({ isOpen, onClose, onSuccess }: BulkC
     <SingleSectionModal open={isOpen} onClose={handleClose} title="Bulk Upload Tickers from CSV">
       <div className="space-y-4 p-2">
         {/* Instructions */}
-        <div className="rounded-md bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 p-3 text-sm">
-          <p className="font-medium text-gray-700 dark:text-gray-300 mb-1">Required CSV columns:</p>
-          <code className="text-xs text-gray-600 dark:text-gray-400">exchange, name, symbol, industryKey, subIndustryKey</code>
-          <p className="font-medium text-gray-700 dark:text-gray-300 mt-2 mb-1">Optional columns:</p>
-          <code className="text-xs text-gray-600 dark:text-gray-400">websiteUrl, stockAnalyzeUrl</code>
-          <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
+        <div className="rounded-md bg-surface border border-border p-3 text-sm">
+          <p className="font-medium text-muted mb-1">Required CSV columns:</p>
+          <code className="text-xs text-muted">exchange, name, symbol, industryKey, subIndustryKey</code>
+          <p className="font-medium text-muted mt-2 mb-1">Optional columns:</p>
+          <code className="text-xs text-muted">websiteUrl, stockAnalyzeUrl</code>
+          <p className="text-xs text-muted mt-2">
             The <strong>description</strong> column is ignored. Duplicate tickers (same symbol + exchange) will be reported as errors.
           </p>
         </div>
@@ -162,21 +162,21 @@ export default function BulkCsvUploadModal({ isOpen, onClose, onSuccess }: BulkC
         {/* File input */}
         {!result && (
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Select CSV file</label>
+            <label className="block text-sm font-medium text-muted mb-2">Select CSV file</label>
             <input
               ref={fileInputRef}
               type="file"
               accept=".csv"
               onChange={handleFileChange}
               disabled={loading}
-              className="block w-full text-sm text-gray-700 dark:text-gray-300 file:mr-3 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-medium file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 dark:file:bg-blue-900/30 dark:file:text-blue-400"
+              className="block w-full text-sm text-muted file:mr-3 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-medium file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 dark:file:bg-blue-900/30 dark:file:text-blue-400"
             />
           </div>
         )}
 
         {/* Loading */}
         {loading && (
-          <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+          <div className="flex items-center gap-2 text-sm text-muted">
             <svg className="animate-spin h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
               <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
               <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z" />

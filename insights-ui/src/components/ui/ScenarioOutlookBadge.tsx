@@ -19,7 +19,7 @@ const DIRECTION_STYLES: Record<ScenarioDirection, { label: string; className: st
 const TIMEFRAME_STYLES: Record<ScenarioTimeframe, { label: string; className: string }> = {
   FUTURE: { label: 'Future', className: 'bg-indigo-500/15 text-indigo-300 border-indigo-500/40' },
   IN_PROGRESS: { label: 'In progress', className: 'bg-yellow-500/15 text-yellow-300 border-yellow-500/40' },
-  PAST: { label: 'Past', className: 'bg-gray-500/15 text-gray-300 border-gray-500/40' },
+  PAST: { label: 'Past', className: 'bg-gray-500/15 text-muted border-gray-500/40' },
 };
 
 export function ProbabilityBadge({

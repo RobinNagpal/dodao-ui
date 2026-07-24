@@ -42,9 +42,9 @@ function EtfRecommendationCard({ etf }: { etf: EtfInvestorGoalEtf }): JSX.Elemen
         <Link
           href={`/etfs/${etf.exchange}/${etf.symbol}`}
           prefetch={false}
-          className="inline-flex items-center gap-1 text-heading hover:text-[#FBBF24] transition-colors"
+          className="inline-flex items-center gap-1 text-heading hover:text-amber-400 transition-colors"
         >
-          <span className="text-xs font-bold bg-primary text-heading px-1.5 py-0.5 rounded">{etf.symbol}</span>
+          <span className="text-xs font-bold bg-primary text-primary-text px-1.5 py-0.5 rounded">{etf.symbol}</span>
           <span className="text-xs text-muted">· {etf.exchange}</span>
         </Link>
       </div>

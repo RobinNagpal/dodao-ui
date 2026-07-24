@@ -53,7 +53,7 @@ export default function EtfGroupsIndex({ country, data, title, description, swit
               <Link
                 href={groupHref}
                 prefetch={false}
-                className="text-sm bg-gradient-to-r from-[#F59E0B] to-[#FBBF24] hover:from-[#F97316] hover:to-[#F59E0B] text-black font-medium px-3 py-1 rounded-lg shadow-md flex items-center whitespace-nowrap"
+                className="text-sm bg-gradient-to-r from-amber-500 to-amber-400 hover:from-orange-500 hover:to-amber-500 text-black font-medium px-3 py-1 rounded-lg shadow-md flex items-center whitespace-nowrap"
               >
                 Show all {totalEtfsInGroup.toLocaleString()} ETFs
                 <span className="ml-1">→</span>
@@ -81,7 +81,7 @@ export default function EtfGroupsIndex({ country, data, title, description, swit
             <Link
               href={etfBrowseDetailPath(country, 'groups', ETF_OTHERS_GROUP.key)}
               prefetch={false}
-              className="text-sm bg-gradient-to-r from-[#F59E0B] to-[#FBBF24] hover:from-[#F97316] hover:to-[#F59E0B] text-black font-medium px-3 py-1 rounded-lg shadow-md flex items-center whitespace-nowrap"
+              className="text-sm bg-gradient-to-r from-amber-500 to-amber-400 hover:from-orange-500 hover:to-amber-500 text-black font-medium px-3 py-1 rounded-lg shadow-md flex items-center whitespace-nowrap"
             >
               Show all {others.count.toLocaleString()} ETFs
               <span className="ml-1">→</span>

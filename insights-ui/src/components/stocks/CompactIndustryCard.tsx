@@ -20,7 +20,7 @@ export default function CompactIndustryCard({ industryKey, industryName, topTick
         <h3 className="text-sm font-semibold heading-color leading-snug mb-1 text-left flex justify-between items-start" title={industryName}>
           {/* Wrap long headings instead of truncating */}
           <span className="whitespace-normal break-words mr-2">{industryName}</span>
-          <span className="text-link hover:text-[#F97316] transition-colors text-sm flex-shrink-0">→</span>
+          <span className="text-link hover:text-orange-500 transition-colors text-sm flex-shrink-0">→</span>
         </h3>
       </Link>
 

@@ -133,7 +133,7 @@ export default function EditTickersForm({ onSuccess, onCancel, tickers, selected
       <div className="flex justify-between items-start mb-4">
         <div>
           <h2 className="text-xl font-semibold">Edit Tickers</h2>
-          <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">Update ticker information for all tickers in this sub-industry</p>
+          <p className="text-xs text-muted mt-1">Update ticker information for all tickers in this sub-industry</p>
         </div>
       </div>
 

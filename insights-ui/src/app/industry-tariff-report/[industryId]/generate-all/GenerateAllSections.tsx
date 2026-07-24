@@ -201,7 +201,7 @@ export default function GenerateWholeReport({ industryId }: { industryId: string
         </div>
 
         {!running && !error && (
-          <button className="px-6 py-3 bg-primary hover:bg-primary text-heading rounded-lg font-semibold transition-colors" onClick={run}>
+          <button className="px-6 py-3 bg-primary text-primary-text rounded-lg font-semibold transition-colors" onClick={run}>
             Start Generation
           </button>
         )}

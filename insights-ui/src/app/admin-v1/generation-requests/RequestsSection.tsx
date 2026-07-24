@@ -8,7 +8,7 @@ type BorderTone = 'blue' | 'gray' | 'red' | 'green';
 
 const BORDER_CLASS: Record<BorderTone, string> = {
   blue: 'border-blue-500',
-  gray: 'border-gray-500',
+  gray: 'border-border',
   red: 'border-red-500',
   green: 'border-green-500',
 };
@@ -38,10 +38,10 @@ export default function RequestsSection({
   onReloadRequest,
 }: RequestsSectionProps): JSX.Element {
   return (
-    <div className={`bg-gray-800 border ${BORDER_CLASS[tone]} rounded-lg p-3`}>
+    <div className={`bg-surface border ${BORDER_CLASS[tone]} rounded-lg p-3`}>
       <div className="flex items-baseline justify-between mb-2">
         <h3 className="text-lg font-semibold">{title}</h3>
-        <span className="text-sm text-gray-400">
+        <span className="text-sm text-muted">
           {totalCount} total item{totalCount === 1 ? '' : 's'}
         </span>
       </div>
@@ -49,7 +49,7 @@ export default function RequestsSection({
       {loading && rows.length === 0 ? (
         <div className="py-6">Loading generation requests...</div>
       ) : rows.length === 0 ? (
-        <div className="py-3 text-gray-400">No {title.toLowerCase()}.</div>
+        <div className="py-3 text-muted">No {title.toLowerCase()}.</div>
       ) : (
         <>
           <GenerationRequestsTable rows={rows} onReloadRequest={onReloadRequest} />

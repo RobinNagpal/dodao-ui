@@ -108,7 +108,7 @@ export default function EditStockDetailsModal({
     <FullPageModal open={open} onClose={onClose} title={`Edit Stock Details — ${symbol} (${exchange})`} className="w-full max-w-xl">
       <div className="px-6 py-4 space-y-5 text-left">
         <div>
-          <label className="block text-sm font-medium mb-1 dark:text-gray-300">Moved Exchange</label>
+          <label className="block text-sm font-medium mb-1 text-muted">Moved Exchange</label>
           <StyledSelect
             label=""
             selectedItemId={movedExchange || null}
@@ -118,47 +118,47 @@ export default function EditStockDetailsModal({
               setMovedExchange(next ? toExchange(next) : '');
             }}
           />
-          <p className="text-xs text-gray-400 mt-1">Set when this ticker has moved to a different exchange. Leave blank if unchanged.</p>
+          <p className="text-xs text-muted mt-1">Set when this ticker has moved to a different exchange. Leave blank if unchanged.</p>
         </div>
 
         <div>
-          <label className="block text-sm font-medium mb-1 dark:text-gray-300">Moved Symbol</label>
+          <label className="block text-sm font-medium mb-1 text-muted">Moved Symbol</label>
           <input
             type="text"
             value={movedSymbol}
             onChange={(e) => setMovedSymbol(e.target.value.toUpperCase())}
             placeholder="e.g. NEWSYM"
-            className="w-full px-3 py-2 bg-transparent border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
+            className="w-full px-3 py-2 bg-transparent border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary text-body placeholder-muted"
           />
-          <p className="text-xs text-gray-400 mt-1">
+          <p className="text-xs text-muted mt-1">
             Set when this ticker has been renamed. If only one of exchange/symbol is set, the other is taken from the current URL.
           </p>
         </div>
 
         <div>
-          <label className="block text-sm font-medium mb-1 dark:text-gray-300">Website URL</label>
+          <label className="block text-sm font-medium mb-1 text-muted">Website URL</label>
           <input
             type="url"
             value={websiteUrl}
             onChange={(e) => setWebsiteUrl(e.target.value)}
             placeholder="https://www.example.com"
-            className="w-full px-3 py-2 bg-transparent border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
+            className="w-full px-3 py-2 bg-transparent border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary text-body placeholder-muted"
           />
-          <p className="text-xs text-gray-400 mt-1">Company homepage. Clear the field to remove the link (some scraped URLs 404 and need fixing).</p>
+          <p className="text-xs text-muted mt-1">Company homepage. Clear the field to remove the link (some scraped URLs 404 and need fixing).</p>
         </div>
 
         <div>
           <label className="flex items-center gap-2">
             <input type="checkbox" checked={isDeleted} onChange={(e) => setIsDeleted(e.target.checked)} className="h-4 w-4" />
-            <span className="text-sm font-medium dark:text-gray-300">Mark as deleted (delisted / removed)</span>
+            <span className="text-sm font-medium text-muted">Mark as deleted (delisted / removed)</span>
           </label>
-          <p className="text-xs text-gray-400 mt-1 ml-6">Detail pages serve a 404 + noindex and the ticker is removed from listings + sitemap.</p>
+          <p className="text-xs text-muted mt-1 ml-6">Detail pages serve a 404 + noindex and the ticker is removed from listings + sitemap.</p>
         </div>
 
         {error && <p className="text-sm text-red-400">{error}</p>}
         {conflict && !error && <p className="text-sm text-yellow-400">Heads up: deleted + moved are mutually exclusive.</p>}
 
-        <div className="flex justify-end gap-3 pt-4 border-t border-gray-700">
+        <div className="flex justify-end gap-3 pt-4 border-t border-border">
           <Button onClick={onClose} disabled={loading} variant="outlined">
             Cancel
           </Button>

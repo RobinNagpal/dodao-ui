@@ -269,9 +269,9 @@ export default function CreateTestPromptInvocationPage(): JSX.Element {
             <div className="flex justify-between w-full mb-2 gap-2 items-center">
               <div>Input Json</div>
               <div>
-                <span className="text-sm text-gray-500">Visual Editor:</span>
+                <span className="text-sm text-muted">Visual Editor:</span>
                 <IconButton iconName={IconTypes.Edit} onClick={() => setShowSampleJsonModal(true)} />
-                <span className="text-sm text-gray-500 ml-2">Raw JSON:</span>
+                <span className="text-sm text-muted ml-2">Raw JSON:</span>
                 <IconButton iconName={IconTypes.Edit} onClick={() => setShowRawJsonModal(true)} />
               </div>
             </div>
@@ -300,7 +300,7 @@ export default function CreateTestPromptInvocationPage(): JSX.Element {
 
           <div className="mt-4">
             <h2 className="text-xl heading-color">Preview</h2>
-            <div className="flex-1 border-l border-gray-200">
+            <div className="flex-1 border-l border-border">
               <Editor
                 height="300px"
                 defaultLanguage="markdown"
@@ -324,7 +324,7 @@ export default function CreateTestPromptInvocationPage(): JSX.Element {
             <div className="flex justify-between w-full mb-2 gap-2 items-center">
               <div>Body to append</div>
               <div>
-                <span className="text-sm text-gray-500 ml-2">Edit:</span>
+                <span className="text-sm text-muted ml-2">Edit:</span>
                 <IconButton iconName={IconTypes.Edit} onClick={() => setShowSampleBodyToAppendModal(true)} />
               </div>
             </div>

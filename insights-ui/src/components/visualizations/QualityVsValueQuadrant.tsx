@@ -243,12 +243,12 @@ export default function QualityVsValueQuadrant({ dataPoints, mainTickerSymbol: _
     <div className="max-w-md mx-auto lg:mx-0">
       <div className="relative">
         {/* Axis labels */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 text-[11px] font-medium text-gray-500 z-10">High Quality</div>
-        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 text-[11px] font-medium text-gray-500 z-10">Low Quality</div>
-        <div className="absolute top-1/2 left-0 -translate-y-1/2 -translate-x-1 text-[11px] font-medium text-gray-500 z-10 [writing-mode:vertical-rl] rotate-180">
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 text-[11px] font-medium text-muted z-10">High Quality</div>
+        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 text-[11px] font-medium text-muted z-10">Low Quality</div>
+        <div className="absolute top-1/2 left-0 -translate-y-1/2 -translate-x-1 text-[11px] font-medium text-muted z-10 [writing-mode:vertical-rl] rotate-180">
           Expensive
         </div>
-        <div className="absolute top-1/2 right-0 translate-x-1 -translate-y-1/2 text-[11px] font-medium text-gray-500 z-10 [writing-mode:vertical-rl]">
+        <div className="absolute top-1/2 right-0 translate-x-1 -translate-y-1/2 text-[11px] font-medium text-muted z-10 [writing-mode:vertical-rl]">
           Good Value
         </div>
 
@@ -262,7 +262,7 @@ export default function QualityVsValueQuadrant({ dataPoints, mainTickerSymbol: _
         {(['High Quality', 'Investable', 'Value Play', 'Underperform'] as const).map((cls) => (
           <div key={cls} className="flex items-center gap-1.5">
             <span className="inline-block w-2.5 h-2.5 rounded-full" style={{ backgroundColor: CLASSIFICATION_COLORS[cls].border }} />
-            <span className="text-gray-400">{cls}</span>
+            <span className="text-muted">{cls}</span>
           </div>
         ))}
       </div>

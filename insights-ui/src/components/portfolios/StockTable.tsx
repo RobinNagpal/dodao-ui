@@ -223,7 +223,7 @@ export default function StockTable({ items, type }: StockTableProps) {
                             setFavouritesModalOpen(true);
                           }
                         }}
-                        className="text-muted hover:text-blue-400 transition-colors p-1 rounded"
+                        className="text-muted hover:text-link transition-colors p-1 rounded"
                         title={type === 'notes' ? 'View Notes' : 'View Favourite Details'}
                       >
                         <DocumentTextSolid className="w-5 h-5" />

@@ -269,31 +269,31 @@ export default function GenAIBusinessCases() {
 
         <div className="relative mx-auto max-w-7xl px-6 lg:px-8">
           <div className="mx-auto max-w-4xl py-16 sm:py-24 text-center">
-            <div className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-indigo-500/20 to-purple-500/20 px-4 py-2 text-sm font-semibold text-indigo-300 ring-1 ring-inset ring-indigo-500/30 backdrop-blur-sm">
+            <div className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-indigo-500/20 to-purple-500/20 px-4 py-2 text-sm font-semibold text-link ring-1 ring-inset ring-indigo-500/30 backdrop-blur-sm">
               <SparklesIcon className="h-4 w-4" />
               Real-World GenAI Implementation Cases
             </div>
 
-            <h1 className="mt-8 text-5xl font-bold tracking-tight text-white sm:text-6xl lg:text-6xl">
+            <h1 className="mt-8 text-5xl font-bold tracking-tight text-heading sm:text-6xl lg:text-6xl">
               GenAI in Business:{' '}
               <span className="block bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">Real Cases & Success Stories</span>
             </h1>
 
-            <p className="mt-6 text-lg leading-7 text-gray-300 max-w-3xl mx-auto">
+            <p className="mt-6 text-lg leading-7 text-muted max-w-3xl mx-auto">
               Discover how leading companies are transforming their operations with Generative AI across 7 key business areas. From data analytics to customer
               support, see real implementations, success metrics, and actionable strategies.
             </p>
 
             <div className="mt-10 flex items-center justify-center gap-4">
-              <div className="flex items-center gap-2 text-sm text-gray-400">
+              <div className="flex items-center gap-2 text-sm text-muted">
                 <ChartBarIcon className="h-5 w-5" />
                 <span>7 Business Areas</span>
               </div>
-              <div className="flex items-center gap-2 text-sm text-gray-400">
+              <div className="flex items-center gap-2 text-sm text-muted">
                 <UserGroupIcon className="h-5 w-5" />
                 <span>Real Company Cases</span>
               </div>
-              <div className="flex items-center gap-2 text-sm text-gray-400">
+              <div className="flex items-center gap-2 text-sm text-muted">
                 <EyeIcon className="h-5 w-5" />
                 <span>Interactive Flyers</span>
               </div>
@@ -311,18 +311,18 @@ export default function GenAIBusinessCases() {
             {genaiUseCases.map((useCase, index) => (
               <div
                 key={useCase.id}
-                className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-gray-800/50 to-gray-900/50 backdrop-blur-sm border border-gray-700/50 hover:border-gray-600/50 transition-all duration-300"
+                className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-gray-800/50 to-gray-900/50 backdrop-blur-sm border border-border hover:border-border transition-all duration-300"
               >
                 <div className="p-8 lg:p-10">
                   {/* Header Section */}
                   <div className="flex items-start justify-between gap-6 mb-6">
                     <div className="flex items-center gap-4 flex-1">
                       <div className={`p-3 rounded-xl bg-gradient-to-r ${useCase.gradient} shadow-lg`}>
-                        <useCase.icon className="h-7 w-7 text-white" />
+                        <useCase.icon className="h-7 w-7 text-heading" />
                       </div>
                       <div className="flex-1">
-                        <h2 className="text-xl font-bold text-white mb-1">{useCase.title}</h2>
-                        <p className="text-base text-gray-300">{useCase.subtitle}</p>
+                        <h2 className="text-xl font-bold text-heading mb-1">{useCase.title}</h2>
+                        <p className="text-base text-muted">{useCase.subtitle}</p>
                       </div>
                     </div>
                     {/* Action Buttons - moved to header */}
@@ -337,7 +337,7 @@ export default function GenAIBusinessCases() {
                       <Link
                         href={useCase.canvaUrl}
                         target="_blank"
-                        className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-gray-600 bg-gray-800/50 text-gray-300 font-medium hover:bg-gray-700/50 hover:border-gray-500 transition-all duration-300"
+                        className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-border bg-surface text-muted font-medium hover:bg-surface-2 hover:border-border transition-all duration-300"
                       >
                         <ArrowTopRightOnSquareIcon className="h-4 w-4" />
                         Canva
@@ -345,7 +345,7 @@ export default function GenAIBusinessCases() {
                     </div>
                   </div>
 
-                  <p className="text-gray-300 mb-8 leading-relaxed text-base">{useCase.description}</p>
+                  <p className="text-muted mb-8 leading-relaxed text-base">{useCase.description}</p>
 
                   {/* Main Content Grid */}
                   <div className="grid lg:grid-cols-5 gap-8">
@@ -353,13 +353,13 @@ export default function GenAIBusinessCases() {
                     <div className="lg:col-span-2 space-y-6">
                       {/* Key Features */}
                       <div>
-                        <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
-                          <SparklesIcon className="h-5 w-5 text-indigo-400" />
+                        <h3 className="text-lg font-semibold text-heading mb-4 flex items-center gap-2">
+                          <SparklesIcon className="h-5 w-5 text-link" />
                           Key Capabilities
                         </h3>
                         <ul className="space-y-3">
                           {useCase.keyFeatures.map((feature, idx) => (
-                            <li key={idx} className="flex items-start gap-3 text-gray-300">
+                            <li key={idx} className="flex items-start gap-3 text-muted">
                               <div className={`w-2 h-2 rounded-full bg-gradient-to-r ${useCase.gradient} mt-2 flex-shrink-0`} />
                               <span className="leading-relaxed">{feature}</span>
                             </li>
@@ -372,7 +372,7 @@ export default function GenAIBusinessCases() {
                     <div className="lg:col-span-3 space-y-6">
                       {useCase.realWorldExample && (
                         <div>
-                          <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+                          <h3 className="text-lg font-semibold text-heading mb-4 flex items-center gap-2">
                             <ChartBarIcon className="h-5 w-5 text-green-400" />
                             Success Story: {useCase.realWorldExample.company}
                           </h3>
@@ -380,15 +380,15 @@ export default function GenAIBusinessCases() {
                             <Link
                               href={useCase.realWorldExample.caseStudyUrl}
                               target="_blank"
-                              className="block p-5 rounded-xl bg-gray-800/60 border border-gray-600/50 hover:border-indigo-500/50 transition-all duration-200 group"
+                              className="block p-5 rounded-xl bg-surface border border-border hover:border-indigo-500/50 transition-all duration-200 group"
                             >
-                              <div className="space-y-3 text-sm text-gray-300">
+                              <div className="space-y-3 text-sm text-muted">
                                 <div className="flex items-start gap-2">
                                   <span className="font-semibold text-red-400 min-w-[80px]">Challenge:</span>
                                   <span className="leading-relaxed">{useCase.realWorldExample.challenge}</span>
                                 </div>
                                 <div className="flex items-start gap-2">
-                                  <span className="font-semibold text-blue-400 min-w-[80px]">Solution:</span>
+                                  <span className="font-semibold text-link min-w-[80px]">Solution:</span>
                                   <span className="leading-relaxed">{useCase.realWorldExample.solution}</span>
                                 </div>
                                 <div className="flex items-start gap-2">
@@ -396,19 +396,19 @@ export default function GenAIBusinessCases() {
                                   <span className="leading-relaxed">{useCase.realWorldExample.impact}</span>
                                 </div>
                                 <div className="flex items-center justify-end mt-3">
-                                  <ArrowTopRightOnSquareIcon className="h-4 w-4 text-gray-400 group-hover:text-indigo-400 transition-colors" />
+                                  <ArrowTopRightOnSquareIcon className="h-4 w-4 text-muted group-hover:text-link transition-colors" />
                                 </div>
                               </div>
                             </Link>
                           ) : (
-                            <div className="p-5 rounded-xl bg-gray-800/60 border border-gray-600/50">
-                              <div className="space-y-3 text-sm text-gray-300">
+                            <div className="p-5 rounded-xl bg-surface border border-border">
+                              <div className="space-y-3 text-sm text-muted">
                                 <div className="flex items-start gap-2">
                                   <span className="font-semibold text-red-400 min-w-[80px]">Challenge:</span>
                                   <span className="leading-relaxed">{useCase.realWorldExample.challenge}</span>
                                 </div>
                                 <div className="flex items-start gap-2">
-                                  <span className="font-semibold text-blue-400 min-w-[80px]">Solution:</span>
+                                  <span className="font-semibold text-link min-w-[80px]">Solution:</span>
                                   <span className="leading-relaxed">{useCase.realWorldExample.solution}</span>
                                 </div>
                                 <div className="flex items-start gap-2">
@@ -425,8 +425,8 @@ export default function GenAIBusinessCases() {
 
                   {/* Blog Links - Full Width at Bottom */}
                   {useCase.blogLinks.length > 0 && (
-                    <div className="mt-8 pt-6 border-t border-gray-700/50">
-                      <h4 className="font-semibold text-white mb-4 flex items-center gap-2">
+                    <div className="mt-8 pt-6 border-t border-border">
+                      <h4 className="font-semibold text-heading mb-4 flex items-center gap-2">
                         <AcademicCapIcon className="h-5 w-5 text-purple-400" />
                         Related Articles
                       </h4>
@@ -436,14 +436,14 @@ export default function GenAIBusinessCases() {
                             key={idx}
                             href={blog.url}
                             target="_blank"
-                            className="block p-4 rounded-lg bg-gray-800/40 border border-gray-600/40 hover:border-indigo-500/50 transition-all duration-200 group"
+                            className="block p-4 rounded-lg bg-surface border border-border hover:border-indigo-500/50 transition-all duration-200 group"
                           >
                             <div className="flex items-start justify-between gap-2">
                               <div className="flex-1">
-                                <h5 className="font-medium text-white group-hover:text-indigo-400 transition-colors text-sm leading-tight">{blog.title}</h5>
-                                <p className="text-xs text-gray-400 mt-2 leading-relaxed">{blog.description}</p>
+                                <h5 className="font-medium text-heading group-hover:text-link transition-colors text-sm leading-tight">{blog.title}</h5>
+                                <p className="text-xs text-muted mt-2 leading-relaxed">{blog.description}</p>
                               </div>
-                              <ArrowTopRightOnSquareIcon className="h-3 w-3 text-gray-400 group-hover:text-indigo-400 transition-colors flex-shrink-0 mt-1" />
+                              <ArrowTopRightOnSquareIcon className="h-3 w-3 text-muted group-hover:text-link transition-colors flex-shrink-0 mt-1" />
                             </div>
                           </Link>
                         ))}
@@ -461,8 +461,8 @@ export default function GenAIBusinessCases() {
       <section className="relative py-20">
         <div className="absolute inset-0 bg-gradient-to-r from-indigo-600/10 to-purple-600/10" />
         <div className="relative mx-auto max-w-4xl px-6 lg:px-8 text-center">
-          <h2 className="text-3xl font-bold text-white mb-6">Ready to Transform Your Business with GenAI?</h2>
-          <p className="text-lg text-gray-300 mb-8">
+          <h2 className="text-3xl font-bold text-heading mb-6">Ready to Transform Your Business with GenAI?</h2>
+          <p className="text-lg text-muted mb-8">
             If you want to implement these GenAI solutions or need expert consultations for your business transformation, we’re here to help you succeed.
           </p>
           <Link

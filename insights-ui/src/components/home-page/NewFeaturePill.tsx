@@ -21,7 +21,7 @@ export default function NewFeaturePill({ label, href, className = '' }: NewFeatu
       href={href}
       className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs sm:text-sm font-semibold
                   bg-indigo-500/15 text-indigo-300 ring-1 ring-inset ring-indigo-400/30
-                  hover:bg-indigo-500/25 hover:text-indigo-200 transition-colors ${className}`}
+                  hover:bg-indigo-500/25 hover:text-link transition-colors ${className}`}
     >
       <SparklesIcon className="h-4 w-4" aria-hidden="true" />
       {label}

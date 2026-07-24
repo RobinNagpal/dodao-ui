@@ -23,7 +23,7 @@ export default function ReloadRequestModal({ open, request, onClose, onReloadFai
             <p className="mb-4">
               How would you like to reload the generation request for{' '}
               <strong>
-                {request.ticker.symbol} <span className="text-blue-400">({request.ticker.exchange})</span>
+                {request.ticker.symbol} <span className="text-link">({request.ticker.exchange})</span>
               </strong>
               ?
             </p>

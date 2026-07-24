@@ -26,12 +26,12 @@ export default function RelatedDailyMovers({ movers, type }: RelatedDailyMoversP
           <Link
             key={mover.id}
             href={`${detailsPath}/${mover.id}`}
-            className="block bg-surface-2 p-4 rounded-md border border-border hover:border-[#F97316] transition-colors group"
+            className="block bg-surface-2 p-4 rounded-md border border-border hover:border-orange-500 transition-colors group"
           >
             <div className="flex flex-col gap-y-2">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-x-2">
-                  <h3 className="font-semibold text-lg text-[#F59E0B] group-hover:text-[#F97316] transition-colors">{mover.ticker.name}</h3>
+                  <h3 className="font-semibold text-lg text-amber-500 group-hover:text-orange-500 transition-colors">{mover.ticker.name}</h3>
                 </div>
               </div>
               <div className="flex items-center justify-between">

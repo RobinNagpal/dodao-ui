@@ -27,7 +27,7 @@ export default function PortfolioCards({ portfolios, portfolioManagerId }: Portf
         className=" bg-surface rounded-lg p-6 transition-all block border border-border hover:border-blue-500"
       >
         <div className="mb-4">
-          <h3 className="text-xl font-semibold text-blue-400 group-hover:text-blue-300 transition-colors mb-2">{portfolio.name}</h3>
+          <h3 className="text-xl font-semibold text-link group-hover:text-link transition-colors mb-2">{portfolio.name}</h3>
           <p className="text-body text-sm mb-3 line-clamp-2">{portfolio.summary}</p>
         </div>
 
@@ -75,7 +75,7 @@ export default function PortfolioCards({ portfolios, portfolioManagerId }: Portf
           )}
 
           <div className="pt-3 border-t border-border">
-            <span className="text-blue-400 group-hover:text-blue-300 transition-colors text-sm font-medium">View Details →</span>
+            <span className="text-link group-hover:text-link transition-colors text-sm font-medium">View Details →</span>
           </div>
         </div>
       </Link>
@@ -92,7 +92,7 @@ export default function PortfolioCards({ portfolios, portfolioManagerId }: Portf
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
         <div>
           <h2 className="text-2xl font-bold text-heading flex items-center gap-2">
-            <FolderIcon className="w-6 h-6 text-blue-500" />
+            <FolderIcon className="w-6 h-6 text-link" />
             Portfolios
           </h2>
           <p className="text-muted mt-1">

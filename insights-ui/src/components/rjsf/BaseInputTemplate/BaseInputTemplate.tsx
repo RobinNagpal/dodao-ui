@@ -45,7 +45,7 @@ export default function BaseInputTemplate<T = any, S extends StrictRJSFSchema = 
         required={required}
         disabled={disabled}
         readOnly={readonly}
-        className={`block w-full rounded-md border-0 py-1.5 pr-10 ring-1 ring-inset ring-gray-400 shadow-sm focus:ring-2 focus:ring-inset  sm:text-sm sm:leading-6 ${inputClass} block-bg-color`}
+        className={`block w-full rounded-md border-0 py-1.5 pr-10 ring-1 ring-inset ring-border shadow-sm focus:ring-2 focus:ring-inset  sm:text-sm sm:leading-6 ${inputClass} block-bg-color`}
         list={schema.examples ? examplesId<T>(id) : undefined}
         {...inputProps}
         value={value || value === 0 ? value : ''}

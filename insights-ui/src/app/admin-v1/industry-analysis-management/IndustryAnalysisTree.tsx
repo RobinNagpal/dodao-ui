@@ -44,18 +44,18 @@ export default function IndustryAnalysisTree({
   );
 
   return (
-    <div className="divide-y divide-gray-800">
+    <div className="divide-y divide-border">
       {sortedIndustryAnalyses.map((indAnalysis, idx) => {
         const subs: IndustryBuildingBlockAnalysis[] = (indAnalysis.subIndustryAnalyses ?? []).slice().sort((a, b) => a.name.localeCompare(b.name));
 
         // Alternate background for readability
-        const rowBg: string = idx % 2 === 0 ? 'bg-gray-500/20 hover:bg-gray-500/30' : 'bg-gray-900/20 hover:bg-gray-900/30';
+        const rowBg: string = idx % 2 === 0 ? 'bg-surface-2 hover:bg-surface-3' : 'bg-surface hover:bg-surface-2';
 
         return (
           <div key={indAnalysis.id} className={`px-3 py-2 transition-colors ${rowBg}`}>
             {/* Top-aligned icon at the start of the industry analysis block */}
             <div className="flex items-start gap-2">
-              <Building2 className="h-4 w-4 text-indigo-400 self-start mt-0.5" />
+              <Building2 className="h-4 w-4 text-link self-start mt-0.5" />
 
               <div className="min-w-0 flex-1">
                 <div className="flex items-center gap-2">
@@ -64,7 +64,7 @@ export default function IndustryAnalysisTree({
                       <Link
                         href={`/stocks/industries/${indAnalysis.industry.industryKey}/analysis`}
                         target="_blank"
-                        className="hover:text-gray-100 link-color text-gray-100"
+                        className="hover:text-body link-color text-body"
                       >
                         <span className="truncate text-base font-medium">{indAnalysis.name}</span>
                       </Link>
@@ -73,24 +73,24 @@ export default function IndustryAnalysisTree({
                         onSelect={(key): void => onIndustryAnalysisAction(key as IndustryAnalysisAction, indAnalysis)}
                       />
                     </div>
-                    <span className="truncate text-xs text-gray-400">
+                    <span className="truncate text-xs text-muted">
                       Industry: {indAnalysis.industry.name} ({indAnalysis.industry.industryKey})
                     </span>
                   </div>
                 </div>
-                {indAnalysis.metaDescription && <div className="text-sm text-gray-400 mt-1">{indAnalysis.metaDescription}</div>}
+                {indAnalysis.metaDescription && <div className="text-sm text-muted mt-1">{indAnalysis.metaDescription}</div>}
               </div>
             </div>
 
             <div className="ml-7 mt-1">
               {subs.length === 0 ? (
-                <div className="text-sm text-gray-500 py-1">No building block analyses</div>
+                <div className="text-sm text-muted py-1">No building block analyses</div>
               ) : (
                 <ul className="space-y-1">
                   {subs.map((subAnalysis) => (
                     // Top-aligned tag at the start of each sub-industry analysis block
                     <li key={subAnalysis.id} className="flex items-start gap-2">
-                      <Tag className="h-3.5 w-3.5 text-indigo-300 self-start mt-0.5" />
+                      <Tag className="h-3.5 w-3.5 text-link self-start mt-0.5" />
                       <div className="min-w-0 flex-1">
                         <div className="flex items-center gap-2">
                           <div className="flex flex-col">
@@ -98,11 +98,11 @@ export default function IndustryAnalysisTree({
                               <Link
                                 href={`/stocks/industries/${indAnalysis.industry.industryKey}/analysis/building-blocks/${subAnalysis.buildingBlockKey}`}
                                 target="_blank"
-                                className="hover:text-gray-100 link-color text-gray-100"
+                                className="hover:text-body link-color text-body"
                               >
                                 <span className="truncate text-sm">{subAnalysis.name}</span>
                               </Link>
-                              <span className="truncate text-xs text-gray-400 ml-1">( {subAnalysis.buildingBlockKey} )</span>
+                              <span className="truncate text-xs text-muted ml-1">( {subAnalysis.buildingBlockKey} )</span>
                               <EllipsisDropdown
                                 items={subAnalysisMenu}
                                 onSelect={(key): void => onSubIndustryAnalysisAction(key as SubIndustryAnalysisAction, subAnalysis)}
@@ -110,7 +110,7 @@ export default function IndustryAnalysisTree({
                             </div>
                           </div>
                         </div>
-                        {subAnalysis.metaDescription && <div className="text-sm text-gray-500 mt-1">{subAnalysis.metaDescription}</div>}
+                        {subAnalysis.metaDescription && <div className="text-sm text-muted mt-1">{subAnalysis.metaDescription}</div>}
                       </div>
                     </li>
                   ))}

@@ -50,7 +50,7 @@ export default function SelectWidget<T = any, S extends StrictRJSFSchema = RJSFS
       multiple={multiple}
       disabled={disabled || readonly}
       autoFocus={autofocus}
-      className={`border-muted-foreground bg-background p-2 focus:border-primary focus:outline-none mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 focus:ring-2 sm:text-sm sm:leading-6 block-bg-color ring-1 ring-inset ring-gray-400 
+      className={`border-muted-foreground bg-background p-2 focus:border-primary focus:outline-none mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 focus:ring-2 sm:text-sm sm:leading-6 block-bg-color ring-1 ring-inset ring-border 
       ${rawErrors.length > 0 ? 'border-red-500' : 'border-muted'}
       `}
       onBlur={

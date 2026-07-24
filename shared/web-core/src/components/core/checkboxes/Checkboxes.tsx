@@ -35,7 +35,7 @@ export default function Checkboxes(props: CheckboxesProps) {
                 aria-describedby="comments-description"
                 name={item.name}
                 type="checkbox"
-                className="h-4 w-4 rounded border-gray-300"
+                className="h-4 w-4 rounded border-[var(--border-color)]"
                 checked={props.selectedItemIds.includes(item.id)}
                 onChange={(e) => {
                   if (e.target.checked) {

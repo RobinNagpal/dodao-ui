@@ -83,7 +83,7 @@ export default function EtfPagination({ currentPage, totalPages }: EtfPagination
             key={item}
             onClick={() => navigateToPage(item)}
             className={`min-w-[2.25rem] h-9 rounded-lg text-sm font-medium transition-colors ${
-              item === currentPage ? 'bg-gradient-to-r from-[#F59E0B] to-[#FBBF24] text-black' : 'text-muted hover:text-heading hover:bg-surface-2'
+              item === currentPage ? 'bg-gradient-to-r from-amber-500 to-amber-400 text-black' : 'text-muted hover:text-heading hover:bg-surface-2'
             }`}
           >
             {item}

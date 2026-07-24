@@ -231,9 +231,9 @@ export default function AnalysisTemplateDetailPage() {
     return (
       <>
         <div className="py-8">
-          <div className="bg-gray-800 rounded-lg p-8 text-center">
+          <div className="bg-surface rounded-lg p-8 text-center">
             <h2 className="text-xl font-semibold mb-2">Template not found</h2>
-            <p className="text-gray-400">The analysis template you’re looking for doesn’t exist.</p>
+            <p className="text-muted">The analysis template you’re looking for doesn’t exist.</p>
           </div>
         </div>
       </>
@@ -250,12 +250,12 @@ export default function AnalysisTemplateDetailPage() {
               {/* Left side - Template info */}
               <div className="flex-1">
                 <div className="flex items-center gap-3 mb-2">
-                  <DocumentTextIcon className="w-8 h-8 text-blue-500" />
-                  <h1 className="text-3xl font-bold text-white">{template.name}</h1>
+                  <DocumentTextIcon className="w-8 h-8 text-link" />
+                  <h1 className="text-3xl font-bold text-heading">{template.name}</h1>
                 </div>
                 <div className="ml-11">
-                  {template.description && <p className="text-gray-400 text-base">{template.description}</p>}
-                  <p className="text-gray-400 text-base mt-2">Manage categories and analysis types for this template.</p>
+                  {template.description && <p className="text-muted text-base">{template.description}</p>}
+                  <p className="text-muted text-base mt-2">Manage categories and analysis types for this template.</p>
                 </div>
               </div>
 
@@ -266,7 +266,7 @@ export default function AnalysisTemplateDetailPage() {
                     {template.analysisTemplateReports.map((report) => {
                       return (
                         <Link key={report.id} href={`/admin-v1/analysis-template-report/${report.id}`}>
-                          <span className="text-blue-400 hover:text-blue-300 transition-colors text-sm">{report.reportName} →</span>
+                          <span className="text-link hover:text-link transition-colors text-sm">{report.reportName} →</span>
                         </Link>
                       );
                     })}
@@ -277,19 +277,19 @@ export default function AnalysisTemplateDetailPage() {
           </div>
 
           {/* Categories Section */}
-          <div className="bg-gray-900 rounded-2xl border border-gray-800 p-6 mb-8">
-            <h2 className="text-2xl font-semibold text-white mb-4">Add Categories</h2>
-            <p className="text-gray-300 text-sm mb-6">
+          <div className="bg-bg rounded-2xl border border-border p-6 mb-8">
+            <h2 className="text-2xl font-semibold text-heading mb-4">Add Categories</h2>
+            <p className="text-muted text-sm mb-6">
               Add multiple categories at once using JSON format. Each category should have a name field (required) and optional description field.
             </p>
 
             <div className="mb-6">
               <div className="flex justify-between items-center mb-3">
-                <label className="text-sm font-medium text-white">Categories JSON *</label>
+                <label className="text-sm font-medium text-heading">Categories JSON *</label>
                 <IconButton iconName={IconTypes.Edit} onClick={() => setShowCategoriesJsonModal(true)} tooltip="Edit JSON" />
               </div>
-              <div className="bg-gray-800 border border-gray-700 rounded-lg w-full py-4 px-3 max-h-[300px] overflow-y-auto">
-                <pre className="whitespace-pre-wrap break-words text-xs text-gray-300 overflow-x-auto">
+              <div className="bg-surface border border-border rounded-lg w-full py-4 px-3 max-h-[300px] overflow-y-auto">
+                <pre className="whitespace-pre-wrap break-words text-xs text-muted overflow-x-auto">
                   {(() => {
                     try {
                       return JSON.stringify(JSON.parse(categoriesJson), null, 2);
@@ -309,8 +309,8 @@ export default function AnalysisTemplateDetailPage() {
           </div>
 
           {/* Analysis Types Section */}
-          <div className="bg-gray-900 rounded-2xl border border-gray-800 p-6 mb-8">
-            <h2 className="text-2xl font-semibold text-white mb-4">Add Analysis Types</h2>
+          <div className="bg-bg rounded-2xl border border-border p-6 mb-8">
+            <h2 className="text-2xl font-semibold text-heading mb-4">Add Analysis Types</h2>
 
             <div className="mb-6">
               <StyledSelect
@@ -343,14 +343,14 @@ export default function AnalysisTemplateDetailPage() {
             {useJsonForAnalysisTypes ? (
               // JSON Input Mode
               <div className="mb-6">
-                <p className="text-gray-300 text-sm mb-4">Add multiple analysis types at once using JSON format.</p>
+                <p className="text-muted text-sm mb-4">Add multiple analysis types at once using JSON format.</p>
                 <div className="mb-4">
                   <div className="flex justify-between items-center mb-3">
-                    <label className="text-sm font-medium text-white">Analysis Types JSON *</label>
+                    <label className="text-sm font-medium text-heading">Analysis Types JSON *</label>
                     <IconButton iconName={IconTypes.Edit} onClick={() => setShowAnalysisTypesFormJsonModal(true)} tooltip="Edit JSON" />
                   </div>
-                  <div className="bg-gray-800 border border-gray-700 rounded-lg w-full py-4 px-3 max-h-[400px] overflow-y-auto">
-                    <pre className="whitespace-pre-wrap break-words text-xs text-gray-300 overflow-x-auto">
+                  <div className="bg-surface border border-border rounded-lg w-full py-4 px-3 max-h-[400px] overflow-y-auto">
+                    <pre className="whitespace-pre-wrap break-words text-xs text-muted overflow-x-auto">
                       {(() => {
                         try {
                           return JSON.stringify(JSON.parse(analysisTypesJson), null, 2);
@@ -366,7 +366,7 @@ export default function AnalysisTemplateDetailPage() {
               // Form Input Mode
               <div className="space-y-6">
                 {analysisTypes.map((analysisType, index) => (
-                  <div key={index} className="bg-gray-800 border border-gray-700 rounded-lg p-4">
+                  <div key={index} className="bg-surface border border-border rounded-lg p-4">
                     <div className="mb-4">
                       <Input
                         modelValue={analysisType.name}
@@ -422,29 +422,29 @@ export default function AnalysisTemplateDetailPage() {
 
           {/* Existing Categories Display */}
           <div>
-            <h2 className="text-2xl font-semibold text-white mb-6">Existing Categories</h2>
+            <h2 className="text-2xl font-semibold text-heading mb-6">Existing Categories</h2>
             {template.categories && template.categories.length > 0 ? (
               <div className="space-y-6">
                 {template.categories.map((category) => (
-                  <div key={category.id} className="bg-gray-900 rounded-2xl border border-gray-800 p-6">
+                  <div key={category.id} className="bg-bg rounded-2xl border border-border p-6">
                     <div className="flex justify-between items-start mb-4">
                       <div>
-                        <h3 className="text-xl font-semibold text-white">{category.name}</h3>
-                        {category.description && <p className="text-gray-300 mt-2">{category.description}</p>}
+                        <h3 className="text-xl font-semibold text-heading">{category.name}</h3>
+                        {category.description && <p className="text-muted mt-2">{category.description}</p>}
                       </div>
                       <Button onClick={() => setCategoryToDelete({ id: category.id, name: category.name })} variant="outlined" loading={deleteCategoryLoading}>
                         <TrashIcon className="w-4 h-4 mr-1" />
                       </Button>
                     </div>
                     <div className="ml-4 mt-6">
-                      <h4 className="font-medium text-white mb-4">Analysis Parameters:</h4>
+                      <h4 className="font-medium text-heading mb-4">Analysis Parameters:</h4>
                       {category.analysisParameters.length > 0 ? (
                         <ul className="space-y-3">
                           {category.analysisParameters.map((type) => (
-                            <li key={type.id} className="flex justify-between items-center text-sm bg-gray-800 border border-gray-700 rounded-lg p-3">
+                            <li key={type.id} className="flex justify-between items-center text-sm bg-surface border border-border rounded-lg p-3">
                               <div>
-                                <strong className="text-white">{type.name}</strong>
-                                {type.description && <p className="text-gray-400 text-xs mt-1">{type.description}</p>}
+                                <strong className="text-heading">{type.name}</strong>
+                                {type.description && <p className="text-muted text-xs mt-1">{type.description}</p>}
                               </div>
                               <Button onClick={() => handleDeleteAnalysisType(type.id)} variant="outlined" size="sm" loading={deleteAnalysisTypeLoading}>
                                 Delete
@@ -453,16 +453,16 @@ export default function AnalysisTemplateDetailPage() {
                           ))}
                         </ul>
                       ) : (
-                        <p className="text-sm text-gray-500 bg-gray-800 border border-gray-700 rounded-lg p-3">No analysis types yet</p>
+                        <p className="text-sm text-muted bg-surface border border-border rounded-lg p-3">No analysis types yet</p>
                       )}
                     </div>
                   </div>
                 ))}
               </div>
             ) : (
-              <div className="bg-gray-800 rounded-lg p-8 text-center">
+              <div className="bg-surface rounded-lg p-8 text-center">
                 <h3 className="text-xl font-semibold mb-2">No categories yet</h3>
-                <p className="text-gray-400">You haven’t created any categories for this template yet.</p>
+                <p className="text-muted">You haven’t created any categories for this template yet.</p>
               </div>
             )}
           </div>

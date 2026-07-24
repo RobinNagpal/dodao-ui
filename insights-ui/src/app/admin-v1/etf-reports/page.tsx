@@ -80,11 +80,11 @@ export default function EtfReportsPage(): JSX.Element {
 
   return (
     <>
-      <div className="bg-gray-800 -mx-6 px-6 py-6 mb-6 border-b border-gray-700/60">
+      <div className="bg-surface -mx-6 px-6 py-6 mb-6 border-b border-border">
         <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
           <div>
-            <h1 className="text-2xl font-semibold text-white">ETF Reports</h1>
-            <p className="text-gray-300 mt-1">Browse ETFs and see which data tables are populated</p>
+            <h1 className="text-2xl font-semibold text-heading">ETF Reports</h1>
+            <p className="text-muted mt-1">Browse ETFs and see which data tables are populated</p>
           </div>
           <EtfReportsFilters
             exchange={exchange}
@@ -102,11 +102,11 @@ export default function EtfReportsPage(): JSX.Element {
 
       {loading ? (
         <div className="flex justify-center items-center h-40">
-          <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-indigo-400" />
-          <span className="ml-3 text-indigo-300">Loading ETFs...</span>
+          <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-primary" />
+          <span className="ml-3 text-link">Loading ETFs...</span>
         </div>
       ) : (
-        <div className="rounded-lg border border-gray-700/50 bg-gray-900/40 overflow-hidden">
+        <div className="rounded-lg border border-border bg-bg overflow-hidden">
           <SelectMissingBar etfs={etfs} onSelectIds={setSelectedIds} />
           {selectedEtfs.length > 0 && <BulkActionsBar selectedEtfs={selectedEtfs} onClearSelection={handleClearSelection} onRefresh={reFetchData} />}
 
@@ -119,8 +119,8 @@ export default function EtfReportsPage(): JSX.Element {
           />
 
           {totalPages > 1 && (
-            <div className="flex items-center justify-between px-6 py-4 border-t border-gray-700/50 bg-gray-800/60">
-              <span className="text-sm text-gray-400">
+            <div className="flex items-center justify-between px-6 py-4 border-t border-border bg-surface">
+              <span className="text-sm text-muted">
                 Showing {(currentPage - 1) * pageSize + 1}
                 {'\u2013'}
                 {Math.min(currentPage * pageSize, totalCount)} of {totalCount} ETFs
@@ -129,17 +129,17 @@ export default function EtfReportsPage(): JSX.Element {
                 <button
                   onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
                   disabled={currentPage === 1}
-                  className="p-2 rounded-md text-gray-300 hover:bg-gray-700 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+                  className="p-2 rounded-md text-muted hover:bg-surface-2 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
                 >
                   <ChevronLeft className="h-5 w-5" />
                 </button>
-                <span className="text-sm text-gray-300">
+                <span className="text-sm text-muted">
                   Page {currentPage} of {totalPages}
                 </span>
                 <button
                   onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
                   disabled={currentPage === totalPages}
-                  className="p-2 rounded-md text-gray-300 hover:bg-gray-700 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+                  className="p-2 rounded-md text-muted hover:bg-surface-2 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
                 >
                   <ChevronRight className="h-5 w-5" />
                 </button>

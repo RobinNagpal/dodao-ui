@@ -99,7 +99,7 @@ export default function AddEditAnalysisTemplateModal({ isOpen, onClose, onSucces
           />
         </div>
 
-        <div className="flex gap-4 mt-6 pt-4 border-t border-gray-200">
+        <div className="flex gap-4 mt-6 pt-4 border-t border-border">
           <Button onClick={handleClose} variant="outlined" className="flex-1">
             Cancel
           </Button>

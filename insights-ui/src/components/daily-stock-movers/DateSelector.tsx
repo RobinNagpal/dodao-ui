@@ -39,8 +39,8 @@ export default function DateSelector({ selectedDate, availableDates, minDate, ma
           maxDate={maxDate}
           filterDate={(date) => !isDateDisabled(date)}
           dateFormat="MMM dd, yyyy"
-          className="date-picker-input px-4 py-2 border border-color rounded-md background-color text-color focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer"
-          calendarClassName="dark:bg-gray-800 dark:border-gray-700"
+          className="date-picker-input px-4 py-2 border border-color rounded-md background-color text-color focus:outline-none focus:ring-2 focus:ring-primary cursor-pointer"
+          calendarClassName="bg-surface border-border"
           showPopperArrow={false}
         />
       </div>

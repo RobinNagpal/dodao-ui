@@ -123,7 +123,7 @@ export function UserLogin({ onLogin, onGoogleSignIn, errorMessage, compact = fal
                         value={email}
                         onChange={(ev: React.ChangeEvent<HTMLInputElement>): void => setEmail(ev.target.value)}
                         required
-                        className="h-11 bg-surface border-border text-body placeholder:text-muted focus-visible:ring-indigo-500 focus-visible:border-indigo-600 transition-colors duration-200"
+                        className="h-11 bg-surface border-border text-body placeholder:text-muted focus-visible:ring-primary focus-visible:border-indigo-600 transition-colors duration-200"
                         aria-invalid={Boolean(localError || errorMessage)}
                         aria-describedby={localError || errorMessage ? 'email-error' : undefined}
                       />
@@ -157,7 +157,7 @@ export function UserLogin({ onLogin, onGoogleSignIn, errorMessage, compact = fal
               ].map((item, index) => (
                 <div key={index} className="flex flex-col items-center gap-1.5 group transition-all duration-300">
                   <div className={`rounded-md bg-gradient-to-r ${item.color} group-hover:scale-110 transition-transform duration-300 shadow-md p-2`}>
-                    <item.icon className="h-5 w-5 text-white sm:h-6 sm:w-6" aria-hidden />
+                    <item.icon className="h-5 w-5 text-heading sm:h-6 sm:w-6" aria-hidden />
                   </div>
                   <span className="text-xs text-body text-center sm:text-sm">{item.label}</span>
                 </div>

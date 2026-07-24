@@ -117,8 +117,8 @@ export default function MobileStockActionsMenu({
           onClick={() => handleSelect('favourite')}
           aria-label={favouriteTicker ? 'Edit favourite' : 'Add to favourites'}
           title={!session ? 'Login to add to favourites' : favouriteTicker ? 'Edit favourite' : 'Add to favourites'}
-          className={`inline-flex items-center justify-center p-2 text-white border rounded-lg shadow-md ${
-            favouriteTicker ? 'bg-blue-700 hover:bg-blue-600 border-blue-600' : 'bg-gray-700 hover:bg-gray-600 border-gray-600'
+          className={`inline-flex items-center justify-center p-2 border rounded-lg shadow-md ${
+            favouriteTicker ? 'bg-primary border-primary text-primary-text' : 'bg-surface-2 hover:bg-surface-3 border-border text-heading'
           }`}
         >
           {favouriteTicker ? <HeartSolid className="w-5 h-5 text-red-400" aria-hidden="true" /> : <HeartOutline className="w-5 h-5" aria-hidden="true" />}
@@ -128,8 +128,8 @@ export default function MobileStockActionsMenu({
           onClick={() => handleSelect('notes')}
           aria-label={existingNote ? 'Edit note' : 'Add note'}
           title={!session ? 'Login to add notes' : existingNote ? 'Edit note' : 'Add note'}
-          className={`inline-flex items-center justify-center p-2 text-white border rounded-lg shadow-md ${
-            existingNote ? 'bg-green-700 hover:bg-green-600 border-green-600' : 'bg-gray-700 hover:bg-gray-600 border-gray-600'
+          className={`inline-flex items-center justify-center p-2 border rounded-lg shadow-md ${
+            existingNote ? 'bg-green-700 hover:bg-green-600 border-green-600 text-white' : 'bg-surface-2 hover:bg-surface-3 border-border text-heading'
           }`}
         >
           {existingNote ? (
@@ -143,7 +143,7 @@ export default function MobileStockActionsMenu({
           onClick={() => handleSelect('compare')}
           aria-label="Compare with others"
           title="Compare with others"
-          className="inline-flex items-center justify-center p-2 text-black border border-transparent rounded-lg shadow-md bg-gradient-to-r from-[#F59E0B] to-[#FBBF24] hover:from-[#F97316] hover:to-[#F59E0B]"
+          className="inline-flex items-center justify-center p-2 text-black border border-transparent rounded-lg shadow-md bg-gradient-to-r from-amber-500 to-amber-400 hover:from-orange-500 hover:to-amber-500"
         >
           <ScaleIcon className="w-5 h-5" aria-hidden="true" />
         </button>

@@ -18,7 +18,10 @@ export interface IndustryTreeProps {
 
 function CountPill({ count, title }: { count: number; title?: string }): JSX.Element {
   return (
-    <span title={title} className="inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-indigo-600 text-white text-[12px] leading-none px-1.5">
+    <span
+      title={title}
+      className="inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-primary text-primary-text text-[12px] leading-none px-1.5"
+    >
       {count}
     </span>
   );
@@ -45,18 +48,18 @@ export default function IndustryTree({ industries, onIndustryAction, onSubIndust
   );
 
   return (
-    <div className="divide-y divide-gray-800">
+    <div className="divide-y divide-border">
       {sortedIndustries.map((ind, idx) => {
         const subs: SubIndustryWithCount[] = (ind.subIndustries ?? []).slice().sort((a, b) => a.name.localeCompare(b.name));
 
         // Alternate background for readability
-        const rowBg: string = idx % 2 === 0 ? 'bg-gray-500/20 hover:bg-gray-500/30' : 'bg-gray-900/20 hover:bg-gray-900/30';
+        const rowBg: string = idx % 2 === 0 ? 'bg-surface-2 hover:bg-surface-3' : 'bg-surface hover:bg-surface-2';
 
         return (
           <div key={ind.industryKey} className={`px-3 py-2 transition-colors ${rowBg}`}>
             {/* Top-aligned icon at the start of the industry block */}
             <div className="flex items-start gap-2">
-              <Building2 className="h-4 w-4 text-indigo-400 self-start mt-0.5" />
+              <Building2 className="h-4 w-4 text-link self-start mt-0.5" />
 
               <div className="min-w-0 flex-1">
                 <div className="flex items-center gap-2">
@@ -64,7 +67,7 @@ export default function IndustryTree({ industries, onIndustryAction, onSubIndust
                   <Link
                     href={`/stocks/industries/${ind.industryKey}`}
                     target="_blank"
-                    className={`hover:text-gray-100 link-color ${ind.archived ? 'text-gray-400' : 'text-gray-100'}`}
+                    className={`hover:text-body link-color ${ind.archived ? 'text-muted' : 'text-body'}`}
                   >
                     <span className="truncate text-base font-medium mr-2">{ind.name}</span>
                     {/* Count next to name */}
@@ -78,26 +81,26 @@ export default function IndustryTree({ industries, onIndustryAction, onSubIndust
                     <span className="ml-1 rounded-full border border-amber-500/30 bg-amber-500/10 px-1.5 py-0.5 text-xs text-amber-300">Archived</span>
                   )}
                 </div>
-                {ind.summary && <div className="text-sm text-gray-400">{ind.summary}</div>}
+                {ind.summary && <div className="text-sm text-muted">{ind.summary}</div>}
               </div>
             </div>
 
             <div className="ml-7 mt-1">
               {subs.length === 0 ? (
-                <div className="text-sm text-gray-500 py-1">No sub-industries</div>
+                <div className="text-sm text-muted py-1">No sub-industries</div>
               ) : (
                 <ul className="space-y-1">
                   {subs.map((si) => (
                     // Top-aligned tag at the start of each sub-industry block
                     <li key={si.subIndustryKey} className="flex items-start gap-2">
-                      <Tag className="h-3.5 w-3.5 text-indigo-300 self-start mt-0.5" />
+                      <Tag className="h-3.5 w-3.5 text-link self-start mt-0.5" />
                       <div className="min-w-0 flex-1">
                         <div className="flex items-center gap-2">
-                          <span className="truncate text-sm text-gray-100">{si.name}</span>
+                          <span className="truncate text-sm text-body">{si.name}</span>
                           {/* Count next to sub-industry name */}
                           <CountPill count={si.tickerCount} title="Tickers in this sub-industry" />
                           {/* Key */}
-                          <span className="truncate text-xs text-gray-400 ml-1">( {si.subIndustryKey} )</span>
+                          <span className="truncate text-xs text-muted ml-1">( {si.subIndustryKey} )</span>
 
                           <EllipsisDropdown items={subMenu} onSelect={(key): void => onSubIndustryAction(key as SubIndustryAction, si)} />
 
@@ -105,7 +108,7 @@ export default function IndustryTree({ industries, onIndustryAction, onSubIndust
                             <span className="rounded-full border border-amber-500/30 bg-amber-500/10 px-1.5 py-0.5 text-xs text-amber-300">Archived</span>
                           )}
                         </div>
-                        {si.summary && <div className="text-sm text-gray-500">{si.summary}</div>}
+                        {si.summary && <div className="text-sm text-muted">{si.summary}</div>}
                       </div>
                     </li>
                   ))}

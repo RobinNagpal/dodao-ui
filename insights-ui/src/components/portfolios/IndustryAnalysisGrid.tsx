@@ -29,7 +29,7 @@ export default function IndustryAnalysisGrid({ industriesByCountry, portfolioMan
           >
             <div className="flex flex-col h-full">
               {/* Industry Name */}
-              <h3 className="text-base font-semibold text-blue-400 transition-colors mb-2 line-clamp-2">{item.industry.name}</h3>
+              <h3 className="text-base font-semibold text-link transition-colors mb-2 line-clamp-2">{item.industry.name}</h3>
 
               {/* Stats */}
               <div className="flex items-center gap-4 text-xs pt-3 border-t border-border">
@@ -44,12 +44,12 @@ export default function IndustryAnalysisGrid({ industriesByCountry, portfolioMan
                 )}
                 {item.notesCount > 0 && (
                   <div className="flex items-center gap-1">
-                    <span className="text-blue-400">📝</span>
+                    <span className="text-link">📝</span>
                     <span className="text-body">{item.notesCount}</span>
                   </div>
                 )}
                 <div className="ml-auto">
-                  <span className="text-blue-400 transition-colors text-sm font-medium">View →</span>
+                  <span className="text-link transition-colors text-sm font-medium">View →</span>
                 </div>
               </div>
             </div>

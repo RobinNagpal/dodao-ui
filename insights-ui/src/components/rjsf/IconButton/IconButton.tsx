@@ -9,11 +9,7 @@ export default function IconButton<T = any, S extends StrictRJSFSchema = RJSFSch
   const buttonClass = iconType === 'block' ? 'w-full' : '';
   const variantClass =
     // @ts-expect-error incomplete type from rjsf
-    props.variant === 'danger'
-      ? 'bg-red-500 hover:bg-red-700 text-white'
-      : disabled
-      ? 'bg-gray-100 text-gray-300'
-      : 'bg-gray-200 hover:bg-gray-500 text-gray-700';
+    props.variant === 'danger' ? 'bg-red-500 hover:bg-red-700 text-white' : disabled ? 'bg-surface-2 text-muted' : 'bg-surface-2 hover:bg-surface-3 text-muted';
 
   return (
     <button className={`grid justify-items-center px-4 py-2 text-base font-normal ${buttonClass} ${variantClass} ${className}`} {...otherProps}>

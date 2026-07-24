@@ -37,7 +37,7 @@ export default function AdminCountryFilter({ selectedCountries, onCountriesChang
 
   return (
     <div className="flex items-center gap-2 flex-wrap">
-      <span className="text-sm text-gray-300 mr-2">Countries:</span>
+      <span className="text-sm text-muted mr-2">Countries:</span>
 
       {/* Country buttons */}
       {ALL_SUPPORTED_COUNTRIES.map((country) => (

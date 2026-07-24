@@ -51,20 +51,20 @@ export default function BenefitsSection() {
           <div>
             <div className="flex items-center gap-3 mb-6">
               <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-r from-indigo-500 to-purple-500">
-                <ClipboardDocumentListIcon className="h-6 w-6 text-white" />
+                <ClipboardDocumentListIcon className="h-6 w-6 text-heading" />
               </div>
-              <h2 className="text-3xl font-bold text-indigo-400">For Professors</h2>
+              <h2 className="text-3xl font-bold text-link">For Professors</h2>
             </div>
-            <p className="text-lg text-gray-300 mb-8">Streamline your teaching with AI-powered tools that enhance both efficiency and student engagement.</p>
+            <p className="text-lg text-muted mb-8">Streamline your teaching with AI-powered tools that enhance both efficiency and student engagement.</p>
 
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               {professorBenefits.map((benefit) => (
-                <div key={benefit.title} className="rounded-xl border border-gray-700 bg-gray-800/30 p-4 hover:bg-gray-800/50 transition-colors">
+                <div key={benefit.title} className="rounded-xl border border-border bg-surface p-4 hover:bg-surface transition-colors">
                   <div className="flex items-start gap-3">
-                    <benefit.icon className="h-5 w-5 text-indigo-400 mt-1 flex-shrink-0" />
+                    <benefit.icon className="h-5 w-5 text-link mt-1 flex-shrink-0" />
                     <div>
-                      <h3 className="font-semibold text-white text-sm">{benefit.title}</h3>
-                      <p className="text-gray-300 text-sm mt-1">{benefit.desc}</p>
+                      <h3 className="font-semibold text-heading text-sm">{benefit.title}</h3>
+                      <p className="text-muted text-sm mt-1">{benefit.desc}</p>
                     </div>
                   </div>
                 </div>
@@ -75,17 +75,17 @@ export default function BenefitsSection() {
           <div>
             <div className="flex items-center gap-3 mb-6">
               <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-r from-green-500 to-emerald-500">
-                <AcademicCapIcon className="h-6 w-6 text-white" />
+                <AcademicCapIcon className="h-6 w-6 text-heading" />
               </div>
-              <h2 className="text-3xl font-bold text-indigo-400">For Students</h2>
+              <h2 className="text-3xl font-bold text-link">For Students</h2>
             </div>
-            <p className="text-lg text-gray-300 mb-8">Use AI-powered simulations to speed up your learning and apply concepts to real-world cases.</p>
+            <p className="text-lg text-muted mb-8">Use AI-powered simulations to speed up your learning and apply concepts to real-world cases.</p>
 
             <div className="space-y-4">
               {studentBenefits.map((benefit, index) => (
-                <div key={index} className="flex items-start gap-3 rounded-xl border border-gray-700 bg-gray-800/30 p-4 hover:bg-gray-800/50 transition-colors">
+                <div key={index} className="flex items-start gap-3 rounded-xl border border-border bg-surface p-4 hover:bg-surface transition-colors">
                   <CheckCircleIcon className="h-5 w-5 text-green-400 mt-0.5 flex-shrink-0" />
-                  <span className="text-gray-200">{benefit}</span>
+                  <span className="text-body">{benefit}</span>
                 </div>
               ))}
             </div>

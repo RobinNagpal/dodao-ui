@@ -149,7 +149,7 @@ export default function AddSlideModal({ open, onClose, onSuccess, presentationId
             value={item}
             onChange={(e) => handleArrayChange(setter, index, e.target.value)}
             placeholder={placeholder}
-            className="flex-1 px-3 py-2 border rounded-md dark:bg-gray-800 dark:border-gray-600"
+            className="flex-1 px-3 py-2 border rounded-md bg-surface border-border"
           />
           {items.length > 1 && (
             <button
@@ -162,7 +162,7 @@ export default function AddSlideModal({ open, onClose, onSuccess, presentationId
           )}
         </div>
       ))}
-      <button type="button" onClick={() => handleAddArrayItem(setter)} className="text-sm text-blue-500 hover:underline">
+      <button type="button" onClick={() => handleAddArrayItem(setter)} className="text-sm text-link hover:underline">
         + Add item
       </button>
     </div>
@@ -174,11 +174,7 @@ export default function AddSlideModal({ open, onClose, onSuccess, presentationId
         {/* Slide Type */}
         <div className="mb-4">
           <label className="block text-sm font-medium mb-1">Slide Type *</label>
-          <select
-            value={type}
-            onChange={(e) => setType(e.target.value as SlideType)}
-            className="w-full px-3 py-2 border rounded-md dark:bg-gray-800 dark:border-gray-600"
-          >
+          <select value={type} onChange={(e) => setType(e.target.value as SlideType)} className="w-full px-3 py-2 border rounded-md bg-surface border-border">
             {SLIDE_TYPES.map((t) => (
               <option key={t.value} value={t.value}>
                 {t.label}
@@ -195,7 +191,7 @@ export default function AddSlideModal({ open, onClose, onSuccess, presentationId
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             placeholder="Enter slide title"
-            className="w-full px-3 py-2 border rounded-md dark:bg-gray-800 dark:border-gray-600"
+            className="w-full px-3 py-2 border rounded-md bg-surface border-border"
           />
         </div>
 
@@ -208,9 +204,9 @@ export default function AddSlideModal({ open, onClose, onSuccess, presentationId
               value={titleAccent}
               onChange={(e) => setTitleAccent(e.target.value)}
               placeholder="Text from title to highlight in accent color"
-              className="w-full px-3 py-2 border rounded-md dark:bg-gray-800 dark:border-gray-600"
+              className="w-full px-3 py-2 border rounded-md bg-surface border-border"
             />
-            <p className="text-xs text-gray-500 mt-1">Enter text that appears in the title to highlight it in blue</p>
+            <p className="text-xs text-muted mt-1">Enter text that appears in the title to highlight it in blue</p>
           </div>
         )}
 
@@ -223,7 +219,7 @@ export default function AddSlideModal({ open, onClose, onSuccess, presentationId
               value={subtitle}
               onChange={(e) => setSubtitle(e.target.value)}
               placeholder="Enter subtitle (optional)"
-              className="w-full px-3 py-2 border rounded-md dark:bg-gray-800 dark:border-gray-600"
+              className="w-full px-3 py-2 border rounded-md bg-surface border-border"
             />
           </div>
         )}
@@ -234,7 +230,7 @@ export default function AddSlideModal({ open, onClose, onSuccess, presentationId
             <div className="mb-4">{renderArrayField(bullets, setBullets, 'Bullet Points', 'Enter bullet point')}</div>
             <div className="mb-4">
               {renderArrayField(bulletAccents, setBulletAccents, 'Bullet Accents (optional)', 'Text to highlight in this bullet')}
-              <p className="text-xs text-gray-500 mt-1">Enter text from each bullet to highlight in blue (one per bullet, leave empty for no accent)</p>
+              <p className="text-xs text-muted mt-1">Enter text from each bullet to highlight in blue (one per bullet, leave empty for no accent)</p>
             </div>
           </>
         )}
@@ -245,7 +241,7 @@ export default function AddSlideModal({ open, onClose, onSuccess, presentationId
             <div className="mb-4">{renderArrayField(paragraphs, setParagraphs, 'Paragraphs', 'Enter paragraph text')}</div>
             <div className="mb-4">
               {renderArrayField(paragraphAccents, setParagraphAccents, 'Paragraph Accents (optional)', 'Text to highlight/underline in this paragraph')}
-              <p className="text-xs text-gray-500 mt-1">Enter text from each paragraph to highlight (one per paragraph, leave empty for no accent)</p>
+              <p className="text-xs text-muted mt-1">Enter text from each paragraph to highlight (one per paragraph, leave empty for no accent)</p>
             </div>
           </>
         )}
@@ -259,7 +255,7 @@ export default function AddSlideModal({ open, onClose, onSuccess, presentationId
               value={imageUrl}
               onChange={(e) => setImageUrl(e.target.value)}
               placeholder="Enter image URL (optional)"
-              className="w-full px-3 py-2 border rounded-md dark:bg-gray-800 dark:border-gray-600"
+              className="w-full px-3 py-2 border rounded-md bg-surface border-border"
             />
           </div>
         )}
@@ -272,7 +268,7 @@ export default function AddSlideModal({ open, onClose, onSuccess, presentationId
             onChange={(e) => setNarration(e.target.value)}
             placeholder="Enter the narration text for this slide..."
             rows={4}
-            className="w-full px-3 py-2 border rounded-md dark:bg-gray-800 dark:border-gray-600"
+            className="w-full px-3 py-2 border rounded-md bg-surface border-border"
           />
         </div>
 

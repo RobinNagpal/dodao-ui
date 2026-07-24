@@ -38,7 +38,7 @@ export default function PerformanceChecklistEvaluation({ criterionEvaluation }: 
           ))}
         </ul>
       ) : (
-        <p className="text-sm text-gray-500 text-center">No performance checklist available</p>
+        <p className="text-sm text-muted text-center">No performance checklist available</p>
       )}
     </>
   );

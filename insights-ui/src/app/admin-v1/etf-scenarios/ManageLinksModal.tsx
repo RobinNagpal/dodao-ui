@@ -140,19 +140,19 @@ export default function ManageLinksModal({ isOpen, onClose, onSuccess, scenarioI
     <SingleSectionModal open={isOpen} onClose={onClose} title={`Manage Links${scenarioTitle ? ` — ${scenarioTitle}` : ''}`}>
       <div className="text-left mt-3 max-h-[75vh] overflow-y-auto pr-1 space-y-4">
         {loadingDetail ? (
-          <div className="flex items-center gap-2 text-sm text-gray-300">
+          <div className="flex items-center gap-2 text-sm text-muted">
             <Loader2 className="h-4 w-4 animate-spin" /> Loading links…
           </div>
         ) : (
           <>
             {detail && detail.countries.length > 0 && (
-              <p className="text-xs text-gray-400">
-                This scenario is scoped to: <span className="text-gray-200 font-medium">{detail.countries.join(', ')}</span>. Links on any other country&apos;s
-                ETF exchanges will be rejected.
+              <p className="text-xs text-muted">
+                This scenario is scoped to: <span className="text-body font-medium">{detail.countries.join(', ')}</span>. Links on any other country&apos;s ETF
+                exchanges will be rejected.
               </p>
             )}
-            <div className="rounded-lg border border-gray-700/50 bg-gray-900/40 p-3 space-y-2">
-              <h3 className="text-sm font-semibold text-white">Add link</h3>
+            <div className="rounded-lg border border-border bg-bg p-3 space-y-2">
+              <h3 className="text-sm font-semibold text-heading">Add link</h3>
               <div className="grid grid-cols-1 md:grid-cols-4 gap-2 items-end">
                 <Input
                   label="Symbol"
@@ -162,9 +162,9 @@ export default function ManageLinksModal({ isOpen, onClose, onSuccess, scenarioI
                   }}
                 />
                 <label className="flex flex-col gap-1 text-sm">
-                  <span className="text-gray-300">Exchange</span>
+                  <span className="text-muted">Exchange</span>
                   <select
-                    className="bg-[#111827] border border-[#374151] rounded px-2 py-1.5 text-sm text-white"
+                    className="bg-bg border border-border rounded px-2 py-1.5 text-sm text-heading"
                     value={form.exchange}
                     onChange={(e) => setForm((f) => ({ ...f, exchange: e.target.value }))}
                   >
@@ -176,9 +176,9 @@ export default function ManageLinksModal({ isOpen, onClose, onSuccess, scenarioI
                   </select>
                 </label>
                 <label className="flex flex-col gap-1 text-sm">
-                  <span className="text-gray-300">Role</span>
+                  <span className="text-muted">Role</span>
                   <select
-                    className="bg-[#111827] border border-[#374151] rounded px-2 py-1.5 text-sm text-white"
+                    className="bg-bg border border-border rounded px-2 py-1.5 text-sm text-heading"
                     value={form.role}
                     onChange={(e) => setForm((f) => ({ ...f, role: e.target.value as EtfScenarioRole }))}
                   >
@@ -203,12 +203,12 @@ export default function ManageLinksModal({ isOpen, onClose, onSuccess, scenarioI
                   }}
                 />
                 <label className="flex flex-col gap-1 text-sm">
-                  <span className="text-gray-300">Expected price change % (-100 to 100)</span>
+                  <span className="text-muted">Expected price change % (-100 to 100)</span>
                   <input
                     type="number"
                     min={-100}
                     max={100}
-                    className="bg-[#111827] border border-[#374151] rounded px-2 py-1.5 text-sm text-white"
+                    className="bg-bg border border-border rounded px-2 py-1.5 text-sm text-heading"
                     value={form.expectedPriceChange}
                     onChange={(e) => setForm((f) => ({ ...f, expectedPriceChange: e.target.value }))}
                     placeholder="e.g. -25"
@@ -227,23 +227,23 @@ export default function ManageLinksModal({ isOpen, onClose, onSuccess, scenarioI
 
             {allLinks.map((group) => (
               <div key={group.role}>
-                <h3 className="text-sm font-semibold text-white mb-2">
-                  {group.heading} <span className="text-xs text-gray-400">({group.items.length})</span>
+                <h3 className="text-sm font-semibold text-heading mb-2">
+                  {group.heading} <span className="text-xs text-muted">({group.items.length})</span>
                 </h3>
                 {group.items.length === 0 ? (
-                  <p className="text-xs text-gray-500">No links in this role.</p>
+                  <p className="text-xs text-muted">No links in this role.</p>
                 ) : (
                   <ul className="space-y-1">
                     {group.items.map((link) => (
-                      <li key={`${link.symbol}-${link.role}`} className="bg-[#111827] border border-[#374151] rounded px-2 py-1.5 text-sm">
+                      <li key={`${link.symbol}-${link.role}`} className="bg-bg border border-border rounded px-2 py-1.5 text-sm">
                         <div className="flex items-center justify-between">
                           <span>
-                            <span className="font-semibold text-white">{link.symbol}</span>
-                            {link.exchange && <span className="text-gray-400"> · {link.exchange}</span>}
+                            <span className="font-semibold text-heading">{link.symbol}</span>
+                            {link.exchange && <span className="text-muted"> · {link.exchange}</span>}
                             {link.etfId ? (
                               <span className="ml-2 text-xs text-emerald-400">resolved</span>
                             ) : (
-                              <span className="ml-2 text-xs text-gray-500">unresolved</span>
+                              <span className="ml-2 text-xs text-muted">unresolved</span>
                             )}
                             {link.expectedPriceChange !== null && (
                               <span className={`ml-2 text-xs ${link.expectedPriceChange >= 0 ? 'text-emerald-400' : 'text-red-400'}`}>
@@ -256,9 +256,9 @@ export default function ManageLinksModal({ isOpen, onClose, onSuccess, scenarioI
                             <Trash2 className="h-3.5 w-3.5" />
                           </Button>
                         </div>
-                        {link.roleExplanation && <p className="mt-1 text-xs text-gray-300 whitespace-pre-wrap">{link.roleExplanation}</p>}
+                        {link.roleExplanation && <p className="mt-1 text-xs text-muted whitespace-pre-wrap">{link.roleExplanation}</p>}
                         {link.expectedPriceChangeExplanation && (
-                          <p className="mt-1 text-xs text-gray-400 whitespace-pre-wrap">{link.expectedPriceChangeExplanation}</p>
+                          <p className="mt-1 text-xs text-muted whitespace-pre-wrap">{link.expectedPriceChangeExplanation}</p>
                         )}
                       </li>
                     ))}

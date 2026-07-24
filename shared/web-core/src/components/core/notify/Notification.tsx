@@ -87,13 +87,13 @@ export default function Notification({ heading, message, duration = 3000, type =
                     {type === 'info' && <InformationCircleIcon className="h-6 w-6 text-blue-400" aria-hidden="true" />}
                   </div>
                   <div className="ml-3 w-0 flex-1 pt-0.5">
-                    <Paragraph className="text-sm font-medium text-gray-900">{heading}</Paragraph>
-                    <Paragraph className="mt-1 text-sm text-gray-500">{message}</Paragraph>
+                    <Paragraph className="text-sm font-medium text-[var(--heading-color)]">{heading}</Paragraph>
+                    <Paragraph className="mt-1 text-sm text-[var(--text-color)]">{message}</Paragraph>
                   </div>
                   <div className="ml-4 flex flex-shrink-0">
                     <CloseButton
                       type="button"
-                      className="inline-flex rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                      className="inline-flex rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)] focus:ring-offset-2"
                       onClick={() => {
                         handleClose();
                       }}
