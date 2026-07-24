@@ -26,7 +26,7 @@ function StatusDot({ stepName, completedSteps, failedSteps, pendingSteps, inProg
   if (completedSteps.includes(stepName)) return <div className="w-3 h-3 rounded-full bg-green-500" title="Completed" />;
   if (inProgressStep === stepName) return <div className="w-3 h-3 rounded-full bg-yellow-500 animate-pulse" title="In Progress" />;
   if (pendingSteps.includes(stepName)) return <div className="w-3 h-3 rounded-full bg-blue-500" title="Pending" />;
-  return <div className="w-3 h-3 rounded-full bg-gray-400" title="Not enabled" />;
+  return <div className="w-3 h-3 rounded-full bg-surface-3" title="Not enabled" />;
 }
 
 /** Total score badge (out of 25) shown next to the ticker symbol. */
@@ -44,14 +44,14 @@ function StatusPill({ status }: { status: GenerationRequestStatus }): JSX.Elemen
     status === GenerationRequestStatus.InProgress
       ? 'bg-blue-900 text-blue-200'
       : status === GenerationRequestStatus.NotStarted
-      ? 'bg-gray-700 text-gray-200'
+      ? 'bg-surface-2 text-body'
       : status === GenerationRequestStatus.Failed
       ? 'bg-red-900 text-red-200'
       : 'bg-green-900 text-green-200';
   return <span className={`px-2 py-0.5 rounded-full text-xs ${toneClass}`}>{status}</span>;
 }
 
-const HEADER_CELL = 'px-3 py-2 text-xs font-medium text-gray-300 uppercase tracking-wider';
+const HEADER_CELL = 'px-3 py-2 text-xs font-medium text-muted uppercase tracking-wider';
 const BODY_CELL = 'px-3 py-2 whitespace-nowrap text-sm text-center';
 
 interface GenerationRequestsTableProps {
@@ -62,10 +62,10 @@ interface GenerationRequestsTableProps {
 export default function GenerationRequestsTable({ rows, onReloadRequest }: GenerationRequestsTableProps): JSX.Element {
   return (
     <div className="overflow-x-auto">
-      <table className="min-w-full divide-y divide-gray-200">
-        <thead className="bg-gray-700">
+      <table className="min-w-full divide-y divide-border">
+        <thead className="bg-surface-2">
           <tr>
-            <th className={`${HEADER_CELL} text-left sticky left-0 bg-gray-700 z-10`}>Ticker</th>
+            <th className={`${HEADER_CELL} text-left sticky left-0 bg-surface-2 z-10`}>Ticker</th>
             <th className={HEADER_CELL}>Industry</th>
             {analysisTypes.map(({ key, label }) => (
               <th key={key} className={HEADER_CELL}>
@@ -77,7 +77,7 @@ export default function GenerationRequestsTable({ rows, onReloadRequest }: Gener
             <th className={HEADER_CELL}>Actions</th>
           </tr>
         </thead>
-        <tbody className="bg-gray-800 divide-y divide-gray-700">
+        <tbody className="bg-surface divide-y divide-border">
           {rows.map((request) => {
             const { exchange, symbol } = request.ticker;
             const completedSteps: ReportType[] = (request.completedSteps as ReportType[] | undefined) ?? [];
@@ -87,21 +87,21 @@ export default function GenerationRequestsTable({ rows, onReloadRequest }: Gener
             const isFailed: boolean = request.status === GenerationRequestStatus.Failed;
             return (
               <tr key={request.id}>
-                <td className="px-3 py-2 whitespace-nowrap text-sm font-medium sticky left-0 bg-gray-800 z-10 link-color">
+                <td className="px-3 py-2 whitespace-nowrap text-sm font-medium sticky left-0 bg-surface z-10 link-color">
                   <Link href={`/stocks/${exchange}/${symbol}`} target="_blank">
                     <div className="flex items-center gap-2">
                       <ScoreBadge score={request.ticker.cachedScoreEntry?.finalScore} />
                       <span className="font-semibold">{symbol}</span>
-                      <span className="text-blue-400 text-xs">({exchange})</span>
+                      <span className="text-link text-xs">({exchange})</span>
                     </div>
-                    <div className="text-xs text-gray-400">{request.ticker.name}</div>
+                    <div className="text-xs text-muted">{request.ticker.name}</div>
                   </Link>
-                  <div className="text-[11px] text-gray-500 mt-1 whitespace-nowrap" title="LLM provider · model used for this request">
+                  <div className="text-[11px] text-muted mt-1 whitespace-nowrap" title="LLM provider · model used for this request">
                     {request.llmProvider || request.llmModel ? `${request.llmProvider ?? '—'} · ${request.llmModel ?? '—'}` : 'default LLM'}
                   </div>
                 </td>
                 <td className="px-3 py-2 whitespace-nowrap text-sm">
-                  <div className="text-xs text-gray-400">
+                  <div className="text-xs text-muted">
                     {request.ticker.industry?.name || 'Unknown Industry'}
                     <br />
                     {request.ticker.subIndustry?.name || 'Unknown Sub-Industry'}
@@ -126,11 +126,7 @@ export default function GenerationRequestsTable({ rows, onReloadRequest }: Gener
                 <td className={BODY_CELL}>{new Date(request.updatedAt || request.createdAt).toLocaleString()}</td>
                 <td className={BODY_CELL}>
                   {isFailed && failedSteps.length > 0 && (
-                    <button
-                      onClick={() => onReloadRequest(request)}
-                      className="text-blue-400 hover:text-blue-300 transition-colors"
-                      title="Reload failed request"
-                    >
+                    <button onClick={() => onReloadRequest(request)} className="text-link hover:text-link transition-colors" title="Reload failed request">
                       <ArrowPathIcon className="w-5 h-5" />
                     </button>
                   )}

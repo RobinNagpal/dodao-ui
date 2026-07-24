@@ -64,16 +64,16 @@ export default function KoalagainsOfferings() {
                     <div
                       className={`inline-flex items-center justify-center w-14 h-14 rounded-xl bg-gradient-to-r ${service.color} group-hover:scale-110 transition-transform duration-300 shadow-lg`}
                     >
-                      <service.icon className="w-8 h-8 text-white" />
+                      <service.icon className="w-8 h-8 text-heading" />
                     </div>
                   </div>
 
                   <div className="text-center">
-                    <h3 className="text-lg font-semibold text-heading mb-3 group-hover:text-indigo-400 transition-colors">{service.name}</h3>
+                    <h3 className="text-lg font-semibold text-heading mb-3 group-hover:text-link transition-colors">{service.name}</h3>
 
                     <p className="text-body text-sm mb-6 leading-relaxed min-h-[3rem]">{service.description}</p>
 
-                    <div className="flex items-center justify-center text-indigo-400 group-hover:text-indigo-300 transition-colors">
+                    <div className="flex items-center justify-center text-link group-hover:text-link transition-colors">
                       <span className="text-sm font-medium">{service.cta}</span>
                       <svg className="ml-1 h-4 w-4 group-hover:translate-x-1 transition-transform duration-200" fill="currentColor" viewBox="0 0 20 20">
                         <path
@@ -92,13 +92,13 @@ export default function KoalagainsOfferings() {
           <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center relative z-20">
             <Link
               href="/stocks"
-              className="inline-flex items-center justify-center rounded-lg bg-indigo-600 px-6 py-3 text-base font-semibold text-white shadow-lg hover:bg-indigo-500 transition-all duration-200 hover:shadow-lg"
+              className="inline-flex items-center justify-center rounded-lg bg-primary px-6 py-3 text-base font-semibold text-primary-text shadow-lg hover:bg-primary transition-all duration-200 hover:shadow-lg"
             >
               Explore Our Platform
             </Link>
             <Link
               href="/genai-business"
-              className="inline-flex items-center justify-center rounded-lg border border-indigo-600 bg-transparent px-6 py-3 text-base font-semibold text-indigo-300 hover:bg-indigo-600 hover:text-white transition-all duration-200 backdrop-blur-sm"
+              className="inline-flex items-center justify-center rounded-lg border border-indigo-600 bg-transparent px-6 py-3 text-base font-semibold text-link hover:bg-primary hover:text-primary-text transition-all duration-200 backdrop-blur-sm"
             >
               GenAI Services
             </Link>

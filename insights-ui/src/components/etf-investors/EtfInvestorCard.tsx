@@ -16,7 +16,7 @@ export default function EtfInvestorCard({ investor }: { investor: EtfInvestor })
               href={`/etf-investors/${investor.key}/${goal.key}`}
               className="flex items-start justify-between gap-2 px-2 py-1.5 rounded hover:bg-surface-2 transition-colors group"
             >
-              <span className="text-sm text-heading group-hover:text-[#FBBF24]">{goal.name}</span>
+              <span className="text-sm text-heading group-hover:text-amber-400">{goal.name}</span>
               <span className="text-xs text-muted whitespace-nowrap pt-0.5">{goal.etfs.length} ETFs</span>
             </Link>
           </li>

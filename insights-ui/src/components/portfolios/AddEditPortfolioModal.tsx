@@ -115,7 +115,7 @@ export default function AddEditPortfolioModal({ isOpen, onClose, portfolio, onSu
             modelValue={name}
             onUpdate={(value) => setName(value?.toString() || '')}
             placeholder="Enter portfolio name"
-            className="bg-gray-800 border-gray-700 text-white"
+            className="bg-surface border-border text-heading"
           />
         </div>
 
@@ -129,7 +129,7 @@ export default function AddEditPortfolioModal({ isOpen, onClose, portfolio, onSu
             value={summary}
             onChange={(e) => setSummary(e.target.value)}
             rows={3}
-            className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-md text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-3 py-2 bg-surface border border-border rounded-md text-heading placeholder-muted focus:outline-none focus:ring-2 focus:ring-primary"
             placeholder="Describe your investment strategy and objectives..."
           />
         </div>
@@ -147,7 +147,7 @@ export default function AddEditPortfolioModal({ isOpen, onClose, portfolio, onSu
         </div>
 
         {/* Action Buttons */}
-        <div className="flex justify-end gap-3 pt-5 mt-2 border-t border-gray-700">
+        <div className="flex justify-end gap-3 pt-5 mt-2 border-t border-border">
           <Button onClick={onClose} disabled={loading} variant="outlined">
             Cancel
           </Button>

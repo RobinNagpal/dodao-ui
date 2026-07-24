@@ -12,7 +12,7 @@ export default function CompetitionAnalysisButton({ exchange, ticker }: Competit
       <Link
         href={`/stocks/${exchange}/${ticker}/competition`}
         prefetch={false}
-        className="inline-flex items-center px-4 py-2 text-sm font-medium text-black bg-gradient-to-r from-[#38BDF8] to-[#818CF8] hover:from-[#0EA5E9] hover:to-[#6366F1] border border-transparent rounded-lg shadow-md"
+        className="inline-flex items-center px-4 py-2 text-sm font-medium text-black bg-gradient-to-r from-sky-400 to-indigo-400 hover:from-sky-500 hover:to-indigo-500 border border-transparent rounded-lg shadow-md"
         title="View competition analysis"
       >
         <TrophyIcon className="w-4 h-4 mr-2" aria-hidden="true" />

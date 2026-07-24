@@ -111,7 +111,7 @@ export default function TextareaAutosize({
             ${fillParent ? styles.fullHeight : ''} 
             ${textAreaClassName || ''}
             
-            w-full rounded-md border-0 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6
+            w-full rounded-md border-0 shadow-sm ring-1 ring-inset ring-[var(--border-color)] placeholder:text-[var(--text-color)] placeholder:opacity-50 focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6
           `}
           ref={textareaRef}
           onChange={handleInput}

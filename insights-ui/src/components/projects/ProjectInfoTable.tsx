@@ -15,7 +15,7 @@ interface ProjectInfoTableProps {
 
 export default function ProjectInfoTable({ initialProjectDetails }: ProjectInfoTableProps) {
   return (
-    <div className="border-b border-gray-100 text-left">
+    <div className="border-b border-border text-left">
       <dl className="divide-y text-color">
         <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
           <dt className="text-sm/6 font-medium">Crowd Funding Link</dt>

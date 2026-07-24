@@ -105,7 +105,7 @@ function ChapterArticleHeader({ chapter, pageTitle, actions }: ChapterArticleHea
 }
 
 // Outer article wrapper shared by the chapter cover and every chapter section page. Mirrors the
-// stock-detail card on /stocks/<EX>/<TK>/<section> — single `bg-gray-900` card with related-section
+// stock-detail card on /stocks/<EX>/<TK>/<section> — single `bg-bg` card with related-section
 // navigation + tools bar at the top, the section body in the middle, and a "Last updated …" footer
 // at the bottom.
 interface ChapterArticleProps {

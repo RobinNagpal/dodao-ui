@@ -42,7 +42,7 @@ export default function EtfSortButton(): JSX.Element {
 
   return (
     <Menu as="div" className="relative inline-block text-left">
-      <MenuButton className="inline-flex items-center gap-2 bg-gradient-to-r from-[#F59E0B] to-[#FBBF24] hover:from-[#F97316] hover:to-[#F59E0B] text-black font-medium rounded-lg px-4 py-2.5 text-sm shadow-md">
+      <MenuButton className="inline-flex items-center gap-2 bg-gradient-to-r from-amber-500 to-amber-400 hover:from-orange-500 hover:to-amber-500 text-black font-medium rounded-lg px-4 py-2.5 text-sm shadow-md">
         <ArrowsUpDownIcon className="h-5 w-5" />
         Sort
         {applied && (
@@ -72,7 +72,7 @@ export default function EtfSortButton(): JSX.Element {
                 }`}
               >
                 <span className="flex items-center gap-2">
-                  {isActive ? <CheckIcon className="h-4 w-4 text-[#F59E0B]" /> : <span className="h-4 w-4" />}
+                  {isActive ? <CheckIcon className="h-4 w-4 text-amber-500" /> : <span className="h-4 w-4" />}
                   {def.label}
                 </span>
                 {isActive && (

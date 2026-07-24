@@ -24,7 +24,7 @@ export default function FuturePerformance({ tickerData, data }: FuturePerformanc
       categoryResult={categoryResult}
       analysisTitle={analysisTitle}
       categoryBadgeText="Future Performance"
-      categoryBadgeClassName="bg-indigo-500/15 border border-indigo-500/40 text-indigo-300"
+      categoryBadgeClassName="bg-indigo-500/15 border border-indigo-500/40 text-link"
       pageSlug="future-performance"
     />
   );

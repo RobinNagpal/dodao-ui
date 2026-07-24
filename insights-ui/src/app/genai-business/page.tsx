@@ -57,7 +57,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default function GenAIBusinessPage() {
   return (
-    <main className="bg-gray-900 overflow-hidden">
+    <main className="bg-bg overflow-hidden">
       <GenAIBusinessCases />
     </main>
   );

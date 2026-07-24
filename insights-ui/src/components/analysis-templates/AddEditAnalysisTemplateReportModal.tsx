@@ -149,14 +149,14 @@ export default function AddEditAnalysisTemplateReportModal({ isOpen, onClose, on
               value={inputJson}
               onChange={(e) => setInputJson(e.target.value)}
               placeholder='Enter JSON data (e.g., {"tickerSymbol": "AAPL", "exchange": "NASDAQ"})'
-              className="w-full h-32 p-3 border border-gray-300 rounded-md resize-vertical focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full h-32 p-3 border border-border rounded-md resize-vertical focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
               style={{ fontFamily: 'monospace' }}
             />
-            <p className="text-xs text-gray-500 mt-1">Enter valid JSON that will be used as input for the analysis template.</p>
+            <p className="text-xs text-muted mt-1">Enter valid JSON that will be used as input for the analysis template.</p>
           </div>
         </div>
 
-        <div className="flex gap-4 mt-6 pt-4 border-t border-gray-200">
+        <div className="flex gap-4 mt-6 pt-4 border-t border-border">
           <Button onClick={handleClose} variant="outlined" className="flex-1">
             Cancel
           </Button>

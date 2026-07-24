@@ -60,7 +60,7 @@ export default function EtfReportsFilters({
         />
       </div>
       <div className="w-56">
-        <label className="block text-sm font-medium text-gray-300 mb-1" title="Show ETFs whose last updatedAt is before this date">
+        <label className="block text-sm font-medium text-muted mb-1" title="Show ETFs whose last updatedAt is before this date">
           Updated before
         </label>
         <div className="flex items-center gap-1">
@@ -68,13 +68,13 @@ export default function EtfReportsFilters({
             type="date"
             value={updatedBefore}
             onChange={(e) => onUpdatedBeforeChange(e.target.value)}
-            className="w-full px-3 py-2 bg-gray-800 text-gray-200 border border-gray-700 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            className="w-full px-3 py-2 bg-surface text-body border border-border rounded focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
           />
           {updatedBefore && (
             <button
               type="button"
               onClick={() => onUpdatedBeforeChange('')}
-              className="px-2 py-2 text-xs text-gray-300 hover:text-white"
+              className="px-2 py-2 text-xs text-muted hover:text-heading"
               title="Clear date filter"
             >
               ×
@@ -83,12 +83,12 @@ export default function EtfReportsFilters({
         </div>
       </div>
       <div className="w-80">
-        <label className="block text-sm font-medium text-gray-300 mb-1">Search</label>
+        <label className="block text-sm font-medium text-muted mb-1">Search</label>
         <input
           value={search}
           onChange={(e) => onSearchChange(e.target.value)}
           placeholder="Search by symbol or name…"
-          className="w-full px-3 py-2 bg-gray-800 text-gray-200 border border-gray-700 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          className="w-full px-3 py-2 bg-surface text-body border border-border rounded focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
         />
       </div>
     </div>

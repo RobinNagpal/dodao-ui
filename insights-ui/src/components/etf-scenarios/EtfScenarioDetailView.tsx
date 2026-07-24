@@ -24,7 +24,7 @@ export default function EtfScenarioDetailView({ scenario }: { scenario: EtfScena
     <article className="text-body" itemScope itemType="https://schema.org/Article">
       <header className="mb-6 sm:mb-8">
         <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 mb-3 sm:mb-4">
-          <span className="bg-gradient-to-r from-[#F59E0B] to-[#FBBF24] text-black text-xs sm:text-sm font-bold px-2 sm:px-2.5 py-0.5 rounded">
+          <span className="bg-gradient-to-r from-amber-500 to-amber-400 text-black text-xs sm:text-sm font-bold px-2 sm:px-2.5 py-0.5 rounded">
             Scenario #{scenario.scenarioNumber}
           </span>
           <EtfScenarioDirectionBadge direction={scenario.direction} />
@@ -65,7 +65,7 @@ export default function EtfScenarioDetailView({ scenario }: { scenario: EtfScena
           {scenario.detailedAnalysis && (
             <Link
               href={`/etf-scenarios/${scenario.slug}/detailed-analysis`}
-              className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-[#F59E0B] to-[#FBBF24] text-black text-sm font-semibold px-3 py-1.5 rounded hover:opacity-90 transition-opacity self-start sm:self-auto"
+              className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-amber-500 to-amber-400 text-black text-sm font-semibold px-3 py-1.5 rounded hover:opacity-90 transition-opacity self-start sm:self-auto"
             >
               Detailed analysis
               <span aria-hidden>→</span>

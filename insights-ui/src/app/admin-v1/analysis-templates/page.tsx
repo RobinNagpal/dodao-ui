@@ -86,15 +86,15 @@ export default function DetailedReportsAdminPage() {
           {/* Header */}
           <div className="mb-8">
             <div className="flex items-center gap-3 mb-2">
-              <DocumentTextIcon className="w-8 h-8 text-blue-500" />
-              <h1 className="text-3xl font-bold text-white">Analysis Templates</h1>
+              <DocumentTextIcon className="w-8 h-8 text-link" />
+              <h1 className="text-3xl font-bold text-heading">Analysis Templates</h1>
               <div className="ml-auto">
                 <Button onClick={handleCreateTemplate} primary variant="contained">
                   Create New Template
                 </Button>
               </div>
             </div>
-            <p className="text-gray-400 text-base ml-11">
+            <p className="text-muted text-base ml-11">
               Discover {templates?.length || 0} analysis template{(templates?.length || 0) !== 1 ? 's' : ''} and explore their categories and parameters
             </p>
           </div>
@@ -104,33 +104,35 @@ export default function DetailedReportsAdminPage() {
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
               {templates.map((template) => (
                 <Link key={template.id} href={`/admin-v1/analysis-templates/${template.id}`}>
-                  <div className="bg-gray-900 rounded-2xl overflow-hidden transition-all border border-gray-800 hover:border-blue-500 relative group cursor-pointer">
+                  <div className="bg-bg rounded-2xl overflow-hidden transition-all border border-border hover:border-blue-500 relative group cursor-pointer">
                     <div className="absolute top-4 right-4 z-10" onClick={(e) => e.stopPropagation()}>
                       <AnalysisTemplateActions onEdit={() => handleEditTemplate(template)} onDelete={() => handleDeleteTemplate(template)} />
                     </div>
                     <div className="p-6">
-                      <h3 className="text-xl font-semibold text-white group-hover:text-blue-400 mb-2 pr-12">{template.name}</h3>
-                      {template.description && <p className="text-gray-300 text-sm leading-relaxed mb-4">{template.description}</p>}
+                      <h3 className="text-xl font-semibold text-heading group-hover:text-link mb-2 pr-12">{template.name}</h3>
+                      {template.description && <p className="text-muted text-sm leading-relaxed mb-4">{template.description}</p>}
 
                       <div className="space-y-3">
                         <div className="flex justify-between items-center text-sm">
-                          <span className="text-gray-400">Categories:</span>
-                          <span className="text-white font-medium">{template.categories.length}</span>
+                          <span className="text-muted">Categories:</span>
+                          <span className="text-heading font-medium">{template.categories.length}</span>
                         </div>
 
                         <div className="flex justify-between items-center text-sm">
-                          <span className="text-gray-400">Analysis Parameters:</span>
-                          <span className="text-white font-medium">{template.categories.reduce((total, cat) => total + cat.analysisParameters.length, 0)}</span>
+                          <span className="text-muted">Analysis Parameters:</span>
+                          <span className="text-heading font-medium">
+                            {template.categories.reduce((total, cat) => total + cat.analysisParameters.length, 0)}
+                          </span>
                         </div>
 
                         <div className="flex justify-between items-center text-sm">
-                          <span className="text-gray-400">Generated Reports:</span>
-                          <span className="text-white font-medium">{template._count?.analysisTemplateReports ?? 0}</span>
+                          <span className="text-muted">Generated Reports:</span>
+                          <span className="text-heading font-medium">{template._count?.analysisTemplateReports ?? 0}</span>
                         </div>
                       </div>
 
-                      <div className="pt-4 border-t border-gray-700 mt-4">
-                        <span className="text-blue-400 group-hover:text-blue-300 transition-colors text-sm font-medium">Manage Template →</span>
+                      <div className="pt-4 border-t border-border mt-4">
+                        <span className="text-link group-hover:text-link transition-colors text-sm font-medium">Manage Template →</span>
                       </div>
                     </div>
                   </div>
@@ -138,10 +140,10 @@ export default function DetailedReportsAdminPage() {
               ))}
             </div>
           ) : (
-            <div className="bg-gray-800 rounded-lg p-8 text-center">
-              <DocumentTextIcon className="w-16 h-16 text-gray-600 mx-auto mb-4" />
+            <div className="bg-surface rounded-lg p-8 text-center">
+              <DocumentTextIcon className="w-16 h-16 text-muted mx-auto mb-4" />
               <h3 className="text-xl font-semibold mb-2">No analysis templates yet</h3>
-              <p className="text-gray-400 mb-4">You haven’t created any analysis templates yet.</p>
+              <p className="text-muted mb-4">You haven’t created any analysis templates yet.</p>
               <Button onClick={handleCreateTemplate} primary variant="contained">
                 Create Your First Template
               </Button>

@@ -363,7 +363,7 @@ export default function AddTickersForm({ onSuccess, onCancel, selectedIndustryKe
       <div className="flex justify-between items-start mb-4">
         <div>
           <h2 className="text-xl font-semibold">Add New Tickers</h2>
-          <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+          <p className="text-xs text-muted mt-1">
             CSV format: <code>exchange, name, symbol, websiteUrl, stockAnalyzeUrl</code> (<strong>all columns required</strong>)
           </p>
         </div>
@@ -394,11 +394,11 @@ export default function AddTickersForm({ onSuccess, onCancel, selectedIndustryKe
 
       {/* CSV Text Area with example on top */}
       <div className="space-y-2">
-        <div className="rounded-md border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-900/20 p-3">
-          <p className="text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Example CSV</p>
-          <pre className="text-xs text-gray-700 dark:text-gray-300 whitespace-pre-wrap">{CSV_EXAMPLE}</pre>
+        <div className="rounded-md border border-border bg-surface p-3">
+          <p className="text-xs font-medium text-muted mb-1">Example CSV</p>
+          <pre className="text-xs text-muted whitespace-pre-wrap">{CSV_EXAMPLE}</pre>
         </div>
-        <label htmlFor="csv-contents" className="block text-sm font-medium dark:text-gray-300">
+        <label htmlFor="csv-contents" className="block text-sm font-medium text-muted">
           Paste CSV Contents
         </label>
         <textarea
@@ -406,11 +406,11 @@ export default function AddTickersForm({ onSuccess, onCancel, selectedIndustryKe
           value={csvText}
           onChange={(e: React.ChangeEvent<HTMLTextAreaElement>): void => setCsvText(e.target.value)}
           rows={6}
-          className="w-full px-3 py-2 bg-transparent border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
+          className="w-full px-3 py-2 bg-transparent border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary text-body placeholder-muted"
           placeholder={`Paste CSV rows here...\n\n${CSV_EXAMPLE}`}
           aria-describedby="csv-help"
         />
-        <p id="csv-help" className="text-xs text-gray-500 dark:text-gray-400">
+        <p id="csv-help" className="text-xs text-muted">
           Clicking <strong>Parse &amp; Add CSV</strong> will parse and immediately submit all rows.
         </p>
       </div>
@@ -498,7 +498,7 @@ export default function AddTickersForm({ onSuccess, onCancel, selectedIndustryKe
         })}
 
         <div>
-          <button type="button" onClick={addRow} className="text-blue-600 hover:text-blue-800 flex items-center">
+          <button type="button" onClick={addRow} className="text-link hover:text-link flex items-center">
             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor">
               <path fillRule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clipRule="evenodd" />
             </svg>

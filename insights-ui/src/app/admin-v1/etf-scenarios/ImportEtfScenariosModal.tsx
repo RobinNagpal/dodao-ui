@@ -45,16 +45,16 @@ export default function ImportEtfScenariosModal({ isOpen, onClose, onSuccess }: 
   return (
     <SingleSectionModal open={isOpen} onClose={onClose} title="Import ETF Scenarios from markdown">
       <div className="text-left mt-3 max-h-[75vh] overflow-y-auto pr-1 space-y-3">
-        <p className="text-xs text-gray-400">
+        <p className="text-xs text-muted">
           Paste an ETF scenarios markdown document. Scenarios are matched by <code>scenarioNumber</code> — existing rows are updated in place, and all winner /
           loser / most-exposed links are rebuilt from the doc.
         </p>
 
         <label className="flex flex-col gap-1 text-sm max-w-xs">
-          <span className="text-gray-300">Fallback outlook date (used when a scenario has no explicit &quot;as of&quot; line)</span>
+          <span className="text-muted">Fallback outlook date (used when a scenario has no explicit &quot;as of&quot; line)</span>
           <input
             type="date"
-            className="bg-[#111827] border border-[#374151] rounded px-2 py-1.5 text-sm text-white"
+            className="bg-bg border border-border rounded px-2 py-1.5 text-sm text-heading"
             value={fallbackDate}
             onChange={(e) => setFallbackDate(e.target.value)}
           />
@@ -72,15 +72,15 @@ export default function ImportEtfScenariosModal({ isOpen, onClose, onSuccess }: 
         {error && <p className="text-red-500 text-sm">{error}</p>}
 
         {result && (
-          <div className="rounded-lg border border-gray-700/50 bg-gray-900/40 p-3 text-sm text-gray-200 space-y-2">
+          <div className="rounded-lg border border-border bg-bg p-3 text-sm text-body space-y-2">
             <p>
               Parsed <strong>{result.totalParsed}</strong> scenarios — {result.created} created, {result.updated} updated. Resolved {result.resolvedTickers}{' '}
               tickers against the ETFs table.
             </p>
             {result.unresolvedTickers.length > 0 && (
               <div>
-                <p className="text-xs text-gray-400 mb-1">Unresolved tickers ({result.unresolvedTickers.length}):</p>
-                <p className="text-xs text-gray-500 break-words">{result.unresolvedTickers.join(', ')}</p>
+                <p className="text-xs text-muted mb-1">Unresolved tickers ({result.unresolvedTickers.length}):</p>
+                <p className="text-xs text-muted break-words">{result.unresolvedTickers.join(', ')}</p>
               </div>
             )}
           </div>

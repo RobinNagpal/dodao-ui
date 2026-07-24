@@ -101,20 +101,20 @@ export default function BulkActionsBar({ selectedEtfs, onClearSelection, onRefre
   }
 
   const buttonClass =
-    'px-3 py-1.5 text-xs font-medium rounded-md transition-colors disabled:opacity-40 disabled:cursor-not-allowed bg-gray-700 text-gray-200 hover:bg-gray-600';
+    'px-3 py-1.5 text-xs font-medium rounded-md transition-colors disabled:opacity-40 disabled:cursor-not-allowed bg-surface-2 text-body hover:bg-surface-3';
 
   return (
     <div className="bg-indigo-900/40 border-b border-indigo-700/50">
       <div className="flex items-center gap-3 px-6 py-3 border-b border-indigo-700/30">
-        <span className="text-sm font-medium text-indigo-200">LLM</span>
+        <span className="text-sm font-medium text-link">LLM</span>
         <LlmProviderModelSelector selection={llmSelection} onChange={setLlmSelection} className="w-full max-w-lg" />
       </div>
       <div className="flex flex-wrap items-center gap-3 px-6 py-3">
-        <span className="text-sm font-medium text-indigo-200">{selectedEtfs.length} selected</span>
+        <span className="text-sm font-medium text-link">{selectedEtfs.length} selected</span>
 
         <div className="h-4 w-px bg-indigo-700/60" />
 
-        <button className={`${buttonClass} !bg-indigo-700 !text-indigo-100 hover:!bg-indigo-600`} disabled={isBusy} onClick={() => handleGenerateAnalysis()}>
+        <button className={`${buttonClass} !bg-primary !text-indigo-100 hover:!bg-primary`} disabled={isBusy} onClick={() => handleGenerateAnalysis()}>
           Generate All Analysis
         </button>
         <button className={buttonClass} disabled={isBusy} onClick={() => handleGenerateAnalysis({ performanceAndReturns: true })}>
@@ -161,13 +161,13 @@ export default function BulkActionsBar({ selectedEtfs, onClearSelection, onRefre
         </button>
 
         {progress && (
-          <span className="text-xs text-indigo-300 ml-2">
+          <span className="text-xs text-link ml-2">
             {progress.done}/{progress.total} done…
           </span>
         )}
 
         <div className="ml-auto">
-          <button className="text-xs text-gray-400 hover:text-gray-200 transition-colors" disabled={isBusy} onClick={onClearSelection}>
+          <button className="text-xs text-muted hover:text-body transition-colors" disabled={isBusy} onClick={onClearSelection}>
             Clear selection
           </button>
         </div>

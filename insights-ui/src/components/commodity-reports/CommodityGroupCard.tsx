@@ -60,7 +60,7 @@ export default function CommodityGroupCard({
                       </span>
                     </p>
                   ) : (
-                    <p className="text-muted px-1 rounded-md bg-gray-500 bg-opacity-15 w-[52px] text-right shrink-0">
+                    <p className="text-muted px-1 rounded-md bg-gray-500/15 w-[52px] text-right shrink-0">
                       <span className="font-mono tabular-nums text-right text-xs">—</span>
                     </p>
                   )}

@@ -120,7 +120,7 @@ export default function PromptsListPage(): JSX.Element {
                             setSelectedNote(prompt.notes || 'No Notes');
                             setShowNotesModal(true);
                           }}
-                          className="text-blue-500 underline"
+                          className="text-link underline"
                         >
                           View Full
                         </button>

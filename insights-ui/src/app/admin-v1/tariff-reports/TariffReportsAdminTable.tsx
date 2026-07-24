@@ -96,7 +96,7 @@ function ChapterRow({ row, runState, onGenerateAll, onGenerateSection }: RowProp
           type="button"
           onClick={() => onGenerateAll(row.slug)}
           disabled={isRunning}
-          className="px-3 py-1.5 rounded-md bg-primary hover:bg-primary disabled:bg-surface-3 disabled:cursor-not-allowed text-heading text-xs font-medium"
+          className="px-3 py-1.5 rounded-md bg-primary disabled:bg-surface-3 disabled:cursor-not-allowed text-heading text-xs font-medium"
         >
           {isRunning ? `Starting ${(runState.currentStep ?? 0) + 1}/${CHAPTER_GENERATE_STEPS.length}` : 'Generate all'}
         </button>
@@ -240,7 +240,7 @@ export default function TariffReportsAdminTable(): JSX.Element {
         </button>
       </div>
 
-      <details className="mb-3 rounded-md border border-border bg-gray-800/40 p-3 text-xs text-muted">
+      <details className="mb-3 rounded-md border border-border bg-surface p-3 text-xs text-muted">
         <summary className="cursor-pointer text-muted">
           Generation order &amp; dependencies — generate a section only after its prerequisites show ✓ (its “Gen” button stays disabled until then)
         </summary>

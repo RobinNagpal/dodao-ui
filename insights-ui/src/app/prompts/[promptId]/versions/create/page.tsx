@@ -132,7 +132,7 @@ export default function CreatePromptVersionPage(): JSX.Element {
 
           <div className="mt-4">
             <h2 className="text-xl heading-color">Preview</h2>
-            <div className="flex-1 border-l border-gray-200">
+            <div className="flex-1 border-l border-border">
               <Editor
                 height="300px"
                 defaultLanguage="markdown"

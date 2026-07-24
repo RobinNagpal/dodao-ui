@@ -96,8 +96,8 @@ function EditableUrlCell({ ticker, onUpdate }: EditableUrlCellProps): JSX.Elemen
               setEditedUrl(e.target.value);
               setValidationError(''); // Clear validation error on change
             }}
-            className={`flex-1 px-2 py-1 text-sm bg-gray-700 text-gray-200 border rounded focus:outline-none focus:ring-2 ${
-              validationError ? 'border-red-500 focus:border-red-500 focus:ring-red-500' : 'border-gray-600 focus:border-blue-500 focus:ring-blue-500'
+            className={`flex-1 px-2 py-1 text-sm bg-surface-2 text-body border rounded focus:outline-none focus:ring-2 ${
+              validationError ? 'border-red-500 focus:border-red-500 focus:ring-red-500' : 'border-border focus:border-primary focus:ring-primary'
             }`}
             disabled={isUpdating || updatingUrl}
             autoFocus
@@ -132,19 +132,19 @@ function EditableUrlCell({ ticker, onUpdate }: EditableUrlCellProps): JSX.Elemen
             href={ticker.stockAnalyzeUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-blue-400 hover:text-blue-300 break-words flex-1"
+            className="text-link hover:text-link break-words flex-1"
             style={{ wordBreak: 'break-word', overflowWrap: 'anywhere' }}
           >
             {ticker.stockAnalyzeUrl}
           </a>
-          <button onClick={handleEdit} className="p-1 text-gray-400 hover:text-gray-300 flex-shrink-0" title="Edit URL">
+          <button onClick={handleEdit} className="p-1 text-muted hover:text-muted flex-shrink-0" title="Edit URL">
             <PencilIcon className="w-4 h-4" />
           </button>
         </>
       ) : (
         <>
           <span className="text-red-400 flex-1">No URL</span>
-          <button onClick={handleEdit} className="p-1 text-gray-400 hover:text-gray-300 flex-shrink-0" title="Add URL">
+          <button onClick={handleEdit} className="p-1 text-muted hover:text-muted flex-shrink-0" title="Add URL">
             <PencilIcon className="w-4 h-4" />
           </button>
         </>
@@ -163,28 +163,28 @@ interface MissingReportsTableProps {
 function MissingReportsTable({ rows, selectedRows, onSelectRow, onUrlUpdate }: MissingReportsTableProps): JSX.Element {
   return (
     <div className="overflow-x-auto">
-      <table className="min-w-full divide-y divide-gray-200">
-        <thead className="bg-gray-700">
+      <table className="min-w-full divide-y divide-border">
+        <thead className="bg-surface-2">
           <tr>
-            <th className="px-3 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Select</th>
-            <th className="px-3 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider sticky left-0 bg-gray-700 z-10">Ticker</th>
-            <th className="px-3 py-3 text-xs font-medium text-gray-300 uppercase tracking-wider">Industry</th>
-            <th className="px-3 py-3 text-xs font-medium text-gray-300 uppercase tracking-wider" style={{ minWidth: '300px', maxWidth: '400px' }}>
+            <th className="px-3 py-3 text-left text-xs font-medium text-muted uppercase tracking-wider">Select</th>
+            <th className="px-3 py-3 text-left text-xs font-medium text-muted uppercase tracking-wider sticky left-0 bg-surface-2 z-10">Ticker</th>
+            <th className="px-3 py-3 text-xs font-medium text-muted uppercase tracking-wider">Industry</th>
+            <th className="px-3 py-3 text-xs font-medium text-muted uppercase tracking-wider" style={{ minWidth: '300px', maxWidth: '400px' }}>
               Stock Analyze URL
             </th>
-            <th className="px-3 py-3 text-xs font-medium text-gray-300 uppercase tracking-wider">Financial Data</th>
-            <th className="px-3 py-3 text-xs font-medium text-gray-300 uppercase tracking-wider">Business & Moat</th>
-            <th className="px-3 py-3 text-xs font-medium text-gray-300 uppercase tracking-wider">Financial Analysis</th>
-            <th className="px-3 py-3 text-xs font-medium text-gray-300 uppercase tracking-wider">Past Performance</th>
-            <th className="px-3 py-3 text-xs font-medium text-gray-300 uppercase tracking-wider">Future Growth</th>
-            <th className="px-3 py-3 text-xs font-medium text-gray-300 uppercase tracking-wider">Fair Value</th>
-            <th className="px-3 py-3 text-xs font-medium text-gray-300 uppercase tracking-wider">Final Summary</th>
-            <th className="px-3 py-3 text-xs font-medium text-gray-300 uppercase tracking-wider">About Report</th>
-            <th className="px-3 py-3 text-xs font-medium text-gray-300 uppercase tracking-wider">Competition</th>
-            <th className="px-3 py-3 text-xs font-medium text-gray-300 uppercase tracking-wider">Meta Description</th>
+            <th className="px-3 py-3 text-xs font-medium text-muted uppercase tracking-wider">Financial Data</th>
+            <th className="px-3 py-3 text-xs font-medium text-muted uppercase tracking-wider">Business & Moat</th>
+            <th className="px-3 py-3 text-xs font-medium text-muted uppercase tracking-wider">Financial Analysis</th>
+            <th className="px-3 py-3 text-xs font-medium text-muted uppercase tracking-wider">Past Performance</th>
+            <th className="px-3 py-3 text-xs font-medium text-muted uppercase tracking-wider">Future Growth</th>
+            <th className="px-3 py-3 text-xs font-medium text-muted uppercase tracking-wider">Fair Value</th>
+            <th className="px-3 py-3 text-xs font-medium text-muted uppercase tracking-wider">Final Summary</th>
+            <th className="px-3 py-3 text-xs font-medium text-muted uppercase tracking-wider">About Report</th>
+            <th className="px-3 py-3 text-xs font-medium text-muted uppercase tracking-wider">Competition</th>
+            <th className="px-3 py-3 text-xs font-medium text-muted uppercase tracking-wider">Meta Description</th>
           </tr>
         </thead>
-        <tbody className="bg-gray-800 divide-y divide-gray-700">
+        <tbody className="bg-surface divide-y divide-border">
           {rows.map((ticker: TickerWithMissingReportInfoExtended) => {
             const exchange: string = ticker.exchange;
             const symbol: string = ticker.symbol;
@@ -195,19 +195,19 @@ function MissingReportsTable({ rows, selectedRows, onSelectRow, onUrlUpdate }: M
                 <td className="px-3 py-4 text-sm w-16">
                   <Checkbox id={`select-${ticker.id}`} labelContent="" isChecked={isSelected} onChange={(checked) => onSelectRow(ticker.id, checked)} />
                 </td>
-                <td className="px-3 py-4 text-sm font-medium sticky left-0 bg-gray-800 z-10 link-color" style={{ minWidth: '200px', maxWidth: '300px' }}>
+                <td className="px-3 py-4 text-sm font-medium sticky left-0 bg-surface z-10 link-color" style={{ minWidth: '200px', maxWidth: '300px' }}>
                   <Link href={`/stocks/${exchange}/${symbol}`} target="_blank">
                     <div className="flex items-center gap-1">
                       <span className="font-semibold text-sm">{symbol}</span>
-                      <span className="text-blue-400 text-xs">({exchange})</span>
+                      <span className="text-link text-xs">({exchange})</span>
                     </div>
-                    <div className="text-xs text-gray-400 truncate" title={ticker.name}>
+                    <div className="text-xs text-muted truncate" title={ticker.name}>
                       {ticker.name}
                     </div>
                   </Link>
                 </td>
                 <td className="px-3 py-4 text-sm" style={{ minWidth: '300px', maxWidth: '400px' }}>
-                  <div className="text-xs text-gray-400">
+                  <div className="text-xs text-muted">
                     <div className="truncate" title={ticker.industryKey?.replace(/_/g, ' ').replace(/\b\w/g, (l) => l.toUpperCase())}>
                       {ticker.industryKey?.replace(/_/g, ' ').replace(/\b\w/g, (l) => l.toUpperCase()) || 'Unknown Industry'}
                     </div>
@@ -459,15 +459,15 @@ export default function MissingReportsPage(): JSX.Element {
       </div>
 
       {/* Date filters */}
-      <div className="mb-4 bg-gray-800 border border-gray-600 rounded-lg p-4">
+      <div className="mb-4 bg-surface border border-border rounded-lg p-4">
         <h3 className="text-lg font-semibold mb-3">Filter by Report Updated Date</h3>
-        <p className="text-sm text-gray-400 mb-4">
+        <p className="text-sm text-muted mb-4">
           When a date is selected, only tickers whose report was last updated before that date (or never generated) are shown. Leave both empty to see all
           missing reports.
         </p>
         <div className="flex flex-wrap gap-6">
           <div className="flex flex-col gap-1">
-            <label htmlFor="bm-date" className="text-sm font-medium text-gray-300">
+            <label htmlFor="bm-date" className="text-sm font-medium text-muted">
               Business & Moat — Updated Before
             </label>
             <input
@@ -475,11 +475,11 @@ export default function MissingReportsPage(): JSX.Element {
               type="date"
               value={businessAndMoatBefore}
               onChange={(e) => setBusinessAndMoatBefore(e.target.value)}
-              className="px-3 py-2 bg-gray-700 text-gray-200 border border-gray-600 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="px-3 py-2 bg-surface-2 text-body border border-border rounded focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
             />
           </div>
           <div className="flex flex-col gap-1">
-            <label htmlFor="fv-date" className="text-sm font-medium text-gray-300">
+            <label htmlFor="fv-date" className="text-sm font-medium text-muted">
               Fair Value — Updated Before
             </label>
             <input
@@ -487,7 +487,7 @@ export default function MissingReportsPage(): JSX.Element {
               type="date"
               value={fairValueBefore}
               onChange={(e) => setFairValueBefore(e.target.value)}
-              className="px-3 py-2 bg-gray-700 text-gray-200 border border-gray-600 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="px-3 py-2 bg-surface-2 text-body border border-border rounded focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
             />
           </div>
           <div className="flex items-end gap-2">
@@ -523,7 +523,7 @@ export default function MissingReportsPage(): JSX.Element {
       </div>
 
       <div className="mb-6">
-        <div className="bg-gray-800 border border-red-500 rounded-lg p-4">
+        <div className="bg-surface border border-red-500 rounded-lg p-4">
           <div className="flex items-baseline justify-between mb-2">
             <h3 className="text-xl font-semibold">
               {appliedBusinessAndMoatBefore || appliedFairValueBefore
@@ -541,7 +541,7 @@ export default function MissingReportsPage(): JSX.Element {
                     .join(' | ')}
                 </span>
               )}
-              <span className="text-sm text-gray-400">Showing {data?.length || 0} tickers</span>
+              <span className="text-sm text-muted">Showing {data?.length || 0} tickers</span>
             </div>
           </div>
 
@@ -557,14 +557,14 @@ export default function MissingReportsPage(): JSX.Element {
               <Button onClick={handleClearSelection} variant="outlined" className="text-sm" disabled={isGenerating || selectedRows.size === 0}>
                 Clear Selection
               </Button>
-              <span className="ml-auto text-sm text-gray-400 self-center">{selectedRows.size} tickers selected</span>
+              <span className="ml-auto text-sm text-muted self-center">{selectedRows.size} tickers selected</span>
             </div>
           )}
 
           {/* LLM provider/model selector */}
           {data && data.length > 0 && (
             <div className="mb-4 max-w-2xl">
-              <h4 className="text-sm font-medium text-gray-300 mb-1">LLM Provider &amp; Model</h4>
+              <h4 className="text-sm font-medium text-muted mb-1">LLM Provider &amp; Model</h4>
               <LlmProviderModelSelector selection={llmSelection} onChange={setLlmSelection} />
             </div>
           )}

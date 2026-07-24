@@ -34,7 +34,7 @@ export default function SimulationPageWrapper() {
 
   return (
     <>
-      <main className="bg-gray-900 overflow-hidden">
+      <main className="bg-bg overflow-hidden">
         <HeroSection onOpenVideo={handleOpenVideoModal} />
         <SubjectsSection />
         <HowItWorksSection />

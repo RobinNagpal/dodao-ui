@@ -54,7 +54,7 @@ export default function EtfFiltersButton(): JSX.Element {
     <>
       <button
         onClick={() => setIsModalOpen(true)}
-        className="inline-flex items-center gap-2 bg-gradient-to-r from-[#F59E0B] to-[#FBBF24] hover:from-[#F97316] hover:to-[#F59E0B] text-black font-medium rounded-lg px-4 py-2.5 text-sm shadow-md"
+        className="inline-flex items-center gap-2 bg-gradient-to-r from-amber-500 to-amber-400 hover:from-orange-500 hover:to-amber-500 text-black font-medium rounded-lg px-4 py-2.5 text-sm shadow-md"
       >
         <AdjustmentsHorizontalIcon className="h-5 w-5" />
         Filters
@@ -82,7 +82,7 @@ interface FilterDropdownProps {
 function FilterDropdown({ id, label, value, options, onChange }: FilterDropdownProps): JSX.Element {
   const isActive = value !== '';
   return (
-    <div className={`rounded p-2 ${isActive ? 'bg-surface-2 ring-1 ring-[#F59E0B]' : 'bg-surface-2'}`}>
+    <div className={`rounded p-2 ${isActive ? 'bg-surface-2 ring-1 ring-amber-500' : 'bg-surface-2'}`}>
       <label htmlFor={id} className="block text-muted mb-1 text-xs truncate" title={label}>
         {label}
       </label>
@@ -116,7 +116,7 @@ interface ScoreTileProps {
 function ScoreTile({ def, value, onChange }: ScoreTileProps): JSX.Element {
   const isActive = value !== '';
   return (
-    <div className={`rounded-lg p-3 ${isActive ? 'bg-surface-2 ring-1 ring-[#F59E0B]' : 'bg-surface-2'}`}>
+    <div className={`rounded-lg p-3 ${isActive ? 'bg-surface-2 ring-1 ring-amber-500' : 'bg-surface-2'}`}>
       <h4 className="text-heading font-medium mb-2 text-sm">{def.label}</h4>
       <div className="space-y-1">
         {def.options.map((option) => (
@@ -383,7 +383,7 @@ function EtfFilterModalContent({ initialSelected, onClose }: EtfFilterModalConte
         <button
           type="button"
           onClick={() => setAdvancedOpen((v) => !v)}
-          className="relative flex w-full items-center justify-center rounded-md bg-surface-2 hover:bg-surface-2 px-3 py-2"
+          className="relative flex w-full items-center justify-center rounded-md bg-surface-2 px-3 py-2"
           aria-expanded={advancedOpen}
         >
           <span className="text-body text-xs font-semibold uppercase tracking-wider">Advanced — Period-Based Risk Capture</span>
@@ -408,7 +408,7 @@ function EtfFilterModalContent({ initialSelected, onClose }: EtfFilterModalConte
                     type="button"
                     aria-pressed={morPeriod === p}
                     className={`px-3 py-1.5 rounded-md text-xs font-medium transition-colors ${
-                      morPeriod === p ? 'bg-[#F59E0B] text-black' : 'bg-surface-2 text-muted hover:bg-surface-3'
+                      morPeriod === p ? 'bg-amber-500 text-black' : 'bg-surface-2 text-muted hover:bg-surface-3'
                     }`}
                   >
                     {p.replace('-', ' ')}
@@ -448,7 +448,7 @@ function EtfFilterModalContent({ initialSelected, onClose }: EtfFilterModalConte
           </button>
           <button
             onClick={handleApply}
-            className="bg-gradient-to-r from-[#F59E0B] to-[#FBBF24] hover:from-[#F97316] hover:to-[#F59E0B] text-black font-medium rounded-lg px-5 py-2 text-xs transition-all duration-200"
+            className="bg-gradient-to-r from-amber-500 to-amber-400 hover:from-orange-500 hover:to-amber-500 text-black font-medium rounded-lg px-5 py-2 text-xs transition-all duration-200"
             type="button"
           >
             Apply Filters

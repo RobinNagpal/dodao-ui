@@ -52,7 +52,7 @@ export default function CountryAlternatives({
       country-alternatives-panel
       flex flex-col sm:flex-row
       items-start sm:items-center
-      ${enhanced ? `p-${compact ? '1' : '2'} sm:p-${compact ? '2' : '3'} rounded-lg bg-gray-700/50` : ''}
+      ${enhanced ? `p-${compact ? '1' : '2'} sm:p-${compact ? '2' : '3'} rounded-lg bg-surface-2` : ''}
       ${centerContent ? 'text-center' : ''}
       ${className}
     `}
@@ -63,8 +63,8 @@ export default function CountryAlternatives({
         ${centerContent ? 'mx-auto sm:mx-0' : ''}
       `}
       >
-        <GlobeAltIcon className={`h-4 w-4 ${enhanced ? 'text-blue-400' : 'text-gray-400'}`} />
-        <span className={`country-alternatives-label ml-2 ${enhanced ? 'text-blue-100 font-semibold' : 'text-gray-400'}`}>Also view:</span>
+        <GlobeAltIcon className={`h-4 w-4 ${enhanced ? 'text-blue-400' : 'text-muted'}`} />
+        <span className={`country-alternatives-label ml-2 ${enhanced ? 'text-blue-100 font-semibold' : 'text-muted'}`}>Also view:</span>
       </div>
       <div className={`flex flex-wrap gap-2 sm:ml-2 ${centerContent ? 'justify-center mx-auto sm:mx-0' : ''}`}>
         {alternativeCountries
@@ -76,11 +76,11 @@ export default function CountryAlternatives({
               <span key={country.code} className="inline-flex items-center">
                 <Link
                   href={href}
-                  className={`country-alternatives-link text-blue-400 hover:text-blue-300 transition-colors duration-200 ${enhanced ? 'font-semibold' : ''}`}
+                  className={`country-alternatives-link text-link hover:text-link transition-colors duration-200 ${enhanced ? 'font-semibold' : ''}`}
                 >
                   {country.name} Stocks
                 </Link>
-                {index < alternativeCountries.length - 1 && <span className="text-gray-500 ml-2 hidden sm:inline">•</span>}
+                {index < alternativeCountries.length - 1 && <span className="text-muted ml-2 hidden sm:inline">•</span>}
               </span>
             );
           })}

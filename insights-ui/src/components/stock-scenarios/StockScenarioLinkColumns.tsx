@@ -20,7 +20,7 @@ const PRICED_IN_CLASS: Record<ScenarioPricedInBucket, string> = {
   NOT_PRICED_IN: 'bg-emerald-900/40 text-emerald-200 border-emerald-700/60',
   PARTIALLY_PRICED_IN: 'bg-sky-900/40 text-sky-200 border-sky-700/60',
   MOSTLY_PRICED_IN: 'bg-amber-900/40 text-amber-200 border-amber-700/60',
-  FULLY_PRICED_IN: 'bg-gray-800 text-gray-300 border-gray-600',
+  FULLY_PRICED_IN: 'bg-surface text-muted border-border',
   OVER_PRICED_IN: 'bg-rose-900/40 text-rose-200 border-rose-700/60',
 };
 
@@ -30,9 +30,9 @@ function renderMarkdown(md: string) {
 
 function PillVisual({ link }: { link: StockScenarioLinkDto }): JSX.Element {
   return (
-    <span className="inline-flex items-center gap-1 bg-[#111827] border border-[#374151] text-xs text-white rounded px-2 py-0.5">
+    <span className="inline-flex items-center gap-1 bg-bg border border-border text-xs text-heading rounded px-2 py-0.5">
       <span className="font-semibold">{link.symbol}</span>
-      <span className="text-gray-400">· {link.exchange}</span>
+      <span className="text-muted">· {link.exchange}</span>
     </span>
   );
 }
@@ -102,14 +102,14 @@ function LinkCard({ link }: { link: StockScenarioLinkDto }): JSX.Element {
           {pricedInLabel}
         </span>
       </div>
-      <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] text-gray-400 mb-1">
+      <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] text-muted mb-1">
         <span title="Market cap">
-          <span className="text-gray-500">Mkt cap </span>
-          <span className="font-mono tabular-nums text-gray-200">{formatMarketCapShort(link.marketCap)}</span>
+          <span className="text-muted">Mkt cap </span>
+          <span className="font-mono tabular-nums text-body">{formatMarketCapShort(link.marketCap)}</span>
         </span>
         <span title="Price-to-earnings ratio (— for negative or unavailable)">
-          <span className="text-gray-500">PE </span>
-          <span className="font-mono tabular-nums text-gray-200">{formatPe(link.pe)}</span>
+          <span className="text-muted">PE </span>
+          <span className="font-mono tabular-nums text-body">{formatPe(link.pe)}</span>
         </span>
         {score !== null && scoreClasses ? (
           <span
@@ -121,8 +121,8 @@ function LinkCard({ link }: { link: StockScenarioLinkDto }): JSX.Element {
           </span>
         ) : (
           <span title="KoalaGains score not available yet">
-            <span className="text-gray-500">Score </span>
-            <span className="font-mono tabular-nums text-gray-200">—</span>
+            <span className="text-muted">Score </span>
+            <span className="font-mono tabular-nums text-body">—</span>
           </span>
         )}
       </div>
@@ -130,13 +130,13 @@ function LinkCard({ link }: { link: StockScenarioLinkDto }): JSX.Element {
         <div className="space-y-1 mt-1">
           {link.roleExplanation && (
             <div
-              className="markdown-body prose prose-invert prose-xs max-w-none text-xs text-gray-300"
+              className="markdown-body prose prose-invert prose-xs max-w-none text-xs text-muted"
               dangerouslySetInnerHTML={renderMarkdown(link.roleExplanation)}
             />
           )}
           {link.expectedPriceChangeExplanation && (
             <div
-              className="markdown-body prose prose-invert prose-xs max-w-none text-xs text-gray-400"
+              className="markdown-body prose prose-invert prose-xs max-w-none text-xs text-muted"
               dangerouslySetInnerHTML={renderMarkdown(link.expectedPriceChangeExplanation)}
             />
           )}
@@ -152,14 +152,14 @@ function LinkCard({ link }: { link: StockScenarioLinkDto }): JSX.Element {
       <Link
         href={`/stocks/${link.exchange}/${link.symbol}`}
         prefetch={false}
-        className="block bg-[#111827] border border-[#374151] rounded-md p-2.5 hover:border-blue-500 hover:bg-[#0f1623] transition-colors"
+        className="block bg-bg border border-border rounded-md p-2.5 hover:border-blue-500 hover:bg-surface-2 transition-colors"
       >
         {body}
       </Link>
     );
   }
 
-  return <div className="bg-[#111827] border border-[#374151] rounded-md p-2.5">{body}</div>;
+  return <div className="bg-bg border border-border rounded-md p-2.5">{body}</div>;
 }
 
 function LinkList({
@@ -180,15 +180,15 @@ function LinkList({
   const anyDetailed = links.length > 0;
   return (
     <div>
-      <h3 className="text-sm font-semibold uppercase tracking-wide text-gray-300 mb-2">
+      <h3 className="text-sm font-semibold uppercase tracking-wide text-muted mb-2">
         {title}{' '}
-        <span className="text-xs font-normal text-gray-500">
+        <span className="text-xs font-normal text-muted">
           ({filteredCount}
           {countryFilter !== 'ALL' ? ` in ${countryFilter}` : ''})
         </span>
       </h3>
       {links.length === 0 ? (
-        <p className="text-xs text-gray-500">{emptyLabel}</p>
+        <p className="text-xs text-muted">{emptyLabel}</p>
       ) : anyDetailed ? (
         <div className="flex flex-col gap-2">
           {links.map((l) => (
@@ -238,13 +238,13 @@ export default function StockScenarioLinkColumns({ winners, losers, tenBaggers, 
   const gridClass = hasBaggers ? 'grid grid-cols-1 md:grid-cols-3 gap-4' : 'grid grid-cols-1 md:grid-cols-2 gap-4';
 
   return (
-    <section className="bg-[#1F2937] border border-[#374151] rounded-lg p-4 space-y-4">
+    <section className="bg-surface border border-border rounded-lg p-4 space-y-4">
       <div className="flex flex-wrap items-center justify-between gap-2">
-        <h2 className="text-xl font-bold text-white">Tagged stocks</h2>
-        <label className="flex items-center gap-2 text-xs text-gray-300">
-          <span className="uppercase tracking-wide text-[11px] text-gray-400">Filter by country</span>
+        <h2 className="text-xl font-bold text-heading">Tagged stocks</h2>
+        <label className="flex items-center gap-2 text-xs text-muted">
+          <span className="uppercase tracking-wide text-[11px] text-muted">Filter by country</span>
           <select
-            className="bg-[#111827] border border-[#374151] rounded px-2 py-1 text-xs text-white focus:outline-none focus:border-[#F59E0B]"
+            className="bg-bg border border-border rounded px-2 py-1 text-xs text-heading focus:outline-none focus:border-amber-500"
             value={countryFilter}
             onChange={(e) => setCountryFilter(e.target.value as SupportedCountries | 'ALL')}
           >

@@ -12,7 +12,7 @@ export interface SelectIndustryAndSubIndustryProps {
 }
 
 const selectClassName =
-  'w-full rounded-md py-1.5 pl-3 pr-10 text-sm shadow-sm ring-1 ring-inset ring-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-[var(--bg-color)] text-[var(--text-color)]';
+  'w-full rounded-md py-1.5 pl-3 pr-10 text-sm shadow-sm ring-1 ring-inset ring-border focus:outline-none focus:ring-2 focus:ring-primary bg-[var(--bg-color)] text-[var(--text-color)]';
 
 export default function SelectIndustryAndSubIndustry({
   selectedIndustry,
@@ -116,8 +116,8 @@ export default function SelectIndustryAndSubIndustry({
         </div>
       </div>
 
-      <div className="mt-2 p-2 border border-gray-300 rounded-lg">
-        <p className="text-xs text-blue-700 dark:text-blue-300">
+      <div className="mt-2 p-2 border border-border rounded-lg">
+        <p className="text-xs text-blue-300">
           Filtering by: {selectedIndustry?.name}
           {' → '}
           {selectedSubIndustry?.name}

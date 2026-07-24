@@ -129,7 +129,7 @@ export default function SlideContentModal({ open, onClose, slide, slideNumber, o
             value={item}
             onChange={(e) => handleArrayChange(field, index, e.target.value)}
             disabled={!isEditing}
-            className="flex-1 px-3 py-2 border rounded-md dark:bg-gray-800 dark:border-gray-600 disabled:opacity-60"
+            className="flex-1 px-3 py-2 border rounded-md bg-surface border-border disabled:opacity-60"
           />
           {isEditing && (
             <button onClick={() => handleRemoveArrayItem(field, index)} className="px-3 py-2 text-red-500 hover:bg-red-100 rounded-md">
@@ -139,7 +139,7 @@ export default function SlideContentModal({ open, onClose, slide, slideNumber, o
         </div>
       ))}
       {isEditing && (
-        <button onClick={() => handleAddArrayItem(field)} className="text-sm text-blue-500 hover:underline">
+        <button onClick={() => handleAddArrayItem(field)} className="text-sm text-link hover:underline">
           + Add item
         </button>
       )}
@@ -165,7 +165,7 @@ export default function SlideContentModal({ open, onClose, slide, slideNumber, o
             value={editedSlide.type}
             onChange={(e) => handleFieldChange('type', e.target.value)}
             disabled={!isEditing}
-            className="w-full px-3 py-2 border rounded-md dark:bg-gray-800 dark:border-gray-600 disabled:opacity-60"
+            className="w-full px-3 py-2 border rounded-md bg-surface border-border disabled:opacity-60"
           >
             {SLIDE_TYPES.map((t) => (
               <option key={t} value={t}>
@@ -183,7 +183,7 @@ export default function SlideContentModal({ open, onClose, slide, slideNumber, o
             value={editedSlide.title}
             onChange={(e) => handleFieldChange('title', e.target.value)}
             disabled={!isEditing}
-            className="w-full px-3 py-2 border rounded-md dark:bg-gray-800 dark:border-gray-600 disabled:opacity-60"
+            className="w-full px-3 py-2 border rounded-md bg-surface border-border disabled:opacity-60"
           />
         </div>
 
@@ -197,9 +197,9 @@ export default function SlideContentModal({ open, onClose, slide, slideNumber, o
               onChange={(e) => handleFieldChange('titleAccent', e.target.value)}
               disabled={!isEditing}
               placeholder="Text from title to highlight in accent color"
-              className="w-full px-3 py-2 border rounded-md dark:bg-gray-800 dark:border-gray-600 disabled:opacity-60"
+              className="w-full px-3 py-2 border rounded-md bg-surface border-border disabled:opacity-60"
             />
-            <p className="text-xs text-gray-500 mt-1">Enter text that appears in the title to highlight it in blue</p>
+            <p className="text-xs text-muted mt-1">Enter text that appears in the title to highlight it in blue</p>
           </div>
         )}
 
@@ -212,7 +212,7 @@ export default function SlideContentModal({ open, onClose, slide, slideNumber, o
               value={editedSlide.subtitle || ''}
               onChange={(e) => handleFieldChange('subtitle', e.target.value)}
               disabled={!isEditing}
-              className="w-full px-3 py-2 border rounded-md dark:bg-gray-800 dark:border-gray-600 disabled:opacity-60"
+              className="w-full px-3 py-2 border rounded-md bg-surface border-border disabled:opacity-60"
             />
           </div>
         )}
@@ -222,7 +222,7 @@ export default function SlideContentModal({ open, onClose, slide, slideNumber, o
           <>
             {renderArrayField('bullets', 'Bullets', editedSlide.bullets || [])}
             {renderArrayField('bulletAccents', 'Bullet Accents (optional)', editedSlide.bulletAccents || [])}
-            <p className="text-xs text-gray-500 mb-4">Enter text from each bullet to highlight in blue (one per bullet)</p>
+            <p className="text-xs text-muted mb-4">Enter text from each bullet to highlight in blue (one per bullet)</p>
           </>
         )}
 
@@ -231,7 +231,7 @@ export default function SlideContentModal({ open, onClose, slide, slideNumber, o
           <>
             {renderArrayField('paragraphs', 'Paragraphs', editedSlide.paragraphs || [])}
             {renderArrayField('paragraphAccents', 'Paragraph Accents (optional)', editedSlide.paragraphAccents || [])}
-            <p className="text-xs text-gray-500 mb-4">Enter text from each paragraph to highlight/underline (one per paragraph)</p>
+            <p className="text-xs text-muted mb-4">Enter text from each paragraph to highlight/underline (one per paragraph)</p>
           </>
         )}
 
@@ -244,7 +244,7 @@ export default function SlideContentModal({ open, onClose, slide, slideNumber, o
               value={editedSlide.imageUrl || ''}
               onChange={(e) => handleFieldChange('imageUrl', e.target.value)}
               disabled={!isEditing}
-              className="w-full px-3 py-2 border rounded-md dark:bg-gray-800 dark:border-gray-600 disabled:opacity-60"
+              className="w-full px-3 py-2 border rounded-md bg-surface border-border disabled:opacity-60"
             />
           </div>
         )}
@@ -257,7 +257,7 @@ export default function SlideContentModal({ open, onClose, slide, slideNumber, o
             onChange={(e) => handleFieldChange('narration', e.target.value)}
             disabled={!isEditing}
             rows={4}
-            className="w-full px-3 py-2 border rounded-md dark:bg-gray-800 dark:border-gray-600 disabled:opacity-60"
+            className="w-full px-3 py-2 border rounded-md bg-surface border-border disabled:opacity-60"
           />
         </div>
 

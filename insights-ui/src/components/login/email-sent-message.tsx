@@ -22,7 +22,7 @@ export function EmailSentMessage({ email, onChangeEmail, compact = false }: Emai
               <div className="text-center">
                 <div className="flex justify-center mb-6">
                   <div className="inline-flex items-center justify-center w-16 h-16 rounded-xl bg-gradient-to-r from-indigo-500 to-purple-600 shadow-lg transition-transform duration-300">
-                    <Mail className="h-8 w-8 text-white" aria-hidden="true" />
+                    <Mail className="h-8 w-8 text-heading" aria-hidden="true" />
                   </div>
                 </div>
 
@@ -45,7 +45,7 @@ export function EmailSentMessage({ email, onChangeEmail, compact = false }: Emai
                 <CardContent>
                   <div className="flex flex-col items-center justify-center space-y-5">
                     <div className="p-3 rounded-full bg-gradient-to-r from-blue-500 to-cyan-600 shadow-lg">
-                      <Mail className="h-6 w-6 text-white" aria-hidden="true" />
+                      <Mail className="h-6 w-6 text-heading" aria-hidden="true" />
                     </div>
 
                     <p className="text-center text-sm text-body sm:text-base">

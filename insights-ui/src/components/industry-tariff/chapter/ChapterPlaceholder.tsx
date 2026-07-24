@@ -43,7 +43,7 @@ export default function ChapterPlaceholder({ chapter, pageTitle, currentSectionS
           </div>
         </header>
 
-        <section className="rounded-lg border border-gray-700/60 bg-gray-800/40 p-5">
+        <section className="rounded-lg border border-border bg-surface p-5">
           <h2 className="text-lg font-semibold">Detailed analysis is being prepared</h2>
           <p className="mt-2 text-sm text-muted-foreground">
             We&apos;re building out the full tariff analysis for HTS Chapter {padded} ({chapter.title}). Use the navigation below to explore the sections of

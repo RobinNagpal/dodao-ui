@@ -74,8 +74,8 @@ function ResultPanel({ result }: { result: AdminInvalidateCacheResult }): JSX.El
 
       {cachedPaths.length > 0 && (
         <div>
-          <p className="text-sm font-medium text-gray-200">Forwarded to CloudFront ({cachedPaths.length}):</p>
-          <ul className="mt-1 text-sm text-gray-300 list-disc list-inside space-y-0.5">
+          <p className="text-sm font-medium text-body">Forwarded to CloudFront ({cachedPaths.length}):</p>
+          <ul className="mt-1 text-sm text-muted list-disc list-inside space-y-0.5">
             {cachedPaths.map((p) => (
               <li key={`cached-${p}`} className="font-mono break-all">
                 {p}
@@ -87,8 +87,8 @@ function ResultPanel({ result }: { result: AdminInvalidateCacheResult }): JSX.El
 
       {uncachedPaths.length > 0 && (
         <div>
-          <p className="text-sm font-medium text-gray-200">Skipped — not under any CloudFront-cached prefix ({uncachedPaths.length}):</p>
-          <ul className="mt-1 text-sm text-gray-300 list-disc list-inside space-y-0.5">
+          <p className="text-sm font-medium text-body">Skipped — not under any CloudFront-cached prefix ({uncachedPaths.length}):</p>
+          <ul className="mt-1 text-sm text-muted list-disc list-inside space-y-0.5">
             {uncachedPaths.map((p) => (
               <li key={`uncached-${p}`} className="font-mono break-all">
                 {p}
@@ -134,14 +134,14 @@ export default function InvalidateCachePage(): JSX.Element {
 
   return (
     <>
-      <div className="bg-gray-800 -mx-6 px-6 py-6 mb-6 border-b border-gray-700/60">
+      <div className="bg-surface -mx-6 px-6 py-6 mb-6 border-b border-border">
         <div>
-          <h1 className="text-2xl font-semibold text-white">Invalidate CloudFront Cache</h1>
-          <p className="text-gray-300 mt-1">Paste one or more URLs (or absolute paths) — one per line — to purge them from the CloudFront edge cache.</p>
+          <h1 className="text-2xl font-semibold text-heading">Invalidate CloudFront Cache</h1>
+          <p className="text-muted mt-1">Paste one or more URLs (or absolute paths) — one per line — to purge them from the CloudFront edge cache.</p>
         </div>
       </div>
 
-      <div className="rounded-lg border border-gray-700/50 bg-gray-900/40 p-4 space-y-4">
+      <div className="rounded-lg border border-border bg-bg p-4 space-y-4">
         <TextareaAutosize
           label="URLs or paths to invalidate (one per line)"
           modelValue={input}
@@ -152,7 +152,7 @@ export default function InvalidateCachePage(): JSX.Element {
           placeholder={'https://koalagains.com/stocks/NYSE/RTX\n/stocks/management-team-sitemap.xml'}
         />
 
-        <div className="text-sm text-gray-300 space-y-1">
+        <div className="text-sm text-muted space-y-1">
           <p>
             Parsed <strong>{parsed.paths.length}</strong> path{parsed.paths.length === 1 ? '' : 's'} from input.
           </p>
@@ -162,7 +162,7 @@ export default function InvalidateCachePage(): JSX.Element {
               <span className="ml-2 font-mono">{parsed.invalid.join(', ')}</span>
             </p>
           )}
-          <p className="text-gray-400">
+          <p className="text-muted">
             Wildcards are supported (e.g. <span className="font-mono">/stocks/NYSE/RTX*</span>). Only paths under CloudFront-cached prefixes are forwarded to
             AWS; the rest are ignored as no-ops.
           </p>

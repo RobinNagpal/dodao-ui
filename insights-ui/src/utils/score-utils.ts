@@ -20,8 +20,8 @@ export enum AnalysisResult {
  * @returns Object containing text color class, background color class, and display label
  */
 export function getAnalysisResultColorClasses(result: string | null | undefined) {
-  let textColorClass = 'text-gray-500';
-  let bgColorClass = 'bg-gray-500';
+  let textColorClass = 'text-muted';
+  let bgColorClass = 'bg-surface-3';
   let displayLabel = 'N/A';
 
   switch (result) {
@@ -46,13 +46,13 @@ export function getAnalysisResultColorClasses(result: string | null | undefined)
       displayLabel = 'Excellent';
       break;
     case AnalysisResult.UNKNOWN:
-      textColorClass = 'text-gray-400';
-      bgColorClass = 'bg-gray-400';
+      textColorClass = 'text-muted';
+      bgColorClass = 'bg-surface-3';
       displayLabel = 'Unknown';
       break;
     case AnalysisResult.NOT_APPLICABLE:
-      textColorClass = 'text-slate-500';
-      bgColorClass = 'bg-slate-500';
+      textColorClass = 'text-muted';
+      bgColorClass = 'bg-surface-3';
       displayLabel = 'Not Applicable';
       break;
   }
@@ -98,7 +98,7 @@ export function getScoreColorClasses(score: number) {
  */
 export function getEtfScoreColorClasses(score: number | null) {
   if (score === null) {
-    return { textColorClass: 'text-gray-400', bgColorClass: 'bg-gray-500', scoreLabel: 'Unknown' };
+    return { textColorClass: 'text-muted', bgColorClass: 'bg-surface-3', scoreLabel: 'Unknown' };
   }
 
   let textColorClass = 'text-green-500';

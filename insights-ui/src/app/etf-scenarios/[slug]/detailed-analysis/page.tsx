@@ -69,7 +69,7 @@ export default async function EtfScenarioDetailedAnalysisPage({ params }: { para
         />
 
         <div className="mt-6">
-          <Link href={`/etf-scenarios/${scenario.slug}`} className="text-sm text-[#FBBF24] hover:underline">
+          <Link href={`/etf-scenarios/${scenario.slug}`} className="text-sm text-amber-400 hover:underline">
             ← Back to scenario summary
           </Link>
         </div>

@@ -90,7 +90,7 @@ export default function FavouriteButton({ tickerId, tickerSymbol, tickerName }: 
       <button
         onClick={handleFavouriteClick}
         className={`inline-flex items-center px-4 py-2 text-sm font-medium ${
-          favouriteTicker ? 'bg-blue-700 hover:bg-blue-600 border-blue-600 text-white' : 'bg-surface-2 hover:bg-surface-3 border-surface-3 text-heading'
+          favouriteTicker ? 'bg-primary border-primary text-primary-text' : 'bg-surface-2 hover:bg-surface-3 border-surface-3 text-heading'
         } border rounded-lg shadow-md relative z-10`}
         title={!session ? 'Login to add to favourites' : favouriteTicker ? 'Edit favourite' : 'Add to favourites'}
       >

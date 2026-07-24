@@ -41,7 +41,7 @@ function getAuthProviderBadgeClasses(authProvider: string): string {
     case 'crypto':
       return 'bg-emerald-900 text-emerald-200';
     default:
-      return 'bg-gray-700 text-gray-200';
+      return 'bg-surface-2 text-body';
   }
 }
 
@@ -71,18 +71,18 @@ export default function UserRow({ user, onEdit, onDelete, onPortfolioProfile }: 
         </span>
       </td>
       <td className="px-6 py-4">
-        <div className="text-sm text-gray-400">{new Date(user.createdAt).toLocaleDateString()}</div>
+        <div className="text-sm text-muted">{new Date(user.createdAt).toLocaleDateString()}</div>
       </td>
       <td className="px-6 py-4">
-        <div className="text-sm text-gray-300">{user.favouriteItemsCount}</div>
+        <div className="text-sm text-muted">{user.favouriteItemsCount}</div>
       </td>
       <td className="px-6 py-4 text-sm font-medium">
         <div className="flex space-x-3">
-          <button onClick={() => onPortfolioProfile(user)} className="text-blue-400 hover:text-blue-300 font-medium transition-colors flex items-center">
+          <button onClick={() => onPortfolioProfile(user)} className="text-link hover:text-link font-medium transition-colors flex items-center">
             <User className="h-4 w-4 mr-1" />
             Portfolio
           </button>
-          <button onClick={() => onEdit(user)} className="text-indigo-400 hover:text-indigo-300 font-medium transition-colors flex items-center">
+          <button onClick={() => onEdit(user)} className="text-link hover:text-link font-medium transition-colors flex items-center">
             <Edit className="h-4 w-4 mr-1" />
             Edit
           </button>

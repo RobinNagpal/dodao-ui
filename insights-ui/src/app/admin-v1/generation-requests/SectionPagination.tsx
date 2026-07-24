@@ -20,8 +20,8 @@ export default function SectionPagination({ currentPage, totalCount, rowsOnPage,
   const rangeEnd: number = (currentPage - 1) * pageSize + rowsOnPage;
 
   return (
-    <div className="flex items-center justify-between px-2 py-3 mt-3 border-t border-gray-700/60">
-      <span className="text-sm text-gray-400">
+    <div className="flex items-center justify-between px-2 py-3 mt-3 border-t border-border">
+      <span className="text-sm text-muted">
         Showing {rangeStart}
         {'–'}
         {rangeEnd} of {totalCount}
@@ -30,18 +30,18 @@ export default function SectionPagination({ currentPage, totalCount, rowsOnPage,
         <button
           onClick={() => onPageChange(Math.max(1, currentPage - 1))}
           disabled={currentPage === 1}
-          className="p-2 rounded-md text-gray-300 hover:bg-gray-700 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+          className="p-2 rounded-md text-muted hover:bg-surface-2 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
           title="Previous page"
         >
           <ChevronLeftIcon className="h-5 w-5" />
         </button>
-        <span className="text-sm text-gray-300">
+        <span className="text-sm text-muted">
           Page {currentPage} of {totalPages}
         </span>
         <button
           onClick={() => onPageChange(Math.min(totalPages, currentPage + 1))}
           disabled={currentPage === totalPages}
-          className="p-2 rounded-md text-gray-300 hover:bg-gray-700 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+          className="p-2 rounded-md text-muted hover:bg-surface-2 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
           title="Next page"
         >
           <ChevronRightIcon className="h-5 w-5" />

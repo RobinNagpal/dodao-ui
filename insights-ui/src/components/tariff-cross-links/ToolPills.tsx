@@ -10,7 +10,7 @@ export interface ToolPillLink {
 }
 
 const TONE_CLASSES: Record<NonNullable<ToolPillLink['tone']>, string> = {
-  indigo: 'bg-indigo-500/10 text-indigo-300 ring-indigo-500/30 hover:bg-indigo-500/20 hover:text-indigo-200',
+  indigo: 'bg-indigo-500/10 text-indigo-300 ring-indigo-500/30 hover:bg-indigo-500/20 hover:text-link',
   emerald: 'bg-emerald-500/10 text-emerald-300 ring-emerald-500/30 hover:bg-emerald-500/20 hover:text-emerald-200',
   amber: 'bg-amber-500/10 text-amber-300 ring-amber-500/30 hover:bg-amber-500/20 hover:text-amber-200',
 };

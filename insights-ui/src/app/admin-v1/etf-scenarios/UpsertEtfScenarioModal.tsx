@@ -236,15 +236,15 @@ export default function UpsertEtfScenarioModal({ isOpen, onClose, onSuccess, sce
         />
 
         <div>
-          <p className="text-sm text-gray-300 mb-1">Countries in scope ({ETF_SUPPORTED_COUNTRIES.join(' / ')} — at least one required)</p>
+          <p className="text-sm text-muted mb-1">Countries in scope ({ETF_SUPPORTED_COUNTRIES.join(' / ')} — at least one required)</p>
           <Checkboxes items={countryItems} selectedItemIds={countries} onChange={(ids: string[]) => setCountries(ids as EtfSupportedCountry[])} />
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
           <label className="flex flex-col gap-1 text-sm">
-            <span className="text-gray-300">Direction</span>
+            <span className="text-muted">Direction</span>
             <select
-              className="bg-[#111827] border border-[#374151] rounded px-2 py-1.5 text-sm text-white"
+              className="bg-bg border border-border rounded px-2 py-1.5 text-sm text-heading"
               value={direction}
               onChange={(e) => setDirection(e.target.value as EtfScenarioDirection)}
             >
@@ -256,9 +256,9 @@ export default function UpsertEtfScenarioModal({ isOpen, onClose, onSuccess, sce
             </select>
           </label>
           <label className="flex flex-col gap-1 text-sm">
-            <span className="text-gray-300">Timeframe</span>
+            <span className="text-muted">Timeframe</span>
             <select
-              className="bg-[#111827] border border-[#374151] rounded px-2 py-1.5 text-sm text-white"
+              className="bg-bg border border-border rounded px-2 py-1.5 text-sm text-heading"
               value={timeframe}
               onChange={(e) => setTimeframe(e.target.value as EtfScenarioTimeframe)}
             >
@@ -270,9 +270,9 @@ export default function UpsertEtfScenarioModal({ isOpen, onClose, onSuccess, sce
             </select>
           </label>
           <label className="flex flex-col gap-1 text-sm">
-            <span className="text-gray-300">Probability bucket</span>
+            <span className="text-muted">Probability bucket</span>
             <select
-              className="bg-[#111827] border border-[#374151] rounded px-2 py-1.5 text-sm text-white"
+              className="bg-bg border border-border rounded px-2 py-1.5 text-sm text-heading"
               value={probabilityBucket}
               onChange={(e) => setProbabilityBucket(e.target.value as EtfScenarioProbabilityBucket)}
             >
@@ -287,22 +287,22 @@ export default function UpsertEtfScenarioModal({ isOpen, onClose, onSuccess, sce
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
           <label className="flex flex-col gap-1 text-sm">
-            <span className="text-gray-300">Precise probability % (optional, 0–100)</span>
+            <span className="text-muted">Precise probability % (optional, 0–100)</span>
             <input
               type="number"
               min={0}
               max={100}
-              className="bg-[#111827] border border-[#374151] rounded px-2 py-1.5 text-sm text-white"
+              className="bg-bg border border-border rounded px-2 py-1.5 text-sm text-heading"
               value={probabilityPercentage}
               onChange={(e) => setProbabilityPercentage(e.target.value)}
               placeholder="e.g. 30"
             />
           </label>
           <label className="flex flex-col gap-1 text-sm">
-            <span className="text-gray-300">Outlook as-of date</span>
+            <span className="text-muted">Outlook as-of date</span>
             <input
               type="date"
-              className="bg-[#111827] border border-[#374151] rounded px-2 py-1.5 text-sm text-white"
+              className="bg-bg border border-border rounded px-2 py-1.5 text-sm text-heading"
               value={outlookAsOfDate}
               onChange={(e) => setOutlookAsOfDate(e.target.value)}
             />
@@ -311,9 +311,9 @@ export default function UpsertEtfScenarioModal({ isOpen, onClose, onSuccess, sce
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
           <label className="flex flex-col gap-1 text-sm">
-            <span className="text-gray-300">Priced in</span>
+            <span className="text-muted">Priced in</span>
             <select
-              className="bg-[#111827] border border-[#374151] rounded px-2 py-1.5 text-sm text-white"
+              className="bg-bg border border-border rounded px-2 py-1.5 text-sm text-heading"
               value={pricedInBucket}
               onChange={(e) => setPricedInBucket(e.target.value as EtfScenarioPricedInBucket)}
             >
@@ -325,12 +325,12 @@ export default function UpsertEtfScenarioModal({ isOpen, onClose, onSuccess, sce
             </select>
           </label>
           <label className="flex flex-col gap-1 text-sm">
-            <span className="text-gray-300">Expected price change % (average still to move, -100 to 100)</span>
+            <span className="text-muted">Expected price change % (average still to move, -100 to 100)</span>
             <input
               type="number"
               min={-100}
               max={100}
-              className="bg-[#111827] border border-[#374151] rounded px-2 py-1.5 text-sm text-white"
+              className="bg-bg border border-border rounded px-2 py-1.5 text-sm text-heading"
               value={expectedPriceChange}
               onChange={(e) => setExpectedPriceChange(e.target.value)}
               placeholder="e.g. -15"

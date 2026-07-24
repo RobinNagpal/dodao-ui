@@ -19,7 +19,7 @@ export default function MobileNavToggle({ basePath, navTitle, lastModified }: Mo
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <button
-          className="bg-primary hover:bg-primary text-heading p-3 sm:px-4 sm:py-3 rounded-full shadow-lg transition-all duration-200 hover:scale-105 flex items-center gap-2"
+          className="bg-primary text-primary-text p-3 sm:px-4 sm:py-3 rounded-full shadow-lg transition-all duration-200 hover:scale-105 flex items-center gap-2"
           aria-label="Show navigation"
         >
           <Menu className="h-5 w-5" />

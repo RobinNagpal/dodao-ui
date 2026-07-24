@@ -27,9 +27,7 @@ function CopyButton({ text }: { text: string }) {
         setCopied(true);
         setTimeout(() => setCopied(false), 2000);
       }}
-      className={`px-3 py-1 rounded text-sm text-white transition-colors duration-200 ${
-        copied ? 'bg-green-600 hover:bg-green-500' : 'bg-blue-600 hover:bg-blue-500'
-      }`}
+      className={`px-3 py-1 rounded text-sm text-primary-text transition-colors duration-200 ${copied ? 'bg-green-600 hover:bg-green-500' : 'bg-primary'}`}
     >
       {copied ? 'Copied!' : 'Copy Markdown'}
     </button>
@@ -110,7 +108,7 @@ export default function PromptInvocationDetailsPage() {
         <p className="mb-4">Updated By: {invocation.updatedBy}</p>
         <div className="mb-4">
           <h2 className="heading-color">Prompt Template</h2>
-          <div className="flex-1 border-l border-gray-200">
+          <div className="flex-1 border-l border-border">
             <Editor
               height="300px"
               defaultLanguage="markdown"

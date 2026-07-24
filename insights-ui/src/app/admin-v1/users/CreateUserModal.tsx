@@ -87,7 +87,7 @@ export default function CreateUserModal({ isOpen, onClose, onSuccess }: CreateUs
       title="Create New User"
     >
       <div className="mt-4">
-        <p className="text-sm text-gray-500 mb-4 text-left">Add a new user to the system. Email is required.</p>
+        <p className="text-sm text-muted mb-4 text-left">Add a new user to the system. Email is required.</p>
         <form onSubmit={handleSubmit} className="text-left space-y-4">
           <Input label="Email" id="email" modelValue={email} onUpdate={(value) => setEmail(value as string)} placeholder="user@example.com" required={true} />
 

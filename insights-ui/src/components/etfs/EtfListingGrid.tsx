@@ -69,7 +69,7 @@ function EtfCard({ etf }: { etf: EtfListingItem }): JSX.Element {
     >
       <div className="flex items-center justify-between mb-3 gap-2">
         <div className="flex items-center gap-2 min-w-0">
-          <span className="bg-gradient-to-r from-[#F59E0B] to-[#FBBF24] text-black text-xs font-bold px-2 py-0.5 rounded">{etf.symbol}</span>
+          <span className="bg-gradient-to-r from-amber-500 to-amber-400 text-black text-xs font-bold px-2 py-0.5 rounded">{etf.symbol}</span>
           <span className="text-xs text-muted">{etf.exchange}</span>
         </div>
         <div className="flex items-center gap-2 shrink-0">

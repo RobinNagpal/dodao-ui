@@ -52,7 +52,7 @@ export default function TopNav() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const pathname = usePathname() ?? ''; // <-- safe for null
   // The navbar themes itself by toggling its own `.dark` class rather than by
-  // token swap: it already ships full `bg-white … dark:bg-gray-900` variants, so
+  // token swap: it already ships full `… bg-bg` variants, so
   // flipping the `.dark` ancestor is all that's needed. It reads the app-wide
   // theme from the global provider it now renders inside.
   const navTheme = usePageTheme();
@@ -82,7 +82,7 @@ export default function TopNav() {
   // force-darkened.
   return (
     <div className={navTheme === 'dark' ? 'dark' : ''}>
-      <header className="bg-white dark:bg-gray-900">
+      <header className="bg-bg">
         <nav aria-label="Global" className="mx-auto flex max-w-7xl items-center justify-between p-4 lg:px-6">
           <div className="flex lg:flex-1">
             <Link href="/" className="-m-1.5 p-1.5 shrink-0" aria-label="KoalaGains home">
@@ -102,11 +102,7 @@ export default function TopNav() {
           </div>
 
           <div className="flex lg:hidden">
-            <button
-              type="button"
-              onClick={openMobileMenu}
-              className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700 dark:text-gray-400"
-            >
+            <button type="button" onClick={openMobileMenu} className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-muted">
               <span className="sr-only">Open main menu</span>
               <Bars3Icon aria-hidden="true" className="size-6" />
             </button>
@@ -116,17 +112,14 @@ export default function TopNav() {
             <div className="flex gap-6 items-center">
               {isStocksRoute && session && (
                 <PopoverGroup className="flex gap-x-6">
-                  <Link href="/favourites" className="text-sm/6 font-semibold text-gray-900 dark:text-white hover:text-indigo-600 dark:hover:text-indigo-400">
+                  <Link href="/favourites" className="text-sm/6 font-semibold text-heading hover:text-link">
                     My Favourite Stocks
                   </Link>
                 </PopoverGroup>
               )}
               {isEtfsRoute && session && (
                 <PopoverGroup className="flex gap-x-6">
-                  <Link
-                    href="/etf-favourites"
-                    className="text-sm/6 font-semibold text-gray-900 dark:text-white hover:text-indigo-600 dark:hover:text-indigo-400"
-                  >
+                  <Link href="/etf-favourites" className="text-sm/6 font-semibold text-heading hover:text-link">
                     My Favourite ETFs
                   </Link>
                 </PopoverGroup>
@@ -136,30 +129,27 @@ export default function TopNav() {
                   <Popover className="relative">
                     {({ close }) => (
                       <>
-                        <PopoverButton className="flex items-center gap-x-1 text-sm/6 font-semibold text-gray-900 dark:text-white data-[open]:text-indigo-600 dark:data-[open]:text-indigo-400">
+                        <PopoverButton className="flex items-center gap-x-1 text-sm/6 font-semibold text-heading data-[open]:text-primary dark:data-[open]:text-link">
                           KoalaGains Insights
-                          <ChevronDownIcon
-                            aria-hidden="true"
-                            className="size-5 flex-none text-gray-400 dark:text-gray-500 data-[open]:text-indigo-600 dark:data-[open]:text-indigo-400"
-                          />
+                          <ChevronDownIcon aria-hidden="true" className="size-5 flex-none text-muted data-[open]:text-primary dark:data-[open]:text-link" />
                         </PopoverButton>
 
                         <PopoverPanel
                           transition
-                          className="absolute left-1/2 z-10 mt-3 w-screen max-w-xs -translate-x-1/2 overflow-hidden rounded-3xl bg-white shadow-lg outline outline-1 outline-gray-900/5 transition data-[closed]:translate-y-1 data-[closed]:opacity-0 data-[enter]:duration-200 data-[leave]:duration-150 data-[enter]:ease-out data-[leave]:ease-in dark:bg-gray-800 dark:shadow-none dark:-outline-offset-1 dark:outline-white/10"
+                          className="absolute left-1/2 z-10 mt-3 w-screen max-w-xs -translate-x-1/2 overflow-hidden rounded-3xl shadow-lg outline outline-1 outline-gray-900/5 transition data-[closed]:translate-y-1 data-[closed]:opacity-0 data-[enter]:duration-200 data-[leave]:duration-150 data-[enter]:ease-out data-[leave]:ease-in bg-surface dark:shadow-none dark:-outline-offset-1 dark:outline-white/10"
                         >
                           <div className="p-2.5">
                             {reportsDropdown.map((item) => (
                               <div
                                 key={item.name}
-                                className="group relative flex items-center gap-x-6 rounded-lg p-3 text-sm/6 hover:bg-gray-50 dark:hover:bg-white/5"
+                                className="group relative flex items-center gap-x-6 rounded-lg p-3 text-sm/6 hover:bg-surface dark:hover:bg-white/5"
                               >
                                 <div className="flex-auto">
-                                  <Link href={item.href} className="block font-semibold text-gray-900 dark:text-white" onClick={() => close()}>
+                                  <Link href={item.href} className="block font-semibold text-heading" onClick={() => close()}>
                                     {item.name}
                                     <span className="absolute inset-0" />
                                   </Link>
-                                  <p className="mt-1 text-xs text-gray-600 dark:text-gray-400">{item.description}</p>
+                                  <p className="mt-1 text-xs text-muted">{item.description}</p>
                                 </div>
                               </div>
                             ))}
@@ -172,30 +162,27 @@ export default function TopNav() {
                   <Popover className="relative">
                     {({ close }) => (
                       <>
-                        <PopoverButton className="flex items-center gap-x-1 text-sm/6 font-semibold text-gray-900 dark:text-white data-[open]:text-indigo-600 dark:data-[open]:text-indigo-400">
+                        <PopoverButton className="flex items-center gap-x-1 text-sm/6 font-semibold text-heading data-[open]:text-primary dark:data-[open]:text-link">
                           Gen AI Adoption
-                          <ChevronDownIcon
-                            aria-hidden="true"
-                            className="size-5 flex-none text-gray-400 dark:text-gray-500 data-[open]:text-indigo-600 dark:data-[open]:text-indigo-400"
-                          />
+                          <ChevronDownIcon aria-hidden="true" className="size-5 flex-none text-muted data-[open]:text-primary dark:data-[open]:text-link" />
                         </PopoverButton>
 
                         <PopoverPanel
                           transition
-                          className="absolute left-1/2 z-10 mt-3 w-screen max-w-xs -translate-x-1/2 overflow-hidden rounded-3xl bg-white shadow-lg outline outline-1 outline-gray-900/5 transition data-[closed]:translate-y-1 data-[closed]:opacity-0 data-[enter]:duration-200 data-[leave]:duration-150 data-[enter]:ease-out data-[leave]:ease-in dark:bg-gray-800 dark:shadow-none dark:-outline-offset-1 dark:outline-white/10"
+                          className="absolute left-1/2 z-10 mt-3 w-screen max-w-xs -translate-x-1/2 overflow-hidden rounded-3xl shadow-lg outline outline-1 outline-gray-900/5 transition data-[closed]:translate-y-1 data-[closed]:opacity-0 data-[enter]:duration-200 data-[leave]:duration-150 data-[enter]:ease-out data-[leave]:ease-in bg-surface dark:shadow-none dark:-outline-offset-1 dark:outline-white/10"
                         >
                           <div className="p-3">
                             {genaiDropdown.map((item) => (
                               <div
                                 key={item.name}
-                                className="group relative flex items-center gap-x-6 rounded-lg p-3 text-sm/6 hover:bg-gray-50 dark:hover:bg-white/5"
+                                className="group relative flex items-center gap-x-6 rounded-lg p-3 text-sm/6 hover:bg-surface dark:hover:bg-white/5"
                               >
                                 <div className="flex-auto">
-                                  <Link href={item.href} className="block font-semibold text-gray-900 dark:text-white" onClick={() => close()}>
+                                  <Link href={item.href} className="block font-semibold text-heading" onClick={() => close()}>
                                     {item.name}
                                     <span className="absolute inset-0" />
                                   </Link>
-                                  <p className="mt-1 text-gray-600 dark:text-gray-400">{item.description}</p>
+                                  <p className="mt-1 text-muted">{item.description}</p>
                                 </div>
                               </div>
                             ))}

@@ -36,7 +36,7 @@ interface StockScenarioFiltersBarProps {
   onSearchChange: (s: string) => void;
 }
 
-const SELECT_CLASSES = 'w-full bg-[#111827] border border-[#374151] rounded px-2 py-1.5 text-sm text-white focus:outline-none focus:border-[#F59E0B]';
+const SELECT_CLASSES = 'w-full bg-bg border border-border rounded px-2 py-1.5 text-sm text-heading focus:outline-none focus:border-amber-500';
 
 export default function StockScenarioFiltersBar({
   direction,
@@ -51,9 +51,9 @@ export default function StockScenarioFiltersBar({
   onSearchChange,
 }: StockScenarioFiltersBarProps): JSX.Element {
   return (
-    <div className="bg-[#1F2937] border border-[#374151] rounded-lg p-3 mb-4 flex flex-col gap-3">
-      <label className="flex flex-col gap-1 text-xs text-gray-300 sm:max-w-xs">
-        <span className="uppercase tracking-wide text-[11px] text-gray-400">Country</span>
+    <div className="bg-surface border border-border rounded-lg p-3 mb-4 flex flex-col gap-3">
+      <label className="flex flex-col gap-1 text-xs text-muted sm:max-w-xs">
+        <span className="uppercase tracking-wide text-[11px] text-muted">Country</span>
         <select className={SELECT_CLASSES} value={country} onChange={(e) => onCountryChange(e.target.value as SupportedCountries | 'ALL')}>
           <option value="ALL">All countries</option>
           {ALL_SUPPORTED_COUNTRIES.map((c) => (
@@ -65,8 +65,8 @@ export default function StockScenarioFiltersBar({
       </label>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-        <label className="flex flex-col gap-1 text-xs text-gray-300">
-          <span className="uppercase tracking-wide text-[11px] text-gray-400">Direction</span>
+        <label className="flex flex-col gap-1 text-xs text-muted">
+          <span className="uppercase tracking-wide text-[11px] text-muted">Direction</span>
           <select className={SELECT_CLASSES} value={direction} onChange={(e) => onDirectionChange(e.target.value as ScenarioDirection | 'ALL')}>
             {DIRECTION_OPTIONS.map((opt) => (
               <option key={opt.value} value={opt.value}>
@@ -76,8 +76,8 @@ export default function StockScenarioFiltersBar({
           </select>
         </label>
 
-        <label className="flex flex-col gap-1 text-xs text-gray-300">
-          <span className="uppercase tracking-wide text-[11px] text-gray-400">Probability</span>
+        <label className="flex flex-col gap-1 text-xs text-muted">
+          <span className="uppercase tracking-wide text-[11px] text-muted">Probability</span>
           <select className={SELECT_CLASSES} value={bucket} onChange={(e) => onBucketChange(e.target.value as ScenarioProbabilityBucket | 'ALL')}>
             {BUCKET_OPTIONS.map((opt) => (
               <option key={opt.value} value={opt.value}>
@@ -87,8 +87,8 @@ export default function StockScenarioFiltersBar({
           </select>
         </label>
 
-        <label className="flex flex-col gap-1 text-xs text-gray-300">
-          <span className="uppercase tracking-wide text-[11px] text-gray-400">Timeframe</span>
+        <label className="flex flex-col gap-1 text-xs text-muted">
+          <span className="uppercase tracking-wide text-[11px] text-muted">Timeframe</span>
           <select className={SELECT_CLASSES} value={timeframe} onChange={(e) => onTimeframeChange(e.target.value as ScenarioTimeframe | 'ALL')}>
             {TIMEFRAME_OPTIONS.map((opt) => (
               <option key={opt.value} value={opt.value}>
@@ -98,8 +98,8 @@ export default function StockScenarioFiltersBar({
           </select>
         </label>
 
-        <label className="flex flex-col gap-1 text-xs text-gray-300">
-          <span className="uppercase tracking-wide text-[11px] text-gray-400">Search</span>
+        <label className="flex flex-col gap-1 text-xs text-muted">
+          <span className="uppercase tracking-wide text-[11px] text-muted">Search</span>
           <input
             type="search"
             className={SELECT_CLASSES}

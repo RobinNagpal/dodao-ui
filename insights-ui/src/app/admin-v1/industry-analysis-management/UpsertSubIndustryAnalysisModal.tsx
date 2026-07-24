@@ -181,7 +181,7 @@ export default function UpsertSubIndustryAnalysisModal({
             onUpdate={(value) => setDetails(value || '')}
             objectId={`building-block-analysis-${subIndustryAnalysis?.id || 'new'}`}
             maxHeight={200}
-            className="border border-gray-300 rounded-md"
+            className="border border-border rounded-md"
           />
         </div>
 

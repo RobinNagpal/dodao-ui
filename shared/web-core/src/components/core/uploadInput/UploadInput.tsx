@@ -54,11 +54,11 @@ export default function UploadInput({
       <UploadWrapper className="mt-2 flex rounded-md shadow-sm">
         <div className="relative flex flex-grow items-stretch focus-within:z-10">
           <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-            <PhotoIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
+            <PhotoIcon className="h-5 w-5 text-[var(--text-color)]" aria-hidden="true" />
           </div>
           <StyledInput
             id={inputId}
-            className="block w-full rounded-none rounded-l-md border-0 py-1.5 pl-10 ring-1 ring-inset placeholder:text-gray-400 ring-gray-400 shadow-sm focus:ring-2 focus:ring-inset  sm:text-sm sm:leading-6"
+            className="block w-full rounded-none rounded-l-md border-0 py-1.5 pl-10 ring-1 ring-inset placeholder:text-[var(--text-color)] placeholder:opacity-50 ring-[var(--border-color)] shadow-sm focus:ring-2 focus:ring-inset  sm:text-sm sm:leading-6"
             placeholder={placeholder}
             aria-invalid="true"
             aria-describedby="email-error"
@@ -69,14 +69,14 @@ export default function UploadInput({
         <WebCoreFileUploader
           allowedFileTypes={allowedFileTypes}
           className={
-            'relative -ml-px inline-flex items-center gap-x-1.5 rounded-r-md px-3 py-2 text-sm font-semibold ring-1 ring-inset ring-gray-300 ' +
+            'relative -ml-px inline-flex items-center gap-x-1.5 rounded-r-md px-3 py-2 text-sm font-semibold ring-1 ring-inset ring-[var(--border-color)] ' +
             styles.styledHover
           }
           uploadFile={uploadToS3}
           loading={loading}
         >
           <div className="flex">
-            <ArrowUpTrayIcon className="-ml-0.5 h-5 w-5 text-gray-400" aria-hidden="true" />
+            <ArrowUpTrayIcon className="-ml-0.5 h-5 w-5 text-[var(--text-color)]" aria-hidden="true" />
             <span className="mx-2">Upload</span>
           </div>
         </WebCoreFileUploader>

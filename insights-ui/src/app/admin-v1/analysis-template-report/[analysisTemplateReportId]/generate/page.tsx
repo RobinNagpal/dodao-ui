@@ -146,32 +146,32 @@ export default function GenerateAnalysisTemplateReportPage({ params }: { params:
           {/* Header */}
           <div className="mb-8">
             <div className="flex items-center gap-3 mb-2">
-              <ChartBarIcon className="w-8 h-8 text-blue-500" />
-              <h1 className="text-3xl font-bold text-white">Generate Analysis Report</h1>
+              <ChartBarIcon className="w-8 h-8 text-link" />
+              <h1 className="text-3xl font-bold text-heading">Generate Analysis Report</h1>
               <div className="ml-auto flex gap-4">
                 <Link href={`/admin-v1/analysis-template-report/${analysisTemplateReportId}`}>
-                  <span className="text-blue-400 hover:text-blue-300 transition-colors">View Results →</span>
+                  <span className="text-link hover:text-link transition-colors">View Results →</span>
                 </Link>
                 <Link href="/admin-v1/analysis-template-report">
-                  <span className="text-blue-400 hover:text-blue-300 transition-colors">Back to Reports →</span>
+                  <span className="text-link hover:text-link transition-colors">Back to Reports →</span>
                 </Link>
               </div>
             </div>
             <div className="ml-11">
-              <p className="text-xl text-blue-400 font-medium mb-2">{analysisTemplateReport?.analysisTemplate.name}</p>
-              <p className="text-gray-400 text-base">
+              <p className="text-xl text-link font-medium mb-2">{analysisTemplateReport?.analysisTemplate.name}</p>
+              <p className="text-muted text-base">
                 {(() => {
                   const inputObj = analysisTemplateReport?.inputObj as any;
                   return inputObj?.tickerSymbol ? `Ticker: ${inputObj.tickerSymbol} (${inputObj.exchange})` : `Company: ${inputObj?.companyName || 'Unknown'}`;
                 })()}
               </p>
-              <p className="text-gray-400 text-base mt-2">Generate detailed analysis for selected categories using the analysis template parameters.</p>
+              <p className="text-muted text-base mt-2">Generate detailed analysis for selected categories using the analysis template parameters.</p>
             </div>
           </div>
 
           {/* Generation Form */}
-          <div className="bg-gray-900 rounded-2xl border border-gray-800 p-6 mb-8">
-            <h2 className="text-xl font-semibold text-white mb-6">Generate Analysis</h2>
+          <div className="bg-bg rounded-2xl border border-border p-6 mb-8">
+            <h2 className="text-xl font-semibold text-heading mb-6">Generate Analysis</h2>
 
             <div className="space-y-6">
               {/* Category Selection */}
@@ -186,16 +186,16 @@ export default function GenerateAnalysisTemplateReportPage({ params }: { params:
 
               {/* Analysis Parameters Status */}
               {analysisParametersStatus.length > 0 && (
-                <div className="bg-gray-800 rounded-lg border border-gray-700 p-4">
-                  <h3 className="text-lg font-semibold mb-4 text-white">Parameters to Analyze</h3>
+                <div className="bg-surface rounded-lg border border-border p-4">
+                  <h3 className="text-lg font-semibold mb-4 text-heading">Parameters to Analyze</h3>
                   <div className="space-y-3">
                     {analysisParametersStatus.map((parameter, index) => {
                       const { textColorClass, bgColorClass, displayLabel } = getAnalysisResultColorClasses(parameter.result);
 
                       return (
-                        <div key={parameter.parameterId} className="flex items-center justify-between p-3 bg-gray-900 border border-gray-700 rounded-lg">
+                        <div key={parameter.parameterId} className="flex items-center justify-between p-3 bg-bg border border-border rounded-lg">
                           <div className="flex-1">
-                            <span className="font-medium text-white">{parameter.parameterName}</span>
+                            <span className="font-medium text-heading">{parameter.parameterName}</span>
                             {parameter.error && <div className="text-sm text-red-400 mt-1">{parameter.error}</div>}
                           </div>
                           <div className="flex items-center gap-2">
@@ -208,7 +208,7 @@ export default function GenerateAnalysisTemplateReportPage({ params }: { params:
                                 parameter.status === ProcessingStatus.InProgress
                                   ? 'bg-blue-900 text-blue-200'
                                   : parameter.status === ProcessingStatus.NotStarted
-                                  ? 'bg-gray-700 text-gray-300'
+                                  ? 'bg-surface-2 text-muted'
                                   : parameter.status === ProcessingStatus.Failed
                                   ? 'bg-red-900 text-red-200'
                                   : 'bg-green-900 text-green-200'

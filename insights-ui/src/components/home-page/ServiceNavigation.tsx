@@ -74,14 +74,14 @@ export default function ServiceNavigation() {
                   <div
                     className={`inline-flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-r ${service.color} group-hover:scale-110 transition-transform duration-300 shadow-lg`}
                   >
-                    <service.icon className="w-6 h-6 text-white" />
+                    <service.icon className="w-6 h-6 text-heading" />
                   </div>
-                  <h3 className="text-lg font-semibold text-heading ml-4 group-hover:text-indigo-400 transition-colors">{service.name}</h3>
+                  <h3 className="text-lg font-semibold text-heading ml-4 group-hover:text-link transition-colors">{service.name}</h3>
                 </div>
 
                 <p className="text-body text-sm leading-relaxed mb-6">{service.description}</p>
 
-                <div className="flex items-center text-indigo-400 group-hover:text-indigo-300 transition-colors">
+                <div className="flex items-center text-link group-hover:text-link transition-colors">
                   <span className="text-sm font-medium">Explore</span>
                   <svg className="ml-1 h-4 w-4 group-hover:translate-x-1 transition-transform duration-200" fill="currentColor" viewBox="0 0 20 20">
                     <path

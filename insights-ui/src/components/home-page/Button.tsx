@@ -11,21 +11,21 @@ const variantStyles = {
   solid: {
     // You can keep 'slate' if you want a neutral/gray button
     slate:
-      'bg-surface-3 text-heading hover:bg-gray-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-700 active:bg-surface-2 active:opacity-80 disabled:opacity-30 disabled:hover:bg-surface-3',
+      'bg-surface-3 text-heading hover:bg-surface-3 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-700 active:bg-surface-2 active:opacity-80 disabled:opacity-30 disabled:hover:bg-surface-3',
     // Updated from 'blue' → 'indigo'
     indigo:
-      'bg-indigo-600 text-white hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 active:bg-indigo-700 active:text-white/80 disabled:opacity-30 disabled:hover:bg-indigo-600',
+      'bg-primary text-primary-text focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary active:text-white/80 disabled:opacity-30',
     // Updated “white” variant to match darker theme
     // If you don’t need a “white” button in dark mode, remove or restyle as needed
     white:
-      'bg-white text-indigo-600 hover:text-indigo-700 hover:bg-indigo-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white active:bg-indigo-100 active:text-indigo-700/80 disabled:opacity-40 disabled:hover:bg-white',
+      'bg-surface text-primary hover:text-primary hover:bg-indigo-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white active:bg-indigo-100 active:text-indigo-700/80 disabled:opacity-40 disabled:hover:bg-surface',
   },
   outline: {
     slate:
-      'border-border text-body hover:border-gray-500 hover:bg-surface-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-500 active:bg-surface-3 active:opacity-80 disabled:opacity-40 disabled:hover:border-border disabled:hover:bg-transparent',
+      'border-border text-body hover:border-border hover:bg-surface-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-500 active:bg-surface-3 active:opacity-80 disabled:opacity-40 disabled:hover:border-border disabled:hover:bg-transparent',
     // Updated from 'blue' → 'indigo'
     indigo:
-      'border-indigo-400 text-indigo-400 hover:border-indigo-300 hover:bg-indigo-500/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-400 active:text-indigo-300/80 disabled:opacity-40 disabled:hover:border-indigo-400 disabled:hover:bg-transparent',
+      'border-primary text-link hover:border-primary hover:bg-indigo-500/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-400 active:text-indigo-300/80 disabled:opacity-40 disabled:hover:border-primary disabled:hover:bg-transparent',
   },
 };
 
