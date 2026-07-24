@@ -85,6 +85,18 @@ or `bg-primary`).
 When adding a leaf: use the structural tokens for surfaces/text/border, and
 `badgeTone` for any chip. Adding a raw gray or a new hue is a review red flag.
 
+**Light-mode contrast for tinted text.** The badge recipes' `-300` text is tuned
+for dark surfaces and is unreadable on the light theme's white cards. Because
+`<body>` always carries `.dark`, Tailwind `dark:` variants can't fix this;
+instead every tinted recipe also carries a style-free hook class
+(`badge-tone-success` / `-danger` / `-warning` / `-info` / `-accent` /
+`-neutral`, plus `-fuchsia` / `-yellow` / `-rose` for extra hues), and
+`src/app/styles/page-theme-light.scss` darkens the text to the matching `-700`
+shade under `.page-theme-light` (which the global `ThemeProvider` adds only in
+light mode). When you author a new tinted chip or colored accent, add the
+matching `badge-tone-*` hook alongside the Tailwind classes so it stays
+readable in light mode.
+
 ## Authoring a leaf component
 
 Use [`class-variance-authority`](https://cva.style) (`cva`) for variants plus the

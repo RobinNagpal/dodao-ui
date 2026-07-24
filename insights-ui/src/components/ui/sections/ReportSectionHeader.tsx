@@ -50,7 +50,8 @@ export default function ReportSectionHeader({
             {symbol && <span className="text-muted-foreground"> ({symbol})</span>}
           </h1>
           <div className="flex flex-wrap items-center gap-2 md:gap-3 text-sm">
-            <span className="inline-flex items-center rounded-full bg-sky-500/15 border border-sky-500/40 px-2.5 py-0.5 text-xs font-medium text-sky-300">
+            {/* `badge-tone-info` is a style-free hook — light mode darkens the sky-300 text via `.page-theme-light`. */}
+            <span className="badge-tone-info inline-flex items-center rounded-full bg-sky-500/15 border border-sky-500/40 px-2.5 py-0.5 text-xs font-medium text-sky-300">
               {exchange}
             </span>
             {score && (

@@ -75,7 +75,7 @@ function AdminNavDropdown({ section }: { section: AdminNavSection }) {
                 <Link
                   key={item.name}
                   href={item.href}
-                  className="block px-4 py-2 text-sm hover:bg-indigo-50 hover:text-primary text-body hover:bg-surface-2 dark:hover:text-white"
+                  className="block px-4 py-2 text-sm hover:text-primary text-body hover:bg-surface-2"
                   onClick={() => close()}
                 >
                   {item.name}

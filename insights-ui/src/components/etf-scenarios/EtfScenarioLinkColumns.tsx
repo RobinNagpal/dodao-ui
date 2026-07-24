@@ -27,7 +27,9 @@ function formatExpectedPriceChange(value: number | null | undefined): string {
 
 function LinkCard({ link }: { link: EtfScenarioLinkDto }): JSX.Element {
   const hasDetails = link.roleExplanation || link.expectedPriceChange !== null || link.expectedPriceChangeExplanation;
-  const changeColor = link.expectedPriceChange === null ? '' : link.expectedPriceChange >= 0 ? 'text-emerald-300' : 'text-red-300';
+  // `badge-tone-*` hooks darken the `-300` text in light mode (page-theme-light.scss).
+  const changeColor =
+    link.expectedPriceChange === null ? '' : link.expectedPriceChange >= 0 ? 'badge-tone-success text-emerald-300' : 'badge-tone-danger text-red-300';
 
   const body = (
     <>

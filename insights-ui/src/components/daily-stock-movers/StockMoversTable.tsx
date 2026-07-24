@@ -58,7 +58,10 @@ export default function StockMoversTable({ movers, type, country, availableDates
     ? `Discover the ${country.toUpperCase()} stocks with the highest percentage gains today. Track market winners and identify emerging opportunities with real-time performance data and AI-powered analysis.`
     : `Track the ${country.toUpperCase()} stocks with the largest percentage declines today. Monitor market losers and understand downward trends with comprehensive performance data and AI-driven insights.`;
   const detailsPath = isGainer ? '/daily-top-movers/top-gainers/details' : '/daily-top-movers/top-losers/details';
-  const changeColorClass = isGainer ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400';
+  // <body> always carries `.dark`, so `dark:` variants would win in BOTH themes;
+  // instead keep the dark-tuned `-400` shade and let the `badge-tone-*` hooks
+  // darken it in light mode via `.page-theme-light` (page-theme-light.scss).
+  const changeColorClass = isGainer ? 'badge-tone-success text-green-400' : 'badge-tone-danger text-red-400';
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">

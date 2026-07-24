@@ -1,19 +1,30 @@
-/* DatePicker custom styles for dark mode */
+/* DatePicker custom styles, themed via the semantic CSS variables so the popup
+   follows the app-wide light/dark toggle. In dark mode the variables resolve to
+   the same grays this file used to hardcode (surface=gray-800, surface-2=gray-700,
+   surface-3=gray-600), so the dark appearance is unchanged; in light mode the
+   popup flips to a light card instead of an unreadable dark box. */
 .react-datepicker {
-  @apply border-gray-700 bg-gray-800 text-white;
+  background-color: var(--surface);
+  border-color: var(--border-color);
+  color: var(--heading-color);
 }
 
 .react-datepicker__header {
-  @apply bg-gray-700 border-b border-gray-600;
+  background-color: var(--surface-2);
+  border-bottom: 1px solid var(--border-color);
 }
 
 .react-datepicker__current-month,
 .react-datepicker__day-name {
-  @apply text-white;
+  color: var(--heading-color);
 }
 
 .react-datepicker__day {
-  @apply text-gray-300 hover:bg-gray-600;
+  color: var(--text-color);
+}
+
+.react-datepicker__day:hover {
+  background-color: var(--surface-3);
 }
 
 .react-datepicker__day--selected,
@@ -22,7 +33,9 @@
 }
 
 .react-datepicker__day--disabled {
-  @apply text-gray-600 cursor-not-allowed hover:bg-transparent;
+  color: var(--text-muted);
+  opacity: 0.5;
+  @apply cursor-not-allowed hover:bg-transparent;
 }
 
 .react-datepicker__day--today {
@@ -30,11 +43,11 @@
 }
 
 .react-datepicker__navigation-icon::before {
-  @apply border-gray-400;
+  border-color: var(--text-muted);
 }
 
 .react-datepicker__navigation:hover *::before {
-  @apply border-white;
+  border-color: var(--heading-color);
 }
 
 /* Override Tailwind's default input styles for DatePicker */
@@ -52,7 +65,7 @@
 }
 
 /* Most specific override to ensure it works in production */
-input.date-picker-input[type="text"] {
+input.date-picker-input[type='text'] {
   background-color: var(--bg-color) !important;
   border-color: var(--border-color) !important;
   color: var(--text-color) !important;

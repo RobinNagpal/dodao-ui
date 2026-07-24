@@ -261,7 +261,9 @@ export default function GenAIBusinessCases() {
     <>
       {/* Hero Section */}
       <section className="relative">
-        <div className="absolute inset-0 bg-gradient-to-br from-indigo-900/20 via-gray-900 to-purple-900/20" />
+        {/* `via-bg` (token) instead of `via-gray-900`: identical in dark mode, but
+            lets the hero flip to a light backdrop so the token text stays readable. */}
+        <div className="absolute inset-0 bg-gradient-to-br from-indigo-900/20 via-bg to-purple-900/20" />
         <div className="absolute inset-0">
           <div className="absolute top-1/4 left-1/4 w-72 h-72 bg-indigo-500/10 rounded-full blur-3xl animate-pulse" />
           <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl animate-pulse delay-1000" />
@@ -311,14 +313,16 @@ export default function GenAIBusinessCases() {
             {genaiUseCases.map((useCase, index) => (
               <div
                 key={useCase.id}
-                className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-gray-800/50 to-gray-900/50 backdrop-blur-sm border border-border hover:border-border transition-all duration-300"
+                className="relative overflow-hidden rounded-2xl bg-surface border border-border hover:border-border transition-all duration-300"
               >
                 <div className="p-8 lg:p-10">
                   {/* Header Section */}
                   <div className="flex items-start justify-between gap-6 mb-6">
                     <div className="flex items-center gap-4 flex-1">
                       <div className={`p-3 rounded-xl bg-gradient-to-r ${useCase.gradient} shadow-lg`}>
-                        <useCase.icon className="h-7 w-7 text-heading" />
+                        {/* Hardcoded white (not `text-heading`): the gradient chip stays
+                            colored in both themes, and the heading token flips dark in light. */}
+                        <useCase.icon className="h-7 w-7 text-white" />
                       </div>
                       <div className="flex-1">
                         <h2 className="text-xl font-bold text-heading mb-1">{useCase.title}</h2>

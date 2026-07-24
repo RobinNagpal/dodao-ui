@@ -16,12 +16,16 @@ const PRICED_IN_LABEL: Record<ScenarioPricedInBucket, string> = {
   OVER_PRICED_IN: 'Over-priced',
 };
 
+// `priced-in-pill` + `badge-tone-*` are style-free hooks: the dark `-900/40`
+// tint + `-200` text recipe is unreadable on the light theme, so
+// `.page-theme-light` (styles/page-theme-light.scss) swaps these pills to a
+// light tint + dark text. Dark mode is untouched.
 const PRICED_IN_CLASS: Record<ScenarioPricedInBucket, string> = {
-  NOT_PRICED_IN: 'bg-emerald-900/40 text-emerald-200 border-emerald-700/60',
-  PARTIALLY_PRICED_IN: 'bg-sky-900/40 text-sky-200 border-sky-700/60',
-  MOSTLY_PRICED_IN: 'bg-amber-900/40 text-amber-200 border-amber-700/60',
+  NOT_PRICED_IN: 'priced-in-pill badge-tone-success bg-emerald-900/40 text-emerald-200 border-emerald-700/60',
+  PARTIALLY_PRICED_IN: 'priced-in-pill badge-tone-info bg-sky-900/40 text-sky-200 border-sky-700/60',
+  MOSTLY_PRICED_IN: 'priced-in-pill badge-tone-warning bg-amber-900/40 text-amber-200 border-amber-700/60',
   FULLY_PRICED_IN: 'bg-surface text-muted border-border',
-  OVER_PRICED_IN: 'bg-rose-900/40 text-rose-200 border-rose-700/60',
+  OVER_PRICED_IN: 'priced-in-pill badge-tone-rose bg-rose-900/40 text-rose-200 border-rose-700/60',
 };
 
 function renderMarkdown(md: string) {
@@ -80,7 +84,9 @@ function formatPe(value: number | null | undefined): string {
 
 function LinkCard({ link }: { link: StockScenarioLinkDto }): JSX.Element {
   const hasDetails = link.roleExplanation || link.expectedPriceChange !== null || link.expectedPriceChangeExplanation;
-  const changeColor = link.expectedPriceChange === null ? '' : link.expectedPriceChange >= 0 ? 'text-emerald-300' : 'text-red-300';
+  // `badge-tone-*` hooks darken the `-300` text in light mode (page-theme-light.scss).
+  const changeColor =
+    link.expectedPriceChange === null ? '' : link.expectedPriceChange >= 0 ? 'badge-tone-success text-emerald-300' : 'badge-tone-danger text-red-300';
   const pricedInLabel = PRICED_IN_LABEL[link.pricedInBucket];
   const pricedInClass = PRICED_IN_CLASS[link.pricedInBucket];
   const score = link.finalScore;

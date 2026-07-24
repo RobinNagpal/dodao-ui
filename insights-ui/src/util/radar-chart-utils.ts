@@ -12,7 +12,7 @@ import { Chart, Plugin, RadialLinearScale } from 'chart.js';
 export const AlternateRingBackgroundPlugin: Plugin = {
   id: 'alternateRingBackground',
   // Use beforeDatasetsDraw so the filled rings appear behind the data
-  beforeDatasetsDraw: (chart: Chart) => {
+  beforeDatasetsDraw: (chart: Chart, _args, pluginOptions) => {
     const ctx = chart.ctx;
     // Get the radial scale ("r"). Use our extended interface and check if it exists.
     const radialScale = chart.scales.r as ExtendedRadialLinearScale | undefined;
@@ -24,9 +24,13 @@ export const AlternateRingBackgroundPlugin: Plugin = {
     const { xCenter, yCenter, drawingArea, ticks } = radialScale;
     if (!ticks || ticks.length < 2) return;
 
-    // Define two colors for alternating background rings.
-    const color2 = 'rgba(33, 48, 74, 1)'; // darker grey
-    const color1 = 'rgba(100, 100, 100, 1)'; // lighter grey
+    // Two colors for alternating background rings + the spoke lines. The dark
+    // defaults are the historical hardcoded values; the themed pages pass light
+    // equivalents via plugin options when the app is in light mode (canvas
+    // can't read the themed CSS variables).
+    const color2 = (pluginOptions?.ringEven as string) || 'rgba(33, 48, 74, 1)'; // darker grey
+    const color1 = (pluginOptions?.ringOdd as string) || 'rgba(100, 100, 100, 1)'; // lighter grey
+    const spokeColor = (pluginOptions?.spoke as string) || color2;
 
     // Draw concentric rings between each tick
     for (let i = 1; i < ticks.length; i++) {
@@ -60,7 +64,7 @@ export const AlternateRingBackgroundPlugin: Plugin = {
       ctx.beginPath();
       ctx.moveTo(xCenter, yCenter);
       ctx.lineTo(endX, endY);
-      ctx.strokeStyle = color2;
+      ctx.strokeStyle = spokeColor;
       ctx.lineWidth = 4;
       ctx.stroke();
       ctx.restore();
@@ -114,7 +118,7 @@ export function getLegendItems() {
 
 export const HighlightPlugin: Plugin = {
   id: 'highlightSlice',
-  afterDatasetsDraw: (chart: Chart<'radar'>) => {
+  afterDatasetsDraw: (chart: Chart<'radar'>, _args, pluginOptions) => {
     const { ctx, scales, tooltip } = chart;
     if (!tooltip || tooltip.opacity === 0) return;
     const activeElement = tooltip.dataPoints?.[0];
@@ -139,7 +143,9 @@ export const HighlightPlugin: Plugin = {
     ctx.arc(xCenter, yCenter, drawingArea, prevAngle, nextAngle);
     ctx.lineTo(xCenter, yCenter);
     ctx.closePath();
-    ctx.fillStyle = 'rgba(200, 200, 200, 0.4)'; // Highlight color
+    // Light-grey default (dark theme); light mode passes a dark tint instead
+    // since a light-grey highlight vanishes on the light rings.
+    ctx.fillStyle = (pluginOptions?.color as string) || 'rgba(200, 200, 200, 0.4)';
     ctx.fill();
     ctx.restore();
   },

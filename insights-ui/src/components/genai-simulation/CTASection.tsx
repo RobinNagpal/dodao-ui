@@ -10,7 +10,10 @@ export default function CTASection() {
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-white/10 rounded-full blur-3xl" />
 
           <div className="relative mx-auto max-w-3xl">
-            <h2 className="text-4xl font-bold text-heading mb-6">Ready to Transform Your Classroom?</h2>
+            {/* Hardcoded white (not `text-heading`): this panel keeps its indigo
+                gradient in both themes, and the heading token flips to gray-900
+                in light mode — dark-on-indigo would be unreadable. */}
+            <h2 className="text-4xl font-bold text-white mb-6">Ready to Transform Your Classroom?</h2>
             <p className="text-lg text-indigo-100 mb-8">
               Join forward-thinking educators who are preparing students for the AI-powered future. Web-based, scalable, and designed for immediate impact.
             </p>
@@ -25,7 +28,7 @@ export default function CTASection() {
               </Link>
               <Link
                 href="#demo"
-                className="inline-flex items-center justify-center rounded-xl border-2 border-white/60 px-8 py-4 text-lg font-semibold text-heading hover:bg-white/10 transition-all duration-300"
+                className="inline-flex items-center justify-center rounded-xl border-2 border-white/60 px-8 py-4 text-lg font-semibold text-white hover:bg-white/10 transition-all duration-300"
               >
                 Watch Demo
               </Link>

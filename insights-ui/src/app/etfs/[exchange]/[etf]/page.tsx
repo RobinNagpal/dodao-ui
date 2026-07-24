@@ -423,10 +423,10 @@ export default async function EtfDetailsPage({ params }: { params: RouteParams }
               </time>
             </div>
             <div className="flex gap-2">
-              <span className="inline-flex items-center rounded-full bg-sky-500/15 text-sky-300 border border-sky-500/40 px-2.5 py-0.5 text-xs font-medium">
+              <span className="badge-tone-info inline-flex items-center rounded-full bg-sky-500/15 text-sky-300 border border-sky-500/40 px-2.5 py-0.5 text-xs font-medium">
                 ETF Analysis
               </span>
-              <span className="inline-flex items-center rounded-full bg-indigo-500/15 text-indigo-300 border border-indigo-500/40 px-2.5 py-0.5 text-xs font-medium">
+              <span className="badge-tone-accent inline-flex items-center rounded-full bg-indigo-500/15 text-indigo-300 border border-indigo-500/40 px-2.5 py-0.5 text-xs font-medium">
                 Investment Report
               </span>
             </div>

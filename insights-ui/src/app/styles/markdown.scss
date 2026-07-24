@@ -337,7 +337,9 @@
 .markdown-body code {
   font-family: ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace;
   font-size: 0.75em;
-  color: #a9a9a9;
+  /* Themed: the old hardcoded #a9a9a9 was ~2.3:1 on the light theme's white
+     cards. `--text-muted` stays close to it in dark and darkens in light. */
+  color: var(--text-muted);
 }
 
 .markdown-body pre {
@@ -688,6 +690,12 @@
 
 .markdown-body table tr:nth-child(2n) {
   background-color: rgba(255, 255, 255, 0.075);
+}
+
+/* Light mode: the white-tint zebra stripe above is invisible on white cards —
+   use a faint dark tint instead so alternating rows stay distinguishable. */
+.page-theme-light .markdown-body table tr:nth-child(2n) {
+  background-color: rgba(17, 24, 39, 0.04);
 }
 
 .markdown-body table img {

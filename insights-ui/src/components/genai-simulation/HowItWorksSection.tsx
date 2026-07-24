@@ -65,8 +65,10 @@ export default function HowItWorksSection() {
 
   return (
     <section id="how-it-works" className="relative py-20" ref={sectionRef}>
-      {/* Background */}
-      <div className="absolute inset-0 bg-gradient-to-b from-gray-900 to-gray-800" />
+      {/* Background — token gradient (`bg`→`surface`): identical to the old
+          gray-900→gray-800 in dark mode, and flips light with the theme so the
+          token text/cards on top stay readable. */}
+      <div className="absolute inset-0 bg-gradient-to-b from-bg to-surface" />
 
       {/* Animated background pattern */}
       <motion.div

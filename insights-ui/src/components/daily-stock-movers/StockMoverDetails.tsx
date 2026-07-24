@@ -10,7 +10,10 @@ interface StockMoverDetailsProps {
 }
 
 export default function StockMoverDetails({ mover, type }: StockMoverDetailsProps) {
-  const changeColorClass = type === DailyMoverType.GAINER ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400';
+  // <body> always carries `.dark`, so `dark:` variants would win in BOTH themes;
+  // instead keep the dark-tuned `-400` shade and let the `badge-tone-*` hooks
+  // darken it in light mode via `.page-theme-light` (page-theme-light.scss).
+  const changeColorClass = type === DailyMoverType.GAINER ? 'badge-tone-success text-green-400' : 'badge-tone-danger text-red-400';
 
   const articleDate = new Date(mover.createdAt);
   const formattedDate = articleDate.toLocaleDateString('en-US', {

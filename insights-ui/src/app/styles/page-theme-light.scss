@@ -7,6 +7,76 @@
 // swap alone — e.g. tinted utility colors that are baked into a component and
 // would otherwise stay tuned for a dark surface.
 .page-theme-light {
+  // badgeTone (src/components/ui/badges/badgeTone.ts): every chip/badge routes
+  // through the 6-tone vocabulary, whose `-300` text is tuned for dark surfaces
+  // (e.g. emerald-300 on white is ~1.9:1 — unreadable). The translucent tint
+  // background + `/40` border read fine on light, so only the text is darkened
+  // to the matching `-700` shade (WCAG AA against the tinted light background).
+  .badge-tone-success {
+    color: #047857; // emerald-700
+  }
+
+  .badge-tone-danger {
+    color: #b91c1c; // red-700
+  }
+
+  .badge-tone-warning {
+    color: #b45309; // amber-700
+  }
+
+  .badge-tone-info {
+    color: #0369a1; // sky-700
+  }
+
+  .badge-tone-accent {
+    color: #4338ca; // indigo-700
+  }
+
+  .badge-tone-neutral {
+    color: #4b5563; // gray-600
+  }
+
+  // Extra hues used by ScenarioOutlookBadge (downside / in-progress pills)
+  // and the scenario "priced-in" pills.
+  .badge-tone-fuchsia {
+    color: #a21caf; // fuchsia-700
+  }
+
+  .badge-tone-yellow {
+    color: #a16207; // yellow-700
+  }
+
+  .badge-tone-rose {
+    color: #be123c; // rose-700
+  }
+
+  // Scenario "priced-in" pills (Stock/EtfScenarioLinkColumns): their dark
+  // `bg-*-900/40` tint turns into a muddy mid-tone over a light card, so swap
+  // the pill to the standard light recipe (translucent `-500/15` tint + `/40`
+  // border) that the badge vocabulary uses; text is darkened by the
+  // `badge-tone-*` rules above.
+  .priced-in-pill {
+    &.badge-tone-success {
+      background-color: rgb(16 185 129 / 0.15); // emerald-500/15
+      border-color: rgb(16 185 129 / 0.4);
+    }
+
+    &.badge-tone-info {
+      background-color: rgb(14 165 233 / 0.15); // sky-500/15
+      border-color: rgb(14 165 233 / 0.4);
+    }
+
+    &.badge-tone-warning {
+      background-color: rgb(245 158 11 / 0.15); // amber-500/15
+      border-color: rgb(245 158 11 / 0.4);
+    }
+
+    &.badge-tone-rose {
+      background-color: rgb(244 63 94 / 0.15); // rose-500/15
+      border-color: rgb(244 63 94 / 0.4);
+    }
+  }
+
   // ToolPills: the tinted tool pills (Tariff Calculator, HTS browser, …) use
   // light `-300` text meant for a dark surface, which is unreadable on a light
   // card. Darken the text per tone; the translucent tint background + ring read

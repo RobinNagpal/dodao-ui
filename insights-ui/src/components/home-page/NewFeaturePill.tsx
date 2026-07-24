@@ -16,10 +16,12 @@ export interface NewFeaturePillProps {
  * the new content even when it sits below the fold.
  */
 export default function NewFeaturePill({ label, href, className = '' }: NewFeaturePillProps): React.JSX.Element {
+  // `badge-tone-accent` is a style-free hook — light mode darkens the
+  // indigo-300 text (unreadable on white) via `.page-theme-light`.
   return (
     <Link
       href={href}
-      className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs sm:text-sm font-semibold
+      className={`badge-tone-accent inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs sm:text-sm font-semibold
                   bg-indigo-500/15 text-indigo-300 ring-1 ring-inset ring-indigo-400/30
                   hover:bg-indigo-500/25 hover:text-link transition-colors ${className}`}
     >
