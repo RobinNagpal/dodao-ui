@@ -17,15 +17,19 @@ import { cva } from 'class-variance-authority';
  *   accent  → special / index / future / competitive
  *   neutral → archived / past / unknown
  */
+// The `badge-tone-*` hook classes carry no styles of their own — they exist so
+// light mode can darken the `-300` text (tuned for dark surfaces, unreadable on
+// white) via `.page-theme-light` overrides in `styles/page-theme-light.scss`.
+// Tailwind `dark:` variants can't be used because <body> always carries `.dark`.
 export const badgeTone = cva('', {
   variants: {
     tone: {
-      success: 'bg-emerald-500/15 text-emerald-300 border border-emerald-500/40',
-      danger: 'bg-red-500/15 text-red-300 border border-red-500/40',
-      warning: 'bg-amber-500/15 text-amber-300 border border-amber-500/40',
-      info: 'bg-sky-500/15 text-sky-300 border border-sky-500/40',
-      accent: 'bg-indigo-500/15 text-indigo-300 border border-indigo-500/40',
-      neutral: 'bg-gray-500/15 text-gray-300 border border-gray-500/40',
+      success: 'badge-tone-success bg-emerald-500/15 text-emerald-300 border border-emerald-500/40',
+      danger: 'badge-tone-danger bg-red-500/15 text-red-300 border border-red-500/40',
+      warning: 'badge-tone-warning bg-amber-500/15 text-amber-300 border border-amber-500/40',
+      info: 'badge-tone-info bg-sky-500/15 text-sky-300 border border-sky-500/40',
+      accent: 'badge-tone-accent bg-indigo-500/15 text-indigo-300 border border-indigo-500/40',
+      neutral: 'badge-tone-neutral bg-gray-500/15 text-gray-300 border border-gray-500/40',
     },
   },
   defaultVariants: { tone: 'neutral' },

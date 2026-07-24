@@ -85,8 +85,9 @@ export default function SelectableSubIndustryCard({
               {selectedTickerIds.length === 0 && 'No tickers selected'}
               {selectedTickerIds.length > 0 && `${selectedTickerIds.length} of ${tickers.length} selected`}
             </span>
-            {someSelected && <span className="text-sky-300 font-medium">Partial Selection</span>}
-            {allSelected && <span className="text-emerald-300 font-medium">All Selected</span>}
+            {/* `badge-tone-*` hooks darken the `-300` text in light mode (page-theme-light.scss). */}
+            {someSelected && <span className="badge-tone-info text-sky-300 font-medium">Partial Selection</span>}
+            {allSelected && <span className="badge-tone-success text-emerald-300 font-medium">All Selected</span>}
           </div>
         </div>
       )}

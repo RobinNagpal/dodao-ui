@@ -17,7 +17,9 @@ export default function HeroSection({ onOpenVideo }: HeroSectionProps) {
 
   return (
     <section className="relative">
-      <div className="absolute inset-0 bg-gradient-to-br from-indigo-900/20 via-gray-900 to-purple-900/20" />
+      {/* `via-bg` (token) instead of `via-gray-900`: identical in dark mode, but
+          lets the hero flip to a light backdrop so the token text stays readable. */}
+      <div className="absolute inset-0 bg-gradient-to-br from-indigo-900/20 via-bg to-purple-900/20" />
       <div className="absolute inset-0">
         <div className="absolute top-1/4 left-1/4 w-72 h-72 bg-indigo-500/10 rounded-full blur-3xl animate-pulse" />
         <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl animate-pulse delay-1000" />
@@ -30,7 +32,7 @@ export default function HeroSection({ onOpenVideo }: HeroSectionProps) {
             The Academic GenAI Simulations Experience
           </div>
 
-          <h1 className="mt-8 text-5xl font-bold tracking-tight text-white sm:text-6xl lg:text-6xl bg-gradient-to-r from-white via-gray-100 to-gray-300 bg-clip-text text-transparent">
+          <h1 className="mt-8 text-5xl font-bold tracking-tight text-heading sm:text-6xl lg:text-6xl bg-gradient-to-r from-heading via-heading to-muted bg-clip-text text-transparent">
             GenAI Simulations for every
             <span className="block bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">Business School Stream</span>
           </h1>
@@ -87,8 +89,8 @@ export default function HeroSection({ onOpenVideo }: HeroSectionProps) {
       </div>
 
       <div className="relative mx-auto max-w-6xl px-6 lg:px-8 pb-20">
-        <div className="relative rounded-2xl border border-border bg-gradient-to-br from-gray-800/50 to-gray-900/50 p-4 backdrop-blur-sm shadow-2xl">
-          <div className="aspect-video w-full rounded-xl bg-gradient-to-br from-gray-800 to-gray-900 ring-1 ring-white/10 flex items-center justify-center relative overflow-hidden">
+        <div className="relative rounded-2xl border border-border bg-surface p-4 shadow-2xl">
+          <div className="aspect-video w-full rounded-xl bg-gradient-to-br from-surface to-bg ring-1 ring-border flex items-center justify-center relative overflow-hidden">
             <Image src={studentGif} alt="Student using GenAI simulation" className="w-full h-full object-cover rounded-xl" unoptimized />
           </div>
         </div>

@@ -27,8 +27,9 @@ export default function TariffCrossLinks({ links }: TariffCrossLinksProps) {
               title={link.description}
               className="group inline-flex max-w-full items-center gap-2 rounded-lg border border-color block-bg-color px-3 py-2 text-sm font-medium text-heading transition-colors hover:border-primary hover:bg-block-bg-color"
             >
+              {/* `badge-tone-accent` darkens the indigo-300 icon in light mode (page-theme-light.scss). */}
               {link.icon && (
-                <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-indigo-500/10 text-indigo-300 ring-1 ring-inset ring-indigo-500/20 group-hover:bg-indigo-500/20 [&_svg]:!size-4">
+                <span className="badge-tone-accent flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-indigo-500/10 text-indigo-300 ring-1 ring-inset ring-indigo-500/20 group-hover:bg-indigo-500/20 [&_svg]:!size-4">
                   {link.icon}
                 </span>
               )}

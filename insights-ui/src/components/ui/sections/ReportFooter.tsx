@@ -6,13 +6,15 @@ export type ReportTagTone = 'family' | 'competitive' | 'category' | 'movers' | '
 
 /** Rounded tag pill shown in the report footer. `tone` covers the known
  *  families; `className` is an escape hatch for a data-driven category color. */
+// `badge-tone-*` are style-free hooks: light mode darkens the `-300` text
+// (unreadable on white) via `.page-theme-light` in `styles/page-theme-light.scss`.
 const tag = cva('inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium', {
   variants: {
     tone: {
-      family: 'bg-sky-500/15 text-sky-300 border border-sky-500/40',
-      competitive: 'bg-indigo-500/15 text-indigo-300 border border-indigo-500/40',
-      category: 'bg-amber-500/15 text-amber-300 border border-amber-500/40',
-      movers: 'bg-emerald-500/15 text-emerald-300 border border-emerald-500/40',
+      family: 'badge-tone-info bg-sky-500/15 text-sky-300 border border-sky-500/40',
+      competitive: 'badge-tone-accent bg-indigo-500/15 text-indigo-300 border border-indigo-500/40',
+      category: 'badge-tone-warning bg-amber-500/15 text-amber-300 border border-amber-500/40',
+      movers: 'badge-tone-success bg-emerald-500/15 text-emerald-300 border border-emerald-500/40',
       none: '',
     },
   },

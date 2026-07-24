@@ -57,7 +57,7 @@ export default function EtfCompetitionFullView({ data, availableSlugsPromise }: 
                 {etf.name} <span className="text-muted-foreground">({etf.symbol})</span>
               </h1>
               <div className="flex flex-wrap items-center gap-2 md:gap-3 text-sm">
-                <span className="inline-flex items-center rounded-full bg-sky-500/15 border border-sky-500/40 px-2.5 py-0.5 text-xs font-medium text-sky-300">
+                <span className="badge-tone-info inline-flex items-center rounded-full bg-sky-500/15 border border-sky-500/40 px-2.5 py-0.5 text-xs font-medium text-sky-300">
                   {etf.exchange}
                 </span>
                 <span className="text-muted-foreground">•</span>
@@ -150,7 +150,7 @@ export default function EtfCompetitionFullView({ data, availableSlugsPromise }: 
               </time>
             </div>
             <div className="flex gap-2">
-              <span className="inline-flex items-center rounded-full bg-sky-500/15 border border-sky-500/40 px-2.5 py-0.5 text-xs font-medium text-sky-300">
+              <span className="badge-tone-info inline-flex items-center rounded-full bg-sky-500/15 border border-sky-500/40 px-2.5 py-0.5 text-xs font-medium text-sky-300">
                 ETF Analysis
               </span>
               <span className="inline-flex items-center rounded-full bg-indigo-500/15 border border-indigo-500/40 px-2.5 py-0.5 text-xs font-medium text-link">

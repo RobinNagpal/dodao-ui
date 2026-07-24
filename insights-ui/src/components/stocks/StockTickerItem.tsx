@@ -52,12 +52,13 @@ export default function StockTickerItem({ symbol, name, exchange, score, display
           {displayExchange && !industry && <p className="text-xs font-medium text-muted whitespace-nowrap shrink-0 ml-2">{displayExchange}</p>}
           {tickerNotes && (
             <button onClick={handleNotesClick} className="shrink-0" title="View notes">
-              <DocumentTextIcon className="w-4 h-4 text-green-300 hover:text-green-200" />
+              {/* `badge-tone-success` darkens the light green in light mode (page-theme-light.scss). */}
+              <DocumentTextIcon className="badge-tone-success w-4 h-4 text-green-300 hover:text-green-200" />
             </button>
           )}
           {favouriteTicker && (
             <button onClick={handleFavouriteClick} className="shrink-0" title="View favourite">
-              <HeartIcon className="w-4 h-4 text-red-400 hover:text-red-300" />
+              <HeartIcon className="badge-tone-danger w-4 h-4 text-red-400 hover:text-red-300" />
             </button>
           )}
         </div>

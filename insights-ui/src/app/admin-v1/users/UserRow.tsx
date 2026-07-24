@@ -86,7 +86,10 @@ export default function UserRow({ user, onEdit, onDelete, onPortfolioProfile }: 
             <Edit className="h-4 w-4 mr-1" />
             Edit
           </button>
-          <button onClick={() => onDelete(user.id)} className="text-red-400 hover:text-red-300 font-medium transition-colors flex items-center">
+          <button
+            onClick={() => onDelete(user.id)}
+            className="badge-tone-danger text-red-400 hover:text-red-300 font-medium transition-colors flex items-center"
+          >
             <Trash2 className="h-4 w-4 mr-1" />
             Delete
           </button>

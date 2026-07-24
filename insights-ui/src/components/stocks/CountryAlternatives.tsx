@@ -63,7 +63,7 @@ export default function CountryAlternatives({
         ${centerContent ? 'mx-auto sm:mx-0' : ''}
       `}
       >
-        <GlobeAltIcon className={`h-4 w-4 ${enhanced ? 'text-blue-400' : 'text-muted'}`} />
+        <GlobeAltIcon className={`h-4 w-4 ${enhanced ? 'badge-tone-info text-blue-400' : 'text-muted'}`} />
         <span className={`country-alternatives-label ml-2 ${enhanced ? 'text-blue-100 font-semibold' : 'text-muted'}`}>Also view:</span>
       </div>
       <div className={`flex flex-wrap gap-2 sm:ml-2 ${centerContent ? 'justify-center mx-auto sm:mx-0' : ''}`}>

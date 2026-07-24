@@ -435,7 +435,8 @@ function ShipmentForm({ form, updateForm, submitting, hideQuantityInputs, primar
         {submitting ? 'Calculating…' : 'Calculate duties'}
       </button>
 
-      {error && <div className="rounded-md border border-red-500/40 bg-red-500/10 px-3 py-2 text-sm text-red-300">{error}</div>}
+      {/* `badge-tone-danger` darkens the red-300 text in light mode (page-theme-light.scss). */}
+      {error && <div className="badge-tone-danger rounded-md border border-red-500/40 bg-red-500/10 px-3 py-2 text-sm text-red-300">{error}</div>}
     </form>
   );
 }
@@ -580,7 +581,7 @@ function PotentialExclusionsPanel({ exclusions, submitting, onToggle }: Potentia
                   </span>
                   <span
                     className={`rounded px-1.5 py-0.5 text-[10px] uppercase tracking-wide ${
-                      ex.applied ? 'bg-emerald-500/15 text-emerald-300' : 'bg-rose-500/15 text-rose-300'
+                      ex.applied ? 'badge-tone-success bg-emerald-500/15 text-emerald-300' : 'badge-tone-rose bg-rose-500/15 text-rose-300'
                     }`}
                   >
                     {ex.applied ? 'Applied' : 'Not applied'}

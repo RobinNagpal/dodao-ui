@@ -1,5 +1,6 @@
 'use client';
 
+import { usePageTheme } from '@/components/theme/page-theme-context';
 import { SpiderGraph } from '@/types/project/project';
 import { SpiderGraphForTicker } from '@/types/public-equity/ticker-report-types';
 import { AlternateRingBackgroundPlugin, ExtendedRadialLinearScale, getGraphColor, HighlightPlugin } from '@/util/radar-chart-utils';
@@ -38,9 +39,35 @@ declare module 'chart.js' {
   interface TooltipPositionerMap {
     myCustomPositioner: TooltipPositionerFunction<ChartType>;
   }
+  // Options for the custom radar plugins (ring backgrounds + hover highlight).
+  interface PluginOptionsByType<TType extends ChartType> {
+    alternateRingBackground?: { ringOdd?: string; ringEven?: string; spoke?: string };
+    highlightSlice?: { color?: string };
+  }
 }
 
 const RadarChart: React.FC<RadarChartProps> = ({ data, scorePercentage }) => {
+  // Canvas can't read the themed CSS variables, so the ring/spoke/label colors
+  // are picked from the current page theme (mirrors the light overrides the
+  // server-rendered SVG radar gets via `.page-theme-light` in theme-styles.scss).
+  // Dark values are the historical hardcoded ones, so dark mode is unchanged.
+  const isDark = usePageTheme() === 'dark';
+  const radarTheme = isDark
+    ? {
+        ringOdd: 'rgba(100, 100, 100, 1)',
+        ringEven: 'rgba(33, 48, 74, 1)',
+        spoke: 'rgba(33, 48, 74, 1)',
+        pointLabel: '#d5d5d5',
+        highlight: 'rgba(200, 200, 200, 0.4)',
+      }
+    : {
+        ringOdd: '#d1d5db', // surface-3 (gray-300)
+        ringEven: '#e5e7eb', // surface-2 (gray-200)
+        spoke: '#d1d5db', // border (gray-300)
+        pointLabel: '#4b5563', // text-muted (gray-600)
+        highlight: 'rgba(17, 24, 39, 0.08)',
+      };
+
   const itemKeys = Object.keys(data);
   const SCORE_OFFSET = 0.5; // Adds padding ONLY for zero scores
 
@@ -112,7 +139,7 @@ const RadarChart: React.FC<RadarChartProps> = ({ data, scorePercentage }) => {
         pointLabels: {
           // Use a custom callback to wrap the text if it takes more than 20% of the chart's width
           font: { size: 14 },
-          color: '#d5d5d5',
+          color: radarTheme.pointLabel,
           callback: function (value: string): string | string[] {
             // 'this' is bound to the radial scale (ExtendedRadialLinearScale)
             const scale = this as ExtendedRadialLinearScale;
@@ -154,6 +181,14 @@ const RadarChart: React.FC<RadarChartProps> = ({ data, scorePercentage }) => {
       intersect: false,
     },
     plugins: {
+      alternateRingBackground: {
+        ringOdd: radarTheme.ringOdd,
+        ringEven: radarTheme.ringEven,
+        spoke: radarTheme.spoke,
+      },
+      highlightSlice: {
+        color: radarTheme.highlight,
+      },
       legend: {
         display: false, // Hide main legend
       },

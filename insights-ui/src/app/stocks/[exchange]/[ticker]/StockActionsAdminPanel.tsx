@@ -355,8 +355,8 @@ export default function StockActionsAdminPanel({ ticker, movedExchange, movedSym
                         <button
                           onClick={handleSaveReport}
                           disabled={savingReport}
-                          className={`px-4 py-2 rounded text-white font-medium transition-colors duration-200 ${
-                            savingReport ? 'bg-surface-3 cursor-not-allowed' : 'bg-green-600 hover:bg-green-500'
+                          className={`px-4 py-2 rounded font-medium transition-colors duration-200 ${
+                            savingReport ? 'bg-surface-3 text-heading cursor-not-allowed' : 'bg-green-600 hover:bg-green-500 text-white'
                           }`}
                         >
                           {savingReport ? 'Saving...' : 'Save Report'}

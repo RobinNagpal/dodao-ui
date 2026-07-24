@@ -90,7 +90,7 @@ export default function FavouriteItem({
           <button onClick={(e) => onEdit(e, favourite)} className="text-link hover:text-link p-0.5" title="Edit">
             <PencilIcon className="w-4 h-4" />
           </button>
-          <button onClick={(e) => onDelete(e, favourite)} className="text-red-400 hover:text-red-300 p-0.5" title="Delete">
+          <button onClick={(e) => onDelete(e, favourite)} className="badge-tone-danger text-red-400 hover:text-red-300 p-0.5" title="Delete">
             <TrashIcon className="w-4 h-4" />
           </button>
         </div>

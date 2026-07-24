@@ -1,13 +1,12 @@
-import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
-import { TopLoserWithTicker } from '@/types/daily-stock-movers';
-import { DailyMoverType } from '@/types/daily-mover-constants';
-import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
-import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import StockMoversTable from '@/components/daily-stock-movers/StockMoversTable';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
+import { DailyMoverType } from '@/types/daily-mover-constants';
+import { TopLoserWithTicker } from '@/types/daily-stock-movers';
+import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
+import { getCachedDailyMoverAvailableDates, getCachedDailyMovers } from '@/utils/daily-movers-data';
+import { generateCountryMoversBreadcrumbSchema, generateDailyMoversListMetadata } from '@/utils/metadata-generators';
+import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { Metadata } from 'next';
-import { generateDailyMoversListMetadata, generateCountryMoversBreadcrumbSchema } from '@/utils/metadata-generators';
-import { getDailyMoversByCountryTag } from '@/utils/ticker-v1-cache-utils';
 
 interface PageProps {
   params: Promise<{ country: string }>;
@@ -20,25 +19,13 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 export default async function DailyTopLosersPage({ params }: PageProps) {
   const { country } = await params;
-  const baseUrl = getBaseUrl();
-  const cacheOptions = {
-    next: {
-      revalidate: 1209600,
-      tags: [getDailyMoversByCountryTag(country, DailyMoverType.LOSER)],
-    },
-  };
 
-  // Fetch available dates first, then only the latest date's movers
-  const datesRes = await fetch(
-    `${baseUrl}/api/${KoalaGainsSpaceId}/tickers-v1/daily-movers-available-dates?country=${country}&type=${DailyMoverType.LOSER}`,
-    cacheOptions
-  );
-  const { dates: availableDates } = (await datesRes.json()) as { dates: string[] };
-
+  // Direct (cached) prisma access — see `daily-movers-data.ts`. The previous
+  // self-`fetch()` of our own API routes failed wherever NEXT_PUBLIC_VERCEL_URL
+  // is unset (relative URL → ERR_INVALID_URL on the server).
+  const availableDates = await getCachedDailyMoverAvailableDates(KoalaGainsSpaceId, country, DailyMoverType.LOSER);
   const latestDate = availableDates.length > 0 ? availableDates[0] : null;
-  const dateParam = latestDate ? `&date=${latestDate}` : '';
-  const losersRes = await fetch(`${baseUrl}/api/${KoalaGainsSpaceId}/tickers-v1/daily-top-losers?country=${country}${dateParam}`, cacheOptions);
-  const topLosers: TopLoserWithTicker[] = await losersRes.json();
+  const topLosers = (await getCachedDailyMovers(KoalaGainsSpaceId, country, DailyMoverType.LOSER, latestDate)) as TopLoserWithTicker[];
 
   const breadcrumbSchema = generateCountryMoversBreadcrumbSchema(country, DailyMoverType.LOSER);
 

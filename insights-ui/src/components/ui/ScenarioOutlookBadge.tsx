@@ -5,20 +5,23 @@ import { ScenarioDirection, ScenarioProbabilityBucket, ScenarioTimeframe } from 
 // (the ETF enums are aliases of the canonical `scenarioEnums` module), so a
 // single generic component serves both features.
 
+// The `badge-tone-*` hook classes carry no styles — light mode darkens the
+// `-300` text (unreadable on white) via `.page-theme-light` overrides in
+// `styles/page-theme-light.scss` (shared with `badges/badgeTone.ts`).
 const BUCKET_STYLES: Record<ScenarioProbabilityBucket, { label: string; className: string }> = {
-  HIGH: { label: 'High', className: 'bg-red-500/15 text-red-300 border-red-500/40' },
-  MEDIUM: { label: 'Medium', className: 'bg-amber-500/15 text-amber-300 border-amber-500/40' },
-  LOW: { label: 'Low', className: 'bg-emerald-500/15 text-emerald-300 border-emerald-500/40' },
+  HIGH: { label: 'High', className: 'badge-tone-danger bg-red-500/15 text-red-300 border-red-500/40' },
+  MEDIUM: { label: 'Medium', className: 'badge-tone-warning bg-amber-500/15 text-amber-300 border-amber-500/40' },
+  LOW: { label: 'Low', className: 'badge-tone-success bg-emerald-500/15 text-emerald-300 border-emerald-500/40' },
 };
 
 const DIRECTION_STYLES: Record<ScenarioDirection, { label: string; className: string }> = {
-  UPSIDE: { label: 'Upside', className: 'bg-sky-500/15 text-sky-300 border-sky-500/40' },
-  DOWNSIDE: { label: 'Downside', className: 'bg-fuchsia-500/15 text-fuchsia-300 border-fuchsia-500/40' },
+  UPSIDE: { label: 'Upside', className: 'badge-tone-info bg-sky-500/15 text-sky-300 border-sky-500/40' },
+  DOWNSIDE: { label: 'Downside', className: 'badge-tone-fuchsia bg-fuchsia-500/15 text-fuchsia-300 border-fuchsia-500/40' },
 };
 
 const TIMEFRAME_STYLES: Record<ScenarioTimeframe, { label: string; className: string }> = {
-  FUTURE: { label: 'Future', className: 'bg-indigo-500/15 text-indigo-300 border-indigo-500/40' },
-  IN_PROGRESS: { label: 'In progress', className: 'bg-yellow-500/15 text-yellow-300 border-yellow-500/40' },
+  FUTURE: { label: 'Future', className: 'badge-tone-accent bg-indigo-500/15 text-indigo-300 border-indigo-500/40' },
+  IN_PROGRESS: { label: 'In progress', className: 'badge-tone-yellow bg-yellow-500/15 text-yellow-300 border-yellow-500/40' },
   PAST: { label: 'Past', className: 'bg-gray-500/15 text-muted border-gray-500/40' },
 };
 
