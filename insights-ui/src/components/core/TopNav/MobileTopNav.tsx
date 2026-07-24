@@ -2,8 +2,7 @@
 
 import SearchBar from '@/components/core/SearchBar';
 import { IndustryWithSubIndustriesAndCounts } from '@/types/ticker-typesv1';
-import { Dialog, DialogPanel, Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/react';
-import { ChevronDownIcon } from '@heroicons/react/20/solid';
+import { Dialog, DialogPanel } from '@headlessui/react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -14,20 +13,13 @@ interface MobileTopNavProps {
   setMobileMenuOpen: (open: boolean) => void;
   industries: IndustryWithSubIndustriesAndCounts[] | undefined;
   industriesLoading: boolean;
-  reportsDropdown: Array<{
+  navItems: Array<{
     name: string;
     href: string;
-    description: string;
-    isNew: boolean;
-  }>;
-  genaiDropdown: Array<{
-    name: string;
-    href: string;
-    description: string;
   }>;
 }
 
-export default function MobileTopNav({ mobileMenuOpen, setMobileMenuOpen, industries, industriesLoading, reportsDropdown, genaiDropdown }: MobileTopNavProps) {
+export default function MobileTopNav({ mobileMenuOpen, setMobileMenuOpen, industries, industriesLoading, navItems }: MobileTopNavProps) {
   const pathname = usePathname() ?? '';
   const isStocksRoute = pathname.startsWith('/stocks');
   const isEtfsRoute = pathname.startsWith('/etfs');
@@ -100,44 +92,17 @@ export default function MobileTopNav({ mobileMenuOpen, setMobileMenuOpen, indust
                   )}
                 </div>
               ) : (
-                <div>
-                  <Disclosure as="div" className="-mx-3">
-                    <DisclosureButton className="group flex w-full items-center justify-between rounded-lg py-2 pl-3 pr-3.5 text-base/7 font-semibold hover:bg-surface text-heading dark:hover:bg-white/5">
-                      KoalaGains Insights
-                      <ChevronDownIcon aria-hidden="true" className="size-5 flex-none group-data-[open]:rotate-180" />
-                    </DisclosureButton>
-                    <DisclosurePanel className="mt-2 space-y-2">
-                      {[...reportsDropdown].map((item) => (
-                        <DisclosureButton
-                          key={item.name}
-                          as={Link}
-                          href={item.href}
-                          className="block rounded-lg py-2 pl-6 pr-3 text-sm/7 font-semibold hover:bg-surface text-heading dark:hover:bg-white/5"
-                        >
-                          {item.name}
-                        </DisclosureButton>
-                      ))}
-                    </DisclosurePanel>
-                  </Disclosure>
-
-                  <Disclosure as="div" className="-mx-3">
-                    <DisclosureButton className="group flex w-full items-center justify-between rounded-lg py-2 pl-3 pr-3.5 text-base/7 font-semibold hover:bg-surface text-heading dark:hover:bg-white/5">
-                      Gen AI Adoption
-                      <ChevronDownIcon aria-hidden="true" className="size-5 flex-none group-data-[open]:rotate-180" />
-                    </DisclosureButton>
-                    <DisclosurePanel className="mt-2 space-y-2">
-                      {[...genaiDropdown].map((item) => (
-                        <DisclosureButton
-                          key={item.name}
-                          as={Link}
-                          href={item.href}
-                          className="block rounded-lg py-2 pl-6 pr-3 text-sm/7 font-semibold hover:bg-surface text-heading dark:hover:bg-white/5"
-                        >
-                          {item.name}
-                        </DisclosureButton>
-                      ))}
-                    </DisclosurePanel>
-                  </Disclosure>
+                <div className="-mx-3">
+                  {navItems.map((item) => (
+                    <Link
+                      key={item.name}
+                      href={item.href}
+                      className="block rounded-lg py-2 px-3 text-base/7 font-semibold hover:bg-surface text-heading dark:hover:bg-white/5"
+                      onClick={() => setMobileMenuOpen(false)}
+                    >
+                      {item.name}
+                    </Link>
+                  ))}
                 </div>
               )}
             </div>

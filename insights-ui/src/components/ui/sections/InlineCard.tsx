@@ -1,5 +1,6 @@
 import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '@/lib/utils';
+import Link from 'next/link';
 import React from 'react';
 
 /**
@@ -17,12 +18,21 @@ type InlineCardElement = 'div' | 'li';
 
 export type InlineCardProps = VariantProps<typeof inlineCard> & {
   children: React.ReactNode;
-  /** Element to render (e.g. `li` inside a list). Defaults to `div`. */
+  /** Element to render (e.g. `li` inside a list). Defaults to `div`. Ignored when `href` is set. */
   as?: InlineCardElement;
+  /** When set, the whole card becomes a Next.js link with a hover affordance. */
+  href?: string;
   className?: string;
 };
 
-export default function InlineCard({ children, padding, as = 'div', className }: InlineCardProps): React.JSX.Element {
+export default function InlineCard({ children, padding, as = 'div', href, className }: InlineCardProps): React.JSX.Element {
+  if (href) {
+    return (
+      <Link href={href} prefetch={false} className={cn(inlineCard({ padding }), 'block hover:bg-surface-3 transition-colors', className)}>
+        {children}
+      </Link>
+    );
+  }
   const Tag = as;
   return <Tag className={cn(inlineCard({ padding }), className)}>{children}</Tag>;
 }
