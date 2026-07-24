@@ -396,6 +396,72 @@ export const generateCountryMoversBreadcrumbSchema = (country: string, type: Dai
 };
 
 // ────────────────────────────────────────────────────────────────────────────────
+// Daily movers overview (gainers & losers side-by-side) metadata generators
+// ────────────────────────────────────────────────────────────────────────────────
+
+export const generateDailyMoversOverviewMetadata = (country: string): Metadata => {
+  const countryUpper = country.toUpperCase();
+  const title = `Top Gainers & Losers in ${countryUpper} - Last 5 Days | KoalaGains`;
+  const description =
+    `Side-by-side view of the top gaining and top losing stocks in ${countryUpper} over the last 5 trading days. ` +
+    `Track market winners and losers with AI-powered analysis of each move.`;
+  const canonicalUrl = 'https://koalagains.com/daily-top-movers';
+
+  return {
+    title,
+    description,
+    alternates: {
+      canonical: canonicalUrl,
+    },
+    keywords: [
+      `${countryUpper} top gainers`,
+      `${countryUpper} top losers`,
+      'top gainers and losers',
+      'daily stock movers',
+      'best performing stocks',
+      'worst performing stocks',
+      'stock market analysis',
+      'KoalaGains',
+    ],
+    openGraph: {
+      title,
+      description,
+      url: canonicalUrl,
+      siteName: 'KoalaGains',
+      type: 'website',
+      images: ['https://koalagains.com/koalagain_logo.png'],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      images: ['https://koalagains.com/koalagain_logo.png'],
+    },
+  };
+};
+
+export const generateDailyMoversOverviewBreadcrumbSchema = (country: string) => {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: 'Home',
+        item: 'https://koalagains.com',
+      },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: `Top Gainers & Losers in ${country.toUpperCase()}`,
+        item: 'https://koalagains.com/daily-top-movers',
+      },
+    ],
+  };
+};
+
+// ────────────────────────────────────────────────────────────────────────────────
 // Stock report structured data generators
 // ────────────────────────────────────────────────────────────────────────────────
 
