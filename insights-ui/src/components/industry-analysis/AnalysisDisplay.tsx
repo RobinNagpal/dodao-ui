@@ -12,12 +12,12 @@ interface AnalysisDisplayProps {
 export default function AnalysisDisplay({ title, details, breadcrumbs }: AnalysisDisplayProps) {
   return (
     <PageWrapper>
-      <div className="min-h-screen text-white">
+      <div className="min-h-screen text-heading">
         {/* Breadcrumbs */}
         <Breadcrumbs breadcrumbs={breadcrumbs} />
 
         {/* Title */}
-        <h1 className="text-4xl font-bold text-white mb-2">{title}</h1>
+        <h1 className="text-4xl font-bold text-heading mb-2">{title}</h1>
 
         {/* Content */}
         {details ? (
@@ -26,7 +26,7 @@ export default function AnalysisDisplay({ title, details, breadcrumbs }: Analysi
           </div>
         ) : (
           <div className="text-center py-12">
-            <p className="text-gray-400 text-lg">No detailed analysis available yet.</p>
+            <p className="text-muted text-lg">No detailed analysis available yet.</p>
           </div>
         )}
       </div>

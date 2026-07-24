@@ -93,7 +93,7 @@ export default function AnimatedFlyerCarousel() {
             {/* Previous Button */}
             <button
               onClick={goToPrevious}
-              className="absolute left-4 z-10 p-3 rounded-full bg-gray-800/80 backdrop-blur-sm border border-gray-600/50 text-white hover:bg-gray-700/80 transition-all duration-300 hover:scale-110"
+              className="absolute left-4 z-10 p-3 rounded-full bg-surface backdrop-blur-sm border border-border text-heading hover:bg-surface-2 transition-all duration-300 hover:scale-110"
               aria-label="Previous flyer"
             >
               <ChevronLeftIcon className="h-6 w-6" />
@@ -115,10 +115,10 @@ export default function AnimatedFlyerCarousel() {
 
                 {/* Overlay with title */}
                 <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-6">
-                  <h3 className="text-xl font-bold text-white mb-2">{flyerData[currentIndex].title}</h3>
+                  <h3 className="text-xl font-bold text-heading mb-2">{flyerData[currentIndex].title}</h3>
                   <div className="flex items-center gap-2">
                     <div className={`w-3 h-3 rounded-full bg-gradient-to-r ${flyerData[currentIndex].gradient}`} />
-                    <span className="text-sm text-gray-300">
+                    <span className="text-sm text-muted">
                       {currentIndex + 1} of {flyerData.length}
                     </span>
                   </div>
@@ -150,7 +150,7 @@ export default function AnimatedFlyerCarousel() {
             {/* Next Button */}
             <button
               onClick={goToNext}
-              className="absolute right-4 z-10 p-3 rounded-full bg-gray-800/80 backdrop-blur-sm border border-gray-600/50 text-white hover:bg-gray-700/80 transition-all duration-300 hover:scale-110"
+              className="absolute right-4 z-10 p-3 rounded-full bg-surface backdrop-blur-sm border border-border text-heading hover:bg-surface-2 transition-all duration-300 hover:scale-110"
               aria-label="Next flyer"
             >
               <ChevronRightIcon className="h-6 w-6" />
@@ -164,7 +164,7 @@ export default function AnimatedFlyerCarousel() {
                 key={index}
                 onClick={() => goToSlide(index)}
                 className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                  index === currentIndex ? `bg-gradient-to-r ${flyerData[currentIndex].gradient} scale-125` : 'bg-gray-600 hover:bg-gray-500'
+                  index === currentIndex ? `bg-gradient-to-r ${flyerData[currentIndex].gradient} scale-125` : 'bg-surface-3'
                 }`}
                 aria-label={`Go to flyer ${index + 1}`}
               />
@@ -173,7 +173,7 @@ export default function AnimatedFlyerCarousel() {
 
           {/* Progress Bar */}
           <div className="mt-6 max-w-md mx-auto">
-            <div className="w-full bg-gray-700 rounded-full h-1">
+            <div className="w-full bg-surface-2 rounded-full h-1">
               <div
                 className={`h-1 rounded-full bg-gradient-to-r ${flyerData[currentIndex].gradient} transition-all duration-300`}
                 style={{ width: `${((currentIndex + 1) / flyerData.length) * 100}%` }}
@@ -183,8 +183,8 @@ export default function AnimatedFlyerCarousel() {
 
           {/* Auto-play indicator */}
           <div className="flex justify-center mt-4">
-            <div className="flex items-center gap-2 text-sm text-gray-400">
-              <div className={`w-2 h-2 rounded-full ${isAutoPlaying ? 'bg-green-400 animate-pulse' : 'bg-gray-500'}`} />
+            <div className="flex items-center gap-2 text-sm text-muted">
+              <div className={`w-2 h-2 rounded-full ${isAutoPlaying ? 'bg-green-400 animate-pulse' : 'bg-surface-3'}`} />
               <span>{isAutoPlaying ? 'Auto-playing' : 'Paused'}</span>
             </div>
           </div>

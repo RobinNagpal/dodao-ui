@@ -171,7 +171,7 @@ export default function PresentationDetailPage({ params }: PresentationDetailPag
         <div className="flex items-center justify-between mb-6">
           <div>
             <h1 className="text-3xl font-bold text-color">{presentationId}</h1>
-            <p className="mt-1 text-gray-600 dark:text-gray-400">{status?.slides?.length || 0} slides</p>
+            <p className="mt-1 text-muted">{status?.slides?.length || 0} slides</p>
           </div>
           <div className="flex gap-3 items-center">
             <Button onClick={handleRefresh} variant="outlined" disabled={loading}>
@@ -216,7 +216,7 @@ export default function PresentationDetailPage({ params }: PresentationDetailPag
           <div className="text-center py-12">
             <div className="text-6xl mb-4">📝</div>
             <h2 className="text-xl font-semibold mb-2">Presentation Not Found</h2>
-            <p className="text-gray-600 dark:text-gray-400 mb-6">This presentation doesnt have any content yet.</p>
+            <p className="text-muted mb-6">This presentation doesnt have any content yet.</p>
             <Button onClick={() => router.push('/generate-ppt')} variant="outlined">
               Go Back
             </Button>
@@ -247,7 +247,7 @@ export default function PresentationDetailPage({ params }: PresentationDetailPag
             {/* Final Video Section */}
             <div className="border-t pt-8">
               <h2 className="text-xl font-semibold mb-4">Final Video</h2>
-              <div className="p-6 bg-gray-50 dark:bg-gray-800 rounded-lg">
+              <div className="p-6 bg-surface rounded-lg">
                 {status.hasFinalVideo && status.finalVideoUrl ? (
                   <div>
                     <div className="mb-4">
@@ -260,10 +260,10 @@ export default function PresentationDetailPage({ params }: PresentationDetailPag
                       </video>
                     </div>
                     <div className="flex justify-center gap-3">
-                      <a href={status.finalVideoUrl} target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline">
+                      <a href={status.finalVideoUrl} target="_blank" rel="noopener noreferrer" className="text-link hover:underline">
                         Download Video
                       </a>
-                      <span className="text-gray-400">•</span>
+                      <span className="text-muted">•</span>
                       <Button onClick={handleGenerateFinalVideo} variant="outlined" loading={generatingFinal} disabled={generatingFinal || !allVideosReady}>
                         Regenerate
                       </Button>
@@ -271,7 +271,7 @@ export default function PresentationDetailPage({ params }: PresentationDetailPag
                   </div>
                 ) : (
                   <div className="text-center">
-                    <p className="text-gray-600 dark:text-gray-400 mb-4">
+                    <p className="text-muted mb-4">
                       {allVideosReady
                         ? 'All slide videos are ready. Generate the final video.'
                         : 'Generate all slide videos first before creating the final video.'}

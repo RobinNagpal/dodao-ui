@@ -23,10 +23,7 @@ export default function FavouritesEmptyState({
       <HeartIcon className="w-14 h-14 sm:w-16 sm:h-16 text-muted mx-auto mb-5" />
       <h3 className="text-lg sm:text-xl font-semibold text-heading mb-2">No favourites yet</h3>
       <p className="text-sm text-muted mb-6 max-w-md mx-auto">{description}</p>
-      <Link
-        href={browseHref}
-        className="inline-flex items-center px-5 py-2.5 bg-blue-600 hover:bg-blue-700 transition-colors rounded-lg text-white text-sm font-semibold"
-      >
+      <Link href={browseHref} className="inline-flex items-center px-5 py-2.5 bg-primary transition-colors rounded-lg text-primary-text text-sm font-semibold">
         {browseLabel}
       </Link>
     </div>

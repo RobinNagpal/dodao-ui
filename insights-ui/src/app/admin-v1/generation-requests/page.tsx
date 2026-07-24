@@ -141,7 +141,7 @@ export default function GenerationRequestsPage(): JSX.Element {
         <h2 className="text-2xl font-bold">Generation Requests</h2>
 
         <div className="flex items-center gap-3">
-          <div className="text-sm text-gray-300">
+          <div className="text-sm text-muted">
             {hasActive && !isPaused ? (
               <span>
                 Reloading in <span className="font-semibold">{secondsLeft}</span> seconds

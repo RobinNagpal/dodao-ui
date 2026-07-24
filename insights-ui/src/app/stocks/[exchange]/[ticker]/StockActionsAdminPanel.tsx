@@ -174,12 +174,12 @@ export default function StockActionsAdminPanel({ ticker, movedExchange, movedSym
         return (
           <div className="space-y-4">
             {value.map((item, index) => (
-              <div key={index} className="bg-gray-800 p-4 rounded-md">
+              <div key={index} className="bg-surface p-4 rounded-md">
                 {typeof item === 'object' && item !== null ? (
                   <div className="space-y-3">
                     {Object.entries(item).map(([itemKey, itemValue]) => (
                       <div key={itemKey}>
-                        <h5 className="font-semibold text-gray-300 mb-1 capitalize">{formatTitle(itemKey)}</h5>
+                        <h5 className="font-semibold text-muted mb-1 capitalize">{formatTitle(itemKey)}</h5>
                         <div className="markdown markdown-body text-left">
                           <div
                             dangerouslySetInnerHTML={{
@@ -228,11 +228,11 @@ export default function StockActionsAdminPanel({ ticker, movedExchange, movedSym
     return (
       <div className="space-y-6">
         {Object.entries(content).map(([key, value]) => (
-          <div key={key} className="border-b border-gray-600 pb-4">
-            <h3 className="text-lg font-semibold text-white mb-3 capitalize">
+          <div key={key} className="border-b border-border pb-4">
+            <h3 className="text-lg font-semibold text-heading mb-3 capitalize">
               {formatTitle(key)}
               {Array.isArray(value) && (
-                <span className="ml-2 text-sm text-gray-400 font-normal">
+                <span className="ml-2 text-sm text-muted font-normal">
                   ({value.length} item{value.length !== 1 ? 's' : ''})
                 </span>
               )}
@@ -258,10 +258,10 @@ export default function StockActionsAdminPanel({ ticker, movedExchange, movedSym
               <button
                 key={item.key}
                 onClick={() => handleModalSelect(item.key)}
-                className="text-left px-3 py-2 bg-gray-800 hover:bg-gray-700 rounded-md transition-colors duration-200 border border-gray-600 text-sm"
+                className="text-left px-3 py-2 bg-surface hover:bg-surface-2 rounded-md transition-colors duration-200 border border-border text-sm"
                 disabled={item.disabled}
               >
-                <span className={`${item.disabled ? 'text-gray-500' : 'text-white'}`}>{item.label}</span>
+                <span className={`${item.disabled ? 'text-muted' : 'text-heading'}`}>{item.label}</span>
               </button>
             ))}
           </div>
@@ -283,15 +283,15 @@ export default function StockActionsAdminPanel({ ticker, movedExchange, movedSym
           <div className="px-4">
             {!selectedPromptType ? (
               <div>
-                <h3 className="text-lg font-semibold mb-4 text-white">Select Report Type</h3>
+                <h3 className="text-lg font-semibold mb-4 text-heading">Select Report Type</h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
                   {analysisTypes.map((item) => (
                     <button
                       key={item.key}
                       onClick={() => handlePromptModalSelect(item.key)}
-                      className="text-left px-3 py-2 bg-gray-800 hover:bg-gray-700 rounded-md transition-colors duration-200 border border-gray-600 text-sm"
+                      className="text-left px-3 py-2 bg-surface hover:bg-surface-2 rounded-md transition-colors duration-200 border border-border text-sm"
                     >
-                      <span className="text-white">{item.label}</span>
+                      <span className="text-heading">{item.label}</span>
                     </button>
                   ))}
                 </div>
@@ -306,7 +306,7 @@ export default function StockActionsAdminPanel({ ticker, movedExchange, movedSym
                       setJsonContent(null);
                       setImportedJson('');
                     }}
-                    className="px-3 py-1 bg-gray-700 hover:bg-gray-600 rounded text-sm text-white"
+                    className="px-3 py-1 bg-surface-2 hover:bg-surface-3 rounded text-sm text-heading"
                   >
                     ← Back to Selection
                   </button>
@@ -321,8 +321,8 @@ export default function StockActionsAdminPanel({ ticker, movedExchange, movedSym
                           console.error('Failed to copy prompt:', error);
                         }
                       }}
-                      className={`px-3 py-1 rounded text-sm text-white transition-colors duration-200 ${
-                        copied ? 'bg-green-600 hover:bg-green-500' : 'bg-blue-600 hover:bg-blue-500'
+                      className={`px-3 py-1 rounded text-sm text-primary-text transition-colors duration-200 ${
+                        copied ? 'bg-green-600 hover:bg-green-500' : 'bg-primary'
                       }`}
                     >
                       {copied ? 'Copied!' : 'Copy Prompt'}
@@ -341,16 +341,14 @@ export default function StockActionsAdminPanel({ ticker, movedExchange, movedSym
                       <div className="mb-4 p-3 bg-green-900 border border-green-600 rounded">
                         <p className="text-green-200 text-sm">✓ JSON content imported successfully!</p>
                       </div>
-                      <div className="bg-gray-900 border border-gray-600 rounded p-4 mb-4 max-h-96 overflow-y-auto">
-                        {renderJsonContentInMarkdown(jsonContent)}
-                      </div>
+                      <div className="bg-bg border border-border rounded p-4 mb-4 max-h-96 overflow-y-auto">{renderJsonContentInMarkdown(jsonContent)}</div>
                       <div className="mt-4 flex justify-center gap-3">
                         <button
                           onClick={() => {
                             setJsonContent(null);
                             setImportedJson('');
                           }}
-                          className="px-4 py-2 bg-gray-600 hover:bg-gray-500 rounded text-white font-medium"
+                          className="px-4 py-2 bg-surface-3 rounded text-heading font-medium"
                         >
                           Clear JSON
                         </button>
@@ -358,7 +356,7 @@ export default function StockActionsAdminPanel({ ticker, movedExchange, movedSym
                           onClick={handleSaveReport}
                           disabled={savingReport}
                           className={`px-4 py-2 rounded text-white font-medium transition-colors duration-200 ${
-                            savingReport ? 'bg-gray-600 cursor-not-allowed' : 'bg-green-600 hover:bg-green-500'
+                            savingReport ? 'bg-surface-3 cursor-not-allowed' : 'bg-green-600 hover:bg-green-500'
                           }`}
                         >
                           {savingReport ? 'Saving...' : 'Save Report'}

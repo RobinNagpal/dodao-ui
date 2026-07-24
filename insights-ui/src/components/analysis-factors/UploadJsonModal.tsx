@@ -103,7 +103,7 @@ export default function UploadJsonModal({ open, onClose, title, industryKey, sub
         )}
 
         {/* Action Buttons */}
-        <div className="flex justify-between mt-4 pt-4 border-t border-gray-200">
+        <div className="flex justify-between mt-4 pt-4 border-t border-border">
           <Button onClick={handleSave} primary variant="contained">
             Save
           </Button>

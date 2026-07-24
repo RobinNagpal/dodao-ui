@@ -22,7 +22,7 @@ export function OperatorSelect({ value, onChange }: OperatorSelectProps): JSX.El
           aria-pressed={value === op}
           onClick={() => onChange(op)}
           className={`w-7 py-1 text-sm font-bold leading-none transition-colors ${
-            value === op ? 'bg-[#F59E0B] text-black' : 'bg-surface-3 text-heading hover:bg-surface-3'
+            value === op ? 'bg-amber-500 text-black' : 'bg-surface-3 text-heading hover:bg-surface-3'
           }`}
         >
           {NUMERIC_FILTER_OP_SYMBOLS[op]}
@@ -86,7 +86,7 @@ export default function NumericFilterControl({ id, label, value, options, onChan
   };
 
   return (
-    <div className={`rounded p-2 ${isActive ? 'bg-surface-2 ring-1 ring-[#F59E0B]' : 'bg-surface-2'}`}>
+    <div className={`rounded p-2 ${isActive ? 'bg-surface-2 ring-1 ring-amber-500' : 'bg-surface-2'}`}>
       <div className="mb-1 flex items-center justify-between gap-2">
         <label htmlFor={id} className="truncate text-xs text-muted" title={label}>
           {label}
@@ -98,7 +98,7 @@ export default function NumericFilterControl({ id, label, value, options, onChan
               type="button"
               aria-pressed={mode === m}
               onClick={() => switchMode(m)}
-              className={`px-1.5 py-0.5 font-medium capitalize transition-colors ${mode === m ? 'bg-[#F59E0B] text-black' : 'text-body hover:bg-surface-3'}`}
+              className={`px-1.5 py-0.5 font-medium capitalize transition-colors ${mode === m ? 'bg-amber-500 text-black' : 'text-body hover:bg-surface-3'}`}
             >
               {m}
             </button>

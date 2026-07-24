@@ -256,7 +256,7 @@ export default function AddEditPortfolioTickerModal({
             <SearchBar variant="navbar" placeholder="Search for a ticker to add..." onResultClick={handleTickerSelect} className="w-full" />
           </div>
         ) : (
-          <div className="bg-gray-900 rounded-md p-3">
+          <div className="bg-bg rounded-md p-3">
             <div className="flex items-center justify-between">
               <TickerBadge ticker={selectedTicker} showScore={true} showName={true} onRemove={() => setSelectedTicker(null)} />
             </div>
@@ -275,7 +275,7 @@ export default function AddEditPortfolioTickerModal({
             min={0}
             max={100}
             placeholder="0-100"
-            className="bg-gray-800 border-gray-700 text-white w-full"
+            className="bg-surface border-border text-heading w-full"
           />
         </div>
       </div>
@@ -300,8 +300,8 @@ export default function AddEditPortfolioTickerModal({
         </div>
 
         {competitorsConsidered.length > 0 && (
-          <div className="bg-gray-900 rounded-md p-3">
-            <div className="text-sm text-gray-400 mb-2">Selected competitors:</div>
+          <div className="bg-bg rounded-md p-3">
+            <div className="text-sm text-muted mb-2">Selected competitors:</div>
             <div className="flex flex-wrap gap-2">
               {competitorsConsidered.map((competitor) => (
                 <TickerBadge key={competitor.id} ticker={competitor} showScore={true} showName={true} onRemove={() => handleRemoveCompetitor(competitor.id)} />
@@ -319,8 +319,8 @@ export default function AddEditPortfolioTickerModal({
         </div>
 
         {betterAlternatives.length > 0 && (
-          <div className="bg-gray-900 rounded-md p-3">
-            <div className="text-sm text-gray-400 mb-2">Selected alternatives:</div>
+          <div className="bg-bg rounded-md p-3">
+            <div className="text-sm text-muted mb-2">Selected alternatives:</div>
             <div className="flex flex-wrap gap-2">
               {betterAlternatives.map((alternative) => (
                 <TickerBadge
@@ -340,14 +340,14 @@ export default function AddEditPortfolioTickerModal({
       <div className="space-y-3">
         <div className="flex justify-between items-center">
           <label className="block text-sm font-medium text-left">Tags</label>
-          <Button onClick={() => setCurrentView('manage-tags')} variant="text" className="text-sm text-blue-400 hover:text-blue-300 flex items-center gap-1">
+          <Button onClick={() => setCurrentView('manage-tags')} variant="text" className="text-sm text-link hover:text-link flex items-center gap-1">
             <TagIcon className="w-4 h-4" />
             Manage Tags
           </Button>
         </div>
-        <div className="space-y-1 max-h-40 overflow-y-auto bg-gray-900 rounded-md p-1">
+        <div className="space-y-1 max-h-40 overflow-y-auto bg-bg rounded-md p-1">
           {availableTags.length === 0 ? (
-            <p className="text-gray-500 text-sm p-2">No tags available. Create one to get started.</p>
+            <p className="text-muted text-sm p-2">No tags available. Create one to get started.</p>
           ) : (
             <div className="ml-2">
               <Checkboxes
@@ -379,14 +379,14 @@ export default function AddEditPortfolioTickerModal({
       <div className="space-y-3">
         <div className="flex justify-between items-center">
           <label className="block text-sm font-medium text-left">Lists</label>
-          <Button onClick={() => setCurrentView('manage-lists')} variant="text" className="text-sm text-blue-400 hover:text-blue-300 flex items-center gap-1">
+          <Button onClick={() => setCurrentView('manage-lists')} variant="text" className="text-sm text-link hover:text-link flex items-center gap-1">
             <ListBulletIcon className="w-4 h-4" />
             Manage Lists
           </Button>
         </div>
-        <div className="space-y-1 max-h-40 overflow-y-auto bg-gray-900 rounded-md p-1">
+        <div className="space-y-1 max-h-40 overflow-y-auto bg-bg rounded-md p-1">
           {availableLists.length === 0 ? (
-            <p className="text-gray-500 text-sm p-2">No lists available. Create one to get started.</p>
+            <p className="text-muted text-sm p-2">No lists available. Create one to get started.</p>
           ) : (
             <div className="ml-2">
               <Checkboxes
@@ -412,7 +412,7 @@ export default function AddEditPortfolioTickerModal({
       </div>
 
       {/* Action Buttons */}
-      <div className="flex justify-end gap-3 pt-5 mt-2 border-t border-gray-700">
+      <div className="flex justify-end gap-3 pt-5 mt-2 border-t border-border">
         <Button onClick={onClose} disabled={loading} variant="outlined">
           Cancel
         </Button>

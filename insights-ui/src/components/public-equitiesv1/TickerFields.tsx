@@ -38,10 +38,10 @@ export default function TickerFields({ value, onPatch, renderAfter, inlineError,
   const containerInnerClass = layout === 'vertical' ? 'grid grid-cols-1 gap-4' : `grid grid-cols-1 ${gridColsClass} gap-4`;
 
   return (
-    <div className={`p-4 border border-gray-200 dark:border-gray-700 rounded-lg shadow-sm ${className ?? ''}`}>
+    <div className={`p-4 border border-border rounded-lg shadow-sm ${className ?? ''}`}>
       <div className={containerInnerClass}>
         <div>
-          <label className="block text-sm font-medium mb-1 dark:text-gray-300">Exchange</label>
+          <label className="block text-sm font-medium mb-1 text-muted">Exchange</label>
           <StyledSelect
             label=""
             selectedItemId={value.exchange}
@@ -53,47 +53,47 @@ export default function TickerFields({ value, onPatch, renderAfter, inlineError,
         </div>
 
         <div>
-          <label className="block text-sm font-medium mb-1 dark:text-gray-300">Company Name</label>
+          <label className="block text-sm font-medium mb-1 text-muted">Company Name</label>
           <input
             type="text"
             value={value.name}
             onChange={(e: React.ChangeEvent<HTMLInputElement>): void => onPatch({ name: e.target.value })}
             required
-            className="w-full px-3 py-2 bg-transparent border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
+            className="w-full px-3 py-2 bg-transparent border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary text-body placeholder-muted"
             placeholder="e.g. Apple Inc."
           />
         </div>
 
         <div>
-          <label className="block text-sm font-medium mb-1 dark:text-gray-300">Symbol</label>
+          <label className="block text-sm font-medium mb-1 text-muted">Symbol</label>
           <input
             type="text"
             value={value.symbol}
             onChange={(e: React.ChangeEvent<HTMLInputElement>): void => onPatch({ symbol: e.target.value.toUpperCase() })}
             required
-            className="w-full px-3 py-2 bg-transparent border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
+            className="w-full px-3 py-2 bg-transparent border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary text-body placeholder-muted"
             placeholder="e.g. AAPL"
           />
         </div>
 
         <div>
-          <label className="block text-sm font-medium mb-1 dark:text-gray-300">Website URL</label>
+          <label className="block text-sm font-medium mb-1 text-muted">Website URL</label>
           <input
             type="url"
             value={value.websiteUrl}
             onChange={(e: React.ChangeEvent<HTMLInputElement>): void => onPatch({ websiteUrl: e.target.value })}
-            className="w-full px-3 py-2 bg-transparent border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
+            className="w-full px-3 py-2 bg-transparent border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary text-body placeholder-muted"
             placeholder="e.g. https://www.apple.com"
           />
         </div>
 
         <div>
-          <label className="block text-sm font-medium mb-1 dark:text-gray-300">Stock Analyze URL</label>
+          <label className="block text-sm font-medium mb-1 text-muted">Stock Analyze URL</label>
           <input
             type="url"
             value={value.stockAnalyzeUrl}
             onChange={(e: React.ChangeEvent<HTMLInputElement>): void => onPatch({ stockAnalyzeUrl: e.target.value })}
-            className="w-full px-3 py-2 bg-transparent border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
+            className="w-full px-3 py-2 bg-transparent border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary text-body placeholder-muted"
             placeholder="e.g. https://stock-analyze.com/stocks/aapl"
           />
         </div>

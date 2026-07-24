@@ -68,21 +68,21 @@ export default async function AnalysisTemplateReportPage({ params }: AnalysisTem
         {/* Header */}
         <div className="mb-6">
           <div className="flex items-center gap-3 mb-2">
-            <h1 className="text-xl font-bold text-white">{report.analysisTemplate.name}</h1>
+            <h1 className="text-xl font-bold text-heading">{report.analysisTemplate.name}</h1>
             <div className="ml-auto flex gap-4">
               <Link href="/admin-v1/analysis-template-report">
-                <span className="text-blue-400 hover:text-blue-300 transition-colors">Back to Reports →</span>
+                <span className="text-link hover:text-link transition-colors">Back to Reports →</span>
               </Link>
             </div>
           </div>
           <div>
-            <div className="flex items-center gap-4 text-sm text-gray-400">
+            <div className="flex items-center gap-4 text-sm text-muted">
               {(() => {
                 const inputObj = report.inputObj as any;
                 if (isTickerAnalysis && inputObj?.tickerSymbol) {
                   return (
                     <>
-                      <span className="text-sm text-blue-400 font-medium">{inputObj.tickerSymbol}</span>
+                      <span className="text-sm text-link font-medium">{inputObj.tickerSymbol}</span>
                       <span>•</span>
                       <span>{inputObj.tickerName || 'Unknown'}</span>
                       <span>•</span>
@@ -93,16 +93,16 @@ export default async function AnalysisTemplateReportPage({ params }: AnalysisTem
                 if (isCompanyAnalysis && inputObj?.companyName) {
                   return (
                     <>
-                      <span className="text-sm text-blue-400 font-medium">{inputObj.companyName}</span>
+                      <span className="text-sm text-link font-medium">{inputObj.companyName}</span>
                       <span>•</span>
                       <span>Company Analysis</span>
                     </>
                   );
                 }
-                return <span className="text-gray-500">No details available</span>;
+                return <span className="text-muted">No details available</span>;
               })()}
             </div>
-            <p className="text-gray-400 text-sm mt-2">
+            <p className="text-muted text-sm mt-2">
               Analysis results with {report.parameterReports.length} parameter{report.parameterReports.length !== 1 ? 's' : ''} across {groupedReports.length}{' '}
               categor{groupedReports.length !== 1 ? 'ies' : 'y'}
             </p>
@@ -110,12 +110,12 @@ export default async function AnalysisTemplateReportPage({ params }: AnalysisTem
         </div>
 
         {report.parameterReports.length === 0 ? (
-          <div className="bg-gray-800 rounded-lg p-8 text-center">
-            <ChartBarIcon className="w-16 h-16 text-gray-600 mx-auto mb-4" />
+          <div className="bg-surface rounded-lg p-8 text-center">
+            <ChartBarIcon className="w-16 h-16 text-muted mx-auto mb-4" />
             <h3 className="text-xl font-semibold mb-2">No analysis results found</h3>
-            <p className="text-gray-400 mb-6">Generate analysis using the admin panel to see results here.</p>
+            <p className="text-muted mb-6">Generate analysis using the admin panel to see results here.</p>
             <Link href={`/admin-v1/analysis-template-report/${analysisTemplateReportId}/generate`}>
-              <span className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg inline-block transition-colors">Generate Analysis →</span>
+              <span className="px-6 py-3 bg-primary text-primary-text rounded-lg inline-block transition-colors">Generate Analysis →</span>
             </Link>
           </div>
         ) : (

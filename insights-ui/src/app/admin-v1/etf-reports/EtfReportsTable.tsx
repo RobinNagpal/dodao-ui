@@ -36,8 +36,8 @@ export default function EtfReportsTable({ etfs, onRefresh, selectedIds, onToggle
 
   return (
     <div className="overflow-x-auto">
-      <table className="min-w-full divide-y divide-gray-200">
-        <thead className="bg-gray-700">
+      <table className="min-w-full divide-y divide-border">
+        <thead className="bg-surface-2">
           <tr>
             <th className="px-4 py-3 text-center w-10">
               <input
@@ -47,27 +47,27 @@ export default function EtfReportsTable({ etfs, onRefresh, selectedIds, onToggle
                   if (el) el.indeterminate = someSelected && !allSelected;
                 }}
                 onChange={onToggleSelectAll}
-                className="h-4 w-4 rounded border-gray-500 bg-gray-700 text-indigo-500 focus:ring-indigo-500 focus:ring-offset-0 cursor-pointer"
+                className="h-4 w-4 rounded border-border bg-surface-2 text-primary focus:ring-primary focus:ring-offset-0 cursor-pointer"
               />
             </th>
-            <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider sticky left-0 bg-gray-700 z-10">ETF</th>
-            <th className="px-4 py-3 text-center text-xs font-medium text-gray-300 uppercase tracking-wider">Financial Info</th>
-            <th className="px-4 py-3 text-center text-xs font-medium text-gray-300 uppercase tracking-wider">Stock Analyzer</th>
-            <th className="px-4 py-3 text-center text-xs font-medium text-gray-300 uppercase tracking-wider">MOR Analyzer</th>
-            <th className="px-4 py-3 text-center text-xs font-medium text-gray-300 uppercase tracking-wider">MOR Risk</th>
-            <th className="px-4 py-3 text-center text-xs font-medium text-gray-300 uppercase tracking-wider">MOR People</th>
-            <th className="px-4 py-3 text-center text-xs font-medium text-gray-300 uppercase tracking-wider">MOR Portfolio</th>
-            <th className="px-4 py-3 text-center text-xs font-medium text-gray-300 uppercase tracking-wider">Performance</th>
-            <th className="px-4 py-3 text-center text-xs font-medium text-gray-300 uppercase tracking-wider">Cost & Team</th>
-            <th className="px-4 py-3 text-center text-xs font-medium text-gray-300 uppercase tracking-wider">Risk</th>
-            <th className="px-4 py-3 text-center text-xs font-medium text-gray-300 uppercase tracking-wider">Future Outlook</th>
-            <th className="px-4 py-3 text-center text-xs font-medium text-gray-300 uppercase tracking-wider">Summary</th>
-            <th className="px-4 py-3 text-center text-xs font-medium text-gray-300 uppercase tracking-wider">Key Facts</th>
-            <th className="px-4 py-3 text-center text-xs font-medium text-gray-300 uppercase tracking-wider">Competition</th>
-            <th className="px-4 py-3 text-center text-xs font-medium text-gray-300 uppercase tracking-wider">Action</th>
+            <th className="px-4 py-3 text-left text-xs font-medium text-muted uppercase tracking-wider sticky left-0 bg-surface-2 z-10">ETF</th>
+            <th className="px-4 py-3 text-center text-xs font-medium text-muted uppercase tracking-wider">Financial Info</th>
+            <th className="px-4 py-3 text-center text-xs font-medium text-muted uppercase tracking-wider">Stock Analyzer</th>
+            <th className="px-4 py-3 text-center text-xs font-medium text-muted uppercase tracking-wider">MOR Analyzer</th>
+            <th className="px-4 py-3 text-center text-xs font-medium text-muted uppercase tracking-wider">MOR Risk</th>
+            <th className="px-4 py-3 text-center text-xs font-medium text-muted uppercase tracking-wider">MOR People</th>
+            <th className="px-4 py-3 text-center text-xs font-medium text-muted uppercase tracking-wider">MOR Portfolio</th>
+            <th className="px-4 py-3 text-center text-xs font-medium text-muted uppercase tracking-wider">Performance</th>
+            <th className="px-4 py-3 text-center text-xs font-medium text-muted uppercase tracking-wider">Cost & Team</th>
+            <th className="px-4 py-3 text-center text-xs font-medium text-muted uppercase tracking-wider">Risk</th>
+            <th className="px-4 py-3 text-center text-xs font-medium text-muted uppercase tracking-wider">Future Outlook</th>
+            <th className="px-4 py-3 text-center text-xs font-medium text-muted uppercase tracking-wider">Summary</th>
+            <th className="px-4 py-3 text-center text-xs font-medium text-muted uppercase tracking-wider">Key Facts</th>
+            <th className="px-4 py-3 text-center text-xs font-medium text-muted uppercase tracking-wider">Competition</th>
+            <th className="px-4 py-3 text-center text-xs font-medium text-muted uppercase tracking-wider">Action</th>
           </tr>
         </thead>
-        <tbody className="bg-gray-800 divide-y divide-gray-700">
+        <tbody className="bg-surface divide-y divide-border">
           {etfs.map((e) => (
             <tr key={e.id} className={selectedIds.has(e.id) ? 'bg-indigo-900/20' : ''}>
               <td className="px-4 py-3 text-center w-10">
@@ -75,16 +75,16 @@ export default function EtfReportsTable({ etfs, onRefresh, selectedIds, onToggle
                   type="checkbox"
                   checked={selectedIds.has(e.id)}
                   onChange={() => onToggleSelect(e.id)}
-                  className="h-4 w-4 rounded border-gray-500 bg-gray-700 text-indigo-500 focus:ring-indigo-500 focus:ring-offset-0 cursor-pointer"
+                  className="h-4 w-4 rounded border-border bg-surface-2 text-primary focus:ring-primary focus:ring-offset-0 cursor-pointer"
                 />
               </td>
-              <td className="px-4 py-3 text-sm font-medium sticky left-0 bg-gray-800 z-10" style={{ minWidth: '220px', maxWidth: '320px' }}>
+              <td className="px-4 py-3 text-sm font-medium sticky left-0 bg-surface z-10" style={{ minWidth: '220px', maxWidth: '320px' }}>
                 <Link href={`/etfs/${e.exchange}/${e.symbol}`} target="_blank" rel="noopener noreferrer" className="link-color">
                   <div className="flex items-center gap-1">
                     <span className="font-semibold text-sm">{e.symbol}</span>
-                    <span className="text-blue-400 text-xs">({e.exchange})</span>
+                    <span className="text-link text-xs">({e.exchange})</span>
                   </div>
-                  <div className="text-xs text-gray-400 truncate" title={e.name}>
+                  <div className="text-xs text-muted truncate" title={e.name}>
                     {e.name}
                   </div>
                 </Link>
@@ -146,7 +146,7 @@ export default function EtfReportsTable({ etfs, onRefresh, selectedIds, onToggle
 
           {etfs.length === 0 && (
             <tr>
-              <td colSpan={16} className="px-4 py-10 text-center text-gray-300">
+              <td colSpan={16} className="px-4 py-10 text-center text-muted">
                 No ETFs found.
               </td>
             </tr>

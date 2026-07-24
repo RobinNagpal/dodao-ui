@@ -81,7 +81,7 @@ export default function WaterfallChart<TDatum>({ width, height, data, xAccessor,
   const yTicks = yScale.ticks(5);
 
   return (
-    <svg width={width} height={height} className="bg-white">
+    <svg width={width} height={height} className="bg-surface">
       {/* Translate the group to account for margins */}
       <g transform={`translate(${margin.left}, ${margin.top})`}>
         {/* Grid Rows */}

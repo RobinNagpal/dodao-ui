@@ -627,7 +627,7 @@ function CategorySummaryCard({ categoryKey, d }: { categoryKey: TickerAnalysisCa
         <Link
           href={link.href(d.exchange.toUpperCase(), d.symbol.toUpperCase())}
           prefetch={false}
-          className="inline-flex items-center gap-1 rounded-md px-3 py-1.5 text-xs font-semibold text-white shadow-sm hover:opacity-90 transition-opacity whitespace-nowrap"
+          className="inline-flex items-center gap-1 rounded-md px-3 py-1.5 text-xs font-semibold text-primary-text shadow-sm hover:opacity-90 transition-opacity whitespace-nowrap"
           style={{ backgroundColor: 'var(--primary-color, #3b82f6)' }}
         >
           {link.label}
@@ -690,7 +690,7 @@ function TickerAnalysisInfo({
                 <Link
                   href={`/stocks/${d.exchange.toUpperCase()}/${d.symbol.toUpperCase()}/management-team`}
                   prefetch={false}
-                  className="inline-flex items-center gap-1 rounded-md px-3 py-1.5 text-xs font-semibold text-white shadow-sm hover:opacity-90 transition-opacity whitespace-nowrap"
+                  className="inline-flex items-center gap-1 rounded-md px-3 py-1.5 text-xs font-semibold text-primary-text shadow-sm hover:opacity-90 transition-opacity whitespace-nowrap"
                   style={{ backgroundColor: 'var(--primary-color, #3b82f6)' }}
                 >
                   View Detailed Analysis →
@@ -731,7 +731,7 @@ function TickerArticleFooter({ modifiedDate, formattedModifiedDate }: { modified
           <span className="inline-flex items-center rounded-full bg-sky-500/15 border border-sky-500/40 px-2.5 py-0.5 text-xs font-medium text-sky-300">
             Stock Analysis
           </span>
-          <span className="inline-flex items-center rounded-full bg-indigo-500/15 border border-indigo-500/40 px-2.5 py-0.5 text-xs font-medium text-indigo-300">
+          <span className="inline-flex items-center rounded-full bg-indigo-500/15 border border-indigo-500/40 px-2.5 py-0.5 text-xs font-medium text-link">
             Investment Report
           </span>
         </div>

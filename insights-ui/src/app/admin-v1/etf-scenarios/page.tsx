@@ -63,11 +63,11 @@ export default function EtfScenariosAdminPage(): JSX.Element {
 
   return (
     <>
-      <div className="bg-gray-800 -mx-6 px-6 py-6 mb-6 border-b border-gray-700/60">
+      <div className="bg-surface -mx-6 px-6 py-6 mb-6 border-b border-border">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-semibold text-white">ETF Scenarios</h1>
-            <p className="text-gray-300 mt-1">Manage the dated playbook of sector / asset-class scenarios.</p>
+            <h1 className="text-2xl font-semibold text-heading">ETF Scenarios</h1>
+            <p className="text-muted mt-1">Manage the dated playbook of sector / asset-class scenarios.</p>
           </div>
           <div className="flex gap-2">
             <Button variant="outlined" onClick={() => refetchList()}>
@@ -92,17 +92,17 @@ export default function EtfScenariosAdminPage(): JSX.Element {
 
       {loadingList ? (
         <div className="flex justify-center items-center h-40">
-          <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-indigo-400" />
-          <span className="ml-3 text-indigo-300">Loading…</span>
+          <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-primary" />
+          <span className="ml-3 text-link">Loading…</span>
         </div>
       ) : scenarios.length === 0 ? (
-        <div className="rounded-lg border border-gray-700/50 bg-gray-900/40 p-8 text-center text-gray-400">
+        <div className="rounded-lg border border-border bg-bg p-8 text-center text-muted">
           No scenarios yet. Use <strong>Import from doc</strong> to bulk-load or <strong>Add Scenario</strong> to create one manually.
         </div>
       ) : (
-        <div className="rounded-lg border border-gray-700/50 bg-gray-900/40 overflow-hidden">
+        <div className="rounded-lg border border-border bg-bg overflow-hidden">
           <table className="w-full text-sm text-left">
-            <thead className="bg-gray-800/60 text-gray-300">
+            <thead className="bg-surface text-muted">
               <tr>
                 <th className="px-3 py-2">#</th>
                 <th className="px-3 py-2">Title</th>
@@ -116,10 +116,10 @@ export default function EtfScenariosAdminPage(): JSX.Element {
             </thead>
             <tbody>
               {scenarios.map((s) => (
-                <tr key={s.id} className="border-t border-gray-700/50 hover:bg-gray-800/40">
-                  <td className="px-3 py-2 text-gray-400">{s.scenarioNumber}</td>
-                  <td className="px-3 py-2 text-white">
-                    <Link href={`/etf-scenarios/${s.slug}`} className="hover:text-indigo-300" target="_blank">
+                <tr key={s.id} className="border-t border-border hover:bg-surface">
+                  <td className="px-3 py-2 text-muted">{s.scenarioNumber}</td>
+                  <td className="px-3 py-2 text-heading">
+                    <Link href={`/etf-scenarios/${s.slug}`} className="hover:text-link" target="_blank">
                       {s.title}
                     </Link>
                   </td>
@@ -132,8 +132,8 @@ export default function EtfScenariosAdminPage(): JSX.Element {
                   <td className="px-3 py-2">
                     <TimeframeBadge timeframe={s.timeframe} />
                   </td>
-                  <td className="px-3 py-2 text-gray-400">{s.outlookAsOfDate.slice(0, 10)}</td>
-                  <td className="px-3 py-2 text-gray-400">{s.archived ? 'Yes' : 'No'}</td>
+                  <td className="px-3 py-2 text-muted">{s.outlookAsOfDate.slice(0, 10)}</td>
+                  <td className="px-3 py-2 text-muted">{s.archived ? 'Yes' : 'No'}</td>
                   <td className="px-3 py-2 text-right">
                     <div className="flex justify-end gap-2">
                       <Button variant="outlined" onClick={() => handleManageLinks(s)}>

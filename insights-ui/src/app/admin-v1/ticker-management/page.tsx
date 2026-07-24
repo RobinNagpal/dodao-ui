@@ -96,7 +96,7 @@ export default function TickerManagementPage() {
         ) : (
           <div>
             {/* Country Filter */}
-            <div className="bg-gray-800 rounded-lg p-4 mb-4">
+            <div className="bg-surface rounded-lg p-4 mb-4">
               <AdminCountryFilter selectedCountries={selectedCountries} onCountriesChange={setSelectedCountries} disabled={!tickerInfos} />
             </div>
 
@@ -155,7 +155,7 @@ export default function TickerManagementPage() {
           </div>
         )}
         {selectedIndustry && selectedSubIndustry && !loadingTickers && (
-          <Block title="Selected Tickers" className="dark:bg-gray-800">
+          <Block title="Selected Tickers" className="bg-surface">
             <Tooltip.Provider delayDuration={300}>
               <SelectableSubIndustryCard
                 subIndustry={selectedSubIndustry.subIndustryKey}

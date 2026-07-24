@@ -36,7 +36,7 @@ interface EtfScenarioFiltersBarProps {
   onSearchChange: (s: string) => void;
 }
 
-const SELECT_CLASSES = 'w-full bg-bg border border-border rounded px-2 py-1.5 text-sm text-heading focus:outline-none focus:border-[#F59E0B]';
+const SELECT_CLASSES = 'w-full bg-bg border border-border rounded px-2 py-1.5 text-sm text-heading focus:outline-none focus:border-amber-500';
 
 export default function EtfScenarioFiltersBar({
   direction,

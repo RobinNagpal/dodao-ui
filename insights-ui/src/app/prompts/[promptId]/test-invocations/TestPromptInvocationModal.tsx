@@ -35,7 +35,7 @@ export default function TestPromptInvocationModal({ open, onClose, invocation }:
 
         <div className="mb-4">
           <h2 className="heading-color">Prompt Template</h2>
-          <div className="flex-1 border-l border-gray-200">
+          <div className="flex-1 border-l border-border">
             <Editor
               height="300px"
               defaultLanguage="markdown"
@@ -57,7 +57,7 @@ export default function TestPromptInvocationModal({ open, onClose, invocation }:
 
         <div className="mb-4">
           <h2 className="heading-color">Prompt</h2>
-          <div className="flex-1 border-l border-gray-200">
+          <div className="flex-1 border-l border-border">
             <Editor
               height="300px"
               defaultLanguage="markdown"

@@ -27,14 +27,14 @@ export default function MobileTopNav({ mobileMenuOpen, setMobileMenuOpen, indust
   return (
     <Dialog open={mobileMenuOpen} onClose={setMobileMenuOpen} className="lg:hidden">
       <div className="fixed inset-0 z-50" />
-      <DialogPanel className="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-white p-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10 dark:bg-gray-900 dark:sm:ring-white/10">
+      <DialogPanel className="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto p-6 sm:max-w-sm sm:ring-1 sm:ring-border bg-bg">
         <div className="flex items-center justify-between">
           <Link href="/" className="-m-1.5 p-1.5" aria-label="KoalaGains home">
             <span className="sr-only">KoalaGains</span>
             {/* Mobile: app icon */}
             <Image alt="KoalaGains icon" src="/images/android-icon-512x512.png" className="h-8 w-auto" width={32} height={32} />
           </Link>
-          <button type="button" onClick={() => setMobileMenuOpen(false)} className="-m-2.5 rounded-md p-2.5 text-gray-700 dark:text-gray-400">
+          <button type="button" onClick={() => setMobileMenuOpen(false)} className="-m-2.5 rounded-md p-2.5 text-muted">
             <span className="sr-only">Close menu</span>
             <XMarkIcon aria-hidden="true" className="size-6" />
           </button>
@@ -45,30 +45,26 @@ export default function MobileTopNav({ mobileMenuOpen, setMobileMenuOpen, indust
             <SearchBar placeholder={isEtfsRoute ? 'Search ETFs...' : 'Search stocks...'} variant="navbar" kind={isEtfsRoute ? 'etfs' : 'stocks'} />
           </div>
 
-          <div className="-my-6 divide-y divide-gray-500/10 dark:divide-white/10">
+          <div className="-my-6 divide-y divide-border">
             <div className="space-y-2 py-6">
               {isStocksRoute ? (
                 <div>
-                  <h3 className="text-base font-semibold text-gray-900 dark:text-white mb-3">Industries</h3>
+                  <h3 className="text-base font-semibold text-heading mb-3">Industries</h3>
 
                   {industriesLoading ? (
                     <div className="text-center">
                       <div
-                        className="inline-block h-6 w-6 animate-spin rounded-full border-2 border-solid border-current border-r-transparent motion-reduce:animate-[spin_1.5s_linear_infinite] text-gray-500 dark:text-gray-400"
+                        className="inline-block h-6 w-6 animate-spin rounded-full border-2 border-solid border-current border-r-transparent motion-reduce:animate-[spin_1.5s_linear_infinite] text-muted"
                         role="status"
                       >
                         <span className="sr-only">Loading...</span>
                       </div>
-                      <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">Loading industries...</p>
+                      <p className="mt-2 text-sm text-muted">Loading industries...</p>
                     </div>
                   ) : !industries || industries.length === 0 ? (
                     <div className="text-center">
-                      <p className="text-sm text-gray-500 dark:text-gray-400">No industries found.</p>
-                      <Link
-                        href="/stocks"
-                        className="mt-2 inline-block text-sm font-medium text-blue-600 hover:text-blue-500 dark:text-blue-400 dark:hover:text-blue-300"
-                        onClick={() => setMobileMenuOpen(false)}
-                      >
+                      <p className="text-sm text-muted">No industries found.</p>
+                      <Link href="/stocks" className="mt-2 inline-block text-sm font-medium text-link hover:text-link" onClick={() => setMobileMenuOpen(false)}>
                         View all stocks
                       </Link>
                     </div>
@@ -81,14 +77,14 @@ export default function MobileTopNav({ mobileMenuOpen, setMobileMenuOpen, indust
                           <Link
                             key={industry.industryKey}
                             href={`/stocks/industries/${encodeURIComponent(industry.industryKey)}`}
-                            className="flex items-center rounded-lg py-2 px-3 text-sm/7 font-semibold text-gray-900 hover:bg-gray-50 dark:text-white dark:hover:bg-white/5"
+                            className="flex items-center rounded-lg py-2 px-3 text-sm/7 font-semibold hover:bg-surface text-heading dark:hover:bg-white/5"
                             onClick={() => setMobileMenuOpen(false)}
                           >
-                            <span className="truncate text-[#F59E0B]">
+                            <span className="truncate text-amber-500">
                               {industry.name} ({industry.tickerCount}){' '}
                             </span>
                             <span className="ml-2 flex items-center">
-                              <span className="text-[#F59E0B]">→</span>
+                              <span className="text-amber-500">→</span>
                             </span>
                           </Link>
                         ))}
@@ -101,7 +97,7 @@ export default function MobileTopNav({ mobileMenuOpen, setMobileMenuOpen, indust
                     <Link
                       key={item.name}
                       href={item.href}
-                      className="block rounded-lg py-2 px-3 text-base/7 font-semibold text-gray-900 hover:bg-gray-50 dark:text-white dark:hover:bg-white/5"
+                      className="block rounded-lg py-2 px-3 text-base/7 font-semibold hover:bg-surface text-heading dark:hover:bg-white/5"
                       onClick={() => setMobileMenuOpen(false)}
                     >
                       {item.name}

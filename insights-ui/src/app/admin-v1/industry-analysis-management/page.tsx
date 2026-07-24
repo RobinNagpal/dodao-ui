@@ -101,11 +101,11 @@ export default function IndustryAnalysisManagementPage(): JSX.Element {
 
   return (
     <>
-      <div className="bg-gray-800 -mx-6 px-6 py-6 mb-6 border-b border-gray-700/60">
+      <div className="bg-surface -mx-6 px-6 py-6 mb-6 border-b border-border">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-semibold text-white">Industry Analysis Management</h1>
-            <p className="text-gray-300 mt-1">Tree view of industry analyses and sub-industry analyses.</p>
+            <h1 className="text-2xl font-semibold text-heading">Industry Analysis Management</h1>
+            <p className="text-muted mt-1">Tree view of industry analyses and sub-industry analyses.</p>
           </div>
           <div className="flex gap-2">
             <Button variant="outlined" onClick={handleRefreshAll}>
@@ -126,18 +126,18 @@ export default function IndustryAnalysisManagementPage(): JSX.Element {
 
       {loading ? (
         <div className="flex justify-center items-center h-40">
-          <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-indigo-400" />
-          <span className="ml-3 text-indigo-300">Loading…</span>
+          <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-primary" />
+          <span className="ml-3 text-link">Loading…</span>
         </div>
       ) : (
-        <div className="rounded-lg border border-gray-700/50 bg-gray-900/40">
+        <div className="rounded-lg border border-border bg-bg">
           <IndustryAnalysisTree
             industryAnalyses={industryAnalyses ?? []}
             onIndustryAnalysisAction={onIndustryAnalysisAction}
             onSubIndustryAnalysisAction={onSubIndustryAnalysisAction}
           />
           {(!industryAnalyses || industryAnalyses.length === 0) && (
-            <div className="p-8 text-center text-gray-400">No industry analyses yet. Use Add Industry Analysis to create one.</div>
+            <div className="p-8 text-center text-muted">No industry analyses yet. Use Add Industry Analysis to create one.</div>
           )}
         </div>
       )}

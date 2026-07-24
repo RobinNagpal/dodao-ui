@@ -89,15 +89,15 @@ export default function AnalysisTemplateReportPage() {
         {/* Header */}
         <div className="mb-8">
           <div className="flex items-center gap-3 mb-2">
-            <ChartBarIcon className="w-8 h-8 text-blue-500" />
-            <h1 className="text-3xl font-bold text-white">Analysis Template Reports</h1>
+            <ChartBarIcon className="w-8 h-8 text-link" />
+            <h1 className="text-3xl font-bold text-heading">Analysis Template Reports</h1>
             <div className="ml-auto">
               <Button onClick={handleCreateNew} primary variant="contained">
                 Create New Report
               </Button>
             </div>
           </div>
-          <p className="text-gray-400 text-base ml-11">
+          <p className="text-muted text-base ml-11">
             Discover {reports?.length || 0} analysis report{(reports?.length || 0) !== 1 ? 's' : ''} and generate detailed analysis
           </p>
         </div>
@@ -108,7 +108,7 @@ export default function AnalysisTemplateReportPage() {
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
               {reports.map((report) => (
                 <Link key={report.id} href={`/admin-v1/analysis-template-report/${report.id}`}>
-                  <div className="bg-gray-900 rounded-2xl overflow-hidden transition-all border border-gray-800 hover:border-blue-500 relative group cursor-pointer">
+                  <div className="bg-bg rounded-2xl overflow-hidden transition-all border border-border hover:border-blue-500 relative group cursor-pointer">
                     <div className="absolute top-4 right-4 z-10" onClick={(e) => e.stopPropagation()}>
                       <AnalysisTemplateActions
                         onEdit={() => handleEdit(report)}
@@ -117,17 +117,17 @@ export default function AnalysisTemplateReportPage() {
                       />
                     </div>
                     <div className="p-6">
-                      <h3 className="text-xl font-semibold text-white group-hover:text-blue-400 mb-2 pr-12">{report.reportName}</h3>
-                      <p className="text-blue-400 text-sm font-medium mb-3">Prompt: {report.promptKey}</p>
+                      <h3 className="text-xl font-semibold text-heading group-hover:text-link mb-2 pr-12">{report.reportName}</h3>
+                      <p className="text-link text-sm font-medium mb-3">Prompt: {report.promptKey}</p>
 
                       <div className="space-y-3 mb-4">
                         <div className="flex items-center text-sm">
-                          <span className="text-gray-400">Analysis Template: {report.analysisTemplate.name}</span>
+                          <span className="text-muted">Analysis Template: {report.analysisTemplate.name}</span>
                         </div>
                       </div>
 
-                      <div className="pt-4 border-t border-gray-700 mt-4">
-                        <span className="text-blue-400 group-hover:text-blue-300 transition-color text-sm font-medium">See Report →</span>
+                      <div className="pt-4 border-t border-border mt-4">
+                        <span className="text-link group-hover:text-link transition-color text-sm font-medium">See Report →</span>
                       </div>
                     </div>
                   </div>
@@ -135,10 +135,10 @@ export default function AnalysisTemplateReportPage() {
               ))}
             </div>
           ) : (
-            <div className="bg-gray-800 rounded-lg p-8 text-center">
-              <ChartBarIcon className="w-16 h-16 text-gray-600 mx-auto mb-4" />
+            <div className="bg-surface rounded-lg p-8 text-center">
+              <ChartBarIcon className="w-16 h-16 text-muted mx-auto mb-4" />
               <h3 className="text-xl font-semibold mb-2">No analysis reports yet</h3>
-              <p className="text-gray-400 mb-4">You haven’t created any analysis template reports yet.</p>
+              <p className="text-muted mb-4">You haven’t created any analysis template reports yet.</p>
               <Button onClick={handleCreateNew} primary variant="contained">
                 Create Your First Report
               </Button>

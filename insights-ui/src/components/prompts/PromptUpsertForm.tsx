@@ -97,9 +97,9 @@ export default function PromptUpsertForm({ prompt, upserting, onUpsert }: Prompt
           <div className="flex justify-between w-full mb-2 gap-2 items-center">
             <div>Sample Input Json</div>
             <div>
-              <span className="text-sm text-gray-500">Visual Editor:</span>
+              <span className="text-sm text-muted">Visual Editor:</span>
               <IconButton iconName={IconTypes.Edit} onClick={() => setShowSampleJsonModal(true)} />
-              <span className="text-sm text-gray-500 ml-2">Raw JSON:</span>
+              <span className="text-sm text-muted ml-2">Raw JSON:</span>
               <IconButton iconName={IconTypes.Edit} onClick={() => setShowRawJsonModal(true)} />
             </div>
           </div>
@@ -118,7 +118,7 @@ export default function PromptUpsertForm({ prompt, upserting, onUpsert }: Prompt
           <div className="flex justify-between w-full mb-2 gap-2 items-center">
             <div>Sample Body to append</div>
             <div>
-              <span className="text-sm text-gray-500 ml-2">Edit:</span>
+              <span className="text-sm text-muted ml-2">Edit:</span>
               <IconButton iconName={IconTypes.Edit} onClick={() => setShowSampleBodyToAppendModal(true)} />
             </div>
           </div>
@@ -138,9 +138,9 @@ export default function PromptUpsertForm({ prompt, upserting, onUpsert }: Prompt
           <div className="flex justify-between w-full mb-2 gap-2 items-center">
             <div>Transformation Patch</div>
             <div>
-              <span className="text-sm text-gray-500">Visual Editor:</span>
+              <span className="text-sm text-muted">Visual Editor:</span>
               <IconButton iconName={IconTypes.Edit} onClick={() => setShowTransformationPatchModal(true)} />
-              <span className="text-sm text-gray-500 ml-2">Raw Patch:</span>
+              <span className="text-sm text-muted ml-2">Raw Patch:</span>
               <IconButton iconName={IconTypes.Edit} onClick={() => setShowRawPatchModal(true)} />
             </div>
           </div>

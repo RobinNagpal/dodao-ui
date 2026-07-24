@@ -63,8 +63,8 @@ export default async function CountryIndustryStocksPage({ params }: PageProps) {
     >
       {!data ? (
         <>
-          <p className="text-[#E5E7EB] text-lg">{`No ${industryKey} stocks found in ${countryName}.`}</p>
-          <p className="text-[#E5E7EB] text-sm mt-2">Please try again later.</p>
+          <p className="text-body text-lg">{`No ${industryKey} stocks found in ${countryName}.`}</p>
+          <p className="text-body text-sm mt-2">Please try again later.</p>
         </>
       ) : (
         <IndustryStocksGrid data={data} industryName={data?.name || industryKey} />

@@ -18,7 +18,7 @@ export default function FavouriteTags({ tags, showEmptyState = false }: Favourit
       {tags.map((tag) => (
         <span
           key={tag.id}
-          className="inline-flex items-center gap-1 px-2 py-0.5 text-xs leading-tight rounded-full text-white font-medium"
+          className="inline-flex items-center gap-1 px-2 py-0.5 text-xs leading-tight rounded-full text-heading font-medium"
           style={{ backgroundColor: tag.colorHex }}
         >
           {tag.name}

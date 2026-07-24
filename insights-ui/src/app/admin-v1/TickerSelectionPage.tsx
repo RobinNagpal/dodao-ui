@@ -110,7 +110,7 @@ export default function TickerSelectionPage({ renderActionComponent, refreshButt
         {selectedIndustry?.industryKey && selectedSubIndustry?.subIndustryKey && (
           <div className="space-y-2">
             {/* Country Filter - Global filter above statistics */}
-            <div className="bg-gray-800 rounded-lg p-4">
+            <div className="bg-surface rounded-lg p-4">
               <AdminCountryFilter
                 selectedCountries={selectedCountries}
                 onCountriesChange={(countries) => {
@@ -123,11 +123,11 @@ export default function TickerSelectionPage({ renderActionComponent, refreshButt
 
             {/* Statistics and Filter Controls */}
             {tickerInfos && (
-              <div className="bg-gray-800 rounded-lg p-4 mb-4">
+              <div className="bg-surface rounded-lg p-4 mb-4">
                 <div className="flex flex-wrap items-center justify-between gap-4">
                   <div className="flex gap-4 text-sm">
-                    <span className="text-gray-300">
-                      Total: <span className="font-medium text-white">{tickerInfos.count}</span>
+                    <span className="text-muted">
+                      Total: <span className="font-medium text-heading">{tickerInfos.count}</span>
                     </span>
                     <span className="text-red-400">
                       Missing: <span className="font-medium">{tickerInfos.missingCount}</span>
@@ -138,8 +138,8 @@ export default function TickerSelectionPage({ renderActionComponent, refreshButt
                     <span className="text-green-400">
                       Complete: <span className="font-medium">{tickerInfos.completeCount}</span>
                     </span>
-                    <span className="text-gray-300">
-                      Showing: <span className="font-medium text-white">{tickers.length}</span>
+                    <span className="text-muted">
+                      Showing: <span className="font-medium text-heading">{tickers.length}</span>
                     </span>
                   </div>
                   <div className="flex gap-2">
@@ -217,12 +217,12 @@ export default function TickerSelectionPage({ renderActionComponent, refreshButt
                           <div className="flex items-center justify-between">
                             <div className="flex items-center gap-2">
                               <span className="font-medium">{t.symbol}</span>
-                              <span className="text-blue-400 text-sm">({t.exchange})</span>
-                              <span className="text-gray-400">-</span>
-                              <span className="text-gray-300">{t.name}</span>
-                              {t.cachedScoreEntry?.finalScore && <span className="text-blue-400 text-sm">Score: {t.cachedScoreEntry.finalScore}/25</span>}
+                              <span className="text-link text-sm">({t.exchange})</span>
+                              <span className="text-muted">-</span>
+                              <span className="text-muted">{t.name}</span>
+                              {t.cachedScoreEntry?.finalScore && <span className="text-link text-sm">Score: {t.cachedScoreEntry.finalScore}/25</span>}
                             </div>
-                            <div className="flex items-center gap-3 text-sm text-gray-400">
+                            <div className="flex items-center gap-3 text-sm text-muted">
                               <span>
                                 Updated:{' '}
                                 {new Date(t.updatedAt).toLocaleDateString('en-US', {
@@ -250,7 +250,7 @@ export default function TickerSelectionPage({ renderActionComponent, refreshButt
                 />
               </div>
             ) : (
-              <div className="text-center py-3 text-gray-500 dark:text-gray-400">No tickers found for the selected Industry and Sub-Industry.</div>
+              <div className="text-center py-3 text-muted">No tickers found for the selected Industry and Sub-Industry.</div>
             )}
 
             {selectedTickers.length > 0 && (

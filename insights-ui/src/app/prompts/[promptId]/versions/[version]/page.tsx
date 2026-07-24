@@ -137,7 +137,7 @@ export default function ViewPromptVersionPage(): JSX.Element {
             {templateError && <p className="mt-2 text-red-500">Error in template: {templateError}</p>}
             <div className="mt-4">
               <h2 className="text-xl heading-color mb-2">Preview</h2>
-              <div className="flex-1 border-l border-gray-200">
+              <div className="flex-1 border-l border-border">
                 <Editor
                   height="300px"
                   defaultLanguage="markdown"

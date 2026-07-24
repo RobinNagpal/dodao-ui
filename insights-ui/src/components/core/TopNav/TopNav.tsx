@@ -32,7 +32,7 @@ export default function TopNav() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const pathname = usePathname() ?? ''; // <-- safe for null
   // The navbar themes itself by toggling its own `.dark` class rather than by
-  // token swap: it already ships full `bg-white … dark:bg-gray-900` variants, so
+  // token swap: it already ships full `… bg-bg` variants, so
   // flipping the `.dark` ancestor is all that's needed. It reads the app-wide
   // theme from the global provider it now renders inside.
   const navTheme = usePageTheme();
@@ -62,7 +62,7 @@ export default function TopNav() {
   // force-darkened.
   return (
     <div className={navTheme === 'dark' ? 'dark' : ''}>
-      <header className="bg-white dark:bg-gray-900">
+      <header className="bg-bg">
         <nav aria-label="Global" className="mx-auto flex max-w-7xl items-center justify-between p-4 lg:px-6">
           <div className="flex lg:flex-1">
             <Link href="/" className="-m-1.5 p-1.5 shrink-0" aria-label="KoalaGains home">
@@ -82,11 +82,7 @@ export default function TopNav() {
           </div>
 
           <div className="flex lg:hidden">
-            <button
-              type="button"
-              onClick={openMobileMenu}
-              className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700 dark:text-gray-400"
-            >
+            <button type="button" onClick={openMobileMenu} className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-muted">
               <span className="sr-only">Open main menu</span>
               <Bars3Icon aria-hidden="true" className="size-6" />
             </button>
@@ -96,17 +92,14 @@ export default function TopNav() {
             <div className="flex gap-6 items-center">
               {isStocksRoute && session && (
                 <PopoverGroup className="flex gap-x-6">
-                  <Link href="/favourites" className="text-sm/6 font-semibold text-gray-900 dark:text-white hover:text-indigo-600 dark:hover:text-indigo-400">
+                  <Link href="/favourites" className="text-sm/6 font-semibold text-heading hover:text-link">
                     My Favourite Stocks
                   </Link>
                 </PopoverGroup>
               )}
               {isEtfsRoute && session && (
                 <PopoverGroup className="flex gap-x-6">
-                  <Link
-                    href="/etf-favourites"
-                    className="text-sm/6 font-semibold text-gray-900 dark:text-white hover:text-indigo-600 dark:hover:text-indigo-400"
-                  >
+                  <Link href="/etf-favourites" className="text-sm/6 font-semibold text-heading hover:text-link">
                     My Favourite ETFs
                   </Link>
                 </PopoverGroup>
@@ -114,11 +107,7 @@ export default function TopNav() {
               {!isStocksRoute && !isEtfsRoute && (
                 <div className="hidden lg:flex lg:gap-x-6">
                   {navItems.map((item) => (
-                    <Link
-                      key={item.name}
-                      href={item.href}
-                      className="text-sm/6 font-semibold text-gray-900 dark:text-white hover:text-indigo-600 dark:hover:text-indigo-400"
-                    >
+                    <Link key={item.name} href={item.href} className="text-sm/6 font-semibold text-heading hover:text-link">
                       {item.name}
                     </Link>
                   ))}

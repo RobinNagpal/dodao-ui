@@ -35,7 +35,7 @@ export default function PresentationsListPage() {
         <div className="flex items-center justify-between mb-8">
           <div>
             <h1 className="text-3xl font-bold text-color">Presentations</h1>
-            <p className="mt-1 text-gray-600 dark:text-gray-400">Create and manage video presentations with AI</p>
+            <p className="mt-1 text-muted">Create and manage video presentations with AI</p>
           </div>
           <Button onClick={() => setShowCreateModal(true)} primary variant="contained">
             + New Presentation
@@ -64,7 +64,7 @@ export default function PresentationsListPage() {
           <div className="text-center py-12">
             <div className="text-6xl mb-4">📊</div>
             <h2 className="text-xl font-semibold mb-2">No Presentations Yet</h2>
-            <p className="text-gray-600 dark:text-gray-400 mb-6">Create your first presentation to get started</p>
+            <p className="text-muted mb-6">Create your first presentation to get started</p>
             <Button onClick={() => setShowCreateModal(true)} primary variant="contained">
               Create Presentation
             </Button>

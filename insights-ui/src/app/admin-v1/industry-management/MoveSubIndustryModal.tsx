@@ -153,17 +153,17 @@ export default function MoveSubIndustryModal({ isOpen, onClose, onSuccess }: Mov
             </p>
           </div>
 
-          <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-4">
-            <h4 className="font-medium text-gray-900 dark:text-gray-100 mb-3">Move Summary:</h4>
+          <div className="bg-surface rounded-lg p-4">
+            <h4 className="font-medium text-body mb-3">Move Summary:</h4>
             <div className="flex items-center justify-between text-sm">
               <div className="text-center">
-                <div className="font-medium text-gray-900 dark:text-gray-100">{selectedSourceIndustry?.name}</div>
-                <div className="text-gray-600 dark:text-gray-400">{selectedSourceSubIndustry?.name}</div>
+                <div className="font-medium text-body">{selectedSourceIndustry?.name}</div>
+                <div className="text-muted">{selectedSourceSubIndustry?.name}</div>
               </div>
-              <ArrowRight className="h-5 w-5 text-gray-400 mx-4" />
+              <ArrowRight className="h-5 w-5 text-muted mx-4" />
               <div className="text-center">
-                <div className="font-medium text-gray-900 dark:text-gray-100">{selectedTargetIndustry?.name}</div>
-                <div className="text-gray-600 dark:text-gray-400">{selectedSourceSubIndustry?.name}</div>
+                <div className="font-medium text-body">{selectedTargetIndustry?.name}</div>
+                <div className="text-muted">{selectedSourceSubIndustry?.name}</div>
               </div>
             </div>
           </div>
@@ -194,7 +194,7 @@ export default function MoveSubIndustryModal({ isOpen, onClose, onSuccess }: Mov
     <SingleSectionModal open={isOpen} onClose={onClose} title="Move Sub-Industry">
       <form onSubmit={handlePreMove} className="space-y-4 text-left mt-3">
         <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-3">
-          <p className="text-blue-700 dark:text-blue-300 text-sm">Select the sub-industry you want to move and its new parent industry.</p>
+          <p className="text-blue-300 text-sm">Select the sub-industry you want to move and its new parent industry.</p>
         </div>
 
         {/* Source Industry Selection */}
@@ -245,17 +245,17 @@ export default function MoveSubIndustryModal({ isOpen, onClose, onSuccess }: Mov
 
         {/* Preview */}
         {sourceIndustryKey && sourceSubIndustryKey && targetIndustryKey && (
-          <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-3">
-            <h4 className="text-sm font-medium text-gray-900 dark:text-gray-100 mb-2">Preview:</h4>
+          <div className="bg-surface rounded-lg p-3">
+            <h4 className="text-sm font-medium text-body mb-2">Preview:</h4>
             <div className="flex items-center justify-between text-xs">
               <div className="text-center">
                 <div className="font-medium">{selectedSourceIndustry?.name}</div>
-                <div className="text-gray-600 dark:text-gray-400">{selectedSourceSubIndustry?.name}</div>
+                <div className="text-muted">{selectedSourceSubIndustry?.name}</div>
               </div>
-              <ArrowRight className="h-4 w-4 text-gray-400 mx-2" />
+              <ArrowRight className="h-4 w-4 text-muted mx-2" />
               <div className="text-center">
                 <div className="font-medium">{selectedTargetIndustry?.name}</div>
-                <div className="text-gray-600 dark:text-gray-400">{selectedSourceSubIndustry?.name}</div>
+                <div className="text-muted">{selectedSourceSubIndustry?.name}</div>
               </div>
             </div>
           </div>

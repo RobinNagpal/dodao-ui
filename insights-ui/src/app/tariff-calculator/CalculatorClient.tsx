@@ -251,7 +251,7 @@ function CodePicker({ onSelect, manualCode, setManualCode, manualError, onManual
           onChange={(e) => setManualCode(e.target.value)}
           placeholder="0901.90.20.00"
           aria-label="HTS code"
-          className="flex-1 h-11 rounded-lg border border-border bg-surface px-4 text-sm text-heading placeholder-gray-500 font-mono focus:outline-none focus:ring-2 focus:ring-amber-300/40 focus:border-amber-300/60"
+          className="flex-1 h-11 rounded-lg border border-border bg-surface px-4 text-sm text-heading placeholder-muted font-mono focus:outline-none focus:ring-2 focus:ring-amber-300/40 focus:border-amber-300/60"
         />
         <button
           type="submit"

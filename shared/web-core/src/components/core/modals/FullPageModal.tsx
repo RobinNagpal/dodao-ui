@@ -58,7 +58,7 @@ export default function FullPageModal({ open, title, children, onClose, showClos
                         <div className="flex justify-end pr-2">
                           <button
                             type="button"
-                            className="inline-flex rounded-md hover:text-gray-500"
+                            className="inline-flex rounded-md hover:text-[var(--text-color)]"
                             onClick={() => {
                               onClose();
                             }}

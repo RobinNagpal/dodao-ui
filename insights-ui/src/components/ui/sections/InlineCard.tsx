@@ -4,7 +4,7 @@ import Link from 'next/link';
 import React from 'react';
 
 /**
- * Minimal filled info box (`bg-gray-800 rounded-md`) for small grouped content
+ * Minimal filled info box (`bg-surface rounded-md`) for small grouped content
  * such as a label + explanation. A lighter-weight surface than `CardSection`.
  */
 const inlineCard = cva('bg-surface-2 rounded-md', {

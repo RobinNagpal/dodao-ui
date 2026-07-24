@@ -319,7 +319,7 @@ export default function AddEditFavouriteModal({
         <div className="flex justify-between items-center mb-3">
           <label className="block text-sm font-medium text-left">Tags</label>
           {!viewOnly && (
-            <Button onClick={onManageTags} variant="text" className="text-sm text-blue-400 hover:text-blue-300 flex items-center gap-1">
+            <Button onClick={onManageTags} variant="text" className="text-sm text-link hover:text-link flex items-center gap-1">
               <TagIcon className="w-4 h-4" />
               Manage Tags
             </Button>
@@ -361,7 +361,7 @@ export default function AddEditFavouriteModal({
         <div className="flex justify-between items-center mb-3">
           <label className="block text-sm font-medium text-left">Lists</label>
           {!viewOnly && (
-            <Button onClick={onManageLists} variant="text" className="text-sm text-blue-400 hover:text-blue-300 flex items-center gap-1">
+            <Button onClick={onManageLists} variant="text" className="text-sm text-link hover:text-link flex items-center gap-1">
               <ListBulletIcon className="w-4 h-4" />
               Manage Lists
             </Button>

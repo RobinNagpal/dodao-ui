@@ -150,7 +150,7 @@ export default function UpsertIndustryAnalysisModal({ isOpen, onClose, onSuccess
             onUpdate={(value) => setDetails(value || '')}
             objectId={`industry-analysis-${industryAnalysis?.id || 'new'}`}
             maxHeight={200}
-            className="border border-gray-300 rounded-md"
+            className="border border-border rounded-md"
           />
         </div>
 

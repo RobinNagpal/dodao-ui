@@ -162,11 +162,11 @@ export default function MoveTickersModal({
             </div>
           </div>
 
-          <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-4">
-            <h4 className="font-medium text-gray-900 dark:text-gray-100 mb-3">Move Summary:</h4>
+          <div className="bg-surface rounded-lg p-4">
+            <h4 className="font-medium text-body mb-3">Move Summary:</h4>
             <div className="space-y-3">
               <div>
-                <span className="text-sm text-gray-600 dark:text-gray-400">Moving {selectedTickers.length} ticker(s):</span>
+                <span className="text-sm text-muted">Moving {selectedTickers.length} ticker(s):</span>
                 <div className="flex flex-wrap gap-1 mt-1">
                   {selectedTickers.map((ticker) => (
                     <span key={ticker.id} className="inline-block bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-xs px-2 py-1 rounded">
@@ -178,13 +178,13 @@ export default function MoveTickersModal({
 
               <div className="flex items-center justify-between text-sm border-t pt-3">
                 <div className="text-center">
-                  <div className="font-medium text-gray-900 dark:text-gray-100">{currentIndustry?.name || currentIndustryKey}</div>
-                  <div className="text-gray-600 dark:text-gray-400">{currentSubIndustry?.name || currentSubIndustryKey}</div>
+                  <div className="font-medium text-body">{currentIndustry?.name || currentIndustryKey}</div>
+                  <div className="text-muted">{currentSubIndustry?.name || currentSubIndustryKey}</div>
                 </div>
-                <ArrowRight className="h-5 w-5 text-gray-400 mx-4" />
+                <ArrowRight className="h-5 w-5 text-muted mx-4" />
                 <div className="text-center">
-                  <div className="font-medium text-gray-900 dark:text-gray-100">{selectedTargetIndustry?.name}</div>
-                  <div className="text-gray-600 dark:text-gray-400">{selectedTargetSubIndustry?.name}</div>
+                  <div className="font-medium text-body">{selectedTargetIndustry?.name}</div>
+                  <div className="text-muted">{selectedTargetSubIndustry?.name}</div>
                 </div>
               </div>
             </div>
@@ -216,12 +216,12 @@ export default function MoveTickersModal({
     <SingleSectionModal open={isOpen} onClose={onClose} title="Move Tickers">
       <form onSubmit={handlePreMove} className="space-y-4 text-left mt-3">
         <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-3">
-          <p className="text-blue-700 dark:text-blue-300 text-sm">Select the target industry and sub-industry where you want to move the selected ticker(s).</p>
+          <p className="text-blue-300 text-sm">Select the target industry and sub-industry where you want to move the selected ticker(s).</p>
         </div>
 
         {/* Selected Tickers Summary */}
-        <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-3">
-          <h4 className="text-sm font-medium text-gray-900 dark:text-gray-100 mb-2">Moving {selectedTickers.length} ticker(s):</h4>
+        <div className="bg-surface rounded-lg p-3">
+          <h4 className="text-sm font-medium text-body mb-2">Moving {selectedTickers.length} ticker(s):</h4>
           <div className="flex flex-wrap gap-1">
             {selectedTickers.map((ticker) => (
               <span key={ticker.id} className="inline-block bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-xs px-2 py-1 rounded">
@@ -265,17 +265,17 @@ export default function MoveTickersModal({
 
         {/* Preview */}
         {targetIndustryKey && targetSubIndustryKey && (
-          <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-3">
-            <h4 className="text-sm font-medium text-gray-900 dark:text-gray-100 mb-2">Preview:</h4>
+          <div className="bg-surface rounded-lg p-3">
+            <h4 className="text-sm font-medium text-body mb-2">Preview:</h4>
             <div className="flex items-center justify-between text-xs">
               <div className="text-center">
                 <div className="font-medium">{currentIndustry?.name || currentIndustryKey}</div>
-                <div className="text-gray-600 dark:text-gray-400">{currentSubIndustry?.name || currentSubIndustryKey}</div>
+                <div className="text-muted">{currentSubIndustry?.name || currentSubIndustryKey}</div>
               </div>
-              <ArrowRight className="h-4 w-4 text-gray-400 mx-2" />
+              <ArrowRight className="h-4 w-4 text-muted mx-2" />
               <div className="text-center">
                 <div className="font-medium">{selectedTargetIndustry?.name}</div>
-                <div className="text-gray-600 dark:text-gray-400">{selectedTargetSubIndustry?.name}</div>
+                <div className="text-muted">{selectedTargetSubIndustry?.name}</div>
               </div>
             </div>
           </div>

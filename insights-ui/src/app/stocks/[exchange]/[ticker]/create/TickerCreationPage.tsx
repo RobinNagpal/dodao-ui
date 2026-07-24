@@ -210,7 +210,7 @@ export default function TickerCreationPage({ symbol, exchange }: TickerCreationP
         {active && (
           <div className="mx-auto max-w-4xl px-4 pt-4 text-left">
             {/* Industry & Sub-industry metadata */}
-            <div className="mb-4 rounded-md border border-gray-200 dark:border-gray-700 p-3">
+            <div className="mb-4 rounded-md border border-border p-3">
               <div className="font-semibold">Industry</div>
               <div className="text-sm">
                 <span className="font-mono">{active.ticker.industry.industryKey}</span> — {active.ticker.industry.name}

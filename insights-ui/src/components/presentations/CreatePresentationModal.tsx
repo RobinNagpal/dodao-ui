@@ -154,20 +154,20 @@ export default function CreatePresentationModal({ open, onClose, onSuccess }: Cr
             <button
               onClick={() => setMode('prompt')}
               className={`flex-1 px-4 py-3 rounded-lg border-2 transition-colors ${
-                mode === 'prompt' ? 'border-blue-500 bg-blue-50 dark:bg-blue-900' : 'border-gray-300 hover:border-gray-400'
+                mode === 'prompt' ? 'border-blue-500 bg-blue-50 dark:bg-blue-900' : 'border-border hover:border-border'
               }`}
             >
               <div className="font-medium">AI Prompt</div>
-              <div className="text-sm text-gray-500">Generate slides from a description</div>
+              <div className="text-sm text-muted">Generate slides from a description</div>
             </button>
             <button
               onClick={() => setMode('json')}
               className={`flex-1 px-4 py-3 rounded-lg border-2 transition-colors ${
-                mode === 'json' ? 'border-blue-500 bg-blue-50 dark:bg-blue-900' : 'border-gray-300 hover:border-gray-400'
+                mode === 'json' ? 'border-blue-500 bg-blue-50 dark:bg-blue-900' : 'border-border hover:border-border'
               }`}
             >
               <div className="font-medium">JSON Input</div>
-              <div className="text-sm text-gray-500">Provide slide content directly</div>
+              <div className="text-sm text-muted">Provide slide content directly</div>
             </button>
           </div>
         </div>
@@ -180,14 +180,14 @@ export default function CreatePresentationModal({ open, onClose, onSuccess }: Cr
             value={presentationId}
             onChange={(e) => setPresentationId(e.target.value)}
             placeholder="my-presentation"
-            className="w-full px-3 py-2 border rounded-md dark:bg-gray-800 dark:border-gray-600"
+            className="w-full px-3 py-2 border rounded-md bg-surface border-border"
           />
         </div>
 
         {/* Voice Selection */}
         <div className="mb-4">
           <label className="block text-sm font-medium mb-1">Voice</label>
-          <select value={voice} onChange={(e) => setVoice(e.target.value)} className="w-full px-3 py-2 border rounded-md dark:bg-gray-800 dark:border-gray-600">
+          <select value={voice} onChange={(e) => setVoice(e.target.value)} className="w-full px-3 py-2 border rounded-md bg-surface border-border">
             {AVAILABLE_VOICES.map((v) => (
               <option key={v.id} value={v.id}>
                 {v.name}
@@ -206,7 +206,7 @@ export default function CreatePresentationModal({ open, onClose, onSuccess }: Cr
                 onChange={(e) => setPrompt(e.target.value)}
                 placeholder="Create a presentation about..."
                 rows={4}
-                className="w-full px-3 py-2 border rounded-md dark:bg-gray-800 dark:border-gray-600"
+                className="w-full px-3 py-2 border rounded-md bg-surface border-border"
               />
             </div>
 
@@ -218,7 +218,7 @@ export default function CreatePresentationModal({ open, onClose, onSuccess }: Cr
                 max={20}
                 value={numberOfSlides}
                 onChange={(e) => setNumberOfSlides(parseInt(e.target.value) || 5)}
-                className="w-full px-3 py-2 border rounded-md dark:bg-gray-800 dark:border-gray-600"
+                className="w-full px-3 py-2 border rounded-md bg-surface border-border"
               />
             </div>
 
@@ -229,7 +229,7 @@ export default function CreatePresentationModal({ open, onClose, onSuccess }: Cr
                 onChange={(e) => setAdditionalInstructions(e.target.value)}
                 placeholder="Include statistics, make it engaging..."
                 rows={2}
-                className="w-full px-3 py-2 border rounded-md dark:bg-gray-800 dark:border-gray-600"
+                className="w-full px-3 py-2 border rounded-md bg-surface border-border"
               />
             </div>
           </>
@@ -243,27 +243,25 @@ export default function CreatePresentationModal({ open, onClose, onSuccess }: Cr
               value={jsonContent}
               onChange={(e) => handleJsonChange(e.target.value)}
               rows={16}
-              className="w-full px-3 py-2 border rounded-md font-mono text-sm dark:bg-gray-800 dark:border-gray-600"
+              className="w-full px-3 py-2 border rounded-md font-mono text-sm bg-surface border-border"
             />
             {jsonError && <p className="mt-1 text-sm text-red-500">{jsonError}</p>}
 
             {/* Field Reference */}
-            <div className="mt-3 p-3 bg-gray-50 dark:bg-gray-800 rounded-md text-xs">
+            <div className="mt-3 p-3 bg-surface rounded-md text-xs">
               <p className="font-medium mb-2">Slide Types & Fields Reference:</p>
-              <div className="space-y-2 text-gray-600 dark:text-gray-400">
+              <div className="space-y-2 text-muted">
                 <div>
-                  <span className="font-medium text-gray-800 dark:text-gray-200">title:</span> title, subtitle?, narration
+                  <span className="font-medium text-body">title:</span> title, subtitle?, narration
                 </div>
                 <div>
-                  <span className="font-medium text-gray-800 dark:text-gray-200">bullets:</span> title, titleAccent?, bullets[], bulletAccents[]?, narration
+                  <span className="font-medium text-body">bullets:</span> title, titleAccent?, bullets[], bulletAccents[]?, narration
                 </div>
                 <div>
-                  <span className="font-medium text-gray-800 dark:text-gray-200">paragraphs:</span> title, titleAccent?, paragraphs[], paragraphAccents[]?,
-                  footer?, narration
+                  <span className="font-medium text-body">paragraphs:</span> title, titleAccent?, paragraphs[], paragraphAccents[]?, footer?, narration
                 </div>
                 <div>
-                  <span className="font-medium text-gray-800 dark:text-gray-200">image:</span> title, titleAccent?, bullets[], bulletAccents[]?, imageUrl,
-                  narration
+                  <span className="font-medium text-body">image:</span> title, titleAccent?, bullets[], bulletAccents[]?, imageUrl, narration
                 </div>
                 <p className="mt-2 italic">Accent fields highlight matching text in blue. Use &quot;?&quot; fields optionally.</p>
               </div>

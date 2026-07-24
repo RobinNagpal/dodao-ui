@@ -13,7 +13,7 @@ export default function AppliedFilterChip({ label, onRemove, className = '' }: A
   return (
     <div
       className={[
-        'inline-flex items-center gap-2 text-black px-3 py-1.5 rounded-full text-sm bg-gradient-to-r from-[#F59E0B] to-[#FBBF24] hover:from-[#F97316] hover:to-[#F59E0B]',
+        'inline-flex items-center gap-2 text-black px-3 py-1.5 rounded-full text-sm bg-gradient-to-r from-amber-500 to-amber-400 hover:from-orange-500 hover:to-amber-500',
         className,
       ].join(' ')}
     >

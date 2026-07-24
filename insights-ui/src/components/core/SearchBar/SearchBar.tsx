@@ -268,12 +268,12 @@ export default function SearchBar({
           // On mobile: full width and shrinkable; grow within flex row without pushing nav off-screen
           'relative w-full min-w-0 flex-shrink sm:w-64 md:w-80 lg:w-96',
         input:
-          'w-full h-9 pl-9 pr-8 text-sm bg-gray-700 border border-gray-600 rounded-md ' +
+          'w-full h-9 pl-9 pr-8 text-sm bg-surface-2 border border-border rounded-md ' +
           'focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent ' +
-          'text-gray-100 placeholder-gray-400',
-        dropdown: 'absolute top-full left-0 right-0 mt-1 bg-gray-800 border border-gray-600 ' + 'rounded-md shadow-xl z-50 max-h-80 overflow-y-auto',
+          'text-body placeholder-muted',
+        dropdown: 'absolute top-full left-0 right-0 mt-1 bg-surface border border-border ' + 'rounded-md shadow-xl z-50 max-h-80 overflow-y-auto',
         searchIcon: 'absolute left-2.5 top-1/2 -translate-y-1/2 h-4 w-4 text-amber-400',
-        clearIcon: 'absolute right-2.5 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400 hover:text-amber-300 cursor-pointer',
+        clearIcon: 'absolute right-2.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted hover:text-amber-300 cursor-pointer',
         searchButton: '',
       } as const;
     }
@@ -282,17 +282,16 @@ export default function SearchBar({
     return {
       container: 'relative w-full max-w-3xl mx-auto mb-14 mt-8',
       input:
-        'w-full h-14 pl-16 pr-36 text-base bg-gray-700/40 backdrop-blur-sm border-3 border-amber-400 rounded-2xl ' +
-        'focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500 text-white placeholder-gray-300 ' +
+        'w-full h-14 pl-16 pr-36 text-base bg-surface-2 backdrop-blur-sm border-3 border-amber-400 rounded-2xl ' +
+        'focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500 text-heading placeholder-muted ' +
         'transition-all duration-200 shadow-sm',
       dropdown:
-        'absolute top-full left-0 right-0 mt-2 bg-gray-800/95 backdrop-blur-sm border border-gray-600/40 ' +
-        'rounded-xl shadow-2xl z-50 max-h-96 overflow-y-auto',
+        'absolute top-full left-0 right-0 mt-2 bg-surface backdrop-blur-sm border border-border ' + 'rounded-xl shadow-2xl z-50 max-h-96 overflow-y-auto',
       searchIcon: 'absolute left-5 top-1/2 -translate-y-1/2 h-6 w-6 text-amber-400 z-10',
-      clearIcon: 'absolute right-28 top-1/2 -translate-y-1/2 h-6 w-6 text-gray-300 hover:text-white cursor-pointer ' + 'transition-colors duration-200 z-10',
+      clearIcon: 'absolute right-28 top-1/2 -translate-y-1/2 h-6 w-6 text-muted hover:text-heading cursor-pointer ' + 'transition-colors duration-200 z-10',
       searchButton:
-        'absolute right-2 top-1/2 -translate-y-1/2 h-10 px-5 bg-gradient-to-r from-[#F59E0B] to-[#FBBF24] ' +
-        'hover:from-[#F97316] hover:to-[#F59E0B] text-black rounded-lg transition-all duration-200 ' +
+        'absolute right-2 top-1/2 -translate-y-1/2 h-10 px-5 bg-gradient-to-r from-amber-500 to-amber-400 ' +
+        'hover:from-orange-500 hover:to-amber-500 text-black rounded-lg transition-all duration-200 ' +
         'shadow-md hover:shadow-lg z-10',
     } as const;
   };
@@ -315,9 +314,11 @@ export default function SearchBar({
             {score}/{scoreDenominator}
           </span>
         </p>
-        <p className="whitespace-nowrap rounded-md px-2 py-0.5 text-sm font-medium bg-[#4F46E5] text-white self-center shadow-sm shrink-0">{result.symbol}</p>
-        <p className="text-sm font-medium text-break break-words text-white truncate min-w-0 flex-1">{result.name}</p>
-        <p className="text-xs font-medium text-gray-400 whitespace-nowrap shrink-0 ml-2">{formatExchangeWithCountry(result.exchange)}</p>
+        <p className="whitespace-nowrap rounded-md px-2 py-0.5 text-sm font-medium bg-primary text-primary-text self-center shadow-sm shrink-0">
+          {result.symbol}
+        </p>
+        <p className="text-sm font-medium text-break break-words text-heading truncate min-w-0 flex-1">{result.name}</p>
+        <p className="text-xs font-medium text-muted whitespace-nowrap shrink-0 ml-2">{formatExchangeWithCountry(result.exchange)}</p>
       </div>
     );
   };
@@ -365,8 +366,8 @@ export default function SearchBar({
         <div className={styles.dropdown} role="listbox" aria-live="polite">
           {isLoading ? (
             <div className="p-4 text-center">
-              <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-indigo-500 mx-auto" />
-              <span className="text-gray-400 text-sm mt-2 block">Searching...</span>
+              <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-primary mx-auto" />
+              <span className="text-muted text-sm mt-2 block">Searching...</span>
             </div>
           ) : results.length > 0 ? (
             <Tooltip.Provider>
@@ -374,8 +375,8 @@ export default function SearchBar({
                 {results.map((result, index) => (
                   <div
                     key={result.id}
-                    className={`cursor-pointer transition-colors duration-150 border-b border-gray-700/50 last:border-b-0 ${
-                      index === highlightedIndex ? 'bg-indigo-600/20' : 'hover:bg-gray-700/50'
+                    className={`cursor-pointer transition-colors duration-150 border-b border-border last:border-b-0 ${
+                      index === highlightedIndex ? 'bg-indigo-600/20' : 'hover:bg-surface-2'
                     }`}
                     onClick={(): void => handleResultClick(result)}
                     onMouseEnter={(): void => setHighlightedIndex(index)}
@@ -399,10 +400,10 @@ export default function SearchBar({
                 ))}
 
                 {singleConfig && results.length >= 8 && (
-                  <div className="p-3 text-center border-t border-gray-700/50">
+                  <div className="p-3 text-center border-t border-border">
                     <Link
                       href={singleConfig.viewAllHref(query)}
-                      className="text-indigo-400 hover:text-indigo-300 text-sm transition-colors duration-200"
+                      className="text-link hover:text-link text-sm transition-colors duration-200"
                       onClick={(): void => setIsOpen(false)}
                     >
                       View all results for &ldquo;{query}&rdquo;
@@ -412,7 +413,7 @@ export default function SearchBar({
               </div>
             </Tooltip.Provider>
           ) : query.trim() && !isLoading ? (
-            <div className="p-4 text-center text-gray-400">
+            <div className="p-4 text-center text-muted">
               <div className="text-sm">{singleConfig ? singleConfig.noResultsTitle(query) : `No stocks or ETFs found for “${query}”`}</div>
               <div className="text-xs mt-1 opacity-75">{singleConfig ? singleConfig.noResultsHint : 'Try searching by name or ticker symbol'}</div>
             </div>

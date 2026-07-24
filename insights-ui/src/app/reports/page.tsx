@@ -113,7 +113,7 @@ export default function Page() {
                   <div key={index} className="relative pl-9">
                     <dt className="text-base/7 font-semibold heading-color">
                       <div className="absolute top-0 left-0 flex size-10 items-center justify-center rounded-lg primary-color">
-                        <Icon aria-hidden="true" className="absolute left-1 top-1 h-5 w-5 text-indigo-500" />
+                        <Icon aria-hidden="true" className="absolute left-1 top-1 h-5 w-5 text-primary" />
                       </div>
                       <div className="flex items-center">
                         {report.title}

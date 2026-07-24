@@ -47,7 +47,7 @@ export default function ExportJsonModal({ open, onClose, title, analysisFactors 
         </div>
 
         {/* Action Buttons */}
-        <div className="flex justify-between mt-4 pt-4 border-t border-gray-200">
+        <div className="flex justify-between mt-4 pt-4 border-t border-border">
           <Button onClick={handleCopyToClipboard} primary variant="contained">
             Copy to Clipboard
           </Button>

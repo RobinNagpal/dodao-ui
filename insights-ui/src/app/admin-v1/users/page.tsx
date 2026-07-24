@@ -142,11 +142,11 @@ export default function Page() {
 
   return (
     <>
-      <div className="bg-gray-800 -mx-6 px-6 py-6 mb-6 border-b border-gray-700/60">
+      <div className="bg-surface -mx-6 px-6 py-6 mb-6 border-b border-border">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-semibold text-white">User Management</h1>
-            <p className="text-gray-300 mt-1">Manage users and their roles</p>
+            <h1 className="text-2xl font-semibold text-heading">User Management</h1>
+            <p className="text-muted mt-1">Manage users and their roles</p>
           </div>
           <Button onClick={() => setShowCreateModal(true)}>
             <Plus className="h-4 w-4 mr-1" />
@@ -165,16 +165,16 @@ export default function Page() {
 
       {loadingUsers ? (
         <div className="flex justify-center items-center h-40">
-          <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-indigo-400" />
-          <span className="ml-3 text-indigo-300">Loading users...</span>
+          <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-primary" />
+          <span className="ml-3 text-link">Loading users...</span>
         </div>
       ) : (
-        <div className="rounded-lg border border-gray-700/50 bg-gray-900/40 overflow-hidden">
+        <div className="rounded-lg border border-border bg-bg overflow-hidden">
           {users.length === 0 ? (
             <div className="text-center py-16">
-              <UsersIcon className="mx-auto h-16 w-16 text-gray-400 mb-4" />
+              <UsersIcon className="mx-auto h-16 w-16 text-muted mb-4" />
               <h3 className="text-xl font-bold mb-2">No users</h3>
-              <p className="text-gray-400 mb-6">Get started by adding a new user.</p>
+              <p className="text-muted mb-6">Get started by adding a new user.</p>
               <Button onClick={() => setShowCreateModal(true)}>
                 <Plus className="h-5 w-5 mr-1" />
                 Add User
@@ -183,19 +183,19 @@ export default function Page() {
           ) : (
             <>
               <div className="overflow-x-auto">
-                <table className="min-w-full divide-y divide-gray-200">
-                  <thead className="bg-gray-700">
+                <table className="min-w-full divide-y divide-border">
+                  <thead className="bg-surface-2">
                     <tr>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Email</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Name</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Role</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Signup Method</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Created Date</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Favourites</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Actions</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-muted uppercase tracking-wider">Email</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-muted uppercase tracking-wider">Name</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-muted uppercase tracking-wider">Role</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-muted uppercase tracking-wider">Signup Method</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-muted uppercase tracking-wider">Created Date</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-muted uppercase tracking-wider">Favourites</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-muted uppercase tracking-wider">Actions</th>
                     </tr>
                   </thead>
-                  <tbody className="bg-gray-800 divide-y divide-gray-700">
+                  <tbody className="bg-surface divide-y divide-border">
                     {users.map((user) => (
                       <UserRow key={user.id} user={user} onEdit={handleEditUser} onDelete={handleDeleteUser} onPortfolioProfile={handlePortfolioProfile} />
                     ))}
@@ -203,8 +203,8 @@ export default function Page() {
                 </table>
               </div>
               {totalPages > 1 && (
-                <div className="flex items-center justify-between px-6 py-4 border-t border-gray-700/50 bg-gray-800/60">
-                  <span className="text-sm text-gray-400">
+                <div className="flex items-center justify-between px-6 py-4 border-t border-border bg-surface">
+                  <span className="text-sm text-muted">
                     Showing {(currentPage - 1) * pageSize + 1}
                     {'\u2013'}
                     {Math.min(currentPage * pageSize, totalCount)} of {totalCount} users
@@ -213,17 +213,17 @@ export default function Page() {
                     <button
                       onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
                       disabled={currentPage === 1}
-                      className="p-2 rounded-md text-gray-300 hover:bg-gray-700 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+                      className="p-2 rounded-md text-muted hover:bg-surface-2 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
                     >
                       <ChevronLeft className="h-5 w-5" />
                     </button>
-                    <span className="text-sm text-gray-300">
+                    <span className="text-sm text-muted">
                       Page {currentPage} of {totalPages}
                     </span>
                     <button
                       onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
                       disabled={currentPage === totalPages}
-                      className="p-2 rounded-md text-gray-300 hover:bg-gray-700 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+                      className="p-2 rounded-md text-muted hover:bg-surface-2 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
                     >
                       <ChevronRight className="h-5 w-5" />
                     </button>

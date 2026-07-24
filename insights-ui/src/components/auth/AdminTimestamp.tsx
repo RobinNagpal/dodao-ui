@@ -15,7 +15,7 @@ export default function AdminTimestamp({ date, label = 'Updated', className }: A
 
   return (
     <PrivateWrapper>
-      <span className={className ?? 'text-xs text-gray-400'}>
+      <span className={className ?? 'text-xs text-muted'}>
         {label}: {d.toLocaleString('en-US')}
       </span>
     </PrivateWrapper>

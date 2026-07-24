@@ -35,7 +35,7 @@ export default function SampleBodyEditModal({ isOpen, onClose, onSave, initialVa
           />
         </div>
 
-        <div className="flex justify-end mt-4 pt-4 border-t border-gray-200">
+        <div className="flex justify-end mt-4 pt-4 border-t border-border">
           <Button onClick={handleSave} primary variant="contained">
             Save
           </Button>

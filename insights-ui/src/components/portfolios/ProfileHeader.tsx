@@ -70,7 +70,7 @@ export default function ProfileHeader({ profile, portfolioManagerId }: ProfileHe
           <div className="flex justify-between items-start mb-4">
             <div className="flex-1">
               <h1 className="text-4xl font-bold text-heading mb-3">{profile.user.name}</h1>
-              <p className="text-xl text-blue-400 font-medium">{profile.headline}</p>
+              <p className="text-xl text-link font-medium">{profile.headline}</p>
             </div>
             {portfolioManagerId && (
               <div className="ml-4">

@@ -38,7 +38,7 @@ export default function FiltersButton({ className = '', pulseWhenActive = true }
     <>
       <button
         onClick={() => setIsModalOpen(true)}
-        className={`inline-flex items-center gap-2 bg-gradient-to-r from-[#F59E0B] to-[#FBBF24] hover:from-[#F97316] hover:to-[#F59E0B] text-black font-medium rounded-lg px-4 py-2.5 text-sm shadow-md `}
+        className={`inline-flex items-center gap-2 bg-gradient-to-r from-amber-500 to-amber-400 hover:from-orange-500 hover:to-amber-500 text-black font-medium rounded-lg px-4 py-2.5 text-sm shadow-md `}
       >
         <AdjustmentsHorizontalIcon className="h-5 w-5" />
         Filters
@@ -162,7 +162,7 @@ function FilterModalContent({ initialSelected, onClose }: FilterModalContentProp
                       value={threshold.value}
                       checked={selectedFilters[category.paramKey] === threshold.value}
                       onChange={() => handleCategoryChange(category, threshold.value)}
-                      className="text-[#4F46E5] focus:ring-[#4F46E5] bg-surface-3 border-[#6B7280] w-4 h-4"
+                      className="text-primary focus:ring-primary bg-surface-3 border-border w-4 h-4"
                     />
                     <span className="text-body text-sm">{threshold.label}</span>
                   </label>
@@ -183,7 +183,7 @@ function FilterModalContent({ initialSelected, onClose }: FilterModalContentProp
                     value={threshold.value}
                     checked={selectedFilters[FilterParamKey.TOTAL] === threshold.value}
                     onChange={() => handleTotalChange(threshold.value)}
-                    className="text-[#4F46E5] focus:ring-[#4F46E5] bg-surface-3 border-[#6B7280] w-4 h-4"
+                    className="text-primary focus:ring-primary bg-surface-3 border-border w-4 h-4"
                   />
                   <span className="text-body text-sm">{threshold.label}</span>
                 </label>
@@ -206,7 +206,7 @@ function FilterModalContent({ initialSelected, onClose }: FilterModalContentProp
               id="marketCap"
               value={selectedFilters[FilterParamKey.MARKET_CAP] || ''}
               onChange={(e) => handleMarketCapChange(e.target.value)}
-              className="w-full bg-surface-3 text-heading border border-[#6B7280] rounded-lg px-2 py-1 text-sm focus:ring-2 focus:ring-[#4F46E5] focus:border-transparent"
+              className="w-full bg-surface-3 text-heading border border-border rounded-lg px-2 py-1 text-sm focus:ring-2 focus:ring-primary focus:border-transparent"
             >
               {MARKET_CAP_OPTIONS.map((option) => (
                 <option key={option.value} value={option.value}>
@@ -225,7 +225,7 @@ function FilterModalContent({ initialSelected, onClose }: FilterModalContentProp
               id="peRatio"
               value={selectedFilters[FilterParamKey.PE_RATIO] || ''}
               onChange={(e) => handlePERatioChange(e.target.value)}
-              className="w-full bg-surface-3 text-heading border border-[#6B7280] rounded-lg px-2 py-1 text-sm focus:ring-2 focus:ring-[#4F46E5] focus:border-transparent"
+              className="w-full bg-surface-3 text-heading border border-border rounded-lg px-2 py-1 text-sm focus:ring-2 focus:ring-primary focus:border-transparent"
             >
               {PE_RATIO_OPTIONS.map((option) => (
                 <option key={option.value} value={option.value}>
@@ -249,7 +249,7 @@ function FilterModalContent({ initialSelected, onClose }: FilterModalContentProp
           </button>
           <button
             onClick={handleApply}
-            className="bg-gradient-to-r from-[#F59E0B] to-[#FBBF24] hover:from-[#F97316] hover:to-[#F59E0B] text-black font-medium rounded-lg px-6 py-2.5 text-sm transition-all duration-200"
+            className="bg-gradient-to-r from-amber-500 to-amber-400 hover:from-orange-500 hover:to-amber-500 text-black font-medium rounded-lg px-6 py-2.5 text-sm transition-all duration-200"
             type="button"
           >
             Apply Filters

@@ -48,8 +48,8 @@ export default function SubjectsSection() {
 
       <div className="relative mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto max-w-3xl text-center">
-          <h2 className="text-4xl font-bold text-indigo-400">Comprehensive Subject Coverage</h2>
-          <p className="mt-4 text-lg text-gray-300">Ready-to-use case studies across all major business disciplines with AI-powered learning paths</p>
+          <h2 className="text-4xl font-bold text-link">Comprehensive Subject Coverage</h2>
+          <p className="mt-4 text-lg text-muted">Ready-to-use case studies across all major business disciplines with AI-powered learning paths</p>
         </div>
 
         <div className="mt-16 relative">
@@ -62,23 +62,23 @@ export default function SubjectsSection() {
                   <div
                     className={`absolute inset-0 bg-gradient-to-r ${subject.color} opacity-0 group-hover:opacity-20 transition-opacity duration-500 rounded-2xl blur-xl`}
                   />
-                  <div className="relative rounded-2xl border border-gray-700 bg-gray-800/50 p-6 backdrop-blur-sm hover:border-gray-600 transition-all duration-300 transform hover:scale-105 hover:-translate-y-2">
+                  <div className="relative rounded-2xl border border-border bg-surface p-6 backdrop-blur-sm hover:border-border transition-all duration-300 transform hover:scale-105 hover:-translate-y-2">
                     <div className="flex items-center gap-3 mb-4">
                       <div
                         className={`inline-flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-r ${subject.color} group-hover:scale-110 transition-transform duration-300`}
                       >
-                        <subject.icon className="h-6 w-6 text-white" />
+                        <subject.icon className="h-6 w-6 text-heading" />
                       </div>
-                      <h3 className="text-xl font-semibold text-white group-hover:text-indigo-300 transition-colors">{subject.title}</h3>
+                      <h3 className="text-xl font-semibold text-heading group-hover:text-link transition-colors">{subject.title}</h3>
                     </div>
 
                     <div className="space-y-2">
-                      <div className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2">Key Topics</div>
+                      <div className="text-xs font-medium text-muted uppercase tracking-wide mb-2">Key Topics</div>
                       <div className="flex flex-wrap gap-2">
                         {subject.items.map((item) => (
                           <span
                             key={item}
-                            className="inline-flex items-center rounded-full bg-gray-700/60 px-3 py-1 text-xs font-medium text-gray-200 hover:bg-gray-600/60 transition-colors"
+                            className="inline-flex items-center rounded-full bg-surface-2 px-3 py-1 text-xs font-medium text-body hover:bg-surface-3 transition-colors"
                           >
                             {item}
                           </span>
@@ -99,23 +99,23 @@ export default function SubjectsSection() {
                     className={`absolute inset-0 bg-gradient-to-r ${subject.color} opacity-0 group-hover:opacity-20 transition-opacity duration-500 rounded-2xl blur-xl`}
                   />
 
-                  <div className="relative rounded-2xl border border-gray-700 bg-gray-800/50 p-6 backdrop-blur-sm hover:border-gray-600 transition-all duration-300 transform hover:scale-105 hover:-translate-y-2">
+                  <div className="relative rounded-2xl border border-border bg-surface p-6 backdrop-blur-sm hover:border-border transition-all duration-300 transform hover:scale-105 hover:-translate-y-2">
                     <div className="flex items-center gap-3 mb-4">
                       <div
                         className={`inline-flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-r ${subject.color} group-hover:scale-110 transition-transform duration-300`}
                       >
-                        <subject.icon className="h-6 w-6 text-white" />
+                        <subject.icon className="h-6 w-6 text-heading" />
                       </div>
-                      <h3 className="text-xl font-semibold text-white group-hover:text-indigo-300 transition-colors">{subject.title}</h3>
+                      <h3 className="text-xl font-semibold text-heading group-hover:text-link transition-colors">{subject.title}</h3>
                     </div>
 
                     <div className="space-y-2">
-                      <div className="text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Key Topics</div>
+                      <div className="text-xs font-bold text-muted uppercase tracking-wide mb-2">Key Topics</div>
                       <div className="flex flex-wrap gap-2">
                         {subject.items.map((item) => (
                           <span
                             key={item}
-                            className="inline-flex items-center rounded-full bg-gray-700/60 px-3 py-1 text-xs font-medium text-gray-200 hover:bg-gray-600/60 transition-colors"
+                            className="inline-flex items-center rounded-full bg-surface-2 px-3 py-1 text-xs font-medium text-body hover:bg-surface-3 transition-colors"
                           >
                             {item}
                           </span>
@@ -131,9 +131,9 @@ export default function SubjectsSection() {
           </div>
 
           <div className="mt-12 text-center">
-            <div className="inline-flex items-center gap-2 rounded-full bg-gray-800/50 border border-gray-700 px-6 py-3 backdrop-blur-sm">
+            <div className="inline-flex items-center gap-2 rounded-full bg-surface border border-border px-6 py-3 backdrop-blur-sm">
               <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
-              <span className="text-gray-300 text-sm font-medium">+ Add Your Own Custom Case Studies</span>
+              <span className="text-muted text-sm font-medium">+ Add Your Own Custom Case Studies</span>
             </div>
           </div>
         </div>

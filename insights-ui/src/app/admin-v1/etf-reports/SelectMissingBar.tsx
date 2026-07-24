@@ -52,7 +52,7 @@ export default function SelectMissingBar({ etfs, onSelectIds }: SelectMissingBar
 
   if (activeCats.length === 0) return null;
 
-  const buttonClass = 'px-3 py-1.5 text-xs font-medium rounded-md transition-colors bg-gray-700 text-gray-200 hover:bg-gray-600';
+  const buttonClass = 'px-3 py-1.5 text-xs font-medium rounded-md transition-colors bg-surface-2 text-body hover:bg-surface-3';
 
   return (
     <div className="flex flex-wrap items-center gap-3 px-6 py-3 bg-amber-900/30 border-b border-amber-700/40">

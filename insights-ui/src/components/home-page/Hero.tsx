@@ -48,9 +48,9 @@ export function Hero({ industries }: HeroProps = { industries: [] }) {
                   href="/stocks"
                   aria-label="Browse all stock reports"
                   className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-xl px-5 py-3
-                               text-sm sm:text-base font-semibold text-gray-900
-                               bg-gradient-to-r from-[#F59E0B] to-[#FBBF24]
-                               hover:from-[#FBBF24] hover:to-[#F59E0B]
+                               text-sm sm:text-base font-semibold text-heading
+                               bg-gradient-to-r from-amber-500 to-amber-400
+                               hover:from-amber-400 hover:to-amber-500
                                focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500
                                focus-visible:ring-offset-2 focus-visible:ring-offset-gray-800
                                shadow-md hover:shadow-lg transition-all"
