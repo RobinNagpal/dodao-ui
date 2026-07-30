@@ -1,7 +1,6 @@
 import { prisma } from '@/prisma';
 import { Etf, EtfPriceHistory } from '@prisma/client';
 import { PriceHistoryPoint } from '@/types/prismaTypes';
-import { revalidateEtfAndExchangeTag } from '@/utils/etf-cache-utils';
 import { convertToYahooFinanceSymbol } from '@/utils/yahoo-finance-symbol-utils';
 import {
   DAILY_LOOKBACK_DAYS,
@@ -68,7 +67,14 @@ export async function ensureEtfPriceHistoryIsFresh(etf: Etf): Promise<EtfPriceHi
       },
     });
 
-    revalidateEtfAndExchangeTag(etf.symbol, etf.exchange);
+    // Intentionally do NOT revalidate any cache tag (or CloudFront path) here.
+    // This function runs in the READ path — the `/chart-data` GET route the ETF
+    // page itself fetches — so revalidating would evict the very cache entry
+    // this response is about to fill, and it fired for EVERY ETF whose price
+    // data aged past the freshness window on any page view or crawler hit
+    // (a major CloudFront invalidation cost). The freshly-returned data is
+    // already what the caller's fetch will cache. Mirrors
+    // `ensurePriceHistoryIsFresh` in `price-history-utils.ts` (stocks).
     return saved;
   } catch (error) {
     console.error(`Failed to refresh price history for ETF ${etf.symbol} (${etf.exchange}):`, error);

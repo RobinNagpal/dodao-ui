@@ -36,10 +36,12 @@ export interface SaveEtfReportAndAdvanceArgs {
  *
  * Steps (unchanged from the original route, plus deferred cache invalidation):
  *  1. Compute `skipRevalidation` — each step always invalidates its own narrow
- *     per-subpage tag (+ CloudFront URL), but the main-page umbrella tag is
- *     deferred and fired only on the LAST pending step, so a full generation
- *     invalidates the main report once instead of once per step. Mirrors the
- *     stocks pipeline (`saveTickerReportAndAdvanceGeneration`).
+ *     per-subpage tag, but the main-page umbrella tag is deferred and fired
+ *     only on the LAST pending step, so a full generation invalidates the main
+ *     report once instead of once per step. All of these are tag-only — no
+ *     CloudFront purge; the edge refreshes on its ~6-day TTL (see
+ *     `etf-cache-utils.ts`). Mirrors the stocks pipeline
+ *     (`saveTickerReportAndAdvanceGeneration`).
  *  2. Save the report for `reportType` (Future Performance Outlook also persists
  *     the expected forward returns in their own table).
  *  3. If this save is part of a generation request: mark the step completed,

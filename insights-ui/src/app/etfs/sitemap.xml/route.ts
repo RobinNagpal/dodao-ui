@@ -8,6 +8,7 @@ import { slugifyEtfTag } from '@/utils/etf-tag-slug-utils';
 import { SupportedCountries } from '@/utils/countryExchangeUtils';
 import { ETF_SUPPORTED_COUNTRIES } from '@/utils/etfCountryExchangeUtils';
 import { buildEtfSitemapResponse, SITEMAP_EXCLUDED_ETF_EXCHANGES, SiteMapUrl } from '@/utils/etfSitemapUtils';
+import { delayedSitemapLastmod } from '@/utils/sitemap-lastmod-utils';
 import { NextResponse } from 'next/server';
 
 export const dynamic = 'force-dynamic';
@@ -91,6 +92,7 @@ async function generateEtfUrls(): Promise<SiteMapUrl[]> {
       symbol: true,
       exchange: true,
       updatedAt: true,
+      createdAt: true,
     },
   });
 
@@ -99,7 +101,7 @@ async function generateEtfUrls(): Promise<SiteMapUrl[]> {
       url: `/etfs/${etf.exchange}/${etf.symbol}`,
       changefreq: 'weekly',
       priority: 0.6,
-      lastmod: etf.updatedAt ? etf.updatedAt.toISOString().split('T')[0] : undefined,
+      lastmod: delayedSitemapLastmod(etf.updatedAt, etf.createdAt),
     });
   }
 

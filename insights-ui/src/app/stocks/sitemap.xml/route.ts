@@ -5,6 +5,7 @@ import { prisma } from '@/prisma';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { ALL_SUPPORTED_COUNTRIES, SupportedCountries } from '@/utils/countryExchangeUtils';
 import { getCanonicalUrl } from '@/utils/getBaseUrlForServerSidePages';
+import { delayedSitemapLastmod } from '@/utils/sitemap-lastmod-utils';
 
 export const dynamic = 'force-dynamic';
 
@@ -51,6 +52,7 @@ interface SitemapTicker {
   symbol: string;
   exchange: string;
   updatedAt: Date;
+  createdAt: Date;
 }
 
 // Fetch tickers eligible for the sitemap: live rows only. Deleted tickers
@@ -69,6 +71,7 @@ async function getAllTickers(): Promise<SitemapTicker[]> {
       symbol: true,
       exchange: true,
       updatedAt: true,
+      createdAt: true,
     },
   });
 }
@@ -137,7 +140,7 @@ async function generateTickerUrls(): Promise<SiteMapUrl[]> {
         url: tickerUrl,
         changefreq: 'weekly',
         priority: 0.6,
-        lastmod: ticker.updatedAt ? ticker.updatedAt.toISOString().split('T')[0] : undefined,
+        lastmod: delayedSitemapLastmod(ticker.updatedAt, ticker.createdAt),
       });
       addedUrls.add(tickerUrl);
     }

@@ -4,6 +4,7 @@ import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { SupportedCountries } from '@/utils/countryExchangeUtils';
 import { getEtfExchangesByCountry } from '@/utils/etfCountryExchangeUtils';
 import { getCanonicalUrl } from '@/utils/getBaseUrlForServerSidePages';
+import { delayedSitemapLastmod } from '@/utils/sitemap-lastmod-utils';
 import { Prisma } from '@prisma/client';
 import { NextResponse } from 'next/server';
 import { SitemapStream, streamToPromise } from 'sitemap';
@@ -68,6 +69,7 @@ export async function buildEtfCategoryReportSitemap(categoryKey: EtfAnalysisCate
     },
     select: {
       updatedAt: true,
+      createdAt: true,
       etf: { select: { symbol: true, exchange: true } },
     },
   });
@@ -77,7 +79,7 @@ export async function buildEtfCategoryReportSitemap(categoryKey: EtfAnalysisCate
     url: `/etfs/${result.etf.exchange}/${result.etf.symbol}/${slug}`,
     changefreq: 'weekly',
     priority: 0.6,
-    lastmod: result.updatedAt ? new Date(result.updatedAt).toISOString().split('T')[0] : undefined,
+    lastmod: delayedSitemapLastmod(result.updatedAt, result.createdAt),
   }));
 
   return buildEtfSitemapResponse(urls);
@@ -96,6 +98,7 @@ export async function buildEtfCompetitionSitemap(): Promise<NextResponse<Buffer>
     },
     select: {
       updatedAt: true,
+      createdAt: true,
       etf: { select: { symbol: true, exchange: true } },
     },
   });
@@ -104,7 +107,7 @@ export async function buildEtfCompetitionSitemap(): Promise<NextResponse<Buffer>
     url: `/etfs/${record.etf.exchange}/${record.etf.symbol}/competition`,
     changefreq: 'weekly',
     priority: 0.6,
-    lastmod: record.updatedAt ? new Date(record.updatedAt).toISOString().split('T')[0] : undefined,
+    lastmod: delayedSitemapLastmod(record.updatedAt, record.createdAt),
   }));
 
   return buildEtfSitemapResponse(urls);
@@ -126,6 +129,7 @@ export async function buildEtfHoldingsSitemap(): Promise<NextResponse<Buffer>> {
       symbol: true,
       exchange: true,
       updatedAt: true,
+      createdAt: true,
       // Prefer the portfolio refresh time for lastmod, fall back to the ETF row's updatedAt.
       morPortfolioInfo: { select: { updatedAt: true } },
     },
@@ -137,7 +141,7 @@ export async function buildEtfHoldingsSitemap(): Promise<NextResponse<Buffer>> {
       url: `/etfs/${etf.exchange}/${etf.symbol}/holdings`,
       changefreq: 'weekly',
       priority: 0.6,
-      lastmod: lastmodDate ? lastmodDate.toISOString().split('T')[0] : undefined,
+      lastmod: delayedSitemapLastmod(lastmodDate, etf.createdAt),
     };
   });
 

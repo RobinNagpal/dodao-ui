@@ -6,11 +6,21 @@ import { waitUntil } from '@vercel/functions';
 /**
  * CloudFront cache-invalidation helper.
  *
- * Use alongside Next.js `revalidateTag(...)` calls so that the CloudFront edge
- * cache for the affected URL is purged at the same moment the upstream
- * (Vercel ISR / Data Cache) tags are invalidated. Without this, CloudFront
- * keeps the old HTML at the edge for up to its TTL (currently 6 days), so
- * users can see stale pages even after a successful save.
+ * WHO MAY CALL THIS: admin-triggered actions and low-volume listing/tariff
+ * flows ONLY. Automated per-entity save pipelines (LLM report callbacks, MOR
+ * scrape callbacks, bulk financial refreshes, read-path data refreshes) must
+ * be tag-only — CloudFront bills $0.005 per invalidation path past the first
+ * 1,000/month, and per-save purges across thousands of tickers/ETFs dominated
+ * the bill. Automated writes instead rely on the edge's ~6-day TTL to roll
+ * over naturally, with the stocks/ETF sitemaps delaying `lastmod` by 7 days
+ * (`sitemap-lastmod-utils.ts`) so crawlers only fetch a URL after every edge
+ * cache is guaranteed to serve the updated content.
+ *
+ * For the flows that ARE allowed to purge: use alongside Next.js
+ * `revalidateTag(...)` calls so the CloudFront edge cache for the affected URL
+ * is purged at the same moment the upstream (Vercel ISR / Data Cache) tags are
+ * invalidated, and prefer wildcard paths (`/stocks/NYSE/RTX*` counts as ONE
+ * billable path) over enumerating URLs.
  *
  * Only the following paths are cached at CloudFront today (see
  * `deployments/insights-ui/cloudfront.tf`):

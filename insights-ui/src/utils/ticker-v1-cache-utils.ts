@@ -16,13 +16,17 @@ import { CloudFrontInvalidationResult, invalidateCloudFrontPaths, invalidateClou
  * page — that way one category save invalidates two pages (main + the one
  * subpage) instead of all seven.
  *
- * Each `revalidate*` helper also purges the CloudFront edge cache for the
- * corresponding page URL AND the API endpoint(s) that page renders from.
- * CloudFront caches both layers (6-day TTL) and would otherwise keep stale
- * responses at the edge until natural expiry — purging only the page would
- * leave the next render to re-fetch a stale API response from CloudFront. See
- * `cloudfront-cache-utils.ts` for the list of cached prefixes and the no-op
- * semantics when the distribution env var is unset.
+ * CloudFront edge purging: the per-slice helpers below are called by the
+ * AUTOMATED save pipelines (LLM report callbacks, scraper refreshes) which run
+ * across thousands of tickers — purging the edge per save billed ~15 CloudFront
+ * invalidation paths per full generation and dominated the monthly bill
+ * ($0.005/path past the 1,000 free). They are therefore TAG-ONLY: the edge
+ * refreshes on its own ~6-day TTL, and the sitemaps delay `lastmod` by 7 days
+ * (see `sitemap-lastmod-utils.ts`) so crawlers never fetch before the edge has
+ * rolled over. Only the admin-facing `revalidateAllTickerTags*` helpers (and
+ * the country/industry listing helpers, which are low-volume) still purge
+ * CloudFront — as wildcards, 2-3 billable paths per click. See
+ * `cloudfront-cache-utils.ts` for the cached prefixes.
  */
 const TICKER_EXCHANGE_TAG_PREFIX = 'ticker_exchange:' as const;
 
@@ -42,14 +46,13 @@ export const tickerAndExchangeTag = (t: string, exchange: string): `${typeof TIC
   `${TICKER_EXCHANGE_TAG_PREFIX}_${t.toUpperCase()}_${exchange.toUpperCase()}`;
 
 export const revalidateTickerAndExchangeTag = (ticker: string, exchange: string) => {
+  // Tag-only (no CloudFront purge): fired by automated pipelines — report saves
+  // and bulk market-data refreshes (`fetch-financial-data`) — at per-ticker
+  // volume. The edge serves the prior version until its TTL expires; the
+  // sitemap's delayed lastmod keeps crawlers behind that window. Admins who
+  // need the edge fresh NOW use the "Invalidate cache" action
+  // (`revalidateAllTickerTagsAwaited`).
   revalidateTag(tickerAndExchangeTag(ticker, exchange));
-  // The main `/stocks/{e}/{t}` page streams per-slice from several GET endpoints
-  // (`financial-info`, `quarterly-chart-data`, `price-history`, `competition-tickers`) — the
-  // `/full-render` consolidation was reverted. This umbrella fires both on report/core saves and
-  // on market-data refreshes (`fetch-financial-data`), so purge the whole per-ticker API subtree
-  // with one wildcard (1 billable path) to cover every slice regardless of which one changed. The
-  // base `/exchange/{e}/{t}` fast route it also fetches is not CloudFront-cached (see cloudfront.tf).
-  invalidateCloudFrontPaths([`/stocks/${exchange}/${ticker}`, `${tickerApiBase(ticker, exchange)}*`]);
 };
 
 /** Per-category report tag — used by `/business-and-moat`, `/financial-statement-analysis`, `/past-performance`, `/future-performance`, `/fair-value` subpages. */
@@ -57,20 +60,17 @@ export const tickerCategoryReportTag = (ticker: string, exchange: string, catego
   `ticker_category_report:_${ticker.toUpperCase()}_${exchange.toUpperCase()}_${category}`;
 
 export const revalidateTickerCategoryReportTag = (ticker: string, exchange: string, category: TickerAnalysisCategory) => {
+  // Tag-only — fired per category save by the LLM generation pipeline (5× per
+  // full generation). See the file header for why no CloudFront purge.
   revalidateTag(tickerCategoryReportTag(ticker, exchange, category));
-  // Subpage URL slug (`fair-value`) and its API endpoint (`fair-value-data`).
-  const slug = TICKER_CATEGORY_TO_PATH[category];
-  invalidateCloudFrontPaths([`/stocks/${exchange}/${ticker}/${slug}`, `${tickerApiBase(ticker, exchange)}/${slug}-data`]);
 };
 
 /** Competition subpage tag — used by `/competition`. */
 export const tickerCompetitionTag = (ticker: string, exchange: string): string => `ticker_competition:_${ticker.toUpperCase()}_${exchange.toUpperCase()}`;
 
 export const revalidateTickerCompetitionTag = (ticker: string, exchange: string) => {
+  // Tag-only — fired by the LLM generation pipeline. See the file header.
   revalidateTag(tickerCompetitionTag(ticker, exchange));
-  // The `/competition` subpage renders from the public `/competition-tickers` GET (the bare
-  // `/competition` route is POST+admin and not cached).
-  invalidateCloudFrontPaths([`/stocks/${exchange}/${ticker}/competition`, `${tickerApiBase(ticker, exchange)}/competition-tickers`]);
 };
 
 /** Management-team subpage tag — used by `/management-team`. */
@@ -78,11 +78,8 @@ export const tickerManagementTeamTag = (ticker: string, exchange: string): strin
   `ticker_management_team:_${ticker.toUpperCase()}_${exchange.toUpperCase()}`;
 
 export const revalidateTickerManagementTeamTag = (ticker: string, exchange: string) => {
+  // Tag-only — fired by the LLM generation pipeline. See the file header.
   revalidateTag(tickerManagementTeamTag(ticker, exchange));
-  // The `/management-team` subpage renders from the base `/exchange/{e}/{t}` fast route, which is
-  // NOT CloudFront-cached (the bare `/management-team` route is POST+admin), so only the page URL
-  // needs purging here.
-  invalidateCloudFrontPaths([`/stocks/${exchange}/${ticker}/management-team`]);
 };
 
 /**
