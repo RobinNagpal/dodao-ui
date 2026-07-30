@@ -158,6 +158,17 @@ export default function StockActionsAdminPanel({ ticker, movedExchange, movedSym
       setIsPromptModalOpen(false);
       setSelectedPromptType(null);
       setGeneratedPrompt('');
+
+      // The save route's revalidation is tag-only (automated pipelines share
+      // it), but this is a synchronous admin save where the admin looks at the
+      // page right away — flush the CloudFront edge too, like the edit-details
+      // flow above. Only surface CloudFront problems; the save already showed
+      // its own success notification via usePostData.
+      const flush = await revalidateTickerCache(ticker.symbol, ticker.exchange);
+      if (!flush.success) {
+        showNotification({ type: 'error', message: flush.message });
+      }
+      router.refresh();
     }
   };
 

@@ -59,6 +59,11 @@ interface SitemapTicker {
 // 404, and tickers with movedExchange/movedSymbol set 308 away — neither
 // should appear in the sitemap. The destination of a move is a separate row
 // (created when the move is applied) and lands in the sitemap on its own.
+// `cachedScoreEntry` gates on at least one generated report existing —
+// between `stocks:add` and first generation the page is a thin "no reports
+// yet" shell that GSC flags "Crawled — currently not indexed", and inviting
+// crawlers to it lets CloudFront pin the thin 200 for its full 6-day TTL.
+// Mirrors the ETF sitemap's `cachedScore` filter.
 async function getAllTickers(): Promise<SitemapTicker[]> {
   return prisma.tickerV1.findMany({
     where: {
@@ -66,6 +71,7 @@ async function getAllTickers(): Promise<SitemapTicker[]> {
       isDeleted: false,
       movedExchange: null,
       movedSymbol: null,
+      cachedScoreEntry: { isNot: null },
     },
     select: {
       symbol: true,

@@ -11,10 +11,13 @@ import { waitUntil } from '@vercel/functions';
  * scrape callbacks, bulk financial refreshes, read-path data refreshes) must
  * be tag-only — CloudFront bills $0.005 per invalidation path past the first
  * 1,000/month, and per-save purges across thousands of tickers/ETFs dominated
- * the bill. Automated writes instead rely on the edge's ~6-day TTL to roll
- * over naturally, with the stocks/ETF sitemaps delaying `lastmod` by 7 days
- * (`sitemap-lastmod-utils.ts`) so crawlers only fetch a URL after every edge
- * cache is guaranteed to serve the updated content.
+ * the bill. Automated writes instead rely on the edge's 6-day TTL to roll
+ * over naturally, with the stocks/ETF/tariff sitemaps delaying `lastmod` by
+ * 7 days (`sitemap-lastmod-utils.ts`) so the advertised date is never newer
+ * than the content any edge cache serves. One sanctioned exception: a
+ * one-shot 2-wildcard purge when an entity's FIRST generation completes
+ * (see the save-callback pipelines), which un-pins the pre-generation thin
+ * page CloudFront may have cached.
  *
  * For the flows that ARE allowed to purge: use alongside Next.js
  * `revalidateTag(...)` calls so the CloudFront edge cache for the affected URL

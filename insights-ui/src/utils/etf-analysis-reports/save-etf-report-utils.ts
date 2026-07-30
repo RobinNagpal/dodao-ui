@@ -139,7 +139,8 @@ export async function saveEtfFinalSummaryResponse(
 
   // Final-summary content lives on the main page only, so it has no narrow tag;
   // the umbrella is its tag. As the normal last step, `skipRevalidation` is
-  // false here and this fires the main-page tag + CloudFront purge once.
+  // false here and this fires the main-page tag once (tag-only — no CloudFront
+  // purge; see etf-cache-utils.ts).
   if (!options?.skipRevalidation) {
     revalidateEtfAndExchangeTag(symbol, exchange);
   }

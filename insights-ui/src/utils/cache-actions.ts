@@ -108,9 +108,14 @@ export async function revalidateStockScenarioCache(slug: string) {
   return { success: true, message: `Revalidated Stock scenario cache for ${slug}` };
 }
 
-export async function revalidateTariffReportsListingCache() {
+export async function revalidateTariffReportsListingCache(): Promise<CacheFlushResult> {
+  // Admin "Revalidate" on the tariff-reports listing. The shared
+  // `revalidateTariffReportsListing` helper is tag-only (the automated tariff
+  // generation pipeline calls it per section save), so this admin action does
+  // the CloudFront purge itself — awaited for real success/failure feedback.
   revalidateTariffReportsListing();
-  return { success: true, message: 'Revalidated tariff reports listing cache' };
+  const cf = await invalidateCloudFrontPathsAwaited(['/tariff-reports*']);
+  return formatCloudFrontResult('tariff reports listing', cf);
 }
 
 export async function revalidateHtsChapterDetailCache(chapterNumber: number) {

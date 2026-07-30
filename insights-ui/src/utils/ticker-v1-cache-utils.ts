@@ -21,29 +21,32 @@ import { CloudFrontInvalidationResult, invalidateCloudFrontPaths, invalidateClou
  * across thousands of tickers — purging the edge per save billed ~15 CloudFront
  * invalidation paths per full generation and dominated the monthly bill
  * ($0.005/path past the 1,000 free). They are therefore TAG-ONLY: the edge
- * refreshes on its own ~6-day TTL, and the sitemaps delay `lastmod` by 7 days
- * (see `sitemap-lastmod-utils.ts`) so crawlers never fetch before the edge has
- * rolled over. Only the admin-facing `revalidateAllTickerTags*` helpers (and
- * the country/industry listing helpers, which are low-volume) still purge
- * CloudFront — as wildcards, 2-3 billable paths per click. See
- * `cloudfront-cache-utils.ts` for the cached prefixes.
+ * refreshes on its own 6-day TTL, and the sitemaps delay `lastmod` by 7 days
+ * (see `sitemap-lastmod-utils.ts`) so the advertised date is never newer than
+ * the content any edge cache serves. Only the admin-facing
+ * `revalidateAllTickerTags*` helpers (and the country/industry listing
+ * helpers, which are low-volume), plus the one-shot first-generation purge in
+ * `save-report-callback-utils.ts`, still purge CloudFront — as wildcards, 2-3
+ * billable paths each. See `cloudfront-cache-utils.ts` for the cached
+ * prefixes.
  */
 const TICKER_EXCHANGE_TAG_PREFIX = 'ticker_exchange:' as const;
-
-/** Maps the analysis-category enum to its URL slug under `/stocks/{e}/{t}/`. */
-const TICKER_CATEGORY_TO_PATH: Record<TickerAnalysisCategory, string> = {
-  [TickerAnalysisCategory.BusinessAndMoat]: 'business-and-moat',
-  [TickerAnalysisCategory.FinancialStatementAnalysis]: 'financial-statement-analysis',
-  [TickerAnalysisCategory.PastPerformance]: 'past-performance',
-  [TickerAnalysisCategory.FutureGrowth]: 'future-performance',
-  [TickerAnalysisCategory.FairValue]: 'fair-value',
-};
 
 /** Base path for the per-ticker API endpoints that back `/stocks/[exchange]/[ticker]/*`. */
 const tickerApiBase = (ticker: string, exchange: string) => `/api/koala_gains/tickers-v1/exchange/${exchange.toUpperCase()}/${ticker.toUpperCase()}`;
 
 export const tickerAndExchangeTag = (t: string, exchange: string): `${typeof TICKER_EXCHANGE_TAG_PREFIX}${string}` =>
   `${TICKER_EXCHANGE_TAG_PREFIX}_${t.toUpperCase()}_${exchange.toUpperCase()}`;
+
+/**
+ * Purge the CloudFront edge for everything belonging to one ticker: its page
+ * tree and its per-ticker API subtree. Two wildcard paths = 2 billable paths.
+ * Reserved for admin actions and the one-shot first-generation purge — do NOT
+ * call from per-save automated flows (see the file header).
+ */
+export const purgeTickerEdgeCache = (ticker: string, exchange: string): void => {
+  invalidateCloudFrontPaths([`/stocks/${exchange}/${ticker}*`, `${tickerApiBase(ticker, exchange)}*`]);
+};
 
 export const revalidateTickerAndExchangeTag = (ticker: string, exchange: string) => {
   // Tag-only (no CloudFront purge): fired by automated pipelines — report saves
@@ -96,7 +99,7 @@ export const revalidateAllTickerTags = (ticker: string, exchange: string) => {
   for (const category of Object.values(TickerAnalysisCategory)) {
     revalidateTag(tickerCategoryReportTag(ticker, exchange, category));
   }
-  invalidateCloudFrontPaths([`/stocks/${exchange}/${ticker}*`, `${tickerApiBase(ticker, exchange)}*`]);
+  purgeTickerEdgeCache(ticker, exchange);
 };
 
 /**
@@ -135,6 +138,23 @@ export const revalidateIndustryPageTag = (country: SupportedCountries, industryK
     `/stocks/countries/${country}/industries/${industryKey}`,
     `/api/koala_gains/tickers-v1/country/${country}/tickers/industries/${industryKey}`,
   ]);
+};
+
+/**
+ * Industry-analysis saves affect the industry's pages in EVERY supported
+ * country. Calling `revalidateIndustryPageTag` in a country loop submitted
+ * 3 CloudFront paths × 10 countries (+ the analysis wildcard) = 31 billable
+ * paths per save. This helper revalidates all the per-country tags (free) and
+ * collapses the edge purge into 3 wildcards. The country wildcards purge more
+ * pages than strictly needed (all country listing pages), but an invalidation
+ * is billed per PATH, not per page purged — 3 paths beats 31.
+ */
+export const revalidateIndustryPagesForAllCountries = (industryKey: string) => {
+  for (const country of Object.values(SupportedCountries)) {
+    revalidateTag(getIndustryPageTag(country, industryKey));
+  }
+  revalidateTag(getIndustryAnalysisTag(industryKey));
+  invalidateCloudFrontPaths([`/stocks/industries/${industryKey}*`, `/stocks/countries/*`, `/api/koala_gains/tickers-v1/country/*`]);
 };
 
 /** Industry analysis cache tags */
