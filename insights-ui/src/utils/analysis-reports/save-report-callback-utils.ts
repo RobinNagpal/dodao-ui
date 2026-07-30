@@ -1,5 +1,6 @@
 import { prisma } from '@/prisma';
 import { ReportType, TickerAnalysisCategory } from '@/types/ticker-typesv1';
+import { purgeTickerEdgeCache } from '@/utils/ticker-v1-cache-utils';
 import { triggerGenerationOfAReportSimplified } from '@/utils/analysis-reports/generation-report-utils';
 import { calculatePendingSteps } from '@/utils/analysis-reports/report-steps-statuses';
 import {
@@ -118,6 +119,22 @@ export async function saveTickerReportAndAdvanceGeneration(args: SaveTickerRepor
         lastInvocationTime: null,
       },
     });
+
+    // One-shot edge purge when a ticker's FIRST-EVER generation completes.
+    // Between `stocks:add` and the first generation finishing, the page serves
+    // a thin "no reports yet" 200 shell that CloudFront pins for its full
+    // 6-day TTL on any hit (thin 200s are force-cached; only real 4xx/5xx get
+    // error_caching_min_ttl=0 — see cloudfront.tf). The per-save purges that
+    // used to clear it are now tag-only, so purge explicitly on this one
+    // transition. The cached-score row is created by the first category save
+    // ever, so `score.createdAt >= request.createdAt` identifies a first
+    // generation; regenerations (score predates the request) don't purge.
+    if (!skipRevalidation) {
+      const cachedScore = await prisma.tickerV1CachedScore.findUnique({ where: { tickerId: generationRequest.tickerId } });
+      if (cachedScore && cachedScore.createdAt >= generationRequest.createdAt) {
+        purgeTickerEdgeCache(ticker, exchange);
+      }
+    }
 
     // Trigger generation of the next report
     await triggerGenerationOfAReportSimplified(ticker, exchange, generationRequestId);

@@ -1,6 +1,5 @@
 import 'server-only';
 import { revalidateTag } from 'next/cache';
-import { invalidateCloudFrontPaths } from './cloudfront-cache-utils';
 import { tariffReportTag, TARIFF_REPORTS_LISTING_TAG } from './tariff-report-tags';
 
 /**
@@ -14,32 +13,33 @@ import { tariffReportTag, TARIFF_REPORTS_LISTING_TAG } from './tariff-report-tag
  *   - Chapter routes: `/industry-tariff-report/chapters/<chapterSlug>` and its
  *     subpages — tagged by the chapter slug.
  *
- * The Vercel-side `revalidateTag` call is identical for both (it just clears
- * the tag), but the CloudFront URL to purge differs. That's why this module
- * exposes two helpers — `revalidateTariffReportIndustry` and
- * `revalidateTariffReportChapter` — instead of one ambiguous helper. Callers
- * know which topology they're invalidating.
- *
- * Each helper also purges the CloudFront edge cache for the corresponding
- * URL — see `cloudfront-cache-utils.ts`.
+ * These helpers are TAG-ONLY — no CloudFront purge. Their dominant caller is
+ * `writeSection` in `tariff-report-repository.ts`, i.e. the automated LLM
+ * generation pipeline: one chapter "Generate all" runs ~14 section saves, and
+ * each save used to purge 2-3 wildcard paths (including re-purging the
+ * `/tariff-reports*` listing on EVERY write), so a regeneration pass across
+ * ~97 chapters billed thousands of CloudFront invalidation paths. Like the
+ * stock/ETF pipelines (`ticker-v1-cache-utils.ts`), the edge now refreshes on
+ * its 6-day TTL and the tariff sitemap delays `lastmod` by 7 days
+ * (`sitemap-lastmod-utils.ts`). Admin actions that need an immediate edge
+ * purge do it themselves (see `revalidateTariffReportsListingCache` in
+ * `cache-actions.ts`, the `/admin-v1/invalidate-cache` page, or the
+ * `flush-cloudfront-cache` workflow's tariffs group).
  */
 
-/** Invalidate the cache for a legacy industry route: `/industry-tariff-report/<industryId>` + subpages. */
+/** Invalidate the Data Cache tag for a legacy industry route: `/industry-tariff-report/<industryId>` + subpages. */
 export const revalidateTariffReportIndustry = (industryId: string) => {
   revalidateTag(tariffReportTag(industryId));
-  invalidateCloudFrontPaths([`/industry-tariff-report/${industryId}*`]);
 };
 
-/** Invalidate the cache for a chapter route: `/industry-tariff-report/chapters/<chapterSlug>` + subpages. */
+/** Invalidate the Data Cache tag for a chapter route: `/industry-tariff-report/chapters/<chapterSlug>` + subpages. */
 export const revalidateTariffReportChapter = (chapterSlug: string) => {
   revalidateTag(tariffReportTag(chapterSlug));
-  invalidateCloudFrontPaths([`/industry-tariff-report/chapters/${chapterSlug}*`]);
 };
 
-/** Invalidate the `/tariff-reports` listing page. */
+/** Invalidate the Data Cache tag for the `/tariff-reports` listing page. */
 export const revalidateTariffReportsListing = () => {
   revalidateTag(TARIFF_REPORTS_LISTING_TAG);
-  invalidateCloudFrontPaths(['/tariff-reports*']);
 };
 
 // Re-export tag builder for server usage when convenient

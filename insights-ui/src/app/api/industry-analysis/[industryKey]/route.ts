@@ -5,8 +5,7 @@ import { TickerV1IndustryAnalysis } from '@prisma/client';
 import { NextRequest } from 'next/server';
 import { withLoggedInAdmin } from '../../helpers/withLoggedInAdmin';
 import type { IndustryAnalysisWithRelations } from '@/types/ticker-typesv1';
-import { revalidateIndustryPageTag, revalidateIndustryAnalysisTag } from '@/utils/ticker-v1-cache-utils';
-import { SupportedCountries } from '@/utils/countryExchangeUtils';
+import { revalidateIndustryPagesForAllCountries } from '@/utils/ticker-v1-cache-utils';
 
 export interface IndustryAnalysisUpdateRequest {
   name?: string;
@@ -46,13 +45,9 @@ async function putHandler(
     },
   });
 
-  // Revalidate industry pages for all supported countries
-  Object.values(SupportedCountries).forEach((country) => {
-    revalidateIndustryPageTag(country, industryKey);
-  });
-
-  // Revalidate industry analysis page
-  revalidateIndustryAnalysisTag(industryKey);
+  // Revalidate the industry's pages for every supported country + the analysis
+  // pages: all tags plus a single 3-wildcard CloudFront purge (was 31 paths).
+  revalidateIndustryPagesForAllCountries(industryKey);
 
   return updated;
 }
@@ -68,13 +63,9 @@ async function deleteHandler(
     where: { industryKey },
   });
 
-  // Revalidate industry pages for all supported countries
-  Object.values(SupportedCountries).forEach((country) => {
-    revalidateIndustryPageTag(country, industryKey);
-  });
-
-  // Revalidate industry analysis page
-  revalidateIndustryAnalysisTag(industryKey);
+  // Revalidate the industry's pages for every supported country + the analysis
+  // pages: all tags plus a single 3-wildcard CloudFront purge (was 31 paths).
+  revalidateIndustryPagesForAllCountries(industryKey);
 
   return { success: true };
 }

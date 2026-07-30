@@ -2,6 +2,7 @@ import { prisma } from '@/prisma';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { TickerAnalysisCategory } from '@/types/ticker-typesv1';
 import { getCanonicalUrl } from '@/utils/getBaseUrlForServerSidePages';
+import { delayedSitemapLastmod } from '@/utils/sitemap-lastmod-utils';
 import { NextResponse } from 'next/server';
 import { SitemapStream, streamToPromise } from 'sitemap';
 
@@ -30,6 +31,7 @@ async function generateBusinessAndMoatUrls(): Promise<SiteMapUrl[]> {
     },
     select: {
       updatedAt: true,
+      createdAt: true,
       ticker: {
         select: {
           symbol: true,
@@ -45,7 +47,7 @@ async function generateBusinessAndMoatUrls(): Promise<SiteMapUrl[]> {
       url,
       changefreq: 'weekly',
       priority: 0.6,
-      lastmod: record.updatedAt ? new Date(record.updatedAt).toISOString().split('T')[0] : undefined,
+      lastmod: delayedSitemapLastmod(record.updatedAt, record.createdAt),
     });
   }
 

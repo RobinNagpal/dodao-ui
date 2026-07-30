@@ -1,6 +1,7 @@
 import { prisma } from '@/prisma';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { getCanonicalUrl } from '@/utils/getBaseUrlForServerSidePages';
+import { delayedSitemapLastmod } from '@/utils/sitemap-lastmod-utils';
 import { NextResponse } from 'next/server';
 import { SitemapStream, streamToPromise } from 'sitemap';
 
@@ -26,6 +27,7 @@ async function generateManagementTeamUrls(): Promise<SiteMapUrl[]> {
     },
     select: {
       updatedAt: true,
+      createdAt: true,
       ticker: {
         select: {
           symbol: true,
@@ -41,7 +43,7 @@ async function generateManagementTeamUrls(): Promise<SiteMapUrl[]> {
       url,
       changefreq: 'weekly',
       priority: 0.6,
-      lastmod: record.updatedAt ? new Date(record.updatedAt).toISOString().split('T')[0] : undefined,
+      lastmod: delayedSitemapLastmod(record.updatedAt, record.createdAt),
     });
   }
 

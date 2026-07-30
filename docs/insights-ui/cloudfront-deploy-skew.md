@@ -4,6 +4,8 @@ The single reference for everything cache-related on koalagains.com: how each la
 
 > **Scope.** This doc supersedes the cache content in [stock-page-caching.md](stock-page-caching.md). That file is preserved as a historical record of the pre-`force-dynamic` ISR tag map — useful when reading legacy code that still references those tags — but its mental model is no longer current. If you only have time to read one doc, read this one.
 
+> **Update (2026-07, invalidation-cost change).** Sections below that describe `revalidate*` helpers firing `revalidateTag()` and `invalidateCloudFrontPaths()` "in lockstep" describe the OLD design. Per-save CloudFront purges billed ~125k invalidation paths ($615) over June–July, so automated pipelines (stock/ETF LLM report callbacks, MOR scrape callbacks, tariff section saves, bulk financial refreshes, the ETF price-history read path) are now **tag-only** — the edge refreshes on its fixed 6-day TTL instead. Two compensating mechanisms: (1) the stocks/ETF/tariff sitemaps delay `lastmod` by 7 days (`src/utils/sitemap-lastmod-utils.ts`) so the advertised date is never newer than what the edge serves, and (2) a one-shot 2-wildcard purge fires when an entity's FIRST generation completes (see `save-report-callback-utils.ts` / `save-etf-report-callback-utils.ts`) so pre-generation thin pages don't stay pinned. CloudFront purges remain only in admin-triggered actions (`revalidateAllTickerTags*`, `revalidateAllEtfTags*`, listing/country/industry helpers, the `/admin-v1/invalidate-cache` page) and the manual `flush-cloudfront-cache` workflow. The current policy lives in the header of `src/utils/cloudfront-cache-utils.ts`, which is authoritative where this doc disagrees.
+
 ---
 
 ## Table of contents

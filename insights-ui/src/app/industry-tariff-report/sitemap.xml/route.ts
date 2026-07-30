@@ -1,6 +1,7 @@
 import { prisma } from '@/prisma';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { getCanonicalUrl } from '@/utils/getBaseUrlForServerSidePages';
+import { delayedSitemapLastmod } from '@/utils/sitemap-lastmod-utils';
 import { Prisma } from '@prisma/client';
 import { NextResponse } from 'next/server';
 import { SitemapStream, streamToPromise } from 'sitemap';
@@ -28,12 +29,15 @@ async function generateTariffReportUrls(): Promise<SiteMapUrl[]> {
 
   const rows = await prisma.tariffChapterReport.findMany({
     where: { spaceId: KoalaGainsSpaceId, ...SEEDED_FILTER },
-    select: { slug: true, updatedAt: true, tariffEngineering: true },
+    select: { slug: true, updatedAt: true, createdAt: true, tariffEngineering: true },
     orderBy: { chapter: { number: 'asc' } },
   });
 
   for (const row of rows) {
-    const lastmod = row.updatedAt.toISOString();
+    // Delayed by 7 days: tariff section saves are tag-only at CloudFront now
+    // (see tariff-report-cache-utils.ts), so the edge can serve up to 6-day-old
+    // content — never advertise an update before every edge cache serves it.
+    const lastmod = delayedSitemapLastmod(row.updatedAt, row.createdAt);
     const chapterPath = `/industry-tariff-report/chapters/${row.slug}`;
     urls.push({ url: chapterPath, changefreq: 'weekly', priority: 0.8, lastmod });
     for (const section of REPORT_SECTIONS) {

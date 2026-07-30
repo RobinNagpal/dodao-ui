@@ -1,5 +1,6 @@
 import { prisma } from '@/prisma';
 import { EtfReportType, ETF_REPORT_TYPE_TO_CATEGORY } from '@/types/etf/etf-analysis-types';
+import { purgeEtfEdgeCache } from '@/utils/etf-cache-utils';
 import { triggerEtfGenerationOfAReport } from '@/utils/etf-analysis-reports/etf-generation-report-utils';
 import { calculateEtfPendingSteps } from '@/utils/etf-analysis-reports/etf-report-steps-statuses';
 import {
@@ -36,10 +37,12 @@ export interface SaveEtfReportAndAdvanceArgs {
  *
  * Steps (unchanged from the original route, plus deferred cache invalidation):
  *  1. Compute `skipRevalidation` — each step always invalidates its own narrow
- *     per-subpage tag (+ CloudFront URL), but the main-page umbrella tag is
- *     deferred and fired only on the LAST pending step, so a full generation
- *     invalidates the main report once instead of once per step. Mirrors the
- *     stocks pipeline (`saveTickerReportAndAdvanceGeneration`).
+ *     per-subpage tag, but the main-page umbrella tag is deferred and fired
+ *     only on the LAST pending step, so a full generation invalidates the main
+ *     report once instead of once per step. All of these are tag-only — no
+ *     CloudFront purge; the edge refreshes on its ~6-day TTL (see
+ *     `etf-cache-utils.ts`). Mirrors the stocks pipeline
+ *     (`saveTickerReportAndAdvanceGeneration`).
  *  2. Save the report for `reportType` (Future Performance Outlook also persists
  *     the expected forward returns in their own table).
  *  3. If this save is part of a generation request: mark the step completed,
@@ -100,6 +103,19 @@ export async function saveEtfReportAndAdvanceGeneration(args: SaveEtfReportAndAd
         lastInvocationTime: null,
       },
     });
+
+    // One-shot edge purge when an ETF's FIRST-EVER generation completes: the
+    // pre-generation thin page may be pinned at the edge for the full 6-day
+    // TTL, and the per-save purges that used to clear it are now tag-only.
+    // The cached-score row is created by the first category save ever, so its
+    // createdAt falling inside this request identifies a first generation.
+    // Mirrors the stocks pipeline (`saveTickerReportAndAdvanceGeneration`).
+    if (!skipRevalidation) {
+      const cachedScore = await prisma.etfCachedScore.findUnique({ where: { etfId: generationRequest.etfId } });
+      if (cachedScore && cachedScore.createdAt >= generationRequest.createdAt) {
+        purgeEtfEdgeCache(etf, exchange);
+      }
+    }
 
     await triggerEtfGenerationOfAReport(etf, exchange, generationRequestId);
   }
