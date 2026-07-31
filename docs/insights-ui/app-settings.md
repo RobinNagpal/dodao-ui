@@ -21,7 +21,27 @@ For every managed key, the effective value is resolved in this order:
    (the "hardcoded config file"), committed to the repo.
 
 The admin screen shows each setting's current value and a badge for where it came
-from (**SSM** / **Env var** / **Default**). SSM reads are cached in-process for 60s.
+from (**SSM** / **Env var** / **Default**).
+
+### Caching (keep KMS/SSM requests minimal)
+
+Every SSM fetch decrypts each `SecureString` secret, and each decryption is a
+billable **KMS request** — a short cache TTL once burned through most of the KMS
+free tier (20k requests/month) on steady traffic alone. SSM reads are therefore
+cached aggressively:
+
+- **30-minute TTL** by default (override with `APP_CONFIG_SSM_CACHE_TTL_MS`).
+- **Shared across module copies** via `globalThis`, so Next.js instantiating the
+  config module in multiple bundles doesn't multiply the fetch stream.
+- **Deduplicated in flight** — concurrent reads at expiry share one SSM call.
+- **Stale-on-error** — if a refresh fails, the last-known-good values are served
+  and the next retry happens after 60s.
+
+Staleness is a non-issue in practice because settings change through the admin
+screen of the same app: saving a value invalidates the cache immediately, and the
+admin screen force-refreshes on load so it always shows live SSM state. The only
+delayed path is editing a parameter directly in the AWS console, which takes up to
+the TTL to be picked up.
 
 A setting can be a boolean (toggle), a free-text string, or a fixed set of `options`
 (rendered as a dropdown and validated on write). Example: the default LLM
