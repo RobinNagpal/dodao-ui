@@ -13,22 +13,15 @@ import { fetchAllSsmParameters, isSsmConfigured, putSsmParameter } from './ssmPa
  * never fails.
  */
 
-// Cost note: fetching from SSM decrypts every SecureString parameter, and each
-// decryption is a billable AWS KMS request. A short TTL therefore turns steady
-// app traffic into a steady stream of KMS calls (enough to exhaust the KMS free
-// tier). Settings only change through the admin screen — which invalidates this
-// cache on save and force-refreshes on view — so a long TTL is safe: its only
-// cost is that a value edited directly in the AWS console (outside the admin
-// screen) takes up to the TTL to be picked up.
-const DEFAULT_CACHE_TTL_MS = 30 * 60_000;
+// Each SSM fetch decrypts every SecureString parameter — a billable KMS request
+// apiece — so the TTL must be long enough that steady traffic can't exhaust the
+// KMS free tier. A long TTL is safe: settings change only via the admin screen,
+// which invalidates this cache on save; only a value edited directly in the AWS
+// console takes up to the TTL to be picked up.
+const CACHE_TTL_MS = 30 * 60_000;
 // After a failed fetch, retry sooner than the full TTL so an outage recovers fast.
 const ERROR_RETRY_TTL_MS = 60_000;
 const defaults = bundledDefaults as Record<string, string>;
-
-function getCacheTtlMs(): number {
-  const raw = Number(process.env.APP_CONFIG_SSM_CACHE_TTL_MS);
-  return Number.isFinite(raw) && raw > 0 ? raw : DEFAULT_CACHE_TTL_MS;
-}
 
 // Public-repo safeguard: a secret must NEVER carry a committed default value —
 // `appConfigDefaults.json` is checked into a public repo, so a default there would
@@ -52,10 +45,8 @@ interface SsmCacheState {
   inFlight: Promise<Record<string, string>> | null;
 }
 
-// The cache lives on globalThis because Next.js can instantiate this module in
-// more than one bundle/module graph within the same server process — a plain
-// module-level variable would mean one independent cache (and one SSM+KMS fetch
-// stream) per copy.
+// On globalThis because Next.js can instantiate this module once per bundle —
+// a module-level variable would mean one cache (and one KMS fetch stream) per copy.
 const globalWithCache = globalThis as typeof globalThis & { __insightsUiSsmCache?: SsmCacheState };
 
 function getSsmCache(): SsmCacheState {
@@ -74,7 +65,7 @@ async function getSsmValues(forceRefresh = false): Promise<Record<string, string
     try {
       const values = await fetchAllSsmParameters();
       cache.values = values;
-      cache.expiresAt = Date.now() + getCacheTtlMs();
+      cache.expiresAt = Date.now() + CACHE_TTL_MS;
       return values;
     } catch (err) {
       // SSM misconfigured / IAM-denied / offline — never crash the app. Serve the

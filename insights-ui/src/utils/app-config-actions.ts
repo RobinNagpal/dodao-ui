@@ -8,8 +8,7 @@ export async function getAppSettingsForAdmin(): Promise<AppSettingsForAdmin> {
   if (!(await isAdminServerSession())) {
     throw new Error('Not authorized');
   }
-  // Force-refresh so admins always see live SSM values despite the long app-config
-  // cache (which exists to keep KMS decrypt requests to a minimum).
+  // Force-refresh so admins see live SSM values despite the long app-config cache.
   return { ssmConfigured: isSsmConfigured(), settings: await getResolvedAppSettings({ forceRefresh: true }) };
 }
 
