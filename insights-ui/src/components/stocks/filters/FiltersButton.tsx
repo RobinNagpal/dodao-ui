@@ -4,13 +4,13 @@ import React, { useMemo, useState } from 'react';
 import { useRouter, useSearchParams, usePathname } from 'next/navigation';
 import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
 import { AdjustmentsHorizontalIcon } from '@heroicons/react/20/solid';
+import NumericFilterControl from '@/components/etfs/NumericFilterControl';
 
 import {
   CATEGORY_OPTIONS,
   CATEGORY_THRESHOLD_OPTIONS,
   TOTAL_SCORE_OPTIONS,
-  MARKET_CAP_OPTIONS,
-  PE_RATIO_OPTIONS,
+  NUMERIC_FILTER_DEFS,
   getAppliedFilters,
   buildInitialSelected,
   applySelectedFiltersToParams,
@@ -32,7 +32,6 @@ export default function FiltersButton({ className = '', pulseWhenActive = true }
   const currentFilters: AppliedFilter[] = getAppliedFilters(searchParams);
 
   const modalKey: string = JSON.stringify({ f: currentFilters, open: isModalOpen });
-  console.log('Rendering filter button');
 
   return (
     <>
@@ -109,28 +108,15 @@ function FilterModalContent({ initialSelected, onClose }: FilterModalContentProp
     );
   };
 
-  const handleMarketCapChange = (value: string): void => {
+  const handleNumericFilterChange = (paramKey: FilterParamKey, value: string): void => {
     setSelectedFilters((prev: SelectedFiltersMap): SelectedFiltersMap => {
       if (!value) {
-        const { [FilterParamKey.MARKET_CAP]: _, ...rest } = prev;
+        const { [paramKey]: _, ...rest } = prev;
         return rest;
       }
       return {
         ...prev,
-        [FilterParamKey.MARKET_CAP]: value,
-      };
-    });
-  };
-
-  const handlePERatioChange = (value: string): void => {
-    setSelectedFilters((prev: SelectedFiltersMap): SelectedFiltersMap => {
-      if (!value) {
-        const { [FilterParamKey.PE_RATIO]: _, ...rest } = prev;
-        return rest;
-      }
-      return {
-        ...prev,
-        [FilterParamKey.PE_RATIO]: value,
+        [paramKey]: value,
       };
     });
   };
@@ -196,44 +182,18 @@ function FilterModalContent({ initialSelected, onClose }: FilterModalContentProp
       {/* Financial Filters Section */}
       <div>
         <h3 className="text-body text-sm mb-3">Financial Metrics</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {/* Market Cap Dropdown */}
-          <div className="bg-surface-2 rounded-lg p-4">
-            <label htmlFor="marketCap" className="block text-heading mb-2 text-sm">
-              Market Cap
-            </label>
-            <select
-              id="marketCap"
-              value={selectedFilters[FilterParamKey.MARKET_CAP] || ''}
-              onChange={(e) => handleMarketCapChange(e.target.value)}
-              className="w-full bg-surface-3 text-heading border border-border rounded-lg px-2 py-1 text-sm focus:ring-2 focus:ring-primary focus:border-transparent"
-            >
-              {MARKET_CAP_OPTIONS.map((option) => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          {/* PE Ratio Dropdown */}
-          <div className="bg-surface-2 rounded-lg p-4">
-            <label htmlFor="peRatio" className="block text-heading mb-2 text-sm">
-              PE Ratio
-            </label>
-            <select
-              id="peRatio"
-              value={selectedFilters[FilterParamKey.PE_RATIO] || ''}
-              onChange={(e) => handlePERatioChange(e.target.value)}
-              className="w-full bg-surface-3 text-heading border border-border rounded-lg px-2 py-1 text-sm focus:ring-2 focus:ring-primary focus:border-transparent"
-            >
-              {PE_RATIO_OPTIONS.map((option) => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
-                </option>
-              ))}
-            </select>
-          </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2">
+          {NUMERIC_FILTER_DEFS.map((def) => (
+            <NumericFilterControl
+              key={def.paramKey}
+              id={def.paramKey}
+              label={def.label}
+              value={selectedFilters[def.paramKey] || ''}
+              options={def.options}
+              onChange={(v) => handleNumericFilterChange(def.paramKey, v)}
+              hint={def.hint}
+            />
+          ))}
         </div>
       </div>
 
