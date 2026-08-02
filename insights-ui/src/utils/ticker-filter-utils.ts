@@ -1,6 +1,15 @@
 import { Prisma, TickerAnalysisCategory } from '@prisma/client';
 import { NextRequest } from 'next/server';
 import { ReadonlyURLSearchParams } from 'next/navigation';
+// Generic numeric-filter primitives (operator encoding, K/M/B/T parsing, Prisma
+// fragment building) shared with the ETF filters — reused, not duplicated.
+import {
+  NUMERIC_FILTER_OP_SYMBOLS,
+  formatCompactNumber,
+  numericCriteriaToPrismaFilter,
+  parseNumericFilterValue,
+  type NumericFilterOp,
+} from '@/utils/etf-filter-utils';
 
 /** ----- Types and Enums ----- */
 
@@ -11,6 +20,8 @@ export enum FilterType {
   SEARCH = 'search',
   MARKET_CAP = 'marketCap',
   PE_RATIO = 'peRatio',
+  DIVIDEND_YIELD = 'dividendYield',
+  FORWARD_PE = 'forwardPe',
 }
 
 // Enum for parameter keys to ensure consistency
@@ -24,6 +35,8 @@ export enum FilterParamKey {
   SEARCH = 'search',
   MARKET_CAP = 'marketCap',
   PE_RATIO = 'peRatio',
+  DIVIDEND_YIELD = 'dividendYield',
+  FORWARD_PE = 'forwardPe',
 }
 
 // Type for search parameters
@@ -68,22 +81,26 @@ export interface AppliedSearchFilter extends AppliedFilterBase {
   searchQuery: string;
 }
 
-// Interface for market cap filters
-export interface AppliedMarketCapFilter extends AppliedFilterBase {
-  type: FilterType.MARKET_CAP;
-  minValue?: number;
-  maxValue?: number;
-}
+// Filter types backed by a numeric metric (bucket range, `negative`, or `op:value`).
+export type NumericFilterType = FilterType.MARKET_CAP | FilterType.PE_RATIO | FilterType.DIVIDEND_YIELD | FilterType.FORWARD_PE;
 
-// Interface for PE ratio filters
-export interface AppliedPERatioFilter extends AppliedFilterBase {
-  type: FilterType.PE_RATIO;
+// Interface for numeric filters (market cap, PE, dividend yield, forward PE)
+export interface AppliedNumericFilter extends AppliedFilterBase {
+  type: NumericFilterType;
+  paramKey: FilterParamKey;
+  // The original URL param value, kept verbatim so the modal can round-trip it
+  // back into the matching control (bucket value, `negative`, or `op:value`).
+  raw: string;
   minValue?: number;
   maxValue?: number;
+  // Operator form: `op` + `value` (e.g. PE < 15).
+  op?: NumericFilterOp;
+  value?: number;
+  negative?: boolean;
 }
 
 // Union type for all filter types
-export type AppliedFilter = AppliedCategoryFilter | AppliedTotalFilter | AppliedSearchFilter | AppliedMarketCapFilter | AppliedPERatioFilter;
+export type AppliedFilter = AppliedCategoryFilter | AppliedTotalFilter | AppliedSearchFilter | AppliedNumericFilter;
 
 // Type for selected filters map
 export type SelectedFiltersMap = Record<string, string>;
@@ -99,6 +116,8 @@ export interface FilterParams {
   [FilterParamKey.SEARCH]?: string;
   [FilterParamKey.MARKET_CAP]?: string;
   [FilterParamKey.PE_RATIO]?: string;
+  [FilterParamKey.DIVIDEND_YIELD]?: string;
+  [FilterParamKey.FORWARD_PE]?: string;
 }
 
 /** ----- Constants (readonly) ----- */
@@ -171,6 +190,67 @@ export const PE_RATIO_OPTIONS: ReadonlyArray<ThresholdOption> = [
   { label: 'Negative / No Earnings', value: 'negative' },
 ] as const;
 
+// Dividend Yield options (percent)
+export const DIVIDEND_YIELD_OPTIONS: ReadonlyArray<ThresholdOption> = [
+  { label: 'Any', value: '' },
+  { label: 'None (< 0.5%)', value: '0-0.5' },
+  { label: 'Low (0.5% - 2%)', value: '0.5-2' },
+  { label: 'Moderate (2% - 4%)', value: '2-4' },
+  { label: 'High (4% - 6%)', value: '4-6' },
+  { label: 'Very High (> 6%)', value: '6-' },
+] as const;
+
+// Forward PE options — same buckets as trailing PE
+export const FORWARD_PE_OPTIONS: ReadonlyArray<ThresholdOption> = [
+  { label: 'Any', value: '' },
+  { label: 'Low (< 15)', value: '0-15' },
+  { label: 'Moderate (15 - 25)', value: '15-25' },
+  { label: 'High (25 - 50)', value: '25-50' },
+  { label: 'Very High (> 50)', value: '50-' },
+  { label: 'Negative / No Earnings', value: 'negative' },
+] as const;
+
+// Definition of a numeric stock filter (drives parsing, chips, and the modal controls)
+export interface NumericFilterDef {
+  type: NumericFilterType;
+  paramKey: FilterParamKey;
+  label: string;
+  options: ReadonlyArray<ThresholdOption>;
+  /** Hint shown under the custom operator input (e.g. "e.g. 1B, 500M"). */
+  hint?: string;
+}
+
+export const NUMERIC_FILTER_DEFS: ReadonlyArray<NumericFilterDef> = [
+  {
+    type: FilterType.MARKET_CAP,
+    paramKey: FilterParamKey.MARKET_CAP,
+    label: 'Market Cap',
+    options: MARKET_CAP_OPTIONS,
+    hint: 'e.g. 1B, 500M',
+  },
+  {
+    type: FilterType.PE_RATIO,
+    paramKey: FilterParamKey.PE_RATIO,
+    label: 'PE Ratio',
+    options: PE_RATIO_OPTIONS,
+    hint: 'e.g. 15',
+  },
+  {
+    type: FilterType.DIVIDEND_YIELD,
+    paramKey: FilterParamKey.DIVIDEND_YIELD,
+    label: 'Dividend Yield',
+    options: DIVIDEND_YIELD_OPTIONS,
+    hint: 'Percent, e.g. 4',
+  },
+  {
+    type: FilterType.FORWARD_PE,
+    paramKey: FilterParamKey.FORWARD_PE,
+    label: 'Forward PE',
+    options: FORWARD_PE_OPTIONS,
+    hint: 'e.g. 20',
+  },
+] as const;
+
 /** ----- Client-side Helpers ----- */
 
 /**
@@ -187,19 +267,10 @@ export function buildInitialSelected(filters: ReadonlyArray<AppliedFilter>): Sel
       }
     } else if (filter.type === FilterType.TOTAL) {
       initial[FilterParamKey.TOTAL] = String(filter.threshold);
-    } else if (filter.type === FilterType.MARKET_CAP) {
-      const min = filter.minValue !== undefined ? filter.minValue : '';
-      const max = filter.maxValue !== undefined ? filter.maxValue : '';
-      initial[FilterParamKey.MARKET_CAP] = `${min}-${max}`;
-    } else if (filter.type === FilterType.PE_RATIO) {
-      const value = filter.label.includes('Negative') ? 'negative' : '';
-      if (!value) {
-        const min = filter.minValue !== undefined ? filter.minValue : '';
-        const max = filter.maxValue !== undefined ? filter.maxValue : '';
-        initial[FilterParamKey.PE_RATIO] = `${min}-${max}`;
-      } else {
-        initial[FilterParamKey.PE_RATIO] = value;
-      }
+    } else if (filter.type !== FilterType.SEARCH) {
+      // Numeric filters: `raw` preserves the exact URL value (bucket, `negative`,
+      // or `op:value`) so the modal control re-hydrates to the original selection.
+      initial[filter.paramKey] = filter.raw;
     }
   }
   return initial;
@@ -253,48 +324,12 @@ export function getAppliedFilters(searchParams: ReadonlyURLSearchParams): Applie
     }
   }
 
-  // Market Cap
-  const marketCapRaw: string | null = searchParams.get(FilterParamKey.MARKET_CAP);
-  if (marketCapRaw != null && marketCapRaw.trim().length > 0) {
-    const [minStr, maxStr] = marketCapRaw.split('-');
-    const minValue = minStr ? parseFloat(minStr) : undefined;
-    const maxValue = maxStr ? parseFloat(maxStr) : undefined;
-
-    // Find matching label from options
-    const matchingOption = MARKET_CAP_OPTIONS.find((opt) => opt.value === marketCapRaw);
-    const label = matchingOption ? matchingOption.label : `Market Cap: ${formatMarketCap(minValue, maxValue)}`;
-
-    filters.push({
-      type: FilterType.MARKET_CAP,
-      minValue,
-      maxValue,
-      label,
-    });
-  }
-
-  // PE Ratio
-  const peRatioRaw: string | null = searchParams.get(FilterParamKey.PE_RATIO);
-  if (peRatioRaw != null && peRatioRaw.trim().length > 0) {
-    if (peRatioRaw === 'negative') {
-      filters.push({
-        type: FilterType.PE_RATIO,
-        label: 'PE Ratio: Negative / No Earnings',
-      });
-    } else {
-      const [minStr, maxStr] = peRatioRaw.split('-');
-      const minValue = minStr ? parseFloat(minStr) : undefined;
-      const maxValue = maxStr ? parseFloat(maxStr) : undefined;
-
-      // Find matching label from options
-      const matchingOption = PE_RATIO_OPTIONS.find((opt) => opt.value === peRatioRaw);
-      const label = matchingOption ? matchingOption.label : `PE Ratio: ${formatPERatio(minValue, maxValue)}`;
-
-      filters.push({
-        type: FilterType.PE_RATIO,
-        minValue,
-        maxValue,
-        label,
-      });
+  // Numeric filters (market cap, PE, dividend yield, forward PE)
+  for (const def of NUMERIC_FILTER_DEFS) {
+    const raw: string | null = searchParams.get(def.paramKey);
+    if (raw != null && raw.trim().length > 0) {
+      const f = parseNumericAppliedFilter(raw, def);
+      if (f) filters.push(f);
     }
   }
 
@@ -302,35 +337,59 @@ export function getAppliedFilters(searchParams: ReadonlyURLSearchParams): Applie
 }
 
 /**
- * Helper function to format market cap for display
+ * Parse a numeric filter URL value (`negative`, `op:value`, or `<min>-<max>` bucket)
+ * into an applied-filter entry with a human-readable chip label.
  */
-function formatMarketCap(min?: number, max?: number): string {
-  const formatValue = (val: number): string => {
-    if (val >= 1e9) return `$${(val / 1e9).toFixed(1)}B`;
-    if (val >= 1e6) return `$${(val / 1e6).toFixed(1)}M`;
-    return `$${val}`;
-  };
+function parseNumericAppliedFilter(raw: string, def: NumericFilterDef): AppliedNumericFilter | null {
+  const v = raw.trim();
+  if (!v) return null;
 
-  if (min !== undefined && max !== undefined) {
-    return `${formatValue(min)} - ${formatValue(max)}`;
-  } else if (min !== undefined) {
-    return `> ${formatValue(min)}`;
-  } else if (max !== undefined) {
-    return `< ${formatValue(max)}`;
+  if (v === 'negative') {
+    const optionLabel = def.options.find((o) => o.value === 'negative')?.label;
+    return {
+      type: def.type,
+      paramKey: def.paramKey,
+      raw: v,
+      negative: true,
+      label: `${def.label}: ${optionLabel || 'Negative'}`,
+    };
   }
-  return 'Any';
+
+  // Custom operator form: gt:/lt:/eq:<value>
+  const criteria = parseNumericFilterValue(v);
+  if (criteria?.op !== undefined) {
+    const shown = criteria.value !== undefined ? formatCompactNumber(criteria.value) : v;
+    return {
+      type: def.type,
+      paramKey: def.paramKey,
+      raw: v,
+      op: criteria.op,
+      value: criteria.value,
+      label: `${def.label} ${NUMERIC_FILTER_OP_SYMBOLS[criteria.op]} ${shown}`,
+    };
+  }
+
+  const [minStr, maxStr] = v.split('-');
+  const minValue = minStr ? parseFloat(minStr) : undefined;
+  const maxValue = maxStr ? parseFloat(maxStr) : undefined;
+
+  const matchingOption = def.options.find((opt) => opt.value === v);
+  const label = matchingOption ? matchingOption.label : `${def.label}: ${formatNumericRange(minValue, maxValue)}`;
+
+  return { type: def.type, paramKey: def.paramKey, raw: v, minValue, maxValue, label };
 }
 
 /**
- * Helper function to format PE ratio for display
+ * Helper function to format a numeric range for display (fallback when the raw
+ * URL value does not match a preset bucket).
  */
-function formatPERatio(min?: number, max?: number): string {
+function formatNumericRange(min?: number, max?: number): string {
   if (min !== undefined && max !== undefined) {
-    return `${min} - ${max}`;
+    return `${formatCompactNumber(min)} - ${formatCompactNumber(max)}`;
   } else if (min !== undefined) {
-    return `> ${min}`;
+    return `> ${formatCompactNumber(min)}`;
   } else if (max !== undefined) {
-    return `< ${max}`;
+    return `< ${formatCompactNumber(max)}`;
   }
   return 'Any';
 }
@@ -345,8 +404,9 @@ export function clearAllFilterParams(searchParams: ReadonlyURLSearchParams): URL
   }
   params.delete(FilterParamKey.TOTAL);
   params.delete(FilterParamKey.SEARCH);
-  params.delete(FilterParamKey.MARKET_CAP);
-  params.delete(FilterParamKey.PE_RATIO);
+  for (const def of NUMERIC_FILTER_DEFS) {
+    params.delete(def.paramKey);
+  }
   return params;
 }
 
@@ -364,10 +424,8 @@ export function removeFilterFromParams(searchParams: ReadonlyURLSearchParams, fi
     params.delete(FilterParamKey.TOTAL);
   } else if (filterToRemove.type === FilterType.SEARCH) {
     params.delete(FilterParamKey.SEARCH);
-  } else if (filterToRemove.type === FilterType.MARKET_CAP) {
-    params.delete(FilterParamKey.MARKET_CAP);
-  } else if (filterToRemove.type === FilterType.PE_RATIO) {
-    params.delete(FilterParamKey.PE_RATIO);
+  } else {
+    params.delete(filterToRemove.paramKey);
   }
   return params;
 }
@@ -407,8 +465,7 @@ export const toSortedQueryString = (sp: SearchParams, country?: string): string 
 export const hasFiltersApplied = (sp?: SearchParams): boolean =>
   (sp && Object.keys(sp).some((k) => k.includes('Threshold'))) ||
   Boolean(toScalar(sp?.[FilterParamKey.SEARCH])) ||
-  Boolean(toScalar(sp?.[FilterParamKey.MARKET_CAP])) ||
-  Boolean(toScalar(sp?.[FilterParamKey.PE_RATIO]));
+  NUMERIC_FILTER_DEFS.some((def) => Boolean(toScalar(sp?.[def.paramKey])));
 
 /** ----- Server-side Helpers ----- */
 
@@ -437,6 +494,8 @@ export function parseFilterParams(req: NextRequest): FilterParams {
     [FilterParamKey.SEARCH]: searchParams.get(FilterParamKey.SEARCH) || undefined,
     [FilterParamKey.MARKET_CAP]: searchParams.get(FilterParamKey.MARKET_CAP) || undefined,
     [FilterParamKey.PE_RATIO]: searchParams.get(FilterParamKey.PE_RATIO) || undefined,
+    [FilterParamKey.DIVIDEND_YIELD]: searchParams.get(FilterParamKey.DIVIDEND_YIELD) || undefined,
+    [FilterParamKey.FORWARD_PE]: searchParams.get(FilterParamKey.FORWARD_PE) || undefined,
   };
 }
 
@@ -494,59 +553,81 @@ export function createTickerFilter(
     tickerFilter.cachedScoreEntry = { is: cacheFilter };
   }
 
-  // Apply financial info filters (Market Cap and PE Ratio)
+  // Apply financial info filters (Market Cap, PE Ratio, Dividend Yield)
   const financialFilter = createFinancialInfoFilter(filters);
   if (Object.keys(financialFilter).length > 0) {
     tickerFilter.financialInfo = { is: financialFilter };
+  }
+
+  // Apply forward PE filter (sourced from the stock analyzer summary JSON)
+  const forwardPeFilter = createForwardPeScraperFilter(filters);
+  if (forwardPeFilter) {
+    tickerFilter.stockAnalyzerScrapperInfo = { is: forwardPeFilter };
   }
 
   return tickerFilter;
 }
 
 /**
- * Create a financial info filter for market cap and PE ratio
+ * Create a financial info filter for market cap, PE ratio, and dividend yield.
+ * Each param supports preset buckets (`<min>-<max>`), `negative`, and the
+ * custom operator encoding (`gt:`/`lt:`/`eq:<value>` with K/M/B/T suffixes).
  */
 export function createFinancialInfoFilter(filters: FilterParams): Prisma.TickerV1FinancialInfoWhereInput {
   const financialFilter: Prisma.TickerV1FinancialInfoWhereInput = {};
 
   // Market Cap filter
-  const marketCapParam = filters[FilterParamKey.MARKET_CAP];
-  if (marketCapParam && marketCapParam.trim()) {
-    const [minStr, maxStr] = marketCapParam.split('-');
-    const min = minStr ? parseFloat(minStr) : undefined;
-    const max = maxStr ? parseFloat(maxStr) : undefined;
+  const marketCapCriteria = parseNumericFilterValue(filters[FilterParamKey.MARKET_CAP]);
+  if (marketCapCriteria) {
+    const f = numericCriteriaToPrismaFilter(marketCapCriteria);
+    if (f) financialFilter.marketCap = f;
+  }
 
-    if (min !== undefined && max !== undefined) {
-      financialFilter.marketCap = { gte: min, lte: max };
-    } else if (min !== undefined) {
-      financialFilter.marketCap = { gte: min };
-    } else if (max !== undefined) {
-      financialFilter.marketCap = { lte: max };
+  // PE Ratio filter — keeps its special "Negative / No Earnings" bucket, which also matches null PE
+  const peRatioParam = filters[FilterParamKey.PE_RATIO]?.trim();
+  if (peRatioParam === 'negative') {
+    financialFilter.OR = [{ pe: { lt: 0 } }, { pe: null }];
+  } else {
+    const peCriteria = parseNumericFilterValue(peRatioParam);
+    if (peCriteria) {
+      const f = numericCriteriaToPrismaFilter(peCriteria);
+      if (f) financialFilter.pe = f;
     }
   }
 
-  // PE Ratio filter
-  const peRatioParam = filters[FilterParamKey.PE_RATIO];
-  if (peRatioParam && peRatioParam.trim()) {
-    if (peRatioParam === 'negative') {
-      // Filter for negative or null PE ratios
-      financialFilter.OR = [{ pe: { lt: 0 } }, { pe: null }];
-    } else {
-      const [minStr, maxStr] = peRatioParam.split('-');
-      const min = minStr ? parseFloat(minStr) : undefined;
-      const max = maxStr ? parseFloat(maxStr) : undefined;
-
-      if (min !== undefined && max !== undefined) {
-        financialFilter.pe = { gte: min, lte: max };
-      } else if (min !== undefined) {
-        financialFilter.pe = { gte: min };
-      } else if (max !== undefined) {
-        financialFilter.pe = { lte: max };
-      }
-    }
+  // Dividend Yield filter
+  const dividendYieldCriteria = parseNumericFilterValue(filters[FilterParamKey.DIVIDEND_YIELD]);
+  if (dividendYieldCriteria) {
+    const f = numericCriteriaToPrismaFilter(dividendYieldCriteria);
+    if (f) financialFilter.dividendYield = f;
   }
 
   return financialFilter;
+}
+
+/**
+ * Create a scraper-info filter for forward PE. Forward PE is not a column on
+ * TickerV1FinancialInfo — it only exists inside the stock analyzer summary
+ * JSON, so it's filtered with a JSON path filter on `summary.forwardPE`.
+ */
+export function createForwardPeScraperFilter(filters: FilterParams): Prisma.TickerV1StockAnalyzerScrapperInfoWhereInput | null {
+  const raw = filters[FilterParamKey.FORWARD_PE]?.trim();
+  if (!raw) return null;
+
+  const criteria = parseNumericFilterValue(raw);
+  if (!criteria) return null;
+
+  const path = ['forwardPE'];
+  if (criteria.negative) return { summary: { path, lt: 0 } };
+  if (criteria.op === 'gt') return { summary: { path, gt: criteria.value } };
+  if (criteria.op === 'lt') return { summary: { path, lt: criteria.value } };
+  if (criteria.op === 'eq') return { summary: { path, equals: criteria.value } };
+
+  const rangeFilter: { path: string[]; gte?: number; lte?: number } = { path };
+  if (criteria.min !== undefined) rangeFilter.gte = criteria.min;
+  if (criteria.max !== undefined) rangeFilter.lte = criteria.max;
+  if (rangeFilter.gte === undefined && rangeFilter.lte === undefined) return null;
+  return { summary: rangeFilter };
 }
 
 /**
@@ -559,8 +640,7 @@ export function hasFiltersAppliedServer(
 ): boolean {
   const hasScoreFilters = Object.keys(cacheFilter).length > 0;
   const hasSearchFilter = !!filters[FilterParamKey.SEARCH]?.trim();
-  const hasMarketCapFilter = !!filters[FilterParamKey.MARKET_CAP]?.trim();
-  const hasPERatioFilter = !!filters[FilterParamKey.PE_RATIO]?.trim();
+  const hasNumericFilter = NUMERIC_FILTER_DEFS.some((def) => !!filters[def.paramKey]?.trim());
 
-  return hasScoreFilters || hasSearchFilter || hasMarketCapFilter || hasPERatioFilter;
+  return hasScoreFilters || hasSearchFilter || hasNumericFilter;
 }
