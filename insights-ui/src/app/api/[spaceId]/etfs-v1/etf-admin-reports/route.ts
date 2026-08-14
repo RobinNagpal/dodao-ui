@@ -3,6 +3,8 @@ import { prisma } from '@/prisma';
 import { KoalaGainsJwtTokenPayload } from '@/types/auth';
 import { EtfGenerationRequestStatus, EtfReportType } from '@/types/etf/etf-analysis-types';
 import { AllExchanges, EXCHANGES, isExchange } from '@/utils/countryExchangeUtils';
+import { ETF_OTHERS_GROUP_KEY, getEtfCategoryByName, getEtfGroupByKey } from '@/utils/etf-categorization-utils';
+import { createEtfStockAnalyzerFilter, EtfFilterParamKey } from '@/utils/etf-filter-utils';
 import { NextRequest } from 'next/server';
 
 export type EtfReportStatus = 'generated' | 'missing' | 'in-progress' | 'failed';
@@ -139,6 +141,30 @@ const getHandler = async (
 
   const searchWhere = buildSearchWhere(q);
 
+  // Group / category filters reuse the public listing machinery:
+  // etf-analysis-categories.json maps categories → groups, and
+  // createEtfStockAnalyzerFilter expands the group key into its category names
+  // (plus aliases) against EtfStockAnalyzerInfo.category. Values are validated
+  // against the config so unknown params fall back to "no filter".
+  const groupRaw = (searchParams.get('group') ?? '').trim();
+  const group = groupRaw && getEtfGroupByKey(groupRaw) ? groupRaw : '';
+  const categoryRaw = (searchParams.get('category') ?? '').trim();
+  const category = getEtfCategoryByName(categoryRaw)?.name ?? '';
+
+  // A category is always narrower than its group, so when both are set the
+  // category wins (createEtfStockAnalyzerFilter would otherwise let the group
+  // expansion overwrite the category match).
+  const stockAnalyzerFilter = createEtfStockAnalyzerFilter(
+    category ? { [EtfFilterParamKey.CATEGORY]: category } : group ? { [EtfFilterParamKey.GROUP]: group } : {}
+  );
+  const groupCategoryWhere: any =
+    !category && group === ETF_OTHERS_GROUP_KEY
+      ? // "Others" = no category value; also include ETFs missing the stockAnalyzerInfo row entirely.
+        { OR: [{ stockAnalyzerInfo: { is: null } }, { stockAnalyzerInfo: { is: stockAnalyzerFilter } }] }
+      : Object.keys(stockAnalyzerFilter).length > 0
+      ? { stockAnalyzerInfo: { is: stockAnalyzerFilter } }
+      : null;
+
   const missingWhere: any =
     missing === 'stockAnalyze'
       ? {
@@ -154,12 +180,14 @@ const getHandler = async (
         }
       : null;
 
+  // missingWhere and groupCategoryWhere can both carry a top-level OR, so
+  // AND them together instead of spreading (spreading would overwrite one OR).
+  const andClauses = [searchWhere, missingWhere, updatedBeforeWhere, groupCategoryWhere].filter(Boolean);
+
   const where: any = {
     spaceId,
     ...(exchange ? { exchange } : {}),
-    ...(searchWhere ? searchWhere : {}),
-    ...(missingWhere ? missingWhere : {}),
-    ...(updatedBeforeWhere ? updatedBeforeWhere : {}),
+    ...(andClauses.length ? { AND: andClauses } : {}),
   };
 
   const [etfs, totalCount, distinctExchanges] = await Promise.all([

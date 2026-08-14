@@ -3,6 +3,7 @@
 import { EtfReportsResponse } from '@/app/api/[spaceId]/etfs-v1/etf-admin-reports/route';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { AllExchanges, EXCHANGES } from '@/utils/countryExchangeUtils';
+import { getEtfCategoryByName } from '@/utils/etf-categorization-utils';
 import BulkActionsBar from './BulkActionsBar';
 import EtfReportsFilters from './EtfReportsFilters';
 import EtfReportsTable from './EtfReportsTable';
@@ -16,6 +17,8 @@ import { useDebouncedValue } from './useDebouncedValue';
 export default function EtfReportsPage(): JSX.Element {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [exchange, setExchange] = useState<AllExchanges | ''>('');
+  const [group, setGroup] = useState<string>('');
+  const [category, setCategory] = useState<string>('');
   const [missing, setMissing] = useState<'' | 'stockAnalyze' | 'mor' | 'analysis'>('');
   const [search, setSearch] = useState<string>('');
   const [updatedBefore, setUpdatedBefore] = useState<string>('');
@@ -26,22 +29,31 @@ export default function EtfReportsPage(): JSX.Element {
 
   useEffect(() => {
     setCurrentPage(1);
-  }, [exchange, missing, debouncedSearch, updatedBefore]);
+  }, [exchange, group, category, missing, debouncedSearch, updatedBefore]);
 
   useEffect(() => {
     setSelectedIds(new Set());
-  }, [currentPage, exchange, missing, debouncedSearch, updatedBefore]);
+  }, [currentPage, exchange, group, category, missing, debouncedSearch, updatedBefore]);
+
+  // Keep the category selection consistent with the group dropdown: when the
+  // group changes, drop the category unless it belongs to the new group.
+  const handleGroupChange = useCallback((groupKey: string) => {
+    setGroup(groupKey);
+    setCategory((prev) => (prev && groupKey && getEtfCategoryByName(prev)?.group !== groupKey ? '' : prev));
+  }, []);
 
   const apiUrl = useMemo(() => {
     const params = new URLSearchParams();
     params.set('page', String(currentPage));
     params.set('limit', String(pageSize));
     if (exchange) params.set('exchange', exchange);
+    if (group) params.set('group', group);
+    if (category) params.set('category', category);
     if (missing) params.set('missing', missing);
     if (debouncedSearch.trim()) params.set('q', debouncedSearch.trim());
     if (updatedBefore) params.set('updatedBefore', updatedBefore);
     return `${getBaseUrl()}/api/${KoalaGainsSpaceId}/etfs-v1/etf-admin-reports?${params.toString()}`;
-  }, [currentPage, exchange, missing, debouncedSearch, updatedBefore]);
+  }, [currentPage, exchange, group, category, missing, debouncedSearch, updatedBefore]);
 
   const { data: response, loading, reFetchData } = useFetchData<EtfReportsResponse>(apiUrl, {}, 'Failed to load ETFs');
 
@@ -90,6 +102,10 @@ export default function EtfReportsPage(): JSX.Element {
             exchange={exchange}
             onExchangeChange={setExchange}
             availableExchanges={availableExchanges}
+            group={group}
+            onGroupChange={handleGroupChange}
+            category={category}
+            onCategoryChange={setCategory}
             missing={missing}
             onMissingChange={setMissing}
             search={search}
