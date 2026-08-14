@@ -75,6 +75,10 @@ export function getAllEtfGroups(): ReadonlyArray<EtfGroup> {
   return categoriesConfig.groups;
 }
 
+export function getAllEtfCategories(): ReadonlyArray<EtfCategoryToGroup> {
+  return categoriesConfig.categories;
+}
+
 export function getCategoriesForGroupKey(key: string | null | undefined): EtfCategoryToGroup[] {
   if (!key) return [];
   return categoriesConfig.categories.filter((c) => c.group === key);
