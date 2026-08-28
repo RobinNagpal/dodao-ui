@@ -41,45 +41,62 @@ re-fetched on the next request instead of being held at the edge. This covers:
 
 This is a safe, additive, distribution-wide change with **zero impact on good 2xx caching**.
 
-## The residual gap (200-status soft errors) — needs an app change
+## The 200-status soft-error gap — root cause was `loading.tsx` (now fixed for pages)
 
-The harder case, **confirmed empirically**, is that several insights-ui responses are an error but
-carry **HTTP 200**, so CloudFront force-caches them for 6 days:
+The harder case is that an error response carries **HTTP 200**, so CloudFront force-caches it for
+6 days. Investigation (5 agents) pinned the exact mechanism, which is more specific than "the fetch
+isn't awaited":
 
-1. **Page not-found / DB-down renders as 200.** `/stocks/[exchange]/[ticker]` and
-   `/etfs/[exchange]/[etf]` are `force-dynamic` and stream via Suspense. The existence/main-data
-   fetch is **not awaited before the shell flushes** (e.g. `getTickerOrRedirect(params)` is passed
-   to streaming as a promise, not `await`ed), so `notFound()` / a thrown error fires **after** the
-   200 shell is already committed. Live check: `GET https://koalagains.com/stocks/NASDAQ/<missing>`
-   returns **HTTP 200**, not 404.
-2. **`full-render` / `allowNull` API endpoints return `200 + null/EMPTY`** for a missing entity
-   instead of a 404. These endpoints are now CloudFront-cached (stocks + ETFs), so a direct/crawler
-   hit to a missing symbol caches "empty" for 6 days.
-3. **Suspense slice fetchers swallow 5xx** (`if (!res.ok) return null`), rendering a degraded-but-200
-   page when a section's data is momentarily unavailable.
+- The stock **page already `await`s** its existence check before returning JSX
+  (`stocks/[exchange]/[ticker]/page.tsx:735`, `const tickerData = await tickerInfo`). The real
+  culprit was the route's **`loading.tsx`**: in the App Router a `loading.tsx` wraps the segment in
+  an implicit `<Suspense>`, so the instant the page component **suspends on that await**, Next.js
+  flushes the loading fallback as the **HTTP 200 shell**. `notFound()` / a thrown error inside the
+  awaited call then fires *after* 200 is already committed → a soft-200.
+- The **ETF route has no `loading.tsx`**, so its identical `await … ; if (!etf) notFound()` blocks
+  the response until it resolves and emits a **real 404**. This asymmetry is why a missing stock
+  returned 200 while a missing ETF returned 404 — same code shape, different segment boundary.
 
-**Why headers can't fix this:** good *and* error pages both send `Cache-Control: no-store`
-(verified), and `min_ttl=6day` ignores it for all 2xx — so CloudFront cannot tell a good 200 from
-a soft-error 200, and lowering `min_ttl` to 0 would stop caching good pages too. A Lambda@Edge
-origin-response can't override `min_ttl` either. **The only real fix is to make these responses a
-genuine non-2xx** so they fall into the (now zero-TTL) error path.
+**The fix (this change set):**
 
-### Recommended follow-up (app)
+1. **Removed `stocks/[exchange]/[ticker]/loading.tsx`.** The awaited existence/redirect/throw at the
+   top of the main page and every subpage now commits a genuine **404 / 308 / 500 before the first
+   byte**, matching the already-correct ETF pages. The heavy sections still stream via the page's
+   **inner** `<Suspense>` boundaries (charts, competition, similar tickers), so streaming UX is kept;
+   only the full-page skeleton on a cold/uncached SSR render is traded for a short block on the one
+   primary fetch (negligible behind the 6-day edge cache).
+2. **`performance-page-utils.ts` no longer swallows 5xx.** `fetchPerformanceByExchange` /
+   `fetchPerformanceAnyExchange` now **re-throw on `status >= 500` and on transport errors** (→ real
+   500), and treat only 404/other non-OK as soft-empty (→ existing any-exchange fallback →
+   `notFound()`). So a momentary DB outage on a subpage surfaces as an uncacheable 500 instead of a
+   404 that would de-index a live ticker.
 
-Lowest-risk, highest-value, in priority order — none are "one-liners", so they're tracked as
-follow-ups rather than bundled with the infra fix:
+With genuine 404/500 statuses, the existing `error_caching_min_ttl=0` config keeps them out of the
+edge cache automatically.
 
-1. **Make the entity-existence check produce a 404 *before* streaming.** `await` the primary
-   ticker/ETF fetch at the top of the page (so `notFound()` / a throw sets the response status
-   before the first Suspense shell flushes). Cost: the first *uncached* SSR render blocks on the
-   main fetch — negligible in practice since the page is force-cached at the edge. Verify the
-   `use(promise)` consumers still work.
-2. **Return `404` from the `full-render` / per-entity GET routes on a miss** (throw the shared
-   `NotFoundError` so `withErrorHandlingV2` maps it to 404) and map that 404 → `notFound()` in the
-   page fetcher. Keep the `allowNull=true` contract for the SSR fallback path.
-3. **Don't swallow 5xx in the slice fetchers** — only treat 404/empty as soft-null.
+**Why headers can't substitute for this:** good *and* error pages both send `Cache-Control:
+no-store`, and `min_ttl=6day` ignores it for all 2xx — so CloudFront cannot tell a good 200 from a
+soft-error 200, and lowering `min_ttl` to 0 would stop caching good pages too. A Lambda@Edge
+origin-response can't override `min_ttl` either, a CloudFront Function can't see the origin response,
+and middleware has no DB access to make the existence decision. Returning a genuine non-2xx from the
+app is the only robust fix.
 
-With those, the existing `error_caching_min_ttl=0` config purges them automatically.
+### Remaining follow-ups (not in this change set)
+
+1. **Per-entity GET API routes still return `200 + null/EMPTY` on a miss** (the cached secondary
+   endpoints: stock category data, `competition-tickers`, `financial-info` / `price-history` /
+   `quarterly-chart-data`; ETF `analysis` / `portfolio-holdings`). The *pages* now convert these to a
+   404, but a **direct/crawler hit** to one of these cached API paths still caches "empty" for 6 days.
+   Convert genuine misses to a thrown `notFoundError` → 404 (`withErrorHandlingV2` maps it), keeping
+   the `allowNull=true` SSR contract on the three main entity routes (`tickers-v1/exchange/…`,
+   `tickers-v1/[ticker]`, `etfs-v1/exchange/…`) and the consumed `full-render` payloads at 200. See
+   the per-route inventory in the PR description.
+2. **Supplementary streamed slices on the main stock page** (`fetchFinancialInfo`,
+   `fetchQuarterlyChartData`, `fetchPriceHistory`, `fetchCompetitionData`) render `null` on error.
+   Because they resolve *after* the 200 shell flushes, a throw there cannot change the committed
+   status — so a DB blip on one of these still yields a 200 page with an empty supplementary section.
+   The substantive report content comes from the pre-flush awaited fetch, so this is an accepted
+   minor residual; closing it would require de-streaming those sections (losing the perf benefit).
 
 ---
 
