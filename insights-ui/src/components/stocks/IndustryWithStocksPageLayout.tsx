@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { ReactNode, Suspense } from 'react';
 import Link from 'next/link';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
@@ -71,14 +71,20 @@ export default function IndustryWithStocksPageLayout({
           mobileBackOnly={true}
           rightButton={
             <div className="flex">
-              <FiltersButton />
+              <Suspense fallback={null}>
+                <FiltersButton />
+              </Suspense>
               <StocksGridPageActions currentCountry={currentCountry} industryKey={industryKey} />
             </div>
           }
         />
       </div>
 
-      {showAppliedFilters && <AppliedFilterChips showClearAll={true} />}
+      {showAppliedFilters && (
+        <Suspense fallback={null}>
+          <AppliedFilterChips showClearAll={true} />
+        </Suspense>
+      )}
 
       <div className="w-full mb-8">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">

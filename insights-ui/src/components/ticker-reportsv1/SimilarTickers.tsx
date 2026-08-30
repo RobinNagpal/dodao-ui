@@ -4,6 +4,9 @@ import { ArrowTopRightOnSquareIcon } from '@heroicons/react/20/solid';
 import Link from 'next/link';
 import { use } from 'react';
 
+/** Resolved stand-in for a missing `slugAvailableIdsPromise` so `use()` stays unconditional. */
+const NO_AVAILABILITY_FILTER: Promise<ReadonlySet<string> | undefined> = Promise.resolve(undefined);
+
 export interface SimilarTickersProps {
   /** Promise-based fetch (resolved via `use()` to keep Suspense at the caller). */
   dataPromise: Promise<SimilarTicker[]>;
@@ -14,10 +17,18 @@ export interface SimilarTickersProps {
    * omitted (main report page), peers link to the main report.
    */
   subPageSlug?: string;
+  /**
+   * Ids of the peers that actually have a report for `subPageSlug`. Peers not in
+   * the set link to their main stock page instead, so we never emit a link to a
+   * sub-page that renders the not-found page. Omit to link every peer to
+   * `subPageSlug` unconditionally (only safe when the slug is known to exist).
+   */
+  slugAvailableIdsPromise?: Promise<ReadonlySet<string>>;
 }
 
-export default function SimilarTickers({ dataPromise, subPageSlug }: SimilarTickersProps): JSX.Element | null {
+export default function SimilarTickers({ dataPromise, subPageSlug, slugAvailableIdsPromise }: SimilarTickersProps): JSX.Element | null {
   const similarTickers: ReadonlyArray<SimilarTicker> = use(dataPromise);
+  const slugAvailableIds: ReadonlySet<string> | undefined = use(slugAvailableIdsPromise ?? NO_AVAILABILITY_FILTER);
   if (!similarTickers || similarTickers.length === 0) {
     return null;
   }
@@ -32,7 +43,8 @@ export default function SimilarTickers({ dataPromise, subPageSlug }: SimilarTick
           const { textColorClass } = typeof scoreValue === 'number' ? getScoreColorClasses(scoreValue) : { textColorClass: 'text-muted' };
 
           const tickerBasePath = `/stocks/${similarTicker.exchange.toUpperCase()}/${similarTicker.symbol.toUpperCase()}`;
-          const href = subPageSlug ? `${tickerBasePath}/${subPageSlug}` : tickerBasePath;
+          const hasSubPage = !!subPageSlug && (!slugAvailableIds || slugAvailableIds.has(similarTicker.id));
+          const href = hasSubPage ? `${tickerBasePath}/${subPageSlug}` : tickerBasePath;
 
           return (
             <Link
