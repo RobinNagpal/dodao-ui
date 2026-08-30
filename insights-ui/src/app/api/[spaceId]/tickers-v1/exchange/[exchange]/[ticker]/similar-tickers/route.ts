@@ -19,6 +19,9 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
       spaceId: KoalaGainsSpaceId,
       industryKey: tickerRecord.industryKey,
       subIndustryKey: tickerRecord.subIndustryKey,
+      // Delisted tickers serve a 404 on every one of their pages, so linking to
+      // them from the "Top Similar Companies" widget only feeds crawlers dead URLs.
+      isDeleted: false,
       id: {
         not: tickerRecord.id, // Exclude current ticker
       },

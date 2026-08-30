@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { ReactNode, Suspense } from 'react';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
@@ -67,15 +67,23 @@ export default function EtfPageLayout({
           mobileBackOnly={true}
           rightButton={
             <div className="flex items-center gap-2">
-              <EtfFiltersButton />
-              <EtfSortButton />
+              <Suspense fallback={null}>
+                <EtfFiltersButton />
+              </Suspense>
+              <Suspense fallback={null}>
+                <EtfSortButton />
+              </Suspense>
               <EtfListingPageActions tag={revalidateTag} />
             </div>
           }
         />
       </div>
 
-      {showAppliedFilters && <EtfAppliedFilterChips showClearAll={true} />}
+      {showAppliedFilters && (
+        <Suspense fallback={null}>
+          <EtfAppliedFilterChips showClearAll={true} />
+        </Suspense>
+      )}
 
       <div className="w-full mb-8">
         <h1 className="text-2xl font-bold text-heading mb-4">{title}</h1>

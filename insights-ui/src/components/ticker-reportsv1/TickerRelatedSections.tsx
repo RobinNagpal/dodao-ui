@@ -24,6 +24,58 @@ const CATEGORY_TO_SLUG: Readonly<Record<TickerAnalysisCategory, string>> = {
 
 export type AvailableSiblingSlugs = ReadonlySet<string>;
 
+const SLUG_TO_CATEGORY: Readonly<Record<string, TickerAnalysisCategory>> = Object.fromEntries(
+  Object.entries(CATEGORY_TO_SLUG).map(([category, slug]) => [slug, category as TickerAnalysisCategory])
+);
+
+/**
+ * Bulk variant of {@link getAvailableSiblingSlugs}: given a set of *peer* ticker
+ * ids and a single sub-page slug, returns the ids that actually have publishable
+ * content for that slug.
+ *
+ * Used by the "Top Similar Companies" widget, which links every peer to the same
+ * sub-page the reader is currently on. A peer without that report renders the
+ * not-found page, which Google logs as "Excluded by 'noindex' tag" — so peers
+ * that fail this check link to their main stock page instead. Same predicates as
+ * `getAvailableSiblingSlugs` / the per-section sitemaps, so the link graph, the
+ * sitemap and the pages themselves stay in sync.
+ */
+export async function filterTickerIdsWithSlug(tickerIds: ReadonlyArray<string>, slug: string): Promise<ReadonlySet<string>> {
+  const ids = Array.from(new Set(tickerIds));
+  if (ids.length === 0) return new Set<string>();
+
+  if (slug === 'competition') {
+    const rows = await prisma.tickerV1VsCompetition.findMany({
+      where: { spaceId: KoalaGainsSpaceId, tickerId: { in: ids }, overallAnalysisDetails: { not: '' } },
+      select: { tickerId: true },
+    });
+    return new Set(rows.map((row) => row.tickerId));
+  }
+
+  if (slug === 'management-team') {
+    const rows = await prisma.tickerV1ManagementTeamReport.findMany({
+      where: { spaceId: KoalaGainsSpaceId, tickerId: { in: ids }, summary: { not: '' }, detailedAnalysis: { not: '' } },
+      select: { tickerId: true },
+    });
+    return new Set(rows.map((row) => row.tickerId));
+  }
+
+  const categoryKey = SLUG_TO_CATEGORY[slug];
+  if (!categoryKey) return new Set<string>();
+
+  const rows = await prisma.tickerV1CategoryAnalysisResult.findMany({
+    where: {
+      spaceId: KoalaGainsSpaceId,
+      tickerId: { in: ids },
+      categoryKey,
+      summary: { not: '' },
+      overallAnalysisDetails: { not: '' },
+    },
+    select: { tickerId: true },
+  });
+  return new Set(rows.map((row) => row.tickerId));
+}
+
 /**
  * Server-side lookup of which sibling stock-detail pages have publishable
  * content for this ticker. Mirrors the per-section sitemap filters so the
