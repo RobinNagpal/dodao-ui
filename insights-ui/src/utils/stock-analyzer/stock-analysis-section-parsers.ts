@@ -16,6 +16,7 @@ import {
   StockFundamentalsSummary,
 } from '@/types/prismaTypes';
 import { normalizeCellValue, ParsedFinancialTable, parseFinancialTables, toValueKey } from '@/utils/stock-analyzer/stock-analysis-table-parser';
+import { parseNumericStringValue } from '@/utils/etf-filter-utils';
 
 /**
  * Page-shape-specific parsers built on top of {@link parseFinancialTables}.
@@ -403,4 +404,74 @@ export function parseDividendsPage(html: string): DividendsData {
   if (cards['Payout Frequency']) summary.payoutFrequency = cards['Payout Frequency'];
 
   return { meta: {}, summary, history };
+}
+
+/* =============================================================================
+   ETF SUMMARY (the ETF quote page's two stat tables)
+============================================================================= */
+
+/**
+ * The subset of an ETF quote page the app persists to `EtfFinancialInfo`.
+ *
+ * Values stay in the source page's own notation (`0.06%`, `Quarterly`) because
+ * the caller already knows how to convert them; the two size fields are the
+ * exception — see {@link parseEtfSummaryPage}.
+ */
+export interface EtfSummaryStats {
+  assets?: string;
+  expenseRatio?: string;
+  peRatio?: number;
+  sharesOut?: string;
+  dividendTtm?: number;
+  dividendYield?: string;
+  payoutFrequency?: string;
+  payoutRatio?: string;
+  volume?: number;
+  week52Low?: number;
+  week52High?: number;
+  beta?: number;
+  holdings?: number;
+}
+
+/**
+ * Expand a compact size string into the plain digits already stored in
+ * `EtfFinancialInfo.aum` / `.sharesOut` (`$112.21B` => `112210000000`).
+ *
+ * The column holds a formatted string that the UI and the ETF filters both
+ * read through `parseNumericStringValue`, which accepts either notation — but
+ * every existing row is plain digits, so keep writing that and leave the rows
+ * homogeneous.
+ */
+function toExpandedAmount(value: string | undefined): string | undefined {
+  const expanded: number | null = parseNumericStringValue(value ?? null);
+  return expanded === null ? undefined : String(expanded);
+}
+
+/** Parse an ETF quote page into the stats persisted on `EtfFinancialInfo`. */
+export function parseEtfSummaryPage(html: string): EtfSummaryStats {
+  const stats: Record<string, string> = parseStatTables(html);
+
+  const summary: EtfSummaryStats = {};
+
+  const assign = <K extends keyof EtfSummaryStats>(key: K, value: EtfSummaryStats[K] | undefined): void => {
+    if (value !== undefined) {
+      summary[key] = value;
+    }
+  };
+
+  assign('assets', toExpandedAmount(firstToken(stats['Assets'])));
+  assign('expenseRatio', firstToken(stats['Expense Ratio']));
+  assign('peRatio', toNumber(stats['PE Ratio']));
+  assign('sharesOut', toExpandedAmount(firstToken(stats['Shares Out'])));
+  assign('dividendTtm', toNumber(stats['Dividend (ttm)']));
+  assign('dividendYield', firstToken(stats['Dividend Yield']));
+  assign('payoutFrequency', firstToken(stats['Payout Frequency']));
+  assign('payoutRatio', firstToken(stats['Payout Ratio']));
+  assign('volume', toNumber(stats['Volume']));
+  assign('week52Low', toNumber(stats['52-Week Low']));
+  assign('week52High', toNumber(stats['52-Week High']));
+  assign('beta', toNumber(stats['Beta']));
+  assign('holdings', toNumber(stats['Holdings']));
+
+  return summary;
 }

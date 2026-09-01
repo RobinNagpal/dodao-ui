@@ -1,7 +1,9 @@
 import { buildStockAnalysisSubPageUrl, fetchStockAnalysisPage } from '@/utils/stock-analyzer/stock-analysis-fetcher';
 import {
+  EtfSummaryStats,
   KpisData,
   parseDividendsPage,
+  parseEtfSummaryPage,
   parseKpisPage,
   parseStatementPage,
   parseSummaryPage,
@@ -163,4 +165,46 @@ export async function scrapeStockAnalyzerSection(stockAnalyzeUrl: string, sectio
     : [{ where: `parse:${section}`, message: `Parsed no usable data from ${url} — the source page layout may have changed` }];
 
   return { section, url, data, errors };
+}
+
+/* =============================================================================
+   ETFs
+============================================================================= */
+
+export interface ScrapeEtfSummaryResult {
+  url: string;
+  data: EtfSummaryStats;
+  errors: ScrapeSectionError[];
+}
+
+/** Whether an ETF quote page produced anything worth persisting. */
+export function isEtfSummaryUsable(data: EtfSummaryStats): boolean {
+  return Object.keys(data).length > 0;
+}
+
+/**
+ * Fetch and parse an ETF quote page.
+ *
+ * ETFs live on the same source site as stocks and their quote page uses the
+ * same two-column stat tables, so this shares the fetcher and the stat-table
+ * reader. As with the stock sections, a page that loads but parses to nothing
+ * comes back with `errors` populated and `isEtfSummaryUsable(...) === false`,
+ * so the caller can decline to overwrite what it already has.
+ */
+export async function scrapeEtfSummary(etfUrl: string): Promise<ScrapeEtfSummaryResult> {
+  const url: string = buildStockAnalysisSubPageUrl(etfUrl, '');
+  const html: string = await fetchStockAnalysisPage(url);
+
+  let data: EtfSummaryStats;
+  try {
+    data = parseEtfSummaryPage(html);
+  } catch (error) {
+    throw new Error(`Failed to parse ETF summary from ${url}: ${error instanceof Error ? error.message : String(error)}`);
+  }
+
+  const errors: ScrapeSectionError[] = isEtfSummaryUsable(data)
+    ? []
+    : [{ where: 'parse:etf-summary', message: `Parsed no usable data from ${url} — the source page layout may have changed` }];
+
+  return { url, data, errors };
 }
