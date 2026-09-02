@@ -23,6 +23,7 @@ export function toFilterableTicker(request: TickerV1GenerationRequestWithTicker)
     pe: ticker.financialInfo?.pe ?? null,
     dividendYield: ticker.financialInfo?.dividendYield ?? null,
     forwardPe: ticker.forwardPe,
+    reportUpdatedAt: ticker.reportUpdatedAt,
   };
 }
 

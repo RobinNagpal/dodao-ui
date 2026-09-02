@@ -3,13 +3,16 @@
 import React, { useState } from 'react';
 import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
 import NumericFilterControl from '@/components/etfs/NumericFilterControl';
+import DateFilterControl from '@/components/ui/DateFilterControl';
 
 import {
   CATEGORY_OPTIONS,
   CATEGORY_THRESHOLD_OPTIONS,
   TOTAL_SCORE_OPTIONS,
   NUMERIC_FILTER_DEFS,
+  DATE_FILTER_DEFS,
   FilterParamKey,
+  FilterType,
   type SelectedFiltersMap,
 } from '@/utils/ticker-filter-utils';
 
@@ -72,7 +75,8 @@ function StockFiltersModalContent({ initialSelected, onApply, onClose }: StockFi
     );
   };
 
-  const handleNumericFilterChange = (paramKey: FilterParamKey, value: string): void => {
+  /** Shared by the numeric tiles and the date pickers: an empty value drops the filter. */
+  const handleValueChange = (paramKey: FilterParamKey, value: string): void => {
     setSelectedFilters((prev: SelectedFiltersMap): SelectedFiltersMap => {
       if (!value) {
         const { [paramKey]: _, ...rest } = prev;
@@ -154,10 +158,33 @@ function StockFiltersModalContent({ initialSelected, onApply, onClose }: StockFi
               label={def.label}
               value={selectedFilters[def.paramKey] || ''}
               options={def.options}
-              onChange={(v) => handleNumericFilterChange(def.paramKey, v)}
+              onChange={(v) => handleValueChange(def.paramKey, v)}
               hint={def.hint}
             />
           ))}
+        </div>
+      </div>
+
+      {/* Report Date Section */}
+      <div>
+        <h3 className="text-body text-sm mb-1">Report Date</h3>
+        <p className="text-muted text-xs mb-3">When the stock&apos;s report was last generated</p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2">
+          {DATE_FILTER_DEFS.map((def) => {
+            // Keep the two pickers from crossing over into an empty range.
+            const isFrom: boolean = def.type === FilterType.REPORT_DATE_FROM;
+            return (
+              <DateFilterControl
+                key={def.paramKey}
+                id={def.paramKey}
+                label={def.label}
+                value={selectedFilters[def.paramKey] || ''}
+                min={isFrom ? undefined : selectedFilters[FilterParamKey.REPORT_DATE_FROM] || undefined}
+                max={isFrom ? selectedFilters[FilterParamKey.REPORT_DATE_TO] || undefined : undefined}
+                onChange={(v) => handleValueChange(def.paramKey, v)}
+              />
+            );
+          })}
         </div>
       </div>
 

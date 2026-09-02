@@ -54,6 +54,8 @@ export interface TickerV1GenerationRequestWithTicker extends TickerV1GenerationR
     } | null;
     /** Forward PE lifted out of the scraper summary JSON (it has no column of its own). */
     forwardPe: number | null;
+    /** The ticker's report date — `TickerV1.updatedAt`, bumped by every report save. */
+    reportUpdatedAt: Date;
     industry: {
       name: string;
       industryKey: string;
@@ -114,6 +116,7 @@ async function getRequests(status: GenerationRequestStatus, skip: number = 0, ta
           symbol: true,
           exchange: true,
           name: true,
+          updatedAt: true,
           cachedScoreEntry: {
             select: {
               businessAndMoatScore: true,
@@ -156,12 +159,13 @@ async function getRequests(status: GenerationRequestStatus, skip: number = 0, ta
   // Add pending steps to each request, and flatten the scraper summary down to
   // the single number the filters need (the raw JSON is far too big to ship).
   return requests.map(({ ticker, ...request }) => {
-    const { stockAnalyzerScrapperInfo, ...tickerFields } = ticker;
+    const { stockAnalyzerScrapperInfo, updatedAt: reportUpdatedAt, ...tickerFields } = ticker;
     return {
       ...request,
       ticker: {
         ...tickerFields,
         forwardPe: extractForwardPe(stockAnalyzerScrapperInfo?.summary),
+        reportUpdatedAt,
       },
       pendingSteps: calculatePendingSteps(request),
     };

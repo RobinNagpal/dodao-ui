@@ -23,6 +23,8 @@ export enum FilterType {
   PE_RATIO = 'peRatio',
   DIVIDEND_YIELD = 'dividendYield',
   FORWARD_PE = 'forwardPe',
+  REPORT_DATE_FROM = 'reportDateFrom',
+  REPORT_DATE_TO = 'reportDateTo',
 }
 
 // Enum for parameter keys to ensure consistency
@@ -38,6 +40,8 @@ export enum FilterParamKey {
   PE_RATIO = 'peRatio',
   DIVIDEND_YIELD = 'dividendYield',
   FORWARD_PE = 'forwardPe',
+  REPORT_DATE_FROM = 'reportDateFrom',
+  REPORT_DATE_TO = 'reportDateTo',
 }
 
 // Type for search parameters
@@ -100,8 +104,19 @@ export interface AppliedNumericFilter extends AppliedFilterBase {
   negative?: boolean;
 }
 
+// Filter types backed by the report date (when the stock's report was last generated).
+export type DateFilterType = FilterType.REPORT_DATE_FROM | FilterType.REPORT_DATE_TO;
+
+// Interface for report-date filters (one bound each, so the two combine into a range)
+export interface AppliedDateFilter extends AppliedFilterBase {
+  type: DateFilterType;
+  paramKey: FilterParamKey;
+  // The `YYYY-MM-DD` URL value, kept verbatim so the date input re-hydrates.
+  raw: string;
+}
+
 // Union type for all filter types
-export type AppliedFilter = AppliedCategoryFilter | AppliedTotalFilter | AppliedSearchFilter | AppliedNumericFilter;
+export type AppliedFilter = AppliedCategoryFilter | AppliedTotalFilter | AppliedSearchFilter | AppliedNumericFilter | AppliedDateFilter;
 
 // Type for selected filters map
 export type SelectedFiltersMap = Record<string, string>;
@@ -119,6 +134,8 @@ export interface FilterParams {
   [FilterParamKey.PE_RATIO]?: string;
   [FilterParamKey.DIVIDEND_YIELD]?: string;
   [FilterParamKey.FORWARD_PE]?: string;
+  [FilterParamKey.REPORT_DATE_FROM]?: string;
+  [FilterParamKey.REPORT_DATE_TO]?: string;
 }
 
 /** ----- Constants (readonly) ----- */
@@ -252,6 +269,67 @@ export const NUMERIC_FILTER_DEFS: ReadonlyArray<NumericFilterDef> = [
   },
 ] as const;
 
+// Definition of a report-date bound (drives parsing, chips, and the modal's date inputs)
+export interface DateFilterDef {
+  type: DateFilterType;
+  paramKey: FilterParamKey;
+  /** Control label inside the modal. */
+  label: string;
+  /** Chip prefix, e.g. "Report updated on/after". */
+  chipPrefix: string;
+}
+
+/**
+ * The report date is `TickerV1.updatedAt`: every report save bumps it (see
+ * `bumpUpdatedAtAndInvalidateCache` / `saveFinalSummaryResponse`), which is the
+ * same anchor `getOldestStocksOverall` uses to find stale reports.
+ */
+export const DATE_FILTER_DEFS: ReadonlyArray<DateFilterDef> = [
+  {
+    type: FilterType.REPORT_DATE_FROM,
+    paramKey: FilterParamKey.REPORT_DATE_FROM,
+    label: 'From',
+    chipPrefix: 'Report updated on/after',
+  },
+  {
+    type: FilterType.REPORT_DATE_TO,
+    paramKey: FilterParamKey.REPORT_DATE_TO,
+    label: 'To',
+    chipPrefix: 'Report updated on/before',
+  },
+] as const;
+
+const ISO_DATE_PATTERN = /^\d{4}-\d{2}-\d{2}$/;
+
+/** Accept only a real `YYYY-MM-DD` calendar date (what `<input type="date">` emits). */
+export function parseIsoDateParam(raw: string | null | undefined): string | null {
+  if (!raw) return null;
+  const value = raw.trim();
+  if (!ISO_DATE_PATTERN.test(value)) return null;
+
+  const parsed = new Date(`${value}T00:00:00.000Z`);
+  if (Number.isNaN(parsed.getTime())) return null;
+  // A hand-edited URL can carry an out-of-range day, which `Date` silently rolls
+  // forward (2026-02-30 → 2026-03-02). Reject it rather than filter on a date
+  // that differs from the one in the URL.
+  return parsed.toISOString().startsWith(value) ? value : null;
+}
+
+/**
+ * Date bounds are resolved in UTC on both sides of the wire, so a filter matches
+ * the same stocks whether Prisma or the browser evaluates it. `From` covers the
+ * whole start day, `To` the whole end day.
+ */
+export function isoDateToStartOfDayUtc(raw: string | null | undefined): Date | null {
+  const value = parseIsoDateParam(raw);
+  return value ? new Date(`${value}T00:00:00.000Z`) : null;
+}
+
+export function isoDateToEndOfDayUtc(raw: string | null | undefined): Date | null {
+  const value = parseIsoDateParam(raw);
+  return value ? new Date(`${value}T23:59:59.999Z`) : null;
+}
+
 /** ----- Client-side Helpers ----- */
 
 /**
@@ -336,6 +414,19 @@ export function getAppliedFiltersFromGetter(getParam: FilterParamGetter): Applie
     if (raw != null && raw.trim().length > 0) {
       const f = parseNumericAppliedFilter(raw, def);
       if (f) filters.push(f);
+    }
+  }
+
+  // Report-date bounds
+  for (const def of DATE_FILTER_DEFS) {
+    const date: string | null = parseIsoDateParam(getParam(def.paramKey));
+    if (date) {
+      filters.push({
+        type: def.type,
+        paramKey: def.paramKey,
+        raw: date,
+        label: `${def.chipPrefix} ${date}`,
+      });
     }
   }
 
@@ -429,6 +520,9 @@ export function clearAllFilterParams(searchParams: ReadonlyURLSearchParams): URL
   for (const def of NUMERIC_FILTER_DEFS) {
     params.delete(def.paramKey);
   }
+  for (const def of DATE_FILTER_DEFS) {
+    params.delete(def.paramKey);
+  }
   return params;
 }
 
@@ -487,7 +581,8 @@ export const toSortedQueryString = (sp: SearchParams, country?: string): string 
 export const hasFiltersApplied = (sp?: SearchParams): boolean =>
   (sp && Object.keys(sp).some((k) => k.includes('Threshold'))) ||
   Boolean(toScalar(sp?.[FilterParamKey.SEARCH])) ||
-  NUMERIC_FILTER_DEFS.some((def) => Boolean(toScalar(sp?.[def.paramKey])));
+  NUMERIC_FILTER_DEFS.some((def) => Boolean(toScalar(sp?.[def.paramKey]))) ||
+  DATE_FILTER_DEFS.some((def) => Boolean(parseIsoDateParam(toScalar(sp?.[def.paramKey]))));
 
 /** ----- Client-side (in-browser) Filtering ----- */
 
@@ -506,6 +601,8 @@ export interface FilterableTicker {
   pe?: number | null;
   dividendYield?: number | null;
   forwardPe?: number | null;
+  /** When the stock's report was last generated (`TickerV1.updatedAt`). */
+  reportUpdatedAt?: Date | string | null;
 }
 
 /** Which {@link FilterableTicker} field each numeric filter reads. */
@@ -563,6 +660,20 @@ export function matchesSelectedFilters(ticker: FilterableTicker, selected: Selec
     if (!matchesNumericCriteria(value, criteria)) return false;
   }
 
+  // Report-date bounds
+  for (const def of DATE_FILTER_DEFS) {
+    const isFrom: boolean = def.type === FilterType.REPORT_DATE_FROM;
+    const bound: Date | null = isFrom ? isoDateToStartOfDayUtc(selected[def.paramKey]) : isoDateToEndOfDayUtc(selected[def.paramKey]);
+    if (!bound) continue;
+
+    // A stock with no report date can't satisfy a date bound, matching the
+    // server's `updatedAt` comparison against a non-null column.
+    if (ticker.reportUpdatedAt == null) return false;
+    const reportedAt: number = new Date(ticker.reportUpdatedAt).getTime();
+    if (Number.isNaN(reportedAt)) return false;
+    if (isFrom ? reportedAt < bound.getTime() : reportedAt > bound.getTime()) return false;
+  }
+
   return true;
 }
 
@@ -611,6 +722,8 @@ export function parseFilterParams(req: NextRequest): FilterParams {
     [FilterParamKey.PE_RATIO]: searchParams.get(FilterParamKey.PE_RATIO) || undefined,
     [FilterParamKey.DIVIDEND_YIELD]: searchParams.get(FilterParamKey.DIVIDEND_YIELD) || undefined,
     [FilterParamKey.FORWARD_PE]: searchParams.get(FilterParamKey.FORWARD_PE) || undefined,
+    [FilterParamKey.REPORT_DATE_FROM]: searchParams.get(FilterParamKey.REPORT_DATE_FROM) || undefined,
+    [FilterParamKey.REPORT_DATE_TO]: searchParams.get(FilterParamKey.REPORT_DATE_TO) || undefined,
   };
 }
 
@@ -680,7 +793,28 @@ export function createTickerFilter(
     tickerFilter.stockAnalyzerScrapperInfo = { is: forwardPeFilter };
   }
 
+  // Apply the report-date bounds
+  const reportDateFilter = createReportDateFilter(filters);
+  if (reportDateFilter) {
+    tickerFilter.updatedAt = reportDateFilter;
+  }
+
   return tickerFilter;
+}
+
+/**
+ * Build the `TickerV1.updatedAt` range for the report-date bounds. `updatedAt`
+ * is bumped by every report save, so it is the ticker's report date.
+ */
+export function createReportDateFilter(filters: FilterParams): Prisma.DateTimeFilter | null {
+  const from: Date | null = isoDateToStartOfDayUtc(filters[FilterParamKey.REPORT_DATE_FROM]);
+  const to: Date | null = isoDateToEndOfDayUtc(filters[FilterParamKey.REPORT_DATE_TO]);
+  if (!from && !to) return null;
+
+  const dateFilter: Prisma.DateTimeFilter = {};
+  if (from) dateFilter.gte = from;
+  if (to) dateFilter.lte = to;
+  return dateFilter;
 }
 
 /**
@@ -756,6 +890,7 @@ export function hasFiltersAppliedServer(
   const hasScoreFilters = Object.keys(cacheFilter).length > 0;
   const hasSearchFilter = !!filters[FilterParamKey.SEARCH]?.trim();
   const hasNumericFilter = NUMERIC_FILTER_DEFS.some((def) => !!filters[def.paramKey]?.trim());
+  const hasDateFilter = DATE_FILTER_DEFS.some((def) => !!parseIsoDateParam(filters[def.paramKey]));
 
-  return hasScoreFilters || hasSearchFilter || hasNumericFilter;
+  return hasScoreFilters || hasSearchFilter || hasNumericFilter || hasDateFilter;
 }
