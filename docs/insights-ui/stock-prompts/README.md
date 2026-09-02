@@ -15,6 +15,16 @@ To preview the rendered prompt for a given ticker, run `yarn stocks:prompt --sym
 
 Stock prompts are stored in `prompt_versions` under `prompts.key = US/public-equities-v1/<report-slug>`. The active version is loaded by `generatePromptForReportType()` in `src/utils/analysis-reports/prompt-generator-utils.ts`.
 
+## Schema authoring gotcha: no non-string `enum`
+
+The output schema file is handed to the model as its structured-output
+`response_schema`, not just to Ajv. Gemini's schema type only allows `enum` on
+`TYPE_STRING`, so a numeric enum (e.g. `enum: [5, 15, 30]` on a `type: number`
+field) fails the whole request with
+`Invalid value at 'generation_config.response_schema...enum[0]' (TYPE_STRING), 5`.
+Pin numeric values with the description plus `minItems`/`maxItems` (and the
+prompt text) instead — every `enum` in `insights-ui/schemas/**` is string-only.
+
 ## Related schemas
 
 The output JSON each prompt produces is validated against a schema in [`insights-ui/schemas/analysis-factors/<report-slug>/`](../../../insights-ui/schemas/analysis-factors/). Keep the prompt's "output schema" block in sync with the YAML file there — they describe the same shape.

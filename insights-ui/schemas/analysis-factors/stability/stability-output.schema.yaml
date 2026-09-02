@@ -36,9 +36,14 @@ properties:
       additionalProperties: false
       properties:
         marketDropPercent:
+          # NOTE: no `enum` here on purpose. This file is handed to Gemini as the
+          # structured-output `response_schema`, and Gemini only accepts `enum`
+          # on TYPE_STRING — a numeric enum fails the request with
+          # "Invalid value at ...enum[0] (TYPE_STRING), 5". The allowed values
+          # are pinned by the description, the array's minItems/maxItems, and
+          # the prompt instead.
           type: number
-          enum: [5, 15, 30]
-          description: 'The broad-market (S&P 500 style index) drawdown assumed for this scenario, as a positive percentage.'
+          description: 'The broad-market (S&P 500 style index) drawdown assumed for this scenario, as a positive percentage. Must be exactly 5 for the first entry, 15 for the second and 30 for the third — no other values.'
         expectedSectorDropPercent:
           type: number
           description: 'Expected drawdown of this company''s industry / sub-industry in this scenario, as a positive percentage. This is NOT required to equal the market drop — an industry already near a cyclical bottom or one with defensive demand typically gives up much less, while a richly-valued or highly cyclical one gives up much more. Use a negative value only if the industry is genuinely expected to rise.'
