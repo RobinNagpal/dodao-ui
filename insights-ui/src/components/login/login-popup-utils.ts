@@ -46,11 +46,3 @@ export function safeSetSession(key: string, value: string): void {
     // sessionStorage may be unavailable (Safari private mode, etc.)
   }
 }
-
-export function safeSetLocal(key: string, value: string): void {
-  try {
-    localStorage.setItem(key, value);
-  } catch {
-    // localStorage may be unavailable
-  }
-}

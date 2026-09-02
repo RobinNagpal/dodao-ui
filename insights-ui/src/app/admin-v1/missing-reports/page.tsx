@@ -398,8 +398,10 @@ export default function MissingReportsPage(): JSX.Element {
 
   const {
     generateAllReportsInBackground,
-    generateSpecificReportsInBackground,
-    openGenerationRequestsPage,
+    generateStepsInBackground,
+    reserveGenerationRequestsTab,
+    showGenerationRequestsTab,
+    discardGenerationRequestsTab,
     isGenerating: hookGenerating,
   } = useGenerateReports();
 
@@ -449,6 +451,7 @@ export default function MissingReportsPage(): JSX.Element {
   }
 
   async function handleGenerateAllConfirmed(): Promise<void> {
+    const tab = reserveGenerationRequestsTab(); // before any await: tied to the confirm click
     setShowGenerateAllConfirmation(false);
     setLocalGenerating(true);
     try {
@@ -458,7 +461,7 @@ export default function MissingReportsPage(): JSX.Element {
       }));
 
       // Check if any selected tickers have missing financial data
-      await handleFinancialDataValidationAndGenerate(selectedTickers, () => generateAllReportsInBackground(selectedTickers, llmSelection));
+      await handleFinancialDataValidationAndGenerate(tab, selectedTickers, () => generateAllReportsInBackground(selectedTickers, llmSelection));
     } catch (err) {
       console.error('Error generating all reports for selected tickers:', err);
     } finally {
@@ -466,7 +469,11 @@ export default function MissingReportsPage(): JSX.Element {
     }
   }
 
-  async function handleFinancialDataValidationAndGenerate(selectedTickers: TickerIdentifier[], generateFunction: () => Promise<void>): Promise<void> {
+  async function handleFinancialDataValidationAndGenerate(
+    tab: Window | null,
+    selectedTickers: TickerIdentifier[],
+    generateFunction: () => Promise<boolean>
+  ): Promise<void> {
     // Get tickers with missing financial data from selected ones
     const tickersWithMissingFinancialData = selectedTickerRows()
       .filter((ticker) => ticker.isMissingFinancialData)
@@ -481,9 +488,8 @@ export default function MissingReportsPage(): JSX.Element {
         });
 
         if (result) {
-          // Wait a moment for data to be processed, then refresh
+          // Give the fetch a moment to land before the reports that read it are queued.
           await new Promise((resolve) => setTimeout(resolve, 2000));
-          reFetchData();
         }
       } catch (err) {
         console.error('Error fetching financial data:', err);
@@ -491,18 +497,24 @@ export default function MissingReportsPage(): JSX.Element {
       }
     }
 
-    // Now proceed with report generation, then show the queue in a new tab so
-    // this screen's filters survive. The queued tickers now have a pending
-    // request, which this list excludes, so reload it and clear the selection.
-    await generateFunction();
-    openGenerationRequestsPage();
-    setSelectedRows(new Set());
+    // Queue the reports, then show the queue in the reserved tab so this
+    // screen's filters survive. Queued tickers now have a pending request,
+    // which this list excludes, so it is reloaded either way; the selection is
+    // only cleared once the requests were actually queued.
+    const queued = await generateFunction();
+    if (queued) {
+      showGenerationRequestsTab(tab);
+      setSelectedRows(new Set());
+    } else {
+      discardGenerationRequestsTab(tab);
+    }
     void reFetchData();
   }
 
   async function handleGenerateMissingForSelected(): Promise<void> {
     if (selectedRows.size === 0 || isGenerating) return;
 
+    const tab = reserveGenerationRequestsTab(); // before any await: tied to the click
     setLocalGenerating(true);
     try {
       const tickersWithReportTypes: { ticker: TickerIdentifier; reportTypes: ReportType[] }[] = [];
@@ -520,12 +532,13 @@ export default function MissingReportsPage(): JSX.Element {
       if (tickersWithReportTypes.length > 0) {
         const selectedTickers = tickersWithReportTypes.map((item) => item.ticker);
 
-        await handleFinancialDataValidationAndGenerate(selectedTickers, async () => {
-          // Generate individual requests for each ticker with their specific missing reports
-          for (const { ticker, reportTypes } of tickersWithReportTypes) {
-            await generateSpecificReportsInBackground([ticker], reportTypes, llmSelection);
-          }
-        });
+        // One batched request, each ticker enabling only its own missing reports.
+        await handleFinancialDataValidationAndGenerate(tab, selectedTickers, () =>
+          generateStepsInBackground(
+            tickersWithReportTypes.map(({ ticker, reportTypes }) => ({ ticker, steps: reportTypes })),
+            llmSelection
+          )
+        );
       }
     } catch (err) {
       console.error('Error generating missing reports for selected tickers:', err);
@@ -612,7 +625,7 @@ export default function MissingReportsPage(): JSX.Element {
             </div>
           )}
 
-          {loading && rows.length === 0 ? (
+          {!data ? (
             <div className="py-8">Loading missing reports...</div>
           ) : rows.length === 0 ? (
             <div className="py-4">No tickers match the selected filters.</div>

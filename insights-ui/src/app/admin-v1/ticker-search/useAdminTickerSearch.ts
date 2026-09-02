@@ -3,6 +3,7 @@
 import { AdminTickerSearchResponse } from '@/app/api/[spaceId]/tickers-v1/admin-search/route';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { type SelectedFiltersMap } from '@/utils/ticker-filter-utils';
+import { safeGetLocal, safeSetLocal } from '@/utils/local-storage-utils';
 import { buildTickerSearchQuery } from '@/utils/ticker-search-utils';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
@@ -23,27 +24,34 @@ interface UseAdminTickerSearchOptions {
   storageKey?: string;
 }
 
-/** The stored value must be a flat string map; anything else is treated as "nothing stored". */
+/**
+ * The stored value must be a non-empty flat string map; anything else — including
+ * the `{}` left by "Clear all" — counts as "nothing stored", so the screen falls
+ * back to its defaults rather than searching with no filters at all.
+ */
 function readStoredSelection(storageKey: string): SelectedFiltersMap | null {
+  const raw: string | null = safeGetLocal(storageKey);
+  if (!raw) return null;
+  let parsed: unknown;
   try {
-    const raw = window.localStorage.getItem(storageKey);
-    if (!raw) return null;
-    const parsed: unknown = JSON.parse(raw);
-    if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) return null;
-    const entries = Object.entries(parsed as Record<string, unknown>).filter((entry): entry is [string, string] => typeof entry[1] === 'string');
-    return Object.fromEntries(entries);
+    parsed = JSON.parse(raw);
   } catch {
     return null;
   }
+  if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) return null;
+  const entries: [string, string][] = Object.entries(parsed as Record<string, unknown>).filter(
+    (entry): entry is [string, string] => typeof entry[1] === 'string' && entry[1].length > 0
+  );
+  return entries.length > 0 ? Object.fromEntries(entries) : null;
 }
 
 function writeStoredSelection(storageKey: string, selected: SelectedFiltersMap): void {
-  try {
-    window.localStorage.setItem(storageKey, JSON.stringify(selected));
-  } catch {
-    // Storage can be unavailable (private mode, quota); the search still runs.
-  }
+  safeSetLocal(storageKey, JSON.stringify(selected));
 }
+
+// Stable defaults, so the URL memo below isn't invalidated by a fresh `{}` each render.
+const NO_SELECTION: SelectedFiltersMap = {};
+const NO_FIXED_PARAMS: Record<string, string> = {};
 
 export interface AdminTickerSearch {
   /** The selection the results correspond to. */
@@ -67,8 +75,8 @@ export interface AdminTickerSearch {
  */
 export function useAdminTickerSearch({
   pageSize,
-  initialSelected = {},
-  fixedParams = {},
+  initialSelected = NO_SELECTION,
+  fixedParams = NO_FIXED_PARAMS,
   searchOnMount = false,
   storageKey,
 }: UseAdminTickerSearchOptions): AdminTickerSearch {
@@ -82,7 +90,7 @@ export function useAdminTickerSearch({
   // Storage is read after mount: it doesn't exist on the server render.
   useEffect(() => {
     if (!storageKey) return;
-    const stored = readStoredSelection(storageKey);
+    const stored: SelectedFiltersMap | null = readStoredSelection(storageKey);
     if (stored) setApplied(stored);
     setHasSearched(stored !== null || searchOnMount);
     setRestored(true);

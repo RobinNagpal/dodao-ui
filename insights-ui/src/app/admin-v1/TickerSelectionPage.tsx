@@ -213,7 +213,9 @@ export default function TickerSelectionPage({ renderActionComponent, refreshButt
         </div>
       )}
 
-      {selectedTickers.length > 0 &&
+      {/* Stays mounted across batches so the provider/model and report-type
+          choices made in it carry over to the next selection. */}
+      {hasSearched &&
         renderActionComponent({
           selectedTickers,
           tickerData,
