@@ -37,9 +37,23 @@ export interface TickerV1GenerationRequestWithTicker extends TickerV1GenerationR
     symbol: string;
     exchange: string;
     name: string;
+    // Per-category + total scores, so the admin UI can apply the same score
+    // filters the public /stocks pages use — client-side, with no refetch.
     cachedScoreEntry: {
+      businessAndMoatScore: number;
+      financialStatementAnalysisScore: number;
+      pastPerformanceScore: number;
+      futureGrowthScore: number;
+      fairValueScore: number;
       finalScore: number;
     } | null;
+    financialInfo: {
+      marketCap: number | null;
+      pe: number | null;
+      dividendYield: number | null;
+    } | null;
+    /** Forward PE lifted out of the scraper summary JSON (it has no column of its own). */
+    forwardPe: number | null;
     industry: {
       name: string;
       industryKey: string;
@@ -72,7 +86,19 @@ export interface GenerationRequestsResponse {
   };
 }
 
+/** Upper bound on a single bucket's page size, so a hand-crafted `take` can't pull the whole table. */
+const MAX_TAKE = 1000;
+
+/** Forward PE only exists inside the scraper summary JSON — pull it out as a plain number. */
+function extractForwardPe(summary: unknown): number | null {
+  const value = (summary as { forwardPE?: unknown } | null | undefined)?.forwardPE;
+  return typeof value === 'number' && Number.isFinite(value) ? value : null;
+}
+
 async function getRequests(status: GenerationRequestStatus, skip: number = 0, take: number = 15): Promise<TickerV1GenerationRequestWithTicker[]> {
+  // A bucket the caller opted out of (take=0) costs nothing.
+  if (take <= 0) return [];
+
   const requests = await prisma.tickerV1GenerationRequest.findMany({
     where: {
       status: status,
@@ -90,7 +116,24 @@ async function getRequests(status: GenerationRequestStatus, skip: number = 0, ta
           name: true,
           cachedScoreEntry: {
             select: {
+              businessAndMoatScore: true,
+              financialStatementAnalysisScore: true,
+              pastPerformanceScore: true,
+              futureGrowthScore: true,
+              fairValueScore: true,
               finalScore: true,
+            },
+          },
+          financialInfo: {
+            select: {
+              marketCap: true,
+              pe: true,
+              dividendYield: true,
+            },
+          },
+          stockAnalyzerScrapperInfo: {
+            select: {
+              summary: true,
             },
           },
           industry: {
@@ -110,11 +153,19 @@ async function getRequests(status: GenerationRequestStatus, skip: number = 0, ta
     },
   });
 
-  // Add pending steps to each request
-  return requests.map((request) => ({
-    ...request,
-    pendingSteps: calculatePendingSteps(request),
-  }));
+  // Add pending steps to each request, and flatten the scraper summary down to
+  // the single number the filters need (the raw JSON is far too big to ship).
+  return requests.map(({ ticker, ...request }) => {
+    const { stockAnalyzerScrapperInfo, ...tickerFields } = ticker;
+    return {
+      ...request,
+      ticker: {
+        ...tickerFields,
+        forwardPe: extractForwardPe(stockAnalyzerScrapperInfo?.summary),
+      },
+      pendingSteps: calculatePendingSteps(request),
+    };
+  });
 }
 
 async function getHandler(
@@ -125,18 +176,28 @@ async function getHandler(
   // Parse pagination parameters from URL
   const url = new URL(req.url);
 
-  // Get pagination parameters for each status
-  const inProgressSkip = parseInt(url.searchParams.get('inProgressSkip') || '0', 10);
-  const inProgressTake = parseInt(url.searchParams.get('inProgressTake') || '15', 10);
+  // Get pagination parameters for each status. `take` is clamped to [0, MAX_TAKE];
+  // 0 means "skip this bucket entirely" (used by the client-side-filtered tabs).
+  const parseSkip = (key: string): number => {
+    const parsed = parseInt(url.searchParams.get(key) || '0', 10);
+    return Number.isNaN(parsed) ? 0 : Math.max(0, parsed);
+  };
+  const parseTake = (key: string): number => {
+    const parsed = parseInt(url.searchParams.get(key) || '15', 10);
+    return Number.isNaN(parsed) ? 15 : Math.min(MAX_TAKE, Math.max(0, parsed));
+  };
 
-  const failedSkip = parseInt(url.searchParams.get('failedSkip') || '0', 10);
-  const failedTake = parseInt(url.searchParams.get('failedTake') || '15', 10);
+  const inProgressSkip = parseSkip('inProgressSkip');
+  const inProgressTake = parseTake('inProgressTake');
 
-  const notStartedSkip = parseInt(url.searchParams.get('notStartedSkip') || '0', 10);
-  const notStartedTake = parseInt(url.searchParams.get('notStartedTake') || '15', 10);
+  const failedSkip = parseSkip('failedSkip');
+  const failedTake = parseTake('failedTake');
 
-  const completedSkip = parseInt(url.searchParams.get('completedSkip') || '0', 10);
-  const completedTake = parseInt(url.searchParams.get('completedTake') || '15', 10);
+  const notStartedSkip = parseSkip('notStartedSkip');
+  const notStartedTake = parseTake('notStartedTake');
+
+  const completedSkip = parseSkip('completedSkip');
+  const completedTake = parseTake('completedTake');
 
   // Get in progress requests
   const inProgressStatus = GenerationRequestStatus.InProgress;

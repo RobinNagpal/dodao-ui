@@ -6,6 +6,7 @@ import { ReadonlyURLSearchParams } from 'next/navigation';
 import {
   NUMERIC_FILTER_OP_SYMBOLS,
   formatCompactNumber,
+  matchesNumericCriteria,
   numericCriteriaToPrismaFilter,
   parseNumericFilterValue,
   type NumericFilterOp,
@@ -276,15 +277,20 @@ export function buildInitialSelected(filters: ReadonlyArray<AppliedFilter>): Sel
   return initial;
 }
 
+/** Reads one filter param by key. Backed either by the URL or by an in-memory selection map. */
+export type FilterParamGetter = (paramKey: string) => string | null;
+
 /**
- * Parse current filters from URL search params.
+ * Parse the applied filters out of an arbitrary param source. Shared by the
+ * URL-driven stock pages and by client-side (state-driven) filtering, so both
+ * produce identical chips and semantics.
  */
-export function getAppliedFilters(searchParams: ReadonlyURLSearchParams): AppliedFilter[] {
+export function getAppliedFiltersFromGetter(getParam: FilterParamGetter): AppliedFilter[] {
   const filters: AppliedFilter[] = [];
 
   // Category filters
   for (const category of CATEGORY_OPTIONS) {
-    const param = searchParams.get(category.paramKey);
+    const param = getParam(category.paramKey);
     if (param != null && param.trim().length > 0) {
       const n: number = Number.parseInt(param, 10);
       if (!Number.isNaN(n)) {
@@ -299,7 +305,7 @@ export function getAppliedFilters(searchParams: ReadonlyURLSearchParams): Applie
   }
 
   // Total score
-  const totalThresholdRaw: string | null = searchParams.get(FilterParamKey.TOTAL);
+  const totalThresholdRaw: string | null = getParam(FilterParamKey.TOTAL);
   if (totalThresholdRaw != null && totalThresholdRaw.trim().length > 0) {
     const n: number = Number.parseInt(totalThresholdRaw, 10);
     if (!Number.isNaN(n)) {
@@ -312,7 +318,7 @@ export function getAppliedFilters(searchParams: ReadonlyURLSearchParams): Applie
   }
 
   // Search
-  const searchQueryRaw: string | null = searchParams.get(FilterParamKey.SEARCH);
+  const searchQueryRaw: string | null = getParam(FilterParamKey.SEARCH);
   if (searchQueryRaw != null) {
     const q: string = searchQueryRaw.trim();
     if (q.length > 0) {
@@ -326,7 +332,7 @@ export function getAppliedFilters(searchParams: ReadonlyURLSearchParams): Applie
 
   // Numeric filters (market cap, PE, dividend yield, forward PE)
   for (const def of NUMERIC_FILTER_DEFS) {
-    const raw: string | null = searchParams.get(def.paramKey);
+    const raw: string | null = getParam(def.paramKey);
     if (raw != null && raw.trim().length > 0) {
       const f = parseNumericAppliedFilter(raw, def);
       if (f) filters.push(f);
@@ -334,6 +340,22 @@ export function getAppliedFilters(searchParams: ReadonlyURLSearchParams): Applie
   }
 
   return filters;
+}
+
+/**
+ * Parse current filters from URL search params.
+ */
+export function getAppliedFilters(searchParams: ReadonlyURLSearchParams): AppliedFilter[] {
+  return getAppliedFiltersFromGetter((paramKey: string): string | null => searchParams.get(paramKey));
+}
+
+/**
+ * Parse current filters out of an in-memory selection map — the client-side
+ * counterpart of {@link getAppliedFilters}, for screens that keep filter state
+ * in React state instead of the URL.
+ */
+export function getAppliedFiltersFromSelected(selected: SelectedFiltersMap): AppliedFilter[] {
+  return getAppliedFiltersFromGetter((paramKey: string): string | null => selected[paramKey] ?? null);
 }
 
 /**
@@ -466,6 +488,99 @@ export const hasFiltersApplied = (sp?: SearchParams): boolean =>
   (sp && Object.keys(sp).some((k) => k.includes('Threshold'))) ||
   Boolean(toScalar(sp?.[FilterParamKey.SEARCH])) ||
   NUMERIC_FILTER_DEFS.some((def) => Boolean(toScalar(sp?.[def.paramKey])));
+
+/** ----- Client-side (in-browser) Filtering ----- */
+
+/**
+ * The ticker fields the stock filters evaluate. Screens that filter an already
+ * fetched list in the browser (rather than re-querying the DB) map their rows
+ * onto this shape and hand it to {@link matchesSelectedFilters}.
+ */
+export interface FilterableTicker {
+  symbol: string;
+  name?: string | null;
+  /** Per-category AI scores, keyed the same way as {@link CATEGORY_OPTIONS}. */
+  categoryScores?: Partial<Record<TickerAnalysisCategory, number | null>> | null;
+  totalScore?: number | null;
+  marketCap?: number | null;
+  pe?: number | null;
+  dividendYield?: number | null;
+  forwardPe?: number | null;
+}
+
+/** Which {@link FilterableTicker} field each numeric filter reads. */
+const NUMERIC_FILTER_FIELDS: Record<string, (ticker: FilterableTicker) => number | null> = {
+  [FilterParamKey.MARKET_CAP]: (ticker) => ticker.marketCap ?? null,
+  [FilterParamKey.PE_RATIO]: (ticker) => ticker.pe ?? null,
+  [FilterParamKey.DIVIDEND_YIELD]: (ticker) => ticker.dividendYield ?? null,
+  [FilterParamKey.FORWARD_PE]: (ticker) => ticker.forwardPe ?? null,
+};
+
+/**
+ * Does this ticker satisfy every selected filter?
+ *
+ * Mirrors the server-side Prisma filters in `createTickerFilter` so a stock the
+ * `/stocks-filtered` pages would show is exactly the stock this returns true for:
+ * thresholds are inclusive (`>=`), a missing score/metric never matches, and the
+ * PE "Negative / No Earnings" bucket also matches an unknown PE.
+ */
+export function matchesSelectedFilters(ticker: FilterableTicker, selected: SelectedFiltersMap): boolean {
+  // Category score thresholds
+  for (const category of CATEGORY_OPTIONS) {
+    const threshold = toInt(selected[category.paramKey]);
+    if (threshold === undefined) continue;
+    const score = ticker.categoryScores?.[category.value];
+    if (score == null || score < threshold) return false;
+  }
+
+  // Total score threshold
+  const totalThreshold = toInt(selected[FilterParamKey.TOTAL]);
+  if (totalThreshold !== undefined) {
+    if (ticker.totalScore == null || ticker.totalScore < totalThreshold) return false;
+  }
+
+  // Free-text search over symbol and name
+  const searchQuery = selected[FilterParamKey.SEARCH]?.trim().toLowerCase();
+  if (searchQuery) {
+    const haystack = `${ticker.symbol} ${ticker.name ?? ''}`.toLowerCase();
+    if (!haystack.includes(searchQuery)) return false;
+  }
+
+  // Numeric metrics (market cap, PE, dividend yield, forward PE)
+  for (const def of NUMERIC_FILTER_DEFS) {
+    const raw = selected[def.paramKey]?.trim();
+    if (!raw) continue;
+    const value = NUMERIC_FILTER_FIELDS[def.paramKey](ticker);
+
+    // PE keeps its special bucket that also matches a missing PE — same as the server.
+    if (def.paramKey === FilterParamKey.PE_RATIO && raw === 'negative') {
+      if (value !== null && value >= 0) return false;
+      continue;
+    }
+
+    const criteria = parseNumericFilterValue(raw);
+    if (!criteria) continue;
+    if (!matchesNumericCriteria(value, criteria)) return false;
+  }
+
+  return true;
+}
+
+/** Return a new selection map with one applied filter removed. */
+export function removeFilterFromSelected(selected: SelectedFiltersMap, filterToRemove: AppliedFilter): SelectedFiltersMap {
+  const paramKey: FilterParamKey | undefined =
+    filterToRemove.type === FilterType.CATEGORY
+      ? CATEGORY_OPTIONS.find((opt) => opt.value === filterToRemove.categoryKey)?.paramKey
+      : filterToRemove.type === FilterType.TOTAL
+      ? FilterParamKey.TOTAL
+      : filterToRemove.type === FilterType.SEARCH
+      ? FilterParamKey.SEARCH
+      : filterToRemove.paramKey;
+
+  if (!paramKey) return selected;
+  const { [paramKey]: _removed, ...rest } = selected;
+  return rest;
+}
 
 /** ----- Server-side Helpers ----- */
 
