@@ -23,6 +23,14 @@ interface RequestsSectionProps {
   pageSize: number;
   onPageChange: (page: number) => void;
   onReloadRequest: (request: GenerationRequestWithFlags) => void;
+  /** Optional controls (e.g. filters) rendered between the header and the table. */
+  toolbar?: React.ReactNode;
+  /** Optional line under the header explaining what the count covers. */
+  note?: string;
+  /** Overrides the default "No <title>." empty state. */
+  emptyMessage?: string;
+  /** Optional controls rendered after the pager (e.g. "Load more"). */
+  footer?: React.ReactNode;
 }
 
 /** One status bucket: bordered card + count header + table / loading / empty state + page-number pager. */
@@ -36,6 +44,10 @@ export default function RequestsSection({
   pageSize,
   onPageChange,
   onReloadRequest,
+  toolbar,
+  note,
+  emptyMessage,
+  footer,
 }: RequestsSectionProps): JSX.Element {
   return (
     <div className={`bg-surface border ${BORDER_CLASS[tone]} rounded-lg p-3`}>
@@ -46,16 +58,22 @@ export default function RequestsSection({
         </span>
       </div>
 
+      {note && <p className="text-xs text-muted mb-3">{note}</p>}
+
+      {toolbar && <div className="mb-3">{toolbar}</div>}
+
       {loading && rows.length === 0 ? (
         <div className="py-6">Loading generation requests...</div>
       ) : rows.length === 0 ? (
-        <div className="py-3 text-muted">No {title.toLowerCase()}.</div>
+        <div className="py-3 text-muted">{emptyMessage ?? `No ${title.toLowerCase()}.`}</div>
       ) : (
         <>
           <GenerationRequestsTable rows={rows} onReloadRequest={onReloadRequest} />
           <SectionPagination currentPage={currentPage} totalCount={totalCount} rowsOnPage={rows.length} pageSize={pageSize} onPageChange={onPageChange} />
         </>
       )}
+
+      {footer && <div className="mt-3 flex justify-center">{footer}</div>}
     </div>
   );
 }
