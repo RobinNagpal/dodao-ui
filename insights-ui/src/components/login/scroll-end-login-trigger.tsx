@@ -1,7 +1,8 @@
 'use client';
 
 import { LoginPopup } from '@/components/login/login-popup';
-import { isInCooldown, isLikelyBot, safeGetSession, safeSetLocal, safeSetSession } from '@/components/login/login-popup-utils';
+import { isInCooldown, isLikelyBot, safeGetSession, safeSetSession } from '@/components/login/login-popup-utils';
+import { safeSetLocal } from '@/utils/local-storage-utils';
 import { useSession } from 'next-auth/react';
 import { useEffect, useRef, useState } from 'react';
 

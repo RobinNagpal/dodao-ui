@@ -22,7 +22,6 @@ import { usePutData } from '@dodao/web-core/ui/hooks/fetch/usePutData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { ArrowPathIcon, PencilIcon, CheckIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import { getMissingReportTypes } from '@/utils/analysis-reports/report-steps-statuses';
 import { TickerWithMissingReportInfoExtended } from '@/utils/missing-reports-utils';
@@ -311,16 +310,16 @@ function MissingReportsTable({ rows, selectedRows, onSelectRow, onUrlUpdate }: M
 }
 
 export default function MissingReportsPage(): JSX.Element {
-  const router = useRouter();
   const [localGenerating, setLocalGenerating] = useState<boolean>(false);
   const [selectedRows, setSelectedRows] = useState<Set<string>>(new Set());
   const [showGenerateAllConfirmation, setShowGenerateAllConfirmation] = useState<boolean>(false);
 
-  const { applied, search, hasSearched, page, setPage, data, loading, reFetchData } = useAdminTickerSearch({
+  const { applied, search, hasSearched, restored, page, setPage, data, loading, reFetchData } = useAdminTickerSearch({
     pageSize: PAGE_SIZE,
     initialSelected: { [TickerSearchParamKey.MISSING_REPORT_TYPES]: ALL_MISSING_REPORT_TYPES },
     fixedParams: FIXED_SEARCH_PARAMS,
     searchOnMount: true,
+    storageKey: 'admin-v1:missing-reports:filters',
   });
 
   const rows: TickerWithMissingReportInfoExtended[] = data?.tickers ?? [];
@@ -397,7 +396,14 @@ export default function MissingReportsPage(): JSX.Element {
     extraChips.push({ paramKey: TickerSearchParamKey.FAIR_VALUE_BEFORE, label: `Fair Value older than ${applied[TickerSearchParamKey.FAIR_VALUE_BEFORE]}` });
   }
 
-  const { generateAllReportsInBackground, generateSpecificReportsInBackground, isGenerating: hookGenerating } = useGenerateReports();
+  const {
+    generateAllReportsInBackground,
+    generateStepsInBackground,
+    reserveGenerationRequestsTab,
+    showGenerationRequestsTab,
+    discardGenerationRequestsTab,
+    isGenerating: hookGenerating,
+  } = useGenerateReports();
 
   // LLM provider/model to use for the background generation requests created here.
   const [llmSelection, setLlmSelection] = useState<LlmProviderModelSelection>(getDefaultLlmProviderModelSelection());
@@ -445,6 +451,7 @@ export default function MissingReportsPage(): JSX.Element {
   }
 
   async function handleGenerateAllConfirmed(): Promise<void> {
+    const tab = reserveGenerationRequestsTab(); // before any await: tied to the confirm click
     setShowGenerateAllConfirmation(false);
     setLocalGenerating(true);
     try {
@@ -454,7 +461,7 @@ export default function MissingReportsPage(): JSX.Element {
       }));
 
       // Check if any selected tickers have missing financial data
-      await handleFinancialDataValidationAndGenerate(selectedTickers, () => generateAllReportsInBackground(selectedTickers, llmSelection));
+      await handleFinancialDataValidationAndGenerate(tab, selectedTickers, () => generateAllReportsInBackground(selectedTickers, llmSelection));
     } catch (err) {
       console.error('Error generating all reports for selected tickers:', err);
     } finally {
@@ -462,7 +469,11 @@ export default function MissingReportsPage(): JSX.Element {
     }
   }
 
-  async function handleFinancialDataValidationAndGenerate(selectedTickers: TickerIdentifier[], generateFunction: () => Promise<void>): Promise<void> {
+  async function handleFinancialDataValidationAndGenerate(
+    tab: Window | null,
+    selectedTickers: TickerIdentifier[],
+    generateFunction: () => Promise<boolean>
+  ): Promise<void> {
     // Get tickers with missing financial data from selected ones
     const tickersWithMissingFinancialData = selectedTickerRows()
       .filter((ticker) => ticker.isMissingFinancialData)
@@ -477,9 +488,8 @@ export default function MissingReportsPage(): JSX.Element {
         });
 
         if (result) {
-          // Wait a moment for data to be processed, then refresh
+          // Give the fetch a moment to land before the reports that read it are queued.
           await new Promise((resolve) => setTimeout(resolve, 2000));
-          reFetchData();
         }
       } catch (err) {
         console.error('Error fetching financial data:', err);
@@ -487,14 +497,24 @@ export default function MissingReportsPage(): JSX.Element {
       }
     }
 
-    // Now proceed with report generation
-    await generateFunction();
-    router.push('/admin-v1/generation-requests');
+    // Queue the reports, then show the queue in the reserved tab so this
+    // screen's filters survive. Queued tickers now have a pending request,
+    // which this list excludes, so it is reloaded either way; the selection is
+    // only cleared once the requests were actually queued.
+    const queued = await generateFunction();
+    if (queued) {
+      showGenerationRequestsTab(tab);
+      setSelectedRows(new Set());
+    } else {
+      discardGenerationRequestsTab(tab);
+    }
+    void reFetchData();
   }
 
   async function handleGenerateMissingForSelected(): Promise<void> {
     if (selectedRows.size === 0 || isGenerating) return;
 
+    const tab = reserveGenerationRequestsTab(); // before any await: tied to the click
     setLocalGenerating(true);
     try {
       const tickersWithReportTypes: { ticker: TickerIdentifier; reportTypes: ReportType[] }[] = [];
@@ -512,12 +532,13 @@ export default function MissingReportsPage(): JSX.Element {
       if (tickersWithReportTypes.length > 0) {
         const selectedTickers = tickersWithReportTypes.map((item) => item.ticker);
 
-        await handleFinancialDataValidationAndGenerate(selectedTickers, async () => {
-          // Generate individual requests for each ticker with their specific missing reports
-          for (const { ticker, reportTypes } of tickersWithReportTypes) {
-            await generateSpecificReportsInBackground([ticker], reportTypes, llmSelection);
-          }
-        });
+        // One batched request, each ticker enabling only its own missing reports.
+        await handleFinancialDataValidationAndGenerate(tab, selectedTickers, () =>
+          generateStepsInBackground(
+            tickersWithReportTypes.map(({ ticker, reportTypes }) => ({ ticker, steps: reportTypes })),
+            llmSelection
+          )
+        );
       }
     } catch (err) {
       console.error('Error generating missing reports for selected tickers:', err);
@@ -539,16 +560,18 @@ export default function MissingReportsPage(): JSX.Element {
         </div>
       </div>
 
-      <div className="mb-4">
-        <AdminTickerSearchFilters
-          applied={applied}
-          hasSearched={hasSearched}
-          onSearch={handleSearch}
-          topSection={topSection}
-          extraChips={extraChips}
-          resultSummary={data ? `${totalCount} ticker${totalCount === 1 ? '' : 's'} found` : undefined}
-        />
-      </div>
+      {restored && (
+        <div className="mb-4">
+          <AdminTickerSearchFilters
+            applied={applied}
+            hasSearched={hasSearched}
+            onSearch={handleSearch}
+            topSection={topSection}
+            extraChips={extraChips}
+            resultSummary={data ? `${totalCount} ticker${totalCount === 1 ? '' : 's'} found` : undefined}
+          />
+        </div>
+      )}
 
       <div className="mb-6">
         <div className="bg-surface border border-red-500 rounded-lg p-4">
@@ -602,7 +625,7 @@ export default function MissingReportsPage(): JSX.Element {
             </div>
           )}
 
-          {loading && rows.length === 0 ? (
+          {!data ? (
             <div className="py-8">Loading missing reports...</div>
           ) : rows.length === 0 ? (
             <div className="py-4">No tickers match the selected filters.</div>
