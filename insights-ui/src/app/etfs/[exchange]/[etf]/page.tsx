@@ -1,7 +1,9 @@
 import type { EtfFullRenderResponse } from '@/app/api/[spaceId]/etfs-v1/exchange/[exchange]/[etf]/full-render/route';
 import type { EtfChartDataResponse } from '@/app/api/[spaceId]/etfs-v1/exchange/[exchange]/[etf]/chart-data/route';
 import { EtfFastResponse } from '@/app/api/[spaceId]/etfs-v1/exchange/[exchange]/[etf]/route';
+import { CreditReportKind } from '@prisma/client';
 import EtfActions from '@/app/etfs/[exchange]/[etf]/EtfActions';
+import ReportGenerationControl from '@/components/credits/ReportGenerationControl';
 import EtfFavouriteButton from '@/app/etfs/[exchange]/[etf]/EtfFavouriteButton';
 import MobileEtfActionsMenu from '@/app/etfs/[exchange]/[etf]/MobileEtfActionsMenu';
 import { getEtfFundCategoryHierarchy } from '@/utils/etf-categorization-utils';
@@ -298,7 +300,10 @@ export default async function EtfDetailsPage({ params }: { params: RouteParams }
   };
 
   const publishedDate = safeDate(etfData.createdAt);
-  const modifiedDate = safeDate(etfData.updatedAt || etfData.createdAt);
+  // The report generation date wins over the row's `updatedAt`, so the footer
+  // states the same single date the freshness bar shows — an unrelated column
+  // edit must not read as "the report was refreshed".
+  const modifiedDate = safeDate(etfData.lastReportGeneratedAt || etfData.updatedAt || etfData.createdAt);
 
   const formattedModifiedDate = modifiedDate.toLocaleDateString('en-US', {
     year: 'numeric',
@@ -376,6 +381,15 @@ export default async function EtfDetailsPage({ params }: { params: RouteParams }
             issuer={etfData.stockAnalyzerInfo?.issuer}
             indexName={etfData.stockAnalyzerInfo?.indexName}
             className="mb-4"
+          />
+
+          {/* One freshness date for the whole report, next to the action that
+              refreshes it. `etfData` arrives as JSON, so the date is normalized here. */}
+          <ReportGenerationControl
+            kind={CreditReportKind.Etf}
+            symbol={etfData.symbol}
+            exchange={etfData.exchange}
+            lastReportGeneratedAt={etfData.lastReportGeneratedAt ? new Date(etfData.lastReportGeneratedAt).toISOString() : null}
           />
 
           {etfData.summary && etfData.summary.trim() && (

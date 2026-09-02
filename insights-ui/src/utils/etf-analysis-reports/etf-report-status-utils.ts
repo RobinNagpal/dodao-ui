@@ -1,4 +1,5 @@
 import { prisma } from '@/prisma';
+import { settleReportCredit } from '@/utils/credits/credit-service';
 import { EtfGenerationRequestStatus, EtfReportType } from '@/types/etf/etf-analysis-types';
 import { Etf, EtfGenerationRequest } from '@prisma/client';
 
@@ -39,13 +40,27 @@ export async function markEtfRequestAsCompleted(generationRequest: EtfGeneration
   }
 
   const hasFailed = generationRequest.failedSteps.length > 0;
+  const completedAt = new Date();
 
   await prisma.etfGenerationRequest.update({
     where: { id: generationRequest.id },
     data: {
       status: hasFailed ? EtfGenerationRequestStatus.Failed : EtfGenerationRequestStatus.Completed,
-      completedAt: new Date(),
-      updatedAt: new Date(),
+      completedAt,
+      updatedAt: completedAt,
     },
   });
+
+  // Mirrors the stock path: any completed step rewrote part of the report, so
+  // the single "Report generated on ..." date moves even for a partial run.
+  if (generationRequest.completedSteps.length > 0) {
+    await prisma.etf.update({
+      where: { id: generationRequest.etfId },
+      data: { lastReportGeneratedAt: completedAt },
+    });
+  }
+
+  // Keeps the credit on success, refunds it when the request ends in Failed.
+  // No-op for admin/cron requests, which never held a credit.
+  await settleReportCredit(generationRequest.id, !hasFailed);
 }

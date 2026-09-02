@@ -4,6 +4,8 @@ import { PriceHistoryResponse } from '@/app/api/[spaceId]/tickers-v1/exchange/[e
 import { QuarterlyChartDataResponse } from '@/app/api/[spaceId]/tickers-v1/exchange/[exchange]/[ticker]/quarterly-chart-data/route';
 import { TickerIdentifier } from '@/app/api/[spaceId]/tickers-v1/generation-requests/route';
 import SpiderChartFlyoutMenu from '@/components/ticker/SpiderChartFlyoutMenu';
+import ReportGenerationControl from '@/components/credits/ReportGenerationControl';
+import { CreditReportKind } from '@prisma/client';
 import StockActions from '@/app/stocks/[exchange]/[ticker]/StockActions';
 import CompetitionAnalysisButton from '@/app/stocks/[exchange]/[ticker]/CompetitionAnalysisButton';
 import TickerComparisonButton from '@/app/stocks/[exchange]/[ticker]/TickerComparisonButton';
@@ -449,6 +451,15 @@ function TickerSummaryInfo({ data }: { data: Promise<TickerV1FastResponse> }): J
         </div>
       </div>
 
+      {/* One freshness date for the whole report, next to the action that
+          refreshes it. `d` arrives as JSON, so the date is normalized here. */}
+      <ReportGenerationControl
+        kind={CreditReportKind.Stock}
+        symbol={d.symbol}
+        exchange={d.exchange}
+        lastReportGeneratedAt={d.lastReportGeneratedAt ? new Date(d.lastReportGeneratedAt).toISOString() : null}
+      />
+
       {/* Company Summary */}
       <div className="mb-2" itemProp="description">
         <div className="markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(d.summary ?? 'Not yet populated') }} />
@@ -837,9 +848,12 @@ export default async function TickerDetailsPage({ params }: { params: RouteParam
   const priceHistoryPromise = retryWithCanonical(fetchPriceHistory);
   const competitionPromise = retryWithCanonical(fetchCompetitionData);
 
-  // Derive dates for semantic footer (based solely on tickerData)
+  // Derive dates for semantic footer (based solely on tickerData). The report
+  // generation date wins over the row's `updatedAt` so the footer states the
+  // same single date the freshness bar and the regenerate modal show — an
+  // unrelated column edit must not read as "the report was refreshed".
   const createdAtRaw = tickerData.createdAt || new Date();
-  const updatedAtRaw = tickerData.updatedAt || tickerData.createdAt || new Date();
+  const updatedAtRaw = tickerData.lastReportGeneratedAt || tickerData.updatedAt || tickerData.createdAt || new Date();
   const publishedDate = new Date(createdAtRaw);
   const modifiedDate = new Date(updatedAtRaw);
   const formattedModifiedDate = modifiedDate.toLocaleDateString('en-US', {
