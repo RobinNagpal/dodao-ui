@@ -1,4 +1,11 @@
 import { Prisma, TickerAnalysisCategory } from '@prisma/client';
+import {
+  MANAGEMENT_TEAM_ALIGNMENT_VERDICT_LABELS,
+  ManagementTeamAlignmentVerdict,
+  STABILITY_RESILIENCE_VERDICT_DESCRIPTIONS,
+  STABILITY_RESILIENCE_VERDICT_LABELS,
+  StabilityResilienceVerdict,
+} from '@/types/ticker-typesv1';
 import { NextRequest } from 'next/server';
 import { ReadonlyURLSearchParams } from 'next/navigation';
 // Generic numeric-filter primitives (operator encoding, K/M/B/T parsing, Prisma
@@ -25,6 +32,8 @@ export enum FilterType {
   FORWARD_PE = 'forwardPe',
   REPORT_DATE_FROM = 'reportDateFrom',
   REPORT_DATE_TO = 'reportDateTo',
+  MANAGEMENT_ALIGNMENT = 'managementAlignment',
+  STABILITY_RESILIENCE = 'stabilityResilience',
 }
 
 // Enum for parameter keys to ensure consistency
@@ -42,6 +51,8 @@ export enum FilterParamKey {
   FORWARD_PE = 'forwardPe',
   REPORT_DATE_FROM = 'reportDateFrom',
   REPORT_DATE_TO = 'reportDateTo',
+  MANAGEMENT_ALIGNMENT = 'managementAlignment',
+  STABILITY_RESILIENCE = 'stabilityResilience',
 }
 
 // Type for search parameters
@@ -115,8 +126,27 @@ export interface AppliedDateFilter extends AppliedFilterBase {
   raw: string;
 }
 
+// Filter types backed by a report verdict the user picks from a fixed list.
+export type MultiSelectFilterType = FilterType.MANAGEMENT_ALIGNMENT | FilterType.STABILITY_RESILIENCE;
+
+// Interface for multi-select verdict filters (a stock matches any selected value)
+export interface AppliedMultiSelectFilter extends AppliedFilterBase {
+  type: MultiSelectFilterType;
+  paramKey: FilterParamKey;
+  // The comma-separated URL value, normalized to the recognized options only,
+  // so the modal control re-hydrates to exactly what is being filtered on.
+  raw: string;
+  values: string[];
+}
+
 // Union type for all filter types
-export type AppliedFilter = AppliedCategoryFilter | AppliedTotalFilter | AppliedSearchFilter | AppliedNumericFilter | AppliedDateFilter;
+export type AppliedFilter =
+  | AppliedCategoryFilter
+  | AppliedTotalFilter
+  | AppliedSearchFilter
+  | AppliedNumericFilter
+  | AppliedDateFilter
+  | AppliedMultiSelectFilter;
 
 // Type for selected filters map
 export type SelectedFiltersMap = Record<string, string>;
@@ -136,6 +166,8 @@ export interface FilterParams {
   [FilterParamKey.FORWARD_PE]?: string;
   [FilterParamKey.REPORT_DATE_FROM]?: string;
   [FilterParamKey.REPORT_DATE_TO]?: string;
+  [FilterParamKey.MANAGEMENT_ALIGNMENT]?: string;
+  [FilterParamKey.STABILITY_RESILIENCE]?: string;
 }
 
 /** ----- Constants (readonly) ----- */
@@ -330,6 +362,66 @@ export function isoDateToEndOfDayUtc(raw: string | null | undefined): Date | nul
   return value ? new Date(`${value}T23:59:59.999Z`) : null;
 }
 
+// One option in a multi-select verdict filter.
+export interface MultiSelectFilterOption {
+  value: string;
+  label: string;
+  /** Optional one-liner shown under the label in the dropdown. */
+  description?: string;
+}
+
+// Definition of a verdict filter (drives parsing, chips, and the modal dropdown)
+export interface MultiSelectFilterDef {
+  type: MultiSelectFilterType;
+  paramKey: FilterParamKey;
+  label: string;
+  options: ReadonlyArray<MultiSelectFilterOption>;
+}
+
+/**
+ * The two report verdicts a stock can be filtered by. Each is a fixed enum on
+ * its report row (`TickerV1ManagementTeamReport.alignmentVerdict` /
+ * `TickerV1StabilityReport.resilienceVerdict`), and selecting several values
+ * matches a stock carrying ANY of them.
+ */
+export const MULTI_SELECT_FILTER_DEFS: ReadonlyArray<MultiSelectFilterDef> = [
+  {
+    type: FilterType.MANAGEMENT_ALIGNMENT,
+    paramKey: FilterParamKey.MANAGEMENT_ALIGNMENT,
+    label: 'Management Team Experience & Alignment',
+    options: Object.values(ManagementTeamAlignmentVerdict).map((verdict) => ({
+      value: verdict,
+      label: MANAGEMENT_TEAM_ALIGNMENT_VERDICT_LABELS[verdict],
+    })),
+  },
+  {
+    type: FilterType.STABILITY_RESILIENCE,
+    paramKey: FilterParamKey.STABILITY_RESILIENCE,
+    label: 'Stability & Market Drawdown',
+    options: Object.values(StabilityResilienceVerdict).map((verdict) => ({
+      value: verdict,
+      label: STABILITY_RESILIENCE_VERDICT_LABELS[verdict],
+      description: STABILITY_RESILIENCE_VERDICT_DESCRIPTIONS[verdict],
+    })),
+  },
+] as const;
+
+/**
+ * Split a comma-separated verdict param into the recognized options only,
+ * de-duplicated and kept in the definition's order. An unknown value (a stale
+ * bookmark, a hand-edited URL) is dropped rather than filtering on nothing.
+ */
+export function parseMultiSelectParam(raw: string | null | undefined, def: MultiSelectFilterDef): string[] {
+  if (!raw) return [];
+  const requested = new Set(
+    raw
+      .split(',')
+      .map((v) => v.trim())
+      .filter((v) => v.length > 0)
+  );
+  return def.options.filter((option) => requested.has(option.value)).map((option) => option.value);
+}
+
 /** ----- Client-side Helpers ----- */
 
 /**
@@ -414,6 +506,21 @@ export function getAppliedFiltersFromGetter(getParam: FilterParamGetter): Applie
     if (raw != null && raw.trim().length > 0) {
       const f = parseNumericAppliedFilter(raw, def);
       if (f) filters.push(f);
+    }
+  }
+
+  // Report verdicts (management alignment, stability resilience)
+  for (const def of MULTI_SELECT_FILTER_DEFS) {
+    const values: string[] = parseMultiSelectParam(getParam(def.paramKey), def);
+    if (values.length > 0) {
+      const labels: string = values.map((v) => def.options.find((o) => o.value === v)?.label ?? v).join(', ');
+      filters.push({
+        type: def.type,
+        paramKey: def.paramKey,
+        raw: values.join(','),
+        values,
+        label: `${def.label}: ${labels}`,
+      });
     }
   }
 
@@ -523,6 +630,9 @@ export function clearAllFilterParams(searchParams: ReadonlyURLSearchParams): URL
   for (const def of DATE_FILTER_DEFS) {
     params.delete(def.paramKey);
   }
+  for (const def of MULTI_SELECT_FILTER_DEFS) {
+    params.delete(def.paramKey);
+  }
   return params;
 }
 
@@ -582,7 +692,8 @@ export const hasFiltersApplied = (sp?: SearchParams): boolean =>
   (sp && Object.keys(sp).some((k) => k.includes('Threshold'))) ||
   Boolean(toScalar(sp?.[FilterParamKey.SEARCH])) ||
   NUMERIC_FILTER_DEFS.some((def) => Boolean(toScalar(sp?.[def.paramKey]))) ||
-  DATE_FILTER_DEFS.some((def) => Boolean(parseIsoDateParam(toScalar(sp?.[def.paramKey]))));
+  DATE_FILTER_DEFS.some((def) => Boolean(parseIsoDateParam(toScalar(sp?.[def.paramKey])))) ||
+  MULTI_SELECT_FILTER_DEFS.some((def) => parseMultiSelectParam(toScalar(sp?.[def.paramKey]), def).length > 0);
 
 /** ----- Client-side (in-browser) Filtering ----- */
 
@@ -603,7 +714,17 @@ export interface FilterableTicker {
   forwardPe?: number | null;
   /** When the stock's report was last generated (`TickerV1.updatedAt`). */
   reportUpdatedAt?: Date | string | null;
+  /** `TickerV1ManagementTeamReport.alignmentVerdict`, when the report exists. */
+  managementAlignment?: string | null;
+  /** `TickerV1StabilityReport.resilienceVerdict`, when the report exists. */
+  stabilityResilience?: string | null;
 }
+
+/** Which {@link FilterableTicker} field each verdict filter reads. */
+const MULTI_SELECT_FILTER_FIELDS: Record<string, (ticker: FilterableTicker) => string | null> = {
+  [FilterParamKey.MANAGEMENT_ALIGNMENT]: (ticker) => ticker.managementAlignment ?? null,
+  [FilterParamKey.STABILITY_RESILIENCE]: (ticker) => ticker.stabilityResilience ?? null,
+};
 
 /** Which {@link FilterableTicker} field each numeric filter reads. */
 const NUMERIC_FILTER_FIELDS: Record<string, (ticker: FilterableTicker) => number | null> = {
@@ -658,6 +779,16 @@ export function matchesSelectedFilters(ticker: FilterableTicker, selected: Selec
     const criteria = parseNumericFilterValue(raw);
     if (!criteria) continue;
     if (!matchesNumericCriteria(value, criteria)) return false;
+  }
+
+  // Report verdicts — a stock matches when its verdict is any of the selected ones.
+  for (const def of MULTI_SELECT_FILTER_DEFS) {
+    const values: string[] = parseMultiSelectParam(selected[def.paramKey], def);
+    if (values.length === 0) continue;
+    const verdict: string | null = MULTI_SELECT_FILTER_FIELDS[def.paramKey](ticker);
+    // No report means no verdict, so it can't be one of the selected ones —
+    // matching the server's `some: { ... }` on the report relation.
+    if (verdict === null || !values.includes(verdict)) return false;
   }
 
   // Report-date bounds
@@ -724,6 +855,8 @@ export function parseFilterParams(req: NextRequest): FilterParams {
     [FilterParamKey.FORWARD_PE]: searchParams.get(FilterParamKey.FORWARD_PE) || undefined,
     [FilterParamKey.REPORT_DATE_FROM]: searchParams.get(FilterParamKey.REPORT_DATE_FROM) || undefined,
     [FilterParamKey.REPORT_DATE_TO]: searchParams.get(FilterParamKey.REPORT_DATE_TO) || undefined,
+    [FilterParamKey.MANAGEMENT_ALIGNMENT]: searchParams.get(FilterParamKey.MANAGEMENT_ALIGNMENT) || undefined,
+    [FilterParamKey.STABILITY_RESILIENCE]: searchParams.get(FilterParamKey.STABILITY_RESILIENCE) || undefined,
   };
 }
 
@@ -799,7 +932,25 @@ export function createTickerFilter(
     tickerFilter.updatedAt = reportDateFilter;
   }
 
+  // Apply the report-verdict filters
+  const managementVerdicts = getSelectedVerdicts(filters, FilterParamKey.MANAGEMENT_ALIGNMENT);
+  if (managementVerdicts.length > 0) {
+    tickerFilter.managementTeamReports = { some: { alignmentVerdict: { in: managementVerdicts as ManagementTeamAlignmentVerdict[] } } };
+  }
+
+  const stabilityVerdicts = getSelectedVerdicts(filters, FilterParamKey.STABILITY_RESILIENCE);
+  if (stabilityVerdicts.length > 0) {
+    tickerFilter.stabilityReports = { some: { resilienceVerdict: { in: stabilityVerdicts as StabilityResilienceVerdict[] } } };
+  }
+
   return tickerFilter;
+}
+
+/** The recognized verdict values selected for one multi-select filter. */
+export function getSelectedVerdicts(filters: FilterParams, paramKey: FilterParamKey): string[] {
+  const def = MULTI_SELECT_FILTER_DEFS.find((d) => d.paramKey === paramKey);
+  if (!def) return [];
+  return parseMultiSelectParam(filters[paramKey], def);
 }
 
 /**
@@ -891,6 +1042,7 @@ export function hasFiltersAppliedServer(
   const hasSearchFilter = !!filters[FilterParamKey.SEARCH]?.trim();
   const hasNumericFilter = NUMERIC_FILTER_DEFS.some((def) => !!filters[def.paramKey]?.trim());
   const hasDateFilter = DATE_FILTER_DEFS.some((def) => !!parseIsoDateParam(filters[def.paramKey]));
+  const hasVerdictFilter = MULTI_SELECT_FILTER_DEFS.some((def) => parseMultiSelectParam(filters[def.paramKey], def).length > 0);
 
-  return hasScoreFilters || hasSearchFilter || hasNumericFilter || hasDateFilter;
+  return hasScoreFilters || hasSearchFilter || hasNumericFilter || hasDateFilter || hasVerdictFilter;
 }

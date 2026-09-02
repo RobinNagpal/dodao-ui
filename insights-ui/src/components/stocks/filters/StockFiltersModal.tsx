@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
 import NumericFilterControl from '@/components/etfs/NumericFilterControl';
 import DateFilterControl from '@/components/ui/DateFilterControl';
+import MultiSelectFilterControl from '@/components/ui/MultiSelectFilterControl';
 
 import {
   CATEGORY_OPTIONS,
@@ -11,6 +12,8 @@ import {
   TOTAL_SCORE_OPTIONS,
   NUMERIC_FILTER_DEFS,
   DATE_FILTER_DEFS,
+  MULTI_SELECT_FILTER_DEFS,
+  parseMultiSelectParam,
   FilterParamKey,
   FilterType,
   type SelectedFiltersMap,
@@ -87,6 +90,10 @@ function StockFiltersModalContent({ initialSelected, onApply, onClose }: StockFi
         [paramKey]: value,
       };
     });
+  };
+
+  const handleMultiSelectChange = (paramKey: FilterParamKey, values: string[]): void => {
+    handleValueChange(paramKey, values.join(','));
   };
 
   const handleClearAll = (): void => {
@@ -185,6 +192,24 @@ function StockFiltersModalContent({ initialSelected, onApply, onClose }: StockFi
               />
             );
           })}
+        </div>
+      </div>
+
+      {/* Report Verdicts Section */}
+      <div>
+        <h3 className="text-body text-sm mb-1">Report Verdicts</h3>
+        <p className="text-muted text-xs mb-3">Match stocks carrying any of the selected verdicts</p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+          {MULTI_SELECT_FILTER_DEFS.map((def) => (
+            <MultiSelectFilterControl
+              key={def.paramKey}
+              id={def.paramKey}
+              label={def.label}
+              options={def.options}
+              value={parseMultiSelectParam(selectedFilters[def.paramKey], def)}
+              onChange={(values) => handleMultiSelectChange(def.paramKey, values)}
+            />
+          ))}
         </div>
       </div>
 

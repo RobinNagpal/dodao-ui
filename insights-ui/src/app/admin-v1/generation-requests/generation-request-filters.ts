@@ -24,6 +24,8 @@ export function toFilterableTicker(request: TickerV1GenerationRequestWithTicker)
     dividendYield: ticker.financialInfo?.dividendYield ?? null,
     forwardPe: ticker.forwardPe,
     reportUpdatedAt: ticker.reportUpdatedAt,
+    managementAlignment: ticker.managementAlignment,
+    stabilityResilience: ticker.stabilityResilience,
   };
 }
 

@@ -7,7 +7,7 @@ import { GenerationRequestStatus, ReportType } from '@/types/ticker-typesv1';
 import { upsertGenerationRequest } from '@/utils/analysis-reports/generation-request-utils';
 import { calculatePendingSteps } from '@/utils/analysis-reports/report-steps-statuses';
 import { AllExchanges } from '@/utils/countryExchangeUtils';
-import { TickerV1GenerationRequest } from '@prisma/client';
+import { ManagementTeamAlignmentVerdict, StabilityResilienceVerdict, TickerV1GenerationRequest } from '@prisma/client';
 import { NextRequest } from 'next/server';
 
 export interface TickerIdentifier {
@@ -56,6 +56,10 @@ export interface TickerV1GenerationRequestWithTicker extends TickerV1GenerationR
     forwardPe: number | null;
     /** The ticker's report date — `TickerV1.updatedAt`, bumped by every report save. */
     reportUpdatedAt: Date;
+    /** Verdict from the management-team report, or null when it hasn't been generated. */
+    managementAlignment: ManagementTeamAlignmentVerdict | null;
+    /** Verdict from the stability report, or null when it hasn't been generated. */
+    stabilityResilience: StabilityResilienceVerdict | null;
     industry: {
       name: string;
       industryKey: string;
@@ -139,6 +143,15 @@ async function getRequests(status: GenerationRequestStatus, skip: number = 0, ta
               summary: true,
             },
           },
+          // Both are unique per (space, ticker), so at most one row comes back.
+          managementTeamReports: {
+            select: { alignmentVerdict: true },
+            take: 1,
+          },
+          stabilityReports: {
+            select: { resilienceVerdict: true },
+            take: 1,
+          },
           industry: {
             select: {
               name: true,
@@ -159,13 +172,15 @@ async function getRequests(status: GenerationRequestStatus, skip: number = 0, ta
   // Add pending steps to each request, and flatten the scraper summary down to
   // the single number the filters need (the raw JSON is far too big to ship).
   return requests.map(({ ticker, ...request }) => {
-    const { stockAnalyzerScrapperInfo, updatedAt: reportUpdatedAt, ...tickerFields } = ticker;
+    const { stockAnalyzerScrapperInfo, managementTeamReports, stabilityReports, updatedAt: reportUpdatedAt, ...tickerFields } = ticker;
     return {
       ...request,
       ticker: {
         ...tickerFields,
         forwardPe: extractForwardPe(stockAnalyzerScrapperInfo?.summary),
         reportUpdatedAt,
+        managementAlignment: managementTeamReports[0]?.alignmentVerdict ?? null,
+        stabilityResilience: stabilityReports[0]?.resilienceVerdict ?? null,
       },
       pendingSteps: calculatePendingSteps(request),
     };
