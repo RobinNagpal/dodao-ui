@@ -708,9 +708,8 @@ export interface FilterableTicker {
   /** Per-category AI scores, keyed the same way as {@link CATEGORY_OPTIONS}. */
   categoryScores?: Partial<Record<TickerAnalysisCategory, number | null>> | null;
   totalScore?: number | null;
-  marketCap?: number | null;
-  pe?: number | null;
-  dividendYield?: number | null;
+  /** The `TickerV1FinancialInfo` row, or null/undefined when the ticker has none. */
+  financialInfo?: { marketCap?: number | null; pe?: number | null; dividendYield?: number | null } | null;
   forwardPe?: number | null;
   /** When the stock's report was last generated (`TickerV1.updatedAt`). */
   reportUpdatedAt?: Date | string | null;
@@ -728,9 +727,9 @@ const MULTI_SELECT_FILTER_FIELDS: Record<string, (ticker: FilterableTicker) => s
 
 /** Which {@link FilterableTicker} field each numeric filter reads. */
 const NUMERIC_FILTER_FIELDS: Record<string, (ticker: FilterableTicker) => number | null> = {
-  [FilterParamKey.MARKET_CAP]: (ticker) => ticker.marketCap ?? null,
-  [FilterParamKey.PE_RATIO]: (ticker) => ticker.pe ?? null,
-  [FilterParamKey.DIVIDEND_YIELD]: (ticker) => ticker.dividendYield ?? null,
+  [FilterParamKey.MARKET_CAP]: (ticker) => ticker.financialInfo?.marketCap ?? null,
+  [FilterParamKey.PE_RATIO]: (ticker) => ticker.financialInfo?.pe ?? null,
+  [FilterParamKey.DIVIDEND_YIELD]: (ticker) => ticker.financialInfo?.dividendYield ?? null,
   [FilterParamKey.FORWARD_PE]: (ticker) => ticker.forwardPe ?? null,
 };
 
@@ -740,7 +739,9 @@ const NUMERIC_FILTER_FIELDS: Record<string, (ticker: FilterableTicker) => number
  * Mirrors the server-side Prisma filters in `createTickerFilter` so a stock the
  * `/stocks-filtered` pages would show is exactly the stock this returns true for:
  * thresholds are inclusive (`>=`), a missing score/metric never matches, and the
- * PE "Negative / No Earnings" bucket also matches an unknown PE.
+ * PE "Negative / No Earnings" bucket also matches a null PE — but only on a
+ * ticker that has a financial-info row at all, as the server's
+ * `financialInfo: { is: ... }` never matches an absent relation.
  */
 export function matchesSelectedFilters(ticker: FilterableTicker, selected: SelectedFiltersMap): boolean {
   // Category score thresholds
@@ -770,9 +771,10 @@ export function matchesSelectedFilters(ticker: FilterableTicker, selected: Selec
     if (!raw) continue;
     const value = NUMERIC_FILTER_FIELDS[def.paramKey](ticker);
 
-    // PE keeps its special bucket that also matches a missing PE — same as the server.
+    // PE keeps its special bucket that also matches a null PE, but a ticker with
+    // no financial-info row can't satisfy any financial filter — same as the server.
     if (def.paramKey === FilterParamKey.PE_RATIO && raw === 'negative') {
-      if (value !== null && value >= 0) return false;
+      if (!ticker.financialInfo || (value !== null && value >= 0)) return false;
       continue;
     }
 

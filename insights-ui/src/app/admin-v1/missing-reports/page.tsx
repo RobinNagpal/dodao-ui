@@ -1,29 +1,48 @@
 'use client';
 
 import { TickerIdentifier } from '@/app/api/[spaceId]/tickers-v1/generation-requests/route';
+import SectionPagination from '@/app/admin-v1/generation-requests/SectionPagination';
+import AdminTickerSearchFilters from '@/app/admin-v1/ticker-search/AdminTickerSearchFilters';
+import AdminTickerSearchTopFilters from '@/app/admin-v1/ticker-search/AdminTickerSearchTopFilters';
+import { useAdminTickerSearch } from '@/app/admin-v1/ticker-search/useAdminTickerSearch';
 import LlmProviderModelSelector, { getDefaultLlmProviderModelSelection, LlmProviderModelSelection } from '@/components/llm/LlmProviderModelSelector';
+import { type ExtraFilterChip } from '@/components/stocks/filters/ClientStockFilters';
+import { type StockFiltersTopSection } from '@/components/stocks/filters/StockFiltersModal';
+import DateFilterControl from '@/components/ui/DateFilterControl';
 import PassFailBadge from '@/components/ui/PassFailBadge';
 import { useGenerateReports } from '@/hooks/useGenerateReports';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { ReportType } from '@/types/ticker-typesv1';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import Checkbox from '@dodao/web-core/components/app/Form/Checkbox';
+import Checkboxes from '@dodao/web-core/components/core/checkboxes/Checkboxes';
 import ConfirmationModal from '@dodao/web-core/components/app/Modal/ConfirmationModal';
-import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import { usePutData } from '@dodao/web-core/ui/hooks/fetch/usePutData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { ArrowPathIcon, PencilIcon, CheckIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { getMissingReportTypes } from '@/utils/analysis-reports/report-steps-statuses';
 import { TickerWithMissingReportInfoExtended } from '@/utils/missing-reports-utils';
 import { validateStockAnalyzeUrl } from '@/utils/stockAnalyzeUrlValidation';
 import { AllExchanges } from '@/utils/countryExchangeUtils';
+import { type SelectedFiltersMap } from '@/utils/ticker-filter-utils';
+import { MISSING_REPORT_FILTER_OPTIONS, parseMissingReportTypesParam, TickerSearchParamKey } from '@/utils/ticker-search-utils';
 import { TickerV1 } from '@prisma/client';
 import { UpdateStockAnalyzeUrlRequest } from '@/app/api/[spaceId]/tickers-v1/exchange/[exchange]/[ticker]/route';
 import { FetchFinancialDataRequest, FetchFinancialDataResponse } from '@/app/api/[spaceId]/tickers-v1/fetch-financial-data/route';
+
+const PAGE_SIZE: number = 50;
+
+/** Every report type checked, which is what the page showed before it had filters. */
+const ALL_MISSING_REPORT_TYPES: string = MISSING_REPORT_FILTER_OPTIONS.map((option) => option.value).join(',');
+
+const missingReportCheckboxItems = MISSING_REPORT_FILTER_OPTIONS.map((option) => ({ id: option.value, name: option.value, label: option.label }));
+
+/** Only tickers with no open generation request: those are already being handled. */
+const FIXED_SEARCH_PARAMS: Record<string, string> = { [TickerSearchParamKey.EXCLUDE_PENDING]: 'true' };
 
 interface EditableUrlCellProps {
   ticker: TickerWithMissingReportInfoExtended;
@@ -178,6 +197,8 @@ function MissingReportsTable({ rows, selectedRows, onSelectRow, onUrlUpdate }: M
             <th className="px-3 py-3 text-xs font-medium text-muted uppercase tracking-wider">Past Performance</th>
             <th className="px-3 py-3 text-xs font-medium text-muted uppercase tracking-wider">Future Growth</th>
             <th className="px-3 py-3 text-xs font-medium text-muted uppercase tracking-wider">Fair Value</th>
+            <th className="px-3 py-3 text-xs font-medium text-muted uppercase tracking-wider">Management Team</th>
+            <th className="px-3 py-3 text-xs font-medium text-muted uppercase tracking-wider">Stability</th>
             <th className="px-3 py-3 text-xs font-medium text-muted uppercase tracking-wider">Final Summary</th>
             <th className="px-3 py-3 text-xs font-medium text-muted uppercase tracking-wider">About Report</th>
             <th className="px-3 py-3 text-xs font-medium text-muted uppercase tracking-wider">Competition</th>
@@ -263,6 +284,12 @@ function MissingReportsTable({ rows, selectedRows, onSelectRow, onUrlUpdate }: M
                   />
                 </td>
                 <td className="px-3 py-4 whitespace-nowrap text-sm text-center">
+                  <PassFailBadge passed={!ticker.isMissingManagementTeamReport} size="xs" passLabel="Yes" failLabel="No" />
+                </td>
+                <td className="px-3 py-4 whitespace-nowrap text-sm text-center">
+                  <PassFailBadge passed={!ticker.isMissingStabilityReport} size="xs" passLabel="Yes" failLabel="No" />
+                </td>
+                <td className="px-3 py-4 whitespace-nowrap text-sm text-center">
                   <PassFailBadge passed={!ticker.isMissingFinalSummaryReport} size="xs" passLabel="Yes" failLabel="No" />
                 </td>
                 <td className="px-3 py-4 whitespace-nowrap text-sm text-center">
@@ -283,28 +310,92 @@ function MissingReportsTable({ rows, selectedRows, onSelectRow, onUrlUpdate }: M
   );
 }
 
-function buildMissingReportsUrl(businessAndMoatBefore: string, fairValueBefore: string): string {
-  const base = `${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/missing-reports`;
-  const params = new URLSearchParams();
-  if (businessAndMoatBefore) params.set('businessAndMoatBefore', businessAndMoatBefore);
-  if (fairValueBefore) params.set('fairValueBefore', fairValueBefore);
-  const qs = params.toString();
-  return qs ? `${base}?${qs}` : base;
-}
-
 export default function MissingReportsPage(): JSX.Element {
   const router = useRouter();
   const [localGenerating, setLocalGenerating] = useState<boolean>(false);
   const [selectedRows, setSelectedRows] = useState<Set<string>>(new Set());
   const [showGenerateAllConfirmation, setShowGenerateAllConfirmation] = useState<boolean>(false);
-  const [businessAndMoatBefore, setBusinessAndMoatBefore] = useState<string>('');
-  const [fairValueBefore, setFairValueBefore] = useState<string>('');
-  const [appliedBusinessAndMoatBefore, setAppliedBusinessAndMoatBefore] = useState<string>('');
-  const [appliedFairValueBefore, setAppliedFairValueBefore] = useState<string>('');
 
-  const apiUrl: string = buildMissingReportsUrl(appliedBusinessAndMoatBefore, appliedFairValueBefore);
+  const { applied, search, hasSearched, page, setPage, data, loading, reFetchData } = useAdminTickerSearch({
+    pageSize: PAGE_SIZE,
+    initialSelected: { [TickerSearchParamKey.MISSING_REPORT_TYPES]: ALL_MISSING_REPORT_TYPES },
+    fixedParams: FIXED_SEARCH_PARAMS,
+    searchOnMount: true,
+  });
 
-  const { data, loading, reFetchData } = useFetchData<TickerWithMissingReportInfoExtended[]>(apiUrl, {}, 'Failed to fetch missing reports');
+  const rows: TickerWithMissingReportInfoExtended[] = data?.tickers ?? [];
+  const totalCount: number = data?.totalCount ?? 0;
+
+  // Every ticker seen so far, so a row selected on an earlier page can still be
+  // generated after paging away from it.
+  const [seenTickers, setSeenTickers] = useState<Record<string, TickerWithMissingReportInfoExtended>>({});
+  useEffect(() => {
+    if (!data) return;
+    setSeenTickers((prev) => {
+      const next = { ...prev };
+      for (const ticker of data.tickers) next[ticker.id] = ticker;
+      return next;
+    });
+  }, [data]);
+
+  const selectedTickerRows = (): TickerWithMissingReportInfoExtended[] => Object.values(seenTickers).filter((ticker) => selectedRows.has(ticker.id));
+
+  function handleSearch(next: SelectedFiltersMap): void {
+    search(next);
+    setSelectedRows(new Set());
+  }
+
+  const topSection: StockFiltersTopSection = (draft, setValue) => (
+    <AdminTickerSearchTopFilters draft={draft} setValue={setValue}>
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+        <Checkboxes
+          label={<span className="text-sm font-semibold">Missing any of these reports</span>}
+          items={missingReportCheckboxItems}
+          selectedItemIds={parseMissingReportTypesParam(draft[TickerSearchParamKey.MISSING_REPORT_TYPES])}
+          onChange={(ids) => setValue(TickerSearchParamKey.MISSING_REPORT_TYPES, ids.join(','))}
+        />
+        <div>
+          <p className="text-sm font-semibold mb-1">Stale reports</p>
+          <p className="text-xs text-muted mb-3">Only tickers whose report was last updated before the date (or never generated)</p>
+          <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+            <DateFilterControl
+              id={TickerSearchParamKey.BUSINESS_AND_MOAT_BEFORE}
+              label="Business & Moat updated before"
+              value={draft[TickerSearchParamKey.BUSINESS_AND_MOAT_BEFORE] ?? ''}
+              onChange={(v) => setValue(TickerSearchParamKey.BUSINESS_AND_MOAT_BEFORE, v)}
+            />
+            <DateFilterControl
+              id={TickerSearchParamKey.FAIR_VALUE_BEFORE}
+              label="Fair Value updated before"
+              value={draft[TickerSearchParamKey.FAIR_VALUE_BEFORE] ?? ''}
+              onChange={(v) => setValue(TickerSearchParamKey.FAIR_VALUE_BEFORE, v)}
+            />
+          </div>
+        </div>
+      </div>
+    </AdminTickerSearchTopFilters>
+  );
+
+  const extraChips: ExtraFilterChip[] = [];
+  if (applied[TickerSearchParamKey.EXCHANGE])
+    extraChips.push({ paramKey: TickerSearchParamKey.EXCHANGE, label: `Exchange: ${applied[TickerSearchParamKey.EXCHANGE]}` });
+  const missingTypes = parseMissingReportTypesParam(applied[TickerSearchParamKey.MISSING_REPORT_TYPES]);
+  if (missingTypes.length > 0) {
+    const label =
+      missingTypes.length === MISSING_REPORT_FILTER_OPTIONS.length
+        ? 'Missing: any report'
+        : `Missing: ${missingTypes.map((t) => MISSING_REPORT_FILTER_OPTIONS.find((o) => o.value === t)?.label ?? t).join(', ')}`;
+    extraChips.push({ paramKey: TickerSearchParamKey.MISSING_REPORT_TYPES, label });
+  }
+  if (applied[TickerSearchParamKey.BUSINESS_AND_MOAT_BEFORE]) {
+    extraChips.push({
+      paramKey: TickerSearchParamKey.BUSINESS_AND_MOAT_BEFORE,
+      label: `Business & Moat older than ${applied[TickerSearchParamKey.BUSINESS_AND_MOAT_BEFORE]}`,
+    });
+  }
+  if (applied[TickerSearchParamKey.FAIR_VALUE_BEFORE]) {
+    extraChips.push({ paramKey: TickerSearchParamKey.FAIR_VALUE_BEFORE, label: `Fair Value older than ${applied[TickerSearchParamKey.FAIR_VALUE_BEFORE]}` });
+  }
 
   const { generateAllReportsInBackground, generateSpecificReportsInBackground, isGenerating: hookGenerating } = useGenerateReports();
 
@@ -334,18 +425,9 @@ export default function MissingReportsPage(): JSX.Element {
     });
   }
 
-  function handleSelectAll(): void {
-    if (!data || data.length === 0) return;
-
-    const allIds = data.map((ticker) => ticker.id);
-    setSelectedRows(new Set(allIds));
-  }
-
-  function handleSelectFirst50(): void {
-    if (!data || data.length === 0) return;
-
-    const first50Ids = data.slice(0, 50).map((ticker) => ticker.id);
-    setSelectedRows(new Set(first50Ids));
+  function handleSelectAllOnPage(): void {
+    if (rows.length === 0) return;
+    setSelectedRows((prev) => new Set([...prev, ...rows.map((ticker) => ticker.id)]));
   }
 
   function handleClearSelection(): void {
@@ -366,9 +448,10 @@ export default function MissingReportsPage(): JSX.Element {
     setShowGenerateAllConfirmation(false);
     setLocalGenerating(true);
     try {
-      const selectedTickers: TickerIdentifier[] = (data || [])
-        .filter((ticker) => selectedRows.has(ticker.id))
-        .map((ticker) => ({ symbol: ticker.symbol, exchange: ticker.exchange as TickerIdentifier['exchange'] }));
+      const selectedTickers: TickerIdentifier[] = selectedTickerRows().map((ticker) => ({
+        symbol: ticker.symbol,
+        exchange: ticker.exchange as TickerIdentifier['exchange'],
+      }));
 
       // Check if any selected tickers have missing financial data
       await handleFinancialDataValidationAndGenerate(selectedTickers, () => generateAllReportsInBackground(selectedTickers, llmSelection));
@@ -381,8 +464,8 @@ export default function MissingReportsPage(): JSX.Element {
 
   async function handleFinancialDataValidationAndGenerate(selectedTickers: TickerIdentifier[], generateFunction: () => Promise<void>): Promise<void> {
     // Get tickers with missing financial data from selected ones
-    const tickersWithMissingFinancialData = (data || [])
-      .filter((ticker) => selectedRows.has(ticker.id) && ticker.isMissingFinancialData)
+    const tickersWithMissingFinancialData = selectedTickerRows()
+      .filter((ticker) => ticker.isMissingFinancialData)
       .map((ticker) => ticker.id);
 
     // If any tickers have missing financial data, fetch it first
@@ -416,15 +499,13 @@ export default function MissingReportsPage(): JSX.Element {
     try {
       const tickersWithReportTypes: { ticker: TickerIdentifier; reportTypes: ReportType[] }[] = [];
 
-      for (const t of data || []) {
-        if (selectedRows.has(t.id)) {
-          const missingReportTypes: ReportType[] = getMissingReportTypes(t);
-          if (missingReportTypes.length > 0) {
-            tickersWithReportTypes.push({
-              ticker: { symbol: t.symbol, exchange: t.exchange as TickerIdentifier['exchange'] },
-              reportTypes: missingReportTypes,
-            });
-          }
+      for (const t of selectedTickerRows()) {
+        const missingReportTypes: ReportType[] = getMissingReportTypes(t);
+        if (missingReportTypes.length > 0) {
+          tickersWithReportTypes.push({
+            ticker: { symbol: t.symbol, exchange: t.exchange as TickerIdentifier['exchange'] },
+            reportTypes: missingReportTypes,
+          });
         }
       }
 
@@ -458,101 +539,31 @@ export default function MissingReportsPage(): JSX.Element {
         </div>
       </div>
 
-      {/* Date filters */}
-      <div className="mb-4 bg-surface border border-border rounded-lg p-4">
-        <h3 className="text-lg font-semibold mb-3">Filter by Report Updated Date</h3>
-        <p className="text-sm text-muted mb-4">
-          When a date is selected, only tickers whose report was last updated before that date (or never generated) are shown. Leave both empty to see all
-          missing reports.
-        </p>
-        <div className="flex flex-wrap gap-6">
-          <div className="flex flex-col gap-1">
-            <label htmlFor="bm-date" className="text-sm font-medium text-muted">
-              Business & Moat — Updated Before
-            </label>
-            <input
-              id="bm-date"
-              type="date"
-              value={businessAndMoatBefore}
-              onChange={(e) => setBusinessAndMoatBefore(e.target.value)}
-              className="px-3 py-2 bg-surface-2 text-body border border-border rounded focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
-            />
-          </div>
-          <div className="flex flex-col gap-1">
-            <label htmlFor="fv-date" className="text-sm font-medium text-muted">
-              Fair Value — Updated Before
-            </label>
-            <input
-              id="fv-date"
-              type="date"
-              value={fairValueBefore}
-              onChange={(e) => setFairValueBefore(e.target.value)}
-              className="px-3 py-2 bg-surface-2 text-body border border-border rounded focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
-            />
-          </div>
-          <div className="flex items-end gap-2">
-            <Button
-              onClick={() => {
-                setAppliedBusinessAndMoatBefore(businessAndMoatBefore);
-                setAppliedFairValueBefore(fairValueBefore);
-                setSelectedRows(new Set());
-              }}
-              variant="contained"
-              className="text-sm"
-              disabled={!businessAndMoatBefore && !fairValueBefore}
-            >
-              Apply
-            </Button>
-            {(appliedBusinessAndMoatBefore || appliedFairValueBefore) && (
-              <Button
-                onClick={() => {
-                  setBusinessAndMoatBefore('');
-                  setFairValueBefore('');
-                  setAppliedBusinessAndMoatBefore('');
-                  setAppliedFairValueBefore('');
-                  setSelectedRows(new Set());
-                }}
-                variant="outlined"
-                className="text-sm"
-              >
-                Clear Filters
-              </Button>
-            )}
-          </div>
-        </div>
+      <div className="mb-4">
+        <AdminTickerSearchFilters
+          applied={applied}
+          hasSearched={hasSearched}
+          onSearch={handleSearch}
+          topSection={topSection}
+          extraChips={extraChips}
+          resultSummary={data ? `${totalCount} ticker${totalCount === 1 ? '' : 's'} found` : undefined}
+        />
       </div>
 
       <div className="mb-6">
         <div className="bg-surface border border-red-500 rounded-lg p-4">
           <div className="flex items-baseline justify-between mb-2">
-            <h3 className="text-xl font-semibold">
-              {appliedBusinessAndMoatBefore || appliedFairValueBefore
-                ? 'Tickers with Stale Reports (Date Filtered)'
-                : 'Tickers with Missing Reports or Financial Data'}
-            </h3>
-            <div className="flex items-center gap-4">
-              {(appliedBusinessAndMoatBefore || appliedFairValueBefore) && (
-                <span className="text-xs text-yellow-400 font-medium">
-                  {[
-                    appliedBusinessAndMoatBefore && `B&M before ${appliedBusinessAndMoatBefore}`,
-                    appliedFairValueBefore && `Fair Value before ${appliedFairValueBefore}`,
-                  ]
-                    .filter(Boolean)
-                    .join(' | ')}
-                </span>
-              )}
-              <span className="text-sm text-muted">Showing {data?.length || 0} tickers</span>
-            </div>
+            <h3 className="text-xl font-semibold">Tickers</h3>
+            <span className="text-sm text-muted">
+              {totalCount} total item{totalCount === 1 ? '' : 's'}
+            </span>
           </div>
 
           {/* Selection controls */}
-          {data && data.length > 0 && (
+          {rows.length > 0 && (
             <div className="flex flex-wrap gap-3 mb-4">
-              <Button onClick={handleSelectAll} variant="outlined" className="text-sm" disabled={isGenerating}>
-                Select All
-              </Button>
-              <Button onClick={handleSelectFirst50} variant="outlined" className="text-sm" disabled={isGenerating}>
-                Select First 50
+              <Button onClick={handleSelectAllOnPage} variant="outlined" className="text-sm" disabled={isGenerating}>
+                Select All on Page ({rows.length})
               </Button>
               <Button onClick={handleClearSelection} variant="outlined" className="text-sm" disabled={isGenerating || selectedRows.size === 0}>
                 Clear Selection
@@ -562,7 +573,7 @@ export default function MissingReportsPage(): JSX.Element {
           )}
 
           {/* LLM provider/model selector */}
-          {data && data.length > 0 && (
+          {rows.length > 0 && (
             <div className="mb-4 max-w-2xl">
               <h4 className="text-sm font-medium text-muted mb-1">LLM Provider &amp; Model</h4>
               <LlmProviderModelSelector selection={llmSelection} onChange={setLlmSelection} />
@@ -591,12 +602,15 @@ export default function MissingReportsPage(): JSX.Element {
             </div>
           )}
 
-          {loading && (!data || data.length === 0) ? (
+          {loading && rows.length === 0 ? (
             <div className="py-8">Loading missing reports...</div>
-          ) : !data || data.length === 0 ? (
-            <div className="py-4">No tickers with missing reports found.</div>
+          ) : rows.length === 0 ? (
+            <div className="py-4">No tickers match the selected filters.</div>
           ) : (
-            <MissingReportsTable rows={data} selectedRows={selectedRows} onSelectRow={handleSelectRow} onUrlUpdate={handleUrlUpdate} />
+            <>
+              <MissingReportsTable rows={rows} selectedRows={selectedRows} onSelectRow={handleSelectRow} onUrlUpdate={handleUrlUpdate} />
+              <SectionPagination currentPage={page} totalCount={totalCount} rowsOnPage={rows.length} pageSize={PAGE_SIZE} onPageChange={setPage} />
+            </>
           )}
         </div>
       </div>

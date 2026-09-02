@@ -19,9 +19,7 @@ export function toFilterableTicker(request: TickerV1GenerationRequestWithTicker)
         }
       : null,
     totalScore: scores?.finalScore ?? null,
-    marketCap: ticker.financialInfo?.marketCap ?? null,
-    pe: ticker.financialInfo?.pe ?? null,
-    dividendYield: ticker.financialInfo?.dividendYield ?? null,
+    financialInfo: ticker.financialInfo,
     forwardPe: ticker.forwardPe,
     reportUpdatedAt: ticker.reportUpdatedAt,
     managementAlignment: ticker.managementAlignment,

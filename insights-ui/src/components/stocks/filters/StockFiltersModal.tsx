@@ -19,13 +19,19 @@ import {
   type SelectedFiltersMap,
 } from '@/utils/ticker-filter-utils';
 
+/** Screen-specific controls rendered above the shared sections; they edit the same draft selection. */
+export type StockFiltersTopSection = (draft: SelectedFiltersMap, setValue: (paramKey: string, value: string) => void) => React.ReactNode;
+
 interface StockFiltersModalProps {
   open: boolean;
   /** Filters to pre-select when the modal opens. */
   initialSelected: SelectedFiltersMap;
-  /** Called with the full selection when "Apply Filters" is pressed. */
+  /** Called with the full selection when the apply button is pressed. */
   onApply: (selected: SelectedFiltersMap) => void;
   onClose: () => void;
+  topSection?: StockFiltersTopSection;
+  /** Label of the apply button; defaults to "Apply Filters". */
+  applyLabel?: string;
 }
 
 /**
@@ -35,7 +41,7 @@ interface StockFiltersModalProps {
  * stock pages push it into query params, while client-side screens (e.g. the
  * admin generation-requests page) keep it in React state.
  */
-export default function StockFiltersModal({ open, initialSelected, onApply, onClose }: StockFiltersModalProps): JSX.Element | null {
+export default function StockFiltersModal({ open, initialSelected, onApply, onClose, topSection, applyLabel }: StockFiltersModalProps): JSX.Element | null {
   if (!open) return null;
 
   // Remount the content whenever the incoming selection changes so every control
@@ -45,19 +51,35 @@ export default function StockFiltersModal({ open, initialSelected, onApply, onCl
   return (
     <FullPageModal open={open} onClose={onClose} title="Filter Tickers" fullWidth={false} className="max-w-5xl">
       <div className="px-6 py-2">
-        <StockFiltersModalContent key={contentKey} initialSelected={initialSelected} onApply={onApply} onClose={onClose} />
+        <StockFiltersPanel
+          key={contentKey}
+          initialSelected={initialSelected}
+          onApply={onApply}
+          onClose={onClose}
+          topSection={topSection}
+          applyLabel={applyLabel}
+        />
       </div>
     </FullPageModal>
   );
 }
 
-interface StockFiltersModalContentProps {
+export interface StockFiltersPanelProps {
   initialSelected: SelectedFiltersMap;
   onApply: (selected: SelectedFiltersMap) => void;
-  onClose: () => void;
+  /** When given, a Cancel button is shown next to apply (modal mode). */
+  onClose?: () => void;
+  topSection?: StockFiltersTopSection;
+  /** Label of the apply button; defaults to "Apply Filters". */
+  applyLabel?: string;
 }
 
-function StockFiltersModalContent({ initialSelected, onApply, onClose }: StockFiltersModalContentProps): JSX.Element {
+/**
+ * The filter form itself: a draft of the selection that is only handed back on
+ * apply. Rendered inside {@link StockFiltersModal}, or inline by screens that
+ * show the form before the first search.
+ */
+export function StockFiltersPanel({ initialSelected, onApply, onClose, topSection, applyLabel = 'Apply Filters' }: StockFiltersPanelProps): JSX.Element {
   const [selectedFilters, setSelectedFilters] = useState<SelectedFiltersMap>(() => ({ ...initialSelected }));
 
   const handleCategoryChange = (category: (typeof CATEGORY_OPTIONS)[number], threshold: string): void => {
@@ -78,8 +100,8 @@ function StockFiltersModalContent({ initialSelected, onApply, onClose }: StockFi
     );
   };
 
-  /** Shared by the numeric tiles and the date pickers: an empty value drops the filter. */
-  const handleValueChange = (paramKey: FilterParamKey, value: string): void => {
+  /** Shared by every control: an empty value drops the filter. */
+  const handleValueChange = (paramKey: string, value: string): void => {
     setSelectedFilters((prev: SelectedFiltersMap): SelectedFiltersMap => {
       if (!value) {
         const { [paramKey]: _, ...rest } = prev;
@@ -92,7 +114,7 @@ function StockFiltersModalContent({ initialSelected, onApply, onClose }: StockFi
     });
   };
 
-  const handleMultiSelectChange = (paramKey: FilterParamKey, values: string[]): void => {
+  const handleMultiSelectChange = (paramKey: string, values: string[]): void => {
     handleValueChange(paramKey, values.join(','));
   };
 
@@ -106,6 +128,8 @@ function StockFiltersModalContent({ initialSelected, onApply, onClose }: StockFi
 
   return (
     <div className="space-y-6">
+      {topSection && <div>{topSection(selectedFilters, handleValueChange)}</div>}
+
       <div>
         <p className="text-body text-sm mb-4">Select minimum thresholds for category analysis factors and total score</p>
 
@@ -220,15 +244,17 @@ function StockFiltersModalContent({ initialSelected, onApply, onClose }: StockFi
         </button>
 
         <div className="flex gap-3">
-          <button onClick={onClose} className="bg-surface-2 hover:bg-surface-3 text-heading font-medium rounded-lg px-6 py-2.5 text-sm" type="button">
-            Cancel
-          </button>
+          {onClose && (
+            <button onClick={onClose} className="bg-surface-2 hover:bg-surface-3 text-heading font-medium rounded-lg px-6 py-2.5 text-sm" type="button">
+              Cancel
+            </button>
+          )}
           <button
             onClick={handleApply}
             className="bg-gradient-to-r from-amber-500 to-amber-400 hover:from-orange-500 hover:to-amber-500 text-black font-medium rounded-lg px-6 py-2.5 text-sm transition-all duration-200"
             type="button"
           >
-            Apply Filters
+            {applyLabel}
           </button>
         </div>
       </div>
