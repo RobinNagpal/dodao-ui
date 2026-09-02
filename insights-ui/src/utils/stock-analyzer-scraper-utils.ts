@@ -645,6 +645,36 @@ export async function loadFairValueValuationSnapshot(ticker: TickerV1): Promise<
   return buildFairValueValuationSnapshotFromScraperInfo(scraperInfo);
 }
 
+export interface StabilityMarketSnapshot {
+  /** e.g. "April 2, 2026" — "today" for the stability prompt. */
+  analysisDateDisplay: string;
+  /** Last close (or open fallback) — every expected price is derived from this. */
+  currentPrice: number | null;
+  /** Listing currency of `currentPrice`, when known. */
+  currency: string | null;
+  /** Full scraper market summary (market cap, P/E, beta, 52-week range, dividend, volume). */
+  marketSummary: StockFundamentalsSummary;
+}
+
+/**
+ * Refreshes the market summary (always — the expected prices are anchored to the
+ * live price) and returns the price + volatility/valuation context the Stability
+ * (market-drawdown) prompt needs.
+ */
+export async function loadStabilityMarketSnapshot(ticker: TickerV1): Promise<StabilityMarketSnapshot> {
+  const scraperInfo = await refreshMarketSummaryForFairValue(ticker);
+  const valuationSnapshot = buildFairValueValuationSnapshotFromScraperInfo(scraperInfo);
+  const summary = (scraperInfo.summary as StockFundamentalsSummary) || {};
+  const financialInfo = await prisma.tickerV1FinancialInfo.findUnique({ where: { tickerId: ticker.id }, select: { currency: true } });
+
+  return {
+    analysisDateDisplay: valuationSnapshot.valuationReportDateDisplay,
+    currentPrice: valuationSnapshot.lastClosePriceUsd,
+    currency: financialInfo?.currency ?? null,
+    marketSummary: isEmptySummary(summary) ? ({} as StockFundamentalsSummary) : summary,
+  };
+}
+
 /**
  * Extract and format KPIs data for business & moat and future growth analysis
  * Returns all available periods (TTM + fiscal years for annual, quarters for quarterly)

@@ -484,6 +484,16 @@ enum ManagementTeamAlignmentVerdict {
   Misaligned
 }
 
+// Overall verdict for the Stability / market-drawdown resilience report: how the
+// stock is expected to hold up when the broad market sells off.
+enum StabilityResilienceVerdict {
+  HighlyResilient
+  Resilient
+  MarketLike
+  Vulnerable
+  HighlyVulnerable
+}
+
 // --------------------------
 // New Tables (convention-aligned)
 // --------------------------
@@ -559,6 +569,7 @@ model TickerV1 {
   investorAnalysisResults TickerV1InvestorAnalysisResult[]
   futureRisks             TickerV1FutureRisk[]
   managementTeamReports   TickerV1ManagementTeamReport[]
+  stabilityReports        TickerV1StabilityReport[]
   vsCompetition           TickerV1VsCompetition?
   generationRequests      TickerV1GenerationRequest[]
 
@@ -789,6 +800,36 @@ model TickerV1ManagementTeamReport {
   @@map("ticker_v1_management_team_reports")
 }
 
+// Stability / drawdown-resilience report: how far the stock is expected to fall
+// when the broad market drops 5%, 10% or 20%, with the expected price and the
+// sector-level + company-level reasoning behind each of those three scenarios.
+model TickerV1StabilityReport {
+  id                String                     @id @default(uuid())
+  summary           String                     @map("summary")
+  detailedAnalysis  String                     @map("detailed_analysis")
+  resilienceVerdict StabilityResilienceVerdict @map("resilience_verdict")
+  // Price the expected prices below were computed from, so a stale report is
+  // still interpretable (and the UI can show "as of this price").
+  referencePrice    Float?                     @map("reference_price")
+  currency          String?                    @map("currency")
+  // One entry per market-drop scenario (-5% / -10% / -20%).
+  /// [MarketDropScenario]
+  dropScenarios     Json[]                     @map("drop_scenarios")
+  tickerId          String                     @map("ticker_id")
+  spaceId           String                     @default("koala_gains") @map("space_id")
+  createdAt         DateTime                   @default(now()) @map("created_at")
+  updatedAt         DateTime                   @updatedAt @map("updated_at")
+  createdBy         String?                    @map("created_by")
+  updatedBy         String?                    @map("updated_by")
+
+  ticker TickerV1 @relation(fields: [tickerId], references: [id])
+
+  @@unique([spaceId, tickerId])
+  @@index([tickerId])
+  @@index([spaceId, tickerId])
+  @@map("ticker_v1_stability_reports")
+}
+
 model TickerV1VsCompetition {
   id                       String   @id @default(uuid())
   summary                  String   @map("summary")
@@ -825,6 +866,7 @@ model TickerV1GenerationRequest {
   regenerateFairValue         Boolean @default(false) @map("regenerate_fair_value")
   regenerateFutureRisk        Boolean @default(false) @map("regenerate_future_risk")
   regenerateManagementTeam    Boolean @default(false) @map("regenerate_management_team")
+  regenerateStability         Boolean @default(false) @map("regenerate_stability")
 
   // Investor analyses
   regenerateWarrenBuffett Boolean @default(false) @map("regenerate_warren_buffett")

@@ -1,0 +1,67 @@
+$schema: 'http://json-schema.org/draft-07/schema#'
+type: object
+additionalProperties: false
+properties:
+  summary:
+    type: string
+    description: '~2 paragraph summary suitable for the main ticker page. Say how this stock has historically behaved when the broad market sells off, what drives that behaviour (demand cyclicality, balance sheet, valuation, dividend), and what an investor should expect in a normal 5–10% pullback versus a real 20% bear market. End with a one-sentence investor takeaway. Format as Markdown: separate each paragraph with a blank line (a double newline "\n\n" in the JSON string value) so each renders as a distinct paragraph.'
+  detailedAnalysis:
+    type: string
+    description: '5–7 paragraphs covering: (1) how the stock behaved in past drawdowns (2020 COVID crash, 2022 bear market, and any sector-specific drawdown) with the actual peak-to-trough percentages; (2) beta and volatility versus the index, and how much of the move is sector versus company specific; (3) where the sector currently sits in its own cycle — already washed out near a bottom (so it gives up much less than the market) or near a cycle high (so it gives up much more); (4) the balance sheet and cash-flow cushion (net debt / EBITDA, interest coverage, dividend coverage, buyback capacity) that decides whether a drawdown is temporary or permanent; (5) valuation support — where the multiple would sit at each expected price and what the buyer of last resort is; (6) recovery profile after the drop; (7) the overall resilience verdict and the reasoning behind it. Format as Markdown: separate every paragraph with a blank line (a double newline "\n\n" in the JSON string value) so each renders as a distinct <p>. Do NOT return the paragraphs as one continuous block of text, and do NOT use inline "Paragraph 1:", "Paragraph 2:" labels.'
+  resilienceVerdict:
+    type: string
+    enum:
+      - HIGHLY_RESILIENT
+      - RESILIENT
+      - MARKET_LIKE
+      - VULNERABLE
+      - HIGHLY_VULNERABLE
+    description: 'Overall verdict on how well the stock holds up when the broad market drops. HIGHLY_RESILIENT = expected to fall far less than the market (defensive demand, strong balance sheet, low valuation risk). RESILIENT = falls somewhat less than the market and recovers faster than peers. MARKET_LIKE = falls roughly in line with the market. VULNERABLE = falls more than the market (cyclical demand, leverage, or a rich valuation). HIGHLY_VULNERABLE = falls much more than the market with a slow, uncertain recovery. The verdict must agree with the drop percentages in dropScenarios.'
+  referencePrice:
+    type: number
+    description: 'The current price the expected prices were computed from. Use the currentPrice given in the input; do not substitute another quote.'
+  currency:
+    type: string
+    description: 'Currency of referencePrice and every expectedPrice, e.g. "USD".'
+  dropScenarios:
+    type: array
+    minItems: 3
+    maxItems: 3
+    description: 'Exactly three scenarios, in this order: broad market drops 5%, 10% and 20%.'
+    items:
+      type: object
+      additionalProperties: false
+      properties:
+        marketDropPercent:
+          type: number
+          enum: [5, 10, 20]
+          description: 'The broad-market (S&P 500 style index) drawdown assumed for this scenario, as a positive percentage.'
+        expectedSectorDropPercent:
+          type: number
+          description: 'Expected drawdown of this company''s sector / sub-industry in this scenario, as a positive percentage. This is NOT required to equal the market drop — a sector already near a cyclical bottom or one with defensive demand typically gives up much less, while a richly-valued or highly cyclical sector gives up much more. Use a negative value only if the sector is genuinely expected to rise.'
+        sectorImpact:
+          type: string
+          description: 'One to two paragraphs explaining what happens to the sector / sub-industry in this scenario and WHY its drop differs from the market drop. Cover where the sector is in its own cycle (already washed out near a bottom versus near a peak), which sector-level drivers move (rates, spreads, commodity prices, freight rates, occupancy, ad budgets, IT spend), how much of the bad news is already priced in, and how sector multiples typically re-rate at this magnitude of sell-off. Markdown; wrap figures in backticks.'
+        expectedStockDropPercent:
+          type: number
+          description: 'Expected drawdown of THIS stock in this scenario, as a positive percentage. It must be consistent with expectedPrice and referencePrice.'
+        expectedPrice:
+          type: number
+          description: 'Expected price of the stock in this scenario, in the same currency as referencePrice: referencePrice * (1 - expectedStockDropPercent/100), rounded to 2 decimals.'
+        companyImpact:
+          type: string
+          description: 'One to two paragraphs explaining what happens to THIS company in this scenario and why it deviates from its sector — earnings sensitivity, contracted or recurring revenue, backlog, leverage and refinancing needs, dividend safety, buyback capacity, valuation cushion, and where the multiple would sit at the expected price. Say explicitly whether the drop is a re-rating or an earnings cut. Markdown; wrap figures in backticks.'
+      required:
+        - marketDropPercent
+        - expectedSectorDropPercent
+        - sectorImpact
+        - expectedStockDropPercent
+        - expectedPrice
+        - companyImpact
+required:
+  - summary
+  - detailedAnalysis
+  - resilienceVerdict
+  - referencePrice
+  - currency
+  - dropScenarios

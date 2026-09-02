@@ -10,7 +10,7 @@ import { CloudFrontInvalidationResult, invalidateCloudFrontPaths, invalidateClou
  * The main ticker page (`/stocks/[exchange]/[ticker]`) renders an aggregate
  * view of everything for one ticker, so it subscribes to the umbrella
  * `tickerAndExchangeTag`. Per-subpage routes (e.g. `/fair-value`,
- * `/competition`, `/management-team`) only need to rebuild when *their* slice
+ * `/competition`, `/management-team`, `/stability`) only need to rebuild when *their* slice
  * of data changes, so each subscribes to a narrow tag. Savers invalidate the
  * narrow tag for the data they touched and the umbrella tag for the main
  * page — that way one category save invalidates two pages (main + the one
@@ -85,6 +85,14 @@ export const revalidateTickerManagementTeamTag = (ticker: string, exchange: stri
   revalidateTag(tickerManagementTeamTag(ticker, exchange));
 };
 
+/** Stability subpage tag — used by `/stability`. */
+export const tickerStabilityTag = (ticker: string, exchange: string): string => `ticker_stability:_${ticker.toUpperCase()}_${exchange.toUpperCase()}`;
+
+export const revalidateTickerStabilityTag = (ticker: string, exchange: string) => {
+  // Tag-only — fired by the LLM generation pipeline. See the file header.
+  revalidateTag(tickerStabilityTag(ticker, exchange));
+};
+
 /**
  * Invalidate every per-ticker cache. Used by the admin "Revalidate" button so
  * it behaves like the old umbrella-only flow. Uses two CloudFront wildcard
@@ -96,6 +104,7 @@ export const revalidateAllTickerTags = (ticker: string, exchange: string) => {
   revalidateTag(tickerAndExchangeTag(ticker, exchange));
   revalidateTag(tickerCompetitionTag(ticker, exchange));
   revalidateTag(tickerManagementTeamTag(ticker, exchange));
+  revalidateTag(tickerStabilityTag(ticker, exchange));
   for (const category of Object.values(TickerAnalysisCategory)) {
     revalidateTag(tickerCategoryReportTag(ticker, exchange, category));
   }
@@ -111,6 +120,7 @@ export const revalidateAllTickerTagsAwaited = async (ticker: string, exchange: s
   revalidateTag(tickerAndExchangeTag(ticker, exchange));
   revalidateTag(tickerCompetitionTag(ticker, exchange));
   revalidateTag(tickerManagementTeamTag(ticker, exchange));
+  revalidateTag(tickerStabilityTag(ticker, exchange));
   for (const category of Object.values(TickerAnalysisCategory)) {
     revalidateTag(tickerCategoryReportTag(ticker, exchange, category));
   }

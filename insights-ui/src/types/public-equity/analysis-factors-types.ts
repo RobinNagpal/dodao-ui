@@ -1,4 +1,4 @@
-import { InvestorKey, InvestorTypes, ManagementTeamAlignmentVerdict, TickerAnalysisCategory } from '@/types/ticker-typesv1';
+import { InvestorKey, InvestorTypes, ManagementTeamAlignmentVerdict, StabilityResilienceVerdict, TickerAnalysisCategory } from '@/types/ticker-typesv1';
 import { TickerV1GenerationRequest } from '@prisma/client';
 import { TopCompaniesToConsider } from '../prismaTypes';
 
@@ -74,6 +74,40 @@ export interface LLMManagementTeamResponse {
   summary: string;
   detailedAnalysis: string;
   alignmentVerdict: ManagementTeamAlignmentVerdict;
+}
+
+/**
+ * One market-drop scenario of the stability report. The market drop is the
+ * broad-market move (S&P 500 style); the sector and the stock can fall by more
+ * or by less — a sector already near a cyclical bottom often gives up much less
+ * than the market, a richly-valued cyclical much more.
+ */
+export interface MarketDropScenario {
+  /** Broad-market drawdown assumed for this scenario: 5, 10 or 20 (percent). */
+  marketDropPercent: number;
+  /** Expected drawdown of the company's sector / sub-industry, in percent. */
+  expectedSectorDropPercent: number;
+  /** Why the sector moves more or less than the market in this scenario (markdown). */
+  sectorImpact: string;
+  /** Expected drawdown of this stock, in percent. */
+  expectedStockDropPercent: number;
+  /** Expected price of the stock in this scenario, in the report's currency. */
+  expectedPrice: number;
+  /** Why this specific company moves the way it does in this scenario (markdown). */
+  companyImpact: string;
+}
+
+export type MarketDropScenarioArray = MarketDropScenario[];
+
+export interface LLMStabilityResponse {
+  summary: string;
+  detailedAnalysis: string;
+  resilienceVerdict: StabilityResilienceVerdict;
+  /** Price the expected prices were computed from. */
+  referencePrice: number;
+  currency: string;
+  /** Exactly three entries: market drops of 5%, 10% and 20%. */
+  dropScenarios: MarketDropScenario[];
 }
 
 export interface LLMInvestorAnalysisResponse {

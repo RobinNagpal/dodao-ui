@@ -24,6 +24,7 @@ export interface GenerationRequestPayload {
   regenerateFutureGrowth: boolean;
   regenerateFairValue: boolean;
   regenerateManagementTeam: boolean;
+  regenerateStability: boolean;
   regenerateFinalSummary: boolean;
   /** Optional LLM provider override chosen in the report-generation UI. */
   llmProvider?: LLMProvider;
@@ -238,6 +239,7 @@ async function postHandler(
         regenerateFutureGrowth: !!regenerateOptions.regenerateFutureGrowth,
         regenerateFairValue: !!regenerateOptions.regenerateFairValue,
         regenerateManagementTeam: !!regenerateOptions.regenerateManagementTeam,
+        regenerateStability: !!regenerateOptions.regenerateStability,
         regenerateFinalSummary: !!regenerateOptions.regenerateFinalSummary,
       },
       llmProvider: payload.llmProvider ?? null,

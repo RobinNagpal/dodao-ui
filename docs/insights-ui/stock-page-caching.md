@@ -38,6 +38,7 @@ Every per-ticker page is `force-static` with `revalidate = false` and `dynamicPa
 | `/stocks/[exchange]/[ticker]/fair-value` | `tickerCategoryReportTag(t,e,FairValue)` | via `utils/performance-page-utils.ts` |
 | `/stocks/[exchange]/[ticker]/competition` | `tickerCompetitionTag(t,e)` | `app/stocks/[exchange]/[ticker]/competition/page.tsx` |
 | `/stocks/[exchange]/[ticker]/management-team` | `tickerManagementTeamTag(t,e)` | `app/stocks/[exchange]/[ticker]/management-team/page.tsx` |
+| `/stocks/[exchange]/[ticker]/stability` | `tickerStabilityTag(t,e)` | `app/stocks/[exchange]/[ticker]/stability/page.tsx` |
 
 The 5 `tickerCategoryReportTag(t,e,category)` values are **5 distinct tag strings** (one per category enum) — not a shared "generic" tag. The category parameter is baked into the tag string, so `tickerCategoryReportTag(AAPL,NASDAQ,BusinessAndMoat) !== tickerCategoryReportTag(AAPL,NASDAQ,FairValue)`.
 
@@ -108,9 +109,10 @@ A page rebuild costs **1 HTML ISR write + 1 Data Cache write (the single tagged 
 | Save 1 category report | 1 subpage + main page (umbrella) | 2 + 2 = **4** |
 | Save competition | /competition + main page | **4** |
 | Save management-team | /management-team + main page | **4** |
+| Save stability | /stability + main page | **4** |
 | Save investor analysis or final summary | main page only | **2** |
-| Full 8-step regen (typical) | All 8 pages, each rebuilt once | 8 × 2 = **16** |
-| Admin "Invalidate cache" / "Edit stock" / PUT | All 8 pages | **16** |
+| Full 9-step regen (typical) | All 9 pages, each rebuilt once | 9 × 2 = **18** |
+| Admin "Invalidate cache" / "Edit stock" / PUT | All 9 pages | **18** |
 | Admin "Refresh financial data" batch | Main page only | **2** |
 
 A pure cache hit serves the stored HTML + the stored Data Cache entry — both count as reads, neither writes.

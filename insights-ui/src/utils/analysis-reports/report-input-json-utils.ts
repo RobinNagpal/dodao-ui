@@ -2,7 +2,7 @@ import { AnalysisCategoryFactor } from '@prisma/client';
 import { CompetitionAnalysisArray } from '@/types/public-equity/analysis-factors-types';
 import { TickerAnalysisCategory, TickerV1WithIndustryAndSubIndustry, VERDICT_DEFINITIONS } from '@/types/ticker-typesv1';
 import { buildBaseAboutReport } from '@/utils/analysis-reports/save-report-utils';
-import type { FairValueValuationSnapshot } from '@/utils/stock-analyzer-scraper-utils';
+import type { FairValueValuationSnapshot, StabilityMarketSnapshot } from '@/utils/stock-analyzer-scraper-utils';
 
 /**
  * Base input JSON for ticker analysis
@@ -43,6 +43,17 @@ export interface FinancialDataInputJson {
   cashFlow: string;
   ratios: string;
   dividends: string;
+}
+
+/**
+ * Stability (market-drawdown resilience) input JSON
+ */
+export interface StabilityInputJson extends BaseTickerInputJson {
+  analysisDateDisplay: string;
+  currentPrice: number | null;
+  currency: string | null;
+  /** JSON-stringified scraper market summary (market cap, P/E, beta, 52-week range, …). */
+  marketSnapshot: string;
 }
 
 /**
@@ -316,6 +327,21 @@ export function prepareFairValueInputJson(
     valuationReportDateDisplay: valuationSnapshot.valuationReportDateDisplay,
     lastClosePrice: valuationSnapshot.lastClosePriceUsd,
     marketSnapshotFetchedAt: valuationSnapshot.marketSnapshotFetchedAt,
+  };
+}
+
+/**
+ * Prepares input JSON for the stability (market-drawdown resilience) analysis.
+ * The prompt derives every expected price from `currentPrice`, so the snapshot
+ * is always refreshed before this is called.
+ */
+export function prepareStabilityInputJson(tickerRecord: TickerV1WithIndustryAndSubIndustry, snapshot: StabilityMarketSnapshot): StabilityInputJson {
+  return {
+    ...prepareBaseTickerInputJson(tickerRecord),
+    analysisDateDisplay: snapshot.analysisDateDisplay,
+    currentPrice: snapshot.currentPrice,
+    currency: snapshot.currency,
+    marketSnapshot: JSON.stringify(snapshot.marketSummary),
   };
 }
 

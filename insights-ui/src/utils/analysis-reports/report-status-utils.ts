@@ -21,6 +21,8 @@ export function shouldRegenerateReport(request: TickerV1GenerationRequest, repor
       return request.regenerateFairValue;
     case ReportType.MANAGEMENT_TEAM:
       return request.regenerateManagementTeam;
+    case ReportType.STABILITY:
+      return request.regenerateStability;
     case ReportType.FINAL_SUMMARY:
       return request.regenerateFinalSummary;
     default:

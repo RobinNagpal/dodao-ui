@@ -9,6 +9,7 @@ To preview the rendered prompt for a given ticker, run `yarn stocks:prompt --sym
 ## Files
 
 - **[management-team.md](management-team.md)** — Prompt for the `management-team` report. Covers current leadership, where the founders are now and why they are or are not on the management team, ownership and compensation alignment, insider buying/selling, past management issues (SEC investigations, lawsuits, abrupt departures, governance controversies, failed prior roles), capital allocation track record, and an `alignmentVerdict` (`OWNER_OPERATOR` / `STRONGLY_ALIGNED` / `ALIGNED` / `WEAKLY_ALIGNED` / `MISALIGNED`).
+- **[stability.md](stability.md)** — Prompt for the `stability` report. Answers "what happens to this stock if the market drops `5%`, `10%` or `20%`": the expected price in each scenario, an explanation of the impact on the sector / sub-industry (explicitly allowing for sectors already near a bottom that give up far less than the market, and stretched sectors that give up far more), the impact on the company itself, past-drawdown behaviour, balance-sheet and valuation cushion, and a `resilienceVerdict` (`HIGHLY_RESILIENT` / `RESILIENT` / `MARKET_LIKE` / `VULNERABLE` / `HIGHLY_VULNERABLE`). Its input carries a live market snapshot (price, `beta`, 52-week range, `P/E`), so every expected price is anchored to the current price.
 
 ## Prompt key convention
 

@@ -144,6 +144,7 @@ export enum ReportType {
   FUTURE_GROWTH = 'future-growth',
   FAIR_VALUE = 'fair-value',
   MANAGEMENT_TEAM = 'management-team',
+  STABILITY = 'stability',
   FINAL_SUMMARY = 'final-summary',
 }
 
@@ -156,6 +157,7 @@ export const analysisTypes: AnalysisTypeInfo[] = [
   { key: ReportType.FUTURE_GROWTH, label: 'Future Growth' },
   { key: ReportType.FAIR_VALUE, label: 'Fair Value' },
   { key: ReportType.MANAGEMENT_TEAM, label: 'Management Team' },
+  { key: ReportType.STABILITY, label: 'Stability' },
   { key: ReportType.FINAL_SUMMARY, label: 'Final Summary' },
 ];
 
@@ -177,6 +179,38 @@ export const MANAGEMENT_TEAM_ALIGNMENT_VERDICT_LABELS: Record<ManagementTeamAlig
   [ManagementTeamAlignmentVerdict.WEAKLY_ALIGNED]: 'Weakly Aligned',
   [ManagementTeamAlignmentVerdict.MISALIGNED]: 'Misaligned',
 };
+
+// Overall verdict for the Stability (market-drawdown resilience) report.
+// String values mirror the Prisma `StabilityResilienceVerdict` enum so they can
+// be passed to the DB without translation; the TS keys are the SCREAMING_SNAKE
+// names the LLM returns.
+export enum StabilityResilienceVerdict {
+  HIGHLY_RESILIENT = 'HighlyResilient',
+  RESILIENT = 'Resilient',
+  MARKET_LIKE = 'MarketLike',
+  VULNERABLE = 'Vulnerable',
+  HIGHLY_VULNERABLE = 'HighlyVulnerable',
+}
+
+export const STABILITY_RESILIENCE_VERDICT_LABELS: Record<StabilityResilienceVerdict, string> = {
+  [StabilityResilienceVerdict.HIGHLY_RESILIENT]: 'Highly Resilient',
+  [StabilityResilienceVerdict.RESILIENT]: 'Resilient',
+  [StabilityResilienceVerdict.MARKET_LIKE]: 'Market-Like',
+  [StabilityResilienceVerdict.VULNERABLE]: 'Vulnerable',
+  [StabilityResilienceVerdict.HIGHLY_VULNERABLE]: 'Highly Vulnerable',
+};
+
+/** One-line meaning of each verdict, shown under the badge on the stability page. */
+export const STABILITY_RESILIENCE_VERDICT_DESCRIPTIONS: Record<StabilityResilienceVerdict, string> = {
+  [StabilityResilienceVerdict.HIGHLY_RESILIENT]: 'Expected to fall far less than the market — defensive demand, strong balance sheet, low valuation risk.',
+  [StabilityResilienceVerdict.RESILIENT]: 'Expected to fall somewhat less than the market and to recover faster than peers.',
+  [StabilityResilienceVerdict.MARKET_LIKE]: 'Expected to fall roughly in line with the market.',
+  [StabilityResilienceVerdict.VULNERABLE]: 'Expected to fall more than the market — cyclical demand, leverage, or a rich valuation.',
+  [StabilityResilienceVerdict.HIGHLY_VULNERABLE]: 'Expected to fall much more than the market, with a slow and uncertain recovery.',
+};
+
+/** The three market-drop scenarios every stability report must cover. */
+export const MARKET_DROP_SCENARIO_PERCENTS: ReadonlyArray<number> = [5, 10, 20];
 
 // Types for ticker analysis categories
 export enum TickerAnalysisCategory {

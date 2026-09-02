@@ -17,6 +17,7 @@ interface GenerationRequestPayload {
   regenerateFutureGrowth: boolean;
   regenerateFairValue: boolean;
   regenerateManagementTeam: boolean;
+  regenerateStability: boolean;
   regenerateFinalSummary: boolean;
 }
 
@@ -34,6 +35,7 @@ const ANALYSIS_CATEGORIES: readonly ReportType[] = [
   ReportType.FUTURE_GROWTH,
   ReportType.FAIR_VALUE,
   ReportType.MANAGEMENT_TEAM,
+  ReportType.STABILITY,
 ];
 
 const ALL_REPORT_TYPES: readonly ReportType[] = [...ANALYSIS_CATEGORIES, ReportType.FINAL_SUMMARY];
@@ -52,6 +54,7 @@ function buildPayload(ticker: TickerIdentifier, categories: ReportType[]): Gener
     regenerateFutureGrowth: set.has(ReportType.FUTURE_GROWTH),
     regenerateFairValue: set.has(ReportType.FAIR_VALUE),
     regenerateManagementTeam: set.has(ReportType.MANAGEMENT_TEAM),
+    regenerateStability: set.has(ReportType.STABILITY),
     regenerateFinalSummary: set.has(ReportType.FINAL_SUMMARY),
   };
 }
@@ -61,7 +64,7 @@ function buildPayload(ticker: TickerIdentifier, categories: ReportType[]): Gener
  *
  * Precedence (first match wins):
  *   1. `--all` (or `--categories=all`)                 → every report type (incl. final-summary)
- *   2. `--analysis` (or `--categories=analysis`)       → 7 analysis categories, skip final-summary
+ *   2. `--analysis` (or `--categories=analysis`)       → 8 analysis categories, skip final-summary
  *   3. `--categories=<csv>`                            → explicit comma-separated list
  *   4. (no flag)                                       → defaults to all 9 report types
  *

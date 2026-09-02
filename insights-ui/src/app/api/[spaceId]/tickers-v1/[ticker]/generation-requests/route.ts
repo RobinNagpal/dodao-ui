@@ -14,6 +14,7 @@ export interface GenerationRequestPayload {
   regenerateFutureGrowth: boolean;
   regenerateFairValue: boolean;
   regenerateManagementTeam: boolean;
+  regenerateStability: boolean;
   regenerateFinalSummary: boolean;
   regenerateCachedScore: boolean;
 }
@@ -62,6 +63,7 @@ async function postHandler(
         regenerateFutureGrowth: payload.regenerateFutureGrowth || existingRequest.regenerateFutureGrowth,
         regenerateFairValue: payload.regenerateFairValue || existingRequest.regenerateFairValue,
         regenerateManagementTeam: payload.regenerateManagementTeam || existingRequest.regenerateManagementTeam,
+        regenerateStability: payload.regenerateStability || existingRequest.regenerateStability,
         regenerateFinalSummary: payload.regenerateFinalSummary || existingRequest.regenerateFinalSummary,
 
         updatedAt: new Date(),
@@ -81,6 +83,7 @@ async function postHandler(
         regenerateFutureGrowth: payload.regenerateFutureGrowth,
         regenerateFairValue: payload.regenerateFairValue,
         regenerateManagementTeam: payload.regenerateManagementTeam,
+        regenerateStability: payload.regenerateStability,
         regenerateFinalSummary: payload.regenerateFinalSummary,
       },
     });
@@ -126,6 +129,7 @@ async function getHandler(req: NextRequest, { params }: { params: Promise<{ spac
       regenerateFutureGrowth: false,
       regenerateFairValue: false,
       regenerateManagementTeam: false,
+      regenerateStability: false,
       regenerateFinalSummary: false,
       status: GenerationRequestStatus.NotStarted,
       createdAt: new Date(),

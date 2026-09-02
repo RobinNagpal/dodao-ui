@@ -3,7 +3,7 @@ import { cn } from '@/lib/utils';
 import { badgeTone, type BadgeTone } from '@/components/ui/badges/badgeTone';
 import React from 'react';
 
-export type StatusBadgeVariant = 'success' | 'danger' | 'warning' | 'neutral' | 'archived';
+export type StatusBadgeVariant = 'success' | 'danger' | 'warning' | 'info' | 'accent' | 'neutral' | 'archived';
 export type StatusBadgeSize = 'xs' | 'sm';
 
 interface StatusBadgeProps {
@@ -27,6 +27,8 @@ const VARIANT_TONE: Record<StatusBadgeVariant, BadgeTone> = {
   success: 'success',
   danger: 'danger',
   warning: 'warning',
+  info: 'info',
+  accent: 'accent',
   neutral: 'neutral',
   archived: 'neutral',
 };
