@@ -22,7 +22,6 @@ import { usePutData } from '@dodao/web-core/ui/hooks/fetch/usePutData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { ArrowPathIcon, PencilIcon, CheckIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import { getMissingReportTypes } from '@/utils/analysis-reports/report-steps-statuses';
 import { TickerWithMissingReportInfoExtended } from '@/utils/missing-reports-utils';
@@ -311,16 +310,16 @@ function MissingReportsTable({ rows, selectedRows, onSelectRow, onUrlUpdate }: M
 }
 
 export default function MissingReportsPage(): JSX.Element {
-  const router = useRouter();
   const [localGenerating, setLocalGenerating] = useState<boolean>(false);
   const [selectedRows, setSelectedRows] = useState<Set<string>>(new Set());
   const [showGenerateAllConfirmation, setShowGenerateAllConfirmation] = useState<boolean>(false);
 
-  const { applied, search, hasSearched, page, setPage, data, loading, reFetchData } = useAdminTickerSearch({
+  const { applied, search, hasSearched, restored, page, setPage, data, loading, reFetchData } = useAdminTickerSearch({
     pageSize: PAGE_SIZE,
     initialSelected: { [TickerSearchParamKey.MISSING_REPORT_TYPES]: ALL_MISSING_REPORT_TYPES },
     fixedParams: FIXED_SEARCH_PARAMS,
     searchOnMount: true,
+    storageKey: 'admin-v1:missing-reports:filters',
   });
 
   const rows: TickerWithMissingReportInfoExtended[] = data?.tickers ?? [];
@@ -397,7 +396,12 @@ export default function MissingReportsPage(): JSX.Element {
     extraChips.push({ paramKey: TickerSearchParamKey.FAIR_VALUE_BEFORE, label: `Fair Value older than ${applied[TickerSearchParamKey.FAIR_VALUE_BEFORE]}` });
   }
 
-  const { generateAllReportsInBackground, generateSpecificReportsInBackground, isGenerating: hookGenerating } = useGenerateReports();
+  const {
+    generateAllReportsInBackground,
+    generateSpecificReportsInBackground,
+    openGenerationRequestsPage,
+    isGenerating: hookGenerating,
+  } = useGenerateReports();
 
   // LLM provider/model to use for the background generation requests created here.
   const [llmSelection, setLlmSelection] = useState<LlmProviderModelSelection>(getDefaultLlmProviderModelSelection());
@@ -487,9 +491,13 @@ export default function MissingReportsPage(): JSX.Element {
       }
     }
 
-    // Now proceed with report generation
+    // Now proceed with report generation, then show the queue in a new tab so
+    // this screen's filters survive. The queued tickers now have a pending
+    // request, which this list excludes, so reload it and clear the selection.
     await generateFunction();
-    router.push('/admin-v1/generation-requests');
+    openGenerationRequestsPage();
+    setSelectedRows(new Set());
+    void reFetchData();
   }
 
   async function handleGenerateMissingForSelected(): Promise<void> {
@@ -539,16 +547,18 @@ export default function MissingReportsPage(): JSX.Element {
         </div>
       </div>
 
-      <div className="mb-4">
-        <AdminTickerSearchFilters
-          applied={applied}
-          hasSearched={hasSearched}
-          onSearch={handleSearch}
-          topSection={topSection}
-          extraChips={extraChips}
-          resultSummary={data ? `${totalCount} ticker${totalCount === 1 ? '' : 's'} found` : undefined}
-        />
-      </div>
+      {restored && (
+        <div className="mb-4">
+          <AdminTickerSearchFilters
+            applied={applied}
+            hasSearched={hasSearched}
+            onSearch={handleSearch}
+            topSection={topSection}
+            extraChips={extraChips}
+            resultSummary={data ? `${totalCount} ticker${totalCount === 1 ? '' : 's'} found` : undefined}
+          />
+        </div>
+      )}
 
       <div className="mb-6">
         <div className="bg-surface border border-red-500 rounded-lg p-4">

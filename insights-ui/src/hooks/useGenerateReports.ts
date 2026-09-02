@@ -2,9 +2,12 @@ import { GenerationRequestPayload, TickerIdentifier } from '@/app/api/[spaceId]/
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { LLMProvider } from '@/types/llmConstants';
 import { InvestorKey, InvestorTypes, ReportType } from '@/types/ticker-typesv1';
+import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { useState } from 'react';
+
+const GENERATION_REQUESTS_PATH = '/admin-v1/generation-requests';
 
 export interface ReportTypeInfo {
   key: ReportType;
@@ -41,6 +44,21 @@ export const reportTypes: ReportTypeInfo[] = [
  */
 export const useGenerateReports = () => {
   const [isGenerating, setIsGenerating] = useState<boolean>(false);
+  const { showNotification } = useNotificationContext();
+
+  /**
+   * Show the queued requests without leaving the current screen, so an admin
+   * can tweak one filter and generate the next batch instead of rebuilding
+   * the whole selection. Falls back to a notice if the browser blocks the tab.
+   */
+  const openGenerationRequestsPage = (): void => {
+    // No `noopener` here: with it, window.open returns null even on success, so
+    // we could not tell a blocked popup apart. The target is our own admin page.
+    const tab = window.open(GENERATION_REQUESTS_PATH, '_blank');
+    if (!tab) {
+      showNotification({ type: 'info', message: 'Requests queued. The Generation Requests tab was blocked — open it from the admin nav.' });
+    }
+  };
 
   // Background batch generation. All stock report generation now goes through
   // background generation requests (the synchronous per-report routes were removed).
@@ -218,6 +236,7 @@ export const useGenerateReports = () => {
     generateAllReportsInBackground,
     createFullBackgroundGenerationRequests,
     createFailedPartsOnlyGenerationRequests,
+    openGenerationRequestsPage,
 
     /** state */
     isGenerating: isGenerating || requestLoading,

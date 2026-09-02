@@ -16,6 +16,33 @@ interface UseAdminTickerSearchOptions {
   fixedParams?: Record<string, string>;
   /** Run the initial selection immediately instead of waiting for the first Search. */
   searchOnMount?: boolean;
+  /**
+   * `localStorage` key under which the last searched selection is kept, so the
+   * screen reopens with the same filters (and searches them straight away).
+   */
+  storageKey?: string;
+}
+
+/** The stored value must be a flat string map; anything else is treated as "nothing stored". */
+function readStoredSelection(storageKey: string): SelectedFiltersMap | null {
+  try {
+    const raw = window.localStorage.getItem(storageKey);
+    if (!raw) return null;
+    const parsed: unknown = JSON.parse(raw);
+    if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) return null;
+    const entries = Object.entries(parsed as Record<string, unknown>).filter((entry): entry is [string, string] => typeof entry[1] === 'string');
+    return Object.fromEntries(entries);
+  } catch {
+    return null;
+  }
+}
+
+function writeStoredSelection(storageKey: string, selected: SelectedFiltersMap): void {
+  try {
+    window.localStorage.setItem(storageKey, JSON.stringify(selected));
+  } catch {
+    // Storage can be unavailable (private mode, quota); the search still runs.
+  }
 }
 
 export interface AdminTickerSearch {
@@ -24,6 +51,8 @@ export interface AdminTickerSearch {
   /** Apply a new selection and load its first page. */
   search: (next: SelectedFiltersMap) => void;
   hasSearched: boolean;
+  /** False only for the first frame while a remembered selection is being read from storage. */
+  restored: boolean;
   page: number;
   setPage: (page: number) => void;
   totalPages: number;
@@ -41,10 +70,23 @@ export function useAdminTickerSearch({
   initialSelected = {},
   fixedParams = {},
   searchOnMount = false,
+  storageKey,
 }: UseAdminTickerSearchOptions): AdminTickerSearch {
   const [applied, setApplied] = useState<SelectedFiltersMap>(initialSelected);
   const [page, setPage] = useState<number>(1);
-  const [hasSearched, setHasSearched] = useState<boolean>(searchOnMount);
+  // With a storage key the first search waits for the effect below, so a
+  // remembered selection is searched once instead of after the defaults.
+  const [hasSearched, setHasSearched] = useState<boolean>(!storageKey && searchOnMount);
+  const [restored, setRestored] = useState<boolean>(!storageKey);
+
+  // Storage is read after mount: it doesn't exist on the server render.
+  useEffect(() => {
+    if (!storageKey) return;
+    const stored = readStoredSelection(storageKey);
+    if (stored) setApplied(stored);
+    setHasSearched(stored !== null || searchOnMount);
+    setRestored(true);
+  }, [storageKey, searchOnMount]);
 
   const url: string = useMemo(
     () => `${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/admin-search?${buildTickerSearchQuery({ ...fixedParams, ...applied }, page, pageSize)}`,
@@ -61,11 +103,15 @@ export function useAdminTickerSearch({
     if (data && page > totalPages) setPage(totalPages);
   }, [data, page, totalPages]);
 
-  const search = useCallback((next: SelectedFiltersMap): void => {
-    setApplied(next);
-    setPage(1);
-    setHasSearched(true);
-  }, []);
+  const search = useCallback(
+    (next: SelectedFiltersMap): void => {
+      setApplied(next);
+      setPage(1);
+      setHasSearched(true);
+      if (storageKey) writeStoredSelection(storageKey, next);
+    },
+    [storageKey]
+  );
 
-  return { applied, search, hasSearched, page, setPage, totalPages, data, loading, reFetchData };
+  return { applied, search, hasSearched, restored, page, setPage, totalPages, data, loading, reFetchData };
 }

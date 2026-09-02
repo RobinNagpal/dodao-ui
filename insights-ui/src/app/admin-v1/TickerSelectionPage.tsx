@@ -25,7 +25,8 @@ interface TickerSelectionPageProps {
   renderActionComponent: (props: {
     selectedTickers: TickerIdentifier[];
     tickerData: Record<string, TickerWithMissingReportInfo>;
-    onDataUpdated: (ticker: TickerIdentifier) => void;
+    /** Call once requests are queued: reloads the results and clears the selection. */
+    onReportsGenerated: () => void;
   }) => React.ReactNode;
 
   /**
@@ -51,7 +52,10 @@ export default function TickerSelectionPage({ renderActionComponent, refreshButt
     'Failed to fetch industries'
   );
 
-  const { applied, search, hasSearched, page, setPage, data, loading, reFetchData } = useAdminTickerSearch({ pageSize: PAGE_SIZE });
+  const { applied, search, hasSearched, restored, page, setPage, data, loading, reFetchData } = useAdminTickerSearch({
+    pageSize: PAGE_SIZE,
+    storageKey: 'admin-v1:create-reports:filters',
+  });
 
   const [selectedTickers, setSelectedTickers] = useState<TickerIdentifier[]>([]);
 
@@ -119,14 +123,16 @@ export default function TickerSelectionPage({ renderActionComponent, refreshButt
 
   return (
     <div className="space-y-3">
-      <AdminTickerSearchFilters
-        applied={applied}
-        hasSearched={hasSearched}
-        onSearch={handleSearch}
-        topSection={topSection}
-        extraChips={extraChips}
-        resultSummary={data ? `${totalCount} ticker${totalCount === 1 ? '' : 's'} found` : undefined}
-      />
+      {restored && (
+        <AdminTickerSearchFilters
+          applied={applied}
+          hasSearched={hasSearched}
+          onSearch={handleSearch}
+          topSection={topSection}
+          extraChips={extraChips}
+          resultSummary={data ? `${totalCount} ticker${totalCount === 1 ? '' : 's'} found` : undefined}
+        />
+      )}
 
       {hasSearched && (
         <div className="space-y-2">
@@ -211,7 +217,11 @@ export default function TickerSelectionPage({ renderActionComponent, refreshButt
         renderActionComponent({
           selectedTickers,
           tickerData,
-          onDataUpdated: () => {
+          onReportsGenerated: () => {
+            // The queued tickers keep their place in the list (they now show a
+            // pending request); drop them from the selection so the next batch
+            // starts clean.
+            setSelectedTickers([]);
             void reFetchData();
           },
         })}
