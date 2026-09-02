@@ -18,6 +18,7 @@ interface RequestsSectionProps {
   tone: BorderTone;
   rows: GenerationRequestWithFlags[];
   totalCount: number;
+  /** True until this bucket's data first arrives; an in-flight refresh keeps showing the current rows. */
   loading: boolean;
   currentPage: number;
   pageSize: number;

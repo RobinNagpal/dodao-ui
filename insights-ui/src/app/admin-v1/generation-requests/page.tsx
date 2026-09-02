@@ -48,26 +48,51 @@ export default function GenerationRequestsPage(): JSX.Element {
     params.append('failedTake', String(PAGE_SIZE));
     params.append('notStartedSkip', String((notStartedPage - 1) * PAGE_SIZE));
     params.append('notStartedTake', String(PAGE_SIZE));
-    // The completed tab filters/pages client-side, so it pulls a window of the
-    // most recent requests — and nothing at all while another tab is open.
+    // The completed window has its own fetch below, so the 30s poll never carries it.
     params.append('completedSkip', '0');
-    params.append('completedTake', String(activeTab === 'completed' ? completedWindow : 0));
+    params.append('completedTake', '0');
     return `${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/generation-requests?${params.toString()}`;
-  }, [inProgressPage, failedPage, notStartedPage, activeTab, completedWindow]);
+  }, [inProgressPage, failedPage, notStartedPage]);
 
-  const { data, loading, reFetchData } = useFetchData<GenerationRequestsResponse>(apiUrl, {}, 'Failed to fetch generation requests');
+  const { data, reFetchData } = useFetchData<GenerationRequestsResponse>(apiUrl, {}, 'Failed to fetch generation requests');
 
   const counts = data?.counts;
   const activeCount: number = (counts?.inProgress ?? 0) + (counts?.notStarted ?? 0);
   const hasActive: boolean = (counts?.inProgress ?? 0) > 0 || (counts?.notStarted ?? 0) > 0;
 
   // ----- Completed tab: filtered + paged in the browser over the loaded window -----
+  // Fetched separately from the polled buckets: up to 1000 joined rows are only
+  // worth downloading when the tab is open, and only when something changed.
+  const completedApiUrl: string = useMemo(() => {
+    const params = new URLSearchParams({
+      inProgressTake: '0',
+      failedTake: '0',
+      notStartedTake: '0',
+      completedSkip: '0',
+      completedTake: String(completedWindow),
+    });
+    return `${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/generation-requests?${params.toString()}`;
+  }, [completedWindow]);
+
+  const {
+    data: completedData,
+    loading: completedLoading,
+    reFetchData: reFetchCompleted,
+  } = useFetchData<GenerationRequestsResponse>(completedApiUrl, { skipInitialFetch: true }, 'Failed to fetch completed generation requests');
+
   const completedTotalCount: number = counts?.completed ?? 0;
-  const loadedCompletedCount: number = data?.completed?.length ?? 0;
+  const loadedCompletedCount: number = completedData?.completed?.length ?? 0;
+
+  // Load the window when the tab opens or grows (a new window is a new
+  // `reFetchCompleted`), and reload it when the poll sees the count move.
+  useEffect(() => {
+    if (activeTab !== 'completed') return;
+    void reFetchCompleted();
+  }, [activeTab, completedTotalCount, reFetchCompleted]);
 
   const filteredCompleted: TickerV1GenerationRequestWithTicker[] = useMemo(
-    () => filterGenerationRequests(data?.completed ?? [], completedFilters),
-    [data?.completed, completedFilters]
+    () => filterGenerationRequests(completedData?.completed ?? [], completedFilters),
+    [completedData?.completed, completedFilters]
   );
 
   const completedTotalPages: number = Math.max(1, Math.ceil(filteredCompleted.length / PAGE_SIZE));
@@ -82,7 +107,9 @@ export default function GenerationRequestsPage(): JSX.Element {
 
   const completedNote: string | undefined =
     loadedCompletedCount < completedTotalCount
-      ? `Filters apply to the ${loadedCompletedCount} most recently updated of ${completedTotalCount} completed requests. Load more to widen the range.`
+      ? `Filters apply to the ${loadedCompletedCount} most recently updated of ${completedTotalCount} completed requests.${
+          canLoadMoreCompleted ? ' Load more to widen the range.' : ' This is the largest window the page loads.'
+        }`
       : undefined;
 
   const completedSummary: string = hasCompletedFilters
@@ -123,6 +150,7 @@ export default function GenerationRequestsPage(): JSX.Element {
   function handleManualRefresh(): void {
     resetToFirstPage();
     reFetchData();
+    if (activeTab === 'completed') void reFetchCompleted();
     setSecondsLeft(REFRESH_SECONDS);
   }
 
@@ -241,7 +269,7 @@ export default function GenerationRequestsPage(): JSX.Element {
             tone="blue"
             rows={data?.inProgress ?? []}
             totalCount={counts?.inProgress ?? 0}
-            loading={loading}
+            loading={data === undefined}
             currentPage={inProgressPage}
             pageSize={PAGE_SIZE}
             onPageChange={setInProgressPage}
@@ -252,7 +280,7 @@ export default function GenerationRequestsPage(): JSX.Element {
             tone="gray"
             rows={data?.notStarted ?? []}
             totalCount={counts?.notStarted ?? 0}
-            loading={loading}
+            loading={data === undefined}
             currentPage={notStartedPage}
             pageSize={PAGE_SIZE}
             onPageChange={setNotStartedPage}
@@ -266,7 +294,7 @@ export default function GenerationRequestsPage(): JSX.Element {
             tone="red"
             rows={data?.failed ?? []}
             totalCount={counts?.failed ?? 0}
-            loading={loading}
+            loading={data === undefined}
             currentPage={failedPage}
             pageSize={PAGE_SIZE}
             onPageChange={setFailedPage}
@@ -280,7 +308,7 @@ export default function GenerationRequestsPage(): JSX.Element {
             tone="green"
             rows={completedPageRows}
             totalCount={filteredCompleted.length}
-            loading={loading}
+            loading={completedData === undefined}
             currentPage={completedCurrentPage}
             pageSize={PAGE_SIZE}
             onPageChange={setCompletedPage}
@@ -290,7 +318,7 @@ export default function GenerationRequestsPage(): JSX.Element {
             toolbar={<ClientStockFilters selected={completedFilters} onChange={handleCompletedFiltersChange} resultSummary={completedSummary} />}
             footer={
               canLoadMoreCompleted ? (
-                <Button onClick={handleLoadMoreCompleted} variant="outlined" disabled={loading}>
+                <Button onClick={handleLoadMoreCompleted} variant="outlined" disabled={completedLoading}>
                   Load {Math.min(COMPLETED_WINDOW_STEP, completedTotalCount - loadedCompletedCount)} more
                 </Button>
               ) : undefined
