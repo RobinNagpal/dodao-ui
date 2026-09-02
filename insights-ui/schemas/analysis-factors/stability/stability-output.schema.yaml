@@ -1,0 +1,71 @@
+$schema: 'http://json-schema.org/draft-07/schema#'
+type: object
+additionalProperties: false
+properties:
+  summary:
+    type: string
+    description: 'THE SHORT REPORT — exactly 2 paragraphs, shown on the main stock page. Paragraph 1: the numbers — state, for a `5%`, `15%` and `30%` broad-market drop, the expected drop for this stock and the expected price for each (quote the price the report is based on first, e.g. "from `$187.42`"). Paragraph 2: the overall explanation — why the stock behaves that way (demand cyclicality, where its industry sits in its own cycle, balance sheet, dividend, valuation), ending with a one-sentence investor takeaway. Format as Markdown: separate the two paragraphs with a blank line (a double newline "\n\n" in the JSON string value). Do NOT write more than 2 paragraphs and do NOT use bullet lists here.'
+  detailedAnalysis:
+    type: string
+    description: 'THE OVERALL part of the LONG REPORT — exactly 2 paragraphs, shown on the stability detail page below the per-scenario analysis. Paragraph 1: how this stock has actually behaved in past drawdowns (the `2020` COVID crash, the `2022` bear market, any industry-specific drawdown) with real peak-to-trough percentages next to the index over the same window, plus its `beta` and how much of its typical move is industry versus company specific. Paragraph 2: the cushion and the recovery — balance sheet (net debt / `EBITDA`, interest coverage, maturity wall), dividend and buyback capacity, valuation support at the expected prices, how quickly it recovered before, and the reasoning behind the resilience verdict. Format as Markdown: separate the two paragraphs with a blank line (a double newline "\n\n" in the JSON string value). Do NOT write more than 2 paragraphs.'
+  resilienceVerdict:
+    type: string
+    enum:
+      - HIGHLY_RESILIENT
+      - RESILIENT
+      - MARKET_LIKE
+      - VULNERABLE
+      - HIGHLY_VULNERABLE
+    description: 'Overall verdict on how well the stock holds up when the broad market drops. HIGHLY_RESILIENT = expected to fall far less than the market (defensive demand, strong balance sheet, low valuation risk). RESILIENT = falls somewhat less than the market and recovers faster than peers. MARKET_LIKE = falls roughly in line with the market. VULNERABLE = falls more than the market (cyclical demand, leverage, or a rich valuation). HIGHLY_VULNERABLE = falls much more than the market with a slow, uncertain recovery. The verdict must agree with the drop percentages in dropScenarios.'
+  referencePrice:
+    type: number
+    description: 'The current price the expected prices were computed from. Use the currentPrice given in the input; do not substitute another quote.'
+  referencePriceAsOf:
+    type: string
+    description: 'ISO 8601 timestamp for when referencePrice was captured. Echo the priceAsOf value given in the input verbatim; if the input has none, use the analysis date.'
+  currency:
+    type: string
+    description: 'Currency of referencePrice and every expectedPrice, e.g. "USD".'
+  dropScenarios:
+    type: array
+    minItems: 3
+    maxItems: 3
+    description: 'Exactly three scenarios, in this order: broad market drops 5%, 15% and 30%.'
+    items:
+      type: object
+      additionalProperties: false
+      properties:
+        marketDropPercent:
+          type: number
+          enum: [5, 15, 30]
+          description: 'The broad-market (S&P 500 style index) drawdown assumed for this scenario, as a positive percentage.'
+        expectedSectorDropPercent:
+          type: number
+          description: 'Expected drawdown of this company''s industry / sub-industry in this scenario, as a positive percentage. This is NOT required to equal the market drop — an industry already near a cyclical bottom or one with defensive demand typically gives up much less, while a richly-valued or highly cyclical one gives up much more. Use a negative value only if the industry is genuinely expected to rise.'
+        sectorImpact:
+          type: string
+          description: 'FIRST PARAGRAPH of this scenario on the detail page — exactly ONE paragraph about the INDUSTRY and the SUB-INDUSTRY (name both). Explain what a market drop of this size does to them and WHY their drop differs from the market drop: where the industry is in its own cycle (already washed out near a bottom, so little left to give up — or near a peak, so a lot), which drivers move (rates, credit spreads, commodity prices, freight rates, occupancy, ad budgets, IT spend, loan losses), how much is already priced in, and how industry multiples re-rate at this magnitude. Say explicitly whether the sub-industry behaves differently from the broader industry. Markdown, single paragraph, figures in backticks.'
+        expectedStockDropPercent:
+          type: number
+          description: 'Expected drawdown of THIS stock in this scenario, as a positive percentage. It must be consistent with expectedPrice and referencePrice.'
+        expectedPrice:
+          type: number
+          description: 'Expected price of the stock in this scenario, in the same currency as referencePrice: referencePrice * (1 - expectedStockDropPercent/100), rounded to 2 decimals.'
+        companyImpact:
+          type: string
+          description: 'SECOND PARAGRAPH of this scenario on the detail page — exactly ONE paragraph about THIS COMPANY. Explain why it deviates from its industry: earnings sensitivity, contracted or recurring revenue, backlog, customer concentration, leverage and near-term refinancing, dividend safety, buyback capacity, and the valuation cushion — where the multiple would sit at the expected price. State explicitly whether the drop is a multiple re-rating or an earnings cut. Markdown, single paragraph, figures in backticks.'
+      required:
+        - marketDropPercent
+        - expectedSectorDropPercent
+        - sectorImpact
+        - expectedStockDropPercent
+        - expectedPrice
+        - companyImpact
+required:
+  - summary
+  - detailedAnalysis
+  - resilienceVerdict
+  - referencePrice
+  - referencePriceAsOf
+  - currency
+  - dropScenarios

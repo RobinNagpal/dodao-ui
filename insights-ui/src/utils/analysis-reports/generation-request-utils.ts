@@ -3,7 +3,7 @@ import { GenerationRequestStatus } from '@/types/ticker-typesv1';
 import { TickerV1GenerationRequest } from '@prisma/client';
 
 /**
- * The eight report sections that make up a full stock report, as `regenerate*`
+ * The nine report sections that make up a full stock report, as `regenerate*`
  * flags. Shared by the admin generation-requests POST route and the nightly
  * auto-generation job so both create identical requests.
  */
@@ -15,6 +15,7 @@ export interface RegenerateFlags {
   regenerateFutureGrowth: boolean;
   regenerateFairValue: boolean;
   regenerateManagementTeam: boolean;
+  regenerateStability: boolean;
   regenerateFinalSummary: boolean;
 }
 
@@ -27,6 +28,7 @@ export const ALL_SECTIONS_REGENERATE_FLAGS: RegenerateFlags = {
   regenerateFutureGrowth: true,
   regenerateFairValue: true,
   regenerateManagementTeam: true,
+  regenerateStability: true,
   regenerateFinalSummary: true,
 };
 
@@ -65,6 +67,7 @@ export async function upsertGenerationRequest(input: UpsertGenerationRequestInpu
         regenerateFutureGrowth: flags.regenerateFutureGrowth || existing.regenerateFutureGrowth,
         regenerateFairValue: flags.regenerateFairValue || existing.regenerateFairValue,
         regenerateManagementTeam: flags.regenerateManagementTeam || existing.regenerateManagementTeam,
+        regenerateStability: flags.regenerateStability || existing.regenerateStability,
         regenerateFinalSummary: flags.regenerateFinalSummary || existing.regenerateFinalSummary,
         // A newly-supplied provider/model overrides the pending request; otherwise keep the existing choice.
         llmProvider: input.llmProvider ?? existing.llmProvider,
@@ -85,6 +88,7 @@ export async function upsertGenerationRequest(input: UpsertGenerationRequestInpu
       regenerateFutureGrowth: flags.regenerateFutureGrowth,
       regenerateFairValue: flags.regenerateFairValue,
       regenerateManagementTeam: flags.regenerateManagementTeam,
+      regenerateStability: flags.regenerateStability,
       regenerateFinalSummary: flags.regenerateFinalSummary,
       llmProvider: input.llmProvider ?? null,
       llmModel: input.llmModel ?? null,

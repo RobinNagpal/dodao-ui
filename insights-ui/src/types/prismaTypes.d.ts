@@ -1,4 +1,4 @@
-import { CompetitionAnalysis as CompetitionAnalysisType } from '@/types/public-equity/analysis-factors-types';
+import { CompetitionAnalysis as CompetitionAnalysisType, MarketDropScenario as MarketDropScenarioType } from '@/types/public-equity/analysis-factors-types';
 import type {
   ExecutiveSummary as TariffExecutiveSummaryType,
   FinalConclusion as TariffFinalConclusionType,
@@ -420,6 +420,9 @@ declare global {
     // with no relation-derived fields like `existsInSystem` or `etfData`.
     type EtfCompetitionAnalysis = CompetitionAnalysisType;
     type TopCompaniesToConsider = CompetitionAnalysisType;
+    // One -5% / -15% / -30% market-drop scenario stored in
+    // `ticker_v1_stability_reports.drop_scenarios`.
+    type MarketDropScenario = MarketDropScenarioType;
     // Stock analyzer types
     type StockFundamentalsSummary = StockFundamentalsSummary;
     type DividendsData = DividendsData;

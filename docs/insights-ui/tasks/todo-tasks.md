@@ -11,6 +11,14 @@ Single source of truth for active KoalaGains work. Completed items live in
 
 - [ ] **SEO — "Crawled — currently not indexed" on `business-and-moat-sitemap.xml`** — check why these pages are not getting indexed.
 
+### Stability report — remaining roll-out steps
+
+The `stability` report type (market drops `5%` / `15%` / `30%` → expected price + industry impact + company impact + `resilienceVerdict`, as a 2-paragraph short report on the main page and a long report on its own page) is wired end-to-end in code: `TickerV1StabilityReport`, `ReportType.STABILITY`, the generation/save pipeline, `/stocks/[exchange]/[ticker]/stability`, the main-page card, `stability-sitemap.xml`. What is left is data/ops:
+
+- [ ] **Create the prompt row** — add `US/public-equities-v1/stability` in the `/prompts` admin UI with the text from [`../stock-prompts/stability.md`](../stock-prompts/stability.md), `inputSchema` = `analysis-factors/stability/stability-input.schema.yaml`, and activate a version. Until this exists, `stability` generation fails with "Active prompt version not found".
+- [ ] **Backfill** — run `yarn stocks:trigger --categories=stability` (or the admin Generate Reports UI) across existing tickers.
+- [ ] **Refresh cadence** — expected prices are anchored to the price at generation time (`referencePrice` / `referencePriceAsOf`, both shown next to the prices in the UI), so a stale stability report drifts from the market. Decide a refresh interval and add `stability` to the off-hours refresh batch.
+
 ### Off-hours Claude Code automation
 
 - [ ] **Off-hours report-refresh cron** — pick the oldest stock reports and regenerate them.

@@ -30,6 +30,7 @@ export const reportTypes: ReportTypeInfo[] = [
   { key: ReportType.FUTURE_GROWTH, label: 'Future Growth', reportType: ReportType.FUTURE_GROWTH },
   { key: ReportType.FAIR_VALUE, label: 'Fair Value', reportType: ReportType.FAIR_VALUE },
   { key: ReportType.MANAGEMENT_TEAM, label: 'Management Team', reportType: ReportType.MANAGEMENT_TEAM },
+  { key: ReportType.STABILITY, label: 'Stability', reportType: ReportType.STABILITY },
   { key: ReportType.FINAL_SUMMARY, label: 'Final Summary/Meta/About', reportType: ReportType.FINAL_SUMMARY },
 ];
 
@@ -71,6 +72,7 @@ export const useGenerateReports = () => {
           regenerateFutureGrowth: false,
           regenerateFairValue: false,
           regenerateManagementTeam: false,
+          regenerateStability: false,
           regenerateFinalSummary: false,
           llmProvider: llmSelection?.llmProvider,
           llmModel: llmSelection?.model,
@@ -84,6 +86,7 @@ export const useGenerateReports = () => {
           else if (rt === ReportType.FUTURE_GROWTH) payload.regenerateFutureGrowth = true;
           else if (rt === ReportType.FAIR_VALUE) payload.regenerateFairValue = true;
           else if (rt === ReportType.MANAGEMENT_TEAM) payload.regenerateManagementTeam = true;
+          else if (rt === ReportType.STABILITY) payload.regenerateStability = true;
           else if (rt === ReportType.FINAL_SUMMARY) payload.regenerateFinalSummary = true;
         });
 
@@ -114,6 +117,7 @@ export const useGenerateReports = () => {
         regenerateFutureGrowth: true,
         regenerateFairValue: true,
         regenerateManagementTeam: true,
+        regenerateStability: true,
         regenerateFinalSummary: true,
         llmProvider: llmSelection?.llmProvider,
         llmModel: llmSelection?.model,
@@ -143,6 +147,7 @@ export const useGenerateReports = () => {
         regenerateFutureGrowth: true,
         regenerateFairValue: true,
         regenerateManagementTeam: true,
+        regenerateStability: true,
         regenerateFinalSummary: true,
         llmProvider: llmSelection?.llmProvider,
         llmModel: llmSelection?.model,
@@ -178,6 +183,7 @@ export const useGenerateReports = () => {
             regenerateFutureGrowth: false,
             regenerateFairValue: false,
             regenerateManagementTeam: false,
+            regenerateStability: false,
             regenerateFinalSummary: false,
             llmProvider: llmSelection?.llmProvider,
             llmModel: llmSelection?.model,
@@ -191,6 +197,7 @@ export const useGenerateReports = () => {
             else if (step === ReportType.FUTURE_GROWTH) p.regenerateFutureGrowth = true;
             else if (step === ReportType.FAIR_VALUE) p.regenerateFairValue = true;
             else if (step === ReportType.MANAGEMENT_TEAM) p.regenerateManagementTeam = true;
+            else if (step === ReportType.STABILITY) p.regenerateStability = true;
             else if (step === ReportType.FINAL_SUMMARY) p.regenerateFinalSummary = true;
           });
 

@@ -9,6 +9,7 @@ import {
   revalidateTickerCategoryReportTag,
   revalidateTickerCompetitionTag,
   revalidateTickerManagementTeamTag,
+  revalidateTickerStabilityTag,
 } from '@/utils/ticker-v1-cache-utils';
 import {
   Prisma,
@@ -18,6 +19,7 @@ import {
   TickerV1CategoryAnalysisResult,
   TickerV1Industry,
   TickerV1ManagementTeamReport,
+  TickerV1StabilityReport,
   TickerV1SubIndustry,
   TickerV1VsCompetition,
 } from '@prisma/client';
@@ -36,6 +38,7 @@ export const tickerV1IncludeWithRelations = {
   subIndustry: true,
   cachedScoreEntry: true,
   managementTeamReports: true,
+  stabilityReports: true,
 } as const;
 
 export type FullTickerV1CategoryAnalysisResult = TickerV1CategoryAnalysisResult & {
@@ -76,6 +79,7 @@ export interface CompetitorTicker {
 export type TickerV1WithRelations = TickerV1 & {
   categoryAnalysisResults: FullTickerV1CategoryAnalysisResult[];
   managementTeamReports?: TickerV1ManagementTeamReport[];
+  stabilityReports?: TickerV1StabilityReport[];
   vsCompetition?: TickerV1VsCompetition | null;
   cachedScoreEntry?: TickerV1CachedScore | null;
 };
@@ -117,6 +121,7 @@ export async function getTickerWithAllDetailsForConditionsOpt(whereClause: Prism
       },
       investorAnalysisResults: true,
       managementTeamReports: true,
+      stabilityReports: true,
       vsCompetition: true,
     },
   });
@@ -330,7 +335,12 @@ export const updateTickerCachedScore = async (tickerRecord: TickerV1, categoryTy
  * page subscribes to). Pass the right one so only the affected subpage's cache
  * is invalidated, not all seven.
  */
-export type TickerCacheSlice = { kind: 'category'; category: TickerAnalysisCategory } | { kind: 'competition' } | { kind: 'managementTeam' } | { kind: 'core' };
+export type TickerCacheSlice =
+  | { kind: 'category'; category: TickerAnalysisCategory }
+  | { kind: 'competition' }
+  | { kind: 'managementTeam' }
+  | { kind: 'stability' }
+  | { kind: 'core' };
 
 const invalidateNarrowTag = (tickerRecord: TickerV1, slice: TickerCacheSlice): void => {
   switch (slice.kind) {
@@ -342,6 +352,9 @@ const invalidateNarrowTag = (tickerRecord: TickerV1, slice: TickerCacheSlice): v
       return;
     case 'managementTeam':
       revalidateTickerManagementTeamTag(tickerRecord.symbol, tickerRecord.exchange);
+      return;
+    case 'stability':
+      revalidateTickerStabilityTag(tickerRecord.symbol, tickerRecord.exchange);
       return;
     case 'core':
       // Ticker-core changes (summary/aboutReport) only need the umbrella tag —

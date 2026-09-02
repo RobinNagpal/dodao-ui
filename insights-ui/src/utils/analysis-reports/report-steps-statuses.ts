@@ -103,6 +103,10 @@ export function calculatePendingSteps(request: TickerV1GenerationRequest): Repor
     pendingSteps.push(ReportType.MANAGEMENT_TEAM);
   }
 
+  if (request.regenerateStability && !request.completedSteps.includes(ReportType.STABILITY) && !request.failedSteps.includes(ReportType.STABILITY)) {
+    pendingSteps.push(ReportType.STABILITY);
+  }
+
   if (request.regenerateFinalSummary && !request.completedSteps.includes(ReportType.FINAL_SUMMARY) && !request.failedSteps.includes(ReportType.FINAL_SUMMARY)) {
     pendingSteps.push(ReportType.FINAL_SUMMARY);
   }

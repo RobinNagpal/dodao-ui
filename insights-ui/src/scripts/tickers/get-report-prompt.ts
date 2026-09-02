@@ -17,6 +17,7 @@ const VALID_REPORT_TYPES: readonly ReportType[] = [
   ReportType.FUTURE_GROWTH,
   ReportType.FAIR_VALUE,
   ReportType.MANAGEMENT_TEAM,
+  ReportType.STABILITY,
   ReportType.FINAL_SUMMARY,
 ];
 

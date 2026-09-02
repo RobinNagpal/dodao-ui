@@ -25,14 +25,14 @@ For ETFs there is one extra step: before the first report, Claude asks the serve
 
 Report type slugs:
 
-- **Stocks:** `financial-analysis`, `competition`, `business-and-moat`, `past-performance`, `future-growth`, `fair-value`, `future-risk`, `final-summary`
+- **Stocks:** `financial-analysis`, `competition`, `business-and-moat`, `past-performance`, `future-growth`, `fair-value`, `management-team`, `stability`, `final-summary`
 - **ETFs:** `performance-and-returns`, `cost-efficiency-and-team`, `risk-analysis`, `future-performance-outlook`, `key-facts`, `competition`, `final-summary`
 
 ## When to use which flow
 
 | User says… | Flow |
 | --- | --- |
-| "generate reports for `AAPL NASDAQ`" | Stock loop, all 8 stock report types |
+| "generate reports for `AAPL NASDAQ`" | Stock loop, all 9 stock report types |
 | "generate reports for `SPUS NYSEARCA`" | ETF loop, all 7 ETF report types |
 | "regenerate just `competition` for `SPY NYSEARCA`" | One-shot: prompt → LLM → save |
 | "refresh the 5 stocks with the oldest business-and-moat reports" | `stocks:list-oldest` → for each, run the full 8-report stock loop |
@@ -108,7 +108,7 @@ yarn etfs:save --symbol SPUS --exchange NYSEARCA \
 
 Expect `{"success": true}`. If the save errors, read the error carefully — it almost always points at a JSON parse issue or a missing schema field.
 
-## Stock loop (8 report types)
+## Stock loop (9 report types)
 
 Use `yarn stocks:prompt` / `yarn stocks:save` (no MOR check — stocks use the stock-analyzer scraper that is refreshed by a separate worker). Report-type order:
 
@@ -118,8 +118,9 @@ Use `yarn stocks:prompt` / `yarn stocks:save` (no MOR check — stocks use the s
 4. `future-growth`
 5. `fair-value`
 6. `competition`
-7. `future-risk`
-8. `final-summary` — last, depends on the others.
+7. `management-team`
+8. `stability`
+9. `final-summary` — last, depends on the others.
 
 Everything else is the same as the ETF loop: prompt → act as LLM → save, once per report type.
 
@@ -185,21 +186,41 @@ The schemas below are the **minimum** shape each save call needs. Each prompt it
 }
 ```
 
-### Stock `future-risk`
+### Stock `management-team`
 
 ```json
-{ "summary": "…", "detailedAnalysis": "markdown paragraphs" }
+{ "summary": "…", "detailedAnalysis": "markdown paragraphs", "alignmentVerdict": "STRONGLY_ALIGNED" }
 ```
 
-### Stock `final-summary`
+### Stock `stability`
 
 ```json
 {
-  "finalSummary": "6–7 short lines",
-  "metaDescription": "≤160 chars, SEO",
-  "aboutReport": "2–3 sentences"
+  "summary": "2 paragraphs — the numbers, then the overall explanation (this is what the main stock page shows)",
+  "detailedAnalysis": "2 overall paragraphs — past drawdowns + volatility, then cushion/recovery/verdict",
+  "resilienceVerdict": "RESILIENT",
+  "referencePrice": 187.42,
+  "referencePriceAsOf": "2026-09-02T00:41:00.000Z",
+  "currency": "USD",
+  "dropScenarios": [
+    {
+      "marketDropPercent": 5,
+      "expectedSectorDropPercent": 3.5,
+      "sectorImpact": "paragraph 1 — the industry + sub-industry in this scenario",
+      "expectedStockDropPercent": 3,
+      "expectedPrice": 181.8,
+      "companyImpact": "paragraph 2 — this company in this scenario"
+    },
+    { "marketDropPercent": 15, "…": "…" },
+    { "marketDropPercent": 30, "…": "…" }
+  ]
 }
 ```
+
+Exactly three scenarios (`5` / `15` / `30`), ascending, two paragraphs each. `expectedPrice`
+is recomputed server-side from `referencePrice` and `expectedStockDropPercent`, so the two must
+agree; `referencePriceAsOf` is echoed from the prompt's `priceAsOf` so every price the UI shows
+carries the date it was captured.
 
 ### ETF factor reports
 (`performance-and-returns`, `cost-efficiency-and-team`, `risk-analysis`, `future-performance-outlook`)
