@@ -8,6 +8,7 @@ CREATE TABLE "ticker_v1_stability_reports" (
     "detailed_analysis" TEXT NOT NULL,
     "resilience_verdict" "StabilityResilienceVerdict" NOT NULL,
     "reference_price" DOUBLE PRECISION,
+    "reference_price_as_of" TIMESTAMP(3),
     "currency" TEXT,
     "drop_scenarios" JSONB[],
     "ticker_id" TEXT NOT NULL,

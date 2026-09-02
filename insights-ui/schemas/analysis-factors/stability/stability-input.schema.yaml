@@ -32,6 +32,9 @@ properties:
   analysisDateDisplay:
     type: string
     description: 'Human-readable date the analysis is being run on, e.g. "April 2, 2026". Treat this as today.'
+  priceAsOf:
+    type: ['string', 'null']
+    description: 'ISO 8601 timestamp for when currentPrice was captured. Echo it back as referencePriceAsOf so every price shown to a reader can be dated.'
   currentPrice:
     type: ['number', 'null']
     description: 'Latest close price of the stock. Every expected price in the output must be derived from this number.'
@@ -52,6 +55,7 @@ required:
   - industryName
   - subIndustryName
   - analysisDateDisplay
+  - priceAsOf
   - currentPrice
   - currency
   - marketSnapshot

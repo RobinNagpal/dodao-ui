@@ -294,7 +294,7 @@ export async function saveManagementTeamResponse(
 /**
  * Saves the stability (market-drawdown resilience) response.
  *
- * The three `-5% / -10% / -20%` scenarios are stored in the order the schema
+ * The three `-5% / -15% / -30%` scenarios are stored in the order the schema
  * requires (ascending market drop) so the UI can render them without sorting,
  * and every expected price is recomputed from `referencePrice` and the stock
  * drop percentage — the LLM's own arithmetic is not trusted for the number the
@@ -319,6 +319,12 @@ export async function saveStabilityResponse(
   // callback path hands the raw LLM JSON straight through — so only recompute
   // when both inputs are real numbers, and otherwise keep what the LLM sent.
   const referencePrice = Number.isFinite(response.referencePrice) ? response.referencePrice : null;
+
+  // The price the whole report is quoted against needs a date the reader can
+  // see. The LLM echoes back the `priceAsOf` it was given; if it garbles it,
+  // fall back to now — the snapshot is refreshed at the start of every run.
+  const echoedPriceAsOf = response.referencePriceAsOf ? new Date(response.referencePriceAsOf) : null;
+  const referencePriceAsOf = echoedPriceAsOf && !Number.isNaN(echoedPriceAsOf.getTime()) ? echoedPriceAsOf : new Date();
   const dropScenarios: MarketDropScenario[] = [...(response.dropScenarios || [])]
     .sort((a, b) => a.marketDropPercent - b.marketDropPercent)
     .map((scenario) => ({
@@ -341,6 +347,7 @@ export async function saveStabilityResponse(
       detailedAnalysis: response.detailedAnalysis,
       resilienceVerdict,
       referencePrice,
+      referencePriceAsOf,
       currency: response.currency,
       dropScenarios,
       updatedAt: new Date(),
@@ -352,6 +359,7 @@ export async function saveStabilityResponse(
       detailedAnalysis: response.detailedAnalysis,
       resilienceVerdict,
       referencePrice,
+      referencePriceAsOf,
       currency: response.currency,
       dropScenarios,
     },

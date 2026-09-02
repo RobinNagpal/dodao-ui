@@ -650,6 +650,8 @@ export interface StabilityMarketSnapshot {
   analysisDateDisplay: string;
   /** Last close (or open fallback) — every expected price is derived from this. */
   currentPrice: number | null;
+  /** ISO 8601 timestamp for when `currentPrice` was captured by the scraper. */
+  priceAsOf: string | null;
   /** Listing currency of `currentPrice`, when known. */
   currency: string | null;
   /** Full scraper market summary (market cap, P/E, beta, 52-week range, dividend, volume). */
@@ -670,6 +672,7 @@ export async function loadStabilityMarketSnapshot(ticker: TickerV1): Promise<Sta
   return {
     analysisDateDisplay: valuationSnapshot.valuationReportDateDisplay,
     currentPrice: valuationSnapshot.lastClosePriceUsd,
+    priceAsOf: valuationSnapshot.marketSnapshotFetchedAt,
     currency: financialInfo?.currency ?? null,
     marketSummary: isEmptySummary(summary) ? ({} as StockFundamentalsSummary) : summary,
   };

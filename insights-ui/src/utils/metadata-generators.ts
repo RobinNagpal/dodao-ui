@@ -1478,7 +1478,7 @@ export const generateStabilityArticleSchema = (
     '@context': 'https://schema.org',
     '@type': 'Article',
     headline: `${ticker.name} (${ticker.symbol}) Stability & Market Drawdown Analysis`,
-    description: `How ${ticker.name} (${ticker.symbol}) is expected to hold up when the market drops 5%, 10% or 20% — expected price in each scenario plus the impact on the sector and on the company.`,
+    description: `How ${ticker.name} (${ticker.symbol}) is expected to hold up when the market drops 5%, 15% or 30% — expected price in each scenario plus the impact on the industry and on the company.`,
     image: ['https://koalagains.com/koalagain_logo.png'],
     datePublished,
     dateModified,

@@ -50,6 +50,8 @@ export interface FinancialDataInputJson {
  */
 export interface StabilityInputJson extends BaseTickerInputJson {
   analysisDateDisplay: string;
+  /** ISO 8601 timestamp the price was captured at; echoed back as `referencePriceAsOf`. */
+  priceAsOf: string | null;
   currentPrice: number | null;
   currency: string | null;
   /** JSON-stringified scraper market summary (market cap, P/E, beta, 52-week range, …). */
@@ -339,6 +341,7 @@ export function prepareStabilityInputJson(tickerRecord: TickerV1WithIndustryAndS
   return {
     ...prepareBaseTickerInputJson(tickerRecord),
     analysisDateDisplay: snapshot.analysisDateDisplay,
+    priceAsOf: snapshot.priceAsOf,
     currentPrice: snapshot.currentPrice,
     currency: snapshot.currency,
     marketSnapshot: JSON.stringify(snapshot.marketSummary),

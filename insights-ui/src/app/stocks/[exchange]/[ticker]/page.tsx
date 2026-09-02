@@ -10,6 +10,7 @@ import TickerComparisonButton from '@/app/stocks/[exchange]/[ticker]/TickerCompa
 import FavouriteButton from '@/app/stocks/[exchange]/[ticker]/FavouriteButton';
 import NotesButton from '@/app/stocks/[exchange]/[ticker]/NotesButton';
 import CompetitionChartSection from '@/components/ticker-reportsv1/CompetitionChartSection';
+import StabilityScenarioNumbers from '@/components/ticker-reportsv1/StabilityScenarioNumbers';
 import FinancialInfo, { FinancialCard } from '@/components/ticker-reportsv1/FinancialInfo';
 // Lazy wrappers — chart.js + react-chartjs-2 deferred out of the main bundle.
 // See PriceChartLazy.tsx / QuarterlyMetricsChartLazy.tsx for the dynamic config.
@@ -753,6 +754,14 @@ function TickerAnalysisInfo({
                 className="text-body markdown markdown-body"
                 dangerouslySetInnerHTML={{ __html: parseMarkdown(stabilityReport.summary || 'No summary available.') }}
               />
+              <div className="mt-3">
+                <StabilityScenarioNumbers
+                  scenarios={stabilityReport.dropScenarios ?? []}
+                  referencePrice={stabilityReport.referencePrice ?? null}
+                  referencePriceAsOf={stabilityReport.referencePriceAsOf ?? null}
+                  currency={stabilityReport.currency ?? null}
+                />
+              </div>
             </div>
           )}
 

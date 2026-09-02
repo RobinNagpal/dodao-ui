@@ -801,18 +801,20 @@ model TickerV1ManagementTeamReport {
 }
 
 // Stability / drawdown-resilience report: how far the stock is expected to fall
-// when the broad market drops 5%, 10% or 20%, with the expected price and the
+// when the broad market drops 5%, 15% or 30%, with the expected price and the
 // sector-level + company-level reasoning behind each of those three scenarios.
 model TickerV1StabilityReport {
   id                String                     @id @default(uuid())
   summary           String                     @map("summary")
   detailedAnalysis  String                     @map("detailed_analysis")
   resilienceVerdict StabilityResilienceVerdict @map("resilience_verdict")
-  // Price the expected prices below were computed from, so a stale report is
-  // still interpretable (and the UI can show "as of this price").
+  // Price the expected prices below were computed from, plus the moment that
+  // price was captured — a stale report stays interpretable, and every place
+  // the UI shows a price can say what it is relative to.
   referencePrice    Float?                     @map("reference_price")
+  referencePriceAsOf DateTime?                 @map("reference_price_as_of")
   currency          String?                    @map("currency")
-  // One entry per market-drop scenario (-5% / -10% / -20%).
+  // One entry per market-drop scenario (-5% / -15% / -30%).
   /// [MarketDropScenario]
   dropScenarios     Json[]                     @map("drop_scenarios")
   tickerId          String                     @map("ticker_id")

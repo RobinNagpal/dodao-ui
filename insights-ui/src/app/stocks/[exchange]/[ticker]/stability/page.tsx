@@ -98,7 +98,7 @@ export async function generateMetadata({ params }: { params: RouteParams }): Pro
   const shortDesc = truncateForMeta(
     `What happens to ${companyName} (${ticker})${
       industryName ? ` in the ${industryName} industry` : ''
-    } if the market drops 5%, 10% or 20% — expected price, sector impact, and company impact in each scenario.`
+    } if the market drops 5%, 15% or 30% — expected price, industry impact, and company impact in each scenario.`
   );
   const canonicalUrl = `https://koalagains.com/stocks/${exchange}/${ticker}/${PAGE_SLUG}`;
   const keywords: string[] = [
@@ -152,7 +152,7 @@ export default async function StabilityPage({ params }: { params: RouteParams })
 
   const country: SupportedCountries = getCountryByExchange(tickerData.exchange as USExchanges | CanadaExchanges | IndiaExchanges | UKExchanges);
   const industryName: string = tickerData.industry?.name || tickerData.industryKey;
-  const sectorName: string = tickerData.subIndustry?.name || industryName;
+  const subIndustryName: string | null = tickerData.subIndustry?.name || null;
 
   const articleSchema = generateStabilityArticleSchema(tickerData, report);
   const breadcrumbSchema = generateStabilityBreadcrumbSchema(tickerData, country);
@@ -195,7 +195,7 @@ export default async function StabilityPage({ params }: { params: RouteParams })
         rightButton={<StockSubPageActions tickerId={tickerData.id} tickerSymbol={tickerData.symbol} tickerName={tickerData.name} />}
       />
 
-      <Stability tickerData={tickerData} report={report} sectorName={sectorName} />
+      <Stability tickerData={tickerData} report={report} industryName={industryName} subIndustryName={subIndustryName} />
 
       <SimilarTickersSection exchange={tickerData.exchange} ticker={tickerData.symbol} subPageSlug={PAGE_SLUG} />
     </PageWrapper>

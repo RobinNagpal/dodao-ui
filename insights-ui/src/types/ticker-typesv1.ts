@@ -210,7 +210,7 @@ export const STABILITY_RESILIENCE_VERDICT_DESCRIPTIONS: Record<StabilityResilien
 };
 
 /** The three market-drop scenarios every stability report must cover. */
-export const MARKET_DROP_SCENARIO_PERCENTS: ReadonlyArray<number> = [5, 10, 20];
+export const MARKET_DROP_SCENARIO_PERCENTS: ReadonlyArray<number> = [5, 15, 30];
 
 // Types for ticker analysis categories
 export enum TickerAnalysisCategory {

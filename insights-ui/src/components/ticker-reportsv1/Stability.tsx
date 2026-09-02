@@ -1,4 +1,6 @@
+import { formatCurrency } from '@/components/reportsv1/financialFormatters';
 import StabilityScenarioCard from '@/components/ticker-reportsv1/StabilityScenarioCard';
+import StabilityScenarioNumbers from '@/components/ticker-reportsv1/StabilityScenarioNumbers';
 import TickerRelatedSections, { getAvailableSiblingSlugs } from '@/components/ticker-reportsv1/TickerRelatedSections';
 import StatusBadge from '@/components/ui/StatusBadge';
 import Text from '@/components/ui/Text';
@@ -12,11 +14,11 @@ import ReportSectionHeader from '@/components/ui/sections/ReportSectionHeader';
 import SectionHeading from '@/components/ui/sections/SectionHeading';
 import { MarketDropScenario } from '@/types/public-equity/analysis-factors-types';
 import { STABILITY_RESILIENCE_VERDICT_DESCRIPTIONS, STABILITY_RESILIENCE_VERDICT_LABELS, StabilityResilienceVerdict } from '@/types/ticker-typesv1';
-import { formatCurrency } from '@/components/reportsv1/financialFormatters';
+import { formatPriceAsOf } from '@/utils/stability-report-utils';
 import { parseMarkdown } from '@/util/parse-markdown';
 import React, { Suspense } from 'react';
 
-const VERDICT_BADGE_VARIANT: Record<StabilityResilienceVerdict, 'success' | 'info' | 'warning' | 'danger'> = {
+export const STABILITY_VERDICT_BADGE_VARIANT: Record<StabilityResilienceVerdict, 'success' | 'info' | 'warning' | 'danger'> = {
   [StabilityResilienceVerdict.HIGHLY_RESILIENT]: 'success',
   [StabilityResilienceVerdict.RESILIENT]: 'success',
   [StabilityResilienceVerdict.MARKET_LIKE]: 'info',
@@ -34,10 +36,13 @@ type TickerDataLike = {
 };
 
 export type StabilityReportLike = {
+  /** Short report (2 paragraphs) — also what the main stock page renders. */
   summary: string;
+  /** Overall part of the long report (2 paragraphs). */
   detailedAnalysis: string;
   resilienceVerdict: string;
   referencePrice?: number | null;
+  referencePriceAsOf?: string | Date | null;
   currency?: string | null;
   dropScenarios?: MarketDropScenario[] | null;
   createdAt?: string | Date;
@@ -47,16 +52,19 @@ export type StabilityReportLike = {
 export interface StabilityProps {
   tickerData: TickerDataLike;
   report: StabilityReportLike;
-  /** Sub-industry (or industry) name used in the per-scenario sector headings. */
-  sectorName: string;
+  /** Industry name used in the per-scenario industry paragraph heading. */
+  industryName: string;
+  /** Sub-industry name, shown alongside the industry when the two differ. */
+  subIndustryName?: string | null;
 }
 
 /**
- * Stability report body: the overall resilience verdict, the three
- * market-drop scenarios (-5% / -10% / -20%) with their expected prices and
- * sector/company reasoning, and the long-form analysis behind them.
+ * The long stability report: the overall resilience verdict and headline
+ * numbers, then two paragraphs per market-drop scenario (`-5%` / `-15%` /
+ * `-30%`) — industry + sub-industry first, this company second — and two
+ * overall paragraphs on past drawdowns and the cushion behind the verdict.
  */
-export default function Stability({ tickerData, report, sectorName }: StabilityProps): React.JSX.Element {
+export default function Stability({ tickerData, report, industryName, subIndustryName }: StabilityProps): React.JSX.Element {
   const publishedDate = new Date(report.createdAt || tickerData.createdAt || new Date());
   const modifiedDate = new Date(report.updatedAt || tickerData.updatedAt || new Date());
   const formattedModifiedDate = modifiedDate.toLocaleDateString('en-US', {
@@ -69,8 +77,10 @@ export default function Stability({ tickerData, report, sectorName }: StabilityP
   const verdictLabel = STABILITY_RESILIENCE_VERDICT_LABELS[verdict] || report.resilienceVerdict;
   const verdictDescription = STABILITY_RESILIENCE_VERDICT_DESCRIPTIONS[verdict];
   const referencePrice = report.referencePrice ?? null;
+  const referencePriceAsOf = report.referencePriceAsOf ?? null;
   const currency = report.currency ?? null;
   const scenarios: MarketDropScenario[] = report.dropScenarios ?? [];
+  const priceAsOfLabel = formatPriceAsOf(referencePriceAsOf);
 
   // Kick off the sibling-presence query in parallel with the rest of render.
   // The Promise is unwrapped via `use()` inside <TickerRelatedSections>, suspended by the boundary below.
@@ -86,10 +96,11 @@ export default function Stability({ tickerData, report, sectorName }: StabilityP
         actionHref={`/stocks/${tickerData.exchange}/${tickerData.symbol}`}
       >
         <Stack direction="row" align="center" gap="sm" wrap mt="sm">
-          <StatusBadge variant={VERDICT_BADGE_VARIANT[verdict] ?? 'neutral'} label={verdictLabel} />
+          <StatusBadge variant={STABILITY_VERDICT_BADGE_VARIANT[verdict] ?? 'neutral'} label={verdictLabel} />
           {referencePrice !== null && (
             <Text size="xs" tone="muted" as="span">
-              Current price {formatCurrency(referencePrice, currency)}
+              Price {formatCurrency(referencePrice, currency)}
+              {priceAsOfLabel ? ` as of ${priceAsOfLabel}` : ''}
             </Text>
           )}
         </Stack>
@@ -104,13 +115,16 @@ export default function Stability({ tickerData, report, sectorName }: StabilityP
             </Text>
           )}
           <MarkdownContent variant="summary" itemProp="abstract" html={parseMarkdown(report.summary)} />
+          <Stack mt="md">
+            <StabilityScenarioNumbers scenarios={scenarios} referencePrice={referencePrice} referencePriceAsOf={referencePriceAsOf} currency={currency} />
+          </Stack>
         </ReportSection>
 
         {scenarios.length > 0 && (
           <ReportSection>
             <SectionHeading>If the Market Drops</SectionHeading>
             <Text size="sm" tone="muted">
-              Expected price for {tickerData.name} in a 5%, 10% and 20% broad-market sell-off, with what each drop does to the sector and to the company.
+              Expected price for {tickerData.name} in a 5%, 15% and 30% broad-market sell-off, with what each drop does to the industry and to the company.
             </Text>
             <Stack as="ul" gap="lg" mt="md">
               {scenarios.map((scenario) => (
@@ -118,8 +132,10 @@ export default function Stability({ tickerData, report, sectorName }: StabilityP
                   key={scenario.marketDropPercent}
                   scenario={scenario}
                   companyName={tickerData.name}
-                  sectorName={sectorName}
+                  industryName={industryName}
+                  subIndustryName={subIndustryName}
                   referencePrice={referencePrice}
+                  referencePriceAsOf={referencePriceAsOf}
                   currency={currency}
                 />
               ))}
@@ -128,7 +144,7 @@ export default function Stability({ tickerData, report, sectorName }: StabilityP
         )}
 
         <ReportSection itemProp="articleBody">
-          <SectionHeading>Detailed Analysis</SectionHeading>
+          <SectionHeading>Overall Analysis</SectionHeading>
           <MarkdownContent variant="body" html={parseMarkdown(report.detailedAnalysis)} />
         </ReportSection>
       </Prose>

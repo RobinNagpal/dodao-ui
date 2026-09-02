@@ -196,38 +196,31 @@ The schemas below are the **minimum** shape each save call needs. Each prompt it
 
 ```json
 {
-  "summary": "…",
-  "detailedAnalysis": "markdown paragraphs",
+  "summary": "2 paragraphs — the numbers, then the overall explanation (this is what the main stock page shows)",
+  "detailedAnalysis": "2 overall paragraphs — past drawdowns + volatility, then cushion/recovery/verdict",
   "resilienceVerdict": "RESILIENT",
   "referencePrice": 187.42,
+  "referencePriceAsOf": "2026-09-02T00:41:00.000Z",
   "currency": "USD",
   "dropScenarios": [
     {
       "marketDropPercent": 5,
       "expectedSectorDropPercent": 3.5,
-      "sectorImpact": "markdown — why the sector moves more/less than the market here",
+      "sectorImpact": "paragraph 1 — the industry + sub-industry in this scenario",
       "expectedStockDropPercent": 3,
       "expectedPrice": 181.8,
-      "companyImpact": "markdown — why this company deviates from its sector"
+      "companyImpact": "paragraph 2 — this company in this scenario"
     },
-    { "marketDropPercent": 10, "…": "…" },
-    { "marketDropPercent": 20, "…": "…" }
+    { "marketDropPercent": 15, "…": "…" },
+    { "marketDropPercent": 30, "…": "…" }
   ]
 }
 ```
 
-Exactly three scenarios (`5` / `10` / `20`), ascending. `expectedPrice` is recomputed
-server-side from `referencePrice` and `expectedStockDropPercent`, so the two must agree.
-
-### Stock `final-summary`
-
-```json
-{
-  "finalSummary": "6–7 short lines",
-  "metaDescription": "≤160 chars, SEO",
-  "aboutReport": "2–3 sentences"
-}
-```
+Exactly three scenarios (`5` / `15` / `30`), ascending, two paragraphs each. `expectedPrice`
+is recomputed server-side from `referencePrice` and `expectedStockDropPercent`, so the two must
+agree; `referencePriceAsOf` is echoed from the prompt's `priceAsOf` so every price the UI shows
+carries the date it was captured.
 
 ### ETF factor reports
 (`performance-and-returns`, `cost-efficiency-and-team`, `risk-analysis`, `future-performance-outlook`)

@@ -420,7 +420,7 @@ declare global {
     // with no relation-derived fields like `existsInSystem` or `etfData`.
     type EtfCompetitionAnalysis = CompetitionAnalysisType;
     type TopCompaniesToConsider = CompetitionAnalysisType;
-    // One -5% / -10% / -20% market-drop scenario stored in
+    // One -5% / -15% / -30% market-drop scenario stored in
     // `ticker_v1_stability_reports.drop_scenarios`.
     type MarketDropScenario = MarketDropScenarioType;
     // Stock analyzer types
