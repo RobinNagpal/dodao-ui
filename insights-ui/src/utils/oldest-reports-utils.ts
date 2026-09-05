@@ -56,12 +56,17 @@ export async function getOldestStocksByReportType(spaceId: string, reportType: S
  * order tickers by `TickerV1.updatedAt asc`. Only tickers that already have a
  * generated report (`summary` present) and no open generation request are
  * eligible — mirroring `getOldestStocksByReportType`'s exclusion.
+ *
+ * `exchanges`, when given, restricts candidates to those venues. The automated job
+ * passes the US + Canada list so the Claude budget goes to the high-priority
+ * markets; omit it (or pass undefined) to consider every exchange.
  */
-export async function getOldestStocksOverall(spaceId: string, limit: number): Promise<OldestReportRow[]> {
+export async function getOldestStocksOverall(spaceId: string, limit: number, exchanges?: string[]): Promise<OldestReportRow[]> {
   const rows = await prisma.tickerV1.findMany({
     where: {
       spaceId,
       summary: { not: null },
+      ...(exchanges ? { exchange: { in: exchanges } } : {}),
       generationRequests: {
         none: { status: { in: [GenerationRequestStatus.NotStarted, GenerationRequestStatus.InProgress] } },
       },

@@ -6,6 +6,7 @@ import { AutoEnqueueResult } from '@/utils/auto-generation/auto-gen-models';
 import {
   chooseAutoGenModel,
   evaluateAutoGenGates,
+  getAutoGenEtfExchanges,
   getAutoGenModePreset,
   isEtfAutoGenEnabled,
   isWithinAutoGenWindow,
@@ -22,9 +23,10 @@ import { ensureMorDataForAnalysis } from '@/utils/etf-analysis-reports/mor-scrap
  * reuses the same gates. The difference is the selection: instead of the OLDEST
  * already-generated reports, this picks ETFs whose reports have NOT been
  * generated/tried yet, prioritized by country — US first, then Canada, then
- * everything else. Called every few minutes by the `/cron/heartbeat` job (via
- * `runAutoGenerationTick`); the same heartbeat's processor step then generates
- * whatever this enqueues.
+ * everything else (that last tier only when GENERATION_MARKETS allows all markets;
+ * by default the job stays on US + Canada). Called every few minutes by the
+ * `/cron/heartbeat` job (via `runAutoGenerationTick`); the same heartbeat's
+ * processor step then generates whatever this enqueues.
  */
 
 const US_EXCHANGES: string[] = Object.values(EtfUSExchanges);
@@ -37,19 +39,43 @@ interface EtfToGenerate {
 }
 
 /**
+ * The same US → Canada → other priority order, but built only from the venues the
+ * caller allows: each tier keeps just its allowed exchanges, "other" is whatever
+ * the allow-list names beyond US/Canada, and empty tiers are dropped so no query
+ * runs with an empty `in` list.
+ */
+function buildAllowedTiers(allowedExchanges: string[]): { exchange: { in: string[] } }[] {
+  const otherExchanges = allowedExchanges.filter((e) => !US_EXCHANGES.includes(e) && !CANADA_EXCHANGES.includes(e));
+  return [US_EXCHANGES, CANADA_EXCHANGES, otherExchanges]
+    .map((tier) => tier.filter((e) => allowedExchanges.includes(e)))
+    .filter((tier) => tier.length > 0)
+    .map((tier) => ({ exchange: { in: tier } }));
+}
+
+/**
  * ETFs that have never been generated or attempted — no category reports and no
  * generation request yet — returned up to `limit`, prioritized US → Canada →
  * other. Country is derived from the exchange (ETFs have no country column), so
  * each priority tier is a separate bounded query that fills the remaining slots.
+ *
+ * `allowedExchanges`, when given, drops any tier outside it — the automated job
+ * passes the US + Canada venues so the Claude budget goes to the high-priority
+ * markets, leaving UK/Australia ETFs to be generated on demand from the admin
+ * screens. Omit it to consider every tier.
  */
-export async function getEtfsMissingReports(spaceId: string, limit: number): Promise<EtfToGenerate[]> {
+export async function getEtfsMissingReports(spaceId: string, limit: number, allowedExchanges?: string[]): Promise<EtfToGenerate[]> {
   const baseWhere = {
     spaceId,
     categoryAnalysisResults: { none: {} },
     generationRequests: { none: {} },
   };
 
-  const tiers = [{ exchange: { in: US_EXCHANGES } }, { exchange: { in: CANADA_EXCHANGES } }, { exchange: { notIn: [...US_EXCHANGES, ...CANADA_EXCHANGES] } }];
+  // Unrestricted, the "everything else" tier is a `notIn` — it has no venue list to
+  // intersect with an allow-list, so a restricted run rebuilds the tiers from the
+  // allowed venues instead (`buildAllowedTiers`) rather than narrowing these.
+  const tiers = allowedExchanges
+    ? buildAllowedTiers(allowedExchanges)
+    : [{ exchange: { in: US_EXCHANGES } }, { exchange: { in: CANADA_EXCHANGES } }, { exchange: { notIn: [...US_EXCHANGES, ...CANADA_EXCHANGES] } }];
 
   const selected: EtfToGenerate[] = [];
   for (const tier of tiers) {
@@ -100,8 +126,9 @@ export async function latestAutoEtfRequestUpdatedAt(spaceId: string): Promise<Da
  * When no auto batch is open, the mode's frequency cooldown has elapsed, and the
  * shared Claude usage gates pass, creates one batch (the mode's batch size) of
  * full-report Claude requests for ETFs missing their reports (US → Canada →
- * other). Called by the heartbeat via `runAutoGenerationTick`. Never throws — on
- * any failure it creates nothing (fails closed).
+ * other, the last tier only when GENERATION_MARKETS allows all markets). Called by
+ * the heartbeat via `runAutoGenerationTick`. Never throws — on any failure it
+ * creates nothing (fails closed).
  */
 export async function enqueueAutoEtfGenerationBatch(spaceId: string): Promise<AutoEnqueueResult> {
   const now = new Date();
@@ -143,7 +170,7 @@ export async function enqueueAutoEtfGenerationBatch(spaceId: string): Promise<Au
       return { created: 0, reason: gate.reason, ...gateFields };
     }
 
-    const etfs = await getEtfsMissingReports(spaceId, batchSize);
+    const etfs = await getEtfsMissingReports(spaceId, batchSize, await getAutoGenEtfExchanges());
     const autoGenModel = await chooseAutoGenModel(usage);
     let created = 0;
     for (const etf of etfs) {
