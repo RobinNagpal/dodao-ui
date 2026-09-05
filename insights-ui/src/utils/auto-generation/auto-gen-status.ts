@@ -1,9 +1,10 @@
 /**
  * Read-only diagnostic for the nightly auto-generation job. Walks the SAME gate
  * chain the enqueue side walks (master switch → entity → window → open-batch →
- * cooldown → Claude usage → candidates) but never creates anything, so an operator
- * can see at a glance WHY a batch would or would not be created right now — instead
- * of triggering the heartbeat and reading its side-effecting result.
+ * cooldown → Claude usage → candidates, the last narrowed by the selected markets)
+ * but never creates anything, so an operator can see at a glance WHY a batch would
+ * or would not be created right now — instead of triggering the heartbeat and
+ * reading its side-effecting result.
  *
  * Everything substantive is the shared helper the real job uses (`isAutoGenEnabled`,
  * `isWithinAutoGenWindow`, `isWithinFrequencyCooldown`, `evaluateAutoGenGates`, the
@@ -18,7 +19,9 @@ import { countOpenAutoStockRequests, latestAutoStockRequestUpdatedAt } from '@/u
 import {
   currentEtHour,
   evaluateAutoGenGates,
+  getAutoGenEtfExchanges,
   getAutoGenModePreset,
+  getAutoGenStockExchanges,
   getResolvedAutoGenControls,
   isAutoGenEnabled,
   isEtfAutoGenEnabled,
@@ -66,13 +69,15 @@ function deriveBlockingReason(i: EntityGateInputs): string {
 export async function getAutoGenerationStatus(spaceId: string): Promise<AutoGenerationStatus> {
   const now = new Date();
 
-  const [masterEnabled, controls, preset, withinWindow, stockEntityEnabled, etfEntityEnabled, resolved] = await Promise.all([
+  const [masterEnabled, controls, preset, withinWindow, stockEntityEnabled, etfEntityEnabled, stockExchanges, etfExchanges, resolved] = await Promise.all([
     isAutoGenEnabled(),
     getResolvedAutoGenControls(),
     getAutoGenModePreset(),
     isWithinAutoGenWindow(now),
     isStockAutoGenEnabled(),
     isEtfAutoGenEnabled(),
+    getAutoGenStockExchanges(),
+    getAutoGenEtfExchanges(),
     getResolvedAppSettings(),
   ]);
 
@@ -93,10 +98,10 @@ export async function getAutoGenerationStatus(spaceId: string): Promise<AutoGene
   const [stockOpen, stockLastAt, stockCandidates, etfOpen, etfLastAt, etfCandidates] = await Promise.all([
     countOpenAutoStockRequests(spaceId),
     latestAutoStockRequestUpdatedAt(spaceId),
-    getOldestStocksOverall(spaceId, preset.batchSize),
+    getOldestStocksOverall(spaceId, preset.batchSize, stockExchanges),
     countOpenAutoEtfRequests(spaceId),
     latestAutoEtfRequestUpdatedAt(spaceId),
-    getEtfsMissingReports(spaceId, preset.batchSize),
+    getEtfsMissingReports(spaceId, preset.batchSize, etfExchanges),
   ]);
 
   const buildEntity = (entityEnabled: boolean, openAutoCount: number, lastAt: Date | null, candidateCount: number): AutoGenEntityStatus => {
@@ -128,6 +133,7 @@ export async function getAutoGenerationStatus(spaceId: string): Promise<AutoGene
     currentEtHour: currentEtHour(now),
     masterEnabled,
     entity: controls.entity,
+    markets: controls.markets,
     window: { value: controls.window, isWithinWindow: withinWindow },
     mode: { value: controls.mode, batchSize: preset.batchSize, minMinutesBetweenBatches: preset.minMinutesBetweenBatches },
     budgetStrategy: controls.budgetStrategy,

@@ -1,6 +1,6 @@
 /**
  * Runtime helpers for the nightly auto-generation: resolvers that read the
- * admin-selected mode / window / entity from App Settings, the ET run-window
+ * admin-selected mode / window / entity / markets from App Settings, the ET run-window
  * check, and the Claude usage gate. Kept separate from `auto-gen-config.ts` (which
  * `appConfigDefinitions.ts` imports) so the App-Settings dependency here never
  * forms an import cycle.
@@ -11,11 +11,14 @@ import { ClaudeSubscriptionUsage } from '@/util/claude/claude-usage';
 import {
   AUTO_GEN_MODE_PRESETS,
   AUTO_GEN_OPUS_MODEL_OPTIONS,
+  AUTO_GEN_PRIORITY_ETF_EXCHANGES,
+  AUTO_GEN_PRIORITY_STOCK_EXCHANGES,
   AUTO_GEN_SONNET_MODEL_OPTIONS,
   AUTO_GEN_USAGE_CAPS,
   AUTO_GEN_WINDOWS,
   DEFAULT_AUTO_GEN_BUDGET_UTILIZATION,
   DEFAULT_AUTO_GEN_ENTITY,
+  DEFAULT_AUTO_GEN_MARKETS,
   DEFAULT_AUTO_GEN_MODE,
   DEFAULT_AUTO_GEN_OPUS_MODEL,
   DEFAULT_AUTO_GEN_SONNET_MODEL,
@@ -27,6 +30,7 @@ import {
   AutoGenBudgetUtilizationStrategy,
   AutoGenEntity,
   AutoGenGateResult,
+  AutoGenMarkets,
   AutoGenMode,
   AutoGenModePreset,
   AutoGenWindow,
@@ -37,6 +41,7 @@ const AUTO_GEN_ENABLED_KEY = 'AUTOMATED_GENERATION_ENABLED';
 const AUTO_GEN_MODE_KEY = 'AUTOMATED_GENERATION_MODE';
 const AUTO_GEN_WINDOW_KEY = 'AUTOMATED_GENERATION_WINDOW';
 const AUTO_GEN_ENTITY_KEY = 'AUTOMATED_GENERATION_ENTITY';
+const AUTO_GEN_MARKETS_KEY = 'AUTOMATED_GENERATION_MARKETS';
 const AUTO_GEN_BUDGET_UTILIZATION_KEY = 'AUTOMATED_GENERATION_BUDGET_UTILIZATION';
 const AUTO_GEN_OPUS_MODEL_KEY = 'AUTOMATED_GENERATION_OPUS_MODEL';
 const AUTO_GEN_SONNET_MODEL_KEY = 'AUTOMATED_GENERATION_SONNET_MODEL';
@@ -74,6 +79,28 @@ async function getAutoGenWindow(): Promise<AutoGenWindow> {
 
 async function getAutoGenEntity(): Promise<AutoGenEntity> {
   return coerce(await getAppConfigValue(AUTO_GEN_ENTITY_KEY), Object.values(AutoGenEntity), DEFAULT_AUTO_GEN_ENTITY);
+}
+
+async function getAutoGenMarkets(): Promise<AutoGenMarkets> {
+  return coerce(await getAppConfigValue(AUTO_GEN_MARKETS_KEY), Object.values(AutoGenMarkets), DEFAULT_AUTO_GEN_MARKETS);
+}
+
+/**
+ * Exchanges the automated stock job may pick candidates from, or `undefined` for
+ * "no restriction". Under the default `UsAndCanadaOnly` this is the US + Canada
+ * stock venues, so the finite Claude budget goes to the high-priority markets and
+ * every other exchange is left to be generated manually from the admin screens.
+ */
+export async function getAutoGenStockExchanges(): Promise<string[] | undefined> {
+  return (await getAutoGenMarkets()) === AutoGenMarkets.UsAndCanadaOnly ? AUTO_GEN_PRIORITY_STOCK_EXCHANGES : undefined;
+}
+
+/**
+ * ETF counterpart of `getAutoGenStockExchanges` — the ETF venue list differs from
+ * the stock one (see `etfCountryExchangeUtils.ts`), so it has its own constant.
+ */
+export async function getAutoGenEtfExchanges(): Promise<string[] | undefined> {
+  return (await getAutoGenMarkets()) === AutoGenMarkets.UsAndCanadaOnly ? AUTO_GEN_PRIORITY_ETF_EXCHANGES : undefined;
 }
 
 /** Which Opus model the balancer uses when it routes a batch to the Opus family (`AUTOMATED_GENERATION_OPUS_MODEL`). */
@@ -119,24 +146,26 @@ async function getAutoGenBudgetUtilizationStrategy(): Promise<AutoGenBudgetUtili
 }
 
 /**
- * The four admin-selected auto-generation controls, resolved and coerced to their
- * enums in one call. Used by the read-only status endpoint to report exactly which
- * mode / window / entity / budget strategy the job is running with. The enqueue job
- * itself reads these through the more specific helpers below.
+ * The admin-selected auto-generation controls, resolved and coerced to their enums
+ * in one call. Used by the read-only status endpoint to report exactly which
+ * mode / window / entity / markets / budget strategy the job is running with. The
+ * enqueue job itself reads these through the more specific helpers below.
  */
 export async function getResolvedAutoGenControls(): Promise<{
   mode: AutoGenMode;
   window: AutoGenWindow;
   entity: AutoGenEntity;
+  markets: AutoGenMarkets;
   budgetStrategy: AutoGenBudgetUtilizationStrategy;
 }> {
-  const [mode, window, entity, budgetStrategy] = await Promise.all([
+  const [mode, window, entity, markets, budgetStrategy] = await Promise.all([
     getAutoGenMode(),
     getAutoGenWindow(),
     getAutoGenEntity(),
+    getAutoGenMarkets(),
     getAutoGenBudgetUtilizationStrategy(),
   ]);
-  return { mode, window, entity, budgetStrategy };
+  return { mode, window, entity, markets, budgetStrategy };
 }
 
 /** Current hour (0-23) in America/New_York, DST-aware. */
