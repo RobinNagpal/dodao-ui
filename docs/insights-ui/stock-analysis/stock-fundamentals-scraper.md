@@ -125,22 +125,52 @@ own; every statement sub-page **404s**, and the nav carries a `Main Listing` lin
 ticker that does have them.
 
 So when a sub-page 404s, `scrapeStockAnalyzerSection` reads the ticker's quote page, finds
-that link via `parseMainListingPath`, and retries the sub-page there:
+that link via `parseMainListingHref`, and retries the sub-page there:
 
-| Section | TSX `QBR.B` scrapes from |
-| --- | --- |
-| `summary`, `dividends` | `/quote/tsx/QBR.B/…` — this listing's own price and dividends |
-| the 10 statement / KPI sections | `/quote/tsx/QBR.A/financials/…` |
+| Section | `fallsBackToMainListing` | TSX `QBR.B` scrapes from |
+| --- | --- | --- |
+| `summary`, `dividends` | **false** | `/quote/tsx/QBR.B/…` |
+| the 10 statement / KPI sections | **true** | `/quote/tsx/QBR.A/financials/…` |
 
-The quote page itself (`subPath: ''`) never redirects — its price, market cap and 52-week
-range must stay those of the listing the user is actually looking at. The fallback fires
-only on a 404, so a main listing never pays for it, and a genuinely missing ticker still
-surfaces its original error.
+Which sections may fall back is an explicit flag on the section definition, not an
+inference from the sub-path. `summary` and `dividends` are **per-listing** figures — price,
+market cap, 52-week range, dividend amount and yield all belong to the listing the user is
+actually looking at — so they never redirect, even when the secondary listing has no
+dividend page of its own (that section simply fails and is retried later under the normal
+backoff). Only the statement / KPI sections, which a secondary listing does not publish at
+all, fall back.
+
+The fallback fires only on a 404, so a main listing never pays for it, and a genuinely
+missing ticker still surfaces its original error. When a section 404s and the quote page
+carries no recognisable `Main Listing` link, that is logged explicitly — otherwise it is
+indistinguishable from "this ticker is a main listing", which is the case that legitimately
+resolves to null.
+
+Only same-origin links are followed. The scraped rows are stored as *this* ticker's
+financials, so an off-site or protocol-relative href (`//other.host/…`, which would slip
+past a naive `startsWith('/')` test) is rejected and logged rather than followed.
 
 The lookup is memoized per ticker for 10 minutes, and the **in-flight promise** is what's
 cached: all 10 statement sections 404 simultaneously under `Promise.all`, so caching only
 the settled value would still let ten identical quote-page fetches race. A failed lookup
 is evicted immediately rather than being remembered for the full TTL.
+
+### Known caveat: cross-border cross-listings mix currencies
+
+For a cross-listing like TSX `SHOP`, the summary is the **TSX** listing (CAD price and
+market cap) while the statements come from the **US** main listing (USD revenue, EPS,
+shares). That is how the company actually reports — financials are filed in one currency
+regardless of where the shares trade — and each statement's `meta.currency` records it, so
+the chart labels the right unit.
+
+But the two live in one `TickerV1StockAnalyzerScrapperInfo` row with no single currency for
+the row as a whole. Nothing in the app divides one by the other today
+(`financial-info` reads only `summary`, `quarterly-chart-data` only the income statement),
+so no displayed number is wrong. The exposure is `extractFinancialDataForAnalysis`, which
+hands `marketSummary` and the statements to the analysis prompts together — an LLM asked
+for a P/E could combine a CAD price with USD EPS. Worth a per-section currency field if
+cross-border cross-listings become common; a same-country second share class like `QBR.B`
+is unaffected (both listings are CAD).
 
 ## ETFs
 
