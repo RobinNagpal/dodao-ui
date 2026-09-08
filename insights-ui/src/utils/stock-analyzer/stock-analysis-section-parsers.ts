@@ -475,3 +475,41 @@ export function parseEtfSummaryPage(html: string): EtfSummaryStats {
 
   return summary;
 }
+
+/* =============================================================================
+   SECONDARY LISTINGS
+============================================================================= */
+
+/**
+ * Find the "Main Listing" link in a quote page's nav, if there is one.
+ *
+ * A secondary listing — a second share class (TSX `QBR.B`, whose financials are
+ * filed under `QBR.A`) or a cross-listing (TSX `SHOP`, reported under the US
+ * listing) — gets only Overview / Dividends / History pages of its own. Every
+ * statement sub-page 404s, and the nav carries a `Main Listing` link to the
+ * ticker that does have them.
+ *
+ * Returns the site-root-relative path (e.g. `/quote/tsx/QBR.A/`), or null when
+ * the page is a main listing itself.
+ */
+export function parseMainListingPath(html: string): string | null {
+  const $: cheerio.CheerioAPI = cheerio.load(html);
+
+  let mainListingPath: string | null = null;
+
+  $('nav a[href], li a[href]').each((_index, anchor) => {
+    if (mainListingPath) {
+      return;
+    }
+    const label: string = $(anchor).text().replace(/\s+/g, ' ').trim();
+    if (!/^Main Listing\b/.test(label)) {
+      return;
+    }
+    const href: string = ($(anchor).attr('href') ?? '').trim();
+    if (href.startsWith('/')) {
+      mainListingPath = href;
+    }
+  });
+
+  return mainListingPath;
+}

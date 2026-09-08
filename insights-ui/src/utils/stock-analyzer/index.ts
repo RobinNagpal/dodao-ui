@@ -1,10 +1,11 @@
-import { buildStockAnalysisSubPageUrl, fetchStockAnalysisPage } from '@/utils/stock-analyzer/stock-analysis-fetcher';
+import { buildStockAnalysisSubPageUrl, fetchStockAnalysisPage, StockAnalysisFetchError } from '@/utils/stock-analyzer/stock-analysis-fetcher';
 import {
   EtfSummaryStats,
   KpisData,
   parseDividendsPage,
   parseEtfSummaryPage,
   parseKpisPage,
+  parseMainListingPath,
   parseStatementPage,
   parseSummaryPage,
   StatementData,
@@ -149,9 +150,26 @@ export function isScrapedSectionUsable(section: StockAnalyzerSectionId, data: un
  */
 export async function scrapeStockAnalyzerSection(stockAnalyzeUrl: string, section: StockAnalyzerSectionId): Promise<ScrapeSectionResult> {
   const definition: SectionDefinition = SECTION_DEFINITIONS[section];
-  const url: string = buildStockAnalysisSubPageUrl(stockAnalyzeUrl, definition.subPath, definition.searchParams);
+  let url: string = buildStockAnalysisSubPageUrl(stockAnalyzeUrl, definition.subPath, definition.searchParams);
 
-  const html: string = await fetchStockAnalysisPage(url);
+  let html: string;
+  try {
+    html = await fetchStockAnalysisPage(url);
+  } catch (error) {
+    // A secondary listing has no statement pages of its own; they live under
+    // its main listing. Retry there once, but only for sub-pages — the quote
+    // page itself (`subPath: ''`) exists and must stay on the ticker the user
+    // is actually looking at, so its price and dividends are that listing's.
+    const mainListingUrl: string | null =
+      error instanceof StockAnalysisFetchError && error.status === 404 && definition.subPath ? await resolveMainListingUrl(stockAnalyzeUrl) : null;
+
+    if (!mainListingUrl) {
+      throw error;
+    }
+
+    url = buildStockAnalysisSubPageUrl(mainListingUrl, definition.subPath, definition.searchParams);
+    html = await fetchStockAnalysisPage(url);
+  }
 
   let data: ScrapedSectionData;
   try {
@@ -165,6 +183,52 @@ export async function scrapeStockAnalyzerSection(stockAnalyzeUrl: string, sectio
     : [{ where: `parse:${section}`, message: `Parsed no usable data from ${url} — the source page layout may have changed` }];
 
   return { section, url, data, errors };
+}
+
+/**
+ * How long a resolved main listing stays memoized.
+ *
+ * All 10 statement sections for a ticker are scraped in parallel, so without
+ * this every one of them would fetch the quote page again just to read the same
+ * link. The mapping only changes when a company restructures its listings, so a
+ * short in-process TTL is ample.
+ */
+const MAIN_LISTING_CACHE_TTL_MS = 10 * 60 * 1000;
+
+/**
+ * The in-flight *promise* is cached, not just its result: all 10 statement
+ * sections 404 at the same moment under `Promise.all`, so caching only the
+ * settled value would still let ten identical quote-page fetches race. This
+ * makes the lookup single-flight per ticker.
+ */
+const mainListingCache: Map<string, { lookup: Promise<string | null>; startedAtMs: number }> = new Map();
+
+/**
+ * Resolve a ticker's main listing URL, or null when it is already one (or the
+ * quote page cannot be read).
+ */
+function resolveMainListingUrl(stockAnalyzeUrl: string): Promise<string | null> {
+  const quoteUrl: string = buildStockAnalysisSubPageUrl(stockAnalyzeUrl, '');
+
+  const cached = mainListingCache.get(quoteUrl);
+  if (cached && Date.now() - cached.startedAtMs < MAIN_LISTING_CACHE_TTL_MS) {
+    return cached.lookup;
+  }
+
+  const lookup: Promise<string | null> = fetchStockAnalysisPage(quoteUrl)
+    .then((quoteHtml: string) => {
+      const mainListingPath: string | null = parseMainListingPath(quoteHtml);
+      return mainListingPath ? new URL(mainListingPath, quoteUrl).toString() : null;
+    })
+    .catch((error: unknown) => {
+      console.error(`Could not resolve a main listing from ${quoteUrl}:`, error instanceof Error ? error.message : String(error));
+      // Don't let a transient failure be remembered for the full TTL.
+      mainListingCache.delete(quoteUrl);
+      return null;
+    });
+
+  mainListingCache.set(quoteUrl, { lookup, startedAtMs: Date.now() });
+  return lookup;
 }
 
 /* =============================================================================

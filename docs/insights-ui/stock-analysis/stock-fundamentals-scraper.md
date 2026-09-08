@@ -116,6 +116,32 @@ read as stale instead of masquerading as freshly fetched.
 backfill rows whose sections were persisted empty — without it those rows carry a fresh
 `lastUpdatedAt*` and the age check skips them.
 
+## Secondary listings
+
+A ticker can be a **secondary listing** — a second share class (TSX `QBR.B`, whose
+financials are filed under `QBR.A`) or a cross-listing (TSX `SHOP`, reported under the US
+listing). The source site gives these only Overview / Dividends / History pages of their
+own; every statement sub-page **404s**, and the nav carries a `Main Listing` link to the
+ticker that does have them.
+
+So when a sub-page 404s, `scrapeStockAnalyzerSection` reads the ticker's quote page, finds
+that link via `parseMainListingPath`, and retries the sub-page there:
+
+| Section | TSX `QBR.B` scrapes from |
+| --- | --- |
+| `summary`, `dividends` | `/quote/tsx/QBR.B/…` — this listing's own price and dividends |
+| the 10 statement / KPI sections | `/quote/tsx/QBR.A/financials/…` |
+
+The quote page itself (`subPath: ''`) never redirects — its price, market cap and 52-week
+range must stay those of the listing the user is actually looking at. The fallback fires
+only on a 404, so a main listing never pays for it, and a genuinely missing ticker still
+surfaces its original error.
+
+The lookup is memoized per ticker for 10 minutes, and the **in-flight promise** is what's
+cached: all 10 statement sections 404 simultaneously under `Promise.all`, so caching only
+the settled value would still let ten identical quote-page fetches race. A failed lookup
+is evicted immediately rather than being remembered for the full TTL.
+
 ## ETFs
 
 ETFs sit on the same source site (`<base>/etf/{symbol}/`) and their quote page uses the
@@ -147,3 +173,6 @@ expands the suffix so the rows stay homogeneous.
 3. Open the page it names in a browser. If the tables moved, fix
    `stock-analysis-table-parser.ts` / `stock-analysis-section-parsers.ts`, then `force`
    a refresh for the affected tickers.
+4. If it is missing for **one** ticker rather than all of them, check whether that ticker
+   is a secondary listing (see above) — its statement pages 404 and the data lives under
+   its main listing.
