@@ -1,10 +1,11 @@
-import { buildStockAnalysisSubPageUrl, fetchStockAnalysisPage } from '@/utils/stock-analyzer/stock-analysis-fetcher';
+import { buildStockAnalysisSubPageUrl, fetchStockAnalysisPage, StockAnalysisFetchError } from '@/utils/stock-analyzer/stock-analysis-fetcher';
 import {
   EtfSummaryStats,
   KpisData,
   parseDividendsPage,
   parseEtfSummaryPage,
   parseKpisPage,
+  parseMainListingHref,
   parseStatementPage,
   parseSummaryPage,
   StatementData,
@@ -63,6 +64,17 @@ interface SectionDefinition {
    * previously stored data instead of overwriting it with an empty object.
    */
   isUsable: (data: ScrapedSectionData) => boolean;
+  /**
+   * Whether a 404 on this section may be retried against the ticker's main
+   * listing (see {@link scrapeStockAnalyzerSection}).
+   *
+   * True only for the statement / KPI sections, which a secondary listing does
+   * not publish. `summary` and `dividends` stay on the ticker the user is
+   * looking at even when its page 404s: those are per-listing figures, and for
+   * a cross-border cross-listing the main listing reports them in a different
+   * currency, which would silently mix currencies within one stored row.
+   */
+  fallsBackToMainListing: boolean;
 }
 
 function hasPeriods(data: ScrapedSectionData): boolean {
@@ -76,6 +88,7 @@ function statementSection(subPath: string, periodType: StatementPeriodType): Sec
     ...(periodType === 'quarterly' ? { searchParams: { p: 'quarterly' } } : {}),
     parse: (html: string): ScrapedSectionData => parseStatementPage(html, periodType),
     isUsable: hasPeriods,
+    fallsBackToMainListing: true,
   };
 }
 
@@ -85,6 +98,7 @@ function kpisSection(periodType: StatementPeriodType): SectionDefinition {
     ...(periodType === 'quarterly' ? { searchParams: { p: 'quarterly' } } : {}),
     parse: (html: string): ScrapedSectionData => parseKpisPage(html, periodType),
     isUsable: hasPeriods,
+    fallsBackToMainListing: true,
   };
 }
 
@@ -95,6 +109,7 @@ const SECTION_DEFINITIONS: Readonly<Record<StockAnalyzerSectionId, SectionDefini
     // The quote page always carries a market cap and a previous close; without
     // them the fetch hit a challenge/placeholder page rather than the quote.
     isUsable: (data: ScrapedSectionData): boolean => Object.keys(data as StockFundamentalsSummary).length > 0,
+    fallsBackToMainListing: false,
   },
   dividends: {
     subPath: 'dividend',
@@ -104,6 +119,7 @@ const SECTION_DEFINITIONS: Readonly<Record<StockAnalyzerSectionId, SectionDefini
       const dividends = data as DividendsData;
       return dividends.history.length > 0 || Object.keys(dividends.summary).length > 0;
     },
+    fallsBackToMainListing: false,
   },
   'income-statement/annual': statementSection('financials/income-statement', 'annual'),
   'income-statement/quarterly': statementSection('financials/income-statement', 'quarterly'),
@@ -149,9 +165,32 @@ export function isScrapedSectionUsable(section: StockAnalyzerSectionId, data: un
  */
 export async function scrapeStockAnalyzerSection(stockAnalyzeUrl: string, section: StockAnalyzerSectionId): Promise<ScrapeSectionResult> {
   const definition: SectionDefinition = SECTION_DEFINITIONS[section];
-  const url: string = buildStockAnalysisSubPageUrl(stockAnalyzeUrl, definition.subPath, definition.searchParams);
+  let url: string = buildStockAnalysisSubPageUrl(stockAnalyzeUrl, definition.subPath, definition.searchParams);
 
-  const html: string = await fetchStockAnalysisPage(url);
+  let html: string;
+  try {
+    html = await fetchStockAnalysisPage(url);
+  } catch (error) {
+    // A secondary listing has no statement pages of its own; they live under
+    // its main listing. Retry there once — but only for the sections that a
+    // secondary listing genuinely does not publish (see
+    // `fallsBackToMainListing`).
+    const isMissingSubPage: boolean = error instanceof StockAnalysisFetchError && error.status === 404 && definition.fallsBackToMainListing;
+    if (!isMissingSubPage) {
+      throw error;
+    }
+
+    const mainListingUrl: string | null = await resolveMainListingUrl(stockAnalyzeUrl);
+    if (!mainListingUrl) {
+      // Distinguishable in the logs from "this is a main listing": we only get
+      // here because the section's own page was missing.
+      console.error(`${section} 404'd for ${stockAnalyzeUrl} and its quote page carries no Main Listing link`);
+      throw error;
+    }
+
+    url = buildStockAnalysisSubPageUrl(mainListingUrl, definition.subPath, definition.searchParams);
+    html = await fetchStockAnalysisPage(url);
+  }
 
   let data: ScrapedSectionData;
   try {
@@ -165,6 +204,63 @@ export async function scrapeStockAnalyzerSection(stockAnalyzeUrl: string, sectio
     : [{ where: `parse:${section}`, message: `Parsed no usable data from ${url} — the source page layout may have changed` }];
 
   return { section, url, data, errors };
+}
+
+/**
+ * How long a resolved main listing stays memoized.
+ *
+ * All 10 statement sections for a ticker are scraped in parallel, so without
+ * this every one of them would fetch the quote page again just to read the same
+ * link. The mapping only changes when a company restructures its listings, so a
+ * short in-process TTL is ample.
+ */
+const MAIN_LISTING_CACHE_TTL_MS = 10 * 60 * 1000;
+
+/**
+ * The in-flight *promise* is cached, not just its result: all 10 statement
+ * sections 404 at the same moment under `Promise.all`, so caching only the
+ * settled value would still let ten identical quote-page fetches race. This
+ * makes the lookup single-flight per ticker.
+ */
+const mainListingCache: Map<string, { lookup: Promise<string | null>; startedAtMs: number }> = new Map();
+
+/**
+ * Resolve a ticker's main listing URL, or null when it is already one (or the
+ * quote page cannot be read).
+ */
+function resolveMainListingUrl(stockAnalyzeUrl: string): Promise<string | null> {
+  const quoteUrl: string = buildStockAnalysisSubPageUrl(stockAnalyzeUrl, '');
+
+  const cached = mainListingCache.get(quoteUrl);
+  if (cached && Date.now() - cached.startedAtMs < MAIN_LISTING_CACHE_TTL_MS) {
+    return cached.lookup;
+  }
+
+  const lookup: Promise<string | null> = fetchStockAnalysisPage(quoteUrl)
+    .then((quoteHtml: string) => {
+      const mainListingHref: string | null = parseMainListingHref(quoteHtml);
+      if (!mainListingHref) {
+        return null;
+      }
+      const resolved: URL = new URL(mainListingHref, quoteUrl);
+      // Never follow the link off-site: the scraped rows are stored as this
+      // ticker's financials, so a wrong target would file another company's
+      // statements under it.
+      if (resolved.origin !== new URL(quoteUrl).origin) {
+        console.error(`Ignoring off-site Main Listing link ${resolved.toString()} on ${quoteUrl}`);
+        return null;
+      }
+      return resolved.toString();
+    })
+    .catch((error: unknown) => {
+      console.error(`Could not resolve a main listing from ${quoteUrl}:`, error instanceof Error ? error.message : String(error));
+      // Don't let a transient failure be remembered for the full TTL.
+      mainListingCache.delete(quoteUrl);
+      return null;
+    });
+
+  mainListingCache.set(quoteUrl, { lookup, startedAtMs: Date.now() });
+  return lookup;
 }
 
 /* =============================================================================

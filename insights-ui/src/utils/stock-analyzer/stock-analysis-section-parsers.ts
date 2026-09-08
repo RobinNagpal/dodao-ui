@@ -475,3 +475,53 @@ export function parseEtfSummaryPage(html: string): EtfSummaryStats {
 
   return summary;
 }
+
+/* =============================================================================
+   SECONDARY LISTINGS
+============================================================================= */
+
+/**
+ * Find the "Main Listing" link in a quote page's nav, if there is one.
+ *
+ * A secondary listing — a second share class (TSX `QBR.B`, whose financials are
+ * filed under `QBR.A`) or a cross-listing (TSX `SHOP`, reported under the US
+ * listing) — gets only Overview / Dividends / History pages of its own. Every
+ * statement sub-page 404s, and the nav carries a `Main Listing` link to the
+ * ticker that does have them.
+ *
+ * Returns the raw `href` (root-relative or absolute); the caller resolves it and
+ * checks it points at the same site. Protocol-relative hrefs (`//host/path`) are
+ * rejected here — they would otherwise pass a `startsWith('/')` test and resolve
+ * to a different host.
+ *
+ * Returns null when the page is a main listing itself, or when the link is
+ * present in a shape this does not recognise; the caller logs that case, because
+ * "no link found" and "layout changed" look identical from here.
+ */
+export function parseMainListingHref(html: string): string | null {
+  const $: cheerio.CheerioAPI = cheerio.load(html);
+
+  let mainListingHref: string | null = null;
+
+  $('nav a[href], li a[href]').each((_index, anchor) => {
+    if (mainListingHref) {
+      return;
+    }
+    // The label reads "Main Listing" plus an external-link icon; match it
+    // anywhere in the text so a prefixed symbol ("QBR.A (Main Listing)")
+    // still counts.
+    const label: string = $(anchor).text().replace(/\s+/g, ' ').trim();
+    if (!/\bMain Listing\b/i.test(label)) {
+      return;
+    }
+    const href: string = ($(anchor).attr('href') ?? '').trim();
+    if (href.startsWith('//') || !href) {
+      return;
+    }
+    if (href.startsWith('/') || /^https?:\/\//i.test(href)) {
+      mainListingHref = href;
+    }
+  });
+
+  return mainListingHref;
+}
