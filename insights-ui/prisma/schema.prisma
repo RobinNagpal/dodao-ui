@@ -60,6 +60,13 @@ model User {
   // Portfolio related relations
   portfolioManagerProfile PortfolioManagerProfile?
 
+  // Report credits. `credits` is the denormalized spendable balance; every
+  // change to it is written together with a CreditTransaction row in the same
+  // DB transaction, so the ledger can always reconstruct the balance.
+  credits            Int                 @default(0) @map("credits")
+  stripeCustomerId   String?             @map("stripe_customer_id")
+  creditTransactions CreditTransaction[]
+
   @@unique([publicAddress, spaceId])
   @@unique([username, spaceId])
   @@unique([email, spaceId])
@@ -547,6 +554,11 @@ model TickerV1 {
   metaDescription String?  @map("meta_description")
   spaceId         String   @default("koala_gains") @map("space_id")
   stockAnalyzeUrl String   @map("stock_analyze_url")
+
+  // When the last full/partial report generation for this ticker finished
+  // successfully. Shown to visitors as the single "Report generated on …"
+  // date and used to decide whether a regeneration is worth a credit.
+  lastReportGeneratedAt DateTime? @map("last_report_generated_at")
 
   // When a ticker has been moved to a new exchange and/or symbol, set one or both
   // of these. The page handlers issue a 308 permanent redirect to the canonical
@@ -1384,6 +1396,10 @@ model Etf {
   spaceId   String   @default("koala_gains") @map("space_id")
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
+
+  // Mirrors TickerV1.lastReportGeneratedAt — the single "Report generated on …"
+  // date shown on the ETF page.
+  lastReportGeneratedAt DateTime? @map("last_report_generated_at")
 
   financialInfo     EtfFinancialInfo?
   stockAnalyzerInfo EtfStockAnalyzerInfo?
@@ -2678,4 +2694,72 @@ model TariffTradeAnalyticImportProgram {
 
   @@index([tradeAnalyticId])
   @@map("tariff_trade_analytic_import_programs")
+}
+
+// --------------------------
+// Report credits
+// --------------------------
+
+enum CreditTransactionType {
+  /// Credits bought through Stripe Checkout.
+  Purchase
+  /// One credit held for a user-triggered report generation.
+  ReportSpend
+  /// The held credit returned because the generation ultimately failed.
+  Refund
+  /// Manual grant by an admin (support, promo, correction).
+  AdminGrant
+}
+
+enum CreditReportKind {
+  Stock
+  Etf
+}
+
+/// Append-only ledger of every credit movement. The user's spendable balance
+/// (`User.credits`) is kept in sync in the same DB transaction as the row that
+/// explains the change, so a mismatch is always a bug and never a lost credit.
+model CreditTransaction {
+  id      String  @id @default(uuid())
+  userId  String  @map("user_id")
+  spaceId String  @default("koala_gains") @map("space_id")
+
+  type CreditTransactionType @map("type")
+
+  /// Signed credit delta: +10 for a purchase, -1 for a spend, +1 for a refund.
+  credits Int @map("credits")
+  /// User.credits immediately after this row was written — makes the history
+  /// readable without re-summing the whole ledger.
+  balanceAfter Int    @map("balance_after")
+  description  String @map("description")
+
+  // ---- Purchase-only fields ----
+  /// Stripe Checkout Session id. Unique so a replayed webhook (Stripe retries
+  /// deliveries) can never credit the same purchase twice.
+  stripeCheckoutSessionId String? @unique @map("stripe_checkout_session_id")
+  stripePaymentIntentId   String? @map("stripe_payment_intent_id")
+  /// Amount actually charged, in the smallest currency unit (USD cents).
+  amountInCents           Int?    @map("amount_in_cents")
+  currency                String? @map("currency")
+
+  // ---- Spend / refund-only fields ----
+  reportKind CreditReportKind? @map("report_kind")
+  /// TickerV1.id or Etf.id, depending on `reportKind`.
+  reportTargetId String? @map("report_target_id")
+  /// Denormalized "AAPL (NASDAQ)" style label so the history table renders
+  /// without joining across two different report tables.
+  reportLabel    String? @map("report_label")
+  /// TickerV1GenerationRequest.id or EtfGenerationRequest.id.
+  generationRequestId String? @map("generation_request_id")
+  /// Set on the ReportSpend row once it has been settled: either the report
+  /// completed (no refund) or the credit was refunded. Guards double refunds.
+  settledAt DateTime? @map("settled_at")
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, createdAt])
+  @@index([generationRequestId])
+  @@map("credit_transactions")
 }
