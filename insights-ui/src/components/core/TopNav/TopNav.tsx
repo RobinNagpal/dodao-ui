@@ -38,7 +38,6 @@ export default function TopNav() {
   const navTheme = usePageTheme();
   const isStocksRoute = pathname.startsWith('/stocks');
   const isEtfsRoute = pathname.startsWith('/etfs');
-  const isHomeRoute = pathname === '/';
 
   // Lazily fetch industries: only when the mobile menu is actually opened on a
   // /stocks route. Firing from the click handler (instead of a useEffect that
@@ -72,7 +71,8 @@ export default function TopNav() {
               <Image alt="KoalaGains icon" src="/images/android-icon-512x512.png" className="h-8 w-auto sm:hidden" width={32} height={32} />
               <Image alt="KoalaGains logo" src="/koalagain_logo.png" className="hidden sm:block h-8 w-auto" width={160} height={32} />
             </Link>
-            {!isHomeRoute && (
+            {/* Search only where the main nav links are hidden, so the two never collide. */}
+            {(isStocksRoute || isEtfsRoute) && (
               <div className="hidden ml-4 lg:block lg:w-auto lg:min-w-[24rem]">
                 <div className="max-w-full lg:max-w-none">
                   <SearchBar placeholder={isEtfsRoute ? 'Search ETFs...' : 'Search stocks...'} variant="navbar" kind={isEtfsRoute ? 'etfs' : 'stocks'} />
@@ -88,18 +88,18 @@ export default function TopNav() {
             </button>
           </div>
 
-          <div className="hidden lg:flex lg:flex-1 gap-x-2 lg:justify-end">
+          <div className="hidden lg:flex lg:flex-none gap-x-2 lg:justify-end">
             <div className="flex gap-6 items-center">
               {isStocksRoute && session && (
                 <PopoverGroup className="flex gap-x-6">
-                  <Link href="/favourites" className="text-sm/6 font-semibold text-heading hover:text-link">
+                  <Link href="/favourites" className="whitespace-nowrap text-sm/6 font-semibold text-heading hover:text-link">
                     My Favourite Stocks
                   </Link>
                 </PopoverGroup>
               )}
               {isEtfsRoute && session && (
                 <PopoverGroup className="flex gap-x-6">
-                  <Link href="/etf-favourites" className="text-sm/6 font-semibold text-heading hover:text-link">
+                  <Link href="/etf-favourites" className="whitespace-nowrap text-sm/6 font-semibold text-heading hover:text-link">
                     My Favourite ETFs
                   </Link>
                 </PopoverGroup>
@@ -107,13 +107,16 @@ export default function TopNav() {
               {!isStocksRoute && !isEtfsRoute && (
                 <div className="hidden lg:flex lg:gap-x-6">
                   {navItems.map((item) => (
-                    <Link key={item.name} href={item.href} className="text-sm/6 font-semibold text-heading hover:text-link">
+                    <Link key={item.name} href={item.href} className="whitespace-nowrap text-sm/6 font-semibold text-heading hover:text-link">
                       {item.name}
                     </Link>
                   ))}
                 </div>
               )}
-              <UserProfile />
+              {/* Fixed-width slot so swapping "Log in" for the avatar doesn't move the links. */}
+              <div className="flex w-12 justify-end">
+                <UserProfile />
+              </div>
             </div>
           </div>
         </nav>
