@@ -88,18 +88,18 @@ export default function TopNav() {
             </button>
           </div>
 
-          <div className="hidden lg:flex lg:flex-1 gap-x-2 lg:justify-end">
+          <div className="hidden lg:flex lg:flex-none gap-x-2 lg:justify-end">
             <div className="flex gap-6 items-center">
               {isStocksRoute && session && (
                 <PopoverGroup className="flex gap-x-6">
-                  <Link href="/favourites" className="text-sm/6 font-semibold text-heading hover:text-link">
+                  <Link href="/favourites" className="whitespace-nowrap text-sm/6 font-semibold text-heading hover:text-link">
                     My Favourite Stocks
                   </Link>
                 </PopoverGroup>
               )}
               {isEtfsRoute && session && (
                 <PopoverGroup className="flex gap-x-6">
-                  <Link href="/etf-favourites" className="text-sm/6 font-semibold text-heading hover:text-link">
+                  <Link href="/etf-favourites" className="whitespace-nowrap text-sm/6 font-semibold text-heading hover:text-link">
                     My Favourite ETFs
                   </Link>
                 </PopoverGroup>
@@ -107,13 +107,16 @@ export default function TopNav() {
               {!isStocksRoute && !isEtfsRoute && (
                 <div className="hidden lg:flex lg:gap-x-6">
                   {navItems.map((item) => (
-                    <Link key={item.name} href={item.href} className="text-sm/6 font-semibold text-heading hover:text-link">
+                    <Link key={item.name} href={item.href} className="whitespace-nowrap text-sm/6 font-semibold text-heading hover:text-link">
                       {item.name}
                     </Link>
                   ))}
                 </div>
               )}
-              <UserProfile />
+              {/* Fixed-width slot so swapping "Log in" for the avatar doesn't move the links. */}
+              <div className="flex w-12 justify-end">
+                <UserProfile />
+              </div>
             </div>
           </div>
         </nav>
