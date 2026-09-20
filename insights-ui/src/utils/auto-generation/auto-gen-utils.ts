@@ -81,7 +81,12 @@ async function getAutoGenEntity(): Promise<AutoGenEntity> {
   return coerce(await getAppConfigValue(AUTO_GEN_ENTITY_KEY), Object.values(AutoGenEntity), DEFAULT_AUTO_GEN_ENTITY);
 }
 
-async function getAutoGenMarkets(): Promise<AutoGenMarkets> {
+/**
+ * The configured `AUTOMATED_GENERATION_MARKETS` value. Exported so the admin
+ * "upcoming reports" screen can show which markets the job will really use, even
+ * when the operator is previewing a different selection.
+ */
+export async function getAutoGenMarkets(): Promise<AutoGenMarkets> {
   return coerce(await getAppConfigValue(AUTO_GEN_MARKETS_KEY), Object.values(AutoGenMarkets), DEFAULT_AUTO_GEN_MARKETS);
 }
 
