@@ -14,6 +14,7 @@ const metricGrid = cva('grid', {
       '3': 'grid-cols-3',
       '1-2-3': 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3',
       '2-3-4': 'grid-cols-2 sm:grid-cols-3 lg:grid-cols-4',
+      '2-4': 'grid-cols-2 lg:grid-cols-4',
       '2-4-7': 'grid-cols-2 sm:grid-cols-4 lg:grid-cols-7',
     },
     gap: { sm: 'gap-2', md: 'gap-3', lg: 'gap-4', xl: 'gap-6' },

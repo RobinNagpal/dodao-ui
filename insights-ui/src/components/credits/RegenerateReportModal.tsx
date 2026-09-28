@@ -5,7 +5,7 @@ import Stack from '@/components/ui/containers/Stack';
 import InlineCard from '@/components/ui/sections/InlineCard';
 import Text from '@/components/ui/Text';
 import { CREDITS_PER_REPORT, ReportGenerationStatusResponse } from '@/types/credits';
-import { formatCredits, formatReportGeneratedDate } from '@/utils/credits/credit-format';
+import { formatCredits } from '@/utils/credits/credit-format';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import SingleSectionModal from '@dodao/web-core/components/core/modals/SingleSectionModal';
 import LoadingSpinner from '@dodao/web-core/components/core/loaders/LoadingSpinner';
@@ -36,7 +36,6 @@ export default function RegenerateReportModal({
   generating,
   onConfirm,
 }: RegenerateReportModalProps): JSX.Element {
-  const generatedAt = formatReportGeneratedDate(status?.lastReportGeneratedAt);
   const credits = status?.credits ?? 0;
   const canAfford = credits >= CREDITS_PER_REPORT;
 
@@ -60,7 +59,7 @@ export default function RegenerateReportModal({
       return (
         <Stack gap="md">
           <InlineCard padding="cozy">
-            <Text size="sm">A new {reportLabel} report is already being generated. It usually takes a few minutes, and this page updates on its own.</Text>
+            <Text size="sm">A new {reportLabel} report is already being made. It can take up to an hour. Refresh the page later to see it.</Text>
           </InlineCard>
           <Text size="xs" tone="muted">
             You have not been charged for this.
@@ -80,7 +79,7 @@ export default function RegenerateReportModal({
               Regenerating the {reportLabel} report costs {formatCredits(CREDITS_PER_REPORT)}. You have {formatCredits(credits)}.
             </Text>
             <Text size="xs" tone="muted">
-              Pick a pack below — you will come straight back here once payment goes through.
+              Pick a pack below. After you pay, you will come right back here.
             </Text>
           </Stack>
           <BuyCreditsPanel layout="list" />
@@ -90,29 +89,24 @@ export default function RegenerateReportModal({
 
     return (
       <Stack gap="lg">
-        <Stack gap="xs">
-          <Text size="sm">This runs a fresh analysis of {reportLabel} and replaces every section of the report. It usually takes a few minutes.</Text>
-          {generatedAt && (
-            <Text size="xs" tone="muted">
-              Current report was generated on {generatedAt}.
-            </Text>
-          )}
-        </Stack>
+        <Text size="sm">A fresh analysis of {reportLabel} will replace the current report. It can take up to an hour.</Text>
 
         <InlineCard padding="cozy">
-          <Stack direction="row" justify="between" align="center" gap="md">
-            <Text size="sm">Cost</Text>
-            <Text size="sm" weight="semibold">
-              {formatCredits(CREDITS_PER_REPORT)}
-            </Text>
-          </Stack>
-          <Stack direction="row" justify="between" align="center" gap="md">
-            <Text size="xs" tone="muted">
-              Balance after
-            </Text>
-            <Text size="xs" tone="muted">
-              {formatCredits(credits - CREDITS_PER_REPORT)}
-            </Text>
+          <Stack gap="xs">
+            {[
+              ['Your balance', formatCredits(credits)],
+              ['Cost', formatCredits(CREDITS_PER_REPORT)],
+              ['Balance after', formatCredits(credits - CREDITS_PER_REPORT)],
+            ].map(([label, value]) => (
+              <Stack key={label} direction="row" justify="between" align="center" gap="md">
+                <Text size="sm" tone="muted">
+                  {label}
+                </Text>
+                <Text size="sm" weight="semibold">
+                  {value}
+                </Text>
+              </Stack>
+            ))}
           </Stack>
         </InlineCard>
 
@@ -124,7 +118,7 @@ export default function RegenerateReportModal({
             Cancel
           </Button>
           <Text size="xs" tone="muted">
-            If the report fails to generate, the credit is returned automatically.
+            If the report fails, you get your credit back.
           </Text>
         </Stack>
       </Stack>

@@ -37,6 +37,13 @@ export function getCreditPack(packKey: string): CreditPack | undefined {
 /** Query param appended to the return URL after a successful Stripe Checkout. */
 export const CREDITS_PURCHASED_QUERY_PARAM = 'creditsPurchased';
 
+/**
+ * Where a report spend stands. The credit is taken when the report is queued so
+ * it can't be spent twice, but it only counts as used once the report exists:
+ * until then it is shown as reserved, and a failed report gets it back.
+ */
+export type ReportSpendStatus = 'InProgress' | 'Completed' | 'Refunded';
+
 export interface CreditTransactionResponse {
   id: string;
   type: CreditTransactionType;
@@ -45,12 +52,21 @@ export interface CreditTransactionResponse {
   description: string;
   amountInCents: number | null;
   reportLabel: string | null;
+  /** Only set on report spends. */
+  reportStatus: ReportSpendStatus | null;
   createdAt: string;
 }
 
 export interface CreditBalanceResponse {
   credits: number;
+  /** Credits held by reports that are still being generated. */
+  reservedCredits: number;
   transactions: CreditTransactionResponse[];
+}
+
+/** Balance only, for the navbar pill. */
+export interface CreditBalanceSummaryResponse {
+  credits: number;
 }
 
 export interface CreateCheckoutSessionRequest {

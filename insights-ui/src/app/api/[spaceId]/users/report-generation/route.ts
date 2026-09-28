@@ -57,12 +57,13 @@ async function postHandler(req: NextRequest, userContext: DoDaoJwtTokenPayload):
       reportTargetId: target.id,
       reportLabel: target.label,
     },
-    target.createGenerationRequest
+    target
   );
 
-  if (!spend) {
+  if (spend.outcome !== 'Started') {
     const credits = await getCredits(userContext.userId);
-    return { ...toStatus(target, credits, false), outcome: 'InsufficientCredits' };
+    const inProgress = spend.outcome === 'AlreadyInProgress';
+    return { ...toStatus(target, credits, inProgress), outcome: spend.outcome };
   }
 
   return { ...toStatus(target, spend.credits, true), outcome: 'Started' };

@@ -3,7 +3,9 @@
 import SearchBar from '@/components/core/SearchBar';
 import { UserProfile } from '@/components/core/UserProfile/UserProfile';
 import MobileTopNav from '@/components/core/TopNav/MobileTopNav';
+import CreditsNavLink from '@/components/ui/credits/CreditsNavLink';
 import { usePageTheme } from '@/components/theme/page-theme-context';
+import { useCreditBalance } from '@/hooks/useCreditBalance';
 import { IndustryWithSubIndustriesAndCounts } from '@/types/ticker-typesv1';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
@@ -38,6 +40,9 @@ export default function TopNav() {
   const navTheme = usePageTheme();
   const isStocksRoute = pathname.startsWith('/stocks');
   const isEtfsRoute = pathname.startsWith('/etfs');
+  // Report regeneration (the only thing credits buy) lives on these pages, so
+  // only they show the balance. Nothing renders until it loads: no spinner.
+  const credits = useCreditBalance(Boolean(session) && (isStocksRoute || isEtfsRoute));
 
   // Lazily fetch industries: only when the mobile menu is actually opened on a
   // /stocks route. Firing from the click handler (instead of a useEffect that
@@ -90,6 +95,7 @@ export default function TopNav() {
 
           <div className="hidden lg:flex lg:flex-none gap-x-2 lg:justify-end">
             <div className="flex gap-6 items-center">
+              {credits !== undefined && <CreditsNavLink credits={credits} />}
               {isStocksRoute && session && (
                 <PopoverGroup className="flex gap-x-6">
                   <Link href="/favourites" className="whitespace-nowrap text-sm/6 font-semibold text-heading hover:text-link">

@@ -36,3 +36,14 @@ export function consumeCreditsPurchasedMarker(): boolean {
   window.history.replaceState(null, '', `${url.pathname}${url.search}${url.hash}`);
   return true;
 }
+
+/** Window event fired whenever this tab changes the user's balance. */
+export const CREDITS_CHANGED_EVENT = 'koalagains:credits-changed';
+
+/** Tell balance displays elsewhere on the page (e.g. the navbar) to re-read it. */
+export function notifyCreditsChanged(): void {
+  if (typeof window === 'undefined') {
+    return;
+  }
+  window.dispatchEvent(new Event(CREDITS_CHANGED_EVENT));
+}

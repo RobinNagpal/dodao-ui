@@ -19,6 +19,8 @@ export interface ResolvedReportTarget {
   lastReportGeneratedAt: Date | null;
   /** True while a generation request for this target is queued or running. */
   generationInProgress: boolean;
+  /** Re-checks for a queued or running request, inside an open DB transaction. */
+  hasOpenGenerationRequest: (tx: Prisma.TransactionClient) => Promise<boolean>;
   /** Creates a full-report generation request inside an open DB transaction. */
   createGenerationRequest: (tx: Prisma.TransactionClient) => Promise<{ id: string }>;
 }
@@ -46,16 +48,16 @@ export async function resolveReportTarget(target: ReportTargetRequest): Promise<
       select: { id: true, lastReportGeneratedAt: true },
     });
 
-    const openRequests = await prisma.tickerV1GenerationRequest.count({
-      where: { tickerId: ticker.id, status: { in: OPEN_STATUSES } },
-    });
+    const hasOpenGenerationRequest = async (client: Prisma.TransactionClient): Promise<boolean> =>
+      (await client.tickerV1GenerationRequest.count({ where: { tickerId: ticker.id, status: { in: OPEN_STATUSES } } })) > 0;
 
     return {
       kind,
       id: ticker.id,
       label,
       lastReportGeneratedAt: ticker.lastReportGeneratedAt,
-      generationInProgress: openRequests > 0,
+      generationInProgress: await hasOpenGenerationRequest(prisma),
+      hasOpenGenerationRequest,
       createGenerationRequest: (tx) =>
         tx.tickerV1GenerationRequest.create({
           data: { tickerId: ticker.id, spaceId: KoalaGainsSpaceId, ...ALL_SECTIONS_REGENERATE_FLAGS },
@@ -69,16 +71,16 @@ export async function resolveReportTarget(target: ReportTargetRequest): Promise<
     select: { id: true, lastReportGeneratedAt: true },
   });
 
-  const openEtfRequests = await prisma.etfGenerationRequest.count({
-    where: { etfId: etf.id, status: { in: OPEN_ETF_STATUSES } },
-  });
+  const hasOpenGenerationRequest = async (client: Prisma.TransactionClient): Promise<boolean> =>
+    (await client.etfGenerationRequest.count({ where: { etfId: etf.id, status: { in: OPEN_ETF_STATUSES } } })) > 0;
 
   return {
     kind,
     id: etf.id,
     label,
     lastReportGeneratedAt: etf.lastReportGeneratedAt,
-    generationInProgress: openEtfRequests > 0,
+    generationInProgress: await hasOpenGenerationRequest(prisma),
+    hasOpenGenerationRequest,
     createGenerationRequest: (tx) =>
       tx.etfGenerationRequest.create({
         data: { etfId: etf.id, spaceId: KoalaGainsSpaceId, ...ALL_ETF_SECTIONS_REGENERATE_FLAGS },

@@ -2,8 +2,8 @@
 
 import MetricGrid from '@/components/ui/containers/MetricGrid';
 import Stack from '@/components/ui/containers/Stack';
+import CheckoutBar from '@/components/ui/credits/CheckoutBar';
 import CreditPackOption from '@/components/ui/credits/CreditPackOption';
-import Text from '@/components/ui/Text';
 import { CREDIT_PACKS, CreateCheckoutSessionRequest, CreateCheckoutSessionResponse } from '@/types/credits';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { formatPackDetail, formatUsd } from '@/utils/credits/credit-format';
@@ -69,22 +69,22 @@ export default function BuyCreditsPanel({ layout = 'grid' }: BuyCreditsPanelProp
   return (
     <Stack gap="lg">
       {layout === 'grid' ? (
-        <MetricGrid columns="2-3-4" gap="md">
+        <MetricGrid columns="2-4" gap="md">
           {options}
         </MetricGrid>
       ) : (
         <Stack gap="sm">{options}</Stack>
       )}
 
-      <Stack gap="sm">
-        <Button primary variant="contained" loading={busy} disabled={busy} onClick={handleCheckout}>
-          {busy ? 'Opening secure checkout…' : `Pay ${formatUsd(selectedPack.amountInCents)}`}
-        </Button>
-        <Text size="xs" tone="muted">
-          Payment is handled by Stripe — card details never reach KoalaGains. Credits never expire, and a credit is returned automatically if a report fails to
-          generate.
-        </Text>
-      </Stack>
+      <CheckoutBar
+        layout={layout === 'grid' ? 'inline' : 'stacked'}
+        note="Payments are handled by Stripe, so we never see your card details. If a report fails, you get your credit back."
+        action={
+          <Button primary variant="contained" loading={busy} disabled={busy} onClick={handleCheckout}>
+            {busy ? 'Opening secure checkout…' : `Buy ${selectedPack.credits} credits for ${formatUsd(selectedPack.amountInCents)}`}
+          </Button>
+        }
+      />
     </Stack>
   );
 }

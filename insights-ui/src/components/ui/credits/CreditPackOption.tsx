@@ -1,4 +1,5 @@
 import { cn } from '@/lib/utils';
+import { CheckCircleIcon } from '@heroicons/react/20/solid';
 import { cva, type VariantProps } from 'class-variance-authority';
 import React from 'react';
 
@@ -6,12 +7,12 @@ const packOption = cva('relative w-full rounded-lg border text-left transition-c
   variants: {
     layout: {
       /** Tile form used on the credits page, where there is room for a grid. */
-      tile: 'px-4 py-3',
+      tile: 'flex h-full flex-col gap-1 p-4',
       /** Compact row form used inside the narrow regenerate modal. */
       row: 'flex items-center justify-between gap-3 px-4 py-2.5',
     },
     selected: {
-      true: 'border-primary bg-surface-2',
+      true: 'border-primary bg-surface-2 ring-1 ring-primary',
       false: 'border-border bg-surface hover:bg-surface-2',
     },
   },
@@ -56,7 +57,7 @@ export default function CreditPackOption({
       <button type="button" onClick={onSelect} disabled={disabled} aria-pressed={selected} className={cn(packOption({ layout, selected }), className)}>
         <span className="flex min-w-0 flex-col">
           <span className="text-sm font-semibold text-heading">
-            {credits} credits — {price}
+            {credits} credits · {price}
           </span>
           <span className="text-xs text-muted">{detail}</span>
         </span>
@@ -67,10 +68,15 @@ export default function CreditPackOption({
 
   return (
     <button type="button" onClick={onSelect} disabled={disabled} aria-pressed={selected} className={cn(packOption({ layout, selected }), className)}>
-      {recommended && <span className="absolute -top-2 right-3">{badge}</span>}
-      <span className="block text-lg font-semibold text-heading">{price}</span>
-      <span className="block text-sm text-body">{credits} credits</span>
-      <span className="block text-xs text-muted">{detail}</span>
+      <span className="flex items-center justify-between gap-2">
+        <span className="text-sm font-medium text-body">{credits} credits</span>
+        {badge}
+      </span>
+      <span className="flex items-center justify-between gap-2">
+        <span className="text-2xl font-semibold text-heading">{price}</span>
+        {selected && <CheckCircleIcon className="h-5 w-5 text-primary" aria-hidden="true" />}
+      </span>
+      <span className="text-xs text-muted">{detail}</span>
     </button>
   );
 }

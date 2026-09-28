@@ -5,7 +5,7 @@ import { ReportGenerationStatusResponse, ReportTargetRequest, TriggerReportGener
 import { KoalaGainsSession } from '@/types/auth';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { formatReportGeneratedDate } from '@/utils/credits/credit-format';
-import { consumeCreditsPurchasedMarker } from '@/utils/credits/credit-return-path';
+import { consumeCreditsPurchasedMarker, notifyCreditsChanged } from '@/utils/credits/credit-return-path';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
@@ -14,17 +14,12 @@ import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { CreditReportKind } from '@prisma/client';
 import { useSession } from 'next-auth/react';
 import dynamic from 'next/dynamic';
-import { useRouter } from 'next/navigation';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 // Both are only needed once the user actually engages with the control, so they
 // stay out of the report page's critical bundle.
 const RegenerateReportModal = dynamic(() => import('@/components/credits/RegenerateReportModal'), { ssr: false });
 const LoginPopup = dynamic(() => import('@/components/login/login-popup').then((m) => ({ default: m.LoginPopup })), { ssr: false });
-
-/** How often to re-check a running generation, and for how long. */
-const POLL_INTERVAL_MS = 20_000;
-const MAX_POLLS = 60;
 
 export interface ReportGenerationControlProps {
   kind: CreditReportKind;
@@ -48,7 +43,6 @@ export default function ReportGenerationControl({ kind, symbol, exchange, lastRe
   const { data: koalaSession } = useSession();
   const session: KoalaGainsSession | null = koalaSession as KoalaGainsSession | null;
 
-  const router = useRouter();
   const { showNotification } = useNotificationContext();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -56,7 +50,6 @@ export default function ReportGenerationControl({ kind, symbol, exchange, lastRe
   // transition instead of vanishing. Same pattern as the favourite/notes buttons.
   const [hasMountedModal, setHasMountedModal] = useState(false);
   const [isLoginPopupOpen, setIsLoginPopupOpen] = useState(false);
-  const pollCountRef = useRef(0);
 
   const statusUrl = `${getBaseUrl()}/api/${KoalaGainsSpaceId}/users/report-generation?kind=${kind}&symbol=${encodeURIComponent(
     symbol
@@ -79,32 +72,6 @@ export default function ReportGenerationControl({ kind, symbol, exchange, lastRe
   // reports a newer one, so nothing flickers on hydration.
   const generatedAt = formatReportGeneratedDate(status?.lastReportGeneratedAt ?? lastReportGeneratedAt);
 
-  // While a generation runs, poll until it finishes and then refresh the page so
-  // the new report and its new date render without the user reloading.
-  useEffect(() => {
-    if (!generationInProgress || !session) {
-      return;
-    }
-
-    pollCountRef.current = 0;
-    const interval = setInterval(async () => {
-      pollCountRef.current += 1;
-      if (pollCountRef.current > MAX_POLLS) {
-        clearInterval(interval);
-        return;
-      }
-
-      const latest = await refetchStatus();
-      if (latest && !latest.generationInProgress) {
-        clearInterval(interval);
-        setInProgress(false);
-        router.refresh();
-      }
-    }, POLL_INTERVAL_MS);
-
-    return () => clearInterval(interval);
-  }, [generationInProgress, session, refetchStatus, router]);
-
   const openModal = useCallback(async () => {
     if (!session) {
       setIsLoginPopupOpen(true);
@@ -122,10 +89,12 @@ export default function ReportGenerationControl({ kind, symbol, exchange, lastRe
     if (!session || !consumeCreditsPurchasedMarker()) {
       return;
     }
-    showNotification({ type: 'success', message: 'Payment received — your credits have been added.' });
+    showNotification({ type: 'success', message: 'Payment received. Your credits have been added.' });
     setHasMountedModal(true);
     setIsModalOpen(true);
     void refetchStatus();
+    // The webhook may land after the redirect, so the navbar re-reads too.
+    notifyCreditsChanged();
   }, [session, showNotification, refetchStatus]);
 
   const handleConfirm = async () => {
@@ -139,6 +108,7 @@ export default function ReportGenerationControl({ kind, symbol, exchange, lastRe
       // Balance changed under us (another tab spent it). The modal re-renders
       // into its buy state off the refreshed status rather than erroring.
       await refetchStatus();
+      notifyCreditsChanged();
       return;
     }
 
@@ -149,9 +119,10 @@ export default function ReportGenerationControl({ kind, symbol, exchange, lastRe
       message:
         response.outcome === 'AlreadyInProgress'
           ? `A ${symbol} report is already being generated. You have not been charged.`
-          : `Generating a new ${symbol} report. This usually takes a few minutes.`,
+          : `Generating a new ${symbol} report. This can take up to an hour. Refresh the page later to see it.`,
     });
     await refetchStatus();
+    notifyCreditsChanged();
   };
 
   return (
@@ -159,9 +130,15 @@ export default function ReportGenerationControl({ kind, symbol, exchange, lastRe
       <ReportFreshnessBar
         generatedAt={generatedAt}
         action={
-          <Button size="sm" variant="text" removeBorder loading={generating} disabled={generating || generationInProgress} onClick={openModal}>
-            {generationInProgress ? 'Regenerating…' : 'Regenerate'}
-          </Button>
+          // No polling while a generation runs: it can take up to an hour, and the
+          // page's own cache refresh picks up the new report once it is saved.
+          generationInProgress ? (
+            <span>· Your new report is being generated. This can take up to an hour.</span>
+          ) : (
+            <Button size="sm" variant="text" removeBorder loading={generating} disabled={generating} onClick={openModal}>
+              Regenerate
+            </Button>
+          )
         }
       />
 

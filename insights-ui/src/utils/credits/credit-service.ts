@@ -91,10 +91,19 @@ export interface SpendCreditInput {
   reportLabel: string;
 }
 
-export interface SpendCreditResult<T> {
-  generationRequest: T;
-  credits: number;
+export type SpendCreditResult<T> =
+  | { outcome: 'Started'; generationRequest: T; credits: number }
+  | { outcome: 'InsufficientCredits' }
+  | { outcome: 'AlreadyInProgress' };
+
+export interface SpendCreditTarget<T> {
+  /** True when a generation request for the report is already queued or running. */
+  hasOpenGenerationRequest: (tx: Prisma.TransactionClient) => Promise<boolean>;
+  createGenerationRequest: (tx: Prisma.TransactionClient) => Promise<T>;
 }
+
+/** Thrown inside the transaction to roll the deduction back. */
+class GenerationAlreadyOpenError extends Error {}
 
 /**
  * Deducts one credit and creates the generation request it pays for, atomically.
@@ -104,44 +113,54 @@ export interface SpendCreditResult<T> {
  * credit. If `createGenerationRequest` throws, the whole transaction — the
  * deduction included — rolls back.
  *
- * Returns null when the user cannot afford the report.
+ * The "already running" check is repeated after the deduction: the deduction
+ * row-locks the user, so a second concurrent click waits here until the first
+ * commits, then sees its request and is rolled back instead of paying twice.
  */
-export async function spendCreditForReport<T extends { id: string }>(
-  input: SpendCreditInput,
-  createGenerationRequest: (tx: Prisma.TransactionClient) => Promise<T>
-): Promise<SpendCreditResult<T> | null> {
+export async function spendCreditForReport<T extends { id: string }>(input: SpendCreditInput, target: SpendCreditTarget<T>): Promise<SpendCreditResult<T>> {
   const { userId, reportKind, reportTargetId, reportLabel } = input;
 
-  return prisma.$transaction(async (tx) => {
-    const deducted = await tx.user.updateMany({
-      where: { id: userId, credits: { gte: CREDITS_PER_REPORT } },
-      data: { credits: { decrement: CREDITS_PER_REPORT } },
-    });
+  try {
+    return await prisma.$transaction(async (tx): Promise<SpendCreditResult<T>> => {
+      const deducted = await tx.user.updateMany({
+        where: { id: userId, credits: { gte: CREDITS_PER_REPORT } },
+        data: { credits: { decrement: CREDITS_PER_REPORT } },
+      });
 
-    if (deducted.count === 0) {
-      return null;
+      if (deducted.count === 0) {
+        return { outcome: 'InsufficientCredits' };
+      }
+
+      if (await target.hasOpenGenerationRequest(tx)) {
+        throw new GenerationAlreadyOpenError();
+      }
+
+      const user = await tx.user.findUniqueOrThrow({ where: { id: userId }, select: { credits: true } });
+      const generationRequest = await target.createGenerationRequest(tx);
+
+      await tx.creditTransaction.create({
+        data: {
+          userId,
+          spaceId: KoalaGainsSpaceId,
+          type: CreditTransactionType.ReportSpend,
+          credits: -CREDITS_PER_REPORT,
+          balanceAfter: user.credits,
+          description: `Report generation for ${reportLabel}`,
+          reportKind,
+          reportTargetId,
+          reportLabel,
+          generationRequestId: generationRequest.id,
+        },
+      });
+
+      return { outcome: 'Started', generationRequest, credits: user.credits };
+    });
+  } catch (error) {
+    if (error instanceof GenerationAlreadyOpenError) {
+      return { outcome: 'AlreadyInProgress' };
     }
-
-    const user = await tx.user.findUniqueOrThrow({ where: { id: userId }, select: { credits: true } });
-    const generationRequest = await createGenerationRequest(tx);
-
-    await tx.creditTransaction.create({
-      data: {
-        userId,
-        spaceId: KoalaGainsSpaceId,
-        type: CreditTransactionType.ReportSpend,
-        credits: -CREDITS_PER_REPORT,
-        balanceAfter: user.credits,
-        description: `Report generation for ${reportLabel}`,
-        reportKind,
-        reportTargetId,
-        reportLabel,
-        generationRequestId: generationRequest.id,
-      },
-    });
-
-    return { generationRequest, credits: user.credits };
-  });
+    throw error;
+  }
 }
 
 /**
@@ -197,7 +216,7 @@ export async function settleReportCredit(generationRequestId: string, succeeded:
         type: CreditTransactionType.Refund,
         credits: CREDITS_PER_REPORT,
         balanceAfter: user.credits,
-        description: `Refund — report generation failed for ${spend.reportLabel ?? 'a report'}`,
+        description: `Refund for failed report: ${spend.reportLabel ?? 'a report'}`,
         reportKind: spend.reportKind,
         reportTargetId: spend.reportTargetId,
         reportLabel: spend.reportLabel,
