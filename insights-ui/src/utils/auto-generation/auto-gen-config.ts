@@ -1,27 +1,40 @@
 /**
  * Defaults and config definitions for the nightly auto-generation controls: the
  * mode presets (the Claude-usage checks each mode applies), the dropdown labels,
- * the run-window predicates/descriptions, and the entity descriptions.
+ * the run-window predicates/descriptions, and the entity/market descriptions.
  *
- * Pure data — imports only the types from `auto-gen-models.ts`, never the App
- * Settings runtime — so `appConfigDefinitions.ts` can import it to build the
- * dropdowns + help notes without an import cycle.
+ * Pure data — imports only types/enums (`auto-gen-models.ts`, the exchange lists),
+ * never the App Settings runtime — so `appConfigDefinitions.ts` can import it to
+ * build the dropdowns + help notes without an import cycle.
  */
 import { ClaudeModel } from '@/types/llmConstants';
 import {
   AutoGenBudgetUtilizationStrategy,
   AutoGenEntity,
+  AutoGenMarkets,
   AutoGenMode,
   AutoGenModePreset,
   AutoGenUsageCaps,
   AutoGenWindow,
   HoursLeftToPercentRemaining,
 } from '@/utils/auto-generation/auto-gen-models';
+import { CanadaExchanges, USExchanges } from '@/utils/countryExchangeUtils';
+import { EtfCanadaExchanges, EtfUSExchanges } from '@/utils/etfCountryExchangeUtils';
 
 export const DEFAULT_AUTO_GEN_MODE = AutoGenMode.Low;
 export const DEFAULT_AUTO_GEN_WINDOW = AutoGenWindow.NightShort;
 export const DEFAULT_AUTO_GEN_ENTITY = AutoGenEntity.StocksAndEtfs;
 export const DEFAULT_AUTO_GEN_BUDGET_UTILIZATION = AutoGenBudgetUtilizationStrategy.Aggressive;
+export const DEFAULT_AUTO_GEN_MARKETS = AutoGenMarkets.UsAndCanadaOnly;
+
+/**
+ * The exchanges that count as "US and Canada" for candidate selection. Stocks and
+ * ETFs keep separate lists because their venue sets differ — we have no ETF data
+ * for NYSEAMERICAN/OTCMKTS, which is why `etfCountryExchangeUtils.ts` exists — so
+ * each entity filters on the venues it can actually have rows for.
+ */
+export const AUTO_GEN_PRIORITY_STOCK_EXCHANGES: string[] = [...Object.values(USExchanges), ...Object.values(CanadaExchanges)];
+export const AUTO_GEN_PRIORITY_ETF_EXCHANGES: string[] = [...Object.values(EtfUSExchanges), ...Object.values(EtfCanadaExchanges)];
 
 /**
  * The auto-generation model is chosen automatically per batch: Opus and Sonnet each
@@ -135,6 +148,19 @@ export const AUTO_GEN_WINDOWS: Record<AutoGenWindow, { label: string; descriptio
     label: 'Day and night',
     description: 'Runs 24/7, all day and night. How often it actually enqueues within this window is set by the mode.',
     isWithinHourEt: () => true,
+  },
+};
+
+export const AUTO_GEN_MARKETS_INFO: Record<AutoGenMarkets, { label: string; description: string }> = {
+  [AutoGenMarkets.UsAndCanadaOnly]: {
+    label: 'US and Canada only',
+    description:
+      'The automated job only picks stocks/ETFs listed on US or Canadian exchanges — the high-priority markets. Reports for every other market are still generated on demand from the admin screens. This is the default.',
+  },
+  [AutoGenMarkets.AllMarkets]: {
+    label: 'All markets',
+    description:
+      'The automated job may pick candidates from every supported exchange. ETFs are still tried US first, then Canada, then the rest; stocks are picked purely by how stale their report is.',
   },
 };
 

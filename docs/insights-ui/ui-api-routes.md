@@ -89,7 +89,8 @@ Base prefix: `/api/[spaceId]/tickers-v1`
 | `/generation-requests` | POST | 🔑 | Queue generation requests |
 | `/generation-requests/by-ids` | GET | 🔑 | |
 | `/industry/[industryKey]/[subIndustryKey]` | GET | 🌐 | |
-| `/missing-factor-analysis` · `/missing-reports` | GET | 🔒 | Admin-only reads |
+| `/admin-search` | GET | 🔒 | Paginated admin ticker search + report status (create-reports / missing-reports) |
+| `/missing-factor-analysis` | GET | 🔒 | Admin-only read |
 | `/move` | POST | 🔑 | Move tickers between industries |
 | `/oldest-by-report-type` | GET | 🔑 | |
 | `/screener-callback` | POST | 🌐 | **Callback** — screener posts top gainers/losers |

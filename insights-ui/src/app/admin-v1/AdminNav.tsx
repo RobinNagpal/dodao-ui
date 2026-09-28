@@ -20,6 +20,7 @@ const stocksReportsSection: AdminNavSection = {
     { name: 'Create Reports', href: '/admin-v1/create-reports' },
     { name: 'Generation Requests', href: '/admin-v1/generation-requests' },
     { name: 'Missing Reports', href: '/admin-v1/missing-reports' },
+    { name: 'Claude Reports', href: '/admin-v1/claude-reports' },
   ],
 };
 

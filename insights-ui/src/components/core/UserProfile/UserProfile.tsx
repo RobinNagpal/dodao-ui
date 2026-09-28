@@ -218,8 +218,8 @@ export function UserProfile({ isMobile = false, onMenuToggle }: UserProfileProps
           )}
         </div>
       ) : (
-        <Link href="/login" className="text-sm/6 font-semibold text-color cursor-pointer hover:text-link transition-colors duration-200">
-          Log in <span aria-hidden="true">&rarr;</span>
+        <Link href="/login" className="whitespace-nowrap text-sm/6 font-semibold text-color cursor-pointer hover:text-link transition-colors duration-200">
+          Log in
         </Link>
       )}
     </>

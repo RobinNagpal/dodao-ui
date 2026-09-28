@@ -18,12 +18,13 @@ import { ClaudeModel, GeminiModel, LLMProvider } from '@/types/llmConstants';
 import {
   AUTO_GEN_BUDGET_UTILIZATION_LABELS,
   AUTO_GEN_ENTITY_INFO,
+  AUTO_GEN_MARKETS_INFO,
   AUTO_GEN_MODE_LABELS,
   AUTO_GEN_MODE_PRESETS,
   AUTO_GEN_WINDOWS,
   HOURS_LEFT_TO_PERCENT_REMAINING,
 } from '@/utils/auto-generation/auto-gen-config';
-import { AutoGenBudgetUtilizationStrategy, AutoGenEntity, AutoGenMode, AutoGenWindow } from '@/utils/auto-generation/auto-gen-models';
+import { AutoGenBudgetUtilizationStrategy, AutoGenEntity, AutoGenMarkets, AutoGenMode, AutoGenWindow } from '@/utils/auto-generation/auto-gen-models';
 
 export type AppConfigValueType = 'boolean' | 'string';
 
@@ -267,6 +268,19 @@ export const APP_CONFIG_DEFINITIONS: AppConfigDefinition[] = [
       value: entity,
       label: AUTO_GEN_ENTITY_INFO[entity].label,
       helpNote: AUTO_GEN_ENTITY_INFO[entity].description,
+    })),
+  },
+  {
+    key: 'AUTOMATED_GENERATION_MARKETS',
+    label: 'Automated generation markets',
+    description:
+      'Which markets the nightly job may pick stocks/ETFs from, based on the listing exchange. The Claude subscription budget is finite, so by default the job spends it on the high-priority US and Canadian markets only — every other market is still generated on demand from the admin screens. This does not restrict manual generation.',
+    type: 'string',
+    group: 'auto-generation',
+    options: Object.values(AutoGenMarkets).map((markets) => ({
+      value: markets,
+      label: AUTO_GEN_MARKETS_INFO[markets].label,
+      helpNote: AUTO_GEN_MARKETS_INFO[markets].description,
     })),
   },
   {

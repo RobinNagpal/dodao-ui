@@ -7,10 +7,11 @@ import { isAutoGenEnabled } from '@/utils/auto-generation/auto-gen-utils';
  * The enqueue side of automated report generation, run by the `/cron/heartbeat`
  * job. All scheduling policy lives here / in the jobs it calls: whether the job is
  * on at all (AUTOMATED_GENERATION_ENABLED), which entities run
- * (AUTOMATED_GENERATION_ENTITY), when (AUTOMATED_GENERATION_WINDOW), and how often +
- * how much (the mode's cooldown and batch size, AUTOMATED_GENERATION_MODE). The
- * external cron is just a clock — change any of the above from App Settings without
- * touching infra.
+ * (AUTOMATED_GENERATION_ENTITY), which markets they may come from
+ * (AUTOMATED_GENERATION_MARKETS — US + Canada by default), when
+ * (AUTOMATED_GENERATION_WINDOW), and how often + how much (the mode's cooldown and
+ * batch size, AUTOMATED_GENERATION_MODE). The external cron is just a clock —
+ * change any of the above from App Settings without touching infra.
  *
  * The master switch is checked once here and short-circuits both jobs. Otherwise
  * both jobs self-gate (entity → window → open-batch → cooldown → usage), so we

@@ -7,6 +7,7 @@ import {
   chooseAutoGenModel,
   evaluateAutoGenGates,
   getAutoGenModePreset,
+  getAutoGenStockExchanges,
   isStockAutoGenEnabled,
   isWithinAutoGenWindow,
   isWithinFrequencyCooldown,
@@ -23,7 +24,8 @@ import { getOldestStocksOverall } from '@/utils/oldest-reports-utils';
  * time must fall inside the selected GENERATION_WINDOW, no auto batch may be open,
  * the mode's frequency cooldown must have elapsed since the last batch, and the
  * shared Claude usage gates must pass. When all pass it creates one batch (the
- * mode's batch size) of generate-all requests for the oldest stocks. The existing
+ * mode's batch size) of generate-all requests for the oldest stocks, restricted to
+ * the markets GENERATION_MARKETS selects (US + Canada by default). The existing
  * ~3-min processor then generates them normally. The mode drives BOTH how many per
  * batch and how often batches run.
  */
@@ -101,7 +103,7 @@ export async function enqueueAutoStockGenerationBatch(spaceId: string): Promise<
       return { created: 0, reason: gate.reason, ...gateFields };
     }
 
-    const oldest = await getOldestStocksOverall(spaceId, batchSize);
+    const oldest = await getOldestStocksOverall(spaceId, batchSize, await getAutoGenStockExchanges());
     const autoGenModel = await chooseAutoGenModel(usage);
     let created = 0;
     for (const stock of oldest) {
