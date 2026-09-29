@@ -8,7 +8,8 @@ export async function getAppSettingsForAdmin(): Promise<AppSettingsForAdmin> {
   if (!(await isAdminServerSession())) {
     throw new Error('Not authorized');
   }
-  return { ssmConfigured: isSsmConfigured(), settings: await getResolvedAppSettings() };
+  // Force-refresh so admins see live SSM values despite the long app-config cache.
+  return { ssmConfigured: isSsmConfigured(), settings: await getResolvedAppSettings({ forceRefresh: true }) };
 }
 
 /** Admin-only: persist a single setting to SSM Parameter Store. */

@@ -13,7 +13,14 @@ import { fetchAllSsmParameters, isSsmConfigured, putSsmParameter } from './ssmPa
  * never fails.
  */
 
-const CACHE_TTL_MS = 60_000;
+// Each SSM fetch decrypts every SecureString parameter — a billable KMS request
+// apiece — so the TTL must be long enough that steady traffic can't exhaust the
+// KMS free tier. A long TTL is safe: settings change only via the admin screen,
+// which invalidates this cache on save; only a value edited directly in the AWS
+// console takes up to the TTL to be picked up.
+const CACHE_TTL_MS = 30 * 60_000;
+// After a failed fetch, retry sooner than the full TTL so an outage recovers fast.
+const ERROR_RETRY_TTL_MS = 60_000;
 const defaults = bundledDefaults as Record<string, string>;
 
 // Public-repo safeguard: a secret must NEVER carry a committed default value —
@@ -29,23 +36,50 @@ for (const def of APP_CONFIG_DEFINITIONS) {
   }
 }
 
-let ssmCache: { values: Record<string, string>; expiresAt: number } | null = null;
+interface SsmCacheState {
+  /** Last successfully fetched values. Kept past expiry so a failed refresh can serve stale data. */
+  values: Record<string, string> | null;
+  /** Time after which the next read triggers a refresh. */
+  expiresAt: number;
+  /** In-flight fetch, shared so concurrent reads at expiry cost one SSM call, not one each. */
+  inFlight: Promise<Record<string, string>> | null;
+}
 
-async function getSsmValues(): Promise<Record<string, string>> {
-  if (!isSsmConfigured()) return {};
-  if (ssmCache && ssmCache.expiresAt > Date.now()) return ssmCache.values;
-  try {
-    const values = await fetchAllSsmParameters();
-    ssmCache = { values, expiresAt: Date.now() + CACHE_TTL_MS };
-    return values;
-  } catch (err) {
-    // SSM misconfigured / IAM-denied / offline — never crash the app. Fall back
-    // to env + bundled defaults, and cache the empty result briefly so we don't
-    // hammer SSM on every request while it is broken.
-    console.error('[appConfig] Failed to read from SSM Parameter Store, using env/defaults instead:', err);
-    ssmCache = { values: {}, expiresAt: Date.now() + CACHE_TTL_MS };
-    return {};
+// On globalThis because Next.js can instantiate this module once per bundle —
+// a module-level variable would mean one cache (and one KMS fetch stream) per copy.
+const globalWithCache = globalThis as typeof globalThis & { __insightsUiSsmCache?: SsmCacheState };
+
+function getSsmCache(): SsmCacheState {
+  if (!globalWithCache.__insightsUiSsmCache) {
+    globalWithCache.__insightsUiSsmCache = { values: null, expiresAt: 0, inFlight: null };
   }
+  return globalWithCache.__insightsUiSsmCache;
+}
+
+async function getSsmValues(forceRefresh = false): Promise<Record<string, string>> {
+  if (!isSsmConfigured()) return {};
+  const cache = getSsmCache();
+  if (!forceRefresh && cache.values && cache.expiresAt > Date.now()) return cache.values;
+  if (cache.inFlight) return cache.inFlight;
+  cache.inFlight = (async () => {
+    try {
+      const values = await fetchAllSsmParameters();
+      cache.values = values;
+      cache.expiresAt = Date.now() + CACHE_TTL_MS;
+      return values;
+    } catch (err) {
+      // SSM misconfigured / IAM-denied / offline — never crash the app. Serve the
+      // last-known-good values (or env + bundled defaults when there are none) and
+      // retry on a short interval so we neither hammer SSM nor stay stale for long.
+      console.error('[appConfig] Failed to read from SSM Parameter Store, using cached/env/default values instead:', err);
+      cache.values = cache.values ?? {};
+      cache.expiresAt = Date.now() + ERROR_RETRY_TTL_MS;
+      return cache.values;
+    } finally {
+      cache.inFlight = null;
+    }
+  })();
+  return cache.inFlight;
 }
 
 /** Resolve a managed config value, or `undefined` if the key is unknown everywhere. */
@@ -86,9 +120,13 @@ function resolveRaw(key: string, ssm: Record<string, string>): { value: string; 
  * Every managed setting with its resolved value and where that value came from.
  * Admin-facing: secret values are redacted (never leave the server) — only their
  * set/not-set state is reported.
+ *
+ * `forceRefresh` bypasses the (long-lived) SSM cache so the admin screen always
+ * shows live values. Leave it off everywhere else — each refresh costs an SSM
+ * call plus one KMS decrypt per secret.
  */
-export async function getResolvedAppSettings(): Promise<ResolvedAppSetting[]> {
-  const ssm = await getSsmValues();
+export async function getResolvedAppSettings(options?: { forceRefresh?: boolean }): Promise<ResolvedAppSetting[]> {
+  const ssm = await getSsmValues(options?.forceRefresh ?? false);
   return APP_CONFIG_DEFINITIONS.map((def) => {
     const { value, source } = resolveRaw(def.key, ssm);
     const isSet = value.trim() !== '';
@@ -123,7 +161,9 @@ export async function setAppConfigValue(key: string, value: string): Promise<Upd
   }
   try {
     await putSsmParameter(key, value, def.secret ?? false);
-    ssmCache = null; // force a fresh read on next access
+    const cache = getSsmCache();
+    cache.values = null; // force a fresh read on next access
+    cache.expiresAt = 0;
     return { success: true, message: `Saved ${key}` };
   } catch (err) {
     const message = err instanceof Error ? err.message : 'Unknown error';
