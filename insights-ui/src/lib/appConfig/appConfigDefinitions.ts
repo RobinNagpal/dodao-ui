@@ -29,7 +29,7 @@ import { AutoGenBudgetUtilizationStrategy, AutoGenEntity, AutoGenMarkets, AutoGe
 export type AppConfigValueType = 'boolean' | 'string';
 
 /** Ids of the groups the admin App Settings screen renders settings under, in display order. */
-export type AppConfigGroupId = 'claude-auth' | 'llm-defaults' | 'provider-keys' | 'report-generation' | 'auto-generation' | 'claude-endpoints';
+export type AppConfigGroupId = 'claude-auth' | 'llm-defaults' | 'provider-keys' | 'report-generation' | 'auto-generation' | 'payments' | 'claude-endpoints';
 
 /** One choice for a setting that has a fixed set of allowed values (rendered as a dropdown). */
 export interface AppConfigOption {
@@ -103,6 +103,11 @@ export const APP_CONFIG_GROUPS: AppConfigGroup[] = [
       'Controls for the nightly Claude auto-generation job: the master on/off switch, how aggressively it spends the Claude budget, when it runs, and which report types it generates.',
   },
   {
+    id: 'payments',
+    label: 'Payments',
+    description: 'Controls for buying report credits through Stripe.',
+  },
+  {
     id: 'claude-endpoints',
     label: 'Claude Endpoints & Headers',
     description: 'Low-level Claude API endpoints and request headers. Rarely change — only when a host or protocol moves.',
@@ -110,6 +115,14 @@ export const APP_CONFIG_GROUPS: AppConfigGroup[] = [
 ];
 
 export const APP_CONFIG_DEFINITIONS: AppConfigDefinition[] = [
+  {
+    key: 'STRIPE_CREDIT_PURCHASES_ENABLED',
+    label: 'Enable buying credits (Stripe)',
+    description:
+      'ON: users can buy report credits through Stripe Checkout. OFF (default): new checkouts are blocked (e.g. during a Stripe issue). Spending existing credits is unaffected, and payments already in progress are still credited by the webhook.',
+    type: 'boolean',
+    group: 'payments',
+  },
   {
     key: 'USE_LAMBDA_FOR_LLM_RESPONSE',
     label: 'Use Lambda for LLM response (stock & ETF reports)',

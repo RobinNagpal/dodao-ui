@@ -7,11 +7,12 @@ import CreditPackOption from '@/components/ui/credits/CreditPackOption';
 import { CREDIT_PACKS, CreateCheckoutSessionRequest, CreateCheckoutSessionResponse } from '@/types/credits';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { formatPackDetail, formatUsd } from '@/utils/credits/credit-format';
+import { isStripeCreditPurchaseEnabled } from '@/utils/app-config-actions';
 import { getCurrentReturnPath } from '@/utils/credits/credit-return-path';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 export interface BuyCreditsPanelProps {
   /** `grid` on the roomy credits page, `list` inside the narrow modal. */
@@ -27,6 +28,15 @@ const DEFAULT_PACK_KEY = CREDIT_PACKS.find((pack) => pack.recommended)?.key ?? C
 export default function BuyCreditsPanel({ layout = 'grid' }: BuyCreditsPanelProps): JSX.Element {
   const [selectedPackKey, setSelectedPackKey] = useState<string>(DEFAULT_PACK_KEY);
   const [redirecting, setRedirecting] = useState(false);
+  // null while loading. Admins can switch buying off (e.g. during a Stripe
+  // issue); the checkout API enforces the same switch server-side.
+  const [purchasesEnabled, setPurchasesEnabled] = useState<boolean | null>(null);
+
+  useEffect(() => {
+    isStripeCreditPurchaseEnabled()
+      .then(setPurchasesEnabled)
+      .catch(() => setPurchasesEnabled(false));
+  }, []);
 
   const { postData: createCheckoutSession, loading } = usePostData<CreateCheckoutSessionResponse, CreateCheckoutSessionRequest>({
     errorMessage: 'Could not start checkout. Please try again.',
@@ -80,8 +90,12 @@ export default function BuyCreditsPanel({ layout = 'grid' }: BuyCreditsPanelProp
         layout={layout === 'grid' ? 'inline' : 'stacked'}
         note="Payments are handled by Stripe, so we never see your card details. If a report fails, you get your credit back."
         action={
-          <Button primary variant="contained" loading={busy} disabled={busy} onClick={handleCheckout}>
-            {busy ? 'Opening secure checkout…' : `Buy ${selectedPack.credits} credits for ${formatUsd(selectedPack.amountInCents)}`}
+          <Button primary variant="contained" loading={busy} disabled={busy || !purchasesEnabled} onClick={handleCheckout}>
+            {busy
+              ? 'Opening secure checkout…'
+              : purchasesEnabled === false
+              ? 'Buying credits is temporarily disabled'
+              : `Buy ${selectedPack.credits} credits for ${formatUsd(selectedPack.amountInCents)}`}
           </Button>
         }
       />

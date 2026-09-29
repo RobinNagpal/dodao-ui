@@ -1,3 +1,4 @@
+import { getAppConfigBoolean } from '@/lib/appConfig/appConfig';
 import { prisma } from '@/prisma';
 import { CREDIT_CURRENCY, CREDITS_PURCHASED_QUERY_PARAM, CreateCheckoutSessionRequest, CreateCheckoutSessionResponse, getCreditPack } from '@/types/credits';
 import { getStripeClient } from '@/utils/credits/stripe-client';
@@ -35,6 +36,12 @@ function withQueryParam(url: string, key: string, value: string): string {
 // Credits are only granted by the webhook, never here: the redirect back can be
 // lost or forged, the signed webhook cannot.
 async function postHandler(req: NextRequest, userContext: DoDaoJwtTokenPayload): Promise<CreateCheckoutSessionResponse> {
+  // Admin kill switch (App Settings → Payments) for when Stripe is having
+  // issues. Only blocks buying — spending credits never touches Stripe.
+  if (!(await getAppConfigBoolean('STRIPE_CREDIT_PURCHASES_ENABLED'))) {
+    throw new Error('Buying credits is temporarily unavailable. You can still use your existing credits.');
+  }
+
   const { userId } = userContext;
   const body = (await req.json()) as CreateCheckoutSessionRequest;
 
