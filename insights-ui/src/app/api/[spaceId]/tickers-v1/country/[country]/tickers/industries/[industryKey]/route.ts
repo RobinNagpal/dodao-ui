@@ -1,6 +1,6 @@
 import { prisma } from '@/prisma';
 import { SubIndustriesResponse, SubIndustryWithAllTickers, TickerMinimal } from '@/types/api/ticker-industries';
-import { getExchangeFilterClause, toSupportedCountry } from '@/utils/countryExchangeUtils';
+import { EXCHANGE_TO_COUNTRY, getExchangeFilterClause, isExchange, SupportedCountries, toSupportedCountry } from '@/utils/countryExchangeUtils';
 import { createCacheFilter, createTickerFilter, hasFiltersAppliedServer, parseFilterParams } from '@/utils/ticker-filter-utils';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';
@@ -97,11 +97,28 @@ async function getHandler(
     return null;
   }
 
+  // Countries with at least one ticker in this industry (same rule as the sitemap and the empty-listing
+  // 404), so the "Also view" country switcher only links to populated industry pages.
+  const exchangesWithStocks = await prisma.tickerV1.findMany({
+    where: { spaceId, industryKey },
+    select: { exchange: true },
+    distinct: ['exchange'],
+  });
+  const countriesWithStocks = Array.from(
+    new Set(
+      exchangesWithStocks
+        .map((t) => t.exchange)
+        .filter(isExchange)
+        .map((e) => EXCHANGE_TO_COUNTRY[e])
+    )
+  );
+
   return {
     ...industry,
     subIndustries: formattedSubIndustries,
     filtersApplied,
     hasAnalysis: industry._count.industryAnalyses > 0,
+    countriesWithStocks,
   };
 }
 
