@@ -58,10 +58,12 @@ export async function fetchIndustryStocksData(
 }
 
 /**
- * True when an industry listing has no stocks to show — either the fetch failed/returned nothing
- * or every sub-industry is empty. Mirrors the empty-state check in `IndustryStocksGrid`. Used to
- * mark these thin pages `noindex` so they don't get reported as soft 404s.
+ * True when an industry listing is CONFIRMED to have no stocks (every sub-industry is empty).
+ * Mirrors the empty-state check in `IndustryStocksGrid`. These thin pages return a real 404 (and
+ * `noindex`) so they aren't reported as soft 404s. A failed fetch (`null`) is NOT treated as
+ * empty, so a transient API/DB error can never 404 or deindex a populated page.
  */
 export function isIndustryStocksResponseEmpty(data: SubIndustriesResponse | null): boolean {
-  return !data || !data.subIndustries || data.subIndustries.flatMap((subIndustry) => subIndustry.tickers).length === 0;
+  if (!data) return false;
+  return !data.subIndustries || data.subIndustries.flatMap((subIndustry) => subIndustry.tickers).length === 0;
 }

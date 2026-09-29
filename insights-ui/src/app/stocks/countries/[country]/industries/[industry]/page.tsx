@@ -8,7 +8,7 @@ import { commonViewport, generateCountryIndustryStocksMetadata } from '@/utils/m
 import { fetchIndustryStocksData, isIndustryStocksResponseEmpty } from '@/utils/stocks-data-utils';
 import { getIndustryPageTag } from '@/utils/ticker-v1-cache-utils';
 import { Metadata } from 'next';
-import { permanentRedirect } from 'next/navigation';
+import { notFound, permanentRedirect } from 'next/navigation';
 
 export async function generateMetadata(props: { params: Promise<{ country: string; industry: string }> }): Promise<Metadata> {
   const params = await props.params;
@@ -51,6 +51,10 @@ export default async function CountryIndustryStocksPage({ params }: PageProps) {
   });
 
   const data = (await res.json()) as SubIndustriesResponse | null;
+
+  // Confirmed-empty listing (or unknown industry: HTTP 200 with a null body) → real 404 (sibling
+  // not-found.tsx) instead of a soft 404. A failed fetch (!res.ok) renders as before.
+  if (res.ok && (!data || isIndustryStocksResponseEmpty(data))) notFound();
 
   return (
     <IndustryWithStocksPageLayout
