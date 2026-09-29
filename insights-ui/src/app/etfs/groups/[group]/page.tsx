@@ -48,7 +48,7 @@ export default async function EtfsByGroupPage({ params }: PageProps) {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }} />
-      <EtfGroupDetail country={SupportedCountries.US} groupKey={groupKey} data={data} />
+      {await EtfGroupDetail({ country: SupportedCountries.US, groupKey: groupKey, data })}
     </>
   );
 }

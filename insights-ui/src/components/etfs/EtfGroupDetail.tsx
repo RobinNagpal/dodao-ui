@@ -4,6 +4,8 @@ import type { EtfGroupDetailResponse } from '@/app/api/[spaceId]/etfs-v1/listing
 import { getEtfGroupByKey, getCategoriesForGroupKey, ETF_OTHERS_GROUP_KEY } from '@/utils/etf-categorization-utils';
 import { EtfSupportedCountry } from '@/utils/etfCountryExchangeUtils';
 import { etfBrowseDetailPath, etfCountryDisplayName, etfGroupCategoryPath } from '@/utils/etf-country-route-utils';
+import { fetchEtfGroupDetail, filterEtfCountriesWithListing } from '@/utils/etf-listing-fetchers';
+import { isGroupDetailEmpty } from '@/utils/etf-listing-noindex';
 import { notFound } from 'next/navigation';
 
 interface EtfGroupDetailProps {
@@ -12,7 +14,7 @@ interface EtfGroupDetailProps {
   data: EtfGroupDetailResponse;
 }
 
-export default function EtfGroupDetail({ country, groupKey, data }: EtfGroupDetailProps) {
+export default async function EtfGroupDetail({ country, groupKey, data }: EtfGroupDetailProps) {
   if (!data.found) notFound();
 
   const groupObj = getEtfGroupByKey(groupKey);
@@ -47,6 +49,8 @@ export default function EtfGroupDetail({ country, groupKey, data }: EtfGroupDeta
       .filter((spec) => spec.etfs.length > 0);
   }
 
+  const switcherCountries = await filterEtfCountriesWithListing(async (c) => !isGroupDetailEmpty(await fetchEtfGroupDetail(c, groupObj.key)));
+
   return (
     <EtfPageLayout
       title={`${groupObj.name} ${displayCountry} ETFs`}
@@ -54,6 +58,7 @@ export default function EtfGroupDetail({ country, groupKey, data }: EtfGroupDeta
       currentCountry={country}
       switcherSection="groups"
       switcherHref={(c) => etfBrowseDetailPath(c, 'groups', groupObj.key)}
+      switcherCountries={switcherCountries}
       extraBreadcrumbs={[{ name: groupObj.name, href: etfBrowseDetailPath(country, 'groups', groupObj.key), current: true }]}
       revalidateTag={{ kind: 'group-detail', country, groupKey }}
     >

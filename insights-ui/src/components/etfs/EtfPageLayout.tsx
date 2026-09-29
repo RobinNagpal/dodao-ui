@@ -22,6 +22,8 @@ interface EtfPageLayoutProps {
   switcherSection?: EtfBrowseSection;
   /** Builds the country-switcher href for a given country; lets detail pages keep the active listing when switching countries. */
   switcherHref?: (country: EtfSupportedCountry) => string;
+  /** When set, the switcher only links to these countries (where this listing has ETFs). */
+  switcherCountries?: EtfSupportedCountry[];
   /** Next.js Data Cache tag backing this listing surface, for the admin "Revalidate This Listing" action. Omitted on uncached filter-detail pages (CloudFront-only purge). */
   revalidateTag?: EtfListingCacheTag;
   children: ReactNode;
@@ -44,6 +46,7 @@ export default function EtfPageLayout({
   currentCountry = SupportedCountries.US,
   switcherSection,
   switcherHref,
+  switcherCountries,
   revalidateTag,
   children,
 }: EtfPageLayoutProps) {
@@ -89,7 +92,13 @@ export default function EtfPageLayout({
         <h1 className="text-2xl font-bold text-heading mb-4">{title}</h1>
         <p className="text-body text-md mb-4">{description}</p>
         <div className="mt-2 mb-2">
-          <EtfCountryAlternatives currentCountry={currentCountry} section={switcherSection} buildHref={switcherHref} className="text-sm" />
+          <EtfCountryAlternatives
+            currentCountry={currentCountry}
+            section={switcherSection}
+            buildHref={switcherHref}
+            countries={switcherCountries}
+            className="text-sm"
+          />
         </div>
       </div>
 

@@ -5,7 +5,7 @@ import type { EtfProvidersIndexResponse } from '@/app/api/[spaceId]/etfs-v1/list
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { getEtfAssetClassesIndexTag, getEtfGroupDetailTag, getEtfGroupsIndexTag, getEtfProvidersIndexTag } from '@/utils/etf-cache-utils';
 import { fetchEtfListingsIndex } from '@/utils/etf-listing-visibility';
-import { EtfSupportedCountry } from '@/utils/etfCountryExchangeUtils';
+import { ETF_SUPPORTED_COUNTRIES, EtfSupportedCountry } from '@/utils/etfCountryExchangeUtils';
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
 
 /**
@@ -71,4 +71,14 @@ export async function fetchEtfGroupDetail(country: EtfSupportedCountry, groupKey
     country
   )}&groupKey=${encodeURIComponent(groupKey)}`;
   return fetchListingJson<EtfGroupDetailResponse>(url, getEtfGroupDetailTag(country, groupKey), 'fetchEtfGroupDetail');
+}
+
+/**
+ * ETF countries whose version of a listing has ETFs, for the "Also view" country switcher on detail
+ * listing pages. Callers pass the same `is*DetailEmpty` predicate the page uses for its 404, so the
+ * switcher never links to an empty (404) listing. A failed fetch counts as populated (fail-soft).
+ */
+export async function filterEtfCountriesWithListing(isPopulated: (country: EtfSupportedCountry) => Promise<boolean>): Promise<EtfSupportedCountry[]> {
+  const flags = await Promise.all(ETF_SUPPORTED_COUNTRIES.map((country) => isPopulated(country)));
+  return ETF_SUPPORTED_COUNTRIES.filter((_, i) => flags[i]);
 }

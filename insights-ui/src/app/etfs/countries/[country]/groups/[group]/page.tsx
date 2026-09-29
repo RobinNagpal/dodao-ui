@@ -50,7 +50,7 @@ export default async function CountryEtfsByGroupPage({ params }: PageProps) {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }} />
-      <EtfGroupDetail country={decodedCountry} groupKey={decodedGroupKey} data={data} />
+      {await EtfGroupDetail({ country: decodedCountry, groupKey: decodedGroupKey, data })}
     </>
   );
 }
