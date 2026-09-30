@@ -4,9 +4,9 @@ import { etfBrowseDetailPath, resolveEtfCountryParam } from '@/utils/etf-country
 import { getEtfProviderBySlug, slugifyEtfTag } from '@/utils/etf-tag-slug-utils';
 import { SupportedCountries } from '@/utils/countryExchangeUtils';
 import { fetchEtfProvidersIndex } from '@/utils/etf-listing-fetchers';
-import { providerDetailRobots } from '@/utils/etf-listing-noindex';
+import { isProviderDetailEmpty, providerDetailRobots } from '@/utils/etf-listing-noindex';
 import { generateEtfProviderDetailBreadcrumbJsonLd, generateEtfProviderDetailMetadata } from '@/utils/etf-metadata-generators';
-import { permanentRedirect } from 'next/navigation';
+import { notFound, permanentRedirect } from 'next/navigation';
 import type { Metadata } from 'next';
 
 export const dynamic = 'force-dynamic';
@@ -39,6 +39,9 @@ export default async function CountryEtfsByProviderPage({ params, searchParams: 
   if (provider !== slug) {
     permanentRedirect(etfBrowseDetailPath(decodedCountry, 'providers', slug));
   }
+
+  // Confirmed-empty listing → real 404 (generic EtfListingNotFound page) instead of a soft 404.
+  if (isProviderDetailEmpty(await fetchEtfProvidersIndex(decodedCountry), slug)) notFound();
 
   const canonical = getEtfProviderBySlug(slug);
   const searchParams = await searchParamsPromise;

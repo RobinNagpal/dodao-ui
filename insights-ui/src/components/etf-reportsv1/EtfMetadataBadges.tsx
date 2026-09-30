@@ -1,7 +1,7 @@
 import Link from 'next/link';
-import { getEtfGroupName, getEtfGroupKey, slugifyEtfCategory } from '@/utils/etf-categorization-utils';
+import { getEtfCategoryByName, getEtfGroupName, getEtfGroupKey, slugifyEtfCategory } from '@/utils/etf-categorization-utils';
 import { getCountryByExchange, SupportedCountries, toExchange } from '@/utils/countryExchangeUtils';
-import { slugifyEtfTag } from '@/utils/etf-tag-slug-utils';
+import { getEtfAssetClassBySlug, slugifyEtfTag } from '@/utils/etf-tag-slug-utils';
 import { badgeTone, type BadgeTone } from '@/components/ui/badges/badgeTone';
 
 export interface EtfMetadataBadgesProps {
@@ -42,7 +42,8 @@ export default function EtfMetadataBadges({ exchange, assetClass, category, issu
     items.push({
       label: 'Asset Class',
       value: assetClass,
-      href: `${prefix}/asset-classes/${slugifyEtfTag(assetClass)}`,
+      // Only the known asset classes have listing pages (e.g. "Asset Allocation" has none).
+      href: getEtfAssetClassBySlug(slugifyEtfTag(assetClass)) ? `${prefix}/asset-classes/${slugifyEtfTag(assetClass)}` : null,
       tone: 'info',
     });
   }
@@ -58,7 +59,8 @@ export default function EtfMetadataBadges({ exchange, assetClass, category, issu
     items.push({
       label: 'Category',
       value: category,
-      href: groupKey ? `${prefix}/groups/${groupKey}/categories/${slugifyEtfCategory(category)}` : null,
+      // Canonical category (e.g. "Health Care" → "Health") so the link matches the listing page.
+      href: groupKey ? `${prefix}/groups/${groupKey}/categories/${slugifyEtfCategory(getEtfCategoryByName(category)?.name ?? category)}` : null,
       tone: 'accent',
     });
   }

@@ -1,3 +1,4 @@
+import { SupportedCountries } from '@/utils/countryExchangeUtils';
 import { SubIndustryWithCount } from '@/types/ticker-typesv1';
 import { FavouriteTicker, TickerV1CachedScore, TickerV1Industry, TickerV1Notes, UserTickerTag, UserTickerList } from '@prisma/client';
 
@@ -58,4 +59,6 @@ export interface SubIndustriesResponse extends Omit<TickerV1Industry, 'subIndust
   subIndustries: SubIndustryWithAllTickers[];
   filtersApplied: boolean;
   hasAnalysis: boolean;
+  /** Countries with at least one ticker in this industry; drives the "Also view" country switcher. */
+  countriesWithStocks?: SupportedCountries[];
 }

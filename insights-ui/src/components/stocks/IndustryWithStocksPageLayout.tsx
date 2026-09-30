@@ -7,6 +7,7 @@ import FiltersButton from '@/components/stocks/filters/FiltersButton';
 import StocksGridPageActions from '@/app/stocks/StocksGridPageActions';
 import CountryAlternatives from '@/components/stocks/CountryAlternatives';
 import AppliedFilterChips from '@/components/stocks/filters/AppliedFilterChips';
+import { SupportedCountries } from '@/utils/countryExchangeUtils';
 
 interface IndustryWithStocksPageLayoutProps {
   title: string;
@@ -16,6 +17,8 @@ interface IndustryWithStocksPageLayoutProps {
   industryName?: string;
   showAppliedFilters?: boolean;
   hasAnalysis?: boolean;
+  /** When set, the "Also view" switcher only links to these countries (industry pages with stocks). */
+  countriesWithStocks?: SupportedCountries[];
   children: ReactNode;
 }
 
@@ -59,6 +62,7 @@ export default function IndustryWithStocksPageLayout({
   industryName,
   showAppliedFilters = false,
   hasAnalysis = false,
+  countriesWithStocks,
   children,
 }: IndustryWithStocksPageLayoutProps) {
   const breadcrumbs = buildBreadcrumbs(currentCountry, industryKey, industryName);
@@ -108,7 +112,14 @@ export default function IndustryWithStocksPageLayout({
         </div>
         <p className="text-muted text-md mb-4">{description}</p>
         <div className="mt-2 mb-2">
-          <CountryAlternatives currentCountry={currentCountry} industryKey={industryKey} className="flex-shrink-0 text-sm" enhanced={true} compact={true} />
+          <CountryAlternatives
+            currentCountry={currentCountry}
+            industryKey={industryKey}
+            countriesWithStocks={countriesWithStocks}
+            className="flex-shrink-0 text-sm"
+            enhanced={true}
+            compact={true}
+          />
         </div>
       </div>
 

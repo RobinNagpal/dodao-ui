@@ -71,7 +71,7 @@ export default function MobileTopNav({ mobileMenuOpen, setMobileMenuOpen, indust
                   ) : (
                     <div className="space-y-1">
                       {industries
-                        .slice()
+                        .filter((industry) => (industry.tickerCount ?? 0) > 0) // skip industries with no stocks (their pages 404)
                         .sort((a, b) => a.name.localeCompare(b.name))
                         .map((industry) => (
                           <Link

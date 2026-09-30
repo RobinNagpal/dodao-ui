@@ -5,7 +5,7 @@ import { etfBrowseDetailPath, resolveEtfCountryParam } from '@/utils/etf-country
 import { getEtfAssetClassBySlug, slugifyEtfTag } from '@/utils/etf-tag-slug-utils';
 import { SupportedCountries } from '@/utils/countryExchangeUtils';
 import { fetchEtfAssetClassesIndex } from '@/utils/etf-listing-fetchers';
-import { assetClassDetailRobots } from '@/utils/etf-listing-noindex';
+import { assetClassDetailRobots, isAssetClassDetailEmpty } from '@/utils/etf-listing-noindex';
 import { generateEtfAssetClassDetailBreadcrumbJsonLd, generateEtfAssetClassDetailMetadata } from '@/utils/etf-metadata-generators';
 import { notFound, permanentRedirect } from 'next/navigation';
 import type { Metadata } from 'next';
@@ -56,6 +56,9 @@ export default async function CountryEtfsByAssetClassPage({ params, searchParams
   if (assetClass !== resolved.slug) {
     permanentRedirect(etfBrowseDetailPath(decodedCountry, 'asset-classes', resolved.slug));
   }
+
+  // Confirmed-empty listing → real 404 (generic EtfListingNotFound page) instead of a soft 404.
+  if (isAssetClassDetailEmpty(await fetchEtfAssetClassesIndex(decodedCountry), resolved.slug)) notFound();
 
   const searchParams = await searchParamsPromise;
   const breadcrumb = generateEtfAssetClassDetailBreadcrumbJsonLd({

@@ -1,11 +1,9 @@
 import EtfPageLayout from '@/components/etfs/EtfPageLayout';
-import EtfGroupingCardGrid, { EtfGroupingCardSpec } from '@/components/etfs/EtfGroupingCardGrid';
+import EtfGroupingCardGrid from '@/components/etfs/EtfGroupingCardGrid';
+import { buildPopulatedEtfAssetClassItems } from '@/components/home-page/TopEtfAssetClassesShowcase';
 import type { EtfAssetClassesIndexResponse } from '@/app/api/[spaceId]/etfs-v1/listings/asset-classes-index/route';
-import { ETF_OTHERS_GROUP } from '@/utils/etf-categorization-utils';
-import { ETF_ASSET_CLASS_OPTIONS } from '@/utils/etf-filter-utils';
 import { EtfSupportedCountry } from '@/utils/etfCountryExchangeUtils';
-import { etfBrowseDetailPath, etfBrowsePath, etfCountryDisplayName } from '@/utils/etf-country-route-utils';
-import { slugifyEtfTag } from '@/utils/etf-tag-slug-utils';
+import { etfBrowsePath, etfCountryDisplayName } from '@/utils/etf-country-route-utils';
 
 interface EtfAssetClassesIndexProps {
   country: EtfSupportedCountry;
@@ -13,28 +11,10 @@ interface EtfAssetClassesIndexProps {
 }
 
 export default function EtfAssetClassesIndex({ country, data }: EtfAssetClassesIndexProps) {
-  const assetClasses = ETF_ASSET_CLASS_OPTIONS.filter((opt) => opt.value !== '');
   const displayName = etfCountryDisplayName(country);
   const assetClassesPath = etfBrowsePath(country, 'asset-classes');
-
-  const items: EtfGroupingCardSpec[] = assetClasses.map((opt) => ({
-    key: opt.value,
-    title: opt.label,
-    href: etfBrowseDetailPath(country, 'asset-classes', slugifyEtfTag(opt.value)),
-    totalCount: data.counts[opt.value] ?? 0,
-    etfs: data.values[opt.value] ?? [],
-  }));
-
-  // Append an "Others" bucket for ETFs with no asset class — only when some exist.
-  if (data.others.count > 0) {
-    items.push({
-      key: ETF_OTHERS_GROUP.key,
-      title: ETF_OTHERS_GROUP.name,
-      href: etfBrowseDetailPath(country, 'asset-classes', ETF_OTHERS_GROUP.key),
-      totalCount: data.others.count,
-      etfs: data.others.items,
-    });
-  }
+  // Only populated asset classes (+ "Others" when it has ETFs) — empty ones 404, so don't link them.
+  const items = buildPopulatedEtfAssetClassItems(country, data);
 
   return (
     <EtfPageLayout
