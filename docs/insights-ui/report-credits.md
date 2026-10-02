@@ -174,6 +174,33 @@ client HTML never disagree around midnight.
   generation can take up to an hour, and the new report and date show up on the
   user's next page load.
 
+### Result email
+
+When a paid run settles, `settleReportCredit` emails the user who paid
+(`sendReportResultEmail` in `src/utils/credits/report-result-email.ts`):
+
+- **Success** — "Your AAPL (NASDAQ) report is ready" with a **View report** button.
+- **Failure** — "We couldn't generate your AAPL (NASDAQ) report", says the
+  credit was returned, with a **Go to report** button.
+
+It is sent through AWS SES via `sendEmail` (`@dodao/web-core/api/email/sendEmail`),
+from `contact@koalagains.com` — the same setup as the login emails. Links use
+`getCanonicalUrl()` (`https://koalagains.com`), so they point at production
+even when sent from a local run. Only the call that actually settles the spend
+sends (guarded by the same `settledAt IS NULL` update), the failure email goes
+out after the refund commits, and any email error is logged and swallowed so it
+can never break report completion or the refund. Admin and nightly runs send
+nothing.
+
+It only fires for credit-paid runs: `settleReportCredit` exits early unless a
+`ReportSpend` row exists for the request, and only `spendCreditForReport` (the
+user's paid Regenerate) creates one.
+
+**Testing locally:** SES isn't configured locally, so — exactly like the login
+email — `sendEmail` prints the recipient, subject and full HTML to the server
+terminal before trying to send, and the send then fails with a logged
+`AccessDenied`. Paste the printed HTML into a `.html` file to preview it.
+
 ### Credits page (`/credits`)
 
 - **History** — report rows link to the stock / ETF page (resolved by

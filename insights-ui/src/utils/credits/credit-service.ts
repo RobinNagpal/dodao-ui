@@ -1,6 +1,7 @@
 import { prisma } from '@/prisma';
 import { CREDITS_PER_REPORT } from '@/types/credits';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
+import { sendReportResultEmail } from '@/utils/credits/report-result-email';
 import { CreditReportKind, CreditTransactionType, Prisma } from '@prisma/client';
 
 /**
@@ -171,6 +172,7 @@ export async function spendCreditForReport<T extends { id: string }>(input: Spen
  *
  * A request that ends in `Failed` gets the credit back — including the partial
  * case where some sections succeeded, since the user paid for a full report.
+ * Either way the user who paid is emailed the result (best effort).
  * A no-op for admin- and cron-created requests, which have no ledger row.
  */
 export async function settleReportCredit(generationRequestId: string, succeeded: boolean): Promise<void> {
@@ -187,14 +189,18 @@ export async function settleReportCredit(generationRequestId: string, succeeded:
   }
 
   if (succeeded) {
-    await prisma.creditTransaction.updateMany({
+    const settled = await prisma.creditTransaction.updateMany({
       where: { id: spend.id, settledAt: null },
       data: { settledAt: new Date() },
     });
+    // Only the call that actually settled it emails, so a concurrent settle can't send twice.
+    if (settled.count > 0) {
+      await sendReportResultEmail(spend, true);
+    }
     return;
   }
 
-  await prisma.$transaction(async (tx) => {
+  const refunded = await prisma.$transaction(async (tx): Promise<boolean> => {
     // Settling and refunding are guarded by the same `settledAt: null` filter,
     // so a concurrent settle can't hand out the refund twice.
     const settled = await tx.creditTransaction.updateMany({
@@ -203,7 +209,7 @@ export async function settleReportCredit(generationRequestId: string, succeeded:
     });
 
     if (settled.count === 0) {
-      return;
+      return false;
     }
 
     const user = await tx.user.update({
@@ -227,5 +233,11 @@ export async function settleReportCredit(generationRequestId: string, succeeded:
         settledAt: new Date(),
       },
     });
+    return true;
   });
+
+  // Sent after the transaction commits, so the email never claims a refund that rolled back.
+  if (refunded) {
+    await sendReportResultEmail(spend, false);
+  }
 }
