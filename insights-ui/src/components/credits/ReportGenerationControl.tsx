@@ -7,7 +7,7 @@ import { ReportGenerationStatusResponse, ReportSpendStatus, ReportTargetRequest,
 import { KoalaGainsSession } from '@/types/auth';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { formatReportAge, formatReportGeneratedDate, formatShortDate } from '@/utils/credits/credit-format';
-import { consumeCreditsPurchasedMarker, notifyCreditsChanged } from '@/utils/credits/credit-return-path';
+import { CREDITS_CHANGED_EVENT, consumeCreditsPurchasedMarker, notifyCreditsChanged } from '@/utils/credits/credit-return-path';
 import { REPORT_STATUS_BADGES } from '@/utils/credits/report-status-badges';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
@@ -120,6 +120,18 @@ export default function ReportGenerationControl({ kind, symbol, exchange, lastRe
     // The webhook may land after the redirect, so the navbar re-reads too.
     notifyCreditsChanged();
   }, [session, showNotification, refetchStatus]);
+
+  // A paid run finished somewhere (see ReportResultNotifier) or the balance
+  // changed: re-read the status so the badge and the Regenerate button update.
+  useEffect(() => {
+    if (!session) return;
+    const refresh = () => {
+      setInProgress(false);
+      void refetchStatus();
+    };
+    window.addEventListener(CREDITS_CHANGED_EVENT, refresh);
+    return () => window.removeEventListener(CREDITS_CHANGED_EVENT, refresh);
+  }, [session, refetchStatus]);
 
   const handleConfirm = async () => {
     const response = await triggerGeneration(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/users/report-generation`, { kind, symbol, exchange });

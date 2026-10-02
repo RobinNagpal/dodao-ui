@@ -90,6 +90,7 @@ read-then-write, so two simultaneous clicks cannot both spend the last credit.
 | `POST /api/[spaceId]/users/credits/checkout-session` | `withLoggedInUser` | Creates a Stripe Checkout Session, returns its URL. |
 | `GET /api/[spaceId]/users/report-generation` | `withLoggedInUser` | Balance, freshness date, whether the user's own paid run is in flight, and their `lastRegeneration` (date + succeeded) for one report. |
 | `POST /api/[spaceId]/users/report-generation` | `withLoggedInUser` | Spends a credit and queues a full regeneration. |
+| `POST /api/[spaceId]/users/credits/report-results` | `withLoggedInUser` | Returns paid runs that finished or failed since the user last looked, and marks them seen (`result_seen_at`). |
 | `POST /api/stripe/webhook` | **Stripe signature** | Grants credits after payment. |
 
 Note the deliberate exception to the rule in
@@ -173,6 +174,35 @@ client HTML never disagree around midnight.
   **no polling** —
   generation can take up to an hour, and the new report and date show up on the
   user's next page load.
+
+### Telling the user a paid report finished
+
+`ReportResultNotifier` (mounted once in `app/layout.tsx`, so it works on every
+page) calls `POST /users/credits/report-results`:
+
+- once when the site loads,
+- when the user comes back to the tab (`visibilitychange`),
+- on navigation, at most once a minute.
+
+There is **no timer polling** and no SSE/WebSocket (Vercel functions can't hold
+an hour-long connection). The endpoint returns every settled `ReportSpend` with
+`result_seen_at IS NULL` and stamps it in the same call, so each result is claimed once; the claiming tab
+passes it to the user's other open tabs over a `BroadcastChannel` (closing the
+notice closes it everywhere), so it is
+announced exactly once, whether the user stayed on the site or came back days
+later. A top-right toast under the navbar (`ReportResultToast`, one divided row per result, stays until closed) shows each one
+with the same badges as elsewhere: `[Generated] AAPL (NASDAQ) report is ready.`
+or `[Failed · refunded] … Your credit was returned.` It then fires
+`notifyCreditsChanged()`, so the navbar balance and the report page's
+regenerate status re-read, and `router.refresh()` if the user is on that report.
+
+Known gap: a user who stays on one page, in one visible tab, for the whole run
+sees the result on their next navigation or tab switch. Closing it would need a
+hosted push service (Pusher / Ably) triggered from `settleReportCredit`; the
+result email below still reaches them meanwhile.
+
+The migration that added `result_seen_at` marks every already-settled spend as
+seen, so a deploy doesn't announce old results.
 
 ### Result email
 
