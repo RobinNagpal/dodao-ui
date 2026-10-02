@@ -97,13 +97,11 @@ export type SpendCreditResult<T> =
   | { outcome: 'AlreadyInProgress' };
 
 export interface SpendCreditTarget<T> {
-  /** True when a generation request for the report is already queued or running. */
-  hasOpenGenerationRequest: (tx: Prisma.TransactionClient) => Promise<boolean>;
   createGenerationRequest: (tx: Prisma.TransactionClient) => Promise<T>;
 }
 
 /** Thrown inside the transaction to roll the deduction back. */
-class GenerationAlreadyOpenError extends Error {}
+class SpendAlreadyOpenError extends Error {}
 
 /**
  * Deducts one credit and creates the generation request it pays for, atomically.
@@ -113,9 +111,11 @@ class GenerationAlreadyOpenError extends Error {}
  * credit. If `createGenerationRequest` throws, the whole transaction — the
  * deduction included — rolls back.
  *
- * The "already running" check is repeated after the deduction: the deduction
- * row-locks the user, so a second concurrent click waits here until the first
- * commits, then sees its request and is rolled back instead of paying twice.
+ * Runs started by an admin or the nightly job don't block a paid run: the user
+ * gets their own request. Only the user's own unfinished paid run does, so a
+ * double click or a second tab can't charge twice. That check sits after the
+ * deduction on purpose: the deduction row-locks the user, so a concurrent click
+ * waits here until the first commits, then sees its spend and rolls back.
  */
 export async function spendCreditForReport<T extends { id: string }>(input: SpendCreditInput, target: SpendCreditTarget<T>): Promise<SpendCreditResult<T>> {
   const { userId, reportKind, reportTargetId, reportLabel } = input;
@@ -131,8 +131,11 @@ export async function spendCreditForReport<T extends { id: string }>(input: Spen
         return { outcome: 'InsufficientCredits' };
       }
 
-      if (await target.hasOpenGenerationRequest(tx)) {
-        throw new GenerationAlreadyOpenError();
+      const openSpends = await tx.creditTransaction.count({
+        where: { userId, reportTargetId, type: CreditTransactionType.ReportSpend, settledAt: null },
+      });
+      if (openSpends > 0) {
+        throw new SpendAlreadyOpenError();
       }
 
       const user = await tx.user.findUniqueOrThrow({ where: { id: userId }, select: { credits: true } });
@@ -156,7 +159,7 @@ export async function spendCreditForReport<T extends { id: string }>(input: Spen
       return { outcome: 'Started', generationRequest, credits: user.credits };
     });
   } catch (error) {
-    if (error instanceof GenerationAlreadyOpenError) {
+    if (error instanceof SpendAlreadyOpenError) {
       return { outcome: 'AlreadyInProgress' };
     }
     throw error;

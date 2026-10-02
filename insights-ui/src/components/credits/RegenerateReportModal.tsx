@@ -4,17 +4,21 @@ import BuyCreditsPanel from '@/components/credits/BuyCreditsPanel';
 import Stack from '@/components/ui/containers/Stack';
 import InlineCard from '@/components/ui/sections/InlineCard';
 import Text from '@/components/ui/Text';
-import { CREDITS_PER_REPORT, ReportGenerationStatusResponse } from '@/types/credits';
+import { CREDITS_PER_REPORT, REFRESHED_SECTIONS, ReportGenerationStatusResponse } from '@/types/credits';
 import { formatCredits } from '@/utils/credits/credit-format';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import SingleSectionModal from '@dodao/web-core/components/core/modals/SingleSectionModal';
 import LoadingSpinner from '@dodao/web-core/components/core/loaders/LoadingSpinner';
+import { CreditReportKind } from '@prisma/client';
 
 export interface RegenerateReportModalProps {
   open: boolean;
   onClose: () => void;
+  kind: CreditReportKind;
   /** "AAPL" / "SPY" — what the user is about to spend a credit on. */
   reportLabel: string;
+  /** "September 2, 2026 (47 days ago)", or null when never generated. */
+  generatedAt: string | null;
   status: ReportGenerationStatusResponse | undefined;
   statusLoading: boolean;
   generating: boolean;
@@ -30,7 +34,9 @@ export interface RegenerateReportModalProps {
 export default function RegenerateReportModal({
   open,
   onClose,
+  kind,
   reportLabel,
+  generatedAt,
   status,
   statusLoading,
   generating,
@@ -59,10 +65,10 @@ export default function RegenerateReportModal({
       return (
         <Stack gap="md">
           <InlineCard padding="cozy">
-            <Text size="sm">A new {reportLabel} report is already being made. It can take up to an hour. Refresh the page later to see it.</Text>
+            <Text size="sm">Your new {reportLabel} report is already being made. It can take up to an hour. Refresh the page later to see it.</Text>
           </InlineCard>
           <Text size="xs" tone="muted">
-            You have not been charged for this.
+            You have not been charged again.
           </Text>
           <Button variant="contained" onClick={onClose}>
             Got it
@@ -89,11 +95,17 @@ export default function RegenerateReportModal({
 
     return (
       <Stack gap="lg">
-        <Text size="sm">A fresh analysis of {reportLabel} will replace the current report. It can take up to an hour.</Text>
+        <Stack gap="xs">
+          <Text size="sm">A fresh analysis of {reportLabel} will replace the current report. It can take up to an hour.</Text>
+          <Text size="xs" tone="muted">
+            Refreshes every section: {REFRESHED_SECTIONS[kind].join(', ')}.
+          </Text>
+        </Stack>
 
         <InlineCard padding="cozy">
           <Stack gap="xs">
             {[
+              ['Current report', generatedAt ?? 'Not generated yet'],
               ['Your balance', formatCredits(credits)],
               ['Cost', formatCredits(CREDITS_PER_REPORT)],
               ['Balance after', formatCredits(credits - CREDITS_PER_REPORT)],

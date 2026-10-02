@@ -8,6 +8,22 @@ export function formatReportGeneratedDate(value: string | Date | null | undefine
   return date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
 }
 
+/** `Sep 2, 2026` — compact date for badges and history rows. */
+export function formatShortDate(value: string | Date): string {
+  return new Date(value).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+}
+
+/** `today` / `yesterday` / `47 days ago` — how old a report is, next to its date. */
+export function formatReportAge(value: string | Date | null | undefined, now: number): string | null {
+  if (!value) return null;
+  const time = new Date(value).getTime();
+  if (Number.isNaN(time)) return null;
+  const days = Math.max(0, Math.floor((now - time) / (24 * 60 * 60 * 1000)));
+  if (days === 0) return 'today';
+  if (days === 1) return 'yesterday';
+  return `${days} days ago`;
+}
+
 /** `$10.00` from an amount in USD cents. */
 export function formatUsd(amountInCents: number): string {
   return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(amountInCents / 100);
