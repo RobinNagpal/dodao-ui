@@ -97,6 +97,19 @@ export interface CreditBalanceResponse {
   hasMore: boolean;
 }
 
+/** A paid regeneration that finished since the user last looked. */
+export interface ReportResult {
+  id: string;
+  reportLabel: string;
+  reportHref: string | null;
+  /** False when it failed and the credit was refunded. */
+  succeeded: boolean;
+}
+
+export interface ReportResultsResponse {
+  results: ReportResult[];
+}
+
 export interface CreditReceiptResponse {
   receiptUrl: string;
 }
