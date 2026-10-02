@@ -28,11 +28,13 @@ async function postHandler(req: NextRequest, userContext: DoDaoJwtTokenPayload):
       select: { generationRequestId: true },
     }),
     getReportHrefs(finished),
-    prisma.creditTransaction.updateMany({
-      where: { id: { in: finished.map((spend) => spend.id) } },
-      data: { resultSeenAt: new Date() },
-    }),
   ]);
+  // Marked seen only after the reads above succeeded, so a failure here can't
+  // swallow a result before the user is shown it.
+  await prisma.creditTransaction.updateMany({
+    where: { id: { in: finished.map((spend) => spend.id) }, resultSeenAt: null },
+    data: { resultSeenAt: new Date() },
+  });
   const refundedRequestIds = new Set(refunds.map((refund) => refund.generationRequestId));
 
   return {

@@ -18,7 +18,10 @@ export function formatReportAge(value: string | Date | null | undefined, now: nu
   if (!value) return null;
   const time = new Date(value).getTime();
   if (Number.isNaN(time)) return null;
-  const days = Math.max(0, Math.floor((now - time) / (24 * 60 * 60 * 1000)));
+  // Calendar days, not 24h blocks: 23:30 yesterday viewed at 08:00 today is "yesterday".
+  // Math.round absorbs the 23h/25h days around DST changes.
+  const startOfDay = (t: number) => new Date(t).setHours(0, 0, 0, 0);
+  const days = Math.max(0, Math.round((startOfDay(now) - startOfDay(time)) / (24 * 60 * 60 * 1000)));
   if (days === 0) return 'today';
   if (days === 1) return 'yesterday';
   return `${days} days ago`;
