@@ -1,54 +1,69 @@
 import { prisma } from '@/prisma';
-import { CREDITS_PER_REPORT, ReportGenerationStatusResponse, ReportTargetRequest, TriggerReportGenerationResponse } from '@/types/credits';
+import { CREDITS_PER_REPORT, LastRegeneration, ReportGenerationStatusResponse, ReportTargetRequest, TriggerReportGenerationResponse } from '@/types/credits';
 import { spendCreditForReport } from '@/utils/credits/credit-service';
 import { parseReportTargetRequest, ResolvedReportTarget, resolveReportTarget } from '@/utils/credits/report-target';
 import { withLoggedInUser } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
+import { CreditTransactionType } from '@prisma/client';
 import { NextRequest } from 'next/server';
 
-function toStatus(target: ResolvedReportTarget, credits: number, generationInProgress: boolean): ReportGenerationStatusResponse {
+/**
+ * Everything the regenerate UI needs about this user and this report. Only the
+ * user's own paid runs count: admin and nightly runs are invisible to users.
+ */
+async function getStatus(userId: string, target: ResolvedReportTarget): Promise<ReportGenerationStatusResponse> {
+  const spendWhere = { userId, reportTargetId: target.id, type: CreditTransactionType.ReportSpend };
+
+  const [user, openSpend, lastSettledSpend] = await Promise.all([
+    prisma.user.findUniqueOrThrow({ where: { id: userId }, select: { credits: true } }),
+    prisma.creditTransaction.findFirst({ where: { ...spendWhere, settledAt: null }, select: { id: true } }),
+    prisma.creditTransaction.findFirst({
+      where: { ...spendWhere, settledAt: { not: null } },
+      orderBy: { settledAt: 'desc' },
+      select: { settledAt: true, generationRequestId: true },
+    }),
+  ]);
+
+  let lastRegeneration: LastRegeneration | null = null;
+  if (lastSettledSpend?.settledAt) {
+    // A failed run is settled by writing a Refund row with the same request id.
+    const refund = await prisma.creditTransaction.findFirst({
+      where: { userId, type: CreditTransactionType.Refund, generationRequestId: lastSettledSpend.generationRequestId },
+      select: { id: true },
+    });
+    lastRegeneration = { finishedAt: lastSettledSpend.settledAt.toISOString(), succeeded: !refund };
+  }
+
   return {
-    credits,
+    credits: user.credits,
     creditsPerReport: CREDITS_PER_REPORT,
     lastReportGeneratedAt: target.lastReportGeneratedAt?.toISOString() ?? null,
-    generationInProgress,
+    generationInProgress: !!openSpend,
+    lastRegeneration,
   };
 }
 
-async function getCredits(userId: string): Promise<number> {
-  const user = await prisma.user.findUniqueOrThrow({ where: { id: userId }, select: { credits: true } });
-  return user.credits;
-}
-
 // GET /api/[spaceId]/users/report-generation?kind=Stock&symbol=AAPL&exchange=NASDAQ
-// Everything the regenerate UI needs in one round trip: the user's balance, the
-// date shown on the page, and whether a generation is already running.
+// The user's balance, the date shown on the page, and their own regeneration
+// history for this report, in one round trip.
 async function getHandler(req: NextRequest, userContext: DoDaoJwtTokenPayload): Promise<ReportGenerationStatusResponse> {
   const params = req.nextUrl.searchParams;
   const request = parseReportTargetRequest(params.get('kind'), params.get('symbol'), params.get('exchange'));
-
-  const [target, credits] = await Promise.all([resolveReportTarget(request), getCredits(userContext.userId)]);
-
-  return toStatus(target, credits, target.generationInProgress);
+  const target = await resolveReportTarget(request);
+  return getStatus(userContext.userId, target);
 }
 
 // POST /api/[spaceId]/users/report-generation — spends one credit and queues a
-// full regeneration of the report.
+// full regeneration of the report, even if an admin or nightly run is already
+// going.
 //
-// "Not enough credits" and "already regenerating" are normal outcomes, not
+// "Not enough credits" and "your run is already going" are normal outcomes, not
 // errors: they come back as data so the UI can offer the next step instead of
 // showing a failure.
 async function postHandler(req: NextRequest, userContext: DoDaoJwtTokenPayload): Promise<TriggerReportGenerationResponse> {
   const body = (await req.json()) as ReportTargetRequest;
   const request = parseReportTargetRequest(body.kind, body.symbol, body.exchange);
   const target = await resolveReportTarget(request);
-
-  // A queued or running generation already produces a fresh report, so charging
-  // for a second one would take a credit for work the user is about to get.
-  if (target.generationInProgress) {
-    const credits = await getCredits(userContext.userId);
-    return { ...toStatus(target, credits, true), outcome: 'AlreadyInProgress' };
-  }
 
   const spend = await spendCreditForReport(
     {
@@ -60,13 +75,7 @@ async function postHandler(req: NextRequest, userContext: DoDaoJwtTokenPayload):
     target
   );
 
-  if (spend.outcome !== 'Started') {
-    const credits = await getCredits(userContext.userId);
-    const inProgress = spend.outcome === 'AlreadyInProgress';
-    return { ...toStatus(target, credits, inProgress), outcome: spend.outcome };
-  }
-
-  return { ...toStatus(target, spend.credits, true), outcome: 'Started' };
+  return { ...(await getStatus(userContext.userId, target)), outcome: spend.outcome };
 }
 
 export const GET = withLoggedInUser<ReportGenerationStatusResponse>(getHandler);

@@ -133,6 +133,8 @@ export default function TopNav() {
           industries={industries}
           industriesLoading={industriesLoading}
           navItems={navItems}
+          isLoggedIn={Boolean(session)}
+          credits={credits}
         />
       </header>
     </div>

@@ -1,8 +1,6 @@
 import { prisma } from '@/prisma';
 import { ReportTargetRequest } from '@/types/credits';
-import { EtfGenerationRequestStatus } from '@/types/etf/etf-analysis-types';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
-import { GenerationRequestStatus } from '@/types/ticker-typesv1';
 import { ALL_SECTIONS_REGENERATE_FLAGS } from '@/utils/analysis-reports/generation-request-utils';
 import { ALL_ETF_SECTIONS_REGENERATE_FLAGS } from '@/utils/etf-analysis-reports/etf-generation-request-utils';
 import { CreditReportKind, Prisma } from '@prisma/client';
@@ -17,16 +15,9 @@ export interface ResolvedReportTarget {
   id: string;
   label: string;
   lastReportGeneratedAt: Date | null;
-  /** True while a generation request for this target is queued or running. */
-  generationInProgress: boolean;
-  /** Re-checks for a queued or running request, inside an open DB transaction. */
-  hasOpenGenerationRequest: (tx: Prisma.TransactionClient) => Promise<boolean>;
   /** Creates a full-report generation request inside an open DB transaction. */
   createGenerationRequest: (tx: Prisma.TransactionClient) => Promise<{ id: string }>;
 }
-
-const OPEN_STATUSES = [GenerationRequestStatus.NotStarted, GenerationRequestStatus.InProgress];
-const OPEN_ETF_STATUSES = [EtfGenerationRequestStatus.NotStarted, EtfGenerationRequestStatus.InProgress];
 
 export function parseReportTargetRequest(kind: unknown, symbol: unknown, exchange: unknown): ReportTargetRequest {
   if (kind !== CreditReportKind.Stock && kind !== CreditReportKind.Etf) {
@@ -48,16 +39,11 @@ export async function resolveReportTarget(target: ReportTargetRequest): Promise<
       select: { id: true, lastReportGeneratedAt: true },
     });
 
-    const hasOpenGenerationRequest = async (client: Prisma.TransactionClient): Promise<boolean> =>
-      (await client.tickerV1GenerationRequest.count({ where: { tickerId: ticker.id, status: { in: OPEN_STATUSES } } })) > 0;
-
     return {
       kind,
       id: ticker.id,
       label,
       lastReportGeneratedAt: ticker.lastReportGeneratedAt,
-      generationInProgress: await hasOpenGenerationRequest(prisma),
-      hasOpenGenerationRequest,
       createGenerationRequest: (tx) =>
         tx.tickerV1GenerationRequest.create({
           data: { tickerId: ticker.id, spaceId: KoalaGainsSpaceId, ...ALL_SECTIONS_REGENERATE_FLAGS },
@@ -71,20 +57,34 @@ export async function resolveReportTarget(target: ReportTargetRequest): Promise<
     select: { id: true, lastReportGeneratedAt: true },
   });
 
-  const hasOpenGenerationRequest = async (client: Prisma.TransactionClient): Promise<boolean> =>
-    (await client.etfGenerationRequest.count({ where: { etfId: etf.id, status: { in: OPEN_ETF_STATUSES } } })) > 0;
-
   return {
     kind,
     id: etf.id,
     label,
     lastReportGeneratedAt: etf.lastReportGeneratedAt,
-    generationInProgress: await hasOpenGenerationRequest(prisma),
-    hasOpenGenerationRequest,
     createGenerationRequest: (tx) =>
       tx.etfGenerationRequest.create({
         data: { etfId: etf.id, spaceId: KoalaGainsSpaceId, ...ALL_ETF_SECTIONS_REGENERATE_FLAGS },
         select: { id: true },
       }),
   };
+}
+
+/**
+ * Report page links for ledger rows, keyed by `reportTargetId`. Looked up by id
+ * rather than parsed from the stored label, so a ticker that has since moved
+ * exchange still links to its current page. Deleted targets get no link.
+ */
+export async function getReportHrefs(rows: { reportKind: CreditReportKind | null; reportTargetId: string | null }[]): Promise<Map<string, string>> {
+  const idsOf = (kind: CreditReportKind) => rows.filter((r) => r.reportKind === kind && r.reportTargetId).map((r) => r.reportTargetId as string);
+
+  const [tickers, etfs] = await Promise.all([
+    prisma.tickerV1.findMany({ where: { id: { in: idsOf(CreditReportKind.Stock) }, isDeleted: false }, select: { id: true, symbol: true, exchange: true } }),
+    prisma.etf.findMany({ where: { id: { in: idsOf(CreditReportKind.Etf) } }, select: { id: true, symbol: true, exchange: true } }),
+  ]);
+
+  const hrefs = new Map<string, string>();
+  tickers.forEach((t) => hrefs.set(t.id, `/stocks/${t.exchange}/${t.symbol}`));
+  etfs.forEach((e) => hrefs.set(e.id, `/etfs/${e.exchange}/${e.symbol}`));
+  return hrefs;
 }

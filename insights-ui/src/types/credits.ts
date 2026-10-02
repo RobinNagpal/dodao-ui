@@ -34,6 +34,30 @@ export function getCreditPack(packKey: string): CreditPack | undefined {
   return CREDIT_PACKS.find((pack) => pack.key === packKey);
 }
 
+/** What a regeneration rewrites, listed in the confirm modal. */
+export const REFRESHED_SECTIONS: Record<CreditReportKind, string[]> = {
+  [CreditReportKind.Stock]: [
+    'Business & moat',
+    'Financial analysis',
+    'Past performance',
+    'Future growth',
+    'Fair value',
+    'Competition',
+    'Management team',
+    'Stability',
+    'Final summary',
+  ],
+  [CreditReportKind.Etf]: [
+    'Performance & returns',
+    'Cost efficiency & team',
+    'Risk analysis',
+    'Future performance outlook',
+    'Key facts',
+    'Competition',
+    'Final summary',
+  ],
+};
+
 /** Query param appended to the return URL after a successful Stripe Checkout. */
 export const CREDITS_PURCHASED_QUERY_PARAM = 'creditsPurchased';
 
@@ -52,16 +76,29 @@ export interface CreditTransactionResponse {
   description: string;
   amountInCents: number | null;
   reportLabel: string | null;
+  /** Link to the stock / ETF page the row is about, when it still exists. */
+  reportHref: string | null;
   /** Only set on report spends. */
   reportStatus: ReportSpendStatus | null;
+  /** True for purchases, whose Stripe receipt can be opened. */
+  hasReceipt: boolean;
   createdAt: string;
 }
+
+/** History rows per "Load more" click on the credits page. */
+export const CREDIT_HISTORY_PAGE_SIZE = 50;
 
 export interface CreditBalanceResponse {
   credits: number;
   /** Credits held by reports that are still being generated. */
   reservedCredits: number;
   transactions: CreditTransactionResponse[];
+  /** True when older history rows exist beyond `transactions`. */
+  hasMore: boolean;
+}
+
+export interface CreditReceiptResponse {
+  receiptUrl: string;
 }
 
 /** Balance only, for the navbar pill. */
@@ -93,8 +130,20 @@ export interface ReportGenerationStatusResponse {
   credits: number;
   creditsPerReport: number;
   lastReportGeneratedAt: string | null;
-  /** True while a generation request for this report is queued or running. */
+  /**
+   * True while a regeneration this user paid for is queued or running. Admin and
+   * nightly runs are deliberately not reported: users never see them.
+   */
   generationInProgress: boolean;
+  /** This user's most recent finished paid regeneration of the report, if any. */
+  lastRegeneration: LastRegeneration | null;
+}
+
+export interface LastRegeneration {
+  /** When it finished (or failed). */
+  finishedAt: string;
+  /** False when it failed and the credit was refunded. */
+  succeeded: boolean;
 }
 
 /**

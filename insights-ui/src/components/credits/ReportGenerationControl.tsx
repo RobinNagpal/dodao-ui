@@ -1,12 +1,14 @@
 'use client';
 
 import ReportFreshnessBar from '@/components/ui/credits/ReportFreshnessBar';
-import { ReportGenerationStatusResponse, ReportTargetRequest, TriggerReportGenerationResponse } from '@/types/credits';
+import RegenerateButton from '@/components/ui/credits/RegenerateButton';
+import StatusBadge from '@/components/ui/StatusBadge';
+import { ReportGenerationStatusResponse, ReportSpendStatus, ReportTargetRequest, TriggerReportGenerationResponse } from '@/types/credits';
 import { KoalaGainsSession } from '@/types/auth';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
-import { formatReportGeneratedDate } from '@/utils/credits/credit-format';
+import { formatReportAge, formatReportGeneratedDate, formatShortDate } from '@/utils/credits/credit-format';
 import { consumeCreditsPurchasedMarker, notifyCreditsChanged } from '@/utils/credits/credit-return-path';
-import Button from '@dodao/web-core/components/core/buttons/Button';
+import { REPORT_STATUS_BADGES } from '@/utils/credits/report-status-badges';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
@@ -65,12 +67,34 @@ export default function ReportGenerationControl({ kind, symbol, exchange, lastRe
     errorMessage: 'Could not start the report generation. Please try again.',
   });
 
+  // Only the user's own paid run counts as "in progress"; admin and nightly runs
+  // are never shown, so the user can always regenerate.
   const [inProgress, setInProgress] = useState(false);
   const generationInProgress = inProgress || status?.generationInProgress || false;
 
+  // Read the clock only after mount: the server and browser would otherwise
+  // disagree on "N days ago" around midnight and break hydration.
+  const [now, setNow] = useState<number | null>(null);
+  useEffect(() => setNow(Date.now()), []);
+
   // The date the server rendered stays authoritative until the status endpoint
   // reports a newer one, so nothing flickers on hydration.
-  const generatedAt = formatReportGeneratedDate(status?.lastReportGeneratedAt ?? lastReportGeneratedAt);
+  const reportDate = status?.lastReportGeneratedAt ?? lastReportGeneratedAt;
+  const age = now ? formatReportAge(reportDate, now) : null;
+  const generatedAt = formatReportGeneratedDate(reportDate);
+  const generatedAtWithAge = generatedAt && age ? `${generatedAt} (${age})` : generatedAt;
+
+  // The user's own history with this report, shown under the main date.
+  // Same badges as the credits page history, so a state looks the same everywhere.
+  const badge = (state: ReportSpendStatus, label: string) => <StatusBadge variant={REPORT_STATUS_BADGES[state].variant} label={label} />;
+  const lastRegeneration = status?.lastRegeneration;
+  const historyNote = generationInProgress
+    ? badge('InProgress', REPORT_STATUS_BADGES.InProgress.label)
+    : !lastRegeneration
+    ? null
+    : lastRegeneration.succeeded
+    ? badge('Completed', `${REPORT_STATUS_BADGES.Completed.label} by you on ${formatShortDate(lastRegeneration.finishedAt)}`)
+    : badge('Refunded', `${REPORT_STATUS_BADGES.Refunded.label} · ${formatShortDate(lastRegeneration.finishedAt)}`);
 
   const openModal = useCallback(async () => {
     if (!session) {
@@ -118,7 +142,7 @@ export default function ReportGenerationControl({ kind, symbol, exchange, lastRe
       type: 'success',
       message:
         response.outcome === 'AlreadyInProgress'
-          ? `A ${symbol} report is already being generated. You have not been charged.`
+          ? `Your ${symbol} report is already being generated. You have not been charged again.`
           : `Generating a new ${symbol} report. This can take up to an hour. Refresh the page later to see it.`,
     });
     await refetchStatus();
@@ -128,25 +152,22 @@ export default function ReportGenerationControl({ kind, symbol, exchange, lastRe
   return (
     <>
       <ReportFreshnessBar
-        generatedAt={generatedAt}
+        generatedAt={generatedAtWithAge}
         action={
-          // No polling while a generation runs: it can take up to an hour, and the
-          // page's own cache refresh picks up the new report once it is saved.
-          generationInProgress ? (
-            <span>· Your new report is being generated. This can take up to an hour.</span>
-          ) : (
-            <Button size="sm" variant="text" removeBorder loading={generating} disabled={generating} onClick={openModal}>
-              Regenerate
-            </Button>
-          )
+          // Hidden while the user's own run is going (the note below says so).
+          // No polling: the new report shows up on the next page load.
+          !generationInProgress && <RegenerateButton loading={generating} onClick={openModal} />
         }
+        note={historyNote}
       />
 
       {session && hasMountedModal && (
         <RegenerateReportModal
           open={isModalOpen}
           onClose={() => setIsModalOpen(false)}
+          kind={kind}
           reportLabel={symbol}
+          generatedAt={generatedAtWithAge}
           status={status}
           statusLoading={statusLoading}
           generating={generating}
