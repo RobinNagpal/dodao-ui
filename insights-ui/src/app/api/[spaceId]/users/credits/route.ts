@@ -14,7 +14,7 @@ const MAX_HISTORY_ROWS = 1000;
 // their most recent `limit` history rows ("Load more" raises the limit).
 async function getHandler(req: NextRequest, userContext: DoDaoJwtTokenPayload): Promise<CreditBalanceResponse> {
   const { userId } = userContext;
-  const requestedLimit = Number(req.nextUrl.searchParams.get('limit')) || CREDIT_HISTORY_PAGE_SIZE;
+  const requestedLimit = Math.floor(Number(req.nextUrl.searchParams.get('limit'))) || CREDIT_HISTORY_PAGE_SIZE;
   const limit = Math.min(Math.max(requestedLimit, 1), MAX_HISTORY_ROWS);
 
   const [user, transactionsPlusOne, reservedCredits] = await Promise.all([
@@ -30,7 +30,8 @@ async function getHandler(req: NextRequest, userContext: DoDaoJwtTokenPayload): 
       _sum: { credits: true },
     }),
   ]);
-  const hasMore = transactionsPlusOne.length > limit;
+  // At the cap there is nothing more this endpoint can return, so stop offering "Load more".
+  const hasMore = transactionsPlusOne.length > limit && limit < MAX_HISTORY_ROWS;
   const transactions = transactionsPlusOne.slice(0, limit);
 
   // A settled spend was either kept (report generated) or refunded — the refund

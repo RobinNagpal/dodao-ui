@@ -3,7 +3,6 @@
 import { CreditReceiptResponse } from '@/types/credits';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import Button from '@dodao/web-core/components/core/buttons/Button';
-import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 
@@ -14,7 +13,6 @@ export interface ReceiptButtonProps {
 
 /** Opens the Stripe receipt for one credit purchase in a new tab. */
 export default function ReceiptButton({ transactionId }: ReceiptButtonProps): JSX.Element {
-  const { showNotification } = useNotificationContext();
   const { loading, reFetchData } = useFetchData<CreditReceiptResponse>(
     `${getBaseUrl()}/api/${KoalaGainsSpaceId}/users/credits/receipt?transactionId=${encodeURIComponent(transactionId)}`,
     { skipInitialFetch: true },
@@ -28,8 +26,8 @@ export default function ReceiptButton({ transactionId }: ReceiptButtonProps): JS
     const receiptUrl = (await reFetchData())?.receiptUrl;
 
     if (!receiptUrl) {
+      // useFetchData has already shown the error toast.
       tab?.close();
-      showNotification({ type: 'error', message: 'Could not open the receipt. Please try again.' });
       return;
     }
 

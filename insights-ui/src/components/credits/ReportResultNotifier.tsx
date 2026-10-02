@@ -19,7 +19,7 @@ const CHANNEL_NAME = 'koalagains:report-results';
 
 type ChannelMessage = { type: 'results'; results: ReportResult[] } | { type: 'close' };
 
-/** Navigations within this window reuse the last check instead of asking again. */
+/** At most one check a minute per tab, whatever triggers it. */
 const MIN_CHECK_INTERVAL_MS = 60 * 1000;
 
 /**
@@ -85,30 +85,27 @@ export default function ReportResultNotifier(): JSX.Element | null {
     };
   }, [showResults]);
 
-  const check = useCallback(
-    async (force: boolean) => {
-      if (!session || document.visibilityState !== 'visible') return;
-      if (!force && Date.now() - lastCheckAt.current < MIN_CHECK_INTERVAL_MS) return;
-      lastCheckAt.current = Date.now();
+  const check = useCallback(async () => {
+    if (!session || document.visibilityState !== 'visible') return;
+    if (Date.now() - lastCheckAt.current < MIN_CHECK_INTERVAL_MS) return;
+    lastCheckAt.current = Date.now();
 
-      const newResults = await claimReportResults();
-      if (newResults.length === 0) return;
+    const newResults = await claimReportResults();
+    if (newResults.length === 0) return;
 
-      showResults(newResults);
-      broadcast({ type: 'results', results: newResults });
-    },
-    [session, showResults]
-  );
+    showResults(newResults);
+    broadcast({ type: 'results', results: newResults });
+  }, [session, showResults]);
 
   // Site load (once the session is known) and every navigation.
   useEffect(() => {
-    void check(false);
+    void check();
   }, [check, pathname]);
 
   // Coming back to the tab is the moment a user who left is most likely waiting.
   useEffect(() => {
     const onVisible = () => {
-      if (document.visibilityState === 'visible') void check(true);
+      if (document.visibilityState === 'visible') void check();
     };
     document.addEventListener('visibilitychange', onVisible);
     return () => document.removeEventListener('visibilitychange', onVisible);
