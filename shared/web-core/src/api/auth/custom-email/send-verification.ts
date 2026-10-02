@@ -1,8 +1,4 @@
-import { SES } from '@aws-sdk/client-ses';
-
-const ses = new SES({
-  region: process.env.AWS_REGION,
-});
+import { ses } from '@dodao/web-core/api/email/sendEmail';
 /** Web compatible method to create a random string of a given length */
 export function randomString(size: number) {
   const i2hex = (i: number) => ('0' + i.toString(16)).slice(-2);
