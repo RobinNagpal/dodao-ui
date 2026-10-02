@@ -56,6 +56,9 @@ Terraform backend needs no DynamoDB lock — CI is the only applier and never ov
 
 Ordered steps (≈20 min end-to-end; the Docker build is the long pole):
 
+0. **`migrate` job** (runs first; `deploy` has `needs: migrate`): `prisma migrate deploy` against
+   the prod RDS, gated on a destructive-SQL check. See
+   [database-migrations.md](database-migrations.md).
 1. **AWS auth** via static access keys (the `insights-ui-deploy` user) — not OIDC.
 2. `terraform init` (S3 backend) + targeted `apply` of `aws_ecr_repository.app` and
    `aws_s3_bucket.assets` so the build/push and asset upload have targets.

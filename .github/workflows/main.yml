@@ -229,6 +229,89 @@ jobs:
       - name: Insights UI - NEXT Build
         run: cd insights-ui && pnpm build
 
+  # Proves insights-ui's Prisma migrations are safe to apply before they reach `main`, where
+  # insights-ui-deploy-aws.yml runs `prisma migrate deploy` against production. Uses a throwaway
+  # Postgres service — never the production DB. See docs/insights-ui/database-migrations.md.
+  insights_ui_migrations_check:
+    runs-on: ubuntu-latest
+    needs: determine-changed-paths
+    if: ${{ needs.determine-changed-paths.outputs.insights_ui_changed == 'true' }}
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: migrations_check
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    defaults:
+      run:
+        working-directory: insights-ui
+    env:
+      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/migrations_check
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Resolve Prisma version
+        run: echo "PRISMA_VERSION=$(jq -r '.devDependencies.prisma // .dependencies.prisma' package.json)" >> "$GITHUB_ENV"
+
+      # A migration that is already on main has (or will be) applied to production; editing,
+      # deleting or renaming it changes its checksum and breaks `migrate deploy`. Add a new one.
+      - name: Existing migrations must not be modified
+        if: github.event_name == 'pull_request'
+        run: |
+          changed=$(git diff --name-only --diff-filter=MDR "origin/${{ github.base_ref }}...HEAD" -- prisma/migrations/ | grep -v 'migration_lock.toml' || true)
+          if [ -n "$changed" ]; then
+            echo "$changed"
+            echo "::error::Existing migrations were modified/deleted/renamed. Never edit an applied migration — create a new one with 'prisma migrate dev --create-only'."
+            exit 1
+          fi
+
+      - name: Apply all migrations to a fresh database
+        run: npx --yes "prisma@$PRISMA_VERSION" migrate deploy
+
+      # Catches a schema.prisma change committed without a matching migration — production would
+      # otherwise be missing the column/table the new code queries.
+      - name: schema.prisma must match the migrations
+        run: |
+          set +e
+          npx --yes "prisma@$PRISMA_VERSION" migrate diff --from-url "$DATABASE_URL" --to-schema-datamodel prisma/schema.prisma --exit-code --script > ../schema-drift.sql
+          code=$?
+          set -e
+          if [ "$code" = 2 ]; then
+            cat ../schema-drift.sql
+            echo "::error::prisma/schema.prisma has changes with no migration. Run 'pnpm prisma migrate dev --create-only --name <change>' against a LOCAL database and commit the migration."
+            exit 1
+          elif [ "$code" != 0 ]; then
+            cat ../schema-drift.sql
+            exit "$code"
+          fi
+
+      # Destructive migrations are allowed but need a human at deploy time: the AWS deploy blocks
+      # until someone re-runs it with `allow_destructive_migrations`. Surface that on the PR.
+      - name: Flag destructive SQL in new migrations
+        if: github.event_name == 'pull_request'
+        run: |
+          added=$(git diff --name-only --diff-filter=A "origin/${{ github.base_ref }}...HEAD" -- 'prisma/migrations/*/migration.sql' | awk -F/ '{print $(NF-1)}')
+          # shellcheck disable=SC2086
+          if ! ./prisma/check-destructive-migrations.sh $added; then
+            echo "::warning::This PR adds destructive migrations. After merge, the AWS deploy will stop until it is re-run manually with 'allow_destructive_migrations' checked."
+          fi
+
   news_reader_job:
     runs-on: ubuntu-latest
     needs: determine-changed-paths
