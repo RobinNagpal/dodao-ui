@@ -144,6 +144,40 @@ Each line carries `level`, `msg`, `source` (`console.error` / `console.warn` /
 `count_over_time` query above, with a contact point (email, or the existing Discord webhook —
 note `shared/web-core/.../errorLogger.ts` already posts errors to Discord independently).
 
+### Pulling logs from the terminal — `pnpm logs:fetch`
+
+`insights-ui/src/scripts/logs/fetch-grafana-logs.ts` queries Loki's `query_range` API so you (or
+Claude) can triage production errors without opening Grafana. By default it prints the **last 24
+hours of production `error` lines, grouped by message pattern** (ticker symbols, numbers and URLs
+are collapsed so the same failure on 20 stocks is one group), most frequent first.
+
+**Setup (once):** add a read token to `insights-ui/.env` (gitignored):
+
+```bash
+LOKI_READ_TOKEN=glc_...   # Grafana Cloud → Access Policies → a policy with `logs:read` → token
+```
+
+The App Setting `LOKI_TOKEN` is **write-only** (pushing logs) and gets 401 on queries, so a
+separate read token is needed. `LOKI_URL` / `LOKI_USER_ID` come from `.env` if set, otherwise
+from `src/lib/appConfig/appConfigDefaults.json`.
+
+**Usage** (run from `insights-ui/`):
+
+```bash
+pnpm logs:fetch                                   # production errors, last 24h, grouped summary
+pnpm logs:fetch --hours 6                         # different window
+pnpm logs:fetch --level error,warn                # several levels (or --level all)
+pnpm logs:fetch --grep "dividend|kpis"            # case-insensitive regex filter on the line
+pnpm logs:fetch --raw                             # every line, oldest first, instead of the summary
+pnpm logs:fetch --out data/logs.jsonl             # also save raw lines as JSONL (data/ is gitignored)
+pnpm logs:fetch --env development                 # another env label
+pnpm logs:fetch --query '{service="insights-ui"} |= "AIRG"'   # any LogQL, overrides the above
+pnpm logs:fetch --limit 20000                     # max lines (default 5000; paged 5000 per request)
+```
+
+The status line goes to stderr and results to stdout, so `pnpm -s logs:fetch > out.txt` stays
+clean. Retention is 14 days, so `--hours` beyond 336 returns nothing older.
+
 ## 6. Troubleshooting
 
 | Symptom | Cause / fix |
