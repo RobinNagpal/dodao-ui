@@ -19,12 +19,12 @@ type PageProps = {
 export async function generateMetadata(props: { params: Promise<{ provider: string }> }): Promise<Metadata> {
   const { provider } = await props.params;
   const slug = slugifyEtfTag(decodeURIComponent(provider));
+  const index = await fetchEtfProvidersIndex(SupportedCountries.US);
   const base = generateEtfProviderDetailMetadata({
     country: SupportedCountries.US,
-    providerCanonical: getEtfProviderBySlug(slug),
+    providerCanonical: getEtfProviderBySlug(slug, index?.providers),
     providerSlug: slug,
   });
-  const index = await fetchEtfProvidersIndex(SupportedCountries.US);
   return { ...base, ...providerDetailRobots(index, slug) };
 }
 
@@ -37,9 +37,10 @@ export default async function EtfsByProviderPage({ params, searchParams: searchP
   }
 
   // Confirmed-empty listing → real 404 (generic EtfListingNotFound page) instead of a soft 404.
-  if (isProviderDetailEmpty(await fetchEtfProvidersIndex(SupportedCountries.US), slug)) notFound();
+  const index = await fetchEtfProvidersIndex(SupportedCountries.US);
+  if (isProviderDetailEmpty(index, slug)) notFound();
 
-  const canonical = getEtfProviderBySlug(slug);
+  const canonical = getEtfProviderBySlug(slug, index?.providers);
   const searchParams = await searchParamsPromise;
   const breadcrumb = generateEtfProviderDetailBreadcrumbJsonLd({
     country: SupportedCountries.US,
