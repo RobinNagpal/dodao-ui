@@ -17,6 +17,7 @@ import {
 } from '@/types/prismaTypes';
 import {
   HALF_YEARLY_ONLY_ERROR_PREFIX,
+  isNotPublishedPayload,
   isScrapedSectionUsable,
   ScrapeSectionResult,
   scrapeStockAnalyzerSection,
@@ -238,8 +239,25 @@ function isInFailureBackoff(storedErrors: StoredScraperError[], section: StockAn
   return lastFailureMs !== null && Date.now() - lastFailureMs < retryMs;
 }
 
+/**
+ * Keep the newest MAX_STORED_ERRORS entries, but always keep each section's
+ * newest one: `isInFailureBackoff` reads it, so losing it to other sections'
+ * churn would end that section's backoff early.
+ */
 function trimErrors(errors: StoredScraperError[]): StoredScraperError[] {
-  return errors.slice(-MAX_STORED_ERRORS);
+  if (errors.length <= MAX_STORED_ERRORS) {
+    return errors;
+  }
+  const keep: Set<StoredScraperError> = new Set();
+  const newestBySection: Map<string, StoredScraperError> = new Map();
+  for (const storedError of errors) {
+    newestBySection.set(storedError.section, storedError);
+  }
+  newestBySection.forEach((storedError) => keep.add(storedError));
+  for (let i = errors.length - 1; i >= 0 && keep.size < MAX_STORED_ERRORS; i--) {
+    keep.add(errors[i]);
+  }
+  return errors.filter((storedError) => keep.has(storedError));
 }
 
 function toErrorMessage(error: unknown): string {
@@ -352,6 +370,16 @@ export async function fetchAndUpdateStockAnalyzerData(
         `Scraped no usable data for ${config.section} (${ticker.symbol}) from ${result.url}; keeping previously stored data`
       );
       allErrors.push(...result.errors.map((e) => ({ section: config.section, error: `${e.where}: ${e.message}`, timestamp: timestamp.toISOString() })));
+      continue;
+    }
+
+    // A 404 is stored as "not published" only for a section that never had data.
+    // If real data is stored, the page vanishing is a source-side change (URL
+    // move, bad deploy) — keep the data and treat it as a failure.
+    const storedValue: unknown = existingInfo?.[config.field];
+    if (isNotPublishedPayload(result.data) && isScrapedSectionUsable(config.section, storedValue) && !isNotPublishedPayload(storedValue)) {
+      console.error(`${config.section} page 404'd for ${ticker.symbol} (${result.url}) but data is stored for it; keeping the stored data`);
+      allErrors.push({ section: config.section, error: `Page not found: ${result.url}`, timestamp: timestamp.toISOString() });
       continue;
     }
 

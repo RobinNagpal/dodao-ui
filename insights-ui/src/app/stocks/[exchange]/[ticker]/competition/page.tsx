@@ -34,13 +34,14 @@ function truncateForMeta(text: string, maxLength: number = 155): string {
  * Self-fetch with a single retry on 5xx. The server render fetches this app's own API over the
  * public host, so a busy container/LB can return a transient 502/503/504. One short retry absorbs
  * that; a persistent failure still throws (never caches or renders an empty page). Next's data
- * cache only stores OK responses, so a 5xx is never cached.
+ * cache only stores OK responses, so a 5xx is never cached. The retry passes a `signal` because
+ * Next memoizes identical GETs within a render and would otherwise hand back the same 5xx.
  */
 async function fetchWithRetryOn5xx(url: string, init: RequestInit): Promise<Response> {
   const res: Response = await fetch(url, init);
   if (res.status < 500) return res;
   await new Promise((resolve) => setTimeout(resolve, 500));
-  return fetch(url, init);
+  return fetch(url, { ...init, signal: AbortSignal.timeout(30_000) });
 }
 
 /** Fetch competition data for a specific exchange+ticker (cached). Returns null ticker if exchange mismatch. */

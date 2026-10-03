@@ -1,4 +1,5 @@
 import { buildStockAnalyzerSubPageUrl, fetchStockAnalyzerPage, StockAnalyzerFetchError } from '@/utils/stock-analyzer/stock-analyzer-fetcher';
+import { parseFinancialTables } from '@/utils/stock-analyzer/stock-analysis-table-parser';
 import {
   EtfSummaryStats,
   KpisData,
@@ -160,7 +161,7 @@ export function isScrapedSectionUsable(section: StockAnalyzerSectionId, data: un
     return false;
   }
   const definition: SectionDefinition = SECTION_DEFINITIONS[section];
-  if (definition.notPublishedData && (data as { meta?: { notPublished?: boolean } }).meta?.notPublished === true) {
+  if (definition.notPublishedData && isNotPublishedPayload(data)) {
     return true;
   }
   try {
@@ -180,7 +181,17 @@ export const HALF_YEARLY_ONLY_ERROR_PREFIX = 'half-yearly-only:';
  * failure. Anything else that parses to nothing stays an error.
  */
 function isHalfYearlyOnlyQuarterlyPage(section: StockAnalyzerSectionId, html: string): boolean {
-  return section.endsWith('/quarterly') && />\s*H[12] \d{4}\s*</.test(html);
+  if (!section.endsWith('/quarterly')) {
+    return false;
+  }
+  return parseFinancialTables(html).some((table) => table.columns.some((column) => HALF_YEAR_COLUMN_PATTERN.test(column.label)));
+}
+
+const HALF_YEAR_COLUMN_PATTERN = /^H[12]\s+\d{4}$/;
+
+/** True for the payload stored when a section's page 404s (see `notPublishedData`). */
+export function isNotPublishedPayload(data: unknown): boolean {
+  return !!data && typeof data === 'object' && (data as { meta?: { notPublished?: boolean } }).meta?.notPublished === true;
 }
 
 function isPageNotFound(error: unknown): error is StockAnalyzerFetchError {
@@ -281,8 +292,8 @@ const MAIN_LISTING_CACHE_TTL_MS = 10 * 60 * 1000;
 const mainListingCache: Map<string, { lookup: Promise<string | null>; startedAtMs: number }> = new Map();
 
 /**
- * Resolve a ticker's main listing URL, or null when it is already one (or the
- * quote page cannot be read).
+ * Resolve a ticker's main listing URL, or null when it is already one. Rejects
+ * when the quote page cannot be read.
  */
 function resolveMainListingUrl(stockAnalyzeUrl: string): Promise<string | null> {
   const quoteUrl: string = buildStockAnalyzerSubPageUrl(stockAnalyzeUrl, '');
@@ -309,10 +320,11 @@ function resolveMainListingUrl(stockAnalyzeUrl: string): Promise<string | null> 
       return resolved.toString();
     })
     .catch((error: unknown) => {
-      console.error(`Could not resolve a main listing from ${quoteUrl}:`, error instanceof Error ? error.message : String(error));
-      // Don't let a transient failure be remembered for the full TTL.
+      // Don't let a transient failure be remembered for the full TTL. Rethrow
+      // rather than return null: null means "no main listing", which turns the
+      // section's 404 into a "not published" result.
       mainListingCache.delete(quoteUrl);
-      return null;
+      throw error;
     });
 
   mainListingCache.set(quoteUrl, { lookup, startedAtMs: Date.now() });

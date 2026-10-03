@@ -34,6 +34,7 @@ const nextConfig: NextConfig = {
       {
         protocol: 'https',
         hostname: 'raw.githubusercontent.com',
+        pathname: '/RobinNagpal/dodao-ui/**',
       },
     ],
   },
