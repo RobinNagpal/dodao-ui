@@ -30,10 +30,23 @@ function truncateForMeta(text: string, maxLength: number = 155): string {
   return text.slice(0, maxLength).replace(/\s+\S*$/, '') + '…';
 }
 
+/**
+ * Self-fetch with a single retry on 5xx. The server render fetches this app's own API over the
+ * public host, so a busy container/LB can return a transient 502/503/504. One short retry absorbs
+ * that; a persistent failure still throws (never caches or renders an empty page). Next's data
+ * cache only stores OK responses, so a 5xx is never cached.
+ */
+async function fetchWithRetryOn5xx(url: string, init: RequestInit): Promise<Response> {
+  const res: Response = await fetch(url, init);
+  if (res.status < 500) return res;
+  await new Promise((resolve) => setTimeout(resolve, 500));
+  return fetch(url, init);
+}
+
 /** Fetch competition data for a specific exchange+ticker (cached). Returns null ticker if exchange mismatch. */
 async function fetchCompetitionByExchange(exchange: string, ticker: string): Promise<CompetitionResponse> {
   const url: string = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/tickers-v1/exchange/${exchange.toUpperCase()}/${ticker.toUpperCase()}/competition-tickers`;
-  const res: Response = await fetch(url, { next: { tags: [tickerCompetitionTag(ticker, exchange)] } });
+  const res: Response = await fetchWithRetryOn5xx(url, { next: { tags: [tickerCompetitionTag(ticker, exchange)] } });
   if (!res.ok) {
     throw new Error(`fetchCompetitionByExchange failed (${res.status}): ${url}`);
   }
@@ -43,7 +56,7 @@ async function fetchCompetitionByExchange(exchange: string, ticker: string): Pro
 /** Fetch competition data for any exchange (uncached — used only as fallback). */
 async function fetchCompetitionAnyExchange(ticker: string): Promise<CompetitionResponse> {
   const url: string = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/tickers-v1/${ticker.toUpperCase()}/competition-tickers`;
-  const res: Response = await fetch(url, { cache: 'no-store' });
+  const res: Response = await fetchWithRetryOn5xx(url, { cache: 'no-store' });
   if (!res.ok) {
     throw new Error(`fetchCompetitionAnyExchange failed (${res.status}): ${url}`);
   }

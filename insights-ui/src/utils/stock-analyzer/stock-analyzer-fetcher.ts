@@ -25,10 +25,10 @@ const BROWSER_USER_AGENT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) Appl
 const REQUEST_TIMEOUT_MS = 20_000;
 const MAX_ATTEMPTS = 3;
 
-export class StockAnalysisFetchError extends Error {
+export class StockAnalyzerFetchError extends Error {
   constructor(message: string, readonly url: string, readonly status?: number) {
     super(message);
-    this.name = 'StockAnalysisFetchError';
+    this.name = 'StockAnalyzerFetchError';
   }
 }
 
@@ -43,7 +43,7 @@ function sleep(ms: number): Promise<void> {
  * A 404 is not retried — it means the ticker or sub-page genuinely does not
  * exist on the source site.
  */
-export async function fetchStockAnalysisPage(url: string): Promise<string> {
+export async function fetchStockAnalyzerPage(url: string): Promise<string> {
   let lastError: Error | undefined;
 
   for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
@@ -59,16 +59,16 @@ export async function fetchStockAnalysisPage(url: string): Promise<string> {
       });
 
       if (response.status === 404) {
-        throw new StockAnalysisFetchError(`Page not found: ${url}`, url, 404);
+        throw new StockAnalyzerFetchError(`Page not found: ${url}`, url, 404);
       }
 
       if (!response.ok) {
-        throw new StockAnalysisFetchError(`Request failed with ${response.status} ${response.statusText}: ${url}`, url, response.status);
+        throw new StockAnalyzerFetchError(`Request failed with ${response.status} ${response.statusText}: ${url}`, url, response.status);
       }
 
       return await response.text();
     } catch (error) {
-      if (error instanceof StockAnalysisFetchError && error.status === 404) {
+      if (error instanceof StockAnalyzerFetchError && error.status === 404) {
         throw error;
       }
       lastError = error instanceof Error ? error : new Error(String(error));
@@ -78,7 +78,7 @@ export async function fetchStockAnalysisPage(url: string): Promise<string> {
     }
   }
 
-  throw new StockAnalysisFetchError(`Failed to fetch after ${MAX_ATTEMPTS} attempts (${lastError?.message}): ${url}`, url);
+  throw new StockAnalyzerFetchError(`Failed to fetch after ${MAX_ATTEMPTS} attempts (${lastError?.message}): ${url}`, url);
 }
 
 /**
@@ -93,7 +93,7 @@ export async function fetchStockAnalysisPage(url: string): Promise<string> {
  * still resolves to the configured one. If that variable is unset (local
  * scripts, tests), the stored URL's own origin is used.
  */
-export function buildStockAnalysisSubPageUrl(stockAnalyzeUrl: string, subPath: string, searchParams?: Record<string, string>): string {
+export function buildStockAnalyzerSubPageUrl(stockAnalyzeUrl: string, subPath: string, searchParams?: Record<string, string>): string {
   const storedUrl: URL = new URL(stockAnalyzeUrl.trim());
   const origin: string = STOCK_ANALYZE_BASE_URL ? new URL(STOCK_ANALYZE_BASE_URL).origin : storedUrl.origin;
 

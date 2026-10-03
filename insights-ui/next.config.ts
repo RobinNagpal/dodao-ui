@@ -30,12 +30,10 @@ const nextConfig: NextConfig = {
     includePaths: ['./src'],
   },
   images: {
-    domains: ['raw.githubusercontent.com'],
     remotePatterns: [
       {
         protocol: 'https',
         hostname: 'raw.githubusercontent.com',
-        pathname: '/RobinNagpal/dodao-ui/refs/heads/main/insights-ui/blogs',
       },
     ],
   },

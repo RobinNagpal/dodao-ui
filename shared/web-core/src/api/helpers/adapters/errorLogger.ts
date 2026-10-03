@@ -14,6 +14,29 @@ function isTransientClientFetchError(value: string): boolean {
   return transientClientFetchErrors.some((pattern) => value.includes(pattern));
 }
 
+function formatLogErrorLine(message: string, params: Record<string, any>, e: Error | null, spaceId: string | null, blockchain: string | null): string {
+  const text = typeof message === 'string' ? message : safeStringify(message);
+  const parts = [`[errorLogger] ${text}`];
+  if (e) {
+    // Avoid repeating the error message when it is already part of the log message.
+    if (e.message && !text.includes(e.message)) parts.push(`error=${e.name || 'Error'}: ${e.message}`);
+  }
+  if (spaceId) parts.push(`spaceId=${spaceId}`);
+  if (blockchain) parts.push(`blockchain=${blockchain}`);
+  if (params && Object.keys(params).length > 0) parts.push(`params=${safeStringify(params)}`);
+  let line = parts.join(' | ');
+  if (e?.stack) line += `\n${e.stack}`;
+  return line;
+}
+
+function safeStringify(value: unknown): string {
+  try {
+    return JSON.stringify(value) ?? String(value);
+  } catch {
+    return String(value);
+  }
+}
+
 export async function logError(
   message: string,
   params: Record<string, any> = {},
@@ -21,29 +44,8 @@ export async function logError(
   spaceId: string | null = null,
   blockchain: string | null = null
 ) {
-  console.log('[errorLogger] logError called with:', {
-    message: message.substring(0, 100) + (message.length > 100 ? '...' : ''),
-    spaceId,
-    blockchain,
-    errorName: e?.name,
-    errorMessage: e?.message,
-  });
-
-  // Always log the error to console, even if it's going to be ignored for Discord
-  console.error(
-    '[errorLogger] Error details:',
-    e,
-    JSON.stringify(
-      {
-        spaceId,
-        blockchain,
-        message,
-        params,
-      },
-      null,
-      2
-    )
-  );
+  // Always log the error to console (one concise line), even if it's going to be ignored for Discord
+  console.error(formatLogErrorLine(message, params, e, spaceId, blockchain));
 
   // Only skip posting to Discord if the error should be ignored
   if (shouldIgnoreError(e || message)) {

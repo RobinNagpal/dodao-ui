@@ -395,17 +395,28 @@ export function getAuthOptions(
       error(code, metadata) {
         // `metadata` can be a raw Error, or an object that wraps one under `.error`.
         // For client-proxied errors (CLIENT_FETCH_ERROR etc.) NextAuth serializes the
-        // nested error with URLSearchParams before POSTing to /api/auth/_log, so it
-        // arrives here as the string "[object Object]" and the stack is already lost.
-        // Pull out a real Error when one is available and always print the fully
-        // serialized metadata so nothing is hidden behind console depth limits.
-        const errorObject: Error | undefined =
-          metadata instanceof Error ? metadata : (metadata as any)?.error instanceof Error ? (metadata as any).error : undefined;
+        // metadata with URLSearchParams before POSTing to /api/auth/_log, so a nested
+        // error arrives here as the string "[object Object]" (its stack is already lost)
+        // and `client` arrives as the string "true".
+        const meta: Record<string, any> = metadata instanceof Error ? {} : (metadata as Record<string, any>) || {};
+        const isClientError = meta.client === true || meta.client === 'true';
 
-        const serializedMetadata = JSON.stringify(metadata, nextAuthErrorReplacer, 2);
-        console.error('[authOptions] NextAuth error:', code, serializedMetadata);
+        const errorObject: Error | undefined = metadata instanceof Error ? metadata : meta.error instanceof Error ? meta.error : undefined;
 
-        const params = metadata instanceof Error ? {} : (metadata as Record<string, any>) || {};
+        // Drop the useless "[object Object]" placeholder so the remaining fields (message, url) stay readable.
+        const { error: rawError, ...metaWithoutError } = meta;
+        const params: Record<string, any> = rawError === '[object Object]' ? metaWithoutError : meta;
+
+        // Browser-side network failures (Safari "Load failed", "Failed to fetch", offline, fetch aborted by
+        // navigation) are reported by the NextAuth client. They are not server errors, so only warn and do
+        // not persist them through logError.
+        if (code === 'CLIENT_FETCH_ERROR' && isClientError) {
+          console.warn(`[authOptions] NextAuth client fetch failed: ${params.message ?? 'unknown'} (url: ${params.url ?? 'unknown'})`);
+          return;
+        }
+
+        console.error('[authOptions] NextAuth error:', code, JSON.stringify(metadata instanceof Error ? metadata : params, nextAuthErrorReplacer));
+
         logError(`NextAuth error: ${code}`, params, errorObject ?? null).catch((err) => {
           console.error('[authOptions] Failed to log NextAuth error:', err);
         });

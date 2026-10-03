@@ -2,8 +2,11 @@
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
 import React, { useState } from 'react';
-import ReactJson from 'react-json-view';
 import { Prisma } from '@prisma/client';
+import dynamic from 'next/dynamic';
+
+// react-json-view touches `document` at module scope, so it must never be evaluated during SSR.
+const ReactJson = dynamic(() => import('react-json-view'), { ssr: false });
 
 export interface TransformationPatchEditModalProps {
   open: boolean;

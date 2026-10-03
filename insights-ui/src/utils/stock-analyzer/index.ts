@@ -1,4 +1,4 @@
-import { buildStockAnalysisSubPageUrl, fetchStockAnalysisPage, StockAnalysisFetchError } from '@/utils/stock-analyzer/stock-analysis-fetcher';
+import { buildStockAnalyzerSubPageUrl, fetchStockAnalyzerPage, StockAnalyzerFetchError } from '@/utils/stock-analyzer/stock-analyzer-fetcher';
 import {
   EtfSummaryStats,
   KpisData,
@@ -75,6 +75,14 @@ interface SectionDefinition {
    * currency, which would silently mix currencies within one stored row.
    */
   fallsBackToMainListing: boolean;
+  /**
+   * Set when a 404 means "the source site does not publish this section for
+   * the listing" rather than a failure: a non-payer has no dividend page, and
+   * most non-US listings have no KPI page. The returned payload (marked
+   * `meta.notPublished`) is stored and stamped fresh like any good scrape, so
+   * the section is not retried until its normal age window expires.
+   */
+  notPublishedData?: () => ScrapedSectionData;
 }
 
 function hasPeriods(data: ScrapedSectionData): boolean {
@@ -99,6 +107,7 @@ function kpisSection(periodType: StatementPeriodType): SectionDefinition {
     parse: (html: string): ScrapedSectionData => parseKpisPage(html, periodType),
     isUsable: hasPeriods,
     fallsBackToMainListing: true,
+    notPublishedData: (): ScrapedSectionData => ({ meta: { notPublished: true }, periods: [] }),
   };
 }
 
@@ -120,6 +129,7 @@ const SECTION_DEFINITIONS: Readonly<Record<StockAnalyzerSectionId, SectionDefini
       return dividends.history.length > 0 || Object.keys(dividends.summary).length > 0;
     },
     fallsBackToMainListing: false,
+    notPublishedData: (): ScrapedSectionData => ({ meta: { notPublished: true }, summary: {}, history: [] }),
   },
   'income-statement/annual': statementSection('financials/income-statement', 'annual'),
   'income-statement/quarterly': statementSection('financials/income-statement', 'quarterly'),
@@ -136,7 +146,7 @@ const SECTION_DEFINITIONS: Readonly<Record<StockAnalyzerSectionId, SectionDefini
 /** URL of the source-site page backing a section, for logging / debugging. */
 export function stockAnalyzerSectionUrl(stockAnalyzeUrl: string, section: StockAnalyzerSectionId): string {
   const definition: SectionDefinition = SECTION_DEFINITIONS[section];
-  return buildStockAnalysisSubPageUrl(stockAnalyzeUrl, definition.subPath, definition.searchParams);
+  return buildStockAnalyzerSubPageUrl(stockAnalyzeUrl, definition.subPath, definition.searchParams);
 }
 
 /**
@@ -149,10 +159,45 @@ export function isScrapedSectionUsable(section: StockAnalyzerSectionId, data: un
   if (!data || typeof data !== 'object') {
     return false;
   }
+  const definition: SectionDefinition = SECTION_DEFINITIONS[section];
+  if (definition.notPublishedData && (data as { meta?: { notPublished?: boolean } }).meta?.notPublished === true) {
+    return true;
+  }
   try {
-    return SECTION_DEFINITIONS[section].isUsable(data as ScrapedSectionData);
+    return definition.isUsable(data as ScrapedSectionData);
   } catch {
     return false;
+  }
+}
+
+function isPageNotFound(error: unknown): error is StockAnalyzerFetchError {
+  return error instanceof StockAnalyzerFetchError && error.status === 404;
+}
+
+/**
+ * Fetch a section's page, retrying a 404 once against the ticker's main
+ * listing. A secondary listing has no statement pages of its own; they live
+ * under its main listing — but only for the sections that a secondary listing
+ * genuinely does not publish (see `fallsBackToMainListing`).
+ */
+async function fetchSectionPage(stockAnalyzeUrl: string, definition: SectionDefinition): Promise<{ url: string; html: string }> {
+  const url: string = buildStockAnalyzerSubPageUrl(stockAnalyzeUrl, definition.subPath, definition.searchParams);
+  try {
+    return { url, html: await fetchStockAnalyzerPage(url) };
+  } catch (error) {
+    if (!isPageNotFound(error) || !definition.fallsBackToMainListing) {
+      throw error;
+    }
+
+    const mainListingUrl: string | null = await resolveMainListingUrl(stockAnalyzeUrl);
+    if (!mainListingUrl) {
+      // Distinguishable in the logs from "this is a main listing": we only get
+      // here because the section's own page was missing.
+      throw new StockAnalyzerFetchError(`${error.message} (and its quote page carries no Main Listing link)`, error.url, 404);
+    }
+
+    const mainListingSectionUrl: string = buildStockAnalyzerSubPageUrl(mainListingUrl, definition.subPath, definition.searchParams);
+    return { url: mainListingSectionUrl, html: await fetchStockAnalyzerPage(mainListingSectionUrl) };
   }
 }
 
@@ -161,35 +206,22 @@ export function isScrapedSectionUsable(section: StockAnalyzerSectionId, data: un
  *
  * Throws if the page cannot be fetched; a page that loads but parses to nothing
  * comes back with `errors` populated and `isScrapedSectionUsable(...) === false`
- * so the caller can decide not to overwrite good data with it.
+ * so the caller can decide not to overwrite good data with it. A 404 on a
+ * section with `notPublishedData` is not an error: it comes back as that
+ * (usable) "not published" payload.
  */
 export async function scrapeStockAnalyzerSection(stockAnalyzeUrl: string, section: StockAnalyzerSectionId): Promise<ScrapeSectionResult> {
   const definition: SectionDefinition = SECTION_DEFINITIONS[section];
-  let url: string = buildStockAnalysisSubPageUrl(stockAnalyzeUrl, definition.subPath, definition.searchParams);
 
+  let url: string;
   let html: string;
   try {
-    html = await fetchStockAnalysisPage(url);
+    ({ url, html } = await fetchSectionPage(stockAnalyzeUrl, definition));
   } catch (error) {
-    // A secondary listing has no statement pages of its own; they live under
-    // its main listing. Retry there once — but only for the sections that a
-    // secondary listing genuinely does not publish (see
-    // `fallsBackToMainListing`).
-    const isMissingSubPage: boolean = error instanceof StockAnalysisFetchError && error.status === 404 && definition.fallsBackToMainListing;
-    if (!isMissingSubPage) {
-      throw error;
+    if (definition.notPublishedData && isPageNotFound(error)) {
+      return { section, url: error.url, data: definition.notPublishedData(), errors: [] };
     }
-
-    const mainListingUrl: string | null = await resolveMainListingUrl(stockAnalyzeUrl);
-    if (!mainListingUrl) {
-      // Distinguishable in the logs from "this is a main listing": we only get
-      // here because the section's own page was missing.
-      console.error(`${section} 404'd for ${stockAnalyzeUrl} and its quote page carries no Main Listing link`);
-      throw error;
-    }
-
-    url = buildStockAnalysisSubPageUrl(mainListingUrl, definition.subPath, definition.searchParams);
-    html = await fetchStockAnalysisPage(url);
+    throw error;
   }
 
   let data: ScrapedSectionData;
@@ -229,14 +261,14 @@ const mainListingCache: Map<string, { lookup: Promise<string | null>; startedAtM
  * quote page cannot be read).
  */
 function resolveMainListingUrl(stockAnalyzeUrl: string): Promise<string | null> {
-  const quoteUrl: string = buildStockAnalysisSubPageUrl(stockAnalyzeUrl, '');
+  const quoteUrl: string = buildStockAnalyzerSubPageUrl(stockAnalyzeUrl, '');
 
   const cached = mainListingCache.get(quoteUrl);
   if (cached && Date.now() - cached.startedAtMs < MAIN_LISTING_CACHE_TTL_MS) {
     return cached.lookup;
   }
 
-  const lookup: Promise<string | null> = fetchStockAnalysisPage(quoteUrl)
+  const lookup: Promise<string | null> = fetchStockAnalyzerPage(quoteUrl)
     .then((quoteHtml: string) => {
       const mainListingHref: string | null = parseMainListingHref(quoteHtml);
       if (!mainListingHref) {
@@ -288,8 +320,8 @@ export function isEtfSummaryUsable(data: EtfSummaryStats): boolean {
  * so the caller can decline to overwrite what it already has.
  */
 export async function scrapeEtfSummary(etfUrl: string): Promise<ScrapeEtfSummaryResult> {
-  const url: string = buildStockAnalysisSubPageUrl(etfUrl, '');
-  const html: string = await fetchStockAnalysisPage(url);
+  const url: string = buildStockAnalyzerSubPageUrl(etfUrl, '');
+  const html: string = await fetchStockAnalyzerPage(url);
 
   let data: EtfSummaryStats;
   try {

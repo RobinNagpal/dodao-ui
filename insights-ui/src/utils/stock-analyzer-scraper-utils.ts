@@ -16,6 +16,7 @@ import {
   StockFundamentalsSummary,
 } from '@/types/prismaTypes';
 import { isScrapedSectionUsable, ScrapeSectionResult, scrapeStockAnalyzerSection, StockAnalyzerSectionId } from '@/utils/stock-analyzer';
+import { StockAnalyzerFetchError } from '@/utils/stock-analyzer/stock-analyzer-fetcher';
 
 type ScraperInfoDataField = keyof Omit<
   TickerV1StockAnalyzerScrapperInfo,
@@ -135,6 +136,14 @@ const MAX_STORED_ERRORS = 50;
  */
 const FAILED_SECTION_RETRY_MS = 6 * 60 * 60 * 1000;
 
+/**
+ * Longer retry window for a section whose page loaded but parsed to nothing
+ * (stored errors prefixed `parse:`). That is mostly expected data shape — e.g.
+ * ASX and other semi-annual reporters, whose `?p=quarterly` pages only carry
+ * H1/H2 columns — so re-scraping every few hours just repeats the same result.
+ */
+const EMPTY_SECTION_RETRY_MS = 7 * 24 * 60 * 60 * 1000;
+
 export interface StoredScraperError {
   section: string;
   error: string;
@@ -206,6 +215,7 @@ function determineDataToFetch(existingData: TickerV1StockAnalyzerScrapperInfo | 
 /** True while a section's most recent scrape failure is still inside the retry window. */
 function isInFailureBackoff(storedErrors: StoredScraperError[], section: StockAnalyzerSectionId): boolean {
   let lastFailureMs: number | null = null;
+  let lastFailureWasEmptyPage = false;
 
   for (const storedError of storedErrors) {
     if (storedError.section !== section) {
@@ -214,10 +224,12 @@ function isInFailureBackoff(storedErrors: StoredScraperError[], section: StockAn
     const failedAtMs: number = new Date(storedError.timestamp).getTime();
     if (Number.isFinite(failedAtMs) && (lastFailureMs === null || failedAtMs > lastFailureMs)) {
       lastFailureMs = failedAtMs;
+      lastFailureWasEmptyPage = storedError.error.startsWith('parse:');
     }
   }
 
-  return lastFailureMs !== null && Date.now() - lastFailureMs < FAILED_SECTION_RETRY_MS;
+  const retryMs: number = lastFailureWasEmptyPage ? EMPTY_SECTION_RETRY_MS : FAILED_SECTION_RETRY_MS;
+  return lastFailureMs !== null && Date.now() - lastFailureMs < retryMs;
 }
 
 function trimErrors(errors: StoredScraperError[]): StoredScraperError[] {
@@ -226,6 +238,19 @@ function trimErrors(errors: StoredScraperError[]): StoredScraperError[] {
 
 function toErrorMessage(error: unknown): string {
   return error instanceof Error ? error.message : String(error);
+}
+
+/**
+ * One line per failed section. A fetch failure (404, 5xx, timeout) is fully
+ * described by its message, so its stack is noise; keep stacks for anything
+ * unexpected.
+ */
+function logSectionScrapeError(section: string, symbol: string, error: unknown): void {
+  if (error instanceof StockAnalyzerFetchError) {
+    console.error(`Error scraping ${section} for ${symbol}: ${error.message}`);
+  } else {
+    console.error(`Error scraping ${section} for ${symbol}:`, error);
+  }
 }
 
 /**
@@ -304,16 +329,19 @@ export async function fetchAndUpdateStockAnalyzerData(
 
   for (const { config, result, error } of results) {
     if (error || !result) {
-      console.error(`Error scraping ${config.section} for ${ticker.symbol}:`, error);
+      logSectionScrapeError(config.section, ticker.symbol, error);
       allErrors.push({ section: config.section, error: toErrorMessage(error), timestamp: timestamp.toISOString() });
       continue;
     }
 
-    // A page that loads but parses to nothing means the source layout changed.
-    // Never write that over data we already have, and never stamp it as fresh —
-    // otherwise one bad scrape blanks the section until its age window expires.
+    // A page that loads but parses to nothing means either the source layout
+    // changed or the ticker has no such data (semi-annual reporters have no
+    // quarterly columns), so warn rather than error; it is retried on the longer
+    // EMPTY_SECTION_RETRY_MS window. Never write that over data we already have,
+    // and never stamp it as fresh — otherwise one bad scrape blanks the section
+    // until its age window expires.
     if (!isScrapedSectionUsable(config.section, result.data)) {
-      console.error(`Scraped no usable data for ${config.section} (${ticker.symbol}) from ${result.url}; keeping previously stored data`);
+      console.warn(`Scraped no usable data for ${config.section} (${ticker.symbol}) from ${result.url}; keeping previously stored data`);
       allErrors.push(...result.errors.map((e) => ({ section: config.section, error: `${e.where}: ${e.message}`, timestamp: timestamp.toISOString() })));
       continue;
     }
@@ -383,7 +411,7 @@ export async function refreshMarketSummaryForFairValue(ticker: TickerV1): Promis
       allErrors.push(...result.errors.map((e) => ({ section: 'summary', error: `${e.where}: ${e.message}`, timestamp: timestamp.toISOString() })));
     }
   } catch (error) {
-    console.error(`Error scraping summary for ${ticker.symbol}:`, error);
+    logSectionScrapeError('summary', ticker.symbol, error);
     allErrors.push({ section: 'summary', error: toErrorMessage(error), timestamp: timestamp.toISOString() });
   }
 

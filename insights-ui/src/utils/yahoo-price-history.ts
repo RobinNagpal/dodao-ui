@@ -50,6 +50,15 @@ export function isDataStale(lastUpdatedAt: Date | null | undefined): boolean {
 }
 
 /**
+ * True when Yahoo has no chart data for the symbol ("No data found, symbol may
+ * be delisted"). That is a property of the symbol, not a transient failure, so
+ * callers log it as a one-line warning and hold off retrying it.
+ */
+export function isYahooNoDataError(error: unknown): boolean {
+  return error instanceof Error && error.message.startsWith('No data found');
+}
+
+/**
  * Fetch OHLC history from Yahoo for the given symbol/interval and date window.
  * Works identically for equities and ETFs.
  */

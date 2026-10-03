@@ -9,6 +9,7 @@ import {
   YahooPriceHistoryResult,
   fetchPriceHistoryFromYahoo,
   isDataStale,
+  isYahooNoDataError,
 } from '@/utils/yahoo-price-history';
 
 /**
@@ -75,6 +76,20 @@ export async function ensurePriceHistoryIsFresh(ticker: TickerV1): Promise<Ticke
     // on the next external invalidation (admin refresh, scraper save, etc.).
     return saved;
   } catch (error) {
+    if (isYahooNoDataError(error)) {
+      console.warn(`Failed to refresh price history for ${ticker.symbol} (${ticker.exchange}) (${yahooSymbol}): ${(error as Error).message}`);
+      // Stamp the existing snapshot as checked so this symbol is not re-requested
+      // from Yahoo on every page view; it is retried after the freshness window.
+      if (existing) {
+        return prisma.tickerV1PriceHistory
+          .update({
+            where: { id: existing.id },
+            data: { lastUpdatedAtDaily: now, lastUpdatedAtWeekly: now },
+          })
+          .catch(() => existing);
+      }
+      return existing;
+    }
     console.error(`Failed to refresh price history for ${ticker.symbol} (${ticker.exchange}):`, error);
     // If refresh fails but we have a prior snapshot, fall back to that so the UI still renders.
     return existing;

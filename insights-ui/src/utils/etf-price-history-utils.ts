@@ -9,6 +9,7 @@ import {
   YahooPriceHistoryResult,
   fetchPriceHistoryFromYahoo,
   isDataStale,
+  isYahooNoDataError,
 } from '@/utils/yahoo-price-history';
 
 /**
@@ -77,6 +78,20 @@ export async function ensureEtfPriceHistoryIsFresh(etf: Etf): Promise<EtfPriceHi
     // `ensurePriceHistoryIsFresh` in `price-history-utils.ts` (stocks).
     return saved;
   } catch (error) {
+    if (isYahooNoDataError(error)) {
+      console.warn(`Failed to refresh price history for ETF ${etf.symbol} (${etf.exchange}) (${yahooSymbol}): ${(error as Error).message}`);
+      // Stamp the existing snapshot as checked so this symbol is not re-requested
+      // from Yahoo on every page view; it is retried after the freshness window.
+      if (existing) {
+        return prisma.etfPriceHistory
+          .update({
+            where: { id: existing.id },
+            data: { lastUpdatedAtDaily: now, lastUpdatedAtWeekly: now },
+          })
+          .catch(() => existing);
+      }
+      return existing;
+    }
     console.error(`Failed to refresh price history for ETF ${etf.symbol} (${etf.exchange}):`, error);
     // Fall back to prior snapshot if available so the UI still renders.
     return existing;
