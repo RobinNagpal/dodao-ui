@@ -206,3 +206,23 @@ expands the suffix so the rows stay homogeneous.
 4. If it is missing for **one** ticker rather than all of them, check whether that ticker
    is a secondary listing (see above) — its statement pages 404 and the data lives under
    its main listing.
+
+## Detecting when the source site rejects us
+
+`stock-analyzer-fetcher.ts` treats 401/403/429 responses and bot-challenge pages (Cloudflare "Just a
+moment…", `cf-chl-`, "Access denied", served with any status) as **rejections**. Each one logs a
+`console.error` line tagged `[scraper-rejected]` with the status, URL, attempt and the edge's
+diagnostic headers (`retry-after`, `server`, `cf-ray`, `cf-mitigated`). The thrown
+`StockAnalyzerFetchError` carries `rejected: true` and the status. A 429 is retried (3 attempts);
+401/403/challenge are not.
+
+To check for blocking in production (needs `LOKI_READ_TOKEN`, see `grafana-cloud-logging.md`):
+
+```bash
+pnpm logs:fetch --grep scraper-rejected --hours 24
+```
+
+Or in Grafana Explore: `{service="insights-ui", env="production"} |= "[scraper-rejected]"`. A
+steady stream of these means requests are being blocked: slow down the scrape, or change UA/egress.
+A challenge page used to parse to nothing and be misreported as "layout may have changed"; it is now
+reported as a rejection.
