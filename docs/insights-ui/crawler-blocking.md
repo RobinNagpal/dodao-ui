@@ -1,7 +1,7 @@
 # Crawler blocking (insights-ui)
 
 **Why:** the AWS deployment is a single Lightsail node. Every uncached `/stocks/*` or `/etfs/*`
-page fans out into ~10 internal API calls and may scrape stockanalysis.com, so one aggressive
+page fans out into ~10 internal API calls and may scrape the upstream fundamentals site, so one aggressive
 crawler sweeping long-tail tickers can pin the Node process's CPU. `/api/health` then misses
 Lightsail's 5 s health-check timeout, the container is marked unhealthy, and **every** request
 (search included) gets an instant 502 until it recovers. This happened on 2026-10-01 (CPU

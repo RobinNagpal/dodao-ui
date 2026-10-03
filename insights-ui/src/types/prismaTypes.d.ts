@@ -42,6 +42,8 @@ export interface StockFundamentalsSummary {
 
 export interface DividendMeta {
   currency?: string;
+  /** The source site has no dividend page for this listing (it pays no dividends). */
+  notPublished?: boolean;
 }
 
 export interface DividendSummary {
@@ -73,6 +75,8 @@ export interface FinancialMeta {
   currency?: string;
   unit?: string;
   fiscalYearNote?: string;
+  /** The source site does not publish this page for the listing (e.g. KPIs for most non-US tickers). */
+  notPublished?: boolean;
 }
 
 // Base Financial Period Type (common structure)
