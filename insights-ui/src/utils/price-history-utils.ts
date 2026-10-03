@@ -77,7 +77,7 @@ export async function ensurePriceHistoryIsFresh(ticker: TickerV1): Promise<Ticke
     return saved;
   } catch (error) {
     if (isYahooNoDataError(error)) {
-      console.warn(`Failed to refresh price history for ${ticker.symbol} (${ticker.exchange}) (${yahooSymbol}): ${(error as Error).message}`);
+      console.error(`Failed to refresh price history for ${ticker.symbol} (${ticker.exchange}) (${yahooSymbol}): ${(error as Error).message}`);
       // Stamp the existing snapshot as checked so this symbol is not re-requested
       // from Yahoo on every page view; it is retried after the freshness window.
       if (existing) {

@@ -170,6 +170,19 @@ export function isScrapedSectionUsable(section: StockAnalyzerSectionId, data: un
   }
 }
 
+/** Stored-error prefix for a quarterly page that only carries half-yearly columns. */
+export const HALF_YEARLY_ONLY_ERROR_PREFIX = 'half-yearly-only:';
+
+/**
+ * Semi-annual reporters (most ASX listings, some US small caps) have a
+ * `?p=quarterly` page whose columns are `H1 2026` / `H2 2026`, so the quarterly
+ * parser finds nothing. That is the company's reporting cadence, not a parser
+ * failure. Anything else that parses to nothing stays an error.
+ */
+function isHalfYearlyOnlyQuarterlyPage(section: StockAnalyzerSectionId, html: string): boolean {
+  return section.endsWith('/quarterly') && />\s*H[12] \d{4}\s*</.test(html);
+}
+
 function isPageNotFound(error: unknown): error is StockAnalyzerFetchError {
   return error instanceof StockAnalyzerFetchError && error.status === 404;
 }
@@ -219,6 +232,9 @@ export async function scrapeStockAnalyzerSection(stockAnalyzeUrl: string, sectio
     ({ url, html } = await fetchSectionPage(stockAnalyzeUrl, definition));
   } catch (error) {
     if (definition.notPublishedData && isPageNotFound(error)) {
+      // Expected for one listing (a non-payer has no dividend page), but kept
+      // visible: a spike across many tickers would mean the source moved its URLs.
+      console.warn(`${section} not published for ${error.url} (404); storing it as empty`);
       return { section, url: error.url, data: definition.notPublishedData(), errors: [] };
     }
     throw error;
@@ -231,9 +247,17 @@ export async function scrapeStockAnalyzerSection(stockAnalyzeUrl: string, sectio
     throw new Error(`Failed to parse ${section} from ${url}: ${error instanceof Error ? error.message : String(error)}`);
   }
 
-  const errors: ScrapeSectionError[] = definition.isUsable(data)
-    ? []
-    : [{ where: `parse:${section}`, message: `Parsed no usable data from ${url} — the source page layout may have changed` }];
+  let errors: ScrapeSectionError[] = [];
+  if (!definition.isUsable(data)) {
+    errors = isHalfYearlyOnlyQuarterlyPage(section, html)
+      ? [
+          {
+            where: `${HALF_YEARLY_ONLY_ERROR_PREFIX}${section}`,
+            message: `Only half-yearly (H1/H2) columns on ${url}; the company publishes no quarterly figures`,
+          },
+        ]
+      : [{ where: `parse:${section}`, message: `Parsed no usable data from ${url} — the source page layout may have changed` }];
+  }
 
   return { section, url, data, errors };
 }

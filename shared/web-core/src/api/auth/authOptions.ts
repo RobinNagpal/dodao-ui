@@ -1,5 +1,5 @@
 import { createHash } from '@dodao/web-core/api/auth/createHash';
-import { logError } from '@dodao/web-core/api/helpers/adapters/errorLogger';
+import { isTransientClientFetchError, logError } from '@dodao/web-core/api/helpers/adapters/errorLogger';
 import { DoDaoJwtTokenPayload, Session } from '@dodao/web-core/types/auth/Session';
 import { User } from '@dodao/web-core/types/auth/User';
 import { PrismaUserAdapter, PrismaVerificationTokenAdapter } from '@dodao/web-core/types/prisma/prismaAdapters';
@@ -407,10 +407,11 @@ export function getAuthOptions(
         const { error: rawError, ...metaWithoutError } = meta;
         const params: Record<string, any> = rawError === '[object Object]' ? metaWithoutError : meta;
 
-        // Browser-side network failures (Safari "Load failed", "Failed to fetch", offline, fetch aborted by
-        // navigation) are reported by the NextAuth client. They are not server errors, so only warn and do
-        // not persist them through logError.
-        if (code === 'CLIENT_FETCH_ERROR' && isClientError) {
+        // Browser-side network failures (Safari "Load failed", Chrome "Failed to fetch", Firefox "NetworkError…":
+        // offline, or the fetch aborted by navigation) are not server errors, so only warn and do not persist
+        // them through logError. Any other CLIENT_FETCH_ERROR (e.g. /api/auth/session returning a 500 or HTML)
+        // stays an error.
+        if (code === 'CLIENT_FETCH_ERROR' && isClientError && typeof params.message === 'string' && isTransientClientFetchError(params.message)) {
           console.warn(`[authOptions] NextAuth client fetch failed: ${params.message ?? 'unknown'} (url: ${params.url ?? 'unknown'})`);
           return;
         }

@@ -15,7 +15,13 @@ import {
   DividendHistoryRow,
   StockFundamentalsSummary,
 } from '@/types/prismaTypes';
-import { isScrapedSectionUsable, ScrapeSectionResult, scrapeStockAnalyzerSection, StockAnalyzerSectionId } from '@/utils/stock-analyzer';
+import {
+  HALF_YEARLY_ONLY_ERROR_PREFIX,
+  isScrapedSectionUsable,
+  ScrapeSectionResult,
+  scrapeStockAnalyzerSection,
+  StockAnalyzerSectionId,
+} from '@/utils/stock-analyzer';
 import { StockAnalyzerFetchError } from '@/utils/stock-analyzer/stock-analyzer-fetcher';
 
 type ScraperInfoDataField = keyof Omit<
@@ -137,12 +143,12 @@ const MAX_STORED_ERRORS = 50;
 const FAILED_SECTION_RETRY_MS = 6 * 60 * 60 * 1000;
 
 /**
- * Longer retry window for a section whose page loaded but parsed to nothing
- * (stored errors prefixed `parse:`). That is mostly expected data shape — e.g.
- * ASX and other semi-annual reporters, whose `?p=quarterly` pages only carry
- * H1/H2 columns — so re-scraping every few hours just repeats the same result.
+ * Longer retry window for a quarterly section of a semi-annual reporter (stored
+ * errors prefixed `HALF_YEARLY_ONLY_ERROR_PREFIX`): its page only carries H1/H2
+ * columns, so re-scraping every few hours just repeats the same result.
+ * Any other empty parse keeps the short window and stays an error.
  */
-const EMPTY_SECTION_RETRY_MS = 7 * 24 * 60 * 60 * 1000;
+const HALF_YEARLY_RETRY_MS = 7 * 24 * 60 * 60 * 1000;
 
 export interface StoredScraperError {
   section: string;
@@ -215,7 +221,7 @@ function determineDataToFetch(existingData: TickerV1StockAnalyzerScrapperInfo | 
 /** True while a section's most recent scrape failure is still inside the retry window. */
 function isInFailureBackoff(storedErrors: StoredScraperError[], section: StockAnalyzerSectionId): boolean {
   let lastFailureMs: number | null = null;
-  let lastFailureWasEmptyPage = false;
+  let lastFailureWasHalfYearly = false;
 
   for (const storedError of storedErrors) {
     if (storedError.section !== section) {
@@ -224,11 +230,11 @@ function isInFailureBackoff(storedErrors: StoredScraperError[], section: StockAn
     const failedAtMs: number = new Date(storedError.timestamp).getTime();
     if (Number.isFinite(failedAtMs) && (lastFailureMs === null || failedAtMs > lastFailureMs)) {
       lastFailureMs = failedAtMs;
-      lastFailureWasEmptyPage = storedError.error.startsWith('parse:');
+      lastFailureWasHalfYearly = storedError.error.startsWith(HALF_YEARLY_ONLY_ERROR_PREFIX);
     }
   }
 
-  const retryMs: number = lastFailureWasEmptyPage ? EMPTY_SECTION_RETRY_MS : FAILED_SECTION_RETRY_MS;
+  const retryMs: number = lastFailureWasHalfYearly ? HALF_YEARLY_RETRY_MS : FAILED_SECTION_RETRY_MS;
   return lastFailureMs !== null && Date.now() - lastFailureMs < retryMs;
 }
 
@@ -334,14 +340,17 @@ export async function fetchAndUpdateStockAnalyzerData(
       continue;
     }
 
-    // A page that loads but parses to nothing means either the source layout
-    // changed or the ticker has no such data (semi-annual reporters have no
-    // quarterly columns), so warn rather than error; it is retried on the longer
-    // EMPTY_SECTION_RETRY_MS window. Never write that over data we already have,
-    // and never stamp it as fresh — otherwise one bad scrape blanks the section
+    // A page that loads but parses to nothing means the source layout changed —
+    // an error. The one known-benign case is a semi-annual reporter's quarterly
+    // page (H1/H2 columns only), which only warns and backs off for
+    // HALF_YEARLY_RETRY_MS. Never write either over data we already have, and
+    // never stamp it as fresh — otherwise one bad scrape blanks the section
     // until its age window expires.
     if (!isScrapedSectionUsable(config.section, result.data)) {
-      console.warn(`Scraped no usable data for ${config.section} (${ticker.symbol}) from ${result.url}; keeping previously stored data`);
+      const isHalfYearlyOnly: boolean = result.errors.some((e) => e.where.startsWith(HALF_YEARLY_ONLY_ERROR_PREFIX));
+      (isHalfYearlyOnly ? console.warn : console.error)(
+        `Scraped no usable data for ${config.section} (${ticker.symbol}) from ${result.url}; keeping previously stored data`
+      );
       allErrors.push(...result.errors.map((e) => ({ section: config.section, error: `${e.where}: ${e.message}`, timestamp: timestamp.toISOString() })));
       continue;
     }

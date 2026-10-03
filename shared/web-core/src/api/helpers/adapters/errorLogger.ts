@@ -10,7 +10,7 @@ const staticPageGenerationError = 'rendered statically ';
 // avoid alert noise.
 const transientClientFetchErrors = ['CLIENT_FETCH_ERROR', 'Load failed', 'Failed to fetch', 'NetworkError when attempting to fetch resource'];
 
-function isTransientClientFetchError(value: string): boolean {
+export function isTransientClientFetchError(value: string): boolean {
   return transientClientFetchErrors.some((pattern) => value.includes(pattern));
 }
 
