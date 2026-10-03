@@ -20,7 +20,7 @@ prod.koalagains.com ──(Route53 CNAME)──► Lightsail Container Service "
                                                 │  next start + system Chromium (Puppeteer)
 browser ──(assetPrefix)──► S3 insights-ui-static-assets/_next/static   └──► existing RDS Postgres (public + SSL)
 EventBridge Scheduler (4 crons) ──► Lambda insights-ui-cron-invoker ──► GET prod.koalagains.com/api/...
-app ──(pino transport)──► CloudWatch Logs /insights-ui/app
+app ──(in-process shipper)──► Grafana Cloud Loki  (errors/warns; see grafana-cloud-logging.md)
 ```
 
 - Single-node Lightsail container service (`scale = 1`, enforced by a Terraform validation) — a
@@ -41,7 +41,7 @@ app ──(pino transport)──► CloudWatch Logs /insights-ui/app
 | Terraform state | S3 `koalagains-terraform-state` (versioned + SSE), **no DynamoDB lock** |
 | App secrets | Secrets Manager `insights-ui/app-env` (33 keys) |
 | CI deploy identity | IAM user `insights-ui-deploy` (AdministratorAccess); access key in GitHub repo secrets `AWS_ACCESS_KEY_ID` / `AWS_SECRET_ACCESS_KEY` |
-| Logs | CloudWatch Log Group `/insights-ui/app`; dashboard `insights-ui-logs` |
+| Logs | Container stdout via `lightsail get-container-log` (3-day window) + **Grafana Cloud Loki** (pushed by the app — see [grafana-cloud-logging.md](grafana-cloud-logging.md)). The CloudWatch group `/insights-ui/app` and dashboard `insights-ui-logs` exist in `observability.tf` but **nothing ships to them**. |
 | Crons | 4 EventBridge schedules → Lambda `insights-ui-cron-invoker` |
 | Existing CloudFront (Vercel apex) | `EZI5H8FKNE9R1` — the AWS app still invalidates it on cron/save writes |
 
@@ -157,10 +157,11 @@ aws lightsail get-container-services --service-name insights-ui --region us-east
 ```bash
 # Container stdout/stderr for the running deployment (Prisma/boot errors show here):
 aws lightsail get-container-log --service-name insights-ui --container-name app --region us-east-1
-# Structured app logs:
-aws logs tail /insights-ui/app --region us-east-1 --since 1h
-# Or the public CloudWatch dashboard "insights-ui-logs".
 ```
+Structured errors/warns are searchable in Grafana Cloud → Explore → Loki:
+`{service="insights-ui", env="production", level="error"} | json`
+(setup + queries: [grafana-cloud-logging.md](grafana-cloud-logging.md)).
+`aws logs tail /insights-ui/app` returns nothing — that log group was never fed.
 
 **Debug a failed CI deploy:** `gh run view <id> --log-failed`. The build/apply gets *further*
 each fix — match the failing step against §4.
