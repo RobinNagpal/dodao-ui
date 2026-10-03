@@ -10,7 +10,7 @@
  * Installed from src/instrumentation.ts. See docs/insights-ui/grafana-cloud-logging.md.
  */
 
-import { flushLoki, isLokiEnabled, setShipperErrorReporter, shipToLoki } from './lokiClient';
+import { flushLoki, initLoki, setShipperErrorReporter, shipToLoki } from './lokiClient';
 
 let installed = false;
 
@@ -43,11 +43,14 @@ function firstErrorStack(args: unknown[]): string | undefined {
  * Patch console + install process hooks. Idempotent, and a no-op when Loki is not configured
  * (so local dev and Vercel behave exactly as they do today).
  */
-export function installServerLogging(): void {
-  if (installed || !isLokiEnabled()) {
+export async function installServerLogging(): Promise<void> {
+  if (installed) {
     return;
   }
   installed = true;
+  if (!(await initLoki())) {
+    return;
+  }
 
   const originalError = console.error.bind(console);
   const originalWarn = console.warn.bind(console);

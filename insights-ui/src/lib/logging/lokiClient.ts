@@ -9,13 +9,16 @@
  * Design constraints, all driven by the fact that this runs in-process on a single node that
  * also runs Puppeteer (see docs/insights-ui/crawler-blocking.md — CPU pressure there 502s the
  * whole site):
- *   - Entirely inert unless LOKI_URL + LOKI_USER_ID + LOKI_TOKEN are all set, so local dev
- *     and the Vercel deployment are unaffected.
+ *   - Entirely inert unless the LOKI_URL / LOKI_USER_ID / LOKI_TOKEN App Settings all resolve
+ *     (SSM → env → appConfigDefaults.json; the token has no default), and always off on
+ *     Vercel, so local dev and the Vercel deployment are unaffected.
  *   - Never blocks a request: callers enqueue and return; the HTTP push happens on a timer.
  *   - Bounded memory: a Loki outage drops the oldest lines instead of growing without limit.
  *   - Never throws and never recurses: a shipping failure is reported through the *original*
  *     console, which `serverLogger` hands over before it patches console.error.
  */
+
+import { getAppConfigValue } from '@/lib/appConfig/appConfig';
 
 export type LogLevel = 'error' | 'warn' | 'info' | 'debug';
 
@@ -40,7 +43,8 @@ const ALL_LEVELS: readonly LogLevel[] = ['error', 'warn', 'info', 'debug'];
 const DEFAULT_LEVELS: readonly LogLevel[] = ['error', 'warn'];
 
 interface LokiConfig {
-  url: string;
+  /** Full push endpoint, built from the LOKI_URL base. */
+  pushUrl: string;
   userId: string;
   token: string;
   service: string;
@@ -48,24 +52,39 @@ interface LokiConfig {
   levels: Set<LogLevel>;
 }
 
-// `undefined` = not resolved yet, `null` = resolved and disabled.
-let config: LokiConfig | null | undefined;
+// Set once by initLoki() at server start; `null` until then (and when disabled).
+let config: LokiConfig | null = null;
 
 function isLogLevel(value: string): value is LogLevel {
   return (ALL_LEVELS as readonly string[]).includes(value);
 }
 
 function getConfig(): LokiConfig | null {
-  if (config !== undefined) {
-    return config;
+  return config;
+}
+
+/**
+ * Resolves the Loki settings from App Settings once, at server start (they are async SSM
+ * reads, so they can't be looked up per log line). Returns whether shipping is enabled.
+ */
+export async function initLoki(): Promise<boolean> {
+  // Vercel still runs the same app in parallel (and may read the same SSM settings); only the
+  // AWS deployment ships, so Vercel lines never mix into the production stream.
+  if (process.env.VERCEL === '1') {
+    return false;
   }
 
-  const url = process.env.LOKI_URL?.trim();
-  const userId = process.env.LOKI_USER_ID?.trim();
-  const token = process.env.LOKI_TOKEN?.trim();
-  if (!url || !userId || !token) {
-    config = null;
-    return config;
+  const [url, userId, token] = await Promise.all([getAppConfigValue('LOKI_URL'), getAppConfigValue('LOKI_USER_ID'), getAppConfigValue('LOKI_TOKEN')]);
+  if (!url?.trim() || !userId?.trim() || !token?.trim()) {
+    return false;
+  }
+
+  let pushUrl: string;
+  try {
+    pushUrl = new URL('/loki/api/v1/push', url.trim()).toString();
+  } catch {
+    console.error(`[lokiClient] LOKI_URL is not a valid URL: ${url}`);
+    return false;
   }
 
   // Only error+warn by default. `console.log` is extremely chatty in this app (every request
@@ -76,19 +95,14 @@ function getConfig(): LokiConfig | null {
     .filter(isLogLevel);
 
   config = {
-    url,
-    userId,
-    token,
+    pushUrl,
+    userId: userId.trim(),
+    token: token.trim(),
     service: process.env.LOKI_SERVICE_NAME || 'insights-ui',
     env: process.env.LOKI_ENV || process.env.NEXT_PUBLIC_VERCEL_ENV || process.env.NODE_ENV || 'development',
     levels: new Set(levels.length > 0 ? levels : DEFAULT_LEVELS),
   };
-  return config;
-}
-
-/** Whether log shipping is configured for this runtime. */
-export function isLokiEnabled(): boolean {
-  return getConfig() !== null;
+  return true;
 }
 
 /**
@@ -264,7 +278,7 @@ async function pushBatch(cfg: LokiConfig): Promise<void> {
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), PUSH_TIMEOUT_MS);
   try {
-    const res = await fetch(cfg.url, {
+    const res = await fetch(cfg.pushUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

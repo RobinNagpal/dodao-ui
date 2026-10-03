@@ -20,7 +20,7 @@ export async function register(): Promise<void> {
   }
   // Imported lazily so the Edge bundle never pulls in the Node-only logger.
   const { installServerLogging } = await import('@/lib/logging/serverLogger');
-  installServerLogging();
+  await installServerLogging();
 }
 
 export const onRequestError: Instrumentation.onRequestError = async (err, request, context) => {

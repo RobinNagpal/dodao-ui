@@ -45,8 +45,10 @@ stdout and `get-container-log` behave exactly as before.
 
 ### Deliberate design choices
 
-- **Inert unless configured.** Missing any of `LOKI_URL` / `LOKI_USER_ID` / `LOKI_TOKEN` and the
-  whole thing is a no-op. Local dev and the Vercel deployment are unaffected.
+- **Inert unless configured.** Missing any of the `LOKI_URL` / `LOKI_USER_ID` / `LOKI_TOKEN` App
+  Settings and the whole thing is a no-op; it is also always off when `VERCEL=1`. Local dev and
+  the Vercel deployment are unaffected. The settings are resolved **once at server start**
+  (`initLoki()` from `instrumentation.ts`), so a change needs a redeploy/restart.
 - **Never blocks a request.** Callers enqueue synchronously; the push happens on an unref'd timer.
 - **Bounded memory.** Buffer caps at 1000 lines; a Loki outage drops the oldest and ships a
   `dropped N lines` warning when it recovers, rather than growing until the container OOMs.
@@ -78,17 +80,19 @@ error+warn should stay far under 1 GB/month.
 1. Sign up at [grafana.com](https://grafana.com/pricing/) and create a stack. Pick a **US**
    region — the app is in `us-east-1`.
 2. In the stack, open **Loki → Send Logs**. Copy:
-   - the push **URL**, e.g. `https://logs-prod-021.grafana.net/loki/api/v1/push`
+   - the stack **URL**, e.g. `https://logs-prod-018.grafana.net` (the app appends `/loki/api/v1/push`)
    - the numeric **User / instance ID**
 3. **Administration → Users and access → Access policies → Add access policy**. Realm = this
    stack, scope = **`logs:write`**. Add a token under it and copy the token (shown once).
+   A token from a Grafana **data source** (read) is not enough — Loki rejects pushes with
+   `401 authentication error: invalid scope requested`.
 
 Verify the credentials before touching the deploy:
 
 ```bash
 curl -i -u "<LOKI_USER_ID>:<LOKI_TOKEN>" \
   -H 'Content-Type: application/json' \
-  "<LOKI_URL>" \
+  "<LOKI_URL>/loki/api/v1/push" \
   --data-binary "{\"streams\":[{\"stream\":{\"service\":\"insights-ui\",\"env\":\"manual-test\",\"level\":\"error\"},\"values\":[[\"$(date +%s)000000000\",\"{\\\"level\\\":\\\"error\\\",\\\"msg\\\":\\\"hello from curl\\\"}\"]]}]}"
 ```
 
@@ -100,34 +104,18 @@ A `204 No Content` means it worked. Then in Grafana → **Explore → Loki**:
 
 ## 4. Wiring it into the AWS deployment
 
-No Terraform or infra change is needed. CI reads the whole Secrets Manager secret
-`insights-ui/app-env` into the `app_secrets` map
-(`.github/workflows/insights-ui-deploy-aws.yml`), and `container.tf` injects it with
-`environment = merge(var.app_env, var.app_secrets)`.
+The three values are **App Settings** (admin → App Settings → *Log Shipping (Grafana Cloud
+Loki)*), resolved SSM → env → `appConfigDefaults.json` like every other setting
+([app-settings.md](app-settings.md)). No Terraform or Secrets Manager change is needed.
 
-So: add the three keys to that secret, preserving the existing ones.
+| Key | Where the value lives |
+| --- | --- |
+| `LOKI_URL` | Default in `appConfigDefaults.json` (`https://logs-prod-018.grafana.net`) |
+| `LOKI_USER_ID` | Default in `appConfigDefaults.json` (`1637978`) |
+| `LOKI_TOKEN` | **Secret** — SSM `SecureString` `/koalagains/insights-ui/LOKI_TOKEN`, set from the App Settings screen. No default (public repo). |
 
-```bash
-# Read current, add the new keys, write back as one document.
-aws secretsmanager get-secret-value --secret-id insights-ui/app-env \
-  --query SecretString --output text --region us-east-1 > /tmp/app-env.json
-
-jq '. + {
-  LOKI_URL: "https://logs-prod-XXX.grafana.net/loki/api/v1/push",
-  LOKI_USER_ID: "1234567",
-  LOKI_TOKEN: "glc_..."
-}' /tmp/app-env.json > /tmp/app-env.new.json
-
-aws secretsmanager put-secret-value --secret-id insights-ui/app-env \
-  --secret-string file:///tmp/app-env.new.json --region us-east-1
-
-rm /tmp/app-env.json /tmp/app-env.new.json
-```
-
-> `put-secret-value` replaces the **entire** document — the `jq '. + {…}'` merge above is what
-> keeps the other ~33 keys. Don't hand-write the JSON.
-
-Then redeploy (push to `main`, or re-run the workflow) so the container picks up the new env.
+Set the token in App Settings, then redeploy (push to `main`, or re-run the workflow) or
+restart the container — the config is read once at startup.
 On startup the container logs `[serverLogger] Grafana Cloud log shipping enabled`.
 
 ## 5. Seeing the errors
