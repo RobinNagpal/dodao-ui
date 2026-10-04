@@ -175,8 +175,18 @@ pnpm logs:fetch --query '{service="insights-ui"} |= "AIRG"'   # any LogQL, overr
 pnpm logs:fetch --limit 20000                     # max lines (default 5000; paged 5000 per request)
 ```
 
-The status line goes to stderr and results to stdout, so `pnpm -s logs:fetch > out.txt` stays
-clean. Retention is 14 days, so `--hours` beyond 336 returns nothing older.
+The script writes its status line to stderr and its results to stdout. To save the results, either
+use `--out` (raw JSONL), or run the script directly with `tsx` so that no package-manager output
+ends up in the file:
+
+```bash
+pnpm logs:fetch --out data/logs.jsonl                                  # raw lines as JSONL
+npx tsx src/scripts/logs/fetch-grafana-logs.ts --hours 6 > out.txt     # grouped summary as text
+```
+
+Don't use `pnpm -s logs:fetch > out.txt`. Depending on the pnpm version, `-s` either silences the
+script's own stdout (an empty file) or is rejected as an unknown flag (`unexpected argument '-s'`
+on pnpm 12). Retention is 14 days, so `--hours` beyond 336 returns nothing older.
 
 ## 6. Troubleshooting
 
