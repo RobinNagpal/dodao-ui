@@ -36,6 +36,7 @@ export type AppConfigGroupId =
   | 'report-generation'
   | 'auto-generation'
   | 'payments'
+  | 'scraping'
   | 'logging'
   | 'claude-endpoints';
 
@@ -114,6 +115,12 @@ export const APP_CONFIG_GROUPS: AppConfigGroup[] = [
     id: 'payments',
     label: 'Payments',
     description: 'Controls for buying report credits through Stripe.',
+  },
+  {
+    id: 'scraping',
+    label: 'Fundamentals Scraping',
+    description:
+      'How stock/ETF fundamentals pages are fetched. Rejections by the source site are logged as [scraper-rejected] and pause fetching for at least 10 minutes. Changes apply within a minute (no redeploy).',
   },
   {
     id: 'logging',
@@ -333,6 +340,22 @@ export const APP_CONFIG_DEFINITIONS: AppConfigDefinition[] = [
     type: 'string',
     group: 'claude-auth',
     secret: true,
+  },
+  {
+    key: 'SCRAPER_FETCH_VIA_LAMBDA',
+    label: 'Fetch fundamentals pages via the Lambda',
+    description:
+      "ON: fetch source pages through the stocks Lambda's POST /html proxy, so requests leave from Lambda's IPs (use when this server's IP is being rate-limited). OFF (default): fetch directly from this server. Parsing happens in the app either way.",
+    type: 'boolean',
+    group: 'scraping',
+  },
+  {
+    key: 'STOCK_ANALYZER_LAMBDA_URL',
+    label: 'Stocks Lambda URL',
+    description:
+      'Base URL of the stocks Lambda (its Lambda Function URL, https://<id>.lambda-url.us-east-1.on.aws). Used only when fetching via the Lambda is ON.',
+    type: 'string',
+    group: 'scraping',
   },
   {
     key: 'LOKI_URL',

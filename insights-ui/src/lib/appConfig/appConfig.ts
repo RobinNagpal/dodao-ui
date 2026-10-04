@@ -30,10 +30,19 @@ for (const def of APP_CONFIG_DEFINITIONS) {
 }
 
 let ssmCache: { values: Record<string, string>; expiresAt: number } | null = null;
+// Single-flight: concurrent callers on a cold/expired cache share one SSM read.
+let ssmInFlight: Promise<Record<string, string>> | null = null;
 
 async function getSsmValues(): Promise<Record<string, string>> {
   if (!isSsmConfigured()) return {};
   if (ssmCache && ssmCache.expiresAt > Date.now()) return ssmCache.values;
+  ssmInFlight ??= readSsmValues().finally(() => {
+    ssmInFlight = null;
+  });
+  return ssmInFlight;
+}
+
+async function readSsmValues(): Promise<Record<string, string>> {
   try {
     const values = await fetchAllSsmParameters();
     ssmCache = { values, expiresAt: Date.now() + CACHE_TTL_MS };
