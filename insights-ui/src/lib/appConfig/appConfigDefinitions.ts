@@ -29,7 +29,15 @@ import { AutoGenBudgetUtilizationStrategy, AutoGenEntity, AutoGenMarkets, AutoGe
 export type AppConfigValueType = 'boolean' | 'string';
 
 /** Ids of the groups the admin App Settings screen renders settings under, in display order. */
-export type AppConfigGroupId = 'claude-auth' | 'llm-defaults' | 'provider-keys' | 'report-generation' | 'auto-generation' | 'payments' | 'claude-endpoints';
+export type AppConfigGroupId =
+  | 'claude-auth'
+  | 'llm-defaults'
+  | 'provider-keys'
+  | 'report-generation'
+  | 'auto-generation'
+  | 'payments'
+  | 'logging'
+  | 'claude-endpoints';
 
 /** One choice for a setting that has a fixed set of allowed values (rendered as a dropdown). */
 export interface AppConfigOption {
@@ -106,6 +114,12 @@ export const APP_CONFIG_GROUPS: AppConfigGroup[] = [
     id: 'payments',
     label: 'Payments',
     description: 'Controls for buying report credits through Stripe.',
+  },
+  {
+    id: 'logging',
+    label: 'Log Shipping (Grafana Cloud Loki)',
+    description:
+      'Where server errors and warnings are pushed. Shipping is on only when URL, user and token are all set, and is read once at server start — redeploy (or restart) after changing these.',
   },
   {
     id: 'claude-endpoints',
@@ -318,6 +332,29 @@ export const APP_CONFIG_DEFINITIONS: AppConfigDefinition[] = [
     description: 'Static Claude access token (sk-ant-oat…) used only if the refresh flow fails. Short-lived — for bootstrap / dev.',
     type: 'string',
     group: 'claude-auth',
+    secret: true,
+  },
+  {
+    key: 'LOKI_URL',
+    label: 'Loki URL',
+    description: 'Base URL of the Grafana Cloud Loki stack (e.g. https://logs-prod-018.grafana.net). The push path /loki/api/v1/push is added automatically.',
+    type: 'string',
+    group: 'logging',
+  },
+  {
+    key: 'LOKI_USER_ID',
+    label: 'Loki user (instance ID)',
+    description: 'Numeric Loki user / instance ID — the basic-auth username for the stack.',
+    type: 'string',
+    group: 'logging',
+  },
+  {
+    key: 'LOKI_TOKEN',
+    label: 'Loki write token',
+    description:
+      'Grafana Cloud access-policy token (glc_…) with the logs:write scope. A read-only token is rejected by Loki with 401 "invalid scope requested".',
+    type: 'string',
+    group: 'logging',
     secret: true,
   },
 ];

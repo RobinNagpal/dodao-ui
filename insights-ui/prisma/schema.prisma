@@ -2754,6 +2754,9 @@ model CreditTransaction {
   /// Set on the ReportSpend row once it has been settled: either the report
   /// completed (no refund) or the credit was refunded. Guards double refunds.
   settledAt DateTime? @map("settled_at")
+  /// Set on a settled ReportSpend once the user has been shown its result
+  /// ("report ready" / "failed, credit returned"), so the notice shows once.
+  resultSeenAt DateTime? @map("result_seen_at")
 
   createdAt DateTime @default(now()) @map("created_at")
 

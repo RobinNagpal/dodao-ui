@@ -10,8 +10,48 @@ const staticPageGenerationError = 'rendered statically ';
 // avoid alert noise.
 const transientClientFetchErrors = ['CLIENT_FETCH_ERROR', 'Load failed', 'Failed to fetch', 'NetworkError when attempting to fetch resource'];
 
-function isTransientClientFetchError(value: string): boolean {
+export function isTransientClientFetchError(value: string): boolean {
   return transientClientFetchErrors.some((pattern) => value.includes(pattern));
+}
+
+function formatLogErrorLine(message: string, params: Record<string, any>, e: Error | null, spaceId: string | null, blockchain: string | null): string {
+  const text = typeof message === 'string' ? message : safeStringify(message);
+  const parts = [`[errorLogger] ${text}`];
+  if (e instanceof Error) {
+    // Avoid repeating the error message when it is already part of the log message.
+    if (e.message && !text.includes(e.message)) parts.push(`error=${e.name || 'Error'}: ${e.message}`);
+    // `cause` (e.g. undici's "fetch failed" → ECONNREFUSED) and own props (Prisma `code`/`meta`) carry the real reason.
+    const details = errorDetails(e);
+    if (details) parts.push(`details=${details}`);
+  } else if (e) {
+    parts.push(`error=${safeStringify(e)}`);
+  }
+  if (spaceId) parts.push(`spaceId=${spaceId}`);
+  if (blockchain) parts.push(`blockchain=${blockchain}`);
+  if (params && Object.keys(params).length > 0) parts.push(`params=${safeStringify(params)}`);
+  let line = parts.join(' | ');
+  if (e instanceof Error && e.stack) line += `\n${e.stack}`;
+  return line;
+}
+
+function errorDetails(e: Error): string | null {
+  const details: Record<string, unknown> = {};
+  for (const key of Object.keys(e)) {
+    if (key !== 'stack' && key !== 'message') details[key] = (e as unknown as Record<string, unknown>)[key];
+  }
+  const cause = (e as { cause?: unknown }).cause;
+  if (cause !== undefined) {
+    details.cause = cause instanceof Error ? { name: cause.name, message: cause.message, ...(cause as unknown as Record<string, unknown>) } : cause;
+  }
+  return Object.keys(details).length > 0 ? safeStringify(details) : null;
+}
+
+function safeStringify(value: unknown): string {
+  try {
+    return JSON.stringify(value) ?? String(value);
+  } catch {
+    return String(value);
+  }
 }
 
 export async function logError(
@@ -21,29 +61,8 @@ export async function logError(
   spaceId: string | null = null,
   blockchain: string | null = null
 ) {
-  console.log('[errorLogger] logError called with:', {
-    message: message.substring(0, 100) + (message.length > 100 ? '...' : ''),
-    spaceId,
-    blockchain,
-    errorName: e?.name,
-    errorMessage: e?.message,
-  });
-
-  // Always log the error to console, even if it's going to be ignored for Discord
-  console.error(
-    '[errorLogger] Error details:',
-    e,
-    JSON.stringify(
-      {
-        spaceId,
-        blockchain,
-        message,
-        params,
-      },
-      null,
-      2
-    )
-  );
+  // Always log the error to console (one concise line), even if it's going to be ignored for Discord
+  console.error(formatLogErrorLine(message, params, e, spaceId, blockchain));
 
   // Only skip posting to Discord if the error should be ignored
   if (shouldIgnoreError(e || message)) {

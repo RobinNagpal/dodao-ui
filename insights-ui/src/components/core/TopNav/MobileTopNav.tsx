@@ -17,9 +17,12 @@ interface MobileTopNavProps {
     name: string;
     href: string;
   }>;
+  isLoggedIn: boolean;
+  /** Credit balance, once loaded. Shown next to the credits link. */
+  credits: number | undefined;
 }
 
-export default function MobileTopNav({ mobileMenuOpen, setMobileMenuOpen, industries, industriesLoading, navItems }: MobileTopNavProps) {
+export default function MobileTopNav({ mobileMenuOpen, setMobileMenuOpen, industries, industriesLoading, navItems, isLoggedIn, credits }: MobileTopNavProps) {
   const pathname = usePathname() ?? '';
   const isStocksRoute = pathname.startsWith('/stocks');
   const isEtfsRoute = pathname.startsWith('/etfs');
@@ -46,6 +49,24 @@ export default function MobileTopNav({ mobileMenuOpen, setMobileMenuOpen, indust
           </div>
 
           <div className="-my-6 divide-y divide-border">
+            {/* Same user links the desktop navbar shows on /stocks and /etfs, which are hidden on small screens. */}
+            {(isStocksRoute || isEtfsRoute) && isLoggedIn && (
+              <div className="-mx-3 py-6">
+                {[
+                  isStocksRoute ? { name: 'My Favourite Stocks', href: '/favourites' } : { name: 'My Favourite ETFs', href: '/etf-favourites' },
+                  { name: credits === undefined ? 'My Credits' : `My Credits (${credits})`, href: '/credits' },
+                ].map((item) => (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    className="block rounded-lg py-2 px-3 text-base/7 font-semibold hover:bg-surface text-heading dark:hover:bg-white/5"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    {item.name}
+                  </Link>
+                ))}
+              </div>
+            )}
             <div className="space-y-2 py-6">
               {isStocksRoute ? (
                 <div>
