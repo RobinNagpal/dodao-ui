@@ -269,6 +269,11 @@ function toErrorMessage(error: unknown): string {
  * described by its message, so its stack is noise; keep stacks for anything
  * unexpected.
  */
+/** The fetcher made no request (paused after a rejection, or the pacing queue was full). */
+function isNotAttempted(error: unknown): boolean {
+  return error instanceof StockAnalyzerFetchError && (error.paused || error.deferred);
+}
+
 function logSectionScrapeError(section: string, symbol: string, error: unknown): void {
   if (error instanceof StockAnalyzerFetchError && error.rejected) {
     // Already logged once per pause as [scraper-rejected] by the fetcher.
@@ -363,6 +368,12 @@ export async function fetchAndUpdateStockAnalyzerData(
 
   for (const { config, result, error } of results) {
     if (error || !result) {
+      // Not attempted (paused after a rejection, or the pacing queue was full):
+      // not a failure, so no log and no stored error / retry backoff. The
+      // section stays stale and refreshes on a later view.
+      if (isNotAttempted(error)) {
+        continue;
+      }
       logSectionScrapeError(config.section, ticker.symbol, error);
       allErrors.push({ section: config.section, error: toErrorMessage(error), timestamp: timestamp.toISOString() });
       continue;
@@ -458,6 +469,9 @@ export async function refreshMarketSummaryForFairValue(ticker: TickerV1): Promis
       allErrors.push(...result.errors.map((e) => ({ section: 'summary', error: `${e.where}: ${e.message}`, timestamp: timestamp.toISOString() })));
     }
   } catch (error) {
+    if (isNotAttempted(error)) {
+      return existingInfo;
+    }
     logSectionScrapeError('summary', ticker.symbol, error);
     allErrors.push({ section: 'summary', error: toErrorMessage(error), timestamp: timestamp.toISOString() });
   }
