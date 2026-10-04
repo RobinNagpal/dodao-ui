@@ -62,9 +62,12 @@ const YAHOO_NO_DATA_RETRY_MS = 24 * 60 * 60 * 1000;
 /**
  * Symbols Yahoo recently answered "No data found" for. Kept in memory (not by
  * stamping `lastUpdatedAt*`), so stored data is never marked fresh when it is
- * not, and it works when there is no stored row yet.
+ * not, and it works when there is no stored row yet. Held on `globalThis` so
+ * every bundled copy of this module in the process shares one Map. It still
+ * resets when the process restarts (each deploy).
  */
-const yahooNoDataAt: Map<string, number> = new Map();
+const globalForYahoo = globalThis as typeof globalThis & { __yahooNoDataAt?: Map<string, number> };
+const yahooNoDataAt: Map<string, number> = (globalForYahoo.__yahooNoDataAt ??= new Map());
 
 /** True while a symbol that recently had no Yahoo data should not be re-requested. */
 export function isYahooSymbolInNoDataBackoff(yahooSymbol: string): boolean {
