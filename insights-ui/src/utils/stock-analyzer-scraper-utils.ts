@@ -23,7 +23,7 @@ import {
   scrapeStockAnalyzerSection,
   StockAnalyzerSectionId,
 } from '@/utils/stock-analyzer';
-import { StockAnalyzerFetchError } from '@/utils/stock-analyzer/stock-analyzer-fetcher';
+import { isScrapingPaused, StockAnalyzerFetchError } from '@/utils/stock-analyzer/stock-analyzer-fetcher';
 
 type ScraperInfoDataField = keyof Omit<
   TickerV1StockAnalyzerScrapperInfo,
@@ -270,6 +270,10 @@ function toErrorMessage(error: unknown): string {
  * unexpected.
  */
 function logSectionScrapeError(section: string, symbol: string, error: unknown): void {
+  if (error instanceof StockAnalyzerFetchError && error.rejected) {
+    // Already logged once per pause as [scraper-rejected] by the fetcher.
+    return;
+  }
   if (error instanceof StockAnalyzerFetchError) {
     console.error(`Error scraping ${section} for ${symbol}: ${error.message}`);
   } else {
@@ -295,6 +299,12 @@ export async function fetchAndUpdateStockAnalyzerData(
       tickerId: ticker.id,
     },
   });
+
+  // While the source site is rejecting us, serve what is stored rather than
+  // queueing requests that would fail fast anyway.
+  if (existingInfo && (await isScrapingPaused())) {
+    return existingInfo;
+  }
 
   // Determine what data needs to be fetched
   const configsToFetch = determineDataToFetch(existingInfo, options);

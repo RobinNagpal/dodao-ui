@@ -210,11 +210,15 @@ expands the suffix so the rows stay homogeneous.
 ## Detecting when the source site rejects us
 
 `stock-analyzer-fetcher.ts` treats 401/403/429 responses and bot-challenge pages (Cloudflare "Just a
-moment…", `cf-chl-`, "Access denied", served with any status) as **rejections**. Each one logs a
-`console.error` line tagged `[scraper-rejected]` with the status, URL, attempt and the edge's
-diagnostic headers (`retry-after`, `server`, `cf-ray`, `cf-mitigated`). The thrown
-`StockAnalyzerFetchError` carries `rejected: true` and the status. A 429 is retried (3 attempts);
-401/403/challenge are not.
+moment…", `cf-chl-`, "Access denied", served with any status) as **rejections**. The site's CDN
+rate-limits bursts (429 with `cf-mitigated: challenge`), so the fetcher:
+
+- **never retries a rejection**, and **pauses every fetch over that transport** for
+  max(`Retry-After`, 10 min), capped at 1 h. While paused, fetches throw `paused: true` without a
+  network call, and `fetchAndUpdateStockAnalyzerData` serves the stored row instead of scraping;
+- logs **one** `console.error` per pause, tagged `[scraper-rejected]`, with the transport, URL and
+  the edge's diagnostic headers (`retry-after`, `server`, `cf-ray`, `cf-mitigated`);
+- keeps at most **2 requests in flight** per process (a ticker's 10 sections used to go out at once).
 
 To check for blocking in production (needs `LOKI_READ_TOKEN`, see `grafana-cloud-logging.md`):
 
@@ -222,7 +226,18 @@ To check for blocking in production (needs `LOKI_READ_TOKEN`, see `grafana-cloud
 pnpm logs:fetch --grep scraper-rejected --hours 24
 ```
 
-Or in Grafana Explore: `{service="insights-ui", env="production"} |= "[scraper-rejected]"`. A
-steady stream of these means requests are being blocked: slow down the scrape, or change UA/egress.
-A challenge page used to parse to nothing and be misreported as "layout may have changed"; it is now
-reported as a rejection.
+Or in Grafana Explore: `{service="insights-ui", env="production"} |= "[scraper-rejected]"`.
+
+## Fetching through the Lambda
+
+When the App Setting **`SCRAPER_FETCH_VIA_LAMBDA`** (group "Fundamentals Scraping") is ON, pages
+are fetched through the stocks Lambda's `POST /html` proxy at **`STOCK_ANALYZER_LAMBDA_URL`** (its
+Lambda Function URL), so requests leave from Lambda's IPs instead of this server's. The Lambda only
+returns `{ status, html, headers }`; parsing stays in the app. Rejections seen by the Lambda are
+logged as `[scraper-rejected] … via lambda` and pause only Lambda fetches. Settings are read with a
+60 s cache, so switching takes effect within a minute, no redeploy.
+
+The Lambda is `lambdas/stock-page-fetcher` in this repo (a Lambda Function URL). It is deployed with
+osls (`sls deploy`) by `.github/workflows/deploy-stock-page-fetcher.yml` on every push to `main` that
+touches that folder, and only fetches hosts listed in its `ALLOWED_FETCH_HOSTS` env var (repo
+variable).
