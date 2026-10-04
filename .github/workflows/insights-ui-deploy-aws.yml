@@ -10,22 +10,34 @@ name: Deploy insights-ui (AWS / Lightsail)
 #
 # Auto-deploys on merge to `main` whenever the insights-ui app or the shared web-core package
 # changes (web-core is a build dependency of insights-ui). Also runnable manually.
+#
+# Database migrations: the `migrate` job applies pending Prisma migrations to the production DB
+# with `prisma migrate deploy` BEFORE the new image is built/rolled out, so the build-time
+# prerender and the new code both see the new schema. `migrate deploy` only applies committed
+# migrations — it never resets the DB or generates SQL. Pending migrations containing
+# destructive SQL (DROP TABLE/COLUMN, TRUNCATE, type changes, …) block the deploy until someone
+# re-runs this workflow manually with `allow_destructive_migrations` checked.
+# See docs/insights-ui/database-migrations.md.
 
 on:
   push:
     branches: [main]
     paths:
-      - 'insights-ui/**'
-      - 'shared/web-core/**'
-      - 'deployments/insights-ui/**'
-      - '.github/workflows/insights-ui-deploy-aws.yml'
+      - "insights-ui/**"
+      - "shared/web-core/**"
+      - "deployments/insights-ui/**"
+      - ".github/workflows/insights-ui-deploy-aws.yml"
   workflow_dispatch:
     inputs:
       environment:
-        description: 'Environment to deploy'
+        description: "Environment to deploy"
         type: choice
         default: production
         options: [production]
+      allow_destructive_migrations:
+        description: "Apply pending migrations even if they contain destructive SQL (DROP/TRUNCATE/type change). Review the SQL first."
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -43,7 +55,59 @@ env:
   DIRECT_HOST: prod.koalagains.com
 
 jobs:
+  migrate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: insights-ui
+    env:
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      ALLOW_DESTRUCTIVE: ${{ inputs.allow_destructive_migrations == true }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      # Only the Prisma CLI is needed (migrate status/deploy never run generators), so skip the
+      # full workspace install. Pin the CLI to the exact version in package.json.
+      - name: Resolve Prisma version
+        run: echo "PRISMA_VERSION=$(jq -r '.devDependencies.prisma // .dependencies.prisma' package.json)" >> "$GITHUB_ENV"
+
+      # `migrate status` exits non-zero when migrations are pending (expected) but also prints
+      # failed/drifted states, which `migrate deploy` would refuse anyway. We parse the pending
+      # list so the destructive-SQL guard below only looks at what is about to run.
+      - name: List pending migrations
+        run: |
+          set +e
+          npx --yes "prisma@$PRISMA_VERSION" migrate status > ../migrate-status.txt 2>&1
+          set -e
+          cat ../migrate-status.txt
+          grep -E '^[[:space:]]*[0-9]{14}_[A-Za-z0-9_]+[[:space:]]*$' ../migrate-status.txt | sed -E 's/[[:space:]]//g' > ../pending.txt || true
+          echo "Pending migrations:"; cat ../pending.txt || true
+
+      - name: Guard against destructive SQL
+        run: |
+          # shellcheck disable=SC2046
+          if ! ./prisma/check-destructive-migrations.sh $(cat ../pending.txt); then
+            if [ "$ALLOW_DESTRUCTIVE" != "true" ]; then
+              echo "::error::Pending migrations contain destructive SQL. Review them, then re-run this workflow manually with 'allow_destructive_migrations' checked."
+              exit 1
+            fi
+            echo "allow_destructive_migrations=true — proceeding."
+          fi
+
+      - name: Apply migrations (prisma migrate deploy)
+        run: |
+          npx --yes "prisma@$PRISMA_VERSION" migrate deploy
+          npx --yes "prisma@$PRISMA_VERSION" migrate status
+
   deploy:
+    needs: migrate
     runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
