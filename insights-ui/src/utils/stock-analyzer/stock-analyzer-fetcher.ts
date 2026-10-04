@@ -7,8 +7,8 @@
  * `stockAnalyzeUrl`.
  *
  * Pages are fetched either directly from this server or, when the
- * `SCRAPER_FETCH_VIA_LAMBDA` App Setting is on, through the stocks Lambda's
- * `POST /html` proxy (`STOCK_ANALYZER_LAMBDA_URL`), so requests leave from
+ * `SCRAPER_FETCH_VIA_LAMBDA` App Setting is on, through the stock-page-fetcher
+ * Lambda's `POST /html` proxy (lambdas/stock-page-fetcher) (`STOCK_ANALYZER_LAMBDA_URL`), so requests leave from
  * Lambda's IPs. Parsing always happens here either way.
  *
  * The site's CDN rate-limits aggressive clients (429 with

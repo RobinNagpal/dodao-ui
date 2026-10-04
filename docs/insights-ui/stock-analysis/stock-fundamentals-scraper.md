@@ -237,6 +237,7 @@ returns `{ status, html, headers }`; parsing stays in the app. Rejections seen b
 logged as `[scraper-rejected] … via lambda` and pause only Lambda fetches. Settings are read with a
 60 s cache, so switching takes effect within a minute, no redeploy.
 
-The Lambda lives in the `RobinNagpal/scraping-lambdas` repo (stocks folder), is deployed with osls
-(`sls deploy`) and redeploys from GitHub Actions on changes to that folder. Its `POST /html` route
-only fetches hosts listed in its `ALLOWED_FETCH_HOSTS` env var.
+The Lambda is `lambdas/stock-page-fetcher` in this repo (a Lambda Function URL). It is deployed with
+osls (`sls deploy`) by `.github/workflows/deploy-stock-page-fetcher.yml` on every push to `main` that
+touches that folder, and only fetches hosts listed in its `ALLOWED_FETCH_HOSTS` env var (repo
+variable).

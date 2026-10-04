@@ -345,15 +345,15 @@ export const APP_CONFIG_DEFINITIONS: AppConfigDefinition[] = [
     key: 'SCRAPER_FETCH_VIA_LAMBDA',
     label: 'Fetch fundamentals pages via the Lambda',
     description:
-      "ON: fetch source pages through the stocks Lambda's POST /html proxy, so requests leave from Lambda's IPs (use when this server's IP is being rate-limited). OFF (default): fetch directly from this server. Parsing happens in the app either way.",
+      "ON: fetch source pages through the stock-page-fetcher Lambda's POST /html proxy, so requests leave from Lambda's IPs (use when this server's IP is being rate-limited). OFF (default): fetch directly from this server. Parsing happens in the app either way.",
     type: 'boolean',
     group: 'scraping',
   },
   {
     key: 'STOCK_ANALYZER_LAMBDA_URL',
-    label: 'Stocks Lambda URL',
+    label: 'Stock page fetcher Lambda URL',
     description:
-      'Base URL of the stocks Lambda (its Lambda Function URL, https://<id>.lambda-url.us-east-1.on.aws). Used only when fetching via the Lambda is ON.',
+      'Function URL of the stock-page-fetcher Lambda (lambdas/stock-page-fetcher, https://<id>.lambda-url.us-east-1.on.aws). Used only when fetching via the Lambda is ON.',
     type: 'string',
     group: 'scraping',
   },
