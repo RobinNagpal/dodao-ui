@@ -1,4 +1,5 @@
-import type { APIGatewayProxyEventV2, APIGatewayProxyResultV2 } from 'aws-lambda';
+import type { APIGatewayProxyEventV2, APIGatewayProxyResultV2, Context } from 'aws-lambda';
+import { flushLoki, log } from './loki';
 
 /**
  * POST /html  { "url": "https://<allowed host>/..." }
@@ -44,7 +45,25 @@ function allowedHosts(): Set<string> {
   );
 }
 
-export async function handler(event: APIGatewayProxyEventV2): Promise<APIGatewayProxyResultV2> {
+/** Statuses that mean the upstream refused us (rate limit / bot protection), as in insights-ui. */
+const REJECTION_STATUSES: ReadonlySet<number> = new Set([401, 403, 429]);
+
+export async function handler(event: APIGatewayProxyEventV2, context?: Context): Promise<APIGatewayProxyResultV2> {
+  try {
+    return await handle(event, context?.awsRequestId);
+  } catch (error) {
+    log('error', `Unhandled error: ${error instanceof Error ? error.message : String(error)}`, {
+      requestId: context?.awsRequestId,
+      stack: error instanceof Error ? error.stack : undefined,
+    });
+    return respond(500, { error: 'Internal error' });
+  } finally {
+    // Must finish before returning: a frozen Lambda cannot complete a background push.
+    await flushLoki();
+  }
+}
+
+async function handle(event: APIGatewayProxyEventV2, requestId: string | undefined): Promise<APIGatewayProxyResultV2> {
   const method: string = event.requestContext?.http?.method ?? 'GET';
   const path: string = (event.rawPath || '/').replace(/\/+$/, '') || '/';
   if (method !== 'POST' || path !== '/html') {
@@ -61,9 +80,11 @@ export async function handler(event: APIGatewayProxyEventV2): Promise<APIGateway
 
   const hosts: Set<string> = allowedHosts();
   if (hosts.size === 0) {
+    log('error', 'ALLOWED_FETCH_HOSTS is not configured; refusing all requests', { requestId });
     return respond(500, { error: 'ALLOWED_FETCH_HOSTS is not configured' });
   }
   if (target.protocol !== 'https:' || !hosts.has(target.hostname.toLowerCase())) {
+    log('warn', `Refused fetch for a host that is not allowed: ${target.hostname}`, { requestId, url: target.toString() });
     return respond(403, { error: `Host not allowed: ${target.hostname}` });
   }
 
@@ -79,13 +100,20 @@ export async function handler(event: APIGatewayProxyEventV2): Promise<APIGateway
       if (value) headers[name] = value;
     }
     const html: string = await upstream.text();
-    if (upstream.status !== 200) {
-      console.warn(`upstream ${upstream.status} for ${target.toString()}${headers['cf-mitigated'] ? ` (cf-mitigated=${headers['cf-mitigated']})` : ''}`);
+    const fields = { requestId, url: target.toString(), status: upstream.status, ...headers };
+    if (REJECTION_STATUSES.has(upstream.status) || headers['cf-mitigated']) {
+      // Same tag as insights-ui, so `|= "[scraper-rejected]"` finds rejections from both.
+      log('error', `[scraper-rejected] upstream ${upstream.status} via lambda for ${target.toString()}`, fields);
+    } else if (upstream.status === 404) {
+      // Normal (e.g. a non-payer has no dividend page): CloudWatch only.
+      log('info', `upstream 404 for ${target.toString()}`, fields);
+    } else if (upstream.status < 200 || upstream.status >= 300) {
+      log('warn', `upstream ${upstream.status} for ${target.toString()}`, fields);
     }
     return respond(200, { status: upstream.status, html, headers });
   } catch (error) {
     const message: string = error instanceof Error ? error.message : String(error);
-    console.error(`fetch failed for ${target.toString()}: ${message}`);
+    log('error', `Upstream fetch failed for ${target.toString()}: ${message}`, { requestId, url: target.toString() });
     return respond(502, { error: `Upstream fetch failed: ${message}` });
   }
 }

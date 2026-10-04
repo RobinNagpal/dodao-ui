@@ -11,6 +11,7 @@ import { parseArgs, parsePositiveInt } from '../tickers/lib';
  *   pnpm logs:fetch --hours 6 --raw          # every line, oldest first
  *   pnpm logs:fetch --level all --grep scrap # all levels, lines matching a regex
  *   pnpm logs:fetch --out data/logs.jsonl    # save the raw lines as JSONL
+ *   pnpm logs:fetch --service stock-page-fetcher   # the fetch-proxy Lambda's logs (`all` = both)
  *
  * Needs LOKI_READ_TOKEN (a Grafana Cloud token with `logs:read` scope) in insights-ui/.env.
  * The app's own LOKI_TOKEN App Setting is write-only and cannot query.
@@ -55,7 +56,9 @@ function buildQuery(args: Record<string, string | boolean>): string {
   }
   const env = stringArg(args, 'env') ?? 'production';
   const level = stringArg(args, 'level') ?? 'error';
-  const selectors = [`service="insights-ui"`, `env="${env}"`];
+  // insights-ui (the app) or stock-page-fetcher (the fetch-proxy Lambda); `all` for both.
+  const service = stringArg(args, 'service') ?? 'insights-ui';
+  const selectors = [service === 'all' ? `service=~".+"` : `service="${service}"`, `env="${env}"`];
   if (level !== 'all') {
     selectors.push(`level=~"${level.replace(/,/g, '|')}"`);
   }
