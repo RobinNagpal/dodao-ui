@@ -1,25 +1,9 @@
 import { ProjectDetails } from '@/types/project/project';
 import { InsightsConstants } from '@/util/insights-constants';
-import { GetObjectCommand, S3Client } from '@aws-sdk/client-s3';
+import { getObjectFromS3Optional } from '@/lib/koalagainsS3Utils';
+import { notFoundError } from '@dodao/web-core/api/errors/notFoundError';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';
-import { Readable } from 'stream';
-
-const s3Client = new S3Client({
-  region: process.env.DEFAULT_REGION,
-  credentials: {
-    accessKeyId: process.env.AWS_ACCESS_KEY_ID!,
-    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY!,
-  },
-});
-
-async function streamToString(stream: Readable): Promise<string> {
-  const chunks: Buffer[] = [];
-  for await (const chunk of stream) {
-    chunks.push(Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk));
-  }
-  return Buffer.concat(chunks).toString('utf-8');
-}
 
 async function getHandler(req: NextRequest, { params }: { params: Promise<{ projectId: string }> }): Promise<{ projectDetails: ProjectDetails }> {
   const { projectId } = await params;
@@ -27,14 +11,10 @@ async function getHandler(req: NextRequest, { params }: { params: Promise<{ proj
   const key = `${InsightsConstants.CROWDFUND_ANALYSIS_PREFIX}/${projectId}/agent-status.json`;
 
   // Fetch the `agent-status.json` file from S3
-  const command = new GetObjectCommand({
-    Bucket: InsightsConstants.S3_BUCKET_NAME,
-    Key: key,
-  });
-
-  const response = await s3Client.send(command);
-
-  const body = response.Body instanceof Readable ? await streamToString(response.Body) : await new Response(response.Body as ReadableStream).text();
+  const body = await getObjectFromS3Optional(key);
+  if (body === null) {
+    throw notFoundError(`Project ${projectId} not found`);
+  }
   const projectDetails = JSON.parse(body);
 
   return {
