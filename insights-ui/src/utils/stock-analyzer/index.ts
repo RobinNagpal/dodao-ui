@@ -1,5 +1,6 @@
+import * as cheerio from 'cheerio';
 import { buildStockAnalyzerSubPageUrl, fetchStockAnalyzerPage, StockAnalyzerFetchError } from '@/utils/stock-analyzer/stock-analyzer-fetcher';
-import { parseFinancialTables } from '@/utils/stock-analyzer/stock-analysis-table-parser';
+import { findNoDataNotice, parseFinancialTables } from '@/utils/stock-analyzer/stock-analysis-table-parser';
 import {
   EtfSummaryStats,
   KpisData,
@@ -77,13 +78,20 @@ interface SectionDefinition {
    */
   fallsBackToMainListing: boolean;
   /**
-   * Set when a 404 means "the source site does not publish this section for
-   * the listing" rather than a failure: a non-payer has no dividend page, and
-   * most non-US listings have no KPI page. The returned payload (marked
-   * `meta.notPublished`) is stored and stamped fresh like any good scrape, so
-   * the section is not retried until its normal age window expires.
+   * Payload stored when the source site does not publish this section for the
+   * listing. It is marked `meta.notPublished` and stored and stamped fresh like
+   * any good scrape, so the section is not retried until its normal age window
+   * expires. Every section that falls back to the main listing has one: a fund,
+   * BDC or trust has a quote page but no Financials tab at all.
    */
   notPublishedData?: () => ScrapedSectionData;
+  /**
+   * Whether any 404 on the section's page means "not published": a non-payer
+   * has no dividend page, and most non-US listings have no KPI page. False for
+   * the statements, which are only "not published" when the quote page has no
+   * Financials tab — any other 404 there stays an error.
+   */
+  notPublishedOnAny404?: boolean;
 }
 
 function hasPeriods(data: ScrapedSectionData): boolean {
@@ -98,6 +106,7 @@ function statementSection(subPath: string, periodType: StatementPeriodType): Sec
     parse: (html: string): ScrapedSectionData => parseStatementPage(html, periodType),
     isUsable: hasPeriods,
     fallsBackToMainListing: true,
+    notPublishedData: (): ScrapedSectionData => ({ meta: { notPublished: true }, periods: [] }),
   };
 }
 
@@ -109,6 +118,7 @@ function kpisSection(periodType: StatementPeriodType): SectionDefinition {
     isUsable: hasPeriods,
     fallsBackToMainListing: true,
     notPublishedData: (): ScrapedSectionData => ({ meta: { notPublished: true }, periods: [] }),
+    notPublishedOnAny404: true,
   };
 }
 
@@ -131,6 +141,7 @@ const SECTION_DEFINITIONS: Readonly<Record<StockAnalyzerSectionId, SectionDefini
     },
     fallsBackToMainListing: false,
     notPublishedData: (): ScrapedSectionData => ({ meta: { notPublished: true }, summary: {}, history: [] }),
+    notPublishedOnAny404: true,
   },
   'income-statement/annual': statementSection('financials/income-statement', 'annual'),
   'income-statement/quarterly': statementSection('financials/income-statement', 'quarterly'),
@@ -175,6 +186,16 @@ export function isScrapedSectionUsable(section: StockAnalyzerSectionId, data: un
 export const HALF_YEARLY_ONLY_ERROR_PREFIX = 'half-yearly-only:';
 
 /**
+ * Stored-error prefix for a page that loaded but where the source site itself
+ * shows no figures (an explicit "No … data available for this stock." notice, or
+ * a header-only statement table). See `findNoDataNotice`.
+ */
+export const NO_DATA_ON_SOURCE_ERROR_PREFIX = 'no-data-on-source:';
+
+/** Empty parses that are proven benign: they warn and back off instead of erroring. */
+export const BENIGN_EMPTY_ERROR_PREFIXES: readonly string[] = [HALF_YEARLY_ONLY_ERROR_PREFIX, NO_DATA_ON_SOURCE_ERROR_PREFIX];
+
+/**
  * Semi-annual reporters (most ASX listings, some US small caps) have a
  * `?p=quarterly` page whose columns are `H1 2026` / `H2 2026`, so the quarterly
  * parser finds nothing. That is the company's reporting cadence, not a parser
@@ -199,6 +220,18 @@ function isPageNotFound(error: unknown): error is StockAnalyzerFetchError {
 }
 
 /**
+ * A section page 404'd and the ticker's quote page (fetched fine) has no
+ * Financials tab and no Main Listing link: the source site publishes no
+ * statements for it (closed-end funds, BDCs, trusts).
+ */
+class FinancialsNotPublishedError extends StockAnalyzerFetchError {
+  constructor(url: string) {
+    super(`Page not found: ${url} (its quote page has no Financials tab)`, url, 404);
+    this.name = 'FinancialsNotPublishedError';
+  }
+}
+
+/**
  * Fetch a section's page, retrying a 404 once against the ticker's main
  * listing. A secondary listing has no statement pages of its own; they live
  * under its main listing — but only for the sections that a secondary listing
@@ -213,8 +246,12 @@ async function fetchSectionPage(stockAnalyzeUrl: string, definition: SectionDefi
       throw error;
     }
 
-    const mainListingUrl: string | null = await resolveMainListingUrl(stockAnalyzeUrl);
+    // Rejects (and so still fails the section) when the quote page itself cannot be read.
+    const { mainListingUrl, hasNoFinancialsTab }: QuotePageInfo = await readQuotePage(stockAnalyzeUrl);
     if (!mainListingUrl) {
+      if (hasNoFinancialsTab) {
+        throw new FinancialsNotPublishedError(error.url);
+      }
       // Distinguishable in the logs from "this is a main listing": we only get
       // here because the section's own page was missing.
       throw new StockAnalyzerFetchError(`${error.message} (and its quote page carries no Main Listing link)`, error.url, 404);
@@ -230,9 +267,9 @@ async function fetchSectionPage(stockAnalyzeUrl: string, definition: SectionDefi
  *
  * Throws if the page cannot be fetched; a page that loads but parses to nothing
  * comes back with `errors` populated and `isScrapedSectionUsable(...) === false`
- * so the caller can decide not to overwrite good data with it. A 404 on a
- * section with `notPublishedData` is not an error: it comes back as that
- * (usable) "not published" payload.
+ * so the caller can decide not to overwrite good data with it. A 404 that
+ * means the source site does not publish the section (see `notPublishedData`)
+ * is not an error: it comes back as that (usable) "not published" payload.
  */
 export async function scrapeStockAnalyzerSection(stockAnalyzeUrl: string, section: StockAnalyzerSectionId): Promise<ScrapeSectionResult> {
   const definition: SectionDefinition = SECTION_DEFINITIONS[section];
@@ -242,11 +279,15 @@ export async function scrapeStockAnalyzerSection(stockAnalyzeUrl: string, sectio
   try {
     ({ url, html } = await fetchSectionPage(stockAnalyzeUrl, definition));
   } catch (error) {
-    if (definition.notPublishedData && isPageNotFound(error)) {
-      // Expected for one listing (a non-payer has no dividend page), but kept
-      // visible: a spike across many tickers would mean the source moved its URLs.
-      console.warn(`${section} not published for ${error.url} (404); storing it as empty`);
-      return { section, url: error.url, data: definition.notPublishedData(), errors: [] };
+    const notPublished: boolean = error instanceof FinancialsNotPublishedError || (!!definition.notPublishedOnAny404 && isPageNotFound(error));
+    if (definition.notPublishedData && notPublished) {
+      // Expected for one listing (a non-payer has no dividend page, a fund has
+      // no statements), but kept visible: a spike across many tickers would
+      // mean the source moved its URLs.
+      const { url: notFoundUrl } = error as StockAnalyzerFetchError;
+      const reason: string = error instanceof FinancialsNotPublishedError ? 'no Financials tab on its quote page' : '404';
+      console.warn(`${section} not published for ${notFoundUrl} (${reason}); storing it as empty`);
+      return { section, url: notFoundUrl, data: definition.notPublishedData(), errors: [] };
     }
     throw error;
   }
@@ -260,28 +301,42 @@ export async function scrapeStockAnalyzerSection(stockAnalyzeUrl: string, sectio
 
   let errors: ScrapeSectionError[] = [];
   if (!definition.isUsable(data)) {
-    errors = isHalfYearlyOnlyQuarterlyPage(section, html)
-      ? [
-          {
-            where: `${HALF_YEARLY_ONLY_ERROR_PREFIX}${section}`,
-            message: `Only half-yearly (H1/H2) columns on ${url}; the company publishes no quarterly figures`,
-          },
-        ]
-      : [{ where: `parse:${section}`, message: `Parsed no usable data from ${url} — the source page layout may have changed` }];
+    // Summary and dividends pages have no "no data" notice of their own.
+    const noDataNotice: string | null = section === 'summary' || section === 'dividends' ? null : findNoDataNotice(html);
+    if (isHalfYearlyOnlyQuarterlyPage(section, html)) {
+      errors = [
+        {
+          where: `${HALF_YEARLY_ONLY_ERROR_PREFIX}${section}`,
+          message: `Only half-yearly (H1/H2) columns on ${url}; the company publishes no quarterly figures`,
+        },
+      ];
+    } else if (noDataNotice) {
+      errors = [{ where: `${NO_DATA_ON_SOURCE_ERROR_PREFIX}${section}`, message: `Source site has no figures on ${url}: ${noDataNotice}` }];
+    } else {
+      errors = [{ where: `parse:${section}`, message: `Parsed no usable data from ${url} — the source page layout may have changed` }];
+    }
   }
 
   return { section, url, data, errors };
 }
 
 /**
- * How long a resolved main listing stays memoized.
+ * How long a read quote page stays memoized.
  *
  * All 10 statement sections for a ticker are scraped in parallel, so without
  * this every one of them would fetch the quote page again just to read the same
- * link. The mapping only changes when a company restructures its listings, so a
- * short in-process TTL is ample.
+ * links. They only change when a company restructures its listings, so a short
+ * in-process TTL is ample.
  */
-const MAIN_LISTING_CACHE_TTL_MS = 10 * 60 * 1000;
+const QUOTE_PAGE_CACHE_TTL_MS = 10 * 60 * 1000;
+
+/** What the statement-section fallback needs from a ticker's quote page. */
+interface QuotePageInfo {
+  /** Absolute URL of the main listing, or null when this is one (or none is linked). */
+  mainListingUrl: string | null;
+  /** True only when the page clearly is the ticker's tabbed quote page and it has no Financials tab. */
+  hasNoFinancialsTab: boolean;
+}
 
 /**
  * The in-flight *promise* is cached, not just its result: all 10 statement
@@ -289,25 +344,57 @@ const MAIN_LISTING_CACHE_TTL_MS = 10 * 60 * 1000;
  * settled value would still let ten identical quote-page fetches race. This
  * makes the lookup single-flight per ticker.
  */
-const mainListingCache: Map<string, { lookup: Promise<string | null>; startedAtMs: number }> = new Map();
+const quotePageCache: Map<string, { lookup: Promise<QuotePageInfo>; startedAtMs: number }> = new Map();
 
 /**
- * Resolve a ticker's main listing URL, or null when it is already one. Rejects
- * when the quote page cannot be read.
+ * Whether a quote page shows the ticker's tab bar without a Financials tab.
+ *
+ * A stock's tabs are Overview, Financials, Forecast, Statistics, ...; a fund,
+ * BDC or trust only gets Overview, Statistics, Dividends, History, ... The
+ * Overview tab (a link back to the quote page itself) must be present, so a
+ * challenge or placeholder page never reads as "no financials".
  */
-function resolveMainListingUrl(stockAnalyzeUrl: string): Promise<string | null> {
+export function quotePageHasNoFinancialsTab(quoteHtml: string, quoteUrl: string): boolean {
+  const $: cheerio.CheerioAPI = cheerio.load(quoteHtml);
+  const quotePath: string = new URL(quoteUrl).pathname.toLowerCase().replace(/\/*$/, '/');
+
+  let hasOverviewTab = false;
+  let hasFinancialsTab = false;
+  $('a[href]').each((_index, anchor) => {
+    let path: string;
+    try {
+      path = new URL(($(anchor).attr('href') ?? '').trim(), quoteUrl).pathname.toLowerCase().replace(/\/*$/, '/');
+    } catch {
+      return;
+    }
+    if (path === quotePath) {
+      hasOverviewTab = true;
+    } else if (path.startsWith(`${quotePath}financials/`)) {
+      hasFinancialsTab = true;
+    }
+  });
+
+  return hasOverviewTab && !hasFinancialsTab;
+}
+
+/**
+ * Read a ticker's quote page for its main listing link and Financials tab.
+ * Rejects when the quote page cannot be read.
+ */
+function readQuotePage(stockAnalyzeUrl: string): Promise<QuotePageInfo> {
   const quoteUrl: string = buildStockAnalyzerSubPageUrl(stockAnalyzeUrl, '');
 
-  const cached = mainListingCache.get(quoteUrl);
-  if (cached && Date.now() - cached.startedAtMs < MAIN_LISTING_CACHE_TTL_MS) {
+  const cached = quotePageCache.get(quoteUrl);
+  if (cached && Date.now() - cached.startedAtMs < QUOTE_PAGE_CACHE_TTL_MS) {
     return cached.lookup;
   }
 
-  const lookup: Promise<string | null> = fetchStockAnalyzerPage(quoteUrl)
-    .then((quoteHtml: string) => {
+  const lookup: Promise<QuotePageInfo> = fetchStockAnalyzerPage(quoteUrl)
+    .then((quoteHtml: string): QuotePageInfo => {
+      const hasNoFinancialsTab: boolean = quotePageHasNoFinancialsTab(quoteHtml, quoteUrl);
       const mainListingHref: string | null = parseMainListingHref(quoteHtml);
       if (!mainListingHref) {
-        return null;
+        return { mainListingUrl: null, hasNoFinancialsTab };
       }
       const resolved: URL = new URL(mainListingHref, quoteUrl);
       // Never follow the link off-site: the scraped rows are stored as this
@@ -315,19 +402,19 @@ function resolveMainListingUrl(stockAnalyzeUrl: string): Promise<string | null> 
       // statements under it.
       if (resolved.origin !== new URL(quoteUrl).origin) {
         console.error(`Ignoring off-site Main Listing link ${resolved.toString()} on ${quoteUrl}`);
-        return null;
+        return { mainListingUrl: null, hasNoFinancialsTab };
       }
-      return resolved.toString();
+      return { mainListingUrl: resolved.toString(), hasNoFinancialsTab };
     })
     .catch((error: unknown) => {
       // Don't let a transient failure be remembered for the full TTL. Rethrow
-      // rather than return null: null means "no main listing", which turns the
-      // section's 404 into a "not published" result.
-      mainListingCache.delete(quoteUrl);
+      // rather than resolve: "no main listing" (with no Financials tab) would
+      // turn the section's 404 into a "not published" result.
+      quotePageCache.delete(quoteUrl);
       throw error;
     });
 
-  mainListingCache.set(quoteUrl, { lookup, startedAtMs: Date.now() });
+  quotePageCache.set(quoteUrl, { lookup, startedAtMs: Date.now() });
   return lookup;
 }
 

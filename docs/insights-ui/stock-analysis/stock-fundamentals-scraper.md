@@ -38,7 +38,20 @@ are unrelated and still in use.)
 | `stock-analyzer-fetcher.ts` | HTTP: browser UA, 20 s timeout, retry on 429/5xx (never on 404), and `stockAnalyzeUrl` → sub-page URL building against the configured base URL. |
 | `stock-analysis-table-parser.ts` | Generic reader for the site's tables — period columns, row labels, cell values. Selector-free: no generated class or id is used. |
 | `stock-analysis-section-parsers.ts` | Page-shape parsers producing the exact persisted JSON shapes (`StockFundamentalsSummary`, `DividendsData`, `{ meta, periods }`). |
-| `index.ts` | Section registry (URL + parser + usability test), `scrapeStockAnalyzerSection()` and `scrapeEtfSummary()`. |
+| `index.ts` | Section registry (URL + parser + usability test + "not published" payload), `scrapeStockAnalyzerSection()`, the quote-page lookup (Main Listing link, Financials tab) and `scrapeEtfSummary()`. |
+| `../stock-analyzer-scraper-utils.ts` | Persistence: which sections are due, the overwrite guard, error backoff, and single-flight per ticker. |
+
+**Funds, BDCs and trusts publish no statements.** Closed-end funds, BDCs and trusts (BST,
+PSBD, LON `OIG`, TSXV `CCEC`, ...) have a quote page but no Financials tab, so all 8
+statement pages 404. When a statement page 404s, the quote page is read anyway (for the
+Main Listing fallback, see below). If it has no Main Listing link and no Financials tab
+(`quotePageHasNoFinancialsTab`: an Overview link back to the quote page is present and no
+link to its `financials/` path), the section is stored as `{ meta: { notPublished: true },
+periods: [] }` and stamped fresh, with a `console.warn` and no error. It works the same way
+as a non-payer's dividends. Requiring the Overview link means a challenge or placeholder
+page never reads as "no Financials tab", and a failed quote-page fetch still fails the
+section. Any other statement 404 stays an error. The overwrite guard still applies: a
+not-published payload never replaces real stored statements.
 
 ## The 12 sections
 
@@ -226,6 +239,15 @@ rate-limits bursts (429 with `cf-mitigated: challenge`), so the fetcher:
   and refreshes on a later view;
 - re-checks the pause after a request's wait, so requests queued behind a rejection are not sent
   (previously each rejection was followed by 1-4 more).
+
+One page render calls several API routes (financial-info, quarterly-chart-data, ...) that
+each call `fetchAndUpdateStockAnalyzerData` for the same ticker, so 138 of 142 tickers were
+scraped twice within 5 s. The scrape is now **single-flight per ticker**: an in-flight map on
+`globalThis` (keyed by ticker id) lets a concurrent caller await the running scrape and get
+its result, and the entry is cleared when the scrape settles. A `force` call waits for the
+running scrape to finish and then scrapes again, so it never gets data from before its
+request. `refreshMarketSummaryForFairValue` waits for a running full scrape. It then
+dedupes under its own `<tickerId>:summary` key.
 
 Paced in process memory: correct for the single Lightsail container. With several app instances each
 would pace separately; an SQS FIFO queue in front of the Lambda would then be the next step.
