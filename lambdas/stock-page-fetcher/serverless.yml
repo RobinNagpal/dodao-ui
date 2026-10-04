@@ -26,6 +26,13 @@ provider:
     NODE_OPTIONS: "--enable-source-maps"
     # Comma-separated hosts POST /html may fetch; empty refuses everything.
     ALLOWED_FETCH_HOSTS: ${env:ALLOWED_FETCH_HOSTS, ''}
+    # Warn/error lines are pushed to the same Grafana Cloud Loki stack as insights-ui
+    # (labels service=stock-page-fetcher, platform=lambda). URL/user are the public values from
+    # insights-ui/src/lib/appConfig/appConfigDefaults.json; the write-only token is read from
+    # insights-ui's App Setting in SSM at deploy time.
+    LOKI_URL: https://logs-prod-018.grafana.net
+    LOKI_USER_ID: "1637978"
+    LOKI_TOKEN: ${ssm:/koalagains/insights-ui/LOKI_TOKEN}
 
 custom:
   esbuild:

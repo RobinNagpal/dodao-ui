@@ -173,6 +173,7 @@ pnpm logs:fetch --out data/logs.jsonl             # also save raw lines as JSONL
 pnpm logs:fetch --env development                 # another env label
 pnpm logs:fetch --query '{service="insights-ui"} |= "AIRG"'   # any LogQL, overrides the above
 pnpm logs:fetch --limit 20000                     # max lines (default 5000; paged 5000 per request)
+pnpm logs:fetch --service stock-page-fetcher      # the fetch-proxy Lambda's logs (--service all = both)
 ```
 
 The script writes its status line to stderr and its results to stdout. To save the results, either
@@ -187,6 +188,24 @@ npx tsx src/scripts/logs/fetch-grafana-logs.ts --hours 6 > out.txt     # grouped
 Don't use `pnpm -s logs:fetch > out.txt`. Depending on the pnpm version, `-s` either silences the
 script's own stdout (an empty file) or is rejected as an unknown flag (`unexpected argument '-s'`
 on pnpm 12). Retention is 14 days, so `--hours` beyond 336 returns nothing older.
+
+### Lambda logs (stock-page-fetcher)
+
+`lambdas/stock-page-fetcher` (the scraper's fetch proxy) pushes its own warn/error lines to the same
+Loki stack, labelled `{service="stock-page-fetcher", platform="lambda", env="production", level}`.
+Each line is JSON with `requestId`, `url`, upstream `status` and the CDN headers (`cf-ray`,
+`cf-mitigated`, `retry-after`). Upstream rejections use the same `[scraper-rejected]` tag as the app,
+so one query covers both:
+
+```logql
+{service="stock-page-fetcher"}                                   # all Lambda warn/error lines
+{platform="lambda"}                                              # any Lambda, if more are added
+{service=~"insights-ui|stock-page-fetcher"} |= "[scraper-rejected]"
+```
+
+Lines are buffered per invocation and pushed before the handler returns, so invocations that only
+succeed push nothing. Normal upstream 404s go to CloudWatch only. The Lambda reads the same
+write-only `LOKI_TOKEN` (SSM `/koalagains/insights-ui/LOKI_TOKEN`) at deploy time.
 
 ## 6. Troubleshooting
 

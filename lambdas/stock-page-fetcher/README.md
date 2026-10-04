@@ -10,6 +10,13 @@ HTML and upstream status. insights-ui parses it with its own parsers
 server's, which the source site's CDN rate-limits. Only hosts in `ALLOWED_FETCH_HOSTS`
 (comma-separated) can be fetched; empty refuses everything.
 
+## Logs
+
+Warn/error lines go to the same Grafana Cloud Loki stack as insights-ui, labelled
+`{service="stock-page-fetcher", platform="lambda"}` (everything also stays in CloudWatch). From
+`insights-ui/`: `pnpm logs:fetch --service stock-page-fetcher --level error,warn`. Rejections by the
+upstream are tagged `[scraper-rejected]`. See `docs/insights-ui/grafana-cloud-logging.md`.
+
 ## Use from insights-ui
 
 Admin → App Settings → **Fundamentals Scraping**:
