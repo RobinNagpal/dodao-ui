@@ -218,7 +218,17 @@ rate-limits bursts (429 with `cf-mitigated: challenge`), so the fetcher:
   network call, and `fetchAndUpdateStockAnalyzerData` serves the stored row instead of scraping;
 - logs **one** `console.error` per pause, tagged `[scraper-rejected]`, with the transport, URL and
   the edge's diagnostic headers (`retry-after`, `server`, `cf-ray`, `cf-mitigated`);
-- keeps at most **2 requests in flight** per process (a ticker's 10 sections used to go out at once).
+- **paces requests**: at most one request *starts* per second per process, and at most 2 are in flight.
+  Rejections followed bursts of ~90-150 requests/min (up to 22 in one second), while the average
+  need is ~20/min, so the queue normally drains at once;
+- **never stalls a page**: a request whose turn is more than 10 s away is not sent (`deferred: true`).
+  It is not a failure either: no log line, no stored error or retry backoff. The section stays stale
+  and refreshes on a later view;
+- re-checks the pause after a request's wait, so requests queued behind a rejection are not sent
+  (previously each rejection was followed by 1-4 more).
+
+Paced in process memory: correct for the single Lightsail container. With several app instances each
+would pace separately; an SQS FIFO queue in front of the Lambda would then be the next step.
 
 To check for blocking in production (needs `LOKI_READ_TOKEN`, see `grafana-cloud-logging.md`):
 

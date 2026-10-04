@@ -13,7 +13,12 @@
  *
  * The site's CDN rate-limits aggressive clients (429 with
  * `cf-mitigated: challenge`). To stay under it:
- * - at most MAX_CONCURRENT_FETCHES requests are in flight per process;
+ * - requests START at most once per MIN_REQUEST_INTERVAL_MS per process (the
+ *   CDN reacts to bursts: rejections followed ~90-150 requests/min, while the
+ *   average need is ~20/min), and at most MAX_CONCURRENT_FETCHES are in flight;
+ * - a request that would wait longer than MAX_QUEUE_WAIT_MS for its turn is
+ *   not sent (`deferred: true`); the caller serves stored data and the section
+ *   refreshes on a later view, so page renders never stall behind a burst;
  * - a rejection is never retried, and pauses ALL fetches over that transport
  *   for max(Retry-After, REJECTION_PAUSE_MS); while paused, fetches fail fast
  *   with `paused: true` and no network call.
@@ -33,6 +38,8 @@ const BROWSER_USER_AGENT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) Appl
 const REQUEST_TIMEOUT_MS = 20_000;
 const MAX_ATTEMPTS = 3;
 const MAX_CONCURRENT_FETCHES = 2;
+const MIN_REQUEST_INTERVAL_MS = 1000;
+const MAX_QUEUE_WAIT_MS = 10_000;
 const REJECTION_PAUSE_MS = 10 * 60 * 1000;
 const MAX_REJECTION_PAUSE_MS = 60 * 60 * 1000;
 
@@ -43,7 +50,9 @@ export class StockAnalyzerFetchError extends Error {
     readonly status?: number,
     readonly rejected: boolean = false,
     /** True when no request was made because fetching is paused after a rejection. */
-    readonly paused: boolean = false
+    readonly paused: boolean = false,
+    /** True when no request was made because the pacing queue was too long; retry on a later view. */
+    readonly deferred: boolean = false
   ) {
     super(message);
     this.name = 'StockAnalyzerFetchError';
@@ -91,14 +100,40 @@ interface FetcherState {
   pausedUntil: Record<Transport, number>;
   inFlight: number;
   waiters: Array<() => void>;
+  /** Earliest time the next request may start (pacing). */
+  nextStartAt: number;
 }
 const globalForFetcher = globalThis as typeof globalThis & { __stockAnalyzerFetcher?: FetcherState };
-const state: FetcherState = (globalForFetcher.__stockAnalyzerFetcher ??= { pausedUntil: { direct: 0, lambda: 0 }, inFlight: 0, waiters: [] });
+const state: FetcherState = (globalForFetcher.__stockAnalyzerFetcher ??= { pausedUntil: { direct: 0, lambda: 0 }, inFlight: 0, waiters: [], nextStartAt: 0 });
+state.nextStartAt ??= 0; // state created by an older bundle in the same process
 
-async function withFetchSlot<T>(run: () => Promise<T>): Promise<T> {
+/**
+ * Wait for this request's turn: paced to one start per MIN_REQUEST_INTERVAL_MS,
+ * then at most MAX_CONCURRENT_FETCHES in flight. Throws `deferred` without
+ * waiting if the turn is more than MAX_QUEUE_WAIT_MS away, and `paused` if a
+ * rejection paused the transport while this request was waiting.
+ */
+async function withFetchSlot<T>(url: string, transport: Transport, run: () => Promise<T>): Promise<T> {
+  const now: number = Date.now();
+  const startAt: number = Math.max(now, state.nextStartAt);
+  if (startAt - now > MAX_QUEUE_WAIT_MS) {
+    throw new StockAnalyzerFetchError(`Fetch queue is ${Math.round((startAt - now) / 1000)}s long; not sending: ${url}`, url, undefined, false, false, true);
+  }
+  state.nextStartAt = startAt + MIN_REQUEST_INTERVAL_MS;
+  if (startAt > now) {
+    await sleep(startAt - now);
+  }
+
   while (state.inFlight >= MAX_CONCURRENT_FETCHES) {
     await new Promise<void>((resolve) => state.waiters.push(resolve));
   }
+  // A rejection may have paused fetching while this request waited its turn.
+  const pausedUntil: number = state.pausedUntil[transport];
+  if (Date.now() < pausedUntil) {
+    state.waiters.shift()?.();
+    throw new StockAnalyzerFetchError(`Fetching paused after a rejection until ${new Date(pausedUntil).toISOString()}: ${url}`, url, undefined, true, true);
+  }
+
   state.inFlight++;
   try {
     return await run();
@@ -214,7 +249,7 @@ export async function fetchStockAnalyzerPage(url: string): Promise<string> {
     }
 
     try {
-      const page: UpstreamPage = await withFetchSlot(() => (transport === 'lambda' ? requestViaLambda(url, lambdaUrl!) : requestDirect(url)));
+      const page: UpstreamPage = await withFetchSlot(url, transport, () => (transport === 'lambda' ? requestViaLambda(url, lambdaUrl!) : requestDirect(url)));
 
       if (page.status === 404) {
         throw new StockAnalyzerFetchError(`Page not found: ${url}`, url, 404);
@@ -230,8 +265,8 @@ export async function fetchStockAnalyzerPage(url: string): Promise<string> {
       }
       return page.html;
     } catch (error) {
-      // 404s and rejections will not change on an immediate retry.
-      if (error instanceof StockAnalyzerFetchError && (error.status === 404 || error.rejected)) {
+      // 404s, rejections, pauses and deferrals will not change on an immediate retry.
+      if (error instanceof StockAnalyzerFetchError && (error.status === 404 || error.rejected || error.deferred)) {
         throw error;
       }
       lastError = error instanceof Error ? error : new Error(String(error));
