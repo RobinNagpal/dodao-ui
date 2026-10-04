@@ -1,0 +1,60 @@
+# Deploys lambdas/stock-page-fetcher (the insights-ui scraper's POST /html fetch proxy, served
+# from a Lambda Function URL) with osls `sls deploy` whenever that folder changes on main, or on
+# demand. Uses the same AWS deploy credentials as insights-ui-deploy-aws.yml.
+#
+# Needs repo variable ALLOWED_FETCH_HOSTS (comma-separated hosts the proxy may fetch).
+name: Deploy stock-page-fetcher Lambda
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "lambdas/stock-page-fetcher/**"
+      - ".github/workflows/deploy-stock-page-fetcher.yml"
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-stock-page-fetcher
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: lambdas/stock-page-fetcher
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: npm install --no-audit --no-fund
+
+      - name: Type check
+        run: npx tsc --noEmit -p .
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Deploy (sls deploy)
+        env:
+          ALLOWED_FETCH_HOSTS: ${{ vars.ALLOWED_FETCH_HOSTS }}
+        run: |
+          test -n "$ALLOWED_FETCH_HOSTS" || { echo "::error::Repo variable ALLOWED_FETCH_HOSTS is not set"; exit 1; }
+          npx sls deploy --verbose
+
+      - name: Function URL
+        env:
+          ALLOWED_FETCH_HOSTS: ${{ vars.ALLOWED_FETCH_HOSTS }}
+        run: |
+          URL=$(npx sls info --verbose | grep -oE 'https://[a-z0-9]+\.lambda-url\.us-east-1\.on\.aws/?' | head -1)
+          echo "Function URL: $URL"
+          echo "### stock-page-fetcher Function URL: $URL" >> "$GITHUB_STEP_SUMMARY"
+          echo "Set it as STOCK_ANALYZER_LAMBDA_URL in insights-ui App Settings." >> "$GITHUB_STEP_SUMMARY"
