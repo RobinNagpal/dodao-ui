@@ -1,0 +1,44 @@
+service: stock-page-fetcher
+
+# Fetch proxy for the insights-ui fundamentals scraper: POST /html returns one
+# source page's raw HTML + status, so page requests leave from Lambda IPs rather
+# than the app server's (which the source site's CDN rate-limits). Parsing stays
+# in insights-ui (src/utils/stock-analyzer/).
+#
+# Deployed with osls (open-source Serverless Framework v3 fork; `sls` CLI, no
+# Serverless account) + serverless-esbuild, by
+# .github/workflows/deploy-stock-page-fetcher.yml on pushes to main that touch
+# this folder.
+
+frameworkVersion: "3"
+
+plugins:
+  - serverless-esbuild
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+  region: us-east-1
+  stage: prod
+  memorySize: 256
+  logRetentionInDays: 14
+  environment:
+    NODE_OPTIONS: "--enable-source-maps"
+    # Comma-separated hosts POST /html may fetch; empty refuses everything.
+    ALLOWED_FETCH_HOSTS: ${env:ALLOWED_FETCH_HOSTS, ''}
+
+custom:
+  esbuild:
+    bundle: true
+    minify: false
+    sourcemap: true
+    target: node20
+    platform: node
+    exclude: ["@aws-sdk/*"]
+
+functions:
+  fetch:
+    handler: src/handler.handler
+    timeout: 25
+    # Lambda Function URL: fixed https://<id>.lambda-url.us-east-1.on.aws/, no API Gateway.
+    url: true
