@@ -1,3 +1,7 @@
+import { USExchanges } from '@/utils/countryExchangeUtils';
+
+const US_EXCHANGES: ReadonlySet<string> = new Set<string>(Object.values(USExchanges));
+
 /**
  * Converts a stock symbol to Yahoo Finance format based on the exchange.
  *
@@ -6,7 +10,7 @@
  * - TSXV: NET.UN -> NET-UN.V
  * - NSE: TCS -> TCS.NS
  * - LSE: BARC -> BARC.L
- * - US exchanges: AAPL -> AAPL (no change)
+ * - US exchanges: AAPL -> AAPL; share classes use a hyphen: CRD.A -> CRD-A, BRK.B -> BRK-B
  *
  * See: https://help.yahoo.com/kb/exchanges-data-providers-yahoo-finance-sln2310.html
  *
@@ -21,6 +25,9 @@ export function convertToYahooFinanceSymbol(symbol: string, exchange: string): s
   // Canadian exchanges use hyphens instead of dots in symbol units (e.g., DIR.UN -> DIR-UN).
   if (upperExchange === 'TSX') return upperSymbol.replace(/\./g, '-') + '.TO';
   if (upperExchange === 'TSXV') return upperSymbol.replace(/\./g, '-') + '.V';
+
+  // US share classes are dotted in our data (CRD.A) but hyphenated on Yahoo (CRD-A).
+  if (US_EXCHANGES.has(upperExchange)) return upperSymbol.replace(/\./g, '-');
 
   // Some exchanges use numeric tickers that Yahoo expects zero-padded.
   const normalizedSymbol = normalizeNumericSymbolForYahoo(upperSymbol, upperExchange);
