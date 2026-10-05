@@ -17,7 +17,7 @@ export interface CreditHistoryPage {
 
 /** Reads `?limit=` and clamps it into a range one query can serve. */
 export function parseHistoryLimit(rawLimit: string | null): number {
-  const requested = Number(rawLimit) || CREDIT_HISTORY_PAGE_SIZE;
+  const requested = Math.floor(Number(rawLimit)) || CREDIT_HISTORY_PAGE_SIZE;
   return Math.min(Math.max(requested, 1), MAX_HISTORY_ROWS);
 }
 
@@ -39,7 +39,8 @@ export async function loadCreditHistory(userId: string, limit: number): Promise<
       _sum: { credits: true },
     }),
   ]);
-  const hasMore = transactionsPlusOne.length > limit;
+  // At the cap there is nothing more one request can return, so stop offering "Load more".
+  const hasMore = transactionsPlusOne.length > limit && limit < MAX_HISTORY_ROWS;
   const transactions = transactionsPlusOne.slice(0, limit);
 
   // A settled spend was either kept (report generated) or refunded — the refund

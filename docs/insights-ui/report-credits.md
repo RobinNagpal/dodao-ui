@@ -117,7 +117,9 @@ purpose so Stripe retries; granting is idempotent, so a retry is always safe.
 `markAsCompleted` (stocks, `report-status-utils.ts`) and
 `markEtfRequestAsCompleted` (ETFs, `etf-report-status-utils.ts`) are the single
 finalization points for every generation request — admin, nightly cron, and
-paid alike. Both now do three things instead of one:
+paid alike. (The automation callback `tickers-v1/[ticker]/update-request-status`
+also settles the credit when it sets `Completed`/`Failed`, so a paid run can't be
+left reserved.) Both now do three things instead of one:
 
 1. Set the request's terminal status (unchanged).
 2. Set `lastReportGeneratedAt` **if at least one step completed** — a partial
@@ -182,11 +184,13 @@ page) calls `POST /users/credits/report-results`:
 
 - once when the site loads,
 - when the user comes back to the tab (`visibilitychange`),
-- on navigation, at most once a minute.
+- on navigation,
+
+at most once a minute per tab whatever the trigger.
 
 There is **no timer polling** and no SSE/WebSocket (Vercel functions can't hold
 an hour-long connection). The endpoint returns every settled `ReportSpend` with
-`result_seen_at IS NULL` and stamps it in the same call, so each result is claimed once; the claiming tab
+`result_seen_at IS NULL` and stamps it in the same call — only after the lookups succeed, so a failed call can't swallow a result — so each result is claimed once; the claiming tab
 passes it to the user's other open tabs over a `BroadcastChannel` (closing the
 notice closes it everywhere), so it is
 announced exactly once, whether the user stayed on the site or came back days
@@ -241,7 +245,8 @@ terminal before trying to send, and the send then fails with a logged
   instead of being saved in the DB. No invoices are created, so there is no
   invoice number to show.
 - **Load more** — the page asks for `?limit=N` and raises it by
-  `CREDIT_HISTORY_PAGE_SIZE` (50) per click, capped server-side.
+  `CREDIT_HISTORY_PAGE_SIZE` (50) per click, capped server-side at 1000 rows
+  (at the cap `hasMore` is false, so the button goes away).
 
 ### Why `window.location` instead of `useSearchParams()`
 

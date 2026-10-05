@@ -50,6 +50,46 @@ export function isDataStale(lastUpdatedAt: Date | null | undefined): boolean {
 }
 
 /**
+ * True when Yahoo has no chart data for the symbol ("No data found, symbol may
+ * be delisted"). That is a property of the symbol, not a transient failure.
+ */
+function isYahooNoDataError(error: unknown): boolean {
+  return error instanceof Error && error.message.startsWith('No data found');
+}
+
+const YAHOO_NO_DATA_RETRY_MS = 24 * 60 * 60 * 1000;
+
+/**
+ * Symbols Yahoo recently answered "No data found" for. Kept in memory (not by
+ * stamping `lastUpdatedAt*`), so stored data is never marked fresh when it is
+ * not, and it works when there is no stored row yet. Held on `globalThis` so
+ * every bundled copy of this module in the process shares one Map. It still
+ * resets when the process restarts (each deploy).
+ */
+const globalForYahoo = globalThis as typeof globalThis & { __yahooNoDataAt?: Map<string, number> };
+const yahooNoDataAt: Map<string, number> = (globalForYahoo.__yahooNoDataAt ??= new Map());
+
+/** True while a symbol that recently had no Yahoo data should not be re-requested. */
+export function isYahooSymbolInNoDataBackoff(yahooSymbol: string): boolean {
+  const failedAtMs: number | undefined = yahooNoDataAt.get(yahooSymbol);
+  return failedAtMs !== undefined && Date.now() - failedAtMs < YAHOO_NO_DATA_RETRY_MS;
+}
+
+/**
+ * Logs a failed price-history refresh. A Yahoo "No data found" is one line with
+ * no stack, and the symbol backs off for a day. It stays an error: a whole
+ * exchange's symbols can stop resolving (all numeric BSE codes did).
+ */
+export function logPriceHistoryRefreshError(label: string, yahooSymbol: string, error: unknown): void {
+  if (isYahooNoDataError(error)) {
+    yahooNoDataAt.set(yahooSymbol, Date.now());
+    console.error(`Failed to refresh price history for ${label} (${yahooSymbol}): ${(error as Error).message}`);
+    return;
+  }
+  console.error(`Failed to refresh price history for ${label}:`, error);
+}
+
+/**
  * Fetch OHLC history from Yahoo for the given symbol/interval and date window.
  * Works identically for equities and ETFs.
  */

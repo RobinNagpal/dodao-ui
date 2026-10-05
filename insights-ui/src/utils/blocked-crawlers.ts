@@ -3,7 +3,7 @@
  * `middleware.ts` (403 for bots that ignore robots.txt).
  *
  * Every uncached stock/ETF page fans out into ~10 internal API calls and may scrape
- * stockanalysis.com, so a single aggressive crawler can pin the single-node server's CPU and
+ * the upstream fundamentals site, so a single aggressive crawler can pin the single-node server's CPU and
  * fail Lightsail health checks (site-wide 502s). These bots bring no search traffic, so
  * blocking them is free.
  *

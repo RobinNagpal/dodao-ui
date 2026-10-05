@@ -43,7 +43,7 @@
     "graphql": "^16.8.1",
     "graphql-tag": "^2.12.6",
     "lucide-react": "^0.503.0",
-    "next": "15.5.7",
+    "next": "15.5.27",
     "next-auth": "^4.24.11",
     "prisma-json-types-generator": "3.1.1",
     "react": "18.3.1",

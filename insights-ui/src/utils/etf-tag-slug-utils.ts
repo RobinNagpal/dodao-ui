@@ -18,11 +18,17 @@ export function getEtfAssetClassBySlug(slug: string): string | undefined {
 }
 
 /**
- * Resolves a provider URL slug back to its canonical label from the known issuer list,
- * or falls back to a title-cased reconstruction so unknown providers still render readably.
+ * Resolves a provider URL slug back to its issuer name. The result is used as the listing's
+ * issuer filter, so it must equal the stored issuer exactly. Tries, in order: `knownProviders`
+ * (the live issuer names, e.g. the providers index), the static issuer list, then a title-cased
+ * reconstruction so unknown providers still render readably.
  */
-export function getEtfProviderBySlug(slug: string): string {
+export function getEtfProviderBySlug(slug: string, knownProviders?: readonly string[]): string {
   const needle = slug.toLowerCase();
+  // Prefer the live issuer names (e.g. from the providers index): slugs drop `.`, `&`, `/`, so a
+  // reconstructed name like "M D Sass" would never match the stored issuer "M.D. Sass".
+  const fromIndex = knownProviders?.find((issuer) => slugifyEtfTag(issuer) === needle);
+  if (fromIndex) return fromIndex;
   const known = ETF_ISSUER_OPTIONS.find((opt) => opt.value !== '' && slugifyEtfTag(opt.value) === needle);
   if (known) return known.value;
   return needle

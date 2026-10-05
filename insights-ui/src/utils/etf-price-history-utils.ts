@@ -9,6 +9,8 @@ import {
   YahooPriceHistoryResult,
   fetchPriceHistoryFromYahoo,
   isDataStale,
+  isYahooSymbolInNoDataBackoff,
+  logPriceHistoryRefreshError,
 } from '@/utils/yahoo-price-history';
 
 /**
@@ -32,6 +34,9 @@ export async function ensureEtfPriceHistoryIsFresh(etf: Etf): Promise<EtfPriceHi
   }
 
   const yahooSymbol = convertToYahooFinanceSymbol(etf.symbol, etf.exchange);
+  if (isYahooSymbolInNoDataBackoff(yahooSymbol)) {
+    return existing;
+  }
   const now = new Date();
 
   try {
@@ -77,8 +82,8 @@ export async function ensureEtfPriceHistoryIsFresh(etf: Etf): Promise<EtfPriceHi
     // `ensurePriceHistoryIsFresh` in `price-history-utils.ts` (stocks).
     return saved;
   } catch (error) {
-    console.error(`Failed to refresh price history for ETF ${etf.symbol} (${etf.exchange}):`, error);
-    // Fall back to prior snapshot if available so the UI still renders.
+    logPriceHistoryRefreshError(`ETF ${etf.symbol} (${etf.exchange})`, yahooSymbol, error);
+    // If refresh fails but we have a prior snapshot, fall back to that so the UI still renders.
     return existing;
   }
 }

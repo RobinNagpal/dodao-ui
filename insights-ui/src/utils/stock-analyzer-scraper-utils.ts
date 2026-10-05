@@ -15,7 +15,15 @@ import {
   DividendHistoryRow,
   StockFundamentalsSummary,
 } from '@/types/prismaTypes';
-import { isScrapedSectionUsable, ScrapeSectionResult, scrapeStockAnalyzerSection, StockAnalyzerSectionId } from '@/utils/stock-analyzer';
+import {
+  BENIGN_EMPTY_ERROR_PREFIXES,
+  isNotPublishedPayload,
+  isScrapedSectionUsable,
+  ScrapeSectionResult,
+  scrapeStockAnalyzerSection,
+  StockAnalyzerSectionId,
+} from '@/utils/stock-analyzer';
+import { isScrapingPaused, StockAnalyzerFetchError } from '@/utils/stock-analyzer/stock-analyzer-fetcher';
 
 type ScraperInfoDataField = keyof Omit<
   TickerV1StockAnalyzerScrapperInfo,
@@ -135,6 +143,15 @@ const MAX_STORED_ERRORS = 50;
  */
 const FAILED_SECTION_RETRY_MS = 6 * 60 * 60 * 1000;
 
+/**
+ * Longer retry window for a section whose empty parse is proven benign (stored
+ * errors prefixed with one of `BENIGN_EMPTY_ERROR_PREFIXES`: a semi-annual
+ * reporter's H1/H2-only quarterly page, or a page where the source site shows
+ * no figures), so re-scraping every few hours just repeats the same result.
+ * Any other empty parse keeps the short window and stays an error.
+ */
+const HALF_YEARLY_RETRY_MS = 7 * 24 * 60 * 60 * 1000;
+
 export interface StoredScraperError {
   section: string;
   error: string;
@@ -206,6 +223,7 @@ function determineDataToFetch(existingData: TickerV1StockAnalyzerScrapperInfo | 
 /** True while a section's most recent scrape failure is still inside the retry window. */
 function isInFailureBackoff(storedErrors: StoredScraperError[], section: StockAnalyzerSectionId): boolean {
   let lastFailureMs: number | null = null;
+  let lastFailureWasHalfYearly = false;
 
   for (const storedError of storedErrors) {
     if (storedError.section !== section) {
@@ -214,14 +232,33 @@ function isInFailureBackoff(storedErrors: StoredScraperError[], section: StockAn
     const failedAtMs: number = new Date(storedError.timestamp).getTime();
     if (Number.isFinite(failedAtMs) && (lastFailureMs === null || failedAtMs > lastFailureMs)) {
       lastFailureMs = failedAtMs;
+      lastFailureWasHalfYearly = BENIGN_EMPTY_ERROR_PREFIXES.some((prefix) => storedError.error.startsWith(prefix));
     }
   }
 
-  return lastFailureMs !== null && Date.now() - lastFailureMs < FAILED_SECTION_RETRY_MS;
+  const retryMs: number = lastFailureWasHalfYearly ? HALF_YEARLY_RETRY_MS : FAILED_SECTION_RETRY_MS;
+  return lastFailureMs !== null && Date.now() - lastFailureMs < retryMs;
 }
 
+/**
+ * Keep the newest MAX_STORED_ERRORS entries, but always keep each section's
+ * newest one: `isInFailureBackoff` reads it, so losing it to other sections'
+ * churn would end that section's backoff early.
+ */
 function trimErrors(errors: StoredScraperError[]): StoredScraperError[] {
-  return errors.slice(-MAX_STORED_ERRORS);
+  if (errors.length <= MAX_STORED_ERRORS) {
+    return errors;
+  }
+  const keep: Set<StoredScraperError> = new Set();
+  const newestBySection: Map<string, StoredScraperError> = new Map();
+  for (const storedError of errors) {
+    newestBySection.set(storedError.section, storedError);
+  }
+  newestBySection.forEach((storedError) => keep.add(storedError));
+  for (let i = errors.length - 1; i >= 0 && keep.size < MAX_STORED_ERRORS; i--) {
+    keep.add(errors[i]);
+  }
+  return errors.filter((storedError) => keep.has(storedError));
 }
 
 function toErrorMessage(error: unknown): string {
@@ -229,8 +266,64 @@ function toErrorMessage(error: unknown): string {
 }
 
 /**
+ * One line per failed section. A fetch failure (404, 5xx, timeout) is fully
+ * described by its message, so its stack is noise; keep stacks for anything
+ * unexpected.
+ */
+/** The fetcher made no request (paused after a rejection, or the pacing queue was full). */
+function isNotAttempted(error: unknown): boolean {
+  return error instanceof StockAnalyzerFetchError && (error.paused || error.deferred);
+}
+
+function logSectionScrapeError(section: string, symbol: string, error: unknown): void {
+  if (error instanceof StockAnalyzerFetchError && error.rejected) {
+    // Already logged once per pause as [scraper-rejected] by the fetcher.
+    return;
+  }
+  if (error instanceof StockAnalyzerFetchError) {
+    console.error(`Error scraping ${section} for ${symbol}: ${error.message}`);
+  } else {
+    console.error(`Error scraping ${section} for ${symbol}:`, error);
+  }
+}
+
+/**
+ * Scrapes currently running, keyed by `tickerId` (full scrape) or
+ * `tickerId:summary` (fair-value summary refresh). One page render calls
+ * several API routes (financial-info, quarterly-chart-data, ...) that each ask
+ * for the same ticker at once; without this every one of them scraped it.
+ * Lives on `globalThis` like the fetcher's state, so every bundled copy of
+ * this module shares it.
+ */
+const globalForScrapes = globalThis as typeof globalThis & { __stockAnalyzerScrapesInFlight?: Map<string, Promise<TickerV1StockAnalyzerScrapperInfo>> };
+const scrapesInFlight: Map<string, Promise<TickerV1StockAnalyzerScrapperInfo>> = (globalForScrapes.__stockAnalyzerScrapesInFlight ??= new Map());
+
+/** Join the scrape running under `key`, or start `run` there; the entry is cleared once it settles. */
+function joinOrStartScrape(key: string, run: () => Promise<TickerV1StockAnalyzerScrapperInfo>): Promise<TickerV1StockAnalyzerScrapperInfo> {
+  const running = scrapesInFlight.get(key);
+  if (running) {
+    return running;
+  }
+  const scrape: Promise<TickerV1StockAnalyzerScrapperInfo> = run().finally(() => scrapesInFlight.delete(key));
+  scrapesInFlight.set(key, scrape);
+  return scrape;
+}
+
+/** Wait until no scrape is running under `key`; its outcome is ignored. */
+async function waitForScrape(key: string): Promise<void> {
+  let running: Promise<TickerV1StockAnalyzerScrapperInfo> | undefined;
+  while ((running = scrapesInFlight.get(key))) {
+    await running.catch(() => undefined);
+  }
+}
+
+/**
  * Fetch and update stock analyzer scraper data for a ticker
  * Returns the updated or existing scraper info
+ *
+ * Single-flight per ticker: a concurrent caller awaits the scrape already
+ * running and gets its result. A `force` caller instead waits for it to finish
+ * and then scrapes again, so it never gets data from before its request.
  */
 export async function fetchAndUpdateStockAnalyzerData(
   ticker: TickerV1,
@@ -240,12 +333,25 @@ export async function fetchAndUpdateStockAnalyzerData(
     throw new Error(`Ticker ${ticker.symbol} does not have a stockAnalyzeUrl`);
   }
 
+  if (options.force) {
+    await waitForScrape(ticker.id);
+  }
+  return joinOrStartScrape(ticker.id, () => scrapeAndStoreStockAnalyzerData(ticker, options));
+}
+
+async function scrapeAndStoreStockAnalyzerData(ticker: TickerV1, options: FetchStockAnalyzerDataOptions): Promise<TickerV1StockAnalyzerScrapperInfo> {
   // Get existing scraper info if it exists
   const existingInfo = await prisma.tickerV1StockAnalyzerScrapperInfo.findUnique({
     where: {
       tickerId: ticker.id,
     },
   });
+
+  // While the source site is rejecting us, serve what is stored rather than
+  // queueing requests that would fail fast anyway.
+  if (existingInfo && (await isScrapingPaused())) {
+    return existingInfo;
+  }
 
   // Determine what data needs to be fetched
   const configsToFetch = determineDataToFetch(existingInfo, options);
@@ -304,17 +410,39 @@ export async function fetchAndUpdateStockAnalyzerData(
 
   for (const { config, result, error } of results) {
     if (error || !result) {
-      console.error(`Error scraping ${config.section} for ${ticker.symbol}:`, error);
+      // Not attempted (paused after a rejection, or the pacing queue was full):
+      // not a failure, so no log and no stored error / retry backoff. The
+      // section stays stale and refreshes on a later view.
+      if (isNotAttempted(error)) {
+        continue;
+      }
+      logSectionScrapeError(config.section, ticker.symbol, error);
       allErrors.push({ section: config.section, error: toErrorMessage(error), timestamp: timestamp.toISOString() });
       continue;
     }
 
-    // A page that loads but parses to nothing means the source layout changed.
-    // Never write that over data we already have, and never stamp it as fresh —
-    // otherwise one bad scrape blanks the section until its age window expires.
+    // A page that loads but parses to nothing means the source layout changed —
+    // an error. The known-benign cases — a semi-annual reporter's quarterly page
+    // (H1/H2 columns only) and a page where the source site itself shows no
+    // figures — only warn and back off for HALF_YEARLY_RETRY_MS. Never write either over data we already have, and
+    // never stamp it as fresh — otherwise one bad scrape blanks the section
+    // until its age window expires.
     if (!isScrapedSectionUsable(config.section, result.data)) {
-      console.error(`Scraped no usable data for ${config.section} (${ticker.symbol}) from ${result.url}; keeping previously stored data`);
+      const isBenignEmpty: boolean = result.errors.some((e) => BENIGN_EMPTY_ERROR_PREFIXES.some((prefix) => e.where.startsWith(prefix)));
+      (isBenignEmpty ? console.warn : console.error)(
+        `Scraped no usable data for ${config.section} (${ticker.symbol}) from ${result.url}; keeping previously stored data`
+      );
       allErrors.push(...result.errors.map((e) => ({ section: config.section, error: `${e.where}: ${e.message}`, timestamp: timestamp.toISOString() })));
+      continue;
+    }
+
+    // A 404 is stored as "not published" only for a section that never had data.
+    // If real data is stored, the page vanishing is a source-side change (URL
+    // move, bad deploy) — keep the data and treat it as a failure.
+    const storedValue: unknown = existingInfo?.[config.field];
+    if (isNotPublishedPayload(result.data) && isScrapedSectionUsable(config.section, storedValue) && !isNotPublishedPayload(storedValue)) {
+      console.error(`${config.section} page 404'd for ${ticker.symbol} (${result.url}) but data is stored for it; keeping the stored data`);
+      allErrors.push({ section: config.section, error: `Page not found: ${result.url}`, timestamp: timestamp.toISOString() });
       continue;
     }
 
@@ -362,6 +490,14 @@ export async function refreshMarketSummaryForFairValue(ticker: TickerV1): Promis
     throw new Error(`Ticker ${ticker.symbol} does not have a stockAnalyzeUrl`);
   }
 
+  // Let a running full scrape finish first: both write the row, and the full
+  // scrape's upsert would otherwise drop the error this refresh records. Then
+  // concurrent refreshes (fair value + stability) share one summary fetch.
+  await waitForScrape(ticker.id);
+  return joinOrStartScrape(`${ticker.id}:summary`, () => refreshMarketSummary(ticker));
+}
+
+async function refreshMarketSummary(ticker: TickerV1): Promise<TickerV1StockAnalyzerScrapperInfo> {
   const existingInfo = await prisma.tickerV1StockAnalyzerScrapperInfo.findUnique({
     where: { tickerId: ticker.id },
   });
@@ -375,7 +511,7 @@ export async function refreshMarketSummaryForFairValue(ticker: TickerV1): Promis
   const timestamp = new Date();
 
   try {
-    const result: ScrapeSectionResult = await scrapeStockAnalyzerSection(ticker.stockAnalyzeUrl, 'summary');
+    const result: ScrapeSectionResult = await scrapeStockAnalyzerSection(ticker.stockAnalyzeUrl!, 'summary');
     if (isScrapedSectionUsable('summary', result.data)) {
       updateData.summary = result.data as unknown as Prisma.InputJsonValue;
       updateData.lastUpdatedAtSummary = timestamp;
@@ -383,7 +519,10 @@ export async function refreshMarketSummaryForFairValue(ticker: TickerV1): Promis
       allErrors.push(...result.errors.map((e) => ({ section: 'summary', error: `${e.where}: ${e.message}`, timestamp: timestamp.toISOString() })));
     }
   } catch (error) {
-    console.error(`Error scraping summary for ${ticker.symbol}:`, error);
+    if (isNotAttempted(error)) {
+      return existingInfo;
+    }
+    logSectionScrapeError('summary', ticker.symbol, error);
     allErrors.push({ section: 'summary', error: toErrorMessage(error), timestamp: timestamp.toISOString() });
   }
 

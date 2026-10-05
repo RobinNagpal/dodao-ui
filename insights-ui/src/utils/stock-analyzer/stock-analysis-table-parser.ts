@@ -193,6 +193,48 @@ export function parseFinancialTables(html: string): ParsedFinancialTable[] {
   return tables;
 }
 
+/** e.g. `No quarterly metrics data available for this stock.`, `No cash flow data is available for this stock.` */
+const NO_DATA_MESSAGE_PATTERN = /No [A-Za-z ]*data (?:is )?available for this stock\./;
+
+/**
+ * Detect a page that loaded fine but where the source site has no figures for
+ * this stock / period type, as opposed to a page whose layout we failed to read.
+ *
+ * Two shapes are recognised:
+ * - an explicit empty-state message (KPI pages, and statement pages with no
+ *   data at all): `No quarterly metrics data available for this stock.`
+ * - a statement table rendered with only its sticky header cell
+ *   (`<th id="header-title">Quarter Ending</th>`), no period columns and no
+ *   body rows. The site renders this when every value for the period type is
+ *   null — e.g. the quarterly cash flow of a company that only files cash flow
+ *   half-yearly or annually (most BSE listings, many Chinese ADRs).
+ *
+ * Returns a short human-readable reason, or null when the page has data (or a
+ * shape this does not recognise).
+ */
+export function findNoDataNotice(html: string): string | null {
+  const $: cheerio.CheerioAPI = cheerio.load(html);
+  const main = $('main');
+  const pageText: string = normalizeWhitespace((main.length > 0 ? main : $('body')).text());
+
+  const message: RegExpMatchArray | null = pageText.match(NO_DATA_MESSAGE_PATTERN);
+  if (message) {
+    return message[0];
+  }
+
+  const tables = $('table').toArray();
+  const hasHeaderOnlyTable: boolean = tables.some((table) => {
+    const headerCells = $(table).find('thead tr').first().find('th').toArray();
+    return headerCells.length === 1 && $(headerCells[0]).attr('id') === 'header-title' && $(table).find('tbody tr').length === 0;
+  });
+  const hasPopulatedTable: boolean = tables.some((table) => $(table).find('thead tr').first().find('th').length > 1 && $(table).find('tbody tr').length > 0);
+  if (hasHeaderOnlyTable && !hasPopulatedTable) {
+    return 'The financials table has no period columns or rows (no figures for this period type)';
+  }
+
+  return null;
+}
+
 /**
  * Convert a displayed cell into the value we persist.
  *

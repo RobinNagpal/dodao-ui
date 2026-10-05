@@ -84,8 +84,7 @@ export default function ReportGenerationControl({
 
   // Only the user's own paid run counts as "in progress"; admin and nightly runs
   // are never shown, so the user can always regenerate.
-  const [inProgress, setInProgress] = useState(false);
-  const generationInProgress = inProgress || status?.generationInProgress || false;
+  const generationInProgress = status?.generationInProgress ?? false;
 
   // Read the clock only after mount: the server and browser would otherwise
   // disagree on "N days ago" around midnight and break hydration.
@@ -121,6 +120,17 @@ export default function ReportGenerationControl({
     await refetchStatus();
   }, [session, refetchStatus]);
 
+  // The one place the status is re-read after anything changes it: a paid run
+  // started or finished (see ReportResultNotifier) or the balance changed.
+  // Declared before the Stripe-return effect so it is listening when that
+  // effect fires the event on mount.
+  useEffect(() => {
+    if (!session) return;
+    const refresh = () => void refetchStatus();
+    window.addEventListener(CREDITS_CHANGED_EVENT, refresh);
+    return () => window.removeEventListener(CREDITS_CHANGED_EVENT, refresh);
+  }, [session, refetchStatus]);
+
   // Coming back from Stripe: reopen the modal with the new balance so the
   // purchase lands the user exactly where they left off rather than on a
   // confirmation dead end. The marker is cleared from the URL as it is read.
@@ -131,22 +141,10 @@ export default function ReportGenerationControl({
     showNotification({ type: 'success', message: 'Payment received. Your credits have been added.' });
     setHasMountedModal(true);
     setIsModalOpen(true);
-    void refetchStatus();
-    // The webhook may land after the redirect, so the navbar re-reads too.
+    // Re-reads the status here and the balance in the navbar (the webhook may
+    // land after the redirect).
     notifyCreditsChanged();
-  }, [session, showNotification, refetchStatus]);
-
-  // A paid run finished somewhere (see ReportResultNotifier) or the balance
-  // changed: re-read the status so the badge and the Regenerate button update.
-  useEffect(() => {
-    if (!session) return;
-    const refresh = () => {
-      setInProgress(false);
-      void refetchStatus();
-    };
-    window.addEventListener(CREDITS_CHANGED_EVENT, refresh);
-    return () => window.removeEventListener(CREDITS_CHANGED_EVENT, refresh);
-  }, [session, refetchStatus]);
+  }, [session, showNotification]);
 
   const handleConfirm = async () => {
     const response = await triggerGeneration(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/users/report-generation`, { kind, symbol, exchange });
@@ -158,12 +156,10 @@ export default function ReportGenerationControl({
     if (response.outcome === 'InsufficientCredits') {
       // Balance changed under us (another tab spent it). The modal re-renders
       // into its buy state off the refreshed status rather than erroring.
-      await refetchStatus();
       notifyCreditsChanged();
       return;
     }
 
-    setInProgress(true);
     setIsModalOpen(false);
     showNotification({
       type: 'success',
@@ -172,7 +168,7 @@ export default function ReportGenerationControl({
           ? `Your ${symbol} report is already being generated. You have not been charged again.`
           : `Generating a new ${symbol} report. This can take up to an hour. Refresh the page later to see it.`,
     });
-    await refetchStatus();
+    // Re-reads the status, which now reports the run as in progress.
     notifyCreditsChanged();
   };
 
