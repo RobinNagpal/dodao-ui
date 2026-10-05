@@ -76,6 +76,12 @@ export interface CreditHistoryTabsProps {
    * cannot open it.
    */
   showReceipts?: boolean;
+  /**
+   * Older history rows exist beyond `transactions`. Both tabs are cut from one
+   * mixed, newest-first page, so an empty tab then means "none loaded yet", not
+   * "none at all" (e.g. 50 recent spends can hide every purchase).
+   */
+  hasMore?: boolean;
 }
 
 /**
@@ -83,7 +89,7 @@ export interface CreditHistoryTabsProps {
  * spent credits on (stocks and ETFs together) and the purchases that paid for
  * them. Used by the user's own credits page and by the admin view of any user.
  */
-export default function CreditHistoryTabs({ transactions, showReceipts = true }: CreditHistoryTabsProps): React.JSX.Element {
+export default function CreditHistoryTabs({ transactions, showReceipts = true, hasMore = false }: CreditHistoryTabsProps): React.JSX.Element {
   // Generations is the default: spending credits is the everyday activity,
   // buying them is the occasional one.
   const [historyTab, setHistoryTab] = useState<HistoryTab>('generations');
@@ -146,7 +152,7 @@ export default function CreditHistoryTabs({ transactions, showReceipts = true }:
 
       <TabsContent value="generations">
         {generationTransactions.length === 0 ? (
-          <Text tone="muted">No report generations yet.</Text>
+          <Text tone="muted">{hasMore ? 'No report generations in the loaded history. Load more to see older activity.' : 'No report generations yet.'}</Text>
         ) : (
           <CreditHistoryLayout
             table={
@@ -164,7 +170,7 @@ export default function CreditHistoryTabs({ transactions, showReceipts = true }:
 
       <TabsContent value="purchases">
         {purchaseTransactions.length === 0 ? (
-          <Text tone="muted">No credit purchases yet.</Text>
+          <Text tone="muted">{hasMore ? 'No credit purchases in the loaded history. Load more to see older activity.' : 'No credit purchases yet.'}</Text>
         ) : (
           <CreditHistoryLayout
             table={

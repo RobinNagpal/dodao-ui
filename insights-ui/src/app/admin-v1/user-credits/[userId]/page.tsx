@@ -44,7 +44,7 @@ export default function AdminUserCreditHistoryPage(): React.JSX.Element {
 
           {/* Receipts are hidden: the receipt endpoint only serves the signed-in
               user's own purchases, so an admin cannot open someone else's. */}
-          <CreditHistoryTabs transactions={data.transactions} showReceipts={false} />
+          <CreditHistoryTabs transactions={data.transactions} showReceipts={false} hasMore={data.hasMore} />
 
           {/* "Load more" pages the whole history, so it keeps filling both tabs. */}
           {data.hasMore && (

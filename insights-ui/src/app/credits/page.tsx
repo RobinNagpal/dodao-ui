@@ -96,7 +96,7 @@ export default function CreditsPage(): JSX.Element {
           {/* Spinner until the first load finishes, so an empty state never flashes before real rows. */}
           {data ? (
             <>
-              <CreditHistoryTabs transactions={data.transactions} />
+              <CreditHistoryTabs transactions={data.transactions} hasMore={data.hasMore} />
               {/* "Load more" pages the whole history, so it keeps filling both tabs. */}
               {data.hasMore && (
                 <Button variant="outlined" loading={loading} disabled={loading} onClick={() => setHistoryLimit((limit) => limit + CREDIT_HISTORY_PAGE_SIZE)}>
