@@ -7,6 +7,9 @@ import { getCountryByExchange } from '@/utils/countryExchangeUtils';
 import type { CompetitionResponse } from '@/types/ticker-typesv1';
 import Link from 'next/link';
 import React, { Suspense } from 'react';
+import ReportGenerationControl from '@/components/credits/ReportGenerationControl';
+import ReportSectionHeader from '@/components/ui/sections/ReportSectionHeader';
+import { CreditReportKind } from '@prisma/client';
 import AddTickerAdminButton from './AddTickerAdminButton';
 
 export interface CompetitionProps {
@@ -99,33 +102,23 @@ export default function Competition({ tickerData, data }: CompetitionProps): JSX
         {/* Hidden datePublished for schema - machine readable only */}
         <meta itemProp="datePublished" content={publishedDate.toISOString()} />
 
-        {/* Article Header */}
-        <header className="mb-6 pb-4 border-b border-color">
-          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
-            <div className="flex-1">
-              <h1 className="text-2xl md:text-3xl font-bold tracking-tight text-color mb-2" itemProp="headline">
-                {analysisTitle}
-              </h1>
-              <div className="flex flex-wrap items-center gap-2 md:gap-3 text-sm">
-                <span className="badge-tone-info inline-flex items-center rounded-full bg-sky-500/15 border border-sky-500/40 px-2.5 py-0.5 text-xs font-medium text-sky-300">
-                  {tickerData.exchange}
-                </span>
-                <span className="text-muted-foreground">•</span>
-                <time dateTime={modifiedDate.toISOString()} className="text-muted-foreground text-sm" itemProp="dateModified">
-                  {formattedModifiedDate}
-                </time>
-              </div>
-            </div>
-
-            <Link
-              href={`/stocks/${tickerData.exchange}/${tickerData.symbol}`}
-              prefetch={false}
-              className="link-color hover:underline text-sm font-medium whitespace-nowrap flex items-center gap-1"
-            >
-              View Full Report →
-            </Link>
-          </div>
-        </header>
+        {/* Was a hand-rolled copy of ReportSectionHeader's markup; now the leaf itself. */}
+        <ReportSectionHeader
+          title={analysisTitle}
+          exchange={tickerData.exchange}
+          modifiedDate={modifiedDate}
+          formattedModifiedDate={formattedModifiedDate}
+          actionHref={`/stocks/${tickerData.exchange}/${tickerData.symbol}`}
+          action={
+            <ReportGenerationControl
+              variant="section"
+              kind={CreditReportKind.Stock}
+              symbol={tickerData.symbol}
+              exchange={tickerData.exchange}
+              lastReportGeneratedAt={modifiedDate.toISOString()}
+            />
+          }
+        />
 
         {/* Article Body */}
         <div className="prose prose-invert max-w-none">

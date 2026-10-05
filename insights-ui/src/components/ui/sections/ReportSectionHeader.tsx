@@ -18,6 +18,11 @@ export interface ReportSectionHeaderProps {
   /** Destination for the right-aligned action link. */
   actionHref: string;
   actionLabel?: React.ReactNode;
+  /**
+   * Phone-only action (the regenerate button). It takes the slot the full-report
+   * link vacates on narrow screens; on `md`+ the floating CTA covers it instead.
+   */
+  action?: React.ReactNode;
   /** Optional extra row under the meta line (e.g. metadata badges). */
   children?: React.ReactNode;
   className?: string;
@@ -28,6 +33,10 @@ export interface ReportSectionHeaderProps {
  * score chip, modified date) + an optional metadata slot + a right-aligned
  * "View Full Report" link. Shared verbatim by the stock and ETF category
  * reports and the competition views.
+ *
+ * The full-report link sits at the right end of the header from `md` up. On a
+ * phone that row would push the header tall, so it moves up beside the heading
+ * and the freed row below carries `action` instead.
  */
 export default function ReportSectionHeader({
   title,
@@ -38,17 +47,28 @@ export default function ReportSectionHeader({
   formattedModifiedDate,
   actionHref,
   actionLabel = 'View Full Report →',
+  action,
   children,
   className,
 }: ReportSectionHeaderProps): React.JSX.Element {
+  // Rendered twice behind complementary breakpoints — never both at once.
+  const fullReportLink = (
+    <Link href={actionHref} prefetch={false} className="link-color hover:underline text-sm font-medium whitespace-nowrap flex shrink-0 items-center gap-1">
+      {actionLabel}
+    </Link>
+  );
+
   return (
     <header className={cn('mb-6 pb-4 border-b border-border', className)}>
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
         <div className="flex-1">
-          <h1 className="text-2xl md:text-3xl font-bold tracking-tight text-body mb-2" itemProp="headline">
-            {title}
-            {symbol && <span className="text-muted-foreground"> ({symbol})</span>}
-          </h1>
+          <div className="flex items-start justify-between gap-3">
+            <h1 className="text-2xl md:text-3xl font-bold tracking-tight text-body mb-2" itemProp="headline">
+              {title}
+              {symbol && <span className="text-muted-foreground"> ({symbol})</span>}
+            </h1>
+            <span className="md:hidden">{fullReportLink}</span>
+          </div>
           <div className="flex flex-wrap items-center gap-2 md:gap-3 text-sm">
             {/* `badge-tone-info` is a style-free hook — light mode darkens the sky-300 text via `.page-theme-light`. */}
             <span className="badge-tone-info inline-flex items-center rounded-full bg-sky-500/15 border border-sky-500/40 px-2.5 py-0.5 text-xs font-medium text-sky-300">
@@ -71,10 +91,9 @@ export default function ReportSectionHeader({
             </time>
           </div>
           {children}
+          {action && <div className="mt-3 md:hidden">{action}</div>}
         </div>
-        <Link href={actionHref} prefetch={false} className="link-color hover:underline text-sm font-medium whitespace-nowrap flex items-center gap-1">
-          {actionLabel}
-        </Link>
+        <span className="hidden md:flex">{fullReportLink}</span>
       </div>
     </header>
   );
