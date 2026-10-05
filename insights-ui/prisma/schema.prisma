@@ -65,7 +65,13 @@ model User {
   // DB transaction, so the ledger can always reconstruct the balance.
   credits            Int                 @default(0) @map("credits")
   stripeCustomerId   String?             @map("stripe_customer_id")
+  /// Set by the purchase webhook the first time a payment settles. Gates every
+  /// Stripe balance call: a user who has never bought has no balance to read,
+  /// so the UI can show "Buy Credits" without touching the Stripe API at all.
+  firstPurchaseAt    DateTime?           @map("first_purchase_at")
   creditTransactions CreditTransaction[]
+  reportSpends       ReportSpend[]
+  creditPurchases    StripeCreditPurchase[]
 
   @@unique([publicAddress, spaceId])
   @@unique([username, spaceId])
@@ -2765,4 +2771,85 @@ model CreditTransaction {
   @@index([userId, createdAt])
   @@index([generationRequestId])
   @@map("credit_transactions")
+}
+
+/// One paid report generation, and everything about it that is *not* money.
+///
+/// The credit itself lives in Stripe (a customer balance transaction); this row
+/// ties that debit to the generation run it paid for and carries the workflow
+/// state Stripe cannot express: whether the run has settled, whether it was
+/// refunded, and whether the user has been shown the result.
+///
+/// It exists because Stripe offers no way to *query* balance transactions by
+/// metadata — answering "does this user have an unsettled spend on this ticker?"
+/// against Stripe would mean listing and filtering every customer.
+model ReportSpend {
+  id      String @id @default(uuid())
+  userId  String @map("user_id")
+  spaceId String @default("koala_gains") @map("space_id")
+
+  reportKind CreditReportKind @map("report_kind")
+  /// TickerV1.id or Etf.id, depending on `reportKind`.
+  reportTargetId String @map("report_target_id")
+  /// Denormalized "AAPL (NASDAQ)" label, so history renders without joining
+  /// across two different report tables.
+  reportLabel String @map("report_label")
+  /// TickerV1GenerationRequest.id or EtfGenerationRequest.id. Unique so one run
+  /// can never be charged for twice.
+  generationRequestId String @unique @map("generation_request_id")
+
+  /// The Stripe customer balance transaction that took the credit, and the one
+  /// that gave it back when the run failed. Unique so a retried call that
+  /// reuses its idempotency key cannot be recorded as a second movement.
+  stripeDebitTxnId  String? @unique @map("stripe_debit_txn_id")
+  stripeRefundTxnId String? @unique @map("stripe_refund_txn_id")
+
+  /// Set once the run has ended: either the report was generated (credit kept)
+  /// or it failed (credit returned). Guards double refunds.
+  settledAt DateTime? @map("settled_at")
+  /// Set once the user has been shown the outcome, so it is announced once.
+  resultSeenAt DateTime? @map("result_seen_at")
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  /// Drives the "already generating this report" guard.
+  @@index([userId, reportTargetId, settledAt])
+  /// Drives the "finished since you last looked" notifier.
+  @@index([userId, settledAt, resultSeenAt])
+  @@map("report_spends")
+}
+
+/// Dedupe log for the purchase webhook — deliberately NOT a ledger: Stripe holds
+/// the authoritative balance and transactions.
+///
+/// It exists because Stripe retries webhook deliveries for days while its
+/// `Idempotency-Key` only de-duplicates for 24 hours, so a late replay could
+/// otherwise credit the same payment twice. The unique checkout session id is
+/// what makes granting exactly-once.
+///
+/// Carrying `credits` / `amountInCents` also keeps the admin "who bought what"
+/// screen a single SQL query instead of a loop over every Stripe customer. Those
+/// two columns are a mirror: reconcile them against Stripe, never trust them over it.
+model StripeCreditPurchase {
+  id      String @id @default(uuid())
+  userId  String @map("user_id")
+  spaceId String @default("koala_gains") @map("space_id")
+
+  stripeCheckoutSessionId String  @unique @map("stripe_checkout_session_id")
+  stripePaymentIntentId   String? @map("stripe_payment_intent_id")
+  /// The balance transaction that credited this purchase in Stripe.
+  stripeCreditTxnId String? @map("stripe_credit_txn_id")
+
+  credits       Int
+  amountInCents Int    @map("amount_in_cents")
+  currency      String
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, createdAt])
+  @@map("stripe_credit_purchases")
 }
