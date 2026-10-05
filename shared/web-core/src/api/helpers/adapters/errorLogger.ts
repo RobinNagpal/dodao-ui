@@ -81,33 +81,15 @@ export async function logErrorRequest(e: Error | string | null, req: NextRequest
     return;
   }
 
-  console.log('[errorLogger] logErrorRequest called with:', {
-    errorType: typeof e,
-    errorName: typeof e === 'object' ? (e as Error).name : 'N/A',
-    errorMessage: typeof e === 'object' ? (e as Error).message : e,
-    requestUrl: req.url,
-    requestMethod: req.method,
-  });
-
-  // Always log the error to console
-  console.error('[errorLogger] Request error:', e);
-  console.error('[errorLogger] Request URL:', req.url);
-  console.error('[errorLogger] Request method:', req.method);
-  console.error('[errorLogger] Request headers:', Object.fromEntries([...req.headers.entries()]));
+  // Always log the error to console (one line). Headers are intentionally not logged (they carry cookies/tokens).
+  const errorText = typeof e === 'string' ? e : `${e.name || 'Error'}: ${e.message}`;
+  const stack = typeof e === 'object' && e.stack ? `\n${e.stack}` : '';
+  console.error(`[errorLogger] Request error: ${req.method} ${req.url} | ${errorText}${stack}`);
 
   // Skip posting to Discord if the error should be ignored
   if (shouldIgnoreError(e)) {
     console.log('[errorLogger] Error ignored for Discord posting due to shouldIgnoreError check');
     return;
-  }
-
-  console.log('[errorLogger] Preparing request data for Discord');
-  let jsonBody = '';
-  try {
-    jsonBody = JSON.stringify(req.json());
-    console.log('[errorLogger] Successfully parsed request body');
-  } catch (parseError) {
-    console.log('[errorLogger] Failed to parse request body:', parseError);
   }
 
   const embeds = [
@@ -123,11 +105,6 @@ export async function logErrorRequest(e: Error | string | null, req: NextRequest
           name: 'Method',
           value: req.method || '----',
           inline: true,
-        },
-        {
-          name: 'JSON',
-          value: jsonBody.substring(0, 1000) || '(empty or unparseable body)',
-          inline: false,
         },
       ],
     },

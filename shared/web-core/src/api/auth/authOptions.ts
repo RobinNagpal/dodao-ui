@@ -12,20 +12,6 @@ import DiscordProvider from 'next-auth/providers/discord';
 import GoogleProvider from 'next-auth/providers/google';
 import TwitterProvider from 'next-auth/providers/twitter';
 
-// JSON.stringify replacer that expands Error objects (which otherwise serialize
-// to `{}`) so the full name/message/stack/cause is printed in logs.
-function nextAuthErrorReplacer(_key: string, value: unknown): unknown {
-  if (value instanceof Error) {
-    return {
-      name: value.name,
-      message: value.message,
-      stack: value.stack,
-      ...((value as any).cause ? { cause: (value as any).cause } : {}),
-    };
-  }
-  return value;
-}
-
 export type PrismaUserHelper = {
   user: PrismaUserAdapter;
   verificationToken: PrismaVerificationTokenAdapter;
@@ -416,8 +402,7 @@ export function getAuthOptions(
           return;
         }
 
-        console.error('[authOptions] NextAuth error:', code, JSON.stringify(metadata instanceof Error ? metadata : params, nextAuthErrorReplacer));
-
+        // logError prints the single console.error line (code, params, error + stack), so no separate console.error here.
         logError(`NextAuth error: ${code}`, params, errorObject ?? null).catch((err) => {
           console.error('[authOptions] Failed to log NextAuth error:', err);
         });

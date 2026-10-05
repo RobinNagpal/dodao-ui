@@ -9,6 +9,29 @@ function isJwtError(error: unknown): boolean {
   return name === 'JsonWebTokenError' || name === 'TokenExpiredError' || name === 'NotBeforeError';
 }
 
+/**
+ * Logs a caught route error as ONE line: `[wrapper] METHOD URL -> status: Name: message | params=…` (+ stack).
+ * Server errors go through logError (one console.error line + Discord). Expected client errors
+ * (e.g. 404 not found) are a single console.warn line and are not posted to Discord.
+ */
+async function logRouteError(wrapperName: string, error: unknown, req: NextRequest, dynamic: { params: any }, statusCode: number): Promise<void> {
+  let params: Record<string, any> = {};
+  try {
+    params = (await dynamic?.params) || {};
+  } catch {
+    // ignore - params are only used for logging
+  }
+  const err = error as any;
+  const summary = `[${wrapperName}] ${req.method} ${req.url} -> ${statusCode}: ${err?.name || 'Error'}: ${err?.message ?? String(error)}`;
+
+  if (statusCode < 500 && !isJwtError(error)) {
+    console.warn(Object.keys(params).length > 0 ? `${summary} | params=${JSON.stringify(params)}` : summary);
+    return;
+  }
+
+  await logError(summary, params, error instanceof Error ? error : null);
+}
+
 type Handler<T> = (
   req: NextRequest,
   dynamic: { params: Promise<any> }
@@ -30,21 +53,11 @@ export function withErrorHandlingV1<T>(handler: Handler<T>): Handler<T> {
       return result;
     } catch (error) {
       const requestInfo = `host: ${req.nextUrl.host}, origin: ${req.nextUrl.origin}, url: ${req.url}, searchParams: ${req.nextUrl.searchParams.toString()}`;
-      console.error('[withErrorHandlingV1] Error stack:', (error as any).stack);
-      console.error('[withErrorHandlingV1] Error caught:', error);
-      console.error('[withErrorHandlingV1] Request info:', requestInfo);
-      console.error('[withErrorHandlingV1] Request Params:', await dynamic.params);
-      console.error('[withErrorHandlingV1] Error name:', (error as any).name);
-      console.error('[withErrorHandlingV1] Error message:', (error as any).message);
-
       const errorData = (error as any)?.response?.data || (error as any)?.message || 'An unknown error occurred';
       const message = `${errorData}. Error occurred while processing the request ${requestInfo}`;
-      console.log('[withErrorHandlingV1] Logging error to system');
-      await logError(message, {}, error as any, null, null);
-      await logErrorRequest(error as Error, req);
 
       const statusCode = isJwtError(error) ? 401 : 500;
-      console.log(`[withErrorHandlingV1] Returning error response with status ${statusCode}`);
+      await logRouteError('withErrorHandlingV1', error, req, dynamic, statusCode);
       return NextResponse.json({ error: message }, { status: statusCode });
     }
   };
@@ -69,22 +82,8 @@ export function withErrorHandlingV2<T>(handler: Handler2<T> | Handler2WithReq<T>
       console.log('[withErrorHandlingV2] Handler executed successfully, returning JSON response with status 200');
       return NextResponse.json(result, { status: 200 });
     } catch (error) {
-      const requestInfo = `host: ${req.nextUrl.host}, origin: ${req.nextUrl.origin}, url: ${req.url}, searchParams: ${req.nextUrl.searchParams.toString()}`;
-      console.error('[withErrorHandlingV2] Error stack:', (error as any).stack);
-      console.error('[withErrorHandlingV2] Error caught:', error);
-      console.error('[withErrorHandlingV2] Request info:', requestInfo);
-      console.error('[withErrorHandlingV2] Request Params:', await dynamic.params);
-      console.error('[withErrorHandlingV2] Error name:', (error as any).name);
-      console.error('[withErrorHandlingV2] Error message:', (error as any).message);
-
       // Check for Prisma "not found" error (P2025)
       const isPrismaNotFound = (error as any)?.code === 'P2025' || (error as any)?.name === 'NotFoundError';
-
-      const errorData = (error as any)?.response?.data || (error as any)?.message || 'An unknown error occurred';
-      const message = `${errorData}. Error occurred while processing the request ${requestInfo}`;
-      console.log('[withErrorHandlingV2] Logging error to system');
-      await logError(message, {}, error as any, null, null);
-      await logErrorRequest(error as Error, req);
 
       const userMessage = (error as any)?.response?.data || (error as any)?.message || 'An unknown error occurred';
 
@@ -94,7 +93,7 @@ export function withErrorHandlingV2<T>(handler: Handler2<T> | Handler2WithReq<T>
       const customStatusCode = typeof (error as any)?.statusCode === 'number' ? (error as any).statusCode : undefined;
 
       const statusCode = customStatusCode ?? (isJwtError(error) ? 401 : isPrismaNotFound ? 404 : 500);
-      console.log(`[withErrorHandlingV2] Returning user-friendly error message with status ${statusCode}:`, userMessage);
+      await logRouteError('withErrorHandlingV2', error, req, dynamic, statusCode);
       return NextResponse.json({ error: userMessage }, { status: statusCode });
     }
   };
@@ -127,23 +126,9 @@ export function withLoggedInUser<T>(handler: HandlerWithUser<T> | HandlerWithUse
       console.log('[withLoggedInUser] Handler executed successfully, returning JSON response with status 200');
       return NextResponse.json(result, { status: 200 });
     } catch (error) {
-      const requestInfo = `host: ${req.nextUrl.host}, origin: ${req.nextUrl.origin}, url: ${req.url}, searchParams: ${req.nextUrl.searchParams.toString()}`;
-      console.error('[withLoggedInUser] Error stack:', (error as any).stack);
-      console.error('[withLoggedInUser] Error caught:', error);
-      console.error('[withLoggedInUser] Request info:', requestInfo);
-      console.error('[withLoggedInUser] Request Params:', await dynamic.params);
-      console.error('[withLoggedInUser] Error name:', (error as any).name);
-      console.error('[withLoggedInUser] Error message:', (error as any).message);
-
-      const errorData = (error as any)?.response?.data || (error as any)?.message || 'An unknown error occurred';
-      const message = `${errorData}. Error occurred while processing the request ${requestInfo}`;
-      console.log('[withLoggedInUser] Logging error to system');
-      await logError(message, {}, error as any, null, null);
-      await logErrorRequest(error as Error, req);
-
       const userMessage = (error as any)?.response?.data || (error as any)?.message || 'An unknown error occurred';
       const statusCode = isJwtError(error) ? 401 : 500;
-      console.log(`[withLoggedInUser] Returning user-friendly error message with status ${statusCode}:`, userMessage);
+      await logRouteError('withLoggedInUser', error, req, dynamic, statusCode);
       return NextResponse.json({ error: userMessage }, { status: statusCode });
     }
   };

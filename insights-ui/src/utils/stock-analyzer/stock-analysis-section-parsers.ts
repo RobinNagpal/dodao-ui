@@ -73,6 +73,89 @@ function isPeriodColumn(label: string, periodType: StatementPeriodType): boolean
 }
 
 /**
+ * Some data sources on the site (e.g. CHAI, served from its "nasdaq" source)
+ * carry no fiscal-period labels at all: the table has a single header row
+ * `Quarter Ending | Jun '26 Jun 30, 2026 | …` (or `Year Ending | TTM | Dec '25
+ * Dec 31, 2025 | …`) instead of `Fiscal Quarter | Q2 2026 | …` over a
+ * `Period Ending` row. The `<th id>` still carries the ISO period end.
+ */
+const PERIOD_END_ONLY_HEADER: Readonly<Record<StatementPeriodType, string>> = {
+  quarterly: 'Quarter Ending',
+  annual: 'Year Ending',
+};
+const PERIOD_END_ONLY_LABEL_PATTERN = /^[A-Z][a-z]{2} '\d{2}\b/;
+
+const MONTH_NAMES: readonly string[] = [
+  'January',
+  'February',
+  'March',
+  'April',
+  'May',
+  'June',
+  'July',
+  'August',
+  'September',
+  'October',
+  'November',
+  'December',
+];
+
+/** `Fiscal year is October - September.` => 9 (1-based month the fiscal year ends in). */
+function fiscalYearEndMonth(meta: FinancialMeta): number | null {
+  const match: RegExpMatchArray | null = meta.fiscalYearNote?.match(/Fiscal year is [A-Za-z]+ - ([A-Za-z]+)\./) ?? null;
+  if (!match) {
+    return null;
+  }
+  const index: number = MONTH_NAMES.indexOf(match[1]);
+  return index >= 0 ? index + 1 : null;
+}
+
+/**
+ * Derive the canonical `Q2 2026` / `FY 2025` label from a period-end date, using
+ * the site's convention that a fiscal year is named after the calendar year it
+ * ends in. A period ending in the first half of a month is attributed to the
+ * previous month, which is how 52/53-week calendars land (Apple's June quarter
+ * can end on Jul 1).
+ */
+function periodLabelFromPeriodEnd(periodEnd: string, periodType: StatementPeriodType, endMonth: number): string {
+  const [rawYear, rawMonth, day] = periodEnd.split('-').map(Number);
+  let year: number = rawYear;
+  let month: number = rawMonth;
+  if (day < 15) {
+    month -= 1;
+    if (month === 0) {
+      month = 12;
+      year -= 1;
+    }
+  }
+  const fiscalYear: number = month > endMonth ? year + 1 : year;
+  if (periodType === 'annual') {
+    return `FY ${fiscalYear}`;
+  }
+  const monthsIntoFiscalYear: number = (month - endMonth + 11) % 12;
+  return `Q${Math.floor(monthsIntoFiscalYear / 3) + 1} ${fiscalYear}`;
+}
+
+/**
+ * The persisted period label for each column of `table` (null for a column that
+ * is not a fiscal period of `periodType`, e.g. `TTM`).
+ */
+function periodLabelsForTable(table: ParsedFinancialTable, periodType: StatementPeriodType, meta: FinancialMeta): (string | null)[] {
+  const isPeriodEndOnlyTable: boolean = table.periodColumnLabel === PERIOD_END_ONLY_HEADER[periodType];
+  const endMonth: number | null = isPeriodEndOnlyTable ? fiscalYearEndMonth(meta) : null;
+
+  return table.columns.map((column) => {
+    if (isPeriodColumn(column.label, periodType)) {
+      return column.label;
+    }
+    if (endMonth !== null && column.periodEnd && PERIOD_END_ONLY_LABEL_PATTERN.test(column.label)) {
+      return periodLabelFromPeriodEnd(column.periodEnd, periodType, endMonth);
+    }
+    return null;
+  });
+}
+
+/**
  * Read the "Financials in millions USD. Fiscal year is January - December."
  * caption that sits above the tables.
  */
@@ -120,18 +203,20 @@ export function parseStatementPage(html: string, periodType: StatementPeriodType
   const periodEndByPeriod: Map<string, string | null> = new Map();
 
   for (const table of tables) {
+    const periodLabels: (string | null)[] = periodLabelsForTable(table, periodType, meta);
     for (const row of table.rows) {
       const key: string = valueKeyForRowLabel(row.label);
 
       table.columns.forEach((column, columnIndex) => {
-        if (!isPeriodColumn(column.label, periodType)) {
+        const periodLabel: string | null = periodLabels[columnIndex];
+        if (!periodLabel) {
           return;
         }
-        if (!valuesByPeriod.has(column.label)) {
-          valuesByPeriod.set(column.label, {});
-          periodEndByPeriod.set(column.label, column.periodEnd);
+        if (!valuesByPeriod.has(periodLabel)) {
+          valuesByPeriod.set(periodLabel, {});
+          periodEndByPeriod.set(periodLabel, column.periodEnd);
         }
-        const values: Record<string, string | number | null> = valuesByPeriod.get(column.label)!;
+        const values: Record<string, string | number | null> = valuesByPeriod.get(periodLabel)!;
         // First table wins for a duplicated row label (e.g. "Net Income"
         // appears on both the cash-flow and supplementary tables).
         if (!(key in values)) {
@@ -170,19 +255,21 @@ export function parseKpisPage(html: string, periodType: StatementPeriodType): Kp
 
   for (const table of tables) {
     const groupKey: string = table.sectionTitle ? toValueKey(table.sectionTitle) : 'metrics';
+    const periodLabels: (string | null)[] = periodLabelsForTable(table, periodType, meta);
 
     for (const row of table.rows) {
       const key: string = valueKeyForRowLabel(row.label);
 
       table.columns.forEach((column, columnIndex) => {
-        if (!isPeriodColumn(column.label, periodType)) {
+        const periodLabel: string | null = periodLabels[columnIndex];
+        if (!periodLabel) {
           return;
         }
-        if (!groupsByPeriod.has(column.label)) {
-          groupsByPeriod.set(column.label, {});
-          periodEndByPeriod.set(column.label, column.periodEnd);
+        if (!groupsByPeriod.has(periodLabel)) {
+          groupsByPeriod.set(periodLabel, {});
+          periodEndByPeriod.set(periodLabel, column.periodEnd);
         }
-        const groups: Record<string, Record<string, string | number | null>> = groupsByPeriod.get(column.label)!;
+        const groups: Record<string, Record<string, string | number | null>> = groupsByPeriod.get(periodLabel)!;
         const group: Record<string, string | number | null> = (groups[groupKey] ??= {});
         if (!(key in group)) {
           group[key] = normalizeCellValue(row.cells[columnIndex] ?? null);

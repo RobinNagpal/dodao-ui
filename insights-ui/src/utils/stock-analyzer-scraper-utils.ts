@@ -16,7 +16,7 @@ import {
   StockFundamentalsSummary,
 } from '@/types/prismaTypes';
 import {
-  HALF_YEARLY_ONLY_ERROR_PREFIX,
+  BENIGN_EMPTY_ERROR_PREFIXES,
   isNotPublishedPayload,
   isScrapedSectionUsable,
   ScrapeSectionResult,
@@ -144,9 +144,10 @@ const MAX_STORED_ERRORS = 50;
 const FAILED_SECTION_RETRY_MS = 6 * 60 * 60 * 1000;
 
 /**
- * Longer retry window for a quarterly section of a semi-annual reporter (stored
- * errors prefixed `HALF_YEARLY_ONLY_ERROR_PREFIX`): its page only carries H1/H2
- * columns, so re-scraping every few hours just repeats the same result.
+ * Longer retry window for a section whose empty parse is proven benign (stored
+ * errors prefixed with one of `BENIGN_EMPTY_ERROR_PREFIXES`: a semi-annual
+ * reporter's H1/H2-only quarterly page, or a page where the source site shows
+ * no figures), so re-scraping every few hours just repeats the same result.
  * Any other empty parse keeps the short window and stays an error.
  */
 const HALF_YEARLY_RETRY_MS = 7 * 24 * 60 * 60 * 1000;
@@ -231,7 +232,7 @@ function isInFailureBackoff(storedErrors: StoredScraperError[], section: StockAn
     const failedAtMs: number = new Date(storedError.timestamp).getTime();
     if (Number.isFinite(failedAtMs) && (lastFailureMs === null || failedAtMs > lastFailureMs)) {
       lastFailureMs = failedAtMs;
-      lastFailureWasHalfYearly = storedError.error.startsWith(HALF_YEARLY_ONLY_ERROR_PREFIX);
+      lastFailureWasHalfYearly = BENIGN_EMPTY_ERROR_PREFIXES.some((prefix) => storedError.error.startsWith(prefix));
     }
   }
 
@@ -287,8 +288,42 @@ function logSectionScrapeError(section: string, symbol: string, error: unknown):
 }
 
 /**
+ * Scrapes currently running, keyed by `tickerId` (full scrape) or
+ * `tickerId:summary` (fair-value summary refresh). One page render calls
+ * several API routes (financial-info, quarterly-chart-data, ...) that each ask
+ * for the same ticker at once; without this every one of them scraped it.
+ * Lives on `globalThis` like the fetcher's state, so every bundled copy of
+ * this module shares it.
+ */
+const globalForScrapes = globalThis as typeof globalThis & { __stockAnalyzerScrapesInFlight?: Map<string, Promise<TickerV1StockAnalyzerScrapperInfo>> };
+const scrapesInFlight: Map<string, Promise<TickerV1StockAnalyzerScrapperInfo>> = (globalForScrapes.__stockAnalyzerScrapesInFlight ??= new Map());
+
+/** Join the scrape running under `key`, or start `run` there; the entry is cleared once it settles. */
+function joinOrStartScrape(key: string, run: () => Promise<TickerV1StockAnalyzerScrapperInfo>): Promise<TickerV1StockAnalyzerScrapperInfo> {
+  const running = scrapesInFlight.get(key);
+  if (running) {
+    return running;
+  }
+  const scrape: Promise<TickerV1StockAnalyzerScrapperInfo> = run().finally(() => scrapesInFlight.delete(key));
+  scrapesInFlight.set(key, scrape);
+  return scrape;
+}
+
+/** Wait until no scrape is running under `key`; its outcome is ignored. */
+async function waitForScrape(key: string): Promise<void> {
+  let running: Promise<TickerV1StockAnalyzerScrapperInfo> | undefined;
+  while ((running = scrapesInFlight.get(key))) {
+    await running.catch(() => undefined);
+  }
+}
+
+/**
  * Fetch and update stock analyzer scraper data for a ticker
  * Returns the updated or existing scraper info
+ *
+ * Single-flight per ticker: a concurrent caller awaits the scrape already
+ * running and gets its result. A `force` caller instead waits for it to finish
+ * and then scrapes again, so it never gets data from before its request.
  */
 export async function fetchAndUpdateStockAnalyzerData(
   ticker: TickerV1,
@@ -298,6 +333,13 @@ export async function fetchAndUpdateStockAnalyzerData(
     throw new Error(`Ticker ${ticker.symbol} does not have a stockAnalyzeUrl`);
   }
 
+  if (options.force) {
+    await waitForScrape(ticker.id);
+  }
+  return joinOrStartScrape(ticker.id, () => scrapeAndStoreStockAnalyzerData(ticker, options));
+}
+
+async function scrapeAndStoreStockAnalyzerData(ticker: TickerV1, options: FetchStockAnalyzerDataOptions): Promise<TickerV1StockAnalyzerScrapperInfo> {
   // Get existing scraper info if it exists
   const existingInfo = await prisma.tickerV1StockAnalyzerScrapperInfo.findUnique({
     where: {
@@ -380,14 +422,14 @@ export async function fetchAndUpdateStockAnalyzerData(
     }
 
     // A page that loads but parses to nothing means the source layout changed —
-    // an error. The one known-benign case is a semi-annual reporter's quarterly
-    // page (H1/H2 columns only), which only warns and backs off for
-    // HALF_YEARLY_RETRY_MS. Never write either over data we already have, and
+    // an error. The known-benign cases — a semi-annual reporter's quarterly page
+    // (H1/H2 columns only) and a page where the source site itself shows no
+    // figures — only warn and back off for HALF_YEARLY_RETRY_MS. Never write either over data we already have, and
     // never stamp it as fresh — otherwise one bad scrape blanks the section
     // until its age window expires.
     if (!isScrapedSectionUsable(config.section, result.data)) {
-      const isHalfYearlyOnly: boolean = result.errors.some((e) => e.where.startsWith(HALF_YEARLY_ONLY_ERROR_PREFIX));
-      (isHalfYearlyOnly ? console.warn : console.error)(
+      const isBenignEmpty: boolean = result.errors.some((e) => BENIGN_EMPTY_ERROR_PREFIXES.some((prefix) => e.where.startsWith(prefix)));
+      (isBenignEmpty ? console.warn : console.error)(
         `Scraped no usable data for ${config.section} (${ticker.symbol}) from ${result.url}; keeping previously stored data`
       );
       allErrors.push(...result.errors.map((e) => ({ section: config.section, error: `${e.where}: ${e.message}`, timestamp: timestamp.toISOString() })));
@@ -448,6 +490,14 @@ export async function refreshMarketSummaryForFairValue(ticker: TickerV1): Promis
     throw new Error(`Ticker ${ticker.symbol} does not have a stockAnalyzeUrl`);
   }
 
+  // Let a running full scrape finish first: both write the row, and the full
+  // scrape's upsert would otherwise drop the error this refresh records. Then
+  // concurrent refreshes (fair value + stability) share one summary fetch.
+  await waitForScrape(ticker.id);
+  return joinOrStartScrape(`${ticker.id}:summary`, () => refreshMarketSummary(ticker));
+}
+
+async function refreshMarketSummary(ticker: TickerV1): Promise<TickerV1StockAnalyzerScrapperInfo> {
   const existingInfo = await prisma.tickerV1StockAnalyzerScrapperInfo.findUnique({
     where: { tickerId: ticker.id },
   });
@@ -461,7 +511,7 @@ export async function refreshMarketSummaryForFairValue(ticker: TickerV1): Promis
   const timestamp = new Date();
 
   try {
-    const result: ScrapeSectionResult = await scrapeStockAnalyzerSection(ticker.stockAnalyzeUrl, 'summary');
+    const result: ScrapeSectionResult = await scrapeStockAnalyzerSection(ticker.stockAnalyzeUrl!, 'summary');
     if (isScrapedSectionUsable('summary', result.data)) {
       updateData.summary = result.data as unknown as Prisma.InputJsonValue;
       updateData.lastUpdatedAtSummary = timestamp;
