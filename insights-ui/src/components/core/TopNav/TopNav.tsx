@@ -14,8 +14,11 @@ import { Bars3Icon } from '@heroicons/react/24/outline';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import dynamic from 'next/dynamic';
 import { useState } from 'react';
 import { useSession } from 'next-auth/react';
+
+const LoginPopup = dynamic(() => import('@/components/login/login-popup').then((m) => ({ default: m.LoginPopup })), { ssr: false });
 
 export interface NavItem {
   name: string;
@@ -30,8 +33,9 @@ const navItems: NavItem[] = [
 ];
 
 export default function TopNav() {
-  const { data: session } = useSession();
+  const { data: session, status: sessionStatus } = useSession();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isLoginPopupOpen, setIsLoginPopupOpen] = useState(false);
   const pathname = usePathname() ?? ''; // <-- safe for null
   // The navbar themes itself by toggling its own `.dark` class rather than by
   // token swap: it already ships full `… bg-bg` variants, so
@@ -40,9 +44,15 @@ export default function TopNav() {
   const navTheme = usePageTheme();
   const isStocksRoute = pathname.startsWith('/stocks');
   const isEtfsRoute = pathname.startsWith('/etfs');
+  const isReportRoute = isStocksRoute || isEtfsRoute;
   // Report regeneration (the only thing credits buy) lives on these pages, so
   // only they show the balance. Nothing renders until it loads: no spinner.
-  const credits = useCreditBalance(Boolean(session) && (isStocksRoute || isEtfsRoute));
+  const credits = useCreditBalance(Boolean(session) && isReportRoute);
+  // Signed-out visitors get a "Buy Credits" pill in the same slot, so the
+  // feature is discoverable before logging in. Gated on `unauthenticated`
+  // rather than `!session` so it doesn't flash while the session is loading.
+  const showBuyCreditsPrompt = isReportRoute && sessionStatus === 'unauthenticated';
+  const openLoginPopup = () => setIsLoginPopupOpen(true);
 
   // Lazily fetch industries: only when the mobile menu is actually opened on a
   // /stocks route. Firing from the click handler (instead of a useEffect that
@@ -96,6 +106,7 @@ export default function TopNav() {
           <div className="hidden lg:flex lg:flex-none gap-x-2 lg:justify-end">
             <div className="flex gap-6 items-center">
               {credits !== undefined && <CreditsNavLink credits={credits} />}
+              {showBuyCreditsPrompt && <CreditsNavLink onBuyCreditsClick={openLoginPopup} />}
               {isStocksRoute && session && (
                 <PopoverGroup className="flex gap-x-6">
                   <Link href="/favourites" className="whitespace-nowrap text-sm/6 font-semibold text-heading hover:text-link">
@@ -135,7 +146,11 @@ export default function TopNav() {
           navItems={navItems}
           isLoggedIn={Boolean(session)}
           credits={credits}
+          showBuyCreditsPrompt={showBuyCreditsPrompt}
+          onBuyCreditsClick={openLoginPopup}
         />
+
+        {showBuyCreditsPrompt && <LoginPopup open={isLoginPopupOpen} onClose={() => setIsLoginPopupOpen(false)} />}
       </header>
     </div>
   );
