@@ -13,6 +13,8 @@ import ReportArticleShell from '@/components/ui/sections/ReportArticleShell';
 import ReportFooter from '@/components/ui/sections/ReportFooter';
 import ReportSection from '@/components/ui/sections/ReportSection';
 import ReportSectionHeader from '@/components/ui/sections/ReportSectionHeader';
+import ReportGenerationControl from '@/components/credits/ReportGenerationControl';
+import { CreditReportKind } from '@prisma/client';
 import SectionHeading from '@/components/ui/sections/SectionHeading';
 import { EtfAnalysisCategory } from '@/types/etf/etf-analysis-types';
 import type { SimilarEtf } from '@/types/etf/etf-detail-response-types';
@@ -94,6 +96,15 @@ export default function EtfCategoryReport({
           modifiedDate={modifiedDate}
           formattedModifiedDate={formattedModifiedDate}
           actionHref={`/etfs/${exchange}/${symbol}`}
+          action={
+            <ReportGenerationControl
+              variant="section"
+              kind={CreditReportKind.Etf}
+              symbol={symbol}
+              exchange={exchange}
+              lastReportGeneratedAt={modifiedDate.toISOString()}
+            />
+          }
         >
           <EtfMetadataBadges exchange={exchange} assetClass={assetClass} category={fundCategory} issuer={issuer} indexName={indexName} className="mt-3" />
         </ReportSectionHeader>

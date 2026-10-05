@@ -11,6 +11,8 @@ import ReportArticleShell from '@/components/ui/sections/ReportArticleShell';
 import ReportFooter from '@/components/ui/sections/ReportFooter';
 import ReportSection from '@/components/ui/sections/ReportSection';
 import ReportSectionHeader from '@/components/ui/sections/ReportSectionHeader';
+import ReportGenerationControl from '@/components/credits/ReportGenerationControl';
+import { CreditReportKind } from '@prisma/client';
 import SectionHeading from '@/components/ui/sections/SectionHeading';
 import { MarketDropScenario } from '@/types/public-equity/analysis-factors-types';
 import { STABILITY_RESILIENCE_VERDICT_DESCRIPTIONS, STABILITY_RESILIENCE_VERDICT_LABELS, StabilityResilienceVerdict } from '@/types/ticker-typesv1';
@@ -94,6 +96,15 @@ export default function Stability({ tickerData, report, industryName, subIndustr
         modifiedDate={modifiedDate}
         formattedModifiedDate={formattedModifiedDate}
         actionHref={`/stocks/${tickerData.exchange}/${tickerData.symbol}`}
+        action={
+          <ReportGenerationControl
+            variant="section"
+            kind={CreditReportKind.Stock}
+            symbol={tickerData.symbol}
+            exchange={tickerData.exchange}
+            lastReportGeneratedAt={modifiedDate.toISOString()}
+          />
+        }
       >
         <Stack direction="row" align="center" gap="sm" wrap mt="sm">
           <StatusBadge variant={STABILITY_VERDICT_BADGE_VARIANT[verdict] ?? 'neutral'} label={verdictLabel} />

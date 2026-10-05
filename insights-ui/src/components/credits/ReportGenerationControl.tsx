@@ -1,5 +1,6 @@
 'use client';
 
+import FloatingReportCta from '@/components/ui/credits/FloatingReportCta';
 import ReportFreshnessBar from '@/components/ui/credits/ReportFreshnessBar';
 import RegenerateButton from '@/components/ui/credits/RegenerateButton';
 import StatusBadge from '@/components/ui/StatusBadge';
@@ -32,6 +33,14 @@ export interface ReportGenerationControlProps {
    * (and for logged-out visitors, who never hit the status endpoint).
    */
   lastReportGeneratedAt: string | null;
+  /**
+   * `full` (default): the "Report generated on …" line plus the actions, for a
+   * report's main page. `section`: the actions only — a sub-report page already
+   * carries its own date in `ReportSectionHeader`, so a second one would just
+   * repeat it. Either way the action regenerates the whole report for one
+   * credit; there is no per-section generation.
+   */
+  variant?: 'full' | 'section';
 }
 
 /**
@@ -41,7 +50,13 @@ export interface ReportGenerationControlProps {
  * Logged-out visitors still see the date; only the status/credit lookup is
  * gated on a session, so the common case costs no extra request.
  */
-export default function ReportGenerationControl({ kind, symbol, exchange, lastReportGeneratedAt }: ReportGenerationControlProps): JSX.Element {
+export default function ReportGenerationControl({
+  kind,
+  symbol,
+  exchange,
+  lastReportGeneratedAt,
+  variant = 'full',
+}: ReportGenerationControlProps): JSX.Element {
   const { data: koalaSession } = useSession();
   const session: KoalaGainsSession | null = koalaSession as KoalaGainsSession | null;
 
@@ -159,15 +174,37 @@ export default function ReportGenerationControl({ kind, symbol, exchange, lastRe
 
   return (
     <>
-      <ReportFreshnessBar
-        generatedAt={generatedAtWithAge}
-        action={
-          // Hidden while the user's own run is going (the note below says so).
-          // No polling: the new report shows up on the next page load.
-          !generationInProgress && <RegenerateButton loading={generating} onClick={openModal} />
-        }
-        note={historyNote}
-      />
+      {variant === 'full' ? (
+        <ReportFreshnessBar
+          generatedAt={generatedAtWithAge}
+          action={
+            // Phones only: from `md` up the floating CTA below is the regenerate
+            // action, and showing both at once would just be clutter.
+            // Hidden entirely while the user's own run is going (the note below
+            // says so). No polling: the new report shows up on the next page load.
+            !generationInProgress && <RegenerateButton visibility="mobileOnly" loading={generating} onClick={openModal} />
+          }
+          note={historyNote}
+        />
+      ) : (
+        // Sub-report page: the button alone, in the slot the full-report link
+        // vacated on phones. The status badge lives on the main report page.
+        !generationInProgress && <RegenerateButton visibility="mobileOnly" loading={generating} onClick={openModal} />
+      )}
+
+      {/* The inline button above competes with the comparison / competition /
+          favourite actions, so the same action is repeated as a floating CTA —
+          visible from the moment the page opens, no scroll needed. Shown to
+          logged-out visitors too: `openModal` sends them to the login prompt
+          first. Tablet and up only; phones keep the inline button alone. */}
+      {!generationInProgress && (
+        <FloatingReportCta
+          label="Get the latest analysis"
+          subLabel={age ? `This report was generated ${age}` : null}
+          loading={generating}
+          onClick={openModal}
+        />
+      )}
 
       {session && hasMountedModal && (
         <RegenerateReportModal

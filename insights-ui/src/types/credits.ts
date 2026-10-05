@@ -114,6 +114,40 @@ export interface CreditReceiptResponse {
   receiptUrl: string;
 }
 
+/** One row of the admin "user credits" list: a user who has bought credits. */
+export interface AdminCreditUserResponse {
+  userId: string;
+  name: string | null;
+  email: string | null;
+  username: string;
+  /** Spendable balance right now. */
+  credits: number;
+  /** Credits bought, summed over every purchase. */
+  purchasedCredits: number;
+  /** Total charged across those purchases, in USD cents. */
+  amountSpentInCents: number;
+  purchaseCount: number;
+  lastPurchaseAt: string;
+  /** Credit-paid report generations, stocks and ETFs together. */
+  reportsGenerated: number;
+}
+
+export interface AdminCreditUsersResponse {
+  users: AdminCreditUserResponse[];
+}
+
+/** One user's full credit history, as the admin sees it. */
+export interface AdminUserCreditHistoryResponse {
+  userId: string;
+  name: string | null;
+  email: string | null;
+  username: string;
+  credits: number;
+  reservedCredits: number;
+  transactions: CreditTransactionResponse[];
+  hasMore: boolean;
+}
+
 /** Balance only, for the navbar pill. */
 export interface CreditBalanceSummaryResponse {
   credits: number;

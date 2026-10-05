@@ -10,6 +10,8 @@ import ReportArticleShell from '@/components/ui/sections/ReportArticleShell';
 import ReportFooter from '@/components/ui/sections/ReportFooter';
 import ReportSection from '@/components/ui/sections/ReportSection';
 import ReportSectionHeader from '@/components/ui/sections/ReportSectionHeader';
+import ReportGenerationControl from '@/components/credits/ReportGenerationControl';
+import { CreditReportKind } from '@prisma/client';
 import SectionHeading from '@/components/ui/sections/SectionHeading';
 import { parseMarkdown } from '@/util/parse-markdown';
 import { CheckCircleIcon, XCircleIcon } from '@heroicons/react/24/solid';
@@ -92,6 +94,15 @@ export default function TickerCategoryReport({
         modifiedDate={modifiedDate}
         formattedModifiedDate={formattedModifiedDate}
         actionHref={`/stocks/${tickerData.exchange}/${tickerData.symbol}`}
+        action={
+          <ReportGenerationControl
+            variant="section"
+            kind={CreditReportKind.Stock}
+            symbol={tickerData.symbol}
+            exchange={tickerData.exchange}
+            lastReportGeneratedAt={modifiedDate.toISOString()}
+          />
+        }
       />
 
       <Prose>

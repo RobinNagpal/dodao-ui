@@ -20,9 +20,23 @@ interface MobileTopNavProps {
   isLoggedIn: boolean;
   /** Credit balance, once loaded. Shown next to the credits link. */
   credits: number | undefined;
+  /** Whether to offer credits to a signed-out visitor instead of the balance link. */
+  showBuyCreditsPrompt: boolean;
+  /** Opens the login prompt — a signed-out visitor has to log in before buying. */
+  onBuyCreditsClick: () => void;
 }
 
-export default function MobileTopNav({ mobileMenuOpen, setMobileMenuOpen, industries, industriesLoading, navItems, isLoggedIn, credits }: MobileTopNavProps) {
+export default function MobileTopNav({
+  mobileMenuOpen,
+  setMobileMenuOpen,
+  industries,
+  industriesLoading,
+  navItems,
+  isLoggedIn,
+  credits,
+  showBuyCreditsPrompt,
+  onBuyCreditsClick,
+}: MobileTopNavProps) {
   const pathname = usePathname() ?? '';
   const isStocksRoute = pathname.startsWith('/stocks');
   const isEtfsRoute = pathname.startsWith('/etfs');
@@ -65,6 +79,22 @@ export default function MobileTopNav({ mobileMenuOpen, setMobileMenuOpen, indust
                     {item.name}
                   </Link>
                 ))}
+              </div>
+            )}
+            {/* Signed out: same offer as the desktop pill. The drawer closes
+                first so the login modal isn't opened inside this dialog. */}
+            {showBuyCreditsPrompt && (
+              <div className="-mx-3 py-6">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setMobileMenuOpen(false);
+                    onBuyCreditsClick();
+                  }}
+                  className="block w-full rounded-lg py-2 px-3 text-left text-base/7 font-semibold hover:bg-surface text-heading dark:hover:bg-white/5"
+                >
+                  Buy Credits
+                </button>
               </div>
             )}
             <div className="space-y-2 py-6">
