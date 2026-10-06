@@ -46,7 +46,7 @@ async function getHandler(req: NextRequest, userContext: DoDaoJwtTokenPayload): 
 }
 
 // POST /api/[spaceId]/users/report-generation — reserves one credit (taken in
-// Stripe only once the report is generated) and queues a
+// Stripe only once the report is generated) and queues
 // a full regeneration of the report, even if an admin or nightly run is already
 // going.
 //
