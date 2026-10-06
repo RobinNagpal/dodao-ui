@@ -1,7 +1,7 @@
 import PrivateWrapper from '@/components/auth/PrivateWrapper';
 import ChapterRelatedSections from '@/components/industry-tariff/chapter/ChapterRelatedSections';
 import ChapterSectionActions, { type ChapterSectionAction } from '@/components/industry-tariff/chapter/ChapterSectionActions';
-import { ChapterRouteInfo } from '@/utils/tariff-reports/chapter-route-helpers';
+import { ChapterRouteInfo, chapterEditHref } from '@/utils/tariff-reports/chapter-route-helpers';
 import type { ReactNode } from 'react';
 
 interface ChapterPlaceholderProps {
@@ -35,11 +35,9 @@ export default function ChapterPlaceholder({ chapter, pageTitle, currentSectionS
               <h1 className="text-2xl md:text-3xl font-bold tracking-tight heading-color">{pageTitle}</h1>
               <p className="mt-3 max-w-3xl text-muted-foreground">{description}</p>
             </div>
-            {actions && actions.length > 0 && (
-              <PrivateWrapper>
-                <ChapterSectionActions chapterSlug={chapter.slug} actions={actions} />
-              </PrivateWrapper>
-            )}
+            <PrivateWrapper>
+              <ChapterSectionActions chapterSlug={chapter.slug} actions={actions ?? []} editHref={chapterEditHref(chapter.slug, currentSlug)} />
+            </PrivateWrapper>
           </div>
         </header>
 
