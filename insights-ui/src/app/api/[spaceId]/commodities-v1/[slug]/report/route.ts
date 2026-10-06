@@ -1,3 +1,4 @@
+import { truncateForLog } from '@/utils/route-param-utils';
 import { CommodityWithAllData, getCommodityWithAllData } from '@/utils/commodity-analysis-reports/get-commodity-report-data-utils';
 import { notFoundError } from '@dodao/web-core/api/errors/notFoundError';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
@@ -14,7 +15,7 @@ import { NextRequest } from 'next/server';
 async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId: string; slug: string }> }): Promise<CommodityWithAllData> {
   const { slug } = await context.params;
   const commodity = getCommodityWithAllData(slug);
-  if (!commodity) throw notFoundError(`No commodity report found for slug "${slug.slice(0, 100)}"`);
+  if (!commodity) throw notFoundError(`No commodity report found for slug ${truncateForLog(slug)}`);
   return commodity;
 }
 

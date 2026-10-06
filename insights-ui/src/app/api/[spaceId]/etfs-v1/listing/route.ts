@@ -6,13 +6,12 @@ import {
   createEtfSearchFilter,
   createEtfCachedScoreFilter,
   createEtfFutureReturnsFilter,
-  findInvalidEtfNumericFilterParam,
   hasEtfFiltersAppliedServer,
   hasAdvancedMorFilters,
   parseEtfFilterParams,
   parseNumericStringValue,
-  parseRangeParam,
-  parseNumericFilterValue,
+  parseEtfNumericFilterParam,
+  parseEtfRangeFilterParam,
   matchesNumericCriteria,
   extractCaptureRatioForPeriod,
   extractRiskLevelForPeriod,
@@ -24,7 +23,6 @@ import {
 } from '@/utils/etf-filter-utils';
 import { shouldIncludeUnpopulatedForRequest } from '@/utils/etf-listing-visibility';
 import { getEtfExchangesByCountry, isEtfSupportedCountry } from '@/utils/etfCountryExchangeUtils';
-import { badRequestError } from '@dodao/web-core/api/errors/badRequestError';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { Prisma } from '@prisma/client';
 import { NextRequest } from 'next/server';
@@ -131,13 +129,9 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
   const page = parsePageParam(searchParams);
   const pageSize = parsePageSizeParam(searchParams, 'pageSize', DEFAULT_PAGE_SIZE);
 
+  // Filter values come from a free-text input, so an invalid one is ignored (with
+  // a warn) by the filter builders below rather than failing the whole listing.
   const filters = parseEtfFilterParams(req);
-  // Unknown query keys (tracking params, scanner junk) are ignored; only the
-  // numeric filters this route uses are validated.
-  const invalidFilterParam = findInvalidEtfNumericFilterParam(filters);
-  if (invalidFilterParam) {
-    throw badRequestError(`Invalid '${invalidFilterParam}' query param`);
-  }
   const filtersApplied = hasEtfFiltersAppliedServer(filters);
   const hasMorFilters = hasAdvancedMorFilters(filters);
 
@@ -210,14 +204,15 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
 
   // Check if we need application-level post-filtering / sorting. AUM is a
   // formatted string column, so its numeric filter is evaluated in app code.
-  const aumCriteria = parseNumericFilterValue(filters[EtfFilterParamKey.AUM]);
+  const aumCriteria = parseEtfNumericFilterParam(filters, EtfFilterParamKey.AUM);
   const needsPostFilter = aumCriteria !== null || hasMorFilters || needsAppSort;
 
-  // Pre-parse active Mor advanced filters for post-filtering
+  // Pre-parse active Mor advanced filters for post-filtering. An invalid capture-ratio
+  // range is ignored (with a warn) rather than failing the request.
   const activeMorFilters = MOR_ADVANCED_FILTERS.map((def) => ({
     ...def,
     raw: filters[def.paramKey]?.trim() || null,
-    range: def.kind !== 'risk' ? parseRangeParam(filters[def.paramKey]) : null,
+    range: def.kind !== 'risk' ? parseEtfRangeFilterParam(filters, def.paramKey) : null,
   })).filter((f) => f.raw);
 
   const include = hasMorFilters ? etfListingIncludeWithMorRisk : etfListingInclude;

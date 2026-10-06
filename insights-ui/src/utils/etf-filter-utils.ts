@@ -125,7 +125,7 @@ export function parseNumericFilterValue(raw: string | undefined): NumericFilterC
 
   const opMatch = v.match(/^(gt|lt|eq):(.+)$/);
   if (opMatch) {
-    const value = parseNumericStringValue(opMatch[2]);
+    const value = parseNumericFilterInputValue(opMatch[2]);
     if (value === null) return null;
     return { op: opMatch[1] as NumericFilterOp, value };
   }
@@ -720,7 +720,7 @@ function parseRangeFilter(
   const opMatch = v.match(/^(gt|lt|eq):(.+)$/);
   if (opMatch) {
     const op = opMatch[1] as NumericFilterOp;
-    const value = parseNumericStringValue(opMatch[2]);
+    const value = parseNumericFilterInputValue(opMatch[2]);
     const shown = value !== null ? formatCompactNumber(value) : opMatch[2];
     return {
       type,
@@ -732,12 +732,14 @@ function parseRangeFilter(
     };
   }
 
-  const [minStr, maxStr] = v.split('-');
-  const minValue = minStr ? parseFloat(minStr) : undefined;
-  const maxValue = maxStr ? parseFloat(maxStr) : undefined;
+  // An unparsable value still gets a chip (showing the raw text) so the user can remove it; the
+  // server ignores that filter.
+  const range = parseRangeParam(v);
+  const minValue = range?.min;
+  const maxValue = range?.max;
 
   const matchingOption = options.find((opt) => opt.value === v);
-  const label = matchingOption ? matchingOption.label : `${defaultLabel}: ${formatRange(minValue, maxValue)}`;
+  const label = matchingOption ? matchingOption.label : `${defaultLabel}: ${range ? formatRange(minValue, maxValue) : v}`;
 
   return { type, paramKey, raw: v, minValue, maxValue, label };
 }
@@ -1197,7 +1199,8 @@ export function parseNumericStringValue(value: string | null | undefined): numbe
   if (!raw) return null;
 
   const cleaned = raw.replace(/,/g, '').replace(/^\$/, '').replace(/%$/, '').trim();
-  const match = cleaned.match(/^([+-]?\d+(?:\.\d+)?)\s*([KMBT])?$/i);
+  // Accepts `5`, `1.5`, `.5` and `1.` (plus an optional K/M/B/T suffix). Exponents and `Infinity` are rejected.
+  const match = cleaned.match(/^([+-]?(?:\d+\.?\d*|\.\d+))\s*([KMBT])?$/i);
   if (!match) return null;
 
   const num = Number(match[1]);
@@ -1205,65 +1208,83 @@ export function parseNumericStringValue(value: string | null | undefined): numbe
 
   const suffix = (match[2] || '').toUpperCase();
   const mult = suffix === 'K' ? 1_000 : suffix === 'M' ? 1_000_000 : suffix === 'B' ? 1_000_000_000 : suffix === 'T' ? 1_000_000_000_000 : 1;
-  return num * mult;
+  const result = num * mult;
+  // A huge mantissa times a suffix can still overflow to Infinity.
+  return Number.isFinite(result) ? result : null;
 }
 
+/**
+ * Parses a number typed into a filter's custom-value input. Same as {@link parseNumericStringValue},
+ * except a comma is only accepted as a thousands separator (`1,500`, `2,000,000.5`): `1,5` could mean
+ * 1.5 or 15, so it is treated as invalid rather than guessed.
+ */
+function parseNumericFilterInputValue(value: string): number | null {
+  const unsigned = value.trim().replace(/^[+-]/, '').replace(/^\$/, '');
+  if (unsigned.includes(',') && !/^\d{1,3}(?:,\d{3})+(?:\.\d*)?(?:\s*[KMBT%])?$/i.test(unsigned)) return null;
+  return parseNumericStringValue(value);
+}
+
+/** A plain non-negative range bound: `5`, `1.5`, `.5`, `1.`. */
+const RANGE_BOUND_RE = /^(?:\d+\.?\d*|\.\d+)$/;
+
+/**
+ * Parses a `<min>-<max>` range (either bound optional). Returns null when the value is not a range or
+ * either bound is not a finite plain number (e.g. `abc`, `Infinity`, `1e999`, a 400-digit run), so
+ * NaN/Infinity can never reach Prisma as `gte`/`lte`.
+ */
 export function parseRangeParam(param: string | undefined): { min?: number; max?: number } | null {
   if (!param || !param.trim()) return null;
-  const [minStr, maxStr] = param.split('-');
-  const min = minStr ? parseFloat(minStr) : undefined;
-  const max = maxStr ? parseFloat(maxStr) : undefined;
+  const parts = param.trim().split('-');
+  if (parts.length !== 2) return null;
+  const parseBound = (str: string): number | undefined | null => {
+    const t = str.trim();
+    if (!t) return undefined;
+    if (!RANGE_BOUND_RE.test(t)) return null;
+    const n = Number(t);
+    return Number.isFinite(n) ? n : null;
+  };
+  const min = parseBound(parts[0]);
+  const max = parseBound(parts[1]);
+  if (min === null || max === null) return null;
   if (min === undefined && max === undefined) return null;
-  // A non-numeric bound (e.g. `abc`) would otherwise reach Prisma as `gte: NaN`.
-  if (Number.isNaN(min) || Number.isNaN(max)) return null;
   return { min, max };
 }
 
-/** Params whose value is parsed by {@link parseNumericFilterValue} (range, operator, or `negative`). */
-const ETF_NUMERIC_FILTER_PARAM_KEYS: ReadonlyArray<EtfFilterParamKey> = [
-  EtfFilterParamKey.AUM,
-  EtfFilterParamKey.EXPENSE_RATIO,
-  EtfFilterParamKey.PE_RATIO,
-  EtfFilterParamKey.DIVIDEND_TTM,
-  EtfFilterParamKey.DIVIDEND_YIELD,
-  EtfFilterParamKey.HOLDINGS,
-  EtfFilterParamKey.VOLUME,
-  EtfFilterParamKey.BETA,
-  EtfFilterParamKey.DIVIDEND_YEARS,
-  EtfFilterParamKey.SORTINO,
-  EtfFilterParamKey.SHARPE,
-  EtfFilterParamKey.EXPECTED_RETURN_1YR,
-  EtfFilterParamKey.EXPECTED_RETURN_3YR,
-  EtfFilterParamKey.EXPECTED_RETURN_5YR,
-];
+const MAX_LOGGED_FILTER_VALUE_LENGTH = 40;
+
+/** One warn line for a filter value we are ignoring. Filter values come from a free-text input, so an
+ *  invalid one must not fail the whole listing (the client would show "0 ETFs"); we drop that filter. */
+function warnIgnoredEtfFilter(paramKey: string, raw: string): void {
+  const shown = raw.length > MAX_LOGGED_FILTER_VALUE_LENGTH ? `${raw.slice(0, MAX_LOGGED_FILTER_VALUE_LENGTH)}…` : raw;
+  console.warn(`[etf-filters] Ignoring invalid '${paramKey}' filter value: ${JSON.stringify(shown)}`);
+}
 
 /**
- * Returns the first numeric filter param whose (non-blank) value cannot be parsed, or null when all
- * numeric filters are valid. Text/enum filters (category, group, issuer, risk level, …) are not
- * checked: an unknown value there just yields an empty result. Used by the listing API to reject
- * junk values with a 400 instead of silently ignoring them or sending NaN to Prisma.
+ * Parses a numeric filter param (bucket range, `op:value`, or `negative`) from the request filters.
+ * Blank → null. An invalid value is ignored (null) with one warn line naming the param.
  */
-export function findInvalidEtfNumericFilterParam(filters: EtfFilterParams): EtfFilterParamKey | null {
-  for (const key of ETF_NUMERIC_FILTER_PARAM_KEYS) {
-    const raw = filters[key]?.trim();
-    if (raw && parseNumericFilterValue(raw) === null) return key;
-  }
-  for (const def of ALL_SCORE_DEFS) {
-    const raw = filters[def.paramKey]?.trim();
-    if (raw && !Number.isFinite(parseInt(raw, 10))) return def.paramKey;
-  }
-  for (const def of MOR_ADVANCED_FILTERS) {
-    if (def.kind === 'risk') continue;
-    const raw = filters[def.paramKey]?.trim();
-    if (raw && parseRangeParam(raw) === null) return def.paramKey;
-  }
-  return null;
+export function parseEtfNumericFilterParam(filters: EtfFilterParams, paramKey: EtfFilterParamKey): NumericFilterCriteria | null {
+  const raw = filters[paramKey]?.trim();
+  if (!raw) return null;
+  const criteria = parseNumericFilterValue(raw);
+  if (!criteria) warnIgnoredEtfFilter(paramKey, raw);
+  return criteria;
+}
+
+/** Range-only variant of {@link parseEtfNumericFilterParam}, used by the advanced (Mor) capture-ratio filters. */
+export function parseEtfRangeFilterParam(filters: EtfFilterParams, paramKey: EtfFilterParamKey): { min?: number; max?: number } | null {
+  const raw = filters[paramKey]?.trim();
+  if (!raw) return null;
+  const range = parseRangeParam(raw);
+  if (!range) warnIgnoredEtfFilter(paramKey, raw);
+  return range;
 }
 
 /** Assign a numeric filter (bucket range, operator, or negative) onto `target[key]`
- *  when the param resolves to usable criteria. Shared by financial + analyzer filters. */
-function assignNumericFilter<T extends object>(target: T, key: keyof T, raw: string | undefined): void {
-  const criteria = parseNumericFilterValue(raw);
+ *  when the param resolves to usable criteria; an invalid value is skipped with a warn.
+ *  Shared by financial + analyzer + future-returns filters. */
+function assignNumericFilter<T extends object>(target: T, key: keyof T, filters: EtfFilterParams, paramKey: EtfFilterParamKey): void {
+  const criteria = parseEtfNumericFilterParam(filters, paramKey);
   if (!criteria) return;
   const prismaFilter = numericCriteriaToPrismaFilter(criteria);
   if (prismaFilter) (target as Record<string, unknown>)[key as string] = prismaFilter;
@@ -1272,7 +1293,7 @@ function assignNumericFilter<T extends object>(target: T, key: keyof T, raw: str
 export function createEtfFinancialFilter(filters: EtfFilterParams): Prisma.EtfFinancialInfoWhereInput {
   const where: Prisma.EtfFinancialInfoWhereInput = {};
 
-  assignNumericFilter(where, 'expenseRatio', filters[EtfFilterParamKey.EXPENSE_RATIO]);
+  assignNumericFilter(where, 'expenseRatio', filters, EtfFilterParamKey.EXPENSE_RATIO);
 
   // P/E keeps its special "Negative / N/A" bucket, which also matches null P/E.
   const peParam = filters[EtfFilterParamKey.PE_RATIO]?.trim();
@@ -1280,20 +1301,20 @@ export function createEtfFinancialFilter(filters: EtfFilterParams): Prisma.EtfFi
     if (peParam === 'negative') {
       where.OR = [{ pe: { lt: 0 } }, { pe: null }];
     } else {
-      assignNumericFilter(where, 'pe', peParam);
+      assignNumericFilter(where, 'pe', filters, EtfFilterParamKey.PE_RATIO);
     }
   }
 
-  assignNumericFilter(where, 'dividendTtm', filters[EtfFilterParamKey.DIVIDEND_TTM]);
+  assignNumericFilter(where, 'dividendTtm', filters, EtfFilterParamKey.DIVIDEND_TTM);
 
   const pf = filters[EtfFilterParamKey.PAYOUT_FREQUENCY];
   if (pf && pf.trim()) {
     where.payoutFrequency = { equals: pf, mode: 'insensitive' };
   }
 
-  assignNumericFilter(where, 'holdings', filters[EtfFilterParamKey.HOLDINGS]);
-  assignNumericFilter(where, 'volume', filters[EtfFilterParamKey.VOLUME]);
-  assignNumericFilter(where, 'dividendYield', filters[EtfFilterParamKey.DIVIDEND_YIELD]);
+  assignNumericFilter(where, 'holdings', filters, EtfFilterParamKey.HOLDINGS);
+  assignNumericFilter(where, 'volume', filters, EtfFilterParamKey.VOLUME);
+  assignNumericFilter(where, 'dividendYield', filters, EtfFilterParamKey.DIVIDEND_YIELD);
 
   return where;
 }
@@ -1301,10 +1322,10 @@ export function createEtfFinancialFilter(filters: EtfFilterParams): Prisma.EtfFi
 export function createEtfStockAnalyzerFilter(filters: EtfFilterParams): Prisma.EtfStockAnalyzerInfoWhereInput {
   const where: Prisma.EtfStockAnalyzerInfoWhereInput = {};
 
-  assignNumericFilter(where, 'beta1y', filters[EtfFilterParamKey.BETA]);
-  assignNumericFilter(where, 'divYears', filters[EtfFilterParamKey.DIVIDEND_YEARS]);
-  assignNumericFilter(where, 'sortino', filters[EtfFilterParamKey.SORTINO]);
-  assignNumericFilter(where, 'sharpe', filters[EtfFilterParamKey.SHARPE]);
+  assignNumericFilter(where, 'beta1y', filters, EtfFilterParamKey.BETA);
+  assignNumericFilter(where, 'divYears', filters, EtfFilterParamKey.DIVIDEND_YEARS);
+  assignNumericFilter(where, 'sortino', filters, EtfFilterParamKey.SORTINO);
+  assignNumericFilter(where, 'sharpe', filters, EtfFilterParamKey.SHARPE);
 
   const assetClass = filters[EtfFilterParamKey.ASSET_CLASS]?.trim();
   if (assetClass) {
@@ -1353,9 +1374,9 @@ export function createEtfStockAnalyzerFilter(filters: EtfFilterParams): Prisma.E
  *  EtfFutureReturns. Returns an empty object when no expected-return filter is set. */
 export function createEtfFutureReturnsFilter(filters: EtfFilterParams): Prisma.EtfFutureReturnsWhereInput {
   const where: Prisma.EtfFutureReturnsWhereInput = {};
-  assignNumericFilter(where, 'expectedNext1YrReturns', filters[EtfFilterParamKey.EXPECTED_RETURN_1YR]);
-  assignNumericFilter(where, 'expectedNext3YrReturns', filters[EtfFilterParamKey.EXPECTED_RETURN_3YR]);
-  assignNumericFilter(where, 'expectedNext5YrReturns', filters[EtfFilterParamKey.EXPECTED_RETURN_5YR]);
+  assignNumericFilter(where, 'expectedNext1YrReturns', filters, EtfFilterParamKey.EXPECTED_RETURN_1YR);
+  assignNumericFilter(where, 'expectedNext3YrReturns', filters, EtfFilterParamKey.EXPECTED_RETURN_3YR);
+  assignNumericFilter(where, 'expectedNext5YrReturns', filters, EtfFilterParamKey.EXPECTED_RETURN_5YR);
   return where;
 }
 
@@ -1381,9 +1402,11 @@ export function createEtfCachedScoreFilter(filters: EtfFilterParams): Prisma.Etf
   for (const def of ALL_SCORE_DEFS) {
     const raw = filters[def.paramKey]?.trim();
     if (!raw) continue;
-    const n = parseInt(raw, 10);
-    if (!Number.isFinite(n)) continue;
-    (where as Record<string, unknown>)[def.cachedScoreField] = { gte: n };
+    if (!/^\d+$/.test(raw) || !Number.isSafeInteger(Number(raw))) {
+      warnIgnoredEtfFilter(def.paramKey, raw);
+      continue;
+    }
+    (where as Record<string, unknown>)[def.cachedScoreField] = { gte: Number(raw) };
   }
   return where;
 }
