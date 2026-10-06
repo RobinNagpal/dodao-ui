@@ -1,6 +1,8 @@
-import { getReportContextBySlug, readIndustryTariffReportBySlug } from '@/scripts/industry-tariff-reports/tariff-report-repository';
+import { getReportContextBySlug, isValidTariffChapterSlug, readIndustryTariffReportBySlug } from '@/scripts/industry-tariff-reports/tariff-report-repository';
 import type { IndustryTariffReport } from '@/scripts/industry-tariff-reports/tariff-types';
+import { truncateForLog } from '@/utils/route-param-utils';
 import type { ChapterRouteInfo } from '@/utils/tariff-reports/chapter-route-helpers';
+import { notFoundError } from '@dodao/web-core/api/errors/notFoundError';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';
 
@@ -16,6 +18,11 @@ export interface ChapterTariffReportResponse {
 
 async function getHandler(_req: NextRequest, { params }: { params: Promise<{ chapterSlug: string }> }): Promise<ChapterTariffReportResponse> {
   const { chapterSlug } = await params;
+  // Reject slugs that can't be real chapter slugs (scanner probes) before any DB work.
+  // The middleware logs the resulting 404 as a single warn line.
+  if (!isValidTariffChapterSlug(chapterSlug)) {
+    throw notFoundError(`[tariff] Rejected invalid chapter slug ${truncateForLog(chapterSlug)}`);
+  }
   const [context, report] = await Promise.all([getReportContextBySlug(chapterSlug), readIndustryTariffReportBySlug(chapterSlug)]);
 
   return {

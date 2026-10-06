@@ -18,6 +18,8 @@ import { NextRequest } from 'next/server';
 // so keep it plain-English and free of internal hints.
 class HtsLookupError extends Error {
   readonly statusCode = 404;
+  /** Trust marker: withErrorHandling only honours `statusCode` on errors that set this. */
+  readonly isClientError = true;
   constructor(message: string) {
     super(message);
     this.name = 'HtsLookupError';

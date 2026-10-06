@@ -1,7 +1,7 @@
 import PrivateWrapper from '@/components/auth/PrivateWrapper';
 import TariffUpdatesActions from '@/components/industry-tariff/section-actions/TariffUpdatesActions';
 import { CountryNavigation } from '@/components/industry-tariff/renderers/CountryNavigation';
-import { getTariffIndustryDefinitionById, TariffIndustryId } from '@/scripts/industry-tariff-reports/tariff-industries';
+import { findIndustryByLegacyUrl } from '@/scripts/industry-tariff-reports/tariff-industries';
 import type { IndustryTariffReport } from '@/scripts/industry-tariff-reports/tariff-types';
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
 import { fetchIndustryTariffUpdatesMetadata } from '@/utils/tariff-reports/industry-metadata';
@@ -32,7 +32,8 @@ export default async function TariffUpdatesPage({ params }: { params: Promise<{ 
     return <div>Report not found</div>;
   }
 
-  const definition = getTariffIndustryDefinitionById(industryId as TariffIndustryId);
+  // Unknown industry ids never reach here: the shared `[industryId]/layout.tsx` 404s them.
+  const industryName = findIndustryByLegacyUrl(industryId)?.name ?? industryId;
 
   // Check if SEO data exists for this page
   const seoDetails = report.reportSeoDetails?.tariffUpdatesSeoDetails;
@@ -48,7 +49,7 @@ export default async function TariffUpdatesPage({ params }: { params: Promise<{ 
         {/* Title and Actions */}
         <div className="mb-4 pb-4 border-b border-border">
           <div className="flex justify-between items-center">
-            <h1 className="text-3xl font-bold heading-color">Top 5 Trade Partners - {definition.name} Industry</h1>
+            <h1 className="text-3xl font-bold heading-color">Top 5 Trade Partners - {industryName} Industry</h1>
             <PrivateWrapper>
               <TariffUpdatesActions industryId={industryId} />
             </PrivateWrapper>

@@ -1,5 +1,5 @@
-import { formatAxiosError } from '@dodao/web-core/api/helpers/adapters/formatAxiosError';
-import axios from 'axios';
+import { DiscordPostResult, postToDiscordWebhook } from '@dodao/web-core/api/helpers/adapters/discordWebhook';
+import { capLogText, MAX_LOGGED_INPUT_CHARS } from '@dodao/web-core/api/helpers/adapters/capLogText';
 import { NextRequest } from 'next/server';
 
 const staticPageGenerationError = 'rendered statically ';
@@ -14,23 +14,44 @@ export function isTransientClientFetchError(value: string): boolean {
   return transientClientFetchErrors.some((pattern) => value.includes(pattern));
 }
 
+const MAX_LOGGED_MESSAGE_CHARS = 1500; // the message is often a composed summary of already-capped parts
+const MAX_LOGGED_DETAILS_CHARS = 1000;
+const MAX_LOGGED_STACK_CHARS = 4000;
+
+/** Stack without the leading `Name: message` header (the message is already on the line), capped. */
+function formatStack(e: Error): string {
+  let stack = e.stack || '';
+  const header = `${e.name || 'Error'}: ${e.message}`;
+  if (e.message && stack.startsWith(header)) {
+    stack = stack.slice(header.length).replace(/^\n/, '');
+  } else if (e.message && e.message.length > MAX_LOGGED_INPUT_CHARS) {
+    stack = stack.split(e.message).join(capLogText(e.message));
+  }
+  return capLogText(stack, MAX_LOGGED_STACK_CHARS);
+}
+
 function formatLogErrorLine(message: string, params: Record<string, any>, e: Error | null, spaceId: string | null, blockchain: string | null): string {
-  const text = typeof message === 'string' ? message : safeStringify(message);
+  // Message, params and error text can carry request input (scanner payloads), so each is capped. The line is never dropped.
+  const text = capLogText(typeof message === 'string' ? message : safeStringify(message), MAX_LOGGED_MESSAGE_CHARS);
   const parts = [`[errorLogger] ${text}`];
   if (e instanceof Error) {
-    // Avoid repeating the error message when it is already part of the log message.
-    if (e.message && !text.includes(e.message)) parts.push(`error=${e.name || 'Error'}: ${e.message}`);
+    // Avoid repeating the error message when it is already part of the log message (callers may have capped it).
+    const errMessage = e.message ? capLogText(e.message) : '';
+    if (errMessage && !text.includes(errMessage) && !text.includes(e.message)) parts.push(`error=${e.name || 'Error'}: ${errMessage}`);
     // `cause` (e.g. undici's "fetch failed" → ECONNREFUSED) and own props (Prisma `code`/`meta`) carry the real reason.
     const details = errorDetails(e);
-    if (details) parts.push(`details=${details}`);
+    if (details) parts.push(`details=${capLogText(details, MAX_LOGGED_DETAILS_CHARS)}`);
   } else if (e) {
-    parts.push(`error=${safeStringify(e)}`);
+    parts.push(`error=${capLogText(safeStringify(e))}`);
   }
-  if (spaceId) parts.push(`spaceId=${spaceId}`);
-  if (blockchain) parts.push(`blockchain=${blockchain}`);
-  if (params && Object.keys(params).length > 0) parts.push(`params=${safeStringify(params)}`);
+  if (spaceId) parts.push(`spaceId=${capLogText(spaceId)}`);
+  if (blockchain) parts.push(`blockchain=${capLogText(blockchain)}`);
+  if (params && Object.keys(params).length > 0) parts.push(`params=${capLogText(safeStringify(params))}`);
   let line = parts.join(' | ');
-  if (e instanceof Error && e.stack) line += `\n${e.stack}`;
+  if (e instanceof Error && e.stack) {
+    const stack = formatStack(e);
+    if (stack) line += `\n${stack}`;
+  }
   return line;
 }
 
@@ -71,8 +92,8 @@ export async function logError(
   }
 
   console.log('[errorLogger] Posting error to Discord');
-  await postErrorOnDiscord(e, spaceId, blockchain, message, params);
-  console.log('[errorLogger] Error posted to Discord successfully');
+  const result = await postErrorOnDiscord(e, spaceId, blockchain, message, params);
+  if (result === 'posted') console.log('[errorLogger] Error posted to Discord successfully');
 }
 
 export async function logErrorRequest(e: Error | string | null, req: NextRequest) {
@@ -82,9 +103,10 @@ export async function logErrorRequest(e: Error | string | null, req: NextRequest
   }
 
   // Always log the error to console (one line). Headers are intentionally not logged (they carry cookies/tokens).
-  const errorText = typeof e === 'string' ? e : `${e.name || 'Error'}: ${e.message}`;
-  const stack = typeof e === 'object' && e.stack ? `\n${e.stack}` : '';
-  console.error(`[errorLogger] Request error: ${req.method} ${req.url} | ${errorText}${stack}`);
+  // URL and message can carry request input, so both are capped (the line is never dropped).
+  const errorText = typeof e === 'string' ? capLogText(e) : `${e.name || 'Error'}: ${capLogText(e.message ?? '')}`;
+  const stack = typeof e === 'object' && e.stack ? `\n${formatStack(e)}` : '';
+  console.error(`[errorLogger] Request error: ${req.method} ${capLogText(req.url)} | ${errorText}${stack}`);
 
   // Skip posting to Discord if the error should be ignored
   if (shouldIgnoreError(e)) {
@@ -115,11 +137,8 @@ export async function logErrorRequest(e: Error | string | null, req: NextRequest
   };
 
   console.log('[errorLogger] Posting request error to Discord');
-  axios.post(process.env.SERVER_ERRORS_WEBHOOK!, data).catch((err) => {
-    console.error('[errorLogger] Failed to post to Discord webhook:', formatAxiosError(err));
-    console.log('[errorLogger] Discord embed data:', JSON.stringify(embeds, null, 2));
-  });
-  console.log('[errorLogger] Request error posted to Discord successfully');
+  // Fire-and-forget (as before). postToDiscordWebhook never throws, truncates to Discord limits and honours 429 pauses.
+  void postToDiscordWebhook(process.env.SERVER_ERRORS_WEBHOOK, data);
 }
 
 function shouldIgnoreError(e: Error | string) {
@@ -159,7 +178,13 @@ function shouldIgnoreError(e: Error | string) {
   return false;
 }
 
-async function postErrorOnDiscord(e: Error | null, spaceId: string | null, blockchain: string | null, message: string, params: Record<string, any> = {}) {
+async function postErrorOnDiscord(
+  e: Error | null,
+  spaceId: string | null,
+  blockchain: string | null,
+  message: string,
+  params: Record<string, any> = {}
+): Promise<DiscordPostResult> {
   console.log('[errorLogger] postErrorOnDiscord called with:', {
     errorName: e?.name,
     errorMessage: e?.message?.substring(0, 100),
@@ -185,12 +210,12 @@ async function postErrorOnDiscord(e: Error | null, spaceId: string | null, block
         },
         {
           name: 'Message',
-          value: (message || '----').substr(0, 1000),
+          value: message || '----',
           inline: false,
         },
         {
           name: 'Params',
-          value: JSON.stringify(params || {}).substr(0, 1000),
+          value: JSON.stringify(params || {}),
           inline: false,
         },
       ],
@@ -214,7 +239,7 @@ async function postErrorOnDiscord(e: Error | null, spaceId: string | null, block
         },
         {
           name: 'Stack',
-          value: (e.stack || '----').substr(0, 1000),
+          value: e.stack || '----',
           inline: false,
         },
       ],
@@ -228,12 +253,7 @@ async function postErrorOnDiscord(e: Error | null, spaceId: string | null, block
     embeds,
   };
 
-  console.log('[errorLogger] Sending data to Discord webhook');
-  try {
-    await axios.post(process.env.SERVER_ERRORS_WEBHOOK!, data);
-    console.log('[errorLogger] Successfully posted to Discord webhook');
-  } catch (err) {
-    console.error('[errorLogger] Failed to post to Discord webhook:', formatAxiosError(err as any));
-    console.log('[errorLogger] Discord embed data that failed to send:', JSON.stringify(embeds, null, 2));
-  }
+  // Field values are truncated to Discord's limits inside postToDiscordWebhook (the full error is already in the console/Loki line).
+  // On a 429 Discord delivery is paused for `retry_after` and skipped alerts are counted, never thrown or logged one-by-one.
+  return postToDiscordWebhook(process.env.SERVER_ERRORS_WEBHOOK, data);
 }

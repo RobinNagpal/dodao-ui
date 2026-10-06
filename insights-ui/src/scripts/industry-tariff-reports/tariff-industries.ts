@@ -564,17 +564,6 @@ export const TariffIndustries: Record<string, TariffIndustryDefinition> = {
   },
 };
 
-export function getTariffIndustryDefinitionById(industryId: TariffIndustryId): TariffIndustryDefinition {
-  const industryDefinition = Object.entries(TariffIndustries).find((k, v) => {
-    return k[1].industryId === industryId;
-  });
-  if (!industryDefinition) {
-    throw new Error(`Industry ${industryId} not found`);
-  }
-
-  return industryDefinition[1];
-}
-
 // Looks up an industry by its `industryId` (the legacy URL slug stored in `tariff_chapter_reports.oldUrl`).
 // Non-throwing — returns undefined if the row's oldUrl doesn't match a known industry.
 export function findIndustryByLegacyUrl(oldUrl: string | null | undefined): TariffIndustryDefinition | undefined {
