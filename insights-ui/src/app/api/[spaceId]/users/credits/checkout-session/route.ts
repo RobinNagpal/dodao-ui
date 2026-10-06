@@ -37,9 +37,10 @@ function withQueryParam(url: string, key: string, value: string): string {
 // lost or forged, the signed webhook cannot.
 async function postHandler(req: NextRequest, userContext: DoDaoJwtTokenPayload): Promise<CreateCheckoutSessionResponse> {
   // Admin kill switch (App Settings → Payments) for when Stripe is having
-  // issues. Only blocks buying — existing credits can still be spent.
+  // issues. It only blocks buying; spending isn't gated here, but spending also
+  // reads and charges the Stripe ledger, so it can fail while Stripe is down.
   if (!(await getAppConfigBoolean('STRIPE_CREDIT_PURCHASES_ENABLED'))) {
-    throw new Error('Buying credits is temporarily unavailable. You can still use your existing credits.');
+    throw new Error('Buying credits is temporarily unavailable. Please try again later.');
   }
 
   const { userId } = userContext;

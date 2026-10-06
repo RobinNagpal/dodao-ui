@@ -6,6 +6,7 @@ import { AllExchanges, EXCHANGES, isExchange } from '@/utils/countryExchangeUtil
 import { ETF_OTHERS_GROUP_KEY, getEtfCategoryByName, getEtfGroupByKey } from '@/utils/etf-categorization-utils';
 import { createEtfStockAnalyzerFilter, EtfFilterParamKey } from '@/utils/etf-filter-utils';
 import { NextRequest } from 'next/server';
+import { parsePageParam, parsePageSizeParam } from '@/utils/pagination-param-utils';
 
 export type EtfReportStatus = 'generated' | 'missing' | 'in-progress' | 'failed';
 
@@ -128,8 +129,8 @@ const getHandler = async (
   const { spaceId } = await params;
   const { searchParams } = new URL(req.url);
 
-  const page = Math.max(1, parseInt(searchParams.get('page') || '1', 10));
-  const limit = Math.min(200, Math.max(1, parseInt(searchParams.get('limit') || '100', 10)));
+  const page = parsePageParam(searchParams);
+  const limit = parsePageSizeParam(searchParams, 'limit', 100);
 
   const exchangeRaw = normalizeUpperTrim(searchParams.get('exchange'));
   const exchange: AllExchanges | '' = exchangeRaw && isExchange(exchangeRaw) ? exchangeRaw : '';

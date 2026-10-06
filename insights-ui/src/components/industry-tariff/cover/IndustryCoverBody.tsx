@@ -2,7 +2,7 @@ import PrivateWrapper from '@/components/auth/PrivateWrapper';
 import ReportCoverActions from '@/components/industry-tariff/section-actions/ReportCoverActions';
 import { renderSection } from '@/components/industry-tariff/renderers/SectionRenderer';
 import TariffCrossLinks from '@/components/tariff-cross-links/TariffCrossLinks';
-import { getTariffIndustryDefinitionById, TariffIndustryId } from '@/scripts/industry-tariff-reports/tariff-industries';
+import { findIndustryByLegacyUrl } from '@/scripts/industry-tariff-reports/tariff-industries';
 import type { IndustryTariffReport } from '@/scripts/industry-tariff-reports/tariff-types';
 import { parseMarkdown } from '@/util/parse-markdown';
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
@@ -17,8 +17,6 @@ import { Calculator, ListTree } from 'lucide-react';
 // URLs, which now mirror the cover content with `<link rel="canonical">`
 // pointing back at the cover instead of 301-redirecting away.
 export async function renderIndustryCoverBody(industryId: string): Promise<JSX.Element> {
-  const definition = getTariffIndustryDefinitionById(industryId as TariffIndustryId);
-
   const reportResponse = await fetch(`${getBaseUrlForServerSidePages()}/api/industry-tariff-reports/${industryId}`, {
     next: { tags: [tariffReportTag(industryId)] },
   });
@@ -35,6 +33,9 @@ export async function renderIndustryCoverBody(industryId: string): Promise<JSX.E
       </div>
     );
   }
+
+  // Unknown industry ids never reach here: the shared `[industryId]/layout.tsx` 404s them.
+  const industryName = findIndustryByLegacyUrl(industryId)?.name ?? industryId;
 
   const seoDetails = report.reportSeoDetails?.reportCoverSeoDetails;
   const isSeoMissing = !seoDetails || !seoDetails.title || !seoDetails.shortDescription || !seoDetails.keywords?.length;
@@ -105,7 +106,7 @@ export async function renderIndustryCoverBody(industryId: string): Promise<JSX.E
 
         {tariffUpdatesSummary.length > 0 &&
           renderSection(
-            `Latest ${definition.name} Tariff Actions`,
+            `Latest ${industryName} Tariff Actions`,
             <div>
               <div className="space-y-4 mb-4">
                 {tariffUpdatesSummary.map((tariff, index) => (

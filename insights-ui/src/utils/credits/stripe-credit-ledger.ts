@@ -31,14 +31,16 @@ export function creditsFromStripeBalance(balance: number): number {
   return Math.max(0, Math.floor(-balance / STRIPE_CENTS_PER_CREDIT));
 }
 
-/** Credits added (+) or taken (−) by one balance transaction. */
-export function creditDeltaOf(transaction: Stripe.CustomerBalanceTransaction): number {
-  return -transaction.amount / STRIPE_CENTS_PER_CREDIT;
-}
+/**
+ * Balance reads are on a page's critical path (and inside the spend
+ * transaction), so they get a tighter budget than the client default: when
+ * Stripe is down the caller should find out in seconds, not a minute.
+ */
+const BALANCE_READ_OPTIONS: Stripe.RequestOptions = { timeout: 5_000, maxNetworkRetries: 1 };
 
 /** Live balance straight from Stripe. Used where it must be exact: deciding whether a run can start. */
 export async function fetchStripeCredits(stripeCustomerId: string): Promise<number> {
-  const customer = await getStripeClient().customers.retrieve(stripeCustomerId);
+  const customer = await getStripeClient().customers.retrieve(stripeCustomerId, {}, BALANCE_READ_OPTIONS);
   return customer.deleted ? 0 : creditsFromStripeBalance(customer.balance);
 }
 
@@ -64,12 +66,39 @@ export interface GrantPurchaseInput {
   amountInCents: number;
 }
 
+/** How far back `findPurchaseInStripe` looks: one list call, newest first. */
+const PURCHASE_LOOKBACK = 100;
+
 /**
- * Adds purchased credits to the customer balance. The idempotency key makes
- * concurrent or retried webhook deliveries (within Stripe's 24h window) return
- * the same transaction instead of crediting twice.
+ * The purchase transaction already written for this checkout session, if it is
+ * among the customer's newest `PURCHASE_LOOKBACK` balance transactions. Stripe
+ * can't query by metadata, but a webhook is only retried for 3 days, and no
+ * customer adds 100 ledger entries in that time.
  */
-export function grantPurchaseInStripe(input: GrantPurchaseInput): Promise<Stripe.CustomerBalanceTransaction> {
+export async function findPurchaseInStripe(stripeCustomerId: string, stripeCheckoutSessionId: string): Promise<Stripe.CustomerBalanceTransaction | null> {
+  const recent = await getStripeClient().customers.listBalanceTransactions(stripeCustomerId, { limit: PURCHASE_LOOKBACK });
+  return (
+    recent.data.find(
+      (transaction) => transaction.metadata?.type === LEDGER_ENTRY_TYPE.Purchase && transaction.metadata?.checkoutSessionId === stripeCheckoutSessionId
+    ) ?? null
+  );
+}
+
+/**
+ * Adds purchased credits to the customer balance, at most once per checkout
+ * session. Two layers keep a retried webhook from crediting twice:
+ * - the idempotency key returns the same transaction for concurrent or retried
+ *   deliveries, but Stripe only keeps it for 24h;
+ * - webhooks are retried for 3 days, so past that window (e.g. the DB insert
+ *   after this call kept failing) the existing transaction is found by its
+ *   `checkoutSessionId` metadata and reused instead of creating a second one.
+ */
+export async function grantPurchaseInStripe(input: GrantPurchaseInput): Promise<Stripe.CustomerBalanceTransaction> {
+  const existing = await findPurchaseInStripe(input.stripeCustomerId, input.stripeCheckoutSessionId);
+  if (existing) {
+    return existing;
+  }
+
   return getStripeClient().customers.createBalanceTransaction(
     input.stripeCustomerId,
     {
@@ -101,7 +130,8 @@ export interface ChargeReportInput {
 
 /**
  * Takes one credit for a generated report. Keyed on the generation request, so
- * two settles of the same run can never charge twice.
+ * two settles of the same run can never charge twice, and a retry after an
+ * error that hid a landed charge gets the original transaction back.
  */
 export function chargeReportInStripe(input: ChargeReportInput): Promise<Stripe.CustomerBalanceTransaction> {
   return getStripeClient().customers.createBalanceTransaction(

@@ -4,6 +4,7 @@ import { User, UserRole } from '@prisma/client';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { NextRequest } from 'next/server';
 import { withLoggedInAdmin } from '../helpers/withLoggedInAdmin';
+import { parsePageParam, parsePageSizeParam } from '@/utils/pagination-param-utils';
 
 export interface UserResponse {
   id: string;
@@ -40,8 +41,8 @@ export interface UserUpdateRequest {
 
 async function getHandler(req: NextRequest, userContext: KoalaGainsJwtTokenPayload): Promise<UsersResponse> {
   const { searchParams } = new URL(req.url);
-  const page = Math.max(1, parseInt(searchParams.get('page') || '1', 10));
-  const limit = Math.min(200, Math.max(1, parseInt(searchParams.get('limit') || '100', 10)));
+  const page = parsePageParam(searchParams);
+  const limit = parsePageSizeParam(searchParams, 'limit', 100);
   const roleParam = searchParams.get('role');
   const isManagerParam = searchParams.get('isManager');
   const isActiveParam = searchParams.get('isActive');

@@ -4,7 +4,7 @@ import FloatingReportCta from '@/components/ui/credits/FloatingReportCta';
 import ReportFreshnessBar from '@/components/ui/credits/ReportFreshnessBar';
 import RegenerateButton from '@/components/ui/credits/RegenerateButton';
 import StatusBadge from '@/components/ui/StatusBadge';
-import { ReportGenerationStatusResponse, ReportSpendStatus, ReportTargetRequest, TriggerReportGenerationResponse } from '@/types/credits';
+import { ReportGenerationStatusResponse, ReportTargetRequest, TriggerReportGenerationResponse } from '@/types/credits';
 import { KoalaGainsSession } from '@/types/auth';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { formatReportAge, formatReportGeneratedDate, formatShortDate } from '@/utils/credits/credit-format';
@@ -14,7 +14,7 @@ import { useNotificationContext } from '@dodao/web-core/ui/contexts/Notification
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import { CreditReportKind } from '@prisma/client';
+import { CreditReportKind, ReportSpendStatus } from '@prisma/client';
 import { useSession } from 'next-auth/react';
 import dynamic from 'next/dynamic';
 import { useCallback, useEffect, useState } from 'react';
@@ -105,12 +105,12 @@ export default function ReportGenerationControl({
   );
   const lastRegeneration = status?.lastRegeneration;
   const historyNote = generationInProgress
-    ? badge('InProgress', REPORT_STATUS_BADGES.InProgress.label)
+    ? badge(ReportSpendStatus.InProgress, REPORT_STATUS_BADGES.InProgress.label)
     : !lastRegeneration
     ? null
     : lastRegeneration.succeeded
-    ? badge('Completed', `${REPORT_STATUS_BADGES.Completed.label} by you on ${formatShortDate(lastRegeneration.finishedAt)}`)
-    : badge('Failed', `${REPORT_STATUS_BADGES.Failed.label} · ${formatShortDate(lastRegeneration.finishedAt)}`);
+    ? badge(ReportSpendStatus.Completed, `${REPORT_STATUS_BADGES.Completed.label} by you on ${formatShortDate(lastRegeneration.finishedAt)}`)
+    : badge(ReportSpendStatus.Failed, `${REPORT_STATUS_BADGES.Failed.label} · ${formatShortDate(lastRegeneration.finishedAt)}`);
 
   const openModal = useCallback(async () => {
     if (!session) {

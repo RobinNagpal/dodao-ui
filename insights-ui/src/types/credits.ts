@@ -1,4 +1,4 @@
-import { CreditReportKind } from '@prisma/client';
+import { CreditReportKind, ReportSpendStatus } from '@prisma/client';
 
 /** Credits burned by one report generation. */
 export const CREDITS_PER_REPORT = 1;
@@ -38,13 +38,6 @@ export function getCreditPack(packKey: string): CreditPack | undefined {
 export const CREDITS_PURCHASED_QUERY_PARAM = 'creditsPurchased';
 
 /**
- * Where a paid regeneration stands (mirrors the Prisma `ReportSpendStatus`). The
- * credit is reserved when the report is queued so it can't be spent twice, and
- * only taken once the report exists; a failed report is never charged.
- */
-export type ReportSpendStatus = 'InProgress' | 'Completed' | 'Failed';
-
-/**
  * Kind of a credit history row. Purchases and charged reports come from the
  * Stripe ledger; `Adjustment` is anything else on it (e.g. a manual credit added
  * in the Stripe dashboard).
@@ -56,14 +49,23 @@ export interface CreditTransactionResponse {
   id: string;
   type: CreditHistoryEntryType;
   credits: number;
-  /** Balance after this entry. Null for a run still in progress, which Stripe hasn't charged yet. */
+  /**
+   * The Stripe ledger balance after this entry, in whole credits. Reservations
+   * (runs still in progress) are not on the ledger, so this can be higher than
+   * what was spendable at the time. Null for a run still in progress, which
+   * Stripe hasn't charged yet.
+   */
   balanceAfter: number | null;
   description: string;
   amountInCents: number | null;
   reportLabel: string | null;
   /** Link to the stock / ETF page the row is about, when it still exists. */
   reportHref: string | null;
-  /** Only set on report spends. */
+  /**
+   * Only set on report spends. The Prisma enum: a credit is reserved when the
+   * report is queued and only taken once the report exists; a failed report is
+   * never charged.
+   */
   reportStatus: ReportSpendStatus | null;
   /** True for purchases, whose Stripe receipt can be opened. */
   hasReceipt: boolean;
@@ -80,6 +82,8 @@ export interface CreditBalanceResponse {
   transactions: CreditTransactionResponse[];
   /** True when older history rows exist beyond `transactions`. */
   hasMore: boolean;
+  /** Stripe (which holds the balance and ledger) could not be reached; the numbers shown are incomplete. */
+  stripeUnavailable?: boolean;
 }
 
 /** A paid regeneration that finished since the user last looked. */
@@ -105,8 +109,8 @@ export interface AdminCreditUserResponse {
   name: string | null;
   email: string | null;
   username: string;
-  /** Spendable balance right now. */
-  credits: number;
+  /** Spendable balance right now. Null when it couldn't be read (e.g. Stripe failed for this user). */
+  credits: number | null;
   /** Credits bought, summed over every purchase. */
   purchasedCredits: number;
   /** Total charged across those purchases, in USD cents. */

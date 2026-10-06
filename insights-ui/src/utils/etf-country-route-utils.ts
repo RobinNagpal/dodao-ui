@@ -1,3 +1,4 @@
+import { safeDecodeParam, truncateForLog } from '@/utils/route-param-utils';
 import { notFound, redirect } from 'next/navigation';
 import { SupportedCountries } from '@/utils/countryExchangeUtils';
 import { EtfSupportedCountry, ETF_SUPPORTED_COUNTRIES, isEtfSupportedCountry } from '@/utils/etfCountryExchangeUtils';
@@ -59,8 +60,12 @@ export const ALL_ETF_COUNTRIES = ETF_SUPPORTED_COUNTRIES;
  * Server-component only: calls `next/navigation` `redirect()`/`notFound()`, both of which throw.
  */
 export function resolveEtfCountryParam(rawCountry: string, usCanonicalPath: string): EtfSupportedCountry {
-  const decoded = decodeURIComponent(rawCountry);
+  const decoded = safeDecodeParam(rawCountry);
   if (decoded === SupportedCountries.US) redirect(usCanonicalPath);
-  if (!isEtfSupportedCountry(decoded)) notFound();
+  if (decoded === undefined || !isEtfSupportedCountry(decoded)) {
+    // Malformed encodings (a lone `%`) used to throw a URIError here → 500.
+    console.warn(`[etfs] unknown country param, returning 404: ${truncateForLog(rawCountry)}`);
+    notFound();
+  }
   return decoded;
 }
