@@ -3,6 +3,7 @@ import type { ChapterTariffReportResponse } from '@/app/api/industry-tariff-repo
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
 import { chapterCoverHref } from '@/utils/tariff-reports/chapter-route-helpers';
 import { tariffReportTag } from '@/utils/tariff-report-tags';
+import { isValidTariffChapterSlug, rejectTariffPageParam } from '@/utils/tariff-reports/tariff-input-validation';
 import type { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import type React from 'react';
@@ -16,6 +17,11 @@ async function fetchChapterTariffReport(chapterSlug: string): Promise<ChapterTar
 
 export default async function ChapterReportLayout({ children, params }: { children: React.ReactNode; params: Promise<{ chapterSlug: string }> }) {
   const { chapterSlug } = await params;
+  // The ONE logging chapter-slug guard for every `/industry-tariff-report/chapters/[chapterSlug]/**`
+  // page: malformed slugs (scanner probes) 404 before any fetch. Pages and generateMetadata repeat the
+  // check silently, so a rejected request logs this single `[input-rejected]` warn. A well-formed but
+  // unknown slug still falls through to the pages' normal not-found handling.
+  if (!isValidTariffChapterSlug(chapterSlug)) rejectTariffPageParam('chapterSlug', chapterSlug);
   const data = await fetchChapterTariffReport(chapterSlug);
 
   if (!data) {

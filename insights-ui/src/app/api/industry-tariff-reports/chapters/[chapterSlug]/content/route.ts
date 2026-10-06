@@ -14,6 +14,7 @@ import type { KoalaGainsJwtTokenPayload } from '@/types/auth';
 import { invalidateCloudFrontPaths } from '@/utils/cloudfront-cache-utils';
 import { CHAPTER_EDIT_FIELDS, type EditableReportContent, type EditableReportField } from '@/utils/tariff-reports/chapter-edit-fields';
 import { chapterCoverHref, chapterSectionHref } from '@/utils/tariff-reports/chapter-route-helpers';
+import { validateTariffChapterSlug } from '@/utils/tariff-reports/tariff-input-validation';
 import { badRequestError } from '@dodao/web-core/api/errors/badRequestError';
 import { NextRequest } from 'next/server';
 
@@ -41,7 +42,7 @@ async function putHandler(
   _userContext: KoalaGainsJwtTokenPayload,
   { params }: { params: Promise<{ chapterSlug: string }> }
 ): Promise<IndustryTariffReport> {
-  const { chapterSlug } = await params;
+  const chapterSlug = validateTariffChapterSlug((await params).chapterSlug);
   const { page, content } = (await req.json()) as UpdateChapterContentRequest;
   const fields = CHAPTER_EDIT_FIELDS[page];
   if (!fields) throw badRequestError(`Unknown chapter page ${JSON.stringify(String(page).slice(0, 100))}`);

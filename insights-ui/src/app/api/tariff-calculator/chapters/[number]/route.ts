@@ -1,5 +1,6 @@
 import { prisma } from '@/prisma';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
+import { parseHtsChapterNumberParam } from '@/utils/tariff-reports/tariff-input-validation';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { HtsCode } from '@prisma/client';
 import { NextRequest } from 'next/server';
@@ -18,17 +19,9 @@ export interface TariffChapterDetail {
   rows: HtsCode[];
 }
 
-function parseChapterNumber(raw: string): number | null {
-  if (!/^\d{1,2}$/.test(raw)) return null;
-  const n = parseInt(raw, 10);
-  if (!Number.isFinite(n) || n < 1 || n > 99) return null;
-  return n;
-}
-
 async function getHandler(_req: NextRequest, dynamic: { params: Promise<{ number: string }> }): Promise<TariffChapterDetail | null> {
-  const { number: rawNumber } = await dynamic.params;
-  const chapterNumber = parseChapterNumber(rawNumber);
-  if (chapterNumber === null) return null;
+  // Malformed chapter numbers (scanner probes) → prefixed 404 before any DB work.
+  const chapterNumber = parseHtsChapterNumberParam((await dynamic.params).number);
 
   const chapter = await prisma.tariffChapter.findUnique({
     where: { spaceId_number: { spaceId: KoalaGainsSpaceId, number: chapterNumber } },

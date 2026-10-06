@@ -20,6 +20,7 @@ import {
   getChapterSectionCopy,
 } from '@/utils/tariff-reports/chapter-route-helpers';
 import { tariffReportTag } from '@/utils/tariff-report-tags';
+import { isValidTariffChapterSlug } from '@/utils/tariff-reports/tariff-input-validation';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import type { ReactNode } from 'react';
@@ -45,6 +46,8 @@ function pickSectionSeo(seo: TariffReportSeoDetails | null | undefined, sectionS
 }
 
 async function fetchChapterTariffReport(chapterSlug: string): Promise<ChapterTariffReportResponse | null> {
+  // Malformed slug: the chapter layout logs the rejection and 404s; skip the fetch silently here.
+  if (!isValidTariffChapterSlug(chapterSlug)) return null;
   const response = await fetch(`${getBaseUrlForServerSidePages()}/api/industry-tariff-reports/chapters/${chapterSlug}`, {
     next: { tags: [tariffReportTag(chapterSlug)] },
   });

@@ -10,13 +10,17 @@ import { chapterSectionHref } from '@/utils/tariff-reports/chapter-route-helpers
 import { getHtsChapterRefByIndustryId } from '@/utils/tariff-cross-links/hts-chapter-ref';
 import { getChapterSlugForOldUrl } from '@/utils/tariff-reports/seeded-chapter-reports';
 import { tariffReportTag } from '@/utils/tariff-report-tags';
+import { isValidTariffIndustryId } from '@/utils/tariff-reports/tariff-input-validation';
 import { Calculator, ListTree } from 'lucide-react';
+import { notFound } from 'next/navigation';
 
 // Shared async render for the industry cover body. Used by the cover route
 // itself and by the legacy `/evaluate-industry-areas` and `/all-countries-tariff-updates`
 // URLs, which now mirror the cover content with `<link rel="canonical">`
 // pointing back at the cover instead of 301-redirecting away.
 export async function renderIndustryCoverBody(industryId: string): Promise<JSX.Element> {
+  // Malformed / unknown industry: the `[industryId]` layout logs the rejection; 404 silently here.
+  if (!isValidTariffIndustryId(industryId)) notFound();
   const reportResponse = await fetch(`${getBaseUrlForServerSidePages()}/api/industry-tariff-reports/${industryId}`, {
     next: { tags: [tariffReportTag(industryId)] },
   });

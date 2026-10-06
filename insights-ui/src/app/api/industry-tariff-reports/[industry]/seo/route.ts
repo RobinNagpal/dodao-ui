@@ -1,6 +1,7 @@
 import { prisma } from '@/prisma';
 import type { ExecutiveSummary, TariffReportSeoDetails, TariffUpdatesForIndustry } from '@/scripts/industry-tariff-reports/tariff-types';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
+import { validateTariffIndustryId } from '@/utils/tariff-reports/tariff-input-validation';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';
 
@@ -11,7 +12,7 @@ export interface IndustrySeoResponse {
 }
 
 async function getHandler(req: NextRequest, { params }: { params: Promise<{ industry: string }> }): Promise<IndustrySeoResponse> {
-  const { industry } = await params;
+  const industry = validateTariffIndustryId((await params).industry);
   const row = await prisma.tariffChapterReport.findUnique({
     where: { spaceId_oldUrl: { spaceId: KoalaGainsSpaceId, oldUrl: industry } },
     select: { seoDetails: true, executiveSummary: true, tariffUpdates: true },

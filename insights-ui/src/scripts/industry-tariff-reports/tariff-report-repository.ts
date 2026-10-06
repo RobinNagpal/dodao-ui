@@ -15,6 +15,7 @@ import type {
 } from '@/scripts/industry-tariff-reports/tariff-types';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { truncateForLog } from '@/utils/route-param-utils';
+import { validateTariffIndustryId } from '@/utils/tariff-reports/tariff-input-validation';
 import { notFoundError } from '@dodao/web-core/api/errors/notFoundError';
 
 import { revalidateTariffReportChapter, revalidateTariffReportIndustry, revalidateTariffReportsListing } from '@/utils/tariff-report-cache-utils';
@@ -102,16 +103,6 @@ export async function getChapterPromptContext(slug: string): Promise<ChapterProm
   };
 }
 
-// Every chapter slug is lowercase alphanumeric words joined by single hyphens
-// (e.g. `3-fish-and-crustaceans`). Anything else (template-injection probes from
-// vulnerability scanners, etc.) cannot exist, so callers can reject it as a 404
-// without touching the database.
-const CHAPTER_SLUG_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
-
-export function isValidTariffChapterSlug(slug: string): boolean {
-  return slug.length <= 200 && CHAPTER_SLUG_PATTERN.test(slug);
-}
-
 async function findRowBySlug(slug: string) {
   return prisma.tariffChapterReport.findUnique({
     where: { spaceId_slug: { spaceId: KoalaGainsSpaceId, slug } },
@@ -175,13 +166,12 @@ function rowToIndustryTariffReport(row: ReportSectionsRow): IndustryTariffReport
 }
 
 // Reads the report behind a legacy industry URL (`/industry-tariff-report/<oldUrl>`).
-//   - Unknown industry (not in `TariffIndustries`: scanner probes, mistyped URLs) → throws
-//     `notFoundError`, which the API middleware turns into a 404 with one warn line.
+//   - Malformed or unknown industry (not in `TariffIndustries`: scanner probes, mistyped URLs) →
+//     throws a prefixed `[input-rejected]` `notFoundError` before any DB work, which the API
+//     middleware turns into a 404 with one warn line.
 //   - Known industry with no report row yet → `{}` (pages render their empty state).
 export async function readIndustryTariffReportByOldUrl(oldUrl: string): Promise<IndustryTariffReport> {
-  if (!findIndustryByLegacyUrl(oldUrl)) {
-    throw notFoundError(`Unknown tariff industry ${truncateForLog(oldUrl)}`);
-  }
+  validateTariffIndustryId(oldUrl);
   const row = await prisma.tariffChapterReport.findUnique({
     where: { spaceId_oldUrl: { spaceId: KoalaGainsSpaceId, oldUrl } },
     select: REPORT_SECTIONS_SELECT,

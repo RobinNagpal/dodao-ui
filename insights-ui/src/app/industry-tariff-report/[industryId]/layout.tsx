@@ -1,28 +1,25 @@
 import MobileNavToggle from '@/components/industry-tariff/mobile-nav-toggle';
 import CollapsibleLayout from '@/components/industry-tariff/collapsible-layout';
 import BreadcrumbsWithJsonLd from '@/components/ui/BreadcrumbsWithJsonLd';
-import { findIndustryByLegacyUrl } from '@/scripts/industry-tariff-reports/tariff-industries';
 import type { IndustryTariffReport } from '@/scripts/industry-tariff-reports/tariff-types';
 import { chapterCoverHref } from '@/utils/tariff-reports/chapter-route-helpers';
 import { getChapterSlugForOldUrl, getSeededLastModifiedForOldUrl } from '@/utils/tariff-reports/seeded-chapter-reports';
+import { isValidTariffIndustryId, rejectTariffPageParam } from '@/utils/tariff-reports/tariff-input-validation';
 import type { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import { truncateForLog } from '@/utils/route-param-utils';
 import { tariffReportTag } from '@/utils/tariff-report-tags';
-import { notFound } from 'next/navigation';
 import type React from 'react';
 
 export default async function IndustryTariffReportLayout({ children, params }: { children: React.ReactNode; params: Promise<{ industryId: string }> }) {
   const { industryId } = await params;
 
-  // The ONE unknown-industry guard for every `/industry-tariff-report/[industryId]/**` page. Unknown
-  // ids (scanner probes, mistyped URLs) are a real 404: rendering an empty page with HTTP 200 would be
-  // a soft 404 that CloudFront caches for 6 days. Checked before any fetch, so it costs no DB work.
-  if (!findIndustryByLegacyUrl(industryId)) {
-    console.warn(`[industry-tariff-report/[industryId]] unknown industry, returning 404: ${truncateForLog(industryId)}`);
-    notFound();
-  }
+  // The ONE logging industry guard for every `/industry-tariff-report/[industryId]/**` page. Malformed
+  // or unknown ids (scanner probes, mistyped URLs) are a real 404: rendering an empty page with HTTP
+  // 200 would be a soft 404 that CloudFront caches for 6 days. Checked before any fetch, so it costs no
+  // DB work. Pages and generateMetadata repeat the check silently (they can run alongside the layout),
+  // so a rejected request logs this single `[input-rejected]` warn.
+  if (!isValidTariffIndustryId(industryId)) rejectTariffPageParam('industryId', industryId);
 
   const url = `${getBaseUrl()}/api/industry-tariff-reports/${encodeURIComponent(industryId)}`;
   const reportResponse = await fetch(url, {

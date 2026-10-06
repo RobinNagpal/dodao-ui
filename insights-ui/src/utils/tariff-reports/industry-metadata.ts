@@ -3,6 +3,7 @@ import type { PageSeoDetails, TariffReportSeoDetails } from '@/scripts/industry-
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
 import { chapterCoverHref, chapterSectionHref } from '@/utils/tariff-reports/chapter-route-helpers';
 import { getChapterSlugForOldUrl } from '@/utils/tariff-reports/seeded-chapter-reports';
+import { isValidTariffIndustryId } from '@/utils/tariff-reports/tariff-input-validation';
 import { tariffReportTag } from '@/utils/tariff-report-tags';
 import type { Metadata } from 'next';
 
@@ -111,6 +112,9 @@ interface SectionMetadataOptions {
 }
 
 async function buildSectionMetadata({ industryId, sectionSlug, section, notFoundFallback, appendCountryKeywords }: SectionMetadataOptions): Promise<Metadata> {
+  // Malformed / unknown industry: the `[industryId]` layout logs the rejection and 404s; skip the
+  // fetch (and its API-side warn) silently here.
+  if (!isValidTariffIndustryId(industryId)) return notFoundFallback;
   const seo = await fetchIndustrySeo(industryId);
   if (!seo) return notFoundFallback;
 
