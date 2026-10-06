@@ -29,7 +29,8 @@ function toRow(user: AdminCreditUserResponse): TableRow {
       renderUser(user),
       // Plenty of accounts are email-only sign-ups, so this is often blank.
       user.name ?? '—',
-      String(user.credits),
+      // Null when the balance couldn't be read from Stripe for this user.
+      user.credits === null ? '—' : String(user.credits),
       String(user.purchasedCredits),
       formatUsd(user.amountSpentInCents),
       String(user.purchaseCount),

@@ -4,6 +4,7 @@ import { SupportedCountries, toSupportedCountry } from '@/utils/countryExchangeU
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { Prisma } from '@prisma/client';
 import { NextRequest } from 'next/server';
+import { parsePageParam, parsePageSizeParam } from '@/utils/pagination-param-utils';
 
 const DEFAULT_PAGE_SIZE = 32;
 
@@ -47,8 +48,8 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
   const { spaceId } = await context.params;
   const { searchParams } = new URL(req.url);
 
-  const page = Math.max(1, parseInt(searchParams.get('page') || '1', 10));
-  const pageSize = Math.min(200, Math.max(1, parseInt(searchParams.get('pageSize') || String(DEFAULT_PAGE_SIZE), 10)));
+  const page = parsePageParam(searchParams);
+  const pageSize = parsePageSizeParam(searchParams, 'pageSize', DEFAULT_PAGE_SIZE);
 
   const directionParam = searchParams.get('direction');
   const timeframeParam = searchParams.get('timeframe');
