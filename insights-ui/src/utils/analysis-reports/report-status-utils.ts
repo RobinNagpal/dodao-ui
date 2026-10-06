@@ -122,9 +122,13 @@ export async function markAsCompleted(generationRequest: TickerV1GenerationReque
   const hasFailed = generationRequest.failedSteps.length > 0;
   const completedAt = new Date();
 
-  await prisma.tickerV1GenerationRequest.update({
+  // Atomic claim: the heartbeat and the step-save trigger can both reach here for
+  // the same request. Only the caller that moves it out of an open status ends
+  // it; the other stops, so the follow-up work below runs once per request.
+  const ended = await prisma.tickerV1GenerationRequest.updateMany({
     where: {
       id: generationRequest.id,
+      status: { in: [GenerationRequestStatus.NotStarted, GenerationRequestStatus.InProgress] },
     },
     data: {
       status: hasFailed ? GenerationRequestStatus.Failed : GenerationRequestStatus.Completed,
@@ -132,6 +136,10 @@ export async function markAsCompleted(generationRequest: TickerV1GenerationReque
       updatedAt: completedAt,
     },
   });
+  if (ended.count === 0) {
+    console.log('Generation request was already ended by another caller - skipping', generationRequest.id);
+    return;
+  }
 
   // The single "Report generated on ..." date shown to visitors. Any completed
   // step rewrote part of the report, so a partial run still moves the date.

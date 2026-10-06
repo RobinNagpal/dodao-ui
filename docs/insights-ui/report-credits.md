@@ -65,8 +65,10 @@ history). Our database keeps track of which reports are being made.**
 
 - The first time a logged-in user clicks **Buy**, our server asks Stripe to
   create a *customer* for them, with their email and our user id in its
-  metadata (idempotency key `credit-customer-<userId>`, so a double click or
-  two tabs get the same customer). Stripe returns an id like `cus_…`.
+  metadata (idempotency key `credit-customer-<userId>-<hash of the create
+  params>`, so a double click or two tabs get the same customer, while a user
+  whose email changed within Stripe's 24h key window gets a fresh key instead
+  of an `idempotency_error`). Stripe returns an id like `cus_…`.
 - We save that id on the user (`users.stripe_customer_id`) and reuse it on
   every later purchase. If the stored customer no longer exists in Stripe (a
   test-mode id against the live key, or deleted in the dashboard), it is
@@ -224,6 +226,10 @@ link that refunds need).
 | `tickers_v1.last_report_generated_at` | The single freshness date for a stock. |
 | `etfs.last_report_generated_at` | Same, for an ETF. |
 
+Both `report_spends` and `stripe_credit_purchases` reference `users` with
+`ON DELETE RESTRICT`: deleting a user who has bought or run a paid report fails
+(the admin user-delete API errors) instead of silently erasing the records.
+
 ```
 spendable credits = Stripe balance − InProgress report_spends
 ```
@@ -335,15 +341,22 @@ charges that aren't credits purchases are ignored.
 - The debit can push the balance above zero (credits already spent are now
   owed); the user simply sees 0. The navbar may take up to 5 minutes to reflect
   it (see [The display cache](#the-display-cache)).
-- **A won dispute is NOT re-credited automatically** (`charge.dispute.closed`
-  is not handled). Runbook when Stripe reports a dispute as won:
-  1. In the Stripe dashboard, open the customer (Customers → email) and find
-     the `dispute` balance transaction for that payment (`metadata.sourceId` =
-     the `du_…` id, `metadata.credits` = credits removed).
-  2. On the customer, **Adjust balance → credit** `$<credits>.00`, with a
-     description like "Dispute du_… won — credits restored".
-  3. It shows in the user's history as an `Adjustment` (on the navbar within
-     5 minutes).
+- **`charge.dispute.closed`** — only `status: won` does anything: the
+  dispute's own `dispute` debit (found in the recent ledger by `sourceId`) is
+  credited back for exactly its amount, as a `dispute_won` entry (`sourceId`,
+  `debitTxnId`, `credits`; shows as an `Adjustment`). Idempotency key
+  `credit-dispute-won-<du_…>`, plus a ledger check for an existing
+  `dispute_won` entry. No debit found → nothing restored: logged as info when
+  the purchase was already fully refunded in credits, otherwise a
+  `MANUAL CHECK NEEDED` `logError` (usually the debit is older than the
+  100-entry lookback — disputes can take months to close). Lost / any other
+  status: the debit stands.
+- Manual restore (for that `MANUAL CHECK NEEDED` case): in the Stripe
+  dashboard open the customer (Customers → email), find the `dispute` balance
+  transaction for the payment (`metadata.sourceId` = the `du_…` id,
+  `metadata.credits` = credits removed), then **Adjust balance → credit**
+  `$<credits>.00` with a description like "Dispute du_… won — credits
+  restored". It shows in the history as an `Adjustment`.
 
 ## Code layout
 
@@ -379,9 +392,9 @@ charges that aren't credits purchases are ignored.
 | `GET /api/[spaceId]/users/report-generation` | `withLoggedInUser` | Balance, freshness date, whether the user's own paid run is in flight, and their `lastRegeneration` (date + succeeded) for one report. |
 | `POST /api/[spaceId]/users/report-generation` | `withLoggedInUser` | Reserves a credit and queues a full regeneration. |
 | `POST /api/[spaceId]/users/credits/report-results` | `withLoggedInUser` | Returns paid runs that finished or failed since the user last looked, and marks them seen (`result_seen_at`). |
-| `GET /api/[spaceId]/admin/credits/users` | `withLoggedInAdmin` | Every buyer with balance, credits bought, amount paid, reports generated. |
+| `GET /api/[spaceId]/admin/credits/users` | `withLoggedInAdmin` | Every buyer with balance, credits bought, amount paid, paid reports (Completed spends actually charged in Stripe; reserved, failed and charge-failed runs excluded). |
 | `GET /api/[spaceId]/admin/credits/users/[userId]?limit=50` | `withLoggedInAdmin` | One user's credit history. |
-| `POST /api/stripe/webhook` | **Stripe signature** | Grants credits (`checkout.session.completed`, `checkout.session.async_payment_succeeded`) and takes them back (`charge.refunded`, `charge.dispute.created`). |
+| `POST /api/stripe/webhook` | **Stripe signature** | Grants credits (`checkout.session.completed`, `checkout.session.async_payment_succeeded`) and takes them back (`charge.refunded`, `charge.dispute.created`), and gives a won dispute's credits back (`charge.dispute.closed`). |
 | `GET` / `POST /api/[spaceId]/tickers-v1/[ticker]/generation-requests` | `withAdminOrToken` | Admin / automation only (GET returns raw request rows). POST never merges into a paid request. |
 | `POST /api/[spaceId]/tickers-v1/[ticker]/update-request-status` | `withAdminOnly` (logged-in admin) | Sets a request's status by hand. It does **not** settle credits; a paid run ended here is charged or released by the heartbeat reconciliation from its stored status. No code calls it. |
 
@@ -429,7 +442,12 @@ paid alike — and the **only** places a paid run settles. (The
 `tickers-v1/[ticker]/update-request-status` route does not settle; see above.)
 After giving each failed step one retry, both do three things:
 
-1. Set the request's terminal status.
+1. Set the request's terminal status — as an **atomic claim**
+   (`updateMany` filtered on `status IN (NotStarted, InProgress)`). The
+   heartbeat and the step-save trigger can both reach the finalizer for the
+   same request; only the caller whose update matched (`count === 1`) goes on
+   to steps 2–3, the other returns. If the winner crashes before settling, the
+   heartbeat reconciliation settles the run from the stored status.
 2. Set `lastReportGeneratedAt` **if at least one step completed** — a partial
    run still rewrote part of the report, so the date genuinely moved.
 3. Call `settleReportCredit(requestId)` — it reads the status just stored:
@@ -606,6 +624,13 @@ works without the keys; only checkout and the webhook fail, with an explicit
 - `checkout.session.async_payment_succeeded`
 - `charge.refunded`
 - `charge.dispute.created`
+- `charge.dispute.closed`
+
+The endpoint's API version is the account default; when an event's
+`api_version` differs from the version stripe-node is pinned to
+(`Stripe.API_VERSION`), the webhook logs one `console.warn` per version per
+process. The fields read are stable across versions; pin the endpoint to that
+version to silence it.
 
 Its signing secret goes in `STRIPE_WEBHOOK_SECRET`.
 
@@ -622,7 +647,7 @@ overrides your local test key.
 ```bash
 stripe login
 stripe listen \
-  --events checkout.session.completed,checkout.session.async_payment_succeeded,charge.refunded,charge.dispute.created \
+  --events checkout.session.completed,checkout.session.async_payment_succeeded,charge.refunded,charge.dispute.created,charge.dispute.closed \
   --forward-to localhost:3000/api/stripe/webhook   # prints whsec_... → STRIPE_WEBHOOK_SECRET
 ```
 
@@ -646,7 +671,7 @@ posts it to Discord. It is used for:
 | Where (log prefix) | Failure |
 |---|---|
 | `[stripe-webhook]` | Payments not configured (500); signature verification failed (400 — a forged request, or a wrong `STRIPE_WEBHOOK_SECRET`, which blocks every purchase); event `livemode` doesn't match the key (400); handler threw (500, Stripe retries). |
-| `[credit-purchase]` | `MANUAL REPAIR NEEDED`: the checkout customer is linked to a different user, or differs from the user's linked customer (credits went to the paying customer); a paid session with no customer (nothing credited). |
+| `[credit-purchase]` | `MANUAL REPAIR NEEDED`: the checkout customer is linked to a different user, or differs from the user's linked customer (credits went to the paying customer); a paid session with no customer (nothing credited). `MANUAL CHECK NEEDED`: a won dispute whose debit isn't in the recent ledger (nothing restored). |
 | `[checkout-session]` | `MANUAL REPAIR NEEDED`: a buyer's stored Stripe customer no longer exists in Stripe. |
 | `[credit-service]` | Report charge failed twice (report kept free); stuck paid run released after 12h (not charged). |
 
@@ -671,10 +696,11 @@ pnpm logs:fetch --grep "checkout-session|confirm-checkout" --level all
 1. **Confirm settings and webhook events.** App Settings → Payments shows
    `STRIPE_SECRET_KEY` (live), `STRIPE_WEBHOOK_SECRET` (from the live endpoint)
    and `STRIPE_PUBLISHABLE_KEY` set. The live endpoint points at
-   `https://koalagains.com/api/stripe/webhook` and subscribes to the four events
-   above.
-2. **Stripe dashboard.** Branding (name, icon, colours on Checkout and
-   receipts), statement descriptor / prefix (statements read
+   `https://koalagains.com/api/stripe/webhook` and subscribes to the five events
+   above (`charge.dispute.closed` is new — add it to the live endpoint).
+2. **Stripe dashboard.** Branding (icon and colours on receipts; the Checkout
+   page's name, logo, button colour and border style are also set per session
+   via `branding_settings` in the checkout-session route), statement descriptor / prefix (statements read
    "<prefix>* KOALAGAINS"), and support email / URL on receipts. Decide the
    payout currency: add a USD bank account, or accept the conversion fee (see
    [Fees to expect](#fees-to-expect)).

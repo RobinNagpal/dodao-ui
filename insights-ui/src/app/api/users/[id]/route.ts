@@ -1,4 +1,5 @@
 import { prisma } from '@/prisma';
+import { badRequestError } from '@dodao/web-core/api/errors/badRequestError';
 import { KoalaGainsJwtTokenPayload } from '@/types/auth';
 import { UserRole } from '@prisma/client';
 import { NextRequest } from 'next/server';
@@ -57,6 +58,17 @@ async function deleteHandler(
   { params }: { params: Promise<{ id: string }> }
 ): Promise<{ success: boolean }> {
   const { id } = await params;
+
+  // Credit purchases and paid runs are financial records and block the delete (ON DELETE RESTRICT).
+  const [purchases, spends] = await Promise.all([
+    prisma.stripeCreditPurchase.count({ where: { userId: id } }),
+    prisma.reportSpend.count({ where: { userId: id } }),
+  ]);
+  if (purchases > 0 || spends > 0) {
+    throw badRequestError(
+      `This user has ${purchases} credit purchase(s) and ${spends} report run(s); their credit records must be kept, so the user can't be deleted.`
+    );
+  }
 
   await prisma.user.delete({
     where: {

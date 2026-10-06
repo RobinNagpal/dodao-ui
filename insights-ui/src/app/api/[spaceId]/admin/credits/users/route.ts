@@ -59,6 +59,9 @@ async function getHandler(req: NextRequest, userContext: KoalaGainsJwtTokenPaylo
 
   // Report spends are counted separately: a purchaser who never generated a
   // report has no spend rows at all, so this can't be folded into one groupBy.
+  // Only paid runs count: Completed AND actually charged in Stripe. Reserved
+  // (InProgress) and Failed runs took no credit, and a Completed run whose
+  // charge failed twice was kept free of charge (no stripeDebitTxnId).
   // Balances come from Stripe (cached), one per buyer, a few at a time.
   const [users, spendsByUser, balances] = await Promise.all([
     prisma.user.findMany({
@@ -67,7 +70,7 @@ async function getHandler(req: NextRequest, userContext: KoalaGainsJwtTokenPaylo
     }),
     prisma.reportSpend.groupBy({
       by: ['userId'],
-      where: { spaceId: KoalaGainsSpaceId, status: ReportSpendStatus.Completed, userId: { in: userIds } },
+      where: { spaceId: KoalaGainsSpaceId, status: ReportSpendStatus.Completed, stripeDebitTxnId: { not: null }, userId: { in: userIds } },
       _count: { _all: true },
     }),
     mapWithConcurrency(userIds, BALANCE_CONCURRENCY, async (userId) => [userId, await balanceOrNull(userId)] as const),

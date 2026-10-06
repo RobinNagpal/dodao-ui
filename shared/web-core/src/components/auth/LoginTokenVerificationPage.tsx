@@ -4,6 +4,7 @@ import FullPageLoader from '@dodao/web-core/components/core/loaders/FullPageLoad
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { Session } from '@dodao/web-core/types/auth/Session';
 import { WebCoreSpace } from '@dodao/web-core/types/space';
+import { getSafeCallbackPath, LOGIN_CALLBACK_PATH_QUERY_PARAM } from '@dodao/web-core/utils/auth/safeCallbackPath';
 import { setDoDAOTokenInLocalStorage } from '@dodao/web-core/utils/auth/setDoDAOTokenInLocalStorage';
 import { Contexts } from '@dodao/web-core/utils/constants/constants';
 import { getSession, signIn } from 'next-auth/react';
@@ -41,9 +42,12 @@ export default function LoginTokenVerificationPage({ space }: CallbackPageProps)
     async function handleSignIn() {
       console.log('[LoginTokenVerificationPage] handleSignIn function started');
 
-      // Conditionally set the callback URL based on the context
-      const callbackUrl = contextToUrlMapping[context as Contexts];
-      console.log('[LoginTokenVerificationPage] Determined callbackUrl from context:', { context, callbackUrl });
+      // A same-origin path carried through the email link (the page the user
+      // started the login from) wins; otherwise fall back to the context's page.
+      // Apps that never put the param in their links keep the context mapping.
+      const callbackPath = getSafeCallbackPath(searchParams.get(LOGIN_CALLBACK_PATH_QUERY_PARAM));
+      const callbackUrl = callbackPath ?? contextToUrlMapping[context as Contexts];
+      console.log('[LoginTokenVerificationPage] Determined callbackUrl:', { context, callbackPath, callbackUrl });
 
       const full = document.location.protocol + '//' + document.location.host;
       const fullCallbackUrl = full + callbackUrl;

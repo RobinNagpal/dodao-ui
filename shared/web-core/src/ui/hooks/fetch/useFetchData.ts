@@ -56,6 +56,7 @@ export const useFetchData = <T>(
 
       const data = await response.json();
       setData(data);
+      setError(undefined);
       return data;
     } catch (error) {
       console.error(error);
@@ -71,10 +72,11 @@ export const useFetchData = <T>(
     }
   }, [fetchData, memoizedOptions.skipInitialFetch]);
 
+  // fetchData already stores the new data on success. On failure it sets `error`
+  // and returns undefined, so the previously loaded data is kept rather than
+  // being wiped by a failed refetch.
   const reFetchData = useCallback(async () => {
-    const refetchResponse = await fetchData();
-    setData(refetchResponse);
-    return refetchResponse;
+    return fetchData();
   }, [fetchData]);
   return {
     data,

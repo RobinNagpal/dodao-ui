@@ -13,7 +13,7 @@ import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import React from 'react';
 
-const COLUMNS = ['User', 'Name', 'Balance', 'Credits bought', 'Amount paid', 'Purchases', 'Reports', 'Last purchase'];
+const COLUMNS = ['User', 'Name', 'Balance', 'Credits bought', 'Amount paid', 'Purchases', 'Paid reports', 'Last purchase'];
 const COLUMN_WIDTHS = [24, 16, 9, 12, 11, 9, 8, 11];
 
 /** Whatever identifies the user best, linked to their credit history. */

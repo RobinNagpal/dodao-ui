@@ -4,6 +4,7 @@ import { defaultNormalizer, isLikelySpamEmail, randomString, sendVerificationReq
 import { logError } from '@dodao/web-core/api/helpers/adapters/errorLogger';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { PredefinedSpaces } from '@dodao/web-core/src/utils/constants/constants';
+import { getSafeCallbackPath, LOGIN_CALLBACK_PATH_QUERY_PARAM } from '@dodao/web-core/utils/auth/safeCallbackPath';
 import { Contexts } from '@dodao/web-core/utils/constants/constants';
 import { headers } from 'next/headers';
 import { NextRequest } from 'next/server';
@@ -13,6 +14,8 @@ export interface LoginSignupByEmailRequestBody {
   spaceId: string;
   email: string;
   context: Contexts;
+  /** Same-origin path to land on after the email link is verified (e.g. the report the login started from). */
+  callbackPath?: string;
 }
 
 export interface LoginSignupByEmailResponse {
@@ -159,9 +162,14 @@ async function postHandler(req: NextRequest): Promise<LoginSignupByEmailResponse
     const baseUrl = `${httpsProto}://${host}`;
     console.log('[login-signup-by-email] Base URL constructed:', baseUrl);
 
-    const url = `${baseUrl}/auth/email/verify?${new URLSearchParams({
-      token,
-    })}&context=${context}`;
+    const verifyParams = new URLSearchParams({ token, context });
+    // Only a same-origin relative path is carried through; anything else is
+    // dropped so the link can't be turned into an open redirect.
+    const callbackPath = getSafeCallbackPath(reqBody.callbackPath);
+    if (callbackPath) {
+      verifyParams.set(LOGIN_CALLBACK_PATH_QUERY_PARAM, callbackPath);
+    }
+    const url = `${baseUrl}/auth/email/verify?${verifyParams}`;
     console.log('[login-signup-by-email] Verification URL constructed (token hidden):', url.replace(token, '[TOKEN_HIDDEN]'));
 
     console.log('[login-signup-by-email] Sending verification email to:', userEmail);

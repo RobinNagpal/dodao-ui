@@ -2759,7 +2759,8 @@ model ReportSpend {
 
   createdAt DateTime @default(now()) @map("created_at")
 
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  /// Restrict, not Cascade: deleting a user must not silently erase their paid-run records.
+  user User @relation(fields: [userId], references: [id], onDelete: Restrict)
 
   /// Drives the "already generating this report" guard and the reserved count.
   @@index([userId, status])
@@ -2794,7 +2795,8 @@ model StripeCreditPurchase {
 
   createdAt DateTime @default(now()) @map("created_at")
 
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  /// Restrict, not Cascade: deleting a user must not silently erase their purchase records.
+  user User @relation(fields: [userId], references: [id], onDelete: Restrict)
 
   @@index([userId, createdAt])
   @@map("stripe_credit_purchases")
