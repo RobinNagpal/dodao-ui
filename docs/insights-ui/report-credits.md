@@ -285,9 +285,9 @@ client HTML never disagree around midnight.
 
 - **Logged out** → clicking opens the login popup. The date still renders, and
   no status request is made, so the common case costs nothing.
-- **Logged in, has credits** → a confirm modal showing the current report's
-  date and age, the sections a regeneration rewrites (`REFRESHED_SECTIONS`),
-  the cost, and the balance after.
+- **Logged in, has credits** → a confirm modal saying every section is
+  refreshed, with the current report's date, the balance, the cost, and the
+  balance after.
 - **Logged in, no credits** → the *same modal* switches to the pack picker.
   Buying does not navigate away from the report; Stripe returns to the exact
   path and query the user was on, and the modal reopens with the new balance.
