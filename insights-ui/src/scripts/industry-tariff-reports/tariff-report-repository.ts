@@ -14,6 +14,7 @@ import type {
   UnderstandIndustry,
 } from '@/scripts/industry-tariff-reports/tariff-types';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
+import { notFoundError } from '@dodao/web-core/api/errors/notFoundError';
 
 import { revalidateTariffReportChapter, revalidateTariffReportIndustry, revalidateTariffReportsListing } from '@/utils/tariff-report-cache-utils';
 
@@ -100,6 +101,16 @@ export async function getChapterPromptContext(slug: string): Promise<ChapterProm
   };
 }
 
+// Every chapter slug is lowercase alphanumeric words joined by single hyphens
+// (e.g. `3-fish-and-crustaceans`). Anything else (template-injection probes from
+// vulnerability scanners, etc.) cannot exist, so callers can reject it as a 404
+// without touching the database.
+const CHAPTER_SLUG_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
+
+export function isValidTariffChapterSlug(slug: string): boolean {
+  return slug.length <= 200 && CHAPTER_SLUG_PATTERN.test(slug);
+}
+
 async function findRowBySlug(slug: string) {
   return prisma.tariffChapterReport.findUnique({
     where: { spaceId_slug: { spaceId: KoalaGainsSpaceId, slug } },
@@ -110,7 +121,7 @@ async function findRowBySlug(slug: string) {
 export async function getReportContextBySlug(slug: string): Promise<TariffReportContext> {
   const row = await findRowBySlug(slug);
   if (!row) {
-    throw new Error(`No tariff chapter report found for slug "${slug}"`);
+    throw notFoundError(`No tariff chapter report found for slug "${slug.slice(0, 100)}"`);
   }
   return {
     slug: row.slug,
@@ -129,7 +140,7 @@ export async function findReportSlugByOldUrl(oldUrl: string): Promise<string> {
     select: { slug: true },
   });
   if (!row) {
-    throw new Error(`No tariff chapter report found for legacy industry "${oldUrl}"`);
+    throw notFoundError(`No tariff chapter report found for legacy industry "${oldUrl.slice(0, 100)}"`);
   }
   return row.slug;
 }

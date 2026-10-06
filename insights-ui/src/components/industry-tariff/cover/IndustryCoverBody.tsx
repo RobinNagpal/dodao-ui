@@ -2,7 +2,7 @@ import PrivateWrapper from '@/components/auth/PrivateWrapper';
 import ReportCoverActions from '@/components/industry-tariff/section-actions/ReportCoverActions';
 import { renderSection } from '@/components/industry-tariff/renderers/SectionRenderer';
 import TariffCrossLinks from '@/components/tariff-cross-links/TariffCrossLinks';
-import { getTariffIndustryDefinitionById, TariffIndustryId } from '@/scripts/industry-tariff-reports/tariff-industries';
+import { findIndustryByLegacyUrl } from '@/scripts/industry-tariff-reports/tariff-industries';
 import type { IndustryTariffReport } from '@/scripts/industry-tariff-reports/tariff-types';
 import { parseMarkdown } from '@/util/parse-markdown';
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
@@ -11,13 +11,19 @@ import { getHtsChapterRefByIndustryId } from '@/utils/tariff-cross-links/hts-cha
 import { getChapterSlugForOldUrl } from '@/utils/tariff-reports/seeded-chapter-reports';
 import { tariffReportTag } from '@/utils/tariff-report-tags';
 import { Calculator, ListTree } from 'lucide-react';
+import { notFound } from 'next/navigation';
 
 // Shared async render for the industry cover body. Used by the cover route
 // itself and by the legacy `/evaluate-industry-areas` and `/all-countries-tariff-updates`
 // URLs, which now mirror the cover content with `<link rel="canonical">`
 // pointing back at the cover instead of 301-redirecting away.
 export async function renderIndustryCoverBody(industryId: string): Promise<JSX.Element> {
-  const definition = getTariffIndustryDefinitionById(industryId as TariffIndustryId);
+  // Unknown industry ids (e.g. `/industry-tariff-report/chapters`, scanner probes) are a 404, not a 500.
+  const definition = findIndustryByLegacyUrl(industryId);
+  if (!definition) {
+    console.warn(`[tariff] Industry "${industryId.slice(0, 100)}" not found`);
+    notFound();
+  }
 
   const reportResponse = await fetch(`${getBaseUrlForServerSidePages()}/api/industry-tariff-reports/${industryId}`, {
     next: { tags: [tariffReportTag(industryId)] },

@@ -1,12 +1,13 @@
 import PrivateWrapper from '@/components/auth/PrivateWrapper';
 import TariffUpdatesActions from '@/components/industry-tariff/section-actions/TariffUpdatesActions';
 import { CountryNavigation } from '@/components/industry-tariff/renderers/CountryNavigation';
-import { getTariffIndustryDefinitionById, TariffIndustryId } from '@/scripts/industry-tariff-reports/tariff-industries';
+import { findIndustryByLegacyUrl } from '@/scripts/industry-tariff-reports/tariff-industries';
 import type { IndustryTariffReport } from '@/scripts/industry-tariff-reports/tariff-types';
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
 import { fetchIndustryTariffUpdatesMetadata } from '@/utils/tariff-reports/industry-metadata';
 import { tariffReportTag } from '@/utils/tariff-report-tags';
 import { Metadata } from 'next';
+import { notFound } from 'next/navigation';
 import { CountryTariffRenderer } from '@/components/industry-tariff/renderers/CountryTariffRenderer';
 import { TariffScrollLoginTrigger } from '@/components/login/tariff-scroll-login-trigger';
 
@@ -17,6 +18,13 @@ export async function generateMetadata({ params }: { params: Promise<{ industryI
 
 export default async function TariffUpdatesPage({ params }: { params: Promise<{ industryId: string }> }) {
   const { industryId } = await params;
+
+  // Unknown industry ids (scanner probes, mistyped URLs) are a 404, not a 500.
+  const definition = findIndustryByLegacyUrl(industryId);
+  if (!definition) {
+    console.warn(`[tariff] Industry "${industryId.slice(0, 100)}" not found`);
+    notFound();
+  }
 
   // Fetch the report data
   const reportResponse = await fetch(`${getBaseUrlForServerSidePages()}/api/industry-tariff-reports/${industryId}`, {
@@ -31,8 +39,6 @@ export default async function TariffUpdatesPage({ params }: { params: Promise<{ 
   if (!report) {
     return <div>Report not found</div>;
   }
-
-  const definition = getTariffIndustryDefinitionById(industryId as TariffIndustryId);
 
   // Check if SEO data exists for this page
   const seoDetails = report.reportSeoDetails?.tariffUpdatesSeoDetails;
