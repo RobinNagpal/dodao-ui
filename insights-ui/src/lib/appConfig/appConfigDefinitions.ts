@@ -140,7 +140,7 @@ export const APP_CONFIG_DEFINITIONS: AppConfigDefinition[] = [
     key: 'STRIPE_CREDIT_PURCHASES_ENABLED',
     label: 'Enable buying credits (Stripe)',
     description:
-      'ON: users can buy report credits through Stripe Checkout. OFF (default): new checkouts are blocked (e.g. during a Stripe issue). Spending existing credits is unaffected, and payments already in progress are still credited by the webhook.',
+      'ON: users can buy report credits through Stripe Checkout. OFF (default): new checkouts are blocked; payments already in progress are still credited by the webhook. Balances live in Stripe, so spending existing credits also needs Stripe to be reachable — this switch does not keep spending working during a Stripe outage.',
     type: 'boolean',
     group: 'payments',
   },

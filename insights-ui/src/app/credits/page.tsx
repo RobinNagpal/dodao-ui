@@ -73,6 +73,11 @@ export default function CreditsPage(): JSX.Element {
     <PageWrapper>
       <Stack gap="xl">
         {/* No balance until it has loaded, so a user with credits never sees a 0 flash. */}
+        {data?.stripeUnavailable && (
+          <Text tone="muted">
+            We couldn&apos;t load your balance from our payment provider right now, so it may show as 0. Please refresh in a few minutes.
+          </Text>
+        )}
         <HeaderWithAside aside={data && <CreditBalanceCard credits={credits} reserved={reservedCredits} />}>
           <Stack gap="sm">
             <Heading as="h1" size="2xl">

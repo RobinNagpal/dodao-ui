@@ -45,6 +45,36 @@ against the same RDS during the AWS parallel window — see
 - **Contract (destructive, gated):** drop/rename columns or tables, change types. Ship the code
   that stops using the old column first, then drop it in a later PR.
 
+## Expand/contract for destructive changes
+
+The `migrate` job runs **before** the new image is rolled out, so for several minutes the
+**old** code serves traffic against the **new** schema. A migration that drops a column or table
+the running code still reads breaks production for that whole window: during the deploy of
+PR #1763 (credit ledger moved to Stripe) the old code kept querying the dropped columns
+between `migrate` and the rollout, and those requests failed for ~14 minutes.
+
+So split any drop/rename the running code depends on into two deploys:
+
+1. **Deploy 1 — stop reading it.** Ship code that no longer reads or writes the columns/tables
+   (no migration, or only additive ones).
+2. **Deploy 2 — drop it.** Once deploy 1 is fully live, merge the migration that drops them.
+
+If a destructive migration assumes the data is already gone (e.g. dropping a table that should
+be empty), make it fail loudly instead of silently deleting rows:
+
+```sql
+DO $$
+BEGIN
+  IF EXISTS (SELECT 1 FROM old_table) THEN
+    RAISE EXCEPTION 'old_table is not empty; migrate the data first';
+  END IF;
+END $$;
+
+DROP TABLE old_table;
+```
+
+`migrate deploy` stops on the exception, nothing is dropped, and the deploy does not roll out.
+
 ## Shipping a destructive migration
 
 1. The PR shows a `Destructive SQL in migration …` warning — review the SQL.
