@@ -1214,7 +1214,50 @@ export function parseRangeParam(param: string | undefined): { min?: number; max?
   const min = minStr ? parseFloat(minStr) : undefined;
   const max = maxStr ? parseFloat(maxStr) : undefined;
   if (min === undefined && max === undefined) return null;
+  // A non-numeric bound (e.g. `abc`) would otherwise reach Prisma as `gte: NaN`.
+  if (Number.isNaN(min) || Number.isNaN(max)) return null;
   return { min, max };
+}
+
+/** Params whose value is parsed by {@link parseNumericFilterValue} (range, operator, or `negative`). */
+const ETF_NUMERIC_FILTER_PARAM_KEYS: ReadonlyArray<EtfFilterParamKey> = [
+  EtfFilterParamKey.AUM,
+  EtfFilterParamKey.EXPENSE_RATIO,
+  EtfFilterParamKey.PE_RATIO,
+  EtfFilterParamKey.DIVIDEND_TTM,
+  EtfFilterParamKey.DIVIDEND_YIELD,
+  EtfFilterParamKey.HOLDINGS,
+  EtfFilterParamKey.VOLUME,
+  EtfFilterParamKey.BETA,
+  EtfFilterParamKey.DIVIDEND_YEARS,
+  EtfFilterParamKey.SORTINO,
+  EtfFilterParamKey.SHARPE,
+  EtfFilterParamKey.EXPECTED_RETURN_1YR,
+  EtfFilterParamKey.EXPECTED_RETURN_3YR,
+  EtfFilterParamKey.EXPECTED_RETURN_5YR,
+];
+
+/**
+ * Returns the first numeric filter param whose (non-blank) value cannot be parsed, or null when all
+ * numeric filters are valid. Text/enum filters (category, group, issuer, risk level, …) are not
+ * checked: an unknown value there just yields an empty result. Used by the listing API to reject
+ * junk values with a 400 instead of silently ignoring them or sending NaN to Prisma.
+ */
+export function findInvalidEtfNumericFilterParam(filters: EtfFilterParams): EtfFilterParamKey | null {
+  for (const key of ETF_NUMERIC_FILTER_PARAM_KEYS) {
+    const raw = filters[key]?.trim();
+    if (raw && parseNumericFilterValue(raw) === null) return key;
+  }
+  for (const def of ALL_SCORE_DEFS) {
+    const raw = filters[def.paramKey]?.trim();
+    if (raw && !Number.isFinite(parseInt(raw, 10))) return def.paramKey;
+  }
+  for (const def of MOR_ADVANCED_FILTERS) {
+    if (def.kind === 'risk') continue;
+    const raw = filters[def.paramKey]?.trim();
+    if (raw && parseRangeParam(raw) === null) return def.paramKey;
+  }
+  return null;
 }
 
 /** Assign a numeric filter (bucket range, operator, or negative) onto `target[key]`

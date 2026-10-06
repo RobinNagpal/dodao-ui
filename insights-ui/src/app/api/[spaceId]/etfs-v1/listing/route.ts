@@ -6,6 +6,7 @@ import {
   createEtfSearchFilter,
   createEtfCachedScoreFilter,
   createEtfFutureReturnsFilter,
+  findInvalidEtfNumericFilterParam,
   hasEtfFiltersAppliedServer,
   hasAdvancedMorFilters,
   parseEtfFilterParams,
@@ -23,9 +24,11 @@ import {
 } from '@/utils/etf-filter-utils';
 import { shouldIncludeUnpopulatedForRequest } from '@/utils/etf-listing-visibility';
 import { getEtfExchangesByCountry, isEtfSupportedCountry } from '@/utils/etfCountryExchangeUtils';
+import { badRequestError } from '@dodao/web-core/api/errors/badRequestError';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { Prisma } from '@prisma/client';
 import { NextRequest } from 'next/server';
+import { parsePageParam, parsePageSizeParam } from '@/utils/pagination-param-utils';
 
 const DEFAULT_PAGE_SIZE = 32;
 
@@ -125,10 +128,16 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
   const { spaceId } = await context.params;
   const { searchParams } = new URL(req.url);
 
-  const page = Math.max(1, parseInt(searchParams.get('page') || '1', 10));
-  const pageSize = Math.min(200, Math.max(1, parseInt(searchParams.get('pageSize') || String(DEFAULT_PAGE_SIZE), 10)));
+  const page = parsePageParam(searchParams);
+  const pageSize = parsePageSizeParam(searchParams, 'pageSize', DEFAULT_PAGE_SIZE);
 
   const filters = parseEtfFilterParams(req);
+  // Unknown query keys (tracking params, scanner junk) are ignored; only the
+  // numeric filters this route uses are validated.
+  const invalidFilterParam = findInvalidEtfNumericFilterParam(filters);
+  if (invalidFilterParam) {
+    throw badRequestError(`Invalid '${invalidFilterParam}' query param`);
+  }
   const filtersApplied = hasEtfFiltersAppliedServer(filters);
   const hasMorFilters = hasAdvancedMorFilters(filters);
 
