@@ -6,18 +6,23 @@ import { SupportedCountries } from '@/utils/countryExchangeUtils';
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
 import { commonViewport, generateCountryIndustryStocksMetadata } from '@/utils/metadata-generators';
 import { fetchIndustryStocksData, isIndustryStocksResponseEmpty } from '@/utils/stocks-data-utils';
+import { parseStockCountryParam, resolveStockCountryParam } from '@/utils/stock-country-route-utils';
 import { getIndustryPageTag } from '@/utils/ticker-v1-cache-utils';
 import { Metadata } from 'next';
 import { notFound, permanentRedirect } from 'next/navigation';
+import { COUNTRY_INDUSTRY_ROUTE, getCountryIndustryPath, parseIndustryKeyParam, truncateForLog } from './industry-route-utils';
 
 export async function generateMetadata(props: { params: Promise<{ country: string; industry: string }> }): Promise<Metadata> {
   const params = await props.params;
-  const countryName = decodeURIComponent(params.country);
-  const industryKey = decodeURIComponent(params.industry);
+  // Validate without logging/404ing here: the page render does both, so invalid input produces
+  // exactly one warn line.
+  const country = parseStockCountryParam(params.country);
+  const industryKey = parseIndustryKeyParam(params.industry);
+  if (!country || !industryKey) return {};
 
   // noindex empty industry listings (thin content → soft 404 in Google Search Console).
-  const data = await fetchIndustryStocksData(industryKey.toUpperCase(), countryName as SupportedCountries, {});
-  return generateCountryIndustryStocksMetadata(countryName, industryKey, { noIndex: isIndustryStocksResponseEmpty(data) });
+  const data = await fetchIndustryStocksData(industryKey.toUpperCase(), country, {});
+  return generateCountryIndustryStocksMetadata(country, industryKey, { noIndex: isIndustryStocksResponseEmpty(data) });
 }
 
 const WEEK = 60 * 60 * 24 * 7;
@@ -31,49 +36,57 @@ type PageProps = {
 
 export default async function CountryIndustryStocksPage({ params }: PageProps) {
   const resolvedParams = await params;
-  const countryName = decodeURIComponent(resolvedParams.country);
-  const rawIndustryKey = decodeURIComponent(resolvedParams.industry);
+  const country: SupportedCountries = resolveStockCountryParam(resolvedParams.country, COUNTRY_INDUSTRY_ROUTE);
+  const countryName: string = country;
+
+  const rawIndustryKey = parseIndustryKeyParam(resolvedParams.industry);
+  if (!rawIndustryKey) {
+    console.warn(`[${COUNTRY_INDUSTRY_ROUTE}] invalid industry param, returning 404: ${truncateForLog(resolvedParams.industry)}`);
+    notFound();
+  }
   const industryKey = rawIndustryKey.toUpperCase();
 
-  // Redirect lowercase/mixed-case URLs to the canonical uppercase URL
-  if (rawIndustryKey !== industryKey) {
-    permanentRedirect(`/stocks/countries/${countryName}/industries/${industryKey}`);
-  }
-
-  // Convert countryName to SupportedCountries type
-  const country = countryName as SupportedCountries;
-
   const baseUrl = getBaseUrlForServerSidePages();
-  const baseUrlPath = `${baseUrl}/api/${KoalaGainsSpaceId}/tickers-v1/country/${country}/tickers/industries/${industryKey}`;
+  const url = `${baseUrl}/api/${KoalaGainsSpaceId}/tickers-v1/country/${encodeURIComponent(country)}/tickers/industries/${encodeURIComponent(industryKey)}`;
 
-  const res = await fetch(baseUrlPath, {
+  const res = await fetch(url, {
     next: { revalidate: WEEK, tags: [getIndustryPageTag(country, industryKey)] },
   });
 
+  if (!res.ok) {
+    // Real upstream failure (5xx / LB error page): stay an error. Next's data cache only stores OK
+    // responses, so this is never cached as a page.
+    throw new Error(`industry stocks fetch failed (${res.status}): ${url}`);
+  }
+
   const data = (await res.json()) as SubIndustriesResponse | null;
 
-  // Confirmed-empty listing (or unknown industry: HTTP 200 with a null body) → real 404 (sibling
-  // not-found.tsx) instead of a soft 404. A failed fetch (!res.ok) renders as before.
-  if (res.ok && (!data || isIndustryStocksResponseEmpty(data))) notFound();
+  // Unknown industry: the API answers HTTP 200 with a null body → real 404 (sibling not-found.tsx).
+  if (!data) {
+    console.warn(`[${COUNTRY_INDUSTRY_ROUTE}] unknown industry key, returning 404: ${truncateForLog(industryKey)}`);
+    notFound();
+  }
+
+  // Confirmed-empty listing → real 404 instead of a soft 404.
+  if (isIndustryStocksResponseEmpty(data)) notFound();
+
+  // Redirect lowercase/mixed-case URLs to the canonical uppercase URL. Only done once the industry is
+  // confirmed to exist, and built from the validated country + DB key (URI-encoded), never raw input.
+  if (rawIndustryKey !== industryKey) {
+    permanentRedirect(getCountryIndustryPath(country, data.industryKey));
+  }
 
   return (
     <IndustryWithStocksPageLayout
-      title={`${data?.name || industryKey} Stocks in ${countryName}`}
-      description={`Explore ${data?.name || industryKey} companies in ${countryName}. ${data?.summary || 'View detailed reports and AI-driven insights.'}`}
+      title={`${data.name || industryKey} Stocks in ${countryName}`}
+      description={`Explore ${data.name || industryKey} companies in ${countryName}. ${data.summary || 'View detailed reports and AI-driven insights.'}`}
       currentCountry={countryName}
       industryKey={industryKey}
-      industryName={data?.name}
-      hasAnalysis={data?.hasAnalysis}
-      countriesWithStocks={data?.countriesWithStocks}
+      industryName={data.name}
+      hasAnalysis={data.hasAnalysis}
+      countriesWithStocks={data.countriesWithStocks}
     >
-      {!data ? (
-        <>
-          <p className="text-body text-lg">{`No ${industryKey} stocks found in ${countryName}.`}</p>
-          <p className="text-body text-sm mt-2">Please try again later.</p>
-        </>
-      ) : (
-        <IndustryStocksGrid data={data} industryName={data?.name || industryKey} />
-      )}
+      <IndustryStocksGrid data={data} industryName={data.name || industryKey} />
     </IndustryWithStocksPageLayout>
   );
 }
