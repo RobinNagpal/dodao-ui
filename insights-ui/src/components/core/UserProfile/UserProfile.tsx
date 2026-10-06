@@ -4,10 +4,12 @@ import { KoalaGainsSession } from '@/types/auth';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
+import { getLoginPathWithCallback } from '@dodao/web-core/utils/auth/safeCallbackPath';
 import { UserIcon } from '@heroicons/react/24/solid';
 import { signOut, useSession } from 'next-auth/react';
 
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 
 interface UserProfileProps {
@@ -20,6 +22,8 @@ export function UserProfile({ isMobile = false, onMenuToggle }: UserProfileProps
   const [userMenuOpen, setUserMenuOpen] = useState<boolean>(false);
   const userMenuRef = useRef<HTMLDivElement | null>(null);
   const session: KoalaGainsSession | null = koalaSession as KoalaGainsSession | null;
+  // Bring the user back to the page they were on after logging in.
+  const loginHref = getLoginPathWithCallback(usePathname());
 
   const { data: portfolioProfile, loading: isLoadingProfile } = useFetchData<{ id: string }>(
     session?.userId ? `${getBaseUrl()}/api/${KoalaGainsSpaceId}/users/portfolio-manager-profiles/by-user/${session.userId}` : '',
@@ -151,7 +155,7 @@ export function UserProfile({ isMobile = false, onMenuToggle }: UserProfileProps
             </button>
           </>
         ) : (
-          <Link href="/login" className="-mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-semibold text-muted hover:bg-surface-2 w-full text-left">
+          <Link href={loginHref} className="-mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-semibold text-muted hover:bg-surface-2 w-full text-left">
             Log in
           </Link>
         )}
@@ -228,7 +232,7 @@ export function UserProfile({ isMobile = false, onMenuToggle }: UserProfileProps
           )}
         </div>
       ) : (
-        <Link href="/login" className="whitespace-nowrap text-sm/6 font-semibold text-color cursor-pointer hover:text-link transition-colors duration-200">
+        <Link href={loginHref} className="whitespace-nowrap text-sm/6 font-semibold text-color cursor-pointer hover:text-link transition-colors duration-200">
           Log in
         </Link>
       )}

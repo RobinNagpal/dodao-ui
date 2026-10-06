@@ -1,3 +1,4 @@
+import { getSafeCallbackPath } from '@dodao/web-core/utils/auth/safeCallbackPath';
 import { CHECKOUT_SESSION_QUERY_PARAM, CREDITS_PURCHASED_QUERY_PARAM } from '@/types/credits';
 import { getCanonicalUrl } from '@/utils/getBaseUrlForServerSidePages';
 
@@ -16,18 +17,20 @@ export function getCheckoutReturnOrigin(requestOrigin: string, nodeEnv: string |
 
 /**
  * `returnPath` comes from the browser, so it is only ever used as a path on
- * this origin. Anything absolute, protocol-relative (`//evil.com`) or otherwise
- * unparseable falls back to the credits page — a checkout flow must not become
- * an open redirect.
+ * this origin. Anything that `getSafeCallbackPath` rejects (absolute,
+ * protocol-relative `//evil.com`, backslash tricks, dot-segments that normalize
+ * to `//…`, unparseable) falls back to the credits page — a checkout flow must
+ * not become an open redirect.
  */
 export function toSameOriginUrl(origin: string, returnPath: string | undefined): string {
   const fallback = `${origin}/credits`;
-  if (!returnPath || !returnPath.startsWith('/') || returnPath.startsWith('//')) {
+  const safePath = getSafeCallbackPath(returnPath);
+  if (!safePath) {
     return fallback;
   }
   try {
-    const url = new URL(returnPath, origin);
-    return url.origin === origin ? url.toString() : fallback;
+    const url = new URL(safePath, origin);
+    return url.origin === new URL(origin).origin ? url.toString() : fallback;
   } catch {
     return fallback;
   }

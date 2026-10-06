@@ -29,13 +29,15 @@ export interface FloatingReportCtaProps {
  *
  * Tablet and up only (`hidden md:inline-flex`): on a phone a bar across the
  * bottom would cover the report itself and collide with the mobile action icons,
- * and those visitors already have the inline button. It sits at `z-40` so modal
- * backdrops (`z-50`) cover it, and bottom-centre keeps it clear of the
- * bottom-right theme toggle.
+ * and those visitors already have the inline button. Bottom-centre keeps it
+ * clear of the bottom-right theme toggle.
  *
- * Hidden while the login popup is open (`LOGIN_POPUP_OPEN_BODY_ATTR` on
- * `<body>`), so the pill never floats over the login modal. The attribute name
- * is spelled out in the class because Tailwind can't see interpolated classes.
+ * Stacking: it sits at `z-[9]`, just under the shared `FullPageModal` (web-core),
+ * whose Headless UI dialog is portaled to `<body>` as `relative z-10`. The pill
+ * must stay below 10 so every such modal (login popup, favourites, filters…)
+ * covers it; the other overlays (`z-40`/`z-50` backdrops, drawers, toasts) cover
+ * it too. The modal's z-index is not raised instead because it is shared with
+ * the other apps.
  */
 export default function FloatingReportCta({ label, subLabel, onClick, loading, className }: FloatingReportCtaProps): React.JSX.Element | null {
   // `document` only exists in the browser, so the portal is created after mount.
@@ -53,7 +55,7 @@ export default function FloatingReportCta({ label, subLabel, onClick, loading, c
       onClick={onClick}
       disabled={loading}
       className={cn(
-        'fixed bottom-5 left-1/2 z-40 hidden -translate-x-1/2 items-center gap-2 rounded-full bg-primary px-4 py-2 text-left text-primary-text shadow-lg ring-1 ring-primary/40 transition-transform duration-200 hover:scale-105 disabled:cursor-not-allowed disabled:opacity-70 md:inline-flex [body[data-login-popup-open]_&]:hidden',
+        'fixed bottom-5 left-1/2 z-[9] hidden -translate-x-1/2 items-center gap-2 rounded-full bg-primary px-4 py-2 text-left text-primary-text shadow-lg ring-1 ring-primary/40 transition-transform duration-200 hover:scale-105 disabled:cursor-not-allowed disabled:opacity-70 md:inline-flex',
         className
       )}
     >

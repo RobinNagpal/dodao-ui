@@ -32,8 +32,48 @@ export function getSafeCallbackPath(path: string | null | undefined): string | u
     if (url.origin !== PLACEHOLDER_ORIGIN) {
       return undefined;
     }
-    return `${url.pathname}${url.search}${url.hash}`;
+    const normalized = `${url.pathname}${url.search}${url.hash}`;
+    // Dot-segment normalization can turn a safe-looking input into a protocol-relative
+    // one (`/.//evil.com`, `/..//evil.com`, `/%2e//evil.com` → `//evil.com`), so the
+    // result is checked again.
+    if (!normalized.startsWith('/') || normalized.startsWith('//') || normalized.includes('\\')) {
+      return undefined;
+    }
+    return normalized;
   } catch {
     return undefined;
   }
+}
+
+/**
+ * Like `getSafeCallbackPath`, but also accepts an absolute URL on `origin` (what
+ * NextAuth puts in `?callbackUrl=`) and reduces it to its path. URLs on any other
+ * origin are rejected.
+ */
+export function getSafeCallbackPathFromUrl(urlOrPath: string | null | undefined, origin: string): string | undefined {
+  if (typeof urlOrPath !== 'string') {
+    return undefined;
+  }
+  const trimmed = urlOrPath.trim();
+  if (trimmed.startsWith('/')) {
+    return getSafeCallbackPath(trimmed);
+  }
+  try {
+    const url = new URL(trimmed);
+    if (url.origin !== new URL(origin).origin) {
+      return undefined;
+    }
+    return getSafeCallbackPath(`${url.pathname}${url.search}${url.hash}`);
+  } catch {
+    return undefined;
+  }
+}
+
+/** `/login`, carrying `callbackPath` (when it is a safe same-origin path) so login returns the user there. */
+export function getLoginPathWithCallback(callbackPath: string | null | undefined): string {
+  const safePath = getSafeCallbackPath(callbackPath);
+  if (!safePath || safePath === '/' || safePath.startsWith('/login')) {
+    return '/login';
+  }
+  return `/login?${new URLSearchParams({ [LOGIN_CALLBACK_PATH_QUERY_PARAM]: safePath }).toString()}`;
 }

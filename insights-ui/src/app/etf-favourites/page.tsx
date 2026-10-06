@@ -12,6 +12,7 @@ import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { useDeleteData } from '@dodao/web-core/ui/hooks/fetch/useDeleteData';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
+import { getLoginPathWithCallback } from '@dodao/web-core/utils/auth/safeCallbackPath';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
@@ -28,7 +29,7 @@ export default function EtfFavouritesPage() {
   // Redirect to login if not authenticated.
   useEffect(() => {
     if (koalaSession === null) {
-      router.push('/login');
+      router.push(getLoginPathWithCallback('/etf-favourites'));
     }
   }, [koalaSession, router]);
 

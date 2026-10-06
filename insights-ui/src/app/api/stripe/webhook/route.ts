@@ -1,5 +1,5 @@
 import { getAppConfigValue } from '@/lib/appConfig/appConfig';
-import { creditCheckoutSession, restoreWonDispute, reverseDisputedCharge, reverseRefundedCharge } from '@/utils/credits/credit-purchase';
+import { creditCheckoutSession, restoreClosedDispute, reverseDisputedCharge, reverseRefundedCharge } from '@/utils/credits/credit-purchase';
 import { getStripeClient, getStripeWebhookSecret } from '@/utils/credits/stripe-client';
 import { logError } from '@dodao/web-core/api/helpers/adapters/errorLogger';
 import { NextRequest, NextResponse } from 'next/server';
@@ -51,8 +51,8 @@ async function handleEvent(event: Stripe.Event): Promise<void> {
   } else if (event.type === 'charge.dispute.created') {
     await reverseDisputedCharge(event.data.object as Stripe.Dispute);
   } else if (event.type === 'charge.dispute.closed') {
-    // Only a won dispute changes anything: its debit is given back.
-    await restoreWonDispute(event.data.object as Stripe.Dispute);
+    // Won / inquiry closed / prevented give the dispute debit back; lost keeps it.
+    await restoreClosedDispute(event.data.object as Stripe.Dispute);
   } else {
     console.log('[stripe-webhook] Ignoring event type', event.type);
   }

@@ -8,6 +8,7 @@ import { KoalaGainsSession } from '@/types/auth';
 import React, { useState, useEffect, useMemo } from 'react';
 import { useDeleteData } from '@dodao/web-core/ui/hooks/fetch/useDeleteData';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
+import { getLoginPathWithCallback } from '@dodao/web-core/utils/auth/safeCallbackPath';
 import ManageListsModal from '@/components/favourites/ManageListsModal';
 import ManageTagsModal from '@/components/favourites/ManageTagsModal';
 import BulkAddTagsModal from '@/components/favourites/BulkAddTagsModal';
@@ -83,7 +84,7 @@ export default function FavouritesPage() {
   // Redirect to login if not authenticated
   useEffect(() => {
     if (koalaSession === null) {
-      router.push('/login');
+      router.push(getLoginPathWithCallback('/favourites'));
     }
   }, [koalaSession, router]);
 

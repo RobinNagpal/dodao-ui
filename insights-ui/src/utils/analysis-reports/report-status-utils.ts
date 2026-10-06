@@ -66,34 +66,58 @@ export async function updateInitialStatus(generationRequest: TickerV1GenerationR
   }
 }
 
-export async function markAsInProgress(generationRequest: TickerV1GenerationRequest & { ticker: TickerV1 }, reportToGenerate: ReportType): Promise<void> {
+/**
+ * Starts `reportToGenerate`. Guarded on an open status (`updateMany` + count), so
+ * a stale trigger — e.g. a late step's save on a request that already ended —
+ * can't reopen a Completed / Failed request (its credit is already settled).
+ * Returns false when the request is no longer open; the caller must stop.
+ */
+export async function markAsInProgress(generationRequest: TickerV1GenerationRequest & { ticker: TickerV1 }, reportToGenerate: ReportType): Promise<boolean> {
   if (generationRequest.status === GenerationRequestStatus.NotStarted) {
     console.log('Starting generation request for', generationRequest.ticker.symbol);
-    await prisma.tickerV1GenerationRequest.update({
-      where: {
-        id: generationRequest.id,
-      },
-      data: {
-        inProgressStep: reportToGenerate,
-        lastInvocationTime: new Date(),
-        status: GenerationRequestStatus.InProgress,
-        startedAt: new Date(),
-        updatedAt: new Date(),
-      },
-    });
-  } else {
-    await prisma.tickerV1GenerationRequest.update({
-      where: {
-        id: generationRequest.id,
-      },
-      data: {
-        inProgressStep: reportToGenerate,
-        lastInvocationTime: new Date(),
-        status: GenerationRequestStatus.InProgress,
-        startedAt: new Date(),
-        updatedAt: new Date(),
-      },
-    });
+  }
+  const started = await prisma.tickerV1GenerationRequest.updateMany({
+    where: {
+      id: generationRequest.id,
+      status: { in: [GenerationRequestStatus.NotStarted, GenerationRequestStatus.InProgress] },
+    },
+    data: {
+      inProgressStep: reportToGenerate,
+      lastInvocationTime: new Date(),
+      status: GenerationRequestStatus.InProgress,
+      startedAt: new Date(),
+      updatedAt: new Date(),
+    },
+  });
+  if (started.count === 0) {
+    console.log('Generation request has already ended - not starting', reportToGenerate, 'for', generationRequest.ticker.symbol, generationRequest.id);
+    return false;
+  }
+  return true;
+}
+
+/**
+ * A step saved after its request already ended (e.g. a step that ran past the
+ * stale-step timeout, so the request ended Failed without it) rewrote part of the
+ * report, so it still moves the "Report generated on ..." date — but nothing
+ * else: the status and the credit were settled when the request ended.
+ *
+ * Detected as the request row changing after it ended (`updatedAt > completedAt`;
+ * the save writes `completedSteps`, and ending sets both to the same instant).
+ * The date is set to that change's time and only ever moved forward, so calling
+ * this again for the same request is a no-op.
+ */
+export async function moveReportDateForSaveAfterEnd(generationRequest: TickerV1GenerationRequest): Promise<void> {
+  const { completedAt, updatedAt } = generationRequest;
+  if (!completedAt || generationRequest.completedSteps.length === 0 || updatedAt.getTime() <= completedAt.getTime()) {
+    return;
+  }
+  const moved = await prisma.tickerV1.updateMany({
+    where: { id: generationRequest.tickerId, OR: [{ lastReportGeneratedAt: null }, { lastReportGeneratedAt: { lt: updatedAt } }] },
+    data: { lastReportGeneratedAt: updatedAt },
+  });
+  if (moved.count > 0) {
+    console.log('Moved the report date for a step saved after its generation request ended', generationRequest.id);
   }
 }
 
@@ -138,6 +162,7 @@ export async function markAsCompleted(generationRequest: TickerV1GenerationReque
   });
   if (ended.count === 0) {
     console.log('Generation request was already ended by another caller - skipping', generationRequest.id);
+    await moveReportDateForSaveAfterEnd(generationRequest);
     return;
   }
 

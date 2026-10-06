@@ -12,7 +12,7 @@ import {
   preparePerformanceAndReturnsInputJson,
   prepareRiskAnalysisInputJson,
 } from '@/utils/etf-analysis-reports/etf-report-input-json-utils';
-import { markEtfRequestAsCompleted, markEtfRequestAsInProgress } from '@/utils/etf-analysis-reports/etf-report-status-utils';
+import { markEtfRequestAsCompleted, markEtfRequestAsInProgress, moveEtfReportDateForSaveAfterEnd } from '@/utils/etf-analysis-reports/etf-report-status-utils';
 import { calculateEtfPendingSteps } from '@/utils/etf-analysis-reports/etf-report-steps-statuses';
 import { callEtfLambdaForLLMResponse } from '@/utils/etf-analysis-reports/etf-llm-lambda-utils';
 
@@ -111,8 +111,11 @@ export async function triggerEtfGenerationOfAReport(symbol: string, exchange: st
     model: generationRequest.llmModel ?? undefined,
   };
 
-  if (generationRequest.status === EtfGenerationRequestStatus.Completed) {
-    console.log('ETF generation request is already completed - skipping', symbol, 'on exchange', exchange);
+  if (generationRequest.status === EtfGenerationRequestStatus.Completed || generationRequest.status === EtfGenerationRequestStatus.Failed) {
+    console.log('ETF generation request has already ended (', generationRequest.status, ') - skipping', symbol, 'on exchange', exchange);
+    // An ended request is never reopened (its credit is settled), but a step saved
+    // after it ended still moves the report date.
+    await moveEtfReportDateForSaveAfterEnd(generationRequest);
     return;
   }
 
@@ -168,7 +171,10 @@ export async function triggerEtfGenerationOfAReport(symbol: string, exchange: st
     return;
   }
 
-  await markEtfRequestAsInProgress(generationRequest, nextStep);
+  // Stops here if the request ended meanwhile: a stale trigger must not reopen it.
+  if (!(await markEtfRequestAsInProgress(generationRequest, nextStep))) {
+    return;
+  }
 
   try {
     await generateEtfCategoryAnalysis(spaceId, etfRecord, generationRequest.id, nextStep, selection);

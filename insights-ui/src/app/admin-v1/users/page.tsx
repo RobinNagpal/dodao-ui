@@ -75,6 +75,8 @@ export default function Page() {
   const { deleteData: deleteUser, loading: deletingUser } = useDeleteData<{ success: boolean }, never>({
     successMessage: 'User deleted successfully!',
     errorMessage: 'Failed to delete user',
+    // e.g. "This user has 2 credit purchase(s) ... can't be deleted."
+    showServerErrorMessage: true,
   });
 
   const { deleteData: deletePortfolioProfile } = useDeleteData<DeleteProfileResponse, never>({

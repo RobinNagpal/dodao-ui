@@ -72,11 +72,10 @@ export const useFetchData = <T>(
     }
   }, [fetchData, memoizedOptions.skipInitialFetch]);
 
-  // fetchData already stores the new data on success. On failure it sets `error`
-  // and returns undefined, so the previously loaded data is kept rather than
-  // being wiped by a failed refetch.
   const reFetchData = useCallback(async () => {
-    return fetchData();
+    const refetchResponse = await fetchData();
+    setData(refetchResponse);
+    return refetchResponse;
   }, [fetchData]);
   return {
     data,

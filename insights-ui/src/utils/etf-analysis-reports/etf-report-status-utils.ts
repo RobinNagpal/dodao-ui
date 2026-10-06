@@ -3,9 +3,17 @@ import { settleReportCredit } from '@/utils/credits/credit-service';
 import { EtfGenerationRequestStatus, EtfReportType } from '@/types/etf/etf-analysis-types';
 import { Etf, EtfGenerationRequest } from '@prisma/client';
 
-export async function markEtfRequestAsInProgress(generationRequest: EtfGenerationRequest & { etf: Etf }, reportToGenerate: EtfReportType): Promise<void> {
-  await prisma.etfGenerationRequest.update({
-    where: { id: generationRequest.id },
+/**
+ * Starts `reportToGenerate`, guarded on an open status like the stock
+ * `markAsInProgress`: a stale trigger can't reopen a Completed / Failed request.
+ * Returns false when the request is no longer open; the caller must stop.
+ */
+export async function markEtfRequestAsInProgress(generationRequest: EtfGenerationRequest & { etf: Etf }, reportToGenerate: EtfReportType): Promise<boolean> {
+  const started = await prisma.etfGenerationRequest.updateMany({
+    where: {
+      id: generationRequest.id,
+      status: { in: [EtfGenerationRequestStatus.NotStarted, EtfGenerationRequestStatus.InProgress] },
+    },
     data: {
       inProgressStep: reportToGenerate,
       lastInvocationTime: new Date(),
@@ -14,6 +22,26 @@ export async function markEtfRequestAsInProgress(generationRequest: EtfGeneratio
       updatedAt: new Date(),
     },
   });
+  if (started.count === 0) {
+    console.log('ETF generation request has already ended - not starting', reportToGenerate, 'for', generationRequest.etf.symbol, generationRequest.id);
+    return false;
+  }
+  return true;
+}
+
+/** ETF twin of the stock `moveReportDateForSaveAfterEnd`: a step saved after the request ended still moves the report date, nothing else. */
+export async function moveEtfReportDateForSaveAfterEnd(generationRequest: EtfGenerationRequest): Promise<void> {
+  const { completedAt, updatedAt } = generationRequest;
+  if (!completedAt || generationRequest.completedSteps.length === 0 || updatedAt.getTime() <= completedAt.getTime()) {
+    return;
+  }
+  const moved = await prisma.etf.updateMany({
+    where: { id: generationRequest.etfId, OR: [{ lastReportGeneratedAt: null }, { lastReportGeneratedAt: { lt: updatedAt } }] },
+    data: { lastReportGeneratedAt: updatedAt },
+  });
+  if (moved.count > 0) {
+    console.log('Moved the ETF report date for a step saved after its generation request ended', generationRequest.id);
+  }
 }
 
 export async function markEtfRequestAsCompleted(generationRequest: EtfGenerationRequest): Promise<void> {
@@ -57,6 +85,7 @@ export async function markEtfRequestAsCompleted(generationRequest: EtfGeneration
   });
   if (ended.count === 0) {
     console.log('ETF generation request was already ended by another caller - skipping', generationRequest.id);
+    await moveEtfReportDateForSaveAfterEnd(generationRequest);
     return;
   }
 
