@@ -28,6 +28,8 @@ const EMPTY_PLACEHOLDER = '----';
 const DEFAULT_RETRY_AFTER_MS = 5_000;
 const MAX_RETRY_AFTER_MS = 10 * 60_000;
 const FAILURE_BODY_MAX = 300;
+/** Upper bound for one Discord post; error responses await it, so a hung Discord must not stall them. */
+export const DISCORD_POST_TIMEOUT_MS = 5_000;
 
 export interface DiscordEmbedField {
   name: string;
@@ -142,22 +144,30 @@ function getState(): DiscordRateLimitState {
   return g[STATE_KEY] as DiscordRateLimitState;
 }
 
-/** For tests: resets the module-level pause/skip counters. */
-export function resetDiscordRateLimitState(): void {
-  const state = getState();
-  state.pausedUntil = 0;
-  state.skipped = 0;
+function positiveNumber(value: unknown): number | undefined {
+  if (value === undefined || value === null || value === '') return undefined;
+  const n = Number(value);
+  return Number.isFinite(n) && n > 0 ? n : undefined;
 }
 
+/**
+ * How long to pause after a 429. The headers are always in seconds (`Retry-After`, then
+ * `X-RateLimit-Reset-After`), so they win. The body's `retry_after` is seconds on current API versions
+ * but milliseconds on unversioned/old webhook versions, so it is only a fallback and a value > 60 is
+ * treated as milliseconds. Capped at 10 minutes.
+ */
 function parseRetryAfterMs(err: any): number {
-  const body = err?.response?.data;
-  let seconds = Number(body?.retry_after);
-  if (!Number.isFinite(seconds) || seconds <= 0) {
-    const header = err?.response?.headers?.['retry-after'] ?? err?.response?.headers?.['x-ratelimit-reset-after'];
-    seconds = Number(header);
+  const headers = err?.response?.headers ?? {};
+  const headerSeconds = positiveNumber(headers['retry-after']) ?? positiveNumber(headers['x-ratelimit-reset-after']);
+  let ms: number | undefined;
+  if (headerSeconds !== undefined) {
+    ms = headerSeconds * 1000;
+  } else {
+    const bodyValue = positiveNumber(err?.response?.data?.retry_after);
+    if (bodyValue !== undefined) ms = bodyValue > 60 ? bodyValue : bodyValue * 1000;
   }
-  if (!Number.isFinite(seconds) || seconds <= 0) return DEFAULT_RETRY_AFTER_MS;
-  return Math.min(Math.ceil(seconds * 1000), MAX_RETRY_AFTER_MS);
+  if (ms === undefined) return DEFAULT_RETRY_AFTER_MS;
+  return Math.min(Math.ceil(ms), MAX_RETRY_AFTER_MS);
 }
 
 function conciseFailure(err: any): string {
@@ -199,7 +209,7 @@ export async function postToDiscordWebhook(webhookUrl: string | undefined, paylo
   );
 
   try {
-    await axios.post(webhookUrl, data);
+    await axios.post(webhookUrl, data, { timeout: DISCORD_POST_TIMEOUT_MS });
     return 'posted';
   } catch (err: any) {
     if (err?.response?.status === 429) {

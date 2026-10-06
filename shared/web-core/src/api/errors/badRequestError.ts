@@ -6,8 +6,9 @@
  * as a 500. The middleware logs it as a single `console.warn` line and does not post it to Discord.
  */
 export function badRequestError(message: string): Error {
-  const error = new Error(message) as Error & { statusCode: number };
+  const error = new Error(message) as Error & { statusCode: number; isClientError: true };
   error.name = 'BadRequestError';
   error.statusCode = 400;
+  error.isClientError = true;
   return error;
 }

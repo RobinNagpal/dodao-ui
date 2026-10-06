@@ -1,4 +1,5 @@
 import { DiscordPostResult, postToDiscordWebhook } from '@dodao/web-core/api/helpers/adapters/discordWebhook';
+import { capLogText, MAX_LOGGED_INPUT_CHARS } from '@dodao/web-core/api/helpers/adapters/capLogText';
 import { NextRequest } from 'next/server';
 
 const staticPageGenerationError = 'rendered statically ';
@@ -13,23 +14,44 @@ export function isTransientClientFetchError(value: string): boolean {
   return transientClientFetchErrors.some((pattern) => value.includes(pattern));
 }
 
+const MAX_LOGGED_MESSAGE_CHARS = 1500; // the message is often a composed summary of already-capped parts
+const MAX_LOGGED_DETAILS_CHARS = 1000;
+const MAX_LOGGED_STACK_CHARS = 4000;
+
+/** Stack without the leading `Name: message` header (the message is already on the line), capped. */
+function formatStack(e: Error): string {
+  let stack = e.stack || '';
+  const header = `${e.name || 'Error'}: ${e.message}`;
+  if (e.message && stack.startsWith(header)) {
+    stack = stack.slice(header.length).replace(/^\n/, '');
+  } else if (e.message && e.message.length > MAX_LOGGED_INPUT_CHARS) {
+    stack = stack.split(e.message).join(capLogText(e.message));
+  }
+  return capLogText(stack, MAX_LOGGED_STACK_CHARS);
+}
+
 function formatLogErrorLine(message: string, params: Record<string, any>, e: Error | null, spaceId: string | null, blockchain: string | null): string {
-  const text = typeof message === 'string' ? message : safeStringify(message);
+  // Message, params and error text can carry request input (scanner payloads), so each is capped. The line is never dropped.
+  const text = capLogText(typeof message === 'string' ? message : safeStringify(message), MAX_LOGGED_MESSAGE_CHARS);
   const parts = [`[errorLogger] ${text}`];
   if (e instanceof Error) {
-    // Avoid repeating the error message when it is already part of the log message.
-    if (e.message && !text.includes(e.message)) parts.push(`error=${e.name || 'Error'}: ${e.message}`);
+    // Avoid repeating the error message when it is already part of the log message (callers may have capped it).
+    const errMessage = e.message ? capLogText(e.message) : '';
+    if (errMessage && !text.includes(errMessage) && !text.includes(e.message)) parts.push(`error=${e.name || 'Error'}: ${errMessage}`);
     // `cause` (e.g. undici's "fetch failed" → ECONNREFUSED) and own props (Prisma `code`/`meta`) carry the real reason.
     const details = errorDetails(e);
-    if (details) parts.push(`details=${details}`);
+    if (details) parts.push(`details=${capLogText(details, MAX_LOGGED_DETAILS_CHARS)}`);
   } else if (e) {
-    parts.push(`error=${safeStringify(e)}`);
+    parts.push(`error=${capLogText(safeStringify(e))}`);
   }
-  if (spaceId) parts.push(`spaceId=${spaceId}`);
-  if (blockchain) parts.push(`blockchain=${blockchain}`);
-  if (params && Object.keys(params).length > 0) parts.push(`params=${safeStringify(params)}`);
+  if (spaceId) parts.push(`spaceId=${capLogText(spaceId)}`);
+  if (blockchain) parts.push(`blockchain=${capLogText(blockchain)}`);
+  if (params && Object.keys(params).length > 0) parts.push(`params=${capLogText(safeStringify(params))}`);
   let line = parts.join(' | ');
-  if (e instanceof Error && e.stack) line += `\n${e.stack}`;
+  if (e instanceof Error && e.stack) {
+    const stack = formatStack(e);
+    if (stack) line += `\n${stack}`;
+  }
   return line;
 }
 
@@ -81,9 +103,10 @@ export async function logErrorRequest(e: Error | string | null, req: NextRequest
   }
 
   // Always log the error to console (one line). Headers are intentionally not logged (they carry cookies/tokens).
-  const errorText = typeof e === 'string' ? e : `${e.name || 'Error'}: ${e.message}`;
-  const stack = typeof e === 'object' && e.stack ? `\n${e.stack}` : '';
-  console.error(`[errorLogger] Request error: ${req.method} ${req.url} | ${errorText}${stack}`);
+  // URL and message can carry request input, so both are capped (the line is never dropped).
+  const errorText = typeof e === 'string' ? capLogText(e) : `${e.name || 'Error'}: ${capLogText(e.message ?? '')}`;
+  const stack = typeof e === 'object' && e.stack ? `\n${formatStack(e)}` : '';
+  console.error(`[errorLogger] Request error: ${req.method} ${capLogText(req.url)} | ${errorText}${stack}`);
 
   // Skip posting to Discord if the error should be ignored
   if (shouldIgnoreError(e)) {
