@@ -40,7 +40,7 @@ const BALANCE_READ_OPTIONS: Stripe.RequestOptions = { timeout: 5_000, maxNetwork
 
 /** Live balance straight from Stripe. Used where it must be exact: deciding whether a run can start. */
 export async function fetchStripeCredits(stripeCustomerId: string): Promise<number> {
-  const customer = await getStripeClient().customers.retrieve(stripeCustomerId, {}, BALANCE_READ_OPTIONS);
+  const customer = await (await getStripeClient()).customers.retrieve(stripeCustomerId, {}, BALANCE_READ_OPTIONS);
   return customer.deleted ? 0 : creditsFromStripeBalance(customer.balance);
 }
 
@@ -76,7 +76,7 @@ const PURCHASE_LOOKBACK = 100;
  * customer adds 100 ledger entries in that time.
  */
 export async function findPurchaseInStripe(stripeCustomerId: string, stripeCheckoutSessionId: string): Promise<Stripe.CustomerBalanceTransaction | null> {
-  const recent = await getStripeClient().customers.listBalanceTransactions(stripeCustomerId, { limit: PURCHASE_LOOKBACK });
+  const recent = await (await getStripeClient()).customers.listBalanceTransactions(stripeCustomerId, { limit: PURCHASE_LOOKBACK });
   return (
     recent.data.find(
       (transaction) => transaction.metadata?.type === LEDGER_ENTRY_TYPE.Purchase && transaction.metadata?.checkoutSessionId === stripeCheckoutSessionId
@@ -99,7 +99,7 @@ export async function grantPurchaseInStripe(input: GrantPurchaseInput): Promise<
     return existing;
   }
 
-  return getStripeClient().customers.createBalanceTransaction(
+  return (await getStripeClient()).customers.createBalanceTransaction(
     input.stripeCustomerId,
     {
       amount: -input.credits * STRIPE_CENTS_PER_CREDIT,
@@ -133,8 +133,8 @@ export interface ChargeReportInput {
  * two settles of the same run can never charge twice, and a retry after an
  * error that hid a landed charge gets the original transaction back.
  */
-export function chargeReportInStripe(input: ChargeReportInput): Promise<Stripe.CustomerBalanceTransaction> {
-  return getStripeClient().customers.createBalanceTransaction(
+export async function chargeReportInStripe(input: ChargeReportInput): Promise<Stripe.CustomerBalanceTransaction> {
+  return (await getStripeClient()).customers.createBalanceTransaction(
     input.stripeCustomerId,
     {
       amount: CREDITS_PER_REPORT * STRIPE_CENTS_PER_CREDIT,
@@ -157,8 +157,8 @@ export function chargeReportInStripe(input: ChargeReportInput): Promise<Stripe.C
 /** The newest `limit` ledger entries, newest first, plus whether older ones exist. */
 export async function listStripeLedger(stripeCustomerId: string, limit: number): Promise<{ entries: Stripe.CustomerBalanceTransaction[]; hasMore: boolean }> {
   // One extra entry tells us whether there is anything left to load.
-  const entries = await getStripeClient()
-    .customers.listBalanceTransactions(stripeCustomerId, { limit: Math.min(limit + 1, 100) })
+  const entries = await (await getStripeClient()).customers
+    .listBalanceTransactions(stripeCustomerId, { limit: Math.min(limit + 1, 100) })
     .autoPagingToArray({ limit: limit + 1 });
   return { entries: entries.slice(0, limit), hasMore: entries.length > limit };
 }
