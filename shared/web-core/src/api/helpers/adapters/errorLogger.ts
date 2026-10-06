@@ -1,5 +1,4 @@
-import { formatAxiosError } from '@dodao/web-core/api/helpers/adapters/formatAxiosError';
-import axios from 'axios';
+import { DiscordPostResult, postToDiscordWebhook } from '@dodao/web-core/api/helpers/adapters/discordWebhook';
 import { NextRequest } from 'next/server';
 
 const staticPageGenerationError = 'rendered statically ';
@@ -71,8 +70,8 @@ export async function logError(
   }
 
   console.log('[errorLogger] Posting error to Discord');
-  await postErrorOnDiscord(e, spaceId, blockchain, message, params);
-  console.log('[errorLogger] Error posted to Discord successfully');
+  const result = await postErrorOnDiscord(e, spaceId, blockchain, message, params);
+  if (result === 'posted') console.log('[errorLogger] Error posted to Discord successfully');
 }
 
 export async function logErrorRequest(e: Error | string | null, req: NextRequest) {
@@ -115,11 +114,8 @@ export async function logErrorRequest(e: Error | string | null, req: NextRequest
   };
 
   console.log('[errorLogger] Posting request error to Discord');
-  axios.post(process.env.SERVER_ERRORS_WEBHOOK!, data).catch((err) => {
-    console.error('[errorLogger] Failed to post to Discord webhook:', formatAxiosError(err));
-    console.log('[errorLogger] Discord embed data:', JSON.stringify(embeds, null, 2));
-  });
-  console.log('[errorLogger] Request error posted to Discord successfully');
+  // Fire-and-forget (as before). postToDiscordWebhook never throws, truncates to Discord limits and honours 429 pauses.
+  void postToDiscordWebhook(process.env.SERVER_ERRORS_WEBHOOK, data);
 }
 
 function shouldIgnoreError(e: Error | string) {
@@ -159,7 +155,13 @@ function shouldIgnoreError(e: Error | string) {
   return false;
 }
 
-async function postErrorOnDiscord(e: Error | null, spaceId: string | null, blockchain: string | null, message: string, params: Record<string, any> = {}) {
+async function postErrorOnDiscord(
+  e: Error | null,
+  spaceId: string | null,
+  blockchain: string | null,
+  message: string,
+  params: Record<string, any> = {}
+): Promise<DiscordPostResult> {
   console.log('[errorLogger] postErrorOnDiscord called with:', {
     errorName: e?.name,
     errorMessage: e?.message?.substring(0, 100),
@@ -185,12 +187,12 @@ async function postErrorOnDiscord(e: Error | null, spaceId: string | null, block
         },
         {
           name: 'Message',
-          value: (message || '----').substr(0, 1000),
+          value: message || '----',
           inline: false,
         },
         {
           name: 'Params',
-          value: JSON.stringify(params || {}).substr(0, 1000),
+          value: JSON.stringify(params || {}),
           inline: false,
         },
       ],
@@ -214,7 +216,7 @@ async function postErrorOnDiscord(e: Error | null, spaceId: string | null, block
         },
         {
           name: 'Stack',
-          value: (e.stack || '----').substr(0, 1000),
+          value: e.stack || '----',
           inline: false,
         },
       ],
@@ -228,12 +230,7 @@ async function postErrorOnDiscord(e: Error | null, spaceId: string | null, block
     embeds,
   };
 
-  console.log('[errorLogger] Sending data to Discord webhook');
-  try {
-    await axios.post(process.env.SERVER_ERRORS_WEBHOOK!, data);
-    console.log('[errorLogger] Successfully posted to Discord webhook');
-  } catch (err) {
-    console.error('[errorLogger] Failed to post to Discord webhook:', formatAxiosError(err as any));
-    console.log('[errorLogger] Discord embed data that failed to send:', JSON.stringify(embeds, null, 2));
-  }
+  // Field values are truncated to Discord's limits inside postToDiscordWebhook (the full error is already in the console/Loki line).
+  // On a 429 Discord delivery is paused for `retry_after` and skipped alerts are counted, never thrown or logged one-by-one.
+  return postToDiscordWebhook(process.env.SERVER_ERRORS_WEBHOOK, data);
 }
