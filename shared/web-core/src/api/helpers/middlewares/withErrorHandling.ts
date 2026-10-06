@@ -9,6 +9,12 @@ function isJwtError(error: unknown): boolean {
   return name === 'JsonWebTokenError' || name === 'TokenExpiredError' || name === 'NotBeforeError';
 }
 
+const MAX_LOGGED_INPUT_CHARS = 500;
+
+function capLogText(text: string): string {
+  return text.length > MAX_LOGGED_INPUT_CHARS ? `${text.slice(0, MAX_LOGGED_INPUT_CHARS)}…(${text.length} chars)` : text;
+}
+
 /**
  * Logs a caught route error as ONE line: `[wrapper] METHOD URL -> status: Name: message | params=…` (+ stack).
  * Server errors go through logError (one console.error line + Discord). Expected client errors
@@ -22,19 +28,36 @@ async function logRouteError(wrapperName: string, error: unknown, req: NextReque
     // ignore - params are only used for logging
   }
   const err = error as any;
-  const summary = `[${wrapperName}] ${req.method} ${req.url} -> ${statusCode}: ${err?.name || 'Error'}: ${err?.message ?? String(error)}`;
+  // URL, message and params can carry attacker-controlled input (scanners send multi-KB
+  // payloads), so each is capped. The line itself is never dropped.
+  const summary = `[${wrapperName}] ${req.method} ${capLogText(req.url)} -> ${statusCode}: ${err?.name || 'Error'}: ${capLogText(
+    String(err?.message ?? error),
+  )}`;
 
   if (statusCode < 500 && !isJwtError(error)) {
-    console.warn(Object.keys(params).length > 0 ? `${summary} | params=${JSON.stringify(params)}` : summary);
+    console.warn(Object.keys(params).length > 0 ? `${summary} | params=${capLogText(JSON.stringify(params))}` : summary);
     return;
   }
 
   await logError(summary, params, error instanceof Error ? error : null);
 }
 
+/**
+ * Status for an error a handler threw on purpose: an explicit numeric `statusCode` wins, then the
+ * named client errors built by `@dodao/web-core/api/errors/*` (BadRequestError → 400,
+ * NotFoundError → 404). Returns undefined for anything else, so callers fall back to their own mapping.
+ */
+function getExplicitStatusCode(error: unknown): number | undefined {
+  const err = error as any;
+  if (typeof err?.statusCode === 'number') return err.statusCode;
+  if (err?.name === 'BadRequestError') return 400;
+  if (err?.name === 'NotFoundError') return 404;
+  return undefined;
+}
+
 type Handler<T> = (
   req: NextRequest,
-  dynamic: { params: Promise<any> }
+  dynamic: { params: Promise<any> },
 ) => Promise<NextResponse<T | ErrorResponse | RedirectResponse>> | NextResponse<T | ErrorResponse>;
 
 export function withErrorHandlingV1<T>(handler: Handler<T>): Handler<T> {
@@ -83,16 +106,15 @@ export function withErrorHandlingV2<T>(handler: Handler2<T> | Handler2WithReq<T>
       return NextResponse.json(result, { status: 200 });
     } catch (error) {
       // Check for Prisma "not found" error (P2025)
-      const isPrismaNotFound = (error as any)?.code === 'P2025' || (error as any)?.name === 'NotFoundError';
+      const isPrismaNotFound = (error as any)?.code === 'P2025';
 
       const userMessage = (error as any)?.response?.data || (error as any)?.message || 'An unknown error occurred';
 
-      // Handlers can throw an error carrying an explicit `statusCode` (e.g. 404
-      // for "resource not found") so an expected user error doesn't surface as a
-      // generic 500. Falls back to the JWT/Prisma/500 detection below.
-      const customStatusCode = typeof (error as any)?.statusCode === 'number' ? (error as any).statusCode : undefined;
-
-      const statusCode = customStatusCode ?? (isJwtError(error) ? 401 : isPrismaNotFound ? 404 : 500);
+      // Handlers can throw an error carrying an explicit `statusCode` or a named
+      // client error (badRequestError → 400, notFoundError → 404) so an expected
+      // user error doesn't surface as a generic 500. Falls back to the
+      // JWT/Prisma/500 detection below.
+      const statusCode = getExplicitStatusCode(error) ?? (isJwtError(error) ? 401 : isPrismaNotFound ? 404 : 500);
       await logRouteError('withErrorHandlingV2', error, req, dynamic, statusCode);
       return NextResponse.json({ error: userMessage }, { status: statusCode });
     }
@@ -127,7 +149,7 @@ export function withLoggedInUser<T>(handler: HandlerWithUser<T> | HandlerWithUse
       return NextResponse.json(result, { status: 200 });
     } catch (error) {
       const userMessage = (error as any)?.response?.data || (error as any)?.message || 'An unknown error occurred';
-      const statusCode = isJwtError(error) ? 401 : 500;
+      const statusCode = getExplicitStatusCode(error) ?? (isJwtError(error) ? 401 : 500);
       await logRouteError('withLoggedInUser', error, req, dynamic, statusCode);
       return NextResponse.json({ error: userMessage }, { status: statusCode });
     }
