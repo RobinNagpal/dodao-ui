@@ -192,18 +192,29 @@ leaf** (see "Reuse Before Creating" in the root `CLAUDE.md`).
 A `no-restricted-syntax` rule bans the `className` JSX attribute outside the
 leaf layer:
 
-- `warn` for `src/app/**` + `src/components/**`
+- `src/app/**` + `src/components/**`: **currently `off` in `.eslintrc.json`**
+  (the config `next lint` uses), `warn` in `eslint.config.mjs`
 - `off` for `src/components/ui/**` (later block wins)
+
+> **The guardrail is currently OFF — `next lint` does not report `className`
+> violations.** It was switched from `warn` to `off` in PR #1624 because the
+> migration is far from done: turning it on reports **5,726 violations across
+> 409 files** (measured 2026-10-06), which buries every other lint warning.
+> Leaving it at `error` would fail CI. Until enough directories are migrated,
+> the rule is enforced only by review and the `koalagains-ui-code-verify`
+> skill. To check a file by hand, temporarily set the rule to `"error"` in
+> `.eslintrc.json` and run `pnpm lint`. Re-enable it per directory (an
+> `error`-level override for each fully migrated glob) rather than globally.
 
 It is configured in **both** ESLint configs on purpose: `.eslintrc.json` (the
 config `next lint` actually consumes under the pinned ESLint 8, where flat config
 is opt-in) and `eslint.config.mjs` (the flat config, ready for when ESLint/Next
 default to flat). Keep them in sync until the configs are consolidated.
 
-It is currently set to **`warn`** so the build stays green while the codebase is
-migrated (CI does not run `--max-warnings`, and `next build` does not fail on
-warnings). The rollout is a **per-directory ratchet to `error`**: as a directory
-is fully migrated to leaves, move its glob into an `error`-level block.
+The plan is a **per-directory ratchet to `error`**: as a directory is fully
+migrated to leaves, add an `error`-level override for its glob (CI does not run
+`--max-warnings`, and `next build` does not fail on warnings, so a `warn` level
+would never block a merge either).
 
 Planned follow-ups (see [next-ui-cleanups.md](next-ui-cleanups.md)): consolidate
 to a single ESLint config, bump `eslint-config-next` to match Next 15, and
@@ -225,10 +236,10 @@ optionally restrict the leaf layer to semantic tokens only.
 2. Replace inline Tailwind with leaf composition. Preserve exact spacing/colors
    (match the scale value to the original class — e.g. `mt-3` → `gap="md"`).
 3. If a needed leaf or variant is missing, add it to the leaf layer first.
-4. Confirm the file has **no `className`** left and `next lint` shows no
-   `no-restricted-syntax` warnings for it.
-5. Once a whole directory is clean, ratchet its glob to `error` in
-   `eslint.config.mjs`.
+4. Confirm the file has **no `className`** left (with the guardrail off,
+   enable it temporarily as described above and check `next lint`).
+5. Once a whole directory is clean, ratchet its glob to `error` in both
+   `.eslintrc.json` and `eslint.config.mjs`.
 
 **Verification (important in CI-only environments)**
 Run `yarn lint`, `yarn prettier-check`, and `yarn compile` before pushing. If

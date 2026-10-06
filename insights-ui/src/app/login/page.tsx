@@ -6,6 +6,7 @@ import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import { Contexts } from '@dodao/web-core/utils/constants/constants';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
+import { getSafeCallbackPath, LOGIN_CALLBACK_PATH_QUERY_PARAM } from '@dodao/web-core/utils/auth/safeCallbackPath';
 import { signIn } from 'next-auth/react';
 import { useState } from 'react';
 
@@ -14,10 +15,23 @@ interface LoginRequest {
   email: string;
   spaceId: string;
   context: string;
+  callbackPath?: string;
 }
 
 interface LoginResponse {
   userId: string;
+}
+
+/**
+ * Page to return to after login, from this page's own `?callbackPath=` (set by
+ * whoever sent the user here). Read from `window.location` rather than
+ * `useSearchParams()` so the page doesn't need a Suspense boundary.
+ */
+function getLoginCallbackPath(): string | undefined {
+  if (typeof window === 'undefined') {
+    return undefined;
+  }
+  return getSafeCallbackPath(new URLSearchParams(window.location.search).get(LOGIN_CALLBACK_PATH_QUERY_PARAM));
 }
 
 export default function LoginPage() {
@@ -36,6 +50,7 @@ export default function LoginPage() {
         email: submittedEmail,
         spaceId: KoalaGainsSpaceId,
         context: Contexts.loginAndRedirectToHome,
+        callbackPath: getLoginCallbackPath(),
       });
 
       if (response) {
@@ -53,7 +68,7 @@ export default function LoginPage() {
   };
 
   const handleGoogleSignIn = () => {
-    signIn('google', { callbackUrl: '/' });
+    signIn('google', { callbackUrl: getLoginCallbackPath() ?? '/' });
   };
 
   const handleUseAnotherEmail = () => {

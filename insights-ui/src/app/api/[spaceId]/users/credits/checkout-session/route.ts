@@ -6,11 +6,34 @@ import { getStripeClient } from '@/utils/credits/stripe-client';
 import { logError } from '@dodao/web-core/api/helpers/adapters/errorLogger';
 import { withLoggedInUser } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
+import { createHash } from 'crypto';
 import { NextRequest } from 'next/server';
 import Stripe from 'stripe';
 
 /** Shown after the account's statement descriptor prefix on card statements. */
 const STATEMENT_DESCRIPTOR_SUFFIX = 'KOALAGAINS';
+
+/** Top-of-page branding on the hosted Checkout page. No `icon`: we have no square asset. */
+const CHECKOUT_BRANDING: Stripe.Checkout.SessionCreateParams.BrandingSettings = {
+  display_name: 'KoalaGains',
+  logo: { type: 'url', url: 'https://koalagains.com/koalagain_logo.png' },
+  button_color: '#384aff',
+  border_style: 'rounded',
+};
+
+/**
+ * Idempotency key for creating this user's customer. Stripe rejects a key
+ * reused with different parameters within 24h (`idempotency_error`), so the
+ * key carries a hash of the parameters: an email changed since the last
+ * attempt gets a fresh key instead of a failed checkout, while concurrent
+ * checkouts (same parameters) still share one key and so one customer.
+ */
+function customerIdempotencyKey(params: Stripe.CustomerCreateParams, userId: string, replacesCustomerId: string | null): string {
+  const paramsHash = createHash('sha256').update(JSON.stringify(params)).digest('hex').slice(0, 16);
+  // A replacement needs its own key: the original one would hand back the missing customer for 24h.
+  const base = replacesCustomerId ? `credit-customer-${userId}-replaces-${replacesCustomerId}` : `credit-customer-${userId}`;
+  return `${base}-${paramsHash}`;
+}
 
 /**
  * The Stripe customer this user's purchases go to. One per user keeps their
@@ -55,14 +78,11 @@ async function getOrCreateStripeCustomer(
     });
   }
 
-  const customer = await stripe.customers.create(
-    {
-      email: user.email ?? undefined,
-      metadata: { userId: user.id, spaceId: user.spaceId },
-    },
-    // A replacement needs its own key: the original one would hand back the missing customer for 24h.
-    { idempotencyKey: storedId ? `credit-customer-${user.id}-replaces-${storedId}` : `credit-customer-${user.id}` }
-  );
+  const params: Stripe.CustomerCreateParams = {
+    email: user.email ?? undefined,
+    metadata: { userId: user.id, spaceId: user.spaceId },
+  };
+  const customer = await stripe.customers.create(params, { idempotencyKey: customerIdempotencyKey(params, user.id, storedId) });
   // Only replace what we read, so two concurrent checkouts can't overwrite each other's link.
   const linked = await prisma.user.updateMany({ where: { id: user.id, stripeCustomerId: storedId }, data: { stripeCustomerId: customer.id } });
   if (linked.count === 0) {
@@ -123,6 +143,7 @@ async function postHandler(req: NextRequest, userContext: DoDaoJwtTokenPayload):
     // Charge in USD only: adaptive pricing would show and charge a converted
     // local-currency amount, breaking "1 credit = $1".
     adaptive_pricing: { enabled: false },
+    branding_settings: CHECKOUT_BRANDING,
     payment_intent_data: {
       // Card statements read "<account prefix>* KOALAGAINS" (≤ 22 chars, has letters, none of <>\'"*).
       statement_descriptor_suffix: STATEMENT_DESCRIPTOR_SUFFIX,

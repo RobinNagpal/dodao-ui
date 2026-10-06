@@ -42,14 +42,23 @@ export async function markEtfRequestAsCompleted(generationRequest: EtfGeneration
   const hasFailed = generationRequest.failedSteps.length > 0;
   const completedAt = new Date();
 
-  await prisma.etfGenerationRequest.update({
-    where: { id: generationRequest.id },
+  // Atomic claim, as in the stock markAsCompleted: only the caller that moves the
+  // request out of an open status ends it and runs the follow-up work below.
+  const ended = await prisma.etfGenerationRequest.updateMany({
+    where: {
+      id: generationRequest.id,
+      status: { in: [EtfGenerationRequestStatus.NotStarted, EtfGenerationRequestStatus.InProgress] },
+    },
     data: {
       status: hasFailed ? EtfGenerationRequestStatus.Failed : EtfGenerationRequestStatus.Completed,
       completedAt,
       updatedAt: completedAt,
     },
   });
+  if (ended.count === 0) {
+    console.log('ETF generation request was already ended by another caller - skipping', generationRequest.id);
+    return;
+  }
 
   // Mirrors the stock path: any completed step rewrote part of the report, so
   // the single "Report generated on ..." date moves even for a partial run.

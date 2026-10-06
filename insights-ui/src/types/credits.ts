@@ -117,7 +117,7 @@ export interface AdminCreditUserResponse {
   amountSpentInCents: number;
   purchaseCount: number;
   lastPurchaseAt: string;
-  /** Credit-paid report generations, stocks and ETFs together. */
+  /** Report generations a credit was actually charged for (Completed + charged in Stripe), stocks and ETFs together. */
   reportsGenerated: number;
 }
 

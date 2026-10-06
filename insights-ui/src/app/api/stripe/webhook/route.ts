@@ -1,5 +1,5 @@
 import { getAppConfigValue } from '@/lib/appConfig/appConfig';
-import { creditCheckoutSession, reverseDisputedCharge, reverseRefundedCharge } from '@/utils/credits/credit-purchase';
+import { creditCheckoutSession, restoreWonDispute, reverseDisputedCharge, reverseRefundedCharge } from '@/utils/credits/credit-purchase';
 import { getStripeClient, getStripeWebhookSecret } from '@/utils/credits/stripe-client';
 import { logError } from '@dodao/web-core/api/helpers/adapters/errorLogger';
 import { NextRequest, NextResponse } from 'next/server';
@@ -19,6 +19,28 @@ async function isLiveModeKey(): Promise<boolean> {
   return /^(sk|rk)_live_/.test(secretKey);
 }
 
+/** Event API versions already warned about, so a mismatch logs once per process rather than per delivery. */
+const warnedApiVersions = new Set<string>();
+
+/**
+ * The endpoint renders events in the account's default API version, which can
+ * differ from the one stripe-node is pinned to (and its types describe). The
+ * fields we read are stable across versions, so a mismatch is only worth a
+ * heads-up — pin the endpoint's version to `Stripe.API_VERSION` to silence it.
+ */
+function warnOnApiVersionMismatch(event: Stripe.Event): void {
+  const eventVersion = event.api_version ?? 'unknown';
+  if (eventVersion === Stripe.API_VERSION || warnedApiVersions.has(eventVersion)) {
+    return;
+  }
+  warnedApiVersions.add(eventVersion);
+  console.warn('[stripe-webhook] Event API version differs from the stripe-node pinned version', {
+    eventApiVersion: eventVersion,
+    pinnedApiVersion: Stripe.API_VERSION,
+    eventId: event.id,
+  });
+}
+
 /** Runs the handler for one verified event. Throwing makes the route answer 500 so Stripe retries. */
 async function handleEvent(event: Stripe.Event): Promise<void> {
   if (CREDITING_EVENTS.has(event.type)) {
@@ -28,6 +50,9 @@ async function handleEvent(event: Stripe.Event): Promise<void> {
     await reverseRefundedCharge(event.data.object as Stripe.Charge);
   } else if (event.type === 'charge.dispute.created') {
     await reverseDisputedCharge(event.data.object as Stripe.Dispute);
+  } else if (event.type === 'charge.dispute.closed') {
+    // Only a won dispute changes anything: its debit is given back.
+    await restoreWonDispute(event.data.object as Stripe.Dispute);
   } else {
     console.log('[stripe-webhook] Ignoring event type', event.type);
   }
@@ -79,6 +104,8 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     });
     return NextResponse.json({ error: 'Event mode does not match the configured Stripe key' }, { status: 400 });
   }
+
+  warnOnApiVersionMismatch(event);
 
   try {
     await handleEvent(event);

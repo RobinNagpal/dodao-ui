@@ -329,28 +329,36 @@ export async function reverseRefundedCharge(charge: Stripe.Charge): Promise<void
   }
 }
 
-/** `charge.dispute.created`: take back all of the purchase's credits not already removed by a refund. */
-export async function reverseDisputedCharge(dispute: Stripe.Dispute): Promise<void> {
-  const what = `charge.dispute.created ${dispute.id}`;
+/** The credits purchase a dispute is about. The dispute doesn't carry the customer; its charge does (read-only GET). */
+async function findPurchaseForDispute(dispute: Stripe.Dispute, what: string): Promise<PurchaseForReversal | null> {
   let paymentIntentId = idOf(dispute.payment_intent);
   let customerId: string | null = null;
   const chargeId = idOf(dispute.charge);
   if (chargeId) {
-    // The dispute doesn't carry the customer; the charge does (read-only GET).
     const charge = await (await getStripeClient()).charges.retrieve(chargeId);
     customerId = idOf(charge.customer);
     paymentIntentId = paymentIntentId ?? idOf(charge.payment_intent);
   }
-  const purchase = await findPurchaseForCharge(paymentIntentId, customerId, what);
-  if (!purchase) return;
+  return findPurchaseForCharge(paymentIntentId, customerId, what);
+}
 
-  const ledger = await listRecentLedgerEntries(purchase.stripeCustomerId);
-  const alreadyRefunded = ledger
+/** Credits the recent ledger shows were already taken back by refunds of this purchase. */
+function creditsRemovedByRefunds(purchase: PurchaseForReversal, ledger: Stripe.CustomerBalanceTransaction[]): number {
+  return ledger
     .filter(
       (entry) => entry.metadata?.type === LEDGER_ENTRY_TYPE.Refund && entry.metadata?.paymentIntentId === purchase.paymentIntentId && entry.metadata?.sourceId
     )
     .reduce((sum, entry) => sum + (Number(entry.metadata?.credits) || 0), 0);
-  const credits = purchase.credits - alreadyRefunded;
+}
+
+/** `charge.dispute.created`: take back all of the purchase's credits not already removed by a refund. */
+export async function reverseDisputedCharge(dispute: Stripe.Dispute): Promise<void> {
+  const what = `charge.dispute.created ${dispute.id}`;
+  const purchase = await findPurchaseForDispute(dispute, what);
+  if (!purchase) return;
+
+  const ledger = await listRecentLedgerEntries(purchase.stripeCustomerId);
+  const credits = purchase.credits - creditsRemovedByRefunds(purchase, ledger);
   if (credits <= 0) {
     console.log(`[credit-purchase] ${what}: purchase ${purchase.paymentIntentId} was already fully refunded in credits; nothing removed`);
     return;
@@ -367,5 +375,80 @@ export async function reverseDisputedCharge(dispute: Stripe.Dispute): Promise<vo
       checkoutSessionId: purchase.stripeCheckoutSessionId,
     },
     ledger
+  );
+}
+
+/** `metadata.type` of the credit that gives a won dispute's credits back. Shows in the history as an `Adjustment`. */
+const DISPUTE_WON_ENTRY_TYPE = 'dispute_won';
+
+/**
+ * `charge.dispute.closed`: a won dispute gives back exactly what its
+ * `charge.dispute.created` debit took — and nothing if there was no debit (the
+ * purchase was already fully refunded in credits, or isn't ours). Any other
+ * outcome (lost, warning closed, …) leaves the debit standing.
+ *
+ * At most once per dispute, the same two layers as the debit: idempotency key
+ * `credit-dispute-won-<du_…>` for concurrent / retried deliveries within 24h,
+ * and a recent-ledger check for a `dispute_won` entry with this `sourceId`.
+ */
+export async function restoreWonDispute(dispute: Stripe.Dispute): Promise<void> {
+  const what = `charge.dispute.closed ${dispute.id}`;
+  if (dispute.status !== 'won') {
+    console.log(`[credit-purchase] ${what}: closed as ${dispute.status}; the dispute debit (if any) stands`);
+    return;
+  }
+  const purchase = await findPurchaseForDispute(dispute, what);
+  if (!purchase) return;
+
+  const ledger = await listRecentLedgerEntries(purchase.stripeCustomerId);
+  const restored = ledger.find((entry) => entry.metadata?.type === DISPUTE_WON_ENTRY_TYPE && entry.metadata?.sourceId === dispute.id);
+  if (restored) {
+    console.log(`[credit-purchase] ${what}: credits already restored (${restored.id}); skipping`);
+    return;
+  }
+
+  const debit = ledger.find((entry) => entry.metadata?.type === LEDGER_ENTRY_TYPE.Dispute && entry.metadata?.sourceId === dispute.id);
+  if (!debit) {
+    if (purchase.credits - creditsRemovedByRefunds(purchase, ledger) <= 0) {
+      console.log(
+        `[credit-purchase] ${what}: purchase ${purchase.paymentIntentId} was fully refunded in credits, so the dispute debited nothing; nothing to restore`
+      );
+      return;
+    }
+    // Most likely the debit is older than the ledger lookback (disputes can take months to close) — restore it by
+    // hand, see the runbook. Also hit if the `charge.dispute.created` debit never landed.
+    await logError(`[credit-purchase] MANUAL CHECK NEEDED: ${what} was won but its dispute debit is not in the recent ledger; nothing restored`, {
+      disputeId: dispute.id,
+      userId: purchase.userId,
+      stripeCustomerId: purchase.stripeCustomerId,
+      paymentIntentId: purchase.paymentIntentId,
+    });
+    return;
+  }
+
+  const credits = Number(debit.metadata?.credits) || 0;
+  const credit = await (
+    await getStripeClient()
+  ).customers.createBalanceTransaction(
+    purchase.stripeCustomerId,
+    {
+      // Exactly the debit's amount, negated: a negative balance change is credit.
+      amount: -debit.amount,
+      currency: debit.currency,
+      description: `Restored ${credits} ${credits === 1 ? 'credit' : 'credits'} (payment dispute won)`,
+      metadata: {
+        type: DISPUTE_WON_ENTRY_TYPE,
+        userId: purchase.userId,
+        credits: String(credits),
+        sourceId: dispute.id,
+        debitTxnId: debit.id,
+        paymentIntentId: purchase.paymentIntentId,
+        checkoutSessionId: purchase.stripeCheckoutSessionId,
+      },
+    },
+    { idempotencyKey: `credit-dispute-won-${dispute.id}` }
+  );
+  console.log(
+    `[credit-purchase] Restored ${credits} credits to ${purchase.userId} (${purchase.stripeCustomerId}) for won dispute ${dispute.id} on ${purchase.paymentIntentId}: ${credit.id}`
   );
 }
