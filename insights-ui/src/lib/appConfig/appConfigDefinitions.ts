@@ -120,7 +120,7 @@ export const APP_CONFIG_GROUPS: AppConfigGroup[] = [
     id: 'scraping',
     label: 'Fundamentals Scraping',
     description:
-      'How stock/ETF fundamentals pages are fetched. Rejections by the source site are logged as [scraper-rejected] and pause fetching for at least 10 minutes. Changes apply within a minute (no redeploy).',
+      'How stock/ETF fundamentals pages are fetched. Rejections by the source site are logged as [scraper-rejected] and pause fetching for at least 10 minutes. Changes saved here apply immediately (no redeploy); a value edited directly in AWS SSM is picked up within 30 minutes.',
   },
   {
     id: 'logging',

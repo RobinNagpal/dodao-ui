@@ -266,8 +266,7 @@ When the App Setting **`SCRAPER_FETCH_VIA_LAMBDA`** (group "Fundamentals Scrapin
 are fetched through the stocks Lambda's `POST /html` proxy at **`STOCK_ANALYZER_LAMBDA_URL`** (its
 Lambda Function URL), so requests leave from Lambda's IPs instead of this server's. The Lambda only
 returns `{ status, html, headers }`; parsing stays in the app. Rejections seen by the Lambda are
-logged as `[scraper-rejected] … via lambda` and pause only Lambda fetches. Settings are read with a
-60 s cache, so switching takes effect within a minute, no redeploy.
+logged as `[scraper-rejected] … via lambda` and pause only Lambda fetches. Saving the setting on the admin App Settings screen applies immediately (no redeploy); a value edited directly in AWS SSM is picked up within 30 minutes (the App Settings cache TTL).
 
 The Lambda is `lambdas/stock-page-fetcher` in this repo (a Lambda Function URL). It is deployed with
 osls (`sls deploy`) by `.github/workflows/deploy-stock-page-fetcher.yml` on every push to `main` that
