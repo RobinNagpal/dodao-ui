@@ -10,7 +10,6 @@ import { generateCountryStocksMetadata } from '@/utils/metadata-generators';
 import { parseStockCountryParam, resolveStockCountryParam } from '@/utils/stock-country-route-utils';
 import { getStocksPageTag } from '@/utils/ticker-v1-cache-utils';
 import type { Metadata } from 'next';
-import { notFound } from 'next/navigation';
 
 export async function generateMetadata(props: { params: Promise<{ country: string }> }): Promise<Metadata> {
   const params = await props.params;
@@ -31,7 +30,6 @@ export default async function CountryStocksPage({ params: paramsPromise }: PageP
   const params = await paramsPromise;
   const baseUrl = getBaseUrlForServerSidePages();
   const country: SupportedCountries = resolveStockCountryParam(params.country, 'stocks/countries/[country]');
-  const countryName: string = country;
 
   // Fetch data using the cached function (no filters on static pages)
   const url = `${baseUrl}/api/${KoalaGainsSpaceId}/tickers-v1/country/${country}/tickers/industries`;
@@ -39,10 +37,11 @@ export default async function CountryStocksPage({ params: paramsPromise }: PageP
     next: { revalidate: WEEK, tags: [getStocksPageTag(country)] },
   });
 
-  if (res.status === 404) notFound();
+  // The country param was validated above, and that is the only source of not-found here: the
+  // industries API answers 200 for every supported country. Any non-OK status (5xx, an LB error page,
+  // or a 404 from deploy skew / a bad base URL) is a real failure and stays an error. Next's data
+  // cache only stores OK responses, so this is never cached as a page.
   if (!res.ok) {
-    // Real upstream failure (e.g. 5xx / LB error page): stay an error. Next's data cache only
-    // stores OK responses, so this is never cached as a page.
     throw new Error(`industries fetch failed (${res.status}): ${url}`);
   }
 
@@ -66,22 +65,22 @@ export default async function CountryStocksPage({ params: paramsPromise }: PageP
 
     return (
       <IndustryWithStocksPageLayout
-        title={`${countryName} Stocks`}
-        description={`Explore top 100 performing ${countryName} stocks with detailed financial reports and AI-driven analysis.`}
-        currentCountry={countryName}
+        title={`${country} Stocks`}
+        description={`Explore top 100 performing ${country} stocks with detailed financial reports and AI-driven analysis.`}
+        currentCountry={country}
       >
-        <AllStocksGridForCountry stocks={allStocks} countryName={countryName} />
+        <AllStocksGridForCountry stocks={allStocks} countryName={country} />
       </IndustryWithStocksPageLayout>
     );
   }
 
   return (
     <IndustryWithStocksPageLayout
-      title={`${countryName} Stocks by Industry`}
-      description={`Explore ${countryName} stocks organized by industry. View top-performing companies in each sector with detailed financial reports and AI-driven analysis.`}
-      currentCountry={countryName}
+      title={`${country} Stocks by Industry`}
+      description={`Explore ${country} stocks organized by industry. View top-performing companies in each sector with detailed financial reports and AI-driven analysis.`}
+      currentCountry={country}
     >
-      <CountryIndustriesGrid data={data} countryName={countryName} />
+      <CountryIndustriesGrid data={data} countryName={country} />
     </IndustryWithStocksPageLayout>
   );
 }

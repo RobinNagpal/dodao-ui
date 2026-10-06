@@ -10,7 +10,8 @@ import { parseStockCountryParam, resolveStockCountryParam } from '@/utils/stock-
 import { getIndustryPageTag } from '@/utils/ticker-v1-cache-utils';
 import { Metadata } from 'next';
 import { notFound, permanentRedirect } from 'next/navigation';
-import { COUNTRY_INDUSTRY_ROUTE, getCountryIndustryPath, parseIndustryKeyParam, truncateForLog } from './industry-route-utils';
+import { truncateForLog } from '@/utils/route-param-utils';
+import { COUNTRY_INDUSTRY_ROUTE, getCountryIndustryPath, parseIndustryKeyParam } from './industry-route-utils';
 
 export async function generateMetadata(props: { params: Promise<{ country: string; industry: string }> }): Promise<Metadata> {
   const params = await props.params;
@@ -37,7 +38,6 @@ type PageProps = {
 export default async function CountryIndustryStocksPage({ params }: PageProps) {
   const resolvedParams = await params;
   const country: SupportedCountries = resolveStockCountryParam(resolvedParams.country, COUNTRY_INDUSTRY_ROUTE);
-  const countryName: string = country;
 
   const rawIndustryKey = parseIndustryKeyParam(resolvedParams.industry);
   if (!rawIndustryKey) {
@@ -78,9 +78,9 @@ export default async function CountryIndustryStocksPage({ params }: PageProps) {
 
   return (
     <IndustryWithStocksPageLayout
-      title={`${data.name || industryKey} Stocks in ${countryName}`}
-      description={`Explore ${data.name || industryKey} companies in ${countryName}. ${data.summary || 'View detailed reports and AI-driven insights.'}`}
-      currentCountry={countryName}
+      title={`${data.name || industryKey} Stocks in ${country}`}
+      description={`Explore ${data.name || industryKey} companies in ${country}. ${data.summary || 'View detailed reports and AI-driven insights.'}`}
+      currentCountry={country}
       industryKey={industryKey}
       industryName={data.name}
       hasAnalysis={data.hasAnalysis}

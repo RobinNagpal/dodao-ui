@@ -11,20 +11,12 @@ import { getHtsChapterRefByIndustryId } from '@/utils/tariff-cross-links/hts-cha
 import { getChapterSlugForOldUrl } from '@/utils/tariff-reports/seeded-chapter-reports';
 import { tariffReportTag } from '@/utils/tariff-report-tags';
 import { Calculator, ListTree } from 'lucide-react';
-import { notFound } from 'next/navigation';
 
 // Shared async render for the industry cover body. Used by the cover route
 // itself and by the legacy `/evaluate-industry-areas` and `/all-countries-tariff-updates`
 // URLs, which now mirror the cover content with `<link rel="canonical">`
 // pointing back at the cover instead of 301-redirecting away.
 export async function renderIndustryCoverBody(industryId: string): Promise<JSX.Element> {
-  // Unknown industry ids (e.g. `/industry-tariff-report/chapters`, scanner probes) are a 404, not a 500.
-  const definition = findIndustryByLegacyUrl(industryId);
-  if (!definition) {
-    console.warn(`[tariff] Industry "${industryId.slice(0, 100)}" not found`);
-    notFound();
-  }
-
   const reportResponse = await fetch(`${getBaseUrlForServerSidePages()}/api/industry-tariff-reports/${industryId}`, {
     next: { tags: [tariffReportTag(industryId)] },
   });
@@ -41,6 +33,9 @@ export async function renderIndustryCoverBody(industryId: string): Promise<JSX.E
       </div>
     );
   }
+
+  // Unknown industry ids never reach here: the shared `[industryId]/layout.tsx` 404s them.
+  const industryName = findIndustryByLegacyUrl(industryId)?.name ?? industryId;
 
   const seoDetails = report.reportSeoDetails?.reportCoverSeoDetails;
   const isSeoMissing = !seoDetails || !seoDetails.title || !seoDetails.shortDescription || !seoDetails.keywords?.length;
@@ -111,7 +106,7 @@ export async function renderIndustryCoverBody(industryId: string): Promise<JSX.E
 
         {tariffUpdatesSummary.length > 0 &&
           renderSection(
-            `Latest ${definition.name} Tariff Actions`,
+            `Latest ${industryName} Tariff Actions`,
             <div>
               <div className="space-y-4 mb-4">
                 {tariffUpdatesSummary.map((tariff, index) => (

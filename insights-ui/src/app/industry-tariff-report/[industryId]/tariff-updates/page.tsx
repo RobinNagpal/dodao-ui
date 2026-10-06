@@ -7,7 +7,6 @@ import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePag
 import { fetchIndustryTariffUpdatesMetadata } from '@/utils/tariff-reports/industry-metadata';
 import { tariffReportTag } from '@/utils/tariff-report-tags';
 import { Metadata } from 'next';
-import { notFound } from 'next/navigation';
 import { CountryTariffRenderer } from '@/components/industry-tariff/renderers/CountryTariffRenderer';
 import { TariffScrollLoginTrigger } from '@/components/login/tariff-scroll-login-trigger';
 
@@ -18,13 +17,6 @@ export async function generateMetadata({ params }: { params: Promise<{ industryI
 
 export default async function TariffUpdatesPage({ params }: { params: Promise<{ industryId: string }> }) {
   const { industryId } = await params;
-
-  // Unknown industry ids (scanner probes, mistyped URLs) are a 404, not a 500.
-  const definition = findIndustryByLegacyUrl(industryId);
-  if (!definition) {
-    console.warn(`[tariff] Industry "${industryId.slice(0, 100)}" not found`);
-    notFound();
-  }
 
   // Fetch the report data
   const reportResponse = await fetch(`${getBaseUrlForServerSidePages()}/api/industry-tariff-reports/${industryId}`, {
@@ -40,6 +32,9 @@ export default async function TariffUpdatesPage({ params }: { params: Promise<{ 
     return <div>Report not found</div>;
   }
 
+  // Unknown industry ids never reach here: the shared `[industryId]/layout.tsx` 404s them.
+  const industryName = findIndustryByLegacyUrl(industryId)?.name ?? industryId;
+
   // Check if SEO data exists for this page
   const seoDetails = report.reportSeoDetails?.tariffUpdatesSeoDetails;
   const isSeoMissing = !seoDetails || !seoDetails.title || !seoDetails.shortDescription || !seoDetails.keywords?.length;
@@ -54,7 +49,7 @@ export default async function TariffUpdatesPage({ params }: { params: Promise<{ 
         {/* Title and Actions */}
         <div className="mb-4 pb-4 border-b border-border">
           <div className="flex justify-between items-center">
-            <h1 className="text-3xl font-bold heading-color">Top 5 Trade Partners - {definition.name} Industry</h1>
+            <h1 className="text-3xl font-bold heading-color">Top 5 Trade Partners - {industryName} Industry</h1>
             <PrivateWrapper>
               <TariffUpdatesActions industryId={industryId} />
             </PrivateWrapper>
