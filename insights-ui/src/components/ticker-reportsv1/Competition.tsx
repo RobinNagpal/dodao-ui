@@ -8,6 +8,7 @@ import type { CompetitionResponse } from '@/types/ticker-typesv1';
 import Link from 'next/link';
 import React, { Suspense } from 'react';
 import ReportGenerationControl from '@/components/credits/ReportGenerationControl';
+import { toIsoDateOrNull } from '@/utils/credits/credit-format';
 import ReportSectionHeader from '@/components/ui/sections/ReportSectionHeader';
 import { CreditReportKind } from '@prisma/client';
 import AddTickerAdminButton from './AddTickerAdminButton';
@@ -115,7 +116,7 @@ export default function Competition({ tickerData, data }: CompetitionProps): JSX
               kind={CreditReportKind.Stock}
               symbol={tickerData.symbol}
               exchange={tickerData.exchange}
-              lastReportGeneratedAt={modifiedDate.toISOString()}
+              lastReportGeneratedAt={toIsoDateOrNull(vsCompetition?.updatedAt, data.ticker?.updatedAt)}
             />
           }
         />

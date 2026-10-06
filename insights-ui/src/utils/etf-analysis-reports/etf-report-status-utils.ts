@@ -62,5 +62,5 @@ export async function markEtfRequestAsCompleted(generationRequest: EtfGeneration
 
   // Charges the reserved credit on success, releases it uncharged when the
   // request ends in Failed. No-op for admin/cron requests, which never held a credit.
-  await settleReportCredit(generationRequest.id, !hasFailed);
+  await settleReportCredit(generationRequest.id);
 }

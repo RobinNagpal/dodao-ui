@@ -6,6 +6,7 @@ import MobileTopNav from '@/components/core/TopNav/MobileTopNav';
 import CreditsNavLink from '@/components/ui/credits/CreditsNavLink';
 import { usePageTheme } from '@/components/theme/page-theme-context';
 import { useCreditBalance } from '@/hooks/useCreditBalance';
+import { usePurchasesEnabled } from '@/hooks/usePurchasesEnabled';
 import { IndustryWithSubIndustriesAndCounts } from '@/types/ticker-typesv1';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
@@ -51,7 +52,10 @@ export default function TopNav() {
   // Signed-out visitors get a "Buy Credits" pill in the same slot, so the
   // feature is discoverable before logging in. Gated on `unauthenticated`
   // rather than `!session` so it doesn't flash while the session is loading.
-  const showBuyCreditsPrompt = isReportRoute && sessionStatus === 'unauthenticated';
+  // Hidden while buying is switched off by an admin: it would lead nowhere.
+  const signedOutOnReport = isReportRoute && sessionStatus === 'unauthenticated';
+  const purchasesEnabled = usePurchasesEnabled(signedOutOnReport);
+  const showBuyCreditsPrompt = signedOutOnReport && purchasesEnabled === true;
   const openLoginPopup = () => setIsLoginPopupOpen(true);
 
   // Lazily fetch industries: only when the mobile menu is actually opened on a

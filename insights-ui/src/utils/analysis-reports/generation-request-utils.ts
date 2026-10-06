@@ -48,13 +48,26 @@ export interface UpsertGenerationRequestInput {
  * the generation-requests POST route used inline; extracted so the nightly
  * auto-generation job reuses it instead of duplicating the create logic.
  */
+/** Which of these generation requests (stock or ETF) were paid for with a credit. */
+export async function findPaidGenerationRequestIds(generationRequestIds: string[]): Promise<Set<string>> {
+  if (generationRequestIds.length === 0) {
+    return new Set();
+  }
+  const spends = await prisma.reportSpend.findMany({ where: { generationRequestId: { in: generationRequestIds } }, select: { generationRequestId: true } });
+  return new Set(spends.map((spend) => spend.generationRequestId));
+}
+
 export async function upsertGenerationRequest(input: UpsertGenerationRequestInput): Promise<TickerV1GenerationRequest> {
   const { tickerId, flags } = input;
 
-  const existing = await prisma.tickerV1GenerationRequest.findFirst({
+  const notStarted = await prisma.tickerV1GenerationRequest.findMany({
     where: { tickerId, status: GenerationRequestStatus.NotStarted },
     orderBy: { createdAt: 'desc' },
   });
+  // A request a user paid for (it has a report_spends row) is never merged into
+  // or re-pointed at another provider/model: admin and nightly work gets its own request.
+  const paidIds = await findPaidGenerationRequestIds(notStarted.map((request) => request.id));
+  const existing = notStarted.find((request) => !paidIds.has(request.id));
 
   if (existing) {
     return prisma.tickerV1GenerationRequest.update({

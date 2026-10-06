@@ -1,6 +1,7 @@
 'use client';
 
 import SearchBar from '@/components/core/SearchBar';
+import CreditsNavLink from '@/components/ui/credits/CreditsNavLink';
 import { IndustryWithSubIndustriesAndCounts } from '@/types/ticker-typesv1';
 import { Dialog, DialogPanel } from '@headlessui/react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
@@ -18,8 +19,8 @@ interface MobileTopNavProps {
     href: string;
   }>;
   isLoggedIn: boolean;
-  /** Credit balance, once loaded. Shown next to the credits link. */
-  credits: number | undefined;
+  /** Credit balance, once loaded (`null` when it couldn't be read). Shown next to the credits link. */
+  credits: number | null | undefined;
   /** Whether to offer credits to a signed-out visitor instead of the balance link. */
   showBuyCreditsPrompt: boolean;
   /** Opens the login prompt — a signed-out visitor has to log in before buying. */
@@ -68,7 +69,7 @@ export default function MobileTopNav({
               <div className="-mx-3 py-6">
                 {[
                   isStocksRoute ? { name: 'My Favourite Stocks', href: '/favourites' } : { name: 'My Favourite ETFs', href: '/etf-favourites' },
-                  { name: credits === undefined ? 'My Credits' : `My Credits (${credits})`, href: '/credits' },
+                  { name: credits === undefined ? 'My Credits' : `My Credits (${credits === null ? '—' : credits})`, href: '/credits' },
                 ].map((item) => (
                   <Link
                     key={item.href}
@@ -85,16 +86,13 @@ export default function MobileTopNav({
                 first so the login modal isn't opened inside this dialog. */}
             {showBuyCreditsPrompt && (
               <div className="-mx-3 py-6">
-                <button
-                  type="button"
-                  onClick={() => {
+                <CreditsNavLink
+                  variant="menu"
+                  onBuyCreditsClick={() => {
                     setMobileMenuOpen(false);
                     onBuyCreditsClick();
                   }}
-                  className="block w-full rounded-lg py-2 px-3 text-left text-base/7 font-semibold hover:bg-surface text-heading dark:hover:bg-white/5"
-                >
-                  Buy Credits
-                </button>
+                />
               </div>
             )}
             <div className="space-y-2 py-6">

@@ -25,6 +25,9 @@ export default function AdminUserCreditHistoryPage(): React.JSX.Element {
     {},
     'Failed to load this user’s credit history'
   );
+  // A failed "Load more" keeps the rows already shown, so it is only visible as
+  // a page that is still shorter than what was asked for.
+  const loadMoreFailed = !loading && Boolean(error) && Boolean(data?.hasMore) && (data?.transactions.length ?? 0) < historyLimit;
 
   return (
     <Stack gap="md">
@@ -33,7 +36,8 @@ export default function AdminUserCreditHistoryPage(): React.JSX.Element {
       {data ? (
         <>
           {/* Balance sits beside the heading rather than under it, so the history starts higher up. */}
-          <HeaderWithAside aside={<CreditBalanceCard credits={data.credits} reserved={data.reservedCredits} label="User balance" />}>
+          {data.stripeUnavailable && <Text tone="muted">Stripe could not be reached: this user&apos;s balance and history below are incomplete.</Text>}
+          <HeaderWithAside aside={!data.stripeUnavailable && <CreditBalanceCard credits={data.credits} reserved={data.reservedCredits} label="User balance" />}>
             <Stack gap="sm">
               <Heading as="h1" size="2xl">
                 {data.email ?? data.name ?? data.username}
@@ -47,6 +51,7 @@ export default function AdminUserCreditHistoryPage(): React.JSX.Element {
           <CreditHistoryTabs transactions={data.transactions} showReceipts={false} hasMore={data.hasMore} />
 
           {/* "Load more" pages the whole history, so it keeps filling both tabs. */}
+          {loadMoreFailed && <Text tone="muted">We could not load older history. Please try again.</Text>}
           {data.hasMore && (
             <Stack align="start">
               <Button variant="outlined" loading={loading} disabled={loading} onClick={() => setHistoryLimit((limit) => limit + CREDIT_HISTORY_PAGE_SIZE)}>

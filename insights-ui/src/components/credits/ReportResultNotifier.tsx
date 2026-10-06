@@ -24,6 +24,18 @@ type ChannelMessage = { type: 'results'; results: ReportResult[] } | { type: 'cl
 const MIN_CHECK_INTERVAL_MS = 60 * 1000;
 
 /**
+ * True when `pathname` is the report at `reportHref` or one of its sub-report
+ * pages (`/stocks/NASDAQ/AAPL/competition` belongs to `/stocks/NASDAQ/AAPL`).
+ * Case-insensitive: exchange and symbol casing varies between links.
+ */
+function isOnReport(reportHref: string | null, pathname: string): boolean {
+  if (!reportHref) return false;
+  const base = reportHref.replace(/\/+$/, '').toLowerCase();
+  const path = pathname.replace(/\/+$/, '').toLowerCase();
+  return path === base || path.startsWith(`${base}/`);
+}
+
+/**
  * Plain fetch rather than usePostData: this runs in the background, so a failed
  * check should stay silent instead of showing an error toast.
  */
@@ -64,7 +76,7 @@ export default function ReportResultNotifier(): JSX.Element | null {
       // Either way the reserved credit was released (charged or not), and a success means the report changed:
       // refresh the balance, the regenerate status, and this page if it is the report.
       notifyCreditsChanged();
-      if (newResults.some((result) => result.reportHref === window.location.pathname)) {
+      if (newResults.some((result) => isOnReport(result.reportHref, window.location.pathname))) {
         router.refresh();
       }
     },

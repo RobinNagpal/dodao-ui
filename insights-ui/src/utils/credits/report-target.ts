@@ -37,7 +37,8 @@ export async function resolveReportTarget(target: ReportTargetRequest): Promise<
 
   if (kind === CreditReportKind.Stock) {
     const ticker = await prisma.tickerV1.findFirstOrThrow({
-      where: { spaceId: KoalaGainsSpaceId, symbol, exchange },
+      // Soft-deleted tickers can't be paid for.
+      where: { spaceId: KoalaGainsSpaceId, symbol, exchange, isDeleted: false },
       select: { id: true, lastReportGeneratedAt: true },
     });
 

@@ -5,6 +5,7 @@ import { UserLogin } from '@/components/login/user-login';
 import { usePageTheme } from '@/components/theme/page-theme-context';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { lightThemeColors, themeColors } from '@/util/theme-colors';
+import { getCurrentReturnPath } from '@/utils/credits/credit-return-path';
 import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import { Contexts } from '@dodao/web-core/utils/constants/constants';
@@ -73,7 +74,9 @@ export function LoginPopup({ open, onClose }: LoginPopupProps): JSX.Element {
   };
 
   const handleGoogleSignIn = (): void => {
-    signIn('google', { callbackUrl: '/' });
+    // Back to the page the popup was opened on (e.g. the report whose Regenerate
+    // or Buy Credits prompted the login), not the home page.
+    signIn('google', { callbackUrl: getCurrentReturnPath() });
   };
 
   const handleUseAnotherEmail = (): void => {

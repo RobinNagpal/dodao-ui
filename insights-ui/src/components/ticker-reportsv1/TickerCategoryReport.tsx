@@ -11,6 +11,7 @@ import ReportFooter from '@/components/ui/sections/ReportFooter';
 import ReportSection from '@/components/ui/sections/ReportSection';
 import ReportSectionHeader from '@/components/ui/sections/ReportSectionHeader';
 import ReportGenerationControl from '@/components/credits/ReportGenerationControl';
+import { toIsoDateOrNull } from '@/utils/credits/credit-format';
 import { CreditReportKind } from '@prisma/client';
 import SectionHeading from '@/components/ui/sections/SectionHeading';
 import { parseMarkdown } from '@/util/parse-markdown';
@@ -100,7 +101,7 @@ export default function TickerCategoryReport({
             kind={CreditReportKind.Stock}
             symbol={tickerData.symbol}
             exchange={tickerData.exchange}
-            lastReportGeneratedAt={modifiedDate.toISOString()}
+            lastReportGeneratedAt={toIsoDateOrNull(categoryResult.updatedAt, tickerData.updatedAt)}
           />
         }
       />

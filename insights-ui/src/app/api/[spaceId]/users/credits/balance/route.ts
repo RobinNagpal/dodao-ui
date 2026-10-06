@@ -8,8 +8,8 @@ import { NextRequest } from 'next/server';
 // No Stripe call for users who never bought, and a cached one for those who did,
 // so it stays cheap enough to call on every page load.
 async function getHandler(req: NextRequest, userContext: DoDaoJwtTokenPayload): Promise<CreditBalanceSummaryResponse> {
-  const { credits } = await getUserCredits(userContext.userId);
-  return { credits };
+  const { credits, stripeUnavailable } = await getUserCredits(userContext.userId);
+  return { credits, stripeUnavailable };
 }
 
 export const GET = withLoggedInUser<CreditBalanceSummaryResponse>(getHandler);

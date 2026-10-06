@@ -21,7 +21,6 @@ import {
 } from '@/utils/analysis-reports/report-input-json-utils';
 import { markAsCompleted, markAsInProgress } from '@/utils/analysis-reports/report-status-utils';
 import { calculatePendingSteps } from '@/utils/analysis-reports/report-steps-statuses';
-import { settleReportCredit } from '@/utils/credits/credit-service';
 import {
   ensureStockAnalyzerDataIsFresh,
   extractFinancialDataForAnalysis,
@@ -405,22 +404,12 @@ export async function triggerGenerationOfAReportSimplified(symbol: string, excha
   if (generationRequest.status === GenerationRequestStatus.InProgress) {
     const inProgressStep = generationRequest.inProgressStep;
     const lastInvocationTime = generationRequest.lastInvocationTime;
-    if (!inProgressStep || !lastInvocationTime) {
-      console.log(`Generation request is in progress but has no inProgressStep or lastInvocationTime. Marking as failed for ticker: `, symbol);
-      await prisma.tickerV1GenerationRequest.update({
-        where: {
-          id: generationRequest.id,
-        },
-        data: {
-          status: GenerationRequestStatus.Failed,
-          completedAt: new Date(),
-          updatedAt: new Date(),
-        },
-      });
-      // This path fails the request without going through markAsCompleted, so
-      // release the reserved credit here too (uncharged) if a user paid for it.
-      await settleReportCredit(generationRequest.id, false);
-    } else {
+    // No step in flight means we are BETWEEN steps: the save callback clears
+    // inProgressStep / lastInvocationTime after every completed step and then
+    // calls this trigger to start the next one. Carry on to the next step (as the
+    // ETF trigger does). The request only ends — and its credit only settles — in
+    // markAsCompleted, once no pending steps remain.
+    if (inProgressStep && lastInvocationTime) {
       // Check if it's been more than 10 minutes since the last invocation time.
       // Bumped from 5 -> 10 min because the Claude (OAuth) report path can run
       // several minutes per step; a 5-min window risked reclaiming a step while

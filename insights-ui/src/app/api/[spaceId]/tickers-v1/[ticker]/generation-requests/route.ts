@@ -2,7 +2,7 @@ import { withAdminOrToken } from '@/app/api/helpers/withAdminOrToken';
 import { prisma } from '@/prisma';
 import { KoalaGainsJwtTokenPayload } from '@/types/auth';
 import { GenerationRequestStatus } from '@/types/ticker-typesv1';
-import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
+import { findPaidGenerationRequestIds } from '@/utils/analysis-reports/generation-request-utils';
 import { TickerV1GenerationRequest } from '@prisma/client';
 import { NextRequest } from 'next/server';
 
@@ -39,7 +39,8 @@ async function postHandler(
   });
 
   // Check if there's an existing request for this ticker that is NotStarted
-  const existingRequest = await prisma.tickerV1GenerationRequest.findFirst({
+  // (Never one a user paid for: a paid request keeps exactly what was bought.)
+  const notStartedRequests = await prisma.tickerV1GenerationRequest.findMany({
     where: {
       tickerId: tickerRecord.id,
       status: GenerationRequestStatus.NotStarted,
@@ -48,6 +49,8 @@ async function postHandler(
       createdAt: 'desc',
     },
   });
+  const paidIds = await findPaidGenerationRequestIds(notStartedRequests.map((request) => request.id));
+  const existingRequest = notStartedRequests.find((request) => !paidIds.has(request.id));
 
   if (existingRequest) {
     // If there's an existing NotStarted request, update it
@@ -92,7 +95,11 @@ async function postHandler(
   }
 }
 
-async function getHandler(req: NextRequest, { params }: { params: Promise<{ spaceId: string; ticker: string }> }): Promise<TickerV1GenerationRequest> {
+async function getHandler(
+  req: NextRequest,
+  _userContext: KoalaGainsJwtTokenPayload | null,
+  { params }: { params: Promise<{ spaceId: string; ticker: string }> }
+): Promise<TickerV1GenerationRequest> {
   const { spaceId, ticker } = await params;
 
   // Find the ticker to get its ID
@@ -143,4 +150,5 @@ async function getHandler(req: NextRequest, { params }: { params: Promise<{ spac
 }
 
 export const POST = withAdminOrToken<TickerV1GenerationRequest>(postHandler);
-export const GET = withErrorHandlingV2<TickerV1GenerationRequest>(getHandler);
+// Admin / automation only: it returns raw request rows (ids included). No page calls it.
+export const GET = withAdminOrToken<TickerV1GenerationRequest>(getHandler);

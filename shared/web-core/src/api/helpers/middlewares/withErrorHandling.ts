@@ -152,7 +152,10 @@ export function withLoggedInUser<T>(handler: HandlerWithUser<T> | HandlerWithUse
       if (!decodedJwt) {
         // Anonymous request (often a scanner): one warn line, no Discord alert.
         console.warn(`[withLoggedInUser] ${req.method} ${capLogText(req.url)} -> 307: no JWT token, redirecting to /login`);
-        return NextResponse.redirect(new URL('/login', req.url), { status: 307 });
+        // Relative Location (RFC 7231 §7.1.2): the browser resolves it against the URL it actually
+        // requested. `new URL('/login', req.url)` would use the host the server sees, which behind a
+        // proxy / in a container is the internal one (e.g. ip-172-…ec2.internal:3000), not the public domain.
+        return new NextResponse(null, { status: 307, headers: { Location: '/login' } }) as NextResponse<RedirectResponse>;
       }
 
       console.log('[withLoggedInUser] User found, executing handler function for user:', decodedJwt);

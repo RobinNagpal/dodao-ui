@@ -4,6 +4,7 @@ import { EtfFastResponse } from '@/app/api/[spaceId]/etfs-v1/exchange/[exchange]
 import { CreditReportKind } from '@prisma/client';
 import EtfActions from '@/app/etfs/[exchange]/[etf]/EtfActions';
 import ReportGenerationControl from '@/components/credits/ReportGenerationControl';
+import { toIsoDateOrNull } from '@/utils/credits/credit-format';
 import EtfFavouriteButton from '@/app/etfs/[exchange]/[etf]/EtfFavouriteButton';
 import MobileEtfActionsMenu from '@/app/etfs/[exchange]/[etf]/MobileEtfActionsMenu';
 import { getEtfFundCategoryHierarchy } from '@/utils/etf-categorization-utils';
@@ -384,12 +385,14 @@ export default async function EtfDetailsPage({ params }: { params: RouteParams }
           />
 
           {/* One freshness date for the whole report, next to the action that
-              refreshes it. `etfData` arrives as JSON, so the date is normalized here. */}
+              refreshes it. `etfData` arrives as JSON, so the date is normalized here.
+              Most rows predate `lastReportGeneratedAt`, so it falls back to the
+              same date the footer's dateModified uses. */}
           <ReportGenerationControl
             kind={CreditReportKind.Etf}
             symbol={etfData.symbol}
             exchange={etfData.exchange}
-            lastReportGeneratedAt={etfData.lastReportGeneratedAt ? new Date(etfData.lastReportGeneratedAt).toISOString() : null}
+            lastReportGeneratedAt={toIsoDateOrNull(etfData.lastReportGeneratedAt, etfData.updatedAt, etfData.createdAt)}
           />
 
           {etfData.summary && etfData.summary.trim() && (

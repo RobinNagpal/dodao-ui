@@ -4,6 +4,7 @@ import { EtfGenerationRequestStatus, EtfReportType } from '@/types/etf/etf-analy
 import { triggerEtfGenerationOfAReport } from '@/utils/etf-analysis-reports/etf-generation-report-utils';
 import { markEtfRequestAsCompleted } from '@/utils/etf-analysis-reports/etf-report-status-utils';
 import { calculateEtfPendingSteps } from '@/utils/etf-analysis-reports/etf-report-steps-statuses';
+import { notStartedSlots } from '@/utils/analysis-reports/process-ticker-requests';
 import { EtfGenerationRequest } from '@prisma/client';
 
 export interface ProcessEtfRequestsResult {
@@ -49,24 +50,27 @@ export async function processPendingEtfRequests(spaceId: string): Promise<Proces
 
   inProgressRequests = await getInProgressEtfRequests();
 
-  const maxNotStartedRequests = 10 - inProgressRequests.length;
+  const maxNotStartedRequests = notStartedSlots(inProgressRequests.length);
 
-  const notStartedRequests = await prisma.etfGenerationRequest.findMany({
-    where: {
-      spaceId,
-      status: EtfGenerationRequestStatus.NotStarted,
-    },
-    include: {
-      etf: {
-        select: {
-          symbol: true,
-          exchange: true,
-        },
-      },
-    },
-    orderBy: { createdAt: 'desc' },
-    take: maxNotStartedRequests,
-  });
+  const notStartedRequests =
+    maxNotStartedRequests === 0
+      ? []
+      : await prisma.etfGenerationRequest.findMany({
+          where: {
+            spaceId,
+            status: EtfGenerationRequestStatus.NotStarted,
+          },
+          include: {
+            etf: {
+              select: {
+                symbol: true,
+                exchange: true,
+              },
+            },
+          },
+          orderBy: { createdAt: 'desc' },
+          take: maxNotStartedRequests,
+        });
 
   let processedCount = 0;
 
