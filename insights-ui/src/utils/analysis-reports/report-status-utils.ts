@@ -142,7 +142,8 @@ export async function markAsCompleted(generationRequest: TickerV1GenerationReque
     });
   }
 
-  // Settles the credit a user reserved for this request: charged in Stripe on
-  // success, released uncharged when the request ends in Failed. No-op for admin/cron requests.
-  await settleReportCredit(generationRequest.id, !hasFailed);
+  // Settles the credit a user reserved for this request, from the status just
+  // stored: charged in Stripe on Completed, released uncharged on Failed. This
+  // is the only place a stock run settles. No-op for admin/cron requests.
+  await settleReportCredit(generationRequest.id);
 }

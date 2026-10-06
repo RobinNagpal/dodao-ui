@@ -1,5 +1,6 @@
 import { prisma } from '@/prisma';
 import { EtfGenerationRequestStatus } from '@/types/etf/etf-analysis-types';
+import { findPaidGenerationRequestIds } from '@/utils/analysis-reports/generation-request-utils';
 import { EtfGenerationRequest } from '@prisma/client';
 
 /**
@@ -47,10 +48,13 @@ export interface UpsertEtfGenerationRequestInput {
 export async function upsertEtfGenerationRequest(input: UpsertEtfGenerationRequestInput): Promise<EtfGenerationRequest> {
   const { etfId, spaceId, flags } = input;
 
-  const existing = await prisma.etfGenerationRequest.findFirst({
+  const notStarted = await prisma.etfGenerationRequest.findMany({
     where: { etfId, status: EtfGenerationRequestStatus.NotStarted },
     orderBy: { createdAt: 'desc' },
   });
+  // Never merge into (or re-point the provider/model of) a request a user paid for.
+  const paidIds = await findPaidGenerationRequestIds(notStarted.map((request) => request.id));
+  const existing = notStarted.find((request) => !paidIds.has(request.id));
 
   if (existing) {
     return prisma.etfGenerationRequest.update({

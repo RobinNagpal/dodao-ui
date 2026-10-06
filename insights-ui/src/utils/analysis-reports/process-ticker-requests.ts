@@ -5,6 +5,7 @@ import { GenerationRequestStatus, ReportType } from '@/types/ticker-typesv1';
 import { triggerGenerationOfAReportSimplified } from '@/utils/analysis-reports/generation-report-utils';
 import { markAsCompleted } from '@/utils/analysis-reports/report-status-utils';
 import { calculatePendingSteps } from '@/utils/analysis-reports/report-steps-statuses';
+import { settleStaleReportSpendsForAllUsers } from '@/utils/credits/credit-service';
 import { TickerV1GenerationRequest } from '@prisma/client';
 
 export interface ProcessTickerRequestsResult {
@@ -39,6 +40,18 @@ async function getInProgressRequests() {
  * config the LLM call runs in the background), so this returns quickly. Shared by
  * the `/cron/heartbeat` job and the `generate-ticker-v1-request` route (manual runs).
  */
+/** Most requests advanced per run (in-progress + newly started). */
+const MAX_ACTIVE_REQUESTS = 10;
+
+/**
+ * How many NotStarted requests can start alongside `inProgressCount`. Clamped at
+ * 0: more than 10 can be in progress, and a negative Prisma `take` reverses the
+ * order (it would pick the oldest requests instead of none).
+ */
+export function notStartedSlots(inProgressCount: number): number {
+  return Math.max(0, MAX_ACTIVE_REQUESTS - inProgressCount);
+}
+
 export async function processPendingTickerRequests(spaceId: string): Promise<ProcessTickerRequestsResult> {
   // First, check how many InProgress requests exist
   let inProgressRequests = await getInProgressRequests();
@@ -53,27 +66,30 @@ export async function processPendingTickerRequests(spaceId: string): Promise<Pro
   inProgressRequests = await getInProgressRequests();
 
   // Calculate how many NotStarted requests we can fetch (max 10 total)
-  const maxNotStartedRequests = 10 - inProgressRequests.length;
+  const maxNotStartedRequests = notStartedSlots(inProgressRequests.length);
 
   // Get NotStarted requests with ticker information
-  const notStartedRequests = await prisma.tickerV1GenerationRequest.findMany({
-    where: {
-      spaceId,
-      status: GenerationRequestStatus.NotStarted,
-    },
-    include: {
-      ticker: {
-        select: {
-          symbol: true,
-          exchange: true,
-        },
-      },
-    },
-    orderBy: {
-      createdAt: 'desc',
-    },
-    take: maxNotStartedRequests,
-  });
+  const notStartedRequests =
+    maxNotStartedRequests === 0
+      ? []
+      : await prisma.tickerV1GenerationRequest.findMany({
+          where: {
+            spaceId,
+            status: GenerationRequestStatus.NotStarted,
+          },
+          include: {
+            ticker: {
+              select: {
+                symbol: true,
+                exchange: true,
+              },
+            },
+          },
+          orderBy: {
+            createdAt: 'desc',
+          },
+          take: maxNotStartedRequests,
+        });
 
   let processedCount = 0;
   const processedRequests: TickerV1GenerationRequestWithTicker[] = [];
@@ -123,6 +139,15 @@ export async function processPendingTickerRequests(spaceId: string): Promise<Pro
     } catch (error) {
       console.error(`Error processing request ${request.id}:`, error);
     }
+  }
+
+  // Credit reconciliation for paid stock AND ETF runs, for all users, bounded
+  // per tick: settles runs whose settle never landed and releases stuck ones.
+  // Runs here (the heartbeat) so no page read ever waits on a Stripe settle.
+  try {
+    await settleStaleReportSpendsForAllUsers();
+  } catch (error) {
+    console.error('Settling stale paid report runs failed', error);
   }
 
   return {

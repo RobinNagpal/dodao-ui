@@ -24,6 +24,10 @@ const STRIPE_CENTS_PER_CREDIT = 100;
 export const LEDGER_ENTRY_TYPE = {
   Purchase: 'purchase',
   ReportSpend: 'report_spend',
+  /** Credits taken back because (part of) a purchase's card payment was refunded. */
+  Refund: 'refund',
+  /** Credits taken back because a purchase's card payment was disputed (chargeback). */
+  Dispute: 'dispute',
 } as const;
 
 /** A Stripe balance (or `ending_balance`) as whole spendable credits. */
@@ -66,19 +70,24 @@ export interface GrantPurchaseInput {
   amountInCents: number;
 }
 
-/** How far back `findPurchaseInStripe` looks: one list call, newest first. */
-const PURCHASE_LOOKBACK = 100;
+/** How far back the ledger dedupe searches look: one list call, newest first. */
+const LEDGER_LOOKBACK = 100;
 
 /**
- * The purchase transaction already written for this checkout session, if it is
- * among the customer's newest `PURCHASE_LOOKBACK` balance transactions. Stripe
- * can't query by metadata, but a webhook is only retried for 3 days, and no
- * customer adds 100 ledger entries in that time.
+ * The customer's newest `LEDGER_LOOKBACK` balance transactions. Stripe can't
+ * query by metadata, so the dedupe searches below scan this page. Webhooks are
+ * only retried for 3 days, and no customer adds 100 ledger entries in that time.
  */
+export async function listRecentLedgerEntries(stripeCustomerId: string): Promise<Stripe.CustomerBalanceTransaction[]> {
+  const recent = await (await getStripeClient()).customers.listBalanceTransactions(stripeCustomerId, { limit: LEDGER_LOOKBACK });
+  return recent.data;
+}
+
+/** The purchase transaction already written for this checkout session, if it is among the customer's newest entries. */
 export async function findPurchaseInStripe(stripeCustomerId: string, stripeCheckoutSessionId: string): Promise<Stripe.CustomerBalanceTransaction | null> {
-  const recent = await (await getStripeClient()).customers.listBalanceTransactions(stripeCustomerId, { limit: PURCHASE_LOOKBACK });
+  const recent = await listRecentLedgerEntries(stripeCustomerId);
   return (
-    recent.data.find(
+    recent.find(
       (transaction) => transaction.metadata?.type === LEDGER_ENTRY_TYPE.Purchase && transaction.metadata?.checkoutSessionId === stripeCheckoutSessionId
     ) ?? null
   );
@@ -115,6 +124,51 @@ export async function grantPurchaseInStripe(input: GrantPurchaseInput): Promise<
       },
     },
     { idempotencyKey: `credit-purchase-${input.stripeCheckoutSessionId}` }
+  );
+}
+
+export interface ReversalDebitInput {
+  stripeCustomerId: string;
+  userId: string;
+  /** Credits to take back; must be > 0. */
+  credits: number;
+  type: typeof LEDGER_ENTRY_TYPE.Refund | typeof LEDGER_ENTRY_TYPE.Dispute;
+  /** The Stripe refund id (`re_…`) or dispute id (`du_…`) this debit is for. */
+  sourceId: string;
+  paymentIntentId: string;
+  checkoutSessionId: string;
+}
+
+/** Idempotency key / dedupe id of the debit for one refund or dispute. */
+export function reversalIdempotencyKey(type: ReversalDebitInput['type'], sourceId: string): string {
+  return `credit-${type}-${sourceId}`;
+}
+
+/**
+ * Takes back credits for a refunded or disputed purchase, at most once per
+ * refund / dispute: the idempotency key covers concurrent and retried deliveries
+ * within 24h, and `existing` (found by the caller in the recent ledger by
+ * `sourceId`) covers a replay after that. The debit can push the balance above
+ * zero (credits already spent are now owed); the display clamps it to 0.
+ */
+export async function postReversalDebitInStripe(input: ReversalDebitInput): Promise<Stripe.CustomerBalanceTransaction> {
+  const what = input.type === LEDGER_ENTRY_TYPE.Refund ? 'refund' : 'dispute';
+  return (await getStripeClient()).customers.createBalanceTransaction(
+    input.stripeCustomerId,
+    {
+      amount: input.credits * STRIPE_CENTS_PER_CREDIT,
+      currency: CREDIT_CURRENCY,
+      description: `Removed ${input.credits} ${input.credits === 1 ? 'credit' : 'credits'} (payment ${what})`,
+      metadata: {
+        type: input.type,
+        userId: input.userId,
+        credits: String(input.credits),
+        sourceId: input.sourceId,
+        paymentIntentId: input.paymentIntentId,
+        checkoutSessionId: input.checkoutSessionId,
+      },
+    },
+    { idempotencyKey: reversalIdempotencyKey(input.type, input.sourceId) }
   );
 }
 
@@ -161,4 +215,20 @@ export async function listStripeLedger(stripeCustomerId: string, limit: number):
     .listBalanceTransactions(stripeCustomerId, { limit: Math.min(limit + 1, 100) })
     .autoPagingToArray({ limit: limit + 1 });
   return { entries: entries.slice(0, limit), hasMore: entries.length > limit };
+}
+
+/**
+ * The report charge already written for this generation request, if it is among
+ * the customer's newest entries. Read-only. Lets a settle that runs after the 24h
+ * idempotency window (e.g. it crashed between charging and closing the row, and
+ * reconciliation only picked it up a day later) reuse the charge instead of
+ * taking a second credit.
+ */
+export async function findReportChargeInStripe(stripeCustomerId: string, generationRequestId: string): Promise<Stripe.CustomerBalanceTransaction | null> {
+  const recent = await listRecentLedgerEntries(stripeCustomerId);
+  return (
+    recent.find(
+      (transaction) => transaction.metadata?.type === LEDGER_ENTRY_TYPE.ReportSpend && transaction.metadata?.generationRequestId === generationRequestId
+    ) ?? null
+  );
 }

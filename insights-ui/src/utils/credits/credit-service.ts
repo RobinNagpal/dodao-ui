@@ -1,6 +1,5 @@
 import { prisma } from '@/prisma';
 import { CREDITS_PER_REPORT } from '@/types/credits';
-import { EtfGenerationRequestStatus } from '@/types/etf/etf-analysis-types';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { GenerationRequestStatus } from '@/types/ticker-typesv1';
 import { sendReportResultEmail } from '@/utils/credits/report-result-email';
@@ -8,10 +7,12 @@ import {
   chargeReportInStripe,
   ChargeReportInput,
   fetchStripeCredits,
+  findReportChargeInStripe,
   getCachedStripeCredits,
   grantPurchaseInStripe,
 } from '@/utils/credits/stripe-credit-ledger';
-import { CreditReportKind, Prisma, ReportSpendStatus } from '@prisma/client';
+import { logError } from '@dodao/web-core/api/helpers/adapters/errorLogger';
+import { CreditReportKind, Prisma, ReportSpend, ReportSpendStatus } from '@prisma/client';
 import Stripe from 'stripe';
 
 /**
@@ -43,7 +44,10 @@ export interface UserCredits {
  * Never throws for a Stripe outage: pages render with `stripeUnavailable` set.
  */
 export async function getUserCredits(userId: string): Promise<UserCredits> {
-  await settleStaleReportSpendsSafely(userId);
+  // Reconciliation runs from the generation heartbeat for every user. This is
+  // only a fire-and-forget nudge for the viewing user: a page never waits on a
+  // Stripe settle.
+  void settleStaleReportSpendsSafely(userId);
 
   const [user, reservedCredits] = await Promise.all([
     prisma.user.findUniqueOrThrow({ where: { id: userId }, select: { stripeCustomerId: true, firstPurchaseAt: true } }),
@@ -145,7 +149,20 @@ export interface SpendCreditInput {
   reportLabel: string;
 }
 
-export type SpendCreditResult<T> = { outcome: 'Started'; generationRequest: T } | { outcome: 'InsufficientCredits' } | { outcome: 'AlreadyInProgress' };
+export type SpendCreditResult<T> =
+  | { outcome: 'Started'; generationRequest: T }
+  | { outcome: 'InsufficientCredits' }
+  | { outcome: 'AlreadyInProgress' }
+  | { outcome: 'TooManyInProgress'; message: string }
+  | { outcome: 'TemporarilyUnavailable'; message: string };
+
+/** A user can have at most this many paid runs going at once. */
+export const MAX_IN_PROGRESS_PAID_RUNS = 3;
+export const TOO_MANY_IN_PROGRESS_MESSAGE = `You already have ${MAX_IN_PROGRESS_PAID_RUNS} reports being generated. Please wait for one to finish before starting another.`;
+/** A report whose last this-many generation requests all failed recently is not sold until one succeeds. */
+const RECENT_FAILURE_RUN_LENGTH = 3;
+const RECENT_FAILURE_WINDOW_MS = 7 * 24 * 60 * 60 * 1000;
+export const REPORT_TEMPORARILY_UNAVAILABLE_MESSAGE = 'This report is failing to generate right now. Please try again later';
 
 export interface SpendCreditTarget<T> {
   createGenerationRequest: (tx: Prisma.TransactionClient) => Promise<T>;
@@ -188,6 +205,16 @@ export async function spendCreditForReport<T extends { id: string }>(input: Spen
         return { outcome: 'AlreadyInProgress' };
       }
 
+      // Failed runs are free, so cap what a user can have going at once and
+      // don't sell a report that keeps failing (from any source).
+      const openSpends = await tx.reportSpend.count({ where: { userId, status: ReportSpendStatus.InProgress } });
+      if (openSpends >= MAX_IN_PROGRESS_PAID_RUNS) {
+        return { outcome: 'TooManyInProgress', message: TOO_MANY_IN_PROGRESS_MESSAGE };
+      }
+      if (await isTargetFailingRepeatedly(tx, input.reportKind, reportTargetId)) {
+        return { outcome: 'TemporarilyUnavailable', message: REPORT_TEMPORARILY_UNAVAILABLE_MESSAGE };
+      }
+
       // Order matters: reserved count FIRST, Stripe balance SECOND, one after the
       // other. A concurrent settle charges in Stripe and only then closes its row,
       // so a run is always either still counted as reserved or already taken from
@@ -195,7 +222,7 @@ export async function spendCreditForReport<T extends { id: string }>(input: Spen
       // which is safe), never neither. Reading them concurrently, or balance
       // first, could see the pre-charge balance AND the closed row, overstating
       // spendable credits by one.
-      const reservedCredits = await countReservedCredits(tx, userId);
+      const reservedCredits = openSpends * CREDITS_PER_REPORT;
       const stripeCredits = await fetchLiveStripeCreditsForSpend(stripeCustomerId);
       if (stripeCredits - reservedCredits < CREDITS_PER_REPORT) {
         return { outcome: 'InsufficientCredits' };
@@ -223,6 +250,24 @@ export async function spendCreditForReport<T extends { id: string }>(input: Spen
   );
 }
 
+/**
+ * True when the target's last `RECENT_FAILURE_RUN_LENGTH` generation requests
+ * (any source: paid, admin, nightly) all ended Failed within the last 7 days.
+ * One indexed query (`[tickerId]` / `[etfId]`).
+ */
+async function isTargetFailingRepeatedly(db: Prisma.TransactionClient, reportKind: CreditReportKind, reportTargetId: string): Promise<boolean> {
+  const query = { orderBy: { createdAt: 'desc' }, take: RECENT_FAILURE_RUN_LENGTH, select: { status: true, completedAt: true, updatedAt: true } } as const;
+  const recent =
+    reportKind === CreditReportKind.Stock
+      ? await db.tickerV1GenerationRequest.findMany({ where: { tickerId: reportTargetId }, ...query })
+      : await db.etfGenerationRequest.findMany({ where: { etfId: reportTargetId }, ...query });
+  if (recent.length < RECENT_FAILURE_RUN_LENGTH) {
+    return false;
+  }
+  const since = Date.now() - RECENT_FAILURE_WINDOW_MS;
+  return recent.every((request) => request.status === GenerationRequestStatus.Failed && (request.completedAt ?? request.updatedAt).getTime() >= since);
+}
+
 /** Spending fails closed: if Stripe can't confirm the balance, nothing starts. */
 async function fetchLiveStripeCreditsForSpend(stripeCustomerId: string): Promise<number> {
   try {
@@ -236,24 +281,59 @@ async function fetchLiveStripeCreditsForSpend(stripeCustomerId: string): Promise
 /**
  * Closes out the credit reserved for a finished generation request.
  *
- * Success charges one credit in Stripe; failure (including a partial run, since
- * the user paid for a full report) charges nothing. The charge is retried once
- * with the same idempotency key (see `chargeReportWithRetry`); if both attempts
- * fail the run is still closed as Completed — the user keeps the report for
- * free rather than being stuck with a reserved credit. If this function never
- * gets to run (crash, timeout), `settleStaleReportSpends` picks the run up. Either way the user who
- * paid is emailed the result (best effort). A no-op for admin- and cron-created
- * requests, which have no ReportSpend.
+ * The outcome is read from the request's STORED status, never taken from the
+ * caller: this only settles once the request is terminal (`Completed` →
+ * charged, `Failed` → released uncharged, including a partial run, since the
+ * user paid for a full report). A request that is still running is left alone,
+ * so a bug that calls this mid-run can't close a paid run early. A request that
+ * no longer exists (deleted with its ticker / ETF) can never finish and is
+ * released. If this never gets to run (crash, timeout), `settleStaleReportSpends`
+ * picks the run up. A no-op for admin- and cron-created requests, which have no
+ * ReportSpend.
  */
-export async function settleReportCredit(generationRequestId: string, succeeded: boolean): Promise<void> {
+export async function settleReportCredit(generationRequestId: string): Promise<void> {
+  const spend = await findOpenSpend(generationRequestId);
+  if (!spend) {
+    return;
+  }
+
+  const status = await storedRequestStatus(spend.reportKind, generationRequestId);
+  if (status !== null && status !== GenerationRequestStatus.Completed && status !== GenerationRequestStatus.Failed) {
+    console.warn('[credit-service] Not settling a paid run whose request is not finished', generationRequestId, status);
+    return;
+  }
+
+  await closeReportSpend(spend, status === GenerationRequestStatus.Completed);
+}
+
+type OpenSpend = ReportSpend & { user: { stripeCustomerId: string | null } };
+
+async function findOpenSpend(generationRequestId: string): Promise<OpenSpend | null> {
   const spend = await prisma.reportSpend.findUnique({
     where: { generationRequestId },
     include: { user: { select: { stripeCustomerId: true } } },
   });
-  if (!spend || spend.status !== ReportSpendStatus.InProgress) {
-    return;
-  }
+  return spend?.status === ReportSpendStatus.InProgress ? spend : null;
+}
 
+/** The request's stored status, or null when it no longer exists. Stock and ETF requests share the same status strings. */
+async function storedRequestStatus(reportKind: CreditReportKind, generationRequestId: string): Promise<string | null> {
+  const where = { id: generationRequestId };
+  const select = { status: true } as const;
+  const request =
+    reportKind === CreditReportKind.Stock
+      ? await prisma.tickerV1GenerationRequest.findUnique({ where, select })
+      : await prisma.etfGenerationRequest.findUnique({ where, select });
+  return request?.status ?? null;
+}
+
+/**
+ * Charges (on success) and closes the spend. The charge is retried once (see
+ * `chargeReportWithRetry`); if both attempts fail the run is still closed as
+ * Completed — the user keeps the report for free rather than being stuck with a
+ * reserved credit. The user who paid is emailed the result (best effort).
+ */
+async function closeReportSpend(spend: OpenSpend, succeeded: boolean): Promise<void> {
   let stripeDebitTxnId: string | null = null;
   if (succeeded && spend.user.stripeCustomerId) {
     // Charged before the row is closed: until it is, the credit still counts
@@ -278,62 +358,121 @@ export async function settleReportCredit(generationRequestId: string, succeeded:
 const CHARGE_RETRY_DELAY_MS = 1_000;
 
 /**
- * Charges the report, retrying once on error. An error doesn't mean the charge
- * didn't land (a timeout or reset connection can hide a success); the retry
- * reuses the same idempotency key, so Stripe hands back the original
+ * Charges the report, retrying once on error. Each attempt first looks for a
+ * charge already written for this run (read-only) and reuses it: the
+ * idempotency key only lasts 24h, and a settle that crashed between charging and
+ * closing its row may only be reconciled later than that. An error doesn't mean
+ * the charge didn't land (a timeout or reset connection can hide a success); the
+ * retry reuses the same idempotency key, so Stripe hands back the original
  * transaction instead of charging again. Returns null only when both attempts
  * fail — the report is then kept free of charge.
  */
 export async function chargeReportWithRetry(input: ChargeReportInput, retryDelayMs = CHARGE_RETRY_DELAY_MS): Promise<Stripe.CustomerBalanceTransaction | null> {
+  const attempt = async () => (await findReportChargeInStripe(input.stripeCustomerId, input.generationRequestId)) ?? (await chargeReportInStripe(input));
   try {
-    return await chargeReportInStripe(input);
+    return await attempt();
   } catch (firstError) {
     console.warn('[credit-service] Stripe charge errored; retrying with the same idempotency key', input.generationRequestId, firstError);
   }
   await new Promise((resolve) => setTimeout(resolve, retryDelayMs));
   try {
-    return await chargeReportInStripe(input);
+    return await attempt();
   } catch (error) {
-    console.error('[credit-service] Stripe charge failed twice; report kept free of charge', input.generationRequestId, error);
+    await logError(
+      '[credit-service] Stripe report charge failed twice; report kept free of charge',
+      { generationRequestId: input.generationRequestId, userId: input.userId, reportLabel: input.reportLabel },
+      error instanceof Error ? error : null
+    );
     return null;
   }
 }
 
-/** At most this many stale runs are settled per call, oldest first. */
+/** At most this many stale runs are settled per user call (spend / page nudge). */
 const STALE_SETTLE_BATCH = 5;
+/** At most this many stale runs are settled per heartbeat tick, across all users. */
+const STALE_SETTLE_GLOBAL_BATCH = 10;
+/** How many open spends one reconciliation pass looks at (still-running ones are skipped cheaply). */
+const STALE_SCAN_LIMIT = 50;
 /**
  * A finished request is only treated as stale this long after it ended, so the
  * reconciliation doesn't race the normal settle that follows markAsCompleted.
  */
 const STALE_SETTLE_GRACE_MS = 2 * 60 * 1000;
+/** A paid run whose request still hasn't finished after this long is stuck: release its credit. */
+const STUCK_SPEND_MS = 12 * 60 * 60 * 1000;
 
 /**
  * Settles this user's paid runs whose generation request has already finished
  * but whose ReportSpend is still InProgress — e.g. the settle after
- * markAsCompleted crashed or timed out on Stripe, and nothing retries it.
- * Completed requests are charged, Failed ones released. A request that no
- * longer exists (deleted with its ticker / ETF) can never finish, so its run is
- * released uncharged. Bounded and idempotent, so it's cheap to call on reads.
- * Returns how many runs were settled.
+ * markAsCompleted crashed or timed out on Stripe — and releases runs stuck for
+ * over 12 hours. Bounded and idempotent. Returns how many runs were settled.
  */
-export async function settleStaleReportSpends(userId: string): Promise<number> {
-  const cutoff = new Date(Date.now() - STALE_SETTLE_GRACE_MS);
+export function settleStaleReportSpends(userId: string): Promise<number> {
+  return reconcileOpenSpends({ userId }, STALE_SETTLE_BATCH);
+}
+
+/**
+ * The same reconciliation for every user, at most `STALE_SETTLE_GLOBAL_BATCH`
+ * runs per call. Driven by the generation heartbeat (processPendingTickerRequests),
+ * so nothing on a page read waits for it.
+ */
+export function settleStaleReportSpendsForAllUsers(): Promise<number> {
+  return reconcileOpenSpends({}, STALE_SETTLE_GLOBAL_BATCH);
+}
+
+async function reconcileOpenSpends(where: Prisma.ReportSpendWhereInput, maxSettles: number): Promise<number> {
+  const now = Date.now();
+  const cutoff = new Date(now - STALE_SETTLE_GRACE_MS);
   const openSpends = await prisma.reportSpend.findMany({
-    where: { userId, status: ReportSpendStatus.InProgress, createdAt: { lt: cutoff } },
+    where: { ...where, status: ReportSpendStatus.InProgress, createdAt: { lt: cutoff } },
     orderBy: { createdAt: 'asc' },
-    take: STALE_SETTLE_BATCH,
-    select: { generationRequestId: true, reportKind: true },
+    take: STALE_SCAN_LIMIT,
+    select: { generationRequestId: true, reportKind: true, createdAt: true, userId: true, reportLabel: true },
   });
   if (openSpends.length === 0) {
     return 0;
   }
 
-  const outcomes = await finishedRequestOutcomes(openSpends, cutoff);
-  for (const [generationRequestId, succeeded] of outcomes) {
-    console.log('[credit-service] Settling stale paid run', generationRequestId, succeeded ? 'Completed' : 'Failed');
-    await settleReportCredit(generationRequestId, succeeded);
+  const requestsById = await loadRequestEnds(openSpends);
+  let settledCount = 0;
+  for (const spend of openSpends) {
+    if (settledCount >= maxSettles) {
+      break;
+    }
+    const request = requestsById.get(spend.generationRequestId);
+    const finished = !request || request.status === GenerationRequestStatus.Completed || request.status === GenerationRequestStatus.Failed;
+    if (finished) {
+      // Missing request → settleReportCredit releases it. Otherwise wait out the grace period after it ended.
+      if (request && (request.completedAt ?? request.updatedAt) >= cutoff) {
+        continue;
+      }
+      console.log('[credit-service] Settling stale paid run', spend.generationRequestId, request?.status ?? 'request deleted');
+      await settleReportCredit(spend.generationRequestId);
+      settledCount++;
+    } else if (spend.createdAt.getTime() < now - STUCK_SPEND_MS) {
+      await releaseStuckReportSpend(spend, request.status);
+      settledCount++;
+    }
   }
-  return outcomes.size;
+  return settledCount;
+}
+
+/** A paid run whose request never finished: something stalled. Release the credit uncharged and alert. */
+async function releaseStuckReportSpend(
+  stuck: { generationRequestId: string; userId: string; reportLabel: string; createdAt: Date },
+  requestStatus: string
+): Promise<void> {
+  await logError('[credit-service] Releasing a stuck paid report run (request still not finished after 12h); not charged', {
+    generationRequestId: stuck.generationRequestId,
+    userId: stuck.userId,
+    reportLabel: stuck.reportLabel,
+    requestStatus,
+    spendCreatedAt: stuck.createdAt.toISOString(),
+  });
+  const spend = await findOpenSpend(stuck.generationRequestId);
+  if (spend) {
+    await closeReportSpend(spend, false);
+  }
 }
 
 interface RequestEnd {
@@ -343,14 +482,8 @@ interface RequestEnd {
   updatedAt: Date;
 }
 
-/**
- * generationRequestId → succeeded, for the requests that ended before `cutoff`
- * (or no longer exist). Still-running requests are left out. Stock and ETF
- * requests live in different tables but share the same status strings, and
- * `Completed` vs `Failed` is exactly what markAsCompleted / markEtfRequestAsCompleted
- * pass to settleReportCredit.
- */
-async function finishedRequestOutcomes(spends: { generationRequestId: string; reportKind: CreditReportKind }[], cutoff: Date): Promise<Map<string, boolean>> {
+/** The current state of each spend's request. Stock and ETF requests live in different tables but share the same status strings. */
+async function loadRequestEnds(spends: { generationRequestId: string; reportKind: CreditReportKind }[]): Promise<Map<string, RequestEnd>> {
   const idsOf = (kind: CreditReportKind): string[] => spends.filter((spend) => spend.reportKind === kind).map((spend) => spend.generationRequestId);
   const stockIds = idsOf(CreditReportKind.Stock);
   const etfIds = idsOf(CreditReportKind.Etf);
@@ -360,26 +493,7 @@ async function finishedRequestOutcomes(spends: { generationRequestId: string; re
     stockIds.length ? prisma.tickerV1GenerationRequest.findMany({ where: { id: { in: stockIds } }, select }) : Promise.resolve([]),
     etfIds.length ? prisma.etfGenerationRequest.findMany({ where: { id: { in: etfIds } }, select }) : Promise.resolve([]),
   ]);
-  const requestsById = new Map([...stockRequests, ...etfRequests].map((request) => [request.id, request]));
-
-  const outcomes = new Map<string, boolean>();
-  for (const { generationRequestId } of spends) {
-    const request = requestsById.get(generationRequestId);
-    if (!request) {
-      outcomes.set(generationRequestId, false);
-      continue;
-    }
-    const endedAt = request.completedAt ?? request.updatedAt;
-    if (endedAt >= cutoff) {
-      continue;
-    }
-    if (request.status === GenerationRequestStatus.Completed || request.status === EtfGenerationRequestStatus.Completed) {
-      outcomes.set(generationRequestId, true);
-    } else if (request.status === GenerationRequestStatus.Failed || request.status === EtfGenerationRequestStatus.Failed) {
-      outcomes.set(generationRequestId, false);
-    }
-  }
-  return outcomes;
+  return new Map([...stockRequests, ...etfRequests].map((request) => [request.id, request]));
 }
 
 /** Reconciliation is best effort on read paths: it must never break the page or the spend. */

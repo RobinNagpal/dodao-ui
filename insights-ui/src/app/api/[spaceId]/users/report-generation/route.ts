@@ -12,7 +12,7 @@ import { NextRequest } from 'next/server';
  * user's own paid runs count: admin and nightly runs are invisible to users.
  */
 async function getStatus(userId: string, target: ResolvedReportTarget): Promise<ReportGenerationStatusResponse> {
-  const [{ credits }, openSpend, lastSettledSpend] = await Promise.all([
+  const [{ credits, stripeUnavailable }, openSpend, lastSettledSpend] = await Promise.all([
     getUserCredits(userId),
     prisma.reportSpend.findFirst({ where: { userId, reportTargetId: target.id, status: ReportSpendStatus.InProgress }, select: { id: true } }),
     prisma.reportSpend.findFirst({
@@ -32,6 +32,7 @@ async function getStatus(userId: string, target: ResolvedReportTarget): Promise<
     lastReportGeneratedAt: target.lastReportGeneratedAt?.toISOString() ?? null,
     generationInProgress: !!openSpend,
     lastRegeneration,
+    stripeUnavailable,
   };
 }
 
@@ -70,7 +71,8 @@ async function postHandler(req: NextRequest, userContext: DoDaoJwtTokenPayload):
     target
   );
 
-  return { ...(await getStatus(userContext.userId, target)), outcome: spend.outcome };
+  const message = 'message' in spend ? spend.message : undefined;
+  return { ...(await getStatus(userContext.userId, target)), outcome: spend.outcome, message };
 }
 
 export const GET = withLoggedInUser<ReportGenerationStatusResponse>(getHandler);

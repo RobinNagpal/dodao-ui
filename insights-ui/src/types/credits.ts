@@ -135,11 +135,15 @@ export interface AdminUserCreditHistoryResponse {
   reservedCredits: number;
   transactions: CreditTransactionResponse[];
   hasMore: boolean;
+  /** Stripe could not be reached; the balance and ledger shown are incomplete. */
+  stripeUnavailable?: boolean;
 }
 
 /** Balance only, for the navbar pill. */
 export interface CreditBalanceSummaryResponse {
   credits: number;
+  /** Stripe could not be reached; `credits` is a 0 placeholder, not the real balance. */
+  stripeUnavailable?: boolean;
 }
 
 export interface CreateCheckoutSessionRequest {
@@ -173,6 +177,8 @@ export interface ReportGenerationStatusResponse {
   generationInProgress: boolean;
   /** This user's most recent finished paid regeneration of the report, if any. */
   lastRegeneration: LastRegeneration | null;
+  /** Stripe could not be reached; `credits` is a 0 placeholder, not the real balance. */
+  stripeUnavailable?: boolean;
 }
 
 export interface LastRegeneration {
@@ -187,8 +193,34 @@ export interface LastRegeneration {
  * reported as data rather than thrown, so the UI can explain them calmly
  * instead of surfacing a generic error toast.
  */
-export type ReportGenerationOutcome = 'Started' | 'AlreadyInProgress' | 'InsufficientCredits';
+export type ReportGenerationOutcome = 'Started' | 'AlreadyInProgress' | 'InsufficientCredits' | 'TooManyInProgress' | 'TemporarilyUnavailable';
 
 export interface TriggerReportGenerationResponse extends ReportGenerationStatusResponse {
   outcome: ReportGenerationOutcome;
+  /** Human-readable reason, set when a paid run was refused (TooManyInProgress / TemporarilyUnavailable). */
+  message?: string;
+}
+
+/**
+ * Query param Stripe fills with the Checkout Session id on the success URL. The success URL
+ * carries the literal `{CHECKOUT_SESSION_ID}` placeholder, which Stripe substitutes — it must NOT
+ * be URL-encoded when the URL is built. The page sends it to `confirm-checkout` on return.
+ */
+export const CHECKOUT_SESSION_QUERY_PARAM = 'checkout_session';
+
+/** POST /api/[spaceId]/users/credits/confirm-checkout */
+export interface ConfirmCheckoutRequest {
+  sessionId: string;
+}
+
+/**
+ * - `credited`: this call granted the purchase (the webhook hadn't yet).
+ * - `already_credited`: the webhook (or an earlier call) already granted it.
+ * - `pending`: paid by a delayed method that hasn't succeeded yet; the webhook grants it later.
+ * - `not_paid`: the session isn't paid (e.g. abandoned) — nothing granted.
+ */
+export interface ConfirmCheckoutResponse {
+  status: 'credited' | 'already_credited' | 'pending' | 'not_paid';
+  /** Spendable credits after the confirmation (same number the navbar shows). */
+  credits: number;
 }

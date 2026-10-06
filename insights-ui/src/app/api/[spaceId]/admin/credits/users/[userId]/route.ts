@@ -33,6 +33,7 @@ async function getHandler(
     reservedCredits: history.reservedCredits,
     transactions: history.transactions,
     hasMore: history.hasMore,
+    stripeUnavailable: history.stripeUnavailable,
   };
 }
 

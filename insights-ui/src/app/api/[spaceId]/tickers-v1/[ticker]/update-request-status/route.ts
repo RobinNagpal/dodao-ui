@@ -1,7 +1,6 @@
 import { prisma } from '@/prisma';
 import { GenerationRequestStatus } from '@/types/ticker-typesv1';
-import { settleReportCredit } from '@/utils/credits/credit-service';
-import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
+import { withAdminOnly } from '@/app/api/helpers/withLoggedInAdmin';
 import { TickerV1GenerationRequest } from '@prisma/client';
 import { NextRequest } from 'next/server';
 
@@ -47,14 +46,13 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ spa
     },
   });
 
-  // Ending a request here must close out a paid run like markAsCompleted does,
-  // or the user's credit stays reserved and the report reads "being generated"
-  // forever. Settling is idempotent and a no-op for admin/cron requests.
-  if (status === GenerationRequestStatus.Completed || status === GenerationRequestStatus.Failed) {
-    await settleReportCredit(id, status === GenerationRequestStatus.Completed);
-  }
+  // No credit is settled here: paid runs settle only in the generation pipeline
+  // (markAsCompleted). A request ended by hand here is picked up by the
+  // heartbeat's stale-spend reconciliation, which charges or releases it from
+  // the stored status.
 
   return updatedRequest;
 }
 
-export const POST = withErrorHandlingV2<TickerV1GenerationRequest>(postHandler);
+// Admin only: it can end a generation request (which decides whether a paid run is charged). No code calls it.
+export const POST = withAdminOnly<TickerV1GenerationRequest>(postHandler);
