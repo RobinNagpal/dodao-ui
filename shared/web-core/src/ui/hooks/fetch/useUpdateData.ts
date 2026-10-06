@@ -65,7 +65,7 @@ export const useUpdateData = <RESPONSE_TYPE, REQUEST_TYPE>(
             // If response has no JSON body, this will fail silently
           }
           console.error(`Unable to update data at ${url}:`, errorText);
-          showNotification({ type: 'error', message: updateOptions.errorMessage });
+          showNotification({ type: 'error', message: updateOptions.showServerErrorMessage && errorText ? errorText : updateOptions.errorMessage });
           setError(errorText);
           return;
         }

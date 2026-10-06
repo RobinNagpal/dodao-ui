@@ -2,7 +2,16 @@ import { prisma } from '@/prisma';
 import { CENTS_PER_CREDIT, CREDIT_CURRENCY, getCreditPack } from '@/types/credits';
 import { grantPurchasedCredits } from '@/utils/credits/credit-service';
 import { getStripeClient } from '@/utils/credits/stripe-client';
-import { LEDGER_ENTRY_TYPE, listRecentLedgerEntries, postReversalDebitInStripe, ReversalDebitInput } from '@/utils/credits/stripe-credit-ledger';
+import {
+  creditsOfLedgerEntry,
+  findLedgerEntryForSource,
+  invalidateCachedStripeCredits,
+  LEDGER_ENTRY_TYPE,
+  listRecentLedgerEntries,
+  postDisputeRestoreInStripe,
+  postReversalDebitInStripe,
+  ReversalDebitInput,
+} from '@/utils/credits/stripe-credit-ledger';
 import { logError } from '@dodao/web-core/api/helpers/adapters/errorLogger';
 import { Prisma } from '@prisma/client';
 import Stripe from 'stripe';
@@ -257,17 +266,36 @@ async function findPurchaseForCharge(paymentIntentId: string | null, chargeCusto
   };
 }
 
+/**
+ * Posts one ledger entry for a refund / dispute unless the recent ledger already
+ * has an entry of that type for it, then busts the cached display balance (these
+ * writes add no DB row, so the cache key doesn't change on its own).
+ */
+async function postLedgerEntryOnce(
+  entry: { type: string; sourceId: string; stripeCustomerId: string },
+  ledger: Stripe.CustomerBalanceTransaction[],
+  post: () => Promise<Stripe.CustomerBalanceTransaction>
+): Promise<Stripe.CustomerBalanceTransaction | null> {
+  const existing = findLedgerEntryForSource(ledger, entry.type, entry.sourceId);
+  if (existing) {
+    console.log(
+      `[credit-purchase] ${entry.type} ${entry.sourceId} is already in the ledger (${existing.id}, ${creditsOfLedgerEntry(existing)} credits); skipping`
+    );
+    return null;
+  }
+  const written = await post();
+  invalidateCachedStripeCredits(entry.stripeCustomerId);
+  return written;
+}
+
 /** Posts one reversal debit unless the recent ledger already has it. */
 async function postReversalOnce(input: ReversalDebitInput, ledger: Stripe.CustomerBalanceTransaction[]): Promise<void> {
-  const existing = ledger.find((entry) => entry.metadata?.type === input.type && entry.metadata?.sourceId === input.sourceId);
-  if (existing) {
-    console.log(`[credit-purchase] ${input.type} ${input.sourceId} already removed ${input.credits} credits (${existing.id}); skipping`);
-    return;
+  const debit = await postLedgerEntryOnce(input, ledger, () => postReversalDebitInStripe(input));
+  if (debit) {
+    console.log(
+      `[credit-purchase] Removed ${input.credits} credits from ${input.userId} (${input.stripeCustomerId}) for ${input.type} ${input.sourceId} on ${input.paymentIntentId}: ${debit.id}`
+    );
   }
-  const debit = await postReversalDebitInStripe(input);
-  console.log(
-    `[credit-purchase] Removed ${input.credits} credits from ${input.userId} (${input.stripeCustomerId}) for ${input.type} ${input.sourceId} on ${input.paymentIntentId}: ${debit.id}`
-  );
 }
 
 /**
@@ -348,19 +376,41 @@ function creditsRemovedByRefunds(purchase: PurchaseForReversal, ledger: Stripe.C
     .filter(
       (entry) => entry.metadata?.type === LEDGER_ENTRY_TYPE.Refund && entry.metadata?.paymentIntentId === purchase.paymentIntentId && entry.metadata?.sourceId
     )
-    .reduce((sum, entry) => sum + (Number(entry.metadata?.credits) || 0), 0);
+    .reduce((sum, entry) => sum + creditsOfLedgerEntry(entry), 0);
 }
 
-/** `charge.dispute.created`: take back all of the purchase's credits not already removed by a refund. */
+/**
+ * Credits a dispute takes back: its disputed amount in credits, capped at what
+ * refunds haven't already removed. Rounded UP — the disputed money (plus the
+ * dispute fee) is held from us, so a fractional credit is never left spendable;
+ * the cap keeps a rounded-up partial dispute from taking more than is left.
+ * Purchases are always charged in USD at `CENTS_PER_CREDIT` per credit, so
+ * `dispute.amount` (USD cents) converts directly.
+ */
+export function creditsToRemoveForDispute(purchase: { credits: number }, disputeAmountInCents: number, creditsAlreadyRefunded: number): number {
+  const remaining = purchase.credits - creditsAlreadyRefunded;
+  const disputed = Math.ceil(Math.max(0, disputeAmountInCents) / CENTS_PER_CREDIT);
+  return Math.max(0, Math.min(remaining, disputed));
+}
+
+/**
+ * `charge.dispute.created`: take back the disputed share of the purchase's
+ * credits (see `creditsToRemoveForDispute`). Inquiries (`warning_needs_response`)
+ * are debited too — the money is at risk the same way — and an inquiry that
+ * closes without becoming a chargeback (`warning_closed`) gets it back in
+ * `restoreClosedDispute`.
+ */
 export async function reverseDisputedCharge(dispute: Stripe.Dispute): Promise<void> {
   const what = `charge.dispute.created ${dispute.id}`;
   const purchase = await findPurchaseForDispute(dispute, what);
   if (!purchase) return;
 
   const ledger = await listRecentLedgerEntries(purchase.stripeCustomerId);
-  const credits = purchase.credits - creditsRemovedByRefunds(purchase, ledger);
+  const credits = creditsToRemoveForDispute(purchase, dispute.amount, creditsRemovedByRefunds(purchase, ledger));
   if (credits <= 0) {
-    console.log(`[credit-purchase] ${what}: purchase ${purchase.paymentIntentId} was already fully refunded in credits; nothing removed`);
+    console.log(
+      `[credit-purchase] ${what}: nothing to remove for purchase ${purchase.paymentIntentId} (disputed ${dispute.amount} cents; already fully refunded in credits, or nothing disputed)`
+    );
     return;
   }
 
@@ -378,22 +428,28 @@ export async function reverseDisputedCharge(dispute: Stripe.Dispute): Promise<vo
   );
 }
 
-/** `metadata.type` of the credit that gives a won dispute's credits back. Shows in the history as an `Adjustment`. */
-const DISPUTE_WON_ENTRY_TYPE = 'dispute_won';
+/**
+ * Closing statuses where we kept the money, so the dispute debit is given back:
+ * `won`, `warning_closed` (an inquiry that never became a chargeback) and
+ * `prevented` (stopped by a dispute-prevention tool; if that came with a refund,
+ * `charge.refunded` takes those credits back on its own). Only `lost` keeps the debit.
+ */
+const MERCHANT_KEPT_FUNDS_STATUSES: ReadonlySet<Stripe.Dispute.Status> = new Set<Stripe.Dispute.Status>(['won', 'warning_closed', 'prevented']);
 
 /**
- * `charge.dispute.closed`: a won dispute gives back exactly what its
+ * `charge.dispute.closed`: when we kept the money (see
+ * `MERCHANT_KEPT_FUNDS_STATUSES`), give back exactly what the dispute's
  * `charge.dispute.created` debit took — and nothing if there was no debit (the
- * purchase was already fully refunded in credits, or isn't ours). Any other
- * outcome (lost, warning closed, …) leaves the debit standing.
+ * purchase was already fully refunded in credits, or isn't ours). `lost` (or an
+ * unknown status) leaves the debit standing.
  *
  * At most once per dispute, the same two layers as the debit: idempotency key
  * `credit-dispute-won-<du_…>` for concurrent / retried deliveries within 24h,
  * and a recent-ledger check for a `dispute_won` entry with this `sourceId`.
  */
-export async function restoreWonDispute(dispute: Stripe.Dispute): Promise<void> {
+export async function restoreClosedDispute(dispute: Stripe.Dispute): Promise<void> {
   const what = `charge.dispute.closed ${dispute.id}`;
-  if (dispute.status !== 'won') {
+  if (!MERCHANT_KEPT_FUNDS_STATUSES.has(dispute.status)) {
     console.log(`[credit-purchase] ${what}: closed as ${dispute.status}; the dispute debit (if any) stands`);
     return;
   }
@@ -401,54 +457,51 @@ export async function restoreWonDispute(dispute: Stripe.Dispute): Promise<void> 
   if (!purchase) return;
 
   const ledger = await listRecentLedgerEntries(purchase.stripeCustomerId);
-  const restored = ledger.find((entry) => entry.metadata?.type === DISPUTE_WON_ENTRY_TYPE && entry.metadata?.sourceId === dispute.id);
-  if (restored) {
-    console.log(`[credit-purchase] ${what}: credits already restored (${restored.id}); skipping`);
-    return;
-  }
-
-  const debit = ledger.find((entry) => entry.metadata?.type === LEDGER_ENTRY_TYPE.Dispute && entry.metadata?.sourceId === dispute.id);
+  const debit = findLedgerEntryForSource(ledger, LEDGER_ENTRY_TYPE.Dispute, dispute.id);
   if (!debit) {
-    if (purchase.credits - creditsRemovedByRefunds(purchase, ledger) <= 0) {
+    if (findLedgerEntryForSource(ledger, LEDGER_ENTRY_TYPE.DisputeRestore, dispute.id)) {
+      console.log(`[credit-purchase] ${what}: credits already restored; skipping`);
+      return;
+    }
+    if (creditsToRemoveForDispute(purchase, dispute.amount, creditsRemovedByRefunds(purchase, ledger)) <= 0) {
       console.log(
-        `[credit-purchase] ${what}: purchase ${purchase.paymentIntentId} was fully refunded in credits, so the dispute debited nothing; nothing to restore`
+        `[credit-purchase] ${what}: the dispute debited nothing for purchase ${purchase.paymentIntentId} (fully refunded in credits); nothing to restore`
       );
       return;
     }
     // Most likely the debit is older than the ledger lookback (disputes can take months to close) — restore it by
     // hand, see the runbook. Also hit if the `charge.dispute.created` debit never landed.
-    await logError(`[credit-purchase] MANUAL CHECK NEEDED: ${what} was won but its dispute debit is not in the recent ledger; nothing restored`, {
-      disputeId: dispute.id,
-      userId: purchase.userId,
-      stripeCustomerId: purchase.stripeCustomerId,
-      paymentIntentId: purchase.paymentIntentId,
-    });
+    await logError(
+      `[credit-purchase] MANUAL CHECK NEEDED: ${what} closed as ${dispute.status} but its dispute debit is not in the recent ledger; nothing restored`,
+      {
+        disputeId: dispute.id,
+        userId: purchase.userId,
+        stripeCustomerId: purchase.stripeCustomerId,
+        paymentIntentId: purchase.paymentIntentId,
+      }
+    );
     return;
   }
 
-  const credits = Number(debit.metadata?.credits) || 0;
-  const credit = await (
-    await getStripeClient()
-  ).customers.createBalanceTransaction(
-    purchase.stripeCustomerId,
-    {
-      // Exactly the debit's amount, negated: a negative balance change is credit.
-      amount: -debit.amount,
-      currency: debit.currency,
-      description: `Restored ${credits} ${credits === 1 ? 'credit' : 'credits'} (payment dispute won)`,
-      metadata: {
-        type: DISPUTE_WON_ENTRY_TYPE,
+  const restore = await postLedgerEntryOnce(
+    { type: LEDGER_ENTRY_TYPE.DisputeRestore, sourceId: dispute.id, stripeCustomerId: purchase.stripeCustomerId },
+    ledger,
+    () =>
+      postDisputeRestoreInStripe({
+        stripeCustomerId: purchase.stripeCustomerId,
         userId: purchase.userId,
-        credits: String(credits),
         sourceId: dispute.id,
-        debitTxnId: debit.id,
+        debit,
+        outcome: dispute.status,
         paymentIntentId: purchase.paymentIntentId,
         checkoutSessionId: purchase.stripeCheckoutSessionId,
-      },
-    },
-    { idempotencyKey: `credit-dispute-won-${dispute.id}` }
+      })
   );
-  console.log(
-    `[credit-purchase] Restored ${credits} credits to ${purchase.userId} (${purchase.stripeCustomerId}) for won dispute ${dispute.id} on ${purchase.paymentIntentId}: ${credit.id}`
-  );
+  if (restore) {
+    console.log(
+      `[credit-purchase] Restored ${creditsOfLedgerEntry(debit)} credits to ${purchase.userId} (${purchase.stripeCustomerId}) for dispute ${
+        dispute.id
+      } closed as ${dispute.status} on ${purchase.paymentIntentId}: ${restore.id}`
+    );
+  }
 }

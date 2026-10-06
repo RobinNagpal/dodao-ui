@@ -48,6 +48,11 @@ function entryTypeOf(entry: Stripe.CustomerBalanceTransaction): CreditHistoryEnt
       return 'Purchase';
     case LEDGER_ENTRY_TYPE.ReportSpend:
       return 'ReportSpend';
+    // Refund / dispute debits and dispute restores show under Adjustments; their
+    // description ("Removed …" / "Restored … (payment dispute closed: won)") says which.
+    case LEDGER_ENTRY_TYPE.Refund:
+    case LEDGER_ENTRY_TYPE.Dispute:
+    case LEDGER_ENTRY_TYPE.DisputeRestore:
     default:
       return 'Adjustment';
   }

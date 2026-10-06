@@ -6,7 +6,7 @@ import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import { Contexts } from '@dodao/web-core/utils/constants/constants';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
-import { getSafeCallbackPath, LOGIN_CALLBACK_PATH_QUERY_PARAM } from '@dodao/web-core/utils/auth/safeCallbackPath';
+import { getSafeCallbackPath, getSafeCallbackPathFromUrl, LOGIN_CALLBACK_PATH_QUERY_PARAM } from '@dodao/web-core/utils/auth/safeCallbackPath';
 import { signIn } from 'next-auth/react';
 import { useState } from 'react';
 
@@ -24,14 +24,17 @@ interface LoginResponse {
 
 /**
  * Page to return to after login, from this page's own `?callbackPath=` (set by
- * whoever sent the user here). Read from `window.location` rather than
- * `useSearchParams()` so the page doesn't need a Suspense boundary.
+ * in-app links to /login), else NextAuth's `?callbackUrl=` (an absolute URL, sent
+ * when NextAuth redirects to `pages.signIn`) — kept only when it is on this
+ * origin. Read from `window.location` rather than `useSearchParams()` so the page
+ * doesn't need a Suspense boundary.
  */
 function getLoginCallbackPath(): string | undefined {
   if (typeof window === 'undefined') {
     return undefined;
   }
-  return getSafeCallbackPath(new URLSearchParams(window.location.search).get(LOGIN_CALLBACK_PATH_QUERY_PARAM));
+  const params = new URLSearchParams(window.location.search);
+  return getSafeCallbackPath(params.get(LOGIN_CALLBACK_PATH_QUERY_PARAM)) ?? getSafeCallbackPathFromUrl(params.get('callbackUrl'), window.location.origin);
 }
 
 export default function LoginPage() {

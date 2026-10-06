@@ -19,7 +19,7 @@ import {
   preparePastPerformanceInputJson,
   prepareStabilityInputJson,
 } from '@/utils/analysis-reports/report-input-json-utils';
-import { markAsCompleted, markAsInProgress } from '@/utils/analysis-reports/report-status-utils';
+import { markAsCompleted, markAsInProgress, moveReportDateForSaveAfterEnd } from '@/utils/analysis-reports/report-status-utils';
 import { calculatePendingSteps } from '@/utils/analysis-reports/report-steps-statuses';
 import {
   ensureStockAnalyzerDataIsFresh,
@@ -389,8 +389,11 @@ export async function triggerGenerationOfAReportSimplified(symbol: string, excha
     model: generationRequest.llmModel ?? GeminiModel.GEMINI_2_5_PRO,
   };
 
-  if (generationRequest.status === GenerationRequestStatus.Completed) {
-    console.log('Generation request is already completed - skipping ', symbol, ' on exchange ', exchange);
+  if (generationRequest.status === GenerationRequestStatus.Completed || generationRequest.status === GenerationRequestStatus.Failed) {
+    console.log('Generation request has already ended (', generationRequest.status, ') - skipping ', symbol, ' on exchange ', exchange);
+    // An ended request is never reopened (its credit is settled), but a step saved
+    // after it ended still moves the report date.
+    await moveReportDateForSaveAfterEnd(generationRequest);
     return;
   }
 
@@ -467,8 +470,10 @@ export async function triggerGenerationOfAReportSimplified(symbol: string, excha
     return;
   }
 
-  // Update initial status if needed
-  await markAsInProgress(generationRequest, nextStep);
+  // Stops here if the request ended meanwhile: a stale trigger must not reopen it.
+  if (!(await markAsInProgress(generationRequest, nextStep))) {
+    return;
+  }
 
   if (nextStep === ReportType.COMPETITION) {
     // When the request uses Claude, competition always runs on Opus 4.8. For any

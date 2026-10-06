@@ -228,7 +228,10 @@ link that refunds need).
 
 Both `report_spends` and `stripe_credit_purchases` reference `users` with
 `ON DELETE RESTRICT`: deleting a user who has bought or run a paid report fails
-(the admin user-delete API errors) instead of silently erasing the records.
+(the admin user-delete API answers 400 with a readable reason — also when a
+purchase / run lands between its pre-check and the delete, via the Prisma
+`P2003` foreign-key error — and the admin users page shows that message)
+instead of silently erasing the records.
 
 ```
 spendable credits = Stripe balance − InProgress report_spends
@@ -245,10 +248,12 @@ Stripe applies a customer balance to the next invoice it finalizes. Checkout in
 "ledger version" = `<count of stripe_credit_purchases>-<count of charged
 report_spends>`. Every purchase and every charge adds one of those rows, so the
 next read misses the cache with no invalidation needed (this also holds when a
-run is settled outside a request). The 5-minute `revalidate` only catches
-changes that add no DB row — manual dashboard edits **and refund / dispute
-debits** — so those can take up to 5 minutes to show. Spending never uses the
-cache.
+run is settled outside a request). Refund / dispute debits and dispute
+restores add no DB row, so the webhook busts the cache explicitly after
+writing them (`invalidateCachedStripeCredits` → `revalidateTag` on the
+customer's `stripe-credit-balance-<cus_…>` tag). The 5-minute `revalidate` only
+catches manual dashboard edits, which can take up to 5 minutes to show.
+Spending never uses the cache.
 
 ### Flow and Stripe calls
 
@@ -335,27 +340,38 @@ charges that aren't credits purchases are ignored.
   removes nothing. One debit per refund, idempotency key
   `credit-refund-<re_…>`, skipped if the recent ledger already has a `refund`
   entry with that `sourceId`.
-- **`charge.dispute.created`** — full debit of the purchase's credits minus any
-  already removed by refunds. Idempotency key `credit-dispute-<du_…>`, plus the
-  same ledger check.
+- **`charge.dispute.created`** — debits the **disputed amount** in credits:
+  `ceil(dispute.amount / CENTS_PER_CREDIT)` (purchases are always USD at $1 a
+  credit), capped at the purchase's credits not already removed by refunds
+  (`creditsToRemoveForDispute`). Rounded up because the disputed money is held
+  from us, so a fractional credit is never left spendable; the cap keeps a
+  rounded-up partial dispute from taking more than is left. Inquiries
+  (`warning_needs_response`) are debited too — if one closes without becoming
+  a chargeback, the close below gives it back. Idempotency key
+  `credit-dispute-<du_…>`, plus the same ledger check.
 - The debit can push the balance above zero (credits already spent are now
-  owed); the user simply sees 0. The navbar may take up to 5 minutes to reflect
-  it (see [The display cache](#the-display-cache)).
-- **`charge.dispute.closed`** — only `status: won` does anything: the
-  dispute's own `dispute` debit (found in the recent ledger by `sourceId`) is
-  credited back for exactly its amount, as a `dispute_won` entry (`sourceId`,
-  `debitTxnId`, `credits`; shows as an `Adjustment`). Idempotency key
-  `credit-dispute-won-<du_…>`, plus a ledger check for an existing
-  `dispute_won` entry. No debit found → nothing restored: logged as info when
-  the purchase was already fully refunded in credits, otherwise a
-  `MANUAL CHECK NEEDED` `logError` (usually the debit is older than the
-  100-entry lookback — disputes can take months to close). Lost / any other
-  status: the debit stands.
+  owed); the user simply sees 0. The webhook busts the display cache, so the
+  navbar reflects it on the next read (see [The display cache](#the-display-cache)).
+- **`charge.dispute.closed`** — when we kept the money (`won`,
+  `warning_closed` = an inquiry that never became a chargeback, `prevented` =
+  stopped by a dispute-prevention tool; a refund that came with it is taken
+  back by `charge.refunded` on its own), the dispute's own `dispute` debit
+  (found in the recent ledger by `sourceId`) is credited back for exactly its
+  amount, as a `dispute_won` entry (`LEDGER_ENTRY_TYPE.DisputeRestore`; the
+  value predates the non-`won` outcomes and is kept; `sourceId`, `debitTxnId`,
+  `credits`; shows as an `Adjustment`, described "Restored N credits (payment
+  dispute closed: won)" etc.). Idempotency key `credit-dispute-won-<du_…>`,
+  plus a ledger check for an existing `dispute_won` entry. No debit found →
+  nothing restored: logged as info when the dispute debited nothing (purchase
+  already fully refunded in credits), otherwise a `MANUAL CHECK NEEDED`
+  `logError` (usually the debit is older than the 100-entry lookback —
+  disputes can take months to close). Only `lost` (or an unknown status)
+  leaves the debit standing.
 - Manual restore (for that `MANUAL CHECK NEEDED` case): in the Stripe
   dashboard open the customer (Customers → email), find the `dispute` balance
   transaction for the payment (`metadata.sourceId` = the `du_…` id,
   `metadata.credits` = credits removed), then **Adjust balance → credit**
-  `$<credits>.00` with a description like "Dispute du_… won — credits
+  `$<credits>.00` with a description like "Dispute du_… closed (won) — credits
   restored". It shows in the history as an `Adjustment`.
 
 ## Code layout
@@ -394,7 +410,7 @@ charges that aren't credits purchases are ignored.
 | `POST /api/[spaceId]/users/credits/report-results` | `withLoggedInUser` | Returns paid runs that finished or failed since the user last looked, and marks them seen (`result_seen_at`). |
 | `GET /api/[spaceId]/admin/credits/users` | `withLoggedInAdmin` | Every buyer with balance, credits bought, amount paid, paid reports (Completed spends actually charged in Stripe; reserved, failed and charge-failed runs excluded). |
 | `GET /api/[spaceId]/admin/credits/users/[userId]?limit=50` | `withLoggedInAdmin` | One user's credit history. |
-| `POST /api/stripe/webhook` | **Stripe signature** | Grants credits (`checkout.session.completed`, `checkout.session.async_payment_succeeded`) and takes them back (`charge.refunded`, `charge.dispute.created`), and gives a won dispute's credits back (`charge.dispute.closed`). |
+| `POST /api/stripe/webhook` | **Stripe signature** | Grants credits (`checkout.session.completed`, `checkout.session.async_payment_succeeded`) and takes them back (`charge.refunded`, `charge.dispute.created`), and gives a dispute's credits back when it closes in our favour — won, inquiry closed, prevented (`charge.dispute.closed`). |
 | `GET` / `POST /api/[spaceId]/tickers-v1/[ticker]/generation-requests` | `withAdminOrToken` | Admin / automation only (GET returns raw request rows). POST never merges into a paid request. |
 | `POST /api/[spaceId]/tickers-v1/[ticker]/update-request-status` | `withAdminOnly` (logged-in admin) | Sets a request's status by hand. It does **not** settle credits; a paid run ended here is charged or released by the heartbeat reconciliation from its stored status. No code calls it. |
 
@@ -453,6 +469,19 @@ After giving each failed step one retry, both do three things:
 3. Call `settleReportCredit(requestId)` — it reads the status just stored:
    takes the reserved credit in Stripe on `Completed`, releases it without
    charging on `Failed`. A no-op for requests that never held a credit.
+
+An ended request is never reopened: both triggers stop on a `Completed` /
+`Failed` request, and `markAsInProgress` / `markEtfRequestAsInProgress` only
+start a step while the request is still `NotStarted` / `InProgress`
+(`updateMany` + count; the caller stops on 0), so a stale trigger can't reopen
+a request whose credit is already settled. A step saved **after** its request
+ended (e.g. one that outran the 10-minute stale-step timeout, so the request
+ended `Failed` without it) still rewrote part of the report: the finalizer that
+loses the claim, and the trigger that sees an ended request, call
+`moveReportDateForSaveAfterEnd` / `moveEtfReportDateForSaveAfterEnd`, which move
+`lastReportGeneratedAt` to the request's `updatedAt` when the row changed after
+`completedAt` (forward only, so repeat calls are no-ops). The status and the
+credit are left alone.
 
 A request that ends in `Failed` is **not charged at all**, even when some
 sections succeeded: the user paid for a whole report. That is deliberately generous and
@@ -671,7 +700,7 @@ posts it to Discord. It is used for:
 | Where (log prefix) | Failure |
 |---|---|
 | `[stripe-webhook]` | Payments not configured (500); signature verification failed (400 — a forged request, or a wrong `STRIPE_WEBHOOK_SECRET`, which blocks every purchase); event `livemode` doesn't match the key (400); handler threw (500, Stripe retries). |
-| `[credit-purchase]` | `MANUAL REPAIR NEEDED`: the checkout customer is linked to a different user, or differs from the user's linked customer (credits went to the paying customer); a paid session with no customer (nothing credited). `MANUAL CHECK NEEDED`: a won dispute whose debit isn't in the recent ledger (nothing restored). |
+| `[credit-purchase]` | `MANUAL REPAIR NEEDED`: the checkout customer is linked to a different user, or differs from the user's linked customer (credits went to the paying customer); a paid session with no customer (nothing credited). `MANUAL CHECK NEEDED`: a dispute closed in our favour (won / inquiry closed / prevented) whose debit isn't in the recent ledger (nothing restored). |
 | `[checkout-session]` | `MANUAL REPAIR NEEDED`: a buyer's stored Stripe customer no longer exists in Stripe. |
 | `[credit-service]` | Report charge failed twice (report kept free); stuck paid run released after 12h (not charged). |
 
@@ -719,8 +748,8 @@ pnpm logs:fetch --grep "checkout-session|confirm-checkout" --level all
    exactly one "+$1.00 Report generation for …" transaction, the
    `report_spends` row is `Completed`, the result email arrives.
 7. **Refund test:** refund the test payment in the dashboard → a "Removed N
-   credits (payment refund)" transaction appears and the balance drops (the
-   navbar may take up to 5 minutes).
+   credits (payment refund)" transaction appears and the navbar balance drops
+   on the next page load.
 8. **Watch logs for 24h** (`pnpm logs:fetch --grep "stripe-webhook|credit-"`
    and the Discord alerts).
 9. **Rollback** = flip `STRIPE_CREDIT_PURCHASES_ENABLED` OFF from the admin

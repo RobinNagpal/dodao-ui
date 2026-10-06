@@ -28,32 +28,6 @@ interface LoginPopupProps {
   onClose: () => void;
 }
 
-/**
- * Attribute set on `<body>` while any login popup is open. Floating page
- * controls that would sit over the modal (e.g. `FloatingReportCta`) hide
- * themselves with a `[body[data-login-popup-open]_&]:hidden` variant.
- */
-export const LOGIN_POPUP_OPEN_BODY_ATTR = 'data-login-popup-open';
-
-// Several popups can be mounted on one page; keep the flag until the last open one closes.
-let openLoginPopupCount = 0;
-
-function useLoginPopupOpenBodyFlag(open: boolean): void {
-  useEffect(() => {
-    if (!open) {
-      return;
-    }
-    openLoginPopupCount += 1;
-    document.body.setAttribute(LOGIN_POPUP_OPEN_BODY_ATTR, '');
-    return () => {
-      openLoginPopupCount = Math.max(0, openLoginPopupCount - 1);
-      if (openLoginPopupCount === 0) {
-        document.body.removeAttribute(LOGIN_POPUP_OPEN_BODY_ATTR);
-      }
-    };
-  }, [open]);
-}
-
 export function LoginPopup({ open, onClose }: LoginPopupProps): JSX.Element {
   const [email, setEmail] = useState<string>('');
   const [step, setStep] = useState<1 | 2>(1);
@@ -68,8 +42,6 @@ export function LoginPopup({ open, onClose }: LoginPopupProps): JSX.Element {
   const { postData: postLogin } = usePostData<LoginResponse, LoginRequest>({
     errorMessage: 'Failed to send login email. Please try again.',
   });
-
-  useLoginPopupOpenBodyFlag(open);
 
   useEffect(() => {
     if (!open) {

@@ -2,7 +2,7 @@ import { CREDIT_CURRENCY, CREDITS_PER_REPORT } from '@/types/credits';
 import { EXCHANGE_TO_COUNTRY, isExchange } from '@/utils/countryExchangeUtils';
 import { getStripeClient } from '@/utils/credits/stripe-client';
 import { CreditReportKind } from '@prisma/client';
-import { unstable_cache } from 'next/cache';
+import { revalidateTag, unstable_cache } from 'next/cache';
 import Stripe from 'stripe';
 
 /**
@@ -26,8 +26,14 @@ export const LEDGER_ENTRY_TYPE = {
   ReportSpend: 'report_spend',
   /** Credits taken back because (part of) a purchase's card payment was refunded. */
   Refund: 'refund',
-  /** Credits taken back because a purchase's card payment was disputed (chargeback). */
+  /** Credits taken back because a purchase's card payment was disputed (chargeback or inquiry). */
   Dispute: 'dispute',
+  /**
+   * Credits given back when a dispute closes with the merchant keeping the money
+   * (won, inquiry closed, prevented). The value predates the non-`won` outcomes;
+   * keep it, existing entries and the dedupe search use it.
+   */
+  DisputeRestore: 'dispute_won',
 } as const;
 
 /** A Stripe balance (or `ending_balance`) as whole spendable credits. */
@@ -48,17 +54,38 @@ export async function fetchStripeCredits(stripeCustomerId: string): Promise<numb
   return customer.deleted ? 0 : creditsFromStripeBalance(customer.balance);
 }
 
+function stripeCreditBalanceTag(stripeCustomerId: string): string {
+  return `stripe-credit-balance-${stripeCustomerId}`;
+}
+
 /**
- * Cached balance for display (navbar, credits page). Only a purchase and a
- * charged report change it, and both add a DB row, so the caller passes
- * `ledgerVersion` (e.g. "purchases-charges" counts): a new purchase or charge
- * changes the cache key and the next read goes to Stripe. This needs no cache
- * invalidation, so it also holds when a run is settled outside a request (cron,
- * scripts). The revalidate window only catches edits made by hand in the
- * Stripe dashboard.
+ * Cached balance for display (navbar, credits page). A purchase and a charged
+ * report both add a DB row, so the caller passes `ledgerVersion` (e.g.
+ * "purchases-charges" counts): a new purchase or charge changes the cache key
+ * and the next read goes to Stripe. That needs no cache invalidation, so it also
+ * holds when a run is settled outside a request (cron, scripts). Refund /
+ * dispute debits and dispute restores add no DB row, so the webhook busts the
+ * cache with `invalidateCachedStripeCredits`. The revalidate window only catches
+ * edits made by hand in the Stripe dashboard.
  */
 export function getCachedStripeCredits(stripeCustomerId: string, ledgerVersion: string): Promise<number> {
-  return unstable_cache(() => fetchStripeCredits(stripeCustomerId), ['stripe-credit-balance', stripeCustomerId, ledgerVersion], { revalidate: 300 })();
+  return unstable_cache(() => fetchStripeCredits(stripeCustomerId), ['stripe-credit-balance', stripeCustomerId, ledgerVersion], {
+    revalidate: 300,
+    tags: [stripeCreditBalanceTag(stripeCustomerId)],
+  })();
+}
+
+/**
+ * Drops the cached display balance after a ledger write that adds no DB row.
+ * Never throws: outside a Next request (a script) there is no cache to bust, and
+ * a stale display balance is not worth failing the (already written) ledger entry.
+ */
+export function invalidateCachedStripeCredits(stripeCustomerId: string): void {
+  try {
+    revalidateTag(stripeCreditBalanceTag(stripeCustomerId));
+  } catch (error) {
+    console.warn(`[stripe-credit-ledger] Could not invalidate the cached balance of ${stripeCustomerId}`, error);
+  }
 }
 
 export interface GrantPurchaseInput {
@@ -139,6 +166,15 @@ export interface ReversalDebitInput {
   checkoutSessionId: string;
 }
 
+/** The entry of this `metadata.type` written for this refund / dispute (`sourceId`), if it is in `ledger`. */
+export function findLedgerEntryForSource(
+  ledger: Stripe.CustomerBalanceTransaction[],
+  type: string,
+  sourceId: string
+): Stripe.CustomerBalanceTransaction | undefined {
+  return ledger.find((entry) => entry.metadata?.type === type && entry.metadata?.sourceId === sourceId);
+}
+
 /** Idempotency key / dedupe id of the debit for one refund or dispute. */
 export function reversalIdempotencyKey(type: ReversalDebitInput['type'], sourceId: string): string {
   return `credit-${type}-${sourceId}`;
@@ -169,6 +205,54 @@ export async function postReversalDebitInStripe(input: ReversalDebitInput): Prom
       },
     },
     { idempotencyKey: reversalIdempotencyKey(input.type, input.sourceId) }
+  );
+}
+
+export interface DisputeRestoreInput {
+  stripeCustomerId: string;
+  userId: string;
+  /** The dispute (`du_…`) whose debit is given back. */
+  sourceId: string;
+  /** The `dispute` debit this gives back; the restore is exactly its amount. */
+  debit: Stripe.CustomerBalanceTransaction;
+  /** The dispute's closing status (`won`, `warning_closed`, `prevented`), for the description. */
+  outcome: string;
+  paymentIntentId: string;
+  checkoutSessionId: string;
+}
+
+/** Credits in a `refund` / `dispute` / `dispute_won` entry, as written in its metadata. */
+export function creditsOfLedgerEntry(entry: Stripe.CustomerBalanceTransaction): number {
+  return Number(entry.metadata?.credits) || 0;
+}
+
+/**
+ * Gives back a dispute's debit once the dispute closed with the money kept, at
+ * most once per dispute: the idempotency key `credit-dispute-won-<du_…>` covers
+ * concurrent and retried deliveries within 24h, and the caller's recent-ledger
+ * check for a `dispute_won` entry with this `sourceId` covers a replay after that.
+ */
+export async function postDisputeRestoreInStripe(input: DisputeRestoreInput): Promise<Stripe.CustomerBalanceTransaction> {
+  const credits = creditsOfLedgerEntry(input.debit);
+  return (await getStripeClient()).customers.createBalanceTransaction(
+    input.stripeCustomerId,
+    {
+      // Exactly the debit's amount, negated: a negative balance change is credit.
+      amount: -input.debit.amount,
+      currency: input.debit.currency,
+      description: `Restored ${credits} ${credits === 1 ? 'credit' : 'credits'} (payment dispute closed: ${input.outcome.replace(/_/g, ' ')})`,
+      metadata: {
+        type: LEDGER_ENTRY_TYPE.DisputeRestore,
+        userId: input.userId,
+        credits: String(credits),
+        sourceId: input.sourceId,
+        debitTxnId: input.debit.id,
+        paymentIntentId: input.paymentIntentId,
+        checkoutSessionId: input.checkoutSessionId,
+      },
+    },
+    // Unchanged from when only won disputes were restored, so the key still matches older attempts.
+    { idempotencyKey: `credit-dispute-won-${input.sourceId}` }
   );
 }
 

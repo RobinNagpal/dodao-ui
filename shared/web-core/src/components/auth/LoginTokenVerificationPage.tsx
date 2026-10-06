@@ -49,6 +49,15 @@ export default function LoginTokenVerificationPage({ space }: CallbackPageProps)
       const callbackUrl = callbackPath ?? contextToUrlMapping[context as Contexts];
       console.log('[LoginTokenVerificationPage] Determined callbackUrl:', { context, callbackPath, callbackUrl });
 
+      // Back to /login with the error, keeping the page to return to so a retry still lands there.
+      const loginErrorPath = (message: string): string => {
+        const params = new URLSearchParams({ error: message });
+        if (callbackPath) {
+          params.set(LOGIN_CALLBACK_PATH_QUERY_PARAM, callbackPath);
+        }
+        return `/login?${params.toString()}`;
+      };
+
       const full = document.location.protocol + '//' + document.location.host;
       const fullCallbackUrl = full + callbackUrl;
       console.log('[LoginTokenVerificationPage] Constructed fullCallbackUrl:', fullCallbackUrl);
@@ -96,18 +105,15 @@ export default function LoginTokenVerificationPage({ space }: CallbackPageProps)
               error: result?.error,
             });
             console.log('[LoginTokenVerificationPage] Redirecting to login page with error');
-            const errorMessage = encodeURIComponent('This login link has expired or was already used. Please request a new login email.');
-            push(`/login?error=${errorMessage}`);
+            push(loginErrorPath('This login link has expired or was already used. Please request a new login email.'));
           }
         } catch (error) {
           console.error('[LoginTokenVerificationPage] Exception during sign-in process:', error);
-          const errorMessage = encodeURIComponent('An error occurred during sign-in. Please try again.');
-          push(`/login?error=${errorMessage}`);
+          push(loginErrorPath('An error occurred during sign-in. Please try again.'));
         }
       } else {
         console.log('[LoginTokenVerificationPage] No token found in URL, cannot proceed with authentication');
-        const errorMessage = encodeURIComponent('No login token found. Please request a new login email.');
-        push(`/login?error=${errorMessage}`);
+        push(loginErrorPath('No login token found. Please request a new login email.'));
       }
     }
 

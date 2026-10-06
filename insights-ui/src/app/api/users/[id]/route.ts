@@ -1,7 +1,7 @@
 import { prisma } from '@/prisma';
 import { badRequestError } from '@dodao/web-core/api/errors/badRequestError';
 import { KoalaGainsJwtTokenPayload } from '@/types/auth';
-import { UserRole } from '@prisma/client';
+import { Prisma, UserRole } from '@prisma/client';
 import { NextRequest } from 'next/server';
 import { withLoggedInAdmin } from '../../helpers/withLoggedInAdmin';
 
@@ -64,17 +64,31 @@ async function deleteHandler(
     prisma.stripeCreditPurchase.count({ where: { userId: id } }),
     prisma.reportSpend.count({ where: { userId: id } }),
   ]);
-  if (purchases > 0 || spends > 0) {
-    throw badRequestError(
-      `This user has ${purchases} credit purchase(s) and ${spends} report run(s); their credit records must be kept, so the user can't be deleted.`
+  const creditRecordsError = (purchaseCount: number | string, spendCount: number | string): Error =>
+    badRequestError(
+      `This user has ${purchaseCount} credit purchase(s) and ${spendCount} report run(s); their credit records must be kept, so the user can't be deleted.`
     );
+  if (purchases > 0 || spends > 0) {
+    throw creditRecordsError(purchases, spends);
   }
 
-  await prisma.user.delete({
-    where: {
-      id: id,
-    },
-  });
+  try {
+    await prisma.user.delete({
+      where: {
+        id: id,
+      },
+    });
+  } catch (error) {
+    // A purchase / run created between the counts above and the delete trips the RESTRICT foreign key.
+    if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2003') {
+      const [purchasesNow, spendsNow] = await Promise.all([
+        prisma.stripeCreditPurchase.count({ where: { userId: id } }),
+        prisma.reportSpend.count({ where: { userId: id } }),
+      ]);
+      throw creditRecordsError(purchasesNow, spendsNow);
+    }
+    throw error;
+  }
 
   return { success: true };
 }
