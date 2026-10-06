@@ -1,5 +1,7 @@
+import { prisma } from '@/prisma';
 import { grantPurchasedCredits } from '@/utils/credits/credit-service';
 import { getStripeClient, getStripeWebhookSecret } from '@/utils/credits/stripe-client';
+import { Prisma } from '@prisma/client';
 import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
 
@@ -10,6 +12,56 @@ export const dynamic = 'force-dynamic';
 
 /** Events that mean "the money for this checkout session has arrived". */
 const CREDITING_EVENTS = new Set<string>(['checkout.session.completed', 'checkout.session.async_payment_succeeded']);
+
+/**
+ * Balance reads and spends use `users.stripeCustomerId`, so the customer we
+ * credit must be that one. If the user has none yet, link the session's
+ * customer. If it's a different one, the credit is still granted to the
+ * customer that paid (money is never dropped), but the user won't see it until
+ * someone repairs the link by hand — hence the loud error.
+ */
+async function linkOrCheckStripeCustomer(userId: string, sessionCustomerId: string, sessionId: string): Promise<void> {
+  const user = await prisma.user.findUnique({ where: { id: userId }, select: { stripeCustomerId: true } });
+  if (!user) {
+    console.error('[stripe-webhook] Checkout session belongs to an unknown user', sessionId, userId);
+    return;
+  }
+
+  let linkedCustomerId = user.stripeCustomerId;
+  if (!linkedCustomerId) {
+    try {
+      const linked = await prisma.user.updateMany({ where: { id: userId, stripeCustomerId: null }, data: { stripeCustomerId: sessionCustomerId } });
+      if (linked.count === 1) {
+        return;
+      }
+    } catch (error) {
+      // stripeCustomerId is unique: this customer is already linked to another user.
+      if (!(error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2002')) {
+        throw error;
+      }
+      console.error('[stripe-webhook] MANUAL REPAIR NEEDED: checkout customer is linked to a different user; credits granted to it anyway', {
+        sessionId,
+        userId,
+        sessionCustomerId,
+      });
+      return;
+    }
+    // Linked concurrently (e.g. a checkout being created right now): compare against that.
+    linkedCustomerId = (await prisma.user.findUnique({ where: { id: userId }, select: { stripeCustomerId: true } }))?.stripeCustomerId ?? null;
+  }
+
+  if (linkedCustomerId !== sessionCustomerId) {
+    console.error(
+      "[stripe-webhook] MANUAL REPAIR NEEDED: checkout customer differs from the user's linked Stripe customer; credits granted to the checkout customer",
+      {
+        sessionId,
+        userId,
+        sessionCustomerId,
+        linkedCustomerId,
+      }
+    );
+  }
+}
 
 async function creditCheckoutSession(session: Stripe.Checkout.Session): Promise<void> {
   // `completed` also fires for sessions whose payment is still pending (some
@@ -34,6 +86,8 @@ async function creditCheckoutSession(session: Stripe.Checkout.Session): Promise<
     console.error('[stripe-webhook] Checkout session has no customer', session.id);
     return;
   }
+
+  await linkOrCheckStripeCustomer(userId, stripeCustomerId, session.id);
 
   const paymentIntentId = typeof session.payment_intent === 'string' ? session.payment_intent : session.payment_intent?.id ?? null;
 

@@ -10,6 +10,7 @@ import { notifyCreditsChanged } from '@/utils/credits/credit-return-path';
 import { REPORT_STATUS_BADGES } from '@/utils/credits/report-status-badges';
 import { DODAO_ACCESS_TOKEN_KEY } from '@dodao/web-core/types/deprecated/models/enums';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
+import { ReportSpendStatus } from '@prisma/client';
 import { useSession } from 'next-auth/react';
 import { usePathname, useRouter } from 'next/navigation';
 import { useCallback, useEffect, useRef, useState } from 'react';
@@ -122,7 +123,7 @@ export default function ReportResultNotifier(): JSX.Element | null {
       }}
     >
       {results.map((result) => {
-        const badge = REPORT_STATUS_BADGES[result.succeeded ? 'Completed' : 'Failed'];
+        const badge = REPORT_STATUS_BADGES[result.succeeded ? ReportSpendStatus.Completed : ReportSpendStatus.Failed];
         const label = result.reportHref ? <TextLink href={result.reportHref}>{result.reportLabel}</TextLink> : result.reportLabel;
         return (
           <ReportResultToastItem key={result.id} badge={<StatusBadge variant={badge.variant} label={badge.label} />}>

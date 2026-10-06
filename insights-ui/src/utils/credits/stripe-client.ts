@@ -2,6 +2,9 @@ import Stripe from 'stripe';
 
 let cachedClient: Stripe | null = null;
 
+const STRIPE_TIMEOUT_MS = 20_000;
+const STRIPE_MAX_NETWORK_RETRIES = 1;
+
 /**
  * Stripe is only reachable from server code, and only when the deployment has
  * been given keys. Everything credit-related degrades to a clear "payments are
@@ -20,7 +23,13 @@ export function getStripeClient(): Stripe {
   // No apiVersion override — stripe-node pins the version it was built against,
   // which is what its own types describe.
   if (!cachedClient) {
-    cachedClient = new Stripe(secretKey);
+    cachedClient = new Stripe(secretKey, {
+      // The library default is 80s, long enough to hang a page or a settle. A
+      // retry reuses the request's idempotency key (stripe-node adds one to
+      // every POST), so it can never apply a balance change twice.
+      timeout: STRIPE_TIMEOUT_MS,
+      maxNetworkRetries: STRIPE_MAX_NETWORK_RETRIES,
+    });
   }
   return cachedClient;
 }
