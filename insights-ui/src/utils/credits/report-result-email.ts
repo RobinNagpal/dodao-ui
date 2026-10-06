@@ -2,7 +2,7 @@ import { prisma } from '@/prisma';
 import { getReportHrefs } from '@/utils/credits/report-target';
 import { getCanonicalUrl } from '@/utils/getBaseUrlForServerSidePages';
 import { sendEmail } from '@dodao/web-core/api/email/sendEmail';
-import { CreditTransaction } from '@prisma/client';
+import { ReportSpend } from '@prisma/client';
 
 /** Same sender as the KoalaGains login emails. */
 const FROM_ADDRESS = 'contact@koalagains.com';
@@ -32,15 +32,15 @@ function emailHtml({ heading, body, buttonLabel, buttonUrl }: { heading: string;
 
 /**
  * Emails the user who paid for a regeneration once it has finished (report is
- * ready) or failed (credit returned). Best effort: a failed email is logged and
- * never breaks report completion or the refund.
+ * ready) or failed (no credit taken). Best effort: a failed email is logged and
+ * never breaks report completion.
  */
-export async function sendReportResultEmail(spend: CreditTransaction, succeeded: boolean): Promise<void> {
+export async function sendReportResultEmail(spend: ReportSpend, succeeded: boolean): Promise<void> {
   try {
     const user = await prisma.user.findUnique({ where: { id: spend.userId }, select: { email: true } });
     if (!user?.email) return;
 
-    const label = escapeHtml(spend.reportLabel ?? 'your report');
+    const label = escapeHtml(spend.reportLabel);
     const hrefs = await getReportHrefs([spend]);
     const path = (spend.reportTargetId && hrefs.get(spend.reportTargetId)) || '/credits';
     const reportUrl = `${getCanonicalUrl()}${path}`;
@@ -59,7 +59,7 @@ export async function sendReportResultEmail(spend: CreditTransaction, succeeded:
           subject: `We couldn't generate your ${spend.reportLabel} report`,
           html: emailHtml({
             heading: "We couldn't generate your report",
-            body: `Something went wrong while generating the new <strong>${label}</strong> report. Your credit has been returned to your balance, so you can try again any time.`,
+            body: `Something went wrong while generating the new <strong>${label}</strong> report. No credit was taken from your balance, so you can try again any time.`,
             buttonLabel: 'Go to report',
             buttonUrl: reportUrl,
           }),

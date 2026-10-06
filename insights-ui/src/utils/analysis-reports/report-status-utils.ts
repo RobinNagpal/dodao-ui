@@ -142,7 +142,7 @@ export async function markAsCompleted(generationRequest: TickerV1GenerationReque
     });
   }
 
-  // Releases the credit a user paid for this request: kept on success, refunded
-  // when the request ends in Failed. No-op for admin/cron requests.
+  // Settles the credit a user reserved for this request: charged in Stripe on
+  // success, released uncharged when the request ends in Failed. No-op for admin/cron requests.
   await settleReportCredit(generationRequest.id, !hasFailed);
 }

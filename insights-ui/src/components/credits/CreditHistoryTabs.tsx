@@ -11,7 +11,6 @@ import { CreditTransactionResponse } from '@/types/credits';
 import { formatShortDate, formatUsd } from '@/utils/credits/credit-format';
 import { REPORT_STATUS_BADGES } from '@/utils/credits/report-status-badges';
 import { Table, TableRow } from '@dodao/web-core/components/core/table/Table';
-import { CreditTransactionType } from '@prisma/client';
 import React, { useState } from 'react';
 
 const GENERATION_COLUMNS = ['Date', 'Activity', 'Credits', 'Balance'];
@@ -23,12 +22,12 @@ const PURCHASE_COLUMN_WIDTHS = [20, 46, 16, 18];
 type HistoryTab = 'generations' | 'purchases';
 
 /**
- * Spends and their refunds describe report generations; purchases (and any admin
- * grant) describe credits coming in. The two have nothing in common column-wise
+ * Report spends describe report generations; purchases (and any manual
+ * adjustment) describe credits coming in. The two have nothing in common column-wise
  * — only a purchase has a dollar amount and a receipt — so they get a table each.
  */
 function isGenerationActivity(transaction: CreditTransactionResponse): boolean {
-  return transaction.type === CreditTransactionType.ReportSpend || transaction.type === CreditTransactionType.Refund;
+  return transaction.type === 'ReportSpend';
 }
 
 /** "AAPL (NASDAQ)" as a link to its report, or plain text when the report no longer exists. */
@@ -56,6 +55,11 @@ function renderBadge(transaction: CreditTransactionResponse): React.ReactNode {
   // Balances matter on this page, so an unfinished run also says its credit is held.
   const label = transaction.reportStatus === 'InProgress' ? `${badge.label} · credit reserved` : badge.label;
   return <StatusBadge variant={badge.variant} label={label} />;
+}
+
+/** A run still in progress has no balance yet: its credit is reserved, not taken. */
+function formatBalance(balanceAfter: number | null): string {
+  return balanceAfter === null ? '—' : String(balanceAfter);
 }
 
 function formatCreditChange(credits: number): string {
@@ -112,7 +116,12 @@ export default function CreditHistoryTabs({ transactions, showReceipts = true, h
   const toGenerationRow = (transaction: CreditTransactionResponse): TableRow => ({
     id: transaction.id,
     item: transaction,
-    columns: [formatShortDate(transaction.createdAt), renderActivity(transaction), formatCreditChange(transaction.credits), String(transaction.balanceAfter)],
+    columns: [
+      formatShortDate(transaction.createdAt),
+      renderActivity(transaction),
+      formatCreditChange(transaction.credits),
+      formatBalance(transaction.balanceAfter),
+    ],
   });
 
   const toPurchaseRow = (transaction: CreditTransactionResponse): TableRow => ({
@@ -137,7 +146,7 @@ export default function CreditHistoryTabs({ transactions, showReceipts = true, h
         <>
           {formatShortDate(transaction.createdAt)}
           {/* Each card mirrors its own table: balance for a generation, amount for a purchase. */}
-          {isGenerationActivity(transaction) ? <> · Balance {transaction.balanceAfter}</> : <> · {renderAmount(transaction)}</>}
+          {isGenerationActivity(transaction) ? <> · Balance {formatBalance(transaction.balanceAfter)}</> : <> · {renderAmount(transaction)}</>}
         </>
       }
     />

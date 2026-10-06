@@ -60,7 +60,7 @@ export default function ReportResultNotifier(): JSX.Element | null {
     (newResults: ReportResult[]) => {
       // Skip ids already shown, in case the same results arrive twice.
       setResults((current) => [...newResults.filter((result) => !current.some((shown) => shown.id === result.id)), ...current]);
-      // A failure refunded a credit, and a success means the report changed:
+      // Either way the reserved credit was released (charged or not), and a success means the report changed:
       // refresh the balance, the regenerate status, and this page if it is the report.
       notifyCreditsChanged();
       if (newResults.some((result) => result.reportHref === window.location.pathname)) {
@@ -122,11 +122,11 @@ export default function ReportResultNotifier(): JSX.Element | null {
       }}
     >
       {results.map((result) => {
-        const badge = REPORT_STATUS_BADGES[result.succeeded ? 'Completed' : 'Refunded'];
+        const badge = REPORT_STATUS_BADGES[result.succeeded ? 'Completed' : 'Failed'];
         const label = result.reportHref ? <TextLink href={result.reportHref}>{result.reportLabel}</TextLink> : result.reportLabel;
         return (
           <ReportResultToastItem key={result.id} badge={<StatusBadge variant={badge.variant} label={badge.label} />}>
-            {label} {result.succeeded ? 'report is ready.' : "report couldn't be generated. Your credit was returned."}
+            {label} {result.succeeded ? 'report is ready.' : "report couldn't be generated. You weren't charged."}
           </ReportResultToastItem>
         );
       })}

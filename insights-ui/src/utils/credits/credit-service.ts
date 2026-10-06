@@ -2,20 +2,56 @@ import { prisma } from '@/prisma';
 import { CREDITS_PER_REPORT } from '@/types/credits';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { sendReportResultEmail } from '@/utils/credits/report-result-email';
-import { CreditReportKind, CreditTransactionType, Prisma } from '@prisma/client';
+import { chargeReportInStripe, fetchStripeCredits, getCachedStripeCredits, grantPurchaseInStripe } from '@/utils/credits/stripe-credit-ledger';
+import { CreditReportKind, Prisma, ReportSpendStatus } from '@prisma/client';
 
 /**
  * Credit accounting.
  *
- * `User.credits` is the spendable balance and `CreditTransaction` is the
- * append-only ledger that explains it. Every function here writes both inside
- * one DB transaction, so the balance can always be re-derived from the ledger
- * and a crash mid-way can never leave a user paid-but-not-credited (or
- * charged-but-not-generated).
+ * Stripe holds the balance and the ledger (customer balance transactions). The
+ * DB holds what Stripe can't answer: which runs are still going. A run reserves
+ * its credit as an `InProgress` ReportSpend and is only charged in Stripe once
+ * the report has been generated, so a failed run never needs a refund.
+ *
+ *   spendable credits = Stripe balance − InProgress spends
  */
+
+export interface UserCredits {
+  /** What the user can spend right now. */
+  credits: number;
+  /** Credits held by reports that are still being generated. */
+  reservedCredits: number;
+}
+
+/**
+ * The user's spendable balance for display. A user who never bought costs no
+ * Stripe call; everyone else reads a cached balance (see `getCachedStripeCredits`).
+ */
+export async function getUserCredits(userId: string): Promise<UserCredits> {
+  const [user, reservedCredits] = await Promise.all([
+    prisma.user.findUniqueOrThrow({ where: { id: userId }, select: { stripeCustomerId: true, firstPurchaseAt: true } }),
+    countReservedCredits(prisma, userId),
+  ]);
+  if (!user.firstPurchaseAt || !user.stripeCustomerId) {
+    return { credits: 0, reservedCredits };
+  }
+  // Every balance change we make adds one of these rows, so their counts version the cache.
+  const [purchases, charges] = await Promise.all([
+    prisma.stripeCreditPurchase.count({ where: { userId } }),
+    prisma.reportSpend.count({ where: { userId, stripeDebitTxnId: { not: null } } }),
+  ]);
+  const stripeCredits = await getCachedStripeCredits(user.stripeCustomerId, `${purchases}-${charges}`);
+  return { credits: Math.max(0, stripeCredits - reservedCredits), reservedCredits };
+}
+
+async function countReservedCredits(db: Prisma.TransactionClient, userId: string): Promise<number> {
+  const openSpends = await db.reportSpend.count({ where: { userId, status: ReportSpendStatus.InProgress } });
+  return openSpends * CREDITS_PER_REPORT;
+}
 
 export interface GrantPurchasedCreditsInput {
   userId: string;
+  stripeCustomerId: string;
   credits: number;
   stripeCheckoutSessionId: string;
   stripePaymentIntentId: string | null;
@@ -23,221 +59,161 @@ export interface GrantPurchasedCreditsInput {
   currency: string;
 }
 
-export interface GrantPurchasedCreditsResult {
-  /** False when this checkout session had already been credited. */
-  granted: boolean;
-  credits: number;
-}
-
 /**
- * Credits a completed Stripe Checkout Session. Idempotent on the session id:
- * Stripe retries webhook deliveries, and a replay must never pay out twice.
+ * Credits a completed Stripe Checkout Session, exactly once.
+ *
+ * Stripe's idempotency key dedupes deliveries within 24h; the unique checkout
+ * session id on StripeCreditPurchase dedupes the late replays after that. The
+ * Stripe call comes first so a crash in between leaves no row, and the retried
+ * delivery (same idempotency key) finishes the job without crediting twice.
  */
-export async function grantPurchasedCredits(input: GrantPurchasedCreditsInput): Promise<GrantPurchasedCreditsResult> {
-  const { userId, credits, stripeCheckoutSessionId } = input;
+export async function grantPurchasedCredits(input: GrantPurchasedCreditsInput): Promise<{ granted: boolean }> {
+  const { userId, stripeCheckoutSessionId } = input;
 
-  const alreadyGranted = await prisma.creditTransaction.findUnique({
-    where: { stripeCheckoutSessionId },
-    select: { balanceAfter: true },
-  });
+  const alreadyGranted = await prisma.stripeCreditPurchase.findUnique({ where: { stripeCheckoutSessionId }, select: { id: true } });
   if (alreadyGranted) {
-    return { granted: false, credits: alreadyGranted.balanceAfter };
+    return { granted: false };
   }
 
+  const creditTxn = await grantPurchaseInStripe(input);
+
   try {
-    return await prisma.$transaction(async (tx) => {
-      const user = await tx.user.update({
-        where: { id: userId },
-        data: { credits: { increment: credits } },
-        select: { credits: true },
-      });
-
-      await tx.creditTransaction.create({
-        data: {
-          userId,
-          spaceId: KoalaGainsSpaceId,
-          type: CreditTransactionType.Purchase,
-          credits,
-          balanceAfter: user.credits,
-          description: `Purchased ${credits} ${credits === 1 ? 'credit' : 'credits'}`,
-          stripeCheckoutSessionId,
-          stripePaymentIntentId: input.stripePaymentIntentId,
-          amountInCents: input.amountInCents,
-          currency: input.currency,
-        },
-      });
-
-      return { granted: true, credits: user.credits };
+    await prisma.stripeCreditPurchase.create({
+      data: {
+        userId,
+        spaceId: KoalaGainsSpaceId,
+        stripeCheckoutSessionId,
+        stripePaymentIntentId: input.stripePaymentIntentId,
+        stripeCreditTxnId: creditTxn.id,
+        credits: input.credits,
+        amountInCents: input.amountInCents,
+        currency: input.currency,
+      },
     });
   } catch (error) {
-    // Two concurrent deliveries of the same event: the loser hits the unique
-    // index on stripe_checkout_session_id and its whole transaction (including
-    // the balance increment) rolls back. The winner already credited the user.
+    // Two concurrent deliveries got the same Stripe transaction back; the other one recorded it.
     if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2002') {
-      const existing = await prisma.creditTransaction.findUnique({
-        where: { stripeCheckoutSessionId },
-        select: { balanceAfter: true },
-      });
-      return { granted: false, credits: existing?.balanceAfter ?? 0 };
+      return { granted: false };
     }
     throw error;
   }
+
+  await prisma.user.updateMany({ where: { id: userId, firstPurchaseAt: null }, data: { firstPurchaseAt: new Date() } });
+  return { granted: true };
 }
 
 export interface SpendCreditInput {
   userId: string;
   reportKind: CreditReportKind;
   reportTargetId: string;
+  symbol: string;
+  exchange: string;
   /** Human-readable "AAPL (NASDAQ)" used in the credit history. */
   reportLabel: string;
 }
 
-export type SpendCreditResult<T> =
-  | { outcome: 'Started'; generationRequest: T; credits: number }
-  | { outcome: 'InsufficientCredits' }
-  | { outcome: 'AlreadyInProgress' };
+export type SpendCreditResult<T> = { outcome: 'Started'; generationRequest: T } | { outcome: 'InsufficientCredits' } | { outcome: 'AlreadyInProgress' };
 
 export interface SpendCreditTarget<T> {
   createGenerationRequest: (tx: Prisma.TransactionClient) => Promise<T>;
 }
 
-/** Thrown inside the transaction to roll the deduction back. */
-class SpendAlreadyOpenError extends Error {}
-
 /**
- * Deducts one credit and creates the generation request it pays for, atomically.
+ * Reserves one credit and creates the generation request it pays for, atomically.
+ * Nothing is taken from Stripe here — that happens in `settleReportCredit`.
  *
- * The deduction is a conditional `updateMany` (`credits >= cost`) rather than a
- * read-then-write, so two simultaneous clicks cannot both spend the same last
- * credit. If `createGenerationRequest` throws, the whole transaction — the
- * deduction included — rolls back.
- *
- * Runs started by an admin or the nightly job don't block a paid run: the user
- * gets their own request. Only the user's own unfinished paid run does, so a
- * double click or a second tab can't charge twice. That check sits after the
- * deduction on purpose: the deduction row-locks the user, so a concurrent click
- * waits here until the first commits, then sees its spend and rolls back.
+ * The user row is locked for the whole check, so two simultaneous clicks run one
+ * after the other: the second sees the first one's reservation and can't spend
+ * the same last credit. The balance is read live from Stripe inside the lock.
+ * Runs started by an admin or the nightly job don't block a paid run; only the
+ * user's own unfinished paid run on the same report does.
  */
 export async function spendCreditForReport<T extends { id: string }>(input: SpendCreditInput, target: SpendCreditTarget<T>): Promise<SpendCreditResult<T>> {
-  const { userId, reportKind, reportTargetId, reportLabel } = input;
+  const { userId, reportTargetId } = input;
 
-  try {
-    return await prisma.$transaction(async (tx): Promise<SpendCreditResult<T>> => {
-      const deducted = await tx.user.updateMany({
-        where: { id: userId, credits: { gte: CREDITS_PER_REPORT } },
-        data: { credits: { decrement: CREDITS_PER_REPORT } },
+  const user = await prisma.user.findUniqueOrThrow({ where: { id: userId }, select: { stripeCustomerId: true, firstPurchaseAt: true } });
+  const stripeCustomerId = user.stripeCustomerId;
+  if (!user.firstPurchaseAt || !stripeCustomerId) {
+    return { outcome: 'InsufficientCredits' };
+  }
+
+  return prisma.$transaction(
+    async (tx): Promise<SpendCreditResult<T>> => {
+      await tx.$queryRaw`SELECT id FROM users WHERE id = ${userId} FOR UPDATE`;
+
+      const openSpendOnTarget = await tx.reportSpend.findFirst({
+        where: { userId, reportTargetId, status: ReportSpendStatus.InProgress },
+        select: { id: true },
       });
+      if (openSpendOnTarget) {
+        return { outcome: 'AlreadyInProgress' };
+      }
 
-      if (deducted.count === 0) {
+      const [stripeCredits, reservedCredits] = await Promise.all([fetchStripeCredits(stripeCustomerId), countReservedCredits(tx, userId)]);
+      if (stripeCredits - reservedCredits < CREDITS_PER_REPORT) {
         return { outcome: 'InsufficientCredits' };
       }
 
-      const openSpends = await tx.creditTransaction.count({
-        where: { userId, reportTargetId, type: CreditTransactionType.ReportSpend, settledAt: null },
-      });
-      if (openSpends > 0) {
-        throw new SpendAlreadyOpenError();
-      }
-
-      const user = await tx.user.findUniqueOrThrow({ where: { id: userId }, select: { credits: true } });
       const generationRequest = await target.createGenerationRequest(tx);
-
-      await tx.creditTransaction.create({
+      await tx.reportSpend.create({
         data: {
           userId,
           spaceId: KoalaGainsSpaceId,
-          type: CreditTransactionType.ReportSpend,
-          credits: -CREDITS_PER_REPORT,
-          balanceAfter: user.credits,
-          description: `Report generation for ${reportLabel}`,
-          reportKind,
+          reportKind: input.reportKind,
           reportTargetId,
-          reportLabel,
+          symbol: input.symbol,
+          exchange: input.exchange,
+          reportLabel: input.reportLabel,
           generationRequestId: generationRequest.id,
         },
       });
 
-      return { outcome: 'Started', generationRequest, credits: user.credits };
-    });
-  } catch (error) {
-    if (error instanceof SpendAlreadyOpenError) {
-      return { outcome: 'AlreadyInProgress' };
-    }
-    throw error;
-  }
+      return { outcome: 'Started', generationRequest };
+    },
+    // The live Stripe read happens inside the transaction, so allow for its latency.
+    { timeout: 15_000 }
+  );
 }
 
 /**
- * Closes out the credit held for a finished generation request.
+ * Closes out the credit reserved for a finished generation request.
  *
- * A request that ends in `Failed` gets the credit back — including the partial
- * case where some sections succeeded, since the user paid for a full report.
- * Either way the user who paid is emailed the result (best effort).
- * A no-op for admin- and cron-created requests, which have no ledger row.
+ * Success charges one credit in Stripe; failure (including a partial run, since
+ * the user paid for a full report) charges nothing. If the Stripe charge itself
+ * fails the run is still closed as Completed — the user keeps the report for
+ * free rather than being stuck with a reserved credit. Either way the user who
+ * paid is emailed the result (best effort). A no-op for admin- and cron-created
+ * requests, which have no ReportSpend.
  */
 export async function settleReportCredit(generationRequestId: string, succeeded: boolean): Promise<void> {
-  const spend = await prisma.creditTransaction.findFirst({
-    where: {
-      generationRequestId,
-      type: CreditTransactionType.ReportSpend,
-      settledAt: null,
-    },
+  const spend = await prisma.reportSpend.findUnique({
+    where: { generationRequestId },
+    include: { user: { select: { stripeCustomerId: true } } },
   });
-
-  if (!spend) {
+  if (!spend || spend.status !== ReportSpendStatus.InProgress) {
     return;
   }
 
-  if (succeeded) {
-    const settled = await prisma.creditTransaction.updateMany({
-      where: { id: spend.id, settledAt: null },
-      data: { settledAt: new Date() },
-    });
-    // Only the call that actually settled it emails, so a concurrent settle can't send twice.
-    if (settled.count > 0) {
-      await sendReportResultEmail(spend, true);
+  let stripeDebitTxnId: string | null = null;
+  if (succeeded && spend.user.stripeCustomerId) {
+    try {
+      // Charged before the row is closed: until it is, the credit still counts
+      // as reserved, so the spendable balance can never briefly overstate.
+      const debit = await chargeReportInStripe({ ...spend, stripeCustomerId: spend.user.stripeCustomerId });
+      stripeDebitTxnId = debit.id;
+    } catch (error) {
+      console.error('[credit-service] Stripe charge failed; report kept free of charge', generationRequestId, error);
     }
+  }
+
+  // The status filter makes concurrent settles close the row once, so only one emails.
+  const settled = await prisma.reportSpend.updateMany({
+    where: { id: spend.id, status: ReportSpendStatus.InProgress },
+    data: { status: succeeded ? ReportSpendStatus.Completed : ReportSpendStatus.Failed, stripeDebitTxnId, settledAt: new Date() },
+  });
+  if (settled.count === 0) {
     return;
   }
 
-  const refunded = await prisma.$transaction(async (tx): Promise<boolean> => {
-    // Settling and refunding are guarded by the same `settledAt: null` filter,
-    // so a concurrent settle can't hand out the refund twice.
-    const settled = await tx.creditTransaction.updateMany({
-      where: { id: spend.id, settledAt: null },
-      data: { settledAt: new Date() },
-    });
-
-    if (settled.count === 0) {
-      return false;
-    }
-
-    const user = await tx.user.update({
-      where: { id: spend.userId },
-      data: { credits: { increment: CREDITS_PER_REPORT } },
-      select: { credits: true },
-    });
-
-    await tx.creditTransaction.create({
-      data: {
-        userId: spend.userId,
-        spaceId: spend.spaceId,
-        type: CreditTransactionType.Refund,
-        credits: CREDITS_PER_REPORT,
-        balanceAfter: user.credits,
-        description: `Refund for failed report: ${spend.reportLabel ?? 'a report'}`,
-        reportKind: spend.reportKind,
-        reportTargetId: spend.reportTargetId,
-        reportLabel: spend.reportLabel,
-        generationRequestId,
-        settledAt: new Date(),
-      },
-    });
-    return true;
-  });
-
-  // Sent after the transaction commits, so the email never claims a refund that rolled back.
-  if (refunded) {
-    await sendReportResultEmail(spend, false);
-  }
+  await sendReportResultEmail(spend, succeeded);
 }

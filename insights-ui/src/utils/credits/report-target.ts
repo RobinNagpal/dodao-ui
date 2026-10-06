@@ -13,6 +13,8 @@ import { CreditReportKind, Prisma } from '@prisma/client';
 export interface ResolvedReportTarget {
   kind: CreditReportKind;
   id: string;
+  symbol: string;
+  exchange: string;
   label: string;
   lastReportGeneratedAt: Date | null;
   /** Creates a full-report generation request inside an open DB transaction. */
@@ -42,6 +44,8 @@ export async function resolveReportTarget(target: ReportTargetRequest): Promise<
     return {
       kind,
       id: ticker.id,
+      symbol,
+      exchange,
       label,
       lastReportGeneratedAt: ticker.lastReportGeneratedAt,
       createGenerationRequest: (tx) =>
@@ -60,6 +64,8 @@ export async function resolveReportTarget(target: ReportTargetRequest): Promise<
   return {
     kind,
     id: etf.id,
+    symbol,
+    exchange,
     label,
     lastReportGeneratedAt: etf.lastReportGeneratedAt,
     createGenerationRequest: (tx) =>
@@ -71,7 +77,7 @@ export async function resolveReportTarget(target: ReportTargetRequest): Promise<
 }
 
 /**
- * Report page links for ledger rows, keyed by `reportTargetId`. Looked up by id
+ * Report page links for report spends, keyed by `reportTargetId`. Looked up by id
  * rather than parsed from the stored label, so a ticker that has since moved
  * exchange still links to its current page. Deleted targets get no link.
  */

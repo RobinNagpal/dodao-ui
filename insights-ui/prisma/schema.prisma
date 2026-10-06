@@ -2,7 +2,7 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider = "prisma-client-js"
+  provider      = "prisma-client-js"
   // The runtime image (node:22-bookworm-slim + libssl3) uses OpenSSL 3.0.x, but the slim build
   // stage has no openssl binary so `prisma generate` mis-detects and defaults to 1.1.x. Pin both
   // engines so the debian-openssl-3.0.x query engine is generated and present at runtime,
@@ -60,18 +60,16 @@ model User {
   // Portfolio related relations
   portfolioManagerProfile PortfolioManagerProfile?
 
-  // Report credits. `credits` is the denormalized spendable balance; every
-  // change to it is written together with a CreditTransaction row in the same
-  // DB transaction, so the ledger can always reconstruct the balance.
-  credits            Int                 @default(0) @map("credits")
-  stripeCustomerId   String?             @map("stripe_customer_id")
+  // Report credits. The balance and its ledger live in Stripe (customer balance
+  // transactions); the DB only maps the user to their Stripe customer.
+  /// Created when the user first opens Checkout, so it is set before any payment.
+  stripeCustomerId String?                @unique @map("stripe_customer_id")
   /// Set by the purchase webhook the first time a payment settles. Gates every
   /// Stripe balance call: a user who has never bought has no balance to read,
   /// so the UI can show "Buy Credits" without touching the Stripe API at all.
-  firstPurchaseAt    DateTime?           @map("first_purchase_at")
-  creditTransactions CreditTransaction[]
-  reportSpends       ReportSpend[]
-  creditPurchases    StripeCreditPurchase[]
+  firstPurchaseAt  DateTime?              @map("first_purchase_at")
+  reportSpends     ReportSpend[]
+  creditPurchases  StripeCreditPurchase[]
 
   @@unique([publicAddress, spaceId])
   @@unique([username, spaceId])
@@ -822,25 +820,25 @@ model TickerV1ManagementTeamReport {
 // when the broad market drops 5%, 15% or 30%, with the expected price and the
 // sector-level + company-level reasoning behind each of those three scenarios.
 model TickerV1StabilityReport {
-  id                String                     @id @default(uuid())
-  summary           String                     @map("summary")
-  detailedAnalysis  String                     @map("detailed_analysis")
-  resilienceVerdict StabilityResilienceVerdict @map("resilience_verdict")
+  id                 String                     @id @default(uuid())
+  summary            String                     @map("summary")
+  detailedAnalysis   String                     @map("detailed_analysis")
+  resilienceVerdict  StabilityResilienceVerdict @map("resilience_verdict")
   // Price the expected prices below were computed from, plus the moment that
   // price was captured — a stale report stays interpretable, and every place
   // the UI shows a price can say what it is relative to.
-  referencePrice    Float?                     @map("reference_price")
-  referencePriceAsOf DateTime?                 @map("reference_price_as_of")
-  currency          String?                    @map("currency")
+  referencePrice     Float?                     @map("reference_price")
+  referencePriceAsOf DateTime?                  @map("reference_price_as_of")
+  currency           String?                    @map("currency")
   // One entry per market-drop scenario (-5% / -15% / -30%).
   /// [MarketDropScenario]
-  dropScenarios     Json[]                     @map("drop_scenarios")
-  tickerId          String                     @map("ticker_id")
-  spaceId           String                     @default("koala_gains") @map("space_id")
-  createdAt         DateTime                   @default(now()) @map("created_at")
-  updatedAt         DateTime                   @updatedAt @map("updated_at")
-  createdBy         String?                    @map("created_by")
-  updatedBy         String?                    @map("updated_by")
+  dropScenarios      Json[]                     @map("drop_scenarios")
+  tickerId           String                     @map("ticker_id")
+  spaceId            String                     @default("koala_gains") @map("space_id")
+  createdAt          DateTime                   @default(now()) @map("created_at")
+  updatedAt          DateTime                   @updatedAt @map("updated_at")
+  createdBy          String?                    @map("created_by")
+  updatedBy          String?                    @map("updated_by")
 
   ticker TickerV1 @relation(fields: [tickerId], references: [id])
 
@@ -2706,107 +2704,56 @@ model TariffTradeAnalyticImportProgram {
 // Report credits
 // --------------------------
 
-enum CreditTransactionType {
-  /// Credits bought through Stripe Checkout.
-  Purchase
-  /// One credit held for a user-triggered report generation.
-  ReportSpend
-  /// The held credit returned because the generation ultimately failed.
-  Refund
-  /// Manual grant by an admin (support, promo, correction).
-  AdminGrant
-}
-
 enum CreditReportKind {
   Stock
   Etf
 }
 
-/// Append-only ledger of every credit movement. The user's spendable balance
-/// (`User.credits`) is kept in sync in the same DB transaction as the row that
-/// explains the change, so a mismatch is always a bug and never a lost credit.
-model CreditTransaction {
-  id      String  @id @default(uuid())
-  userId  String  @map("user_id")
-  spaceId String  @default("koala_gains") @map("space_id")
-
-  type CreditTransactionType @map("type")
-
-  /// Signed credit delta: +10 for a purchase, -1 for a spend, +1 for a refund.
-  credits Int @map("credits")
-  /// User.credits immediately after this row was written — makes the history
-  /// readable without re-summing the whole ledger.
-  balanceAfter Int    @map("balance_after")
-  description  String @map("description")
-
-  // ---- Purchase-only fields ----
-  /// Stripe Checkout Session id. Unique so a replayed webhook (Stripe retries
-  /// deliveries) can never credit the same purchase twice.
-  stripeCheckoutSessionId String? @unique @map("stripe_checkout_session_id")
-  stripePaymentIntentId   String? @map("stripe_payment_intent_id")
-  /// Amount actually charged, in the smallest currency unit (USD cents).
-  amountInCents           Int?    @map("amount_in_cents")
-  currency                String? @map("currency")
-
-  // ---- Spend / refund-only fields ----
-  reportKind CreditReportKind? @map("report_kind")
-  /// TickerV1.id or Etf.id, depending on `reportKind`.
-  reportTargetId String? @map("report_target_id")
-  /// Denormalized "AAPL (NASDAQ)" style label so the history table renders
-  /// without joining across two different report tables.
-  reportLabel    String? @map("report_label")
-  /// TickerV1GenerationRequest.id or EtfGenerationRequest.id.
-  generationRequestId String? @map("generation_request_id")
-  /// Set on the ReportSpend row once it has been settled: either the report
-  /// completed (no refund) or the credit was refunded. Guards double refunds.
-  settledAt DateTime? @map("settled_at")
-  /// Set on a settled ReportSpend once the user has been shown its result
-  /// ("report ready" / "failed, credit returned"), so the notice shows once.
-  resultSeenAt DateTime? @map("result_seen_at")
-
-  createdAt DateTime @default(now()) @map("created_at")
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@index([userId, createdAt])
-  @@index([generationRequestId])
-  @@map("credit_transactions")
+/// Where a paid report generation stands.
+enum ReportSpendStatus {
+  /// Queued or running. Its credit is reserved: subtracted from what the user can spend, not yet taken in Stripe.
+  InProgress
+  /// The report was generated and one credit was taken in Stripe.
+  Completed
+  /// The run failed. Nothing was taken from the balance.
+  Failed
 }
 
 /// One paid report generation, and everything about it that is *not* money.
 ///
-/// The credit itself lives in Stripe (a customer balance transaction); this row
-/// ties that debit to the generation run it paid for and carries the workflow
-/// state Stripe cannot express: whether the run has settled, whether it was
-/// refunded, and whether the user has been shown the result.
+/// The money lives in Stripe: a credit is taken (one customer balance
+/// transaction) only once the report has been generated. Until then this row
+/// *reserves* the credit, so a user with one credit can't start two runs. A
+/// failed run is simply marked Failed: nothing was taken, so nothing is refunded.
 ///
 /// It exists because Stripe offers no way to *query* balance transactions by
-/// metadata — answering "does this user have an unsettled spend on this ticker?"
-/// against Stripe would mean listing and filtering every customer.
+/// metadata — answering "does this user have a run going on this ticker?"
+/// against Stripe would mean listing and filtering every transaction.
 model ReportSpend {
   id      String @id @default(uuid())
   userId  String @map("user_id")
   spaceId String @default("koala_gains") @map("space_id")
 
-  reportKind CreditReportKind @map("report_kind")
+  reportKind          CreditReportKind @map("report_kind")
   /// TickerV1.id or Etf.id, depending on `reportKind`.
-  reportTargetId String @map("report_target_id")
+  reportTargetId      String           @map("report_target_id")
+  symbol              String
+  exchange            String
   /// Denormalized "AAPL (NASDAQ)" label, so history renders without joining
   /// across two different report tables.
-  reportLabel String @map("report_label")
+  reportLabel         String           @map("report_label")
   /// TickerV1GenerationRequest.id or EtfGenerationRequest.id. Unique so one run
   /// can never be charged for twice.
-  generationRequestId String @unique @map("generation_request_id")
+  generationRequestId String           @unique @map("generation_request_id")
 
-  /// The Stripe customer balance transaction that took the credit, and the one
-  /// that gave it back when the run failed. Unique so a retried call that
-  /// reuses its idempotency key cannot be recorded as a second movement.
-  stripeDebitTxnId  String? @unique @map("stripe_debit_txn_id")
-  stripeRefundTxnId String? @unique @map("stripe_refund_txn_id")
+  status           ReportSpendStatus @default(InProgress)
+  /// The Stripe customer balance transaction that took the credit. Null while
+  /// in progress, for a failed run, or if the Stripe call failed (the report is
+  /// then kept free of charge rather than retried).
+  stripeDebitTxnId String?           @unique @map("stripe_debit_txn_id")
 
-  /// Set once the run has ended: either the report was generated (credit kept)
-  /// or it failed (credit returned). Guards double refunds.
-  settledAt DateTime? @map("settled_at")
+  /// Set once the run has ended (Completed or Failed). Guards double charges.
+  settledAt    DateTime? @map("settled_at")
   /// Set once the user has been shown the outcome, so it is announced once.
   resultSeenAt DateTime? @map("result_seen_at")
 
@@ -2814,8 +2761,8 @@ model ReportSpend {
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  /// Drives the "already generating this report" guard.
-  @@index([userId, reportTargetId, settledAt])
+  /// Drives the "already generating this report" guard and the reserved count.
+  @@index([userId, status])
   /// Drives the "finished since you last looked" notifier.
   @@index([userId, settledAt, resultSeenAt])
   @@map("report_spends")
@@ -2830,8 +2777,7 @@ model ReportSpend {
 /// what makes granting exactly-once.
 ///
 /// Carrying `credits` / `amountInCents` also keeps the admin "who bought what"
-/// screen a single SQL query instead of a loop over every Stripe customer. Those
-/// two columns are a mirror: reconcile them against Stripe, never trust them over it.
+/// screen a single SQL query instead of a loop over every Stripe customer.
 model StripeCreditPurchase {
   id      String @id @default(uuid())
   userId  String @map("user_id")
@@ -2840,7 +2786,7 @@ model StripeCreditPurchase {
   stripeCheckoutSessionId String  @unique @map("stripe_checkout_session_id")
   stripePaymentIntentId   String? @map("stripe_payment_intent_id")
   /// The balance transaction that credited this purchase in Stripe.
-  stripeCreditTxnId String? @map("stripe_credit_txn_id")
+  stripeCreditTxnId       String  @unique @map("stripe_credit_txn_id")
 
   credits       Int
   amountInCents Int    @map("amount_in_cents")

@@ -1,4 +1,4 @@
-import { CreditReportKind, CreditTransactionType } from '@prisma/client';
+import { CreditReportKind } from '@prisma/client';
 
 /** Credits burned by one report generation. */
 export const CREDITS_PER_REPORT = 1;
@@ -62,17 +62,26 @@ export const REFRESHED_SECTIONS: Record<CreditReportKind, string[]> = {
 export const CREDITS_PURCHASED_QUERY_PARAM = 'creditsPurchased';
 
 /**
- * Where a report spend stands. The credit is taken when the report is queued so
- * it can't be spent twice, but it only counts as used once the report exists:
- * until then it is shown as reserved, and a failed report gets it back.
+ * Where a paid regeneration stands (mirrors the Prisma `ReportSpendStatus`). The
+ * credit is reserved when the report is queued so it can't be spent twice, and
+ * only taken once the report exists; a failed report is never charged.
  */
-export type ReportSpendStatus = 'InProgress' | 'Completed' | 'Refunded';
+export type ReportSpendStatus = 'InProgress' | 'Completed' | 'Failed';
+
+/**
+ * Kind of a credit history row. Purchases and charged reports come from the
+ * Stripe ledger; `Adjustment` is anything else on it (e.g. a manual credit added
+ * in the Stripe dashboard).
+ */
+export type CreditHistoryEntryType = 'Purchase' | 'ReportSpend' | 'Adjustment';
 
 export interface CreditTransactionResponse {
+  /** Stripe balance transaction id, or the ReportSpend id for a run still in progress. */
   id: string;
-  type: CreditTransactionType;
+  type: CreditHistoryEntryType;
   credits: number;
-  balanceAfter: number;
+  /** Balance after this entry. Null for a run still in progress, which Stripe hasn't charged yet. */
+  balanceAfter: number | null;
   description: string;
   amountInCents: number | null;
   reportLabel: string | null;
@@ -102,7 +111,7 @@ export interface ReportResult {
   id: string;
   reportLabel: string;
   reportHref: string | null;
-  /** False when it failed and the credit was refunded. */
+  /** False when it failed (and nothing was charged). */
   succeeded: boolean;
 }
 
@@ -189,7 +198,7 @@ export interface ReportGenerationStatusResponse {
 export interface LastRegeneration {
   /** When it finished (or failed). */
   finishedAt: string;
-  /** False when it failed and the credit was refunded. */
+  /** False when it failed (and nothing was charged). */
   succeeded: boolean;
 }
 

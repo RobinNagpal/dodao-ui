@@ -19,7 +19,7 @@ async function getHandler(
   const [user, history] = await Promise.all([
     prisma.user.findFirstOrThrow({
       where: { id: userId, spaceId: KoalaGainsSpaceId },
-      select: { id: true, name: true, email: true, username: true, credits: true },
+      select: { id: true, name: true, email: true, username: true },
     }),
     loadCreditHistory(userId, limit),
   ]);
@@ -29,7 +29,7 @@ async function getHandler(
     name: user.name,
     email: user.email,
     username: user.username,
-    credits: user.credits,
+    credits: history.credits,
     reservedCredits: history.reservedCredits,
     transactions: history.transactions,
     hasMore: history.hasMore,

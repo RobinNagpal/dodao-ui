@@ -8,5 +8,5 @@ import { ReportSpendStatus } from '@/types/credits';
 export const REPORT_STATUS_BADGES: Record<ReportSpendStatus, { variant: StatusBadgeVariant; label: string }> = {
   InProgress: { variant: 'info', label: 'Being generated' },
   Completed: { variant: 'success', label: 'Generated' },
-  Refunded: { variant: 'warning', label: 'Failed · refunded' },
+  Failed: { variant: 'warning', label: 'Failed · not charged' },
 };
