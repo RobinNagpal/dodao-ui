@@ -56,7 +56,7 @@ async function postHandler(req: NextRequest, userContext: DoDaoJwtTokenPayload):
     select: { id: true, email: true, spaceId: true, stripeCustomerId: true },
   });
 
-  const stripe = getStripeClient();
+  const stripe = await getStripeClient();
 
   // Reusing one Stripe customer per user keeps their receipts and saved cards
   // together, which makes the second purchase a two-click flow. It also holds

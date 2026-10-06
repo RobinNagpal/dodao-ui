@@ -25,7 +25,7 @@ async function getHandler(req: NextRequest, userContext: DoDaoJwtTokenPayload): 
     throw new Error('No receipt is available for this purchase');
   }
 
-  const paymentIntent = await getStripeClient().paymentIntents.retrieve(purchase.stripePaymentIntentId, { expand: ['latest_charge'] });
+  const paymentIntent = await (await getStripeClient()).paymentIntents.retrieve(purchase.stripePaymentIntentId, { expand: ['latest_charge'] });
   const receiptUrl = (paymentIntent.latest_charge as Stripe.Charge | null)?.receipt_url;
   if (!receiptUrl) {
     throw new Error('Stripe has no receipt for this purchase yet');

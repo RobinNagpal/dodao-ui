@@ -407,6 +407,8 @@ the marker with `history.replaceState` instead. Do not reintroduce the hook here
 
 ## Environment
 
+The Stripe keys are **App Settings** (admin → App Settings → **Payments**): `STRIPE_SECRET_KEY` and `STRIPE_WEBHOOK_SECRET` are secrets (SSM `SecureString` on AWS, never a committed default), `STRIPE_PUBLISHABLE_KEY` is a plain setting. Resolution is SSM → env → default, so the env vars below still work locally. The webhook secret must come from the endpoint in the **same Stripe mode** (live/test) as the secret key.
+
 ```
 STRIPE_SECRET_KEY=sk_test_...      # sk_live_... in production
 STRIPE_WEBHOOK_SECRET=whsec_...    # for /api/stripe/webhook

@@ -145,6 +145,32 @@ export const APP_CONFIG_DEFINITIONS: AppConfigDefinition[] = [
     group: 'payments',
   },
   {
+    key: 'STRIPE_SECRET_KEY',
+    label: 'Stripe secret key',
+    description:
+      'Server-side Stripe API key (sk_live_… / sk_test_…). Holds the credit balances and runs Checkout. Live and test keys see different customers and balances, so changing modes makes existing balances invisible.',
+    type: 'string',
+    group: 'payments',
+    secret: true,
+  },
+  {
+    key: 'STRIPE_WEBHOOK_SECRET',
+    label: 'Stripe webhook signing secret',
+    description:
+      'Signing secret (whsec_…) of the Stripe webhook endpoint pointing at /api/stripe/webhook, from the same Stripe mode (live/test) as the secret key. Without it, completed checkouts are never credited.',
+    type: 'string',
+    group: 'payments',
+    secret: true,
+  },
+  {
+    key: 'STRIPE_PUBLISHABLE_KEY',
+    label: 'Stripe publishable key',
+    description:
+      'Public Stripe key (pk_live_… / pk_test_…). Not secret by design; not used by the current Checkout redirect flow, kept for client-side Stripe.js.',
+    type: 'string',
+    group: 'payments',
+  },
+  {
     key: 'USE_LAMBDA_FOR_LLM_RESPONSE',
     label: 'Use Lambda for LLM response (stock & ETF reports)',
     description:
