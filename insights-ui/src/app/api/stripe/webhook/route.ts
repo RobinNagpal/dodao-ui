@@ -27,10 +27,19 @@ async function creditCheckoutSession(session: Stripe.Checkout.Session): Promise<
     return;
   }
 
+  // Checkout sessions are always created for the user's Stripe customer, so the
+  // credit goes onto that customer's balance.
+  const stripeCustomerId = typeof session.customer === 'string' ? session.customer : session.customer?.id;
+  if (!stripeCustomerId) {
+    console.error('[stripe-webhook] Checkout session has no customer', session.id);
+    return;
+  }
+
   const paymentIntentId = typeof session.payment_intent === 'string' ? session.payment_intent : session.payment_intent?.id ?? null;
 
   const result = await grantPurchasedCredits({
     userId,
+    stripeCustomerId,
     credits,
     stripeCheckoutSessionId: session.id,
     stripePaymentIntentId: paymentIntentId,
@@ -39,8 +48,7 @@ async function creditCheckoutSession(session: Stripe.Checkout.Session): Promise<
   });
 
   console.log(
-    result.granted ? `[stripe-webhook] Granted ${credits} credits to ${userId}` : `[stripe-webhook] Checkout session ${session.id} was already credited`,
-    `balance=${result.credits}`
+    result.granted ? `[stripe-webhook] Granted ${credits} credits to ${userId}` : `[stripe-webhook] Checkout session ${session.id} was already credited`
   );
 }
 

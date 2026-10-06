@@ -3,12 +3,12 @@ import { CreditReceiptResponse } from '@/types/credits';
 import { getStripeClient } from '@/utils/credits/stripe-client';
 import { withLoggedInUser } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
-import { CreditTransactionType } from '@prisma/client';
 import { NextRequest } from 'next/server';
 import Stripe from 'stripe';
 
 // GET /api/[spaceId]/users/credits/receipt?transactionId=… — the Stripe-hosted
-// receipt for one of the user's purchases. We only store the payment intent id,
+// receipt for one of the user's purchases. `transactionId` is the Stripe balance
+// transaction shown in the credit history. We only store the payment intent id,
 // so the receipt URL is looked up on demand instead of being kept in the DB.
 async function getHandler(req: NextRequest, userContext: DoDaoJwtTokenPayload): Promise<CreditReceiptResponse> {
   const transactionId = req.nextUrl.searchParams.get('transactionId');
@@ -17,8 +17,8 @@ async function getHandler(req: NextRequest, userContext: DoDaoJwtTokenPayload): 
   }
 
   // Scoped to the logged-in user, so nobody can open someone else's receipt.
-  const purchase = await prisma.creditTransaction.findFirstOrThrow({
-    where: { id: transactionId, userId: userContext.userId, type: CreditTransactionType.Purchase },
+  const purchase = await prisma.stripeCreditPurchase.findFirstOrThrow({
+    where: { stripeCreditTxnId: transactionId, userId: userContext.userId },
     select: { stripePaymentIntentId: true },
   });
   if (!purchase.stripePaymentIntentId) {

@@ -418,7 +418,7 @@ export async function triggerGenerationOfAReportSimplified(symbol: string, excha
         },
       });
       // This path fails the request without going through markAsCompleted, so
-      // refund the credit here too if a user paid for it.
+      // release the reserved credit here too (uncharged) if a user paid for it.
       await settleReportCredit(generationRequest.id, false);
     } else {
       // Check if it's been more than 10 minutes since the last invocation time.

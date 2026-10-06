@@ -37,7 +37,7 @@ function withQueryParam(url: string, key: string, value: string): string {
 // lost or forged, the signed webhook cannot.
 async function postHandler(req: NextRequest, userContext: DoDaoJwtTokenPayload): Promise<CreateCheckoutSessionResponse> {
   // Admin kill switch (App Settings → Payments) for when Stripe is having
-  // issues. Only blocks buying — spending credits never touches Stripe.
+  // issues. Only blocks buying — existing credits can still be spent.
   if (!(await getAppConfigBoolean('STRIPE_CREDIT_PURCHASES_ENABLED'))) {
     throw new Error('Buying credits is temporarily unavailable. You can still use your existing credits.');
   }
@@ -58,13 +58,20 @@ async function postHandler(req: NextRequest, userContext: DoDaoJwtTokenPayload):
   const stripe = getStripeClient();
 
   // Reusing one Stripe customer per user keeps their receipts and saved cards
-  // together, which makes the second purchase a two-click flow.
+  // together, which makes the second purchase a two-click flow. It also holds
+  // the credit balance, so a user must never end up with two: the idempotency
+  // key makes concurrent first checkouts (double click, two tabs) get the same
+  // customer instead of each creating one and the last write winning — which
+  // would credit a purchase to a customer the user is no longer linked to.
   let stripeCustomerId = user.stripeCustomerId;
   if (!stripeCustomerId) {
-    const customer = await stripe.customers.create({
-      email: user.email ?? undefined,
-      metadata: { userId: user.id, spaceId: user.spaceId },
-    });
+    const customer = await stripe.customers.create(
+      {
+        email: user.email ?? undefined,
+        metadata: { userId: user.id, spaceId: user.spaceId },
+      },
+      { idempotencyKey: `credit-customer-${user.id}` }
+    );
     stripeCustomerId = customer.id;
     await prisma.user.update({ where: { id: user.id }, data: { stripeCustomerId } });
   }

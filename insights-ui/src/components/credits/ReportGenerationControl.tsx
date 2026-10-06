@@ -108,7 +108,7 @@ export default function ReportGenerationControl({
     ? null
     : lastRegeneration.succeeded
     ? badge('Completed', `${REPORT_STATUS_BADGES.Completed.label} by you on ${formatShortDate(lastRegeneration.finishedAt)}`)
-    : badge('Refunded', `${REPORT_STATUS_BADGES.Refunded.label} · ${formatShortDate(lastRegeneration.finishedAt)}`);
+    : badge('Failed', `${REPORT_STATUS_BADGES.Failed.label} · ${formatShortDate(lastRegeneration.finishedAt)}`);
 
   const openModal = useCallback(async () => {
     if (!session) {

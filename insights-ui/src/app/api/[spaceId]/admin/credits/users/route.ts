@@ -3,15 +3,16 @@ import { prisma } from '@/prisma';
 import { AdminCreditUserResponse, AdminCreditUsersResponse } from '@/types/credits';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { KoalaGainsJwtTokenPayload } from '@/types/auth';
-import { CreditTransactionType } from '@prisma/client';
+import { getUserCredits } from '@/utils/credits/credit-service';
+import { ReportSpendStatus } from '@prisma/client';
 import { NextRequest } from 'next/server';
 
 // GET /api/[spaceId]/admin/credits/users — every user who has bought credits,
 // with what they spent and how many reports they generated. Admin only.
 async function getHandler(req: NextRequest, userContext: KoalaGainsJwtTokenPayload): Promise<AdminCreditUsersResponse> {
-  const purchasesByUser = await prisma.creditTransaction.groupBy({
+  const purchasesByUser = await prisma.stripeCreditPurchase.groupBy({
     by: ['userId'],
-    where: { spaceId: KoalaGainsSpaceId, type: CreditTransactionType.Purchase },
+    where: { spaceId: KoalaGainsSpaceId },
     _sum: { credits: true, amountInCents: true },
     _count: { _all: true },
     _max: { createdAt: true },
@@ -25,20 +26,23 @@ async function getHandler(req: NextRequest, userContext: KoalaGainsJwtTokenPaylo
 
   // Report spends are counted separately: a purchaser who never generated a
   // report has no spend rows at all, so this can't be folded into one groupBy.
-  const [users, spendsByUser] = await Promise.all([
+  // Balances come from Stripe (cached), one per buyer.
+  const [users, spendsByUser, balances] = await Promise.all([
     prisma.user.findMany({
       where: { id: { in: userIds }, spaceId: KoalaGainsSpaceId },
-      select: { id: true, name: true, email: true, username: true, credits: true },
+      select: { id: true, name: true, email: true, username: true },
     }),
-    prisma.creditTransaction.groupBy({
+    prisma.reportSpend.groupBy({
       by: ['userId'],
-      where: { spaceId: KoalaGainsSpaceId, type: CreditTransactionType.ReportSpend, userId: { in: userIds } },
+      where: { spaceId: KoalaGainsSpaceId, status: ReportSpendStatus.Completed, userId: { in: userIds } },
       _count: { _all: true },
     }),
+    Promise.all(userIds.map(async (userId) => [userId, (await getUserCredits(userId)).credits] as const)),
   ]);
 
   const usersById = new Map(users.map((user) => [user.id, user]));
   const reportsByUserId = new Map(spendsByUser.map((row) => [row.userId, row._count._all]));
+  const creditsByUserId = new Map(balances);
 
   const rows: AdminCreditUserResponse[] = purchasesByUser
     // A purchase row always has a user, but a deleted one would otherwise crash the page.
@@ -50,7 +54,7 @@ async function getHandler(req: NextRequest, userContext: KoalaGainsJwtTokenPaylo
         name: user.name,
         email: user.email,
         username: user.username,
-        credits: user.credits,
+        credits: creditsByUserId.get(user.id) ?? 0,
         purchasedCredits: row._sum.credits ?? 0,
         amountSpentInCents: row._sum.amountInCents ?? 0,
         purchaseCount: row._count._all,

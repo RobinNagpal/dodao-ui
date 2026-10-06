@@ -1,10 +1,10 @@
 import { prisma } from '@/prisma';
 import { CREDITS_PER_REPORT, LastRegeneration, ReportGenerationStatusResponse, ReportTargetRequest, TriggerReportGenerationResponse } from '@/types/credits';
-import { spendCreditForReport } from '@/utils/credits/credit-service';
+import { getUserCredits, spendCreditForReport } from '@/utils/credits/credit-service';
 import { parseReportTargetRequest, ResolvedReportTarget, resolveReportTarget } from '@/utils/credits/report-target';
 import { withLoggedInUser } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
-import { CreditTransactionType } from '@prisma/client';
+import { ReportSpendStatus } from '@prisma/client';
 import { NextRequest } from 'next/server';
 
 /**
@@ -12,30 +12,22 @@ import { NextRequest } from 'next/server';
  * user's own paid runs count: admin and nightly runs are invisible to users.
  */
 async function getStatus(userId: string, target: ResolvedReportTarget): Promise<ReportGenerationStatusResponse> {
-  const spendWhere = { userId, reportTargetId: target.id, type: CreditTransactionType.ReportSpend };
-
-  const [user, openSpend, lastSettledSpend] = await Promise.all([
-    prisma.user.findUniqueOrThrow({ where: { id: userId }, select: { credits: true } }),
-    prisma.creditTransaction.findFirst({ where: { ...spendWhere, settledAt: null }, select: { id: true } }),
-    prisma.creditTransaction.findFirst({
-      where: { ...spendWhere, settledAt: { not: null } },
+  const [{ credits }, openSpend, lastSettledSpend] = await Promise.all([
+    getUserCredits(userId),
+    prisma.reportSpend.findFirst({ where: { userId, reportTargetId: target.id, status: ReportSpendStatus.InProgress }, select: { id: true } }),
+    prisma.reportSpend.findFirst({
+      where: { userId, reportTargetId: target.id, settledAt: { not: null } },
       orderBy: { settledAt: 'desc' },
-      select: { settledAt: true, generationRequestId: true },
+      select: { settledAt: true, status: true },
     }),
   ]);
 
-  let lastRegeneration: LastRegeneration | null = null;
-  if (lastSettledSpend?.settledAt) {
-    // A failed run is settled by writing a Refund row with the same request id.
-    const refund = await prisma.creditTransaction.findFirst({
-      where: { userId, type: CreditTransactionType.Refund, generationRequestId: lastSettledSpend.generationRequestId },
-      select: { id: true },
-    });
-    lastRegeneration = { finishedAt: lastSettledSpend.settledAt.toISOString(), succeeded: !refund };
-  }
+  const lastRegeneration: LastRegeneration | null = lastSettledSpend?.settledAt
+    ? { finishedAt: lastSettledSpend.settledAt.toISOString(), succeeded: lastSettledSpend.status === ReportSpendStatus.Completed }
+    : null;
 
   return {
-    credits: user.credits,
+    credits,
     creditsPerReport: CREDITS_PER_REPORT,
     lastReportGeneratedAt: target.lastReportGeneratedAt?.toISOString() ?? null,
     generationInProgress: !!openSpend,
@@ -53,8 +45,9 @@ async function getHandler(req: NextRequest, userContext: DoDaoJwtTokenPayload): 
   return getStatus(userContext.userId, target);
 }
 
-// POST /api/[spaceId]/users/report-generation — spends one credit and queues a
-// full regeneration of the report, even if an admin or nightly run is already
+// POST /api/[spaceId]/users/report-generation — reserves one credit (taken in
+// Stripe only once the report is generated) and queues
+// a full regeneration of the report, even if an admin or nightly run is already
 // going.
 //
 // "Not enough credits" and "your run is already going" are normal outcomes, not
@@ -70,6 +63,8 @@ async function postHandler(req: NextRequest, userContext: DoDaoJwtTokenPayload):
       userId: userContext.userId,
       reportKind: target.kind,
       reportTargetId: target.id,
+      symbol: target.symbol,
+      exchange: target.exchange,
       reportLabel: target.label,
     },
     target
