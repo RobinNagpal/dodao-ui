@@ -45,9 +45,13 @@ export type ChapterSectionAction = SimpleChapterAction | TariffFanoutChapterActi
 interface ChapterSectionActionsProps {
   chapterSlug: string;
   actions: ChapterSectionAction[];
+  // Admin edit page for the current chapter page; adds an "Edit" item at the top of the menu.
+  editHref?: string;
 }
 
-export default function ChapterSectionActions({ chapterSlug, actions }: ChapterSectionActionsProps): JSX.Element | null {
+const EDIT_KEY = 'edit';
+
+export default function ChapterSectionActions({ chapterSlug, actions, editHref }: ChapterSectionActionsProps): JSX.Element | null {
   const router = useRouter();
   const { showNotification } = useNotificationContext();
   const [pendingAction, setPendingAction] = useState<ChapterSectionAction | null>(null);
@@ -67,7 +71,7 @@ export default function ChapterSectionActions({ chapterSlug, actions }: ChapterS
 
   const isWorking = isPosting || isInitting || isPostingCountry;
 
-  if (actions.length === 0) return null;
+  if (actions.length === 0 && !editHref) return null;
 
   const handleConfirm = async (): Promise<void> => {
     if (!pendingAction) return;
@@ -110,13 +114,17 @@ export default function ChapterSectionActions({ chapterSlug, actions }: ChapterS
     router.refresh();
   };
 
-  const items: EllipsisDropdownItem[] = actions.map((a) => ({ key: a.key, label: a.label }));
+  const items: EllipsisDropdownItem[] = [...(editHref ? [{ key: EDIT_KEY, label: 'Edit' }] : []), ...actions.map((a) => ({ key: a.key, label: a.label }))];
 
   return (
     <>
       <EllipsisDropdown
         items={items}
         onSelect={async (key) => {
+          if (key === EDIT_KEY && editHref) {
+            router.push(editHref);
+            return;
+          }
           const action = actions.find((a) => a.key === key);
           if (action) setPendingAction(action);
         }}

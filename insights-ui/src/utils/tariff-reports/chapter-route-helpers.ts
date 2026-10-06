@@ -59,3 +59,9 @@ export function getChapterSectionCopy(sectionSlug: string, chapter: ChapterRoute
   const padded = chapter.number.toString().padStart(2, '0');
   return SECTION_COPY[sectionSlug]?.(chapter.title, padded);
 }
+
+// Admin edit page for a chapter page. `pageSlug` is 'overview' for the chapter cover, otherwise a
+// CHAPTER_REPORT_SECTIONS slug.
+export function chapterEditHref(slug: string, pageSlug: string): string {
+  return pageSlug === 'overview' ? `${chapterCoverHref(slug)}/edit` : `${chapterSectionHref(slug, pageSlug)}/edit`;
+}
