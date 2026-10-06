@@ -3,6 +3,7 @@ import { isSyncTariffGenerationEnabled, startTariffSectionGeneration } from '@/s
 import { findReportSlugByOldUrl, readIndustryTariffReportByOldUrl } from '@/scripts/industry-tariff-reports/tariff-report-repository';
 import type { IndustryTariffReport } from '@/scripts/industry-tariff-reports/tariff-types';
 import type { ChapterReportField } from '@/utils/tariff-reports/chapter-generate-sections';
+import { validateTariffIndustryId } from '@/utils/tariff-reports/tariff-input-validation';
 import { NextRequest } from 'next/server';
 
 export async function parseBody(req: NextRequest): Promise<unknown> {
@@ -34,8 +35,7 @@ export function industryGenerateRoute(
   generate: (slug: string, body: unknown) => Promise<void>
 ): (req: NextRequest, ctx: { params: Promise<{ industry: string }> }) => Promise<IndustryGenerateResponse> {
   return async (req, { params }) => {
-    const { industry } = await params;
-    if (!industry) throw new Error('Industry is required');
+    const industry = validateTariffIndustryId((await params).industry);
 
     const body = await parseBody(req);
     const slug = await findReportSlugByOldUrl(industry);

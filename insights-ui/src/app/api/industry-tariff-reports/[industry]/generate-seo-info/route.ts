@@ -1,3 +1,4 @@
+import { withAdminOnly } from '@/app/api/helpers/withLoggedInAdmin';
 import { IndustryGenerateResponse } from '@/app/api/industry-tariff-reports/[industry]/industry-generate-handler';
 import {
   generateAndSaveAllSeoDetails,
@@ -16,14 +17,13 @@ import {
   writeSeoDetails,
 } from '@/scripts/industry-tariff-reports/tariff-report-repository';
 import { PageSeoDetails, ReportType, TariffReportSeoDetails } from '@/scripts/industry-tariff-reports/tariff-types';
-import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
+import { validateTariffIndustryId } from '@/utils/tariff-reports/tariff-input-validation';
 import { NextRequest } from 'next/server';
 
 const VALID_SECTION_VALUES = Object.values(ReportType);
 
 async function postHandler(req: NextRequest, { params }: { params: Promise<{ industry: string }> }): Promise<IndustryGenerateResponse> {
-  const { industry } = await params;
-  if (!industry) throw new Error('Industry is required');
+  const industry = validateTariffIndustryId((await params).industry);
 
   const requestBody = await req.json();
   const sectionParam = requestBody.section || ReportType.ALL;
@@ -87,4 +87,4 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ ind
   return { status: 'started', section: 'seoDetails' };
 }
 
-export const POST = withErrorHandlingV2<IndustryGenerateResponse>(postHandler);
+export const POST = withAdminOnly<IndustryGenerateResponse>(postHandler);

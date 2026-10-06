@@ -2,6 +2,7 @@ import { prisma } from '@/prisma';
 import { KoalaGainsJwtTokenPayload } from '@/types/auth';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { revalidateCandidateCodesTag } from '@/utils/tariff-calculator/cache-tags';
+import { parseHts10Param } from '@/utils/tariff-reports/tariff-input-validation';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { TariffApplicabilityConditionKind, TariffCandidateCodeType, TariffCountryScopeType, TariffRelatedCodeKind } from '@prisma/client';
 import { NextRequest } from 'next/server';
@@ -71,14 +72,9 @@ export interface CandidateCodesResponse {
   lastFetchedAt: string | null;
 }
 
-function parseHts10(raw: string): string | null {
-  return /^\d{10}$/.test(raw) ? raw : null;
-}
-
 async function getHandler(_req: NextRequest, dynamic: { params: Promise<{ hts10: string }> }): Promise<CandidateCodesResponse | null> {
-  const { hts10: rawHts10 } = await dynamic.params;
-  const hts10 = parseHts10(rawHts10);
-  if (!hts10) return null;
+  // Malformed codes (scanner probes) → prefixed 404 before any DB work. Accepts plain or dotted.
+  const hts10 = parseHts10Param((await dynamic.params).hts10);
 
   const htsRow = await prisma.htsCode.findUnique({
     where: { spaceId_htsCode10: { spaceId: KoalaGainsSpaceId, htsCode10: hts10 } },
@@ -156,11 +152,7 @@ async function getHandler(_req: NextRequest, dynamic: { params: Promise<{ hts10:
 }
 
 async function postHandler(_req: NextRequest, _user: KoalaGainsJwtTokenPayload, dynamic: { params: Promise<{ hts10: string }> }): Promise<{ error: string }> {
-  const { hts10: rawHts10 } = await dynamic.params;
-  const hts10 = parseHts10(rawHts10);
-  if (!hts10) {
-    throw new Error(`Invalid HTS 10-digit code: ${rawHts10}`);
-  }
+  const hts10 = parseHts10Param((await dynamic.params).hts10);
   // Candidate codes must be pre-ingested into the DB by an offline pipeline.
   revalidateCandidateCodesTag(hts10);
   return { error: `Upstream refresh disabled. Candidate codes for ${hts10} must be ingested offline.` };

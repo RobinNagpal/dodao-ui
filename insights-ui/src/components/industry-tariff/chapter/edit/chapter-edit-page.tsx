@@ -2,6 +2,7 @@ import ChapterEditForm from '@/components/industry-tariff/chapter/edit/ChapterEd
 import { getReportContextBySlug, readIndustryTariffReportBySlug } from '@/scripts/industry-tariff-reports/tariff-report-repository';
 import { CHAPTER_EDIT_FIELDS, EMPTY_EDIT_CONTENT, type EditableReportContent } from '@/utils/tariff-reports/chapter-edit-fields';
 import { CHAPTER_REPORT_SECTIONS, chapterCoverHref, chapterSectionHref } from '@/utils/tariff-reports/chapter-route-helpers';
+import { isValidTariffChapterSlug } from '@/utils/tariff-reports/tariff-input-validation';
 import { authOptions } from '@/app/api/auth/[...nextauth]/authOptions';
 import type { KoalaGainsSession } from '@/types/auth';
 import type { Metadata } from 'next';
@@ -16,6 +17,8 @@ export const chapterEditMetadata: Metadata = {
 // Shared body of every `/industry-tariff-report/chapters/<slug>[/<section>]/edit` route. Reads
 // straight from the DB (not the cached API) so admins always edit the latest content.
 export async function renderChapterEditPage(chapterSlug: string, pageSlug: string): Promise<JSX.Element> {
+  // Malformed slug: the chapter layout logs the rejection; 404 silently here, before any DB read.
+  if (!isValidTariffChapterSlug(chapterSlug)) notFound();
   // Admins only, checked on the server: anyone else (including crawlers that find an /edit URL)
   // gets a 404 before any DB read. The client-side PrivateWrapper in the form is just UI.
   const session = (await getServerSession(authOptions)) as KoalaGainsSession | null;

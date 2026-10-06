@@ -1,5 +1,6 @@
 import { prisma } from '@/prisma';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
+import { parseHtsSearchLimitParam, validateHtsSearchQuery } from '@/utils/tariff-reports/tariff-input-validation';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { Prisma } from '@prisma/client';
 import { NextRequest } from 'next/server';
@@ -45,9 +46,10 @@ interface AncestorRow {
   parentId: string | null;
 }
 
+// Absent or 0 → default; a malformed value is rejected (prefixed 404) by parseHtsSearchLimitParam.
 function parseLimit(raw: string | null): number {
-  const n = raw ? parseInt(raw, 10) : DEFAULT_LIMIT;
-  if (!Number.isFinite(n) || n <= 0) return DEFAULT_LIMIT;
+  const n = parseHtsSearchLimitParam(raw);
+  if (n === null || n <= 0) return DEFAULT_LIMIT;
   return Math.min(n, MAX_LIMIT);
 }
 
@@ -98,6 +100,8 @@ async function getHandler(req: NextRequest): Promise<HtsSearchResponse> {
   if (rawQuery.length < MIN_QUERY_LENGTH) {
     return { query: rawQuery, results: [] };
   }
+  // Template / markup / shell metacharacters (scanner probes) → prefixed 404 before any DB work.
+  validateHtsSearchQuery(rawQuery);
 
   // Prefer leaf rows (htsCode10 set) — those are the only rows the
   // calculator can actually price. We look at description + htsNumber so

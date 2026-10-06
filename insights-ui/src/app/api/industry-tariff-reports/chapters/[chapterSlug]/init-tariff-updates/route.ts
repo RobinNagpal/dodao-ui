@@ -1,7 +1,8 @@
+import { withAdminOnly } from '@/app/api/helpers/withLoggedInAdmin';
 import { getTariffUpdatesForIndustryAndSaveToFile, initTariffUpdatesAndSaveToFile } from '@/scripts/industry-tariff-reports/03-industry-tariffs';
 import { isSyncTariffGenerationEnabled, startTariffSectionGeneration } from '@/scripts/industry-tariff-reports/tariff-generation-runner';
 import { getTodayDateAsMonthDDYYYYFormat } from '@/util/get-date';
-import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
+import { validateTariffChapterSlug } from '@/utils/tariff-reports/tariff-input-validation';
 import { NextRequest } from 'next/server';
 
 export interface InitTariffUpdatesResponse {
@@ -20,9 +21,8 @@ export interface InitTariffUpdatesResponse {
 // no chunking is needed. We return an empty country list so the UI's per-country
 // loop is a no-op; the background task does everything and the content lands in
 // the DB when it finishes.
-export const POST = withErrorHandlingV2<InitTariffUpdatesResponse>(async (_req: NextRequest, { params }: { params: Promise<{ chapterSlug: string }> }) => {
-  const { chapterSlug } = await params;
-  if (!chapterSlug) throw new Error('chapterSlug is required');
+export const POST = withAdminOnly<InitTariffUpdatesResponse>(async (_req: NextRequest, { params }: { params: Promise<{ chapterSlug: string }> }) => {
+  const chapterSlug = validateTariffChapterSlug((await params).chapterSlug);
 
   if (await isSyncTariffGenerationEnabled()) {
     const countries = await initTariffUpdatesAndSaveToFile(chapterSlug);

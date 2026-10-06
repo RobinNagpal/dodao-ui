@@ -49,3 +49,11 @@ export function withLoggedInAdmin<T>(handler: HandlerWithAdmin<T> | HandlerWithA
     return await handler(req, koalaGainsUserContext, dynamic as any);
   }) as any;
 }
+
+/**
+ * Admin-only version of a plain `(req, { params })` route handler: the same handler shape that
+ * `withErrorHandlingV2` takes, so a route can switch wrappers without changing its handler.
+ */
+export function withAdminOnly<T>(handler: (req: NextRequest, ctx: { params: Promise<any> }) => Promise<T>): any {
+  return withLoggedInAdmin<T>((req: NextRequest, _userContext: KoalaGainsJwtTokenPayload, ctx: { params: Promise<any> }) => handler(req, ctx));
+}

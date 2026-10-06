@@ -7,6 +7,8 @@ import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePag
 import { fetchIndustryUnderstandIndustryMetadata } from '@/utils/tariff-reports/industry-metadata';
 import { tariffReportTag } from '@/utils/tariff-report-tags';
 import { Metadata } from 'next';
+import { isValidTariffIndustryId } from '@/utils/tariff-reports/tariff-input-validation';
+import { notFound } from 'next/navigation';
 
 export async function generateMetadata({ params }: { params: Promise<{ industryId: string }> }): Promise<Metadata> {
   const { industryId } = await params;
@@ -15,6 +17,8 @@ export async function generateMetadata({ params }: { params: Promise<{ industryI
 
 export default async function UnderstandIndustryPage({ params }: { params: Promise<{ industryId: string }> }) {
   const { industryId } = await params;
+  // Malformed / unknown industry: the `[industryId]` layout logs the rejection; 404 silently here.
+  if (!isValidTariffIndustryId(industryId)) notFound();
 
   // Fetch the report data
   const reportResponse = await fetch(`${getBaseUrlForServerSidePages()}/api/industry-tariff-reports/${industryId}`, {

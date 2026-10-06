@@ -7,12 +7,15 @@ import { parseChapterBodyMarkdown } from '@/util/parse-markdown';
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
 import { chapterCoverHref, chapterSectionHref } from '@/utils/tariff-reports/chapter-route-helpers';
 import { tariffReportTag } from '@/utils/tariff-report-tags';
+import { isValidTariffChapterSlug } from '@/utils/tariff-reports/tariff-input-validation';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 
 type SeoDetailsWithAliases = PageSeoDetails & { seoTitle?: string; metaDescription?: string; seo_title?: string; meta_description?: string };
 
 async function fetchChapterTariffReport(chapterSlug: string): Promise<ChapterTariffReportResponse | null> {
+  // Malformed slug: the layout logs the rejection and 404s; skip the fetch silently here.
+  if (!isValidTariffChapterSlug(chapterSlug)) return null;
   const response = await fetch(`${getBaseUrlForServerSidePages()}/api/industry-tariff-reports/chapters/${chapterSlug}`, {
     next: { tags: [tariffReportTag(chapterSlug)] },
   });

@@ -7,6 +7,7 @@ import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { ProcessingStatus, ProjectDetails, REPORT_TYPES_TO_DISPLAY, ReportType, SpiderGraph } from '@/types/project/project';
 import { parseMarkdown } from '@/util/parse-markdown';
 import { formatProjectName, getReportName, truncateDescription } from '@/util/report-utils';
+import { assertValidCrowdFundingPageParams, getCrowdFundingParamRejection } from '@/utils/crowd-funding-param-utils';
 
 const DEFAULT_OG_IMAGE = 'https://koalagains.com/koalagain_logo.png';
 
@@ -27,6 +28,8 @@ function getReadableReportType(reportType: string): string {
 
 export async function generateMetadata({ params }: { params: Promise<{ projectId: string; reportType: string }> }): Promise<Metadata> {
   const { projectId, reportType } = await params;
+  // Invalid params: skip the fetch; the page itself logs the rejection and renders the 404.
+  if (getCrowdFundingParamRejection({ projectId, reportType })) return { robots: { index: false, follow: false } };
 
   const projectResponse = await fetch(`${getBaseUrl()}/api/crowd-funding/projects/${projectId}`);
   const projectData: { projectDetails: ProjectDetails; spiderGraph: SpiderGraph | {} } = await projectResponse.json();
@@ -70,6 +73,7 @@ export async function generateMetadata({ params }: { params: Promise<{ projectId
 
 export default async function ReportDetailPage({ params }: { params: Promise<{ projectId: string; reportType: string }> }) {
   const { projectId, reportType } = await params;
+  assertValidCrowdFundingPageParams({ projectId, reportType });
 
   const [reportResponse, projectResponse] = await Promise.all([
     fetch(`${getBaseUrl()}/api/crowd-funding/projects/${projectId}/reports/${reportType}`),

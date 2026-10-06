@@ -2,6 +2,7 @@ import { isSyncTariffGenerationEnabled, startTariffSectionGeneration } from '@/s
 import { readIndustryTariffReportBySlug } from '@/scripts/industry-tariff-reports/tariff-report-repository';
 import type { IndustryTariffReport } from '@/scripts/industry-tariff-reports/tariff-types';
 import type { ChapterReportField } from '@/utils/tariff-reports/chapter-generate-sections';
+import { validateTariffChapterSlug } from '@/utils/tariff-reports/tariff-input-validation';
 import { NextRequest } from 'next/server';
 
 async function parseBody(req: NextRequest): Promise<unknown> {
@@ -40,8 +41,7 @@ export function chapterGenerateRoute(
   generate: (slug: string, body: unknown) => Promise<void>
 ): (req: NextRequest, ctx: { params: Promise<{ chapterSlug: string }> }) => Promise<ChapterGenerateResponse> {
   return async (req, { params }) => {
-    const { chapterSlug } = await params;
-    if (!chapterSlug) throw new Error('chapterSlug is required');
+    const chapterSlug = validateTariffChapterSlug((await params).chapterSlug);
 
     const body = await parseBody(req);
 
