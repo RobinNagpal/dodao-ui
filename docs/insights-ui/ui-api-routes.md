@@ -52,11 +52,11 @@ Base prefix: `/api/[spaceId]/tickers-v1`
 | `/[ticker]/fair-value-data` | GET | 🌐 | |
 | `/[ticker]/financial-statement-analysis-data` | GET | 🌐 | |
 | `/[ticker]/future-performance-data` | GET | 🌐 | |
-| `/[ticker]/generation-requests` | GET | 🌐 | |
-| `/[ticker]/generation-requests` | POST | 🔑 | Create a generation request for the ticker |
+| `/[ticker]/generation-requests` | GET | 🔑 | Admin / automation only — returns raw request rows |
+| `/[ticker]/generation-requests` | POST | 🔑 | Create a generation request for the ticker (never merges into a request a user paid for) |
 | `/[ticker]/get-exchange-name` | GET | 🌐 | |
 | `/[ticker]/past-performance-data` | GET | 🌐 | |
-| `/[ticker]/update-request-status` | POST | 🌐 | **Callback** — automation pipeline updates generation-request status |
+| `/[ticker]/update-request-status` | POST | 🔒 | Admin only (`withAdminOnly`) — sets a request's status by hand; no code calls it. Does not settle report credits (see [report-credits.md](report-credits.md)) |
 | `/bulk-csv` | POST | 🔑 | Admin CSV upload |
 | `/country/[country]/tickers/industries` | GET | 🌐 | |
 | `/country/[country]/tickers/industries/[industryKey]` | GET | 🌐 | |
@@ -235,13 +235,18 @@ user lists, ticker tags, portfolio-manager profiles).
 
 Credits belong to the end user and are paid for, so these stay on `withLoggedInUser` too. Note that
 `report-generation` **mutates a stock/ETF** (it queues a generation request) yet is deliberately *not*
-`withAdminOrToken`: the paying user is the one authorizing it, and the credit deduction is what gates
-abuse. See [report-credits.md](report-credits.md).
+`withAdminOrToken`: the paying user is the one authorizing it, and the credit spend (plus its limits:
+at most 3 paid runs in progress per user, no sale of a report whose last 3 runs failed within 7 days)
+is what gates abuse. See [report-credits.md](report-credits.md).
 
 | Route | Methods | Auth |
 | --- | --- | --- |
 | `/api/[spaceId]/users/credits` | GET | 👤 |
+| `/api/[spaceId]/users/credits/balance` | GET | 👤 |
+| `/api/[spaceId]/users/credits/receipt` | GET | 👤 |
 | `/api/[spaceId]/users/credits/checkout-session` | POST | 👤 |
+| `/api/[spaceId]/users/credits/confirm-checkout` | POST | 👤 |
+| `/api/[spaceId]/users/credits/report-results` | POST | 👤 |
 | `/api/[spaceId]/users/report-generation` | GET / POST | 👤 |
 | `/api/stripe/webhook` | POST | 🔏 Stripe signature |
 
@@ -255,7 +260,6 @@ before anything is read out of it.
 
 | Endpoint | Wrapper | Reason kept as-is |
 | --- | --- | --- |
-| `tickers-v1/[ticker]/update-request-status` | 🌐 | Automation status callback |
 | `tickers-v1/daily-movers/[moverId]/save-daily-mover` | 🌐 | Lambda result callback |
 | `tickers-v1/exchange/.../save-report-callback` | 🌐 | Lambda result callback |
 | `tickers-v1/screener-callback` | 🌐 | Screener callback |
