@@ -1,14 +1,17 @@
 'use client';
 
+import { useCheckoutReturn } from '@/hooks/useCheckoutReturn';
+import { publishCreditBalance, useCreditBalance, useCreditBalanceProvider } from '@/hooks/useCreditBalance';
+import { usePurchasesEnabled } from '@/hooks/usePurchasesEnabled';
 import FloatingReportCta from '@/components/ui/credits/FloatingReportCta';
 import ReportFreshnessBar from '@/components/ui/credits/ReportFreshnessBar';
 import RegenerateButton from '@/components/ui/credits/RegenerateButton';
 import StatusBadge from '@/components/ui/StatusBadge';
-import { ReportGenerationStatusResponse, ReportTargetRequest, TriggerReportGenerationResponse } from '@/types/credits';
+import { CREDITS_PER_REPORT, ReportGenerationStatusResponse, ReportTargetRequest, TriggerReportGenerationResponse } from '@/types/credits';
 import { KoalaGainsSession } from '@/types/auth';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { formatReportAge, formatReportGeneratedDate, formatShortDate } from '@/utils/credits/credit-format';
-import { CREDITS_CHANGED_EVENT, consumeCreditsPurchasedMarker, notifyCreditsChanged } from '@/utils/credits/credit-return-path';
+import { CREDITS_CHANGED_EVENT, notifyCreditsChanged } from '@/utils/credits/credit-return-path';
 import { REPORT_STATUS_BADGES } from '@/utils/credits/report-status-badges';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
@@ -23,6 +26,17 @@ import { useCallback, useEffect, useState } from 'react';
 // stay out of the report page's critical bundle.
 const RegenerateReportModal = dynamic(() => import('@/components/credits/RegenerateReportModal'), { ssr: false });
 const LoginPopup = dynamic(() => import('@/components/login/login-popup').then((m) => ({ default: m.LoginPopup })), { ssr: false });
+
+/**
+ * What to tell the user when a run did not start, keyed by outcome. The
+ * server's own `message` wins when it sends one; unknown future outcomes fall
+ * back to the generic line rather than breaking the control.
+ */
+const REFUSED_OUTCOME_MESSAGES: Record<string, string> = {
+  TooManyInProgress: 'You already have 3 reports generating. Please wait for one to finish.',
+  TemporarilyUnavailable: 'This report is failing to generate right now. Please try again later.',
+};
+const GENERIC_REFUSED_MESSAGE = 'We could not start this report right now. You have not been charged. Please try again later.';
 
 export interface ReportGenerationControlProps {
   kind: CreditReportKind;
@@ -57,8 +71,9 @@ export default function ReportGenerationControl({
   lastReportGeneratedAt,
   variant = 'full',
 }: ReportGenerationControlProps): JSX.Element {
-  const { data: koalaSession } = useSession();
+  const { data: koalaSession, status: sessionStatus } = useSession();
   const session: KoalaGainsSession | null = koalaSession as KoalaGainsSession | null;
+  const sessionLoading = sessionStatus === 'loading';
 
   const { showNotification } = useNotificationContext();
 
@@ -67,6 +82,8 @@ export default function ReportGenerationControl({
   // transition instead of vanishing. Same pattern as the favourite/notes buttons.
   const [hasMountedModal, setHasMountedModal] = useState(false);
   const [isLoginPopupOpen, setIsLoginPopupOpen] = useState(false);
+  // Shown at the top of the modal after the server refused a spend.
+  const [modalNotice, setModalNotice] = useState<string | null>(null);
 
   const statusUrl = `${getBaseUrl()}/api/${KoalaGainsSpaceId}/users/report-generation?kind=${kind}&symbol=${encodeURIComponent(
     symbol
@@ -77,6 +94,15 @@ export default function ReportGenerationControl({
     loading: statusLoading,
     reFetchData: refetchStatus,
   } = useFetchData<ReportGenerationStatusResponse>(statusUrl, { skipInitialFetch: !session }, 'Failed to load report generation status');
+
+  // The status already carries the balance, so this control is the page's
+  // balance source: the navbar shows the number published here instead of
+  // asking the server (and Stripe) for it a second time.
+  useCreditBalanceProvider(Boolean(session));
+  useEffect(() => {
+    if (status) publishCreditBalance(status.credits, status.stripeUnavailable);
+  }, [status]);
+  const balance = useCreditBalance(Boolean(session));
 
   const { postData: triggerGeneration, loading: generating } = usePostData<TriggerReportGenerationResponse, ReportTargetRequest>({
     errorMessage: 'Could not start the report generation. Please try again.',
@@ -112,20 +138,40 @@ export default function ReportGenerationControl({
     ? badge(ReportSpendStatus.Completed, `${REPORT_STATUS_BADGES.Completed.label} by you on ${formatShortDate(lastRegeneration.finishedAt)}`)
     : badge(ReportSpendStatus.Failed, `${REPORT_STATUS_BADGES.Failed.label} · ${formatShortDate(lastRegeneration.finishedAt)}`);
 
+  const showModal = useCallback(() => {
+    setModalNotice(null);
+    setHasMountedModal(true);
+    setIsModalOpen(true);
+  }, []);
+
+  // A click while the session is still loading is remembered and replayed once
+  // it resolves, rather than flashing the login prompt at a signed-in user.
+  const [openWhenSessionLoads, setOpenWhenSessionLoads] = useState(false);
+
   const openModal = useCallback(async () => {
+    if (sessionLoading) {
+      setOpenWhenSessionLoads(true);
+      return;
+    }
     if (!session) {
       setIsLoginPopupOpen(true);
       return;
     }
-    setHasMountedModal(true);
-    setIsModalOpen(true);
+    showModal();
     await refetchStatus();
-  }, [session, refetchStatus]);
+  }, [session, sessionLoading, showModal, refetchStatus]);
+
+  useEffect(() => {
+    if (openWhenSessionLoads && !sessionLoading) {
+      setOpenWhenSessionLoads(false);
+      void openModal();
+    }
+  }, [openWhenSessionLoads, sessionLoading, openModal]);
 
   // The one place the status is re-read after anything changes it: a paid run
   // started or finished (see ReportResultNotifier) or the balance changed.
-  // Declared before the Stripe-return effect so it is listening when that
-  // effect fires the event on mount.
+  // Declared before the Stripe-return hook so it is listening when that hook
+  // fires the event.
   useEffect(() => {
     if (!session) return;
     const refresh = () => void refetchStatus();
@@ -133,20 +179,20 @@ export default function ReportGenerationControl({
     return () => window.removeEventListener(CREDITS_CHANGED_EVENT, refresh);
   }, [session, refetchStatus]);
 
-  // Coming back from Stripe: reopen the modal with the new balance so the
-  // purchase lands the user exactly where they left off rather than on a
-  // confirmation dead end. The marker is cleared from the URL as it is read.
-  useEffect(() => {
-    if (!session || !consumeCreditsPurchasedMarker()) {
-      return;
-    }
-    showNotification({ type: 'success', message: 'Payment received. Your credits have been added.' });
-    setHasMountedModal(true);
-    setIsModalOpen(true);
-    // Re-reads the status here and the balance in the navbar (the webhook may
-    // land after the redirect).
-    notifyCreditsChanged();
-  }, [session, showNotification]);
+  // Coming back from Stripe: reopen the modal right away ("Adding your
+  // credits…" while the purchase is confirmed), then with the new balance, so
+  // the purchase lands the user exactly where they left off.
+  const checkoutReturn = useCheckoutReturn(Boolean(session), showModal);
+
+  // Buying can be switched off by an admin. Only asked for when it matters:
+  // signed out (the CTA would lead to buying) or once the balance is known to
+  // be too low. The answer is shared with the navbar, so it is one request.
+  const canAffordFromBalance = typeof balance === 'number' && balance >= CREDITS_PER_REPORT;
+  const purchasesEnabled = usePurchasesEnabled(!sessionLoading && (!session || (balance !== undefined && !canAffordFromBalance)));
+
+  // With buying off, the floating CTA is only for users who can actually
+  // regenerate; for anyone else it would lead to a dead end.
+  const ctaUseful = canAffordFromBalance || purchasesEnabled !== false;
 
   const handleConfirm = async () => {
     const response = await triggerGeneration(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/users/report-generation`, { kind, symbol, exchange });
@@ -155,24 +201,47 @@ export default function ReportGenerationControl({
       return;
     }
 
-    if (response.outcome === 'InsufficientCredits') {
+    // Matched as a string so an outcome added on the server later still lands
+    // in the default branch instead of being mistaken for a start.
+    const outcome: string = response.outcome;
+    const serverMessage = response.message?.trim() || null;
+
+    if (outcome === 'InsufficientCredits') {
       // Balance changed under us (another tab spent it). The modal re-renders
       // into its buy state off the refreshed status rather than erroring.
+      setModalNotice(purchasesEnabled === false ? 'Your balance changed.' : 'Your balance changed — pick a pack to continue.');
       notifyCreditsChanged();
       return;
     }
 
+    if (outcome === 'Started' || outcome === 'AlreadyInProgress') {
+      setIsModalOpen(false);
+      showNotification({
+        type: 'success',
+        message:
+          outcome === 'AlreadyInProgress'
+            ? `Your ${symbol} report is already being generated. You have not been charged again.`
+            : `Generating a new ${symbol} report. This can take up to an hour. Refresh the page later to see it.`,
+      });
+      // Re-reads the status, which now reports the run as in progress.
+      notifyCreditsChanged();
+      return;
+    }
+
+    // Refused (too many runs going, report failing, or an outcome this build
+    // doesn't know yet): nothing was charged.
     setIsModalOpen(false);
     showNotification({
-      type: 'success',
-      message:
-        response.outcome === 'AlreadyInProgress'
-          ? `Your ${symbol} report is already being generated. You have not been charged again.`
-          : `Generating a new ${symbol} report. This can take up to an hour. Refresh the page later to see it.`,
+      type: 'info',
+      message: serverMessage ?? REFUSED_OUTCOME_MESSAGES[outcome] ?? GENERIC_REFUSED_MESSAGE,
+      duration: 6000,
     });
-    // Re-reads the status, which now reports the run as in progress.
     notifyCreditsChanged();
   };
+
+  // The floating CTA sits above the page (z-40) but below nothing that a
+  // `relative z-10` modal establishes, so it is hidden while a dialog is open.
+  const dialogOpen = isModalOpen || isLoginPopupOpen;
 
   return (
     <>
@@ -199,7 +268,7 @@ export default function ReportGenerationControl({
           visible from the moment the page opens, no scroll needed. Shown to
           logged-out visitors too: `openModal` sends them to the login prompt
           first. Tablet and up only; phones keep the inline button alone. */}
-      {!generationInProgress && (
+      {!generationInProgress && !dialogOpen && ctaUseful && (
         <FloatingReportCta
           label="Get the latest analysis"
           subLabel={age ? `This report was generated ${age}` : null}
@@ -217,6 +286,9 @@ export default function ReportGenerationControl({
           status={status}
           statusLoading={statusLoading}
           generating={generating}
+          addingCredits={checkoutReturn === 'confirming'}
+          purchasesEnabled={purchasesEnabled}
+          notice={modalNotice}
           onConfirm={handleConfirm}
         />
       )}

@@ -14,6 +14,7 @@ import ReportFooter from '@/components/ui/sections/ReportFooter';
 import ReportSection from '@/components/ui/sections/ReportSection';
 import ReportSectionHeader from '@/components/ui/sections/ReportSectionHeader';
 import ReportGenerationControl from '@/components/credits/ReportGenerationControl';
+import { toIsoDateOrNull } from '@/utils/credits/credit-format';
 import { CreditReportKind } from '@prisma/client';
 import SectionHeading from '@/components/ui/sections/SectionHeading';
 import { EtfAnalysisCategory } from '@/types/etf/etf-analysis-types';
@@ -102,7 +103,7 @@ export default function EtfCategoryReport({
               kind={CreditReportKind.Etf}
               symbol={symbol}
               exchange={exchange}
-              lastReportGeneratedAt={modifiedDate.toISOString()}
+              lastReportGeneratedAt={toIsoDateOrNull(updatedAt)}
             />
           }
         >

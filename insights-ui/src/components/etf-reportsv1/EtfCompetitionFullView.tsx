@@ -1,5 +1,6 @@
 import CompetitorCard from '@/components/competition/CompetitorCard';
 import ReportGenerationControl from '@/components/credits/ReportGenerationControl';
+import { toIsoDateOrNull } from '@/utils/credits/credit-format';
 import ReportSectionHeader from '@/components/ui/sections/ReportSectionHeader';
 import { CreditReportKind } from '@prisma/client';
 import EtfCompetitionQuadrantWithLegend from '@/components/etf-reportsv1/EtfCompetitionQuadrantWithLegend';
@@ -66,7 +67,7 @@ export default function EtfCompetitionFullView({ data, availableSlugsPromise }: 
               kind={CreditReportKind.Etf}
               symbol={etf.symbol}
               exchange={etf.exchange}
-              lastReportGeneratedAt={modifiedDate.toISOString()}
+              lastReportGeneratedAt={toIsoDateOrNull(vsCompetition?.updatedAt, etf.updatedAt)}
             />
           }
         />

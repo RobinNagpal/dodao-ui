@@ -12,6 +12,7 @@ import ReportFooter from '@/components/ui/sections/ReportFooter';
 import ReportSection from '@/components/ui/sections/ReportSection';
 import ReportSectionHeader from '@/components/ui/sections/ReportSectionHeader';
 import ReportGenerationControl from '@/components/credits/ReportGenerationControl';
+import { toIsoDateOrNull } from '@/utils/credits/credit-format';
 import { CreditReportKind } from '@prisma/client';
 import SectionHeading from '@/components/ui/sections/SectionHeading';
 import { MarketDropScenario } from '@/types/public-equity/analysis-factors-types';
@@ -102,7 +103,7 @@ export default function Stability({ tickerData, report, industryName, subIndustr
             kind={CreditReportKind.Stock}
             symbol={tickerData.symbol}
             exchange={tickerData.exchange}
-            lastReportGeneratedAt={modifiedDate.toISOString()}
+            lastReportGeneratedAt={toIsoDateOrNull(report.updatedAt, tickerData.updatedAt)}
           />
         }
       >

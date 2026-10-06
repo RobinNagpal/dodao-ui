@@ -12,10 +12,10 @@ import { KoalaGainsSession } from '@/types/auth';
 import { CENTS_PER_CREDIT, CREDIT_HISTORY_PAGE_SIZE, CreditBalanceResponse } from '@/types/credits';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { formatUsd } from '@/utils/credits/credit-format';
-import { consumeCreditsPurchasedMarker } from '@/utils/credits/credit-return-path';
+import { CREDITS_CHANGED_EVENT } from '@/utils/credits/credit-return-path';
+import { useCheckoutReturn } from '@/hooks/useCheckoutReturn';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
-import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { useSession } from 'next-auth/react';
@@ -30,7 +30,6 @@ export default function CreditsPage(): JSX.Element {
   const session: KoalaGainsSession | null = koalaSession as KoalaGainsSession | null;
 
   const router = useRouter();
-  const { showNotification } = useNotificationContext();
 
   // "Load more" raises the limit; the hook refetches when the URL changes and
   // keeps showing the current rows until the longer list arrives.
@@ -41,16 +40,18 @@ export default function CreditsPage(): JSX.Element {
     'Failed to load your credits'
   );
 
-  // Returning from Stripe. The webhook is what actually grants the credits, and
-  // it can land a moment after the redirect, so re-read the balance instead of
-  // trusting the URL.
+  // Re-read whenever this tab changes the balance — including right after a
+  // returning checkout has been confirmed (below).
   useEffect(() => {
-    if (!session || !consumeCreditsPurchasedMarker()) {
-      return;
-    }
-    showNotification({ type: 'success', message: 'Payment received. Your credits have been added.' });
-    void reFetchData();
-  }, [session, showNotification, reFetchData]);
+    if (!session) return;
+    const refresh = () => void reFetchData();
+    window.addEventListener(CREDITS_CHANGED_EVENT, refresh);
+    return () => window.removeEventListener(CREDITS_CHANGED_EVENT, refresh);
+  }, [session, reFetchData]);
+
+  // Returning from Stripe: confirm the purchase (the webhook can land after the
+  // redirect), then the event above re-reads the balance and history.
+  const checkoutReturn = useCheckoutReturn(Boolean(session));
 
   if (sessionStatus !== 'loading' && !session) {
     return (
@@ -68,17 +69,18 @@ export default function CreditsPage(): JSX.Element {
 
   const credits = data?.credits ?? 0;
   const reservedCredits = data?.reservedCredits ?? 0;
+  // A failed "Load more" keeps the rows already shown, so it is only visible as
+  // a page that is still shorter than what was asked for.
+  const loadMoreFailed = !loading && Boolean(error) && Boolean(data?.hasMore) && (data?.transactions.length ?? 0) < historyLimit;
 
   return (
     <PageWrapper>
       <Stack gap="xl">
         {/* No balance until it has loaded, so a user with credits never sees a 0 flash. */}
-        {data?.stripeUnavailable && (
-          <Text tone="muted">
-            We couldn&apos;t load your balance from our payment provider right now, so it may show as 0. Please refresh in a few minutes.
-          </Text>
-        )}
-        <HeaderWithAside aside={data && <CreditBalanceCard credits={credits} reserved={reservedCredits} />}>
+        {checkoutReturn === 'confirming' && <Text tone="muted">Adding your credits…</Text>}
+        {data?.stripeUnavailable && <Text tone="muted">We couldn&apos;t load your balance right now. Please try again in a few minutes.</Text>}
+        {/* Hidden when Stripe is unreachable: its 0 is a placeholder, not the balance. */}
+        <HeaderWithAside aside={data && !data.stripeUnavailable && <CreditBalanceCard credits={credits} reserved={reservedCredits} />}>
           <Stack gap="sm">
             <Heading as="h1" size="2xl">
               Report credits
@@ -103,6 +105,7 @@ export default function CreditsPage(): JSX.Element {
             <>
               <CreditHistoryTabs transactions={data.transactions} hasMore={data.hasMore} />
               {/* "Load more" pages the whole history, so it keeps filling both tabs. */}
+              {loadMoreFailed && <Text tone="muted">We could not load older history. Please try again.</Text>}
               {data.hasMore && (
                 <Button variant="outlined" loading={loading} disabled={loading} onClick={() => setHistoryLimit((limit) => limit + CREDIT_HISTORY_PAGE_SIZE)}>
                   Load more

@@ -5,6 +5,7 @@ import { QuarterlyChartDataResponse } from '@/app/api/[spaceId]/tickers-v1/excha
 import { TickerIdentifier } from '@/app/api/[spaceId]/tickers-v1/generation-requests/route';
 import SpiderChartFlyoutMenu from '@/components/ticker/SpiderChartFlyoutMenu';
 import ReportGenerationControl from '@/components/credits/ReportGenerationControl';
+import { toIsoDateOrNull } from '@/utils/credits/credit-format';
 import { CreditReportKind } from '@prisma/client';
 import StockActions from '@/app/stocks/[exchange]/[ticker]/StockActions';
 import CompetitionAnalysisButton from '@/app/stocks/[exchange]/[ticker]/CompetitionAnalysisButton';
@@ -452,12 +453,14 @@ function TickerSummaryInfo({ data }: { data: Promise<TickerV1FastResponse> }): J
       </div>
 
       {/* One freshness date for the whole report, next to the action that
-          refreshes it. `d` arrives as JSON, so the date is normalized here. */}
+          refreshes it. `d` arrives as JSON, so the date is normalized here.
+          Most rows predate `lastReportGeneratedAt`, so it falls back to the same
+          date the footer's dateModified uses. */}
       <ReportGenerationControl
         kind={CreditReportKind.Stock}
         symbol={d.symbol}
         exchange={d.exchange}
-        lastReportGeneratedAt={d.lastReportGeneratedAt ? new Date(d.lastReportGeneratedAt).toISOString() : null}
+        lastReportGeneratedAt={toIsoDateOrNull(d.lastReportGeneratedAt, d.updatedAt, d.createdAt)}
       />
 
       {/* Company Summary */}

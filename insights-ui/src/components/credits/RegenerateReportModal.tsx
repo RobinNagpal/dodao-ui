@@ -20,6 +20,12 @@ export interface RegenerateReportModalProps {
   status: ReportGenerationStatusResponse | undefined;
   statusLoading: boolean;
   generating: boolean;
+  /** True while a just-finished Stripe checkout is being confirmed. */
+  addingCredits?: boolean;
+  /** The admin buying switch; `null` while unknown (the pack picker then checks it itself). */
+  purchasesEnabled?: boolean | null;
+  /** One-line notice above the body, e.g. after the balance changed under a spend. */
+  notice?: string | null;
   onConfirm: () => void;
 }
 
@@ -37,25 +43,45 @@ export default function RegenerateReportModal({
   status,
   statusLoading,
   generating,
+  addingCredits = false,
+  purchasesEnabled = null,
+  notice = null,
   onConfirm,
 }: RegenerateReportModalProps): JSX.Element {
   const credits = status?.credits ?? 0;
   const canAfford = credits >= CREDITS_PER_REPORT;
 
+  const closeOnly = (message: string): JSX.Element => (
+    <Stack gap="md">
+      <Text size="sm">{message}</Text>
+      <Button variant="contained" onClick={onClose}>
+        Close
+      </Button>
+    </Stack>
+  );
+
   const body = (): JSX.Element => {
+    // Back from Stripe: the purchase is still being confirmed, so any balance
+    // shown now could be the old one.
+    if (addingCredits) {
+      return (
+        <Stack gap="md" align="center">
+          <LoadingSpinner />
+          <Text size="sm">Adding your credits…</Text>
+        </Stack>
+      );
+    }
+
     // Never render a spend/buy decision off a balance we do not have yet — a
     // half-loaded modal would flash "you have 0 credits" at someone who has ten.
     if (!status) {
-      return statusLoading ? (
-        <LoadingSpinner />
-      ) : (
-        <Stack gap="md">
-          <Text size="sm">We could not load your credit balance. Please close this and try again.</Text>
-          <Button variant="contained" onClick={onClose}>
-            Close
-          </Button>
-        </Stack>
-      );
+      return statusLoading ? <LoadingSpinner /> : closeOnly('We could not load your credit balance. Please close this and try again.');
+    }
+
+    // Stripe holds the balance; when it can't be reached the 0 we got is a
+    // placeholder, and offering packs off it would be wrong.
+    if (status.stripeUnavailable) {
+      return closeOnly("We couldn't load your balance right now. Please try again in a few minutes.");
     }
 
     if (status.generationInProgress) {
@@ -82,10 +108,16 @@ export default function RegenerateReportModal({
               Regenerating the {reportLabel} report costs {formatCredits(CREDITS_PER_REPORT)}. You have {formatCredits(credits)}.
             </Text>
             <Text size="xs" tone="muted">
-              Pick a pack below. After you pay, you will come right back here.
+              {purchasesEnabled === false ? "Buying credits isn't available right now." : 'Pick a pack below. After you pay, you will come right back here.'}
             </Text>
           </Stack>
-          <BuyCreditsPanel layout="list" />
+          {purchasesEnabled === false ? (
+            <Button variant="contained" onClick={onClose}>
+              Close
+            </Button>
+          ) : (
+            <BuyCreditsPanel layout="list" />
+          )}
         </Stack>
       );
     }
@@ -136,7 +168,14 @@ export default function RegenerateReportModal({
 
   return (
     <SingleSectionModal open={open} onClose={onClose} title={`Regenerate ${reportLabel} report`}>
-      {body()}
+      <Stack gap="md">
+        {notice && !addingCredits && (
+          <InlineCard padding="cozy">
+            <Text size="sm">{notice}</Text>
+          </InlineCard>
+        )}
+        {body()}
+      </Stack>
     </SingleSectionModal>
   );
 }

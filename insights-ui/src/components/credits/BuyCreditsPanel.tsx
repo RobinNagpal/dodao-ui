@@ -5,19 +5,20 @@ import Stack from '@/components/ui/containers/Stack';
 import CheckoutBar from '@/components/ui/credits/CheckoutBar';
 import CreditPackOption from '@/components/ui/credits/CreditPackOption';
 import { CREDIT_PACKS, CreateCheckoutSessionRequest, CreateCheckoutSessionResponse } from '@/types/credits';
-import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
+import { loadPurchasesEnabled, usePurchasesEnabled } from '@/hooks/usePurchasesEnabled';
+import { callCreditApi } from '@/utils/credits/credit-api-client';
 import { formatPackDetail, formatUsd } from '@/utils/credits/credit-format';
-import { isStripeCreditPurchaseEnabled } from '@/utils/app-config-actions';
 import { getCurrentReturnPath } from '@/utils/credits/credit-return-path';
 import Button from '@dodao/web-core/components/core/buttons/Button';
-import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
-import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import { useEffect, useState } from 'react';
+import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
+import { useState } from 'react';
 
 export interface BuyCreditsPanelProps {
   /** `grid` on the roomy credits page, `list` inside the narrow modal. */
   layout?: 'grid' | 'list';
 }
+
+const KILL_SWITCH_MESSAGE = 'Buying credits is temporarily unavailable. Please try again later.';
 
 const DEFAULT_PACK_KEY = CREDIT_PACKS.find((pack) => pack.recommended)?.key ?? CREDIT_PACKS[0].key;
 
@@ -27,39 +28,50 @@ const DEFAULT_PACK_KEY = CREDIT_PACKS.find((pack) => pack.recommended)?.key ?? C
  */
 export default function BuyCreditsPanel({ layout = 'grid' }: BuyCreditsPanelProps): JSX.Element {
   const [selectedPackKey, setSelectedPackKey] = useState<string>(DEFAULT_PACK_KEY);
+  const [loading, setLoading] = useState(false);
   const [redirecting, setRedirecting] = useState(false);
+  const { showNotification } = useNotificationContext();
   // null while loading. Admins can switch buying off (e.g. during a Stripe
   // issue); the checkout API enforces the same switch server-side.
-  const [purchasesEnabled, setPurchasesEnabled] = useState<boolean | null>(null);
-
-  useEffect(() => {
-    isStripeCreditPurchaseEnabled()
-      .then(setPurchasesEnabled)
-      .catch(() => setPurchasesEnabled(false));
-  }, []);
-
-  const { postData: createCheckoutSession, loading } = usePostData<CreateCheckoutSessionResponse, CreateCheckoutSessionRequest>({
-    errorMessage: 'Could not start checkout. Please try again.',
-  });
+  const loadedPurchasesEnabled = usePurchasesEnabled();
+  // Set when checkout was refused because the switch flipped after the page loaded.
+  const [switchedOff, setSwitchedOff] = useState(false);
+  const purchasesEnabled = switchedOff ? false : loadedPurchasesEnabled;
 
   const selectedPack = CREDIT_PACKS.find((pack) => pack.key === selectedPackKey) ?? CREDIT_PACKS[0];
   const busy = loading || redirecting;
 
   const handleCheckout = async () => {
-    const response = await createCheckoutSession(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/users/credits/checkout-session`, {
-      packKey: selectedPack.key,
-      // Resolved at click time so Stripe returns the user to exactly the page
-      // and query they were reading when they decided to buy.
-      returnPath: getCurrentReturnPath(),
+    setLoading(true);
+    const result = await callCreditApi<CreateCheckoutSessionResponse>('users/credits/checkout-session', {
+      method: 'POST',
+      body: {
+        packKey: selectedPack.key,
+        // Resolved at click time so Stripe returns the user to exactly the page
+        // and query they were reading when they decided to buy.
+        returnPath: getCurrentReturnPath(),
+      } satisfies CreateCheckoutSessionRequest,
     });
 
-    if (response?.checkoutUrl) {
+    if (result.ok && result.data.checkoutUrl) {
       // Hold the loading state through the redirect — the page is about to be
       // replaced, and a button springing back to "Pay" mid-navigation reads as
       // a failure.
       setRedirecting(true);
-      window.location.href = response.checkoutUrl;
+      window.location.href = result.data.checkoutUrl;
+      return;
     }
+    setLoading(false);
+
+    // Most likely cause of a refusal: an admin switched buying off since the
+    // page loaded. Say exactly that (the server's own wording) instead of a
+    // generic error, and disable the button.
+    if (!(await loadPurchasesEnabled(true))) {
+      setSwitchedOff(true);
+      showNotification({ type: 'error', message: !result.ok && result.message ? result.message : KILL_SWITCH_MESSAGE });
+      return;
+    }
+    showNotification({ type: 'error', message: 'Could not start checkout. Please try again.' });
   };
 
   const options = CREDIT_PACKS.map((pack) => (
@@ -88,7 +100,7 @@ export default function BuyCreditsPanel({ layout = 'grid' }: BuyCreditsPanelProp
 
       <CheckoutBar
         layout={layout === 'grid' ? 'inline' : 'stacked'}
-        note="Payments are handled by Stripe, so we never see your card details. If a report fails, you get your credit back."
+        note="Payments are handled by Stripe, so we never see your card details. If a report fails, you aren't charged."
         action={
           <Button primary variant="contained" loading={busy} disabled={busy || !purchasesEnabled} onClick={handleCheckout}>
             {busy
