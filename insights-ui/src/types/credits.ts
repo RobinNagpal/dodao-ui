@@ -34,30 +34,6 @@ export function getCreditPack(packKey: string): CreditPack | undefined {
   return CREDIT_PACKS.find((pack) => pack.key === packKey);
 }
 
-/** What a regeneration rewrites, listed in the confirm modal. */
-export const REFRESHED_SECTIONS: Record<CreditReportKind, string[]> = {
-  [CreditReportKind.Stock]: [
-    'Business & moat',
-    'Financial analysis',
-    'Past performance',
-    'Future growth',
-    'Fair value',
-    'Competition',
-    'Management team',
-    'Stability',
-    'Final summary',
-  ],
-  [CreditReportKind.Etf]: [
-    'Performance & returns',
-    'Cost efficiency & team',
-    'Risk analysis',
-    'Future performance outlook',
-    'Key facts',
-    'Competition',
-    'Final summary',
-  ],
-};
-
 /** Query param appended to the return URL after a successful Stripe Checkout. */
 export const CREDITS_PURCHASED_QUERY_PARAM = 'creditsPurchased';
 

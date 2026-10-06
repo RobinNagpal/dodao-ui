@@ -100,7 +100,9 @@ export default function ReportGenerationControl({
 
   // The user's own history with this report, shown under the main date.
   // Same badges as the credits page history, so a state looks the same everywhere.
-  const badge = (state: ReportSpendStatus, label: string) => <StatusBadge variant={REPORT_STATUS_BADGES[state].variant} label={label} />;
+  const badge = (state: ReportSpendStatus, label: string) => (
+    <StatusBadge variant={REPORT_STATUS_BADGES[state].variant} spinning={REPORT_STATUS_BADGES[state].spinning} label={label} />
+  );
   const lastRegeneration = status?.lastRegeneration;
   const historyNote = generationInProgress
     ? badge(ReportSpendStatus.InProgress, REPORT_STATUS_BADGES.InProgress.label)
@@ -210,9 +212,8 @@ export default function ReportGenerationControl({
         <RegenerateReportModal
           open={isModalOpen}
           onClose={() => setIsModalOpen(false)}
-          kind={kind}
           reportLabel={symbol}
-          generatedAt={generatedAtWithAge}
+          generatedAt={generatedAt}
           status={status}
           statusLoading={statusLoading}
           generating={generating}

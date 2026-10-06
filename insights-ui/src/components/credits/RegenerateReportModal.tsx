@@ -4,20 +4,18 @@ import BuyCreditsPanel from '@/components/credits/BuyCreditsPanel';
 import Stack from '@/components/ui/containers/Stack';
 import InlineCard from '@/components/ui/sections/InlineCard';
 import Text from '@/components/ui/Text';
-import { CREDITS_PER_REPORT, REFRESHED_SECTIONS, ReportGenerationStatusResponse } from '@/types/credits';
+import { CREDITS_PER_REPORT, ReportGenerationStatusResponse } from '@/types/credits';
 import { formatCredits } from '@/utils/credits/credit-format';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import SingleSectionModal from '@dodao/web-core/components/core/modals/SingleSectionModal';
 import LoadingSpinner from '@dodao/web-core/components/core/loaders/LoadingSpinner';
-import { CreditReportKind } from '@prisma/client';
 
 export interface RegenerateReportModalProps {
   open: boolean;
   onClose: () => void;
-  kind: CreditReportKind;
   /** "AAPL" / "SPY" — what the user is about to spend a credit on. */
   reportLabel: string;
-  /** "September 2, 2026 (47 days ago)", or null when never generated. */
+  /** "September 2, 2026", or null when never generated. */
   generatedAt: string | null;
   status: ReportGenerationStatusResponse | undefined;
   statusLoading: boolean;
@@ -34,7 +32,6 @@ export interface RegenerateReportModalProps {
 export default function RegenerateReportModal({
   open,
   onClose,
-  kind,
   reportLabel,
   generatedAt,
   status,
@@ -68,7 +65,7 @@ export default function RegenerateReportModal({
             <Text size="sm">Your new {reportLabel} report is already being made. It can take up to an hour. Refresh the page later to see it.</Text>
           </InlineCard>
           <Text size="xs" tone="muted">
-            You have not been charged again.
+            You won&apos;t be charged again.
           </Text>
           <Button variant="contained" onClick={onClose}>
             Got it
@@ -98,7 +95,7 @@ export default function RegenerateReportModal({
         <Stack gap="xs">
           <Text size="sm">A fresh analysis of {reportLabel} will replace the current report. It can take up to an hour.</Text>
           <Text size="xs" tone="muted">
-            Refreshes every section: {REFRESHED_SECTIONS[kind].join(', ')}.
+            Refreshes all sections of the report.
           </Text>
         </Stack>
 
@@ -130,7 +127,7 @@ export default function RegenerateReportModal({
             Cancel
           </Button>
           <Text size="xs" tone="muted">
-            If the report fails, you get your credit back.
+            If the report fails, you won&apos;t be charged.
           </Text>
         </Stack>
       </Stack>

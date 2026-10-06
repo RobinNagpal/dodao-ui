@@ -66,7 +66,7 @@ function renderBadge(transaction: CreditTransactionResponse): React.ReactNode {
   const badge = REPORT_STATUS_BADGES[transaction.reportStatus];
   // Balances matter on this page, so an unfinished run also says its credit is held.
   const label = transaction.reportStatus === ReportSpendStatus.InProgress ? `${badge.label} · credit reserved` : badge.label;
-  return <StatusBadge variant={badge.variant} label={label} />;
+  return <StatusBadge variant={badge.variant} spinning={badge.spinning} label={label} />;
 }
 
 /** A run still in progress has no balance yet: its credit is reserved, not taken. */
