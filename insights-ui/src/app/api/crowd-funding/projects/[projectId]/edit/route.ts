@@ -3,9 +3,11 @@ import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/wit
 import { notFoundError } from '@dodao/web-core/api/errors/notFoundError';
 import { getObjectFromS3Optional } from '@/lib/koalagainsS3Utils';
 import { InsightsConstants } from '@/util/insights-constants';
+import { assertValidCrowdFundingApiParams } from '@/utils/crowd-funding-param-utils';
 
 async function getHandler(req: NextRequest, { params }: { params: Promise<{ projectId: string }> }): Promise<any> {
   const { projectId } = await params;
+  assertValidCrowdFundingApiParams({ projectId });
 
   const key = `${InsightsConstants.CROWDFUND_ANALYSIS_PREFIX}/${projectId}/agent-status.json`;
 

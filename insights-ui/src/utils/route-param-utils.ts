@@ -21,3 +21,27 @@ export function safeDecodeParam(raw: string): string | undefined {
 export function truncateForLog(text: string): string {
   return JSON.stringify(text.slice(0, MAX_LOGGED_INPUT_LENGTH));
 }
+
+/**
+ * Prefix on every log line for input rejected by a format check (route params, query params), so
+ * they can be found together: `pnpm logs:fetch --level warn --grep input-rejected`. These are
+ * warnings, not errors: the input is malformed, typically from scanners/bots.
+ */
+export const INPUT_REJECTED_LOG_PREFIX = '[input-rejected]';
+
+/** Inputs longer than this are rejected before the pattern is even tried. */
+const MAX_VALIDATED_INPUT_LENGTH = 200;
+
+/** True when `value` is present, not over-long, and fully matches `pattern` (anchor it with ^…$). */
+export function matchesInputPattern(value: string | null | undefined, pattern: RegExp): value is string {
+  return typeof value === 'string' && value.length > 0 && value.length <= MAX_VALIDATED_INPUT_LENGTH && pattern.test(value);
+}
+
+/**
+ * The one log message for a rejected input: `[input-rejected] <scope>: invalid <name> "<value…>"`.
+ * API routes throw `notFoundError(inputRejectedMessage(...))` (the error wrapper logs it once as a
+ * warn); pages `console.warn` it and call `notFound()`.
+ */
+export function inputRejectedMessage(scope: string, name: string, value: string | null | undefined): string {
+  return `${INPUT_REJECTED_LOG_PREFIX} ${scope}: invalid ${name} ${truncateForLog(String(value ?? ''))}`;
+}
