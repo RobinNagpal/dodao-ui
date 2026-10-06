@@ -7,13 +7,18 @@ import { TickerWithIndustryNames } from '@/types/ticker-typesv1';
 import { SupportedCountries } from '@/utils/countryExchangeUtils';
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
 import { generateCountryStocksMetadata } from '@/utils/metadata-generators';
+import { parseStockCountryParam, resolveStockCountryParam } from '@/utils/stock-country-route-utils';
 import { getStocksPageTag } from '@/utils/ticker-v1-cache-utils';
 import type { Metadata } from 'next';
+import { notFound } from 'next/navigation';
 
 export async function generateMetadata(props: { params: Promise<{ country: string }> }): Promise<Metadata> {
   const params = await props.params;
-  const countryName = decodeURIComponent(params.country);
-  return generateCountryStocksMetadata(countryName);
+  // Validate without logging/404ing here: the page render does both, so an invalid country
+  // produces exactly one warn line.
+  const country = parseStockCountryParam(params.country);
+  if (!country) return {};
+  return generateCountryStocksMetadata(country);
 }
 
 type PageProps = {
@@ -25,13 +30,21 @@ const WEEK = 60 * 60 * 24 * 7;
 export default async function CountryStocksPage({ params: paramsPromise }: PageProps) {
   const params = await paramsPromise;
   const baseUrl = getBaseUrlForServerSidePages();
-  const countryName = decodeURIComponent(params.country);
-  const country = countryName as SupportedCountries;
+  const country: SupportedCountries = resolveStockCountryParam(params.country, 'stocks/countries/[country]');
+  const countryName: string = country;
 
   // Fetch data using the cached function (no filters on static pages)
-  const res = await fetch(`${baseUrl}/api/${KoalaGainsSpaceId}/tickers-v1/country/${country}/tickers/industries`, {
+  const url = `${baseUrl}/api/${KoalaGainsSpaceId}/tickers-v1/country/${country}/tickers/industries`;
+  const res = await fetch(url, {
     next: { revalidate: WEEK, tags: [getStocksPageTag(country)] },
   });
+
+  if (res.status === 404) notFound();
+  if (!res.ok) {
+    // Real upstream failure (e.g. 5xx / LB error page): stay an error. Next's data cache only
+    // stores OK responses, so this is never cached as a page.
+    throw new Error(`industries fetch failed (${res.status}): ${url}`);
+  }
 
   const data = (await res.json()) as IndustriesResponse;
 
