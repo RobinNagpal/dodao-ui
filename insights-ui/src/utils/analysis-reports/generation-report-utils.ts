@@ -17,15 +17,18 @@ import {
   prepareFinancialAnalysisInputJson,
   prepareFutureGrowthInputJson,
   preparePastPerformanceInputJson,
+  prepareStabilityInputJson,
 } from '@/utils/analysis-reports/report-input-json-utils';
 import { markAsCompleted, markAsInProgress } from '@/utils/analysis-reports/report-status-utils';
 import { calculatePendingSteps } from '@/utils/analysis-reports/report-steps-statuses';
+import { settleReportCredit } from '@/utils/credits/credit-service';
 import {
   ensureStockAnalyzerDataIsFresh,
   extractFinancialDataForAnalysis,
   extractFinancialDataForPastPerformance,
   extractKpisDataForAnalysis,
   loadFairValueValuationSnapshot,
+  loadStabilityMarketSnapshot,
 } from '@/utils/stock-analyzer-scraper-utils';
 import { AnalysisCategoryFactor } from '@prisma/client';
 
@@ -41,6 +44,7 @@ export const reportDependencyMap: Record<ReportType, ReportType[]> = {
   [ReportType.FUTURE_GROWTH]: [ReportType.BUSINESS_AND_MOAT],
   [ReportType.FAIR_VALUE]: [ReportType.BUSINESS_AND_MOAT, ReportType.FINANCIAL_ANALYSIS, ReportType.PAST_PERFORMANCE, ReportType.FUTURE_GROWTH],
   [ReportType.MANAGEMENT_TEAM]: [],
+  [ReportType.STABILITY]: [],
   [ReportType.FINAL_SUMMARY]: [
     ReportType.FINANCIAL_ANALYSIS,
     ReportType.COMPETITION,
@@ -63,6 +67,7 @@ export const dependencyBasedReportOrder: ReportType[] = [
   ReportType.FINANCIAL_ANALYSIS,
   ReportType.PAST_PERFORMANCE,
   ReportType.MANAGEMENT_TEAM,
+  ReportType.STABILITY,
 
   // Dependent reports (with dependencies)
   ReportType.FUTURE_GROWTH,
@@ -309,6 +314,35 @@ async function generateManagementTeamAnalysis(
   });
 }
 
+async function generateStabilityAnalysis(
+  spaceId: string,
+  tickerRecord: TickerV1WithIndustryAndSubIndustry,
+  generationRequestId: string,
+  selection: ReportLlmSelection
+): Promise<void> {
+  // Always refresh the market snapshot — every expected price in the report is
+  // derived from the current price, so a stale quote makes the whole report wrong.
+  const snapshot = await loadStabilityMarketSnapshot(tickerRecord);
+
+  const inputJson = prepareStabilityInputJson(tickerRecord, snapshot);
+
+  // Call the LLM
+  await getLLMResponseForPromptViaInvocationViaLambda({
+    symbol: tickerRecord.symbol,
+    exchange: tickerRecord.exchange,
+    generationRequestId,
+    params: {
+      spaceId,
+      inputJson,
+      promptKey: 'US/public-equities-v1/stability',
+      requestFrom: 'ui',
+      llmProvider: selection.llmProvider,
+      model: selection.model,
+    },
+    reportType: ReportType.STABILITY,
+  });
+}
+
 async function generateFinalSummary(
   spaceId: string,
   tickerRecord: TickerV1WithIndustryAndSubIndustry,
@@ -383,6 +417,9 @@ export async function triggerGenerationOfAReportSimplified(symbol: string, excha
           updatedAt: new Date(),
         },
       });
+      // This path fails the request without going through markAsCompleted, so
+      // release the reserved credit here too (uncharged) if a user paid for it.
+      await settleReportCredit(generationRequest.id, false);
     } else {
       // Check if it's been more than 10 minutes since the last invocation time.
       // Bumped from 5 -> 10 min because the Claude (OAuth) report path can run
@@ -481,6 +518,9 @@ export async function triggerGenerationOfAReportSimplified(symbol: string, excha
         break;
       case ReportType.MANAGEMENT_TEAM:
         await generateManagementTeamAnalysis(spaceId, tickerRecord, generationRequest.id, selection);
+        break;
+      case ReportType.STABILITY:
+        await generateStabilityAnalysis(spaceId, tickerRecord, generationRequest.id, selection);
         break;
       case ReportType.FINAL_SUMMARY:
         await generateFinalSummary(spaceId, tickerRecord, generationRequestId, selection);

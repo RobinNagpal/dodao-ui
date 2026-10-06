@@ -23,7 +23,8 @@
     "stocks:add": "tsx src/scripts/tickers/add-stock.ts",
     "stocks:prompt": "tsx src/scripts/tickers/get-report-prompt.ts",
     "stocks:save": "tsx src/scripts/tickers/save-report.ts",
-    "stocks:list-oldest": "tsx src/scripts/tickers/list-oldest.ts"
+    "stocks:list-oldest": "tsx src/scripts/tickers/list-oldest.ts",
+    "logs:fetch": "tsx src/scripts/logs/fetch-grafana-logs.ts"
   },
   "engines": {
     "node": ">=22.0.0"
@@ -80,7 +81,7 @@
     "logrocket": "^10.1.0",
     "lucide-react": "^0.503.0",
     "marked": "^4.3.0",
-    "next": "15.5.7",
+    "next": "15.5.27",
     "next-auth": "^4.24.11",
     "next-mdx-remote": "^6.0.0",
     "next-themes": "^0.4.6",
@@ -103,6 +104,7 @@
     "sass": "^1.62.1",
     "sitemap": "^7.1.1",
     "sonner": "^2.0.3",
+    "stripe": "^22.6.1",
     "styled-components": "6.1.11",
     "tailwind-merge": "^3.2.0",
     "tailwindcss-animate": "^1.0.7",
@@ -116,7 +118,7 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
-    "@next/bundle-analyzer": "15.5.7",
+    "@next/bundle-analyzer": "15.5.27",
     "@types/connect": "^3.4.38",
     "@types/d3-array": "^3.0.3",
     "@types/d3-scale": "^4.0.2",

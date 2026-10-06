@@ -1,6 +1,8 @@
 import EtfPageLayout from '@/components/etfs/EtfPageLayout';
 import WithSuspenseEtfListingGrid from '@/components/etfs/WithSuspenseEtfListingGrid';
 import { fetchEtfListingData } from '@/utils/etf-data-utils';
+import { fetchEtfProvidersIndex, filterEtfCountriesWithListing } from '@/utils/etf-listing-fetchers';
+import { isProviderDetailEmpty } from '@/utils/etf-listing-noindex';
 import { ETF_OTHERS_GROUP_KEY } from '@/utils/etf-categorization-utils';
 import { EtfFilterParamKey, EtfSearchParams } from '@/utils/etf-filter-utils';
 import { EtfSupportedCountry } from '@/utils/etfCountryExchangeUtils';
@@ -29,13 +31,17 @@ export default async function EtfProviderDetail({ country, provider, searchParam
     country
   );
 
+  const providerSlug = slugifyEtfTag(provider);
+  const switcherCountries = await filterEtfCountriesWithListing(async (c) => !isProviderDetailEmpty(await fetchEtfProvidersIndex(c), providerSlug));
+
   return (
     <EtfPageLayout
       title={`${provider} ${displayCountry} ETFs`}
       description={`Explore ${displayCountry} ETFs issued by ${provider} with detailed financial metrics, expense ratios, dividend analysis, and AI-driven insights.`}
       currentCountry={country}
       switcherSection="providers"
-      switcherHref={(c) => etfBrowseDetailPath(c, 'providers', slugifyEtfTag(provider))}
+      switcherHref={(c) => etfBrowseDetailPath(c, 'providers', providerSlug)}
+      switcherCountries={switcherCountries}
       extraBreadcrumbs={[
         { name: 'All Providers', href: etfBrowsePath(country, 'providers'), current: false },
         { name: provider, href: etfBrowseDetailPath(country, 'providers', slugifyEtfTag(provider)), current: true },

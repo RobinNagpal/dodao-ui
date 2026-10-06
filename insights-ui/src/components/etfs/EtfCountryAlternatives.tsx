@@ -27,11 +27,20 @@ interface EtfCountryAlternativesProps {
    * isn't "on" any one country, so every supported country (including the US) is shown as a link.
    */
   includeCurrent?: boolean;
+  /** When set, only these countries are linked — detail listing pages pass the countries where that listing has ETFs. */
+  countries?: EtfSupportedCountry[];
   className?: string;
 }
 
-export default function EtfCountryAlternatives({ currentCountry, section, buildHref, includeCurrent = false, className = '' }: EtfCountryAlternativesProps) {
-  const alternatives = includeCurrent ? [...SWITCHER_ETF_COUNTRIES] : SWITCHER_ETF_COUNTRIES.filter((c) => c !== currentCountry);
+export default function EtfCountryAlternatives({
+  currentCountry,
+  section,
+  buildHref,
+  includeCurrent = false,
+  countries,
+  className = '',
+}: EtfCountryAlternativesProps) {
+  const alternatives = SWITCHER_ETF_COUNTRIES.filter((c) => (includeCurrent || c !== currentCountry) && (!countries || countries.includes(c)));
   if (alternatives.length === 0) return null;
 
   return (

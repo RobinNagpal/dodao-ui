@@ -15,111 +15,99 @@ import {
   DividendHistoryRow,
   StockFundamentalsSummary,
 } from '@/types/prismaTypes';
+import {
+  BENIGN_EMPTY_ERROR_PREFIXES,
+  isNotPublishedPayload,
+  isScrapedSectionUsable,
+  ScrapeSectionResult,
+  scrapeStockAnalyzerSection,
+  StockAnalyzerSectionId,
+} from '@/utils/stock-analyzer';
+import { isScrapingPaused, StockAnalyzerFetchError } from '@/utils/stock-analyzer/stock-analyzer-fetcher';
 
-const LAMBDA_BASE_URL = process.env.STOCK_ANALYZER_LAMBDA_URL || '';
-
-interface ScraperResponse<T = any> {
-  tickerUrl: string;
-  section: string;
-  period: string | null;
-  view: string;
-  data: T;
-  errors: any[];
-}
+type ScraperInfoDataField = keyof Omit<
+  TickerV1StockAnalyzerScrapperInfo,
+  'id' | 'tickerId' | 'ticker' | 'createdAt' | 'updatedAt' | 'createdBy' | 'updatedBy' | 'errors'
+>;
 
 interface FetchConfig {
-  endpoint: string;
-  view: 'strict' | 'normal';
-  field: keyof Omit<TickerV1StockAnalyzerScrapperInfo, 'id' | 'tickerId' | 'ticker' | 'createdAt' | 'updatedAt' | 'createdBy' | 'updatedBy' | 'errors'>;
-  lastUpdatedField: keyof Omit<
-    TickerV1StockAnalyzerScrapperInfo,
-    'id' | 'tickerId' | 'ticker' | 'createdAt' | 'updatedAt' | 'createdBy' | 'updatedBy' | 'errors'
-  >;
+  /** Which source-site page + period this row is scraped from. */
+  section: StockAnalyzerSectionId;
+  field: ScraperInfoDataField;
+  lastUpdatedField: ScraperInfoDataField;
   maxAgeInDays: number;
 }
 
 // Configuration for each data type
 const FETCH_CONFIGS: FetchConfig[] = [
   {
-    endpoint: '/summary',
-    view: 'strict',
+    section: 'summary',
     field: 'summary',
     lastUpdatedField: 'lastUpdatedAtSummary',
     maxAgeInDays: 7,
   },
   {
-    endpoint: '/dividends',
-    view: 'strict',
+    section: 'dividends',
     field: 'dividends',
     lastUpdatedField: 'lastUpdatedAtDividends',
     maxAgeInDays: 30,
   },
   {
-    endpoint: '/income-statement/annual',
-    view: 'normal',
+    section: 'income-statement/annual',
     field: 'incomeStatementAnnual',
     lastUpdatedField: 'lastUpdatedAtIncomeStatementAnnual',
     maxAgeInDays: 90,
   },
   {
-    endpoint: '/income-statement/quarterly',
-    view: 'normal',
+    section: 'income-statement/quarterly',
     field: 'incomeStatementQuarter',
     lastUpdatedField: 'lastUpdatedAtIncomeStatementQuarter',
     maxAgeInDays: 30,
   },
   {
-    endpoint: '/balance-sheet/annual',
-    view: 'normal',
+    section: 'balance-sheet/annual',
     field: 'balanceSheetAnnual',
     lastUpdatedField: 'lastUpdatedAtBalanceSheetAnnual',
     maxAgeInDays: 90,
   },
   {
-    endpoint: '/balance-sheet/quarterly',
-    view: 'normal',
+    section: 'balance-sheet/quarterly',
     field: 'balanceSheetQuarter',
     lastUpdatedField: 'lastUpdatedAtBalanceSheetQuarter',
     maxAgeInDays: 30,
   },
   {
-    endpoint: '/cashflow/annual',
-    view: 'normal',
+    section: 'cashflow/annual',
     field: 'cashFlowAnnual',
     lastUpdatedField: 'lastUpdatedAtCashFlowAnnual',
     maxAgeInDays: 90,
   },
   {
-    endpoint: '/cashflow/quarterly',
-    view: 'normal',
+    section: 'cashflow/quarterly',
     field: 'cashFlowQuarter',
     lastUpdatedField: 'lastUpdatedAtCashFlowQuarter',
     maxAgeInDays: 30,
   },
   {
-    endpoint: '/ratios/annual',
-    view: 'normal',
+    section: 'ratios/annual',
     field: 'ratiosAnnual',
     lastUpdatedField: 'lastUpdatedAtRatiosAnnual',
     maxAgeInDays: 90,
   },
   {
-    endpoint: '/ratios/quarterly',
-    view: 'normal',
+    section: 'ratios/quarterly',
     field: 'ratiosQuarter',
     lastUpdatedField: 'lastUpdatedAtRatiosQuarter',
     maxAgeInDays: 30,
   },
   {
-    endpoint: '/kpis/annual',
-    view: 'strict',
+    section: 'kpis/annual',
     field: 'kpisAnnual',
     lastUpdatedField: 'lastUpdatedAtKpisAnnual',
     maxAgeInDays: 90,
   },
   {
-    endpoint: '/kpis/quarterly',
-    view: 'strict',
+    section: 'kpis/quarterly',
     field: 'kpisQuarter',
     lastUpdatedField: 'lastUpdatedAtKpisQuarter',
     maxAgeInDays: 30,
@@ -127,29 +115,56 @@ const FETCH_CONFIGS: FetchConfig[] = [
 ];
 
 /**
- * Fetch data from AWS Lambda scraper endpoint
+ * `lastUpdatedAt*` sentinel for a section that has never been stored
+ * successfully. The columns are non-nullable, so a row created while a section
+ * was failing has to carry *some* timestamp — the epoch makes it unambiguously
+ * stale, instead of the `new Date()` that used to be written and made an empty
+ * section look freshly fetched for the next 30-90 days.
  */
-async function fetchFromLambda<T = any>(url: string, endpoint: string, view: 'strict' | 'normal'): Promise<ScraperResponse<T>> {
-  if (!LAMBDA_BASE_URL) {
-    throw new Error('STOCK_ANALYZER_LAMBDA_URL environment variable is not set');
-  }
+const NEVER_FETCHED_AT = new Date(0);
 
-  const response = await fetch(`${LAMBDA_BASE_URL}${endpoint}`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      url,
-      view,
-    }),
-  });
+/**
+ * Cap on the persisted `errors` array. It used to be read back and appended to
+ * on every request, so a section failing on a hot page grew the column without
+ * bound. Keep only the most recent entries — older ones tell you nothing the
+ * newer ones don't.
+ */
+const MAX_STORED_ERRORS = 50;
 
-  if (!response.ok) {
-    throw new Error(`Lambda request failed: ${response.status} ${response.statusText}`);
-  }
+/**
+ * How long to leave a failing section alone before scraping it again.
+ *
+ * A section can come back empty for two very different reasons: the source
+ * layout changed (fix the parser), or the ticker genuinely has no data for that
+ * statement/period (Reliance publishes no quarterly cash flow, for instance).
+ * Neither is worth re-attempting on every page render, and neither may be
+ * written over good data — so instead of stamping `lastUpdatedAt*`, the last
+ * attempt is read back off the persisted `errors` entries.
+ */
+const FAILED_SECTION_RETRY_MS = 6 * 60 * 60 * 1000;
 
-  return await response.json();
+/**
+ * Longer retry window for a section whose empty parse is proven benign (stored
+ * errors prefixed with one of `BENIGN_EMPTY_ERROR_PREFIXES`: a semi-annual
+ * reporter's H1/H2-only quarterly page, or a page where the source site shows
+ * no figures), so re-scraping every few hours just repeats the same result.
+ * Any other empty parse keeps the short window and stays an error.
+ */
+const HALF_YEARLY_RETRY_MS = 7 * 24 * 60 * 60 * 1000;
+
+export interface StoredScraperError {
+  section: string;
+  error: string;
+  timestamp: string;
+}
+
+export interface FetchStockAnalyzerDataOptions {
+  /**
+   * Re-scrape every section regardless of how recently it was stored. Used by
+   * the admin refresh endpoint to recover rows whose sections were persisted
+   * empty (and therefore look "fresh" to the age check).
+   */
+  force?: boolean;
 }
 
 /**
@@ -174,27 +189,30 @@ function isEmptySummary(summary: StockFundamentalsSummary): boolean {
 }
 
 /**
- * Determine which data needs to be fetched based on existing data and age
+ * Determine which sections need to be scraped.
+ *
+ * A section is fetched when it is missing, when what is stored for it is not
+ * usable (an empty `{}` or a `{ periods: [] }` left behind by a failed scrape),
+ * or when it is older than its `maxAgeInDays`. The stored-but-unusable case
+ * matters: without it an empty section keeps its "fresh" timestamp and is not
+ * retried until the age window expires, which is how every ticker ended up with
+ * no income statement for months after the source site changed its markup.
  */
-function determineDataToFetch(existingData: TickerV1StockAnalyzerScrapperInfo | null): FetchConfig[] {
-  if (!existingData) {
+function determineDataToFetch(existingData: TickerV1StockAnalyzerScrapperInfo | null, options: FetchStockAnalyzerDataOptions = {}): FetchConfig[] {
+  if (!existingData || options.force) {
     // If no existing data, fetch everything
     return FETCH_CONFIGS;
   }
 
-  // Check if summary is empty - if so, treat as missing and fetch all
-  // Summary is the key indicator of a successful fetch
-  if (isEmptySummary(existingData.summary as StockFundamentalsSummary)) {
-    console.log(`Found empty summary field, fetching all data`);
-    return FETCH_CONFIGS;
-  }
-
-  // Check each config to see if data needs updating based on age
+  const storedErrors: StoredScraperError[] = (existingData.errors as StoredScraperError[] | null) || [];
   const configsToFetch: FetchConfig[] = [];
 
   for (const config of FETCH_CONFIGS) {
+    const storedValue: unknown = existingData[config.field];
     const lastUpdatedAt = existingData[config.lastUpdatedField] as Date;
-    if (isDataStale(lastUpdatedAt, config.maxAgeInDays)) {
+    const needsFetch: boolean = !isScrapedSectionUsable(config.section, storedValue) || isDataStale(lastUpdatedAt, config.maxAgeInDays);
+
+    if (needsFetch && !isInFailureBackoff(storedErrors, config.section)) {
       configsToFetch.push(config);
     }
   }
@@ -202,15 +220,126 @@ function determineDataToFetch(existingData: TickerV1StockAnalyzerScrapperInfo | 
   return configsToFetch;
 }
 
+/** True while a section's most recent scrape failure is still inside the retry window. */
+function isInFailureBackoff(storedErrors: StoredScraperError[], section: StockAnalyzerSectionId): boolean {
+  let lastFailureMs: number | null = null;
+  let lastFailureWasHalfYearly = false;
+
+  for (const storedError of storedErrors) {
+    if (storedError.section !== section) {
+      continue;
+    }
+    const failedAtMs: number = new Date(storedError.timestamp).getTime();
+    if (Number.isFinite(failedAtMs) && (lastFailureMs === null || failedAtMs > lastFailureMs)) {
+      lastFailureMs = failedAtMs;
+      lastFailureWasHalfYearly = BENIGN_EMPTY_ERROR_PREFIXES.some((prefix) => storedError.error.startsWith(prefix));
+    }
+  }
+
+  const retryMs: number = lastFailureWasHalfYearly ? HALF_YEARLY_RETRY_MS : FAILED_SECTION_RETRY_MS;
+  return lastFailureMs !== null && Date.now() - lastFailureMs < retryMs;
+}
+
+/**
+ * Keep the newest MAX_STORED_ERRORS entries, but always keep each section's
+ * newest one: `isInFailureBackoff` reads it, so losing it to other sections'
+ * churn would end that section's backoff early.
+ */
+function trimErrors(errors: StoredScraperError[]): StoredScraperError[] {
+  if (errors.length <= MAX_STORED_ERRORS) {
+    return errors;
+  }
+  const keep: Set<StoredScraperError> = new Set();
+  const newestBySection: Map<string, StoredScraperError> = new Map();
+  for (const storedError of errors) {
+    newestBySection.set(storedError.section, storedError);
+  }
+  newestBySection.forEach((storedError) => keep.add(storedError));
+  for (let i = errors.length - 1; i >= 0 && keep.size < MAX_STORED_ERRORS; i--) {
+    keep.add(errors[i]);
+  }
+  return errors.filter((storedError) => keep.has(storedError));
+}
+
+function toErrorMessage(error: unknown): string {
+  return error instanceof Error ? error.message : String(error);
+}
+
+/**
+ * One line per failed section. A fetch failure (404, 5xx, timeout) is fully
+ * described by its message, so its stack is noise; keep stacks for anything
+ * unexpected.
+ */
+/** The fetcher made no request (paused after a rejection, or the pacing queue was full). */
+function isNotAttempted(error: unknown): boolean {
+  return error instanceof StockAnalyzerFetchError && (error.paused || error.deferred);
+}
+
+function logSectionScrapeError(section: string, symbol: string, error: unknown): void {
+  if (error instanceof StockAnalyzerFetchError && error.rejected) {
+    // Already logged once per pause as [scraper-rejected] by the fetcher.
+    return;
+  }
+  if (error instanceof StockAnalyzerFetchError) {
+    console.error(`Error scraping ${section} for ${symbol}: ${error.message}`);
+  } else {
+    console.error(`Error scraping ${section} for ${symbol}:`, error);
+  }
+}
+
+/**
+ * Scrapes currently running, keyed by `tickerId` (full scrape) or
+ * `tickerId:summary` (fair-value summary refresh). One page render calls
+ * several API routes (financial-info, quarterly-chart-data, ...) that each ask
+ * for the same ticker at once; without this every one of them scraped it.
+ * Lives on `globalThis` like the fetcher's state, so every bundled copy of
+ * this module shares it.
+ */
+const globalForScrapes = globalThis as typeof globalThis & { __stockAnalyzerScrapesInFlight?: Map<string, Promise<TickerV1StockAnalyzerScrapperInfo>> };
+const scrapesInFlight: Map<string, Promise<TickerV1StockAnalyzerScrapperInfo>> = (globalForScrapes.__stockAnalyzerScrapesInFlight ??= new Map());
+
+/** Join the scrape running under `key`, or start `run` there; the entry is cleared once it settles. */
+function joinOrStartScrape(key: string, run: () => Promise<TickerV1StockAnalyzerScrapperInfo>): Promise<TickerV1StockAnalyzerScrapperInfo> {
+  const running = scrapesInFlight.get(key);
+  if (running) {
+    return running;
+  }
+  const scrape: Promise<TickerV1StockAnalyzerScrapperInfo> = run().finally(() => scrapesInFlight.delete(key));
+  scrapesInFlight.set(key, scrape);
+  return scrape;
+}
+
+/** Wait until no scrape is running under `key`; its outcome is ignored. */
+async function waitForScrape(key: string): Promise<void> {
+  let running: Promise<TickerV1StockAnalyzerScrapperInfo> | undefined;
+  while ((running = scrapesInFlight.get(key))) {
+    await running.catch(() => undefined);
+  }
+}
+
 /**
  * Fetch and update stock analyzer scraper data for a ticker
  * Returns the updated or existing scraper info
+ *
+ * Single-flight per ticker: a concurrent caller awaits the scrape already
+ * running and gets its result. A `force` caller instead waits for it to finish
+ * and then scrapes again, so it never gets data from before its request.
  */
-export async function fetchAndUpdateStockAnalyzerData(ticker: TickerV1): Promise<TickerV1StockAnalyzerScrapperInfo> {
+export async function fetchAndUpdateStockAnalyzerData(
+  ticker: TickerV1,
+  options: FetchStockAnalyzerDataOptions = {}
+): Promise<TickerV1StockAnalyzerScrapperInfo> {
   if (!ticker.stockAnalyzeUrl) {
     throw new Error(`Ticker ${ticker.symbol} does not have a stockAnalyzeUrl`);
   }
 
+  if (options.force) {
+    await waitForScrape(ticker.id);
+  }
+  return joinOrStartScrape(ticker.id, () => scrapeAndStoreStockAnalyzerData(ticker, options));
+}
+
+async function scrapeAndStoreStockAnalyzerData(ticker: TickerV1, options: FetchStockAnalyzerDataOptions): Promise<TickerV1StockAnalyzerScrapperInfo> {
   // Get existing scraper info if it exists
   const existingInfo = await prisma.tickerV1StockAnalyzerScrapperInfo.findUnique({
     where: {
@@ -218,8 +347,14 @@ export async function fetchAndUpdateStockAnalyzerData(ticker: TickerV1): Promise
     },
   });
 
+  // While the source site is rejecting us, serve what is stored rather than
+  // queueing requests that would fail fast anyway.
+  if (existingInfo && (await isScrapingPaused())) {
+    return existingInfo;
+  }
+
   // Determine what data needs to be fetched
-  const configsToFetch = determineDataToFetch(existingInfo);
+  const configsToFetch = determineDataToFetch(existingInfo, options);
 
   if (configsToFetch.length === 0) {
     // All data is fresh, return existing data
@@ -227,87 +362,103 @@ export async function fetchAndUpdateStockAnalyzerData(ticker: TickerV1): Promise
     return existingInfo!;
   }
 
-  console.log(`Fetching ${configsToFetch.length} data types for ticker ${ticker.symbol}`);
+  console.log(`Scraping ${configsToFetch.length} section(s) for ticker ${ticker.symbol}`);
 
-  // Fetch all required data
-  const fetchPromises = configsToFetch.map((config) =>
-    fetchFromLambda(ticker.stockAnalyzeUrl!, config.endpoint, config.view)
-      .then((result) => ({ config, result, error: null }))
-      .catch((error) => ({ config, result: null, error }))
+  const results = await Promise.all(
+    configsToFetch.map((config) =>
+      scrapeStockAnalyzerSection(ticker.stockAnalyzeUrl!, config.section)
+        .then((result: ScrapeSectionResult) => ({ config, result, error: null as unknown }))
+        .catch((error: unknown) => ({ config, result: null as ScrapeSectionResult | null, error }))
+    )
   );
 
-  const results = await Promise.all(fetchPromises);
+  const allErrors: StoredScraperError[] = [...((existingInfo?.errors as StoredScraperError[] | null) || [])];
+  const recoveredSections: Set<StockAnalyzerSectionId> = new Set();
+  const updateData: Partial<Prisma.TickerV1StockAnalyzerScrapperInfoUpdateInput> = {};
+  const timestamp = new Date();
 
-  // Prepare data for upsert
-  const allErrors: any[] = existingInfo?.errors ? [...(existingInfo.errors as any[])] : [];
-  const updateData: Partial<Prisma.TickerV1StockAnalyzerScrapperInfoCreateInput> = {};
-  const currentTimestamp = new Date();
-
-  // Initialize createData with all required timestamp fields
+  // Every section starts out "never fetched" on create; only the ones that
+  // actually produced usable data below get a real timestamp.
   const createData: Prisma.TickerV1StockAnalyzerScrapperInfoCreateInput = {
     ticker: { connect: { id: ticker.id } },
     summary: {},
-    lastUpdatedAtSummary: currentTimestamp,
+    lastUpdatedAtSummary: NEVER_FETCHED_AT,
     dividends: {},
-    lastUpdatedAtDividends: currentTimestamp,
+    lastUpdatedAtDividends: NEVER_FETCHED_AT,
     incomeStatementAnnual: {},
-    lastUpdatedAtIncomeStatementAnnual: currentTimestamp,
+    lastUpdatedAtIncomeStatementAnnual: NEVER_FETCHED_AT,
     incomeStatementQuarter: {},
-    lastUpdatedAtIncomeStatementQuarter: currentTimestamp,
+    lastUpdatedAtIncomeStatementQuarter: NEVER_FETCHED_AT,
     balanceSheetAnnual: {},
-    lastUpdatedAtBalanceSheetAnnual: currentTimestamp,
+    lastUpdatedAtBalanceSheetAnnual: NEVER_FETCHED_AT,
     balanceSheetQuarter: {},
-    lastUpdatedAtBalanceSheetQuarter: currentTimestamp,
+    lastUpdatedAtBalanceSheetQuarter: NEVER_FETCHED_AT,
     cashFlowAnnual: {},
-    lastUpdatedAtCashFlowAnnual: currentTimestamp,
+    lastUpdatedAtCashFlowAnnual: NEVER_FETCHED_AT,
     cashFlowQuarter: {},
-    lastUpdatedAtCashFlowQuarter: currentTimestamp,
+    lastUpdatedAtCashFlowQuarter: NEVER_FETCHED_AT,
     ratiosAnnual: {},
-    lastUpdatedAtRatiosAnnual: currentTimestamp,
+    lastUpdatedAtRatiosAnnual: NEVER_FETCHED_AT,
     ratiosQuarter: {},
-    lastUpdatedAtRatiosQuarter: currentTimestamp,
-    // KPIs are optional, so we set them to null for backward compatibility
+    lastUpdatedAtRatiosQuarter: NEVER_FETCHED_AT,
     kpisAnnual: {},
-    lastUpdatedAtKpisAnnual: currentTimestamp,
+    lastUpdatedAtKpisAnnual: NEVER_FETCHED_AT,
     kpisQuarter: {},
-    lastUpdatedAtKpisQuarter: currentTimestamp,
-    errors: allErrors,
+    lastUpdatedAtKpisQuarter: NEVER_FETCHED_AT,
+    errors: [],
   };
 
   for (const { config, result, error } of results) {
-    if (error) {
-      console.error(`Error fetching ${config.endpoint} for ${ticker.symbol}:`, error);
-      allErrors.push({
-        endpoint: config.endpoint,
-        error: error.message,
-        timestamp: new Date().toISOString(),
-      });
-    } else if (result) {
-      // Set data for both update and create
-      const dataValue = result.data;
-      const timestampValue = new Date();
-
-      (updateData as any)[config.field] = dataValue;
-      (updateData as any)[config.lastUpdatedField] = timestampValue;
-      (createData as any)[config.field] = dataValue;
-      (createData as any)[config.lastUpdatedField] = timestampValue;
-
-      // Add any errors from the response
-      if (result.errors && result.errors.length > 0) {
-        allErrors.push(
-          ...result.errors.map((err: any) => ({
-            endpoint: config.endpoint,
-            error: err,
-            timestamp: new Date().toISOString(),
-          }))
-        );
+    if (error || !result) {
+      // Not attempted (paused after a rejection, or the pacing queue was full):
+      // not a failure, so no log and no stored error / retry backoff. The
+      // section stays stale and refreshes on a later view.
+      if (isNotAttempted(error)) {
+        continue;
       }
+      logSectionScrapeError(config.section, ticker.symbol, error);
+      allErrors.push({ section: config.section, error: toErrorMessage(error), timestamp: timestamp.toISOString() });
+      continue;
     }
-    // Note: For failed requests, timestamps remain null in createData
-    // This ensures that failed requests don't appear as "fresh" data
+
+    // A page that loads but parses to nothing means the source layout changed —
+    // an error. The known-benign cases — a semi-annual reporter's quarterly page
+    // (H1/H2 columns only) and a page where the source site itself shows no
+    // figures — only warn and back off for HALF_YEARLY_RETRY_MS. Never write either over data we already have, and
+    // never stamp it as fresh — otherwise one bad scrape blanks the section
+    // until its age window expires.
+    if (!isScrapedSectionUsable(config.section, result.data)) {
+      const isBenignEmpty: boolean = result.errors.some((e) => BENIGN_EMPTY_ERROR_PREFIXES.some((prefix) => e.where.startsWith(prefix)));
+      (isBenignEmpty ? console.warn : console.error)(
+        `Scraped no usable data for ${config.section} (${ticker.symbol}) from ${result.url}; keeping previously stored data`
+      );
+      allErrors.push(...result.errors.map((e) => ({ section: config.section, error: `${e.where}: ${e.message}`, timestamp: timestamp.toISOString() })));
+      continue;
+    }
+
+    // A 404 is stored as "not published" only for a section that never had data.
+    // If real data is stored, the page vanishing is a source-side change (URL
+    // move, bad deploy) — keep the data and treat it as a failure.
+    const storedValue: unknown = existingInfo?.[config.field];
+    if (isNotPublishedPayload(result.data) && isScrapedSectionUsable(config.section, storedValue) && !isNotPublishedPayload(storedValue)) {
+      console.error(`${config.section} page 404'd for ${ticker.symbol} (${result.url}) but data is stored for it; keeping the stored data`);
+      allErrors.push({ section: config.section, error: `Page not found: ${result.url}`, timestamp: timestamp.toISOString() });
+      continue;
+    }
+
+    (updateData as Record<string, unknown>)[config.field] = result.data;
+    (updateData as Record<string, unknown>)[config.lastUpdatedField] = timestamp;
+    (createData as Record<string, unknown>)[config.field] = result.data;
+    (createData as Record<string, unknown>)[config.lastUpdatedField] = timestamp;
+
+    // Clear this section's past failures so a recovered section is not held in
+    // the retry backoff by errors that no longer apply.
+    recoveredSections.add(config.section);
   }
 
-  (updateData as any).errors = allErrors;
+  const trimmedErrors = trimErrors(allErrors.filter((storedError) => !recoveredSections.has(storedError.section as StockAnalyzerSectionId)));
+  updateData.errors = trimmedErrors as unknown as Prisma.InputJsonValue;
+  createData.errors = trimmedErrors as unknown as Prisma.InputJsonValue;
 
   // Upsert the scraper info
   const scraperInfo = await prisma.tickerV1StockAnalyzerScrapperInfo.upsert({
@@ -329,12 +480,6 @@ export async function fetchAndUpdateStockAnalyzerData(ticker: TickerV1): Promise
   return scraperInfo;
 }
 
-const summaryFetchConfigFound = FETCH_CONFIGS.find((c) => c.field === 'summary');
-if (!summaryFetchConfigFound) {
-  throw new Error('stock-analyzer-scraper-utils: summary fetch config is missing from FETCH_CONFIGS');
-}
-const SUMMARY_FETCH_CONFIG: FetchConfig = summaryFetchConfigFound;
-
 /**
  * Always re-fetches the market summary from the scraper (bypasses the 7-day freshness rule).
  * Use for Fair Value so last close / snapshot time matches the latest quote, without refreshing all other sections.
@@ -345,6 +490,14 @@ export async function refreshMarketSummaryForFairValue(ticker: TickerV1): Promis
     throw new Error(`Ticker ${ticker.symbol} does not have a stockAnalyzeUrl`);
   }
 
+  // Let a running full scrape finish first: both write the row, and the full
+  // scrape's upsert would otherwise drop the error this refresh records. Then
+  // concurrent refreshes (fair value + stability) share one summary fetch.
+  await waitForScrape(ticker.id);
+  return joinOrStartScrape(`${ticker.id}:summary`, () => refreshMarketSummary(ticker));
+}
+
+async function refreshMarketSummary(ticker: TickerV1): Promise<TickerV1StockAnalyzerScrapperInfo> {
   const existingInfo = await prisma.tickerV1StockAnalyzerScrapperInfo.findUnique({
     where: { tickerId: ticker.id },
   });
@@ -353,34 +506,27 @@ export async function refreshMarketSummaryForFairValue(ticker: TickerV1): Promis
     return fetchAndUpdateStockAnalyzerData(ticker);
   }
 
-  const config = SUMMARY_FETCH_CONFIG;
-  const allErrors: any[] = existingInfo.errors ? [...(existingInfo.errors as any[])] : [];
+  const allErrors: StoredScraperError[] = [...((existingInfo.errors as StoredScraperError[] | null) || [])];
   const updateData: Partial<Prisma.TickerV1StockAnalyzerScrapperInfoUpdateInput> = {};
+  const timestamp = new Date();
 
   try {
-    const result = await fetchFromLambda(ticker.stockAnalyzeUrl, config.endpoint, config.view);
-    const timestampValue = new Date();
-    (updateData as Record<string, unknown>)[config.field] = result.data;
-    (updateData as Record<string, unknown>)[config.lastUpdatedField] = timestampValue;
-    if (result.errors && result.errors.length > 0) {
-      allErrors.push(
-        ...result.errors.map((err: any) => ({
-          endpoint: config.endpoint,
-          error: err,
-          timestamp: new Date().toISOString(),
-        }))
-      );
+    const result: ScrapeSectionResult = await scrapeStockAnalyzerSection(ticker.stockAnalyzeUrl!, 'summary');
+    if (isScrapedSectionUsable('summary', result.data)) {
+      updateData.summary = result.data as unknown as Prisma.InputJsonValue;
+      updateData.lastUpdatedAtSummary = timestamp;
+    } else {
+      allErrors.push(...result.errors.map((e) => ({ section: 'summary', error: `${e.where}: ${e.message}`, timestamp: timestamp.toISOString() })));
     }
   } catch (error) {
-    console.error(`Error fetching ${config.endpoint} for ${ticker.symbol}:`, error);
-    allErrors.push({
-      endpoint: config.endpoint,
-      error: error instanceof Error ? error.message : String(error),
-      timestamp: new Date().toISOString(),
-    });
+    if (isNotAttempted(error)) {
+      return existingInfo;
+    }
+    logSectionScrapeError('summary', ticker.symbol, error);
+    allErrors.push({ section: 'summary', error: toErrorMessage(error), timestamp: timestamp.toISOString() });
   }
 
-  updateData.errors = allErrors;
+  updateData.errors = trimErrors(allErrors) as unknown as Prisma.InputJsonValue;
 
   const scraperInfo = await prisma.tickerV1StockAnalyzerScrapperInfo.update({
     where: { tickerId: ticker.id },
@@ -636,6 +782,39 @@ export function buildFairValueValuationSnapshotFromScraperInfo(
 export async function loadFairValueValuationSnapshot(ticker: TickerV1): Promise<FairValueValuationSnapshot> {
   const scraperInfo = await refreshMarketSummaryForFairValue(ticker);
   return buildFairValueValuationSnapshotFromScraperInfo(scraperInfo);
+}
+
+export interface StabilityMarketSnapshot {
+  /** e.g. "April 2, 2026" — "today" for the stability prompt. */
+  analysisDateDisplay: string;
+  /** Last close (or open fallback) — every expected price is derived from this. */
+  currentPrice: number | null;
+  /** ISO 8601 timestamp for when `currentPrice` was captured by the scraper. */
+  priceAsOf: string | null;
+  /** Listing currency of `currentPrice`, when known. */
+  currency: string | null;
+  /** Full scraper market summary (market cap, P/E, beta, 52-week range, dividend, volume). */
+  marketSummary: StockFundamentalsSummary;
+}
+
+/**
+ * Refreshes the market summary (always — the expected prices are anchored to the
+ * live price) and returns the price + volatility/valuation context the Stability
+ * (market-drawdown) prompt needs.
+ */
+export async function loadStabilityMarketSnapshot(ticker: TickerV1): Promise<StabilityMarketSnapshot> {
+  const scraperInfo = await refreshMarketSummaryForFairValue(ticker);
+  const valuationSnapshot = buildFairValueValuationSnapshotFromScraperInfo(scraperInfo);
+  const summary = (scraperInfo.summary as StockFundamentalsSummary) || {};
+  const financialInfo = await prisma.tickerV1FinancialInfo.findUnique({ where: { tickerId: ticker.id }, select: { currency: true } });
+
+  return {
+    analysisDateDisplay: valuationSnapshot.valuationReportDateDisplay,
+    currentPrice: valuationSnapshot.lastClosePriceUsd,
+    priceAsOf: valuationSnapshot.marketSnapshotFetchedAt,
+    currency: financialInfo?.currency ?? null,
+    marketSummary: isEmptySummary(summary) ? ({} as StockFundamentalsSummary) : summary,
+  };
 }
 
 /**

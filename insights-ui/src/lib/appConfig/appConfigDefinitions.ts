@@ -18,17 +18,27 @@ import { ClaudeModel, GeminiModel, LLMProvider } from '@/types/llmConstants';
 import {
   AUTO_GEN_BUDGET_UTILIZATION_LABELS,
   AUTO_GEN_ENTITY_INFO,
+  AUTO_GEN_MARKETS_INFO,
   AUTO_GEN_MODE_LABELS,
   AUTO_GEN_MODE_PRESETS,
   AUTO_GEN_WINDOWS,
   HOURS_LEFT_TO_PERCENT_REMAINING,
 } from '@/utils/auto-generation/auto-gen-config';
-import { AutoGenBudgetUtilizationStrategy, AutoGenEntity, AutoGenMode, AutoGenWindow } from '@/utils/auto-generation/auto-gen-models';
+import { AutoGenBudgetUtilizationStrategy, AutoGenEntity, AutoGenMarkets, AutoGenMode, AutoGenWindow } from '@/utils/auto-generation/auto-gen-models';
 
 export type AppConfigValueType = 'boolean' | 'string';
 
 /** Ids of the groups the admin App Settings screen renders settings under, in display order. */
-export type AppConfigGroupId = 'claude-auth' | 'llm-defaults' | 'provider-keys' | 'report-generation' | 'auto-generation' | 'claude-endpoints';
+export type AppConfigGroupId =
+  | 'claude-auth'
+  | 'llm-defaults'
+  | 'provider-keys'
+  | 'report-generation'
+  | 'auto-generation'
+  | 'payments'
+  | 'scraping'
+  | 'logging'
+  | 'claude-endpoints';
 
 /** One choice for a setting that has a fixed set of allowed values (rendered as a dropdown). */
 export interface AppConfigOption {
@@ -102,6 +112,23 @@ export const APP_CONFIG_GROUPS: AppConfigGroup[] = [
       'Controls for the nightly Claude auto-generation job: the master on/off switch, how aggressively it spends the Claude budget, when it runs, and which report types it generates.',
   },
   {
+    id: 'payments',
+    label: 'Payments',
+    description: 'Controls for buying report credits through Stripe.',
+  },
+  {
+    id: 'scraping',
+    label: 'Fundamentals Scraping',
+    description:
+      'How stock/ETF fundamentals pages are fetched. Rejections by the source site are logged as [scraper-rejected] and pause fetching for at least 10 minutes. Changes saved here apply immediately (no redeploy); a value edited directly in AWS SSM is picked up within 30 minutes.',
+  },
+  {
+    id: 'logging',
+    label: 'Log Shipping (Grafana Cloud Loki)',
+    description:
+      'Where server errors and warnings are pushed. Shipping is on only when URL, user and token are all set, and is read once at server start — redeploy (or restart) after changing these.',
+  },
+  {
     id: 'claude-endpoints',
     label: 'Claude Endpoints & Headers',
     description: 'Low-level Claude API endpoints and request headers. Rarely change — only when a host or protocol moves.',
@@ -109,6 +136,14 @@ export const APP_CONFIG_GROUPS: AppConfigGroup[] = [
 ];
 
 export const APP_CONFIG_DEFINITIONS: AppConfigDefinition[] = [
+  {
+    key: 'STRIPE_CREDIT_PURCHASES_ENABLED',
+    label: 'Enable buying credits (Stripe)',
+    description:
+      'ON: users can buy report credits through Stripe Checkout. OFF (default): new checkouts are blocked; payments already in progress are still credited by the webhook. Balances live in Stripe, so spending existing credits also needs Stripe to be reachable — this switch does not keep spending working during a Stripe outage.',
+    type: 'boolean',
+    group: 'payments',
+  },
   {
     key: 'USE_LAMBDA_FOR_LLM_RESPONSE',
     label: 'Use Lambda for LLM response (stock & ETF reports)',
@@ -270,6 +305,19 @@ export const APP_CONFIG_DEFINITIONS: AppConfigDefinition[] = [
     })),
   },
   {
+    key: 'AUTOMATED_GENERATION_MARKETS',
+    label: 'Automated generation markets',
+    description:
+      'Which markets the nightly job may pick stocks/ETFs from, based on the listing exchange. The Claude subscription budget is finite, so by default the job spends it on the high-priority US and Canadian markets only — every other market is still generated on demand from the admin screens. This does not restrict manual generation.',
+    type: 'string',
+    group: 'auto-generation',
+    options: Object.values(AutoGenMarkets).map((markets) => ({
+      value: markets,
+      label: AUTO_GEN_MARKETS_INFO[markets].label,
+      helpNote: AUTO_GEN_MARKETS_INFO[markets].description,
+    })),
+  },
+  {
     key: 'GOOGLE_API_KEY',
     label: 'Google / Gemini API key',
     description: 'API key for the Gemini provider — report generation and grounded (Google Search) responses.',
@@ -291,6 +339,45 @@ export const APP_CONFIG_DEFINITIONS: AppConfigDefinition[] = [
     description: 'Static Claude access token (sk-ant-oat…) used only if the refresh flow fails. Short-lived — for bootstrap / dev.',
     type: 'string',
     group: 'claude-auth',
+    secret: true,
+  },
+  {
+    key: 'SCRAPER_FETCH_VIA_LAMBDA',
+    label: 'Fetch fundamentals pages via the Lambda',
+    description:
+      "ON: fetch source pages through the stock-page-fetcher Lambda's POST /html proxy, so requests leave from Lambda's IPs (use when this server's IP is being rate-limited). OFF (default): fetch directly from this server. Parsing happens in the app either way.",
+    type: 'boolean',
+    group: 'scraping',
+  },
+  {
+    key: 'STOCK_ANALYZER_LAMBDA_URL',
+    label: 'Stock page fetcher Lambda URL',
+    description:
+      'Function URL of the stock-page-fetcher Lambda (lambdas/stock-page-fetcher, https://<id>.lambda-url.us-east-1.on.aws). Used only when fetching via the Lambda is ON.',
+    type: 'string',
+    group: 'scraping',
+  },
+  {
+    key: 'LOKI_URL',
+    label: 'Loki URL',
+    description: 'Base URL of the Grafana Cloud Loki stack (e.g. https://logs-prod-018.grafana.net). The push path /loki/api/v1/push is added automatically.',
+    type: 'string',
+    group: 'logging',
+  },
+  {
+    key: 'LOKI_USER_ID',
+    label: 'Loki user (instance ID)',
+    description: 'Numeric Loki user / instance ID — the basic-auth username for the stack.',
+    type: 'string',
+    group: 'logging',
+  },
+  {
+    key: 'LOKI_TOKEN',
+    label: 'Loki write token',
+    description:
+      'Grafana Cloud access-policy token (glc_…) with the logs:write scope. A read-only token is rejected by Loki with 401 "invalid scope requested".',
+    type: 'string',
+    group: 'logging',
     secret: true,
   },
 ];

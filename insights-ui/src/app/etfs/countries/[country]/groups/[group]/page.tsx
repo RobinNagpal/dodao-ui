@@ -2,7 +2,7 @@ import EtfGroupDetail from '@/components/etfs/EtfGroupDetail';
 import { getEtfGroupByKey } from '@/utils/etf-categorization-utils';
 import { resolveEtfCountryParam } from '@/utils/etf-country-route-utils';
 import { EMPTY_ETF_GROUP_DETAIL, fetchEtfGroupDetail } from '@/utils/etf-listing-fetchers';
-import { groupDetailRobots } from '@/utils/etf-listing-noindex';
+import { groupDetailRobots, isGroupDetailEmpty } from '@/utils/etf-listing-noindex';
 import { generateEtfGroupDetailBreadcrumbJsonLd, generateEtfGroupDetailMetadata } from '@/utils/etf-metadata-generators';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
@@ -38,7 +38,10 @@ export default async function CountryEtfsByGroupPage({ params }: PageProps) {
   // failures on a valid key still fail-soft via EMPTY_ETF_GROUP_DETAIL.
   const groupObj = getEtfGroupByKey(decodedGroupKey);
   if (!groupObj) notFound();
-  const data = (await fetchEtfGroupDetail(decodedCountry, decodedGroupKey)) ?? EMPTY_ETF_GROUP_DETAIL;
+  const groupData = await fetchEtfGroupDetail(decodedCountry, decodedGroupKey);
+  // Confirmed-empty listing → real 404 (generic EtfListingNotFound page) instead of a soft 404.
+  if (isGroupDetailEmpty(groupData)) notFound();
+  const data = groupData ?? EMPTY_ETF_GROUP_DETAIL;
   const breadcrumb = generateEtfGroupDetailBreadcrumbJsonLd({
     country: decodedCountry,
     groupKey: decodedGroupKey,
@@ -47,7 +50,7 @@ export default async function CountryEtfsByGroupPage({ params }: PageProps) {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }} />
-      <EtfGroupDetail country={decodedCountry} groupKey={decodedGroupKey} data={data} />
+      {await EtfGroupDetail({ country: decodedCountry, groupKey: decodedGroupKey, data })}
     </>
   );
 }

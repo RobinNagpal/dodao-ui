@@ -2,7 +2,7 @@ import PrivateWrapper from '@/components/auth/PrivateWrapper';
 import ReportCoverActions from '@/components/industry-tariff/section-actions/ReportCoverActions';
 import { renderSection } from '@/components/industry-tariff/renderers/SectionRenderer';
 import TariffCrossLinks from '@/components/tariff-cross-links/TariffCrossLinks';
-import { getTariffIndustryDefinitionById, TariffIndustryId } from '@/scripts/industry-tariff-reports/tariff-industries';
+import { findIndustryByLegacyUrl } from '@/scripts/industry-tariff-reports/tariff-industries';
 import type { IndustryTariffReport } from '@/scripts/industry-tariff-reports/tariff-types';
 import { parseMarkdown } from '@/util/parse-markdown';
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
@@ -10,15 +10,17 @@ import { chapterSectionHref } from '@/utils/tariff-reports/chapter-route-helpers
 import { getHtsChapterRefByIndustryId } from '@/utils/tariff-cross-links/hts-chapter-ref';
 import { getChapterSlugForOldUrl } from '@/utils/tariff-reports/seeded-chapter-reports';
 import { tariffReportTag } from '@/utils/tariff-report-tags';
+import { isValidTariffIndustryId } from '@/utils/tariff-reports/tariff-input-validation';
 import { Calculator, ListTree } from 'lucide-react';
+import { notFound } from 'next/navigation';
 
 // Shared async render for the industry cover body. Used by the cover route
 // itself and by the legacy `/evaluate-industry-areas` and `/all-countries-tariff-updates`
 // URLs, which now mirror the cover content with `<link rel="canonical">`
 // pointing back at the cover instead of 301-redirecting away.
 export async function renderIndustryCoverBody(industryId: string): Promise<JSX.Element> {
-  const definition = getTariffIndustryDefinitionById(industryId as TariffIndustryId);
-
+  // Malformed / unknown industry: the `[industryId]` layout logs the rejection; 404 silently here.
+  if (!isValidTariffIndustryId(industryId)) notFound();
   const reportResponse = await fetch(`${getBaseUrlForServerSidePages()}/api/industry-tariff-reports/${industryId}`, {
     next: { tags: [tariffReportTag(industryId)] },
   });
@@ -35,6 +37,9 @@ export async function renderIndustryCoverBody(industryId: string): Promise<JSX.E
       </div>
     );
   }
+
+  // Unknown industry ids never reach here: the shared `[industryId]/layout.tsx` 404s them.
+  const industryName = findIndustryByLegacyUrl(industryId)?.name ?? industryId;
 
   const seoDetails = report.reportSeoDetails?.reportCoverSeoDetails;
   const isSeoMissing = !seoDetails || !seoDetails.title || !seoDetails.shortDescription || !seoDetails.keywords?.length;
@@ -105,7 +110,7 @@ export async function renderIndustryCoverBody(industryId: string): Promise<JSX.E
 
         {tariffUpdatesSummary.length > 0 &&
           renderSection(
-            `Latest ${definition.name} Tariff Actions`,
+            `Latest ${industryName} Tariff Actions`,
             <div>
               <div className="space-y-4 mb-4">
                 {tariffUpdatesSummary.map((tariff, index) => (

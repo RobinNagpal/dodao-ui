@@ -3,7 +3,9 @@
 import SearchBar from '@/components/core/SearchBar';
 import { UserProfile } from '@/components/core/UserProfile/UserProfile';
 import MobileTopNav from '@/components/core/TopNav/MobileTopNav';
+import CreditsNavLink from '@/components/ui/credits/CreditsNavLink';
 import { usePageTheme } from '@/components/theme/page-theme-context';
+import { useCreditBalance } from '@/hooks/useCreditBalance';
 import { IndustryWithSubIndustriesAndCounts } from '@/types/ticker-typesv1';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
@@ -12,8 +14,11 @@ import { Bars3Icon } from '@heroicons/react/24/outline';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import dynamic from 'next/dynamic';
 import { useState } from 'react';
 import { useSession } from 'next-auth/react';
+
+const LoginPopup = dynamic(() => import('@/components/login/login-popup').then((m) => ({ default: m.LoginPopup })), { ssr: false });
 
 export interface NavItem {
   name: string;
@@ -28,8 +33,9 @@ const navItems: NavItem[] = [
 ];
 
 export default function TopNav() {
-  const { data: session } = useSession();
+  const { data: session, status: sessionStatus } = useSession();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isLoginPopupOpen, setIsLoginPopupOpen] = useState(false);
   const pathname = usePathname() ?? ''; // <-- safe for null
   // The navbar themes itself by toggling its own `.dark` class rather than by
   // token swap: it already ships full `… bg-bg` variants, so
@@ -38,7 +44,15 @@ export default function TopNav() {
   const navTheme = usePageTheme();
   const isStocksRoute = pathname.startsWith('/stocks');
   const isEtfsRoute = pathname.startsWith('/etfs');
-  const isHomeRoute = pathname === '/';
+  const isReportRoute = isStocksRoute || isEtfsRoute;
+  // Report regeneration (the only thing credits buy) lives on these pages, so
+  // only they show the balance. Nothing renders until it loads: no spinner.
+  const credits = useCreditBalance(Boolean(session) && isReportRoute);
+  // Signed-out visitors get a "Buy Credits" pill in the same slot, so the
+  // feature is discoverable before logging in. Gated on `unauthenticated`
+  // rather than `!session` so it doesn't flash while the session is loading.
+  const showBuyCreditsPrompt = isReportRoute && sessionStatus === 'unauthenticated';
+  const openLoginPopup = () => setIsLoginPopupOpen(true);
 
   // Lazily fetch industries: only when the mobile menu is actually opened on a
   // /stocks route. Firing from the click handler (instead of a useEffect that
@@ -72,7 +86,8 @@ export default function TopNav() {
               <Image alt="KoalaGains icon" src="/images/android-icon-512x512.png" className="h-8 w-auto sm:hidden" width={32} height={32} />
               <Image alt="KoalaGains logo" src="/koalagain_logo.png" className="hidden sm:block h-8 w-auto" width={160} height={32} />
             </Link>
-            {!isHomeRoute && (
+            {/* Search only where the main nav links are hidden, so the two never collide. */}
+            {(isStocksRoute || isEtfsRoute) && (
               <div className="hidden ml-4 lg:block lg:w-auto lg:min-w-[24rem]">
                 <div className="max-w-full lg:max-w-none">
                   <SearchBar placeholder={isEtfsRoute ? 'Search ETFs...' : 'Search stocks...'} variant="navbar" kind={isEtfsRoute ? 'etfs' : 'stocks'} />
@@ -88,18 +103,20 @@ export default function TopNav() {
             </button>
           </div>
 
-          <div className="hidden lg:flex lg:flex-1 gap-x-2 lg:justify-end">
+          <div className="hidden lg:flex lg:flex-none gap-x-2 lg:justify-end">
             <div className="flex gap-6 items-center">
+              {credits !== undefined && <CreditsNavLink credits={credits} />}
+              {showBuyCreditsPrompt && <CreditsNavLink onBuyCreditsClick={openLoginPopup} />}
               {isStocksRoute && session && (
                 <PopoverGroup className="flex gap-x-6">
-                  <Link href="/favourites" className="text-sm/6 font-semibold text-heading hover:text-link">
+                  <Link href="/favourites" className="whitespace-nowrap text-sm/6 font-semibold text-heading hover:text-link">
                     My Favourite Stocks
                   </Link>
                 </PopoverGroup>
               )}
               {isEtfsRoute && session && (
                 <PopoverGroup className="flex gap-x-6">
-                  <Link href="/etf-favourites" className="text-sm/6 font-semibold text-heading hover:text-link">
+                  <Link href="/etf-favourites" className="whitespace-nowrap text-sm/6 font-semibold text-heading hover:text-link">
                     My Favourite ETFs
                   </Link>
                 </PopoverGroup>
@@ -107,13 +124,16 @@ export default function TopNav() {
               {!isStocksRoute && !isEtfsRoute && (
                 <div className="hidden lg:flex lg:gap-x-6">
                   {navItems.map((item) => (
-                    <Link key={item.name} href={item.href} className="text-sm/6 font-semibold text-heading hover:text-link">
+                    <Link key={item.name} href={item.href} className="whitespace-nowrap text-sm/6 font-semibold text-heading hover:text-link">
                       {item.name}
                     </Link>
                   ))}
                 </div>
               )}
-              <UserProfile />
+              {/* Fixed-width slot so swapping "Log in" for the avatar doesn't move the links. */}
+              <div className="flex w-12 justify-end">
+                <UserProfile />
+              </div>
             </div>
           </div>
         </nav>
@@ -124,7 +144,13 @@ export default function TopNav() {
           industries={industries}
           industriesLoading={industriesLoading}
           navItems={navItems}
+          isLoggedIn={Boolean(session)}
+          credits={credits}
+          showBuyCreditsPrompt={showBuyCreditsPrompt}
+          onBuyCreditsClick={openLoginPopup}
         />
+
+        {showBuyCreditsPrompt && <LoginPopup open={isLoginPopupOpen} onClose={() => setIsLoginPopupOpen(false)} />}
       </header>
     </div>
   );

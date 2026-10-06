@@ -5,9 +5,11 @@ import SingleCardLayout from '@/layouts/SingleCardLayout';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
+import { assertValidCrowdFundingPageParams } from '@/utils/crowd-funding-param-utils';
 
 export default async function Page({ params }: { params: Promise<{ projectId: string }> }) {
   const { projectId } = await params;
+  assertValidCrowdFundingPageParams({ projectId });
   const res = await fetch(`${getBaseUrl()}/api/crowd-funding/projects/${projectId}/edit`);
   const data: { projectDetails: ProjectDetails } = await res.json();
   const breadcrumbs: BreadcrumbsOjbect[] = [

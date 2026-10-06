@@ -4,7 +4,7 @@ import EmptyStateCard from '@/components/ui/EmptyStateCard';
 import EtfScoreBadge from '@/components/ui/badges/EtfScoreBadge';
 import { getEtfGroupKey } from '@/utils/etf-categorization-utils';
 import Link from 'next/link';
-import React, { use } from 'react';
+import React, { Suspense, use } from 'react';
 import EtfPagination from './EtfPagination';
 
 function parseNumericString(value: string | null): number | null {
@@ -140,7 +140,11 @@ export default function EtfListingGrid({
         ))}
       </div>
 
-      {totalPages > 1 && <EtfPagination currentPage={page} totalPages={totalPages} />}
+      {totalPages > 1 && (
+        <Suspense fallback={null}>
+          <EtfPagination currentPage={page} totalPages={totalPages} />
+        </Suspense>
+      )}
     </div>
   );
 }

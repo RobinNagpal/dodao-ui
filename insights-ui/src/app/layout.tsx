@@ -1,4 +1,5 @@
 import TopNav from '@/components/core/TopNav/TopNav';
+import ReportResultNotifier from '@/components/credits/ReportResultNotifier';
 import { LoginPopupAutoPrompt } from '@/components/login/login-popup-auto-prompt';
 import ThemeProvider from '@/components/theme/ThemeProvider';
 import { themeColors } from '@/util/theme-colors';
@@ -66,6 +67,7 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
             <TopNav />
             {children}
             <LoginPopupAutoPrompt />
+            <ReportResultNotifier />
           </ThemeProvider>
         </Providers>
 

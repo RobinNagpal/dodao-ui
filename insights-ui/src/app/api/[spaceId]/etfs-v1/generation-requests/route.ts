@@ -6,6 +6,7 @@ import { EtfGenerationRequestStatus, EtfReportType } from '@/types/etf/etf-analy
 import { ensureMorDataForAnalysis } from '@/utils/etf-analysis-reports/mor-scrape-utils';
 import { upsertEtfGenerationRequest } from '@/utils/etf-analysis-reports/etf-generation-request-utils';
 import { calculateEtfPendingSteps } from '@/utils/etf-analysis-reports/etf-report-steps-statuses';
+import { parsePageSizeParam, parseSkipParam } from '@/utils/pagination-param-utils';
 import { EtfGenerationRequest } from '@prisma/client';
 import { NextRequest } from 'next/server';
 
@@ -115,14 +116,14 @@ async function getHandler(
 ): Promise<EtfGenerationRequestsResponse> {
   const url = new URL(req.url);
 
-  const inProgressSkip = parseInt(url.searchParams.get('inProgressSkip') || '0', 10);
-  const inProgressTake = parseInt(url.searchParams.get('inProgressTake') || '50', 10);
-  const failedSkip = parseInt(url.searchParams.get('failedSkip') || '0', 10);
-  const failedTake = parseInt(url.searchParams.get('failedTake') || '50', 10);
-  const notStartedSkip = parseInt(url.searchParams.get('notStartedSkip') || '0', 10);
-  const notStartedTake = parseInt(url.searchParams.get('notStartedTake') || '50', 10);
-  const completedSkip = parseInt(url.searchParams.get('completedSkip') || '0', 10);
-  const completedTake = parseInt(url.searchParams.get('completedTake') || '50', 10);
+  const inProgressSkip = parseSkipParam(url.searchParams, 'inProgressSkip');
+  const inProgressTake = parsePageSizeParam(url.searchParams, 'inProgressTake', 50);
+  const failedSkip = parseSkipParam(url.searchParams, 'failedSkip');
+  const failedTake = parsePageSizeParam(url.searchParams, 'failedTake', 50);
+  const notStartedSkip = parseSkipParam(url.searchParams, 'notStartedSkip');
+  const notStartedTake = parsePageSizeParam(url.searchParams, 'notStartedTake', 50);
+  const completedSkip = parseSkipParam(url.searchParams, 'completedSkip');
+  const completedTake = parsePageSizeParam(url.searchParams, 'completedTake', 50);
 
   const searchWhere = buildEtfSearchWhere(url.searchParams.get('q'));
 

@@ -12,6 +12,7 @@ import {
   saveFutureGrowthFactorAnalysisResponse,
   saveManagementTeamResponse,
   savePastPerformanceFactorAnalysisResponse,
+  saveStabilityResponse,
 } from '@/utils/analysis-reports/save-report-utils';
 
 export interface SaveTickerReportAndAdvanceArgs {
@@ -89,6 +90,9 @@ export async function saveTickerReportAndAdvanceGeneration(args: SaveTickerRepor
       break;
     case ReportType.MANAGEMENT_TEAM:
       await saveManagementTeamResponse(ticker, exchange, llmResponse, { skipRevalidation });
+      break;
+    case ReportType.STABILITY:
+      await saveStabilityResponse(ticker, exchange, llmResponse, { skipRevalidation });
       break;
     case ReportType.FINAL_SUMMARY:
       await saveFinalSummaryResponse(ticker, exchange, llmResponse.finalSummary, llmResponse.metaDescription, llmResponse.aboutReport, { skipRevalidation });

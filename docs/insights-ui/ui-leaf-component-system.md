@@ -177,7 +177,7 @@ Rules for leaves:
 | Component | Responsibility |
 |---|---|
 | `MetricCell` | Label + value box; `sentiment` colors the value; `size`/`loading`. |
-| `StatusBadge` | Status pill (`success`/`warning`/`neutral`/`archived`). |
+| `StatusBadge` | Status pill (`success`/`danger`/`warning`/`info`/`accent`/`neutral`/`archived`). |
 | `PassFailBadge` | Green/red pass-fail pill. |
 | `ScenarioOutlookBadge` | Probability / Direction / Timeframe scenario pills. |
 | `AppliedFilterChip` | Removable filter chip. |

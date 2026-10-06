@@ -1,6 +1,8 @@
 import EtfPageLayout from '@/components/etfs/EtfPageLayout';
 import WithSuspenseEtfListingGrid from '@/components/etfs/WithSuspenseEtfListingGrid';
 import { fetchEtfListingData } from '@/utils/etf-data-utils';
+import { fetchEtfAssetClassesIndex, filterEtfCountriesWithListing } from '@/utils/etf-listing-fetchers';
+import { isAssetClassDetailEmpty } from '@/utils/etf-listing-noindex';
 import { ETF_OTHERS_GROUP, ETF_OTHERS_GROUP_KEY } from '@/utils/etf-categorization-utils';
 import { EtfFilterParamKey, EtfSearchParams, ETF_ASSET_CLASS_OPTIONS } from '@/utils/etf-filter-utils';
 import { EtfSupportedCountry } from '@/utils/etfCountryExchangeUtils';
@@ -30,13 +32,17 @@ export default async function EtfAssetClassDetail({ country, assetClass, searchP
     country
   );
 
+  const assetClassSlug = slugifyEtfTag(filterValue);
+  const switcherCountries = await filterEtfCountriesWithListing(async (c) => !isAssetClassDetailEmpty(await fetchEtfAssetClassesIndex(c), assetClassSlug));
+
   return (
     <EtfPageLayout
       title={`${displayAssetClass} ${displayCountry} ETFs`}
       description={`Explore ${displayCountry} ETFs in the ${displayAssetClass} asset class with detailed financial metrics, expense ratios, dividend analysis, and AI-driven insights.`}
       currentCountry={country}
       switcherSection="asset-classes"
-      switcherHref={(c) => etfBrowseDetailPath(c, 'asset-classes', slugifyEtfTag(filterValue))}
+      switcherHref={(c) => etfBrowseDetailPath(c, 'asset-classes', assetClassSlug)}
+      switcherCountries={switcherCountries}
       extraBreadcrumbs={[
         { name: 'All Asset Classes', href: etfBrowsePath(country, 'asset-classes'), current: false },
         { name: displayAssetClass, href: etfBrowseDetailPath(country, 'asset-classes', slugifyEtfTag(filterValue)), current: true },

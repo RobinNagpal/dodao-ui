@@ -75,6 +75,10 @@ export function getAllEtfGroups(): ReadonlyArray<EtfGroup> {
   return categoriesConfig.groups;
 }
 
+export function getAllEtfCategories(): ReadonlyArray<EtfCategoryToGroup> {
+  return categoriesConfig.categories;
+}
+
 export function getCategoriesForGroupKey(key: string | null | undefined): EtfCategoryToGroup[] {
   if (!key) return [];
   return categoriesConfig.categories.filter((c) => c.group === key);
@@ -112,10 +116,13 @@ export function getEtfFundCategoryHierarchy(fundCategory: string | null | undefi
   if (!fundCategory) return { groupKey: null, groupName: null, fundCategoryName: null, fundCategorySlug: null };
   const groupKey = getEtfGroupKey(fundCategory) ?? null;
   const groupName = getEtfGroupName(fundCategory) ?? null;
+  // Use the canonical category (e.g. raw "Health Care" → "Health") so the breadcrumb links to the
+  // category page the listings actually bucket this ETF into, not a non-existent alias slug.
+  const categoryName = getEtfCategoryByName(fundCategory)?.name ?? fundCategory;
   return {
     groupKey,
     groupName,
-    fundCategoryName: fundCategory,
-    fundCategorySlug: slugifyEtfCategory(fundCategory),
+    fundCategoryName: categoryName,
+    fundCategorySlug: slugifyEtfCategory(categoryName),
   };
 }

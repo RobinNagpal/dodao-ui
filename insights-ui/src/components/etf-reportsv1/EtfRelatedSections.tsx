@@ -69,6 +69,76 @@ export async function fetchEtfAvailableSlugs(exchange: string, symbol: string): 
   return Array.from(available);
 }
 
+const SLUG_TO_ANALYSIS_CATEGORY: Readonly<Record<string, EtfAnalysisCategory>> = Object.fromEntries(
+  Object.entries(ANALYSIS_CATEGORY_TO_SLUG).map(([category, slug]) => [slug, category as EtfAnalysisCategory])
+);
+
+/** Stable `SYMBOL|EXCHANGE` key for peer-availability lookups. */
+export function etfPeerKey(peer: { symbol: string; exchange: string }): string {
+  return `${peer.symbol.toUpperCase()}|${peer.exchange.toUpperCase()}`;
+}
+
+/**
+ * Bulk variant of {@link fetchEtfAvailableSlugs}: given a list of *peer* ETFs and
+ * a single sub-report slug, returns the {@link etfPeerKey}s that actually have
+ * publishable content for that slug.
+ *
+ * The "Similar ETFs" table links every peer to the same sub-report the reader is
+ * on; a peer without that report renders the not-found page, which Google logs
+ * as "Excluded by 'noindex' tag". Peers missing from this set link to their main
+ * ETF page instead. Same predicates as `fetchEtfAvailableSlugs` and the
+ * per-category sitemaps, so the link graph and the sitemap stay in sync.
+ */
+export async function filterEtfPeersWithSlug(peers: ReadonlyArray<{ symbol: string; exchange: string }>, slug: string): Promise<ReadonlySet<string>> {
+  if (peers.length === 0) return new Set<string>();
+
+  const etfRecords = await prisma.etf.findMany({
+    where: {
+      spaceId: KoalaGainsSpaceId,
+      OR: peers.map((peer) => ({ symbol: peer.symbol, exchange: peer.exchange })),
+    },
+    select: { id: true, symbol: true, exchange: true },
+  });
+  if (etfRecords.length === 0) return new Set<string>();
+
+  const keyByEtfId = new Map(etfRecords.map((record) => [record.id, etfPeerKey(record)]));
+  const etfIds = Array.from(keyByEtfId.keys());
+
+  const withReport = async (): Promise<string[]> => {
+    if (slug === 'holdings') {
+      const rows = await prisma.etfMorPortfolioInfo.findMany({ where: { etfId: { in: etfIds } }, select: { etfId: true } });
+      return rows.map((row) => row.etfId);
+    }
+    if (slug === 'competition') {
+      const rows = await prisma.etfVsCompetition.findMany({
+        where: { spaceId: KoalaGainsSpaceId, etfId: { in: etfIds }, overallAnalysisDetails: { not: '' } },
+        select: { etfId: true },
+      });
+      return rows.map((row) => row.etfId);
+    }
+    const categoryKey = SLUG_TO_ANALYSIS_CATEGORY[slug];
+    if (!categoryKey) return [];
+    const rows = await prisma.etfCategoryAnalysisResult.findMany({
+      where: {
+        spaceId: KoalaGainsSpaceId,
+        etfId: { in: etfIds },
+        categoryKey,
+        summary: { not: '' },
+        overallAnalysisDetails: { not: '' },
+      },
+      select: { etfId: true },
+    });
+    return rows.map((row) => row.etfId);
+  };
+
+  const available = new Set<string>();
+  for (const etfId of await withReport()) {
+    const key = keyByEtfId.get(etfId);
+    if (key) available.add(key);
+  }
+  return available;
+}
+
 export interface EtfRelatedSectionsProps {
   /** Promise returned by {@link fetchEtfAvailableSlugs}. Unwrapped with `use()` inside a `<Suspense>` boundary. */
   availableSlugsPromise: Promise<string[]>;

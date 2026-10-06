@@ -1,0 +1,90 @@
+import { prisma } from '@/prisma';
+import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
+import { getCanonicalUrl } from '@/utils/getBaseUrlForServerSidePages';
+import { delayedSitemapLastmod } from '@/utils/sitemap-lastmod-utils';
+import { NextResponse } from 'next/server';
+import { SitemapStream, streamToPromise } from 'sitemap';
+
+export const dynamic = 'force-dynamic';
+
+interface SiteMapUrl {
+  url: string;
+  changefreq: string;
+  priority?: number;
+  lastmod?: string;
+}
+
+async function generateStabilityUrls(): Promise<SiteMapUrl[]> {
+  const urls: SiteMapUrl[] = [];
+
+  const records = await prisma.tickerV1StabilityReport.findMany({
+    where: {
+      spaceId: KoalaGainsSpaceId,
+      // The stability page renders both `summary` and `detailedAnalysis`
+      // as markdown sections; either being empty makes the page thin.
+      summary: { not: '' },
+      detailedAnalysis: { not: '' },
+    },
+    select: {
+      updatedAt: true,
+      createdAt: true,
+      ticker: {
+        select: {
+          symbol: true,
+          exchange: true,
+        },
+      },
+    },
+  });
+
+  for (const record of records) {
+    const url = `/stocks/${record.ticker.exchange}/${record.ticker.symbol}/stability`;
+    urls.push({
+      url,
+      changefreq: 'weekly',
+      priority: 0.6,
+      lastmod: delayedSitemapLastmod(record.updatedAt, record.createdAt),
+    });
+  }
+
+  return urls;
+}
+
+async function GET(): Promise<NextResponse<Buffer | string>> {
+  try {
+    const urls = await generateStabilityUrls();
+
+    // streamToPromise() rejects on an empty SitemapStream, so emit a valid
+    // empty urlset directly until the first stability report exists.
+    if (urls.length === 0) {
+      const empty = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"></urlset>';
+      return new NextResponse(empty, {
+        status: 200,
+        headers: {
+          'Content-Type': 'application/xml',
+        },
+      });
+    }
+
+    const smStream = new SitemapStream({ hostname: getCanonicalUrl() });
+
+    for (const url of urls) {
+      smStream.write(url);
+    }
+
+    smStream.end();
+    const response: Buffer = await streamToPromise(smStream);
+
+    return new NextResponse(response as BodyInit, {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/xml',
+      },
+    });
+  } catch (error) {
+    console.error('Error generating stability sitemap:', error);
+    return new NextResponse('Internal Server Error', { status: 500 });
+  }
+}
+
+export { GET };

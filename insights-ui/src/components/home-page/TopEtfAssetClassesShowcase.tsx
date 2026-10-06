@@ -14,12 +14,11 @@ export interface TopEtfAssetClassesShowcaseProps {
 }
 
 /**
- * Home-page showcase of top-rated ETFs grouped by asset class — the ETF twin of the stocks
- * `TopIndustriesShowcase`. Reuses the `/etfs/asset-classes` cards so the home page and listing
- * pages stay visually consistent. Empty asset classes (e.g. US Multi-Asset) are hidden and the
- * "Others" bucket is appended so the grid stays full. Renders nothing when no populated ETFs exist.
+ * Asset-class cards that actually have ETFs, plus the "Others" bucket when it has any. Empty asset
+ * classes (e.g. US Multi-Asset) are skipped so the grid never shows a blank card. Shared with the
+ * ETF listing 404 page.
  */
-export default function TopEtfAssetClassesShowcase({ country, data }: TopEtfAssetClassesShowcaseProps): React.JSX.Element | null {
+export function buildPopulatedEtfAssetClassItems(country: EtfSupportedCountry, data: EtfAssetClassesIndexResponse): EtfGroupingCardSpec[] {
   const assetClasses = ETF_ASSET_CLASS_OPTIONS.filter((opt) => opt.value !== '');
 
   // Only surface asset classes that actually have ETFs — keeps empty buckets (e.g. US Multi-Asset)
@@ -45,6 +44,18 @@ export default function TopEtfAssetClassesShowcase({ country, data }: TopEtfAsse
       etfs: data.others.items,
     });
   }
+
+  return items;
+}
+
+/**
+ * Home-page showcase of top-rated ETFs grouped by asset class — the ETF twin of the stocks
+ * `TopIndustriesShowcase`. Reuses the `/etfs/asset-classes` cards so the home page and listing
+ * pages stay visually consistent. Empty asset classes (e.g. US Multi-Asset) are hidden and the
+ * "Others" bucket is appended so the grid stays full. Renders nothing when no populated ETFs exist.
+ */
+export default function TopEtfAssetClassesShowcase({ country, data }: TopEtfAssetClassesShowcaseProps): React.JSX.Element | null {
+  const items = buildPopulatedEtfAssetClassItems(country, data);
 
   if (items.length === 0) {
     return null;

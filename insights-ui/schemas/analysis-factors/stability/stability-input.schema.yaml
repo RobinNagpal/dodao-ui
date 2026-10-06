@@ -1,0 +1,61 @@
+$schema: 'http://json-schema.org/draft-07/schema#'
+type: object
+additionalProperties: false
+properties:
+  name:
+    type: string
+    description: 'The full name of the company or REIT being analyzed (e.g., AvalonBay Communities Inc.).'
+  symbol:
+    type: string
+    description: 'The stock ticker symbol of the company or REIT (e.g., AVB).'
+  exchange:
+    type: string
+    description: 'Exchange code, e.g. "NASDAQ" or "NYSE"'
+  industryKey:
+    type: string
+    description: 'The broad industry the stock belongs to (e.g., REITS).'
+  industryName:
+    type: string
+    description: 'Name of the industry'
+  industryDescription:
+    type: string
+    description: 'A few lines explaining the industry'
+  subIndustryKey:
+    type: string
+    description: 'The specific sub-industry of the stock (e.g., OFFICE_REITS).'
+  subIndustryName:
+    type: string
+    description: 'Name of the sub-industry'
+  subIndustryDescription:
+    type: string
+    description: 'A few lines explaining the sub-industry'
+  analysisDateDisplay:
+    type: string
+    description: 'Human-readable date the analysis is being run on, e.g. "April 2, 2026". Treat this as today.'
+  priceAsOf:
+    type: ['string', 'null']
+    description: 'ISO 8601 timestamp for when currentPrice was captured. Echo it back as referencePriceAsOf so every price shown to a reader can be dated.'
+  currentPrice:
+    type: ['number', 'null']
+    description: 'Latest close price of the stock. Every expected price in the output must be derived from this number.'
+  currency:
+    type: ['string', 'null']
+    description: 'Currency of currentPrice, e.g. "USD".'
+  marketSnapshot:
+    type: string
+    description: 'JSON string with the latest market snapshot for the stock — market cap, P/E, forward P/E, beta, 52-week range, day range, dividend yield, volume. Use it to ground the drawdown estimates.'
+required:
+  - name
+  - symbol
+  - exchange
+  - industryKey
+  - subIndustryKey
+  - industryDescription
+  - subIndustryDescription
+  - industryName
+  - subIndustryName
+  - analysisDateDisplay
+  - priceAsOf
+  - currentPrice
+  - currency
+  - marketSnapshot

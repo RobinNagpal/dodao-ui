@@ -1,0 +1,614 @@
+import * as cheerio from 'cheerio';
+import {
+  BalanceAnnualData,
+  BalanceQuarterlyData,
+  CashFlowAnnualData,
+  CashFlowQuarterlyData,
+  DividendHistoryRow,
+  DividendsData,
+  FinancialMeta,
+  IncomeAnnualData,
+  IncomeQuarterlyData,
+  KpisAnnualData,
+  KpisQuarterlyData,
+  RatiosAnnualData,
+  RatiosQuarterlyData,
+  StockFundamentalsSummary,
+} from '@/types/prismaTypes';
+import { normalizeCellValue, ParsedFinancialTable, parseFinancialTables, toValueKey } from '@/utils/stock-analyzer/stock-analysis-table-parser';
+import { parseNumericStringValue } from '@/utils/etf-filter-utils';
+
+/**
+ * Page-shape-specific parsers built on top of {@link parseFinancialTables}.
+ *
+ * Every parser returns the exact JSON shape already persisted on
+ * `TickerV1StockAnalyzerScrapperInfo`, so nothing downstream (chart route,
+ * financial-info route, analysis prompts) has to change.
+ */
+
+export type StatementData =
+  | IncomeAnnualData
+  | IncomeQuarterlyData
+  | BalanceAnnualData
+  | BalanceQuarterlyData
+  | CashFlowAnnualData
+  | CashFlowQuarterlyData
+  | RatiosAnnualData
+  | RatiosQuarterlyData;
+
+export type KpisData = KpisAnnualData | KpisQuarterlyData;
+
+export type StatementPeriodType = 'annual' | 'quarterly';
+
+/** Column headings that are not a fiscal period and must not become a data point. */
+const NON_PERIOD_COLUMN_LABELS: ReadonlySet<string> = new Set(['Current', 'TTM', 'Upgrade']);
+
+const QUARTER_LABEL_PATTERN = /^Q[1-4]\s+\d{4}$/;
+const FISCAL_YEAR_LABEL_PATTERN = /^FY\s+\d{4}$/;
+
+/**
+ * Row labels whose camelCase form would not match the key the rest of the app
+ * reads. `quarterly-chart-data/route.ts` looks for `revenue`, `grossMargin`,
+ * `ebit`, `freeCashFlow`, `eps` and `sharesOutstanding`; the source page spells
+ * the last two "EPS (Diluted)" and "Shares Outstanding (Diluted)".
+ */
+const ROW_LABEL_TO_VALUE_KEY: Readonly<Record<string, string>> = {
+  'EPS (Diluted)': 'eps',
+  'EPS (Basic)': 'basicEps',
+  'Shares Outstanding (Diluted)': 'sharesOutstanding',
+  'Shares Outstanding (Basic)': 'basicSharesOutstanding',
+  'Revenue (Total)': 'totalRevenue',
+  "Shareholders' Equity": 'shareholdersEquity',
+};
+
+function valueKeyForRowLabel(label: string): string {
+  return ROW_LABEL_TO_VALUE_KEY[label] ?? toValueKey(label);
+}
+
+function isPeriodColumn(label: string, periodType: StatementPeriodType): boolean {
+  if (!label || NON_PERIOD_COLUMN_LABELS.has(label)) {
+    return false;
+  }
+  return periodType === 'quarterly' ? QUARTER_LABEL_PATTERN.test(label) : FISCAL_YEAR_LABEL_PATTERN.test(label);
+}
+
+/**
+ * Some data sources on the site (e.g. CHAI, served from its "nasdaq" source)
+ * carry no fiscal-period labels at all: the table has a single header row
+ * `Quarter Ending | Jun '26 Jun 30, 2026 | …` (or `Year Ending | TTM | Dec '25
+ * Dec 31, 2025 | …`) instead of `Fiscal Quarter | Q2 2026 | …` over a
+ * `Period Ending` row. The `<th id>` still carries the ISO period end.
+ */
+const PERIOD_END_ONLY_HEADER: Readonly<Record<StatementPeriodType, string>> = {
+  quarterly: 'Quarter Ending',
+  annual: 'Year Ending',
+};
+const PERIOD_END_ONLY_LABEL_PATTERN = /^[A-Z][a-z]{2} '\d{2}\b/;
+
+const MONTH_NAMES: readonly string[] = [
+  'January',
+  'February',
+  'March',
+  'April',
+  'May',
+  'June',
+  'July',
+  'August',
+  'September',
+  'October',
+  'November',
+  'December',
+];
+
+/** `Fiscal year is October - September.` => 9 (1-based month the fiscal year ends in). */
+function fiscalYearEndMonth(meta: FinancialMeta): number | null {
+  const match: RegExpMatchArray | null = meta.fiscalYearNote?.match(/Fiscal year is [A-Za-z]+ - ([A-Za-z]+)\./) ?? null;
+  if (!match) {
+    return null;
+  }
+  const index: number = MONTH_NAMES.indexOf(match[1]);
+  return index >= 0 ? index + 1 : null;
+}
+
+/**
+ * Derive the canonical `Q2 2026` / `FY 2025` label from a period-end date, using
+ * the site's convention that a fiscal year is named after the calendar year it
+ * ends in. A period ending in the first half of a month is attributed to the
+ * previous month, which is how 52/53-week calendars land (Apple's June quarter
+ * can end on Jul 1).
+ */
+function periodLabelFromPeriodEnd(periodEnd: string, periodType: StatementPeriodType, endMonth: number): string {
+  const [rawYear, rawMonth, day] = periodEnd.split('-').map(Number);
+  let year: number = rawYear;
+  let month: number = rawMonth;
+  if (day < 15) {
+    month -= 1;
+    if (month === 0) {
+      month = 12;
+      year -= 1;
+    }
+  }
+  const fiscalYear: number = month > endMonth ? year + 1 : year;
+  if (periodType === 'annual') {
+    return `FY ${fiscalYear}`;
+  }
+  const monthsIntoFiscalYear: number = (month - endMonth + 11) % 12;
+  return `Q${Math.floor(monthsIntoFiscalYear / 3) + 1} ${fiscalYear}`;
+}
+
+/**
+ * The persisted period label for each column of `table` (null for a column that
+ * is not a fiscal period of `periodType`, e.g. `TTM`).
+ */
+function periodLabelsForTable(table: ParsedFinancialTable, periodType: StatementPeriodType, meta: FinancialMeta): (string | null)[] {
+  const isPeriodEndOnlyTable: boolean = table.periodColumnLabel === PERIOD_END_ONLY_HEADER[periodType];
+  const endMonth: number | null = isPeriodEndOnlyTable ? fiscalYearEndMonth(meta) : null;
+
+  return table.columns.map((column) => {
+    if (isPeriodColumn(column.label, periodType)) {
+      return column.label;
+    }
+    if (endMonth !== null && column.periodEnd && PERIOD_END_ONLY_LABEL_PATTERN.test(column.label)) {
+      return periodLabelFromPeriodEnd(column.periodEnd, periodType, endMonth);
+    }
+    return null;
+  });
+}
+
+/**
+ * Read the "Financials in millions USD. Fiscal year is January - December."
+ * caption that sits above the tables.
+ */
+function parseFinancialMeta(html: string): FinancialMeta {
+  const $: cheerio.CheerioAPI = cheerio.load(html);
+  const main = $('main');
+  const pageText: string = (main.length > 0 ? main : $('body')).text().replace(/\s+/g, ' ');
+
+  const meta: FinancialMeta = {};
+
+  const unitAndCurrency: RegExpMatchArray | null = pageText.match(/in (thousands|millions|billions)\s+([A-Z]{3})\b/);
+  if (unitAndCurrency) {
+    meta.unit = unitAndCurrency[1];
+    meta.currency = unitAndCurrency[2];
+  } else {
+    const currencyOnly: RegExpMatchArray | null = pageText.match(/Financials in ([A-Z]{3})\b/);
+    if (currencyOnly) {
+      meta.currency = currencyOnly[1];
+    }
+  }
+
+  const fiscalYearNote: RegExpMatchArray | null = pageText.match(/Fiscal year is [^.]+\./);
+  if (fiscalYearNote) {
+    meta.fiscalYearNote = fiscalYearNote[0].trim();
+  }
+
+  return meta;
+}
+
+/**
+ * Parse a statement page (income statement / balance sheet / cash flow /
+ * ratios) into `{ meta, periods }`.
+ *
+ * A page splits its rows over several tables that share the same period
+ * columns, so all of them are merged into one flat `values` map per period —
+ * which is what the persisted shape has always been.
+ */
+export function parseStatementPage(html: string, periodType: StatementPeriodType): StatementData {
+  const tables: ParsedFinancialTable[] = parseFinancialTables(html);
+  const meta: FinancialMeta = parseFinancialMeta(html);
+
+  // Period identity is the column label; a page can order/repeat columns
+  // differently per table, so index by label and keep first-seen order.
+  const valuesByPeriod: Map<string, Record<string, string | number | null>> = new Map();
+  const periodEndByPeriod: Map<string, string | null> = new Map();
+
+  for (const table of tables) {
+    const periodLabels: (string | null)[] = periodLabelsForTable(table, periodType, meta);
+    for (const row of table.rows) {
+      const key: string = valueKeyForRowLabel(row.label);
+
+      table.columns.forEach((column, columnIndex) => {
+        const periodLabel: string | null = periodLabels[columnIndex];
+        if (!periodLabel) {
+          return;
+        }
+        if (!valuesByPeriod.has(periodLabel)) {
+          valuesByPeriod.set(periodLabel, {});
+          periodEndByPeriod.set(periodLabel, column.periodEnd);
+        }
+        const values: Record<string, string | number | null> = valuesByPeriod.get(periodLabel)!;
+        // First table wins for a duplicated row label (e.g. "Net Income"
+        // appears on both the cash-flow and supplementary tables).
+        if (!(key in values)) {
+          values[key] = normalizeCellValue(row.cells[columnIndex] ?? null);
+        }
+      });
+    }
+  }
+
+  const periods = Array.from(valuesByPeriod.entries()).map(([label, values]) => {
+    const periodEnd: string | null = periodEndByPeriod.get(label) ?? null;
+    const periodKey = periodType === 'quarterly' ? { fiscalQuarter: label } : { fiscalYear: label };
+    return {
+      ...periodKey,
+      ...(periodEnd ? { periodEnd } : {}),
+      values,
+    };
+  });
+
+  return { meta, periods } as StatementData;
+}
+
+/**
+ * Parse the metrics ("KPIs") page.
+ *
+ * Unlike the statements, the KPI tables are kept grouped by their heading —
+ * `{ revenue: {...}, revenueByGeography: {...}, keyPerformanceIndicators: {...} }`
+ * — which is the shape already stored for this section.
+ */
+export function parseKpisPage(html: string, periodType: StatementPeriodType): KpisData {
+  const tables: ParsedFinancialTable[] = parseFinancialTables(html);
+  const meta: FinancialMeta = parseFinancialMeta(html);
+
+  const groupsByPeriod: Map<string, Record<string, Record<string, string | number | null>>> = new Map();
+  const periodEndByPeriod: Map<string, string | null> = new Map();
+
+  for (const table of tables) {
+    const groupKey: string = table.sectionTitle ? toValueKey(table.sectionTitle) : 'metrics';
+    const periodLabels: (string | null)[] = periodLabelsForTable(table, periodType, meta);
+
+    for (const row of table.rows) {
+      const key: string = valueKeyForRowLabel(row.label);
+
+      table.columns.forEach((column, columnIndex) => {
+        const periodLabel: string | null = periodLabels[columnIndex];
+        if (!periodLabel) {
+          return;
+        }
+        if (!groupsByPeriod.has(periodLabel)) {
+          groupsByPeriod.set(periodLabel, {});
+          periodEndByPeriod.set(periodLabel, column.periodEnd);
+        }
+        const groups: Record<string, Record<string, string | number | null>> = groupsByPeriod.get(periodLabel)!;
+        const group: Record<string, string | number | null> = (groups[groupKey] ??= {});
+        if (!(key in group)) {
+          group[key] = normalizeCellValue(row.cells[columnIndex] ?? null);
+        }
+      });
+    }
+  }
+
+  const periods = Array.from(groupsByPeriod.entries()).map(([label, groups]) => {
+    const periodEnd: string | null = periodEndByPeriod.get(label) ?? null;
+    const periodKey = periodType === 'quarterly' ? { fiscalQuarter: label } : { fiscalYear: label };
+    return {
+      ...periodKey,
+      ...(periodEnd ? { periodEnd } : {}),
+      values: groups as unknown as Record<string, string | number | null>,
+    };
+  });
+
+  return { meta, periods } as KpisData;
+}
+
+/* =============================================================================
+   SUMMARY (the quote page's two stat tables)
+============================================================================= */
+
+function parseStatTables(html: string): Record<string, string> {
+  const $: cheerio.CheerioAPI = cheerio.load(html);
+  const stats: Record<string, string> = {};
+
+  $('table tr').each((_index, row) => {
+    const cells = $(row).find('td').toArray();
+    if (cells.length !== 2) {
+      return;
+    }
+    const label: string = $(cells[0]).text().replace(/\s+/g, ' ').trim();
+    const value: string = $(cells[1]).text().replace(/\s+/g, ' ').trim();
+    if (label && value && !(label in stats)) {
+      stats[label] = value;
+    }
+  });
+
+  return stats;
+}
+
+/** `69.08B -55.8%` => `69.08B`; the trailing change is a separate stat. */
+function firstToken(value: string | undefined): string | undefined {
+  const token: string | undefined = value?.trim().split(/\s+/)[0];
+  return token && token !== 'n/a' ? token : undefined;
+}
+
+function toNumber(value: string | undefined): number | undefined {
+  const token: string | undefined = firstToken(value);
+  if (token === undefined) {
+    return undefined;
+  }
+  const parsed: number = Number(token.replace(/[,$]/g, ''));
+  return Number.isFinite(parsed) ? parsed : undefined;
+}
+
+function toRange(value: string | undefined): { low: number; high: number } | undefined {
+  const match: RegExpMatchArray | undefined | null = value?.match(/^([\d.,]+)\s*-\s*([\d.,]+)$/);
+  if (!match) {
+    return undefined;
+  }
+  const low: number = Number(match[1].replace(/,/g, ''));
+  const high: number = Number(match[2].replace(/,/g, ''));
+  return Number.isFinite(low) && Number.isFinite(high) ? { low, high } : undefined;
+}
+
+function toDate(value: string | undefined): Date | undefined {
+  const trimmed: string | undefined = value?.trim();
+  if (!trimmed || trimmed === 'n/a') {
+    return undefined;
+  }
+  const parsed: Date = new Date(trimmed);
+  return Number.isNaN(parsed.getTime()) ? undefined : parsed;
+}
+
+/** `$0.53 (2.41%)` => `{ amount: 0.53, yieldPct: '2.41%' }` */
+function parseDividendStat(value: string | undefined): { amount?: number; yieldPct?: string } | undefined {
+  if (!value || value.trim() === 'n/a') {
+    return undefined;
+  }
+  const amount: number | undefined = toNumber(value);
+  const yieldMatch: RegExpMatchArray | null = value.match(/\(([\d.]+%)\)/);
+  if (amount === undefined && !yieldMatch) {
+    return undefined;
+  }
+  return {
+    ...(amount === undefined ? {} : { amount }),
+    ...(yieldMatch ? { yieldPct: yieldMatch[1] } : {}),
+  };
+}
+
+/**
+ * Parse the quote page into {@link StockFundamentalsSummary}.
+ *
+ * Note the key names come from the persisted type, not from the source page:
+ * `financial-info/route.ts` reads `epsTtm` / `averageVolume`, so those are the
+ * keys written here.
+ */
+export function parseSummaryPage(html: string): StockFundamentalsSummary {
+  const stats: Record<string, string> = parseStatTables(html);
+
+  const summary: StockFundamentalsSummary = {};
+
+  const assign = <K extends keyof StockFundamentalsSummary>(key: K, value: StockFundamentalsSummary[K] | undefined): void => {
+    if (value !== undefined) {
+      summary[key] = value;
+    }
+  };
+
+  assign('marketCap', firstToken(stats['Market Cap']));
+  assign('revenueTtm', firstToken(stats['Revenue (ttm)']));
+  assign('netIncomeTtm', firstToken(stats['Net Income']));
+  assign('sharesOut', firstToken(stats['Shares Out']));
+  assign('epsTtm', toNumber(stats['EPS']));
+  assign('peRatio', toNumber(stats['PE Ratio']));
+  assign('forwardPE', toNumber(stats['Forward PE']));
+  assign('dividend', parseDividendStat(stats['Dividend']));
+  assign('exDividendDate', toDate(stats['Ex-Dividend Date']));
+  assign('volume', toNumber(stats['Volume']));
+  assign('averageVolume', toNumber(stats['Average Volume']));
+  assign('open', toNumber(stats['Open']));
+  assign('previousClose', toNumber(stats['Previous Close']));
+  assign('daysRange', toRange(stats["Day's Range"]));
+  assign('week52Range', toRange(stats['52-Week Range']));
+  assign('beta', toNumber(stats['Beta']));
+  assign('rsi', toNumber(stats['RSI (14)']));
+  assign('earningsDate', toDate(stats['Earnings Date']));
+
+  return summary;
+}
+
+/* =============================================================================
+   DIVIDENDS
+============================================================================= */
+
+/**
+ * The dividend page shows its headline stats as
+ * `<div>Payout Ratio <div class="… font-semibold …">63.71%</div></div>` cards.
+ */
+function parseDividendStatCards(html: string): Record<string, string> {
+  const $: cheerio.CheerioAPI = cheerio.load(html);
+  const cards: Record<string, string> = {};
+
+  $('div.font-semibold').each((_index, valueElement) => {
+    const container = $(valueElement).parent();
+    const value: string = $(valueElement).text().replace(/\s+/g, ' ').trim();
+    const label: string = container.clone().children().remove().end().text().replace(/\s+/g, ' ').trim();
+    if (label && value && !(label in cards)) {
+      cards[label] = value;
+    }
+  });
+
+  return cards;
+}
+
+export function parseDividendsPage(html: string): DividendsData {
+  const cards: Record<string, string> = parseDividendStatCards(html);
+  const $: cheerio.CheerioAPI = cheerio.load(html);
+
+  const history: DividendHistoryRow[] = [];
+  $('table').each((_tableIndex, table) => {
+    const headers: string[] = $(table)
+      .find('thead tr')
+      .last()
+      .find('th')
+      .toArray()
+      .map((cell) => $(cell).text().replace(/\s+/g, ' ').trim());
+
+    if (!headers.includes('Ex-Dividend Date') || !headers.includes('Cash Amount')) {
+      return;
+    }
+
+    $(table)
+      .find('tbody tr')
+      .each((_rowIndex, row) => {
+        const cells: string[] = $(row)
+          .find('td')
+          .toArray()
+          .map((cell) => $(cell).text().replace(/\s+/g, ' ').trim());
+        if (cells.length < headers.length) {
+          return;
+        }
+        const cellByHeader = (header: string): string | undefined => {
+          const index: number = headers.indexOf(header);
+          return index >= 0 ? cells[index] : undefined;
+        };
+
+        const exDividendDate: Date | undefined = toDate(cellByHeader('Ex-Dividend Date'));
+        const amount: number | undefined = toNumber(cellByHeader('Cash Amount'));
+        if (!exDividendDate && amount === undefined) {
+          return;
+        }
+        history.push({
+          ...(exDividendDate ? { exDividendDate } : {}),
+          ...(amount === undefined ? {} : { amount }),
+          ...(toDate(cellByHeader('Record Date')) ? { recordDate: toDate(cellByHeader('Record Date')) } : {}),
+          ...(toDate(cellByHeader('Pay Date')) ? { payDate: toDate(cellByHeader('Pay Date')) } : {}),
+        });
+      });
+  });
+
+  const summary: DividendsData['summary'] = {};
+  const annualDividend: number | undefined = toNumber(cards['Annual Dividend']);
+  if (annualDividend !== undefined) summary.annualDividend = annualDividend;
+  if (cards['Dividend Yield'] && cards['Dividend Yield'] !== 'n/a') summary.yieldPct = cards['Dividend Yield'];
+  const exDividendDate: Date | undefined = toDate(cards['Ex-Dividend Date']);
+  if (exDividendDate) summary.exDividendDate = exDividendDate;
+  if (cards['Payout Ratio'] && cards['Payout Ratio'] !== 'n/a') summary.payoutRatioPct = cards['Payout Ratio'];
+  const growth: string | undefined = cards['Dividend Growth(1Y)'] ?? cards['Dividend Growth'];
+  if (growth && growth !== 'n/a') summary.dividendGrowth1Y = growth;
+
+  // Kept even when it reads `n/a`: a company that has never paid a dividend
+  // still renders the stat cards, and this is the field that distinguishes
+  // "scraped a real page, this stock pays nothing" from "scraped nothing at
+  // all". Without it a non-payer would look like a failed scrape forever.
+  if (cards['Payout Frequency']) summary.payoutFrequency = cards['Payout Frequency'];
+
+  return { meta: {}, summary, history };
+}
+
+/* =============================================================================
+   ETF SUMMARY (the ETF quote page's two stat tables)
+============================================================================= */
+
+/**
+ * The subset of an ETF quote page the app persists to `EtfFinancialInfo`.
+ *
+ * Values stay in the source page's own notation (`0.06%`, `Quarterly`) because
+ * the caller already knows how to convert them; the two size fields are the
+ * exception — see {@link parseEtfSummaryPage}.
+ */
+export interface EtfSummaryStats {
+  assets?: string;
+  expenseRatio?: string;
+  peRatio?: number;
+  sharesOut?: string;
+  dividendTtm?: number;
+  dividendYield?: string;
+  payoutFrequency?: string;
+  payoutRatio?: string;
+  volume?: number;
+  week52Low?: number;
+  week52High?: number;
+  beta?: number;
+  holdings?: number;
+}
+
+/**
+ * Expand a compact size string into the plain digits already stored in
+ * `EtfFinancialInfo.aum` / `.sharesOut` (`$112.21B` => `112210000000`).
+ *
+ * The column holds a formatted string that the UI and the ETF filters both
+ * read through `parseNumericStringValue`, which accepts either notation — but
+ * every existing row is plain digits, so keep writing that and leave the rows
+ * homogeneous.
+ */
+function toExpandedAmount(value: string | undefined): string | undefined {
+  const expanded: number | null = parseNumericStringValue(value ?? null);
+  return expanded === null ? undefined : String(expanded);
+}
+
+/** Parse an ETF quote page into the stats persisted on `EtfFinancialInfo`. */
+export function parseEtfSummaryPage(html: string): EtfSummaryStats {
+  const stats: Record<string, string> = parseStatTables(html);
+
+  const summary: EtfSummaryStats = {};
+
+  const assign = <K extends keyof EtfSummaryStats>(key: K, value: EtfSummaryStats[K] | undefined): void => {
+    if (value !== undefined) {
+      summary[key] = value;
+    }
+  };
+
+  assign('assets', toExpandedAmount(firstToken(stats['Assets'])));
+  assign('expenseRatio', firstToken(stats['Expense Ratio']));
+  assign('peRatio', toNumber(stats['PE Ratio']));
+  assign('sharesOut', toExpandedAmount(firstToken(stats['Shares Out'])));
+  assign('dividendTtm', toNumber(stats['Dividend (ttm)']));
+  assign('dividendYield', firstToken(stats['Dividend Yield']));
+  assign('payoutFrequency', firstToken(stats['Payout Frequency']));
+  assign('payoutRatio', firstToken(stats['Payout Ratio']));
+  assign('volume', toNumber(stats['Volume']));
+  assign('week52Low', toNumber(stats['52-Week Low']));
+  assign('week52High', toNumber(stats['52-Week High']));
+  assign('beta', toNumber(stats['Beta']));
+  assign('holdings', toNumber(stats['Holdings']));
+
+  return summary;
+}
+
+/* =============================================================================
+   SECONDARY LISTINGS
+============================================================================= */
+
+/**
+ * Find the "Main Listing" link in a quote page's nav, if there is one.
+ *
+ * A secondary listing — a second share class (TSX `QBR.B`, whose financials are
+ * filed under `QBR.A`) or a cross-listing (TSX `SHOP`, reported under the US
+ * listing) — gets only Overview / Dividends / History pages of its own. Every
+ * statement sub-page 404s, and the nav carries a `Main Listing` link to the
+ * ticker that does have them.
+ *
+ * Returns the raw `href` (root-relative or absolute); the caller resolves it and
+ * checks it points at the same site. Protocol-relative hrefs (`//host/path`) are
+ * rejected here — they would otherwise pass a `startsWith('/')` test and resolve
+ * to a different host.
+ *
+ * Returns null when the page is a main listing itself, or when the link is
+ * present in a shape this does not recognise; the caller logs that case, because
+ * "no link found" and "layout changed" look identical from here.
+ */
+export function parseMainListingHref(html: string): string | null {
+  const $: cheerio.CheerioAPI = cheerio.load(html);
+
+  let mainListingHref: string | null = null;
+
+  $('nav a[href], li a[href]').each((_index, anchor) => {
+    if (mainListingHref) {
+      return;
+    }
+    // The label reads "Main Listing" plus an external-link icon; match it
+    // anywhere in the text so a prefixed symbol ("QBR.A (Main Listing)")
+    // still counts.
+    const label: string = $(anchor).text().replace(/\s+/g, ' ').trim();
+    if (!/\bMain Listing\b/i.test(label)) {
+      return;
+    }
+    const href: string = ($(anchor).attr('href') ?? '').trim();
+    if (href.startsWith('//') || !href) {
+      return;
+    }
+    if (href.startsWith('/') || /^https?:\/\//i.test(href)) {
+      mainListingHref = href;
+    }
+  });
+
+  return mainListingHref;
+}

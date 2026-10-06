@@ -2,32 +2,11 @@ import { withAdminOrToken } from '@/app/api/helpers/withAdminOrToken';
 import { prisma } from '@/prisma';
 import { KoalaGainsJwtTokenPayload } from '@/types/auth';
 import { revalidateEtfAndExchangeTag } from '@/utils/etf-cache-utils';
+import { isEtfSummaryUsable, ScrapeEtfSummaryResult, scrapeEtfSummary } from '@/utils/stock-analyzer';
+import { EtfSummaryStats } from '@/utils/stock-analyzer/stock-analysis-section-parsers';
 import { NextRequest } from 'next/server';
 
 type Num = number | null;
-
-interface LambdaEtfStats {
-  assets?: string;
-  expenseRatio?: string;
-  peRatio?: number;
-  sharesOut?: string;
-  dividendTtm?: number;
-  dividendYield?: string;
-  payoutFrequency?: string;
-  payoutRatio?: string;
-  volume?: number;
-  week52Low?: number;
-  week52High?: number;
-  beta?: number;
-  holdings?: number;
-}
-
-interface LambdaResponse {
-  etfUrl: string;
-  section: 'etf-summary';
-  data: LambdaEtfStats;
-  errors?: unknown[];
-}
 
 export interface FetchEtfFinancialInfoResponse {
   success: boolean;
@@ -35,7 +14,6 @@ export interface FetchEtfFinancialInfoResponse {
   errors: unknown[];
 }
 
-const LAMBDA_BASE_URL = process.env.ETF_ANALYZER_LAMBDA_URL || '';
 const STOCK_ANALYZE_BASE_URL = process.env.NEXT_PUBLIC_STOCK_ANALYZE_BASE_URL || '';
 
 function normalizeUpperTrim(v: string | null | undefined): string {
@@ -54,10 +32,6 @@ async function postHandler(
   _userContext: KoalaGainsJwtTokenPayload | null,
   { params }: { params: Promise<{ spaceId: string; exchange: string; etf: string }> }
 ): Promise<FetchEtfFinancialInfoResponse> {
-  if (!LAMBDA_BASE_URL) {
-    throw new Error('ETF_ANALYZER_LAMBDA_URL environment variable is not set');
-  }
-
   const { spaceId, exchange, etf } = await params;
   const symbol = normalizeUpperTrim(etf);
   const ex = normalizeUpperTrim(exchange);
@@ -69,19 +43,18 @@ async function postHandler(
 
   const etfUrl = `${STOCK_ANALYZE_BASE_URL}/etf/${etfRecord.symbol.toLowerCase()}/`;
 
-  const resp = await fetch(`${LAMBDA_BASE_URL}/summary`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ url: etfUrl }),
-  });
+  const scraped: ScrapeEtfSummaryResult = await scrapeEtfSummary(etfUrl);
+  const data: EtfSummaryStats = scraped.data;
+  const errors: unknown[] = scraped.errors;
 
-  if (!resp.ok) {
-    throw new Error(`Lambda request failed: ${resp.status} ${resp.statusText}`);
+  // A page that loads but parses to nothing means the source layout changed.
+  // Writing it would blank every column (each field below falls back to null),
+  // so leave the stored row alone and report the failure instead — the same
+  // rule the stock scraper applies in `stock-analyzer-scraper-utils.ts`.
+  if (!isEtfSummaryUsable(data)) {
+    console.error(`Scraped no usable ETF summary for ${etfRecord.symbol} from ${scraped.url}; keeping previously stored financial info`);
+    return { success: false, etfUrl: scraped.url, errors };
   }
-
-  const json = (await resp.json()) as LambdaResponse;
-  const data = json?.data ?? {};
-  const errors = (json?.errors ?? []) as unknown[];
 
   await prisma.etfFinancialInfo.upsert({
     where: { etfId: etfRecord.id },
@@ -121,7 +94,7 @@ async function postHandler(
   // Ensure ETF details page (force-static) reflects latest financial info immediately.
   revalidateEtfAndExchangeTag(etfRecord.symbol, ex);
 
-  return { success: true, etfUrl: json?.etfUrl ?? etfUrl, errors };
+  return { success: true, etfUrl: scraped.url, errors };
 }
 
 export const POST = withAdminOrToken<FetchEtfFinancialInfoResponse>(postHandler);

@@ -12,8 +12,15 @@ import { getMarkdownContentForIndustryAreas } from '@/scripts/industry-tariff-re
 import { ReportType, type IndustryTariffReport, type PageSeoDetails, type TariffReportSeoDetails } from '@/scripts/industry-tariff-reports/tariff-types';
 import { parseChapterBodyMarkdown } from '@/util/parse-markdown';
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
-import { CHAPTER_REPORT_SECTIONS, ChapterRouteInfo, chapterSectionHref, getChapterSectionCopy } from '@/utils/tariff-reports/chapter-route-helpers';
+import {
+  CHAPTER_REPORT_SECTIONS,
+  ChapterRouteInfo,
+  chapterEditHref,
+  chapterSectionHref,
+  getChapterSectionCopy,
+} from '@/utils/tariff-reports/chapter-route-helpers';
 import { tariffReportTag } from '@/utils/tariff-report-tags';
+import { isValidTariffChapterSlug } from '@/utils/tariff-reports/tariff-input-validation';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import type { ReactNode } from 'react';
@@ -39,6 +46,8 @@ function pickSectionSeo(seo: TariffReportSeoDetails | null | undefined, sectionS
 }
 
 async function fetchChapterTariffReport(chapterSlug: string): Promise<ChapterTariffReportResponse | null> {
+  // Malformed slug: the chapter layout logs the rejection and 404s; skip the fetch silently here.
+  if (!isValidTariffChapterSlug(chapterSlug)) return null;
   const response = await fetch(`${getBaseUrlForServerSidePages()}/api/industry-tariff-reports/chapters/${chapterSlug}`, {
     next: { tags: [tariffReportTag(chapterSlug)] },
   });
@@ -85,20 +94,19 @@ interface ChapterArticleHeaderProps {
   chapter: ChapterRouteInfo;
   pageTitle: string;
   actions: ChapterSectionAction[];
+  currentSlug: string;
 }
 
-function ChapterArticleHeader({ chapter, pageTitle, actions }: ChapterArticleHeaderProps): JSX.Element {
+function ChapterArticleHeader({ chapter, pageTitle, actions, currentSlug }: ChapterArticleHeaderProps): JSX.Element {
   return (
     <header className="mb-6 pb-4 border-b border-color">
       <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
         <div className="flex-1">
           <h1 className="text-2xl md:text-3xl font-bold tracking-tight heading-color">{pageTitle}</h1>
         </div>
-        {actions.length > 0 && (
-          <PrivateWrapper>
-            <ChapterSectionActions chapterSlug={chapter.slug} actions={actions} />
-          </PrivateWrapper>
-        )}
+        <PrivateWrapper>
+          <ChapterSectionActions chapterSlug={chapter.slug} actions={actions} editHref={chapterEditHref(chapter.slug, currentSlug)} />
+        </PrivateWrapper>
       </div>
     </header>
   );
@@ -158,7 +166,7 @@ export function ChapterArticle({
         {publishedDate && <meta itemProp="datePublished" content={publishedDate.toISOString()} />}
         {toolsCrossLinks}
         <ChapterRelatedSections chapter={chapter} currentSlug={currentSlug} />
-        <ChapterArticleHeader chapter={chapter} pageTitle={pageTitle} actions={actions} />
+        <ChapterArticleHeader chapter={chapter} pageTitle={pageTitle} actions={actions} currentSlug={currentSlug} />
         {children}
         <footer className="mt-8 pt-6 border-t border-color">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">

@@ -1,6 +1,23 @@
 import { Prisma, TickerAnalysisCategory } from '@prisma/client';
+import {
+  MANAGEMENT_TEAM_ALIGNMENT_VERDICT_LABELS,
+  ManagementTeamAlignmentVerdict,
+  STABILITY_RESILIENCE_VERDICT_DESCRIPTIONS,
+  STABILITY_RESILIENCE_VERDICT_LABELS,
+  StabilityResilienceVerdict,
+} from '@/types/ticker-typesv1';
 import { NextRequest } from 'next/server';
 import { ReadonlyURLSearchParams } from 'next/navigation';
+// Generic numeric-filter primitives (operator encoding, K/M/B/T parsing, Prisma
+// fragment building) shared with the ETF filters — reused, not duplicated.
+import {
+  NUMERIC_FILTER_OP_SYMBOLS,
+  formatCompactNumber,
+  matchesNumericCriteria,
+  numericCriteriaToPrismaFilter,
+  parseNumericFilterValue,
+  type NumericFilterOp,
+} from '@/utils/etf-filter-utils';
 
 /** ----- Types and Enums ----- */
 
@@ -11,6 +28,12 @@ export enum FilterType {
   SEARCH = 'search',
   MARKET_CAP = 'marketCap',
   PE_RATIO = 'peRatio',
+  DIVIDEND_YIELD = 'dividendYield',
+  FORWARD_PE = 'forwardPe',
+  REPORT_DATE_FROM = 'reportDateFrom',
+  REPORT_DATE_TO = 'reportDateTo',
+  MANAGEMENT_ALIGNMENT = 'managementAlignment',
+  STABILITY_RESILIENCE = 'stabilityResilience',
 }
 
 // Enum for parameter keys to ensure consistency
@@ -24,6 +47,12 @@ export enum FilterParamKey {
   SEARCH = 'search',
   MARKET_CAP = 'marketCap',
   PE_RATIO = 'peRatio',
+  DIVIDEND_YIELD = 'dividendYield',
+  FORWARD_PE = 'forwardPe',
+  REPORT_DATE_FROM = 'reportDateFrom',
+  REPORT_DATE_TO = 'reportDateTo',
+  MANAGEMENT_ALIGNMENT = 'managementAlignment',
+  STABILITY_RESILIENCE = 'stabilityResilience',
 }
 
 // Type for search parameters
@@ -68,22 +97,56 @@ export interface AppliedSearchFilter extends AppliedFilterBase {
   searchQuery: string;
 }
 
-// Interface for market cap filters
-export interface AppliedMarketCapFilter extends AppliedFilterBase {
-  type: FilterType.MARKET_CAP;
+// Filter types backed by a numeric metric (bucket range, `negative`, or `op:value`).
+export type NumericFilterType = FilterType.MARKET_CAP | FilterType.PE_RATIO | FilterType.DIVIDEND_YIELD | FilterType.FORWARD_PE;
+
+// Interface for numeric filters (market cap, PE, dividend yield, forward PE)
+export interface AppliedNumericFilter extends AppliedFilterBase {
+  type: NumericFilterType;
+  paramKey: FilterParamKey;
+  // The original URL param value, kept verbatim so the modal can round-trip it
+  // back into the matching control (bucket value, `negative`, or `op:value`).
+  raw: string;
   minValue?: number;
   maxValue?: number;
+  // Operator form: `op` + `value` (e.g. PE < 15).
+  op?: NumericFilterOp;
+  value?: number;
+  negative?: boolean;
 }
 
-// Interface for PE ratio filters
-export interface AppliedPERatioFilter extends AppliedFilterBase {
-  type: FilterType.PE_RATIO;
-  minValue?: number;
-  maxValue?: number;
+// Filter types backed by the report date (when the stock's report was last generated).
+export type DateFilterType = FilterType.REPORT_DATE_FROM | FilterType.REPORT_DATE_TO;
+
+// Interface for report-date filters (one bound each, so the two combine into a range)
+export interface AppliedDateFilter extends AppliedFilterBase {
+  type: DateFilterType;
+  paramKey: FilterParamKey;
+  // The `YYYY-MM-DD` URL value, kept verbatim so the date input re-hydrates.
+  raw: string;
+}
+
+// Filter types backed by a report verdict the user picks from a fixed list.
+export type MultiSelectFilterType = FilterType.MANAGEMENT_ALIGNMENT | FilterType.STABILITY_RESILIENCE;
+
+// Interface for multi-select verdict filters (a stock matches any selected value)
+export interface AppliedMultiSelectFilter extends AppliedFilterBase {
+  type: MultiSelectFilterType;
+  paramKey: FilterParamKey;
+  // The comma-separated URL value, normalized to the recognized options only,
+  // so the modal control re-hydrates to exactly what is being filtered on.
+  raw: string;
+  values: string[];
 }
 
 // Union type for all filter types
-export type AppliedFilter = AppliedCategoryFilter | AppliedTotalFilter | AppliedSearchFilter | AppliedMarketCapFilter | AppliedPERatioFilter;
+export type AppliedFilter =
+  | AppliedCategoryFilter
+  | AppliedTotalFilter
+  | AppliedSearchFilter
+  | AppliedNumericFilter
+  | AppliedDateFilter
+  | AppliedMultiSelectFilter;
 
 // Type for selected filters map
 export type SelectedFiltersMap = Record<string, string>;
@@ -99,6 +162,12 @@ export interface FilterParams {
   [FilterParamKey.SEARCH]?: string;
   [FilterParamKey.MARKET_CAP]?: string;
   [FilterParamKey.PE_RATIO]?: string;
+  [FilterParamKey.DIVIDEND_YIELD]?: string;
+  [FilterParamKey.FORWARD_PE]?: string;
+  [FilterParamKey.REPORT_DATE_FROM]?: string;
+  [FilterParamKey.REPORT_DATE_TO]?: string;
+  [FilterParamKey.MANAGEMENT_ALIGNMENT]?: string;
+  [FilterParamKey.STABILITY_RESILIENCE]?: string;
 }
 
 /** ----- Constants (readonly) ----- */
@@ -171,6 +240,188 @@ export const PE_RATIO_OPTIONS: ReadonlyArray<ThresholdOption> = [
   { label: 'Negative / No Earnings', value: 'negative' },
 ] as const;
 
+// Dividend Yield options (percent)
+export const DIVIDEND_YIELD_OPTIONS: ReadonlyArray<ThresholdOption> = [
+  { label: 'Any', value: '' },
+  { label: 'None (< 0.5%)', value: '0-0.5' },
+  { label: 'Low (0.5% - 2%)', value: '0.5-2' },
+  { label: 'Moderate (2% - 4%)', value: '2-4' },
+  { label: 'High (4% - 6%)', value: '4-6' },
+  { label: 'Very High (> 6%)', value: '6-' },
+] as const;
+
+// Forward PE options — same buckets as trailing PE
+export const FORWARD_PE_OPTIONS: ReadonlyArray<ThresholdOption> = [
+  { label: 'Any', value: '' },
+  { label: 'Low (< 15)', value: '0-15' },
+  { label: 'Moderate (15 - 25)', value: '15-25' },
+  { label: 'High (25 - 50)', value: '25-50' },
+  { label: 'Very High (> 50)', value: '50-' },
+  { label: 'Negative / No Earnings', value: 'negative' },
+] as const;
+
+// Definition of a numeric stock filter (drives parsing, chips, and the modal controls)
+export interface NumericFilterDef {
+  type: NumericFilterType;
+  paramKey: FilterParamKey;
+  label: string;
+  options: ReadonlyArray<ThresholdOption>;
+  /** Hint shown under the custom operator input (e.g. "e.g. 1B, 500M"). */
+  hint?: string;
+}
+
+export const NUMERIC_FILTER_DEFS: ReadonlyArray<NumericFilterDef> = [
+  {
+    type: FilterType.MARKET_CAP,
+    paramKey: FilterParamKey.MARKET_CAP,
+    label: 'Market Cap',
+    options: MARKET_CAP_OPTIONS,
+    hint: 'e.g. 1B, 500M',
+  },
+  {
+    type: FilterType.PE_RATIO,
+    paramKey: FilterParamKey.PE_RATIO,
+    label: 'PE Ratio',
+    options: PE_RATIO_OPTIONS,
+    hint: 'e.g. 15',
+  },
+  {
+    type: FilterType.DIVIDEND_YIELD,
+    paramKey: FilterParamKey.DIVIDEND_YIELD,
+    label: 'Dividend Yield',
+    options: DIVIDEND_YIELD_OPTIONS,
+    hint: 'Percent, e.g. 4',
+  },
+  {
+    type: FilterType.FORWARD_PE,
+    paramKey: FilterParamKey.FORWARD_PE,
+    label: 'Forward PE',
+    options: FORWARD_PE_OPTIONS,
+    hint: 'e.g. 20',
+  },
+] as const;
+
+// Definition of a report-date bound (drives parsing, chips, and the modal's date inputs)
+export interface DateFilterDef {
+  type: DateFilterType;
+  paramKey: FilterParamKey;
+  /** Control label inside the modal. */
+  label: string;
+  /** Chip prefix, e.g. "Report updated on/after". */
+  chipPrefix: string;
+}
+
+/**
+ * The report date is `TickerV1.updatedAt`: every report save bumps it (see
+ * `bumpUpdatedAtAndInvalidateCache` / `saveFinalSummaryResponse`), which is the
+ * same anchor `getOldestStocksOverall` uses to find stale reports.
+ */
+export const DATE_FILTER_DEFS: ReadonlyArray<DateFilterDef> = [
+  {
+    type: FilterType.REPORT_DATE_FROM,
+    paramKey: FilterParamKey.REPORT_DATE_FROM,
+    label: 'From',
+    chipPrefix: 'Report updated on/after',
+  },
+  {
+    type: FilterType.REPORT_DATE_TO,
+    paramKey: FilterParamKey.REPORT_DATE_TO,
+    label: 'To',
+    chipPrefix: 'Report updated on/before',
+  },
+] as const;
+
+const ISO_DATE_PATTERN = /^\d{4}-\d{2}-\d{2}$/;
+
+/** Accept only a real `YYYY-MM-DD` calendar date (what `<input type="date">` emits). */
+export function parseIsoDateParam(raw: string | null | undefined): string | null {
+  if (!raw) return null;
+  const value = raw.trim();
+  if (!ISO_DATE_PATTERN.test(value)) return null;
+
+  const parsed = new Date(`${value}T00:00:00.000Z`);
+  if (Number.isNaN(parsed.getTime())) return null;
+  // A hand-edited URL can carry an out-of-range day, which `Date` silently rolls
+  // forward (2026-02-30 → 2026-03-02). Reject it rather than filter on a date
+  // that differs from the one in the URL.
+  return parsed.toISOString().startsWith(value) ? value : null;
+}
+
+/**
+ * Date bounds are resolved in UTC on both sides of the wire, so a filter matches
+ * the same stocks whether Prisma or the browser evaluates it. `From` covers the
+ * whole start day, `To` the whole end day.
+ */
+export function isoDateToStartOfDayUtc(raw: string | null | undefined): Date | null {
+  const value = parseIsoDateParam(raw);
+  return value ? new Date(`${value}T00:00:00.000Z`) : null;
+}
+
+export function isoDateToEndOfDayUtc(raw: string | null | undefined): Date | null {
+  const value = parseIsoDateParam(raw);
+  return value ? new Date(`${value}T23:59:59.999Z`) : null;
+}
+
+// One option in a multi-select verdict filter.
+export interface MultiSelectFilterOption {
+  value: string;
+  label: string;
+  /** Optional one-liner shown under the label in the dropdown. */
+  description?: string;
+}
+
+// Definition of a verdict filter (drives parsing, chips, and the modal dropdown)
+export interface MultiSelectFilterDef {
+  type: MultiSelectFilterType;
+  paramKey: FilterParamKey;
+  label: string;
+  options: ReadonlyArray<MultiSelectFilterOption>;
+}
+
+/**
+ * The two report verdicts a stock can be filtered by. Each is a fixed enum on
+ * its report row (`TickerV1ManagementTeamReport.alignmentVerdict` /
+ * `TickerV1StabilityReport.resilienceVerdict`), and selecting several values
+ * matches a stock carrying ANY of them.
+ */
+export const MULTI_SELECT_FILTER_DEFS: ReadonlyArray<MultiSelectFilterDef> = [
+  {
+    type: FilterType.MANAGEMENT_ALIGNMENT,
+    paramKey: FilterParamKey.MANAGEMENT_ALIGNMENT,
+    label: 'Management Team Experience & Alignment',
+    options: Object.values(ManagementTeamAlignmentVerdict).map((verdict) => ({
+      value: verdict,
+      label: MANAGEMENT_TEAM_ALIGNMENT_VERDICT_LABELS[verdict],
+    })),
+  },
+  {
+    type: FilterType.STABILITY_RESILIENCE,
+    paramKey: FilterParamKey.STABILITY_RESILIENCE,
+    label: 'Stability & Market Drawdown',
+    options: Object.values(StabilityResilienceVerdict).map((verdict) => ({
+      value: verdict,
+      label: STABILITY_RESILIENCE_VERDICT_LABELS[verdict],
+      description: STABILITY_RESILIENCE_VERDICT_DESCRIPTIONS[verdict],
+    })),
+  },
+] as const;
+
+/**
+ * Split a comma-separated verdict param into the recognized options only,
+ * de-duplicated and kept in the definition's order. An unknown value (a stale
+ * bookmark, a hand-edited URL) is dropped rather than filtering on nothing.
+ */
+export function parseMultiSelectParam(raw: string | null | undefined, def: MultiSelectFilterDef): string[] {
+  if (!raw) return [];
+  const requested = new Set(
+    raw
+      .split(',')
+      .map((v) => v.trim())
+      .filter((v) => v.length > 0)
+  );
+  return def.options.filter((option) => requested.has(option.value)).map((option) => option.value);
+}
+
 /** ----- Client-side Helpers ----- */
 
 /**
@@ -187,33 +438,29 @@ export function buildInitialSelected(filters: ReadonlyArray<AppliedFilter>): Sel
       }
     } else if (filter.type === FilterType.TOTAL) {
       initial[FilterParamKey.TOTAL] = String(filter.threshold);
-    } else if (filter.type === FilterType.MARKET_CAP) {
-      const min = filter.minValue !== undefined ? filter.minValue : '';
-      const max = filter.maxValue !== undefined ? filter.maxValue : '';
-      initial[FilterParamKey.MARKET_CAP] = `${min}-${max}`;
-    } else if (filter.type === FilterType.PE_RATIO) {
-      const value = filter.label.includes('Negative') ? 'negative' : '';
-      if (!value) {
-        const min = filter.minValue !== undefined ? filter.minValue : '';
-        const max = filter.maxValue !== undefined ? filter.maxValue : '';
-        initial[FilterParamKey.PE_RATIO] = `${min}-${max}`;
-      } else {
-        initial[FilterParamKey.PE_RATIO] = value;
-      }
+    } else if (filter.type !== FilterType.SEARCH) {
+      // Numeric filters: `raw` preserves the exact URL value (bucket, `negative`,
+      // or `op:value`) so the modal control re-hydrates to the original selection.
+      initial[filter.paramKey] = filter.raw;
     }
   }
   return initial;
 }
 
+/** Reads one filter param by key. Backed either by the URL or by an in-memory selection map. */
+export type FilterParamGetter = (paramKey: string) => string | null;
+
 /**
- * Parse current filters from URL search params.
+ * Parse the applied filters out of an arbitrary param source. Shared by the
+ * URL-driven stock pages and by client-side (state-driven) filtering, so both
+ * produce identical chips and semantics.
  */
-export function getAppliedFilters(searchParams: ReadonlyURLSearchParams): AppliedFilter[] {
+export function getAppliedFiltersFromGetter(getParam: FilterParamGetter): AppliedFilter[] {
   const filters: AppliedFilter[] = [];
 
   // Category filters
   for (const category of CATEGORY_OPTIONS) {
-    const param = searchParams.get(category.paramKey);
+    const param = getParam(category.paramKey);
     if (param != null && param.trim().length > 0) {
       const n: number = Number.parseInt(param, 10);
       if (!Number.isNaN(n)) {
@@ -228,7 +475,7 @@ export function getAppliedFilters(searchParams: ReadonlyURLSearchParams): Applie
   }
 
   // Total score
-  const totalThresholdRaw: string | null = searchParams.get(FilterParamKey.TOTAL);
+  const totalThresholdRaw: string | null = getParam(FilterParamKey.TOTAL);
   if (totalThresholdRaw != null && totalThresholdRaw.trim().length > 0) {
     const n: number = Number.parseInt(totalThresholdRaw, 10);
     if (!Number.isNaN(n)) {
@@ -241,7 +488,7 @@ export function getAppliedFilters(searchParams: ReadonlyURLSearchParams): Applie
   }
 
   // Search
-  const searchQueryRaw: string | null = searchParams.get(FilterParamKey.SEARCH);
+  const searchQueryRaw: string | null = getParam(FilterParamKey.SEARCH);
   if (searchQueryRaw != null) {
     const q: string = searchQueryRaw.trim();
     if (q.length > 0) {
@@ -253,47 +500,39 @@ export function getAppliedFilters(searchParams: ReadonlyURLSearchParams): Applie
     }
   }
 
-  // Market Cap
-  const marketCapRaw: string | null = searchParams.get(FilterParamKey.MARKET_CAP);
-  if (marketCapRaw != null && marketCapRaw.trim().length > 0) {
-    const [minStr, maxStr] = marketCapRaw.split('-');
-    const minValue = minStr ? parseFloat(minStr) : undefined;
-    const maxValue = maxStr ? parseFloat(maxStr) : undefined;
-
-    // Find matching label from options
-    const matchingOption = MARKET_CAP_OPTIONS.find((opt) => opt.value === marketCapRaw);
-    const label = matchingOption ? matchingOption.label : `Market Cap: ${formatMarketCap(minValue, maxValue)}`;
-
-    filters.push({
-      type: FilterType.MARKET_CAP,
-      minValue,
-      maxValue,
-      label,
-    });
+  // Numeric filters (market cap, PE, dividend yield, forward PE)
+  for (const def of NUMERIC_FILTER_DEFS) {
+    const raw: string | null = getParam(def.paramKey);
+    if (raw != null && raw.trim().length > 0) {
+      const f = parseNumericAppliedFilter(raw, def);
+      if (f) filters.push(f);
+    }
   }
 
-  // PE Ratio
-  const peRatioRaw: string | null = searchParams.get(FilterParamKey.PE_RATIO);
-  if (peRatioRaw != null && peRatioRaw.trim().length > 0) {
-    if (peRatioRaw === 'negative') {
+  // Report verdicts (management alignment, stability resilience)
+  for (const def of MULTI_SELECT_FILTER_DEFS) {
+    const values: string[] = parseMultiSelectParam(getParam(def.paramKey), def);
+    if (values.length > 0) {
+      const labels: string = values.map((v) => def.options.find((o) => o.value === v)?.label ?? v).join(', ');
       filters.push({
-        type: FilterType.PE_RATIO,
-        label: 'PE Ratio: Negative / No Earnings',
+        type: def.type,
+        paramKey: def.paramKey,
+        raw: values.join(','),
+        values,
+        label: `${def.label}: ${labels}`,
       });
-    } else {
-      const [minStr, maxStr] = peRatioRaw.split('-');
-      const minValue = minStr ? parseFloat(minStr) : undefined;
-      const maxValue = maxStr ? parseFloat(maxStr) : undefined;
+    }
+  }
 
-      // Find matching label from options
-      const matchingOption = PE_RATIO_OPTIONS.find((opt) => opt.value === peRatioRaw);
-      const label = matchingOption ? matchingOption.label : `PE Ratio: ${formatPERatio(minValue, maxValue)}`;
-
+  // Report-date bounds
+  for (const def of DATE_FILTER_DEFS) {
+    const date: string | null = parseIsoDateParam(getParam(def.paramKey));
+    if (date) {
       filters.push({
-        type: FilterType.PE_RATIO,
-        minValue,
-        maxValue,
-        label,
+        type: def.type,
+        paramKey: def.paramKey,
+        raw: date,
+        label: `${def.chipPrefix} ${date}`,
       });
     }
   }
@@ -302,35 +541,75 @@ export function getAppliedFilters(searchParams: ReadonlyURLSearchParams): Applie
 }
 
 /**
- * Helper function to format market cap for display
+ * Parse current filters from URL search params.
  */
-function formatMarketCap(min?: number, max?: number): string {
-  const formatValue = (val: number): string => {
-    if (val >= 1e9) return `$${(val / 1e9).toFixed(1)}B`;
-    if (val >= 1e6) return `$${(val / 1e6).toFixed(1)}M`;
-    return `$${val}`;
-  };
-
-  if (min !== undefined && max !== undefined) {
-    return `${formatValue(min)} - ${formatValue(max)}`;
-  } else if (min !== undefined) {
-    return `> ${formatValue(min)}`;
-  } else if (max !== undefined) {
-    return `< ${formatValue(max)}`;
-  }
-  return 'Any';
+export function getAppliedFilters(searchParams: ReadonlyURLSearchParams): AppliedFilter[] {
+  return getAppliedFiltersFromGetter((paramKey: string): string | null => searchParams.get(paramKey));
 }
 
 /**
- * Helper function to format PE ratio for display
+ * Parse current filters out of an in-memory selection map — the client-side
+ * counterpart of {@link getAppliedFilters}, for screens that keep filter state
+ * in React state instead of the URL.
  */
-function formatPERatio(min?: number, max?: number): string {
+export function getAppliedFiltersFromSelected(selected: SelectedFiltersMap): AppliedFilter[] {
+  return getAppliedFiltersFromGetter((paramKey: string): string | null => selected[paramKey] ?? null);
+}
+
+/**
+ * Parse a numeric filter URL value (`negative`, `op:value`, or `<min>-<max>` bucket)
+ * into an applied-filter entry with a human-readable chip label.
+ */
+function parseNumericAppliedFilter(raw: string, def: NumericFilterDef): AppliedNumericFilter | null {
+  const v = raw.trim();
+  if (!v) return null;
+
+  if (v === 'negative') {
+    const optionLabel = def.options.find((o) => o.value === 'negative')?.label;
+    return {
+      type: def.type,
+      paramKey: def.paramKey,
+      raw: v,
+      negative: true,
+      label: `${def.label}: ${optionLabel || 'Negative'}`,
+    };
+  }
+
+  // Custom operator form: gt:/lt:/eq:<value>
+  const criteria = parseNumericFilterValue(v);
+  if (criteria?.op !== undefined) {
+    const shown = criteria.value !== undefined ? formatCompactNumber(criteria.value) : v;
+    return {
+      type: def.type,
+      paramKey: def.paramKey,
+      raw: v,
+      op: criteria.op,
+      value: criteria.value,
+      label: `${def.label} ${NUMERIC_FILTER_OP_SYMBOLS[criteria.op]} ${shown}`,
+    };
+  }
+
+  const [minStr, maxStr] = v.split('-');
+  const minValue = minStr ? parseFloat(minStr) : undefined;
+  const maxValue = maxStr ? parseFloat(maxStr) : undefined;
+
+  const matchingOption = def.options.find((opt) => opt.value === v);
+  const label = matchingOption ? matchingOption.label : `${def.label}: ${formatNumericRange(minValue, maxValue)}`;
+
+  return { type: def.type, paramKey: def.paramKey, raw: v, minValue, maxValue, label };
+}
+
+/**
+ * Helper function to format a numeric range for display (fallback when the raw
+ * URL value does not match a preset bucket).
+ */
+function formatNumericRange(min?: number, max?: number): string {
   if (min !== undefined && max !== undefined) {
-    return `${min} - ${max}`;
+    return `${formatCompactNumber(min)} - ${formatCompactNumber(max)}`;
   } else if (min !== undefined) {
-    return `> ${min}`;
+    return `> ${formatCompactNumber(min)}`;
   } else if (max !== undefined) {
-    return `< ${max}`;
+    return `< ${formatCompactNumber(max)}`;
   }
   return 'Any';
 }
@@ -345,8 +624,15 @@ export function clearAllFilterParams(searchParams: ReadonlyURLSearchParams): URL
   }
   params.delete(FilterParamKey.TOTAL);
   params.delete(FilterParamKey.SEARCH);
-  params.delete(FilterParamKey.MARKET_CAP);
-  params.delete(FilterParamKey.PE_RATIO);
+  for (const def of NUMERIC_FILTER_DEFS) {
+    params.delete(def.paramKey);
+  }
+  for (const def of DATE_FILTER_DEFS) {
+    params.delete(def.paramKey);
+  }
+  for (const def of MULTI_SELECT_FILTER_DEFS) {
+    params.delete(def.paramKey);
+  }
   return params;
 }
 
@@ -364,10 +650,8 @@ export function removeFilterFromParams(searchParams: ReadonlyURLSearchParams, fi
     params.delete(FilterParamKey.TOTAL);
   } else if (filterToRemove.type === FilterType.SEARCH) {
     params.delete(FilterParamKey.SEARCH);
-  } else if (filterToRemove.type === FilterType.MARKET_CAP) {
-    params.delete(FilterParamKey.MARKET_CAP);
-  } else if (filterToRemove.type === FilterType.PE_RATIO) {
-    params.delete(FilterParamKey.PE_RATIO);
+  } else {
+    params.delete(filterToRemove.paramKey);
   }
   return params;
 }
@@ -407,8 +691,140 @@ export const toSortedQueryString = (sp: SearchParams, country?: string): string 
 export const hasFiltersApplied = (sp?: SearchParams): boolean =>
   (sp && Object.keys(sp).some((k) => k.includes('Threshold'))) ||
   Boolean(toScalar(sp?.[FilterParamKey.SEARCH])) ||
-  Boolean(toScalar(sp?.[FilterParamKey.MARKET_CAP])) ||
-  Boolean(toScalar(sp?.[FilterParamKey.PE_RATIO]));
+  NUMERIC_FILTER_DEFS.some((def) => Boolean(toScalar(sp?.[def.paramKey]))) ||
+  DATE_FILTER_DEFS.some((def) => Boolean(parseIsoDateParam(toScalar(sp?.[def.paramKey])))) ||
+  MULTI_SELECT_FILTER_DEFS.some((def) => parseMultiSelectParam(toScalar(sp?.[def.paramKey]), def).length > 0);
+
+/** ----- Client-side (in-browser) Filtering ----- */
+
+/**
+ * The ticker fields the stock filters evaluate. Screens that filter an already
+ * fetched list in the browser (rather than re-querying the DB) map their rows
+ * onto this shape and hand it to {@link matchesSelectedFilters}.
+ */
+export interface FilterableTicker {
+  symbol: string;
+  name?: string | null;
+  /** Per-category AI scores, keyed the same way as {@link CATEGORY_OPTIONS}. */
+  categoryScores?: Partial<Record<TickerAnalysisCategory, number | null>> | null;
+  totalScore?: number | null;
+  /** The `TickerV1FinancialInfo` row, or null/undefined when the ticker has none. */
+  financialInfo?: { marketCap?: number | null; pe?: number | null; dividendYield?: number | null } | null;
+  forwardPe?: number | null;
+  /** When the stock's report was last generated (`TickerV1.updatedAt`). */
+  reportUpdatedAt?: Date | string | null;
+  /** `TickerV1ManagementTeamReport.alignmentVerdict`, when the report exists. */
+  managementAlignment?: string | null;
+  /** `TickerV1StabilityReport.resilienceVerdict`, when the report exists. */
+  stabilityResilience?: string | null;
+}
+
+/** Which {@link FilterableTicker} field each verdict filter reads. */
+const MULTI_SELECT_FILTER_FIELDS: Record<string, (ticker: FilterableTicker) => string | null> = {
+  [FilterParamKey.MANAGEMENT_ALIGNMENT]: (ticker) => ticker.managementAlignment ?? null,
+  [FilterParamKey.STABILITY_RESILIENCE]: (ticker) => ticker.stabilityResilience ?? null,
+};
+
+/** Which {@link FilterableTicker} field each numeric filter reads. */
+const NUMERIC_FILTER_FIELDS: Record<string, (ticker: FilterableTicker) => number | null> = {
+  [FilterParamKey.MARKET_CAP]: (ticker) => ticker.financialInfo?.marketCap ?? null,
+  [FilterParamKey.PE_RATIO]: (ticker) => ticker.financialInfo?.pe ?? null,
+  [FilterParamKey.DIVIDEND_YIELD]: (ticker) => ticker.financialInfo?.dividendYield ?? null,
+  [FilterParamKey.FORWARD_PE]: (ticker) => ticker.forwardPe ?? null,
+};
+
+/**
+ * Does this ticker satisfy every selected filter?
+ *
+ * Mirrors the server-side Prisma filters in `createTickerFilter` so a stock the
+ * `/stocks-filtered` pages would show is exactly the stock this returns true for:
+ * thresholds are inclusive (`>=`), a missing score/metric never matches, and the
+ * PE "Negative / No Earnings" bucket also matches a null PE — but only on a
+ * ticker that has a financial-info row at all, as the server's
+ * `financialInfo: { is: ... }` never matches an absent relation.
+ */
+export function matchesSelectedFilters(ticker: FilterableTicker, selected: SelectedFiltersMap): boolean {
+  // Category score thresholds
+  for (const category of CATEGORY_OPTIONS) {
+    const threshold = toInt(selected[category.paramKey]);
+    if (threshold === undefined) continue;
+    const score = ticker.categoryScores?.[category.value];
+    if (score == null || score < threshold) return false;
+  }
+
+  // Total score threshold
+  const totalThreshold = toInt(selected[FilterParamKey.TOTAL]);
+  if (totalThreshold !== undefined) {
+    if (ticker.totalScore == null || ticker.totalScore < totalThreshold) return false;
+  }
+
+  // Free-text search over symbol and name
+  const searchQuery = selected[FilterParamKey.SEARCH]?.trim().toLowerCase();
+  if (searchQuery) {
+    const haystack = `${ticker.symbol} ${ticker.name ?? ''}`.toLowerCase();
+    if (!haystack.includes(searchQuery)) return false;
+  }
+
+  // Numeric metrics (market cap, PE, dividend yield, forward PE)
+  for (const def of NUMERIC_FILTER_DEFS) {
+    const raw = selected[def.paramKey]?.trim();
+    if (!raw) continue;
+    const value = NUMERIC_FILTER_FIELDS[def.paramKey](ticker);
+
+    // PE keeps its special bucket that also matches a null PE, but a ticker with
+    // no financial-info row can't satisfy any financial filter — same as the server.
+    if (def.paramKey === FilterParamKey.PE_RATIO && raw === 'negative') {
+      if (!ticker.financialInfo || (value !== null && value >= 0)) return false;
+      continue;
+    }
+
+    const criteria = parseNumericFilterValue(raw);
+    if (!criteria) continue;
+    if (!matchesNumericCriteria(value, criteria)) return false;
+  }
+
+  // Report verdicts — a stock matches when its verdict is any of the selected ones.
+  for (const def of MULTI_SELECT_FILTER_DEFS) {
+    const values: string[] = parseMultiSelectParam(selected[def.paramKey], def);
+    if (values.length === 0) continue;
+    const verdict: string | null = MULTI_SELECT_FILTER_FIELDS[def.paramKey](ticker);
+    // No report means no verdict, so it can't be one of the selected ones —
+    // matching the server's `some: { ... }` on the report relation.
+    if (verdict === null || !values.includes(verdict)) return false;
+  }
+
+  // Report-date bounds
+  for (const def of DATE_FILTER_DEFS) {
+    const isFrom: boolean = def.type === FilterType.REPORT_DATE_FROM;
+    const bound: Date | null = isFrom ? isoDateToStartOfDayUtc(selected[def.paramKey]) : isoDateToEndOfDayUtc(selected[def.paramKey]);
+    if (!bound) continue;
+
+    // A stock with no report date can't satisfy a date bound, matching the
+    // server's `updatedAt` comparison against a non-null column.
+    if (ticker.reportUpdatedAt == null) return false;
+    const reportedAt: number = new Date(ticker.reportUpdatedAt).getTime();
+    if (Number.isNaN(reportedAt)) return false;
+    if (isFrom ? reportedAt < bound.getTime() : reportedAt > bound.getTime()) return false;
+  }
+
+  return true;
+}
+
+/** Return a new selection map with one applied filter removed. */
+export function removeFilterFromSelected(selected: SelectedFiltersMap, filterToRemove: AppliedFilter): SelectedFiltersMap {
+  const paramKey: FilterParamKey | undefined =
+    filterToRemove.type === FilterType.CATEGORY
+      ? CATEGORY_OPTIONS.find((opt) => opt.value === filterToRemove.categoryKey)?.paramKey
+      : filterToRemove.type === FilterType.TOTAL
+      ? FilterParamKey.TOTAL
+      : filterToRemove.type === FilterType.SEARCH
+      ? FilterParamKey.SEARCH
+      : filterToRemove.paramKey;
+
+  if (!paramKey) return selected;
+  const { [paramKey]: _removed, ...rest } = selected;
+  return rest;
+}
 
 /** ----- Server-side Helpers ----- */
 
@@ -437,6 +853,12 @@ export function parseFilterParams(req: NextRequest): FilterParams {
     [FilterParamKey.SEARCH]: searchParams.get(FilterParamKey.SEARCH) || undefined,
     [FilterParamKey.MARKET_CAP]: searchParams.get(FilterParamKey.MARKET_CAP) || undefined,
     [FilterParamKey.PE_RATIO]: searchParams.get(FilterParamKey.PE_RATIO) || undefined,
+    [FilterParamKey.DIVIDEND_YIELD]: searchParams.get(FilterParamKey.DIVIDEND_YIELD) || undefined,
+    [FilterParamKey.FORWARD_PE]: searchParams.get(FilterParamKey.FORWARD_PE) || undefined,
+    [FilterParamKey.REPORT_DATE_FROM]: searchParams.get(FilterParamKey.REPORT_DATE_FROM) || undefined,
+    [FilterParamKey.REPORT_DATE_TO]: searchParams.get(FilterParamKey.REPORT_DATE_TO) || undefined,
+    [FilterParamKey.MANAGEMENT_ALIGNMENT]: searchParams.get(FilterParamKey.MANAGEMENT_ALIGNMENT) || undefined,
+    [FilterParamKey.STABILITY_RESILIENCE]: searchParams.get(FilterParamKey.STABILITY_RESILIENCE) || undefined,
   };
 }
 
@@ -494,59 +916,120 @@ export function createTickerFilter(
     tickerFilter.cachedScoreEntry = { is: cacheFilter };
   }
 
-  // Apply financial info filters (Market Cap and PE Ratio)
+  // Apply financial info filters (Market Cap, PE Ratio, Dividend Yield)
   const financialFilter = createFinancialInfoFilter(filters);
   if (Object.keys(financialFilter).length > 0) {
     tickerFilter.financialInfo = { is: financialFilter };
   }
 
+  // Apply forward PE filter (sourced from the stock analyzer summary JSON)
+  const forwardPeFilter = createForwardPeScraperFilter(filters);
+  if (forwardPeFilter) {
+    tickerFilter.stockAnalyzerScrapperInfo = { is: forwardPeFilter };
+  }
+
+  // Apply the report-date bounds
+  const reportDateFilter = createReportDateFilter(filters);
+  if (reportDateFilter) {
+    tickerFilter.updatedAt = reportDateFilter;
+  }
+
+  // Apply the report-verdict filters
+  const managementVerdicts = getSelectedVerdicts(filters, FilterParamKey.MANAGEMENT_ALIGNMENT);
+  if (managementVerdicts.length > 0) {
+    tickerFilter.managementTeamReports = { some: { alignmentVerdict: { in: managementVerdicts as ManagementTeamAlignmentVerdict[] } } };
+  }
+
+  const stabilityVerdicts = getSelectedVerdicts(filters, FilterParamKey.STABILITY_RESILIENCE);
+  if (stabilityVerdicts.length > 0) {
+    tickerFilter.stabilityReports = { some: { resilienceVerdict: { in: stabilityVerdicts as StabilityResilienceVerdict[] } } };
+  }
+
   return tickerFilter;
 }
 
+/** The recognized verdict values selected for one multi-select filter. */
+export function getSelectedVerdicts(filters: FilterParams, paramKey: FilterParamKey): string[] {
+  const def = MULTI_SELECT_FILTER_DEFS.find((d) => d.paramKey === paramKey);
+  if (!def) return [];
+  return parseMultiSelectParam(filters[paramKey], def);
+}
+
 /**
- * Create a financial info filter for market cap and PE ratio
+ * Build the `TickerV1.updatedAt` range for the report-date bounds. `updatedAt`
+ * is bumped by every report save, so it is the ticker's report date.
+ */
+export function createReportDateFilter(filters: FilterParams): Prisma.DateTimeFilter | null {
+  const from: Date | null = isoDateToStartOfDayUtc(filters[FilterParamKey.REPORT_DATE_FROM]);
+  const to: Date | null = isoDateToEndOfDayUtc(filters[FilterParamKey.REPORT_DATE_TO]);
+  if (!from && !to) return null;
+
+  const dateFilter: Prisma.DateTimeFilter = {};
+  if (from) dateFilter.gte = from;
+  if (to) dateFilter.lte = to;
+  return dateFilter;
+}
+
+/**
+ * Create a financial info filter for market cap, PE ratio, and dividend yield.
+ * Each param supports preset buckets (`<min>-<max>`), `negative`, and the
+ * custom operator encoding (`gt:`/`lt:`/`eq:<value>` with K/M/B/T suffixes).
  */
 export function createFinancialInfoFilter(filters: FilterParams): Prisma.TickerV1FinancialInfoWhereInput {
   const financialFilter: Prisma.TickerV1FinancialInfoWhereInput = {};
 
   // Market Cap filter
-  const marketCapParam = filters[FilterParamKey.MARKET_CAP];
-  if (marketCapParam && marketCapParam.trim()) {
-    const [minStr, maxStr] = marketCapParam.split('-');
-    const min = minStr ? parseFloat(minStr) : undefined;
-    const max = maxStr ? parseFloat(maxStr) : undefined;
+  const marketCapCriteria = parseNumericFilterValue(filters[FilterParamKey.MARKET_CAP]);
+  if (marketCapCriteria) {
+    const f = numericCriteriaToPrismaFilter(marketCapCriteria);
+    if (f) financialFilter.marketCap = f;
+  }
 
-    if (min !== undefined && max !== undefined) {
-      financialFilter.marketCap = { gte: min, lte: max };
-    } else if (min !== undefined) {
-      financialFilter.marketCap = { gte: min };
-    } else if (max !== undefined) {
-      financialFilter.marketCap = { lte: max };
+  // PE Ratio filter — keeps its special "Negative / No Earnings" bucket, which also matches null PE
+  const peRatioParam = filters[FilterParamKey.PE_RATIO]?.trim();
+  if (peRatioParam === 'negative') {
+    financialFilter.OR = [{ pe: { lt: 0 } }, { pe: null }];
+  } else {
+    const peCriteria = parseNumericFilterValue(peRatioParam);
+    if (peCriteria) {
+      const f = numericCriteriaToPrismaFilter(peCriteria);
+      if (f) financialFilter.pe = f;
     }
   }
 
-  // PE Ratio filter
-  const peRatioParam = filters[FilterParamKey.PE_RATIO];
-  if (peRatioParam && peRatioParam.trim()) {
-    if (peRatioParam === 'negative') {
-      // Filter for negative or null PE ratios
-      financialFilter.OR = [{ pe: { lt: 0 } }, { pe: null }];
-    } else {
-      const [minStr, maxStr] = peRatioParam.split('-');
-      const min = minStr ? parseFloat(minStr) : undefined;
-      const max = maxStr ? parseFloat(maxStr) : undefined;
-
-      if (min !== undefined && max !== undefined) {
-        financialFilter.pe = { gte: min, lte: max };
-      } else if (min !== undefined) {
-        financialFilter.pe = { gte: min };
-      } else if (max !== undefined) {
-        financialFilter.pe = { lte: max };
-      }
-    }
+  // Dividend Yield filter
+  const dividendYieldCriteria = parseNumericFilterValue(filters[FilterParamKey.DIVIDEND_YIELD]);
+  if (dividendYieldCriteria) {
+    const f = numericCriteriaToPrismaFilter(dividendYieldCriteria);
+    if (f) financialFilter.dividendYield = f;
   }
 
   return financialFilter;
+}
+
+/**
+ * Create a scraper-info filter for forward PE. Forward PE is not a column on
+ * TickerV1FinancialInfo — it only exists inside the stock analyzer summary
+ * JSON, so it's filtered with a JSON path filter on `summary.forwardPE`.
+ */
+export function createForwardPeScraperFilter(filters: FilterParams): Prisma.TickerV1StockAnalyzerScrapperInfoWhereInput | null {
+  const raw = filters[FilterParamKey.FORWARD_PE]?.trim();
+  if (!raw) return null;
+
+  const criteria = parseNumericFilterValue(raw);
+  if (!criteria) return null;
+
+  const path = ['forwardPE'];
+  if (criteria.negative) return { summary: { path, lt: 0 } };
+  if (criteria.op === 'gt') return { summary: { path, gt: criteria.value } };
+  if (criteria.op === 'lt') return { summary: { path, lt: criteria.value } };
+  if (criteria.op === 'eq') return { summary: { path, equals: criteria.value } };
+
+  const rangeFilter: { path: string[]; gte?: number; lte?: number } = { path };
+  if (criteria.min !== undefined) rangeFilter.gte = criteria.min;
+  if (criteria.max !== undefined) rangeFilter.lte = criteria.max;
+  if (rangeFilter.gte === undefined && rangeFilter.lte === undefined) return null;
+  return { summary: rangeFilter };
 }
 
 /**
@@ -559,8 +1042,9 @@ export function hasFiltersAppliedServer(
 ): boolean {
   const hasScoreFilters = Object.keys(cacheFilter).length > 0;
   const hasSearchFilter = !!filters[FilterParamKey.SEARCH]?.trim();
-  const hasMarketCapFilter = !!filters[FilterParamKey.MARKET_CAP]?.trim();
-  const hasPERatioFilter = !!filters[FilterParamKey.PE_RATIO]?.trim();
+  const hasNumericFilter = NUMERIC_FILTER_DEFS.some((def) => !!filters[def.paramKey]?.trim());
+  const hasDateFilter = DATE_FILTER_DEFS.some((def) => !!parseIsoDateParam(filters[def.paramKey]));
+  const hasVerdictFilter = MULTI_SELECT_FILTER_DEFS.some((def) => parseMultiSelectParam(filters[def.paramKey], def).length > 0);
 
-  return hasScoreFilters || hasSearchFilter || hasMarketCapFilter || hasPERatioFilter;
+  return hasScoreFilters || hasSearchFilter || hasNumericFilter || hasDateFilter || hasVerdictFilter;
 }

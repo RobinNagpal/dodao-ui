@@ -123,6 +123,7 @@ async function createTickerFomCompetition(
       regenerateFutureGrowth: true,
       regenerateFairValue: true,
       regenerateManagementTeam: true,
+      regenerateStability: true,
       regenerateFinalSummary: true,
     },
   });

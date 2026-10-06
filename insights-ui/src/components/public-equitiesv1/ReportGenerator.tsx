@@ -5,18 +5,16 @@ import { ReportType } from '@/types/ticker-typesv1';
 import { getMissingReportTypes, TickerWithMissingReportInfo } from '@/utils/analysis-reports/report-steps-statuses';
 import Block from '@dodao/web-core/components/app/Block';
 import Button from '@dodao/web-core/components/core/buttons/Button';
-import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 
 interface ReportGeneratorProps {
   selectedTickers: TickerIdentifier[];
   tickerReports: Record<string, TickerWithMissingReportInfo>;
-  onReportGenerated: (ticker: TickerIdentifier) => void;
+  /** Called once the generation requests have been queued. */
+  onReportsGenerated: () => void;
 }
 
-export default function ReportGenerator({ selectedTickers, tickerReports, onReportGenerated }: ReportGeneratorProps): JSX.Element {
-  const router = useRouter();
-  const [loadingStates] = useState<Record<string, boolean>>({});
+export default function ReportGenerator({ selectedTickers, tickerReports, onReportsGenerated }: ReportGeneratorProps): JSX.Element {
   const [isGeneratingAll, setIsGeneratingAll] = useState<boolean>(false);
 
   const [selectedReportTypes, setSelectedReportTypes] = useState<ReportType[]>([]);
@@ -29,21 +27,37 @@ export default function ReportGenerator({ selectedTickers, tickerReports, onRepo
     setSelectedReportTypes(allReportTypeKeys);
   }, []);
 
-  const { generateSpecificReportsInBackground, createFullBackgroundGenerationRequests } = useGenerateReports();
+  const {
+    generateSpecificReportsInBackground,
+    createFullBackgroundGenerationRequests,
+    reserveGenerationRequestsTab,
+    showGenerationRequestsTab,
+    discardGenerationRequestsTab,
+  } = useGenerateReports();
 
-  // Generation now always runs in the background: it creates generation requests
-  // (with the chosen provider/model) and redirects to the requests page. There is
-  // no synchronous option anymore.
-  const handleGenerateAllForAllTickers = async (): Promise<void> => {
-    if (selectedTickers.length === 0) return;
-
+  // Generation always runs in the background: it creates generation requests
+  // (with the chosen provider/model) and shows the queue in a new tab, so this
+  // screen keeps its filters, provider/model and report-type choices for the
+  // next batch. Nothing here changes unless the requests were actually queued.
+  const runGeneration = async (queueRequests: () => Promise<boolean>): Promise<void> => {
+    const tab = reserveGenerationRequestsTab(); // before any await: tied to the click
     setIsGeneratingAll(true);
     try {
-      await createFullBackgroundGenerationRequests(selectedTickers, llmSelection);
-      router.push('/admin-v1/generation-requests');
+      const queued = await queueRequests();
+      if (queued) {
+        showGenerationRequestsTab(tab);
+        onReportsGenerated();
+      } else {
+        discardGenerationRequestsTab(tab);
+      }
     } finally {
       setIsGeneratingAll(false);
     }
+  };
+
+  const handleGenerateAllForAllTickers = (): Promise<void> => {
+    if (selectedTickers.length === 0) return Promise.resolve();
+    return runGeneration(() => createFullBackgroundGenerationRequests(selectedTickers, llmSelection));
   };
 
   const handleSelectAllReportTypes = (): void => {
@@ -59,16 +73,9 @@ export default function ReportGenerator({ selectedTickers, tickerReports, onRepo
     setSelectedReportTypes((prev) => (prev.includes(reportTypeKey) ? prev.filter((k) => k !== reportTypeKey) : [...prev, reportTypeKey]));
   };
 
-  const handleGenerateSpecificReportTypes = async (): Promise<void> => {
-    if (selectedTickers.length === 0 || selectedReportTypes.length === 0) return;
-
-    setIsGeneratingAll(true);
-    try {
-      await generateSpecificReportsInBackground(selectedTickers, selectedReportTypes, llmSelection);
-      router.push('/admin-v1/generation-requests');
-    } finally {
-      setIsGeneratingAll(false);
-    }
+  const handleGenerateSpecificReportTypes = (): Promise<void> => {
+    if (selectedTickers.length === 0 || selectedReportTypes.length === 0) return Promise.resolve();
+    return runGeneration(() => generateSpecificReportsInBackground(selectedTickers, selectedReportTypes, llmSelection));
   };
 
   const renderReportsGrid = (): JSX.Element => {
@@ -119,14 +126,10 @@ export default function ReportGenerator({ selectedTickers, tickerReports, onRepo
                     const report = tickerReports[tickerKey];
                     const isCompleted: boolean = report ? !getMissingReportTypes(report).includes(reportType) : false;
 
-                    const isLoading: boolean = loadingStates[`${tickerKey}-${reportType}`];
-
                     return (
                       <td key={`${tickerKey}-${reportType}-${tickerIndex}`} className="px-6 py-4 whitespace-nowrap text-sm">
                         <div className="flex flex-col items-center space-y-2">
-                          <div
-                            className={`h-3 w-3 rounded-full ${isCompleted ? 'bg-green-500' : isLoading ? 'bg-yellow-500 animate-pulse' : 'bg-surface-3'}`}
-                          />
+                          <div className={`h-3 w-3 rounded-full ${isCompleted ? 'bg-green-500' : 'bg-surface-3'}`} />
                         </div>
                       </td>
                     );
@@ -190,7 +193,9 @@ export default function ReportGenerator({ selectedTickers, tickerReports, onRepo
             {isGeneratingAll ? 'Creating Requests...' : 'Generate for Specific Report Type'}
           </Button>
         </div>
-        <div className="text-sm text-muted text-center">Reports are generated in the background. You will be redirected to the generation requests page.</div>
+        <div className="text-sm text-muted text-center">
+          Reports are generated in the background. The generation requests page opens in a new tab and this screen keeps its filters.
+        </div>
       </div>
     );
   };

@@ -1,0 +1,274 @@
+# Stock fundamentals scraper
+
+How `TickerV1StockAnalyzerScrapperInfo` gets filled — the data behind the **Financial
+Information** card and the **Quarterly / Annual Financial Metrics** chart on
+`/stocks/[exchange]/[ticker]`, and behind the financial JSON handed to the analysis
+prompts.
+
+Lives in [`insights-ui/src/utils/stock-analyzer/`](../../../insights-ui/src/utils/stock-analyzer/),
+with the persistence layer in
+[`insights-ui/src/utils/stock-analyzer-scraper-utils.ts`](../../../insights-ui/src/utils/stock-analyzer-scraper-utils.ts).
+
+## Why it moved out of the Lambda
+
+It used to be an AWS Lambda (`STOCK_ANALYZER_LAMBDA_URL`) that did nothing but fetch a
+page from the stock-analyze site and parse its tables. Its statement parsers keyed off a
+`#main-table` id that the source site **dropped in a SvelteKit redesign**. After that
+every statement request came back `200 OK` with:
+
+```json
+{ "data": { "meta": { "unit": "ones" }, "periods": [] },
+  "errors": [{ "where": "parseIncomeStatementQuarterlyRaw", "message": "#main-table not found" }] }
+```
+
+The app treated that as a successful fetch, wrote the empty object over good data and
+stamped it fresh — so the revenue chart silently disappeared for every ticker and would
+not have retried for 30–90 days. Owning the scrape here means the parsers sit next to the
+code that reads their output and a fix is one app deploy, not a separate Lambda release.
+
+`STOCK_ANALYZER_LAMBDA_URL` and `ETF_ANALYZER_LAMBDA_URL` are no longer read by anything;
+the scraper reads `NEXT_PUBLIC_STOCK_ANALYZE_BASE_URL` instead. (`ETF_MORN_LAMBDA_URL` —
+the Morningstar scrape, a different source on an async callback — and `SCREENER_API_URL`
+are unrelated and still in use.)
+
+## Layout
+
+| File | Responsibility |
+| --- | --- |
+| `stock-analyzer-fetcher.ts` | HTTP: browser UA, 20 s timeout, retry on 429/5xx (never on 404), and `stockAnalyzeUrl` → sub-page URL building against the configured base URL. |
+| `stock-analysis-table-parser.ts` | Generic reader for the site's tables — period columns, row labels, cell values. Selector-free: no generated class or id is used. |
+| `stock-analysis-section-parsers.ts` | Page-shape parsers producing the exact persisted JSON shapes (`StockFundamentalsSummary`, `DividendsData`, `{ meta, periods }`). |
+| `index.ts` | Section registry (URL + parser + usability test + "not published" payload), `scrapeStockAnalyzerSection()`, the quote-page lookup (Main Listing link, Financials tab) and `scrapeEtfSummary()`. |
+| `../stock-analyzer-scraper-utils.ts` | Persistence: which sections are due, the overwrite guard, error backoff, and single-flight per ticker. |
+
+**Funds, BDCs and trusts publish no statements.** Closed-end funds, BDCs and trusts (BST,
+PSBD, LON `OIG`, TSXV `CCEC`, ...) have a quote page but no Financials tab, so all 8
+statement pages 404. When a statement page 404s, the quote page is read anyway (for the
+Main Listing fallback, see below). If it has no Main Listing link and no Financials tab
+(`quotePageHasNoFinancialsTab`: an Overview link back to the quote page is present and no
+link to its `financials/` path), the section is stored as `{ meta: { notPublished: true },
+periods: [] }` and stamped fresh, with a `console.warn` and no error. It works the same way
+as a non-payer's dividends. Requiring the Overview link means a challenge or placeholder
+page never reads as "no Financials tab", and a failed quote-page fetch still fails the
+section. Any other statement 404 stays an error. The overwrite guard still applies: a
+not-published payload never replaces real stored statements.
+
+## The 12 sections
+
+Each maps to one source-site page appended to the ticker's `stockAnalyzeUrl`
+(`<base>/stocks/{SYMBOL}/` for US exchanges, `<base>/quote/{segment}/{SYMBOL}/` otherwise).
+Quarterly variants add `?p=quarterly`.
+
+The origin is never hard-coded: `buildStockAnalyzerSubPageUrl` takes the *path* from the
+stored `stockAnalyzeUrl` and resolves it against `NEXT_PUBLIC_STOCK_ANALYZE_BASE_URL` —
+the same variable `stockAnalyzeUrlValidation.ts` uses to generate those URLs. If the
+variable is unset (local scripts, tests) the stored URL's own origin is used.
+
+| Section | Page | DB column | Max age |
+| --- | --- | --- | --- |
+| `summary` | *(quote page)* | `summary` | 7 d |
+| `dividends` | `dividend/` | `dividends` | 30 d |
+| `income-statement/{annual,quarterly}` | `financials/income-statement/` | `incomeStatement{Annual,Quarter}` | 90 / 30 d |
+| `balance-sheet/{annual,quarterly}` | `financials/balance-sheet/` | `balanceSheet{Annual,Quarter}` | 90 / 30 d |
+| `cashflow/{annual,quarterly}` | `financials/cash-flow-statement/` | `cashFlow{Annual,Quarter}` | 90 / 30 d |
+| `ratios/{annual,quarterly}` | `financials/ratios/` | `ratios{Annual,Quarter}` | 90 / 30 d |
+| `kpis/{annual,quarterly}` | `financials/metrics/` | `kpis{Annual,Quarter}` | 90 / 30 d |
+
+A full 12-section refresh is ~0.6–1.0 s (all sections in parallel), versus a Lambda
+round-trip per section before.
+
+## Parsing rules worth knowing
+
+- **Two header rows.** Statement pages stack `Fiscal Quarter | Q2 2026 | …` over
+  `Period Ending | Jun 30, 2026 | …`. Period labels come from the first row; the ISO
+  `periodEnd` comes from the `<th id="2026-06-30">` on either row.
+- **Several tables per page.** A statement page splits its rows across 2–6 tables sharing
+  the same period columns. Statement parsers merge them into one flat `values` map per
+  period; the KPI parser instead keeps them grouped by heading
+  (`revenue` / `revenueByGeography` / `keyPerformanceIndicators`).
+- **Non-period columns are dropped.** `TTM` (annual) and `Current` (ratios) are not
+  fiscal periods; only `Q[1-4] YYYY` / `FY YYYY` columns become data points.
+- **Row label → value key.** camelCase of the label, with an alias table for the keys the
+  app reads: `EPS (Diluted)` → `eps`, `Shares Outstanding (Diluted)` → `sharesOutstanding`,
+  `Revenue (Total)` → `totalRevenue`. `quarterly-chart-data/route.ts` looks up `revenue`,
+  `grossMargin`, `ebit`, `freeCashFlow`, `eps`, `sharesOutstanding` — keep those aliases
+  if you touch this.
+- **Values.** Plain numbers become numbers (`5,442` → `5442`, `(1,234)` → `-1234`);
+  percentages and suffixed values stay strings (`70.49%`, `1.45B`). `-` / `n/a` → `null`.
+
+## How a bad scrape is now contained
+
+Three rules replace "write whatever came back":
+
+1. **Usability gate before writing.** Each section declares `isUsable`. A page that loads
+   but parses to nothing is never written over stored data and never stamps
+   `lastUpdatedAt*` — so a future source-site change degrades to "data goes stale"
+   instead of "data is deleted".
+2. **Empty sections are re-fetched.** `determineDataToFetch` re-scrapes any section whose
+   *stored* value fails `isUsable`, not just stale ones. Previously only an empty
+   `summary` triggered a refetch, which is why empty statements stayed empty.
+3. **Failure backoff.** A section that fails is left alone for 6 h, read off the newest
+   matching entry in the `errors` column. This bounds the retry rate both for a broken
+   parser and for tickers with legitimately no data (Reliance publishes no quarterly cash
+   flow; a non-payer has no dividend history). A successful scrape clears that section's
+   past errors, and the column is capped at the 50 most recent entries — it used to grow
+   without bound.
+
+On create, sections that failed get `lastUpdatedAt* = epoch` rather than "now", so they
+read as stale instead of masquerading as freshly fetched.
+
+## Forcing a refresh
+
+`POST /api/{spaceId}/tickers-v1/fetch-financial-data` (admin or automation token):
+
+```json
+{ "tickerIds": ["…"], "force": true }
+```
+
+`force` bypasses the age check and the backoff and re-scrapes all 12 sections. Use it to
+backfill rows whose sections were persisted empty — without it those rows carry a fresh
+`lastUpdatedAt*` and the age check skips them.
+
+## Secondary listings
+
+A ticker can be a **secondary listing** — a second share class (TSX `QBR.B`, whose
+financials are filed under `QBR.A`) or a cross-listing (TSX `SHOP`, reported under the US
+listing). The source site gives these only Overview / Dividends / History pages of their
+own; every statement sub-page **404s**, and the nav carries a `Main Listing` link to the
+ticker that does have them.
+
+So when a sub-page 404s, `scrapeStockAnalyzerSection` reads the ticker's quote page, finds
+that link via `parseMainListingHref`, and retries the sub-page there:
+
+| Section | `fallsBackToMainListing` | TSX `QBR.B` scrapes from |
+| --- | --- | --- |
+| `summary`, `dividends` | **false** | `/quote/tsx/QBR.B/…` |
+| the 10 statement / KPI sections | **true** | `/quote/tsx/QBR.A/financials/…` |
+
+Which sections may fall back is an explicit flag on the section definition, not an
+inference from the sub-path. `summary` and `dividends` are **per-listing** figures — price,
+market cap, 52-week range, dividend amount and yield all belong to the listing the user is
+actually looking at — so they never redirect, even when the secondary listing has no
+dividend page of its own (that section simply fails and is retried later under the normal
+backoff). Only the statement / KPI sections, which a secondary listing does not publish at
+all, fall back.
+
+The fallback fires only on a 404, so a main listing never pays for it, and a genuinely
+missing ticker still surfaces its original error. When a section 404s and the quote page
+carries no recognisable `Main Listing` link, that is logged explicitly — otherwise it is
+indistinguishable from "this ticker is a main listing", which is the case that legitimately
+resolves to null.
+
+Only same-origin links are followed. The scraped rows are stored as *this* ticker's
+financials, so an off-site or protocol-relative href (`//other.host/…`, which would slip
+past a naive `startsWith('/')` test) is rejected and logged rather than followed.
+
+The lookup is memoized per ticker for 10 minutes, and the **in-flight promise** is what's
+cached: all 10 statement sections 404 simultaneously under `Promise.all`, so caching only
+the settled value would still let ten identical quote-page fetches race. A failed lookup
+is evicted immediately rather than being remembered for the full TTL.
+
+### Known caveat: cross-border cross-listings mix currencies
+
+For a cross-listing like TSX `SHOP`, the summary is the **TSX** listing (CAD price and
+market cap) while the statements come from the **US** main listing (USD revenue, EPS,
+shares). That is how the company actually reports — financials are filed in one currency
+regardless of where the shares trade — and each statement's `meta.currency` records it, so
+the chart labels the right unit.
+
+But the two live in one `TickerV1StockAnalyzerScrapperInfo` row with no single currency for
+the row as a whole. Nothing in the app divides one by the other today
+(`financial-info` reads only `summary`, `quarterly-chart-data` only the income statement),
+so no displayed number is wrong. The exposure is `extractFinancialDataForAnalysis`, which
+hands `marketSummary` and the statements to the analysis prompts together — an LLM asked
+for a P/E could combine a CAD price with USD EPS. Worth a per-section currency field if
+cross-border cross-listings become common; a same-country second share class like `QBR.B`
+is unaffected (both listings are CAD).
+
+## ETFs
+
+ETFs sit on the same source site (`<base>/etf/{symbol}/`) and their quote page uses the
+same two-column stat tables, so `scrapeEtfSummary()` shares the fetcher and the stat-table
+reader. It backs `EtfFinancialInfo` (the AUM / expense ratio / yield / holdings card on
+`/etfs/[exchange]/[etf]`), written by
+`POST /api/{spaceId}/etfs-v1/exchange/{exchange}/{etf}/fetch-financial-info`.
+
+That route carried the same bug in a sharper form: it upserted **every** column from the
+Lambda payload with a `?? null` fallback and no usability check at all, so a single empty
+response would have nulled out AUM, expense ratio, P/E, dividends, holdings — the whole
+row — rather than just one section. It survived only because it is an admin/automation
+write path, not a read path, so nothing had triggered it since the source-site redesign
+(rows were last written months ago and are correspondingly stale). It now scrapes
+in-process and refuses to write a row when the page parses to nothing.
+
+Two size fields, `aum` and `sharesOut`, are stored as plain digit strings
+(`112210000000`) rather than the page's compact form (`$112.21B`). Both the UI's
+`formatCompactAmount` and the ETF filters read them through `parseNumericStringValue`,
+which accepts either, but every existing row is plain digits — `parseEtfSummaryPage`
+expands the suffix so the rows stay homogeneous.
+
+## When the charts disappear again
+
+1. `GET /api/koala_gains/tickers-v1/exchange/{EXCHANGE}/{TICKER}/quarterly-chart-data` —
+   `{"chartData": null}` for every ticker means the statement sections are empty.
+2. Check the `errors` column on `TickerV1StockAnalyzerScrapperInfo` for that ticker; the
+   newest entries name the failing section and page URL.
+3. Open the page it names in a browser. If the tables moved, fix
+   `stock-analysis-table-parser.ts` / `stock-analysis-section-parsers.ts`, then `force`
+   a refresh for the affected tickers.
+4. If it is missing for **one** ticker rather than all of them, check whether that ticker
+   is a secondary listing (see above) — its statement pages 404 and the data lives under
+   its main listing.
+
+## Detecting when the source site rejects us
+
+`stock-analyzer-fetcher.ts` treats 401/403/429 responses and bot-challenge pages (Cloudflare "Just a
+moment…", `cf-chl-`, "Access denied", served with any status) as **rejections**. The site's CDN
+rate-limits bursts (429 with `cf-mitigated: challenge`), so the fetcher:
+
+- **never retries a rejection**, and **pauses every fetch over that transport** for
+  max(`Retry-After`, 10 min), capped at 1 h. While paused, fetches throw `paused: true` without a
+  network call, and `fetchAndUpdateStockAnalyzerData` serves the stored row instead of scraping;
+- logs **one** `console.error` per pause, tagged `[scraper-rejected]`, with the transport, URL and
+  the edge's diagnostic headers (`retry-after`, `server`, `cf-ray`, `cf-mitigated`);
+- **paces requests**: at most one request *starts* per second per process, and at most 2 are in flight.
+  Rejections followed bursts of ~90-150 requests/min (up to 22 in one second), while the average
+  need is ~20/min, so the queue normally drains at once;
+- **never stalls a page**: a request whose turn is more than 10 s away is not sent (`deferred: true`).
+  It is not a failure either: no log line, no stored error or retry backoff. The section stays stale
+  and refreshes on a later view;
+- re-checks the pause after a request's wait, so requests queued behind a rejection are not sent
+  (previously each rejection was followed by 1-4 more).
+
+One page render calls several API routes (financial-info, quarterly-chart-data, ...) that
+each call `fetchAndUpdateStockAnalyzerData` for the same ticker, so 138 of 142 tickers were
+scraped twice within 5 s. The scrape is now **single-flight per ticker**: an in-flight map on
+`globalThis` (keyed by ticker id) lets a concurrent caller await the running scrape and get
+its result, and the entry is cleared when the scrape settles. A `force` call waits for the
+running scrape to finish and then scrapes again, so it never gets data from before its
+request. `refreshMarketSummaryForFairValue` waits for a running full scrape. It then
+dedupes under its own `<tickerId>:summary` key.
+
+Paced in process memory: correct for the single Lightsail container. With several app instances each
+would pace separately; an SQS FIFO queue in front of the Lambda would then be the next step.
+
+To check for blocking in production (needs `LOKI_READ_TOKEN`, see `grafana-cloud-logging.md`):
+
+```bash
+pnpm logs:fetch --grep scraper-rejected --hours 24
+```
+
+Or in Grafana Explore: `{service="insights-ui", env="production"} |= "[scraper-rejected]"`.
+
+## Fetching through the Lambda
+
+When the App Setting **`SCRAPER_FETCH_VIA_LAMBDA`** (group "Fundamentals Scraping") is ON, pages
+are fetched through the stocks Lambda's `POST /html` proxy at **`STOCK_ANALYZER_LAMBDA_URL`** (its
+Lambda Function URL), so requests leave from Lambda's IPs instead of this server's. The Lambda only
+returns `{ status, html, headers }`; parsing stays in the app. Rejections seen by the Lambda are
+logged as `[scraper-rejected] … via lambda` and pause only Lambda fetches. Saving the setting on the admin App Settings screen applies immediately (no redeploy); a value edited directly in AWS SSM is picked up within 30 minutes (the App Settings cache TTL).
+
+The Lambda is `lambdas/stock-page-fetcher` in this repo (a Lambda Function URL). It is deployed with
+osls (`sls deploy`) by `.github/workflows/deploy-stock-page-fetcher.yml` on every push to `main` that
+touches that folder, and only fetches hosts listed in its `ALLOWED_FETCH_HOSTS` env var (repo
+variable).

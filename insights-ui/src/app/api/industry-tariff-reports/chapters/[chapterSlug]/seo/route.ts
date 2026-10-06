@@ -1,6 +1,7 @@
 import { prisma } from '@/prisma';
 import type { TariffReportSeoDetails } from '@/scripts/industry-tariff-reports/tariff-types';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
+import { validateTariffChapterSlug } from '@/utils/tariff-reports/tariff-input-validation';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';
 
@@ -9,7 +10,7 @@ export interface ChapterSeoResponse {
 }
 
 async function getHandler(req: NextRequest, { params }: { params: Promise<{ chapterSlug: string }> }): Promise<ChapterSeoResponse> {
-  const { chapterSlug } = await params;
+  const chapterSlug = validateTariffChapterSlug((await params).chapterSlug);
   const row = await prisma.tariffChapterReport.findUnique({
     where: { spaceId_slug: { spaceId: KoalaGainsSpaceId, slug: chapterSlug } },
     select: { seoDetails: true },

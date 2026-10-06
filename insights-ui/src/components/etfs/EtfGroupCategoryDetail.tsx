@@ -1,6 +1,8 @@
 import EtfPageLayout from '@/components/etfs/EtfPageLayout';
 import WithSuspenseEtfListingGrid from '@/components/etfs/WithSuspenseEtfListingGrid';
 import { fetchEtfListingData } from '@/utils/etf-data-utils';
+import { fetchEtfGroupDetail, filterEtfCountriesWithListing } from '@/utils/etf-listing-fetchers';
+import { isGroupCategoryDetailEmpty } from '@/utils/etf-listing-noindex';
 import { EtfFilterParamKey, EtfSearchParams } from '@/utils/etf-filter-utils';
 import { getEtfCategoryByName, getEtfGroupByKey } from '@/utils/etf-categorization-utils';
 import { EtfSupportedCountry } from '@/utils/etfCountryExchangeUtils';
@@ -37,6 +39,10 @@ export default async function EtfGroupCategoryDetail({ country, groupKey, catego
     country
   );
 
+  const switcherCountries = await filterEtfCountriesWithListing(
+    async (c) => !isGroupCategoryDetailEmpty(await fetchEtfGroupDetail(c, groupObj.key), knownCategory.name)
+  );
+
   return (
     <EtfPageLayout
       title={`${knownCategory.name} ${displayCountry} ETFs`}
@@ -44,6 +50,7 @@ export default async function EtfGroupCategoryDetail({ country, groupKey, catego
       currentCountry={country}
       switcherSection="groups"
       switcherHref={(c) => etfGroupCategoryPath(c, groupObj.key, knownCategory.name)}
+      switcherCountries={switcherCountries}
       extraBreadcrumbs={[
         { name: groupObj.name, href: etfBrowseDetailPath(country, 'groups', groupObj.key), current: false },
         { name: knownCategory.name, href: etfGroupCategoryPath(country, groupObj.key, knownCategory.name), current: true },

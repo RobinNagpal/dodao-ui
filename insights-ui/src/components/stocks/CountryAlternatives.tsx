@@ -5,6 +5,8 @@ import { ALL_SUPPORTED_COUNTRIES, SupportedCountries } from '@/utils/countryExch
 interface CountryAlternativesProps {
   currentCountry?: string;
   industryKey?: string;
+  /** When set, only these countries are linked — used on industry pages so we never link to an empty listing. */
+  countriesWithStocks?: SupportedCountries[];
   className?: string;
   enhanced?: boolean;
   centerContent?: boolean;
@@ -28,6 +30,7 @@ const COUNTRY_DISPLAY_CONFIG: Record<SupportedCountries, { name: string; path: s
 export default function CountryAlternatives({
   currentCountry = 'US',
   industryKey,
+  countriesWithStocks,
   className = '',
   enhanced = false,
   centerContent = false,
@@ -39,8 +42,10 @@ export default function CountryAlternatives({
     ...COUNTRY_DISPLAY_CONFIG[code],
   }));
 
-  // Filter out the current country
-  const alternativeCountries = countries.filter((country) => country.code !== currentCountry);
+  // Filter out the current country, inactive countries, and (on industry pages) countries with no stocks in this industry
+  const alternativeCountries = countries.filter(
+    (country) => country.code !== currentCountry && country.isActive && (!countriesWithStocks || countriesWithStocks.includes(country.code))
+  );
 
   if (alternativeCountries.length === 0) {
     return null;
@@ -67,23 +72,21 @@ export default function CountryAlternatives({
         <span className={`country-alternatives-label ml-2 ${enhanced ? 'text-blue-100 font-semibold' : 'text-muted'}`}>Also view:</span>
       </div>
       <div className={`flex flex-wrap gap-2 sm:ml-2 ${centerContent ? 'justify-center mx-auto sm:mx-0' : ''}`}>
-        {alternativeCountries
-          .filter((c) => COUNTRY_DISPLAY_CONFIG[c.code].isActive)
-          .map((country, index) => {
-            const href = industryKey ? `/stocks${country.path}/industries/${industryKey}` : `/stocks${country.path}`;
+        {alternativeCountries.map((country, index) => {
+          const href = industryKey ? `/stocks${country.path}/industries/${industryKey}` : `/stocks${country.path}`;
 
-            return (
-              <span key={country.code} className="inline-flex items-center">
-                <Link
-                  href={href}
-                  className={`country-alternatives-link text-link hover:text-link transition-colors duration-200 ${enhanced ? 'font-semibold' : ''}`}
-                >
-                  {country.name} Stocks
-                </Link>
-                {index < alternativeCountries.length - 1 && <span className="text-muted ml-2 hidden sm:inline">•</span>}
-              </span>
-            );
-          })}
+          return (
+            <span key={country.code} className="inline-flex items-center">
+              <Link
+                href={href}
+                className={`country-alternatives-link text-link hover:text-link transition-colors duration-200 ${enhanced ? 'font-semibold' : ''}`}
+              >
+                {country.name} Stocks
+              </Link>
+              {index < alternativeCountries.length - 1 && <span className="text-muted ml-2 hidden sm:inline">•</span>}
+            </span>
+          );
+        })}
       </div>
     </div>
   );

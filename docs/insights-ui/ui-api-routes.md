@@ -30,7 +30,7 @@ All route handlers are wrapped by one of these middlewares (see `src/app/api/hel
 
 `GET` handlers are out of scope of the rule (mostly public reads); they are listed below for completeness.
 
-Legend: 🔑 `withAdminOrToken` · 🔒 `withLoggedInAdmin` · 👤 `withLoggedInUser` · 🌐 `withErrorHandlingV2` (no auth)
+Legend: 🔑 `withAdminOrToken` · 🔒 `withLoggedInAdmin` · 👤 `withLoggedInUser` · 🌐 `withErrorHandlingV2` (no auth) · 🔏 Stripe signature
 
 ---
 
@@ -89,7 +89,8 @@ Base prefix: `/api/[spaceId]/tickers-v1`
 | `/generation-requests` | POST | 🔑 | Queue generation requests |
 | `/generation-requests/by-ids` | GET | 🔑 | |
 | `/industry/[industryKey]/[subIndustryKey]` | GET | 🌐 | |
-| `/missing-factor-analysis` · `/missing-reports` | GET | 🔒 | Admin-only reads |
+| `/admin-search` | GET | 🔒 | Paginated admin ticker search + report status (create-reports / missing-reports) |
+| `/missing-factor-analysis` | GET | 🔒 | Admin-only read |
 | `/move` | POST | 🔑 | Move tickers between industries |
 | `/oldest-by-report-type` | GET | 🔑 | |
 | `/screener-callback` | POST | 🌐 | **Callback** — screener posts top gainers/losers |
@@ -230,6 +231,24 @@ Favourites are owned by the end user, not by an admin, so they stay on `withLogg
 The same applies to the other user-owned routes under `/api/[spaceId]/users/**` (ticker/ETF notes,
 user lists, ticker tags, portfolio-manager profiles).
 
+## Excluded by design — Report credits (paid, user-owned)
+
+Credits belong to the end user and are paid for, so these stay on `withLoggedInUser` too. Note that
+`report-generation` **mutates a stock/ETF** (it queues a generation request) yet is deliberately *not*
+`withAdminOrToken`: the paying user is the one authorizing it, and the credit deduction is what gates
+abuse. See [report-credits.md](report-credits.md).
+
+| Route | Methods | Auth |
+| --- | --- | --- |
+| `/api/[spaceId]/users/credits` | GET | 👤 |
+| `/api/[spaceId]/users/credits/checkout-session` | POST | 👤 |
+| `/api/[spaceId]/users/report-generation` | GET / POST | 👤 |
+| `/api/stripe/webhook` | POST | 🔏 Stripe signature |
+
+🔏 The Stripe webhook is unauthenticated by design — the `stripe-signature` header verified against
+`STRIPE_WEBHOOK_SECRET` is what proves the request is genuine, and an unverifiable body is rejected
+before anything is read out of it.
+
 ---
 
 ## Summary of the non-`withAdminOrToken` mutations (and why)
@@ -247,5 +266,7 @@ user lists, ticker tags, portfolio-manager profiles).
 | `etfs-v1/exchange/.../mor-info-callback` | 🌐 | MOR scrape callback |
 | `etfs-v1/exchange/.../save-report-callback` | 🌐 | Lambda result callback |
 | `users/favourite-tickers*`, `users/favourite-etfs*` | 👤 | User-owned data (kept as `main`) |
+| `users/credits*`, `users/report-generation` | 👤 | Paid, user-owned — the credit spend is the gate |
+| `stripe/webhook` | 🔏 | Stripe signature verification (no session exists) |
 
 Everything else that mutates stocks, ETFs, prompts, or prompt invocations is on `withAdminOrToken`.

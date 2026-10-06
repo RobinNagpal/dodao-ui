@@ -257,6 +257,7 @@ Use **`docs/insights-ui/`** for topical reference docs about Insights-UI subsyst
 * `etf-prompt-improvement/` — Iterative prompt-tuning review notes
 * `tariffs/` — Tariffs subsystem reference (`tariffs-functionality.md`, `tariff-usecases.md`)
 * `tasks/` — Active KoalaGains task lists (open + closed): ETFs, stocks, tariffs, scenarios, prompt tuning
+* `grafana-cloud-logging.md` — Production error logs in Grafana Cloud Loki. **To see recent production errors, run `pnpm logs:fetch` from `insights-ui/`** (last 24h of errors, grouped by pattern; `--hours`, `--level`, `--grep`, `--raw`, `--out`). Needs `LOKI_READ_TOKEN` in `insights-ui/.env` — see the "Pulling logs from the terminal" section.
 * `ui-leaf-component-system.md` — **Styling architecture (read before adding a component or touching `className`).** A small leaf layer (`src/components/ui/**`) owns ALL Tailwind; high-level components (admin/stock/ETF/scenario pages) carry zero `className` and compose leaves. Covers the leaf inventory, `cva` + `cn` authoring pattern, semantic color tokens, the ESLint guardrail, and the migration process.
 
 ### How to Use the Knowledge Base

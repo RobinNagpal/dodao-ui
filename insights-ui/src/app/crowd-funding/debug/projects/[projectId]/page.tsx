@@ -4,9 +4,11 @@ import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import Link from 'next/link';
 import React from 'react';
+import { assertValidCrowdFundingPageParams } from '@/utils/crowd-funding-param-utils';
 
 export default async function ProjectDetailPageWrapper({ params }: { params: Promise<{ projectId: string }> }) {
   const { projectId } = await params;
+  assertValidCrowdFundingPageParams({ projectId });
 
   const res = await fetch(`${getBaseUrl()}/api/crowd-funding/projects/${projectId}`);
   const data: { projectDetails: ProjectDetails; spiderGraph: SpiderGraph | {} } = await res.json();

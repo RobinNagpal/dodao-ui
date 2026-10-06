@@ -21,6 +21,7 @@ export const createBackgroundGenerationRequest = async (
     regenerateFutureGrowth: true,
     regenerateFairValue: true,
     regenerateManagementTeam: true,
+    regenerateStability: true,
     regenerateFinalSummary: true,
     llmProvider: llmSelection?.llmProvider,
     llmModel: llmSelection?.model,
@@ -48,6 +49,7 @@ export const createSingleAnalysisBackgroundRequest = async (
     regenerateFutureGrowth: false,
     regenerateFairValue: false,
     regenerateManagementTeam: false,
+    regenerateStability: false,
     regenerateFinalSummary: false,
     llmProvider: llmSelection?.llmProvider,
     llmModel: llmSelection?.model,
@@ -75,6 +77,9 @@ export const createSingleAnalysisBackgroundRequest = async (
       break;
     case ReportType.MANAGEMENT_TEAM:
       payload.regenerateManagementTeam = true;
+      break;
+    case ReportType.STABILITY:
+      payload.regenerateStability = true;
       break;
     case ReportType.FINAL_SUMMARY:
       payload.regenerateFinalSummary = true;

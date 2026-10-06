@@ -9,7 +9,8 @@ import { getChapterSlugForOldUrl } from '@/utils/tariff-reports/seeded-chapter-r
 import { tariffReportTag } from '@/utils/tariff-report-tags';
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
 import { Metadata } from 'next';
-import { permanentRedirect } from 'next/navigation';
+import { permanentRedirect, notFound } from 'next/navigation';
+import { isValidTariffIndustryId } from '@/utils/tariff-reports/tariff-input-validation';
 
 export async function generateMetadata({ params }: { params: Promise<{ industryId: string }> }): Promise<Metadata> {
   const { industryId } = await params;
@@ -18,6 +19,8 @@ export async function generateMetadata({ params }: { params: Promise<{ industryI
 
 export default async function FinalConclusionPage({ params }: { params: Promise<{ industryId: string }> }) {
   const { industryId } = await params;
+  // Malformed / unknown industry: the `[industryId]` layout logs the rejection; 404 silently here.
+  if (!isValidTariffIndustryId(industryId)) notFound();
 
   // Industry-areas and final-conclusion legacy URLs were the two sections GSC kept flagging as
   // duplicates of the chapter route — the canonical-only consolidation wasn't strong enough. 308 to

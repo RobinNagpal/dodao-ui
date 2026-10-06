@@ -43,6 +43,11 @@ interface SsmCacheState {
   expiresAt: number;
   /** In-flight fetch, shared so concurrent reads at expiry cost one SSM call, not one each. */
   inFlight: Promise<Record<string, string>> | null;
+  /**
+   * Bumped on every save. A fetch that started before a save must not cache its (pre-save)
+   * result for the full TTL, so it only stores values if the generation is unchanged.
+   */
+  generation: number;
 }
 
 // On globalThis because Next.js can instantiate this module once per bundle —
@@ -51,7 +56,7 @@ const globalWithCache = globalThis as typeof globalThis & { __insightsUiSsmCache
 
 function getSsmCache(): SsmCacheState {
   if (!globalWithCache.__insightsUiSsmCache) {
-    globalWithCache.__insightsUiSsmCache = { values: null, expiresAt: 0, inFlight: null };
+    globalWithCache.__insightsUiSsmCache = { values: null, expiresAt: 0, inFlight: null, generation: 0 };
   }
   return globalWithCache.__insightsUiSsmCache;
 }
@@ -61,9 +66,12 @@ async function getSsmValues(forceRefresh = false): Promise<Record<string, string
   const cache = getSsmCache();
   if (!forceRefresh && cache.values && cache.expiresAt > Date.now()) return cache.values;
   if (cache.inFlight) return cache.inFlight;
+  const generation = cache.generation;
   cache.inFlight = (async () => {
     try {
       const values = await fetchAllSsmParameters();
+      // A save landed while this read was in flight: return what we read, but don't cache it.
+      if (generation !== cache.generation) return values;
       cache.values = values;
       cache.expiresAt = Date.now() + CACHE_TTL_MS;
       return values;
@@ -164,6 +172,8 @@ export async function setAppConfigValue(key: string, value: string): Promise<Upd
     const cache = getSsmCache();
     cache.values = null; // force a fresh read on next access
     cache.expiresAt = 0;
+    cache.generation++; // an in-flight read that started before this save must not re-cache old values
+    cache.inFlight = null;
     return { success: true, message: `Saved ${key}` };
   } catch (err) {
     const message = err instanceof Error ? err.message : 'Unknown error';

@@ -1,4 +1,5 @@
 import { prisma } from '@/prisma';
+import { settleReportCredit } from '@/utils/credits/credit-service';
 import { GenerationRequestStatus, ReportType } from '@/types/ticker-typesv1';
 import { TickerV1, TickerV1GenerationRequest } from '@prisma/client';
 
@@ -21,6 +22,8 @@ export function shouldRegenerateReport(request: TickerV1GenerationRequest, repor
       return request.regenerateFairValue;
     case ReportType.MANAGEMENT_TEAM:
       return request.regenerateManagementTeam;
+    case ReportType.STABILITY:
+      return request.regenerateStability;
     case ReportType.FINAL_SUMMARY:
       return request.regenerateFinalSummary;
     default:
@@ -117,6 +120,7 @@ export async function markAsCompleted(generationRequest: TickerV1GenerationReque
   }
 
   const hasFailed = generationRequest.failedSteps.length > 0;
+  const completedAt = new Date();
 
   await prisma.tickerV1GenerationRequest.update({
     where: {
@@ -124,8 +128,21 @@ export async function markAsCompleted(generationRequest: TickerV1GenerationReque
     },
     data: {
       status: hasFailed ? GenerationRequestStatus.Failed : GenerationRequestStatus.Completed,
-      completedAt: new Date(),
-      updatedAt: new Date(),
+      completedAt,
+      updatedAt: completedAt,
     },
   });
+
+  // The single "Report generated on ..." date shown to visitors. Any completed
+  // step rewrote part of the report, so a partial run still moves the date.
+  if (generationRequest.completedSteps.length > 0) {
+    await prisma.tickerV1.update({
+      where: { id: generationRequest.tickerId },
+      data: { lastReportGeneratedAt: completedAt },
+    });
+  }
+
+  // Settles the credit a user reserved for this request: charged in Stripe on
+  // success, released uncharged when the request ends in Failed. No-op for admin/cron requests.
+  await settleReportCredit(generationRequest.id, !hasFailed);
 }

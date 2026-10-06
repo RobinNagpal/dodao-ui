@@ -15,6 +15,7 @@ import {
   extractFinancialDataForPastPerformance,
   extractKpisDataForAnalysis,
   loadFairValueValuationSnapshot,
+  loadStabilityMarketSnapshot,
 } from '@/utils/stock-analyzer-scraper-utils';
 import {
   prepareBaseTickerInputJson,
@@ -24,6 +25,7 @@ import {
   prepareFinancialAnalysisInputJson,
   prepareFutureGrowthInputJson,
   preparePastPerformanceInputJson,
+  prepareStabilityInputJson,
 } from '@/utils/analysis-reports/report-input-json-utils';
 import { compileTemplate, loadSchema, validateData } from '@/util/get-llm-response';
 import path from 'path';
@@ -42,6 +44,7 @@ const SCHEMA_PATHS: Partial<Record<ReportType, string>> = {
   [ReportType.FAIR_VALUE]: 'schemas/analysis-factors/outputs/whole-category-analysis-output.schema.yaml',
   [ReportType.COMPETITION]: 'schemas/analysis-factors/competition/competition-output.schema.yaml',
   [ReportType.MANAGEMENT_TEAM]: 'schemas/analysis-factors/management-team/management-team-output.schema.yaml',
+  [ReportType.STABILITY]: 'schemas/analysis-factors/stability/stability-output.schema.yaml',
   [ReportType.FINAL_SUMMARY]: 'schemas/analysis-factors/final-summary/final-summary-analysis-output.schema.yaml',
 };
 
@@ -166,6 +169,12 @@ export async function generatePromptForReportType(symbol: string, exchange: stri
     case ReportType.MANAGEMENT_TEAM:
       inputJson = prepareBaseTickerInputJson(tickerRecord);
       promptKey = 'US/public-equities-v1/management-team';
+      break;
+
+    case ReportType.STABILITY:
+      const stabilitySnapshot = await loadStabilityMarketSnapshot(tickerRecord);
+      inputJson = prepareStabilityInputJson(tickerRecord, stabilitySnapshot);
+      promptKey = 'US/public-equities-v1/stability';
       break;
 
     case ReportType.FINAL_SUMMARY:

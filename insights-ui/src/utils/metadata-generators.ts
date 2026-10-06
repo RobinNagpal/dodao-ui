@@ -1461,6 +1461,128 @@ export const generateManagementTeamBreadcrumbSchema = (ticker: TickerWithOptiona
 };
 
 // ────────────────────────────────────────────────────────────────────────────────
+// Stock stability (market-drawdown) structured data generators
+// ────────────────────────────────────────────────────────────────────────────────
+
+export const generateStabilityArticleSchema = (
+  ticker: TickerWithOptionalIndustry,
+  report?: { createdAt?: string | Date; updatedAt?: string | Date } | null
+) => {
+  const stockUrl = `https://koalagains.com/stocks/${ticker.exchange}/${ticker.symbol}`;
+  const canonicalUrl = `${stockUrl}/stability`;
+
+  const datePublished = report?.createdAt ? new Date(report.createdAt).toISOString() : new Date(ticker.createdAt).toISOString();
+  const dateModified = report?.updatedAt ? new Date(report.updatedAt).toISOString() : new Date(ticker.updatedAt).toISOString();
+
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: `${ticker.name} (${ticker.symbol}) Stability & Market Drawdown Analysis`,
+    description: `How ${ticker.name} (${ticker.symbol}) is expected to hold up when the market drops 5%, 15% or 30% — expected price in each scenario plus the impact on the industry and on the company.`,
+    image: ['https://koalagains.com/koalagain_logo.png'],
+    datePublished,
+    dateModified,
+    author: {
+      '@type': 'Organization',
+      name: 'KoalaGains',
+      url: 'https://koalagains.com',
+      logo: {
+        '@type': 'ImageObject',
+        url: 'https://koalagains.com/koalagain_logo.png',
+      },
+    },
+    publisher: {
+      '@type': 'Organization',
+      name: 'KoalaGains',
+      url: 'https://koalagains.com',
+      logo: {
+        '@type': 'ImageObject',
+        url: 'https://koalagains.com/koalagain_logo.png',
+        width: 600,
+        height: 60,
+      },
+    },
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': canonicalUrl,
+    },
+    articleSection: 'Stability Analysis',
+    keywords: [
+      ticker.name,
+      `${ticker.symbol} stability`,
+      `${ticker.name} drawdown`,
+      `${ticker.symbol} market crash impact`,
+      `${ticker.name} downside risk`,
+      `${ticker.symbol} expected price if market drops`,
+      'drawdown resilience',
+      'market correction',
+      'downside protection',
+      'investment analysis',
+      `${ticker.exchange} stocks`,
+      ticker.industryKey,
+      ticker.industry?.name,
+      'KoalaGains',
+    ]
+      .filter(Boolean)
+      .join(', '),
+    about: {
+      '@type': 'Corporation',
+      name: ticker.name,
+      tickerSymbol: ticker.symbol,
+    },
+    inLanguage: 'en-US',
+  };
+};
+
+export const generateStabilityBreadcrumbSchema = (ticker: TickerWithOptionalIndustry, country: string) => {
+  const stockUrl = `https://koalagains.com/stocks/${ticker.exchange}/${ticker.symbol}`;
+  const canonicalUrl = `${stockUrl}/stability`;
+  const industryName = ticker.industry?.name || ticker.industryKey;
+
+  const breadcrumbItems: { '@type': string; position: number; name: string; item: string }[] = [
+    {
+      '@type': 'ListItem',
+      position: 1,
+      name: 'Home',
+      item: 'https://koalagains.com',
+    },
+  ];
+
+  if (country === 'US') {
+    breadcrumbItems.push(
+      { '@type': 'ListItem', position: 2, name: 'US Stocks', item: 'https://koalagains.com/stocks' },
+      { '@type': 'ListItem', position: 3, name: industryName, item: `https://koalagains.com/stocks/industries/${ticker.industryKey}` },
+      { '@type': 'ListItem', position: 4, name: `${ticker.symbol}`, item: stockUrl },
+      { '@type': 'ListItem', position: 5, name: 'Stability', item: canonicalUrl }
+    );
+  } else if (country) {
+    breadcrumbItems.push(
+      { '@type': 'ListItem', position: 2, name: `${country} Stocks`, item: `https://koalagains.com/stocks/countries/${country}` },
+      {
+        '@type': 'ListItem',
+        position: 3,
+        name: industryName,
+        item: `https://koalagains.com/stocks/countries/${country}/industries/${ticker.industryKey}`,
+      },
+      { '@type': 'ListItem', position: 4, name: `${ticker.symbol}`, item: stockUrl },
+      { '@type': 'ListItem', position: 5, name: 'Stability', item: canonicalUrl }
+    );
+  } else {
+    breadcrumbItems.push(
+      { '@type': 'ListItem', position: 2, name: 'Stocks', item: 'https://koalagains.com/stocks' },
+      { '@type': 'ListItem', position: 3, name: `${ticker.symbol}`, item: stockUrl },
+      { '@type': 'ListItem', position: 4, name: 'Stability', item: canonicalUrl }
+    );
+  }
+
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: breadcrumbItems,
+  };
+};
+
+// ────────────────────────────────────────────────────────────────────────────────
 // Common viewport configuration
 // ────────────────────────────────────────────────────────────────────────────────
 export const commonViewport = {

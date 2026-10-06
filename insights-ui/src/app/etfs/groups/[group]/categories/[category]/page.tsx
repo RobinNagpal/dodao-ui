@@ -4,7 +4,7 @@ import { getEtfCategoryByName, getEtfCategoryBySlug, getEtfGroupByKey, slugifyEt
 import { etfGroupCategoryPath } from '@/utils/etf-country-route-utils';
 import { SupportedCountries } from '@/utils/countryExchangeUtils';
 import { fetchEtfGroupDetail } from '@/utils/etf-listing-fetchers';
-import { groupCategoryDetailRobots } from '@/utils/etf-listing-noindex';
+import { groupCategoryDetailRobots, isGroupCategoryDetailEmpty } from '@/utils/etf-listing-noindex';
 import { generateEtfGroupCategoryListingBreadcrumbJsonLd, generateEtfGroupCategoryListingMetadata } from '@/utils/etf-metadata-generators';
 import { notFound, permanentRedirect } from 'next/navigation';
 import type { Metadata } from 'next';
@@ -44,6 +44,9 @@ export default async function EtfGroupCategoryPage({ params, searchParams: searc
   if (decodedCategory !== slugifyEtfCategory(resolved.name)) {
     permanentRedirect(etfGroupCategoryPath(SupportedCountries.US, resolved.group, resolved.name));
   }
+
+  // Confirmed-empty listing → real 404 (generic EtfListingNotFound page) instead of a soft 404.
+  if (isGroupCategoryDetailEmpty(await fetchEtfGroupDetail(SupportedCountries.US, resolved.group), resolved.name)) notFound();
 
   const searchParams = await searchParamsPromise;
   const groupObj = getEtfGroupByKey(decodedGroup);

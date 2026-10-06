@@ -4,9 +4,9 @@ import { etfBrowseDetailPath, resolveEtfCountryParam } from '@/utils/etf-country
 import { getEtfProviderBySlug, slugifyEtfTag } from '@/utils/etf-tag-slug-utils';
 import { SupportedCountries } from '@/utils/countryExchangeUtils';
 import { fetchEtfProvidersIndex } from '@/utils/etf-listing-fetchers';
-import { providerDetailRobots } from '@/utils/etf-listing-noindex';
+import { isProviderDetailEmpty, providerDetailRobots } from '@/utils/etf-listing-noindex';
 import { generateEtfProviderDetailBreadcrumbJsonLd, generateEtfProviderDetailMetadata } from '@/utils/etf-metadata-generators';
-import { permanentRedirect } from 'next/navigation';
+import { notFound, permanentRedirect } from 'next/navigation';
 import type { Metadata } from 'next';
 
 export const dynamic = 'force-dynamic';
@@ -20,12 +20,12 @@ export async function generateMetadata(props: { params: Promise<{ country: strin
   const { country, provider } = await props.params;
   const slug = slugifyEtfTag(decodeURIComponent(provider));
   const decodedCountry = resolveEtfCountryParam(country, etfBrowseDetailPath(SupportedCountries.US, 'providers', slug));
+  const index = await fetchEtfProvidersIndex(decodedCountry);
   const base = generateEtfProviderDetailMetadata({
     country: decodedCountry,
-    providerCanonical: getEtfProviderBySlug(slug),
+    providerCanonical: getEtfProviderBySlug(slug, index?.providers),
     providerSlug: slug,
   });
-  const index = await fetchEtfProvidersIndex(decodedCountry);
   return { ...base, ...providerDetailRobots(index, slug) };
 }
 
@@ -40,7 +40,11 @@ export default async function CountryEtfsByProviderPage({ params, searchParams: 
     permanentRedirect(etfBrowseDetailPath(decodedCountry, 'providers', slug));
   }
 
-  const canonical = getEtfProviderBySlug(slug);
+  // Confirmed-empty listing → real 404 (generic EtfListingNotFound page) instead of a soft 404.
+  const index = await fetchEtfProvidersIndex(decodedCountry);
+  if (isProviderDetailEmpty(index, slug)) notFound();
+
+  const canonical = getEtfProviderBySlug(slug, index?.providers);
   const searchParams = await searchParamsPromise;
   const breadcrumb = generateEtfProviderDetailBreadcrumbJsonLd({
     country: decodedCountry,

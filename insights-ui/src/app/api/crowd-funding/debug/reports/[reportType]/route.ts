@@ -5,6 +5,7 @@ import { GetObjectCommand, ListObjectsV2Command, ListObjectsV2CommandInput, S3Cl
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';
 import { Readable } from 'stream';
+import { assertValidCrowdFundingApiParams } from '@/utils/crowd-funding-param-utils';
 
 const s3Client = new S3Client({
   region: process.env.DEFAULT_REGION,
@@ -62,6 +63,7 @@ async function getProjectReport(projectId: string, reportType: string): Promise<
 
 async function getHandler(req: NextRequest, { params }: { params: Promise<{ reportType: string }> }) {
   const { reportType } = await params;
+  assertValidCrowdFundingApiParams({ reportType });
 
   const projectIds = await getProjects();
 

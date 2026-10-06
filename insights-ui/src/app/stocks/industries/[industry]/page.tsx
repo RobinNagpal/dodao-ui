@@ -5,9 +5,10 @@ import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { SupportedCountries } from '@/utils/countryExchangeUtils';
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
 import { commonViewport, generateCountryIndustryStocksMetadata } from '@/utils/metadata-generators';
+import { isIndustryStocksResponseEmpty } from '@/utils/stocks-data-utils';
 import { getIndustryPageTag } from '@/utils/ticker-v1-cache-utils';
 import type { Metadata } from 'next';
-import { permanentRedirect } from 'next/navigation';
+import { notFound, permanentRedirect } from 'next/navigation';
 
 export const dynamic = 'force-dynamic';
 
@@ -18,8 +19,7 @@ export async function generateMetadata(props: { params: Promise<{ industry: stri
   const { industry } = await props.params;
   const industryKey = decodeURIComponent(industry);
 
-  // US industry listings always have stocks, so they stay indexable — no need for the empty-check
-  // fetch here. The noindex-when-empty guard is only applied to the per-country leaf pages.
+  // Empty / unknown industries 404 from the page itself (see below), so no robots override is needed here.
   return generateCountryIndustryStocksMetadata('US', industryKey);
 }
 
@@ -56,6 +56,10 @@ export default async function IndustryStocksPage({ params }: PageProps) {
 
   const data = (await res.json()) as SubIndustriesResponse | null;
 
+  // Confirmed-empty listing (or unknown industry: HTTP 200 with a null body) → real 404 (sibling
+  // not-found.tsx) instead of a soft 404. A failed fetch (!res.ok) renders as before.
+  if (res.ok && (!data || isIndustryStocksResponseEmpty(data))) notFound();
+
   return (
     <IndustryWithStocksPageLayout
       title={`${data?.name || industryKey} Stocks`}
@@ -66,6 +70,7 @@ export default async function IndustryStocksPage({ params }: PageProps) {
       industryKey={industryKey}
       industryName={data?.name}
       hasAnalysis={data?.hasAnalysis}
+      countriesWithStocks={data?.countriesWithStocks}
     >
       {!data ? (
         <>

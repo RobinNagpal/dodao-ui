@@ -4,12 +4,15 @@ import { PriceHistoryResponse } from '@/app/api/[spaceId]/tickers-v1/exchange/[e
 import { QuarterlyChartDataResponse } from '@/app/api/[spaceId]/tickers-v1/exchange/[exchange]/[ticker]/quarterly-chart-data/route';
 import { TickerIdentifier } from '@/app/api/[spaceId]/tickers-v1/generation-requests/route';
 import SpiderChartFlyoutMenu from '@/components/ticker/SpiderChartFlyoutMenu';
+import ReportGenerationControl from '@/components/credits/ReportGenerationControl';
+import { CreditReportKind } from '@prisma/client';
 import StockActions from '@/app/stocks/[exchange]/[ticker]/StockActions';
 import CompetitionAnalysisButton from '@/app/stocks/[exchange]/[ticker]/CompetitionAnalysisButton';
 import TickerComparisonButton from '@/app/stocks/[exchange]/[ticker]/TickerComparisonButton';
 import FavouriteButton from '@/app/stocks/[exchange]/[ticker]/FavouriteButton';
 import NotesButton from '@/app/stocks/[exchange]/[ticker]/NotesButton';
 import CompetitionChartSection from '@/components/ticker-reportsv1/CompetitionChartSection';
+import StabilityScenarioNumbers from '@/components/ticker-reportsv1/StabilityScenarioNumbers';
 import FinancialInfo, { FinancialCard } from '@/components/ticker-reportsv1/FinancialInfo';
 // Lazy wrappers — chart.js + react-chartjs-2 deferred out of the main bundle.
 // See PriceChartLazy.tsx / QuarterlyMetricsChartLazy.tsx for the dynamic config.
@@ -27,6 +30,8 @@ import {
   MANAGEMENT_TEAM_ALIGNMENT_VERDICT_LABELS,
   ManagementTeamAlignmentVerdict,
   ReportType,
+  STABILITY_RESILIENCE_VERDICT_LABELS,
+  StabilityResilienceVerdict,
   TickerAnalysisCategory,
 } from '@/types/ticker-typesv1';
 import { parseMarkdown } from '@/util/parse-markdown';
@@ -446,6 +451,15 @@ function TickerSummaryInfo({ data }: { data: Promise<TickerV1FastResponse> }): J
         </div>
       </div>
 
+      {/* One freshness date for the whole report, next to the action that
+          refreshes it. `d` arrives as JSON, so the date is normalized here. */}
+      <ReportGenerationControl
+        kind={CreditReportKind.Stock}
+        symbol={d.symbol}
+        exchange={d.exchange}
+        lastReportGeneratedAt={d.lastReportGeneratedAt ? new Date(d.lastReportGeneratedAt).toISOString() : null}
+      />
+
       {/* Company Summary */}
       <div className="mb-2" itemProp="description">
         <div className="markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(d.summary ?? 'Not yet populated') }} />
@@ -576,6 +590,24 @@ function getManagementTeamVerdictBadgeClasses(verdict: ManagementTeamAlignmentVe
   }
 }
 
+// `badge-tone-*` are style-free hooks — light mode darkens the `-300` text
+// (unreadable on white) via `.page-theme-light` in `styles/page-theme-light.scss`.
+function getStabilityVerdictBadgeClasses(verdict: StabilityResilienceVerdict): string {
+  switch (verdict) {
+    case StabilityResilienceVerdict.HIGHLY_RESILIENT:
+    case StabilityResilienceVerdict.RESILIENT:
+      return 'badge-tone-success bg-emerald-500/15 text-emerald-300 border border-emerald-500/40';
+    case StabilityResilienceVerdict.MARKET_LIKE:
+      return 'badge-tone-info bg-sky-500/15 text-sky-300 border border-sky-500/40';
+    case StabilityResilienceVerdict.VULNERABLE:
+      return 'badge-tone-warning bg-amber-500/15 text-amber-300 border border-amber-500/40';
+    case StabilityResilienceVerdict.HIGHLY_VULNERABLE:
+      return 'badge-tone-danger bg-red-500/15 text-red-300 border border-red-500/40';
+    default:
+      return 'bg-gray-500/15 text-body border border-gray-500/40';
+  }
+}
+
 const CATEGORY_DETAIL_LINKS: Record<TickerAnalysisCategory, { id: ReportType; href: (exchange: string, symbol: string) => string; label: string }> = {
   [TickerAnalysisCategory.BusinessAndMoat]: {
     id: ReportType.BUSINESS_AND_MOAT,
@@ -658,6 +690,7 @@ function TickerAnalysisInfo({
 }): JSX.Element {
   const d: TickerV1FastResponse = use(data);
   const managementTeamReport = d.managementTeamReports?.[0];
+  const stabilityReport = d.stabilityReports?.[0];
 
   return (
     <section id="summary-analysis" className="mb-4 sm:py-6" itemProp="abstract">
@@ -702,6 +735,44 @@ function TickerAnalysisInfo({
                 className="text-body markdown markdown-body"
                 dangerouslySetInnerHTML={{ __html: parseMarkdown(managementTeamReport.summary || 'No summary available.') }}
               />
+            </div>
+          )}
+
+          {stabilityReport && (
+            <div id={ReportType.STABILITY} className="bg-surface p-3 sm:p-4 rounded-md shadow-sm">
+              <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
+                <div className="flex flex-wrap items-center gap-2">
+                  <h3 className="text-lg font-semibold">Stability &amp; Market Drawdown</h3>
+                  <span
+                    className={`inline-flex items-center justify-center rounded-full px-2.5 py-1 text-xs font-medium ${getStabilityVerdictBadgeClasses(
+                      stabilityReport.resilienceVerdict as StabilityResilienceVerdict
+                    )}`}
+                  >
+                    {STABILITY_RESILIENCE_VERDICT_LABELS[stabilityReport.resilienceVerdict as StabilityResilienceVerdict] || stabilityReport.resilienceVerdict}
+                  </span>
+                  {stabilityReport.updatedAt && <AdminTimestamp date={stabilityReport.updatedAt} />}
+                </div>
+                <Link
+                  href={`/stocks/${d.exchange.toUpperCase()}/${d.symbol.toUpperCase()}/stability`}
+                  prefetch={false}
+                  className="inline-flex items-center gap-1 rounded-md px-3 py-1.5 text-xs font-semibold text-primary-text shadow-sm hover:opacity-90 transition-opacity whitespace-nowrap"
+                  style={{ backgroundColor: 'var(--primary-color, #3b82f6)' }}
+                >
+                  View Detailed Analysis →
+                </Link>
+              </div>
+              <div
+                className="text-body markdown markdown-body"
+                dangerouslySetInnerHTML={{ __html: parseMarkdown(stabilityReport.summary || 'No summary available.') }}
+              />
+              <div className="mt-3">
+                <StabilityScenarioNumbers
+                  scenarios={stabilityReport.dropScenarios ?? []}
+                  referencePrice={stabilityReport.referencePrice ?? null}
+                  referencePriceAsOf={stabilityReport.referencePriceAsOf ?? null}
+                  currency={stabilityReport.currency ?? null}
+                />
+              </div>
             </div>
           )}
 
@@ -777,9 +848,12 @@ export default async function TickerDetailsPage({ params }: { params: RouteParam
   const priceHistoryPromise = retryWithCanonical(fetchPriceHistory);
   const competitionPromise = retryWithCanonical(fetchCompetitionData);
 
-  // Derive dates for semantic footer (based solely on tickerData)
+  // Derive dates for semantic footer (based solely on tickerData). The report
+  // generation date wins over the row's `updatedAt` so the footer states the
+  // same single date the freshness bar and the regenerate modal show — an
+  // unrelated column edit must not read as "the report was refreshed".
   const createdAtRaw = tickerData.createdAt || new Date();
-  const updatedAtRaw = tickerData.updatedAt || tickerData.createdAt || new Date();
+  const updatedAtRaw = tickerData.lastReportGeneratedAt || tickerData.updatedAt || tickerData.createdAt || new Date();
   const publishedDate = new Date(createdAtRaw);
   const modifiedDate = new Date(updatedAtRaw);
   const formattedModifiedDate = modifiedDate.toLocaleDateString('en-US', {

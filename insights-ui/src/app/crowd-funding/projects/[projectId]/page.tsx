@@ -7,11 +7,14 @@ import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import ProjectDetailPage from '@/components/projects/ProductDetailsPage';
 import { formatProjectName, truncateDescription } from '@/util/report-utils';
+import { assertValidCrowdFundingPageParams, getCrowdFundingParamRejection } from '@/utils/crowd-funding-param-utils';
 
 const DEFAULT_OG_IMAGE = 'https://koalagains.com/koalagain_logo.png';
 
 export async function generateMetadata({ params }: { params: Promise<{ projectId: string }> }): Promise<Metadata> {
   const { projectId } = await params;
+  // Invalid params: skip the fetch; the page itself logs the rejection and renders the 404.
+  if (getCrowdFundingParamRejection({ projectId })) return { robots: { index: false, follow: false } };
 
   const res = await fetch(`${getBaseUrl()}/api/crowd-funding/projects/${projectId}`);
   const data: { projectDetails: ProjectDetails } = await res.json();
@@ -51,6 +54,7 @@ export async function generateMetadata({ params }: { params: Promise<{ projectId
 
 export default async function ProjectDetailPageWrapper({ params }: { params: Promise<{ projectId: string }> }) {
   const { projectId } = await params;
+  assertValidCrowdFundingPageParams({ projectId });
 
   const res = await fetch(`${getBaseUrl()}/api/crowd-funding/projects/${projectId}`);
   const data: { projectDetails: ProjectDetails; spiderGraph: SpiderGraph | {} } = await res.json();

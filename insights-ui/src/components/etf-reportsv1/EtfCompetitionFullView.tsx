@@ -1,10 +1,12 @@
 import CompetitorCard from '@/components/competition/CompetitorCard';
+import ReportGenerationControl from '@/components/credits/ReportGenerationControl';
+import ReportSectionHeader from '@/components/ui/sections/ReportSectionHeader';
+import { CreditReportKind } from '@prisma/client';
 import EtfCompetitionQuadrantWithLegend from '@/components/etf-reportsv1/EtfCompetitionQuadrantWithLegend';
 import EtfRelatedSections from '@/components/etf-reportsv1/EtfRelatedSections';
 import type { EtfCompetitionResponse } from '@/types/etf/etf-analysis-types';
 import { parseMarkdown } from '@/util/parse-markdown';
 import { buildEtfQuadrantDataPoints } from '@/utils/etf-competition-utils';
-import Link from 'next/link';
 import { Suspense } from 'react';
 
 export interface EtfCompetitionFullViewProps {
@@ -50,32 +52,24 @@ export default function EtfCompetitionFullView({ data, availableSlugsPromise }: 
       <article className="bg-surface rounded-lg shadow-sm border border-color p-3 sm:p-6 md:p-8" itemScope itemType="https://schema.org/Article">
         <meta itemProp="datePublished" content={publishedDate.toISOString()} />
 
-        <header className="mb-6 pb-4 border-b border-color">
-          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
-            <div className="flex-1">
-              <h1 className="text-2xl md:text-3xl font-bold tracking-tight text-color mb-2" itemProp="headline">
-                {etf.name} <span className="text-muted-foreground">({etf.symbol})</span>
-              </h1>
-              <div className="flex flex-wrap items-center gap-2 md:gap-3 text-sm">
-                <span className="badge-tone-info inline-flex items-center rounded-full bg-sky-500/15 border border-sky-500/40 px-2.5 py-0.5 text-xs font-medium text-sky-300">
-                  {etf.exchange}
-                </span>
-                <span className="text-muted-foreground">•</span>
-                <time dateTime={modifiedDate.toISOString()} className="text-muted-foreground text-sm" itemProp="dateModified">
-                  {formattedModifiedDate}
-                </time>
-              </div>
-            </div>
-
-            <Link
-              href={`/etfs/${etf.exchange}/${etf.symbol}`}
-              prefetch={false}
-              className="link-color hover:underline text-sm font-medium whitespace-nowrap flex items-center gap-1"
-            >
-              View Full Report →
-            </Link>
-          </div>
-        </header>
+        {/* Was a hand-rolled copy of ReportSectionHeader's markup; now the leaf itself. */}
+        <ReportSectionHeader
+          title={etf.name}
+          symbol={etf.symbol}
+          exchange={etf.exchange}
+          modifiedDate={modifiedDate}
+          formattedModifiedDate={formattedModifiedDate}
+          actionHref={`/etfs/${etf.exchange}/${etf.symbol}`}
+          action={
+            <ReportGenerationControl
+              variant="section"
+              kind={CreditReportKind.Etf}
+              symbol={etf.symbol}
+              exchange={etf.exchange}
+              lastReportGeneratedAt={modifiedDate.toISOString()}
+            />
+          }
+        />
 
         <div className="prose prose-invert max-w-none">
           {quadrantDataPoints.length >= 2 ? (

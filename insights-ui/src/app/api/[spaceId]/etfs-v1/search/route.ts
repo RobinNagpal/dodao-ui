@@ -2,6 +2,10 @@ import { prisma } from '@/prisma';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { Prisma } from '@prisma/client';
 import { NextRequest } from 'next/server';
+import { parseLimitParam } from '@/utils/pagination-param-utils';
+
+/** Upper bound for the `limit` param; the query fetches up to 4× this before ranking. */
+const MAX_SEARCH_LIMIT = 50;
 
 export interface EtfSearchResult {
   id: string;
@@ -23,7 +27,8 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
   const { spaceId } = await context.params;
   const url = new URL(req.url);
   const query = url.searchParams.get('q');
-  const limit = parseInt(url.searchParams.get('limit') || '10');
+  // Non-numeric junk (e.g. `limit=JJJ`) → 400; numeric values are clamped to [1, MAX_SEARCH_LIMIT].
+  const limit = parseLimitParam(url.searchParams.get('limit'), { default: 10, max: MAX_SEARCH_LIMIT });
 
   if (!query || query.trim().length < 1) {
     return { results: [], totalCount: 0, query: query || '' };

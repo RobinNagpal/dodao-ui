@@ -30,6 +30,18 @@ export enum AutoGenEntity {
 }
 
 /**
+ * Which markets the nightly job is allowed to pick candidates from, derived from
+ * the ticker/ETF exchange. The Claude subscription budget is finite, so by default
+ * the automated job spends it only on the high-priority markets (US + Canada);
+ * everything else is generated on demand from the admin screens. `AllMarkets`
+ * restores the previous unrestricted behavior.
+ */
+export enum AutoGenMarkets {
+  UsAndCanadaOnly = 'UsAndCanadaOnly',
+  AllMarkets = 'AllMarkets',
+}
+
+/**
  * How aggressively auto-generation is allowed to spend the weekly Claude budget as
  * the weekly reset approaches. Each strategy selects one of the
  * `HOURS_LEFT_TO_PERCENT_REMAINING` curves: Aggressive reserves the least budget
@@ -143,7 +155,7 @@ export interface AutoGenEntityStatus {
   cooldownActive: boolean;
   /** Whole minutes since the last auto batch, or null when there is none. */
   minutesSinceLastBatch: number | null;
-  /** How many candidates the selection query returns right now (bounded by batch size). */
+  /** How many candidates the selection query returns right now (bounded by batch size, and by the selected markets). */
   candidateCount: number;
   /** True only when every gate passes AND at least one candidate exists. */
   wouldEnqueue: boolean;
@@ -176,6 +188,8 @@ export interface AutoGenerationStatus {
   /** Master switch (`AUTOMATED_GENERATION_ENABLED`). When false, the tick short-circuits both entities. */
   masterEnabled: boolean;
   entity: AutoGenEntity;
+  /** Which markets candidates may come from (`AUTOMATED_GENERATION_MARKETS`). */
+  markets: AutoGenMarkets;
   window: { value: AutoGenWindow; isWithinWindow: boolean };
   mode: { value: AutoGenMode; batchSize: number; minMinutesBetweenBatches: number };
   budgetStrategy: AutoGenBudgetUtilizationStrategy;

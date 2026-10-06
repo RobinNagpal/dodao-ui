@@ -4,6 +4,7 @@ import {
   FinalSummaryResponse,
   LLMFactorAnalysisResponse,
   LLMManagementTeamResponse,
+  LLMStabilityResponse,
 } from '@/types/public-equity/analysis-factors-types';
 import {
   saveBusinessAndMoatFactorAnalysisResponse,
@@ -14,6 +15,7 @@ import {
   saveFutureGrowthFactorAnalysisResponse,
   saveManagementTeamResponse,
   savePastPerformanceFactorAnalysisResponse,
+  saveStabilityResponse,
 } from '@/utils/analysis-reports/save-report-utils';
 import { fetchAnalysisFactors, fetchTickerRecordBySymbolAndExchangeWithIndustryAndSubIndustry } from '@/utils/analysis-reports/get-report-data-utils';
 import { withAdminOrToken } from '@/app/api/helpers/withAdminOrToken';
@@ -27,6 +29,7 @@ export type LLMResponse =
   | LLMFactorAnalysisResponse // For BUSINESS_AND_MOAT, PAST_PERFORMANCE, FUTURE_GROWTH, FINANCIAL_ANALYSIS, FAIR_VALUE
   | CompetitionAnalysisResponse // For COMPETITION
   | LLMManagementTeamResponse // For MANAGEMENT_TEAM
+  | LLMStabilityResponse // For STABILITY
   | FinalSummaryResponse; // For FINAL_SUMMARY
 
 export interface SaveJsonReportRequest {
@@ -97,6 +100,9 @@ async function postHandler(
     case ReportType.MANAGEMENT_TEAM:
       schemaPath = path.join(process.cwd(), 'schemas', 'analysis-factors', 'management-team', 'management-team-output.schema.yaml');
       break;
+    case ReportType.STABILITY:
+      schemaPath = path.join(process.cwd(), 'schemas', 'analysis-factors', 'stability', 'stability-output.schema.yaml');
+      break;
     case ReportType.FINAL_SUMMARY:
       schemaPath = path.join(process.cwd(), 'schemas', 'analysis-factors', 'final-summary', 'final-summary-analysis-output.schema.yaml');
       break;
@@ -161,6 +167,9 @@ async function postHandler(
       break;
     case ReportType.MANAGEMENT_TEAM:
       await saveManagementTeamResponse(ticker, exchange, llmResponse as LLMManagementTeamResponse);
+      break;
+    case ReportType.STABILITY:
+      await saveStabilityResponse(ticker, exchange, llmResponse as LLMStabilityResponse);
       break;
     case ReportType.FAIR_VALUE:
       await saveFairValueFactorAnalysisResponse(ticker, exchange, llmResponse as LLMFactorAnalysisResponse, TickerAnalysisCategory.FairValue);

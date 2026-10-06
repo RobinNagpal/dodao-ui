@@ -5,8 +5,10 @@ import {
   LLMFactorAnalysisResponse,
   LLMInvestorAnalysisResponse,
   LLMManagementTeamResponse,
+  LLMStabilityResponse,
+  MarketDropScenario,
 } from '@/types/public-equity/analysis-factors-types';
-import { CATEGORY_MAPPINGS, InvestorTypes, ManagementTeamAlignmentVerdict, TickerAnalysisCategory } from '@/types/ticker-typesv1';
+import { CATEGORY_MAPPINGS, InvestorTypes, ManagementTeamAlignmentVerdict, StabilityResilienceVerdict, TickerAnalysisCategory } from '@/types/ticker-typesv1';
 import { fetchAnalysisFactors, fetchTickerRecordBySymbolAndExchangeWithIndustryAndSubIndustry } from '@/utils/analysis-reports/get-report-data-utils';
 import { revalidateTickerAndExchangeTag } from '@/utils/ticker-v1-cache-utils';
 import { bumpUpdatedAtAndInvalidateCache, TickerCacheSlice, updateTickerCachedScore } from '@/utils/ticker-v1-model-utils';
@@ -287,6 +289,83 @@ export async function saveManagementTeamResponse(
   });
 
   await bumpUpdatedAtAndInvalidateCache(tickerRecord, { kind: 'managementTeam' }, options);
+}
+
+/**
+ * Saves the stability (market-drawdown resilience) response.
+ *
+ * The three `-5% / -15% / -30%` scenarios are stored in the order the schema
+ * requires (ascending market drop) so the UI can render them without sorting,
+ * and every expected price is recomputed from `referencePrice` and the stock
+ * drop percentage — the LLM's own arithmetic is not trusted for the number the
+ * page shows.
+ */
+export async function saveStabilityResponse(
+  ticker: string,
+  exchange: string,
+  response: LLMStabilityResponse,
+  options?: { skipRevalidation?: boolean }
+): Promise<void> {
+  const spaceId = KoalaGainsSpaceId;
+  const tickerRecord = await fetchTickerRecordBySymbolAndExchangeWithIndustryAndSubIndustry(ticker, exchange);
+
+  // The LLM returns SCREAMING_SNAKE strings per the prompt schema (e.g. "HIGHLY_RESILIENT"),
+  // but the Prisma enum uses PascalCase (e.g. "HighlyResilient"). The TS enum's keys are the
+  // LLM-side names and its values are the DB-side names, so indexing by key translates.
+  const rawVerdict = response.resilienceVerdict as unknown as string;
+  const resilienceVerdict = StabilityResilienceVerdict[rawVerdict as keyof typeof StabilityResilienceVerdict] ?? (rawVerdict as StabilityResilienceVerdict);
+
+  // The HTTP save route validates against the output schema, but the in-process
+  // callback path hands the raw LLM JSON straight through — so only recompute
+  // when both inputs are real numbers, and otherwise keep what the LLM sent.
+  const referencePrice = Number.isFinite(response.referencePrice) ? response.referencePrice : null;
+
+  // The price the whole report is quoted against needs a date the reader can
+  // see. The LLM echoes back the `priceAsOf` it was given; if it garbles it,
+  // fall back to now — the snapshot is refreshed at the start of every run.
+  const echoedPriceAsOf = response.referencePriceAsOf ? new Date(response.referencePriceAsOf) : null;
+  const referencePriceAsOf = echoedPriceAsOf && !Number.isNaN(echoedPriceAsOf.getTime()) ? echoedPriceAsOf : new Date();
+  const dropScenarios: MarketDropScenario[] = [...(response.dropScenarios || [])]
+    .sort((a, b) => a.marketDropPercent - b.marketDropPercent)
+    .map((scenario) => ({
+      ...scenario,
+      expectedPrice:
+        referencePrice !== null && Number.isFinite(scenario.expectedStockDropPercent)
+          ? Number((referencePrice * (1 - scenario.expectedStockDropPercent / 100)).toFixed(2))
+          : scenario.expectedPrice,
+    }));
+
+  await prisma.tickerV1StabilityReport.upsert({
+    where: {
+      spaceId_tickerId: {
+        spaceId,
+        tickerId: tickerRecord.id,
+      },
+    },
+    update: {
+      summary: response.summary,
+      detailedAnalysis: response.detailedAnalysis,
+      resilienceVerdict,
+      referencePrice,
+      referencePriceAsOf,
+      currency: response.currency,
+      dropScenarios,
+      updatedAt: new Date(),
+    },
+    create: {
+      spaceId,
+      tickerId: tickerRecord.id,
+      summary: response.summary,
+      detailedAnalysis: response.detailedAnalysis,
+      resilienceVerdict,
+      referencePrice,
+      referencePriceAsOf,
+      currency: response.currency,
+      dropScenarios,
+    },
+  });
+
+  await bumpUpdatedAtAndInvalidateCache(tickerRecord, { kind: 'stability' }, options);
 }
 
 /**

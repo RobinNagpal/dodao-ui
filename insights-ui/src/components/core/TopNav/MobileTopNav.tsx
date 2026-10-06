@@ -17,9 +17,26 @@ interface MobileTopNavProps {
     name: string;
     href: string;
   }>;
+  isLoggedIn: boolean;
+  /** Credit balance, once loaded. Shown next to the credits link. */
+  credits: number | undefined;
+  /** Whether to offer credits to a signed-out visitor instead of the balance link. */
+  showBuyCreditsPrompt: boolean;
+  /** Opens the login prompt — a signed-out visitor has to log in before buying. */
+  onBuyCreditsClick: () => void;
 }
 
-export default function MobileTopNav({ mobileMenuOpen, setMobileMenuOpen, industries, industriesLoading, navItems }: MobileTopNavProps) {
+export default function MobileTopNav({
+  mobileMenuOpen,
+  setMobileMenuOpen,
+  industries,
+  industriesLoading,
+  navItems,
+  isLoggedIn,
+  credits,
+  showBuyCreditsPrompt,
+  onBuyCreditsClick,
+}: MobileTopNavProps) {
   const pathname = usePathname() ?? '';
   const isStocksRoute = pathname.startsWith('/stocks');
   const isEtfsRoute = pathname.startsWith('/etfs');
@@ -46,6 +63,40 @@ export default function MobileTopNav({ mobileMenuOpen, setMobileMenuOpen, indust
           </div>
 
           <div className="-my-6 divide-y divide-border">
+            {/* Same user links the desktop navbar shows on /stocks and /etfs, which are hidden on small screens. */}
+            {(isStocksRoute || isEtfsRoute) && isLoggedIn && (
+              <div className="-mx-3 py-6">
+                {[
+                  isStocksRoute ? { name: 'My Favourite Stocks', href: '/favourites' } : { name: 'My Favourite ETFs', href: '/etf-favourites' },
+                  { name: credits === undefined ? 'My Credits' : `My Credits (${credits})`, href: '/credits' },
+                ].map((item) => (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    className="block rounded-lg py-2 px-3 text-base/7 font-semibold hover:bg-surface text-heading dark:hover:bg-white/5"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    {item.name}
+                  </Link>
+                ))}
+              </div>
+            )}
+            {/* Signed out: same offer as the desktop pill. The drawer closes
+                first so the login modal isn't opened inside this dialog. */}
+            {showBuyCreditsPrompt && (
+              <div className="-mx-3 py-6">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setMobileMenuOpen(false);
+                    onBuyCreditsClick();
+                  }}
+                  className="block w-full rounded-lg py-2 px-3 text-left text-base/7 font-semibold hover:bg-surface text-heading dark:hover:bg-white/5"
+                >
+                  Buy Credits
+                </button>
+              </div>
+            )}
             <div className="space-y-2 py-6">
               {isStocksRoute ? (
                 <div>
@@ -71,7 +122,7 @@ export default function MobileTopNav({ mobileMenuOpen, setMobileMenuOpen, indust
                   ) : (
                     <div className="space-y-1">
                       {industries
-                        .slice()
+                        .filter((industry) => (industry.tickerCount ?? 0) > 0) // skip industries with no stocks (their pages 404)
                         .sort((a, b) => a.name.localeCompare(b.name))
                         .map((industry) => (
                           <Link

@@ -7,6 +7,12 @@ import { NextRequest } from 'next/server';
 
 export interface FetchFinancialDataRequest {
   tickerIds: string[];
+  /**
+   * Re-scrape every section even if it was stored recently. Needed to recover
+   * tickers whose sections were persisted empty by a failing scraper — those
+   * carry a fresh `lastUpdatedAt*` and are otherwise skipped by the age check.
+   */
+  force?: boolean;
 }
 
 export interface FetchFinancialDataResponse {
@@ -22,7 +28,7 @@ const postHandler = async (
 ): Promise<FetchFinancialDataResponse> => {
   const { spaceId } = await params;
   const body: FetchFinancialDataRequest = await req.json();
-  const { tickerIds } = body;
+  const { tickerIds, force } = body;
 
   if (!tickerIds || !Array.isArray(tickerIds) || tickerIds.length === 0) {
     throw new Error('tickerIds array is required');
@@ -53,7 +59,7 @@ const postHandler = async (
         continue;
       }
 
-      await fetchAndUpdateStockAnalyzerData(ticker);
+      await fetchAndUpdateStockAnalyzerData(ticker, { force: force === true });
       // fetchAndUpdateStockAnalyzerData no longer revalidates on its own (it
       // runs in the read path of several API routes where revalidating would
       // double the ISR write count). This admin endpoint is an explicit

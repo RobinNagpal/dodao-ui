@@ -14,6 +14,9 @@ import type {
   UnderstandIndustry,
 } from '@/scripts/industry-tariff-reports/tariff-types';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
+import { truncateForLog } from '@/utils/route-param-utils';
+import { validateTariffIndustryId } from '@/utils/tariff-reports/tariff-input-validation';
+import { notFoundError } from '@dodao/web-core/api/errors/notFoundError';
 
 import { revalidateTariffReportChapter, revalidateTariffReportIndustry, revalidateTariffReportsListing } from '@/utils/tariff-report-cache-utils';
 
@@ -110,7 +113,7 @@ async function findRowBySlug(slug: string) {
 export async function getReportContextBySlug(slug: string): Promise<TariffReportContext> {
   const row = await findRowBySlug(slug);
   if (!row) {
-    throw new Error(`No tariff chapter report found for slug "${slug}"`);
+    throw notFoundError(`No tariff chapter report found for slug ${truncateForLog(slug)}`);
   }
   return {
     slug: row.slug,
@@ -129,7 +132,7 @@ export async function findReportSlugByOldUrl(oldUrl: string): Promise<string> {
     select: { slug: true },
   });
   if (!row) {
-    throw new Error(`No tariff chapter report found for legacy industry "${oldUrl}"`);
+    throw notFoundError(`No tariff chapter report found for legacy industry ${truncateForLog(oldUrl)}`);
   }
   return row.slug;
 }
@@ -162,7 +165,13 @@ function rowToIndustryTariffReport(row: ReportSectionsRow): IndustryTariffReport
   };
 }
 
+// Reads the report behind a legacy industry URL (`/industry-tariff-report/<oldUrl>`).
+//   - Malformed or unknown industry (not in `TariffIndustries`: scanner probes, mistyped URLs) →
+//     throws a prefixed `[input-rejected]` `notFoundError` before any DB work, which the API
+//     middleware turns into a 404 with one warn line.
+//   - Known industry with no report row yet → `{}` (pages render their empty state).
 export async function readIndustryTariffReportByOldUrl(oldUrl: string): Promise<IndustryTariffReport> {
+  validateTariffIndustryId(oldUrl);
   const row = await prisma.tariffChapterReport.findUnique({
     where: { spaceId_oldUrl: { spaceId: KoalaGainsSpaceId, oldUrl } },
     select: REPORT_SECTIONS_SELECT,

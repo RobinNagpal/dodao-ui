@@ -125,6 +125,13 @@ export function UserProfile({ isMobile = false, onMenuToggle }: UserProfileProps
             >
               My Favourite ETFs
             </Link>
+            <Link
+              href="/credits"
+              className="-mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-semibold text-muted hover:bg-surface-2 w-full text-left"
+              onClick={onMenuToggle}
+            >
+              My Credits
+            </Link>
             <div className="border-t border-border my-1"></div>
             {portfolioProfile?.id && (
               <Link
@@ -197,6 +204,9 @@ export function UserProfile({ isMobile = false, onMenuToggle }: UserProfileProps
               <Link href="/etf-favourites" className="block w-full px-4 py-2 text-sm font-semibold text-color cursor-pointer text-left hover:bg-surface-2">
                 My Favourite ETFs
               </Link>
+              <Link href="/credits" className="block w-full px-4 py-2 text-sm font-semibold text-color cursor-pointer text-left hover:bg-surface-2">
+                My Credits
+              </Link>
               <div className="border-t border-border my-1"></div>
               {portfolioProfile?.id && (
                 <Link
@@ -218,8 +228,8 @@ export function UserProfile({ isMobile = false, onMenuToggle }: UserProfileProps
           )}
         </div>
       ) : (
-        <Link href="/login" className="text-sm/6 font-semibold text-color cursor-pointer hover:text-link transition-colors duration-200">
-          Log in <span aria-hidden="true">&rarr;</span>
+        <Link href="/login" className="whitespace-nowrap text-sm/6 font-semibold text-color cursor-pointer hover:text-link transition-colors duration-200">
+          Log in
         </Link>
       )}
     </>
