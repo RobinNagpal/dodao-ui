@@ -29,13 +29,6 @@ interface ChapterOverviewApproach2Props {
   content: TariffChapterPrototype;
 }
 
-function formatUsd(value: number): string {
-  if (value === 0) return '$0';
-  if (value >= 1_000_000_000) return `$${(value / 1_000_000_000).toFixed(1)}B`;
-  if (value >= 1_000_000) return `$${(value / 1_000_000).toFixed(1)}M`;
-  return `$${value.toLocaleString('en-US')}`;
-}
-
 function formatAsOf(iso: string): string {
   const date = new Date(iso);
   if (Number.isNaN(date.getTime())) return iso;
@@ -134,9 +127,8 @@ export default function ChapterOverviewApproach2({ content }: ChapterOverviewApp
             <Stack gap="xs">
               <SectionHeading as="h2">What the preference codes mean</SectionHeading>
               <Text size="sm" tone="muted">
-                These are the codes behind &ldquo;Free &middot; 17 programs&rdquo; in the FTA column of the table above (expand a row to see them). Every line
-                lists the same 17; some lines carry GSP as A and others as A+, so 18 codes appear here in total. A shipment claims one of these programs at
-                entry, and claiming it is what turns the general rate into Free.
+                These are the codes behind the program count in the FTA column of the table above (expand a row to see them). A shipment claims one of these
+                programs at entry, and claiming it is what turns the general rate into Free.
               </Text>
             </Stack>
             <DefinitionList columns="1-2" items={overview.spiLegend.map((entry) => ({ term: entry.code, definition: entry.name }))} />

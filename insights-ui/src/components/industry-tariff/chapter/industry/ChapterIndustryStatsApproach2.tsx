@@ -222,7 +222,9 @@ export default function ChapterIndustryStatsApproach2({ content, industry }: Cha
                     <TableCell tone="muted">—</TableCell>
                     <TableCell>All other products ({otherLines.length})</TableCell>
                     <TableCell variant="rate">{usd(sum(otherLines, 'importsUsd'))}</TableCell>
-                    <TableCell variant="rate">{`${((sum(otherLines, 'importsUsd') / totalLatest) * 100).toFixed(1)}%`}</TableCell>
+                    <TableCell variant="rate">
+                      {totalLatest > 0 ? `${((sum(otherLines, 'importsUsd') / totalLatest) * 100).toFixed(1)}%` : <EmptyCellValue />}
+                    </TableCell>
                     <TableCell variant="rate" tone="muted">
                       {usd(sum(otherLines, 'priorImportsUsd'))}
                     </TableCell>
