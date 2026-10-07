@@ -89,7 +89,9 @@ function ChapterCard({ chapterNumber, chapterTitle, chapterSlug, lastModified }:
   );
 
   return (
-    <article className="group flex flex-col rounded-2xl bg-bg border border-border transition-all hover:border-primary p-6">
+    // The whole card opens the report: the title link stretches over it (::after), and the
+    // section pills and "Open report" sit above that overlay (relative z-10) so they keep their own targets.
+    <article className="group relative flex flex-col rounded-2xl bg-bg border border-border transition-all hover:border-primary p-6">
       <div className="mb-4 flex items-center justify-between text-xs">
         <span className="inline-flex items-center gap-1.5 rounded-full bg-blue-500/10 px-2.5 py-1 font-medium text-blue-400 ring-1 ring-inset ring-blue-500/20">
           <Layers className="h-3 w-3" />
@@ -99,14 +101,17 @@ function ChapterCard({ chapterNumber, chapterTitle, chapterSlug, lastModified }:
       </div>
 
       <h3 className="mb-2 text-xl font-semibold leading-snug text-heading">
-        <Link href={href} className="transition-colors group-hover:text-link focus-visible:text-link focus-visible:outline-none">
+        <Link
+          href={href}
+          className="transition-colors after:absolute after:inset-0 after:rounded-2xl after:content-[''] group-hover:text-link focus-visible:text-link focus-visible:outline-none focus-visible:after:ring-2 focus-visible:after:ring-primary"
+        >
           {title}
         </Link>
       </h3>
 
       <p className="mb-5 line-clamp-3 flex-1 text-sm text-muted">{description}</p>
 
-      <div className="mb-5 flex flex-wrap gap-1.5">
+      <div className="relative z-10 mb-5 flex flex-wrap gap-1.5">
         {orderedSections.map((section) => (
           <Link
             key={section.slug}
@@ -118,7 +123,10 @@ function ChapterCard({ chapterNumber, chapterTitle, chapterSlug, lastModified }:
         ))}
       </div>
 
-      <Link href={href} className="mt-auto inline-flex items-center gap-1.5 text-sm font-medium text-link transition-colors group-hover:text-link">
+      <Link
+        href={href}
+        className="relative z-10 mt-auto inline-flex items-center gap-1.5 self-start text-sm font-medium text-link transition-colors group-hover:text-link"
+      >
         Open report
         <ArrowRight className="h-4 w-4" />
       </Link>
