@@ -1,10 +1,13 @@
 import { ChapterArticle } from '@/components/industry-tariff/chapter/chapter-section-page';
 import ChapterPlaceholder from '@/components/industry-tariff/chapter/ChapterPlaceholder';
+import ChapterOverviewApproach2 from '@/components/industry-tariff/chapter/overview/ChapterOverviewApproach2';
+import PrototypeChapterToolsBar from '@/components/industry-tariff/chapter/PrototypeChapterToolsBar';
 import { renderChapterToolsCrossLinks } from '@/components/industry-tariff/chapter/ChapterToolsCrossLinks';
 import type { ChapterTariffReportResponse } from '@/app/api/industry-tariff-reports/chapters/[chapterSlug]/route';
 import type { PageSeoDetails } from '@/scripts/industry-tariff-reports/tariff-types';
 import { parseChapterBodyMarkdown } from '@/util/parse-markdown';
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
+import { buildPrototypeMetadata, getChapterPrototype } from '@/utils/tariff-reports/chapter-prototype';
 import { chapterCoverHref, chapterSectionHref } from '@/utils/tariff-reports/chapter-route-helpers';
 import { tariffReportTag } from '@/utils/tariff-report-tags';
 import { isValidTariffChapterSlug } from '@/utils/tariff-reports/tariff-input-validation';
@@ -24,6 +27,12 @@ async function fetchChapterTariffReport(chapterSlug: string): Promise<ChapterTar
 
 export async function generateMetadata({ params }: { params: Promise<{ chapterSlug: string }> }): Promise<Metadata> {
   const { chapterSlug } = await params;
+
+  // Approach-2 chapters (issue #1770) carry their own SEO copy in the content
+  // file, and must resolve without the tariff tables being populated.
+  const prototype = getChapterPrototype(chapterSlug);
+  if (prototype) return buildPrototypeMetadata(prototype.overview.seo, chapterCoverHref(prototype.chapter.slug));
+
   const data = await fetchChapterTariffReport(chapterSlug);
   if (!data) {
     return { title: 'HTS Chapter Tariff Report' };
@@ -58,6 +67,34 @@ export async function generateMetadata({ params }: { params: Promise<{ chapterSl
 
 export default async function ChapterCoverPage({ params }: { params: Promise<{ chapterSlug: string }> }) {
   const { chapterSlug } = await params;
+
+  // Approach-2 chapters render from their content file instead of the report
+  // tables (issue #1770). While the page shape is being iterated on, the
+  // content lives in `src/tariff-data/chapters/<slug>.json` — so the page also
+  // renders locally, where `hts_codes` / `tariff_trade_analytics` are empty.
+  // Chapters without a content file keep the DB-backed flow below untouched.
+  const prototype = getChapterPrototype(chapterSlug);
+  if (prototype) {
+    const chapterInfo = {
+      number: prototype.chapter.number,
+      title: prototype.chapter.title,
+      slug: prototype.chapter.slug,
+    };
+    const prototypeCrossLinks = <PrototypeChapterToolsBar chapter={prototype.chapter} />;
+    return (
+      <ChapterArticle
+        chapter={chapterInfo}
+        pageTitle={prototype.overview.h1}
+        toolsCrossLinks={prototypeCrossLinks}
+        currentSlug="overview"
+        updatedAt={prototype.asOf}
+        sectionLabel="Rate table"
+      >
+        <ChapterOverviewApproach2 content={prototype} />
+      </ChapterArticle>
+    );
+  }
+
   const data = await fetchChapterTariffReport(chapterSlug);
   if (!data) notFound();
 

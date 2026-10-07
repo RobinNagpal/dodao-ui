@@ -1,0 +1,63 @@
+'use client';
+
+import { MagnifyingGlassIcon, XMarkIcon } from '@heroicons/react/20/solid';
+import { cva, type VariantProps } from 'class-variance-authority';
+import { cn } from '@/lib/utils';
+import React from 'react';
+
+/**
+ * Search box for filtering a listing in place: magnifier, clear button and an
+ * optional result count. Wraps the chrome so feature code passes only
+ * `value` / `onChange` / copy.
+ */
+
+const field = cva('relative flex items-center rounded-md border border-border bg-surface-2', {
+  variants: {
+    size: { md: 'h-10', sm: 'h-9' },
+  },
+  defaultVariants: { size: 'md' },
+});
+
+export type SearchFieldProps = VariantProps<typeof field> & {
+  value: string;
+  onChange: (value: string) => void;
+  placeholder?: string;
+  /** Accessible label; also the `aria-label` on the input. */
+  label: string;
+  /** Right-aligned count, e.g. "12 of 126 lines". */
+  resultLabel?: string;
+  className?: string;
+};
+
+export default function SearchField({ value, onChange, placeholder, label, resultLabel, size, className }: SearchFieldProps): React.JSX.Element {
+  return (
+    <div className={cn('flex flex-col gap-1 sm:flex-row sm:items-center sm:gap-3', className)}>
+      <div className={cn(field({ size }), 'flex-1')}>
+        <MagnifyingGlassIcon className="ml-3 h-4 w-4 shrink-0 text-muted" aria-hidden="true" />
+        <input
+          type="search"
+          value={value}
+          aria-label={label}
+          placeholder={placeholder}
+          onChange={(e) => onChange(e.target.value)}
+          className="h-full w-full bg-transparent px-2 text-sm text-body outline-none placeholder:text-muted"
+        />
+        {value.length > 0 && (
+          <button
+            type="button"
+            onClick={() => onChange('')}
+            aria-label="Clear search"
+            className="mr-2 rounded-full p-1 text-muted hover:bg-surface hover:text-body"
+          >
+            <XMarkIcon className="h-4 w-4" aria-hidden="true" />
+          </button>
+        )}
+      </div>
+      {resultLabel && (
+        <span className="text-xs text-muted whitespace-nowrap" aria-live="polite">
+          {resultLabel}
+        </span>
+      )}
+    </div>
+  );
+}
