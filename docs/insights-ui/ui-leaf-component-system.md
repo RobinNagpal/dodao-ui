@@ -163,6 +163,7 @@ Rules for leaves:
 | `InlineCard` | Lightweight filled box (`bg-gray-800 rounded-md`); `padding` presets incl. `factor`; `as` for `li`. |
 | `RelatedSectionsNav` | Top-bordered "more analyses" nav: heading + responsive grid of pill links. |
 | `LinkTile` | Navigational tile with eyebrow, title, highlighted meta value, body and footer. |
+| `DisclosureList` / `DisclosureItem` | Collapsible question/answer list on native `<details>` (no client JS; collapsed answers stay in the HTML). Used for FAQs. |
 | `ReportArticleShell` | Outer `<article>` card chrome + schema.org microdata + optional `datePublished`; `padding` variant. |
 | `ReportSectionHeader` | Bordered report header: title (+ `symbol`), exchange/score/date meta row, metadata slot, action link. |
 | `SectionHeading` | In-article H2/H3 (`text-xl font-semibold text-color`); `size`/`weight`/`bordered`. |

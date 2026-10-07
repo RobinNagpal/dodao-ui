@@ -11,12 +11,15 @@ import React from 'react';
  * `value` / `onChange` / copy.
  */
 
-const field = cva('relative flex items-center rounded-md border border-border bg-surface-2', {
-  variants: {
-    size: { md: 'h-10', sm: 'h-9' },
-  },
-  defaultVariants: { size: 'md' },
-});
+const field = cva(
+  'relative flex items-center rounded-md border border-border bg-surface-2 transition-colors focus-within:border-primary focus-within:ring-1 focus-within:ring-primary/40',
+  {
+    variants: {
+      size: { md: 'h-10', sm: 'h-9' },
+    },
+    defaultVariants: { size: 'md' },
+  }
+);
 
 export type SearchFieldProps = VariantProps<typeof field> & {
   value: string;
@@ -40,7 +43,7 @@ export default function SearchField({ value, onChange, placeholder, label, resul
           aria-label={label}
           placeholder={placeholder}
           onChange={(e) => onChange(e.target.value)}
-          className="h-full w-full bg-transparent px-2 text-sm text-body outline-none placeholder:text-muted"
+          className="h-full w-full appearance-none border-0 bg-transparent px-2 text-sm text-body shadow-none outline-none ring-0 placeholder:text-muted focus:border-0 focus:outline-none focus:ring-0 [&::-webkit-search-cancel-button]:appearance-none"
         />
         {value.length > 0 && (
           <button

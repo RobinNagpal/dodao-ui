@@ -100,11 +100,6 @@ export default function ChapterIndustryAreasApproach2({ content, areas }: Chapte
                 </Text>
               </li>
             ))}
-            <li>
-              <Text size="sm" tone="muted">
-                Exemption check: {areas.exemptionCheck}
-              </Text>
-            </li>
           </Stack>
           <Stack direction="row" gap="md" wrap>
             {areas.sources.map((source) => (

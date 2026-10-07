@@ -19,8 +19,9 @@
       "note": "rate table rows"
     },
     {
-      "label": "tariff_trade_analytics",
-      "note": "2024 import and duty figures"
+      "label": "UN Comtrade",
+      "url": "https://comtradeplus.un.org/",
+      "note": "2025 import figures"
     }
   ],
   "overview": {
@@ -39,7 +40,7 @@
         "parrot import tariff"
       ]
     },
-    "intro": "Chapter 01 covers animals imported alive — horses, cattle, swine, sheep and goats, poultry, and everything from honeybees to parrots. Its **78 tariff lines** carry some of the smallest printed rates in the schedule: a penny per kilogram on cattle, 68¢ per head on goats, 0.9¢ on a day-old chick.\n\nThose rates are also why the duty almost never gets paid. Canada and Mexico supply about 83% of the $4.5B the U.S. imported in 2024, and USMCA takes their rate to zero — so collected duty on the whole chapter rounds to nothing. What actually decides whether a shipment lands is disease status, quarantine and permits, not the number in this table.",
+    "intro": "Chapter 01 covers animals imported alive — horses, cattle, swine, sheep and goats, poultry, and everything from honeybees to parrots. Its **78 tariff lines** carry some of the smallest printed rates in the schedule: a penny per kilogram on cattle, 68¢ per head on goats, 0.9¢ on a day-old chick.\n\nThe printed rate is rarely what decides the cost. Canada and Mexico supplied 79% of the $3.71B the U.S. imported in 2025, and USMCA-qualifying animals from both enter free. Animals from elsewhere pay the base rate **plus an extra duty by country** — 15% for the EU, at least 10% for most others (see Rates by country). And for any shipment, disease status, quarantine and permits decide whether it lands at all.",
     "stats": [
       {
         "label": "Tariff lines",
@@ -50,12 +51,12 @@
         "value": "44 of 78"
       },
       {
-        "label": "2024 imports",
-        "value": "$4.5B"
+        "label": "2025 imports",
+        "value": "$3.71B"
       },
       {
-        "label": "Duty collected",
-        "value": "≈ $0"
+        "label": "Canada + Mexico share",
+        "value": "79%"
       }
     ],
     "productGroups": [
@@ -3237,27 +3238,27 @@
       {
         "title": "500 goats from a country with no FTA",
         "line": "0104.20.00.00",
-        "body": "Goats are a flat 68¢ per head with no reference to value: 500 × $0.68 = **$340**. The same 500 goats from a Column 2 country would be $3.00 per head — **$1,500**."
+        "body": "Goats are a flat 68¢ per head: 500 × $0.68 = **$340** base duty. On top of that comes the extra duty for the country of origin — at least 10% of the shipment's value. At $200 a head that is another **$10,000**, so the extra duty, not the base rate, is most of the bill."
       },
       {
         "title": "50,000 day-old chicks",
         "line": "0105.11.00",
-        "body": "Chicks not over 185 g are 0.9¢ each: 50,000 × $0.009 = **$450**. Free from any of the 18 preference programs listed on the line."
+        "body": "Chicks not over 185 g are 0.9¢ each: 50,000 × $0.009 = **$450** base duty. A trade-agreement claim (one of the 17 programs on the line) removes the base rate, but the extra duty for the country still applies — except under USMCA, where both are zero."
       }
     ],
     "tradeSnapshot": {
-      "year": 2024,
-      "totalImportsUsd": 4500000000,
+      "year": 2025,
+      "totalImportsUsd": 3710000000,
       "totalDutyCollectedUsd": 0,
       "effectiveDutyRateNote": "rounds to 0.00%",
       "topCountries": [
         {
           "name": "Canada",
-          "importsUsd": 2430000000
+          "importsUsd": 2600000000
         },
         {
           "name": "Mexico",
-          "importsUsd": 1310000000
+          "importsUsd": 328600000
         }
       ],
       "biggestLines": [
@@ -3270,8 +3271,8 @@
           "label": "Cattle, other"
         }
       ],
-      "source": "tariff_trade_analytics (2024), chapter-level figures as cited in issue #1770",
-      "coverageNote": "Chapter totals and top source countries only. Per-line import values live in `tariff_trade_analytics` in production and are not bundled into this prototype file."
+      "source": "UN Comtrade, United States imports, HS chapter 01 (2025)",
+      "coverageNote": ""
     },
     "notes": {
       "chapterNotes": "**Note 1.** This chapter covers all live animals except: (a) fish and crustaceans, molluscs and other aquatic invertebrates of heading 0301, 0306, 0307 or 0308; (b) cultures of micro-organisms and other products of heading 3002; and (c) animals of heading 9508.",
@@ -3293,7 +3294,7 @@
       ]
     },
     "intro": "This page compares two editions of the tariff schedule: the **2025 Basic Edition**, in force at the start of 2025, and the current **2026 Revision 20**. On every one of the 78 Chapter 01 lines the base rates are the same in both.\n\nEverything that changed came on top of the base rate, as extra duties set by country. Canada and Mexico supply most of U.S. live-animal imports, and **USMCA-qualifying animals from both are exempt from those extra duties**.",
-    "scope": "Canada, Mexico and measures that apply to all countries. Country-specific reciprocal rates (9903.02.02–9903.02.91) are not itemised.",
+    "scope": "Canada, Mexico and measures that apply to all countries. For the rate each country pays today, including the EU, UK and Vietnam, see Rates by country.",
     "before": {
       "edition": "2025 Basic Edition",
       "released": "2024-12-10",
@@ -3367,22 +3368,10 @@
         "date": "2026-09-28",
         "dateLabel": "Checked",
         "title": "No Chapter 01 base-rate changes",
-        "detail": "All 100 coded Chapter 01 lines carry the same General, FTA and Column 2 rates in the 2026 Revision 20 as in the 2025 Basic Edition.",
+        "detail": "All 78 Chapter 01 tariff lines carry the same General, FTA and Column 2 rates in the 2026 Revision 20 as in the 2025 Basic Edition.",
         "before": null,
         "now": null,
         "countries": null,
-        "sourceIds": ["hts-before", "hts-now"]
-      },
-      {
-        "id": "footnote-301",
-        "type": "reference",
-        "date": "2026-09-28",
-        "dateLabel": "Checked",
-        "title": "Cross-reference to 9903.88.15 removed from Chapter 01 lines",
-        "detail": "The 2025 Basic Edition footnoted 24 of the 78 lines “See 9903.88.15.” (a Section 301 heading for products of China). The 2026 Revision 20 carries no footnote. Rates are unaffected.",
-        "before": "See 9903.88.15.",
-        "now": "—",
-        "countries": "China",
         "sourceIds": ["hts-before", "hts-now"]
       },
       {
@@ -4378,8 +4367,8 @@
         "value": "98"
       },
       {
-        "label": "Effective duty rate (2024)",
-        "value": "≈ 0%"
+        "label": "Largest product",
+        "value": "Cattle · 56%"
       }
     ],
     "byYear": [
@@ -5816,12 +5805,9 @@
       {
         "label": "Federal Register 90 FR 40609 (New World screwworm emergency declaration)",
         "url": "https://www.federalregister.gov/documents/2025/08/20/2025-15918/declaration-of-emergency-pursuant-to-the-federal-food-drug-and-cosmetic-act-for-new-world-screwworm"
-      },
-      {
-        "label": "tariff_trade_analytics (KoalaGains), 2024 duty paid"
       }
     ],
-    "coverageNote": "Comtrade values are CIF, so they run a little above the customs values used on the overview page (e.g. 2024: $4.80B here vs $4.5B there). Duty paid by country and by line is not in Comtrade and will come from tariff_trade_analytics in production."
+    "coverageNote": "Values are CIF (customs value plus freight and insurance), as reported by the United States to UN Comtrade."
   },
   "industryAreas": {
     "h1": "HTS Chapter 01: Live Animals — Tariff Rates by Country",
@@ -10351,8 +10337,7 @@
       "EU: 9903.02.20 applies 15% when the base rate, or its ad valorem equivalent, is under 15%. Every Chapter 01 base rate is a few percent at most, so all EU cells are 15%.",
       "Preferences other than USMCA are not applied. The schedule still lists GSP (A, A+) and AGOA (D) on these lines; check whether those programs are in force before relying on them.",
       "\"Any other country\" shows the 10% baseline. Countries with their own reciprocal rate under 9903.02.02–9903.02.73 pay that instead, which may be higher.",
-      "The September 2026 proclamation on products of Canada (91 FR 58331) is not yet reflected in the schedule edition used here.",
-      "The rate actually paid by country needs duty-collected data (tariff_trade_analytics, production). This page shows the rate that applies today."
+      "The September 2026 proclamation on products of Canada (91 FR 58331) is not yet reflected in the schedule edition used here."
     ],
     "exemptionCheck": "U.S. note 2(v)(iii)(a) to Chapter 99 subchapter III (heading 9903.01.32, 1,090 subheadings) and (v)(iii)(b) (heading 9903.02.78, 17 articles) contain no Chapter 01 code in the 2026 Revision 20.",
     "sources": [
@@ -11540,7 +11525,7 @@
         "cost to import horse from europe to usa"
       ]
     },
-    "intro": "The questions below are the ones people actually search for — taken from search suggestions — answered with the rates, rules and trade figures on this report's other pages.",
+    "intro": "Straight answers to the most common questions about importing live animals into the U.S. — tariffs by country, HS codes and entry requirements. Each answer links to the page with the full detail.",
     "keyTakeaways": [
       "USMCA-qualifying animals from Canada and Mexico enter free — no base rate, no extra duty.",
       "Animals from the EU pay a flat 15% of value; most other countries pay their base rate plus at least 10%.",

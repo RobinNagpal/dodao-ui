@@ -1,4 +1,3 @@
-import ChapterLineStatusTable from '@/components/industry-tariff/chapter/updates/ChapterLineStatusTable';
 import Heading from '@/components/ui/Heading';
 import MetricCell from '@/components/ui/MetricCell';
 import StatusBadge, { type StatusBadgeVariant } from '@/components/ui/StatusBadge';
@@ -12,7 +11,7 @@ import MarkdownContent from '@/components/ui/sections/MarkdownContent';
 import SectionHeading from '@/components/ui/sections/SectionHeading';
 import type { TariffChangeType, TariffChapterPrototype, TariffUpdateSource, TariffUpdatesContent } from '@/types/tariff-chapter-prototype';
 import { parseChapterBodyMarkdown } from '@/util/parse-markdown';
-import { chapterCoverHref } from '@/utils/tariff-reports/chapter-route-helpers';
+import { chapterCoverHref, chapterSectionHref } from '@/utils/tariff-reports/chapter-route-helpers';
 import React from 'react';
 
 // Approach 2 tariff-updates page (issue #1770): what changed, as data. Two
@@ -90,7 +89,8 @@ export default function ChapterTariffUpdatesApproach2({ content, updates }: Chap
           <Stack gap="xs">
             <SectionHeading as="h2">Extra duties in effect today</SectionHeading>
             <Text size="sm" tone="muted">
-              Charged on top of the base rate, by country of origin. None of these existed in the {updates.before.edition}. Scope: {updates.scope}
+              Charged on top of the base rate, by country of origin. None of these existed in the {updates.before.edition}. Scope: {updates.scope}{' '}
+              <TextLink href={chapterSectionHref(chapter.slug, 'industry-areas')}>Rates by country →</TextLink>
             </Text>
           </Stack>
           <Stack gap="md">
@@ -111,7 +111,6 @@ export default function ChapterTariffUpdatesApproach2({ content, updates }: Chap
                   <Text size="sm" tone="muted">
                     {duty.exemption}
                   </Text>
-                  <Text size="sm">{duty.whatItMeans}</Text>
                   <SourceLinks ids={duty.sourceIds} sources={sources} />
                 </Stack>
               </InlineCard>
@@ -158,19 +157,6 @@ export default function ChapterTariffUpdatesApproach2({ content, updates }: Chap
               );
             })}
           </Stack>
-        </Stack>
-      </CardSection>
-
-      <CardSection padding="normal" id="line-status">
-        <Stack gap="lg">
-          <Stack gap="xs">
-            <SectionHeading as="h2">Base rate on every line: then and now</SectionHeading>
-            <Text size="sm" tone="muted">
-              The general (MFN) rate on each of the {updates.lines.length} tariff lines in the {updates.before.edition} and today. For the full current rates,
-              including FTA and Column 2, see the <TextLink href={chapterCoverHref(chapter.slug)}>rate table</TextLink>.
-            </Text>
-          </Stack>
-          <ChapterLineStatusTable lines={updates.lines} beforeLabel={beforeLabel} nowLabel={updates.now.edition} />
         </Stack>
       </CardSection>
 

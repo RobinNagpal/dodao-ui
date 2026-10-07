@@ -8,7 +8,7 @@ import CardSection from '@/components/ui/sections/CardSection';
 import MarkdownContent from '@/components/ui/sections/MarkdownContent';
 import SectionHeading from '@/components/ui/sections/SectionHeading';
 import { DataTable, EmptyCellValue, TableCell, TableHead, TableHeaderCell, TableRow, TableScroll } from '@/components/ui/tables/DataTable';
-import type { TariffChapterPrototype, TariffUnderstandIndustryContent } from '@/types/tariff-chapter-prototype';
+import type { TariffChapterPrototype, TariffImportsByLine, TariffUnderstandIndustryContent } from '@/types/tariff-chapter-prototype';
 import { parseChapterBodyMarkdown } from '@/util/parse-markdown';
 import { chapterCoverHref, chapterSectionHref } from '@/utils/tariff-reports/chapter-route-helpers';
 import React from 'react';
@@ -20,6 +20,14 @@ import React from 'react';
 interface ChapterIndustryStatsApproach2Props {
   content: TariffChapterPrototype;
   industry: TariffUnderstandIndustryContent;
+}
+
+// The product table lists the largest lines; the long tail of near-zero
+// lines folds into one "All other products" row.
+const TOP_LINES = 15;
+
+function sum(lines: TariffImportsByLine[], key: 'importsUsd' | 'priorImportsUsd'): number {
+  return lines.reduce((total, line) => total + (line[key] ?? 0), 0);
 }
 
 function usd(value: number): string {
@@ -44,6 +52,9 @@ export default function ChapterIndustryStatsApproach2({ content, industry }: Cha
   const { latestYear, priorYear } = industry;
   const hasCountryDuty = industry.byCountry.some((c) => c.dutyPaidUsd !== null);
   const hasLineDuty = industry.byLine.some((l) => l.dutyPaidUsd !== null);
+  const topLines = industry.byLine.slice(0, TOP_LINES);
+  const otherLines = industry.byLine.slice(TOP_LINES);
+  const totalLatest = sum(industry.byLine, 'importsUsd');
   const latestTotal = industry.byYear.find((y) => y.year === latestYear)?.totalUsd ?? 0;
 
   return (
@@ -193,7 +204,7 @@ export default function ChapterIndustryStatsApproach2({ content, industry }: Cha
                 </TableRow>
               </TableHead>
               <tbody>
-                {industry.byLine.map((line) => (
+                {topLines.map((line) => (
                   <TableRow key={line.hs6}>
                     <TableCell variant="code">{line.hs6}</TableCell>
                     <TableCell>{line.description}</TableCell>
@@ -206,6 +217,27 @@ export default function ChapterIndustryStatsApproach2({ content, industry }: Cha
                     {hasLineDuty && <TableCell variant="rate">{line.dutyPaidUsd !== null ? usd(line.dutyPaidUsd) : <EmptyCellValue />}</TableCell>}
                   </TableRow>
                 ))}
+                {otherLines.length > 0 && (
+                  <TableRow emphasis="header">
+                    <TableCell tone="muted">—</TableCell>
+                    <TableCell>All other products ({otherLines.length})</TableCell>
+                    <TableCell variant="rate">{usd(sum(otherLines, 'importsUsd'))}</TableCell>
+                    <TableCell variant="rate">
+                      {totalLatest > 0 ? `${((sum(otherLines, 'importsUsd') / totalLatest) * 100).toFixed(1)}%` : <EmptyCellValue />}
+                    </TableCell>
+                    <TableCell variant="rate" tone="muted">
+                      {usd(sum(otherLines, 'priorImportsUsd'))}
+                    </TableCell>
+                    <TableCell variant="rate">
+                      <EmptyCellValue />
+                    </TableCell>
+                    {hasLineDuty && (
+                      <TableCell variant="rate">
+                        <EmptyCellValue />
+                      </TableCell>
+                    )}
+                  </TableRow>
+                )}
               </tbody>
             </DataTable>
           </TableScroll>
@@ -213,9 +245,6 @@ export default function ChapterIndustryStatsApproach2({ content, industry }: Cha
       </CardSection>
 
       <Stack gap="xs">
-        <Text size="xs" tone="muted">
-          Effective duty rate: {industry.effectiveDuty.note}
-        </Text>
         <Text size="xs" tone="muted">
           {industry.coverageNote}
         </Text>
