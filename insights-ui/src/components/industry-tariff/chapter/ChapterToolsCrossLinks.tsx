@@ -3,13 +3,9 @@ import { getHtsChapterRefByNumber } from '@/utils/tariff-cross-links/hts-chapter
 import type { ChapterRouteInfo } from '@/utils/tariff-reports/chapter-route-helpers';
 import { Calculator, ListTree } from 'lucide-react';
 
-// Shared "Tools for this chapter" block. Exposed as an async helper rather than an async server
-// component because the project's TypeScript (5.0.4) doesn't type-check `<AsyncComponent />` in
-// JSX. Callers await it once and store the result; the JSX it returns can be embedded normally.
-export async function renderChapterToolsCrossLinks(chapter: ChapterRouteInfo): Promise<JSX.Element> {
-  const padded = chapter.number.toString().padStart(2, '0');
-  const htsChapter = await getHtsChapterRefByNumber(chapter.number);
-
+/** The "Tools for this chapter" links; the HTS codes link is left out when the chapter has no HTS page. */
+export function buildChapterToolLinks(chapterNumber: number, htsChapterHref: string | null): ChapterToolLink[] {
+  const padded = chapterNumber.toString().padStart(2, '0');
   const links: ChapterToolLink[] = [
     {
       href: '/tariff-calculator',
@@ -20,9 +16,9 @@ export async function renderChapterToolsCrossLinks(chapter: ChapterRouteInfo): P
     },
   ];
 
-  if (htsChapter) {
+  if (htsChapterHref) {
     links.push({
-      href: htsChapter.href,
+      href: htsChapterHref,
       label: `HTS Chapter ${padded} Codes`,
       description: 'Browse every HTS code in this chapter, with general rate, Column 2, special rates, and units of quantity.',
       icon: <ListTree className="h-4 w-4" />,
@@ -30,5 +26,13 @@ export async function renderChapterToolsCrossLinks(chapter: ChapterRouteInfo): P
     });
   }
 
-  return <ChapterToolsBar links={links} />;
+  return links;
+}
+
+// Shared "Tools for this chapter" block. Exposed as an async helper rather than an async server
+// component because the project's TypeScript (5.0.4) doesn't type-check `<AsyncComponent />` in
+// JSX. Callers await it once and store the result; the JSX it returns can be embedded normally.
+export async function renderChapterToolsCrossLinks(chapter: ChapterRouteInfo): Promise<JSX.Element> {
+  const htsChapter = await getHtsChapterRefByNumber(chapter.number);
+  return <ChapterToolsBar links={buildChapterToolLinks(chapter.number, htsChapter?.href ?? null)} />;
 }

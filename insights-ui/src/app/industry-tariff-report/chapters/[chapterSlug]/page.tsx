@@ -7,7 +7,7 @@ import type { ChapterTariffReportResponse } from '@/app/api/industry-tariff-repo
 import type { PageSeoDetails } from '@/scripts/industry-tariff-reports/tariff-types';
 import { parseChapterBodyMarkdown } from '@/util/parse-markdown';
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
-import { buildPrototypeMetadata, getChapterPrototype } from '@/utils/tariff-reports/chapter-prototype';
+import { buildPrototypeMetadata, getChapterPrototype, prototypeChapterInfo } from '@/utils/tariff-reports/chapter-prototype';
 import { chapterCoverHref, chapterSectionHref } from '@/utils/tariff-reports/chapter-route-helpers';
 import { tariffReportTag } from '@/utils/tariff-report-tags';
 import { isValidTariffChapterSlug } from '@/utils/tariff-reports/tariff-input-validation';
@@ -75,11 +75,7 @@ export default async function ChapterCoverPage({ params }: { params: Promise<{ c
   // Chapters without a content file keep the DB-backed flow below untouched.
   const prototype = getChapterPrototype(chapterSlug);
   if (prototype) {
-    const chapterInfo = {
-      number: prototype.chapter.number,
-      title: prototype.chapter.title,
-      slug: prototype.chapter.slug,
-    };
+    const chapterInfo = prototypeChapterInfo(prototype);
     const prototypeCrossLinks = <PrototypeChapterToolsBar chapter={prototype.chapter} />;
     return (
       <ChapterArticle

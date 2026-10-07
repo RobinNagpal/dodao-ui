@@ -1,7 +1,7 @@
 import { ChapterArticle, buildChapterSectionMetadata, renderChapterSection } from '@/components/industry-tariff/chapter/chapter-section-page';
 import ChapterIndustryStatsApproach2 from '@/components/industry-tariff/chapter/industry/ChapterIndustryStatsApproach2';
 import PrototypeChapterToolsBar from '@/components/industry-tariff/chapter/PrototypeChapterToolsBar';
-import { buildPrototypeMetadata, getChapterPrototype } from '@/utils/tariff-reports/chapter-prototype';
+import { buildPrototypeMetadata, getChapterPrototype, prototypeChapterInfo } from '@/utils/tariff-reports/chapter-prototype';
 import { chapterSectionHref } from '@/utils/tariff-reports/chapter-route-helpers';
 import type { Metadata } from 'next';
 
@@ -22,7 +22,7 @@ export default async function Page({ params }: { params: Promise<{ chapterSlug: 
   // other chapter keeps the DB-backed section.
   const prototype = getChapterPrototype(chapterSlug);
   if (prototype?.understandIndustry) {
-    const chapterInfo = { number: prototype.chapter.number, title: prototype.chapter.title, slug: prototype.chapter.slug };
+    const chapterInfo = prototypeChapterInfo(prototype);
     return (
       <ChapterArticle
         chapter={chapterInfo}

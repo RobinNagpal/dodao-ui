@@ -11,6 +11,7 @@
 
 import liveAnimals from '@/tariff-data/chapters/01-live-animals.json';
 import type { TariffChapterPrototype } from '@/types/tariff-chapter-prototype';
+import type { ChapterRouteInfo } from '@/utils/tariff-reports/chapter-route-helpers';
 import type { Metadata } from 'next';
 
 // Static imports (not `fs`) so the content is bundled and works in every
@@ -23,8 +24,10 @@ export function getChapterPrototype(chapterSlug: string): TariffChapterPrototype
   return PROTOTYPES_BY_SLUG[chapterSlug] ?? null;
 }
 
-export function hasChapterPrototype(chapterSlug: string): boolean {
-  return chapterSlug in PROTOTYPES_BY_SLUG;
+/** The route facts (number, title, slug) the chapter shell and breadcrumbs need. */
+export function prototypeChapterInfo(prototype: TariffChapterPrototype): ChapterRouteInfo {
+  const { number, title, slug } = prototype.chapter;
+  return { number, title, slug };
 }
 
 /** Page metadata for an Approach-2 page, from the SEO copy in its content file. */

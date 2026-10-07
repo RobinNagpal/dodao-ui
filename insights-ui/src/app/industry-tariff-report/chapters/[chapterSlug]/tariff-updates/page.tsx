@@ -2,7 +2,7 @@ import { ChapterArticle, buildChapterSectionMetadata, renderChapterSection } fro
 import PrototypeChapterToolsBar from '@/components/industry-tariff/chapter/PrototypeChapterToolsBar';
 import ChapterTariffUpdatesApproach2 from '@/components/industry-tariff/chapter/updates/ChapterTariffUpdatesApproach2';
 import { TariffScrollLoginTrigger } from '@/components/login/tariff-scroll-login-trigger';
-import { buildPrototypeMetadata, getChapterPrototype } from '@/utils/tariff-reports/chapter-prototype';
+import { buildPrototypeMetadata, getChapterPrototype, prototypeChapterInfo } from '@/utils/tariff-reports/chapter-prototype';
 import { chapterSectionHref } from '@/utils/tariff-reports/chapter-route-helpers';
 import type { Metadata } from 'next';
 
@@ -25,7 +25,7 @@ export default async function Page({ params }: { params: Promise<{ chapterSlug: 
   // other chapter keeps the DB-backed section below.
   const prototype = getChapterPrototype(chapterSlug);
   if (prototype?.tariffUpdates) {
-    const chapterInfo = { number: prototype.chapter.number, title: prototype.chapter.title, slug: prototype.chapter.slug };
+    const chapterInfo = prototypeChapterInfo(prototype);
     return (
       <>
         <ChapterArticle

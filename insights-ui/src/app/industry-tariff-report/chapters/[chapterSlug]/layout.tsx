@@ -1,7 +1,7 @@
 import BreadcrumbsWithJsonLd from '@/components/ui/BreadcrumbsWithJsonLd';
 import type { ChapterTariffReportResponse } from '@/app/api/industry-tariff-reports/chapters/[chapterSlug]/route';
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
-import { getChapterPrototype } from '@/utils/tariff-reports/chapter-prototype';
+import { getChapterPrototype, prototypeChapterInfo } from '@/utils/tariff-reports/chapter-prototype';
 import { chapterCoverHref } from '@/utils/tariff-reports/chapter-route-helpers';
 import { tariffReportTag } from '@/utils/tariff-report-tags';
 import { isValidTariffChapterSlug, rejectTariffPageParam } from '@/utils/tariff-reports/tariff-input-validation';
@@ -29,7 +29,7 @@ export default async function ChapterReportLayout({ children, params }: { childr
   const prototype = getChapterPrototype(chapterSlug);
   const data = prototype ? null : await fetchChapterTariffReport(chapterSlug);
   const chapterInfo = prototype
-    ? { number: prototype.chapter.number, title: prototype.chapter.title, slug: prototype.chapter.slug }
+    ? prototypeChapterInfo(prototype)
     : data
     ? { number: data.chapter.number, title: data.chapter.title, slug: data.chapter.slug }
     : null;
