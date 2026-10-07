@@ -1,9 +1,8 @@
-import Heading from '@/components/ui/Heading';
 import Text from '@/components/ui/Text';
 import TextLink from '@/components/ui/TextLink';
 import Stack from '@/components/ui/containers/Stack';
 import CardSection from '@/components/ui/sections/CardSection';
-import InlineCard from '@/components/ui/sections/InlineCard';
+import { DisclosureItem, DisclosureList } from '@/components/ui/sections/DisclosureList';
 import SectionHeading from '@/components/ui/sections/SectionHeading';
 import type { TariffChapterPrototype, TariffFinalConclusionContent } from '@/types/tariff-chapter-prototype';
 import { chapterCoverHref, chapterSectionHref } from '@/utils/tariff-reports/chapter-route-helpers';
@@ -68,32 +67,21 @@ export default function ChapterFaqApproach2({ content, conclusion }: ChapterFaqA
 
       <Stack gap="md">
         <SectionHeading as="h2">Frequently asked questions</SectionHeading>
-        {conclusion.faqs.map((faq) => (
-          <InlineCard key={faq.id} padding="roomy">
-            <Stack gap="sm">
-              <Heading as="h3" size="md" tone="white">
-                {faq.question}
-              </Heading>
-              <Text size="sm" leading="relaxed">
-                {faq.answer}
-              </Text>
-              <Stack direction="row" gap="md" align="center" wrap>
+        <DisclosureList>
+          {conclusion.faqs.map((faq, i) => (
+            <DisclosureItem key={faq.id} id={faq.id} summary={faq.question} defaultOpen={i === 0}>
+              <Stack gap="sm">
+                <Text size="sm" leading="relaxed">
+                  {faq.answer}
+                </Text>
                 <TextLink href={faq.link ? chapterSectionHref(chapter.slug, faq.link) : chapterCoverHref(chapter.slug)} size="xs">
                   {LINK_LABEL[faq.link] ?? 'Details'} →
                 </TextLink>
-                <Text as="span" size="xs" tone="muted">
-                  Searched as: {faq.searchedAs.map((q) => `“${q}”`).join(', ')}
-                </Text>
               </Stack>
-            </Stack>
-          </InlineCard>
-        ))}
+            </DisclosureItem>
+          ))}
+        </DisclosureList>
       </Stack>
-
-      <Text size="xs" tone="muted">
-        Questions: {conclusion.questionSource}. Answers draw on the tariff schedule, Federal Register, eCFR and UN Comtrade sources cited on this report&apos;s
-        other pages.
-      </Text>
     </Stack>
   );
 }

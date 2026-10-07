@@ -44,7 +44,6 @@ function formatAsOf(iso: string): string {
 
 export default function ChapterOverviewApproach2({ content }: ChapterOverviewApproach2Props): React.JSX.Element {
   const { chapter, overview, asOf, sources } = content;
-  const { tradeSnapshot: trade } = overview;
 
   return (
     <Stack gap="2xl">
@@ -63,8 +62,6 @@ export default function ChapterOverviewApproach2({ content }: ChapterOverviewApp
           ))}
         </MetricGrid>
         <Text size="xs" tone="muted">
-          {trade.year} imports {formatUsd(trade.totalImportsUsd)} · duty collected {formatUsd(trade.totalDutyCollectedUsd)} ({trade.effectiveDutyRateNote}) ·
-          top sources {trade.topCountries.map((c) => `${c.name} ${formatUsd(c.importsUsd)}`).join(', ')}.{' '}
           <Link href={chapterSectionHref(chapter.slug, 'understand-industry')}>Full trade statistics →</Link>
         </Text>
       </Stack>
@@ -137,8 +134,9 @@ export default function ChapterOverviewApproach2({ content }: ChapterOverviewApp
             <Stack gap="xs">
               <SectionHeading as="h2">What the preference codes mean</SectionHeading>
               <Text size="sm" tone="muted">
-                The codes in the FTA column are Special Program Indicators. A shipment claims one at entry, and claiming it is what turns the general rate into
-                Free.
+                These are the codes behind &ldquo;Free &middot; 17 programs&rdquo; in the FTA column of the table above (expand a row to see them). Every line
+                lists the same 17; some lines carry GSP as A and others as A+, so 18 codes appear here in total. A shipment claims one of these programs at
+                entry, and claiming it is what turns the general rate into Free.
               </Text>
             </Stack>
             <DefinitionList columns="1-2" items={overview.spiLegend.map((entry) => ({ term: entry.code, definition: entry.name }))} />
@@ -158,14 +156,9 @@ export default function ChapterOverviewApproach2({ content }: ChapterOverviewApp
         </CardSection>
       )}
 
-      <Stack gap="xs">
-        <Text size="xs" tone="muted">
-          Sources: {sources.map((source) => (source.url ? `${source.label} (${source.url})` : source.label)).join(' · ')}.
-        </Text>
-        <Text size="xs" tone="muted">
-          {trade.coverageNote}
-        </Text>
-      </Stack>
+      <Text size="xs" tone="muted">
+        Sources: {sources.map((source) => (source.url ? `${source.label} (${source.url})` : source.label)).join(' · ')}.
+      </Text>
     </Stack>
   );
 }

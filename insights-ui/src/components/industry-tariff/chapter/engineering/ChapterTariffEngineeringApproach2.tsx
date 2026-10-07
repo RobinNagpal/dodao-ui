@@ -1,4 +1,3 @@
-import LineRequirementsTable from '@/components/industry-tariff/chapter/engineering/LineRequirementsTable';
 import Heading from '@/components/ui/Heading';
 import Text from '@/components/ui/Text';
 import TextLink from '@/components/ui/TextLink';
@@ -142,18 +141,6 @@ export default function ChapterTariffEngineeringApproach2({ content, engineering
               </InlineCard>
             ))}
           </Stack>
-        </Stack>
-      </CardSection>
-
-      <CardSection padding="normal" id="per-line">
-        <Stack gap="lg">
-          <Stack gap="xs">
-            <SectionHeading as="h2">Every line: rules, documents and levers</SectionHeading>
-            <Text size="sm" tone="muted">
-              The same rules mapped onto each of the {engineering.lines.length} tariff lines. Search for your product.
-            </Text>
-          </Stack>
-          <LineRequirementsTable lines={engineering.lines} rules={engineering.rules} levers={engineering.levers} />
         </Stack>
       </CardSection>
 
