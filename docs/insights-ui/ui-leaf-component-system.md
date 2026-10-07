@@ -29,8 +29,12 @@ Why:
     `InlineCard`, `RelatedSectionsNav`, `ReportArticleShell`,
     `ReportSectionHeader`, `SectionHeading`, `ReportSection`, `ReportFooter`,
     `Prose`, `MarkdownContent`).
+  - `ui/tables/**` — **data-table chrome** (`DataTable` and its row/cell
+    primitives) for reference tables that web-core's fixed-column `Table`
+    can't express.
   - `ui/*` (flat) — typography (`Heading`, `Text`), data/badges/feedback
-    (`MetricCell`, `StatusBadge`, …), and wrapped controls (`Breadcrumbs`, …).
+    (`MetricCell`, `StatusBadge`, …), and wrapped controls (`Breadcrumbs`,
+    `SearchField`, `ToggleChip`, …).
   - The ESLint `src/components/ui/**` globs cover these subfolders (the `**`
     recurses), so nested leaves stay in the "Tailwind-allowed" zone with no
     config change.
@@ -148,6 +152,7 @@ Rules for leaves:
 |---|---|
 | `Stack` | Flex container; owns `gap` + optional block margins (`mt`/`mb`); `as` for `ul`/`section`/etc. |
 | `MetricGrid` | Responsive grid for metric cells; `columns` presets + `gap`. |
+| `ChartFrame` | Full-width, fixed-height (`height` sm/md/lg) box for a chart.js canvas, with an accessible label; the square radar charts use `RadarChartFrame`. |
 | `SplitColumns` | Two-column responsive split (`lg:w-1/2` halves) with a `gap` variant. |
 
 **Sections (`ui/sections/`) — surfaces & report chrome**
@@ -157,6 +162,7 @@ Rules for leaves:
 | `CardSection` | Dark report-section surface (`bg-gray-900 rounded-lg shadow-sm`) with padding presets. |
 | `InlineCard` | Lightweight filled box (`bg-gray-800 rounded-md`); `padding` presets incl. `factor`; `as` for `li`. |
 | `RelatedSectionsNav` | Top-bordered "more analyses" nav: heading + responsive grid of pill links. |
+| `LinkTile` | Navigational tile with eyebrow, title, highlighted meta value, body and footer. |
 | `ReportArticleShell` | Outer `<article>` card chrome + schema.org microdata + optional `datePublished`; `padding` variant. |
 | `ReportSectionHeader` | Bordered report header: title (+ `symbol`), exchange/score/date meta row, metadata slot, action link. |
 | `SectionHeading` | In-article H2/H3 (`text-xl font-semibold text-color`); `size`/`weight`/`bordered`. |
@@ -181,7 +187,19 @@ Rules for leaves:
 | `PassFailBadge` | Green/red pass-fail pill. |
 | `ScenarioOutlookBadge` | Probability / Direction / Timeframe scenario pills. |
 | `AppliedFilterChip` | Removable filter chip. |
+| `ToggleChip` | On/off filter chip (`aria-pressed`) with an optional count. |
+| `SearchField` | Filter-a-listing search box: magnifier, clear button, result count. |
+| `DefinitionList` | Compact term → definition grid for code legends/glossaries. |
 | `EmptyStateCard` | "No data" placeholder (`card` / `inline`). |
+
+**Tables (`ui/tables/`)**
+
+| Component | Responsibility |
+|---|---|
+| `DataTable` + `TableScroll`/`TableHead`/`TableHeaderCell`/`TableRow`/`TableCell` | Reference-table chrome: scroll container, sticky header, row emphasis, cell variants (`code`/`rate`/`rateWrap`). |
+| `IndentedLabel` | Description cell indented to its place in a hierarchy (literal `pl-*` per depth, 0–6). |
+| `InheritedValue` / `EmptyCellValue` | Muted "inherited from <parent>" value, and the em-dash empty cell. |
+| `MatrixCellButton` | Selectable matrix cell (primary value + muted second line, `selected`/`dim`) that opens a detail view. |
 
 Plus the shadcn-style `Card`, `Input`, `Label`, `Tabs` already in
 `components/ui/`. **Always grep the leaf layer + web-core before creating a new
