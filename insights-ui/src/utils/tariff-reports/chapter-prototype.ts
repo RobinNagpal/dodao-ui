@@ -17,7 +17,7 @@ import type { Metadata } from 'next';
 // Static imports (not `fs`) so the content is bundled and works in every
 // runtime — including the edge/serverless build where there is no filesystem.
 const PROTOTYPES_BY_SLUG: Record<string, TariffChapterPrototype> = {
-  '01-live-animals': liveAnimals as TariffChapterPrototype,
+  '1-live-animals': liveAnimals as TariffChapterPrototype,
 };
 
 export function getChapterPrototype(chapterSlug: string): TariffChapterPrototype | null {
