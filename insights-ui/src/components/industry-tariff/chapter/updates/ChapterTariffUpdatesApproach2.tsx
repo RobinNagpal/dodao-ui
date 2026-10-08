@@ -37,7 +37,7 @@ function formatDate(iso: string): string {
   return date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric', timeZone: 'UTC' });
 }
 
-function SourceLinks({ ids, sources }: { ids: string[]; sources: Map<string, TariffUpdateSource> }): React.JSX.Element {
+export function SourceLinks({ ids, sources }: { ids: string[]; sources: Map<string, TariffUpdateSource> }): React.JSX.Element {
   return (
     <Stack direction="row" gap="md" wrap>
       {ids.map((id) => {
@@ -67,6 +67,8 @@ export default function ChapterTariffUpdatesApproach2({ content, updates }: Chap
   const { chapter } = content;
   const sources = new Map(updates.sources.map((s) => [s.id, s]));
   const beforeLabel = 'Jan 2025';
+  // Only claim the duties are all new when every one of them started from nothing.
+  const allNew = updates.inEffect.every((duty) => duty.before === 'None');
 
   return (
     <Stack gap="2xl">
@@ -89,8 +91,8 @@ export default function ChapterTariffUpdatesApproach2({ content, updates }: Chap
           <Stack gap="xs">
             <SectionHeading as="h2">Extra duties in effect today</SectionHeading>
             <Text size="sm" tone="muted">
-              Charged on top of the base rate, by country of origin. None of these existed in the {updates.before.edition}. Scope: {updates.scope}{' '}
-              <TextLink href={chapterSectionHref(chapter.slug, 'industry-areas')}>Rates by country →</TextLink>
+              Charged on top of the base rate, by country of origin.{allNew ? ` None of these existed in the ${updates.before.edition}.` : ''} Scope:{' '}
+              {updates.scope} <TextLink href={chapterSectionHref(chapter.slug, 'industry-areas')}>Rates by country →</TextLink>
             </Text>
           </Stack>
           <Stack gap="md">

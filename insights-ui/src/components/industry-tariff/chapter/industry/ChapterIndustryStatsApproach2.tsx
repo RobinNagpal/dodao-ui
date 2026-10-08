@@ -76,17 +76,17 @@ export default function ChapterIndustryStatsApproach2({ content, industry }: Cha
           <Stack gap="xs">
             <SectionHeading as="h2">Imports over time</SectionHeading>
             <Text size="sm" tone="muted">
-              U.S. imports of Chapter {chapter.padded} goods each year, split into the two USMCA partners and everyone else.
+              {industry.byYearCaption}
             </Text>
           </Stack>
-          <ImportsByYearChart byYear={industry.byYear} />
+          <ImportsByYearChart byYear={industry.byYear} partners={industry.byYearPartners} chapterTitle={chapter.title} />
           <TableScroll>
             <DataTable>
               <TableHead>
                 <TableRow>
                   <TableHeaderCell>Year</TableHeaderCell>
-                  <TableHeaderCell>Canada</TableHeaderCell>
-                  <TableHeaderCell>Mexico</TableHeaderCell>
+                  <TableHeaderCell>{industry.byYearPartners[0]}</TableHeaderCell>
+                  <TableHeaderCell>{industry.byYearPartners[1]}</TableHeaderCell>
                   <TableHeaderCell>Rest of world</TableHeaderCell>
                   <TableHeaderCell>Total</TableHeaderCell>
                 </TableRow>
@@ -95,8 +95,8 @@ export default function ChapterIndustryStatsApproach2({ content, industry }: Cha
                 {industry.byYear.map((y) => (
                   <TableRow key={y.year}>
                     <TableCell variant="code">{y.year}</TableCell>
-                    <TableCell variant="rate">{usd(y.canadaUsd)}</TableCell>
-                    <TableCell variant="rate">{usd(y.mexicoUsd)}</TableCell>
+                    <TableCell variant="rate">{usd(y.partnerAUsd)}</TableCell>
+                    <TableCell variant="rate">{usd(y.partnerBUsd)}</TableCell>
                     <TableCell variant="rate">{usd(y.restUsd)}</TableCell>
                     <TableCell variant="rate">{usd(y.totalUsd)}</TableCell>
                   </TableRow>

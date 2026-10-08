@@ -1,7 +1,7 @@
 import ChapterToolsBar, { type ChapterToolLink } from '@/components/industry-tariff/chapter/ChapterToolsBar';
 import { getHtsChapterRefByNumber } from '@/utils/tariff-cross-links/hts-chapter-ref';
-import type { ChapterRouteInfo } from '@/utils/tariff-reports/chapter-route-helpers';
-import { Calculator, ListTree } from 'lucide-react';
+import { CHAPTER_US_EXPORTS_SLUG, chapterSectionHref, type ChapterRouteInfo } from '@/utils/tariff-reports/chapter-route-helpers';
+import { Calculator, ListTree, Ship } from 'lucide-react';
 
 /** The "Tools for this chapter" links; the HTS codes link is left out when the chapter has no HTS page. */
 export function buildChapterToolLinks(chapterNumber: number, htsChapterHref: string | null): ChapterToolLink[] {
@@ -27,6 +27,18 @@ export function buildChapterToolLinks(chapterNumber: number, htsChapterHref: str
   }
 
   return links;
+}
+
+/** The "Tariffs on U.S. Exports" tool link — only for chapters whose content has that page. */
+export function buildUsExportsToolLink(chapterSlug: string, active: boolean): ChapterToolLink {
+  return {
+    href: chapterSectionHref(chapterSlug, CHAPTER_US_EXPORTS_SLUG),
+    label: 'Tariffs on U.S. Exports',
+    description: 'Which countries buy these goods from the U.S., the tariff they charge on them, and what changed since January 2025.',
+    icon: <Ship className="h-4 w-4" />,
+    tone: 'amber',
+    active,
+  };
 }
 
 // Shared "Tools for this chapter" block. Exposed as an async helper rather than an async server

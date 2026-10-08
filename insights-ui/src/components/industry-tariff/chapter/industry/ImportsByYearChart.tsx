@@ -9,7 +9,7 @@ import { Bar } from 'react-chartjs-2';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
 
-// Imports by year, stacked by Canada / Mexico / rest of world.
+// Imports by year, stacked by the two named partners / rest of world.
 //
 // Three categorical series → the first three slots of the validated reference
 // palette (blue, orange, aqua), which pass the CVD and normal-vision checks
@@ -17,15 +17,21 @@ ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
 // selections, not a flip. Light-mode aqua sits under 3:1 contrast, so the page
 // pairs this chart with a table of the same numbers.
 const SERIES_COLORS = {
-  dark: { canada: '#3987e5', mexico: '#d95926', rest: '#199e70', surface: '#1f2937' },
-  light: { canada: '#2a78d6', mexico: '#eb6834', rest: '#1baf7a', surface: '#ffffff' },
+  dark: { partnerA: '#3987e5', partnerB: '#d95926', rest: '#199e70', surface: '#1f2937' },
+  light: { partnerA: '#2a78d6', partnerB: '#eb6834', rest: '#1baf7a', surface: '#ffffff' },
 } as const;
 
 function formatBillions(value: number): string {
   return `$${(value / 1e9).toFixed(2)}B`;
 }
 
-export default function ImportsByYearChart({ byYear }: { byYear: TariffImportsByYear[] }): JSX.Element {
+interface ImportsByYearChartProps {
+  byYear: TariffImportsByYear[];
+  partners: string[];
+  chapterTitle: string;
+}
+
+export default function ImportsByYearChart({ byYear, partners, chapterTitle }: ImportsByYearChartProps): JSX.Element {
   const theme = usePageTheme();
   const axis = chartAxisTheme(theme);
   const colors = SERIES_COLORS[theme === 'dark' ? 'dark' : 'light'];
@@ -46,14 +52,14 @@ export default function ImportsByYearChart({ byYear }: { byYear: TariffImportsBy
     labels: byYear.map((y) => String(y.year)),
     datasets: [
       segment(
-        'Canada',
-        byYear.map((y) => y.canadaUsd),
-        colors.canada
+        partners[0],
+        byYear.map((y) => y.partnerAUsd),
+        colors.partnerA
       ),
       segment(
-        'Mexico',
-        byYear.map((y) => y.mexicoUsd),
-        colors.mexico
+        partners[1],
+        byYear.map((y) => y.partnerBUsd),
+        colors.partnerB
       ),
       segment(
         'Rest of world',
@@ -88,7 +94,7 @@ export default function ImportsByYearChart({ byYear }: { byYear: TariffImportsBy
   };
 
   return (
-    <ChartFrame height="md" label="U.S. live-animal imports by year, stacked by Canada, Mexico and rest of world">
+    <ChartFrame height="md" label={`U.S. ${chapterTitle.toLowerCase()} imports by year, stacked by ${partners[0]}, ${partners[1]} and rest of world`}>
       <Bar data={data} options={options} />
     </ChartFrame>
   );
