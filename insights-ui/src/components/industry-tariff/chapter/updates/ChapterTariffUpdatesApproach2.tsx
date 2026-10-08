@@ -37,7 +37,7 @@ function formatDate(iso: string): string {
   return date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric', timeZone: 'UTC' });
 }
 
-function SourceLinks({ ids, sources }: { ids: string[]; sources: Map<string, TariffUpdateSource> }): React.JSX.Element {
+export function SourceLinks({ ids, sources }: { ids: string[]; sources: Map<string, TariffUpdateSource> }): React.JSX.Element {
   return (
     <Stack direction="row" gap="md" wrap>
       {ids.map((id) => {
