@@ -1,13 +1,15 @@
 import type { TariffReportListingItem } from '@/app/api/tariff-reports/listing/route';
 import BreadcrumbsWithJsonLd from '@/components/ui/BreadcrumbsWithJsonLd';
+import TariffChapterCardGrid from '@/components/industry-tariff/TariffChapterCardGrid';
 import TariffReportsPageActions from '@/components/industry-tariff/TariffReportsPageActions';
 import ToolPills from '@/components/tariff-cross-links/ToolPills';
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
+import { hasChapterExports } from '@/utils/tariff-reports/chapter-exports';
 import { CHAPTER_REPORT_SECTIONS, chapterCoverHref, chapterSectionHref } from '@/utils/tariff-reports/chapter-route-helpers';
 import { TARIFF_REPORTS_LISTING_TAG } from '@/utils/tariff-report-tags';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
-import { ArrowRight, Calculator, FileText, Layers, ListTree } from 'lucide-react';
+import { ArrowRight, Calculator, FileText, Layers, ListTree, Ship } from 'lucide-react';
 import { Metadata } from 'next';
 import Link from 'next/link';
 
@@ -73,13 +75,15 @@ interface ChapterCardProps {
   chapterTitle: string;
   chapterSlug: string;
   lastModified?: string;
+  // Chapters with export pages get a second "U.S. exports" link next to "Open report".
+  hasExports: boolean;
 }
 
 // Card-only ordering: shorter labels first so the 5 section pills fit in two rows
 // instead of three. The canonical reading order lives in CHAPTER_REPORT_SECTIONS.
 const CARD_SECTION_DISPLAY_ORDER = ['tariff-updates', 'industry-areas', 'tariff-engineering', 'understand-industry', 'final-conclusion'];
 
-function ChapterCard({ chapterNumber, chapterTitle, chapterSlug, lastModified }: ChapterCardProps) {
+function ChapterCard({ chapterNumber, chapterTitle, chapterSlug, lastModified, hasExports }: ChapterCardProps) {
   const padded = chapterNumber.toString().padStart(2, '0');
   const href = chapterCoverHref(chapterSlug);
   const title = `${chapterTitle}`;
@@ -123,13 +127,22 @@ function ChapterCard({ chapterNumber, chapterTitle, chapterSlug, lastModified }:
         ))}
       </div>
 
-      <Link
-        href={href}
-        className="relative z-10 mt-auto inline-flex items-center gap-1.5 self-start text-sm font-medium text-link transition-colors group-hover:text-link"
-      >
-        Open report
-        <ArrowRight className="h-4 w-4" />
-      </Link>
+      <div className="relative z-10 mt-auto flex flex-wrap items-center gap-x-5 gap-y-2">
+        <Link href={href} className="inline-flex items-center gap-1.5 text-sm font-medium text-link transition-colors group-hover:text-link">
+          Open report
+          <ArrowRight className="h-4 w-4" />
+        </Link>
+        {hasExports && (
+          <Link
+            href={chapterSectionHref(chapterSlug, 'exports')}
+            className="inline-flex items-center gap-1.5 text-sm font-medium text-muted transition-colors hover:text-link"
+          >
+            <Ship className="h-4 w-4" />
+            U.S. exports
+            <ArrowRight className="h-4 w-4" />
+          </Link>
+        )}
+      </div>
     </article>
   );
 }
@@ -190,17 +203,21 @@ export default async function TariffReportsPage() {
               <h2 className="text-2xl font-semibold text-heading">All Chapters</h2>
               <span className="text-sm text-muted">{rows.length} chapters</span>
             </div>
-            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {rows.map((row) => (
-                <ChapterCard
-                  key={row.slug}
-                  chapterNumber={row.chapter.number}
-                  chapterTitle={row.chapter.title}
-                  chapterSlug={row.slug}
-                  lastModified={row.updatedAt}
-                />
-              ))}
-            </div>
+            <TariffChapterCardGrid
+              items={rows.map((row) => ({
+                key: row.slug,
+                hasExports: hasChapterExports(row.slug),
+                card: (
+                  <ChapterCard
+                    chapterNumber={row.chapter.number}
+                    chapterTitle={row.chapter.title}
+                    chapterSlug={row.slug}
+                    lastModified={row.updatedAt}
+                    hasExports={hasChapterExports(row.slug)}
+                  />
+                ),
+              }))}
+            />
           </section>
         )}
       </div>

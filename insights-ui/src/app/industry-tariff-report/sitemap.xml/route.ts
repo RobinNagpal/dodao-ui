@@ -1,8 +1,9 @@
 import { prisma } from '@/prisma';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { getCanonicalUrl } from '@/utils/getBaseUrlForServerSidePages';
+import { hasChapterExports } from '@/utils/tariff-reports/chapter-exports';
 import { getChapterPrototype } from '@/utils/tariff-reports/chapter-prototype';
-import { CHAPTER_US_EXPORTS_SLUG } from '@/utils/tariff-reports/chapter-route-helpers';
+import { CHAPTER_EXPORT_SECTIONS } from '@/utils/tariff-reports/chapter-route-helpers';
 import { delayedSitemapLastmod } from '@/utils/sitemap-lastmod-utils';
 import { Prisma } from '@prisma/client';
 import { NextResponse } from 'next/server';
@@ -47,13 +48,16 @@ async function generateTariffReportUrls(): Promise<SiteMapUrl[]> {
     }
     // Tariff Engineering is only seeded for a subset of chapters — include the URL only when the
     // JSONB column has content so we don't advertise placeholder section pages in the sitemap.
-    // Approach-2 chapters (issue #1770) render from a content file, which can carry pages the DB row lacks.
+    // Approach-2 chapters (issue #1770) render from a content file, which can carry a page the DB row lacks.
     const prototype = getChapterPrototype(row.slug);
     if (row.tariffEngineering !== null || prototype?.tariffEngineering) {
       urls.push({ url: `${chapterPath}/tariff-engineering`, changefreq: 'weekly', priority: 0.7, lastmod });
     }
-    if (prototype?.usExports) {
-      urls.push({ url: `${chapterPath}/${CHAPTER_US_EXPORTS_SLUG}`, changefreq: 'weekly', priority: 0.7, lastmod });
+    // The export half of the report (/exports, /exports/tariff-updates, /exports/markets) exists only for chapters with export content.
+    if (hasChapterExports(row.slug)) {
+      for (const section of CHAPTER_EXPORT_SECTIONS) {
+        urls.push({ url: `${chapterPath}/${section.slug}`, changefreq: 'weekly', priority: 0.7, lastmod });
+      }
     }
   }
 

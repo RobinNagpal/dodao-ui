@@ -11,9 +11,15 @@ export const CHAPTER_REPORT_SECTIONS: readonly ChapterReportSection[] = [
   { slug: 'final-conclusion', label: 'Final Conclusion' },
 ] as const;
 
-// "Tariffs on U.S. exports" page. Reached from the "Tools for this chapter" bar rather than the
-// section grid, so it is deliberately not one of CHAPTER_REPORT_SECTIONS.
-export const CHAPTER_US_EXPORTS_SLUG = 'us-exports';
+// Export half of a chapter report (only for chapters with export content — see chapter-exports.ts).
+// Slugs are relative to the chapter cover, like CHAPTER_REPORT_SECTIONS; 'exports' is the export overview.
+export const CHAPTER_EXPORT_SECTIONS: readonly ChapterReportSection[] = [
+  { slug: 'exports', label: 'Export Overview' },
+  { slug: 'exports/tariff-updates', label: 'Export Tariff Updates' },
+  { slug: 'exports/markets', label: 'Export Markets' },
+] as const;
+
+export type ChapterReportDirection = 'import' | 'export';
 
 export interface ChapterRouteInfo {
   number: number;

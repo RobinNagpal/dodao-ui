@@ -1,4 +1,11 @@
-import { CHAPTER_REPORT_SECTIONS, chapterCoverHref, chapterSectionHref, type ChapterRouteInfo } from '@/utils/tariff-reports/chapter-route-helpers';
+import {
+  CHAPTER_EXPORT_SECTIONS,
+  CHAPTER_REPORT_SECTIONS,
+  chapterCoverHref,
+  chapterSectionHref,
+  type ChapterReportDirection,
+  type ChapterRouteInfo,
+} from '@/utils/tariff-reports/chapter-route-helpers';
 import Link from 'next/link';
 
 interface ChapterRelatedSectionsProps {
@@ -6,6 +13,8 @@ interface ChapterRelatedSectionsProps {
   // Slug of the current sub-section, or 'overview' on the chapter cover page. The matching link is
   // highlighted (link color + aria-current) so the user can see which page they're on.
   currentSlug: string;
+  // Import pages list Overview + the five import sections; export pages list the three export pages.
+  direction?: ChapterReportDirection;
 }
 
 // Section nav rendered between the chapter tools bar and the article body. Always lists every page
@@ -14,11 +23,14 @@ interface ChapterRelatedSectionsProps {
 // Card labels intentionally omit the chapter title because the HTS chapter titles ("Dairy produce;
 // birds eggs; natural honey; edible products of animal origin, not elsewhere specified or included")
 // are long enough to drown out the per-section labels.
-export default function ChapterRelatedSections({ chapter, currentSlug }: ChapterRelatedSectionsProps): JSX.Element {
-  const items: Array<{ slug: string; href: string; label: string }> = [
-    { slug: 'overview', href: chapterCoverHref(chapter.slug), label: 'Overview' },
-    ...CHAPTER_REPORT_SECTIONS.map((section) => ({ slug: section.slug, href: chapterSectionHref(chapter.slug, section.slug), label: section.label })),
-  ];
+export default function ChapterRelatedSections({ chapter, currentSlug, direction = 'import' }: ChapterRelatedSectionsProps): JSX.Element {
+  const items: Array<{ slug: string; href: string; label: string }> =
+    direction === 'export'
+      ? CHAPTER_EXPORT_SECTIONS.map((section) => ({ slug: section.slug, href: chapterSectionHref(chapter.slug, section.slug), label: section.label }))
+      : [
+          { slug: 'overview', href: chapterCoverHref(chapter.slug), label: 'Overview' },
+          ...CHAPTER_REPORT_SECTIONS.map((section) => ({ slug: section.slug, href: chapterSectionHref(chapter.slug, section.slug), label: section.label })),
+        ];
 
   return (
     <nav aria-label="Chapter report sections" className="mb-6">
