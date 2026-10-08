@@ -111,7 +111,7 @@ export default function ChapterTariffEngineeringApproach2({ content, engineering
           <Stack gap="xs">
             <SectionHeading as="h2">Documents and rules by product group</SectionHeading>
             <Text size="sm" tone="muted">
-              Who clears the animals at the border, and the regulation that says what they need.
+              Who clears the goods at the border, and the regulation that says what they need.
             </Text>
           </Stack>
           <Stack gap="md">

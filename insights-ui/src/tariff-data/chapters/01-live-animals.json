@@ -4375,46 +4375,48 @@
       {
         "year": 2020,
         "totalUsd": 2960871121,
-        "canadaUsd": 1296320821,
-        "mexicoUsd": 938547137,
+        "partnerAUsd": 1296320821,
+        "partnerBUsd": 938547137,
         "restUsd": 726003163
       },
       {
         "year": 2021,
         "totalUsd": 3353883591,
-        "canadaUsd": 1624005321,
-        "mexicoUsd": 767059529,
+        "partnerAUsd": 1624005321,
+        "partnerBUsd": 767059529,
         "restUsd": 962818741
       },
       {
         "year": 2022,
         "totalUsd": 3686855821,
-        "canadaUsd": 1908714145,
-        "mexicoUsd": 649131375,
+        "partnerAUsd": 1908714145,
+        "partnerBUsd": 649131375,
         "restUsd": 1129010301
       },
       {
         "year": 2023,
         "totalUsd": 4056240843,
-        "canadaUsd": 1978446851,
-        "mexicoUsd": 1132086678,
+        "partnerAUsd": 1978446851,
+        "partnerBUsd": 1132086678,
         "restUsd": 945707314
       },
       {
         "year": 2024,
         "totalUsd": 4804903061,
-        "canadaUsd": 2439571827,
-        "mexicoUsd": 1313128294,
+        "partnerAUsd": 2439571827,
+        "partnerBUsd": 1313128294,
         "restUsd": 1052202940
       },
       {
         "year": 2025,
         "totalUsd": 3705579305,
-        "canadaUsd": 2602583632,
-        "mexicoUsd": 328587622,
+        "partnerAUsd": 2602583632,
+        "partnerBUsd": 328587622,
         "restUsd": 774408051
       }
     ],
+    "byYearPartners": ["Canada", "Mexico"],
+    "byYearCaption": "U.S. imports of Chapter 01 goods each year, split into the two USMCA partners and everyone else.",
     "byCountry": [
       {
         "countryCode": 124,

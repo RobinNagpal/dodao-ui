@@ -34,6 +34,7 @@ function formatDate(iso: string): string {
 export default function ChapterIndustryAreasApproach2({ content, areas }: ChapterIndustryAreasApproach2Props): React.JSX.Element {
   const { chapter } = content;
   const groupLabel = new Map(areas.groups.map((g) => [g.heading, g.label]));
+  const hasUsmca = areas.countries.some((c) => c.rule.kind === 'usmca');
 
   return (
     <Stack gap="2xl">
@@ -63,7 +64,7 @@ export default function ChapterIndustryAreasApproach2({ content, areas }: Chapte
           <Stack gap="xs">
             <SectionHeading as="h2">Where the trade actually is</SectionHeading>
             <Text size="sm" tone="muted">
-              The largest country × product lanes in {areas.tradeYear}, with the rate that applies (USMCA claimed). Full statistics are on{' '}
+              The largest country × product lanes in {areas.tradeYear}, with the rate that applies{hasUsmca ? ' (USMCA claimed)' : ''}. Full statistics are on{' '}
               <TextLink href={chapterSectionHref(chapter.slug, 'understand-industry')}>Understand industry</TextLink>.
             </Text>
           </Stack>

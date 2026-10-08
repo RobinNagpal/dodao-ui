@@ -10,6 +10,7 @@
 // `TariffChapterPrototype` shape and the renderers don't move.
 
 import liveAnimals from '@/tariff-data/chapters/01-live-animals.json';
+import pharmaceuticalProducts from '@/tariff-data/chapters/30-pharmaceutical-products.json';
 import type { TariffChapterPrototype } from '@/types/tariff-chapter-prototype';
 import type { ChapterRouteInfo } from '@/utils/tariff-reports/chapter-route-helpers';
 import type { Metadata } from 'next';
@@ -18,6 +19,7 @@ import type { Metadata } from 'next';
 // runtime — including the edge/serverless build where there is no filesystem.
 const PROTOTYPES_BY_SLUG: Record<string, TariffChapterPrototype> = {
   '1-live-animals': liveAnimals as TariffChapterPrototype,
+  '30-pharmaceutical-products': pharmaceuticalProducts as TariffChapterPrototype,
 };
 
 export function getChapterPrototype(chapterSlug: string): TariffChapterPrototype | null {

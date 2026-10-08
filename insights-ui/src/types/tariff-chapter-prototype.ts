@@ -214,11 +214,12 @@ export interface TariffUpdatesContent {
  * Comtrade; `dutyPaidUsd` fields are null until filled from production's
  * `tariff_trade_analytics`.
  */
+/** One year of imports, split into the two partners named in `byYearPartners` and everyone else. */
 export interface TariffImportsByYear {
   year: number;
   totalUsd: number;
-  canadaUsd: number;
-  mexicoUsd: number;
+  partnerAUsd: number;
+  partnerBUsd: number;
   restUsd: number;
 }
 
@@ -265,6 +266,10 @@ export interface TariffUnderstandIndustryContent {
   lastCheckedAt: string;
   stats: TariffStat[];
   byYear: TariffImportsByYear[];
+  /** Names of the two partners (exactly two) broken out in `byYear` (e.g. the USMCA partners, or the top two suppliers). */
+  byYearPartners: string[];
+  /** Caption under the "Imports over time" heading. */
+  byYearCaption: string;
   byCountry: TariffImportsByCountry[];
   othersImportsUsd: number;
   othersPriorImportsUsd: number;

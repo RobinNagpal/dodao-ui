@@ -32,7 +32,13 @@ function linesLabel(lines: string[]): string {
 
 export default function CountryRateMatrix({ areas }: CountryRateMatrixProps): React.JSX.Element {
   const [usmcaClaimed, setUsmcaClaimed] = useState(true);
-  const [selected, setSelected] = useState<{ country: string; heading: string }>({ country: 'Canada', heading: '0102' });
+  // Open on the chapter's biggest lane, so the first breakdown shown is the one most readers need.
+  const firstLane = areas.biggestLanes[0];
+  const [selected, setSelected] = useState<{ country: string; heading: string }>({
+    country: firstLane?.country ?? areas.countries[0]?.country ?? '',
+    heading: firstLane?.heading ?? areas.groups[0]?.heading ?? '',
+  });
+  const hasUsmca = areas.countries.some((c) => c.rule.kind === 'usmca');
   const sources = useMemo(() => new Map<string, TariffUpdateSource>(areas.sources.map((s) => [s.id, s])), [areas.sources]);
 
   const mode = usmcaClaimed ? 'withUsmca' : 'withoutUsmca';
@@ -43,12 +49,14 @@ export default function CountryRateMatrix({ areas }: CountryRateMatrixProps): Re
 
   return (
     <Stack gap="lg">
-      <Stack direction="row" gap="sm" align="center" wrap>
-        <ToggleChip label="Canada & Mexico claiming USMCA" active={usmcaClaimed} onToggle={() => setUsmcaClaimed(!usmcaClaimed)} />
-        <Text as="span" size="xs" tone="muted">
-          Turn off to see the rate for animals that don&apos;t qualify for USMCA.
-        </Text>
-      </Stack>
+      {hasUsmca && (
+        <Stack direction="row" gap="sm" align="center" wrap>
+          <ToggleChip label="Canada & Mexico claiming USMCA" active={usmcaClaimed} onToggle={() => setUsmcaClaimed(!usmcaClaimed)} />
+          <Text as="span" size="xs" tone="muted">
+            Turn off to see the rate for goods that don&apos;t qualify for USMCA.
+          </Text>
+        </Stack>
+      )}
 
       <TableScroll>
         <DataTable>
@@ -121,7 +129,7 @@ export default function CountryRateMatrix({ areas }: CountryRateMatrixProps): Re
                 </TableHead>
                 <tbody>
                   {rates.breakdown.map((row) => (
-                    <TableRow key={row.base}>
+                    <TableRow key={`${row.base}-${row.lines[0]}`}>
                       <TableCell variant="code">
                         {linesLabel(row.lines)} ({row.lineCount} {row.lineCount === 1 ? 'line' : 'lines'})
                       </TableCell>
