@@ -1,0 +1,435 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 30,
+    "padded": "30",
+    "slug": "30-pharmaceutical-products",
+    "title": "Pharmaceutical Products"
+  },
+  "page": {
+    "slug": "exports",
+    "path": "/industry-tariff-report/chapters/30-pharmaceutical-products/exports",
+    "h1": "HTS Chapter 30: Pharmaceutical Products — U.S. Exports & Foreign Tariffs",
+    "seo": {
+      "title": "U.S. Pharmaceutical Exports & Foreign Tariffs on U.S. Medicines (HTS Ch. 30) | KoalaGains",
+      "shortDescription": "U.S. pharmaceutical exports were $97.82B in 2025. Where they go, what each country charges on U.S. medicines, and which tariffs changed since January 2025.",
+      "keywords": [
+        "US pharmaceutical exports",
+        "tariffs on US medicines",
+        "China tariff on US pharmaceuticals",
+        "US drug exports by country",
+        "HS 30 exports",
+        "US vaccine exports"
+      ]
+    },
+    "lastCheckedAt": "2026-10-08"
+  },
+  "nav": [
+    {
+      "slug": "exports",
+      "label": "Export overview",
+      "path": "/industry-tariff-report/chapters/30-pharmaceutical-products/exports"
+    },
+    {
+      "slug": "exports/tariff-updates",
+      "label": "Export tariff updates",
+      "path": "/industry-tariff-report/chapters/30-pharmaceutical-products/exports/tariff-updates"
+    },
+    {
+      "slug": "exports/markets",
+      "label": "Export markets",
+      "path": "/industry-tariff-report/chapters/30-pharmaceutical-products/exports/markets"
+    }
+  ],
+  "intro": "The U.S. exported **$97.82B** of pharmaceuticals in 2025, up 3.6% on 2024 — less than half of the $213.82B it imported, but still one of its largest export chapters. Most of it is biologics: vaccines, antibodies and blood products (heading 3002) were **59%** of the total.\n\nFor a U.S. exporter, tariffs are rarely the obstacle. The EU, Japan, Canada, the UK and Switzerland — which together take most U.S. medicines — charge **0%** under the WTO zero-for-zero pharmaceutical agreement or a free-trade agreement. The exceptions are **China**, which adds an extra 10% on all U.S. goods on top of its 0–3% normal rate, and **Brazil**, whose normal rates reach 14%. What decides access is the destination's drug approval, covered on the Export markets page.",
+  "latestYear": 2025,
+  "priorYear": 2024,
+  "valueBasis": "FOB value of U.S. exports, as reported by the United States to UN Comtrade.",
+  "stats": [
+    {
+      "label": "2025 U.S. exports",
+      "value": "$97.82B"
+    },
+    {
+      "label": "Change vs 2024",
+      "value": "+3.6%"
+    },
+    {
+      "label": "Biologics share (3002)",
+      "value": "59%"
+    },
+    {
+      "label": "Top buyers charging 0%",
+      "value": "10 of 12"
+    },
+    {
+      "label": "Buyers that raised tariffs",
+      "value": "1 (China)"
+    }
+  ],
+  "byYear": [
+    {
+      "year": 2020,
+      "totalUsd": 53938940706,
+      "partnerAUsd": 5565312440,
+      "partnerBUsd": 5154396605,
+      "restUsd": 43219231661
+    },
+    {
+      "year": 2021,
+      "totalUsd": 77962125336,
+      "partnerAUsd": 5932656181,
+      "partnerBUsd": 5547260658,
+      "restUsd": 66482208497
+    },
+    {
+      "year": 2022,
+      "totalUsd": 83492754665,
+      "partnerAUsd": 6546131536,
+      "partnerBUsd": 8073328793,
+      "restUsd": 68873294336
+    },
+    {
+      "year": 2023,
+      "totalUsd": 90308212767,
+      "partnerAUsd": 6553882807,
+      "partnerBUsd": 8601736230,
+      "restUsd": 75152593730
+    },
+    {
+      "year": 2024,
+      "totalUsd": 94386913659,
+      "partnerAUsd": 7674910116,
+      "partnerBUsd": 8706469887,
+      "restUsd": 78005533656
+    },
+    {
+      "year": 2025,
+      "totalUsd": 97824774180,
+      "partnerAUsd": 10207541367,
+      "partnerBUsd": 9628609746,
+      "restUsd": 77988623067
+    }
+  ],
+  "byYearPartners": ["Germany", "Netherlands"],
+  "byYearCaption": "U.S. exports of Chapter 30 goods each year, split into the two largest 2025 buyers (Germany and Netherlands) and everyone else.",
+  "topMarkets": [
+    {
+      "countryCode": 276,
+      "country": "Germany",
+      "exportsUsd": 10207541367,
+      "priorExportsUsd": 7674910116,
+      "sharePct": 10.4,
+      "changePct": 33.0,
+      "mainProducts": "Vaccines, antibodies & blood products (3002) · packaged medicines (3004)",
+      "tariffNow": "Free (EU zero-for-zero)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 528,
+      "country": "Netherlands",
+      "exportsUsd": 9628609746,
+      "priorExportsUsd": 8706469887,
+      "sharePct": 9.8,
+      "changePct": 10.6,
+      "mainProducts": "Vaccines, antibodies & blood products (3002) · packaged medicines (3004)",
+      "tariffNow": "Free (EU zero-for-zero)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 156,
+      "country": "China",
+      "exportsUsd": 9100009871,
+      "priorExportsUsd": 9495088888,
+      "sharePct": 9.3,
+      "changePct": -4.2,
+      "mainProducts": "Vaccines, antibodies & blood products (3002) · packaged medicines (3004)",
+      "tariffNow": "Same + 10% extra on all U.S. goods",
+      "status": "raised"
+    },
+    {
+      "countryCode": 392,
+      "country": "Japan",
+      "exportsUsd": 7116750187,
+      "priorExportsUsd": 8411860252,
+      "sharePct": 7.3,
+      "changePct": -15.4,
+      "mainProducts": "Vaccines, antibodies & blood products (3002) · packaged medicines (3004)",
+      "tariffNow": "Free (medicines)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 124,
+      "country": "Canada",
+      "exportsUsd": 6979136136,
+      "priorExportsUsd": 6800062881,
+      "sharePct": 7.1,
+      "changePct": 2.6,
+      "mainProducts": "Packaged medicines (3004) · vaccines, antibodies & blood products (3002)",
+      "tariffNow": "Free (CUSMA)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 56,
+      "country": "Belgium",
+      "exportsUsd": 6732307393,
+      "priorExportsUsd": 4643932869,
+      "sharePct": 6.9,
+      "changePct": 45.0,
+      "mainProducts": "Vaccines, antibodies & blood products (3002) · packaged medicines (3004)",
+      "tariffNow": "Free (EU zero-for-zero)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 724,
+      "country": "Spain",
+      "exportsUsd": 5597342112,
+      "priorExportsUsd": 5150158302,
+      "sharePct": 5.7,
+      "changePct": 8.7,
+      "mainProducts": "Packaged medicines (3004) · vaccines, antibodies & blood products (3002)",
+      "tariffNow": "Free (EU zero-for-zero)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 372,
+      "country": "Ireland",
+      "exportsUsd": 5401035804,
+      "priorExportsUsd": 4474588088,
+      "sharePct": 5.5,
+      "changePct": 20.7,
+      "mainProducts": "Vaccines, antibodies & blood products (3002) · packaged medicines (3004)",
+      "tariffNow": "Free (EU zero-for-zero)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 826,
+      "country": "United Kingdom",
+      "exportsUsd": 3595138689,
+      "priorExportsUsd": 5618686950,
+      "sharePct": 3.7,
+      "changePct": -36.0,
+      "mainProducts": "Packaged medicines (3004) · vaccines, antibodies & blood products (3002)",
+      "tariffNow": "Free",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 76,
+      "country": "Brazil",
+      "exportsUsd": 3485878505,
+      "priorExportsUsd": 2472709661,
+      "sharePct": 3.6,
+      "changePct": 41.0,
+      "mainProducts": "Packaged medicines (3004) · vaccines, antibodies & blood products (3002)",
+      "tariffNow": "MFN 0–14% (≈10% avg packaged medicines)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 757,
+      "country": "Switzerland",
+      "exportsUsd": 3232048426,
+      "priorExportsUsd": 3170569272,
+      "sharePct": 3.3,
+      "changePct": 1.9,
+      "mainProducts": "Vaccines, antibodies & blood products (3002) · packaged medicines (3004)",
+      "tariffNow": "Free",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 484,
+      "country": "Mexico",
+      "exportsUsd": 3168336151,
+      "priorExportsUsd": 3479634249,
+      "sharePct": 3.2,
+      "changePct": -8.9,
+      "mainProducts": "Packaged medicines (3004) · vaccines, antibodies & blood products (3002) · bandages & dressings (3005)",
+      "tariffNow": "Free (USMCA)",
+      "status": "unchanged"
+    }
+  ],
+  "othersExportsUsd": 23580639793,
+  "othersPriorExportsUsd": 24288242244,
+  "byHeading": [
+    {
+      "heading": "3001",
+      "label": "Glands, organs & heparin",
+      "exportsUsd": 663348038,
+      "priorExportsUsd": 763507046,
+      "changePct": -13.1,
+      "sharePct": 0.7
+    },
+    {
+      "heading": "3002",
+      "label": "Vaccines, antibodies & blood products",
+      "exportsUsd": 57297422484,
+      "priorExportsUsd": 54586966262,
+      "changePct": 5.0,
+      "sharePct": 58.6
+    },
+    {
+      "heading": "3003",
+      "label": "Medicines in bulk",
+      "exportsUsd": 1227312797,
+      "priorExportsUsd": 1357906934,
+      "changePct": -9.6,
+      "sharePct": 1.3
+    },
+    {
+      "heading": "3004",
+      "label": "Packaged medicines (doses / retail)",
+      "exportsUsd": 34583044439,
+      "priorExportsUsd": 33669352526,
+      "changePct": 2.7,
+      "sharePct": 35.4
+    },
+    {
+      "heading": "3005",
+      "label": "Bandages & dressings",
+      "exportsUsd": 1351421904,
+      "priorExportsUsd": 1291679183,
+      "changePct": 4.6,
+      "sharePct": 1.4
+    },
+    {
+      "heading": "3006",
+      "label": "Other pharmaceutical goods",
+      "exportsUsd": 2702224518,
+      "priorExportsUsd": 2717501708,
+      "changePct": -0.6,
+      "sharePct": 2.8
+    }
+  ],
+  "byLine": [
+    {
+      "hs6": "3004.90",
+      "heading": "3004",
+      "description": "Medicaments; consisting of mixed or unmixed products n.e.c. in heading no. 3004, for therapeutic or prophylactic uses, packaged for retail sale",
+      "exportsUsd": 28210083357,
+      "priorExportsUsd": 27700367901,
+      "changePct": 1.8,
+      "sharePct": 28.8
+    },
+    {
+      "hs6": "3002.15",
+      "heading": "3002",
+      "description": "Blood, human or animal, antisera, other blood fractions and immunological products; immunological products, put up in measured doses or in forms or packings for retail sale",
+      "exportsUsd": 24754911014,
+      "priorExportsUsd": 25444903034,
+      "changePct": -2.7,
+      "sharePct": 25.3
+    },
+    {
+      "hs6": "3002.12",
+      "heading": "3002",
+      "description": "Blood, human or animal, antisera, other blood fractions and immunological products; antisera and other blood fractions",
+      "exportsUsd": 11409529473,
+      "priorExportsUsd": 11944874567,
+      "changePct": -4.5,
+      "sharePct": 11.7
+    },
+    {
+      "hs6": "3002.14",
+      "heading": "3002",
+      "description": "Blood, human or animal, antisera, other blood fractions and immunological products; immunological products, mixed, put up in measured doses or in forms or packings for retail sale",
+      "exportsUsd": 10334732057,
+      "priorExportsUsd": 6453245149,
+      "changePct": 60.1,
+      "sharePct": 10.6
+    },
+    {
+      "hs6": "3002.41",
+      "heading": "3002",
+      "description": "Vaccines, toxins, cultures of micro-organisms (excluding yeasts) and similar products; for human medicine",
+      "exportsUsd": 5193552774,
+      "priorExportsUsd": 5556380325,
+      "changePct": -6.5,
+      "sharePct": 5.3
+    },
+    {
+      "hs6": "3004.39",
+      "heading": "3004",
+      "description": "Medicaments; containing hormones (but not insulin), adrenal cortex hormones or antibiotics, for therapeutic or prophylactic uses, packaged for retail sale",
+      "exportsUsd": 3792338450,
+      "priorExportsUsd": 3313356036,
+      "changePct": 14.5,
+      "sharePct": 3.9
+    },
+    {
+      "hs6": "3002.49",
+      "heading": "3002",
+      "description": "Toxins, cultures of micro-organisms (excluding yeasts) and similar products; n.e.c. in item 3002.3",
+      "exportsUsd": 1861761749,
+      "priorExportsUsd": 1536777252,
+      "changePct": 21.1,
+      "sharePct": 1.9
+    },
+    {
+      "hs6": "3006.10",
+      "heading": "3006",
+      "description": "Pharmaceutical goods; sterile surgical catgut, suture materials, tissue adhesives, laminaria, laminaria tents, absorbable surgical or dental haemostatics, and surgical or dental adhesion barriers",
+      "exportsUsd": 1386712378,
+      "priorExportsUsd": 1430921564,
+      "changePct": -3.1,
+      "sharePct": 1.4
+    },
+    {
+      "hs6": "3004.20",
+      "heading": "3004",
+      "description": "Medicaments; containing antibiotics (other than penicillins, streptomycins or their derivatives), for therapeutic or prophylactic uses, packaged for retail sale",
+      "exportsUsd": 1198325198,
+      "priorExportsUsd": 790336227,
+      "changePct": 51.6,
+      "sharePct": 1.2
+    },
+    {
+      "hs6": "3002.51",
+      "heading": "3002",
+      "description": "Cell cultures, whether or not modified; cell therapy products",
+      "exportsUsd": 1131179679,
+      "priorExportsUsd": 768715791,
+      "changePct": 47.2,
+      "sharePct": 1.2
+    }
+  ],
+  "keyTakeaways": [
+    "U.S. pharmaceutical exports reached $97.82B in 2025; biologics (3002) are the core of it.",
+    "The EU, Japan, Canada, the UK, Switzerland and Mexico (under USMCA) charge nothing on U.S. medicines, and none of them added a tariff since 2025.",
+    "China is the only large buyer charging more than in January 2025: an extra 10% on all U.S. goods, down from a 125% peak in April 2025.",
+    "Brazil charges up to 14% and has an open reciprocity case against U.S. tariffs, with nothing imposed yet."
+  ],
+  "classificationNote": "The first six digits of a Chapter 30 code are the same in every country (the Harmonized System). Beyond that each country uses its own schedule: the U.S. reports exports under **Schedule B**, and the duty is set by the **destination's** tariff schedule, not the U.S. one. So the HTS rates on the import pages of this report do not apply to exports.",
+  "sources": [
+    {
+      "id": "comtrade",
+      "publisher": "UN Comtrade",
+      "citation": "UN Comtrade",
+      "document": "Database",
+      "title": "United States exports, HS chapter 30, by partner and heading (2024, 2025)",
+      "signed": null,
+      "published": "2026-10-08",
+      "url": "https://comtradeplus.un.org/"
+    },
+    {
+      "id": "wits-mfn",
+      "publisher": "World Bank WITS / UNCTAD TRAINS",
+      "citation": "WITS TRAINS, MFN applied rates",
+      "document": "Database",
+      "title": "MFN applied tariff rates by HS subheading (China, Brazil, Japan, Canada, EU, UK, Switzerland, Mexico)",
+      "signed": null,
+      "published": "2026-10-08",
+      "url": "https://wits.worldbank.org/tariff/trains/en/country/CHN/partner/WLD/product/300215"
+    },
+    {
+      "id": "schedule-b",
+      "publisher": "U.S. Census Bureau",
+      "citation": "Schedule B",
+      "document": "Classification",
+      "title": "Schedule B — U.S. export classification",
+      "signed": null,
+      "published": "2026-01-01",
+      "url": "https://www.census.gov/foreign-trade/schedules/b/index.html"
+    }
+  ],
+  "coverageNote": "The 12 buyers listed take 76% of 2025 U.S. Chapter 30 exports. Values are FOB as reported by the U.S. to UN Comtrade; they can differ from what the destination country reports as imports."
+}

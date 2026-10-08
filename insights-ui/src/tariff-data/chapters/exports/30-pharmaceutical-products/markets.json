@@ -1,0 +1,919 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 30,
+    "padded": "30",
+    "slug": "30-pharmaceutical-products",
+    "title": "Pharmaceutical Products"
+  },
+  "page": {
+    "slug": "exports/markets",
+    "path": "/industry-tariff-report/chapters/30-pharmaceutical-products/exports/markets",
+    "h1": "HTS Chapter 30: Pharmaceutical Products — Export Markets & Foreign Tariff Rates",
+    "seo": {
+      "title": "Where U.S. Medicines Are Sold & the Tariff Each Country Charges (HTS Ch. 30) | KoalaGains",
+      "shortDescription": "The 12 largest buyers of U.S. pharmaceuticals, what each buys (vaccines, antibodies, packaged medicines), the tariff it charges by product group and the approval needed to sell there.",
+      "keywords": [
+        "US pharmaceutical export markets",
+        "tariff on US medicines by country",
+        "export medicines to EU from US",
+        "export drugs to China tariff",
+        "Brazil tariff on medicines",
+        "Health Canada DIN export"
+      ]
+    },
+    "lastCheckedAt": "2026-10-08"
+  },
+  "nav": [
+    {
+      "slug": "exports",
+      "label": "Export overview",
+      "path": "/industry-tariff-report/chapters/30-pharmaceutical-products/exports"
+    },
+    {
+      "slug": "exports/tariff-updates",
+      "label": "Export tariff updates",
+      "path": "/industry-tariff-report/chapters/30-pharmaceutical-products/exports/tariff-updates"
+    },
+    {
+      "slug": "exports/markets",
+      "label": "Export markets",
+      "path": "/industry-tariff-report/chapters/30-pharmaceutical-products/exports/markets"
+    }
+  ],
+  "intro": "Who buys U.S. pharmaceuticals, **what** they buy and **what they charge** on it. The matrix shows each destination's tariff on U.S.-origin goods for the six Chapter 30 product groups, next to the value the U.S. shipped there in 2025. Below it, a short profile of each market names the regulator whose approval decides whether the product can be sold at all — for medicines that, not the tariff, is usually the real gate.",
+  "tradeYear": 2025,
+  "tariffYear": 2023,
+  "valueBasis": "FOB value of U.S. exports, as reported by the United States to UN Comtrade.",
+  "groups": [
+    {
+      "heading": "3001",
+      "label": "Glands, organs & heparin",
+      "shortLabel": "Glands"
+    },
+    {
+      "heading": "3002",
+      "label": "Vaccines, antibodies & blood products",
+      "shortLabel": "Biologics"
+    },
+    {
+      "heading": "3003",
+      "label": "Medicines in bulk",
+      "shortLabel": "Bulk meds"
+    },
+    {
+      "heading": "3004",
+      "label": "Packaged medicines (doses / retail)",
+      "shortLabel": "Dosed meds"
+    },
+    {
+      "heading": "3005",
+      "label": "Bandages & dressings",
+      "shortLabel": "Dressings"
+    },
+    {
+      "heading": "3006",
+      "label": "Other pharmaceutical goods",
+      "shortLabel": "Other pharma"
+    }
+  ],
+  "countries": [
+    {
+      "countryCode": 276,
+      "country": "Germany",
+      "tariffArea": "EU",
+      "rule": "EU common external tariff (WTO pharmaceutical zero-for-zero)",
+      "exportsUsd": 10207541367,
+      "priorExportsUsd": 7674910116,
+      "sharePct": 10.4,
+      "changePct": 33.0,
+      "status": "unchanged",
+      "cells": {
+        "3001": {
+          "exportsUsd": 14453247,
+          "rate": "Free",
+          "basis": "MFN on 3001.20 (2023)"
+        },
+        "3002": {
+          "exportsUsd": 6165164728,
+          "rate": "Free",
+          "basis": "MFN on 3002.15 (2023)"
+        },
+        "3003": {
+          "exportsUsd": 311538498,
+          "rate": "Free",
+          "basis": "MFN on 3003.90 (2023)"
+        },
+        "3004": {
+          "exportsUsd": 3459080081,
+          "rate": "Free",
+          "basis": "MFN on 3004.90 (2023)"
+        },
+        "3005": {
+          "exportsUsd": 87028838,
+          "rate": "Free",
+          "basis": "MFN on 3005.90 (2023)"
+        },
+        "3006": {
+          "exportsUsd": 170275975,
+          "rate": "Free",
+          "basis": "MFN on 3006.91 (2023)"
+        }
+      },
+      "profile": {
+        "headline": "U.S. medicines enter Germany duty-free, as everywhere in the EU, and no EU measure since 2025 has changed that. The 33% jump in 2025 sales is supply-chain driven, not tariff driven.",
+        "mainProducts": "Vaccines, antibodies & blood products (3002) · packaged medicines (3004)",
+        "tariffNow": "Free (EU zero-for-zero)",
+        "regulator": {
+          "name": "European Medicines Agency (EMA) or the national agency",
+          "url": "https://www.ema.europa.eu/en/human-regulatory-overview/marketing-authorisation",
+          "requirement": "An EU marketing authorisation (centralised via EMA for biologics), an EU-based authorisation holder and an EU importer with a manufacturing/import authorisation; a Qualified Person certifies each batch."
+        }
+      }
+    },
+    {
+      "countryCode": 528,
+      "country": "Netherlands",
+      "tariffArea": "EU",
+      "rule": "EU common external tariff (WTO pharmaceutical zero-for-zero)",
+      "exportsUsd": 9628609746,
+      "priorExportsUsd": 8706469887,
+      "sharePct": 9.8,
+      "changePct": 10.6,
+      "status": "unchanged",
+      "cells": {
+        "3001": {
+          "exportsUsd": 133107249,
+          "rate": "Free",
+          "basis": "MFN on 3001.20 (2023)"
+        },
+        "3002": {
+          "exportsUsd": 6821165239,
+          "rate": "Free",
+          "basis": "MFN on 3002.15 (2023)"
+        },
+        "3003": {
+          "exportsUsd": 161208030,
+          "rate": "Free",
+          "basis": "MFN on 3003.90 (2023)"
+        },
+        "3004": {
+          "exportsUsd": 2274586664,
+          "rate": "Free",
+          "basis": "MFN on 3004.90 (2023)"
+        },
+        "3005": {
+          "exportsUsd": 61252675,
+          "rate": "Free",
+          "basis": "MFN on 3005.90 (2023)"
+        },
+        "3006": {
+          "exportsUsd": 177289889,
+          "rate": "Free",
+          "basis": "MFN on 3006.91 (2023)"
+        }
+      },
+      "profile": {
+        "headline": "Duty-free. Much of what lands in the Netherlands is cleared there and then distributed across the EU, so this figure partly stands in for other EU buyers.",
+        "mainProducts": "Vaccines, antibodies & blood products (3002) · packaged medicines (3004)",
+        "tariffNow": "Free (EU zero-for-zero)",
+        "regulator": {
+          "name": "European Medicines Agency (EMA) or the national agency",
+          "url": "https://www.ema.europa.eu/en/human-regulatory-overview/marketing-authorisation",
+          "requirement": "An EU marketing authorisation (centralised via EMA for biologics), an EU-based authorisation holder and an EU importer with a manufacturing/import authorisation; a Qualified Person certifies each batch."
+        }
+      }
+    },
+    {
+      "countryCode": 156,
+      "country": "China",
+      "tariffArea": "China",
+      "rule": "MFN rate plus China's extra 10% on all U.S. goods",
+      "exportsUsd": 9100009871,
+      "priorExportsUsd": 9495088888,
+      "sharePct": 9.3,
+      "changePct": -4.2,
+      "status": "raised",
+      "cells": {
+        "3001": {
+          "exportsUsd": 39760135,
+          "rate": "3% + 10%",
+          "basis": "MFN on 3001.20 (2023)"
+        },
+        "3002": {
+          "exportsUsd": 6691464837,
+          "rate": "3% + 10%",
+          "basis": "MFN on 3002.15 (2023)"
+        },
+        "3003": {
+          "exportsUsd": 4916085,
+          "rate": "0% + 10%",
+          "basis": "MFN on 3003.90 (2023)"
+        },
+        "3004": {
+          "exportsUsd": 1798555182,
+          "rate": "0.5% avg (0–4%) + 10%",
+          "basis": "MFN on 3004.90 (2023)"
+        },
+        "3005": {
+          "exportsUsd": 90954974,
+          "rate": "5% + 10%",
+          "basis": "MFN on 3005.90 (2023)"
+        },
+        "3006": {
+          "exportsUsd": 474358658,
+          "rate": "10% + 10%",
+          "basis": "MFN on 3006.91 (2023)"
+        }
+      },
+      "profile": {
+        "headline": "China is the only big buyer charging U.S. medicines more than in January 2025: an extra 10% on top of its 0–3% normal rate. It peaked at 125% in April 2025, when some U.S. drugs reportedly got quiet exemptions; sales dipped only 4%.",
+        "mainProducts": "Vaccines, antibodies & blood products (3002) · packaged medicines (3004)",
+        "tariffNow": "Same + 10% extra on all U.S. goods",
+        "regulator": {
+          "name": "National Medical Products Administration (NMPA)",
+          "url": "https://english.nmpa.gov.cn/",
+          "requirement": "An imported-drug registration with NMPA and port inspection on arrival."
+        }
+      }
+    },
+    {
+      "countryCode": 392,
+      "country": "Japan",
+      "tariffArea": "Japan",
+      "rule": "MFN (WTO pharmaceutical zero-for-zero)",
+      "exportsUsd": 7116750187,
+      "priorExportsUsd": 8411860252,
+      "sharePct": 7.3,
+      "changePct": -15.4,
+      "status": "unchanged",
+      "cells": {
+        "3001": {
+          "exportsUsd": 10592230,
+          "rate": "Free",
+          "basis": "MFN on 3001.20 (2023)"
+        },
+        "3002": {
+          "exportsUsd": 3945209218,
+          "rate": "Free",
+          "basis": "MFN on 3002.15 (2023)"
+        },
+        "3003": {
+          "exportsUsd": 16740553,
+          "rate": "Free",
+          "basis": "MFN on 3003.90 (2023)"
+        },
+        "3004": {
+          "exportsUsd": 2866452292,
+          "rate": "Free",
+          "basis": "MFN on 3004.90 (2023)"
+        },
+        "3005": {
+          "exportsUsd": 30934153,
+          "rate": "Free",
+          "basis": "MFN on 3005.90 (2023)"
+        },
+        "3006": {
+          "exportsUsd": 246821741,
+          "rate": "3.9%",
+          "basis": "MFN on 3006.91 (2023)"
+        }
+      },
+      "profile": {
+        "headline": "Japan charges nothing on U.S. medicines and did not retaliate. Only a few minor 3006 lines (e.g. lubricating gels, ostomy appliances) carry 2–4%. The 15% drop in 2025 sales is not tariff driven.",
+        "mainProducts": "Vaccines, antibodies & blood products (3002) · packaged medicines (3004)",
+        "tariffNow": "Free (medicines)",
+        "regulator": {
+          "name": "Ministry of Health, Labour and Welfare / PMDA",
+          "url": "https://www.pmda.go.jp/english/",
+          "requirement": "A Japanese marketing approval held by a Japan-based marketing authorisation holder."
+        }
+      }
+    },
+    {
+      "countryCode": 124,
+      "country": "Canada",
+      "tariffArea": "Canada",
+      "rule": "Free under USMCA (CUSMA)",
+      "exportsUsd": 6979136136,
+      "priorExportsUsd": 6800062881,
+      "sharePct": 7.1,
+      "changePct": 2.6,
+      "status": "unchanged",
+      "cells": {
+        "3001": {
+          "exportsUsd": 53116714,
+          "rate": "Free (USMCA)",
+          "basis": "MFN on 3001.20 (2023)"
+        },
+        "3002": {
+          "exportsUsd": 2242903324,
+          "rate": "Free (USMCA)",
+          "basis": "MFN on 3002.15 (2023)"
+        },
+        "3003": {
+          "exportsUsd": 56612590,
+          "rate": "Free (USMCA)",
+          "basis": "MFN on 3003.90 (2023)"
+        },
+        "3004": {
+          "exportsUsd": 4231534853,
+          "rate": "Free (USMCA)",
+          "basis": "MFN on 3004.90 (2023)"
+        },
+        "3005": {
+          "exportsUsd": 176183789,
+          "rate": "Free (USMCA)",
+          "basis": "MFN on 3005.90 (2023)"
+        },
+        "3006": {
+          "exportsUsd": 218784866,
+          "rate": "Free (USMCA)",
+          "basis": "MFN on 3006.91 (2023)"
+        }
+      },
+      "profile": {
+        "headline": "U.S. medicines enter Canada duty-free, and neither the 2025 nor the 2026 Canadian counter-tariff list included a single Chapter 30 line.",
+        "mainProducts": "Packaged medicines (3004) · vaccines, antibodies & blood products (3002)",
+        "tariffNow": "Free (CUSMA)",
+        "regulator": {
+          "name": "Health Canada",
+          "url": "https://www.canada.ca/en/health-canada/services/drugs-health-products.html",
+          "requirement": "A Drug Identification Number (DIN) and an importer holding a Drug Establishment Licence."
+        }
+      }
+    },
+    {
+      "countryCode": 56,
+      "country": "Belgium",
+      "tariffArea": "EU",
+      "rule": "EU common external tariff (WTO pharmaceutical zero-for-zero)",
+      "exportsUsd": 6732307393,
+      "priorExportsUsd": 4643932869,
+      "sharePct": 6.9,
+      "changePct": 45.0,
+      "status": "unchanged",
+      "cells": {
+        "3001": {
+          "exportsUsd": 6449956,
+          "rate": "Free",
+          "basis": "MFN on 3001.20 (2023)"
+        },
+        "3002": {
+          "exportsUsd": 4383110405,
+          "rate": "Free",
+          "basis": "MFN on 3002.15 (2023)"
+        },
+        "3003": {
+          "exportsUsd": 59868657,
+          "rate": "Free",
+          "basis": "MFN on 3003.90 (2023)"
+        },
+        "3004": {
+          "exportsUsd": 1918939917,
+          "rate": "Free",
+          "basis": "MFN on 3004.90 (2023)"
+        },
+        "3005": {
+          "exportsUsd": 90570626,
+          "rate": "Free",
+          "basis": "MFN on 3005.90 (2023)"
+        },
+        "3006": {
+          "exportsUsd": 273367832,
+          "rate": "Free",
+          "basis": "MFN on 3006.91 (2023)"
+        }
+      },
+      "profile": {
+        "headline": "Duty-free. Belgium is a European vaccine and biologics hub, and U.S. sales there rose 45% in 2025 with no tariff change.",
+        "mainProducts": "Vaccines, antibodies & blood products (3002) · packaged medicines (3004)",
+        "tariffNow": "Free (EU zero-for-zero)",
+        "regulator": {
+          "name": "European Medicines Agency (EMA) or the national agency",
+          "url": "https://www.ema.europa.eu/en/human-regulatory-overview/marketing-authorisation",
+          "requirement": "An EU marketing authorisation (centralised via EMA for biologics), an EU-based authorisation holder and an EU importer with a manufacturing/import authorisation; a Qualified Person certifies each batch."
+        }
+      }
+    },
+    {
+      "countryCode": 724,
+      "country": "Spain",
+      "tariffArea": "EU",
+      "rule": "EU common external tariff (WTO pharmaceutical zero-for-zero)",
+      "exportsUsd": 5597342112,
+      "priorExportsUsd": 5150158302,
+      "sharePct": 5.7,
+      "changePct": 8.7,
+      "status": "unchanged",
+      "cells": {
+        "3001": {
+          "exportsUsd": 24057076,
+          "rate": "Free",
+          "basis": "MFN on 3001.20 (2023)"
+        },
+        "3002": {
+          "exportsUsd": 1457564643,
+          "rate": "Free",
+          "basis": "MFN on 3002.15 (2023)"
+        },
+        "3003": {
+          "exportsUsd": 1113798,
+          "rate": "Free",
+          "basis": "MFN on 3003.90 (2023)"
+        },
+        "3004": {
+          "exportsUsd": 4102861385,
+          "rate": "Free",
+          "basis": "MFN on 3004.90 (2023)"
+        },
+        "3005": {
+          "exportsUsd": 4685496,
+          "rate": "Free",
+          "basis": "MFN on 3005.90 (2023)"
+        },
+        "3006": {
+          "exportsUsd": 7059714,
+          "rate": "Free",
+          "basis": "MFN on 3006.91 (2023)"
+        }
+      },
+      "profile": {
+        "headline": "Duty-free. Unlike most EU buyers, Spain mainly takes finished packaged medicines from the U.S.",
+        "mainProducts": "Packaged medicines (3004) · vaccines, antibodies & blood products (3002)",
+        "tariffNow": "Free (EU zero-for-zero)",
+        "regulator": {
+          "name": "European Medicines Agency (EMA) or the national agency",
+          "url": "https://www.ema.europa.eu/en/human-regulatory-overview/marketing-authorisation",
+          "requirement": "An EU marketing authorisation (centralised via EMA for biologics), an EU-based authorisation holder and an EU importer with a manufacturing/import authorisation; a Qualified Person certifies each batch."
+        }
+      }
+    },
+    {
+      "countryCode": 372,
+      "country": "Ireland",
+      "tariffArea": "EU",
+      "rule": "EU common external tariff (WTO pharmaceutical zero-for-zero)",
+      "exportsUsd": 5401035804,
+      "priorExportsUsd": 4474588088,
+      "sharePct": 5.5,
+      "changePct": 20.7,
+      "status": "unchanged",
+      "cells": {
+        "3001": {
+          "exportsUsd": 10518737,
+          "rate": "Free",
+          "basis": "MFN on 3001.20 (2023)"
+        },
+        "3002": {
+          "exportsUsd": 4157321051,
+          "rate": "Free",
+          "basis": "MFN on 3002.15 (2023)"
+        },
+        "3003": {
+          "exportsUsd": 357823922,
+          "rate": "Free",
+          "basis": "MFN on 3003.90 (2023)"
+        },
+        "3004": {
+          "exportsUsd": 756538449,
+          "rate": "Free",
+          "basis": "MFN on 3004.90 (2023)"
+        },
+        "3005": {
+          "exportsUsd": 31051342,
+          "rate": "Free",
+          "basis": "MFN on 3005.90 (2023)"
+        },
+        "3006": {
+          "exportsUsd": 87782303,
+          "rate": "Free",
+          "basis": "MFN on 3006.91 (2023)"
+        }
+      },
+      "profile": {
+        "headline": "Duty-free. Ireland is also the largest supplier of U.S. pharmaceutical imports ($42.6B), so much of this trade is drug substance and biologics moving between plants of the same companies.",
+        "mainProducts": "Vaccines, antibodies & blood products (3002) · packaged medicines (3004)",
+        "tariffNow": "Free (EU zero-for-zero)",
+        "regulator": {
+          "name": "European Medicines Agency (EMA) or the national agency",
+          "url": "https://www.ema.europa.eu/en/human-regulatory-overview/marketing-authorisation",
+          "requirement": "An EU marketing authorisation (centralised via EMA for biologics), an EU-based authorisation holder and an EU importer with a manufacturing/import authorisation; a Qualified Person certifies each batch."
+        }
+      }
+    },
+    {
+      "countryCode": 826,
+      "country": "United Kingdom",
+      "tariffArea": "United Kingdom",
+      "rule": "UK Global Tariff (MFN)",
+      "exportsUsd": 3595138689,
+      "priorExportsUsd": 5618686950,
+      "sharePct": 3.7,
+      "changePct": -36.0,
+      "status": "unchanged",
+      "cells": {
+        "3001": {
+          "exportsUsd": 32620865,
+          "rate": "Free",
+          "basis": "MFN on 3001.20 (2023)"
+        },
+        "3002": {
+          "exportsUsd": 1122267247,
+          "rate": "Free",
+          "basis": "MFN on 3002.15 (2023)"
+        },
+        "3003": {
+          "exportsUsd": 41736784,
+          "rate": "Free",
+          "basis": "MFN on 3003.90 (2023)"
+        },
+        "3004": {
+          "exportsUsd": 2323625064,
+          "rate": "Free",
+          "basis": "MFN on 3004.90 (2023)"
+        },
+        "3005": {
+          "exportsUsd": 25470019,
+          "rate": "Free",
+          "basis": "MFN on 3005.90 (2023)"
+        },
+        "3006": {
+          "exportsUsd": 49418710,
+          "rate": "Free",
+          "basis": "MFN on 3006.91 (2023)"
+        }
+      },
+      "profile": {
+        "headline": "The UK charges nothing on U.S. medicines. The December 2025 pharma deal changed what the NHS pays for new medicines, not UK tariffs; the 36% drop in 2025 sales came before it.",
+        "mainProducts": "Packaged medicines (3004) · vaccines, antibodies & blood products (3002)",
+        "tariffNow": "Free",
+        "regulator": {
+          "name": "Medicines and Healthcare products Regulatory Agency (MHRA)",
+          "url": "https://www.gov.uk/government/organisations/medicines-and-healthcare-products-regulatory-agency",
+          "requirement": "A UK marketing authorisation and a UK importer licence."
+        }
+      }
+    },
+    {
+      "countryCode": 76,
+      "country": "Brazil",
+      "tariffArea": "Brazil",
+      "rule": "Mercosur common external tariff (MFN); no U.S. preference",
+      "exportsUsd": 3485878505,
+      "priorExportsUsd": 2472709661,
+      "sharePct": 3.6,
+      "changePct": 41.0,
+      "status": "unchanged",
+      "cells": {
+        "3001": {
+          "exportsUsd": 285439,
+          "rate": "6%",
+          "basis": "MFN on 3001.20 (2023)"
+        },
+        "3002": {
+          "exportsUsd": 1461125937,
+          "rate": "0.7% avg (0–2%)",
+          "basis": "MFN on 3002.15 (2023)"
+        },
+        "3003": {
+          "exportsUsd": 9371349,
+          "rate": "10.5% avg (0–14%)",
+          "basis": "MFN on 3003.90 (2023)"
+        },
+        "3004": {
+          "exportsUsd": 1913728828,
+          "rate": "10.6% avg (0–14%)",
+          "basis": "MFN on 3004.90 (2023)"
+        },
+        "3005": {
+          "exportsUsd": 18495850,
+          "rate": "8.0% avg (2–12%)",
+          "basis": "MFN on 3005.90 (2023)"
+        },
+        "3006": {
+          "exportsUsd": 82871102,
+          "rate": "12.0% avg (6–18%)",
+          "basis": "MFN on 3006.91 (2023)"
+        }
+      },
+      "profile": {
+        "headline": "U.S. medicines pay Brazil’s normal Mercosur rates — near zero for most biologics, around 10% on many packaged drugs. Brazil has not retaliated, but its August 2026 reciprocity case could; suspending drug patents is one listed option.",
+        "mainProducts": "Packaged medicines (3004) · vaccines, antibodies & blood products (3002)",
+        "tariffNow": "MFN 0–14% (≈10% avg packaged medicines)",
+        "regulator": {
+          "name": "ANVISA",
+          "url": "https://www.gov.br/anvisa/pt-br",
+          "requirement": "Product registration with ANVISA, held by a Brazilian company."
+        }
+      }
+    },
+    {
+      "countryCode": 757,
+      "country": "Switzerland",
+      "tariffArea": "Switzerland",
+      "rule": "MFN (zero on all industrial goods since 2024)",
+      "exportsUsd": 3232048426,
+      "priorExportsUsd": 3170569272,
+      "sharePct": 3.3,
+      "changePct": 1.9,
+      "status": "unchanged",
+      "cells": {
+        "3001": {
+          "exportsUsd": 6996150,
+          "rate": "Free",
+          "basis": "MFN on 3001.20 (2023)"
+        },
+        "3002": {
+          "exportsUsd": 2617501727,
+          "rate": "Free",
+          "basis": "MFN on 3002.15 (2023)"
+        },
+        "3003": {
+          "exportsUsd": 1099093,
+          "rate": "Free",
+          "basis": "MFN on 3003.90 (2023)"
+        },
+        "3004": {
+          "exportsUsd": 573330442,
+          "rate": "Free",
+          "basis": "MFN on 3004.90 (2023)"
+        },
+        "3005": {
+          "exportsUsd": 1817080,
+          "rate": "Free",
+          "basis": "MFN on 3005.90 (2023)"
+        },
+        "3006": {
+          "exportsUsd": 31303934,
+          "rate": "Free",
+          "basis": "MFN on 3006.91 (2023)"
+        }
+      },
+      "profile": {
+        "headline": "Duty-free. Switzerland abolished tariffs on all industrial goods in January 2024, and the November 2025 framework only locked that in for U.S. goods.",
+        "mainProducts": "Vaccines, antibodies & blood products (3002) · packaged medicines (3004)",
+        "tariffNow": "Free",
+        "regulator": {
+          "name": "Swissmedic",
+          "url": "https://www.swissmedic.ch/",
+          "requirement": "A Swissmedic marketing authorisation held by a Swiss company."
+        }
+      }
+    },
+    {
+      "countryCode": 484,
+      "country": "Mexico",
+      "tariffArea": "Mexico",
+      "rule": "Free under USMCA",
+      "exportsUsd": 3168336151,
+      "priorExportsUsd": 3479634249,
+      "sharePct": 3.2,
+      "changePct": -8.9,
+      "status": "unchanged",
+      "cells": {
+        "3001": {
+          "exportsUsd": 11631111,
+          "rate": "Free (USMCA)",
+          "basis": "MFN on 3001.20 (2023): 1.0% avg (0–5%) without USMCA"
+        },
+        "3002": {
+          "exportsUsd": 1255335471,
+          "rate": "Free (USMCA)",
+          "basis": "MFN on 3002.15 (2023): 5.0% avg (0–10%) without USMCA"
+        },
+        "3003": {
+          "exportsUsd": 13254621,
+          "rate": "Free (USMCA)",
+          "basis": "MFN on 3003.90 (2023): 1.0% avg (0–10%) without USMCA"
+        },
+        "3004": {
+          "exportsUsd": 1349286663,
+          "rate": "Free (USMCA)",
+          "basis": "MFN on 3004.90 (2023): 1.5% avg (0–15%) without USMCA"
+        },
+        "3005": {
+          "exportsUsd": 416044552,
+          "rate": "Free (USMCA)",
+          "basis": "MFN on 3005.90 (2023): 16.7% avg (15–20%) without USMCA"
+        },
+        "3006": {
+          "exportsUsd": 122783733,
+          "rate": "Free (USMCA)",
+          "basis": "MFN on 3006.91 (2023)"
+        }
+      },
+      "profile": {
+        "headline": "No Mexican tariff change has touched U.S. medicines; they still enter free under USMCA. Without USMCA they would face Mexico’s MFN rates (about 5% on many biologics).",
+        "mainProducts": "Packaged medicines (3004) · vaccines, antibodies & blood products (3002) · bandages & dressings (3005)",
+        "tariffNow": "Free (USMCA)",
+        "regulator": {
+          "name": "COFEPRIS",
+          "url": "https://www.gob.mx/cofepris",
+          "requirement": "A COFEPRIS sanitary registration and import permit."
+        }
+      }
+    }
+  ],
+  "biggestLanes": [
+    {
+      "country": "Netherlands",
+      "heading": "3002",
+      "exportsUsd": 6821165239,
+      "rate": "Free"
+    },
+    {
+      "country": "China",
+      "heading": "3002",
+      "exportsUsd": 6691464837,
+      "rate": "3% + 10%"
+    },
+    {
+      "country": "Germany",
+      "heading": "3002",
+      "exportsUsd": 6165164728,
+      "rate": "Free"
+    },
+    {
+      "country": "Belgium",
+      "heading": "3002",
+      "exportsUsd": 4383110405,
+      "rate": "Free"
+    },
+    {
+      "country": "Canada",
+      "heading": "3004",
+      "exportsUsd": 4231534853,
+      "rate": "Free (USMCA)"
+    },
+    {
+      "country": "Ireland",
+      "heading": "3002",
+      "exportsUsd": 4157321051,
+      "rate": "Free"
+    },
+    {
+      "country": "Spain",
+      "heading": "3004",
+      "exportsUsd": 4102861385,
+      "rate": "Free"
+    },
+    {
+      "country": "Japan",
+      "heading": "3002",
+      "exportsUsd": 3945209218,
+      "rate": "Free"
+    }
+  ],
+  "why": "The U.S. imported $213.8B of pharmaceuticals in 2025 and exported $97.8B. Both numbers are large because the same multinational drugmakers sit on both sides of the trade, moving product between their own plants:\n\n- **Biologics go both ways.** Vaccines, antibodies and blood products (heading 3002) were 58.6% of U.S. exports ($57.3B) and about half of imports ($109.6B). A company may make an antibody in Ireland or Germany for the U.S. market while shipping a different vaccine or plasma product from U.S. plants to Europe and Asia.\n- **Drug substance and finished packs cross separately.** Bulk drug substance is often made in one country and filled, finished or packaged in another, sometimes by a contract manufacturer — so the same product can be counted as an export and later as an import.\n- **Distribution hubs inflate some buyers.** The Netherlands and Belgium clear goods for the whole EU, and Ireland, Switzerland and Germany are big suppliers *and* big buyers, reflecting where companies have put plants and intellectual property.\n\nTariffs barely touch this trade. Under the WTO zero-for-zero pharmaceutical agreement, the EU, Japan, Canada, Switzerland and the UK charge nothing on most medicines. The exposure sits with buyers outside it: China (now an extra 10% on top of 0–3%), Brazil (up to 14%) and Mexico, where U.S. drugs are free only while USMCA lasts.",
+  "assumptions": [
+    "Rates are each destination's MFN applied rate on one representative HS subheading per group (shown under each cell), from the WITS/TRAINS 2023 schedules — the latest year available for all of them. National 8–10-digit lines can differ.",
+    "EU members share one tariff, so Germany, the Netherlands, Belgium, Spain and Ireland show the same rates.",
+    "Canada and Mexico apply USMCA rates (Free) to qualifying U.S. goods; the MFN rate they would charge otherwise is noted under the cell.",
+    "China's extra 10% applies to all U.S.-origin goods on top of its MFN rate. A further 24 points are suspended until Jan 10, 2027.",
+    "Regulatory requirements are summarised for orientation only; check the regulator's current rules for the specific product."
+  ],
+  "sources": [
+    {
+      "id": "comtrade",
+      "publisher": "UN Comtrade",
+      "citation": "UN Comtrade",
+      "document": "Database",
+      "title": "United States exports, HS chapter 30, by partner and heading (2024, 2025)",
+      "signed": null,
+      "published": "2026-10-08",
+      "url": "https://comtradeplus.un.org/"
+    },
+    {
+      "id": "wits-mfn",
+      "publisher": "World Bank WITS / UNCTAD TRAINS",
+      "citation": "WITS TRAINS, MFN applied rates",
+      "document": "Database",
+      "title": "MFN applied tariff rates by HS subheading (China, Brazil, Japan, Canada, EU, UK, Switzerland, Mexico)",
+      "signed": null,
+      "published": "2026-10-08",
+      "url": "https://wits.worldbank.org/tariff/trains/en/country/CHN/partner/WLD/product/300215"
+    },
+    {
+      "id": "jp-tariff",
+      "publisher": "Japan Customs",
+      "citation": "Japan Tariff Schedule 2026, ch. 30",
+      "document": "Tariff schedule",
+      "title": "Customs Tariff Schedules of Japan, Chapter 30 — Pharmaceutical products (April 1, 2026)",
+      "signed": null,
+      "published": "2026-04-01",
+      "url": "https://www.customs.go.jp/english/tariff/2026_04_01/data/e_30.htm"
+    },
+    {
+      "id": "ca-cbsa-ch30",
+      "publisher": "CBSA",
+      "citation": "Customs Tariff 2025, ch. 30",
+      "document": "Tariff schedule",
+      "title": "Canadian Customs Tariff, Chapter 30 — Pharmaceutical products",
+      "signed": null,
+      "published": "2025-01-01",
+      "url": "https://www.cbsa-asfc.gc.ca/trade-commerce/tariff-tarif/2025/html/00/ch30-eng.html"
+    },
+    {
+      "id": "uk-tariff",
+      "publisher": "HM Government",
+      "citation": "UK Trade Tariff, heading 3004",
+      "document": "Tariff schedule",
+      "title": "UK Global Tariff — heading 3004, medicaments in measured doses",
+      "signed": null,
+      "published": "2026-10-08",
+      "url": "https://www.trade-tariff.service.gov.uk/headings/3004"
+    },
+    {
+      "id": "cn-sctc-125",
+      "publisher": "USDA FAS",
+      "citation": "GAIN report, Apr 2025",
+      "document": "GAIN report",
+      "title": "China: SCTC 2025 Announcement No. 6 increases retaliatory tariffs to 125 percent on all goods",
+      "signed": null,
+      "published": "2025-04-14",
+      "url": "https://www.fas.usda.gov/data/china-sctc-2025-announcement-number-6-increases-retaliatory-tariffs-125-percent-all-goods"
+    },
+    {
+      "id": "reg-eu",
+      "publisher": "European Medicines Agency (EMA) or the national agency",
+      "citation": "European Medicines Agency (EMA) or the national agency",
+      "document": "Regulator",
+      "title": "EU: medicine approval and import requirements",
+      "signed": null,
+      "published": "2026-10-08",
+      "url": "https://www.ema.europa.eu/en/human-regulatory-overview/marketing-authorisation"
+    },
+    {
+      "id": "reg-china",
+      "publisher": "National Medical Products Administration (NMPA)",
+      "citation": "National Medical Products Administration (NMPA)",
+      "document": "Regulator",
+      "title": "China: medicine approval and import requirements",
+      "signed": null,
+      "published": "2026-10-08",
+      "url": "https://english.nmpa.gov.cn/"
+    },
+    {
+      "id": "reg-japan",
+      "publisher": "Ministry of Health, Labour and Welfare / PMDA",
+      "citation": "Ministry of Health, Labour and Welfare / PMDA",
+      "document": "Regulator",
+      "title": "Japan: medicine approval and import requirements",
+      "signed": null,
+      "published": "2026-10-08",
+      "url": "https://www.pmda.go.jp/english/"
+    },
+    {
+      "id": "reg-canada",
+      "publisher": "Health Canada",
+      "citation": "Health Canada",
+      "document": "Regulator",
+      "title": "Canada: medicine approval and import requirements",
+      "signed": null,
+      "published": "2026-10-08",
+      "url": "https://www.canada.ca/en/health-canada/services/drugs-health-products.html"
+    },
+    {
+      "id": "reg-united-kingdom",
+      "publisher": "Medicines and Healthcare products Regulatory Agency (MHRA)",
+      "citation": "Medicines and Healthcare products Regulatory Agency (MHRA)",
+      "document": "Regulator",
+      "title": "United Kingdom: medicine approval and import requirements",
+      "signed": null,
+      "published": "2026-10-08",
+      "url": "https://www.gov.uk/government/organisations/medicines-and-healthcare-products-regulatory-agency"
+    },
+    {
+      "id": "reg-brazil",
+      "publisher": "ANVISA",
+      "citation": "ANVISA",
+      "document": "Regulator",
+      "title": "Brazil: medicine approval and import requirements",
+      "signed": null,
+      "published": "2026-10-08",
+      "url": "https://www.gov.br/anvisa/pt-br"
+    },
+    {
+      "id": "reg-switzerland",
+      "publisher": "Swissmedic",
+      "citation": "Swissmedic",
+      "document": "Regulator",
+      "title": "Switzerland: medicine approval and import requirements",
+      "signed": null,
+      "published": "2026-10-08",
+      "url": "https://www.swissmedic.ch/"
+    },
+    {
+      "id": "reg-mexico",
+      "publisher": "COFEPRIS",
+      "citation": "COFEPRIS",
+      "document": "Regulator",
+      "title": "Mexico: medicine approval and import requirements",
+      "signed": null,
+      "published": "2026-10-08",
+      "url": "https://www.gob.mx/cofepris"
+    }
+  ]
+}

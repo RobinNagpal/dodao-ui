@@ -1,4 +1,5 @@
 import PrivateWrapper from '@/components/auth/PrivateWrapper';
+import ChapterDirectionSwitch from '@/components/industry-tariff/chapter/ChapterDirectionSwitch';
 import ChapterPlaceholder from '@/components/industry-tariff/chapter/ChapterPlaceholder';
 import ChapterRelatedSections from '@/components/industry-tariff/chapter/ChapterRelatedSections';
 import ChapterSectionActions, { type ChapterSectionAction } from '@/components/industry-tariff/chapter/ChapterSectionActions';
@@ -14,12 +15,14 @@ import { parseChapterBodyMarkdown } from '@/util/parse-markdown';
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
 import {
   CHAPTER_REPORT_SECTIONS,
+  ChapterReportDirection,
   ChapterRouteInfo,
   chapterEditHref,
   chapterSectionHref,
   getChapterSectionCopy,
 } from '@/utils/tariff-reports/chapter-route-helpers';
 import { tariffReportTag } from '@/utils/tariff-report-tags';
+import { hasChapterExports } from '@/utils/tariff-reports/chapter-exports';
 import { isValidTariffChapterSlug } from '@/utils/tariff-reports/tariff-input-validation';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
@@ -95,18 +98,22 @@ interface ChapterArticleHeaderProps {
   pageTitle: string;
   actions: ChapterSectionAction[];
   currentSlug: string;
+  // Export pages have no admin edit page or regenerate actions yet.
+  showAdminActions: boolean;
 }
 
-function ChapterArticleHeader({ chapter, pageTitle, actions, currentSlug }: ChapterArticleHeaderProps): JSX.Element {
+function ChapterArticleHeader({ chapter, pageTitle, actions, currentSlug, showAdminActions }: ChapterArticleHeaderProps): JSX.Element {
   return (
     <header className="mb-6 pb-4 border-b border-color">
       <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
         <div className="flex-1">
           <h1 className="text-2xl md:text-3xl font-bold tracking-tight heading-color">{pageTitle}</h1>
         </div>
-        <PrivateWrapper>
-          <ChapterSectionActions chapterSlug={chapter.slug} actions={actions} editHref={chapterEditHref(chapter.slug, currentSlug)} />
-        </PrivateWrapper>
+        {showAdminActions && (
+          <PrivateWrapper>
+            <ChapterSectionActions chapterSlug={chapter.slug} actions={actions} editHref={chapterEditHref(chapter.slug, currentSlug)} />
+          </PrivateWrapper>
+        )}
       </div>
     </header>
   );
@@ -137,6 +144,9 @@ interface ChapterArticleProps {
   // Human-readable label for the current section (e.g. "Tariff Updates", "Overview"). Rendered as
   // the right-hand badge in the footer, mirroring the per-category badge on the stock report card.
   sectionLabel: string;
+  // Which half of the chapter report the page belongs to. Chapters with export content show an
+  // Import | Export switch above the section nav; the nav lists that direction's pages.
+  direction?: ChapterReportDirection;
 }
 
 function toValidDate(value: string | undefined): Date | null {
@@ -155,6 +165,7 @@ export function ChapterArticle({
   updatedAt,
   createdAt,
   sectionLabel,
+  direction = 'import',
 }: ChapterArticleProps): JSX.Element {
   const publishedDate = toValidDate(createdAt);
   const modifiedDate = toValidDate(updatedAt);
@@ -165,8 +176,9 @@ export function ChapterArticle({
       <article className="bg-bg rounded-lg shadow-sm border border-color p-3 sm:p-6 md:p-8" itemScope itemType="https://schema.org/Article">
         {publishedDate && <meta itemProp="datePublished" content={publishedDate.toISOString()} />}
         {toolsCrossLinks}
-        <ChapterRelatedSections chapter={chapter} currentSlug={currentSlug} />
-        <ChapterArticleHeader chapter={chapter} pageTitle={pageTitle} actions={actions} currentSlug={currentSlug} />
+        {hasChapterExports(chapter.slug) && <ChapterDirectionSwitch chapter={chapter} direction={direction} />}
+        <ChapterRelatedSections chapter={chapter} currentSlug={currentSlug} direction={direction} />
+        <ChapterArticleHeader chapter={chapter} pageTitle={pageTitle} actions={actions} currentSlug={currentSlug} showAdminActions={direction === 'import'} />
         {children}
         <footer className="mt-8 pt-6 border-t border-color">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">

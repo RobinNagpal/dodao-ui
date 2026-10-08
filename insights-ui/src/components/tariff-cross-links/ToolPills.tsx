@@ -7,20 +7,12 @@ export interface ToolPillLink {
   description?: string;
   icon?: ReactNode;
   tone?: 'indigo' | 'emerald' | 'amber';
-  /** The page this pill links to is the one being viewed — rendered filled, with aria-current. */
-  active?: boolean;
 }
 
 const TONE_CLASSES: Record<NonNullable<ToolPillLink['tone']>, string> = {
   indigo: 'bg-indigo-500/10 text-indigo-300 ring-indigo-500/30 hover:bg-indigo-500/20 hover:text-link',
   emerald: 'bg-emerald-500/10 text-emerald-300 ring-emerald-500/30 hover:bg-emerald-500/20 hover:text-emerald-200',
   amber: 'bg-amber-500/10 text-amber-300 ring-amber-500/30 hover:bg-amber-500/20 hover:text-amber-200',
-};
-
-const ACTIVE_TONE_CLASSES: Record<NonNullable<ToolPillLink['tone']>, string> = {
-  indigo: 'bg-indigo-500/25 text-indigo-200 ring-2 ring-indigo-400 font-semibold',
-  emerald: 'bg-emerald-500/25 text-emerald-200 ring-2 ring-emerald-400 font-semibold',
-  amber: 'bg-amber-500/25 text-amber-200 ring-2 ring-amber-400 font-semibold',
 };
 
 interface ToolPillsProps {
@@ -39,10 +31,7 @@ export default function ToolPills({ links, className }: ToolPillsProps): JSX.Ele
             key={link.href}
             href={link.href}
             title={link.description}
-            aria-current={link.active ? 'page' : undefined}
-            className={`tool-pill tone-${tone} inline-flex items-center gap-1.5 rounded-md px-2.5 py-1 text-xs font-medium ring-1 ring-inset transition-colors sm:text-sm ${
-              link.active ? ACTIVE_TONE_CLASSES[tone] : TONE_CLASSES[tone]
-            }`}
+            className={`tool-pill tone-${tone} inline-flex items-center gap-1.5 rounded-md px-2.5 py-1 text-xs font-medium ring-1 ring-inset transition-colors sm:text-sm ${TONE_CLASSES[tone]}`}
           >
             {link.icon && <span className="flex h-4 w-4 shrink-0 items-center justify-center">{link.icon}</span>}
             <span>{link.label}</span>

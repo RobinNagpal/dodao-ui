@@ -29,9 +29,11 @@ interface ImportsByYearChartProps {
   byYear: TariffImportsByYear[];
   partners: string[];
   chapterTitle: string;
+  /** Which trade flow the bars show — only changes the accessible label. */
+  flow?: 'imports' | 'exports';
 }
 
-export default function ImportsByYearChart({ byYear, partners, chapterTitle }: ImportsByYearChartProps): JSX.Element {
+export default function ImportsByYearChart({ byYear, partners, chapterTitle, flow = 'imports' }: ImportsByYearChartProps): JSX.Element {
   const theme = usePageTheme();
   const axis = chartAxisTheme(theme);
   const colors = SERIES_COLORS[theme === 'dark' ? 'dark' : 'light'];
@@ -94,7 +96,7 @@ export default function ImportsByYearChart({ byYear, partners, chapterTitle }: I
   };
 
   return (
-    <ChartFrame height="md" label={`U.S. ${chapterTitle.toLowerCase()} imports by year, stacked by ${partners[0]}, ${partners[1]} and rest of world`}>
+    <ChartFrame height="md" label={`U.S. ${chapterTitle.toLowerCase()} ${flow} by year, stacked by ${partners[0]}, ${partners[1]} and rest of world`}>
       <Bar data={data} options={options} />
     </ChartFrame>
   );
