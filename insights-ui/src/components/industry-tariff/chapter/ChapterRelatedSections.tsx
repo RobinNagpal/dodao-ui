@@ -19,7 +19,8 @@ interface ChapterRelatedSectionsProps {
 
 // Section nav rendered between the chapter tools bar and the article body. Always lists every page
 // of the chapter report (Overview + each section) in a stable order so the buttons don't shift as the
-// user moves between pages. No heading — the link grid alone is enough context next to the tools row.
+// user moves between pages. Two columns even on phones, so the six import links take three rows
+// instead of filling the first screen. No heading — the link grid alone is enough context next to the tools row.
 // Card labels intentionally omit the chapter title because the HTS chapter titles ("Dairy produce;
 // birds eggs; natural honey; edible products of animal origin, not elsewhere specified or included")
 // are long enough to drown out the per-section labels.
@@ -34,7 +35,7 @@ export default function ChapterRelatedSections({ chapter, currentSlug, direction
 
   return (
     <nav aria-label="Chapter report sections" className="mb-6">
-      <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
+      <ul className="grid grid-cols-2 lg:grid-cols-3 gap-2">
         {items.map((item) => {
           const isCurrent = item.slug === currentSlug;
           return (

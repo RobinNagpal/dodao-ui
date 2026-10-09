@@ -154,7 +154,7 @@ export default function ChapterExportMarkets({ markets }: { markets: TariffExpor
                     </Text>
                     <Text size="xs">
                       To sell there: {c.profile.regulator.requirement}{' '}
-                      <TextLink href={c.profile.regulator.url} size="xs">
+                      <TextLink href={c.profile.regulator.url} size="xs" wrap>
                         {c.profile.regulator.name} ↗
                       </TextLink>
                     </Text>
