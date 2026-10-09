@@ -6,8 +6,9 @@ import TextLink from '@/components/ui/TextLink';
 import ToggleSwitch from '@/components/ui/ToggleSwitch';
 import Stack from '@/components/ui/containers/Stack';
 import { DataTable, TableCell, TableHead, TableHeaderCell, TableRow, TableScroll } from '@/components/ui/tables/DataTable';
-import SelectableMatrix, { type MatrixGroup, type MatrixRow, type MatrixSelection } from '@/components/ui/tables/SelectableMatrix';
-import type { TariffIndustryAreasContent, TariffMatrixCountry, TariffUpdateSource } from '@/types/tariff-chapter-prototype';
+import SelectableMatrix, { type MatrixCellValue, type MatrixGroup, type MatrixRow, type MatrixSelection } from '@/components/ui/tables/SelectableMatrix';
+import type { TariffIndustryAreasContent, TariffMatrixCellRates, TariffMatrixCountry, TariffUpdateSource } from '@/types/tariff-chapter-prototype';
+import { compactNames, labelledTotals, listNames, type MatrixBreakdownLabels } from '@/utils/tariff-reports/line-labels';
 import React, { useMemo, useState } from 'react';
 
 // Country x product-group matrix of the total rate (Approach 2, issue #1770).
@@ -19,7 +20,16 @@ interface CountryRateMatrixProps {
   areas: TariffIndustryAreasContent;
   /** Section title + description, laid out beside the USMCA switch. */
   heading: React.ReactNode;
+  /**
+   * Product names per breakdown row (from `matrixBreakdownLabels`, computed on the server from the
+   * chapter's rate table), so a cell with several rates says which product pays which. Without
+   * it, cells show the bare totals.
+   */
+  breakdownLabels?: MatrixBreakdownLabels;
 }
+
+/** Cells list at most this many labelled rates; the rest show as "+N more". */
+const MAX_CELL_ENTRIES = 3;
 
 function usd(value: number): string {
   if (value >= 1e9) return `$${(value / 1e9).toFixed(2)}B`;
@@ -33,7 +43,26 @@ function linesLabel(lines: string[]): string {
   return `${lines[0]} + ${lines.length - 1} more`;
 }
 
-export default function CountryRateMatrix({ areas, heading }: CountryRateMatrixProps): React.JSX.Element {
+/** Cell value for one set of rates: labelled rates when names are available, else the joined totals. */
+function cellValue(rates: TariffMatrixCellRates, names: string[][] | undefined): Pick<MatrixCellValue, 'value' | 'entries' | 'moreEntries'> {
+  const value = rates.totals.join(' · ');
+  const labelled = labelledTotals(rates, names);
+  if (!labelled) return { value };
+  return {
+    value,
+    entries: labelled.slice(0, MAX_CELL_ENTRIES).map((t) => ({ label: compactNames(t.names), value: t.total, emphasis: rateEmphasis([t.total]) })),
+    moreEntries: Math.max(0, labelled.length - MAX_CELL_ENTRIES),
+  };
+}
+
+/** Full labelled line for the detail header, e.g. "Horses 10% · Asses 16.8% · HTS 0101.90.40 14.5%". */
+function labelledSummary(rates: TariffMatrixCellRates, names: string[][] | undefined): string {
+  const labelled = labelledTotals(rates, names);
+  if (!labelled) return rates.totals.join(' · ');
+  return labelled.map((t) => `${compactNames(t.names)} ${t.total}`.trim()).join(' · ');
+}
+
+export default function CountryRateMatrix({ areas, heading, breakdownLabels }: CountryRateMatrixProps): React.JSX.Element {
   const [usmcaClaimed, setUsmcaClaimed] = useState(true);
   // Open on the chapter's biggest lane, so the first breakdown shown is the one most readers need.
   const firstLane = areas.biggestLanes[0];
@@ -50,6 +79,8 @@ export default function CountryRateMatrix({ areas, heading }: CountryRateMatrixP
   const group = areas.groups.find((g) => g.heading === selected.group);
   const cell = country?.cells[selected.group];
   const rates = cell?.[mode];
+  const names = breakdownLabels?.[selected.row]?.[selected.group]?.[mode];
+  const showProducts = Boolean(names?.some((n) => n.length > 0));
 
   const groups: MatrixGroup[] = areas.groups.map((g) => ({ key: g.heading, label: g.label, shortLabel: g.shortLabel }));
   // `atLeast` marks the "any other country" floor row: no single trade figure of its own.
@@ -69,7 +100,7 @@ export default function CountryRateMatrix({ areas, heading }: CountryRateMatrixP
     country && cell && rates ? (
       <Stack gap="md">
         <Text as="span" size="lg" weight="bold" tone={rateEmphasis(rates.totals) === 'high' ? 'warning' : 'white'}>
-          {rates.totals.join(' · ')}
+          {labelledSummary(rates, names)}
         </Text>
         <Text size="sm">
           {country.rule.label}
@@ -79,6 +110,7 @@ export default function CountryRateMatrix({ areas, heading }: CountryRateMatrixP
           <DataTable>
             <TableHead look="plain">
               <TableRow>
+                {showProducts && <TableHeaderCell>Products</TableHeaderCell>}
                 <TableHeaderCell>Base rate</TableHeaderCell>
                 <TableHeaderCell>Lines</TableHeaderCell>
                 <TableHeaderCell>Extra duty</TableHeaderCell>
@@ -87,8 +119,9 @@ export default function CountryRateMatrix({ areas, heading }: CountryRateMatrixP
               </TableRow>
             </TableHead>
             <tbody>
-              {rates.breakdown.map((row) => (
+              {rates.breakdown.map((row, i) => (
                 <TableRow key={`${row.base}-${row.lines[0]}`}>
+                  {showProducts && <TableCell variant="note">{listNames(names?.[i] ?? [])}</TableCell>}
                   <TableCell variant="rate" tone="emphasis">
                     {row.base}
                   </TableCell>
@@ -144,7 +177,7 @@ export default function CountryRateMatrix({ areas, heading }: CountryRateMatrixP
           const cv = c?.cells[g.key];
           if (!c || !cv) return { value: '—', emphasis: 'quiet' };
           return {
-            value: cv[mode].totals.join(' · '),
+            ...cellValue(cv[mode], breakdownLabels?.[row.key]?.[g.key]?.[mode]),
             emphasis: rateEmphasis(cv[mode].totals),
             secondary: c.rule.atLeast ? undefined : usd(cv.importsUsd),
             dim: !c.rule.atLeast && cv.importsUsd === 0,

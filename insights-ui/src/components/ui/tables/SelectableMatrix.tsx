@@ -6,6 +6,7 @@ import ShowAt from '@/components/ui/containers/ShowAt';
 import Stack from '@/components/ui/containers/Stack';
 import DetailModal from '@/components/ui/sections/DetailModal';
 import { DataTable, MatrixCellButton, TableCell, TableHead, TableHeaderCell, TableRow, TableScroll } from '@/components/ui/tables/DataTable';
+import { cva } from 'class-variance-authority';
 import React, { useState } from 'react';
 
 /**
@@ -37,9 +38,23 @@ export interface MatrixRow {
   floor?: boolean;
 }
 
-export interface MatrixCellValue {
+type MatrixEmphasis = 'quiet' | 'normal' | 'high';
+
+/** One labelled value in a cell that holds several, e.g. { label: "Horses", value: "10%" }. */
+export interface MatrixCellEntry {
+  label: string;
   value: string;
-  emphasis: 'quiet' | 'normal' | 'high';
+  emphasis: MatrixEmphasis;
+}
+
+export interface MatrixCellValue {
+  /** Plain value; shown when there are no `entries`. */
+  value: string;
+  emphasis: MatrixEmphasis;
+  /** Labelled values, one per line — replaces `value` in the cell when given. */
+  entries?: MatrixCellEntry[];
+  /** Further entries not listed, shown as "+N more". */
+  moreEntries?: number;
   /** Muted second line, e.g. the trade value in this cell. */
   secondary?: string;
   dim?: boolean;
@@ -64,6 +79,30 @@ interface SelectableMatrixProps {
   detailTitle: string;
   /** Detail view for the selected cell, shown in the modal. */
   detail: React.ReactNode;
+}
+
+// Per-entry value color, matching the cell's own value emphasis (quiet / normal / amber).
+const entryValue = cva('', {
+  variants: {
+    emphasis: { quiet: 'font-normal text-muted', normal: 'font-semibold text-heading', high: 'font-semibold text-tariff-accent' },
+  },
+  defaultVariants: { emphasis: 'normal' },
+});
+
+/** The cell's main value: the plain value, or its labelled entries one per line. */
+function CellValue({ value }: { value: MatrixCellValue }): React.JSX.Element {
+  if (!value.entries || value.entries.length === 0) return <>{value.value}</>;
+  return (
+    <span className="flex flex-col gap-0.5">
+      {value.entries.map((e, i) => (
+        <span key={`${e.label}-${i}`} className="block">
+          <span className="font-normal text-muted">{e.label} </span>
+          <span className={entryValue({ emphasis: e.emphasis })}>{e.value}</span>
+        </span>
+      ))}
+      {value.moreEntries ? <span className="font-normal text-muted">+{value.moreEntries} more</span> : null}
+    </span>
+  );
 }
 
 export default function SelectableMatrix({
@@ -126,7 +165,7 @@ export default function SelectableMatrix({
                       <TableCell key={g.key}>
                         <MatrixCellButton
                           label={cellLabel(row, g)}
-                          primary={value.value}
+                          primary={<CellValue value={value} />}
                           emphasis={value.emphasis}
                           secondary={value.secondary}
                           dim={value.dim}
@@ -165,7 +204,7 @@ export default function SelectableMatrix({
                     key={row.key}
                     label={cellLabel(row, selectedGroup)}
                     name={row.name}
-                    primary={value.value}
+                    primary={<CellValue value={value} />}
                     emphasis={value.emphasis}
                     secondary={value.secondary ? `${value.secondary} in ${selectedGroup.shortLabel.toLowerCase()}` : row.sub}
                     dim={value.dim}

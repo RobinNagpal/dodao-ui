@@ -1,3 +1,4 @@
+import GlossaryTerm from '@/components/industry-tariff/chapter/GlossaryTerm';
 import Text from '@/components/ui/Text';
 import TextLink from '@/components/ui/TextLink';
 import InlineCard from '@/components/ui/sections/InlineCard';
@@ -32,7 +33,7 @@ export default function BaseRateNotice({ inEffect, ratesByCountryHref, ratesByCo
     <InlineCard padding="cozy">
       <Text size="sm">
         <Text as="span" size="sm" weight="semibold" tone="white">
-          These are base rates.
+          These are <GlossaryTerm id="base-rate">base rates</GlossaryTerm>.
         </Text>{' '}
         An extra duty may be added on top, depending on where the goods come from and which measures cover them: {shown.join(' · ')}
         {more > 0 ? ` · +${more} more` : ''}. {ratesByCountryHref && <TextLink href={ratesByCountryHref}>{ratesByCountryLabel} →</TextLink>}

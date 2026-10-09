@@ -1,5 +1,6 @@
 import PrivateWrapper from '@/components/auth/PrivateWrapper';
 import ChapterDirectionSwitch from '@/components/industry-tariff/chapter/ChapterDirectionSwitch';
+import ChapterKeyTerms from '@/components/industry-tariff/chapter/ChapterKeyTerms';
 import ChapterNextPageNav from '@/components/industry-tariff/chapter/ChapterNextPageNav';
 import ChapterPlaceholder from '@/components/industry-tariff/chapter/ChapterPlaceholder';
 import ChapterPrototypeHeader from '@/components/industry-tariff/chapter/ChapterPrototypeHeader';
@@ -26,6 +27,7 @@ import {
 } from '@/utils/tariff-reports/chapter-route-helpers';
 import { tariffReportTag } from '@/utils/tariff-report-tags';
 import { hasChapterExports, latestExportChange } from '@/utils/tariff-reports/chapter-exports';
+import { approach2PageGlossaryTerms } from '@/utils/tariff-reports/chapter-glossary';
 import { getChapterPrototype, latestChapterChange } from '@/utils/tariff-reports/chapter-prototype';
 import { isValidTariffChapterSlug } from '@/utils/tariff-reports/tariff-input-validation';
 import type { Metadata } from 'next';
@@ -241,6 +243,8 @@ export function ChapterArticle({
             />
           </>
         )}
+        {/* Approach-2 pages: plain-English definitions of the jargon this page's content uses (issue #1784). */}
+        {ratesAsOf && <ChapterKeyTerms terms={approach2PageGlossaryTerms(chapter.slug, currentSlug, direction)} />}
         {children}
         {ratesAsOf && <ChapterNextPageNav chapter={chapter} currentSlug={currentSlug} direction={direction} />}
         <footer className="mt-8 pt-6 border-t border-color">

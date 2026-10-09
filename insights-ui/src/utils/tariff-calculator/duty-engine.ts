@@ -40,6 +40,13 @@ export const MPF_MIN_USD = 32.71;
 export const MPF_MAX_USD = 634.62;
 export const MPF_FORMAL_ENTRY_THRESHOLD = 2500;
 
+/** HMF (ocean only) and MPF (formal entries only, clamped) on a shipment's customs value. */
+export function entryFees(customsValueUsd: number, modeOfTransport: TransportMode): { hmf: number; mpf: number } {
+  const hmf = modeOfTransport === 'OCEAN' ? customsValueUsd * HMF_RATE : 0;
+  const mpf = customsValueUsd > MPF_FORMAL_ENTRY_THRESHOLD ? Math.min(Math.max(customsValueUsd * MPF_RATE, MPF_MIN_USD), MPF_MAX_USD) : 0;
+  return { hmf, mpf };
+}
+
 export interface CalculatorInputs {
   hts10: string;
   shipmentValueUsd: number;
@@ -470,11 +477,7 @@ export function calculateDuties(candidates: CandidateCodeListItem[], inputs: Cal
   const primaryUoms = Array.from(uomSet).sort();
 
   const baseCost = inputs.shipmentValueUsd;
-  const hmf = inputs.modeOfTransport === 'OCEAN' ? baseCost * HMF_RATE : 0;
-  let mpf = 0;
-  if (baseCost > MPF_FORMAL_ENTRY_THRESHOLD) {
-    mpf = Math.min(Math.max(baseCost * MPF_RATE, MPF_MIN_USD), MPF_MAX_USD);
-  }
+  const { hmf, mpf } = entryFees(baseCost, inputs.modeOfTransport);
   const landedCost = baseCost + totalDuties + hmf + mpf;
   const effectiveDutyRate = baseCost > 0 ? totalDuties / baseCost : 0;
 
