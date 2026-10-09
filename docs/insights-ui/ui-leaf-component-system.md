@@ -152,6 +152,8 @@ Rules for leaves:
 |---|---|
 | `Stack` | Flex container; owns `gap` + optional block margins (`mt`/`mb`); `as` for `ul`/`section`/etc. |
 | `MetricGrid` | Responsive grid for metric cells; `columns` presets + `gap`. |
+| `StatCardGrid` | Row of headline stat cards (`MetricCell size="lg"`): two per row below desktop, all in one row on desktop; an odd last card spans the row. |
+| `TabsWithAside` | Tab row with a control beside it (e.g. section tabs + Import/Export switch); the aside drops below on narrow screens. |
 | `ChartFrame` | Full-width, fixed-height (`height` sm/md/lg) box for a chart.js canvas, with an accessible label; the square radar charts use `RadarChartFrame`. |
 | `SplitColumns` | Two-column responsive split (`lg:w-1/2` halves) with a `gap` variant. |
 
@@ -163,6 +165,8 @@ Rules for leaves:
 | `InlineCard` | Lightweight filled box (`bg-gray-800 rounded-md`); `padding` presets incl. `factor`; `as` for `li`. |
 | `RelatedSectionsNav` | Top-bordered "more analyses" nav: heading + responsive grid of pill links. |
 | `LinkTile` | Navigational tile with eyebrow, title, highlighted meta value, body and footer. |
+| `RuleList` | List separated by top rules instead of boxes, for sources and citations; optional `columns`. |
+| `TimelineRow` | One ruled list entry: a left column (date + status, or code + name) beside the entry body; stacks on phones. |
 | `DisclosureList` / `DisclosureItem` | Collapsible question/answer list on native `<details>` (no client JS; collapsed answers stay in the HTML). Used for FAQs. |
 | `ReportArticleShell` | Outer `<article>` card chrome + schema.org microdata + optional `datePublished`; `padding` variant. |
 | `ReportSectionHeader` | Bordered report header: title (+ `symbol`), exchange/score/date meta row, metadata slot, action link. |
@@ -189,6 +193,9 @@ Rules for leaves:
 | `ScenarioOutlookBadge` | Probability / Direction / Timeframe scenario pills. |
 | `AppliedFilterChip` | Removable filter chip. |
 | `ToggleChip` | On/off filter chip (`aria-pressed`) with an optional count. |
+| `ToggleSwitch` | Track-and-knob on/off switch with its label, for one setting that changes a whole table (e.g. "USMCA claimed"). |
+| `ActiveTabScroller` | Horizontally scrolling tab row that scrolls the current tab (`aria-current="page"`) into view on load. |
+| `ShareBar` | Inline bar + label for a share column in a table, scaled to the column's largest value. |
 | `SearchField` | Filter-a-listing search box: magnifier, clear button, result count. |
 | `DefinitionList` | Compact term → definition grid for code legends/glossaries. |
 | `EmptyStateCard` | "No data" placeholder (`card` / `inline`). |
