@@ -156,6 +156,7 @@ Rules for leaves:
 | `TabsWithAside` | Tab row with a control beside it (e.g. section tabs + Import/Export switch); the aside drops below on narrow screens. |
 | `ChartFrame` | Full-width, fixed-height (`height` sm/md/lg) box for a chart.js canvas, with an accessible label; the square radar charts use `RadarChartFrame`. |
 | `SplitColumns` | Two-column responsive split (`lg:w-1/2` halves) with a `gap` variant. |
+| `ShowAt` | Renders children only on one side of the `lg` breakpoint (`lg-up` / `below-lg`), for a different phone layout. |
 
 **Sections (`ui/sections/`) — surfaces & report chrome**
 
@@ -167,7 +168,8 @@ Rules for leaves:
 | `LinkTile` | Navigational tile with eyebrow, title, highlighted meta value, body and footer. |
 | `RuleList` | List separated by top rules instead of boxes, for sources and citations; optional `columns`. |
 | `TimelineRow` | One ruled list entry: a left column (date + status, or code + name) beside the entry body; stacks on phones. |
-| `DisclosureList` / `DisclosureItem` | Collapsible question/answer list on native `<details>` (no client JS; collapsed answers stay in the HTML). Used for FAQs. |
+| `DisclosureList` / `DisclosureItem` | Collapsible question/answer list on native `<details>` (no client JS; collapsed answers stay in the HTML). Used for FAQs; `look="inline"` is the small "show details" toggle inside a card. |
+| `DetailModal` | Modal for the detail behind a selected item (wraps web-core `FullPageModal`: left-aligned title, padded scrolling body). |
 | `ReportArticleShell` | Outer `<article>` card chrome + schema.org microdata + optional `datePublished`; `padding` variant. |
 | `ReportSectionHeader` | Bordered report header: title (+ `symbol`), exchange/score/date meta row, metadata slot, action link. |
 | `SectionHeading` | In-article H2/H3 (`text-xl font-semibold text-color`); `size`/`weight`/`bordered`. |
@@ -208,6 +210,7 @@ Rules for leaves:
 | `IndentedLabel` | Description cell indented to its place in a hierarchy (literal `pl-*` per depth, 0–6). |
 | `InheritedValue` / `EmptyCellValue` | Muted "inherited from <parent>" value, and the em-dash empty cell. |
 | `MatrixCellButton` | Selectable matrix cell (primary value + muted second line, `selected`/`dim`) that opens a detail view. |
+| `SelectableMatrix` | Row × group matrix of `MatrixCellButton`s: a table on desktop, a group picker + list on phones; the selected cell's detail opens in a `DetailModal`. |
 
 Plus the shadcn-style `Card`, `Input`, `Label`, `Tabs` already in
 `components/ui/`. **Always grep the leaf layer + web-core before creating a new
