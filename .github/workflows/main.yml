@@ -226,6 +226,12 @@ jobs:
       - name: Insights UI - TSC
         run: cd insights-ui && pnpm compile
 
+      - name: Insights UI - Tariff calculator golden scenarios
+        run: cd insights-ui && pnpm tariff:calc-scenarios
+
+      - name: Insights UI - Validate tariff chapters + calculator cross-check
+        run: cd insights-ui && pnpm tariff:validate-chapters --check-calculator
+
       - name: Insights UI - NEXT Build
         run: cd insights-ui && pnpm build
 

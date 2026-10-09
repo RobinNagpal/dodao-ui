@@ -1,5 +1,17 @@
-import { calculateDuties, CalculatorInputs, CalculatorResponse, TRANSPORT_MODES, TransportMode } from '@/utils/tariff-calculator/duty-engine';
-import { loadCandidates, loadDataFreshness } from '@/utils/tariff-calculator/load-candidates';
+import type { TariffProductType } from '@/types/tariff-calculator-measures';
+import {
+  calculateDuties,
+  CalculatorInputs,
+  CalculatorResponse,
+  DutyLine,
+  entryFees,
+  TRANSPORT_MODES,
+  TransportMode,
+} from '@/utils/tariff-calculator/duty-engine';
+import { formatHts10, loadCandidates, loadDataFreshness } from '@/utils/tariff-calculator/load-candidates';
+import { isMeasuresEngineEnabledFor, loadMeasureEngineLine, loadMeasures } from '@/utils/tariff-calculator/load-measures';
+import { calculateWithMeasures, rateUoms, SPECIAL_PROGRAMS } from '@/utils/tariff-calculator/measures-engine';
+import { TariffCandidateCodeType } from '@prisma/client';
 import { badRequestError } from '@dodao/web-core/api/errors/badRequestError';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';
@@ -10,6 +22,12 @@ import { NextRequest } from 'next/server';
 // codes for the requested HTS 10-digit line, runs the duty engine and returns
 // the breakdown plus how fresh the cached extra-duty data is. Bad input and a
 // missing quantity for a per-unit duty are 400s; an unknown HTS code is a 404.
+//
+// For HTS chapters listed in the TARIFF_CALC_MEASURES_ENABLED App Setting the
+// official-measures engine prices the line instead (issue #1785): base rates from
+// `hts_codes`, extra duties from the reviewed `tariff_measures`, with the optional
+// trade-deal claim (`claimedSpi`) and `productType`. The response keeps the same
+// shape and adds `engine: 'official-measures'`.
 
 function isObject(v: unknown): v is Record<string, unknown> {
   return typeof v === 'object' && v !== null && !Array.isArray(v);
@@ -66,6 +84,20 @@ function parseChosenExclusions(raw: unknown): string[] {
   });
 }
 
+const PRODUCT_TYPES: TariffProductType[] = ['patented', 'generic', 'specialty', 'other'];
+
+function parseClaimedSpi(raw: unknown): string | undefined {
+  if (raw === undefined || raw === null || raw === '') return undefined;
+  if (typeof raw !== 'string' || !/^[A-Z]{1,2}[+*]?$/.test(raw)) throw badRequestError('claimedSpi must be a special program code such as "S" or "KR"');
+  return raw;
+}
+
+function parseProductType(raw: unknown): TariffProductType | undefined {
+  if (raw === undefined || raw === null || raw === '') return undefined;
+  if (typeof raw !== 'string' || !(PRODUCT_TYPES as string[]).includes(raw)) throw badRequestError(`productType must be one of ${PRODUCT_TYPES.join(', ')}`);
+  return raw as TariffProductType;
+}
+
 function parseCalculatorInputs(body: unknown): CalculatorInputs {
   if (!isObject(body)) throw badRequestError('Request body must be an object');
   const hts10 = parseHts10(body.hts10);
@@ -84,14 +116,85 @@ function parseCalculatorInputs(body: unknown): CalculatorInputs {
     dateOfLoading: parseIsoDate(body.dateOfLoading, 'dateOfLoading'),
     chosenSpis: parseChosenSpis(body.chosenSpis),
     chosenExclusions: parseChosenExclusions(body.chosenExclusions),
+    claimedSpi: parseClaimedSpi(body.claimedSpi),
+    productType: parseProductType(body.productType),
+  };
+}
+
+async function calculateWithOfficialMeasures(inputs: CalculatorInputs): Promise<CalculatorResponse> {
+  const program = inputs.claimedSpi ? SPECIAL_PROGRAMS[inputs.claimedSpi] : undefined;
+  if (inputs.claimedSpi && program?.countries && !program.countries.includes(inputs.countryOfOrigin)) {
+    throw badRequestError(`${program.name} can only be claimed for goods from ${program.countries.join(', ')}.`);
+  }
+  if (program?.lapsed) throw badRequestError(`${program.name} is no longer in force, so it can't be claimed.`);
+
+  const [line, loaded] = await Promise.all([loadMeasureEngineLine(inputs.hts10), loadMeasures()]);
+  const result = calculateWithMeasures(
+    {
+      hts10: inputs.hts10,
+      countryOfOrigin: inputs.countryOfOrigin,
+      customsValueUsd: inputs.shipmentValueUsd,
+      quantities: inputs.unitsOfMeasure,
+      claimedSpi: inputs.claimedSpi,
+      productType: inputs.productType,
+      entryDate: inputs.entryDate,
+    },
+    line,
+    loaded.measures
+  );
+  if (result.error) throw badRequestError(result.error);
+
+  const value = inputs.shipmentValueUsd;
+  const lines: DutyLine[] = result.lines.map((l, i) => ({
+    candidateId: `${l.code}-${i}`,
+    code: l.code === 'base' ? formatHts10(line.hts10) : l.code,
+    variant: null,
+    type: l.code === 'base' ? TariffCandidateCodeType.COMMODITY_CODE : TariffCandidateCodeType.SPECIAL_CODE,
+    label: l.label,
+    category: null,
+    rateDescription: l.rateText,
+    dutyAmount: l.amountUsd,
+    effectiveAdValoremRate: value > 0 ? l.amountUsd / value : null,
+    notes: [],
+    sources: l.sources,
+  }));
+  const primaryUoms = Array.from(new Set([line.general, line.column2 ?? null].flatMap((t) => rateUoms(t)))).sort();
+  const totalDuties = result.totalDutyUsd;
+  const { hmf, mpf } = entryFees(value, inputs.modeOfTransport);
+  const freshness = await loadDataFreshness(inputs.hts10, loaded.reviewedAt);
+
+  return {
+    hts10: inputs.hts10,
+    inputs,
+    lines,
+    potentialExclusions: [],
+    totals: {
+      baseCost: value,
+      totalDuties,
+      hmf,
+      mpf,
+      landedCost: value + totalDuties + hmf + mpf,
+      effectiveDutyRate: value > 0 ? totalDuties / value : 0,
+    },
+    diagnostics: {
+      candidatesEvaluated: loaded.measures.length,
+      candidatesApplicable: result.lines.length - 1,
+      candidatesExcluded: result.skipped.length,
+      requiresQuantity: primaryUoms.length > 0,
+      primaryUoms,
+    },
+    dataFreshness: { ...freshness, engine: 'official-measures', htsEdition: loaded.htsEdition },
+    engine: 'official-measures',
+    skippedMeasures: result.skipped,
   };
 }
 
 async function postHandler(req: NextRequest): Promise<CalculatorResponse> {
   const inputs = parseCalculatorInputs(await req.json().catch(() => null));
+  if (await isMeasuresEngineEnabledFor(inputs.hts10)) return calculateWithOfficialMeasures(inputs);
   const { candidates, lastFetchedAt } = await loadCandidates(inputs.hts10);
   const result = calculateDuties(candidates, inputs);
-  return { ...result, dataFreshness: await loadDataFreshness(inputs.hts10, lastFetchedAt) };
+  return { ...result, dataFreshness: await loadDataFreshness(inputs.hts10, lastFetchedAt), engine: 'candidate-codes' };
 }
 
 export const POST = withErrorHandlingV2<CalculatorResponse>(postHandler);

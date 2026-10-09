@@ -30,6 +30,7 @@
 
 import { TariffApplicabilityConditionKind, TariffCandidateCodeType, TariffCountryScopeType, TariffRelatedCodeKind } from '@prisma/client';
 import { CandidateCodeListItem } from '@/app/api/tariff-calculator/candidate-codes/[hts10]/route';
+import type { TariffMeasureSource, TariffProductType } from '@/types/tariff-calculator-measures';
 
 export const TRANSPORT_MODES = ['OCEAN', 'AIR', 'RAIL', 'TRUCK'] as const;
 export type TransportMode = (typeof TRANSPORT_MODES)[number];
@@ -60,7 +61,15 @@ export interface CalculatorInputs {
   // Used for `requiresUserChoice`-flagged candidates (e.g. Section 122 Donation
   // Exclusion) which never auto-apply — the importer has to claim them.
   chosenExclusions: string[];
+  // Official-measures engine only (issue #1785): the trade-deal (SPI) program claimed for
+  // the base line (e.g. "S" for USMCA) and the product type some measures depend on.
+  claimedSpi?: string;
+  productType?: TariffProductType;
 }
+
+// Which engine priced a result: the legacy cached candidate codes, or the official HTS
+// rates + reviewed Chapter 99 measures (enabled per chapter by TARIFF_CALC_MEASURES_ENABLED).
+export type CalculatorEngine = 'candidate-codes' | 'official-measures';
 
 export interface DutyLine {
   candidateId: string;
@@ -73,6 +82,8 @@ export interface DutyLine {
   dutyAmount: number;
   effectiveAdValoremRate: number | null;
   notes: string[];
+  // Official documents behind the line (official-measures engine only).
+  sources?: TariffMeasureSource[];
 }
 
 // A user-electable Chapter 99 code (requiresUserChoice = true) that — if the
@@ -125,10 +136,17 @@ export interface DataFreshness {
   lastUpdatedAt: string | null;
   // Chapter tariff report for the HTS chapter, when one is published.
   chapterReportHref: string | null;
+  // Official-measures engine: the HTS edition the measures were reviewed against.
+  // `lastUpdatedAt` is then the latest date the measures were reviewed against official sources.
+  engine?: CalculatorEngine;
+  htsEdition?: string | null;
 }
 
 export interface CalculatorResponse extends CalculatorResult {
   dataFreshness: DataFreshness;
+  engine?: CalculatorEngine;
+  // Official-measures engine: extra duties in scope for this line and country that are not charged, and why.
+  skippedMeasures?: { ch99Code: string; reason: string }[];
 }
 
 // Units a per-unit duty for this HTS line can be charged in. Returned by the

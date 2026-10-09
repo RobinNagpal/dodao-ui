@@ -1,0 +1,111 @@
+name: "insights-ui: apply data SQL"
+
+# Applies a reviewed, committed data SQL file (insights-ui/prisma/data-sql/**) to the production
+# database — e.g. the tariff calculator's Chapter 99 headings / measures / base-rate refresh generated
+# by `pnpm tariff:build-data-sql` (see docs/insights-ui/tariffs/calculator-data-refresh.md).
+#
+# Manual only. Run it AFTER the PR that adds the file is merged and deployed (the deploy applies the
+# Prisma migrations the SQL depends on). Always run with dry_run=true first: the whole file runs inside
+# its transaction, the counts it SELECTs are printed, and the transaction is rolled back. Then re-run
+# with dry_run=false to commit.
+#
+# The file must be one transaction: exactly one `BEGIN;` line and one `COMMIT;` line.
+
+on:
+  workflow_dispatch:
+    inputs:
+      sql_file:
+        description: "SQL file path, relative to the repo root, under insights-ui/prisma/data-sql/ (e.g. insights-ui/prisma/data-sql/tariff-calculator/20261009-2026-revision-21.sql)"
+        type: string
+        required: true
+      dry_run:
+        description: "Dry run: execute inside the transaction, print the counts, then ROLLBACK (nothing is saved)"
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+
+concurrency:
+  group: insights-ui-apply-data-sql
+  cancel-in-progress: false
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      SQL_FILE: ${{ inputs.sql_file }}
+      DRY_RUN: ${{ inputs.dry_run }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate the SQL file
+        run: |
+          set -euo pipefail
+          case "$SQL_FILE" in
+            insights-ui/prisma/data-sql/*.sql) ;;
+            *) echo "::error::sql_file must be a .sql file under insights-ui/prisma/data-sql/ (got '$SQL_FILE')"; exit 1 ;;
+          esac
+          if [[ "$SQL_FILE" == *..* ]]; then
+            echo "::error::sql_file must not contain '..'"; exit 1
+          fi
+          resolved="$(realpath -e "$SQL_FILE")" || { echo "::error::$SQL_FILE does not exist on $GITHUB_REF_NAME"; exit 1; }
+          case "$resolved" in
+            "$GITHUB_WORKSPACE"/insights-ui/prisma/data-sql/*) ;;
+            *) echo "::error::$SQL_FILE resolves outside insights-ui/prisma/data-sql/"; exit 1 ;;
+          esac
+          begins=$(grep -cE '^[[:space:]]*BEGIN[[:space:]]*;[[:space:]]*$' "$SQL_FILE" || true)
+          commits=$(grep -cE '^[[:space:]]*COMMIT[[:space:]]*;[[:space:]]*$' "$SQL_FILE" || true)
+          others=$(grep -ciE '^[[:space:]]*(END|ROLLBACK|START[[:space:]]+TRANSACTION|COMMIT[[:space:]]+AND|SAVEPOINT|RELEASE)\b' "$SQL_FILE" || true)
+          if [ "$begins" != "1" ] || [ "$commits" != "1" ] || [ "$others" != "0" ]; then
+            echo "::error::$SQL_FILE must be a single transaction (one 'BEGIN;' line, one 'COMMIT;' line, no other transaction control). Found BEGIN=$begins COMMIT=$commits other=$others"
+            exit 1
+          fi
+          echo "File: $SQL_FILE ($(wc -c < "$SQL_FILE") bytes, sha256 $(sha256sum "$SQL_FILE" | cut -d' ' -f1))"
+          echo "Commit: $GITHUB_SHA"
+          echo "Header:"; grep -m 30 -E '^--' "$SQL_FILE" || true
+
+      - name: Install PostgreSQL client
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq postgresql-client > /dev/null
+          psql --version
+
+      - name: Prepare the run file
+        run: |
+          set -euo pipefail
+          if [ "$DRY_RUN" = "true" ]; then
+            # Same statements, but the transaction ends in ROLLBACK instead of COMMIT.
+            sed -E 's/^([[:space:]]*)COMMIT[[:space:]]*;[[:space:]]*$/\1ROLLBACK;/' "$SQL_FILE" > "$RUNNER_TEMP/run.sql"
+            grep -qE '^[[:space:]]*ROLLBACK;$' "$RUNNER_TEMP/run.sql" || { echo "::error::could not turn COMMIT into ROLLBACK"; exit 1; }
+            if grep -qE '^[[:space:]]*COMMIT[[:space:]]*;' "$RUNNER_TEMP/run.sql"; then echo "::error::COMMIT still present in dry-run file"; exit 1; fi
+            echo "DRY RUN — the transaction will be rolled back."
+          else
+            cp "$SQL_FILE" "$RUNNER_TEMP/run.sql"
+            echo "REAL RUN — the transaction will be committed."
+          fi
+
+      - name: Run SQL (${{ inputs.dry_run && 'dry run, ROLLBACK' || 'COMMIT' }})
+        env:
+          # Only ever passed to psql through the environment — never echoed.
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        run: |
+          set -euo pipefail
+          if [ -z "${DATABASE_URL:-}" ]; then echo "::error::secrets.DATABASE_URL is not set"; exit 1; fi
+          # Prisma-style URLs may carry query params libpq rejects (?schema=public, connection_limit, …) — drop them.
+          PGURL="$(python3 -c '
+          import os, urllib.parse as u
+          p = u.urlsplit(os.environ["DATABASE_URL"])
+          prisma_only = {"schema", "connection_limit", "pool_timeout", "pgbouncer", "socket_timeout", "statement_cache_size"}
+          q = [(k, v) for k, v in u.parse_qsl(p.query, keep_blank_values=True) if k not in prisma_only]
+          print(u.urlunsplit(p._replace(query=u.urlencode(q))))
+          ')"
+          echo "::add-mask::$PGURL"
+          psql "$PGURL" -v ON_ERROR_STOP=1 --no-psqlrc --echo-errors -P pager=off -f "$RUNNER_TEMP/run.sql"
+          if [ "$DRY_RUN" = "true" ]; then
+            echo "Dry run finished — nothing was saved. Re-run with dry_run=false to commit."
+          else
+            echo "Committed."
+          fi

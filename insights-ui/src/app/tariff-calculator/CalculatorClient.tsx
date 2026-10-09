@@ -3,8 +3,16 @@
 import type { HtsSearchResponse } from '@/app/api/tariff-calculator/hts-search/route';
 import type { CalculatorRequirementsResponse } from '@/app/api/tariff-calculator/requirements/[hts10]/route';
 import HtsCodeSearch from '@/components/tariff-calculator/HtsCodeSearch';
+import {
+  dealsForCountry,
+  MeasureSources,
+  PRODUCT_TYPE_CHOICES,
+  SkippedMeasuresPanel,
+  TradeDealFields,
+} from '@/components/tariff-calculator/OfficialMeasuresFields';
 import NoticeCallout from '@/components/ui/NoticeCallout';
 import TextLink from '@/components/ui/TextLink';
+import type { TariffProductType } from '@/types/tariff-calculator-measures';
 import {
   CalculatorResponse,
   DataFreshness,
@@ -29,6 +37,9 @@ interface FormState {
   // Quantity per unit of measure (e.g. { KG: '21000' }). Only the units a
   // per-unit duty on the picked HTS line is charged in are shown/sent.
   quantities: Record<string, string>;
+  // Official-measures engine only: claimed trade-deal program code ('' = none) and product type.
+  claimedSpi: string;
+  productType: TariffProductType | '';
 }
 
 interface SelectedCode {
@@ -48,6 +59,8 @@ const INITIAL_FORM: FormState = {
   // Quantities stay blank until we know whether the picked HTS line is
   // priced per-unit and which unit(s) it uses.
   quantities: {},
+  claimedSpi: '',
+  productType: '',
 };
 
 // Extra-duty data older than this gets a visible "may be missing recent tariffs" warning.
@@ -59,10 +72,13 @@ interface DeepLinkParams {
   country: string | null;
   value: string | null;
   qty: string | null;
+  // Trade-deal program code (e.g. "S"), validated against the line's deals once they load.
+  claim: string | null;
+  productType: TariffProductType | null;
 }
 
-// Reads ?hts=<10 digits>&country=<ISO2>&value=&qty= (e.g. links from the chapter
-// reports). Returns null when there's no usable HTS code.
+// Reads ?hts=<10 digits>&country=<ISO2>&value=&qty=&claim=<SPI>&type=<patented|generic|specialty>
+// (e.g. links from the chapter reports). Returns null when there's no usable HTS code.
 function parseDeepLink(params: URLSearchParams | null): DeepLinkParams | null {
   if (!params) return null;
   const hts10 = (params.get('hts') ?? '').replace(/[^\d]/g, '');
@@ -70,11 +86,15 @@ function parseDeepLink(params: URLSearchParams | null): DeepLinkParams | null {
   const countryRaw = (params.get('country') ?? '').trim().toUpperCase();
   const valueRaw = Number(params.get('value'));
   const qtyRaw = Number(params.get('qty'));
+  const claimRaw = (params.get('claim') ?? '').trim().toUpperCase();
+  const typeRaw = (params.get('type') ?? '').trim().toLowerCase();
   return {
     hts10,
     country: isKnownCountryCode(countryRaw) ? countryRaw : null,
     value: params.get('value') && Number.isFinite(valueRaw) && valueRaw > 0 ? String(valueRaw) : null,
     qty: params.get('qty') && Number.isFinite(qtyRaw) && qtyRaw >= 0 ? String(qtyRaw) : null,
+    claim: /^[A-Z]{1,2}\+?$/.test(claimRaw) ? claimRaw : null,
+    productType: PRODUCT_TYPE_CHOICES.find((c) => c.value === typeRaw)?.value ?? null,
   };
 }
 
@@ -123,6 +143,18 @@ function formatExclusionTargets(targets: { code: string; variant: string | null 
   return targets.map((t) => (t.variant ? `${t.code} (${t.variant})` : t.code)).join(', ');
 }
 
+// Units to ask a quantity for. Official-measures engine: the units of the rate actually
+// charged as the base — the claimed deal's, the column 2 rate's for column 2 countries,
+// else the general rate's. Otherwise the cached candidate codes' units.
+function quantityUnitsFor(requirements: CalculatorRequirementsResponse, form: FormState): PerUnitRequirement[] {
+  const official = requirements.officialMeasures;
+  if (!official) return requirements.perUnit;
+  const deal = dealsForCountry(official.tradeDeals, form.countryOfOrigin).find((d) => d.codes[0] === form.claimedSpi);
+  if (deal) return deal.perUnit;
+  if (official.column2Countries.includes(form.countryOfOrigin)) return official.column2PerUnit;
+  return requirements.perUnit;
+}
+
 export default function CalculatorClient(): JSX.Element {
   const [selected, setSelected] = useState<SelectedCode | null>(null);
   // Free-form HTS input — only used when the user wants to bypass search
@@ -168,6 +200,8 @@ export default function CalculatorClient(): JSX.Element {
         unitsOfMeasure,
         chosenSpis: [] as string[],
         chosenExclusions: Array.from(exclusions),
+        claimedSpi: currentForm.claimedSpi || undefined,
+        productType: currentForm.productType || undefined,
       };
       const res = await fetch('/api/tariff-calculator/calculate', {
         method: 'POST',
@@ -200,7 +234,7 @@ export default function CalculatorClient(): JSX.Element {
     setError(null);
     setChosenExclusions(new Set());
     setRequirements(null);
-    setForm((prev) => ({ ...prev, quantities: {} }));
+    setForm((prev) => ({ ...prev, quantities: {}, claimedSpi: '', productType: '' }));
   }
 
   function handleManualSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -288,9 +322,13 @@ export default function CalculatorClient(): JSX.Element {
     const quantities: Record<string, string> = {};
     // A single ?qty= fills the first unit the line is charged in.
     if (link.qty !== null && requirements.perUnit.length > 0) quantities[requirements.perUnit[0].uom] = link.qty;
-    const nextForm: FormState = { ...form, quantities };
+    // ?claim= is kept only when the line offers that deal for the linked country; ?type= only when the line asks for one.
+    const deals = requirements.officialMeasures ? dealsForCountry(requirements.officialMeasures.tradeDeals, form.countryOfOrigin) : [];
+    const claimedSpi = deals.find((d) => link.claim !== null && d.codes.includes(link.claim))?.codes[0] ?? '';
+    const productType = link.productType && requirements.officialMeasures?.productTypes.length ? link.productType : '';
+    const nextForm: FormState = { ...form, quantities, claimedSpi, productType };
     setForm(nextForm);
-    const hasQuantities = requirements.perUnit.every((u) => quantities[u.uom] !== undefined);
+    const hasQuantities = quantityUnitsFor(requirements, nextForm).every((u) => quantities[u.uom] !== undefined);
     if (link.country && link.value && hasQuantities) {
       submitCalculation(nextForm, selected, chosenExclusions);
     }
@@ -299,8 +337,8 @@ export default function CalculatorClient(): JSX.Element {
   // Units to ask a quantity for: from the requirements call, else (if it hasn't
   // loaded) whatever the last calculation reported.
   const quantityUnits: PerUnitRequirement[] = useMemo(
-    () => requirements?.perUnit ?? result?.diagnostics.primaryUoms.map((uom) => ({ uom, rateDescription: '' })) ?? [],
-    [requirements, result]
+    () => (requirements ? quantityUnitsFor(requirements, form) : result?.diagnostics.primaryUoms.map((uom) => ({ uom, rateDescription: '' })) ?? []),
+    [requirements, result, form]
   );
   const hideQuantityInputs = (requirements !== null || result !== null) && quantityUnits.length === 0;
   const freshness = result?.dataFreshness ?? requirements?.dataFreshness ?? null;
@@ -324,6 +362,19 @@ export default function CalculatorClient(): JSX.Element {
           quantityUnits={quantityUnits}
           onSubmit={onSubmit}
           error={error}
+          extraFields={
+            requirements?.officialMeasures ? (
+              <TradeDealFields
+                deals={requirements.officialMeasures.tradeDeals}
+                country={form.countryOfOrigin}
+                claimedSpi={form.claimedSpi}
+                onClaim={(code) => updateForm('claimedSpi', code)}
+                productTypes={requirements.officialMeasures.productTypes}
+                productType={form.productType}
+                onProductType={(type) => updateForm('productType', type)}
+              />
+            ) : null
+          }
         />
 
         <div className="space-y-6">
@@ -417,9 +468,11 @@ interface ShipmentFormProps {
   quantityUnits: PerUnitRequirement[];
   onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
   error: string | null;
+  // Trade-deal claim / product type controls (official-measures engine only).
+  extraFields: React.ReactNode;
 }
 
-function ShipmentForm({ form, updateForm, submitting, hideQuantityInputs, quantityUnits, onSubmit, error }: ShipmentFormProps): JSX.Element {
+function ShipmentForm({ form, updateForm, submitting, hideQuantityInputs, quantityUnits, onSubmit, error, extraFields }: ShipmentFormProps): JSX.Element {
   return (
     <form onSubmit={onSubmit} className="rounded-xl bg-bg border border-border p-4 sm:p-6 shadow-lg space-y-4">
       <h2 className="text-lg font-semibold heading-color">Shipment details</h2>
@@ -496,6 +549,8 @@ function ShipmentForm({ form, updateForm, submitting, hideQuantityInputs, quanti
         </Field>
       </div>
 
+      {extraFields}
+
       {hideQuantityInputs ? (
         <p className="text-xs opacity-70">This code uses only percentage duties, so you can skip the unit and quantity.</p>
       ) : (
@@ -560,6 +615,7 @@ function EmptyResultState(): JSX.Element {
 // "Extra-duty data last updated <date>" + a warning when the cached Chapter 99
 // data is old enough to miss recent tariff actions.
 function DataFreshnessNotice({ freshness }: { freshness: DataFreshness }): JSX.Element | null {
+  if (freshness.engine === 'official-measures') return <OfficialDataNotice freshness={freshness} />;
   if (!freshness.lastUpdatedAt) return null;
   const date = formatDataDate(freshness.lastUpdatedAt);
   if (!isStale(freshness.lastUpdatedAt)) {
@@ -572,6 +628,29 @@ function DataFreshnessNotice({ freshness }: { freshness: DataFreshness }): JSX.E
       <TextLink href={freshness.chapterReportHref ?? '/tariff-reports'} wrap>
         {freshness.chapterReportHref ? 'Open the chapter report →' : 'Browse tariff reports →'}
       </TextLink>
+    </NoticeCallout>
+  );
+}
+
+// Official-measures engine: rates come straight from the cited HTS edition and the reviewed
+// Chapter 99 measures, so there is no cache to go stale — say which edition and when the
+// measures were last reviewed against their official sources instead.
+function OfficialDataNotice({ freshness }: { freshness: DataFreshness }): JSX.Element {
+  const edition = freshness.htsEdition ? `the official HTS (${freshness.htsEdition})` : 'the official HTS';
+  if (!freshness.lastUpdatedAt) {
+    return (
+      <NoticeCallout tone="warning">
+        Base and trade-deal rates come from {edition}, but no reviewed extra-duty measures are loaded yet, so Chapter 99 duties are missing.{' '}
+        <TextLink href={freshness.chapterReportHref ?? '/tariff-reports'} wrap>
+          {freshness.chapterReportHref ? 'Open the chapter report →' : 'Browse tariff reports →'}
+        </TextLink>
+      </NoticeCallout>
+    );
+  }
+  return (
+    <NoticeCallout tone="neutral">
+      Base and trade-deal rates from {edition}. Extra duties from the Chapter 99 measures, last checked against official sources on{' '}
+      {formatDataDate(freshness.lastUpdatedAt)}.
     </NoticeCallout>
   );
 }
@@ -628,8 +707,13 @@ function ResultPanel({ result, submitting, onToggleExclusion }: ResultPanelProps
                       {line.variant ? ` (${line.variant})` : ''}
                     </div>
                     <div className="text-xs opacity-80 mt-0.5">
-                      {line.type === TariffCandidateCodeType.SPECIAL_CODE ? line.label || 'Special code' : 'Base HTS rate'}
+                      {line.type === TariffCandidateCodeType.SPECIAL_CODE
+                        ? line.label || 'Special code'
+                        : result.engine === 'official-measures'
+                        ? line.label
+                        : 'Base HTS rate'}
                     </div>
+                    {line.sources && <MeasureSources sources={line.sources} />}
                     {line.notes.length > 0 && (
                       <ul className="mt-1 text-xs text-tariff-accent list-disc list-inside">
                         {line.notes.map((n, i) => (
@@ -646,6 +730,8 @@ function ResultPanel({ result, submitting, onToggleExclusion }: ResultPanelProps
           </table>
         </div>
       </div>
+
+      {result.skippedMeasures && <SkippedMeasuresPanel skipped={result.skippedMeasures} />}
 
       {potentialExclusions.length > 0 && <PotentialExclusionsPanel exclusions={potentialExclusions} submitting={submitting} onToggle={onToggleExclusion} />}
 
