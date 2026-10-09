@@ -1,7 +1,7 @@
 import { ChapterArticle } from '@/components/industry-tariff/chapter/chapter-section-page';
 import ChapterPlaceholder from '@/components/industry-tariff/chapter/ChapterPlaceholder';
 import ChapterOverviewApproach2 from '@/components/industry-tariff/chapter/overview/ChapterOverviewApproach2';
-import PrototypeChapterToolsBar from '@/components/industry-tariff/chapter/PrototypeChapterToolsBar';
+import PrototypeChapterToolLinks from '@/components/industry-tariff/chapter/PrototypeChapterToolLinks';
 import { renderChapterToolsCrossLinks } from '@/components/industry-tariff/chapter/ChapterToolsCrossLinks';
 import type { ChapterTariffReportResponse } from '@/app/api/industry-tariff-reports/chapters/[chapterSlug]/route';
 import type { PageSeoDetails } from '@/scripts/industry-tariff-reports/tariff-types';
@@ -76,12 +76,13 @@ export default async function ChapterCoverPage({ params }: { params: Promise<{ c
   const prototype = getChapterPrototype(chapterSlug);
   if (prototype) {
     const chapterInfo = prototypeChapterInfo(prototype);
-    const prototypeCrossLinks = <PrototypeChapterToolsBar chapter={prototype.chapter} />;
+    const prototypeCrossLinks = <PrototypeChapterToolLinks chapter={prototype.chapter} />;
     return (
       <ChapterArticle
         chapter={chapterInfo}
         pageTitle={prototype.overview.h1}
         toolsCrossLinks={prototypeCrossLinks}
+        ratesAsOf={prototype.asOf}
         currentSlug="overview"
         updatedAt={prototype.asOf}
         sectionLabel="Rate table"

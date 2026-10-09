@@ -1,6 +1,7 @@
 import PrivateWrapper from '@/components/auth/PrivateWrapper';
 import ChapterDirectionSwitch from '@/components/industry-tariff/chapter/ChapterDirectionSwitch';
 import ChapterPlaceholder from '@/components/industry-tariff/chapter/ChapterPlaceholder';
+import ChapterPrototypeHeader from '@/components/industry-tariff/chapter/ChapterPrototypeHeader';
 import ChapterRelatedSections from '@/components/industry-tariff/chapter/ChapterRelatedSections';
 import ChapterSectionActions, { type ChapterSectionAction } from '@/components/industry-tariff/chapter/ChapterSectionActions';
 import { renderChapterToolsCrossLinks } from '@/components/industry-tariff/chapter/ChapterToolsCrossLinks';
@@ -147,6 +148,10 @@ interface ChapterArticleProps {
   // Which half of the chapter report the page belongs to. Chapters with export content show an
   // Import | Export switch above the section nav; the nav lists that direction's pages.
   direction?: ChapterReportDirection;
+  // Approach-2 chapters (issue #1770) pass the content file's `asOf` date. It switches the top of
+  // the card to ChapterPrototypeHeader (title, "Rates as of …" + tool links, section tabs), and
+  // `toolsCrossLinks` is then rendered inline on the "Rates as of" line instead of as a bar.
+  ratesAsOf?: string;
 }
 
 function toValidDate(value: string | undefined): Date | null {
@@ -166,6 +171,7 @@ export function ChapterArticle({
   createdAt,
   sectionLabel,
   direction = 'import',
+  ratesAsOf,
 }: ChapterArticleProps): JSX.Element {
   const publishedDate = toValidDate(createdAt);
   const modifiedDate = toValidDate(updatedAt);
@@ -173,12 +179,45 @@ export function ChapterArticle({
 
   return (
     <div className="py-4">
-      <article className="bg-bg rounded-lg shadow-sm border border-color p-3 sm:p-6 md:p-8" itemScope itemType="https://schema.org/Article">
+      {/* Approach-2 pages sit straight on the page background (no outer card), like the redesign. */}
+      <article
+        className={ratesAsOf ? 'bg-bg px-3 sm:px-0' : 'bg-bg rounded-lg shadow-sm border border-color p-3 sm:p-6 md:p-8'}
+        itemScope
+        itemType="https://schema.org/Article"
+      >
         {publishedDate && <meta itemProp="datePublished" content={publishedDate.toISOString()} />}
-        {toolsCrossLinks}
-        {hasChapterExports(chapter.slug) && <ChapterDirectionSwitch chapter={chapter} direction={direction} />}
-        <ChapterRelatedSections chapter={chapter} currentSlug={currentSlug} direction={direction} />
-        <ChapterArticleHeader chapter={chapter} pageTitle={pageTitle} actions={actions} currentSlug={currentSlug} showAdminActions={direction === 'import'} />
+        {ratesAsOf ? (
+          <ChapterPrototypeHeader
+            chapter={chapter}
+            pageTitle={pageTitle}
+            ratesAsOf={ratesAsOf}
+            toolLinks={toolsCrossLinks}
+            currentSlug={currentSlug}
+            direction={direction}
+            adminActions={
+              // Regenerate/edit actions exist for the import pages only.
+              direction === 'import' ? (
+                <PrivateWrapper>
+                  <ChapterSectionActions chapterSlug={chapter.slug} actions={actions} editHref={chapterEditHref(chapter.slug, currentSlug)} />
+                </PrivateWrapper>
+              ) : undefined
+            }
+            directionSwitch={hasChapterExports(chapter.slug) ? <ChapterDirectionSwitch chapter={chapter} direction={direction} layout="parts" /> : undefined}
+          />
+        ) : (
+          <>
+            {toolsCrossLinks}
+            {hasChapterExports(chapter.slug) && <ChapterDirectionSwitch chapter={chapter} direction={direction} />}
+            <ChapterRelatedSections chapter={chapter} currentSlug={currentSlug} direction={direction} />
+            <ChapterArticleHeader
+              chapter={chapter}
+              pageTitle={pageTitle}
+              actions={actions}
+              currentSlug={currentSlug}
+              showAdminActions={direction === 'import'}
+            />
+          </>
+        )}
         {children}
         <footer className="mt-8 pt-6 border-t border-color">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">

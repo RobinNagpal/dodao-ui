@@ -1,9 +1,10 @@
 'use client';
 
+import { rateEmphasis } from '@/components/industry-tariff/chapter/areas/rate-emphasis';
 import Heading from '@/components/ui/Heading';
 import Text from '@/components/ui/Text';
 import TextLink from '@/components/ui/TextLink';
-import ToggleChip from '@/components/ui/ToggleChip';
+import ToggleSwitch from '@/components/ui/ToggleSwitch';
 import Stack from '@/components/ui/containers/Stack';
 import InlineCard from '@/components/ui/sections/InlineCard';
 import { DataTable, MatrixCellButton, TableCell, TableHead, TableHeaderCell, TableRow, TableScroll } from '@/components/ui/tables/DataTable';
@@ -16,6 +17,8 @@ import React, { useMemo, useState } from 'react';
 
 interface CountryRateMatrixProps {
   areas: TariffIndustryAreasContent;
+  /** Section title + description, laid out beside the USMCA switch. */
+  heading: React.ReactNode;
 }
 
 function usd(value: number): string {
@@ -30,7 +33,7 @@ function linesLabel(lines: string[]): string {
   return `${lines[0]} + ${lines.length - 1} more`;
 }
 
-export default function CountryRateMatrix({ areas }: CountryRateMatrixProps): React.JSX.Element {
+export default function CountryRateMatrix({ areas, heading }: CountryRateMatrixProps): React.JSX.Element {
   const [usmcaClaimed, setUsmcaClaimed] = useState(true);
   // Open on the chapter's biggest lane, so the first breakdown shown is the one most readers need.
   const firstLane = areas.biggestLanes[0];
@@ -49,33 +52,37 @@ export default function CountryRateMatrix({ areas }: CountryRateMatrixProps): Re
 
   return (
     <Stack gap="lg">
-      {hasUsmca && (
-        <Stack direction="row" gap="sm" align="center" wrap>
-          <ToggleChip label="Canada & Mexico claiming USMCA" active={usmcaClaimed} onToggle={() => setUsmcaClaimed(!usmcaClaimed)} />
-          <Text as="span" size="xs" tone="muted">
-            Turn off to see the rate for goods that don&apos;t qualify for USMCA.
-          </Text>
-        </Stack>
-      )}
+      <Stack direction="row" gap="md" align="end" justify="between" wrap>
+        {heading}
+        {hasUsmca && <ToggleSwitch label="USMCA claimed (Canada, Mexico)" checked={usmcaClaimed} onToggle={() => setUsmcaClaimed(!usmcaClaimed)} />}
+      </Stack>
 
       <TableScroll>
         <DataTable>
-          <TableHead>
+          <TableHead look="plain">
             <TableRow>
-              <TableHeaderCell>Country of origin</TableHeaderCell>
+              <TableHeaderCell pinned>Country of origin</TableHeaderCell>
               {areas.groups.map((g) => (
                 <TableHeaderCell key={g.heading} title={g.label}>
-                  {g.heading} {g.shortLabel}
+                  <Stack gap="xxs">
+                    <span>{g.shortLabel}</span>
+                    <Text as="span" size="xs" tone="primary" font="mono">
+                      {g.heading}
+                    </Text>
+                  </Stack>
                 </TableHeaderCell>
               ))}
             </TableRow>
           </TableHead>
           <tbody>
             {areas.countries.map((c) => (
-              <TableRow key={c.country} emphasis={c.country === 'Any other country' ? 'header' : 'normal'}>
-                <TableCell>
+              // `atLeast` marks the "any other country" floor row: no single trade figure of its own.
+              <TableRow key={c.country} emphasis={c.rule.atLeast ? 'group' : 'normal'}>
+                <TableCell pinned>
                   <Stack gap="xxs">
-                    <span>{c.country}</span>
+                    <Text as="span" weight="semibold" tone="white">
+                      {c.country}
+                    </Text>
                     <Text as="span" size="xs" tone="muted">
                       {usd(c.importsUsd)} in {areas.tradeYear}
                     </Text>
@@ -89,9 +96,10 @@ export default function CountryRateMatrix({ areas }: CountryRateMatrixProps): Re
                       <MatrixCellButton
                         label={`${g.label} from ${c.country}`}
                         primary={cv[mode].totals.join(' · ')}
-                        secondary={c.country === 'Any other country' ? undefined : usd(cv.importsUsd)}
+                        emphasis={rateEmphasis(cv[mode].totals)}
+                        secondary={c.rule.atLeast ? undefined : usd(cv.importsUsd)}
                         selected={isSelected}
-                        dim={c.country !== 'Any other country' && cv.importsUsd === 0}
+                        dim={!c.rule.atLeast && cv.importsUsd === 0}
                         onSelect={() => setSelected({ country: c.country, heading: g.heading })}
                       />
                     </TableCell>
@@ -104,24 +112,27 @@ export default function CountryRateMatrix({ areas }: CountryRateMatrixProps): Re
       </TableScroll>
 
       {country && group && cell && rates && (
-        <InlineCard padding="roomy">
+        <InlineCard surface="highlight" padding="spacious">
           <Stack gap="md">
-            <Stack gap="xs">
+            <Stack direction="row" gap="md" align="baseline" justify="between" wrap>
               <Heading as="h3" size="md" tone="white">
-                {group.label} ({group.heading}) from {country.country}
-                {country.rule.kind === 'usmca' ? (usmcaClaimed ? ', claiming USMCA' : ', not claiming USMCA') : ''}
+                {country.country} · {group.heading} {group.label}
+                {country.rule.kind === 'usmca' ? (usmcaClaimed ? ' · USMCA claimed' : ' · no USMCA claim') : ''}
               </Heading>
-              <Text size="sm" tone="muted">
-                {country.rule.label}
-                {country.country !== 'Any other country' ? ` ${areas.tradeYear} imports: ${usd(cell.importsUsd)}.` : ''}
+              <Text as="span" size="base" weight="bold" tone="primary">
+                {rates.totals.join(' · ')}
               </Text>
             </Stack>
+            <Text size="sm">
+              {country.rule.label}
+              {!country.rule.atLeast ? ` ${areas.tradeYear} imports: ${usd(cell.importsUsd)}.` : ''}
+            </Text>
             <TableScroll>
               <DataTable>
-                <TableHead>
+                <TableHead look="plain">
                   <TableRow>
-                    <TableHeaderCell>Lines</TableHeaderCell>
                     <TableHeaderCell>Base rate</TableHeaderCell>
+                    <TableHeaderCell>Lines</TableHeaderCell>
                     <TableHeaderCell>Extra duty</TableHeaderCell>
                     <TableHeaderCell>Preference</TableHeaderCell>
                     <TableHeaderCell>Total</TableHeaderCell>
@@ -130,13 +141,17 @@ export default function CountryRateMatrix({ areas }: CountryRateMatrixProps): Re
                 <tbody>
                   {rates.breakdown.map((row) => (
                     <TableRow key={`${row.base}-${row.lines[0]}`}>
+                      <TableCell variant="rate" tone="emphasis">
+                        {row.base}
+                      </TableCell>
                       <TableCell variant="code">
                         {linesLabel(row.lines)} ({row.lineCount} {row.lineCount === 1 ? 'line' : 'lines'})
                       </TableCell>
-                      <TableCell variant="rate">{row.base}</TableCell>
-                      <TableCell variant="rate">{row.extra}</TableCell>
+                      <TableCell variant="note">{row.extra}</TableCell>
                       <TableCell variant="rateWrap">{row.preference}</TableCell>
-                      <TableCell variant="rate">{row.total}</TableCell>
+                      <TableCell variant="rateWrap" tone="primary">
+                        {row.total}
+                      </TableCell>
                     </TableRow>
                   ))}
                 </tbody>
@@ -146,7 +161,7 @@ export default function CountryRateMatrix({ areas }: CountryRateMatrixProps): Re
               {country.rule.sourceIds.map((id) => {
                 const source = sources.get(id);
                 return source ? (
-                  <TextLink key={id} href={source.url} size="xs">
+                  <TextLink key={id} href={source.url} size="xs" wrap>
                     {source.citation} ↗
                   </TextLink>
                 ) : null;

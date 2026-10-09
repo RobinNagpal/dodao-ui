@@ -12,10 +12,10 @@ import React from 'react';
  */
 
 const field = cva(
-  'relative flex items-center rounded-md border border-border bg-surface-2 transition-colors focus-within:border-primary focus-within:ring-1 focus-within:ring-primary/40',
+  'relative flex items-center rounded-md border border-border transition-colors focus-within:border-primary focus-within:ring-1 focus-within:ring-primary/40',
   {
     variants: {
-      size: { md: 'h-10', sm: 'h-9' },
+      size: { lg: 'h-12 rounded-lg bg-bg', md: 'h-10 bg-surface-2', sm: 'h-9 bg-surface-2' },
     },
     defaultVariants: { size: 'md' },
   }
@@ -43,7 +43,11 @@ export default function SearchField({ value, onChange, placeholder, label, resul
           aria-label={label}
           placeholder={placeholder}
           onChange={(e) => onChange(e.target.value)}
-          className="h-full w-full appearance-none border-0 bg-transparent px-2 text-sm text-body shadow-none outline-none ring-0 placeholder:text-muted focus:border-0 focus:outline-none focus:ring-0 [&::-webkit-search-cancel-button]:appearance-none"
+          className={cn(
+            'h-full w-full appearance-none border-0 bg-transparent px-2 text-body',
+            size === 'lg' ? 'text-base' : 'text-sm',
+            'shadow-none outline-none ring-0 placeholder:text-muted focus:border-0 focus:outline-none focus:ring-0 [&::-webkit-search-cancel-button]:appearance-none'
+          )}
         />
         {value.length > 0 && (
           <button

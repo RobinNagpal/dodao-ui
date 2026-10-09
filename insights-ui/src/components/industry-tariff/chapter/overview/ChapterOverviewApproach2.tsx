@@ -1,9 +1,9 @@
 import ChapterRateTable from '@/components/industry-tariff/chapter/overview/ChapterRateTable';
 import DefinitionList from '@/components/ui/DefinitionList';
 import Heading from '@/components/ui/Heading';
-import MetricCell from '@/components/ui/MetricCell';
 import Text from '@/components/ui/Text';
-import MetricGrid from '@/components/ui/containers/MetricGrid';
+import MetricGrid, { cardGridColumns } from '@/components/ui/containers/MetricGrid';
+import StatCardGrid from '@/components/ui/containers/StatCardGrid';
 import Stack from '@/components/ui/containers/Stack';
 import CardSection from '@/components/ui/sections/CardSection';
 import InlineCard from '@/components/ui/sections/InlineCard';
@@ -29,66 +29,47 @@ interface ChapterOverviewApproach2Props {
   content: TariffChapterPrototype;
 }
 
-function formatAsOf(iso: string): string {
-  const date = new Date(iso);
-  if (Number.isNaN(date.getTime())) return iso;
-  return date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
-}
-
 export default function ChapterOverviewApproach2({ content }: ChapterOverviewApproach2Props): React.JSX.Element {
-  const { chapter, overview, asOf, sources } = content;
+  const { chapter, overview, sources } = content;
 
   return (
     <Stack gap="2xl">
       {/* The page H1 is rendered by the ChapterArticle shell from `overview.h1`. */}
-      <Stack gap="md">
-        <Text size="xs" tone="muted">
-          Section {chapter.sectionRoman} · {chapter.sectionTitle} · rates as of {formatAsOf(asOf)}
-        </Text>
-        <MarkdownContent variant="body" html={parseChapterBodyMarkdown(overview.intro)} />
-      </Stack>
+      <MarkdownContent variant="body" html={parseChapterBodyMarkdown(overview.intro)} />
 
       <Stack gap="md">
-        <MetricGrid columns="2-4" gap="md">
-          {overview.stats.map((stat) => (
-            <MetricCell key={stat.label} label={stat.label} value={stat.value} />
-          ))}
-        </MetricGrid>
+        <StatCardGrid stats={overview.stats} />
         <Text size="xs" tone="muted">
           <Link href={chapterSectionHref(chapter.slug, 'understand-industry')}>Full trade statistics →</Link>
         </Text>
       </Stack>
 
-      <CardSection padding="normal">
-        <Stack gap="lg">
-          <Stack gap="xs">
-            <SectionHeading as="h2">Jump to a product group</SectionHeading>
-            <Text size="sm" tone="muted">
-              Chapter {chapter.padded} splits into six headings. Each tile shows the general rates in that heading and how many of its lines actually carry a
-              duty.
-            </Text>
-          </Stack>
-          <MetricGrid columns="1-2-3" gap="md">
-            {overview.productGroups.map((group) => (
-              <LinkTile
-                key={group.heading}
-                href={`#${group.heading}`}
-                eyebrow={group.heading}
-                title={group.label}
-                meta={group.rateSummary}
-                footer={`${group.lineCount} lines · ${group.dutiableLineCount} with a duty · try “${group.searchExamples[0]}”`}
-              >
-                {group.blurb}
-              </LinkTile>
-            ))}
-          </MetricGrid>
-        </Stack>
-      </CardSection>
+      <Stack as="section" gap="md">
+        <SectionHeading as="h2" size="lg" weight="bold" tone="heading">
+          The {overview.productGroups.length} headings in Chapter {chapter.padded}
+        </SectionHeading>
+        <MetricGrid columns={cardGridColumns(overview.productGroups.length)} gap="md">
+          {overview.productGroups.map((group) => (
+            <LinkTile
+              key={group.heading}
+              href={`#${group.heading}`}
+              eyebrow={group.heading}
+              aside={group.dutiableLineCount > 0 ? `${group.lineCount} lines · ${group.dutiableLineCount} with a duty` : `${group.lineCount} lines`}
+              title={group.label}
+              meta={group.rateSummary}
+            >
+              {group.blurb}
+            </LinkTile>
+          ))}
+        </MetricGrid>
+      </Stack>
 
-      <CardSection padding="normal" id="rate-table">
+      <CardSection padding="roomy" bordered id="rate-table">
         <Stack gap="lg">
           <Stack gap="xs">
-            <SectionHeading as="h2">Every HTS Chapter {chapter.padded} tariff line and its duty rate</SectionHeading>
+            <SectionHeading as="h2" size="lg" weight="bold" tone="heading">
+              Every HTS Chapter {chapter.padded} tariff line and its duty rate
+            </SectionHeading>
             <Text size="sm" tone="muted">
               All {overview.rateTable.rowCount} rows of the schedule, with the general (MFN) rate, the free-trade and preference rates, the Column 2 rate and
               the reporting unit. Search by product name or HTS code; select a line for its full description and preference list.
@@ -98,34 +79,34 @@ export default function ChapterOverviewApproach2({ content }: ChapterOverviewApp
         </Stack>
       </CardSection>
 
-      <CardSection padding="normal">
-        <Stack gap="lg">
-          <SectionHeading as="h2">What the rate works out to</SectionHeading>
-          <Stack gap="md">
-            {overview.workedExamples.map((example) => (
-              <InlineCard key={example.title} padding="roomy">
-                <Stack gap="xs">
-                  <Stack direction="row" gap="sm" align="baseline" wrap>
-                    <Heading as="h3" size="md" tone="white">
-                      {example.title}
-                    </Heading>
-                    <Text as="span" size="xs" tone="muted">
-                      {example.line}
-                    </Text>
-                  </Stack>
-                  <MarkdownContent variant="plain" html={parseChapterBodyMarkdown(example.body)} />
-                </Stack>
-              </InlineCard>
-            ))}
-          </Stack>
-        </Stack>
-      </CardSection>
+      <Stack as="section" gap="md">
+        <SectionHeading as="h2" size="lg" weight="bold" tone="heading">
+          What the rate works out to
+        </SectionHeading>
+        <MetricGrid columns={cardGridColumns(overview.workedExamples.length)} gap="lg">
+          {overview.workedExamples.map((example) => (
+            <InlineCard key={example.title} surface="card" padding="spacious">
+              <Stack gap="sm">
+                <Text as="span" size="sm" tone="primary" font="mono">
+                  {example.line}
+                </Text>
+                <Heading as="h3" size="lg" tone="white">
+                  {example.title}
+                </Heading>
+                <MarkdownContent variant="plain" html={parseChapterBodyMarkdown(example.body)} />
+              </Stack>
+            </InlineCard>
+          ))}
+        </MetricGrid>
+      </Stack>
 
       {overview.spiLegend.length > 0 && (
-        <CardSection padding="normal">
+        <CardSection padding="roomy" bordered>
           <Stack gap="lg">
             <Stack gap="xs">
-              <SectionHeading as="h2">What the preference codes mean</SectionHeading>
+              <SectionHeading as="h2" size="md" weight="bold" tone="heading">
+                What the preference codes mean
+              </SectionHeading>
               <Text size="sm" tone="muted">
                 These are the codes behind the program count in the FTA column of the table above (expand a row to see them). A shipment claims one of these
                 programs at entry, and claiming it is what turns the general rate into Free.
@@ -137,9 +118,11 @@ export default function ChapterOverviewApproach2({ content }: ChapterOverviewApp
       )}
 
       {(overview.notes.chapterNotes || overview.notes.additionalUsNotes) && (
-        <CardSection padding="normal">
+        <CardSection padding="roomy" bordered>
           <Stack gap="lg">
-            <SectionHeading as="h2">Chapter notes</SectionHeading>
+            <SectionHeading as="h2" size="md" weight="bold" tone="heading">
+              Chapter notes
+            </SectionHeading>
             <Stack gap="md">
               {overview.notes.chapterNotes && <MarkdownContent variant="plain" html={parseChapterBodyMarkdown(overview.notes.chapterNotes)} />}
               {overview.notes.additionalUsNotes && <MarkdownContent variant="plain" html={parseChapterBodyMarkdown(overview.notes.additionalUsNotes)} />}

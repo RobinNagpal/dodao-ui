@@ -1,9 +1,9 @@
 import ImportsByYearChart from '@/components/industry-tariff/chapter/industry/ImportsByYearChart';
-import MetricCell from '@/components/ui/MetricCell';
+import ShareBar from '@/components/ui/ShareBar';
 import Text from '@/components/ui/Text';
 import TextLink from '@/components/ui/TextLink';
-import MetricGrid from '@/components/ui/containers/MetricGrid';
 import Stack from '@/components/ui/containers/Stack';
+import StatCardGrid from '@/components/ui/containers/StatCardGrid';
 import CardSection from '@/components/ui/sections/CardSection';
 import MarkdownContent from '@/components/ui/sections/MarkdownContent';
 import SectionHeading from '@/components/ui/sections/SectionHeading';
@@ -42,9 +42,9 @@ function change(pct: number | null): string | null {
   return `${pct > 0 ? '+' : ''}${pct.toFixed(1)}%`;
 }
 
-function formatDate(iso: string): string {
-  const date = new Date(`${iso}T00:00:00Z`);
-  return Number.isNaN(date.getTime()) ? iso : date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric', timeZone: 'UTC' });
+/** A share bar's length, scaled so the largest row in its table fills the track. */
+function barWidth(sharePct: number, maxSharePct: number): number {
+  return maxSharePct > 0 ? (sharePct / maxSharePct) * 100 : 0;
 }
 
 export default function ChapterIndustryStatsApproach2({ content, industry }: ChapterIndustryStatsApproach2Props): React.JSX.Element {
@@ -56,25 +56,36 @@ export default function ChapterIndustryStatsApproach2({ content, industry }: Cha
   const otherLines = industry.byLine.slice(TOP_LINES);
   const totalLatest = sum(industry.byLine, 'importsUsd');
   const latestTotal = industry.byYear.find((y) => y.year === latestYear)?.totalUsd ?? 0;
+  const othersSharePct = latestTotal ? (industry.othersImportsUsd / latestTotal) * 100 : null;
+  const otherLinesSharePct = totalLatest > 0 ? (sum(otherLines, 'importsUsd') / totalLatest) * 100 : null;
+  const maxCountryShare = Math.max(...industry.byCountry.map((c) => c.sharePct), othersSharePct ?? 0);
+  const maxLineShare = Math.max(...topLines.map((l) => l.sharePct ?? 0), otherLinesSharePct ?? 0);
 
   return (
     <Stack gap="2xl">
-      {/* The page H1 is rendered by the ChapterArticle shell from `industry.h1`. */}
+      {/* The page H1 and the "Rates as of" date are rendered by the ChapterArticle shell. */}
       <Stack gap="md">
         <Text size="xs" tone="muted">
-          {industry.byYear[0]?.year}–{latestYear} · {industry.valueBasis} · last checked {formatDate(industry.lastCheckedAt)}
+          {industry.byYear[0]?.year}–{latestYear} · {industry.valueBasis}
         </Text>
-        <MetricGrid columns="2-3-5" gap="md">
-          {industry.stats.map((stat) => (
-            <MetricCell key={stat.label} label={stat.label} value={stat.value} />
-          ))}
-        </MetricGrid>
+        <StatCardGrid stats={industry.stats} />
       </Stack>
 
-      <CardSection padding="normal">
+      <CardSection padding="roomy" bordered>
+        <Stack gap="md">
+          <SectionHeading as="h2" size="lg" weight="bold" tone="heading">
+            Why imports moved
+          </SectionHeading>
+          <MarkdownContent variant="body" html={parseChapterBodyMarkdown(industry.why)} />
+        </Stack>
+      </CardSection>
+
+      <CardSection padding="roomy" bordered>
         <Stack gap="lg">
           <Stack gap="xs">
-            <SectionHeading as="h2">Imports over time</SectionHeading>
+            <SectionHeading as="h2" size="lg" weight="bold" tone="heading">
+              Imports over time
+            </SectionHeading>
             <Text size="sm" tone="muted">
               {industry.byYearCaption}
             </Text>
@@ -82,23 +93,31 @@ export default function ChapterIndustryStatsApproach2({ content, industry }: Cha
           <ImportsByYearChart byYear={industry.byYear} partners={industry.byYearPartners} chapterTitle={chapter.title} />
           <TableScroll>
             <DataTable>
-              <TableHead>
+              <TableHead look="plain">
                 <TableRow>
                   <TableHeaderCell>Year</TableHeaderCell>
-                  <TableHeaderCell>{industry.byYearPartners[0]}</TableHeaderCell>
-                  <TableHeaderCell>{industry.byYearPartners[1]}</TableHeaderCell>
-                  <TableHeaderCell>Rest of world</TableHeaderCell>
-                  <TableHeaderCell>Total</TableHeaderCell>
+                  <TableHeaderCell align="right">{industry.byYearPartners[0]}</TableHeaderCell>
+                  <TableHeaderCell align="right">{industry.byYearPartners[1]}</TableHeaderCell>
+                  <TableHeaderCell align="right">Rest of world</TableHeaderCell>
+                  <TableHeaderCell align="right">Total</TableHeaderCell>
                 </TableRow>
               </TableHead>
               <tbody>
                 {industry.byYear.map((y) => (
                   <TableRow key={y.year}>
                     <TableCell variant="code">{y.year}</TableCell>
-                    <TableCell variant="rate">{usd(y.partnerAUsd)}</TableCell>
-                    <TableCell variant="rate">{usd(y.partnerBUsd)}</TableCell>
-                    <TableCell variant="rate">{usd(y.restUsd)}</TableCell>
-                    <TableCell variant="rate">{usd(y.totalUsd)}</TableCell>
+                    <TableCell variant="rate" align="right">
+                      {usd(y.partnerAUsd)}
+                    </TableCell>
+                    <TableCell variant="rate" align="right">
+                      {usd(y.partnerBUsd)}
+                    </TableCell>
+                    <TableCell variant="rate" align="right">
+                      {usd(y.restUsd)}
+                    </TableCell>
+                    <TableCell variant="rate" align="right" tone="emphasis">
+                      {usd(y.totalUsd)}
+                    </TableCell>
                   </TableRow>
                 ))}
               </tbody>
@@ -107,17 +126,12 @@ export default function ChapterIndustryStatsApproach2({ content, industry }: Cha
         </Stack>
       </CardSection>
 
-      <CardSection padding="normal">
-        <Stack gap="lg">
-          <SectionHeading as="h2">What the numbers say</SectionHeading>
-          <MarkdownContent variant="body" html={parseChapterBodyMarkdown(industry.why)} />
-        </Stack>
-      </CardSection>
-
-      <CardSection padding="normal">
+      <CardSection padding="roomy" bordered>
         <Stack gap="lg">
           <Stack gap="xs">
-            <SectionHeading as="h2">By country, {latestYear}</SectionHeading>
+            <SectionHeading as="h2" size="lg" weight="bold" tone="heading">
+              By country, {latestYear}
+            </SectionHeading>
             <Text size="sm" tone="muted">
               The top {industry.byCountry.length} source countries. For the rate each country pays by product group, see{' '}
               <TextLink href={chapterSectionHref(chapter.slug, 'industry-areas')}>Industry areas</TextLink>.
@@ -125,13 +139,12 @@ export default function ChapterIndustryStatsApproach2({ content, industry }: Cha
           </Stack>
           <TableScroll>
             <DataTable>
-              <TableHead>
+              <TableHead look="plain">
                 <TableRow>
                   <TableHeaderCell>Country</TableHeaderCell>
-                  <TableHeaderCell>Imports {latestYear}</TableHeaderCell>
-                  <TableHeaderCell>Share</TableHeaderCell>
-                  <TableHeaderCell>{priorYear}</TableHeaderCell>
-                  <TableHeaderCell>Change</TableHeaderCell>
+                  <TableHeaderCell align="right">{latestYear}</TableHeaderCell>
+                  <TableHeaderCell align="right">vs {priorYear}</TableHeaderCell>
+                  <TableHeaderCell width="wide">Share of {latestYear} imports</TableHeaderCell>
                   <TableHeaderCell>Biggest product group</TableHeaderCell>
                   {hasCountryDuty && <TableHeaderCell>Duty paid</TableHeaderCell>}
                 </TableRow>
@@ -139,29 +152,35 @@ export default function ChapterIndustryStatsApproach2({ content, industry }: Cha
               <tbody>
                 {industry.byCountry.map((c) => (
                   <TableRow key={c.countryCode}>
-                    <TableCell>{c.country}</TableCell>
-                    <TableCell variant="rate">{usd(c.importsUsd)}</TableCell>
-                    <TableCell variant="rate">{c.sharePct.toFixed(1)}%</TableCell>
-                    <TableCell variant="rate" tone="muted">
-                      {usd(c.priorImportsUsd)}
+                    <TableCell tone="emphasis">{c.country}</TableCell>
+                    <TableCell variant="rate" align="right" tone="emphasis">
+                      {usd(c.importsUsd)}
                     </TableCell>
-                    <TableCell variant="rate">{change(c.changePct) ?? <EmptyCellValue />}</TableCell>
-                    <TableCell variant="rate" tone="muted">
-                      {c.mainHeading ? `${c.mainHeading} ${c.mainHeadingLabel ?? ''}` : <EmptyCellValue />}
+                    <TableCell variant="rate" align="right">
+                      {change(c.changePct) ?? <EmptyCellValue />}
                     </TableCell>
+                    <TableCell>
+                      <ShareBar tone="primary" widthPct={barWidth(c.sharePct, maxCountryShare)} label={`${c.sharePct.toFixed(1)}%`} />
+                    </TableCell>
+                    <TableCell variant="note">{c.mainHeading ? `${c.mainHeading} ${c.mainHeadingLabel ?? ''}` : <EmptyCellValue />}</TableCell>
                     {hasCountryDuty && <TableCell variant="rate">{c.dutyPaidUsd !== null ? usd(c.dutyPaidUsd) : <EmptyCellValue />}</TableCell>}
                   </TableRow>
                 ))}
-                <TableRow emphasis="header">
+                <TableRow emphasis="group">
                   <TableCell>All other countries</TableCell>
-                  <TableCell variant="rate">{usd(industry.othersImportsUsd)}</TableCell>
-                  <TableCell variant="rate">{latestTotal ? `${((industry.othersImportsUsd / latestTotal) * 100).toFixed(1)}%` : <EmptyCellValue />}</TableCell>
-                  <TableCell variant="rate" tone="muted">
-                    {usd(industry.othersPriorImportsUsd)}
+                  <TableCell variant="rate" align="right">
+                    {usd(industry.othersImportsUsd)}
                   </TableCell>
-                  <TableCell variant="rate">
+                  <TableCell variant="rate" align="right">
                     {industry.othersPriorImportsUsd ? (
                       change(((industry.othersImportsUsd - industry.othersPriorImportsUsd) / industry.othersPriorImportsUsd) * 100)
+                    ) : (
+                      <EmptyCellValue />
+                    )}
+                  </TableCell>
+                  <TableCell>
+                    {othersSharePct !== null ? (
+                      <ShareBar tone="primary" widthPct={barWidth(othersSharePct, maxCountryShare)} label={`${othersSharePct.toFixed(1)}%`} />
                     ) : (
                       <EmptyCellValue />
                     )}
@@ -181,10 +200,12 @@ export default function ChapterIndustryStatsApproach2({ content, industry }: Cha
         </Stack>
       </CardSection>
 
-      <CardSection padding="normal">
+      <CardSection padding="roomy" bordered>
         <Stack gap="lg">
           <Stack gap="xs">
-            <SectionHeading as="h2">By product, {latestYear}</SectionHeading>
+            <SectionHeading as="h2" size="lg" weight="bold" tone="heading">
+              By product, {latestYear}
+            </SectionHeading>
             <Text size="sm" tone="muted">
               Imports by 6-digit product, largest first. These are the international 6-digit codes; each covers one or more of the 10-digit lines on the{' '}
               <TextLink href={chapterCoverHref(chapter.slug)}>rate table</TextLink>.
@@ -192,44 +213,55 @@ export default function ChapterIndustryStatsApproach2({ content, industry }: Cha
           </Stack>
           <TableScroll maxHeight="lg">
             <DataTable>
-              <TableHead sticky>
+              <TableHead sticky look="plain">
                 <TableRow>
                   <TableHeaderCell>HS code</TableHeaderCell>
                   <TableHeaderCell width="wide">Product</TableHeaderCell>
-                  <TableHeaderCell>Imports {latestYear}</TableHeaderCell>
-                  <TableHeaderCell>Share</TableHeaderCell>
-                  <TableHeaderCell>{priorYear}</TableHeaderCell>
-                  <TableHeaderCell>Change</TableHeaderCell>
+                  <TableHeaderCell align="right">{latestYear}</TableHeaderCell>
+                  <TableHeaderCell align="right">vs {priorYear}</TableHeaderCell>
+                  <TableHeaderCell width="quarter">Share</TableHeaderCell>
                   {hasLineDuty && <TableHeaderCell>Duty paid</TableHeaderCell>}
                 </TableRow>
               </TableHead>
               <tbody>
                 {topLines.map((line) => (
                   <TableRow key={line.hs6}>
-                    <TableCell variant="code">{line.hs6}</TableCell>
-                    <TableCell>{line.description}</TableCell>
-                    <TableCell variant="rate">{usd(line.importsUsd)}</TableCell>
-                    <TableCell variant="rate">{line.sharePct !== null ? `${line.sharePct.toFixed(1)}%` : <EmptyCellValue />}</TableCell>
-                    <TableCell variant="rate" tone="muted">
-                      {usd(line.priorImportsUsd)}
+                    <TableCell variant="code" tone="primary">
+                      {line.hs6}
                     </TableCell>
-                    <TableCell variant="rate">{change(line.changePct) ?? <EmptyCellValue />}</TableCell>
+                    <TableCell>{line.description}</TableCell>
+                    <TableCell variant="rate" align="right" tone="emphasis">
+                      {usd(line.importsUsd)}
+                    </TableCell>
+                    <TableCell variant="rate" align="right">
+                      {change(line.changePct) ?? <EmptyCellValue />}
+                    </TableCell>
+                    <TableCell>
+                      {line.sharePct !== null ? (
+                        <ShareBar tone="teal" widthPct={barWidth(line.sharePct, maxLineShare)} label={`${line.sharePct.toFixed(1)}%`} />
+                      ) : (
+                        <EmptyCellValue />
+                      )}
+                    </TableCell>
                     {hasLineDuty && <TableCell variant="rate">{line.dutyPaidUsd !== null ? usd(line.dutyPaidUsd) : <EmptyCellValue />}</TableCell>}
                   </TableRow>
                 ))}
                 {otherLines.length > 0 && (
-                  <TableRow emphasis="header">
+                  <TableRow emphasis="group">
                     <TableCell tone="muted">—</TableCell>
                     <TableCell>All other products ({otherLines.length})</TableCell>
-                    <TableCell variant="rate">{usd(sum(otherLines, 'importsUsd'))}</TableCell>
-                    <TableCell variant="rate">
-                      {totalLatest > 0 ? `${((sum(otherLines, 'importsUsd') / totalLatest) * 100).toFixed(1)}%` : <EmptyCellValue />}
+                    <TableCell variant="rate" align="right">
+                      {usd(sum(otherLines, 'importsUsd'))}
                     </TableCell>
-                    <TableCell variant="rate" tone="muted">
-                      {usd(sum(otherLines, 'priorImportsUsd'))}
-                    </TableCell>
-                    <TableCell variant="rate">
+                    <TableCell variant="rate" align="right">
                       <EmptyCellValue />
+                    </TableCell>
+                    <TableCell>
+                      {otherLinesSharePct !== null ? (
+                        <ShareBar tone="teal" widthPct={barWidth(otherLinesSharePct, maxLineShare)} label={`${otherLinesSharePct.toFixed(1)}%`} />
+                      ) : (
+                        <EmptyCellValue />
+                      )}
                     </TableCell>
                     {hasLineDuty && (
                       <TableCell variant="rate">
@@ -244,24 +276,27 @@ export default function ChapterIndustryStatsApproach2({ content, industry }: Cha
         </Stack>
       </CardSection>
 
-      <Stack gap="xs">
-        <Text size="xs" tone="muted">
-          {industry.coverageNote}
-        </Text>
-        <Stack direction="row" gap="md" wrap>
-          {industry.sources.map((source) =>
-            source.url ? (
-              <TextLink key={source.label} href={source.url} size="xs" wrap>
-                {source.label} ↗
-              </TextLink>
-            ) : (
-              <Text key={source.label} as="span" size="xs" tone="muted">
-                {source.label}
-              </Text>
-            )
-          )}
+      <CardSection padding="roomy" bordered>
+        <Stack gap="md">
+          <SectionHeading as="h2" size="md" weight="bold" tone="heading">
+            About these numbers
+          </SectionHeading>
+          <Text size="sm">{industry.coverageNote}</Text>
+          <Stack gap="xs">
+            {industry.sources.map((source) =>
+              source.url ? (
+                <TextLink key={source.label} href={source.url} wrap>
+                  {source.label} ↗
+                </TextLink>
+              ) : (
+                <Text key={source.label} size="sm" tone="muted">
+                  {source.label}
+                </Text>
+              )
+            )}
+          </Stack>
         </Stack>
-      </Stack>
+      </CardSection>
     </Stack>
   );
 }

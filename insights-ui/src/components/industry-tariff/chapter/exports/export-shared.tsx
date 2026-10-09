@@ -1,13 +1,7 @@
 import { type StatusBadgeVariant } from '@/components/ui/StatusBadge';
-import Text from '@/components/ui/Text';
-import TextLink from '@/components/ui/TextLink';
-import Stack from '@/components/ui/containers/Stack';
-import SectionHeading from '@/components/ui/sections/SectionHeading';
 import type { TariffExportMarketStatus } from '@/types/tariff-chapter-exports';
-import type { TariffUpdateSource } from '@/types/tariff-chapter-prototype';
-import React from 'react';
 
-// Formatting and small blocks shared by the three export pages of a chapter report.
+// Formatting shared by the three export pages of a chapter report.
 
 export function usd(value: number): string {
   if (value >= 1e9) return `$${(value / 1e9).toFixed(2)}B`;
@@ -21,9 +15,9 @@ export function change(pct: number | null): string | null {
   return `${pct > 0 ? '+' : ''}${pct.toFixed(1)}%`;
 }
 
-export function formatDate(iso: string): string {
-  const date = new Date(`${iso}T00:00:00Z`);
-  return Number.isNaN(date.getTime()) ? iso : date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric', timeZone: 'UTC' });
+/** A share bar's length, scaled so the largest row in its table fills the track. */
+export function barWidth(sharePct: number, maxSharePct: number): number {
+  return maxSharePct > 0 ? (sharePct / maxSharePct) * 100 : 0;
 }
 
 export const EXPORT_STATUS_BADGE: Record<TariffExportMarketStatus, { variant: StatusBadgeVariant; label: string }> = {
@@ -33,23 +27,3 @@ export const EXPORT_STATUS_BADGE: Record<TariffExportMarketStatus, { variant: St
   raisedThenRemoved: { variant: 'warning', label: 'Raised, then removed' },
   pending: { variant: 'info', label: 'Change pending' },
 };
-
-export function ExportSources({ sources }: { sources: TariffUpdateSource[] }): React.JSX.Element {
-  return (
-    <Stack gap="sm">
-      <SectionHeading as="h2" size="sm">
-        Sources
-      </SectionHeading>
-      <Stack gap="xs">
-        {sources.map((source) => (
-          <Text key={source.id} size="xs" tone="muted">
-            <TextLink href={source.url} size="xs">
-              {source.citation}
-            </TextLink>{' '}
-            — {source.document}: {source.title}
-          </Text>
-        ))}
-      </Stack>
-    </Stack>
-  );
-}

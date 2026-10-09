@@ -24,14 +24,21 @@ interface ChapterRelatedSectionsProps {
 // Card labels intentionally omit the chapter title because the HTS chapter titles ("Dairy produce;
 // birds eggs; natural honey; edible products of animal origin, not elsewhere specified or included")
 // are long enough to drown out the per-section labels.
+/** Every page of the chapter report for one direction, in nav order. Shared with the Approach-2 header tabs. */
+export function chapterReportNavItems(
+  chapter: ChapterRouteInfo,
+  direction: ChapterReportDirection = 'import'
+): Array<{ slug: string; href: string; label: string }> {
+  return direction === 'export'
+    ? CHAPTER_EXPORT_SECTIONS.map((section) => ({ slug: section.slug, href: chapterSectionHref(chapter.slug, section.slug), label: section.label }))
+    : [
+        { slug: 'overview', href: chapterCoverHref(chapter.slug), label: 'Overview' },
+        ...CHAPTER_REPORT_SECTIONS.map((section) => ({ slug: section.slug, href: chapterSectionHref(chapter.slug, section.slug), label: section.label })),
+      ];
+}
+
 export default function ChapterRelatedSections({ chapter, currentSlug, direction = 'import' }: ChapterRelatedSectionsProps): JSX.Element {
-  const items: Array<{ slug: string; href: string; label: string }> =
-    direction === 'export'
-      ? CHAPTER_EXPORT_SECTIONS.map((section) => ({ slug: section.slug, href: chapterSectionHref(chapter.slug, section.slug), label: section.label }))
-      : [
-          { slug: 'overview', href: chapterCoverHref(chapter.slug), label: 'Overview' },
-          ...CHAPTER_REPORT_SECTIONS.map((section) => ({ slug: section.slug, href: chapterSectionHref(chapter.slug, section.slug), label: section.label })),
-        ];
+  const items = chapterReportNavItems(chapter, direction);
 
   return (
     <nav aria-label="Chapter report sections" className="mb-6">

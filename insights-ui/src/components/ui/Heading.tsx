@@ -17,6 +17,7 @@ const heading = cva('', {
       lg: 'text-lg',
       xl: 'text-xl',
       '2xl': 'text-2xl',
+      page: 'text-2xl md:text-3xl tracking-tight',
       display: 'text-2xl sm:text-4xl tracking-tight',
     },
     weight: { medium: 'font-medium', semibold: 'font-semibold', bold: 'font-bold' },

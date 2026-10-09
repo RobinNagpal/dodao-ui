@@ -1,6 +1,6 @@
 import { ChapterArticle, buildChapterSectionMetadata, renderChapterSection } from '@/components/industry-tariff/chapter/chapter-section-page';
 import ChapterIndustryStatsApproach2 from '@/components/industry-tariff/chapter/industry/ChapterIndustryStatsApproach2';
-import PrototypeChapterToolsBar from '@/components/industry-tariff/chapter/PrototypeChapterToolsBar';
+import PrototypeChapterToolLinks from '@/components/industry-tariff/chapter/PrototypeChapterToolLinks';
 import { buildPrototypeMetadata, getChapterPrototype, prototypeChapterInfo } from '@/utils/tariff-reports/chapter-prototype';
 import { chapterSectionHref } from '@/utils/tariff-reports/chapter-route-helpers';
 import type { Metadata } from 'next';
@@ -27,7 +27,8 @@ export default async function Page({ params }: { params: Promise<{ chapterSlug: 
       <ChapterArticle
         chapter={chapterInfo}
         pageTitle={prototype.understandIndustry.h1}
-        toolsCrossLinks={<PrototypeChapterToolsBar chapter={prototype.chapter} />}
+        toolsCrossLinks={<PrototypeChapterToolLinks chapter={prototype.chapter} />}
+        ratesAsOf={prototype.asOf}
         currentSlug={SECTION_SLUG}
         updatedAt={prototype.understandIndustry.lastCheckedAt}
         sectionLabel="Import Statistics"

@@ -2,7 +2,6 @@
 
 import Stack from '@/components/ui/containers/Stack';
 import SearchField from '@/components/ui/SearchField';
-import StatusBadge from '@/components/ui/StatusBadge';
 import Text from '@/components/ui/Text';
 import ToggleChip from '@/components/ui/ToggleChip';
 import InlineCard from '@/components/ui/sections/InlineCard';
@@ -162,13 +161,21 @@ export default function ChapterRateTable({ rows, note }: ChapterRateTableProps):
         value={query}
         onChange={setQuery}
         label="Filter tariff lines by product name or HTS code"
-        placeholder='Search a product — "goat", "parrot", "day-old chicks", or an HTS code'
+        placeholder="Search by product name or HTS code"
         resultLabel={`${shownLines} of ${totalLines} tariff lines`}
+        size="lg"
       />
 
       <Stack direction="row" gap="sm" wrap>
-        <ToggleChip label="Only lines with a duty" active={dutiableOnly} onToggle={() => setDutiableOnly(!dutiableOnly)} count={dutiableLines} />
-        <ToggleChip label="10-digit lines only" active={leafOnly} onToggle={() => setLeafOnly(!leafOnly)} count={totalLines} />
+        <ToggleChip
+          size="md"
+          look="outline"
+          label="Only lines with a duty"
+          active={dutiableOnly}
+          onToggle={() => setDutiableOnly(!dutiableOnly)}
+          count={dutiableLines}
+        />
+        <ToggleChip size="md" look="outline" label="10-digit lines only" active={leafOnly} onToggle={() => setLeafOnly(!leafOnly)} count={totalLines} />
       </Stack>
 
       <Text size="xs" tone="muted">
@@ -178,13 +185,13 @@ export default function ChapterRateTable({ rows, note }: ChapterRateTableProps):
       {shown.length === 0 ? (
         <InlineCard padding="cozy">
           <Text size="sm" tone="muted">
-            No tariff line in this chapter matches “{query}”. Try a broader word — the schedule uses terms like “bovine”, “swine” and “psittaciformes”.
+            No tariff line in this chapter matches “{query}”. Try a broader word, or search by HTS code.
           </Text>
         </InlineCard>
       ) : (
         <TableScroll maxHeight="lg">
           <DataTable>
-            <TableHead sticky>
+            <TableHead sticky look="plain">
               <TableRow>
                 <TableHeaderCell>HTS code</TableHeaderCell>
                 <TableHeaderCell width="wide">Description</TableHeaderCell>
@@ -204,11 +211,13 @@ export default function ChapterRateTable({ rows, note }: ChapterRateTableProps):
                   <React.Fragment key={row.id}>
                     <TableRow
                       id={row.indent === 0 && row.hts ? row.hts : undefined}
-                      emphasis={row.isHeaderRow ? 'header' : 'normal'}
+                      emphasis={row.isHeaderRow ? 'group' : 'normal'}
                       interactive={expandable}
                       onClick={expandable ? () => setExpandedId(expanded ? null : row.id) : undefined}
                     >
-                      <TableCell variant="code">{row.hts ?? <EmptyCellValue />}</TableCell>
+                      <TableCell variant="code" tone="primary">
+                        {row.hts ?? <EmptyCellValue />}
+                      </TableCell>
                       <TableCell>
                         <IndentedLabel indent={row.indent}>
                           <Stack gap="xxs">
@@ -217,18 +226,13 @@ export default function ChapterRateTable({ rows, note }: ChapterRateTableProps):
                                 {row.ancestorPath.join(' › ')}
                               </Text>
                             )}
-                            <Stack direction="row" gap="sm" align="center" wrap>
-                              <span>{row.description}</span>
-                              {/* Badge the dutiable lines, not the free ones: in most chapters
-                                  "Free" is the default and the duty is the thing to spot. */}
-                              {row.htsCode10 && row.dutiable && row.effectiveGeneral && (
-                                <StatusBadge variant="warning" size="sm" label={row.effectiveGeneral} />
-                              )}
-                            </Stack>
+                            <span>{row.description}</span>
                           </Stack>
                         </IndentedLabel>
                       </TableCell>
-                      <TableCell variant="rate">
+                      {/* Emphasize the dutiable lines, not the free ones: in most chapters
+                          "Free" is the default and the duty is the thing to spot. */}
+                      <TableCell variant="rate" tone={row.htsCode10 && row.dutiable ? 'emphasis' : 'body'}>
                         <RateValue value={row.effectiveGeneral} inheritedFrom={row.generalInheritedFrom} />
                       </TableCell>
                       <TableCell variant="rateWrap">

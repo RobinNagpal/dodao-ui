@@ -10,10 +10,20 @@ const text = cva('', {
   variants: {
     size: { inherit: '', xs: 'text-xs', sm: 'text-sm', base: 'text-base', lg: 'text-lg' },
     weight: { normal: '', medium: 'font-medium', semibold: 'font-semibold', bold: 'font-bold' },
-    tone: { body: 'text-body', muted: 'text-muted', subtle: 'text-muted', bright: 'text-body', white: 'text-heading', theme: 'text-body' },
+    tone: {
+      body: 'text-body',
+      muted: 'text-muted',
+      subtle: 'text-muted',
+      bright: 'text-body',
+      white: 'text-heading',
+      theme: 'text-body',
+      primary: 'text-primary',
+    },
+    /** `mono` for codes (HTS numbers, program codes). */
+    font: { sans: '', mono: 'font-mono' },
     leading: { normal: '', snug: 'leading-snug', relaxed: 'leading-relaxed' },
   },
-  defaultVariants: { size: 'sm', weight: 'normal', tone: 'body', leading: 'normal' },
+  defaultVariants: { size: 'sm', weight: 'normal', tone: 'body', font: 'sans', leading: 'normal' },
 });
 
 type TextElement = 'p' | 'span' | 'div';
@@ -26,10 +36,10 @@ export type TextProps = VariantProps<typeof text> & {
   className?: string;
 };
 
-export default function Text({ children, as = 'p', size, weight, tone, leading, itemProp, className }: TextProps): React.JSX.Element {
+export default function Text({ children, as = 'p', size, weight, tone, font, leading, itemProp, className }: TextProps): React.JSX.Element {
   const Tag = as;
   return (
-    <Tag className={cn(text({ size, weight, tone, leading }), className)} itemProp={itemProp}>
+    <Tag className={cn(text({ size, weight, tone, font, leading }), className)} itemProp={itemProp}>
       {children}
     </Tag>
   );

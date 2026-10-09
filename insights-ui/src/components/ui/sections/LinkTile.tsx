@@ -1,49 +1,44 @@
-import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
 import React from 'react';
 
 /**
- * Clickable tile with a title, a highlighted meta value and supporting body
- * text — used for the "jump to a product group" grid and similar navigational
- * card grids. `RelatedSectionsNav` renders flat pill links; this is the richer
- * tile for when each link needs its own numbers.
+ * Clickable card with a monospace eyebrow, a title, a highlighted meta value
+ * and supporting body text — used for the chapter's "headings" grid and
+ * similar navigational card grids. `RelatedSectionsNav` renders flat pill
+ * links; this is the richer card for when each link needs its own numbers.
  *
  * `href` may be an in-page anchor (`#0104`) or a route.
  */
 
-const tile = cva('block rounded-lg border border-border bg-surface-2 p-3 transition-colors hover:border-primary/50', {
-  variants: {
-    size: { sm: 'p-3', md: 'p-4' },
-  },
-  defaultVariants: { size: 'sm' },
-});
-
-export type LinkTileProps = VariantProps<typeof tile> & {
+export interface LinkTileProps {
   href: string;
-  /** Small monospace eyebrow, e.g. the HTS heading "0104". */
+  /** Monospace eyebrow, e.g. the HTS heading "0104". */
   eyebrow?: string;
+  /** Muted note on the eyebrow row's right, e.g. "7 lines · 2 with a duty". */
+  aside?: string;
   title: string;
-  /** Right-aligned highlighted value, e.g. the group's rate summary. */
+  /** Emphasized line under the title, e.g. the heading's rate summary. */
   meta?: string;
   children?: React.ReactNode;
-  /** Muted footer line, e.g. "2 lines · 1 dutiable". */
-  footer?: string;
   className?: string;
-};
+}
 
-export default function LinkTile({ href, eyebrow, title, meta, children, footer, size, className }: LinkTileProps): React.JSX.Element {
+export default function LinkTile({ href, eyebrow, aside, title, meta, children, className }: LinkTileProps): React.JSX.Element {
   return (
-    <Link href={href} className={cn(tile({ size }), className)}>
-      <span className="flex flex-wrap items-baseline justify-between gap-x-2 gap-y-1">
-        <span className="flex items-baseline gap-2">
-          {eyebrow && <span className="font-mono text-xs text-primary">{eyebrow}</span>}
-          <span className="text-sm font-semibold text-body">{title}</span>
+    <Link
+      href={href}
+      className={cn('flex flex-col gap-2 rounded-lg border border-border bg-surface p-4 transition-colors hover:border-primary/50 sm:p-5', className)}
+    >
+      {(eyebrow || aside) && (
+        <span className="flex flex-wrap items-baseline justify-between gap-2">
+          {eyebrow && <span className="font-mono font-semibold text-primary">{eyebrow}</span>}
+          {aside && <span className="text-xs text-muted">{aside}</span>}
         </span>
-        {meta && <span className="min-w-0 text-xs font-medium text-primary">{meta}</span>}
-      </span>
-      {children && <span className="mt-1.5 block text-xs leading-relaxed text-muted">{children}</span>}
-      {footer && <span className="mt-2 block text-xs text-muted">{footer}</span>}
+      )}
+      <span className="text-base font-semibold text-heading">{title}</span>
+      {meta && <span className="text-sm font-semibold text-body">{meta}</span>}
+      {children && <span className="text-sm text-muted">{children}</span>}
     </Link>
   );
 }

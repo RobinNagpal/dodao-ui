@@ -9,11 +9,12 @@ import React from 'react';
  */
 const cardSection = cva('bg-surface rounded-lg shadow-sm', {
   variants: {
-    padding: { compact: 'px-2 py-2 sm:p-3', normal: 'px-3 py-6 sm:p-6', flush: '' },
+    padding: { compact: 'px-2 py-2 sm:p-3', normal: 'px-3 py-6 sm:p-6', roomy: 'px-4 py-6 sm:p-7', flush: '' },
+    bordered: { true: 'border border-border rounded-xl', false: '' },
     mt: { none: '', md: 'mt-6' },
     mb: { none: '', lg: 'mb-8' },
   },
-  defaultVariants: { padding: 'normal', mt: 'none', mb: 'none' },
+  defaultVariants: { padding: 'normal', bordered: false, mt: 'none', mb: 'none' },
 });
 
 export type CardSectionProps = VariantProps<typeof cardSection> & {
@@ -23,9 +24,9 @@ export type CardSectionProps = VariantProps<typeof cardSection> & {
   className?: string;
 };
 
-export default function CardSection({ children, id, padding, mt, mb, className }: CardSectionProps): React.JSX.Element {
+export default function CardSection({ children, id, padding, bordered, mt, mb, className }: CardSectionProps): React.JSX.Element {
   return (
-    <section id={id} className={cn(cardSection({ padding, mt, mb }), className)}>
+    <section id={id} className={cn(cardSection({ padding, bordered, mt, mb }), className)}>
       {children}
     </section>
   );
