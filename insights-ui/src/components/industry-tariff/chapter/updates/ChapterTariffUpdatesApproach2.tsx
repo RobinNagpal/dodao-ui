@@ -116,6 +116,8 @@ export default function ChapterTariffUpdatesApproach2({ content, updates }: Chap
               whatItMeans={duty.whatItMeans}
               details={duty.exemption}
               sources={<SourceLinks ids={duty.sourceIds} sources={sources} />}
+              effectiveFrom={duty.effectiveFrom}
+              effectiveSource={sources.get(duty.effectiveSourceId)}
             />
           ))}
         </Stack>

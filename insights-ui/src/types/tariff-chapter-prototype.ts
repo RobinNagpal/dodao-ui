@@ -161,6 +161,10 @@ export interface TariffExtraDutyInEffect {
   now: string;
   exemption: string;
   whatItMeans: string;
+  /** ISO date the rate shown in `now` took effect (for a duty raised or cut later, the date of that latest change). */
+  effectiveFrom: string;
+  /** The official document that put the current rate in force; must also be listed in `sourceIds`. */
+  effectiveSourceId: string;
   sourceIds: string[];
 }
 

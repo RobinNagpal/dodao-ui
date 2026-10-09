@@ -78,7 +78,7 @@ export const OFFICIAL_SOURCE_DOMAINS: readonly string[] = [
 ];
 
 /** Keys whose string value is a date. All must be ISO YYYY-MM-DD and not in the future. */
-const DATE_KEYS = new Set(['date', 'published', 'signed', 'released', 'inForceFrom', 'lastCheckedAt', 'asOf', 'regulationsAsOf']);
+const DATE_KEYS = new Set(['date', 'published', 'signed', 'released', 'inForceFrom', 'effectiveFrom', 'lastCheckedAt', 'asOf', 'regulationsAsOf']);
 /** Keys whose age drives the freshness warning. */
 const FRESHNESS_KEYS = new Set(['lastCheckedAt', 'asOf']);
 /** Section slugs a FAQ `link` may point at ('' = the chapter overview). */
@@ -196,6 +196,13 @@ function walk(report: Report, opts: Options, node: Json, where: string, scope: S
 
   for (const [key, value] of Object.entries(node)) {
     const w = `${where}.${key}`;
+    if (key === 'effectiveSourceId') {
+      // The document that put an in-effect rate in force: must resolve, and must be one of the entry's own citations.
+      if (typeof value !== 'string' || !value) report.error(w, 'missing — cite the document that put the current rate in force');
+      else if (!scope || !scope.has(value)) report.error(w, `unknown source id "${value}"`);
+      else if (Array.isArray(node.sourceIds) && !node.sourceIds.includes(value)) report.error(w, `"${value}" is not in this entry's sourceIds`);
+      continue;
+    }
     if (key === 'sourceIds' && Array.isArray(value)) {
       if (!scope) report.error(w, 'sourceIds used but no `sources` list with ids encloses it');
       else for (const id of value) if (typeof id !== 'string' || !scope.has(id)) report.error(w, `unknown source id "${String(id)}"`);
@@ -231,6 +238,14 @@ function checkSortedNewestFirst(report: Report, where: string, entries: { id: st
   }
 }
 
+/** Every in-effect measure must say since when its current rate applies and which official document put it in force. */
+function checkInEffectDated(report: Report, where: string, entries: { id: string; effectiveFrom?: string; effectiveSourceId?: string }[] | undefined): void {
+  for (const e of entries ?? []) {
+    if (!e.effectiveFrom) report.error(`${where}[${e.id}]`, 'missing `effectiveFrom` — the date the current rate took effect');
+    if (!e.effectiveSourceId) report.error(`${where}[${e.id}]`, 'missing `effectiveSourceId` — the official document that put it in force');
+  }
+}
+
 function checkPrototype(report: Report, opts: Options, slug: string, p: TariffChapterPrototype): void {
   const where = slug;
   if (p.chapter.slug !== slug) report.error(where, `chapter.slug "${p.chapter.slug}" does not match the registered slug`);
@@ -239,6 +254,7 @@ function checkPrototype(report: Report, opts: Options, slug: string, p: TariffCh
   const tu = p.tariffUpdates;
   if (tu) {
     checkSortedNewestFirst(report, `${where}.tariffUpdates.changes`, tu.changes);
+    checkInEffectDated(report, `${where}.tariffUpdates.inEffect`, tu.inEffect);
     if (tu.before.inForceFrom > tu.now.inForceFrom) report.error(`${where}.tariffUpdates`, 'before edition is newer than now edition');
   }
 
@@ -292,6 +308,7 @@ function checkExports(report: Report, opts: Options, slug: string, e: TariffChap
     walk(report, opts, page as unknown as Json, where, null, false);
   }
   checkSortedNewestFirst(report, `${slug}/exports/tariffUpdates.changes`, e.tariffUpdates.changes);
+  checkInEffectDated(report, `${slug}/exports/tariffUpdates.inEffect`, e.tariffUpdates.inEffect);
 }
 
 /** Content files on disk that no loader registers — they never render. */

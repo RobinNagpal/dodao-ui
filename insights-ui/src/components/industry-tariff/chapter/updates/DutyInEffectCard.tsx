@@ -1,11 +1,13 @@
 import Text from '@/components/ui/Text';
+import TextLink from '@/components/ui/TextLink';
 import Stack from '@/components/ui/containers/Stack';
 import { DisclosureItem } from '@/components/ui/sections/DisclosureList';
 import InlineCard from '@/components/ui/sections/InlineCard';
 import React from 'react';
 
 // One measure in the "in effect today" list on the Approach-2 tariff-updates pages, import and
-// export: who it applies to, what it is and its citations, the rate change as the headline, what it means for a
+// export: who it applies to, what it is and its citations, the rate change as the headline with the
+// date it took effect and the official document behind it, what it means for a
 // shipment, and the long scope / exemption text folded behind "Scope and exemptions".
 
 interface DutyInEffectCardProps {
@@ -21,9 +23,28 @@ interface DutyInEffectCardProps {
   details: string;
   /** Citation links for the measure. */
   sources: React.ReactNode;
+  /** ISO date the current rate took effect, and the official document that put it in force. */
+  effectiveFrom: string;
+  effectiveSource?: { citation: string; url: string };
 }
 
-export default function DutyInEffectCard({ country, measure, code, before, now, whatItMeans, details, sources }: DutyInEffectCardProps): React.JSX.Element {
+function formatSince(iso: string): string {
+  const date = new Date(`${iso}T00:00:00Z`);
+  return Number.isNaN(date.getTime()) ? iso : date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric', timeZone: 'UTC' });
+}
+
+export default function DutyInEffectCard({
+  country,
+  measure,
+  code,
+  before,
+  now,
+  whatItMeans,
+  details,
+  sources,
+  effectiveFrom,
+  effectiveSource,
+}: DutyInEffectCardProps): React.JSX.Element {
   return (
     <InlineCard surface="card" padding="spacious">
       <Stack gap="md">
@@ -42,9 +63,22 @@ export default function DutyInEffectCard({ country, measure, code, before, now, 
             )}
             {sources}
           </Stack>
-          <Text as="span" size="lg" weight="bold" tone="white">
-            {before} → {now}
-          </Text>
+          <Stack gap="xs" align="end">
+            <Text as="span" size="lg" weight="bold" tone="white">
+              {before} → {now}
+            </Text>
+            <Text as="span" size="sm" tone="muted">
+              In effect since <time dateTime={effectiveFrom}>{formatSince(effectiveFrom)}</time>
+              {effectiveSource && (
+                <>
+                  {' · '}
+                  <TextLink href={effectiveSource.url} size="sm" wrap>
+                    {effectiveSource.citation} ↗
+                  </TextLink>
+                </>
+              )}
+            </Text>
+          </Stack>
         </Stack>
         <Text size="sm">
           <Text as="span" size="sm" weight="semibold" tone="white">

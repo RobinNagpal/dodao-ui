@@ -92,6 +92,8 @@ export default function ChapterExportTariffUpdates({ updates }: { updates: Tarif
               whatItMeans={measure.whatItMeans}
               details={measure.appliesTo}
               sources={<SourceLinks ids={measure.sourceIds} sources={sources} />}
+              effectiveFrom={measure.effectiveFrom}
+              effectiveSource={sources.get(measure.effectiveSourceId)}
             />
           ))}
         </Stack>

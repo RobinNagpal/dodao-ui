@@ -11324,6 +11324,8 @@
         "now": "100% (in place of base)",
         "exemption": "Covers only patented drugs (Orange Book or Purple Book, valid U.S. patent) and their ingredients on the U.S. note 40(c) list: 77 lines in 3002, 3003 and 3004. Generics and biosimilars: no extra duty (9903.04.67). Other ways to pay less: company onshoring plan 20% (9903.04.64; CBP's July 30, 2026 guidance said no company was then eligible); onshoring plus an MFN drug-pricing agreement with HHS 0% until January 20, 2029 (9903.04.65); orphan drugs, plasma-derived therapies, cell and gene therapies, ADCs, fertility and nuclear medicines from listed countries 0% (9903.04.66); U.S.-made API put into dosage form abroad (9903.04.68); clinical trials and R&D (9903.04.70); goods on listed lines that are not finished drugs, APIs or key starting materials, or are neither patented nor generic (9903.04.69). Annex III companies have paid since July 31, 2026; everyone else since September 29, 2026.",
         "whatItMeans": "A patented cancer biologic from Singapore (3002.15) with no company agreement pays 100% of its value; a generic from the same plant pays nothing extra. The 100% is the total, not 100% on top of the base rate, and every listed line is Free anyway.",
+        "effectiveFrom": "2026-09-29",
+        "effectiveSourceId": "procl-11020",
         "sourceIds": ["procl-11020", "csms-69395344", "csms-70054007", "bis-specialty", "bis-onshoring", "hts-now"]
       },
       {
@@ -11335,6 +11337,8 @@
         "now": "15% (in place of base)",
         "exemption": "Same scope as 9903.04.60: patented drugs only. Generics: no extra duty (9903.04.67). The lower company and specialty headings (9903.04.65, 9903.04.66, 9903.04.70) apply when they give a lower rate; all five are on the 9903.04.66 country list.",
         "whatItMeans": "A patented antibody from Ireland or Germany (3002.15) pays 15% of its value in total. If the company has both an onshoring plan and an MFN pricing agreement, it pays 0%.",
+        "effectiveFrom": "2026-09-29",
+        "effectiveSourceId": "procl-11020",
         "sourceIds": ["procl-11020", "csms-70054007", "hts-now"]
       },
       {
@@ -11346,6 +11350,8 @@
         "now": "+0%",
         "exemption": "Set at +10% by Proclamation 11020, then cut to +0% from July 31, 2026 under the U.S.–UK pharmaceutical pricing arrangement. Patented UK drugs must still be entered under 9903.04.63.",
         "whatItMeans": "A patented medicine made in the UK pays only its base rate, which is Free for every listed line.",
+        "effectiveFrom": "2026-07-31",
+        "effectiveSourceId": "bis-uk",
         "sourceIds": ["bis-uk", "csms-69415934", "hts-now"]
       },
       {
@@ -11357,6 +11363,8 @@
         "now": "+10% or +12.5%",
         "exemption": "Most of Chapter 30 is exempt: 45 subheadings are on the U.S. note 52(b) list (9903.05.86) and 7 more are exempt when for pharmaceutical use (9903.05.89). Patented drugs under 9903.04.60–9903.04.66 are also excluded (9903.05.90). What is left: all of 3005 (bandages, gauze, dressings) and 3006.10.01, 3006.40.00, 3006.50.00 and 3006.91.00 (9 lines). EU goods pay 10% in place of the base rate (9903.05.39); Japan, South Korea and Switzerland 12.5% and Taiwan 10% in place of the base rate; India, UK, Canada and Mexico +10%; China, Singapore and most others +12.5%. USMCA-qualifying goods from Canada and Mexico are exempt (9903.05.93, 9903.05.94).",
         "whatItMeans": "Sterile gauze from China (3005.90) pays 12.5%; an ostomy pouch from Germany (3006.91, base 4.2%) pays 10% in total. Vaccines, insulin and tablets pay none of this. Goods of Brazil also pay the separate 25% Section 301 tariff (9903.05.01) on the same lines.",
+        "effectiveFrom": "2026-07-24",
+        "effectiveSourceId": "ustr-301-fl",
         "sourceIds": ["ustr-301-fl", "hts-now"]
       },
       {
@@ -11368,6 +11376,8 @@
         "now": "+25%",
         "exemption": "Most of Chapter 30 is exempt: the same 45 subheadings as the 60-economy action are on U.S. note 50(a)(ii) (9903.05.03), 7 more are exempt when for pharmaceutical use (9903.05.06), and patented drugs under 9903.04.60–9903.04.66 are excluded (9903.05.07). What is left: all of 3005 and 3006.10.01, 3006.40.00, 3006.50.00 and 3006.91.00 (9 lines). The 25% is added on top of the base rate and of the 12.5% that Brazil pays under 9903.05.27.",
         "whatItMeans": "Gauze from Brazil (3005.90) pays 37.5% (12.5% + 25%); an ostomy pouch from Brazil (3006.91, base 4.2%) pays 41.7%. Brazilian medicines in 3002–3004 pay none of this.",
+        "effectiveFrom": "2026-07-22",
+        "effectiveSourceId": "ustr-br-301",
         "sourceIds": ["ustr-br-301", "hts-now"]
       },
       {
@@ -11379,7 +11389,9 @@
         "now": "+25% / +7.5%",
         "exemption": "Not new: in force before 2025 and unchanged since; USTR confirmed on October 7, 2026 that both actions continue during the four-year review. List 3 (+25%, 9903.88.03) covers 3006.93.60 and 3006.93.80; List 4A (+7.5%, 9903.88.15) covers 3006.93.20 and 3006.93.50. No other Chapter 30 subheading is on a China Section 301 list.",
         "whatItMeans": "Chinese placebos or clinical trial kits (3006.93.80, base 5%) pay 30%; other Chinese Chapter 30 goods are untouched by these lists.",
-        "sourceIds": ["ustr-cn-301-continue", "hts-now"]
+        "effectiveFrom": "2020-02-14",
+        "effectiveSourceId": "ustr-301-cn-4a-cut",
+        "sourceIds": ["ustr-cn-301-continue", "ustr-301-cn-3-increase", "ustr-301-cn-4a-cut", "hts-now"]
       }
     ],
     "changes": [
@@ -14810,6 +14822,26 @@
         "signed": null,
         "published": "2026-10-07",
         "url": "https://www.federalregister.gov/documents/2026/10/07/2026-20510/continuation-of-actions-chinas-acts-policies-and-practices-related-to-technology-transfer"
+      },
+      {
+        "id": "ustr-301-cn-3-increase",
+        "publisher": "Federal Register",
+        "citation": "84 FR 20459",
+        "document": "Notice (USTR)",
+        "title": "Notice of Modification of Section 301 Action: China's Acts, Policies, and Practices Related to Technology Transfer, Intellectual Property, and Innovation",
+        "signed": null,
+        "published": "2019-05-09",
+        "url": "https://www.federalregister.gov/documents/2019/05/09/2019-09681/notice-of-modification-of-section-301-action-chinas-acts-policies-and-practices-related-to"
+      },
+      {
+        "id": "ustr-301-cn-4a-cut",
+        "publisher": "Federal Register",
+        "citation": "85 FR 3741",
+        "document": "Notice (USTR)",
+        "title": "Notice of Modification of Section 301 Action: China's Acts, Policies, and Practices Related to Technology Transfer, Intellectual Property, and Innovation",
+        "signed": null,
+        "published": "2020-01-22",
+        "url": "https://www.federalregister.gov/documents/2020/01/22/2020-00904/notice-of-modification-of-section-301-action-chinas-acts-policies-and-practices-related-to"
       }
     ]
   },
@@ -22860,19 +22892,18 @@
         }
       },
       {
-        "country": "Any other country",
+        "country": "Brazil",
         "rule": {
           "kind": "additive",
-          "extraPct": 0,
-          "ch99Code": "9903.04.60",
-          "atLeast": true,
-          "label": "Patented drugs on the Section 232 list: 100% (9903.04.60), or 15% from EU members, South Korea and Liechtenstein (9903.04.62), unless a company or specialty heading applies; generics: nothing extra. Dressings and four 3006 subheadings: nothing extra, +10% or +12.5% depending on whether the country is one of the 60 Section 301 economies (9903.05.20–9903.05.84); Brazil pays a further 25% (9903.05.01).",
+          "extraPct": 37.5,
+          "ch99Code": "9903.05.01 + 9903.05.27",
+          "label": "Base rate + 25% Brazil Section 301 (9903.05.01) + 12.5% Section 301 (9903.05.27) on dressings and four 3006 subheadings = 37.5%. Patented drugs on the Section 232 list: 100% in place of the base rate (9903.04.60) unless the company has onshoring and MFN pricing agreements (0%, 9903.04.65) or a specialty heading applies; generics: nothing extra.",
           "sourceIds": ["procl-11020", "ustr-301-fl", "ustr-br-301", "hts-now"]
         },
-        "importsUsd": 37703867494,
+        "importsUsd": 223258262,
         "cells": {
           "3001": {
-            "importsUsd": 120823254,
+            "importsUsd": 1421788,
             "withUsmca": {
               "totals": ["Free"],
               "breakdown": [
@@ -22901,7 +22932,671 @@
             }
           },
           "3002": {
-            "importsUsd": 14891429460,
+            "importsUsd": 2062390,
+            "withUsmca": {
+              "totals": ["Free", "100% if patented"],
+              "breakdown": [
+                {
+                  "base": "Free (232 list)",
+                  "lines": [
+                    "3002.12.00.40",
+                    "3002.13.00.10",
+                    "3002.13.00.90",
+                    "3002.14.00.10",
+                    "3002.14.00.90",
+                    "3002.15.00.11",
+                    "3002.15.00.91",
+                    "3002.41.00.00",
+                    "3002.42.00.00",
+                    "3002.49.00.50",
+                    "3002.51.00.00",
+                    "3002.59.00.00",
+                    "3002.90.10.00",
+                    "3002.90.52.20",
+                    "3002.90.52.50"
+                  ],
+                  "lineCount": 15,
+                  "extra": "Patented: 100% in place of base (9903.04.60). Generic: none (9903.04.67)",
+                  "preference": "None",
+                  "total": "Free generic / 100% patented"
+                },
+                {
+                  "base": "Free",
+                  "lines": ["3002.12.00.10", "3002.12.00.20", "3002.12.00.30", "3002.12.00.90", "3002.49.00.10", "3002.90.52.10"],
+                  "lineCount": 6,
+                  "extra": "None",
+                  "preference": "None",
+                  "total": "Free"
+                }
+              ]
+            },
+            "withoutUsmca": {
+              "totals": ["Free", "100% if patented"],
+              "breakdown": [
+                {
+                  "base": "Free (232 list)",
+                  "lines": [
+                    "3002.12.00.40",
+                    "3002.13.00.10",
+                    "3002.13.00.90",
+                    "3002.14.00.10",
+                    "3002.14.00.90",
+                    "3002.15.00.11",
+                    "3002.15.00.91",
+                    "3002.41.00.00",
+                    "3002.42.00.00",
+                    "3002.49.00.50",
+                    "3002.51.00.00",
+                    "3002.59.00.00",
+                    "3002.90.10.00",
+                    "3002.90.52.20",
+                    "3002.90.52.50"
+                  ],
+                  "lineCount": 15,
+                  "extra": "Patented: 100% in place of base (9903.04.60). Generic: none (9903.04.67)",
+                  "preference": "None",
+                  "total": "Free generic / 100% patented"
+                },
+                {
+                  "base": "Free",
+                  "lines": ["3002.12.00.10", "3002.12.00.20", "3002.12.00.30", "3002.12.00.90", "3002.49.00.10", "3002.90.52.10"],
+                  "lineCount": 6,
+                  "extra": "None",
+                  "preference": "None",
+                  "total": "Free"
+                }
+              ]
+            }
+          },
+          "3003": {
+            "importsUsd": 116494,
+            "withUsmca": {
+              "totals": ["Free", "100% if patented"],
+              "breakdown": [
+                {
+                  "base": "Free (232 list)",
+                  "lines": [
+                    "3003.20.00.00",
+                    "3003.31.00.00",
+                    "3003.39.10.00",
+                    "3003.39.50.00",
+                    "3003.49.00.00",
+                    "3003.90.01.20",
+                    "3003.90.01.40",
+                    "3003.90.01.80",
+                    "3003.90.01.90"
+                  ],
+                  "lineCount": 9,
+                  "extra": "Patented: 100% in place of base (9903.04.60). Generic: none (9903.04.67)",
+                  "preference": "None",
+                  "total": "Free generic / 100% patented"
+                },
+                {
+                  "base": "Free",
+                  "lines": ["3003.10.00.00", "3003.41.00.00", "3003.42.00.00", "3003.43.00.00", "3003.60.00.00", "3003.90.01.60"],
+                  "lineCount": 6,
+                  "extra": "None",
+                  "preference": "None",
+                  "total": "Free"
+                }
+              ]
+            },
+            "withoutUsmca": {
+              "totals": ["Free", "100% if patented"],
+              "breakdown": [
+                {
+                  "base": "Free (232 list)",
+                  "lines": [
+                    "3003.20.00.00",
+                    "3003.31.00.00",
+                    "3003.39.10.00",
+                    "3003.39.50.00",
+                    "3003.49.00.00",
+                    "3003.90.01.20",
+                    "3003.90.01.40",
+                    "3003.90.01.80",
+                    "3003.90.01.90"
+                  ],
+                  "lineCount": 9,
+                  "extra": "Patented: 100% in place of base (9903.04.60). Generic: none (9903.04.67)",
+                  "preference": "None",
+                  "total": "Free generic / 100% patented"
+                },
+                {
+                  "base": "Free",
+                  "lines": ["3003.10.00.00", "3003.41.00.00", "3003.42.00.00", "3003.43.00.00", "3003.60.00.00", "3003.90.01.60"],
+                  "lineCount": 6,
+                  "extra": "None",
+                  "preference": "None",
+                  "total": "Free"
+                }
+              ]
+            }
+          },
+          "3004": {
+            "importsUsd": 134068091,
+            "withUsmca": {
+              "totals": ["Free", "100% if patented"],
+              "breakdown": [
+                {
+                  "base": "Free",
+                  "lines": [
+                    "3004.10.10.20",
+                    "3004.10.10.45",
+                    "3004.10.50.48",
+                    "3004.10.50.49",
+                    "3004.10.50.55",
+                    "3004.10.50.65",
+                    "3004.10.50.70",
+                    "3004.10.50.80",
+                    "3004.20.00.20",
+                    "3004.20.00.30",
+                    "3004.20.00.45",
+                    "3004.20.00.55",
+                    "3004.20.00.65",
+                    "3004.20.00.70",
+                    "3004.20.00.71",
+                    "3004.20.00.72",
+                    "3004.20.00.76",
+                    "3004.20.00.80",
+                    "3004.32.00.10",
+                    "3004.32.00.40",
+                    "3004.39.00.20",
+                    "3004.39.00.30",
+                    "3004.39.00.40",
+                    "3004.39.00.45",
+                    "3004.42.00.00",
+                    "3004.43.00.00",
+                    "3004.50.10.00",
+                    "3004.50.20.00",
+                    "3004.50.30.00",
+                    "3004.50.40.00",
+                    "3004.50.50.10",
+                    "3004.50.50.15",
+                    "3004.50.50.25",
+                    "3004.50.50.28",
+                    "3004.50.50.30",
+                    "3004.50.50.40",
+                    "3004.60.00.00",
+                    "3004.90.92.03",
+                    "3004.90.92.04",
+                    "3004.90.92.05",
+                    "3004.90.92.07",
+                    "3004.90.92.09",
+                    "3004.90.92.13",
+                    "3004.90.92.14",
+                    "3004.90.92.19",
+                    "3004.90.92.20",
+                    "3004.90.92.21",
+                    "3004.90.92.22",
+                    "3004.90.92.23",
+                    "3004.90.92.24",
+                    "3004.90.92.25",
+                    "3004.90.92.27",
+                    "3004.90.92.28",
+                    "3004.90.92.29",
+                    "3004.90.92.30",
+                    "3004.90.92.31",
+                    "3004.90.92.32",
+                    "3004.90.92.33",
+                    "3004.90.92.34",
+                    "3004.90.92.35",
+                    "3004.90.92.37",
+                    "3004.90.92.38",
+                    "3004.90.92.39",
+                    "3004.90.92.40",
+                    "3004.90.92.41",
+                    "3004.90.92.42",
+                    "3004.90.92.44",
+                    "3004.90.92.45",
+                    "3004.90.92.47",
+                    "3004.90.92.48",
+                    "3004.90.92.50",
+                    "3004.90.92.54",
+                    "3004.90.92.55",
+                    "3004.90.92.56",
+                    "3004.90.92.57",
+                    "3004.90.92.58",
+                    "3004.90.92.61",
+                    "3004.90.92.62",
+                    "3004.90.92.64",
+                    "3004.90.92.65",
+                    "3004.90.92.66",
+                    "3004.90.92.69",
+                    "3004.90.92.72",
+                    "3004.90.92.74",
+                    "3004.90.92.75"
+                  ],
+                  "lineCount": 85,
+                  "extra": "None",
+                  "preference": "None",
+                  "total": "Free"
+                },
+                {
+                  "base": "Free (232 list)",
+                  "lines": [
+                    "3004.10.10.10",
+                    "3004.10.50.10",
+                    "3004.20.00.10",
+                    "3004.20.00.42",
+                    "3004.20.00.58",
+                    "3004.20.00.73",
+                    "3004.20.00.74",
+                    "3004.20.00.78",
+                    "3004.20.00.85",
+                    "3004.31.00.10",
+                    "3004.31.00.90",
+                    "3004.32.00.20",
+                    "3004.32.00.80",
+                    "3004.39.00.10",
+                    "3004.39.00.15",
+                    "3004.39.00.80",
+                    "3004.41.00.00",
+                    "3004.49.00.05",
+                    "3004.49.00.10",
+                    "3004.49.00.20",
+                    "3004.49.00.30",
+                    "3004.49.00.40",
+                    "3004.49.00.50",
+                    "3004.49.00.60",
+                    "3004.49.00.70",
+                    "3004.50.50.05",
+                    "3004.90.10.00",
+                    "3004.90.92.01",
+                    "3004.90.92.06",
+                    "3004.90.92.08",
+                    "3004.90.92.10",
+                    "3004.90.92.11",
+                    "3004.90.92.12",
+                    "3004.90.92.15",
+                    "3004.90.92.16",
+                    "3004.90.92.17",
+                    "3004.90.92.18",
+                    "3004.90.92.26",
+                    "3004.90.92.36",
+                    "3004.90.92.43",
+                    "3004.90.92.46",
+                    "3004.90.92.49",
+                    "3004.90.92.51",
+                    "3004.90.92.52",
+                    "3004.90.92.53",
+                    "3004.90.92.60",
+                    "3004.90.92.63",
+                    "3004.90.92.67",
+                    "3004.90.92.68",
+                    "3004.90.92.70",
+                    "3004.90.92.71",
+                    "3004.90.92.73",
+                    "3004.90.92.76"
+                  ],
+                  "lineCount": 53,
+                  "extra": "Patented: 100% in place of base (9903.04.60). Generic: none (9903.04.67)",
+                  "preference": "None",
+                  "total": "Free generic / 100% patented"
+                }
+              ]
+            },
+            "withoutUsmca": {
+              "totals": ["Free", "100% if patented"],
+              "breakdown": [
+                {
+                  "base": "Free",
+                  "lines": [
+                    "3004.10.10.20",
+                    "3004.10.10.45",
+                    "3004.10.50.48",
+                    "3004.10.50.49",
+                    "3004.10.50.55",
+                    "3004.10.50.65",
+                    "3004.10.50.70",
+                    "3004.10.50.80",
+                    "3004.20.00.20",
+                    "3004.20.00.30",
+                    "3004.20.00.45",
+                    "3004.20.00.55",
+                    "3004.20.00.65",
+                    "3004.20.00.70",
+                    "3004.20.00.71",
+                    "3004.20.00.72",
+                    "3004.20.00.76",
+                    "3004.20.00.80",
+                    "3004.32.00.10",
+                    "3004.32.00.40",
+                    "3004.39.00.20",
+                    "3004.39.00.30",
+                    "3004.39.00.40",
+                    "3004.39.00.45",
+                    "3004.42.00.00",
+                    "3004.43.00.00",
+                    "3004.50.10.00",
+                    "3004.50.20.00",
+                    "3004.50.30.00",
+                    "3004.50.40.00",
+                    "3004.50.50.10",
+                    "3004.50.50.15",
+                    "3004.50.50.25",
+                    "3004.50.50.28",
+                    "3004.50.50.30",
+                    "3004.50.50.40",
+                    "3004.60.00.00",
+                    "3004.90.92.03",
+                    "3004.90.92.04",
+                    "3004.90.92.05",
+                    "3004.90.92.07",
+                    "3004.90.92.09",
+                    "3004.90.92.13",
+                    "3004.90.92.14",
+                    "3004.90.92.19",
+                    "3004.90.92.20",
+                    "3004.90.92.21",
+                    "3004.90.92.22",
+                    "3004.90.92.23",
+                    "3004.90.92.24",
+                    "3004.90.92.25",
+                    "3004.90.92.27",
+                    "3004.90.92.28",
+                    "3004.90.92.29",
+                    "3004.90.92.30",
+                    "3004.90.92.31",
+                    "3004.90.92.32",
+                    "3004.90.92.33",
+                    "3004.90.92.34",
+                    "3004.90.92.35",
+                    "3004.90.92.37",
+                    "3004.90.92.38",
+                    "3004.90.92.39",
+                    "3004.90.92.40",
+                    "3004.90.92.41",
+                    "3004.90.92.42",
+                    "3004.90.92.44",
+                    "3004.90.92.45",
+                    "3004.90.92.47",
+                    "3004.90.92.48",
+                    "3004.90.92.50",
+                    "3004.90.92.54",
+                    "3004.90.92.55",
+                    "3004.90.92.56",
+                    "3004.90.92.57",
+                    "3004.90.92.58",
+                    "3004.90.92.61",
+                    "3004.90.92.62",
+                    "3004.90.92.64",
+                    "3004.90.92.65",
+                    "3004.90.92.66",
+                    "3004.90.92.69",
+                    "3004.90.92.72",
+                    "3004.90.92.74",
+                    "3004.90.92.75"
+                  ],
+                  "lineCount": 85,
+                  "extra": "None",
+                  "preference": "None",
+                  "total": "Free"
+                },
+                {
+                  "base": "Free (232 list)",
+                  "lines": [
+                    "3004.10.10.10",
+                    "3004.10.50.10",
+                    "3004.20.00.10",
+                    "3004.20.00.42",
+                    "3004.20.00.58",
+                    "3004.20.00.73",
+                    "3004.20.00.74",
+                    "3004.20.00.78",
+                    "3004.20.00.85",
+                    "3004.31.00.10",
+                    "3004.31.00.90",
+                    "3004.32.00.20",
+                    "3004.32.00.80",
+                    "3004.39.00.10",
+                    "3004.39.00.15",
+                    "3004.39.00.80",
+                    "3004.41.00.00",
+                    "3004.49.00.05",
+                    "3004.49.00.10",
+                    "3004.49.00.20",
+                    "3004.49.00.30",
+                    "3004.49.00.40",
+                    "3004.49.00.50",
+                    "3004.49.00.60",
+                    "3004.49.00.70",
+                    "3004.50.50.05",
+                    "3004.90.10.00",
+                    "3004.90.92.01",
+                    "3004.90.92.06",
+                    "3004.90.92.08",
+                    "3004.90.92.10",
+                    "3004.90.92.11",
+                    "3004.90.92.12",
+                    "3004.90.92.15",
+                    "3004.90.92.16",
+                    "3004.90.92.17",
+                    "3004.90.92.18",
+                    "3004.90.92.26",
+                    "3004.90.92.36",
+                    "3004.90.92.43",
+                    "3004.90.92.46",
+                    "3004.90.92.49",
+                    "3004.90.92.51",
+                    "3004.90.92.52",
+                    "3004.90.92.53",
+                    "3004.90.92.60",
+                    "3004.90.92.63",
+                    "3004.90.92.67",
+                    "3004.90.92.68",
+                    "3004.90.92.70",
+                    "3004.90.92.71",
+                    "3004.90.92.73",
+                    "3004.90.92.76"
+                  ],
+                  "lineCount": 53,
+                  "extra": "Patented: 100% in place of base (9903.04.60). Generic: none (9903.04.67)",
+                  "preference": "None",
+                  "total": "Free generic / 100% patented"
+                }
+              ]
+            }
+          },
+          "3005": {
+            "importsUsd": 60776445,
+            "withUsmca": {
+              "totals": ["37.5%"],
+              "breakdown": [
+                {
+                  "base": "Free (301 applies)",
+                  "lines": ["3005.10.10.00", "3005.10.50.00", "3005.90.10.00", "3005.90.50.10", "3005.90.50.90"],
+                  "lineCount": 5,
+                  "extra": "+12.5% (9903.05.27) + 25% (9903.05.01)",
+                  "preference": "None",
+                  "total": "37.5%"
+                }
+              ]
+            },
+            "withoutUsmca": {
+              "totals": ["37.5%"],
+              "breakdown": [
+                {
+                  "base": "Free (301 applies)",
+                  "lines": ["3005.10.10.00", "3005.10.50.00", "3005.90.10.00", "3005.90.50.10", "3005.90.50.90"],
+                  "lineCount": 5,
+                  "extra": "+12.5% (9903.05.27) + 25% (9903.05.01)",
+                  "preference": "None",
+                  "total": "37.5%"
+                }
+              ]
+            }
+          },
+          "3006": {
+            "importsUsd": 24813054,
+            "withUsmca": {
+              "totals": ["Free", "37.5%", "5%", "41.7%", "40¢/kg + 10.4%", "6.4%", "0.2¢/liter"],
+              "breakdown": [
+                {
+                  "base": "Free",
+                  "lines": ["3006.30.10.00", "3006.30.50.00", "3006.60.00.00", "3006.92.00.00", "3006.93.10.00"],
+                  "lineCount": 5,
+                  "extra": "None",
+                  "preference": "None",
+                  "total": "Free"
+                },
+                {
+                  "base": "Free (301 applies)",
+                  "lines": ["3006.10.01.00", "3006.40.00.00", "3006.50.00.00"],
+                  "lineCount": 3,
+                  "extra": "+12.5% (9903.05.27) + 25% (9903.05.01)",
+                  "preference": "None",
+                  "total": "37.5%"
+                },
+                {
+                  "base": "5%",
+                  "lines": ["3006.70.00.00", "3006.93.80.00"],
+                  "lineCount": 2,
+                  "extra": "None",
+                  "preference": "None",
+                  "total": "5%"
+                },
+                {
+                  "base": "4.2%",
+                  "lines": ["3006.91.00.00"],
+                  "lineCount": 1,
+                  "extra": "+12.5% (9903.05.27) + 25% (9903.05.01)",
+                  "preference": "None",
+                  "total": "41.7%"
+                },
+                {
+                  "base": "40¢/kg + 10.4%",
+                  "lines": ["3006.93.20.00"],
+                  "lineCount": 1,
+                  "extra": "None",
+                  "preference": "None",
+                  "total": "40¢/kg + 10.4%"
+                },
+                {
+                  "base": "6.4%",
+                  "lines": ["3006.93.50.00"],
+                  "lineCount": 1,
+                  "extra": "None",
+                  "preference": "None",
+                  "total": "6.4%"
+                },
+                {
+                  "base": "0.2¢/liter",
+                  "lines": ["3006.93.60.00"],
+                  "lineCount": 1,
+                  "extra": "None",
+                  "preference": "None",
+                  "total": "0.2¢/liter"
+                }
+              ]
+            },
+            "withoutUsmca": {
+              "totals": ["Free", "37.5%", "5%", "41.7%", "40¢/kg + 10.4%", "6.4%", "0.2¢/liter"],
+              "breakdown": [
+                {
+                  "base": "Free",
+                  "lines": ["3006.30.10.00", "3006.30.50.00", "3006.60.00.00", "3006.92.00.00", "3006.93.10.00"],
+                  "lineCount": 5,
+                  "extra": "None",
+                  "preference": "None",
+                  "total": "Free"
+                },
+                {
+                  "base": "Free (301 applies)",
+                  "lines": ["3006.10.01.00", "3006.40.00.00", "3006.50.00.00"],
+                  "lineCount": 3,
+                  "extra": "+12.5% (9903.05.27) + 25% (9903.05.01)",
+                  "preference": "None",
+                  "total": "37.5%"
+                },
+                {
+                  "base": "5%",
+                  "lines": ["3006.70.00.00", "3006.93.80.00"],
+                  "lineCount": 2,
+                  "extra": "None",
+                  "preference": "None",
+                  "total": "5%"
+                },
+                {
+                  "base": "4.2%",
+                  "lines": ["3006.91.00.00"],
+                  "lineCount": 1,
+                  "extra": "+12.5% (9903.05.27) + 25% (9903.05.01)",
+                  "preference": "None",
+                  "total": "41.7%"
+                },
+                {
+                  "base": "40¢/kg + 10.4%",
+                  "lines": ["3006.93.20.00"],
+                  "lineCount": 1,
+                  "extra": "None",
+                  "preference": "None",
+                  "total": "40¢/kg + 10.4%"
+                },
+                {
+                  "base": "6.4%",
+                  "lines": ["3006.93.50.00"],
+                  "lineCount": 1,
+                  "extra": "None",
+                  "preference": "None",
+                  "total": "6.4%"
+                },
+                {
+                  "base": "0.2¢/liter",
+                  "lines": ["3006.93.60.00"],
+                  "lineCount": 1,
+                  "extra": "None",
+                  "preference": "None",
+                  "total": "0.2¢/liter"
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "country": "Any other country",
+        "rule": {
+          "kind": "additive",
+          "extraPct": 0,
+          "ch99Code": "9903.04.60",
+          "atLeast": true,
+          "label": "Patented drugs on the Section 232 list: 100% (9903.04.60), or 15% from EU members, South Korea and Liechtenstein (9903.04.62), unless a company or specialty heading applies; generics: nothing extra. Dressings and four 3006 subheadings: nothing extra, +10% or +12.5% depending on whether the country is one of the 60 Section 301 economies (9903.05.20–9903.05.84). Brazil has its own row.",
+          "sourceIds": ["procl-11020", "ustr-301-fl", "hts-now"]
+        },
+        "importsUsd": 37480609232,
+        "cells": {
+          "3001": {
+            "importsUsd": 119401466,
+            "withUsmca": {
+              "totals": ["Free"],
+              "breakdown": [
+                {
+                  "base": "Free",
+                  "lines": ["3001.20.00.00", "3001.90.01.10", "3001.90.01.50", "3001.90.01.65", "3001.90.01.95"],
+                  "lineCount": 5,
+                  "extra": "None",
+                  "preference": "None",
+                  "total": "Free"
+                }
+              ]
+            },
+            "withoutUsmca": {
+              "totals": ["Free"],
+              "breakdown": [
+                {
+                  "base": "Free",
+                  "lines": ["3001.20.00.00", "3001.90.01.10", "3001.90.01.50", "3001.90.01.65", "3001.90.01.95"],
+                  "lineCount": 5,
+                  "extra": "None",
+                  "preference": "None",
+                  "total": "Free"
+                }
+              ]
+            }
+          },
+          "3002": {
+            "importsUsd": 14889367070,
             "withUsmca": {
               "totals": ["Free", "15–100% if patented"],
               "breakdown": [
@@ -22978,7 +23673,7 @@
             }
           },
           "3003": {
-            "importsUsd": 1513467823,
+            "importsUsd": 1513351329,
             "withUsmca": {
               "totals": ["Free", "15–100% if patented"],
               "breakdown": [
@@ -23043,7 +23738,7 @@
             }
           },
           "3004": {
-            "importsUsd": 18133628541,
+            "importsUsd": 17999560450,
             "withUsmca": {
               "totals": ["Free", "15–100% if patented"],
               "breakdown": [
@@ -23368,38 +24063,38 @@
             }
           },
           "3005": {
-            "importsUsd": 708309974,
+            "importsUsd": 647533529,
             "withUsmca": {
-              "totals": ["Free–37.5%"],
+              "totals": ["Free–12.5%"],
               "breakdown": [
                 {
                   "base": "Free (301 applies)",
                   "lines": ["3005.10.10.00", "3005.10.50.00", "3005.90.10.00", "3005.90.50.10", "3005.90.50.90"],
                   "lineCount": 5,
-                  "extra": "0% to +12.5% by country (9903.05.20–9903.05.84); Brazil a further +25% (9903.05.01)",
+                  "extra": "0% to +12.5% by country (9903.05.20–9903.05.84)",
                   "preference": "Depends on country",
-                  "total": "Free–37.5%"
+                  "total": "Free–12.5%"
                 }
               ]
             },
             "withoutUsmca": {
-              "totals": ["Free–37.5%"],
+              "totals": ["Free–12.5%"],
               "breakdown": [
                 {
                   "base": "Free (301 applies)",
                   "lines": ["3005.10.10.00", "3005.10.50.00", "3005.90.10.00", "3005.90.50.10", "3005.90.50.90"],
                   "lineCount": 5,
-                  "extra": "0% to +12.5% by country (9903.05.20–9903.05.84); Brazil a further +25% (9903.05.01)",
+                  "extra": "0% to +12.5% by country (9903.05.20–9903.05.84)",
                   "preference": "Depends on country",
-                  "total": "Free–37.5%"
+                  "total": "Free–12.5%"
                 }
               ]
             }
           },
           "3006": {
-            "importsUsd": 2336208442,
+            "importsUsd": 2311395388,
             "withUsmca": {
-              "totals": ["Free", "Free–37.5%", "5%", "4.2%–41.7%", "40¢/kg + 10.4%", "6.4%", "0.2¢/liter"],
+              "totals": ["Free", "Free–12.5%", "5%", "4.2%–16.7%", "40¢/kg + 10.4%", "6.4%", "0.2¢/liter"],
               "breakdown": [
                 {
                   "base": "Free",
@@ -23413,9 +24108,9 @@
                   "base": "Free (301 applies)",
                   "lines": ["3006.10.01.00", "3006.40.00.00", "3006.50.00.00"],
                   "lineCount": 3,
-                  "extra": "0% to +12.5% by country (9903.05.20–9903.05.84); Brazil a further +25% (9903.05.01)",
+                  "extra": "0% to +12.5% by country (9903.05.20–9903.05.84)",
                   "preference": "Depends on country",
-                  "total": "Free–37.5%"
+                  "total": "Free–12.5%"
                 },
                 {
                   "base": "5%",
@@ -23429,9 +24124,9 @@
                   "base": "4.2%",
                   "lines": ["3006.91.00.00"],
                   "lineCount": 1,
-                  "extra": "0% to +12.5% by country (9903.05.20–9903.05.84); Brazil a further +25% (9903.05.01)",
+                  "extra": "0% to +12.5% by country (9903.05.20–9903.05.84)",
                   "preference": "Depends on country",
-                  "total": "4.2%–41.7%"
+                  "total": "4.2%–16.7%"
                 },
                 {
                   "base": "40¢/kg + 10.4%",
@@ -23460,7 +24155,7 @@
               ]
             },
             "withoutUsmca": {
-              "totals": ["Free", "Free–37.5%", "5%", "4.2%–41.7%", "40¢/kg + 10.4%", "6.4%", "0.2¢/liter"],
+              "totals": ["Free", "Free–12.5%", "5%", "4.2%–16.7%", "40¢/kg + 10.4%", "6.4%", "0.2¢/liter"],
               "breakdown": [
                 {
                   "base": "Free",
@@ -23474,9 +24169,9 @@
                   "base": "Free (301 applies)",
                   "lines": ["3006.10.01.00", "3006.40.00.00", "3006.50.00.00"],
                   "lineCount": 3,
-                  "extra": "0% to +12.5% by country (9903.05.20–9903.05.84); Brazil a further +25% (9903.05.01)",
+                  "extra": "0% to +12.5% by country (9903.05.20–9903.05.84)",
                   "preference": "Depends on country",
-                  "total": "Free–37.5%"
+                  "total": "Free–12.5%"
                 },
                 {
                   "base": "5%",
@@ -23490,9 +24185,9 @@
                   "base": "4.2%",
                   "lines": ["3006.91.00.00"],
                   "lineCount": 1,
-                  "extra": "0% to +12.5% by country (9903.05.20–9903.05.84); Brazil a further +25% (9903.05.01)",
+                  "extra": "0% to +12.5% by country (9903.05.20–9903.05.84)",
                   "preference": "Depends on country",
-                  "total": "4.2%–41.7%"
+                  "total": "4.2%–16.7%"
                 },
                 {
                   "base": "40¢/kg + 10.4%",
@@ -23583,7 +24278,7 @@
       "EU goods pay the Section 301 rate as 10% in place of the base rate (9903.05.39), Japan, South Korea and Switzerland as 12.5% in place of the base rate, and Taiwan as 10% in place of the base rate; for other countries it is added to the base rate.",
       "Preferences applied: Singapore FTA (SG) and U.S.–Japan Trade Agreement (JP) where the schedule lists them. GSP (A, A+) and the WTO Pharmaceutical Appendix (K) are not applied; K requires the product to be listed in the Pharmaceutical Appendix. The Section 232 duty is charged even when a preference makes the base rate Free (U.S. note 40(b)).",
       "Per-unit rates (40¢/kg + 10.4%, 0.2¢/liter) cannot be added into one percentage without the shipment's weight and volume, so they are shown as written.",
-      "\"Any other country\" shows a range for dressings because only the 60 economies named in the Section 301 action pay it; Canada and Mexico pay nothing on USMCA-qualifying goods. The top of the range is Brazil, which pays 12.5% (9903.05.27) plus the separate 25% Brazil Section 301 duty (9903.05.01)."
+      "\"Any other country\" shows a range for dressings because only the 60 economies named in the Section 301 action pay it; Canada and Mexico pay nothing on USMCA-qualifying goods. The top of the range is 12.5%; Brazil, which also pays the separate 25% Brazil Section 301 duty (9903.05.01), has its own row at 37.5%."
     ],
     "exemptionCheck": "Read U.S. notes 40, 50, 51 and 52 to Chapter 99 subchapter III in the 2026 Revision 21. Note 40(c) lists 77 Chapter 30 statistical lines (in 3002, 3003 and 3004) that carry the Section 232 duty; none in 3001, 3005 or 3006. Note 52(b) (9903.05.86) exempts 45 of the 60 Chapter 30 subheadings from Section 301 and note 52(e) (9903.05.89) 7 more for pharmaceutical use; 3005 and 3006.10.01, 3006.40.00, 3006.50.00 and 3006.91.00 are on neither list. The country exception lists in note 52(j) contain no Chapter 30 code. Note 50 (Brazil, 9903.05.01) exempts the same 45 subheadings (50(a)(ii)) and the same 7 for pharmaceutical use (50(a)(v)). Note 51 (Canada, 9903.03.12–9903.03.14) lists no Chapter 30 code. In note 20, only 3006.93.20, 3006.93.50 (List 4A) and 3006.93.60, 3006.93.80 (List 3) are on a China Section 301 list.",
     "sources": [

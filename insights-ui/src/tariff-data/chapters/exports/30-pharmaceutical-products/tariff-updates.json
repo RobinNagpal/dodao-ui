@@ -74,6 +74,8 @@
       "now": "+10%",
       "appliesTo": "All Chapter 30 goods of U.S. origin, on top of China's 0–3% normal rate (5–10% on dressings and other 3006 goods).",
       "whatItMeans": "A $1M shipment of U.S. antibodies pays about $130,000 instead of $30,000 at China's 3% normal rate. The extra rate peaked at 125% in April 2025; since November 10, 2025 a further 24 points are suspended for one year (Tariff Commission Announcement No. 10 of 2025).",
+      "effectiveFrom": "2025-05-14",
+      "effectiveSourceId": "cn-sctc-may2025",
       "sourceIds": ["cn-sctc-125", "cn-sctc-may2025", "cn-24-suspend"]
     }
   ],

@@ -53,8 +53,10 @@ a file are untouched.
 
 - [ ] **Current edition:** the cited HTS edition is the newest revision (`--check-hts`), and
       `tariffUpdates.now`, `industryAreas.scheduleEdition` and the `hts-now` source all name it.
-- [ ] **What is collected today:** every measure in `inEffect` is still being collected today. Check
-      court rulings, expiry dates and later proclamations. A Chapter 99 heading can still be printed
+- [ ] **What is collected today:** every measure in `inEffect` is still being collected today, and
+      carries `effectiveFrom` (the date its current rate took effect) and `effectiveSourceId` (the
+      official document that put it in force). Check court rulings, expiry dates and later
+      proclamations. A Chapter 99 heading can still be printed
       in the HTS after it stops being collected (e.g. the IEEPA duties ended 2026-02-24 and the
       Section 122 surcharge expired 2026-07-23).
 - [ ] **By country:** for each country in the matrix, the rate matches the in-effect rules. That
