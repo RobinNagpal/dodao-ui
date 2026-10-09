@@ -79,16 +79,22 @@ function RateValue({ value, inheritedFrom }: { value: string | null; inheritedFr
 // "Free (A+,AU,BH,CL,CO,D,E,IL,JO,KR,MA,OM,P,PA,PE,S,SG)" is 18 codes wide and
 // wraps to three lines in every row of the table. Collapse it to the rate plus
 // a program count; the codes themselves are in the expanded row and in the
-// legend under the table.
-const PREFERENCE_LIST = /^(.*?)\s*\(([^)]+)\)\s*$/;
+// legend under the table. Some lines also point to Chapter 98 provisions for
+// further programs — "Free (BH,CL) See 9822.05.20 (P+) See 9822.06.10 (PE)" —
+// and each of those counts as one more program.
+const PREFERENCE_LIST = /^(.*?)\s*\(([^)]+)\)(.*)$/;
+const CHAPTER_98_REFERENCE = /See\s+[\d.-]+\s*\(([^)]+)\)/g;
 
 function PreferenceRateValue({ value, inheritedFrom }: { value: string | null; inheritedFrom: string | null }): React.JSX.Element {
   if (!value) return <EmptyCellValue />;
   const match = PREFERENCE_LIST.exec(value);
   if (!match) return <RateValue value={value} inheritedFrom={inheritedFrom} />;
 
-  const [, rate, codes] = match;
-  const count = codes.split(',').filter((code) => code.trim().length > 0).length;
+  const [, rate, codes, rest] = match;
+  if (rest.replace(CHAPTER_98_REFERENCE, '').trim().length > 0) return <RateValue value={value} inheritedFrom={inheritedFrom} />;
+
+  const referenceCount = Array.from(rest.matchAll(CHAPTER_98_REFERENCE)).length;
+  const count = codes.split(',').filter((code) => code.trim().length > 0).length + referenceCount;
   return (
     <Stack direction="row" gap="xs" align="baseline" wrap>
       <RateValue value={rate} inheritedFrom={inheritedFrom} />

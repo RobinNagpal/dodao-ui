@@ -35,12 +35,12 @@ export type LinkTileProps = VariantProps<typeof tile> & {
 export default function LinkTile({ href, eyebrow, title, meta, children, footer, size, className }: LinkTileProps): React.JSX.Element {
   return (
     <Link href={href} className={cn(tile({ size }), className)}>
-      <span className="flex items-baseline justify-between gap-2">
+      <span className="flex flex-wrap items-baseline justify-between gap-x-2 gap-y-1">
         <span className="flex items-baseline gap-2">
           {eyebrow && <span className="font-mono text-xs text-primary">{eyebrow}</span>}
           <span className="text-sm font-semibold text-body">{title}</span>
         </span>
-        {meta && <span className="shrink-0 text-xs font-medium text-primary">{meta}</span>}
+        {meta && <span className="min-w-0 text-xs font-medium text-primary">{meta}</span>}
       </span>
       {children && <span className="mt-1.5 block text-xs leading-relaxed text-muted">{children}</span>}
       {footer && <span className="mt-2 block text-xs text-muted">{footer}</span>}

@@ -251,7 +251,7 @@ export default function ChapterIndustryStatsApproach2({ content, industry }: Cha
         <Stack direction="row" gap="md" wrap>
           {industry.sources.map((source) =>
             source.url ? (
-              <TextLink key={source.label} href={source.url} size="xs">
+              <TextLink key={source.label} href={source.url} size="xs" wrap>
                 {source.label} ↗
               </TextLink>
             ) : (

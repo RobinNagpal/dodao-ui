@@ -11277,7 +11277,7 @@
         "url": "https://www.mayerbrown.com/de/insights/publications/2026/04/trump-administration-implements-tariffs-on-imported-patented-medication-and-pharmaceutical-ingredients-under-section-232-of-the-trade-expansion-act-of-1962"
       }
     ],
-    "coverageNote": "Values are CIF (customs value plus freight and insurance), as reported by the United States to UN Comtrade. They run higher than the customs-value total in tariff_trade_analytics ($168.9B for 2024, issue #1770), which excludes freight and insurance and is measured on a different basis."
+    "coverageNote": "Values are CIF (customs value plus freight and insurance), as reported by the United States to UN Comtrade. They run higher than customs-value totals (about $168.9B for 2024), which exclude freight and insurance."
   },
   "tariffUpdates": {
     "h1": "HTS Chapter 30: Pharmaceutical Products — Tariff Updates",
@@ -22815,7 +22815,7 @@
           "extraPct": 0,
           "ch99Code": "9903.04.60",
           "atLeast": true,
-          "label": "Patented drugs on the Section 232 list: 100% (9903.04.60) unless a company or specialty heading applies; generics: nothing extra. Dressings and four 3006 subheadings: nothing extra, +10% or +12.5% depending on whether the country is one of the 60 Section 301 economies (9903.05.20–9903.05.84).",
+          "label": "Patented drugs on the Section 232 list: 100% (9903.04.60), or 15% from EU members, South Korea and Liechtenstein (9903.04.62), unless a company or specialty heading applies; generics: nothing extra. Dressings and four 3006 subheadings: nothing extra, +10% or +12.5% depending on whether the country is one of the 60 Section 301 economies (9903.05.20–9903.05.84).",
           "sourceIds": ["procl-11020", "ustr-301-fl", "hts-now"]
         },
         "importsUsd": 37703867494,
@@ -22852,7 +22852,7 @@
           "3002": {
             "importsUsd": 14891429460,
             "withUsmca": {
-              "totals": ["Free", "100% if patented"],
+              "totals": ["Free", "15–100% if patented"],
               "breakdown": [
                 {
                   "base": "Free (232 list)",
@@ -22874,9 +22874,9 @@
                     "3002.90.52.50"
                   ],
                   "lineCount": 15,
-                  "extra": "Patented: 100% in place of base (9903.04.60). Generic: none (9903.04.67)",
+                  "extra": "Patented: 100% in place of base (9903.04.60); 15% from EU members, South Korea and Liechtenstein (9903.04.62). Generic: none (9903.04.67)",
                   "preference": "None",
-                  "total": "Free generic / 100% patented"
+                  "total": "Free generic / 15–100% patented"
                 },
                 {
                   "base": "Free",
@@ -22889,7 +22889,7 @@
               ]
             },
             "withoutUsmca": {
-              "totals": ["Free", "100% if patented"],
+              "totals": ["Free", "15–100% if patented"],
               "breakdown": [
                 {
                   "base": "Free (232 list)",
@@ -22911,9 +22911,9 @@
                     "3002.90.52.50"
                   ],
                   "lineCount": 15,
-                  "extra": "Patented: 100% in place of base (9903.04.60). Generic: none (9903.04.67)",
+                  "extra": "Patented: 100% in place of base (9903.04.60); 15% from EU members, South Korea and Liechtenstein (9903.04.62). Generic: none (9903.04.67)",
                   "preference": "None",
-                  "total": "Free generic / 100% patented"
+                  "total": "Free generic / 15–100% patented"
                 },
                 {
                   "base": "Free",
@@ -22929,7 +22929,7 @@
           "3003": {
             "importsUsd": 1513467823,
             "withUsmca": {
-              "totals": ["Free", "100% if patented"],
+              "totals": ["Free", "15–100% if patented"],
               "breakdown": [
                 {
                   "base": "Free (232 list)",
@@ -22945,9 +22945,9 @@
                     "3003.90.01.90"
                   ],
                   "lineCount": 9,
-                  "extra": "Patented: 100% in place of base (9903.04.60). Generic: none (9903.04.67)",
+                  "extra": "Patented: 100% in place of base (9903.04.60); 15% from EU members, South Korea and Liechtenstein (9903.04.62). Generic: none (9903.04.67)",
                   "preference": "None",
-                  "total": "Free generic / 100% patented"
+                  "total": "Free generic / 15–100% patented"
                 },
                 {
                   "base": "Free",
@@ -22960,7 +22960,7 @@
               ]
             },
             "withoutUsmca": {
-              "totals": ["Free", "100% if patented"],
+              "totals": ["Free", "15–100% if patented"],
               "breakdown": [
                 {
                   "base": "Free (232 list)",
@@ -22976,9 +22976,9 @@
                     "3003.90.01.90"
                   ],
                   "lineCount": 9,
-                  "extra": "Patented: 100% in place of base (9903.04.60). Generic: none (9903.04.67)",
+                  "extra": "Patented: 100% in place of base (9903.04.60); 15% from EU members, South Korea and Liechtenstein (9903.04.62). Generic: none (9903.04.67)",
                   "preference": "None",
-                  "total": "Free generic / 100% patented"
+                  "total": "Free generic / 15–100% patented"
                 },
                 {
                   "base": "Free",
@@ -22994,7 +22994,7 @@
           "3004": {
             "importsUsd": 18133628541,
             "withUsmca": {
-              "totals": ["Free", "100% if patented"],
+              "totals": ["Free", "15–100% if patented"],
               "breakdown": [
                 {
                   "base": "Free",
@@ -23148,14 +23148,14 @@
                     "3004.90.92.76"
                   ],
                   "lineCount": 53,
-                  "extra": "Patented: 100% in place of base (9903.04.60). Generic: none (9903.04.67)",
+                  "extra": "Patented: 100% in place of base (9903.04.60); 15% from EU members, South Korea and Liechtenstein (9903.04.62). Generic: none (9903.04.67)",
                   "preference": "None",
-                  "total": "Free generic / 100% patented"
+                  "total": "Free generic / 15–100% patented"
                 }
               ]
             },
             "withoutUsmca": {
-              "totals": ["Free", "100% if patented"],
+              "totals": ["Free", "15–100% if patented"],
               "breakdown": [
                 {
                   "base": "Free",
@@ -23309,9 +23309,9 @@
                     "3004.90.92.76"
                   ],
                   "lineCount": 53,
-                  "extra": "Patented: 100% in place of base (9903.04.60). Generic: none (9903.04.67)",
+                  "extra": "Patented: 100% in place of base (9903.04.60); 15% from EU members, South Korea and Liechtenstein (9903.04.62). Generic: none (9903.04.67)",
                   "preference": "None",
-                  "total": "Free generic / 100% patented"
+                  "total": "Free generic / 15–100% patented"
                 }
               ]
             }
