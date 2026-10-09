@@ -25,7 +25,11 @@
     "stocks:save": "tsx src/scripts/tickers/save-report.ts",
     "stocks:list-oldest": "tsx src/scripts/tickers/list-oldest.ts",
     "logs:fetch": "tsx src/scripts/logs/fetch-grafana-logs.ts",
-    "tariff:validate-chapters": "tsx src/scripts/industry-tariff-reports/validate-chapter-content.ts"
+    "tariff:validate-chapters": "tsx src/scripts/industry-tariff-reports/validate-chapter-content.ts",
+    "tariff:build-ch99": "tsx src/scripts/tariff-calculator/build-ch99-headings.ts",
+    "tariff:build-base-rates-sql": "tsx src/scripts/tariff-calculator/build-hts-base-rates-sql.ts",
+    "tariff:build-data-sql": "tsx src/scripts/tariff-calculator/build-data-sql.ts",
+    "tariff:calc-scenarios": "tsx src/scripts/tariff-calculator/run-golden-scenarios.ts"
   },
   "engines": {
     "node": ">=22.0.0"

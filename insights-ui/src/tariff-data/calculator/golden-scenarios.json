@@ -1,0 +1,599 @@
+{
+  "description": "Golden scenarios for the measures-based tariff calculator (issue #1785). Each expected duty is taken from the chapter content files (industryAreas matrix cells, tariffUpdates.inEffect, worked examples) — the verified truth. Run: pnpm tariff:calc-scenarios. Quantities use HTS unit codes (KG, NO, L).",
+  "entryDate": "2026-10-09",
+  "scenarios": [
+    {
+      "id": "ch01-horse-de",
+      "description": "Purebred breeding horse (male) from Germany, $50,000",
+      "chapter": "01",
+      "input": {
+        "hts10": "0101210010",
+        "countryOfOrigin": "DE",
+        "customsValueUsd": 50000,
+        "quantities": {
+          "NO": 1
+        },
+        "entryDate": "2026-10-09"
+      },
+      "line": {
+        "hts10": "0101210010",
+        "general": "Free",
+        "special": null,
+        "units": ["No."]
+      },
+      "expectedTotalDutyUsd": 5000,
+      "toleranceUsd": 0.01,
+      "sourceNote": "Chapter 01 Rates by country: Germany x 0101 = 10% (EU: 10% in place of the base rate, 9903.05.39; tariffUpdates.inEffect eu-301, effective 2026-07-24, USTR Section 301 FR notice)."
+    },
+    {
+      "id": "ch01-horse-ca-no-claim",
+      "description": "Purebred breeding horse (male) from Canada, $50,000, no USMCA claim",
+      "chapter": "01",
+      "input": {
+        "hts10": "0101210010",
+        "countryOfOrigin": "CA",
+        "customsValueUsd": 50000,
+        "quantities": {
+          "NO": 1
+        },
+        "entryDate": "2026-10-09"
+      },
+      "line": {
+        "hts10": "0101210010",
+        "general": "Free",
+        "special": null,
+        "units": ["No."]
+      },
+      "expectedTotalDutyUsd": 5000,
+      "toleranceUsd": 0.01,
+      "sourceNote": "Chapter 01 Rates by country: Canada x 0101 without USMCA = 10% (Free base + 10% Section 301, 9903.05.29; inEffect ca-301, effective 2026-07-24)."
+    },
+    {
+      "id": "ch01-horse-ca-usmca",
+      "description": "Same horse from Canada with a USMCA claim (SPI S) on a Free-base line",
+      "chapter": "01",
+      "input": {
+        "hts10": "0101210010",
+        "countryOfOrigin": "CA",
+        "customsValueUsd": 50000,
+        "quantities": {
+          "NO": 1
+        },
+        "claimedSpi": "S",
+        "entryDate": "2026-10-09"
+      },
+      "line": {
+        "hts10": "0101210010",
+        "general": "Free",
+        "special": null,
+        "units": ["No."]
+      },
+      "expectedTotalDutyUsd": 0,
+      "toleranceUsd": 0.01,
+      "sourceNote": "Chapter 01 Rates by country: Canada x 0101 with USMCA = Free (base already Free; Section 301 does not apply to USMCA-qualifying goods, 9903.05.93). The line has no special-rate column, but the USMCA claim still matters for the 301 exemption."
+    },
+    {
+      "id": "ch01-horse-mx-no-claim",
+      "description": "Purebred breeding horse (male) from Mexico, $50,000, no USMCA claim",
+      "chapter": "01",
+      "input": {
+        "hts10": "0101210010",
+        "countryOfOrigin": "MX",
+        "customsValueUsd": 50000,
+        "quantities": {
+          "NO": 1
+        },
+        "entryDate": "2026-10-09"
+      },
+      "line": {
+        "hts10": "0101210010",
+        "general": "Free",
+        "special": null,
+        "units": ["No."]
+      },
+      "expectedTotalDutyUsd": 5000,
+      "toleranceUsd": 0.01,
+      "sourceNote": "Chapter 01 Rates by country: Mexico x 0101 without USMCA = 10% (Free base + 10% Section 301, 9903.05.55; inEffect mx-301, effective 2026-07-24)."
+    },
+    {
+      "id": "ch01-steers-ca-no-claim",
+      "description": "60 steers for immediate slaughter from Canada, 21,000 kg, $100,000, no USMCA claim",
+      "chapter": "01",
+      "input": {
+        "hts10": "0102294062",
+        "countryOfOrigin": "CA",
+        "customsValueUsd": 100000,
+        "quantities": {
+          "NO": 60,
+          "KG": 21000
+        },
+        "entryDate": "2026-10-09"
+      },
+      "line": {
+        "hts10": "0102294062",
+        "general": "1¢/kg",
+        "special": "Free (A+,AU,BH,CL,CO,D,E,IL,JO,KR,MA,OM,P,PA,PE,S,SG)",
+        "units": ["No.", "kg"]
+      },
+      "expectedTotalDutyUsd": 10210,
+      "toleranceUsd": 0.01,
+      "sourceNote": "Chapter 01 Rates by country: Canada x 0102 without USMCA = 1¢/kg + 10% (base 1¢/kg x 21,000 kg = $210 + 10% Section 301, 9903.05.29; inEffect ca-301, effective 2026-07-24)."
+    },
+    {
+      "id": "ch01-steers-ca-usmca",
+      "description": "Same 60 steers from Canada with a USMCA claim (SPI S)",
+      "chapter": "01",
+      "input": {
+        "hts10": "0102294062",
+        "countryOfOrigin": "CA",
+        "customsValueUsd": 100000,
+        "quantities": {
+          "NO": 60,
+          "KG": 21000
+        },
+        "claimedSpi": "S",
+        "entryDate": "2026-10-09"
+      },
+      "line": {
+        "hts10": "0102294062",
+        "general": "1¢/kg",
+        "special": "Free (A+,AU,BH,CL,CO,D,E,IL,JO,KR,MA,OM,P,PA,PE,S,SG)",
+        "units": ["No.", "kg"]
+      },
+      "expectedTotalDutyUsd": 0,
+      "toleranceUsd": 0.01,
+      "sourceNote": "Chapter 01 Rates by country: Canada x 0102 with USMCA = Free (Free under USMCA (S); Section 301 does not apply, 9903.05.93)."
+    },
+    {
+      "id": "ch01-goats-nz",
+      "description": "500 goats from New Zealand, $100,000 (no trade-deal claim)",
+      "chapter": "01",
+      "input": {
+        "hts10": "0104200000",
+        "countryOfOrigin": "NZ",
+        "customsValueUsd": 100000,
+        "quantities": {
+          "NO": 500
+        },
+        "entryDate": "2026-10-09"
+      },
+      "line": {
+        "hts10": "0104200000",
+        "general": "68¢/head",
+        "special": "Free (A+,AU,BH,CL,CO,D,E, IL,JO,KR,MA,OM,P,PA, PE,S,SG)",
+        "units": ["No."]
+      },
+      "expectedTotalDutyUsd": 12840,
+      "toleranceUsd": 0.01,
+      "sourceNote": "Chapter 01 worked example '500 goats from New Zealand': 68¢/head x 500 = $340 base + 12.5% Section 301 (9903.05.57) = $12,500; inEffect other-301 lists New Zealand at +12.5% (effective 2026-07-24). New Zealand is not a matrix row (falls under 'Any other country', Free–12.5%)."
+    },
+    {
+      "id": "ch01-goats-au-fta",
+      "description": "500 goats from Australia, $100,000, Australia FTA claim (SPI AU)",
+      "chapter": "01",
+      "input": {
+        "hts10": "0104200000",
+        "countryOfOrigin": "AU",
+        "customsValueUsd": 100000,
+        "quantities": {
+          "NO": 500
+        },
+        "claimedSpi": "AU",
+        "entryDate": "2026-10-09"
+      },
+      "line": {
+        "hts10": "0104200000",
+        "general": "68¢/head",
+        "special": "Free (A+,AU,BH,CL,CO,D,E, IL,JO,KR,MA,OM,P,PA, PE,S,SG)",
+        "units": ["No."]
+      },
+      "expectedTotalDutyUsd": 12500,
+      "toleranceUsd": 0.01,
+      "sourceNote": "Chapter 01 tariffUpdates.inEffect other-301 whatItMeans: '500 goats from Australia: the 68¢/head base rate is Free under the Australia FTA, but the 12.5% Section 301 duty still applies' (Australia +12.5%). 0104.20 special column lists AU."
+    },
+    {
+      "id": "ch01-steers-cn",
+      "description": "60 steers from China, 21,000 kg, $100,000",
+      "chapter": "01",
+      "input": {
+        "hts10": "0102294062",
+        "countryOfOrigin": "CN",
+        "customsValueUsd": 100000,
+        "quantities": {
+          "NO": 60,
+          "KG": 21000
+        },
+        "entryDate": "2026-10-09"
+      },
+      "line": {
+        "hts10": "0102294062",
+        "general": "1¢/kg",
+        "special": "Free (A+,AU,BH,CL,CO,D,E,IL,JO,KR,MA,OM,P,PA,PE,S,SG)",
+        "units": ["No.", "kg"]
+      },
+      "expectedTotalDutyUsd": 20210,
+      "toleranceUsd": 0.01,
+      "sourceNote": "Chapter 01 Rates by country: China x 0102 = 1¢/kg + 20% (12.5% Section 301, 9903.05.31 + 7.5% List 4A, 9903.88.15)."
+    },
+    {
+      "id": "ch01-horse-cn",
+      "description": "Purebred breeding horse (male) from China, $50,000 (Free base)",
+      "chapter": "01",
+      "input": {
+        "hts10": "0101210010",
+        "countryOfOrigin": "CN",
+        "customsValueUsd": 50000,
+        "quantities": {
+          "NO": 1
+        },
+        "entryDate": "2026-10-09"
+      },
+      "line": {
+        "hts10": "0101210010",
+        "general": "Free",
+        "special": null,
+        "units": ["No."]
+      },
+      "expectedTotalDutyUsd": 10000,
+      "toleranceUsd": 0.01,
+      "sourceNote": "Chapter 01 Rates by country: China x 0101 = 20% (Free base + 12.5% 9903.05.31 + 7.5% 9903.88.15)."
+    },
+    {
+      "id": "ch01-steers-de",
+      "description": "60 steers from Germany, 21,000 kg, $100,000 (EU 10% replaces the 1¢/kg base)",
+      "chapter": "01",
+      "input": {
+        "hts10": "0102294062",
+        "countryOfOrigin": "DE",
+        "customsValueUsd": 100000,
+        "quantities": {
+          "NO": 60,
+          "KG": 21000
+        },
+        "entryDate": "2026-10-09"
+      },
+      "line": {
+        "hts10": "0102294062",
+        "general": "1¢/kg",
+        "special": "Free (A+,AU,BH,CL,CO,D,E,IL,JO,KR,MA,OM,P,PA,PE,S,SG)",
+        "units": ["No.", "kg"]
+      },
+      "expectedTotalDutyUsd": 10000,
+      "toleranceUsd": 0.01,
+      "sourceNote": "Chapter 01 Rates by country: Germany x 0102 = 10% (10% in place of base, 9903.05.39)."
+    },
+    {
+      "id": "ch01-steers-mu-agoa",
+      "description": "60 steers from Mauritius, 21,000 kg, $100,000, AGOA claim (SPI D)",
+      "chapter": "01",
+      "input": {
+        "hts10": "0102294062",
+        "countryOfOrigin": "MU",
+        "customsValueUsd": 100000,
+        "quantities": {
+          "NO": 60,
+          "KG": 21000
+        },
+        "claimedSpi": "D",
+        "entryDate": "2026-10-09"
+      },
+      "line": {
+        "hts10": "0102294062",
+        "general": "1¢/kg",
+        "special": "Free (A+,AU,BH,CL,CO,D,E,IL,JO,KR,MA,OM,P,PA,PE,S,SG)",
+        "units": ["No.", "kg"]
+      },
+      "expectedTotalDutyUsd": 0,
+      "toleranceUsd": 0.01,
+      "sourceNote": "Chapter 01 Rates by country: Mauritius x 0102 = Free (Free under AGOA (D), through 2026-12-31; Mauritius is outside the 60 Section 301 economies)."
+    },
+    {
+      "id": "ch01-steers-mu-no-claim",
+      "description": "60 steers from Mauritius, 21,000 kg, $100,000, no AGOA claim",
+      "chapter": "01",
+      "input": {
+        "hts10": "0102294062",
+        "countryOfOrigin": "MU",
+        "customsValueUsd": 100000,
+        "quantities": {
+          "NO": 60,
+          "KG": 21000
+        },
+        "entryDate": "2026-10-09"
+      },
+      "line": {
+        "hts10": "0102294062",
+        "general": "1¢/kg",
+        "special": "Free (A+,AU,BH,CL,CO,D,E,IL,JO,KR,MA,OM,P,PA,PE,S,SG)",
+        "units": ["No.", "kg"]
+      },
+      "expectedTotalDutyUsd": 210,
+      "toleranceUsd": 0.01,
+      "sourceNote": "Interpreted from the Chapter 01 Mauritius rule ('Base rate only' — no Section 301, reciprocal duty ended 2026-02-24): without the AGOA claim only the 1¢/kg base applies, 21,000 kg x $0.01 = $210. The matrix cell assumes the AGOA claim."
+    },
+    {
+      "id": "ch01-asses-ca-usmca",
+      "description": "Asses (0101.30, 6.8% base) from Canada with a USMCA claim, $10,000",
+      "chapter": "01",
+      "input": {
+        "hts10": "0101300000",
+        "countryOfOrigin": "CA",
+        "customsValueUsd": 10000,
+        "quantities": {
+          "NO": 5
+        },
+        "claimedSpi": "S",
+        "entryDate": "2026-10-09"
+      },
+      "line": {
+        "hts10": "0101300000",
+        "general": "6.8%",
+        "special": "Free (A+,AU,BH,CL,CO,D,E,IL,JO,KR,MA,OM,P,PA,PE,S,SG)",
+        "units": ["No."]
+      },
+      "expectedTotalDutyUsd": 0,
+      "toleranceUsd": 0.01,
+      "sourceNote": "Chapter 01 Rates by country: Canada x 0101 with USMCA = Free (9903.05.93)."
+    },
+    {
+      "id": "ch30-gauze-br",
+      "description": "Laparotomy sponges (gauze) from Brazil, $100,000",
+      "chapter": "30",
+      "input": {
+        "hts10": "3005905010",
+        "countryOfOrigin": "BR",
+        "customsValueUsd": 100000,
+        "quantities": {
+          "KG": 1000
+        },
+        "entryDate": "2026-10-09"
+      },
+      "line": {
+        "hts10": "3005905010",
+        "general": "Free",
+        "special": null,
+        "units": ["kg"]
+      },
+      "expectedTotalDutyUsd": 37500,
+      "toleranceUsd": 0.01,
+      "sourceNote": "Chapter 30 Rates by country: Brazil x 3005 = 37.5% (+12.5% 9903.05.27 + 25% Brazil Section 301, 9903.05.01; inEffect br-301 effective 2026-07-22, s301-fl effective 2026-07-24)."
+    },
+    {
+      "id": "ch30-ostomy-br",
+      "description": "Ostomy appliances from Brazil, $100,000 (4.2% base)",
+      "chapter": "30",
+      "input": {
+        "hts10": "3006910000",
+        "countryOfOrigin": "BR",
+        "customsValueUsd": 100000,
+        "quantities": {
+          "KG": 1000
+        },
+        "entryDate": "2026-10-09"
+      },
+      "line": {
+        "hts10": "3006910000",
+        "general": "4.2%",
+        "special": "Free (A,AU,BH,CL,CO,D,E,IL,JO,KR,MA,OM,P,PA,PE,S,SG)",
+        "units": ["kg"]
+      },
+      "expectedTotalDutyUsd": 41700,
+      "toleranceUsd": 0.01,
+      "sourceNote": "Chapter 30 Rates by country: Brazil x 3006 (3006.91) = 41.7% (4.2% base + 12.5% 9903.05.27 + 25% 9903.05.01)."
+    },
+    {
+      "id": "ch30-patented-ch",
+      "description": "Patented antineoplastic medicament (Section 232 list) from Switzerland, $100,000",
+      "chapter": "30",
+      "input": {
+        "hts10": "3004909218",
+        "countryOfOrigin": "CH",
+        "customsValueUsd": 100000,
+        "quantities": {
+          "KG": 100
+        },
+        "productType": "patented",
+        "entryDate": "2026-10-09"
+      },
+      "line": {
+        "hts10": "3004909218",
+        "general": "Free",
+        "special": null,
+        "units": ["kg"]
+      },
+      "expectedTotalDutyUsd": 15000,
+      "toleranceUsd": 0.01,
+      "sourceNote": "Chapter 30 Rates by country: Switzerland x 3004 (232 list) = 15% patented (in place of base, 9903.04.62; inEffect s232-deal15 effective 2026-09-29)."
+    },
+    {
+      "id": "ch30-patented-in",
+      "description": "Patented antineoplastic medicament (Section 232 list) from India, $100,000",
+      "chapter": "30",
+      "input": {
+        "hts10": "3004909218",
+        "countryOfOrigin": "IN",
+        "customsValueUsd": 100000,
+        "quantities": {
+          "KG": 100
+        },
+        "productType": "patented",
+        "entryDate": "2026-10-09"
+      },
+      "line": {
+        "hts10": "3004909218",
+        "general": "Free",
+        "special": null,
+        "units": ["kg"]
+      },
+      "expectedTotalDutyUsd": 100000,
+      "toleranceUsd": 0.01,
+      "sourceNote": "Chapter 30 Rates by country: India x 3004 (232 list) = 100% patented (in place of base, 9903.04.60; inEffect s232-default effective 2026-09-29). Section 301 does not cover 3004."
+    },
+    {
+      "id": "ch30-generic-in",
+      "description": "Generic antineoplastic medicament from India, $100,000",
+      "chapter": "30",
+      "input": {
+        "hts10": "3004909218",
+        "countryOfOrigin": "IN",
+        "customsValueUsd": 100000,
+        "quantities": {
+          "KG": 100
+        },
+        "productType": "generic",
+        "entryDate": "2026-10-09"
+      },
+      "line": {
+        "hts10": "3004909218",
+        "general": "Free",
+        "special": null,
+        "units": ["kg"]
+      },
+      "expectedTotalDutyUsd": 0,
+      "toleranceUsd": 0.01,
+      "sourceNote": "Chapter 30 Rates by country: India x 3004 (232 list) = Free generic (9903.04.67)."
+    },
+    {
+      "id": "ch30-patented-gb",
+      "description": "Patented antineoplastic medicament from the United Kingdom, $100,000",
+      "chapter": "30",
+      "input": {
+        "hts10": "3004909218",
+        "countryOfOrigin": "GB",
+        "customsValueUsd": 100000,
+        "quantities": {
+          "KG": 100
+        },
+        "productType": "patented",
+        "entryDate": "2026-10-09"
+      },
+      "line": {
+        "hts10": "3004909218",
+        "general": "Free",
+        "special": null,
+        "units": ["kg"]
+      },
+      "expectedTotalDutyUsd": 0,
+      "toleranceUsd": 0.01,
+      "sourceNote": "Chapter 30 Rates by country: United Kingdom x 3004 (232 list) = Free (patented +0%, 9903.04.63; inEffect s232-uk effective 2026-07-31)."
+    },
+    {
+      "id": "ch30-patented-de",
+      "description": "Patented biologic (3002.13, Section 232 list) from Germany, $100,000",
+      "chapter": "30",
+      "input": {
+        "hts10": "3002130010",
+        "countryOfOrigin": "DE",
+        "customsValueUsd": 100000,
+        "quantities": {
+          "KG": 10
+        },
+        "productType": "patented",
+        "entryDate": "2026-10-09"
+      },
+      "line": {
+        "hts10": "3002130010",
+        "general": "Free",
+        "special": null,
+        "units": ["kg"]
+      },
+      "expectedTotalDutyUsd": 15000,
+      "toleranceUsd": 0.01,
+      "sourceNote": "Chapter 30 Rates by country: Germany x 3002 (232 list) = 15% patented (9903.04.62)."
+    },
+    {
+      "id": "ch30-ostomy-sg-fta",
+      "description": "Ostomy appliances from Singapore with an FTA claim (SPI SG), $100,000",
+      "chapter": "30",
+      "input": {
+        "hts10": "3006910000",
+        "countryOfOrigin": "SG",
+        "customsValueUsd": 100000,
+        "quantities": {
+          "KG": 1000
+        },
+        "claimedSpi": "SG",
+        "entryDate": "2026-10-09"
+      },
+      "line": {
+        "hts10": "3006910000",
+        "general": "4.2%",
+        "special": "Free (A,AU,BH,CL,CO,D,E,IL,JO,KR,MA,OM,P,PA,PE,S,SG)",
+        "units": ["kg"]
+      },
+      "expectedTotalDutyUsd": 12500,
+      "toleranceUsd": 0.01,
+      "sourceNote": "Chapter 30 Rates by country: Singapore x 3006 (3006.91) = 12.5% (4.2% base Free under the U.S.–Singapore FTA (SG); +12.5% Section 301, 9903.05.68, still applies)."
+    },
+    {
+      "id": "ch30-ostomy-de",
+      "description": "Ostomy appliances from Germany, $100,000 (EU 10% replaces the 4.2% base)",
+      "chapter": "30",
+      "input": {
+        "hts10": "3006910000",
+        "countryOfOrigin": "DE",
+        "customsValueUsd": 100000,
+        "quantities": {
+          "KG": 1000
+        },
+        "entryDate": "2026-10-09"
+      },
+      "line": {
+        "hts10": "3006910000",
+        "general": "4.2%",
+        "special": "Free (A,AU,BH,CL,CO,D,E,IL,JO,KR,MA,OM,P,PA,PE,S,SG)",
+        "units": ["kg"]
+      },
+      "expectedTotalDutyUsd": 10000,
+      "toleranceUsd": 0.01,
+      "sourceNote": "Chapter 30 Rates by country: Germany x 3006 (3006.91) = 10% (10% in place of base, 9903.05.39)."
+    },
+    {
+      "id": "ch30-placebo-liquid-cn",
+      "description": "Liquid placebo kits (0.2¢/liter) from China, 1,000 liters, $10,000",
+      "chapter": "30",
+      "input": {
+        "hts10": "3006936000",
+        "countryOfOrigin": "CN",
+        "customsValueUsd": 10000,
+        "quantities": {
+          "L": 1000
+        },
+        "entryDate": "2026-10-09"
+      },
+      "line": {
+        "hts10": "3006936000",
+        "general": "0.2¢/liter",
+        "special": "Free  (A, AU, BH, CL, CO, D, E, IL, JO, KR, MA, OM, P,PA, PE, S, SG)",
+        "units": ["liters"]
+      },
+      "expectedTotalDutyUsd": 2502,
+      "toleranceUsd": 0.01,
+      "sourceNote": "Chapter 30 Rates by country: China x 3006 (3006.93.60) = 0.2¢/liter + 25% (List 1/2/3 Section 301, 9903.88.03): $2 + $2,500."
+    },
+    {
+      "id": "ch30-placebo-jp-claim",
+      "description": "Placebo kits with other chemicals (3006.93.80, 5% base) from Japan with a U.S.–Japan claim (SPI JP), $100,000",
+      "chapter": "30",
+      "input": {
+        "hts10": "3006938000",
+        "countryOfOrigin": "JP",
+        "customsValueUsd": 100000,
+        "quantities": {
+          "KG": 1000
+        },
+        "claimedSpi": "JP",
+        "entryDate": "2026-10-09"
+      },
+      "line": {
+        "hts10": "3006938000",
+        "general": "5%",
+        "special": "Free  (A+, AU, BH, CL, CO, D, E, IL, JO, JP, K, KR, MA,OM, P, PA, PE, S, SG)",
+        "units": ["kg"]
+      },
+      "expectedTotalDutyUsd": 0,
+      "toleranceUsd": 0.01,
+      "sourceNote": "Chapter 30 Rates by country: Japan x 3006 (3006.93.80) = Free (U.S.–Japan Trade Agreement (JP): Free; no Section 301 coverage)."
+    }
+  ]
+}

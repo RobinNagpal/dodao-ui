@@ -36,6 +36,7 @@ export type AppConfigGroupId =
   | 'report-generation'
   | 'auto-generation'
   | 'payments'
+  | 'tariff-calculator'
   | 'scraping'
   | 'logging'
   | 'claude-endpoints';
@@ -117,6 +118,11 @@ export const APP_CONFIG_GROUPS: AppConfigGroup[] = [
     description: 'Controls for buying report credits through Stripe.',
   },
   {
+    id: 'tariff-calculator',
+    label: 'Tariff Calculator',
+    description: 'Which data the public tariff calculator (/tariff-calculator) prices duties from.',
+  },
+  {
     id: 'scraping',
     label: 'Fundamentals Scraping',
     description:
@@ -169,6 +175,14 @@ export const APP_CONFIG_DEFINITIONS: AppConfigDefinition[] = [
       'Public Stripe key (pk_live_… / pk_test_…). Not secret by design; not used by the current Checkout redirect flow, kept for client-side Stripe.js.',
     type: 'string',
     group: 'payments',
+  },
+  {
+    key: 'TARIFF_CALC_MEASURES_ENABLED',
+    label: 'Official-measures engine: HTS chapters',
+    description:
+      'Comma-separated HTS chapter numbers (e.g. "1,30") whose tariff-calculator results come from the official-measures engine: base and trade-deal rates from the HTS, extra duties from the reviewed Chapter 99 measures (tariff_measures table), with the "Claim a trade deal" and "Product type" choices. Chapters not listed keep the cached candidate-code engine. Empty (default) or "off" = off for every chapter (this screen cannot save an empty value, so type "off" to switch it off again). Only list a chapter once its measures have been loaded and checked.',
+    type: 'string',
+    group: 'tariff-calculator',
   },
   {
     key: 'USE_LAMBDA_FOR_LLM_RESPONSE',

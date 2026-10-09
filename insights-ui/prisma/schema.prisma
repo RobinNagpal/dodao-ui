@@ -2801,3 +2801,75 @@ model StripeCreditPurchase {
   @@index([userId, createdAt])
   @@map("stripe_credit_purchases")
 }
+
+// Official-source extra-duty data for the tariff calculator (issue #1785). Both tables are
+// replaced wholesale by reviewed SQL generated from committed files
+// (src/tariff-data/calculator/*.json → prisma/data-sql/tariff-calculator/*.sql), applied with the
+// "Apply insights-ui data SQL" workflow — never edited by hand in production.
+
+// Every Chapter 99 heading in the cited HTS edition, parsed from the USITC HTS JSON.
+model TariffChapter99Heading {
+  id          String   @id @default(uuid())
+  // Dotted heading, e.g. "9903.05.01".
+  code        String   @map("code")
+  description String   @map("description") @db.Text
+  // Rate text exactly as the HTS states it, e.g. "The duty provided in the applicable subheading + 25%".
+  generalRate String?  @map("general_rate") @db.Text
+  // additive (+X% on top of the base rate) | flat (X% stated alone) | relief (base rate only) | unknown
+  rateKind    String   @map("rate_kind")
+  ratePct     Decimal? @map("rate_pct") @db.Decimal(7, 3)
+  // ISO 3166-1 alpha-2 countries named in the description ("the product of Brazil" → BR); EU → its members.
+  countries   String[] @default([]) @map("countries")
+  // Headings named in "Except for products described in headings …", ranges expanded.
+  exceptCodes String[] @default([]) @map("except_codes")
+  // U.S. notes the description points to, e.g. "52(a)".
+  noteRefs    String[] @default([]) @map("note_refs")
+  // HTS edition the row was read from, e.g. "2026 Revision 21".
+  htsEdition  String   @map("hts_edition")
+
+  spaceId   String   @default("koala_gains") @map("space_id")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@unique([spaceId, code])
+  @@map("tariff_chapter99_headings")
+}
+
+// One reviewed extra-duty measure the calculator applies: which Chapter 99 heading, to which
+// countries and HTS lines, how (rate kind), under which conditions, from when, per which sources.
+model TariffMeasure {
+  id               String    @id @default(uuid())
+  // Stable slug, e.g. "s301-2026-brazil-12-5".
+  measureKey       String    @map("measure_key")
+  program          String    @map("program")
+  ch99Code         String    @map("ch99_code")
+  // additive (base + X%) | inPlaceOfBase (X% instead of the base rate) | floor (max(base, X%)) | relief (no extra duty; cancels `replacesCodes`)
+  rateKind         String    @map("rate_kind")
+  ratePct          Decimal?  @map("rate_pct") @db.Decimal(7, 3)
+  // ISO2 codes; empty include = every country.
+  countriesInclude String[]  @default([]) @map("countries_include")
+  countriesExclude String[]  @default([]) @map("countries_exclude")
+  // HTS digit prefixes ("3005", "30061001"); empty include = every line.
+  coverageInclude  String[]  @default([]) @map("coverage_include")
+  coverageExclude  String[]  @default([]) @map("coverage_exclude")
+  // TariffMeasureConditions (src/types/tariff-calculator-measures.ts).
+  conditions       Json      @default("{}") @map("conditions")
+  // Chapter 99 codes this measure displaces when it applies (e.g. a relief heading replacing a duty).
+  replacesCodes    String[]  @default([]) @map("replaces_codes")
+  effectiveFrom    DateTime  @map("effective_from") @db.Date
+  effectiveTo      DateTime? @map("effective_to") @db.Date
+  // TariffMeasureSource[]: official documents behind the measure.
+  sources          Json      @default("[]") @map("sources")
+  htsEdition       String    @map("hts_edition")
+  // Date the measure was last checked against its official sources (measures.json `reviewedAt`).
+  reviewedAt       DateTime  @map("reviewed_at") @db.Date
+  notes            String?   @map("notes") @db.Text
+
+  spaceId   String   @default("koala_gains") @map("space_id")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@unique([spaceId, measureKey])
+  @@index([spaceId, ch99Code])
+  @@map("tariff_measures")
+}

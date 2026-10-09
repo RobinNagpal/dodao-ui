@@ -1,9 +1,12 @@
-import { readdirSync, statSync } from 'node:fs';
+import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs';
 import path from 'node:path';
+import type { MeasureEngineInput, MeasureEngineLine, TariffMeasuresFile, TariffProductType } from '@/types/tariff-calculator-measures';
 import type { TariffChapterPrototype, TariffEditionRef } from '@/types/tariff-chapter-prototype';
 import type { TariffChapterExports } from '@/types/tariff-chapter-exports';
 import { getChapterExports, listChapterExportSlugs } from '@/utils/tariff-reports/chapter-exports';
 import { getChapterPrototype, listChapterPrototypeSlugs } from '@/utils/tariff-reports/chapter-prototype';
+import { countryCodeForName, parseRateVariants, quantityUnits, rateDollars } from '@/utils/tariff-reports/shipment-duty';
+import { calculateWithMeasures, normalizeUom } from '@/utils/tariff-calculator/measures-engine';
 import { parseArgs, parsePositiveInt } from '../tickers/lib';
 
 /**
@@ -15,6 +18,8 @@ import { parseArgs, parsePositiveInt } from '../tickers/lib';
  *   pnpm tariff:validate-chapters --max-age-days 14     # stricter freshness window (default 30)
  *   pnpm tariff:validate-chapters --check-hts           # also ask usitc.gov whether a newer HTS revision exists
  *   pnpm tariff:validate-chapters --strict              # treat warnings as errors
+ *   pnpm tariff:validate-chapters --check-calculator    # run every matrix country x line through the measures
+ *                                                       # engine and flag totals that differ from the cell (offline)
  *
  * Exits 1 when any ERROR is found. WARNINGs (unknown source hosts, stale
  * check dates, a newer HTS revision) are printed but don't fail the run unless
@@ -341,6 +346,156 @@ function findUnregisteredFiles(report: Report, registered: string[], registeredE
 }
 
 // ---------------------------------------------------------------------------
+// Optional offline check (--check-calculator): does the measures-based
+// calculator engine agree with every "Rates by country" matrix cell? (#1785)
+// ---------------------------------------------------------------------------
+
+const CALC_VALUE_USD = 10_000;
+const CALC_QUANTITY = 1_000;
+/** Every quantity unit the engine might price a per-unit rate in; all get the same nominal quantity. */
+const CALC_DEFAULT_UOMS = ['NO', 'KG', 'G', 'T', 'L', 'PF.L', 'CKG', 'DOZ', 'DPR', 'PRS', 'GROSS', 'M', 'M2', 'M3', 'THS'];
+const PRODUCT_TYPES: readonly TariffProductType[] = ['patented', 'generic', 'specialty', 'other'];
+
+function loadMeasures(): TariffMeasuresFile {
+  const file = path.resolve(process.cwd(), 'src/tariff-data/calculator/measures.json');
+  if (!existsSync(file)) throw new Error('src/tariff-data/calculator/measures.json not found');
+  return JSON.parse(readFileSync(file, 'utf8')) as TariffMeasuresFile;
+}
+
+/** SPI code a matrix row's preference column claims ("Free under AGOA (D), …" → "D"; "U.S.–Singapore FTA (SG): Free" → "SG"). */
+function claimedSpiOf(preference: string): string | undefined {
+  return preference.match(/\(([A-Z][A-Z0-9]?\+?)\)/)?.[1];
+}
+
+function calculatorQuantities(units: string[]): Record<string, number> {
+  const quantities: Record<string, number> = {};
+  for (const u of CALC_DEFAULT_UOMS) quantities[u] = CALC_QUANTITY;
+  for (const u of units) {
+    const code = normalizeUom(u);
+    if (code) quantities[code] = CALC_QUANTITY;
+  }
+  return quantities;
+}
+
+interface CalcCheckStats {
+  compared: number;
+  mismatched: number;
+  skipped: Map<string, number>;
+}
+
+function skip(stats: CalcCheckStats, reason: string, n = 1): void {
+  stats.skipped.set(reason, (stats.skipped.get(reason) ?? 0) + n);
+}
+
+function checkCalculator(report: Report, slug: string, p: TariffChapterPrototype, measures: TariffMeasuresFile): CalcCheckStats {
+  const stats: CalcCheckStats = { compared: 0, mismatched: 0, skipped: new Map() };
+  const ia = p.industryAreas;
+  const rows = p.overview?.rateTable.rows ?? [];
+  if (!ia || rows.length === 0) {
+    skip(stats, 'chapter has no industryAreas matrix or rate table');
+    return stats;
+  }
+  const rowByHts = new Map(rows.filter((r) => r.hts && r.htsCode10).map((r) => [r.hts as string, r]));
+
+  for (const country of ia.countries) {
+    const iso = countryCodeForName(country.country);
+    if (!iso) {
+      skip(stats, `"${country.country}" has no single ISO code`);
+      continue;
+    }
+    const sides: { usmca: boolean; key: 'withoutUsmca' | 'withUsmca' }[] = [{ usmca: false, key: 'withoutUsmca' }];
+    if (country.rule.kind === 'usmca') sides.push({ usmca: true, key: 'withUsmca' });
+
+    for (const [heading, cell] of Object.entries(country.cells)) {
+      for (const side of sides) {
+        for (const bRow of cell[side.key].breakdown) {
+          const variants = parseRateVariants(bRow.total);
+          if (!variants) {
+            skip(stats, `unparseable total "${bRow.total}"`, bRow.lines.length);
+            continue;
+          }
+          // A single-rate row whose extra still distinguishes patented/generic: check both kinds against the one total.
+          const cases: { productType?: TariffProductType; range: (typeof variants)[number]['range'] }[] = [];
+          if (variants.length > 1) {
+            for (const v of variants) {
+              const type = PRODUCT_TYPES.find((t) => t === v.label);
+              if (type) cases.push({ productType: type, range: v.range });
+              else skip(stats, `unknown product-type variant "${v.label}"`, bRow.lines.length);
+            }
+          } else if (/patented/i.test(bRow.extra)) {
+            cases.push({ productType: 'patented', range: variants[0].range }, { productType: 'generic', range: variants[0].range });
+          } else {
+            cases.push({ range: variants[0].range });
+          }
+          const claimedSpi = side.usmca ? 'S' : claimedSpiOf(bRow.preference);
+
+          for (const c of cases) {
+            if (!c.range.exact) {
+              skip(stats, `range total "${bRow.total}"`, bRow.lines.length);
+              continue;
+            }
+            const unitQty: Record<string, number> = {};
+            for (const u of quantityUnits([c.range.low])) unitQty[u.key] = CALC_QUANTITY;
+            const expected = rateDollars(c.range.low, CALC_VALUE_USD, unitQty);
+            if (expected === null) {
+              skip(stats, `no quantity for total "${bRow.total}"`, bRow.lines.length);
+              continue;
+            }
+            const bad: string[] = [];
+            for (const hts of bRow.lines) {
+              const row = rowByHts.get(hts);
+              if (!row || !row.htsCode10) {
+                skip(stats, 'breakdown line missing from the rate table');
+                continue;
+              }
+              const input: MeasureEngineInput = {
+                hts10: row.htsCode10,
+                countryOfOrigin: iso,
+                customsValueUsd: CALC_VALUE_USD,
+                quantities: calculatorQuantities(row.units),
+                ...(claimedSpi ? { claimedSpi } : {}),
+                ...(c.productType ? { productType: c.productType } : {}),
+                entryDate: ia.lastCheckedAt,
+              };
+              const line: MeasureEngineLine = { hts10: row.htsCode10, general: row.effectiveGeneral, special: row.effectiveSpecial, units: row.units };
+              stats.compared++;
+              let actual: string;
+              try {
+                const result = calculateWithMeasures(input, line, measures.measures);
+                if (!result.error && Math.abs(result.totalDutyUsd - expected) <= 0.01) continue;
+                actual = result.error ? `error: ${result.error}` : `$${result.totalDutyUsd.toFixed(2)}`;
+              } catch (err) {
+                actual = `threw: ${(err as Error).message}`;
+              }
+              stats.mismatched++;
+              bad.push(`${hts} ${actual}`);
+            }
+            if (bad.length > 0) {
+              const kind = [side.usmca ? 'USMCA claimed' : null, claimedSpi && !side.usmca ? `SPI ${claimedSpi}` : null, c.productType ?? null]
+                .filter(Boolean)
+                .join(', ');
+              const sample = bad.slice(0, 3).join('; ') + (bad.length > 3 ? `; +${bad.length - 3} more` : '');
+              report.error(
+                `${slug}.calculator[${country.country} ${iso} × ${heading}${kind ? ` (${kind})` : ''}]`,
+                `cell total "${bRow.total}" = $${expected.toFixed(2)} on $${CALC_VALUE_USD} / ${CALC_QUANTITY} units, engine differs on ${bad.length}/${
+                  bRow.lines.length
+                } line(s): ${sample}`
+              );
+            }
+          }
+        }
+      }
+    }
+  }
+  return stats;
+}
+
+function printCalculatorStats(slug: string, stats: CalcCheckStats): void {
+  console.log(`  calculator cross-check (${slug}): ${stats.compared} line case(s) compared, ${stats.mismatched} mismatch(es)`);
+  for (const [reason, n] of stats.skipped) console.log(`    not compared: ${reason} (${n})`);
+}
+
+// ---------------------------------------------------------------------------
 // Optional network check: is the cited HTS edition the newest one published?
 // ---------------------------------------------------------------------------
 
@@ -427,6 +582,7 @@ async function main(): Promise<void> {
   };
   const only = typeof args.chapter === 'string' ? args.chapter : null;
   const strict = Boolean(args.strict);
+  const checkCalc = Boolean(args['check-calculator']);
 
   const prototypeSlugs = listChapterPrototypeSlugs();
   const exportSlugs = listChapterExportSlugs();
@@ -437,7 +593,9 @@ async function main(): Promise<void> {
   }
 
   console.log(
-    `Validating ${slugs.length} chapter(s) as of ${opts.today} (freshness window ${opts.maxAgeDays} days${opts.checkHts ? ', HTS edition check on' : ''})`
+    `Validating ${slugs.length} chapter(s) as of ${opts.today} (freshness window ${opts.maxAgeDays} days${opts.checkHts ? ', HTS edition check on' : ''}${
+      checkCalc ? ', calculator cross-check on' : ''
+    })`
   );
 
   let errors = 0;
@@ -448,6 +606,18 @@ async function main(): Promise<void> {
   errors += global.errorCount;
   warnings += global.warnCount;
 
+  let measures: TariffMeasuresFile | null = null;
+  if (checkCalc) {
+    try {
+      measures = loadMeasures();
+    } catch (err) {
+      const calcReport = new Report();
+      calcReport.error('calculator', `cross-check not run: ${(err as Error).message}`);
+      printReport('calculator', calcReport);
+      errors += calcReport.errorCount;
+    }
+  }
+
   for (const slug of slugs) {
     const report = new Report();
     const prototype = getChapterPrototype(slug);
@@ -455,6 +625,7 @@ async function main(): Promise<void> {
     if (prototype) {
       checkPrototype(report, opts, slug, prototype);
       if (opts.checkHts) await checkHtsEdition(report, `${slug}.tariffUpdates.now`, prototype.tariffUpdates?.now);
+      if (measures) printCalculatorStats(slug, checkCalculator(report, slug, prototype, measures));
     } else {
       report.error(slug, 'export content is registered but the chapter has no import content file');
     }
