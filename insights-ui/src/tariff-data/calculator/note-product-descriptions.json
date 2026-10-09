@@ -1,0 +1,274 @@
+{
+  "htsEdition": "2026 Revision 21",
+  "sourceUrl": "https://hts.usitc.gov/reststop/file?release=2026HTSRev21&filename=Chapter%2099",
+  "generatedAt": "2026-10-09T18:07:33.119Z",
+  "counts": {
+    "50(a)(iii)": 11,
+    "52(c)": 16,
+    "52(j)(4)(ii)": 3,
+    "52(j)(5)(ii)": 3,
+    "52(j)(6)(ii)": 3,
+    "52(j)(7)(ii)": 1,
+    "52(j)(8)(ii)": 3,
+    "52(j)(9)(ii)": 2,
+    "52(j)(10)(ii)": 4,
+    "52(j)(11)(ii)": 1,
+    "52(j)(12)(ii)": 1,
+    "52(j)(13)(ii)": 2
+  },
+  "passages": {
+    "50(a)(iii)": {
+      "reliefHeading": "9903.05.04",
+      "dutyHeadings": ["9903.05.01"],
+      "productOf": "Brazil"
+    },
+    "52(c)": {
+      "reliefHeading": "9903.05.87",
+      "dutyHeadings": [
+        "9903.05.20",
+        "9903.05.21",
+        "9903.05.22",
+        "9903.05.23",
+        "9903.05.24",
+        "9903.05.25",
+        "9903.05.26",
+        "9903.05.27",
+        "9903.05.28",
+        "9903.05.29",
+        "9903.05.30",
+        "9903.05.31",
+        "9903.05.32",
+        "9903.05.33",
+        "9903.05.34",
+        "9903.05.35",
+        "9903.05.36",
+        "9903.05.37",
+        "9903.05.38",
+        "9903.05.39",
+        "9903.05.40",
+        "9903.05.41",
+        "9903.05.42",
+        "9903.05.43",
+        "9903.05.44",
+        "9903.05.45",
+        "9903.05.46",
+        "9903.05.47",
+        "9903.05.48",
+        "9903.05.49",
+        "9903.05.50",
+        "9903.05.51",
+        "9903.05.52",
+        "9903.05.53",
+        "9903.05.54",
+        "9903.05.55",
+        "9903.05.56",
+        "9903.05.57",
+        "9903.05.58",
+        "9903.05.59",
+        "9903.05.60",
+        "9903.05.61",
+        "9903.05.62",
+        "9903.05.63",
+        "9903.05.64",
+        "9903.05.65",
+        "9903.05.66",
+        "9903.05.67",
+        "9903.05.68",
+        "9903.05.69",
+        "9903.05.70",
+        "9903.05.71",
+        "9903.05.72",
+        "9903.05.73",
+        "9903.05.74",
+        "9903.05.75",
+        "9903.05.76",
+        "9903.05.77",
+        "9903.05.78",
+        "9903.05.79",
+        "9903.05.80",
+        "9903.05.81",
+        "9903.05.82",
+        "9903.05.83",
+        "9903.05.84"
+      ],
+      "productOf": null
+    },
+    "52(j)(4)(ii)": {
+      "reliefHeading": "9903.06.01",
+      "dutyHeadings": ["9903.05.54"],
+      "productOf": "Malaysia"
+    },
+    "52(j)(5)(ii)": {
+      "reliefHeading": "9903.06.03",
+      "dutyHeadings": ["9903.05.28"],
+      "productOf": "Cambodia"
+    },
+    "52(j)(6)(ii)": {
+      "reliefHeading": "9903.06.05",
+      "dutyHeadings": ["9903.05.40"],
+      "productOf": "Guatemala"
+    },
+    "52(j)(7)(ii)": {
+      "reliefHeading": "9903.06.08",
+      "dutyHeadings": ["9903.05.37"],
+      "productOf": "El Salvador"
+    },
+    "52(j)(8)(ii)": {
+      "reliefHeading": "9903.06.11",
+      "dutyHeadings": ["9903.05.22"],
+      "productOf": "Argentina"
+    },
+    "52(j)(9)(ii)": {
+      "reliefHeading": "9903.06.13",
+      "dutyHeadings": ["9903.05.26"],
+      "productOf": "Bangladesh"
+    },
+    "52(j)(10)(ii)": {
+      "reliefHeading": "9903.06.15",
+      "dutyHeadings": ["9903.05.75", "9903.05.76"],
+      "productOf": "Taiwan"
+    },
+    "52(j)(11)(ii)": {
+      "reliefHeading": "9903.06.17",
+      "dutyHeadings": ["9903.05.45"],
+      "productOf": "Indonesia"
+    },
+    "52(j)(12)(ii)": {
+      "reliefHeading": "9903.06.19",
+      "dutyHeadings": ["9903.05.35"],
+      "productOf": "Ecuador"
+    },
+    "52(j)(13)(ii)": {
+      "reliefHeading": "9903.06.21",
+      "dutyHeadings": ["9903.05.50"],
+      "productOf": "Jordan"
+    }
+  },
+  "descriptions": [
+    { "id": "50aiii-0805.90.01-1", "codePrefix": "08059001", "description": "Etrogs", "note": "50(a)(iii)" },
+    {
+      "id": "50aiii-0811.90.80-1",
+      "codePrefix": "08119080",
+      "description": "Tropical fruit, nesoi, frozen, whether or not previously steamed or boiled",
+      "note": "50(a)(iii)"
+    },
+    {
+      "id": "50aiii-1404.90.90-1",
+      "codePrefix": "14049090",
+      "description": "Date palm branches, Myrtus branches or other vegetable material, for religious purposes only",
+      "note": "50(a)(iii)"
+    },
+    {
+      "id": "50aiii-1905.90.10-1",
+      "codePrefix": "19059010",
+      "description": "Bread, pastry, cakes, biscuits and similar baked products nesoi, and puddings, whether or not containing chocolate, fruit, nuts or confectionery, for religious purposes only",
+      "note": "50(a)(iii)"
+    },
+    {
+      "id": "50aiii-1905.90.90-1",
+      "codePrefix": "19059090",
+      "description": "Bakers’ wares, communion wafers, sealing wafers, rice paper and similar products, nesoi, for religious purposes only",
+      "note": "50(a)(iii)"
+    },
+    { "id": "50aiii-2008.99.21-1", "codePrefix": "20089921", "description": "Acai", "note": "50(a)(iii)" },
+    {
+      "id": "50aiii-2009.31.60-1",
+      "codePrefix": "20093160",
+      "description": "Citrus juice of any single citrus fruit (other than orange, grapefruit or lime), of a Brix value not exceeding 20, concentrated, unfermented, except for lemon juice",
+      "note": "50(a)(iii)"
+    },
+    { "id": "50aiii-2009.89.70-1", "codePrefix": "20098970", "description": "Coconut water or juice of acai", "note": "50(a)(iii)" },
+    {
+      "id": "50aiii-2009.90.40-1",
+      "codePrefix": "20099040",
+      "description": "Coconut water juice blends, not from concentrate, packaged for retail sale",
+      "note": "50(a)(iii)"
+    },
+    { "id": "50aiii-2106.90.99-1", "codePrefix": "21069099", "description": "Acai preparations for the manufacture of beverages", "note": "50(a)(iii)" },
+    {
+      "id": "50aiii-3301.29.51-1",
+      "codePrefix": "33012951",
+      "description": "Essential oils other than those of citrus fruit, nesoi, for religious purposes only",
+      "note": "50(a)(iii)"
+    },
+    { "id": "52c-0805.90.01-1", "codePrefix": "08059001", "description": "Etrogs", "note": "52(c)" },
+    {
+      "id": "52c-0811.90.80-1",
+      "codePrefix": "08119080",
+      "description": "Tropical fruit, nesoi, frozen, whether or not previously steamed or boiled",
+      "note": "52(c)"
+    },
+    { "id": "52c-1207.30.00-1", "codePrefix": "12073000", "description": "Castor oil seeds, for sowing", "note": "52(c)" },
+    { "id": "52c-1207.40.00-1", "codePrefix": "12074000", "description": "Sesame seeds, whether or not broken, for sowing", "note": "52(c)" },
+    { "id": "52c-1207.50.00-1", "codePrefix": "12075000", "description": "Mustard seeds, whether or not broken, for sowing", "note": "52(c)" },
+    { "id": "52c-1207.60.00-1", "codePrefix": "12076000", "description": "Safflower (Carthamus tintorius) seeds, for sowing", "note": "52(c)" },
+    {
+      "id": "52c-1207.99.03-1",
+      "codePrefix": "12079903",
+      "description": "Other oil seeds and oleaginous fruits whether or not broken, including niger seeds, hemp seeds and seeds nesoi, for sowing",
+      "note": "52(c)"
+    },
+    {
+      "id": "52c-1905.90.10-1",
+      "codePrefix": "19059010",
+      "description": "Bread, pastry, cakes, biscuits and similar baked products, nesoi, and puddings, whether or not containing chocolate, fruit, nuts or confectionery, for religious purposes only",
+      "note": "52(c)"
+    },
+    {
+      "id": "52c-1905.90.90-1",
+      "codePrefix": "19059090",
+      "description": "Bakers’ wares, communion wafers, sealing wafers, rice paper and similar products, nesoi, for religious purposes only",
+      "note": "52(c)"
+    },
+    { "id": "52c-2008.99.21-1", "codePrefix": "20089921", "description": "Acai", "note": "52(c)" },
+    {
+      "id": "52c-2009.31.60-1",
+      "codePrefix": "20093160",
+      "description": "Citrus juice of any single citrus fruit (other than orange, grapefruit or lime), of a Brix value not exceeding 20, concentrated, unfermented, except for lemon juice",
+      "note": "52(c)"
+    },
+    { "id": "52c-2009.89.70-1", "codePrefix": "20098970", "description": "Coconut water or juice of acai", "note": "52(c)" },
+    {
+      "id": "52c-2009.90.40-1",
+      "codePrefix": "20099040",
+      "description": "Coconut water juice blends, not from concentrate, packaged for retail sale",
+      "note": "52(c)"
+    },
+    { "id": "52c-2106.90.99-1", "codePrefix": "21069099", "description": "Acai preparations for the manufacture of beverages", "note": "52(c)" },
+    {
+      "id": "52c-3301.29.51-1",
+      "codePrefix": "33012951",
+      "description": "Essential oils other than those of citrus fruit, nesoi, for religious purposes only",
+      "note": "52(c)"
+    },
+    {
+      "id": "52c-4412.33.57-1",
+      "codePrefix": "44123357",
+      "description": "Eucalyptus plywood sheets not exceeding 6 mm in thickness, outer ply of specified nonconiferous wood including birch or walnut, surface covered beyond clear or transparent material",
+      "note": "52(c)"
+    },
+    { "id": "52j4ii-1211.90.89-1", "codePrefix": "12119089", "description": "Psyllium seed husks", "note": "52(j)(4)(ii)" },
+    { "id": "52j4ii-1301.90.91-1", "codePrefix": "13019091", "description": "Boswellia", "note": "52(j)(4)(ii)" },
+    { "id": "52j4ii-1515.90.81-1", "codePrefix": "15159081", "description": "Argan oil", "note": "52(j)(4)(ii)" },
+    { "id": "52j5ii-1211.90.89-1", "codePrefix": "12119089", "description": "Psyllium seed husks", "note": "52(j)(5)(ii)" },
+    { "id": "52j5ii-1301.90.91-1", "codePrefix": "13019091", "description": "Boswellia", "note": "52(j)(5)(ii)" },
+    { "id": "52j5ii-1302.19.91-1", "codePrefix": "13021991", "description": "Aloe, Tasmanian pepper, coconut and centella", "note": "52(j)(5)(ii)" },
+    { "id": "52j6ii-1211.90.89-1", "codePrefix": "12119089", "description": "Psyllium seed husks", "note": "52(j)(6)(ii)" },
+    { "id": "52j6ii-1301.90.91-1", "codePrefix": "13019091", "description": "Boswellia", "note": "52(j)(6)(ii)" },
+    { "id": "52j6ii-1302.19.91-1", "codePrefix": "13021991", "description": "Aloe, Tasmanian pepper, coconut and centella", "note": "52(j)(6)(ii)" },
+    { "id": "52j7ii-1302.19.91-1", "codePrefix": "13021991", "description": "Aloe, Tasmanian pepper, coconut and centella", "note": "52(j)(7)(ii)" },
+    { "id": "52j8ii-1211.90.89-1", "codePrefix": "12119089", "description": "Psyllium seed husks", "note": "52(j)(8)(ii)" },
+    { "id": "52j8ii-1302.19.91-1", "codePrefix": "13021991", "description": "Aloe, Tasmanian pepper, coconut and centella", "note": "52(j)(8)(ii)" },
+    { "id": "52j8ii-1515.90.81-1", "codePrefix": "15159081", "description": "Argan oil", "note": "52(j)(8)(ii)" },
+    { "id": "52j9ii-1211.90.89-1", "codePrefix": "12119089", "description": "Psyllium seed husks", "note": "52(j)(9)(ii)" },
+    { "id": "52j9ii-1515.90.81-1", "codePrefix": "15159081", "description": "Argan oil", "note": "52(j)(9)(ii)" },
+    { "id": "52j10ii-1211.90.89-1", "codePrefix": "12119089", "description": "Psyllium seed husks", "note": "52(j)(10)(ii)" },
+    { "id": "52j10ii-1301.90.91-1", "codePrefix": "13019091", "description": "Boswellia", "note": "52(j)(10)(ii)" },
+    { "id": "52j10ii-1302.19.91-1", "codePrefix": "13021991", "description": "Aloe, Tasmanian pepper, coconut and centella", "note": "52(j)(10)(ii)" },
+    { "id": "52j10ii-1515.90.81-1", "codePrefix": "15159081", "description": "Argan oil", "note": "52(j)(10)(ii)" },
+    { "id": "52j11ii-1302.19.91-1", "codePrefix": "13021991", "description": "Aloe, Tasmanian pepper, coconut and centella", "note": "52(j)(11)(ii)" },
+    { "id": "52j12ii-1302.19.91-1", "codePrefix": "13021991", "description": "Aloe, Tasmanian pepper, coconut and centella", "note": "52(j)(12)(ii)" },
+    { "id": "52j13ii-1211.90.89-1", "codePrefix": "12119089", "description": "Psyllium seed husks", "note": "52(j)(13)(ii)" },
+    { "id": "52j13ii-1302.19.91-1", "codePrefix": "13021991", "description": "Aloe, Tasmanian pepper, coconut and centella", "note": "52(j)(13)(ii)" }
+  ]
+}

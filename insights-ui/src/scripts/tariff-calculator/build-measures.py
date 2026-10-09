@@ -2,6 +2,7 @@
 # (rates, countries, conditions, dates and official sources). Run: python3 src/scripts/tariff-calculator/build-measures.py
 # Review every change to the definitions against the cited official documents; see docs/insights-ui/tariffs/calculator-data-refresh.md.
 import json, sys
+sys.dont_write_bytecode = True  # importing measures_named_products must not leave __pycache__ in the repo
 import os
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', 'tariff-data', 'calculator') + os.sep
 cov = json.load(open(ROOT + 'note-coverage.json'))['notes']
@@ -27,6 +28,7 @@ SRC = {
   'bis-specialty': {'citation': '91 FR 60360 (Commerce/BIS: specialty pharmaceuticals, eligible jurisdictions and technical corrections)', 'url': 'https://www.federalregister.gov/documents/2026/09/23/2026-19498/guidance-and-procedures-for-implementing-tariff-adjustments-for-specialty-pharmaceuticals-and', 'published': '2026-09-23'},
 }
 def S(*ids): return [SRC[i] for i in ids]
+GN29 = {'citation': 'HTSUS 2026 Revision 21, General Note 29 (Dominican Republic-Central America-United States Free Trade Agreement; SPI "P" / "P+")', 'url': 'https://hts.usitc.gov/reststop/file?release=2026HTSRev21&filename=General%20Notes', 'published': '2026-10-07'}
 
 EU = ['AT','BE','BG','HR','CY','CZ','DK','EE','FI','FR','DE','GR','HU','IE','IT','LV','LT','LU','MT','NL','PL','PT','RO','SK','SI','ES','SE']
 
@@ -89,11 +91,21 @@ measures.append(rec(measureKey='s301-2026-exempt-52b', program=P301, ch99Code='9
     coverageInclude=cov['52(b)'], replacesCodes=ALL_S301_CODES, effectiveFrom='2026-07-24', sources=S('ustr-301-fl') + [hts_note(52)],
     notes=f"U.S. note 52(b): the {len(cov['52(b)'])} subheadings listed are exempt from 9903.05.20–9903.05.84 for every country (in Chapter 30: 45 subheadings in 3001–3004 and 3006). No Chapter 01 line is listed."))
 ch30e = [c for c in cov['52(e)'] if c.startswith('30')]
+other52e = [c for c in cov['52(e)'] if not c.startswith('30')]
+PHARMA_USE_CH30 = ("Chapter 30 is \"Pharmaceutical products\": its headings 3003/3004 are medicaments for therapeutic or prophylactic uses and heading 3006 "
+    "covers the pharmaceutical goods of chapter note 4, so the classification itself establishes the pharmaceutical application and no confirmation is asked "
+    "(as in the Chapter 30 content file). Review point: 3006.92 (waste pharmaceuticals) is presumed the same way.")
 measures.append(rec(measureKey='s301-2026-exempt-52e-pharma-use-ch30', program=P301, ch99Code='9903.05.89', rateKind='relief',
     coverageInclude=ch30e, replacesCodes=ALL_S301_CODES, effectiveFrom='2026-07-24', sources=S('ustr-301-fl') + [hts_note(52)],
-    notes=f"U.S. note 52(e): articles for use in pharmaceutical applications. Only the {len(ch30e)} Chapter 30 subheadings of the {len(cov['52(e)'])}-line list are modeled "
-          "(goods there are presumed for pharmaceutical use, as in the Chapter 30 content file). The Chapter 28/29/38/39 lines of the list need a pharmaceutical-use "
-          "claim the calculator conditions cannot express yet, so they are left out (see note-coverage.json \"52(e)\")."))
+    notes=f"U.S. note 52(e): articles for use in pharmaceutical applications. The {len(ch30e)} Chapter 30 subheadings of the {len(cov['52(e)'])}-line list "
+          f"({', '.join(ch30e)}) are exempt without a confirmation. {PHARMA_USE_CH30} The other {len(other52e)} lines are in s301-2026-exempt-52e-pharma-use."))
+measures.append(rec(measureKey='s301-2026-exempt-52e-pharma-use', program=P301, ch99Code='9903.05.89', rateKind='relief',
+    coverageInclude=other52e, conditions={'endUse': 'pharmaceutical'}, replacesCodes=ALL_S301_CODES, effectiveFrom='2026-07-24',
+    sources=S('ustr-301-fl') + [hts_note(52)], reviewedAt='2026-10-09',
+    notes=f"U.S. note 52(e): the {len(other52e)} non-Chapter-30 subheadings of the {len(cov['52(e)'])}-line list (Chapters 28, 29, 32, 34, 35, 38, 39) are exempt from "
+          "9903.05.20–9903.05.84 for every country only when the goods are for use in pharmaceutical applications (heading 9903.05.89), including lines entered "
+          "under a \"Free (K)\" special rate. These chemicals have many non-pharmaceutical uses, so the exemption applies only when the importer confirms the end use "
+          "(conditions.endUse = pharmaceutical); CBP may ask the importer to support the claim."))
 
 # Country exceptions 52(j)
 EXC = [
@@ -119,6 +131,22 @@ for sub, code, k, countries, repl, name in EXC:
         notes=f'U.S. note {sub}: products of {name} classifiable in the {len(codes)} listed provisions pay no Section 301 duty under {", ".join(repl)}.'
               + (f' Chapter 01 lines: {", ".join(ch01)}.' if ch01 else ' No Chapter 01 or 30 line is listed.')))
 
+# CAFTA-DR textiles and apparel (U.S. note 52(j)(6)(iii), 52(j)(7)(iii)). The SPI codes are "P" and "P+" (HTSUS general note 29(a)(i)(A)).
+CAFTA_SPI = ['P', 'P+']
+for sub, code, k, countries, repl, name in [('52(j)(6)(iii)', '9903.06.06', 'gt', ['GT'], ['9903.05.40'], 'Guatemala'),
+                                             ('52(j)(7)(iii)', '9903.06.09', 'sv', ['SV'], ['9903.05.37'], 'El Salvador')]:
+    codes = cov[sub]
+    measures.append(rec(measureKey=f's301-2026-except-{k}-cafta-dr', program=P301, ch99Code=code, rateKind='relief', countriesInclude=countries,
+        coverageInclude=codes, conditions={'spiClaimed': CAFTA_SPI}, replacesCodes=repl, effectiveFrom='2026-07-24',
+        sources=S('ustr-301-fl') + [hts_note(52), GN29], reviewedAt='2026-10-09',
+        notes=f'U.S. note {sub}: articles the product of {name} for which entry is claimed under the Dominican Republic-Central America-United States Free Trade '
+              f'Agreement (CAFTA-DR) consistent with general note 29, classifiable in the {len(codes)} listed provisions (textiles and apparel of Chapters 50–63, '
+              f'plus listed lines of Chapters 42, 65, 70 and 94), pay no Section 301 duty under {", ".join(repl)}. Applies only when the CAFTA-DR special rate is '
+              'claimed (SPI "P" or "P+", general note 29(a)(i)); without the claim the duty is charged. '
+              'Note 52(i) (heading 9903.05.95: CAFTA-DR textile or apparel goods of Costa Rica, the Dominican Republic, El Salvador, Guatemala, Honduras and Nicaragua) '
+              'is not modeled: it has no code list and defines its goods by the Annex to the WTO Agreement on Textiles and Clothing (general note 29(d)(v)), '
+              'which the HTS does not reproduce.'))
+
 # Brazil Section 301 (U.S. note 50)
 PBR = 'Section 301 (Brazil)'
 measures.append(rec(measureKey='s301-brazil', program=PBR, ch99Code='9903.05.01', rateKind='additive', ratePct=25, countriesInclude=['BR'],
@@ -128,10 +156,18 @@ measures.append(rec(measureKey='s301-brazil-exempt-50a-ii', program=PBR, ch99Cod
     coverageInclude=cov['50(a)(ii)'], replacesCodes=['9903.05.01'], effectiveFrom='2026-07-22', sources=S('ustr-301-br') + [hts_note(50)],
     notes=f"U.S. note 50(a)(ii): the {len(cov['50(a)(ii)'])} listed subheadings are exempt from 9903.05.01 (in Chapter 30, the same 45 subheadings as note 52(b)). No Chapter 01 line is listed."))
 ch30v = [c for c in cov['50(a)(v)'] if c.startswith('30')]
+other50v = [c for c in cov['50(a)(v)'] if not c.startswith('30')]
 measures.append(rec(measureKey='s301-brazil-exempt-50a-v-pharma-use-ch30', program=PBR, ch99Code='9903.05.06', rateKind='relief', countriesInclude=['BR'],
     coverageInclude=ch30v, replacesCodes=['9903.05.01'], effectiveFrom='2026-07-22', sources=S('ustr-301-br') + [hts_note(50)],
-    notes=f"U.S. note 50(a)(v): Brazilian articles for use in pharmaceutical applications. Only the {len(ch30v)} Chapter 30 subheadings of the {len(cov['50(a)(v)'])}-line list are modeled "
-          "(presumed for pharmaceutical use, as in the Chapter 30 content file); the other lines need a pharmaceutical-use claim the conditions cannot express yet."))
+    notes=f"U.S. note 50(a)(v): Brazilian articles for use in pharmaceutical applications. The {len(ch30v)} Chapter 30 subheadings of the {len(cov['50(a)(v)'])}-line list "
+          f"are exempt without a confirmation. {PHARMA_USE_CH30} The other {len(other50v)} lines are in s301-brazil-exempt-50a-v-pharma-use."))
+measures.append(rec(measureKey='s301-brazil-exempt-50a-v-pharma-use', program=PBR, ch99Code='9903.05.06', rateKind='relief', countriesInclude=['BR'],
+    coverageInclude=other50v, conditions={'endUse': 'pharmaceutical'}, replacesCodes=['9903.05.01'], effectiveFrom='2026-07-22',
+    sources=S('ustr-301-br') + [hts_note(50)], reviewedAt='2026-10-09',
+    notes=f"U.S. note 50(a)(v): the {len(other50v)} non-Chapter-30 subheadings of the {len(cov['50(a)(v)'])}-line list are exempt from the 25% Brazil duty (9903.05.01) "
+          "only when the goods are for use in pharmaceutical applications (heading 9903.05.06), including lines entered under a \"Free (K)\" special rate. "
+          "Applies only when the importer confirms the end use (conditions.endUse = pharmaceutical). The 12.5% 2026 Section 301 duty on Brazil (9903.05.27) is "
+          "removed separately by s301-2026-exempt-52e-pharma-use for the lines also on the note 52(e) list."))
 
 # China Section 301 lists (U.S. note 20) — Chapters 01 and 30 only
 PCN = 'Section 301 (China, 2018-2019 lists)'
@@ -161,7 +197,8 @@ measures.append(rec(measureKey='s232-pharma-patented', program=P232, ch99Code='9
     notes='U.S. note 40(d): when the column 1 rate is below 100%, the total is 100%; when above, no additional duty. Modeled as a floor: max(base, 100%). '
           'In force for all importers from September 29, 2026 (companies in Annex III to Proclamation 11020 from July 31, 2026). '
           'Specialty products from jurisdictions not on the 9903.04.66 list are charged as patented. Note 40(b): collected even when an FTA special rate is claimed. '
-          'Company onshoring/MFN-pricing headings 9903.04.64 (+20%) and 9903.04.65 (0%), U.S.-API 9903.04.68, non-pharmaceutical 9903.04.69 and R&D 9903.04.70 are not modeled (no condition for them yet). '
+          'Company programs (9903.04.64 onshoring, 9903.04.65 MFN pricing, Annex III companies before September 29), U.S.-origin ingredient (9903.04.68) and research use (9903.04.70) are separate measures conditioned on the importer\'s confirmation; '
+          'non-pharmaceutical articles and articles neither patented nor generic (9903.04.69) are the "other" product type, which no Section 232 measure charges. '
           + COV_NOTE + ' ' + STACK_NOTE))
 measures.append(rec(measureKey='s232-pharma-deal-15', program=P232, ch99Code='9903.04.62', rateKind='floor', ratePct=15, countriesInclude=DEAL,
     coverageInclude=c40, conditions={'productTypes': ['patented', 'specialty']}, replacesCodes=REPL_301, effectiveFrom='2026-09-29',
@@ -174,7 +211,7 @@ measures.append(rec(measureKey='s232-pharma-uk', program=P232, ch99Code='9903.04
     notes='U.S. note 40(g): patented articles of the United Kingdom, base rate + 0% (set at 10% by Proclamation 11020, reduced to 0% from July 31, 2026). Must still be entered under 9903.04.63. '
           + COV_NOTE + ' ' + STACK_NOTE))
 measures.append(rec(measureKey='s232-pharma-specialty', program=P232, ch99Code='9903.04.66', rateKind='additive', ratePct=0, countriesInclude=SPECIALTY,
-    coverageInclude=c40, conditions={'productTypes': ['specialty']}, replacesCodes=['9903.04.60', '9903.04.62', '9903.04.63'] + REPL_301, effectiveFrom='2026-09-29',
+    coverageInclude=c40, conditions={'productTypes': ['specialty']}, replacesCodes=['9903.04.60', '9903.04.62', '9903.04.63', '9903.04.64'] + REPL_301, effectiveFrom='2026-09-29',
     sources=S('procl-11020', 'bis-specialty') + [hts_note(40)],
     notes='U.S. note 40(h)(iii): orphan drugs, nuclear medicines, plasma-derived therapies, fertility drugs, cell and gene therapies, ADCs, CBRN countermeasures and animal-health products '
           'of the jurisdictions BIS listed on September 23, 2026 (EU, Argentina, Bangladesh, Cambodia, Ecuador, El Salvador, Guatemala, India, Indonesia, Japan, Jordan, Malaysia, North Macedonia, '
@@ -186,6 +223,66 @@ measures.append(rec(measureKey='s232-pharma-generic', program=P232, ch99Code='99
     notes='Proclamation 11020 clause 5 and U.S. note 40(c)(iii): generic pharmaceuticals, biosimilars and their ingredients pay no Section 232 duty (entered under 9903.04.67). '
           'They are not in 9903.04.60–9903.04.66, so the 2026 Section 301 and Brazil duties still apply unless another exemption covers the line (all Chapter 30 lines of note 40(c) are on note 52(b) / 50(a)(ii)). '
           + COV_NOTE))
+
+# Section 232 pharmaceuticals: company programs and other confirmed facts (issue #1790, phase A: self-declared).
+# Note 40(a): headings 9903.04.60–9903.04.70 are mutually exclusive; clause (8) of Proclamation 11020: the lowest applicable rate applies.
+PATENTED = ['patented', 'specialty']
+S232_DUTY = ['9903.04.60', '9903.04.61', '9903.04.62', '9903.04.63', '9903.04.64', '9903.04.65', '9903.04.66']
+measures.append(rec(measureKey='s232-pharma-other-companies-before-0929', program=P232, ch99Code='9903.04.61', rateKind='relief',
+    coverageInclude=c40, conditions={'productTypes': PATENTED}, replacesCodes=REPL_301, effectiveFrom='2026-07-31', effectiveTo='2026-09-28',
+    sources=S('procl-11020', 'csms-69395344') + [hts_note(40)], reviewedAt='2026-10-09',
+    notes='U.S. note 40(e) and CBP CSMS # 69395344: from July 31 through September 28, 2026, patented pharmaceutical articles of companies NOT listed in Annex III '
+          'to Proclamation 11020 enter under 9903.04.61 with no Section 232 duty. 9903.04.61 is within 9903.04.60–9903.04.66, so the 2026 Section 301 and Brazil duties '
+          'do not apply either (notes 52(f)(8), 50(a)(vi)(8)). Annex III companies (companyProgram annexCompany) paid the duty from July 31: see s232-pharma-annex3-*. '
+          + COV_NOTE))
+measures.append(rec(measureKey='s232-pharma-annex3-patented', program=P232, ch99Code='9903.04.60', rateKind='floor', ratePct=100, countriesExclude=sorted(DEAL + ['GB']),
+    coverageInclude=c40, conditions={'productTypes': PATENTED, 'companyProgram': 'annexCompany'}, replacesCodes=['9903.04.61'] + REPL_301,
+    effectiveFrom='2026-07-31', effectiveTo='2026-09-28', sources=S('procl-11020', 'csms-69395344') + [hts_note(40)], reviewedAt='2026-10-09',
+    notes='Proclamation 11020 clause (4) and CBP CSMS # 69395344: products of the companies listed in Annex III to the proclamation paid the Section 232 duty from '
+          'July 31, 2026, eight weeks before everyone else (other companies used 9903.04.61 until September 28). Same terms as s232-pharma-patented: when the column 1 rate '
+          'is below 100% the total is 100%. Self-declared: the Annex III company names are not in the Federal Register text of the proclamation, so the importer '
+          'confirms the manufacturer is listed (companyProgram annexCompany). ' + COV_NOTE + ' ' + STACK_NOTE))
+measures.append(rec(measureKey='s232-pharma-annex3-deal-15', program=P232, ch99Code='9903.04.62', rateKind='floor', ratePct=15, countriesInclude=DEAL,
+    coverageInclude=c40, conditions={'productTypes': PATENTED, 'companyProgram': 'annexCompany'}, replacesCodes=['9903.04.61'] + REPL_301,
+    effectiveFrom='2026-07-31', effectiveTo='2026-09-28', sources=S('procl-11020', 'csms-69395344') + [hts_note(40)], reviewedAt='2026-10-09',
+    notes='U.S. note 40(f) for Annex III companies from July 31 through September 28, 2026: patented articles of Japan, the EU, South Korea, Switzerland or Liechtenstein, '
+          'total 15% when the column 1 rate is below 15%. Self-declared (companyProgram annexCompany). ' + COV_NOTE + ' ' + STACK_NOTE))
+measures.append(rec(measureKey='s232-pharma-onshoring', program=P232, ch99Code='9903.04.64', rateKind='additive', ratePct=20, countriesExclude=sorted(DEAL + ['GB']),
+    coverageInclude=c40, conditions={'productTypes': PATENTED, 'companyProgram': 'onshoring'}, replacesCodes=['9903.04.60'] + REPL_301,
+    effectiveFrom='2026-09-29', effectiveTo='2030-04-01', sources=S('procl-11020', 'csms-69395344', 'csms-70054007') + [hts_note(40)], reviewedAt='2026-10-09',
+    notes='U.S. note 40(h)(i), heading 9903.04.64 ("The duty provided in the applicable subheading + 20%"; CBP: 20% additional): patented articles imported for companies '
+          'with an onshoring plan approved by the Secretary of Commerce pay base rate + 20% instead of 9903.04.60. Self-declared (companyProgram onshoring); CBP may '
+          'require proof, and CSMS # 69395344 said no company was yet eligible. Not offered for products of Japan, the EU, South Korea, Switzerland, Liechtenstein or '
+          'the United Kingdom, whose lower rates (15%, 0%) apply under clause (8) of the proclamation (lowest rate wins); specialty products eligible for 9903.04.66 '
+          'stay at 0%. The rate rises to 100% on April 2, 2030 (Proclamation 11020 clause 3(b)), so the measure ends April 1, 2030 and 9903.04.60 applies again. '
+          + COV_NOTE + ' ' + STACK_NOTE))
+measures.append(rec(measureKey='s232-pharma-mfn-pricing', program=P232, ch99Code='9903.04.65', rateKind='additive', ratePct=0,
+    coverageInclude=c40, conditions={'productTypes': PATENTED, 'companyProgram': 'mfnPricing'}, replacesCodes=['9903.04.60', '9903.04.62', '9903.04.63', '9903.04.64'] + REPL_301,
+    effectiveFrom='2026-09-29', effectiveTo='2029-01-19', sources=S('procl-11020', 'csms-69395344', 'csms-70054007') + [hts_note(40)], reviewedAt='2026-10-09',
+    notes='U.S. note 40(h)(ii), heading 9903.04.65 (base rate + 0%): patented articles of companies with an approved onshoring plan AND a most-favored-nation '
+          'pharmaceutical pricing agreement with HHS, including the company agreements in Annex II to Proclamation 11020 (clause 3(e); CSMS # 69395344). '
+          'Self-declared (companyProgram mfnPricing); CBP may require proof. The zero rate runs until January 20, 2029 (CSMS: 9903.04.65 expires that day), '
+          'so the measure ends January 19, 2029. ' + COV_NOTE + ' ' + STACK_NOTE))
+measures.append(rec(measureKey='s232-pharma-us-origin-api', program=P232, ch99Code='9903.04.68', rateKind='relief',
+    coverageInclude=c40, conditions={'usOriginIngredient': True}, replacesCodes=S232_DUTY, effectiveFrom='2026-07-31',
+    sources=S('procl-11020', 'csms-69395344', 'csms-70054007') + [hts_note(40)], reviewedAt='2026-10-09',
+    notes='Heading 9903.04.68 (Proclamation 11020 clause (11); CSMS # 69395344 and # 70054007): pharmaceutical products with an active pharmaceutical ingredient that is '
+          'a product of the United States, packaged in dosage form abroad, pay no Section 232 duty (0%). Applies only when the importer confirms the U.S.-origin '
+          'ingredient (conditions.usOriginIngredient). 9903.04.68 is outside 9903.04.60–9903.04.66, so the 2026 Section 301 and Brazil duties still apply unless '
+          'another exemption covers the line. ' + COV_NOTE))
+measures.append(rec(measureKey='s232-pharma-research-use', program=P232, ch99Code='9903.04.70', rateKind='relief',
+    coverageInclude=c40, conditions={'endUse': 'research'}, replacesCodes=S232_DUTY, effectiveFrom='2026-09-29',
+    sources=S('bis-specialty', 'csms-70054007') + [hts_note(40)], reviewedAt='2026-10-09',
+    notes='Heading 9903.04.70 (added by 91 FR 60360 from September 29, 2026; CSMS # 70054007): pharmaceutical articles and ingredients of note 40(c) solely for use in '
+          'clinical trials, research and development, or other non-commercial applications pay no Section 232 duty (0%). Applies only when the importer confirms '
+          'that end use (conditions.endUse = research). 9903.04.70 is outside 9903.04.60–9903.04.66, so the 2026 Section 301 and Brazil duties still apply unless '
+          'another exemption covers the line. ' + COV_NOTE))
+
+# Named-product exemptions (notes 52(c), 52(j)(n)(ii), 50(a)(iii)): one relief measure per (note, subheading),
+# applying only when the importer confirms the described product (issue #1790).
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from measures_named_products import load_descriptions, named_product_measures  # noqa: E402
+measures += named_product_measures(cov, load_descriptions(ROOT), rec=rec, S=S, hts_note=hts_note, all_s301_codes=ALL_S301_CODES)
 
 out = {'htsEdition': ED, 'reviewedAt': '2026-10-09', 'measures': measures}
 json.dump(out, open(ROOT + 'measures.json', 'w'), ensure_ascii=False, indent=2)

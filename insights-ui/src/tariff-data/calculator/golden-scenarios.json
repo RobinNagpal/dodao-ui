@@ -594,6 +594,489 @@
       "expectedTotalDutyUsd": 0,
       "toleranceUsd": 0.01,
       "sourceNote": "Chapter 30 Rates by country: Japan x 3006 (3006.93.80) = Free (U.S.–Japan Trade Agreement (JP): Free; no Section 301 coverage)."
+    },
+    {
+      "id": "ch29-acetaminophen-in-no-confirmation",
+      "description": "Acetaminophen (2924.29.62.10, 6.5% base) from India, pharmaceutical use NOT confirmed, $100,000",
+      "chapter": "29",
+      "input": {
+        "hts10": "2924296210",
+        "countryOfOrigin": "IN",
+        "customsValueUsd": 100000,
+        "quantities": {
+          "KG": 1000
+        },
+        "entryDate": "2026-10-09"
+      },
+      "line": {
+        "hts10": "2924296210",
+        "general": "6.5%",
+        "special": "Free (A,AU,BH,CL,CO,D,E,IL,JO,K,KR,MA,OM,P,PA,PE,S,SG)",
+        "units": ["kg"]
+      },
+      "expectedTotalDutyUsd": 16500,
+      "toleranceUsd": 0.01,
+      "sourceNote": "U.S. note 52(e) lists 2924.29.62 but exempts it only when for use in pharmaceutical applications (9903.05.89). Unconfirmed, so the India 2026 Section 301 duty applies: 6.5% base ($6,500) + 10% (9903.05.44, $10,000) = $16,500."
+    },
+    {
+      "id": "ch29-acetaminophen-in-pharma-use",
+      "description": "Acetaminophen (2924.29.62.10, 6.5% base) from India for use in pharmaceutical applications, $100,000",
+      "chapter": "29",
+      "input": {
+        "hts10": "2924296210",
+        "countryOfOrigin": "IN",
+        "customsValueUsd": 100000,
+        "quantities": {
+          "KG": 1000
+        },
+        "confirmations": {
+          "endUse": "pharmaceutical"
+        },
+        "entryDate": "2026-10-09"
+      },
+      "line": {
+        "hts10": "2924296210",
+        "general": "6.5%",
+        "special": "Free (A,AU,BH,CL,CO,D,E,IL,JO,K,KR,MA,OM,P,PA,PE,S,SG)",
+        "units": ["kg"]
+      },
+      "expectedTotalDutyUsd": 6500,
+      "toleranceUsd": 0.01,
+      "sourceNote": "U.S. note 52(e) / heading 9903.05.89: 2924.29.62 is on the list and the pharmaceutical end use is confirmed, so 9903.05.44 (India, +10%) does not apply. 6.5% base only = $6,500."
+    },
+    {
+      "id": "ch29-acetaminophen-br-no-confirmation",
+      "description": "Acetaminophen (2924.29.62.10, 6.5% base) from Brazil, pharmaceutical use NOT confirmed, $100,000",
+      "chapter": "29",
+      "input": {
+        "hts10": "2924296210",
+        "countryOfOrigin": "BR",
+        "customsValueUsd": 100000,
+        "quantities": {
+          "KG": 1000
+        },
+        "entryDate": "2026-10-09"
+      },
+      "line": {
+        "hts10": "2924296210",
+        "general": "6.5%",
+        "special": "Free (A,AU,BH,CL,CO,D,E,IL,JO,K,KR,MA,OM,P,PA,PE,S,SG)",
+        "units": ["kg"]
+      },
+      "expectedTotalDutyUsd": 44000,
+      "toleranceUsd": 0.01,
+      "sourceNote": "Unconfirmed end use: 6.5% base ($6,500) + 2026 Section 301 Brazil 12.5% (9903.05.27, $12,500) + Brazil Section 301 25% (9903.05.01, U.S. note 50(a)(i), $25,000) = $44,000."
+    },
+    {
+      "id": "ch29-acetaminophen-br-pharma-use",
+      "description": "Acetaminophen (2924.29.62.10, 6.5% base) from Brazil for use in pharmaceutical applications, $100,000",
+      "chapter": "29",
+      "input": {
+        "hts10": "2924296210",
+        "countryOfOrigin": "BR",
+        "customsValueUsd": 100000,
+        "quantities": {
+          "KG": 1000
+        },
+        "confirmations": {
+          "endUse": "pharmaceutical"
+        },
+        "entryDate": "2026-10-09"
+      },
+      "line": {
+        "hts10": "2924296210",
+        "general": "6.5%",
+        "special": "Free (A,AU,BH,CL,CO,D,E,IL,JO,K,KR,MA,OM,P,PA,PE,S,SG)",
+        "units": ["kg"]
+      },
+      "expectedTotalDutyUsd": 6500,
+      "toleranceUsd": 0.01,
+      "sourceNote": "2924.29.62 is on both U.S. note 52(e) (9903.05.89 removes 9903.05.27) and note 50(a)(v) (9903.05.06 removes 9903.05.01); the pharmaceutical end use is confirmed, so only the 6.5% base is due = $6,500."
+    },
+    {
+      "id": "ch61-tshirt-gt-no-claim",
+      "description": "Men's cotton T-shirts (6109.10.00.12, 16.5% base) from Guatemala, no CAFTA-DR claim, $10,000",
+      "chapter": "61",
+      "input": {
+        "hts10": "6109100012",
+        "countryOfOrigin": "GT",
+        "customsValueUsd": 10000,
+        "quantities": {
+          "DOZ": 500,
+          "KG": 1000
+        },
+        "entryDate": "2026-10-09"
+      },
+      "line": {
+        "hts10": "6109100012",
+        "general": "16.5%",
+        "special": "Free (AU,BH,CL,CO,IL,JO,KR,MA,OM,P,PA,PE,S,SG)",
+        "units": ["doz.", "kg"]
+      },
+      "expectedTotalDutyUsd": 2650,
+      "toleranceUsd": 0.01,
+      "sourceNote": "Without a CAFTA-DR claim: 16.5% base ($1,650) + Guatemala 2026 Section 301 10% (9903.05.40, $1,000) = $2,650. The U.S. note 52(j)(6)(iii) exception (9903.06.06) needs entry claimed under CAFTA-DR."
+    },
+    {
+      "id": "ch61-tshirt-gt-cafta",
+      "description": "Men's cotton T-shirts (6109.10.00.12) from Guatemala, CAFTA-DR claimed (SPI P), $10,000",
+      "chapter": "61",
+      "input": {
+        "hts10": "6109100012",
+        "countryOfOrigin": "GT",
+        "customsValueUsd": 10000,
+        "quantities": {
+          "DOZ": 500,
+          "KG": 1000
+        },
+        "claimedSpi": "P",
+        "entryDate": "2026-10-09"
+      },
+      "line": {
+        "hts10": "6109100012",
+        "general": "16.5%",
+        "special": "Free (AU,BH,CL,CO,IL,JO,KR,MA,OM,P,PA,PE,S,SG)",
+        "units": ["doz.", "kg"]
+      },
+      "expectedTotalDutyUsd": 0,
+      "toleranceUsd": 0.01,
+      "sourceNote": "CAFTA-DR special rate (P) for 6109.10.00 = Free; 6109.10.00 is on the U.S. note 52(j)(6)(iii) list, so heading 9903.06.06 removes 9903.05.40 for goods entered under CAFTA-DR (general note 29). Total $0."
+    },
+    {
+      "id": "ch61-tshirt-sv-cafta",
+      "description": "Men's cotton T-shirts (6109.10.00.12) from El Salvador, CAFTA-DR claimed (SPI P), $10,000",
+      "chapter": "61",
+      "input": {
+        "hts10": "6109100012",
+        "countryOfOrigin": "SV",
+        "customsValueUsd": 10000,
+        "quantities": {
+          "DOZ": 500,
+          "KG": 1000
+        },
+        "claimedSpi": "P",
+        "entryDate": "2026-10-09"
+      },
+      "line": {
+        "hts10": "6109100012",
+        "general": "16.5%",
+        "special": "Free (AU,BH,CL,CO,IL,JO,KR,MA,OM,P,PA,PE,S,SG)",
+        "units": ["doz.", "kg"]
+      },
+      "expectedTotalDutyUsd": 0,
+      "toleranceUsd": 0.01,
+      "sourceNote": "CAFTA-DR special rate (P) = Free; 6109.10.00 is on the U.S. note 52(j)(7)(iii) list, so heading 9903.06.09 removes the El Salvador 10% duty (9903.05.37). Total $0."
+    },
+    {
+      "id": "ch29-patented-api-in-no-program",
+      "description": "Patented anticonvulsant API (2933.99.65.00, 6.5% base) from India, no company program, $100,000",
+      "chapter": "29",
+      "input": {
+        "hts10": "2933996500",
+        "countryOfOrigin": "IN",
+        "customsValueUsd": 100000,
+        "quantities": {
+          "KG": 1000
+        },
+        "productType": "patented",
+        "entryDate": "2026-10-09"
+      },
+      "line": {
+        "hts10": "2933996500",
+        "general": "6.5%",
+        "special": "Free (A+,AU,BH,CL,CO,D,E,IL,JO,K,KR,MA,OM,P,PA,PE,S,SG)",
+        "units": ["kg"]
+      },
+      "expectedTotalDutyUsd": 100000,
+      "toleranceUsd": 0.01,
+      "sourceNote": "U.S. note 40(c) lists 2933.99.6500. Patented, no company program: 9903.04.60, total 100% when the column 1 rate is below 100% (note 40(d)) = $100,000. 9903.04.60 is in 9903.04.60–.66, so the India 301 duty does not stack (note 52(f)(8))."
+    },
+    {
+      "id": "ch29-patented-api-in-onshoring",
+      "description": "Patented API (2933.99.65.00, 6.5% base) from India, manufacturer has a Commerce-approved onshoring plan, $100,000",
+      "chapter": "29",
+      "input": {
+        "hts10": "2933996500",
+        "countryOfOrigin": "IN",
+        "customsValueUsd": 100000,
+        "quantities": {
+          "KG": 1000
+        },
+        "productType": "patented",
+        "confirmations": {
+          "companyProgram": "onshoring"
+        },
+        "entryDate": "2026-10-09"
+      },
+      "line": {
+        "hts10": "2933996500",
+        "general": "6.5%",
+        "special": "Free (A+,AU,BH,CL,CO,D,E,IL,JO,K,KR,MA,OM,P,PA,PE,S,SG)",
+        "units": ["kg"]
+      },
+      "expectedTotalDutyUsd": 26500,
+      "toleranceUsd": 0.01,
+      "sourceNote": "Heading 9903.04.64 (note 40(h)(i)): \"The duty provided in the applicable subheading + 20%\" instead of 9903.04.60; 301 excluded by note 52(f)(8). 6.5% ($6,500) + 20% ($20,000) = $26,500."
+    },
+    {
+      "id": "ch29-patented-api-de-onshoring",
+      "description": "Patented API (2933.99.65.00, 6.5% base) from Germany, manufacturer has an onshoring plan, $100,000",
+      "chapter": "29",
+      "input": {
+        "hts10": "2933996500",
+        "countryOfOrigin": "DE",
+        "customsValueUsd": 100000,
+        "quantities": {
+          "KG": 1000
+        },
+        "productType": "patented",
+        "confirmations": {
+          "companyProgram": "onshoring"
+        },
+        "entryDate": "2026-10-09"
+      },
+      "line": {
+        "hts10": "2933996500",
+        "general": "6.5%",
+        "special": "Free (A+,AU,BH,CL,CO,D,E,IL,JO,K,KR,MA,OM,P,PA,PE,S,SG)",
+        "units": ["kg"]
+      },
+      "expectedTotalDutyUsd": 15000,
+      "toleranceUsd": 0.01,
+      "sourceNote": "For EU goods the 15% rate of 9903.04.62 (total 15% when column 1 is below 15%, note 40(f)) is lower than the 20% onshoring rate, and Proclamation 11020 clause (8) applies the lowest rate, so the onshoring claim changes nothing: $15,000."
+    },
+    {
+      "id": "ch29-patented-api-in-mfn-pricing",
+      "description": "Patented API (2933.99.65.00, 6.5% base) from India, manufacturer has onshoring + MFN pricing agreements, $100,000",
+      "chapter": "29",
+      "input": {
+        "hts10": "2933996500",
+        "countryOfOrigin": "IN",
+        "customsValueUsd": 100000,
+        "quantities": {
+          "KG": 1000
+        },
+        "productType": "patented",
+        "confirmations": {
+          "companyProgram": "mfnPricing"
+        },
+        "entryDate": "2026-10-09"
+      },
+      "line": {
+        "hts10": "2933996500",
+        "general": "6.5%",
+        "special": "Free (A+,AU,BH,CL,CO,D,E,IL,JO,K,KR,MA,OM,P,PA,PE,S,SG)",
+        "units": ["kg"]
+      },
+      "expectedTotalDutyUsd": 6500,
+      "toleranceUsd": 0.01,
+      "sourceNote": "Heading 9903.04.65 (note 40(h)(ii); Proclamation 11020 clause 3(e)): base rate + 0% instead of 9903.04.60; 301 excluded by note 52(f)(8). 6.5% base only = $6,500."
+    },
+    {
+      "id": "ch29-patented-api-in-annex3-aug",
+      "description": "Patented API (2933.99.65.00) from India entered 2026-08-15, manufacturer listed in Annex III, $100,000",
+      "chapter": "29",
+      "input": {
+        "hts10": "2933996500",
+        "countryOfOrigin": "IN",
+        "customsValueUsd": 100000,
+        "quantities": {
+          "KG": 1000
+        },
+        "productType": "patented",
+        "confirmations": {
+          "companyProgram": "annexCompany"
+        },
+        "entryDate": "2026-08-15"
+      },
+      "line": {
+        "hts10": "2933996500",
+        "general": "6.5%",
+        "special": "Free (A+,AU,BH,CL,CO,D,E,IL,JO,K,KR,MA,OM,P,PA,PE,S,SG)",
+        "units": ["kg"]
+      },
+      "expectedTotalDutyUsd": 100000,
+      "toleranceUsd": 0.01,
+      "sourceNote": "Proclamation 11020 clause (4) / CSMS # 69395344: Annex III companies paid the Section 232 duty from July 31, 2026 under 9903.04.60 (total 100%) = $100,000."
+    },
+    {
+      "id": "ch29-patented-api-in-other-company-aug",
+      "description": "Patented API (2933.99.65.00, 6.5% base) from India entered 2026-08-15, manufacturer not in Annex III, $100,000",
+      "chapter": "29",
+      "input": {
+        "hts10": "2933996500",
+        "countryOfOrigin": "IN",
+        "customsValueUsd": 100000,
+        "quantities": {
+          "KG": 1000
+        },
+        "productType": "patented",
+        "entryDate": "2026-08-15"
+      },
+      "line": {
+        "hts10": "2933996500",
+        "general": "6.5%",
+        "special": "Free (A+,AU,BH,CL,CO,D,E,IL,JO,K,KR,MA,OM,P,PA,PE,S,SG)",
+        "units": ["kg"]
+      },
+      "expectedTotalDutyUsd": 6500,
+      "toleranceUsd": 0.01,
+      "sourceNote": "CSMS # 69395344: until September 28, 2026 other companies enter under 9903.04.61 (0%); 9903.04.61 is in 9903.04.60–.66 so the India 301 duty does not apply (note 52(f)(8)). 6.5% base only = $6,500."
+    },
+    {
+      "id": "ch29-patented-api-in-us-origin-api",
+      "description": "Patented drug ingredient (2933.99.65.00, 6.5% base) from India with a U.S.-origin active ingredient, $100,000",
+      "chapter": "29",
+      "input": {
+        "hts10": "2933996500",
+        "countryOfOrigin": "IN",
+        "customsValueUsd": 100000,
+        "quantities": {
+          "KG": 1000
+        },
+        "productType": "patented",
+        "confirmations": {
+          "usOriginIngredient": true
+        },
+        "entryDate": "2026-10-09"
+      },
+      "line": {
+        "hts10": "2933996500",
+        "general": "6.5%",
+        "special": "Free (A+,AU,BH,CL,CO,D,E,IL,JO,K,KR,MA,OM,P,PA,PE,S,SG)",
+        "units": ["kg"]
+      },
+      "expectedTotalDutyUsd": 16500,
+      "toleranceUsd": 0.01,
+      "sourceNote": "Heading 9903.04.68 (Proclamation 11020 clause 11; CSMS # 70054007): 0% Section 232. 9903.04.68 is outside 9903.04.60–.66, so the India 2026 Section 301 duty (9903.05.44, +10%) still applies: $6,500 + $10,000 = $16,500."
+    },
+    {
+      "id": "ch29-patented-api-in-research",
+      "description": "Patented API (2933.99.65.00, 6.5% base) from India solely for clinical trials / R&D, $100,000",
+      "chapter": "29",
+      "input": {
+        "hts10": "2933996500",
+        "countryOfOrigin": "IN",
+        "customsValueUsd": 100000,
+        "quantities": {
+          "KG": 1000
+        },
+        "productType": "patented",
+        "confirmations": {
+          "endUse": "research"
+        },
+        "entryDate": "2026-10-09"
+      },
+      "line": {
+        "hts10": "2933996500",
+        "general": "6.5%",
+        "special": "Free (A+,AU,BH,CL,CO,D,E,IL,JO,K,KR,MA,OM,P,PA,PE,S,SG)",
+        "units": ["kg"]
+      },
+      "expectedTotalDutyUsd": 16500,
+      "toleranceUsd": 0.01,
+      "sourceNote": "Heading 9903.04.70 (91 FR 60360; CSMS # 70054007): 0% Section 232 for research use. Outside 9903.04.60–.66, so the India 301 duty (+10%) still applies (the 52(e) pharmaceutical-use exemption is not claimed): $6,500 + $10,000 = $16,500."
+    },
+    {
+      "id": "named-52c-safflower-in-confirmed",
+      "description": "Safflower seeds for sowing from India, $10,000, named product confirmed (note 52(c))",
+      "chapter": "12",
+      "input": {
+        "hts10": "1207600000",
+        "countryOfOrigin": "IN",
+        "customsValueUsd": 10000,
+        "quantities": {
+          "KG": 5000
+        },
+        "entryDate": "2026-10-09",
+        "confirmations": {
+          "productDescriptionIds": ["52c-1207.60.00-1"]
+        }
+      },
+      "line": {
+        "hts10": "1207600000",
+        "general": "Free",
+        "special": null,
+        "units": ["kg"]
+      },
+      "expectedTotalDutyUsd": 0,
+      "toleranceUsd": 0.01,
+      "sourceNote": "U.S. note 52(c), relief 9903.05.87: 'Safflower (Carthamus tintorius) seeds, for sowing' exempt from 9903.05.20–.84; base Free."
+    },
+    {
+      "id": "named-52c-safflower-in-unconfirmed",
+      "description": "Same line from India, description not confirmed",
+      "chapter": "12",
+      "input": {
+        "hts10": "1207600000",
+        "countryOfOrigin": "IN",
+        "customsValueUsd": 10000,
+        "quantities": {
+          "KG": 5000
+        },
+        "entryDate": "2026-10-09"
+      },
+      "line": {
+        "hts10": "1207600000",
+        "general": "Free",
+        "special": null,
+        "units": ["kg"]
+      },
+      "expectedTotalDutyUsd": 1000,
+      "toleranceUsd": 0.01,
+      "sourceNote": "No confirmation: Free base + 10% Section 301 (9903.05.44, India)."
+    },
+    {
+      "id": "named-52j4ii-psyllium-my",
+      "description": "Psyllium seed husks from Malaysia, $20,000, Malaysia named product confirmed (note 52(j)(4)(ii))",
+      "chapter": "12",
+      "input": {
+        "hts10": "1211908920",
+        "countryOfOrigin": "MY",
+        "customsValueUsd": 20000,
+        "quantities": {
+          "KG": 4000
+        },
+        "entryDate": "2026-10-09",
+        "confirmations": {
+          "productDescriptionIds": ["52j4ii-1211.90.89-1"]
+        }
+      },
+      "line": {
+        "hts10": "1211908920",
+        "general": "Free",
+        "special": null,
+        "units": ["kg"]
+      },
+      "expectedTotalDutyUsd": 0,
+      "toleranceUsd": 0.01,
+      "sourceNote": "U.S. note 52(j)(4)(ii), relief 9903.06.01 lifts 9903.05.54 (Malaysia 10%); without it $2,000."
+    },
+    {
+      "id": "named-50aiii-acai-br-partial",
+      "description": "Acai (2008.99.21) from Brazil, $10,000, only the note 50(a)(iii) description confirmed",
+      "chapter": "20",
+      "input": {
+        "hts10": "2008992140",
+        "countryOfOrigin": "BR",
+        "customsValueUsd": 10000,
+        "quantities": {
+          "KG": 2000
+        },
+        "entryDate": "2026-10-09",
+        "confirmations": {
+          "productDescriptionIds": ["50aiii-2008.99.21-1"]
+        }
+      },
+      "line": {
+        "hts10": "2008992140",
+        "general": "4.5%",
+        "special": "Free (A*,AU,BH,CL,CO,D,E,IL,JO,KR,MA,OM,P,PA,PE,S,SG)",
+        "units": ["kg"]
+      },
+      "expectedTotalDutyUsd": 1700,
+      "toleranceUsd": 0.01,
+      "sourceNote": "4.5% base + 12.5% (9903.05.27) = $1,700; the Brazil 25% (9903.05.01) is lifted by 9903.05.04. Both ids confirmed: $450; neither: $4,200."
     }
   ]
 }

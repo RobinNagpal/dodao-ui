@@ -1,11 +1,12 @@
-import type { TariffProductType } from '@/types/tariff-calculator-measures';
+import type { TariffConfirmationQuestion, TariffProductType } from '@/types/tariff-calculator-measures';
 import { CalculatorEngine, DataFreshness, perUnitRequirements, PerUnitRequirement } from '@/utils/tariff-calculator/duty-engine';
 import { loadCandidates, loadDataFreshness } from '@/utils/tariff-calculator/load-candidates';
-import { isMeasuresEngineEnabledFor, loadMeasureEngineLine, loadMeasures } from '@/utils/tariff-calculator/load-measures';
+import { isMeasuresEngineEnabledFor, loadMeasureEngineLine, loadMeasures, loadProductDescriptions } from '@/utils/tariff-calculator/load-measures';
 import {
   claimablePrograms,
   COLUMN2_COUNTRIES,
   conditionProgramsForLine,
+  confirmationQuestionsForLine,
   productTypesForLine,
   rateQuantityRequirements,
 } from '@/utils/tariff-calculator/measures-engine';
@@ -23,6 +24,10 @@ import { NextRequest } from 'next/server';
 // For chapters on the official-measures engine (TARIFF_CALC_MEASURES_ENABLED) it
 // also returns the trade deals the line offers (for the "Claim a trade deal"
 // select) and the product types its extra duties depend on (for "Product type").
+// With ?country=<ISO2>[&date=YYYY-MM-DD] (default today) it also returns the
+// "Do any of these apply to your goods?" questions (issue #1790): end use, named
+// product and company program confirmations whose measures cover the line and
+// country on that date.
 
 /** A trade deal (SPI program) the line's special column offers. */
 export interface ClaimableTradeDeal {
@@ -44,6 +49,8 @@ export interface OfficialMeasuresRequirements {
   /** Countries charged the column 2 rate, and the quantities that rate needs. */
   column2Countries: string[];
   column2PerUnit: PerUnitRequirement[];
+  /** Facts to confirm about the shipment (end use, named product, company program); empty without ?country=. */
+  confirmationQuestions: TariffConfirmationQuestion[];
 }
 
 export interface CalculatorRequirementsResponse {
@@ -55,7 +62,21 @@ export interface CalculatorRequirementsResponse {
   officialMeasures?: OfficialMeasuresRequirements;
 }
 
-async function officialMeasuresRequirements(hts10: string): Promise<CalculatorRequirementsResponse> {
+interface QuestionScope {
+  country: string | null;
+  /** YYYY-MM-DD. */
+  date: string;
+}
+
+// ?country= must be ISO2 and ?date= YYYY-MM-DD; anything else is ignored (no country → no questions, bad date → today).
+function parseQuestionScope(req: NextRequest): QuestionScope {
+  const country = (req.nextUrl.searchParams.get('country') ?? '').trim().toUpperCase();
+  const date = (req.nextUrl.searchParams.get('date') ?? '').trim();
+  const validDate = /^\d{4}-\d{2}-\d{2}$/.test(date) && !Number.isNaN(new Date(date).getTime());
+  return { country: /^[A-Z]{2}$/.test(country) ? country : null, date: validDate ? date : new Date().toISOString().slice(0, 10) };
+}
+
+async function officialMeasuresRequirements(hts10: string, scope: QuestionScope): Promise<CalculatorRequirementsResponse> {
   const [line, loaded] = await Promise.all([loadMeasureEngineLine(hts10), loadMeasures()]);
   // One choice per plain name (USMCA lists both "S" and "S+").
   const deals = new Map<string, ClaimableTradeDeal>();
@@ -76,13 +97,16 @@ async function officialMeasuresRequirements(hts10: string): Promise<CalculatorRe
       productTypes: productTypesForLine(hts10, loaded.measures),
       column2Countries: line.column2 ? COLUMN2_COUNTRIES : [],
       column2PerUnit: rateQuantityRequirements(line.column2),
+      confirmationQuestions: scope.country
+        ? confirmationQuestionsForLine({ hts10, countryOfOrigin: scope.country, entryDate: scope.date }, loaded.measures, loadProductDescriptions())
+        : [],
     },
   };
 }
 
-async function getHandler(_req: NextRequest, dynamic: { params: Promise<{ hts10: string }> }): Promise<CalculatorRequirementsResponse> {
+async function getHandler(req: NextRequest, dynamic: { params: Promise<{ hts10: string }> }): Promise<CalculatorRequirementsResponse> {
   const hts10 = parseHts10Param((await dynamic.params).hts10);
-  if (await isMeasuresEngineEnabledFor(hts10)) return officialMeasuresRequirements(hts10);
+  if (await isMeasuresEngineEnabledFor(hts10)) return officialMeasuresRequirements(hts10, parseQuestionScope(req));
   const { candidates, lastFetchedAt } = await loadCandidates(hts10);
   return {
     hts10,

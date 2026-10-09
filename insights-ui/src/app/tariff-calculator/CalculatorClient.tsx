@@ -2,6 +2,7 @@
 
 import type { HtsSearchResponse } from '@/app/api/tariff-calculator/hts-search/route';
 import type { CalculatorRequirementsResponse } from '@/app/api/tariff-calculator/requirements/[hts10]/route';
+import ConfirmationQuestions, { confirmationsForQuestions, setConfirmed } from '@/components/tariff-calculator/ConfirmationQuestions';
 import HtsCodeSearch from '@/components/tariff-calculator/HtsCodeSearch';
 import {
   dealsForCountry,
@@ -12,7 +13,7 @@ import {
 } from '@/components/tariff-calculator/OfficialMeasuresFields';
 import NoticeCallout from '@/components/ui/NoticeCallout';
 import TextLink from '@/components/ui/TextLink';
-import type { TariffProductType } from '@/types/tariff-calculator-measures';
+import type { TariffConfirmationQuestion, TariffProductType, TariffShipmentConfirmations } from '@/types/tariff-calculator-measures';
 import {
   CalculatorResponse,
   DataFreshness,
@@ -40,6 +41,8 @@ interface FormState {
   // Official-measures engine only: claimed trade-deal program code ('' = none) and product type.
   claimedSpi: string;
   productType: TariffProductType | '';
+  // Official-measures engine only: facts the importer confirmed (end use, named product, company program).
+  confirmations: TariffShipmentConfirmations;
 }
 
 interface SelectedCode {
@@ -61,6 +64,7 @@ const INITIAL_FORM: FormState = {
   quantities: {},
   claimedSpi: '',
   productType: '',
+  confirmations: {},
 };
 
 // Extra-duty data older than this gets a visible "may be missing recent tariffs" warning.
@@ -75,9 +79,16 @@ interface DeepLinkParams {
   // Trade-deal program code (e.g. "S"), validated against the line's deals once they load.
   claim: string | null;
   productType: TariffProductType | null;
+  // Confirmation answers, kept only when the line asks that question:
+  // ?use=<pharmaceutical|research>, ?company=<program>, ?product=<id,id>, ?usapi=1.
+  use: string | null;
+  usOriginIngredient: boolean;
+  company: string | null;
+  products: string[];
 }
 
 // Reads ?hts=<10 digits>&country=<ISO2>&value=&qty=&claim=<SPI>&type=<patented|generic|specialty>
+// &use=<pharmaceutical|research>&company=<onshoring|mfnPricing|annexCompany>&product=<id,id>&usapi=1
 // (e.g. links from the chapter reports). Returns null when there's no usable HTS code.
 function parseDeepLink(params: URLSearchParams | null): DeepLinkParams | null {
   if (!params) return null;
@@ -95,6 +106,13 @@ function parseDeepLink(params: URLSearchParams | null): DeepLinkParams | null {
     qty: params.get('qty') && Number.isFinite(qtyRaw) && qtyRaw >= 0 ? String(qtyRaw) : null,
     claim: /^[A-Z]{1,2}\+?$/.test(claimRaw) ? claimRaw : null,
     productType: PRODUCT_TYPE_CHOICES.find((c) => c.value === typeRaw)?.value ?? null,
+    use: params.get('use')?.trim() || null,
+    company: params.get('company')?.trim() || null,
+    usOriginIngredient: params.get('usapi') === '1',
+    products: (params.get('product') ?? '')
+      .split(',')
+      .map((p) => p.trim())
+      .filter(Boolean),
   };
 }
 
@@ -143,6 +161,18 @@ function formatExclusionTargets(targets: { code: string; variant: string | null 
   return targets.map((t) => (t.variant ? `${t.code} (${t.variant})` : t.code)).join(', ');
 }
 
+// Deep-link answers for the questions the line actually asks; unknown values are dropped.
+function deepLinkConfirmations(link: DeepLinkParams, questions: TariffConfirmationQuestion[]): TariffShipmentConfirmations {
+  return questions.reduce<TariffShipmentConfirmations>((acc, q) => {
+    const yes =
+      (q.kind === 'endUse' && q.value === link.use) ||
+      (q.kind === 'companyProgram' && q.value === link.company) ||
+      (q.kind === 'productDescription' && link.products.includes(q.value)) ||
+      (q.kind === 'usOriginIngredient' && link.usOriginIngredient);
+    return yes ? setConfirmed(q, acc, true) : acc;
+  }, {});
+}
+
 // Units to ask a quantity for. Official-measures engine: the units of the rate actually
 // charged as the base — the claimed deal's, the column 2 rate's for column 2 countries,
 // else the general rate's. Otherwise the cached candidate codes' units.
@@ -173,6 +203,8 @@ export default function CalculatorClient(): JSX.Element {
   // Guards against an in-flight calculation from clobbering a newer one when
   // the user toggles exclusions or re-submits quickly.
   const requestSeqRef = useRef(0);
+  // Questions currently asked, so a calculation only sends answers to them (a changed country or date can drop one).
+  const questionsRef = useRef<TariffConfirmationQuestion[] | null>(null);
 
   const updateForm = useCallback(<K extends keyof FormState>(key: K, value: FormState[K]) => {
     setForm((prev) => ({ ...prev, [key]: value }));
@@ -202,6 +234,7 @@ export default function CalculatorClient(): JSX.Element {
         chosenExclusions: Array.from(exclusions),
         claimedSpi: currentForm.claimedSpi || undefined,
         productType: currentForm.productType || undefined,
+        confirmations: questionsRef.current ? confirmationsForQuestions(currentForm.confirmations, questionsRef.current) : currentForm.confirmations,
       };
       const res = await fetch('/api/tariff-calculator/calculate', {
         method: 'POST',
@@ -234,7 +267,7 @@ export default function CalculatorClient(): JSX.Element {
     setError(null);
     setChosenExclusions(new Set());
     setRequirements(null);
-    setForm((prev) => ({ ...prev, quantities: {}, claimedSpi: '', productType: '' }));
+    setForm((prev) => ({ ...prev, quantities: {}, claimedSpi: '', productType: '', confirmations: {} }));
   }
 
   function handleManualSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -278,12 +311,16 @@ export default function CalculatorClient(): JSX.Element {
 
   // Load which units this HTS line's per-unit duties are charged in (e.g.
   // cattle "1¢/kg" -> KG) so the form asks for the right quantity up front,
-  // plus how fresh the cached extra-duty data is.
+  // plus how fresh the cached extra-duty data is. Country and entry date scope the
+  // "Do any of these apply?" questions, so the call is repeated when they change.
   const selectedHts10 = selected?.hts10 ?? null;
+  const questionCountry = form.countryOfOrigin;
+  const questionDate = form.entryDate;
   useEffect(() => {
     if (!selectedHts10) return;
     let cancelled = false;
-    fetch(`/api/tariff-calculator/requirements/${selectedHts10}`)
+    const query = new URLSearchParams({ country: questionCountry, date: questionDate });
+    fetch(`/api/tariff-calculator/requirements/${selectedHts10}?${query.toString()}`)
       .then(async (res) => (res.ok ? ((await res.json()) as CalculatorRequirementsResponse) : null))
       .catch(() => null)
       .then((data) => {
@@ -295,7 +332,9 @@ export default function CalculatorClient(): JSX.Element {
     return () => {
       cancelled = true;
     };
-  }, [selectedHts10]);
+  }, [selectedHts10, questionCountry, questionDate]);
+  const confirmationQuestions = requirements?.officialMeasures?.confirmationQuestions ?? null;
+  questionsRef.current = confirmationQuestions;
 
   // Deep links: ?hts=&country=&value=&qty= pre-fill the form and calculate
   // once the requirements for the code are known.
@@ -326,7 +365,8 @@ export default function CalculatorClient(): JSX.Element {
     const deals = requirements.officialMeasures ? dealsForCountry(requirements.officialMeasures.tradeDeals, form.countryOfOrigin) : [];
     const claimedSpi = deals.find((d) => link.claim !== null && d.codes.includes(link.claim))?.codes[0] ?? '';
     const productType = link.productType && requirements.officialMeasures?.productTypes.length ? link.productType : '';
-    const nextForm: FormState = { ...form, quantities, claimedSpi, productType };
+    const confirmations = deepLinkConfirmations(link, requirements.officialMeasures?.confirmationQuestions ?? []);
+    const nextForm: FormState = { ...form, quantities, claimedSpi, productType, confirmations };
     setForm(nextForm);
     const hasQuantities = quantityUnitsFor(requirements, nextForm).every((u) => quantities[u.uom] !== undefined);
     if (link.country && link.value && hasQuantities) {
@@ -364,15 +404,22 @@ export default function CalculatorClient(): JSX.Element {
           error={error}
           extraFields={
             requirements?.officialMeasures ? (
-              <TradeDealFields
-                deals={requirements.officialMeasures.tradeDeals}
-                country={form.countryOfOrigin}
-                claimedSpi={form.claimedSpi}
-                onClaim={(code) => updateForm('claimedSpi', code)}
-                productTypes={requirements.officialMeasures.productTypes}
-                productType={form.productType}
-                onProductType={(type) => updateForm('productType', type)}
-              />
+              <>
+                <TradeDealFields
+                  deals={requirements.officialMeasures.tradeDeals}
+                  country={form.countryOfOrigin}
+                  claimedSpi={form.claimedSpi}
+                  onClaim={(code) => updateForm('claimedSpi', code)}
+                  productTypes={requirements.officialMeasures.productTypes}
+                  productType={form.productType}
+                  onProductType={(type) => updateForm('productType', type)}
+                />
+                <ConfirmationQuestions
+                  questions={requirements.officialMeasures.confirmationQuestions ?? []}
+                  confirmations={form.confirmations}
+                  onChange={(next) => updateForm('confirmations', next)}
+                />
+              </>
             ) : null
           }
         />

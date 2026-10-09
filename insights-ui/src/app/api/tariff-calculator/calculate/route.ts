@@ -1,4 +1,4 @@
-import type { TariffProductType } from '@/types/tariff-calculator-measures';
+import type { TariffCompanyProgram, TariffEndUse, TariffProductType, TariffShipmentConfirmations } from '@/types/tariff-calculator-measures';
 import {
   calculateDuties,
   CalculatorInputs,
@@ -28,6 +28,9 @@ import { NextRequest } from 'next/server';
 // `hts_codes`, extra duties from the reviewed `tariff_measures`, with the optional
 // trade-deal claim (`claimedSpi`) and `productType`. The response keeps the same
 // shape and adds `engine: 'official-measures'`.
+// Optional `confirmations` ({ endUse, productDescriptionIds, companyProgram, usOriginIngredient }, issue #1790)
+// are the shipment facts the importer confirmed; measures conditioned on an unconfirmed
+// fact are skipped and listed in `skippedMeasures` with the reason.
 
 function isObject(v: unknown): v is Record<string, unknown> {
   return typeof v === 'object' && v !== null && !Array.isArray(v);
@@ -98,6 +101,43 @@ function parseProductType(raw: unknown): TariffProductType | undefined {
   return raw as TariffProductType;
 }
 
+const END_USES: TariffEndUse[] = ['pharmaceutical', 'research'];
+const COMPANY_PROGRAMS: TariffCompanyProgram[] = ['onshoring', 'mfnPricing', 'annexCompany'];
+const MAX_PRODUCT_DESCRIPTION_IDS = 50;
+
+function parseConfirmations(raw: unknown): TariffShipmentConfirmations | undefined {
+  if (raw === undefined || raw === null) return undefined;
+  if (!isObject(raw)) throw badRequestError('confirmations must be an object');
+  const out: TariffShipmentConfirmations = {};
+  if (raw.endUse !== undefined && raw.endUse !== null && raw.endUse !== '') {
+    if (typeof raw.endUse !== 'string' || !(END_USES as string[]).includes(raw.endUse))
+      throw badRequestError(`confirmations.endUse must be one of ${END_USES.join(', ')}`);
+    out.endUse = raw.endUse as TariffEndUse;
+  }
+  if (raw.companyProgram !== undefined && raw.companyProgram !== null && raw.companyProgram !== '') {
+    if (typeof raw.companyProgram !== 'string' || !(COMPANY_PROGRAMS as string[]).includes(raw.companyProgram)) {
+      throw badRequestError(`confirmations.companyProgram must be one of ${COMPANY_PROGRAMS.join(', ')}`);
+    }
+    out.companyProgram = raw.companyProgram as TariffCompanyProgram;
+  }
+  if (raw.usOriginIngredient !== undefined && raw.usOriginIngredient !== null) {
+    if (typeof raw.usOriginIngredient !== 'boolean') throw badRequestError('confirmations.usOriginIngredient must be true or false');
+    if (raw.usOriginIngredient) out.usOriginIngredient = true;
+  }
+  if (raw.productDescriptionIds !== undefined && raw.productDescriptionIds !== null) {
+    const ids = raw.productDescriptionIds;
+    if (!Array.isArray(ids)) throw badRequestError('confirmations.productDescriptionIds must be an array of strings');
+    if (ids.length > MAX_PRODUCT_DESCRIPTION_IDS)
+      throw badRequestError(`confirmations.productDescriptionIds accepts at most ${MAX_PRODUCT_DESCRIPTION_IDS} ids`);
+    const parsed = ids.map((id, i) => {
+      if (typeof id !== 'string' || !/^[\w.()-]{1,80}$/.test(id)) throw badRequestError(`confirmations.productDescriptionIds[${i}] must be a description id`);
+      return id;
+    });
+    if (parsed.length > 0) out.productDescriptionIds = Array.from(new Set(parsed));
+  }
+  return Object.keys(out).length > 0 ? out : undefined;
+}
+
 function parseCalculatorInputs(body: unknown): CalculatorInputs {
   if (!isObject(body)) throw badRequestError('Request body must be an object');
   const hts10 = parseHts10(body.hts10);
@@ -121,7 +161,7 @@ function parseCalculatorInputs(body: unknown): CalculatorInputs {
   };
 }
 
-async function calculateWithOfficialMeasures(inputs: CalculatorInputs): Promise<CalculatorResponse> {
+async function calculateWithOfficialMeasures(inputs: CalculatorInputs, confirmations: TariffShipmentConfirmations | undefined): Promise<CalculatorResponse> {
   const program = inputs.claimedSpi ? SPECIAL_PROGRAMS[inputs.claimedSpi] : undefined;
   if (inputs.claimedSpi && program?.countries && !program.countries.includes(inputs.countryOfOrigin)) {
     throw badRequestError(`${program.name} can only be claimed for goods from ${program.countries.join(', ')}.`);
@@ -137,6 +177,7 @@ async function calculateWithOfficialMeasures(inputs: CalculatorInputs): Promise<
       quantities: inputs.unitsOfMeasure,
       claimedSpi: inputs.claimedSpi,
       productType: inputs.productType,
+      confirmations,
       entryDate: inputs.entryDate,
     },
     line,
@@ -190,8 +231,10 @@ async function calculateWithOfficialMeasures(inputs: CalculatorInputs): Promise<
 }
 
 async function postHandler(req: NextRequest): Promise<CalculatorResponse> {
-  const inputs = parseCalculatorInputs(await req.json().catch(() => null));
-  if (await isMeasuresEngineEnabledFor(inputs.hts10)) return calculateWithOfficialMeasures(inputs);
+  const body: unknown = await req.json().catch(() => null);
+  const inputs = parseCalculatorInputs(body);
+  const confirmations = parseConfirmations(isObject(body) ? body.confirmations : undefined);
+  if (await isMeasuresEngineEnabledFor(inputs.hts10)) return calculateWithOfficialMeasures(inputs, confirmations);
   const { candidates, lastFetchedAt } = await loadCandidates(inputs.hts10);
   const result = calculateDuties(candidates, inputs);
   return { ...result, dataFreshness: await loadDataFreshness(inputs.hts10, lastFetchedAt), engine: 'candidate-codes' };

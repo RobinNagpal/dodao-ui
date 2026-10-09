@@ -10,7 +10,10 @@
 //                        country passes `countriesInclude` / `countriesExclude`
 //        b. applicable = in effect on the entry date, line not in `coverageExclude`,
 //                        and every condition matches (usmcaQualifying ⇔ SPI "S"/"S+"
-//                        claimed; productTypes; spiClaimed)
+//                        claimed; productTypes; spiClaimed; and the shipment facts the
+//                        importer confirmed — endUse, productDescriptionIds,
+//                        companyProgram, usOriginIngredient (issue #1790): unconfirmed = skipped, so a
+//                        conditional relief never applies on a guess)
 //        c. replaces   = each applicable measure still in play drops every measure whose
 //                        Chapter 99 code is in its `replacesCodes` (relief measures walk
 //                        first; a measure already dropped cannot drop others)
@@ -31,7 +34,12 @@ import type {
   MeasureEngineInput,
   MeasureEngineLine,
   MeasureEngineResult,
+  TariffCompanyProgram,
+  TariffConfirmationQuestion,
+  TariffEndUse,
   TariffMeasureRecord,
+  TariffMeasureSource,
+  TariffProductDescription,
   TariffProductType,
 } from '@/types/tariff-calculator-measures';
 import { parseRate, type ParsedRate } from '@/utils/tariff-reports/shipment-duty';
@@ -275,6 +283,21 @@ function dateReason(m: TariffMeasureRecord, entryDay: string): string | null {
 
 const PRODUCT_TYPE_LABELS: Record<TariffProductType, string> = { patented: 'patented', generic: 'generic', specialty: 'specialty', other: 'other' };
 
+/** Plain-English phrase for each end use (completes "Not confirmed: …" and the question). */
+export const END_USE_LABELS: Record<TariffEndUse, string> = {
+  pharmaceutical: 'for use in pharmaceutical applications',
+  research: 'solely for clinical trials, research and development, or other non-commercial use',
+};
+
+/** Plain-English phrase for each company program, completing "manufacturer …". */
+export const COMPANY_PROGRAM_LABELS: Record<TariffCompanyProgram, string> = {
+  onshoring: 'covered by a Commerce-approved onshoring plan',
+  mfnPricing: 'covered by a most-favored-nation pricing agreement with Commerce',
+  annexCompany: 'named in Annex III of Proclamation 11020 (Section 232 duty from July 31, 2026)',
+};
+
+export const US_ORIGIN_INGREDIENT_LABEL = 'the active ingredient is of U.S. origin, made into dosage form abroad';
+
 type ConditionCheck = { ok: true } | { ok: false; reason: string } | { ok: false; needsProductType: TariffProductType[] };
 
 function conditionCheck(m: TariffMeasureRecord, input: MeasureEngineInput): ConditionCheck {
@@ -286,6 +309,28 @@ function conditionCheck(m: TariffMeasureRecord, input: MeasureEngineInput): Cond
     if (!input.claimedSpi || !c.spiClaimed.some((p) => samePrograms(p, input.claimedSpi as string))) {
       return { ok: false, reason: `Only when ${c.spiClaimed.join(' / ')} is claimed` };
     }
+  }
+  // Shipment facts the importer confirms (issue #1790). Checked before the product type so an
+  // unconfirmed conditional measure is skipped instead of forcing a product-type question.
+  const confirmed = input.confirmations ?? {};
+  if (c.endUse && confirmed.endUse !== c.endUse) {
+    return { ok: false, reason: `Not confirmed: ${END_USE_LABELS[c.endUse]}` };
+  }
+  if (c.productDescriptionIds && c.productDescriptionIds.length > 0) {
+    const ids = confirmed.productDescriptionIds ?? [];
+    if (!c.productDescriptionIds.some((id) => ids.includes(id))) {
+      return { ok: false, reason: `Not confirmed: the product matches the description named in the note (${c.productDescriptionIds.join(', ')})` };
+    }
+  }
+  if (c.companyProgram && confirmed.companyProgram !== c.companyProgram) {
+    const chosen = confirmed.companyProgram ? ` (${COMPANY_PROGRAM_LABELS[confirmed.companyProgram]} confirmed instead)` : '';
+    return { ok: false, reason: `Not confirmed: manufacturer ${COMPANY_PROGRAM_LABELS[c.companyProgram]}${chosen}` };
+  }
+  if (c.usOriginIngredient === true && confirmed.usOriginIngredient !== true) {
+    return { ok: false, reason: `Not confirmed: ${US_ORIGIN_INGREDIENT_LABEL}` };
+  }
+  if (c.usOriginIngredient === false && confirmed.usOriginIngredient === true) {
+    return { ok: false, reason: `Not charged when ${US_ORIGIN_INGREDIENT_LABEL} (confirmed)` };
   }
   if (c.productTypes && c.productTypes.length > 0) {
     if (!input.productType) return { ok: false, needsProductType: c.productTypes };
@@ -460,4 +505,145 @@ export const calculateWithMeasures: CalculateWithMeasures = (input, line, measur
 /** Per-unit quantities one rate text needs, as normalized unit codes with the rate text that needs them; empty for an ad valorem rate. */
 export function rateQuantityRequirements(rateText: string | null | undefined): { uom: string; rateDescription: string }[] {
   return rateUoms(rateText).map((uom) => ({ uom, rateDescription: rateText as string }));
+}
+
+// ---------------------------------------------------------------------------
+// Confirmation questions (issue #1790)
+// ---------------------------------------------------------------------------
+
+const QUESTION_CAVEATS: Record<TariffConfirmationQuestion['kind'], string> = {
+  endUse:
+    'Answer yes only if the importer can support the end-use claim to CBP (for example, with an end-use certificate or records showing how the goods are used).',
+  productDescription: 'The goods must match the description in the Chapter 99 note exactly; CBP can ask for product specifications to support the claim.',
+  companyProgram: 'Self-declared here: CBP requires proof that the manufacturer is covered (for example, the Commerce approval or agreement) at entry.',
+  usOriginIngredient: 'Answer yes only if the importer can document the U.S. origin of the active ingredient to CBP.',
+};
+
+function questionPrompt(kind: 'endUse' | 'companyProgram', value: string): string {
+  if (kind === 'endUse') {
+    switch (value as TariffEndUse) {
+      case 'pharmaceutical':
+        return 'Will these goods be used in pharmaceutical applications?';
+      case 'research':
+        return 'Are these goods solely for clinical trials, research and development, or other non-commercial use?';
+      default:
+        return `Will these goods be used for ${value}?`;
+    }
+  }
+  switch (value as TariffCompanyProgram) {
+    case 'onshoring':
+      return 'Is the manufacturer covered by a Commerce-approved onshoring plan?';
+    case 'mfnPricing':
+      return 'Is the manufacturer covered by a most-favored-nation pricing agreement with Commerce?';
+    case 'annexCompany':
+      return 'Is the manufacturer named in Annex II/III of Proclamation 11020?';
+    default:
+      return `Is the manufacturer covered by the "${value}" company program?`;
+  }
+}
+
+/** "the 12.5% Section 301 duty (9903.05.89)" — or just the code when the measure has no rate. */
+function describeCharge(m: TariffMeasureRecord): string {
+  return m.ratePct !== null && m.rateKind !== 'relief' ? `the ${m.ratePct}% ${m.program} duty (${m.ch99Code})` : `${m.program} (${m.ch99Code})`;
+}
+
+/**
+ * What confirming `m` changes for the line, from what it replaces (among `inScope`) and its own
+ * rate. Null when it would change nothing: a relief whose replaced duties don't apply here.
+ */
+function questionEffect(m: TariffMeasureRecord, inScope: TariffMeasureRecord[]): string | null {
+  const replaced = inScope.filter((o) => o !== m && m.replacesCodes.includes(o.ch99Code) && o.rateKind !== 'relief');
+  const replacedText = Array.from(new Set(replaced.map(describeCharge))).join(' and ');
+  const pct = m.ratePct ?? 0;
+  switch (m.rateKind) {
+    case 'relief':
+      return replaced.length > 0 ? `Removes ${replacedText}.` : null;
+    case 'additive':
+      return `Charged ${pct}% on top of the base rate (${m.ch99Code})${replaced.length > 0 ? ` instead of ${replacedText}` : ''}.`;
+    case 'inPlaceOfBase':
+      return `Charged ${pct}% in place of the base rate (${m.ch99Code})${replaced.length > 0 ? ` instead of ${replacedText}` : ''}.`;
+    case 'floor':
+      return `Charged ${pct}% or the base rate, whichever is higher (${m.ch99Code})${replaced.length > 0 ? `, instead of ${replacedText}` : ''}.`;
+  }
+}
+
+interface QuestionDraft {
+  question: Omit<TariffConfirmationQuestion, 'effect' | 'sources'>;
+  effects: string[];
+  sources: TariffMeasureSource[];
+}
+
+const KIND_ORDER: TariffConfirmationQuestion['kind'][] = ['endUse', 'usOriginIngredient', 'companyProgram', 'productDescription'];
+
+/**
+ * The confirmation questions that matter for a line from one country on one date: one per end
+ * use / company program / named product that a measure in scope (coverage, country, in effect)
+ * is conditioned on, and only when confirming it changes the duty. `productDescriptions` supplies
+ * the note text for named products (descriptions whose `codePrefix` doesn't match the line are
+ * left out); a description id it doesn't list is asked about by id. Pure, like the engine.
+ */
+export function confirmationQuestionsForLine(
+  line: { hts10: string; countryOfOrigin: string; entryDate: string },
+  measures: TariffMeasureRecord[],
+  productDescriptions: TariffProductDescription[] = []
+): TariffConfirmationQuestion[] {
+  const hts10 = digits(line.hts10);
+  const entryDay = isoDay(line.entryDate);
+  const inScope = measures.filter(
+    (m) =>
+      measureCoversLine(m, hts10) && !coverageMatches(m.coverageExclude, hts10) && countryMatches(m, line.countryOfOrigin) && dateReason(m, entryDay) === null
+  );
+  const descriptions = new Map(productDescriptions.map((d) => [d.id, d]));
+  const drafts = new Map<string, QuestionDraft>();
+  const add = (question: QuestionDraft['question'], effect: string, sources: TariffMeasureSource[]) => {
+    const key = `${question.kind}|${question.value}`;
+    const draft = drafts.get(key) ?? { question, effects: [], sources: [] };
+    if (!draft.effects.includes(effect)) draft.effects.push(effect);
+    for (const s of sources) if (!draft.sources.some((x) => x.url === s.url)) draft.sources.push(s);
+    drafts.set(key, draft);
+  };
+
+  for (const m of inScope) {
+    const c = m.conditions ?? {};
+    if (!c.endUse && !c.companyProgram && c.usOriginIngredient !== true && !(c.productDescriptionIds && c.productDescriptionIds.length > 0)) continue;
+    const effect = questionEffect(m, inScope);
+    if (!effect) continue;
+    if (c.endUse) add({ kind: 'endUse', value: c.endUse, prompt: questionPrompt('endUse', c.endUse), caveat: QUESTION_CAVEATS.endUse }, effect, m.sources);
+    if (c.companyProgram) {
+      add(
+        {
+          kind: 'companyProgram',
+          value: c.companyProgram,
+          prompt: questionPrompt('companyProgram', c.companyProgram),
+          caveat: QUESTION_CAVEATS.companyProgram,
+        },
+        effect,
+        m.sources
+      );
+    }
+    if (c.usOriginIngredient === true) {
+      add(
+        {
+          kind: 'usOriginIngredient',
+          value: 'true',
+          prompt: 'Is the active ingredient of U.S. origin, made into dosage form abroad?',
+          caveat: QUESTION_CAVEATS.usOriginIngredient,
+        },
+        effect,
+        m.sources
+      );
+    }
+    for (const id of c.productDescriptionIds ?? []) {
+      const d = descriptions.get(id);
+      if (d && !hts10.startsWith(digits(d.codePrefix))) continue;
+      const prompt = d
+        ? `Does your product match: “${d.description}”?`
+        : `Does your product match the product the Chapter 99 notes describe for this line (${id})?`;
+      add({ kind: 'productDescription', value: id, prompt, caveat: QUESTION_CAVEATS.productDescription }, effect, m.sources);
+    }
+  }
+
+  return Array.from(drafts.values())
+    .map((d) => ({ ...d.question, effect: d.effects.join(' '), sources: d.sources }))
+    .sort((a, b) => KIND_ORDER.indexOf(a.kind) - KIND_ORDER.indexOf(b.kind));
 }
