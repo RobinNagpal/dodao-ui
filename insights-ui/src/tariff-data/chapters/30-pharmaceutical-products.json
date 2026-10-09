@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "approach": 2,
   "generatedBy": "scratchpad ch30 build_base.py + section builders (prototype — see issue #1770)",
-  "asOf": "2026-10-08",
+  "asOf": "2026-10-09",
   "chapter": {
     "number": 30,
     "padded": "30",
@@ -16,7 +16,7 @@
     {
       "label": "Harmonized Tariff Schedule of the United States",
       "url": "https://hts.usitc.gov/",
-      "note": "rate table rows (2026 Revision 20)"
+      "note": "rate table rows (2026 Revision 21)"
     },
     {
       "label": "UN Comtrade",
@@ -40,7 +40,7 @@
         "generic drug tariff"
       ]
     },
-    "intro": "Chapter 30 covers finished pharmaceuticals — vaccines, antibodies and blood products (3002), medicines in bulk (3003) and in doses or retail packs (3004), bandages and dressings (3005) and other pharmaceutical goods such as surgical sutures, contraceptives and ostomy appliances (3006). It is one of the largest chapters by value: the U.S. imported **$213.8B** of these goods in 2025, a fifth of it from Ireland.\n\nThe printed rate is almost always **Free**: 192 of the **198 tariff lines** carry no duty, and the six that do are niche 3006 products. What decides the cost is the extra duty on top. Since September 29, 2026, **patented drugs** on a list of 77 lines pay a Section 232 duty of **100%**, cut to **15%** for the EU, Japan, South Korea and Switzerland and to **0%** for the UK; **generic drugs pay nothing extra**. Dressings and a few 3006 lines also pay a 10–12.5% Section 301 duty for 60 economies (see Rates by country). And for any shipment, FDA approval and registration decide whether the product can be sold at all.",
+    "intro": "Chapter 30 covers finished pharmaceuticals — vaccines, antibodies and blood products (3002), medicines in bulk (3003) and in doses or retail packs (3004), bandages and dressings (3005) and other pharmaceutical goods such as surgical sutures, contraceptives and ostomy appliances (3006). It is one of the largest chapters by value: the U.S. imported **$213.8B** of these goods in 2025, a fifth of it from Ireland.\n\nThe printed rate is almost always **Free**: 192 of the **198 tariff lines** carry no duty, and the six that do are niche 3006 products. What decides the cost is the extra duty on top. Since September 29, 2026, **patented drugs** on a list of 77 lines pay a Section 232 duty of **100%**, cut to **15%** for the EU, Japan, South Korea and Switzerland and to **0%** for the UK; **generic drugs pay nothing extra**. Dressings and a few 3006 lines also pay a 10–12.5% Section 301 duty for 60 economies, and goods of Brazil a further 25% (see Rates by country). And for any shipment, FDA approval and registration decide whether the product can be sold at all.",
     "stats": [
       {
         "label": "Tariff lines",
@@ -8378,7 +8378,7 @@
     "latestYear": 2025,
     "priorYear": 2024,
     "valueBasis": "CIF value (customs value plus freight and insurance), as reported by the United States to UN Comtrade.",
-    "lastCheckedAt": "2026-10-08",
+    "lastCheckedAt": "2026-10-09",
     "stats": [
       {
         "label": "2025 imports",
@@ -11235,47 +11235,27 @@
       "dutyPaidUsd": 5200000,
       "note": "Chapter-level duty paid in 2024 from tariff_trade_analytics (as cited in issue #1770): about $5.2M on $168.9B of customs value. Per-country and per-line duty come from the same table in production."
     },
-    "why": "U.S. pharmaceutical imports were **$213.82B in 2025**, flat on 2024 (+0.5%). Two lines make up three-quarters of the total. **3004.90** ($82.51B) is finished medicines in doses or retail packs, ready for patients. **3002.15** ($78.73B) is \"immunological products\" in doses: monoclonal antibodies, interferons and similar proteins (Note 2), which covers much of today's biologic drugs.\n\n**Why these countries.** Ireland (19.9%), Germany, Switzerland, Belgium and Singapore host large drug-substance and fill-finish plants run by U.S. and European drugmakers. Ireland has drawn 17 of the top 20 drugmakers, helped by its long-standing 12.5% corporate tax rate. Eli Lilly makes Zepbound in Cork. India (7.1%) is different: it ships mostly generic tablets under 3004.\n\n**2023 → 2024 (+20%).** Imports rose $34.8B. Ireland alone added $14.3B, a rise Irish reporting ties in large part to Lilly's GLP-1 drug Zepbound.\n\n**2025: a spike, then a hangover.** After the U.S. opened a Section 232 investigation into pharmaceuticals, companies brought shipments forward. U.S. imports from Ireland reached nearly $31B in March 2025 alone. Ireland's CSO then reported steep falls through December as U.S. inventories were worked down. The spike and the drawdown roughly cancelled out, leaving Ireland down 15% and the total flat. Singapore's pharma shipments to the U.S. fell 93.5% in July 2025 alone, and Singapore ended the year down 28%. Germany (+52%) and France (+185%) gained share. Germany's own data show its pharma exports to the U.S. barely rose, so origin recording may explain part of that gap. We found no reporting that explains France's jump.\n\nThe 6 dutiable lines are all in 3006, so duty paid stays near zero. The Section 232 tariffs on patented drugs, signed April 2, 2026, are covered under Tariff updates.",
+    "why": "U.S. pharmaceutical imports were **$213.82B in 2025**, flat on 2024 (+0.5%). Two lines make up three-quarters of the total. **3004.90** ($82.51B) is finished medicines in doses or retail packs, ready for patients. **3002.15** ($78.73B) is \"immunological products\" in doses: monoclonal antibodies, interferons and similar proteins (Note 2), which covers much of today's biologic drugs.\n\n**Where it comes from.** Ireland (19.9%), Germany (12.2%), Switzerland, Belgium and Singapore supply most of the biologics and branded medicines. India (7.1%) is different: it ships mostly finished medicines under 3004, where its imports rose 20% in 2025.\n\n**2023 → 2024 (+20%).** Imports rose $34.8B. Ireland alone added $14.3B.\n\n**2025: a spike, then a drawdown.** Ireland's statistics office reported that its goods exports to the U.S. rose by €20.3B to €25.4B in March 2025 alone, 94% of them chemicals and pharmaceutical products. By December 2025 its exports to the U.S. were down 41% on a year earlier. Over the full year U.S. imports from Ireland fell 15% and the total was flat. Singapore fell 28%, China 31% and the UK 26%, while Germany (+52%), France (+185%) and the Netherlands (+36%) gained.\n\nThe 6 dutiable lines are all in 3006, so duty paid stays near zero. The Section 232 duty on patented drugs, signed April 2, 2026 and collected from all companies since September 29, 2026, is covered under Tariff updates.",
     "sources": [
       {
         "label": "UN Comtrade (public API), United States imports, HS chapter 30",
         "url": "https://comtradeplus.un.org/"
       },
       {
-        "label": "USITC, HTSUS 2026 Revision 20, Chapter 30 (notes and rates)",
+        "label": "USITC, HTSUS 2026 Revision 21, Chapter 30 (notes and rates)",
         "url": "https://hts.usitc.gov/reststop/file?release=currentRelease&filename=Chapter%2030"
       },
       {
-        "label": "Fortune (Feb 2025): Zepbound helped drive Ireland's record goods exports to the U.S. in 2024",
-        "url": "https://fortune.com/europe/2025/02/19/weight-loss-drug-zepbound-helped-drive-ireland-record-76-billion-goods-exports-us-bittersweet-reminder-challenges-ahead/"
+        "label": "CSO Ireland: Goods Exports and Imports, March 2025 (published May 15, 2025)",
+        "url": "https://www.cso.ie/en/releasesandpublications/ep/p-gei/goodsexportsandimportsmarch2025/"
       },
       {
-        "label": "Chemistry World: Ireland still attractive to pharma industry (12.5% rate, 17 of top 20 firms)",
-        "url": "https://chemistryworld.com/news/business-roundup/1012789.article"
-      },
-      {
-        "label": "Axios (May 2025): Pharma shipments surge as tariff threat looms",
-        "url": "https://www.axios.com/2025/05/07/tariffs-imports-drugs-pharmaceuticals"
-      },
-      {
-        "label": "CSO Ireland: Goods Exports and Imports, December 2025",
+        "label": "CSO Ireland: Goods Exports and Imports, December 2025 (published February 17, 2026)",
         "url": "https://www.cso.ie/en/releasesandpublications/ep/p-gei/goodsexportsandimportsdecember2025/keyfindings/"
       },
       {
-        "label": "BDO Ireland (2026): Exports hit record €260.3bn in 2025 (CSO commentary, front-loading)",
-        "url": "https://www.bdo.ie/en-gb/news/2026/exports-hit-record-level-of-%E2%82%AC260-3-billion-in-2025-cso"
-      },
-      {
-        "label": "AFP via The Jakarta Post (Aug 2025): Singapore exports to U.S. tumble 42.7% in July, pharma −93.5%",
-        "url": "https://www.thejakartapost.com/business/2025/08/18/singapore-key-exports-slip-in-july-as-us-shipments-tumble-43.html"
-      },
-      {
-        "label": "Deutsches Ärzteblatt: German pharma exports to the U.S. in 2025 (Destatis data)",
-        "url": "https://www.aerzteblatt.de/news/pharmabranche-wachst-zollstreit-mit-trump-kurbelt-export-an-ee75f2cf-b18f-46f9-ac37-79f89eba404e"
-      },
-      {
-        "label": "Mayer Brown (Apr 2026): Section 232 tariffs on patented pharmaceuticals and ingredients",
-        "url": "https://www.mayerbrown.com/de/insights/publications/2026/04/trump-administration-implements-tariffs-on-imported-patented-medication-and-pharmaceutical-ingredients-under-section-232-of-the-trade-expansion-act-of-1962"
+        "label": "Proclamation 11020 (91 FR 18183, April 9, 2026): Section 232 duty on patented pharmaceuticals",
+        "url": "https://www.federalregister.gov/documents/2026/04/09/2026-06956/adjusting-imports-of-pharmaceuticals-and-pharmaceutical-ingredients-into-the-united-states"
       }
     ],
     "coverageNote": "Values are CIF (customs value plus freight and insurance), as reported by the United States to UN Comtrade. They run higher than customs-value totals (about $168.9B for 2024), which exclude freight and insurance."
@@ -11296,8 +11276,8 @@
         "pharmaceutical tariffs 2026"
       ]
     },
-    "intro": "This page compares the **2025 Basic Edition** of the tariff schedule, in force at the start of 2025, with the current **2026 Revision 20**. No Chapter 30 base rate changed: 192 of the 198 lines are still Free and the six dutiable lines in heading 3006 carry the same rates as before.\n\nWhat changed is the extra duty on top. Since **September 29, 2026** (July 31 for 17 large drugmakers), patented (brand-name) medicines on a list of 77 Chapter 30 lines pay a **Section 232 duty of 100%**, cut to **15%** for the EU, Japan, South Korea and Switzerland and to **0%** for the UK. **Generic drugs pay nothing extra.** The IEEPA tariffs of 2025 ended on February 24, 2026, and the Section 122 surcharge that replaced them expired on July 23, 2026. The Section 301 tariffs in force since July 24, 2026 exempt almost all of Chapter 30; they reach only bandages and dressings (3005) and four 3006 subheadings (9 lines).\n\nThe line list grew from 144 to 198. **102 lines are new**: 68 numbers that did not exist in 2025 and 34 numbers in 3004.90.92 that were reused for a different drug. They came in two statistical updates, Revision 2 (in force January 30, 2026) and Revision 11 (in force July 1, 2026). They split \"Other\" baskets into named, mostly generic hospital drugs (ceftriaxone, vancomycin, heparin, insulin glargine, propofol and others). The schedule does not say why; the likely aim is to track imports of individual essential drugs, but we have not found an official statement. 14 old \"Other\" lines were retired.",
-    "scope": "Measures that reach Chapter 30 from any country: the Section 232 pharmaceutical duty (default, deal and UK rates), the 2026 Section 301 tariffs and the older China Section 301 lists. For the rate each supplier pays, see Rates by country.",
+    "intro": "This page compares the **2025 Basic Edition** of the tariff schedule, in force at the start of 2025, with the current **2026 Revision 21** (in force October 9, 2026). No Chapter 30 base rate changed: 192 of the 198 lines are still Free and the six dutiable lines in heading 3006 carry the same rates as before.\n\nWhat changed is the extra duty on top. Since **September 29, 2026** (July 31 for 17 large drugmakers), patented (brand-name) medicines on a list of 77 Chapter 30 lines pay a **Section 232 duty of 100%**, cut to **15%** for the EU, Japan, South Korea and Switzerland and to **0%** for the UK. **Generic drugs pay nothing extra.** The IEEPA tariffs of 2025 ended on February 24, 2026, and the Section 122 surcharge that replaced them expired on July 23, 2026. The Section 301 tariffs on 60 economies in force since July 24, 2026, and the separate 25% Section 301 tariff on Brazil in force since July 22, 2026, exempt almost all of Chapter 30; they reach only bandages and dressings (3005) and four 3006 subheadings (9 lines).\n\nThe line list grew from 144 to 198. **102 lines are new**: 68 numbers that did not exist in 2025 and 34 numbers in 3004.90.92 that were reused for a different drug. They came in two statistical updates, Revision 2 (in force January 30, 2026) and Revision 11 (in force July 1, 2026). They split \"Other\" baskets into named, mostly generic hospital drugs (ceftriaxone, vancomycin, heparin, insulin glargine, propofol and others). The schedule does not say why; the likely aim is to track imports of individual essential drugs, but we have not found an official statement. 14 old \"Other\" lines were retired.",
+    "scope": "Measures that reach Chapter 30 from any country: the Section 232 pharmaceutical duty (default, deal and UK rates), the 2026 Section 301 tariffs on 60 economies, the 2026 Section 301 tariff on Brazil and the older China Section 301 lists. The 2026 Canada duties under U.S. note 51 list no Chapter 30 code. For the rate each supplier pays, see Rates by country.",
     "before": {
       "edition": "2025 Basic Edition",
       "released": "2024-12-10",
@@ -11305,12 +11285,12 @@
       "url": "https://www.usitc.gov/sites/default/files/tata/hts/hts_2025_basic_edition_json.json"
     },
     "now": {
-      "edition": "2026 Revision 20",
-      "released": "2026-09-23",
-      "inForceFrom": "2026-09-28",
-      "url": "https://www.usitc.gov/sites/default/files/tata/hts/hts_2026_revision_20_json.json"
+      "edition": "2026 Revision 21",
+      "released": "2026-10-07",
+      "inForceFrom": "2026-10-09",
+      "url": "https://www.usitc.gov/sites/default/files/tata/hts/hts_2026_revision_21_json.json"
     },
-    "lastCheckedAt": "2026-10-08",
+    "lastCheckedAt": "2026-10-09",
     "stats": [
       {
         "label": "Base rates changed",
@@ -11322,7 +11302,7 @@
       },
       {
         "label": "Extra duties in effect",
-        "value": "5"
+        "value": "6"
       },
       {
         "label": "Lines on the Section 232 list",
@@ -11337,9 +11317,9 @@
         "ch99Code": "9903.04.60",
         "before": "None",
         "now": "100% (in place of base)",
-        "exemption": "Covers only patented drugs (Orange Book or Purple Book, valid U.S. patent) and their ingredients on the U.S. note 40(c) list: 77 lines in 3002, 3003 and 3004. Generics and biosimilars: no extra duty (9903.04.67). Other ways to pay less: company onshoring plan 20% (9903.04.64; no company eligible as of CBP's July 30, 2026 guidance); onshoring plus an MFN drug-pricing agreement with HHS 0% until January 20, 2029 (9903.04.65); orphan drugs, plasma-derived therapies, cell and gene therapies, ADCs, fertility and nuclear medicines from listed countries 0% (9903.04.66); U.S.-made API put into dosage form abroad (9903.04.68); clinical trials and R&D (9903.04.70). Annex III companies have paid since July 31, 2026; everyone else since September 29, 2026.",
+        "exemption": "Covers only patented drugs (Orange Book or Purple Book, valid U.S. patent) and their ingredients on the U.S. note 40(c) list: 77 lines in 3002, 3003 and 3004. Generics and biosimilars: no extra duty (9903.04.67). Other ways to pay less: company onshoring plan 20% (9903.04.64; CBP's July 30, 2026 guidance said no company was then eligible); onshoring plus an MFN drug-pricing agreement with HHS 0% until January 20, 2029 (9903.04.65); orphan drugs, plasma-derived therapies, cell and gene therapies, ADCs, fertility and nuclear medicines from listed countries 0% (9903.04.66); U.S.-made API put into dosage form abroad (9903.04.68); clinical trials and R&D (9903.04.70); goods on listed lines that are not finished drugs, APIs or key starting materials, or are neither patented nor generic (9903.04.69). Annex III companies have paid since July 31, 2026; everyone else since September 29, 2026.",
         "whatItMeans": "A patented cancer biologic from Singapore (3002.15) with no company agreement pays 100% of its value; a generic from the same plant pays nothing extra. The 100% is the total, not 100% on top of the base rate, and every listed line is Free anyway.",
-        "sourceIds": ["procl-11020", "csms-69395344", "bis-specialty", "bis-onshoring", "hts-now"]
+        "sourceIds": ["procl-11020", "csms-69395344", "csms-70054007", "bis-specialty", "bis-onshoring", "hts-now"]
       },
       {
         "id": "s232-deal15",
@@ -11350,7 +11330,7 @@
         "now": "15% (in place of base)",
         "exemption": "Same scope as 9903.04.60: patented drugs only. Generics: no extra duty (9903.04.67). The lower company and specialty headings (9903.04.65, 9903.04.66, 9903.04.70) apply when they give a lower rate; all five are on the 9903.04.66 country list.",
         "whatItMeans": "A patented antibody from Ireland or Germany (3002.15) pays 15% of its value in total. If the company has both an onshoring plan and an MFN pricing agreement, it pays 0%.",
-        "sourceIds": ["procl-11020", "csms-69395344", "hts-now"]
+        "sourceIds": ["procl-11020", "csms-70054007", "hts-now"]
       },
       {
         "id": "s232-uk",
@@ -11370,9 +11350,20 @@
         "ch99Code": "9903.05.20–9903.05.84",
         "before": "None",
         "now": "+10% or +12.5%",
-        "exemption": "Most of Chapter 30 is exempt: 45 subheadings are on the U.S. note 52(b) list (9903.05.86) and 7 more are exempt when for pharmaceutical use (9903.05.89). Patented drugs under 9903.04.60–9903.04.66 are also excluded (9903.05.90). What is left: all of 3005 (bandages, gauze, dressings) and 3006.10.01, 3006.40.00, 3006.50.00 and 3006.91.00 (9 lines). EU goods pay 10% in place of the base rate (9903.05.39); Japan, South Korea and Switzerland 12.5% in place of the base rate; India, UK, Canada and Mexico +10%; China, Singapore and most others +12.5%. USMCA-qualifying goods from Canada and Mexico are exempt (9903.05.93, 9903.05.94).",
-        "whatItMeans": "Sterile gauze from China (3005.90) pays 12.5%; an ostomy pouch from Germany (3006.91, base 4.2%) pays 10% in total. Vaccines, insulin and tablets pay none of this.",
+        "exemption": "Most of Chapter 30 is exempt: 45 subheadings are on the U.S. note 52(b) list (9903.05.86) and 7 more are exempt when for pharmaceutical use (9903.05.89). Patented drugs under 9903.04.60–9903.04.66 are also excluded (9903.05.90). What is left: all of 3005 (bandages, gauze, dressings) and 3006.10.01, 3006.40.00, 3006.50.00 and 3006.91.00 (9 lines). EU goods pay 10% in place of the base rate (9903.05.39); Japan, South Korea and Switzerland 12.5% and Taiwan 10% in place of the base rate; India, UK, Canada and Mexico +10%; China, Singapore and most others +12.5%. USMCA-qualifying goods from Canada and Mexico are exempt (9903.05.93, 9903.05.94).",
+        "whatItMeans": "Sterile gauze from China (3005.90) pays 12.5%; an ostomy pouch from Germany (3006.91, base 4.2%) pays 10% in total. Vaccines, insulin and tablets pay none of this. Goods of Brazil also pay the separate 25% Section 301 tariff (9903.05.01) on the same lines.",
         "sourceIds": ["ustr-301-fl", "hts-now"]
+      },
+      {
+        "id": "br-301",
+        "country": "Brazil",
+        "measure": "Section 301 tariff (Brazil investigation)",
+        "ch99Code": "9903.05.01",
+        "before": "None",
+        "now": "+25%",
+        "exemption": "Most of Chapter 30 is exempt: the same 45 subheadings as the 60-economy action are on U.S. note 50(a)(ii) (9903.05.03), 7 more are exempt when for pharmaceutical use (9903.05.06), and patented drugs under 9903.04.60–9903.04.66 are excluded (9903.05.07). What is left: all of 3005 and 3006.10.01, 3006.40.00, 3006.50.00 and 3006.91.00 (9 lines). The 25% is added on top of the base rate and of the 12.5% that Brazil pays under 9903.05.27.",
+        "whatItMeans": "Gauze from Brazil (3005.90) pays 37.5% (12.5% + 25%); an ostomy pouch from Brazil (3006.91, base 4.2%) pays 41.7%. Brazilian medicines in 3002–3004 pay none of this.",
+        "sourceIds": ["ustr-br-301", "hts-now"]
       },
       {
         "id": "cn-301-legacy",
@@ -11381,23 +11372,47 @@
         "ch99Code": "9903.88.03 / 9903.88.15",
         "before": "+25% / +7.5%",
         "now": "+25% / +7.5%",
-        "exemption": "Not new: in force before 2025 and unchanged since. List 3 (+25%, 9903.88.03) covers 3006.93.60 and 3006.93.80; List 4A (+7.5%, 9903.88.15) covers 3006.93.20 and 3006.93.50. No other Chapter 30 subheading is on a China Section 301 list.",
+        "exemption": "Not new: in force before 2025 and unchanged since; USTR confirmed on October 7, 2026 that both actions continue during the four-year review. List 3 (+25%, 9903.88.03) covers 3006.93.60 and 3006.93.80; List 4A (+7.5%, 9903.88.15) covers 3006.93.20 and 3006.93.50. No other Chapter 30 subheading is on a China Section 301 list.",
         "whatItMeans": "Chinese placebos or clinical trial kits (3006.93.80, base 5%) pay 30%; other Chinese Chapter 30 goods are untouched by these lists.",
-        "sourceIds": ["hts-now"]
+        "sourceIds": ["ustr-cn-301-continue", "hts-now"]
       }
     ],
     "changes": [
       {
+        "id": "hts-rev21",
+        "type": "reference",
+        "date": "2026-10-09",
+        "dateLabel": "Effective",
+        "title": "HTS 2026 Revision 21: nothing changes for Chapter 30",
+        "detail": "Revision 21 only corrects a Chapter 38 subheading note and amends one China Section 301 product exclusion (U.S. note 20(vvv)). Chapter 30 lines and rates and the Chapter 99 headings that reach them (9903.04.60–9903.04.70, 9903.05.01–9903.05.99) are the same as in Revision 20.",
+        "before": null,
+        "now": null,
+        "countries": null,
+        "sourceIds": ["hts-now"]
+      },
+      {
         "id": "base-rates",
         "type": "baseRate",
-        "date": "2026-10-08",
+        "date": "2026-10-09",
         "dateLabel": "Checked",
         "title": "No Chapter 30 base-rate changes",
-        "detail": "Every line that exists in both editions carries the same General rate in the 2026 Revision 20 as in the 2025 Basic Edition. The six dutiable lines (3006.70, 3006.91, 3006.93.20, 3006.93.50, 3006.93.60, 3006.93.80) are unchanged; everything else is Free.",
+        "detail": "Every line that exists in both editions carries the same General rate in the 2026 Revision 21 as in the 2025 Basic Edition. The six dutiable lines (3006.70, 3006.91, 3006.93.20, 3006.93.50, 3006.93.60, 3006.93.80) are unchanged; everything else is Free.",
         "before": null,
         "now": null,
         "countries": null,
         "sourceIds": ["hts-before", "hts-now"]
+      },
+      {
+        "id": "cn-301-continue",
+        "type": "reference",
+        "date": "2026-10-07",
+        "dateLabel": "Published",
+        "title": "China Section 301 lists continue after four-year review notice",
+        "detail": "USTR announced that the 2018 China Section 301 actions did not terminate on their July 6 and August 23, 2026 anniversaries because domestic industries asked for them to continue. For Chapter 30 this keeps +25% on 3006.93.60 and 3006.93.80 and +7.5% on 3006.93.20 and 3006.93.50.",
+        "before": "+25% / +7.5%",
+        "now": "+25% / +7.5%",
+        "countries": "China",
+        "sourceIds": ["ustr-cn-301-continue"]
       },
       {
         "id": "s232-all",
@@ -11405,11 +11420,11 @@
         "date": "2026-09-29",
         "dateLabel": "Effective",
         "title": "Section 232 pharmaceutical duty extended to all companies",
-        "detail": "The interim 0% heading for companies not named in Annex III (9903.04.61) ended at 12:01 a.m. ET. Patented drugs from every company now pay 100% (9903.04.60) unless a lower heading applies. CBP's updated guidance is CSMS # 70054007 (September 28, 2026); we could not open the CBP copy and relied on the HTS text for the rates.",
+        "detail": "The interim 0% heading for companies not named in Annex III (9903.04.61) ended at 12:01 a.m. ET. Patented drugs from every company now pay 100% (9903.04.60) unless a lower heading applies. CBP's updated guidance (CSMS # 70054007, September 28, 2026) confirms 9903.04.61 is no longer in effect and lists the rates and the 19 jurisdictions eligible for the specialty 0% heading.",
         "before": "Free (9903.04.61)",
         "now": "100% / 15% / 0%",
         "countries": "All",
-        "sourceIds": ["procl-11020", "hts-now"]
+        "sourceIds": ["procl-11020", "csms-70054007", "hts-now"]
       },
       {
         "id": "s232-specialty",
@@ -11472,6 +11487,18 @@
         "sourceIds": ["procl-11012", "hts-now"]
       },
       {
+        "id": "br-301",
+        "type": "extraDuty",
+        "date": "2026-07-22",
+        "dateLabel": "Effective",
+        "title": "25% Section 301 tariff on Brazil; most of Chapter 30 exempt",
+        "detail": "USTR imposed 25% on all products of Brazil (9903.05.01), with the same pharmaceutical exemptions as the 60-economy action (U.S. note 50(a)(ii) and (a)(v)) and an exclusion for goods under the Section 232 pharmaceutical headings. Only 3005 and 3006.10.01, 3006.40.00, 3006.50.00 and 3006.91.00 (9 lines) pay it, on top of Brazil's 12.5% under 9903.05.27.",
+        "before": "None",
+        "now": "+25%",
+        "countries": "Brazil",
+        "sourceIds": ["ustr-br-301", "hts-now"]
+      },
+      {
         "id": "stat-jul",
         "type": "reference",
         "date": "2026-07-01",
@@ -11513,7 +11540,7 @@
         "date": "2026-02-24",
         "dateLabel": "Effective",
         "title": "All IEEPA tariffs end",
-        "detail": "After the Supreme Court held on February 20, 2026 (Learning Resources, Inc. v. Trump) that IEEPA does not authorize tariffs, Executive Order 14389 ended every IEEPA duty and CBP stopped collecting them for goods entered from 12:00 a.m. ET on February 24. The 9903.01.xx and 9903.02.xx headings are still printed in Revision 20 but are shaded as expired.",
+        "detail": "After the Supreme Court held on February 20, 2026 (Learning Resources, Inc. v. Trump) that IEEPA does not authorize tariffs, Executive Order 14389 ended every IEEPA duty and CBP stopped collecting them for goods entered from 12:00 a.m. ET on February 24. The 9903.01.xx and 9903.02.xx headings are still printed in Revision 21 but are shaded as expired.",
         "before": "+10% to +50%",
         "now": "None",
         "countries": "All",
@@ -11542,18 +11569,6 @@
         "now": "+10%",
         "countries": "China",
         "sourceIds": ["eo-14357"]
-      },
-      {
-        "id": "s232-announce",
-        "type": "reference",
-        "date": "2025-09-25",
-        "dateLabel": "Announced",
-        "title": "100% tariff on branded drugs announced for October 1, 2025, not implemented",
-        "detail": "The President announced on social media a 100% tariff on branded or patented drugs from October 1, 2025, unless the company was building a U.S. plant. No proclamation followed in 2025 and nothing was collected; the duty arrived with Proclamation 11020 in April 2026.",
-        "before": null,
-        "now": null,
-        "countries": "All",
-        "sourceIds": []
       },
       {
         "id": "s232-open",
@@ -14584,12 +14599,12 @@
       {
         "id": "hts-now",
         "publisher": "USITC",
-        "citation": "HTSUS 2026 Revision 20",
+        "citation": "HTSUS 2026 Revision 21",
         "document": "Harmonized Tariff Schedule",
-        "title": "Harmonized Tariff Schedule of the United States, 2026 Revision 20",
+        "title": "Harmonized Tariff Schedule of the United States, 2026 Revision 21",
         "signed": null,
-        "published": "2026-09-23",
-        "url": "https://www.usitc.gov/sites/default/files/tata/hts/hts_2026_revision_20_json.json"
+        "published": "2026-10-07",
+        "url": "https://www.usitc.gov/sites/default/files/tata/hts/hts_2026_revision_21_json.json"
       },
       {
         "id": "hts-2026-rev2",
@@ -14620,6 +14635,16 @@
         "signed": "2026-04-02",
         "published": "2026-04-09",
         "url": "https://www.federalregister.gov/documents/2026/04/09/2026-06956/adjusting-imports-of-pharmaceuticals-and-pharmaceutical-ingredients-into-the-united-states"
+      },
+      {
+        "id": "csms-70054007",
+        "publisher": "CBP",
+        "citation": "CSMS # 70054007",
+        "document": "CBP CSMS message",
+        "title": "UPDATED GUIDANCE: Section 232 Duties on Imports of Pharmaceutical Articles and Ingredients",
+        "signed": null,
+        "published": "2026-09-28",
+        "url": "https://content.govdelivery.com/accounts/USDHSCBP/bulletins/42cf077"
       },
       {
         "id": "csms-69395344",
@@ -14760,6 +14785,26 @@
         "signed": "2025-11-04",
         "published": "2025-11-07",
         "url": "https://www.federalregister.gov/documents/2025/11/07/2025-19825/modifying-duties-addressing-the-synthetic-opioid-supply-chain-in-the-peoples-republic-of-china"
+      },
+      {
+        "id": "ustr-br-301",
+        "publisher": "Federal Register",
+        "citation": "91 FR 45516",
+        "document": "Notice (USTR)",
+        "title": "Notice of Action: Brazil's Acts, Policies, and Practices Related to Digital Trade and Electronic Payment Services; Unfair, Preferential Tariffs; Anti-Corruption Enforcement; Intellectual Property Protection; Ethanol Market Access; and Illegal Deforestation",
+        "signed": null,
+        "published": "2026-07-20",
+        "url": "https://www.federalregister.gov/documents/2026/07/20/2026-14542/notice-of-action-brazils-acts-policies-and-practices-related-to-digital-trade-and-electronic-payment"
+      },
+      {
+        "id": "ustr-cn-301-continue",
+        "publisher": "Federal Register",
+        "citation": "91 FR 64212",
+        "document": "Notice (USTR)",
+        "title": "Continuation of Actions: China's Acts, Policies, and Practices Related to Technology Transfer, Intellectual Property, and Innovation",
+        "signed": null,
+        "published": "2026-10-07",
+        "url": "https://www.federalregister.gov/documents/2026/10/07/2026-20510/continuation-of-actions-chinas-acts-policies-and-practices-related-to-technology-transfer"
       }
     ]
   },
@@ -14778,10 +14823,10 @@
         "vaccine import tariff"
       ]
     },
-    "intro": "For medicines, the total rate depends less on the country than on **whether the drug is patented**. Every line in 3001–3005 and almost all of 3006 is Free, so the only money at stake is the extra duty. Since September 29, 2026, patented drugs on the Section 232 list (77 lines in 3002, 3003 and 3004) pay **100%**, or **15%** from the EU, Japan, South Korea and Switzerland, and **0%** from the UK. **Generics and biosimilars pay nothing extra** from anywhere.\n\nThat is why each biologics and dosed-medicine cell below shows two numbers: Free for generics and the patented rate. Companies with onshoring and MFN drug-pricing agreements, and orphan, plasma, cell and gene therapies from listed countries, pay 0% even when patented. The 2026 Section 301 tariffs exempt nearly all of Chapter 30; they reach only bandages and dressings (3005) and a few 3006 goods such as sutures, dental cements, first-aid kits and ostomy appliances.",
-    "scheduleEdition": "2026 Revision 20",
+    "intro": "For medicines, the total rate depends less on the country than on **whether the drug is patented**. Every line in 3001–3005 and almost all of 3006 is Free, so the only money at stake is the extra duty. Since September 29, 2026, patented drugs on the Section 232 list (77 lines in 3002, 3003 and 3004) pay **100%**, or **15%** from the EU, Japan, South Korea and Switzerland, and **0%** from the UK. **Generics and biosimilars pay nothing extra** from anywhere.\n\nThat is why each biologics and dosed-medicine cell below shows two numbers: Free for generics and the patented rate. Companies with onshoring and MFN drug-pricing agreements, and orphan, plasma, cell and gene therapies from listed countries, pay 0% even when patented. The 2026 Section 301 tariffs exempt nearly all of Chapter 30; they reach only bandages and dressings (3005) and a few 3006 goods such as sutures, dental cements, first-aid kits and ostomy appliances. Goods of Brazil pay a further 25% Section 301 duty on those same lines.",
+    "scheduleEdition": "2026 Revision 21",
     "tradeYear": 2025,
-    "lastCheckedAt": "2026-10-08",
+    "lastCheckedAt": "2026-10-09",
     "groups": [
       {
         "heading": "3001",
@@ -22816,8 +22861,8 @@
           "extraPct": 0,
           "ch99Code": "9903.04.60",
           "atLeast": true,
-          "label": "Patented drugs on the Section 232 list: 100% (9903.04.60), or 15% from EU members, South Korea and Liechtenstein (9903.04.62), unless a company or specialty heading applies; generics: nothing extra. Dressings and four 3006 subheadings: nothing extra, +10% or +12.5% depending on whether the country is one of the 60 Section 301 economies (9903.05.20–9903.05.84).",
-          "sourceIds": ["procl-11020", "ustr-301-fl", "hts-now"]
+          "label": "Patented drugs on the Section 232 list: 100% (9903.04.60), or 15% from EU members, South Korea and Liechtenstein (9903.04.62), unless a company or specialty heading applies; generics: nothing extra. Dressings and four 3006 subheadings: nothing extra, +10% or +12.5% depending on whether the country is one of the 60 Section 301 economies (9903.05.20–9903.05.84); Brazil pays a further 25% (9903.05.01).",
+          "sourceIds": ["procl-11020", "ustr-301-fl", "ustr-br-301", "hts-now"]
         },
         "importsUsd": 37703867494,
         "cells": {
@@ -23320,28 +23365,28 @@
           "3005": {
             "importsUsd": 708309974,
             "withUsmca": {
-              "totals": ["Free–12.5%"],
+              "totals": ["Free–37.5%"],
               "breakdown": [
                 {
                   "base": "Free (301 applies)",
                   "lines": ["3005.10.10.00", "3005.10.50.00", "3005.90.10.00", "3005.90.50.10", "3005.90.50.90"],
                   "lineCount": 5,
-                  "extra": "0% to +12.5% by country (9903.05.20–9903.05.84)",
+                  "extra": "0% to +12.5% by country (9903.05.20–9903.05.84); Brazil a further +25% (9903.05.01)",
                   "preference": "Depends on country",
-                  "total": "Free–12.5%"
+                  "total": "Free–37.5%"
                 }
               ]
             },
             "withoutUsmca": {
-              "totals": ["Free–12.5%"],
+              "totals": ["Free–37.5%"],
               "breakdown": [
                 {
                   "base": "Free (301 applies)",
                   "lines": ["3005.10.10.00", "3005.10.50.00", "3005.90.10.00", "3005.90.50.10", "3005.90.50.90"],
                   "lineCount": 5,
-                  "extra": "0% to +12.5% by country (9903.05.20–9903.05.84)",
+                  "extra": "0% to +12.5% by country (9903.05.20–9903.05.84); Brazil a further +25% (9903.05.01)",
                   "preference": "Depends on country",
-                  "total": "Free–12.5%"
+                  "total": "Free–37.5%"
                 }
               ]
             }
@@ -23349,7 +23394,7 @@
           "3006": {
             "importsUsd": 2336208442,
             "withUsmca": {
-              "totals": ["Free", "Free–12.5%", "5%", "4.2%–16.7%", "40¢/kg + 10.4%", "6.4%", "0.2¢/liter"],
+              "totals": ["Free", "Free–37.5%", "5%", "4.2%–41.7%", "40¢/kg + 10.4%", "6.4%", "0.2¢/liter"],
               "breakdown": [
                 {
                   "base": "Free",
@@ -23363,9 +23408,9 @@
                   "base": "Free (301 applies)",
                   "lines": ["3006.10.01.00", "3006.40.00.00", "3006.50.00.00"],
                   "lineCount": 3,
-                  "extra": "0% to +12.5% by country (9903.05.20–9903.05.84)",
+                  "extra": "0% to +12.5% by country (9903.05.20–9903.05.84); Brazil a further +25% (9903.05.01)",
                   "preference": "Depends on country",
-                  "total": "Free–12.5%"
+                  "total": "Free–37.5%"
                 },
                 {
                   "base": "5%",
@@ -23379,9 +23424,9 @@
                   "base": "4.2%",
                   "lines": ["3006.91.00.00"],
                   "lineCount": 1,
-                  "extra": "0% to +12.5% by country (9903.05.20–9903.05.84)",
+                  "extra": "0% to +12.5% by country (9903.05.20–9903.05.84); Brazil a further +25% (9903.05.01)",
                   "preference": "Depends on country",
-                  "total": "4.2%–16.7%"
+                  "total": "4.2%–41.7%"
                 },
                 {
                   "base": "40¢/kg + 10.4%",
@@ -23410,7 +23455,7 @@
               ]
             },
             "withoutUsmca": {
-              "totals": ["Free", "Free–12.5%", "5%", "4.2%–16.7%", "40¢/kg + 10.4%", "6.4%", "0.2¢/liter"],
+              "totals": ["Free", "Free–37.5%", "5%", "4.2%–41.7%", "40¢/kg + 10.4%", "6.4%", "0.2¢/liter"],
               "breakdown": [
                 {
                   "base": "Free",
@@ -23424,9 +23469,9 @@
                   "base": "Free (301 applies)",
                   "lines": ["3006.10.01.00", "3006.40.00.00", "3006.50.00.00"],
                   "lineCount": 3,
-                  "extra": "0% to +12.5% by country (9903.05.20–9903.05.84)",
+                  "extra": "0% to +12.5% by country (9903.05.20–9903.05.84); Brazil a further +25% (9903.05.01)",
                   "preference": "Depends on country",
-                  "total": "Free–12.5%"
+                  "total": "Free–37.5%"
                 },
                 {
                   "base": "5%",
@@ -23440,9 +23485,9 @@
                   "base": "4.2%",
                   "lines": ["3006.91.00.00"],
                   "lineCount": 1,
-                  "extra": "0% to +12.5% by country (9903.05.20–9903.05.84)",
+                  "extra": "0% to +12.5% by country (9903.05.20–9903.05.84); Brazil a further +25% (9903.05.01)",
                   "preference": "Depends on country",
-                  "total": "4.2%–16.7%"
+                  "total": "4.2%–41.7%"
                 },
                 {
                   "base": "40¢/kg + 10.4%",
@@ -23530,12 +23575,12 @@
       "The 232 rates of 100% and 15% are totals that replace the base rate (U.S. note 40(d) and (f)). Every listed Chapter 30 line is Free, so the total equals the stated rate.",
       "Company-specific relief is not applied: 0% for companies with onshoring and MFN pricing agreements (9903.04.65, Annex II), 20% with an approved onshoring plan (9903.04.64), and 0% for specialty drugs such as orphan, plasma-derived, cell and gene therapies from listed countries (9903.04.66). Many of the largest drugmakers have such agreements, so actual duty paid on patented drugs is likely well below the headline rate.",
       "Seven subheadings (3003.31, 3003.43, 3003.60, 3004.43, 3006.70, 3006.92, 3006.93.80) are exempt from Section 301 only when \"for use in pharmaceutical applications\" (9903.05.89). The table assumes that condition is met.",
-      "EU goods pay the Section 301 rate as 10% in place of the base rate (9903.05.39), and Japan and Switzerland as 12.5% in place of the base rate; for other countries it is added to the base rate.",
+      "EU goods pay the Section 301 rate as 10% in place of the base rate (9903.05.39), Japan, South Korea and Switzerland as 12.5% in place of the base rate, and Taiwan as 10% in place of the base rate; for other countries it is added to the base rate.",
       "Preferences applied: Singapore FTA (SG) and U.S.–Japan Trade Agreement (JP) where the schedule lists them. GSP (A, A+) and the WTO Pharmaceutical Appendix (K) are not applied; K requires the product to be listed in the Pharmaceutical Appendix. The Section 232 duty is charged even when a preference makes the base rate Free (U.S. note 40(b)).",
       "Per-unit rates (40¢/kg + 10.4%, 0.2¢/liter) cannot be added into one percentage without the shipment's weight and volume, so they are shown as written.",
-      "\"Any other country\" shows a range for dressings because only the 60 economies named in the Section 301 action pay it; Canada and Mexico pay nothing on USMCA-qualifying goods."
+      "\"Any other country\" shows a range for dressings because only the 60 economies named in the Section 301 action pay it; Canada and Mexico pay nothing on USMCA-qualifying goods. The top of the range is Brazil, which pays 12.5% (9903.05.27) plus the separate 25% Brazil Section 301 duty (9903.05.01)."
     ],
-    "exemptionCheck": "Read U.S. notes 40 and 52 to Chapter 99 subchapter III in the 2026 Revision 20. Note 40(c) lists 77 Chapter 30 statistical lines (in 3002, 3003 and 3004) that carry the Section 232 duty; none in 3001, 3005 or 3006. Note 52(b) (9903.05.86) exempts 45 of the 60 Chapter 30 subheadings from Section 301 and note 52(e) (9903.05.89) 7 more for pharmaceutical use; 3005 and 3006.10.01, 3006.40.00, 3006.50.00 and 3006.91.00 are on neither list. The country exception lists in note 52(j) contain no Chapter 30 code. In note 20, only 3006.93.20, 3006.93.50 (List 4A) and 3006.93.60, 3006.93.80 (List 3) are on a China Section 301 list.",
+    "exemptionCheck": "Read U.S. notes 40, 50, 51 and 52 to Chapter 99 subchapter III in the 2026 Revision 21. Note 40(c) lists 77 Chapter 30 statistical lines (in 3002, 3003 and 3004) that carry the Section 232 duty; none in 3001, 3005 or 3006. Note 52(b) (9903.05.86) exempts 45 of the 60 Chapter 30 subheadings from Section 301 and note 52(e) (9903.05.89) 7 more for pharmaceutical use; 3005 and 3006.10.01, 3006.40.00, 3006.50.00 and 3006.91.00 are on neither list. The country exception lists in note 52(j) contain no Chapter 30 code. Note 50 (Brazil, 9903.05.01) exempts the same 45 subheadings (50(a)(ii)) and the same 7 for pharmaceutical use (50(a)(v)). Note 51 (Canada, 9903.03.12–9903.03.14) lists no Chapter 30 code. In note 20, only 3006.93.20, 3006.93.50 (List 4A) and 3006.93.60, 3006.93.80 (List 3) are on a China Section 301 list.",
     "sources": [
       {
         "id": "procl-11020",
@@ -23556,6 +23601,16 @@
         "signed": null,
         "published": "2026-07-30",
         "url": "https://content.govdelivery.com/accounts/USDHSCBP/bulletins/422e390"
+      },
+      {
+        "id": "csms-70054007",
+        "publisher": "CBP",
+        "citation": "CSMS # 70054007",
+        "document": "CBP CSMS message",
+        "title": "UPDATED GUIDANCE: Section 232 Duties on Imports of Pharmaceutical Articles and Ingredients",
+        "signed": null,
+        "published": "2026-09-28",
+        "url": "https://content.govdelivery.com/accounts/USDHSCBP/bulletins/42cf077"
       },
       {
         "id": "bis-uk",
@@ -23590,12 +23645,22 @@
       {
         "id": "hts-now",
         "publisher": "USITC",
-        "citation": "HTSUS 2026 Revision 20",
+        "citation": "HTSUS 2026 Revision 21",
         "document": "Harmonized Tariff Schedule",
-        "title": "Harmonized Tariff Schedule of the United States, 2026 Revision 20",
+        "title": "Harmonized Tariff Schedule of the United States, 2026 Revision 21",
         "signed": null,
-        "published": "2026-09-23",
-        "url": "https://www.usitc.gov/sites/default/files/tata/hts/hts_2026_revision_20_json.json"
+        "published": "2026-10-07",
+        "url": "https://www.usitc.gov/sites/default/files/tata/hts/hts_2026_revision_21_json.json"
+      },
+      {
+        "id": "ustr-br-301",
+        "publisher": "Federal Register",
+        "citation": "91 FR 45516",
+        "document": "Notice (USTR)",
+        "title": "Notice of Action: Brazil's Acts, Policies, and Practices Related to Digital Trade and Electronic Payment Services; Unfair, Preferential Tariffs; Anti-Corruption Enforcement; Intellectual Property Protection; Ethanol Market Access; and Illegal Deforestation",
+        "signed": null,
+        "published": "2026-07-20",
+        "url": "https://www.federalregister.gov/documents/2026/07/20/2026-14542/notice-of-action-brazils-acts-policies-and-practices-related-to-digital-trade-and-electronic-payment"
       }
     ]
   },
@@ -23615,8 +23680,8 @@
         "pharmaceutical duty drawback"
       ]
     },
-    "intro": "For medicines the tariff schedule is the easy part: **192 of the chapter's 198 lines are Free**, and the six that are not are all in heading 3006. **What decides whether the goods land is FDA** — every shipment is checked against the maker's registration, the product's listing and its approval or license, and DEA, USDA, CDC or EPA step in for specific products.\n\nThe money is now in two newer layers. **Section 232** puts up to 100% on patented drugs on 77 lines in 3002–3004 from September 29, 2026 — with generics, biosimilars, EU/Japanese/Korean/Swiss goods (15% all-in), UK goods and specialty products carved out. **Section 301 forced-labor duties** (10–12.5%) exempt most medicines but reach dressings, sutures, dental cements, first-aid kits and ostomy appliances. Each way to pay less below depends on a document, listed with the rule that creates it.",
-    "lastCheckedAt": "2026-10-08",
+    "intro": "For medicines the tariff schedule is the easy part: **192 of the chapter's 198 lines are Free**, and the six that are not are all in heading 3006. **What decides whether the goods land is FDA** — every shipment is checked against the maker's registration, the product's listing and its approval or license, and DEA, USDA, CDC or EPA step in for specific products.\n\nThe money is now in two newer layers. **Section 232** puts up to 100% on patented drugs on 77 lines in 3002–3004 from September 29, 2026 — with generics, biosimilars, EU/Japanese/Korean/Swiss goods (15% all-in), UK goods and specialty products carved out. **Section 301 duties** (10–12.5% on 60 economies, plus 25% on Brazil) exempt most medicines but reach dressings, sutures, dental cements, first-aid kits and ostomy appliances. Each way to pay less below depends on a document, listed with the rule that creates it.",
+    "lastCheckedAt": "2026-10-09",
     "regulationsAsOf": "2026-10-06",
     "levers": [
       {
@@ -23643,7 +23708,7 @@
         "saves": "85 points on a patented drug from the EU, Japan, Korea or Switzerland (15% all-in instead of 100%); the full 100% on UK-origin goods; the full duty on a dosage form made from U.S.-origin API",
         "appliesTo": "The 77 Section 232 lines — headings 9903.04.62 (15% all-in), 9903.04.63 (UK, +0%) and 9903.04.68 (U.S. API packaged in dosage form)",
         "document": "Country-of-origin evidence for the finished product (where it was last substantially transformed — for most drugs, where the API was made or the dosage form produced, decided case by case), or proof the API is a product of the United States.",
-        "caveat": "Origin is not where the goods ship from: an Irish-packed tablet made from Indian API may not be an EU product. The proclamation set the UK at 10%; the current schedule shows +0% — check CBP guidance for the date that applies to your entry. Commerce can raise country rates if a partner misses its commitments.",
+        "caveat": "Origin is not where the goods ship from: an Irish-packed tablet made from Indian API may not be an EU product. The proclamation set the UK at 10%; Commerce cut it to +0% for goods entered from July 31, 2026. Commerce can raise country rates if a partner misses its commitments.",
         "citations": [
           {
             "label": "HTSUS 9903.04.62–9903.04.63, 9903.04.68",
@@ -23652,6 +23717,10 @@
           {
             "label": "Proclamation 11020, cl. (3)(c), (11)",
             "url": "https://www.federalregister.gov/documents/2026/04/09/2026-06956/adjusting-imports-of-pharmaceuticals-and-pharmaceutical-ingredients-into-the-united-states"
+          },
+          {
+            "label": "Commerce UK rate notice (91 FR 49406)",
+            "url": "https://www.federalregister.gov/documents/2026/08/04/2026-15799/notice-of-reduction-of-tariffs-on-patented-pharmaceuticals-and-pharmaceutical-ingredients-for"
           }
         ]
       },
@@ -23661,7 +23730,7 @@
         "saves": "Onshoring plan + MFN pricing agreement: 0% instead of 100% (until January 20, 2029). Onshoring plan alone: 20% instead of 100% (rising to 100% on April 2, 2030)",
         "appliesTo": "Patented products on the 77 Section 232 lines, imported for a company Commerce has notified to CBP — headings 9903.04.65 and 9903.04.64",
         "document": "Confirmation that the manufacturer is on Commerce's list sent to CBP, plus any information CBP requires at entry.",
-        "caveat": "The importer cannot apply — the manufacturer's agreement decides it. Industry summaries of CBP guidance report that no company yet qualifies for the 20% onshoring-only rate (unverified). Commerce can re-impose duties retroactively if a company breaks its commitments.",
+        "caveat": "The importer cannot apply — the manufacturer's agreement decides it. CBP's July 30, 2026 guidance said Commerce had notified no company eligible for the 20% onshoring-only rate (9903.04.64); the September 28, 2026 update does not repeat that note. Commerce can re-impose duties retroactively if a company breaks its commitments.",
         "citations": [
           {
             "label": "HTSUS 9903.04.64–9903.04.65, U.S. note 40(h)",
@@ -23670,6 +23739,14 @@
           {
             "label": "Proclamation 11020, cl. (3)(b), (3)(e), (6)",
             "url": "https://www.federalregister.gov/documents/2026/04/09/2026-06956/adjusting-imports-of-pharmaceuticals-and-pharmaceutical-ingredients-into-the-united-states"
+          },
+          {
+            "label": "CBP CSMS # 69395344 (July 30, 2026)",
+            "url": "https://content.govdelivery.com/accounts/USDHSCBP/bulletins/422e390"
+          },
+          {
+            "label": "CBP CSMS # 70054007 (September 28, 2026)",
+            "url": "https://content.govdelivery.com/accounts/USDHSCBP/bulletins/42cf077"
           }
         ]
       },
@@ -23677,9 +23754,9 @@
         "id": "s232-specialty",
         "title": "Check the specialty-product zero rate (orphan drugs, plasma-derived, cell & gene therapies, ADCs, nuclear medicine, fertility, countermeasures, animal health)",
         "saves": "The whole Section 232 duty (0% instead of up to 100%)",
-        "appliesTo": "Products on the 77 Section 232 lines in the listed categories that Commerce designates by Federal Register notice — heading 9903.04.66. Relevant here: plasma fractions (3002.12), monoclonal-antibody and ADC products (3002.13–3002.15), cell therapies (3002.51), veterinary lines",
+        "appliesTo": "Products on the 77 Section 232 lines in the categories Commerce defined on September 23, 2026, from one of 19 listed jurisdictions (including the EU, Japan, South Korea, Switzerland and Liechtenstein, the UK, India, Taiwan and Vietnam; not Singapore or China) or approved as meeting an urgent U.S. health need — heading 9903.04.66. Relevant here: plasma fractions (3002.12), monoclonal-antibody and ADC products (3002.13–3002.15), cell therapies (3002.51), veterinary lines",
         "document": "The Commerce Federal Register designation covering the product (and, for orphan drugs, FDA orphan designation for every approved indication).",
-        "caveat": "Not automatic: the zero rate applies only once Commerce designates the product and finds the source country has a trade-and-security framework or the product meets an urgent U.S. health need. A drug with any non-orphan indication does not qualify as orphan.",
+        "caveat": "Since September 29, 2026 the zero rate applies to products that meet Commerce's definitions (orphan for every approved indication, radioactive drugs, plasma-derived, fertility, cell therapy, gene therapy, ADCs, CBRN countermeasures, animal health) and are products of a listed jurisdiction. From other countries, such as Singapore or China, the importer's supplier must ask Commerce to approve the product as meeting an urgent U.S. health need. A drug with any non-orphan indication does not qualify as orphan.",
         "citations": [
           {
             "label": "HTSUS 9903.04.66, U.S. note 40(h)(iii)",
@@ -23688,6 +23765,14 @@
           {
             "label": "Proclamation 11020, cl. (3)(d)",
             "url": "https://www.federalregister.gov/documents/2026/04/09/2026-06956/adjusting-imports-of-pharmaceuticals-and-pharmaceutical-ingredients-into-the-united-states"
+          },
+          {
+            "label": "Commerce specialty-pharmaceutical notice (91 FR 60360)",
+            "url": "https://www.federalregister.gov/documents/2026/09/23/2026-19498/guidance-and-procedures-for-implementing-tariff-adjustments-for-specialty-pharmaceuticals-and"
+          },
+          {
+            "label": "CBP CSMS # 70054007 (September 28, 2026)",
+            "url": "https://content.govdelivery.com/accounts/USDHSCBP/bulletins/42cf077"
           }
         ]
       },
@@ -23711,9 +23796,9 @@
       },
       {
         "id": "s301-exempt",
-        "title": "Report the pharmaceutical exemption from the Section 301 forced-labor duties",
-        "saves": "10% or 12.5% of value, depending on the country (applies to imports from 60 economies including China, India, the EU, Switzerland, Singapore, Japan, Korea and the UK since July 24, 2026)",
-        "appliesTo": "Almost every line in 3001–3004 and most of 3006 — via heading 9903.05.86 (provisions listed in U.S. note 52(b)) or 9903.05.89 (provisions in U.S. note 52(e), for goods used in pharmaceutical applications)",
+        "title": "Report the pharmaceutical exemption from the Section 301 duties",
+        "saves": "10% or 12.5% of value, depending on the country (60 economies including China, India, the EU, Switzerland, Singapore, Japan, Korea and the UK since July 24, 2026), plus 25% on goods of Brazil since July 22, 2026",
+        "appliesTo": "Almost every line in 3001–3004 and most of 3006 — via heading 9903.05.86 (provisions listed in U.S. note 52(b)) or 9903.05.89 (provisions in U.S. note 52(e), for goods used in pharmaceutical applications); for Brazil also 9903.05.03 (note 50(a)(ii)) or 9903.05.06 (note 50(a)(v))",
         "document": "The correct 10-digit classification and the exemption heading on the entry; for 9903.05.89, support that the goods are for pharmaceutical use.",
         "caveat": "Not covered by either list: 3005 dressings and bandages, 3006.10 sutures, 3006.40 dental cements, 3006.50 first-aid kits and 3006.91 ostomy appliances — those pay the duty unless another exemption applies.",
         "citations": [
@@ -23724,6 +23809,10 @@
           {
             "label": "USTR: forced-labor Section 301 action",
             "url": "https://ustr.gov/about/policy-offices/press-office/press-releases/2026/july/ustr-takes-action-forced-labor-section-301-investigations"
+          },
+          {
+            "label": "USTR Brazil Section 301 action (91 FR 45516)",
+            "url": "https://www.federalregister.gov/documents/2026/07/20/2026-14542/notice-of-action-brazils-acts-policies-and-practices-related-to-digital-trade-and-electronic-payment"
           }
         ]
       },
@@ -24094,6 +24183,10 @@
           {
             "label": "Proclamation 11020 (91 FR 18183)",
             "url": "https://www.federalregister.gov/documents/2026/04/09/2026-06956/adjusting-imports-of-pharmaceuticals-and-pharmaceutical-ingredients-into-the-united-states"
+          },
+          {
+            "label": "CBP CSMS # 70054007 (September 28, 2026)",
+            "url": "https://content.govdelivery.com/accounts/USDHSCBP/bulletins/42cf077"
           }
         ]
       },
@@ -27276,7 +27369,7 @@
       "Patented drugs on the Section 232 list pay 100%, or 15% from the EU, Japan, South Korea and Switzerland and 0% from the UK. Generics pay nothing extra.",
       "FDA approval, registration and listing decide whether a drug can be imported at all — check them before the tariff."
     ],
-    "lastCheckedAt": "2026-10-08",
+    "lastCheckedAt": "2026-10-09",
     "questionSource": "Google search suggestions, collected October 8, 2026",
     "faqs": [
       {
@@ -27295,7 +27388,7 @@
           "tariffs on generic drugs from india",
           "us tariff on medicine from india"
         ],
-        "answer": "Generic medicines, most of what India ships, pay nothing: the base rate is Free and generics are excluded from the Section 232 duty (9903.04.67) and from the Section 301 tariffs. Patented drugs on the Section 232 list pay 100%, because India has no reduced rate. Bandages and a few other 3006 lines pay an extra 10% under Section 301.",
+        "answer": "Generic medicines, most of what India ships, pay nothing: the base rate is Free and generics are excluded from the Section 232 duty (9903.04.67) and from the Section 301 tariffs. Patented drugs on the Section 232 list pay 100%, because India has no reduced country rate; orphan, plasma-derived, cell and gene therapies and other specialty drugs from India pay 0% (9903.04.66). Bandages and a few other 3006 lines pay an extra 10% under Section 301.",
         "link": "industry-areas"
       },
       {
@@ -27323,7 +27416,7 @@
         "id": "hundred-percent",
         "question": "What is the 100% pharmaceutical tariff, and when did it start?",
         "searchedAs": ["100 pharmaceutical tariffs", "trump 100 pharmaceutical tariff", "100 percent pharma tariff", "pharmaceutical tariffs trump"],
-        "answer": "It is the Section 232 duty on patented pharmaceuticals (Proclamation 11020, April 2, 2026). It started on July 31, 2026 for 17 large drugmakers and on September 29, 2026 for everyone else. The 100% rate is the default; the EU, Japan, South Korea and Switzerland pay 15%, the UK 0%, and companies with onshoring and pricing agreements 0%. The September 2025 announcement of 100% from October 1, 2025 was never put into effect.",
+        "answer": "It is the Section 232 duty on patented pharmaceuticals (Proclamation 11020, April 2, 2026). It started on July 31, 2026 for 17 large drugmakers and on September 29, 2026 for everyone else. The 100% rate is the default; the EU, Japan, South Korea and Switzerland pay 15%, the UK 0%, and companies with onshoring and pricing agreements 0%.",
         "link": "tariff-updates"
       },
       {

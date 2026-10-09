@@ -22,6 +22,11 @@ export function getChapterExports(chapterSlug: string): TariffChapterExports | n
   return EXPORTS_BY_SLUG[chapterSlug] ?? null;
 }
 
+/** Slugs of every chapter with export-side content (used by the content validator). */
+export function listChapterExportSlugs(): string[] {
+  return Object.keys(EXPORTS_BY_SLUG);
+}
+
 export function hasChapterExports(chapterSlug: string): boolean {
   return chapterSlug in EXPORTS_BY_SLUG;
 }

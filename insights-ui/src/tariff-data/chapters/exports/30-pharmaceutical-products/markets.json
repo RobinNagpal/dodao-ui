@@ -23,7 +23,7 @@
         "Health Canada DIN export"
       ]
     },
-    "lastCheckedAt": "2026-10-08"
+    "lastCheckedAt": "2026-10-09"
   },
   "nav": [
     {
@@ -228,7 +228,7 @@
         }
       },
       "profile": {
-        "headline": "China is the only big buyer charging U.S. medicines more than in January 2025: an extra 10% on top of its 0–3% normal rate. It peaked at 125% in April 2025, when some U.S. drugs reportedly got quiet exemptions; sales dipped only 4%.",
+        "headline": "China is the only big buyer charging U.S. medicines more than in January 2025: an extra 10% on top of its 0–3% normal rate. It peaked at 125% in April 2025; sales dipped only 4% in 2025.",
         "mainProducts": "Vaccines, antibodies & blood products (3002) · packaged medicines (3004)",
         "tariffNow": "Same + 10% extra on all U.S. goods",
         "regulator": {
@@ -599,7 +599,7 @@
         }
       },
       "profile": {
-        "headline": "U.S. medicines pay Brazil’s normal Mercosur rates — near zero for most biologics, around 10% on many packaged drugs. Brazil has not retaliated, but its August 2026 reciprocity case could; suspending drug patents is one listed option.",
+        "headline": "U.S. medicines pay Brazil’s normal Mercosur rates — near zero for most biologics, around 10% on many packaged drugs. Brazil has imposed nothing on U.S. goods; it is challenging the 2026 U.S. Section 301 tariffs at the WTO.",
         "mainProducts": "Packaged medicines (3004) · vaccines, antibodies & blood products (3002)",
         "tariffNow": "MFN 0–14% (≈10% avg packaged medicines)",
         "regulator": {
@@ -771,7 +771,7 @@
     "Rates are each destination's MFN applied rate on one representative HS subheading per group (shown under each cell), from the WITS/TRAINS 2023 schedules — the latest year available for all of them. National 8–10-digit lines can differ.",
     "EU members share one tariff, so Germany, the Netherlands, Belgium, Spain and Ireland show the same rates.",
     "Canada and Mexico apply USMCA rates (Free) to qualifying U.S. goods; the MFN rate they would charge otherwise is noted under the cell.",
-    "China's extra 10% applies to all U.S.-origin goods on top of its MFN rate. A further 24 points are suspended until Jan 10, 2027.",
+    "China's extra 10% applies to all U.S.-origin goods on top of its MFN rate. A further 24 points are suspended for one year from Nov 10, 2025 (Tariff Commission Announcement No. 10 of 2025).",
     "Regulatory requirements are summarised for orientation only; check the regulator's current rules for the specific product."
   ],
   "sources": [
@@ -792,7 +792,7 @@
       "document": "Database",
       "title": "MFN applied tariff rates by HS subheading (China, Brazil, Japan, Canada, EU, UK, Switzerland, Mexico)",
       "signed": null,
-      "published": "2026-10-08",
+      "published": "2026-10-09",
       "url": "https://wits.worldbank.org/tariff/trains/en/country/CHN/partner/WLD/product/300215"
     },
     {
@@ -827,13 +827,13 @@
     },
     {
       "id": "cn-sctc-125",
-      "publisher": "USDA FAS",
-      "citation": "GAIN report, Apr 2025",
-      "document": "GAIN report",
-      "title": "China: SCTC 2025 Announcement No. 6 increases retaliatory tariffs to 125 percent on all goods",
+      "publisher": "State Council Tariff Commission (PRC)",
+      "citation": "Tariff Commission Announcement No. 6 of 2025",
+      "document": "Announcement",
+      "title": "Adjusting the additional tariffs on imports originating in the United States (84% raised to 125% from April 12, 2025)",
       "signed": null,
-      "published": "2025-04-14",
-      "url": "https://www.fas.usda.gov/data/china-sctc-2025-announcement-number-6-increases-retaliatory-tariffs-125-percent-all-goods"
+      "published": "2025-04-11",
+      "url": "https://gss.mof.gov.cn/gzdt/zhengcefabu/202504/t20250411_3961823.htm"
     },
     {
       "id": "reg-eu",

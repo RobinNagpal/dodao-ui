@@ -26,6 +26,11 @@ export function getChapterPrototype(chapterSlug: string): TariffChapterPrototype
   return PROTOTYPES_BY_SLUG[chapterSlug] ?? null;
 }
 
+/** Slugs of every chapter with an Approach-2 content file (used by the content validator). */
+export function listChapterPrototypeSlugs(): string[] {
+  return Object.keys(PROTOTYPES_BY_SLUG);
+}
+
 /** The route facts (number, title, slug) the chapter shell and breadcrumbs need. */
 export function prototypeChapterInfo(prototype: TariffChapterPrototype): ChapterRouteInfo {
   const { number, title, slug } = prototype.chapter;
