@@ -3342,6 +3342,8 @@
         "now": "+10%",
         "exemption": "USMCA-qualifying goods entered free under USMCA: no Section 301 duty (9903.05.93), including lines whose general rate is already Free. The 2025 IEEPA duty on Canada (+35%, 9903.01.10) ended February 24, 2026. The 2026 Section 338 duties and import bans on Canadian alcoholic beverages, dairy and motor vehicles (9903.03.12–9903.03.14) list no Chapter 01 line.",
         "whatItMeans": "A USMCA-qualifying feeder steer from Alberta still pays $0; a Canadian animal that does not qualify pays the base rate plus 10% of value.",
+        "effectiveFrom": "2026-07-24",
+        "effectiveSourceId": "ustr-301-fl",
         "sourceIds": ["ustr-301-fl", "hts-now"]
       },
       {
@@ -3353,6 +3355,8 @@
         "now": "+10%",
         "exemption": "USMCA-qualifying goods entered free under USMCA: no Section 301 duty (9903.05.94). The 2025 IEEPA duty on Mexico (+25%, 9903.01.01) ended February 24, 2026.",
         "whatItMeans": "USMCA-qualifying cattle from Mexico pay nothing extra; animals that do not qualify pay the base rate plus 10% of value. Whether Mexican cattle can enter at all is decided by USDA APHIS (only Douglas, AZ is open as of October 7, 2026).",
+        "effectiveFrom": "2026-07-24",
+        "effectiveSourceId": "ustr-301-fl",
         "sourceIds": ["ustr-301-fl", "hts-now", "aphis-nws-status"]
       },
       {
@@ -3364,6 +3368,8 @@
         "now": "10% (in place of base)",
         "exemption": "For EU goods whose base rate (or its ad valorem equivalent) is under 10%, the total is 10% (9903.05.39); every Chapter 01 base rate is under 10%. The EU exception list (9903.05.97) has no Chapter 01 line. This replaced the 15% IEEPA reciprocal rate (9903.02.20), which ended February 24, 2026.",
         "whatItMeans": "A $50,000 horse from Germany, Ireland or the Netherlands pays $5,000 (10%).",
+        "effectiveFrom": "2026-07-24",
+        "effectiveSourceId": "ustr-301-fl",
         "sourceIds": ["ustr-301-fl", "hts-now"]
       },
       {
@@ -3375,6 +3381,8 @@
         "now": "+10%",
         "exemption": "The UK exception list (9903.05.96) covers medical goods only, no Chapter 01 line.",
         "whatItMeans": "A horse from the UK (Free base rate) pays 10% of its value.",
+        "effectiveFrom": "2026-07-24",
+        "effectiveSourceId": "ustr-301-fl",
         "sourceIds": ["ustr-301-fl", "hts-now"]
       },
       {
@@ -3386,6 +3394,8 @@
         "now": "+20%",
         "exemption": "Two Section 301 duties stack: +12.5% under the 2026 action (9903.05.31, from July 24, 2026) and +7.5% under List 4A (9903.88.15), which covers all 37 Chapter 01 subheadings and has been in force since 2019 (7.5% since February 14, 2020). The IEEPA duty on China ended February 24, 2026.",
         "whatItMeans": "Live animals from China pay the base rate plus 20% of value; a 1.8% bird line pays 21.8%.",
+        "effectiveFrom": "2026-07-24",
+        "effectiveSourceId": "ustr-301-fl",
         "sourceIds": ["ustr-301-fl", "ustr-301-cn-4a", "ustr-301-cn-4a-cut", "hts-now"]
       },
       {
@@ -3397,6 +3407,8 @@
         "now": "+37.5%",
         "exemption": "+25% under the Brazil action from July 22, 2026 (9903.05.01) and +12.5% under the forced-labor action from July 24, 2026 (9903.05.27). Neither exemption list (U.S. note 50(a)(ii)–(v), U.S. note 52(b)–(e)) includes a Chapter 01 line.",
         "whatItMeans": "Live animals from Brazil pay the base rate plus 37.5% of value.",
+        "effectiveFrom": "2026-07-24",
+        "effectiveSourceId": "ustr-301-fl",
         "sourceIds": ["ustr-301-br", "ustr-301-fl", "hts-now"]
       },
       {
@@ -3408,6 +3420,8 @@
         "now": "+10% or +12.5%",
         "exemption": "Japan, South Korea and Switzerland pay 12.5% in total and Taiwan 10% in total when the base rate is lower (9903.05.49, 9903.05.71, 9903.05.74, 9903.05.76); Australia, New Zealand and Vietnam +12.5%; India +10%. Country exception lists in U.S. note 52(j) exempt a few 0106 lines (for example 0106.19.91 and 0106.20) for Switzerland, Taiwan, Malaysia, Cambodia, Indonesia, Ecuador, Jordan, Argentina, Guatemala and El Salvador. Countries outside the 60 economies (for example Mauritius) pay no extra duty.",
         "whatItMeans": "500 goats from Australia: the 68¢/head base rate is Free under the Australia FTA, but the 12.5% Section 301 duty still applies to the shipment value.",
+        "effectiveFrom": "2026-07-24",
+        "effectiveSourceId": "ustr-301-fl",
         "sourceIds": ["ustr-301-fl", "pm-301-fl", "hts-now"]
       }
     ],

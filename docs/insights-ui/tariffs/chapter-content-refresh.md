@@ -69,6 +69,13 @@ Id conventions: `eo-<number>`, `proc-<number>`, `fr-<doc-number>`, `csms-<id>`, 
 
 One per Chapter 99 measure that reaches the chapter today: `country`, `measure`, `ch99Code`, `before`, `now`, `exemption`, `whatItMeans`, `sourceIds` (the instrument **and** `hts-now`).
 
+Every entry also needs (required by the type and the validator):
+
+- `effectiveFrom`: the ISO date the rate shown in `now` took effect. If the duty was raised, cut or stacked later, use the date of that latest change.
+- `effectiveSourceId`: the id of the official document that put that rate in force. It must also be in the entry's `sourceIds`.
+
+The card shows "In effect since <date> · <citation ↗>". The same two fields are required on export-side `inEffect` entries.
+
 ### Dates to bump on every refresh
 
 `asOf` (file root), `tariffUpdates.lastCheckedAt`, `understandIndustry.lastCheckedAt`, `industryAreas.lastCheckedAt`, `tariffEngineering.lastCheckedAt` + `regulationsAsOf`, `finalConclusion.lastCheckedAt`, each export page's `page.lastCheckedAt`. Only bump a date for a page you actually re-checked.
