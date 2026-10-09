@@ -1,5 +1,6 @@
 'use client';
 
+import GlossaryTerm from '@/components/industry-tariff/chapter/GlossaryTerm';
 import Stack from '@/components/ui/containers/Stack';
 import SearchField from '@/components/ui/SearchField';
 import Text from '@/components/ui/Text';
@@ -197,15 +198,18 @@ export default function ChapterRateTable({ rows, note }: ChapterRateTableProps):
               <TableRow>
                 <TableHeaderCell>HTS code</TableHeaderCell>
                 <TableHeaderCell width="wide">Description</TableHeaderCell>
-                <TableHeaderCell title="The schedule's general (normal trade relations) rate — what most countries pay before any extra duty">
-                  Base rate
+                {/* Tap-to-explain labels (issue #1784): a `title=` tooltip doesn't open on phones. */}
+                <TableHeaderCell>
+                  <GlossaryTerm id="base-rate">Base rate</GlossaryTerm>
                 </TableHeaderCell>
-                <TableHeaderCell width="narrow" title="Free-trade-agreement and preference-program rates (the schedule's Special column)">
-                  With a trade deal
+                <TableHeaderCell width="narrow">
+                  <GlossaryTerm id="special-rate">With a trade deal</GlossaryTerm>
                 </TableHeaderCell>
-                <TableHeaderCell title="Countries without normal trade relations (currently Cuba, North Korea, Belarus, Russia)">
+                <TableHeaderCell>
                   <Stack gap="xxs">
-                    <span>Column 2</span>
+                    <span>
+                      <GlossaryTerm id="column-2">Column 2</GlossaryTerm>
+                    </span>
                     <Text as="span" size="xs" tone="muted" weight="normal">
                       Cuba, N. Korea, Russia, Belarus only
                     </Text>

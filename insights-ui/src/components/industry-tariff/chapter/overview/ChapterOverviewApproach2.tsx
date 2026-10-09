@@ -1,6 +1,7 @@
 import ChapterKeyTakeaways from '@/components/industry-tariff/chapter/ChapterKeyTakeaways';
 import BaseRateNotice from '@/components/industry-tariff/chapter/overview/BaseRateNotice';
 import ChapterRateTable from '@/components/industry-tariff/chapter/overview/ChapterRateTable';
+import ShipmentDutyBox from '@/components/industry-tariff/chapter/shipment/ShipmentDutyBox';
 import SourcesCard, { labeledSourceItems } from '@/components/industry-tariff/chapter/updates/SourcesCard';
 import DefinitionList from '@/components/ui/DefinitionList';
 import Heading from '@/components/ui/Heading';
@@ -18,6 +19,7 @@ import SectionHeading from '@/components/ui/sections/SectionHeading';
 import type { TariffChapterPrototype } from '@/types/tariff-chapter-prototype';
 import { parseChapterBodyMarkdown } from '@/util/parse-markdown';
 import { approach2SectionLabel, chapterSectionHref } from '@/utils/tariff-reports/chapter-route-helpers';
+import { shipmentLines } from '@/utils/tariff-reports/shipment-duty';
 import React from 'react';
 
 // Approach 2 overview page (issue #1770). The page's single job is to be the
@@ -107,6 +109,17 @@ export default function ChapterOverviewApproach2({ content }: ChapterOverviewApp
           <ChapterRateTable rows={overview.rateTable.rows} note={overview.rateTable.note} />
         </Stack>
       </CardSection>
+
+      {/* The one-number answer needs the country matrix, so it appears once the chapter has one. */}
+      {industryAreas && (
+        <ShipmentDutyBox
+          lines={shipmentLines(overview.rateTable.rows)}
+          countries={industryAreas.countries}
+          ratesAsOf={industryAreas.lastCheckedAt}
+          scheduleEdition={industryAreas.scheduleEdition}
+          ratesByCountryHref={chapterSectionHref(chapter.slug, 'industry-areas')}
+        />
+      )}
 
       <Stack as="section" gap="md">
         <SectionHeading as="h2" size="lg" weight="bold" tone="heading">

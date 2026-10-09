@@ -201,6 +201,7 @@ Rules for leaves:
 | `ShareBar` | Inline bar + label for a share column in a table, scaled to the column's largest value. |
 | `SearchField` | Filter-a-listing search box: magnifier, clear button, result count. |
 | `DefinitionList` | Compact term → definition grid for code legends/glossaries. |
+| `Term` | Inline jargon term with a dotted underline that opens a plain-English definition on tap / click / Enter (button + popover portalled to `<body>`, clamped to the viewport; closes on Escape, outside tap or scroll). Works on phones, unlike `title=`. Tariff pages use it through `GlossaryTerm id="…"`, which reads `src/tariff-data/glossary.ts`. |
 | `EmptyStateCard` | "No data" placeholder (`card` / `inline`). |
 
 **Tables (`ui/tables/`)**

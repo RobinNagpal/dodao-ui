@@ -1,4 +1,5 @@
 import CountryRateMatrix from '@/components/industry-tariff/chapter/areas/CountryRateMatrix';
+import ShipmentDutyBox from '@/components/industry-tariff/chapter/shipment/ShipmentDutyBox';
 import SourcesCard, { documentSourceItems } from '@/components/industry-tariff/chapter/updates/SourcesCard';
 import Text from '@/components/ui/Text';
 import TextLink from '@/components/ui/TextLink';
@@ -10,6 +11,8 @@ import { DataTable, TableCell, TableHead, TableHeaderCell, TableRow, TableScroll
 import type { TariffChapterPrototype, TariffIndustryAreasContent } from '@/types/tariff-chapter-prototype';
 import { parseChapterBodyMarkdown } from '@/util/parse-markdown';
 import { approach2SectionLabel, chapterSectionHref } from '@/utils/tariff-reports/chapter-route-helpers';
+import { matrixBreakdownLabels } from '@/utils/tariff-reports/line-labels';
+import { shipmentLines } from '@/utils/tariff-reports/shipment-duty';
 import React from 'react';
 
 // Approach 2 industry-areas page (issue #1770): the country x product-group
@@ -45,6 +48,7 @@ export default function ChapterIndustryAreasApproach2({ content, areas }: Chapte
       <CardSection padding="roomy" bordered id="rate-matrix">
         <CountryRateMatrix
           areas={areas}
+          breakdownLabels={matrixBreakdownLabels(areas, content.overview.rateTable.rows)}
           heading={
             <Stack gap="xs">
               <SectionHeading as="h2" size="lg" weight="bold" tone="heading">
@@ -57,6 +61,13 @@ export default function ChapterIndustryAreasApproach2({ content, areas }: Chapte
           }
         />
       </CardSection>
+
+      <ShipmentDutyBox
+        lines={shipmentLines(content.overview.rateTable.rows)}
+        countries={areas.countries}
+        ratesAsOf={areas.lastCheckedAt}
+        scheduleEdition={areas.scheduleEdition}
+      />
 
       <Stack as="section" gap="lg">
         <Stack gap="lg">
