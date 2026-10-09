@@ -1,8 +1,8 @@
 import { ChapterArticle, buildChapterSectionMetadata, renderChapterSection } from '@/components/industry-tariff/chapter/chapter-section-page';
 import ChapterFaqApproach2 from '@/components/industry-tariff/chapter/faq/ChapterFaqApproach2';
-import PrototypeChapterToolsBar from '@/components/industry-tariff/chapter/PrototypeChapterToolsBar';
+import PrototypeChapterToolLinks from '@/components/industry-tariff/chapter/PrototypeChapterToolLinks';
 import { buildPrototypeMetadata, getChapterPrototype, prototypeChapterInfo } from '@/utils/tariff-reports/chapter-prototype';
-import { chapterSectionHref } from '@/utils/tariff-reports/chapter-route-helpers';
+import { approach2SectionLabel, chapterSectionHref } from '@/utils/tariff-reports/chapter-route-helpers';
 import type { Metadata } from 'next';
 
 const SECTION_SLUG = 'final-conclusion';
@@ -27,10 +27,12 @@ export default async function Page({ params }: { params: Promise<{ chapterSlug: 
       <ChapterArticle
         chapter={chapterInfo}
         pageTitle={prototype.finalConclusion.h1}
-        toolsCrossLinks={<PrototypeChapterToolsBar chapter={prototype.chapter} />}
+        toolsCrossLinks={<PrototypeChapterToolLinks chapter={prototype.chapter} />}
+        ratesAsOf={prototype.asOf}
         currentSlug={SECTION_SLUG}
         updatedAt={prototype.finalConclusion.lastCheckedAt}
-        sectionLabel="FAQ"
+        asOfLabel="Updated"
+        sectionLabel={approach2SectionLabel(SECTION_SLUG)}
       >
         <ChapterFaqApproach2 content={prototype} conclusion={prototype.finalConclusion} />
       </ChapterArticle>

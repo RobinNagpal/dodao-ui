@@ -1,4 +1,5 @@
 import {
+  approach2SectionLabel,
   CHAPTER_EXPORT_SECTIONS,
   CHAPTER_REPORT_SECTIONS,
   chapterCoverHref,
@@ -24,14 +25,27 @@ interface ChapterRelatedSectionsProps {
 // Card labels intentionally omit the chapter title because the HTS chapter titles ("Dairy produce;
 // birds eggs; natural honey; edible products of animal origin, not elsewhere specified or included")
 // are long enough to drown out the per-section labels.
-export default function ChapterRelatedSections({ chapter, currentSlug, direction = 'import' }: ChapterRelatedSectionsProps): JSX.Element {
-  const items: Array<{ slug: string; href: string; label: string }> =
+/**
+ * Every page of the chapter report for one direction, in nav order. Shared with the Approach-2 header
+ * tabs, which pass `approach2` to use the Approach-2 page names.
+ */
+export function chapterReportNavItems(
+  chapter: ChapterRouteInfo,
+  direction: ChapterReportDirection = 'import',
+  approach2 = false
+): Array<{ slug: string; href: string; label: string }> {
+  const items =
     direction === 'export'
       ? CHAPTER_EXPORT_SECTIONS.map((section) => ({ slug: section.slug, href: chapterSectionHref(chapter.slug, section.slug), label: section.label }))
       : [
           { slug: 'overview', href: chapterCoverHref(chapter.slug), label: 'Overview' },
           ...CHAPTER_REPORT_SECTIONS.map((section) => ({ slug: section.slug, href: chapterSectionHref(chapter.slug, section.slug), label: section.label })),
         ];
+  return approach2 ? items.map((item) => ({ ...item, label: approach2SectionLabel(item.slug) })) : items;
+}
+
+export default function ChapterRelatedSections({ chapter, currentSlug, direction = 'import' }: ChapterRelatedSectionsProps): JSX.Element {
+  const items = chapterReportNavItems(chapter, direction);
 
   return (
     <nav aria-label="Chapter report sections" className="mb-6">

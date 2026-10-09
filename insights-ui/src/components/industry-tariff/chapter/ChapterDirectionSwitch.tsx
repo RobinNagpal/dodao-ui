@@ -6,6 +6,10 @@ import React from 'react';
 
 // Import | Export switch at the top of a chapter report. Rendered only for chapters that have
 // export content; chapters without it show the import pages alone, with no switch.
+//
+// `layout="row"` lays the switch and its explainer out on their own line (legacy pages);
+// `layout="parts"` returns them bare so the parent places them (the Approach-2 header puts them
+// beside the section tabs).
 
 const EXPLAINER: Record<ChapterReportDirection, string> = {
   import: 'What the U.S. charges on these goods coming in.',
@@ -15,11 +19,12 @@ const EXPLAINER: Record<ChapterReportDirection, string> = {
 interface ChapterDirectionSwitchProps {
   chapter: ChapterRouteInfo;
   direction: ChapterReportDirection;
+  layout?: 'row' | 'parts';
 }
 
-export default function ChapterDirectionSwitch({ chapter, direction }: ChapterDirectionSwitchProps): React.JSX.Element {
-  return (
-    <Stack direction="row" gap="md" align="center" wrap mb="md">
+export default function ChapterDirectionSwitch({ chapter, direction, layout = 'row' }: ChapterDirectionSwitchProps): React.JSX.Element {
+  const parts = (
+    <>
       <SegmentedLinks
         ariaLabel="Report direction"
         items={[
@@ -27,9 +32,16 @@ export default function ChapterDirectionSwitch({ chapter, direction }: ChapterDi
           { key: 'export', href: chapterSectionHref(chapter.slug, 'exports'), label: 'Export', active: direction === 'export' },
         ]}
       />
-      <Text as="span" size="sm" tone="muted">
+      <Text as="span" size={layout === 'parts' ? 'xs' : 'sm'} tone="muted" leading="snug" maxWidth={layout === 'parts' ? 'narrow' : 'none'}>
         {EXPLAINER[direction]}
       </Text>
+    </>
+  );
+
+  if (layout === 'parts') return parts;
+  return (
+    <Stack direction="row" gap="md" align="center" wrap mb="md">
+      {parts}
     </Stack>
   );
 }

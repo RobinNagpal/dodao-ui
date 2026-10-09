@@ -51,15 +51,18 @@
     },
     {
       "label": "In force & cost U.S. medicines",
-      "value": "1 (China +10%)"
+      "value": "1",
+      "note": "China +10%"
     },
     {
       "label": "Counter-tariff lists that skipped Ch. 30",
-      "value": "3 (Canada 2025, Canada 2026, EU)"
+      "value": "3",
+      "note": "Canada 2025, Canada 2026, EU"
     },
     {
       "label": "Pending",
-      "value": "2 (Brazil reciprocity, China Board of Trade list)"
+      "value": "2",
+      "note": "Brazil reciprocity, China Board of Trade list"
     }
   ],
   "inEffect": [

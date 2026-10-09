@@ -3319,7 +3319,7 @@
       },
       {
         "label": "Compared",
-        "value": "Jan 2025 → 2026 Revision 20"
+        "value": "Jan 2025 → Rev 20"
       },
       {
         "label": "Pending / unconfirmed",
@@ -4368,7 +4368,8 @@
       },
       {
         "label": "Largest product",
-        "value": "Cattle · 56%"
+        "value": "56%",
+        "note": "Cattle"
       }
     ],
     "byYear": [

@@ -65,7 +65,8 @@
     },
     {
       "label": "Buyers that raised tariffs",
-      "value": "1 (China)"
+      "value": "1",
+      "note": "China"
     }
   ],
   "byYear": [

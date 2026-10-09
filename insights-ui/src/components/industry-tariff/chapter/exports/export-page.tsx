@@ -1,9 +1,10 @@
 import { ChapterArticle } from '@/components/industry-tariff/chapter/chapter-section-page';
 import { renderChapterToolsCrossLinks } from '@/components/industry-tariff/chapter/ChapterToolsCrossLinks';
-import PrototypeChapterToolsBar from '@/components/industry-tariff/chapter/PrototypeChapterToolsBar';
+import PrototypeChapterToolLinks from '@/components/industry-tariff/chapter/PrototypeChapterToolLinks';
 import type { TariffChapterExports } from '@/types/tariff-chapter-exports';
 import { buildPrototypeMetadata, getChapterPrototype } from '@/utils/tariff-reports/chapter-prototype';
 import { getChapterExports } from '@/utils/tariff-reports/chapter-exports';
+import { approach2SectionLabel } from '@/utils/tariff-reports/chapter-route-helpers';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import type { ReactNode } from 'react';
@@ -13,12 +14,6 @@ import type { ReactNode } from 'react';
 // export content 404 on all three.
 
 type ExportPageKey = keyof TariffChapterExports;
-
-const SECTION_LABEL: Record<ExportPageKey, string> = {
-  overview: 'Export Overview',
-  tariffUpdates: 'Export Tariff Updates',
-  markets: 'Export Markets',
-};
 
 export function buildExportPageMetadata(chapterSlug: string, key: ExportPageKey): Metadata {
   const page = getChapterExports(chapterSlug)?.[key].page;
@@ -36,9 +31,9 @@ export async function renderExportPage<K extends ExportPageKey>(
 
   const { number, title, slug } = content.chapter;
   const chapter = { number, title, slug };
-  // Approach-2 chapters build the tools bar from their content file; DB-backed chapters look the HTS chapter up.
+  // Approach-2 chapters build the tool links from their content file; DB-backed chapters look the HTS chapter up.
   const prototype = getChapterPrototype(chapterSlug);
-  const toolsCrossLinks = prototype ? <PrototypeChapterToolsBar chapter={prototype.chapter} /> : await renderChapterToolsCrossLinks(chapter);
+  const toolsCrossLinks = prototype ? <PrototypeChapterToolLinks chapter={prototype.chapter} /> : await renderChapterToolsCrossLinks(chapter);
 
   return (
     <ChapterArticle
@@ -47,8 +42,9 @@ export async function renderExportPage<K extends ExportPageKey>(
       toolsCrossLinks={toolsCrossLinks}
       currentSlug={content.page.slug}
       updatedAt={content.page.lastCheckedAt}
-      sectionLabel={SECTION_LABEL[key]}
+      sectionLabel={approach2SectionLabel(content.page.slug)}
       direction="export"
+      ratesAsOf={content.page.lastCheckedAt}
     >
       {renderBody(content)}
     </ChapterArticle>

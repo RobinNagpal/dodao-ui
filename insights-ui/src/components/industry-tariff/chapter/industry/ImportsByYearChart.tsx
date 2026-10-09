@@ -11,14 +11,14 @@ ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
 
 // Imports by year, stacked by the two named partners / rest of world.
 //
-// Three categorical series → the first three slots of the validated reference
-// palette (blue, orange, aqua), which pass the CVD and normal-vision checks
-// against the card surface in both themes. Dark and light steps are separate
-// selections, not a flip. Light-mode aqua sits under 3:1 contrast, so the page
-// pairs this chart with a table of the same numbers.
+// Three series in the tariff-report palette: teal for the largest partner,
+// the brand purple for the second, and a neutral gray for everyone else — the
+// same teal / purple the share bars in the country and product tables use
+// (ShareBar `teal` / `sky`). The page pairs this chart with a table of the
+// same numbers.
 const SERIES_COLORS = {
-  dark: { partnerA: '#3987e5', partnerB: '#d95926', rest: '#199e70', surface: '#1f2937' },
-  light: { partnerA: '#2a78d6', partnerB: '#eb6834', rest: '#1baf7a', surface: '#ffffff' },
+  dark: { partnerA: '#14b8a6', partnerB: '#38bdf8', rest: '#4b5563', surface: '#1f2937' },
+  light: { partnerA: '#0d9488', partnerB: '#0284c7', rest: '#9ca3af', surface: '#ffffff' },
 } as const;
 
 function formatBillions(value: number): string {
@@ -47,7 +47,9 @@ export default function ImportsByYearChart({ byYear, partners, chapterTitle, flo
     borderWidth: 2,
     borderSkipped: false as const,
     borderRadius: 4,
-    maxBarThickness: 56,
+    barPercentage: 0.85,
+    categoryPercentage: 0.8,
+    maxBarThickness: 120,
   });
 
   const data: ChartData<'bar'> = {

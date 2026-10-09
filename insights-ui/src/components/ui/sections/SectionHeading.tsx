@@ -7,13 +7,14 @@ import React from 'react';
  * repeated ~18× across report sections). `bordered` covers the "Summary
  * Analysis"-style header with an underline (normalized to `border-border`).
  */
-const sectionHeading = cva('text-body', {
+const sectionHeading = cva('', {
   variants: {
-    size: { md: 'text-xl', sm: 'text-lg' },
+    size: { lg: 'text-2xl', md: 'text-xl', sm: 'text-lg' },
+    tone: { body: 'text-body', heading: 'text-heading' },
     weight: { semibold: 'font-semibold', bold: 'font-bold' },
     bordered: { true: 'mb-4 pb-2 border-b border-border', false: 'mb-3' },
   },
-  defaultVariants: { size: 'md', weight: 'semibold', bordered: false },
+  defaultVariants: { size: 'md', tone: 'body', weight: 'semibold', bordered: false },
 });
 
 type HeadingElement = 'h2' | 'h3' | 'h4';
@@ -24,7 +25,7 @@ export type SectionHeadingProps = VariantProps<typeof sectionHeading> & {
   className?: string;
 };
 
-export default function SectionHeading({ children, as = 'h2', size, weight, bordered, className }: SectionHeadingProps): React.JSX.Element {
+export default function SectionHeading({ children, as = 'h2', size, tone, weight, bordered, className }: SectionHeadingProps): React.JSX.Element {
   const Tag = as;
-  return <Tag className={cn(sectionHeading({ size, weight, bordered }), className)}>{children}</Tag>;
+  return <Tag className={cn(sectionHeading({ size, tone, weight, bordered }), className)}>{children}</Tag>;
 }
