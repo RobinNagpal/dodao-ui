@@ -73,6 +73,14 @@ jobs:
           sudo apt-get install -y -qq postgresql-client > /dev/null
           psql --version
 
+      - name: Fetch the AWS RDS CA bundle
+        # The production DATABASE_URL verifies the server certificate (sslmode=verify-*), which needs the
+        # RDS root certificates. Use AWS's official bundle rather than weakening sslmode.
+        run: |
+          set -euo pipefail
+          curl -fsSL --retry 3 https://truststore.pki.rds.amazonaws.com/global/global-bundle.pem -o "$RUNNER_TEMP/rds-ca.pem"
+          grep -c 'BEGIN CERTIFICATE' "$RUNNER_TEMP/rds-ca.pem" | sed 's/^/RDS CA certificates: /'
+
       - name: Prepare the run file
         run: |
           set -euo pipefail
@@ -91,6 +99,7 @@ jobs:
         env:
           # Only ever passed to psql through the environment — never echoed.
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          RDS_CA_FILE: ${{ runner.temp }}/rds-ca.pem
         run: |
           set -euo pipefail
           if [ -z "${DATABASE_URL:-}" ]; then echo "::error::secrets.DATABASE_URL is not set"; exit 1; fi
@@ -99,7 +108,8 @@ jobs:
           import os, urllib.parse as u
           p = u.urlsplit(os.environ["DATABASE_URL"])
           prisma_only = {"schema", "connection_limit", "pool_timeout", "pgbouncer", "socket_timeout", "statement_cache_size"}
-          q = [(k, v) for k, v in u.parse_qsl(p.query, keep_blank_values=True) if k not in prisma_only]
+          q = [(k, v) for k, v in u.parse_qsl(p.query, keep_blank_values=True) if k not in prisma_only and k != "sslrootcert"]
+          q.append(("sslrootcert", os.environ["RDS_CA_FILE"]))
           print(u.urlunsplit(p._replace(query=u.urlencode(q))))
           ')"
           echo "::add-mask::$PGURL"
