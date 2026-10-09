@@ -67,8 +67,10 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-function formatDate(value: string): string {
-  return new Date(value).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+// `utc` for date-only ISO strings ("2026-10-09"), which parse as UTC midnight and would otherwise
+// show the previous day in U.S. time zones.
+function formatDate(value: string, utc = false): string {
+  return new Date(value).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric', ...(utc ? { timeZone: 'UTC' } : {}) });
 }
 
 interface ChapterCardProps {
@@ -88,9 +90,15 @@ function ChapterCard({ chapterNumber, chapterTitle, chapterSlug, lastModified, h
   const padded = chapterNumber.toString().padStart(2, '0');
   const href = chapterCoverHref(chapterSlug);
   const title = `${chapterTitle}`;
-  const description = `Tariff and trade-policy analysis for HTS Chapter ${padded} (${chapterTitle}). Browse tariff updates, country-level breakdowns, industry structure, and forward-looking conclusions.`;
   // Approach-2 chapters name their pages differently (see approach2SectionLabel); the pills match their tabs.
-  const isApproach2 = Boolean(getChapterPrototype(chapterSlug));
+  // Their card also takes its date and summary from the content file: the DB row's updatedAt does not
+  // move when the file is refreshed, and the first key takeaway says more than the boilerplate.
+  const prototype = getChapterPrototype(chapterSlug);
+  const isApproach2 = Boolean(prototype);
+  const description = prototype
+    ? prototype.finalConclusion?.keyTakeaways[0] ?? prototype.overview.seo.shortDescription
+    : `Tariff and trade-policy analysis for HTS Chapter ${padded} (${chapterTitle}). Browse tariff updates, country-level breakdowns, industry structure, and forward-looking conclusions.`;
+  const updatedLabel = prototype ? formatDate(prototype.asOf, true) : lastModified ? formatDate(lastModified) : null;
   const orderedSections = CARD_SECTION_DISPLAY_ORDER.map((slug) => CHAPTER_REPORT_SECTIONS.find((s) => s.slug === slug)).filter(
     (s): s is (typeof CHAPTER_REPORT_SECTIONS)[number] => Boolean(s)
   );
@@ -104,7 +112,7 @@ function ChapterCard({ chapterNumber, chapterTitle, chapterSlug, lastModified, h
           <Layers className="h-3 w-3" />
           HTS Chapter {padded}
         </span>
-        {lastModified && <span className="text-muted">Updated {formatDate(lastModified)}</span>}
+        {updatedLabel && <span className="text-muted">Updated {updatedLabel}</span>}
       </div>
 
       <h3 className="mb-2 text-xl font-semibold leading-snug text-heading">

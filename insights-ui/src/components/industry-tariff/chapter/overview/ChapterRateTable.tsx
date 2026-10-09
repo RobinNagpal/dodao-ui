@@ -3,6 +3,7 @@
 import Stack from '@/components/ui/containers/Stack';
 import SearchField from '@/components/ui/SearchField';
 import Text from '@/components/ui/Text';
+import TextLink from '@/components/ui/TextLink';
 import ToggleChip from '@/components/ui/ToggleChip';
 import InlineCard from '@/components/ui/sections/InlineCard';
 import {
@@ -17,7 +18,6 @@ import {
   TableScroll,
 } from '@/components/ui/tables/DataTable';
 import type { TariffRateTableRow } from '@/types/tariff-chapter-prototype';
-import Link from 'next/link';
 import React, { useMemo, useState } from 'react';
 
 // The chapter rate table: Approach 2's overview job — "the complete, searchable
@@ -77,7 +77,7 @@ function RateValue({ value, inheritedFrom }: { value: string | null; inheritedFr
 
 // "Free (A+,AU,BH,CL,CO,D,E,IL,JO,KR,MA,OM,P,PA,PE,S,SG)" is 18 codes wide and
 // wraps to three lines in every row of the table. Collapse it to the rate plus
-// a program count; the codes themselves are in the expanded row and in the
+// a count ("Free under 17 trade deals"); the codes themselves are in the expanded row and in the
 // legend under the table. Some lines also point to Chapter 98 provisions for
 // further programs — "Free (BH,CL) See 9822.05.20 (P+) See 9822.06.10 (PE)" —
 // and each of those counts as one more program.
@@ -98,7 +98,7 @@ function PreferenceRateValue({ value, inheritedFrom }: { value: string | null; i
     <Stack direction="row" gap="xs" align="baseline" wrap>
       <RateValue value={rate} inheritedFrom={inheritedFrom} />
       <Text as="span" size="xs" tone="muted">
-        {count} {count === 1 ? 'program' : 'programs'}
+        under {count} {count === 1 ? 'trade deal' : 'trade deals'}
       </Text>
     </Stack>
   );
@@ -135,7 +135,9 @@ function RowDetail({ row }: { row: TariffRateTableRow }): React.JSX.Element {
             Preference rate: {row.effectiveSpecial}
           </Text>
         )}
-        <Link href="/tariff-calculator">Work out the landed cost in the duty calculator →</Link>
+        <TextLink href={row.htsCode10 ? `/tariff-calculator?hts=${row.htsCode10}` : '/tariff-calculator'} size="xs">
+          Work out the landed cost in the duty calculator →
+        </TextLink>
       </Stack>
     </InlineCard>
   );
@@ -170,7 +172,7 @@ export default function ChapterRateTable({ rows, note }: ChapterRateTableProps):
         <ToggleChip
           size="md"
           look="outline"
-          label="Only lines with a duty"
+          label="Base rate above Free"
           active={dutiableOnly}
           onToggle={() => setDutiableOnly(!dutiableOnly)}
           count={dutiableLines}
@@ -195,11 +197,20 @@ export default function ChapterRateTable({ rows, note }: ChapterRateTableProps):
               <TableRow>
                 <TableHeaderCell>HTS code</TableHeaderCell>
                 <TableHeaderCell width="wide">Description</TableHeaderCell>
-                <TableHeaderCell title="Normal trade relations rate — what most countries pay">General</TableHeaderCell>
-                <TableHeaderCell width="narrow" title="Free-trade-agreement and preference-program rates">
-                  FTA / special
+                <TableHeaderCell title="The schedule's general (normal trade relations) rate — what most countries pay before any extra duty">
+                  Base rate
                 </TableHeaderCell>
-                <TableHeaderCell title="Countries without normal trade relations (currently Cuba, North Korea, Belarus, Russia)">Column 2</TableHeaderCell>
+                <TableHeaderCell width="narrow" title="Free-trade-agreement and preference-program rates (the schedule's Special column)">
+                  With a trade deal
+                </TableHeaderCell>
+                <TableHeaderCell title="Countries without normal trade relations (currently Cuba, North Korea, Belarus, Russia)">
+                  <Stack gap="xxs">
+                    <span>Column 2</span>
+                    <Text as="span" size="xs" tone="muted" weight="normal">
+                      Cuba, N. Korea, Russia, Belarus only
+                    </Text>
+                  </Stack>
+                </TableHeaderCell>
                 <TableHeaderCell>Unit</TableHeaderCell>
               </TableRow>
             </TableHead>

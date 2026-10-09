@@ -1,3 +1,5 @@
+import ChapterKeyTakeaways from '@/components/industry-tariff/chapter/ChapterKeyTakeaways';
+import BaseRateNotice from '@/components/industry-tariff/chapter/overview/BaseRateNotice';
 import ChapterRateTable from '@/components/industry-tariff/chapter/overview/ChapterRateTable';
 import SourcesCard, { labeledSourceItems } from '@/components/industry-tariff/chapter/updates/SourcesCard';
 import DefinitionList from '@/components/ui/DefinitionList';
@@ -46,12 +48,15 @@ interface ChapterOverviewApproach2Props {
 }
 
 export default function ChapterOverviewApproach2({ content }: ChapterOverviewApproach2Props): React.JSX.Element {
-  const { chapter, overview, sources } = content;
+  const { chapter, overview, sources, tariffUpdates, industryAreas, finalConclusion } = content;
   const lineCount = overview.rateTable.rows.filter((row) => row.htsCode10).length;
 
   return (
     <Stack gap="2xl">
       {/* The page H1 is rendered by the ChapterArticle shell from `overview.h1`. */}
+      {/* The FAQ page's takeaways come first, so a reader gets the answer before the table. */}
+      {finalConclusion && <ChapterKeyTakeaways takeaways={finalConclusion.keyTakeaways} />}
+
       <MarkdownContent variant="body" html={parseChapterBodyMarkdown(overview.intro)} />
 
       <Stack gap="md">
@@ -71,7 +76,7 @@ export default function ChapterOverviewApproach2({ content }: ChapterOverviewApp
               key={group.heading}
               href={`#${group.heading}`}
               eyebrow={group.heading}
-              aside={group.dutiableLineCount > 0 ? `${group.lineCount} lines · ${group.dutiableLineCount} with a duty` : `${group.lineCount} lines`}
+              aside={group.dutiableLineCount > 0 ? `${group.lineCount} lines · ${group.dutiableLineCount} with a base-rate duty` : `${group.lineCount} lines`}
               title={group.label}
               meta={tileRateSummary(group.rateSummary)}
             >
@@ -88,10 +93,17 @@ export default function ChapterOverviewApproach2({ content }: ChapterOverviewApp
               Every HTS Chapter {chapter.padded} tariff line and its duty rate
             </SectionHeading>
             <Text size="sm" tone="muted">
-              All {lineCount} tariff lines in the schedule, with the general (MFN) rate, the free-trade and preference rates, the Column 2 rate and the
-              reporting unit. Search by product name or HTS code; select a line for its full description and preference list.
+              All {lineCount} tariff lines in the schedule, with the base (general / MFN) rate, the rate with a trade deal or preference program, the Column 2
+              rate and the reporting unit. Search by product name or HTS code; select a line for its full description and preference list.
             </Text>
           </Stack>
+          {tariffUpdates && (
+            <BaseRateNotice
+              inEffect={tariffUpdates.inEffect}
+              ratesByCountryHref={industryAreas ? chapterSectionHref(chapter.slug, 'industry-areas') : undefined}
+              ratesByCountryLabel={approach2SectionLabel('industry-areas')}
+            />
+          )}
           <ChapterRateTable rows={overview.rateTable.rows} note={overview.rateTable.note} />
         </Stack>
       </CardSection>
@@ -124,8 +136,8 @@ export default function ChapterOverviewApproach2({ content }: ChapterOverviewApp
               What the preference codes mean
             </SectionHeading>
             <Text size="sm" tone="muted">
-              These are the codes behind the program count in the FTA column of the table above (expand a row to see them). A shipment claims one of these
-              programs at entry, and claiming it is what turns the general rate into Free.
+              These are the codes behind the trade-deal count in the “With a trade deal” column of the table above (expand a row to see them). A shipment claims
+              one of these programs at entry, and claiming it is what turns the base rate into Free.
             </Text>
           </Stack>
           <DefinitionList columns="1-2" items={overview.spiLegend.map((entry) => ({ term: entry.code, definition: entry.name }))} />

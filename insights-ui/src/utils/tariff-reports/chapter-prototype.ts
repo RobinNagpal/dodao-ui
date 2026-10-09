@@ -49,3 +49,21 @@ export function buildPrototypeMetadata(seo: { title: string; shortDescription: s
     twitter: { card: 'summary_large_image', title: seo.title, description: seo.shortDescription },
   };
 }
+
+/** The newest dated change on a chapter's tariff-updates page, for the header's "Latest change" line. */
+export interface ChapterLatestChange {
+  date: string;
+  title: string;
+}
+
+/**
+ * The newest entry in `tariffUpdates.changes` that is an actual tariff change: background notes
+ * (`reference`), proposals not yet in force (`pending`) and "Checked" status rows are skipped.
+ */
+export function latestChapterChange(prototype: TariffChapterPrototype): ChapterLatestChange | null {
+  const changes = prototype.tariffUpdates?.changes ?? [];
+  const newest = changes
+    .filter((change) => change.type !== 'reference' && change.type !== 'pending' && change.dateLabel !== 'Checked')
+    .reduce<(typeof changes)[number] | null>((latest, change) => (!latest || change.date > latest.date ? change : latest), null);
+  return newest ? { date: newest.date, title: newest.title } : null;
+}

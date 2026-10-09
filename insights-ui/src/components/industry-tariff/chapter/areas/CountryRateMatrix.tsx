@@ -122,7 +122,9 @@ export default function CountryRateMatrix({ areas, heading }: CountryRateMatrixP
     <Stack gap="lg">
       <Stack direction="row" gap="md" align="end" justify="between" wrap>
         {heading}
-        {hasUsmca && <ToggleSwitch label="USMCA claimed (Canada, Mexico)" checked={usmcaClaimed} onToggle={() => setUsmcaClaimed(!usmcaClaimed)} />}
+        {hasUsmca && (
+          <ToggleSwitch label="Goods qualify for USMCA (North American trade deal)" checked={usmcaClaimed} onToggle={() => setUsmcaClaimed(!usmcaClaimed)} />
+        )}
       </Stack>
 
       <Text size="xs" tone="muted">
