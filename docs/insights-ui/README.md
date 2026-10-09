@@ -10,7 +10,7 @@ Topical reference docs for the Insights-UI (KoalaGains) app — patterns, prompt
 - **[scenario-prompts/](scenario-prompts/)** — Reusable prompt templates for stock & ETF scenario authoring. Currently: `detailed-analysis.md` for generating the optional `detailedAnalysis` long-form section.
 - **[stock-prompts/](stock-prompts/)** — Source-of-truth prompt text for stock analysis report types (currently `management-team`). The prompts themselves live in the `prompt_versions` DB table; the files here are the human-readable, version-controlled copy used for review and seeding. See [stock-prompts/README.md](stock-prompts/README.md).
 - **[etf-prompt-improvement/](etf-prompt-improvement/)** — Methodology + runbook for the prompt-tuning loop (`etf-verification-loop.md`, `run-prompt-analysis.md`) plus iterative prompt-review notes, factor-set reviews, and per-ETF audits. See [etf-prompt-improvement/README.md](etf-prompt-improvement/README.md).
-- **[tariffs/](tariffs/)** — Reference docs for the tariffs subsystem: pipeline, data structures, UI components, S3 storage, admin flow, and the use-case catalog that drives feature prioritization.
+- **[tariffs/](tariffs/)** — Reference docs for the tariffs subsystem: pipeline, data structures, UI components, S3 storage, admin flow, and the use-case catalog that drives feature prioritization, plus the [Approach-2 chapter content refresh runbook](tariffs/chapter-content-refresh.md) (official sources per fact, recording rules, `pnpm tariff:validate-chapters`, cache flush).
 - **[tasks/](tasks/)** — Active KoalaGains task lists (open + closed work, per surface): ETFs, stocks, tariffs, scenarios, prompt tuning, plus open questions and per-page checklists.
 
 ## Top-level files

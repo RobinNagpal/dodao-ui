@@ -24,7 +24,8 @@
     "stocks:prompt": "tsx src/scripts/tickers/get-report-prompt.ts",
     "stocks:save": "tsx src/scripts/tickers/save-report.ts",
     "stocks:list-oldest": "tsx src/scripts/tickers/list-oldest.ts",
-    "logs:fetch": "tsx src/scripts/logs/fetch-grafana-logs.ts"
+    "logs:fetch": "tsx src/scripts/logs/fetch-grafana-logs.ts",
+    "tariff:validate-chapters": "tsx src/scripts/industry-tariff-reports/validate-chapter-content.ts"
   },
   "engines": {
     "node": ">=22.0.0"

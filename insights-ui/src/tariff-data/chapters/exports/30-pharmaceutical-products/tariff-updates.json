@@ -13,7 +13,7 @@
     "h1": "HTS Chapter 30: Pharmaceutical Products — Foreign Tariff Changes on U.S. Exports",
     "seo": {
       "title": "Tariffs on U.S. Pharmaceutical Exports: What Changed Since 2025 (HTS Ch. 30) | KoalaGains",
-      "shortDescription": "Every tariff action since January 2025 that touched U.S. medicine exports: China’s retaliation (125% → 10%), Canada and EU counter-tariff lists, trade deals with the UK, Japan and Switzerland, and Brazil’s open reciprocity case.",
+      "shortDescription": "Every tariff action since January 2025 that touched U.S. medicine exports: China’s retaliation (125% → 10%), Canada and EU counter-tariff lists, trade deals with the UK, Japan, Switzerland and the EU, and Brazil’s WTO challenge.",
       "keywords": [
         "China tariff on US pharmaceuticals",
         "retaliatory tariffs US medicines",
@@ -23,7 +23,7 @@
         "US pharma export tariffs 2026"
       ]
     },
-    "lastCheckedAt": "2026-10-08"
+    "lastCheckedAt": "2026-10-09"
   },
   "nav": [
     {
@@ -42,12 +42,12 @@
       "path": "/industry-tariff-report/chapters/30-pharmaceutical-products/exports/markets"
     }
   ],
-  "intro": "This page tracks what **other countries** changed on U.S. pharmaceuticals since January 2025 — retaliation, trade deals and removals — newest first. Only one measure actually costs U.S. medicine exporters money today: **China's extra 10%** on all U.S. goods. Canada's and the EU's counter-tariff lists left Chapter 30 out, and the 2025–26 deals with the UK, Japan, Switzerland and the EU did not need to cut tariffs that were already zero. For what the U.S. charges on imported medicines, see the import Tariff updates page.",
+  "intro": "This page tracks what **other countries** changed on U.S. pharmaceuticals since January 2025 — retaliation, trade deals and removals — newest first. Only one measure actually costs U.S. medicine exporters money today: **China's extra 10%** on all U.S. goods. Canada's counter-tariff lists left Chapter 30 out; the EU's list named only adhesive dressings and has never been applied. The 2025–26 deals with the UK, Japan, Switzerland and the EU did not need to cut tariffs that were already zero. For what the U.S. charges on imported medicines, see the import Tariff updates page.",
   "scope": "The 12 largest buyers of U.S. Chapter 30 goods (76% of 2025 exports). Measures on other U.S. goods are listed only where a buyer might reasonably expect them to reach medicines.",
   "stats": [
     {
       "label": "Measures tracked",
-      "value": "15"
+      "value": "14"
     },
     {
       "label": "In force & cost U.S. medicines",
@@ -56,13 +56,13 @@
     },
     {
       "label": "Counter-tariff lists that skipped Ch. 30",
-      "value": "3",
-      "note": "Canada 2025, Canada 2026, EU"
+      "value": "2",
+      "note": "Canada 2025, Canada 2026 (the suspended EU list named adhesive dressings)"
     },
     {
       "label": "Pending",
       "value": "2",
-      "note": "Brazil reciprocity, China Board of Trade list"
+      "note": "China Board of Trade list, Brazil–U.S. talks"
     }
   ],
   "inEffect": [
@@ -73,8 +73,8 @@
       "before": "0% (Jan 2025)",
       "now": "+10%",
       "appliesTo": "All Chapter 30 goods of U.S. origin, on top of China's 0–3% normal rate (5–10% on dressings and other 3006 goods).",
-      "whatItMeans": "A $1M shipment of U.S. antibodies pays about $130,000 instead of $30,000 at China's 3% normal rate. The extra rate peaked at 125% in April 2025; a further 24 points stay suspended under the truce to Jan 10, 2027.",
-      "sourceIds": ["cn-sctc-125", "cn-24-suspend", "cn-truce-2026"]
+      "whatItMeans": "A $1M shipment of U.S. antibodies pays about $130,000 instead of $30,000 at China's 3% normal rate. The extra rate peaked at 125% in April 2025; since November 10, 2025 a further 24 points are suspended for one year (Tariff Commission Announcement No. 10 of 2025).",
+      "sourceIds": ["cn-sctc-125", "cn-sctc-may2025", "cn-24-suspend"]
     }
   ],
   "changes": [
@@ -87,8 +87,8 @@
       "before": null,
       "now": null,
       "coversChapter": "partly",
-      "status": "Recommended, not yet implemented",
-      "detail": "China’s list of 1,619 U.S. tariff lines that could get lower tariffs has only three Chapter 30 lines — adhesive dressings (3005.10.90), other wadding (3005.90.90) and dental/bone cements (3006.40). No vaccines, antibodies or packaged medicines.",
+      "status": "Recommended for reduced tariffs; no Chinese tariff cut published yet",
+      "detail": "China’s import list under the U.S.–China Board of Trade “30-for-30” framework names 1,619 Chinese tariff lines that could get lower tariffs on U.S. goods. Only three are in Chapter 30: other adhesive dressings (3005.10.90), other wadding and gauze (3005.90.90) and dental and bone cements (3006.40.00). No vaccines, antibodies or packaged medicines.",
       "sourceIds": ["cn-bot-list", "cn-board-of-trade"]
     },
     {
@@ -106,16 +106,16 @@
     },
     {
       "id": "br-2026",
-      "date": "2026-08-13",
-      "type": "retaliation",
+      "date": "2026-07-27",
+      "type": "reference",
       "countries": ["Brazil"],
-      "title": "Reciprocity process opened against new U.S. tariffs",
+      "title": "Brazil challenges the new U.S. Section 301 tariffs at the WTO; no counter-tariff",
       "before": null,
       "now": null,
-      "coversChapter": "partly",
-      "status": "Under review; nothing imposed",
-      "detail": "Answers the 25% U.S. Section 301 tariff of July 2026. A 60-day consultation window ends around Oct 12, 2026. Options include higher tariffs on U.S. goods and, as a last resort, suspending intellectual-property rights such as pharmaceutical patents. No product list yet.",
-      "sourceIds": ["br-2026", "wits-mfn"]
+      "coversChapter": "no",
+      "status": "Nothing imposed on U.S. goods; talks ongoing",
+      "detail": "Brazil asked the United States for WTO consultations on July 27, 2026 over the 25% Brazil-specific and 12.5% forced-labor Section 301 tariffs. Brazil's Economic Reciprocity Law (Law 15,122 of April 11, 2025) allows countermeasures such as import restrictions and suspension of intellectual-property obligations, but no measure on U.S. goods has been published. Brazilian ministers met USTR on August 31 and September 30, 2026 and agreed to set up a working group on a possible agreement.",
+      "sourceIds": ["br-wto-2026", "br-talks-2026", "br-law"]
     },
     {
       "id": "mx-usmca",
@@ -127,21 +127,47 @@
       "now": null,
       "coversChapter": "yes",
       "status": "USMCA still in force",
-      "detail": "Preferences continue for now; the agreement is reviewed every year instead of being renewed for 16 years. A future exit would expose U.S. goods to Mexican MFN rates.",
+      "detail": "At the first USMCA joint review on July 1, 2026 the United States did not agree to extend the agreement for a new 16-year term, so it is now reviewed every year; it stays in force until at least July 1, 2036. Preferences continue. USTR is taking comments for the 2027 review until January 12, 2027.",
       "sourceIds": ["mx-usmca-review", "wits-mfn"]
     },
     {
       "id": "de-eu-framework",
-      "date": "2026-06-16",
+      "date": "2026-06-25",
       "type": "tradeDeal",
       "countries": ["EU (Germany, Netherlands, Belgium, Spain, Ireland)"],
       "title": "EU–U.S. framework tariff cuts adopted",
       "before": null,
       "now": null,
       "coversChapter": "no",
-      "status": "In force",
-      "detail": "The EU removes its tariffs on U.S. industrial goods under the August 2025 framework; U.S. medicines were already duty-free, so nothing changes for Chapter 30. On the U.S. side, the framework caps U.S. tariffs on EU pharmaceuticals at 15%.",
+      "status": "In force (applies from July 1, 2026)",
+      "detail": "Regulation (EU) 2026/1455 cuts EU duties on listed U.S. goods to zero from July 1, 2026, and Regulation (EU) 2026/1461 sets aside duties on certain other goods. No Chapter 30 line is listed because EU duties on U.S. medicines were already zero. On the U.S. side, the August 2025 framework caps U.S. tariffs on EU pharmaceuticals at 15%.",
       "sourceIds": ["eu-framework", "eu-joint-2025"]
+    },
+    {
+      "id": "mx-ligie-2026",
+      "date": "2025-12-29",
+      "type": "reference",
+      "countries": ["Mexico"],
+      "title": "Mexico raises its general tariffs on goods from countries without a trade agreement",
+      "before": null,
+      "now": null,
+      "coversChapter": "no",
+      "status": "In force since Jan 1, 2026; U.S. goods still enter under USMCA",
+      "detail": "The decree raises Mexico's general (MFN) rates on more than 1,400 tariff lines, mostly cars, textiles, clothing, steel, plastics and footwear. No Chapter 30 line is listed, and U.S. goods that qualify for USMCA keep their preferential rate. Mexico has published no counter-tariff on U.S. goods.",
+      "sourceIds": ["mx-dof-2025"]
+    },
+    {
+      "id": "br-2025",
+      "date": "2025-12-18",
+      "type": "retaliation",
+      "countries": ["Brazil"],
+      "title": "Reciprocity petition against the 2025 U.S. tariffs: framing approved, action deferred",
+      "before": null,
+      "now": null,
+      "coversChapter": "no",
+      "status": "Never applied",
+      "detail": "Camex's executive committee (Gecex) approved the Foreign Ministry's petition as falling under the Economic Reciprocity Law and chose to await diplomatic consultations before forming the working group that would propose countermeasures. Nothing was imposed.",
+      "sourceIds": ["br-2025"]
     },
     {
       "id": "uk-pharma",
@@ -179,21 +205,8 @@
       "now": null,
       "coversChapter": "no",
       "status": "In force",
-      "detail": "Japan committed to buy more U.S. farm goods and invest in the U.S.; no change to Japanese tariffs on medicines. On the U.S. side, Japanese pharmaceuticals face at most 15% under the U.S. Section 232 drug tariffs.",
+      "detail": "Executive Order 14345 implements the U.S.–Japan agreement: Japan works toward buying U.S. farm and other goods worth $8 billion a year and investing in the U.S.; Japanese tariffs on medicines did not change. On the U.S. side, Japanese pharmaceuticals face at most 15% under the U.S. Section 232 drug tariffs.",
       "sourceIds": ["jp-deal", "jp-tariff"]
-    },
-    {
-      "id": "br-2025",
-      "date": "2025-08-28",
-      "type": "retaliation",
-      "countries": ["Brazil"],
-      "title": "Reciprocity review against the 50% U.S. tariff",
-      "before": null,
-      "now": null,
-      "coversChapter": "no",
-      "status": "Never applied",
-      "detail": "Brazil began assessing countermeasures under its new Economic Reciprocity Law but imposed none.",
-      "sourceIds": ["br-2025"]
     },
     {
       "id": "de-eu-rebalancing",
@@ -202,10 +215,10 @@
       "countries": ["EU (Germany, Netherlands, Belgium, Spain, Ireland)"],
       "title": "EU countermeasures on about €93B of U.S. goods",
       "before": "0%",
-      "now": "0%",
-      "coversChapter": "no",
+      "now": "0% (suspended)",
+      "coversChapter": "partly",
       "status": "Suspended, never applied",
-      "detail": "Reported to leave pharmaceuticals out (the line-level annex was not checked here). Suspended in August 2025 and, since July 2026, with no end date.",
+      "detail": "Implementing Regulation (EU) 2025/1564 listed one Chapter 30 code, adhesive dressings (CN 3005 10 00), at an extra 10% from September 7, 2025; medicines in 3001–3004 were not listed. The measures were suspended from August 6, 2025, again from February 7, 2026, and from August 7, 2026 with no end date (Implementing Regulation (EU) 2026/1893).",
       "sourceIds": ["eu-rebalancing", "eu-rebalancing-pharma"]
     },
     {
@@ -217,9 +230,9 @@
       "before": "0% (Jan 2025)",
       "now": "10%",
       "coversChapter": "yes",
-      "status": "In force; truce extended to Jan 10, 2027",
-      "detail": "Rose 34% → 84% → 125% in April 2025, then cut to 10% with 24 points suspended. In November 2025 China kept the 10% and extended the suspension for a year; the September 2026 truce runs to Jan 10, 2027. Applies to medicines on top of China’s normal rate.",
-      "sourceIds": ["cn-sctc-125", "cn-crs", "cn-24-suspend", "cn-truce-2026", "wits-mfn"]
+      "status": "In force; 24-point suspension runs one year from Nov 10, 2025",
+      "detail": "Rose 34% → 84% → 125% in April 2025 (125% from April 12), then cut to 10% from May 14, 2025 with 24 points suspended for 90 days. The suspension was extended for 90 days from August 12, 2025 and for one year from November 10, 2025, with the 10% kept. Applies to medicines on top of China’s normal rate.",
+      "sourceIds": ["cn-sctc-125", "cn-sctc-may2025", "cn-sctc-aug2025", "cn-24-suspend", "wits-mfn"]
     },
     {
       "id": "uk-epd",
@@ -233,32 +246,6 @@
       "status": "In force",
       "detail": "UK concessions were a beef quota and a duty-free ethanol quota; UK tariffs on medicines were already zero.",
       "sourceIds": ["uk-epd", "uk-tariff"]
-    },
-    {
-      "id": "cn-whitelist",
-      "date": "2025-04-30",
-      "type": "reference",
-      "countries": ["China"],
-      "title": "Reported exemptions for some U.S. medicines from the 125% tariff",
-      "before": "125%",
-      "now": "Exempt (some products)",
-      "coversChapter": "partly",
-      "status": "Unofficial; moot after May 14, 2025",
-      "detail": "Reuters reported that Chinese authorities privately told importers of some U.S.-made medicines, chips and aircraft engines that their goods were exempt. No list was published, so which drugs qualified is unverified.",
-      "sourceIds": ["cn-whitelist"]
-    },
-    {
-      "id": "mx-2025",
-      "date": "2025-03-09",
-      "type": "retaliation",
-      "countries": ["Mexico"],
-      "title": "Announced retaliation against U.S. tariffs never applied",
-      "before": "0%",
-      "now": "0%",
-      "coversChapter": "no",
-      "status": "Never in force",
-      "detail": "Mexico announced countermeasures in March 2025 but never published a list. Its January 2026 tariff increases on non-FTA countries do not apply to U.S. goods.",
-      "sourceIds": ["mx-csis"]
     },
     {
       "id": "ca-2025",
@@ -294,7 +281,7 @@
       "tariffBefore": "3% biologics · mostly 0% packaged medicines",
       "tariffNow": "Same + 10% extra on all U.S. goods",
       "status": "raised",
-      "headline": "China is the only big buyer charging U.S. medicines more than in January 2025: an extra 10% on top of its 0–3% normal rate. It peaked at 125% in April 2025, when some U.S. drugs reportedly got quiet exemptions; sales dipped only 4%."
+      "headline": "China is the only big buyer charging U.S. medicines more than in January 2025: an extra 10% on top of its 0–3% normal rate. It peaked at 125% in April 2025; sales dipped only 4% in 2025."
     },
     {
       "country": "Japan",
@@ -343,7 +330,7 @@
       "tariffBefore": "MFN 0–14% (≈10% avg packaged medicines)",
       "tariffNow": "MFN 0–14% (≈10% avg packaged medicines)",
       "status": "unchanged",
-      "headline": "U.S. medicines pay Brazil’s normal Mercosur rates — near zero for most biologics, around 10% on many packaged drugs. Brazil has not retaliated, but its August 2026 reciprocity case could; suspending drug patents is one listed option."
+      "headline": "U.S. medicines pay Brazil’s normal Mercosur rates — near zero for most biologics, around 10% on many packaged drugs. Brazil has imposed nothing on U.S. goods; it is challenging the 2026 U.S. Section 301 tariffs at the WTO, and its 2025 reciprocity law would allow countermeasures, including on intellectual property."
     },
     {
       "country": "Switzerland",
@@ -363,23 +350,43 @@
   "sources": [
     {
       "id": "br-2025",
-      "publisher": "U.S. News (Reuters)",
-      "citation": "Reuters, Aug 2025",
-      "document": "News",
-      "title": "Brazil starts formal process to assess US tariff retaliation, say sources",
+      "publisher": "Ministry of Development, Industry, Trade and Services (Brazil)",
+      "citation": "Gecex, 232nd meeting",
+      "document": "Deliberations",
+      "title": "Deliberações da 232ª Reunião Ordinária do Comitê-Executivo de Gestão (Gecex)",
       "signed": null,
-      "published": "2025-08-28",
-      "url": "https://www.usnews.com/news/top-news/articles/2025-08-28/brazil-starts-formal-process-to-assess-us-tariff-retaliation-say-sources"
+      "published": "2025-12-18",
+      "url": "https://www.gov.br/mdic/pt-br/assuntos/camex/outros-documentos/deliberacoes/deliberacoes-da-232a-reuniao-ordinaria-do-comite-executivo-de-gestao-gecex"
     },
     {
-      "id": "br-2026",
-      "publisher": "U.S. News (Reuters)",
-      "citation": "Reuters, Aug 2026",
-      "document": "News",
-      "title": "Brazil opens reciprocity process against US over tariffs",
+      "id": "br-law",
+      "publisher": "Presidência da República (Brazil)",
+      "citation": "Lei nº 15.122/2025",
+      "document": "Law",
+      "title": "Lei nº 15.122, de 11 de abril de 2025 (Economic Reciprocity Law)",
+      "signed": "2025-04-11",
+      "published": "2025-04-14",
+      "url": "https://www.planalto.gov.br/ccivil_03/_ato2023-2026/2025/lei/l15122.htm"
+    },
+    {
+      "id": "br-talks-2026",
+      "publisher": "Ministry of Development, Industry, Trade and Services (Brazil)",
+      "citation": "MDIC, Sep 30, 2026",
+      "document": "Press release",
+      "title": "Reunião presencial Brasil-EUA sobre temas comerciais",
       "signed": null,
-      "published": "2026-08-13",
-      "url": "https://www.usnews.com/news/world/articles/2026-08-13/brazil-opens-reciprocity-process-against-us-over-tariffs"
+      "published": "2026-09-30",
+      "url": "https://www.gov.br/mdic/pt-br/assuntos/noticias/2026-periodo-eleitoral/setembro/reuniao-presencial-brasil-eua-sobre-temas-comerciais"
+    },
+    {
+      "id": "br-wto-2026",
+      "publisher": "Ministry of Foreign Affairs (Brazil)",
+      "citation": "MRE press note, Jul 27, 2026",
+      "document": "Press note",
+      "title": "Pedido de consultas aos Estados Unidos na Organização Mundial do Comércio",
+      "signed": null,
+      "published": "2026-07-27",
+      "url": "https://www.gov.br/mre/pt-br/canais_atendimento/imprensa/notas-a-imprensa/pedido-de-consultas-aos-estados-unidos-na-organizacao-mundial-do-comercio"
     },
     {
       "id": "ca-2025-list",
@@ -443,23 +450,23 @@
     },
     {
       "id": "cn-24-suspend",
-      "publisher": "Yahoo Finance (Reuters)",
-      "citation": "Reuters, Nov 2025",
-      "document": "News",
-      "title": "China confirms suspension of 24% tariff on US goods, retains 10% levy",
+      "publisher": "State Council Tariff Commission (PRC)",
+      "citation": "Tariff Commission Announcement No. 10 of 2025",
+      "document": "Announcement",
+      "title": "Adjusting the additional tariffs on imports originating in the United States (24-point suspension continued for one year from November 10, 2025; 10% kept)",
       "signed": null,
       "published": "2025-11-05",
-      "url": "https://finance.yahoo.com/news/china-confirms-suspension-24-tariff-040133464.html"
+      "url": "https://gss.mof.gov.cn/gzdt/zhengcefabu/202511/t20251105_3975756.htm"
     },
     {
       "id": "cn-board-of-trade",
-      "publisher": "Covington",
-      "citation": "Covington, Oct 2026",
-      "document": "Client alert",
-      "title": "White House announces product lists for potential tariff cuts under US–China Board of Trade mechanism",
+      "publisher": "USTR",
+      "citation": "USTR press release, Sep 27, 2026",
+      "document": "Press release",
+      "title": "Ambassador Greer Issues a Statement on Announcement of Recommendations from the U.S.-China Board of Trade",
       "signed": null,
-      "published": "2026-10-01",
-      "url": "https://www.cov.com/en/news-and-insights/insights/2026/10/white-house-announces-product-lists-for-potential-tariff-cuts-under-us-china-board-of-trade-mechanism"
+      "published": "2026-09-27",
+      "url": "https://ustr.gov/about/policy-offices/press-office/press-releases/2026/september/ambassador-greer-issues-statement-announcement-recommendations-us-china-board-trade"
     },
     {
       "id": "cn-bot-list",
@@ -472,54 +479,44 @@
       "url": "https://www.whitehouse.gov/wp-content/uploads/2026/09/China-Import-List.pdf"
     },
     {
-      "id": "cn-crs",
-      "publisher": "Congressional Research Service",
-      "citation": "CRS R48549",
-      "document": "Report",
-      "title": "U.S.–China trade relations and tariffs",
-      "signed": null,
-      "published": "2025-06-01",
-      "url": "https://www.congress.gov/crs-product/R48549"
-    },
-    {
       "id": "cn-sctc-125",
-      "publisher": "USDA FAS",
-      "citation": "GAIN report, Apr 2025",
-      "document": "GAIN report",
-      "title": "China: SCTC 2025 Announcement No. 6 increases retaliatory tariffs to 125 percent on all goods",
+      "publisher": "State Council Tariff Commission (PRC)",
+      "citation": "Tariff Commission Announcement No. 6 of 2025",
+      "document": "Announcement",
+      "title": "Adjusting the additional tariffs on imports originating in the United States (84% raised to 125% from April 12, 2025)",
       "signed": null,
-      "published": "2025-04-14",
-      "url": "https://www.fas.usda.gov/data/china-sctc-2025-announcement-number-6-increases-retaliatory-tariffs-125-percent-all-goods"
+      "published": "2025-04-11",
+      "url": "https://gss.mof.gov.cn/gzdt/zhengcefabu/202504/t20250411_3961823.htm"
     },
     {
-      "id": "cn-truce-2026",
-      "publisher": "U.S. News (Reuters)",
-      "citation": "Reuters, Sept 2026",
-      "document": "News",
-      "title": "China, US pledge tariff cuts on $60 billion of goods; trade truce extended",
+      "id": "cn-sctc-aug2025",
+      "publisher": "State Council Tariff Commission (PRC)",
+      "citation": "Tariff Commission Announcement No. 8 of 2025",
+      "document": "Announcement",
+      "title": "Adjusting the additional tariffs on imports originating in the United States (24-point suspension extended 90 days from August 12, 2025)",
       "signed": null,
-      "published": "2026-09-27",
-      "url": "https://www.usnews.com/news/world/articles/2026-09-27/china-says-us-trade-truce-extension-creates-space-to-advance-talks"
+      "published": "2025-08-12",
+      "url": "https://gss.mof.gov.cn/gzdt/zhengcefabu/202508/t20250812_3969806.htm"
     },
     {
-      "id": "cn-whitelist",
-      "publisher": "Korea JoongAng Daily (Reuters)",
-      "citation": "Reuters, Apr 2025",
-      "document": "News",
-      "title": "China creates list of U.S.-made goods exempt from 125% tariffs, sources say",
+      "id": "cn-sctc-may2025",
+      "publisher": "State Council Tariff Commission (PRC)",
+      "citation": "Tariff Commission Announcement No. 7 of 2025",
+      "document": "Announcement",
+      "title": "Adjusting the additional tariffs on imports originating in the United States (cut to 10% with 24 points suspended for 90 days from May 14, 2025)",
       "signed": null,
-      "published": "2025-04-30",
-      "url": "https://www.koreajoongangdaily.com/world/china-creates-list-of-usmade-goods-exempt-from-125-tariffs-sources-say/12221040"
+      "published": "2025-05-13",
+      "url": "https://gss.mof.gov.cn/gzdt/zhengcefabu/202505/t20250513_3963684.htm"
     },
     {
       "id": "eu-framework",
-      "publisher": "European Commission",
-      "citation": "IP/26/1103",
-      "document": "Press release",
-      "title": "EU–US framework tariff regulation adopted",
-      "signed": null,
-      "published": "2026-06-16",
-      "url": "https://ec.europa.eu/commission/presscorner/detail/en/ip_26_1103"
+      "publisher": "EUR-Lex",
+      "citation": "Regulation (EU) 2026/1455",
+      "document": "Regulation",
+      "title": "Regulation (EU) 2026/1455 on the adjustment of customs duties on imports of certain goods originating in the United States of America",
+      "signed": "2026-06-25",
+      "published": "2026-06-30",
+      "url": "https://eur-lex.europa.eu/eli/reg/2026/1455/oj"
     },
     {
       "id": "eu-joint-2025",
@@ -533,33 +530,33 @@
     },
     {
       "id": "eu-rebalancing",
-      "publisher": "KPMG",
-      "citation": "KPMG, Jul 2026",
-      "document": "Tax news flash",
-      "title": "EU suspension of rebalancing measures against U.S. exports extended",
-      "signed": null,
+      "publisher": "EUR-Lex",
+      "citation": "Implementing Regulation (EU) 2026/1893",
+      "document": "Implementing regulation",
+      "title": "Commission Implementing Regulation (EU) 2026/1893 suspending commercial rebalancing measures concerning certain products originating in the United States",
+      "signed": "2026-07-30",
       "published": "2026-07-31",
-      "url": "https://kpmg.com/us/en/taxnewsflash/news/2026/07/eu-suspension-rebalancing-measures-against-us-exports-extended.html"
+      "url": "https://eur-lex.europa.eu/eli/reg_impl/2026/1893/oj"
     },
     {
       "id": "eu-rebalancing-pharma",
-      "publisher": "Euronews",
-      "citation": "Euronews, Jul 2025",
-      "document": "News",
-      "title": "EU adopts retaliatory hit list in response to US tariffs",
-      "signed": null,
+      "publisher": "EUR-Lex",
+      "citation": "Implementing Regulation (EU) 2025/1564",
+      "document": "Implementing regulation",
+      "title": "Commission Implementing Regulation (EU) 2025/1564 on commercial rebalancing measures concerning certain products originating in the United States of America",
+      "signed": "2025-07-24",
       "published": "2025-07-24",
-      "url": "https://www.euronews.com/business/2025/07/24/eu-adopts-retaliatory-hit-list-in-response-to-us-tariffs"
+      "url": "https://eur-lex.europa.eu/eli/reg_impl/2025/1564/oj/eng"
     },
     {
       "id": "jp-deal",
-      "publisher": "Agri-Pulse",
-      "citation": "Agri-Pulse",
-      "document": "News",
-      "title": "Japan to buy $8 billion of US ag, other goods under trade pact, White House says",
-      "signed": null,
-      "published": "2025-09-05",
-      "url": "https://www.agri-pulse.com/articles/23263-japan-to-buy-8-billion-of-us-ag-other-goods-under-trade-pact-white-house-says"
+      "publisher": "Federal Register",
+      "citation": "90 FR 43535",
+      "document": "Executive Order 14345",
+      "title": "Implementing the United States-Japan Agreement",
+      "signed": "2025-09-04",
+      "published": "2025-09-09",
+      "url": "https://www.federalregister.gov/documents/2025/09/09/2025-17389/implementing-the-united-states-japan-agreement"
     },
     {
       "id": "jp-tariff",
@@ -572,24 +569,24 @@
       "url": "https://www.customs.go.jp/english/tariff/2026_04_01/data/e_30.htm"
     },
     {
-      "id": "mx-csis",
-      "publisher": "CSIS",
-      "citation": "CSIS",
-      "document": "Analysis",
-      "title": "The USMCA review in 2026",
+      "id": "mx-dof-2025",
+      "publisher": "Diario Oficial de la Federación (Mexico)",
+      "citation": "DOF, Dec 29, 2025",
+      "document": "Decree",
+      "title": "Decreto por el que se reforman diversas fracciones arancelarias de la Tarifa de la Ley de los Impuestos Generales de Importación y de Exportación",
       "signed": null,
-      "published": "2026-01-15",
-      "url": "https://www.csis.org/analysis/usmca-review-2026"
+      "published": "2025-12-29",
+      "url": "https://dof.gob.mx/nota_detalle.php?codigo=5777376&fecha=29%2F12%2F2025"
     },
     {
       "id": "mx-usmca-review",
-      "publisher": "White & Case",
-      "citation": "White & Case, Jul 2026",
-      "document": "Client alert",
-      "title": "USMCA 2026 joint review: United States declines to extend the agreement, triggering annual reviews",
+      "publisher": "Federal Register",
+      "citation": "91 FR 63379",
+      "document": "Notice (USTR)",
+      "title": "Request for Public Comments and Notice of Public Hearing Relating to the Operation of the Agreement Between the United States of America, the United Mexican States, and Canada",
       "signed": null,
-      "published": "2026-07-01",
-      "url": "https://www.whitecase.com/insight-alert/usmca-2026-joint-review-united-states-declines-extend-agreement-triggering-annual"
+      "published": "2026-10-05",
+      "url": "https://www.federalregister.gov/documents/2026/10/05/2026-20341/request-for-public-comments-and-notice-of-public-hearing-relating-to-the-operation-of-the-agreement-between-the-united-states-of-america-the-united-mexican-states-and-canada"
     },
     {
       "id": "uk-epd",
@@ -638,7 +635,7 @@
       "document": "Database",
       "title": "MFN applied tariff rates by HS subheading (China, Brazil, Japan, Canada, EU, UK, Switzerland, Mexico)",
       "signed": null,
-      "published": "2026-10-08",
+      "published": "2026-10-09",
       "url": "https://wits.worldbank.org/tariff/trains/en/country/CHN/partner/WLD/product/300215"
     }
   ]

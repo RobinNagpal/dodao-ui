@@ -23,7 +23,7 @@
         "US vaccine exports"
       ]
     },
-    "lastCheckedAt": "2026-10-08"
+    "lastCheckedAt": "2026-10-09"
   },
   "nav": [
     {
@@ -397,7 +397,7 @@
     "U.S. pharmaceutical exports reached $97.82B in 2025; biologics (3002) are the core of it.",
     "The EU, Japan, Canada, the UK, Switzerland and Mexico (under USMCA) charge nothing on U.S. medicines, and none of them added a tariff since 2025.",
     "China is the only large buyer charging more than in January 2025: an extra 10% on all U.S. goods, down from a 125% peak in April 2025.",
-    "Brazil charges up to 14% and has an open reciprocity case against U.S. tariffs, with nothing imposed yet."
+    "Brazil charges up to 14% on packaged medicines; it has challenged the 2026 U.S. Section 301 tariffs at the WTO but has imposed nothing on U.S. goods."
   ],
   "classificationNote": "The first six digits of a Chapter 30 code are the same in every country (the Harmonized System). Beyond that each country uses its own schedule: the U.S. reports exports under **Schedule B**, and the duty is set by the **destination's** tariff schedule, not the U.S. one. So the HTS rates on the import pages of this report do not apply to exports.",
   "sources": [
@@ -418,7 +418,7 @@
       "document": "Database",
       "title": "MFN applied tariff rates by HS subheading (China, Brazil, Japan, Canada, EU, UK, Switzerland, Mexico)",
       "signed": null,
-      "published": "2026-10-08",
+      "published": "2026-10-09",
       "url": "https://wits.worldbank.org/tariff/trains/en/country/CHN/partner/WLD/product/300215"
     },
     {
