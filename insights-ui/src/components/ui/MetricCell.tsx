@@ -39,16 +39,25 @@ const cellValue = cva('font-semibold', {
 export type MetricCellProps = VariantProps<typeof cellBox> & {
   label: string;
   value?: React.ReactNode;
+  /** Small muted line under the value, e.g. which countries a count covers. */
+  note?: string;
   sentiment?: 'positive' | 'negative' | 'neutral' | 'none';
   loading?: boolean;
   className?: string;
 };
 
-export default function MetricCell({ label, value, size, sentiment, loading = false, className }: MetricCellProps): React.JSX.Element {
+export default function MetricCell({ label, value, note, size, sentiment, loading = false, className }: MetricCellProps): React.JSX.Element {
   return (
     <div className={cn(cellBox({ size }), className)}>
       <div className={cellLabel({ size })}>{label}</div>
-      {loading ? <div className="rounded animate-pulse">--</div> : <div className={cn(cellValue({ size, sentiment }))}>{value ?? '—'}</div>}
+      {loading ? (
+        <div className="rounded animate-pulse">--</div>
+      ) : (
+        <div>
+          <div className={cn(cellValue({ size, sentiment }))}>{value ?? '—'}</div>
+          {note && <div className="mt-0.5 text-xs text-muted">{note}</div>}
+        </div>
+      )}
     </div>
   );
 }

@@ -5,7 +5,8 @@ import TariffReportsPageActions from '@/components/industry-tariff/TariffReports
 import ToolPills from '@/components/tariff-cross-links/ToolPills';
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
 import { hasChapterExports } from '@/utils/tariff-reports/chapter-exports';
-import { CHAPTER_REPORT_SECTIONS, chapterCoverHref, chapterSectionHref } from '@/utils/tariff-reports/chapter-route-helpers';
+import { getChapterPrototype } from '@/utils/tariff-reports/chapter-prototype';
+import { approach2SectionLabel, CHAPTER_REPORT_SECTIONS, chapterCoverHref, chapterSectionHref } from '@/utils/tariff-reports/chapter-route-helpers';
 import { TARIFF_REPORTS_LISTING_TAG } from '@/utils/tariff-report-tags';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
@@ -88,6 +89,8 @@ function ChapterCard({ chapterNumber, chapterTitle, chapterSlug, lastModified, h
   const href = chapterCoverHref(chapterSlug);
   const title = `${chapterTitle}`;
   const description = `Tariff and trade-policy analysis for HTS Chapter ${padded} (${chapterTitle}). Browse tariff updates, country-level breakdowns, industry structure, and forward-looking conclusions.`;
+  // Approach-2 chapters name their pages differently (see approach2SectionLabel); the pills match their tabs.
+  const isApproach2 = Boolean(getChapterPrototype(chapterSlug));
   const orderedSections = CARD_SECTION_DISPLAY_ORDER.map((slug) => CHAPTER_REPORT_SECTIONS.find((s) => s.slug === slug)).filter(
     (s): s is (typeof CHAPTER_REPORT_SECTIONS)[number] => Boolean(s)
   );
@@ -122,7 +125,7 @@ function ChapterCard({ chapterNumber, chapterTitle, chapterSlug, lastModified, h
             href={chapterSectionHref(chapterSlug, section.slug)}
             className="inline-flex items-center rounded-md border border-border px-2 py-1 text-xs font-medium text-muted transition-colors hover:border-primary hover:bg-blue-500/5 hover:text-primary"
           >
-            {section.label}
+            {isApproach2 ? approach2SectionLabel(section.slug) : section.label}
           </Link>
         ))}
       </div>

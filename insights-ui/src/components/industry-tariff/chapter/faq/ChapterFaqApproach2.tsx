@@ -7,7 +7,7 @@ import InlineCard from '@/components/ui/sections/InlineCard';
 import { DisclosureItem, DisclosureList } from '@/components/ui/sections/DisclosureList';
 import SectionHeading from '@/components/ui/sections/SectionHeading';
 import type { TariffChapterPrototype, TariffFinalConclusionContent } from '@/types/tariff-chapter-prototype';
-import { chapterCoverHref, chapterSectionHref } from '@/utils/tariff-reports/chapter-route-helpers';
+import { approach2SectionLabel, chapterCoverHref, chapterSectionHref } from '@/utils/tariff-reports/chapter-route-helpers';
 import React from 'react';
 
 // Approach 2 final-conclusion page (issue #1770): an FAQ built from real
@@ -19,14 +19,6 @@ interface ChapterFaqApproach2Props {
   content: TariffChapterPrototype;
   conclusion: TariffFinalConclusionContent;
 }
-
-const LINK_LABEL: Record<string, string> = {
-  '': 'Rate table',
-  'tariff-updates': 'Tariff updates',
-  'understand-industry': 'Import statistics',
-  'industry-areas': 'Rates by country',
-  'tariff-engineering': 'Documents & levers',
-};
 
 function faqJsonLd(conclusion: TariffFinalConclusionContent): string {
   const ld = {
@@ -60,7 +52,7 @@ export default function ChapterFaqApproach2({ content, conclusion }: ChapterFaqA
           {conclusion.keyTakeaways.map((point, index) => (
             <InlineCard key={point} surface="card" padding="spacious" fill>
               <Stack direction="row" gap="md" align="start">
-                <Text as="span" size="lg" weight="bold" tone="primary">
+                <Text as="span" size="lg" weight="bold" tone="muted">
                   {index + 1}
                 </Text>
                 <Text size="base">{point}</Text>
@@ -83,7 +75,7 @@ export default function ChapterFaqApproach2({ content, conclusion }: ChapterFaqA
                     {faq.answer}
                   </Text>
                   <TextLink href={faq.link ? chapterSectionHref(chapter.slug, faq.link) : chapterCoverHref(chapter.slug)}>
-                    {LINK_LABEL[faq.link] ?? 'Details'} →
+                    {approach2SectionLabel(faq.link || 'overview')} →
                   </TextLink>
                 </Stack>
               </DisclosureItem>

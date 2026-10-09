@@ -28,7 +28,7 @@ export default function LinkTile({ href, eyebrow, aside, title, meta, children, 
   return (
     <Link
       href={href}
-      className={cn('flex flex-col gap-2 rounded-lg border border-border bg-surface p-4 transition-colors hover:border-primary/50 sm:p-5', className)}
+      className={cn('flex flex-col gap-2 rounded-lg border border-border bg-surface p-4 transition-colors hover:border-muted sm:p-5', className)}
     >
       {(eyebrow || aside) && (
         <span className="flex flex-wrap items-baseline justify-between gap-2">

@@ -14,11 +14,11 @@ ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
 // Three series in the tariff-report palette: teal for the largest partner,
 // the brand purple for the second, and a neutral gray for everyone else — the
 // same teal / purple the share bars in the country and product tables use
-// (ShareBar `teal` / `primary`). The page pairs this chart with a table of the
+// (ShareBar `teal` / `sky`). The page pairs this chart with a table of the
 // same numbers.
 const SERIES_COLORS = {
-  dark: { partnerA: '#14b8a6', partnerB: '#7f78ff', rest: '#4b5563', surface: '#1f2937' },
-  light: { partnerA: '#0d9488', partnerB: '#7f78ff', rest: '#9ca3af', surface: '#ffffff' },
+  dark: { partnerA: '#14b8a6', partnerB: '#38bdf8', rest: '#4b5563', surface: '#1f2937' },
+  light: { partnerA: '#0d9488', partnerB: '#0284c7', rest: '#9ca3af', surface: '#ffffff' },
 } as const;
 
 function formatBillions(value: number): string {

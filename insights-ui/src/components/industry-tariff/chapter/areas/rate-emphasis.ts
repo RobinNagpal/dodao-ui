@@ -2,7 +2,8 @@
 // (markets) matrices: quiet when every rate is just "Free", loud when any rate holds a large
 // percentage a reader should spot.
 
-const HIGH_RATE_PCT = 25;
+/** A rate at or above this percentage is drawn in amber; the matrices' legends quote it. */
+export const HIGH_RATE_PCT = 25;
 
 export function rateEmphasis(rates: string[]): 'quiet' | 'normal' | 'high' {
   if (rates.every((r) => r === 'Free' || r.startsWith('Free ('))) return 'quiet';

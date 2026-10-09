@@ -1,4 +1,5 @@
 import CountryRateMatrix from '@/components/industry-tariff/chapter/areas/CountryRateMatrix';
+import SourcesCard, { documentSourceItems } from '@/components/industry-tariff/chapter/updates/SourcesCard';
 import Text from '@/components/ui/Text';
 import TextLink from '@/components/ui/TextLink';
 import Stack from '@/components/ui/containers/Stack';
@@ -8,12 +9,12 @@ import SectionHeading from '@/components/ui/sections/SectionHeading';
 import { DataTable, TableCell, TableHead, TableHeaderCell, TableRow, TableScroll } from '@/components/ui/tables/DataTable';
 import type { TariffChapterPrototype, TariffIndustryAreasContent } from '@/types/tariff-chapter-prototype';
 import { parseChapterBodyMarkdown } from '@/util/parse-markdown';
-import { chapterSectionHref } from '@/utils/tariff-reports/chapter-route-helpers';
+import { approach2SectionLabel, chapterSectionHref } from '@/utils/tariff-reports/chapter-route-helpers';
 import React from 'react';
 
 // Approach 2 industry-areas page (issue #1770): the country x product-group
-// matrix of the total rate, then the biggest trade lanes, then how the
-// numbers were worked out.
+// matrix of the total rate (the page's one boxed section), then the biggest
+// trade lanes, how the numbers were worked out, and the sources.
 
 interface ChapterIndustryAreasApproach2Props {
   content: TariffChapterPrototype;
@@ -57,7 +58,7 @@ export default function ChapterIndustryAreasApproach2({ content, areas }: Chapte
         />
       </CardSection>
 
-      <CardSection padding="roomy" bordered>
+      <Stack as="section" gap="lg">
         <Stack gap="lg">
           <Stack gap="xs">
             <SectionHeading as="h2" size="lg" weight="bold" tone="heading">
@@ -65,7 +66,7 @@ export default function ChapterIndustryAreasApproach2({ content, areas }: Chapte
             </SectionHeading>
             <Text size="sm" tone="muted">
               The largest country × product lanes in {areas.tradeYear}, with the rate each one faces now{hasUsmca ? ' (USMCA claimed)' : ''}. Full statistics
-              are on <TextLink href={chapterSectionHref(chapter.slug, 'understand-industry')}>Understand industry</TextLink>.
+              are on <TextLink href={chapterSectionHref(chapter.slug, 'understand-industry')}>{approach2SectionLabel('understand-industry')}</TextLink>.
             </Text>
           </Stack>
           <TableScroll>
@@ -91,16 +92,16 @@ export default function ChapterIndustryAreasApproach2({ content, areas }: Chapte
                     <TableCell align="right" tone="emphasis">
                       {usd(lane.importsUsd)}
                     </TableCell>
-                    <TableCell tone="primary">{lane.totals.join(' · ')}</TableCell>
+                    <TableCell tone="emphasis">{lane.totals.join(' · ')}</TableCell>
                   </TableRow>
                 ))}
               </tbody>
             </DataTable>
           </TableScroll>
         </Stack>
-      </CardSection>
+      </Stack>
 
-      <CardSection padding="roomy" bordered>
+      <Stack as="section" gap="lg">
         <Stack gap="md">
           <SectionHeading as="h2" size="md" weight="bold" tone="heading">
             How these rates are worked out
@@ -114,15 +115,10 @@ export default function ChapterIndustryAreasApproach2({ content, areas }: Chapte
               </li>
             ))}
           </Stack>
-          <Stack direction="row" gap="md" wrap>
-            {areas.sources.map((source) => (
-              <TextLink key={source.id} href={source.url} size="xs" wrap>
-                {source.citation} ↗
-              </TextLink>
-            ))}
-          </Stack>
         </Stack>
-      </CardSection>
+      </Stack>
+
+      <SourcesCard items={documentSourceItems(areas.sources)} />
     </Stack>
   );
 }

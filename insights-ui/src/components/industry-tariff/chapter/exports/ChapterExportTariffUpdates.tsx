@@ -1,15 +1,14 @@
 import { EXPORT_STATUS_BADGE } from '@/components/industry-tariff/chapter/exports/export-shared';
 import ChapterChangeLog, { type ChangeLogEntry } from '@/components/industry-tariff/chapter/updates/ChapterChangeLog';
+import DutyInEffectCard from '@/components/industry-tariff/chapter/updates/DutyInEffectCard';
 import { SourceLinks } from '@/components/industry-tariff/chapter/updates/SourceLinks';
-import SourcesCard from '@/components/industry-tariff/chapter/updates/SourcesCard';
+import SourcesCard, { documentSourceItems } from '@/components/industry-tariff/chapter/updates/SourcesCard';
 import StatusBadge, { type StatusBadgeVariant } from '@/components/ui/StatusBadge';
 import Text from '@/components/ui/Text';
 import TextLink from '@/components/ui/TextLink';
-import MetricGrid from '@/components/ui/containers/MetricGrid';
 import Stack from '@/components/ui/containers/Stack';
 import StatCardGrid from '@/components/ui/containers/StatCardGrid';
 import CardSection from '@/components/ui/sections/CardSection';
-import InlineCard from '@/components/ui/sections/InlineCard';
 import MarkdownContent from '@/components/ui/sections/MarkdownContent';
 import SectionHeading from '@/components/ui/sections/SectionHeading';
 import { DataTable, TableCell, TableHead, TableHeaderCell, TableRow, TableScroll } from '@/components/ui/tables/DataTable';
@@ -72,52 +71,31 @@ export default function ChapterExportTariffUpdates({ updates }: { updates: Tarif
 
       <StatCardGrid stats={updates.stats} />
 
-      <CardSection padding="roomy" bordered>
-        <Stack gap="lg">
-          <Stack gap="xs">
-            <SectionHeading as="h2" size="lg" weight="bold" tone="heading">
-              In force today
-            </SectionHeading>
-            <Text size="sm" tone="muted">
-              Foreign measures that charge U.S.-origin Chapter {chapter.padded} goods more than in January 2025. Scope: {updates.scope}
-            </Text>
-          </Stack>
-          <Stack gap="md">
-            {updates.inEffect.map((measure) => (
-              <InlineCard key={measure.id} surface="sunken" padding="spacious">
-                <MetricGrid columns="1-3-wide" gap="xl">
-                  <Stack gap="xs">
-                    <Text as="span" size="sm" tone="muted">
-                      {measure.country}
-                    </Text>
-                    <Text as="span" size="base" weight="semibold" tone="white">
-                      {measure.measure}
-                    </Text>
-                    <SourceLinks ids={measure.sourceIds} sources={sources} />
-                  </Stack>
-                  <Stack gap="xs">
-                    <Text as="span" size="sm" tone="muted">
-                      Jan 2025 → now
-                    </Text>
-                    <Text as="span" size="lg" weight="bold" tone="white">
-                      {measure.before} → {measure.now}
-                    </Text>
-                    <Text as="span" size="sm">
-                      {measure.appliesTo}
-                    </Text>
-                  </Stack>
-                  <Text size="sm">
-                    <Text as="span" size="sm" weight="semibold" tone="white">
-                      What it means:{' '}
-                    </Text>
-                    {measure.whatItMeans}
-                  </Text>
-                </MetricGrid>
-              </InlineCard>
-            ))}
-          </Stack>
+      <Stack as="section" gap="lg">
+        <Stack gap="xs">
+          <SectionHeading as="h2" size="lg" weight="bold" tone="heading">
+            In force today
+          </SectionHeading>
+          <Text size="sm" tone="muted">
+            Foreign measures that charge U.S.-origin Chapter {chapter.padded} goods more than in January 2025; each rate reads Jan 2025 → now. Scope:{' '}
+            {updates.scope}
+          </Text>
         </Stack>
-      </CardSection>
+        <Stack gap="md">
+          {updates.inEffect.map((measure) => (
+            <DutyInEffectCard
+              key={measure.id}
+              country={measure.country}
+              measure={measure.measure}
+              before={measure.before}
+              now={measure.now}
+              whatItMeans={measure.whatItMeans}
+              details={measure.appliesTo}
+              sources={<SourceLinks ids={measure.sourceIds} sources={sources} />}
+            />
+          ))}
+        </Stack>
+      </Stack>
 
       <CardSection padding="roomy" bordered>
         <Stack gap="lg">
@@ -134,7 +112,7 @@ export default function ChapterExportTariffUpdates({ updates }: { updates: Tarif
         </Stack>
       </CardSection>
 
-      <CardSection padding="roomy" bordered>
+      <Stack as="section" gap="lg">
         <Stack gap="lg">
           <Stack gap="xs">
             <SectionHeading as="h2" size="lg" weight="bold" tone="heading">
@@ -163,7 +141,7 @@ export default function ChapterExportTariffUpdates({ updates }: { updates: Tarif
                     <TableCell variant="rateWrap" tone="muted">
                       {c.tariffBefore}
                     </TableCell>
-                    <TableCell variant="rateWrap" tone="primary">
+                    <TableCell variant="rateWrap" tone="emphasis">
                       {c.tariffNow}
                     </TableCell>
                     <TableCell variant="rate">
@@ -176,9 +154,9 @@ export default function ChapterExportTariffUpdates({ updates }: { updates: Tarif
             </DataTable>
           </TableScroll>
         </Stack>
-      </CardSection>
+      </Stack>
 
-      <SourcesCard sources={updates.sources} />
+      <SourcesCard items={documentSourceItems(updates.sources)} />
     </Stack>
   );
 }

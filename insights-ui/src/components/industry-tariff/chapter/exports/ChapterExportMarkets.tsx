@@ -1,6 +1,6 @@
-import { rateEmphasis } from '@/components/industry-tariff/chapter/areas/rate-emphasis';
+import ExportRateMatrix from '@/components/industry-tariff/chapter/exports/ExportRateMatrix';
 import { EXPORT_STATUS_BADGE, change, usd } from '@/components/industry-tariff/chapter/exports/export-shared';
-import SourcesCard from '@/components/industry-tariff/chapter/updates/SourcesCard';
+import SourcesCard, { documentSourceItems } from '@/components/industry-tariff/chapter/updates/SourcesCard';
 import Heading from '@/components/ui/Heading';
 import StatusBadge from '@/components/ui/StatusBadge';
 import Text from '@/components/ui/Text';
@@ -11,7 +11,7 @@ import CardSection from '@/components/ui/sections/CardSection';
 import InlineCard from '@/components/ui/sections/InlineCard';
 import MarkdownContent from '@/components/ui/sections/MarkdownContent';
 import SectionHeading from '@/components/ui/sections/SectionHeading';
-import { DataTable, MatrixCell, TableCell, TableHead, TableHeaderCell, TableRow, TableScroll } from '@/components/ui/tables/DataTable';
+import { DataTable, TableCell, TableHead, TableHeaderCell, TableRow, TableScroll } from '@/components/ui/tables/DataTable';
 import type { TariffExportMarketsContent } from '@/types/tariff-chapter-exports';
 import { parseChapterBodyMarkdown } from '@/util/parse-markdown';
 import React from 'react';
@@ -19,7 +19,7 @@ import React from 'react';
 // Export markets: destination × product-group matrix of the tariff each buyer charges on U.S.
 // goods (next to what the U.S. shipped there), the biggest lanes, and a short profile per market
 // naming the regulator whose approval decides whether the product can be sold. Laid out like the
-// import industry-areas page.
+// import rates-by-country page: the matrix is the one boxed section, the rest sits on the page.
 
 export default function ChapterExportMarkets({ markets }: { markets: TariffExportMarketsContent }): React.JSX.Element {
   const groupLabel = new Map(markets.groups.map((g) => [g.heading, g.label]));
@@ -41,62 +41,15 @@ export default function ChapterExportMarkets({ markets }: { markets: TariffExpor
               Tariff on U.S. goods by destination and product group
             </SectionHeading>
             <Text size="sm" tone="muted">
-              Each cell: the destination&apos;s tariff on U.S.-origin goods, then {markets.tradeYear} U.S. exports. Hover a cell for where the rate comes from.
+              Each cell: the destination&apos;s tariff on U.S.-origin goods, then {markets.tradeYear} U.S. exports. Select a cell to see where the rate comes
+              from.
             </Text>
           </Stack>
-          <TableScroll>
-            <DataTable>
-              <TableHead look="plain">
-                <TableRow>
-                  <TableHeaderCell pinned>Destination</TableHeaderCell>
-                  {markets.groups.map((g) => (
-                    <TableHeaderCell key={g.heading} title={g.label}>
-                      <Stack gap="xxs">
-                        <span>{g.shortLabel}</span>
-                        <Text as="span" size="xs" tone="primary" font="mono">
-                          {g.heading}
-                        </Text>
-                      </Stack>
-                    </TableHeaderCell>
-                  ))}
-                </TableRow>
-              </TableHead>
-              <tbody>
-                {markets.countries.map((c) => (
-                  <TableRow key={c.countryCode}>
-                    <TableCell pinned>
-                      <Stack gap="xxs">
-                        <Text as="span" weight="semibold" tone="white">
-                          {c.country}
-                        </Text>
-                        <Text as="span" size="xs" tone="muted">
-                          {usd(c.exportsUsd)} in {markets.tradeYear}
-                        </Text>
-                      </Stack>
-                    </TableCell>
-                    {markets.groups.map((g) => {
-                      const cell = c.cells[g.heading];
-                      return (
-                        <TableCell key={g.heading}>
-                          <MatrixCell
-                            primary={cell.rate}
-                            secondary={usd(cell.exportsUsd)}
-                            emphasis={rateEmphasis([cell.rate])}
-                            dim={cell.exportsUsd === 0}
-                            title={cell.basis}
-                          />
-                        </TableCell>
-                      );
-                    })}
-                  </TableRow>
-                ))}
-              </tbody>
-            </DataTable>
-          </TableScroll>
+          <ExportRateMatrix markets={markets} />
         </Stack>
       </CardSection>
 
-      <CardSection padding="roomy" bordered>
+      <Stack as="section" gap="lg">
         <Stack gap="lg">
           <Stack gap="xs">
             <SectionHeading as="h2" size="lg" weight="bold" tone="heading">
@@ -129,16 +82,16 @@ export default function ChapterExportMarkets({ markets }: { markets: TariffExpor
                     <TableCell align="right" tone="emphasis">
                       {usd(lane.exportsUsd)}
                     </TableCell>
-                    <TableCell tone="primary">{lane.rate}</TableCell>
+                    <TableCell tone="emphasis">{lane.rate}</TableCell>
                   </TableRow>
                 ))}
               </tbody>
             </DataTable>
           </TableScroll>
         </Stack>
-      </CardSection>
+      </Stack>
 
-      <CardSection padding="roomy" bordered>
+      <Stack as="section" gap="lg">
         <Stack gap="lg">
           <Stack gap="xs">
             <SectionHeading as="h2" size="lg" weight="bold" tone="heading">
@@ -152,7 +105,7 @@ export default function ChapterExportMarkets({ markets }: { markets: TariffExpor
             {markets.countries.map((c) => {
               const badge = EXPORT_STATUS_BADGE[c.status];
               return (
-                <InlineCard key={c.countryCode} surface="sunken" padding="spacious" fill>
+                <InlineCard key={c.countryCode} surface="card" padding="spacious" fill>
                   <Stack gap="sm">
                     <Stack direction="row" gap="sm" align="center" justify="between" wrap>
                       <Heading as="h3" size="lg" tone="white">
@@ -165,7 +118,7 @@ export default function ChapterExportMarkets({ markets }: { markets: TariffExpor
                     </Text>
                     <Text size="sm" weight="semibold" tone="white">
                       Tariff:{' '}
-                      <Text as="span" size="sm" weight="semibold" tone="primary">
+                      <Text as="span" size="sm" weight="semibold" tone="white">
                         {c.profile.tariffNow}
                       </Text>
                     </Text>
@@ -188,18 +141,18 @@ export default function ChapterExportMarkets({ markets }: { markets: TariffExpor
             })}
           </MetricGrid>
         </Stack>
-      </CardSection>
+      </Stack>
 
-      <CardSection padding="roomy" bordered>
+      <Stack as="section" gap="lg">
         <Stack gap="md">
           <SectionHeading as="h2" size="lg" weight="bold" tone="heading">
             Why the U.S. both buys and sells these goods
           </SectionHeading>
           <MarkdownContent variant="body" html={parseChapterBodyMarkdown(markets.why)} />
         </Stack>
-      </CardSection>
+      </Stack>
 
-      <CardSection padding="roomy" bordered>
+      <Stack as="section" gap="lg">
         <Stack gap="md">
           <SectionHeading as="h2" size="md" weight="bold" tone="heading">
             How these rates are worked out
@@ -214,9 +167,9 @@ export default function ChapterExportMarkets({ markets }: { markets: TariffExpor
             ))}
           </Stack>
         </Stack>
-      </CardSection>
+      </Stack>
 
-      <SourcesCard sources={markets.sources} />
+      <SourcesCard items={documentSourceItems(markets.sources)} />
     </Stack>
   );
 }

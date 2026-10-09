@@ -34,6 +34,7 @@ const segment = cva('inline-flex items-center text-sm transition-colors', {
     active: { true: '', false: '' },
   },
   compoundVariants: [
+    // Brand purple marks where you are (the current page / side), like links and HTS codes.
     { variant: 'segmented', active: true, className: 'badge-tone-accent bg-primary/15 font-semibold text-primary ring-1 ring-inset ring-primary/40' },
     { variant: 'segmented', active: false, className: 'font-medium text-muted hover:bg-surface-3 hover:text-body' },
     { variant: 'tabs', active: true, className: 'border-primary bg-surface-2 font-semibold text-heading' },

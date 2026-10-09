@@ -26,13 +26,15 @@ const grid = cva('grid grid-cols-2 gap-3', {
 });
 
 export interface StatCardGridProps {
-  stats: Array<{ label: string; value: React.ReactNode }>;
+  stats: Array<{ label: string; value: React.ReactNode; note?: string }>;
   className?: string;
 }
 
 export default function StatCardGrid({ stats, className }: StatCardGridProps): React.JSX.Element {
   const count = stats.length;
   const desktop = count <= 6 ? (Math.max(count, 1) as 1 | 2 | 3 | 4 | 5 | 6) : 'many';
+  // When some cards carry a note, the others keep an empty note line so every value sits at the same height.
+  const hasNotes = stats.some((stat) => Boolean(stat.note));
   return (
     <div className={cn(grid({ desktop }), className)}>
       {stats.map((stat, index) => (
@@ -41,6 +43,7 @@ export default function StatCardGrid({ stats, className }: StatCardGridProps): R
           size="lg"
           label={stat.label}
           value={stat.value}
+          note={stat.note ?? (hasNotes ? '\u00a0' : undefined)}
           className={cn(count % 2 === 1 && index === count - 1 && 'col-span-2 lg:col-span-1')}
         />
       ))}

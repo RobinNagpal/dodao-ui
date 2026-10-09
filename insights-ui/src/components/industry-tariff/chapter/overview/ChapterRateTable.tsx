@@ -189,7 +189,7 @@ export default function ChapterRateTable({ rows, note }: ChapterRateTableProps):
           </Text>
         </InlineCard>
       ) : (
-        <TableScroll maxHeight="lg">
+        <TableScroll pageSticky>
           <DataTable>
             <TableHead sticky look="plain">
               <TableRow>

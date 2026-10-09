@@ -1,4 +1,5 @@
 import ImportsByYearChart from '@/components/industry-tariff/chapter/industry/ImportsByYearChart';
+import SourcesCard, { labeledSourceItems } from '@/components/industry-tariff/chapter/updates/SourcesCard';
 import ShareBar from '@/components/ui/ShareBar';
 import Text from '@/components/ui/Text';
 import TextLink from '@/components/ui/TextLink';
@@ -10,12 +11,13 @@ import SectionHeading from '@/components/ui/sections/SectionHeading';
 import { DataTable, EmptyCellValue, TableCell, TableHead, TableHeaderCell, TableRow, TableScroll } from '@/components/ui/tables/DataTable';
 import type { TariffChapterPrototype, TariffImportsByLine, TariffUnderstandIndustryContent } from '@/types/tariff-chapter-prototype';
 import { parseChapterBodyMarkdown } from '@/util/parse-markdown';
-import { chapterCoverHref, chapterSectionHref } from '@/utils/tariff-reports/chapter-route-helpers';
+import { approach2SectionLabel, chapterCoverHref, chapterSectionHref } from '@/utils/tariff-reports/chapter-route-helpers';
 import React from 'react';
 
 // Approach 2 understand-industry page (issue #1770): import statistics by
 // country, by product and over time, plus the effective duty rate. Numbers
-// first; the one prose block explains them.
+// first; the one prose block explains them. The chart is the page's one boxed
+// section; the tables and prose sit straight on the page.
 
 interface ChapterIndustryStatsApproach2Props {
   content: TariffChapterPrototype;
@@ -71,14 +73,14 @@ export default function ChapterIndustryStatsApproach2({ content, industry }: Cha
         <StatCardGrid stats={industry.stats} />
       </Stack>
 
-      <CardSection padding="roomy" bordered>
+      <Stack as="section" gap="lg">
         <Stack gap="md">
           <SectionHeading as="h2" size="lg" weight="bold" tone="heading">
             Why imports moved
           </SectionHeading>
           <MarkdownContent variant="body" html={parseChapterBodyMarkdown(industry.why)} />
         </Stack>
-      </CardSection>
+      </Stack>
 
       <CardSection padding="roomy" bordered>
         <Stack gap="lg">
@@ -126,7 +128,7 @@ export default function ChapterIndustryStatsApproach2({ content, industry }: Cha
         </Stack>
       </CardSection>
 
-      <CardSection padding="roomy" bordered>
+      <Stack as="section" gap="lg">
         <Stack gap="lg">
           <Stack gap="xs">
             <SectionHeading as="h2" size="lg" weight="bold" tone="heading">
@@ -134,7 +136,7 @@ export default function ChapterIndustryStatsApproach2({ content, industry }: Cha
             </SectionHeading>
             <Text size="sm" tone="muted">
               The top {industry.byCountry.length} source countries. For the rate each country pays by product group, see{' '}
-              <TextLink href={chapterSectionHref(chapter.slug, 'industry-areas')}>Industry areas</TextLink>.
+              <TextLink href={chapterSectionHref(chapter.slug, 'industry-areas')}>{approach2SectionLabel('industry-areas')}</TextLink>.
             </Text>
           </Stack>
           <TableScroll>
@@ -160,7 +162,7 @@ export default function ChapterIndustryStatsApproach2({ content, industry }: Cha
                       {change(c.changePct) ?? <EmptyCellValue />}
                     </TableCell>
                     <TableCell>
-                      <ShareBar tone="primary" widthPct={barWidth(c.sharePct, maxCountryShare)} label={`${c.sharePct.toFixed(1)}%`} />
+                      <ShareBar tone="sky" widthPct={barWidth(c.sharePct, maxCountryShare)} label={`${c.sharePct.toFixed(1)}%`} />
                     </TableCell>
                     <TableCell variant="note">{c.mainHeading ? `${c.mainHeading} ${c.mainHeadingLabel ?? ''}` : <EmptyCellValue />}</TableCell>
                     {hasCountryDuty && <TableCell variant="rate">{c.dutyPaidUsd !== null ? usd(c.dutyPaidUsd) : <EmptyCellValue />}</TableCell>}
@@ -180,7 +182,7 @@ export default function ChapterIndustryStatsApproach2({ content, industry }: Cha
                   </TableCell>
                   <TableCell>
                     {othersSharePct !== null ? (
-                      <ShareBar tone="primary" widthPct={barWidth(othersSharePct, maxCountryShare)} label={`${othersSharePct.toFixed(1)}%`} />
+                      <ShareBar tone="sky" widthPct={barWidth(othersSharePct, maxCountryShare)} label={`${othersSharePct.toFixed(1)}%`} />
                     ) : (
                       <EmptyCellValue />
                     )}
@@ -198,9 +200,9 @@ export default function ChapterIndustryStatsApproach2({ content, industry }: Cha
             </DataTable>
           </TableScroll>
         </Stack>
-      </CardSection>
+      </Stack>
 
-      <CardSection padding="roomy" bordered>
+      <Stack as="section" gap="lg">
         <Stack gap="lg">
           <Stack gap="xs">
             <SectionHeading as="h2" size="lg" weight="bold" tone="heading">
@@ -208,10 +210,10 @@ export default function ChapterIndustryStatsApproach2({ content, industry }: Cha
             </SectionHeading>
             <Text size="sm" tone="muted">
               Imports by 6-digit product, largest first. These are the international 6-digit codes; each covers one or more of the 10-digit lines on the{' '}
-              <TextLink href={chapterCoverHref(chapter.slug)}>rate table</TextLink>.
+              <TextLink href={chapterCoverHref(chapter.slug)}>{approach2SectionLabel('overview')}</TextLink> page.
             </Text>
           </Stack>
-          <TableScroll maxHeight="lg">
+          <TableScroll pageSticky>
             <DataTable>
               <TableHead sticky look="plain">
                 <TableRow>
@@ -274,29 +276,9 @@ export default function ChapterIndustryStatsApproach2({ content, industry }: Cha
             </DataTable>
           </TableScroll>
         </Stack>
-      </CardSection>
+      </Stack>
 
-      <CardSection padding="roomy" bordered>
-        <Stack gap="md">
-          <SectionHeading as="h2" size="md" weight="bold" tone="heading">
-            About these numbers
-          </SectionHeading>
-          <Text size="sm">{industry.coverageNote}</Text>
-          <Stack gap="xs">
-            {industry.sources.map((source) =>
-              source.url ? (
-                <TextLink key={source.label} href={source.url} wrap>
-                  {source.label} ↗
-                </TextLink>
-              ) : (
-                <Text key={source.label} size="sm" tone="muted">
-                  {source.label}
-                </Text>
-              )
-            )}
-          </Stack>
-        </Stack>
-      </CardSection>
+      <SourcesCard items={labeledSourceItems(industry.sources)} intro={industry.coverageNote} />
     </Stack>
   );
 }

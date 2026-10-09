@@ -4368,7 +4368,8 @@
       },
       {
         "label": "Largest product",
-        "value": "Cattle · 56%"
+        "value": "56%",
+        "note": "Cattle"
       }
     ],
     "byYear": [

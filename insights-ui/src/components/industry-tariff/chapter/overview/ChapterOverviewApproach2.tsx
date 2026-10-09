@@ -1,19 +1,21 @@
 import ChapterRateTable from '@/components/industry-tariff/chapter/overview/ChapterRateTable';
+import SourcesCard, { labeledSourceItems } from '@/components/industry-tariff/chapter/updates/SourcesCard';
 import DefinitionList from '@/components/ui/DefinitionList';
 import Heading from '@/components/ui/Heading';
 import Text from '@/components/ui/Text';
+import TextLink from '@/components/ui/TextLink';
 import MetricGrid, { cardGridColumns } from '@/components/ui/containers/MetricGrid';
 import StatCardGrid from '@/components/ui/containers/StatCardGrid';
 import Stack from '@/components/ui/containers/Stack';
 import CardSection from '@/components/ui/sections/CardSection';
+import { DisclosureItem, DisclosureList } from '@/components/ui/sections/DisclosureList';
 import InlineCard from '@/components/ui/sections/InlineCard';
 import LinkTile from '@/components/ui/sections/LinkTile';
 import MarkdownContent from '@/components/ui/sections/MarkdownContent';
 import SectionHeading from '@/components/ui/sections/SectionHeading';
 import type { TariffChapterPrototype } from '@/types/tariff-chapter-prototype';
 import { parseChapterBodyMarkdown } from '@/util/parse-markdown';
-import { chapterSectionHref } from '@/utils/tariff-reports/chapter-route-helpers';
-import Link from 'next/link';
+import { approach2SectionLabel, chapterSectionHref } from '@/utils/tariff-reports/chapter-route-helpers';
 import React from 'react';
 
 // Approach 2 overview page (issue #1770). The page's single job is to be the
@@ -23,7 +25,21 @@ import React from 'react';
 // whether the rate is even the thing that matters), give them the chapter's
 // numbers, let them jump to their product group, then the full table, then the
 // arithmetic worked through on real lines. Nothing here is hidden behind an
-// interaction — the filters narrow content that is already rendered.
+// interaction — the filters narrow content that is already rendered, and the
+// collapsed chapter notes stay in the HTML.
+//
+// The rate table is the page's one boxed section, so it reads as the main
+// element; the supporting sections sit straight on the page.
+
+// A heading's rate summary lists every distinct rate ("Free · 5% · 4.2% · 40¢/kg + 10.4% · …"),
+// which turns into noise past a few. The tile shows the first three; the table has them all.
+const MAX_TILE_RATES = 3;
+
+function tileRateSummary(summary: string): string {
+  const rates = summary.split(' · ');
+  if (rates.length <= MAX_TILE_RATES) return summary;
+  return `${rates.slice(0, MAX_TILE_RATES).join(' · ')} · +${rates.length - MAX_TILE_RATES} more`;
+}
 
 interface ChapterOverviewApproach2Props {
   content: TariffChapterPrototype;
@@ -31,6 +47,7 @@ interface ChapterOverviewApproach2Props {
 
 export default function ChapterOverviewApproach2({ content }: ChapterOverviewApproach2Props): React.JSX.Element {
   const { chapter, overview, sources } = content;
+  const lineCount = overview.rateTable.rows.filter((row) => row.htsCode10).length;
 
   return (
     <Stack gap="2xl">
@@ -39,8 +56,8 @@ export default function ChapterOverviewApproach2({ content }: ChapterOverviewApp
 
       <Stack gap="md">
         <StatCardGrid stats={overview.stats} />
-        <Text size="xs" tone="muted">
-          <Link href={chapterSectionHref(chapter.slug, 'understand-industry')}>Full trade statistics →</Link>
+        <Text size="sm">
+          <TextLink href={chapterSectionHref(chapter.slug, 'understand-industry')}>See {approach2SectionLabel('understand-industry').toLowerCase()} →</TextLink>
         </Text>
       </Stack>
 
@@ -56,7 +73,7 @@ export default function ChapterOverviewApproach2({ content }: ChapterOverviewApp
               eyebrow={group.heading}
               aside={group.dutiableLineCount > 0 ? `${group.lineCount} lines · ${group.dutiableLineCount} with a duty` : `${group.lineCount} lines`}
               title={group.label}
-              meta={group.rateSummary}
+              meta={tileRateSummary(group.rateSummary)}
             >
               {group.blurb}
             </LinkTile>
@@ -71,8 +88,8 @@ export default function ChapterOverviewApproach2({ content }: ChapterOverviewApp
               Every HTS Chapter {chapter.padded} tariff line and its duty rate
             </SectionHeading>
             <Text size="sm" tone="muted">
-              All {overview.rateTable.rowCount} rows of the schedule, with the general (MFN) rate, the free-trade and preference rates, the Column 2 rate and
-              the reporting unit. Search by product name or HTS code; select a line for its full description and preference list.
+              All {lineCount} tariff lines in the schedule, with the general (MFN) rate, the free-trade and preference rates, the Column 2 rate and the
+              reporting unit. Search by product name or HTS code; select a line for its full description and preference list.
             </Text>
           </Stack>
           <ChapterRateTable rows={overview.rateTable.rows} note={overview.rateTable.note} />
@@ -101,39 +118,37 @@ export default function ChapterOverviewApproach2({ content }: ChapterOverviewApp
       </Stack>
 
       {overview.spiLegend.length > 0 && (
-        <CardSection padding="roomy" bordered>
-          <Stack gap="lg">
-            <Stack gap="xs">
-              <SectionHeading as="h2" size="md" weight="bold" tone="heading">
-                What the preference codes mean
-              </SectionHeading>
-              <Text size="sm" tone="muted">
-                These are the codes behind the program count in the FTA column of the table above (expand a row to see them). A shipment claims one of these
-                programs at entry, and claiming it is what turns the general rate into Free.
-              </Text>
-            </Stack>
-            <DefinitionList columns="1-2" items={overview.spiLegend.map((entry) => ({ term: entry.code, definition: entry.name }))} />
-          </Stack>
-        </CardSection>
-      )}
-
-      {(overview.notes.chapterNotes || overview.notes.additionalUsNotes) && (
-        <CardSection padding="roomy" bordered>
-          <Stack gap="lg">
+        <Stack as="section" gap="lg">
+          <Stack gap="xs">
             <SectionHeading as="h2" size="md" weight="bold" tone="heading">
-              Chapter notes
+              What the preference codes mean
             </SectionHeading>
-            <Stack gap="md">
-              {overview.notes.chapterNotes && <MarkdownContent variant="plain" html={parseChapterBodyMarkdown(overview.notes.chapterNotes)} />}
-              {overview.notes.additionalUsNotes && <MarkdownContent variant="plain" html={parseChapterBodyMarkdown(overview.notes.additionalUsNotes)} />}
-            </Stack>
+            <Text size="sm" tone="muted">
+              These are the codes behind the program count in the FTA column of the table above (expand a row to see them). A shipment claims one of these
+              programs at entry, and claiming it is what turns the general rate into Free.
+            </Text>
           </Stack>
-        </CardSection>
+          <DefinitionList columns="1-2" items={overview.spiLegend.map((entry) => ({ term: entry.code, definition: entry.name }))} />
+        </Stack>
       )}
 
-      <Text size="xs" tone="muted">
-        Sources: {sources.map((source) => (source.url ? `${source.label} (${source.url})` : source.label)).join(' · ')}.
-      </Text>
+      {/* The legal notes are long reference text: collapsed by default, still in the HTML. */}
+      {(overview.notes.chapterNotes || overview.notes.additionalUsNotes) && (
+        <DisclosureList>
+          {overview.notes.chapterNotes && (
+            <DisclosureItem summary="Chapter notes">
+              <MarkdownContent variant="plain" html={parseChapterBodyMarkdown(overview.notes.chapterNotes)} />
+            </DisclosureItem>
+          )}
+          {overview.notes.additionalUsNotes && (
+            <DisclosureItem summary="Additional U.S. notes">
+              <MarkdownContent variant="plain" html={parseChapterBodyMarkdown(overview.notes.additionalUsNotes)} />
+            </DisclosureItem>
+          )}
+        </DisclosureList>
+      )}
+
+      <SourcesCard items={labeledSourceItems(sources)} />
     </Stack>
   );
 }

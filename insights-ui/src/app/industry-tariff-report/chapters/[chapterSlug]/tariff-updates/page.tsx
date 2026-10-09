@@ -3,7 +3,7 @@ import PrototypeChapterToolLinks from '@/components/industry-tariff/chapter/Prot
 import ChapterTariffUpdatesApproach2 from '@/components/industry-tariff/chapter/updates/ChapterTariffUpdatesApproach2';
 import { TariffScrollLoginTrigger } from '@/components/login/tariff-scroll-login-trigger';
 import { buildPrototypeMetadata, getChapterPrototype, prototypeChapterInfo } from '@/utils/tariff-reports/chapter-prototype';
-import { chapterSectionHref } from '@/utils/tariff-reports/chapter-route-helpers';
+import { approach2SectionLabel, chapterSectionHref } from '@/utils/tariff-reports/chapter-route-helpers';
 import type { Metadata } from 'next';
 
 const SECTION_SLUG = 'tariff-updates';
@@ -35,7 +35,7 @@ export default async function Page({ params }: { params: Promise<{ chapterSlug: 
           ratesAsOf={prototype.asOf}
           currentSlug={SECTION_SLUG}
           updatedAt={prototype.tariffUpdates.lastCheckedAt}
-          sectionLabel="Tariff Updates"
+          sectionLabel={approach2SectionLabel(SECTION_SLUG)}
         >
           <ChapterTariffUpdatesApproach2 content={prototype} updates={prototype.tariffUpdates} />
         </ChapterArticle>

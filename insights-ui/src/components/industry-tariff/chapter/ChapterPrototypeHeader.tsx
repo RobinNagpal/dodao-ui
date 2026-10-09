@@ -8,14 +8,17 @@ import TabsWithAside from '@/components/ui/containers/TabsWithAside';
 import type { ChapterReportDirection, ChapterRouteInfo } from '@/utils/tariff-reports/chapter-route-helpers';
 import type { ReactNode } from 'react';
 
-// Page header for Approach-2 chapters (issue #1770), shared by all six report pages: the H1, a
-// "Rates as of …" line with the chapter's tool links beside it, then the report pages as a tab row.
+// Page header for Approach-2 chapters (issue #1770), shared by all report pages: the H1, a
+// "Rates as of …" (or "Updated …") line with the chapter's tool links beside it, then the report
+// pages as a tab row, named with the Approach-2 page labels.
 
 interface ChapterPrototypeHeaderProps {
   chapter: ChapterRouteInfo;
   pageTitle: string;
   // ISO date (YYYY-MM-DD) the chapter's content was compiled.
   ratesAsOf: string;
+  // Wording before the date: "Rates as of" on the rate pages, "Updated" on pages that hold no rates.
+  asOfLabel?: string;
   // Inline "Tools for this chapter" links (PrototypeChapterToolLinks).
   toolLinks: ReactNode;
   currentSlug: string;
@@ -38,13 +41,14 @@ export default function ChapterPrototypeHeader({
   chapter,
   pageTitle,
   ratesAsOf,
+  asOfLabel = 'Rates as of',
   toolLinks,
   currentSlug,
   direction = 'import',
   adminActions,
   directionSwitch,
 }: ChapterPrototypeHeaderProps): JSX.Element {
-  const tabs = chapterReportNavItems(chapter, direction).map((item) => ({
+  const tabs = chapterReportNavItems(chapter, direction, true).map((item) => ({
     key: item.slug,
     href: item.href,
     label: item.label,
@@ -60,7 +64,7 @@ export default function ChapterPrototypeHeader({
           </Heading>
           <Stack direction="row" gap="lg" align="center" wrap>
             <Text as="span" size="sm" tone="muted">
-              Rates as of {formatRatesAsOf(ratesAsOf)}
+              {asOfLabel} {formatRatesAsOf(ratesAsOf)}
             </Text>
             {toolLinks}
           </Stack>

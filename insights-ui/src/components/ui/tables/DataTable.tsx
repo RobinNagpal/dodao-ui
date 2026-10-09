@@ -17,18 +17,37 @@ import React from 'react';
 const tableScroll = cva('overflow-x-auto rounded-lg border border-border', {
   variants: {
     maxHeight: { none: '', lg: 'max-h-[70vh] overflow-y-auto' },
+    // `pageSticky`: on desktop the table scrolls with the page (no box of its own), so a `sticky`
+    // header pins to the top of the window instead of a nested scroll area. Phones keep the sideways scroll.
+    pageSticky: { true: 'lg:overflow-x-visible', false: '' },
   },
-  defaultVariants: { maxHeight: 'none' },
+  defaultVariants: { maxHeight: 'none', pageSticky: false },
 });
+
+// Edge shadows that appear only while there is more table to scroll to (the "local" covers scroll
+// with the content and hide the "scroll" shadows at each end). The cover matches whatever surface the
+// table sits on — `--scroll-cover`, set by the card leaves — so it is invisible until it is needed.
+const SCROLL_HINT: React.CSSProperties = {
+  background: [
+    'linear-gradient(to right, var(--scroll-cover, var(--bg-color)) 30%, transparent) left center / 40px 100% no-repeat local',
+    'linear-gradient(to left, var(--scroll-cover, var(--bg-color)) 30%, transparent) right center / 40px 100% no-repeat local',
+    'radial-gradient(farthest-side at 0 50%, var(--surface-3), transparent) left center / 14px 100% no-repeat scroll',
+    'radial-gradient(farthest-side at 100% 50%, var(--surface-3), transparent) right center / 14px 100% no-repeat scroll',
+  ].join(', '),
+};
 
 export type TableScrollProps = VariantProps<typeof tableScroll> & {
   children: React.ReactNode;
   className?: string;
 };
 
-/** Horizontal (and optionally vertical) scroll container with the table border. */
-export function TableScroll({ children, maxHeight, className }: TableScrollProps): React.JSX.Element {
-  return <div className={cn(tableScroll({ maxHeight }), className)}>{children}</div>;
+/** Horizontal (and optionally vertical) scroll container with the table border and edge scroll shadows. */
+export function TableScroll({ children, maxHeight, pageSticky, className }: TableScrollProps): React.JSX.Element {
+  return (
+    <div className={cn(tableScroll({ maxHeight, pageSticky }), className)} style={SCROLL_HINT}>
+      {children}
+    </div>
+  );
 }
 
 export function DataTable({ children, className }: { children: React.ReactNode; className?: string }): React.JSX.Element {
@@ -120,7 +139,13 @@ const tableCell = cva('px-3 py-2.5 align-top', {
       /** Small explanatory text that wraps freely, e.g. a rate breakdown note. */
       note: 'min-w-48 text-xs',
     },
-    tone: { body: 'text-body', muted: 'text-muted', primary: 'text-primary', emphasis: 'font-semibold text-heading' },
+    tone: {
+      body: 'text-body',
+      muted: 'text-muted',
+      primary: 'text-primary',
+      emphasis: 'font-semibold text-heading',
+      warning: 'font-semibold text-tariff-accent',
+    },
     colSpanFull: { true: 'px-3 py-3', false: '' },
     align: { left: '', right: 'text-right' },
     // Sticky row label for a table that scrolls sideways; the surface fill hides the cells scrolling under it.
@@ -187,12 +212,13 @@ export function InheritedValue({ value, from }: { value: string; from: string })
   );
 }
 
+// Plain cells (no box per cell), so a large matrix reads as a table rather than a wall of buttons.
 // The phone min-width keeps a scrolled matrix readable instead of squeezing each rate onto several lines.
 const matrixCell = cva(
-  'flex min-h-11 w-full min-w-32 flex-col items-start justify-center gap-0.5 rounded-md border px-2 py-1.5 text-left transition-colors lg:min-w-0',
+  'flex min-h-11 w-full min-w-32 flex-col items-start justify-center gap-0.5 rounded-md px-2 py-1.5 text-left transition-colors lg:min-w-0',
   {
     variants: {
-      selected: { true: 'border-primary bg-primary/20', false: 'border-border bg-bg hover:border-primary/60' },
+      selected: { true: 'bg-primary/20 ring-1 ring-inset ring-primary', false: 'hover:bg-surface-2' },
       dim: { true: 'opacity-60', false: '' },
     },
     defaultVariants: { selected: false, dim: false },
@@ -200,16 +226,18 @@ const matrixCell = cva(
 );
 
 // How loud the cell's main value is: `quiet` for the default (e.g. "Free"),
-// `high` for the values a reader should spot (e.g. a large extra duty).
+// `high` (amber) for the values a reader should spot (e.g. a large extra duty).
 const matrixValue = cva('text-xs', {
   variants: {
-    emphasis: { quiet: 'text-muted', normal: 'font-semibold text-heading', high: 'font-semibold text-primary' },
+    emphasis: { quiet: 'text-muted', normal: 'font-semibold text-heading', high: 'font-semibold text-tariff-accent' },
   },
   defaultVariants: { emphasis: 'normal' },
 });
 
 export type MatrixCellButtonProps = VariantProps<typeof matrixCell> &
   VariantProps<typeof matrixValue> & {
+    /** Optional name above the value, for the phone list where the row label isn't beside the cell. */
+    name?: React.ReactNode;
     /** Main value (e.g. the total rate). */
     primary: React.ReactNode;
     /** Muted second line (e.g. trade value). */
@@ -221,9 +249,10 @@ export type MatrixCellButtonProps = VariantProps<typeof matrixCell> &
   };
 
 /** Selectable cell in a matrix table — opens a detail view for that cell. */
-export function MatrixCellButton({ primary, secondary, onSelect, label, selected, dim, emphasis, className }: MatrixCellButtonProps): React.JSX.Element {
+export function MatrixCellButton({ name, primary, secondary, onSelect, label, selected, dim, emphasis, className }: MatrixCellButtonProps): React.JSX.Element {
   return (
     <button type="button" aria-pressed={Boolean(selected)} aria-label={label} onClick={onSelect} className={cn(matrixCell({ selected, dim }), className)}>
+      {name && <span className="text-sm font-semibold text-heading">{name}</span>}
       <span className={matrixValue({ emphasis })}>{primary}</span>
       {secondary && <span className="text-xs text-muted">{secondary}</span>}
     </button>
@@ -240,7 +269,7 @@ export function MatrixCell({
   className,
 }: Omit<MatrixCellButtonProps, 'onSelect' | 'label' | 'selected'> & { title?: string }): React.JSX.Element {
   return (
-    <div title={title} className={cn(matrixCell({ dim }), 'hover:border-border', className)}>
+    <div title={title} className={cn(matrixCell({ dim }), 'hover:bg-transparent', className)}>
       <span className={matrixValue({ emphasis })}>{primary}</span>
       {secondary && <span className="text-xs text-muted">{secondary}</span>}
     </div>

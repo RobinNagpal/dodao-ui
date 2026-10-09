@@ -1,6 +1,6 @@
 import { EXPORT_STATUS_BADGE, barWidth, change, usd } from '@/components/industry-tariff/chapter/exports/export-shared';
 import ImportsByYearChart from '@/components/industry-tariff/chapter/industry/ImportsByYearChart';
-import SourcesCard from '@/components/industry-tariff/chapter/updates/SourcesCard';
+import SourcesCard, { documentSourceItems } from '@/components/industry-tariff/chapter/updates/SourcesCard';
 import ShareBar from '@/components/ui/ShareBar';
 import StatusBadge from '@/components/ui/StatusBadge';
 import Text from '@/components/ui/Text';
@@ -20,7 +20,8 @@ import React from 'react';
 
 // Export overview: how much of this chapter the U.S. sells abroad, to whom, what, and the tariff
 // each top buyer charges. The detail lives on the export tariff-updates and markets pages. Laid
-// out like the import pages: stat cards, numbered takeaways, then bordered cards.
+// out like the import pages: stat cards, numbered takeaways, then the sections — the buyers table
+// is the one boxed section, the rest sits on the page.
 
 export default function ChapterExportOverview({ overview }: { overview: TariffExportOverviewContent }): React.JSX.Element {
   const { chapter, latestYear, priorYear } = overview;
@@ -50,7 +51,7 @@ export default function ChapterExportOverview({ overview }: { overview: TariffEx
           {overview.keyTakeaways.map((point, index) => (
             <InlineCard key={point} surface="card" padding="spacious" fill>
               <Stack direction="row" gap="md" align="start">
-                <Text as="span" size="lg" weight="bold" tone="primary">
+                <Text as="span" size="lg" weight="bold" tone="muted">
                   {index + 1}
                 </Text>
                 <Text size="base">{point}</Text>
@@ -60,7 +61,7 @@ export default function ChapterExportOverview({ overview }: { overview: TariffEx
         </MetricGrid>
       </Stack>
 
-      <CardSection padding="roomy" bordered>
+      <Stack as="section" gap="lg">
         <Stack gap="lg">
           <Stack gap="xs">
             <SectionHeading as="h2" size="lg" weight="bold" tone="heading">
@@ -72,7 +73,7 @@ export default function ChapterExportOverview({ overview }: { overview: TariffEx
           </Stack>
           <ImportsByYearChart byYear={overview.byYear} partners={overview.byYearPartners} chapterTitle={chapter.title} flow="exports" />
         </Stack>
-      </CardSection>
+      </Stack>
 
       <CardSection padding="roomy" bordered>
         <Stack gap="lg">
@@ -109,11 +110,9 @@ export default function ChapterExportOverview({ overview }: { overview: TariffEx
                       {change(m.changePct) ?? <EmptyCellValue />}
                     </TableCell>
                     <TableCell>
-                      <ShareBar tone="primary" widthPct={barWidth(m.sharePct, maxMarketShare)} label={`${m.sharePct.toFixed(1)}%`} />
+                      <ShareBar tone="sky" widthPct={barWidth(m.sharePct, maxMarketShare)} label={`${m.sharePct.toFixed(1)}%`} />
                     </TableCell>
-                    <TableCell variant="rateWrap" tone="primary">
-                      {m.tariffNow}
-                    </TableCell>
+                    <TableCell variant="rateWrap">{m.tariffNow}</TableCell>
                     <TableCell variant="rate">
                       <StatusBadge variant={EXPORT_STATUS_BADGE[m.status].variant} size="sm" label={EXPORT_STATUS_BADGE[m.status].label} />
                     </TableCell>
@@ -133,7 +132,7 @@ export default function ChapterExportOverview({ overview }: { overview: TariffEx
                   </TableCell>
                   <TableCell>
                     {othersSharePct !== null ? (
-                      <ShareBar tone="primary" widthPct={barWidth(othersSharePct, maxMarketShare)} label={`${othersSharePct.toFixed(1)}%`} />
+                      <ShareBar tone="sky" widthPct={barWidth(othersSharePct, maxMarketShare)} label={`${othersSharePct.toFixed(1)}%`} />
                     ) : (
                       <EmptyCellValue />
                     )}
@@ -154,7 +153,7 @@ export default function ChapterExportOverview({ overview }: { overview: TariffEx
         </Stack>
       </CardSection>
 
-      <CardSection padding="roomy" bordered>
+      <Stack as="section" gap="lg">
         <Stack gap="lg">
           <Stack gap="xs">
             <SectionHeading as="h2" size="lg" weight="bold" tone="heading">
@@ -230,18 +229,18 @@ export default function ChapterExportOverview({ overview }: { overview: TariffEx
             </DataTable>
           </TableScroll>
         </Stack>
-      </CardSection>
+      </Stack>
 
-      <CardSection padding="roomy" bordered>
+      <Stack as="section" gap="lg">
         <Stack gap="md">
           <SectionHeading as="h2" size="lg" weight="bold" tone="heading">
             Why the import rates don&apos;t apply here
           </SectionHeading>
           <MarkdownContent variant="body" html={parseChapterBodyMarkdown(overview.classificationNote)} />
         </Stack>
-      </CardSection>
+      </Stack>
 
-      <SourcesCard sources={overview.sources} />
+      <SourcesCard items={documentSourceItems(overview.sources)} />
     </Stack>
   );
 }

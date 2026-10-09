@@ -7,7 +7,8 @@ import React from 'react';
  * preset padding. Use instead of hand-writing the card chrome on report
  * sections (financial info, holdings, competition, etc.).
  */
-const cardSection = cva('bg-surface rounded-lg shadow-sm', {
+// `--scroll-cover` tells TableScroll's edge shadows which surface they sit on.
+const cardSection = cva('bg-surface rounded-lg shadow-sm [--scroll-cover:var(--surface)]', {
   variants: {
     padding: { compact: 'px-2 py-2 sm:p-3', normal: 'px-3 py-6 sm:p-6', roomy: 'px-4 py-6 sm:p-7', flush: '' },
     bordered: { true: 'border border-border rounded-xl', false: '' },

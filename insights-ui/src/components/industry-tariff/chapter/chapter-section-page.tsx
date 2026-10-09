@@ -15,6 +15,7 @@ import { ReportType, type IndustryTariffReport, type PageSeoDetails, type Tariff
 import { parseChapterBodyMarkdown } from '@/util/parse-markdown';
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
 import {
+  approach2SectionLabel,
   CHAPTER_REPORT_SECTIONS,
   ChapterReportDirection,
   ChapterRouteInfo,
@@ -152,6 +153,8 @@ interface ChapterArticleProps {
   // the card to ChapterPrototypeHeader (title, "Rates as of …" + tool links, section tabs), and
   // `toolsCrossLinks` is then rendered inline on the "Rates as of" line instead of as a bar.
   ratesAsOf?: string;
+  // Approach-2 pages that hold no rates (import statistics, FAQ) say "Updated" instead of "Rates as of".
+  asOfLabel?: string;
 }
 
 function toValidDate(value: string | undefined): Date | null {
@@ -172,7 +175,10 @@ export function ChapterArticle({
   sectionLabel,
   direction = 'import',
   ratesAsOf,
+  asOfLabel,
 }: ChapterArticleProps): JSX.Element {
+  // Approach-2 pages name the footer badge after the page, like their tab and H1.
+  const footerLabel = ratesAsOf ? approach2SectionLabel(currentSlug) : sectionLabel;
   const publishedDate = toValidDate(createdAt);
   const modifiedDate = toValidDate(updatedAt);
   const formattedModifiedDate = modifiedDate ? modifiedDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) : null;
@@ -191,6 +197,7 @@ export function ChapterArticle({
             chapter={chapter}
             pageTitle={pageTitle}
             ratesAsOf={ratesAsOf}
+            asOfLabel={asOfLabel}
             toolLinks={toolsCrossLinks}
             currentSlug={currentSlug}
             direction={direction}
@@ -240,7 +247,7 @@ export function ChapterArticle({
                 Tariff Report
               </span>
               <span className="inline-flex items-center rounded-full bg-teal-100 dark:bg-teal-900 px-2.5 py-0.5 text-xs font-medium text-teal-800 dark:text-teal-300">
-                {sectionLabel}
+                {footerLabel}
               </span>
             </div>
           </div>

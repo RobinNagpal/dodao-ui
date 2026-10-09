@@ -2,7 +2,7 @@ import { ChapterArticle, buildChapterSectionMetadata, renderChapterSection } fro
 import ChapterTariffEngineeringApproach2 from '@/components/industry-tariff/chapter/engineering/ChapterTariffEngineeringApproach2';
 import PrototypeChapterToolLinks from '@/components/industry-tariff/chapter/PrototypeChapterToolLinks';
 import { buildPrototypeMetadata, getChapterPrototype, prototypeChapterInfo } from '@/utils/tariff-reports/chapter-prototype';
-import { chapterSectionHref } from '@/utils/tariff-reports/chapter-route-helpers';
+import { approach2SectionLabel, chapterSectionHref } from '@/utils/tariff-reports/chapter-route-helpers';
 import type { Metadata } from 'next';
 
 const SECTION_SLUG = 'tariff-engineering';
@@ -31,7 +31,7 @@ export default async function Page({ params }: { params: Promise<{ chapterSlug: 
         ratesAsOf={prototype.asOf}
         currentSlug={SECTION_SLUG}
         updatedAt={prototype.tariffEngineering.lastCheckedAt}
-        sectionLabel="Documents & Levers"
+        sectionLabel={approach2SectionLabel(SECTION_SLUG)}
       >
         <ChapterTariffEngineeringApproach2 content={prototype} engineering={prototype.tariffEngineering} />
       </ChapterArticle>

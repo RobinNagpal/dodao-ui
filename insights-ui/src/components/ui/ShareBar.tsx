@@ -8,12 +8,12 @@ import React from 'react';
  * three-quarters of the cell so its label still fits beside it.
  *
  * Tones match the series colors of the tariff import charts (ImportsByYearChart):
- * `primary` (brand purple) and `teal`. Colors are inline so the bar never
+ * `sky` and `teal`. No brand purple — that is kept for links and HTS codes. Colors are inline so the bar never
  * depends on a utility class being generated.
  */
 
 const BAR_COLOR = {
-  primary: 'var(--primary-color)',
+  sky: '#38bdf8',
   teal: '#14b8a6',
 } as const;
 
@@ -25,7 +25,7 @@ export interface ShareBarProps {
   className?: string;
 }
 
-export default function ShareBar({ widthPct, label, tone = 'primary', className }: ShareBarProps): React.JSX.Element {
+export default function ShareBar({ widthPct, label, tone = 'sky', className }: ShareBarProps): React.JSX.Element {
   const width = Math.max(1, Math.min(100, widthPct)) * 0.75;
   return (
     <span className={cn('flex items-center gap-2', className)}>

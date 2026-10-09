@@ -71,7 +71,10 @@ export interface TariffProductGroup {
 
 export interface TariffStat {
   label: string;
+  /** The headline figure only, e.g. "3" — keep it short so the stat cards stay one line. */
   value: string;
+  /** Optional detail under the figure, e.g. "Canada 2025, Canada 2026, EU". */
+  note?: string;
 }
 
 /** Special Program Indicator → program name, per HTSUS General Note 3(c). */

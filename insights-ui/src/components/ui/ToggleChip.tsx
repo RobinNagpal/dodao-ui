@@ -18,6 +18,7 @@ const chip = cva('inline-flex items-center gap-1.5 rounded-full border font-medi
     active: { true: '', false: '' },
   },
   compoundVariants: [
+    // Pressed chips use brand purple: purple marks links, HTS codes and whatever is currently selected.
     { look: 'filled', active: true, className: 'badge-tone-accent border-primary/40 bg-primary/15 text-primary' },
     { look: 'filled', active: false, className: 'badge-tone-neutral border-border bg-surface-2 text-muted hover:text-body' },
     { look: 'outline', active: true, className: 'badge-tone-accent border-primary bg-primary/20 text-heading' },

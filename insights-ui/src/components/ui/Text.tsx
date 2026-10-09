@@ -18,12 +18,16 @@ const text = cva('', {
       white: 'text-heading',
       theme: 'text-body',
       primary: 'text-primary',
+      /** Amber, for values a reader should spot (e.g. a high tariff rate). */
+      warning: 'text-tariff-accent',
     },
     /** `mono` for codes (HTS numbers, program codes). */
     font: { sans: '', mono: 'font-mono' },
     leading: { normal: '', snug: 'leading-snug', relaxed: 'leading-relaxed' },
+    /** `narrow` keeps a short caption beside a control from stretching across the row. */
+    maxWidth: { none: '', narrow: 'max-w-60' },
   },
-  defaultVariants: { size: 'sm', weight: 'normal', tone: 'body', font: 'sans', leading: 'normal' },
+  defaultVariants: { size: 'sm', weight: 'normal', tone: 'body', font: 'sans', leading: 'normal', maxWidth: 'none' },
 });
 
 type TextElement = 'p' | 'span' | 'div';
@@ -36,10 +40,10 @@ export type TextProps = VariantProps<typeof text> & {
   className?: string;
 };
 
-export default function Text({ children, as = 'p', size, weight, tone, font, leading, itemProp, className }: TextProps): React.JSX.Element {
+export default function Text({ children, as = 'p', size, weight, tone, font, leading, maxWidth, itemProp, className }: TextProps): React.JSX.Element {
   const Tag = as;
   return (
-    <Tag className={cn(text({ size, weight, tone, font, leading }), className)} itemProp={itemProp}>
+    <Tag className={cn(text({ size, weight, tone, font, leading, maxWidth }), className)} itemProp={itemProp}>
       {children}
     </Tag>
   );

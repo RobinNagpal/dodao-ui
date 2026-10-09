@@ -1,19 +1,18 @@
 import ChapterChangeLog, { type ChangeLogEntry } from '@/components/industry-tariff/chapter/updates/ChapterChangeLog';
+import DutyInEffectCard from '@/components/industry-tariff/chapter/updates/DutyInEffectCard';
 import { SourceLinks } from '@/components/industry-tariff/chapter/updates/SourceLinks';
-import SourcesCard from '@/components/industry-tariff/chapter/updates/SourcesCard';
+import SourcesCard, { documentSourceItems } from '@/components/industry-tariff/chapter/updates/SourcesCard';
 import { type StatusBadgeVariant } from '@/components/ui/StatusBadge';
 import Text from '@/components/ui/Text';
 import TextLink from '@/components/ui/TextLink';
-import MetricGrid from '@/components/ui/containers/MetricGrid';
 import StatCardGrid from '@/components/ui/containers/StatCardGrid';
 import Stack from '@/components/ui/containers/Stack';
 import CardSection from '@/components/ui/sections/CardSection';
-import InlineCard from '@/components/ui/sections/InlineCard';
 import MarkdownContent from '@/components/ui/sections/MarkdownContent';
 import SectionHeading from '@/components/ui/sections/SectionHeading';
 import type { TariffChangeEntry, TariffChangeType, TariffChapterPrototype, TariffUpdatesContent } from '@/types/tariff-chapter-prototype';
 import { parseChapterBodyMarkdown } from '@/util/parse-markdown';
-import { chapterSectionHref } from '@/utils/tariff-reports/chapter-route-helpers';
+import { approach2SectionLabel, chapterSectionHref } from '@/utils/tariff-reports/chapter-route-helpers';
 import React from 'react';
 
 // Approach 2 tariff-updates page (issue #1770): what changed, as data. Two
@@ -42,7 +41,7 @@ const TYPE_LABEL: Record<TariffChangeType, string> = {
 // Status pill for what the date is ("Effective", "Signed", …). Pending entries show "Pending".
 const STATUS_VARIANT: Record<string, StatusBadgeVariant> = {
   Effective: 'success',
-  Signed: 'accent',
+  Signed: 'info',
   Published: 'info',
   Announced: 'warning',
   Pending: 'warning',
@@ -94,56 +93,33 @@ export default function ChapterTariffUpdatesApproach2({ content, updates }: Chap
 
       <StatCardGrid stats={updates.stats} />
 
-      <CardSection padding="roomy" bordered>
-        <Stack gap="lg">
-          <Stack gap="xs">
-            <SectionHeading as="h2" size="lg" weight="bold" tone="heading">
-              Extra duties in effect today
-            </SectionHeading>
-            <Text size="sm" tone="muted">
-              Charged on top of the base rate, by country of origin.{allNew ? ` None of these existed in the ${updates.before.edition}.` : ''} Scope:{' '}
-              {updates.scope} <TextLink href={chapterSectionHref(chapter.slug, 'industry-areas')}>Rates by country →</TextLink>
-            </Text>
-          </Stack>
-          <Stack gap="md">
-            {updates.inEffect.map((duty) => (
-              <InlineCard key={duty.id} surface="sunken" padding="spacious">
-                <MetricGrid columns="1-3-wide" gap="xl">
-                  <Stack gap="xs">
-                    <Text as="span" size="sm" tone="muted">
-                      {duty.country}
-                    </Text>
-                    <Text as="span" size="base" weight="semibold" tone="white">
-                      {duty.measure}
-                    </Text>
-                    <Text as="span" size="sm" tone="primary" font="mono">
-                      {duty.ch99Code}
-                    </Text>
-                    <SourceLinks ids={duty.sourceIds} sources={sources} />
-                  </Stack>
-                  <Stack gap="xs">
-                    <Text as="span" size="sm" tone="muted">
-                      {beforeLabel} → now
-                    </Text>
-                    <Text as="span" size="lg" weight="bold" tone="white">
-                      {duty.before} → {duty.now}
-                    </Text>
-                    <Text as="span" size="sm">
-                      {duty.exemption}
-                    </Text>
-                  </Stack>
-                  <Text size="sm">
-                    <Text as="span" size="sm" weight="semibold" tone="white">
-                      What it means:{' '}
-                    </Text>
-                    {duty.whatItMeans}
-                  </Text>
-                </MetricGrid>
-              </InlineCard>
-            ))}
-          </Stack>
+      <Stack as="section" gap="lg">
+        <Stack gap="xs">
+          <SectionHeading as="h2" size="lg" weight="bold" tone="heading">
+            Extra duties in effect today
+          </SectionHeading>
+          <Text size="sm" tone="muted">
+            Charged on top of the base rate, by country of origin; each rate reads {beforeLabel} → now.
+            {allNew ? ` None of these existed in the ${updates.before.edition}.` : ''} Scope: {updates.scope}{' '}
+            <TextLink href={chapterSectionHref(chapter.slug, 'industry-areas')}>{approach2SectionLabel('industry-areas')} →</TextLink>
+          </Text>
         </Stack>
-      </CardSection>
+        <Stack gap="md">
+          {updates.inEffect.map((duty) => (
+            <DutyInEffectCard
+              key={duty.id}
+              country={duty.country}
+              measure={duty.measure}
+              code={duty.ch99Code}
+              before={duty.before}
+              now={duty.now}
+              whatItMeans={duty.whatItMeans}
+              details={duty.exemption}
+              sources={<SourceLinks ids={duty.sourceIds} sources={sources} />}
+            />
+          ))}
+        </Stack>
+      </Stack>
 
       <CardSection padding="roomy" bordered>
         <Stack gap="lg">
@@ -160,7 +136,7 @@ export default function ChapterTariffUpdatesApproach2({ content, updates }: Chap
         </Stack>
       </CardSection>
 
-      <SourcesCard sources={updates.sources} />
+      <SourcesCard items={documentSourceItems(updates.sources)} />
     </Stack>
   );
 }

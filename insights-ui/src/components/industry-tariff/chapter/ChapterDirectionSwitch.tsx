@@ -32,7 +32,7 @@ export default function ChapterDirectionSwitch({ chapter, direction, layout = 'r
           { key: 'export', href: chapterSectionHref(chapter.slug, 'exports'), label: 'Export', active: direction === 'export' },
         ]}
       />
-      <Text as="span" size={layout === 'parts' ? 'xs' : 'sm'} tone="muted">
+      <Text as="span" size={layout === 'parts' ? 'xs' : 'sm'} tone="muted" leading="snug" maxWidth={layout === 'parts' ? 'narrow' : 'none'}>
         {EXPLAINER[direction]}
       </Text>
     </>

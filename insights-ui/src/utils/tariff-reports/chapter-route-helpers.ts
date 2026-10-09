@@ -13,11 +13,29 @@ export const CHAPTER_REPORT_SECTIONS: readonly ChapterReportSection[] = [
 
 // Export half of a chapter report (only for chapters with export content — see chapter-exports.ts).
 // Slugs are relative to the chapter cover, like CHAPTER_REPORT_SECTIONS; 'exports' is the export overview.
+// The labels skip "Export" because the Import | Export switch beside the tabs already says which side is open.
 export const CHAPTER_EXPORT_SECTIONS: readonly ChapterReportSection[] = [
-  { slug: 'exports', label: 'Export Overview' },
-  { slug: 'exports/tariff-updates', label: 'Export Tariff Updates' },
-  { slug: 'exports/markets', label: 'Export Markets' },
+  { slug: 'exports', label: 'Overview' },
+  { slug: 'exports/tariff-updates', label: 'Tariff updates' },
+  { slug: 'exports/markets', label: 'Markets' },
 ] as const;
+
+// Approach-2 chapters (issue #1770) name each page after what it holds, so the tab, the page H1,
+// the footer badge and the in-page links all use the same words. Same slugs as the DB-backed
+// chapters; only the labels differ ("Industry Areas" there is a sub-area essay, here a rate matrix).
+const APPROACH2_SECTION_LABELS: Record<string, string> = {
+  overview: 'Tariff rates',
+  'tariff-updates': 'Tariff updates',
+  'understand-industry': 'Import statistics',
+  'industry-areas': 'Rates by country',
+  'tariff-engineering': 'Duty-saving rules',
+  'final-conclusion': 'FAQ',
+};
+
+/** Label for an Approach-2 page ('overview' for the chapter cover, otherwise a section slug, import or export). */
+export function approach2SectionLabel(slug: string): string {
+  return APPROACH2_SECTION_LABELS[slug] ?? CHAPTER_EXPORT_SECTIONS.find((s) => s.slug === slug)?.label ?? slug;
+}
 
 export type ChapterReportDirection = 'import' | 'export';
 
