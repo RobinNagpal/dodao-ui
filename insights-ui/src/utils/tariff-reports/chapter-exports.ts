@@ -30,3 +30,15 @@ export function listChapterExportSlugs(): string[] {
 export function hasChapterExports(chapterSlug: string): boolean {
   return chapterSlug in EXPORTS_BY_SLUG;
 }
+
+/**
+ * The newest foreign tariff action on the export tariff-updates page that reaches this chapter's goods
+ * (background `reference` entries and actions that do not cover the chapter are skipped).
+ */
+export function latestExportChange(chapterSlug: string): { date: string; title: string } | null {
+  const changes = getChapterExports(chapterSlug)?.tariffUpdates.changes ?? [];
+  const newest = changes
+    .filter((change) => change.type !== 'reference' && change.coversChapter !== 'no')
+    .reduce<(typeof changes)[number] | null>((latest, change) => (!latest || change.date > latest.date ? change : latest), null);
+  return newest ? { date: newest.date, title: newest.title } : null;
+}

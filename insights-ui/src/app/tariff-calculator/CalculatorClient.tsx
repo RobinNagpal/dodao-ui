@@ -1,10 +1,23 @@
 'use client';
 
+import type { HtsSearchResponse } from '@/app/api/tariff-calculator/hts-search/route';
+import type { CalculatorRequirementsResponse } from '@/app/api/tariff-calculator/requirements/[hts10]/route';
 import HtsCodeSearch from '@/components/tariff-calculator/HtsCodeSearch';
-import { CalculatorResult, PotentialExclusion, TRANSPORT_MODES, TransportMode } from '@/utils/tariff-calculator/duty-engine';
-import { COUNTRY_OPTIONS } from '@/utils/tariff-calculator/countries';
+import NoticeCallout from '@/components/ui/NoticeCallout';
+import TextLink from '@/components/ui/TextLink';
+import {
+  CalculatorResponse,
+  DataFreshness,
+  describeUom,
+  PerUnitRequirement,
+  PotentialExclusion,
+  TRANSPORT_MODES,
+  TransportMode,
+} from '@/utils/tariff-calculator/duty-engine';
+import { isKnownCountryCode, OTHER_COUNTRY_OPTIONS, PINNED_COUNTRY_OPTIONS } from '@/utils/tariff-calculator/countries';
 import { TariffCandidateCodeType } from '@prisma/client';
 import { ArrowPathIcon, CheckCircleIcon } from '@heroicons/react/24/outline';
+import { useSearchParams } from 'next/navigation';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 interface FormState {
@@ -13,8 +26,9 @@ interface FormState {
   modeOfTransport: TransportMode;
   entryDate: string;
   dateOfLoading: string;
-  unitOfMeasure: string;
-  quantity: string;
+  // Quantity per unit of measure (e.g. { KG: '21000' }). Only the units a
+  // per-unit duty on the picked HTS line is charged in are shown/sent.
+  quantities: Record<string, string>;
 }
 
 interface SelectedCode {
@@ -31,11 +45,58 @@ const INITIAL_FORM: FormState = {
   modeOfTransport: 'OCEAN',
   entryDate: TODAY_ISO,
   dateOfLoading: TODAY_ISO,
-  // UOM/quantity stay blank until we know whether the picked HTS line is
-  // priced per-unit and which UOM it uses.
-  unitOfMeasure: '',
-  quantity: '',
+  // Quantities stay blank until we know whether the picked HTS line is
+  // priced per-unit and which unit(s) it uses.
+  quantities: {},
 };
+
+// Extra-duty data older than this gets a visible "may be missing recent tariffs" warning.
+const STALE_DATA_DAYS = 30;
+const USER_ENTERED_DESCRIPTION = 'User-entered HTS code';
+
+interface DeepLinkParams {
+  hts10: string;
+  country: string | null;
+  value: string | null;
+  qty: string | null;
+}
+
+// Reads ?hts=<10 digits>&country=<ISO2>&value=&qty= (e.g. links from the chapter
+// reports). Returns null when there's no usable HTS code.
+function parseDeepLink(params: URLSearchParams | null): DeepLinkParams | null {
+  if (!params) return null;
+  const hts10 = (params.get('hts') ?? '').replace(/[^\d]/g, '');
+  if (hts10.length !== 10) return null;
+  const countryRaw = (params.get('country') ?? '').trim().toUpperCase();
+  const valueRaw = Number(params.get('value'));
+  const qtyRaw = Number(params.get('qty'));
+  return {
+    hts10,
+    country: isKnownCountryCode(countryRaw) ? countryRaw : null,
+    value: params.get('value') && Number.isFinite(valueRaw) && valueRaw > 0 ? String(valueRaw) : null,
+    qty: params.get('qty') && Number.isFinite(qtyRaw) && qtyRaw >= 0 ? String(qtyRaw) : null,
+  };
+}
+
+// The HTS line's own description, via the same search API the picker uses.
+async function lookupHtsDescription(hts10: string): Promise<string> {
+  try {
+    const res = await fetch(`/api/tariff-calculator/hts-search?q=${encodeURIComponent(formatHts10(hts10))}`);
+    if (!res.ok) return USER_ENTERED_DESCRIPTION;
+    const data = (await res.json()) as HtsSearchResponse;
+    return data.results.find((r) => r.htsCode10 === hts10)?.description ?? USER_ENTERED_DESCRIPTION;
+  } catch {
+    return USER_ENTERED_DESCRIPTION;
+  }
+}
+
+function formatDataDate(iso: string): string {
+  return new Date(iso).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' });
+}
+
+function isStale(iso: string): boolean {
+  return Date.now() - new Date(iso).getTime() > STALE_DATA_DAYS * 24 * 60 * 60 * 1000;
+}
 
 function formatCurrency(value: number): string {
   return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 2 }).format(value);
@@ -70,7 +131,9 @@ export default function CalculatorClient(): JSX.Element {
   const [manualError, setManualError] = useState<string | null>(null);
 
   const [form, setForm] = useState<FormState>(INITIAL_FORM);
-  const [result, setResult] = useState<CalculatorResult | null>(null);
+  const [result, setResult] = useState<CalculatorResponse | null>(null);
+  // Units the picked HTS line's per-unit duties need + data freshness, loaded on selection.
+  const [requirements, setRequirements] = useState<CalculatorRequirementsResponse | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [chosenExclusions, setChosenExclusions] = useState<Set<string>>(new Set());
@@ -90,10 +153,10 @@ export default function CalculatorClient(): JSX.Element {
     try {
       const value = Number(currentForm.shipmentValueUsd);
       if (!Number.isFinite(value) || value <= 0) throw new Error('Shipment value must be a positive number.');
-      const qty = Number(currentForm.quantity);
       const unitsOfMeasure: Record<string, number> = {};
-      if (currentForm.unitOfMeasure.trim() && Number.isFinite(qty) && qty >= 0) {
-        unitsOfMeasure[currentForm.unitOfMeasure.trim().toUpperCase()] = qty;
+      for (const [uom, raw] of Object.entries(currentForm.quantities)) {
+        const qty = Number(raw);
+        if (raw.trim() !== '' && Number.isFinite(qty) && qty >= 0) unitsOfMeasure[uom] = qty;
       }
       const body = {
         hts10: code.hts10,
@@ -117,7 +180,7 @@ export default function CalculatorClient(): JSX.Element {
         const payload = (await res.json().catch(() => ({}))) as { error?: string; message?: string; errorMessage?: string };
         throw new Error(payload.error ?? payload.errorMessage ?? payload.message ?? `Calculation failed (HTTP ${res.status})`);
       }
-      const data = (await res.json()) as CalculatorResult;
+      const data = (await res.json()) as CalculatorResponse;
       if (seq !== requestSeqRef.current) return;
       setResult(data);
     } catch (err) {
@@ -136,7 +199,8 @@ export default function CalculatorClient(): JSX.Element {
     setResult(null);
     setError(null);
     setChosenExclusions(new Set());
-    setForm((prev) => ({ ...prev, unitOfMeasure: '', quantity: '' }));
+    setRequirements(null);
+    setForm((prev) => ({ ...prev, quantities: {} }));
   }
 
   function handleManualSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -147,7 +211,7 @@ export default function CalculatorClient(): JSX.Element {
       return;
     }
     setManualError(null);
-    handleSelect({ hts10: digits, htsNumber: formatHts10(digits), description: 'User-entered HTS code' });
+    handleSelect({ hts10: digits, htsNumber: formatHts10(digits), description: USER_ENTERED_DESCRIPTION });
   }
 
   function handleClearSelection() {
@@ -155,6 +219,7 @@ export default function CalculatorClient(): JSX.Element {
     setResult(null);
     setError(null);
     setChosenExclusions(new Set());
+    setRequirements(null);
     setManualCode('');
     setManualError(null);
     setForm(INITIAL_FORM);
@@ -177,16 +242,68 @@ export default function CalculatorClient(): JSX.Element {
     await submitCalculation(form, selected, next);
   }
 
-  const hideQuantityInputs = result !== null && !result.diagnostics.requiresQuantity;
-  const primaryUoms = useMemo(() => result?.diagnostics.primaryUoms ?? [], [result]);
-
-  // After each calc, if the candidate data tells us which UOMs this HTS
-  // line is priced in, snap the form's UOM into that set. This is what
-  // turns an empty UOM into 'NO' (poultry) or 'KG' (coffee) automatically.
+  // Load which units this HTS line's per-unit duties are charged in (e.g.
+  // cattle "1¢/kg" -> KG) so the form asks for the right quantity up front,
+  // plus how fresh the cached extra-duty data is.
+  const selectedHts10 = selected?.hts10 ?? null;
   useEffect(() => {
-    if (primaryUoms.length === 0) return;
-    setForm((prev) => (primaryUoms.includes(prev.unitOfMeasure) ? prev : { ...prev, unitOfMeasure: primaryUoms[0] }));
-  }, [primaryUoms]);
+    if (!selectedHts10) return;
+    let cancelled = false;
+    fetch(`/api/tariff-calculator/requirements/${selectedHts10}`)
+      .then(async (res) => (res.ok ? ((await res.json()) as CalculatorRequirementsResponse) : null))
+      .catch(() => null)
+      .then((data) => {
+        if (cancelled) return;
+        // On failure fall back to an empty list: the calculate API still
+        // returns a clear "quantity required" error naming the unit.
+        setRequirements(data ?? { hts10: selectedHts10, perUnit: [], dataFreshness: { lastUpdatedAt: null, chapterReportHref: null } });
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [selectedHts10]);
+
+  // Deep links: ?hts=&country=&value=&qty= pre-fill the form and calculate
+  // once the requirements for the code are known.
+  const searchParams = useSearchParams();
+  const deepLinkRef = useRef<DeepLinkParams | null | undefined>(undefined);
+  useEffect(() => {
+    if (deepLinkRef.current !== undefined) return;
+    const link = parseDeepLink(searchParams);
+    deepLinkRef.current = link;
+    if (!link) return;
+    setForm((prev) => ({
+      ...prev,
+      countryOfOrigin: link.country ?? prev.countryOfOrigin,
+      shipmentValueUsd: link.value ?? prev.shipmentValueUsd,
+    }));
+    lookupHtsDescription(link.hts10).then((description) => handleSelect({ hts10: link.hts10, htsNumber: formatHts10(link.hts10), description }));
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- run once on mount
+  }, []);
+
+  useEffect(() => {
+    const link = deepLinkRef.current;
+    if (!link || !selected || !requirements || requirements.hts10 !== link.hts10 || selected.hts10 !== link.hts10) return;
+    deepLinkRef.current = null;
+    const quantities: Record<string, string> = {};
+    // A single ?qty= fills the first unit the line is charged in.
+    if (link.qty !== null && requirements.perUnit.length > 0) quantities[requirements.perUnit[0].uom] = link.qty;
+    const nextForm: FormState = { ...form, quantities };
+    setForm(nextForm);
+    const hasQuantities = requirements.perUnit.every((u) => quantities[u.uom] !== undefined);
+    if (link.country && link.value && hasQuantities) {
+      submitCalculation(nextForm, selected, chosenExclusions);
+    }
+  }, [requirements, selected, form, chosenExclusions, submitCalculation]);
+
+  // Units to ask a quantity for: from the requirements call, else (if it hasn't
+  // loaded) whatever the last calculation reported.
+  const quantityUnits: PerUnitRequirement[] = useMemo(
+    () => requirements?.perUnit ?? result?.diagnostics.primaryUoms.map((uom) => ({ uom, rateDescription: '' })) ?? [],
+    [requirements, result]
+  );
+  const hideQuantityInputs = (requirements !== null || result !== null) && quantityUnits.length === 0;
+  const freshness = result?.dataFreshness ?? requirements?.dataFreshness ?? null;
 
   if (!selected) {
     return (
@@ -204,12 +321,13 @@ export default function CalculatorClient(): JSX.Element {
           updateForm={updateForm}
           submitting={submitting}
           hideQuantityInputs={hideQuantityInputs}
-          primaryUoms={primaryUoms}
+          quantityUnits={quantityUnits}
           onSubmit={onSubmit}
           error={error}
         />
 
         <div className="space-y-6">
+          {freshness && <DataFreshnessNotice freshness={freshness} />}
           {result ? <ResultPanel result={result} submitting={submitting} onToggleExclusion={toggleExclusion} /> : <EmptyResultState />}
         </div>
       </div>
@@ -274,7 +392,7 @@ function SelectedCodeBanner({ selected, onChange }: { selected: SelectedCode; on
         <div className="min-w-0 flex-1">
           <div className="text-xs uppercase tracking-wide opacity-60">Working out duties for</div>
           <div className="font-mono text-sm sm:text-base font-semibold text-tariff-accent break-all">{formatHts10(selected.hts10)}</div>
-          {selected.description && selected.description !== 'User-entered HTS code' && (
+          {selected.description && selected.description !== USER_ENTERED_DESCRIPTION && (
             <div className="mt-0.5 text-xs opacity-80 line-clamp-2 sm:line-clamp-1">{selected.description}</div>
           )}
         </div>
@@ -296,12 +414,12 @@ interface ShipmentFormProps {
   updateForm: <K extends keyof FormState>(key: K, value: FormState[K]) => void;
   submitting: boolean;
   hideQuantityInputs: boolean;
-  primaryUoms: string[];
+  quantityUnits: PerUnitRequirement[];
   onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
   error: string | null;
 }
 
-function ShipmentForm({ form, updateForm, submitting, hideQuantityInputs, primaryUoms, onSubmit, error }: ShipmentFormProps): JSX.Element {
+function ShipmentForm({ form, updateForm, submitting, hideQuantityInputs, quantityUnits, onSubmit, error }: ShipmentFormProps): JSX.Element {
   return (
     <form onSubmit={onSubmit} className="rounded-xl bg-bg border border-border p-4 sm:p-6 shadow-lg space-y-4">
       <h2 className="text-lg font-semibold heading-color">Shipment details</h2>
@@ -325,11 +443,20 @@ function ShipmentForm({ form, updateForm, submitting, hideQuantityInputs, primar
           onChange={(e) => updateForm('countryOfOrigin', e.target.value)}
           className="block w-full rounded-md border border-border bg-surface px-3 py-2 text-sm text-heading shadow-xs focus:outline-none focus:ring-2 focus:ring-amber-300/40 focus:border-amber-300/60"
         >
-          {COUNTRY_OPTIONS.map((c) => (
-            <option key={c.code} value={c.code}>
-              {c.name} ({c.code})
-            </option>
-          ))}
+          <optgroup label="Top US trading partners">
+            {PINNED_COUNTRY_OPTIONS.map((c) => (
+              <option key={c.code} value={c.code}>
+                {c.name} ({c.code})
+              </option>
+            ))}
+          </optgroup>
+          <optgroup label="All countries">
+            {OTHER_COUNTRY_OPTIONS.map((c) => (
+              <option key={c.code} value={c.code}>
+                {c.name} ({c.code})
+              </option>
+            ))}
+          </optgroup>
         </select>
       </Field>
 
@@ -373,56 +500,26 @@ function ShipmentForm({ form, updateForm, submitting, hideQuantityInputs, primar
         <p className="text-xs opacity-70">This code uses only percentage duties, so you can skip the unit and quantity.</p>
       ) : (
         <>
-          <div className="grid grid-cols-[110px_minmax(0,1fr)] gap-3">
-            <Field label="UOM" htmlFor="unitOfMeasure">
-              {primaryUoms.length === 1 ? (
-                <input
-                  id="unitOfMeasure"
-                  type="text"
-                  value={primaryUoms[0]}
-                  readOnly
-                  className="block w-full rounded-md border border-border bg-surface px-3 py-2 text-sm text-heading shadow-xs uppercase opacity-80"
-                />
-              ) : primaryUoms.length > 1 ? (
-                <select
-                  id="unitOfMeasure"
-                  value={form.unitOfMeasure}
-                  onChange={(e) => updateForm('unitOfMeasure', e.target.value)}
-                  className="block w-full rounded-md border border-border bg-surface px-3 py-2 text-sm text-heading shadow-xs uppercase focus:outline-none focus:ring-2 focus:ring-amber-300/40 focus:border-amber-300/60"
-                >
-                  {primaryUoms.map((u) => (
-                    <option key={u} value={u}>
-                      {u}
-                    </option>
-                  ))}
-                </select>
-              ) : (
-                <input
-                  id="unitOfMeasure"
-                  type="text"
-                  value={form.unitOfMeasure}
-                  onChange={(e) => updateForm('unitOfMeasure', e.target.value)}
-                  placeholder="—"
-                  className="block w-full rounded-md border border-border bg-surface px-3 py-2 text-sm text-heading shadow-xs uppercase focus:outline-none focus:ring-2 focus:ring-amber-300/40 focus:border-amber-300/60"
-                />
-              )}
-            </Field>
-            <Field label="Quantity" htmlFor="quantity">
+          {quantityUnits.map((u) => (
+            <Field key={u.uom} label={`Quantity in ${describeUom(u.uom)}`} htmlFor={`quantity-${u.uom}`}>
               <input
-                id="quantity"
+                id={`quantity-${u.uom}`}
                 type="number"
                 min="0"
-                step="0.01"
-                value={form.quantity}
-                onChange={(e) => updateForm('quantity', e.target.value)}
+                step="any"
+                required
+                value={form.quantities[u.uom] ?? ''}
+                onChange={(e) => updateForm('quantities', { ...form.quantities, [u.uom]: e.target.value })}
                 className="block w-full rounded-md border border-border bg-surface px-3 py-2 text-sm text-heading shadow-xs focus:outline-none focus:ring-2 focus:ring-amber-300/40 focus:border-amber-300/60"
               />
             </Field>
-          </div>
+          ))}
           <p className="text-xs opacity-70">
-            {primaryUoms.length > 0
-              ? `This code charges per ${primaryUoms.join(' / ')}. Enter your quantity in that unit.`
-              : 'Some codes charge per unit (like per kg). The unit fills in after the first calculation.'}
+            {quantityUnits.length > 0
+              ? `This code has a per-unit duty${
+                  quantityUnits[0].rateDescription ? ` (${quantityUnits.map((u) => u.rateDescription).join(', ')})` : ''
+                }. Enter your quantity in ${quantityUnits.map((u) => u.uom).join(' and ')}.`
+              : 'Checking whether this code charges per unit (like per kg)…'}
           </p>
         </>
       )}
@@ -460,8 +557,27 @@ function EmptyResultState(): JSX.Element {
   );
 }
 
+// "Extra-duty data last updated <date>" + a warning when the cached Chapter 99
+// data is old enough to miss recent tariff actions.
+function DataFreshnessNotice({ freshness }: { freshness: DataFreshness }): JSX.Element | null {
+  if (!freshness.lastUpdatedAt) return null;
+  const date = formatDataDate(freshness.lastUpdatedAt);
+  if (!isStale(freshness.lastUpdatedAt)) {
+    return <NoticeCallout tone="neutral">Extra-duty data last updated {date}.</NoticeCallout>;
+  }
+  return (
+    <NoticeCallout tone="warning">
+      Extra-duty data last updated {date}. Recent tariff actions after {date} (for example the July 2026 Section 301 tariffs) are not included yet. Check the
+      chapter report&apos;s Rates by country page for today&apos;s extra duties.{' '}
+      <TextLink href={freshness.chapterReportHref ?? '/tariff-reports'} wrap>
+        {freshness.chapterReportHref ? 'Open the chapter report →' : 'Browse tariff reports →'}
+      </TextLink>
+    </NoticeCallout>
+  );
+}
+
 interface ResultPanelProps {
-  result: CalculatorResult;
+  result: CalculatorResponse;
   submitting: boolean;
   onToggleExclusion: (key: string, applied: boolean) => void;
 }

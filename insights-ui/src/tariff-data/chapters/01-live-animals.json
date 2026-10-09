@@ -40,15 +40,20 @@
         "parrot import tariff"
       ]
     },
-    "intro": "Chapter 01 covers animals imported alive — horses, cattle, swine, sheep and goats, poultry, and everything from honeybees to parrots. Its **78 tariff lines** carry some of the smallest printed rates in the schedule: a penny per kilogram on cattle, 68¢ per head on goats, 0.9¢ on a day-old chick.\n\nThe printed rate is rarely what decides the cost. Canada and Mexico supplied 79% of the $3.71B the U.S. imported in 2025, and USMCA-qualifying animals from both enter free. Animals from elsewhere pay the base rate **plus an extra duty by country**: since July 24, 2026 a Section 301 tariff on 60 economies — 10% in total for the EU, +10% or +12.5% for most others, +20% for China (see Rates by country). And for any shipment, disease status, quarantine and permits decide whether it lands at all.",
+    "intro": "Chapter 01 covers animals imported alive — horses, cattle, swine, sheep and goats, poultry, and everything from honeybees to parrots. Its **78 tariff lines** carry some of the smallest printed rates in the schedule: a penny per kilogram on cattle, 68¢ per head on goats, 0.9¢ on a day-old chick.\n\nThe printed rate is rarely what decides the cost. Canada and Mexico supplied 79% of the $3.71B the U.S. imported in 2025, and USMCA-qualifying animals from both enter free. Animals from elsewhere pay the base rate **plus an extra duty by country**: since July 24, 2026 a Section 301 tariff on 60 economies — 10% in total for the EU, +10% or +12.5% for most others, +20% for China and +37.5% for Brazil (see Rates by country). And for any shipment, disease status, quarantine and permits decide whether it lands at all.",
     "stats": [
       {
         "label": "Tariff lines",
         "value": "78"
       },
       {
-        "label": "Lines with a duty",
+        "label": "Lines with a base-rate duty",
         "value": "44 of 78"
+      },
+      {
+        "label": "Lines with an extra duty for some origins",
+        "value": "78 of 78",
+        "note": "Section 301, goods of 60 economies; USMCA goods exempt"
       },
       {
         "label": "2025 imports",
@@ -3293,7 +3298,7 @@
         "USMCA live cattle duty"
       ]
     },
-    "intro": "This page compares two editions of the tariff schedule: the **2025 Basic Edition**, in force at the start of 2025, and the current **2026 Revision 21** (in force October 9, 2026). On every one of the 78 Chapter 01 lines the base rates are the same in both.\n\nEverything that changed came on top of the base rate, as extra duties set by country. The 2025 IEEPA duties (Canada +35%, Mexico +25%, the reciprocal tariff on everyone else) **ended on February 24, 2026**, and the 10% Section 122 surcharge that replaced them expired on July 23, 2026. Since **July 24, 2026**, live animals from 60 economies pay a **Section 301 tariff of 10% or 12.5%**; no Chapter 01 line is on the general exemption list. **USMCA-qualifying animals from Canada and Mexico are still exempt.**",
+    "intro": "This page compares two editions of the tariff schedule: the **2025 Basic Edition**, in force at the start of 2025, and the current **2026 Revision 21** (in force October 9, 2026). On every one of the 78 Chapter 01 lines the base rates are the same in both.\n\nEverything that changed came on top of the base rate, as extra duties set by country. The 2025 IEEPA duties (Canada +35%, Mexico +25%, the reciprocal tariff on everyone else) **ended on February 24, 2026**, and the 10% Section 122 surcharge that replaced them expired on July 23, 2026. Since **July 24, 2026**, live animals from 60 economies pay a **Section 301 tariff of 10% or 12.5%**; no Chapter 01 line is on the general exemption list. Two origins pay more because another duty stacks on top: China also pays the 7.5% List 4A duty (**20%** in all) and Brazil the separate 25% Brazil Section 301 duty (**37.5%** in all). **USMCA-qualifying animals from Canada and Mexico are still exempt.**",
     "scope": "Measures that reach Chapter 01 from any country: the 2026 Section 301 tariffs on 60 economies, the Brazil Section 301 tariff, the older China Section 301 List 4A, and the 2025–2026 IEEPA and Section 122 duties that have ended. For the rate each supplier pays, see Rates by country.",
     "before": {
       "edition": "2025 Basic Edition",
@@ -4840,7 +4845,7 @@
       {
         "label": "Largest product",
         "value": "56%",
-        "note": "Cattle"
+        "note": "Cattle other than purebred breeding (0102.29)"
       }
     ],
     "byYear": [
@@ -11429,7 +11434,7 @@
         "saves": "The base rate: each provision below is Free in the schedule",
         "appliesTo": "Animals imported for a specific purpose, whatever their Chapter 01 line",
         "document": "Evidence of the qualifying purpose (and, for 9813.00.60, a bond for temporary importation).",
-        "caveat": "Chapter 98 entries are outside the Section 301 duty except entries under 9802 (U.S. note 52(a) to Chapter 99 subchapter III); confirm the treatment with CBP before relying on it.",
+        "caveat": "The 2026 Section 301 duties (9903.05.20–9903.05.84) do not apply to goods properly entered under a Chapter 98 provision when CBP agrees the entry is appropriate, except entries under 9802.00.40–9802.00.80 (U.S. note 52(a) to Chapter 99 subchapter III); the Brazil duty (9903.05.01) has the same rule (U.S. note 50(a)). The entry must qualify, so get CBP's agreement (or a ruling) before relying on it.",
         "provisions": [
           {
             "code": "9813.00.60",
@@ -12540,7 +12545,7 @@
     "intro": "Straight answers to the most common questions about importing live animals into the U.S. — tariffs by country, HS codes and entry requirements. Each answer links to the page with the full detail.",
     "keyTakeaways": [
       "USMCA-qualifying animals from Canada and Mexico enter free — no base rate, no extra duty.",
-      "The 2025 IEEPA tariffs ended on February 24, 2026. Since July 24, 2026 the extra duty is a Section 301 tariff: 10% in total for the EU, +10% or +12.5% for most other large suppliers, +20% for China.",
+      "The 2025 IEEPA tariffs ended on February 24, 2026. Since July 24, 2026 the extra duty is a Section 301 tariff: 10% in total for the EU, +10% or +12.5% for most other large suppliers, +20% for China and +37.5% for Brazil.",
       "For live animals, USDA animal-health rules decide whether a shipment lands at all — Mexican cattle can cross only at Douglas, AZ as of October 2026. Check APHIS before every import."
     ],
     "lastCheckedAt": "2026-10-09",
@@ -12569,7 +12574,7 @@
           "import duty on horses from ireland",
           "tariffs on horses imported from europe"
         ],
-        "answer": "10% of the horse's value since July 24, 2026. For EU products whose base rate is under 10%, the Section 301 action charges 10% in place of the base rate (9903.05.39), and horses are Free at base. The 15% reciprocal rate of 2025 ended on February 24, 2026. Horses brought in temporarily for breeding, shows or competition can enter under 9813.00.60 (Free, under bond) — confirm with CBP whether the 10% also falls away. The U.S. imported $380M of horses and other equines from these five EU countries in 2025.",
+        "answer": "10% of the horse's value since July 24, 2026. For EU products whose base rate is under 10%, the Section 301 action charges 10% in place of the base rate (9903.05.39), and horses are Free at base. The 15% reciprocal rate of 2025 ended on February 24, 2026. Horses brought in temporarily for breeding, shows or competition can enter under 9813.00.60 (Free, under bond); the Section 301 duty does not apply to goods properly entered under a Chapter 98 provision when CBP agrees the entry is appropriate (U.S. note 52(a); only 9802 entries are excepted). The U.S. imported $380M of horses and other equines from these five EU countries in 2025.",
         "link": "industry-areas"
       },
       {
@@ -12634,7 +12639,7 @@
         "id": "us-imports",
         "question": "How many live animals does the U.S. import?",
         "searchedAs": ["us live cattle imports", "live cattle imports", "live animal imports"],
-        "answer": "$3.71B of live animals in 2025, of which $2.14B was cattle. Canada supplied 70% of the total; Mexico, still the No. 2 source, fell from $1.31B to $329M as its cattle shipments dropped.",
+        "answer": "$3.71B of live animals in 2025, of which $2.14B was live cattle and other bovine animals (heading 0102). Canada supplied 70% of the total; Mexico, still the No. 2 source, fell from $1.31B to $329M as its cattle shipments dropped.",
         "link": "understand-industry"
       }
     ]

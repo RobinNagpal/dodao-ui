@@ -192,6 +192,7 @@ Rules for leaves:
 | `MetricCell` | Label + value box; `sentiment` colors the value; `size`/`loading`. |
 | `StatusBadge` | Status pill (`success`/`danger`/`warning`/`info`/`accent`/`neutral`/`archived`). |
 | `PassFailBadge` | Green/red pass-fail pill. |
+| `NoticeCallout` | Boxed short notice in a badge tone (`warning`/`info`/`neutral`), e.g. the tariff calculator's "extra-duty data last updated" warning. |
 | `ScenarioOutlookBadge` | Probability / Direction / Timeframe scenario pills. |
 | `AppliedFilterChip` | Removable filter chip. |
 | `ToggleChip` | On/off filter chip (`aria-pressed`) with an optional count. |

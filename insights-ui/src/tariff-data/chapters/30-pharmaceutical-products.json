@@ -47,8 +47,13 @@
         "value": "198"
       },
       {
-        "label": "Lines with a duty",
+        "label": "Lines with a base-rate duty",
         "value": "6 of 198"
+      },
+      {
+        "label": "Lines with an extra duty for some origins",
+        "value": "90 of 198",
+        "note": "77 Section 232 (patented drugs only), 9 Section 301, 4 China Section 301 lists"
       },
       {
         "label": "2025 imports",

@@ -1,5 +1,6 @@
 import PrivateWrapper from '@/components/auth/PrivateWrapper';
 import ChapterDirectionSwitch from '@/components/industry-tariff/chapter/ChapterDirectionSwitch';
+import ChapterNextPageNav from '@/components/industry-tariff/chapter/ChapterNextPageNav';
 import ChapterPlaceholder from '@/components/industry-tariff/chapter/ChapterPlaceholder';
 import ChapterPrototypeHeader from '@/components/industry-tariff/chapter/ChapterPrototypeHeader';
 import ChapterRelatedSections from '@/components/industry-tariff/chapter/ChapterRelatedSections';
@@ -24,7 +25,8 @@ import {
   getChapterSectionCopy,
 } from '@/utils/tariff-reports/chapter-route-helpers';
 import { tariffReportTag } from '@/utils/tariff-report-tags';
-import { hasChapterExports } from '@/utils/tariff-reports/chapter-exports';
+import { hasChapterExports, latestExportChange } from '@/utils/tariff-reports/chapter-exports';
+import { getChapterPrototype, latestChapterChange } from '@/utils/tariff-reports/chapter-prototype';
 import { isValidTariffChapterSlug } from '@/utils/tariff-reports/tariff-input-validation';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
@@ -150,11 +152,24 @@ interface ChapterArticleProps {
   // Import | Export switch above the section nav; the nav lists that direction's pages.
   direction?: ChapterReportDirection;
   // Approach-2 chapters (issue #1770) pass the content file's `asOf` date. It switches the top of
-  // the card to ChapterPrototypeHeader (title, "Rates as of …" + tool links, section tabs), and
-  // `toolsCrossLinks` is then rendered inline on the "Rates as of" line instead of as a bar.
+  // the card to ChapterPrototypeHeader (title, "Rates checked …" + tool links, latest change, section
+  // tabs), and `toolsCrossLinks` is then rendered inline on the "Rates checked" line instead of as a bar.
+  // It also adds a "Next: <page>" nav at the bottom of the page.
   ratesAsOf?: string;
-  // Approach-2 pages that hold no rates (import statistics, FAQ) say "Updated" instead of "Rates as of".
+  // Approach-2 pages that hold no rates (import statistics, FAQ) say "Updated" instead of "Rates checked".
   asOfLabel?: string;
+}
+
+// The header's "Latest change" line for an Approach-2 page: the newest change on the tariff-updates
+// page of the same direction (import or export), linked to that page.
+function approach2LatestChange(chapterSlug: string, direction: ChapterReportDirection): { date: string; title: string; href: string } | undefined {
+  if (direction === 'export') {
+    const change = latestExportChange(chapterSlug);
+    return change ? { ...change, href: chapterSectionHref(chapterSlug, 'exports/tariff-updates') } : undefined;
+  }
+  const prototype = getChapterPrototype(chapterSlug);
+  const change = prototype ? latestChapterChange(prototype) : null;
+  return change ? { ...change, href: chapterSectionHref(chapterSlug, 'tariff-updates') } : undefined;
 }
 
 function toValidDate(value: string | undefined): Date | null {
@@ -198,6 +213,7 @@ export function ChapterArticle({
             pageTitle={pageTitle}
             ratesAsOf={ratesAsOf}
             asOfLabel={asOfLabel}
+            latestChange={approach2LatestChange(chapter.slug, direction)}
             toolLinks={toolsCrossLinks}
             currentSlug={currentSlug}
             direction={direction}
@@ -226,6 +242,7 @@ export function ChapterArticle({
           </>
         )}
         {children}
+        {ratesAsOf && <ChapterNextPageNav chapter={chapter} currentSlug={currentSlug} direction={direction} />}
         <footer className="mt-8 pt-6 border-t border-color">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             {modifiedDate && formattedModifiedDate ? (

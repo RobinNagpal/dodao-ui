@@ -6,13 +6,14 @@ import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/B
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { FileText, ListTree } from 'lucide-react';
 import { Metadata } from 'next';
+import { Suspense } from 'react';
 
 export const dynamic = 'force-dynamic';
 
 const PAGE_URL = 'https://koalagains.com/tariff-calculator';
 const PAGE_TITLE = 'US Tariff Calculator 2026 – Free Import Duty Estimator by HTS Code';
 const PAGE_DESCRIPTION =
-  'Free US import duty calculator. Pick an HTS code and country to see the full landed cost — base HTS rate, Section 232, 301 and IEEPA tariffs, plus port and processing fees.';
+  'Free US import duty calculator. Pick an HTS code and country to see the full landed cost — base rate plus Section 232 and Section 301 duties, and port and processing fees.';
 
 export const metadata: Metadata = {
   title: PAGE_TITLE,
@@ -37,7 +38,6 @@ export const metadata: Metadata = {
     'HTSUS calculator',
     'Section 301 tariff calculator',
     'Section 232 tariff calculator',
-    'IEEPA tariff calculator',
     'landed cost calculator',
     'import duty estimator',
     'customs duty calculator',
@@ -95,12 +95,15 @@ export default function TariffCalculatorPage() {
             />
           </div>
           <p className="mt-3 max-w-3xl text-muted-foreground">
-            Search for what you ship and see what it costs to bring into the US. We add the base HTS rate, extra tariffs like Section 232, 301 and IEEPA, and
-            the usual port and processing fees. Pick the country you ship from and the date your goods arrive to get the final cost.
+            Search for what you ship and see what it costs to bring into the US. We add the base rate plus Section 232 and Section 301 duties, and the usual
+            port and processing fees. Pick the country you ship from and the date your goods arrive to get the final cost.
           </p>
         </header>
 
-        <CalculatorClient />
+        {/* CalculatorClient reads ?hts=&country=&value=&qty= deep-link params via useSearchParams. */}
+        <Suspense fallback={null}>
+          <CalculatorClient />
+        </Suspense>
       </CalculatorThemeScope>
     </PageWrapper>
   );

@@ -2,6 +2,7 @@ import { chapterReportNavItems } from '@/components/industry-tariff/chapter/Chap
 import Heading from '@/components/ui/Heading';
 import SegmentedLinks from '@/components/ui/SegmentedLinks';
 import Text from '@/components/ui/Text';
+import TextLink from '@/components/ui/TextLink';
 import HeaderWithAside from '@/components/ui/containers/HeaderWithAside';
 import Stack from '@/components/ui/containers/Stack';
 import TabsWithAside from '@/components/ui/containers/TabsWithAside';
@@ -9,16 +10,19 @@ import type { ChapterReportDirection, ChapterRouteInfo } from '@/utils/tariff-re
 import type { ReactNode } from 'react';
 
 // Page header for Approach-2 chapters (issue #1770), shared by all report pages: the H1, a
-// "Rates as of …" (or "Updated …") line with the chapter's tool links beside it, then the report
-// pages as a tab row, named with the Approach-2 page labels.
+// "Rates checked …" (or "Updated …") line with the chapter's tool links beside it, an optional
+// "Latest change" line linking to the tariff-updates page, then the report pages as a tab row,
+// named with the Approach-2 page labels.
 
 interface ChapterPrototypeHeaderProps {
   chapter: ChapterRouteInfo;
   pageTitle: string;
   // ISO date (YYYY-MM-DD) the chapter's content was compiled.
   ratesAsOf: string;
-  // Wording before the date: "Rates as of" on the rate pages, "Updated" on pages that hold no rates.
+  // Wording before the date: "Rates checked" on the rate pages, "Updated" on pages that hold no rates.
   asOfLabel?: string;
+  // The newest dated tariff change, linked to the page that lists it.
+  latestChange?: { date: string; title: string; href: string };
   // Inline "Tools for this chapter" links (PrototypeChapterToolLinks).
   toolLinks: ReactNode;
   currentSlug: string;
@@ -41,7 +45,8 @@ export default function ChapterPrototypeHeader({
   chapter,
   pageTitle,
   ratesAsOf,
-  asOfLabel = 'Rates as of',
+  asOfLabel = 'Rates checked',
+  latestChange,
   toolLinks,
   currentSlug,
   direction = 'import',
@@ -68,6 +73,11 @@ export default function ChapterPrototypeHeader({
             </Text>
             {toolLinks}
           </Stack>
+          {latestChange && (
+            <Text size="sm" tone="muted">
+              Latest change: {formatRatesAsOf(latestChange.date)} · {latestChange.title} · <TextLink href={latestChange.href}>Details →</TextLink>
+            </Text>
+          )}
         </Stack>
       </HeaderWithAside>
       {/* The Import | Export switch sits with the section tabs: one navigation bar for side and page. */}

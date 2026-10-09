@@ -1,9 +1,8 @@
+import ChapterKeyTakeaways from '@/components/industry-tariff/chapter/ChapterKeyTakeaways';
 import Text from '@/components/ui/Text';
 import TextLink from '@/components/ui/TextLink';
-import MetricGrid, { cardGridColumns } from '@/components/ui/containers/MetricGrid';
 import Stack from '@/components/ui/containers/Stack';
 import CardSection from '@/components/ui/sections/CardSection';
-import InlineCard from '@/components/ui/sections/InlineCard';
 import { DisclosureItem, DisclosureList } from '@/components/ui/sections/DisclosureList';
 import SectionHeading from '@/components/ui/sections/SectionHeading';
 import type { TariffChapterPrototype, TariffFinalConclusionContent } from '@/types/tariff-chapter-prototype';
@@ -44,23 +43,7 @@ export default function ChapterFaqApproach2({ content, conclusion }: ChapterFaqA
       {/* The page H1 is rendered by the ChapterArticle shell from `conclusion.h1`. */}
       <Text size="base">{conclusion.intro}</Text>
 
-      <Stack as="section" gap="md">
-        <SectionHeading as="h2" size="lg" weight="bold" tone="heading">
-          In short
-        </SectionHeading>
-        <MetricGrid columns={cardGridColumns(conclusion.keyTakeaways.length)} gap="lg">
-          {conclusion.keyTakeaways.map((point, index) => (
-            <InlineCard key={point} surface="card" padding="spacious" fill>
-              <Stack direction="row" gap="md" align="start">
-                <Text as="span" size="lg" weight="bold" tone="muted">
-                  {index + 1}
-                </Text>
-                <Text size="base">{point}</Text>
-              </Stack>
-            </InlineCard>
-          ))}
-        </MetricGrid>
-      </Stack>
+      <ChapterKeyTakeaways takeaways={conclusion.keyTakeaways} />
 
       <CardSection padding="roomy" bordered>
         <Stack gap="md">
