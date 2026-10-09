@@ -60,6 +60,30 @@ How the parser reads a heading:
 | `exceptCodes` | Headings after "Except for products described in headings …", "except as provided for in headings …", "Except as provided in heading …" (every clause in the description). Ranges are expanded: `9903.05.85–9903.05.92` → each code; a range that crosses groups (`9903.05.99–9903.06.01`) runs to `.99` and restarts at `.01`. |
 | `noteRefs` | U.S. notes to subchapter III: "U.S. note 2(a)" → `2(a)`; "subdivision (v)(iv) of U.S. note 2" → `2(v)(iv)`; "subdivisions (c) and (d) of U.S. note 40" → `40(c)`, `40(d)`; "subdivisions (v)(vi) through (v)(xvi)" → `2(v)(vi)–(v)(xvi)`; "notes 20(f) or 20(g)" → both. General notes, statistical notes and notes to other chapters are skipped. Typos are kept verbatim (`9903.01.15` cites "note 2(I)"). |
 
+## Measure conditions (what the HTS line alone can't tell)
+
+A measure applies only when every condition in its `conditions` matches the shipment. Types: `TariffMeasureConditions` / `TariffShipmentConfirmations` in `insights-ui/src/types/tariff-calculator-measures.ts`. Facts the importer confirms (issue #1790) come in `MeasureEngineInput.confirmations`. A missing confirmation counts as "no": a conditional relief never applies on a guess, and the requirements route asks only the questions that change the duty for that line and country.
+
+| Condition | Matches when | Used by (`build-measures.py`) |
+| --- | --- | --- |
+| `usmcaQualifying` | USMCA (SPI `S`/`S+`) is / is not claimed | Canada/Mexico 2026 Section 301 duty and its relief (notes 52(g)/(h)) |
+| `productTypes` | the chosen product type is listed (`patented`, `generic`, `specialty`, `other`) | Section 232 pharmaceuticals (note 40). `other` = 9903.04.69 (not a pharmaceutical article, or neither patented nor generic): no Section 232 measure charges it, so it has no record of its own |
+| `spiClaimed` | one of these SPI codes is claimed | CAFTA-DR: `["P", "P+"]` (general note 29(a)(i)) on `s301-2026-except-gt-cafta-dr` (9903.06.06, note 52(j)(6)(iii), 1,737 lines) and `s301-2026-except-sv-cafta-dr` (9903.06.09, note 52(j)(7)(iii), 1,707 lines) |
+| `endUse: "pharmaceutical"` | the importer confirms the goods are for use in pharmaceutical applications | `s301-2026-exempt-52e-pharma-use` (9903.05.89, the 693 non-Chapter-30 lines of note 52(e)) and `s301-brazil-exempt-50a-v-pharma-use` (9903.05.06, the 698 non-Chapter-30 lines of note 50(a)(v)) |
+| `endUse: "research"` | solely for clinical trials, R&D or other non-commercial use | `s232-pharma-research-use` (9903.04.70, from 2026-09-29, 91 FR 60360) |
+| `usOriginIngredient: true` | the active ingredient is a product of the United States, made into dosage form abroad | `s232-pharma-us-origin-api` (9903.04.68, Proclamation 11020 clause 11) |
+| `companyProgram` | the importer confirms the manufacturer is in the program (self-declared, CBP may ask for proof) | `onshoring` → `s232-pharma-onshoring` (9903.04.64, base + 20%, 2026-09-29 to 2030-04-01, not for EU/JP/KR/CH/LI/GB whose rates are lower); `mfnPricing` (Annex II companies and other onshoring + MFN pricing agreements) → `s232-pharma-mfn-pricing` (9903.04.65, + 0%, until 2029-01-19); `annexCompany` (Annex III companies, which paid from July 31, 2026) → `s232-pharma-annex3-patented` / `-deal-15` (9903.04.60 / .62, 2026-07-31 to 2026-09-28). Every other company used `s232-pharma-other-companies-before-0929` (9903.04.61, 0%) in that window |
+| `productDescriptionIds` | the importer confirms the product matches a named-product description | Named-product exemptions (notes 52(c), 52(j)(n)(ii), 50(a)(iii)); ids in `note-product-descriptions.json` |
+
+Review notes for these measures:
+
+- **Chapter 30 pharmaceutical use is presumed.** The 7 Chapter 30 lines on the 52(e) / 50(a)(v) lists (`*-pharma-use-ch30`) stay unconditional. Chapter 30 is "Pharmaceutical products": headings 3003/3004 are medicaments and heading 3006 covers the pharmaceutical goods of chapter note 4, so the classification itself establishes the pharmaceutical use. This matches the Chapter 30 content file and its golden scenarios. 3006.92 (waste pharmaceuticals) is presumed the same way. The Chapter 28/29/32/34/35/38/39 lines need the confirmation.
+- **Section 232 headings are mutually exclusive** (note 40(a)), and the lowest applicable rate wins (Proclamation 11020 clause 8). Relief/company measures therefore list the 232 headings they displace in `replacesCodes`. Only 9903.04.60–9903.04.66 also displace the 2026 Section 301 and Brazil duties (notes 52(f)(8), 50(a)(vi)(8)). 9903.04.67, .68 and .70 do not.
+- **Note 52(i) is not modelled.** It covers CAFTA-DR textile/apparel goods of Costa Rica, the Dominican Republic, El Salvador, Guatemala, Honduras and Nicaragua (9903.05.95). It has no code list and defines its goods by the Annex to the WTO Agreement on Textiles and Clothing (general note 29(d)(v)), which the HTS doesn't reproduce. For Guatemala and El Salvador, the 52(j)(6)(iii)/(7)(iii) lists already give the same relief for the listed lines.
+- After a new HTS revision, re-check: the CAFTA-DR SPI codes; the 9903.04.64 rate step (100% from April 2, 2030); the 9903.04.65 expiry (January 20, 2029); and whether Commerce/BIS has published the Annex II/III company lists (phase B of #1790: verified company lists instead of self-declaration).
+
+**Never overwrite a SQL file that is already on `main`.** It may already have been dry-run or applied. `tariff:build-data-sql` writes `<YYYYMMDD>-<edition>.sql`. If that name already exists on `main`, rename the new output to something descriptive (e.g. `20261009-2026-revision-21-conditional-exemptions.sql`) and restore the old file. Each file replaces the tables wholesale, so applying the newest file is enough.
+
 ## 3. Review
 
 Open a PR with the regenerated JSON and SQL (plus `measures.json` changes). Reviewers check:

@@ -2,12 +2,14 @@ import 'server-only';
 import { getAppConfigValue } from '@/lib/appConfig/appConfig';
 import { prisma } from '@/prisma';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
+import noteProductDescriptionsJson from '@/tariff-data/calculator/note-product-descriptions.json';
 import type {
   MeasureEngineLine,
   TariffMeasureConditions,
   TariffMeasureRateKind,
   TariffMeasureRecord,
   TariffMeasureSource,
+  TariffProductDescription,
 } from '@/types/tariff-calculator-measures';
 import { formatHts10, HtsLookupError } from '@/utils/tariff-calculator/load-candidates';
 
@@ -114,4 +116,29 @@ export async function loadMeasures(): Promise<LoadedMeasures> {
   }
   const htsEdition = Array.from(editions).sort((a, b) => b[1] - a[1])[0]?.[0] ?? null;
   return { measures, htsEdition, reviewedAt: reviewedMs > 0 ? new Date(reviewedMs).toISOString().slice(0, 10) : null };
+}
+
+function isProductDescription(v: unknown): v is TariffProductDescription {
+  if (typeof v !== 'object' || v === null) return false;
+  const d = v as Record<string, unknown>;
+  return typeof d.id === 'string' && typeof d.codePrefix === 'string' && typeof d.description === 'string' && typeof d.note === 'string';
+}
+
+let productDescriptionsCache: TariffProductDescription[] | null = null;
+
+/**
+ * Named-product descriptions from the Chapter 99 notes (src/tariff-data/calculator/note-product-descriptions.json,
+ * issue #1790), for the "Does your product match …?" questions. Accepts a plain array or `{ descriptions: [...] }`;
+ * malformed entries are dropped. Bundled with the app (static import), so no file I/O at runtime.
+ */
+export function loadProductDescriptions(): TariffProductDescription[] {
+  if (productDescriptionsCache) return productDescriptionsCache;
+  const raw: unknown = noteProductDescriptionsJson;
+  const list: unknown[] = Array.isArray(raw)
+    ? raw
+    : typeof raw === 'object' && raw !== null && Array.isArray((raw as { descriptions?: unknown }).descriptions)
+    ? (raw as { descriptions: unknown[] }).descriptions
+    : [];
+  productDescriptionsCache = list.filter(isProductDescription);
+  return productDescriptionsCache;
 }

@@ -47,6 +47,64 @@ export interface TariffMeasureConditions {
   productTypes?: TariffProductType[];
   /** Only when one of these SPI program codes is claimed. */
   spiClaimed?: string[];
+  /** Only when the importer confirms this end use (e.g. notes 52(e) / 50(a)(v): "for use in pharmaceutical applications"). */
+  endUse?: TariffEndUse;
+  /** Only when the importer confirms the product matches one of these described products (ids in note-product-descriptions.json). */
+  productDescriptionIds?: string[];
+  /** Only when the importer confirms the manufacturer is covered by this company program (self-declared; CBP may require proof). */
+  companyProgram?: TariffCompanyProgram;
+  /** Only when the importer confirms the active ingredient is of U.S. origin, made into dosage form abroad (9903.04.68). */
+  usOriginIngredient?: boolean;
+}
+
+/**
+ * pharmaceutical — notes 52(e) / 50(a)(v): "for use in pharmaceutical applications".
+ * research — 9903.04.70: solely for clinical trials, research and development, or other non-commercial use.
+ */
+export type TariffEndUse = 'pharmaceutical' | 'research';
+
+/**
+ * Section 232 pharmaceutical company programs (Proclamation 11020):
+ * onshoring — Commerce-approved onshoring plan (9903.04.64);
+ * mfnPricing — Annex II companies with onshoring + most-favored-nation pricing agreements (9903.04.65, 0%);
+ * annexCompany — companies named in Annex III, which paid the Section 232 duty from July 31, 2026.
+ */
+export type TariffCompanyProgram = 'onshoring' | 'mfnPricing' | 'annexCompany';
+
+/** Facts the importer confirms about the shipment that the HTS line alone can't tell (issue #1790). */
+export interface TariffShipmentConfirmations {
+  endUse?: TariffEndUse;
+  /** Ids of named-product descriptions the product matches. */
+  productDescriptionIds?: string[];
+  companyProgram?: TariffCompanyProgram;
+  /** The active ingredient is of U.S. origin (made into dosage form abroad). */
+  usOriginIngredient?: boolean;
+}
+
+/** A named-product exemption description extracted from the Chapter 99 notes (note-product-descriptions.json). */
+export interface TariffProductDescription {
+  /** Stable id, e.g. "52c-8471.30.01-1". */
+  id: string;
+  /** HTS digit prefix without dots. */
+  codePrefix: string;
+  /** Description text exactly as the note states it. */
+  description: string;
+  /** Note subdivision, e.g. "52(c)". */
+  note: string;
+}
+
+/** A question the calculator asks for a line because a measure in scope depends on the answer. */
+export interface TariffConfirmationQuestion {
+  kind: 'endUse' | 'productDescription' | 'companyProgram' | 'usOriginIngredient';
+  /** For endUse / companyProgram: the value a "yes" sets; for productDescription: the description id. */
+  value: string;
+  /** Plain-language question shown to the user. */
+  prompt: string;
+  /** What changes if confirmed, e.g. "Exempt from the 12.5% Section 301 duty". */
+  effect: string;
+  /** Proof the importer may need, e.g. "CBP may ask for an end-use certification". */
+  caveat?: string;
+  sources: TariffMeasureSource[];
 }
 
 /** One reviewed measure. Mirrors the `TariffMeasure` model. */
@@ -114,6 +172,8 @@ export interface MeasureEngineInput {
   /** SPI program code claimed for the base line (e.g. "S" for USMCA), if any. */
   claimedSpi?: string;
   productType?: TariffProductType;
+  /** Facts the importer confirmed (end use, named product, company program). Missing = not confirmed. */
+  confirmations?: TariffShipmentConfirmations;
   /** ISO date. */
   entryDate: string;
 }
