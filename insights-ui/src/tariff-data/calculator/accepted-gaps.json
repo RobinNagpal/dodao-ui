@@ -1,0 +1,17 @@
+{
+  "acceptedGaps": [
+    {
+      "id": "s232-alu-russia-smelted-other-origin",
+      "kind": "condition",
+      "ch99Codes": ["9903.85.68"],
+      "linePrefixes": [],
+      "chapters": [],
+      "conditionNotModelled": "Derivative aluminum articles of a country other than Russia in which any primary aluminum was smelted in Russia, or that were cast in Russia (U.S. note 19). The engine applies 9903.85.68 to products of Russia only; it does not ask where the aluminum was smelted or cast.",
+      "reason": "Needs a smelt/cast-country question the calculator does not have yet. Goods that are the product of Russia are modelled in measures.json; the other-origin case is rare for the listed lines and is accepted until the question exists.",
+      "sources": ["https://hts.usitc.gov/reststop/file?release=2026HTSRev21&filename=Chapter%2099"],
+      "reviewedBy": "issue #1794 (coordinator decision)",
+      "reviewedAt": "2026-10-10",
+      "reviewBy": "2027-01-08"
+    }
+  ]
+}

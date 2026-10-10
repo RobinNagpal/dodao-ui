@@ -11,9 +11,9 @@ import { parseArgs } from '../tickers/lib';
  * The HTS JSON has no product coverage for Chapter 99 headings: which lines a heading covers lives in the
  * U.S. notes as subheading lists (note 52(b)–(e), (j) for the 2026 Section 301 action, note 50 for Brazil,
  * note 40(c) for Section 232 pharmaceuticals, note 20 for the China Section 301 lists, note 31 for the 2024
- * China increases). This script writes them to `src/tariff-data/calculator/note-coverage.json` as digit
- * prefixes ("0101", "30069360") keyed by subdivision ("52(b)", "52(j)(4)(i)", "20(s)(i)") so that
- * `measures.json` can be curated (and re-checked) against them.
+ * China increases, note 33 for Section 232 autos, notes 16 and 19 for Section 232 steel and aluminum). This
+ * script writes them to `src/tariff-data/calculator/note-coverage.json` as digit prefixes ("0101", "30069360")
+ * keyed by subdivision ("52(b)", "52(j)(4)(i)", "20(s)(i)") so that `measures.json` can be curated (and re-checked) against them.
  *
  *   pnpm tsx src/scripts/tariff-calculator/extract-ch99-note-coverage.ts
  *   pnpm tsx src/scripts/tariff-calculator/extract-ch99-note-coverage.ts --release 2026HTSRev22 --edition "2026 Revision 22"
@@ -31,11 +31,17 @@ import { parseArgs } from '../tickers/lib';
  * subheading 0805.90.01)" — as { id, codePrefix, description, note } plus, per passage, the relief heading, the duty
  * headings it lifts and the country (`--descriptions-out <file>` to write elsewhere). build-measures.py turns them into
  * relief measures through measures_named_products.py. Items it can't read are printed under "item(s) to review".
+ *
+ * Issue #1795 adds to the same file: the China product exclusions still in effect (note 20(a)'s compiler's note names
+ * the subdivisions, (vvv) and (www) in Revision 21) as passages "20(vvv)(i)" … "20(www)" — described items become
+ * descriptions (one per current statistical number), items that name only statistical numbers go to "wholeLines"
+ * (whole line excluded, no confirmation) — and the note 31 described products (31(k)(i) intermodal chassis, 31(l)(i)
+ * ship-to-shore cranes) whose duty build-measures.py conditions on the description.
  */
 
 const DEFAULT_RELEASE = '2026HTSRev21';
 const DEFAULT_EDITION = '2026 Revision 21';
-const DEFAULT_NOTES = ['20', '31', '40', '50', '52'];
+const DEFAULT_NOTES = ['16', '19', '20', '31', '33', '40', '50', '52'];
 const OUT_FILE = path.join(__dirname, '..', '..', 'tariff-data', 'calculator', 'note-coverage.json');
 const USER_AGENT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0 Safari/537.36';
 
@@ -210,6 +216,19 @@ function extractCodes(text: string): string[] {
       if (digits.startsWith('98') || digits.startsWith('99')) continue; // Chapter 98/99 references, not coverage
       codes.push(digits);
     }
+    // 4-digit headings in a list row ("7606760576047601", "84718431.10.00908426.91.00" — pypdf runs a row's codes
+    // together): only on rows made of codes alone, so years and amounts in the note text are never read as headings.
+    if (/^[\d.\s;,]+$/.test(line.trim())) {
+      CODE_PATTERN.lastIndex = 0;
+      const rest = line.replace(CODE_PATTERN, ' ');
+      for (const run of rest.match(/\d+/g) ?? []) {
+        if (run.length % 4 !== 0) continue;
+        for (let i = 0; i < run.length; i += 4) {
+          const heading = run.slice(i, i + 4);
+          if (!heading.startsWith('98') && !heading.startsWith('99')) codes.push(heading);
+        }
+      }
+    }
   }
   return codes;
 }
@@ -365,6 +384,11 @@ export interface NoteProductDescriptionsFile {
   /** Note subdivision → number of descriptions. */
   counts: Record<string, number>;
   passages: Record<string, NoteProductPassage>;
+  /**
+   * Exclusion items that name only statistical reporting numbers (note 20 in-effect exclusions, issue #1795): passage →
+   * 10-digit lines (no dots) excluded whole, without a confirmation.
+   */
+  wholeLines: Record<string, string[]>;
   descriptions: NoteProductDescription[];
 }
 
@@ -457,6 +481,184 @@ function extractProductDescriptions(parsed: ParsedNote, problems: string[]): Map
   return out;
 }
 
+// ---------- China Section 301 product exclusions in effect (note 20, issue #1795) ----------
+
+/**
+ * Note 20 lists every USTR product exclusion ever granted (20(h)–20(www)), but most have expired. Note 20(a) carries a
+ * compiler's note naming the subdivisions still in effect ("only subdivisions (vvv) and (www) of this note indicating
+ * exclusions are now in effect", Revision 21). Only those are extracted; the expiry date is in the relief heading's
+ * description (9903.88.69 / 9903.88.70: "through November 9, 2026"), which build-measures.py reads from ch99-headings.json.
+ */
+const IN_EFFECT_COMPILER_NOTE = /only subdivisions\s*((?:\([a-z]+\)\s*(?:,|and|or)?\s*)+)\s*of this note indicating exclusions are now in effect/;
+const STAT_NUMBER = /\d{4}\.\d{2}\.\d{4}/g;
+
+function inEffectExclusionSubdivisions(note: string, parsed: ParsedNote, problems: string[]): string[] {
+  const text = parsed.lines
+    .map((l) => l.raw)
+    .join(' ')
+    .replace(/\s+/g, ' ');
+  const m = IN_EFFECT_COMPILER_NOTE.exec(text);
+  if (!m) {
+    problems.push(`note ${note}: compiler's note naming the exclusion subdivisions in effect not found — re-read note ${note}(a)`);
+    return [];
+  }
+  return Array.from(m[1].matchAll(/\(([a-z]+)\)/g)).map((x) => `${note}(${x[1]})`);
+}
+
+/**
+ * Statistical reporting numbers an exclusion item covers today. The parenthetical (or a stat-number-only item) can list
+ * the history: "8413.91.9080 prior to January 1, 2019; described in … 8413.91.9085 or 8413.91.9096 effective January 1,
+ * 2020 through June 30, 2026; described in … 8413.91.9039, …, 8413.91.9099 effective July 1, 2026". The current
+ * segment is the one with neither "prior to" nor "through"; exactly one must exist.
+ */
+function currentStatNumbers(where: string, body: string, problems: string[]): string[] {
+  const segments = body.split(/;|,\s*(?=described in)/).filter((s) => /\d{4}\.\d{2}\.\d{4}/.test(s));
+  let current = segments.filter((s) => !/prior to|through/.test(s));
+  // "… 3926.90.9985 effective July 1, 2020; described in … 3926.90.9989 effective July 1, 2024": the latest start wins.
+  if (current.length > 1 && current.every((s) => /effective [A-Z][a-z]+ \d{1,2}, \d{4}/.test(s))) {
+    const start = (s: string): number => Date.parse(/effective ([A-Z][a-z]+ \d{1,2}, \d{4})/.exec(s)![1]);
+    current = [current.reduce((a, b) => (start(b) > start(a) ? b : a))];
+  }
+  if (current.length !== 1) {
+    problems.push(`${where}: expected one current statistical-number segment, found ${current.length}: "${body.slice(0, 200)}"`);
+    return [];
+  }
+  return Array.from(current[0].matchAll(STAT_NUMBER)).map((x) => x[0]);
+}
+
+interface ExclusionPassageResult {
+  passage: NoteProductPassage;
+  /** Items that describe a product: one description per current statistical number. */
+  descriptions: NoteProductDescription[];
+  /** Items that name only statistical numbers: the whole 10-digit line is excluded (digits, no dots). */
+  wholeLines: string[];
+}
+
+/**
+ * Parse the in-effect exclusion subdivisions of note 20 into passages: "20(vvv)(i)" … "20(vvv)(iv)" and "20(www)". Each
+ * passage header names the relief heading ("as provided in heading 9903.88.69", "a claim for the tariff treatment
+ * provided in heading 9903.88.70") and the duty headings it lifts (every other 9903.xx.xx code in the header). Items are
+ * "(4) Pump casings and bodies (described in statistical reporting number …)" or "(1) 8483.50.9040".
+ */
+function extractExclusionPassages(note: string, parsed: ParsedNote, problems: string[]): Map<string, ExclusionPassageResult> {
+  const out = new Map<string, ExclusionPassageResult>();
+  for (const sub of inEffectExclusionSubdivisions(note, parsed, problems)) {
+    const lines = parsed.lines.filter((l) => l.key === sub || l.key.startsWith(`${sub}(`));
+    if (lines.length === 0) {
+      problems.push(`${sub}: named in the compiler's note but not found in note ${note}`);
+      continue;
+    }
+    // Group: item keys end in a number ("20(vvv)(i)(4)", "20(www)(3)"); the rest is the passage header.
+    const headers = new Map<string, string[]>();
+    const items = new Map<string, Map<number, string[]>>();
+    for (const l of lines) {
+      const item = /^(.*)\((\d+)\)$/.exec(l.key);
+      const passageKey = item ? item[1] : l.key;
+      if (!item) {
+        if (!headers.has(passageKey)) headers.set(passageKey, []);
+        headers.get(passageKey)!.push(l.raw);
+        continue;
+      }
+      if (!items.has(passageKey)) items.set(passageKey, new Map());
+      const byNum = items.get(passageKey)!;
+      const n = Number(item[2]);
+      if (!byNum.has(n)) byNum.set(n, []);
+      byNum.get(n)!.push(l.raw);
+    }
+    for (const [passageKey, headerLines] of headers) {
+      const header = headerLines.join(' ').replace(/\s+/g, ' ');
+      const relief = /(?:as provided\s+in heading|tariff treatment provided in heading) (9903\.\d{2}\.\d{2})/.exec(header);
+      if (!relief) {
+        problems.push(`${passageKey}: could not find the relief heading in "${header.slice(0, 200)}"`);
+        continue;
+      }
+      const dutyHeadings = Array.from(new Set(Array.from(header.matchAll(/9903\.\d{2}\.\d{2}/g)).map((x) => x[0]))).filter((c) => c !== relief[1]);
+      const byNum = items.get(passageKey) ?? new Map<number, string[]>();
+      const nums = Array.from(byNum.keys()).sort((a, b) => a - b);
+      if (nums.length === 0 || nums.some((n, i) => n !== i + 1)) problems.push(`${passageKey}: items are not numbered 1…n (${nums.join(', ')})`);
+      const result: ExclusionPassageResult = {
+        passage: { reliefHeading: relief[1], dutyHeadings: dutyHeadings.sort(), productOf: 'China' },
+        descriptions: [],
+        wholeLines: [],
+      };
+      const perCode = new Map<string, number>();
+      for (const n of nums) {
+        const where = `${passageKey}(${n})`;
+        const text = byNum
+          .get(n)!
+          .join(' ')
+          .replace(/^\(\d+\)\s*/, '')
+          .replace(/\s+/g, ' ')
+          .trim();
+        if (/^\d{4}\.\d{2}\.\d{4}/.test(text)) {
+          for (const code of currentStatNumbers(where, text, problems)) result.wholeLines.push(code.replace(/\./g, ''));
+          continue;
+        }
+        const at = text.lastIndexOf('(described in');
+        if (at < 0 || !text.endsWith(')')) {
+          problems.push(`${where}: no "(described in statistical reporting number …)" found: "${text.slice(0, 160)}"`);
+          continue;
+        }
+        const description = text.slice(0, at).trim();
+        for (const code of currentStatNumbers(where, text.slice(at + 1, -1), problems)) {
+          const k = (perCode.get(code) ?? 0) + 1;
+          perCode.set(code, k);
+          result.descriptions.push({
+            id: `${passageKey.replace(/[()]/g, '')}-${code}-${k}`,
+            codePrefix: code.replace(/\./g, ''),
+            description,
+            note: passageKey,
+          });
+        }
+      }
+      result.wholeLines = Array.from(new Set(result.wholeLines)).sort();
+      out.set(passageKey, result);
+    }
+  }
+  return out;
+}
+
+/**
+ * Note 31 products that the HTS line alone does not identify (issue #1795): the duty applies only to the product the note
+ * describes, so build-measures.py conditions the duty on the importer confirming the description.
+ *   31(k)(i) — intermodal chassis, subassemblies and parts (9903.91.12, from November 10, 2026), in 8716.39.0090,
+ *              8716.90.30 and 8716.90.50 (other goods of those lines: 9903.91.13, no duty);
+ *   31(l)(i) — ship-to-shore gantry cranes of 8426.19.00 (9903.91.14, from November 10, 2026; the same description as
+ *              subheading 9903.92.10, 25% since September 27, 2024 — other cranes of 8426.19.00: 9903.92.80, no duty).
+ */
+function extractNote31Descriptions(parsed: ParsedNote, problems: string[]): NoteProductDescription[] {
+  const textOf = (key: string): string =>
+    parsed.lines
+      .filter((l) => l.key === key)
+      .map((l) => l.raw)
+      .join(' ')
+      .replace(/\s+/g, ' ');
+  const out: NoteProductDescription[] = [];
+  const add = (note: string, codes: string[], description: string): void => {
+    for (const code of codes) out.push({ id: `${note.replace(/[()]/g, '')}-${code}-1`, codePrefix: code.replace(/\./g, ''), description, note });
+  };
+
+  const k = textOf('31(k)(i)');
+  const chassis =
+    /applies to (intermodal chassis, subassemblies thereof, and parts thereof), of China, provided\s+for in statistical reporting number (\d{4}\.\d{2}\.\d{4}) or in subheadings (\d{4}\.\d{2}\.\d{2}) or (\d{4}\.\d{2}\.\d{2})\./.exec(
+      k
+    );
+  const definition = /(The articles consist of chassis .*? for road, marine and\/or rail transport\.)/.exec(k);
+  if (chassis && definition) {
+    const what = chassis[1].charAt(0).toUpperCase() + chassis[1].slice(1);
+    add('31(k)(i)', [chassis[2], chassis[3], chassis[4]], `${what} (${definition[1]})`);
+  } else {
+    problems.push(`31(k)(i): could not read the intermodal chassis description: "${k.slice(0, 200)}"`);
+  }
+
+  const l = textOf('31(l)(i)');
+  const crane =
+    /applies to (ship-to-shore gantry cranes, configured as .*?, including spreaders or twist-locks), provided for in subheading (\d{4}\.\d{2}\.\d{2})/.exec(l);
+  if (crane) add('31(l)(i)', [crane[2]], crane[1].charAt(0).toUpperCase() + crane[1].slice(1));
+  else problems.push(`31(l)(i): could not read the ship-to-shore gantry crane description: "${l.slice(0, 200)}"`);
+  return out;
+}
+
 function compareNoteKeys(a: string, b: string): number {
   return a.localeCompare(b, 'en', { numeric: true });
 }
@@ -489,6 +691,20 @@ function formatDescriptionsLikePrettier(file: NoteProductDescriptionsFile): stri
     lines.push(`    }${comma}`);
   });
   lines.push('  },');
+  const wholeLines = Object.entries(file.wholeLines);
+  lines.push(wholeLines.length === 0 ? '  "wholeLines": {},' : '  "wholeLines": {');
+  wholeLines.forEach(([k, codes], i) => {
+    const comma = i < wholeLines.length - 1 ? ',' : '';
+    const oneLine = `    ${JSON.stringify(k)}: [${codes.map((c) => JSON.stringify(c)).join(', ')}]${comma}`;
+    if (oneLine.length <= 160) {
+      lines.push(oneLine);
+    } else {
+      lines.push(`    ${JSON.stringify(k)}: [`);
+      codes.forEach((c, j) => lines.push(`      ${JSON.stringify(c)}${j < codes.length - 1 ? ',' : ''}`));
+      lines.push(`    ]${comma}`);
+    }
+  });
+  if (wholeLines.length > 0) lines.push('  },');
   lines.push('  "descriptions": [');
   file.descriptions.forEach((d, i) => {
     const comma = i < file.descriptions.length - 1 ? ',' : '';
@@ -546,6 +762,8 @@ async function main(): Promise<void> {
   const result: Record<string, string[]> = {};
   const problems: string[] = [];
   const passages = new Map<string, ParsedPassage>();
+  const wholeLines = new Map<string, string[]>();
+  const note31Descriptions: NoteProductDescription[] = [];
   for (const num of wanted) {
     const lines = notes.get(num);
     if (!lines) {
@@ -556,6 +774,13 @@ async function main(): Promise<void> {
     for (const [key, codes] of parsed.subdivisions) result[key] = codes;
     for (const u of parsed.unmatchedLabels) problems.push(`unrecognized subdivision label ${u}`);
     if (descriptionNotes.includes(num)) for (const [key, p] of extractProductDescriptions(parsed, problems)) passages.set(key, p);
+    if (num === '20') {
+      for (const [key, p] of extractExclusionPassages(num, parsed, problems)) {
+        passages.set(key, { passage: p.passage, descriptions: p.descriptions });
+        if (p.wholeLines.length > 0) wholeLines.set(key, p.wholeLines);
+      }
+    }
+    if (num === '31') note31Descriptions.push(...extractNote31Descriptions(parsed, problems));
     console.log(`note ${num}: ${parsed.subdivisions.size} subdivisions with codes`);
   }
 
@@ -573,11 +798,22 @@ async function main(): Promise<void> {
     htsEdition: edition,
     sourceUrl,
     generatedAt: file.generatedAt,
-    counts: Object.fromEntries(noteKeys.map((k) => [k, passages.get(k)!.descriptions.length])),
+    counts: Object.fromEntries([
+      ...noteKeys.map((k): [string, number] => [k, passages.get(k)!.descriptions.length]),
+      ...Array.from(new Set(note31Descriptions.map((d) => d.note))).map((k): [string, number] => [k, note31Descriptions.filter((d) => d.note === k).length]),
+    ]),
     passages: Object.fromEntries(noteKeys.map((k) => [k, passages.get(k)!.passage])),
-    descriptions: noteKeys.flatMap((k) =>
-      [...passages.get(k)!.descriptions].sort((a, b) => a.codePrefix.localeCompare(b.codePrefix) || a.id.localeCompare(b.id, 'en', { numeric: true }))
+    wholeLines: Object.fromEntries(
+      Array.from(wholeLines.keys())
+        .sort(compareNoteKeys)
+        .map((k) => [k, wholeLines.get(k)!])
     ),
+    descriptions: [
+      ...noteKeys.flatMap((k) =>
+        [...passages.get(k)!.descriptions].sort((a, b) => a.codePrefix.localeCompare(b.codePrefix) || a.id.localeCompare(b.id, 'en', { numeric: true }))
+      ),
+      ...note31Descriptions,
+    ],
   };
   writeFileSync(descriptionsOut, formatDescriptionsLikePrettier(descriptionsFile));
   console.log('\nNamed-product descriptions ("the following particular articles"):');
@@ -591,6 +827,9 @@ async function main(): Promise<void> {
       }${p.passage.productOf ? ` (product of ${p.passage.productOf})` : ''}`
     );
   }
+  for (const [k, codes] of Object.entries(descriptionsFile.wholeLines))
+    console.log(`  ${k.padEnd(14)} ${String(codes.length).padStart(3)}  whole 10-digit lines (no description)`);
+  for (const d of note31Descriptions) console.log(`  ${d.note.padEnd(14)}   1  ${d.codePrefix}: duty conditioned on the description`);
   console.log(`  total ${descriptionsFile.descriptions.length}; wrote ${path.relative(process.cwd(), descriptionsOut)}`);
 
   if (problems.length > 0) {

@@ -7,6 +7,7 @@ import { getChapterExports, listChapterExportSlugs } from '@/utils/tariff-report
 import { getChapterPrototype, listChapterPrototypeSlugs } from '@/utils/tariff-reports/chapter-prototype';
 import { countryCodeForName, parseRateVariants, quantityUnits, rateDollars } from '@/utils/tariff-reports/shipment-duty';
 import { calculateWithMeasures, normalizeUom } from '@/utils/tariff-calculator/measures-engine';
+import { computeCalcReadiness, enabledChapterProblems } from '../tariff-calculator/lib/calc-readiness';
 import { parseArgs, parsePositiveInt } from '../tickers/lib';
 
 /**
@@ -19,7 +20,10 @@ import { parseArgs, parsePositiveInt } from '../tickers/lib';
  *   pnpm tariff:validate-chapters --check-hts           # also ask usitc.gov whether a newer HTS revision exists
  *   pnpm tariff:validate-chapters --strict              # treat warnings as errors
  *   pnpm tariff:validate-chapters --check-calculator    # run every matrix country x line through the measures
- *                                                       # engine and flag totals that differ from the cell (offline)
+ *                                                       # engine and flag totals that differ from the cell (offline);
+ *                                                       # also fails when appConfigDefaults.json or the runbook's
+ *                                                       # documented TARIFF_CALC_MEASURES_ENABLED lists a chapter
+ *                                                       # that `pnpm tariff:calc-readiness` reports NOT READY
  *
  * Exits 1 when any ERROR is found. WARNINGs (unknown source hosts, stale
  * check dates, a newer HTS revision) are printed but don't fail the run unless
@@ -616,6 +620,19 @@ async function main(): Promise<void> {
       printReport('calculator', calcReport);
       errors += calcReport.errorCount;
     }
+  }
+
+  if (checkCalc) {
+    // Only READY chapters may be switched to the measures engine (issue #1794).
+    const calcReport = new Report();
+    try {
+      for (const p of enabledChapterProblems(computeCalcReadiness(opts.today))) calcReport.error('TARIFF_CALC_MEASURES_ENABLED', p);
+    } catch (err) {
+      calcReport.error('TARIFF_CALC_MEASURES_ENABLED', `readiness check not run: ${(err as Error).message}`);
+    }
+    if (calcReport.findings.length) printReport('calculator readiness', calcReport);
+    else console.log('\nEvery chapter enabled for the measures engine is READY (pnpm tariff:calc-readiness).');
+    errors += calcReport.errorCount;
   }
 
   for (const slug of slugs) {

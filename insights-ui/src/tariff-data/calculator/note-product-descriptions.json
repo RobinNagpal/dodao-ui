@@ -1,8 +1,13 @@
 {
   "htsEdition": "2026 Revision 21",
   "sourceUrl": "https://hts.usitc.gov/reststop/file?release=2026HTSRev21&filename=Chapter%2099",
-  "generatedAt": "2026-10-09T18:07:33.119Z",
+  "generatedAt": "2026-10-10T10:45:09.761Z",
   "counts": {
+    "20(vvv)(i)": 53,
+    "20(vvv)(ii)": 20,
+    "20(vvv)(iii)": 57,
+    "20(vvv)(iv)": 20,
+    "20(www)": 14,
     "50(a)(iii)": 11,
     "52(c)": 16,
     "52(j)(4)(ii)": 3,
@@ -14,9 +19,36 @@
     "52(j)(10)(ii)": 4,
     "52(j)(11)(ii)": 1,
     "52(j)(12)(ii)": 1,
-    "52(j)(13)(ii)": 2
+    "52(j)(13)(ii)": 2,
+    "31(k)(i)": 3,
+    "31(l)(i)": 1
   },
   "passages": {
+    "20(vvv)(i)": {
+      "reliefHeading": "9903.88.69",
+      "dutyHeadings": ["9903.88.01"],
+      "productOf": "China"
+    },
+    "20(vvv)(ii)": {
+      "reliefHeading": "9903.88.69",
+      "dutyHeadings": ["9903.88.02"],
+      "productOf": "China"
+    },
+    "20(vvv)(iii)": {
+      "reliefHeading": "9903.88.69",
+      "dutyHeadings": ["9903.88.03", "9903.88.04"],
+      "productOf": "China"
+    },
+    "20(vvv)(iv)": {
+      "reliefHeading": "9903.88.69",
+      "dutyHeadings": ["9903.88.15"],
+      "productOf": "China"
+    },
+    "20(www)": {
+      "reliefHeading": "9903.88.70",
+      "dutyHeadings": ["9903.88.02"],
+      "productOf": "China"
+    },
     "50(a)(iii)": {
       "reliefHeading": "9903.05.04",
       "dutyHeadings": ["9903.05.01"],
@@ -144,7 +176,867 @@
       "productOf": "Jordan"
     }
   },
+  "wholeLines": {
+    "20(vvv)(i)": ["8483509040", "8607211000", "9030904600"],
+    "20(vvv)(ii)": ["9025198010", "9025198020", "9025198085"],
+    "20(vvv)(iii)": [
+      "0304725000",
+      "0304831015",
+      "0304831020",
+      "0304835015",
+      "0304835020",
+      "0304835090",
+      "3808945010",
+      "3923210095",
+      "5603920070",
+      "5603920095",
+      "5603930090",
+      "6505008015",
+      "8424909080",
+      "8425310100"
+    ],
+    "20(vvv)(iv)": ["0505100050", "0505100055", "3401190000", "3926909915", "3926909920", "5504100000", "6210105010", "6210105090", "6506106030"]
+  },
   "descriptions": [
+    { "id": "20vvvi-8413.91.9039-1", "codePrefix": "8413919039", "description": "Pump casings and bodies", "note": "20(vvv)(i)" },
+    { "id": "20vvvi-8413.91.9039-2", "codePrefix": "8413919039", "description": "Pump covers", "note": "20(vvv)(i)" },
+    { "id": "20vvvi-8413.91.9039-3", "codePrefix": "8413919039", "description": "Pump parts, of plastics, each valued not over $3", "note": "20(vvv)(i)" },
+    { "id": "20vvvi-8413.91.9046-1", "codePrefix": "8413919046", "description": "Pump casings and bodies", "note": "20(vvv)(i)" },
+    { "id": "20vvvi-8413.91.9046-2", "codePrefix": "8413919046", "description": "Pump covers", "note": "20(vvv)(i)" },
+    { "id": "20vvvi-8413.91.9046-3", "codePrefix": "8413919046", "description": "Pump parts, of plastics, each valued not over $3", "note": "20(vvv)(i)" },
+    { "id": "20vvvi-8413.91.9059-1", "codePrefix": "8413919059", "description": "Pump casings and bodies", "note": "20(vvv)(i)" },
+    { "id": "20vvvi-8413.91.9059-2", "codePrefix": "8413919059", "description": "Pump covers", "note": "20(vvv)(i)" },
+    { "id": "20vvvi-8413.91.9059-3", "codePrefix": "8413919059", "description": "Pump parts, of plastics, each valued not over $3", "note": "20(vvv)(i)" },
+    { "id": "20vvvi-8413.91.9099-1", "codePrefix": "8413919099", "description": "Pump casings and bodies", "note": "20(vvv)(i)" },
+    { "id": "20vvvi-8413.91.9099-2", "codePrefix": "8413919099", "description": "Pump covers", "note": "20(vvv)(i)" },
+    { "id": "20vvvi-8413.91.9099-3", "codePrefix": "8413919099", "description": "Pump parts, of plastics, each valued not over $3", "note": "20(vvv)(i)" },
+    {
+      "id": "20vvvi-8414.30.8030-1",
+      "codePrefix": "8414308030",
+      "description": "Compressors, other than screw type, used in air conditioning equipment in motor vehicles, each valued over $88 but not over $92 per unit",
+      "note": "20(vvv)(i)"
+    },
+    {
+      "id": "20vvvi-8414.30.8060-1",
+      "codePrefix": "8414308060",
+      "description": "Rotary compressors, each exceeding 746 W but not exceeding 2,238 W, with a cooling capacity ranging from 2.3 kW to 5.5 kW",
+      "note": "20(vvv)(i)"
+    },
+    {
+      "id": "20vvvi-8419.90.3000-1",
+      "codePrefix": "8419903000",
+      "description": "Heat exchanger plates, cores, finned tubes, cones, shells, bonnets, flanges and baffles",
+      "note": "20(vvv)(i)"
+    },
+    {
+      "id": "20vvvi-8420.99.9000-1",
+      "codePrefix": "8420999000",
+      "description": "Chemically etched dies of steel, steel-rule cutting dies, movable magnetic dies, embossing folders and plastic embossing diffusers, of a kind used in manually-powered roller machines for etching or stenciling a single sheet of cardstock, paper, leather, flexible magnet, plastics, metallic foil, vellum, felt or fabric, such sheets measuring not more than 50.8 cm in width or length",
+      "note": "20(vvv)(i)"
+    },
+    {
+      "id": "20vvvi-8420.99.9000-2",
+      "codePrefix": "8420999000",
+      "description": "Cutting pads, platforms, base plates, pads, shims, trays, which function as guides for hand-operated table-top calendering machines of a width not exceeding 51 cm",
+      "note": "20(vvv)(i)"
+    },
+    {
+      "id": "20vvvi-8421.21.0000-1",
+      "codePrefix": "8421210000",
+      "description": "Machinery for filtering water, submersible, powered by batteries, manually operated, such machinery designed for use in pools, basins, aquariums, spas or similar contained bodies of water",
+      "note": "20(vvv)(i)"
+    },
+    {
+      "id": "20vvvi-8421.39.0115-1",
+      "codePrefix": "8421390115",
+      "description": "Air purification equipment, electrically powered, weighing less than 36 kg",
+      "note": "20(vvv)(i)"
+    },
+    {
+      "id": "20vvvi-8421.39.0190-1",
+      "codePrefix": "8421390190",
+      "description": "Disposable plastic filters of a kind suitable for filtering and dehumidifying a patient's breath in a medical device such as a gas analyzer",
+      "note": "20(vvv)(i)"
+    },
+    {
+      "id": "20vvvi-8421.99.0140-1",
+      "codePrefix": "8421990140",
+      "description": "Filter housings, covers, or couplings, the foregoing of steel and comprising parts of machinery or apparatus for filtering liquids",
+      "note": "20(vvv)(i)"
+    },
+    {
+      "id": "20vvvi-8431.20.0000-1",
+      "codePrefix": "8431200000",
+      "description": "Counterweight castings of iron or steel designed for use on fork lift and other works trucks",
+      "note": "20(vvv)(i)"
+    },
+    {
+      "id": "20vvvi-8431.20.0000-2",
+      "codePrefix": "8431200000",
+      "description": "Tines, carriages, and other goods handling apparatus and parts designed for use on fork lift and other works trucks",
+      "note": "20(vvv)(i)"
+    },
+    { "id": "20vvvi-8436.80.0090-1", "codePrefix": "8436800090", "description": "Animal feeding machinery", "note": "20(vvv)(i)" },
+    { "id": "20vvvi-8436.99.0090-1", "codePrefix": "8436990090", "description": "Parts of animal feeding machinery", "note": "20(vvv)(i)" },
+    {
+      "id": "20vvvi-8479.90.9591-1",
+      "codePrefix": "8479909591",
+      "description": "Reject doors, pin protectors, liners, front walls, grates, hammers, rotor and end disc caps, and anvil and breaker bars, of iron or steel, the foregoing parts of metal shredders",
+      "note": "20(vvv)(i)"
+    },
+    {
+      "id": "20vvvi-8481.90.9020-1",
+      "codePrefix": "8481909020",
+      "description": "Ball type angle cock valve bodies, of cast iron, for oleohydraulic or pneumatic transmissions",
+      "note": "20(vvv)(i)"
+    },
+    {
+      "id": "20vvvi-8481.90.9020-2",
+      "codePrefix": "8481909020",
+      "description": "Valve bodies, of aluminum, of valves for oleohydraulic or pneumatic transmissions",
+      "note": "20(vvv)(i)"
+    },
+    {
+      "id": "20vvvi-8481.90.9040-1",
+      "codePrefix": "8481909040",
+      "description": "Angle cock handle assemblies, of iron and steel, each measuring 11.43 cm by 21.59 cm by 5.08 cm and weighing 0.748 kg",
+      "note": "20(vvv)(i)"
+    },
+    {
+      "id": "20vvvi-8481.90.9040-2",
+      "codePrefix": "8481909040",
+      "description": "Pipe brackets of aluminum, each with 4 ports, the foregoing measuring 27.9 cm x 20.3 cm x 17.8 cm and weighing 11.34 kg, designed for installation into air brake control valves",
+      "note": "20(vvv)(i)"
+    },
+    {
+      "id": "20vvvi-8501.10.4020-1",
+      "codePrefix": "8501104020",
+      "description": "Electric motors, AC, permanent split capacitor type, not exceeding 16 W",
+      "note": "20(vvv)(i)"
+    },
+    {
+      "id": "20vvvi-8501.10.4060-1",
+      "codePrefix": "8501104060",
+      "description": "DC electric motors, of an output of less than 18.65 W, other than brushless, measuring less than 38 mm in diameter",
+      "note": "20(vvv)(i)"
+    },
+    {
+      "id": "20vvvi-8501.31.2000-1",
+      "codePrefix": "8501312000",
+      "description": "DC motors, of an output exceeding 37.5 W but not exceeding 74.6 W, valued over $2 but not over $30 each",
+      "note": "20(vvv)(i)"
+    },
+    {
+      "id": "20vvvi-8501.51.4040-1",
+      "codePrefix": "8501514040",
+      "description": "AC motors, multi-phase, of rolled steel frame construction",
+      "note": "20(vvv)(i)"
+    },
+    {
+      "id": "20vvvi-8501.53.8040-1",
+      "codePrefix": "8501538040",
+      "description": "AC motors, multi-phase, of an output of 186.5 kW or more but not exceeding 373 kW, having a cast iron frame construction",
+      "note": "20(vvv)(i)"
+    },
+    {
+      "id": "20vvvi-8504.90.7500-1",
+      "codePrefix": "8504907500",
+      "description": "Dual layer printed circuit board assemblies, each valued over $30 but not over $35",
+      "note": "20(vvv)(i)"
+    },
+    { "id": "20vvvi-8536.90.4000-1", "codePrefix": "8536904000", "description": "Ring terminals, for a voltage not exceeding 1,000 V", "note": "20(vvv)(i)" },
+    {
+      "id": "20vvvi-9015.80.8080-1",
+      "codePrefix": "9015808080",
+      "description": "Weather station sets, each consisting of a monitoring display and outdoor weather sensors, having a transmission range of not over 140 m and valued not over $50 per set",
+      "note": "20(vvv)(i)"
+    },
+    { "id": "20vvvi-9018.11.9000-1", "codePrefix": "9018119000", "description": "Disposable electrocardiograph (ECG) electrodes", "note": "20(vvv)(i)" },
+    {
+      "id": "20vvvi-9018.12.0000-1",
+      "codePrefix": "9018120000",
+      "description": "Ultrasonic scanning apparatus, each having dimensions not exceeding 122 cm by 77 cm by 127 cm, whether or not presented with transducer",
+      "note": "20(vvv)(i)"
+    },
+    {
+      "id": "20vvvi-9018.19.9530-1",
+      "codePrefix": "9018199530",
+      "description": "Blood pressure monitors suitable for use by medical professionals",
+      "note": "20(vvv)(i)"
+    },
+    {
+      "id": "20vvvi-9018.19.9550-1",
+      "codePrefix": "9018199550",
+      "description": "Digital peak flow meters suitable for use by medical professionals",
+      "note": "20(vvv)(i)"
+    },
+    {
+      "id": "20vvvi-9018.19.9550-2",
+      "codePrefix": "9018199550",
+      "description": "Fingertip pulse oximeters suitable for use by medical professionals",
+      "note": "20(vvv)(i)"
+    },
+    {
+      "id": "20vvvi-9018.19.9560-1",
+      "codePrefix": "9018199560",
+      "description": "Disposable surface electrodes for Intra-operative neuromonitoring (\"IONM\") systems, each composed of a surface electrode pad, an insulated wire, and a standard DIN 42802 connector",
+      "note": "20(vvv)(i)"
+    },
+    { "id": "20vvvi-9018.19.9560-2", "codePrefix": "9018199560", "description": "Parts and accessories of capnography monitors", "note": "20(vvv)(i)" },
+    {
+      "id": "20vvvi-9018.90.3000-1",
+      "codePrefix": "9018903000",
+      "description": "Anesthetic instruments and appliances suitable for use in medical or surgical sciences, and parts and accessories of the foregoing",
+      "note": "20(vvv)(i)"
+    },
+    {
+      "id": "20vvvi-9018.90.6000-1",
+      "codePrefix": "9018906000",
+      "description": "Electrosurgical cautery pencils with electrical connectors",
+      "note": "20(vvv)(i)"
+    },
+    {
+      "id": "20vvvi-9022.12.0000-1",
+      "codePrefix": "9022120000",
+      "description": "Combined positron emission tomography/computed tomography (PET/CT) scanners which utilize multiple PET gantries (frames) on a common base",
+      "note": "20(vvv)(i)"
+    },
+    {
+      "id": "20vvvi-9022.14.0000-1",
+      "codePrefix": "9022140000",
+      "description": "Radiation therapy systems, each encased by steel-based structural shell with gantry cover comprising three pairs of plastics-based panels",
+      "note": "20(vvv)(i)"
+    },
+    { "id": "20vvvi-9022.90.4000-1", "codePrefix": "9022904000", "description": "X-ray tube housings and parts thereof", "note": "20(vvv)(i)" },
+    {
+      "id": "20vvvi-9022.90.6000-1",
+      "codePrefix": "9022906000",
+      "description": "Multi-leaf collimators of radiotherapy systems based on the use of X-ray",
+      "note": "20(vvv)(i)"
+    },
+    {
+      "id": "20vvvi-9022.90.6000-2",
+      "codePrefix": "9022906000",
+      "description": "Printed circuit board assemblies, of a kind designed for use in X-ray apparatus",
+      "note": "20(vvv)(i)"
+    },
+    {
+      "id": "20vvvi-9032.10.0030-1",
+      "codePrefix": "9032100030",
+      "description": "Thermostats designed for air conditioning or heating systems, not designed to connect to the internet, the foregoing designed for wall mounting",
+      "note": "20(vvv)(i)"
+    },
+    {
+      "id": "20vvvii-3906.90.5000-1",
+      "codePrefix": "3906905000",
+      "description": "Acrylic acid-2-acrylamido-2-methylpropanesulfonic acid-acrylic ester (AA/AMPS/I-IPA) terpolymers, presented in dry form",
+      "note": "20(vvv)(ii)"
+    },
+    {
+      "id": "20vvvii-3919.10.2055-1",
+      "codePrefix": "3919102055",
+      "description": "Rolls of polyethylene film coated with a solvent acrylic adhesive",
+      "note": "20(vvv)(ii)"
+    },
+    {
+      "id": "20vvvii-3919.90.5040-1",
+      "codePrefix": "3919905040",
+      "description": "Polyethylene film, 20.32 to 198.12 cm in width, and 30.5 to 2000.5 min length, coated on one side with solvent acrylic adhesive, clear or in transparent colors, whether or not printed, in rolls",
+      "note": "20(vvv)(ii)"
+    },
+    {
+      "id": "20vvvii-3919.90.5060-1",
+      "codePrefix": "3919905060",
+      "description": "Polyethylene film, 20.32 to 198.12 cm in width, and 30.5 to 2000.5 min length, coated on one side with solvent acrylic adhesive, clear or in transparent colors, whether or not printed, in rolls",
+      "note": "20(vvv)(ii)"
+    },
+    {
+      "id": "20vvvii-3920.62.0090-1",
+      "codePrefix": "3920620090",
+      "description": "Films coated on one or both sides with polyvinylidene chloride (PVdC) or polyvinyl alcohol (PVOH), whether or not having a primer layer between the base and coating; any of the foregoing having a total thickness greater than 0.01 mm but not greater than 0.03 mm",
+      "note": "20(vvv)(ii)"
+    },
+    {
+      "id": "20vvvii-8407.90.9010-1",
+      "codePrefix": "8407909010",
+      "description": "Gas (natural or liquid propane (LP)) engines each having a displacement of more than 2 liters but not more than 2.5 liters",
+      "note": "20(vvv)(ii)"
+    },
+    {
+      "id": "20vvvii-8424.89.9000-1",
+      "codePrefix": "8424899000",
+      "description": "Dispensers of hand-cleaning or hand-sanitizing solutions, whether employing a manual pump or a proximity-detecting battery-operated pump, each article weighing not more than 3 kg",
+      "note": "20(vvv)(ii)"
+    },
+    {
+      "id": "20vvvii-8501.10.6080-1",
+      "codePrefix": "8501106080",
+      "description": "Electric motors, with an output of 18.65 W or more but not exceeding 37.5 W, with attached cables, designed for use in adjusting motor vehicle seats",
+      "note": "20(vvv)(ii)"
+    },
+    {
+      "id": "20vvvii-8501.31.4000-1",
+      "codePrefix": "8501314000",
+      "description": "DC electric motors, 24 V, with an output not exceeding 515 W, measuring not over 95 mm in outside diameter, not over 155 mm in length and with a shaft not over 30 mm in length",
+      "note": "20(vvv)(ii)"
+    },
+    {
+      "id": "20vvvii-8501.31.4000-2",
+      "codePrefix": "8501314000",
+      "description": "DC electric motors, with an output exceeding 74.6 W but not exceeding 735 W, containing lead wires and an electrical connector",
+      "note": "20(vvv)(ii)"
+    },
+    {
+      "id": "20vvvii-8501.31.4000-3",
+      "codePrefix": "8501314000",
+      "description": "DC motors with a power output exceeding 74.6 W but not exceeding 230 W, measuring less than 105 mm in diameter and 50 mm or more but not over 100 mm in length",
+      "note": "20(vvv)(ii)"
+    },
+    {
+      "id": "20vvvii-8501.31.4000-4",
+      "codePrefix": "8501314000",
+      "description": "DC motors, of an output exceeding 74.6 W but not exceeding 735 W, each valued not over $18",
+      "note": "20(vvv)(ii)"
+    },
+    {
+      "id": "20vvvii-8536.30.8000-1",
+      "codePrefix": "8536308000",
+      "description": "Ground Fault Circuit Interrupters (GFCIs), Appliance Leakage Current Interrupters (ALCIs), Leakage Current Detection Interrupters (LCDIs), and Arc Fault Circuit Interrupters (AFCIs)",
+      "note": "20(vvv)(ii)"
+    },
+    {
+      "id": "20vvvii-8536.50.7000-1",
+      "codePrefix": "8536507000",
+      "description": "Electronic AC passive infrared (PIR) motion sensing switches",
+      "note": "20(vvv)(ii)"
+    },
+    {
+      "id": "20vvvii-8543.70.4500-1",
+      "codePrefix": "8543704500",
+      "description": "Position or speed sensors for motor vehicle transmission systems, each valued not over $12",
+      "note": "20(vvv)(ii)"
+    },
+    {
+      "id": "20vvvii-8543.70.9860-1",
+      "codePrefix": "8543709860",
+      "description": "Apparatus using passive infrared detection sensors designed for turning lights on and off",
+      "note": "20(vvv)(ii)"
+    },
+    { "id": "20vvvii-8543.70.9860-2", "codePrefix": "8543709860", "description": "Liquid leak detectors", "note": "20(vvv)(ii)" },
+    {
+      "id": "20vvvii-8543.70.9860-3",
+      "codePrefix": "8543709860",
+      "description": "Robots, programmable, measuring not more than 40 cm high by 22 cm wide by 27 cm deep, incorporating an LCD display, camera and microphone but without \"hands\"",
+      "note": "20(vvv)(ii)"
+    },
+    {
+      "id": "20vvvii-8711.10.0000-1",
+      "codePrefix": "8711100000",
+      "description": "Motorcycles (including mopeds), with reciprocating internal combustion piston engine of a cylinder capacity not exceeding 50 cc, valued not over $500 each",
+      "note": "20(vvv)(ii)"
+    },
+    { "id": "20vvvii-9027.10.2000-1", "codePrefix": "9027102000", "description": "Portable, wireless enabled, electrical gas monitors", "note": "20(vvv)(ii)" },
+    {
+      "id": "20vvviii-1605.10.2010-1",
+      "codePrefix": "1605102010",
+      "description": "King crab meat, frozen in blocks each weighing at least 1 kg but not more than 1.2 kg, in airtight containers",
+      "note": "20(vvv)(iii)"
+    },
+    {
+      "id": "20vvviii-1605.10.2022-1",
+      "codePrefix": "1605102022",
+      "description": "Snow crab meat (C. opilio), frozen in blocks, in airtight containers each with net weight of not more than 1.2 kg",
+      "note": "20(vvv)(iii)"
+    },
+    {
+      "id": "20vvviii-1605.10.2030-1",
+      "codePrefix": "1605102030",
+      "description": "Dungeness crab meat, frozen in blocks, in airtight containers with net weight of not more than 1.2 kg",
+      "note": "20(vvv)(iii)"
+    },
+    {
+      "id": "20vvviii-1605.10.2090-1",
+      "codePrefix": "1605102090",
+      "description": "Crab meat (other than King crab, Snow crab, Dungeness or swimming crabs), frozen in blocks, in airtight containers with net weight of not more than 1.5 kg",
+      "note": "20(vvv)(iii)"
+    },
+    {
+      "id": "20vvviii-2805.11.0000-1",
+      "codePrefix": "2805110000",
+      "description": "Sodium metal (CAS No. 7440-23-5), in bulk solid form",
+      "note": "20(vvv)(iii)"
+    },
+    {
+      "id": "20vvviii-2917.12.5000-1",
+      "codePrefix": "2917125000",
+      "description": "Sodium adipate (1,4-butanedicarboxylic acid, disodium salt) (IUPAC name: disodium hexanedioate) (CAS No. 7486-38-6)",
+      "note": "20(vvv)(iii)"
+    },
+    {
+      "id": "20vvviii-2929.90.5095-1",
+      "codePrefix": "2929905095",
+      "description": "N-(n-Butyl)thiophosphoric triamide (IUPAC name: N-Diaminophosphinothioylbutan-1-amine) (CAS No. 94317-64-3)",
+      "note": "20(vvv)(iii)"
+    },
+    {
+      "id": "20vvviii-3815.11.0000-1",
+      "codePrefix": "3815110000",
+      "description": "Supported nickel-based catalysts, of a kind used for methanation, desulfurization, hydrogenation, pre-reforming or reforming of organic chemicals or for protection of hydrotreating catalysts from arsine poisoning",
+      "note": "20(vvv)(iii)"
+    },
+    { "id": "20vvviii-3815.19.0000-1", "codePrefix": "3815190000", "description": "Supported catalysts for polymerization", "note": "20(vvv)(iii)" },
+    {
+      "id": "20vvviii-3815.19.0000-2",
+      "codePrefix": "3815190000",
+      "description": "Supported catalysts of copper oxide or zinc oxide as the active ingredients for arsine removal",
+      "note": "20(vvv)(iii)"
+    },
+    {
+      "id": "20vvviii-3815.19.0000-3",
+      "codePrefix": "3815190000",
+      "description": "Supported catalysts with copper carbonate or zinc carbonate as the active ingredients for low temperature desulfurization",
+      "note": "20(vvv)(iii)"
+    },
+    {
+      "id": "20vvviii-3815.19.0000-4",
+      "codePrefix": "3815190000",
+      "description": "Supported catalysts with metal sulfide as the active substance for mercury removal",
+      "note": "20(vvv)(iii)"
+    },
+    {
+      "id": "20vvviii-3815.19.0000-5",
+      "codePrefix": "3815190000",
+      "description": "Supported catalysts with molybdenum compounds as the active substance for hydrogenation",
+      "note": "20(vvv)(iii)"
+    },
+    {
+      "id": "20vvviii-3815.19.0000-6",
+      "codePrefix": "3815190000",
+      "description": "Supported catalysts with zinc oxide as the active substance",
+      "note": "20(vvv)(iii)"
+    },
+    {
+      "id": "20vvviii-3923.50.0000-1",
+      "codePrefix": "3923500000",
+      "description": "One-piece stoppers, of polypropiolactone (\"PPL\") or polylactic acid (\"PLA\") polymers, each comprising a disc-shaped top attached to a rounded, tapered plug with a protruding stirrer, measuring at least 55 mm but not more than 120.7 mm in overall length, and weighing at least 0.6 g but not more than 1.1 g each, of a kind used with lids for beverage containers",
+      "note": "20(vvv)(iii)"
+    },
+    {
+      "id": "20vvviii-4202.92.3120-1",
+      "codePrefix": "4202923120",
+      "description": "Backpacks with outer surface of textile materials of man-made fibers, each measuring at least 35 cm but not more than 75 cm in height, at least 19 cm but not more than 34 cm in width, and at least 5 cm but not more than 26 cm in depth",
+      "note": "20(vvv)(iii)"
+    },
+    {
+      "id": "20vvviii-5007.20.0065-1",
+      "codePrefix": "5007200065",
+      "description": "Silk fabrics, containing 85 percent or more by weight of silk or of silk waste other than noil silk, the foregoing not printed, not jacquard woven, measuring over 127 cm in width",
+      "note": "20(vvv)(iii)"
+    },
+    {
+      "id": "20vvviii-5007.20.0085-1",
+      "codePrefix": "5007200085",
+      "description": "Silk fabrics, containing 85 percent or more by weight of silk or of silk waste other than noil silk, the foregoing not printed, not jacquard woven, measuring 107 cm or more but not over 127 cm in width",
+      "note": "20(vvv)(iii)"
+    },
+    {
+      "id": "20vvviii-6001.10.2000-1",
+      "codePrefix": "6001102000",
+      "description": "Long pile knit fabrics, of acrylic pile on polyester ground, valued not over $16 per m2",
+      "note": "20(vvv)(iii)"
+    },
+    {
+      "id": "20vvviii-6802.99.0090-1",
+      "codePrefix": "6802990090",
+      "description": "Sandstone known as brown wave, of a kind used in outdoor living spaces, containing one textured side and up to four chiseled edges with a density of 2,750 kg/m3",
+      "note": "20(vvv)(iii)"
+    },
+    {
+      "id": "20vvviii-6802.99.0090-2",
+      "codePrefix": "6802990090",
+      "description": "Sandstone with a flamed finish on one side and a length of 200 mm or more but not over 3,100 mm, a width of 100 mm or more but not over 1,380 mm and a thickness of 30 mm or more but not over 180 mm",
+      "note": "20(vvv)(iii)"
+    },
+    { "id": "20vvviii-6909.11.2000-1", "codePrefix": "6909112000", "description": "Grinding beads of yttria-stabilized zirconia", "note": "20(vvv)(iii)" },
+    {
+      "id": "20vvviii-7007.19.0000-1",
+      "codePrefix": "7007190000",
+      "description": "Screen protectors of tempered safety glass, transparent, cut, and treated, with adhesive on one side, in rectangular sheets, each weighing at least 6 g but not more than 77 g, each measuring not less than 2.8 cm but not more than 28 cm in height, not less than 1.9 cm but not more than 21 cm in width, and not more than 0.1 cm in thickness",
+      "note": "20(vvv)(iii)"
+    },
+    {
+      "id": "20vvviii-7007.19.0000-2",
+      "codePrefix": "7007190000",
+      "description": "Sheets of tempered safety glass, coated with silicone oxide, having a surface area of less than 2.5 m2, designed to be placed over solar cell panels for protection from external damage",
+      "note": "20(vvv)(iii)"
+    },
+    {
+      "id": "20vvviii-7009.10.0000-1",
+      "codePrefix": "7009100000",
+      "description": "Rear-view mirrors of convex glass for motor vehicles, each measuring not less than 1.75 mm and not more than 2.4 mm in thickness, not less than 125 mm and not more than 210 mm in length, not less than 97 mm and not more than 180 mm in width, weighing not less than 74 g and not more than 188 g",
+      "note": "20(vvv)(iii)"
+    },
+    {
+      "id": "20vvviii-7009.10.0000-2",
+      "codePrefix": "7009100000",
+      "description": "Rear-view mirrors of flat glass for motor vehicles, each measuring not less than 1.75 mm but not more than 2.4 mm in thickness, not less than 163 mm but not more than 210 mm in length, not less than 107 mm but not more than 167 mm in width and weighing not less than 80 g but not more than 188 g",
+      "note": "20(vvv)(iii)"
+    },
+    {
+      "id": "20vvviii-7016.10.0000-1",
+      "codePrefix": "7016100000",
+      "description": "Tiles of non-recycled glass on a vinyl mesh backing, in a grid pattern of not less than 304 mm by 304 mm and not exceeding 305 mm by 305 mm, for mosaics or other decorative or construction purposes",
+      "note": "20(vvv)(iii)"
+    },
+    {
+      "id": "20vvviii-7326.90.8688-1",
+      "codePrefix": "7326908688",
+      "description": "Cable hooks of steel, each weighing not less than 0.2 kg, measuring not less than 9 cm in length, not less than 5 cm in width and not less than 1 cm in height with spring loaded closure gate",
+      "note": "20(vvv)(iii)"
+    },
+    {
+      "id": "20vvviii-8205.51.3030-1",
+      "codePrefix": "8205513030",
+      "description": "Kitchen and table implements of iron or steel, non-electric, including but not limited to peelers, graters and whisks",
+      "note": "20(vvv)(iii)"
+    },
+    {
+      "id": "20vvviii-8413.30.9090-1",
+      "codePrefix": "8413309090",
+      "description": "Cooling medium pumps for internal combustion piston engines of the motor vehicles of headings 8703 or 8704",
+      "note": "20(vvv)(iii)"
+    },
+    {
+      "id": "20vvviii-8414.59.6540-1",
+      "codePrefix": "8414596540",
+      "description": "DC blowers for use in motor vehicle climate control systems, each measuring no less than 323 mm by 122 mm by 102 mm and no more than 357 mm by 214 mm by 167 mm",
+      "note": "20(vvv)(iii)"
+    },
+    {
+      "id": "20vvviii-8414.59.6560-1",
+      "codePrefix": "8414596560",
+      "description": "DC centrifugal radial blowers, each measuring not less than 345 mm by 122 mm by 102 mm and not more than 355 mm by 173 mm by 145 mm, of an output of 100 W to 285 W, and weighing at least 1.80 kg but no more than 2.72 kg",
+      "note": "20(vvv)(iii)"
+    },
+    {
+      "id": "20vvviii-8418.50.0080-1",
+      "codePrefix": "8418500080",
+      "description": "Electric display cases incorporating refrigerating equipment designed for commercial use, each with a glass front to display the food or drink being stored",
+      "note": "20(vvv)(iii)"
+    },
+    {
+      "id": "20vvviii-8473.30.1180-1",
+      "codePrefix": "8473301180",
+      "description": "Printed circuit assemblies for rendering images onto computer screens (\"graphics processing modules\")",
+      "note": "20(vvv)(iii)"
+    },
+    {
+      "id": "20vvviii-8473.30.1180-2",
+      "codePrefix": "8473301180",
+      "description": "Printed circuit assemblies to enhance the graphics performance of automatic data processing (ADP) machines (\"accelerator modules\")",
+      "note": "20(vvv)(iii)"
+    },
+    {
+      "id": "20vvviii-8473.30.1180-3",
+      "codePrefix": "8473301180",
+      "description": "Printed circuit assemblies, constituting unfinished logic boards",
+      "note": "20(vvv)(iii)"
+    },
+    {
+      "id": "20vvviii-8473.30.5100-1",
+      "codePrefix": "8473305100",
+      "description": "Parts and accessories of machines of heading 8471, whether or not incorporating fan hubs or LEDs but not incorporating other goods of heading 8541 or 8542",
+      "note": "20(vvv)(iii)"
+    },
+    {
+      "id": "20vvviii-8501.40.4020-1",
+      "codePrefix": "8501404020",
+      "description": "Electric gear motors, single phase AC, of an output of 74.6 W or more but not exceeding 228 W, each with a spring, a coupling, and a locking connector, the assembly measuring not more than 30 cm in length, not more than 11 cm in width, not more than 16 cm in height",
+      "note": "20(vvv)(iii)"
+    },
+    {
+      "id": "20vvviii-8501.40.4040-1",
+      "codePrefix": "8501404040",
+      "description": "AC motors, single phase, each of an output exceeding 74.6 W but not exceeding 335 W, measuring not more than 13 cm in diameter and not more than 13 cm in height and with a shaft measuring not more than 39 cm in length",
+      "note": "20(vvv)(iii)"
+    },
+    {
+      "id": "20vvviii-8504.40.9580-1",
+      "codePrefix": "8504409580",
+      "description": "Power adapters for a weather sensor or weather station display",
+      "note": "20(vvv)(iii)"
+    },
+    {
+      "id": "20vvviii-8511.40.0000-1",
+      "codePrefix": "8511400000",
+      "description": "Starter motors for internal combustion gasoline engines designed for use in the lawn, automotive, watercraft, motorcycle, industrial and garden industries",
+      "note": "20(vvv)(iii)"
+    },
+    { "id": "20vvviii-8516.29.0090-1", "codePrefix": "8516290090", "description": "Electric fireplaces, weighing not more than 55 kg", "note": "20(vvv)(iii)" },
+    {
+      "id": "20vvviii-8534.00.0020-1",
+      "codePrefix": "8534000020",
+      "description": "Printed circuit boards, each with a base wholly of plastics impregnated glass, not flexible, with 4 layers of copper",
+      "note": "20(vvv)(iii)"
+    },
+    {
+      "id": "20vvviii-8534.00.0040-1",
+      "codePrefix": "8534000040",
+      "description": "Printed circuit boards, each with a base wholly of plastics impregnated glass, not flexible, with 2 layers of copper",
+      "note": "20(vvv)(iii)"
+    },
+    {
+      "id": "20vvviii-8537.10.9170-1",
+      "codePrefix": "8537109170",
+      "description": "Gas ignition safety controls, measuring 3.8 to 5.3 cm in height, 6.4 to 10.1 cm in width and 13.2 to 13.9 cm in depth; weighing 160 g to 380 g each; and valued not over $26 each; of a kind used in patio heaters, agricultural heaters or clothes dryers",
+      "note": "20(vvv)(iii)"
+    },
+    {
+      "id": "20vvviii-8543.70.9100-1",
+      "codePrefix": "8543709100",
+      "description": "Digital sound processing apparatus capable of connecting to a wired or wireless network for the mixing of sound, each capable of mixing 16, 24, 32 or 64 channel, each measuring not more than 17 cm in height, not more than 60 cm in depth, and not more than 83 cm in width",
+      "note": "20(vvv)(iii)"
+    },
+    {
+      "id": "20vvviii-8544.42.2000-1",
+      "codePrefix": "8544422000",
+      "description": "Insulated electric conductors for a voltage not exceeding 1,000 V, fitted with connectors of a kind used for telecommunications, each valued over $0.35 but not over $2",
+      "note": "20(vvv)(iii)"
+    },
+    {
+      "id": "20vvviii-8544.42.9090-1",
+      "codePrefix": "8544429090",
+      "description": "Insulated conductors, not of a kind used for telecommunications, for a voltage not exceeding 1,000 V, each with polyvinyl chloride (PVC) covers and connectors at each end in bundles of 3, 5 or 6 for use in connecting patients to monitoring devices",
+      "note": "20(vvv)(iii)"
+    },
+    {
+      "id": "20vvviii-8544.42.9090-2",
+      "codePrefix": "8544429090",
+      "description": "Junction box assemblies, of a kind used in solar panels, incorporating three bypass diodes and two insulated cables fitted with connectors, for a voltage not more than 1,000 V",
+      "note": "20(vvv)(iii)"
+    },
+    {
+      "id": "20vvviii-8708.40.7570-1",
+      "codePrefix": "8708407570",
+      "description": "Park gear blanks of Society of Automotive Engineers (“SAE”) 1520 carbon steel",
+      "note": "20(vvv)(iii)"
+    },
+    {
+      "id": "20vvviii-8708.40.7570-2",
+      "codePrefix": "8708407570",
+      "description": "Stator shafts of Stahlwerk Annahutte ZF34C grade carbon steel",
+      "note": "20(vvv)(iii)"
+    },
+    {
+      "id": "20vvviii-8716.40.0000-1",
+      "codePrefix": "8716400000",
+      "description": "Wheeled trailers suitable for towing behind an adult bicycle, each comprising a frame of aluminum with a hitch mechanism, weighing not more than 17.5 kg, with a capacity of not more than 46 kg, with those trailers designated for carrying children meeting ASTM International standard F1975",
+      "note": "20(vvv)(iii)"
+    },
+    {
+      "id": "20vvviii-9401.61.6011-1",
+      "codePrefix": "9401616011",
+      "description": "Upholstered seats with wooden frames other than chairs, not of cane, osier, bamboo or similar materials, each measuring at least 144 cm but no more than 214 cm in width, at least 81 cm but no more than 89 cm in height and at least 81 cm but not more than 163 cm in depth",
+      "note": "20(vvv)(iii)"
+    },
+    {
+      "id": "20vvviii-9401.71.0031-1",
+      "codePrefix": "9401710031",
+      "description": "Unassembled upholstered chairs with metal frames, other than household chairs, with seats and backs having a shell of plastics or wood and measuring at least 48 cm but not more than 61 cm in width",
+      "note": "20(vvv)(iii)"
+    },
+    {
+      "id": "20vvviii-9401.79.0035-1",
+      "codePrefix": "9401790035",
+      "description": "Hunting stands of steel or aluminum (including ladder stands, pod stands, hang-on stands and climbing stands), each of which allows one or more hunters to ascend to a height and sit while waiting for game animals to appear",
+      "note": "20(vvv)(iii)"
+    },
+    {
+      "id": "20vvviii-9401.91.9090-1",
+      "codePrefix": "9401919090",
+      "description": "Parts of chairs of unfinished plywood, including bodies, legs and arms",
+      "note": "20(vvv)(iii)"
+    },
+    {
+      "id": "20vvviii-9403.99.5005-1",
+      "codePrefix": "9403995005",
+      "description": "Baby crib liners, each composed of two pieces of multi-layer warp polyester knit mesh without any padding, one measuring no more than 29 cm by 283 cm and the other measuring no more than 29 cm by 210 cm",
+      "note": "20(vvv)(iii)"
+    },
+    { "id": "20vvviv-3913.10.0000-1", "codePrefix": "3913100000", "description": "Sodium alginate resins (CAS No. 9005-38-3)", "note": "20(vvv)(iv)" },
+    {
+      "id": "20vvviv-3926.90.9989-1",
+      "codePrefix": "3926909989",
+      "description": "Single-use sterile drapes and covers of plastics, of a kind used to protect the sterile field in surgical operating rooms",
+      "note": "20(vvv)(iv)"
+    },
+    {
+      "id": "20vvviv-3926.90.9989-2",
+      "codePrefix": "3926909989",
+      "description": "Sterile decanters of polystyrene plastics, each of a kind used to transfer aseptic fluids or medication to and from sterile bags, vials or glass containers",
+      "note": "20(vvv)(iv)"
+    },
+    {
+      "id": "20vvviv-6111.20.6070-1",
+      "codePrefix": "6111206070",
+      "description": "Babies' sleep sacks of cotton interlock knitted fabric, sleeveless, each with neck opening and two-way zipper",
+      "note": "20(vvv)(iv)"
+    },
+    {
+      "id": "20vvviv-6111.20.6070-2",
+      "codePrefix": "6111206070",
+      "description": "Babies' sleep sacks, knitted, of cotton, each with neck opening and two-way zipper",
+      "note": "20(vvv)(iv)"
+    },
+    {
+      "id": "20vvviv-6302.10.0020-1",
+      "codePrefix": "6302100020",
+      "description": "Dust covers of knitted polyester fabric, designed for bed mattresses and pillows",
+      "note": "20(vvv)(iv)"
+    },
+    {
+      "id": "20vvviv-6302.31.9040-1",
+      "codePrefix": "6302319040",
+      "description": "Protective covers of cotton for pillows, not knitted or crocheted, of cotton, not napped or printed, each with full encasement construction and zipper opening",
+      "note": "20(vvv)(iv)"
+    },
+    {
+      "id": "20vvviv-6307.90.9891-1",
+      "codePrefix": "6307909891",
+      "description": "Cold packs consisting of a single-use, instant, endothermic chemical reaction cold pack combined with a textile exterior lining",
+      "note": "20(vvv)(iv)"
+    },
+    { "id": "20vvviv-6307.90.9891-2", "codePrefix": "6307909891", "description": "Laparotomy sponges of cotton", "note": "20(vvv)(iv)" },
+    {
+      "id": "20vvviv-6506.10.6045-1",
+      "codePrefix": "6506106045",
+      "description": "Athletic, recreational and sporting headgear comprising shells of polyvinyl chloride, polycarbonate plastic or acrylonitrile butadiene styrene, each with an inner liner of expanded polypropylene or expanded polystyrene, designed for use with bicycles",
+      "note": "20(vvv)(iv)"
+    },
+    {
+      "id": "20vvviv-8452.10.0090-1",
+      "codePrefix": "8452100090",
+      "description": "Sewing machines of the household type, each weighing not more than 22.5 kg, having a touch screen control, a sewing light, a presser foot lifter and an automatic needle threader",
+      "note": "20(vvv)(iv)"
+    },
+    {
+      "id": "20vvviv-8524.11.9000-1",
+      "codePrefix": "8524119000",
+      "description": "Liquid crystal display (\"LCD\") modules, not capable of receiving or processing a broadcast television signal, each with a video display diagonal measuring not more than 191 cm",
+      "note": "20(vvv)(iv)"
+    },
+    {
+      "id": "20vvviv-8529.90.1300-1",
+      "codePrefix": "8529901300",
+      "description": "Television liquid crystal display (\"LCD\") main board assemblies, each consisting of a printed circuit board containing a television tuner and audio and video components",
+      "note": "20(vvv)(iv)"
+    },
+    { "id": "20vvviv-9004.90.0010-1", "codePrefix": "9004900010", "description": "Protective Articles", "note": "20(vvv)(iv)" },
+    { "id": "20vvviv-9004.90.0090-1", "codePrefix": "9004900090", "description": "Protective Articles", "note": "20(vvv)(iv)" },
+    {
+      "id": "20vvviv-9005.10.0040-1",
+      "codePrefix": "9005100040",
+      "description": "Prism binoculars, other than for use with infrared light, comprising a plastic, aluminum or magnesium alloy body with a rubber jacket, with magnification ranging from at least 4X but not more than 22X and aperture ranging from at least 21 mm but not more than 56 mm",
+      "note": "20(vvv)(iv)"
+    },
+    { "id": "20vvviv-9401.91.1500-1", "codePrefix": "9401911500", "description": "Parts of child safety seats", "note": "20(vvv)(iv)" },
+    { "id": "20vvviv-9401.99.1085-1", "codePrefix": "9401991085", "description": "Parts of child safety seats", "note": "20(vvv)(iv)" },
+    {
+      "id": "20vvviv-9404.90.1060-1",
+      "codePrefix": "9404901060",
+      "description": "Pillow shells of cotton, each filled with goose or duck down",
+      "note": "20(vvv)(iv)"
+    },
+    {
+      "id": "20vvviv-9404.90.1090-1",
+      "codePrefix": "9404901090",
+      "description": "Pillow shells of cotton, each filled with goose or duck down",
+      "note": "20(vvv)(iv)"
+    },
+    {
+      "id": "20www-8486.10.0000-1",
+      "codePrefix": "8486100000",
+      "description": "Silicon growth furnaces, including Czochralski crystal growth furnaces, designed for growing monocrystalline silicon ingots (boules) of a mass exceeding 700 kg, for use in solar wafer manufacturing",
+      "note": "20(www)"
+    },
+    {
+      "id": "20www-8486.10.0000-2",
+      "codePrefix": "8486100000",
+      "description": "Band saws designed for cutting or slicing cylindrical monocrystalline silicon ingots (boules) of an initial mass exceeding 400 kg into square or rectangular ingots (boules), for use in solar wafer manufacturing",
+      "note": "20(www)"
+    },
+    {
+      "id": "20www-8486.10.0000-3",
+      "codePrefix": "8486100000",
+      "description": "Machines designed to align and adhere square or rectangular monocrystalline silicon ingots (boules) of an initial mass exceeding 200 kg to plastic support boards on metal mounting plates to provide support during diamond wire sawing, for use in solar wafer manufacturing",
+      "note": "20(www)"
+    },
+    {
+      "id": "20www-8486.10.0000-4",
+      "codePrefix": "8486100000",
+      "description": "Diamond wire saws designed for cutting or slicing square or rectangular monocrystalline silicon ingots (boules) of an initial mass exceeding 400 kg into solar wafers of a thickness not exceeding 200 micrometers",
+      "note": "20(www)"
+    },
+    {
+      "id": "20www-8486.10.0000-5",
+      "codePrefix": "8486100000",
+      "description": "Wire guide roller machines, presented with diamond wire saws designed for slicing square or rectangular monocrystalline silicon ingots (boules) of an initial mass exceeding 400 kg into solar wafers of a thickness not exceeding 200 micrometers, all of the foregoing for use in solar wafer manufacturing",
+      "note": "20(www)"
+    },
+    {
+      "id": "20www-8486.10.0000-6",
+      "codePrefix": "8486100000",
+      "description": "Coolant fluid recycling machines, presented with diamond wire saws designed for slicing square or rectangular monocrystalline silicon ingots (boules) of an initial mass exceeding 400 kg into solar wafers of a thickness not exceeding 200 micrometers, all of the foregoing for use in solar wafer manufacturing",
+      "note": "20(www)"
+    },
+    {
+      "id": "20www-8486.10.0000-7",
+      "codePrefix": "8486100000",
+      "description": "Degumming machines designed to remove adhesives from solar wafers",
+      "note": "20(www)"
+    },
+    {
+      "id": "20www-8486.20.0000-1",
+      "codePrefix": "8486200000",
+      "description": "Texturing, etching, polishing, and cleaning machines designed to prepare, repair, clean, etch, polish or texture the solar wafer substrate, whether or not integrated with automation equipment for transferring solar wafers from one process station to the next, all the foregoing for use in solar wafer manufacturing",
+      "note": "20(www)"
+    },
+    {
+      "id": "20www-8486.20.0000-2",
+      "codePrefix": "8486200000",
+      "description": "Thermal diffusion quartz-tube furnaces, designed to diffuse dopant impurities into square or rectangular silicon wafers, whether or not integrated with automation equipment for transferring solar wafers from one process station to the next or boat loading or unloading machines, all the foregoing for use in solar cell manufacturing",
+      "note": "20(www)"
+    },
+    {
+      "id": "20www-8486.20.0000-3",
+      "codePrefix": "8486200000",
+      "description": "Plasma-enhanced or low-pressure chemical vapor deposition machines designed to deposit amorphous or nanocrystalline layers on one or both surfaces of a solar wafer, whether or not integrated with automation equipment for transferring solar wafers from one process station to the next, all the foregoing for use in solar cell manufacturing",
+      "note": "20(www)"
+    },
+    {
+      "id": "20www-8486.20.0000-4",
+      "codePrefix": "8486200000",
+      "description": "Physical vapor deposition (PVD) machines, designed to deposit a thin film of transparent conducting oxide on one or both surfaces of a solar wafer, whether or not integrated with automation equipment for transferring solar wafers from one process station to the next, all the foregoing for use in solar cell manufacturing",
+      "note": "20(www)"
+    },
+    {
+      "id": "20www-8486.20.0000-5",
+      "codePrefix": "8486200000",
+      "description": "Screen printing line machines, including sintering furnaces for printing conducting contacts on both surfaces of a solar wafer, whether or not integrated with automation equipment for transferring solar wafers from one process station to the next, and whether or not integrated with equipment for solar cell testing, all the foregoing for use in solar cell manufacturing",
+      "note": "20(www)"
+    },
+    {
+      "id": "20www-8486.40.0030-1",
+      "codePrefix": "8486400030",
+      "description": "Machines designed for transporting polysilicon material to growth furnaces and machines designed for transporting monocrystalline ingots (boules) and wafers throughout the solar wafer manufacturing process, including machines for loading or unloading solar wafers during the diamond wire slicing process",
+      "note": "20(www)"
+    },
+    {
+      "id": "20www-8486.40.0030-2",
+      "codePrefix": "8486400030",
+      "description": "Machines designed for lifting, handling, loading, or unloading of solar wafers of a thickness not exceeding 200 micrometers, for use in solar wafer manufacturing",
+      "note": "20(www)"
+    },
     { "id": "50aiii-0805.90.01-1", "codePrefix": "08059001", "description": "Etrogs", "note": "50(a)(iii)" },
     {
       "id": "50aiii-0811.90.80-1",
@@ -269,6 +1161,30 @@
     { "id": "52j11ii-1302.19.91-1", "codePrefix": "13021991", "description": "Aloe, Tasmanian pepper, coconut and centella", "note": "52(j)(11)(ii)" },
     { "id": "52j12ii-1302.19.91-1", "codePrefix": "13021991", "description": "Aloe, Tasmanian pepper, coconut and centella", "note": "52(j)(12)(ii)" },
     { "id": "52j13ii-1211.90.89-1", "codePrefix": "12119089", "description": "Psyllium seed husks", "note": "52(j)(13)(ii)" },
-    { "id": "52j13ii-1302.19.91-1", "codePrefix": "13021991", "description": "Aloe, Tasmanian pepper, coconut and centella", "note": "52(j)(13)(ii)" }
+    { "id": "52j13ii-1302.19.91-1", "codePrefix": "13021991", "description": "Aloe, Tasmanian pepper, coconut and centella", "note": "52(j)(13)(ii)" },
+    {
+      "id": "31ki-8716.39.0090-1",
+      "codePrefix": "8716390090",
+      "description": "Intermodal chassis, subassemblies thereof, and parts thereof (The articles consist of chassis and subassemblies thereof, whether finished or unfinished, whether assembled or unassembled, whether coated or uncoated, regardless of the number of axles, for carriage of containers, or other payloads (including self-supporting payloads) for road, marine and/or rail transport.)",
+      "note": "31(k)(i)"
+    },
+    {
+      "id": "31ki-8716.90.30-1",
+      "codePrefix": "87169030",
+      "description": "Intermodal chassis, subassemblies thereof, and parts thereof (The articles consist of chassis and subassemblies thereof, whether finished or unfinished, whether assembled or unassembled, whether coated or uncoated, regardless of the number of axles, for carriage of containers, or other payloads (including self-supporting payloads) for road, marine and/or rail transport.)",
+      "note": "31(k)(i)"
+    },
+    {
+      "id": "31ki-8716.90.50-1",
+      "codePrefix": "87169050",
+      "description": "Intermodal chassis, subassemblies thereof, and parts thereof (The articles consist of chassis and subassemblies thereof, whether finished or unfinished, whether assembled or unassembled, whether coated or uncoated, regardless of the number of axles, for carriage of containers, or other payloads (including self-supporting payloads) for road, marine and/or rail transport.)",
+      "note": "31(k)(i)"
+    },
+    {
+      "id": "31li-8426.19.00-1",
+      "codePrefix": "84261900",
+      "description": "Ship-to-shore gantry cranes, configured as a high- or low-profile steel superstructure and designed to unload intermodal containers from vessels with coupling devices for containers, including spreaders or twist-locks",
+      "note": "31(l)(i)"
+    }
   ]
 }

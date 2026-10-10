@@ -229,6 +229,11 @@ jobs:
       - name: Insights UI - Tariff calculator golden scenarios
         run: cd insights-ui && pnpm tariff:calc-scenarios
 
+      # Offline: fails if a chapter listed for the official-measures engine (appConfigDefaults.json or the
+      # runbook's documented TARIFF_CALC_MEASURES_ENABLED value) is NOT READY (issue #1794).
+      - name: Insights UI - Tariff calculator chapter readiness
+        run: cd insights-ui && pnpm tariff:calc-readiness --check-enabled --no-write
+
       - name: Insights UI - Validate tariff chapters + calculator cross-check
         run: cd insights-ui && pnpm tariff:validate-chapters --check-calculator
 

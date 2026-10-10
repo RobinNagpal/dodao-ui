@@ -84,6 +84,16 @@ Review notes for these measures:
 - After a new HTS revision, re-check: the CAFTA-DR SPI codes; the 9903.04.64 rate step (100% from April 2, 2030); the 9903.04.65 expiry (January 20, 2029); and whether Commerce/BIS has published the Annex II/III company lists (phase B of #1790: verified company lists instead of self-declaration).
 
 **Never overwrite a SQL file that is already on `main`.** It may already have been dry-run or applied. `tariff:build-data-sql` writes `<YYYYMMDD>-<edition>.sql`. If that name already exists on `main`, rename the new output to something descriptive (e.g. `20261009-2026-revision-21-conditional-exemptions.sql`) and restore the old file. Each file replaces the tables wholesale, so applying the newest file is enough.
+- `spiNotClaimed`: the measure applies only when none of the listed SPI codes is claimed; `'*'` means no SPI claimed at all (goods entered at column 1-general). Used by the Nicaragua records (9903.89.01) with `['*','P','P+']`.
+
+### China Section 301: review notes
+
+- **Coverage:** Lists 1, 2, 3, 3-described and 4A cover all chapters, at 25/25/25/25/7.5%. Note 20(g) and 20(s)(ii) are modelled as an 8-digit include plus 10-digit carve-outs.
+- **Exclusions:** only those in effect (per the compiler's note in 20(a)) are extracted. They currently end **2026-11-09**, so re-check USTR before then.
+- **Stacking with 9903.05.31 (12.5%):** additive, per note 52(a). Note 52(f) removes the 12.5% for goods under the named Section 232 headings; it is modelled for China passenger vehicles only.
+- **Cranes and chassis:** the duties (9903.92.10, 9903.91.12, 9903.91.14) apply only when the importer confirms the described product.
+- **Re-check dates:** 2026-11-10 (the maritime action starts) and 2027-06-23 (the 9903.91.05 increase, whose rate is not announced yet).
+
 
 ## 3. Review
 
@@ -153,7 +163,59 @@ Before writing the SQL the generator simulates the post-sync state in memory and
 
 **Page impact.** `/hts-codes/us/[section]/[chapter]` lists a chapter's rows in `sort_order` (anchors are `#<hts_code_10>`; there are no per-line URLs, so nothing 404s). New lines appear and removed ones disappear once the chapter's cache is invalidated — the pages are cached by tag, so after the real run use **Invalidate Cache** in each affected chapter page's admin menu (or wait for the next deploy). Calculator search (`/api/tariff-calculator/hts-search`) reads `hts_codes` directly: removed codes are no longer found (correct — they are not valid for entry under this edition), new codes are found, and breadcrumbs follow the corrected `parent_id` chain. New lines have no candidate-code links until the candidate-code ingest runs for them.
 
+## Switching a chapter to the official-measures engine
+
+The App Setting **`TARIFF_CALC_MEASURES_ENABLED`** (Admin → App Settings, group "tariff-calculator") lists the HTS chapters whose calculator results come from the official-measures engine. The engine does not read chapter page content; it only knows the extra duties in `tariff_measures`. A chapter is safe to switch on only when **every Chapter 99 program that charges duty on any of its lines is modelled**. Otherwise the engine undercharges.
+
+**Documented production value** (keep this line in sync with the App Setting — CI reads it):
+
+<!-- calc-enabled-chapters: 1,30 -->
+
+`TARIFF_CALC_MEASURES_ENABLED = 1,30`
+
+### 1. Run the readiness check (from `insights-ui/`)
+
+```bash
+pnpm tariff:calc-readiness                      # every chapter: READY / NOT READY + gaps; writes chapter-readiness.json
+pnpm tariff:calc-readiness --chapter 39         # one chapter (exit 1 if NOT READY); --chapter 1,30 or repeat the flag
+pnpm tariff:calc-readiness --check-enabled      # what CI runs: every chapter in appConfigDefaults.json and the line above must be READY
+pnpm tariff:calc-readiness --as-of 2027-01-01   # readiness on a later date (programs that start then count)
+pnpm tariff:calc-readiness --json               # machine-readable
+```
+
+For each chapter it lists the programs that reach its lines: `GAP` (in effect or status unknown, not fully modelled — blocks), `UPCOMING` (starts later, e.g. Nicaragua +10% from January 1, 2027 — blocks from that date), `ACCEPTED` (waived, see below) and `modelled`. Each row gives the program, its headings, how many of the chapter's lines it reaches and whether `measures.json` models them (yes / partial / no). The full report is written to `src/tariff-data/calculator/chapter-readiness.json`.
+
+How it decides (all offline, from committed files):
+
+| Question                        | Source                                                                                                                                                                                                                                                                                                                                                       |
+| ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Which headings charge duty      | `ch99-headings.json`: additive / flat with a non-zero rate, plus "unknown" duty headings (e.g. Russia 35% in lieu of Column 2); relief headings are ignored.                                                                                                                                                                                                  |
+| Program + status on the date    | The reviewed `PROGRAMS` table in `src/scripts/tariff-calculator/lib/calc-readiness.ts` (IEEPA ended Feb 24, 2026; Section 122 ended July 23, 2026; suspended note 5 / note 21 headings; …), headings shaded as expired in the Chapter 99 PDF, compiler's notes, and "on or after / before" dates in the heading text. A heading in no program is `unknown` and blocks. |
+| Which lines a heading covers    | `note-coverage.json` + `program-coverage.json` (note lists), codes named in the heading text, or "all articles of country X" (country-wide). Reviewed per-heading overrides live in `HEADING_COVERAGE`; certified vehicle-part headings are approximated as chapters 39–97 except 72, 73, 76.                                                                    |
+| Modelled?                       | `measures.json` has a measure for that heading (not ended) whose `coverageInclude` (empty = every line) or `coverageExclude` reaches the line.                                                                                                                                                                                                                |
+
+`program-coverage.json` is regenerated per HTS revision with `pnpm tsx src/scripts/tariff-calculator/extract-ch99-program-coverage.ts --pdf <Chapter 99 PDF> --hts-file <HTS JSON> --python <python with pypdf + pdfplumber>` (note lists incl. run-together 4-digit headings, the expired shading, and every chapter's 10-digit lines).
+
+### 2. Close the gaps
+
+Model each `GAP` program in `build-measures.py` (§2), regenerate `measures.json`, and re-run the check until the chapter is **READY**. Add at least 3 golden scenarios for the chapter in `golden-scenarios.json`, including a China-origin case, and run `pnpm tariff:calc-scenarios`.
+
+**Waivers** (`src/tariff-data/calculator/accepted-gaps.json`) are for gaps a reviewer explicitly accepts — never to get a chapter switched on faster. Each entry has `id`, `kind`, `ch99Codes`, `linePrefixes` (empty = every line), `chapters` (empty = any), `conditionNotModelled`, `reason`, `sources`, `reviewedBy`, `reviewedAt` and `reviewBy` (ISO date, at most ~90 days out):
+
+- `kind: "lines"` — the listed unmodelled lines report `ACCEPTED` instead of `GAP` until `reviewBy`.
+- `kind: "condition"` — the heading is modelled, but a condition the line-level check can't see is not (e.g. 9903.85.68 reaching non-Russian goods made with aluminum smelted or cast in Russia). It never accepts an unmodelled line; it is listed with the chapters it touches.
+
+After `reviewBy` a waiver stops applying (the check prints `WAIVER EXPIRED`) and the gap blocks again until someone re-reviews it and moves the date. A waiver that matches nothing is reported so it can be removed.
+
+### 3. Switch it on (or off)
+
+1. Update the `calc-enabled-chapters` line above in the same PR as the measures (CI fails if it lists a NOT READY chapter; `pnpm tariff:validate-chapters --check-calculator` checks it too, plus `appConfigDefaults.json`).
+2. After the data SQL is applied (§4), edit **`TARIFF_CALC_MEASURES_ENABLED`** in Admin → App Settings (e.g. `1,30,39`). It applies within about 30 minutes (App Settings cache); no deploy is needed.
+3. Check a few golden scenarios for the chapter on the live calculator.
+4. To switch the engine off for every chapter, set the value to `off` (the screen can't save an empty value); to drop one chapter, remove it from the list. Update the documented line above to match.
+
 ## Gaps / things the scripts don't do
+- **Not in the overlay:** Section 232 metals, autos and parts, trucks, wood and semiconductors (issue #1796). Their goods wrongly pay the 12.5% (note 52(f)) and miss the Section 232 duty, so their chapters stay NOT READY. Russia 9903.85.67/.68 is modelled for products of Russia only; the "smelted or cast in Russia" reach for other origins is an accepted gap.
 
 - **Coverage** (which HTS lines a measure covers) is not in the HTS JSON — it lives in the Chapter 99 U.S. notes text and is curated into `measures.json`.
 - `9903.92` (a header row, not a 10-character heading) is skipped; its indented headings (`9903.92.10`, `9903.92.80`) inherit its countries.

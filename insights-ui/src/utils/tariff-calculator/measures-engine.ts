@@ -310,6 +310,11 @@ function conditionCheck(m: TariffMeasureRecord, input: MeasureEngineInput): Cond
       return { ok: false, reason: `Only when ${c.spiClaimed.join(' / ')} is claimed` };
     }
   }
+  if (c.spiNotClaimed && c.spiNotClaimed.length > 0 && input.claimedSpi) {
+    const claimed = input.claimedSpi;
+    if (c.spiNotClaimed.includes('*')) return { ok: false, reason: `Only for goods entered at the general rate (${claimed} claimed)` };
+    if (c.spiNotClaimed.some((p) => samePrograms(p, claimed))) return { ok: false, reason: `Not charged when ${claimed} is claimed` };
+  }
   // Shipment facts the importer confirms (issue #1790). Checked before the product type so an
   // unconfirmed conditional measure is skipped instead of forcing a product-type question.
   const confirmed = input.confirmations ?? {};
@@ -362,6 +367,7 @@ export function conditionProgramsForLine(hts10: string, measures: TariffMeasureR
     if (!measureCoversLine(m, hts10) || coverageMatches(m.coverageExclude, hts10)) continue;
     if (m.conditions?.usmcaQualifying !== undefined) codes.add(USMCA_SPI_CODES[0]);
     for (const c of m.conditions?.spiClaimed ?? []) codes.add(c);
+    for (const c of m.conditions?.spiNotClaimed ?? []) if (c !== '*') codes.add(c);
   }
   return Array.from(codes);
 }
