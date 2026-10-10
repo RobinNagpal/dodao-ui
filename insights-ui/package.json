@@ -30,7 +30,8 @@
     "tariff:build-base-rates-sql": "tsx src/scripts/tariff-calculator/build-hts-base-rates-sql.ts",
     "tariff:build-data-sql": "tsx src/scripts/tariff-calculator/build-data-sql.ts",
     "tariff:build-hts-lines-sync-sql": "tsx src/scripts/tariff-calculator/build-hts-lines-sync-sql.ts",
-    "tariff:calc-scenarios": "tsx src/scripts/tariff-calculator/run-golden-scenarios.ts"
+    "tariff:calc-scenarios": "tsx src/scripts/tariff-calculator/run-golden-scenarios.ts",
+    "tariff:calc-readiness": "tsx src/scripts/tariff-calculator/build-calc-readiness.ts"
   },
   "engines": {
     "node": ">=22.0.0"

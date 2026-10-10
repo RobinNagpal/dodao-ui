@@ -47,6 +47,14 @@ export interface TariffMeasureConditions {
   productTypes?: TariffProductType[];
   /** Only when one of these SPI program codes is claimed. */
   spiClaimed?: string[];
+  /**
+   * Only when NONE of these SPI program codes is claimed (e.g. a duty that originating goods under a trade agreement
+   * don't pay). The special value '*' = only when no SPI at all is claimed, i.e. the goods are entered at the column 1
+   * general rate (U.S. note 29(a): Nicaragua's 9903.89.01 applies to "products of Nicaragua that are subject to the
+   * rates of duty provided for in column 1-general"). Named codes next to '*' don't change the check; they tell the
+   * calculator which claims to offer on lines whose general rate is Free (conditionProgramsForLine).
+   */
+  spiNotClaimed?: string[];
   /** Only when the importer confirms this end use (e.g. notes 52(e) / 50(a)(v): "for use in pharmaceutical applications"). */
   endUse?: TariffEndUse;
   /** Only when the importer confirms the product matches one of these described products (ids in note-product-descriptions.json). */

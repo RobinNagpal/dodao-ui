@@ -27,6 +27,7 @@
 # product from exempting a different subheading of the same note.
 import json
 import os
+import re
 
 DESCRIPTIONS_FILE = 'note-product-descriptions.json'
 CH99_HEADINGS_FILE = 'ch99-headings.json'
@@ -70,7 +71,9 @@ def named_product_measures(cov, descriptions_file, *, rec, S, hts_note, all_s301
     passages = descriptions_file['passages']
     by_note = {}
     for d in descriptions_file['descriptions']:
-        by_note.setdefault(d['note'], []).append(d)
+        # Notes 50/52 only; note 20 exclusions → china_exclusion_measures, note 31 descriptions → build-measures.py.
+        if d['note'].split('(')[0] in NOTE_FAMILIES:
+            by_note.setdefault(d['note'], []).append(d)
 
     measures = []
     for note in sorted(by_note, key=lambda n: [int(p) if p.isdigit() else p for p in n.replace(')', '(').split('(') if p]):
@@ -112,4 +115,79 @@ def named_product_measures(cov, descriptions_file, *, rec, S, hts_note, all_s301
                 notes=f'U.S. note {note} ({relief}): {where} described as {quoted} (classifiable in subheading {_dotted(code_prefix)}) '
                       f'are exempt from {lifted}. Applies only when the importer confirms the product matches the description; '
                       'other goods of the subheading pay the duty.'))
+    return measures
+
+
+# China Section 301 product exclusions in effect (U.S. note 20, issue #1795). Note 20(a)'s compiler's note names the
+# subdivisions still in effect ((vvv) and (www) in Revision 21); extract-ch99-note-coverage.ts writes their passages
+# ("20(vvv)(i)" … "20(www)": relief heading, duty headings lifted), the described products (descriptions) and the items
+# that name only statistical numbers (wholeLines) to note-product-descriptions.json. The relief heading's own text gives
+# the dates ("Effective with respect to entries on or after June 15, 2024 and through November 9, 2026").
+#
+#   china_exclusion_measures(cov, descriptions_file, *, rec, sources, hts_note, program, ch99_headings=None) -> list[dict]
+#     sources   {reliefHeading: [source, …]} — the USTR notices granting / extending the exclusions under that heading
+#     program   the program name the China list measures use
+#
+# One relief measure per passage for its whole-line items (no condition), and one per (passage, statistical number) for
+# the described items (conditions.productDescriptionIds = every description the passage gives for that number).
+MONTHS = {m: i + 1 for i, m in enumerate(['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September',
+                                          'October', 'November', 'December'])}
+
+
+def _iso(text):
+    month, day, year = text.replace(',', '').split()
+    return f'{int(year):04d}-{MONTHS[month]:02d}-{int(day):02d}'
+
+
+def _heading_dates(heading):
+    """("2024-06-15", "2026-11-09") from "Effective with respect to entries on or after June 15, 2024[,] and through November 9, 2026"."""
+    m = re.search(r'on or after ([A-Z][a-z]+ \d{1,2}, \d{4}),? and through ([A-Z][a-z]+ \d{1,2}, \d{4})', heading['description'])
+    assert m, f'{heading["code"]}: no "on or after … and through …" dates in its description'
+    return _iso(m.group(1)), _iso(m.group(2))
+
+
+def china_exclusion_measures(cov, descriptions_file, *, rec, sources, hts_note, program, ch99_headings=None):
+    if ch99_headings is None:
+        ch99_headings = _load_ch99_headings(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', 'tariff-data', 'calculator'))
+    passages = {k: p for k, p in descriptions_file['passages'].items() if k.startswith('20(')}
+    assert passages, 'note-product-descriptions.json has no note 20 exclusion passages — re-run extract-ch99-note-coverage.ts'
+    whole = descriptions_file.get('wholeLines', {})
+    measures = []
+    for note in sorted(passages, key=lambda n: [int(x) if x.isdigit() else x for x in n.replace(')', '(').split('(') if x]):
+        p = passages[note]
+        relief = p['reliefHeading']
+        heading = ch99_headings.get(relief)
+        assert heading and heading['rateKind'] == 'relief' and heading['countries'] == ['CN'], f'{note}: {relief} is not a China relief heading'
+        assert any(note == r or note.startswith(r + '(') for r in heading['noteRefs']), f'{note}: {relief} does not cite the note ({heading["noteRefs"]})'
+        for code in p['dutyHeadings']:
+            duty = ch99_headings.get(code)
+            assert duty and duty['rateKind'] == 'additive' and duty['countries'] == ['CN'], f'{note}: duty heading {code} is not a China additive heading'
+        start, end = _heading_dates(heading)
+        lifted = ', '.join(p['dutyHeadings'])
+        src = sources[relief] + [hts_note(20)]
+        dated = f'In effect for entries from {start} through {end} (dates of heading {relief}; USTR extension notice 90 FR 55232).'
+        codes = whole.get(note, [])
+        for c in codes:
+            assert _covered_by(cov, note, c), f'{note}: whole line {c} not listed under the note in note-coverage.json'
+        if codes:
+            measures.append(rec(
+                measureKey=f's301-china-excl-{_note_slug(note)}-lines', program=program, ch99Code=relief, rateKind='relief',
+                countriesInclude=['CN'], coverageInclude=list(codes), replacesCodes=list(p['dutyHeadings']),
+                effectiveFrom=start, effectiveTo=end, sources=src,
+                notes=f'U.S. note {note} ({relief}): the exclusions that name only a statistical reporting number cover the whole 10-digit line, '
+                      f'so these {len(codes)} lines ({", ".join(_dotted(c) for c in codes)}) are exempt from {lifted} without a confirmation. {dated}'))
+        by_code = {}
+        for d in descriptions_file['descriptions']:
+            if d['note'] == note:
+                assert _covered_by(cov, note, d['codePrefix']), f'{d["id"]}: {d["codePrefix"]} not listed under {note} in note-coverage.json'
+                by_code.setdefault(d['codePrefix'], []).append(d)
+        for code_prefix, descs in sorted(by_code.items()):
+            quoted = ' / '.join(f'"{d["description"]}"' for d in descs)
+            measures.append(rec(
+                measureKey=f's301-china-excl-{_note_slug(note)}-{code_prefix}', program=program, ch99Code=relief, rateKind='relief',
+                countriesInclude=['CN'], coverageInclude=[code_prefix], conditions={'productDescriptionIds': [d['id'] for d in descs]},
+                replacesCodes=list(p['dutyHeadings']), effectiveFrom=start, effectiveTo=end, sources=src,
+                notes=f'U.S. note {note} ({relief}): products of China described as {quoted} (statistical reporting number {_dotted(code_prefix)}) '
+                      f'are exempt from {lifted}. Applies only when the importer confirms the product matches the description; other goods '
+                      f'of the line pay the duty. Does not lift the 12.5% 2026 Section 301 duty (9903.05.31) or the note 31 duties. {dated}'))
     return measures

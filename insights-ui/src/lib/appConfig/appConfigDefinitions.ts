@@ -180,7 +180,7 @@ export const APP_CONFIG_DEFINITIONS: AppConfigDefinition[] = [
     key: 'TARIFF_CALC_MEASURES_ENABLED',
     label: 'Official-measures engine: HTS chapters',
     description:
-      'Comma-separated HTS chapter numbers (e.g. "1,30") whose tariff-calculator results come from the official-measures engine: base and trade-deal rates from the HTS, extra duties from the reviewed Chapter 99 measures (tariff_measures table), with the "Claim a trade deal" and "Product type" choices. Chapters not listed keep the cached candidate-code engine. Empty (default) or "off" = off for every chapter (this screen cannot save an empty value, so type "off" to switch it off again). Only list a chapter once its measures have been loaded and checked.',
+      'Comma-separated HTS chapter numbers (e.g. "1,30") whose tariff-calculator results come from the official-measures engine: base and trade-deal rates from the HTS, extra duties from the reviewed Chapter 99 measures (tariff_measures table), with the "Claim a trade deal" and "Product type" choices. Chapters not listed keep the cached candidate-code engine. Empty (default) or "off" = off for every chapter (this screen cannot save an empty value, so type "off" to switch it off again). Before adding a chapter run `pnpm tariff:calc-readiness --chapter N`: only list READY chapters (every Chapter 99 duty on its lines modelled), or the engine undercharges. CI fails while the documented value lists a NOT READY chapter. Applies within about 30 minutes.',
     type: 'string',
     group: 'tariff-calculator',
   },

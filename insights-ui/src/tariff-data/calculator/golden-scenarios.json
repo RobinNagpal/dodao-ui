@@ -1077,6 +1077,364 @@
       "expectedTotalDutyUsd": 1700,
       "toleranceUsd": 0.01,
       "sourceNote": "4.5% base + 12.5% (9903.05.27) = $1,700; the Brazil 25% (9903.05.01) is lifted by 9903.05.04. Both ids confirmed: $450; neither: $4,200."
+    },
+    {
+      "id": "cn301-acetaminophen-cn-no-confirmation",
+      "description": "Acetaminophen from China, 1,000 kg, $100,000, end use not confirmed",
+      "chapter": "29",
+      "input": {
+        "hts10": "2924296210",
+        "countryOfOrigin": "CN",
+        "customsValueUsd": 100000,
+        "quantities": {
+          "KG": 1000
+        },
+        "entryDate": "2026-10-10"
+      },
+      "line": {
+        "hts10": "2924296210",
+        "general": "6.5%",
+        "special": "Free (A,AU,BH,CL,CO,D,E,IL,JO,K,KR,MA,OM,P,PA,PE,S,SG)",
+        "units": ["kg"]
+      },
+      "expectedTotalDutyUsd": 19000,
+      "toleranceUsd": 0.01,
+      "sourceNote": "HTS Rev 21: 2924.29.62 general 6.5% ($6,500). Not on China Lists 1–4A: note 20(f) lists 2924.29.57, .65, .71 but not 2924.29.62, and 20(b)/(d)/(g)/(s) do not list it; not in note 31. 2026 China Section 301 (9903.05.31, 12.5%, note 52(a): additive to the China list duties because note 52(a) keeps \"any additional duty provided for in this subchapter\" on top of 9903.05.20–9903.05.84; USTR 91 FR 47318) = $12,500. 2924.29.62 is on the note 52(e) pharmaceutical-use list, but 9903.05.89 needs the end-use confirmation. Total $19,000."
+    },
+    {
+      "id": "cn301-acetaminophen-cn-pharma-use",
+      "description": "Same acetaminophen from China, importer confirms use in pharmaceutical applications",
+      "chapter": "29",
+      "input": {
+        "hts10": "2924296210",
+        "countryOfOrigin": "CN",
+        "customsValueUsd": 100000,
+        "quantities": {
+          "KG": 1000
+        },
+        "entryDate": "2026-10-10",
+        "confirmations": {
+          "endUse": "pharmaceutical"
+        }
+      },
+      "line": {
+        "hts10": "2924296210",
+        "general": "6.5%",
+        "special": "Free (A,AU,BH,CL,CO,D,E,IL,JO,K,KR,MA,OM,P,PA,PE,S,SG)",
+        "units": ["kg"]
+      },
+      "expectedTotalDutyUsd": 6500,
+      "toleranceUsd": 0.01,
+      "sourceNote": "Note 52(e) / heading 9903.05.89 lifts 9903.05.20–9903.05.84 (incl. 9903.05.31 for China) for the listed lines used in pharmaceutical applications. No China list duty applies (not on Lists 1–4A). Base 6.5% only: $6,500."
+    },
+    {
+      "id": "cn301-sodium-citrate-cn-list3",
+      "description": "Sodium citrate from China, 50,000 kg, $100,000",
+      "chapter": "29",
+      "input": {
+        "hts10": "2918151000",
+        "countryOfOrigin": "CN",
+        "customsValueUsd": 100000,
+        "quantities": {
+          "KG": 50000
+        },
+        "entryDate": "2026-10-10"
+      },
+      "line": {
+        "hts10": "2918151000",
+        "general": "6.5%",
+        "special": "Free (A*,AU,BH,CL,CO,D,E,IL,JO,KR,MA,OM,P,PA,PE,S,SG)",
+        "units": ["kg"]
+      },
+      "expectedTotalDutyUsd": 44000,
+      "toleranceUsd": 0.01,
+      "sourceNote": "HTS Rev 21: 2918.15.10 general 6.5% ($6,500). List 3: 2918.15.10 is in note 20(f), heading 9903.88.03 +25% since May 10, 2019 (84 FR 20459) = $25,000; no note 20(vvv) exclusion and not on the 52(b)/(c)/(e) lists. Plus 9903.05.31, 12.5%, note 52(a): additive to the China list duties because note 52(a) keeps \"any additional duty provided for in this subchapter\" on top of 9903.05.20–9903.05.84; USTR 91 FR 47318 = $12,500. Total 44% = $44,000."
+    },
+    {
+      "id": "cn301-tshirt-cn-list4a",
+      "description": "Men's cotton T-shirts (6109.10.00.12) from China, 500 doz / 600 kg, $10,000",
+      "chapter": "61",
+      "input": {
+        "hts10": "6109100012",
+        "countryOfOrigin": "CN",
+        "customsValueUsd": 10000,
+        "quantities": {
+          "DOZ": 500,
+          "KG": 600
+        },
+        "entryDate": "2026-10-10"
+      },
+      "line": {
+        "hts10": "6109100012",
+        "general": "16.5%",
+        "special": "Free (AU,BH,CL,CO,IL,JO,KR,MA,OM,P,PA,PE,S,SG)",
+        "units": ["doz.", "kg"]
+      },
+      "expectedTotalDutyUsd": 3650,
+      "toleranceUsd": 0.01,
+      "sourceNote": "HTS Rev 21: 6109.10.00 general 16.5% ($1,650). List 4A: 6109.10.00 is in note 20(s)(i), heading 9903.88.15 +7.5% since February 14, 2020 (85 FR 3741) = $750; no 20(vvv)(iv) exclusion. Plus 9903.05.31, 12.5%, note 52(a): additive to the China list duties because note 52(a) keeps \"any additional duty provided for in this subchapter\" on top of 9903.05.20–9903.05.84; USTR 91 FR 47318 = $1,250. Total 36.5% = $3,650."
+    },
+    {
+      "id": "cn301-tshirt-vn-control",
+      "description": "Same men's cotton T-shirts from Vietnam (non-China control)",
+      "chapter": "61",
+      "input": {
+        "hts10": "6109100012",
+        "countryOfOrigin": "VN",
+        "customsValueUsd": 10000,
+        "quantities": {
+          "DOZ": 500,
+          "KG": 600
+        },
+        "entryDate": "2026-10-10"
+      },
+      "line": {
+        "hts10": "6109100012",
+        "general": "16.5%",
+        "special": "Free (AU,BH,CL,CO,IL,JO,KR,MA,OM,P,PA,PE,S,SG)",
+        "units": ["doz.", "kg"]
+      },
+      "expectedTotalDutyUsd": 2900,
+      "toleranceUsd": 0.01,
+      "sourceNote": "Control: the China lists (note 20) and note 31 apply only to products of China. Vietnam: base 16.5% ($1,650) + 9903.05.84 (Vietnam, 12.5% additive, note 52; no 52(j) exception for Vietnam) = $1,250. Total 29% = $2,900."
+    },
+    {
+      "id": "cn301-medical-gloves-cn-2026",
+      "description": "Medical gloves of rubber (4015.12.10.10) from China, 10,000 doz pairs, $50,000",
+      "chapter": "40",
+      "input": {
+        "hts10": "4015121010",
+        "countryOfOrigin": "CN",
+        "customsValueUsd": 50000,
+        "quantities": {
+          "DPR": 10000
+        },
+        "entryDate": "2026-10-10"
+      },
+      "line": {
+        "hts10": "4015121010",
+        "general": "Free",
+        "special": null,
+        "units": ["doz. prs."]
+      },
+      "expectedTotalDutyUsd": 56250,
+      "toleranceUsd": 0.01,
+      "sourceNote": "HTS Rev 21: 4015.12.10 general Free. Note 31(i): heading 9903.91.08 +100% from January 1, 2026 (89 FR 76581) = $50,000. Not on the note 20 lists or the 52(b)/(c)/(e) lists, so 9903.05.31, 12.5%, note 52(a): additive to the China list duties because note 52(a) keeps \"any additional duty provided for in this subchapter\" on top of 9903.05.20–9903.05.84; USTR 91 FR 47318 = $6,250. Total 112.5% = $56,250."
+    },
+    {
+      "id": "cn301-natural-graphite-cn-52b",
+      "description": "Natural graphite, other (2504.10.50), from China, 20,000 kg, $20,000",
+      "chapter": "25",
+      "input": {
+        "hts10": "2504105000",
+        "countryOfOrigin": "CN",
+        "customsValueUsd": 20000,
+        "quantities": {
+          "KG": 20000
+        },
+        "entryDate": "2026-10-10"
+      },
+      "line": {
+        "hts10": "2504105000",
+        "general": "Free",
+        "special": null,
+        "units": ["kg"]
+      },
+      "expectedTotalDutyUsd": 5000,
+      "toleranceUsd": 0.01,
+      "sourceNote": "HTS Rev 21: 2504.10.50 general Free. Note 31(g)(2): heading 9903.91.06 +25% from January 1, 2026 = $5,000. 2504.10.50 is on the note 52(b) list (heading 9903.05.86), which lifts only 9903.05.20–9903.05.84 (so no 12.5%) — not the note 31 duty. Total $5,000."
+    },
+    {
+      "id": "cn301-excluded-fireplace-cn-unconfirmed",
+      "description": "Electric fireplace (8516.29.00.90) from China, 100 units, $10,000, exclusion description NOT confirmed",
+      "chapter": "85",
+      "input": {
+        "hts10": "8516290090",
+        "countryOfOrigin": "CN",
+        "customsValueUsd": 10000,
+        "quantities": {
+          "NO": 100
+        },
+        "entryDate": "2026-10-10"
+      },
+      "line": {
+        "hts10": "8516290090",
+        "general": "3.7%",
+        "special": "Free (A,AU,B,BH,CL,CO,D,E,IL,JO,KR,MA,OM,P,PA,PE,S,SG)",
+        "units": ["No."]
+      },
+      "expectedTotalDutyUsd": 4120,
+      "toleranceUsd": 0.01,
+      "sourceNote": "HTS Rev 21: 8516.29.00 general 3.7% ($370). List 3: 8516.29.00 in note 20(f), 9903.88.03 +25% = $2,500. The note 20(vvv)(iii)(55) exclusion (9903.88.69, \"Electric fireplaces, weighing not more than 55 kg\") applies only to that product, so without the confirmation the 25% stays. Plus 9903.05.31, 12.5%, note 52(a): additive to the China list duties because note 52(a) keeps \"any additional duty provided for in this subchapter\" on top of 9903.05.20–9903.05.84; USTR 91 FR 47318 = $1,250. Total 41.2% = $4,120."
+    },
+    {
+      "id": "cn301-excluded-fireplace-cn-confirmed",
+      "description": "Same electric fireplace from China, importer confirms it matches note 20(vvv)(iii)(55) (weighing not more than 55 kg)",
+      "chapter": "85",
+      "input": {
+        "hts10": "8516290090",
+        "countryOfOrigin": "CN",
+        "customsValueUsd": 10000,
+        "quantities": {
+          "NO": 100
+        },
+        "entryDate": "2026-10-10",
+        "confirmations": {
+          "productDescriptionIds": ["20vvviii-8516.29.0090-1"]
+        }
+      },
+      "line": {
+        "hts10": "8516290090",
+        "general": "3.7%",
+        "special": "Free (A,AU,B,BH,CL,CO,D,E,IL,JO,KR,MA,OM,P,PA,PE,S,SG)",
+        "units": ["No."]
+      },
+      "expectedTotalDutyUsd": 1620,
+      "toleranceUsd": 0.01,
+      "sourceNote": "Note 20(vvv)(iii)(55) via heading 9903.88.69 lifts the List 3 duty (9903.88.03) for \"Electric fireplaces, weighing not more than 55 kg\" (8516.29.0090), in effect June 15, 2024 through November 9, 2026 (extended by USTR, 90 FR 55232). The exclusion does not lift 9903.05.31 (note 52 has no such exception). Base 3.7% ($370) + 12.5% ($1,250) = $1,620."
+    },
+    {
+      "id": "cn301-excluded-viscose-cn-whole-line",
+      "description": "Viscose rayon staple fiber (5504.10.00.00) from China, 5,000 kg, $10,000 — exclusion names the whole statistical line",
+      "chapter": "55",
+      "input": {
+        "hts10": "5504100000",
+        "countryOfOrigin": "CN",
+        "customsValueUsd": 10000,
+        "quantities": {
+          "KG": 5000
+        },
+        "entryDate": "2026-10-10"
+      },
+      "line": {
+        "hts10": "5504100000",
+        "general": "4.3%",
+        "special": null,
+        "units": ["kg"]
+      },
+      "expectedTotalDutyUsd": 1680,
+      "toleranceUsd": 0.01,
+      "sourceNote": "HTS Rev 21: 5504.10.00 general 4.3% ($430). List 4A (note 20(s)(i), 7.5%) is lifted by note 20(vvv)(iv)(5) (\"5504.10.0000\", heading 9903.88.69) — the item names only the statistical number, so the whole line is excluded without a confirmation (through November 9, 2026). Plus 9903.05.31, 12.5%, note 52(a): additive to the China list duties because note 52(a) keeps \"any additional duty provided for in this subchapter\" on top of 9903.05.20–9903.05.84; USTR 91 FR 47318 = $1,250. Total 16.8% = $1,680."
+    },
+    {
+      "id": "cn301-sts-crane-cn-confirmed",
+      "description": "Ship-to-shore gantry crane (8426.19.00.00) from China, 1 unit, $10,000,000, importer confirms the STS-crane description",
+      "chapter": "84",
+      "input": {
+        "hts10": "8426190000",
+        "countryOfOrigin": "CN",
+        "customsValueUsd": 10000000,
+        "quantities": {
+          "NO": 1
+        },
+        "entryDate": "2026-10-10",
+        "confirmations": {
+          "productDescriptionIds": ["31li-8426.19.00-1"]
+        }
+      },
+      "line": {
+        "hts10": "8426190000",
+        "general": "Free",
+        "special": null,
+        "units": ["No."]
+      },
+      "expectedTotalDutyUsd": 3750000,
+      "toleranceUsd": 0.01,
+      "sourceNote": "HTS Rev 21: 8426.19.00 general Free. Subheading 9903.92.10: ship-to-shore gantry cranes of China +25% since September 27, 2024 (89 FR 76581) = $2,500,000 (other cranes of 8426.19.00 use 9903.92.80, no duty — hence the confirmation). The 100% of 9903.91.14 starts November 10, 2026 (90 FR 48320, suspended until then by 90 FR 50947), after this entry. Plus 9903.05.31, 12.5%, note 52(a): additive to the China list duties because note 52(a) keeps \"any additional duty provided for in this subchapter\" on top of 9903.05.20–9903.05.84; USTR 91 FR 47318 = $1,250,000. Total 37.5% = $3,750,000."
+    },
+    {
+      "id": "ni301-horse-ni-2026",
+      "description": "Purebred breeding horse (male) from Nicaragua, $50,000, entered 2026-10-10",
+      "chapter": "01",
+      "input": {
+        "hts10": "0101210010",
+        "countryOfOrigin": "NI",
+        "customsValueUsd": 50000,
+        "quantities": {
+          "NO": 1
+        },
+        "entryDate": "2026-10-10"
+      },
+      "line": {
+        "hts10": "0101210010",
+        "general": "Free",
+        "special": null,
+        "units": ["No."]
+      },
+      "expectedTotalDutyUsd": 6250,
+      "toleranceUsd": 0.01,
+      "sourceNote": "Base Free. 2026 Section 301 on Nicaragua 9903.05.58 = 12.5% additive (note 52; USTR 91 FR 47318) = $6,250. Nicaragua Section 301 (9903.89.01, note 29(b)) is 0% for entries January 1 – December 31, 2026. Total $6,250."
+    },
+    {
+      "id": "ni301-horse-ni-2027-no-claim",
+      "description": "Same horse from Nicaragua entered 2027-01-15, no CAFTA-DR claim",
+      "chapter": "01",
+      "input": {
+        "hts10": "0101210010",
+        "countryOfOrigin": "NI",
+        "customsValueUsd": 50000,
+        "quantities": {
+          "NO": 1
+        },
+        "entryDate": "2027-01-15"
+      },
+      "line": {
+        "hts10": "0101210010",
+        "general": "Free",
+        "special": null,
+        "units": ["No."]
+      },
+      "expectedTotalDutyUsd": 11250,
+      "toleranceUsd": 0.01,
+      "sourceNote": "Base Free. 9903.89.01 (U.S. note 29(b)): 10% for entries January 1 – December 31, 2027, on goods at column 1-general (90 FR 57807, 90 FR 60850) = $5,000. Note 52(a) keeps subchapter III duties on top of 9903.05.58 (12.5%, $6,250). Total $11,250."
+    },
+    {
+      "id": "ni301-horse-ni-2027-cafta",
+      "description": "Same horse from Nicaragua entered 2027-01-15 with a CAFTA-DR claim (SPI P)",
+      "chapter": "01",
+      "input": {
+        "hts10": "0101210010",
+        "countryOfOrigin": "NI",
+        "customsValueUsd": 50000,
+        "quantities": {
+          "NO": 1
+        },
+        "entryDate": "2027-01-15",
+        "claimedSpi": "P"
+      },
+      "line": {
+        "hts10": "0101210010",
+        "general": "Free",
+        "special": null,
+        "units": ["No."]
+      },
+      "expectedTotalDutyUsd": 6250,
+      "toleranceUsd": 0.01,
+      "sourceNote": "Note 29(a): 9903.89.01 does not apply to originating goods of Nicaragua under CAFTA-DR (general note 29), so with the P claim only 9903.05.58 (12.5%, $6,250) remains — note 52 has no CAFTA-DR exception for a horse (52(i) covers textile/apparel goods only). Total $6,250."
+    },
+    {
+      "id": "s232-al-ru-lorazepam",
+      "description": "Lorazepam preparation (3004.90.92.44) from Russia, 10 kg, $10,000",
+      "chapter": "30",
+      "input": {
+        "hts10": "3004909244",
+        "countryOfOrigin": "RU",
+        "customsValueUsd": 10000,
+        "quantities": {
+          "KG": 10
+        },
+        "entryDate": "2026-10-10"
+      },
+      "line": {
+        "hts10": "3004909244",
+        "general": "Free",
+        "special": null,
+        "column2": "30%",
+        "units": ["kg"]
+      },
+      "expectedTotalDutyUsd": 23000,
+      "toleranceUsd": 0.01,
+      "sourceNote": "Russia is a column 2 country: 3004.90.92 column 2 rate 30% ($3,000). 3004.90.92.44 is on the U.S. note 19(k) aluminum derivative list (added August 18, 2025, 90 FR 40326), so heading 9903.85.68 (note 19(m)(B), Proclamation 10522) adds 200% for products of Russia ($20,000). 3004.90.92 is on the note 52(b) list (9903.05.86), which lifts the 12.5% 2026 Section 301 duty on Russia (9903.05.66). Not on note 40(c), so no Section 232 pharmaceutical duty. Total $23,000."
     }
   ]
 }
