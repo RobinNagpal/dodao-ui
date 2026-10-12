@@ -12,7 +12,7 @@ export async function generateMetadata({ params }: { params: Promise<{ chapterSl
   const { chapterSlug } = await params;
 
   // Approach-2 chapters (issue #1770) carry their own SEO copy in the content file.
-  const updates = getChapterPrototype(chapterSlug)?.tariffUpdates;
+  const updates = (await getChapterPrototype(chapterSlug))?.tariffUpdates;
   if (updates) return buildPrototypeMetadata(updates.seo, chapterSectionHref(chapterSlug, SECTION_SLUG));
 
   return buildChapterSectionMetadata(chapterSlug, SECTION_SLUG);
@@ -23,7 +23,7 @@ export default async function Page({ params }: { params: Promise<{ chapterSlug: 
 
   // Approach-2 chapters render from their content file (issue #1770); every
   // other chapter keeps the DB-backed section below.
-  const prototype = getChapterPrototype(chapterSlug);
+  const prototype = await getChapterPrototype(chapterSlug);
   if (prototype?.tariffUpdates) {
     const chapterInfo = prototypeChapterInfo(prototype);
     return (
@@ -33,6 +33,7 @@ export default async function Page({ params }: { params: Promise<{ chapterSlug: 
           pageTitle={prototype.tariffUpdates.h1}
           toolsCrossLinks={<PrototypeChapterToolLinks chapter={prototype.chapter} />}
           ratesAsOf={prototype.asOf}
+          prototype={prototype}
           currentSlug={SECTION_SLUG}
           updatedAt={prototype.tariffUpdates.lastCheckedAt}
           sectionLabel={approach2SectionLabel(SECTION_SLUG)}

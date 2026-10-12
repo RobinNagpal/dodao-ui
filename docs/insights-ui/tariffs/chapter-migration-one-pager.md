@@ -39,8 +39,14 @@ a file are untouched.
 5. **Write chapter-specific copy in the data, not the components.** Shared components must stay
    generic. Never hard-code a chapter's numbers, countries ("Canada / Mexico") or goods ("animals")
    in a component; put them in the JSON.
-6. **Register the chapter.** Add a static import to `PROTOTYPES_BY_SLUG` in
-   `src/utils/tariff-reports/chapter-prototype.ts`. If it has export pages, also register it in
+6. **Register the chapter.** Add one line to `CHAPTER_FILES` in
+   `src/utils/tariff-reports/chapter-prototype.ts`:
+   `'<slug>': () => import('@/tariff-data/chapters/<NN>-<slug>.json'),` (a lazy import — each chapter
+   is its own chunk; never add a static import). Store the file **compact**: no `searchText` on
+   rate-table rows, and only `hts` + the line's own fields on `tariffUpdates.lines` /
+   `tariffEngineering.lines` (no `description` / `ancestorPath` / `searchText`, and no engineering
+   `heading` / `general`) — the loader derives those from the rate table. `pnpm tariff:compact-chapters
+   src/tariff-data/chapters/<NN>-<slug>.json` strips them from a file written in the old shape. If it has export pages, also register it in
    `EXPORTS_BY_SLUG` in `chapter-exports.ts`. The sitemap and the `/tariff-reports` card pick it up
    from there.
 7. **Validate:** from `insights-ui/`, run `pnpm tariff:validate-chapters --chapter <slug> --check-hts`.

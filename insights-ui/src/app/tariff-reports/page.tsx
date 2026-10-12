@@ -5,7 +5,7 @@ import TariffReportsPageActions from '@/components/industry-tariff/TariffReports
 import ToolPills from '@/components/tariff-cross-links/ToolPills';
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
 import { hasChapterExports } from '@/utils/tariff-reports/chapter-exports';
-import { getChapterPrototype } from '@/utils/tariff-reports/chapter-prototype';
+import { type ChapterPrototypeCard, getChapterPrototypeCard, hasChapterPrototype } from '@/utils/tariff-reports/chapter-prototype';
 import { approach2SectionLabel, CHAPTER_REPORT_SECTIONS, chapterCoverHref, chapterSectionHref } from '@/utils/tariff-reports/chapter-route-helpers';
 import { TARIFF_REPORTS_LISTING_TAG } from '@/utils/tariff-report-tags';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
@@ -80,25 +80,26 @@ interface ChapterCardProps {
   lastModified?: string;
   // Chapters with export pages get a second "U.S. exports" link next to "Open report".
   hasExports: boolean;
+  /** Set for Approach-2 chapters (content file); null for DB-backed chapters. */
+  approach2: ChapterPrototypeCard | null;
 }
 
 // Card-only ordering: shorter labels first so the 5 section pills fit in two rows
 // instead of three. The canonical reading order lives in CHAPTER_REPORT_SECTIONS.
 const CARD_SECTION_DISPLAY_ORDER = ['tariff-updates', 'industry-areas', 'tariff-engineering', 'understand-industry', 'final-conclusion'];
 
-function ChapterCard({ chapterNumber, chapterTitle, chapterSlug, lastModified, hasExports }: ChapterCardProps) {
+function ChapterCard({ chapterNumber, chapterTitle, chapterSlug, lastModified, hasExports, approach2 }: ChapterCardProps) {
   const padded = chapterNumber.toString().padStart(2, '0');
   const href = chapterCoverHref(chapterSlug);
   const title = `${chapterTitle}`;
   // Approach-2 chapters name their pages differently (see approach2SectionLabel); the pills match their tabs.
   // Their card also takes its date and summary from the content file: the DB row's updatedAt does not
   // move when the file is refreshed, and the first key takeaway says more than the boilerplate.
-  const prototype = getChapterPrototype(chapterSlug);
-  const isApproach2 = Boolean(prototype);
-  const description = prototype
-    ? prototype.finalConclusion?.keyTakeaways[0] ?? prototype.overview.seo.shortDescription
+  const isApproach2 = Boolean(approach2);
+  const description = approach2
+    ? approach2.summary
     : `Tariff and trade-policy analysis for HTS Chapter ${padded} (${chapterTitle}). Browse tariff updates, country-level breakdowns, industry structure, and forward-looking conclusions.`;
-  const updatedLabel = prototype ? formatDate(prototype.asOf, true) : lastModified ? formatDate(lastModified) : null;
+  const updatedLabel = approach2 ? formatDate(approach2.asOf, true) : lastModified ? formatDate(lastModified) : null;
   const orderedSections = CARD_SECTION_DISPLAY_ORDER.map((slug) => CHAPTER_REPORT_SECTIONS.find((s) => s.slug === slug)).filter(
     (s): s is (typeof CHAPTER_REPORT_SECTIONS)[number] => Boolean(s)
   );
@@ -160,6 +161,10 @@ function ChapterCard({ chapterNumber, chapterTitle, chapterSlug, lastModified, h
 
 export default async function TariffReportsPage() {
   const rows = await fetchTariffReportsListing();
+  // Approach-2 chapters' card facts come from their content files (one lazily loaded chunk each).
+  const approach2Cards = new Map(
+    await Promise.all(rows.filter((row) => hasChapterPrototype(row.slug)).map(async (row) => [row.slug, await getChapterPrototypeCard(row.slug)] as const))
+  );
 
   const breadcrumbs: BreadcrumbsOjbect[] = [
     { name: 'Reports', href: '/reports', current: false },
@@ -225,6 +230,7 @@ export default async function TariffReportsPage() {
                     chapterSlug={row.slug}
                     lastModified={row.updatedAt}
                     hasExports={hasChapterExports(row.slug)}
+                    approach2={approach2Cards.get(row.slug) ?? null}
                   />
                 ),
               }))}

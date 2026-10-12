@@ -145,8 +145,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "0101",
-          "ancestorPath": [],
-          "searchText": "live horses, asses, mules and hinnies: 0101"
+          "ancestorPath": []
         },
         {
           "id": "r1",
@@ -169,8 +168,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "0101",
-          "ancestorPath": ["Live horses, asses, mules and hinnies"],
-          "searchText": "live horses, asses, mules and hinnies horses: "
+          "ancestorPath": ["Live horses, asses, mules and hinnies"]
         },
         {
           "id": "r2",
@@ -193,8 +191,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "0101",
-          "ancestorPath": ["Live horses, asses, mules and hinnies", "Horses"],
-          "searchText": "live horses, asses, mules and hinnies horses purebred breeding animals 0101.21.00"
+          "ancestorPath": ["Live horses, asses, mules and hinnies", "Horses"]
         },
         {
           "id": "r3",
@@ -217,8 +214,7 @@
           "column2InheritedFrom": "0101.21.00",
           "dutiable": false,
           "heading": "0101",
-          "ancestorPath": ["Live horses, asses, mules and hinnies", "Horses", "Purebred breeding animals"],
-          "searchText": "live horses, asses, mules and hinnies horses purebred breeding animals males 0101.21.00.10"
+          "ancestorPath": ["Live horses, asses, mules and hinnies", "Horses", "Purebred breeding animals"]
         },
         {
           "id": "r4",
@@ -241,8 +237,7 @@
           "column2InheritedFrom": "0101.21.00",
           "dutiable": false,
           "heading": "0101",
-          "ancestorPath": ["Live horses, asses, mules and hinnies", "Horses", "Purebred breeding animals"],
-          "searchText": "live horses, asses, mules and hinnies horses purebred breeding animals females 0101.21.00.20"
+          "ancestorPath": ["Live horses, asses, mules and hinnies", "Horses", "Purebred breeding animals"]
         },
         {
           "id": "r5",
@@ -265,8 +260,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "0101",
-          "ancestorPath": ["Live horses, asses, mules and hinnies", "Horses"],
-          "searchText": "live horses, asses, mules and hinnies horses other 0101.29.00"
+          "ancestorPath": ["Live horses, asses, mules and hinnies", "Horses"]
         },
         {
           "id": "r6",
@@ -289,8 +283,7 @@
           "column2InheritedFrom": "0101.29.00",
           "dutiable": false,
           "heading": "0101",
-          "ancestorPath": ["Live horses, asses, mules and hinnies", "Horses", "Other"],
-          "searchText": "live horses, asses, mules and hinnies horses other imported for immediate slaughter 0101.29.00.10"
+          "ancestorPath": ["Live horses, asses, mules and hinnies", "Horses", "Other"]
         },
         {
           "id": "r7",
@@ -313,8 +306,7 @@
           "column2InheritedFrom": "0101.29.00",
           "dutiable": false,
           "heading": "0101",
-          "ancestorPath": ["Live horses, asses, mules and hinnies", "Horses", "Other"],
-          "searchText": "live horses, asses, mules and hinnies horses other other 0101.29.00.90"
+          "ancestorPath": ["Live horses, asses, mules and hinnies", "Horses", "Other"]
         },
         {
           "id": "r8",
@@ -337,8 +329,7 @@
           "column2InheritedFrom": null,
           "dutiable": true,
           "heading": "0101",
-          "ancestorPath": ["Live horses, asses, mules and hinnies"],
-          "searchText": "live horses, asses, mules and hinnies asses 0101.30.00.00"
+          "ancestorPath": ["Live horses, asses, mules and hinnies"]
         },
         {
           "id": "r9",
@@ -361,8 +352,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "0101",
-          "ancestorPath": ["Live horses, asses, mules and hinnies"],
-          "searchText": "live horses, asses, mules and hinnies other: 0101.90"
+          "ancestorPath": ["Live horses, asses, mules and hinnies"]
         },
         {
           "id": "r10",
@@ -385,8 +375,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "0101",
-          "ancestorPath": ["Live horses, asses, mules and hinnies", "Other"],
-          "searchText": "live horses, asses, mules and hinnies other imported for immediate slaughter 0101.90.30.00"
+          "ancestorPath": ["Live horses, asses, mules and hinnies", "Other"]
         },
         {
           "id": "r11",
@@ -409,8 +398,7 @@
           "column2InheritedFrom": null,
           "dutiable": true,
           "heading": "0101",
-          "ancestorPath": ["Live horses, asses, mules and hinnies", "Other"],
-          "searchText": "live horses, asses, mules and hinnies other other 0101.90.40.00"
+          "ancestorPath": ["Live horses, asses, mules and hinnies", "Other"]
         },
         {
           "id": "r12",
@@ -433,8 +421,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "0102",
-          "ancestorPath": [],
-          "searchText": "live bovine animals: 0102"
+          "ancestorPath": []
         },
         {
           "id": "r13",
@@ -457,8 +444,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "0102",
-          "ancestorPath": ["Live bovine animals"],
-          "searchText": "live bovine animals cattle: "
+          "ancestorPath": ["Live bovine animals"]
         },
         {
           "id": "r14",
@@ -481,8 +467,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "0102",
-          "ancestorPath": ["Live bovine animals", "Cattle"],
-          "searchText": "live bovine animals cattle purebred breeding animals 0102.21.00"
+          "ancestorPath": ["Live bovine animals", "Cattle"]
         },
         {
           "id": "r15",
@@ -505,8 +490,7 @@
           "column2InheritedFrom": "0102.21.00",
           "dutiable": false,
           "heading": "0102",
-          "ancestorPath": ["Live bovine animals", "Cattle", "Purebred breeding animals"],
-          "searchText": "live bovine animals cattle purebred breeding animals dairy: "
+          "ancestorPath": ["Live bovine animals", "Cattle", "Purebred breeding animals"]
         },
         {
           "id": "r16",
@@ -529,8 +513,7 @@
           "column2InheritedFrom": "0102.21.00",
           "dutiable": false,
           "heading": "0102",
-          "ancestorPath": ["Live bovine animals", "Cattle", "Purebred breeding animals", "Dairy"],
-          "searchText": "live bovine animals cattle purebred breeding animals dairy male 0102.21.00.10"
+          "ancestorPath": ["Live bovine animals", "Cattle", "Purebred breeding animals", "Dairy"]
         },
         {
           "id": "r17",
@@ -553,8 +536,7 @@
           "column2InheritedFrom": "0102.21.00",
           "dutiable": false,
           "heading": "0102",
-          "ancestorPath": ["Live bovine animals", "Cattle", "Purebred breeding animals", "Dairy"],
-          "searchText": "live bovine animals cattle purebred breeding animals dairy female 0102.21.00.20"
+          "ancestorPath": ["Live bovine animals", "Cattle", "Purebred breeding animals", "Dairy"]
         },
         {
           "id": "r18",
@@ -577,8 +559,7 @@
           "column2InheritedFrom": "0102.21.00",
           "dutiable": false,
           "heading": "0102",
-          "ancestorPath": ["Live bovine animals", "Cattle", "Purebred breeding animals"],
-          "searchText": "live bovine animals cattle purebred breeding animals other: "
+          "ancestorPath": ["Live bovine animals", "Cattle", "Purebred breeding animals"]
         },
         {
           "id": "r19",
@@ -601,8 +582,7 @@
           "column2InheritedFrom": "0102.21.00",
           "dutiable": false,
           "heading": "0102",
-          "ancestorPath": ["Live bovine animals", "Cattle", "Purebred breeding animals", "Other"],
-          "searchText": "live bovine animals cattle purebred breeding animals other male 0102.21.00.30"
+          "ancestorPath": ["Live bovine animals", "Cattle", "Purebred breeding animals", "Other"]
         },
         {
           "id": "r20",
@@ -625,8 +605,7 @@
           "column2InheritedFrom": "0102.21.00",
           "dutiable": false,
           "heading": "0102",
-          "ancestorPath": ["Live bovine animals", "Cattle", "Purebred breeding animals", "Other"],
-          "searchText": "live bovine animals cattle purebred breeding animals other female 0102.21.00.50"
+          "ancestorPath": ["Live bovine animals", "Cattle", "Purebred breeding animals", "Other"]
         },
         {
           "id": "r21",
@@ -649,8 +628,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "0102",
-          "ancestorPath": ["Live bovine animals", "Cattle"],
-          "searchText": "live bovine animals cattle other: 0102.29"
+          "ancestorPath": ["Live bovine animals", "Cattle"]
         },
         {
           "id": "r22",
@@ -673,8 +651,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "0102",
-          "ancestorPath": ["Live bovine animals", "Cattle", "Other"],
-          "searchText": "live bovine animals cattle other cows imported specially for dairy purposes 0102.29.20"
+          "ancestorPath": ["Live bovine animals", "Cattle", "Other"]
         },
         {
           "id": "r23",
@@ -697,8 +674,7 @@
           "column2InheritedFrom": "0102.29.20",
           "dutiable": false,
           "heading": "0102",
-          "ancestorPath": ["Live bovine animals", "Cattle", "Other", "Cows imported specially for dairy purposes"],
-          "searchText": "live bovine animals cattle other cows imported specially for dairy purposes weighing less than 90 kg each 0102.29.20.11"
+          "ancestorPath": ["Live bovine animals", "Cattle", "Other", "Cows imported specially for dairy purposes"]
         },
         {
           "id": "r24",
@@ -721,8 +697,7 @@
           "column2InheritedFrom": "0102.29.20",
           "dutiable": false,
           "heading": "0102",
-          "ancestorPath": ["Live bovine animals", "Cattle", "Other", "Cows imported specially for dairy purposes"],
-          "searchText": "live bovine animals cattle other cows imported specially for dairy purposes weighing 90 kg or more each 0102.29.20.12"
+          "ancestorPath": ["Live bovine animals", "Cattle", "Other", "Cows imported specially for dairy purposes"]
         },
         {
           "id": "r25",
@@ -745,8 +720,7 @@
           "column2InheritedFrom": null,
           "dutiable": true,
           "heading": "0102",
-          "ancestorPath": ["Live bovine animals", "Cattle", "Other"],
-          "searchText": "live bovine animals cattle other other 0102.29.40"
+          "ancestorPath": ["Live bovine animals", "Cattle", "Other"]
         },
         {
           "id": "r26",
@@ -769,8 +743,7 @@
           "column2InheritedFrom": "0102.29.40",
           "dutiable": true,
           "heading": "0102",
-          "ancestorPath": ["Live bovine animals", "Cattle", "Other", "Other"],
-          "searchText": "live bovine animals cattle other other weighing less than 90 kg each: "
+          "ancestorPath": ["Live bovine animals", "Cattle", "Other", "Other"]
         },
         {
           "id": "r27",
@@ -793,8 +766,7 @@
           "column2InheritedFrom": "0102.29.40",
           "dutiable": true,
           "heading": "0102",
-          "ancestorPath": ["Live bovine animals", "Cattle", "Other", "Other", "Weighing less than 90 kg each"],
-          "searchText": "live bovine animals cattle other other weighing less than 90 kg each male 0102.29.40.24"
+          "ancestorPath": ["Live bovine animals", "Cattle", "Other", "Other", "Weighing less than 90 kg each"]
         },
         {
           "id": "r28",
@@ -817,8 +789,7 @@
           "column2InheritedFrom": "0102.29.40",
           "dutiable": true,
           "heading": "0102",
-          "ancestorPath": ["Live bovine animals", "Cattle", "Other", "Other", "Weighing less than 90 kg each"],
-          "searchText": "live bovine animals cattle other other weighing less than 90 kg each female 0102.29.40.28"
+          "ancestorPath": ["Live bovine animals", "Cattle", "Other", "Other", "Weighing less than 90 kg each"]
         },
         {
           "id": "r29",
@@ -841,8 +812,7 @@
           "column2InheritedFrom": "0102.29.40",
           "dutiable": true,
           "heading": "0102",
-          "ancestorPath": ["Live bovine animals", "Cattle", "Other", "Other"],
-          "searchText": "live bovine animals cattle other other weighing 90 kg or more but less than 200 kg each: "
+          "ancestorPath": ["Live bovine animals", "Cattle", "Other", "Other"]
         },
         {
           "id": "r30",
@@ -865,8 +835,7 @@
           "column2InheritedFrom": "0102.29.40",
           "dutiable": true,
           "heading": "0102",
-          "ancestorPath": ["Live bovine animals", "Cattle", "Other", "Other", "Weighing 90 kg or more but less than 200 kg each"],
-          "searchText": "live bovine animals cattle other other weighing 90 kg or more but less than 200 kg each male 0102.29.40.34"
+          "ancestorPath": ["Live bovine animals", "Cattle", "Other", "Other", "Weighing 90 kg or more but less than 200 kg each"]
         },
         {
           "id": "r31",
@@ -889,8 +858,7 @@
           "column2InheritedFrom": "0102.29.40",
           "dutiable": true,
           "heading": "0102",
-          "ancestorPath": ["Live bovine animals", "Cattle", "Other", "Other", "Weighing 90 kg or more but less than 200 kg each"],
-          "searchText": "live bovine animals cattle other other weighing 90 kg or more but less than 200 kg each female 0102.29.40.38"
+          "ancestorPath": ["Live bovine animals", "Cattle", "Other", "Other", "Weighing 90 kg or more but less than 200 kg each"]
         },
         {
           "id": "r32",
@@ -913,8 +881,7 @@
           "column2InheritedFrom": "0102.29.40",
           "dutiable": true,
           "heading": "0102",
-          "ancestorPath": ["Live bovine animals", "Cattle", "Other", "Other"],
-          "searchText": "live bovine animals cattle other other weighing 200 kg or more but less than 320 kg each: "
+          "ancestorPath": ["Live bovine animals", "Cattle", "Other", "Other"]
         },
         {
           "id": "r33",
@@ -937,8 +904,7 @@
           "column2InheritedFrom": "0102.29.40",
           "dutiable": true,
           "heading": "0102",
-          "ancestorPath": ["Live bovine animals", "Cattle", "Other", "Other", "Weighing 200 kg or more but less than 320 kg each"],
-          "searchText": "live bovine animals cattle other other weighing 200 kg or more but less than 320 kg each male 0102.29.40.54"
+          "ancestorPath": ["Live bovine animals", "Cattle", "Other", "Other", "Weighing 200 kg or more but less than 320 kg each"]
         },
         {
           "id": "r34",
@@ -961,8 +927,7 @@
           "column2InheritedFrom": "0102.29.40",
           "dutiable": true,
           "heading": "0102",
-          "ancestorPath": ["Live bovine animals", "Cattle", "Other", "Other", "Weighing 200 kg or more but less than 320 kg each"],
-          "searchText": "live bovine animals cattle other other weighing 200 kg or more but less than 320 kg each female 0102.29.40.58"
+          "ancestorPath": ["Live bovine animals", "Cattle", "Other", "Other", "Weighing 200 kg or more but less than 320 kg each"]
         },
         {
           "id": "r35",
@@ -985,8 +950,7 @@
           "column2InheritedFrom": "0102.29.40",
           "dutiable": true,
           "heading": "0102",
-          "ancestorPath": ["Live bovine animals", "Cattle", "Other", "Other"],
-          "searchText": "live bovine animals cattle other other weighing 320 kg or more each: "
+          "ancestorPath": ["Live bovine animals", "Cattle", "Other", "Other"]
         },
         {
           "id": "r36",
@@ -1009,8 +973,7 @@
           "column2InheritedFrom": "0102.29.40",
           "dutiable": true,
           "heading": "0102",
-          "ancestorPath": ["Live bovine animals", "Cattle", "Other", "Other", "Weighing 320 kg or more each"],
-          "searchText": "live bovine animals cattle other other weighing 320 kg or more each for immediate slaughter: "
+          "ancestorPath": ["Live bovine animals", "Cattle", "Other", "Other", "Weighing 320 kg or more each"]
         },
         {
           "id": "r37",
@@ -1033,8 +996,7 @@
           "column2InheritedFrom": "0102.29.40",
           "dutiable": true,
           "heading": "0102",
-          "ancestorPath": ["Live bovine animals", "Cattle", "Other", "Other", "Weighing 320 kg or more each", "For immediate slaughter"],
-          "searchText": "live bovine animals cattle other other weighing 320 kg or more each for immediate slaughter steers 0102.29.40.62"
+          "ancestorPath": ["Live bovine animals", "Cattle", "Other", "Other", "Weighing 320 kg or more each", "For immediate slaughter"]
         },
         {
           "id": "r38",
@@ -1057,8 +1019,7 @@
           "column2InheritedFrom": "0102.29.40",
           "dutiable": true,
           "heading": "0102",
-          "ancestorPath": ["Live bovine animals", "Cattle", "Other", "Other", "Weighing 320 kg or more each", "For immediate slaughter"],
-          "searchText": "live bovine animals cattle other other weighing 320 kg or more each for immediate slaughter bulls 0102.29.40.64"
+          "ancestorPath": ["Live bovine animals", "Cattle", "Other", "Other", "Weighing 320 kg or more each", "For immediate slaughter"]
         },
         {
           "id": "r39",
@@ -1081,8 +1042,7 @@
           "column2InheritedFrom": "0102.29.40",
           "dutiable": true,
           "heading": "0102",
-          "ancestorPath": ["Live bovine animals", "Cattle", "Other", "Other", "Weighing 320 kg or more each", "For immediate slaughter"],
-          "searchText": "live bovine animals cattle other other weighing 320 kg or more each for immediate slaughter cows 0102.29.40.66"
+          "ancestorPath": ["Live bovine animals", "Cattle", "Other", "Other", "Weighing 320 kg or more each", "For immediate slaughter"]
         },
         {
           "id": "r40",
@@ -1105,8 +1065,7 @@
           "column2InheritedFrom": "0102.29.40",
           "dutiable": true,
           "heading": "0102",
-          "ancestorPath": ["Live bovine animals", "Cattle", "Other", "Other", "Weighing 320 kg or more each", "For immediate slaughter"],
-          "searchText": "live bovine animals cattle other other weighing 320 kg or more each for immediate slaughter heifers 0102.29.40.68"
+          "ancestorPath": ["Live bovine animals", "Cattle", "Other", "Other", "Weighing 320 kg or more each", "For immediate slaughter"]
         },
         {
           "id": "r41",
@@ -1129,8 +1088,7 @@
           "column2InheritedFrom": "0102.29.40",
           "dutiable": true,
           "heading": "0102",
-          "ancestorPath": ["Live bovine animals", "Cattle", "Other", "Other", "Weighing 320 kg or more each"],
-          "searchText": "live bovine animals cattle other other weighing 320 kg or more each for breeding: "
+          "ancestorPath": ["Live bovine animals", "Cattle", "Other", "Other", "Weighing 320 kg or more each"]
         },
         {
           "id": "r42",
@@ -1153,8 +1111,7 @@
           "column2InheritedFrom": "0102.29.40",
           "dutiable": true,
           "heading": "0102",
-          "ancestorPath": ["Live bovine animals", "Cattle", "Other", "Other", "Weighing 320 kg or more each", "For breeding"],
-          "searchText": "live bovine animals cattle other other weighing 320 kg or more each for breeding male 0102.29.40.72"
+          "ancestorPath": ["Live bovine animals", "Cattle", "Other", "Other", "Weighing 320 kg or more each", "For breeding"]
         },
         {
           "id": "r43",
@@ -1177,8 +1134,7 @@
           "column2InheritedFrom": "0102.29.40",
           "dutiable": true,
           "heading": "0102",
-          "ancestorPath": ["Live bovine animals", "Cattle", "Other", "Other", "Weighing 320 kg or more each", "For breeding"],
-          "searchText": "live bovine animals cattle other other weighing 320 kg or more each for breeding female 0102.29.40.74"
+          "ancestorPath": ["Live bovine animals", "Cattle", "Other", "Other", "Weighing 320 kg or more each", "For breeding"]
         },
         {
           "id": "r44",
@@ -1201,8 +1157,7 @@
           "column2InheritedFrom": "0102.29.40",
           "dutiable": true,
           "heading": "0102",
-          "ancestorPath": ["Live bovine animals", "Cattle", "Other", "Other", "Weighing 320 kg or more each"],
-          "searchText": "live bovine animals cattle other other weighing 320 kg or more each other: "
+          "ancestorPath": ["Live bovine animals", "Cattle", "Other", "Other", "Weighing 320 kg or more each"]
         },
         {
           "id": "r45",
@@ -1225,8 +1180,7 @@
           "column2InheritedFrom": "0102.29.40",
           "dutiable": true,
           "heading": "0102",
-          "ancestorPath": ["Live bovine animals", "Cattle", "Other", "Other", "Weighing 320 kg or more each", "Other"],
-          "searchText": "live bovine animals cattle other other weighing 320 kg or more each other male 0102.29.40.82"
+          "ancestorPath": ["Live bovine animals", "Cattle", "Other", "Other", "Weighing 320 kg or more each", "Other"]
         },
         {
           "id": "r46",
@@ -1249,8 +1203,7 @@
           "column2InheritedFrom": "0102.29.40",
           "dutiable": true,
           "heading": "0102",
-          "ancestorPath": ["Live bovine animals", "Cattle", "Other", "Other", "Weighing 320 kg or more each", "Other"],
-          "searchText": "live bovine animals cattle other other weighing 320 kg or more each other female 0102.29.40.84"
+          "ancestorPath": ["Live bovine animals", "Cattle", "Other", "Other", "Weighing 320 kg or more each", "Other"]
         },
         {
           "id": "r47",
@@ -1273,8 +1226,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "0102",
-          "ancestorPath": ["Live bovine animals"],
-          "searchText": "live bovine animals buffalo: "
+          "ancestorPath": ["Live bovine animals"]
         },
         {
           "id": "r48",
@@ -1297,8 +1249,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "0102",
-          "ancestorPath": ["Live bovine animals", "Buffalo"],
-          "searchText": "live bovine animals buffalo purebred breeding animals 0102.31.00"
+          "ancestorPath": ["Live bovine animals", "Buffalo"]
         },
         {
           "id": "r49",
@@ -1321,8 +1272,7 @@
           "column2InheritedFrom": "0102.31.00",
           "dutiable": false,
           "heading": "0102",
-          "ancestorPath": ["Live bovine animals", "Buffalo", "Purebred breeding animals"],
-          "searchText": "live bovine animals buffalo purebred breeding animals male 0102.31.00.10"
+          "ancestorPath": ["Live bovine animals", "Buffalo", "Purebred breeding animals"]
         },
         {
           "id": "r50",
@@ -1345,8 +1295,7 @@
           "column2InheritedFrom": "0102.31.00",
           "dutiable": false,
           "heading": "0102",
-          "ancestorPath": ["Live bovine animals", "Buffalo", "Purebred breeding animals"],
-          "searchText": "live bovine animals buffalo purebred breeding animals female 0102.31.00.20"
+          "ancestorPath": ["Live bovine animals", "Buffalo", "Purebred breeding animals"]
         },
         {
           "id": "r51",
@@ -1369,8 +1318,7 @@
           "column2InheritedFrom": null,
           "dutiable": true,
           "heading": "0102",
-          "ancestorPath": ["Live bovine animals", "Buffalo"],
-          "searchText": "live bovine animals buffalo other 0102.39.00"
+          "ancestorPath": ["Live bovine animals", "Buffalo"]
         },
         {
           "id": "r52",
@@ -1393,8 +1341,7 @@
           "column2InheritedFrom": "0102.39.00",
           "dutiable": true,
           "heading": "0102",
-          "ancestorPath": ["Live bovine animals", "Buffalo", "Other"],
-          "searchText": "live bovine animals buffalo other bison 0102.39.00.10"
+          "ancestorPath": ["Live bovine animals", "Buffalo", "Other"]
         },
         {
           "id": "r53",
@@ -1417,8 +1364,7 @@
           "column2InheritedFrom": "0102.39.00",
           "dutiable": true,
           "heading": "0102",
-          "ancestorPath": ["Live bovine animals", "Buffalo", "Other"],
-          "searchText": "live bovine animals buffalo other other: "
+          "ancestorPath": ["Live bovine animals", "Buffalo", "Other"]
         },
         {
           "id": "r54",
@@ -1441,8 +1387,7 @@
           "column2InheritedFrom": "0102.39.00",
           "dutiable": true,
           "heading": "0102",
-          "ancestorPath": ["Live bovine animals", "Buffalo", "Other", "Other"],
-          "searchText": "live bovine animals buffalo other other weighing less than 90 kg each: "
+          "ancestorPath": ["Live bovine animals", "Buffalo", "Other", "Other"]
         },
         {
           "id": "r55",
@@ -1465,8 +1410,7 @@
           "column2InheritedFrom": "0102.39.00",
           "dutiable": true,
           "heading": "0102",
-          "ancestorPath": ["Live bovine animals", "Buffalo", "Other", "Other", "Weighing less than 90 kg each"],
-          "searchText": "live bovine animals buffalo other other weighing less than 90 kg each male 0102.39.00.24"
+          "ancestorPath": ["Live bovine animals", "Buffalo", "Other", "Other", "Weighing less than 90 kg each"]
         },
         {
           "id": "r56",
@@ -1489,8 +1433,7 @@
           "column2InheritedFrom": "0102.39.00",
           "dutiable": true,
           "heading": "0102",
-          "ancestorPath": ["Live bovine animals", "Buffalo", "Other", "Other", "Weighing less than 90 kg each"],
-          "searchText": "live bovine animals buffalo other other weighing less than 90 kg each female 0102.39.00.28"
+          "ancestorPath": ["Live bovine animals", "Buffalo", "Other", "Other", "Weighing less than 90 kg each"]
         },
         {
           "id": "r57",
@@ -1513,8 +1456,7 @@
           "column2InheritedFrom": "0102.39.00",
           "dutiable": true,
           "heading": "0102",
-          "ancestorPath": ["Live bovine animals", "Buffalo", "Other", "Other"],
-          "searchText": "live bovine animals buffalo other other weighing 90 kg or more but less than 200 kg each: "
+          "ancestorPath": ["Live bovine animals", "Buffalo", "Other", "Other"]
         },
         {
           "id": "r58",
@@ -1537,8 +1479,7 @@
           "column2InheritedFrom": "0102.39.00",
           "dutiable": true,
           "heading": "0102",
-          "ancestorPath": ["Live bovine animals", "Buffalo", "Other", "Other", "Weighing 90 kg or more but less than 200 kg each"],
-          "searchText": "live bovine animals buffalo other other weighing 90 kg or more but less than 200 kg each male 0102.39.00.34"
+          "ancestorPath": ["Live bovine animals", "Buffalo", "Other", "Other", "Weighing 90 kg or more but less than 200 kg each"]
         },
         {
           "id": "r59",
@@ -1561,8 +1502,7 @@
           "column2InheritedFrom": "0102.39.00",
           "dutiable": true,
           "heading": "0102",
-          "ancestorPath": ["Live bovine animals", "Buffalo", "Other", "Other", "Weighing 90 kg or more but less than 200 kg each"],
-          "searchText": "live bovine animals buffalo other other weighing 90 kg or more but less than 200 kg each female 0102.39.00.38"
+          "ancestorPath": ["Live bovine animals", "Buffalo", "Other", "Other", "Weighing 90 kg or more but less than 200 kg each"]
         },
         {
           "id": "r60",
@@ -1585,8 +1525,7 @@
           "column2InheritedFrom": "0102.39.00",
           "dutiable": true,
           "heading": "0102",
-          "ancestorPath": ["Live bovine animals", "Buffalo", "Other", "Other"],
-          "searchText": "live bovine animals buffalo other other weighing 200 kg or more but less than 320 kg each: "
+          "ancestorPath": ["Live bovine animals", "Buffalo", "Other", "Other"]
         },
         {
           "id": "r61",
@@ -1609,8 +1548,7 @@
           "column2InheritedFrom": "0102.39.00",
           "dutiable": true,
           "heading": "0102",
-          "ancestorPath": ["Live bovine animals", "Buffalo", "Other", "Other", "Weighing 200 kg or more but less than 320 kg each"],
-          "searchText": "live bovine animals buffalo other other weighing 200 kg or more but less than 320 kg each male 0102.39.00.54"
+          "ancestorPath": ["Live bovine animals", "Buffalo", "Other", "Other", "Weighing 200 kg or more but less than 320 kg each"]
         },
         {
           "id": "r62",
@@ -1633,8 +1571,7 @@
           "column2InheritedFrom": "0102.39.00",
           "dutiable": true,
           "heading": "0102",
-          "ancestorPath": ["Live bovine animals", "Buffalo", "Other", "Other", "Weighing 200 kg or more but less than 320 kg each"],
-          "searchText": "live bovine animals buffalo other other weighing 200 kg or more but less than 320 kg each female 0102.39.00.58"
+          "ancestorPath": ["Live bovine animals", "Buffalo", "Other", "Other", "Weighing 200 kg or more but less than 320 kg each"]
         },
         {
           "id": "r63",
@@ -1657,8 +1594,7 @@
           "column2InheritedFrom": "0102.39.00",
           "dutiable": true,
           "heading": "0102",
-          "ancestorPath": ["Live bovine animals", "Buffalo", "Other", "Other"],
-          "searchText": "live bovine animals buffalo other other weighing 320 kg or more each: "
+          "ancestorPath": ["Live bovine animals", "Buffalo", "Other", "Other"]
         },
         {
           "id": "r64",
@@ -1681,8 +1617,7 @@
           "column2InheritedFrom": "0102.39.00",
           "dutiable": true,
           "heading": "0102",
-          "ancestorPath": ["Live bovine animals", "Buffalo", "Other", "Other", "Weighing 320 kg or more each"],
-          "searchText": "live bovine animals buffalo other other weighing 320 kg or more each for immediate slaughter 0102.39.00.61"
+          "ancestorPath": ["Live bovine animals", "Buffalo", "Other", "Other", "Weighing 320 kg or more each"]
         },
         {
           "id": "r65",
@@ -1705,8 +1640,7 @@
           "column2InheritedFrom": "0102.39.00",
           "dutiable": true,
           "heading": "0102",
-          "ancestorPath": ["Live bovine animals", "Buffalo", "Other", "Other", "Weighing 320 kg or more each"],
-          "searchText": "live bovine animals buffalo other other weighing 320 kg or more each for breeding: "
+          "ancestorPath": ["Live bovine animals", "Buffalo", "Other", "Other", "Weighing 320 kg or more each"]
         },
         {
           "id": "r66",
@@ -1729,8 +1663,7 @@
           "column2InheritedFrom": "0102.39.00",
           "dutiable": true,
           "heading": "0102",
-          "ancestorPath": ["Live bovine animals", "Buffalo", "Other", "Other", "Weighing 320 kg or more each", "For breeding"],
-          "searchText": "live bovine animals buffalo other other weighing 320 kg or more each for breeding male 0102.39.00.72"
+          "ancestorPath": ["Live bovine animals", "Buffalo", "Other", "Other", "Weighing 320 kg or more each", "For breeding"]
         },
         {
           "id": "r67",
@@ -1753,8 +1686,7 @@
           "column2InheritedFrom": "0102.39.00",
           "dutiable": true,
           "heading": "0102",
-          "ancestorPath": ["Live bovine animals", "Buffalo", "Other", "Other", "Weighing 320 kg or more each", "For breeding"],
-          "searchText": "live bovine animals buffalo other other weighing 320 kg or more each for breeding female 0102.39.00.74"
+          "ancestorPath": ["Live bovine animals", "Buffalo", "Other", "Other", "Weighing 320 kg or more each", "For breeding"]
         },
         {
           "id": "r68",
@@ -1777,8 +1709,7 @@
           "column2InheritedFrom": "0102.39.00",
           "dutiable": true,
           "heading": "0102",
-          "ancestorPath": ["Live bovine animals", "Buffalo", "Other", "Other", "Weighing 320 kg or more each"],
-          "searchText": "live bovine animals buffalo other other weighing 320 kg or more each other: "
+          "ancestorPath": ["Live bovine animals", "Buffalo", "Other", "Other", "Weighing 320 kg or more each"]
         },
         {
           "id": "r69",
@@ -1801,8 +1732,7 @@
           "column2InheritedFrom": "0102.39.00",
           "dutiable": true,
           "heading": "0102",
-          "ancestorPath": ["Live bovine animals", "Buffalo", "Other", "Other", "Weighing 320 kg or more each", "Other"],
-          "searchText": "live bovine animals buffalo other other weighing 320 kg or more each other male 0102.39.00.82"
+          "ancestorPath": ["Live bovine animals", "Buffalo", "Other", "Other", "Weighing 320 kg or more each", "Other"]
         },
         {
           "id": "r70",
@@ -1825,8 +1755,7 @@
           "column2InheritedFrom": "0102.39.00",
           "dutiable": true,
           "heading": "0102",
-          "ancestorPath": ["Live bovine animals", "Buffalo", "Other", "Other", "Weighing 320 kg or more each", "Other"],
-          "searchText": "live bovine animals buffalo other other weighing 320 kg or more each other female 0102.39.00.84"
+          "ancestorPath": ["Live bovine animals", "Buffalo", "Other", "Other", "Weighing 320 kg or more each", "Other"]
         },
         {
           "id": "r71",
@@ -1849,8 +1778,7 @@
           "column2InheritedFrom": null,
           "dutiable": true,
           "heading": "0102",
-          "ancestorPath": ["Live bovine animals"],
-          "searchText": "live bovine animals other 0102.90.00.00"
+          "ancestorPath": ["Live bovine animals"]
         },
         {
           "id": "r72",
@@ -1873,8 +1801,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "0103",
-          "ancestorPath": [],
-          "searchText": "live swine: 0103"
+          "ancestorPath": []
         },
         {
           "id": "r73",
@@ -1897,8 +1824,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "0103",
-          "ancestorPath": ["Live swine"],
-          "searchText": "live swine purebred breeding animals 0103.10.00.00"
+          "ancestorPath": ["Live swine"]
         },
         {
           "id": "r74",
@@ -1921,8 +1847,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "0103",
-          "ancestorPath": ["Live swine"],
-          "searchText": "live swine other: "
+          "ancestorPath": ["Live swine"]
         },
         {
           "id": "r75",
@@ -1945,8 +1870,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "0103",
-          "ancestorPath": ["Live swine", "Other"],
-          "searchText": "live swine other weighing less than 50 kg each 0103.91.00"
+          "ancestorPath": ["Live swine", "Other"]
         },
         {
           "id": "r76",
@@ -1969,8 +1893,7 @@
           "column2InheritedFrom": "0103.91.00",
           "dutiable": false,
           "heading": "0103",
-          "ancestorPath": ["Live swine", "Other", "Weighing less than 50 kg each"],
-          "searchText": "live swine other weighing less than 50 kg each weighing less than 7 kg each 0103.91.00.10"
+          "ancestorPath": ["Live swine", "Other", "Weighing less than 50 kg each"]
         },
         {
           "id": "r77",
@@ -1993,8 +1916,7 @@
           "column2InheritedFrom": "0103.91.00",
           "dutiable": false,
           "heading": "0103",
-          "ancestorPath": ["Live swine", "Other", "Weighing less than 50 kg each"],
-          "searchText": "live swine other weighing less than 50 kg each weighing 7 kg or more but less than 23 kg each 0103.91.00.20"
+          "ancestorPath": ["Live swine", "Other", "Weighing less than 50 kg each"]
         },
         {
           "id": "r78",
@@ -2017,8 +1939,7 @@
           "column2InheritedFrom": "0103.91.00",
           "dutiable": false,
           "heading": "0103",
-          "ancestorPath": ["Live swine", "Other", "Weighing less than 50 kg each"],
-          "searchText": "live swine other weighing less than 50 kg each weighing 23 kg or more but less than 50 kg each 0103.91.00.30"
+          "ancestorPath": ["Live swine", "Other", "Weighing less than 50 kg each"]
         },
         {
           "id": "r79",
@@ -2041,8 +1962,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "0103",
-          "ancestorPath": ["Live swine", "Other"],
-          "searchText": "live swine other weighing 50 kg or more each 0103.92.00"
+          "ancestorPath": ["Live swine", "Other"]
         },
         {
           "id": "r80",
@@ -2065,8 +1985,7 @@
           "column2InheritedFrom": "0103.92.00",
           "dutiable": false,
           "heading": "0103",
-          "ancestorPath": ["Live swine", "Other", "Weighing 50 kg or more each"],
-          "searchText": "live swine other weighing 50 kg or more each imported for immediate slaughter 0103.92.00.10"
+          "ancestorPath": ["Live swine", "Other", "Weighing 50 kg or more each"]
         },
         {
           "id": "r81",
@@ -2089,8 +2008,7 @@
           "column2InheritedFrom": "0103.92.00",
           "dutiable": false,
           "heading": "0103",
-          "ancestorPath": ["Live swine", "Other", "Weighing 50 kg or more each"],
-          "searchText": "live swine other weighing 50 kg or more each breeding animals other than purebred breeding animals 0103.92.00.20"
+          "ancestorPath": ["Live swine", "Other", "Weighing 50 kg or more each"]
         },
         {
           "id": "r82",
@@ -2113,8 +2031,7 @@
           "column2InheritedFrom": "0103.92.00",
           "dutiable": false,
           "heading": "0103",
-          "ancestorPath": ["Live swine", "Other", "Weighing 50 kg or more each"],
-          "searchText": "live swine other weighing 50 kg or more each other 0103.92.00.91"
+          "ancestorPath": ["Live swine", "Other", "Weighing 50 kg or more each"]
         },
         {
           "id": "r83",
@@ -2137,8 +2054,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "0104",
-          "ancestorPath": [],
-          "searchText": "live sheep and goats: 0104"
+          "ancestorPath": []
         },
         {
           "id": "r84",
@@ -2161,8 +2077,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "0104",
-          "ancestorPath": ["Live sheep and goats"],
-          "searchText": "live sheep and goats sheep 0104.10.00.00"
+          "ancestorPath": ["Live sheep and goats"]
         },
         {
           "id": "r85",
@@ -2185,8 +2100,7 @@
           "column2InheritedFrom": null,
           "dutiable": true,
           "heading": "0104",
-          "ancestorPath": ["Live sheep and goats"],
-          "searchText": "live sheep and goats goats 0104.20.00.00"
+          "ancestorPath": ["Live sheep and goats"]
         },
         {
           "id": "r86",
@@ -2209,8 +2123,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "0105",
-          "ancestorPath": [],
-          "searchText": "live poultry of the following kinds: chickens, ducks, geese, turkeys and guineas: 0105"
+          "ancestorPath": []
         },
         {
           "id": "r87",
@@ -2233,8 +2146,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "0105",
-          "ancestorPath": ["Live poultry of the following kinds: Chickens, ducks, geese, turkeys and guineas"],
-          "searchText": "live poultry of the following kinds: chickens, ducks, geese, turkeys and guineas weighing not more than 185 g: "
+          "ancestorPath": ["Live poultry of the following kinds: Chickens, ducks, geese, turkeys and guineas"]
         },
         {
           "id": "r88",
@@ -2257,8 +2169,7 @@
           "column2InheritedFrom": null,
           "dutiable": true,
           "heading": "0105",
-          "ancestorPath": ["Live poultry of the following kinds: Chickens, ducks, geese, turkeys and guineas", "Weighing not more than 185 g"],
-          "searchText": "live poultry of the following kinds: chickens, ducks, geese, turkeys and guineas weighing not more than 185 g chickens 0105.11.00"
+          "ancestorPath": ["Live poultry of the following kinds: Chickens, ducks, geese, turkeys and guineas", "Weighing not more than 185 g"]
         },
         {
           "id": "r89",
@@ -2281,8 +2192,7 @@
           "column2InheritedFrom": "0105.11.00",
           "dutiable": true,
           "heading": "0105",
-          "ancestorPath": ["Live poultry of the following kinds: Chickens, ducks, geese, turkeys and guineas", "Weighing not more than 185 g", "Chickens"],
-          "searchText": "live poultry of the following kinds: chickens, ducks, geese, turkeys and guineas weighing not more than 185 g chickens breeding stock, whether or not purebred: "
+          "ancestorPath": ["Live poultry of the following kinds: Chickens, ducks, geese, turkeys and guineas", "Weighing not more than 185 g", "Chickens"]
         },
         {
           "id": "r90",
@@ -2310,8 +2220,7 @@
             "Weighing not more than 185 g",
             "Chickens",
             "Breeding stock, whether or not purebred"
-          ],
-          "searchText": "live poultry of the following kinds: chickens, ducks, geese, turkeys and guineas weighing not more than 185 g chickens breeding stock, whether or not purebred layer-type (egg-type) 0105.11.00.10"
+          ]
         },
         {
           "id": "r91",
@@ -2339,8 +2248,7 @@
             "Weighing not more than 185 g",
             "Chickens",
             "Breeding stock, whether or not purebred"
-          ],
-          "searchText": "live poultry of the following kinds: chickens, ducks, geese, turkeys and guineas weighing not more than 185 g chickens breeding stock, whether or not purebred broiler-type (meat-type) 0105.11.00.20"
+          ]
         },
         {
           "id": "r92",
@@ -2363,8 +2271,7 @@
           "column2InheritedFrom": "0105.11.00",
           "dutiable": true,
           "heading": "0105",
-          "ancestorPath": ["Live poultry of the following kinds: Chickens, ducks, geese, turkeys and guineas", "Weighing not more than 185 g", "Chickens"],
-          "searchText": "live poultry of the following kinds: chickens, ducks, geese, turkeys and guineas weighing not more than 185 g chickens other 0105.11.00.40"
+          "ancestorPath": ["Live poultry of the following kinds: Chickens, ducks, geese, turkeys and guineas", "Weighing not more than 185 g", "Chickens"]
         },
         {
           "id": "r93",
@@ -2387,8 +2294,7 @@
           "column2InheritedFrom": null,
           "dutiable": true,
           "heading": "0105",
-          "ancestorPath": ["Live poultry of the following kinds: Chickens, ducks, geese, turkeys and guineas", "Weighing not more than 185 g"],
-          "searchText": "live poultry of the following kinds: chickens, ducks, geese, turkeys and guineas weighing not more than 185 g turkeys 0105.12.00.00"
+          "ancestorPath": ["Live poultry of the following kinds: Chickens, ducks, geese, turkeys and guineas", "Weighing not more than 185 g"]
         },
         {
           "id": "r94",
@@ -2411,8 +2317,7 @@
           "column2InheritedFrom": null,
           "dutiable": true,
           "heading": "0105",
-          "ancestorPath": ["Live poultry of the following kinds: Chickens, ducks, geese, turkeys and guineas", "Weighing not more than 185 g"],
-          "searchText": "live poultry of the following kinds: chickens, ducks, geese, turkeys and guineas weighing not more than 185 g ducks 0105.13.00.00"
+          "ancestorPath": ["Live poultry of the following kinds: Chickens, ducks, geese, turkeys and guineas", "Weighing not more than 185 g"]
         },
         {
           "id": "r95",
@@ -2435,8 +2340,7 @@
           "column2InheritedFrom": null,
           "dutiable": true,
           "heading": "0105",
-          "ancestorPath": ["Live poultry of the following kinds: Chickens, ducks, geese, turkeys and guineas", "Weighing not more than 185 g"],
-          "searchText": "live poultry of the following kinds: chickens, ducks, geese, turkeys and guineas weighing not more than 185 g geese 0105.14.00.00"
+          "ancestorPath": ["Live poultry of the following kinds: Chickens, ducks, geese, turkeys and guineas", "Weighing not more than 185 g"]
         },
         {
           "id": "r96",
@@ -2459,8 +2363,7 @@
           "column2InheritedFrom": null,
           "dutiable": true,
           "heading": "0105",
-          "ancestorPath": ["Live poultry of the following kinds: Chickens, ducks, geese, turkeys and guineas", "Weighing not more than 185 g"],
-          "searchText": "live poultry of the following kinds: chickens, ducks, geese, turkeys and guineas weighing not more than 185 g guinea fowls 0105.15.00.00"
+          "ancestorPath": ["Live poultry of the following kinds: Chickens, ducks, geese, turkeys and guineas", "Weighing not more than 185 g"]
         },
         {
           "id": "r97",
@@ -2483,8 +2386,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "0105",
-          "ancestorPath": ["Live poultry of the following kinds: Chickens, ducks, geese, turkeys and guineas"],
-          "searchText": "live poultry of the following kinds: chickens, ducks, geese, turkeys and guineas other: "
+          "ancestorPath": ["Live poultry of the following kinds: Chickens, ducks, geese, turkeys and guineas"]
         },
         {
           "id": "r98",
@@ -2507,8 +2409,7 @@
           "column2InheritedFrom": null,
           "dutiable": true,
           "heading": "0105",
-          "ancestorPath": ["Live poultry of the following kinds: Chickens, ducks, geese, turkeys and guineas", "Other"],
-          "searchText": "live poultry of the following kinds: chickens, ducks, geese, turkeys and guineas other chickens 0105.94.00.00"
+          "ancestorPath": ["Live poultry of the following kinds: Chickens, ducks, geese, turkeys and guineas", "Other"]
         },
         {
           "id": "r99",
@@ -2531,8 +2432,7 @@
           "column2InheritedFrom": null,
           "dutiable": true,
           "heading": "0105",
-          "ancestorPath": ["Live poultry of the following kinds: Chickens, ducks, geese, turkeys and guineas", "Other"],
-          "searchText": "live poultry of the following kinds: chickens, ducks, geese, turkeys and guineas other other 0105.99.00.00"
+          "ancestorPath": ["Live poultry of the following kinds: Chickens, ducks, geese, turkeys and guineas", "Other"]
         },
         {
           "id": "r100",
@@ -2555,8 +2455,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "0106",
-          "ancestorPath": [],
-          "searchText": "other live animals: 0106"
+          "ancestorPath": []
         },
         {
           "id": "r101",
@@ -2579,8 +2478,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "0106",
-          "ancestorPath": ["Other live animals"],
-          "searchText": "other live animals mammals: "
+          "ancestorPath": ["Other live animals"]
         },
         {
           "id": "r102",
@@ -2603,8 +2501,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "0106",
-          "ancestorPath": ["Other live animals", "Mammals"],
-          "searchText": "other live animals mammals primates 0106.11.00.00"
+          "ancestorPath": ["Other live animals", "Mammals"]
         },
         {
           "id": "r103",
@@ -2627,8 +2524,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "0106",
-          "ancestorPath": ["Other live animals", "Mammals"],
-          "searchText": "other live animals mammals whales, dolphins and porpoises (mammals of the order cetacea); manatees and dugongs (mammals of the order sirenia); seals, sea lions and walruses (mammals of the suborder pinnipedia) 0106.12.01.00"
+          "ancestorPath": ["Other live animals", "Mammals"]
         },
         {
           "id": "r104",
@@ -2651,8 +2547,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "0106",
-          "ancestorPath": ["Other live animals", "Mammals"],
-          "searchText": "other live animals mammals camels and other camelids (camelidae) 0106.13.00.00"
+          "ancestorPath": ["Other live animals", "Mammals"]
         },
         {
           "id": "r105",
@@ -2675,8 +2570,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "0106",
-          "ancestorPath": ["Other live animals", "Mammals"],
-          "searchText": "other live animals mammals rabbits and hares 0106.14.00.00"
+          "ancestorPath": ["Other live animals", "Mammals"]
         },
         {
           "id": "r106",
@@ -2699,8 +2593,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "0106",
-          "ancestorPath": ["Other live animals", "Mammals"],
-          "searchText": "other live animals mammals other: 0106.19"
+          "ancestorPath": ["Other live animals", "Mammals"]
         },
         {
           "id": "r107",
@@ -2723,8 +2616,7 @@
           "column2InheritedFrom": null,
           "dutiable": true,
           "heading": "0106",
-          "ancestorPath": ["Other live animals", "Mammals", "Other"],
-          "searchText": "other live animals mammals other foxes 0106.19.30.00"
+          "ancestorPath": ["Other live animals", "Mammals", "Other"]
         },
         {
           "id": "r108",
@@ -2747,8 +2639,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "0106",
-          "ancestorPath": ["Other live animals", "Mammals", "Other"],
-          "searchText": "other live animals mammals other other 0106.19.91"
+          "ancestorPath": ["Other live animals", "Mammals", "Other"]
         },
         {
           "id": "r109",
@@ -2771,8 +2662,7 @@
           "column2InheritedFrom": "0106.19.91",
           "dutiable": false,
           "heading": "0106",
-          "ancestorPath": ["Other live animals", "Mammals", "Other", "Other"],
-          "searchText": "other live animals mammals other other dogs 0106.19.91.20"
+          "ancestorPath": ["Other live animals", "Mammals", "Other", "Other"]
         },
         {
           "id": "r110",
@@ -2795,8 +2685,7 @@
           "column2InheritedFrom": "0106.19.91",
           "dutiable": false,
           "heading": "0106",
-          "ancestorPath": ["Other live animals", "Mammals", "Other", "Other"],
-          "searchText": "other live animals mammals other other other 0106.19.91.95"
+          "ancestorPath": ["Other live animals", "Mammals", "Other", "Other"]
         },
         {
           "id": "r111",
@@ -2819,8 +2708,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "0106",
-          "ancestorPath": ["Other live animals"],
-          "searchText": "other live animals reptiles (including snakes and turtles) 0106.20.00.00"
+          "ancestorPath": ["Other live animals"]
         },
         {
           "id": "r112",
@@ -2843,8 +2731,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "0106",
-          "ancestorPath": ["Other live animals"],
-          "searchText": "other live animals birds: "
+          "ancestorPath": ["Other live animals"]
         },
         {
           "id": "r113",
@@ -2867,8 +2754,7 @@
           "column2InheritedFrom": null,
           "dutiable": true,
           "heading": "0106",
-          "ancestorPath": ["Other live animals", "Birds"],
-          "searchText": "other live animals birds birds of prey 0106.31.00.00"
+          "ancestorPath": ["Other live animals", "Birds"]
         },
         {
           "id": "r114",
@@ -2891,8 +2777,7 @@
           "column2InheritedFrom": null,
           "dutiable": true,
           "heading": "0106",
-          "ancestorPath": ["Other live animals", "Birds"],
-          "searchText": "other live animals birds psittaciformes (including parrots, parakeets, macaws and cockatoos) 0106.32.00.00"
+          "ancestorPath": ["Other live animals", "Birds"]
         },
         {
           "id": "r115",
@@ -2915,8 +2800,7 @@
           "column2InheritedFrom": null,
           "dutiable": true,
           "heading": "0106",
-          "ancestorPath": ["Other live animals", "Birds"],
-          "searchText": "other live animals birds ostriches; emus (dromaius novaehollandiae) 0106.33.00.00"
+          "ancestorPath": ["Other live animals", "Birds"]
         },
         {
           "id": "r116",
@@ -2939,8 +2823,7 @@
           "column2InheritedFrom": null,
           "dutiable": true,
           "heading": "0106",
-          "ancestorPath": ["Other live animals", "Birds"],
-          "searchText": "other live animals birds other 0106.39.01.00"
+          "ancestorPath": ["Other live animals", "Birds"]
         },
         {
           "id": "r117",
@@ -2963,8 +2846,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "0106",
-          "ancestorPath": ["Other live animals"],
-          "searchText": "other live animals insects: "
+          "ancestorPath": ["Other live animals"]
         },
         {
           "id": "r118",
@@ -2987,8 +2869,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "0106",
-          "ancestorPath": ["Other live animals", "Insects"],
-          "searchText": "other live animals insects bees 0106.41.00.00"
+          "ancestorPath": ["Other live animals", "Insects"]
         },
         {
           "id": "r119",
@@ -3011,8 +2892,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "0106",
-          "ancestorPath": ["Other live animals", "Insects"],
-          "searchText": "other live animals insects other 0106.49.00"
+          "ancestorPath": ["Other live animals", "Insects"]
         },
         {
           "id": "r120",
@@ -3035,8 +2915,7 @@
           "column2InheritedFrom": "0106.49.00",
           "dutiable": false,
           "heading": "0106",
-          "ancestorPath": ["Other live animals", "Insects", "Other"],
-          "searchText": "other live animals insects other leaf cutter bee larvae 0106.49.00.10"
+          "ancestorPath": ["Other live animals", "Insects", "Other"]
         },
         {
           "id": "r121",
@@ -3059,8 +2938,7 @@
           "column2InheritedFrom": "0106.49.00",
           "dutiable": false,
           "heading": "0106",
-          "ancestorPath": ["Other live animals", "Insects", "Other"],
-          "searchText": "other live animals insects other other 0106.49.00.90"
+          "ancestorPath": ["Other live animals", "Insects", "Other"]
         },
         {
           "id": "r122",
@@ -3083,8 +2961,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "0106",
-          "ancestorPath": ["Other live animals"],
-          "searchText": "other live animals other 0106.90.01"
+          "ancestorPath": ["Other live animals"]
         },
         {
           "id": "r123",
@@ -3107,8 +2984,7 @@
           "column2InheritedFrom": "0106.90.01",
           "dutiable": false,
           "heading": "0106",
-          "ancestorPath": ["Other live animals", "Other"],
-          "searchText": "other live animals other worms 0106.90.01.10"
+          "ancestorPath": ["Other live animals", "Other"]
         },
         {
           "id": "r124",
@@ -3131,8 +3007,7 @@
           "column2InheritedFrom": "0106.90.01",
           "dutiable": false,
           "heading": "0106",
-          "ancestorPath": ["Other live animals", "Other"],
-          "searchText": "other live animals other bait (other than worms) 0106.90.01.20"
+          "ancestorPath": ["Other live animals", "Other"]
         },
         {
           "id": "r125",
@@ -3155,8 +3030,7 @@
           "column2InheritedFrom": "0106.90.01",
           "dutiable": false,
           "heading": "0106",
-          "ancestorPath": ["Other live animals", "Other"],
-          "searchText": "other live animals other other 0106.90.01.80"
+          "ancestorPath": ["Other live animals", "Other"]
         }
       ]
     },
@@ -3670,9 +3544,6 @@
     "lines": [
       {
         "hts": "0101.21.00.10",
-        "description": "Males",
-        "ancestorPath": ["Live horses, asses, mules and hinnies", "Horses", "Purebred breeding animals"],
-        "searchText": "live horses, asses, mules and hinnies horses purebred breeding animals males 0101.21.00.10",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -3680,9 +3551,6 @@
       },
       {
         "hts": "0101.21.00.20",
-        "description": "Females",
-        "ancestorPath": ["Live horses, asses, mules and hinnies", "Horses", "Purebred breeding animals"],
-        "searchText": "live horses, asses, mules and hinnies horses purebred breeding animals females 0101.21.00.20",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -3690,9 +3558,6 @@
       },
       {
         "hts": "0101.29.00.10",
-        "description": "Imported for immediate slaughter",
-        "ancestorPath": ["Live horses, asses, mules and hinnies", "Horses", "Other"],
-        "searchText": "live horses, asses, mules and hinnies horses other imported for immediate slaughter 0101.29.00.10",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -3700,9 +3565,6 @@
       },
       {
         "hts": "0101.29.00.90",
-        "description": "Other",
-        "ancestorPath": ["Live horses, asses, mules and hinnies", "Horses", "Other"],
-        "searchText": "live horses, asses, mules and hinnies horses other other 0101.29.00.90",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -3710,9 +3572,6 @@
       },
       {
         "hts": "0101.30.00.00",
-        "description": "Asses",
-        "ancestorPath": ["Live horses, asses, mules and hinnies"],
-        "searchText": "live horses, asses, mules and hinnies asses 0101.30.00.00",
         "generalBefore": "6.8%",
         "generalNow": "6.8%",
         "status": "unchanged",
@@ -3720,9 +3579,6 @@
       },
       {
         "hts": "0101.90.30.00",
-        "description": "Imported for immediate slaughter",
-        "ancestorPath": ["Live horses, asses, mules and hinnies", "Other"],
-        "searchText": "live horses, asses, mules and hinnies other imported for immediate slaughter 0101.90.30.00",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -3730,9 +3586,6 @@
       },
       {
         "hts": "0101.90.40.00",
-        "description": "Other",
-        "ancestorPath": ["Live horses, asses, mules and hinnies", "Other"],
-        "searchText": "live horses, asses, mules and hinnies other other 0101.90.40.00",
         "generalBefore": "4.5%",
         "generalNow": "4.5%",
         "status": "unchanged",
@@ -3740,9 +3593,6 @@
       },
       {
         "hts": "0102.21.00.10",
-        "description": "Male",
-        "ancestorPath": ["Live bovine animals", "Cattle", "Purebred breeding animals", "Dairy"],
-        "searchText": "live bovine animals cattle purebred breeding animals dairy male 0102.21.00.10",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -3750,9 +3600,6 @@
       },
       {
         "hts": "0102.21.00.20",
-        "description": "Female",
-        "ancestorPath": ["Live bovine animals", "Cattle", "Purebred breeding animals", "Dairy"],
-        "searchText": "live bovine animals cattle purebred breeding animals dairy female 0102.21.00.20",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -3760,9 +3607,6 @@
       },
       {
         "hts": "0102.21.00.30",
-        "description": "Male",
-        "ancestorPath": ["Live bovine animals", "Cattle", "Purebred breeding animals", "Other"],
-        "searchText": "live bovine animals cattle purebred breeding animals other male 0102.21.00.30",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -3770,9 +3614,6 @@
       },
       {
         "hts": "0102.21.00.50",
-        "description": "Female",
-        "ancestorPath": ["Live bovine animals", "Cattle", "Purebred breeding animals", "Other"],
-        "searchText": "live bovine animals cattle purebred breeding animals other female 0102.21.00.50",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -3780,9 +3621,6 @@
       },
       {
         "hts": "0102.29.20.11",
-        "description": "Weighing less than 90 kg each",
-        "ancestorPath": ["Live bovine animals", "Cattle", "Other", "Cows imported specially for dairy purposes"],
-        "searchText": "live bovine animals cattle other cows imported specially for dairy purposes weighing less than 90 kg each 0102.29.20.11",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -3790,9 +3628,6 @@
       },
       {
         "hts": "0102.29.20.12",
-        "description": "Weighing 90 kg or more each",
-        "ancestorPath": ["Live bovine animals", "Cattle", "Other", "Cows imported specially for dairy purposes"],
-        "searchText": "live bovine animals cattle other cows imported specially for dairy purposes weighing 90 kg or more each 0102.29.20.12",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -3800,9 +3635,6 @@
       },
       {
         "hts": "0102.29.40.24",
-        "description": "Male",
-        "ancestorPath": ["Live bovine animals", "Cattle", "Other", "Other", "Weighing less than 90 kg each"],
-        "searchText": "live bovine animals cattle other other weighing less than 90 kg each male 0102.29.40.24",
         "generalBefore": "1¢/kg",
         "generalNow": "1¢/kg",
         "status": "unchanged",
@@ -3810,9 +3642,6 @@
       },
       {
         "hts": "0102.29.40.28",
-        "description": "Female",
-        "ancestorPath": ["Live bovine animals", "Cattle", "Other", "Other", "Weighing less than 90 kg each"],
-        "searchText": "live bovine animals cattle other other weighing less than 90 kg each female 0102.29.40.28",
         "generalBefore": "1¢/kg",
         "generalNow": "1¢/kg",
         "status": "unchanged",
@@ -3820,9 +3649,6 @@
       },
       {
         "hts": "0102.29.40.34",
-        "description": "Male",
-        "ancestorPath": ["Live bovine animals", "Cattle", "Other", "Other", "Weighing 90 kg or more but less than 200 kg each"],
-        "searchText": "live bovine animals cattle other other weighing 90 kg or more but less than 200 kg each male 0102.29.40.34",
         "generalBefore": "1¢/kg",
         "generalNow": "1¢/kg",
         "status": "unchanged",
@@ -3830,9 +3656,6 @@
       },
       {
         "hts": "0102.29.40.38",
-        "description": "Female",
-        "ancestorPath": ["Live bovine animals", "Cattle", "Other", "Other", "Weighing 90 kg or more but less than 200 kg each"],
-        "searchText": "live bovine animals cattle other other weighing 90 kg or more but less than 200 kg each female 0102.29.40.38",
         "generalBefore": "1¢/kg",
         "generalNow": "1¢/kg",
         "status": "unchanged",
@@ -3840,9 +3663,6 @@
       },
       {
         "hts": "0102.29.40.54",
-        "description": "Male",
-        "ancestorPath": ["Live bovine animals", "Cattle", "Other", "Other", "Weighing 200 kg or more but less than 320 kg each"],
-        "searchText": "live bovine animals cattle other other weighing 200 kg or more but less than 320 kg each male 0102.29.40.54",
         "generalBefore": "1¢/kg",
         "generalNow": "1¢/kg",
         "status": "unchanged",
@@ -3850,9 +3670,6 @@
       },
       {
         "hts": "0102.29.40.58",
-        "description": "Female",
-        "ancestorPath": ["Live bovine animals", "Cattle", "Other", "Other", "Weighing 200 kg or more but less than 320 kg each"],
-        "searchText": "live bovine animals cattle other other weighing 200 kg or more but less than 320 kg each female 0102.29.40.58",
         "generalBefore": "1¢/kg",
         "generalNow": "1¢/kg",
         "status": "unchanged",
@@ -3860,9 +3677,6 @@
       },
       {
         "hts": "0102.29.40.62",
-        "description": "Steers",
-        "ancestorPath": ["Live bovine animals", "Cattle", "Other", "Other", "Weighing 320 kg or more each", "For immediate slaughter"],
-        "searchText": "live bovine animals cattle other other weighing 320 kg or more each for immediate slaughter steers 0102.29.40.62",
         "generalBefore": "1¢/kg",
         "generalNow": "1¢/kg",
         "status": "unchanged",
@@ -3870,9 +3684,6 @@
       },
       {
         "hts": "0102.29.40.64",
-        "description": "Bulls",
-        "ancestorPath": ["Live bovine animals", "Cattle", "Other", "Other", "Weighing 320 kg or more each", "For immediate slaughter"],
-        "searchText": "live bovine animals cattle other other weighing 320 kg or more each for immediate slaughter bulls 0102.29.40.64",
         "generalBefore": "1¢/kg",
         "generalNow": "1¢/kg",
         "status": "unchanged",
@@ -3880,9 +3691,6 @@
       },
       {
         "hts": "0102.29.40.66",
-        "description": "Cows",
-        "ancestorPath": ["Live bovine animals", "Cattle", "Other", "Other", "Weighing 320 kg or more each", "For immediate slaughter"],
-        "searchText": "live bovine animals cattle other other weighing 320 kg or more each for immediate slaughter cows 0102.29.40.66",
         "generalBefore": "1¢/kg",
         "generalNow": "1¢/kg",
         "status": "unchanged",
@@ -3890,9 +3698,6 @@
       },
       {
         "hts": "0102.29.40.68",
-        "description": "Heifers",
-        "ancestorPath": ["Live bovine animals", "Cattle", "Other", "Other", "Weighing 320 kg or more each", "For immediate slaughter"],
-        "searchText": "live bovine animals cattle other other weighing 320 kg or more each for immediate slaughter heifers 0102.29.40.68",
         "generalBefore": "1¢/kg",
         "generalNow": "1¢/kg",
         "status": "unchanged",
@@ -3900,9 +3705,6 @@
       },
       {
         "hts": "0102.29.40.72",
-        "description": "Male",
-        "ancestorPath": ["Live bovine animals", "Cattle", "Other", "Other", "Weighing 320 kg or more each", "For breeding"],
-        "searchText": "live bovine animals cattle other other weighing 320 kg or more each for breeding male 0102.29.40.72",
         "generalBefore": "1¢/kg",
         "generalNow": "1¢/kg",
         "status": "unchanged",
@@ -3910,9 +3712,6 @@
       },
       {
         "hts": "0102.29.40.74",
-        "description": "Female",
-        "ancestorPath": ["Live bovine animals", "Cattle", "Other", "Other", "Weighing 320 kg or more each", "For breeding"],
-        "searchText": "live bovine animals cattle other other weighing 320 kg or more each for breeding female 0102.29.40.74",
         "generalBefore": "1¢/kg",
         "generalNow": "1¢/kg",
         "status": "unchanged",
@@ -3920,9 +3719,6 @@
       },
       {
         "hts": "0102.29.40.82",
-        "description": "Male",
-        "ancestorPath": ["Live bovine animals", "Cattle", "Other", "Other", "Weighing 320 kg or more each", "Other"],
-        "searchText": "live bovine animals cattle other other weighing 320 kg or more each other male 0102.29.40.82",
         "generalBefore": "1¢/kg",
         "generalNow": "1¢/kg",
         "status": "unchanged",
@@ -3930,9 +3726,6 @@
       },
       {
         "hts": "0102.29.40.84",
-        "description": "Female",
-        "ancestorPath": ["Live bovine animals", "Cattle", "Other", "Other", "Weighing 320 kg or more each", "Other"],
-        "searchText": "live bovine animals cattle other other weighing 320 kg or more each other female 0102.29.40.84",
         "generalBefore": "1¢/kg",
         "generalNow": "1¢/kg",
         "status": "unchanged",
@@ -3940,9 +3733,6 @@
       },
       {
         "hts": "0102.31.00.10",
-        "description": "Male",
-        "ancestorPath": ["Live bovine animals", "Buffalo", "Purebred breeding animals"],
-        "searchText": "live bovine animals buffalo purebred breeding animals male 0102.31.00.10",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -3950,9 +3740,6 @@
       },
       {
         "hts": "0102.31.00.20",
-        "description": "Female",
-        "ancestorPath": ["Live bovine animals", "Buffalo", "Purebred breeding animals"],
-        "searchText": "live bovine animals buffalo purebred breeding animals female 0102.31.00.20",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -3960,9 +3747,6 @@
       },
       {
         "hts": "0102.39.00.10",
-        "description": "Bison",
-        "ancestorPath": ["Live bovine animals", "Buffalo", "Other"],
-        "searchText": "live bovine animals buffalo other bison 0102.39.00.10",
         "generalBefore": "1¢/kg",
         "generalNow": "1¢/kg",
         "status": "unchanged",
@@ -3970,9 +3754,6 @@
       },
       {
         "hts": "0102.39.00.24",
-        "description": "Male",
-        "ancestorPath": ["Live bovine animals", "Buffalo", "Other", "Other", "Weighing less than 90 kg each"],
-        "searchText": "live bovine animals buffalo other other weighing less than 90 kg each male 0102.39.00.24",
         "generalBefore": "1¢/kg",
         "generalNow": "1¢/kg",
         "status": "unchanged",
@@ -3980,9 +3761,6 @@
       },
       {
         "hts": "0102.39.00.28",
-        "description": "Female",
-        "ancestorPath": ["Live bovine animals", "Buffalo", "Other", "Other", "Weighing less than 90 kg each"],
-        "searchText": "live bovine animals buffalo other other weighing less than 90 kg each female 0102.39.00.28",
         "generalBefore": "1¢/kg",
         "generalNow": "1¢/kg",
         "status": "unchanged",
@@ -3990,9 +3768,6 @@
       },
       {
         "hts": "0102.39.00.34",
-        "description": "Male",
-        "ancestorPath": ["Live bovine animals", "Buffalo", "Other", "Other", "Weighing 90 kg or more but less than 200 kg each"],
-        "searchText": "live bovine animals buffalo other other weighing 90 kg or more but less than 200 kg each male 0102.39.00.34",
         "generalBefore": "1¢/kg",
         "generalNow": "1¢/kg",
         "status": "unchanged",
@@ -4000,9 +3775,6 @@
       },
       {
         "hts": "0102.39.00.38",
-        "description": "Female",
-        "ancestorPath": ["Live bovine animals", "Buffalo", "Other", "Other", "Weighing 90 kg or more but less than 200 kg each"],
-        "searchText": "live bovine animals buffalo other other weighing 90 kg or more but less than 200 kg each female 0102.39.00.38",
         "generalBefore": "1¢/kg",
         "generalNow": "1¢/kg",
         "status": "unchanged",
@@ -4010,9 +3782,6 @@
       },
       {
         "hts": "0102.39.00.54",
-        "description": "Male",
-        "ancestorPath": ["Live bovine animals", "Buffalo", "Other", "Other", "Weighing 200 kg or more but less than 320 kg each"],
-        "searchText": "live bovine animals buffalo other other weighing 200 kg or more but less than 320 kg each male 0102.39.00.54",
         "generalBefore": "1¢/kg",
         "generalNow": "1¢/kg",
         "status": "unchanged",
@@ -4020,9 +3789,6 @@
       },
       {
         "hts": "0102.39.00.58",
-        "description": "Female",
-        "ancestorPath": ["Live bovine animals", "Buffalo", "Other", "Other", "Weighing 200 kg or more but less than 320 kg each"],
-        "searchText": "live bovine animals buffalo other other weighing 200 kg or more but less than 320 kg each female 0102.39.00.58",
         "generalBefore": "1¢/kg",
         "generalNow": "1¢/kg",
         "status": "unchanged",
@@ -4030,9 +3796,6 @@
       },
       {
         "hts": "0102.39.00.61",
-        "description": "For immediate slaughter",
-        "ancestorPath": ["Live bovine animals", "Buffalo", "Other", "Other", "Weighing 320 kg or more each"],
-        "searchText": "live bovine animals buffalo other other weighing 320 kg or more each for immediate slaughter 0102.39.00.61",
         "generalBefore": "1¢/kg",
         "generalNow": "1¢/kg",
         "status": "unchanged",
@@ -4040,9 +3803,6 @@
       },
       {
         "hts": "0102.39.00.72",
-        "description": "Male",
-        "ancestorPath": ["Live bovine animals", "Buffalo", "Other", "Other", "Weighing 320 kg or more each", "For breeding"],
-        "searchText": "live bovine animals buffalo other other weighing 320 kg or more each for breeding male 0102.39.00.72",
         "generalBefore": "1¢/kg",
         "generalNow": "1¢/kg",
         "status": "unchanged",
@@ -4050,9 +3810,6 @@
       },
       {
         "hts": "0102.39.00.74",
-        "description": "Female",
-        "ancestorPath": ["Live bovine animals", "Buffalo", "Other", "Other", "Weighing 320 kg or more each", "For breeding"],
-        "searchText": "live bovine animals buffalo other other weighing 320 kg or more each for breeding female 0102.39.00.74",
         "generalBefore": "1¢/kg",
         "generalNow": "1¢/kg",
         "status": "unchanged",
@@ -4060,9 +3817,6 @@
       },
       {
         "hts": "0102.39.00.82",
-        "description": "Male",
-        "ancestorPath": ["Live bovine animals", "Buffalo", "Other", "Other", "Weighing 320 kg or more each", "Other"],
-        "searchText": "live bovine animals buffalo other other weighing 320 kg or more each other male 0102.39.00.82",
         "generalBefore": "1¢/kg",
         "generalNow": "1¢/kg",
         "status": "unchanged",
@@ -4070,9 +3824,6 @@
       },
       {
         "hts": "0102.39.00.84",
-        "description": "Female",
-        "ancestorPath": ["Live bovine animals", "Buffalo", "Other", "Other", "Weighing 320 kg or more each", "Other"],
-        "searchText": "live bovine animals buffalo other other weighing 320 kg or more each other female 0102.39.00.84",
         "generalBefore": "1¢/kg",
         "generalNow": "1¢/kg",
         "status": "unchanged",
@@ -4080,9 +3831,6 @@
       },
       {
         "hts": "0102.90.00.00",
-        "description": "Other",
-        "ancestorPath": ["Live bovine animals"],
-        "searchText": "live bovine animals other 0102.90.00.00",
         "generalBefore": "1¢/kg",
         "generalNow": "1¢/kg",
         "status": "unchanged",
@@ -4090,9 +3838,6 @@
       },
       {
         "hts": "0103.10.00.00",
-        "description": "Purebred breeding animals",
-        "ancestorPath": ["Live swine"],
-        "searchText": "live swine purebred breeding animals 0103.10.00.00",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -4100,9 +3845,6 @@
       },
       {
         "hts": "0103.91.00.10",
-        "description": "Weighing less than 7 kg each",
-        "ancestorPath": ["Live swine", "Other", "Weighing less than 50 kg each"],
-        "searchText": "live swine other weighing less than 50 kg each weighing less than 7 kg each 0103.91.00.10",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -4110,9 +3852,6 @@
       },
       {
         "hts": "0103.91.00.20",
-        "description": "Weighing 7 kg or more but less than 23 kg each",
-        "ancestorPath": ["Live swine", "Other", "Weighing less than 50 kg each"],
-        "searchText": "live swine other weighing less than 50 kg each weighing 7 kg or more but less than 23 kg each 0103.91.00.20",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -4120,9 +3859,6 @@
       },
       {
         "hts": "0103.91.00.30",
-        "description": "Weighing 23 kg or more but less than 50 kg each",
-        "ancestorPath": ["Live swine", "Other", "Weighing less than 50 kg each"],
-        "searchText": "live swine other weighing less than 50 kg each weighing 23 kg or more but less than 50 kg each 0103.91.00.30",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -4130,9 +3866,6 @@
       },
       {
         "hts": "0103.92.00.10",
-        "description": "Imported for immediate slaughter",
-        "ancestorPath": ["Live swine", "Other", "Weighing 50 kg or more each"],
-        "searchText": "live swine other weighing 50 kg or more each imported for immediate slaughter 0103.92.00.10",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -4140,9 +3873,6 @@
       },
       {
         "hts": "0103.92.00.20",
-        "description": "Breeding animals other than purebred breeding animals",
-        "ancestorPath": ["Live swine", "Other", "Weighing 50 kg or more each"],
-        "searchText": "live swine other weighing 50 kg or more each breeding animals other than purebred breeding animals 0103.92.00.20",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -4150,9 +3880,6 @@
       },
       {
         "hts": "0103.92.00.91",
-        "description": "Other",
-        "ancestorPath": ["Live swine", "Other", "Weighing 50 kg or more each"],
-        "searchText": "live swine other weighing 50 kg or more each other 0103.92.00.91",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -4160,9 +3887,6 @@
       },
       {
         "hts": "0104.10.00.00",
-        "description": "Sheep",
-        "ancestorPath": ["Live sheep and goats"],
-        "searchText": "live sheep and goats sheep 0104.10.00.00",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -4170,9 +3894,6 @@
       },
       {
         "hts": "0104.20.00.00",
-        "description": "Goats",
-        "ancestorPath": ["Live sheep and goats"],
-        "searchText": "live sheep and goats goats 0104.20.00.00",
         "generalBefore": "68¢/head",
         "generalNow": "68¢/head",
         "status": "unchanged",
@@ -4180,14 +3901,6 @@
       },
       {
         "hts": "0105.11.00.10",
-        "description": "Layer-type (egg-type)",
-        "ancestorPath": [
-          "Live poultry of the following kinds: Chickens, ducks, geese, turkeys and guineas",
-          "Weighing not more than 185 g",
-          "Chickens",
-          "Breeding stock, whether or not purebred"
-        ],
-        "searchText": "live poultry of the following kinds: chickens, ducks, geese, turkeys and guineas weighing not more than 185 g chickens breeding stock, whether or not purebred layer-type (egg-type) 0105.11.00.10",
         "generalBefore": "0.9¢ each",
         "generalNow": "0.9¢ each",
         "status": "unchanged",
@@ -4195,14 +3908,6 @@
       },
       {
         "hts": "0105.11.00.20",
-        "description": "Broiler-type (meat-type)",
-        "ancestorPath": [
-          "Live poultry of the following kinds: Chickens, ducks, geese, turkeys and guineas",
-          "Weighing not more than 185 g",
-          "Chickens",
-          "Breeding stock, whether or not purebred"
-        ],
-        "searchText": "live poultry of the following kinds: chickens, ducks, geese, turkeys and guineas weighing not more than 185 g chickens breeding stock, whether or not purebred broiler-type (meat-type) 0105.11.00.20",
         "generalBefore": "0.9¢ each",
         "generalNow": "0.9¢ each",
         "status": "unchanged",
@@ -4210,9 +3915,6 @@
       },
       {
         "hts": "0105.11.00.40",
-        "description": "Other",
-        "ancestorPath": ["Live poultry of the following kinds: Chickens, ducks, geese, turkeys and guineas", "Weighing not more than 185 g", "Chickens"],
-        "searchText": "live poultry of the following kinds: chickens, ducks, geese, turkeys and guineas weighing not more than 185 g chickens other 0105.11.00.40",
         "generalBefore": "0.9¢ each",
         "generalNow": "0.9¢ each",
         "status": "unchanged",
@@ -4220,9 +3922,6 @@
       },
       {
         "hts": "0105.12.00.00",
-        "description": "Turkeys",
-        "ancestorPath": ["Live poultry of the following kinds: Chickens, ducks, geese, turkeys and guineas", "Weighing not more than 185 g"],
-        "searchText": "live poultry of the following kinds: chickens, ducks, geese, turkeys and guineas weighing not more than 185 g turkeys 0105.12.00.00",
         "generalBefore": "0.9¢ each",
         "generalNow": "0.9¢ each",
         "status": "unchanged",
@@ -4230,9 +3929,6 @@
       },
       {
         "hts": "0105.13.00.00",
-        "description": "Ducks",
-        "ancestorPath": ["Live poultry of the following kinds: Chickens, ducks, geese, turkeys and guineas", "Weighing not more than 185 g"],
-        "searchText": "live poultry of the following kinds: chickens, ducks, geese, turkeys and guineas weighing not more than 185 g ducks 0105.13.00.00",
         "generalBefore": "0.9¢ each",
         "generalNow": "0.9¢ each",
         "status": "unchanged",
@@ -4240,9 +3936,6 @@
       },
       {
         "hts": "0105.14.00.00",
-        "description": "Geese",
-        "ancestorPath": ["Live poultry of the following kinds: Chickens, ducks, geese, turkeys and guineas", "Weighing not more than 185 g"],
-        "searchText": "live poultry of the following kinds: chickens, ducks, geese, turkeys and guineas weighing not more than 185 g geese 0105.14.00.00",
         "generalBefore": "0.9¢ each",
         "generalNow": "0.9¢ each",
         "status": "unchanged",
@@ -4250,9 +3943,6 @@
       },
       {
         "hts": "0105.15.00.00",
-        "description": "Guinea fowls",
-        "ancestorPath": ["Live poultry of the following kinds: Chickens, ducks, geese, turkeys and guineas", "Weighing not more than 185 g"],
-        "searchText": "live poultry of the following kinds: chickens, ducks, geese, turkeys and guineas weighing not more than 185 g guinea fowls 0105.15.00.00",
         "generalBefore": "0.9¢ each",
         "generalNow": "0.9¢ each",
         "status": "unchanged",
@@ -4260,9 +3950,6 @@
       },
       {
         "hts": "0105.94.00.00",
-        "description": "Chickens",
-        "ancestorPath": ["Live poultry of the following kinds: Chickens, ducks, geese, turkeys and guineas", "Other"],
-        "searchText": "live poultry of the following kinds: chickens, ducks, geese, turkeys and guineas other chickens 0105.94.00.00",
         "generalBefore": "2¢/kg",
         "generalNow": "2¢/kg",
         "status": "unchanged",
@@ -4270,9 +3957,6 @@
       },
       {
         "hts": "0105.99.00.00",
-        "description": "Other",
-        "ancestorPath": ["Live poultry of the following kinds: Chickens, ducks, geese, turkeys and guineas", "Other"],
-        "searchText": "live poultry of the following kinds: chickens, ducks, geese, turkeys and guineas other other 0105.99.00.00",
         "generalBefore": "2¢/kg",
         "generalNow": "2¢/kg",
         "status": "unchanged",
@@ -4280,9 +3964,6 @@
       },
       {
         "hts": "0106.11.00.00",
-        "description": "Primates",
-        "ancestorPath": ["Other live animals", "Mammals"],
-        "searchText": "other live animals mammals primates 0106.11.00.00",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -4290,9 +3971,6 @@
       },
       {
         "hts": "0106.12.01.00",
-        "description": "Whales, dolphins and porpoises (mammals of the order Cetacea); manatees and dugongs (mammals of the order Sirenia); seals, sea lions and walruses (mammals of the suborder Pinnipedia)",
-        "ancestorPath": ["Other live animals", "Mammals"],
-        "searchText": "other live animals mammals whales, dolphins and porpoises (mammals of the order cetacea); manatees and dugongs (mammals of the order sirenia); seals, sea lions and walruses (mammals of the suborder pinnipedia) 0106.12.01.00",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -4300,9 +3978,6 @@
       },
       {
         "hts": "0106.13.00.00",
-        "description": "Camels and other camelids (Camelidae)",
-        "ancestorPath": ["Other live animals", "Mammals"],
-        "searchText": "other live animals mammals camels and other camelids (camelidae) 0106.13.00.00",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -4310,9 +3985,6 @@
       },
       {
         "hts": "0106.14.00.00",
-        "description": "Rabbits and hares",
-        "ancestorPath": ["Other live animals", "Mammals"],
-        "searchText": "other live animals mammals rabbits and hares 0106.14.00.00",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -4320,9 +3992,6 @@
       },
       {
         "hts": "0106.19.30.00",
-        "description": "Foxes",
-        "ancestorPath": ["Other live animals", "Mammals", "Other"],
-        "searchText": "other live animals mammals other foxes 0106.19.30.00",
         "generalBefore": "4.8%",
         "generalNow": "4.8%",
         "status": "unchanged",
@@ -4330,9 +3999,6 @@
       },
       {
         "hts": "0106.19.91.20",
-        "description": "Dogs",
-        "ancestorPath": ["Other live animals", "Mammals", "Other", "Other"],
-        "searchText": "other live animals mammals other other dogs 0106.19.91.20",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -4340,9 +4006,6 @@
       },
       {
         "hts": "0106.19.91.95",
-        "description": "Other",
-        "ancestorPath": ["Other live animals", "Mammals", "Other", "Other"],
-        "searchText": "other live animals mammals other other other 0106.19.91.95",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -4350,9 +4013,6 @@
       },
       {
         "hts": "0106.20.00.00",
-        "description": "Reptiles (including snakes and turtles)",
-        "ancestorPath": ["Other live animals"],
-        "searchText": "other live animals reptiles (including snakes and turtles) 0106.20.00.00",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -4360,9 +4020,6 @@
       },
       {
         "hts": "0106.31.00.00",
-        "description": "Birds of prey",
-        "ancestorPath": ["Other live animals", "Birds"],
-        "searchText": "other live animals birds birds of prey 0106.31.00.00",
         "generalBefore": "1.8%",
         "generalNow": "1.8%",
         "status": "unchanged",
@@ -4370,9 +4027,6 @@
       },
       {
         "hts": "0106.32.00.00",
-        "description": "Psittaciformes (including parrots, parakeets, macaws and cockatoos)",
-        "ancestorPath": ["Other live animals", "Birds"],
-        "searchText": "other live animals birds psittaciformes (including parrots, parakeets, macaws and cockatoos) 0106.32.00.00",
         "generalBefore": "1.8%",
         "generalNow": "1.8%",
         "status": "unchanged",
@@ -4380,9 +4034,6 @@
       },
       {
         "hts": "0106.33.00.00",
-        "description": "Ostriches; emus (Dromaius novaehollandiae)",
-        "ancestorPath": ["Other live animals", "Birds"],
-        "searchText": "other live animals birds ostriches; emus (dromaius novaehollandiae) 0106.33.00.00",
         "generalBefore": "1.8%",
         "generalNow": "1.8%",
         "status": "unchanged",
@@ -4390,9 +4041,6 @@
       },
       {
         "hts": "0106.39.01.00",
-        "description": "Other",
-        "ancestorPath": ["Other live animals", "Birds"],
-        "searchText": "other live animals birds other 0106.39.01.00",
         "generalBefore": "1.8%",
         "generalNow": "1.8%",
         "status": "unchanged",
@@ -4400,9 +4048,6 @@
       },
       {
         "hts": "0106.41.00.00",
-        "description": "Bees",
-        "ancestorPath": ["Other live animals", "Insects"],
-        "searchText": "other live animals insects bees 0106.41.00.00",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -4410,9 +4055,6 @@
       },
       {
         "hts": "0106.49.00.10",
-        "description": "Leaf cutter bee larvae",
-        "ancestorPath": ["Other live animals", "Insects", "Other"],
-        "searchText": "other live animals insects other leaf cutter bee larvae 0106.49.00.10",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -4420,9 +4062,6 @@
       },
       {
         "hts": "0106.49.00.90",
-        "description": "Other",
-        "ancestorPath": ["Other live animals", "Insects", "Other"],
-        "searchText": "other live animals insects other other 0106.49.00.90",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -4430,9 +4069,6 @@
       },
       {
         "hts": "0106.90.01.10",
-        "description": "Worms",
-        "ancestorPath": ["Other live animals", "Other"],
-        "searchText": "other live animals other worms 0106.90.01.10",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -4440,9 +4076,6 @@
       },
       {
         "hts": "0106.90.01.20",
-        "description": "Bait (other than worms)",
-        "ancestorPath": ["Other live animals", "Other"],
-        "searchText": "other live animals other bait (other than worms) 0106.90.01.20",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -4450,9 +4083,6 @@
       },
       {
         "hts": "0106.90.01.80",
-        "description": "Other",
-        "ancestorPath": ["Other live animals", "Other"],
-        "searchText": "other live animals other other 0106.90.01.80",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -4925,7 +4555,7 @@
         "country": "Mexico",
         "importsUsd": 328587622,
         "priorImportsUsd": 1313128294,
-        "changePct": -75.0,
+        "changePct": -75,
         "sharePct": 8.9,
         "mainHeading": "0102",
         "mainHeadingLabel": "Cattle & buffalo",
@@ -5013,7 +4643,7 @@
         "country": "United Kingdom",
         "importsUsd": 31510587,
         "priorImportsUsd": 105068150,
-        "changePct": -70.0,
+        "changePct": -70,
         "sharePct": 0.9,
         "mainHeading": "0101",
         "mainHeadingLabel": "Horses, asses, mules & hinnies",
@@ -5030,7 +4660,7 @@
         "importsUsd": 2076856631,
         "priorImportsUsd": 2915226413,
         "changePct": -28.8,
-        "sharePct": 56.0,
+        "sharePct": 56,
         "dutyPaidUsd": null,
         "searchText": "010229 0102.29 cattle; live, other than pure-bred breeding animals cattle & buffalo"
       },
@@ -5183,7 +4813,7 @@
         "description": "Poultry; live, ducks, geese, turkeys and guinea fowls, weighing more than 185g",
         "importsUsd": 7824242,
         "priorImportsUsd": 10723782,
-        "changePct": -27.0,
+        "changePct": -27,
         "sharePct": 0.2,
         "dutyPaidUsd": null,
         "searchText": "010599 0105.99 poultry; live, ducks, geese, turkeys and guinea fowls, weighing more than 185g poultry"
@@ -5217,7 +4847,7 @@
         "importsUsd": 1522822,
         "priorImportsUsd": 1485244,
         "changePct": 2.5,
-        "sharePct": 0.0,
+        "sharePct": 0,
         "dutyPaidUsd": null,
         "searchText": "010641 0106.41 insects; live, bees other live animals"
       },
@@ -5228,7 +4858,7 @@
         "importsUsd": 1483400,
         "priorImportsUsd": 1959096,
         "changePct": -24.3,
-        "sharePct": 0.0,
+        "sharePct": 0,
         "dutyPaidUsd": null,
         "searchText": "010639 0106.39 birds; live, other than birds of prey, psittaciformes, ostriches and emus (dromaius novaehollandiae) other live animals"
       },
@@ -5239,7 +4869,7 @@
         "importsUsd": 504170,
         "priorImportsUsd": 9266,
         "changePct": 5341.1,
-        "sharePct": 0.0,
+        "sharePct": 0,
         "dutyPaidUsd": null,
         "searchText": "010310 0103.10 swine; live, pure-bred breeding animals swine"
       },
@@ -5250,7 +4880,7 @@
         "importsUsd": 413329,
         "priorImportsUsd": 667506,
         "changePct": -38.1,
-        "sharePct": 0.0,
+        "sharePct": 0,
         "dutyPaidUsd": null,
         "searchText": "010410 0104.10 sheep; live sheep & goats"
       },
@@ -5260,8 +4890,8 @@
         "description": "Poultry; live, fowls of the species Gallus domesticus, weighing more than 185g",
         "importsUsd": 393272,
         "priorImportsUsd": 360817,
-        "changePct": 9.0,
-        "sharePct": 0.0,
+        "changePct": 9,
+        "sharePct": 0,
         "dutyPaidUsd": null,
         "searchText": "010594 0105.94 poultry; live, fowls of the species gallus domesticus, weighing more than 185g poultry"
       },
@@ -5272,7 +4902,7 @@
         "importsUsd": 103385,
         "priorImportsUsd": 10497,
         "changePct": 884.9,
-        "sharePct": 0.0,
+        "sharePct": 0,
         "dutyPaidUsd": null,
         "searchText": "010514 0105.14 poultry; live, geese, weighing not more than 185g poultry"
       },
@@ -5283,7 +4913,7 @@
         "importsUsd": 79032,
         "priorImportsUsd": 153531,
         "changePct": -48.5,
-        "sharePct": 0.0,
+        "sharePct": 0,
         "dutyPaidUsd": null,
         "searchText": "010130 0101.30 asses; live horses, asses, mules & hinnies"
       },
@@ -5294,7 +4924,7 @@
         "importsUsd": 56243,
         "priorImportsUsd": 65504,
         "changePct": -14.1,
-        "sharePct": 0.0,
+        "sharePct": 0,
         "dutyPaidUsd": null,
         "searchText": "010290 0102.90 bovine animals; live, other than cattle and buffalo cattle & buffalo"
       },
@@ -5305,7 +4935,7 @@
         "importsUsd": 49782,
         "priorImportsUsd": 0,
         "changePct": null,
-        "sharePct": 0.0,
+        "sharePct": 0,
         "dutyPaidUsd": null,
         "searchText": "010231 0102.31 buffalo; live, pure-bred breeding animals cattle & buffalo"
       },
@@ -5316,7 +4946,7 @@
         "importsUsd": 32020,
         "priorImportsUsd": 5797,
         "changePct": 452.4,
-        "sharePct": 0.0,
+        "sharePct": 0,
         "dutyPaidUsd": null,
         "searchText": "010632 0106.32 birds; live, psittaciformes other live animals"
       },
@@ -5327,7 +4957,7 @@
         "importsUsd": 27253,
         "priorImportsUsd": 40002,
         "changePct": -31.9,
-        "sharePct": 0.0,
+        "sharePct": 0,
         "dutyPaidUsd": null,
         "searchText": "010613 0106.13 mammals; live, camels and other camelids (camelidae) other live animals"
       },
@@ -5338,7 +4968,7 @@
         "importsUsd": 6951,
         "priorImportsUsd": 0,
         "changePct": null,
-        "sharePct": 0.0,
+        "sharePct": 0,
         "dutyPaidUsd": null,
         "searchText": "010190 0101.90 mules and hinnies; live horses, asses, mules & hinnies"
       },
@@ -5349,7 +4979,7 @@
         "importsUsd": 6302,
         "priorImportsUsd": 0,
         "changePct": null,
-        "sharePct": 0.0,
+        "sharePct": 0,
         "dutyPaidUsd": null,
         "searchText": "010612 0106.12 mammals; live, whales, dolphins and porpoises (mammals of the order cetacea); manatees and dugongs (mammals of the order sirenia); seals, sea lions and walruses (mammals of the suborder pinnipedia) other live animals"
       },
@@ -5359,8 +4989,8 @@
         "description": "Birds; live, ostriches; emus (Dromaius novaehollandiae)",
         "importsUsd": 0,
         "priorImportsUsd": 71293,
-        "changePct": -100.0,
-        "sharePct": 0.0,
+        "changePct": -100,
+        "sharePct": 0,
         "dutyPaidUsd": null,
         "searchText": "010633 0106.33 birds; live, ostriches; emus (dromaius novaehollandiae) other live animals"
       },
@@ -5370,8 +5000,8 @@
         "description": "Birds; live, birds of prey",
         "importsUsd": 0,
         "priorImportsUsd": 9245,
-        "changePct": -100.0,
-        "sharePct": 0.0,
+        "changePct": -100,
+        "sharePct": 0,
         "dutyPaidUsd": null,
         "searchText": "010631 0106.31 birds; live, birds of prey other live animals"
       }
@@ -11745,791 +11375,391 @@
     "lines": [
       {
         "hts": "0101.21.00.10",
-        "description": "Males",
-        "ancestorPath": ["Live horses, asses, mules and hinnies", "Horses", "Purebred breeding animals"],
-        "searchText": "live horses, asses, mules and hinnies horses purebred breeding animals males 0101.21.00.10",
-        "heading": "0101",
-        "general": "Free",
         "ruleIds": ["aphis-horses", "aphis-nws-mexico"],
         "leverIds": ["usmca"]
       },
       {
         "hts": "0101.21.00.20",
-        "description": "Females",
-        "ancestorPath": ["Live horses, asses, mules and hinnies", "Horses", "Purebred breeding animals"],
-        "searchText": "live horses, asses, mules and hinnies horses purebred breeding animals females 0101.21.00.20",
-        "heading": "0101",
-        "general": "Free",
         "ruleIds": ["aphis-horses", "aphis-nws-mexico"],
         "leverIds": ["usmca"]
       },
       {
         "hts": "0101.29.00.10",
-        "description": "Imported for immediate slaughter",
-        "ancestorPath": ["Live horses, asses, mules and hinnies", "Horses", "Other"],
-        "searchText": "live horses, asses, mules and hinnies horses other imported for immediate slaughter 0101.29.00.10",
-        "heading": "0101",
-        "general": "Free",
         "ruleIds": ["aphis-horses", "aphis-nws-mexico"],
         "leverIds": ["usmca"]
       },
       {
         "hts": "0101.29.00.90",
-        "description": "Other",
-        "ancestorPath": ["Live horses, asses, mules and hinnies", "Horses", "Other"],
-        "searchText": "live horses, asses, mules and hinnies horses other other 0101.29.00.90",
-        "heading": "0101",
-        "general": "Free",
         "ruleIds": ["aphis-horses", "aphis-nws-mexico"],
         "leverIds": ["usmca"]
       },
       {
         "hts": "0101.30.00.00",
-        "description": "Asses",
-        "ancestorPath": ["Live horses, asses, mules and hinnies"],
-        "searchText": "live horses, asses, mules and hinnies asses 0101.30.00.00",
-        "heading": "0101",
-        "general": "6.8%",
         "ruleIds": ["aphis-horses", "aphis-nws-mexico"],
         "leverIds": ["usmca"]
       },
       {
         "hts": "0101.90.30.00",
-        "description": "Imported for immediate slaughter",
-        "ancestorPath": ["Live horses, asses, mules and hinnies", "Other"],
-        "searchText": "live horses, asses, mules and hinnies other imported for immediate slaughter 0101.90.30.00",
-        "heading": "0101",
-        "general": "Free",
         "ruleIds": ["aphis-horses", "aphis-nws-mexico"],
         "leverIds": ["usmca"]
       },
       {
         "hts": "0101.90.40.00",
-        "description": "Other",
-        "ancestorPath": ["Live horses, asses, mules and hinnies", "Other"],
-        "searchText": "live horses, asses, mules and hinnies other other 0101.90.40.00",
-        "heading": "0101",
-        "general": "4.5%",
         "ruleIds": ["aphis-horses", "aphis-nws-mexico"],
         "leverIds": ["usmca"]
       },
       {
         "hts": "0102.21.00.10",
-        "description": "Male",
-        "ancestorPath": ["Live bovine animals", "Cattle", "Purebred breeding animals", "Dairy"],
-        "searchText": "live bovine animals cattle purebred breeding animals dairy male 0102.21.00.10",
-        "heading": "0102",
-        "general": "Free",
         "ruleIds": ["aphis-ruminants", "aphis-nws-mexico"],
         "leverIds": ["usmca", "purebred"]
       },
       {
         "hts": "0102.21.00.20",
-        "description": "Female",
-        "ancestorPath": ["Live bovine animals", "Cattle", "Purebred breeding animals", "Dairy"],
-        "searchText": "live bovine animals cattle purebred breeding animals dairy female 0102.21.00.20",
-        "heading": "0102",
-        "general": "Free",
         "ruleIds": ["aphis-ruminants", "aphis-nws-mexico"],
         "leverIds": ["usmca", "purebred"]
       },
       {
         "hts": "0102.21.00.30",
-        "description": "Male",
-        "ancestorPath": ["Live bovine animals", "Cattle", "Purebred breeding animals", "Other"],
-        "searchText": "live bovine animals cattle purebred breeding animals other male 0102.21.00.30",
-        "heading": "0102",
-        "general": "Free",
         "ruleIds": ["aphis-ruminants", "aphis-nws-mexico"],
         "leverIds": ["usmca", "purebred"]
       },
       {
         "hts": "0102.21.00.50",
-        "description": "Female",
-        "ancestorPath": ["Live bovine animals", "Cattle", "Purebred breeding animals", "Other"],
-        "searchText": "live bovine animals cattle purebred breeding animals other female 0102.21.00.50",
-        "heading": "0102",
-        "general": "Free",
         "ruleIds": ["aphis-ruminants", "aphis-nws-mexico"],
         "leverIds": ["usmca", "purebred"]
       },
       {
         "hts": "0102.29.20.11",
-        "description": "Weighing less than 90 kg each",
-        "ancestorPath": ["Live bovine animals", "Cattle", "Other", "Cows imported specially for dairy purposes"],
-        "searchText": "live bovine animals cattle other cows imported specially for dairy purposes weighing less than 90 kg each 0102.29.20.11",
-        "heading": "0102",
-        "general": "Free",
         "ruleIds": ["aphis-ruminants", "aphis-nws-mexico"],
         "leverIds": ["usmca"]
       },
       {
         "hts": "0102.29.20.12",
-        "description": "Weighing 90 kg or more each",
-        "ancestorPath": ["Live bovine animals", "Cattle", "Other", "Cows imported specially for dairy purposes"],
-        "searchText": "live bovine animals cattle other cows imported specially for dairy purposes weighing 90 kg or more each 0102.29.20.12",
-        "heading": "0102",
-        "general": "Free",
         "ruleIds": ["aphis-ruminants", "aphis-nws-mexico"],
         "leverIds": ["usmca"]
       },
       {
         "hts": "0102.29.40.24",
-        "description": "Male",
-        "ancestorPath": ["Live bovine animals", "Cattle", "Other", "Other", "Weighing less than 90 kg each"],
-        "searchText": "live bovine animals cattle other other weighing less than 90 kg each male 0102.29.40.24",
-        "heading": "0102",
-        "general": "1¢/kg",
         "ruleIds": ["aphis-ruminants", "aphis-nws-mexico"],
         "leverIds": ["usmca"]
       },
       {
         "hts": "0102.29.40.28",
-        "description": "Female",
-        "ancestorPath": ["Live bovine animals", "Cattle", "Other", "Other", "Weighing less than 90 kg each"],
-        "searchText": "live bovine animals cattle other other weighing less than 90 kg each female 0102.29.40.28",
-        "heading": "0102",
-        "general": "1¢/kg",
         "ruleIds": ["aphis-ruminants", "aphis-nws-mexico"],
         "leverIds": ["usmca"]
       },
       {
         "hts": "0102.29.40.34",
-        "description": "Male",
-        "ancestorPath": ["Live bovine animals", "Cattle", "Other", "Other", "Weighing 90 kg or more but less than 200 kg each"],
-        "searchText": "live bovine animals cattle other other weighing 90 kg or more but less than 200 kg each male 0102.29.40.34",
-        "heading": "0102",
-        "general": "1¢/kg",
         "ruleIds": ["aphis-ruminants", "aphis-nws-mexico"],
         "leverIds": ["usmca"]
       },
       {
         "hts": "0102.29.40.38",
-        "description": "Female",
-        "ancestorPath": ["Live bovine animals", "Cattle", "Other", "Other", "Weighing 90 kg or more but less than 200 kg each"],
-        "searchText": "live bovine animals cattle other other weighing 90 kg or more but less than 200 kg each female 0102.29.40.38",
-        "heading": "0102",
-        "general": "1¢/kg",
         "ruleIds": ["aphis-ruminants", "aphis-nws-mexico"],
         "leverIds": ["usmca"]
       },
       {
         "hts": "0102.29.40.54",
-        "description": "Male",
-        "ancestorPath": ["Live bovine animals", "Cattle", "Other", "Other", "Weighing 200 kg or more but less than 320 kg each"],
-        "searchText": "live bovine animals cattle other other weighing 200 kg or more but less than 320 kg each male 0102.29.40.54",
-        "heading": "0102",
-        "general": "1¢/kg",
         "ruleIds": ["aphis-ruminants", "aphis-nws-mexico"],
         "leverIds": ["usmca"]
       },
       {
         "hts": "0102.29.40.58",
-        "description": "Female",
-        "ancestorPath": ["Live bovine animals", "Cattle", "Other", "Other", "Weighing 200 kg or more but less than 320 kg each"],
-        "searchText": "live bovine animals cattle other other weighing 200 kg or more but less than 320 kg each female 0102.29.40.58",
-        "heading": "0102",
-        "general": "1¢/kg",
         "ruleIds": ["aphis-ruminants", "aphis-nws-mexico"],
         "leverIds": ["usmca"]
       },
       {
         "hts": "0102.29.40.62",
-        "description": "Steers",
-        "ancestorPath": ["Live bovine animals", "Cattle", "Other", "Other", "Weighing 320 kg or more each", "For immediate slaughter"],
-        "searchText": "live bovine animals cattle other other weighing 320 kg or more each for immediate slaughter steers 0102.29.40.62",
-        "heading": "0102",
-        "general": "1¢/kg",
         "ruleIds": ["aphis-ruminants", "aphis-nws-mexico"],
         "leverIds": ["usmca"]
       },
       {
         "hts": "0102.29.40.64",
-        "description": "Bulls",
-        "ancestorPath": ["Live bovine animals", "Cattle", "Other", "Other", "Weighing 320 kg or more each", "For immediate slaughter"],
-        "searchText": "live bovine animals cattle other other weighing 320 kg or more each for immediate slaughter bulls 0102.29.40.64",
-        "heading": "0102",
-        "general": "1¢/kg",
         "ruleIds": ["aphis-ruminants", "aphis-nws-mexico"],
         "leverIds": ["usmca"]
       },
       {
         "hts": "0102.29.40.66",
-        "description": "Cows",
-        "ancestorPath": ["Live bovine animals", "Cattle", "Other", "Other", "Weighing 320 kg or more each", "For immediate slaughter"],
-        "searchText": "live bovine animals cattle other other weighing 320 kg or more each for immediate slaughter cows 0102.29.40.66",
-        "heading": "0102",
-        "general": "1¢/kg",
         "ruleIds": ["aphis-ruminants", "aphis-nws-mexico"],
         "leverIds": ["usmca"]
       },
       {
         "hts": "0102.29.40.68",
-        "description": "Heifers",
-        "ancestorPath": ["Live bovine animals", "Cattle", "Other", "Other", "Weighing 320 kg or more each", "For immediate slaughter"],
-        "searchText": "live bovine animals cattle other other weighing 320 kg or more each for immediate slaughter heifers 0102.29.40.68",
-        "heading": "0102",
-        "general": "1¢/kg",
         "ruleIds": ["aphis-ruminants", "aphis-nws-mexico"],
         "leverIds": ["usmca"]
       },
       {
         "hts": "0102.29.40.72",
-        "description": "Male",
-        "ancestorPath": ["Live bovine animals", "Cattle", "Other", "Other", "Weighing 320 kg or more each", "For breeding"],
-        "searchText": "live bovine animals cattle other other weighing 320 kg or more each for breeding male 0102.29.40.72",
-        "heading": "0102",
-        "general": "1¢/kg",
         "ruleIds": ["aphis-ruminants", "aphis-nws-mexico"],
         "leverIds": ["usmca"]
       },
       {
         "hts": "0102.29.40.74",
-        "description": "Female",
-        "ancestorPath": ["Live bovine animals", "Cattle", "Other", "Other", "Weighing 320 kg or more each", "For breeding"],
-        "searchText": "live bovine animals cattle other other weighing 320 kg or more each for breeding female 0102.29.40.74",
-        "heading": "0102",
-        "general": "1¢/kg",
         "ruleIds": ["aphis-ruminants", "aphis-nws-mexico"],
         "leverIds": ["usmca"]
       },
       {
         "hts": "0102.29.40.82",
-        "description": "Male",
-        "ancestorPath": ["Live bovine animals", "Cattle", "Other", "Other", "Weighing 320 kg or more each", "Other"],
-        "searchText": "live bovine animals cattle other other weighing 320 kg or more each other male 0102.29.40.82",
-        "heading": "0102",
-        "general": "1¢/kg",
         "ruleIds": ["aphis-ruminants", "aphis-nws-mexico"],
         "leverIds": ["usmca"]
       },
       {
         "hts": "0102.29.40.84",
-        "description": "Female",
-        "ancestorPath": ["Live bovine animals", "Cattle", "Other", "Other", "Weighing 320 kg or more each", "Other"],
-        "searchText": "live bovine animals cattle other other weighing 320 kg or more each other female 0102.29.40.84",
-        "heading": "0102",
-        "general": "1¢/kg",
         "ruleIds": ["aphis-ruminants", "aphis-nws-mexico"],
         "leverIds": ["usmca"]
       },
       {
         "hts": "0102.31.00.10",
-        "description": "Male",
-        "ancestorPath": ["Live bovine animals", "Buffalo", "Purebred breeding animals"],
-        "searchText": "live bovine animals buffalo purebred breeding animals male 0102.31.00.10",
-        "heading": "0102",
-        "general": "Free",
         "ruleIds": ["aphis-ruminants", "aphis-nws-mexico"],
         "leverIds": ["usmca", "purebred"]
       },
       {
         "hts": "0102.31.00.20",
-        "description": "Female",
-        "ancestorPath": ["Live bovine animals", "Buffalo", "Purebred breeding animals"],
-        "searchText": "live bovine animals buffalo purebred breeding animals female 0102.31.00.20",
-        "heading": "0102",
-        "general": "Free",
         "ruleIds": ["aphis-ruminants", "aphis-nws-mexico"],
         "leverIds": ["usmca", "purebred"]
       },
       {
         "hts": "0102.39.00.10",
-        "description": "Bison",
-        "ancestorPath": ["Live bovine animals", "Buffalo", "Other"],
-        "searchText": "live bovine animals buffalo other bison 0102.39.00.10",
-        "heading": "0102",
-        "general": "1¢/kg",
         "ruleIds": ["aphis-ruminants", "aphis-nws-mexico"],
         "leverIds": ["usmca"]
       },
       {
         "hts": "0102.39.00.24",
-        "description": "Male",
-        "ancestorPath": ["Live bovine animals", "Buffalo", "Other", "Other", "Weighing less than 90 kg each"],
-        "searchText": "live bovine animals buffalo other other weighing less than 90 kg each male 0102.39.00.24",
-        "heading": "0102",
-        "general": "1¢/kg",
         "ruleIds": ["aphis-ruminants", "aphis-nws-mexico"],
         "leverIds": ["usmca"]
       },
       {
         "hts": "0102.39.00.28",
-        "description": "Female",
-        "ancestorPath": ["Live bovine animals", "Buffalo", "Other", "Other", "Weighing less than 90 kg each"],
-        "searchText": "live bovine animals buffalo other other weighing less than 90 kg each female 0102.39.00.28",
-        "heading": "0102",
-        "general": "1¢/kg",
         "ruleIds": ["aphis-ruminants", "aphis-nws-mexico"],
         "leverIds": ["usmca"]
       },
       {
         "hts": "0102.39.00.34",
-        "description": "Male",
-        "ancestorPath": ["Live bovine animals", "Buffalo", "Other", "Other", "Weighing 90 kg or more but less than 200 kg each"],
-        "searchText": "live bovine animals buffalo other other weighing 90 kg or more but less than 200 kg each male 0102.39.00.34",
-        "heading": "0102",
-        "general": "1¢/kg",
         "ruleIds": ["aphis-ruminants", "aphis-nws-mexico"],
         "leverIds": ["usmca"]
       },
       {
         "hts": "0102.39.00.38",
-        "description": "Female",
-        "ancestorPath": ["Live bovine animals", "Buffalo", "Other", "Other", "Weighing 90 kg or more but less than 200 kg each"],
-        "searchText": "live bovine animals buffalo other other weighing 90 kg or more but less than 200 kg each female 0102.39.00.38",
-        "heading": "0102",
-        "general": "1¢/kg",
         "ruleIds": ["aphis-ruminants", "aphis-nws-mexico"],
         "leverIds": ["usmca"]
       },
       {
         "hts": "0102.39.00.54",
-        "description": "Male",
-        "ancestorPath": ["Live bovine animals", "Buffalo", "Other", "Other", "Weighing 200 kg or more but less than 320 kg each"],
-        "searchText": "live bovine animals buffalo other other weighing 200 kg or more but less than 320 kg each male 0102.39.00.54",
-        "heading": "0102",
-        "general": "1¢/kg",
         "ruleIds": ["aphis-ruminants", "aphis-nws-mexico"],
         "leverIds": ["usmca"]
       },
       {
         "hts": "0102.39.00.58",
-        "description": "Female",
-        "ancestorPath": ["Live bovine animals", "Buffalo", "Other", "Other", "Weighing 200 kg or more but less than 320 kg each"],
-        "searchText": "live bovine animals buffalo other other weighing 200 kg or more but less than 320 kg each female 0102.39.00.58",
-        "heading": "0102",
-        "general": "1¢/kg",
         "ruleIds": ["aphis-ruminants", "aphis-nws-mexico"],
         "leverIds": ["usmca"]
       },
       {
         "hts": "0102.39.00.61",
-        "description": "For immediate slaughter",
-        "ancestorPath": ["Live bovine animals", "Buffalo", "Other", "Other", "Weighing 320 kg or more each"],
-        "searchText": "live bovine animals buffalo other other weighing 320 kg or more each for immediate slaughter 0102.39.00.61",
-        "heading": "0102",
-        "general": "1¢/kg",
         "ruleIds": ["aphis-ruminants", "aphis-nws-mexico"],
         "leverIds": ["usmca"]
       },
       {
         "hts": "0102.39.00.72",
-        "description": "Male",
-        "ancestorPath": ["Live bovine animals", "Buffalo", "Other", "Other", "Weighing 320 kg or more each", "For breeding"],
-        "searchText": "live bovine animals buffalo other other weighing 320 kg or more each for breeding male 0102.39.00.72",
-        "heading": "0102",
-        "general": "1¢/kg",
         "ruleIds": ["aphis-ruminants", "aphis-nws-mexico"],
         "leverIds": ["usmca"]
       },
       {
         "hts": "0102.39.00.74",
-        "description": "Female",
-        "ancestorPath": ["Live bovine animals", "Buffalo", "Other", "Other", "Weighing 320 kg or more each", "For breeding"],
-        "searchText": "live bovine animals buffalo other other weighing 320 kg or more each for breeding female 0102.39.00.74",
-        "heading": "0102",
-        "general": "1¢/kg",
         "ruleIds": ["aphis-ruminants", "aphis-nws-mexico"],
         "leverIds": ["usmca"]
       },
       {
         "hts": "0102.39.00.82",
-        "description": "Male",
-        "ancestorPath": ["Live bovine animals", "Buffalo", "Other", "Other", "Weighing 320 kg or more each", "Other"],
-        "searchText": "live bovine animals buffalo other other weighing 320 kg or more each other male 0102.39.00.82",
-        "heading": "0102",
-        "general": "1¢/kg",
         "ruleIds": ["aphis-ruminants", "aphis-nws-mexico"],
         "leverIds": ["usmca"]
       },
       {
         "hts": "0102.39.00.84",
-        "description": "Female",
-        "ancestorPath": ["Live bovine animals", "Buffalo", "Other", "Other", "Weighing 320 kg or more each", "Other"],
-        "searchText": "live bovine animals buffalo other other weighing 320 kg or more each other female 0102.39.00.84",
-        "heading": "0102",
-        "general": "1¢/kg",
         "ruleIds": ["aphis-ruminants", "aphis-nws-mexico"],
         "leverIds": ["usmca"]
       },
       {
         "hts": "0102.90.00.00",
-        "description": "Other",
-        "ancestorPath": ["Live bovine animals"],
-        "searchText": "live bovine animals other 0102.90.00.00",
-        "heading": "0102",
-        "general": "1¢/kg",
         "ruleIds": ["aphis-ruminants", "aphis-nws-mexico"],
         "leverIds": ["usmca"]
       },
       {
         "hts": "0103.10.00.00",
-        "description": "Purebred breeding animals",
-        "ancestorPath": ["Live swine"],
-        "searchText": "live swine purebred breeding animals 0103.10.00.00",
-        "heading": "0103",
-        "general": "Free",
         "ruleIds": ["aphis-swine"],
         "leverIds": ["usmca"]
       },
       {
         "hts": "0103.91.00.10",
-        "description": "Weighing less than 7 kg each",
-        "ancestorPath": ["Live swine", "Other", "Weighing less than 50 kg each"],
-        "searchText": "live swine other weighing less than 50 kg each weighing less than 7 kg each 0103.91.00.10",
-        "heading": "0103",
-        "general": "Free",
         "ruleIds": ["aphis-swine"],
         "leverIds": ["usmca"]
       },
       {
         "hts": "0103.91.00.20",
-        "description": "Weighing 7 kg or more but less than 23 kg each",
-        "ancestorPath": ["Live swine", "Other", "Weighing less than 50 kg each"],
-        "searchText": "live swine other weighing less than 50 kg each weighing 7 kg or more but less than 23 kg each 0103.91.00.20",
-        "heading": "0103",
-        "general": "Free",
         "ruleIds": ["aphis-swine"],
         "leverIds": ["usmca"]
       },
       {
         "hts": "0103.91.00.30",
-        "description": "Weighing 23 kg or more but less than 50 kg each",
-        "ancestorPath": ["Live swine", "Other", "Weighing less than 50 kg each"],
-        "searchText": "live swine other weighing less than 50 kg each weighing 23 kg or more but less than 50 kg each 0103.91.00.30",
-        "heading": "0103",
-        "general": "Free",
         "ruleIds": ["aphis-swine"],
         "leverIds": ["usmca"]
       },
       {
         "hts": "0103.92.00.10",
-        "description": "Imported for immediate slaughter",
-        "ancestorPath": ["Live swine", "Other", "Weighing 50 kg or more each"],
-        "searchText": "live swine other weighing 50 kg or more each imported for immediate slaughter 0103.92.00.10",
-        "heading": "0103",
-        "general": "Free",
         "ruleIds": ["aphis-swine"],
         "leverIds": ["usmca"]
       },
       {
         "hts": "0103.92.00.20",
-        "description": "Breeding animals other than purebred breeding animals",
-        "ancestorPath": ["Live swine", "Other", "Weighing 50 kg or more each"],
-        "searchText": "live swine other weighing 50 kg or more each breeding animals other than purebred breeding animals 0103.92.00.20",
-        "heading": "0103",
-        "general": "Free",
         "ruleIds": ["aphis-swine"],
         "leverIds": ["usmca"]
       },
       {
         "hts": "0103.92.00.91",
-        "description": "Other",
-        "ancestorPath": ["Live swine", "Other", "Weighing 50 kg or more each"],
-        "searchText": "live swine other weighing 50 kg or more each other 0103.92.00.91",
-        "heading": "0103",
-        "general": "Free",
         "ruleIds": ["aphis-swine"],
         "leverIds": ["usmca"]
       },
       {
         "hts": "0104.10.00.00",
-        "description": "Sheep",
-        "ancestorPath": ["Live sheep and goats"],
-        "searchText": "live sheep and goats sheep 0104.10.00.00",
-        "heading": "0104",
-        "general": "Free",
         "ruleIds": ["aphis-ruminants"],
         "leverIds": ["usmca"]
       },
       {
         "hts": "0104.20.00.00",
-        "description": "Goats",
-        "ancestorPath": ["Live sheep and goats"],
-        "searchText": "live sheep and goats goats 0104.20.00.00",
-        "heading": "0104",
-        "general": "68¢/head",
         "ruleIds": ["aphis-ruminants"],
         "leverIds": ["usmca"]
       },
       {
         "hts": "0105.11.00.10",
-        "description": "Layer-type (egg-type)",
-        "ancestorPath": [
-          "Live poultry of the following kinds: Chickens, ducks, geese, turkeys and guineas",
-          "Weighing not more than 185 g",
-          "Chickens",
-          "Breeding stock, whether or not purebred"
-        ],
-        "searchText": "live poultry of the following kinds: chickens, ducks, geese, turkeys and guineas weighing not more than 185 g chickens breeding stock, whether or not purebred layer-type (egg-type) 0105.11.00.10",
-        "heading": "0105",
-        "general": "0.9¢ each",
         "ruleIds": ["aphis-poultry", "aphis-hpai"],
         "leverIds": ["usmca"]
       },
       {
         "hts": "0105.11.00.20",
-        "description": "Broiler-type (meat-type)",
-        "ancestorPath": [
-          "Live poultry of the following kinds: Chickens, ducks, geese, turkeys and guineas",
-          "Weighing not more than 185 g",
-          "Chickens",
-          "Breeding stock, whether or not purebred"
-        ],
-        "searchText": "live poultry of the following kinds: chickens, ducks, geese, turkeys and guineas weighing not more than 185 g chickens breeding stock, whether or not purebred broiler-type (meat-type) 0105.11.00.20",
-        "heading": "0105",
-        "general": "0.9¢ each",
         "ruleIds": ["aphis-poultry", "aphis-hpai"],
         "leverIds": ["usmca"]
       },
       {
         "hts": "0105.11.00.40",
-        "description": "Other",
-        "ancestorPath": ["Live poultry of the following kinds: Chickens, ducks, geese, turkeys and guineas", "Weighing not more than 185 g", "Chickens"],
-        "searchText": "live poultry of the following kinds: chickens, ducks, geese, turkeys and guineas weighing not more than 185 g chickens other 0105.11.00.40",
-        "heading": "0105",
-        "general": "0.9¢ each",
         "ruleIds": ["aphis-poultry", "aphis-hpai"],
         "leverIds": ["usmca"]
       },
       {
         "hts": "0105.12.00.00",
-        "description": "Turkeys",
-        "ancestorPath": ["Live poultry of the following kinds: Chickens, ducks, geese, turkeys and guineas", "Weighing not more than 185 g"],
-        "searchText": "live poultry of the following kinds: chickens, ducks, geese, turkeys and guineas weighing not more than 185 g turkeys 0105.12.00.00",
-        "heading": "0105",
-        "general": "0.9¢ each",
         "ruleIds": ["aphis-poultry", "aphis-hpai"],
         "leverIds": ["usmca"]
       },
       {
         "hts": "0105.13.00.00",
-        "description": "Ducks",
-        "ancestorPath": ["Live poultry of the following kinds: Chickens, ducks, geese, turkeys and guineas", "Weighing not more than 185 g"],
-        "searchText": "live poultry of the following kinds: chickens, ducks, geese, turkeys and guineas weighing not more than 185 g ducks 0105.13.00.00",
-        "heading": "0105",
-        "general": "0.9¢ each",
         "ruleIds": ["aphis-poultry", "aphis-hpai"],
         "leverIds": ["usmca"]
       },
       {
         "hts": "0105.14.00.00",
-        "description": "Geese",
-        "ancestorPath": ["Live poultry of the following kinds: Chickens, ducks, geese, turkeys and guineas", "Weighing not more than 185 g"],
-        "searchText": "live poultry of the following kinds: chickens, ducks, geese, turkeys and guineas weighing not more than 185 g geese 0105.14.00.00",
-        "heading": "0105",
-        "general": "0.9¢ each",
         "ruleIds": ["aphis-poultry", "aphis-hpai"],
         "leverIds": ["usmca"]
       },
       {
         "hts": "0105.15.00.00",
-        "description": "Guinea fowls",
-        "ancestorPath": ["Live poultry of the following kinds: Chickens, ducks, geese, turkeys and guineas", "Weighing not more than 185 g"],
-        "searchText": "live poultry of the following kinds: chickens, ducks, geese, turkeys and guineas weighing not more than 185 g guinea fowls 0105.15.00.00",
-        "heading": "0105",
-        "general": "0.9¢ each",
         "ruleIds": ["aphis-poultry", "aphis-hpai"],
         "leverIds": ["usmca"]
       },
       {
         "hts": "0105.94.00.00",
-        "description": "Chickens",
-        "ancestorPath": ["Live poultry of the following kinds: Chickens, ducks, geese, turkeys and guineas", "Other"],
-        "searchText": "live poultry of the following kinds: chickens, ducks, geese, turkeys and guineas other chickens 0105.94.00.00",
-        "heading": "0105",
-        "general": "2¢/kg",
         "ruleIds": ["aphis-poultry", "aphis-hpai"],
         "leverIds": ["usmca"]
       },
       {
         "hts": "0105.99.00.00",
-        "description": "Other",
-        "ancestorPath": ["Live poultry of the following kinds: Chickens, ducks, geese, turkeys and guineas", "Other"],
-        "searchText": "live poultry of the following kinds: chickens, ducks, geese, turkeys and guineas other other 0105.99.00.00",
-        "heading": "0105",
-        "general": "2¢/kg",
         "ruleIds": ["aphis-poultry", "aphis-hpai"],
         "leverIds": ["usmca"]
       },
       {
         "hts": "0106.11.00.00",
-        "description": "Primates",
-        "ancestorPath": ["Other live animals", "Mammals"],
-        "searchText": "other live animals mammals primates 0106.11.00.00",
-        "heading": "0106",
-        "general": "Free",
         "ruleIds": ["aphis-misc", "fws-3177", "cites"],
         "leverIds": ["usmca"]
       },
       {
         "hts": "0106.12.01.00",
-        "description": "Whales, dolphins and porpoises (mammals of the order Cetacea); manatees and dugongs (mammals of the order Sirenia); seals, sea lions and walruses (mammals of the suborder Pinnipedia)",
-        "ancestorPath": ["Other live animals", "Mammals"],
-        "searchText": "other live animals mammals whales, dolphins and porpoises (mammals of the order cetacea); manatees and dugongs (mammals of the order sirenia); seals, sea lions and walruses (mammals of the suborder pinnipedia) 0106.12.01.00",
-        "heading": "0106",
-        "general": "Free",
         "ruleIds": ["aphis-misc", "fws-3177", "cites"],
         "leverIds": ["usmca"]
       },
       {
         "hts": "0106.13.00.00",
-        "description": "Camels and other camelids (Camelidae)",
-        "ancestorPath": ["Other live animals", "Mammals"],
-        "searchText": "other live animals mammals camels and other camelids (camelidae) 0106.13.00.00",
-        "heading": "0106",
-        "general": "Free",
         "ruleIds": ["aphis-misc", "fws-3177", "cites"],
         "leverIds": ["usmca"]
       },
       {
         "hts": "0106.14.00.00",
-        "description": "Rabbits and hares",
-        "ancestorPath": ["Other live animals", "Mammals"],
-        "searchText": "other live animals mammals rabbits and hares 0106.14.00.00",
-        "heading": "0106",
-        "general": "Free",
         "ruleIds": ["aphis-misc", "fws-3177", "cites"],
         "leverIds": ["usmca"]
       },
       {
         "hts": "0106.19.30.00",
-        "description": "Foxes",
-        "ancestorPath": ["Other live animals", "Mammals", "Other"],
-        "searchText": "other live animals mammals other foxes 0106.19.30.00",
-        "heading": "0106",
-        "general": "4.8%",
         "ruleIds": ["aphis-misc", "fws-3177", "cites", "cdc-dogs"],
         "leverIds": ["usmca"]
       },
       {
         "hts": "0106.19.91.20",
-        "description": "Dogs",
-        "ancestorPath": ["Other live animals", "Mammals", "Other", "Other"],
-        "searchText": "other live animals mammals other other dogs 0106.19.91.20",
-        "heading": "0106",
-        "general": "Free",
         "ruleIds": ["aphis-misc", "fws-3177", "cites", "cdc-dogs"],
         "leverIds": ["usmca"]
       },
       {
         "hts": "0106.19.91.95",
-        "description": "Other",
-        "ancestorPath": ["Other live animals", "Mammals", "Other", "Other"],
-        "searchText": "other live animals mammals other other other 0106.19.91.95",
-        "heading": "0106",
-        "general": "Free",
         "ruleIds": ["aphis-misc", "fws-3177", "cites", "cdc-dogs"],
         "leverIds": ["usmca"]
       },
       {
         "hts": "0106.20.00.00",
-        "description": "Reptiles (including snakes and turtles)",
-        "ancestorPath": ["Other live animals"],
-        "searchText": "other live animals reptiles (including snakes and turtles) 0106.20.00.00",
-        "heading": "0106",
-        "general": "Free",
         "ruleIds": ["fws-3177", "cites"],
         "leverIds": ["usmca"]
       },
       {
         "hts": "0106.31.00.00",
-        "description": "Birds of prey",
-        "ancestorPath": ["Other live animals", "Birds"],
-        "searchText": "other live animals birds birds of prey 0106.31.00.00",
-        "heading": "0106",
-        "general": "1.8%",
         "ruleIds": ["aphis-birds", "fws-3177", "cites", "wbca", "aphis-hpai"],
         "leverIds": ["usmca"]
       },
       {
         "hts": "0106.32.00.00",
-        "description": "Psittaciformes (including parrots, parakeets, macaws and cockatoos)",
-        "ancestorPath": ["Other live animals", "Birds"],
-        "searchText": "other live animals birds psittaciformes (including parrots, parakeets, macaws and cockatoos) 0106.32.00.00",
-        "heading": "0106",
-        "general": "1.8%",
         "ruleIds": ["aphis-birds", "fws-3177", "cites", "wbca", "aphis-hpai"],
         "leverIds": ["usmca"]
       },
       {
         "hts": "0106.33.00.00",
-        "description": "Ostriches; emus (Dromaius novaehollandiae)",
-        "ancestorPath": ["Other live animals", "Birds"],
-        "searchText": "other live animals birds ostriches; emus (dromaius novaehollandiae) 0106.33.00.00",
-        "heading": "0106",
-        "general": "1.8%",
         "ruleIds": ["aphis-birds", "fws-3177", "cites", "wbca", "aphis-hpai"],
         "leverIds": ["usmca"]
       },
       {
         "hts": "0106.39.01.00",
-        "description": "Other",
-        "ancestorPath": ["Other live animals", "Birds"],
-        "searchText": "other live animals birds other 0106.39.01.00",
-        "heading": "0106",
-        "general": "1.8%",
         "ruleIds": ["aphis-birds", "fws-3177", "cites", "wbca", "aphis-hpai"],
         "leverIds": ["usmca"]
       },
       {
         "hts": "0106.41.00.00",
-        "description": "Bees",
-        "ancestorPath": ["Other live animals", "Insects"],
-        "searchText": "other live animals insects bees 0106.41.00.00",
-        "heading": "0106",
-        "general": "Free",
         "ruleIds": ["fws-3177", "cites"],
         "leverIds": ["usmca"]
       },
       {
         "hts": "0106.49.00.10",
-        "description": "Leaf cutter bee larvae",
-        "ancestorPath": ["Other live animals", "Insects", "Other"],
-        "searchText": "other live animals insects other leaf cutter bee larvae 0106.49.00.10",
-        "heading": "0106",
-        "general": "Free",
         "ruleIds": ["fws-3177", "cites"],
         "leverIds": ["usmca"]
       },
       {
         "hts": "0106.49.00.90",
-        "description": "Other",
-        "ancestorPath": ["Other live animals", "Insects", "Other"],
-        "searchText": "other live animals insects other other 0106.49.00.90",
-        "heading": "0106",
-        "general": "Free",
         "ruleIds": ["fws-3177", "cites"],
         "leverIds": ["usmca"]
       },
       {
         "hts": "0106.90.01.10",
-        "description": "Worms",
-        "ancestorPath": ["Other live animals", "Other"],
-        "searchText": "other live animals other worms 0106.90.01.10",
-        "heading": "0106",
-        "general": "Free",
         "ruleIds": ["fws-3177", "cites"],
         "leverIds": ["usmca"]
       },
       {
         "hts": "0106.90.01.20",
-        "description": "Bait (other than worms)",
-        "ancestorPath": ["Other live animals", "Other"],
-        "searchText": "other live animals other bait (other than worms) 0106.90.01.20",
-        "heading": "0106",
-        "general": "Free",
         "ruleIds": ["fws-3177", "cites"],
         "leverIds": ["usmca"]
       },
       {
         "hts": "0106.90.01.80",
-        "description": "Other",
-        "ancestorPath": ["Other live animals", "Other"],
-        "searchText": "other live animals other other 0106.90.01.80",
-        "heading": "0106",
-        "general": "Free",
         "ruleIds": ["fws-3177", "cites"],
         "leverIds": ["usmca"]
       }

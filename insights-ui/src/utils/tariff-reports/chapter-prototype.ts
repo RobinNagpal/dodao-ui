@@ -9,72 +9,246 @@
 // Replacing this with a query later is a one-function change: return the same
 // `TariffChapterPrototype` shape and the renderers don't move.
 
-import liveAnimals from '@/tariff-data/chapters/01-live-animals.json';
-import meatAndOffal from '@/tariff-data/chapters/02-meat-and-offal.json';
-import fishAndCrustaceans from '@/tariff-data/chapters/03-fish-and-crustaceans.json';
-import animalProductsNes from '@/tariff-data/chapters/05-animal-products-nes.json';
-import livePlantsAndBulbs from '@/tariff-data/chapters/06-live-plants-and-bulbs.json';
-import vegetablesAndRoots from '@/tariff-data/chapters/07-vegetables-and-roots.json';
-import fruitAndNuts from '@/tariff-data/chapters/08-fruit-and-nuts.json';
-import coffeeTeaSpices from '@/tariff-data/chapters/09-coffee-tea-spices.json';
-import cereals from '@/tariff-data/chapters/10-cereals.json';
-import millingProducts from '@/tariff-data/chapters/11-milling-products.json';
-import oilSeedsAndGrains from '@/tariff-data/chapters/12-oil-seeds-and-grains.json';
-import lacGumsResins from '@/tariff-data/chapters/13-lac-gums-resins.json';
-import plaitingMaterialsNes from '@/tariff-data/chapters/14-plaiting-materials-nes.json';
-import fatsAndOils from '@/tariff-data/chapters/15-fats-and-oils.json';
-import preparedMeatAndFish from '@/tariff-data/chapters/16-prepared-meat-and-fish.json';
-import cocoaAndPreparations from '@/tariff-data/chapters/18-cocoa-and-preparations.json';
-import vegFruitPreparations from '@/tariff-data/chapters/20-veg-fruit-preparations.json';
-import miscEdiblePreparations from '@/tariff-data/chapters/21-misc-edible-preparations.json';
-import foodIndustryResiduesAndFeed from '@/tariff-data/chapters/23-food-industry-residues-and-feed.json';
-import tobaccoAndSubstitutes from '@/tariff-data/chapters/24-tobacco-and-substitutes.json';
-import saltSulfurAndCements from '@/tariff-data/chapters/25-salt-sulfur-and-cements.json';
-import oresSlagAndAsh from '@/tariff-data/chapters/26-ores-slag-and-ash.json';
-import mineralFuelsAndOils from '@/tariff-data/chapters/27-mineral-fuels-and-oils.json';
-import pharmaceuticalProducts from '@/tariff-data/chapters/30-pharmaceutical-products.json';
-import fertilizers from '@/tariff-data/chapters/31-fertilizers.json';
-import type { TariffChapterPrototype } from '@/types/tariff-chapter-prototype';
+import type {
+  StoredTariffChapterPrototype,
+  StoredTariffEngineeringLine,
+  StoredTariffLineStatus,
+  TariffChapterPrototype,
+  TariffEngineeringLine,
+  TariffLineStatus,
+  TariffRateTableRow,
+} from '@/types/tariff-chapter-prototype';
 import type { ChapterRouteInfo } from '@/utils/tariff-reports/chapter-route-helpers';
 import type { Metadata } from 'next';
 
-// Static imports (not `fs`) so the content is bundled and works in every
-// runtime — including the edge/serverless build where there is no filesystem.
-const PROTOTYPES_BY_SLUG: Record<string, TariffChapterPrototype> = {
-  '1-live-animals': liveAnimals as TariffChapterPrototype,
-  '2-meat-and-offal': meatAndOffal as TariffChapterPrototype,
-  '3-fish-and-crustaceans': fishAndCrustaceans as TariffChapterPrototype,
-  '5-animal-products-nes': animalProductsNes as TariffChapterPrototype,
-  '6-live-plants-and-bulbs': livePlantsAndBulbs as TariffChapterPrototype,
-  '7-vegetables-and-roots': vegetablesAndRoots as TariffChapterPrototype,
-  '8-fruit-and-nuts': fruitAndNuts as TariffChapterPrototype,
-  '9-coffee-tea-spices': coffeeTeaSpices as TariffChapterPrototype,
-  '10-cereals': cereals as TariffChapterPrototype,
-  '11-milling-products': millingProducts as TariffChapterPrototype,
-  '12-oil-seeds-and-grains': oilSeedsAndGrains as TariffChapterPrototype,
-  '13-lac-gums-resins': lacGumsResins as TariffChapterPrototype,
-  '14-plaiting-materials-nes': plaitingMaterialsNes as TariffChapterPrototype,
-  '15-fats-and-oils': fatsAndOils as TariffChapterPrototype,
-  '16-prepared-meat-and-fish': preparedMeatAndFish as TariffChapterPrototype,
-  '18-cocoa-and-preparations': cocoaAndPreparations as TariffChapterPrototype,
-  '20-veg-fruit-preparations': vegFruitPreparations as TariffChapterPrototype,
-  '21-misc-edible-preparations': miscEdiblePreparations as TariffChapterPrototype,
-  '23-food-industry-residues-and-feed': foodIndustryResiduesAndFeed as TariffChapterPrototype,
-  '24-tobacco-and-substitutes': tobaccoAndSubstitutes as TariffChapterPrototype,
-  '25-salt-sulfur-and-cements': saltSulfurAndCements as TariffChapterPrototype,
-  '26-ores-slag-and-ash': oresSlagAndAsh as TariffChapterPrototype,
-  '27-mineral-fuels-and-oils': mineralFuelsAndOils as TariffChapterPrototype,
-  '30-pharmaceutical-products': pharmaceuticalProducts as TariffChapterPrototype,
-  '31-fertilizers': fertilizers as TariffChapterPrototype,
+// ---------------------------------------------------------------------------
+// Registry — ONE line per chapter: route slug -> lazy import of its content file.
+// ---------------------------------------------------------------------------
+//
+// Each entry is a dynamic `import()` (not a static import, not `fs`): the bundler
+// emits every chapter as its own chunk, so a request loads only the chapter it
+// renders (a static map would pull every chapter — tens of MB — into every route
+// that touches this module). The content is still bundled, so it works in every
+// runtime, including serverless builds with no filesystem.
+const CHAPTER_FILES: Record<string, () => Promise<{ default: unknown }>> = {
+  '1-live-animals': () => import('@/tariff-data/chapters/01-live-animals.json'),
+  '2-meat-and-offal': () => import('@/tariff-data/chapters/02-meat-and-offal.json'),
+  '3-fish-and-crustaceans': () => import('@/tariff-data/chapters/03-fish-and-crustaceans.json'),
+  '5-animal-products-nes': () => import('@/tariff-data/chapters/05-animal-products-nes.json'),
+  '6-live-plants-and-bulbs': () => import('@/tariff-data/chapters/06-live-plants-and-bulbs.json'),
+  '7-vegetables-and-roots': () => import('@/tariff-data/chapters/07-vegetables-and-roots.json'),
+  '8-fruit-and-nuts': () => import('@/tariff-data/chapters/08-fruit-and-nuts.json'),
+  '9-coffee-tea-spices': () => import('@/tariff-data/chapters/09-coffee-tea-spices.json'),
+  '10-cereals': () => import('@/tariff-data/chapters/10-cereals.json'),
+  '11-milling-products': () => import('@/tariff-data/chapters/11-milling-products.json'),
+  '12-oil-seeds-and-grains': () => import('@/tariff-data/chapters/12-oil-seeds-and-grains.json'),
+  '13-lac-gums-resins': () => import('@/tariff-data/chapters/13-lac-gums-resins.json'),
+  '14-plaiting-materials-nes': () => import('@/tariff-data/chapters/14-plaiting-materials-nes.json'),
+  '15-fats-and-oils': () => import('@/tariff-data/chapters/15-fats-and-oils.json'),
+  '16-prepared-meat-and-fish': () => import('@/tariff-data/chapters/16-prepared-meat-and-fish.json'),
+  '18-cocoa-and-preparations': () => import('@/tariff-data/chapters/18-cocoa-and-preparations.json'),
+  '20-veg-fruit-preparations': () => import('@/tariff-data/chapters/20-veg-fruit-preparations.json'),
+  '21-misc-edible-preparations': () => import('@/tariff-data/chapters/21-misc-edible-preparations.json'),
+  '23-food-industry-residues-and-feed': () => import('@/tariff-data/chapters/23-food-industry-residues-and-feed.json'),
+  '24-tobacco-and-substitutes': () => import('@/tariff-data/chapters/24-tobacco-and-substitutes.json'),
+  '25-salt-sulfur-and-cements': () => import('@/tariff-data/chapters/25-salt-sulfur-and-cements.json'),
+  '26-ores-slag-and-ash': () => import('@/tariff-data/chapters/26-ores-slag-and-ash.json'),
+  '27-mineral-fuels-and-oils': () => import('@/tariff-data/chapters/27-mineral-fuels-and-oils.json'),
+  '30-pharmaceutical-products': () => import('@/tariff-data/chapters/30-pharmaceutical-products.json'),
+  '31-fertilizers': () => import('@/tariff-data/chapters/31-fertilizers.json'),
 };
 
-export function getChapterPrototype(chapterSlug: string): TariffChapterPrototype | null {
-  return PROTOTYPES_BY_SLUG[chapterSlug] ?? null;
+/**
+ * Recently normalized chapters (a chapter's layout, page and metadata all ask for it in one request).
+ * Bounded so a long-lived server that renders many chapters does not keep a normalized copy of each.
+ */
+const loaded = new Map<string, Promise<TariffChapterPrototype>>();
+const MAX_LOADED = 8;
+
+/** Slugs of every chapter with an Approach-2 content file. Cheap: no content file is loaded. */
+export function listChapterPrototypeSlugs(): string[] {
+  return Object.keys(CHAPTER_FILES);
 }
 
-/** Slugs of every chapter with an Approach-2 content file (used by the content validator). */
-export function listChapterPrototypeSlugs(): string[] {
-  return Object.keys(PROTOTYPES_BY_SLUG);
+/** True when the chapter has an Approach-2 content file (no content file is loaded). */
+export function hasChapterPrototype(chapterSlug: string): boolean {
+  return Object.prototype.hasOwnProperty.call(CHAPTER_FILES, chapterSlug);
+}
+
+/**
+ * The content file exactly as stored (derived per-line fields not filled in, nothing cached beyond the
+ * module itself). Enough for top-level facts across many chapters (sitemap, listing); renderers use
+ * `getChapterPrototype`.
+ */
+export async function getStoredChapterPrototype(chapterSlug: string): Promise<StoredTariffChapterPrototype | null> {
+  if (!hasChapterPrototype(chapterSlug)) return null;
+  const mod = await CHAPTER_FILES[chapterSlug]();
+  return mod.default as StoredTariffChapterPrototype;
+}
+
+/** The chapter's Approach-2 content with every derived field filled in, or null when it has no content file. */
+export async function getChapterPrototype(chapterSlug: string): Promise<TariffChapterPrototype | null> {
+  if (!hasChapterPrototype(chapterSlug)) return null;
+  let prototype = loaded.get(chapterSlug);
+  if (prototype) {
+    loaded.delete(chapterSlug); // re-insert below: Map order doubles as least-recently-used order
+  } else {
+    prototype = getStoredChapterPrototype(chapterSlug).then((stored) => normalizeChapterPrototype(stored as StoredTariffChapterPrototype));
+    prototype.catch(() => loaded.delete(chapterSlug));
+  }
+  loaded.set(chapterSlug, prototype);
+  if (loaded.size > MAX_LOADED) loaded.delete(loaded.keys().next().value as string);
+  return prototype;
+}
+
+/** The few facts a chapter's card on /tariff-reports shows. */
+export interface ChapterPrototypeCard {
+  asOf: string;
+  /** The first "In short" takeaway, else the overview's SEO description. */
+  summary: string;
+}
+
+/**
+ * Card facts for the /tariff-reports listing. Reads the stored file without normalizing or caching the
+ * full chapter, so listing every chapter does not hold every normalized chapter in memory.
+ */
+export async function getChapterPrototypeCard(chapterSlug: string): Promise<ChapterPrototypeCard | null> {
+  const stored = await getStoredChapterPrototype(chapterSlug);
+  if (!stored) return null;
+  return { asOf: stored.asOf, summary: stored.finalConclusion?.keyTakeaways[0] ?? stored.overview.seo.shortDescription };
+}
+
+// ---------------------------------------------------------------------------
+// Stored <-> rendered shape
+// ---------------------------------------------------------------------------
+
+/** A rate-table row's filter text: lowercased ancestor descriptions + own description + HTS number. */
+export function rateRowSearchText(row: Pick<TariffRateTableRow, 'ancestorPath' | 'description' | 'hts'>): string {
+  return [...row.ancestorPath, row.description, row.hts ?? ''].join(' ').toLowerCase();
+}
+
+/** The per-line fields copied from the rate-table row with the same `hts` (falls back to a stored copy for an unknown line). */
+function lineFieldsFromRateTable(
+  byHts: ReadonlyMap<string, TariffRateTableRow>,
+  line: { hts: string; description?: string; ancestorPath?: string[]; searchText?: string }
+): Pick<TariffRateTableRow, 'description' | 'ancestorPath' | 'searchText'> & { row: TariffRateTableRow | undefined } {
+  const row = byHts.get(line.hts);
+  return {
+    row,
+    description: row?.description ?? line.description ?? '',
+    ancestorPath: row?.ancestorPath ?? line.ancestorPath ?? [],
+    searchText: row?.searchText ?? line.searchText ?? line.hts.toLowerCase(),
+  };
+}
+
+/**
+ * Fills in the fields a content file does not store (see "Stored (on-disk) shape" in
+ * `src/types/tariff-chapter-prototype.ts`): rate-table `searchText`, and each tariff-updates /
+ * tariff-engineering line's `description`, `ancestorPath`, `searchText` (+ engineering `heading`,
+ * `general`) from the rate-table row with the same `hts`. Copies stored by older files are ignored —
+ * the rate table is the single source. Key order matches the pre-split files, so the result is
+ * identical to what the renderers received before.
+ */
+export function normalizeChapterPrototype(stored: StoredTariffChapterPrototype): TariffChapterPrototype {
+  const rows: TariffRateTableRow[] = stored.overview.rateTable.rows.map((row) => ({ ...row, searchText: rateRowSearchText(row) }));
+  const byHts = new Map<string, TariffRateTableRow>();
+  for (const row of rows) if (row.hts && !byHts.has(row.hts)) byHts.set(row.hts, row);
+
+  const updateLine = (line: StoredTariffLineStatus): TariffLineStatus => {
+    const { description, ancestorPath, searchText } = lineFieldsFromRateTable(byHts, line);
+    return {
+      hts: line.hts,
+      description,
+      ancestorPath,
+      searchText,
+      generalBefore: line.generalBefore,
+      generalNow: line.generalNow,
+      status: line.status,
+      unchangedSince: line.unchangedSince,
+    };
+  };
+  const engineeringLine = (line: StoredTariffEngineeringLine): TariffEngineeringLine => {
+    const { row, description, ancestorPath, searchText } = lineFieldsFromRateTable(byHts, line);
+    return {
+      hts: line.hts,
+      description,
+      ancestorPath,
+      searchText,
+      heading: row?.heading ?? line.heading ?? line.hts.replace(/\D/g, '').slice(0, 4),
+      general: row ? row.effectiveGeneral : line.general ?? null,
+      ruleIds: line.ruleIds,
+      leverIds: line.leverIds,
+    };
+  };
+
+  // Spread-then-override keeps every key in its stored position (the type drops the stored line arrays,
+  // which are always overridden below when present).
+  const base: Omit<StoredTariffChapterPrototype, 'tariffUpdates' | 'tariffEngineering'> = stored;
+  return {
+    ...base,
+    overview: { ...stored.overview, rateTable: { ...stored.overview.rateTable, rows } },
+    ...(stored.tariffUpdates && { tariffUpdates: { ...stored.tariffUpdates, lines: stored.tariffUpdates.lines.map(updateLine) } }),
+    ...(stored.tariffEngineering && { tariffEngineering: { ...stored.tariffEngineering, lines: stored.tariffEngineering.lines.map(engineeringLine) } }),
+  };
+}
+
+const RATE_ROW_DERIVED_KEYS = ['searchText'] as const;
+const UPDATE_LINE_DERIVED_KEYS = ['description', 'ancestorPath', 'searchText'] as const;
+const ENGINEERING_LINE_DERIVED_KEYS = ['description', 'ancestorPath', 'searchText', 'heading', 'general'] as const;
+
+function omitKeys<T extends object, K extends string>(obj: T, keys: readonly K[]): Omit<T, K> {
+  const out = { ...obj } as Record<string, unknown>;
+  for (const key of keys) delete out[key];
+  return out as Omit<T, K>;
+}
+
+/**
+ * The inverse of `normalizeChapterPrototype`: drops every derived field, leaving everything else (and
+ * its key order) untouched. Used by the chapter generator and the one-off migration to write files.
+ */
+export function compactChapterPrototype(prototype: TariffChapterPrototype | StoredTariffChapterPrototype): StoredTariffChapterPrototype {
+  const { overview, tariffUpdates, tariffEngineering } = prototype;
+  return {
+    ...prototype,
+    overview: { ...overview, rateTable: { ...overview.rateTable, rows: overview.rateTable.rows.map((row) => omitKeys(row, RATE_ROW_DERIVED_KEYS)) } },
+    ...(tariffUpdates && { tariffUpdates: { ...tariffUpdates, lines: tariffUpdates.lines.map((line) => omitKeys(line, UPDATE_LINE_DERIVED_KEYS)) } }),
+    ...(tariffEngineering && {
+      tariffEngineering: { ...tariffEngineering, lines: tariffEngineering.lines.map((line) => omitKeys(line, ENGINEERING_LINE_DERIVED_KEYS)) },
+    }),
+  };
+}
+
+/**
+ * Derived fields a content file still stores (files written before the split) whose value differs from
+ * what the loader derives — the page shows the derived value, so each one is a content bug. Also lists
+ * tariff-updates / tariff-engineering lines with no rate-table row to derive from. Empty for a compact file.
+ */
+export function storedDerivedFieldMismatches(stored: StoredTariffChapterPrototype): string[] {
+  const rendered = normalizeChapterPrototype(stored);
+  const problems: string[] = [];
+  const hts = new Set(rendered.overview.rateTable.rows.map((row) => row.hts));
+  const compare = (where: string, storedItem: object, renderedItem: object, keys: readonly string[]): void => {
+    for (const key of keys) {
+      const value = (storedItem as Record<string, unknown>)[key];
+      if (value !== undefined && JSON.stringify(value) !== JSON.stringify((renderedItem as Record<string, unknown>)[key])) {
+        problems.push(
+          `${where}.${key}: stored ${JSON.stringify(value)} differs from the rate table's ${JSON.stringify((renderedItem as Record<string, unknown>)[key])}`
+        );
+      }
+    }
+  };
+  stored.overview.rateTable.rows.forEach((row, i) =>
+    compare(`overview.rateTable.rows[${row.id}]`, row, rendered.overview.rateTable.rows[i], RATE_ROW_DERIVED_KEYS)
+  );
+  stored.tariffUpdates?.lines.forEach((line, i) => {
+    if (!hts.has(line.hts)) problems.push(`tariffUpdates.lines[${line.hts}]: no rate-table row with this hts`);
+    else compare(`tariffUpdates.lines[${line.hts}]`, line, rendered.tariffUpdates?.lines[i] ?? {}, UPDATE_LINE_DERIVED_KEYS);
+  });
+  stored.tariffEngineering?.lines.forEach((line, i) => {
+    if (!hts.has(line.hts)) problems.push(`tariffEngineering.lines[${line.hts}]: no rate-table row with this hts`);
+    else compare(`tariffEngineering.lines[${line.hts}]`, line, rendered.tariffEngineering?.lines[i] ?? {}, ENGINEERING_LINE_DERIVED_KEYS);
+  });
+  return problems;
 }
 
 /** The route facts (number, title, slug) the chapter shell and breadcrumbs need. */
