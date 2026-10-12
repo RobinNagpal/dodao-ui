@@ -15,6 +15,14 @@ import {
   USMCA_SPI_CODES,
 } from '@/utils/tariff-calculator/measures-engine';
 import { parseRate, quantityUnits, rateDollars } from '@/utils/tariff-reports/shipment-duty';
+import {
+  FTA_SAFEGUARD_FACT,
+  FTA_WITHIN_QUOTA_FACT,
+  FTA_WITHIN_SECOND_QUOTA_FACT,
+  isQuotaReference,
+  resolveQuotaClaim,
+  type QuotaTierKey,
+} from '@/utils/tariff-calculator/fta-quota';
 import { engineLine } from './rate-table';
 
 // Runs one HTS line from one country through the official-measures engine (the same function the live
@@ -345,22 +353,45 @@ export function evaluateLine(
     out.problems.push(`${hts}: the HTS states no base rate.`);
     return out;
   }
-  // A claimed program whose special rate only points to a Chapter 98/99 quota heading ("See 9823.05.01-9823.05.06
-  // (S+)") can't be priced: the rate depends on in-quota / over-quota status. Say so in the cell instead of a number;
-  // the validator's calculator cross-check skips non-numeric totals.
-  const quotaRef = baseText.match(/^\s*See\s+(9[89]\d{2}\.\d{2}\.\d{2}(?:\s*-\s*9[89]\d{2}\.\d{2}\.\d{2})?)/i);
-  if (opts.claimedSpi && quotaRef) {
-    out.variants.push({
-      label: null,
-      total: `See ${quotaRef[1]} (quota)`,
-      extra: 'Depends on quota status',
-      preference: `${opts.claimedSpi} rate set by ${quotaRef[1]} (in-quota / over-quota); not priced by the calculator`,
-      dollars: Number.NaN,
-      expr: null,
-      chargedCodes: [],
-    });
-    out.notes.push(`${hts} (${iso}, ${opts.claimedSpi}): special rate refers to ${quotaRef[1]} (quota) — shown as text, not priced.`);
-    return out;
+  // A claimed program whose special rate points to Chapter 98/99 quota headings ("See 9822.04.01-9822.04.03 (AU)")
+  // is priced per quota tier (within quota, additional quota, safeguard, above quota), the way the calculator asks.
+  // Only a reference the calculator can't resolve stays text; the validator's cross-check skips non-numeric totals.
+  let quotaTiers: { label: string | null; baseText: string; facts: Record<string, boolean> }[] | null = null;
+  if (opts.claimedSpi && isQuotaReference(baseText)) {
+    const res = resolveQuotaClaim(line, opts.claimedSpi, baseText, iso, day);
+    if (!res.ok) {
+      out.variants.push({
+        label: null,
+        total: `${baseText.trim()} (quota)`,
+        extra: 'Depends on quota status',
+        preference: `${opts.claimedSpi} rate set by a Chapter 98/99 quota heading; not priced by the calculator`,
+        dollars: Number.NaN,
+        expr: null,
+        chargedCodes: [],
+      });
+      out.notes.push(`${hts} (${iso}, ${opts.claimedSpi}): ${res.error} — shown as text, not priced.`);
+      return out;
+    }
+    const answersFor: Record<QuotaTierKey, Record<string, boolean>> = {
+      unconditional: {},
+      inQuota: { [FTA_WITHIN_QUOTA_FACT]: true },
+      secondQuota: { [FTA_WITHIN_QUOTA_FACT]: false, [FTA_WITHIN_SECOND_QUOTA_FACT]: true },
+      safeguard: { [FTA_WITHIN_QUOTA_FACT]: false, [FTA_WITHIN_SECOND_QUOTA_FACT]: false, [FTA_SAFEGUARD_FACT]: true },
+      overQuota: { [FTA_WITHIN_QUOTA_FACT]: false, [FTA_WITHIN_SECOND_QUOTA_FACT]: false, [FTA_SAFEGUARD_FACT]: false },
+    };
+    const labelFor: Record<QuotaTierKey, string | null> = {
+      unconditional: null,
+      inQuota: 'within quota',
+      secondQuota: 'within additional quota',
+      safeguard: 'safeguard applies',
+      overQuota: 'above quota',
+    };
+    const tiers = res.resolution.collapsed ? res.resolution.tiers.slice(0, 1) : res.resolution.tiers;
+    quotaTiers = tiers.map((t) => ({
+      label: res.resolution.collapsed ? null : labelFor[t.key],
+      baseText: t.rateText,
+      facts: res.resolution.collapsed ? {} : answersFor[t.key],
+    }));
   }
   const { mustAnswer, defaulted } = factIdsInScope(measures, hts10, iso, day);
   if (mustAnswer.length > MAX_FACT_COMBOS) out.problems.push(`${hts}: ${mustAnswer.length} must-answer facts; only the first ${MAX_FACT_COMBOS} are varied.`);
@@ -374,7 +405,16 @@ export function evaluateLine(
   const quantities = nominalQuantities(row, [generalBase, claimRate]);
 
   const raw: RateVariantResult[] = [];
-  for (const c of combos(types, mustAnswer)) {
+  const quotaRuns = quotaTiers ?? [{ label: null, baseText, facts: {} as Record<string, boolean> }];
+  const runs = quotaRuns.flatMap((q) =>
+    combos(types, mustAnswer).map((c) => ({
+      label: [q.label, c.label].filter(Boolean).join(', ') || null,
+      productType: c.productType,
+      facts: Object.keys(q.facts).length > 0 || c.facts ? { ...(c.facts ?? {}), ...q.facts } : undefined,
+      baseText: q.baseText,
+    }))
+  );
+  for (const c of runs) {
     const input: MeasureEngineInput = {
       hts10,
       countryOfOrigin: iso,
@@ -404,7 +444,7 @@ export function evaluateLine(
       out.problems.push(`${hts} (${iso}${opts.claimedSpi ? `, ${opts.claimedSpi}` : ''}${c.label ? `, ${c.label}` : ''}): engine error: ${result.error}`);
       continue;
     }
-    const priced = priceResult(result, baseText, measures, hts10, iso, day, usmcaClaimed);
+    const priced = priceResult(result, c.baseText, measures, hts10, iso, day, usmcaClaimed);
     if (contentFallback || priced.contentAssumed)
       out.notes.push(`${hts} (${iso}): content-based duty priced on the full customs value (the cell can't know the content value).`);
     const total = priced.expr ? exprString(priced.expr) : null;
@@ -429,7 +469,12 @@ export function evaluateLine(
   }
   // Collapse variants with the same total (e.g. generic = specialty = other) and order cheapest first.
   const merged: RateVariantResult[] = [];
-  for (const v of raw) if (!merged.some((m) => m.total === v.total && m.extra === v.extra)) merged.push(v);
+  for (const v of raw) {
+    const same = merged.find((m) => m.total === v.total && m.extra === v.extra);
+    if (!same) merged.push(v);
+    // Quota tiers with the same total keep both labels ("within quota or above quota").
+    else if (same.label && v.label && quotaTiers && !same.label.split(' or ').includes(v.label)) same.label = `${same.label} or ${v.label}`;
+  }
   merged.sort((a, b) => a.dollars - b.dollars);
   out.variants = merged.length === 1 ? [{ ...merged[0], label: null }] : merged;
   return out;
