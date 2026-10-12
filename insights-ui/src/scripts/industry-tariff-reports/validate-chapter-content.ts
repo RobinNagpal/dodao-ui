@@ -69,6 +69,7 @@ export const OFFICIAL_SOURCE_DOMAINS: readonly string[] = [
   'irs.gov', // excise taxes collected at import (Form 720 / 6627)
   'usgs.gov', // mineral commodity summaries
   'nrc.gov', // import licensing for nuclear material
+  'cpsc.gov', // consumer product safety rules and certificates
   'ttb.gov', // alcohol and tobacco permits
   'epa.gov',
   // U.S. courts

@@ -288,6 +288,15 @@ async function main(): Promise<void> {
     (r) =>
       r.rateKind === 'relief' && r.conditions?.usmcaQualifying === true && inEffectOn(r, asOf) && chargingLive.some((m) => r.replacesCodes.includes(m.ch99Code))
   );
+  // A duty that a USMCA claim does not remove (e.g. Section 338 on Canada) means USMCA goods are not fully exempt.
+  const usmcaStillCharged = chargingLive.some(
+    (m) =>
+      (m.countriesInclude.length === 0 || m.countriesInclude.some((c) => c === 'CA' || c === 'MX')) &&
+      m.conditions?.usmcaQualifying !== false &&
+      !chapterMeasures.some(
+        (r) => r.rateKind === 'relief' && r.conditions?.usmcaQualifying === true && inEffectOn(r, asOf) && r.replacesCodes.includes(m.ch99Code)
+      )
+  );
   // Per program, how many lines it charges ("Section 301: 163"), so a China-only list reaching every line
   // doesn't hide a broad exemption from the newer duties.
   const programLines = new Map<string, Set<string>>();
@@ -307,7 +316,7 @@ async function main(): Promise<void> {
         Array.from(programLines.entries())
           .map(([program, set]) => `${program}: ${set.size}`)
           .join(', ') || 'none'
-      }${usmcaRelief ? '; USMCA goods exempt' : ''}`,
+      }${usmcaRelief ? (usmcaStillCharged ? '; USMCA goods exempt from some of these' : '; USMCA goods exempt') : ''}`,
     },
   ];
   if (trade?.year && trade.totalUsd) {
