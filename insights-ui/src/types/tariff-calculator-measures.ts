@@ -289,6 +289,8 @@ export interface MeasureEngineDutyLine {
   rateText: string;
   amountUsd: number;
   sources: TariffMeasureSource[];
+  /** Plain-language notes on how the line was priced (e.g. which FTA quota heading the claim was entered under). */
+  notes?: string[];
 }
 
 export interface MeasureEngineResult {
@@ -306,3 +308,55 @@ export interface MeasureEngineResult {
  * Pure (no DB) so it runs in the golden-scenario tests.
  */
 export type CalculateWithMeasures = (input: MeasureEngineInput, line: MeasureEngineLine, measures: TariffMeasureRecord[]) => MeasureEngineResult;
+
+// ---------------------------------------------------------------------------
+// FTA quota headings (Chapter 98 subchapters XXII / XXIII, Chapter 99 subchapters VIII, XVIII, XIX, XXI)
+// ---------------------------------------------------------------------------
+
+/**
+ * How a Chapter 98/99 FTA heading is charged relative to its trade agreement's quota:
+ *   inQuota       — "Subject to the quantitative limits specified in U.S. note …" (the in-quota rate)
+ *   safeguard     — a safeguard rate that applies above the quota when the note's trigger is met (AU beef, note 8(c))
+ *   overQuota     — "Other" / "Goods provided for in note N(b)(2)" (above the quota)
+ *   unconditional — no quota or safeguard (e.g. goods of Mexico under USMCA, 9823.xx.01)
+ *   notModelled   — a heading whose rate the calculator can't price (`reason` says why)
+ */
+export type FtaQuotaHeadingKind = 'inQuota' | 'safeguard' | 'overQuota' | 'unconditional' | 'notModelled';
+
+/** One Chapter 98/99 heading that an HTS line's special column points to ("See 9822.04.01-9822.04.03 (AU)"). */
+export interface FtaQuotaHeading {
+  /** "9822.04.01". */
+  code: string;
+  /** SPI symbol the heading's rate is listed for ("AU", "S+", "P+"). */
+  spi: string;
+  /** Rate text without the SPI symbol ("Free", "17.1%", "77.2¢/liter"). */
+  rateText: string;
+  kind: FtaQuotaHeadingKind;
+  /** U.S. note to the heading's subchapter that sets the quota / safeguard, e.g. "8(b)", "1(b)(2)"; null when none is cited. */
+  noteRef: string | null;
+  /** "98" or "99". */
+  chapter: string;
+  /** Roman numeral of the subchapter, e.g. "XXII". */
+  subchapter: string;
+  /** ISO2 countries whose goods the heading is for (USMCA: MX for note N(a), CA for note N(b)). */
+  countries: string[];
+  /** 8-digit subheadings the heading's own description limits it to; empty = every line that points to it. */
+  subheadings: string[];
+  /** The heading's own description and the indented text above it (nearest first), as the HTS states them. */
+  description: string;
+  context: string[];
+  /** Last day (ISO) the subchapter's note says its provisions apply; absent = open-ended. */
+  effectiveTo?: string;
+  /** notModelled only: why the calculator does not price it. */
+  reason?: string;
+}
+
+export interface FtaQuotaHeadingsFile {
+  htsEdition: string;
+  /** usitc.gov URL of the HTS JSON the rows were read from. */
+  sourceUrl: string;
+  generatedAt: string;
+  /** Chapter 98 / 99 PDFs of the same edition (the U.S. notes the headings cite). */
+  noteSources: TariffMeasureSource[];
+  headings: FtaQuotaHeading[];
+}

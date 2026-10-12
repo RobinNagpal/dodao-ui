@@ -959,10 +959,7 @@
       ],
       "acceptedConditions": [],
       "rateGaps": [],
-      "acceptedRateGaps": [
-        "special (AU) \"See 9822.04.01-9822.04.03\": unreadable; 11 line(s), e.g. 0201105010 — accepted (special-rate-see-chapter-98-99)",
-        "special (PA) \"See 9919.02.01-9919.02.02\": unreadable; 11 line(s), e.g. 0201105010 — accepted (special-rate-see-chapter-98-99)"
-      ]
+      "acceptedRateGaps": []
     },
     {
       "chapter": "03",
@@ -998,56 +995,7 @@
       ],
       "acceptedConditions": ["s232-alu-russia-smelted-other-origin"],
       "rateGaps": [],
-      "acceptedRateGaps": [
-        "special (S+) \"See 9823.04.01-9823.04.54\": unreadable; 51 line(s), e.g. 0406100800 — accepted (special-rate-see-chapter-98-99)",
-        "special (IL) \"See 9908.04.05\": unreadable; 51 line(s), e.g. 0406100800 — accepted (special-rate-see-chapter-98-99)",
-        "special (AU) \"See 9822.04.40\": unreadable; 27 line(s), e.g. 0406101800 — accepted (special-rate-see-chapter-98-99)",
-        "special (S+) \"See 9823.03.01-9823.03.12\": unreadable; 9 line(s), e.g. 0401507500 — accepted (special-rate-see-chapter-98-99)",
-        "special (AU) \"See 9822.04.10\": unreadable; 8 line(s), e.g. 0401507500 — accepted (special-rate-see-chapter-98-99)",
-        "special (CO) \"See 9918.04.50, 9918.04.56\": unreadable; 8 line(s), e.g. 0406105800 — accepted (special-rate-see-chapter-98-99)",
-        "special (PA) \"See 9919.04.50, 9919.04.55, 9919.04.65\": unreadable; 8 line(s), e.g. 0406105800 — accepted (special-rate-see-chapter-98-99)",
-        "special (AU) \"See 9822.04.25\": unreadable; 7 line(s), e.g. 0402295000 — accepted (special-rate-see-chapter-98-99)",
-        "special (S+) \"See 9823.06.01-9823.06.09\": unreadable; 7 line(s), e.g. 0403205000 — accepted (special-rate-see-chapter-98-99)",
-        "special (CO) \"See 9918.04.50, 9918.04.52\": unreadable; 7 line(s), e.g. 0406101800 — accepted (special-rate-see-chapter-98-99)",
-        "special (PA) \"See 9919.04.50, 9919.04.51, 9919.04.61\": unreadable; 7 line(s), e.g. 0406101800 — accepted (special-rate-see-chapter-98-99)",
-        "special (AU) \"See 9822.04.45\": unreadable; 7 line(s), e.g. 0406102800 — accepted (special-rate-see-chapter-98-99)",
-        "special (CO) \"See 9918.04.50, 9918.04.53\": unreadable; 7 line(s), e.g. 0406102800 — accepted (special-rate-see-chapter-98-99)",
-        "special (PA) \"See 9919.04.50, 9919.04.52, 9919.04.62\": unreadable; 7 line(s), e.g. 0406102800 — accepted (special-rate-see-chapter-98-99)",
-        "special (AU) \"See 9822.04.50\": unreadable; 7 line(s), e.g. 0406103800 — accepted (special-rate-see-chapter-98-99)",
-        "special (CO) \"See 9918.04.50, 9918.04.54\": unreadable; 7 line(s), e.g. 0406103800 — accepted (special-rate-see-chapter-98-99)",
-        "special (PA) \"See 9919.04.50, 9919.04.53, 9919.04.63\": unreadable; 7 line(s), e.g. 0406103800 — accepted (special-rate-see-chapter-98-99)",
-        "special (CO) \"See 9918.04.50, 9918.04.55\": unreadable; 7 line(s), e.g. 0406104800 — accepted (special-rate-see-chapter-98-99)",
-        "special (PA) \"See 9919.04.50, 9919.04.54, 9919.04.64\": unreadable; 7 line(s), e.g. 0406104800 — accepted (special-rate-see-chapter-98-99)",
-        "special (S+) \"See 9823.07.01-9823.07.07\": unreadable; 5 line(s), e.g. 0402917000 — accepted (special-rate-see-chapter-98-99)",
-        "special (AU) \"See 9822.04.35\": unreadable; 5 line(s), e.g. 0406100800 — accepted (special-rate-see-chapter-98-99)",
-        "special (CO) \"See 9918.04.50, 9918.04.51\": unreadable; 5 line(s), e.g. 0406100800 — accepted (special-rate-see-chapter-98-99)",
-        "special (PA) \"See 9919.04.40, 9919.04.41-9919.04.42\": unreadable; 5 line(s), e.g. 0406100800 — accepted (special-rate-see-chapter-98-99)",
-        "special (CO) \"See 9918.04.50, 9918.04.57\": unreadable; 5 line(s), e.g. 0406106800 — accepted (special-rate-see-chapter-98-99)",
-        "special (PA) \"See 9919.04.50, 9919.04.56, 9919.04.66\": unreadable; 5 line(s), e.g. 0406106800 — accepted (special-rate-see-chapter-98-99)",
-        "special (AU) \"See 9822.04.20\": unreadable; 4 line(s), e.g. 0402215000 — accepted (special-rate-see-chapter-98-99)",
-        "special (AU) \"See 9822.04.30\": unreadable; 4 line(s), e.g. 0402917000 — accepted (special-rate-see-chapter-98-99)",
-        "special (CO) \"See 9918.04.50, 9918.04.58\": unreadable; 4 line(s), e.g. 0406107800 — accepted (special-rate-see-chapter-98-99)",
-        "special (PA) \"See 9919.04.50, 9919.04.57, 9919.04.67\": unreadable; 4 line(s), e.g. 0406107800 — accepted (special-rate-see-chapter-98-99)",
-        "special (AU) \"See 9822.04.05\": unreadable; 3 line(s), e.g. 0401402500 — accepted (special-rate-see-chapter-98-99)",
-        "special (S+) \"See 9823.01.01-9823.01.07\": unreadable; 3 line(s), e.g. 0401402500 — accepted (special-rate-see-chapter-98-99)",
-        "special (IL) \"See 9908.04.01\": unreadable; 3 line(s), e.g. 0401507500 — accepted (special-rate-see-chapter-98-99)",
-        "special (AU) \"See 9822.04.15\": unreadable; 2 line(s), e.g. 0402105000 — accepted (special-rate-see-chapter-98-99)",
-        "special (S+) \"See 9823.02.01-9823.02.04\": unreadable; 2 line(s), e.g. 0402105000 — accepted (special-rate-see-chapter-98-99)",
-        "special (IL) \"See 9908.04.03\": unreadable; 2 line(s), e.g. 0402105000 — accepted (special-rate-see-chapter-98-99)",
-        "special (S+) \"See 9823.05.01-9823.05.06\": unreadable; 2 line(s), e.g. 0402215000 — accepted (special-rate-see-chapter-98-99)",
-        "special (PA) \"See 9919.04.10, 9919.04.11, 9919.04.13\": unreadable; 2 line(s), e.g. 0402917000 — accepted (special-rate-see-chapter-98-99)",
-        "special (PA) \"See 9919.04.10, 9919.04.12, 99.19.04.14\": unreadable; 2 line(s), e.g. 0402994500 — accepted (special-rate-see-chapter-98-99)",
-        "special (CO) \"See 9918.04.60, 9918.04.61\": unreadable; 1 line(s), e.g. 0402295000 — accepted (special-rate-see-chapter-98-99)",
-        "special (CO) \"See 9918.04.60, 9918.04.62\": unreadable; 1 line(s), e.g. 0402999000 — accepted (special-rate-see-chapter-98-99)",
-        "special (CO) \"See 9918.04.60, 9918.04.63\": unreadable; 1 line(s), e.g. 0403205000 — accepted (special-rate-see-chapter-98-99)",
-        "special (CO) \"See 9918.04.60, 9918.04.64\": unreadable; 1 line(s), e.g. 0403909500 — accepted (special-rate-see-chapter-98-99)",
-        "special (CO) \"See 9918.04.60, 9918.04.65\": unreadable; 1 line(s), e.g. 0404101500 — accepted (special-rate-see-chapter-98-99)",
-        "special (CO) \"See 9918.04.60, 9918.04.66\": unreadable; 1 line(s), e.g. 0404905000 — accepted (special-rate-see-chapter-98-99)",
-        "special (CO) \"See 9918.04.60, 9918.04.67\": unreadable; 1 line(s), e.g. 0405207000 — accepted (special-rate-see-chapter-98-99)",
-        "special (AU) \"See 9822.04.65\": unreadable; 1 line(s), e.g. 0406904800 — accepted (special-rate-see-chapter-98-99)",
-        "special (CO) \"See 9918.04.50, 9918.04.59\": unreadable; 1 line(s), e.g. 0406904800 — accepted (special-rate-see-chapter-98-99)",
-        "special (PA) \"See 9919.04.50, 9919.04.58, 9919.04.68\": unreadable; 1 line(s), e.g. 0406904800 — accepted (special-rate-see-chapter-98-99)"
-      ]
+      "acceptedRateGaps": []
     },
     {
       "chapter": "05",
@@ -1186,7 +1134,7 @@
       ],
       "acceptedConditions": [],
       "rateGaps": [],
-      "acceptedRateGaps": ["special (IL) \"See 9908.12.01\": unreadable; 7 line(s), e.g. 1202308000 — accepted (special-rate-see-chapter-98-99)"]
+      "acceptedRateGaps": []
     },
     {
       "chapter": "13",
@@ -1240,10 +1188,7 @@
       ],
       "acceptedConditions": [],
       "rateGaps": [],
-      "acceptedRateGaps": [
-        "special (AU) \"See 9822.04.25\": unreadable; 1 line(s), e.g. 1517906000 — accepted (special-rate-see-chapter-98-99)",
-        "special (CO) \"See 9918.04.60, 9918.04.68\": unreadable; 1 line(s), e.g. 1517906000 — accepted (special-rate-see-chapter-98-99)"
-      ]
+      "acceptedRateGaps": []
     },
     {
       "chapter": "16",
@@ -1335,19 +1280,7 @@
           "exampleLine": "1701911000"
         }
       ],
-      "acceptedRateGaps": [
-        "special (P+) \"See 9822.05.20\": unreadable; 20 line(s), e.g. 1701125000 — accepted (special-rate-see-chapter-98-99)",
-        "special (PE) \"See 9822.06.10\": unreadable; 20 line(s), e.g. 1701125000 — accepted (special-rate-see-chapter-98-99)",
-        "special (CO) \"See 9822.08.01\": unreadable; 20 line(s), e.g. 1701125000 — accepted (special-rate-see-chapter-98-99)",
-        "special (PA) \"See 9822.09.17\": unreadable; 20 line(s), e.g. 1701125000 — accepted (special-rate-see-chapter-98-99)",
-        "special (MA) \"See 9822.03.01\": unreadable; 20 line(s), e.g. 1701125000 — accepted (special-rate-see-chapter-98-99)",
-        "special (S+) \"See 9823.10.01-9823.10.45\": unreadable; 11 line(s), e.g. 1701914800 — accepted (special-rate-see-chapter-98-99)",
-        "special (P+) \"See 9822.05.15\": unreadable; 10 line(s), e.g. 1701121000 — accepted (special-rate-see-chapter-98-99)",
-        "special (S+) \"See 9823.09.01-9823.09.09\": unreadable; 9 line(s), e.g. 1701125000 — accepted (special-rate-see-chapter-98-99)",
-        "special (AU) \"See 9822.04.25\": unreadable; 1 line(s), e.g. 1704905800 — accepted (special-rate-see-chapter-98-99)",
-        "special (S+) \"See 9823.08.01-9823.08.38\": unreadable; 1 line(s), e.g. 1704905800 — accepted (special-rate-see-chapter-98-99)",
-        "special (CO) \"See 9918.04.60, 9918.04.69\": unreadable; 1 line(s), e.g. 1704905800 — accepted (special-rate-see-chapter-98-99)"
-      ]
+      "acceptedRateGaps": []
     },
     {
       "chapter": "18",
@@ -1364,17 +1297,7 @@
       ],
       "acceptedConditions": [],
       "rateGaps": [],
-      "acceptedRateGaps": [
-        "special (AU) \"See 9822.04.25\": unreadable; 20 line(s), e.g. 1806202600 — accepted (special-rate-see-chapter-98-99)",
-        "special (S+) \"See 9823.08.01-9823.08.38\": unreadable; 20 line(s), e.g. 1806202600 — accepted (special-rate-see-chapter-98-99)",
-        "special (P+) \"See 9822.05.20\": unreadable; 12 line(s), e.g. 1806101500 — accepted (special-rate-see-chapter-98-99)",
-        "special (PE) \"See 9822.06.10\": unreadable; 12 line(s), e.g. 1806101500 — accepted (special-rate-see-chapter-98-99)",
-        "special (CO) \"See 9822.08.01\": unreadable; 12 line(s), e.g. 1806101500 — accepted (special-rate-see-chapter-98-99)",
-        "special (PA) \"See 9822.09.17\": unreadable; 12 line(s), e.g. 1806101500 — accepted (special-rate-see-chapter-98-99)",
-        "special (S+) \"See 9823.10.01-9823.10.45\": unreadable; 12 line(s), e.g. 1806101500 — accepted (special-rate-see-chapter-98-99)",
-        "special (MA) \"See 9822.03.01\": unreadable; 12 line(s), e.g. 1806101500 — accepted (special-rate-see-chapter-98-99)",
-        "special (CO) \"See 9918.04.60-9918.04.80\": unreadable; 6 line(s), e.g. 1806208200 — accepted (special-rate-see-chapter-98-99)"
-      ]
+      "acceptedRateGaps": []
     },
     {
       "chapter": "19",
@@ -1392,21 +1315,7 @@
       ],
       "acceptedConditions": [],
       "rateGaps": [],
-      "acceptedRateGaps": [
-        "special (AU) \"See 9822.04.25\": unreadable; 10 line(s), e.g. 1901101600 — accepted (special-rate-see-chapter-98-99)",
-        "special (S+) \"See 9823.08.01-9823.08.38\": unreadable; 10 line(s), e.g. 1901101600 — accepted (special-rate-see-chapter-98-99)",
-        "special (CO) \"See 9918.04.60-9918.04.80\": unreadable; 10 line(s), e.g. 1901101600 — accepted (special-rate-see-chapter-98-99)",
-        "special (MA) \"See 9822.03.01\": unreadable; 7 line(s), e.g. 1901107600 — accepted (special-rate-see-chapter-98-99)",
-        "special (P+) \"See 9822.05.20\": unreadable; 7 line(s), e.g. 1901107600 — accepted (special-rate-see-chapter-98-99)",
-        "special (PE) \"See 9822.06.10\": unreadable; 7 line(s), e.g. 1901107600 — accepted (special-rate-see-chapter-98-99)",
-        "special (CO) \"See 9822.08.01\": unreadable; 7 line(s), e.g. 1901107600 — accepted (special-rate-see-chapter-98-99)",
-        "special (PA) \"See 9822.09.17\": unreadable; 7 line(s), e.g. 1901107600 — accepted (special-rate-see-chapter-98-99)",
-        "special (S+) \"See 9823.10.01-9823.10.45\": unreadable; 7 line(s), e.g. 1901107600 — accepted (special-rate-see-chapter-98-99)",
-        "special (S+) \"See 9823.04.01-9823.04.54\": unreadable; 1 line(s), e.g. 1901903600 — accepted (special-rate-see-chapter-98-99)",
-        "special (IL) \"See 9908.04.05\": unreadable; 1 line(s), e.g. 1901903600 — accepted (special-rate-see-chapter-98-99)",
-        "special (CO) \"See 9918.04.50-9918.04.59\": unreadable; 1 line(s), e.g. 1901903600 — accepted (special-rate-see-chapter-98-99)",
-        "special (PA) \"See 9919.04.50, 9919.04.57, 9919.04.67\": unreadable; 1 line(s), e.g. 1901903600 — accepted (special-rate-see-chapter-98-99)"
-      ]
+      "acceptedRateGaps": []
     },
     {
       "chapter": "20",
@@ -1423,7 +1332,7 @@
       ],
       "acceptedConditions": [],
       "rateGaps": [],
-      "acceptedRateGaps": ["special (IL) \"See 9908.12.01\": unreadable; 1 line(s), e.g. 2008116100 — accepted (special-rate-see-chapter-98-99)"]
+      "acceptedRateGaps": []
     },
     {
       "chapter": "21",
@@ -1443,25 +1352,7 @@
       "acceptedRateGaps": [
         "general \"The rate applicable to the natural juice in heading 2009\": unreadable; 2 line(s), e.g. 2106905200 — accepted (rate-of-natural-juice-heading-2009)",
         "column2 \"The rate applicable to the natural juice in heading 2009\": unreadable; 2 line(s), e.g. 2106905200 — accepted (rate-of-natural-juice-heading-2009)",
-        "special (P+) \"See 9822.05.20\": unreadable; 14 line(s), e.g. 2101123800 — accepted (special-rate-see-chapter-98-99)",
-        "special (PE) \"See 9822.06.10\": unreadable; 14 line(s), e.g. 2101123800 — accepted (special-rate-see-chapter-98-99)",
-        "special (CO) \"See 9822.08.01\": unreadable; 14 line(s), e.g. 2101123800 — accepted (special-rate-see-chapter-98-99)",
-        "special (PA) \"See 9822.09.17\": unreadable; 14 line(s), e.g. 2101123800 — accepted (special-rate-see-chapter-98-99)",
-        "special (S+) \"See 9823.10.01-9823.10.45\": unreadable; 14 line(s), e.g. 2101123800 — accepted (special-rate-see-chapter-98-99)",
-        "special (MA) \"See 9822.03.01\": unreadable; 14 line(s), e.g. 2101123800 — accepted (special-rate-see-chapter-98-99)",
-        "special (AU) \"See 9822.04.25\": unreadable; 4 line(s), e.g. 2105004000 — accepted (special-rate-see-chapter-98-99)",
-        "special (S+) \"See 9823.08.01-9823.08.38\": unreadable; 4 line(s), e.g. 2105004000 — accepted (special-rate-see-chapter-98-99)",
-        "special (CO) \"See 9918.04.60-9918.04.80\": unreadable; 2 line(s), e.g. 2105004000 — accepted (special-rate-see-chapter-98-99)",
-        "special (AU) \"See 9822.04.10\": unreadable; 2 line(s), e.g. 2106902600 — accepted (special-rate-see-chapter-98-99)",
-        "special (S+) \"See 9823.03.01-9823.03.12\": unreadable; 2 line(s), e.g. 2106902600 — accepted (special-rate-see-chapter-98-99)",
-        "special (D) \"The rate applicable to the natural juice in heading 2009\": unreadable; 2 line(s), e.g. 2106905200 — accepted (rate-of-natural-juice-heading-2009)",
-        "special (AU) \"See 9822.04.05\": unreadable; 1 line(s), e.g. 2105002000 — accepted (special-rate-see-chapter-98-99)",
-        "special (S+) \"See 9823.01.01-9823.01.07\": unreadable; 1 line(s), e.g. 2105002000 — accepted (special-rate-see-chapter-98-99)",
-        "special (IL) \"See 9908.21.01\": unreadable; 1 line(s), e.g. 2105002000 — accepted (special-rate-see-chapter-98-99)",
-        "special (PA) \"See 9919.21.10, 9919.21.11-9919.21.12\": unreadable; 1 line(s), e.g. 2105002000 — accepted (special-rate-see-chapter-98-99)",
-        "special (P+) \"See 9822.05.15\": unreadable; 1 line(s), e.g. 2106904400 — accepted (special-rate-see-chapter-98-99)",
-        "special (CO) \"See 9918.04.60, 9918.04.67\": unreadable; 1 line(s), e.g. 2106906600 — accepted (special-rate-see-chapter-98-99)",
-        "special (CO) \"See 9918.04.60, 9918.04.79\": unreadable; 1 line(s), e.g. 2106908700 — accepted (special-rate-see-chapter-98-99)"
+        "special (D) \"The rate applicable to the natural juice in heading 2009\": unreadable; 2 line(s), e.g. 2106905200 — accepted (rate-of-natural-juice-heading-2009)"
       ]
     },
     {
@@ -1484,10 +1375,7 @@
       "acceptedRateGaps": [
         "general \"The rate applicable to the natural juice in heading 2009\": unreadable; 2 line(s), e.g. 2202993600 — accepted (rate-of-natural-juice-heading-2009)",
         "column2 \"The rate applicable to the natural juice in heading 2009\": unreadable; 2 line(s), e.g. 2202993600 — accepted (rate-of-natural-juice-heading-2009)",
-        "special (PA) \"See 9822.09.22-9822.09.24\": unreadable; 4 line(s), e.g. 2207106010 — accepted (special-rate-see-chapter-98-99)",
-        "special (AU) \"See 9822.04.25\": unreadable; 1 line(s), e.g. 2202992800 — accepted (special-rate-see-chapter-98-99)",
-        "special (S+) \"See 9823.01.01-9823.01.07\": unreadable; 1 line(s), e.g. 2202992800 — accepted (special-rate-see-chapter-98-99)",
-        "special (CO) \"See 9918.04.60, 9918.04.80\": unreadable; 1 line(s), e.g. 2202992800 — accepted (special-rate-see-chapter-98-99)"
+        "special (PA) \"See 9822.09.22-9822.09.24\": quota heading 9822.09.22 not modelled: its rate \"The rate provided for beneficiary countries in heading 9901.00.50\" is not a rate the calculator can price; 4 line(s), e.g. 2207106010 — accepted (special-rate-see-chapter-98-99)"
       ]
     },
     {
@@ -1505,10 +1393,7 @@
       ],
       "acceptedConditions": [],
       "rateGaps": [],
-      "acceptedRateGaps": [
-        "special (AU) \"See 9822.04.20\": unreadable; 4 line(s), e.g. 2309902810 — accepted (special-rate-see-chapter-98-99)",
-        "special (S+) \"See 9823.05.01-9823.05.06\": unreadable; 4 line(s), e.g. 2309902810 — accepted (special-rate-see-chapter-98-99)"
-      ]
+      "acceptedRateGaps": []
     },
     {
       "chapter": "24",
@@ -1525,7 +1410,7 @@
       ],
       "acceptedConditions": [],
       "rateGaps": [],
-      "acceptedRateGaps": ["special (CO) \"See 9918.24.10-9918.24.11\": unreadable; 36 line(s), e.g. 2401106530 — accepted (special-rate-see-chapter-98-99)"]
+      "acceptedRateGaps": []
     },
     {
       "chapter": "25",
@@ -1641,14 +1526,7 @@
       ],
       "acceptedConditions": ["s232-alu-russia-smelted-other-origin"],
       "rateGaps": [],
-      "acceptedRateGaps": [
-        "special (P+) \"See 9822.05.20\": unreadable; 1 line(s), e.g. 3006932000 — accepted (special-rate-see-chapter-98-99)",
-        "special (PE) \"See 9822.06.10\": unreadable; 1 line(s), e.g. 3006932000 — accepted (special-rate-see-chapter-98-99)",
-        "special (CO) \"See 9822.08.01\": unreadable; 1 line(s), e.g. 3006932000 — accepted (special-rate-see-chapter-98-99)",
-        "special (PA) \"See 9822.09.17\": unreadable; 1 line(s), e.g. 3006932000 — accepted (special-rate-see-chapter-98-99)",
-        "special (S+) \"See 9823.10.01-9823.10.45\": unreadable; 1 line(s), e.g. 3006932000 — accepted (special-rate-see-chapter-98-99)",
-        "special (MA) \"See 9822.03.01\": unreadable; 1 line(s), e.g. 3006932000 — accepted (special-rate-see-chapter-98-99)"
-      ]
+      "acceptedRateGaps": []
     },
     {
       "chapter": "31",
@@ -4148,7 +4026,9 @@
       ],
       "acceptedConditions": ["s232-alu-russia-smelted-other-origin"],
       "rateGaps": [],
-      "acceptedRateGaps": ["special (JP) \"See 9921.01.01, 9921.01.02\": unreadable; 6 line(s), e.g. 8415908010 — accepted (special-rate-see-chapter-98-99)"]
+      "acceptedRateGaps": [
+        "special (JP) \"See 9921.01.01, 9921.01.02\": quota heading 9921.01.01 not modelled: the Japan rate on 8415.90.80 depends on whether the parts are of automotive air conditioners (9921.01.01, 1.4%) or other (9921.01.02, Free); the calculator does not ask that yet; 6 line(s), e.g. 8415908010 — accepted (special-rate-see-chapter-98-99)"
+      ]
     },
     {
       "chapter": "85",

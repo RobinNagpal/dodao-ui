@@ -5587,6 +5587,306 @@
       "expectedTotalDutyUsd": 50000.0,
       "toleranceUsd": 0.01,
       "sourceNote": "HTS Rev 21 7210.30.00 general Free. Section 232 steel (note 16(c)(iii), heading 7210) -> 9903.82.02 +50% on the full value; note 16(b): for goods eligible for FTA treatment (USMCA) the duty is collected in addition to the special rate, so the USMCA claim does not lift it (the 9903.82.18 reduced-rate quota needs a Commerce authorization, not claimed). 2026 Section 301 Mexico 9903.05.55 is removed by note 52(f)(1) (and would also be lifted by 52(h)). 50% x $100,000 = $50,000."
+    },
+    {
+      "id": "ch02-beef-au-fta-in-quota",
+      "description": "Fresh beef carcasses (0201.10.50.10) from Australia, $100,000 / 10,000 kg, AUSFTA claimed, within the note 8(b) quota",
+      "chapter": "02",
+      "input": {
+        "hts10": "0201105010",
+        "countryOfOrigin": "AU",
+        "customsValueUsd": 100000,
+        "quantities": {
+          "KG": 10000
+        },
+        "claimedSpi": "AU",
+        "confirmations": {
+          "facts": {
+            "ftaWithinQuota": true
+          }
+        },
+        "entryDate": "2026-10-09"
+      },
+      "line": {
+        "hts10": "0201105010",
+        "general": "26.4%",
+        "special": "Free (BH,CL,CO,JO,KR,MA,OM,P,PE,S,SG) See 9822.04.01-9822.04.03 (AU) See 9919.02.01-9919.02.02 (PA)",
+        "column2": "31.1%",
+        "units": ["kg"]
+      },
+      "expectedTotalDutyUsd": 0,
+      "toleranceUsd": 0.01,
+      "sourceNote": "HTSUS 2026 Revision 21: 0201.10.50 special column \"See 9822.04.01-9822.04.03 (AU)\"; chapter 98 subchapter XXII heading 9822.04.01 \"Subject to the quantitative limits specified in U.S. note 8(b)\" = Free (AU). $0 base. Extra duty: Section 301 (2026) 9903.05.23 (+12.5%, Australia) does not apply — subheading 0201.10.50 is on the U.S. note 52(b) exempt list (9903.05.86), chapter 99 subchapter III."
+    },
+    {
+      "id": "ch02-beef-au-fta-safeguard",
+      "description": "Same Australian beef above the quota while the note 8(c) price safeguard is in effect",
+      "chapter": "02",
+      "input": {
+        "hts10": "0201105010",
+        "countryOfOrigin": "AU",
+        "customsValueUsd": 100000,
+        "quantities": {
+          "KG": 10000
+        },
+        "claimedSpi": "AU",
+        "confirmations": {
+          "facts": {
+            "ftaSafeguardApplies": true
+          }
+        },
+        "entryDate": "2026-10-09"
+      },
+      "line": {
+        "hts10": "0201105010",
+        "general": "26.4%",
+        "special": "Free (BH,CL,CO,JO,KR,MA,OM,P,PE,S,SG) See 9822.04.01-9822.04.03 (AU) See 9919.02.01-9919.02.02 (PA)",
+        "column2": "31.1%",
+        "units": ["kg"]
+      },
+      "expectedTotalDutyUsd": 17100,
+      "toleranceUsd": 0.01,
+      "sourceNote": "HTSUS 2026 Revision 21: chapter 98 subchapter XXII heading 9822.04.02 (under \"Other:\") \"Subject to the provisions of U.S. note 8(c)\" = 17.1% (AU); note 8(c): \"A safeguard measure shall apply to originating goods of Australia entered in excess of the aggregate quantity …\" → 17.1% × $100,000 = $17,100. Extra duty: Section 301 (2026) 9903.05.23 (+12.5%, Australia) does not apply — subheading 0201.10.50 is on the U.S. note 52(b) exempt list (9903.05.86), chapter 99 subchapter III."
+    },
+    {
+      "id": "ch02-beef-au-fta-over-quota-no-safeguard",
+      "description": "Same Australian beef with the AUSFTA claim and no quota/safeguard answers (the live bug: was charged the 26.4% general rate)",
+      "chapter": "02",
+      "input": {
+        "hts10": "0201105010",
+        "countryOfOrigin": "AU",
+        "customsValueUsd": 100000,
+        "quantities": {
+          "KG": 10000
+        },
+        "claimedSpi": "AU",
+        "entryDate": "2026-10-09"
+      },
+      "line": {
+        "hts10": "0201105010",
+        "general": "26.4%",
+        "special": "Free (BH,CL,CO,JO,KR,MA,OM,P,PE,S,SG) See 9822.04.01-9822.04.03 (AU) See 9919.02.01-9919.02.02 (PA)",
+        "column2": "31.1%",
+        "units": ["kg"]
+      },
+      "expectedTotalDutyUsd": 0,
+      "toleranceUsd": 0.01,
+      "sourceNote": "HTSUS 2026 Revision 21: heading 9822.04.03 (\"Other:\" → \"Other\") = Free (AU) — above the note 8(b) quantity with no safeguard in effect AUSFTA beef is Free; unanswered quota facts default to \"no\" (over quota, no safeguard). $0, not 26.4% × $100,000. Extra duty: Section 301 (2026) 9903.05.23 (+12.5%, Australia) does not apply — subheading 0201.10.50 is on the U.S. note 52(b) exempt list (9903.05.86), chapter 99 subchapter III."
+    },
+    {
+      "id": "ch04-cream-mx-usmca",
+      "description": "Cream (0401.40.25.00) from Mexico, $100,000 / 10,000 liters, USMCA (S+) claimed",
+      "chapter": "04",
+      "input": {
+        "hts10": "0401402500",
+        "countryOfOrigin": "MX",
+        "customsValueUsd": 100000,
+        "quantities": {
+          "L": 10000
+        },
+        "claimedSpi": "S+",
+        "entryDate": "2026-10-09"
+      },
+      "line": {
+        "hts10": "0401402500",
+        "general": "77.2¢/liter",
+        "special": "Free (BH,CL,CO,JO,KR,MA,OM,P,P+,PA,PE,SG) See 9822.04.05 (AU) See 9823.01.01-9823.01.07 (S+)",
+        "column2": "90.8¢/liter",
+        "units": ["liters", "kg cmsc"]
+      },
+      "expectedTotalDutyUsd": 0,
+      "toleranceUsd": 0.01,
+      "sourceNote": "HTSUS 2026 Revision 21: 0401.40.25 special \"See 9823.01.01-9823.01.07 (S+)\"; chapter 98 subchapter XXIII note 1(a): goods of Mexico \"shall be eligible for USMCA tariff treatment only under subheading 9823.01.01\" = Free (S+), no quota. Section 301 (2026) 9903.05.55 (+10%, Mexico) does not apply to products of Mexico entered free of duty under USMCA (U.S. note 52(h), 9903.05.94). $0."
+    },
+    {
+      "id": "ch04-cream-ca-usmca-in-quota",
+      "description": "Cream (0401.40.25.00) from Canada, $100,000 / 10,000 liters, USMCA (S+) claimed, within the note 1(b)(1) quota",
+      "chapter": "04",
+      "input": {
+        "hts10": "0401402500",
+        "countryOfOrigin": "CA",
+        "customsValueUsd": 100000,
+        "quantities": {
+          "L": 10000
+        },
+        "claimedSpi": "S+",
+        "confirmations": {
+          "facts": {
+            "ftaWithinQuota": true
+          }
+        },
+        "entryDate": "2026-10-09"
+      },
+      "line": {
+        "hts10": "0401402500",
+        "general": "77.2¢/liter",
+        "special": "Free (BH,CL,CO,JO,KR,MA,OM,P,P+,PA,PE,SG) See 9822.04.05 (AU) See 9823.01.01-9823.01.07 (S+)",
+        "column2": "90.8¢/liter",
+        "units": ["liters", "kg cmsc"]
+      },
+      "expectedTotalDutyUsd": 0,
+      "toleranceUsd": 0.01,
+      "sourceNote": "HTSUS 2026 Revision 21: chapter 98 subchapter XXIII heading 9823.01.02 \"Subject to the quantitative limits specified in U.S. note 1(b)(1)\" (goods of Canada, note 1(b)) = Free (S+). Entered free under USMCA, so Section 301 (2026) 9903.05.29 (+10%, Canada) does not apply (U.S. note 52(g), 9903.05.93). $0."
+    },
+    {
+      "id": "ch04-cream-ca-usmca-over-quota",
+      "description": "Same Canadian cream above the note 1(b)(1) quota (no answer = over quota)",
+      "chapter": "04",
+      "input": {
+        "hts10": "0401402500",
+        "countryOfOrigin": "CA",
+        "customsValueUsd": 100000,
+        "quantities": {
+          "L": 10000
+        },
+        "claimedSpi": "S+",
+        "entryDate": "2026-10-09"
+      },
+      "line": {
+        "hts10": "0401402500",
+        "general": "77.2¢/liter",
+        "special": "Free (BH,CL,CO,JO,KR,MA,OM,P,P+,PA,PE,SG) See 9822.04.05 (AU) See 9823.01.01-9823.01.07 (S+)",
+        "column2": "90.8¢/liter",
+        "units": ["liters", "kg cmsc"]
+      },
+      "expectedTotalDutyUsd": 17720,
+      "toleranceUsd": 0.01,
+      "sourceNote": "HTSUS 2026 Revision 21: note 1(b)(2): above the 1(b)(1) quantity goods of Canada \"shall be entered under subheadings 9823.01.03 through 9823.01.07\"; 9823.01.03 \"Goods provided for in subheading 0401.40.25\" = 77.2¢/liter (S+) → 10,000 L × $0.772 = $7,720. Not entered free of duty, so the note 52(g) relief (9903.05.93) does not apply and Section 301 (2026) 9903.05.29 charges +10% × $100,000 = $10,000. Total $17,720."
+    },
+    {
+      "id": "ch17-sugar-mx-usmca",
+      "description": "Raw cane sugar (1701.12.50.00) from Mexico, $100,000 / 10,000 kg, USMCA (S+) claimed",
+      "chapter": "17",
+      "input": {
+        "hts10": "1701125000",
+        "countryOfOrigin": "MX",
+        "customsValueUsd": 100000,
+        "quantities": {
+          "KG": 10000
+        },
+        "claimedSpi": "S+",
+        "entryDate": "2026-10-09"
+      },
+      "line": {
+        "hts10": "1701125000",
+        "general": "35.74¢/kg",
+        "special": "Free (BH,CL,JO,KR,OM,SG) See 9822.05.20 (P+) See 9822.06.10 (PE) See 9822.08.01 (CO) See 9822.09.17 (PA) See 9823.09.01-9823.09.09 (S+) See 9822.03.01(MA)",
+        "column2": "42.05¢/kg",
+        "units": ["kg"]
+      },
+      "expectedTotalDutyUsd": 0,
+      "toleranceUsd": 0.01,
+      "sourceNote": "HTSUS 2026 Revision 21: 1701.12.50 special \"See 9823.09.01-9823.09.09 (S+)\"; chapter 98 subchapter XXIII note 9(a): goods of Mexico eligible \"only under subheading 9823.09.01\" = Free (S+). Section 301 (2026) relief for Mexico under USMCA (note 52(h), 9903.05.94). $0."
+    },
+    {
+      "id": "ch17-sugar-ca-usmca-over-quota",
+      "description": "Raw cane sugar (1701.12.50.00) from Canada, $100,000 / 10,000 kg, USMCA (S+) claimed, above the note 9(b)(1) quota",
+      "chapter": "17",
+      "input": {
+        "hts10": "1701125000",
+        "countryOfOrigin": "CA",
+        "customsValueUsd": 100000,
+        "quantities": {
+          "KG": 10000
+        },
+        "claimedSpi": "S+",
+        "entryDate": "2026-10-09"
+      },
+      "line": {
+        "hts10": "1701125000",
+        "general": "35.74¢/kg",
+        "special": "Free (BH,CL,JO,KR,OM,SG) See 9822.05.20 (P+) See 9822.06.10 (PE) See 9822.08.01 (CO) See 9822.09.17 (PA) See 9823.09.01-9823.09.09 (S+) See 9822.03.01(MA)",
+        "column2": "42.05¢/kg",
+        "units": ["kg"]
+      },
+      "expectedTotalDutyUsd": 13574,
+      "toleranceUsd": 0.01,
+      "sourceNote": "HTSUS 2026 Revision 21: note 9(b)(2): above the 9,600 t of note 9(b)(1) goods of Canada \"shall be entered under subheadings 9823.09.03 through 9823.09.08\"; 9823.09.03 \"Goods provided for in subheading 1701.12.50\" = 35.74¢/kg (S+) → 10,000 kg × $0.3574 = $3,574. Not entered free of duty, so Section 301 (2026) 9903.05.29 +10% × $100,000 = $10,000 applies (note 52(g) covers only goods entered free). Total $13,574."
+    },
+    {
+      "id": "ch04-cheese-pa-tpa-second-quota",
+      "description": "Blue-veined cheese (0406.10.18.00) from Panama, $100,000 / 10,000 kg, Panama TPA claimed, within the note 6(b) quota",
+      "chapter": "04",
+      "input": {
+        "hts10": "0406101800",
+        "countryOfOrigin": "PA",
+        "customsValueUsd": 100000,
+        "quantities": {
+          "KG": 10000
+        },
+        "claimedSpi": "PA",
+        "confirmations": {
+          "facts": {
+            "ftaWithinSecondQuota": true
+          }
+        },
+        "entryDate": "2026-10-09"
+      },
+      "line": {
+        "hts10": "0406101800",
+        "general": "$2.269/kg",
+        "special": "Free (BH,CL,JO,KR,MA,OM,P,PE,SG) See 9822.04.40 (AU) See 9823.04.01-9823.04.54 (S+) See 9908.04.05 (IL) See 9918.04.50, 9918.04.52 (CO) See 9919.04.50, 9919.04.51, 9919.04.61 (PA)",
+        "column2": "$2.67/kg",
+        "units": ["kg", "kg cmsc"]
+      },
+      "expectedTotalDutyUsd": 5670,
+      "toleranceUsd": 0.01,
+      "sourceNote": "HTSUS 2026 Revision 21: 0406.10.18 special \"See 9919.04.50, 9919.04.51, 9919.04.61 (PA)\"; chapter 99 subchapter XIX: 9919.04.50 \"Subject to the quantitative limits specified in U.S. note 6(a)\" = Free; 9919.04.51 (under \"Subject to the quantitative limits specified in U.S. note 6(b)\", subheading 0406.10.18) = 56.7¢/kg (PA) → 10,000 kg × $0.567 = $5,670; no extra duty in measures.json applies to products of Panama on this line."
+    },
+    {
+      "id": "ch04-cheese-pa-tpa-over-quota",
+      "description": "Same Panamanian cheese above both quotas (no answers)",
+      "chapter": "04",
+      "input": {
+        "hts10": "0406101800",
+        "countryOfOrigin": "PA",
+        "customsValueUsd": 100000,
+        "quantities": {
+          "KG": 10000
+        },
+        "claimedSpi": "PA",
+        "entryDate": "2026-10-09"
+      },
+      "line": {
+        "hts10": "0406101800",
+        "general": "$2.269/kg",
+        "special": "Free (BH,CL,JO,KR,MA,OM,P,PE,SG) See 9822.04.40 (AU) See 9823.04.01-9823.04.54 (S+) See 9908.04.05 (IL) See 9918.04.50, 9918.04.52 (CO) See 9919.04.50, 9919.04.51, 9919.04.61 (PA)",
+        "column2": "$2.67/kg",
+        "units": ["kg", "kg cmsc"]
+      },
+      "expectedTotalDutyUsd": 14100,
+      "toleranceUsd": 0.01,
+      "sourceNote": "HTSUS 2026 Revision 21: chapter 99 subchapter XIX heading 9919.04.61 (\"Other:\", subheading 0406.10.18) = $1.41/kg (PA) → 10,000 kg × $1.41 = $14,100 (below the $2.269/kg general rate; quota facts unanswered = over quota)."
+    },
+    {
+      "id": "ch04-cheese-il-in-quota",
+      "description": "Cheese (0406.10.18.00) from Israel, $100,000 / 10,000 kg, US–Israel FTA claimed, within the note 5 quota",
+      "chapter": "04",
+      "input": {
+        "hts10": "0406101800",
+        "countryOfOrigin": "IL",
+        "customsValueUsd": 100000,
+        "quantities": {
+          "KG": 10000
+        },
+        "claimedSpi": "IL",
+        "confirmations": {
+          "facts": {
+            "ftaWithinQuota": true
+          }
+        },
+        "entryDate": "2026-10-09"
+      },
+      "line": {
+        "hts10": "0406101800",
+        "general": "$2.269/kg",
+        "special": "Free (BH,CL,JO,KR,MA,OM,P,PE,SG) See 9822.04.40 (AU) See 9823.04.01-9823.04.54 (S+) See 9908.04.05 (IL) See 9918.04.50, 9918.04.52 (CO) See 9919.04.50, 9919.04.51, 9919.04.61 (PA)",
+        "column2": "$2.67/kg",
+        "units": ["kg", "kg cmsc"]
+      },
+      "expectedTotalDutyUsd": 12500,
+      "toleranceUsd": 0.01,
+      "sourceNote": "HTSUS 2026 Revision 21: 0406.10.18 special \"See 9908.04.05 (IL)\"; chapter 99 subchapter VIII heading 9908.04.05 \"… subject to the quantitative limits specified in U.S. note 5\" = Free (IL) (subchapter VIII applies through 2026-12-31, note 1). Section 301 (2026) 9903.05.47 (+12.5%, Israel) applies also when an FTA rate is claimed (U.S. note 52(a)) → $12,500."
     }
   ]
 }
