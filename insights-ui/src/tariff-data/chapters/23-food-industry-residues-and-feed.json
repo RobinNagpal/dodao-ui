@@ -40,7 +40,7 @@
         "china tariff on pet food"
       ]
     },
-    "intro": "Chapter 23 covers what the food industry leaves behind and what animals eat — **dog and cat food**, prepared livestock feed, soybean and canola meal, fish and meat meal, bran, beet pulp and distillers' grains. Its **61 tariff lines** carry small printed rates: 25 are Free, most others are 1.4% or a fraction of a cent per kilogram. The one steep rate is on **feed containing milk** above its quota: 80.4¢/kg + 6.4%.\n\nSo the extra duty by country decides the cost. Since **July 24, 2026** goods from 60 economies pay a Section 301 tariff: **+12.5% on Thai and Vietnamese pet food**, +10% for Indonesia, Cambodia and Malaysia, 10% in total for the EU, and **37.5% on Chinese pet food** (+25% from 2019 plus 12.5%). USMCA-qualifying feed from Canada and Mexico enters free. The U.S. imported $5.42B of Chapter 23 goods in 2025, $3.49B of it pet food and feed preparations.",
+    "intro": "Chapter 23 covers what the food industry leaves behind and what animals eat — **dog and cat food**, prepared livestock feed, soybean and canola meal, fish and meat meal, bran, beet pulp and distillers' grains. Its **61 tariff lines** carry small printed rates: 25 are Free, most others are 1.4% or a fraction of a cent per kilogram. The one steep rate is on **feed containing milk** above its quota: 80.4¢/kg + 6.4%.\n\nSo the extra duty by country decides the cost. Since **July 24, 2026** goods from 60 economies pay a Section 301 tariff: **+12.5% on Thai and Vietnamese pet food**, +10% for Indonesia, Cambodia and Malaysia, 10% in total for the EU, and **37.5% on Chinese pet food** (+25% from 2019 plus 12.5%). USMCA-qualifying feed from Canada and Mexico enters free (Canadian milk-based feed only within its quota). The U.S. imported $5.42B of Chapter 23 goods in 2025, $3.49B of it pet food and feed preparations.",
     "stats": [
       {
         "label": "Tariff lines",
@@ -2677,7 +2677,7 @@
         "ch99Code": "9903.05.29",
         "before": "None",
         "now": "+10%",
-        "exemption": "USMCA-qualifying goods entered free under USMCA pay no Section 301 duty (9903.05.93). No Chapter 23 line is on the general exemption list (U.S. note 52(b)). Milk-based feed over the quota (2309.90.28, 2309.90.48) is free under USMCA only within Canada's 696.9 t quota for 2026 (9823.05.02), shared with whole milk powder. The 35% IEEPA duty on non-USMCA Canadian goods ended February 24, 2026, and the 2026 Section 338 duties on Canadian dairy, alcoholic beverages and motor vehicles name no Chapter 23 line.",
+        "exemption": "USMCA-qualifying goods entered free under USMCA pay no Section 301 duty (9903.05.93). No Chapter 23 line is on the general exemption list (U.S. note 52(b)). Milk-based feed over the quota (2309.90.28, 2309.90.48) is free under USMCA only within Canada's 696.9 t quota for 2026 (9823.05.02), shared with whole milk powder; above it, it pays 80.4¢/kg + 6.4% (9823.05.05, 9823.05.06) plus the 10% Section 301 duty, because U.S. note 52(g) relieves only goods entered free of duty under USMCA. The 35% IEEPA duty on non-USMCA Canadian goods ended February 24, 2026, and none of the three 2026 Section 338 lists on Canadian goods (U.S. note 51(b), 9903.03.12–9903.03.14), which reach products in dozens of chapters, names a Chapter 23 line.",
         "whatItMeans": "USMCA-qualifying canola meal, soybean meal and pet food from Canada pay $0. Goods that don't qualify pay their base rate plus 10% of value: on a $350,000 shipment of canola meal that is $35,000 more. Canada shipped $1.82B of Chapter 23 goods in 2025, $1.0B of it canola and other oilcake.",
         "effectiveFrom": "2026-07-24",
         "effectiveSourceId": "fr-2026-15181",
@@ -5516,7 +5516,7 @@
         "soybean oil-cake import duty rates"
       ]
     },
-    "intro": "The total rate on Chapter 23 goods depends on **what it is and where it comes from**. Each cell below is the base rate for that product group plus the extra duty for that country, minus any preference — computed from the current tariff schedule with the same engine as the tariff calculator.\n\nBecause most base rates are Free or tiny, **the Section 301 duty is the bill**: +12.5% for Thailand, Vietnam and Türkiye, +10% for Indonesia, Cambodia, Malaysia, India and the UK, 10% in total for the EU, **37.5% for Brazil and for Chinese pet food**. USMCA-qualifying goods from Canada and Mexico enter free; milk-based feed over its quota follows its own USMCA quota rules.",
+    "intro": "The total rate on Chapter 23 goods depends on **what it is and where it comes from**. Each cell below is the base rate for that product group plus the extra duty for that country, minus any preference — computed from the current tariff schedule with the same engine as the tariff calculator.\n\nBecause most base rates are Free or tiny, **the Section 301 duty is the bill**: +12.5% for Thailand, Vietnam and Türkiye, +10% for Indonesia, Cambodia, Malaysia, India and the UK, 10% in total for the EU, **37.5% for Brazil and for Chinese pet food**. USMCA-qualifying goods from Canada and Mexico enter free; Canadian milk-based feed is free only within its USMCA quota and pays 80.4¢/kg + 16.4% above it (the over-quota rate plus 10% Section 301), while Mexican milk-based feed is free.",
     "scheduleEdition": "2026 Revision 21",
     "tradeYear": 2025,
     "lastCheckedAt": "2026-10-12",
@@ -5584,7 +5584,7 @@
           "extraPct": 10,
           "ch99Code": "9903.05.29",
           "usmcaCode": "9903.05.93",
-          "label": "USMCA-qualifying: free, no extra duty (9903.05.93); over-quota milk-based feed is free only within Canada's 696.9 t USMCA quota (9823.05.02) and 80.4¢/kg + 6.4% above it. Otherwise base rate + 10% Section 301 (9903.05.29). The 35% IEEPA duty ended February 24, 2026.",
+          "label": "USMCA-qualifying: free, no extra duty (9903.05.93). Milk-based feed (2309.90.28, 2309.90.48) is free only within Canada's 696.9 t USMCA quota for 2026 (9823.05.02); above it, 80.4¢/kg + 6.4% (9823.05.05, 9823.05.06) plus 10% Section 301, since only goods entered free under USMCA are exempt. Otherwise base rate + 10% Section 301 (9903.05.29). The 35% IEEPA duty ended February 24, 2026.",
           "sourceIds": ["fr-2026-15181", "fr-2026-15274", "hts-chapter-99", "hts-ch98", "eo-14389", "hts-now"]
         },
         "importsUsd": 1820899153,
@@ -5952,7 +5952,7 @@
           "2309": {
             "importsUsd": 614537901,
             "withUsmca": {
-              "totals": ["Free", "See 9823.05.01-9823.05.06 (quota)"],
+              "totals": ["Free", "80.4¢/kg + 16.4% if above quota"],
               "breakdown": [
                 {
                   "base": "Free",
@@ -5994,9 +5994,9 @@
                   "base": "80.4¢/kg + 6.4%",
                   "lines": ["2309.90.28.10", "2309.90.28.90", "2309.90.48.10", "2309.90.48.90"],
                   "lineCount": 4,
-                  "extra": "Depends on quota status",
-                  "preference": "S+ rate set by 9823.05.01-9823.05.06 (in-quota / over-quota); not priced by the calculator",
-                  "total": "See 9823.05.01-9823.05.06 (quota)"
+                  "extra": "Within quota: None (USMCA). Above quota: +10%",
+                  "preference": "Free under USMCA within Canada's quota (9823.05.02) with no Section 301 (9903.05.93); 80.4¢/kg + 6.4% above it (9823.05.05, 9823.05.06) plus 10% Section 301 (9903.05.29)",
+                  "total": "Free within quota / 80.4¢/kg + 16.4% above quota"
                 },
                 {
                   "base": "1.4%",
@@ -7487,7 +7487,7 @@
           "2309": {
             "importsUsd": 161141798,
             "withUsmca": {
-              "totals": ["Free", "See 9823.05.01-9823.05.06 (quota)"],
+              "totals": ["Free"],
               "breakdown": [
                 {
                   "base": "Free",
@@ -7529,9 +7529,9 @@
                   "base": "80.4¢/kg + 6.4%",
                   "lines": ["2309.90.28.10", "2309.90.28.90", "2309.90.48.10", "2309.90.48.90"],
                   "lineCount": 4,
-                  "extra": "Depends on quota status",
-                  "preference": "S+ rate set by 9823.05.01-9823.05.06 (in-quota / over-quota); not priced by the calculator",
-                  "total": "See 9823.05.01-9823.05.06 (quota)"
+                  "extra": "None (USMCA)",
+                  "preference": "Free under USMCA with no quota (9823.05.01, S+); Section 301 does not apply (9903.05.94)",
+                  "total": "Free"
                 },
                 {
                   "base": "1.4%",
@@ -13311,7 +13311,7 @@
         "country": "Canada",
         "heading": "2309",
         "importsUsd": 614537901,
-        "totals": ["Free", "See 9823.05.01-9823.05.06 (quota)"]
+        "totals": ["Free", "80.4¢/kg + 16.4% if above quota"]
       },
       {
         "country": "Indonesia",
@@ -13323,7 +13323,7 @@
         "country": "Mexico",
         "heading": "2309",
         "importsUsd": 161141798,
-        "totals": ["Free", "See 9823.05.01-9823.05.06 (quota)"]
+        "totals": ["Free"]
       },
       {
         "country": "China",
@@ -13350,7 +13350,7 @@
       "A per-unit rate plus a percentage cannot be added into one number without the shipment’s weight, count or volume, so it is shown as written.",
       "Preferences: USMCA (S) is applied for Canada and Mexico on the \"USMCA-qualifying\" side. GSP (A, A+) has lapsed and is not applied. Other preferences are not applied.",
       "Any other country shows the range across every country not listed (column 2 countries — Cuba, North Korea, Russia, Belarus — aside), without preferences.",
-      "Milk-based feed over the quota (2309.90.28, 2309.90.48): the USMCA rate is set in Chapter 98 and is not priced by the calculator. Mexican goods are Free (9823.05.01); Canadian goods are Free within a 696.9 t quota for 2026 shared with whole milk powder (9823.05.02) and 80.4¢/kg + 6.4% above it (9823.05.05, 9823.05.06).",
+      "Milk-based feed (2309.90.28, 2309.90.48) under USMCA is priced per tier: Mexican goods are Free with no quota (9823.05.01); Canadian goods are Free within a 696.9 t quota for 2026 shared with whole milk powder (9823.05.02) and pay 80.4¢/kg + 6.4% above it (9823.05.05, 9823.05.06) plus the 10% Section 301 duty, because U.S. note 52(g) relieves only goods entered free of duty under USMCA. The Canada cell shows both tiers.",
       "The IEEPA duties (9903.01.xx, 9903.02.xx) are still printed in the schedule but ended February 24, 2026, and the Section 122 surcharge (9903.03.01) expired July 23, 2026; neither is applied.",
       "Antidumping and countervailing duties are not in the matrix: feed-grade lysine from China (including lysine in premixes under 2309.90.70 and 2309.90.95) owes cash deposits of 73.37%–139.65% plus 48.21%–82.11% since September 2026.",
       "The rate is not the only gate: FDA prior notice, food-facility registration and the importer's FSVP apply to all animal food, and animal-protein meals and pet food with meat need APHIS clearance."
@@ -13515,7 +13515,7 @@
         "saves": "The 10% Section 301 duty on Canadian or Mexican goods, plus any base rate (up to 1.9%, or 7.5% on in-quota milk-based feed)",
         "appliesTo": "All 61 lines, for goods that qualify as originating under USMCA. Milk-based feed (2309.90.28, 2309.90.48) has its own USMCA rule: see the caveat.",
         "document": "A certification of origin from the importer, exporter or producer. It need not follow a prescribed format; it can be on the invoice or another document, and CBP can ask for it.",
-        "caveat": "For milk-based feed outside the quota (2309.90.28, 2309.90.48), the USMCA rate is set in Chapter 98. Mexican goods are Free (9823.05.01). Canadian goods are Free only within Canada's USMCA quota, which they share with whole milk powder (696.9 t in 2026; 9823.05.02, U.S. note 5(b)(1) to subchapter XXIII), and pay 80.4¢/kg + 6.4% above it (9823.05.05, 9823.05.06). A claim without a valid certification exposes the entry to the 10% Section 301 duty plus penalties. The USMCA was not renewed at the July 1, 2026 joint review but remains in force.",
+        "caveat": "Milk-based feed outside the quota (2309.90.28, 2309.90.48) takes its USMCA rate from Chapter 98. Mexican goods are Free with no quota (9823.05.01). Canadian goods are Free only within Canada's USMCA quota, which they share with whole milk powder (696.9 t in 2026; 9823.05.02, U.S. note 5(b)(1) to subchapter XXIII), and pay 80.4¢/kg + 6.4% above it (9823.05.05, 9823.05.06) plus the 10% Section 301 duty, which U.S. note 52(g) waives only for goods entered free under USMCA. A claim without a valid certification exposes the entry to the 10% Section 301 duty plus penalties. The USMCA was not renewed at the July 1, 2026 joint review but remains in force.",
         "citations": [
           {
             "label": "19 CFR 182.12",
@@ -13541,7 +13541,7 @@
         "saves": "The base rate: 1.4% or 1.9% of value, 0.12¢–0.56¢/kg on oilcake, or 7.5% on in-quota milk-based feed. The Section 301 duty for the country still applies.",
         "appliesTo": "Lines whose Special column lists the agreement (AU, BH, CL, CO, IL, JO, KR, MA, OM, P, PA, PE, SG); the 25 Free lines have nothing to save",
         "document": "A claim on the entry with the agreement's certification or origin information — for example Chile (19 CFR 10.410), CAFTA-DR (19 CFR 10.583) or Australia (19 CFR 10.703).",
-        "caveat": "An FTA claim does not remove the 2026 Section 301 duty (U.S. note 52(a) to Chapter 99 subchapter III). On over-quota milk-based feed, Australia's FTA rate is set in Chapter 98 (9822.04.20, within Australia's FTA quantity). GSP (A, A*, A+) has been expired since December 31, 2020.",
+        "caveat": "An FTA claim does not remove the 2026 Section 301 duty (U.S. note 52(a) to Chapter 99 subchapter III). On over-quota milk-based feed (2309.90.28, 2309.90.48), Australian goods are Free within Australia's FTA quantity (9822.04.20, U.S. note 12 to Chapter 98 subchapter XXII) and pay 80.4¢/kg + 6.4% beyond it. GSP (A, A*, A+) has been expired since December 31, 2020.",
         "citations": [
           {
             "label": "19 CFR 10.410",
@@ -14524,7 +14524,7 @@
         "id": "canada-pet-food",
         "question": "Is there a tariff on pet food and feed from Canada?",
         "searchedAs": ["pet food tariffs canada", "usmca duty-free animal feed imports"],
-        "answer": "Not if it qualifies for USMCA: qualifying goods pay no base rate and are exempt from the 10% Section 301 duty on Canadian products (9903.05.93). Goods that don't qualify pay their base rate plus 10% of value (9903.05.29). The 35% IEEPA duty ended February 24, 2026. Over-quota milk-based feed is the exception: free only within Canada's 696.9 t USMCA quota for 2026. Canada shipped $1.82B of Chapter 23 goods in 2025, mostly canola meal ($1.0B) and feed and pet food ($615M).",
+        "answer": "Not if it qualifies for USMCA: qualifying goods pay no base rate and are exempt from the 10% Section 301 duty on Canadian products (9903.05.93). Goods that don't qualify pay their base rate plus 10% of value (9903.05.29). The 35% IEEPA duty ended February 24, 2026. Over-quota milk-based feed is the exception: free only within Canada's 696.9 t USMCA quota for 2026, and 80.4¢/kg + 6.4% plus 10% Section 301 above it. Canada shipped $1.82B of Chapter 23 goods in 2025, mostly canola meal ($1.0B) and feed and pet food ($615M).",
         "link": "industry-areas"
       },
       {

@@ -11,6 +11,8 @@ import {
   storedDerivedFieldMismatches,
 } from '@/utils/tariff-reports/chapter-prototype';
 import { countryCodeForName, parseRateVariants, quantityUnits, rateDollars } from '@/utils/tariff-reports/shipment-duty';
+import { FTA_SAFEGUARD_FACT, FTA_WITHIN_QUOTA_FACT, FTA_WITHIN_SECOND_QUOTA_FACT } from '@/utils/tariff-calculator/fta-quota';
+import { usmcaClaimFor } from './chapter-generator/line-rates';
 import { calculateWithMeasures, CONTENT_VALUE_REQUIRED, FACT_ANSWER_REQUIRED, normalizeUom, rateUoms } from '@/utils/tariff-calculator/measures-engine';
 import { computeCalcReadiness, enabledChapterProblems } from '../tariff-calculator/lib/calc-readiness';
 import { parseArgs, parsePositiveInt } from '../tickers/lib';
@@ -437,6 +439,14 @@ function skip(stats: CalcCheckStats, reason: string, n = 1): void {
   stats.skipped.set(reason, (stats.skipped.get(reason) ?? 0) + n);
 }
 
+/** Facts that pick each FTA quota tier, as the chapter generator labels the tiers (see fta-quota.ts). */
+const QUOTA_TIER_FACTS: Record<string, Record<string, boolean>> = {
+  'within quota': { [FTA_WITHIN_QUOTA_FACT]: true },
+  'within additional quota': { [FTA_WITHIN_QUOTA_FACT]: false, [FTA_WITHIN_SECOND_QUOTA_FACT]: true },
+  'safeguard applies': { [FTA_WITHIN_QUOTA_FACT]: false, [FTA_WITHIN_SECOND_QUOTA_FACT]: false, [FTA_SAFEGUARD_FACT]: true },
+  'above quota': { [FTA_WITHIN_QUOTA_FACT]: false, [FTA_WITHIN_SECOND_QUOTA_FACT]: false, [FTA_SAFEGUARD_FACT]: false },
+};
+
 function checkCalculator(report: Report, slug: string, p: TariffChapterPrototype, measures: TariffMeasuresFile): CalcCheckStats {
   const stats: CalcCheckStats = { compared: 0, mismatched: 0, skipped: new Map() };
   const ia = p.industryAreas;
@@ -465,19 +475,34 @@ function checkCalculator(report: Report, slug: string, p: TariffChapterPrototype
             continue;
           }
           // A single-rate row whose extra still distinguishes patented/generic: check both kinds against the one total.
-          const cases: { productType?: TariffProductType; range: (typeof variants)[number]['range'] }[] = [];
+          const cases: { productType?: TariffProductType; facts?: Record<string, boolean>; range: (typeof variants)[number]['range'] }[] = [];
           if (variants.length > 1) {
             for (const v of variants) {
-              const type = PRODUCT_TYPES.find((t) => t === v.label);
-              if (type) cases.push({ productType: type, range: v.range });
-              else skip(stats, `unknown product-type variant "${v.label}"`, bRow.lines.length);
+              // Labels are "<quota tier>[ or <quota tier>]" and/or a product type, joined by ", " (chapter generator).
+              let productType: TariffProductType | undefined;
+              let tiers: string[] = [];
+              let unknown = false;
+              for (const part of (v.label ?? '').split(/,\s*/)) {
+                const type = PRODUCT_TYPES.find((t) => t === part);
+                if (type) productType = type;
+                else if (part.split(' or ').every((t) => t in QUOTA_TIER_FACTS)) tiers = part.split(' or ');
+                else unknown = true;
+              }
+              if (unknown || (!productType && tiers.length === 0)) {
+                skip(stats, `unknown variant "${v.label}"`, bRow.lines.length);
+                continue;
+              }
+              if (tiers.length === 0) cases.push({ productType, range: v.range });
+              for (const t of tiers) cases.push({ productType, facts: QUOTA_TIER_FACTS[t], range: v.range });
             }
           } else if (/patented/i.test(bRow.extra)) {
             cases.push({ productType: 'patented', range: variants[0].range }, { productType: 'generic', range: variants[0].range });
           } else {
             cases.push({ range: variants[0].range });
           }
-          const claimedSpi = side.usmca ? 'S' : claimedSpiOf(bRow.preference);
+          const firstRow = rowByHts.get(bRow.lines[0]);
+          // The USMCA program the line offers ("S" or "S+"; quota lines are often "S+"), as the generator claims it.
+          const claimedSpi = side.usmca ? (firstRow ? usmcaClaimFor(firstRow) ?? 'S' : 'S') : claimedSpiOf(bRow.preference);
 
           for (const c of cases) {
             if (!c.range.exact) {
@@ -512,6 +537,7 @@ function checkCalculator(report: Report, slug: string, p: TariffChapterPrototype
                 ]),
                 ...(claimedSpi ? { claimedSpi } : {}),
                 ...(c.productType ? { productType: c.productType } : {}),
+                ...(c.facts ? { confirmations: { facts: c.facts } } : {}),
                 entryDate: ia.lastCheckedAt,
               };
               const line: MeasureEngineLine = {
@@ -540,7 +566,16 @@ function checkCalculator(report: Report, slug: string, p: TariffChapterPrototype
               bad.push(`${hts} ${actual}`);
             }
             if (bad.length > 0) {
-              const kind = [side.usmca ? 'USMCA claimed' : null, claimedSpi && !side.usmca ? `SPI ${claimedSpi}` : null, c.productType ?? null]
+              const kind = [
+                side.usmca ? 'USMCA claimed' : null,
+                claimedSpi && !side.usmca ? `SPI ${claimedSpi}` : null,
+                c.productType ?? null,
+                c.facts
+                  ? Object.entries(c.facts)
+                      .map(([f, v]) => `${f}=${v ? 'yes' : 'no'}`)
+                      .join(' ')
+                  : null,
+              ]
                 .filter(Boolean)
                 .join(', ');
               const sample = bad.slice(0, 3).join('; ') + (bad.length > 3 ? `; +${bad.length - 3} more` : '');
