@@ -1,0 +1,1889 @@
+{
+  "chapter": 2,
+  "chapterPadded": "02",
+  "chapterDescription": "Meat and edible meat offal",
+  "source": "un-comtrade-public-preview",
+  "sourceLabel": "UN Comtrade public API (preview), United States imports, annual, HS",
+  "sourceUrls": [
+    "https://comtradeplus.un.org/",
+    "https://comtradeapi.un.org/public/v1/preview/C/A/HS?reporterCode=842&flowCode=M&period=YYYY&cmdCode=02",
+    "https://comtradeapi.un.org/files/v1/app/reference/H6.json"
+  ],
+  "retrievedAt": "2026-10-12",
+  "reporter": {
+    "code": 842,
+    "name": "United States"
+  },
+  "flow": "M",
+  "valueBasis": "CIF value (customs value plus freight and insurance), as reported by the United States to UN Comtrade.",
+  "years": [2020, 2021, 2022, 2023, 2024, 2025],
+  "latestYear": 2025,
+  "priorYear": 2024,
+  "totalsByYear": [
+    {
+      "year": 2020,
+      "totalUsd": 9455097419,
+      "partnerCount": 35
+    },
+    {
+      "year": 2021,
+      "totalUsd": 11995695705,
+      "partnerCount": 39
+    },
+    {
+      "year": 2022,
+      "totalUsd": 12964608899,
+      "partnerCount": 37
+    },
+    {
+      "year": 2023,
+      "totalUsd": 12452072203,
+      "partnerCount": 35
+    },
+    {
+      "year": 2024,
+      "totalUsd": 15270063945,
+      "partnerCount": 38
+    },
+    {
+      "year": 2025,
+      "totalUsd": 18160267166,
+      "partnerCount": 38
+    }
+  ],
+  "byCountry": [
+    {
+      "countryCode": 36,
+      "country": "Australia",
+      "importsUsd": 5263380620,
+      "priorImportsUsd": 4119489688,
+      "byYear": {
+        "2020": 2357911520,
+        "2021": 2355515531,
+        "2022": 2551683744,
+        "2023": 2665915323,
+        "2024": 4119489688,
+        "2025": 5263380620
+      }
+    },
+    {
+      "countryCode": 124,
+      "country": "Canada",
+      "importsUsd": 4217370996,
+      "priorImportsUsd": 4010738638,
+      "byYear": {
+        "2020": 2701688926,
+        "2021": 3851874327,
+        "2022": 4036886161,
+        "2023": 4129301350,
+        "2024": 4010738638,
+        "2025": 4217370996
+      }
+    },
+    {
+      "countryCode": 484,
+      "country": "Mexico",
+      "importsUsd": 2502797121,
+      "priorImportsUsd": 2076185562,
+      "byYear": {
+        "2020": 1575685838,
+        "2021": 2102350666,
+        "2022": 2130552220,
+        "2023": 1993524648,
+        "2024": 2076185562,
+        "2025": 2502797121
+      }
+    },
+    {
+      "countryCode": 554,
+      "country": "New Zealand",
+      "importsUsd": 1790670284,
+      "priorImportsUsd": 1634688905,
+      "byYear": {
+        "2020": 1192607297,
+        "2021": 1370449953,
+        "2022": 1361453017,
+        "2023": 1422766240,
+        "2024": 1634688905,
+        "2025": 1790670284
+      }
+    },
+    {
+      "countryCode": 76,
+      "country": "Brazil",
+      "importsUsd": 1333108998,
+      "priorImportsUsd": 1094050950,
+      "byYear": {
+        "2020": 131094543,
+        "2021": 376742632,
+        "2022": 661993738,
+        "2023": 514031104,
+        "2024": 1094050950,
+        "2025": 1333108998
+      }
+    },
+    {
+      "countryCode": 858,
+      "country": "Uruguay",
+      "importsUsd": 852126356,
+      "priorImportsUsd": 579090284,
+      "byYear": {
+        "2020": 275220634,
+        "2021": 260500415,
+        "2022": 314047404,
+        "2023": 335035483,
+        "2024": 579090284,
+        "2025": 852126356
+      }
+    },
+    {
+      "countryCode": 558,
+      "country": "Nicaragua",
+      "importsUsd": 444458422,
+      "priorImportsUsd": 346260935,
+      "byYear": {
+        "2020": 327301533,
+        "2021": 385787347,
+        "2022": 366532124,
+        "2023": 308325778,
+        "2024": 346260935,
+        "2025": 444458422
+      }
+    },
+    {
+      "countryCode": 32,
+      "country": "Argentina",
+      "importsUsd": 342529134,
+      "priorImportsUsd": 227676712,
+      "byYear": {
+        "2020": 114406733,
+        "2021": 139950319,
+        "2022": 156040541,
+        "2023": 168745444,
+        "2024": 227676712,
+        "2025": 342529134
+      }
+    },
+    {
+      "countryCode": 600,
+      "country": "Paraguay",
+      "importsUsd": 291065957,
+      "priorImportsUsd": 96306769,
+      "byYear": {
+        "2024": 96306769,
+        "2025": 291065957
+      }
+    },
+    {
+      "countryCode": 152,
+      "country": "Chile",
+      "importsUsd": 235706698,
+      "priorImportsUsd": 242286830,
+      "byYear": {
+        "2020": 175382265,
+        "2021": 284561928,
+        "2022": 463274545,
+        "2023": 213896927,
+        "2024": 242286830,
+        "2025": 235706698
+      }
+    },
+    {
+      "countryCode": 380,
+      "country": "Italy",
+      "importsUsd": 228780809,
+      "priorImportsUsd": 216143278,
+      "byYear": {
+        "2020": 118383740,
+        "2021": 163965870,
+        "2022": 192162751,
+        "2023": 192629162,
+        "2024": 216143278,
+        "2025": 228780809
+      }
+    },
+    {
+      "countryCode": 208,
+      "country": "Denmark",
+      "importsUsd": 113979754,
+      "priorImportsUsd": 133199102,
+      "byYear": {
+        "2020": 89851449,
+        "2021": 151011849,
+        "2022": 189234775,
+        "2023": 110161803,
+        "2024": 133199102,
+        "2025": 113979754
+      }
+    },
+    {
+      "countryCode": 724,
+      "country": "Spain",
+      "importsUsd": 112603611,
+      "priorImportsUsd": 103531868,
+      "byYear": {
+        "2020": 40199477,
+        "2021": 67263730,
+        "2022": 92781611,
+        "2023": 83980298,
+        "2024": 103531868,
+        "2025": 112603611
+      }
+    },
+    {
+      "countryCode": 392,
+      "country": "Japan",
+      "importsUsd": 106501471,
+      "priorImportsUsd": 82452516,
+      "byYear": {
+        "2020": 43730113,
+        "2021": 100077029,
+        "2022": 80754547,
+        "2023": 80947625,
+        "2024": 82452516,
+        "2025": 106501471
+      }
+    },
+    {
+      "countryCode": 188,
+      "country": "Costa Rica",
+      "importsUsd": 94273035,
+      "priorImportsUsd": 71895558,
+      "byYear": {
+        "2020": 46598370,
+        "2021": 40717014,
+        "2022": 33421587,
+        "2023": 41800599,
+        "2024": 71895558,
+        "2025": 94273035
+      }
+    },
+    {
+      "countryCode": 528,
+      "country": "Netherlands",
+      "importsUsd": 80980093,
+      "priorImportsUsd": 71800128,
+      "byYear": {
+        "2020": 48808948,
+        "2021": 55499124,
+        "2022": 68205263,
+        "2023": 54602375,
+        "2024": 71800128,
+        "2025": 80980093
+      }
+    },
+    {
+      "countryCode": 616,
+      "country": "Poland",
+      "importsUsd": 45691211,
+      "priorImportsUsd": 42017362,
+      "byYear": {
+        "2020": 72727858,
+        "2021": 98109888,
+        "2022": 83818052,
+        "2023": 31015604,
+        "2024": 42017362,
+        "2025": 45691211
+      }
+    },
+    {
+      "countryCode": 826,
+      "country": "United Kingdom",
+      "importsUsd": 38650618,
+      "priorImportsUsd": 33650055,
+      "byYear": {
+        "2020": 24935561,
+        "2021": 33448641,
+        "2022": 42873691,
+        "2023": 30630329,
+        "2024": 33650055,
+        "2025": 38650618
+      }
+    },
+    {
+      "countryCode": 372,
+      "country": "Ireland",
+      "importsUsd": 35868314,
+      "priorImportsUsd": 48843377,
+      "byYear": {
+        "2020": 77012191,
+        "2021": 88006338,
+        "2022": 74293448,
+        "2023": 38668195,
+        "2024": 48843377,
+        "2025": 35868314
+      }
+    },
+    {
+      "countryCode": 251,
+      "country": "France",
+      "importsUsd": 9961102,
+      "priorImportsUsd": 6354044,
+      "byYear": {
+        "2020": 2665777,
+        "2021": 3872520,
+        "2022": 3772191,
+        "2023": 5894997,
+        "2024": 6354044,
+        "2025": 9961102
+      }
+    },
+    {
+      "countryCode": 156,
+      "country": "China",
+      "importsUsd": 5693322,
+      "priorImportsUsd": 7967709,
+      "byYear": {
+        "2020": 8347027,
+        "2021": 9395457,
+        "2022": 8903524,
+        "2023": 9690733,
+        "2024": 7967709,
+        "2025": 5693322
+      }
+    },
+    {
+      "countryCode": 214,
+      "country": "Dominican Rep.",
+      "importsUsd": 3409948,
+      "priorImportsUsd": 1492632,
+      "byYear": {
+        "2023": 291249,
+        "2024": 1492632,
+        "2025": 3409948
+      }
+    },
+    {
+      "countryCode": 348,
+      "country": "Hungary",
+      "importsUsd": 2974892,
+      "priorImportsUsd": 12102983,
+      "byYear": {
+        "2020": 13134861,
+        "2021": 43221879,
+        "2022": 37483049,
+        "2023": 8447339,
+        "2024": 12102983,
+        "2025": 2974892
+      }
+    },
+    {
+      "countryCode": 704,
+      "country": "Viet Nam",
+      "importsUsd": 2396876,
+      "priorImportsUsd": 3735378,
+      "byYear": {
+        "2020": 975841,
+        "2021": 4064537,
+        "2022": 5752269,
+        "2023": 4692151,
+        "2024": 3735378,
+        "2025": 2396876
+      }
+    },
+    {
+      "countryCode": 246,
+      "country": "Finland",
+      "importsUsd": 1602107,
+      "priorImportsUsd": 1791520,
+      "byYear": {
+        "2020": 1306774,
+        "2021": 1578153,
+        "2022": 2242205,
+        "2023": 808941,
+        "2024": 1791520,
+        "2025": 1602107
+      }
+    },
+    {
+      "countryCode": 276,
+      "country": "Germany",
+      "importsUsd": 1347510,
+      "priorImportsUsd": 4689023,
+      "byYear": {
+        "2020": 3498645,
+        "2021": 4361555,
+        "2022": 4120063,
+        "2023": 5129695,
+        "2024": 4689023,
+        "2025": 1347510
+      }
+    },
+    {
+      "countryCode": 218,
+      "country": "Ecuador",
+      "importsUsd": 601789,
+      "priorImportsUsd": 154736,
+      "byYear": {
+        "2020": 119327,
+        "2021": 37687,
+        "2022": 59138,
+        "2023": 126311,
+        "2024": 154736,
+        "2025": 601789
+      }
+    },
+    {
+      "countryCode": 170,
+      "country": "Colombia",
+      "importsUsd": 446934,
+      "priorImportsUsd": 70616,
+      "byYear": {
+        "2020": 51784,
+        "2021": 60955,
+        "2022": 29480,
+        "2024": 70616,
+        "2025": 446934
+      }
+    },
+    {
+      "countryCode": 340,
+      "country": "Honduras",
+      "importsUsd": 296594,
+      "priorImportsUsd": 107100,
+      "byYear": {
+        "2020": 7149533,
+        "2021": 95961,
+        "2022": 282056,
+        "2024": 107100,
+        "2025": 296594
+      }
+    },
+    {
+      "countryCode": 604,
+      "country": "Peru",
+      "importsUsd": 242072,
+      "priorImportsUsd": 258387,
+      "byYear": {
+        "2020": 134032,
+        "2021": 114326,
+        "2022": 123508,
+        "2023": 40824,
+        "2024": 258387,
+        "2025": 242072
+      }
+    },
+    {
+      "countryCode": 352,
+      "country": "Iceland",
+      "importsUsd": 146884,
+      "priorImportsUsd": 144482,
+      "byYear": {
+        "2020": 147009,
+        "2021": 210280,
+        "2022": 14903,
+        "2023": 149362,
+        "2024": 144482,
+        "2025": 146884
+      }
+    },
+    {
+      "countryCode": 56,
+      "country": "Belgium",
+      "importsUsd": 146727,
+      "priorImportsUsd": 0,
+      "byYear": {
+        "2025": 146727
+      }
+    },
+    {
+      "countryCode": 620,
+      "country": "Portugal",
+      "importsUsd": 143546,
+      "priorImportsUsd": 308077,
+      "byYear": {
+        "2020": 409477,
+        "2021": 666957,
+        "2022": 586753,
+        "2023": 176371,
+        "2024": 308077,
+        "2025": 143546
+      }
+    },
+    {
+      "countryCode": 84,
+      "country": "Belize",
+      "importsUsd": 134919,
+      "priorImportsUsd": 0,
+      "byYear": {
+        "2025": 134919
+      }
+    },
+    {
+      "countryCode": 764,
+      "country": "Thailand",
+      "importsUsd": 105026,
+      "priorImportsUsd": 62573,
+      "byYear": {
+        "2020": 136759,
+        "2021": 194276,
+        "2022": 243495,
+        "2023": 340037,
+        "2024": 62573,
+        "2025": 105026
+      }
+    },
+    {
+      "countryCode": 440,
+      "country": "Lithuania",
+      "importsUsd": 49558,
+      "priorImportsUsd": 0,
+      "byYear": {
+        "2020": 37895,
+        "2021": 28618,
+        "2022": 57136,
+        "2023": 122629,
+        "2025": 49558
+      }
+    },
+    {
+      "countryCode": 136,
+      "country": "Cayman Isds",
+      "importsUsd": 21563,
+      "priorImportsUsd": 0,
+      "byYear": {
+        "2025": 21563
+      }
+    },
+    {
+      "countryCode": 818,
+      "country": "Egypt",
+      "importsUsd": 2295,
+      "priorImportsUsd": 0,
+      "byYear": {
+        "2025": 2295
+      }
+    },
+    {
+      "countryCode": 699,
+      "country": "India",
+      "importsUsd": 0,
+      "priorImportsUsd": 174822,
+      "byYear": {
+        "2020": 525336,
+        "2021": 1519305,
+        "2024": 174822
+      }
+    },
+    {
+      "countryCode": 642,
+      "country": "Romania",
+      "importsUsd": 0,
+      "priorImportsUsd": 165660,
+      "byYear": {
+        "2022": 55514,
+        "2024": 165660
+      }
+    },
+    {
+      "countryCode": 586,
+      "country": "Pakistan",
+      "importsUsd": 0,
+      "priorImportsUsd": 89119,
+      "byYear": {
+        "2024": 89119
+      }
+    },
+    {
+      "countryCode": 422,
+      "country": "Lebanon",
+      "importsUsd": 0,
+      "priorImportsUsd": 68554,
+      "byYear": {
+        "2024": 68554
+      }
+    },
+    {
+      "countryCode": 516,
+      "country": "Namibia",
+      "importsUsd": 0,
+      "priorImportsUsd": 18013,
+      "byYear": {
+        "2020": 2887452,
+        "2023": 104773,
+        "2024": 18013
+      }
+    }
+  ],
+  "byHeading": [
+    {
+      "heading": "0201",
+      "description": "Meat of bovine animals; fresh or chilled",
+      "byYear": {
+        "2020": 3748478167,
+        "2021": 4974105638,
+        "2022": 4874459253,
+        "2023": 5343310360,
+        "2024": 5862262739,
+        "2025": 6886169909
+      }
+    },
+    {
+      "heading": "0202",
+      "description": "Meat of bovine animals; frozen",
+      "byYear": {
+        "2020": 2681848579,
+        "2021": 2638987630,
+        "2022": 3024855881,
+        "2023": 3213103313,
+        "2024": 4895334521,
+        "2025": 6530120179
+      }
+    },
+    {
+      "heading": "0203",
+      "description": "Meat of swine; fresh, chilled or frozen",
+      "byYear": {
+        "2020": 1048287531,
+        "2021": 1574391330,
+        "2022": 1838868308,
+        "2023": 1376009425,
+        "2024": 1502321539,
+        "2025": 1515417386
+      }
+    },
+    {
+      "heading": "0204",
+      "description": "Meat of sheep or goats; fresh, chilled or frozen",
+      "byYear": {
+        "2020": 1010792534,
+        "2021": 1435941792,
+        "2022": 1674802292,
+        "2023": 1233676784,
+        "2024": 1544634347,
+        "2025": 1722350697
+      }
+    },
+    {
+      "heading": "0205",
+      "description": "Meat; of horses, asses, mules or hinnies, fresh, chilled or frozen",
+      "byYear": {
+        "2020": 2369725,
+        "2021": 1346822,
+        "2022": 2479289,
+        "2023": 2157411,
+        "2024": 2067337,
+        "2025": 1681879
+      }
+    },
+    {
+      "heading": "0206",
+      "description": "Edible offal of bovine animals, swine, sheep, goats, horses, asses, mules or hinnies; fresh, chilled or frozen",
+      "byYear": {
+        "2020": 372485105,
+        "2021": 545872910,
+        "2022": 517138327,
+        "2023": 509048951,
+        "2024": 602771731,
+        "2025": 650387802
+      }
+    },
+    {
+      "heading": "0207",
+      "description": "Meat and edible offal of poultry; of the poultry of heading no. 0105, (i.e. fowls of the species Gallus domesticus), fresh, chilled or frozen",
+      "byYear": {
+        "2020": 272062857,
+        "2021": 383046235,
+        "2022": 566412591,
+        "2023": 328085936,
+        "2024": 369236805,
+        "2025": 354500203
+      }
+    },
+    {
+      "heading": "0208",
+      "description": "Meat and edible meat offal, n.e.c. in chapter 2; fresh, chilled or frozen",
+      "byYear": {
+        "2020": 39182997,
+        "2021": 54358641,
+        "2022": 63203813,
+        "2023": 63022033,
+        "2024": 69855408,
+        "2025": 63910645
+      }
+    },
+    {
+      "heading": "0209",
+      "description": "Pig fat, free of lean meat, and poultry fat, not rendered or otherwise extracted, fresh, chilled, frozen, salted, in brine, dried or smoked",
+      "byYear": {
+        "2020": 9111826,
+        "2021": 17267221,
+        "2022": 15135999,
+        "2023": 14636903,
+        "2024": 13837211,
+        "2025": 14774910
+      }
+    },
+    {
+      "heading": "0210",
+      "description": "Meat and edible meat offal; salted, in brine, dried or smoked; edible flours and meals of meat or meat offal",
+      "byYear": {
+        "2020": 270478098,
+        "2021": 370377486,
+        "2022": 387253146,
+        "2023": 369021087,
+        "2024": 407742307,
+        "2025": 420953556
+      }
+    }
+  ],
+  "byHs6": [
+    {
+      "hs6": "020230",
+      "heading": "0202",
+      "description": "Meat; of bovine animals, boneless cuts, frozen",
+      "importsUsd": 6322292050,
+      "priorImportsUsd": 4798069163
+    },
+    {
+      "hs6": "020130",
+      "heading": "0201",
+      "description": "Meat; of bovine animals, boneless cuts, fresh or chilled",
+      "importsUsd": 5742585465,
+      "priorImportsUsd": 4770037140
+    },
+    {
+      "hs6": "020120",
+      "heading": "0201",
+      "description": "Meat; of bovine animals, cuts with bone in (excluding carcasses and half-carcasses), fresh or chilled",
+      "importsUsd": 1099705689,
+      "priorImportsUsd": 1056544863
+    },
+    {
+      "hs6": "020319",
+      "heading": "0203",
+      "description": "Meat; of swine, n.e.c. in item no. 0203.1, fresh or chilled",
+      "importsUsd": 697003781,
+      "priorImportsUsd": 622701179
+    },
+    {
+      "hs6": "020329",
+      "heading": "0203",
+      "description": "Meat; of swine, n.e.c. in item no. 0203.2, frozen",
+      "importsUsd": 635985568,
+      "priorImportsUsd": 658218837
+    },
+    {
+      "hs6": "020422",
+      "heading": "0204",
+      "description": "Meat; of sheep (including lamb), cuts with bone in (excluding carcasses and half-carcasses), fresh or chilled",
+      "importsUsd": 593804531,
+      "priorImportsUsd": 540804228
+    },
+    {
+      "hs6": "020442",
+      "heading": "0204",
+      "description": "Meat; of sheep (including lamb), cuts with bone in (excluding carcasses and half-carcasses), frozen",
+      "importsUsd": 508808619,
+      "priorImportsUsd": 433881894
+    },
+    {
+      "hs6": "020629",
+      "heading": "0206",
+      "description": "Offal, edible; of bovine animals, (other than tongues and livers), frozen",
+      "importsUsd": 389191773,
+      "priorImportsUsd": 350721510
+    },
+    {
+      "hs6": "021019",
+      "heading": "0210",
+      "description": "Meat; salted in brine, dried or smoked, of swine, n.e.c. in item no. 0210.1",
+      "importsUsd": 277512119,
+      "priorImportsUsd": 270247889
+    },
+    {
+      "hs6": "020714",
+      "heading": "0207",
+      "description": "Meat and edible offal; of fowls of the species Gallus domesticus, cuts and offal, frozen",
+      "importsUsd": 234927062,
+      "priorImportsUsd": 227788240
+    },
+    {
+      "hs6": "020220",
+      "heading": "0202",
+      "description": "Meat; of bovine animals, cuts with bone in (excluding carcasses and half-carcasses), frozen",
+      "importsUsd": 206601976,
+      "priorImportsUsd": 95376413
+    },
+    {
+      "hs6": "020443",
+      "heading": "0204",
+      "description": "Meat; of sheep (including lamb), boneless cuts, frozen",
+      "importsUsd": 206425313,
+      "priorImportsUsd": 197233832
+    },
+    {
+      "hs6": "020423",
+      "heading": "0204",
+      "description": "Meat; of sheep (including lamb), boneless cuts, fresh or chilled",
+      "importsUsd": 191482850,
+      "priorImportsUsd": 181490598
+    },
+    {
+      "hs6": "020610",
+      "heading": "0206",
+      "description": "Offal, edible; of bovine animals, fresh or chilled",
+      "importsUsd": 170363989,
+      "priorImportsUsd": 160260751
+    },
+    {
+      "hs6": "020450",
+      "heading": "0204",
+      "description": "Meat; of goats, fresh, chilled or frozen",
+      "importsUsd": 163855407,
+      "priorImportsUsd": 142881455
+    },
+    {
+      "hs6": "020312",
+      "heading": "0203",
+      "description": "Meat; of swine, hams, shoulders and cuts thereof, with bone in, fresh or chilled",
+      "importsUsd": 148327256,
+      "priorImportsUsd": 183116059
+    },
+    {
+      "hs6": "021012",
+      "heading": "0210",
+      "description": "Meat; salted, in brine, dried or smoked, of swine, bellies (streaky) and cuts thereof",
+      "importsUsd": 111974646,
+      "priorImportsUsd": 110502303
+    },
+    {
+      "hs6": "020890",
+      "heading": "0208",
+      "description": "Meat and edible meat offal; n.e.c. in chapter 2, fresh, chilled or frozen",
+      "importsUsd": 57708123,
+      "priorImportsUsd": 61401886
+    },
+    {
+      "hs6": "020110",
+      "heading": "0201",
+      "description": "Meat; of bovine animals, carcasses and half-carcasses, fresh or chilled",
+      "importsUsd": 43878755,
+      "priorImportsUsd": 35680736
+    },
+    {
+      "hs6": "020713",
+      "heading": "0207",
+      "description": "Meat and edible offal; of fowls of the species Gallus domesticus, cuts and offal, fresh or chilled",
+      "importsUsd": 43199934,
+      "priorImportsUsd": 70108343
+    },
+    {
+      "hs6": "020649",
+      "heading": "0206",
+      "description": "Offal, edible; of swine, (other than livers), frozen",
+      "importsUsd": 40191123,
+      "priorImportsUsd": 39311581
+    },
+    {
+      "hs6": "020322",
+      "heading": "0203",
+      "description": "Meat; of swine, hams, shoulders and cuts thereof, with bone in, frozen",
+      "importsUsd": 33635041,
+      "priorImportsUsd": 36109749
+    },
+    {
+      "hs6": "020430",
+      "heading": "0204",
+      "description": "Meat; of sheep, lamb carcasses and half-carcasses, frozen",
+      "importsUsd": 31804299,
+      "priorImportsUsd": 24856658
+    },
+    {
+      "hs6": "020727",
+      "heading": "0207",
+      "description": "Meat and edible offal; of turkeys, cuts and offal, frozen",
+      "importsUsd": 29910448,
+      "priorImportsUsd": 32868307
+    },
+    {
+      "hs6": "021011",
+      "heading": "0210",
+      "description": "Meat; salted, in brine, dried or smoked, of swine, hams, shoulders and cuts thereof, with bone in",
+      "importsUsd": 25059175,
+      "priorImportsUsd": 20063342
+    },
+    {
+      "hs6": "020441",
+      "heading": "0204",
+      "description": "Meat; of sheep, carcasses and half-carcasses (excluding carcasses and half-carcasses of lamb), frozen",
+      "importsUsd": 24886254,
+      "priorImportsUsd": 22716479
+    },
+    {
+      "hs6": "020690",
+      "heading": "0206",
+      "description": "Offal, edible; of sheep, goats, horses, asses, mules or hinnies, frozen",
+      "importsUsd": 23235592,
+      "priorImportsUsd": 21286127
+    },
+    {
+      "hs6": "020910",
+      "heading": "0209",
+      "description": "Fat; pig fat, free of lean meat, not rendered or otherwise extracted, fresh, chilled, frozen, salted, in brine, dried or smoked",
+      "importsUsd": 14667694,
+      "priorImportsUsd": 13320026
+    },
+    {
+      "hs6": "020621",
+      "heading": "0206",
+      "description": "Offal, edible; of bovine animals, tongues, frozen",
+      "importsUsd": 13382117,
+      "priorImportsUsd": 15168638
+    },
+    {
+      "hs6": "020630",
+      "heading": "0206",
+      "description": "Offal, edible; of swine, fresh or chilled",
+      "importsUsd": 11623608,
+      "priorImportsUsd": 14703922
+    },
+    {
+      "hs6": "020724",
+      "heading": "0207",
+      "description": "Meat and edible offal; of turkeys, not cut in pieces, fresh or chilled",
+      "importsUsd": 10615956,
+      "priorImportsUsd": 790168
+    },
+    {
+      "hs6": "020725",
+      "heading": "0207",
+      "description": "Meat and edible offal; of turkeys, not cut in pieces, frozen",
+      "importsUsd": 9131845,
+      "priorImportsUsd": 4684793
+    },
+    {
+      "hs6": "020711",
+      "heading": "0207",
+      "description": "Meat and edible offal; of fowls of the species Gallus domesticus, not cut in pieces, fresh or chilled",
+      "importsUsd": 8723210,
+      "priorImportsUsd": 12781209
+    },
+    {
+      "hs6": "020726",
+      "heading": "0207",
+      "description": "Meat and edible offal; of turkeys, cuts and offal, fresh or chilled",
+      "importsUsd": 5337527,
+      "priorImportsUsd": 5781847
+    },
+    {
+      "hs6": "020745",
+      "heading": "0207",
+      "description": "Meat and edible offal; of ducks, cuts and offal, excluding fatty livers, frozen",
+      "importsUsd": 5070015,
+      "priorImportsUsd": 5702093
+    },
+    {
+      "hs6": "020810",
+      "heading": "0208",
+      "description": "Meat and edible meat offal; of rabbits or hares, fresh, chilled or frozen",
+      "importsUsd": 4324447,
+      "priorImportsUsd": 6687718
+    },
+    {
+      "hs6": "021020",
+      "heading": "0210",
+      "description": "Meat; salted, in brine, dried or smoked, of bovine animals",
+      "importsUsd": 4185477,
+      "priorImportsUsd": 3382909
+    },
+    {
+      "hs6": "020712",
+      "heading": "0207",
+      "description": "Meat and edible offal; of fowls of the species Gallus domesticus, not cut in pieces, frozen",
+      "importsUsd": 3977134,
+      "priorImportsUsd": 4587434
+    },
+    {
+      "hs6": "020742",
+      "heading": "0207",
+      "description": "Meat and edible offal; of ducks, not cut in pieces, frozen",
+      "importsUsd": 3592734,
+      "priorImportsUsd": 4077445
+    },
+    {
+      "hs6": "021099",
+      "heading": "0210",
+      "description": "Meat and edible meat offal; salted, in brine, dried or smoked, and edible flours and meals of meat or meat offal, other than of primates, whales, dolphins, porpoises, manatees, dugongs, seals, sea lions, walruses, reptiles (including snakes and turtles)",
+      "importsUsd": 2219639,
+      "priorImportsUsd": 3545864
+    },
+    {
+      "hs6": "020860",
+      "heading": "0208",
+      "description": "Meat and edible meat offal; of camels and other camelids (Camelidae), fresh, chilled or frozen",
+      "importsUsd": 1767534,
+      "priorImportsUsd": 1735942
+    },
+    {
+      "hs6": "020500",
+      "heading": "0205",
+      "description": "Meat; of horses, asses, mules or hinnies, fresh, chilled or frozen",
+      "importsUsd": 1681879,
+      "priorImportsUsd": 2067337
+    },
+    {
+      "hs6": "020622",
+      "heading": "0206",
+      "description": "Offal, edible; of bovine animals, livers, frozen",
+      "importsUsd": 1578747,
+      "priorImportsUsd": 450098
+    },
+    {
+      "hs6": "020210",
+      "heading": "0202",
+      "description": "Meat; of bovine animals, carcasses and half-carcasses, frozen",
+      "importsUsd": 1226153,
+      "priorImportsUsd": 1888945
+    },
+    {
+      "hs6": "020410",
+      "heading": "0204",
+      "description": "Meat; of sheep, lamb carcasses and half-carcasses, fresh or chilled",
+      "importsUsd": 893421,
+      "priorImportsUsd": 699684
+    },
+    {
+      "hs6": "020641",
+      "heading": "0206",
+      "description": "Offal, edible; of swine, livers, frozen",
+      "importsUsd": 782760,
+      "priorImportsUsd": 657069
+    },
+    {
+      "hs6": "020321",
+      "heading": "0203",
+      "description": "Meat; of swine, carcasses and half-carcasses, frozen",
+      "importsUsd": 463675,
+      "priorImportsUsd": 634349
+    },
+    {
+      "hs6": "020421",
+      "heading": "0204",
+      "description": "Meat; of sheep, carcasses and half-carcasses (excluding carcasses and half-carcasses of lamb), fresh or chilled",
+      "importsUsd": 390003,
+      "priorImportsUsd": 69519
+    },
+    {
+      "hs6": "020850",
+      "heading": "0208",
+      "description": "Meat and edible meat offal; of reptiles (including snakes and turtles), fresh, chilled or frozen",
+      "importsUsd": 110541,
+      "priorImportsUsd": 29862
+    },
+    {
+      "hs6": "020990",
+      "heading": "0209",
+      "description": "Fat; poultry fat, not rendered or otherwise extracted, fresh, chilled, frozen, salted, in brine, dried or smoked",
+      "importsUsd": 107216,
+      "priorImportsUsd": 517185
+    },
+    {
+      "hs6": "020680",
+      "heading": "0206",
+      "description": "Offal, edible; of sheep, goats, horses, asses, mules or hinnies, fresh or chilled",
+      "importsUsd": 38093,
+      "priorImportsUsd": 212035
+    },
+    {
+      "hs6": "020744",
+      "heading": "0207",
+      "description": "Meat and edible offal; of ducks, cuts and offal, excluding fatty livers, fresh or chilled",
+      "importsUsd": 14338,
+      "priorImportsUsd": 4836
+    },
+    {
+      "hs6": "021091",
+      "heading": "0210",
+      "description": "Meat and edible meat offal; salted, in brine, dried or smoked, and edible flours and meals of meat or meat offal, of primates",
+      "importsUsd": 2500,
+      "priorImportsUsd": 0
+    },
+    {
+      "hs6": "020311",
+      "heading": "0203",
+      "description": "Meat; of swine, carcasses and half-carcasses, fresh or chilled",
+      "importsUsd": 2065,
+      "priorImportsUsd": 1541366
+    },
+    {
+      "hs6": "020741",
+      "heading": "0207",
+      "description": "Meat and edible offal; of ducks, not cut in pieces, fresh or chilled",
+      "importsUsd": 0,
+      "priorImportsUsd": 62090
+    }
+  ],
+  "byHeadingCountry": [
+    {
+      "heading": "0201",
+      "countryCode": 124,
+      "country": "Canada",
+      "importsUsd": 2648965393
+    },
+    {
+      "heading": "0201",
+      "countryCode": 484,
+      "country": "Mexico",
+      "importsUsd": 2049207587
+    },
+    {
+      "heading": "0201",
+      "countryCode": 36,
+      "country": "Australia",
+      "importsUsd": 1458096661
+    },
+    {
+      "heading": "0201",
+      "countryCode": 554,
+      "country": "New Zealand",
+      "importsUsd": 151394990
+    },
+    {
+      "heading": "0201",
+      "countryCode": 76,
+      "country": "Brazil",
+      "importsUsd": 137200439
+    },
+    {
+      "heading": "0201",
+      "countryCode": 558,
+      "country": "Nicaragua",
+      "importsUsd": 134274544
+    },
+    {
+      "heading": "0201",
+      "countryCode": 858,
+      "country": "Uruguay",
+      "importsUsd": 105937202
+    },
+    {
+      "heading": "0201",
+      "countryCode": 32,
+      "country": "Argentina",
+      "importsUsd": 101876878
+    },
+    {
+      "heading": "0201",
+      "countryCode": 392,
+      "country": "Japan",
+      "importsUsd": 58470383
+    },
+    {
+      "heading": "0201",
+      "countryCode": 188,
+      "country": "Costa Rica",
+      "importsUsd": 19899559
+    },
+    {
+      "heading": "0201",
+      "countryCode": 528,
+      "country": "Netherlands",
+      "importsUsd": 13182362
+    },
+    {
+      "heading": "0201",
+      "countryCode": 251,
+      "country": "France",
+      "importsUsd": 2482037
+    },
+    {
+      "heading": "0201",
+      "countryCode": 600,
+      "country": "Paraguay",
+      "importsUsd": 2065208
+    },
+    {
+      "heading": "0201",
+      "countryCode": 214,
+      "country": "Dominican Rep.",
+      "importsUsd": 1997818
+    },
+    {
+      "heading": "0201",
+      "countryCode": 152,
+      "country": "Chile",
+      "importsUsd": 374940
+    },
+    {
+      "heading": "0201",
+      "countryCode": 340,
+      "country": "Honduras",
+      "importsUsd": 296594
+    },
+    {
+      "heading": "0201",
+      "countryCode": 380,
+      "country": "Italy",
+      "importsUsd": 228125
+    },
+    {
+      "heading": "0201",
+      "countryCode": 372,
+      "country": "Ireland",
+      "importsUsd": 219189
+    },
+    {
+      "heading": "0202",
+      "countryCode": 36,
+      "country": "Australia",
+      "importsUsd": 2297538984
+    },
+    {
+      "heading": "0202",
+      "countryCode": 554,
+      "country": "New Zealand",
+      "importsUsd": 1137809886
+    },
+    {
+      "heading": "0202",
+      "countryCode": 76,
+      "country": "Brazil",
+      "importsUsd": 1119928004
+    },
+    {
+      "heading": "0202",
+      "countryCode": 858,
+      "country": "Uruguay",
+      "importsUsd": 716171827
+    },
+    {
+      "heading": "0202",
+      "countryCode": 558,
+      "country": "Nicaragua",
+      "importsUsd": 289641591
+    },
+    {
+      "heading": "0202",
+      "countryCode": 600,
+      "country": "Paraguay",
+      "importsUsd": 288422944
+    },
+    {
+      "heading": "0202",
+      "countryCode": 32,
+      "country": "Argentina",
+      "importsUsd": 231598976
+    },
+    {
+      "heading": "0202",
+      "countryCode": 124,
+      "country": "Canada",
+      "importsUsd": 158019318
+    },
+    {
+      "heading": "0202",
+      "countryCode": 484,
+      "country": "Mexico",
+      "importsUsd": 134674800
+    },
+    {
+      "heading": "0202",
+      "countryCode": 188,
+      "country": "Costa Rica",
+      "importsUsd": 70676423
+    },
+    {
+      "heading": "0202",
+      "countryCode": 392,
+      "country": "Japan",
+      "importsUsd": 48031088
+    },
+    {
+      "heading": "0202",
+      "countryCode": 528,
+      "country": "Netherlands",
+      "importsUsd": 27368750
+    },
+    {
+      "heading": "0202",
+      "countryCode": 251,
+      "country": "France",
+      "importsUsd": 6756682
+    },
+    {
+      "heading": "0202",
+      "countryCode": 214,
+      "country": "Dominican Rep.",
+      "importsUsd": 1317881
+    },
+    {
+      "heading": "0202",
+      "countryCode": 372,
+      "country": "Ireland",
+      "importsUsd": 462831
+    },
+    {
+      "heading": "0202",
+      "countryCode": 170,
+      "country": "Colombia",
+      "importsUsd": 446934
+    },
+    {
+      "heading": "0202",
+      "countryCode": 826,
+      "country": "United Kingdom",
+      "importsUsd": 344915
+    },
+    {
+      "heading": "0202",
+      "countryCode": 152,
+      "country": "Chile",
+      "importsUsd": 240785
+    },
+    {
+      "heading": "0202",
+      "countryCode": 276,
+      "country": "Germany",
+      "importsUsd": 149042
+    },
+    {
+      "heading": "0202",
+      "countryCode": 56,
+      "country": "Belgium",
+      "importsUsd": 146727
+    },
+    {
+      "heading": "0202",
+      "countryCode": 84,
+      "country": "Belize",
+      "importsUsd": 134919
+    },
+    {
+      "heading": "0202",
+      "countryCode": 724,
+      "country": "Spain",
+      "importsUsd": 120403
+    },
+    {
+      "heading": "0202",
+      "countryCode": 156,
+      "country": "China",
+      "importsUsd": 94906
+    },
+    {
+      "heading": "0202",
+      "countryCode": 136,
+      "country": "Cayman Isds",
+      "importsUsd": 21563
+    },
+    {
+      "heading": "0203",
+      "countryCode": 124,
+      "country": "Canada",
+      "importsUsd": 959522526
+    },
+    {
+      "heading": "0203",
+      "countryCode": 484,
+      "country": "Mexico",
+      "importsUsd": 171182275
+    },
+    {
+      "heading": "0203",
+      "countryCode": 208,
+      "country": "Denmark",
+      "importsUsd": 106742606
+    },
+    {
+      "heading": "0203",
+      "countryCode": 76,
+      "country": "Brazil",
+      "importsUsd": 74634014
+    },
+    {
+      "heading": "0203",
+      "countryCode": 724,
+      "country": "Spain",
+      "importsUsd": 54978073
+    },
+    {
+      "heading": "0203",
+      "countryCode": 616,
+      "country": "Poland",
+      "importsUsd": 43300472
+    },
+    {
+      "heading": "0203",
+      "countryCode": 528,
+      "country": "Netherlands",
+      "importsUsd": 37614211
+    },
+    {
+      "heading": "0203",
+      "countryCode": 826,
+      "country": "United Kingdom",
+      "importsUsd": 29713982
+    },
+    {
+      "heading": "0203",
+      "countryCode": 372,
+      "country": "Ireland",
+      "importsUsd": 21999509
+    },
+    {
+      "heading": "0203",
+      "countryCode": 152,
+      "country": "Chile",
+      "importsUsd": 11953621
+    },
+    {
+      "heading": "0203",
+      "countryCode": 348,
+      "country": "Hungary",
+      "importsUsd": 2168581
+    },
+    {
+      "heading": "0203",
+      "countryCode": 246,
+      "country": "Finland",
+      "importsUsd": 1206033
+    },
+    {
+      "heading": "0203",
+      "countryCode": 380,
+      "country": "Italy",
+      "importsUsd": 399269
+    },
+    {
+      "heading": "0203",
+      "countryCode": 251,
+      "country": "France",
+      "importsUsd": 2214
+    },
+    {
+      "heading": "0204",
+      "countryCode": 36,
+      "country": "Australia",
+      "importsUsd": 1292641806
+    },
+    {
+      "heading": "0204",
+      "countryCode": 554,
+      "country": "New Zealand",
+      "importsUsd": 416531564
+    },
+    {
+      "heading": "0204",
+      "countryCode": 152,
+      "country": "Chile",
+      "importsUsd": 5992575
+    },
+    {
+      "heading": "0204",
+      "countryCode": 484,
+      "country": "Mexico",
+      "importsUsd": 1708346
+    },
+    {
+      "heading": "0204",
+      "countryCode": 124,
+      "country": "Canada",
+      "importsUsd": 1479324
+    },
+    {
+      "heading": "0204",
+      "countryCode": 826,
+      "country": "United Kingdom",
+      "importsUsd": 1343884
+    },
+    {
+      "heading": "0204",
+      "countryCode": 76,
+      "country": "Brazil",
+      "importsUsd": 1324000
+    },
+    {
+      "heading": "0204",
+      "countryCode": 858,
+      "country": "Uruguay",
+      "importsUsd": 803581
+    },
+    {
+      "heading": "0204",
+      "countryCode": 724,
+      "country": "Spain",
+      "importsUsd": 511771
+    },
+    {
+      "heading": "0204",
+      "countryCode": 352,
+      "country": "Iceland",
+      "importsUsd": 13846
+    },
+    {
+      "heading": "0205",
+      "countryCode": 124,
+      "country": "Canada",
+      "importsUsd": 1681879
+    },
+    {
+      "heading": "0206",
+      "countryCode": 36,
+      "country": "Australia",
+      "importsUsd": 212544156
+    },
+    {
+      "heading": "0206",
+      "countryCode": 124,
+      "country": "Canada",
+      "importsUsd": 165931860
+    },
+    {
+      "heading": "0206",
+      "countryCode": 484,
+      "country": "Mexico",
+      "importsUsd": 138784462
+    },
+    {
+      "heading": "0206",
+      "countryCode": 554,
+      "country": "New Zealand",
+      "importsUsd": 40026539
+    },
+    {
+      "heading": "0206",
+      "countryCode": 858,
+      "country": "Uruguay",
+      "importsUsd": 27172712
+    },
+    {
+      "heading": "0206",
+      "countryCode": 558,
+      "country": "Nicaragua",
+      "importsUsd": 20538370
+    },
+    {
+      "heading": "0206",
+      "countryCode": 372,
+      "country": "Ireland",
+      "importsUsd": 13186785
+    },
+    {
+      "heading": "0206",
+      "countryCode": 32,
+      "country": "Argentina",
+      "importsUsd": 9053280
+    },
+    {
+      "heading": "0206",
+      "countryCode": 826,
+      "country": "United Kingdom",
+      "importsUsd": 7047639
+    },
+    {
+      "heading": "0206",
+      "countryCode": 208,
+      "country": "Denmark",
+      "importsUsd": 7018875
+    },
+    {
+      "heading": "0206",
+      "countryCode": 188,
+      "country": "Costa Rica",
+      "importsUsd": 3697053
+    },
+    {
+      "heading": "0206",
+      "countryCode": 528,
+      "country": "Netherlands",
+      "importsUsd": 2702090
+    },
+    {
+      "heading": "0206",
+      "countryCode": 724,
+      "country": "Spain",
+      "importsUsd": 1052556
+    },
+    {
+      "heading": "0206",
+      "countryCode": 600,
+      "country": "Paraguay",
+      "importsUsd": 577805
+    },
+    {
+      "heading": "0206",
+      "countryCode": 246,
+      "country": "Finland",
+      "importsUsd": 396074
+    },
+    {
+      "heading": "0206",
+      "countryCode": 152,
+      "country": "Chile",
+      "importsUsd": 322806
+    },
+    {
+      "heading": "0206",
+      "countryCode": 352,
+      "country": "Iceland",
+      "importsUsd": 133038
+    },
+    {
+      "heading": "0206",
+      "countryCode": 616,
+      "country": "Poland",
+      "importsUsd": 107453
+    },
+    {
+      "heading": "0206",
+      "countryCode": 214,
+      "country": "Dominican Rep.",
+      "importsUsd": 94249
+    },
+    {
+      "heading": "0207",
+      "countryCode": 152,
+      "country": "Chile",
+      "importsUsd": 216821971
+    },
+    {
+      "heading": "0207",
+      "countryCode": 124,
+      "country": "Canada",
+      "importsUsd": 137157137
+    },
+    {
+      "heading": "0207",
+      "countryCode": 484,
+      "country": "Mexico",
+      "importsUsd": 518800
+    },
+    {
+      "heading": "0207",
+      "countryCode": 818,
+      "country": "Egypt",
+      "importsUsd": 2295
+    },
+    {
+      "heading": "0208",
+      "countryCode": 554,
+      "country": "New Zealand",
+      "importsUsd": 44674077
+    },
+    {
+      "heading": "0208",
+      "countryCode": 156,
+      "country": "China",
+      "importsUsd": 5598416
+    },
+    {
+      "heading": "0208",
+      "countryCode": 124,
+      "country": "Canada",
+      "importsUsd": 3291401
+    },
+    {
+      "heading": "0208",
+      "countryCode": 724,
+      "country": "Spain",
+      "importsUsd": 2961005
+    },
+    {
+      "heading": "0208",
+      "countryCode": 704,
+      "country": "Viet Nam",
+      "importsUsd": 2396876
+    },
+    {
+      "heading": "0208",
+      "countryCode": 36,
+      "country": "Australia",
+      "importsUsd": 2383967
+    },
+    {
+      "heading": "0208",
+      "countryCode": 348,
+      "country": "Hungary",
+      "importsUsd": 615482
+    },
+    {
+      "heading": "0208",
+      "countryCode": 218,
+      "country": "Ecuador",
+      "importsUsd": 601789
+    },
+    {
+      "heading": "0208",
+      "countryCode": 380,
+      "country": "Italy",
+      "importsUsd": 500975
+    },
+    {
+      "heading": "0208",
+      "countryCode": 251,
+      "country": "France",
+      "importsUsd": 378333
+    },
+    {
+      "heading": "0208",
+      "countryCode": 604,
+      "country": "Peru",
+      "importsUsd": 242072
+    },
+    {
+      "heading": "0208",
+      "countryCode": 620,
+      "country": "Portugal",
+      "importsUsd": 143546
+    },
+    {
+      "heading": "0208",
+      "countryCode": 764,
+      "country": "Thailand",
+      "importsUsd": 105026
+    },
+    {
+      "heading": "0208",
+      "countryCode": 826,
+      "country": "United Kingdom",
+      "importsUsd": 17680
+    },
+    {
+      "heading": "0209",
+      "countryCode": 124,
+      "country": "Canada",
+      "importsUsd": 13686717
+    },
+    {
+      "heading": "0209",
+      "countryCode": 724,
+      "country": "Spain",
+      "importsUsd": 1049827
+    },
+    {
+      "heading": "0209",
+      "countryCode": 616,
+      "country": "Poland",
+      "importsUsd": 38366
+    },
+    {
+      "heading": "0210",
+      "countryCode": 380,
+      "country": "Italy",
+      "importsUsd": 227652440
+    },
+    {
+      "heading": "0210",
+      "countryCode": 124,
+      "country": "Canada",
+      "importsUsd": 127635441
+    },
+    {
+      "heading": "0210",
+      "countryCode": 724,
+      "country": "Spain",
+      "importsUsd": 51929976
+    },
+    {
+      "heading": "0210",
+      "countryCode": 484,
+      "country": "Mexico",
+      "importsUsd": 6720851
+    },
+    {
+      "heading": "0210",
+      "countryCode": 616,
+      "country": "Poland",
+      "importsUsd": 2244920
+    },
+    {
+      "heading": "0210",
+      "countryCode": 858,
+      "country": "Uruguay",
+      "importsUsd": 2041034
+    },
+    {
+      "heading": "0210",
+      "countryCode": 276,
+      "country": "Germany",
+      "importsUsd": 1198468
+    },
+    {
+      "heading": "0210",
+      "countryCode": 251,
+      "country": "France",
+      "importsUsd": 341836
+    },
+    {
+      "heading": "0210",
+      "countryCode": 554,
+      "country": "New Zealand",
+      "importsUsd": 233228
+    },
+    {
+      "heading": "0210",
+      "countryCode": 208,
+      "country": "Denmark",
+      "importsUsd": 218273
+    },
+    {
+      "heading": "0210",
+      "countryCode": 348,
+      "country": "Hungary",
+      "importsUsd": 190829
+    },
+    {
+      "heading": "0210",
+      "countryCode": 826,
+      "country": "United Kingdom",
+      "importsUsd": 182518
+    },
+    {
+      "heading": "0210",
+      "countryCode": 36,
+      "country": "Australia",
+      "importsUsd": 175046
+    },
+    {
+      "heading": "0210",
+      "countryCode": 528,
+      "country": "Netherlands",
+      "importsUsd": 112680
+    },
+    {
+      "heading": "0210",
+      "countryCode": 440,
+      "country": "Lithuania",
+      "importsUsd": 49558
+    },
+    {
+      "heading": "0210",
+      "countryCode": 76,
+      "country": "Brazil",
+      "importsUsd": 22541
+    },
+    {
+      "heading": "0210",
+      "countryCode": 558,
+      "country": "Nicaragua",
+      "importsUsd": 3917
+    }
+  ],
+  "checks": [
+    {
+      "label": "2025 partners sum",
+      "expectedUsd": 18160267166,
+      "actualUsd": 18160267166,
+      "diffUsd": 0
+    },
+    {
+      "label": "2025 headings sum",
+      "expectedUsd": 18160267166,
+      "actualUsd": 18160267166,
+      "diffUsd": 0
+    },
+    {
+      "label": "2025 HS6 lines sum",
+      "expectedUsd": 18160267166,
+      "actualUsd": 18160267166,
+      "diffUsd": 0
+    },
+    {
+      "label": "2025 heading x partner sum",
+      "expectedUsd": 18160267166,
+      "actualUsd": 18160267166,
+      "diffUsd": 0
+    }
+  ]
+}

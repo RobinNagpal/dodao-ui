@@ -99,7 +99,8 @@ export interface TariffTradeSnapshotCountry {
 export interface TariffTradeSnapshot {
   year: number;
   totalImportsUsd: number;
-  totalDutyCollectedUsd: number;
+  /** Null when no official duty-collected figure is available (e.g. no Census data). */
+  totalDutyCollectedUsd: number | null;
   effectiveDutyRateNote: string;
   topCountries: TariffTradeSnapshotCountry[];
   biggestLines: { hts: string; label: string }[];
@@ -282,7 +283,8 @@ export interface TariffUnderstandIndustryContent {
   othersPriorImportsUsd: number;
   byLine: TariffImportsByLine[];
   byHeadingCountry: TariffImportsByHeadingCountry[];
-  effectiveDuty: { year: number; dutyPaidUsd: number; note: string };
+  /** dutyPaidUsd is null when no official duty-paid figure is available; the note then says so. */
+  effectiveDuty: { year: number; dutyPaidUsd: number | null; note: string };
   /** Markdown — explains the numbers above. */
   why: string;
   sources: { label: string; url?: string }[];
