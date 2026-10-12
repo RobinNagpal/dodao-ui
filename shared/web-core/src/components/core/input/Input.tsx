@@ -1,8 +1,7 @@
 import { PropsWithChildren } from '@dodao/web-core/types/PropsWithChildren';
 import { ExclamationCircleIcon } from '@heroicons/react/20/solid';
-import React, { useRef, useState } from 'react';
+import React, { useId, useRef, useState } from 'react';
 import styles from './Input.module.scss';
-import { v4 as uuidV4 } from 'uuid';
 
 interface TextInputProps extends PropsWithChildren {
   id?: string;
@@ -57,7 +56,8 @@ export default function Input({
     }
   };
 
-  const inputId = uuidV4();
+  // useId, not a random id: the same on the server and in the browser, so the label/input ids hydrate cleanly.
+  const inputId = useId();
 
   return (
     <div className={'my-2 ' + (className || '')}>
