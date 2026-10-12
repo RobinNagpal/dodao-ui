@@ -1,4 +1,4 @@
-import type { TariffConfirmationQuestion, TariffProductType } from '@/types/tariff-calculator-measures';
+import type { TariffConfirmationQuestion, TariffImportProhibition, TariffProductType } from '@/types/tariff-calculator-measures';
 import { CalculatorEngine, DataFreshness, perUnitRequirements, PerUnitRequirement } from '@/utils/tariff-calculator/duty-engine';
 import { loadCandidates, loadDataFreshness } from '@/utils/tariff-calculator/load-candidates';
 import { isMeasuresEngineEnabledFor, loadMeasureEngineLine, loadMeasures, loadProductDescriptions } from '@/utils/tariff-calculator/load-measures';
@@ -7,6 +7,10 @@ import {
   COLUMN2_COUNTRIES,
   conditionProgramsForLine,
   confirmationQuestionsForLine,
+  contentInputsForLine,
+  importBanQuestionsForLine,
+  importProhibitionFor,
+  type TariffContentInput,
   productTypesForLine,
   rateQuantityRequirements,
 } from '@/utils/tariff-calculator/measures-engine';
@@ -28,6 +32,12 @@ import { NextRequest } from 'next/server';
 // "Do any of these apply to your goods?" questions (issue #1790): end use, named
 // product and company program confirmations whose measures cover the line and
 // country on that date.
+// It also returns `contentInputs` (issue #1796): the content values (steel / aluminum /
+// copper content, U.S.-content value) that a content-based measure in scope for the line
+// (and the country, when given) on that date is charged on.
+// With ?country= it also returns `importProhibition` when an import ban (import-bans.json) covers the
+// line, country and date — `unconfirmed` when it depends on an unanswered question, which is then
+// added to the confirmation questions (official-measures chapters).
 
 /** A trade deal (SPI program) the line's special column offers. */
 export interface ClaimableTradeDeal {
@@ -51,6 +61,8 @@ export interface OfficialMeasuresRequirements {
   column2PerUnit: PerUnitRequirement[];
   /** Facts to confirm about the shipment (end use, named product, company program); empty without ?country=. */
   confirmationQuestions: TariffConfirmationQuestion[];
+  /** Content values to ask for (metal content, U.S.-content value); empty = none of the line's measures is charged on content. */
+  contentInputs: TariffContentInput[];
 }
 
 export interface CalculatorRequirementsResponse {
@@ -60,6 +72,24 @@ export interface CalculatorRequirementsResponse {
   dataFreshness: DataFreshness;
   engine?: CalculatorEngine;
   officialMeasures?: OfficialMeasuresRequirements;
+  /** Import ban covering the line for ?country= on ?date= (before any answers); absent when none or no country. */
+  importProhibition?: TariffImportProhibition;
+}
+
+function prohibitionFor(hts10: string, scope: QuestionScope): { importProhibition?: TariffImportProhibition } {
+  const ban = scope.country ? importProhibitionFor({ hts10, countryOfOrigin: scope.country, entryDate: scope.date }) : null;
+  return ban ? { importProhibition: ban } : {};
+}
+
+/** Measure questions plus the import-ban fact questions not already asked. */
+function withBanQuestions(questions: TariffConfirmationQuestion[], banQuestions: TariffConfirmationQuestion[]): TariffConfirmationQuestion[] {
+  const merged = [...questions];
+  for (const q of banQuestions) {
+    const existing = merged.find((x) => x.kind === q.kind && x.value === q.value);
+    if (existing) existing.effect = `${existing.effect} ${q.effect}`;
+    else merged.unshift(q);
+  }
+  return merged;
 }
 
 interface QuestionScope {
@@ -98,21 +128,28 @@ async function officialMeasuresRequirements(hts10: string, scope: QuestionScope)
       column2Countries: line.column2 ? COLUMN2_COUNTRIES : [],
       column2PerUnit: rateQuantityRequirements(line.column2),
       confirmationQuestions: scope.country
-        ? confirmationQuestionsForLine({ hts10, countryOfOrigin: scope.country, entryDate: scope.date }, loaded.measures, loadProductDescriptions())
+        ? withBanQuestions(
+            confirmationQuestionsForLine({ hts10, countryOfOrigin: scope.country, entryDate: scope.date }, loaded.measures, loadProductDescriptions()),
+            importBanQuestionsForLine({ hts10, countryOfOrigin: scope.country, entryDate: scope.date })
+          )
         : [],
+      contentInputs: contentInputsForLine({ hts10, countryOfOrigin: scope.country, entryDate: scope.date }, loaded.measures),
     },
+    ...prohibitionFor(hts10, scope),
   };
 }
 
 async function getHandler(req: NextRequest, dynamic: { params: Promise<{ hts10: string }> }): Promise<CalculatorRequirementsResponse> {
   const hts10 = parseHts10Param((await dynamic.params).hts10);
-  if (await isMeasuresEngineEnabledFor(hts10)) return officialMeasuresRequirements(hts10, parseQuestionScope(req));
+  const scope = parseQuestionScope(req);
+  if (await isMeasuresEngineEnabledFor(hts10)) return officialMeasuresRequirements(hts10, scope);
   const { candidates, lastFetchedAt } = await loadCandidates(hts10);
   return {
     hts10,
     perUnit: perUnitRequirements(candidates, new Date()),
     dataFreshness: await loadDataFreshness(hts10, lastFetchedAt),
     engine: 'candidate-codes',
+    ...prohibitionFor(hts10, scope),
   };
 }
 

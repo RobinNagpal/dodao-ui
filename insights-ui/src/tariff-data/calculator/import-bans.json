@@ -1,0 +1,133 @@
+{
+  "bans": [
+    {
+      "id": "ca-338-11061-alcohol",
+      "countries": ["CA"],
+      "coveragePrefixes": [
+        "22042120",
+        "22042130",
+        "22042150",
+        "22042160",
+        "22042180",
+        "22042220",
+        "22042240",
+        "22051030",
+        "22082020",
+        "22082030",
+        "22082040",
+        "2208306020",
+        "2208306055",
+        "2208306065",
+        "22084020",
+        "22084040",
+        "22086010",
+        "22086020",
+        "2208700030",
+        "22089012",
+        "22089020",
+        "22089025",
+        "22089030",
+        "22089050",
+        "22089072"
+      ],
+      "effectiveFrom": "2026-09-29",
+      "description": "Certain alcoholic beverages that are products of Canada are excluded from importation into the United States (Proclamation 11061).",
+      "sources": [
+        {
+          "citation": "91 FR 58311 (Proclamation 11061: import ban on certain Canadian alcoholic beverages from September 29, 2026)",
+          "url": "https://www.federalregister.gov/documents/2026/09/14/2026-18835/excluding-certain-canadian-products-from-importation-into-the-united-states-in-response-to-continued",
+          "published": "2026-09-14"
+        }
+      ]
+    },
+    {
+      "id": "ca-338-11061-alcohol-packaged",
+      "countries": ["CA"],
+      "coveragePrefixes": [
+        "22030000",
+        "22041000",
+        "22042260",
+        "22042280",
+        "22042961",
+        "22042981",
+        "22060015",
+        "22060030",
+        "22060045",
+        "22060060",
+        "22060090",
+        "22071030",
+        "22082010",
+        "22082050",
+        "22082060",
+        "22083030",
+        "2208306040",
+        "2208306075",
+        "22084060",
+        "22084080",
+        "22085000",
+        "22086050",
+        "22089010",
+        "22089014",
+        "22089015",
+        "22089035",
+        "22089040",
+        "22089075"
+      ],
+      "effectiveFrom": "2026-09-29",
+      "conditions": {
+        "factsTrue": ["packagedDirectToConsumer"]
+      },
+      "description": "Certain alcoholic beverages that are products of Canada, packaged in bottles, cans, boxes, kegs or other similar direct-to-consumption containers, are excluded from importation into the United States (Proclamation 11061). Bulk goods under these provisions are not banned.",
+      "sources": [
+        {
+          "citation": "91 FR 58311 (Proclamation 11061: import ban on certain Canadian alcoholic beverages from September 29, 2026)",
+          "url": "https://www.federalregister.gov/documents/2026/09/14/2026-18835/excluding-certain-canadian-products-from-importation-into-the-united-states-in-response-to-continued",
+          "published": "2026-09-14"
+        }
+      ]
+    },
+    {
+      "id": "ca-338-11062-dairy",
+      "countries": ["CA"],
+      "coveragePrefixes": [
+        "04041005",
+        "04041008",
+        "04041011",
+        "04041015",
+        "04041020",
+        "04041048",
+        "04041050",
+        "04041090",
+        "17029035",
+        "17031030",
+        "17031050",
+        "17039030",
+        "17039050",
+        "22029100"
+      ],
+      "effectiveFrom": "2026-09-29",
+      "description": "Certain dairy-scope products of Canada are excluded from importation into the United States (Proclamation 11062).",
+      "sources": [
+        {
+          "citation": "91 FR 58319 (Proclamation 11062: import ban on certain Canadian dairy-scope products from September 29, 2026)",
+          "url": "https://www.federalregister.gov/documents/2026/09/14/2026-18836/excluding-certain-canadian-products-from-importation-into-the-united-states-in-response-to-continued",
+          "published": "2026-09-14"
+        }
+      ]
+    },
+    {
+      "id": "ca-338-11063-motorcycles",
+      "countries": ["CA"],
+      "coveragePrefixes": ["87115000"],
+      "effectiveFrom": "2026-09-29",
+      "description": "Motorcycles over 800 cc that are products of Canada are excluded from importation into the United States (Proclamation 11063).",
+      "sources": [
+        {
+          "citation": "91 FR 58325 (Proclamation 11063: import ban on Canadian motorcycles over 800 cc from September 29, 2026)",
+          "url": "https://www.federalregister.gov/documents/2026/09/14/2026-18837/excluding-certain-canadian-products-from-importation-into-the-united-states-in-response-to-continued",
+          "published": "2026-09-14"
+        }
+      ]
+    }
+  ]
+}

@@ -10,6 +10,8 @@ import React from 'react';
 // "Do any of these apply to your goods?" (issue #1790): facts about the shipment the HTS line
 // alone can't tell (end use, a named product, the manufacturer's company program, a U.S.-origin
 // active ingredient) that decide whether a conditional exemption or company rate applies.
+// Registry facts (kind "fact", issue #1796 — confirmation-facts.json) are yes / no / unanswered:
+// unanswered uses the fact's default, and a must-answer fact has none, so the calculation needs an answer.
 // Composed from leaves only.
 
 /** True when the confirmations answer this question "yes". */
@@ -23,7 +25,19 @@ export function isConfirmed(q: TariffConfirmationQuestion, c: TariffShipmentConf
       return (c.productDescriptionIds ?? []).includes(q.value);
     case 'usOriginIngredient':
       return c.usOriginIngredient === true;
+    case 'fact':
+      return c.facts?.[q.value] === true;
   }
+}
+
+/** Sets (true / false) or clears (undefined) the answer to a registry fact. */
+export function setFactAnswer(id: string, c: TariffShipmentConfirmations, answer: boolean | undefined): TariffShipmentConfirmations {
+  const facts = { ...(c.facts ?? {}) };
+  if (answer === undefined) delete facts[id];
+  else facts[id] = answer;
+  const next: TariffShipmentConfirmations = { ...c, facts };
+  if (Object.keys(facts).length === 0) delete next.facts;
+  return next;
 }
 
 /** Sets one answer. End use and company program hold one value each, so "yes" to one end use (or company program) replaces another. */
@@ -38,6 +52,8 @@ export function setConfirmed(q: TariffConfirmationQuestion, c: TariffShipmentCon
   } else if (q.kind === 'usOriginIngredient') {
     if (yes) next.usOriginIngredient = true;
     else delete next.usOriginIngredient;
+  } else if (q.kind === 'fact') {
+    return setFactAnswer(q.value, c, yes);
   } else {
     const ids = (next.productDescriptionIds ?? []).filter((id) => id !== q.value);
     if (yes) ids.push(q.value);
@@ -49,7 +65,18 @@ export function setConfirmed(q: TariffConfirmationQuestion, c: TariffShipmentCon
 
 /** Only the answers to questions currently asked (a changed country or date can drop a question). */
 export function confirmationsForQuestions(c: TariffShipmentConfirmations, questions: TariffConfirmationQuestion[]): TariffShipmentConfirmations {
-  return questions.reduce<TariffShipmentConfirmations>((acc, q) => (isConfirmed(q, c) ? setConfirmed(q, acc, true) : acc), {});
+  return questions.reduce<TariffShipmentConfirmations>((acc, q) => {
+    // Facts keep "no" answers too: a "no" can differ from the fact's default.
+    if (q.kind === 'fact') return c.facts?.[q.value] === undefined ? acc : setFactAnswer(q.value, acc, c.facts[q.value]);
+    return isConfirmed(q, c) ? setConfirmed(q, acc, true) : acc;
+  }, {});
+}
+
+/** "Not answered yet: …" line for a registry fact question; null for the other kinds. */
+function factAnswerHint(q: TariffConfirmationQuestion, c: TariffShipmentConfirmations): string | null {
+  if (q.kind !== 'fact' || c.facts?.[q.value] !== undefined) return null;
+  if (q.mustAnswer) return 'Answer required: the result depends on a yes or no here.';
+  return q.defaultAnswer === undefined ? null : `Not answered: the calculator assumes "${q.defaultAnswer ? 'yes' : 'no'}".`;
 }
 
 interface ConfirmationQuestionsProps {
@@ -72,15 +99,36 @@ export default function ConfirmationQuestions({ questions, confirmations, onChan
       </Stack>
       {questions.map((q) => {
         const yes = isConfirmed(q, confirmations);
+        // Registry facts are three-state: "No" is lit only for an explicit no; clicking the lit chip clears the answer.
+        const isFact = q.kind === 'fact';
+        const answer = isFact ? confirmations.facts?.[q.value] : yes;
+        const hint = factAnswerHint(q, confirmations);
         return (
           <Stack key={`${q.kind}-${q.value}`} gap="xs">
             <Text size="sm" weight="medium">
               {q.prompt}
             </Text>
             <Stack direction="row" gap="sm" wrap>
-              <ToggleChip label="Yes" active={yes} onToggle={() => onChange(setConfirmed(q, confirmations, true))} />
-              <ToggleChip label="No" active={!yes} onToggle={() => onChange(setConfirmed(q, confirmations, false))} />
+              <ToggleChip
+                label="Yes"
+                active={answer === true}
+                onToggle={() =>
+                  onChange(isFact ? setFactAnswer(q.value, confirmations, answer === true ? undefined : true) : setConfirmed(q, confirmations, true))
+                }
+              />
+              <ToggleChip
+                label="No"
+                active={answer === false || (!isFact && !yes)}
+                onToggle={() =>
+                  onChange(isFact ? setFactAnswer(q.value, confirmations, answer === false ? undefined : false) : setConfirmed(q, confirmations, false))
+                }
+              />
             </Stack>
+            {hint && (
+              <Text size="xs" tone="warning">
+                {hint}
+              </Text>
+            )}
             <Text size="xs">If yes: {q.effect}</Text>
             {q.caveat && (
               <Text size="xs" tone="muted">

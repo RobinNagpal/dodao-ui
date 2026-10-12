@@ -6,7 +6,7 @@ import type { TariffChapterExports } from '@/types/tariff-chapter-exports';
 import { getChapterExports, listChapterExportSlugs } from '@/utils/tariff-reports/chapter-exports';
 import { getChapterPrototype, listChapterPrototypeSlugs } from '@/utils/tariff-reports/chapter-prototype';
 import { countryCodeForName, parseRateVariants, quantityUnits, rateDollars } from '@/utils/tariff-reports/shipment-duty';
-import { calculateWithMeasures, normalizeUom } from '@/utils/tariff-calculator/measures-engine';
+import { calculateWithMeasures, CONTENT_VALUE_REQUIRED, FACT_ANSWER_REQUIRED, normalizeUom } from '@/utils/tariff-calculator/measures-engine';
 import { computeCalcReadiness, enabledChapterProblems } from '../tariff-calculator/lib/calc-readiness';
 import { parseArgs, parsePositiveInt } from '../tickers/lib';
 
@@ -467,6 +467,12 @@ function checkCalculator(report: Report, slug: string, p: TariffChapterPrototype
               try {
                 const result = calculateWithMeasures(input, line, measures.measures);
                 if (!result.error && Math.abs(result.totalDutyUsd - expected) <= 0.01) continue;
+                // A cell total can't say what content value or fact answer it assumed (issue #1796): not comparable.
+                if (result.error?.startsWith(CONTENT_VALUE_REQUIRED) || result.error?.startsWith(FACT_ANSWER_REQUIRED)) {
+                  stats.compared--;
+                  skip(stats, result.error.startsWith(CONTENT_VALUE_REQUIRED) ? 'needs a declared content value' : 'needs a confirmation-fact answer');
+                  continue;
+                }
                 actual = result.error ? `error: ${result.error}` : `$${result.totalDutyUsd.toFixed(2)}`;
               } catch (err) {
                 actual = `threw: ${(err as Error).message}`;

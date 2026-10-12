@@ -13,6 +13,8 @@ const noticeCallout = cva('rounded-lg px-3 py-2 text-sm', {
   variants: {
     tone: {
       warning: badgeTone({ tone: 'warning' }),
+      /** Blocking notices, e.g. "Import prohibited" on the tariff calculator. */
+      danger: badgeTone({ tone: 'danger' }),
       info: badgeTone({ tone: 'info' }),
       neutral: badgeTone({ tone: 'neutral' }),
     },
@@ -27,7 +29,7 @@ export type NoticeCalloutProps = VariantProps<typeof noticeCallout> & {
 
 export default function NoticeCallout({ tone, children, className }: NoticeCalloutProps): React.JSX.Element {
   return (
-    <div role={tone === 'warning' ? 'alert' : 'status'} className={cn(noticeCallout({ tone }), className)}>
+    <div role={tone === 'warning' || tone === 'danger' ? 'alert' : 'status'} className={cn(noticeCallout({ tone }), className)}>
       {children}
     </div>
   );

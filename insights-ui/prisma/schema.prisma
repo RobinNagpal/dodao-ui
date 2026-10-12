@@ -2838,32 +2838,38 @@ model TariffChapter99Heading {
 // One reviewed extra-duty measure the calculator applies: which Chapter 99 heading, to which
 // countries and HTS lines, how (rate kind), under which conditions, from when, per which sources.
 model TariffMeasure {
-  id               String    @id @default(uuid())
+  id                       String    @id @default(uuid())
   // Stable slug, e.g. "s301-2026-brazil-12-5".
-  measureKey       String    @map("measure_key")
-  program          String    @map("program")
-  ch99Code         String    @map("ch99_code")
+  measureKey               String    @map("measure_key")
+  program                  String    @map("program")
+  ch99Code                 String    @map("ch99_code")
   // additive (base + X%) | inPlaceOfBase (X% instead of the base rate) | floor (max(base, X%)) | relief (no extra duty; cancels `replacesCodes`)
-  rateKind         String    @map("rate_kind")
-  ratePct          Decimal?  @map("rate_pct") @db.Decimal(7, 3)
+  rateKind                 String    @map("rate_kind")
+  ratePct                  Decimal?  @map("rate_pct") @db.Decimal(7, 3)
   // ISO2 codes; empty include = every country.
-  countriesInclude String[]  @default([]) @map("countries_include")
-  countriesExclude String[]  @default([]) @map("countries_exclude")
+  countriesInclude         String[]  @default([]) @map("countries_include")
+  countriesExclude         String[]  @default([]) @map("countries_exclude")
   // HTS digit prefixes ("3005", "30061001"); empty include = every line.
-  coverageInclude  String[]  @default([]) @map("coverage_include")
-  coverageExclude  String[]  @default([]) @map("coverage_exclude")
+  coverageInclude          String[]  @default([]) @map("coverage_include")
+  coverageExclude          String[]  @default([]) @map("coverage_exclude")
   // TariffMeasureConditions (src/types/tariff-calculator-measures.ts).
-  conditions       Json      @default("{}") @map("conditions")
+  conditions               Json      @default("{}") @map("conditions")
   // Chapter 99 codes this measure displaces when it applies (e.g. a relief heading replacing a duty).
-  replacesCodes    String[]  @default([]) @map("replaces_codes")
-  effectiveFrom    DateTime  @map("effective_from") @db.Date
-  effectiveTo      DateTime? @map("effective_to") @db.Date
+  replacesCodes            String[]  @default([]) @map("replaces_codes")
+  effectiveFrom            DateTime  @map("effective_from") @db.Date
+  effectiveTo              DateTime? @map("effective_to") @db.Date
   // TariffMeasureSource[]: official documents behind the measure.
-  sources          Json      @default("[]") @map("sources")
-  htsEdition       String    @map("hts_edition")
+  sources                  Json      @default("[]") @map("sources")
+  htsEdition               String    @map("hts_edition")
   // Date the measure was last checked against its official sources (measures.json `reviewedAt`).
-  reviewedAt       DateTime  @map("reviewed_at") @db.Date
-  notes            String?   @map("notes") @db.Text
+  reviewedAt               DateTime  @map("reviewed_at") @db.Date
+  notes                    String?   @map("notes") @db.Text
+  // TariffContentBasis (issue #1796): steel | aluminum | copper | nonUsContent — the ad valorem rate is charged on
+  // that content value instead of the full customs value. Null = the full customs value.
+  contentBasis             String?   @map("content_basis")
+  // With contentBasis nonUsContent: the U.S.-content deduction is capped at this % of the customs value (e.g. 40 for
+  // note 16(j) / 9903.82.20). Null = no cap.
+  usContentDeductionCapPct Decimal?  @map("us_content_deduction_cap_pct") @db.Decimal(5, 2)
 
   spaceId   String   @default("koala_gains") @map("space_id")
   createdAt DateTime @default(now()) @map("created_at")

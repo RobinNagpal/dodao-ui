@@ -2,8 +2,10 @@
 
 import type { HtsSearchResponse } from '@/app/api/tariff-calculator/hts-search/route';
 import type { CalculatorRequirementsResponse } from '@/app/api/tariff-calculator/requirements/[hts10]/route';
-import ConfirmationQuestions, { confirmationsForQuestions, setConfirmed } from '@/components/tariff-calculator/ConfirmationQuestions';
+import ConfirmationQuestions, { confirmationsForQuestions, setConfirmed, setFactAnswer } from '@/components/tariff-calculator/ConfirmationQuestions';
+import ContentValueFields, { CONTENT_DEEP_LINK_PARAMS, ContentValueDrafts, contentValuesForInputs } from '@/components/tariff-calculator/ContentValueFields';
 import HtsCodeSearch from '@/components/tariff-calculator/HtsCodeSearch';
+import ImportProhibitedNotice from '@/components/tariff-calculator/ImportProhibitedNotice';
 import {
   dealsForCountry,
   MeasureSources,
@@ -24,6 +26,7 @@ import {
   TransportMode,
 } from '@/utils/tariff-calculator/duty-engine';
 import { isKnownCountryCode, OTHER_COUNTRY_OPTIONS, PINNED_COUNTRY_OPTIONS } from '@/utils/tariff-calculator/countries';
+import type { TariffContentInput, TariffContentInputKind } from '@/utils/tariff-calculator/measures-engine';
 import { TariffCandidateCodeType } from '@prisma/client';
 import { ArrowPathIcon, CheckCircleIcon } from '@heroicons/react/24/outline';
 import { useSearchParams } from 'next/navigation';
@@ -43,6 +46,8 @@ interface FormState {
   productType: TariffProductType | '';
   // Official-measures engine only: facts the importer confirmed (end use, named product, company program).
   confirmations: TariffShipmentConfirmations;
+  // Official-measures engine only: declared content values (metal content, U.S.-content value) as typed (issue #1796).
+  contentValues: ContentValueDrafts;
 }
 
 interface SelectedCode {
@@ -65,6 +70,7 @@ const INITIAL_FORM: FormState = {
   claimedSpi: '',
   productType: '',
   confirmations: {},
+  contentValues: {},
 };
 
 // Extra-duty data older than this gets a visible "may be missing recent tariffs" warning.
@@ -83,13 +89,17 @@ interface DeepLinkParams {
   // ?use=<pharmaceutical|research>, ?company=<program>, ?product=<id,id>, ?usapi=1.
   use: string | null;
   usOriginIngredient: boolean;
+  // Registry fact answers (issue #1796): ?facts=<id>:1,<id>:0.
+  facts: Record<string, boolean>;
   company: string | null;
   products: string[];
+  // Content values in USD (?steel=&aluminum=&copper=&uscontent=), kept only when the line asks for them.
+  contentValues: ContentValueDrafts;
 }
 
 // Reads ?hts=<10 digits>&country=<ISO2>&value=&qty=&claim=<SPI>&type=<patented|generic|specialty>
 // &use=<pharmaceutical|research>&company=<onshoring|mfnPricing|annexCompany>&product=<id,id>&usapi=1
-// (e.g. links from the chapter reports). Returns null when there's no usable HTS code.
+// &facts=<id>:1,<id>:0&steel=&aluminum=&copper=&uscontent=<USD> (e.g. links from the chapter reports). Returns null when there's no usable HTS code.
 function parseDeepLink(params: URLSearchParams | null): DeepLinkParams | null {
   if (!params) return null;
   const hts10 = (params.get('hts') ?? '').replace(/[^\d]/g, '');
@@ -99,6 +109,12 @@ function parseDeepLink(params: URLSearchParams | null): DeepLinkParams | null {
   const qtyRaw = Number(params.get('qty'));
   const claimRaw = (params.get('claim') ?? '').trim().toUpperCase();
   const typeRaw = (params.get('type') ?? '').trim().toLowerCase();
+  const contentValues: ContentValueDrafts = {};
+  for (const kind of Object.keys(CONTENT_DEEP_LINK_PARAMS) as TariffContentInputKind[]) {
+    const raw = params.get(CONTENT_DEEP_LINK_PARAMS[kind]);
+    const n = Number(raw);
+    if (raw && raw.trim() !== '' && Number.isFinite(n) && n >= 0) contentValues[kind] = String(n);
+  }
   return {
     hts10,
     country: isKnownCountryCode(countryRaw) ? countryRaw : null,
@@ -109,11 +125,23 @@ function parseDeepLink(params: URLSearchParams | null): DeepLinkParams | null {
     use: params.get('use')?.trim() || null,
     company: params.get('company')?.trim() || null,
     usOriginIngredient: params.get('usapi') === '1',
+    facts: parseFactsParam(params.get('facts')),
     products: (params.get('product') ?? '')
       .split(',')
       .map((p) => p.trim())
       .filter(Boolean),
+    contentValues,
   };
+}
+
+// ?facts=noMetalContent:1,ukMelted:0 → { noMetalContent: true, ukMelted: false }; malformed pairs are dropped.
+function parseFactsParam(raw: string | null): Record<string, boolean> {
+  const out: Record<string, boolean> = {};
+  for (const pair of (raw ?? '').split(',')) {
+    const m = /^([A-Za-z][\w.-]{0,79}):([01])$/.exec(pair.trim());
+    if (m) out[m[1]] = m[2] === '1';
+  }
+  return out;
 }
 
 // The HTS line's own description, via the same search API the picker uses.
@@ -169,8 +197,20 @@ function deepLinkConfirmations(link: DeepLinkParams, questions: TariffConfirmati
       (q.kind === 'companyProgram' && q.value === link.company) ||
       (q.kind === 'productDescription' && link.products.includes(q.value)) ||
       (q.kind === 'usOriginIngredient' && link.usOriginIngredient);
+    if (q.kind === 'fact') return link.facts[q.value] === undefined ? acc : setFactAnswer(q.value, acc, link.facts[q.value]);
     return yes ? setConfirmed(q, acc, true) : acc;
   }, {});
+}
+
+// Deep-link content values for the inputs the line actually asks for.
+function deepLinkContentValues(link: DeepLinkParams, inputs: TariffContentInput[]): ContentValueDrafts {
+  return inputs.reduce<ContentValueDrafts>((acc, i) => (link.contentValues[i.kind] !== undefined ? { ...acc, [i.kind]: link.contentValues[i.kind] } : acc), {});
+}
+
+// A deep link calculates on its own only when every metal content asked for is filled in. The U.S.-content value matters
+// only for some claims (e.g. USMCA), so it doesn't block; the engine names it if a measure needs it.
+function hasRequiredContentValues(inputs: TariffContentInput[], values: ContentValueDrafts): boolean {
+  return inputs.every((i) => i.kind === 'usContent' || (values[i.kind] ?? '').trim() !== '');
 }
 
 // Units to ask a quantity for. Official-measures engine: the units of the rate actually
@@ -205,6 +245,8 @@ export default function CalculatorClient(): JSX.Element {
   const requestSeqRef = useRef(0);
   // Questions currently asked, so a calculation only sends answers to them (a changed country or date can drop one).
   const questionsRef = useRef<TariffConfirmationQuestion[] | null>(null);
+  // Content values currently asked, so a calculation only sends those.
+  const contentInputsRef = useRef<TariffContentInput[] | null>(null);
 
   const updateForm = useCallback(<K extends keyof FormState>(key: K, value: FormState[K]) => {
     setForm((prev) => ({ ...prev, [key]: value }));
@@ -235,6 +277,7 @@ export default function CalculatorClient(): JSX.Element {
         claimedSpi: currentForm.claimedSpi || undefined,
         productType: currentForm.productType || undefined,
         confirmations: questionsRef.current ? confirmationsForQuestions(currentForm.confirmations, questionsRef.current) : currentForm.confirmations,
+        contentValuesUsd: contentValuesForInputs(currentForm.contentValues, contentInputsRef.current ?? []),
       };
       const res = await fetch('/api/tariff-calculator/calculate', {
         method: 'POST',
@@ -267,7 +310,7 @@ export default function CalculatorClient(): JSX.Element {
     setError(null);
     setChosenExclusions(new Set());
     setRequirements(null);
-    setForm((prev) => ({ ...prev, quantities: {}, claimedSpi: '', productType: '', confirmations: {} }));
+    setForm((prev) => ({ ...prev, quantities: {}, claimedSpi: '', productType: '', confirmations: {}, contentValues: {} }));
   }
 
   function handleManualSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -335,6 +378,7 @@ export default function CalculatorClient(): JSX.Element {
   }, [selectedHts10, questionCountry, questionDate]);
   const confirmationQuestions = requirements?.officialMeasures?.confirmationQuestions ?? null;
   questionsRef.current = confirmationQuestions;
+  contentInputsRef.current = requirements?.officialMeasures?.contentInputs ?? null;
 
   // Deep links: ?hts=&country=&value=&qty= pre-fill the form and calculate
   // once the requirements for the code are known.
@@ -366,10 +410,12 @@ export default function CalculatorClient(): JSX.Element {
     const claimedSpi = deals.find((d) => link.claim !== null && d.codes.includes(link.claim))?.codes[0] ?? '';
     const productType = link.productType && requirements.officialMeasures?.productTypes.length ? link.productType : '';
     const confirmations = deepLinkConfirmations(link, requirements.officialMeasures?.confirmationQuestions ?? []);
-    const nextForm: FormState = { ...form, quantities, claimedSpi, productType, confirmations };
+    const contentInputs = requirements.officialMeasures?.contentInputs ?? [];
+    const contentValues = deepLinkContentValues(link, contentInputs);
+    const nextForm: FormState = { ...form, quantities, claimedSpi, productType, confirmations, contentValues };
     setForm(nextForm);
     const hasQuantities = quantityUnitsFor(requirements, nextForm).every((u) => quantities[u.uom] !== undefined);
-    if (link.country && link.value && hasQuantities) {
+    if (link.country && link.value && hasQuantities && hasRequiredContentValues(contentInputs, contentValues)) {
       submitCalculation(nextForm, selected, chosenExclusions);
     }
   }, [requirements, selected, form, chosenExclusions, submitCalculation]);
@@ -382,6 +428,8 @@ export default function CalculatorClient(): JSX.Element {
   );
   const hideQuantityInputs = (requirements !== null || result !== null) && quantityUnits.length === 0;
   const freshness = result?.dataFreshness ?? requirements?.dataFreshness ?? null;
+  // Import ban: the last calculation's (it reflects the answers given), else what the requirements call found for the country and date.
+  const prohibition = result ? result.prohibited ?? null : requirements?.importProhibition ?? null;
 
   if (!selected) {
     return (
@@ -419,12 +467,18 @@ export default function CalculatorClient(): JSX.Element {
                   confirmations={form.confirmations}
                   onChange={(next) => updateForm('confirmations', next)}
                 />
+                <ContentValueFields
+                  inputs={requirements.officialMeasures.contentInputs ?? []}
+                  values={form.contentValues}
+                  onChange={(next) => updateForm('contentValues', next)}
+                />
               </>
             ) : null
           }
         />
 
         <div className="space-y-6">
+          {prohibition && <ImportProhibitedNotice prohibition={prohibition} />}
           {freshness && <DataFreshnessNotice freshness={freshness} />}
           {result ? <ResultPanel result={result} submitting={submitting} onToggleExclusion={toggleExclusion} /> : <EmptyResultState />}
         </div>

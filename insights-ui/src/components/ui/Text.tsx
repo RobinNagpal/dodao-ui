@@ -20,6 +20,8 @@ const text = cva('', {
       primary: 'text-primary',
       /** Amber, for values a reader should spot (e.g. a high tariff rate). */
       warning: 'text-tariff-accent',
+      /** Keeps the parent's color (e.g. text inside a toned NoticeCallout). */
+      inherit: '',
     },
     /** `mono` for codes (HTS numbers, program codes). */
     font: { sans: '', mono: 'font-mono' },

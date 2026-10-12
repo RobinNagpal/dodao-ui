@@ -5,6 +5,7 @@ import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import noteProductDescriptionsJson from '@/tariff-data/calculator/note-product-descriptions.json';
 import type {
   MeasureEngineLine,
+  TariffContentBasis,
   TariffMeasureConditions,
   TariffMeasureRateKind,
   TariffMeasureRecord,
@@ -72,6 +73,7 @@ export async function loadMeasureEngineLine(hts10: string): Promise<MeasureEngin
 }
 
 const RATE_KINDS: TariffMeasureRateKind[] = ['additive', 'inPlaceOfBase', 'floor', 'relief'];
+const CONTENT_BASES: TariffContentBasis[] = ['steel', 'aluminum', 'copper', 'nonUsContent'];
 
 export interface LoadedMeasures {
   measures: TariffMeasureRecord[];
@@ -94,6 +96,11 @@ export async function loadMeasures(): Promise<LoadedMeasures> {
       console.warn(`[tariff-calculator] measure ${r.measureKey} has unknown rateKind "${r.rateKind}" — skipped`);
       continue;
     }
+    if (r.contentBasis !== null && !CONTENT_BASES.includes(r.contentBasis as TariffContentBasis)) {
+      // Charging the full value (or nothing) on a guess would misprice the line, so the measure is dropped and logged.
+      console.warn(`[tariff-calculator] measure ${r.measureKey} has unknown contentBasis "${r.contentBasis}" — skipped`);
+      continue;
+    }
     measures.push({
       measureKey: r.measureKey,
       program: r.program,
@@ -112,6 +119,8 @@ export async function loadMeasures(): Promise<LoadedMeasures> {
       htsEdition: r.htsEdition,
       notes: r.notes ?? undefined,
       reviewedAt: r.reviewedAt.toISOString().slice(0, 10),
+      ...(r.contentBasis !== null ? { contentBasis: r.contentBasis as TariffContentBasis } : {}),
+      ...(r.usContentDeductionCapPct !== null ? { usContentDeductionCapPct: Number(r.usContentDeductionCapPct) } : {}),
     });
   }
   const htsEdition = Array.from(editions).sort((a, b) => b[1] - a[1])[0]?.[0] ?? null;

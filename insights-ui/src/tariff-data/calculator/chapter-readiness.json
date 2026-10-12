@@ -1,31 +1,49 @@
 {
-  "asOf": "2026-10-10",
+  "asOf": "2026-10-12",
   "htsEdition": "2026 Revision 21",
   "measuresReviewedAt": "2026-10-09",
-  "ready": ["01", "02", "03", "07", "08", "09", "10", "11", "16", "18", "20", "21", "23", "24", "30", "31"],
-  "notReady": [
+  "ready": [
+    "01",
+    "02",
+    "03",
     "04",
     "05",
     "06",
+    "07",
+    "08",
+    "09",
+    "10",
+    "11",
     "12",
     "13",
     "14",
     "15",
+    "16",
     "17",
+    "18",
     "19",
+    "20",
+    "21",
     "22",
+    "23",
+    "24",
     "25",
     "26",
     "27",
     "28",
     "29",
+    "30",
+    "31",
     "32",
     "33",
     "34",
     "35",
     "36",
-    "37",
     "38",
+    "72"
+  ],
+  "notReady": [
+    "37",
     "39",
     "40",
     "41",
@@ -59,7 +77,6 @@
     "69",
     "70",
     "71",
-    "72",
     "73",
     "74",
     "75",
@@ -248,67 +265,7 @@
       "headings": {
         "inEffect": ["9903.03.12", "9903.03.13", "9903.03.14"]
       },
-      "blocksChapters": [
-        "04",
-        "05",
-        "06",
-        "12",
-        "13",
-        "14",
-        "15",
-        "17",
-        "19",
-        "22",
-        "29",
-        "32",
-        "33",
-        "34",
-        "35",
-        "38",
-        "39",
-        "40",
-        "41",
-        "42",
-        "43",
-        "44",
-        "46",
-        "47",
-        "48",
-        "49",
-        "50",
-        "51",
-        "52",
-        "54",
-        "55",
-        "56",
-        "57",
-        "58",
-        "59",
-        "60",
-        "61",
-        "62",
-        "63",
-        "64",
-        "65",
-        "67",
-        "68",
-        "70",
-        "71",
-        "72",
-        "73",
-        "76",
-        "81",
-        "82",
-        "83",
-        "84",
-        "85",
-        "87",
-        "89",
-        "90",
-        "94",
-        "95",
-        "97"
-      ],
+      "blocksChapters": [],
       "upcomingInChapters": []
     },
     {
@@ -458,7 +415,7 @@
       "headings": {
         "inEffect": ["9903.08.21", "9903.08.22", "9903.08.23", "9903.08.24"]
       },
-      "blocksChapters": ["85", "88"],
+      "blocksChapters": [],
       "upcomingInChapters": []
     },
     {
@@ -562,14 +519,14 @@
     {
       "id": "japan-1980s",
       "name": "Duties on products of Japan (9903.41)",
-      "status": "unknown",
-      "basis": "U.S. note 5 suspends 9903.41.25 and 9903.41.35–.45 and the PDF shades 9903.41.15–.45 as expired, but 9903.41.05 and 9903.41.10 (leather, footwear) are neither shaded nor suspended and no end date was found.",
+      "status": "inEffect",
+      "basis": "9903.41.05 / 9903.41.10 (leather, footwear; +40%, Proclamation 5448 of March 16, 1986) are neither shaded as expired nor suspended by U.S. note 5 (which covers only 9903.41.25 and .35–.45), and note 3 makes them cumulative; no terminating notice found (online Federal Register starts 1994). Modelled in measures_country_actions.py — confirm with CBP before relying on it.",
       "sources": ["https://hts.usitc.gov/reststop/file?release=2026HTSRev21&filename=Chapter%2099"],
       "headings": {
-        "unknown": ["9903.41.05", "9903.41.10"],
+        "inEffect": ["9903.41.05", "9903.41.10"],
         "ended": ["9903.41.15", "9903.41.20", "9903.41.25", "9903.41.30", "9903.41.35", "9903.41.40", "9903.41.45"]
       },
-      "blocksChapters": ["41", "64"],
+      "blocksChapters": [],
       "upcomingInChapters": []
     },
     {
@@ -593,7 +550,7 @@
       "headings": {
         "inEffect": ["9903.45.30", "9903.45.31"]
       },
-      "blocksChapters": ["68", "70"],
+      "blocksChapters": [],
       "upcomingInChapters": []
     },
     {
@@ -703,7 +660,6 @@
         "69",
         "70",
         "71",
-        "73",
         "74",
         "75",
         "78",
@@ -738,7 +694,7 @@
       "headings": {
         "inEffect": ["9903.76.01", "9903.76.02", "9903.76.03", "9903.76.20", "9903.76.21", "9903.76.22", "9903.76.23", "9903.76.24"]
       },
-      "blocksChapters": ["44", "94"],
+      "blocksChapters": [],
       "upcomingInChapters": []
     },
     {
@@ -750,7 +706,7 @@
       "headings": {
         "inEffect": ["9903.79.01"]
       },
-      "blocksChapters": ["84"],
+      "blocksChapters": [],
       "upcomingInChapters": []
     },
     {
@@ -781,7 +737,7 @@
           "9903.85.68"
         ]
       },
-      "blocksChapters": ["37", "72", "73", "74", "76", "82", "83", "84", "85", "86", "87", "90", "94"],
+      "blocksChapters": ["37", "73", "76", "82", "83", "84", "85", "86", "87", "94"],
       "upcomingInChapters": []
     },
     {
@@ -851,58 +807,7 @@
       "headings": {
         "inEffect": ["9903.90.08", "9903.90.09"]
       },
-      "blocksChapters": [
-        "25",
-        "26",
-        "27",
-        "28",
-        "29",
-        "32",
-        "34",
-        "35",
-        "36",
-        "37",
-        "38",
-        "39",
-        "40",
-        "42",
-        "43",
-        "44",
-        "48",
-        "49",
-        "52",
-        "59",
-        "62",
-        "63",
-        "64",
-        "65",
-        "67",
-        "68",
-        "69",
-        "70",
-        "71",
-        "72",
-        "73",
-        "74",
-        "75",
-        "76",
-        "78",
-        "81",
-        "82",
-        "83",
-        "84",
-        "85",
-        "86",
-        "87",
-        "88",
-        "89",
-        "90",
-        "93",
-        "94",
-        "95",
-        "96",
-        "97"
-      ],
+      "blocksChapters": [],
       "upcomingInChapters": []
     },
     {
@@ -993,7 +898,6 @@
         "69",
         "70",
         "71",
-        "73",
         "74",
         "75",
         "78",
@@ -1071,18 +975,8 @@
     {
       "chapter": "04",
       "lines": 272,
-      "status": "NOT READY",
-      "gaps": [
-        {
-          "programId": "s338-canada",
-          "program": "Section 338 duties on Canada (U.S. note 51)",
-          "state": "inEffect",
-          "headings": ["9903.03.12", "9903.03.13", "9903.03.14"],
-          "linesAffected": 60,
-          "linesNotModelled": 60,
-          "modelled": "no"
-        }
-      ],
+      "status": "READY",
+      "gaps": [],
       "upcoming": [],
       "accepted": [],
       "modelled": [
@@ -1090,57 +984,40 @@
         "Section 301 (2026, 60 economies): 272 line(s)",
         "Section 301 (Brazil): 272 line(s)",
         "Section 301 (China, 2018-2019 lists): 272 line(s)",
-        "Section 301 (Nicaragua): 272 line(s)"
+        "Section 301 (Nicaragua): 272 line(s)",
+        "Section 338 duties on Canada (U.S. note 51): 60 line(s)"
       ],
       "acceptedConditions": ["s232-alu-russia-smelted-other-origin"]
     },
     {
       "chapter": "05",
       "lines": 38,
-      "status": "NOT READY",
-      "gaps": [
-        {
-          "programId": "s338-canada",
-          "program": "Section 338 duties on Canada (U.S. note 51)",
-          "state": "inEffect",
-          "headings": ["9903.03.13", "9903.03.14"],
-          "linesAffected": 20,
-          "linesNotModelled": 20,
-          "modelled": "no"
-        }
-      ],
+      "status": "READY",
+      "gaps": [],
       "upcoming": [],
       "accepted": [],
       "modelled": [
         "Section 301 (2026, 60 economies): 38 line(s)",
         "Section 301 (Brazil): 38 line(s)",
         "Section 301 (China, 2018-2019 lists): 37 line(s)",
-        "Section 301 (Nicaragua): 38 line(s)"
+        "Section 301 (Nicaragua): 38 line(s)",
+        "Section 338 duties on Canada (U.S. note 51): 20 line(s)"
       ],
       "acceptedConditions": []
     },
     {
       "chapter": "06",
       "lines": 78,
-      "status": "NOT READY",
-      "gaps": [
-        {
-          "programId": "s338-canada",
-          "program": "Section 338 duties on Canada (U.S. note 51)",
-          "state": "inEffect",
-          "headings": ["9903.03.14"],
-          "linesAffected": 48,
-          "linesNotModelled": 48,
-          "modelled": "no"
-        }
-      ],
+      "status": "READY",
+      "gaps": [],
       "upcoming": [],
       "accepted": [],
       "modelled": [
         "Section 301 (2026, 60 economies): 78 line(s)",
         "Section 301 (Brazil): 78 line(s)",
         "Section 301 (China, 2018-2019 lists): 77 line(s)",
-        "Section 301 (Nicaragua): 78 line(s)"
+        "Section 301 (Nicaragua): 78 line(s)",
+        "Section 338 duties on Canada (U.S. note 51): 48 line(s)"
       ],
       "acceptedConditions": []
     },
@@ -1222,100 +1099,64 @@
     {
       "chapter": "12",
       "lines": 167,
-      "status": "NOT READY",
-      "gaps": [
-        {
-          "programId": "s338-canada",
-          "program": "Section 338 duties on Canada (U.S. note 51)",
-          "state": "inEffect",
-          "headings": ["9903.03.13", "9903.03.14"],
-          "linesAffected": 42,
-          "linesNotModelled": 42,
-          "modelled": "no"
-        }
-      ],
+      "status": "READY",
+      "gaps": [],
       "upcoming": [],
       "accepted": [],
       "modelled": [
         "Section 301 (2026, 60 economies): 167 line(s)",
         "Section 301 (Brazil): 167 line(s)",
         "Section 301 (China, 2018-2019 lists): 166 line(s)",
-        "Section 301 (Nicaragua): 167 line(s)"
+        "Section 301 (Nicaragua): 167 line(s)",
+        "Section 338 duties on Canada (U.S. note 51): 42 line(s)"
       ],
       "acceptedConditions": []
     },
     {
       "chapter": "13",
       "lines": 24,
-      "status": "NOT READY",
-      "gaps": [
-        {
-          "programId": "s338-canada",
-          "program": "Section 338 duties on Canada (U.S. note 51)",
-          "state": "inEffect",
-          "headings": ["9903.03.13", "9903.03.14"],
-          "linesAffected": 20,
-          "linesNotModelled": 20,
-          "modelled": "no"
-        }
-      ],
+      "status": "READY",
+      "gaps": [],
       "upcoming": [],
       "accepted": [],
       "modelled": [
         "Section 301 (2026, 60 economies): 24 line(s)",
         "Section 301 (Brazil): 24 line(s)",
         "Section 301 (China, 2018-2019 lists): 24 line(s)",
-        "Section 301 (Nicaragua): 24 line(s)"
+        "Section 301 (Nicaragua): 24 line(s)",
+        "Section 338 duties on Canada (U.S. note 51): 20 line(s)"
       ],
       "acceptedConditions": []
     },
     {
       "chapter": "14",
       "lines": 14,
-      "status": "NOT READY",
-      "gaps": [
-        {
-          "programId": "s338-canada",
-          "program": "Section 338 duties on Canada (U.S. note 51)",
-          "state": "inEffect",
-          "headings": ["9903.03.14"],
-          "linesAffected": 8,
-          "linesNotModelled": 8,
-          "modelled": "no"
-        }
-      ],
+      "status": "READY",
+      "gaps": [],
       "upcoming": [],
       "accepted": [],
       "modelled": [
         "Section 301 (2026, 60 economies): 14 line(s)",
         "Section 301 (Brazil): 14 line(s)",
         "Section 301 (China, 2018-2019 lists): 13 line(s)",
-        "Section 301 (Nicaragua): 14 line(s)"
+        "Section 301 (Nicaragua): 14 line(s)",
+        "Section 338 duties on Canada (U.S. note 51): 8 line(s)"
       ],
       "acceptedConditions": []
     },
     {
       "chapter": "15",
       "lines": 114,
-      "status": "NOT READY",
-      "gaps": [
-        {
-          "programId": "s338-canada",
-          "program": "Section 338 duties on Canada (U.S. note 51)",
-          "state": "inEffect",
-          "headings": ["9903.03.12"],
-          "linesAffected": 1,
-          "linesNotModelled": 1,
-          "modelled": "no"
-        }
-      ],
+      "status": "READY",
+      "gaps": [],
       "upcoming": [],
       "accepted": [],
       "modelled": [
         "Section 301 (2026, 60 economies): 114 line(s)",
         "Section 301 (Brazil): 114 line(s)",
         "Section 301 (China, 2018-2019 lists): 113 line(s)",
-        "Section 301 (Nicaragua): 114 line(s)"
+        "Section 301 (Nicaragua): 114 line(s)",
+        "Section 338 duties on Canada (U.S. note 51): 1 line(s)"
       ],
       "acceptedConditions": []
     },
@@ -1337,25 +1178,16 @@
     {
       "chapter": "17",
       "lines": 92,
-      "status": "NOT READY",
-      "gaps": [
-        {
-          "programId": "s338-canada",
-          "program": "Section 338 duties on Canada (U.S. note 51)",
-          "state": "inEffect",
-          "headings": ["9903.03.13"],
-          "linesAffected": 12,
-          "linesNotModelled": 12,
-          "modelled": "no"
-        }
-      ],
+      "status": "READY",
+      "gaps": [],
       "upcoming": [],
       "accepted": [],
       "modelled": [
         "Section 301 (2026, 60 economies): 92 line(s)",
         "Section 301 (Brazil): 92 line(s)",
         "Section 301 (China, 2018-2019 lists): 92 line(s)",
-        "Section 301 (Nicaragua): 92 line(s)"
+        "Section 301 (Nicaragua): 92 line(s)",
+        "Section 338 duties on Canada (U.S. note 51): 12 line(s)"
       ],
       "acceptedConditions": []
     },
@@ -1377,25 +1209,16 @@
     {
       "chapter": "19",
       "lines": 111,
-      "status": "NOT READY",
-      "gaps": [
-        {
-          "programId": "s338-canada",
-          "program": "Section 338 duties on Canada (U.S. note 51)",
-          "state": "inEffect",
-          "headings": ["9903.03.13", "9903.03.14"],
-          "linesAffected": 4,
-          "linesNotModelled": 4,
-          "modelled": "no"
-        }
-      ],
+      "status": "READY",
+      "gaps": [],
       "upcoming": [],
       "accepted": [],
       "modelled": [
         "Section 301 (2026, 60 economies): 111 line(s)",
         "Section 301 (Brazil): 111 line(s)",
         "Section 301 (China, 2018-2019 lists): 111 line(s)",
-        "Section 301 (Nicaragua): 111 line(s)"
+        "Section 301 (Nicaragua): 111 line(s)",
+        "Section 338 duties on Canada (U.S. note 51): 4 line(s)"
       ],
       "acceptedConditions": []
     },
@@ -1432,18 +1255,8 @@
     {
       "chapter": "22",
       "lines": 121,
-      "status": "NOT READY",
-      "gaps": [
-        {
-          "programId": "s338-canada",
-          "program": "Section 338 duties on Canada (U.S. note 51)",
-          "state": "inEffect",
-          "headings": ["9903.03.12", "9903.03.13", "9903.03.14"],
-          "linesAffected": 84,
-          "linesNotModelled": 84,
-          "modelled": "no"
-        }
-      ],
+      "status": "READY",
+      "gaps": [],
       "upcoming": [],
       "accepted": [],
       "modelled": [
@@ -1451,7 +1264,8 @@
         "Section 301 (2026, 60 economies): 121 line(s)",
         "Section 301 (Brazil): 121 line(s)",
         "Section 301 (China, 2018-2019 lists): 119 line(s)",
-        "Section 301 (Nicaragua): 121 line(s)"
+        "Section 301 (Nicaragua): 121 line(s)",
+        "Section 338 duties on Canada (U.S. note 51): 84 line(s)"
       ],
       "acceptedConditions": ["s232-alu-russia-smelted-other-origin"]
     },
@@ -1488,21 +1302,12 @@
     {
       "chapter": "25",
       "lines": 101,
-      "status": "NOT READY",
-      "gaps": [
-        {
-          "programId": "russia-col2",
-          "program": "Russia: 35% in lieu of Column 2 (U.S. note 30)",
-          "state": "inEffect",
-          "headings": ["9903.90.08"],
-          "linesAffected": 7,
-          "linesNotModelled": 7,
-          "modelled": "no"
-        }
-      ],
+      "status": "READY",
+      "gaps": [],
       "upcoming": [],
       "accepted": [],
       "modelled": [
+        "Russia: 35% in lieu of Column 2 (U.S. note 30): 7 line(s)",
         "Section 301 (2026, 60 economies): 101 line(s)",
         "Section 301 (Brazil): 101 line(s)",
         "Section 301 (China, 2018-2019 lists): 84 line(s)",
@@ -1514,21 +1319,12 @@
     {
       "chapter": "26",
       "lines": 102,
-      "status": "NOT READY",
-      "gaps": [
-        {
-          "programId": "russia-col2",
-          "program": "Russia: 35% in lieu of Column 2 (U.S. note 30)",
-          "state": "inEffect",
-          "headings": ["9903.90.08"],
-          "linesAffected": 4,
-          "linesNotModelled": 4,
-          "modelled": "no"
-        }
-      ],
+      "status": "READY",
+      "gaps": [],
       "upcoming": [],
       "accepted": [],
       "modelled": [
+        "Russia: 35% in lieu of Column 2 (U.S. note 30): 4 line(s)",
         "Section 301 (2026, 60 economies): 102 line(s)",
         "Section 301 (Brazil): 102 line(s)",
         "Section 301 (China, 2018-2019 lists): 74 line(s)",
@@ -1540,21 +1336,12 @@
     {
       "chapter": "27",
       "lines": 141,
-      "status": "NOT READY",
-      "gaps": [
-        {
-          "programId": "russia-col2",
-          "program": "Russia: 35% in lieu of Column 2 (U.S. note 30)",
-          "state": "inEffect",
-          "headings": ["9903.90.08"],
-          "linesAffected": 1,
-          "linesNotModelled": 1,
-          "modelled": "no"
-        }
-      ],
+      "status": "READY",
+      "gaps": [],
       "upcoming": [],
       "accepted": [],
       "modelled": [
+        "Russia: 35% in lieu of Column 2 (U.S. note 30): 1 line(s)",
         "Section 232 steel, aluminum, copper and derivatives (U.S. notes 16, 19): 1 line(s)",
         "Section 301 (2026, 60 economies): 141 line(s)",
         "Section 301 (Brazil): 141 line(s)",
@@ -1566,21 +1353,12 @@
     {
       "chapter": "28",
       "lines": 336,
-      "status": "NOT READY",
-      "gaps": [
-        {
-          "programId": "russia-col2",
-          "program": "Russia: 35% in lieu of Column 2 (U.S. note 30)",
-          "state": "inEffect",
-          "headings": ["9903.90.08"],
-          "linesAffected": 75,
-          "linesNotModelled": 75,
-          "modelled": "no"
-        }
-      ],
+      "status": "READY",
+      "gaps": [],
       "upcoming": [],
       "accepted": [],
       "modelled": [
+        "Russia: 35% in lieu of Column 2 (U.S. note 30): 75 line(s)",
         "Section 301 (2026, 60 economies): 336 line(s)",
         "Section 301 (Brazil): 336 line(s)",
         "Section 301 (China, 2018-2019 lists): 282 line(s)",
@@ -1592,36 +1370,19 @@
     {
       "chapter": "29",
       "lines": 1227,
-      "status": "NOT READY",
-      "gaps": [
-        {
-          "programId": "russia-col2",
-          "program": "Russia: 35% in lieu of Column 2 (U.S. note 30)",
-          "state": "inEffect",
-          "headings": ["9903.90.08"],
-          "linesAffected": 128,
-          "linesNotModelled": 128,
-          "modelled": "no"
-        },
-        {
-          "programId": "s338-canada",
-          "program": "Section 338 duties on Canada (U.S. note 51)",
-          "state": "inEffect",
-          "headings": ["9903.03.14"],
-          "linesAffected": 4,
-          "linesNotModelled": 4,
-          "modelled": "no"
-        }
-      ],
+      "status": "READY",
+      "gaps": [],
       "upcoming": [],
       "accepted": [],
       "modelled": [
+        "Russia: 35% in lieu of Column 2 (U.S. note 30): 128 line(s)",
         "Section 232 pharmaceuticals: 72 line(s)",
         "Section 232 steel, aluminum, copper and derivatives (U.S. notes 16, 19): 5 line(s)",
         "Section 301 (2026, 60 economies): 1227 line(s)",
         "Section 301 (Brazil): 1227 line(s)",
         "Section 301 (China, 2018-2019 lists): 824 line(s)",
-        "Section 301 (Nicaragua): 1227 line(s)"
+        "Section 301 (Nicaragua): 1227 line(s)",
+        "Section 338 duties on Canada (U.S. note 51): 4 line(s)"
       ],
       "acceptedConditions": ["s232-alu-russia-smelted-other-origin"]
     },
@@ -1660,53 +1421,26 @@
     {
       "chapter": "32",
       "lines": 168,
-      "status": "NOT READY",
-      "gaps": [
-        {
-          "programId": "s338-canada",
-          "program": "Section 338 duties on Canada (U.S. note 51)",
-          "state": "inEffect",
-          "headings": ["9903.03.14"],
-          "linesAffected": 8,
-          "linesNotModelled": 8,
-          "modelled": "no"
-        },
-        {
-          "programId": "russia-col2",
-          "program": "Russia: 35% in lieu of Column 2 (U.S. note 30)",
-          "state": "inEffect",
-          "headings": ["9903.90.08"],
-          "linesAffected": 4,
-          "linesNotModelled": 4,
-          "modelled": "no"
-        }
-      ],
+      "status": "READY",
+      "gaps": [],
       "upcoming": [],
       "accepted": [],
       "modelled": [
+        "Russia: 35% in lieu of Column 2 (U.S. note 30): 4 line(s)",
         "Section 232 steel, aluminum, copper and derivatives (U.S. notes 16, 19): 9 line(s)",
         "Section 301 (2026, 60 economies): 168 line(s)",
         "Section 301 (Brazil): 168 line(s)",
         "Section 301 (China, 2018-2019 lists): 165 line(s)",
-        "Section 301 (Nicaragua): 168 line(s)"
+        "Section 301 (Nicaragua): 168 line(s)",
+        "Section 338 duties on Canada (U.S. note 51): 8 line(s)"
       ],
       "acceptedConditions": ["s232-alu-russia-smelted-other-origin"]
     },
     {
       "chapter": "33",
       "lines": 74,
-      "status": "NOT READY",
-      "gaps": [
-        {
-          "programId": "s338-canada",
-          "program": "Section 338 duties on Canada (U.S. note 51)",
-          "state": "inEffect",
-          "headings": ["9903.03.12", "9903.03.13", "9903.03.14"],
-          "linesAffected": 50,
-          "linesNotModelled": 50,
-          "modelled": "no"
-        }
-      ],
+      "status": "READY",
+      "gaps": [],
       "upcoming": [],
       "accepted": [],
       "modelled": [
@@ -1714,98 +1448,56 @@
         "Section 301 (2026, 60 economies): 74 line(s)",
         "Section 301 (Brazil): 74 line(s)",
         "Section 301 (China, 2018-2019 lists): 72 line(s)",
-        "Section 301 (Nicaragua): 74 line(s)"
+        "Section 301 (Nicaragua): 74 line(s)",
+        "Section 338 duties on Canada (U.S. note 51): 50 line(s)"
       ],
       "acceptedConditions": ["s232-alu-russia-smelted-other-origin"]
     },
     {
       "chapter": "34",
       "lines": 48,
-      "status": "NOT READY",
-      "gaps": [
-        {
-          "programId": "russia-col2",
-          "program": "Russia: 35% in lieu of Column 2 (U.S. note 30)",
-          "state": "inEffect",
-          "headings": ["9903.90.08"],
-          "linesAffected": 13,
-          "linesNotModelled": 13,
-          "modelled": "no"
-        },
-        {
-          "programId": "s338-canada",
-          "program": "Section 338 duties on Canada (U.S. note 51)",
-          "state": "inEffect",
-          "headings": ["9903.03.14"],
-          "linesAffected": 1,
-          "linesNotModelled": 1,
-          "modelled": "no"
-        }
-      ],
+      "status": "READY",
+      "gaps": [],
       "upcoming": [],
       "accepted": [],
       "modelled": [
+        "Russia: 35% in lieu of Column 2 (U.S. note 30): 13 line(s)",
         "Section 232 steel, aluminum, copper and derivatives (U.S. notes 16, 19): 18 line(s)",
         "Section 301 (2026, 60 economies): 48 line(s)",
         "Section 301 (Brazil): 48 line(s)",
         "Section 301 (China, 2018-2019 lists): 46 line(s)",
-        "Section 301 (Nicaragua): 48 line(s)"
+        "Section 301 (Nicaragua): 48 line(s)",
+        "Section 338 duties on Canada (U.S. note 51): 1 line(s)"
       ],
       "acceptedConditions": ["s232-alu-russia-smelted-other-origin"]
     },
     {
       "chapter": "35",
       "lines": 33,
-      "status": "NOT READY",
-      "gaps": [
-        {
-          "programId": "s338-canada",
-          "program": "Section 338 duties on Canada (U.S. note 51)",
-          "state": "inEffect",
-          "headings": ["9903.03.13", "9903.03.14"],
-          "linesAffected": 21,
-          "linesNotModelled": 21,
-          "modelled": "no"
-        },
-        {
-          "programId": "russia-col2",
-          "program": "Russia: 35% in lieu of Column 2 (U.S. note 30)",
-          "state": "inEffect",
-          "headings": ["9903.90.08"],
-          "linesAffected": 4,
-          "linesNotModelled": 4,
-          "modelled": "no"
-        }
-      ],
+      "status": "READY",
+      "gaps": [],
       "upcoming": [],
       "accepted": [],
       "modelled": [
+        "Russia: 35% in lieu of Column 2 (U.S. note 30): 4 line(s)",
         "Section 232 steel, aluminum, copper and derivatives (U.S. notes 16, 19): 4 line(s)",
         "Section 301 (2026, 60 economies): 33 line(s)",
         "Section 301 (Brazil): 33 line(s)",
         "Section 301 (China, 2018-2019 lists): 33 line(s)",
-        "Section 301 (Nicaragua): 33 line(s)"
+        "Section 301 (Nicaragua): 33 line(s)",
+        "Section 338 duties on Canada (U.S. note 51): 21 line(s)"
       ],
       "acceptedConditions": ["s232-alu-russia-smelted-other-origin"]
     },
     {
       "chapter": "36",
       "lines": 19,
-      "status": "NOT READY",
-      "gaps": [
-        {
-          "programId": "russia-col2",
-          "program": "Russia: 35% in lieu of Column 2 (U.S. note 30)",
-          "state": "inEffect",
-          "headings": ["9903.90.08"],
-          "linesAffected": 4,
-          "linesNotModelled": 4,
-          "modelled": "no"
-        }
-      ],
+      "status": "READY",
+      "gaps": [],
       "upcoming": [],
       "accepted": [],
       "modelled": [
+        "Russia: 35% in lieu of Column 2 (U.S. note 30): 4 line(s)",
         "Section 301 (2026, 60 economies): 19 line(s)",
         "Section 301 (Brazil): 19 line(s)",
         "Section 301 (China, 2018-2019 lists): 15 line(s)",
@@ -1819,15 +1511,6 @@
       "status": "NOT READY",
       "gaps": [
         {
-          "programId": "russia-col2",
-          "program": "Russia: 35% in lieu of Column 2 (U.S. note 30)",
-          "state": "inEffect",
-          "headings": ["9903.90.08"],
-          "linesAffected": 7,
-          "linesNotModelled": 7,
-          "modelled": "no"
-        },
-        {
           "programId": "s232-metals",
           "program": "Section 232 steel, aluminum, copper and derivatives (U.S. notes 16, 19)",
           "state": "inEffect",
@@ -1840,6 +1523,7 @@
       "upcoming": [],
       "accepted": [],
       "modelled": [
+        "Russia: 35% in lieu of Column 2 (U.S. note 30): 7 line(s)",
         "Section 301 (2026, 60 economies): 61 line(s)",
         "Section 301 (Brazil): 61 line(s)",
         "Section 301 (China, 2018-2019 lists): 61 line(s)",
@@ -1850,36 +1534,19 @@
     {
       "chapter": "38",
       "lines": 217,
-      "status": "NOT READY",
-      "gaps": [
-        {
-          "programId": "s338-canada",
-          "program": "Section 338 duties on Canada (U.S. note 51)",
-          "state": "inEffect",
-          "headings": ["9903.03.14"],
-          "linesAffected": 19,
-          "linesNotModelled": 19,
-          "modelled": "no"
-        },
-        {
-          "programId": "russia-col2",
-          "program": "Russia: 35% in lieu of Column 2 (U.S. note 30)",
-          "state": "inEffect",
-          "headings": ["9903.90.08"],
-          "linesAffected": 13,
-          "linesNotModelled": 13,
-          "modelled": "no"
-        }
-      ],
+      "status": "READY",
+      "gaps": [],
       "upcoming": [],
       "accepted": [],
       "modelled": [
+        "Russia: 35% in lieu of Column 2 (U.S. note 30): 13 line(s)",
         "Section 232 steel, aluminum, copper and derivatives (U.S. notes 16, 19): 27 line(s)",
         "Section 301 (2026, 60 economies): 217 line(s)",
         "Section 301 (Brazil): 217 line(s)",
         "Section 301 (China, 2018-2019 lists): 198 line(s)",
         "Section 301 (China, 2024 increases): 7 line(s)",
-        "Section 301 (Nicaragua): 217 line(s)"
+        "Section 301 (Nicaragua): 217 line(s)",
+        "Section 338 duties on Canada (U.S. note 51): 19 line(s)"
       ],
       "acceptedConditions": ["s232-alu-russia-smelted-other-origin"]
     },
@@ -1914,33 +1581,17 @@
           "linesNotModelled": 319,
           "modelled": "no",
           "coverageNotes": ["9903.74.09: approximate coverage: certified vehicle parts, approximated as chapters 39–97 except 72, 73, 76"]
-        },
-        {
-          "programId": "s338-canada",
-          "program": "Section 338 duties on Canada (U.S. note 51)",
-          "state": "inEffect",
-          "headings": ["9903.03.14"],
-          "linesAffected": 51,
-          "linesNotModelled": 51,
-          "modelled": "no"
-        },
-        {
-          "programId": "russia-col2",
-          "program": "Russia: 35% in lieu of Column 2 (U.S. note 30)",
-          "state": "inEffect",
-          "headings": ["9903.90.08"],
-          "linesAffected": 40,
-          "linesNotModelled": 40,
-          "modelled": "no"
         }
       ],
       "upcoming": [],
       "accepted": [],
       "modelled": [
+        "Russia: 35% in lieu of Column 2 (U.S. note 30): 40 line(s)",
         "Section 301 (2026, 60 economies): 319 line(s)",
         "Section 301 (Brazil): 319 line(s)",
         "Section 301 (China, 2018-2019 lists): 297 line(s)",
-        "Section 301 (Nicaragua): 319 line(s)"
+        "Section 301 (Nicaragua): 319 line(s)",
+        "Section 338 duties on Canada (U.S. note 51): 51 line(s)"
       ],
       "acceptedConditions": []
     },
@@ -1988,34 +1639,18 @@
           "linesNotModelled": 198,
           "modelled": "no",
           "coverageNotes": ["9903.74.09: approximate coverage: certified vehicle parts, approximated as chapters 39–97 except 72, 73, 76"]
-        },
-        {
-          "programId": "russia-col2",
-          "program": "Russia: 35% in lieu of Column 2 (U.S. note 30)",
-          "state": "inEffect",
-          "headings": ["9903.90.08"],
-          "linesAffected": 66,
-          "linesNotModelled": 66,
-          "modelled": "no"
-        },
-        {
-          "programId": "s338-canada",
-          "program": "Section 338 duties on Canada (U.S. note 51)",
-          "state": "inEffect",
-          "headings": ["9903.03.14"],
-          "linesAffected": 6,
-          "linesNotModelled": 6,
-          "modelled": "no"
         }
       ],
       "upcoming": [],
       "accepted": [],
       "modelled": [
+        "Russia: 35% in lieu of Column 2 (U.S. note 30): 66 line(s)",
         "Section 301 (2026, 60 economies): 198 line(s)",
         "Section 301 (Brazil): 198 line(s)",
         "Section 301 (China, 2018-2019 lists): 191 line(s)",
         "Section 301 (China, 2024 increases): 2 line(s)",
-        "Section 301 (Nicaragua): 198 line(s)"
+        "Section 301 (Nicaragua): 198 line(s)",
+        "Section 338 duties on Canada (U.S. note 51): 6 line(s)"
       ],
       "acceptedConditions": []
     },
@@ -2050,33 +1685,17 @@
           "linesNotModelled": 176,
           "modelled": "no",
           "coverageNotes": ["9903.74.09: approximate coverage: certified vehicle parts, approximated as chapters 39–97 except 72, 73, 76"]
-        },
-        {
-          "programId": "japan-1980s",
-          "program": "Duties on products of Japan (9903.41)",
-          "state": "unknown",
-          "headings": ["9903.41.05"],
-          "linesAffected": 125,
-          "linesNotModelled": 125,
-          "modelled": "no"
-        },
-        {
-          "programId": "s338-canada",
-          "program": "Section 338 duties on Canada (U.S. note 51)",
-          "state": "inEffect",
-          "headings": ["9903.03.12", "9903.03.14"],
-          "linesAffected": 14,
-          "linesNotModelled": 14,
-          "modelled": "no"
         }
       ],
       "upcoming": [],
       "accepted": [],
       "modelled": [
+        "Duties on products of Japan (9903.41): 125 line(s)",
         "Section 301 (2026, 60 economies): 176 line(s)",
         "Section 301 (Brazil): 176 line(s)",
         "Section 301 (China, 2018-2019 lists): 175 line(s)",
-        "Section 301 (Nicaragua): 176 line(s)"
+        "Section 301 (Nicaragua): 176 line(s)",
+        "Section 338 duties on Canada (U.S. note 51): 14 line(s)"
       ],
       "acceptedConditions": []
     },
@@ -2111,33 +1730,17 @@
           "linesNotModelled": 121,
           "modelled": "no",
           "coverageNotes": ["9903.74.09: approximate coverage: certified vehicle parts, approximated as chapters 39–97 except 72, 73, 76"]
-        },
-        {
-          "programId": "s338-canada",
-          "program": "Section 338 duties on Canada (U.S. note 51)",
-          "state": "inEffect",
-          "headings": ["9903.03.14"],
-          "linesAffected": 22,
-          "linesNotModelled": 22,
-          "modelled": "no"
-        },
-        {
-          "programId": "russia-col2",
-          "program": "Russia: 35% in lieu of Column 2 (U.S. note 30)",
-          "state": "inEffect",
-          "headings": ["9903.90.08"],
-          "linesAffected": 2,
-          "linesNotModelled": 2,
-          "modelled": "no"
         }
       ],
       "upcoming": [],
       "accepted": [],
       "modelled": [
+        "Russia: 35% in lieu of Column 2 (U.S. note 30): 2 line(s)",
         "Section 301 (2026, 60 economies): 121 line(s)",
         "Section 301 (Brazil): 121 line(s)",
         "Section 301 (China, 2018-2019 lists): 117 line(s)",
-        "Section 301 (Nicaragua): 121 line(s)"
+        "Section 301 (Nicaragua): 121 line(s)",
+        "Section 338 duties on Canada (U.S. note 51): 22 line(s)"
       ],
       "acceptedConditions": []
     },
@@ -2172,33 +1775,17 @@
           "linesNotModelled": 39,
           "modelled": "no",
           "coverageNotes": ["9903.74.09: approximate coverage: certified vehicle parts, approximated as chapters 39–97 except 72, 73, 76"]
-        },
-        {
-          "programId": "s338-canada",
-          "program": "Section 338 duties on Canada (U.S. note 51)",
-          "state": "inEffect",
-          "headings": ["9903.03.12", "9903.03.14"],
-          "linesAffected": 11,
-          "linesNotModelled": 11,
-          "modelled": "no"
-        },
-        {
-          "programId": "russia-col2",
-          "program": "Russia: 35% in lieu of Column 2 (U.S. note 30)",
-          "state": "inEffect",
-          "headings": ["9903.90.08"],
-          "linesAffected": 3,
-          "linesNotModelled": 3,
-          "modelled": "no"
         }
       ],
       "upcoming": [],
       "accepted": [],
       "modelled": [
+        "Russia: 35% in lieu of Column 2 (U.S. note 30): 3 line(s)",
         "Section 301 (2026, 60 economies): 39 line(s)",
         "Section 301 (Brazil): 39 line(s)",
         "Section 301 (China, 2018-2019 lists): 37 line(s)",
-        "Section 301 (Nicaragua): 39 line(s)"
+        "Section 301 (Nicaragua): 39 line(s)",
+        "Section 338 duties on Canada (U.S. note 51): 11 line(s)"
       ],
       "acceptedConditions": []
     },
@@ -2233,42 +1820,18 @@
           "linesNotModelled": 556,
           "modelled": "no",
           "coverageNotes": ["9903.74.09: approximate coverage: certified vehicle parts, approximated as chapters 39–97 except 72, 73, 76"]
-        },
-        {
-          "programId": "s338-canada",
-          "program": "Section 338 duties on Canada (U.S. note 51)",
-          "state": "inEffect",
-          "headings": ["9903.03.12", "9903.03.14"],
-          "linesAffected": 154,
-          "linesNotModelled": 154,
-          "modelled": "no"
-        },
-        {
-          "programId": "russia-col2",
-          "program": "Russia: 35% in lieu of Column 2 (U.S. note 30)",
-          "state": "inEffect",
-          "headings": ["9903.90.08"],
-          "linesAffected": 144,
-          "linesNotModelled": 144,
-          "modelled": "no"
-        },
-        {
-          "programId": "s232-lumber",
-          "program": "Section 232 timber, lumber and wood products (U.S. note 37)",
-          "state": "inEffect",
-          "headings": ["9903.76.01"],
-          "linesAffected": 106,
-          "linesNotModelled": 106,
-          "modelled": "no"
         }
       ],
       "upcoming": [],
       "accepted": [],
       "modelled": [
+        "Russia: 35% in lieu of Column 2 (U.S. note 30): 144 line(s)",
+        "Section 232 timber, lumber and wood products (U.S. note 37): 106 line(s)",
         "Section 301 (2026, 60 economies): 556 line(s)",
         "Section 301 (Brazil): 556 line(s)",
         "Section 301 (China, 2018-2019 lists): 529 line(s)",
-        "Section 301 (Nicaragua): 556 line(s)"
+        "Section 301 (Nicaragua): 556 line(s)",
+        "Section 338 duties on Canada (U.S. note 51): 154 line(s)"
       ],
       "acceptedConditions": []
     },
@@ -2346,15 +1909,6 @@
           "linesNotModelled": 49,
           "modelled": "no",
           "coverageNotes": ["9903.74.09: approximate coverage: certified vehicle parts, approximated as chapters 39–97 except 72, 73, 76"]
-        },
-        {
-          "programId": "s338-canada",
-          "program": "Section 338 duties on Canada (U.S. note 51)",
-          "state": "inEffect",
-          "headings": ["9903.03.12"],
-          "linesAffected": 1,
-          "linesNotModelled": 1,
-          "modelled": "no"
         }
       ],
       "upcoming": [],
@@ -2363,7 +1917,8 @@
         "Section 301 (2026, 60 economies): 49 line(s)",
         "Section 301 (Brazil): 49 line(s)",
         "Section 301 (China, 2018-2019 lists): 49 line(s)",
-        "Section 301 (Nicaragua): 49 line(s)"
+        "Section 301 (Nicaragua): 49 line(s)",
+        "Section 338 duties on Canada (U.S. note 51): 1 line(s)"
       ],
       "acceptedConditions": []
     },
@@ -2398,15 +1953,6 @@
           "linesNotModelled": 26,
           "modelled": "no",
           "coverageNotes": ["9903.74.09: approximate coverage: certified vehicle parts, approximated as chapters 39–97 except 72, 73, 76"]
-        },
-        {
-          "programId": "s338-canada",
-          "program": "Section 338 duties on Canada (U.S. note 51)",
-          "state": "inEffect",
-          "headings": ["9903.03.14"],
-          "linesAffected": 2,
-          "linesNotModelled": 2,
-          "modelled": "no"
         }
       ],
       "upcoming": [],
@@ -2415,7 +1961,8 @@
         "Section 301 (2026, 60 economies): 26 line(s)",
         "Section 301 (Brazil): 26 line(s)",
         "Section 301 (China, 2018-2019 lists): 26 line(s)",
-        "Section 301 (Nicaragua): 26 line(s)"
+        "Section 301 (Nicaragua): 26 line(s)",
+        "Section 338 duties on Canada (U.S. note 51): 2 line(s)"
       ],
       "acceptedConditions": []
     },
@@ -2450,33 +1997,17 @@
           "linesNotModelled": 312,
           "modelled": "no",
           "coverageNotes": ["9903.74.09: approximate coverage: certified vehicle parts, approximated as chapters 39–97 except 72, 73, 76"]
-        },
-        {
-          "programId": "s338-canada",
-          "program": "Section 338 duties on Canada (U.S. note 51)",
-          "state": "inEffect",
-          "headings": ["9903.03.12", "9903.03.14"],
-          "linesAffected": 62,
-          "linesNotModelled": 62,
-          "modelled": "no"
-        },
-        {
-          "programId": "russia-col2",
-          "program": "Russia: 35% in lieu of Column 2 (U.S. note 30)",
-          "state": "inEffect",
-          "headings": ["9903.90.08"],
-          "linesAffected": 23,
-          "linesNotModelled": 23,
-          "modelled": "no"
         }
       ],
       "upcoming": [],
       "accepted": [],
       "modelled": [
+        "Russia: 35% in lieu of Column 2 (U.S. note 30): 23 line(s)",
         "Section 301 (2026, 60 economies): 312 line(s)",
         "Section 301 (Brazil): 312 line(s)",
         "Section 301 (China, 2018-2019 lists): 312 line(s)",
-        "Section 301 (Nicaragua): 312 line(s)"
+        "Section 301 (Nicaragua): 312 line(s)",
+        "Section 338 duties on Canada (U.S. note 51): 62 line(s)"
       ],
       "acceptedConditions": []
     },
@@ -2511,33 +2042,17 @@
           "linesNotModelled": 50,
           "modelled": "no",
           "coverageNotes": ["9903.74.09: approximate coverage: certified vehicle parts, approximated as chapters 39–97 except 72, 73, 76"]
-        },
-        {
-          "programId": "russia-col2",
-          "program": "Russia: 35% in lieu of Column 2 (U.S. note 30)",
-          "state": "inEffect",
-          "headings": ["9903.90.08"],
-          "linesAffected": 36,
-          "linesNotModelled": 36,
-          "modelled": "no"
-        },
-        {
-          "programId": "s338-canada",
-          "program": "Section 338 duties on Canada (U.S. note 51)",
-          "state": "inEffect",
-          "headings": ["9903.03.14"],
-          "linesAffected": 3,
-          "linesNotModelled": 3,
-          "modelled": "no"
         }
       ],
       "upcoming": [],
       "accepted": [],
       "modelled": [
+        "Russia: 35% in lieu of Column 2 (U.S. note 30): 36 line(s)",
         "Section 301 (2026, 60 economies): 50 line(s)",
         "Section 301 (Brazil): 50 line(s)",
         "Section 301 (China, 2018-2019 lists): 44 line(s)",
-        "Section 301 (Nicaragua): 50 line(s)"
+        "Section 301 (Nicaragua): 50 line(s)",
+        "Section 338 duties on Canada (U.S. note 51): 3 line(s)"
       ],
       "acceptedConditions": []
     },
@@ -2572,15 +2087,6 @@
           "linesNotModelled": 30,
           "modelled": "no",
           "coverageNotes": ["9903.74.09: approximate coverage: certified vehicle parts, approximated as chapters 39–97 except 72, 73, 76"]
-        },
-        {
-          "programId": "s338-canada",
-          "program": "Section 338 duties on Canada (U.S. note 51)",
-          "state": "inEffect",
-          "headings": ["9903.03.14"],
-          "linesAffected": 2,
-          "linesNotModelled": 2,
-          "modelled": "no"
         }
       ],
       "upcoming": [],
@@ -2589,7 +2095,8 @@
         "Section 301 (2026, 60 economies): 30 line(s)",
         "Section 301 (Brazil): 30 line(s)",
         "Section 301 (China, 2018-2019 lists): 30 line(s)",
-        "Section 301 (Nicaragua): 30 line(s)"
+        "Section 301 (Nicaragua): 30 line(s)",
+        "Section 338 duties on Canada (U.S. note 51): 2 line(s)"
       ],
       "acceptedConditions": []
     },
@@ -2624,15 +2131,6 @@
           "linesNotModelled": 124,
           "modelled": "no",
           "coverageNotes": ["9903.74.09: approximate coverage: certified vehicle parts, approximated as chapters 39–97 except 72, 73, 76"]
-        },
-        {
-          "programId": "s338-canada",
-          "program": "Section 338 duties on Canada (U.S. note 51)",
-          "state": "inEffect",
-          "headings": ["9903.03.14"],
-          "linesAffected": 3,
-          "linesNotModelled": 3,
-          "modelled": "no"
         }
       ],
       "upcoming": [],
@@ -2641,7 +2139,8 @@
         "Section 301 (2026, 60 economies): 124 line(s)",
         "Section 301 (Brazil): 124 line(s)",
         "Section 301 (China, 2018-2019 lists): 124 line(s)",
-        "Section 301 (Nicaragua): 124 line(s)"
+        "Section 301 (Nicaragua): 124 line(s)",
+        "Section 338 duties on Canada (U.S. note 51): 3 line(s)"
       ],
       "acceptedConditions": []
     },
@@ -2676,33 +2175,17 @@
           "linesNotModelled": 525,
           "modelled": "no",
           "coverageNotes": ["9903.74.09: approximate coverage: certified vehicle parts, approximated as chapters 39–97 except 72, 73, 76"]
-        },
-        {
-          "programId": "s338-canada",
-          "program": "Section 338 duties on Canada (U.S. note 51)",
-          "state": "inEffect",
-          "headings": ["9903.03.14"],
-          "linesAffected": 5,
-          "linesNotModelled": 5,
-          "modelled": "no"
-        },
-        {
-          "programId": "russia-col2",
-          "program": "Russia: 35% in lieu of Column 2 (U.S. note 30)",
-          "state": "inEffect",
-          "headings": ["9903.90.08"],
-          "linesAffected": 1,
-          "linesNotModelled": 1,
-          "modelled": "no"
         }
       ],
       "upcoming": [],
       "accepted": [],
       "modelled": [
+        "Russia: 35% in lieu of Column 2 (U.S. note 30): 1 line(s)",
         "Section 301 (2026, 60 economies): 525 line(s)",
         "Section 301 (Brazil): 525 line(s)",
         "Section 301 (China, 2018-2019 lists): 524 line(s)",
-        "Section 301 (Nicaragua): 525 line(s)"
+        "Section 301 (Nicaragua): 525 line(s)",
+        "Section 338 duties on Canada (U.S. note 51): 5 line(s)"
       ],
       "acceptedConditions": []
     },
@@ -2780,15 +2263,6 @@
           "linesNotModelled": 265,
           "modelled": "no",
           "coverageNotes": ["9903.74.09: approximate coverage: certified vehicle parts, approximated as chapters 39–97 except 72, 73, 76"]
-        },
-        {
-          "programId": "s338-canada",
-          "program": "Section 338 duties on Canada (U.S. note 51)",
-          "state": "inEffect",
-          "headings": ["9903.03.14"],
-          "linesAffected": 3,
-          "linesNotModelled": 3,
-          "modelled": "no"
         }
       ],
       "upcoming": [],
@@ -2797,7 +2271,8 @@
         "Section 301 (2026, 60 economies): 265 line(s)",
         "Section 301 (Brazil): 265 line(s)",
         "Section 301 (China, 2018-2019 lists): 264 line(s)",
-        "Section 301 (Nicaragua): 265 line(s)"
+        "Section 301 (Nicaragua): 265 line(s)",
+        "Section 338 duties on Canada (U.S. note 51): 3 line(s)"
       ],
       "acceptedConditions": []
     },
@@ -2832,15 +2307,6 @@
           "linesNotModelled": 399,
           "modelled": "no",
           "coverageNotes": ["9903.74.09: approximate coverage: certified vehicle parts, approximated as chapters 39–97 except 72, 73, 76"]
-        },
-        {
-          "programId": "s338-canada",
-          "program": "Section 338 duties on Canada (U.S. note 51)",
-          "state": "inEffect",
-          "headings": ["9903.03.14"],
-          "linesAffected": 13,
-          "linesNotModelled": 13,
-          "modelled": "no"
         }
       ],
       "upcoming": [],
@@ -2849,7 +2315,8 @@
         "Section 301 (2026, 60 economies): 399 line(s)",
         "Section 301 (Brazil): 399 line(s)",
         "Section 301 (China, 2018-2019 lists): 395 line(s)",
-        "Section 301 (Nicaragua): 399 line(s)"
+        "Section 301 (Nicaragua): 399 line(s)",
+        "Section 338 duties on Canada (U.S. note 51): 13 line(s)"
       ],
       "acceptedConditions": []
     },
@@ -2884,15 +2351,6 @@
           "linesNotModelled": 81,
           "modelled": "no",
           "coverageNotes": ["9903.74.09: approximate coverage: certified vehicle parts, approximated as chapters 39–97 except 72, 73, 76"]
-        },
-        {
-          "programId": "s338-canada",
-          "program": "Section 338 duties on Canada (U.S. note 51)",
-          "state": "inEffect",
-          "headings": ["9903.03.14"],
-          "linesAffected": 17,
-          "linesNotModelled": 17,
-          "modelled": "no"
         }
       ],
       "upcoming": [],
@@ -2901,7 +2359,8 @@
         "Section 301 (2026, 60 economies): 81 line(s)",
         "Section 301 (Brazil): 81 line(s)",
         "Section 301 (China, 2018-2019 lists): 81 line(s)",
-        "Section 301 (Nicaragua): 81 line(s)"
+        "Section 301 (Nicaragua): 81 line(s)",
+        "Section 338 duties on Canada (U.S. note 51): 17 line(s)"
       ],
       "acceptedConditions": []
     },
@@ -2936,15 +2395,6 @@
           "linesNotModelled": 74,
           "modelled": "no",
           "coverageNotes": ["9903.74.09: approximate coverage: certified vehicle parts, approximated as chapters 39–97 except 72, 73, 76"]
-        },
-        {
-          "programId": "s338-canada",
-          "program": "Section 338 duties on Canada (U.S. note 51)",
-          "state": "inEffect",
-          "headings": ["9903.03.14"],
-          "linesAffected": 2,
-          "linesNotModelled": 2,
-          "modelled": "no"
         }
       ],
       "upcoming": [],
@@ -2953,7 +2403,8 @@
         "Section 301 (2026, 60 economies): 74 line(s)",
         "Section 301 (Brazil): 74 line(s)",
         "Section 301 (China, 2018-2019 lists): 74 line(s)",
-        "Section 301 (Nicaragua): 74 line(s)"
+        "Section 301 (Nicaragua): 74 line(s)",
+        "Section 338 duties on Canada (U.S. note 51): 2 line(s)"
       ],
       "acceptedConditions": []
     },
@@ -2988,15 +2439,6 @@
           "linesNotModelled": 111,
           "modelled": "no",
           "coverageNotes": ["9903.74.09: approximate coverage: certified vehicle parts, approximated as chapters 39–97 except 72, 73, 76"]
-        },
-        {
-          "programId": "s338-canada",
-          "program": "Section 338 duties on Canada (U.S. note 51)",
-          "state": "inEffect",
-          "headings": ["9903.03.14"],
-          "linesAffected": 1,
-          "linesNotModelled": 1,
-          "modelled": "no"
         }
       ],
       "upcoming": [],
@@ -3005,7 +2447,8 @@
         "Section 301 (2026, 60 economies): 111 line(s)",
         "Section 301 (Brazil): 111 line(s)",
         "Section 301 (China, 2018-2019 lists): 109 line(s)",
-        "Section 301 (Nicaragua): 111 line(s)"
+        "Section 301 (Nicaragua): 111 line(s)",
+        "Section 338 duties on Canada (U.S. note 51): 1 line(s)"
       ],
       "acceptedConditions": []
     },
@@ -3040,33 +2483,17 @@
           "linesNotModelled": 75,
           "modelled": "no",
           "coverageNotes": ["9903.74.09: approximate coverage: certified vehicle parts, approximated as chapters 39–97 except 72, 73, 76"]
-        },
-        {
-          "programId": "s338-canada",
-          "program": "Section 338 duties on Canada (U.S. note 51)",
-          "state": "inEffect",
-          "headings": ["9903.03.14"],
-          "linesAffected": 6,
-          "linesNotModelled": 6,
-          "modelled": "no"
-        },
-        {
-          "programId": "russia-col2",
-          "program": "Russia: 35% in lieu of Column 2 (U.S. note 30)",
-          "state": "inEffect",
-          "headings": ["9903.90.08"],
-          "linesAffected": 3,
-          "linesNotModelled": 3,
-          "modelled": "no"
         }
       ],
       "upcoming": [],
       "accepted": [],
       "modelled": [
+        "Russia: 35% in lieu of Column 2 (U.S. note 30): 3 line(s)",
         "Section 301 (2026, 60 economies): 75 line(s)",
         "Section 301 (Brazil): 75 line(s)",
         "Section 301 (China, 2018-2019 lists): 75 line(s)",
-        "Section 301 (Nicaragua): 75 line(s)"
+        "Section 301 (Nicaragua): 75 line(s)",
+        "Section 338 duties on Canada (U.S. note 51): 6 line(s)"
       ],
       "acceptedConditions": []
     },
@@ -3101,15 +2528,6 @@
           "linesNotModelled": 106,
           "modelled": "no",
           "coverageNotes": ["9903.74.09: approximate coverage: certified vehicle parts, approximated as chapters 39–97 except 72, 73, 76"]
-        },
-        {
-          "programId": "s338-canada",
-          "program": "Section 338 duties on Canada (U.S. note 51)",
-          "state": "inEffect",
-          "headings": ["9903.03.14"],
-          "linesAffected": 12,
-          "linesNotModelled": 12,
-          "modelled": "no"
         }
       ],
       "upcoming": [],
@@ -3118,7 +2536,8 @@
         "Section 301 (2026, 60 economies): 106 line(s)",
         "Section 301 (Brazil): 106 line(s)",
         "Section 301 (China, 2018-2019 lists): 98 line(s)",
-        "Section 301 (Nicaragua): 106 line(s)"
+        "Section 301 (Nicaragua): 106 line(s)",
+        "Section 338 duties on Canada (U.S. note 51): 12 line(s)"
       ],
       "acceptedConditions": []
     },
@@ -3153,15 +2572,6 @@
           "linesNotModelled": 838,
           "modelled": "no",
           "coverageNotes": ["9903.74.09: approximate coverage: certified vehicle parts, approximated as chapters 39–97 except 72, 73, 76"]
-        },
-        {
-          "programId": "s338-canada",
-          "program": "Section 338 duties on Canada (U.S. note 51)",
-          "state": "inEffect",
-          "headings": ["9903.03.14"],
-          "linesAffected": 55,
-          "linesNotModelled": 55,
-          "modelled": "no"
         }
       ],
       "upcoming": [],
@@ -3170,7 +2580,8 @@
         "Section 301 (2026, 60 economies): 838 line(s)",
         "Section 301 (Brazil): 838 line(s)",
         "Section 301 (China, 2018-2019 lists): 714 line(s)",
-        "Section 301 (Nicaragua): 838 line(s)"
+        "Section 301 (Nicaragua): 838 line(s)",
+        "Section 338 duties on Canada (U.S. note 51): 55 line(s)"
       ],
       "acceptedConditions": []
     },
@@ -3205,33 +2616,17 @@
           "linesNotModelled": 1247,
           "modelled": "no",
           "coverageNotes": ["9903.74.09: approximate coverage: certified vehicle parts, approximated as chapters 39–97 except 72, 73, 76"]
-        },
-        {
-          "programId": "s338-canada",
-          "program": "Section 338 duties on Canada (U.S. note 51)",
-          "state": "inEffect",
-          "headings": ["9903.03.14"],
-          "linesAffected": 74,
-          "linesNotModelled": 74,
-          "modelled": "no"
-        },
-        {
-          "programId": "russia-col2",
-          "program": "Russia: 35% in lieu of Column 2 (U.S. note 30)",
-          "state": "inEffect",
-          "headings": ["9903.90.08"],
-          "linesAffected": 2,
-          "linesNotModelled": 2,
-          "modelled": "no"
         }
       ],
       "upcoming": [],
       "accepted": [],
       "modelled": [
+        "Russia: 35% in lieu of Column 2 (U.S. note 30): 2 line(s)",
         "Section 301 (2026, 60 economies): 1247 line(s)",
         "Section 301 (Brazil): 1247 line(s)",
         "Section 301 (China, 2018-2019 lists): 1147 line(s)",
-        "Section 301 (Nicaragua): 1247 line(s)"
+        "Section 301 (Nicaragua): 1247 line(s)",
+        "Section 338 duties on Canada (U.S. note 51): 74 line(s)"
       ],
       "acceptedConditions": []
     },
@@ -3266,34 +2661,18 @@
           "linesNotModelled": 229,
           "modelled": "no",
           "coverageNotes": ["9903.74.09: approximate coverage: certified vehicle parts, approximated as chapters 39–97 except 72, 73, 76"]
-        },
-        {
-          "programId": "s338-canada",
-          "program": "Section 338 duties on Canada (U.S. note 51)",
-          "state": "inEffect",
-          "headings": ["9903.03.14"],
-          "linesAffected": 22,
-          "linesNotModelled": 22,
-          "modelled": "no"
-        },
-        {
-          "programId": "russia-col2",
-          "program": "Russia: 35% in lieu of Column 2 (U.S. note 30)",
-          "state": "inEffect",
-          "headings": ["9903.90.08"],
-          "linesAffected": 17,
-          "linesNotModelled": 17,
-          "modelled": "no"
         }
       ],
       "upcoming": [],
       "accepted": [],
       "modelled": [
+        "Russia: 35% in lieu of Column 2 (U.S. note 30): 17 line(s)",
         "Section 301 (2026, 60 economies): 229 line(s)",
         "Section 301 (Brazil): 229 line(s)",
         "Section 301 (China, 2018-2019 lists): 180 line(s)",
         "Section 301 (China, 2024 increases): 5 line(s)",
-        "Section 301 (Nicaragua): 229 line(s)"
+        "Section 301 (Nicaragua): 229 line(s)",
+        "Section 338 duties on Canada (U.S. note 51): 22 line(s)"
       ],
       "acceptedConditions": []
     },
@@ -3302,15 +2681,6 @@
       "lines": 391,
       "status": "NOT READY",
       "gaps": [
-        {
-          "programId": "japan-1980s",
-          "program": "Duties on products of Japan (9903.41)",
-          "state": "unknown",
-          "headings": ["9903.41.10"],
-          "linesAffected": 391,
-          "linesNotModelled": 391,
-          "modelled": "no"
-        },
         {
           "programId": "s232-autos",
           "program": "Section 232 autos and auto parts (U.S. note 33)",
@@ -3337,33 +2707,18 @@
           "linesNotModelled": 391,
           "modelled": "no",
           "coverageNotes": ["9903.74.09: approximate coverage: certified vehicle parts, approximated as chapters 39–97 except 72, 73, 76"]
-        },
-        {
-          "programId": "russia-col2",
-          "program": "Russia: 35% in lieu of Column 2 (U.S. note 30)",
-          "state": "inEffect",
-          "headings": ["9903.90.08"],
-          "linesAffected": 30,
-          "linesNotModelled": 30,
-          "modelled": "no"
-        },
-        {
-          "programId": "s338-canada",
-          "program": "Section 338 duties on Canada (U.S. note 51)",
-          "state": "inEffect",
-          "headings": ["9903.03.14"],
-          "linesAffected": 4,
-          "linesNotModelled": 4,
-          "modelled": "no"
         }
       ],
       "upcoming": [],
       "accepted": [],
       "modelled": [
+        "Duties on products of Japan (9903.41): 391 line(s)",
+        "Russia: 35% in lieu of Column 2 (U.S. note 30): 30 line(s)",
         "Section 301 (2026, 60 economies): 391 line(s)",
         "Section 301 (Brazil): 391 line(s)",
         "Section 301 (China, 2018-2019 lists): 242 line(s)",
-        "Section 301 (Nicaragua): 391 line(s)"
+        "Section 301 (Nicaragua): 391 line(s)",
+        "Section 338 duties on Canada (U.S. note 51): 4 line(s)"
       ],
       "acceptedConditions": []
     },
@@ -3398,33 +2753,17 @@
           "linesNotModelled": 64,
           "modelled": "no",
           "coverageNotes": ["9903.74.09: approximate coverage: certified vehicle parts, approximated as chapters 39–97 except 72, 73, 76"]
-        },
-        {
-          "programId": "s338-canada",
-          "program": "Section 338 duties on Canada (U.S. note 51)",
-          "state": "inEffect",
-          "headings": ["9903.03.14"],
-          "linesAffected": 7,
-          "linesNotModelled": 7,
-          "modelled": "no"
-        },
-        {
-          "programId": "russia-col2",
-          "program": "Russia: 35% in lieu of Column 2 (U.S. note 30)",
-          "state": "inEffect",
-          "headings": ["9903.90.08"],
-          "linesAffected": 3,
-          "linesNotModelled": 3,
-          "modelled": "no"
         }
       ],
       "upcoming": [],
       "accepted": [],
       "modelled": [
+        "Russia: 35% in lieu of Column 2 (U.S. note 30): 3 line(s)",
         "Section 301 (2026, 60 economies): 64 line(s)",
         "Section 301 (Brazil): 64 line(s)",
         "Section 301 (China, 2018-2019 lists): 64 line(s)",
-        "Section 301 (Nicaragua): 64 line(s)"
+        "Section 301 (Nicaragua): 64 line(s)",
+        "Section 338 duties on Canada (U.S. note 51): 7 line(s)"
       ],
       "acceptedConditions": []
     },
@@ -3503,33 +2842,17 @@
           "linesNotModelled": 13,
           "modelled": "no",
           "coverageNotes": ["9903.74.09: approximate coverage: certified vehicle parts, approximated as chapters 39–97 except 72, 73, 76"]
-        },
-        {
-          "programId": "russia-col2",
-          "program": "Russia: 35% in lieu of Column 2 (U.S. note 30)",
-          "state": "inEffect",
-          "headings": ["9903.90.08"],
-          "linesAffected": 1,
-          "linesNotModelled": 1,
-          "modelled": "no"
-        },
-        {
-          "programId": "s338-canada",
-          "program": "Section 338 duties on Canada (U.S. note 51)",
-          "state": "inEffect",
-          "headings": ["9903.03.14"],
-          "linesAffected": 1,
-          "linesNotModelled": 1,
-          "modelled": "no"
         }
       ],
       "upcoming": [],
       "accepted": [],
       "modelled": [
+        "Russia: 35% in lieu of Column 2 (U.S. note 30): 1 line(s)",
         "Section 301 (2026, 60 economies): 13 line(s)",
         "Section 301 (Brazil): 13 line(s)",
         "Section 301 (China, 2018-2019 lists): 9 line(s)",
-        "Section 301 (Nicaragua): 13 line(s)"
+        "Section 301 (Nicaragua): 13 line(s)",
+        "Section 338 duties on Canada (U.S. note 51): 1 line(s)"
       ],
       "acceptedConditions": []
     },
@@ -3564,42 +2887,18 @@
           "linesNotModelled": 97,
           "modelled": "no",
           "coverageNotes": ["9903.74.09: approximate coverage: certified vehicle parts, approximated as chapters 39–97 except 72, 73, 76"]
-        },
-        {
-          "programId": "russia-col2",
-          "program": "Russia: 35% in lieu of Column 2 (U.S. note 30)",
-          "state": "inEffect",
-          "headings": ["9903.90.08"],
-          "linesAffected": 27,
-          "linesNotModelled": 27,
-          "modelled": "no"
-        },
-        {
-          "programId": "s338-canada",
-          "program": "Section 338 duties on Canada (U.S. note 51)",
-          "state": "inEffect",
-          "headings": ["9903.03.14"],
-          "linesAffected": 5,
-          "linesNotModelled": 5,
-          "modelled": "no"
-        },
-        {
-          "programId": "s201-quartz",
-          "program": "Section 201 safeguard on quartz surface products (U.S. note 41)",
-          "state": "inEffect",
-          "headings": ["9903.45.30", "9903.45.31"],
-          "linesAffected": 2,
-          "linesNotModelled": 2,
-          "modelled": "no"
         }
       ],
       "upcoming": [],
       "accepted": [],
       "modelled": [
+        "Russia: 35% in lieu of Column 2 (U.S. note 30): 27 line(s)",
+        "Section 201 safeguard on quartz surface products (U.S. note 41): 2 line(s)",
         "Section 301 (2026, 60 economies): 97 line(s)",
         "Section 301 (Brazil): 97 line(s)",
         "Section 301 (China, 2018-2019 lists): 97 line(s)",
-        "Section 301 (Nicaragua): 97 line(s)"
+        "Section 301 (Nicaragua): 97 line(s)",
+        "Section 338 duties on Canada (U.S. note 51): 5 line(s)"
       ],
       "acceptedConditions": []
     },
@@ -3634,20 +2933,12 @@
           "linesNotModelled": 120,
           "modelled": "no",
           "coverageNotes": ["9903.74.09: approximate coverage: certified vehicle parts, approximated as chapters 39–97 except 72, 73, 76"]
-        },
-        {
-          "programId": "russia-col2",
-          "program": "Russia: 35% in lieu of Column 2 (U.S. note 30)",
-          "state": "inEffect",
-          "headings": ["9903.90.08"],
-          "linesAffected": 5,
-          "linesNotModelled": 5,
-          "modelled": "no"
         }
       ],
       "upcoming": [],
       "accepted": [],
       "modelled": [
+        "Russia: 35% in lieu of Column 2 (U.S. note 30): 5 line(s)",
         "Section 301 (2026, 60 economies): 120 line(s)",
         "Section 301 (Brazil): 120 line(s)",
         "Section 301 (China, 2018-2019 lists): 99 line(s)",
@@ -3699,42 +2990,18 @@
           "linesNotModelled": 280,
           "modelled": "no",
           "coverageNotes": ["9903.74.09: approximate coverage: certified vehicle parts, approximated as chapters 39–97 except 72, 73, 76"]
-        },
-        {
-          "programId": "s338-canada",
-          "program": "Section 338 duties on Canada (U.S. note 51)",
-          "state": "inEffect",
-          "headings": ["9903.03.14"],
-          "linesAffected": 13,
-          "linesNotModelled": 13,
-          "modelled": "no"
-        },
-        {
-          "programId": "russia-col2",
-          "program": "Russia: 35% in lieu of Column 2 (U.S. note 30)",
-          "state": "inEffect",
-          "headings": ["9903.90.08"],
-          "linesAffected": 11,
-          "linesNotModelled": 11,
-          "modelled": "no"
-        },
-        {
-          "programId": "s201-quartz",
-          "program": "Section 201 safeguard on quartz surface products (U.S. note 41)",
-          "state": "inEffect",
-          "headings": ["9903.45.30", "9903.45.31"],
-          "linesAffected": 1,
-          "linesNotModelled": 1,
-          "modelled": "no"
         }
       ],
       "upcoming": [],
       "accepted": [],
       "modelled": [
+        "Russia: 35% in lieu of Column 2 (U.S. note 30): 11 line(s)",
+        "Section 201 safeguard on quartz surface products (U.S. note 41): 1 line(s)",
         "Section 301 (2026, 60 economies): 280 line(s)",
         "Section 301 (Brazil): 280 line(s)",
         "Section 301 (China, 2018-2019 lists): 266 line(s)",
-        "Section 301 (Nicaragua): 280 line(s)"
+        "Section 301 (Nicaragua): 280 line(s)",
+        "Section 338 duties on Canada (U.S. note 51): 13 line(s)"
       ],
       "acceptedConditions": []
     },
@@ -3769,77 +3036,36 @@
           "linesNotModelled": 140,
           "modelled": "no",
           "coverageNotes": ["9903.74.09: approximate coverage: certified vehicle parts, approximated as chapters 39–97 except 72, 73, 76"]
-        },
-        {
-          "programId": "russia-col2",
-          "program": "Russia: 35% in lieu of Column 2 (U.S. note 30)",
-          "state": "inEffect",
-          "headings": ["9903.90.08"],
-          "linesAffected": 45,
-          "linesNotModelled": 45,
-          "modelled": "no"
-        },
-        {
-          "programId": "s338-canada",
-          "program": "Section 338 duties on Canada (U.S. note 51)",
-          "state": "inEffect",
-          "headings": ["9903.03.14"],
-          "linesAffected": 14,
-          "linesNotModelled": 14,
-          "modelled": "no"
         }
       ],
       "upcoming": [],
       "accepted": [],
       "modelled": [
+        "Russia: 35% in lieu of Column 2 (U.S. note 30): 45 line(s)",
         "Section 301 (2026, 60 economies): 140 line(s)",
         "Section 301 (Brazil): 140 line(s)",
         "Section 301 (China, 2018-2019 lists): 134 line(s)",
-        "Section 301 (Nicaragua): 140 line(s)"
+        "Section 301 (Nicaragua): 140 line(s)",
+        "Section 338 duties on Canada (U.S. note 51): 14 line(s)"
       ],
       "acceptedConditions": []
     },
     {
       "chapter": "72",
       "lines": 559,
-      "status": "NOT READY",
-      "gaps": [
-        {
-          "programId": "s232-metals",
-          "program": "Section 232 steel, aluminum, copper and derivatives (U.S. notes 16, 19)",
-          "state": "inEffect",
-          "headings": ["9903.82.02", "9903.82.04", "9903.82.06", "9903.82.14", "9903.82.15"],
-          "linesAffected": 505,
-          "linesNotModelled": 505,
-          "modelled": "no"
-        },
-        {
-          "programId": "russia-col2",
-          "program": "Russia: 35% in lieu of Column 2 (U.S. note 30)",
-          "state": "inEffect",
-          "headings": ["9903.90.09"],
-          "linesAffected": 119,
-          "linesNotModelled": 119,
-          "modelled": "no"
-        },
-        {
-          "programId": "s338-canada",
-          "program": "Section 338 duties on Canada (U.S. note 51)",
-          "state": "inEffect",
-          "headings": ["9903.03.14"],
-          "linesAffected": 1,
-          "linesNotModelled": 1,
-          "modelled": "no"
-        }
-      ],
+      "status": "READY",
+      "gaps": [],
       "upcoming": [],
       "accepted": [],
       "modelled": [
+        "Russia: 35% in lieu of Column 2 (U.S. note 30): 119 line(s)",
+        "Section 232 steel, aluminum, copper and derivatives (U.S. notes 16, 19): 505 line(s)",
         "Section 301 (2026, 60 economies): 559 line(s)",
         "Section 301 (Brazil): 559 line(s)",
         "Section 301 (China, 2018-2019 lists): 69 line(s)",
         "Section 301 (China, 2024 increases): 486 line(s)",
-        "Section 301 (Nicaragua): 559 line(s)"
+        "Section 301 (Nicaragua): 559 line(s)",
+        "Section 338 duties on Canada (U.S. note 51): 1 line(s)"
       ],
       "acceptedConditions": []
     },
@@ -3866,54 +3092,22 @@
             "9903.85.68"
           ],
           "linesAffected": 559,
-          "linesNotModelled": 559,
-          "modelled": "no"
-        },
-        {
-          "programId": "russia-col2",
-          "program": "Russia: 35% in lieu of Column 2 (U.S. note 30)",
-          "state": "inEffect",
-          "headings": ["9903.90.09"],
-          "linesAffected": 130,
-          "linesNotModelled": 130,
-          "modelled": "no"
-        },
-        {
-          "programId": "s232-autos",
-          "program": "Section 232 autos and auto parts (U.S. note 33)",
-          "state": "inEffect",
-          "headings": ["9903.94.05", "9903.94.32", "9903.94.43", "9903.94.53", "9903.94.63", "9903.94.67"],
-          "linesAffected": 6,
-          "linesNotModelled": 6,
-          "modelled": "no"
-        },
-        {
-          "programId": "s232-trucks",
-          "program": "Section 232 medium/heavy trucks and parts (U.S. note 38)",
-          "state": "inEffect",
-          "headings": ["9903.74.08"],
-          "linesAffected": 6,
-          "linesNotModelled": 6,
-          "modelled": "no"
-        },
-        {
-          "programId": "s338-canada",
-          "program": "Section 338 duties on Canada (U.S. note 51)",
-          "state": "inEffect",
-          "headings": ["9903.03.14"],
-          "linesAffected": 5,
-          "linesNotModelled": 5,
-          "modelled": "no"
+          "linesNotModelled": 64,
+          "modelled": "partial"
         }
       ],
       "upcoming": [],
       "accepted": [],
       "modelled": [
+        "Russia: 35% in lieu of Column 2 (U.S. note 30): 130 line(s)",
+        "Section 232 autos and auto parts (U.S. note 33): 6 line(s)",
+        "Section 232 medium/heavy trucks and parts (U.S. note 38): 6 line(s)",
         "Section 301 (2026, 60 economies): 573 line(s)",
         "Section 301 (Brazil): 573 line(s)",
         "Section 301 (China, 2018-2019 lists): 322 line(s)",
         "Section 301 (China, 2024 increases): 234 line(s)",
-        "Section 301 (Nicaragua): 573 line(s)"
+        "Section 301 (Nicaragua): 573 line(s)",
+        "Section 338 duties on Canada (U.S. note 51): 5 line(s)"
       ],
       "acceptedConditions": ["s232-alu-russia-smelted-other-origin"]
     },
@@ -3948,29 +3142,13 @@
           "linesNotModelled": 136,
           "modelled": "no",
           "coverageNotes": ["9903.74.09: approximate coverage: certified vehicle parts, approximated as chapters 39–97 except 72, 73, 76"]
-        },
-        {
-          "programId": "s232-metals",
-          "program": "Section 232 steel, aluminum, copper and derivatives (U.S. notes 16, 19)",
-          "state": "inEffect",
-          "headings": ["9903.82.02", "9903.82.14"],
-          "linesAffected": 113,
-          "linesNotModelled": 113,
-          "modelled": "no"
-        },
-        {
-          "programId": "russia-col2",
-          "program": "Russia: 35% in lieu of Column 2 (U.S. note 30)",
-          "state": "inEffect",
-          "headings": ["9903.90.09"],
-          "linesAffected": 9,
-          "linesNotModelled": 9,
-          "modelled": "no"
         }
       ],
       "upcoming": [],
       "accepted": [],
       "modelled": [
+        "Russia: 35% in lieu of Column 2 (U.S. note 30): 9 line(s)",
+        "Section 232 steel, aluminum, copper and derivatives (U.S. notes 16, 19): 113 line(s)",
         "Section 301 (2026, 60 economies): 136 line(s)",
         "Section 301 (Brazil): 136 line(s)",
         "Section 301 (China, 2018-2019 lists): 135 line(s)",
@@ -4009,20 +3187,12 @@
           "linesNotModelled": 29,
           "modelled": "no",
           "coverageNotes": ["9903.74.09: approximate coverage: certified vehicle parts, approximated as chapters 39–97 except 72, 73, 76"]
-        },
-        {
-          "programId": "russia-col2",
-          "program": "Russia: 35% in lieu of Column 2 (U.S. note 30)",
-          "state": "inEffect",
-          "headings": ["9903.90.08"],
-          "linesAffected": 5,
-          "linesNotModelled": 5,
-          "modelled": "no"
         }
       ],
       "upcoming": [],
       "accepted": [],
       "modelled": [
+        "Russia: 35% in lieu of Column 2 (U.S. note 30): 5 line(s)",
         "Section 301 (2026, 60 economies): 29 line(s)",
         "Section 301 (Brazil): 29 line(s)",
         "Section 301 (China, 2018-2019 lists): 29 line(s)",
@@ -4053,37 +3223,21 @@
             "9903.85.68"
           ],
           "linesAffected": 124,
-          "linesNotModelled": 124,
-          "modelled": "no",
+          "linesNotModelled": 53,
+          "modelled": "partial",
           "coverageNotes": ["9903.85.67: approximate coverage: aluminum articles of U.S. note 19(a)(vii)(A)/(m)(A) — approximated as chapter 76"]
-        },
-        {
-          "programId": "russia-col2",
-          "program": "Russia: 35% in lieu of Column 2 (U.S. note 30)",
-          "state": "inEffect",
-          "headings": ["9903.90.09"],
-          "linesAffected": 54,
-          "linesNotModelled": 54,
-          "modelled": "no"
-        },
-        {
-          "programId": "s338-canada",
-          "program": "Section 338 duties on Canada (U.S. note 51)",
-          "state": "inEffect",
-          "headings": ["9903.03.14"],
-          "linesAffected": 17,
-          "linesNotModelled": 17,
-          "modelled": "no"
         }
       ],
       "upcoming": [],
       "accepted": [],
       "modelled": [
+        "Russia: 35% in lieu of Column 2 (U.S. note 30): 54 line(s)",
         "Section 301 (2026, 60 economies): 124 line(s)",
         "Section 301 (Brazil): 124 line(s)",
         "Section 301 (China, 2018-2019 lists): 56 line(s)",
         "Section 301 (China, 2024 increases): 62 line(s)",
-        "Section 301 (Nicaragua): 124 line(s)"
+        "Section 301 (Nicaragua): 124 line(s)",
+        "Section 338 duties on Canada (U.S. note 51): 17 line(s)"
       ],
       "acceptedConditions": ["s232-alu-russia-smelted-other-origin"]
     },
@@ -4118,20 +3272,12 @@
           "linesNotModelled": 13,
           "modelled": "no",
           "coverageNotes": ["9903.74.09: approximate coverage: certified vehicle parts, approximated as chapters 39–97 except 72, 73, 76"]
-        },
-        {
-          "programId": "russia-col2",
-          "program": "Russia: 35% in lieu of Column 2 (U.S. note 30)",
-          "state": "inEffect",
-          "headings": ["9903.90.09"],
-          "linesAffected": 3,
-          "linesNotModelled": 3,
-          "modelled": "no"
         }
       ],
       "upcoming": [],
       "accepted": [],
       "modelled": [
+        "Russia: 35% in lieu of Column 2 (U.S. note 30): 3 line(s)",
         "Section 301 (2026, 60 economies): 13 line(s)",
         "Section 301 (Brazil): 13 line(s)",
         "Section 301 (China, 2018-2019 lists): 10 line(s)",
@@ -4258,34 +3404,18 @@
           "linesNotModelled": 84,
           "modelled": "no",
           "coverageNotes": ["9903.74.09: approximate coverage: certified vehicle parts, approximated as chapters 39–97 except 72, 73, 76"]
-        },
-        {
-          "programId": "russia-col2",
-          "program": "Russia: 35% in lieu of Column 2 (U.S. note 30)",
-          "state": "inEffect",
-          "headings": ["9903.90.09"],
-          "linesAffected": 11,
-          "linesNotModelled": 11,
-          "modelled": "no"
-        },
-        {
-          "programId": "s338-canada",
-          "program": "Section 338 duties on Canada (U.S. note 51)",
-          "state": "inEffect",
-          "headings": ["9903.03.14"],
-          "linesAffected": 1,
-          "linesNotModelled": 1,
-          "modelled": "no"
         }
       ],
       "upcoming": [],
       "accepted": [],
       "modelled": [
+        "Russia: 35% in lieu of Column 2 (U.S. note 30): 11 line(s)",
         "Section 301 (2026, 60 economies): 84 line(s)",
         "Section 301 (Brazil): 84 line(s)",
         "Section 301 (China, 2018-2019 lists): 51 line(s)",
         "Section 301 (China, 2024 increases): 8 line(s)",
-        "Section 301 (Nicaragua): 84 line(s)"
+        "Section 301 (Nicaragua): 84 line(s)",
+        "Section 338 duties on Canada (U.S. note 51): 1 line(s)"
       ],
       "acceptedConditions": []
     },
@@ -4339,35 +3469,19 @@
             "9903.82.25"
           ],
           "linesAffected": 55,
-          "linesNotModelled": 55,
-          "modelled": "no"
-        },
-        {
-          "programId": "s338-canada",
-          "program": "Section 338 duties on Canada (U.S. note 51)",
-          "state": "inEffect",
-          "headings": ["9903.03.14"],
-          "linesAffected": 18,
-          "linesNotModelled": 18,
-          "modelled": "no"
-        },
-        {
-          "programId": "russia-col2",
-          "program": "Russia: 35% in lieu of Column 2 (U.S. note 30)",
-          "state": "inEffect",
-          "headings": ["9903.90.08"],
-          "linesAffected": 6,
-          "linesNotModelled": 6,
-          "modelled": "no"
+          "linesNotModelled": 52,
+          "modelled": "partial"
         }
       ],
       "upcoming": [],
       "accepted": [],
       "modelled": [
+        "Russia: 35% in lieu of Column 2 (U.S. note 30): 6 line(s)",
         "Section 301 (2026, 60 economies): 189 line(s)",
         "Section 301 (Brazil): 189 line(s)",
         "Section 301 (China, 2018-2019 lists): 168 line(s)",
-        "Section 301 (Nicaragua): 189 line(s)"
+        "Section 301 (Nicaragua): 189 line(s)",
+        "Section 338 duties on Canada (U.S. note 51): 18 line(s)"
       ],
       "acceptedConditions": []
     },
@@ -4424,33 +3538,17 @@
           "linesAffected": 31,
           "linesNotModelled": 31,
           "modelled": "no"
-        },
-        {
-          "programId": "s338-canada",
-          "program": "Section 338 duties on Canada (U.S. note 51)",
-          "state": "inEffect",
-          "headings": ["9903.03.14"],
-          "linesAffected": 18,
-          "linesNotModelled": 18,
-          "modelled": "no"
-        },
-        {
-          "programId": "russia-col2",
-          "program": "Russia: 35% in lieu of Column 2 (U.S. note 30)",
-          "state": "inEffect",
-          "headings": ["9903.90.08"],
-          "linesAffected": 3,
-          "linesNotModelled": 3,
-          "modelled": "no"
         }
       ],
       "upcoming": [],
       "accepted": [],
       "modelled": [
+        "Russia: 35% in lieu of Column 2 (U.S. note 30): 3 line(s)",
         "Section 301 (2026, 60 economies): 89 line(s)",
         "Section 301 (Brazil): 89 line(s)",
         "Section 301 (China, 2018-2019 lists): 81 line(s)",
-        "Section 301 (Nicaragua): 89 line(s)"
+        "Section 301 (Nicaragua): 89 line(s)",
+        "Section 338 duties on Canada (U.S. note 51): 18 line(s)"
       ],
       "acceptedConditions": ["s232-alu-russia-smelted-other-origin"]
     },
@@ -4520,46 +3618,22 @@
             "9903.85.68"
           ],
           "linesAffected": 408,
-          "linesNotModelled": 405,
+          "linesNotModelled": 32,
           "modelled": "partial"
-        },
-        {
-          "programId": "russia-col2",
-          "program": "Russia: 35% in lieu of Column 2 (U.S. note 30)",
-          "state": "inEffect",
-          "headings": ["9903.90.08"],
-          "linesAffected": 119,
-          "linesNotModelled": 119,
-          "modelled": "no"
-        },
-        {
-          "programId": "s338-canada",
-          "program": "Section 338 duties on Canada (U.S. note 51)",
-          "state": "inEffect",
-          "headings": ["9903.03.14"],
-          "linesAffected": 56,
-          "linesNotModelled": 56,
-          "modelled": "no"
-        },
-        {
-          "programId": "s232-semiconductors",
-          "program": "Section 232 semiconductors (U.S. note 39)",
-          "state": "inEffect",
-          "headings": ["9903.79.01"],
-          "linesAffected": 10,
-          "linesNotModelled": 10,
-          "modelled": "no"
         }
       ],
       "upcoming": [],
       "accepted": [],
       "modelled": [
+        "Russia: 35% in lieu of Column 2 (U.S. note 30): 119 line(s)",
+        "Section 232 semiconductors (U.S. note 39): 10 line(s)",
         "Section 301 (2026, 60 economies): 1706 line(s)",
         "Section 301 (Brazil): 1706 line(s)",
         "Section 301 (China, 2018-2019 lists): 1679 line(s)",
         "Section 301 (China, 2024 increases): 1 line(s)",
         "Section 301 (China, ship-to-shore cranes): 1 line(s)",
-        "Section 301 (Nicaragua): 1706 line(s)"
+        "Section 301 (Nicaragua): 1706 line(s)",
+        "Section 338 duties on Canada (U.S. note 51): 56 line(s)"
       ],
       "acceptedConditions": ["s232-alu-russia-smelted-other-origin"]
     },
@@ -4627,45 +3701,21 @@
             "9903.85.68"
           ],
           "linesAffected": 85,
-          "linesNotModelled": 83,
+          "linesNotModelled": 8,
           "modelled": "partial"
-        },
-        {
-          "programId": "s338-canada",
-          "program": "Section 338 duties on Canada (U.S. note 51)",
-          "state": "inEffect",
-          "headings": ["9903.03.14"],
-          "linesAffected": 62,
-          "linesNotModelled": 62,
-          "modelled": "no"
-        },
-        {
-          "programId": "russia-col2",
-          "program": "Russia: 35% in lieu of Column 2 (U.S. note 30)",
-          "state": "inEffect",
-          "headings": ["9903.90.08"],
-          "linesAffected": 18,
-          "linesNotModelled": 18,
-          "modelled": "no"
-        },
-        {
-          "programId": "s232-drones",
-          "program": "Section 232 unmanned aircraft (U.S. note 43)",
-          "state": "inEffect",
-          "headings": ["9903.08.21", "9903.08.23", "9903.08.24"],
-          "linesAffected": 2,
-          "linesNotModelled": 2,
-          "modelled": "no"
         }
       ],
       "upcoming": [],
       "accepted": [],
       "modelled": [
+        "Russia: 35% in lieu of Column 2 (U.S. note 30): 18 line(s)",
+        "Section 232 unmanned aircraft (U.S. note 43): 2 line(s)",
         "Section 301 (2026, 60 economies): 982 line(s)",
         "Section 301 (Brazil): 982 line(s)",
         "Section 301 (China, 2018-2019 lists): 832 line(s)",
         "Section 301 (China, 2024 increases): 69 line(s)",
-        "Section 301 (Nicaragua): 982 line(s)"
+        "Section 301 (Nicaragua): 982 line(s)",
+        "Section 338 duties on Canada (U.S. note 51): 62 line(s)"
       ],
       "acceptedConditions": ["s232-alu-russia-smelted-other-origin"]
     },
@@ -4709,20 +3759,12 @@
           "linesAffected": 23,
           "linesNotModelled": 23,
           "modelled": "no"
-        },
-        {
-          "programId": "russia-col2",
-          "program": "Russia: 35% in lieu of Column 2 (U.S. note 30)",
-          "state": "inEffect",
-          "headings": ["9903.90.08"],
-          "linesAffected": 2,
-          "linesNotModelled": 2,
-          "modelled": "no"
         }
       ],
       "upcoming": [],
       "accepted": [],
       "modelled": [
+        "Russia: 35% in lieu of Column 2 (U.S. note 30): 2 line(s)",
         "Section 301 (2026, 60 economies): 37 line(s)",
         "Section 301 (Brazil): 37 line(s)",
         "Section 301 (China, 2018-2019 lists): 36 line(s)",
@@ -4782,15 +3824,6 @@
           "coverageNotes": ["9903.74.09: approximate coverage: certified vehicle parts, approximated as chapters 39–97 except 72, 73, 76"]
         },
         {
-          "programId": "russia-col2",
-          "program": "Russia: 35% in lieu of Column 2 (U.S. note 30)",
-          "state": "inEffect",
-          "headings": ["9903.90.08"],
-          "linesAffected": 93,
-          "linesNotModelled": 93,
-          "modelled": "no"
-        },
-        {
           "programId": "s232-metals",
           "program": "Section 232 steel, aluminum, copper and derivatives (U.S. notes 16, 19)",
           "state": "inEffect",
@@ -4811,27 +3844,20 @@
             "9903.85.68"
           ],
           "linesAffected": 89,
-          "linesNotModelled": 88,
+          "linesNotModelled": 5,
           "modelled": "partial"
-        },
-        {
-          "programId": "s338-canada",
-          "program": "Section 338 duties on Canada (U.S. note 51)",
-          "state": "inEffect",
-          "headings": ["9903.03.14"],
-          "linesAffected": 7,
-          "linesNotModelled": 7,
-          "modelled": "no"
         }
       ],
       "upcoming": [],
       "accepted": [],
       "modelled": [
+        "Russia: 35% in lieu of Column 2 (U.S. note 30): 93 line(s)",
         "Section 301 (2026, 60 economies): 402 line(s)",
         "Section 301 (Brazil): 402 line(s)",
         "Section 301 (China, 2018-2019 lists): 367 line(s)",
         "Section 301 (China, 2024 increases): 39 line(s)",
-        "Section 301 (Nicaragua): 402 line(s)"
+        "Section 301 (Nicaragua): 402 line(s)",
+        "Section 338 duties on Canada (U.S. note 51): 7 line(s)"
       ],
       "acceptedConditions": ["s232-alu-russia-smelted-other-origin"]
     },
@@ -4866,30 +3892,14 @@
           "linesNotModelled": 67,
           "modelled": "no",
           "coverageNotes": ["9903.74.09: approximate coverage: certified vehicle parts, approximated as chapters 39–97 except 72, 73, 76"]
-        },
-        {
-          "programId": "russia-col2",
-          "program": "Russia: 35% in lieu of Column 2 (U.S. note 30)",
-          "state": "inEffect",
-          "headings": ["9903.90.08"],
-          "linesAffected": 31,
-          "linesNotModelled": 31,
-          "modelled": "no"
-        },
-        {
-          "programId": "s232-drones",
-          "program": "Section 232 unmanned aircraft (U.S. note 43)",
-          "state": "inEffect",
-          "headings": ["9903.08.21", "9903.08.22", "9903.08.23", "9903.08.24"],
-          "linesAffected": 22,
-          "linesNotModelled": 22,
-          "modelled": "no"
         }
       ],
       "upcoming": [],
       "accepted": [],
       "modelled": [
+        "Russia: 35% in lieu of Column 2 (U.S. note 30): 31 line(s)",
         "Section 232 steel, aluminum, copper and derivatives (U.S. notes 16, 19): 1 line(s)",
+        "Section 232 unmanned aircraft (U.S. note 43): 22 line(s)",
         "Section 301 (2026, 60 economies): 67 line(s)",
         "Section 301 (Brazil): 67 line(s)",
         "Section 301 (China, 2018-2019 lists): 67 line(s)",
@@ -4928,33 +3938,17 @@
           "linesNotModelled": 58,
           "modelled": "no",
           "coverageNotes": ["9903.74.09: approximate coverage: certified vehicle parts, approximated as chapters 39–97 except 72, 73, 76"]
-        },
-        {
-          "programId": "s338-canada",
-          "program": "Section 338 duties on Canada (U.S. note 51)",
-          "state": "inEffect",
-          "headings": ["9903.03.12", "9903.03.14"],
-          "linesAffected": 20,
-          "linesNotModelled": 20,
-          "modelled": "no"
-        },
-        {
-          "programId": "russia-col2",
-          "program": "Russia: 35% in lieu of Column 2 (U.S. note 30)",
-          "state": "inEffect",
-          "headings": ["9903.90.08"],
-          "linesAffected": 18,
-          "linesNotModelled": 18,
-          "modelled": "no"
         }
       ],
       "upcoming": [],
       "accepted": [],
       "modelled": [
+        "Russia: 35% in lieu of Column 2 (U.S. note 30): 18 line(s)",
         "Section 301 (2026, 60 economies): 58 line(s)",
         "Section 301 (Brazil): 58 line(s)",
         "Section 301 (China, 2018-2019 lists): 57 line(s)",
-        "Section 301 (Nicaragua): 58 line(s)"
+        "Section 301 (Nicaragua): 58 line(s)",
+        "Section 338 duties on Canada (U.S. note 51): 20 line(s)"
       ],
       "acceptedConditions": []
     },
@@ -5002,43 +3996,19 @@
           "linesNotModelled": 421,
           "modelled": "no",
           "coverageNotes": ["9903.74.09: approximate coverage: certified vehicle parts, approximated as chapters 39–97 except 72, 73, 76"]
-        },
-        {
-          "programId": "russia-col2",
-          "program": "Russia: 35% in lieu of Column 2 (U.S. note 30)",
-          "state": "inEffect",
-          "headings": ["9903.90.08"],
-          "linesAffected": 8,
-          "linesNotModelled": 8,
-          "modelled": "no"
-        },
-        {
-          "programId": "s232-metals",
-          "program": "Section 232 steel, aluminum, copper and derivatives (U.S. notes 16, 19)",
-          "state": "inEffect",
-          "headings": ["9903.82.07", "9903.82.10", "9903.82.12", "9903.85.68"],
-          "linesAffected": 2,
-          "linesNotModelled": 1,
-          "modelled": "partial"
-        },
-        {
-          "programId": "s338-canada",
-          "program": "Section 338 duties on Canada (U.S. note 51)",
-          "state": "inEffect",
-          "headings": ["9903.03.14"],
-          "linesAffected": 1,
-          "linesNotModelled": 1,
-          "modelled": "no"
         }
       ],
       "upcoming": [],
       "accepted": [],
       "modelled": [
+        "Russia: 35% in lieu of Column 2 (U.S. note 30): 8 line(s)",
+        "Section 232 steel, aluminum, copper and derivatives (U.S. notes 16, 19): 2 line(s)",
         "Section 301 (2026, 60 economies): 421 line(s)",
         "Section 301 (Brazil): 421 line(s)",
         "Section 301 (China, 2018-2019 lists): 364 line(s)",
         "Section 301 (China, 2024 increases): 4 line(s)",
-        "Section 301 (Nicaragua): 421 line(s)"
+        "Section 301 (Nicaragua): 421 line(s)",
+        "Section 338 duties on Canada (U.S. note 51): 1 line(s)"
       ],
       "acceptedConditions": ["s232-alu-russia-smelted-other-origin"]
     },
@@ -5159,20 +4129,12 @@
           "linesNotModelled": 67,
           "modelled": "no",
           "coverageNotes": ["9903.74.09: approximate coverage: certified vehicle parts, approximated as chapters 39–97 except 72, 73, 76"]
-        },
-        {
-          "programId": "russia-col2",
-          "program": "Russia: 35% in lieu of Column 2 (U.S. note 30)",
-          "state": "inEffect",
-          "headings": ["9903.90.08"],
-          "linesAffected": 15,
-          "linesNotModelled": 15,
-          "modelled": "no"
         }
       ],
       "upcoming": [],
       "accepted": [],
       "modelled": [
+        "Russia: 35% in lieu of Column 2 (U.S. note 30): 15 line(s)",
         "Section 301 (2026, 60 economies): 67 line(s)",
         "Section 301 (Brazil): 67 line(s)",
         "Section 301 (China, 2018-2019 lists): 66 line(s)",
@@ -5226,24 +4188,6 @@
           "coverageNotes": ["9903.74.09: approximate coverage: certified vehicle parts, approximated as chapters 39–97 except 72, 73, 76"]
         },
         {
-          "programId": "s338-canada",
-          "program": "Section 338 duties on Canada (U.S. note 51)",
-          "state": "inEffect",
-          "headings": ["9903.03.14"],
-          "linesAffected": 177,
-          "linesNotModelled": 177,
-          "modelled": "no"
-        },
-        {
-          "programId": "russia-col2",
-          "program": "Russia: 35% in lieu of Column 2 (U.S. note 30)",
-          "state": "inEffect",
-          "headings": ["9903.90.08"],
-          "linesAffected": 24,
-          "linesNotModelled": 24,
-          "modelled": "no"
-        },
-        {
           "programId": "s232-metals",
           "program": "Section 232 steel, aluminum, copper and derivatives (U.S. notes 16, 19)",
           "state": "inEffect",
@@ -5251,24 +4195,18 @@
           "linesAffected": 40,
           "linesNotModelled": 10,
           "modelled": "partial"
-        },
-        {
-          "programId": "s232-lumber",
-          "program": "Section 232 timber, lumber and wood products (U.S. note 37)",
-          "state": "inEffect",
-          "headings": ["9903.76.02", "9903.76.03", "9903.76.20", "9903.76.21", "9903.76.22", "9903.76.23", "9903.76.24"],
-          "linesAffected": 7,
-          "linesNotModelled": 7,
-          "modelled": "no"
         }
       ],
       "upcoming": [],
       "accepted": [],
       "modelled": [
+        "Russia: 35% in lieu of Column 2 (U.S. note 30): 24 line(s)",
+        "Section 232 timber, lumber and wood products (U.S. note 37): 7 line(s)",
         "Section 301 (2026, 60 economies): 275 line(s)",
         "Section 301 (Brazil): 275 line(s)",
         "Section 301 (China, 2018-2019 lists): 259 line(s)",
-        "Section 301 (Nicaragua): 275 line(s)"
+        "Section 301 (Nicaragua): 275 line(s)",
+        "Section 338 duties on Canada (U.S. note 51): 177 line(s)"
       ],
       "acceptedConditions": ["s232-alu-russia-smelted-other-origin"]
     },
@@ -5303,34 +4241,18 @@
           "linesNotModelled": 118,
           "modelled": "no",
           "coverageNotes": ["9903.74.09: approximate coverage: certified vehicle parts, approximated as chapters 39–97 except 72, 73, 76"]
-        },
-        {
-          "programId": "s338-canada",
-          "program": "Section 338 duties on Canada (U.S. note 51)",
-          "state": "inEffect",
-          "headings": ["9903.03.12", "9903.03.14"],
-          "linesAffected": 27,
-          "linesNotModelled": 27,
-          "modelled": "no"
-        },
-        {
-          "programId": "russia-col2",
-          "program": "Russia: 35% in lieu of Column 2 (U.S. note 30)",
-          "state": "inEffect",
-          "headings": ["9903.90.08"],
-          "linesAffected": 7,
-          "linesNotModelled": 7,
-          "modelled": "no"
         }
       ],
       "upcoming": [],
       "accepted": [],
       "modelled": [
+        "Russia: 35% in lieu of Column 2 (U.S. note 30): 7 line(s)",
         "Section 232 steel, aluminum, copper and derivatives (U.S. notes 16, 19): 22 line(s)",
         "Section 301 (2026, 60 economies): 118 line(s)",
         "Section 301 (Brazil): 118 line(s)",
         "Section 301 (China, 2018-2019 lists): 81 line(s)",
-        "Section 301 (Nicaragua): 118 line(s)"
+        "Section 301 (Nicaragua): 118 line(s)",
+        "Section 338 duties on Canada (U.S. note 51): 27 line(s)"
       ],
       "acceptedConditions": ["s232-alu-russia-smelted-other-origin"]
     },
@@ -5365,20 +4287,12 @@
           "linesNotModelled": 157,
           "modelled": "no",
           "coverageNotes": ["9903.74.09: approximate coverage: certified vehicle parts, approximated as chapters 39–97 except 72, 73, 76"]
-        },
-        {
-          "programId": "russia-col2",
-          "program": "Russia: 35% in lieu of Column 2 (U.S. note 30)",
-          "state": "inEffect",
-          "headings": ["9903.90.08"],
-          "linesAffected": 1,
-          "linesNotModelled": 1,
-          "modelled": "no"
         }
       ],
       "upcoming": [],
       "accepted": [],
       "modelled": [
+        "Russia: 35% in lieu of Column 2 (U.S. note 30): 1 line(s)",
         "Section 232 steel, aluminum, copper and derivatives (U.S. notes 16, 19): 1 line(s)",
         "Section 301 (2026, 60 economies): 157 line(s)",
         "Section 301 (Brazil): 157 line(s)",
@@ -5392,15 +4306,6 @@
       "lines": 30,
       "status": "NOT READY",
       "gaps": [
-        {
-          "programId": "russia-col2",
-          "program": "Russia: 35% in lieu of Column 2 (U.S. note 30)",
-          "state": "inEffect",
-          "headings": ["9903.90.08"],
-          "linesAffected": 30,
-          "linesNotModelled": 30,
-          "modelled": "no"
-        },
         {
           "programId": "s232-autos",
           "program": "Section 232 autos and auto parts (U.S. note 33)",
@@ -5427,24 +4332,17 @@
           "linesNotModelled": 30,
           "modelled": "no",
           "coverageNotes": ["9903.74.09: approximate coverage: certified vehicle parts, approximated as chapters 39–97 except 72, 73, 76"]
-        },
-        {
-          "programId": "s338-canada",
-          "program": "Section 338 duties on Canada (U.S. note 51)",
-          "state": "inEffect",
-          "headings": ["9903.03.14"],
-          "linesAffected": 16,
-          "linesNotModelled": 16,
-          "modelled": "no"
         }
       ],
       "upcoming": [],
       "accepted": [],
       "modelled": [
+        "Russia: 35% in lieu of Column 2 (U.S. note 30): 30 line(s)",
         "Section 301 (2026, 60 economies): 30 line(s)",
         "Section 301 (Brazil): 30 line(s)",
         "Section 301 (China, 2018-2019 lists): 30 line(s)",
-        "Section 301 (Nicaragua): 30 line(s)"
+        "Section 301 (Nicaragua): 30 line(s)",
+        "Section 338 duties on Canada (U.S. note 51): 16 line(s)"
       ],
       "acceptedConditions": []
     }
