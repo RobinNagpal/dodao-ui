@@ -169,7 +169,7 @@ The App Setting **`TARIFF_CALC_MEASURES_ENABLED`** (Admin → App Settings, grou
 
 **Documented production value** (keep this line in sync with the App Setting — CI reads it):
 
-<!-- calc-enabled-chapters: 1,30 -->
+<!-- calc-enabled-chapters: 1,2,3,7,8,9,10,11,16,18,20,21,23,24,30,31 -->
 
 `TARIFF_CALC_MEASURES_ENABLED = 1,30`
 
