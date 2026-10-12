@@ -17,15 +17,21 @@ export const RATE_TABLE_NOTE =
 export function chapterJsonRows(rows: readonly HtsJsonRow[], chapter: number): HtsJsonRow[] {
   const prefix = String(chapter).padStart(2, '0');
   const out: HtsJsonRow[] = [];
+  // Unnumbered rows are held until the next numbered row shows whose they are: a grouping row inside
+  // the chapter is kept, a heading of the next chapter ("I. CHEMICAL ELEMENTS" before 2801) is not.
+  let pending: HtsJsonRow[] = [];
   let inChapter = false;
   for (const r of rows) {
     const no = (r.htsno ?? '').trim();
-    if (no) {
-      if (no.slice(0, 2) === prefix) inChapter = true;
-      else if (inChapter) break;
-      else continue;
+    if (!no) {
+      if (inChapter) pending.push(r);
+      continue;
     }
-    if (inChapter) out.push(r);
+    if (no.slice(0, 2) === prefix) {
+      inChapter = true;
+      out.push(...pending, r);
+      pending = [];
+    } else if (inChapter) break;
   }
   if (out.length === 0) throw new Error(`chapter ${prefix} not found in the HTS JSON`);
   return out;

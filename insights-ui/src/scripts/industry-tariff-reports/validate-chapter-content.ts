@@ -66,6 +66,7 @@ export const OFFICIAL_SOURCE_DOMAINS: readonly string[] = [
   'fws.gov', // Fish and Wildlife Service
   'state.gov', // shrimp/sea-turtle certification (DS-2031)
   'treasury.gov', // OFAC sanctions and import bans
+  'irs.gov', // excise taxes collected at import (Form 720 / 6627)
   'ttb.gov', // alcohol and tobacco permits
   'epa.gov',
   // U.S. courts
