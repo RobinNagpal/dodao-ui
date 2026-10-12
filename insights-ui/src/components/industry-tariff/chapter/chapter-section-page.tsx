@@ -28,7 +28,8 @@ import {
 import { tariffReportTag } from '@/utils/tariff-report-tags';
 import { hasChapterExports, latestExportChange } from '@/utils/tariff-reports/chapter-exports';
 import { approach2PageGlossaryTerms } from '@/utils/tariff-reports/chapter-glossary';
-import { getChapterPrototype, latestChapterChange } from '@/utils/tariff-reports/chapter-prototype';
+import { latestChapterChange } from '@/utils/tariff-reports/chapter-prototype';
+import type { TariffChapterPrototype } from '@/types/tariff-chapter-prototype';
 import { isValidTariffChapterSlug } from '@/utils/tariff-reports/tariff-input-validation';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
@@ -160,16 +161,22 @@ interface ChapterArticleProps {
   ratesAsOf?: string;
   // Approach-2 pages that hold no rates (import statistics, FAQ) say "Updated" instead of "Rates checked".
   asOfLabel?: string;
+  // Approach-2 pages pass the chapter's loaded content (`getChapterPrototype`) so the header's latest
+  // change and the key-terms box read from it without loading the content file again.
+  prototype?: TariffChapterPrototype | null;
 }
 
 // The header's "Latest change" line for an Approach-2 page: the newest change on the tariff-updates
 // page of the same direction (import or export), linked to that page.
-function approach2LatestChange(chapterSlug: string, direction: ChapterReportDirection): { date: string; title: string; href: string } | undefined {
+function approach2LatestChange(
+  chapterSlug: string,
+  direction: ChapterReportDirection,
+  prototype: TariffChapterPrototype | null
+): { date: string; title: string; href: string } | undefined {
   if (direction === 'export') {
     const change = latestExportChange(chapterSlug);
     return change ? { ...change, href: chapterSectionHref(chapterSlug, 'exports/tariff-updates') } : undefined;
   }
-  const prototype = getChapterPrototype(chapterSlug);
   const change = prototype ? latestChapterChange(prototype) : null;
   return change ? { ...change, href: chapterSectionHref(chapterSlug, 'tariff-updates') } : undefined;
 }
@@ -193,6 +200,7 @@ export function ChapterArticle({
   direction = 'import',
   ratesAsOf,
   asOfLabel,
+  prototype = null,
 }: ChapterArticleProps): JSX.Element {
   // Approach-2 pages name the footer badge after the page, like their tab and H1.
   const footerLabel = ratesAsOf ? approach2SectionLabel(currentSlug) : sectionLabel;
@@ -215,7 +223,7 @@ export function ChapterArticle({
             pageTitle={pageTitle}
             ratesAsOf={ratesAsOf}
             asOfLabel={asOfLabel}
-            latestChange={approach2LatestChange(chapter.slug, direction)}
+            latestChange={approach2LatestChange(chapter.slug, direction, prototype)}
             toolLinks={toolsCrossLinks}
             currentSlug={currentSlug}
             direction={direction}
@@ -244,7 +252,7 @@ export function ChapterArticle({
           </>
         )}
         {/* Approach-2 pages: plain-English definitions of the jargon this page's content uses (issue #1784). */}
-        {ratesAsOf && <ChapterKeyTerms terms={approach2PageGlossaryTerms(chapter.slug, currentSlug, direction)} />}
+        {ratesAsOf && <ChapterKeyTerms terms={approach2PageGlossaryTerms(prototype, chapter.slug, currentSlug, direction)} />}
         {children}
         {ratesAsOf && <ChapterNextPageNav chapter={chapter} currentSlug={currentSlug} direction={direction} />}
         <footer className="mt-8 pt-6 border-t border-color">

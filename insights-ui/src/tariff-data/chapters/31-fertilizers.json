@@ -136,8 +136,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "3101",
-          "ancestorPath": [],
-          "searchText": "animal or vegetable fertilizers, whether or not mixed together or chemically treated; fertilizers produced by the mixing or chemical treatment of animal or vegetable products 3101.00.00.00"
+          "ancestorPath": []
         },
         {
           "id": "r1",
@@ -160,8 +159,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "3102",
-          "ancestorPath": [],
-          "searchText": "mineral or chemical fertilizers, nitrogenous: 3102"
+          "ancestorPath": []
         },
         {
           "id": "r2",
@@ -184,8 +182,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "3102",
-          "ancestorPath": ["Mineral or chemical fertilizers, nitrogenous"],
-          "searchText": "mineral or chemical fertilizers, nitrogenous urea, whether or not in aqueous solution 3102.10.00"
+          "ancestorPath": ["Mineral or chemical fertilizers, nitrogenous"]
         },
         {
           "id": "r3",
@@ -208,8 +205,7 @@
           "column2InheritedFrom": "3102.10.00",
           "dutiable": false,
           "heading": "3102",
-          "ancestorPath": ["Mineral or chemical fertilizers, nitrogenous", "Urea, whether or not in aqueous solution"],
-          "searchText": "mineral or chemical fertilizers, nitrogenous urea, whether or not in aqueous solution solid urea 3102.10.00.10"
+          "ancestorPath": ["Mineral or chemical fertilizers, nitrogenous", "Urea, whether or not in aqueous solution"]
         },
         {
           "id": "r4",
@@ -232,8 +228,7 @@
           "column2InheritedFrom": "3102.10.00",
           "dutiable": false,
           "heading": "3102",
-          "ancestorPath": ["Mineral or chemical fertilizers, nitrogenous", "Urea, whether or not in aqueous solution"],
-          "searchText": "mineral or chemical fertilizers, nitrogenous urea, whether or not in aqueous solution other: "
+          "ancestorPath": ["Mineral or chemical fertilizers, nitrogenous", "Urea, whether or not in aqueous solution"]
         },
         {
           "id": "r5",
@@ -256,8 +251,7 @@
           "column2InheritedFrom": "3102.10.00",
           "dutiable": false,
           "heading": "3102",
-          "ancestorPath": ["Mineral or chemical fertilizers, nitrogenous", "Urea, whether or not in aqueous solution", "Other"],
-          "searchText": "mineral or chemical fertilizers, nitrogenous urea, whether or not in aqueous solution other diesel exhaust fluid (def) of a kind meeting iso 22241 3102.10.00.30"
+          "ancestorPath": ["Mineral or chemical fertilizers, nitrogenous", "Urea, whether or not in aqueous solution", "Other"]
         },
         {
           "id": "r6",
@@ -280,8 +274,7 @@
           "column2InheritedFrom": "3102.10.00",
           "dutiable": false,
           "heading": "3102",
-          "ancestorPath": ["Mineral or chemical fertilizers, nitrogenous", "Urea, whether or not in aqueous solution", "Other"],
-          "searchText": "mineral or chemical fertilizers, nitrogenous urea, whether or not in aqueous solution other other 3102.10.00.50"
+          "ancestorPath": ["Mineral or chemical fertilizers, nitrogenous", "Urea, whether or not in aqueous solution", "Other"]
         },
         {
           "id": "r7",
@@ -304,8 +297,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "3102",
-          "ancestorPath": ["Mineral or chemical fertilizers, nitrogenous"],
-          "searchText": "mineral or chemical fertilizers, nitrogenous ammonium sulfate; double salts and mixtures of ammonium sulfate and ammonium nitrate: "
+          "ancestorPath": ["Mineral or chemical fertilizers, nitrogenous"]
         },
         {
           "id": "r8",
@@ -331,8 +323,7 @@
           "ancestorPath": [
             "Mineral or chemical fertilizers, nitrogenous",
             "Ammonium sulfate; double salts and mixtures of ammonium sulfate and ammonium nitrate"
-          ],
-          "searchText": "mineral or chemical fertilizers, nitrogenous ammonium sulfate; double salts and mixtures of ammonium sulfate and ammonium nitrate ammonium sulfate 3102.21.00.00"
+          ]
         },
         {
           "id": "r9",
@@ -358,8 +349,7 @@
           "ancestorPath": [
             "Mineral or chemical fertilizers, nitrogenous",
             "Ammonium sulfate; double salts and mixtures of ammonium sulfate and ammonium nitrate"
-          ],
-          "searchText": "mineral or chemical fertilizers, nitrogenous ammonium sulfate; double salts and mixtures of ammonium sulfate and ammonium nitrate other 3102.29.00.00"
+          ]
         },
         {
           "id": "r10",
@@ -382,8 +372,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "3102",
-          "ancestorPath": ["Mineral or chemical fertilizers, nitrogenous"],
-          "searchText": "mineral or chemical fertilizers, nitrogenous ammonium nitrate, whether or not in aqueous solution 3102.30.00.00"
+          "ancestorPath": ["Mineral or chemical fertilizers, nitrogenous"]
         },
         {
           "id": "r11",
@@ -406,8 +395,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "3102",
-          "ancestorPath": ["Mineral or chemical fertilizers, nitrogenous"],
-          "searchText": "mineral or chemical fertilizers, nitrogenous mixtures of ammonium nitrate with calcium carbonate or other inorganic nonfertilizing substances 3102.40.00.00"
+          "ancestorPath": ["Mineral or chemical fertilizers, nitrogenous"]
         },
         {
           "id": "r12",
@@ -430,8 +418,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "3102",
-          "ancestorPath": ["Mineral or chemical fertilizers, nitrogenous"],
-          "searchText": "mineral or chemical fertilizers, nitrogenous sodium nitrate 3102.50.00.00"
+          "ancestorPath": ["Mineral or chemical fertilizers, nitrogenous"]
         },
         {
           "id": "r13",
@@ -454,8 +441,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "3102",
-          "ancestorPath": ["Mineral or chemical fertilizers, nitrogenous"],
-          "searchText": "mineral or chemical fertilizers, nitrogenous double salts and mixtures of calcium nitrate and ammonium nitrate 3102.60.00.00"
+          "ancestorPath": ["Mineral or chemical fertilizers, nitrogenous"]
         },
         {
           "id": "r14",
@@ -478,8 +464,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "3102",
-          "ancestorPath": ["Mineral or chemical fertilizers, nitrogenous"],
-          "searchText": "mineral or chemical fertilizers, nitrogenous mixtures of urea and ammonium nitrate in aqueous or ammoniacal solution 3102.80.00.00"
+          "ancestorPath": ["Mineral or chemical fertilizers, nitrogenous"]
         },
         {
           "id": "r15",
@@ -502,8 +487,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "3102",
-          "ancestorPath": ["Mineral or chemical fertilizers, nitrogenous"],
-          "searchText": "mineral or chemical fertilizers, nitrogenous other, including mixtures not specified in the foregoing subheadings 3102.90.01.00"
+          "ancestorPath": ["Mineral or chemical fertilizers, nitrogenous"]
         },
         {
           "id": "r16",
@@ -526,8 +510,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "3103",
-          "ancestorPath": [],
-          "searchText": "mineral or chemical fertilizers, phosphatic: 3103"
+          "ancestorPath": []
         },
         {
           "id": "r17",
@@ -550,8 +533,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "3103",
-          "ancestorPath": ["Mineral or chemical fertilizers, phosphatic"],
-          "searchText": "mineral or chemical fertilizers, phosphatic superphosphates: "
+          "ancestorPath": ["Mineral or chemical fertilizers, phosphatic"]
         },
         {
           "id": "r18",
@@ -574,8 +556,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "3103",
-          "ancestorPath": ["Mineral or chemical fertilizers, phosphatic", "Superphosphates"],
-          "searchText": "mineral or chemical fertilizers, phosphatic superphosphates containing by weight 35 percent or more of diphosphorous pentaoxide (p2o5) 3103.11.00.00"
+          "ancestorPath": ["Mineral or chemical fertilizers, phosphatic", "Superphosphates"]
         },
         {
           "id": "r19",
@@ -598,8 +579,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "3103",
-          "ancestorPath": ["Mineral or chemical fertilizers, phosphatic", "Superphosphates"],
-          "searchText": "mineral or chemical fertilizers, phosphatic superphosphates other 3103.19.00.00"
+          "ancestorPath": ["Mineral or chemical fertilizers, phosphatic", "Superphosphates"]
         },
         {
           "id": "r20",
@@ -622,8 +602,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "3103",
-          "ancestorPath": ["Mineral or chemical fertilizers, phosphatic"],
-          "searchText": "mineral or chemical fertilizers, phosphatic other 3103.90.01.00"
+          "ancestorPath": ["Mineral or chemical fertilizers, phosphatic"]
         },
         {
           "id": "r21",
@@ -646,8 +625,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "3104",
-          "ancestorPath": [],
-          "searchText": "mineral or chemical fertilizers, potassic: 3104"
+          "ancestorPath": []
         },
         {
           "id": "r22",
@@ -670,8 +648,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "3104",
-          "ancestorPath": ["Mineral or chemical fertilizers, potassic"],
-          "searchText": "mineral or chemical fertilizers, potassic potassium chloride 3104.20.00"
+          "ancestorPath": ["Mineral or chemical fertilizers, potassic"]
         },
         {
           "id": "r23",
@@ -694,8 +671,7 @@
           "column2InheritedFrom": "3104.20.00",
           "dutiable": false,
           "heading": "3104",
-          "ancestorPath": ["Mineral or chemical fertilizers, potassic", "Potassium chloride"],
-          "searchText": "mineral or chemical fertilizers, potassic potassium chloride containing not more than 62 percent by weight of potassium oxide (k2o) 3104.20.00.10"
+          "ancestorPath": ["Mineral or chemical fertilizers, potassic", "Potassium chloride"]
         },
         {
           "id": "r24",
@@ -718,8 +694,7 @@
           "column2InheritedFrom": "3104.20.00",
           "dutiable": false,
           "heading": "3104",
-          "ancestorPath": ["Mineral or chemical fertilizers, potassic", "Potassium chloride"],
-          "searchText": "mineral or chemical fertilizers, potassic potassium chloride containing more than 62 percent by weight of potassium oxide (k2o) 3104.20.00.50"
+          "ancestorPath": ["Mineral or chemical fertilizers, potassic", "Potassium chloride"]
         },
         {
           "id": "r25",
@@ -742,8 +717,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "3104",
-          "ancestorPath": ["Mineral or chemical fertilizers, potassic"],
-          "searchText": "mineral or chemical fertilizers, potassic potassium sulfate 3104.30.00.00"
+          "ancestorPath": ["Mineral or chemical fertilizers, potassic"]
         },
         {
           "id": "r26",
@@ -766,8 +740,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "3104",
-          "ancestorPath": ["Mineral or chemical fertilizers, potassic"],
-          "searchText": "mineral or chemical fertilizers, potassic other 3104.90.01.00"
+          "ancestorPath": ["Mineral or chemical fertilizers, potassic"]
         },
         {
           "id": "r27",
@@ -790,8 +763,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "3105",
-          "ancestorPath": [],
-          "searchText": "mineral or chemical fertilizers containing two or three of the fertilizing elements nitrogen, phosphorus and potassium; other fertilizers; goods of this chapter in tablets or similar forms or in packages of a gross weight not exceeding 10 kg: 3105"
+          "ancestorPath": []
         },
         {
           "id": "r28",
@@ -816,8 +788,7 @@
           "heading": "3105",
           "ancestorPath": [
             "Mineral or chemical fertilizers containing two or three of the fertilizing elements nitrogen, phosphorus and potassium; other fertilizers; goods of this chapter in tablets or similar forms or in packages of a gross weight not exceeding 10 kg"
-          ],
-          "searchText": "mineral or chemical fertilizers containing two or three of the fertilizing elements nitrogen, phosphorus and potassium; other fertilizers; goods of this chapter in tablets or similar forms or in packages of a gross weight not exceeding 10 kg products of this chapter in tablets or similar forms or in packages of a gross weight not exceeding 10 kg 3105.10.00.00"
+          ]
         },
         {
           "id": "r29",
@@ -842,8 +813,7 @@
           "heading": "3105",
           "ancestorPath": [
             "Mineral or chemical fertilizers containing two or three of the fertilizing elements nitrogen, phosphorus and potassium; other fertilizers; goods of this chapter in tablets or similar forms or in packages of a gross weight not exceeding 10 kg"
-          ],
-          "searchText": "mineral or chemical fertilizers containing two or three of the fertilizing elements nitrogen, phosphorus and potassium; other fertilizers; goods of this chapter in tablets or similar forms or in packages of a gross weight not exceeding 10 kg mineral or chemical fertilizers containing the three fertilizing elements nitrogen, phosphorus and potassium 3105.20.00.00"
+          ]
         },
         {
           "id": "r30",
@@ -868,8 +838,7 @@
           "heading": "3105",
           "ancestorPath": [
             "Mineral or chemical fertilizers containing two or three of the fertilizing elements nitrogen, phosphorus and potassium; other fertilizers; goods of this chapter in tablets or similar forms or in packages of a gross weight not exceeding 10 kg"
-          ],
-          "searchText": "mineral or chemical fertilizers containing two or three of the fertilizing elements nitrogen, phosphorus and potassium; other fertilizers; goods of this chapter in tablets or similar forms or in packages of a gross weight not exceeding 10 kg diammonium hydrogenorthophosphate (diammonium phosphate) 3105.30.00.00"
+          ]
         },
         {
           "id": "r31",
@@ -894,8 +863,7 @@
           "heading": "3105",
           "ancestorPath": [
             "Mineral or chemical fertilizers containing two or three of the fertilizing elements nitrogen, phosphorus and potassium; other fertilizers; goods of this chapter in tablets or similar forms or in packages of a gross weight not exceeding 10 kg"
-          ],
-          "searchText": "mineral or chemical fertilizers containing two or three of the fertilizing elements nitrogen, phosphorus and potassium; other fertilizers; goods of this chapter in tablets or similar forms or in packages of a gross weight not exceeding 10 kg ammonium dihydrogenorthophosphate (monoammonium phosphate) and mixtures thereof with diammonium hydrogenorthophosphate (diammonium phosphate) 3105.40.00"
+          ]
         },
         {
           "id": "r32",
@@ -921,8 +889,7 @@
           "ancestorPath": [
             "Mineral or chemical fertilizers containing two or three of the fertilizing elements nitrogen, phosphorus and potassium; other fertilizers; goods of this chapter in tablets or similar forms or in packages of a gross weight not exceeding 10 kg",
             "Ammonium dihydrogenorthophosphate (Monoammonium phosphate) and mixtures thereof with diammonium hydrogenorthophosphate (Diammonium phosphate)"
-          ],
-          "searchText": "mineral or chemical fertilizers containing two or three of the fertilizing elements nitrogen, phosphorus and potassium; other fertilizers; goods of this chapter in tablets or similar forms or in packages of a gross weight not exceeding 10 kg ammonium dihydrogenorthophosphate (monoammonium phosphate) and mixtures thereof with diammonium hydrogenorthophosphate (diammonium phosphate) ammonium dihydrogenorthophosphate (monoammonium phosphate) 3105.40.00.10"
+          ]
         },
         {
           "id": "r33",
@@ -948,8 +915,7 @@
           "ancestorPath": [
             "Mineral or chemical fertilizers containing two or three of the fertilizing elements nitrogen, phosphorus and potassium; other fertilizers; goods of this chapter in tablets or similar forms or in packages of a gross weight not exceeding 10 kg",
             "Ammonium dihydrogenorthophosphate (Monoammonium phosphate) and mixtures thereof with diammonium hydrogenorthophosphate (Diammonium phosphate)"
-          ],
-          "searchText": "mineral or chemical fertilizers containing two or three of the fertilizing elements nitrogen, phosphorus and potassium; other fertilizers; goods of this chapter in tablets or similar forms or in packages of a gross weight not exceeding 10 kg ammonium dihydrogenorthophosphate (monoammonium phosphate) and mixtures thereof with diammonium hydrogenorthophosphate (diammonium phosphate) other 3105.40.00.50"
+          ]
         },
         {
           "id": "r34",
@@ -974,8 +940,7 @@
           "heading": "3105",
           "ancestorPath": [
             "Mineral or chemical fertilizers containing two or three of the fertilizing elements nitrogen, phosphorus and potassium; other fertilizers; goods of this chapter in tablets or similar forms or in packages of a gross weight not exceeding 10 kg"
-          ],
-          "searchText": "mineral or chemical fertilizers containing two or three of the fertilizing elements nitrogen, phosphorus and potassium; other fertilizers; goods of this chapter in tablets or similar forms or in packages of a gross weight not exceeding 10 kg other mineral or chemical fertilizers containing the two fertilizing elements nitrogen and phosphorus: "
+          ]
         },
         {
           "id": "r35",
@@ -1001,8 +966,7 @@
           "ancestorPath": [
             "Mineral or chemical fertilizers containing two or three of the fertilizing elements nitrogen, phosphorus and potassium; other fertilizers; goods of this chapter in tablets or similar forms or in packages of a gross weight not exceeding 10 kg",
             "Other mineral or chemical fertilizers containing the two fertilizing elements nitrogen and phosphorus"
-          ],
-          "searchText": "mineral or chemical fertilizers containing two or three of the fertilizing elements nitrogen, phosphorus and potassium; other fertilizers; goods of this chapter in tablets or similar forms or in packages of a gross weight not exceeding 10 kg other mineral or chemical fertilizers containing the two fertilizing elements nitrogen and phosphorus containing nitrates and phosphates 3105.51.00.00"
+          ]
         },
         {
           "id": "r36",
@@ -1028,8 +992,7 @@
           "ancestorPath": [
             "Mineral or chemical fertilizers containing two or three of the fertilizing elements nitrogen, phosphorus and potassium; other fertilizers; goods of this chapter in tablets or similar forms or in packages of a gross weight not exceeding 10 kg",
             "Other mineral or chemical fertilizers containing the two fertilizing elements nitrogen and phosphorus"
-          ],
-          "searchText": "mineral or chemical fertilizers containing two or three of the fertilizing elements nitrogen, phosphorus and potassium; other fertilizers; goods of this chapter in tablets or similar forms or in packages of a gross weight not exceeding 10 kg other mineral or chemical fertilizers containing the two fertilizing elements nitrogen and phosphorus other 3105.59.00.00"
+          ]
         },
         {
           "id": "r37",
@@ -1054,8 +1017,7 @@
           "heading": "3105",
           "ancestorPath": [
             "Mineral or chemical fertilizers containing two or three of the fertilizing elements nitrogen, phosphorus and potassium; other fertilizers; goods of this chapter in tablets or similar forms or in packages of a gross weight not exceeding 10 kg"
-          ],
-          "searchText": "mineral or chemical fertilizers containing two or three of the fertilizing elements nitrogen, phosphorus and potassium; other fertilizers; goods of this chapter in tablets or similar forms or in packages of a gross weight not exceeding 10 kg mineral or chemical fertilizers containing the two fertilizing elements phosphorus and potassium 3105.60.00.00"
+          ]
         },
         {
           "id": "r38",
@@ -1080,8 +1042,7 @@
           "heading": "3105",
           "ancestorPath": [
             "Mineral or chemical fertilizers containing two or three of the fertilizing elements nitrogen, phosphorus and potassium; other fertilizers; goods of this chapter in tablets or similar forms or in packages of a gross weight not exceeding 10 kg"
-          ],
-          "searchText": "mineral or chemical fertilizers containing two or three of the fertilizing elements nitrogen, phosphorus and potassium; other fertilizers; goods of this chapter in tablets or similar forms or in packages of a gross weight not exceeding 10 kg other 3105.90.00"
+          ]
         },
         {
           "id": "r39",
@@ -1107,8 +1068,7 @@
           "ancestorPath": [
             "Mineral or chemical fertilizers containing two or three of the fertilizing elements nitrogen, phosphorus and potassium; other fertilizers; goods of this chapter in tablets or similar forms or in packages of a gross weight not exceeding 10 kg",
             "Other"
-          ],
-          "searchText": "mineral or chemical fertilizers containing two or three of the fertilizing elements nitrogen, phosphorus and potassium; other fertilizers; goods of this chapter in tablets or similar forms or in packages of a gross weight not exceeding 10 kg other potassium nitrate-sodium nitrate mixtures 3105.90.00.10"
+          ]
         },
         {
           "id": "r40",
@@ -1134,8 +1094,7 @@
           "ancestorPath": [
             "Mineral or chemical fertilizers containing two or three of the fertilizing elements nitrogen, phosphorus and potassium; other fertilizers; goods of this chapter in tablets or similar forms or in packages of a gross weight not exceeding 10 kg",
             "Other"
-          ],
-          "searchText": "mineral or chemical fertilizers containing two or three of the fertilizing elements nitrogen, phosphorus and potassium; other fertilizers; goods of this chapter in tablets or similar forms or in packages of a gross weight not exceeding 10 kg other other 3105.90.00.50"
+          ]
         }
       ]
     },
@@ -1585,9 +1544,6 @@
     "lines": [
       {
         "hts": "3101.00.00.00",
-        "description": "Animal or vegetable fertilizers, whether or not mixed together or chemically treated; fertilizers produced by the mixing or chemical treatment of animal or vegetable products",
-        "ancestorPath": [],
-        "searchText": "animal or vegetable fertilizers, whether or not mixed together or chemically treated; fertilizers produced by the mixing or chemical treatment of animal or vegetable products 3101.00.00.00",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -1595,9 +1551,6 @@
       },
       {
         "hts": "3102.10.00.10",
-        "description": "Solid urea",
-        "ancestorPath": ["Mineral or chemical fertilizers, nitrogenous", "Urea, whether or not in aqueous solution"],
-        "searchText": "mineral or chemical fertilizers, nitrogenous urea, whether or not in aqueous solution solid urea 3102.10.00.10",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -1605,9 +1558,6 @@
       },
       {
         "hts": "3102.10.00.30",
-        "description": "Diesel exhaust fluid (DEF) of a kind meeting ISO 22241",
-        "ancestorPath": ["Mineral or chemical fertilizers, nitrogenous", "Urea, whether or not in aqueous solution", "Other"],
-        "searchText": "mineral or chemical fertilizers, nitrogenous urea, whether or not in aqueous solution other diesel exhaust fluid (def) of a kind meeting iso 22241 3102.10.00.30",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -1615,9 +1565,6 @@
       },
       {
         "hts": "3102.10.00.50",
-        "description": "Other",
-        "ancestorPath": ["Mineral or chemical fertilizers, nitrogenous", "Urea, whether or not in aqueous solution", "Other"],
-        "searchText": "mineral or chemical fertilizers, nitrogenous urea, whether or not in aqueous solution other other 3102.10.00.50",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -1625,12 +1572,6 @@
       },
       {
         "hts": "3102.21.00.00",
-        "description": "Ammonium sulfate",
-        "ancestorPath": [
-          "Mineral or chemical fertilizers, nitrogenous",
-          "Ammonium sulfate; double salts and mixtures of ammonium sulfate and ammonium nitrate"
-        ],
-        "searchText": "mineral or chemical fertilizers, nitrogenous ammonium sulfate; double salts and mixtures of ammonium sulfate and ammonium nitrate ammonium sulfate 3102.21.00.00",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -1638,12 +1579,6 @@
       },
       {
         "hts": "3102.29.00.00",
-        "description": "Other",
-        "ancestorPath": [
-          "Mineral or chemical fertilizers, nitrogenous",
-          "Ammonium sulfate; double salts and mixtures of ammonium sulfate and ammonium nitrate"
-        ],
-        "searchText": "mineral or chemical fertilizers, nitrogenous ammonium sulfate; double salts and mixtures of ammonium sulfate and ammonium nitrate other 3102.29.00.00",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -1651,9 +1586,6 @@
       },
       {
         "hts": "3102.30.00.00",
-        "description": "Ammonium nitrate, whether or not in aqueous solution",
-        "ancestorPath": ["Mineral or chemical fertilizers, nitrogenous"],
-        "searchText": "mineral or chemical fertilizers, nitrogenous ammonium nitrate, whether or not in aqueous solution 3102.30.00.00",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -1661,9 +1593,6 @@
       },
       {
         "hts": "3102.40.00.00",
-        "description": "Mixtures of ammonium nitrate with calcium carbonate or other inorganic nonfertilizing substances",
-        "ancestorPath": ["Mineral or chemical fertilizers, nitrogenous"],
-        "searchText": "mineral or chemical fertilizers, nitrogenous mixtures of ammonium nitrate with calcium carbonate or other inorganic nonfertilizing substances 3102.40.00.00",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -1671,9 +1600,6 @@
       },
       {
         "hts": "3102.50.00.00",
-        "description": "Sodium nitrate",
-        "ancestorPath": ["Mineral or chemical fertilizers, nitrogenous"],
-        "searchText": "mineral or chemical fertilizers, nitrogenous sodium nitrate 3102.50.00.00",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -1681,9 +1607,6 @@
       },
       {
         "hts": "3102.60.00.00",
-        "description": "Double salts and mixtures of calcium nitrate and ammonium nitrate",
-        "ancestorPath": ["Mineral or chemical fertilizers, nitrogenous"],
-        "searchText": "mineral or chemical fertilizers, nitrogenous double salts and mixtures of calcium nitrate and ammonium nitrate 3102.60.00.00",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -1691,9 +1614,6 @@
       },
       {
         "hts": "3102.80.00.00",
-        "description": "Mixtures of urea and ammonium nitrate in aqueous or ammoniacal solution",
-        "ancestorPath": ["Mineral or chemical fertilizers, nitrogenous"],
-        "searchText": "mineral or chemical fertilizers, nitrogenous mixtures of urea and ammonium nitrate in aqueous or ammoniacal solution 3102.80.00.00",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -1701,9 +1621,6 @@
       },
       {
         "hts": "3102.90.01.00",
-        "description": "Other, including mixtures not specified in the foregoing subheadings",
-        "ancestorPath": ["Mineral or chemical fertilizers, nitrogenous"],
-        "searchText": "mineral or chemical fertilizers, nitrogenous other, including mixtures not specified in the foregoing subheadings 3102.90.01.00",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -1711,9 +1628,6 @@
       },
       {
         "hts": "3103.11.00.00",
-        "description": "Containing by weight 35 percent or more of diphosphorous pentaoxide (P2O5)",
-        "ancestorPath": ["Mineral or chemical fertilizers, phosphatic", "Superphosphates"],
-        "searchText": "mineral or chemical fertilizers, phosphatic superphosphates containing by weight 35 percent or more of diphosphorous pentaoxide (p2o5) 3103.11.00.00",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -1721,9 +1635,6 @@
       },
       {
         "hts": "3103.19.00.00",
-        "description": "Other",
-        "ancestorPath": ["Mineral or chemical fertilizers, phosphatic", "Superphosphates"],
-        "searchText": "mineral or chemical fertilizers, phosphatic superphosphates other 3103.19.00.00",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -1731,9 +1642,6 @@
       },
       {
         "hts": "3103.90.01.00",
-        "description": "Other",
-        "ancestorPath": ["Mineral or chemical fertilizers, phosphatic"],
-        "searchText": "mineral or chemical fertilizers, phosphatic other 3103.90.01.00",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -1741,9 +1649,6 @@
       },
       {
         "hts": "3104.20.00.10",
-        "description": "Containing not more than 62 percent by weight of potassium oxide (K2O)",
-        "ancestorPath": ["Mineral or chemical fertilizers, potassic", "Potassium chloride"],
-        "searchText": "mineral or chemical fertilizers, potassic potassium chloride containing not more than 62 percent by weight of potassium oxide (k2o) 3104.20.00.10",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -1751,9 +1656,6 @@
       },
       {
         "hts": "3104.20.00.50",
-        "description": "Containing more than 62 percent by weight of potassium oxide (K2O)",
-        "ancestorPath": ["Mineral or chemical fertilizers, potassic", "Potassium chloride"],
-        "searchText": "mineral or chemical fertilizers, potassic potassium chloride containing more than 62 percent by weight of potassium oxide (k2o) 3104.20.00.50",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -1761,9 +1663,6 @@
       },
       {
         "hts": "3104.30.00.00",
-        "description": "Potassium sulfate",
-        "ancestorPath": ["Mineral or chemical fertilizers, potassic"],
-        "searchText": "mineral or chemical fertilizers, potassic potassium sulfate 3104.30.00.00",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -1771,9 +1670,6 @@
       },
       {
         "hts": "3104.90.01.00",
-        "description": "Other",
-        "ancestorPath": ["Mineral or chemical fertilizers, potassic"],
-        "searchText": "mineral or chemical fertilizers, potassic other 3104.90.01.00",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -1781,11 +1677,6 @@
       },
       {
         "hts": "3105.10.00.00",
-        "description": "Products of this chapter in tablets or similar forms or in packages of a gross weight not exceeding 10 kg",
-        "ancestorPath": [
-          "Mineral or chemical fertilizers containing two or three of the fertilizing elements nitrogen, phosphorus and potassium; other fertilizers; goods of this chapter in tablets or similar forms or in packages of a gross weight not exceeding 10 kg"
-        ],
-        "searchText": "mineral or chemical fertilizers containing two or three of the fertilizing elements nitrogen, phosphorus and potassium; other fertilizers; goods of this chapter in tablets or similar forms or in packages of a gross weight not exceeding 10 kg products of this chapter in tablets or similar forms or in packages of a gross weight not exceeding 10 kg 3105.10.00.00",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -1793,11 +1684,6 @@
       },
       {
         "hts": "3105.20.00.00",
-        "description": "Mineral or chemical fertilizers containing the three fertilizing elements nitrogen, phosphorus and potassium",
-        "ancestorPath": [
-          "Mineral or chemical fertilizers containing two or three of the fertilizing elements nitrogen, phosphorus and potassium; other fertilizers; goods of this chapter in tablets or similar forms or in packages of a gross weight not exceeding 10 kg"
-        ],
-        "searchText": "mineral or chemical fertilizers containing two or three of the fertilizing elements nitrogen, phosphorus and potassium; other fertilizers; goods of this chapter in tablets or similar forms or in packages of a gross weight not exceeding 10 kg mineral or chemical fertilizers containing the three fertilizing elements nitrogen, phosphorus and potassium 3105.20.00.00",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -1805,11 +1691,6 @@
       },
       {
         "hts": "3105.30.00.00",
-        "description": "Diammonium hydrogenorthophosphate (Diammonium phosphate)",
-        "ancestorPath": [
-          "Mineral or chemical fertilizers containing two or three of the fertilizing elements nitrogen, phosphorus and potassium; other fertilizers; goods of this chapter in tablets or similar forms or in packages of a gross weight not exceeding 10 kg"
-        ],
-        "searchText": "mineral or chemical fertilizers containing two or three of the fertilizing elements nitrogen, phosphorus and potassium; other fertilizers; goods of this chapter in tablets or similar forms or in packages of a gross weight not exceeding 10 kg diammonium hydrogenorthophosphate (diammonium phosphate) 3105.30.00.00",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -1817,12 +1698,6 @@
       },
       {
         "hts": "3105.40.00.10",
-        "description": "Ammonium dihydrogenorthophosphate (Monoammonium phosphate)",
-        "ancestorPath": [
-          "Mineral or chemical fertilizers containing two or three of the fertilizing elements nitrogen, phosphorus and potassium; other fertilizers; goods of this chapter in tablets or similar forms or in packages of a gross weight not exceeding 10 kg",
-          "Ammonium dihydrogenorthophosphate (Monoammonium phosphate) and mixtures thereof with diammonium hydrogenorthophosphate (Diammonium phosphate)"
-        ],
-        "searchText": "mineral or chemical fertilizers containing two or three of the fertilizing elements nitrogen, phosphorus and potassium; other fertilizers; goods of this chapter in tablets or similar forms or in packages of a gross weight not exceeding 10 kg ammonium dihydrogenorthophosphate (monoammonium phosphate) and mixtures thereof with diammonium hydrogenorthophosphate (diammonium phosphate) ammonium dihydrogenorthophosphate (monoammonium phosphate) 3105.40.00.10",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -1830,12 +1705,6 @@
       },
       {
         "hts": "3105.40.00.50",
-        "description": "Other",
-        "ancestorPath": [
-          "Mineral or chemical fertilizers containing two or three of the fertilizing elements nitrogen, phosphorus and potassium; other fertilizers; goods of this chapter in tablets or similar forms or in packages of a gross weight not exceeding 10 kg",
-          "Ammonium dihydrogenorthophosphate (Monoammonium phosphate) and mixtures thereof with diammonium hydrogenorthophosphate (Diammonium phosphate)"
-        ],
-        "searchText": "mineral or chemical fertilizers containing two or three of the fertilizing elements nitrogen, phosphorus and potassium; other fertilizers; goods of this chapter in tablets or similar forms or in packages of a gross weight not exceeding 10 kg ammonium dihydrogenorthophosphate (monoammonium phosphate) and mixtures thereof with diammonium hydrogenorthophosphate (diammonium phosphate) other 3105.40.00.50",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -1843,12 +1712,6 @@
       },
       {
         "hts": "3105.51.00.00",
-        "description": "Containing nitrates and phosphates",
-        "ancestorPath": [
-          "Mineral or chemical fertilizers containing two or three of the fertilizing elements nitrogen, phosphorus and potassium; other fertilizers; goods of this chapter in tablets or similar forms or in packages of a gross weight not exceeding 10 kg",
-          "Other mineral or chemical fertilizers containing the two fertilizing elements nitrogen and phosphorus"
-        ],
-        "searchText": "mineral or chemical fertilizers containing two or three of the fertilizing elements nitrogen, phosphorus and potassium; other fertilizers; goods of this chapter in tablets or similar forms or in packages of a gross weight not exceeding 10 kg other mineral or chemical fertilizers containing the two fertilizing elements nitrogen and phosphorus containing nitrates and phosphates 3105.51.00.00",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -1856,12 +1719,6 @@
       },
       {
         "hts": "3105.59.00.00",
-        "description": "Other",
-        "ancestorPath": [
-          "Mineral or chemical fertilizers containing two or three of the fertilizing elements nitrogen, phosphorus and potassium; other fertilizers; goods of this chapter in tablets or similar forms or in packages of a gross weight not exceeding 10 kg",
-          "Other mineral or chemical fertilizers containing the two fertilizing elements nitrogen and phosphorus"
-        ],
-        "searchText": "mineral or chemical fertilizers containing two or three of the fertilizing elements nitrogen, phosphorus and potassium; other fertilizers; goods of this chapter in tablets or similar forms or in packages of a gross weight not exceeding 10 kg other mineral or chemical fertilizers containing the two fertilizing elements nitrogen and phosphorus other 3105.59.00.00",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -1869,11 +1726,6 @@
       },
       {
         "hts": "3105.60.00.00",
-        "description": "Mineral or chemical fertilizers containing the two fertilizing elements phosphorus and potassium",
-        "ancestorPath": [
-          "Mineral or chemical fertilizers containing two or three of the fertilizing elements nitrogen, phosphorus and potassium; other fertilizers; goods of this chapter in tablets or similar forms or in packages of a gross weight not exceeding 10 kg"
-        ],
-        "searchText": "mineral or chemical fertilizers containing two or three of the fertilizing elements nitrogen, phosphorus and potassium; other fertilizers; goods of this chapter in tablets or similar forms or in packages of a gross weight not exceeding 10 kg mineral or chemical fertilizers containing the two fertilizing elements phosphorus and potassium 3105.60.00.00",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -1881,12 +1733,6 @@
       },
       {
         "hts": "3105.90.00.10",
-        "description": "Potassium nitrate-sodium nitrate mixtures",
-        "ancestorPath": [
-          "Mineral or chemical fertilizers containing two or three of the fertilizing elements nitrogen, phosphorus and potassium; other fertilizers; goods of this chapter in tablets or similar forms or in packages of a gross weight not exceeding 10 kg",
-          "Other"
-        ],
-        "searchText": "mineral or chemical fertilizers containing two or three of the fertilizing elements nitrogen, phosphorus and potassium; other fertilizers; goods of this chapter in tablets or similar forms or in packages of a gross weight not exceeding 10 kg other potassium nitrate-sodium nitrate mixtures 3105.90.00.10",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -1894,12 +1740,6 @@
       },
       {
         "hts": "3105.90.00.50",
-        "description": "Other",
-        "ancestorPath": [
-          "Mineral or chemical fertilizers containing two or three of the fertilizing elements nitrogen, phosphorus and potassium; other fertilizers; goods of this chapter in tablets or similar forms or in packages of a gross weight not exceeding 10 kg",
-          "Other"
-        ],
-        "searchText": "mineral or chemical fertilizers containing two or three of the fertilizing elements nitrogen, phosphorus and potassium; other fertilizers; goods of this chapter in tablets or similar forms or in packages of a gross weight not exceeding 10 kg other other 3105.90.00.50",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -7122,323 +6962,146 @@
     "lines": [
       {
         "hts": "3101.00.00.00",
-        "description": "Animal or vegetable fertilizers, whether or not mixed together or chemically treated; fertilizers produced by the mixing or chemical treatment of animal or vegetable products",
-        "ancestorPath": [],
-        "searchText": "animal or vegetable fertilizers, whether or not mixed together or chemically treated; fertilizers produced by the mixing or chemical treatment of animal or vegetable products 3101.00.00.00",
-        "heading": "3101",
-        "general": "Free",
         "ruleIds": ["aphis-bone-meal", "aphis-blood-meal", "aphis-manure", "aphis-bse", "epa-pesticide"],
         "leverIds": ["origin", "drawback", "usmca"]
       },
       {
         "hts": "3102.10.00.10",
-        "description": "Solid urea",
-        "ancestorPath": ["Mineral or chemical fertilizers, nitrogenous", "Urea, whether or not in aqueous solution"],
-        "searchText": "mineral or chemical fertilizers, nitrogenous urea, whether or not in aqueous solution solid urea 3102.10.00.10",
-        "heading": "3102",
-        "general": "Free",
         "ruleIds": ["tsca"],
         "leverIds": ["origin", "drawback", "usmca"]
       },
       {
         "hts": "3102.10.00.30",
-        "description": "Diesel exhaust fluid (DEF) of a kind meeting ISO 22241",
-        "ancestorPath": ["Mineral or chemical fertilizers, nitrogenous", "Urea, whether or not in aqueous solution", "Other"],
-        "searchText": "mineral or chemical fertilizers, nitrogenous urea, whether or not in aqueous solution other diesel exhaust fluid (def) of a kind meeting iso 22241 3102.10.00.30",
-        "heading": "3102",
-        "general": "Free",
         "ruleIds": ["tsca"],
         "leverIds": ["origin", "drawback", "usmca"]
       },
       {
         "hts": "3102.10.00.50",
-        "description": "Other",
-        "ancestorPath": ["Mineral or chemical fertilizers, nitrogenous", "Urea, whether or not in aqueous solution", "Other"],
-        "searchText": "mineral or chemical fertilizers, nitrogenous urea, whether or not in aqueous solution other other 3102.10.00.50",
-        "heading": "3102",
-        "general": "Free",
         "ruleIds": ["tsca"],
         "leverIds": ["origin", "drawback", "usmca"]
       },
       {
         "hts": "3102.21.00.00",
-        "description": "Ammonium sulfate",
-        "ancestorPath": [
-          "Mineral or chemical fertilizers, nitrogenous",
-          "Ammonium sulfate; double salts and mixtures of ammonium sulfate and ammonium nitrate"
-        ],
-        "searchText": "mineral or chemical fertilizers, nitrogenous ammonium sulfate; double salts and mixtures of ammonium sulfate and ammonium nitrate ammonium sulfate 3102.21.00.00",
-        "heading": "3102",
-        "general": "Free",
         "ruleIds": ["tsca", "adcvd-as"],
         "leverIds": ["origin", "adcvd-scope", "drawback", "usmca"]
       },
       {
         "hts": "3102.29.00.00",
-        "description": "Other",
-        "ancestorPath": [
-          "Mineral or chemical fertilizers, nitrogenous",
-          "Ammonium sulfate; double salts and mixtures of ammonium sulfate and ammonium nitrate"
-        ],
-        "searchText": "mineral or chemical fertilizers, nitrogenous ammonium sulfate; double salts and mixtures of ammonium sulfate and ammonium nitrate other 3102.29.00.00",
-        "heading": "3102",
-        "general": "Free",
         "ruleIds": ["tsca"],
         "leverIds": ["origin", "drawback", "usmca"]
       },
       {
         "hts": "3102.30.00.00",
-        "description": "Ammonium nitrate, whether or not in aqueous solution",
-        "ancestorPath": ["Mineral or chemical fertilizers, nitrogenous"],
-        "searchText": "mineral or chemical fertilizers, nitrogenous ammonium nitrate, whether or not in aqueous solution 3102.30.00.00",
-        "heading": "3102",
-        "general": "Free",
         "ruleIds": ["tsca", "dot-hazmat"],
         "leverIds": ["origin", "drawback", "usmca"]
       },
       {
         "hts": "3102.40.00.00",
-        "description": "Mixtures of ammonium nitrate with calcium carbonate or other inorganic nonfertilizing substances",
-        "ancestorPath": ["Mineral or chemical fertilizers, nitrogenous"],
-        "searchText": "mineral or chemical fertilizers, nitrogenous mixtures of ammonium nitrate with calcium carbonate or other inorganic nonfertilizing substances 3102.40.00.00",
-        "heading": "3102",
-        "general": "Free",
         "ruleIds": ["tsca", "dot-hazmat"],
         "leverIds": ["origin", "drawback", "usmca"]
       },
       {
         "hts": "3102.50.00.00",
-        "description": "Sodium nitrate",
-        "ancestorPath": ["Mineral or chemical fertilizers, nitrogenous"],
-        "searchText": "mineral or chemical fertilizers, nitrogenous sodium nitrate 3102.50.00.00",
-        "heading": "3102",
-        "general": "Free",
         "ruleIds": ["tsca"],
         "leverIds": ["origin", "drawback", "usmca"]
       },
       {
         "hts": "3102.60.00.00",
-        "description": "Double salts and mixtures of calcium nitrate and ammonium nitrate",
-        "ancestorPath": ["Mineral or chemical fertilizers, nitrogenous"],
-        "searchText": "mineral or chemical fertilizers, nitrogenous double salts and mixtures of calcium nitrate and ammonium nitrate 3102.60.00.00",
-        "heading": "3102",
-        "general": "Free",
         "ruleIds": ["tsca", "dot-hazmat"],
         "leverIds": ["origin", "drawback", "usmca"]
       },
       {
         "hts": "3102.80.00.00",
-        "description": "Mixtures of urea and ammonium nitrate in aqueous or ammoniacal solution",
-        "ancestorPath": ["Mineral or chemical fertilizers, nitrogenous"],
-        "searchText": "mineral or chemical fertilizers, nitrogenous mixtures of urea and ammonium nitrate in aqueous or ammoniacal solution 3102.80.00.00",
-        "heading": "3102",
-        "general": "Free",
         "ruleIds": ["tsca", "dot-hazmat"],
         "leverIds": ["origin", "drawback", "usmca"]
       },
       {
         "hts": "3102.90.01.00",
-        "description": "Other, including mixtures not specified in the foregoing subheadings",
-        "ancestorPath": ["Mineral or chemical fertilizers, nitrogenous"],
-        "searchText": "mineral or chemical fertilizers, nitrogenous other, including mixtures not specified in the foregoing subheadings 3102.90.01.00",
-        "heading": "3102",
-        "general": "Free",
         "ruleIds": ["tsca"],
         "leverIds": ["origin", "drawback", "usmca"]
       },
       {
         "hts": "3103.11.00.00",
-        "description": "Containing by weight 35 percent or more of diphosphorous pentaoxide (P2O5)",
-        "ancestorPath": ["Mineral or chemical fertilizers, phosphatic", "Superphosphates"],
-        "searchText": "mineral or chemical fertilizers, phosphatic superphosphates containing by weight 35 percent or more of diphosphorous pentaoxide (p2o5) 3103.11.00.00",
-        "heading": "3103",
-        "general": "Free",
         "ruleIds": ["tsca", "cvd-phosphate"],
         "leverIds": ["origin", "morocco-318", "adcvd-scope", "drawback", "usmca"]
       },
       {
         "hts": "3103.19.00.00",
-        "description": "Other",
-        "ancestorPath": ["Mineral or chemical fertilizers, phosphatic", "Superphosphates"],
-        "searchText": "mineral or chemical fertilizers, phosphatic superphosphates other 3103.19.00.00",
-        "heading": "3103",
-        "general": "Free",
         "ruleIds": ["tsca", "cvd-phosphate"],
         "leverIds": ["origin", "morocco-318", "adcvd-scope", "drawback", "usmca"]
       },
       {
         "hts": "3103.90.01.00",
-        "description": "Other",
-        "ancestorPath": ["Mineral or chemical fertilizers, phosphatic"],
-        "searchText": "mineral or chemical fertilizers, phosphatic other 3103.90.01.00",
-        "heading": "3103",
-        "general": "Free",
         "ruleIds": ["tsca", "cvd-phosphate"],
         "leverIds": ["origin", "morocco-318", "adcvd-scope", "drawback", "usmca"]
       },
       {
         "hts": "3104.20.00.10",
-        "description": "Containing not more than 62 percent by weight of potassium oxide (K2O)",
-        "ancestorPath": ["Mineral or chemical fertilizers, potassic", "Potassium chloride"],
-        "searchText": "mineral or chemical fertilizers, potassic potassium chloride containing not more than 62 percent by weight of potassium oxide (k2o) 3104.20.00.10",
-        "heading": "3104",
-        "general": "Free",
         "ruleIds": ["tsca"],
         "leverIds": ["origin", "drawback", "usmca"]
       },
       {
         "hts": "3104.20.00.50",
-        "description": "Containing more than 62 percent by weight of potassium oxide (K2O)",
-        "ancestorPath": ["Mineral or chemical fertilizers, potassic", "Potassium chloride"],
-        "searchText": "mineral or chemical fertilizers, potassic potassium chloride containing more than 62 percent by weight of potassium oxide (k2o) 3104.20.00.50",
-        "heading": "3104",
-        "general": "Free",
         "ruleIds": ["tsca"],
         "leverIds": ["origin", "drawback", "usmca"]
       },
       {
         "hts": "3104.30.00.00",
-        "description": "Potassium sulfate",
-        "ancestorPath": ["Mineral or chemical fertilizers, potassic"],
-        "searchText": "mineral or chemical fertilizers, potassic potassium sulfate 3104.30.00.00",
-        "heading": "3104",
-        "general": "Free",
         "ruleIds": ["tsca"],
         "leverIds": ["origin", "drawback", "usmca"]
       },
       {
         "hts": "3104.90.01.00",
-        "description": "Other",
-        "ancestorPath": ["Mineral or chemical fertilizers, potassic"],
-        "searchText": "mineral or chemical fertilizers, potassic other 3104.90.01.00",
-        "heading": "3104",
-        "general": "Free",
         "ruleIds": ["tsca"],
         "leverIds": ["origin", "drawback", "usmca"]
       },
       {
         "hts": "3105.10.00.00",
-        "description": "Products of this chapter in tablets or similar forms or in packages of a gross weight not exceeding 10 kg",
-        "ancestorPath": [
-          "Mineral or chemical fertilizers containing two or three of the fertilizing elements nitrogen, phosphorus and potassium; other fertilizers; goods of this chapter in tablets or similar forms or in packages of a gross weight not exceeding 10 kg"
-        ],
-        "searchText": "mineral or chemical fertilizers containing two or three of the fertilizing elements nitrogen, phosphorus and potassium; other fertilizers; goods of this chapter in tablets or similar forms or in packages of a gross weight not exceeding 10 kg products of this chapter in tablets or similar forms or in packages of a gross weight not exceeding 10 kg 3105.10.00.00",
-        "heading": "3105",
-        "general": "Free",
         "ruleIds": ["tsca", "epa-pesticide", "cvd-phosphate"],
         "leverIds": ["origin", "morocco-318", "adcvd-scope", "drawback", "usmca"]
       },
       {
         "hts": "3105.20.00.00",
-        "description": "Mineral or chemical fertilizers containing the three fertilizing elements nitrogen, phosphorus and potassium",
-        "ancestorPath": [
-          "Mineral or chemical fertilizers containing two or three of the fertilizing elements nitrogen, phosphorus and potassium; other fertilizers; goods of this chapter in tablets or similar forms or in packages of a gross weight not exceeding 10 kg"
-        ],
-        "searchText": "mineral or chemical fertilizers containing two or three of the fertilizing elements nitrogen, phosphorus and potassium; other fertilizers; goods of this chapter in tablets or similar forms or in packages of a gross weight not exceeding 10 kg mineral or chemical fertilizers containing the three fertilizing elements nitrogen, phosphorus and potassium 3105.20.00.00",
-        "heading": "3105",
-        "general": "Free",
         "ruleIds": ["tsca", "epa-pesticide", "cvd-phosphate"],
         "leverIds": ["origin", "morocco-318", "adcvd-scope", "drawback", "usmca"]
       },
       {
         "hts": "3105.30.00.00",
-        "description": "Diammonium hydrogenorthophosphate (Diammonium phosphate)",
-        "ancestorPath": [
-          "Mineral or chemical fertilizers containing two or three of the fertilizing elements nitrogen, phosphorus and potassium; other fertilizers; goods of this chapter in tablets or similar forms or in packages of a gross weight not exceeding 10 kg"
-        ],
-        "searchText": "mineral or chemical fertilizers containing two or three of the fertilizing elements nitrogen, phosphorus and potassium; other fertilizers; goods of this chapter in tablets or similar forms or in packages of a gross weight not exceeding 10 kg diammonium hydrogenorthophosphate (diammonium phosphate) 3105.30.00.00",
-        "heading": "3105",
-        "general": "Free",
         "ruleIds": ["tsca", "epa-pesticide", "cvd-phosphate"],
         "leverIds": ["origin", "morocco-318", "adcvd-scope", "drawback", "usmca"]
       },
       {
         "hts": "3105.40.00.10",
-        "description": "Ammonium dihydrogenorthophosphate (Monoammonium phosphate)",
-        "ancestorPath": [
-          "Mineral or chemical fertilizers containing two or three of the fertilizing elements nitrogen, phosphorus and potassium; other fertilizers; goods of this chapter in tablets or similar forms or in packages of a gross weight not exceeding 10 kg",
-          "Ammonium dihydrogenorthophosphate (Monoammonium phosphate) and mixtures thereof with diammonium hydrogenorthophosphate (Diammonium phosphate)"
-        ],
-        "searchText": "mineral or chemical fertilizers containing two or three of the fertilizing elements nitrogen, phosphorus and potassium; other fertilizers; goods of this chapter in tablets or similar forms or in packages of a gross weight not exceeding 10 kg ammonium dihydrogenorthophosphate (monoammonium phosphate) and mixtures thereof with diammonium hydrogenorthophosphate (diammonium phosphate) ammonium dihydrogenorthophosphate (monoammonium phosphate) 3105.40.00.10",
-        "heading": "3105",
-        "general": "Free",
         "ruleIds": ["tsca", "epa-pesticide", "cvd-phosphate"],
         "leverIds": ["origin", "morocco-318", "adcvd-scope", "drawback", "usmca"]
       },
       {
         "hts": "3105.40.00.50",
-        "description": "Other",
-        "ancestorPath": [
-          "Mineral or chemical fertilizers containing two or three of the fertilizing elements nitrogen, phosphorus and potassium; other fertilizers; goods of this chapter in tablets or similar forms or in packages of a gross weight not exceeding 10 kg",
-          "Ammonium dihydrogenorthophosphate (Monoammonium phosphate) and mixtures thereof with diammonium hydrogenorthophosphate (Diammonium phosphate)"
-        ],
-        "searchText": "mineral or chemical fertilizers containing two or three of the fertilizing elements nitrogen, phosphorus and potassium; other fertilizers; goods of this chapter in tablets or similar forms or in packages of a gross weight not exceeding 10 kg ammonium dihydrogenorthophosphate (monoammonium phosphate) and mixtures thereof with diammonium hydrogenorthophosphate (diammonium phosphate) other 3105.40.00.50",
-        "heading": "3105",
-        "general": "Free",
         "ruleIds": ["tsca", "epa-pesticide", "cvd-phosphate"],
         "leverIds": ["origin", "morocco-318", "adcvd-scope", "drawback", "usmca"]
       },
       {
         "hts": "3105.51.00.00",
-        "description": "Containing nitrates and phosphates",
-        "ancestorPath": [
-          "Mineral or chemical fertilizers containing two or three of the fertilizing elements nitrogen, phosphorus and potassium; other fertilizers; goods of this chapter in tablets or similar forms or in packages of a gross weight not exceeding 10 kg",
-          "Other mineral or chemical fertilizers containing the two fertilizing elements nitrogen and phosphorus"
-        ],
-        "searchText": "mineral or chemical fertilizers containing two or three of the fertilizing elements nitrogen, phosphorus and potassium; other fertilizers; goods of this chapter in tablets or similar forms or in packages of a gross weight not exceeding 10 kg other mineral or chemical fertilizers containing the two fertilizing elements nitrogen and phosphorus containing nitrates and phosphates 3105.51.00.00",
-        "heading": "3105",
-        "general": "Free",
         "ruleIds": ["tsca", "epa-pesticide", "cvd-phosphate", "dot-hazmat"],
         "leverIds": ["origin", "morocco-318", "adcvd-scope", "drawback", "usmca"]
       },
       {
         "hts": "3105.59.00.00",
-        "description": "Other",
-        "ancestorPath": [
-          "Mineral or chemical fertilizers containing two or three of the fertilizing elements nitrogen, phosphorus and potassium; other fertilizers; goods of this chapter in tablets or similar forms or in packages of a gross weight not exceeding 10 kg",
-          "Other mineral or chemical fertilizers containing the two fertilizing elements nitrogen and phosphorus"
-        ],
-        "searchText": "mineral or chemical fertilizers containing two or three of the fertilizing elements nitrogen, phosphorus and potassium; other fertilizers; goods of this chapter in tablets or similar forms or in packages of a gross weight not exceeding 10 kg other mineral or chemical fertilizers containing the two fertilizing elements nitrogen and phosphorus other 3105.59.00.00",
-        "heading": "3105",
-        "general": "Free",
         "ruleIds": ["tsca", "epa-pesticide", "cvd-phosphate"],
         "leverIds": ["origin", "morocco-318", "adcvd-scope", "drawback", "usmca"]
       },
       {
         "hts": "3105.60.00.00",
-        "description": "Mineral or chemical fertilizers containing the two fertilizing elements phosphorus and potassium",
-        "ancestorPath": [
-          "Mineral or chemical fertilizers containing two or three of the fertilizing elements nitrogen, phosphorus and potassium; other fertilizers; goods of this chapter in tablets or similar forms or in packages of a gross weight not exceeding 10 kg"
-        ],
-        "searchText": "mineral or chemical fertilizers containing two or three of the fertilizing elements nitrogen, phosphorus and potassium; other fertilizers; goods of this chapter in tablets or similar forms or in packages of a gross weight not exceeding 10 kg mineral or chemical fertilizers containing the two fertilizing elements phosphorus and potassium 3105.60.00.00",
-        "heading": "3105",
-        "general": "Free",
         "ruleIds": ["tsca", "epa-pesticide", "cvd-phosphate"],
         "leverIds": ["origin", "morocco-318", "adcvd-scope", "drawback", "usmca"]
       },
       {
         "hts": "3105.90.00.10",
-        "description": "Potassium nitrate-sodium nitrate mixtures",
-        "ancestorPath": [
-          "Mineral or chemical fertilizers containing two or three of the fertilizing elements nitrogen, phosphorus and potassium; other fertilizers; goods of this chapter in tablets or similar forms or in packages of a gross weight not exceeding 10 kg",
-          "Other"
-        ],
-        "searchText": "mineral or chemical fertilizers containing two or three of the fertilizing elements nitrogen, phosphorus and potassium; other fertilizers; goods of this chapter in tablets or similar forms or in packages of a gross weight not exceeding 10 kg other potassium nitrate-sodium nitrate mixtures 3105.90.00.10",
-        "heading": "3105",
-        "general": "Free",
         "ruleIds": ["tsca", "epa-pesticide", "cvd-phosphate"],
         "leverIds": ["origin", "morocco-318", "adcvd-scope", "drawback", "usmca"]
       },
       {
         "hts": "3105.90.00.50",
-        "description": "Other",
-        "ancestorPath": [
-          "Mineral or chemical fertilizers containing two or three of the fertilizing elements nitrogen, phosphorus and potassium; other fertilizers; goods of this chapter in tablets or similar forms or in packages of a gross weight not exceeding 10 kg",
-          "Other"
-        ],
-        "searchText": "mineral or chemical fertilizers containing two or three of the fertilizing elements nitrogen, phosphorus and potassium; other fertilizers; goods of this chapter in tablets or similar forms or in packages of a gross weight not exceeding 10 kg other other 3105.90.00.50",
-        "heading": "3105",
-        "general": "Free",
         "ruleIds": ["tsca", "epa-pesticide", "cvd-phosphate"],
         "leverIds": ["origin", "morocco-318", "adcvd-scope", "drawback", "usmca"]
       }

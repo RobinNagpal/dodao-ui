@@ -184,8 +184,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "0901",
-          "ancestorPath": [],
-          "searchText": "coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion: 0901"
+          "ancestorPath": []
         },
         {
           "id": "r1",
@@ -208,8 +207,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "0901",
-          "ancestorPath": ["Coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion"],
-          "searchText": "coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion coffee, not roasted: "
+          "ancestorPath": ["Coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion"]
         },
         {
           "id": "r2",
@@ -235,8 +233,7 @@
           "ancestorPath": [
             "Coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion",
             "Coffee, not roasted"
-          ],
-          "searchText": "coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion coffee, not roasted not decaffeinated 0901.11.00"
+          ]
         },
         {
           "id": "r3",
@@ -263,8 +260,7 @@
             "Coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion",
             "Coffee, not roasted",
             "Not decaffeinated"
-          ],
-          "searchText": "coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion coffee, not roasted not decaffeinated arabica: "
+          ]
         },
         {
           "id": "r4",
@@ -292,8 +288,7 @@
             "Coffee, not roasted",
             "Not decaffeinated",
             "Arabica"
-          ],
-          "searchText": "coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion coffee, not roasted not decaffeinated arabica certified organic 0901.11.00.15"
+          ]
         },
         {
           "id": "r5",
@@ -321,8 +316,7 @@
             "Coffee, not roasted",
             "Not decaffeinated",
             "Arabica"
-          ],
-          "searchText": "coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion coffee, not roasted not decaffeinated arabica other 0901.11.00.25"
+          ]
         },
         {
           "id": "r6",
@@ -349,8 +343,7 @@
             "Coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion",
             "Coffee, not roasted",
             "Not decaffeinated"
-          ],
-          "searchText": "coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion coffee, not roasted not decaffeinated robusta: "
+          ]
         },
         {
           "id": "r7",
@@ -378,8 +371,7 @@
             "Coffee, not roasted",
             "Not decaffeinated",
             "Robusta"
-          ],
-          "searchText": "coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion coffee, not roasted not decaffeinated robusta certified organic 0901.11.00.35"
+          ]
         },
         {
           "id": "r8",
@@ -407,8 +399,7 @@
             "Coffee, not roasted",
             "Not decaffeinated",
             "Robusta"
-          ],
-          "searchText": "coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion coffee, not roasted not decaffeinated robusta other 0901.11.00.40"
+          ]
         },
         {
           "id": "r9",
@@ -435,8 +426,7 @@
             "Coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion",
             "Coffee, not roasted",
             "Not decaffeinated"
-          ],
-          "searchText": "coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion coffee, not roasted not decaffeinated other: "
+          ]
         },
         {
           "id": "r10",
@@ -464,8 +454,7 @@
             "Coffee, not roasted",
             "Not decaffeinated",
             "Other"
-          ],
-          "searchText": "coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion coffee, not roasted not decaffeinated other certified organic 0901.11.00.50"
+          ]
         },
         {
           "id": "r11",
@@ -493,8 +482,7 @@
             "Coffee, not roasted",
             "Not decaffeinated",
             "Other"
-          ],
-          "searchText": "coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion coffee, not roasted not decaffeinated other other 0901.11.00.65"
+          ]
         },
         {
           "id": "r12",
@@ -520,8 +508,7 @@
           "ancestorPath": [
             "Coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion",
             "Coffee, not roasted"
-          ],
-          "searchText": "coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion coffee, not roasted decaffeinated 0901.12.00"
+          ]
         },
         {
           "id": "r13",
@@ -548,8 +535,7 @@
             "Coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion",
             "Coffee, not roasted",
             "Decaffeinated"
-          ],
-          "searchText": "coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion coffee, not roasted decaffeinated arabica: "
+          ]
         },
         {
           "id": "r14",
@@ -577,8 +563,7 @@
             "Coffee, not roasted",
             "Decaffeinated",
             "Arabica"
-          ],
-          "searchText": "coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion coffee, not roasted decaffeinated arabica certified organic 0901.12.00.20"
+          ]
         },
         {
           "id": "r15",
@@ -606,8 +591,7 @@
             "Coffee, not roasted",
             "Decaffeinated",
             "Arabica"
-          ],
-          "searchText": "coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion coffee, not roasted decaffeinated arabica other 0901.12.00.35"
+          ]
         },
         {
           "id": "r16",
@@ -634,8 +618,7 @@
             "Coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion",
             "Coffee, not roasted",
             "Decaffeinated"
-          ],
-          "searchText": "coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion coffee, not roasted decaffeinated robusta: "
+          ]
         },
         {
           "id": "r17",
@@ -663,8 +646,7 @@
             "Coffee, not roasted",
             "Decaffeinated",
             "Robusta"
-          ],
-          "searchText": "coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion coffee, not roasted decaffeinated robusta certified organic 0901.12.00.40"
+          ]
         },
         {
           "id": "r18",
@@ -692,8 +674,7 @@
             "Coffee, not roasted",
             "Decaffeinated",
             "Robusta"
-          ],
-          "searchText": "coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion coffee, not roasted decaffeinated robusta other 0901.12.00.55"
+          ]
         },
         {
           "id": "r19",
@@ -720,8 +701,7 @@
             "Coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion",
             "Coffee, not roasted",
             "Decaffeinated"
-          ],
-          "searchText": "coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion coffee, not roasted decaffeinated other: "
+          ]
         },
         {
           "id": "r20",
@@ -749,8 +729,7 @@
             "Coffee, not roasted",
             "Decaffeinated",
             "Other"
-          ],
-          "searchText": "coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion coffee, not roasted decaffeinated other certified organic 0901.12.00.60"
+          ]
         },
         {
           "id": "r21",
@@ -778,8 +757,7 @@
             "Coffee, not roasted",
             "Decaffeinated",
             "Other"
-          ],
-          "searchText": "coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion coffee, not roasted decaffeinated other other 0901.12.00.75"
+          ]
         },
         {
           "id": "r22",
@@ -802,8 +780,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "0901",
-          "ancestorPath": ["Coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion"],
-          "searchText": "coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion coffee, roasted: "
+          "ancestorPath": ["Coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion"]
         },
         {
           "id": "r23",
@@ -829,8 +806,7 @@
           "ancestorPath": [
             "Coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion",
             "Coffee, roasted"
-          ],
-          "searchText": "coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion coffee, roasted not decaffeinated 0901.21.00"
+          ]
         },
         {
           "id": "r24",
@@ -857,8 +833,7 @@
             "Coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion",
             "Coffee, roasted",
             "Not decaffeinated"
-          ],
-          "searchText": "coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion coffee, roasted not decaffeinated in retail containers weighing 2 kg or less: "
+          ]
         },
         {
           "id": "r25",
@@ -886,8 +861,7 @@
             "Coffee, roasted",
             "Not decaffeinated",
             "In retail containers weighing 2 kg or less"
-          ],
-          "searchText": "coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion coffee, roasted not decaffeinated in retail containers weighing 2 kg or less arabica: "
+          ]
         },
         {
           "id": "r26",
@@ -916,8 +890,7 @@
             "Not decaffeinated",
             "In retail containers weighing 2 kg or less",
             "Arabica"
-          ],
-          "searchText": "coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion coffee, roasted not decaffeinated in retail containers weighing 2 kg or less arabica certified organic 0901.21.00.15"
+          ]
         },
         {
           "id": "r27",
@@ -946,8 +919,7 @@
             "Not decaffeinated",
             "In retail containers weighing 2 kg or less",
             "Arabica"
-          ],
-          "searchText": "coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion coffee, roasted not decaffeinated in retail containers weighing 2 kg or less arabica other 0901.21.00.20"
+          ]
         },
         {
           "id": "r28",
@@ -975,8 +947,7 @@
             "Coffee, roasted",
             "Not decaffeinated",
             "In retail containers weighing 2 kg or less"
-          ],
-          "searchText": "coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion coffee, roasted not decaffeinated in retail containers weighing 2 kg or less robusta: "
+          ]
         },
         {
           "id": "r29",
@@ -1005,8 +976,7 @@
             "Not decaffeinated",
             "In retail containers weighing 2 kg or less",
             "Robusta"
-          ],
-          "searchText": "coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion coffee, roasted not decaffeinated in retail containers weighing 2 kg or less robusta certified organic 0901.21.00.25"
+          ]
         },
         {
           "id": "r30",
@@ -1035,8 +1005,7 @@
             "Not decaffeinated",
             "In retail containers weighing 2 kg or less",
             "Robusta"
-          ],
-          "searchText": "coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion coffee, roasted not decaffeinated in retail containers weighing 2 kg or less robusta other 0901.21.00.29"
+          ]
         },
         {
           "id": "r31",
@@ -1064,8 +1033,7 @@
             "Coffee, roasted",
             "Not decaffeinated",
             "In retail containers weighing 2 kg or less"
-          ],
-          "searchText": "coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion coffee, roasted not decaffeinated in retail containers weighing 2 kg or less other: "
+          ]
         },
         {
           "id": "r32",
@@ -1094,8 +1062,7 @@
             "Not decaffeinated",
             "In retail containers weighing 2 kg or less",
             "Other"
-          ],
-          "searchText": "coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion coffee, roasted not decaffeinated in retail containers weighing 2 kg or less other certified organic 0901.21.00.40"
+          ]
         },
         {
           "id": "r33",
@@ -1124,8 +1091,7 @@
             "Not decaffeinated",
             "In retail containers weighing 2 kg or less",
             "Other"
-          ],
-          "searchText": "coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion coffee, roasted not decaffeinated in retail containers weighing 2 kg or less other other 0901.21.00.49"
+          ]
         },
         {
           "id": "r34",
@@ -1152,8 +1118,7 @@
             "Coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion",
             "Coffee, roasted",
             "Not decaffeinated"
-          ],
-          "searchText": "coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion coffee, roasted not decaffeinated other: "
+          ]
         },
         {
           "id": "r35",
@@ -1181,8 +1146,7 @@
             "Coffee, roasted",
             "Not decaffeinated",
             "Other"
-          ],
-          "searchText": "coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion coffee, roasted not decaffeinated other certified organic 0901.21.00.55"
+          ]
         },
         {
           "id": "r36",
@@ -1210,8 +1174,7 @@
             "Coffee, roasted",
             "Not decaffeinated",
             "Other"
-          ],
-          "searchText": "coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion coffee, roasted not decaffeinated other other 0901.21.00.65"
+          ]
         },
         {
           "id": "r37",
@@ -1237,8 +1200,7 @@
           "ancestorPath": [
             "Coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion",
             "Coffee, roasted"
-          ],
-          "searchText": "coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion coffee, roasted decaffeinated 0901.22.00"
+          ]
         },
         {
           "id": "r38",
@@ -1265,8 +1227,7 @@
             "Coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion",
             "Coffee, roasted",
             "Decaffeinated"
-          ],
-          "searchText": "coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion coffee, roasted decaffeinated in retail containers weighing 2 kg or less: "
+          ]
         },
         {
           "id": "r39",
@@ -1294,8 +1255,7 @@
             "Coffee, roasted",
             "Decaffeinated",
             "In retail containers weighing 2 kg or less"
-          ],
-          "searchText": "coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion coffee, roasted decaffeinated in retail containers weighing 2 kg or less certified organic 0901.22.00.35"
+          ]
         },
         {
           "id": "r40",
@@ -1323,8 +1283,7 @@
             "Coffee, roasted",
             "Decaffeinated",
             "In retail containers weighing 2 kg or less"
-          ],
-          "searchText": "coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion coffee, roasted decaffeinated in retail containers weighing 2 kg or less other: "
+          ]
         },
         {
           "id": "r41",
@@ -1353,8 +1312,7 @@
             "Decaffeinated",
             "In retail containers weighing 2 kg or less",
             "Other"
-          ],
-          "searchText": "coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion coffee, roasted decaffeinated in retail containers weighing 2 kg or less other arabica 0901.22.00.40"
+          ]
         },
         {
           "id": "r42",
@@ -1383,8 +1341,7 @@
             "Decaffeinated",
             "In retail containers weighing 2 kg or less",
             "Other"
-          ],
-          "searchText": "coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion coffee, roasted decaffeinated in retail containers weighing 2 kg or less other robusta 0901.22.00.50"
+          ]
         },
         {
           "id": "r43",
@@ -1413,8 +1370,7 @@
             "Decaffeinated",
             "In retail containers weighing 2 kg or less",
             "Other"
-          ],
-          "searchText": "coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion coffee, roasted decaffeinated in retail containers weighing 2 kg or less other other 0901.22.00.55"
+          ]
         },
         {
           "id": "r44",
@@ -1441,8 +1397,7 @@
             "Coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion",
             "Coffee, roasted",
             "Decaffeinated"
-          ],
-          "searchText": "coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion coffee, roasted decaffeinated other: "
+          ]
         },
         {
           "id": "r45",
@@ -1470,8 +1425,7 @@
             "Coffee, roasted",
             "Decaffeinated",
             "Other"
-          ],
-          "searchText": "coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion coffee, roasted decaffeinated other arabica: "
+          ]
         },
         {
           "id": "r46",
@@ -1500,8 +1454,7 @@
             "Decaffeinated",
             "Other",
             "Arabica"
-          ],
-          "searchText": "coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion coffee, roasted decaffeinated other arabica certified organic 0901.22.00.65"
+          ]
         },
         {
           "id": "r47",
@@ -1530,8 +1483,7 @@
             "Decaffeinated",
             "Other",
             "Arabica"
-          ],
-          "searchText": "coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion coffee, roasted decaffeinated other arabica other 0901.22.00.70"
+          ]
         },
         {
           "id": "r48",
@@ -1559,8 +1511,7 @@
             "Coffee, roasted",
             "Decaffeinated",
             "Other"
-          ],
-          "searchText": "coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion coffee, roasted decaffeinated other robusta: "
+          ]
         },
         {
           "id": "r49",
@@ -1589,8 +1540,7 @@
             "Decaffeinated",
             "Other",
             "Robusta"
-          ],
-          "searchText": "coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion coffee, roasted decaffeinated other robusta certified organic 0901.22.00.75"
+          ]
         },
         {
           "id": "r50",
@@ -1619,8 +1569,7 @@
             "Decaffeinated",
             "Other",
             "Robusta"
-          ],
-          "searchText": "coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion coffee, roasted decaffeinated other robusta other 0901.22.00.80"
+          ]
         },
         {
           "id": "r51",
@@ -1648,8 +1597,7 @@
             "Coffee, roasted",
             "Decaffeinated",
             "Other"
-          ],
-          "searchText": "coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion coffee, roasted decaffeinated other other 0901.22.00.90"
+          ]
         },
         {
           "id": "r52",
@@ -1672,8 +1620,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "0901",
-          "ancestorPath": ["Coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion"],
-          "searchText": "coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion other: 0901.90"
+          "ancestorPath": ["Coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion"]
         },
         {
           "id": "r53",
@@ -1699,8 +1646,7 @@
           "ancestorPath": [
             "Coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion",
             "Other"
-          ],
-          "searchText": "coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion other coffee husks and skins 0901.90.10.00"
+          ]
         },
         {
           "id": "r54",
@@ -1726,8 +1672,7 @@
           "ancestorPath": [
             "Coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion",
             "Other"
-          ],
-          "searchText": "coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion other coffee substitutes containing coffee 0901.90.20.00"
+          ]
         },
         {
           "id": "r55",
@@ -1750,8 +1695,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "0902",
-          "ancestorPath": [],
-          "searchText": "tea, whether or not flavored: 0902"
+          "ancestorPath": []
         },
         {
           "id": "r56",
@@ -1774,8 +1718,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "0902",
-          "ancestorPath": ["Tea, whether or not flavored"],
-          "searchText": "tea, whether or not flavored green tea (not fermented) in immediate packings of a content not exceeding 3 kg: 0902.10"
+          "ancestorPath": ["Tea, whether or not flavored"]
         },
         {
           "id": "r57",
@@ -1798,8 +1741,7 @@
           "column2InheritedFrom": null,
           "dutiable": true,
           "heading": "0902",
-          "ancestorPath": ["Tea, whether or not flavored", "Green tea (not fermented) in immediate packings of a content not exceeding 3 kg"],
-          "searchText": "tea, whether or not flavored green tea (not fermented) in immediate packings of a content not exceeding 3 kg flavored 0902.10.10"
+          "ancestorPath": ["Tea, whether or not flavored", "Green tea (not fermented) in immediate packings of a content not exceeding 3 kg"]
         },
         {
           "id": "r58",
@@ -1822,8 +1764,7 @@
           "column2InheritedFrom": "0902.10.10",
           "dutiable": true,
           "heading": "0902",
-          "ancestorPath": ["Tea, whether or not flavored", "Green tea (not fermented) in immediate packings of a content not exceeding 3 kg", "Flavored"],
-          "searchText": "tea, whether or not flavored green tea (not fermented) in immediate packings of a content not exceeding 3 kg flavored certified organic 0902.10.10.15"
+          "ancestorPath": ["Tea, whether or not flavored", "Green tea (not fermented) in immediate packings of a content not exceeding 3 kg", "Flavored"]
         },
         {
           "id": "r59",
@@ -1846,8 +1787,7 @@
           "column2InheritedFrom": "0902.10.10",
           "dutiable": true,
           "heading": "0902",
-          "ancestorPath": ["Tea, whether or not flavored", "Green tea (not fermented) in immediate packings of a content not exceeding 3 kg", "Flavored"],
-          "searchText": "tea, whether or not flavored green tea (not fermented) in immediate packings of a content not exceeding 3 kg flavored other 0902.10.10.50"
+          "ancestorPath": ["Tea, whether or not flavored", "Green tea (not fermented) in immediate packings of a content not exceeding 3 kg", "Flavored"]
         },
         {
           "id": "r60",
@@ -1870,8 +1810,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "0902",
-          "ancestorPath": ["Tea, whether or not flavored", "Green tea (not fermented) in immediate packings of a content not exceeding 3 kg"],
-          "searchText": "tea, whether or not flavored green tea (not fermented) in immediate packings of a content not exceeding 3 kg other 0902.10.90"
+          "ancestorPath": ["Tea, whether or not flavored", "Green tea (not fermented) in immediate packings of a content not exceeding 3 kg"]
         },
         {
           "id": "r61",
@@ -1894,8 +1833,7 @@
           "column2InheritedFrom": "0902.10.90",
           "dutiable": false,
           "heading": "0902",
-          "ancestorPath": ["Tea, whether or not flavored", "Green tea (not fermented) in immediate packings of a content not exceeding 3 kg", "Other"],
-          "searchText": "tea, whether or not flavored green tea (not fermented) in immediate packings of a content not exceeding 3 kg other certified organic 0902.10.90.15"
+          "ancestorPath": ["Tea, whether or not flavored", "Green tea (not fermented) in immediate packings of a content not exceeding 3 kg", "Other"]
         },
         {
           "id": "r62",
@@ -1918,8 +1856,7 @@
           "column2InheritedFrom": "0902.10.90",
           "dutiable": false,
           "heading": "0902",
-          "ancestorPath": ["Tea, whether or not flavored", "Green tea (not fermented) in immediate packings of a content not exceeding 3 kg", "Other"],
-          "searchText": "tea, whether or not flavored green tea (not fermented) in immediate packings of a content not exceeding 3 kg other other 0902.10.90.50"
+          "ancestorPath": ["Tea, whether or not flavored", "Green tea (not fermented) in immediate packings of a content not exceeding 3 kg", "Other"]
         },
         {
           "id": "r63",
@@ -1942,8 +1879,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "0902",
-          "ancestorPath": ["Tea, whether or not flavored"],
-          "searchText": "tea, whether or not flavored other green tea (not fermented): 0902.20"
+          "ancestorPath": ["Tea, whether or not flavored"]
         },
         {
           "id": "r64",
@@ -1966,8 +1902,7 @@
           "column2InheritedFrom": null,
           "dutiable": true,
           "heading": "0902",
-          "ancestorPath": ["Tea, whether or not flavored", "Other green tea (not fermented)"],
-          "searchText": "tea, whether or not flavored other green tea (not fermented) flavored 0902.20.10.00"
+          "ancestorPath": ["Tea, whether or not flavored", "Other green tea (not fermented)"]
         },
         {
           "id": "r65",
@@ -1990,8 +1925,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "0902",
-          "ancestorPath": ["Tea, whether or not flavored", "Other green tea (not fermented)"],
-          "searchText": "tea, whether or not flavored other green tea (not fermented) other 0902.20.90"
+          "ancestorPath": ["Tea, whether or not flavored", "Other green tea (not fermented)"]
         },
         {
           "id": "r66",
@@ -2014,8 +1948,7 @@
           "column2InheritedFrom": "0902.20.90",
           "dutiable": false,
           "heading": "0902",
-          "ancestorPath": ["Tea, whether or not flavored", "Other green tea (not fermented)", "Other"],
-          "searchText": "tea, whether or not flavored other green tea (not fermented) other certified organic 0902.20.90.15"
+          "ancestorPath": ["Tea, whether or not flavored", "Other green tea (not fermented)", "Other"]
         },
         {
           "id": "r67",
@@ -2038,8 +1971,7 @@
           "column2InheritedFrom": "0902.20.90",
           "dutiable": false,
           "heading": "0902",
-          "ancestorPath": ["Tea, whether or not flavored", "Other green tea (not fermented)", "Other"],
-          "searchText": "tea, whether or not flavored other green tea (not fermented) other other 0902.20.90.50"
+          "ancestorPath": ["Tea, whether or not flavored", "Other green tea (not fermented)", "Other"]
         },
         {
           "id": "r68",
@@ -2062,8 +1994,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "0902",
-          "ancestorPath": ["Tea, whether or not flavored"],
-          "searchText": "tea, whether or not flavored black tea (fermented) and partly fermented tea, in immediate packings of a content not exceeding 3 kg 0902.30.00"
+          "ancestorPath": ["Tea, whether or not flavored"]
         },
         {
           "id": "r69",
@@ -2089,8 +2020,7 @@
           "ancestorPath": [
             "Tea, whether or not flavored",
             "Black tea (fermented) and partly fermented tea, in immediate packings of a content not exceeding 3 kg"
-          ],
-          "searchText": "tea, whether or not flavored black tea (fermented) and partly fermented tea, in immediate packings of a content not exceeding 3 kg in tea bags: "
+          ]
         },
         {
           "id": "r70",
@@ -2117,8 +2047,7 @@
             "Tea, whether or not flavored",
             "Black tea (fermented) and partly fermented tea, in immediate packings of a content not exceeding 3 kg",
             "In tea bags"
-          ],
-          "searchText": "tea, whether or not flavored black tea (fermented) and partly fermented tea, in immediate packings of a content not exceeding 3 kg in tea bags certified organic 0902.30.00.15"
+          ]
         },
         {
           "id": "r71",
@@ -2145,8 +2074,7 @@
             "Tea, whether or not flavored",
             "Black tea (fermented) and partly fermented tea, in immediate packings of a content not exceeding 3 kg",
             "In tea bags"
-          ],
-          "searchText": "tea, whether or not flavored black tea (fermented) and partly fermented tea, in immediate packings of a content not exceeding 3 kg in tea bags other 0902.30.00.50"
+          ]
         },
         {
           "id": "r72",
@@ -2172,8 +2100,7 @@
           "ancestorPath": [
             "Tea, whether or not flavored",
             "Black tea (fermented) and partly fermented tea, in immediate packings of a content not exceeding 3 kg"
-          ],
-          "searchText": "tea, whether or not flavored black tea (fermented) and partly fermented tea, in immediate packings of a content not exceeding 3 kg other 0902.30.00.90"
+          ]
         },
         {
           "id": "r73",
@@ -2196,8 +2123,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "0902",
-          "ancestorPath": ["Tea, whether or not flavored"],
-          "searchText": "tea, whether or not flavored other black tea (fermented) and other partly fermented tea 0902.40.00.00"
+          "ancestorPath": ["Tea, whether or not flavored"]
         },
         {
           "id": "r74",
@@ -2220,8 +2146,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "0903",
-          "ancestorPath": [],
-          "searchText": "maté 0903.00.00.00"
+          "ancestorPath": []
         },
         {
           "id": "r75",
@@ -2244,8 +2169,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "0904",
-          "ancestorPath": [],
-          "searchText": "pepper of the genus piper; dried or crushed or ground fruits of the genus capsicum (peppers) or of the genus pimenta (e.g., allspice): 0904"
+          "ancestorPath": []
         },
         {
           "id": "r76",
@@ -2270,8 +2194,7 @@
           "heading": "0904",
           "ancestorPath": [
             "Pepper of the genus Piper; dried or crushed or ground fruits of the genus Capsicum (peppers) or of the genus Pimenta (e.g., allspice)"
-          ],
-          "searchText": "pepper of the genus piper; dried or crushed or ground fruits of the genus capsicum (peppers) or of the genus pimenta (e.g., allspice) pepper of the genus piper: "
+          ]
         },
         {
           "id": "r77",
@@ -2297,8 +2220,7 @@
           "ancestorPath": [
             "Pepper of the genus Piper; dried or crushed or ground fruits of the genus Capsicum (peppers) or of the genus Pimenta (e.g., allspice)",
             "Pepper of the genus Piper"
-          ],
-          "searchText": "pepper of the genus piper; dried or crushed or ground fruits of the genus capsicum (peppers) or of the genus pimenta (e.g., allspice) pepper of the genus piper neither crushed nor ground 0904.11.00"
+          ]
         },
         {
           "id": "r78",
@@ -2325,8 +2247,7 @@
             "Pepper of the genus Piper; dried or crushed or ground fruits of the genus Capsicum (peppers) or of the genus Pimenta (e.g., allspice)",
             "Pepper of the genus Piper",
             "Neither crushed nor ground"
-          ],
-          "searchText": "pepper of the genus piper; dried or crushed or ground fruits of the genus capsicum (peppers) or of the genus pimenta (e.g., allspice) pepper of the genus piper neither crushed nor ground black 0904.11.00.20"
+          ]
         },
         {
           "id": "r79",
@@ -2353,8 +2274,7 @@
             "Pepper of the genus Piper; dried or crushed or ground fruits of the genus Capsicum (peppers) or of the genus Pimenta (e.g., allspice)",
             "Pepper of the genus Piper",
             "Neither crushed nor ground"
-          ],
-          "searchText": "pepper of the genus piper; dried or crushed or ground fruits of the genus capsicum (peppers) or of the genus pimenta (e.g., allspice) pepper of the genus piper neither crushed nor ground white 0904.11.00.40"
+          ]
         },
         {
           "id": "r80",
@@ -2380,8 +2300,7 @@
           "ancestorPath": [
             "Pepper of the genus Piper; dried or crushed or ground fruits of the genus Capsicum (peppers) or of the genus Pimenta (e.g., allspice)",
             "Pepper of the genus Piper"
-          ],
-          "searchText": "pepper of the genus piper; dried or crushed or ground fruits of the genus capsicum (peppers) or of the genus pimenta (e.g., allspice) pepper of the genus piper crushed or ground 0904.12.00.00"
+          ]
         },
         {
           "id": "r81",
@@ -2406,8 +2325,7 @@
           "heading": "0904",
           "ancestorPath": [
             "Pepper of the genus Piper; dried or crushed or ground fruits of the genus Capsicum (peppers) or of the genus Pimenta (e.g., allspice)"
-          ],
-          "searchText": "pepper of the genus piper; dried or crushed or ground fruits of the genus capsicum (peppers) or of the genus pimenta (e.g., allspice) fruits of the genus capsicum or of the genus pimenta: "
+          ]
         },
         {
           "id": "r82",
@@ -2433,8 +2351,7 @@
           "ancestorPath": [
             "Pepper of the genus Piper; dried or crushed or ground fruits of the genus Capsicum (peppers) or of the genus Pimenta (e.g., allspice)",
             "Fruits of the genus Capsicum or of the genus Pimenta"
-          ],
-          "searchText": "pepper of the genus piper; dried or crushed or ground fruits of the genus capsicum (peppers) or of the genus pimenta (e.g., allspice) fruits of the genus capsicum or of the genus pimenta dried, neither crushed nor ground: 0904.21"
+          ]
         },
         {
           "id": "r83",
@@ -2461,8 +2378,7 @@
             "Pepper of the genus Piper; dried or crushed or ground fruits of the genus Capsicum (peppers) or of the genus Pimenta (e.g., allspice)",
             "Fruits of the genus Capsicum or of the genus Pimenta",
             "Dried, neither crushed nor ground"
-          ],
-          "searchText": "pepper of the genus piper; dried or crushed or ground fruits of the genus capsicum (peppers) or of the genus pimenta (e.g., allspice) fruits of the genus capsicum or of the genus pimenta dried, neither crushed nor ground of the genuscapsicum(including cayenne pepper, paprika and red pepper): "
+          ]
         },
         {
           "id": "r84",
@@ -2490,8 +2406,7 @@
             "Fruits of the genus Capsicum or of the genus Pimenta",
             "Dried, neither crushed nor ground",
             "Of the genusCapsicum(including cayenne pepper, paprika and red pepper)"
-          ],
-          "searchText": "pepper of the genus piper; dried or crushed or ground fruits of the genus capsicum (peppers) or of the genus pimenta (e.g., allspice) fruits of the genus capsicum or of the genus pimenta dried, neither crushed nor ground of the genuscapsicum(including cayenne pepper, paprika and red pepper) paprika 0904.21.20.00"
+          ]
         },
         {
           "id": "r85",
@@ -2519,8 +2434,7 @@
             "Fruits of the genus Capsicum or of the genus Pimenta",
             "Dried, neither crushed nor ground",
             "Of the genusCapsicum(including cayenne pepper, paprika and red pepper)"
-          ],
-          "searchText": "pepper of the genus piper; dried or crushed or ground fruits of the genus capsicum (peppers) or of the genus pimenta (e.g., allspice) fruits of the genus capsicum or of the genus pimenta dried, neither crushed nor ground of the genuscapsicum(including cayenne pepper, paprika and red pepper) anaheim and ancho pepper 0904.21.40.00"
+          ]
         },
         {
           "id": "r86",
@@ -2548,8 +2462,7 @@
             "Fruits of the genus Capsicum or of the genus Pimenta",
             "Dried, neither crushed nor ground",
             "Of the genusCapsicum(including cayenne pepper, paprika and red pepper)"
-          ],
-          "searchText": "pepper of the genus piper; dried or crushed or ground fruits of the genus capsicum (peppers) or of the genus pimenta (e.g., allspice) fruits of the genus capsicum or of the genus pimenta dried, neither crushed nor ground of the genuscapsicum(including cayenne pepper, paprika and red pepper) other 0904.21.60"
+          ]
         },
         {
           "id": "r87",
@@ -2578,8 +2491,7 @@
             "Dried, neither crushed nor ground",
             "Of the genusCapsicum(including cayenne pepper, paprika and red pepper)",
             "Other"
-          ],
-          "searchText": "pepper of the genus piper; dried or crushed or ground fruits of the genus capsicum (peppers) or of the genus pimenta (e.g., allspice) fruits of the genus capsicum or of the genus pimenta dried, neither crushed nor ground of the genuscapsicum(including cayenne pepper, paprika and red pepper) other bell peppers 0904.21.60.10"
+          ]
         },
         {
           "id": "r88",
@@ -2608,8 +2520,7 @@
             "Dried, neither crushed nor ground",
             "Of the genusCapsicum(including cayenne pepper, paprika and red pepper)",
             "Other"
-          ],
-          "searchText": "pepper of the genus piper; dried or crushed or ground fruits of the genus capsicum (peppers) or of the genus pimenta (e.g., allspice) fruits of the genus capsicum or of the genus pimenta dried, neither crushed nor ground of the genuscapsicum(including cayenne pepper, paprika and red pepper) other jalapeno peppers 0904.21.60.20"
+          ]
         },
         {
           "id": "r89",
@@ -2638,8 +2549,7 @@
             "Dried, neither crushed nor ground",
             "Of the genusCapsicum(including cayenne pepper, paprika and red pepper)",
             "Other"
-          ],
-          "searchText": "pepper of the genus piper; dried or crushed or ground fruits of the genus capsicum (peppers) or of the genus pimenta (e.g., allspice) fruits of the genus capsicum or of the genus pimenta dried, neither crushed nor ground of the genuscapsicum(including cayenne pepper, paprika and red pepper) other other 0904.21.60.90"
+          ]
         },
         {
           "id": "r90",
@@ -2666,8 +2576,7 @@
             "Pepper of the genus Piper; dried or crushed or ground fruits of the genus Capsicum (peppers) or of the genus Pimenta (e.g., allspice)",
             "Fruits of the genus Capsicum or of the genus Pimenta",
             "Dried, neither crushed nor ground"
-          ],
-          "searchText": "pepper of the genus piper; dried or crushed or ground fruits of the genus capsicum (peppers) or of the genus pimenta (e.g., allspice) fruits of the genus capsicum or of the genus pimenta dried, neither crushed nor ground of the genus pimenta (including allspice) 0904.21.80.00"
+          ]
         },
         {
           "id": "r91",
@@ -2693,8 +2602,7 @@
           "ancestorPath": [
             "Pepper of the genus Piper; dried or crushed or ground fruits of the genus Capsicum (peppers) or of the genus Pimenta (e.g., allspice)",
             "Fruits of the genus Capsicum or of the genus Pimenta"
-          ],
-          "searchText": "pepper of the genus piper; dried or crushed or ground fruits of the genus capsicum (peppers) or of the genus pimenta (e.g., allspice) fruits of the genus capsicum or of the genus pimenta crushed or ground: 0904.22"
+          ]
         },
         {
           "id": "r92",
@@ -2721,8 +2629,7 @@
             "Pepper of the genus Piper; dried or crushed or ground fruits of the genus Capsicum (peppers) or of the genus Pimenta (e.g., allspice)",
             "Fruits of the genus Capsicum or of the genus Pimenta",
             "Crushed or ground"
-          ],
-          "searchText": "pepper of the genus piper; dried or crushed or ground fruits of the genus capsicum (peppers) or of the genus pimenta (e.g., allspice) fruits of the genus capsicum or of the genus pimenta crushed or ground of the genus capsicum (including cayenne pepper, paprika and red pepper): "
+          ]
         },
         {
           "id": "r93",
@@ -2750,8 +2657,7 @@
             "Fruits of the genus Capsicum or of the genus Pimenta",
             "Crushed or ground",
             "Of the genus Capsicum (including cayenne Pepper, paprika and red pepper)"
-          ],
-          "searchText": "pepper of the genus piper; dried or crushed or ground fruits of the genus capsicum (peppers) or of the genus pimenta (e.g., allspice) fruits of the genus capsicum or of the genus pimenta crushed or ground of the genus capsicum (including cayenne pepper, paprika and red pepper) paprika 0904.22.20.00"
+          ]
         },
         {
           "id": "r94",
@@ -2779,8 +2685,7 @@
             "Fruits of the genus Capsicum or of the genus Pimenta",
             "Crushed or ground",
             "Of the genus Capsicum (including cayenne Pepper, paprika and red pepper)"
-          ],
-          "searchText": "pepper of the genus piper; dried or crushed or ground fruits of the genus capsicum (peppers) or of the genus pimenta (e.g., allspice) fruits of the genus capsicum or of the genus pimenta crushed or ground of the genus capsicum (including cayenne pepper, paprika and red pepper) anaheim and ancho pepper 0904.22.40.00"
+          ]
         },
         {
           "id": "r95",
@@ -2808,8 +2713,7 @@
             "Fruits of the genus Capsicum or of the genus Pimenta",
             "Crushed or ground",
             "Of the genus Capsicum (including cayenne Pepper, paprika and red pepper)"
-          ],
-          "searchText": "pepper of the genus piper; dried or crushed or ground fruits of the genus capsicum (peppers) or of the genus pimenta (e.g., allspice) fruits of the genus capsicum or of the genus pimenta crushed or ground of the genus capsicum (including cayenne pepper, paprika and red pepper) mixtures of mashed or macerated hot red peppers and salt 0904.22.73.00"
+          ]
         },
         {
           "id": "r96",
@@ -2837,8 +2741,7 @@
             "Fruits of the genus Capsicum or of the genus Pimenta",
             "Crushed or ground",
             "Of the genus Capsicum (including cayenne Pepper, paprika and red pepper)"
-          ],
-          "searchText": "pepper of the genus piper; dried or crushed or ground fruits of the genus capsicum (peppers) or of the genus pimenta (e.g., allspice) fruits of the genus capsicum or of the genus pimenta crushed or ground of the genus capsicum (including cayenne pepper, paprika and red pepper) other 0904.22.76.00"
+          ]
         },
         {
           "id": "r97",
@@ -2865,8 +2768,7 @@
             "Pepper of the genus Piper; dried or crushed or ground fruits of the genus Capsicum (peppers) or of the genus Pimenta (e.g., allspice)",
             "Fruits of the genus Capsicum or of the genus Pimenta",
             "Crushed or ground"
-          ],
-          "searchText": "pepper of the genus piper; dried or crushed or ground fruits of the genus capsicum (peppers) or of the genus pimenta (e.g., allspice) fruits of the genus capsicum or of the genus pimenta crushed or ground of the genus pimenta (including allspice) 0904.22.80.00"
+          ]
         },
         {
           "id": "r98",
@@ -2889,8 +2791,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "0905",
-          "ancestorPath": [],
-          "searchText": "vanilla: 0905"
+          "ancestorPath": []
         },
         {
           "id": "r99",
@@ -2913,8 +2814,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "0905",
-          "ancestorPath": ["Vanilla"],
-          "searchText": "vanilla neither crushed nor ground 0905.10.00.00"
+          "ancestorPath": ["Vanilla"]
         },
         {
           "id": "r100",
@@ -2937,8 +2837,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "0905",
-          "ancestorPath": ["Vanilla"],
-          "searchText": "vanilla crushed or ground 0905.20.00.00"
+          "ancestorPath": ["Vanilla"]
         },
         {
           "id": "r101",
@@ -2961,8 +2860,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "0906",
-          "ancestorPath": [],
-          "searchText": "cinnamon and cinnamon-tree flowers: 0906"
+          "ancestorPath": []
         },
         {
           "id": "r102",
@@ -2985,8 +2883,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "0906",
-          "ancestorPath": ["Cinnamon and cinnamon-tree flowers"],
-          "searchText": "cinnamon and cinnamon-tree flowers neither crushed nor ground: "
+          "ancestorPath": ["Cinnamon and cinnamon-tree flowers"]
         },
         {
           "id": "r103",
@@ -3009,8 +2906,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "0906",
-          "ancestorPath": ["Cinnamon and cinnamon-tree flowers", "Neither crushed nor ground"],
-          "searchText": "cinnamon and cinnamon-tree flowers neither crushed nor ground cinnamon (cinnamomum zeylanicum blume) 0906.11.00.00"
+          "ancestorPath": ["Cinnamon and cinnamon-tree flowers", "Neither crushed nor ground"]
         },
         {
           "id": "r104",
@@ -3033,8 +2929,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "0906",
-          "ancestorPath": ["Cinnamon and cinnamon-tree flowers", "Neither crushed nor ground"],
-          "searchText": "cinnamon and cinnamon-tree flowers neither crushed nor ground other 0906.19.00.00"
+          "ancestorPath": ["Cinnamon and cinnamon-tree flowers", "Neither crushed nor ground"]
         },
         {
           "id": "r105",
@@ -3057,8 +2952,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "0906",
-          "ancestorPath": ["Cinnamon and cinnamon-tree flowers"],
-          "searchText": "cinnamon and cinnamon-tree flowers crushed or ground 0906.20.00.00"
+          "ancestorPath": ["Cinnamon and cinnamon-tree flowers"]
         },
         {
           "id": "r106",
@@ -3081,8 +2975,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "0907",
-          "ancestorPath": [],
-          "searchText": "cloves (whole fruit, cloves and stems): 0907"
+          "ancestorPath": []
         },
         {
           "id": "r107",
@@ -3105,8 +2998,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "0907",
-          "ancestorPath": ["Cloves (whole fruit, cloves and stems)"],
-          "searchText": "cloves (whole fruit, cloves and stems) neither crushed nor ground 0907.10.00.00"
+          "ancestorPath": ["Cloves (whole fruit, cloves and stems)"]
         },
         {
           "id": "r108",
@@ -3129,8 +3021,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "0907",
-          "ancestorPath": ["Cloves (whole fruit, cloves and stems)"],
-          "searchText": "cloves (whole fruit, cloves and stems) crushed or ground 0907.20.00.00"
+          "ancestorPath": ["Cloves (whole fruit, cloves and stems)"]
         },
         {
           "id": "r109",
@@ -3153,8 +3044,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "0908",
-          "ancestorPath": [],
-          "searchText": "nutmeg, mace and cardamoms: 0908"
+          "ancestorPath": []
         },
         {
           "id": "r110",
@@ -3177,8 +3067,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "0908",
-          "ancestorPath": ["Nutmeg, mace and cardamoms"],
-          "searchText": "nutmeg, mace and cardamoms nutmeg: "
+          "ancestorPath": ["Nutmeg, mace and cardamoms"]
         },
         {
           "id": "r111",
@@ -3201,8 +3090,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "0908",
-          "ancestorPath": ["Nutmeg, mace and cardamoms", "Nutmeg"],
-          "searchText": "nutmeg, mace and cardamoms nutmeg neither crushed nor ground 0908.11.00.00"
+          "ancestorPath": ["Nutmeg, mace and cardamoms", "Nutmeg"]
         },
         {
           "id": "r112",
@@ -3225,8 +3113,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "0908",
-          "ancestorPath": ["Nutmeg, mace and cardamoms", "Nutmeg"],
-          "searchText": "nutmeg, mace and cardamoms nutmeg crushed or ground 0908.12.00.00"
+          "ancestorPath": ["Nutmeg, mace and cardamoms", "Nutmeg"]
         },
         {
           "id": "r113",
@@ -3249,8 +3136,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "0908",
-          "ancestorPath": ["Nutmeg, mace and cardamoms"],
-          "searchText": "nutmeg, mace and cardamoms mace: "
+          "ancestorPath": ["Nutmeg, mace and cardamoms"]
         },
         {
           "id": "r114",
@@ -3273,8 +3159,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "0908",
-          "ancestorPath": ["Nutmeg, mace and cardamoms", "Mace"],
-          "searchText": "nutmeg, mace and cardamoms mace neither crushed nor ground 0908.21.00.00"
+          "ancestorPath": ["Nutmeg, mace and cardamoms", "Mace"]
         },
         {
           "id": "r115",
@@ -3297,8 +3182,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "0908",
-          "ancestorPath": ["Nutmeg, mace and cardamoms", "Mace"],
-          "searchText": "nutmeg, mace and cardamoms mace crushed or ground: 0908.22"
+          "ancestorPath": ["Nutmeg, mace and cardamoms", "Mace"]
         },
         {
           "id": "r116",
@@ -3321,8 +3205,7 @@
           "column2InheritedFrom": null,
           "dutiable": true,
           "heading": "0908",
-          "ancestorPath": ["Nutmeg, mace and cardamoms", "Mace", "Crushed or ground"],
-          "searchText": "nutmeg, mace and cardamoms mace crushed or ground bombay or wild mace, ground 0908.22.20.00"
+          "ancestorPath": ["Nutmeg, mace and cardamoms", "Mace", "Crushed or ground"]
         },
         {
           "id": "r117",
@@ -3345,8 +3228,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "0908",
-          "ancestorPath": ["Nutmeg, mace and cardamoms", "Mace", "Crushed or ground"],
-          "searchText": "nutmeg, mace and cardamoms mace crushed or ground other 0908.22.40.00"
+          "ancestorPath": ["Nutmeg, mace and cardamoms", "Mace", "Crushed or ground"]
         },
         {
           "id": "r118",
@@ -3369,8 +3251,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "0908",
-          "ancestorPath": ["Nutmeg, mace and cardamoms"],
-          "searchText": "nutmeg, mace and cardamoms cardamoms: "
+          "ancestorPath": ["Nutmeg, mace and cardamoms"]
         },
         {
           "id": "r119",
@@ -3393,8 +3274,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "0908",
-          "ancestorPath": ["Nutmeg, mace and cardamoms", "Cardamoms"],
-          "searchText": "nutmeg, mace and cardamoms cardamoms neither crushed nor ground 0908.31.00.00"
+          "ancestorPath": ["Nutmeg, mace and cardamoms", "Cardamoms"]
         },
         {
           "id": "r120",
@@ -3417,8 +3297,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "0908",
-          "ancestorPath": ["Nutmeg, mace and cardamoms", "Cardamoms"],
-          "searchText": "nutmeg, mace and cardamoms cardamoms crushed or ground 0908.32.00.00"
+          "ancestorPath": ["Nutmeg, mace and cardamoms", "Cardamoms"]
         },
         {
           "id": "r121",
@@ -3441,8 +3320,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "0909",
-          "ancestorPath": [],
-          "searchText": "seeds of anise, badian, fennel, coriander, cumin or caraway; juniper berries: 0909"
+          "ancestorPath": []
         },
         {
           "id": "r122",
@@ -3465,8 +3343,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "0909",
-          "ancestorPath": ["Seeds of anise, badian, fennel, coriander, cumin or caraway; juniper berries"],
-          "searchText": "seeds of anise, badian, fennel, coriander, cumin or caraway; juniper berries seeds of coriander: "
+          "ancestorPath": ["Seeds of anise, badian, fennel, coriander, cumin or caraway; juniper berries"]
         },
         {
           "id": "r123",
@@ -3489,8 +3366,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "0909",
-          "ancestorPath": ["Seeds of anise, badian, fennel, coriander, cumin or caraway; juniper berries", "Seeds of coriander"],
-          "searchText": "seeds of anise, badian, fennel, coriander, cumin or caraway; juniper berries seeds of coriander neither crushed nor ground 0909.21.00.00"
+          "ancestorPath": ["Seeds of anise, badian, fennel, coriander, cumin or caraway; juniper berries", "Seeds of coriander"]
         },
         {
           "id": "r124",
@@ -3513,8 +3389,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "0909",
-          "ancestorPath": ["Seeds of anise, badian, fennel, coriander, cumin or caraway; juniper berries", "Seeds of coriander"],
-          "searchText": "seeds of anise, badian, fennel, coriander, cumin or caraway; juniper berries seeds of coriander crushed or ground 0909.22.00.00"
+          "ancestorPath": ["Seeds of anise, badian, fennel, coriander, cumin or caraway; juniper berries", "Seeds of coriander"]
         },
         {
           "id": "r125",
@@ -3537,8 +3412,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "0909",
-          "ancestorPath": ["Seeds of anise, badian, fennel, coriander, cumin or caraway; juniper berries"],
-          "searchText": "seeds of anise, badian, fennel, coriander, cumin or caraway; juniper berries seeds of cumin: "
+          "ancestorPath": ["Seeds of anise, badian, fennel, coriander, cumin or caraway; juniper berries"]
         },
         {
           "id": "r126",
@@ -3561,8 +3435,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "0909",
-          "ancestorPath": ["Seeds of anise, badian, fennel, coriander, cumin or caraway; juniper berries", "Seeds of cumin"],
-          "searchText": "seeds of anise, badian, fennel, coriander, cumin or caraway; juniper berries seeds of cumin neither crushed nor ground 0909.31.00.00"
+          "ancestorPath": ["Seeds of anise, badian, fennel, coriander, cumin or caraway; juniper berries", "Seeds of cumin"]
         },
         {
           "id": "r127",
@@ -3585,8 +3458,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "0909",
-          "ancestorPath": ["Seeds of anise, badian, fennel, coriander, cumin or caraway; juniper berries", "Seeds of cumin"],
-          "searchText": "seeds of anise, badian, fennel, coriander, cumin or caraway; juniper berries seeds of cumin crushed or ground 0909.32.00.00"
+          "ancestorPath": ["Seeds of anise, badian, fennel, coriander, cumin or caraway; juniper berries", "Seeds of cumin"]
         },
         {
           "id": "r128",
@@ -3609,8 +3481,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "0909",
-          "ancestorPath": ["Seeds of anise, badian, fennel, coriander, cumin or caraway; juniper berries"],
-          "searchText": "seeds of anise, badian, fennel, coriander, cumin or caraway; juniper berries seeds of anise, badian, caraway or fennel; juniper berries: "
+          "ancestorPath": ["Seeds of anise, badian, fennel, coriander, cumin or caraway; juniper berries"]
         },
         {
           "id": "r129",
@@ -3636,8 +3507,7 @@
           "ancestorPath": [
             "Seeds of anise, badian, fennel, coriander, cumin or caraway; juniper berries",
             "Seeds of anise, badian, caraway or fennel; juniper berries"
-          ],
-          "searchText": "seeds of anise, badian, fennel, coriander, cumin or caraway; juniper berries seeds of anise, badian, caraway or fennel; juniper berries neither crushed nor ground 0909.61.00.00"
+          ]
         },
         {
           "id": "r130",
@@ -3663,8 +3533,7 @@
           "ancestorPath": [
             "Seeds of anise, badian, fennel, coriander, cumin or caraway; juniper berries",
             "Seeds of anise, badian, caraway or fennel; juniper berries"
-          ],
-          "searchText": "seeds of anise, badian, fennel, coriander, cumin or caraway; juniper berries seeds of anise, badian, caraway or fennel; juniper berries crushed or ground 0909.62.00.00"
+          ]
         },
         {
           "id": "r131",
@@ -3687,8 +3556,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "0910",
-          "ancestorPath": [],
-          "searchText": "ginger, saffron, turmeric (curcuma), thyme, bay leaves, curry and other spices: 0910"
+          "ancestorPath": []
         },
         {
           "id": "r132",
@@ -3711,8 +3579,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "0910",
-          "ancestorPath": ["Ginger, saffron, turmeric (curcuma), thyme, bay leaves, curry and other spices"],
-          "searchText": "ginger, saffron, turmeric (curcuma), thyme, bay leaves, curry and other spices ginger: "
+          "ancestorPath": ["Ginger, saffron, turmeric (curcuma), thyme, bay leaves, curry and other spices"]
         },
         {
           "id": "r133",
@@ -3735,8 +3602,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "0910",
-          "ancestorPath": ["Ginger, saffron, turmeric (curcuma), thyme, bay leaves, curry and other spices", "Ginger"],
-          "searchText": "ginger, saffron, turmeric (curcuma), thyme, bay leaves, curry and other spices ginger neither crushed nor ground 0910.11.00"
+          "ancestorPath": ["Ginger, saffron, turmeric (curcuma), thyme, bay leaves, curry and other spices", "Ginger"]
         },
         {
           "id": "r134",
@@ -3759,8 +3625,7 @@
           "column2InheritedFrom": "0910.11.00",
           "dutiable": false,
           "heading": "0910",
-          "ancestorPath": ["Ginger, saffron, turmeric (curcuma), thyme, bay leaves, curry and other spices", "Ginger", "Neither crushed nor ground"],
-          "searchText": "ginger, saffron, turmeric (curcuma), thyme, bay leaves, curry and other spices ginger neither crushed nor ground certified organic 0910.11.00.10"
+          "ancestorPath": ["Ginger, saffron, turmeric (curcuma), thyme, bay leaves, curry and other spices", "Ginger", "Neither crushed nor ground"]
         },
         {
           "id": "r135",
@@ -3783,8 +3648,7 @@
           "column2InheritedFrom": "0910.11.00",
           "dutiable": false,
           "heading": "0910",
-          "ancestorPath": ["Ginger, saffron, turmeric (curcuma), thyme, bay leaves, curry and other spices", "Ginger", "Neither crushed nor ground"],
-          "searchText": "ginger, saffron, turmeric (curcuma), thyme, bay leaves, curry and other spices ginger neither crushed nor ground other 0910.11.00.15"
+          "ancestorPath": ["Ginger, saffron, turmeric (curcuma), thyme, bay leaves, curry and other spices", "Ginger", "Neither crushed nor ground"]
         },
         {
           "id": "r136",
@@ -3807,8 +3671,7 @@
           "column2InheritedFrom": null,
           "dutiable": true,
           "heading": "0910",
-          "ancestorPath": ["Ginger, saffron, turmeric (curcuma), thyme, bay leaves, curry and other spices", "Ginger"],
-          "searchText": "ginger, saffron, turmeric (curcuma), thyme, bay leaves, curry and other spices ginger crushed or ground 0910.12.00.00"
+          "ancestorPath": ["Ginger, saffron, turmeric (curcuma), thyme, bay leaves, curry and other spices", "Ginger"]
         },
         {
           "id": "r137",
@@ -3831,8 +3694,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "0910",
-          "ancestorPath": ["Ginger, saffron, turmeric (curcuma), thyme, bay leaves, curry and other spices"],
-          "searchText": "ginger, saffron, turmeric (curcuma), thyme, bay leaves, curry and other spices saffron 0910.20.00.00"
+          "ancestorPath": ["Ginger, saffron, turmeric (curcuma), thyme, bay leaves, curry and other spices"]
         },
         {
           "id": "r138",
@@ -3855,8 +3717,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "0910",
-          "ancestorPath": ["Ginger, saffron, turmeric (curcuma), thyme, bay leaves, curry and other spices"],
-          "searchText": "ginger, saffron, turmeric (curcuma), thyme, bay leaves, curry and other spices turmeric (curcuma) 0910.30.00.00"
+          "ancestorPath": ["Ginger, saffron, turmeric (curcuma), thyme, bay leaves, curry and other spices"]
         },
         {
           "id": "r139",
@@ -3879,8 +3740,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "0910",
-          "ancestorPath": ["Ginger, saffron, turmeric (curcuma), thyme, bay leaves, curry and other spices"],
-          "searchText": "ginger, saffron, turmeric (curcuma), thyme, bay leaves, curry and other spices other spices: "
+          "ancestorPath": ["Ginger, saffron, turmeric (curcuma), thyme, bay leaves, curry and other spices"]
         },
         {
           "id": "r140",
@@ -3903,8 +3763,7 @@
           "column2InheritedFrom": null,
           "dutiable": true,
           "heading": "0910",
-          "ancestorPath": ["Ginger, saffron, turmeric (curcuma), thyme, bay leaves, curry and other spices", "Other spices"],
-          "searchText": "ginger, saffron, turmeric (curcuma), thyme, bay leaves, curry and other spices other spices mixtures referred to in note 1(b) to this chapter 0910.91.00.00"
+          "ancestorPath": ["Ginger, saffron, turmeric (curcuma), thyme, bay leaves, curry and other spices", "Other spices"]
         },
         {
           "id": "r141",
@@ -3927,8 +3786,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "0910",
-          "ancestorPath": ["Ginger, saffron, turmeric (curcuma), thyme, bay leaves, curry and other spices", "Other spices"],
-          "searchText": "ginger, saffron, turmeric (curcuma), thyme, bay leaves, curry and other spices other spices other: 0910.99"
+          "ancestorPath": ["Ginger, saffron, turmeric (curcuma), thyme, bay leaves, curry and other spices", "Other spices"]
         },
         {
           "id": "r142",
@@ -3951,8 +3809,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "0910",
-          "ancestorPath": ["Ginger, saffron, turmeric (curcuma), thyme, bay leaves, curry and other spices", "Other spices", "Other"],
-          "searchText": "ginger, saffron, turmeric (curcuma), thyme, bay leaves, curry and other spices other spices other thyme; bay leaves: "
+          "ancestorPath": ["Ginger, saffron, turmeric (curcuma), thyme, bay leaves, curry and other spices", "Other spices", "Other"]
         },
         {
           "id": "r143",
@@ -3975,8 +3832,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "0910",
-          "ancestorPath": ["Ginger, saffron, turmeric (curcuma), thyme, bay leaves, curry and other spices", "Other spices", "Other", "Thyme; bay leaves"],
-          "searchText": "ginger, saffron, turmeric (curcuma), thyme, bay leaves, curry and other spices other spices other thyme; bay leaves crude or not manufactured 0910.99.05.00"
+          "ancestorPath": ["Ginger, saffron, turmeric (curcuma), thyme, bay leaves, curry and other spices", "Other spices", "Other", "Thyme; bay leaves"]
         },
         {
           "id": "r144",
@@ -3999,8 +3855,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "0910",
-          "ancestorPath": ["Ginger, saffron, turmeric (curcuma), thyme, bay leaves, curry and other spices", "Other spices", "Other", "Thyme; bay leaves"],
-          "searchText": "ginger, saffron, turmeric (curcuma), thyme, bay leaves, curry and other spices other spices other thyme; bay leaves other: "
+          "ancestorPath": ["Ginger, saffron, turmeric (curcuma), thyme, bay leaves, curry and other spices", "Other spices", "Other", "Thyme; bay leaves"]
         },
         {
           "id": "r145",
@@ -4029,8 +3884,7 @@
             "Other",
             "Thyme; bay leaves",
             "Other"
-          ],
-          "searchText": "ginger, saffron, turmeric (curcuma), thyme, bay leaves, curry and other spices other spices other thyme; bay leaves other thyme 0910.99.06.00"
+          ]
         },
         {
           "id": "r146",
@@ -4059,8 +3913,7 @@
             "Other",
             "Thyme; bay leaves",
             "Other"
-          ],
-          "searchText": "ginger, saffron, turmeric (curcuma), thyme, bay leaves, curry and other spices other spices other thyme; bay leaves other bay leaves 0910.99.07.00"
+          ]
         },
         {
           "id": "r147",
@@ -4083,8 +3936,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "0910",
-          "ancestorPath": ["Ginger, saffron, turmeric (curcuma), thyme, bay leaves, curry and other spices", "Other spices", "Other"],
-          "searchText": "ginger, saffron, turmeric (curcuma), thyme, bay leaves, curry and other spices other spices other curry 0910.99.10.00"
+          "ancestorPath": ["Ginger, saffron, turmeric (curcuma), thyme, bay leaves, curry and other spices", "Other spices", "Other"]
         },
         {
           "id": "r148",
@@ -4107,8 +3959,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "0910",
-          "ancestorPath": ["Ginger, saffron, turmeric (curcuma), thyme, bay leaves, curry and other spices", "Other spices", "Other"],
-          "searchText": "ginger, saffron, turmeric (curcuma), thyme, bay leaves, curry and other spices other spices other origanum (lippia spp.): "
+          "ancestorPath": ["Ginger, saffron, turmeric (curcuma), thyme, bay leaves, curry and other spices", "Other spices", "Other"]
         },
         {
           "id": "r149",
@@ -4131,8 +3982,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "0910",
-          "ancestorPath": ["Ginger, saffron, turmeric (curcuma), thyme, bay leaves, curry and other spices", "Other spices", "Other", "Origanum (Lippia spp.)"],
-          "searchText": "ginger, saffron, turmeric (curcuma), thyme, bay leaves, curry and other spices other spices other origanum (lippia spp.) crude or not manufactured 0910.99.20.00"
+          "ancestorPath": ["Ginger, saffron, turmeric (curcuma), thyme, bay leaves, curry and other spices", "Other spices", "Other", "Origanum (Lippia spp.)"]
         },
         {
           "id": "r150",
@@ -4155,8 +4005,7 @@
           "column2InheritedFrom": null,
           "dutiable": true,
           "heading": "0910",
-          "ancestorPath": ["Ginger, saffron, turmeric (curcuma), thyme, bay leaves, curry and other spices", "Other spices", "Other", "Origanum (Lippia spp.)"],
-          "searchText": "ginger, saffron, turmeric (curcuma), thyme, bay leaves, curry and other spices other spices other origanum (lippia spp.) other 0910.99.40.00"
+          "ancestorPath": ["Ginger, saffron, turmeric (curcuma), thyme, bay leaves, curry and other spices", "Other spices", "Other", "Origanum (Lippia spp.)"]
         },
         {
           "id": "r151",
@@ -4179,8 +4028,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "0910",
-          "ancestorPath": ["Ginger, saffron, turmeric (curcuma), thyme, bay leaves, curry and other spices", "Other spices", "Other"],
-          "searchText": "ginger, saffron, turmeric (curcuma), thyme, bay leaves, curry and other spices other spices other other: "
+          "ancestorPath": ["Ginger, saffron, turmeric (curcuma), thyme, bay leaves, curry and other spices", "Other spices", "Other"]
         },
         {
           "id": "r152",
@@ -4203,8 +4051,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "0910",
-          "ancestorPath": ["Ginger, saffron, turmeric (curcuma), thyme, bay leaves, curry and other spices", "Other spices", "Other", "Other"],
-          "searchText": "ginger, saffron, turmeric (curcuma), thyme, bay leaves, curry and other spices other spices other other dill 0910.99.50.00"
+          "ancestorPath": ["Ginger, saffron, turmeric (curcuma), thyme, bay leaves, curry and other spices", "Other spices", "Other", "Other"]
         },
         {
           "id": "r153",
@@ -4227,8 +4074,7 @@
           "column2InheritedFrom": null,
           "dutiable": true,
           "heading": "0910",
-          "ancestorPath": ["Ginger, saffron, turmeric (curcuma), thyme, bay leaves, curry and other spices", "Other spices", "Other", "Other"],
-          "searchText": "ginger, saffron, turmeric (curcuma), thyme, bay leaves, curry and other spices other spices other other other 0910.99.60.00"
+          "ancestorPath": ["Ginger, saffron, turmeric (curcuma), thyme, bay leaves, curry and other spices", "Other spices", "Other", "Other"]
         }
       ]
     },
@@ -4887,14 +4733,6 @@
     "lines": [
       {
         "hts": "0901.11.00.15",
-        "description": "Certified organic",
-        "ancestorPath": [
-          "Coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion",
-          "Coffee, not roasted",
-          "Not decaffeinated",
-          "Arabica"
-        ],
-        "searchText": "coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion coffee, not roasted not decaffeinated arabica certified organic 0901.11.00.15",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -4902,14 +4740,6 @@
       },
       {
         "hts": "0901.11.00.25",
-        "description": "Other",
-        "ancestorPath": [
-          "Coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion",
-          "Coffee, not roasted",
-          "Not decaffeinated",
-          "Arabica"
-        ],
-        "searchText": "coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion coffee, not roasted not decaffeinated arabica other 0901.11.00.25",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -4917,14 +4747,6 @@
       },
       {
         "hts": "0901.11.00.35",
-        "description": "Certified organic",
-        "ancestorPath": [
-          "Coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion",
-          "Coffee, not roasted",
-          "Not decaffeinated",
-          "Robusta"
-        ],
-        "searchText": "coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion coffee, not roasted not decaffeinated robusta certified organic 0901.11.00.35",
         "generalBefore": null,
         "generalNow": "Free",
         "status": "new",
@@ -4932,14 +4754,6 @@
       },
       {
         "hts": "0901.11.00.40",
-        "description": "Other",
-        "ancestorPath": [
-          "Coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion",
-          "Coffee, not roasted",
-          "Not decaffeinated",
-          "Robusta"
-        ],
-        "searchText": "coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion coffee, not roasted not decaffeinated robusta other 0901.11.00.40",
         "generalBefore": null,
         "generalNow": "Free",
         "status": "new",
@@ -4947,14 +4761,6 @@
       },
       {
         "hts": "0901.11.00.50",
-        "description": "Certified organic",
-        "ancestorPath": [
-          "Coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion",
-          "Coffee, not roasted",
-          "Not decaffeinated",
-          "Other"
-        ],
-        "searchText": "coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion coffee, not roasted not decaffeinated other certified organic 0901.11.00.50",
         "generalBefore": null,
         "generalNow": "Free",
         "status": "new",
@@ -4962,14 +4768,6 @@
       },
       {
         "hts": "0901.11.00.65",
-        "description": "Other",
-        "ancestorPath": [
-          "Coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion",
-          "Coffee, not roasted",
-          "Not decaffeinated",
-          "Other"
-        ],
-        "searchText": "coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion coffee, not roasted not decaffeinated other other 0901.11.00.65",
         "generalBefore": null,
         "generalNow": "Free",
         "status": "new",
@@ -4977,14 +4775,6 @@
       },
       {
         "hts": "0901.12.00.20",
-        "description": "Certified organic",
-        "ancestorPath": [
-          "Coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion",
-          "Coffee, not roasted",
-          "Decaffeinated",
-          "Arabica"
-        ],
-        "searchText": "coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion coffee, not roasted decaffeinated arabica certified organic 0901.12.00.20",
         "generalBefore": null,
         "generalNow": "Free",
         "status": "new",
@@ -4992,14 +4782,6 @@
       },
       {
         "hts": "0901.12.00.35",
-        "description": "Other",
-        "ancestorPath": [
-          "Coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion",
-          "Coffee, not roasted",
-          "Decaffeinated",
-          "Arabica"
-        ],
-        "searchText": "coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion coffee, not roasted decaffeinated arabica other 0901.12.00.35",
         "generalBefore": null,
         "generalNow": "Free",
         "status": "new",
@@ -5007,14 +4789,6 @@
       },
       {
         "hts": "0901.12.00.40",
-        "description": "Certified organic",
-        "ancestorPath": [
-          "Coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion",
-          "Coffee, not roasted",
-          "Decaffeinated",
-          "Robusta"
-        ],
-        "searchText": "coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion coffee, not roasted decaffeinated robusta certified organic 0901.12.00.40",
         "generalBefore": null,
         "generalNow": "Free",
         "status": "new",
@@ -5022,14 +4796,6 @@
       },
       {
         "hts": "0901.12.00.55",
-        "description": "Other",
-        "ancestorPath": [
-          "Coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion",
-          "Coffee, not roasted",
-          "Decaffeinated",
-          "Robusta"
-        ],
-        "searchText": "coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion coffee, not roasted decaffeinated robusta other 0901.12.00.55",
         "generalBefore": null,
         "generalNow": "Free",
         "status": "new",
@@ -5037,14 +4803,6 @@
       },
       {
         "hts": "0901.12.00.60",
-        "description": "Certified organic",
-        "ancestorPath": [
-          "Coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion",
-          "Coffee, not roasted",
-          "Decaffeinated",
-          "Other"
-        ],
-        "searchText": "coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion coffee, not roasted decaffeinated other certified organic 0901.12.00.60",
         "generalBefore": null,
         "generalNow": "Free",
         "status": "new",
@@ -5052,14 +4810,6 @@
       },
       {
         "hts": "0901.12.00.75",
-        "description": "Other",
-        "ancestorPath": [
-          "Coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion",
-          "Coffee, not roasted",
-          "Decaffeinated",
-          "Other"
-        ],
-        "searchText": "coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion coffee, not roasted decaffeinated other other 0901.12.00.75",
         "generalBefore": null,
         "generalNow": "Free",
         "status": "new",
@@ -5067,15 +4817,6 @@
       },
       {
         "hts": "0901.21.00.15",
-        "description": "Certified organic",
-        "ancestorPath": [
-          "Coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion",
-          "Coffee, roasted",
-          "Not decaffeinated",
-          "In retail containers weighing 2 kg or less",
-          "Arabica"
-        ],
-        "searchText": "coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion coffee, roasted not decaffeinated in retail containers weighing 2 kg or less arabica certified organic 0901.21.00.15",
         "generalBefore": null,
         "generalNow": "Free",
         "status": "new",
@@ -5083,15 +4824,6 @@
       },
       {
         "hts": "0901.21.00.20",
-        "description": "Other",
-        "ancestorPath": [
-          "Coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion",
-          "Coffee, roasted",
-          "Not decaffeinated",
-          "In retail containers weighing 2 kg or less",
-          "Arabica"
-        ],
-        "searchText": "coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion coffee, roasted not decaffeinated in retail containers weighing 2 kg or less arabica other 0901.21.00.20",
         "generalBefore": null,
         "generalNow": "Free",
         "status": "new",
@@ -5099,15 +4831,6 @@
       },
       {
         "hts": "0901.21.00.25",
-        "description": "Certified organic",
-        "ancestorPath": [
-          "Coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion",
-          "Coffee, roasted",
-          "Not decaffeinated",
-          "In retail containers weighing 2 kg or less",
-          "Robusta"
-        ],
-        "searchText": "coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion coffee, roasted not decaffeinated in retail containers weighing 2 kg or less robusta certified organic 0901.21.00.25",
         "generalBefore": null,
         "generalNow": "Free",
         "status": "new",
@@ -5115,15 +4838,6 @@
       },
       {
         "hts": "0901.21.00.29",
-        "description": "Other",
-        "ancestorPath": [
-          "Coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion",
-          "Coffee, roasted",
-          "Not decaffeinated",
-          "In retail containers weighing 2 kg or less",
-          "Robusta"
-        ],
-        "searchText": "coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion coffee, roasted not decaffeinated in retail containers weighing 2 kg or less robusta other 0901.21.00.29",
         "generalBefore": null,
         "generalNow": "Free",
         "status": "new",
@@ -5131,15 +4845,6 @@
       },
       {
         "hts": "0901.21.00.40",
-        "description": "Certified organic",
-        "ancestorPath": [
-          "Coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion",
-          "Coffee, roasted",
-          "Not decaffeinated",
-          "In retail containers weighing 2 kg or less",
-          "Other"
-        ],
-        "searchText": "coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion coffee, roasted not decaffeinated in retail containers weighing 2 kg or less other certified organic 0901.21.00.40",
         "generalBefore": null,
         "generalNow": "Free",
         "status": "new",
@@ -5147,15 +4852,6 @@
       },
       {
         "hts": "0901.21.00.49",
-        "description": "Other",
-        "ancestorPath": [
-          "Coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion",
-          "Coffee, roasted",
-          "Not decaffeinated",
-          "In retail containers weighing 2 kg or less",
-          "Other"
-        ],
-        "searchText": "coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion coffee, roasted not decaffeinated in retail containers weighing 2 kg or less other other 0901.21.00.49",
         "generalBefore": null,
         "generalNow": "Free",
         "status": "new",
@@ -5163,14 +4859,6 @@
       },
       {
         "hts": "0901.21.00.55",
-        "description": "Certified organic",
-        "ancestorPath": [
-          "Coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion",
-          "Coffee, roasted",
-          "Not decaffeinated",
-          "Other"
-        ],
-        "searchText": "coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion coffee, roasted not decaffeinated other certified organic 0901.21.00.55",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -5178,14 +4866,6 @@
       },
       {
         "hts": "0901.21.00.65",
-        "description": "Other",
-        "ancestorPath": [
-          "Coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion",
-          "Coffee, roasted",
-          "Not decaffeinated",
-          "Other"
-        ],
-        "searchText": "coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion coffee, roasted not decaffeinated other other 0901.21.00.65",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -5193,14 +4873,6 @@
       },
       {
         "hts": "0901.22.00.35",
-        "description": "Certified organic",
-        "ancestorPath": [
-          "Coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion",
-          "Coffee, roasted",
-          "Decaffeinated",
-          "In retail containers weighing 2 kg or less"
-        ],
-        "searchText": "coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion coffee, roasted decaffeinated in retail containers weighing 2 kg or less certified organic 0901.22.00.35",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -5208,15 +4880,6 @@
       },
       {
         "hts": "0901.22.00.40",
-        "description": "Arabica",
-        "ancestorPath": [
-          "Coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion",
-          "Coffee, roasted",
-          "Decaffeinated",
-          "In retail containers weighing 2 kg or less",
-          "Other"
-        ],
-        "searchText": "coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion coffee, roasted decaffeinated in retail containers weighing 2 kg or less other arabica 0901.22.00.40",
         "generalBefore": null,
         "generalNow": "Free",
         "status": "new",
@@ -5224,15 +4887,6 @@
       },
       {
         "hts": "0901.22.00.50",
-        "description": "Robusta",
-        "ancestorPath": [
-          "Coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion",
-          "Coffee, roasted",
-          "Decaffeinated",
-          "In retail containers weighing 2 kg or less",
-          "Other"
-        ],
-        "searchText": "coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion coffee, roasted decaffeinated in retail containers weighing 2 kg or less other robusta 0901.22.00.50",
         "generalBefore": null,
         "generalNow": "Free",
         "status": "new",
@@ -5240,15 +4894,6 @@
       },
       {
         "hts": "0901.22.00.55",
-        "description": "Other",
-        "ancestorPath": [
-          "Coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion",
-          "Coffee, roasted",
-          "Decaffeinated",
-          "In retail containers weighing 2 kg or less",
-          "Other"
-        ],
-        "searchText": "coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion coffee, roasted decaffeinated in retail containers weighing 2 kg or less other other 0901.22.00.55",
         "generalBefore": null,
         "generalNow": "Free",
         "status": "new",
@@ -5256,15 +4901,6 @@
       },
       {
         "hts": "0901.22.00.65",
-        "description": "Certified organic",
-        "ancestorPath": [
-          "Coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion",
-          "Coffee, roasted",
-          "Decaffeinated",
-          "Other",
-          "Arabica"
-        ],
-        "searchText": "coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion coffee, roasted decaffeinated other arabica certified organic 0901.22.00.65",
         "generalBefore": null,
         "generalNow": "Free",
         "status": "new",
@@ -5272,15 +4908,6 @@
       },
       {
         "hts": "0901.22.00.70",
-        "description": "Other",
-        "ancestorPath": [
-          "Coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion",
-          "Coffee, roasted",
-          "Decaffeinated",
-          "Other",
-          "Arabica"
-        ],
-        "searchText": "coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion coffee, roasted decaffeinated other arabica other 0901.22.00.70",
         "generalBefore": null,
         "generalNow": "Free",
         "status": "new",
@@ -5288,15 +4915,6 @@
       },
       {
         "hts": "0901.22.00.75",
-        "description": "Certified organic",
-        "ancestorPath": [
-          "Coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion",
-          "Coffee, roasted",
-          "Decaffeinated",
-          "Other",
-          "Robusta"
-        ],
-        "searchText": "coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion coffee, roasted decaffeinated other robusta certified organic 0901.22.00.75",
         "generalBefore": null,
         "generalNow": "Free",
         "status": "new",
@@ -5304,15 +4922,6 @@
       },
       {
         "hts": "0901.22.00.80",
-        "description": "Other",
-        "ancestorPath": [
-          "Coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion",
-          "Coffee, roasted",
-          "Decaffeinated",
-          "Other",
-          "Robusta"
-        ],
-        "searchText": "coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion coffee, roasted decaffeinated other robusta other 0901.22.00.80",
         "generalBefore": null,
         "generalNow": "Free",
         "status": "new",
@@ -5320,14 +4929,6 @@
       },
       {
         "hts": "0901.22.00.90",
-        "description": "Other",
-        "ancestorPath": [
-          "Coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion",
-          "Coffee, roasted",
-          "Decaffeinated",
-          "Other"
-        ],
-        "searchText": "coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion coffee, roasted decaffeinated other other 0901.22.00.90",
         "generalBefore": null,
         "generalNow": "Free",
         "status": "new",
@@ -5335,12 +4936,6 @@
       },
       {
         "hts": "0901.90.10.00",
-        "description": "Coffee husks and skins",
-        "ancestorPath": [
-          "Coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion",
-          "Other"
-        ],
-        "searchText": "coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion other coffee husks and skins 0901.90.10.00",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -5348,12 +4943,6 @@
       },
       {
         "hts": "0901.90.20.00",
-        "description": "Coffee substitutes containing coffee",
-        "ancestorPath": [
-          "Coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion",
-          "Other"
-        ],
-        "searchText": "coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion other coffee substitutes containing coffee 0901.90.20.00",
         "generalBefore": "1.5¢/kg",
         "generalNow": "1.5¢/kg",
         "status": "unchanged",
@@ -5361,9 +4950,6 @@
       },
       {
         "hts": "0902.10.10.15",
-        "description": "Certified organic",
-        "ancestorPath": ["Tea, whether or not flavored", "Green tea (not fermented) in immediate packings of a content not exceeding 3 kg", "Flavored"],
-        "searchText": "tea, whether or not flavored green tea (not fermented) in immediate packings of a content not exceeding 3 kg flavored certified organic 0902.10.10.15",
         "generalBefore": "6.4%",
         "generalNow": "6.4%",
         "status": "unchanged",
@@ -5371,9 +4957,6 @@
       },
       {
         "hts": "0902.10.10.50",
-        "description": "Other",
-        "ancestorPath": ["Tea, whether or not flavored", "Green tea (not fermented) in immediate packings of a content not exceeding 3 kg", "Flavored"],
-        "searchText": "tea, whether or not flavored green tea (not fermented) in immediate packings of a content not exceeding 3 kg flavored other 0902.10.10.50",
         "generalBefore": "6.4%",
         "generalNow": "6.4%",
         "status": "unchanged",
@@ -5381,9 +4964,6 @@
       },
       {
         "hts": "0902.10.90.15",
-        "description": "Certified organic",
-        "ancestorPath": ["Tea, whether or not flavored", "Green tea (not fermented) in immediate packings of a content not exceeding 3 kg", "Other"],
-        "searchText": "tea, whether or not flavored green tea (not fermented) in immediate packings of a content not exceeding 3 kg other certified organic 0902.10.90.15",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -5391,9 +4971,6 @@
       },
       {
         "hts": "0902.10.90.50",
-        "description": "Other",
-        "ancestorPath": ["Tea, whether or not flavored", "Green tea (not fermented) in immediate packings of a content not exceeding 3 kg", "Other"],
-        "searchText": "tea, whether or not flavored green tea (not fermented) in immediate packings of a content not exceeding 3 kg other other 0902.10.90.50",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -5401,9 +4978,6 @@
       },
       {
         "hts": "0902.20.10.00",
-        "description": "Flavored",
-        "ancestorPath": ["Tea, whether or not flavored", "Other green tea (not fermented)"],
-        "searchText": "tea, whether or not flavored other green tea (not fermented) flavored 0902.20.10.00",
         "generalBefore": "6.4%",
         "generalNow": "6.4%",
         "status": "unchanged",
@@ -5411,9 +4985,6 @@
       },
       {
         "hts": "0902.20.90.15",
-        "description": "Certified organic",
-        "ancestorPath": ["Tea, whether or not flavored", "Other green tea (not fermented)", "Other"],
-        "searchText": "tea, whether or not flavored other green tea (not fermented) other certified organic 0902.20.90.15",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -5421,9 +4992,6 @@
       },
       {
         "hts": "0902.20.90.50",
-        "description": "Other",
-        "ancestorPath": ["Tea, whether or not flavored", "Other green tea (not fermented)", "Other"],
-        "searchText": "tea, whether or not flavored other green tea (not fermented) other other 0902.20.90.50",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -5431,13 +4999,6 @@
       },
       {
         "hts": "0902.30.00.15",
-        "description": "Certified organic",
-        "ancestorPath": [
-          "Tea, whether or not flavored",
-          "Black tea (fermented) and partly fermented tea, in immediate packings of a content not exceeding 3 kg",
-          "In tea bags"
-        ],
-        "searchText": "tea, whether or not flavored black tea (fermented) and partly fermented tea, in immediate packings of a content not exceeding 3 kg in tea bags certified organic 0902.30.00.15",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -5445,13 +5006,6 @@
       },
       {
         "hts": "0902.30.00.50",
-        "description": "Other",
-        "ancestorPath": [
-          "Tea, whether or not flavored",
-          "Black tea (fermented) and partly fermented tea, in immediate packings of a content not exceeding 3 kg",
-          "In tea bags"
-        ],
-        "searchText": "tea, whether or not flavored black tea (fermented) and partly fermented tea, in immediate packings of a content not exceeding 3 kg in tea bags other 0902.30.00.50",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -5459,12 +5013,6 @@
       },
       {
         "hts": "0902.30.00.90",
-        "description": "Other",
-        "ancestorPath": [
-          "Tea, whether or not flavored",
-          "Black tea (fermented) and partly fermented tea, in immediate packings of a content not exceeding 3 kg"
-        ],
-        "searchText": "tea, whether or not flavored black tea (fermented) and partly fermented tea, in immediate packings of a content not exceeding 3 kg other 0902.30.00.90",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -5472,9 +5020,6 @@
       },
       {
         "hts": "0902.40.00.00",
-        "description": "Other black tea (fermented) and other partly fermented tea",
-        "ancestorPath": ["Tea, whether or not flavored"],
-        "searchText": "tea, whether or not flavored other black tea (fermented) and other partly fermented tea 0902.40.00.00",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -5482,9 +5027,6 @@
       },
       {
         "hts": "0903.00.00.00",
-        "description": "Maté",
-        "ancestorPath": [],
-        "searchText": "maté 0903.00.00.00",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -5492,13 +5034,6 @@
       },
       {
         "hts": "0904.11.00.20",
-        "description": "Black",
-        "ancestorPath": [
-          "Pepper of the genus Piper; dried or crushed or ground fruits of the genus Capsicum (peppers) or of the genus Pimenta (e.g., allspice)",
-          "Pepper of the genus Piper",
-          "Neither crushed nor ground"
-        ],
-        "searchText": "pepper of the genus piper; dried or crushed or ground fruits of the genus capsicum (peppers) or of the genus pimenta (e.g., allspice) pepper of the genus piper neither crushed nor ground black 0904.11.00.20",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -5506,13 +5041,6 @@
       },
       {
         "hts": "0904.11.00.40",
-        "description": "White",
-        "ancestorPath": [
-          "Pepper of the genus Piper; dried or crushed or ground fruits of the genus Capsicum (peppers) or of the genus Pimenta (e.g., allspice)",
-          "Pepper of the genus Piper",
-          "Neither crushed nor ground"
-        ],
-        "searchText": "pepper of the genus piper; dried or crushed or ground fruits of the genus capsicum (peppers) or of the genus pimenta (e.g., allspice) pepper of the genus piper neither crushed nor ground white 0904.11.00.40",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -5520,12 +5048,6 @@
       },
       {
         "hts": "0904.12.00.00",
-        "description": "Crushed or ground",
-        "ancestorPath": [
-          "Pepper of the genus Piper; dried or crushed or ground fruits of the genus Capsicum (peppers) or of the genus Pimenta (e.g., allspice)",
-          "Pepper of the genus Piper"
-        ],
-        "searchText": "pepper of the genus piper; dried or crushed or ground fruits of the genus capsicum (peppers) or of the genus pimenta (e.g., allspice) pepper of the genus piper crushed or ground 0904.12.00.00",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -5533,14 +5055,6 @@
       },
       {
         "hts": "0904.21.20.00",
-        "description": "Paprika",
-        "ancestorPath": [
-          "Pepper of the genus Piper; dried or crushed or ground fruits of the genus Capsicum (peppers) or of the genus Pimenta (e.g., allspice)",
-          "Fruits of the genus Capsicum or of the genus Pimenta",
-          "Dried, neither crushed nor ground",
-          "Of the genusCapsicum(including cayenne pepper, paprika and red pepper)"
-        ],
-        "searchText": "pepper of the genus piper; dried or crushed or ground fruits of the genus capsicum (peppers) or of the genus pimenta (e.g., allspice) fruits of the genus capsicum or of the genus pimenta dried, neither crushed nor ground of the genuscapsicum(including cayenne pepper, paprika and red pepper) paprika 0904.21.20.00",
         "generalBefore": "3¢/kg",
         "generalNow": "3¢/kg",
         "status": "unchanged",
@@ -5548,14 +5062,6 @@
       },
       {
         "hts": "0904.21.40.00",
-        "description": "Anaheim and ancho pepper",
-        "ancestorPath": [
-          "Pepper of the genus Piper; dried or crushed or ground fruits of the genus Capsicum (peppers) or of the genus Pimenta (e.g., allspice)",
-          "Fruits of the genus Capsicum or of the genus Pimenta",
-          "Dried, neither crushed nor ground",
-          "Of the genusCapsicum(including cayenne pepper, paprika and red pepper)"
-        ],
-        "searchText": "pepper of the genus piper; dried or crushed or ground fruits of the genus capsicum (peppers) or of the genus pimenta (e.g., allspice) fruits of the genus capsicum or of the genus pimenta dried, neither crushed nor ground of the genuscapsicum(including cayenne pepper, paprika and red pepper) anaheim and ancho pepper 0904.21.40.00",
         "generalBefore": "5¢/kg",
         "generalNow": "5¢/kg",
         "status": "unchanged",
@@ -5563,15 +5069,6 @@
       },
       {
         "hts": "0904.21.60.10",
-        "description": "Bell peppers",
-        "ancestorPath": [
-          "Pepper of the genus Piper; dried or crushed or ground fruits of the genus Capsicum (peppers) or of the genus Pimenta (e.g., allspice)",
-          "Fruits of the genus Capsicum or of the genus Pimenta",
-          "Dried, neither crushed nor ground",
-          "Of the genusCapsicum(including cayenne pepper, paprika and red pepper)",
-          "Other"
-        ],
-        "searchText": "pepper of the genus piper; dried or crushed or ground fruits of the genus capsicum (peppers) or of the genus pimenta (e.g., allspice) fruits of the genus capsicum or of the genus pimenta dried, neither crushed nor ground of the genuscapsicum(including cayenne pepper, paprika and red pepper) other bell peppers 0904.21.60.10",
         "generalBefore": "2.5¢/kg",
         "generalNow": "2.5¢/kg",
         "status": "unchanged",
@@ -5579,15 +5076,6 @@
       },
       {
         "hts": "0904.21.60.20",
-        "description": "Jalapeno peppers",
-        "ancestorPath": [
-          "Pepper of the genus Piper; dried or crushed or ground fruits of the genus Capsicum (peppers) or of the genus Pimenta (e.g., allspice)",
-          "Fruits of the genus Capsicum or of the genus Pimenta",
-          "Dried, neither crushed nor ground",
-          "Of the genusCapsicum(including cayenne pepper, paprika and red pepper)",
-          "Other"
-        ],
-        "searchText": "pepper of the genus piper; dried or crushed or ground fruits of the genus capsicum (peppers) or of the genus pimenta (e.g., allspice) fruits of the genus capsicum or of the genus pimenta dried, neither crushed nor ground of the genuscapsicum(including cayenne pepper, paprika and red pepper) other jalapeno peppers 0904.21.60.20",
         "generalBefore": "2.5¢/kg",
         "generalNow": "2.5¢/kg",
         "status": "unchanged",
@@ -5595,15 +5083,6 @@
       },
       {
         "hts": "0904.21.60.90",
-        "description": "Other",
-        "ancestorPath": [
-          "Pepper of the genus Piper; dried or crushed or ground fruits of the genus Capsicum (peppers) or of the genus Pimenta (e.g., allspice)",
-          "Fruits of the genus Capsicum or of the genus Pimenta",
-          "Dried, neither crushed nor ground",
-          "Of the genusCapsicum(including cayenne pepper, paprika and red pepper)",
-          "Other"
-        ],
-        "searchText": "pepper of the genus piper; dried or crushed or ground fruits of the genus capsicum (peppers) or of the genus pimenta (e.g., allspice) fruits of the genus capsicum or of the genus pimenta dried, neither crushed nor ground of the genuscapsicum(including cayenne pepper, paprika and red pepper) other other 0904.21.60.90",
         "generalBefore": "2.5¢/kg",
         "generalNow": "2.5¢/kg",
         "status": "unchanged",
@@ -5611,13 +5090,6 @@
       },
       {
         "hts": "0904.21.80.00",
-        "description": "Of the genus Pimenta (including allspice)",
-        "ancestorPath": [
-          "Pepper of the genus Piper; dried or crushed or ground fruits of the genus Capsicum (peppers) or of the genus Pimenta (e.g., allspice)",
-          "Fruits of the genus Capsicum or of the genus Pimenta",
-          "Dried, neither crushed nor ground"
-        ],
-        "searchText": "pepper of the genus piper; dried or crushed or ground fruits of the genus capsicum (peppers) or of the genus pimenta (e.g., allspice) fruits of the genus capsicum or of the genus pimenta dried, neither crushed nor ground of the genus pimenta (including allspice) 0904.21.80.00",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -5625,14 +5097,6 @@
       },
       {
         "hts": "0904.22.20.00",
-        "description": "Paprika",
-        "ancestorPath": [
-          "Pepper of the genus Piper; dried or crushed or ground fruits of the genus Capsicum (peppers) or of the genus Pimenta (e.g., allspice)",
-          "Fruits of the genus Capsicum or of the genus Pimenta",
-          "Crushed or ground",
-          "Of the genus Capsicum (including cayenne Pepper, paprika and red pepper)"
-        ],
-        "searchText": "pepper of the genus piper; dried or crushed or ground fruits of the genus capsicum (peppers) or of the genus pimenta (e.g., allspice) fruits of the genus capsicum or of the genus pimenta crushed or ground of the genus capsicum (including cayenne pepper, paprika and red pepper) paprika 0904.22.20.00",
         "generalBefore": "3¢/kg",
         "generalNow": "3¢/kg",
         "status": "unchanged",
@@ -5640,14 +5104,6 @@
       },
       {
         "hts": "0904.22.40.00",
-        "description": "Anaheim and ancho pepper",
-        "ancestorPath": [
-          "Pepper of the genus Piper; dried or crushed or ground fruits of the genus Capsicum (peppers) or of the genus Pimenta (e.g., allspice)",
-          "Fruits of the genus Capsicum or of the genus Pimenta",
-          "Crushed or ground",
-          "Of the genus Capsicum (including cayenne Pepper, paprika and red pepper)"
-        ],
-        "searchText": "pepper of the genus piper; dried or crushed or ground fruits of the genus capsicum (peppers) or of the genus pimenta (e.g., allspice) fruits of the genus capsicum or of the genus pimenta crushed or ground of the genus capsicum (including cayenne pepper, paprika and red pepper) anaheim and ancho pepper 0904.22.40.00",
         "generalBefore": "5¢/kg",
         "generalNow": "5¢/kg",
         "status": "unchanged",
@@ -5655,14 +5111,6 @@
       },
       {
         "hts": "0904.22.73.00",
-        "description": "Mixtures of mashed or macerated hot red peppers and salt",
-        "ancestorPath": [
-          "Pepper of the genus Piper; dried or crushed or ground fruits of the genus Capsicum (peppers) or of the genus Pimenta (e.g., allspice)",
-          "Fruits of the genus Capsicum or of the genus Pimenta",
-          "Crushed or ground",
-          "Of the genus Capsicum (including cayenne Pepper, paprika and red pepper)"
-        ],
-        "searchText": "pepper of the genus piper; dried or crushed or ground fruits of the genus capsicum (peppers) or of the genus pimenta (e.g., allspice) fruits of the genus capsicum or of the genus pimenta crushed or ground of the genus capsicum (including cayenne pepper, paprika and red pepper) mixtures of mashed or macerated hot red peppers and salt 0904.22.73.00",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -5670,14 +5118,6 @@
       },
       {
         "hts": "0904.22.76.00",
-        "description": "Other",
-        "ancestorPath": [
-          "Pepper of the genus Piper; dried or crushed or ground fruits of the genus Capsicum (peppers) or of the genus Pimenta (e.g., allspice)",
-          "Fruits of the genus Capsicum or of the genus Pimenta",
-          "Crushed or ground",
-          "Of the genus Capsicum (including cayenne Pepper, paprika and red pepper)"
-        ],
-        "searchText": "pepper of the genus piper; dried or crushed or ground fruits of the genus capsicum (peppers) or of the genus pimenta (e.g., allspice) fruits of the genus capsicum or of the genus pimenta crushed or ground of the genus capsicum (including cayenne pepper, paprika and red pepper) other 0904.22.76.00",
         "generalBefore": "5¢/kg",
         "generalNow": "5¢/kg",
         "status": "unchanged",
@@ -5685,13 +5125,6 @@
       },
       {
         "hts": "0904.22.80.00",
-        "description": "Of the genus Pimenta (including allspice)",
-        "ancestorPath": [
-          "Pepper of the genus Piper; dried or crushed or ground fruits of the genus Capsicum (peppers) or of the genus Pimenta (e.g., allspice)",
-          "Fruits of the genus Capsicum or of the genus Pimenta",
-          "Crushed or ground"
-        ],
-        "searchText": "pepper of the genus piper; dried or crushed or ground fruits of the genus capsicum (peppers) or of the genus pimenta (e.g., allspice) fruits of the genus capsicum or of the genus pimenta crushed or ground of the genus pimenta (including allspice) 0904.22.80.00",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -5699,9 +5132,6 @@
       },
       {
         "hts": "0905.10.00.00",
-        "description": "Neither crushed nor ground",
-        "ancestorPath": ["Vanilla"],
-        "searchText": "vanilla neither crushed nor ground 0905.10.00.00",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -5709,9 +5139,6 @@
       },
       {
         "hts": "0905.20.00.00",
-        "description": "Crushed or ground",
-        "ancestorPath": ["Vanilla"],
-        "searchText": "vanilla crushed or ground 0905.20.00.00",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -5719,9 +5146,6 @@
       },
       {
         "hts": "0906.11.00.00",
-        "description": "Cinnamon (Cinnamomum zeylanicum Blume)",
-        "ancestorPath": ["Cinnamon and cinnamon-tree flowers", "Neither crushed nor ground"],
-        "searchText": "cinnamon and cinnamon-tree flowers neither crushed nor ground cinnamon (cinnamomum zeylanicum blume) 0906.11.00.00",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -5729,9 +5153,6 @@
       },
       {
         "hts": "0906.19.00.00",
-        "description": "Other",
-        "ancestorPath": ["Cinnamon and cinnamon-tree flowers", "Neither crushed nor ground"],
-        "searchText": "cinnamon and cinnamon-tree flowers neither crushed nor ground other 0906.19.00.00",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -5739,9 +5160,6 @@
       },
       {
         "hts": "0906.20.00.00",
-        "description": "Crushed or ground",
-        "ancestorPath": ["Cinnamon and cinnamon-tree flowers"],
-        "searchText": "cinnamon and cinnamon-tree flowers crushed or ground 0906.20.00.00",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -5749,9 +5167,6 @@
       },
       {
         "hts": "0907.10.00.00",
-        "description": "Neither crushed nor ground",
-        "ancestorPath": ["Cloves (whole fruit, cloves and stems)"],
-        "searchText": "cloves (whole fruit, cloves and stems) neither crushed nor ground 0907.10.00.00",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -5759,9 +5174,6 @@
       },
       {
         "hts": "0907.20.00.00",
-        "description": "Crushed or ground",
-        "ancestorPath": ["Cloves (whole fruit, cloves and stems)"],
-        "searchText": "cloves (whole fruit, cloves and stems) crushed or ground 0907.20.00.00",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -5769,9 +5181,6 @@
       },
       {
         "hts": "0908.11.00.00",
-        "description": "Neither crushed nor ground",
-        "ancestorPath": ["Nutmeg, mace and cardamoms", "Nutmeg"],
-        "searchText": "nutmeg, mace and cardamoms nutmeg neither crushed nor ground 0908.11.00.00",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -5779,9 +5188,6 @@
       },
       {
         "hts": "0908.12.00.00",
-        "description": "Crushed or ground",
-        "ancestorPath": ["Nutmeg, mace and cardamoms", "Nutmeg"],
-        "searchText": "nutmeg, mace and cardamoms nutmeg crushed or ground 0908.12.00.00",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -5789,9 +5195,6 @@
       },
       {
         "hts": "0908.21.00.00",
-        "description": "Neither crushed nor ground",
-        "ancestorPath": ["Nutmeg, mace and cardamoms", "Mace"],
-        "searchText": "nutmeg, mace and cardamoms mace neither crushed nor ground 0908.21.00.00",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -5799,9 +5202,6 @@
       },
       {
         "hts": "0908.22.20.00",
-        "description": "Bombay or wild mace, ground",
-        "ancestorPath": ["Nutmeg, mace and cardamoms", "Mace", "Crushed or ground"],
-        "searchText": "nutmeg, mace and cardamoms mace crushed or ground bombay or wild mace, ground 0908.22.20.00",
         "generalBefore": "7.4¢/kg",
         "generalNow": "7.4¢/kg",
         "status": "unchanged",
@@ -5809,9 +5209,6 @@
       },
       {
         "hts": "0908.22.40.00",
-        "description": "Other",
-        "ancestorPath": ["Nutmeg, mace and cardamoms", "Mace", "Crushed or ground"],
-        "searchText": "nutmeg, mace and cardamoms mace crushed or ground other 0908.22.40.00",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -5819,9 +5216,6 @@
       },
       {
         "hts": "0908.31.00.00",
-        "description": "Neither crushed nor ground",
-        "ancestorPath": ["Nutmeg, mace and cardamoms", "Cardamoms"],
-        "searchText": "nutmeg, mace and cardamoms cardamoms neither crushed nor ground 0908.31.00.00",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -5829,9 +5223,6 @@
       },
       {
         "hts": "0908.32.00.00",
-        "description": "Crushed or ground",
-        "ancestorPath": ["Nutmeg, mace and cardamoms", "Cardamoms"],
-        "searchText": "nutmeg, mace and cardamoms cardamoms crushed or ground 0908.32.00.00",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -5839,9 +5230,6 @@
       },
       {
         "hts": "0909.21.00.00",
-        "description": "Neither crushed nor ground",
-        "ancestorPath": ["Seeds of anise, badian, fennel, coriander, cumin or caraway; juniper berries", "Seeds of coriander"],
-        "searchText": "seeds of anise, badian, fennel, coriander, cumin or caraway; juniper berries seeds of coriander neither crushed nor ground 0909.21.00.00",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -5849,9 +5237,6 @@
       },
       {
         "hts": "0909.22.00.00",
-        "description": "Crushed or ground",
-        "ancestorPath": ["Seeds of anise, badian, fennel, coriander, cumin or caraway; juniper berries", "Seeds of coriander"],
-        "searchText": "seeds of anise, badian, fennel, coriander, cumin or caraway; juniper berries seeds of coriander crushed or ground 0909.22.00.00",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -5859,9 +5244,6 @@
       },
       {
         "hts": "0909.31.00.00",
-        "description": "Neither crushed nor ground",
-        "ancestorPath": ["Seeds of anise, badian, fennel, coriander, cumin or caraway; juniper berries", "Seeds of cumin"],
-        "searchText": "seeds of anise, badian, fennel, coriander, cumin or caraway; juniper berries seeds of cumin neither crushed nor ground 0909.31.00.00",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -5869,9 +5251,6 @@
       },
       {
         "hts": "0909.32.00.00",
-        "description": "Crushed or ground",
-        "ancestorPath": ["Seeds of anise, badian, fennel, coriander, cumin or caraway; juniper berries", "Seeds of cumin"],
-        "searchText": "seeds of anise, badian, fennel, coriander, cumin or caraway; juniper berries seeds of cumin crushed or ground 0909.32.00.00",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -5879,12 +5258,6 @@
       },
       {
         "hts": "0909.61.00.00",
-        "description": "Neither crushed nor ground",
-        "ancestorPath": [
-          "Seeds of anise, badian, fennel, coriander, cumin or caraway; juniper berries",
-          "Seeds of anise, badian, caraway or fennel; juniper berries"
-        ],
-        "searchText": "seeds of anise, badian, fennel, coriander, cumin or caraway; juniper berries seeds of anise, badian, caraway or fennel; juniper berries neither crushed nor ground 0909.61.00.00",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -5892,12 +5265,6 @@
       },
       {
         "hts": "0909.62.00.00",
-        "description": "Crushed or ground",
-        "ancestorPath": [
-          "Seeds of anise, badian, fennel, coriander, cumin or caraway; juniper berries",
-          "Seeds of anise, badian, caraway or fennel; juniper berries"
-        ],
-        "searchText": "seeds of anise, badian, fennel, coriander, cumin or caraway; juniper berries seeds of anise, badian, caraway or fennel; juniper berries crushed or ground 0909.62.00.00",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -5905,9 +5272,6 @@
       },
       {
         "hts": "0910.11.00.10",
-        "description": "Certified organic",
-        "ancestorPath": ["Ginger, saffron, turmeric (curcuma), thyme, bay leaves, curry and other spices", "Ginger", "Neither crushed nor ground"],
-        "searchText": "ginger, saffron, turmeric (curcuma), thyme, bay leaves, curry and other spices ginger neither crushed nor ground certified organic 0910.11.00.10",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -5915,9 +5279,6 @@
       },
       {
         "hts": "0910.11.00.15",
-        "description": "Other",
-        "ancestorPath": ["Ginger, saffron, turmeric (curcuma), thyme, bay leaves, curry and other spices", "Ginger", "Neither crushed nor ground"],
-        "searchText": "ginger, saffron, turmeric (curcuma), thyme, bay leaves, curry and other spices ginger neither crushed nor ground other 0910.11.00.15",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -5925,9 +5286,6 @@
       },
       {
         "hts": "0910.12.00.00",
-        "description": "Crushed or ground",
-        "ancestorPath": ["Ginger, saffron, turmeric (curcuma), thyme, bay leaves, curry and other spices", "Ginger"],
-        "searchText": "ginger, saffron, turmeric (curcuma), thyme, bay leaves, curry and other spices ginger crushed or ground 0910.12.00.00",
         "generalBefore": "1¢/kg",
         "generalNow": "1¢/kg",
         "status": "unchanged",
@@ -5935,9 +5293,6 @@
       },
       {
         "hts": "0910.20.00.00",
-        "description": "Saffron",
-        "ancestorPath": ["Ginger, saffron, turmeric (curcuma), thyme, bay leaves, curry and other spices"],
-        "searchText": "ginger, saffron, turmeric (curcuma), thyme, bay leaves, curry and other spices saffron 0910.20.00.00",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -5945,9 +5300,6 @@
       },
       {
         "hts": "0910.30.00.00",
-        "description": "Turmeric (curcuma)",
-        "ancestorPath": ["Ginger, saffron, turmeric (curcuma), thyme, bay leaves, curry and other spices"],
-        "searchText": "ginger, saffron, turmeric (curcuma), thyme, bay leaves, curry and other spices turmeric (curcuma) 0910.30.00.00",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -5955,9 +5307,6 @@
       },
       {
         "hts": "0910.91.00.00",
-        "description": "Mixtures referred to in note 1(b) to this chapter",
-        "ancestorPath": ["Ginger, saffron, turmeric (curcuma), thyme, bay leaves, curry and other spices", "Other spices"],
-        "searchText": "ginger, saffron, turmeric (curcuma), thyme, bay leaves, curry and other spices other spices mixtures referred to in note 1(b) to this chapter 0910.91.00.00",
         "generalBefore": "1.9%",
         "generalNow": "1.9%",
         "status": "unchanged",
@@ -5965,9 +5314,6 @@
       },
       {
         "hts": "0910.99.05.00",
-        "description": "Crude or not manufactured",
-        "ancestorPath": ["Ginger, saffron, turmeric (curcuma), thyme, bay leaves, curry and other spices", "Other spices", "Other", "Thyme; bay leaves"],
-        "searchText": "ginger, saffron, turmeric (curcuma), thyme, bay leaves, curry and other spices other spices other thyme; bay leaves crude or not manufactured 0910.99.05.00",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -5975,15 +5321,6 @@
       },
       {
         "hts": "0910.99.06.00",
-        "description": "Thyme",
-        "ancestorPath": [
-          "Ginger, saffron, turmeric (curcuma), thyme, bay leaves, curry and other spices",
-          "Other spices",
-          "Other",
-          "Thyme; bay leaves",
-          "Other"
-        ],
-        "searchText": "ginger, saffron, turmeric (curcuma), thyme, bay leaves, curry and other spices other spices other thyme; bay leaves other thyme 0910.99.06.00",
         "generalBefore": "4.8%",
         "generalNow": "4.8%",
         "status": "unchanged",
@@ -5991,15 +5328,6 @@
       },
       {
         "hts": "0910.99.07.00",
-        "description": "Bay leaves",
-        "ancestorPath": [
-          "Ginger, saffron, turmeric (curcuma), thyme, bay leaves, curry and other spices",
-          "Other spices",
-          "Other",
-          "Thyme; bay leaves",
-          "Other"
-        ],
-        "searchText": "ginger, saffron, turmeric (curcuma), thyme, bay leaves, curry and other spices other spices other thyme; bay leaves other bay leaves 0910.99.07.00",
         "generalBefore": "3.2%",
         "generalNow": "3.2%",
         "status": "unchanged",
@@ -6007,9 +5335,6 @@
       },
       {
         "hts": "0910.99.10.00",
-        "description": "Curry",
-        "ancestorPath": ["Ginger, saffron, turmeric (curcuma), thyme, bay leaves, curry and other spices", "Other spices", "Other"],
-        "searchText": "ginger, saffron, turmeric (curcuma), thyme, bay leaves, curry and other spices other spices other curry 0910.99.10.00",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -6017,9 +5342,6 @@
       },
       {
         "hts": "0910.99.20.00",
-        "description": "Crude or not manufactured",
-        "ancestorPath": ["Ginger, saffron, turmeric (curcuma), thyme, bay leaves, curry and other spices", "Other spices", "Other", "Origanum (Lippia spp.)"],
-        "searchText": "ginger, saffron, turmeric (curcuma), thyme, bay leaves, curry and other spices other spices other origanum (lippia spp.) crude or not manufactured 0910.99.20.00",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -6027,9 +5349,6 @@
       },
       {
         "hts": "0910.99.40.00",
-        "description": "Other",
-        "ancestorPath": ["Ginger, saffron, turmeric (curcuma), thyme, bay leaves, curry and other spices", "Other spices", "Other", "Origanum (Lippia spp.)"],
-        "searchText": "ginger, saffron, turmeric (curcuma), thyme, bay leaves, curry and other spices other spices other origanum (lippia spp.) other 0910.99.40.00",
         "generalBefore": "3.4%",
         "generalNow": "3.4%",
         "status": "unchanged",
@@ -6037,9 +5356,6 @@
       },
       {
         "hts": "0910.99.50.00",
-        "description": "Dill",
-        "ancestorPath": ["Ginger, saffron, turmeric (curcuma), thyme, bay leaves, curry and other spices", "Other spices", "Other", "Other"],
-        "searchText": "ginger, saffron, turmeric (curcuma), thyme, bay leaves, curry and other spices other spices other other dill 0910.99.50.00",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -6047,9 +5363,6 @@
       },
       {
         "hts": "0910.99.60.00",
-        "description": "Other",
-        "ancestorPath": ["Ginger, saffron, turmeric (curcuma), thyme, bay leaves, curry and other spices", "Other spices", "Other", "Other"],
-        "searchText": "ginger, saffron, turmeric (curcuma), thyme, bay leaves, curry and other spices other spices other other other 0910.99.60.00",
         "generalBefore": "1.9%",
         "generalNow": "1.9%",
         "status": "unchanged",
@@ -20150,1171 +19463,456 @@
     "lines": [
       {
         "hts": "0901.11.00.15",
-        "description": "Certified organic",
-        "ancestorPath": [
-          "Coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion",
-          "Coffee, not roasted",
-          "Not decaffeinated",
-          "Arabica"
-        ],
-        "searchText": "coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion coffee, not roasted not decaffeinated arabica certified organic 0901.11.00.15",
-        "heading": "0901",
-        "general": "Free",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "cbp-marking", "aphis-coffee", "nop-organic"],
         "leverIds": ["s301-exempt", "usmca", "ruling"]
       },
       {
         "hts": "0901.11.00.25",
-        "description": "Other",
-        "ancestorPath": [
-          "Coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion",
-          "Coffee, not roasted",
-          "Not decaffeinated",
-          "Arabica"
-        ],
-        "searchText": "coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion coffee, not roasted not decaffeinated arabica other 0901.11.00.25",
-        "heading": "0901",
-        "general": "Free",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "cbp-marking", "aphis-coffee"],
         "leverIds": ["s301-exempt", "usmca", "ruling"]
       },
       {
         "hts": "0901.11.00.35",
-        "description": "Certified organic",
-        "ancestorPath": [
-          "Coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion",
-          "Coffee, not roasted",
-          "Not decaffeinated",
-          "Robusta"
-        ],
-        "searchText": "coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion coffee, not roasted not decaffeinated robusta certified organic 0901.11.00.35",
-        "heading": "0901",
-        "general": "Free",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "cbp-marking", "aphis-coffee", "nop-organic"],
         "leverIds": ["s301-exempt", "usmca", "ruling"]
       },
       {
         "hts": "0901.11.00.40",
-        "description": "Other",
-        "ancestorPath": [
-          "Coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion",
-          "Coffee, not roasted",
-          "Not decaffeinated",
-          "Robusta"
-        ],
-        "searchText": "coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion coffee, not roasted not decaffeinated robusta other 0901.11.00.40",
-        "heading": "0901",
-        "general": "Free",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "cbp-marking", "aphis-coffee"],
         "leverIds": ["s301-exempt", "usmca", "ruling"]
       },
       {
         "hts": "0901.11.00.50",
-        "description": "Certified organic",
-        "ancestorPath": [
-          "Coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion",
-          "Coffee, not roasted",
-          "Not decaffeinated",
-          "Other"
-        ],
-        "searchText": "coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion coffee, not roasted not decaffeinated other certified organic 0901.11.00.50",
-        "heading": "0901",
-        "general": "Free",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "cbp-marking", "aphis-coffee", "nop-organic"],
         "leverIds": ["s301-exempt", "usmca", "ruling"]
       },
       {
         "hts": "0901.11.00.65",
-        "description": "Other",
-        "ancestorPath": [
-          "Coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion",
-          "Coffee, not roasted",
-          "Not decaffeinated",
-          "Other"
-        ],
-        "searchText": "coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion coffee, not roasted not decaffeinated other other 0901.11.00.65",
-        "heading": "0901",
-        "general": "Free",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "cbp-marking", "aphis-coffee"],
         "leverIds": ["s301-exempt", "usmca", "ruling"]
       },
       {
         "hts": "0901.12.00.20",
-        "description": "Certified organic",
-        "ancestorPath": [
-          "Coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion",
-          "Coffee, not roasted",
-          "Decaffeinated",
-          "Arabica"
-        ],
-        "searchText": "coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion coffee, not roasted decaffeinated arabica certified organic 0901.12.00.20",
-        "heading": "0901",
-        "general": "Free",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "cbp-marking", "aphis-coffee", "nop-organic"],
         "leverIds": ["s301-exempt", "usmca", "ruling"]
       },
       {
         "hts": "0901.12.00.35",
-        "description": "Other",
-        "ancestorPath": [
-          "Coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion",
-          "Coffee, not roasted",
-          "Decaffeinated",
-          "Arabica"
-        ],
-        "searchText": "coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion coffee, not roasted decaffeinated arabica other 0901.12.00.35",
-        "heading": "0901",
-        "general": "Free",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "cbp-marking", "aphis-coffee"],
         "leverIds": ["s301-exempt", "usmca", "ruling"]
       },
       {
         "hts": "0901.12.00.40",
-        "description": "Certified organic",
-        "ancestorPath": [
-          "Coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion",
-          "Coffee, not roasted",
-          "Decaffeinated",
-          "Robusta"
-        ],
-        "searchText": "coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion coffee, not roasted decaffeinated robusta certified organic 0901.12.00.40",
-        "heading": "0901",
-        "general": "Free",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "cbp-marking", "aphis-coffee", "nop-organic"],
         "leverIds": ["s301-exempt", "usmca", "ruling"]
       },
       {
         "hts": "0901.12.00.55",
-        "description": "Other",
-        "ancestorPath": [
-          "Coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion",
-          "Coffee, not roasted",
-          "Decaffeinated",
-          "Robusta"
-        ],
-        "searchText": "coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion coffee, not roasted decaffeinated robusta other 0901.12.00.55",
-        "heading": "0901",
-        "general": "Free",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "cbp-marking", "aphis-coffee"],
         "leverIds": ["s301-exempt", "usmca", "ruling"]
       },
       {
         "hts": "0901.12.00.60",
-        "description": "Certified organic",
-        "ancestorPath": [
-          "Coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion",
-          "Coffee, not roasted",
-          "Decaffeinated",
-          "Other"
-        ],
-        "searchText": "coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion coffee, not roasted decaffeinated other certified organic 0901.12.00.60",
-        "heading": "0901",
-        "general": "Free",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "cbp-marking", "aphis-coffee", "nop-organic"],
         "leverIds": ["s301-exempt", "usmca", "ruling"]
       },
       {
         "hts": "0901.12.00.75",
-        "description": "Other",
-        "ancestorPath": [
-          "Coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion",
-          "Coffee, not roasted",
-          "Decaffeinated",
-          "Other"
-        ],
-        "searchText": "coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion coffee, not roasted decaffeinated other other 0901.12.00.75",
-        "heading": "0901",
-        "general": "Free",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "cbp-marking", "aphis-coffee"],
         "leverIds": ["s301-exempt", "usmca", "ruling"]
       },
       {
         "hts": "0901.21.00.15",
-        "description": "Certified organic",
-        "ancestorPath": [
-          "Coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion",
-          "Coffee, roasted",
-          "Not decaffeinated",
-          "In retail containers weighing 2 kg or less",
-          "Arabica"
-        ],
-        "searchText": "coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion coffee, roasted not decaffeinated in retail containers weighing 2 kg or less arabica certified organic 0901.21.00.15",
-        "heading": "0901",
-        "general": "Free",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "cbp-marking", "aphis-coffee", "nop-organic"],
         "leverIds": ["s301-exempt", "usmca", "ruling"]
       },
       {
         "hts": "0901.21.00.20",
-        "description": "Other",
-        "ancestorPath": [
-          "Coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion",
-          "Coffee, roasted",
-          "Not decaffeinated",
-          "In retail containers weighing 2 kg or less",
-          "Arabica"
-        ],
-        "searchText": "coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion coffee, roasted not decaffeinated in retail containers weighing 2 kg or less arabica other 0901.21.00.20",
-        "heading": "0901",
-        "general": "Free",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "cbp-marking", "aphis-coffee"],
         "leverIds": ["s301-exempt", "usmca", "ruling"]
       },
       {
         "hts": "0901.21.00.25",
-        "description": "Certified organic",
-        "ancestorPath": [
-          "Coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion",
-          "Coffee, roasted",
-          "Not decaffeinated",
-          "In retail containers weighing 2 kg or less",
-          "Robusta"
-        ],
-        "searchText": "coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion coffee, roasted not decaffeinated in retail containers weighing 2 kg or less robusta certified organic 0901.21.00.25",
-        "heading": "0901",
-        "general": "Free",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "cbp-marking", "aphis-coffee", "nop-organic"],
         "leverIds": ["s301-exempt", "usmca", "ruling"]
       },
       {
         "hts": "0901.21.00.29",
-        "description": "Other",
-        "ancestorPath": [
-          "Coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion",
-          "Coffee, roasted",
-          "Not decaffeinated",
-          "In retail containers weighing 2 kg or less",
-          "Robusta"
-        ],
-        "searchText": "coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion coffee, roasted not decaffeinated in retail containers weighing 2 kg or less robusta other 0901.21.00.29",
-        "heading": "0901",
-        "general": "Free",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "cbp-marking", "aphis-coffee"],
         "leverIds": ["s301-exempt", "usmca", "ruling"]
       },
       {
         "hts": "0901.21.00.40",
-        "description": "Certified organic",
-        "ancestorPath": [
-          "Coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion",
-          "Coffee, roasted",
-          "Not decaffeinated",
-          "In retail containers weighing 2 kg or less",
-          "Other"
-        ],
-        "searchText": "coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion coffee, roasted not decaffeinated in retail containers weighing 2 kg or less other certified organic 0901.21.00.40",
-        "heading": "0901",
-        "general": "Free",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "cbp-marking", "aphis-coffee", "nop-organic"],
         "leverIds": ["s301-exempt", "usmca", "ruling"]
       },
       {
         "hts": "0901.21.00.49",
-        "description": "Other",
-        "ancestorPath": [
-          "Coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion",
-          "Coffee, roasted",
-          "Not decaffeinated",
-          "In retail containers weighing 2 kg or less",
-          "Other"
-        ],
-        "searchText": "coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion coffee, roasted not decaffeinated in retail containers weighing 2 kg or less other other 0901.21.00.49",
-        "heading": "0901",
-        "general": "Free",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "cbp-marking", "aphis-coffee"],
         "leverIds": ["s301-exempt", "usmca", "ruling"]
       },
       {
         "hts": "0901.21.00.55",
-        "description": "Certified organic",
-        "ancestorPath": [
-          "Coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion",
-          "Coffee, roasted",
-          "Not decaffeinated",
-          "Other"
-        ],
-        "searchText": "coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion coffee, roasted not decaffeinated other certified organic 0901.21.00.55",
-        "heading": "0901",
-        "general": "Free",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "cbp-marking", "aphis-coffee", "nop-organic"],
         "leverIds": ["s301-exempt", "usmca", "ruling"]
       },
       {
         "hts": "0901.21.00.65",
-        "description": "Other",
-        "ancestorPath": [
-          "Coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion",
-          "Coffee, roasted",
-          "Not decaffeinated",
-          "Other"
-        ],
-        "searchText": "coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion coffee, roasted not decaffeinated other other 0901.21.00.65",
-        "heading": "0901",
-        "general": "Free",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "cbp-marking", "aphis-coffee"],
         "leverIds": ["s301-exempt", "usmca", "ruling"]
       },
       {
         "hts": "0901.22.00.35",
-        "description": "Certified organic",
-        "ancestorPath": [
-          "Coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion",
-          "Coffee, roasted",
-          "Decaffeinated",
-          "In retail containers weighing 2 kg or less"
-        ],
-        "searchText": "coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion coffee, roasted decaffeinated in retail containers weighing 2 kg or less certified organic 0901.22.00.35",
-        "heading": "0901",
-        "general": "Free",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "cbp-marking", "aphis-coffee", "nop-organic"],
         "leverIds": ["s301-exempt", "usmca", "ruling"]
       },
       {
         "hts": "0901.22.00.40",
-        "description": "Arabica",
-        "ancestorPath": [
-          "Coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion",
-          "Coffee, roasted",
-          "Decaffeinated",
-          "In retail containers weighing 2 kg or less",
-          "Other"
-        ],
-        "searchText": "coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion coffee, roasted decaffeinated in retail containers weighing 2 kg or less other arabica 0901.22.00.40",
-        "heading": "0901",
-        "general": "Free",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "cbp-marking", "aphis-coffee"],
         "leverIds": ["s301-exempt", "usmca", "ruling"]
       },
       {
         "hts": "0901.22.00.50",
-        "description": "Robusta",
-        "ancestorPath": [
-          "Coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion",
-          "Coffee, roasted",
-          "Decaffeinated",
-          "In retail containers weighing 2 kg or less",
-          "Other"
-        ],
-        "searchText": "coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion coffee, roasted decaffeinated in retail containers weighing 2 kg or less other robusta 0901.22.00.50",
-        "heading": "0901",
-        "general": "Free",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "cbp-marking", "aphis-coffee"],
         "leverIds": ["s301-exempt", "usmca", "ruling"]
       },
       {
         "hts": "0901.22.00.55",
-        "description": "Other",
-        "ancestorPath": [
-          "Coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion",
-          "Coffee, roasted",
-          "Decaffeinated",
-          "In retail containers weighing 2 kg or less",
-          "Other"
-        ],
-        "searchText": "coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion coffee, roasted decaffeinated in retail containers weighing 2 kg or less other other 0901.22.00.55",
-        "heading": "0901",
-        "general": "Free",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "cbp-marking", "aphis-coffee"],
         "leverIds": ["s301-exempt", "usmca", "ruling"]
       },
       {
         "hts": "0901.22.00.65",
-        "description": "Certified organic",
-        "ancestorPath": [
-          "Coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion",
-          "Coffee, roasted",
-          "Decaffeinated",
-          "Other",
-          "Arabica"
-        ],
-        "searchText": "coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion coffee, roasted decaffeinated other arabica certified organic 0901.22.00.65",
-        "heading": "0901",
-        "general": "Free",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "cbp-marking", "aphis-coffee", "nop-organic"],
         "leverIds": ["s301-exempt", "usmca", "ruling"]
       },
       {
         "hts": "0901.22.00.70",
-        "description": "Other",
-        "ancestorPath": [
-          "Coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion",
-          "Coffee, roasted",
-          "Decaffeinated",
-          "Other",
-          "Arabica"
-        ],
-        "searchText": "coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion coffee, roasted decaffeinated other arabica other 0901.22.00.70",
-        "heading": "0901",
-        "general": "Free",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "cbp-marking", "aphis-coffee"],
         "leverIds": ["s301-exempt", "usmca", "ruling"]
       },
       {
         "hts": "0901.22.00.75",
-        "description": "Certified organic",
-        "ancestorPath": [
-          "Coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion",
-          "Coffee, roasted",
-          "Decaffeinated",
-          "Other",
-          "Robusta"
-        ],
-        "searchText": "coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion coffee, roasted decaffeinated other robusta certified organic 0901.22.00.75",
-        "heading": "0901",
-        "general": "Free",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "cbp-marking", "aphis-coffee", "nop-organic"],
         "leverIds": ["s301-exempt", "usmca", "ruling"]
       },
       {
         "hts": "0901.22.00.80",
-        "description": "Other",
-        "ancestorPath": [
-          "Coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion",
-          "Coffee, roasted",
-          "Decaffeinated",
-          "Other",
-          "Robusta"
-        ],
-        "searchText": "coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion coffee, roasted decaffeinated other robusta other 0901.22.00.80",
-        "heading": "0901",
-        "general": "Free",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "cbp-marking", "aphis-coffee"],
         "leverIds": ["s301-exempt", "usmca", "ruling"]
       },
       {
         "hts": "0901.22.00.90",
-        "description": "Other",
-        "ancestorPath": [
-          "Coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion",
-          "Coffee, roasted",
-          "Decaffeinated",
-          "Other"
-        ],
-        "searchText": "coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion coffee, roasted decaffeinated other other 0901.22.00.90",
-        "heading": "0901",
-        "general": "Free",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "cbp-marking", "aphis-coffee"],
         "leverIds": ["s301-exempt", "usmca", "ruling"]
       },
       {
         "hts": "0901.90.10.00",
-        "description": "Coffee husks and skins",
-        "ancestorPath": [
-          "Coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion",
-          "Other"
-        ],
-        "searchText": "coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion other coffee husks and skins 0901.90.10.00",
-        "heading": "0901",
-        "general": "Free",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "cbp-marking", "aphis-coffee"],
         "leverIds": ["s301-exempt", "usmca", "ruling"]
       },
       {
         "hts": "0901.90.20.00",
-        "description": "Coffee substitutes containing coffee",
-        "ancestorPath": [
-          "Coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion",
-          "Other"
-        ],
-        "searchText": "coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion other coffee substitutes containing coffee 0901.90.20.00",
-        "heading": "0901",
-        "general": "1.5¢/kg",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "cbp-marking", "aphis-coffee"],
         "leverIds": ["s301-exempt", "fta", "usmca", "agoa", "drawback", "ruling"]
       },
       {
         "hts": "0902.10.10.15",
-        "description": "Certified organic",
-        "ancestorPath": ["Tea, whether or not flavored", "Green tea (not fermented) in immediate packings of a content not exceeding 3 kg", "Flavored"],
-        "searchText": "tea, whether or not flavored green tea (not fermented) in immediate packings of a content not exceeding 3 kg flavored certified organic 0902.10.10.15",
-        "heading": "0902",
-        "general": "6.4%",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "cbp-marking", "nop-organic", "hts-tea-packing"],
         "leverIds": ["s301-exempt", "fta", "usmca", "agoa", "drawback", "ruling"]
       },
       {
         "hts": "0902.10.10.50",
-        "description": "Other",
-        "ancestorPath": ["Tea, whether or not flavored", "Green tea (not fermented) in immediate packings of a content not exceeding 3 kg", "Flavored"],
-        "searchText": "tea, whether or not flavored green tea (not fermented) in immediate packings of a content not exceeding 3 kg flavored other 0902.10.10.50",
-        "heading": "0902",
-        "general": "6.4%",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "cbp-marking", "hts-tea-packing"],
         "leverIds": ["s301-exempt", "fta", "usmca", "agoa", "drawback", "ruling"]
       },
       {
         "hts": "0902.10.90.15",
-        "description": "Certified organic",
-        "ancestorPath": ["Tea, whether or not flavored", "Green tea (not fermented) in immediate packings of a content not exceeding 3 kg", "Other"],
-        "searchText": "tea, whether or not flavored green tea (not fermented) in immediate packings of a content not exceeding 3 kg other certified organic 0902.10.90.15",
-        "heading": "0902",
-        "general": "Free",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "cbp-marking", "nop-organic", "hts-tea-packing"],
         "leverIds": ["s301-exempt", "usmca", "ruling"]
       },
       {
         "hts": "0902.10.90.50",
-        "description": "Other",
-        "ancestorPath": ["Tea, whether or not flavored", "Green tea (not fermented) in immediate packings of a content not exceeding 3 kg", "Other"],
-        "searchText": "tea, whether or not flavored green tea (not fermented) in immediate packings of a content not exceeding 3 kg other other 0902.10.90.50",
-        "heading": "0902",
-        "general": "Free",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "cbp-marking", "hts-tea-packing"],
         "leverIds": ["s301-exempt", "usmca", "ruling"]
       },
       {
         "hts": "0902.20.10.00",
-        "description": "Flavored",
-        "ancestorPath": ["Tea, whether or not flavored", "Other green tea (not fermented)"],
-        "searchText": "tea, whether or not flavored other green tea (not fermented) flavored 0902.20.10.00",
-        "heading": "0902",
-        "general": "6.4%",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "cbp-marking", "hts-tea-packing"],
         "leverIds": ["s301-exempt", "fta", "usmca", "agoa", "drawback", "ruling"]
       },
       {
         "hts": "0902.20.90.15",
-        "description": "Certified organic",
-        "ancestorPath": ["Tea, whether or not flavored", "Other green tea (not fermented)", "Other"],
-        "searchText": "tea, whether or not flavored other green tea (not fermented) other certified organic 0902.20.90.15",
-        "heading": "0902",
-        "general": "Free",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "cbp-marking", "nop-organic", "hts-tea-packing"],
         "leverIds": ["s301-exempt", "usmca", "ruling"]
       },
       {
         "hts": "0902.20.90.50",
-        "description": "Other",
-        "ancestorPath": ["Tea, whether or not flavored", "Other green tea (not fermented)", "Other"],
-        "searchText": "tea, whether or not flavored other green tea (not fermented) other other 0902.20.90.50",
-        "heading": "0902",
-        "general": "Free",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "cbp-marking", "hts-tea-packing"],
         "leverIds": ["s301-exempt", "usmca", "ruling"]
       },
       {
         "hts": "0902.30.00.15",
-        "description": "Certified organic",
-        "ancestorPath": [
-          "Tea, whether or not flavored",
-          "Black tea (fermented) and partly fermented tea, in immediate packings of a content not exceeding 3 kg",
-          "In tea bags"
-        ],
-        "searchText": "tea, whether or not flavored black tea (fermented) and partly fermented tea, in immediate packings of a content not exceeding 3 kg in tea bags certified organic 0902.30.00.15",
-        "heading": "0902",
-        "general": "Free",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "cbp-marking", "nop-organic", "hts-tea-packing"],
         "leverIds": ["s301-exempt", "usmca", "ruling"]
       },
       {
         "hts": "0902.30.00.50",
-        "description": "Other",
-        "ancestorPath": [
-          "Tea, whether or not flavored",
-          "Black tea (fermented) and partly fermented tea, in immediate packings of a content not exceeding 3 kg",
-          "In tea bags"
-        ],
-        "searchText": "tea, whether or not flavored black tea (fermented) and partly fermented tea, in immediate packings of a content not exceeding 3 kg in tea bags other 0902.30.00.50",
-        "heading": "0902",
-        "general": "Free",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "cbp-marking", "hts-tea-packing"],
         "leverIds": ["s301-exempt", "usmca", "ruling"]
       },
       {
         "hts": "0902.30.00.90",
-        "description": "Other",
-        "ancestorPath": [
-          "Tea, whether or not flavored",
-          "Black tea (fermented) and partly fermented tea, in immediate packings of a content not exceeding 3 kg"
-        ],
-        "searchText": "tea, whether or not flavored black tea (fermented) and partly fermented tea, in immediate packings of a content not exceeding 3 kg other 0902.30.00.90",
-        "heading": "0902",
-        "general": "Free",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "cbp-marking", "hts-tea-packing"],
         "leverIds": ["s301-exempt", "usmca", "ruling"]
       },
       {
         "hts": "0902.40.00.00",
-        "description": "Other black tea (fermented) and other partly fermented tea",
-        "ancestorPath": ["Tea, whether or not flavored"],
-        "searchText": "tea, whether or not flavored other black tea (fermented) and other partly fermented tea 0902.40.00.00",
-        "heading": "0902",
-        "general": "Free",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "cbp-marking", "hts-tea-packing"],
         "leverIds": ["s301-exempt", "usmca", "ruling"]
       },
       {
         "hts": "0903.00.00.00",
-        "description": "Maté",
-        "ancestorPath": [],
-        "searchText": "maté 0903.00.00.00",
-        "heading": "0903",
-        "general": "Free",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "cbp-marking"],
         "leverIds": ["s301-exempt", "usmca", "ruling"]
       },
       {
         "hts": "0904.11.00.20",
-        "description": "Black",
-        "ancestorPath": [
-          "Pepper of the genus Piper; dried or crushed or ground fruits of the genus Capsicum (peppers) or of the genus Pimenta (e.g., allspice)",
-          "Pepper of the genus Piper",
-          "Neither crushed nor ground"
-        ],
-        "searchText": "pepper of the genus piper; dried or crushed or ground fruits of the genus capsicum (peppers) or of the genus pimenta (e.g., allspice) pepper of the genus piper neither crushed nor ground black 0904.11.00.20",
-        "heading": "0904",
-        "general": "Free",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "cbp-marking", "fda-ia-salmonella", "fda-ia-pepper", "hts-pepper-shells"],
         "leverIds": ["s301-exempt", "usmca", "ruling"]
       },
       {
         "hts": "0904.11.00.40",
-        "description": "White",
-        "ancestorPath": [
-          "Pepper of the genus Piper; dried or crushed or ground fruits of the genus Capsicum (peppers) or of the genus Pimenta (e.g., allspice)",
-          "Pepper of the genus Piper",
-          "Neither crushed nor ground"
-        ],
-        "searchText": "pepper of the genus piper; dried or crushed or ground fruits of the genus capsicum (peppers) or of the genus pimenta (e.g., allspice) pepper of the genus piper neither crushed nor ground white 0904.11.00.40",
-        "heading": "0904",
-        "general": "Free",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "cbp-marking", "fda-ia-salmonella", "fda-ia-pepper", "hts-pepper-shells"],
         "leverIds": ["s301-exempt", "usmca", "ruling"]
       },
       {
         "hts": "0904.12.00.00",
-        "description": "Crushed or ground",
-        "ancestorPath": [
-          "Pepper of the genus Piper; dried or crushed or ground fruits of the genus Capsicum (peppers) or of the genus Pimenta (e.g., allspice)",
-          "Pepper of the genus Piper"
-        ],
-        "searchText": "pepper of the genus piper; dried or crushed or ground fruits of the genus capsicum (peppers) or of the genus pimenta (e.g., allspice) pepper of the genus piper crushed or ground 0904.12.00.00",
-        "heading": "0904",
-        "general": "Free",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "cbp-marking", "fda-ia-salmonella", "fda-ia-pepper", "hts-pepper-shells"],
         "leverIds": ["s301-exempt", "usmca", "ruling"]
       },
       {
         "hts": "0904.21.20.00",
-        "description": "Paprika",
-        "ancestorPath": [
-          "Pepper of the genus Piper; dried or crushed or ground fruits of the genus Capsicum (peppers) or of the genus Pimenta (e.g., allspice)",
-          "Fruits of the genus Capsicum or of the genus Pimenta",
-          "Dried, neither crushed nor ground",
-          "Of the genusCapsicum(including cayenne pepper, paprika and red pepper)"
-        ],
-        "searchText": "pepper of the genus piper; dried or crushed or ground fruits of the genus capsicum (peppers) or of the genus pimenta (e.g., allspice) fruits of the genus capsicum or of the genus pimenta dried, neither crushed nor ground of the genuscapsicum(including cayenne pepper, paprika and red pepper) paprika 0904.21.20.00",
-        "heading": "0904",
-        "general": "3¢/kg",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "cbp-marking", "fda-ia-salmonella", "aphis-khapra"],
         "leverIds": ["s301-exempt", "fta", "usmca", "agoa", "drawback", "ruling"]
       },
       {
         "hts": "0904.21.40.00",
-        "description": "Anaheim and ancho pepper",
-        "ancestorPath": [
-          "Pepper of the genus Piper; dried or crushed or ground fruits of the genus Capsicum (peppers) or of the genus Pimenta (e.g., allspice)",
-          "Fruits of the genus Capsicum or of the genus Pimenta",
-          "Dried, neither crushed nor ground",
-          "Of the genusCapsicum(including cayenne pepper, paprika and red pepper)"
-        ],
-        "searchText": "pepper of the genus piper; dried or crushed or ground fruits of the genus capsicum (peppers) or of the genus pimenta (e.g., allspice) fruits of the genus capsicum or of the genus pimenta dried, neither crushed nor ground of the genuscapsicum(including cayenne pepper, paprika and red pepper) anaheim and ancho pepper 0904.21.40.00",
-        "heading": "0904",
-        "general": "5¢/kg",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "cbp-marking", "fda-ia-salmonella", "aphis-khapra"],
         "leverIds": ["s301-exempt", "fta", "usmca", "agoa", "drawback", "ruling"]
       },
       {
         "hts": "0904.21.60.10",
-        "description": "Bell peppers",
-        "ancestorPath": [
-          "Pepper of the genus Piper; dried or crushed or ground fruits of the genus Capsicum (peppers) or of the genus Pimenta (e.g., allspice)",
-          "Fruits of the genus Capsicum or of the genus Pimenta",
-          "Dried, neither crushed nor ground",
-          "Of the genusCapsicum(including cayenne pepper, paprika and red pepper)",
-          "Other"
-        ],
-        "searchText": "pepper of the genus piper; dried or crushed or ground fruits of the genus capsicum (peppers) or of the genus pimenta (e.g., allspice) fruits of the genus capsicum or of the genus pimenta dried, neither crushed nor ground of the genuscapsicum(including cayenne pepper, paprika and red pepper) other bell peppers 0904.21.60.10",
-        "heading": "0904",
-        "general": "2.5¢/kg",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "cbp-marking", "fda-ia-salmonella", "aphis-khapra"],
         "leverIds": ["s301-exempt", "fta", "usmca", "agoa", "drawback", "ruling"]
       },
       {
         "hts": "0904.21.60.20",
-        "description": "Jalapeno peppers",
-        "ancestorPath": [
-          "Pepper of the genus Piper; dried or crushed or ground fruits of the genus Capsicum (peppers) or of the genus Pimenta (e.g., allspice)",
-          "Fruits of the genus Capsicum or of the genus Pimenta",
-          "Dried, neither crushed nor ground",
-          "Of the genusCapsicum(including cayenne pepper, paprika and red pepper)",
-          "Other"
-        ],
-        "searchText": "pepper of the genus piper; dried or crushed or ground fruits of the genus capsicum (peppers) or of the genus pimenta (e.g., allspice) fruits of the genus capsicum or of the genus pimenta dried, neither crushed nor ground of the genuscapsicum(including cayenne pepper, paprika and red pepper) other jalapeno peppers 0904.21.60.20",
-        "heading": "0904",
-        "general": "2.5¢/kg",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "cbp-marking", "fda-ia-salmonella", "aphis-khapra"],
         "leverIds": ["s301-exempt", "fta", "usmca", "agoa", "drawback", "ruling"]
       },
       {
         "hts": "0904.21.60.90",
-        "description": "Other",
-        "ancestorPath": [
-          "Pepper of the genus Piper; dried or crushed or ground fruits of the genus Capsicum (peppers) or of the genus Pimenta (e.g., allspice)",
-          "Fruits of the genus Capsicum or of the genus Pimenta",
-          "Dried, neither crushed nor ground",
-          "Of the genusCapsicum(including cayenne pepper, paprika and red pepper)",
-          "Other"
-        ],
-        "searchText": "pepper of the genus piper; dried or crushed or ground fruits of the genus capsicum (peppers) or of the genus pimenta (e.g., allspice) fruits of the genus capsicum or of the genus pimenta dried, neither crushed nor ground of the genuscapsicum(including cayenne pepper, paprika and red pepper) other other 0904.21.60.90",
-        "heading": "0904",
-        "general": "2.5¢/kg",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "cbp-marking", "fda-ia-salmonella", "aphis-khapra"],
         "leverIds": ["s301-exempt", "fta", "usmca", "agoa", "drawback", "ruling"]
       },
       {
         "hts": "0904.21.80.00",
-        "description": "Of the genus Pimenta (including allspice)",
-        "ancestorPath": [
-          "Pepper of the genus Piper; dried or crushed or ground fruits of the genus Capsicum (peppers) or of the genus Pimenta (e.g., allspice)",
-          "Fruits of the genus Capsicum or of the genus Pimenta",
-          "Dried, neither crushed nor ground"
-        ],
-        "searchText": "pepper of the genus piper; dried or crushed or ground fruits of the genus capsicum (peppers) or of the genus pimenta (e.g., allspice) fruits of the genus capsicum or of the genus pimenta dried, neither crushed nor ground of the genus pimenta (including allspice) 0904.21.80.00",
-        "heading": "0904",
-        "general": "Free",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "cbp-marking", "fda-ia-salmonella"],
         "leverIds": ["s301-exempt", "usmca", "ruling"]
       },
       {
         "hts": "0904.22.20.00",
-        "description": "Paprika",
-        "ancestorPath": [
-          "Pepper of the genus Piper; dried or crushed or ground fruits of the genus Capsicum (peppers) or of the genus Pimenta (e.g., allspice)",
-          "Fruits of the genus Capsicum or of the genus Pimenta",
-          "Crushed or ground",
-          "Of the genus Capsicum (including cayenne Pepper, paprika and red pepper)"
-        ],
-        "searchText": "pepper of the genus piper; dried or crushed or ground fruits of the genus capsicum (peppers) or of the genus pimenta (e.g., allspice) fruits of the genus capsicum or of the genus pimenta crushed or ground of the genus capsicum (including cayenne pepper, paprika and red pepper) paprika 0904.22.20.00",
-        "heading": "0904",
-        "general": "3¢/kg",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "cbp-marking", "fda-ia-salmonella"],
         "leverIds": ["s301-exempt", "fta", "usmca", "agoa", "drawback", "ruling"]
       },
       {
         "hts": "0904.22.40.00",
-        "description": "Anaheim and ancho pepper",
-        "ancestorPath": [
-          "Pepper of the genus Piper; dried or crushed or ground fruits of the genus Capsicum (peppers) or of the genus Pimenta (e.g., allspice)",
-          "Fruits of the genus Capsicum or of the genus Pimenta",
-          "Crushed or ground",
-          "Of the genus Capsicum (including cayenne Pepper, paprika and red pepper)"
-        ],
-        "searchText": "pepper of the genus piper; dried or crushed or ground fruits of the genus capsicum (peppers) or of the genus pimenta (e.g., allspice) fruits of the genus capsicum or of the genus pimenta crushed or ground of the genus capsicum (including cayenne pepper, paprika and red pepper) anaheim and ancho pepper 0904.22.40.00",
-        "heading": "0904",
-        "general": "5¢/kg",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "cbp-marking", "fda-ia-salmonella"],
         "leverIds": ["s301-exempt", "fta", "usmca", "agoa", "drawback", "ruling"]
       },
       {
         "hts": "0904.22.73.00",
-        "description": "Mixtures of mashed or macerated hot red peppers and salt",
-        "ancestorPath": [
-          "Pepper of the genus Piper; dried or crushed or ground fruits of the genus Capsicum (peppers) or of the genus Pimenta (e.g., allspice)",
-          "Fruits of the genus Capsicum or of the genus Pimenta",
-          "Crushed or ground",
-          "Of the genus Capsicum (including cayenne Pepper, paprika and red pepper)"
-        ],
-        "searchText": "pepper of the genus piper; dried or crushed or ground fruits of the genus capsicum (peppers) or of the genus pimenta (e.g., allspice) fruits of the genus capsicum or of the genus pimenta crushed or ground of the genus capsicum (including cayenne pepper, paprika and red pepper) mixtures of mashed or macerated hot red peppers and salt 0904.22.73.00",
-        "heading": "0904",
-        "general": "Free",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "cbp-marking", "fda-ia-salmonella"],
         "leverIds": ["s301-exempt", "usmca", "ruling"]
       },
       {
         "hts": "0904.22.76.00",
-        "description": "Other",
-        "ancestorPath": [
-          "Pepper of the genus Piper; dried or crushed or ground fruits of the genus Capsicum (peppers) or of the genus Pimenta (e.g., allspice)",
-          "Fruits of the genus Capsicum or of the genus Pimenta",
-          "Crushed or ground",
-          "Of the genus Capsicum (including cayenne Pepper, paprika and red pepper)"
-        ],
-        "searchText": "pepper of the genus piper; dried or crushed or ground fruits of the genus capsicum (peppers) or of the genus pimenta (e.g., allspice) fruits of the genus capsicum or of the genus pimenta crushed or ground of the genus capsicum (including cayenne pepper, paprika and red pepper) other 0904.22.76.00",
-        "heading": "0904",
-        "general": "5¢/kg",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "cbp-marking", "fda-ia-salmonella"],
         "leverIds": ["s301-exempt", "fta", "usmca", "agoa", "drawback", "ruling"]
       },
       {
         "hts": "0904.22.80.00",
-        "description": "Of the genus Pimenta (including allspice)",
-        "ancestorPath": [
-          "Pepper of the genus Piper; dried or crushed or ground fruits of the genus Capsicum (peppers) or of the genus Pimenta (e.g., allspice)",
-          "Fruits of the genus Capsicum or of the genus Pimenta",
-          "Crushed or ground"
-        ],
-        "searchText": "pepper of the genus piper; dried or crushed or ground fruits of the genus capsicum (peppers) or of the genus pimenta (e.g., allspice) fruits of the genus capsicum or of the genus pimenta crushed or ground of the genus pimenta (including allspice) 0904.22.80.00",
-        "heading": "0904",
-        "general": "Free",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "cbp-marking", "fda-ia-salmonella"],
         "leverIds": ["s301-exempt", "usmca", "ruling"]
       },
       {
         "hts": "0905.10.00.00",
-        "description": "Neither crushed nor ground",
-        "ancestorPath": ["Vanilla"],
-        "searchText": "vanilla neither crushed nor ground 0905.10.00.00",
-        "heading": "0905",
-        "general": "Free",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "cbp-marking", "fda-ia-salmonella"],
         "leverIds": ["s301-exempt", "usmca", "ruling"]
       },
       {
         "hts": "0905.20.00.00",
-        "description": "Crushed or ground",
-        "ancestorPath": ["Vanilla"],
-        "searchText": "vanilla crushed or ground 0905.20.00.00",
-        "heading": "0905",
-        "general": "Free",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "cbp-marking", "fda-ia-salmonella"],
         "leverIds": ["s301-exempt", "usmca", "ruling"]
       },
       {
         "hts": "0906.11.00.00",
-        "description": "Cinnamon (Cinnamomum zeylanicum Blume)",
-        "ancestorPath": ["Cinnamon and cinnamon-tree flowers", "Neither crushed nor ground"],
-        "searchText": "cinnamon and cinnamon-tree flowers neither crushed nor ground cinnamon (cinnamomum zeylanicum blume) 0906.11.00.00",
-        "heading": "0906",
-        "general": "Free",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "cbp-marking", "fda-ia-salmonella"],
         "leverIds": ["s301-exempt", "usmca", "ruling"]
       },
       {
         "hts": "0906.19.00.00",
-        "description": "Other",
-        "ancestorPath": ["Cinnamon and cinnamon-tree flowers", "Neither crushed nor ground"],
-        "searchText": "cinnamon and cinnamon-tree flowers neither crushed nor ground other 0906.19.00.00",
-        "heading": "0906",
-        "general": "Free",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "cbp-marking", "fda-ia-salmonella"],
         "leverIds": ["s301-exempt", "usmca", "ruling"]
       },
       {
         "hts": "0906.20.00.00",
-        "description": "Crushed or ground",
-        "ancestorPath": ["Cinnamon and cinnamon-tree flowers"],
-        "searchText": "cinnamon and cinnamon-tree flowers crushed or ground 0906.20.00.00",
-        "heading": "0906",
-        "general": "Free",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "cbp-marking", "fda-ia-salmonella", "fda-ia-metals"],
         "leverIds": ["s301-exempt", "usmca", "ruling"]
       },
       {
         "hts": "0907.10.00.00",
-        "description": "Neither crushed nor ground",
-        "ancestorPath": ["Cloves (whole fruit, cloves and stems)"],
-        "searchText": "cloves (whole fruit, cloves and stems) neither crushed nor ground 0907.10.00.00",
-        "heading": "0907",
-        "general": "Free",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "cbp-marking", "fda-ia-salmonella"],
         "leverIds": ["s301-exempt", "usmca", "ruling"]
       },
       {
         "hts": "0907.20.00.00",
-        "description": "Crushed or ground",
-        "ancestorPath": ["Cloves (whole fruit, cloves and stems)"],
-        "searchText": "cloves (whole fruit, cloves and stems) crushed or ground 0907.20.00.00",
-        "heading": "0907",
-        "general": "Free",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "cbp-marking", "fda-ia-salmonella"],
         "leverIds": ["s301-exempt", "usmca", "ruling"]
       },
       {
         "hts": "0908.11.00.00",
-        "description": "Neither crushed nor ground",
-        "ancestorPath": ["Nutmeg, mace and cardamoms", "Nutmeg"],
-        "searchText": "nutmeg, mace and cardamoms nutmeg neither crushed nor ground 0908.11.00.00",
-        "heading": "0908",
-        "general": "Free",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "cbp-marking", "fda-ia-salmonella"],
         "leverIds": ["s301-exempt", "usmca", "ruling"]
       },
       {
         "hts": "0908.12.00.00",
-        "description": "Crushed or ground",
-        "ancestorPath": ["Nutmeg, mace and cardamoms", "Nutmeg"],
-        "searchText": "nutmeg, mace and cardamoms nutmeg crushed or ground 0908.12.00.00",
-        "heading": "0908",
-        "general": "Free",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "cbp-marking", "fda-ia-salmonella"],
         "leverIds": ["s301-exempt", "usmca", "ruling"]
       },
       {
         "hts": "0908.21.00.00",
-        "description": "Neither crushed nor ground",
-        "ancestorPath": ["Nutmeg, mace and cardamoms", "Mace"],
-        "searchText": "nutmeg, mace and cardamoms mace neither crushed nor ground 0908.21.00.00",
-        "heading": "0908",
-        "general": "Free",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "cbp-marking", "fda-ia-salmonella"],
         "leverIds": ["s301-exempt", "usmca", "form", "ruling"]
       },
       {
         "hts": "0908.22.20.00",
-        "description": "Bombay or wild mace, ground",
-        "ancestorPath": ["Nutmeg, mace and cardamoms", "Mace", "Crushed or ground"],
-        "searchText": "nutmeg, mace and cardamoms mace crushed or ground bombay or wild mace, ground 0908.22.20.00",
-        "heading": "0908",
-        "general": "7.4¢/kg",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "cbp-marking", "fda-ia-salmonella"],
         "leverIds": ["s301-exempt", "fta", "usmca", "agoa", "form", "drawback", "ruling"]
       },
       {
         "hts": "0908.22.40.00",
-        "description": "Other",
-        "ancestorPath": ["Nutmeg, mace and cardamoms", "Mace", "Crushed or ground"],
-        "searchText": "nutmeg, mace and cardamoms mace crushed or ground other 0908.22.40.00",
-        "heading": "0908",
-        "general": "Free",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "cbp-marking", "fda-ia-salmonella"],
         "leverIds": ["s301-exempt", "usmca", "form", "ruling"]
       },
       {
         "hts": "0908.31.00.00",
-        "description": "Neither crushed nor ground",
-        "ancestorPath": ["Nutmeg, mace and cardamoms", "Cardamoms"],
-        "searchText": "nutmeg, mace and cardamoms cardamoms neither crushed nor ground 0908.31.00.00",
-        "heading": "0908",
-        "general": "Free",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "cbp-marking", "fda-ia-salmonella"],
         "leverIds": ["s301-exempt", "usmca", "ruling"]
       },
       {
         "hts": "0908.32.00.00",
-        "description": "Crushed or ground",
-        "ancestorPath": ["Nutmeg, mace and cardamoms", "Cardamoms"],
-        "searchText": "nutmeg, mace and cardamoms cardamoms crushed or ground 0908.32.00.00",
-        "heading": "0908",
-        "general": "Free",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "cbp-marking", "fda-ia-salmonella"],
         "leverIds": ["s301-exempt", "usmca", "ruling"]
       },
       {
         "hts": "0909.21.00.00",
-        "description": "Neither crushed nor ground",
-        "ancestorPath": ["Seeds of anise, badian, fennel, coriander, cumin or caraway; juniper berries", "Seeds of coriander"],
-        "searchText": "seeds of anise, badian, fennel, coriander, cumin or caraway; juniper berries seeds of coriander neither crushed nor ground 0909.21.00.00",
-        "heading": "0909",
-        "general": "Free",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "cbp-marking", "fda-ia-salmonella"],
         "leverIds": ["s301-exempt", "usmca", "ruling"]
       },
       {
         "hts": "0909.22.00.00",
-        "description": "Crushed or ground",
-        "ancestorPath": ["Seeds of anise, badian, fennel, coriander, cumin or caraway; juniper berries", "Seeds of coriander"],
-        "searchText": "seeds of anise, badian, fennel, coriander, cumin or caraway; juniper berries seeds of coriander crushed or ground 0909.22.00.00",
-        "heading": "0909",
-        "general": "Free",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "cbp-marking", "fda-ia-salmonella"],
         "leverIds": ["s301-exempt", "usmca", "ruling"]
       },
       {
         "hts": "0909.31.00.00",
-        "description": "Neither crushed nor ground",
-        "ancestorPath": ["Seeds of anise, badian, fennel, coriander, cumin or caraway; juniper berries", "Seeds of cumin"],
-        "searchText": "seeds of anise, badian, fennel, coriander, cumin or caraway; juniper berries seeds of cumin neither crushed nor ground 0909.31.00.00",
-        "heading": "0909",
-        "general": "Free",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "cbp-marking", "fda-ia-salmonella", "aphis-khapra"],
         "leverIds": ["s301-exempt", "usmca", "ruling"]
       },
       {
         "hts": "0909.32.00.00",
-        "description": "Crushed or ground",
-        "ancestorPath": ["Seeds of anise, badian, fennel, coriander, cumin or caraway; juniper berries", "Seeds of cumin"],
-        "searchText": "seeds of anise, badian, fennel, coriander, cumin or caraway; juniper berries seeds of cumin crushed or ground 0909.32.00.00",
-        "heading": "0909",
-        "general": "Free",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "cbp-marking", "fda-ia-salmonella"],
         "leverIds": ["s301-exempt", "usmca", "ruling"]
       },
       {
         "hts": "0909.61.00.00",
-        "description": "Neither crushed nor ground",
-        "ancestorPath": [
-          "Seeds of anise, badian, fennel, coriander, cumin or caraway; juniper berries",
-          "Seeds of anise, badian, caraway or fennel; juniper berries"
-        ],
-        "searchText": "seeds of anise, badian, fennel, coriander, cumin or caraway; juniper berries seeds of anise, badian, caraway or fennel; juniper berries neither crushed nor ground 0909.61.00.00",
-        "heading": "0909",
-        "general": "Free",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "cbp-marking", "fda-ia-salmonella"],
         "leverIds": ["s301-exempt", "usmca", "ruling"]
       },
       {
         "hts": "0909.62.00.00",
-        "description": "Crushed or ground",
-        "ancestorPath": [
-          "Seeds of anise, badian, fennel, coriander, cumin or caraway; juniper berries",
-          "Seeds of anise, badian, caraway or fennel; juniper berries"
-        ],
-        "searchText": "seeds of anise, badian, fennel, coriander, cumin or caraway; juniper berries seeds of anise, badian, caraway or fennel; juniper berries crushed or ground 0909.62.00.00",
-        "heading": "0909",
-        "general": "Free",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "cbp-marking", "fda-ia-salmonella"],
         "leverIds": ["s301-exempt", "usmca", "ruling"]
       },
       {
         "hts": "0910.11.00.10",
-        "description": "Certified organic",
-        "ancestorPath": ["Ginger, saffron, turmeric (curcuma), thyme, bay leaves, curry and other spices", "Ginger", "Neither crushed nor ground"],
-        "searchText": "ginger, saffron, turmeric (curcuma), thyme, bay leaves, curry and other spices ginger neither crushed nor ground certified organic 0910.11.00.10",
-        "heading": "0910",
-        "general": "Free",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "cbp-marking", "fda-ia-salmonella", "aphis-fresh", "nop-organic"],
         "leverIds": ["s301-exempt", "usmca", "form", "ruling"]
       },
       {
         "hts": "0910.11.00.15",
-        "description": "Other",
-        "ancestorPath": ["Ginger, saffron, turmeric (curcuma), thyme, bay leaves, curry and other spices", "Ginger", "Neither crushed nor ground"],
-        "searchText": "ginger, saffron, turmeric (curcuma), thyme, bay leaves, curry and other spices ginger neither crushed nor ground other 0910.11.00.15",
-        "heading": "0910",
-        "general": "Free",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "cbp-marking", "fda-ia-salmonella", "aphis-fresh"],
         "leverIds": ["s301-exempt", "usmca", "form", "ruling"]
       },
       {
         "hts": "0910.12.00.00",
-        "description": "Crushed or ground",
-        "ancestorPath": ["Ginger, saffron, turmeric (curcuma), thyme, bay leaves, curry and other spices", "Ginger"],
-        "searchText": "ginger, saffron, turmeric (curcuma), thyme, bay leaves, curry and other spices ginger crushed or ground 0910.12.00.00",
-        "heading": "0910",
-        "general": "1¢/kg",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "cbp-marking", "fda-ia-salmonella"],
         "leverIds": ["s301-exempt", "fta", "usmca", "agoa", "form", "drawback", "ruling"]
       },
       {
         "hts": "0910.20.00.00",
-        "description": "Saffron",
-        "ancestorPath": ["Ginger, saffron, turmeric (curcuma), thyme, bay leaves, curry and other spices"],
-        "searchText": "ginger, saffron, turmeric (curcuma), thyme, bay leaves, curry and other spices saffron 0910.20.00.00",
-        "heading": "0910",
-        "general": "Free",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "cbp-marking", "fda-ia-salmonella"],
         "leverIds": ["s301-exempt", "usmca", "ruling"]
       },
       {
         "hts": "0910.30.00.00",
-        "description": "Turmeric (curcuma)",
-        "ancestorPath": ["Ginger, saffron, turmeric (curcuma), thyme, bay leaves, curry and other spices"],
-        "searchText": "ginger, saffron, turmeric (curcuma), thyme, bay leaves, curry and other spices turmeric (curcuma) 0910.30.00.00",
-        "heading": "0910",
-        "general": "Free",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "cbp-marking", "fda-ia-salmonella", "fda-ia-metals"],
         "leverIds": ["s301-exempt", "usmca", "ruling"]
       },
       {
         "hts": "0910.91.00.00",
-        "description": "Mixtures referred to in note 1(b) to this chapter",
-        "ancestorPath": ["Ginger, saffron, turmeric (curcuma), thyme, bay leaves, curry and other spices", "Other spices"],
-        "searchText": "ginger, saffron, turmeric (curcuma), thyme, bay leaves, curry and other spices other spices mixtures referred to in note 1(b) to this chapter 0910.91.00.00",
-        "heading": "0910",
-        "general": "1.9%",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "cbp-marking", "fda-ia-salmonella"],
         "leverIds": ["s301-exempt", "fta", "usmca", "agoa", "drawback", "ruling"]
       },
       {
         "hts": "0910.99.05.00",
-        "description": "Crude or not manufactured",
-        "ancestorPath": ["Ginger, saffron, turmeric (curcuma), thyme, bay leaves, curry and other spices", "Other spices", "Other", "Thyme; bay leaves"],
-        "searchText": "ginger, saffron, turmeric (curcuma), thyme, bay leaves, curry and other spices other spices other thyme; bay leaves crude or not manufactured 0910.99.05.00",
-        "heading": "0910",
-        "general": "Free",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "cbp-marking", "fda-ia-salmonella"],
         "leverIds": ["usmca", "form", "drawback", "ruling"]
       },
       {
         "hts": "0910.99.06.00",
-        "description": "Thyme",
-        "ancestorPath": [
-          "Ginger, saffron, turmeric (curcuma), thyme, bay leaves, curry and other spices",
-          "Other spices",
-          "Other",
-          "Thyme; bay leaves",
-          "Other"
-        ],
-        "searchText": "ginger, saffron, turmeric (curcuma), thyme, bay leaves, curry and other spices other spices other thyme; bay leaves other thyme 0910.99.06.00",
-        "heading": "0910",
-        "general": "4.8%",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "cbp-marking", "fda-ia-salmonella"],
         "leverIds": ["fta", "usmca", "agoa", "form", "drawback", "ruling"]
       },
       {
         "hts": "0910.99.07.00",
-        "description": "Bay leaves",
-        "ancestorPath": [
-          "Ginger, saffron, turmeric (curcuma), thyme, bay leaves, curry and other spices",
-          "Other spices",
-          "Other",
-          "Thyme; bay leaves",
-          "Other"
-        ],
-        "searchText": "ginger, saffron, turmeric (curcuma), thyme, bay leaves, curry and other spices other spices other thyme; bay leaves other bay leaves 0910.99.07.00",
-        "heading": "0910",
-        "general": "3.2%",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "cbp-marking", "fda-ia-salmonella"],
         "leverIds": ["s301-exempt", "fta", "usmca", "agoa", "form", "drawback", "ruling"]
       },
       {
         "hts": "0910.99.10.00",
-        "description": "Curry",
-        "ancestorPath": ["Ginger, saffron, turmeric (curcuma), thyme, bay leaves, curry and other spices", "Other spices", "Other"],
-        "searchText": "ginger, saffron, turmeric (curcuma), thyme, bay leaves, curry and other spices other spices other curry 0910.99.10.00",
-        "heading": "0910",
-        "general": "Free",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "cbp-marking", "fda-ia-salmonella"],
         "leverIds": ["s301-exempt", "usmca", "ruling"]
       },
       {
         "hts": "0910.99.20.00",
-        "description": "Crude or not manufactured",
-        "ancestorPath": ["Ginger, saffron, turmeric (curcuma), thyme, bay leaves, curry and other spices", "Other spices", "Other", "Origanum (Lippia spp.)"],
-        "searchText": "ginger, saffron, turmeric (curcuma), thyme, bay leaves, curry and other spices other spices other origanum (lippia spp.) crude or not manufactured 0910.99.20.00",
-        "heading": "0910",
-        "general": "Free",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "cbp-marking", "fda-ia-salmonella"],
         "leverIds": ["s301-exempt", "usmca", "form", "ruling"]
       },
       {
         "hts": "0910.99.40.00",
-        "description": "Other",
-        "ancestorPath": ["Ginger, saffron, turmeric (curcuma), thyme, bay leaves, curry and other spices", "Other spices", "Other", "Origanum (Lippia spp.)"],
-        "searchText": "ginger, saffron, turmeric (curcuma), thyme, bay leaves, curry and other spices other spices other origanum (lippia spp.) other 0910.99.40.00",
-        "heading": "0910",
-        "general": "3.4%",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "cbp-marking", "fda-ia-salmonella"],
         "leverIds": ["s301-exempt", "fta", "usmca", "agoa", "form", "drawback", "ruling"]
       },
       {
         "hts": "0910.99.50.00",
-        "description": "Dill",
-        "ancestorPath": ["Ginger, saffron, turmeric (curcuma), thyme, bay leaves, curry and other spices", "Other spices", "Other", "Other"],
-        "searchText": "ginger, saffron, turmeric (curcuma), thyme, bay leaves, curry and other spices other spices other other dill 0910.99.50.00",
-        "heading": "0910",
-        "general": "Free",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "cbp-marking", "fda-ia-salmonella"],
         "leverIds": ["s301-exempt", "usmca", "ruling"]
       },
       {
         "hts": "0910.99.60.00",
-        "description": "Other",
-        "ancestorPath": ["Ginger, saffron, turmeric (curcuma), thyme, bay leaves, curry and other spices", "Other spices", "Other", "Other"],
-        "searchText": "ginger, saffron, turmeric (curcuma), thyme, bay leaves, curry and other spices other spices other other other 0910.99.60.00",
-        "heading": "0910",
-        "general": "1.9%",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "cbp-marking", "fda-ia-salmonella"],
         "leverIds": ["s301-exempt", "fta", "usmca", "agoa", "drawback", "ruling"]
       }

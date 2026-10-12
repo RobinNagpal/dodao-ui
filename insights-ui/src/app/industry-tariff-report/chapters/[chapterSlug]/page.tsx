@@ -30,7 +30,7 @@ export async function generateMetadata({ params }: { params: Promise<{ chapterSl
 
   // Approach-2 chapters (issue #1770) carry their own SEO copy in the content
   // file, and must resolve without the tariff tables being populated.
-  const prototype = getChapterPrototype(chapterSlug);
+  const prototype = await getChapterPrototype(chapterSlug);
   if (prototype) return buildPrototypeMetadata(prototype.overview.seo, chapterCoverHref(prototype.chapter.slug));
 
   const data = await fetchChapterTariffReport(chapterSlug);
@@ -73,7 +73,7 @@ export default async function ChapterCoverPage({ params }: { params: Promise<{ c
   // content lives in `src/tariff-data/chapters/<slug>.json` — so the page also
   // renders locally, where `hts_codes` / `tariff_trade_analytics` are empty.
   // Chapters without a content file keep the DB-backed flow below untouched.
-  const prototype = getChapterPrototype(chapterSlug);
+  const prototype = await getChapterPrototype(chapterSlug);
   if (prototype) {
     const chapterInfo = prototypeChapterInfo(prototype);
     const prototypeCrossLinks = <PrototypeChapterToolLinks chapter={prototype.chapter} />;
@@ -83,6 +83,7 @@ export default async function ChapterCoverPage({ params }: { params: Promise<{ c
         pageTitle={prototype.overview.h1}
         toolsCrossLinks={prototypeCrossLinks}
         ratesAsOf={prototype.asOf}
+        prototype={prototype}
         currentSlug="overview"
         updatedAt={prototype.asOf}
         sectionLabel={approach2SectionLabel('overview')}

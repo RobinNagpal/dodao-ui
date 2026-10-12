@@ -1,6 +1,7 @@
 import type { TariffProductGroup, TariffRateTableRow, TariffSpiLegendEntry } from '@/types/tariff-chapter-prototype';
 import type { MeasureEngineLine } from '@/types/tariff-calculator-measures';
 import { parseSpecialRates, SPECIAL_PROGRAMS } from '@/utils/tariff-calculator/measures-engine';
+import { rateRowSearchText } from '@/utils/tariff-reports/chapter-prototype';
 import { shortenDescription } from '@/utils/tariff-reports/line-labels';
 import type { HtsJsonRow } from '../../tariff-calculator/lib/hts-source';
 import { TODO } from './placeholders';
@@ -101,7 +102,7 @@ export function buildRateTableRows(jsonRows: readonly HtsJsonRow[]): TariffRateT
       dutiable: isDutiable(effectiveGeneral),
       heading,
       ancestorPath,
-      searchText: [...ancestorPath, description, hts ?? ''].join(' ').toLowerCase(),
+      searchText: rateRowSearchText({ ancestorPath, description, hts }),
     };
     out.push(row);
     stack.push({ indent, row });

@@ -10,6 +10,7 @@ import type {
   TariffUnderstandIndustryContent,
 } from '@/types/tariff-chapter-prototype';
 import type { TariffMeasureRecord, TariffMeasuresFile } from '@/types/tariff-calculator-measures';
+import { compactChapterPrototype } from '@/utils/tariff-reports/chapter-prototype';
 import { downloadHtsJson, editionFromName, type HtsJsonRow, parseCliArgs, stringArg, urlForEdition } from '../../tariff-calculator/lib/hts-source';
 import { contentFileName, liveChapterSlugs, liveChapterTitle, padChapter, sectionForChapter } from './chapter-info';
 import { ANY_OTHER_COUNTRY, buildIndustryAreas, type MatrixCountryInput } from './industry-areas';
@@ -32,7 +33,9 @@ import { loadTradeInput, loadTradeStatsModule, tradeSnapshot, type TradeInput } 
  * From data:
  *   chapter          number, live slug (checked against /industry-tariff-report/sitemap.xml), title, HTSUS section
  *   overview         rateTable (HTS JSON: effective rates inherited from the rate-stating parent, ancestorPath,
- *                    searchText, dutiable), productGroups (rate summary + line counts), stats, SPI legend
+ *                    dutiable), productGroups (rate summary + line counts), stats, SPI legend
+ * The file is written compact (`compactChapterPrototype`): rate-table `searchText` and the per-line copies of
+ * rate-table fields on tariffUpdates / tariffEngineering lines are left out — the loader derives them.
  *   tariffUpdates    inEffect + changes from measures.json (dates, official sources), before/now editions,
  *                    base-rate status of every line between the 2025 Basic Edition and the current edition
  *   industryAreas    country × heading matrix priced by the official-measures engine (calculateWithMeasures)
@@ -409,9 +412,10 @@ async function main(): Promise<void> {
   if (existsSync(out) && args.force !== true) throw new Error(`${out} exists — pass --force to overwrite (or --out elsewhere)`);
   mkdirSync(path.dirname(out), { recursive: true });
   // Format with the repo's prettier config so the file passes `pnpm prettier-check` as generated.
+  // Compact: the fields the loader derives from the rate table are not stored (see normalizeChapterPrototype).
   const prettier = await loadPrettier();
   const options = (await prettier.resolveConfig(out)) ?? {};
-  writeFileSync(out, prettier.format(JSON.stringify(doc, null, 2), { ...options, parser: 'json' }));
+  writeFileSync(out, prettier.format(JSON.stringify(compactChapterPrototype(doc), null, 2), { ...options, parser: 'json' }));
 
   console.log(`\nChapter ${padded} (${slug}) — "${title}", section ${section.roman}`);
   console.log(`  rate table: ${rows.length} rows, ${lines.length} lines, ${headings.length} headings (${nowEdition})`);

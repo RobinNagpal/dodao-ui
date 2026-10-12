@@ -4,7 +4,7 @@
 
 import { findGlossaryTerms, TARIFF_GLOSSARY, type GlossaryEntry } from '@/tariff-data/glossary';
 import { getChapterExports } from '@/utils/tariff-reports/chapter-exports';
-import { getChapterPrototype } from '@/utils/tariff-reports/chapter-prototype';
+import type { TariffChapterPrototype } from '@/types/tariff-chapter-prototype';
 import type { ChapterReportDirection } from '@/utils/tariff-reports/chapter-route-helpers';
 
 // Fields that are never shown as page text: ids, links, search indexes, SEO metadata.
@@ -30,13 +30,17 @@ const STATIC_TERM_IDS: Record<string, string[]> = {
 const EXPORT_PAGE_KEYS = { exports: 'overview', 'exports/tariff-updates': 'tariffUpdates', 'exports/markets': 'markets' } as const;
 
 /** The content-file data rendered on an Approach-2 page, or null when the page has none. */
-function approach2PageContent(chapterSlug: string, currentSlug: string, direction: ChapterReportDirection): unknown[] | null {
+function approach2PageContent(
+  prototype: TariffChapterPrototype | null,
+  chapterSlug: string,
+  currentSlug: string,
+  direction: ChapterReportDirection
+): unknown[] | null {
   if (direction === 'export') {
     const key = EXPORT_PAGE_KEYS[currentSlug as keyof typeof EXPORT_PAGE_KEYS];
     const content = key ? getChapterExports(chapterSlug)?.[key] : undefined;
     return content ? [content] : null;
   }
-  const prototype = getChapterPrototype(chapterSlug);
   if (!prototype) return null;
   switch (currentSlug) {
     // The overview also shows the "In short" takeaways and the extra duties in effect.
@@ -57,9 +61,14 @@ function approach2PageContent(chapterSlug: string, currentSlug: string, directio
   }
 }
 
-/** Glossary entries used on an Approach-2 page, in glossary order; empty for DB-backed chapters. */
-export function approach2PageGlossaryTerms(chapterSlug: string, currentSlug: string, direction: ChapterReportDirection): GlossaryEntry[] {
-  const content = approach2PageContent(chapterSlug, currentSlug, direction);
+/** Glossary entries used on an Approach-2 page, in glossary order; empty for DB-backed chapters (`prototype` null). */
+export function approach2PageGlossaryTerms(
+  prototype: TariffChapterPrototype | null,
+  chapterSlug: string,
+  currentSlug: string,
+  direction: ChapterReportDirection
+): GlossaryEntry[] {
+  const content = approach2PageContent(prototype, chapterSlug, currentSlug, direction);
   if (!content) return [];
   const text: string[] = [];
   collectText(content, text);

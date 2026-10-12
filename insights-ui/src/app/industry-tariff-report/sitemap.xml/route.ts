@@ -2,7 +2,7 @@ import { prisma } from '@/prisma';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { getCanonicalUrl } from '@/utils/getBaseUrlForServerSidePages';
 import { hasChapterExports } from '@/utils/tariff-reports/chapter-exports';
-import { getChapterPrototype } from '@/utils/tariff-reports/chapter-prototype';
+import { getStoredChapterPrototype } from '@/utils/tariff-reports/chapter-prototype';
 import { CHAPTER_EXPORT_SECTIONS } from '@/utils/tariff-reports/chapter-route-helpers';
 import { delayedSitemapLastmod } from '@/utils/sitemap-lastmod-utils';
 import { Prisma } from '@prisma/client';
@@ -43,7 +43,7 @@ async function generateTariffReportUrls(): Promise<SiteMapUrl[]> {
     // Approach-2 chapters (issue #1770) render from a content file, not the DB row, so the row's
     // updatedAt goes stale. Their file's lastCheckedAt is safe to advertise as-is: shipping a
     // content file is a deploy, and each migration flushes the chapter's CloudFront paths.
-    const prototype = getChapterPrototype(row.slug);
+    const prototype = await getStoredChapterPrototype(row.slug);
     const dbLastmod = delayedSitemapLastmod(row.updatedAt, row.createdAt);
     const fileLastmod = prototype?.tariffUpdates?.lastCheckedAt;
     const lastmod = fileLastmod && (!dbLastmod || fileLastmod > dbLastmod) ? fileLastmod : dbLastmod;
