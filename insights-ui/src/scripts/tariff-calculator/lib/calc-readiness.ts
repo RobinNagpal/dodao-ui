@@ -7,12 +7,14 @@
 //      (in effect / ended / suspended / upcoming / unknown) from the official schedule and the reviewed facts below;
 //   2. which HTS lines each heading covers (note-coverage.json + program-coverage.json + the heading's own text);
 //   3. whether measures.json has a measure for that heading covering each line ("modelled").
-// A chapter is READY when no in-effect (or unknown) program reaches one of its lines unmodelled.
+// A chapter is READY when no in-effect (or unknown) program reaches one of its lines unmodelled, and the engine can
+// read every base rate of its lines (general, column 2, and each claimable special rate — lib/rate-parse.ts).
 
 import { existsSync, readFileSync } from 'node:fs';
 import path from 'node:path';
 import type { Ch99HeadingRecord, Ch99HeadingsFile, TariffMeasureRecord, TariffMeasuresFile } from '@/types/tariff-calculator-measures';
 import { INSIGHTS_UI_ROOT } from './hts-source';
+import { chapterRateGaps, describeRateGap, loadRateStrings, type RateColumn, type RateParseGap, type RateStringsFile } from './rate-parse';
 
 export const CALC_DATA_DIR = path.join(INSIGHTS_UI_ROOT, 'src', 'tariff-data', 'calculator');
 export const PROGRAM_COVERAGE_FILE = path.join(CALC_DATA_DIR, 'program-coverage.json');
@@ -694,14 +696,20 @@ export interface AcceptedGap {
    * "condition": the headings are modelled, but a condition the line-level check can't see is not (e.g. a duty that also
    * reaches other origins through where the metal was smelted). Never turns an unmodelled line into an accepted one;
    * recorded so the known limitation is listed with the chapters it touches and re-reviewed by `reviewBy`.
+   * "rates": base-rate strings the engine can't price (lib/rate-parse.ts) matching `ratePattern` in `rateColumns` of
+   * `chapters` report ACCEPTED instead of blocking the chapter (`ch99Codes` / `linePrefixes` are empty).
    */
-  kind: 'lines' | 'condition';
+  kind: 'lines' | 'condition' | 'rates';
   /** Chapter 99 headings the waiver applies to. */
   ch99Codes: string[];
   /** HTS digit prefixes of the waived lines; empty = every line the headings reach. */
   linePrefixes: string[];
   /** Chapters ("30") the waiver is limited to; empty = any. */
   chapters: string[];
+  /** "rates" waivers: regex (case-insensitive) the whole unparseable rate text must match. */
+  ratePattern?: string;
+  /** "rates" waivers: the rate columns it covers; empty or absent = all. */
+  rateColumns?: RateColumn[];
   /** What the measures engine doesn't model, in plain words. */
   conditionNotModelled: string;
   reason: string;
@@ -730,6 +738,10 @@ export interface ChapterReadiness {
   modelled: ProgramGap[];
   /** Ids of unexpired "condition" waivers whose headings reach the chapter. */
   acceptedConditions: string[];
+  /** Base-rate strings of the chapter's lines the engine can't price (lib/rate-parse.ts); any one blocks the chapter. */
+  rateGaps: RateParseGap[];
+  /** Unpriceable rate strings accepted by an unexpired "rates" waiver (they don't block). */
+  acceptedRateGaps: RateParseGap[];
 }
 
 export interface ProgramSummary {
@@ -779,6 +791,19 @@ export interface ReadinessInputs {
   noteCoverage?: NoteCoverageFileLike;
   programCoverage?: ProgramCoverageFile;
   acceptedGaps?: AcceptedGapsFile;
+  rateStrings?: RateStringsFile;
+}
+
+/** The unexpired "rates" waiver that accepts an unpriceable rate string of a chapter, if any. */
+export function rateWaiverFor(waivers: AcceptedGap[], chapter: string, gap: RateParseGap): AcceptedGap | undefined {
+  return waivers.find(
+    (w) =>
+      w.kind === 'rates' &&
+      !!w.ratePattern &&
+      (w.chapters.length === 0 || w.chapters.includes(chapter)) &&
+      (!w.rateColumns || w.rateColumns.length === 0 || w.rateColumns.includes(gap.column)) &&
+      new RegExp(`^(?:${w.ratePattern})$`, 'i').test(gap.rateText)
+  );
 }
 
 const STATE_RANK: Record<ProgramGap['state'], number> = { unknown: 0, inEffect: 1, upcoming: 2 };
@@ -788,6 +813,7 @@ export function computeCalcReadiness(asOf: string, inputs: ReadinessInputs = {})
   const measuresFile = inputs.measures ?? readJson<TariffMeasuresFile>(path.join(CALC_DATA_DIR, 'measures.json'));
   const noteCoverage = inputs.noteCoverage ?? readJson<NoteCoverageFileLike>(path.join(CALC_DATA_DIR, 'note-coverage.json'));
   const programCoverage = inputs.programCoverage ?? readJson<ProgramCoverageFile>(PROGRAM_COVERAGE_FILE);
+  const rateStrings = inputs.rateStrings ?? loadRateStrings();
 
   const notes = new Map<string, string[]>();
   for (const src of [noteCoverage.notes, programCoverage.notes]) {
@@ -798,6 +824,7 @@ export function computeCalcReadiness(asOf: string, inputs: ReadinessInputs = {})
   const waivers = waiverFile.acceptedGaps.filter((w) => w.reviewBy >= asOf);
   const lineWaivers = waivers.filter((w) => w.kind === 'lines');
   const conditionWaivers = waivers.filter((w) => w.kind === 'condition');
+  const rateWaivers = waivers.filter((w) => w.kind === 'rates');
   const expiredWaivers = waiverFile.acceptedGaps.filter((w) => w.reviewBy < asOf).map((w) => `${w.id} (review was due ${w.reviewBy})`);
   const usedWaivers = new Set<string>();
   const waiverFor = (code: string, chapter: string, line: string): AcceptedGap | undefined =>
@@ -931,15 +958,26 @@ export function computeCalcReadiness(asOf: string, inputs: ReadinessInputs = {})
     for (const g of gaps) blocks.set(g.programId, [...(blocks.get(g.programId) ?? []), chapter]);
     for (const g of upcoming) upcomingIn.set(g.programId, [...(upcomingIn.get(g.programId) ?? []), chapter]);
     accepted.sort((x, y) => x.program.localeCompare(y.program));
+    const rateGaps: RateParseGap[] = [];
+    const acceptedRateGaps: RateParseGap[] = [];
+    for (const g of chapterRateGaps(rateStrings.chapters[chapter])) {
+      const w = rateWaiverFor(rateWaivers, chapter, g);
+      if (w) {
+        usedWaivers.add(w.id);
+        acceptedRateGaps.push({ ...g, acceptedBy: w.id });
+      } else rateGaps.push(g);
+    }
     chapters.push({
       chapter,
       lines: lines.length,
-      status: gaps.length === 0 ? 'READY' : 'NOT READY',
+      status: gaps.length === 0 && rateGaps.length === 0 ? 'READY' : 'NOT READY',
       gaps,
       upcoming,
       accepted,
       modelled,
       acceptedConditions: Array.from(conditions).sort(),
+      rateGaps,
+      acceptedRateGaps,
     });
   }
 
@@ -1016,7 +1054,8 @@ export function enabledChapterProblems(report: CalcReadinessReport, sources: Ena
     for (const n of s.chapters) {
       const c = byChapter.get(chapterKey(n));
       if (!c) problems.push(`${s.source} lists chapter ${n}, which has no HTS lines in program-coverage.json`);
-      else if (c.status !== 'READY') problems.push(`${s.source} lists chapter ${n}, which is NOT READY: ${c.gaps.map(describeGap).join('; ')}`);
+      else if (c.status !== 'READY')
+        problems.push(`${s.source} lists chapter ${n}, which is NOT READY: ${[...c.gaps.map(describeGap), ...c.rateGaps.map(describeRateGap)].join('; ')}`);
     }
   }
   return problems;
@@ -1028,4 +1067,21 @@ export function describeGap(g: ProgramGap): string {
   const state = g.state === 'unknown' ? ', status unknown' : g.state === 'upcoming' ? `, starts ${g.startsOn}` : '';
   const waived = g.linesAccepted ? `, ${g.linesAccepted} accepted (${(g.acceptedBy ?? []).join(', ')})` : '';
   return `${g.program} [${heads}] ${g.linesAffected} line(s), ${modelled}${state}${waived}`;
+}
+
+/** JSON laid out the way prettier (printWidth 160) leaves it: objects expanded, primitive arrays on one line when they fit. */
+export function formatJson(value: unknown, indent = '', prefixLength = 0): string {
+  if (value === null || typeof value !== 'object') return JSON.stringify(value);
+  const inner = `${indent}  `;
+  if (Array.isArray(value)) {
+    if (value.length === 0) return '[]';
+    if (value.every((v) => v === null || typeof v !== 'object')) {
+      const one = `[${value.map((v) => JSON.stringify(v)).join(', ')}]`;
+      if (indent.length + prefixLength + one.length + 1 <= 160) return one;
+    }
+    return `[\n${value.map((v) => `${inner}${formatJson(v, inner)}`).join(',\n')}\n${indent}]`;
+  }
+  const entries = Object.entries(value as Record<string, unknown>).filter(([, v]) => v !== undefined);
+  if (entries.length === 0) return '{}';
+  return `{\n${entries.map(([k, v]) => `${inner}${JSON.stringify(k)}: ${formatJson(v, inner, JSON.stringify(k).length + 2)}`).join(',\n')}\n${indent}}`;
 }

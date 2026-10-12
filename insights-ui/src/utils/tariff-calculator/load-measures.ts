@@ -60,6 +60,16 @@ export async function loadMeasureEngineLine(hts10: string): Promise<MeasureEngin
     row = await prisma.htsCode.findUnique({ where: { id: row.parentId }, select });
     if (row && units.length === 0) units = row.unitOfQuantity;
   }
+  // Some HTS lines skip an indent level (e.g. 2620.99.75.x), so the parent chain never reaches the row that states
+  // the rate. Fall back to the 8-digit subheading, which is where HTSUS states it.
+  if (!row || !nonEmpty(row.generalRateOfDuty)) {
+    const subheading = `${hts10.slice(0, 4)}.${hts10.slice(4, 6)}.${hts10.slice(6, 8)}`;
+    const eight = await prisma.htsCode.findUnique({ where: { spaceId_htsNumber: { spaceId: KoalaGainsSpaceId, htsNumber: subheading } }, select });
+    if (eight && nonEmpty(eight.generalRateOfDuty)) {
+      row = eight;
+      if (units.length === 0) units = eight.unitOfQuantity;
+    }
+  }
   const general = row?.generalRateOfDuty;
   const special = row?.specialRateOfDuty;
   const column2 = row?.column2RateOfDuty;

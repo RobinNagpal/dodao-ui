@@ -31,6 +31,7 @@
 import { TariffApplicabilityConditionKind, TariffCandidateCodeType, TariffCountryScopeType, TariffRelatedCodeKind } from '@prisma/client';
 import { CandidateCodeListItem } from '@/app/api/tariff-calculator/candidate-codes/[hts10]/route';
 import type { TariffImportProhibition, TariffMeasureSource, TariffProductType } from '@/types/tariff-calculator-measures';
+import { describeUom, qualifiedKey, splitUnitText } from '@/utils/tariff-calculator/rate-units';
 
 export const TRANSPORT_MODES = ['OCEAN', 'AIR', 'RAIL', 'TRUCK'] as const;
 export type TransportMode = (typeof TRANSPORT_MODES)[number];
@@ -175,28 +176,8 @@ export class QuantityRequiredError extends Error {
   }
 }
 
-const UOM_LABELS: Record<string, string> = {
-  KG: 'kilograms',
-  CKG: 'clean kilograms',
-  G: 'grams',
-  T: 'metric tons',
-  L: 'liters',
-  'PF.L': 'proof liters',
-  NO: 'number of units / head',
-  DOZ: 'dozens',
-  DPR: 'dozen pairs',
-  PRS: 'pairs',
-  GROSS: 'gross',
-  M: 'meters',
-  M2: 'square meters',
-  M3: 'cubic meters',
-  THS: 'thousands',
-};
-
-export function describeUom(uom: string): string {
-  const label = UOM_LABELS[uom];
-  return label ? `${uom} (${label})` : uom;
-}
+// Unit labels live in rate-units.ts (shared with the measures engine and the rate parser).
+export { describeUom };
 
 function withinDateWindow(c: CandidateCodeListItem, entryDate: Date): boolean {
   return entryDate.getTime() >= new Date(c.effectiveFrom).getTime() && entryDate.getTime() <= new Date(c.effectiveTo).getTime();
@@ -298,14 +279,24 @@ const RATE_UNIT_PATTERNS: { pattern: RegExp; uoms: string[] }[] = [
   { pattern: /\/\s*(?:t|ton|tonne)\b/i, uoms: ['T'] },
   { pattern: /\/\s*(?:g|gram)\b/i, uoms: ['G'] },
   { pattern: /\/\s*(?:1,?000|thousand)\b/i, uoms: ['THS'] },
+  { pattern: /\/\s*bbl\b/i, uoms: ['BBL'] },
   { pattern: /\/\s*(?:head|no\.?|unit|item|piece|pc)(?=\W|$)|\beach\b/i, uoms: ['NO'] },
 ];
+
+// A rate charged on a qualified quantity ("12.8¢/kg on molybdenum content", "5¢/kg on contents and
+// container") gets the qualified key ("KG:molybdenum content", "KG:gross weight", see rate-units.ts),
+// so the importer is asked for that quantity, not the plain weight. Only when the rate has a single
+// per-unit part — the one the unit was read from.
+function rateQualifier(text: string): string | null {
+  const parts = Array.from(text.matchAll(/\/\s*([^+/]+?)\s*(?=\+|$)/g));
+  return parts.length === 1 ? splitUnitText(parts[0][1]).qualifier : null;
+}
 
 export function rateUnitOfMeasure(c: Pick<CandidateCodeListItem, 'rateDescription' | 'unitsOfMeasure'>): string | undefined {
   const text = c.rateDescription ?? '';
   for (const { pattern, uoms } of RATE_UNIT_PATTERNS) {
     if (!pattern.test(text)) continue;
-    return uoms.find((u) => c.unitsOfMeasure.includes(u)) ?? uoms[0];
+    return qualifiedKey(uoms.find((u) => c.unitsOfMeasure.includes(u)) ?? uoms[0], rateQualifier(text));
   }
   return c.unitsOfMeasure[0];
 }

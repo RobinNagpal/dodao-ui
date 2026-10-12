@@ -60,6 +60,7 @@ import type {
 } from '@/types/tariff-calculator-measures';
 import { loadConfirmationFacts } from '@/utils/tariff-calculator/confirmation-facts';
 import { loadImportBans } from '@/utils/tariff-calculator/import-bans';
+import { describeUom, KNOWN_UOMS, qualifiedKey, splitQualifiedKey, splitUnitText } from '@/utils/tariff-calculator/rate-units';
 import { parseRate, type ParsedRate } from '@/utils/tariff-reports/shipment-duty';
 
 // ---------------------------------------------------------------------------
@@ -84,13 +85,45 @@ const UOM_ALIASES: { pattern: RegExp; uom: string }[] = [
   { pattern: /^(m3|m³|cubic\s?met(er|re)s?)$/, uom: 'M3' },
   { pattern: /^(m|met(er|re)s?)$/, uom: 'M' },
   { pattern: /^(ths|thousands?|1,?000)$/, uom: 'THS' },
+  { pattern: /^(bbl|barrels?)$/, uom: 'BBL' },
 ];
 
-/** Normalizes a unit spelling ("No.", "kg", "liters", "doz.", "PFL", "count") to the calculator's unit code ("NO", "KG", "L", "DOZ", "PF.L"). Unknown units are upper-cased. */
-export function normalizeUom(raw: string): string {
+const METAL_CONTENT: Record<string, string> = {
+  mo: 'molybdenum',
+  w: 'tungsten',
+  cu: 'copper',
+  pb: 'lead',
+  zn: 'zinc',
+  mg: 'magnesium',
+  mn: 'manganese',
+  si: 'silicon',
+};
+
+function normalizePlainUom(raw: string): string {
   const lower = raw.trim().toLowerCase().replace(/\s+/g, ' ');
   const alias = UOM_ALIASES.find((a) => a.pattern.test(lower));
   return alias ? alias.uom : raw.trim().toUpperCase();
+}
+
+/**
+ * Normalizes a unit spelling ("No.", "kg", "liters", "doz.", "PFL", "count") to the calculator's unit code ("NO", "KG",
+ * "L", "DOZ", "PF.L"). A qualified quantity keeps its qualifier (rate-units.ts): "kg:copper content", "KG:copper content"
+ * and the rate text's own "kg on copper content" all give "KG:copper content"; "kg on contents and container" gives
+ * "KG:gross weight". Unknown units are upper-cased.
+ */
+export function normalizeUom(raw: string): string {
+  // HTS reporting units for metal content ("Mo kg", "W kg", "Cu kg") are the qualified quantity the rate charges on.
+  const metal = /^(mo|w|cu|pb|zn|mg|mn|si)\s?kg$/i.exec(raw.trim());
+  if (metal) return qualifiedKey('KG', `${METAL_CONTENT[metal[1].toLowerCase()]} content`);
+  const keyed = splitQualifiedKey(raw.trim());
+  if (keyed.qualifier) return qualifiedKey(normalizePlainUom(keyed.base), keyed.qualifier.toLowerCase().replace(/\s+/g, ' '));
+  const plain = normalizePlainUom(raw);
+  if (plain !== raw.trim().toUpperCase()) return plain;
+  const { base, qualifier } = splitUnitText(raw);
+  if (!qualifier) return normalizePlainUom(base);
+  const baseUom = normalizePlainUom(base);
+  // Only a known base takes a qualifier; anything else stays as written (upper-cased), as before.
+  return KNOWN_UOMS.includes(baseUom) ? qualifiedKey(baseUom, qualifier) : plain;
 }
 
 function normalizeQuantities(quantities: Record<string, number>): Record<string, number> {
@@ -683,7 +716,10 @@ export function calculateWithMeasuresAndFacts(
   if (!basePriced.ok) basePriced.missingUoms.forEach((u) => missingUoms.add(u));
   if (missingUoms.size > 0) {
     const uoms = Array.from(missingUoms);
-    return fail(`Quantity required: the base rate "${baseText}" is charged per unit. Enter the shipment quantity in ${uoms.join(' and ')}.`, skipped);
+    return fail(
+      `Quantity required: the base rate "${baseText}" is charged per unit. Enter the shipment quantity in ${uoms.map(describeUom).join(' and ')}.`,
+      skipped
+    );
   }
   const baseAmount = basePriced.ok ? basePriced.amount : 0;
 

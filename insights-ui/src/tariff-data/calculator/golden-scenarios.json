@@ -3753,6 +3753,1840 @@
       "expectedTotalDutyUsd": 5250,
       "toleranceUsd": 0.01,
       "sourceNote": "Column 1 10% is under 12.5%, so the 2026 Section 301 duty on Japan brings the total to 12.5% ($1,250). Heading 9903.41.10 (footwear with rubber/plastics or leather outer soles and leather uppers, product of Japan, not an excepted slipper or sports type): +40% ($4,000). Total $5,250."
+    },
+    {
+      "id": "ch04-wpc-cn",
+      "description": "Whey protein concentrate from China, $20,000, 4,000 kg (List 3)",
+      "chapter": "04",
+      "input": {
+        "hts10": "0404100500",
+        "countryOfOrigin": "CN",
+        "customsValueUsd": 20000,
+        "quantities": {
+          "KG": 4000
+        },
+        "entryDate": "2026-10-11"
+      },
+      "line": {
+        "hts10": "0404100500",
+        "general": "8.5%",
+        "special": "Free (A,AU,BH,CL,CO,D,E,IL,JO,KR,MA,OM,P,PA,PE,S,SG)",
+        "units": ["kg", "kg cmsc"]
+      },
+      "expectedTotalDutyUsd": 9200,
+      "toleranceUsd": 0.01,
+      "sourceNote": "HTS 0404.10.05.00 general 8.5% = $1,700. China: 0404.10.05 is on List 3 (note 20(f), heading 9903.88.03, base + 25%) = $5,000; no 20(vvv)/(www) exclusion covers it. Not on note 52(b)/(c)/(e), so 9903.05.31 China + 12.5% (note 52(a): additive to the column 1 rate and to any other subchapter III duty, incl. the Section 301 China duty) = $2,500. 8.5% + 25% + 12.5% = 46% x $20,000 = $9,200."
+    },
+    {
+      "id": "ch04-fresh-cheese-ca-no-claim",
+      "description": "Fresh cheese nesoi (0406.10.95) from Canada, $30,000, 5,000 kg, no USMCA claim (Section 338 + 2026 Section 301)",
+      "chapter": "04",
+      "input": {
+        "hts10": "0406109500",
+        "countryOfOrigin": "CA",
+        "customsValueUsd": 30000,
+        "quantities": {
+          "KG": 5000
+        },
+        "entryDate": "2026-10-11"
+      },
+      "line": {
+        "hts10": "0406109500",
+        "general": "8.5%",
+        "special": "Free (A+,AU,BH,CL,CO,D,E,IL,JO,KR,MA,OM,P,PA,PE,S,SG)",
+        "units": ["kg"]
+      },
+      "expectedTotalDutyUsd": 20550,
+      "toleranceUsd": 0.01,
+      "sourceNote": "HTS 0406.10.95.00 general 8.5% = $2,550. Canada note 51(b)(1) lists 0406.10.95 (added by Proclamation 11064 Annex II, from 2026-09-15; present in Rev 21) -> 9903.03.12 base + 50% = $15,000; note 51(a): also subject to any other subchapter III duty. 9903.05.29 Canada base + 10% = $3,000 (note 52(g) relief needs USMCA duty-free entry, not claimed; not on 52(b)). Not on the Proclamation 11062 dairy import-ban list (that covers 0404.10 whey, 1702/1703, 2202.91 only). Total 68.5% = $20,550."
+    },
+    {
+      "id": "ch04-milk-powder-ca-usmca",
+      "description": "Whole milk powder, in-quota (0402.21.05, add. US note 7) from Canada, $10,000, 4,000 kg, USMCA (S) claimed",
+      "chapter": "04",
+      "input": {
+        "hts10": "0402210500",
+        "countryOfOrigin": "CA",
+        "customsValueUsd": 10000,
+        "quantities": {
+          "KG": 4000
+        },
+        "entryDate": "2026-10-11",
+        "claimedSpi": "S"
+      },
+      "line": {
+        "hts10": "0402210500",
+        "general": "3.3¢/kg",
+        "special": "Free (A+,BH,CL,CO,D,E,IL,JO,KR,MA,OM,P,PA,PE,S,SG)",
+        "units": ["kg", "kg cmsc"]
+      },
+      "expectedTotalDutyUsd": 5000,
+      "toleranceUsd": 0.01,
+      "sourceNote": "HTS 0402.21.05.00 general 3.3¢/kg; special 'Free (...S...)' -> USMCA base Free. 9903.05.29 does not apply: note 52(g) / 9903.05.93 (Canada goods entered free under USMCA). Section 338 still applies: 0402.21.05 is on note 51(b)(2) (9903.03.13, + 50%), and note 51(a) says goods eligible for special tariff treatment under GN 3(c)(i) remain subject to it; no 51(c)/(d) relief. 0402.21 is not on the 2026-09-29 Canadian dairy import-ban list (import-bans.json: 0404.10.xx only in ch04). Total 50% x $10,000 = $5,000."
+    },
+    {
+      "id": "ch04-eggs-cn",
+      "description": "Fresh table eggs in shell from China, $30,000, 20,000 dozen (List 3, per-dozen base)",
+      "chapter": "04",
+      "input": {
+        "hts10": "0407210030",
+        "countryOfOrigin": "CN",
+        "customsValueUsd": 30000,
+        "quantities": {
+          "DOZ": 20000
+        },
+        "entryDate": "2026-10-11"
+      },
+      "line": {
+        "hts10": "0407210030",
+        "general": "2.8¢/doz.",
+        "special": "Free (A,AU,BH,CL,CO,D,E,IL,JO,KR,MA,OM,P,PA,PE,S,SG)",
+        "units": ["doz."]
+      },
+      "expectedTotalDutyUsd": 11810,
+      "toleranceUsd": 0.01,
+      "sourceNote": "HTS 0407.21.00 general 2.8¢/doz.: 20,000 doz x $0.028 = $560. China: List 3 (note 20(f), 9903.88.03, + 25%) = $7,500. 0407 is not on 52(b), so 9903.05.31 China + 12.5% (note 52(a): additive to the column 1 rate and to any other subchapter III duty, incl. the Section 301 China duty) = $3,750. Total $11,810."
+    },
+    {
+      "id": "ch05-feather-meal-cn",
+      "description": "Feather meal from China, $10,000, 8,000 kg (List 3)",
+      "chapter": "05",
+      "input": {
+        "hts10": "0505902020",
+        "countryOfOrigin": "CN",
+        "customsValueUsd": 10000,
+        "quantities": {
+          "KG": 8000
+        },
+        "entryDate": "2026-10-11"
+      },
+      "line": {
+        "hts10": "0505902020",
+        "general": "2.3%",
+        "special": "Free (A,AU,BH,CL,CO,D,E,IL,JO,KR,MA,OM,P,PA,PE,S,SG)",
+        "units": ["kg"]
+      },
+      "expectedTotalDutyUsd": 3980,
+      "toleranceUsd": 0.01,
+      "sourceNote": "HTS 0505.90.20 general 2.3% = $230. China: List 3 (note 20(f), 9903.88.03, base + 25%) = $2,500. Not on 52(b), so 9903.05.31 China + 12.5% (note 52(a): additive to the column 1 rate and to any other subchapter III duty, incl. the Section 301 China duty) = $1,250. Total 39.8% = $3,980."
+    },
+    {
+      "id": "ch05-feathers-cn-excluded",
+      "description": "Feathers (0505.10.00.50) from China, $40,000, 2,000 kg — List 4A product exclusion in effect",
+      "chapter": "05",
+      "input": {
+        "hts10": "0505100050",
+        "countryOfOrigin": "CN",
+        "customsValueUsd": 40000,
+        "quantities": {
+          "KG": 2000
+        },
+        "entryDate": "2026-10-11"
+      },
+      "line": {
+        "hts10": "0505100050",
+        "general": "Free",
+        "special": null,
+        "units": ["kg"]
+      },
+      "expectedTotalDutyUsd": 5000,
+      "toleranceUsd": 0.01,
+      "sourceNote": "HTS 0505.10.00 general Free. On List 4A (note 20(s)(i), 9903.88.15, +7.5%), but note 20(vvv)(iv)(1) excludes the whole statistical number 0505.10.0050 via 9903.88.69 (entries 2024-06-15 through 2026-11-09; 9903.88.15 lists 9903.88.69 in its exceptions) -> no 7.5%. The exclusion lifts only 9903.88.15; 9903.05.31 excepts only 9903.05.85-.92, and 0505.10 is not on 52(b) -> 12.5% x $40,000 = $5,000."
+    },
+    {
+      "id": "ch05-pig-bristles-cn-list4b",
+      "description": "Pig bristles (0502.10.00) from China, $15,000, 3,000 kg — specific base, List 4B suspended",
+      "chapter": "05",
+      "input": {
+        "hts10": "0502100000",
+        "countryOfOrigin": "CN",
+        "customsValueUsd": 15000,
+        "quantities": {
+          "KG": 3000
+        },
+        "entryDate": "2026-10-11"
+      },
+      "line": {
+        "hts10": "0502100000",
+        "general": "0.8¢/kg",
+        "special": "Free (A*,AU,BH,CL,CO,D,E,IL,JO,KR,MA,OM,P,PA,PE,S,SG)",
+        "units": ["kg"]
+      },
+      "expectedTotalDutyUsd": 1899,
+      "toleranceUsd": 0.01,
+      "sourceNote": "HTS 0502.10.00.00 general 0.8¢/kg: 3,000 kg x $0.008 = $24. 0502.10.00 is only on note 20(u) (List 4B, 9903.88.16), which is suspended (Rev 21 compiler's note) -> no China 301 list duty. Not on 52(b), so 9903.05.31 China + 12.5% (note 52(a): additive to the column 1 rate and to any other subchapter III duty, incl. the Section 301 China duty) = $1,875. Total $1,899."
+    },
+    {
+      "id": "ch05-sponges-ca-no-claim",
+      "description": "Natural sponges of animal origin from Canada, $10,000, 500 kg, no USMCA claim",
+      "chapter": "05",
+      "input": {
+        "hts10": "0511993600",
+        "countryOfOrigin": "CA",
+        "customsValueUsd": 10000,
+        "quantities": {
+          "KG": 500
+        },
+        "entryDate": "2026-10-11"
+      },
+      "line": {
+        "hts10": "0511993600",
+        "general": "3%",
+        "special": "Free (A+,AU,BH,CL,CO,D,E, IL,JO,KR,MA,OM,P,PA, PE,S,SG)",
+        "units": ["kg"]
+      },
+      "expectedTotalDutyUsd": 6300,
+      "toleranceUsd": 0.01,
+      "sourceNote": "HTS 0511.99.36.00 general 3% = $300. 0511.99.36 is on note 51(b)(3) -> 9903.03.14 base + 50% = $5,000 (note 51(a): plus any other subchapter III duty). 9903.05.29 Canada + 10% = $1,000 (no USMCA claim, so no 52(g) relief; not on 52(b)). Not on any import-ban list. Total 63% = $6,300."
+    },
+    {
+      "id": "ch06-gerbera-cn",
+      "description": "Fresh cut gerberas from China, $10,000, 20,000 stems (List 4A)",
+      "chapter": "06",
+      "input": {
+        "hts10": "0603190118",
+        "countryOfOrigin": "CN",
+        "customsValueUsd": 10000,
+        "quantities": {
+          "NO": 20000
+        },
+        "entryDate": "2026-10-11"
+      },
+      "line": {
+        "hts10": "0603190118",
+        "general": "6.4%",
+        "special": "Free (A*,AU,BH,CL,CO,D,E,IL,JO,KR,MA,OM,P,PA,PE,S,SG) 3.2% (JP)",
+        "units": ["No."]
+      },
+      "expectedTotalDutyUsd": 2640,
+      "toleranceUsd": 0.01,
+      "sourceNote": "HTS 0603.19.01 general 6.4% = $640. China: List 4A (note 20(s)(i), 9903.88.15, base + 7.5%) = $750. Not on 52(b) (only 0602.10.00 in ch06), so 9903.05.31 China + 12.5% (note 52(a): additive to the column 1 rate and to any other subchapter III duty, incl. the Section 301 China duty) = $1,250. Total 26.4% = $2,640."
+    },
+    {
+      "id": "ch06-tulip-bulbs-ca-no-claim",
+      "description": "Dormant tulip bulbs from Canada, $20,000, 500,000 bulbs, no USMCA claim — per-1,000 specific base + Section 338",
+      "chapter": "06",
+      "input": {
+        "hts10": "0601101500",
+        "countryOfOrigin": "CA",
+        "customsValueUsd": 20000,
+        "quantities": {
+          "NO": 500000
+        },
+        "entryDate": "2026-10-11"
+      },
+      "line": {
+        "hts10": "0601101500",
+        "general": "89.6¢/1000",
+        "special": "Free (A*,AU,BH,CL,CO,D,E,IL,JO,KR,MA,OM,P,PA,PE,S,SG)",
+        "units": ["No."]
+      },
+      "expectedTotalDutyUsd": 12448,
+      "toleranceUsd": 0.01,
+      "sourceNote": "HTS 0601.10.15.00 general 89.6¢/1000: 500 thousand x $0.896 = $448. 0601.10.15 is on note 51(b)(3) -> 9903.03.14 + 50% = $10,000. 9903.05.29 Canada + 10% = $2,000 (no USMCA claim; not on 52(b)). Total $12,448."
+    },
+    {
+      "id": "ch06-tulip-bulbs-nl",
+      "description": "Dormant tulip bulbs from the Netherlands (EU), $15,000, 400,000 bulbs — per-1,000 specific base under the EU 10% floor",
+      "chapter": "06",
+      "input": {
+        "hts10": "0601101500",
+        "countryOfOrigin": "NL",
+        "customsValueUsd": 15000,
+        "quantities": {
+          "NO": 400000
+        },
+        "entryDate": "2026-10-11"
+      },
+      "line": {
+        "hts10": "0601101500",
+        "general": "89.6¢/1000",
+        "special": "Free (A*,AU,BH,CL,CO,D,E,IL,JO,KR,MA,OM,P,PA,PE,S,SG)",
+        "units": ["No."]
+      },
+      "expectedTotalDutyUsd": 1500,
+      "toleranceUsd": 0.01,
+      "sourceNote": "HTS 0601.10.15.00 general 89.6¢/1000: 400 x $0.896 = $358.40 -> AVE 2.39% (note 52(k): column 1 duty / customs value). Below 10%, so 9903.05.39: column 1 + additional = 10% of value = $1,500 (in place of the base). 0601.10.15 is not on 52(b) or the EU list 52(j)(2). Total $1,500."
+    },
+    {
+      "id": "ch12-soybean-seed-cn-52b",
+      "description": "Soybeans for sowing (1201.10.00) from China, $100,000, 150,000 kg (List 3 + note 52(b))",
+      "chapter": "12",
+      "input": {
+        "hts10": "1201100000",
+        "countryOfOrigin": "CN",
+        "customsValueUsd": 100000,
+        "quantities": {
+          "KG": 150000
+        },
+        "entryDate": "2026-10-11"
+      },
+      "line": {
+        "hts10": "1201100000",
+        "general": "Free",
+        "special": null,
+        "units": ["kg"]
+      },
+      "expectedTotalDutyUsd": 25000,
+      "toleranceUsd": 0.01,
+      "sourceNote": "HTS 1201.10.00.00 general Free. China: List 3 (note 20(f), 9903.88.03, + 25%) = $25,000. 1201.10.00 is on note 52(b) (9903.05.86), which 9903.05.31 excepts -> no 12.5%. Total $25,000."
+    },
+    {
+      "id": "ch12-hop-pellets-ca-no-claim",
+      "description": "Hop cone pellets from Canada, $50,000, 5,000 kg, no USMCA claim — specific base + Section 338 (note 51(b)(2))",
+      "chapter": "12",
+      "input": {
+        "hts10": "1210200020",
+        "countryOfOrigin": "CA",
+        "customsValueUsd": 50000,
+        "quantities": {
+          "KG": 5000
+        },
+        "entryDate": "2026-10-11"
+      },
+      "line": {
+        "hts10": "1210200020",
+        "general": "13.2¢/kg",
+        "special": "Free (A,AU,BH,CL,CO,D,E,IL,JO,KR,MA,OM,P,PA,PE,S,SG)",
+        "units": ["kg"]
+      },
+      "expectedTotalDutyUsd": 30660,
+      "toleranceUsd": 0.01,
+      "sourceNote": "HTS 1210.20.00 general 13.2¢/kg: 5,000 x $0.132 = $660. 1210.20.00 is on note 51(b)(2) (9903.03.13, + 50%) = $25,000; note 51(c) relief is only for Section 232 goods. 9903.05.29 Canada + 10% = $5,000 (no USMCA claim; not on 52(b)). Total $30,660."
+    },
+    {
+      "id": "ch12-hop-cones-de",
+      "description": "Hop cones (not ground) from Germany (EU), $60,000, 5,000 kg — specific base under the EU 10% floor",
+      "chapter": "12",
+      "input": {
+        "hts10": "1210100000",
+        "countryOfOrigin": "DE",
+        "customsValueUsd": 60000,
+        "quantities": {
+          "KG": 5000
+        },
+        "entryDate": "2026-10-11"
+      },
+      "line": {
+        "hts10": "1210100000",
+        "general": "13.2¢/kg",
+        "special": "Free (A,AU,BH,CL,CO,D,E,IL,JO,KR,MA,OM,P,PA,PE,S,SG)",
+        "units": ["kg"]
+      },
+      "expectedTotalDutyUsd": 6000,
+      "toleranceUsd": 0.01,
+      "sourceNote": "HTS 1210.10.00.00 general 13.2¢/kg: 5,000 x $0.132 = $660 -> AVE 1.1% (note 52(k)). Below 10%, so 9903.05.39: total = 10% x $60,000 = $6,000. Not on 52(b) or 52(j)(2)."
+    },
+    {
+      "id": "ch12-sesame-sowing-in-52c",
+      "description": "Sesame seeds for sowing (1207.40.00.90) from India, $10,000, 5,000 kg, note 52(c)(4) description confirmed",
+      "chapter": "12",
+      "input": {
+        "hts10": "1207400090",
+        "countryOfOrigin": "IN",
+        "customsValueUsd": 10000,
+        "quantities": {
+          "KG": 5000
+        },
+        "entryDate": "2026-10-11",
+        "confirmations": {
+          "productDescriptionIds": ["52c-1207.40.00-1"]
+        }
+      },
+      "line": {
+        "hts10": "1207400090",
+        "general": "Free",
+        "special": null,
+        "units": ["kg"]
+      },
+      "expectedTotalDutyUsd": 0,
+      "toleranceUsd": 0.01,
+      "sourceNote": "HTS 1207.40.00 general Free. India 9903.05.44 (+10%) excepts 9903.05.87; the importer confirms the goods are 'sesame seeds, whether or not broken, for sowing' (note 52(c)(4)) -> no 10%. Total $0."
+    },
+    {
+      "id": "ch13-carrageenan-cn",
+      "description": "Carrageenan from China, $20,000, 2,000 kg (List 4A)",
+      "chapter": "13",
+      "input": {
+        "hts10": "1302390010",
+        "countryOfOrigin": "CN",
+        "customsValueUsd": 20000,
+        "quantities": {
+          "KG": 2000
+        },
+        "entryDate": "2026-10-11"
+      },
+      "line": {
+        "hts10": "1302390010",
+        "general": "3.2%",
+        "special": "Free (A+,AU,BH,CL,CO,D,E, IL,JO,KR,MA,OM,P,PA,PE,S, SG)",
+        "units": ["kg"]
+      },
+      "expectedTotalDutyUsd": 4640,
+      "toleranceUsd": 0.01,
+      "sourceNote": "HTS 1302.39.00 general 3.2% = $640. China: List 4A (note 20(s)(i), 9903.88.15, + 7.5%) = $1,500. Not on 52(b), so 9903.05.31 China + 12.5% (note 52(a): additive to the column 1 rate and to any other subchapter III duty, incl. the Section 301 China duty) = $2,500. Total 23.2% = $4,640."
+    },
+    {
+      "id": "ch13-ginseng-extract-ca-no-claim",
+      "description": "Ginseng extract from Canada, $10,000, 200 kg, no USMCA claim",
+      "chapter": "13",
+      "input": {
+        "hts10": "1302194120",
+        "countryOfOrigin": "CA",
+        "customsValueUsd": 10000,
+        "quantities": {
+          "KG": 200
+        },
+        "entryDate": "2026-10-11"
+      },
+      "line": {
+        "hts10": "1302194120",
+        "general": "1%",
+        "special": "Free (A,AU,BH,CL,CO,D,E,IL,JO,KR,MA,OM,P,PA,PE,S,SG)",
+        "units": ["kg"]
+      },
+      "expectedTotalDutyUsd": 6100,
+      "toleranceUsd": 0.01,
+      "sourceNote": "HTS 1302.19.41 general 1% = $100. 1302.19.41 is on note 51(b)(3) (9903.03.14, + 50%) = $5,000. 9903.05.29 Canada + 10% = $1,000 (no USMCA claim; not on 52(b)). Total 61% = $6,100."
+    },
+    {
+      "id": "ch13-hops-extract-jp",
+      "description": "Hops extract from Japan, $20,000, 1,000 kg — specific base under the Japan 12.5% floor",
+      "chapter": "13",
+      "input": {
+        "hts10": "1302130000",
+        "countryOfOrigin": "JP",
+        "customsValueUsd": 20000,
+        "quantities": {
+          "KG": 1000
+        },
+        "entryDate": "2026-10-11"
+      },
+      "line": {
+        "hts10": "1302130000",
+        "general": "89¢/kg",
+        "special": "Free (A+,AU,BH,CL,CO,D,E, IL,JO,KR,MA,OM,P,PA,PE,S, SG)",
+        "units": ["kg"]
+      },
+      "expectedTotalDutyUsd": 2500,
+      "toleranceUsd": 0.01,
+      "sourceNote": "HTS 1302.13.00.00 general 89¢/kg: 1,000 x $0.89 = $890 -> AVE 4.45% (note 52(k)). Below 12.5%, so 9903.05.49: column 1 + additional = 12.5% of value = $2,500. Japan has no 52(j) list; not on 52(b)."
+    },
+    {
+      "id": "ch14-willow-cn",
+      "description": "Willow (osier) for plaiting from China, $10,000, 5,000 kg (List 3)",
+      "chapter": "14",
+      "input": {
+        "hts10": "1401902000",
+        "countryOfOrigin": "CN",
+        "customsValueUsd": 10000,
+        "quantities": {
+          "KG": 5000
+        },
+        "entryDate": "2026-10-11"
+      },
+      "line": {
+        "hts10": "1401902000",
+        "general": "4.4%",
+        "special": "Free (A+,AU,BH,CL,CO,D,E, IL,JO,KR,MA,OM,P,PA,PE,S, SG)",
+        "units": ["kg"]
+      },
+      "expectedTotalDutyUsd": 4190,
+      "toleranceUsd": 0.01,
+      "sourceNote": "HTS 1401.90.20.00 general 4.4% = $440. China: List 3 (note 20(f), 9903.88.03, + 25%) = $2,500. Not on 52(b), so 9903.05.31 China + 12.5% (note 52(a): additive to the column 1 rate and to any other subchapter III duty, incl. the Section 301 China duty) = $1,250. Total 41.9% = $4,190."
+    },
+    {
+      "id": "ch14-veg-products-ca-no-claim",
+      "description": "Vegetable products nesoi (1404.90.40) from Canada, $8,000, 2,000 kg, no USMCA claim",
+      "chapter": "14",
+      "input": {
+        "hts10": "1404904000",
+        "countryOfOrigin": "CA",
+        "customsValueUsd": 8000,
+        "quantities": {
+          "KG": 2000
+        },
+        "entryDate": "2026-10-11"
+      },
+      "line": {
+        "hts10": "1404904000",
+        "general": "2.3%",
+        "special": "Free (A*,AU,BH,CL,CO,D,E,IL,JO,KR,MA,OM,P,PA,PE,S,SG)",
+        "units": ["kg"]
+      },
+      "expectedTotalDutyUsd": 4984,
+      "toleranceUsd": 0.01,
+      "sourceNote": "HTS 1404.90.40.00 general 2.3% = $184. 1404.90.40 is on note 51(b)(3) (9903.03.14, + 50%) = $4,000. 9903.05.29 Canada + 10% = $800 (no USMCA claim; not on 52(b)). Total 62.3% = $4,984."
+    },
+    {
+      "id": "ch14-broomcorn-mx-no-claim",
+      "description": "Broomcorn from Mexico, $10,000, 20 t, no USMCA claim — per-ton specific base",
+      "chapter": "14",
+      "input": {
+        "hts10": "1404902000",
+        "countryOfOrigin": "MX",
+        "customsValueUsd": 10000,
+        "quantities": {
+          "T": 20
+        },
+        "entryDate": "2026-10-11"
+      },
+      "line": {
+        "hts10": "1404902000",
+        "general": "$4.95/t",
+        "special": "Free (A+,AU,BH,CL,CO,D,E, IL,JO,KR,MA,OM,P,PA,PE,S, SG)",
+        "units": ["t"]
+      },
+      "expectedTotalDutyUsd": 1099,
+      "toleranceUsd": 0.01,
+      "sourceNote": "HTS 1404.90.20.00 general $4.95/t: 20 t x $4.95 = $99. Mexico 9903.05.55 base + 10% = $1,000 (note 52(h) relief needs USMCA duty-free entry, not claimed; not on 52(b)). Total $1,099."
+    },
+    {
+      "id": "ch15-menhaden-oil-cn",
+      "description": "Menhaden fish oil from China, $30,000, 10,000 kg — compound base + List 3",
+      "chapter": "15",
+      "input": {
+        "hts10": "1504206020",
+        "countryOfOrigin": "CN",
+        "customsValueUsd": 30000,
+        "quantities": {
+          "KG": 10000
+        },
+        "entryDate": "2026-10-11"
+      },
+      "line": {
+        "hts10": "1504206020",
+        "general": "1.5¢/kg + 5%",
+        "special": "Free (A,AU,BH,CL,CO,D,E,IL,JO,KR,MA,OM,P,PA,PE,S,SG)",
+        "units": ["kg"]
+      },
+      "expectedTotalDutyUsd": 12900,
+      "toleranceUsd": 0.01,
+      "sourceNote": "HTS 1504.20.60 general 1.5¢/kg + 5%: $150 + $1,500 = $1,650. China: List 3 (note 20(f), 9903.88.03, + 25%) = $7,500. Not on 52(b), so 9903.05.31 China + 12.5% (note 52(a): additive to the column 1 rate and to any other subchapter III duty, incl. the Section 301 China duty) = $3,750. Total $12,900."
+    },
+    {
+      "id": "ch15-fatty-oils-ca-no-claim",
+      "description": "Chemically modified animal/vegetable fats nesoi (1518.00.40) from Canada, $10,000, 5,000 kg, no USMCA claim",
+      "chapter": "15",
+      "input": {
+        "hts10": "1518004000",
+        "countryOfOrigin": "CA",
+        "customsValueUsd": 10000,
+        "quantities": {
+          "KG": 5000
+        },
+        "entryDate": "2026-10-11"
+      },
+      "line": {
+        "hts10": "1518004000",
+        "general": "8%",
+        "special": "Free (A,AU,BH,CL,CO,D,E,IL,JO,KR,MA,OM,P,PA,PE,S,SG)",
+        "units": ["kg"]
+      },
+      "expectedTotalDutyUsd": 6800,
+      "toleranceUsd": 0.01,
+      "sourceNote": "HTS 1518.00.40.00 general 8% = $800. 1518.00.40 is on note 51(b)(1) (9903.03.12, + 50%) = $5,000. 9903.05.29 Canada + 10% = $1,000 (no USMCA claim; not on 52(b)). Not on any import-ban list. Total 68% = $6,800."
+    },
+    {
+      "id": "ch15-evoo-it",
+      "description": "Extra virgin olive oil, bottled (<18 kg with container) from Italy (EU), $50,000, 8,000 kg gross — specific base under the EU 10% floor",
+      "chapter": "15",
+      "input": {
+        "hts10": "1509202090",
+        "countryOfOrigin": "IT",
+        "customsValueUsd": 50000,
+        "quantities": {
+          "KG:gross weight": 8000
+        },
+        "entryDate": "2026-10-11"
+      },
+      "line": {
+        "hts10": "1509202090",
+        "general": "5¢/kg on contents and container",
+        "special": "Free (A,AU,BH,CL,CO,D,E,IL,JO,KR,MA,OM,P,PA,PE,S,SG)",
+        "units": ["kg"]
+      },
+      "expectedTotalDutyUsd": 5000,
+      "toleranceUsd": 0.01,
+      "sourceNote": "HTS 1509.20.20 general 5¢/kg on contents and container: 8,000 kg x $0.05 = $400 -> AVE 0.8% (note 52(k)). Below 10%, so 9903.05.39: total = 10% x $50,000 = $5,000. Not on 52(b) or 52(j)(2). Quantity is the gross weight including the immediate container (key 'KG:gross weight')."
+    },
+    {
+      "id": "ch15-sunflower-oil-ru",
+      "description": "Refined sunflower-seed oil from Russia, $20,000, 15,000 kg — column 2 compound base + 2026 Section 301",
+      "chapter": "15",
+      "input": {
+        "hts10": "1512190035",
+        "countryOfOrigin": "RU",
+        "customsValueUsd": 20000,
+        "quantities": {
+          "KG": 15000
+        },
+        "entryDate": "2026-10-11"
+      },
+      "line": {
+        "hts10": "1512190035",
+        "general": "1.7¢/kg + 3.4%",
+        "special": "Free (A+,AU,BH,CL,CO,D,E, IL,JO,KR,MA,OM,P,PA,PE,S, SG)",
+        "units": ["kg"],
+        "column2": "9.9¢/kg + 20%"
+      },
+      "expectedTotalDutyUsd": 7985,
+      "toleranceUsd": 0.01,
+      "sourceNote": "Russia pays column 2 (general note 3(b)). HTS 1512.19.00 column 2 9.9¢/kg + 20%: 15,000 x $0.099 = $1,485 + $4,000 = $5,485. 1512.19 is not on note 30(b)/(d), so no 9903.90.08/.09. Russia 9903.05.66 'duty provided in the applicable subheading + 12.5%' = $2,500 (not on 52(b)). Total $7,985."
+    },
+    {
+      "id": "ch15-palm-oil-my-52j",
+      "description": "Crude palm oil from Malaysia, $100,000, 100,000 kg (note 52(j)(4)(i) exemption)",
+      "chapter": "15",
+      "input": {
+        "hts10": "1511100000",
+        "countryOfOrigin": "MY",
+        "customsValueUsd": 100000,
+        "quantities": {
+          "KG": 100000
+        },
+        "entryDate": "2026-10-11"
+      },
+      "line": {
+        "hts10": "1511100000",
+        "general": "Free",
+        "special": null,
+        "units": ["kg"]
+      },
+      "expectedTotalDutyUsd": 0,
+      "toleranceUsd": 0.01,
+      "sourceNote": "HTS 1511.10.00.00 general Free. Malaysia 9903.05.54 (+10%) excepts 9903.05.99; note 52(j)(4)(i) lists 1511.10.00 -> no 10%. Total $0."
+    },
+    {
+      "id": "g22b-ch17-confectionery-cn-list3",
+      "description": "Other sugar confectionery (1704.90.90.00, 10.4%) from China, 2,000 kg, $10,000",
+      "chapter": "17",
+      "input": {
+        "hts10": "1704909000",
+        "countryOfOrigin": "CN",
+        "customsValueUsd": 10000,
+        "quantities": {
+          "KG": 2000
+        },
+        "entryDate": "2026-10-11"
+      },
+      "line": {
+        "hts10": "1704909000",
+        "general": "10.4%",
+        "special": "Free (A+,AU,BH,CL,CO,D,E,IL,JO,KR,MA,OM,P,PA,PE,S,SG)",
+        "units": ["kg"]
+      },
+      "expectedTotalDutyUsd": 4790,
+      "toleranceUsd": 0.01,
+      "sourceNote": "HTS Rev 21: 1704.90.90 general 10.4% ($1,040). On the note 20(f) list (List 3) -> 9903.88.03 +25% ($2,500); no 20(nn)/(vvv)/(www) exclusion names 1704.90.90. Not on note 52(b)/(c)/(e), not a 52(f) Section 232 good -> 9903.05.31 China 2026 Section 301 +12.5% stacks per note 52(a) ('shall also be subject to any additional duty provided for in this subchapter') ($1,250). Total 47.9% = $4,790."
+    },
+    {
+      "id": "g22b-ch17-lactose-ca-no-claim",
+      "description": "Lactose >=99% (1702.11.00.00, 6.4%) from Canada, 20,000 kg, $40,000, no USMCA claim",
+      "chapter": "17",
+      "input": {
+        "hts10": "1702110000",
+        "countryOfOrigin": "CA",
+        "customsValueUsd": 40000,
+        "quantities": {
+          "KG": 20000
+        },
+        "entryDate": "2026-10-11"
+      },
+      "line": {
+        "hts10": "1702110000",
+        "general": "6.4%",
+        "special": "Free (A+,AU,BH,CL,CO,D,E,IL,JO,KR,MA,OM,P,PA,PE,S,SG)",
+        "units": ["kg", "kg cmsc"]
+      },
+      "expectedTotalDutyUsd": 26560,
+      "toleranceUsd": 0.01,
+      "sourceNote": "1702.11.00 general 6.4% ($2,560). U.S. note 51(b)(2) lists 1702.11.00 -> 9903.03.13 'duty provided in the applicable subheading + 50%' ($20,000); note 51(a): also subject to any other subchapter III duty. Canada 2026 Section 301 9903.05.29 +10% ($4,000) applies because USMCA is not claimed (note 52(g) relief needs a USMCA duty-free entry); 1702.11.00 is not on 52(b). Not on the Proclamation 11062 dairy ban list (that covers 1702.90.35, 1703.10.30/.50, 1703.90.30/.50, not 1702.11). Total $26,560."
+    },
+    {
+      "id": "g22b-ch17-invert-molasses-fr-eu-floor",
+      "description": "Invert molasses, other (1702.90.40.00, 0.35¢/liter) from France, 10,000 liters / 13,000 kg, $5,000",
+      "chapter": "17",
+      "input": {
+        "hts10": "1702904000",
+        "countryOfOrigin": "FR",
+        "customsValueUsd": 5000,
+        "quantities": {
+          "L": 10000,
+          "KG": 13000
+        },
+        "entryDate": "2026-10-11"
+      },
+      "line": {
+        "hts10": "1702904000",
+        "general": "0.35¢/liter",
+        "special": "Free (A*,AU,BH,CL,CO,D,E,IL,JO,KR,MA,OM,P,PA,PE,S,SG)",
+        "units": ["liters", "kg"]
+      },
+      "expectedTotalDutyUsd": 500,
+      "toleranceUsd": 0.01,
+      "sourceNote": "1702.90.40 general 0.35¢/liter: base $35 on 10,000 L. EU good with a specific rate: note 52(k) AVE = $35 / $5,000 = 0.7% < 10%, so heading 9903.05.39 applies: column 1 rate + additional duty sums to 10% ad valorem -> total 10% x $5,000 = $500 (the $35 base is inside the 10%). 1702.90.40 is not on 52(b) (only 1702.90.10 is). Total $500."
+    },
+    {
+      "id": "g22b-ch17-lactose-ca-usmca",
+      "description": "Lactose >=99% (1702.11.00.00) from Canada, 20,000 kg, $40,000, USMCA (S) claimed",
+      "chapter": "17",
+      "input": {
+        "hts10": "1702110000",
+        "countryOfOrigin": "CA",
+        "customsValueUsd": 40000,
+        "quantities": {
+          "KG": 20000
+        },
+        "entryDate": "2026-10-11",
+        "claimedSpi": "S"
+      },
+      "line": {
+        "hts10": "1702110000",
+        "general": "6.4%",
+        "special": "Free (A+,AU,BH,CL,CO,D,E,IL,JO,KR,MA,OM,P,PA,PE,S,SG)",
+        "units": ["kg", "kg cmsc"]
+      },
+      "expectedTotalDutyUsd": 20000,
+      "toleranceUsd": 0.01,
+      "sourceNote": "USMCA claimed: base Free (S). Note 52(g) / 9903.05.93 lifts the 10% (9903.05.29) for Canadian goods entered free under USMCA. Note 51(a): goods eligible for special tariff treatment under GN 3(c)(i) remain subject to 9903.03.13 (+50%) -> 50% x $40,000 = $20,000. Not banned (1702.11.00 is not on the Proclamation 11062 list)."
+    },
+    {
+      "id": "g22b-ch19-pasta-cn-list3",
+      "description": "Other pasta, not canned/frozen (1902.30.00.60, 6.4%) from China, 8,000 kg, $20,000",
+      "chapter": "19",
+      "input": {
+        "hts10": "1902300060",
+        "countryOfOrigin": "CN",
+        "customsValueUsd": 20000,
+        "quantities": {
+          "KG": 8000
+        },
+        "entryDate": "2026-10-11"
+      },
+      "line": {
+        "hts10": "1902300060",
+        "general": "6.4%",
+        "special": "Free (A*,AU,BH,CL,CO,D,E,IL,JO,KR,MA,OM,P,PA,PE,S,SG)",
+        "units": ["kg"]
+      },
+      "expectedTotalDutyUsd": 8780,
+      "toleranceUsd": 0.01,
+      "sourceNote": "1902.30.00 general 6.4% ($1,280). Note 20(f) (List 3) -> 9903.88.03 +25% ($5,000). Not on 52(b)/(c)/(e) -> 9903.05.31 +12.5% additive per note 52(a) ($2,500). Total 43.9% = $8,780."
+    },
+    {
+      "id": "g22b-ch19-pasta-it-eu-floor",
+      "description": "Uncooked pasta, exclusively pasta, EU product (1902.19.20.50, Free) from Italy, 25,000 kg, $50,000",
+      "chapter": "19",
+      "input": {
+        "hts10": "1902192050",
+        "countryOfOrigin": "IT",
+        "customsValueUsd": 50000,
+        "quantities": {
+          "KG": 25000
+        },
+        "entryDate": "2026-10-11"
+      },
+      "line": {
+        "hts10": "1902192050",
+        "general": "Free",
+        "special": null,
+        "units": ["kg"]
+      },
+      "expectedTotalDutyUsd": 5000,
+      "toleranceUsd": 0.01,
+      "sourceNote": "1902.19.20 general Free. EU good with a column 1 rate (0%) below 10% -> 9903.05.39: column 1 + additional = 10% ad valorem (note 52(k)). Not on 52(b)/(c). 10% x $50,000 = $5,000 (AD/CVD on Italian pasta out of scope)."
+    },
+    {
+      "id": "g22b-ch19-bakers-mix-ca-compound",
+      "description": "Mixes/doughs for bakers' wares, other (1901.20.60.00, 42.3¢/kg + 8.5%) from Canada, 1,000 kg, $5,000, no USMCA claim",
+      "chapter": "19",
+      "input": {
+        "hts10": "1901206000",
+        "countryOfOrigin": "CA",
+        "customsValueUsd": 5000,
+        "quantities": {
+          "KG": 1000
+        },
+        "entryDate": "2026-10-11"
+      },
+      "line": {
+        "hts10": "1901206000",
+        "general": "42.3¢/kg + 8.5%",
+        "special": "Free (BH,CL,JO,KR,OM,SG) See 9822.05.20 (P+) See 9822.06.10 (PE) See 9822.08.01 (CO) See 9822.09.17 (PA) See 9823.10.01-9823.10.45 (S+) See 9822.03.01(MA)",
+        "units": ["kg"]
+      },
+      "expectedTotalDutyUsd": 3848,
+      "toleranceUsd": 0.01,
+      "sourceNote": "Compound base: 42.3¢/kg x 1,000 kg = $423 + 8.5% x $5,000 = $425 -> $848. U.S. note 51(b)(3) lists 1901.20.60 -> 9903.03.14 +50% ($2,500). No USMCA claim -> 9903.05.29 Canada +10% ($500); not on 52(b). Not on any Proclamation 11061-11063 ban list. Total $3,848."
+    },
+    {
+      "id": "g22b-ch22-sparkling-wine-cn-list3",
+      "description": "Sparkling wine valued over $1.59/liter (2204.10.00.75, 19.8¢/liter) from China, 1,000 liters, $8,000",
+      "chapter": "22",
+      "input": {
+        "hts10": "2204100075",
+        "countryOfOrigin": "CN",
+        "customsValueUsd": 8000,
+        "quantities": {
+          "L": 1000
+        },
+        "entryDate": "2026-10-11"
+      },
+      "line": {
+        "hts10": "2204100075",
+        "general": "19.8¢/liter",
+        "special": "Free (A,AU,BH,CL,CO,D,E,IL,KR,MA,OM,P,PA,PE,S,SG)8.8¢/liter(JO)",
+        "units": ["liters"]
+      },
+      "expectedTotalDutyUsd": 3198,
+      "toleranceUsd": 0.01,
+      "sourceNote": "Specific base 19.8¢/liter x 1,000 L = $198. 2204.10.00 is in note 20(f) (List 3) -> 9903.88.03 +25% ($2,000); not in a 20(www) exclusion. Not on 52(b)/(c)/(e) -> 9903.05.31 +12.5% additive per 52(a) ($1,000). Total $3,198."
+    },
+    {
+      "id": "g22b-ch22-vodka-ca-bulk",
+      "description": "Vodka in containers over 4 liters (2208.60.50.00, Free) from Canada, shipped in bulk (not direct-to-consumer packaging), 10,000 proof liters, $30,000, no USMCA claim",
+      "chapter": "22",
+      "input": {
+        "hts10": "2208605000",
+        "countryOfOrigin": "CA",
+        "customsValueUsd": 30000,
+        "quantities": {
+          "PF.L": 10000
+        },
+        "entryDate": "2026-10-11",
+        "confirmations": {
+          "facts": {
+            "packagedDirectToConsumer": false
+          }
+        }
+      },
+      "line": {
+        "hts10": "2208605000",
+        "general": "Free",
+        "special": null,
+        "units": ["pf.liters"]
+      },
+      "expectedTotalDutyUsd": 18000,
+      "toleranceUsd": 0.01,
+      "sourceNote": "Ban check: Proclamation 11061 (91 FR 58311, from 2026-09-29) bans 2208.60.50 from Canada only when packaged in bottles/cans/boxes/kegs or similar direct-to-consumption containers; this shipment is bulk (packagedDirectToConsumer = false), so entry is allowed and dutiable. Base Free. Note 51(b)(1) lists 2208.60.50 -> 9903.03.12 +50% ($15,000). No USMCA claim -> 9903.05.29 +10% ($3,000). Total $18,000."
+    },
+    {
+      "id": "g22b-ch22-vodka-ca-bulk-usmca",
+      "description": "Bulk vodka (2208.60.50.00) from Canada, not direct-to-consumer packaging, 10,000 proof liters, $30,000, USMCA (S) claimed",
+      "chapter": "22",
+      "input": {
+        "hts10": "2208605000",
+        "countryOfOrigin": "CA",
+        "customsValueUsd": 30000,
+        "quantities": {
+          "PF.L": 10000
+        },
+        "entryDate": "2026-10-11",
+        "claimedSpi": "S",
+        "confirmations": {
+          "facts": {
+            "packagedDirectToConsumer": false
+          }
+        }
+      },
+      "line": {
+        "hts10": "2208605000",
+        "general": "Free",
+        "special": null,
+        "units": ["pf.liters"]
+      },
+      "expectedTotalDutyUsd": 15000,
+      "toleranceUsd": 0.01,
+      "sourceNote": "Bulk, so not banned (Proclamation 11061 packaged list). USMCA claimed: 52(g)/9903.05.93 lifts 9903.05.29. Note 51(a) keeps 9903.03.12 for goods eligible for special treatment -> 50% x $30,000 = $15,000."
+    },
+    {
+      "id": "g22b-ch22-red-wine-fr-eu-floor",
+      "description": "Red wine, <=14% vol., <=2 liters, valued over $1.05/liter (2204.21.50.40, 6.3¢/liter) from France, 9,000 liters, $45,000",
+      "chapter": "22",
+      "input": {
+        "hts10": "2204215040",
+        "countryOfOrigin": "FR",
+        "customsValueUsd": 45000,
+        "quantities": {
+          "L": 9000
+        },
+        "entryDate": "2026-10-11"
+      },
+      "line": {
+        "hts10": "2204215040",
+        "general": "6.3¢/liter",
+        "special": "Free (A+,AU,BH,CL,CO,D,E,IL,KR,MA,OM,P,PA,PE,S,SG) 2.8¢/liter (JO)",
+        "units": ["liters"]
+      },
+      "expectedTotalDutyUsd": 4500,
+      "toleranceUsd": 0.01,
+      "sourceNote": "Specific base 6.3¢ x 9,000 L = $567. Note 52(k): AVE = $567 / $45,000 = 1.26% < 10% -> 9903.05.39, column 1 + additional = 10% -> $4,500 total (base included). Not on 52(b)/(c). Total $4,500."
+    },
+    {
+      "id": "g22b-ch22-scotch-gb-52j1",
+      "description": "Scotch whisky in containers <=4 liters (2208.30.30.30, Free) from the United Kingdom, 5,000 proof liters, $60,000",
+      "chapter": "22",
+      "input": {
+        "hts10": "2208303030",
+        "countryOfOrigin": "GB",
+        "customsValueUsd": 60000,
+        "quantities": {
+          "PF.L": 5000
+        },
+        "entryDate": "2026-10-11"
+      },
+      "line": {
+        "hts10": "2208303030",
+        "general": "Free",
+        "special": null,
+        "units": ["pf.liters"]
+      },
+      "expectedTotalDutyUsd": 0,
+      "toleranceUsd": 0.01,
+      "sourceNote": "Base Free. U.S. note 52(j)(1) / heading 9903.05.96: the UK duty 9903.05.81 (+10%) does not apply to UK products classifiable in 2208.30.30 (list: 2208.30.30, 2208.30.60, 8419.20.0010, 9018.x). No other measure. Total $0."
+    },
+    {
+      "id": "g22b-ch25-granite-slabs-cn-list3",
+      "description": "Granite merely cut into slabs, >=7.5 cm (2516.12.00.30, 2.8%) from China, 100 t, $10,000",
+      "chapter": "25",
+      "input": {
+        "hts10": "2516120030",
+        "countryOfOrigin": "CN",
+        "customsValueUsd": 10000,
+        "quantities": {
+          "T": 100
+        },
+        "entryDate": "2026-10-11"
+      },
+      "line": {
+        "hts10": "2516120030",
+        "general": "2.8%",
+        "special": "Free (A,AU,BH,CL,CO,D,E,IL,JO,KR,MA,OM,P,PA,PE,S,SG)",
+        "units": ["t"]
+      },
+      "expectedTotalDutyUsd": 4030,
+      "toleranceUsd": 0.01,
+      "sourceNote": "2516.12.00 general 2.8% ($280). Note 20(f) (List 3) -> 9903.88.03 +25% ($2,500). Not on 52(b) (ch25 entries there are 2503, 2504, 2510, 2511.10, 2519.10/.90.10/.20, 2524.90, 2529.21/.22, 2530.20, 2530.90.10/.20/.80) -> 9903.05.31 +12.5% ($1,250). Total $4,030."
+    },
+    {
+      "id": "g22b-ch25-salt-ru-note30",
+      "description": "Salt (2501.00.00.00) from Russia, 1,000 t, $60,000",
+      "chapter": "25",
+      "input": {
+        "hts10": "2501000000",
+        "countryOfOrigin": "RU",
+        "customsValueUsd": 60000,
+        "quantities": {
+          "T": 1000
+        },
+        "entryDate": "2026-10-11"
+      },
+      "line": {
+        "hts10": "2501000000",
+        "general": "Free",
+        "special": null,
+        "units": ["t"],
+        "column2": "26%"
+      },
+      "expectedTotalDutyUsd": 28500,
+      "toleranceUsd": 0.01,
+      "sourceNote": "Russia is a column 2 country (col. 2 = 26%). 2501.00.00 is in note 30(b) -> 9903.90.08: 35% ad valorem in lieu of the column 2 rate ($21,000). Russia 2026 Section 301 9903.05.66 +12.5% also applies: 2501.00.00 is not on note 52(b), and note 52(a) keeps any other subchapter III duty ($7,500). Total 47.5% = $28,500."
+    },
+    {
+      "id": "g22b-ch25-barytes-in-per-ton-52b",
+      "description": "Natural barium sulfate (barytes), not ground (2511.10.50.00, $1.25/t) from India, 2,000 t, $300,000",
+      "chapter": "25",
+      "input": {
+        "hts10": "2511105000",
+        "countryOfOrigin": "IN",
+        "customsValueUsd": 300000,
+        "quantities": {
+          "T": 2000
+        },
+        "entryDate": "2026-10-11"
+      },
+      "line": {
+        "hts10": "2511105000",
+        "general": "$1.25/t",
+        "special": "Free (A,AU,BH,CL,CO,D,E,IL,JO,KR,MA,OM,P,PA,PE,S,SG)",
+        "units": ["t"]
+      },
+      "expectedTotalDutyUsd": 2500,
+      "toleranceUsd": 0.01,
+      "sourceNote": "Specific base $1.25/t x 2,000 t = $2,500. India 9903.05.44 (+10%) does not apply: 2511.10.50 is on note 52(b) (9903.05.86). Total $2,500."
+    },
+    {
+      "id": "g22b-ch25-calcareous-stone-mx-usmca",
+      "description": "Other calcareous building stone (2515.20.00.00, 3%) from Mexico, 200 t, $20,000, USMCA (S) claimed",
+      "chapter": "25",
+      "input": {
+        "hts10": "2515200000",
+        "countryOfOrigin": "MX",
+        "customsValueUsd": 20000,
+        "quantities": {
+          "T": 200
+        },
+        "entryDate": "2026-10-11",
+        "claimedSpi": "S"
+      },
+      "line": {
+        "hts10": "2515200000",
+        "general": "3%",
+        "special": "Free (A,AU,BH,CL,CO,D,E,IL,JO,KR,MA,OM,P,PA,PE,S,SG)",
+        "units": ["t"]
+      },
+      "expectedTotalDutyUsd": 0,
+      "toleranceUsd": 0.01,
+      "sourceNote": "USMCA claimed: base Free (S). Note 52(h) / 9903.05.94 lifts the Mexico 2026 Section 301 duty (9903.05.55) for goods entered free under USMCA. Total $0 (without the claim: 3% + 10% = $2,600)."
+    },
+    {
+      "id": "g22b-ch26-arsenic-slag-cn-list3",
+      "description": "Ash/residues for arsenic extraction (2620.60.10.00, 5%) from China, 5,000 kg, $20,000",
+      "chapter": "26",
+      "input": {
+        "hts10": "2620601000",
+        "countryOfOrigin": "CN",
+        "customsValueUsd": 20000,
+        "quantities": {
+          "KG": 5000
+        },
+        "entryDate": "2026-10-11"
+      },
+      "line": {
+        "hts10": "2620601000",
+        "general": "5%",
+        "special": "Free (A+,AU,BH,CL,CO,D,E,IL, JO,KR,MA, OM,P,PA,PE,S,SG)",
+        "units": ["kg"]
+      },
+      "expectedTotalDutyUsd": 8500,
+      "toleranceUsd": 0.01,
+      "sourceNote": "2620.60.10 general 5% ($1,000). Note 20(f) (List 3) -> 9903.88.03 +25% ($5,000). Not on 52(b) (ch26 heading 2620 entries there are 2620.30.00, 2620.99.50) and not in note 31 -> 9903.05.31 +12.5% ($2,500). Total $8,500."
+    },
+    {
+      "id": "g22b-ch26-cobalt-ore-cn-31b-52b",
+      "description": "Cobalt ores and concentrates (2605.00.00.00, Free) from China, 10,000 kg, $100,000",
+      "chapter": "26",
+      "input": {
+        "hts10": "2605000000",
+        "countryOfOrigin": "CN",
+        "customsValueUsd": 100000,
+        "quantities": {
+          "KG": 10000,
+          "Co kg": 1500
+        },
+        "entryDate": "2026-10-11"
+      },
+      "line": {
+        "hts10": "2605000000",
+        "general": "Free",
+        "special": null,
+        "units": ["kg", "Co kg"]
+      },
+      "expectedTotalDutyUsd": 25000,
+      "toleranceUsd": 0.01,
+      "sourceNote": "Base Free. Note 31(b) lists 2605.00.00 -> 9903.91.01 +25% from 2024-09-27 ($25,000). Not on note 20 lists. Note 52(b) lists 2605.00.00 -> 9903.05.86 lifts 9903.05.31 (it lifts only 9903.05.20-.84, not note 31). Total $25,000."
+    },
+    {
+      "id": "g22b-ch26-iron-pellets-ru-note30",
+      "description": "Agglomerated iron ore pellets (2601.12.00.30) from Russia, 1,000 t, $120,000",
+      "chapter": "26",
+      "input": {
+        "hts10": "2601120030",
+        "countryOfOrigin": "RU",
+        "customsValueUsd": 120000,
+        "quantities": {
+          "T": 1000
+        },
+        "entryDate": "2026-10-11"
+      },
+      "line": {
+        "hts10": "2601120030",
+        "general": "Free",
+        "special": null,
+        "units": ["t"],
+        "column2": "Free"
+      },
+      "expectedTotalDutyUsd": 57000,
+      "toleranceUsd": 0.01,
+      "sourceNote": "Column 2 rate Free, but 2601.12.00 is in note 30(b) -> 9903.90.08: 35% in lieu of column 2 ($42,000). Not on 52(b) (only 2601.11.00 and 2601.20.00 are) -> 9903.05.66 +12.5% ($15,000). Total $57,000."
+    },
+    {
+      "id": "g22b-ch26-moly-roasted-cl-content",
+      "description": "Roasted molybdenum ores/concentrates (2613.10.00.00, 12.8¢/kg on Mo content + 1.8%) from Chile, 10,000 kg gross, 5,600 kg Mo content, $250,000, no FTA claim",
+      "chapter": "26",
+      "input": {
+        "hts10": "2613100000",
+        "countryOfOrigin": "CL",
+        "customsValueUsd": 250000,
+        "quantities": {
+          "KG": 10000,
+          "kg on molybdenum content": 5600
+        },
+        "entryDate": "2026-10-11"
+      },
+      "line": {
+        "hts10": "2613100000",
+        "general": "12.8¢/kg on molybdenum content + 1.8%",
+        "special": "Free (A+,AU,BH,CL,CO,D,E,IL, JO,KR,MA, OM,P,PA,PE,S,SG)",
+        "units": ["kg", "Mo kg"]
+      },
+      "expectedTotalDutyUsd": 36466.8,
+      "toleranceUsd": 0.01,
+      "sourceNote": "Compound base charged on molybdenum content: 12.8¢ x 5,600 kg Mo = $716.80 + 1.8% x $250,000 = $4,500 -> $5,216.80. Chile 9903.05.30 +12.5% ($31,250): 2613.10.00 is not on 52(b) (only 2613.90.00). Total $36,466.80. (With a CL claim the base would be Free and the 12.5% still due per note 52(a).) Quantity key: the engine prices the specific part on the unit named in the rate text, so the molybdenum content is entered as 'kg on molybdenum content' (HTS reporting unit 'Mo kg')."
+    },
+    {
+      "id": "g22b-ch27-lube-oil-cn-list2-52b",
+      "description": "Lubricating oils, other (2710.19.30.80, 84¢/bbl) from China, 1,000 bbl, $100,000",
+      "chapter": "27",
+      "input": {
+        "hts10": "2710193080",
+        "countryOfOrigin": "CN",
+        "customsValueUsd": 100000,
+        "quantities": {
+          "BBL": 1000
+        },
+        "entryDate": "2026-10-11"
+      },
+      "line": {
+        "hts10": "2710193080",
+        "general": "84¢/bbl",
+        "special": "Free (A+,AU,BH,CL,CO,D, IL,JO, KR,MA,OM,P, PA,PE,R,S,SG)",
+        "units": ["bbl"]
+      },
+      "expectedTotalDutyUsd": 25840,
+      "toleranceUsd": 0.01,
+      "sourceNote": "Specific base 84¢ x 1,000 bbl = $840. Note 20(d) (List 2) lists 2710.19.30 -> 9903.88.02 +25% ($25,000). Note 52(b) lists 2710.19.30 -> 9903.05.86 lifts 9903.05.31 (no 12.5%). Total $25,840."
+    },
+    {
+      "id": "g22b-ch27-peat-ru-note30-52b",
+      "description": "Peat (2703.00.00.00) from Russia, 500 t, $40,000",
+      "chapter": "27",
+      "input": {
+        "hts10": "2703000000",
+        "countryOfOrigin": "RU",
+        "customsValueUsd": 40000,
+        "quantities": {
+          "T": 500
+        },
+        "entryDate": "2026-10-11"
+      },
+      "line": {
+        "hts10": "2703000000",
+        "general": "Free",
+        "special": null,
+        "units": ["t"],
+        "column2": "Free"
+      },
+      "expectedTotalDutyUsd": 14000,
+      "toleranceUsd": 0.01,
+      "sourceNote": "Column 2 Free; 2703.00.00 is in note 30(b) -> 9903.90.08 35% in lieu of column 2 ($14,000). 2703.00.00 is on note 52(b) -> 9903.05.86 lifts 9903.05.66. Peat is not a Russian energy product under the EO 14066 import ban (crude oil, petroleum products, LNG, coal). Total $14,000."
+    },
+    {
+      "id": "g22b-ch27-gasoline-nl-per-bbl-52b",
+      "description": "Unleaded gasoline, other (2710.12.15.19, 52.5¢/bbl) from the Netherlands, 10,000 bbl, $900,000",
+      "chapter": "27",
+      "input": {
+        "hts10": "2710121519",
+        "countryOfOrigin": "NL",
+        "customsValueUsd": 900000,
+        "quantities": {
+          "BBL": 10000
+        },
+        "entryDate": "2026-10-11"
+      },
+      "line": {
+        "hts10": "2710121519",
+        "general": "52.5¢/bbl",
+        "special": "Free (A+,AU,BH,CL,CO,D, IL,JO, KR,MA,OM,P, PA,PE,R,S,SG)",
+        "units": ["bbl"]
+      },
+      "expectedTotalDutyUsd": 5250,
+      "toleranceUsd": 0.01,
+      "sourceNote": "Specific base 52.5¢ x 10,000 bbl = $5,250 (AVE 0.58%). The EU 10% floor (9903.05.39) would normally apply, but 2710.12.15 is on note 52(b): 9903.05.86 lifts all of 9903.05.20-.84, including 9903.05.38/.39. Total $5,250."
+    },
+    {
+      "id": "g22b-ch27-crude-sa-per-bbl-52b",
+      "description": "Crude petroleum testing >=25 API, other (2709.00.20.90, 10.5¢/bbl) from Saudi Arabia, 100,000 bbl, $7,000,000",
+      "chapter": "27",
+      "input": {
+        "hts10": "2709002090",
+        "countryOfOrigin": "SA",
+        "customsValueUsd": 7000000,
+        "quantities": {
+          "BBL": 100000
+        },
+        "entryDate": "2026-10-11"
+      },
+      "line": {
+        "hts10": "2709002090",
+        "general": "10.5¢/bbl",
+        "special": "Free (A+,AU,BH,CL,CO,D,IL, JO,KR,MA, OM,P,PA,PE, R,S,SG)",
+        "units": ["bbl"]
+      },
+      "expectedTotalDutyUsd": 10500,
+      "toleranceUsd": 0.01,
+      "sourceNote": "Specific base 10.5¢ x 100,000 bbl = $10,500. Saudi Arabia 9903.05.67 (+12.5%) lifted by note 52(b) (2709.00.20 listed). Total $10,500."
+    },
+    {
+      "id": "g22b-ch28-borates-cn-list3",
+      "description": "Other borates (2840.20.00.00, 3.7%) from China, 10,000 kg, $50,000",
+      "chapter": "28",
+      "input": {
+        "hts10": "2840200000",
+        "countryOfOrigin": "CN",
+        "customsValueUsd": 50000,
+        "quantities": {
+          "KG": 10000
+        },
+        "entryDate": "2026-10-11"
+      },
+      "line": {
+        "hts10": "2840200000",
+        "general": "3.7%",
+        "special": "Free (A,AU,BH,CL,CO,D,E,IL,JO,KR,MA,OM,P,PA,PE,S,SG)",
+        "units": ["kg"]
+      },
+      "expectedTotalDutyUsd": 20600,
+      "toleranceUsd": 0.01,
+      "sourceNote": "2840.20.00 general 3.7% ($1,850). Note 20(f) (List 3) -> 9903.88.03 +25% ($12,500). Not on 52(b)/(e), not in note 31 -> 9903.05.31 +12.5% ($6,250). Total 41.2% = $20,600."
+    },
+    {
+      "id": "g22b-ch28-rare-earth-oxides-ru-note30-52b",
+      "description": "Rare-earth oxides except cerium, other (2846.90.20.40) from Russia, 1,000 kg, $40,000",
+      "chapter": "28",
+      "input": {
+        "hts10": "2846902040",
+        "countryOfOrigin": "RU",
+        "customsValueUsd": 40000,
+        "quantities": {
+          "KG": 1000
+        },
+        "entryDate": "2026-10-11"
+      },
+      "line": {
+        "hts10": "2846902040",
+        "general": "Free",
+        "special": null,
+        "units": ["kg"],
+        "column2": "25%"
+      },
+      "expectedTotalDutyUsd": 14000,
+      "toleranceUsd": 0.01,
+      "sourceNote": "Column 2 = 25%; 2846.90.20 is in note 30(b) -> 9903.90.08 35% in lieu of column 2 ($14,000). On note 52(b) -> 9903.05.86 lifts 9903.05.66. Total $14,000."
+    },
+    {
+      "id": "g22b-ch28-co2-mx-usmca",
+      "description": "Carbon dioxide (2811.21.00.00, 3.7%) from Mexico, 500 t, $50,000, USMCA (S) claimed",
+      "chapter": "28",
+      "input": {
+        "hts10": "2811210000",
+        "countryOfOrigin": "MX",
+        "customsValueUsd": 50000,
+        "quantities": {
+          "T": 500
+        },
+        "entryDate": "2026-10-11",
+        "claimedSpi": "S"
+      },
+      "line": {
+        "hts10": "2811210000",
+        "general": "3.7%",
+        "special": "Free (A,AU,BH,CL,CO,D,E,IL,JO,KR,MA,OM,P,PA,PE,S,SG)",
+        "units": ["t"]
+      },
+      "expectedTotalDutyUsd": 0,
+      "toleranceUsd": 0.01,
+      "sourceNote": "USMCA claimed: base Free (S); note 52(h) / 9903.05.94 lifts 9903.05.55 (Mexico +10%). 2811.21.00 is not on 52(b). Total $0 (without the claim: 3.7% + 10% = $6,850)."
+    },
+    {
+      "id": "g22b-ch28-borates-kr-korus",
+      "description": "Other borates (2840.20.00.00, 3.7%) from South Korea, KORUS (KR) claimed, 10,000 kg, $50,000",
+      "chapter": "28",
+      "input": {
+        "hts10": "2840200000",
+        "countryOfOrigin": "KR",
+        "customsValueUsd": 50000,
+        "quantities": {
+          "KG": 10000
+        },
+        "entryDate": "2026-10-11",
+        "claimedSpi": "KR"
+      },
+      "line": {
+        "hts10": "2840200000",
+        "general": "3.7%",
+        "special": "Free (A,AU,BH,CL,CO,D,E,IL,JO,KR,MA,OM,P,PA,PE,S,SG)",
+        "units": ["kg"]
+      },
+      "expectedTotalDutyUsd": 6250,
+      "toleranceUsd": 0.01,
+      "sourceNote": "KR claimed: column 1 rate Free (special). 9903.05.71: Korean goods with column 1 rate below 12.5% -> column 1 + additional = 12.5% (note 52(k); for Korea the claimed column 1-Special rate counts). 12.5% x $50,000 = $6,250 (same without the claim: 3.7% < 12.5%)."
+    },
+    {
+      "id": "ch29-chloroform-cn-list3-pharma-use",
+      "description": "Chloroform from China, $40,000, 10,000 kg, importer confirms use in pharmaceutical applications",
+      "chapter": "29",
+      "input": {
+        "hts10": "2903130000",
+        "countryOfOrigin": "CN",
+        "customsValueUsd": 40000,
+        "quantities": {
+          "KG": 10000
+        },
+        "confirmations": {
+          "endUse": "pharmaceutical"
+        },
+        "entryDate": "2026-10-11"
+      },
+      "line": {
+        "hts10": "2903130000",
+        "general": "5.5%",
+        "special": "Free (A,AU,BH,CL,CO,D,E,IL,JO,KR,MA,OM,P,PA,PE,S,SG)",
+        "units": ["kg"]
+      },
+      "expectedTotalDutyUsd": 12200.0,
+      "toleranceUsd": 0.01,
+      "sourceNote": "HTS Rev 21 2903.13.00 general 5.5%. China Section 301 List 3: 2903.13.00 is enumerated in U.S. note 20(f) -> 9903.88.03 +25%. 2026 Section 301 China 9903.05.31 (+12.5%) does not apply: 2903.13.00 is on the note 52(e) list and the goods are for use in pharmaceutical applications (9903.05.89). 5.5% + 25% = 30.5% x $40,000 = $12,200."
+    },
+    {
+      "id": "ch29-dichloromethane-jp-floor",
+      "description": "Dichloromethane (methylene chloride) from Japan, $20,000, 8,000 kg, no end-use confirmation",
+      "chapter": "29",
+      "input": {
+        "hts10": "2903120000",
+        "countryOfOrigin": "JP",
+        "customsValueUsd": 20000,
+        "quantities": {
+          "KG": 8000
+        },
+        "entryDate": "2026-10-11"
+      },
+      "line": {
+        "hts10": "2903120000",
+        "general": "3.7%",
+        "special": "Free (A,AU,BH,CL,CO,D,E,IL,JO,KR,MA,OM,P,PA,PE,S,SG)",
+        "units": ["kg"]
+      },
+      "expectedTotalDutyUsd": 2500.0,
+      "toleranceUsd": 0.01,
+      "sourceNote": "HTS Rev 21 2903.12.00 general 3.7% (< 12.5%), so heading 9903.05.49 applies: note 52(k) makes the column 1 rate + additional duty total 12.5% ad valorem (the line is on the note 52(e) pharma list but no pharmaceutical use is confirmed). 12.5% x $20,000 = $2,500."
+    },
+    {
+      "id": "ch29-glycerol-ca-no-usmca",
+      "description": "Glycerol from Canada, 20,000 kg, $30,000, no USMCA claim",
+      "chapter": "29",
+      "input": {
+        "hts10": "2905450000",
+        "countryOfOrigin": "CA",
+        "customsValueUsd": 30000,
+        "quantities": {
+          "KG": 20000
+        },
+        "entryDate": "2026-10-11"
+      },
+      "line": {
+        "hts10": "2905450000",
+        "general": "0.5¢/kg",
+        "special": "Free (A*,AU,BH,CL,CO,D,E,IL,JO,KR,MA,OM,P,PA,PE,S,SG)",
+        "units": ["kg"]
+      },
+      "expectedTotalDutyUsd": 18100.0,
+      "toleranceUsd": 0.01,
+      "sourceNote": "HTS Rev 21 2905.45.00 general 0.5 cents/kg (specific): 20,000 kg x $0.005 = $100. Section 338 duty on Canada: 2905.45.00 is enumerated in U.S. note 51(b)(3) -> 9903.03.14 +50% = $15,000 (note 51(a): also subject to any other additional duty). 2026 Section 301 Canada 9903.05.29 +10% = $3,000 (no USMCA claim, so note 52(g)/9903.05.93 relief does not apply). $100 + $15,000 + $3,000 = $18,100."
+    },
+    {
+      "id": "ch32-tio2-pigment-cn-list3-52b",
+      "description": "Titanium dioxide pigment (>=80% TiO2) from China, $50,000, 20,000 kg",
+      "chapter": "32",
+      "input": {
+        "hts10": "3206110000",
+        "countryOfOrigin": "CN",
+        "customsValueUsd": 50000,
+        "quantities": {
+          "KG": 20000
+        },
+        "entryDate": "2026-10-11"
+      },
+      "line": {
+        "hts10": "3206110000",
+        "general": "6%",
+        "special": "Free (A,AU,BH,CL,CO,D,E,IL,JO,KR,MA,OM,P,PA,PE,S,SG)",
+        "units": ["kg"]
+      },
+      "expectedTotalDutyUsd": 15500.0,
+      "toleranceUsd": 0.01,
+      "sourceNote": "HTS Rev 21 3206.11.00 general 6%. China Section 301 List 3: 3206.11.00 enumerated in U.S. note 20(f) -> 9903.88.03 +25%. 2026 Section 301 China (9903.05.31, +12.5%) does not apply: 3206.11.00 is on the note 52(b) list (heading 9903.05.86, unconditional). 6% + 25% = 31% x $50,000 = $15,500."
+    },
+    {
+      "id": "ch32-paint-other-ca-no-usmca",
+      "description": "Paint/varnish in non-aqueous medium (3208.90.00) from Canada, $10,000, 2,000 kg / 1,800 liters, no USMCA claim",
+      "chapter": "32",
+      "input": {
+        "hts10": "3208900000",
+        "countryOfOrigin": "CA",
+        "customsValueUsd": 10000,
+        "quantities": {
+          "KG": 2000,
+          "L": 1800
+        },
+        "entryDate": "2026-10-11"
+      },
+      "line": {
+        "hts10": "3208900000",
+        "general": "3.2%",
+        "special": "Free (A,AU,BH,CL,CO,D,E,IL,JO,KR,MA,OM,P,PA,PE,S,SG)",
+        "units": ["liters", "kg"]
+      },
+      "expectedTotalDutyUsd": 6320.0,
+      "toleranceUsd": 0.01,
+      "sourceNote": "HTS Rev 21 3208.90.00 general 3.2%. Section 338 duty on Canada: 3208.90.00 is enumerated in note 51(b)(3) -> 9903.03.14 +50%. 2026 Section 301 Canada 9903.05.29 +10% (no USMCA claim). 3.2% + 50% + 10% = 63.2% x $10,000 = $6,320. (Note 19(k)/9903.85.68 reaches only Russian aluminum; not applicable.)"
+    },
+    {
+      "id": "ch32-acrylic-paint-kr-korus",
+      "description": "Water-based acrylic paint (3209.10.00) from South Korea, $30,000, 6,000 kg / 5,000 liters, KORUS claim (SPI KR)",
+      "chapter": "32",
+      "input": {
+        "hts10": "3209100000",
+        "countryOfOrigin": "KR",
+        "customsValueUsd": 30000,
+        "quantities": {
+          "KG": 6000,
+          "L": 5000
+        },
+        "claimedSpi": "KR",
+        "entryDate": "2026-10-11"
+      },
+      "line": {
+        "hts10": "3209100000",
+        "general": "5.1%",
+        "special": "Free (A,AU,BH,CL,CO,D,E,IL,JO,KR,MA,OM,P,PA,PE,S,SG)",
+        "units": ["liters", "kg"]
+      },
+      "expectedTotalDutyUsd": 3750.0,
+      "toleranceUsd": 0.01,
+      "sourceNote": "HTS Rev 21 3209.10.00 general 5.1%, special Free (KR). With the KORUS claim the applicable column 1 rate is Free (0% < 12.5%), so heading 9903.05.71 applies: note 52(k) makes column 1 + additional duty total 12.5% ad valorem (52(k) expressly applies to South Korean goods claiming column 1-Special). FTA eligibility does not remove the 2026 Section 301 duty (note 52(a)). 12.5% x $30,000 = $3,750."
+    },
+    {
+      "id": "ch33-bath-salts-cn-list3",
+      "description": "Bath salts (3307.30.10) from China, $25,000, 10,000 kg",
+      "chapter": "33",
+      "input": {
+        "hts10": "3307301000",
+        "countryOfOrigin": "CN",
+        "customsValueUsd": 25000,
+        "quantities": {
+          "KG": 10000
+        },
+        "entryDate": "2026-10-11"
+      },
+      "line": {
+        "hts10": "3307301000",
+        "general": "5.8%",
+        "special": "Free (A,AU,BH,CL,CO,D,E,IL,JO,KR,MA,OM,P,PA,PE,S,SG)",
+        "units": ["kg"]
+      },
+      "expectedTotalDutyUsd": 10825.0,
+      "toleranceUsd": 0.01,
+      "sourceNote": "HTS Rev 21 3307.30.10 general 5.8%. China Section 301 List 3: 3307.30.10 enumerated in note 20(f) -> 9903.88.03 +25%. 2026 Section 301 China 9903.05.31 +12.5%, additive per note 52(a) (no 52(b)-(f) relief for this line). 5.8% + 25% + 12.5% = 43.3% x $25,000 = $10,825."
+    },
+    {
+      "id": "ch33-lip-makeup-ca-usmca",
+      "description": "Lip make-up preparations (3304.10.00) from Canada, $40,000, 4,000 kg, USMCA claim (SPI S)",
+      "chapter": "33",
+      "input": {
+        "hts10": "3304100000",
+        "countryOfOrigin": "CA",
+        "customsValueUsd": 40000,
+        "quantities": {
+          "KG": 4000
+        },
+        "claimedSpi": "S",
+        "entryDate": "2026-10-11"
+      },
+      "line": {
+        "hts10": "3304100000",
+        "general": "Free",
+        "special": null,
+        "units": ["kg"]
+      },
+      "expectedTotalDutyUsd": 20000.0,
+      "toleranceUsd": 0.01,
+      "sourceNote": "HTS Rev 21 3304.10.00 general Free. Section 338 duty on Canada: 3304.10.00 enumerated in note 51(b)(3) -> 9903.03.14 +50%; note 51(a) keeps it on goods eligible for special tariff treatment (USMCA does not lift it; only 51(c)/(d) do, neither applies). The 2026 Section 301 Canada duty (9903.05.29) is lifted by the USMCA claim (note 52(g), 9903.05.93). 50% x $40,000 = $20,000."
+    },
+    {
+      "id": "ch33-flavoring-alcohol-fr-eu-floor-compound",
+      "description": "Odoriferous mixture for beverages, 20-50% alcohol (3302.10.40), from France, 1,000 kg, $12,000",
+      "chapter": "33",
+      "input": {
+        "hts10": "3302104000",
+        "countryOfOrigin": "FR",
+        "customsValueUsd": 12000,
+        "quantities": {
+          "KG": 1000
+        },
+        "entryDate": "2026-10-11"
+      },
+      "line": {
+        "hts10": "3302104000",
+        "general": "8.4¢/kg + 1.9%",
+        "special": "Free (A,AU,BH,CL,CO,D,E,IL,JO,KR,MA,OM,P,PA,PE,S,SG)",
+        "units": ["kg"]
+      },
+      "expectedTotalDutyUsd": 1200.0,
+      "toleranceUsd": 0.01,
+      "sourceNote": "HTS Rev 21 3302.10.40 general 8.4 cents/kg + 1.9% (compound). Column 1 duty = 1,000 x $0.084 + 1.9% x $12,000 = $84 + $228 = $312; ad valorem equivalent = $312 / $12,000 = 2.6% (note 52(k) AVE method). 2.6% < 10%, so 9903.05.39 applies and column 1 + additional duty total 10% ad valorem (note 52(k)). 10% x $12,000 = $1,200. 3302.10.40 is not on the note 52(j)(2) EU list."
+    },
+    {
+      "id": "ch34-lubricant-prep-cn-list2",
+      "description": "Lubricating preparation, other (3403.19.50) from China, $20,000, 5,000 kg",
+      "chapter": "34",
+      "input": {
+        "hts10": "3403195000",
+        "countryOfOrigin": "CN",
+        "customsValueUsd": 20000,
+        "quantities": {
+          "KG": 5000
+        },
+        "entryDate": "2026-10-11"
+      },
+      "line": {
+        "hts10": "3403195000",
+        "general": "5.8%",
+        "special": "Free (A,AU,BH,CL,CO,D,E,IL,JO,KR,MA,OM,P,PA,PE,S,SG) 2.9%(JP)",
+        "units": ["kg"]
+      },
+      "expectedTotalDutyUsd": 8660.0,
+      "toleranceUsd": 0.01,
+      "sourceNote": "HTS Rev 21 3403.19.50 general 5.8%. China Section 301 List 2: 3403.19.50 enumerated in note 20(d) -> 9903.88.02 +25% (no exclusion in effect: only 20(vvv)/(www), and (www) covers 8486 only). 2026 Section 301 China 9903.05.31 +12.5% additive (note 52(a)). 5.8% + 25% + 12.5% = 43.3% x $20,000 = $8,660. (19(k)/9903.85.68 is Russian-aluminum only.)"
+    },
+    {
+      "id": "ch34-candles-ru",
+      "description": "Candles (3406.00.00) from Russia, $10,000, 4,000 kg",
+      "chapter": "34",
+      "input": {
+        "hts10": "3406000000",
+        "countryOfOrigin": "RU",
+        "customsValueUsd": 10000,
+        "quantities": {
+          "KG": 4000
+        },
+        "entryDate": "2026-10-11"
+      },
+      "line": {
+        "hts10": "3406000000",
+        "general": "Free",
+        "special": null,
+        "column2": "27.5%",
+        "units": ["kg"]
+      },
+      "expectedTotalDutyUsd": 4750.0,
+      "toleranceUsd": 0.01,
+      "sourceNote": "Russia is a column 2 country (general note 3(b)). 3406.00.00 is enumerated in note 30(b), so heading 9903.90.08 imposes 35% ad valorem in lieu of the column 2 rate (27.5%). 2026 Section 301 Russia 9903.05.66: duty provided in the applicable subheading + 12.5%, additive (note 52(a): also subject to any other additional duty in subchapter III). 35% + 12.5% = 47.5% x $10,000 = $4,750."
+    },
+    {
+      "id": "ch34-surfactant-il-fta",
+      "description": "Anionic surface-active agent, salts of sulfated alcohols (3402.39.90.10) from Israel, $20,000, 10,000 kg, US-Israel FTA claim (SPI IL)",
+      "chapter": "34",
+      "input": {
+        "hts10": "3402399010",
+        "countryOfOrigin": "IL",
+        "customsValueUsd": 20000,
+        "quantities": {
+          "KG": 10000
+        },
+        "claimedSpi": "IL",
+        "entryDate": "2026-10-11"
+      },
+      "line": {
+        "hts10": "3402399010",
+        "general": "3.7%",
+        "special": "Free (A, AU, BH, CL, CO, D, E, IL, JO, KR, MA, OM, P, PA, PE, S, SG)",
+        "units": ["kg"]
+      },
+      "expectedTotalDutyUsd": 2500.0,
+      "toleranceUsd": 0.01,
+      "sourceNote": "HTS Rev 21 3402.39.90 general 3.7%, special Free (IL) -> base $0 with the claim. 2026 Section 301 Israel 9903.05.47 +12.5% still applies to goods eligible for special tariff treatment under general note 3(c)(i) (note 52(a)); Israel has no 52(k) floor, so it is additive to the Free base. 12.5% x $20,000 = $2,500."
+    },
+    {
+      "id": "ch35-egg-albumin-cn-list3-specific",
+      "description": "Dried egg albumin (3502.11.00) from China, 1,000 kg, $8,000",
+      "chapter": "35",
+      "input": {
+        "hts10": "3502110000",
+        "countryOfOrigin": "CN",
+        "customsValueUsd": 8000,
+        "quantities": {
+          "KG": 1000
+        },
+        "entryDate": "2026-10-11"
+      },
+      "line": {
+        "hts10": "3502110000",
+        "general": "47.6¢/kg",
+        "special": "Free (A+,AU,BH,CL,CO,D,E,IL,JO,KR,MA,OM,P, PA,PE,S,SG)",
+        "units": ["kg"]
+      },
+      "expectedTotalDutyUsd": 3476.0,
+      "toleranceUsd": 0.01,
+      "sourceNote": "HTS Rev 21 3502.11.00 general 47.6 cents/kg: 1,000 x $0.476 = $476. China Section 301 List 3 (note 20(f)) 9903.88.03 +25% = $2,000. 2026 Section 301 China 9903.05.31 +12.5% = $1,000 (additive, note 52(a)). $476 + $2,000 + $1,000 = $3,476."
+    },
+    {
+      "id": "ch35-milk-protein-conc-ca-no-usmca",
+      "description": "Milk protein concentrate (3501.10.10) from Canada, 20,000 kg, $60,000, no USMCA claim",
+      "chapter": "35",
+      "input": {
+        "hts10": "3501101000",
+        "countryOfOrigin": "CA",
+        "customsValueUsd": 60000,
+        "quantities": {
+          "KG": 20000
+        },
+        "entryDate": "2026-10-11"
+      },
+      "line": {
+        "hts10": "3501101000",
+        "general": "0.37¢/kg",
+        "special": "Free (A,AU,BH,CL,CO,D,E,IL,JO,KR,MA,OM,P,PA,PE,S,SG)",
+        "units": ["kg", "kg msc"]
+      },
+      "expectedTotalDutyUsd": 36074.0,
+      "toleranceUsd": 0.01,
+      "sourceNote": "HTS Rev 21 3501.10.10 general 0.37 cents/kg: 20,000 x $0.0037 = $74. Section 338 duty on Canada: 3501.10.10 enumerated in note 51(b)(2) -> 9903.03.13 +50% = $30,000 (the 51(c) relief for 9903.03.13 covers only metals/vehicles/wood/semiconductors/patented pharma). 2026 Section 301 Canada 9903.05.29 +10% = $6,000. Not on the Canada dairy import-ban list (Proclamation 11062). $74 + $30,000 + $6,000 = $36,074."
+    },
+    {
+      "id": "ch35-edible-gelatin-jp-floor-compound",
+      "description": "Edible gelatin (3503.00.55.10) from Japan, 2,000 kg, $20,000",
+      "chapter": "35",
+      "input": {
+        "hts10": "3503005510",
+        "countryOfOrigin": "JP",
+        "customsValueUsd": 20000,
+        "quantities": {
+          "KG": 2000
+        },
+        "entryDate": "2026-10-11"
+      },
+      "line": {
+        "hts10": "3503005510",
+        "general": "2.8¢/kg + 3.8%",
+        "special": "Free (A,AU,BH,CL,CO,D,E,IL,JO,KR,MA,OM,P,PA,PE,S,SG)",
+        "units": ["kg"]
+      },
+      "expectedTotalDutyUsd": 2500.0,
+      "toleranceUsd": 0.01,
+      "sourceNote": "HTS Rev 21 3503.00.55 general 2.8 cents/kg + 3.8% (compound): 2,000 x $0.028 + 3.8% x $20,000 = $56 + $760 = $816 -> AVE 4.08% (note 52(k)). 4.08% < 12.5%, so 9903.05.49 applies and column 1 + additional duty total 12.5% ad valorem. 12.5% x $20,000 = $2,500."
+    },
+    {
+      "id": "ch36-pyrotechnic-other-cn-list4a",
+      "description": "Signalling flares and other pyrotechnic articles (3604.90.00) from China, $10,000, 2,000 kg",
+      "chapter": "36",
+      "input": {
+        "hts10": "3604900000",
+        "countryOfOrigin": "CN",
+        "customsValueUsd": 10000,
+        "quantities": {
+          "KG": 2000
+        },
+        "entryDate": "2026-10-11"
+      },
+      "line": {
+        "hts10": "3604900000",
+        "general": "6.5%",
+        "special": "Free (A*,AU,BH,CL,CO,D,E,IL,JO,KR,MA,OM,P,PA,PE,S,SG)",
+        "units": ["kg"]
+      },
+      "expectedTotalDutyUsd": 2650.0,
+      "toleranceUsd": 0.01,
+      "sourceNote": "HTS Rev 21 3604.90.00 general 6.5%. China Section 301 List 4A: 3604.90.00 enumerated in note 20(s)(i) -> 9903.88.15 +7.5%. 2026 Section 301 China 9903.05.31 +12.5% additive (note 52(a)). 6.5% + 7.5% + 12.5% = 26.5% x $10,000 = $2,650."
+    },
+    {
+      "id": "ch36-ferrocerium-de-52b",
+      "description": "Ferrocerium (3606.90.30) from Germany, $10,000, 500 kg",
+      "chapter": "36",
+      "input": {
+        "hts10": "3606903000",
+        "countryOfOrigin": "DE",
+        "customsValueUsd": 10000,
+        "quantities": {
+          "KG": 500
+        },
+        "entryDate": "2026-10-11"
+      },
+      "line": {
+        "hts10": "3606903000",
+        "general": "5.9%",
+        "special": "Free (A+,AU,BH,CL,CO,D,E,IL, JO,KR,MA,OM,P, PA,PE,S,SG)",
+        "units": ["kg"]
+      },
+      "expectedTotalDutyUsd": 590.0,
+      "toleranceUsd": 0.01,
+      "sourceNote": "HTS Rev 21 3606.90.30 general 5.9%. The EU 2026 Section 301 headings (9903.05.38/.39, 10% floor) do not apply: 3606.90.30 is on the note 52(b) list (heading 9903.05.86, which the EU headings except). Base only: 5.9% x $10,000 = $590."
+    },
+    {
+      "id": "ch36-propellant-powder-au-fta",
+      "description": "Propellant powders (3601.00.00) from Australia, $10,000, 1,000 kg, AUSFTA claim (SPI AU)",
+      "chapter": "36",
+      "input": {
+        "hts10": "3601000000",
+        "countryOfOrigin": "AU",
+        "customsValueUsd": 10000,
+        "quantities": {
+          "KG": 1000
+        },
+        "claimedSpi": "AU",
+        "entryDate": "2026-10-11"
+      },
+      "line": {
+        "hts10": "3601000000",
+        "general": "3.25%",
+        "special": "Free (A,AU,BH,CL,CO,D,E,IL,JO,KR,MA,OM,P,PA,PE,S,SG)",
+        "units": ["kg"]
+      },
+      "expectedTotalDutyUsd": 1250.0,
+      "toleranceUsd": 0.01,
+      "sourceNote": "HTS Rev 21 3601.00.00 general 3.25%, special Free (AU) -> base $0 with the claim. 2026 Section 301 Australia 9903.05.23 +12.5% applies to FTA-eligible goods too (note 52(a)); no 52(k) floor for Australia. 12.5% x $10,000 = $1,250."
+    },
+    {
+      "id": "ch38-activated-carbon-cn-list3-no-confirmation",
+      "description": "Activated carbon derived from coconut (3802.10.00.20) from China, $20,000, 10,000 kg, no end-use confirmation",
+      "chapter": "38",
+      "input": {
+        "hts10": "3802100020",
+        "countryOfOrigin": "CN",
+        "customsValueUsd": 20000,
+        "quantities": {
+          "KG": 10000
+        },
+        "entryDate": "2026-10-11"
+      },
+      "line": {
+        "hts10": "3802100020",
+        "general": "4.8%",
+        "special": "Free (A*,AU,BH,CL,CO,D,E,IL,JO,KR,MA,OM,P,PA,PE,S,SG)",
+        "units": ["kg"]
+      },
+      "expectedTotalDutyUsd": 8460.0,
+      "toleranceUsd": 0.01,
+      "sourceNote": "HTS Rev 21 3802.10.00 general 4.8%. China Section 301 List 3 (note 20(f)) 9903.88.03 +25%. 2026 Section 301 China 9903.05.31 +12.5%: 3802.10.00 is on the note 52(e) list, but the 9903.05.89 relief needs use in pharmaceutical applications, which is not confirmed, so the 12.5% applies (additive, note 52(a)). 4.8% + 25% + 12.5% = 42.3% x $20,000 = $8,460."
+    },
+    {
+      "id": "ch38-polysilicon-wafers-ru",
+      "description": "Doped polycrystalline silicon wafers (3818.00.00.20) from Russia, $50,000, 100 kg",
+      "chapter": "38",
+      "input": {
+        "hts10": "3818000020",
+        "countryOfOrigin": "RU",
+        "customsValueUsd": 50000,
+        "quantities": {
+          "KG": 100
+        },
+        "entryDate": "2026-10-11"
+      },
+      "line": {
+        "hts10": "3818000020",
+        "general": "Free",
+        "special": null,
+        "column2": "25%",
+        "units": ["kg"]
+      },
+      "expectedTotalDutyUsd": 17500.0,
+      "toleranceUsd": 0.01,
+      "sourceNote": "Russia is a column 2 country (general note 3(b)); 3818.00.00 is enumerated in note 30(b) -> 9903.90.08: 35% ad valorem in lieu of the column 2 rate (25%). The 2026 Section 301 Russia duty (9903.05.66) does not apply: 3818.00.00 is on the note 52(b) list (9903.05.86). The China-only note 31(f) duty does not reach Russia. 35% x $50,000 = $17,500."
+    },
+    {
+      "id": "ch38-stearic-acid-de-compound-52j2",
+      "description": "Industrial stearic acid (3823.11.00) from Germany, 10,000 kg, $15,000",
+      "chapter": "38",
+      "input": {
+        "hts10": "3823110000",
+        "countryOfOrigin": "DE",
+        "customsValueUsd": 15000,
+        "quantities": {
+          "KG": 10000
+        },
+        "entryDate": "2026-10-11"
+      },
+      "line": {
+        "hts10": "3823110000",
+        "general": "2.1¢/kg + 3.8%",
+        "special": "Free (A*,AU,BH,CL,CO,D,E,IL,JO,KR,MA,OM,P,PA,PE,S,SG)",
+        "units": ["kg"]
+      },
+      "expectedTotalDutyUsd": 780.0,
+      "toleranceUsd": 0.01,
+      "sourceNote": "HTS Rev 21 3823.11.00 general 2.1 cents/kg + 3.8% (compound): 10,000 x $0.021 + 3.8% x $15,000 = $210 + $570 = $780. The EU 2026 Section 301 headings (9903.05.38/.39) do not apply: 3823.11.00 is on the note 52(j)(2) EU list (heading 9903.05.97). Base only: $780."
+    },
+    {
+      "id": "ch72-steel-wire-cn-list4a-s232",
+      "description": "Galvanized (plated or coated with zinc) iron/nonalloy steel wire, coils <= 2 kg (7217.10.40.40) from China, $30,000, 20,000 kg",
+      "chapter": "72",
+      "input": {
+        "hts10": "7217104040",
+        "countryOfOrigin": "CN",
+        "customsValueUsd": 30000,
+        "quantities": {
+          "KG": 20000
+        },
+        "entryDate": "2026-10-11"
+      },
+      "line": {
+        "hts10": "7217104040",
+        "general": "Free",
+        "special": null,
+        "units": ["kg"]
+      },
+      "expectedTotalDutyUsd": 17250.0,
+      "toleranceUsd": 0.01,
+      "sourceNote": "HTS Rev 21 7217.10.40 general Free. Section 232 steel: heading 7217 is on the note 16(c)(iii) list -> 9903.82.02 +50% on the full customs value (Proclamation 11021; ch72 articles have no 15%-metal-weight test). China Section 301 List 4A: 7217.10.40 enumerated in note 20(s)(i) -> 9903.88.15 +7.5% (7217.10.40 is not in note 31(b), so 9903.91.01 does not apply). 2026 Section 301 China 9903.05.31 removed by note 52(f)(1) (articles of steel under 9903.82.02). 50% + 7.5% = 57.5% x $30,000 = $17,250."
+    },
+    {
+      "id": "ch72-steel-plate-ru-col2-s232",
+      "description": "Universal mill plate of nonalloy steel (7208.51.00.30) from Russia, $100,000, 80,000 kg",
+      "chapter": "72",
+      "input": {
+        "hts10": "7208510030",
+        "countryOfOrigin": "RU",
+        "customsValueUsd": 100000,
+        "quantities": {
+          "KG": 80000
+        },
+        "entryDate": "2026-10-11"
+      },
+      "line": {
+        "hts10": "7208510030",
+        "general": "Free",
+        "special": null,
+        "column2": "20%",
+        "units": ["kg"]
+      },
+      "expectedTotalDutyUsd": 120000.0,
+      "toleranceUsd": 0.01,
+      "sourceNote": "Russia is a column 2 country; 7208.51.00 is enumerated in note 30(d) -> 9903.90.09: 70% ad valorem in lieu of the column 2 rate (20%). Section 232 steel for Russia: 9903.82.14 (duty of the applicable subheading + 50%, full value; 9903.82.02 excepts Russian steel to 9903.82.14). 2026 Section 301 Russia 9903.05.66 removed by note 52(f)(1) (goods under 9903.82.04-.26). 70% + 50% = 120% x $100,000 = $120,000."
+    },
+    {
+      "id": "ch72-galvanized-sheet-mx-usmca-s232",
+      "description": "Electrolytically zinc-plated flat-rolled high-strength steel (7210.30.00.30) from Mexico, $100,000, 80,000 kg, USMCA claim (SPI S)",
+      "chapter": "72",
+      "input": {
+        "hts10": "7210300030",
+        "countryOfOrigin": "MX",
+        "customsValueUsd": 100000,
+        "quantities": {
+          "KG": 80000
+        },
+        "claimedSpi": "S",
+        "entryDate": "2026-10-11"
+      },
+      "line": {
+        "hts10": "7210300030",
+        "general": "Free",
+        "special": null,
+        "units": ["kg"]
+      },
+      "expectedTotalDutyUsd": 50000.0,
+      "toleranceUsd": 0.01,
+      "sourceNote": "HTS Rev 21 7210.30.00 general Free. Section 232 steel (note 16(c)(iii), heading 7210) -> 9903.82.02 +50% on the full value; note 16(b): for goods eligible for FTA treatment (USMCA) the duty is collected in addition to the special rate, so the USMCA claim does not lift it (the 9903.82.18 reduced-rate quota needs a Commerce authorization, not claimed). 2026 Section 301 Mexico 9903.05.55 is removed by note 52(f)(1) (and would also be lifted by 52(h)). 50% x $100,000 = $50,000."
     }
   ]
 }
