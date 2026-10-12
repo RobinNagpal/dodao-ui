@@ -51,6 +51,7 @@ const CHAPTER_FILES: Record<string, () => Promise<{ default: unknown }>> = {
   '19-cereal-and-bakers-goods': () => import('@/tariff-data/chapters/19-cereal-and-bakers-goods.json'),
   '20-veg-fruit-preparations': () => import('@/tariff-data/chapters/20-veg-fruit-preparations.json'),
   '21-misc-edible-preparations': () => import('@/tariff-data/chapters/21-misc-edible-preparations.json'),
+  '22-beverages-spirits-vinegar': () => import('@/tariff-data/chapters/22-beverages-spirits-vinegar.json'),
   '23-food-industry-residues-and-feed': () => import('@/tariff-data/chapters/23-food-industry-residues-and-feed.json'),
   '24-tobacco-and-substitutes': () => import('@/tariff-data/chapters/24-tobacco-and-substitutes.json'),
   '25-salt-sulfur-and-cements': () => import('@/tariff-data/chapters/25-salt-sulfur-and-cements.json'),
