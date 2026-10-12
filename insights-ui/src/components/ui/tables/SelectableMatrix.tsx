@@ -16,7 +16,7 @@ import React, { useState } from 'react';
  *
  * - Desktop: a table with plain selectable cells.
  * - Phones: a wide matrix would show one column at a time, so it becomes a list — pick a group with
- *   the chips, then each row is one tappable item.
+ *   the chips, then each row is one tappable item (divided, with a chevron).
  *
  * Selecting a cell (or list item) opens its detail in a modal, so the matrix itself never shifts;
  * the selected cell stays highlighted behind the modal and after it closes.
@@ -195,25 +195,28 @@ export default function SelectableMatrix({
             ))}
           </Stack>
           {selectedGroup && (
-            <Stack gap="xs">
+            // Divided rows with a chevron, so each country reads as a tappable item rather than plain text.
+            <ul className="divide-y divide-border rounded-lg border border-border">
               {rows.map((row) => {
                 const value = cell(row, selectedGroup);
                 const isSelected = selected.row === row.key && selected.group === selectedGroup.key;
                 return (
-                  <MatrixCellButton
-                    key={row.key}
-                    label={cellLabel(row, selectedGroup)}
-                    name={row.name}
-                    primary={<CellValue value={value} />}
-                    emphasis={value.emphasis}
-                    secondary={value.secondary ? `${value.secondary} in ${selectedGroup.shortLabel.toLowerCase()}` : row.sub}
-                    dim={value.dim}
-                    selected={isSelected}
-                    onSelect={() => openDetail({ row: row.key, group: selectedGroup.key })}
-                  />
+                  <li key={row.key}>
+                    <MatrixCellButton
+                      layout="row"
+                      label={cellLabel(row, selectedGroup)}
+                      name={row.name}
+                      primary={<CellValue value={value} />}
+                      emphasis={value.emphasis}
+                      secondary={value.secondary ? `${value.secondary} in ${selectedGroup.shortLabel.toLowerCase()}` : row.sub}
+                      dim={value.dim}
+                      selected={isSelected}
+                      onSelect={() => openDetail({ row: row.key, group: selectedGroup.key })}
+                    />
+                  </li>
                 );
               })}
-            </Stack>
+            </ul>
           )}
         </Stack>
       </ShowAt>

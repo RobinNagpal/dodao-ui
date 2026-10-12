@@ -1,5 +1,6 @@
 'use client';
 
+import DefinitionList from '@/components/ui/DefinitionList';
 import NoticeCallout from '@/components/ui/NoticeCallout';
 import MetricCell from '@/components/ui/MetricCell';
 import SearchField from '@/components/ui/SearchField';
@@ -12,7 +13,7 @@ import Stack from '@/components/ui/containers/Stack';
 import CardSection from '@/components/ui/sections/CardSection';
 import InlineCard from '@/components/ui/sections/InlineCard';
 import SectionHeading from '@/components/ui/sections/SectionHeading';
-import { MatrixCellButton } from '@/components/ui/tables/DataTable';
+import { StackedRow, StackedRowList } from '@/components/ui/tables/StackedRowList';
 import type { TariffMatrixCountry } from '@/types/tariff-chapter-prototype';
 import {
   HMF_RATE,
@@ -93,6 +94,38 @@ function capitalize(s: string): string {
   return s.charAt(0).toUpperCase() + s.slice(1);
 }
 
+/** The picked line: its parent headings muted above its own description. */
+function LineLabel({ line }: { line: ShipmentLine }): React.JSX.Element {
+  return (
+    <Stack gap="xxs">
+      {line.context && (
+        <Text as="span" size="xs" tone="muted">
+          {line.context}
+        </Text>
+      )}
+      <Text as="span" size="sm" weight="medium" tone="white">
+        {line.description}
+      </Text>
+    </Stack>
+  );
+}
+
+/** One part of the duty breakdown: the dollar amount, then the rule that produced it. */
+function BreakdownValue({ amount, rule }: { amount: string; rule?: string }): React.JSX.Element {
+  return (
+    <Stack direction="row" gap="sm" align="baseline" wrap>
+      <Text as="span" size="sm" weight="semibold" tone="white">
+        {amount}
+      </Text>
+      {rule && (
+        <Text as="span" size="xs" tone="muted">
+          {rule}
+        </Text>
+      )}
+    </Stack>
+  );
+}
+
 function parsePositive(raw: string): number | undefined {
   const n = Number(raw.replace(/[,$\s]/g, ''));
   return raw.trim() !== '' && Number.isFinite(n) && n >= 0 ? n : undefined;
@@ -152,16 +185,9 @@ export default function ShipmentDutyBox({ lines, countries, ratesAsOf, scheduleE
             1. Product line
           </Text>
           {line ? (
-            <Stack gap="xs">
-              <MatrixCellButton
-                selected
-                name={line.hts}
-                primary={line.label}
-                secondary="Change product line"
-                label={`Selected line ${line.hts}. Select to change.`}
-                onSelect={() => setLine(null)}
-              />
-            </Stack>
+            <StackedRowList selected>
+              <StackedRow code={line.hts} label={<LineLabel line={line} />} value="Change" tone="primary" onSelect={() => setLine(null)} />
+            </StackedRowList>
           ) : (
             <Stack gap="sm">
               <SearchField
@@ -172,22 +198,36 @@ export default function ShipmentDutyBox({ lines, countries, ratesAsOf, scheduleE
                 resultLabel={query ? `${results.count} line${results.count === 1 ? '' : 's'}` : undefined}
               />
               {results.matches.length > 0 && (
-                <Stack as="ul" gap="xxs">
-                  {results.matches.map((match) => (
-                    <li key={match.hts}>
-                      <MatrixCellButton
-                        name={match.hts}
-                        primary={match.label}
-                        label={`Pick ${match.hts} ${match.label}`}
+                <StackedRowList>
+                  {results.matches.map((match, index) => (
+                    <React.Fragment key={match.hts}>
+                      {/* Matches are in schedule order, so siblings sit together: name their shared parents once, above them. */}
+                      {match.context && match.context !== results.matches[index - 1]?.context && (
+                        <StackedRow
+                          emphasis="group"
+                          label={
+                            <Text as="span" size="xs" tone="muted">
+                              {match.context}
+                            </Text>
+                          }
+                        />
+                      )}
+                      <StackedRow
+                        code={match.hts}
+                        label={
+                          <Text as="span" size="sm" weight="medium" tone="white">
+                            {match.description}
+                          </Text>
+                        }
                         onSelect={() => {
                           setLine(match);
                           setQuery('');
                           setVariant(null);
                         }}
                       />
-                    </li>
+                    </React.Fragment>
                   ))}
-                </Stack>
+                </StackedRowList>
               )}
               {results.count > MAX_RESULTS && (
                 <Text size="xs" tone="muted">
@@ -292,20 +332,36 @@ export default function ShipmentDutyBox({ lines, countries, ratesAsOf, scheduleE
                 value={usdRange(result.total)}
                 note={`Duty ${usdRange(result.duty)} + customs fees ${usd(result.mpf + result.hmf)}`}
               />
-              <Text size="sm">
-                {result.baseDuty && result.extraDuty ? (
-                  <>
-                    Base duty {usdRange(result.baseDuty)} ({rule.row.base}
-                    {result.baseNote === 'replaced' ? ', replaced by the extra duty' : result.baseNote === 'preference' ? ', waived by the trade deal' : ''}) +
-                    extra duty {usdRange(result.extraDuty)} ({rule.row.extra})
-                  </>
-                ) : (
-                  <>
-                    Duty {usdRange(result.duty)} ({rule.row.total})
-                  </>
-                )}{' '}
-                + MPF {usd(result.mpf)} + HMF {usd(result.hmf)} = {usdRange(result.total)}
-              </Text>
+              {/* One row per part, so the rule text (which has its own brackets, e.g. "None (USMCA)") is never wrapped in more. */}
+              <DefinitionList
+                look="fields"
+                columns="1"
+                items={[
+                  ...(result.baseDuty && result.extraDuty
+                    ? [
+                        {
+                          term: 'Base duty',
+                          definition: (
+                            <BreakdownValue
+                              amount={usdRange(result.baseDuty)}
+                              rule={`${rule.row.base}${
+                                result.baseNote === 'replaced'
+                                  ? ', replaced by the extra duty'
+                                  : result.baseNote === 'preference'
+                                  ? ', waived by the trade deal'
+                                  : ''
+                              }`}
+                            />
+                          ),
+                        },
+                        { term: 'Extra duty', definition: <BreakdownValue amount={usdRange(result.extraDuty)} rule={rule.row.extra} /> },
+                      ]
+                    : [{ term: 'Duty', definition: <BreakdownValue amount={usdRange(result.duty)} rule={rule.row.total} /> }]),
+                  { term: 'Processing fee', definition: <BreakdownValue amount={usd(result.mpf)} rule="MPF" /> },
+                  { term: 'Harbor fee', definition: <BreakdownValue amount={usd(result.hmf)} rule={mode === 'OCEAN' ? 'HMF' : 'HMF, ocean shipments only'} /> },
+                  { term: 'Total', definition: <BreakdownValue amount={usdRange(result.total)} /> },
+                ]}
+              />
               {!result.exact && (
                 <NoticeCallout tone="info">
                   “{countryName}” covers many countries, so this is a range ({rule.row.total}). Pick a listed country for an exact number, or open the full
@@ -330,7 +386,9 @@ export default function ShipmentDutyBox({ lines, countries, ratesAsOf, scheduleE
 
         {line && (
           <Text size="sm">
-            <TextLink href={fullCalculatorHref}>Open this shipment in the full tariff calculator →</TextLink>
+            <TextLink href={fullCalculatorHref} wrap>
+              Open this shipment in the full tariff calculator&nbsp;→
+            </TextLink>
           </Text>
         )}
       </Stack>

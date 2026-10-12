@@ -150,7 +150,7 @@ Rules for leaves:
 
 | Component | Responsibility |
 |---|---|
-| `Stack` | Flex container; owns `gap` + optional block margins (`mt`/`mb`); `as` for `ul`/`section`/etc. |
+| `Stack` | Flex container; owns `gap` + optional block margins (`mt`/`mb`); `as` for `ul`/`section`/etc. `align="end-from-sm"` is left on phones, right from `sm` up. |
 | `MetricGrid` | Responsive grid for metric cells; `columns` presets + `gap`. |
 | `StatCardGrid` | Row of headline stat cards (`MetricCell size="lg"`): two per row below desktop, all in one row on desktop; an odd last card spans the row. |
 | `TabsWithAside` | Tab row with a control beside it (e.g. section tabs + Import/Export switch); the aside drops below on narrow screens. |
@@ -164,7 +164,7 @@ Rules for leaves:
 |---|---|
 | `CardSection` | Dark report-section surface (`bg-gray-900 rounded-lg shadow-sm`) with padding presets. |
 | `InlineCard` | Lightweight filled box (`bg-gray-800 rounded-md`); `padding` presets incl. `factor`; `as` for `li`. |
-| `RelatedSectionsNav` | Top-bordered "more analyses" nav: heading + responsive grid of pill links. |
+| `RelatedSectionsNav` | Top-bordered "more analyses" nav: heading + responsive grid of pill links. An item with `active` is the current page: shown in place, highlighted, not linked. |
 | `LinkTile` | Navigational tile with eyebrow, title, highlighted meta value, body and footer. |
 | `RuleList` | List separated by top rules instead of boxes, for sources and citations; optional `columns`. |
 | `TimelineRow` | One ruled list entry: a left column (date + status, or code + name) beside the entry body; stacks on phones. |
@@ -196,9 +196,9 @@ Rules for leaves:
 | `ScenarioOutlookBadge` | Probability / Direction / Timeframe scenario pills. |
 | `AppliedFilterChip` | Removable filter chip. |
 | `ToggleChip` | On/off filter chip (`aria-pressed`) with an optional count. |
-| `ToggleSwitch` | Track-and-knob on/off switch with its label, for one setting that changes a whole table (e.g. "USMCA claimed"). |
-| `ActiveTabScroller` | Horizontally scrolling tab row that scrolls the current tab (`aria-current="page"`) into view on load. |
-| `ShareBar` | Inline bar + label for a share column in a table, scaled to the column's largest value. |
+| `ToggleSwitch` | Track-and-knob on/off switch with its label, for one setting that changes a whole table (e.g. "USMCA claimed"). The label wraps on narrow screens. |
+| `ActiveTabScroller` | Horizontally scrolling tab row that scrolls the current tab (`aria-current="page"`) into view on load, and fades whichever edge still has tabs hidden past it. |
+| `ShareBar` | Inline bar + label for a share column in a table, scaled to the column's largest value. Below `lg` only the percentage shows; give the column header `width="wideFromLg"`/`"quarterFromLg"`. |
 | `SearchField` | Filter-a-listing search box: magnifier, clear button, result count. |
 | `DefinitionList` | Compact term → definition grid for code legends/glossaries. |
 | `Term` | Inline jargon term with a dotted underline that opens a plain-English definition on tap / click / Enter (button + popover portalled to `<body>`, clamped to the viewport; closes on Escape, outside tap or scroll). Works on phones, unlike `title=`. Tariff pages use it through `GlossaryTerm id="…"`, which reads `src/tariff-data/glossary.ts`. |
@@ -212,7 +212,8 @@ Rules for leaves:
 | `IndentedLabel` | Description cell indented to its place in a hierarchy (literal `pl-*` per depth, 0–6). |
 | `InheritedValue` / `EmptyCellValue` | Muted "inherited from <parent>" value, and the em-dash empty cell. |
 | `MatrixCellButton` | Selectable matrix cell (primary value + muted second line, `selected`/`dim`) that opens a detail view. |
-| `SelectableMatrix` | Row × group matrix of `MatrixCellButton`s: a table on desktop, a group picker + list on phones; the selected cell's detail opens in a `DetailModal`. |
+| `SelectableMatrix` | Row × group matrix of `MatrixCellButton`s: a table on desktop, a group picker + a divided list of tappable rows (`MatrixCellButton layout="row"`, with a chevron) on phones; the selected cell's detail opens in a `DetailModal`. |
+| `StackedRowList` + `StackedRowListHeader`/`StackedRow` | Phone layout for a wide reference table: one list item per row (code + key value on top, full label below, indented as a tree), tap to open the other columns. Rows can instead be picked (`onSelect`, e.g. search results in a line picker), and `selected` on the list marks the picked one. Pair with `ShowAt` so the table shows from `lg` up. |
 
 Plus the shadcn-style `Card`, `Input`, `Label`, `Tabs` already in
 `components/ui/`. **Always grep the leaf layer + web-core before creating a new

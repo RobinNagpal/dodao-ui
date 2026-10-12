@@ -31,12 +31,16 @@ export default function ToggleSwitch({ label, checked, onToggle, className }: To
       role="switch"
       aria-checked={checked}
       onClick={onToggle}
-      className={cn('inline-flex items-center gap-2 rounded-lg border border-border bg-bg px-3 py-2.5 text-sm text-heading hover:bg-surface-2', className)}
+      className={cn(
+        'inline-flex max-w-full items-center gap-2 rounded-lg border border-border bg-bg px-3 py-2.5 text-sm text-heading hover:bg-surface-2',
+        className
+      )}
     >
       <span style={{ ...TRACK, background: checked ? ON_COLOR : 'var(--surface-3)' }}>
         <span style={{ ...KNOB, left: checked ? 18 : 2 }} />
       </span>
-      <span className="whitespace-nowrap">{label}</span>
+      {/* Wraps on narrow screens rather than widening the page. */}
+      <span className="text-left">{label}</span>
     </button>
   );
 }

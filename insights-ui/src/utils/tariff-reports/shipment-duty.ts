@@ -244,6 +244,10 @@ export interface ShipmentLine {
   htsCode10: string;
   /** Nearest ancestors + own description, e.g. "Horses › Purebred breeding animals › Males". */
   label: string;
+  /** The line's own description, e.g. "Males" — what tells it apart from its siblings. */
+  description: string;
+  /** Its nearest ancestors, e.g. "Horses › Purebred breeding animals"; empty at the top level. */
+  context: string;
   searchText: string;
 }
 
@@ -252,7 +256,15 @@ export function shipmentLines(rows: TariffRateTableRow[]): ShipmentLine[] {
   const lines: ShipmentLine[] = [];
   for (const row of rows) {
     if (!row.hts || !row.htsCode10) continue;
-    lines.push({ hts: row.hts, htsCode10: row.htsCode10, label: [...row.ancestorPath.slice(-2), row.description].join(' › '), searchText: row.searchText });
+    const context = row.ancestorPath.slice(-2).join(' › ');
+    lines.push({
+      hts: row.hts,
+      htsCode10: row.htsCode10,
+      label: context ? `${context} › ${row.description}` : row.description,
+      description: row.description,
+      context,
+      searchText: row.searchText,
+    });
   }
   return lines;
 }

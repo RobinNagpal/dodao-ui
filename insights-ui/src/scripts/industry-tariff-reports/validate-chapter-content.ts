@@ -282,6 +282,19 @@ function checkInEffectDated(report: Report, where: string, entries: { id: string
   }
 }
 
+/**
+ * Lists the pages render with each entry's text as its React key (notes, key takeaways): a repeated
+ * entry shows twice on the page and collides as a key. Most string arrays may repeat (e.g. "Other" in
+ * an HTS ancestor path), so only these lists are checked.
+ */
+function checkUniqueStrings(report: Report, where: string, list: string[] | undefined): void {
+  const seen = new Set<string>();
+  list?.forEach((text, i) => {
+    if (seen.has(text)) report.error(`${where}[${i}]`, `repeats an earlier entry: "${text.slice(0, 80)}"`);
+    seen.add(text);
+  });
+}
+
 function checkPrototype(report: Report, opts: Options, slug: string, p: TariffChapterPrototype): void {
   const where = slug;
   if (p.chapter.slug !== slug) report.error(where, `chapter.slug "${p.chapter.slug}" does not match the registered slug`);
@@ -298,6 +311,8 @@ function checkPrototype(report: Report, opts: Options, slug: string, p: TariffCh
   if (ia && tu && ia.scheduleEdition !== tu.now.edition) {
     report.warn(`${where}.industryAreas.scheduleEdition`, `"${ia.scheduleEdition}" differs from tariffUpdates.now.edition "${tu.now.edition}"`);
   }
+  checkUniqueStrings(report, `${where}.industryAreas.assumptions`, ia?.assumptions);
+  checkUniqueStrings(report, `${where}.finalConclusion.keyTakeaways`, p.finalConclusion?.keyTakeaways);
   if (ia) {
     const headings = new Set(ia.groups.map((g) => g.heading));
     ia.countries.forEach((c) => {
@@ -343,6 +358,8 @@ function checkExports(report: Report, opts: Options, slug: string, e: TariffChap
     if (page.chapter.slug !== slug) report.error(where, `chapter.slug "${page.chapter.slug}" does not match the registered slug`);
     walk(report, opts, page as unknown as Json, where, null, false);
   }
+  checkUniqueStrings(report, `${slug}/exports/overview.keyTakeaways`, e.overview.keyTakeaways);
+  checkUniqueStrings(report, `${slug}/exports/markets.assumptions`, e.markets.assumptions);
   checkSortedNewestFirst(report, `${slug}/exports/tariffUpdates.changes`, e.tariffUpdates.changes);
   checkInEffectDated(report, `${slug}/exports/tariffUpdates.inEffect`, e.tariffUpdates.inEffect);
 }

@@ -22,7 +22,15 @@ const stack = cva('flex', {
       xl: 'gap-6',
       '2xl': 'gap-8',
     },
-    align: { start: 'items-start', center: 'items-center', end: 'items-end', stretch: 'items-stretch', baseline: 'items-baseline' },
+    align: {
+      start: 'items-start',
+      center: 'items-center',
+      end: 'items-end',
+      stretch: 'items-stretch',
+      baseline: 'items-baseline',
+      // Left on phones, where the stack sits under other content; right from `sm` up, where it sits beside it.
+      'end-from-sm': 'items-start sm:items-end',
+    },
     justify: { start: 'justify-start', center: 'justify-center', between: 'justify-between', end: 'justify-end' },
     wrap: { true: 'flex-wrap', false: '' },
     mt: { none: '', sm: 'mt-2', md: 'mt-3', lg: 'mt-4', xl: 'mt-6' },

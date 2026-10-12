@@ -12,7 +12,7 @@ export function SourceLinks({ ids, sources }: { ids: string[]; sources: Map<stri
         if (!source) return null;
         return (
           <TextLink key={id} href={source.url} size="xs" wrap>
-            {source.citation} ↗
+            {source.citation}&nbsp;↗
           </TextLink>
         );
       })}

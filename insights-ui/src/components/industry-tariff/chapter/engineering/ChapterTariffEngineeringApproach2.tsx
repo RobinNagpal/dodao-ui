@@ -3,6 +3,7 @@ import Heading from '@/components/ui/Heading';
 import StatusBadge from '@/components/ui/StatusBadge';
 import Text from '@/components/ui/Text';
 import TextLink from '@/components/ui/TextLink';
+import ShowAt from '@/components/ui/containers/ShowAt';
 import Stack from '@/components/ui/containers/Stack';
 import CardSection from '@/components/ui/sections/CardSection';
 import { DisclosureItem } from '@/components/ui/sections/DisclosureList';
@@ -11,6 +12,7 @@ import MarkdownContent from '@/components/ui/sections/MarkdownContent';
 import SectionHeading from '@/components/ui/sections/SectionHeading';
 import TimelineRow from '@/components/ui/sections/TimelineRow';
 import { DataTable, TableCell, TableHead, TableHeaderCell, TableRow, TableScroll } from '@/components/ui/tables/DataTable';
+import { StackedRow, StackedRowList } from '@/components/ui/tables/StackedRowList';
 import type { TariffCitation, TariffChapterPrototype, TariffEngineeringContent } from '@/types/tariff-chapter-prototype';
 import { parseChapterBodyMarkdown } from '@/util/parse-markdown';
 import React from 'react';
@@ -68,28 +70,51 @@ export default function ChapterTariffEngineeringApproach2({ content, engineering
               document and what to watch out for.
             </Text>
           </Stack>
-          <TableScroll>
-            <DataTable>
-              <TableHead look="plain">
-                <TableRow>
-                  <TableHeaderCell width="wide">Way to pay less</TableHeaderCell>
-                  <TableHeaderCell width="wide">What it saves</TableHeaderCell>
-                </TableRow>
-              </TableHead>
-              <tbody>
-                {engineering.levers.map((lever) => (
-                  <TableRow key={lever.id}>
-                    <TableCell>
+          <ShowAt range="lg-up">
+            <TableScroll>
+              <DataTable>
+                <TableHead look="plain">
+                  <TableRow>
+                    <TableHeaderCell width="wide">Way to pay less</TableHeaderCell>
+                    <TableHeaderCell width="wide">What it saves</TableHeaderCell>
+                  </TableRow>
+                </TableHead>
+                <tbody>
+                  {engineering.levers.map((lever) => (
+                    <TableRow key={lever.id}>
+                      <TableCell>
+                        <TextLink href={`#${lever.id}`} wrap>
+                          {lever.title}
+                        </TextLink>
+                      </TableCell>
+                      <TableCell>{lever.saves}</TableCell>
+                    </TableRow>
+                  ))}
+                </tbody>
+              </DataTable>
+            </TableScroll>
+          </ShowAt>
+          {/* Phones: two wide columns would cut "What it saves" off at the edge, so each way becomes a
+              list item with what it saves underneath. */}
+          <ShowAt range="below-lg">
+            <StackedRowList>
+              {engineering.levers.map((lever) => (
+                <StackedRow
+                  key={lever.id}
+                  label={
+                    <Stack gap="xs">
                       <TextLink href={`#${lever.id}`} wrap>
                         {lever.title}
                       </TextLink>
-                    </TableCell>
-                    <TableCell>{lever.saves}</TableCell>
-                  </TableRow>
-                ))}
-              </tbody>
-            </DataTable>
-          </TableScroll>
+                      <Text as="span" size="sm">
+                        {lever.saves}
+                      </Text>
+                    </Stack>
+                  }
+                />
+              ))}
+            </StackedRowList>
+          </ShowAt>
         </Stack>
       </CardSection>
 

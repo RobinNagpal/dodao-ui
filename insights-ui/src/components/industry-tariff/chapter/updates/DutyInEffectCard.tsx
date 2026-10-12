@@ -1,5 +1,6 @@
 import Text from '@/components/ui/Text';
 import TextLink from '@/components/ui/TextLink';
+import HeaderWithAside from '@/components/ui/containers/HeaderWithAside';
 import Stack from '@/components/ui/containers/Stack';
 import { DisclosureItem } from '@/components/ui/sections/DisclosureList';
 import InlineCard from '@/components/ui/sections/InlineCard';
@@ -48,7 +49,28 @@ export default function DutyInEffectCard({
   return (
     <InlineCard surface="card" padding="spacious">
       <Stack gap="md">
-        <Stack direction="row" gap="lg" align="start" justify="between" wrap>
+        <HeaderWithAside
+          bordered={false}
+          align="start"
+          aside={
+            <Stack gap="xs" align="end-from-sm">
+              <Text as="span" size="lg" weight="bold" tone="white">
+                {before} → {now}
+              </Text>
+              <Text as="span" size="sm" tone="muted">
+                In effect since <time dateTime={effectiveFrom}>{formatSince(effectiveFrom)}</time>
+                {effectiveSource && (
+                  <>
+                    {' · '}
+                    <TextLink href={effectiveSource.url} size="sm" wrap>
+                      {effectiveSource.citation}&nbsp;↗
+                    </TextLink>
+                  </>
+                )}
+              </Text>
+            </Stack>
+          }
+        >
           <Stack gap="xs">
             <Text as="span" size="sm" tone="muted">
               {country}
@@ -63,23 +85,7 @@ export default function DutyInEffectCard({
             )}
             {sources}
           </Stack>
-          <Stack gap="xs" align="end">
-            <Text as="span" size="lg" weight="bold" tone="white">
-              {before} → {now}
-            </Text>
-            <Text as="span" size="sm" tone="muted">
-              In effect since <time dateTime={effectiveFrom}>{formatSince(effectiveFrom)}</time>
-              {effectiveSource && (
-                <>
-                  {' · '}
-                  <TextLink href={effectiveSource.url} size="sm" wrap>
-                    {effectiveSource.citation} ↗
-                  </TextLink>
-                </>
-              )}
-            </Text>
-          </Stack>
-        </Stack>
+        </HeaderWithAside>
         <Text size="sm">
           <Text as="span" size="sm" weight="semibold" tone="white">
             What it means:{' '}
