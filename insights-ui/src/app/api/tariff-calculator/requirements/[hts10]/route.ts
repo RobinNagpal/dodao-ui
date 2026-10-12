@@ -12,6 +12,7 @@ import {
   importProhibitionFor,
   type TariffContentInput,
   productTypesForLine,
+  quotaQuestionsForLine,
   rateQuantityRequirements,
 } from '@/utils/tariff-calculator/measures-engine';
 import { parseHts10Param } from '@/utils/tariff-reports/tariff-input-validation';
@@ -38,6 +39,9 @@ import { NextRequest } from 'next/server';
 // With ?country= it also returns `importProhibition` when an import ban (import-bans.json) covers the
 // line, country and date — `unconfirmed` when it depends on an unanswered question, which is then
 // added to the confirmation questions (official-measures chapters).
+// Trade deals whose special rate points to Chapter 98/99 FTA quota headings ("See 9822.04.01-9822.04.03 (AU)") are
+// offered per country with their tiers in words; with ?country= the quota questions (within the in-quota quantity,
+// additional quota, safeguard in effect) come first in the confirmation questions.
 
 /** A trade deal (SPI program) the line's special column offers. */
 export interface ClaimableTradeDeal {
@@ -106,6 +110,13 @@ function parseQuestionScope(req: NextRequest): QuestionScope {
   return { country: /^[A-Z]{2}$/.test(country) ? country : null, date: validDate ? date : new Date().toISOString().slice(0, 10) };
 }
 
+/** Quantities any of a deal's rates needs (one per unit; FTA quota claims can be charged at several rates). */
+function perUnitFor(rateTexts: string[]): PerUnitRequirement[] {
+  const out: PerUnitRequirement[] = [];
+  for (const t of rateTexts) for (const r of rateQuantityRequirements(t)) if (!out.some((x) => x.uom === r.uom)) out.push(r);
+  return out;
+}
+
 async function officialMeasuresRequirements(hts10: string, scope: QuestionScope): Promise<CalculatorRequirementsResponse> {
   const [line, loaded] = await Promise.all([loadMeasureEngineLine(hts10), loadMeasures()]);
   // One choice per plain name (USMCA lists both "S" and "S+").
@@ -114,7 +125,7 @@ async function officialMeasuresRequirements(hts10: string, scope: QuestionScope)
     const key = `${p.name}|${p.rateText}`;
     const existing = deals.get(key);
     if (existing) existing.codes.push(p.code);
-    else deals.set(key, { codes: [p.code], name: p.name, rateText: p.rateText, countries: p.countries, perUnit: rateQuantityRequirements(p.rateText) });
+    else deals.set(key, { codes: [p.code], name: p.name, rateText: p.rateText, countries: p.countries, perUnit: perUnitFor(p.rateTexts) });
   }
   const freshness = await loadDataFreshness(hts10, loaded.reviewedAt);
   return {
@@ -129,7 +140,10 @@ async function officialMeasuresRequirements(hts10: string, scope: QuestionScope)
       column2PerUnit: rateQuantityRequirements(line.column2),
       confirmationQuestions: scope.country
         ? withBanQuestions(
-            confirmationQuestionsForLine({ hts10, countryOfOrigin: scope.country, entryDate: scope.date }, loaded.measures, loadProductDescriptions()),
+            [
+              ...quotaQuestionsForLine(line, scope.country),
+              ...confirmationQuestionsForLine({ hts10, countryOfOrigin: scope.country, entryDate: scope.date }, loaded.measures, loadProductDescriptions()),
+            ],
             importBanQuestionsForLine({ hts10, countryOfOrigin: scope.country, entryDate: scope.date })
           )
         : [],

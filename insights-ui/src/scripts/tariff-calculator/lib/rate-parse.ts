@@ -10,6 +10,7 @@
 
 import { existsSync, readFileSync } from 'node:fs';
 import path from 'node:path';
+import { expandQuotaReference, isQuotaReference } from '@/utils/tariff-calculator/fta-quota';
 import { parseSpecialRates, SPECIAL_PROGRAMS } from '@/utils/tariff-calculator/measures-engine';
 import { isKnownUnitKey, parseRate } from '@/utils/tariff-reports/shipment-duty';
 import { stackParents, editionByChapter } from './hts-lines-sync';
@@ -93,6 +94,26 @@ export function rateTextProblem(text: string): string | null {
   return unknown.length > 0 ? `unknown unit ${unknown.map((k) => `"${k}"`).join(', ')}` : null;
 }
 
+/**
+ * Why the engine can't price a special entry that points to Chapter 98/99 FTA quota headings ("See 9822.04.01-9822.04.03"
+ * for AU): null when every heading it names for the programs is in fta-quota-headings.json, is modelled and has a rate
+ * the parser reads. (Above the quota without an over-quota heading the line's general rate applies; that is checked as
+ * a general rate.)
+ */
+export function quotaReferenceProblem(rateText: string, programs: string[]): string | null {
+  const { headings, missing } = expandQuotaReference(rateText);
+  if (missing.length > 0) return `quota heading(s) ${missing.join(', ')} not in fta-quota-headings.json`;
+  const own = headings.filter((h) => programs.some((p) => p.replace(/\*$/, '') === h.spi.replace(/\*$/, '')));
+  if (own.length === 0) return `no heading in ${rateText} is listed for ${programs.join(', ')}`;
+  const notModelled = own.find((h) => h.kind === 'notModelled');
+  if (notModelled) return `quota heading ${notModelled.code} not modelled: ${notModelled.reason ?? 'no reason given'}`;
+  for (const h of own) {
+    const problem = rateTextProblem(h.rateText);
+    if (problem) return `quota heading ${h.code} rate "${h.rateText}": ${problem}`;
+  }
+  return null;
+}
+
 /** One rate string of a chapter the engine can't price. */
 export interface RateParseGap {
   column: RateColumn;
@@ -126,7 +147,7 @@ export function chapterRateGaps(columns: Record<RateColumn, RateStringCounts> | 
     for (const entry of parseSpecialRates(text)) {
       const programs = entry.programs.filter((p) => !SPECIAL_PROGRAMS[p]?.lapsed);
       if (programs.length === 0) continue;
-      const problem = rateTextProblem(entry.rateText);
+      const problem = isQuotaReference(entry.rateText) ? quotaReferenceProblem(entry.rateText, programs) : rateTextProblem(entry.rateText);
       if (problem) add({ column: 'special', rateText: entry.rateText, programs, problem }, lines, example);
     }
   }

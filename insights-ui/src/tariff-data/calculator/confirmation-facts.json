@@ -73,6 +73,50 @@
       ]
     },
     {
+      "id": "ftaSafeguardApplies",
+      "prompt": "Is the trade agreement's safeguard in effect for these goods (e.g. the Australian beef price safeguard of U.S. note 8(c) to subchapter XXII of chapter 98)?",
+      "help": "Only for an FTA claim whose line points to a safeguard heading (9822.04.02, 17.1%). The safeguard applies to goods above the in-quota quantity in a quarter after the monthly beef index price fell below the trigger price; USTR publishes a determination when it does not apply. Unanswered = no (the over-quota heading, 9822.04.03, applies).",
+      "defaultWhenUnanswered": false,
+      "sources": [
+        {
+          "citation": "HTSUS 2026 Revision 21, Chapter 98, subchapter XXII (FTA quotas; Australia notes 8–19) and subchapter XXIII (USMCA notes 1–10)",
+          "url": "https://hts.usitc.gov/reststop/file?release=2026HTSRev21&filename=Chapter%2098",
+          "published": "2026-10-07"
+        }
+      ]
+    },
+    {
+      "id": "ftaWithinQuota",
+      "prompt": "Does this shipment enter within the trade agreement's in-quota quantity for these goods (the quantitative limit of the Chapter 98/99 U.S. note the line points to)?",
+      "help": "Only for an FTA claim whose line's special rate is \"See 98xx / 99xx …\" (Australia, USMCA-Canada, Israel, Morocco, CAFTA-DR, Peru, Colombia, Panama quotas for beef, dairy, sugar, peanuts and tobacco). Answer yes only when the goods are entered under the in-quota heading (quota still open; where the note requires it, a valid export certificate). Unanswered = no: the over-quota heading's rate, or the general rate when the agreement has none above the quota.",
+      "defaultWhenUnanswered": false,
+      "sources": [
+        {
+          "citation": "HTSUS 2026 Revision 21, Chapter 98, subchapter XXII (FTA quotas; Australia notes 8–19) and subchapter XXIII (USMCA notes 1–10)",
+          "url": "https://hts.usitc.gov/reststop/file?release=2026HTSRev21&filename=Chapter%2098",
+          "published": "2026-10-07"
+        },
+        {
+          "citation": "HTSUS 2026 Revision 21, Chapter 99, subchapters VIII (Israel), XVIII (Colombia), XIX (Panama)",
+          "url": "https://hts.usitc.gov/reststop/file?release=2026HTSRev21&filename=Chapter%2099",
+          "published": "2026-10-07"
+        }
+      ]
+    },
+    {
+      "id": "ftaWithinSecondQuota",
+      "prompt": "Does this shipment enter within the trade agreement's additional (second) quota for these goods (e.g. U.S. note 4(b) or 6(b) to subchapter XIX of chapter 99 for Panama)?",
+      "help": "Only for an FTA claim with a second quota tier at its own rate (Panama milk powder 9919.04.11/.12, cheese 9919.04.51–.58). Asked when the first quota doesn't apply. Unanswered = no.",
+      "defaultWhenUnanswered": false,
+      "sources": [
+        {
+          "citation": "HTSUS 2026 Revision 21, Chapter 99, subchapters VIII (Israel), XVIII (Colombia), XIX (Panama)",
+          "url": "https://hts.usitc.gov/reststop/file?release=2026HTSRev21&filename=Chapter%2099",
+          "published": "2026-10-07"
+        }
+      ]
+    },
+    {
       "id": "jpFootwearExcepted",
       "prompt": "Is the footwear (a) slip-on footwear not suitable for outdoor use, without backs or backstraps, with an outer sole under 5 mm thick and less than 20 mm difference between ball and heel, or (b) sports footwear with (provision for) spikes, sprigs, stops, clips or bars, skating boots, ski boots, cross-country ski footwear, wrestling, boxing or cycling shoes?",
       "help": "These are excepted from the 40% duty on Japanese leather footwear (heading 9903.41.10).",
