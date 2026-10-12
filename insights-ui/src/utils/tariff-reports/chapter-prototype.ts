@@ -18,7 +18,13 @@ import coffeeTeaSpices from '@/tariff-data/chapters/09-coffee-tea-spices.json';
 import cereals from '@/tariff-data/chapters/10-cereals.json';
 import millingProducts from '@/tariff-data/chapters/11-milling-products.json';
 import preparedMeatAndFish from '@/tariff-data/chapters/16-prepared-meat-and-fish.json';
+import cocoaAndPreparations from '@/tariff-data/chapters/18-cocoa-and-preparations.json';
+import vegFruitPreparations from '@/tariff-data/chapters/20-veg-fruit-preparations.json';
+import miscEdiblePreparations from '@/tariff-data/chapters/21-misc-edible-preparations.json';
+import foodIndustryResiduesAndFeed from '@/tariff-data/chapters/23-food-industry-residues-and-feed.json';
+import tobaccoAndSubstitutes from '@/tariff-data/chapters/24-tobacco-and-substitutes.json';
 import pharmaceuticalProducts from '@/tariff-data/chapters/30-pharmaceutical-products.json';
+import fertilizers from '@/tariff-data/chapters/31-fertilizers.json';
 import type { TariffChapterPrototype } from '@/types/tariff-chapter-prototype';
 import type { ChapterRouteInfo } from '@/utils/tariff-reports/chapter-route-helpers';
 import type { Metadata } from 'next';
@@ -35,7 +41,13 @@ const PROTOTYPES_BY_SLUG: Record<string, TariffChapterPrototype> = {
   '10-cereals': cereals as TariffChapterPrototype,
   '11-milling-products': millingProducts as TariffChapterPrototype,
   '16-prepared-meat-and-fish': preparedMeatAndFish as TariffChapterPrototype,
+  '18-cocoa-and-preparations': cocoaAndPreparations as TariffChapterPrototype,
+  '20-veg-fruit-preparations': vegFruitPreparations as TariffChapterPrototype,
+  '21-misc-edible-preparations': miscEdiblePreparations as TariffChapterPrototype,
+  '23-food-industry-residues-and-feed': foodIndustryResiduesAndFeed as TariffChapterPrototype,
+  '24-tobacco-and-substitutes': tobaccoAndSubstitutes as TariffChapterPrototype,
   '30-pharmaceutical-products': pharmaceuticalProducts as TariffChapterPrototype,
+  '31-fertilizers': fertilizers as TariffChapterPrototype,
 };
 
 export function getChapterPrototype(chapterSlug: string): TariffChapterPrototype | null {
