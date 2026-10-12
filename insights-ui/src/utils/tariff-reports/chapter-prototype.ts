@@ -10,6 +10,14 @@
 // `TariffChapterPrototype` shape and the renderers don't move.
 
 import liveAnimals from '@/tariff-data/chapters/01-live-animals.json';
+import meatAndOffal from '@/tariff-data/chapters/02-meat-and-offal.json';
+import fishAndCrustaceans from '@/tariff-data/chapters/03-fish-and-crustaceans.json';
+import vegetablesAndRoots from '@/tariff-data/chapters/07-vegetables-and-roots.json';
+import fruitAndNuts from '@/tariff-data/chapters/08-fruit-and-nuts.json';
+import coffeeTeaSpices from '@/tariff-data/chapters/09-coffee-tea-spices.json';
+import cereals from '@/tariff-data/chapters/10-cereals.json';
+import millingProducts from '@/tariff-data/chapters/11-milling-products.json';
+import preparedMeatAndFish from '@/tariff-data/chapters/16-prepared-meat-and-fish.json';
 import pharmaceuticalProducts from '@/tariff-data/chapters/30-pharmaceutical-products.json';
 import type { TariffChapterPrototype } from '@/types/tariff-chapter-prototype';
 import type { ChapterRouteInfo } from '@/utils/tariff-reports/chapter-route-helpers';
@@ -19,6 +27,14 @@ import type { Metadata } from 'next';
 // runtime — including the edge/serverless build where there is no filesystem.
 const PROTOTYPES_BY_SLUG: Record<string, TariffChapterPrototype> = {
   '1-live-animals': liveAnimals as TariffChapterPrototype,
+  '2-meat-and-offal': meatAndOffal as TariffChapterPrototype,
+  '3-fish-and-crustaceans': fishAndCrustaceans as TariffChapterPrototype,
+  '7-vegetables-and-roots': vegetablesAndRoots as TariffChapterPrototype,
+  '8-fruit-and-nuts': fruitAndNuts as TariffChapterPrototype,
+  '9-coffee-tea-spices': coffeeTeaSpices as TariffChapterPrototype,
+  '10-cereals': cereals as TariffChapterPrototype,
+  '11-milling-products': millingProducts as TariffChapterPrototype,
+  '16-prepared-meat-and-fish': preparedMeatAndFish as TariffChapterPrototype,
   '30-pharmaceutical-products': pharmaceuticalProducts as TariffChapterPrototype,
 };
 
