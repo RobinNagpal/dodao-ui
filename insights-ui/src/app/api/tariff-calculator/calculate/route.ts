@@ -40,7 +40,10 @@ import { NextRequest } from 'next/server';
 // For HTS chapters listed in the TARIFF_CALC_MEASURES_ENABLED App Setting the
 // official-measures engine prices the line instead (issue #1785): base rates from
 // `hts_codes`, extra duties from the reviewed `tariff_measures`, with the optional
-// trade-deal claim (`claimedSpi`) and `productType`. The response keeps the same
+// trade-deal claim (`claimedSpi`, or a single-entry `chosenSpis`) and `productType`. A claim the line does not
+// offer is a 400, never ignored; a claim whose special rate points to Chapter 98/99 FTA quota headings is priced at
+// the heading the quota facts (confirmations.facts ftaWithinQuota / ftaWithinSecondQuota / ftaSafeguardApplies) pick.
+// The response keeps the same
 // shape and adds `engine: 'official-measures'`.
 // Optional `confirmations` ({ endUse, productDescriptionIds, companyProgram, usOriginIngredient }, issue #1790;
 // facts: { <registry fact id>: true/false } from confirmation-facts.json, issue #1796)
@@ -188,6 +191,20 @@ function parseContentValues(raw: unknown, customsValueUsd: number): ContentValue
   return Object.keys(out).length > 0 ? out : undefined;
 }
 
+/**
+ * The trade-deal claim for the official-measures engine. `claimedSpi` is the field; `chosenSpis` (the candidate-codes
+ * engine's list) is accepted as the claim when it names exactly one program, so a claim sent that way is never dropped.
+ * Two programs, or a `chosenSpis` that disagrees with `claimedSpi`, is a 400.
+ */
+function officialClaim(claimedSpi: string | undefined, chosenSpis: string[]): string | undefined {
+  const chosen = Array.from(new Set(chosenSpis.map((s) => s.trim()).filter(Boolean)));
+  if (chosen.length > 1) throw badRequestError(`Claim one trade program at a time (chosenSpis lists ${chosen.join(', ')}).`);
+  if (chosen.length === 0) return claimedSpi;
+  const fromChosen = parseClaimedSpi(chosen[0]);
+  if (claimedSpi && fromChosen !== claimedSpi) throw badRequestError(`claimedSpi "${claimedSpi}" and chosenSpis "${chosen[0]}" name different programs.`);
+  return fromChosen;
+}
+
 function parseCalculatorInputs(body: unknown): CalculatorInputs {
   if (!isObject(body)) throw badRequestError('Request body must be an object');
   const hts10 = parseHts10(body.hts10);
@@ -212,10 +229,11 @@ function parseCalculatorInputs(body: unknown): CalculatorInputs {
 }
 
 async function calculateWithOfficialMeasures(
-  inputs: CalculatorInputs,
+  rawInputs: CalculatorInputs,
   confirmations: TariffShipmentConfirmations | undefined,
   contentValuesUsd: ContentValues | undefined
 ): Promise<CalculatorResponse> {
+  const inputs: CalculatorInputs = { ...rawInputs, claimedSpi: officialClaim(rawInputs.claimedSpi, rawInputs.chosenSpis) };
   const program = inputs.claimedSpi ? SPECIAL_PROGRAMS[inputs.claimedSpi] : undefined;
   if (inputs.claimedSpi && program?.countries && !program.countries.includes(inputs.countryOfOrigin)) {
     throw badRequestError(`${program.name} can only be claimed for goods from ${program.countries.join(', ')}.`);
@@ -251,7 +269,7 @@ async function calculateWithOfficialMeasures(
     rateDescription: l.rateText,
     dutyAmount: l.amountUsd,
     effectiveAdValoremRate: value > 0 ? l.amountUsd / value : null,
-    notes: [],
+    notes: l.notes ?? [],
     sources: l.sources,
   }));
   const primaryUoms = Array.from(new Set([line.general, line.column2 ?? null].flatMap((t) => rateUoms(t)))).sort();
