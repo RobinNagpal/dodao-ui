@@ -196,6 +196,7 @@ Rules for leaves:
 | `ScenarioOutlookBadge` | Probability / Direction / Timeframe scenario pills. |
 | `AppliedFilterChip` | Removable filter chip. |
 | `ToggleChip` | On/off filter chip (`aria-pressed`) with an optional count. |
+| `TextButton` | A `<button>` styled like `TextLink` for a small in-page action that isn't navigation (e.g. "Expand all" / "Collapse all"); dims when `disabled`. |
 | `ToggleSwitch` | Track-and-knob on/off switch with its label, for one setting that changes a whole table (e.g. "USMCA claimed"). The label wraps on narrow screens. |
 | `ActiveTabScroller` | Horizontally scrolling tab row that scrolls the current tab (`aria-current="page"`) into view on load, and fades whichever edge still has tabs hidden past it. |
 | `ShareBar` | Inline bar + label for a share column in a table, scaled to the column's largest value. Below `lg` only the percentage shows; give the column header `width="wideFromLg"`/`"quarterFromLg"`. |
@@ -214,6 +215,7 @@ Rules for leaves:
 | `MatrixCellButton` | Selectable matrix cell (primary value + muted second line, `selected`/`dim`) that opens a detail view. |
 | `SelectableMatrix` | Row × group matrix of `MatrixCellButton`s: a table on desktop, a group picker + a divided list of tappable rows (`MatrixCellButton layout="row"`, with a chevron) on phones; the selected cell's detail opens in a `DetailModal`. |
 | `StackedRowList` + `StackedRowListHeader`/`StackedRow` | Phone layout for a wide reference table: one list item per row (code + key value on top, full label below, indented as a tree), tap to open the other columns. Rows can instead be picked (`onSelect`, e.g. search results in a line picker), and `selected` on the list marks the picked one. Pair with `ShowAt` so the table shows from `lg` up. |
+| `TableRowGroup` / `StackedRowGroup` + `RowGroupToggle` | Collapsible row groups for a long reference table (the chapter rate table grouped by 4-digit heading, issue #1819). The toggle is a full-width button (`aria-expanded`/`aria-controls`, visible focus ring) with code, title, optional official description, key value and aside (e.g. line or match count); it stacks on phones and lines up in columns from `md` (layout from PR #1822's summary row). `TableRowGroup` is two `<tbody>`s inside a `DataTable` (toggle row, then rows) so groups share one header and column widths; `StackedRowGroup` is a list item inside a `StackedRowList`. Collapsed rows keep rendering with `hidden`, so every row stays in the server HTML. |
 
 Plus the shadcn-style `Card`, `Input`, `Label`, `Tabs` already in
 `components/ui/`. **Always grep the leaf layer + web-core before creating a new
