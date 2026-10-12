@@ -111,8 +111,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "1401",
-          "ancestorPath": [],
-          "searchText": "vegetable materials of a kind used primarily for plaiting (for example, bamboos, rattans, reeds, rushes, osier, raffia, cleaned, bleached or dyed cereal straw, and lime bark): 1401"
+          "ancestorPath": []
         },
         {
           "id": "r1",
@@ -137,8 +136,7 @@
           "heading": "1401",
           "ancestorPath": [
             "Vegetable materials of a kind used primarily for plaiting (for example, bamboos, rattans, reeds, rushes, osier, raffia, cleaned, bleached or dyed cereal straw, and lime bark)"
-          ],
-          "searchText": "vegetable materials of a kind used primarily for plaiting (for example, bamboos, rattans, reeds, rushes, osier, raffia, cleaned, bleached or dyed cereal straw, and lime bark) bamboos 1401.10.00.00"
+          ]
         },
         {
           "id": "r2",
@@ -163,8 +161,7 @@
           "heading": "1401",
           "ancestorPath": [
             "Vegetable materials of a kind used primarily for plaiting (for example, bamboos, rattans, reeds, rushes, osier, raffia, cleaned, bleached or dyed cereal straw, and lime bark)"
-          ],
-          "searchText": "vegetable materials of a kind used primarily for plaiting (for example, bamboos, rattans, reeds, rushes, osier, raffia, cleaned, bleached or dyed cereal straw, and lime bark) rattans: 1401.20"
+          ]
         },
         {
           "id": "r3",
@@ -190,8 +187,7 @@
           "ancestorPath": [
             "Vegetable materials of a kind used primarily for plaiting (for example, bamboos, rattans, reeds, rushes, osier, raffia, cleaned, bleached or dyed cereal straw, and lime bark)",
             "Rattans"
-          ],
-          "searchText": "vegetable materials of a kind used primarily for plaiting (for example, bamboos, rattans, reeds, rushes, osier, raffia, cleaned, bleached or dyed cereal straw, and lime bark) rattans in the rough or cut transversely into sections 1401.20.20"
+          ]
         },
         {
           "id": "r4",
@@ -218,8 +214,7 @@
             "Vegetable materials of a kind used primarily for plaiting (for example, bamboos, rattans, reeds, rushes, osier, raffia, cleaned, bleached or dyed cereal straw, and lime bark)",
             "Rattans",
             "In the rough or cut transversely into sections"
-          ],
-          "searchText": "vegetable materials of a kind used primarily for plaiting (for example, bamboos, rattans, reeds, rushes, osier, raffia, cleaned, bleached or dyed cereal straw, and lime bark) rattans in the rough or cut transversely into sections in the rough, 4 meters or more in length 1401.20.20.10"
+          ]
         },
         {
           "id": "r5",
@@ -246,8 +241,7 @@
             "Vegetable materials of a kind used primarily for plaiting (for example, bamboos, rattans, reeds, rushes, osier, raffia, cleaned, bleached or dyed cereal straw, and lime bark)",
             "Rattans",
             "In the rough or cut transversely into sections"
-          ],
-          "searchText": "vegetable materials of a kind used primarily for plaiting (for example, bamboos, rattans, reeds, rushes, osier, raffia, cleaned, bleached or dyed cereal straw, and lime bark) rattans in the rough or cut transversely into sections other 1401.20.20.90"
+          ]
         },
         {
           "id": "r6",
@@ -273,8 +267,7 @@
           "ancestorPath": [
             "Vegetable materials of a kind used primarily for plaiting (for example, bamboos, rattans, reeds, rushes, osier, raffia, cleaned, bleached or dyed cereal straw, and lime bark)",
             "Rattans"
-          ],
-          "searchText": "vegetable materials of a kind used primarily for plaiting (for example, bamboos, rattans, reeds, rushes, osier, raffia, cleaned, bleached or dyed cereal straw, and lime bark) rattans other 1401.20.40.00"
+          ]
         },
         {
           "id": "r7",
@@ -299,8 +292,7 @@
           "heading": "1401",
           "ancestorPath": [
             "Vegetable materials of a kind used primarily for plaiting (for example, bamboos, rattans, reeds, rushes, osier, raffia, cleaned, bleached or dyed cereal straw, and lime bark)"
-          ],
-          "searchText": "vegetable materials of a kind used primarily for plaiting (for example, bamboos, rattans, reeds, rushes, osier, raffia, cleaned, bleached or dyed cereal straw, and lime bark) other: 1401.90"
+          ]
         },
         {
           "id": "r8",
@@ -326,8 +318,7 @@
           "ancestorPath": [
             "Vegetable materials of a kind used primarily for plaiting (for example, bamboos, rattans, reeds, rushes, osier, raffia, cleaned, bleached or dyed cereal straw, and lime bark)",
             "Other"
-          ],
-          "searchText": "vegetable materials of a kind used primarily for plaiting (for example, bamboos, rattans, reeds, rushes, osier, raffia, cleaned, bleached or dyed cereal straw, and lime bark) other willow (osier) 1401.90.20.00"
+          ]
         },
         {
           "id": "r9",
@@ -353,8 +344,7 @@
           "ancestorPath": [
             "Vegetable materials of a kind used primarily for plaiting (for example, bamboos, rattans, reeds, rushes, osier, raffia, cleaned, bleached or dyed cereal straw, and lime bark)",
             "Other"
-          ],
-          "searchText": "vegetable materials of a kind used primarily for plaiting (for example, bamboos, rattans, reeds, rushes, osier, raffia, cleaned, bleached or dyed cereal straw, and lime bark) other other 1401.90.40.00"
+          ]
         },
         {
           "id": "r10",
@@ -377,8 +367,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "1404",
-          "ancestorPath": [],
-          "searchText": "vegetable products not elsewhere specified or included: 1404"
+          "ancestorPath": []
         },
         {
           "id": "r11",
@@ -401,8 +390,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "1404",
-          "ancestorPath": ["Vegetable products not elsewhere specified or included"],
-          "searchText": "vegetable products not elsewhere specified or included cotton linters 1404.20.00.00"
+          "ancestorPath": ["Vegetable products not elsewhere specified or included"]
         },
         {
           "id": "r12",
@@ -425,8 +413,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "1404",
-          "ancestorPath": ["Vegetable products not elsewhere specified or included"],
-          "searchText": "vegetable products not elsewhere specified or included other: 1404.90"
+          "ancestorPath": ["Vegetable products not elsewhere specified or included"]
         },
         {
           "id": "r13",
@@ -449,8 +436,7 @@
           "column2InheritedFrom": null,
           "dutiable": true,
           "heading": "1404",
-          "ancestorPath": ["Vegetable products not elsewhere specified or included", "Other"],
-          "searchText": "vegetable products not elsewhere specified or included other vegetable hair 1404.90.10.00"
+          "ancestorPath": ["Vegetable products not elsewhere specified or included", "Other"]
         },
         {
           "id": "r14",
@@ -473,8 +459,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "1404",
-          "ancestorPath": ["Vegetable products not elsewhere specified or included", "Other"],
-          "searchText": "vegetable products not elsewhere specified or included other vegetable materials of a kind used primarily in brooms or in brushes (for example, broomcorn piassava, couch grass and istle), whether or not in hanks or bundles: "
+          "ancestorPath": ["Vegetable products not elsewhere specified or included", "Other"]
         },
         {
           "id": "r15",
@@ -501,8 +486,7 @@
             "Vegetable products not elsewhere specified or included",
             "Other",
             "Vegetable materials of a kind used primarily in brooms or in brushes (for example, broomcorn piassava, couch grass and istle), whether or not in hanks or bundles"
-          ],
-          "searchText": "vegetable products not elsewhere specified or included other vegetable materials of a kind used primarily in brooms or in brushes (for example, broomcorn piassava, couch grass and istle), whether or not in hanks or bundles broomcorn (sorghum vulgare var. technicum) 1404.90.20.00"
+          ]
         },
         {
           "id": "r16",
@@ -529,8 +513,7 @@
             "Vegetable products not elsewhere specified or included",
             "Other",
             "Vegetable materials of a kind used primarily in brooms or in brushes (for example, broomcorn piassava, couch grass and istle), whether or not in hanks or bundles"
-          ],
-          "searchText": "vegetable products not elsewhere specified or included other vegetable materials of a kind used primarily in brooms or in brushes (for example, broomcorn piassava, couch grass and istle), whether or not in hanks or bundles istle 1404.90.30.00"
+          ]
         },
         {
           "id": "r17",
@@ -557,8 +540,7 @@
             "Vegetable products not elsewhere specified or included",
             "Other",
             "Vegetable materials of a kind used primarily in brooms or in brushes (for example, broomcorn piassava, couch grass and istle), whether or not in hanks or bundles"
-          ],
-          "searchText": "vegetable products not elsewhere specified or included other vegetable materials of a kind used primarily in brooms or in brushes (for example, broomcorn piassava, couch grass and istle), whether or not in hanks or bundles other 1404.90.40.00"
+          ]
         },
         {
           "id": "r18",
@@ -581,8 +563,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "1404",
-          "ancestorPath": ["Vegetable products not elsewhere specified or included", "Other"],
-          "searchText": "vegetable products not elsewhere specified or included other other 1404.90.90"
+          "ancestorPath": ["Vegetable products not elsewhere specified or included", "Other"]
         },
         {
           "id": "r19",
@@ -605,8 +586,7 @@
           "column2InheritedFrom": "1404.90.90",
           "dutiable": false,
           "heading": "1404",
-          "ancestorPath": ["Vegetable products not elsewhere specified or included", "Other", "Other"],
-          "searchText": "vegetable products not elsewhere specified or included other other raw vegetable materials of a kind used primarily in dyeing or tanning: "
+          "ancestorPath": ["Vegetable products not elsewhere specified or included", "Other", "Other"]
         },
         {
           "id": "r20",
@@ -634,8 +614,7 @@
             "Other",
             "Other",
             "Raw vegetable materials of a kind used primarily in dyeing or tanning"
-          ],
-          "searchText": "vegetable products not elsewhere specified or included other other raw vegetable materials of a kind used primarily in dyeing or tanning canaigre, chestnut, curupay, divi-divi, eucalyptus, gall nuts, hemlock, larch, mangrove, myrobalan, oak, quebracho, sumac, tara, urunday, valonia, wattle and other materials of a kind used primarily in tanning 1404.90.90.20"
+          ]
         },
         {
           "id": "r21",
@@ -663,8 +642,7 @@
             "Other",
             "Other",
             "Raw vegetable materials of a kind used primarily in dyeing or tanning"
-          ],
-          "searchText": "vegetable products not elsewhere specified or included other other raw vegetable materials of a kind used primarily in dyeing or tanning other 1404.90.90.40"
+          ]
         },
         {
           "id": "r22",
@@ -687,8 +665,7 @@
           "column2InheritedFrom": "1404.90.90",
           "dutiable": false,
           "heading": "1404",
-          "ancestorPath": ["Vegetable products not elsewhere specified or included", "Other", "Other"],
-          "searchText": "vegetable products not elsewhere specified or included other other other 1404.90.90.90"
+          "ancestorPath": ["Vegetable products not elsewhere specified or included", "Other", "Other"]
         }
       ]
     },
@@ -1331,11 +1308,6 @@
     "lines": [
       {
         "hts": "1401.10.00.00",
-        "description": "Bamboos",
-        "ancestorPath": [
-          "Vegetable materials of a kind used primarily for plaiting (for example, bamboos, rattans, reeds, rushes, osier, raffia, cleaned, bleached or dyed cereal straw, and lime bark)"
-        ],
-        "searchText": "vegetable materials of a kind used primarily for plaiting (for example, bamboos, rattans, reeds, rushes, osier, raffia, cleaned, bleached or dyed cereal straw, and lime bark) bamboos 1401.10.00.00",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -1343,13 +1315,6 @@
       },
       {
         "hts": "1401.20.20.10",
-        "description": "In the rough, 4 meters or more in length",
-        "ancestorPath": [
-          "Vegetable materials of a kind used primarily for plaiting (for example, bamboos, rattans, reeds, rushes, osier, raffia, cleaned, bleached or dyed cereal straw, and lime bark)",
-          "Rattans",
-          "In the rough or cut transversely into sections"
-        ],
-        "searchText": "vegetable materials of a kind used primarily for plaiting (for example, bamboos, rattans, reeds, rushes, osier, raffia, cleaned, bleached or dyed cereal straw, and lime bark) rattans in the rough or cut transversely into sections in the rough, 4 meters or more in length 1401.20.20.10",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -1357,13 +1322,6 @@
       },
       {
         "hts": "1401.20.20.90",
-        "description": "Other",
-        "ancestorPath": [
-          "Vegetable materials of a kind used primarily for plaiting (for example, bamboos, rattans, reeds, rushes, osier, raffia, cleaned, bleached or dyed cereal straw, and lime bark)",
-          "Rattans",
-          "In the rough or cut transversely into sections"
-        ],
-        "searchText": "vegetable materials of a kind used primarily for plaiting (for example, bamboos, rattans, reeds, rushes, osier, raffia, cleaned, bleached or dyed cereal straw, and lime bark) rattans in the rough or cut transversely into sections other 1401.20.20.90",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -1371,12 +1329,6 @@
       },
       {
         "hts": "1401.20.40.00",
-        "description": "Other",
-        "ancestorPath": [
-          "Vegetable materials of a kind used primarily for plaiting (for example, bamboos, rattans, reeds, rushes, osier, raffia, cleaned, bleached or dyed cereal straw, and lime bark)",
-          "Rattans"
-        ],
-        "searchText": "vegetable materials of a kind used primarily for plaiting (for example, bamboos, rattans, reeds, rushes, osier, raffia, cleaned, bleached or dyed cereal straw, and lime bark) rattans other 1401.20.40.00",
         "generalBefore": "2%",
         "generalNow": "2%",
         "status": "unchanged",
@@ -1384,12 +1336,6 @@
       },
       {
         "hts": "1401.90.20.00",
-        "description": "Willow (osier)",
-        "ancestorPath": [
-          "Vegetable materials of a kind used primarily for plaiting (for example, bamboos, rattans, reeds, rushes, osier, raffia, cleaned, bleached or dyed cereal straw, and lime bark)",
-          "Other"
-        ],
-        "searchText": "vegetable materials of a kind used primarily for plaiting (for example, bamboos, rattans, reeds, rushes, osier, raffia, cleaned, bleached or dyed cereal straw, and lime bark) other willow (osier) 1401.90.20.00",
         "generalBefore": "4.4%",
         "generalNow": "4.4%",
         "status": "unchanged",
@@ -1397,12 +1343,6 @@
       },
       {
         "hts": "1401.90.40.00",
-        "description": "Other",
-        "ancestorPath": [
-          "Vegetable materials of a kind used primarily for plaiting (for example, bamboos, rattans, reeds, rushes, osier, raffia, cleaned, bleached or dyed cereal straw, and lime bark)",
-          "Other"
-        ],
-        "searchText": "vegetable materials of a kind used primarily for plaiting (for example, bamboos, rattans, reeds, rushes, osier, raffia, cleaned, bleached or dyed cereal straw, and lime bark) other other 1401.90.40.00",
         "generalBefore": "3.2%",
         "generalNow": "3.2%",
         "status": "unchanged",
@@ -1410,9 +1350,6 @@
       },
       {
         "hts": "1404.20.00.00",
-        "description": "Cotton linters",
-        "ancestorPath": ["Vegetable products not elsewhere specified or included"],
-        "searchText": "vegetable products not elsewhere specified or included cotton linters 1404.20.00.00",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -1420,9 +1357,6 @@
       },
       {
         "hts": "1404.90.10.00",
-        "description": "Vegetable hair",
-        "ancestorPath": ["Vegetable products not elsewhere specified or included", "Other"],
-        "searchText": "vegetable products not elsewhere specified or included other vegetable hair 1404.90.10.00",
         "generalBefore": "0.5¢/kg",
         "generalNow": "0.5¢/kg",
         "status": "unchanged",
@@ -1430,13 +1364,6 @@
       },
       {
         "hts": "1404.90.20.00",
-        "description": "Broomcorn (Sorghum vulgare var. technicum)",
-        "ancestorPath": [
-          "Vegetable products not elsewhere specified or included",
-          "Other",
-          "Vegetable materials of a kind used primarily in brooms or in brushes (for example, broomcorn piassava, couch grass and istle), whether or not in hanks or bundles"
-        ],
-        "searchText": "vegetable products not elsewhere specified or included other vegetable materials of a kind used primarily in brooms or in brushes (for example, broomcorn piassava, couch grass and istle), whether or not in hanks or bundles broomcorn (sorghum vulgare var. technicum) 1404.90.20.00",
         "generalBefore": "$4.95/t",
         "generalNow": "$4.95/t",
         "status": "unchanged",
@@ -1444,13 +1371,6 @@
       },
       {
         "hts": "1404.90.30.00",
-        "description": "Istle",
-        "ancestorPath": [
-          "Vegetable products not elsewhere specified or included",
-          "Other",
-          "Vegetable materials of a kind used primarily in brooms or in brushes (for example, broomcorn piassava, couch grass and istle), whether or not in hanks or bundles"
-        ],
-        "searchText": "vegetable products not elsewhere specified or included other vegetable materials of a kind used primarily in brooms or in brushes (for example, broomcorn piassava, couch grass and istle), whether or not in hanks or bundles istle 1404.90.30.00",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -1458,13 +1378,6 @@
       },
       {
         "hts": "1404.90.40.00",
-        "description": "Other",
-        "ancestorPath": [
-          "Vegetable products not elsewhere specified or included",
-          "Other",
-          "Vegetable materials of a kind used primarily in brooms or in brushes (for example, broomcorn piassava, couch grass and istle), whether or not in hanks or bundles"
-        ],
-        "searchText": "vegetable products not elsewhere specified or included other vegetable materials of a kind used primarily in brooms or in brushes (for example, broomcorn piassava, couch grass and istle), whether or not in hanks or bundles other 1404.90.40.00",
         "generalBefore": "2.3%",
         "generalNow": "2.3%",
         "status": "unchanged",
@@ -1472,14 +1385,6 @@
       },
       {
         "hts": "1404.90.90.20",
-        "description": "Canaigre, chestnut, curupay, divi-divi, eucalyptus, gall nuts, hemlock, larch, mangrove, myrobalan, oak, quebracho, sumac, tara, urunday, valonia, wattle and other materials of a kind used primarily in tanning",
-        "ancestorPath": [
-          "Vegetable products not elsewhere specified or included",
-          "Other",
-          "Other",
-          "Raw vegetable materials of a kind used primarily in dyeing or tanning"
-        ],
-        "searchText": "vegetable products not elsewhere specified or included other other raw vegetable materials of a kind used primarily in dyeing or tanning canaigre, chestnut, curupay, divi-divi, eucalyptus, gall nuts, hemlock, larch, mangrove, myrobalan, oak, quebracho, sumac, tara, urunday, valonia, wattle and other materials of a kind used primarily in tanning 1404.90.90.20",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -1487,14 +1392,6 @@
       },
       {
         "hts": "1404.90.90.40",
-        "description": "Other",
-        "ancestorPath": [
-          "Vegetable products not elsewhere specified or included",
-          "Other",
-          "Other",
-          "Raw vegetable materials of a kind used primarily in dyeing or tanning"
-        ],
-        "searchText": "vegetable products not elsewhere specified or included other other raw vegetable materials of a kind used primarily in dyeing or tanning other 1404.90.90.40",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -1502,9 +1399,6 @@
       },
       {
         "hts": "1404.90.90.90",
-        "description": "Other",
-        "ancestorPath": ["Vegetable products not elsewhere specified or included", "Other", "Other"],
-        "searchText": "vegetable products not elsewhere specified or included other other other 1404.90.90.90",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -5732,182 +5626,71 @@
     "lines": [
       {
         "hts": "1401.10.00.00",
-        "description": "Bamboos",
-        "ancestorPath": [
-          "Vegetable materials of a kind used primarily for plaiting (for example, bamboos, rattans, reeds, rushes, osier, raffia, cleaned, bleached or dyed cereal straw, and lime bark)"
-        ],
-        "searchText": "vegetable materials of a kind used primarily for plaiting (for example, bamboos, rattans, reeds, rushes, osier, raffia, cleaned, bleached or dyed cereal straw, and lime bark) bamboos 1401.10.00.00",
-        "heading": "1401",
-        "general": "Free",
         "ruleIds": ["lacey", "aphis-bamboo", "cbp-marking", "aphis-packaging"],
         "leverIds": ["usmca", "exception-lists", "ruling", "drawback"]
       },
       {
         "hts": "1401.20.20.10",
-        "description": "In the rough, 4 meters or more in length",
-        "ancestorPath": [
-          "Vegetable materials of a kind used primarily for plaiting (for example, bamboos, rattans, reeds, rushes, osier, raffia, cleaned, bleached or dyed cereal straw, and lime bark)",
-          "Rattans",
-          "In the rough or cut transversely into sections"
-        ],
-        "searchText": "vegetable materials of a kind used primarily for plaiting (for example, bamboos, rattans, reeds, rushes, osier, raffia, cleaned, bleached or dyed cereal straw, and lime bark) rattans in the rough or cut transversely into sections in the rough, 4 meters or more in length 1401.20.20.10",
-        "heading": "1401",
-        "general": "Free",
         "ruleIds": ["lacey", "cbp-marking", "aphis-packaging"],
         "leverIds": ["usmca", "exception-lists", "ruling", "drawback"]
       },
       {
         "hts": "1401.20.20.90",
-        "description": "Other",
-        "ancestorPath": [
-          "Vegetable materials of a kind used primarily for plaiting (for example, bamboos, rattans, reeds, rushes, osier, raffia, cleaned, bleached or dyed cereal straw, and lime bark)",
-          "Rattans",
-          "In the rough or cut transversely into sections"
-        ],
-        "searchText": "vegetable materials of a kind used primarily for plaiting (for example, bamboos, rattans, reeds, rushes, osier, raffia, cleaned, bleached or dyed cereal straw, and lime bark) rattans in the rough or cut transversely into sections other 1401.20.20.90",
-        "heading": "1401",
-        "general": "Free",
         "ruleIds": ["lacey", "cbp-marking", "aphis-packaging"],
         "leverIds": ["usmca", "exception-lists", "ruling", "drawback"]
       },
       {
         "hts": "1401.20.40.00",
-        "description": "Other",
-        "ancestorPath": [
-          "Vegetable materials of a kind used primarily for plaiting (for example, bamboos, rattans, reeds, rushes, osier, raffia, cleaned, bleached or dyed cereal straw, and lime bark)",
-          "Rattans"
-        ],
-        "searchText": "vegetable materials of a kind used primarily for plaiting (for example, bamboos, rattans, reeds, rushes, osier, raffia, cleaned, bleached or dyed cereal straw, and lime bark) rattans other 1401.20.40.00",
-        "heading": "1401",
-        "general": "2%",
         "ruleIds": ["lacey", "cbp-marking", "aphis-packaging"],
         "leverIds": ["usmca", "exception-lists", "fta", "ruling", "drawback"]
       },
       {
         "hts": "1401.90.20.00",
-        "description": "Willow (osier)",
-        "ancestorPath": [
-          "Vegetable materials of a kind used primarily for plaiting (for example, bamboos, rattans, reeds, rushes, osier, raffia, cleaned, bleached or dyed cereal straw, and lime bark)",
-          "Other"
-        ],
-        "searchText": "vegetable materials of a kind used primarily for plaiting (for example, bamboos, rattans, reeds, rushes, osier, raffia, cleaned, bleached or dyed cereal straw, and lime bark) other willow (osier) 1401.90.20.00",
-        "heading": "1401",
-        "general": "4.4%",
         "ruleIds": ["lacey", "cbp-marking", "aphis-packaging"],
         "leverIds": ["usmca", "fta", "ruling", "drawback"]
       },
       {
         "hts": "1401.90.40.00",
-        "description": "Other",
-        "ancestorPath": [
-          "Vegetable materials of a kind used primarily for plaiting (for example, bamboos, rattans, reeds, rushes, osier, raffia, cleaned, bleached or dyed cereal straw, and lime bark)",
-          "Other"
-        ],
-        "searchText": "vegetable materials of a kind used primarily for plaiting (for example, bamboos, rattans, reeds, rushes, osier, raffia, cleaned, bleached or dyed cereal straw, and lime bark) other other 1401.90.40.00",
-        "heading": "1401",
-        "general": "3.2%",
         "ruleIds": ["lacey", "aphis-straw", "cbp-marking", "aphis-packaging"],
         "leverIds": ["usmca", "fta", "ruling", "drawback"]
       },
       {
         "hts": "1404.20.00.00",
-        "description": "Cotton linters",
-        "ancestorPath": ["Vegetable products not elsewhere specified or included"],
-        "searchText": "vegetable products not elsewhere specified or included cotton linters 1404.20.00.00",
-        "heading": "1404",
-        "general": "Free",
         "ruleIds": ["aphis-cotton", "cbp-marking", "aphis-packaging"],
         "leverIds": ["usmca", "ruling", "drawback"]
       },
       {
         "hts": "1404.90.10.00",
-        "description": "Vegetable hair",
-        "ancestorPath": ["Vegetable products not elsewhere specified or included", "Other"],
-        "searchText": "vegetable products not elsewhere specified or included other vegetable hair 1404.90.10.00",
-        "heading": "1404",
-        "general": "0.5¢/kg",
         "ruleIds": ["cbp-marking", "aphis-packaging"],
         "leverIds": ["usmca", "fta", "ruling", "drawback"]
       },
       {
         "hts": "1404.90.20.00",
-        "description": "Broomcorn (Sorghum vulgare var. technicum)",
-        "ancestorPath": [
-          "Vegetable products not elsewhere specified or included",
-          "Other",
-          "Vegetable materials of a kind used primarily in brooms or in brushes (for example, broomcorn piassava, couch grass and istle), whether or not in hanks or bundles"
-        ],
-        "searchText": "vegetable products not elsewhere specified or included other vegetable materials of a kind used primarily in brooms or in brushes (for example, broomcorn piassava, couch grass and istle), whether or not in hanks or bundles broomcorn (sorghum vulgare var. technicum) 1404.90.20.00",
-        "heading": "1404",
-        "general": "$4.95/t",
         "ruleIds": ["aphis-broomcorn", "cbp-marking", "aphis-packaging"],
         "leverIds": ["usmca", "fta", "ruling", "drawback"]
       },
       {
         "hts": "1404.90.30.00",
-        "description": "Istle",
-        "ancestorPath": [
-          "Vegetable products not elsewhere specified or included",
-          "Other",
-          "Vegetable materials of a kind used primarily in brooms or in brushes (for example, broomcorn piassava, couch grass and istle), whether or not in hanks or bundles"
-        ],
-        "searchText": "vegetable products not elsewhere specified or included other vegetable materials of a kind used primarily in brooms or in brushes (for example, broomcorn piassava, couch grass and istle), whether or not in hanks or bundles istle 1404.90.30.00",
-        "heading": "1404",
-        "general": "Free",
         "ruleIds": ["lacey", "cbp-marking", "aphis-packaging"],
         "leverIds": ["usmca", "exception-lists", "ruling", "drawback"]
       },
       {
         "hts": "1404.90.40.00",
-        "description": "Other",
-        "ancestorPath": [
-          "Vegetable products not elsewhere specified or included",
-          "Other",
-          "Vegetable materials of a kind used primarily in brooms or in brushes (for example, broomcorn piassava, couch grass and istle), whether or not in hanks or bundles"
-        ],
-        "searchText": "vegetable products not elsewhere specified or included other vegetable materials of a kind used primarily in brooms or in brushes (for example, broomcorn piassava, couch grass and istle), whether or not in hanks or bundles other 1404.90.40.00",
-        "heading": "1404",
-        "general": "2.3%",
         "ruleIds": ["lacey", "cbp-marking", "aphis-packaging"],
         "leverIds": ["usmca", "exception-lists", "fta", "ruling", "drawback"]
       },
       {
         "hts": "1404.90.90.20",
-        "description": "Canaigre, chestnut, curupay, divi-divi, eucalyptus, gall nuts, hemlock, larch, mangrove, myrobalan, oak, quebracho, sumac, tara, urunday, valonia, wattle and other materials of a kind used primarily in tanning",
-        "ancestorPath": [
-          "Vegetable products not elsewhere specified or included",
-          "Other",
-          "Other",
-          "Raw vegetable materials of a kind used primarily in dyeing or tanning"
-        ],
-        "searchText": "vegetable products not elsewhere specified or included other other raw vegetable materials of a kind used primarily in dyeing or tanning canaigre, chestnut, curupay, divi-divi, eucalyptus, gall nuts, hemlock, larch, mangrove, myrobalan, oak, quebracho, sumac, tara, urunday, valonia, wattle and other materials of a kind used primarily in tanning 1404.90.90.20",
-        "heading": "1404",
-        "general": "Free",
         "ruleIds": ["lacey", "cbp-marking", "aphis-packaging"],
         "leverIds": ["usmca", "exception-lists", "ruling", "drawback"]
       },
       {
         "hts": "1404.90.90.40",
-        "description": "Other",
-        "ancestorPath": [
-          "Vegetable products not elsewhere specified or included",
-          "Other",
-          "Other",
-          "Raw vegetable materials of a kind used primarily in dyeing or tanning"
-        ],
-        "searchText": "vegetable products not elsewhere specified or included other other raw vegetable materials of a kind used primarily in dyeing or tanning other 1404.90.90.40",
-        "heading": "1404",
-        "general": "Free",
         "ruleIds": ["lacey", "fda-henna", "cbp-marking", "aphis-packaging"],
         "leverIds": ["usmca", "exception-lists", "ruling", "drawback"]
       },
       {
         "hts": "1404.90.90.90",
-        "description": "Other",
-        "ancestorPath": ["Vegetable products not elsewhere specified or included", "Other", "Other"],
-        "searchText": "vegetable products not elsewhere specified or included other other other 1404.90.90.90",
-        "heading": "1404",
-        "general": "Free",
         "ruleIds": ["hemp", "ttb-excise", "cbp-marking", "aphis-packaging"],
         "leverIds": ["usmca", "exception-lists", "ruling", "drawback"]
       }

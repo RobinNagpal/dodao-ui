@@ -282,8 +282,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "2601",
-          "ancestorPath": [],
-          "searchText": "iron ores and concentrates, including roasted iron pyrites: 2601"
+          "ancestorPath": []
         },
         {
           "id": "r1",
@@ -306,8 +305,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "2601",
-          "ancestorPath": ["Iron ores and concentrates, including roasted iron pyrites"],
-          "searchText": "iron ores and concentrates, including roasted iron pyrites iron ores and concentrates, other than roasted iron pyrites: "
+          "ancestorPath": ["Iron ores and concentrates, including roasted iron pyrites"]
         },
         {
           "id": "r2",
@@ -330,8 +328,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "2601",
-          "ancestorPath": ["Iron ores and concentrates, including roasted iron pyrites", "Iron ores and concentrates, other than roasted iron pyrites"],
-          "searchText": "iron ores and concentrates, including roasted iron pyrites iron ores and concentrates, other than roasted iron pyrites non-agglomerated 2601.11.00"
+          "ancestorPath": ["Iron ores and concentrates, including roasted iron pyrites", "Iron ores and concentrates, other than roasted iron pyrites"]
         },
         {
           "id": "r3",
@@ -358,8 +355,7 @@
             "Iron ores and concentrates, including roasted iron pyrites",
             "Iron ores and concentrates, other than roasted iron pyrites",
             "Non-agglomerated"
-          ],
-          "searchText": "iron ores and concentrates, including roasted iron pyrites iron ores and concentrates, other than roasted iron pyrites non-agglomerated concentrates 2601.11.00.30"
+          ]
         },
         {
           "id": "r4",
@@ -386,8 +382,7 @@
             "Iron ores and concentrates, including roasted iron pyrites",
             "Iron ores and concentrates, other than roasted iron pyrites",
             "Non-agglomerated"
-          ],
-          "searchText": "iron ores and concentrates, including roasted iron pyrites iron ores and concentrates, other than roasted iron pyrites non-agglomerated ores: "
+          ]
         },
         {
           "id": "r5",
@@ -415,8 +410,7 @@
             "Iron ores and concentrates, other than roasted iron pyrites",
             "Non-agglomerated",
             "Ores"
-          ],
-          "searchText": "iron ores and concentrates, including roasted iron pyrites iron ores and concentrates, other than roasted iron pyrites non-agglomerated ores coarse 2601.11.00.60"
+          ]
         },
         {
           "id": "r6",
@@ -444,8 +438,7 @@
             "Iron ores and concentrates, other than roasted iron pyrites",
             "Non-agglomerated",
             "Ores"
-          ],
-          "searchText": "iron ores and concentrates, including roasted iron pyrites iron ores and concentrates, other than roasted iron pyrites non-agglomerated ores other 2601.11.00.90"
+          ]
         },
         {
           "id": "r7",
@@ -468,8 +461,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "2601",
-          "ancestorPath": ["Iron ores and concentrates, including roasted iron pyrites", "Iron ores and concentrates, other than roasted iron pyrites"],
-          "searchText": "iron ores and concentrates, including roasted iron pyrites iron ores and concentrates, other than roasted iron pyrites agglomerated 2601.12.00"
+          "ancestorPath": ["Iron ores and concentrates, including roasted iron pyrites", "Iron ores and concentrates, other than roasted iron pyrites"]
         },
         {
           "id": "r8",
@@ -496,8 +488,7 @@
             "Iron ores and concentrates, including roasted iron pyrites",
             "Iron ores and concentrates, other than roasted iron pyrites",
             "Agglomerated"
-          ],
-          "searchText": "iron ores and concentrates, including roasted iron pyrites iron ores and concentrates, other than roasted iron pyrites agglomerated pellets 2601.12.00.30"
+          ]
         },
         {
           "id": "r9",
@@ -524,8 +515,7 @@
             "Iron ores and concentrates, including roasted iron pyrites",
             "Iron ores and concentrates, other than roasted iron pyrites",
             "Agglomerated"
-          ],
-          "searchText": "iron ores and concentrates, including roasted iron pyrites iron ores and concentrates, other than roasted iron pyrites agglomerated briquettes 2601.12.00.60"
+          ]
         },
         {
           "id": "r10",
@@ -552,8 +542,7 @@
             "Iron ores and concentrates, including roasted iron pyrites",
             "Iron ores and concentrates, other than roasted iron pyrites",
             "Agglomerated"
-          ],
-          "searchText": "iron ores and concentrates, including roasted iron pyrites iron ores and concentrates, other than roasted iron pyrites agglomerated other 2601.12.00.90"
+          ]
         },
         {
           "id": "r11",
@@ -576,8 +565,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "2601",
-          "ancestorPath": ["Iron ores and concentrates, including roasted iron pyrites"],
-          "searchText": "iron ores and concentrates, including roasted iron pyrites roasted iron pyrites 2601.20.00.00"
+          "ancestorPath": ["Iron ores and concentrates, including roasted iron pyrites"]
         },
         {
           "id": "r12",
@@ -600,8 +588,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "2602",
-          "ancestorPath": [],
-          "searchText": "manganese ores and concentrates, including ferruginous manganese ores and concentrates with a manganese content of 20 percent or more, calculated on the dry weight 2602.00.00"
+          "ancestorPath": []
         },
         {
           "id": "r13",
@@ -626,8 +613,7 @@
           "heading": "2602",
           "ancestorPath": [
             "Manganese ores and concentrates, including ferruginous manganese ores and concentrates with a manganese content of 20 percent or more, calculated on the dry weight"
-          ],
-          "searchText": "manganese ores and concentrates, including ferruginous manganese ores and concentrates with a manganese content of 20 percent or more, calculated on the dry weight containing less than 47 percent by weight of manganese 2602.00.00.40"
+          ]
         },
         {
           "id": "r14",
@@ -652,8 +638,7 @@
           "heading": "2602",
           "ancestorPath": [
             "Manganese ores and concentrates, including ferruginous manganese ores and concentrates with a manganese content of 20 percent or more, calculated on the dry weight"
-          ],
-          "searchText": "manganese ores and concentrates, including ferruginous manganese ores and concentrates with a manganese content of 20 percent or more, calculated on the dry weight containing 47 percent or more by weight of manganese 2602.00.00.60"
+          ]
         },
         {
           "id": "r15",
@@ -676,8 +661,7 @@
           "column2InheritedFrom": null,
           "dutiable": true,
           "heading": "2603",
-          "ancestorPath": [],
-          "searchText": "copper ores and concentrates 2603.00.00"
+          "ancestorPath": []
         },
         {
           "id": "r16",
@@ -700,8 +684,7 @@
           "column2InheritedFrom": "2603.00.00",
           "dutiable": true,
           "heading": "2603",
-          "ancestorPath": ["Copper ores and concentrates"],
-          "searchText": "copper ores and concentrates copper content 2603.00.00.10"
+          "ancestorPath": ["Copper ores and concentrates"]
         },
         {
           "id": "r17",
@@ -724,8 +707,7 @@
           "column2InheritedFrom": "2603.00.00",
           "dutiable": true,
           "heading": "2603",
-          "ancestorPath": ["Copper ores and concentrates"],
-          "searchText": "copper ores and concentrates lead content 2603.00.00.20"
+          "ancestorPath": ["Copper ores and concentrates"]
         },
         {
           "id": "r18",
@@ -748,8 +730,7 @@
           "column2InheritedFrom": "2603.00.00",
           "dutiable": true,
           "heading": "2603",
-          "ancestorPath": ["Copper ores and concentrates"],
-          "searchText": "copper ores and concentrates zinc content 2603.00.00.30"
+          "ancestorPath": ["Copper ores and concentrates"]
         },
         {
           "id": "r19",
@@ -772,8 +753,7 @@
           "column2InheritedFrom": "2603.00.00",
           "dutiable": true,
           "heading": "2603",
-          "ancestorPath": ["Copper ores and concentrates"],
-          "searchText": "copper ores and concentrates silver content 2603.00.00.40"
+          "ancestorPath": ["Copper ores and concentrates"]
         },
         {
           "id": "r20",
@@ -796,8 +776,7 @@
           "column2InheritedFrom": "2603.00.00",
           "dutiable": true,
           "heading": "2603",
-          "ancestorPath": ["Copper ores and concentrates"],
-          "searchText": "copper ores and concentrates gold content 2603.00.00.50"
+          "ancestorPath": ["Copper ores and concentrates"]
         },
         {
           "id": "r21",
@@ -820,8 +799,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "2604",
-          "ancestorPath": [],
-          "searchText": "nickel ores and concentrates 2604.00.00"
+          "ancestorPath": []
         },
         {
           "id": "r22",
@@ -844,8 +822,7 @@
           "column2InheritedFrom": "2604.00.00",
           "dutiable": false,
           "heading": "2604",
-          "ancestorPath": ["Nickel ores and concentrates"],
-          "searchText": "nickel ores and concentrates nickel content 2604.00.00.40"
+          "ancestorPath": ["Nickel ores and concentrates"]
         },
         {
           "id": "r23",
@@ -868,8 +845,7 @@
           "column2InheritedFrom": "2604.00.00",
           "dutiable": false,
           "heading": "2604",
-          "ancestorPath": ["Nickel ores and concentrates"],
-          "searchText": "nickel ores and concentrates other metal content 2604.00.00.80"
+          "ancestorPath": ["Nickel ores and concentrates"]
         },
         {
           "id": "r24",
@@ -892,8 +868,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "2605",
-          "ancestorPath": [],
-          "searchText": "cobalt ores and concentrates 2605.00.00.00"
+          "ancestorPath": []
         },
         {
           "id": "r25",
@@ -916,8 +891,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "2606",
-          "ancestorPath": [],
-          "searchText": "aluminum ores and concentrates 2606.00.00"
+          "ancestorPath": []
         },
         {
           "id": "r26",
@@ -940,8 +914,7 @@
           "column2InheritedFrom": "2606.00.00",
           "dutiable": false,
           "heading": "2606",
-          "ancestorPath": ["Aluminum ores and concentrates"],
-          "searchText": "aluminum ores and concentrates bauxite, calcined: "
+          "ancestorPath": ["Aluminum ores and concentrates"]
         },
         {
           "id": "r27",
@@ -964,8 +937,7 @@
           "column2InheritedFrom": "2606.00.00",
           "dutiable": false,
           "heading": "2606",
-          "ancestorPath": ["Aluminum ores and concentrates", "Bauxite, calcined"],
-          "searchText": "aluminum ores and concentrates bauxite, calcined refractory grade 2606.00.00.30"
+          "ancestorPath": ["Aluminum ores and concentrates", "Bauxite, calcined"]
         },
         {
           "id": "r28",
@@ -988,8 +960,7 @@
           "column2InheritedFrom": "2606.00.00",
           "dutiable": false,
           "heading": "2606",
-          "ancestorPath": ["Aluminum ores and concentrates", "Bauxite, calcined"],
-          "searchText": "aluminum ores and concentrates bauxite, calcined other 2606.00.00.60"
+          "ancestorPath": ["Aluminum ores and concentrates", "Bauxite, calcined"]
         },
         {
           "id": "r29",
@@ -1012,8 +983,7 @@
           "column2InheritedFrom": "2606.00.00",
           "dutiable": false,
           "heading": "2606",
-          "ancestorPath": ["Aluminum ores and concentrates"],
-          "searchText": "aluminum ores and concentrates other 2606.00.00.90"
+          "ancestorPath": ["Aluminum ores and concentrates"]
         },
         {
           "id": "r30",
@@ -1036,8 +1006,7 @@
           "column2InheritedFrom": null,
           "dutiable": true,
           "heading": "2607",
-          "ancestorPath": [],
-          "searchText": "lead ores and concentrates 2607.00.00"
+          "ancestorPath": []
         },
         {
           "id": "r31",
@@ -1060,8 +1029,7 @@
           "column2InheritedFrom": "2607.00.00",
           "dutiable": true,
           "heading": "2607",
-          "ancestorPath": ["Lead ores and concentrates"],
-          "searchText": "lead ores and concentrates copper content 2607.00.00.10"
+          "ancestorPath": ["Lead ores and concentrates"]
         },
         {
           "id": "r32",
@@ -1084,8 +1052,7 @@
           "column2InheritedFrom": "2607.00.00",
           "dutiable": true,
           "heading": "2607",
-          "ancestorPath": ["Lead ores and concentrates"],
-          "searchText": "lead ores and concentrates lead content 2607.00.00.20"
+          "ancestorPath": ["Lead ores and concentrates"]
         },
         {
           "id": "r33",
@@ -1108,8 +1075,7 @@
           "column2InheritedFrom": "2607.00.00",
           "dutiable": true,
           "heading": "2607",
-          "ancestorPath": ["Lead ores and concentrates"],
-          "searchText": "lead ores and concentrates zinc content 2607.00.00.30"
+          "ancestorPath": ["Lead ores and concentrates"]
         },
         {
           "id": "r34",
@@ -1132,8 +1098,7 @@
           "column2InheritedFrom": "2607.00.00",
           "dutiable": true,
           "heading": "2607",
-          "ancestorPath": ["Lead ores and concentrates"],
-          "searchText": "lead ores and concentrates silver content 2607.00.00.40"
+          "ancestorPath": ["Lead ores and concentrates"]
         },
         {
           "id": "r35",
@@ -1156,8 +1121,7 @@
           "column2InheritedFrom": "2607.00.00",
           "dutiable": true,
           "heading": "2607",
-          "ancestorPath": ["Lead ores and concentrates"],
-          "searchText": "lead ores and concentrates gold content 2607.00.00.50"
+          "ancestorPath": ["Lead ores and concentrates"]
         },
         {
           "id": "r36",
@@ -1180,8 +1144,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "2608",
-          "ancestorPath": [],
-          "searchText": "zinc ores and concentrates 2608.00.00"
+          "ancestorPath": []
         },
         {
           "id": "r37",
@@ -1204,8 +1167,7 @@
           "column2InheritedFrom": "2608.00.00",
           "dutiable": false,
           "heading": "2608",
-          "ancestorPath": ["Zinc ores and concentrates"],
-          "searchText": "zinc ores and concentrates copper content 2608.00.00.10"
+          "ancestorPath": ["Zinc ores and concentrates"]
         },
         {
           "id": "r38",
@@ -1228,8 +1190,7 @@
           "column2InheritedFrom": "2608.00.00",
           "dutiable": false,
           "heading": "2608",
-          "ancestorPath": ["Zinc ores and concentrates"],
-          "searchText": "zinc ores and concentrates lead content 2608.00.00.20"
+          "ancestorPath": ["Zinc ores and concentrates"]
         },
         {
           "id": "r39",
@@ -1252,8 +1213,7 @@
           "column2InheritedFrom": "2608.00.00",
           "dutiable": false,
           "heading": "2608",
-          "ancestorPath": ["Zinc ores and concentrates"],
-          "searchText": "zinc ores and concentrates zinc content 2608.00.00.30"
+          "ancestorPath": ["Zinc ores and concentrates"]
         },
         {
           "id": "r40",
@@ -1276,8 +1236,7 @@
           "column2InheritedFrom": "2608.00.00",
           "dutiable": false,
           "heading": "2608",
-          "ancestorPath": ["Zinc ores and concentrates"],
-          "searchText": "zinc ores and concentrates silver content 2608.00.00.40"
+          "ancestorPath": ["Zinc ores and concentrates"]
         },
         {
           "id": "r41",
@@ -1300,8 +1259,7 @@
           "column2InheritedFrom": "2608.00.00",
           "dutiable": false,
           "heading": "2608",
-          "ancestorPath": ["Zinc ores and concentrates"],
-          "searchText": "zinc ores and concentrates gold content 2608.00.00.50"
+          "ancestorPath": ["Zinc ores and concentrates"]
         },
         {
           "id": "r42",
@@ -1324,8 +1282,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "2609",
-          "ancestorPath": [],
-          "searchText": "tin ores and concentrates 2609.00.00.00"
+          "ancestorPath": []
         },
         {
           "id": "r43",
@@ -1348,8 +1305,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "2610",
-          "ancestorPath": [],
-          "searchText": "chromium ores and concentrates 2610.00.00"
+          "ancestorPath": []
         },
         {
           "id": "r44",
@@ -1372,8 +1328,7 @@
           "column2InheritedFrom": "2610.00.00",
           "dutiable": false,
           "heading": "2610",
-          "ancestorPath": ["Chromium ores and concentrates"],
-          "searchText": "chromium ores and concentrates having a chromium content equivalent to not more than 40 percent chromic oxide (cr2o3) 2610.00.00.20"
+          "ancestorPath": ["Chromium ores and concentrates"]
         },
         {
           "id": "r45",
@@ -1396,8 +1351,7 @@
           "column2InheritedFrom": "2610.00.00",
           "dutiable": false,
           "heading": "2610",
-          "ancestorPath": ["Chromium ores and concentrates"],
-          "searchText": "chromium ores and concentrates having a chromium content equivalent to more than 40 percent but less than 46 percent chromic oxide (cr2o3) 2610.00.00.40"
+          "ancestorPath": ["Chromium ores and concentrates"]
         },
         {
           "id": "r46",
@@ -1420,8 +1374,7 @@
           "column2InheritedFrom": "2610.00.00",
           "dutiable": false,
           "heading": "2610",
-          "ancestorPath": ["Chromium ores and concentrates"],
-          "searchText": "chromium ores and concentrates having a chromium content equivalent to 46 percent or more chromic oxide (cr2o3) 2610.00.00.60"
+          "ancestorPath": ["Chromium ores and concentrates"]
         },
         {
           "id": "r47",
@@ -1444,8 +1397,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "2611",
-          "ancestorPath": [],
-          "searchText": "tungsten ores and concentrates: 2611.00"
+          "ancestorPath": []
         },
         {
           "id": "r48",
@@ -1468,8 +1420,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "2611",
-          "ancestorPath": ["Tungsten ores and concentrates"],
-          "searchText": "tungsten ores and concentrates ores 2611.00.30.00"
+          "ancestorPath": ["Tungsten ores and concentrates"]
         },
         {
           "id": "r49",
@@ -1492,8 +1443,7 @@
           "column2InheritedFrom": null,
           "dutiable": true,
           "heading": "2611",
-          "ancestorPath": ["Tungsten ores and concentrates"],
-          "searchText": "tungsten ores and concentrates concentrates 2611.00.60.00"
+          "ancestorPath": ["Tungsten ores and concentrates"]
         },
         {
           "id": "r50",
@@ -1516,8 +1466,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "2612",
-          "ancestorPath": [],
-          "searchText": "uranium or thorium ores and concentrates: 2612"
+          "ancestorPath": []
         },
         {
           "id": "r51",
@@ -1540,8 +1489,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "2612",
-          "ancestorPath": ["Uranium or thorium ores and concentrates"],
-          "searchText": "uranium or thorium ores and concentrates uranium ores and concentrates 2612.10.00.00"
+          "ancestorPath": ["Uranium or thorium ores and concentrates"]
         },
         {
           "id": "r52",
@@ -1564,8 +1512,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "2612",
-          "ancestorPath": ["Uranium or thorium ores and concentrates"],
-          "searchText": "uranium or thorium ores and concentrates thorium ores and concentrates 2612.20.00.00"
+          "ancestorPath": ["Uranium or thorium ores and concentrates"]
         },
         {
           "id": "r53",
@@ -1588,8 +1535,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "2613",
-          "ancestorPath": [],
-          "searchText": "molybdenum ores and concentrates: 2613"
+          "ancestorPath": []
         },
         {
           "id": "r54",
@@ -1612,8 +1558,7 @@
           "column2InheritedFrom": null,
           "dutiable": true,
           "heading": "2613",
-          "ancestorPath": ["Molybdenum ores and concentrates"],
-          "searchText": "molybdenum ores and concentrates roasted 2613.10.00.00"
+          "ancestorPath": ["Molybdenum ores and concentrates"]
         },
         {
           "id": "r55",
@@ -1636,8 +1581,7 @@
           "column2InheritedFrom": null,
           "dutiable": true,
           "heading": "2613",
-          "ancestorPath": ["Molybdenum ores and concentrates"],
-          "searchText": "molybdenum ores and concentrates other 2613.90.00.00"
+          "ancestorPath": ["Molybdenum ores and concentrates"]
         },
         {
           "id": "r56",
@@ -1660,8 +1604,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "2614",
-          "ancestorPath": [],
-          "searchText": "titanium ores and concentrates: 2614.00"
+          "ancestorPath": []
         },
         {
           "id": "r57",
@@ -1684,8 +1627,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "2614",
-          "ancestorPath": ["Titanium ores and concentrates"],
-          "searchText": "titanium ores and concentrates synthetic rutile 2614.00.30.00"
+          "ancestorPath": ["Titanium ores and concentrates"]
         },
         {
           "id": "r58",
@@ -1708,8 +1650,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "2614",
-          "ancestorPath": ["Titanium ores and concentrates"],
-          "searchText": "titanium ores and concentrates other 2614.00.60"
+          "ancestorPath": ["Titanium ores and concentrates"]
         },
         {
           "id": "r59",
@@ -1732,8 +1673,7 @@
           "column2InheritedFrom": "2614.00.60",
           "dutiable": false,
           "heading": "2614",
-          "ancestorPath": ["Titanium ores and concentrates", "Other"],
-          "searchText": "titanium ores and concentrates other ilmenite and ilmenite sand 2614.00.60.20"
+          "ancestorPath": ["Titanium ores and concentrates", "Other"]
         },
         {
           "id": "r60",
@@ -1756,8 +1696,7 @@
           "column2InheritedFrom": "2614.00.60",
           "dutiable": false,
           "heading": "2614",
-          "ancestorPath": ["Titanium ores and concentrates", "Other"],
-          "searchText": "titanium ores and concentrates other other (including rutile and rutile sand) 2614.00.60.40"
+          "ancestorPath": ["Titanium ores and concentrates", "Other"]
         },
         {
           "id": "r61",
@@ -1780,8 +1719,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "2615",
-          "ancestorPath": [],
-          "searchText": "niobium (columbium), tantalum, vanadium or zirconium ores and concentrates: 2615"
+          "ancestorPath": []
         },
         {
           "id": "r62",
@@ -1804,8 +1742,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "2615",
-          "ancestorPath": ["Niobium (columbium), tantalum, vanadium or zirconium ores and concentrates"],
-          "searchText": "niobium (columbium), tantalum, vanadium or zirconium ores and concentrates zirconium ores and concentrates 2615.10.00.00"
+          "ancestorPath": ["Niobium (columbium), tantalum, vanadium or zirconium ores and concentrates"]
         },
         {
           "id": "r63",
@@ -1828,8 +1765,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "2615",
-          "ancestorPath": ["Niobium (columbium), tantalum, vanadium or zirconium ores and concentrates"],
-          "searchText": "niobium (columbium), tantalum, vanadium or zirconium ores and concentrates other: 2615.90"
+          "ancestorPath": ["Niobium (columbium), tantalum, vanadium or zirconium ores and concentrates"]
         },
         {
           "id": "r64",
@@ -1852,8 +1788,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "2615",
-          "ancestorPath": ["Niobium (columbium), tantalum, vanadium or zirconium ores and concentrates", "Other"],
-          "searchText": "niobium (columbium), tantalum, vanadium or zirconium ores and concentrates other synthetic tantalum-niobium (columbium) concentrates 2615.90.30.00"
+          "ancestorPath": ["Niobium (columbium), tantalum, vanadium or zirconium ores and concentrates", "Other"]
         },
         {
           "id": "r65",
@@ -1876,8 +1811,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "2615",
-          "ancestorPath": ["Niobium (columbium), tantalum, vanadium or zirconium ores and concentrates", "Other"],
-          "searchText": "niobium (columbium), tantalum, vanadium or zirconium ores and concentrates other other 2615.90.60"
+          "ancestorPath": ["Niobium (columbium), tantalum, vanadium or zirconium ores and concentrates", "Other"]
         },
         {
           "id": "r66",
@@ -1900,8 +1834,7 @@
           "column2InheritedFrom": "2615.90.60",
           "dutiable": false,
           "heading": "2615",
-          "ancestorPath": ["Niobium (columbium), tantalum, vanadium or zirconium ores and concentrates", "Other", "Other"],
-          "searchText": "niobium (columbium), tantalum, vanadium or zirconium ores and concentrates other other niobium (columbium) ores and concentrates 2615.90.60.30"
+          "ancestorPath": ["Niobium (columbium), tantalum, vanadium or zirconium ores and concentrates", "Other", "Other"]
         },
         {
           "id": "r67",
@@ -1924,8 +1857,7 @@
           "column2InheritedFrom": "2615.90.60",
           "dutiable": false,
           "heading": "2615",
-          "ancestorPath": ["Niobium (columbium), tantalum, vanadium or zirconium ores and concentrates", "Other", "Other"],
-          "searchText": "niobium (columbium), tantalum, vanadium or zirconium ores and concentrates other other tantalum ores and concentrates 2615.90.60.60"
+          "ancestorPath": ["Niobium (columbium), tantalum, vanadium or zirconium ores and concentrates", "Other", "Other"]
         },
         {
           "id": "r68",
@@ -1948,8 +1880,7 @@
           "column2InheritedFrom": "2615.90.60",
           "dutiable": false,
           "heading": "2615",
-          "ancestorPath": ["Niobium (columbium), tantalum, vanadium or zirconium ores and concentrates", "Other", "Other"],
-          "searchText": "niobium (columbium), tantalum, vanadium or zirconium ores and concentrates other other vanadium ores and concentrates 2615.90.60.90"
+          "ancestorPath": ["Niobium (columbium), tantalum, vanadium or zirconium ores and concentrates", "Other", "Other"]
         },
         {
           "id": "r69",
@@ -1972,8 +1903,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "2616",
-          "ancestorPath": [],
-          "searchText": "precious metal ores and concentrates: 2616"
+          "ancestorPath": []
         },
         {
           "id": "r70",
@@ -1996,8 +1926,7 @@
           "column2InheritedFrom": null,
           "dutiable": true,
           "heading": "2616",
-          "ancestorPath": ["Precious metal ores and concentrates"],
-          "searchText": "precious metal ores and concentrates silver ores and concentrates 2616.10.00"
+          "ancestorPath": ["Precious metal ores and concentrates"]
         },
         {
           "id": "r71",
@@ -2020,8 +1949,7 @@
           "column2InheritedFrom": "2616.10.00",
           "dutiable": true,
           "heading": "2616",
-          "ancestorPath": ["Precious metal ores and concentrates", "Silver ores and concentrates"],
-          "searchText": "precious metal ores and concentrates silver ores and concentrates copper content 2616.10.00.10"
+          "ancestorPath": ["Precious metal ores and concentrates", "Silver ores and concentrates"]
         },
         {
           "id": "r72",
@@ -2044,8 +1972,7 @@
           "column2InheritedFrom": "2616.10.00",
           "dutiable": true,
           "heading": "2616",
-          "ancestorPath": ["Precious metal ores and concentrates", "Silver ores and concentrates"],
-          "searchText": "precious metal ores and concentrates silver ores and concentrates lead content 2616.10.00.20"
+          "ancestorPath": ["Precious metal ores and concentrates", "Silver ores and concentrates"]
         },
         {
           "id": "r73",
@@ -2068,8 +1995,7 @@
           "column2InheritedFrom": "2616.10.00",
           "dutiable": true,
           "heading": "2616",
-          "ancestorPath": ["Precious metal ores and concentrates", "Silver ores and concentrates"],
-          "searchText": "precious metal ores and concentrates silver ores and concentrates zinc content 2616.10.00.30"
+          "ancestorPath": ["Precious metal ores and concentrates", "Silver ores and concentrates"]
         },
         {
           "id": "r74",
@@ -2092,8 +2018,7 @@
           "column2InheritedFrom": "2616.10.00",
           "dutiable": true,
           "heading": "2616",
-          "ancestorPath": ["Precious metal ores and concentrates", "Silver ores and concentrates"],
-          "searchText": "precious metal ores and concentrates silver ores and concentrates silver content 2616.10.00.40"
+          "ancestorPath": ["Precious metal ores and concentrates", "Silver ores and concentrates"]
         },
         {
           "id": "r75",
@@ -2116,8 +2041,7 @@
           "column2InheritedFrom": "2616.10.00",
           "dutiable": true,
           "heading": "2616",
-          "ancestorPath": ["Precious metal ores and concentrates", "Silver ores and concentrates"],
-          "searchText": "precious metal ores and concentrates silver ores and concentrates gold content 2616.10.00.80"
+          "ancestorPath": ["Precious metal ores and concentrates", "Silver ores and concentrates"]
         },
         {
           "id": "r76",
@@ -2140,8 +2064,7 @@
           "column2InheritedFrom": null,
           "dutiable": true,
           "heading": "2616",
-          "ancestorPath": ["Precious metal ores and concentrates"],
-          "searchText": "precious metal ores and concentrates other 2616.90.00"
+          "ancestorPath": ["Precious metal ores and concentrates"]
         },
         {
           "id": "r77",
@@ -2164,8 +2087,7 @@
           "column2InheritedFrom": "2616.90.00",
           "dutiable": true,
           "heading": "2616",
-          "ancestorPath": ["Precious metal ores and concentrates", "Other"],
-          "searchText": "precious metal ores and concentrates other copper content 2616.90.00.10"
+          "ancestorPath": ["Precious metal ores and concentrates", "Other"]
         },
         {
           "id": "r78",
@@ -2188,8 +2110,7 @@
           "column2InheritedFrom": "2616.90.00",
           "dutiable": true,
           "heading": "2616",
-          "ancestorPath": ["Precious metal ores and concentrates", "Other"],
-          "searchText": "precious metal ores and concentrates other lead content 2616.90.00.20"
+          "ancestorPath": ["Precious metal ores and concentrates", "Other"]
         },
         {
           "id": "r79",
@@ -2212,8 +2133,7 @@
           "column2InheritedFrom": "2616.90.00",
           "dutiable": true,
           "heading": "2616",
-          "ancestorPath": ["Precious metal ores and concentrates", "Other"],
-          "searchText": "precious metal ores and concentrates other zinc content 2616.90.00.30"
+          "ancestorPath": ["Precious metal ores and concentrates", "Other"]
         },
         {
           "id": "r80",
@@ -2236,8 +2156,7 @@
           "column2InheritedFrom": "2616.90.00",
           "dutiable": true,
           "heading": "2616",
-          "ancestorPath": ["Precious metal ores and concentrates", "Other"],
-          "searchText": "precious metal ores and concentrates other gold content 2616.90.00.40"
+          "ancestorPath": ["Precious metal ores and concentrates", "Other"]
         },
         {
           "id": "r81",
@@ -2260,8 +2179,7 @@
           "column2InheritedFrom": "2616.90.00",
           "dutiable": true,
           "heading": "2616",
-          "ancestorPath": ["Precious metal ores and concentrates", "Other"],
-          "searchText": "precious metal ores and concentrates other other precious metal content 2616.90.00.50"
+          "ancestorPath": ["Precious metal ores and concentrates", "Other"]
         },
         {
           "id": "r82",
@@ -2284,8 +2202,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "2617",
-          "ancestorPath": [],
-          "searchText": "other ores and concentrates: 2617"
+          "ancestorPath": []
         },
         {
           "id": "r83",
@@ -2308,8 +2225,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "2617",
-          "ancestorPath": ["Other ores and concentrates"],
-          "searchText": "other ores and concentrates antimony ores and concentrates 2617.10.00.00"
+          "ancestorPath": ["Other ores and concentrates"]
         },
         {
           "id": "r84",
@@ -2332,8 +2248,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "2617",
-          "ancestorPath": ["Other ores and concentrates"],
-          "searchText": "other ores and concentrates other 2617.90.00"
+          "ancestorPath": ["Other ores and concentrates"]
         },
         {
           "id": "r85",
@@ -2356,8 +2271,7 @@
           "column2InheritedFrom": "2617.90.00",
           "dutiable": false,
           "heading": "2617",
-          "ancestorPath": ["Other ores and concentrates", "Other"],
-          "searchText": "other ores and concentrates other beryllium ores and concentrates 2617.90.00.30"
+          "ancestorPath": ["Other ores and concentrates", "Other"]
         },
         {
           "id": "r86",
@@ -2380,8 +2294,7 @@
           "column2InheritedFrom": "2617.90.00",
           "dutiable": false,
           "heading": "2617",
-          "ancestorPath": ["Other ores and concentrates", "Other"],
-          "searchText": "other ores and concentrates other other 2617.90.00.60"
+          "ancestorPath": ["Other ores and concentrates", "Other"]
         },
         {
           "id": "r87",
@@ -2404,8 +2317,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "2618",
-          "ancestorPath": [],
-          "searchText": "granulated slag (slag sand) from the manufacture of iron or steel 2618.00.00.00"
+          "ancestorPath": []
         },
         {
           "id": "r88",
@@ -2428,8 +2340,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "2619",
-          "ancestorPath": [],
-          "searchText": "slag, dross (other than granulated slag), scalings and other waste from the manufacture of iron or steel: 2619.00"
+          "ancestorPath": []
         },
         {
           "id": "r89",
@@ -2452,8 +2363,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "2619",
-          "ancestorPath": ["Slag, dross (other than granulated slag), scalings and other waste from the manufacture of iron or steel"],
-          "searchText": "slag, dross (other than granulated slag), scalings and other waste from the manufacture of iron or steel ferrous scale 2619.00.30.00"
+          "ancestorPath": ["Slag, dross (other than granulated slag), scalings and other waste from the manufacture of iron or steel"]
         },
         {
           "id": "r90",
@@ -2476,8 +2386,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "2619",
-          "ancestorPath": ["Slag, dross (other than granulated slag), scalings and other waste from the manufacture of iron or steel"],
-          "searchText": "slag, dross (other than granulated slag), scalings and other waste from the manufacture of iron or steel other 2619.00.90.00"
+          "ancestorPath": ["Slag, dross (other than granulated slag), scalings and other waste from the manufacture of iron or steel"]
         },
         {
           "id": "r91",
@@ -2500,8 +2409,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "2620",
-          "ancestorPath": [],
-          "searchText": "slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds: 2620"
+          "ancestorPath": []
         },
         {
           "id": "r92",
@@ -2524,8 +2432,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "2620",
-          "ancestorPath": ["Slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds"],
-          "searchText": "slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds containing mainly zinc: "
+          "ancestorPath": ["Slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds"]
         },
         {
           "id": "r93",
@@ -2551,8 +2458,7 @@
           "ancestorPath": [
             "Slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds",
             "Containing mainly zinc"
-          ],
-          "searchText": "slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds containing mainly zinc hard zinc spelter 2620.11.00.00"
+          ]
         },
         {
           "id": "r94",
@@ -2578,8 +2484,7 @@
           "ancestorPath": [
             "Slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds",
             "Containing mainly zinc"
-          ],
-          "searchText": "slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds containing mainly zinc other: 2620.19"
+          ]
         },
         {
           "id": "r95",
@@ -2606,8 +2511,7 @@
             "Slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds",
             "Containing mainly zinc",
             "Other"
-          ],
-          "searchText": "slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds containing mainly zinc other zinc dross and zinc skimmings 2620.19.30.00"
+          ]
         },
         {
           "id": "r96",
@@ -2634,8 +2538,7 @@
             "Slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds",
             "Containing mainly zinc",
             "Other"
-          ],
-          "searchText": "slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds containing mainly zinc other other 2620.19.60"
+          ]
         },
         {
           "id": "r97",
@@ -2663,8 +2566,7 @@
             "Containing mainly zinc",
             "Other",
             "Other"
-          ],
-          "searchText": "slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds containing mainly zinc other other copper content 2620.19.60.10"
+          ]
         },
         {
           "id": "r98",
@@ -2692,8 +2594,7 @@
             "Containing mainly zinc",
             "Other",
             "Other"
-          ],
-          "searchText": "slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds containing mainly zinc other other lead content 2620.19.60.20"
+          ]
         },
         {
           "id": "r99",
@@ -2721,8 +2622,7 @@
             "Containing mainly zinc",
             "Other",
             "Other"
-          ],
-          "searchText": "slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds containing mainly zinc other other zinc content 2620.19.60.30"
+          ]
         },
         {
           "id": "r100",
@@ -2750,8 +2650,7 @@
             "Containing mainly zinc",
             "Other",
             "Other"
-          ],
-          "searchText": "slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds containing mainly zinc other other silver content 2620.19.60.40"
+          ]
         },
         {
           "id": "r101",
@@ -2779,8 +2678,7 @@
             "Containing mainly zinc",
             "Other",
             "Other"
-          ],
-          "searchText": "slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds containing mainly zinc other other gold content 2620.19.60.50"
+          ]
         },
         {
           "id": "r102",
@@ -2803,8 +2701,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "2620",
-          "ancestorPath": ["Slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds"],
-          "searchText": "slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds containing mainly lead: "
+          "ancestorPath": ["Slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds"]
         },
         {
           "id": "r103",
@@ -2830,8 +2727,7 @@
           "ancestorPath": [
             "Slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds",
             "Containing mainly lead"
-          ],
-          "searchText": "slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds containing mainly lead leaded gasoline sludges and leaded anti-knock compound sludges 2620.21.00"
+          ]
         },
         {
           "id": "r104",
@@ -2858,8 +2754,7 @@
             "Slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds",
             "Containing mainly lead",
             "Leaded gasoline sludges and leaded anti-knock compound sludges"
-          ],
-          "searchText": "slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds containing mainly lead leaded gasoline sludges and leaded anti-knock compound sludges copper content 2620.21.00.10"
+          ]
         },
         {
           "id": "r105",
@@ -2886,8 +2781,7 @@
             "Slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds",
             "Containing mainly lead",
             "Leaded gasoline sludges and leaded anti-knock compound sludges"
-          ],
-          "searchText": "slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds containing mainly lead leaded gasoline sludges and leaded anti-knock compound sludges lead content 2620.21.00.20"
+          ]
         },
         {
           "id": "r106",
@@ -2914,8 +2808,7 @@
             "Slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds",
             "Containing mainly lead",
             "Leaded gasoline sludges and leaded anti-knock compound sludges"
-          ],
-          "searchText": "slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds containing mainly lead leaded gasoline sludges and leaded anti-knock compound sludges zinc content 2620.21.00.30"
+          ]
         },
         {
           "id": "r107",
@@ -2942,8 +2835,7 @@
             "Slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds",
             "Containing mainly lead",
             "Leaded gasoline sludges and leaded anti-knock compound sludges"
-          ],
-          "searchText": "slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds containing mainly lead leaded gasoline sludges and leaded anti-knock compound sludges silver content 2620.21.00.40"
+          ]
         },
         {
           "id": "r108",
@@ -2970,8 +2862,7 @@
             "Slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds",
             "Containing mainly lead",
             "Leaded gasoline sludges and leaded anti-knock compound sludges"
-          ],
-          "searchText": "slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds containing mainly lead leaded gasoline sludges and leaded anti-knock compound sludges gold content 2620.21.00.50"
+          ]
         },
         {
           "id": "r109",
@@ -2997,8 +2888,7 @@
           "ancestorPath": [
             "Slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds",
             "Containing mainly lead"
-          ],
-          "searchText": "slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds containing mainly lead other 2620.29.00"
+          ]
         },
         {
           "id": "r110",
@@ -3025,8 +2915,7 @@
             "Slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds",
             "Containing mainly lead",
             "Other"
-          ],
-          "searchText": "slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds containing mainly lead other copper content 2620.29.00.10"
+          ]
         },
         {
           "id": "r111",
@@ -3053,8 +2942,7 @@
             "Slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds",
             "Containing mainly lead",
             "Other"
-          ],
-          "searchText": "slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds containing mainly lead other lead content 2620.29.00.20"
+          ]
         },
         {
           "id": "r112",
@@ -3081,8 +2969,7 @@
             "Slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds",
             "Containing mainly lead",
             "Other"
-          ],
-          "searchText": "slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds containing mainly lead other zinc content 2620.29.00.30"
+          ]
         },
         {
           "id": "r113",
@@ -3109,8 +2996,7 @@
             "Slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds",
             "Containing mainly lead",
             "Other"
-          ],
-          "searchText": "slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds containing mainly lead other silver content 2620.29.00.40"
+          ]
         },
         {
           "id": "r114",
@@ -3137,8 +3023,7 @@
             "Slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds",
             "Containing mainly lead",
             "Other"
-          ],
-          "searchText": "slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds containing mainly lead other gold content 2620.29.00.50"
+          ]
         },
         {
           "id": "r115",
@@ -3161,8 +3046,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "2620",
-          "ancestorPath": ["Slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds"],
-          "searchText": "slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds containing mainly copper 2620.30.00"
+          "ancestorPath": ["Slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds"]
         },
         {
           "id": "r116",
@@ -3188,8 +3072,7 @@
           "ancestorPath": [
             "Slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds",
             "Containing mainly copper"
-          ],
-          "searchText": "slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds containing mainly copper copper content 2620.30.00.10"
+          ]
         },
         {
           "id": "r117",
@@ -3215,8 +3098,7 @@
           "ancestorPath": [
             "Slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds",
             "Containing mainly copper"
-          ],
-          "searchText": "slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds containing mainly copper lead content 2620.30.00.20"
+          ]
         },
         {
           "id": "r118",
@@ -3242,8 +3124,7 @@
           "ancestorPath": [
             "Slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds",
             "Containing mainly copper"
-          ],
-          "searchText": "slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds containing mainly copper zinc content 2620.30.00.30"
+          ]
         },
         {
           "id": "r119",
@@ -3269,8 +3150,7 @@
           "ancestorPath": [
             "Slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds",
             "Containing mainly copper"
-          ],
-          "searchText": "slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds containing mainly copper silver content 2620.30.00.40"
+          ]
         },
         {
           "id": "r120",
@@ -3296,8 +3176,7 @@
           "ancestorPath": [
             "Slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds",
             "Containing mainly copper"
-          ],
-          "searchText": "slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds containing mainly copper gold content 2620.30.00.50"
+          ]
         },
         {
           "id": "r121",
@@ -3320,8 +3199,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "2620",
-          "ancestorPath": ["Slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds"],
-          "searchText": "slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds containing mainly aluminum 2620.40.00"
+          "ancestorPath": ["Slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds"]
         },
         {
           "id": "r122",
@@ -3347,8 +3225,7 @@
           "ancestorPath": [
             "Slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds",
             "Containing mainly aluminum"
-          ],
-          "searchText": "slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds containing mainly aluminum vanadium bearing materials 2620.40.00.30"
+          ]
         },
         {
           "id": "r123",
@@ -3374,8 +3251,7 @@
           "ancestorPath": [
             "Slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds",
             "Containing mainly aluminum"
-          ],
-          "searchText": "slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds containing mainly aluminum other 2620.40.00.60"
+          ]
         },
         {
           "id": "r124",
@@ -3398,8 +3274,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "2620",
-          "ancestorPath": ["Slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds"],
-          "searchText": "slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds containing arsenic, mercury, thallium or their mixtures, of a kind used for the extraction of arsenic or those metalsor for the manufacture of their chemical compounds: 2620.60"
+          "ancestorPath": ["Slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds"]
         },
         {
           "id": "r125",
@@ -3425,8 +3300,7 @@
           "ancestorPath": [
             "Slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds",
             "Containing arsenic, mercury, thallium or their mixtures, of a kind used for the extraction of arsenic or those metalsor for the manufacture of their chemical compounds"
-          ],
-          "searchText": "slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds containing arsenic, mercury, thallium or their mixtures, of a kind used for the extraction of arsenic or those metalsor for the manufacture of their chemical compounds of a kind used only for the extraction of arsenic or the manufacture of its chemical compounds 2620.60.10.00"
+          ]
         },
         {
           "id": "r126",
@@ -3452,8 +3326,7 @@
           "ancestorPath": [
             "Slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds",
             "Containing arsenic, mercury, thallium or their mixtures, of a kind used for the extraction of arsenic or those metalsor for the manufacture of their chemical compounds"
-          ],
-          "searchText": "slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds containing arsenic, mercury, thallium or their mixtures, of a kind used for the extraction of arsenic or those metalsor for the manufacture of their chemical compounds other 2620.60.90.00"
+          ]
         },
         {
           "id": "r127",
@@ -3476,8 +3349,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "2620",
-          "ancestorPath": ["Slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds"],
-          "searchText": "slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds other: "
+          "ancestorPath": ["Slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds"]
         },
         {
           "id": "r128",
@@ -3500,8 +3372,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "2620",
-          "ancestorPath": ["Slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds", "Other"],
-          "searchText": "slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds other containing antimony, beryllium, cadmium, chromium or their mixtures 2620.91.00.00"
+          "ancestorPath": ["Slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds", "Other"]
         },
         {
           "id": "r129",
@@ -3524,8 +3395,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "2620",
-          "ancestorPath": ["Slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds", "Other"],
-          "searchText": "slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds other other: 2620.99"
+          "ancestorPath": ["Slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds", "Other"]
         },
         {
           "id": "r130",
@@ -3552,8 +3422,7 @@
             "Slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds",
             "Other",
             "Other"
-          ],
-          "searchText": "slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds other other containing mainly vanadium 2620.99.10.00"
+          ]
         },
         {
           "id": "r131",
@@ -3580,8 +3449,7 @@
             "Slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds",
             "Other",
             "Other"
-          ],
-          "searchText": "slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds other other containing mainly tungsten 2620.99.20.00"
+          ]
         },
         {
           "id": "r132",
@@ -3608,8 +3476,7 @@
             "Slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds",
             "Other",
             "Other"
-          ],
-          "searchText": "slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds other other materials not provided for elsewhere in this heading containing by weight over 10 percent nickel 2620.99.30.00"
+          ]
         },
         {
           "id": "r133",
@@ -3636,8 +3503,7 @@
             "Slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds",
             "Other",
             "Other"
-          ],
-          "searchText": "slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds other other slag containing by weight over 40 percent titanium, and which if containing over 2 percent by weight of copper, lead, or zinc is not to be treated for the recovery thereof 2620.99.50.00"
+          ]
         },
         {
           "id": "r134",
@@ -3664,8 +3530,7 @@
             "Slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds",
             "Other",
             "Other"
-          ],
-          "searchText": "slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds other other other materials which are residues not advanced in value or condition by any means, and which if containing over 2 percent by weight of copper, lead or zinc are not to be treated for the recovery thereof 2620.99.75"
+          ]
         },
         {
           "id": "r135",
@@ -3693,8 +3558,7 @@
             "Other",
             "Other",
             "Other materials which are residues not advanced in value or condition by any means, and which if containing over 2 percent by weight of copper, lead or zinc are not to be treated for the recovery thereof"
-          ],
-          "searchText": "slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds other other other materials which are residues not advanced in value or condition by any means, and which if containing over 2 percent by weight of copper, lead or zinc are not to be treated for the recovery thereof vanadium bearing materials 2620.99.75.20"
+          ]
         },
         {
           "id": "r136",
@@ -3722,8 +3586,7 @@
             "Other",
             "Other",
             "Other materials which are residues not advanced in value or condition by any means, and which if containing over 2 percent by weight of copper, lead or zinc are not to be treated for the recovery thereof"
-          ],
-          "searchText": "slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds other other other materials which are residues not advanced in value or condition by any means, and which if containing over 2 percent by weight of copper, lead or zinc are not to be treated for the recovery thereof other materials containing silver 2620.99.75.60"
+          ]
         },
         {
           "id": "r137",
@@ -3751,8 +3614,7 @@
             "Other",
             "Other",
             "Other materials which are residues not advanced in value or condition by any means, and which if containing over 2 percent by weight of copper, lead or zinc are not to be treated for the recovery thereof"
-          ],
-          "searchText": "slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds other other other materials which are residues not advanced in value or condition by any means, and which if containing over 2 percent by weight of copper, lead or zinc are not to be treated for the recovery thereof other materials containing gold 2620.99.75.80"
+          ]
         },
         {
           "id": "r138",
@@ -3780,8 +3642,7 @@
             "Other",
             "Other",
             "Other materials which are residues not advanced in value or condition by any means, and which if containing over 2 percent by weight of copper, lead or zinc are not to be treated for the recovery thereof"
-          ],
-          "searchText": "slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds other other other materials which are residues not advanced in value or condition by any means, and which if containing over 2 percent by weight of copper, lead or zinc are not to be treated for the recovery thereof other materials that do not contain vanadium, silver or gold 2620.99.75.90"
+          ]
         },
         {
           "id": "r139",
@@ -3808,8 +3669,7 @@
             "Slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds",
             "Other",
             "Other"
-          ],
-          "searchText": "slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds other other other 2620.99.85.00"
+          ]
         },
         {
           "id": "r140",
@@ -3832,8 +3692,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "2621",
-          "ancestorPath": [],
-          "searchText": "other slag and ash, including seaweed ash (kelp); ash and residues from the incineration of municipal waste: 2621"
+          "ancestorPath": []
         },
         {
           "id": "r141",
@@ -3856,8 +3715,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "2621",
-          "ancestorPath": ["Other slag and ash, including seaweed ash (kelp); ash and residues from the incineration of municipal waste"],
-          "searchText": "other slag and ash, including seaweed ash (kelp); ash and residues from the incineration of municipal waste ash and residues from the incineration of municipal waste 2621.10.00.00"
+          "ancestorPath": ["Other slag and ash, including seaweed ash (kelp); ash and residues from the incineration of municipal waste"]
         },
         {
           "id": "r142",
@@ -3880,8 +3738,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "2621",
-          "ancestorPath": ["Other slag and ash, including seaweed ash (kelp); ash and residues from the incineration of municipal waste"],
-          "searchText": "other slag and ash, including seaweed ash (kelp); ash and residues from the incineration of municipal waste other 2621.90.00.00"
+          "ancestorPath": ["Other slag and ash, including seaweed ash (kelp); ash and residues from the incineration of municipal waste"]
         }
       ]
     },
@@ -4521,13 +4378,6 @@
     "lines": [
       {
         "hts": "2601.11.00.30",
-        "description": "Concentrates",
-        "ancestorPath": [
-          "Iron ores and concentrates, including roasted iron pyrites",
-          "Iron ores and concentrates, other than roasted iron pyrites",
-          "Non-agglomerated"
-        ],
-        "searchText": "iron ores and concentrates, including roasted iron pyrites iron ores and concentrates, other than roasted iron pyrites non-agglomerated concentrates 2601.11.00.30",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -4535,14 +4385,6 @@
       },
       {
         "hts": "2601.11.00.60",
-        "description": "Coarse",
-        "ancestorPath": [
-          "Iron ores and concentrates, including roasted iron pyrites",
-          "Iron ores and concentrates, other than roasted iron pyrites",
-          "Non-agglomerated",
-          "Ores"
-        ],
-        "searchText": "iron ores and concentrates, including roasted iron pyrites iron ores and concentrates, other than roasted iron pyrites non-agglomerated ores coarse 2601.11.00.60",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -4550,14 +4392,6 @@
       },
       {
         "hts": "2601.11.00.90",
-        "description": "Other",
-        "ancestorPath": [
-          "Iron ores and concentrates, including roasted iron pyrites",
-          "Iron ores and concentrates, other than roasted iron pyrites",
-          "Non-agglomerated",
-          "Ores"
-        ],
-        "searchText": "iron ores and concentrates, including roasted iron pyrites iron ores and concentrates, other than roasted iron pyrites non-agglomerated ores other 2601.11.00.90",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -4565,13 +4399,6 @@
       },
       {
         "hts": "2601.12.00.30",
-        "description": "Pellets",
-        "ancestorPath": [
-          "Iron ores and concentrates, including roasted iron pyrites",
-          "Iron ores and concentrates, other than roasted iron pyrites",
-          "Agglomerated"
-        ],
-        "searchText": "iron ores and concentrates, including roasted iron pyrites iron ores and concentrates, other than roasted iron pyrites agglomerated pellets 2601.12.00.30",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -4579,13 +4406,6 @@
       },
       {
         "hts": "2601.12.00.60",
-        "description": "Briquettes",
-        "ancestorPath": [
-          "Iron ores and concentrates, including roasted iron pyrites",
-          "Iron ores and concentrates, other than roasted iron pyrites",
-          "Agglomerated"
-        ],
-        "searchText": "iron ores and concentrates, including roasted iron pyrites iron ores and concentrates, other than roasted iron pyrites agglomerated briquettes 2601.12.00.60",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -4593,13 +4413,6 @@
       },
       {
         "hts": "2601.12.00.90",
-        "description": "Other",
-        "ancestorPath": [
-          "Iron ores and concentrates, including roasted iron pyrites",
-          "Iron ores and concentrates, other than roasted iron pyrites",
-          "Agglomerated"
-        ],
-        "searchText": "iron ores and concentrates, including roasted iron pyrites iron ores and concentrates, other than roasted iron pyrites agglomerated other 2601.12.00.90",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -4607,9 +4420,6 @@
       },
       {
         "hts": "2601.20.00.00",
-        "description": "Roasted iron pyrites",
-        "ancestorPath": ["Iron ores and concentrates, including roasted iron pyrites"],
-        "searchText": "iron ores and concentrates, including roasted iron pyrites roasted iron pyrites 2601.20.00.00",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -4617,11 +4427,6 @@
       },
       {
         "hts": "2602.00.00.40",
-        "description": "Containing less than 47 percent by weight of manganese",
-        "ancestorPath": [
-          "Manganese ores and concentrates, including ferruginous manganese ores and concentrates with a manganese content of 20 percent or more, calculated on the dry weight"
-        ],
-        "searchText": "manganese ores and concentrates, including ferruginous manganese ores and concentrates with a manganese content of 20 percent or more, calculated on the dry weight containing less than 47 percent by weight of manganese 2602.00.00.40",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -4629,11 +4434,6 @@
       },
       {
         "hts": "2602.00.00.60",
-        "description": "Containing 47 percent or more by weight of manganese",
-        "ancestorPath": [
-          "Manganese ores and concentrates, including ferruginous manganese ores and concentrates with a manganese content of 20 percent or more, calculated on the dry weight"
-        ],
-        "searchText": "manganese ores and concentrates, including ferruginous manganese ores and concentrates with a manganese content of 20 percent or more, calculated on the dry weight containing 47 percent or more by weight of manganese 2602.00.00.60",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -4641,9 +4441,6 @@
       },
       {
         "hts": "2603.00.00.10",
-        "description": "Copper content",
-        "ancestorPath": ["Copper ores and concentrates"],
-        "searchText": "copper ores and concentrates copper content 2603.00.00.10",
         "generalBefore": "1.7¢/kg on lead content",
         "generalNow": "1.7¢/kg on lead content",
         "status": "unchanged",
@@ -4651,9 +4448,6 @@
       },
       {
         "hts": "2603.00.00.20",
-        "description": "Lead content",
-        "ancestorPath": ["Copper ores and concentrates"],
-        "searchText": "copper ores and concentrates lead content 2603.00.00.20",
         "generalBefore": "1.7¢/kg on lead content",
         "generalNow": "1.7¢/kg on lead content",
         "status": "unchanged",
@@ -4661,9 +4455,6 @@
       },
       {
         "hts": "2603.00.00.30",
-        "description": "Zinc content",
-        "ancestorPath": ["Copper ores and concentrates"],
-        "searchText": "copper ores and concentrates zinc content 2603.00.00.30",
         "generalBefore": "1.7¢/kg on lead content",
         "generalNow": "1.7¢/kg on lead content",
         "status": "unchanged",
@@ -4671,9 +4462,6 @@
       },
       {
         "hts": "2603.00.00.40",
-        "description": "Silver content",
-        "ancestorPath": ["Copper ores and concentrates"],
-        "searchText": "copper ores and concentrates silver content 2603.00.00.40",
         "generalBefore": "1.7¢/kg on lead content",
         "generalNow": "1.7¢/kg on lead content",
         "status": "unchanged",
@@ -4681,9 +4469,6 @@
       },
       {
         "hts": "2603.00.00.50",
-        "description": "Gold content",
-        "ancestorPath": ["Copper ores and concentrates"],
-        "searchText": "copper ores and concentrates gold content 2603.00.00.50",
         "generalBefore": "1.7¢/kg on lead content",
         "generalNow": "1.7¢/kg on lead content",
         "status": "unchanged",
@@ -4691,9 +4476,6 @@
       },
       {
         "hts": "2604.00.00.40",
-        "description": "Nickel content",
-        "ancestorPath": ["Nickel ores and concentrates"],
-        "searchText": "nickel ores and concentrates nickel content 2604.00.00.40",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -4701,9 +4483,6 @@
       },
       {
         "hts": "2604.00.00.80",
-        "description": "Other metal content",
-        "ancestorPath": ["Nickel ores and concentrates"],
-        "searchText": "nickel ores and concentrates other metal content 2604.00.00.80",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -4711,9 +4490,6 @@
       },
       {
         "hts": "2605.00.00.00",
-        "description": "Cobalt ores and concentrates",
-        "ancestorPath": [],
-        "searchText": "cobalt ores and concentrates 2605.00.00.00",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -4721,9 +4497,6 @@
       },
       {
         "hts": "2606.00.00.30",
-        "description": "Refractory grade",
-        "ancestorPath": ["Aluminum ores and concentrates", "Bauxite, calcined"],
-        "searchText": "aluminum ores and concentrates bauxite, calcined refractory grade 2606.00.00.30",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -4731,9 +4504,6 @@
       },
       {
         "hts": "2606.00.00.60",
-        "description": "Other",
-        "ancestorPath": ["Aluminum ores and concentrates", "Bauxite, calcined"],
-        "searchText": "aluminum ores and concentrates bauxite, calcined other 2606.00.00.60",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -4741,9 +4511,6 @@
       },
       {
         "hts": "2606.00.00.90",
-        "description": "Other",
-        "ancestorPath": ["Aluminum ores and concentrates"],
-        "searchText": "aluminum ores and concentrates other 2606.00.00.90",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -4751,9 +4518,6 @@
       },
       {
         "hts": "2607.00.00.10",
-        "description": "Copper content",
-        "ancestorPath": ["Lead ores and concentrates"],
-        "searchText": "lead ores and concentrates copper content 2607.00.00.10",
         "generalBefore": "1.1¢/kg on lead content",
         "generalNow": "1.1¢/kg on lead content",
         "status": "unchanged",
@@ -4761,9 +4525,6 @@
       },
       {
         "hts": "2607.00.00.20",
-        "description": "Lead content",
-        "ancestorPath": ["Lead ores and concentrates"],
-        "searchText": "lead ores and concentrates lead content 2607.00.00.20",
         "generalBefore": "1.1¢/kg on lead content",
         "generalNow": "1.1¢/kg on lead content",
         "status": "unchanged",
@@ -4771,9 +4532,6 @@
       },
       {
         "hts": "2607.00.00.30",
-        "description": "Zinc content",
-        "ancestorPath": ["Lead ores and concentrates"],
-        "searchText": "lead ores and concentrates zinc content 2607.00.00.30",
         "generalBefore": "1.1¢/kg on lead content",
         "generalNow": "1.1¢/kg on lead content",
         "status": "unchanged",
@@ -4781,9 +4539,6 @@
       },
       {
         "hts": "2607.00.00.40",
-        "description": "Silver content",
-        "ancestorPath": ["Lead ores and concentrates"],
-        "searchText": "lead ores and concentrates silver content 2607.00.00.40",
         "generalBefore": "1.1¢/kg on lead content",
         "generalNow": "1.1¢/kg on lead content",
         "status": "unchanged",
@@ -4791,9 +4546,6 @@
       },
       {
         "hts": "2607.00.00.50",
-        "description": "Gold content",
-        "ancestorPath": ["Lead ores and concentrates"],
-        "searchText": "lead ores and concentrates gold content 2607.00.00.50",
         "generalBefore": "1.1¢/kg on lead content",
         "generalNow": "1.1¢/kg on lead content",
         "status": "unchanged",
@@ -4801,9 +4553,6 @@
       },
       {
         "hts": "2608.00.00.10",
-        "description": "Copper content",
-        "ancestorPath": ["Zinc ores and concentrates"],
-        "searchText": "zinc ores and concentrates copper content 2608.00.00.10",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -4811,9 +4560,6 @@
       },
       {
         "hts": "2608.00.00.20",
-        "description": "Lead content",
-        "ancestorPath": ["Zinc ores and concentrates"],
-        "searchText": "zinc ores and concentrates lead content 2608.00.00.20",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -4821,9 +4567,6 @@
       },
       {
         "hts": "2608.00.00.30",
-        "description": "Zinc content",
-        "ancestorPath": ["Zinc ores and concentrates"],
-        "searchText": "zinc ores and concentrates zinc content 2608.00.00.30",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -4831,9 +4574,6 @@
       },
       {
         "hts": "2608.00.00.40",
-        "description": "Silver content",
-        "ancestorPath": ["Zinc ores and concentrates"],
-        "searchText": "zinc ores and concentrates silver content 2608.00.00.40",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -4841,9 +4581,6 @@
       },
       {
         "hts": "2608.00.00.50",
-        "description": "Gold content",
-        "ancestorPath": ["Zinc ores and concentrates"],
-        "searchText": "zinc ores and concentrates gold content 2608.00.00.50",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -4851,9 +4588,6 @@
       },
       {
         "hts": "2609.00.00.00",
-        "description": "Tin ores and concentrates",
-        "ancestorPath": [],
-        "searchText": "tin ores and concentrates 2609.00.00.00",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -4861,9 +4595,6 @@
       },
       {
         "hts": "2610.00.00.20",
-        "description": "Having a chromium content equivalent to not more than 40 percent chromic oxide (Cr2O3)",
-        "ancestorPath": ["Chromium ores and concentrates"],
-        "searchText": "chromium ores and concentrates having a chromium content equivalent to not more than 40 percent chromic oxide (cr2o3) 2610.00.00.20",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -4871,9 +4602,6 @@
       },
       {
         "hts": "2610.00.00.40",
-        "description": "Having a chromium content equivalent to more than 40 percent but less than 46 percent chromic oxide (Cr2O3)",
-        "ancestorPath": ["Chromium ores and concentrates"],
-        "searchText": "chromium ores and concentrates having a chromium content equivalent to more than 40 percent but less than 46 percent chromic oxide (cr2o3) 2610.00.00.40",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -4881,9 +4609,6 @@
       },
       {
         "hts": "2610.00.00.60",
-        "description": "Having a chromium content equivalent to 46 percent or more chromic oxide (Cr2O3)",
-        "ancestorPath": ["Chromium ores and concentrates"],
-        "searchText": "chromium ores and concentrates having a chromium content equivalent to 46 percent or more chromic oxide (cr2o3) 2610.00.00.60",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -4891,9 +4616,6 @@
       },
       {
         "hts": "2611.00.30.00",
-        "description": "Ores",
-        "ancestorPath": ["Tungsten ores and concentrates"],
-        "searchText": "tungsten ores and concentrates ores 2611.00.30.00",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -4901,9 +4623,6 @@
       },
       {
         "hts": "2611.00.60.00",
-        "description": "Concentrates",
-        "ancestorPath": ["Tungsten ores and concentrates"],
-        "searchText": "tungsten ores and concentrates concentrates 2611.00.60.00",
         "generalBefore": "37.5¢/kg on tungsten content",
         "generalNow": "37.5¢/kg on tungsten content",
         "status": "unchanged",
@@ -4911,9 +4630,6 @@
       },
       {
         "hts": "2612.10.00.00",
-        "description": "Uranium ores and concentrates",
-        "ancestorPath": ["Uranium or thorium ores and concentrates"],
-        "searchText": "uranium or thorium ores and concentrates uranium ores and concentrates 2612.10.00.00",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -4921,9 +4637,6 @@
       },
       {
         "hts": "2612.20.00.00",
-        "description": "Thorium ores and concentrates",
-        "ancestorPath": ["Uranium or thorium ores and concentrates"],
-        "searchText": "uranium or thorium ores and concentrates thorium ores and concentrates 2612.20.00.00",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -4931,9 +4644,6 @@
       },
       {
         "hts": "2613.10.00.00",
-        "description": "Roasted",
-        "ancestorPath": ["Molybdenum ores and concentrates"],
-        "searchText": "molybdenum ores and concentrates roasted 2613.10.00.00",
         "generalBefore": "12.8¢/kg on molybdenum content + 1.8%",
         "generalNow": "12.8¢/kg on molybdenum content + 1.8%",
         "status": "unchanged",
@@ -4941,9 +4651,6 @@
       },
       {
         "hts": "2613.90.00.00",
-        "description": "Other",
-        "ancestorPath": ["Molybdenum ores and concentrates"],
-        "searchText": "molybdenum ores and concentrates other 2613.90.00.00",
         "generalBefore": "17.8¢/kg on molybdenum content",
         "generalNow": "17.8¢/kg on molybdenum content",
         "status": "unchanged",
@@ -4951,9 +4658,6 @@
       },
       {
         "hts": "2614.00.30.00",
-        "description": "Synthetic rutile",
-        "ancestorPath": ["Titanium ores and concentrates"],
-        "searchText": "titanium ores and concentrates synthetic rutile 2614.00.30.00",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -4961,9 +4665,6 @@
       },
       {
         "hts": "2614.00.60.20",
-        "description": "Ilmenite and ilmenite sand",
-        "ancestorPath": ["Titanium ores and concentrates", "Other"],
-        "searchText": "titanium ores and concentrates other ilmenite and ilmenite sand 2614.00.60.20",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -4971,9 +4672,6 @@
       },
       {
         "hts": "2614.00.60.40",
-        "description": "Other (including rutile and rutile sand)",
-        "ancestorPath": ["Titanium ores and concentrates", "Other"],
-        "searchText": "titanium ores and concentrates other other (including rutile and rutile sand) 2614.00.60.40",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -4981,9 +4679,6 @@
       },
       {
         "hts": "2615.10.00.00",
-        "description": "Zirconium ores and concentrates",
-        "ancestorPath": ["Niobium (columbium), tantalum, vanadium or zirconium ores and concentrates"],
-        "searchText": "niobium (columbium), tantalum, vanadium or zirconium ores and concentrates zirconium ores and concentrates 2615.10.00.00",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -4991,9 +4686,6 @@
       },
       {
         "hts": "2615.90.30.00",
-        "description": "Synthetic tantalum-niobium (columbium) concentrates",
-        "ancestorPath": ["Niobium (columbium), tantalum, vanadium or zirconium ores and concentrates", "Other"],
-        "searchText": "niobium (columbium), tantalum, vanadium or zirconium ores and concentrates other synthetic tantalum-niobium (columbium) concentrates 2615.90.30.00",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -5001,9 +4693,6 @@
       },
       {
         "hts": "2615.90.60.30",
-        "description": "Niobium (columbium) ores and concentrates",
-        "ancestorPath": ["Niobium (columbium), tantalum, vanadium or zirconium ores and concentrates", "Other", "Other"],
-        "searchText": "niobium (columbium), tantalum, vanadium or zirconium ores and concentrates other other niobium (columbium) ores and concentrates 2615.90.60.30",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -5011,9 +4700,6 @@
       },
       {
         "hts": "2615.90.60.60",
-        "description": "Tantalum ores and concentrates",
-        "ancestorPath": ["Niobium (columbium), tantalum, vanadium or zirconium ores and concentrates", "Other", "Other"],
-        "searchText": "niobium (columbium), tantalum, vanadium or zirconium ores and concentrates other other tantalum ores and concentrates 2615.90.60.60",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -5021,9 +4707,6 @@
       },
       {
         "hts": "2615.90.60.90",
-        "description": "Vanadium ores and concentrates",
-        "ancestorPath": ["Niobium (columbium), tantalum, vanadium or zirconium ores and concentrates", "Other", "Other"],
-        "searchText": "niobium (columbium), tantalum, vanadium or zirconium ores and concentrates other other vanadium ores and concentrates 2615.90.60.90",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -5031,9 +4714,6 @@
       },
       {
         "hts": "2616.10.00.10",
-        "description": "Copper content",
-        "ancestorPath": ["Precious metal ores and concentrates", "Silver ores and concentrates"],
-        "searchText": "precious metal ores and concentrates silver ores and concentrates copper content 2616.10.00.10",
         "generalBefore": "0.8¢/kg on lead content",
         "generalNow": "0.8¢/kg on lead content",
         "status": "unchanged",
@@ -5041,9 +4721,6 @@
       },
       {
         "hts": "2616.10.00.20",
-        "description": "Lead content",
-        "ancestorPath": ["Precious metal ores and concentrates", "Silver ores and concentrates"],
-        "searchText": "precious metal ores and concentrates silver ores and concentrates lead content 2616.10.00.20",
         "generalBefore": "0.8¢/kg on lead content",
         "generalNow": "0.8¢/kg on lead content",
         "status": "unchanged",
@@ -5051,9 +4728,6 @@
       },
       {
         "hts": "2616.10.00.30",
-        "description": "Zinc content",
-        "ancestorPath": ["Precious metal ores and concentrates", "Silver ores and concentrates"],
-        "searchText": "precious metal ores and concentrates silver ores and concentrates zinc content 2616.10.00.30",
         "generalBefore": "0.8¢/kg on lead content",
         "generalNow": "0.8¢/kg on lead content",
         "status": "unchanged",
@@ -5061,9 +4735,6 @@
       },
       {
         "hts": "2616.10.00.40",
-        "description": "Silver content",
-        "ancestorPath": ["Precious metal ores and concentrates", "Silver ores and concentrates"],
-        "searchText": "precious metal ores and concentrates silver ores and concentrates silver content 2616.10.00.40",
         "generalBefore": "0.8¢/kg on lead content",
         "generalNow": "0.8¢/kg on lead content",
         "status": "unchanged",
@@ -5071,9 +4742,6 @@
       },
       {
         "hts": "2616.10.00.80",
-        "description": "Gold content",
-        "ancestorPath": ["Precious metal ores and concentrates", "Silver ores and concentrates"],
-        "searchText": "precious metal ores and concentrates silver ores and concentrates gold content 2616.10.00.80",
         "generalBefore": "0.8¢/kg on lead content",
         "generalNow": "0.8¢/kg on lead content",
         "status": "unchanged",
@@ -5081,9 +4749,6 @@
       },
       {
         "hts": "2616.90.00.10",
-        "description": "Copper content",
-        "ancestorPath": ["Precious metal ores and concentrates", "Other"],
-        "searchText": "precious metal ores and concentrates other copper content 2616.90.00.10",
         "generalBefore": "1.7¢/kg on lead content",
         "generalNow": "1.7¢/kg on lead content",
         "status": "unchanged",
@@ -5091,9 +4756,6 @@
       },
       {
         "hts": "2616.90.00.20",
-        "description": "Lead content",
-        "ancestorPath": ["Precious metal ores and concentrates", "Other"],
-        "searchText": "precious metal ores and concentrates other lead content 2616.90.00.20",
         "generalBefore": "1.7¢/kg on lead content",
         "generalNow": "1.7¢/kg on lead content",
         "status": "unchanged",
@@ -5101,9 +4763,6 @@
       },
       {
         "hts": "2616.90.00.30",
-        "description": "Zinc content",
-        "ancestorPath": ["Precious metal ores and concentrates", "Other"],
-        "searchText": "precious metal ores and concentrates other zinc content 2616.90.00.30",
         "generalBefore": "1.7¢/kg on lead content",
         "generalNow": "1.7¢/kg on lead content",
         "status": "unchanged",
@@ -5111,9 +4770,6 @@
       },
       {
         "hts": "2616.90.00.40",
-        "description": "Gold content",
-        "ancestorPath": ["Precious metal ores and concentrates", "Other"],
-        "searchText": "precious metal ores and concentrates other gold content 2616.90.00.40",
         "generalBefore": "1.7¢/kg on lead content",
         "generalNow": "1.7¢/kg on lead content",
         "status": "unchanged",
@@ -5121,9 +4777,6 @@
       },
       {
         "hts": "2616.90.00.50",
-        "description": "Other precious metal content",
-        "ancestorPath": ["Precious metal ores and concentrates", "Other"],
-        "searchText": "precious metal ores and concentrates other other precious metal content 2616.90.00.50",
         "generalBefore": "1.7¢/kg on lead content",
         "generalNow": "1.7¢/kg on lead content",
         "status": "unchanged",
@@ -5131,9 +4784,6 @@
       },
       {
         "hts": "2617.10.00.00",
-        "description": "Antimony ores and concentrates",
-        "ancestorPath": ["Other ores and concentrates"],
-        "searchText": "other ores and concentrates antimony ores and concentrates 2617.10.00.00",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -5141,9 +4791,6 @@
       },
       {
         "hts": "2617.90.00.30",
-        "description": "Beryllium ores and concentrates",
-        "ancestorPath": ["Other ores and concentrates", "Other"],
-        "searchText": "other ores and concentrates other beryllium ores and concentrates 2617.90.00.30",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -5151,9 +4798,6 @@
       },
       {
         "hts": "2617.90.00.60",
-        "description": "Other",
-        "ancestorPath": ["Other ores and concentrates", "Other"],
-        "searchText": "other ores and concentrates other other 2617.90.00.60",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -5161,9 +4805,6 @@
       },
       {
         "hts": "2618.00.00.00",
-        "description": "Granulated slag (slag sand) from the manufacture of iron or steel",
-        "ancestorPath": [],
-        "searchText": "granulated slag (slag sand) from the manufacture of iron or steel 2618.00.00.00",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -5171,9 +4812,6 @@
       },
       {
         "hts": "2619.00.30.00",
-        "description": "Ferrous scale",
-        "ancestorPath": ["Slag, dross (other than granulated slag), scalings and other waste from the manufacture of iron or steel"],
-        "searchText": "slag, dross (other than granulated slag), scalings and other waste from the manufacture of iron or steel ferrous scale 2619.00.30.00",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -5181,9 +4819,6 @@
       },
       {
         "hts": "2619.00.90.00",
-        "description": "Other",
-        "ancestorPath": ["Slag, dross (other than granulated slag), scalings and other waste from the manufacture of iron or steel"],
-        "searchText": "slag, dross (other than granulated slag), scalings and other waste from the manufacture of iron or steel other 2619.00.90.00",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -5191,12 +4826,6 @@
       },
       {
         "hts": "2620.11.00.00",
-        "description": "Hard zinc spelter",
-        "ancestorPath": [
-          "Slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds",
-          "Containing mainly zinc"
-        ],
-        "searchText": "slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds containing mainly zinc hard zinc spelter 2620.11.00.00",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -5204,13 +4833,6 @@
       },
       {
         "hts": "2620.19.30.00",
-        "description": "Zinc dross and zinc skimmings",
-        "ancestorPath": [
-          "Slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds",
-          "Containing mainly zinc",
-          "Other"
-        ],
-        "searchText": "slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds containing mainly zinc other zinc dross and zinc skimmings 2620.19.30.00",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -5218,14 +4840,6 @@
       },
       {
         "hts": "2620.19.60.10",
-        "description": "Copper content",
-        "ancestorPath": [
-          "Slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds",
-          "Containing mainly zinc",
-          "Other",
-          "Other"
-        ],
-        "searchText": "slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds containing mainly zinc other other copper content 2620.19.60.10",
         "generalBefore": "0.7¢/kg on copper content + 0.7¢/kg on lead content",
         "generalNow": "0.7¢/kg on copper content + 0.7¢/kg on lead content",
         "status": "unchanged",
@@ -5233,14 +4847,6 @@
       },
       {
         "hts": "2620.19.60.20",
-        "description": "Lead content",
-        "ancestorPath": [
-          "Slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds",
-          "Containing mainly zinc",
-          "Other",
-          "Other"
-        ],
-        "searchText": "slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds containing mainly zinc other other lead content 2620.19.60.20",
         "generalBefore": "0.7¢/kg on copper content + 0.7¢/kg on lead content",
         "generalNow": "0.7¢/kg on copper content + 0.7¢/kg on lead content",
         "status": "unchanged",
@@ -5248,14 +4854,6 @@
       },
       {
         "hts": "2620.19.60.30",
-        "description": "Zinc content",
-        "ancestorPath": [
-          "Slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds",
-          "Containing mainly zinc",
-          "Other",
-          "Other"
-        ],
-        "searchText": "slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds containing mainly zinc other other zinc content 2620.19.60.30",
         "generalBefore": "0.7¢/kg on copper content + 0.7¢/kg on lead content",
         "generalNow": "0.7¢/kg on copper content + 0.7¢/kg on lead content",
         "status": "unchanged",
@@ -5263,14 +4861,6 @@
       },
       {
         "hts": "2620.19.60.40",
-        "description": "Silver content",
-        "ancestorPath": [
-          "Slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds",
-          "Containing mainly zinc",
-          "Other",
-          "Other"
-        ],
-        "searchText": "slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds containing mainly zinc other other silver content 2620.19.60.40",
         "generalBefore": "0.7¢/kg on copper content + 0.7¢/kg on lead content",
         "generalNow": "0.7¢/kg on copper content + 0.7¢/kg on lead content",
         "status": "unchanged",
@@ -5278,14 +4868,6 @@
       },
       {
         "hts": "2620.19.60.50",
-        "description": "Gold content",
-        "ancestorPath": [
-          "Slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds",
-          "Containing mainly zinc",
-          "Other",
-          "Other"
-        ],
-        "searchText": "slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds containing mainly zinc other other gold content 2620.19.60.50",
         "generalBefore": "0.7¢/kg on copper content + 0.7¢/kg on lead content",
         "generalNow": "0.7¢/kg on copper content + 0.7¢/kg on lead content",
         "status": "unchanged",
@@ -5293,13 +4875,6 @@
       },
       {
         "hts": "2620.21.00.10",
-        "description": "Copper content",
-        "ancestorPath": [
-          "Slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds",
-          "Containing mainly lead",
-          "Leaded gasoline sludges and leaded anti-knock compound sludges"
-        ],
-        "searchText": "slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds containing mainly lead leaded gasoline sludges and leaded anti-knock compound sludges copper content 2620.21.00.10",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -5307,13 +4882,6 @@
       },
       {
         "hts": "2620.21.00.20",
-        "description": "Lead content",
-        "ancestorPath": [
-          "Slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds",
-          "Containing mainly lead",
-          "Leaded gasoline sludges and leaded anti-knock compound sludges"
-        ],
-        "searchText": "slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds containing mainly lead leaded gasoline sludges and leaded anti-knock compound sludges lead content 2620.21.00.20",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -5321,13 +4889,6 @@
       },
       {
         "hts": "2620.21.00.30",
-        "description": "Zinc content",
-        "ancestorPath": [
-          "Slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds",
-          "Containing mainly lead",
-          "Leaded gasoline sludges and leaded anti-knock compound sludges"
-        ],
-        "searchText": "slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds containing mainly lead leaded gasoline sludges and leaded anti-knock compound sludges zinc content 2620.21.00.30",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -5335,13 +4896,6 @@
       },
       {
         "hts": "2620.21.00.40",
-        "description": "Silver content",
-        "ancestorPath": [
-          "Slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds",
-          "Containing mainly lead",
-          "Leaded gasoline sludges and leaded anti-knock compound sludges"
-        ],
-        "searchText": "slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds containing mainly lead leaded gasoline sludges and leaded anti-knock compound sludges silver content 2620.21.00.40",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -5349,13 +4903,6 @@
       },
       {
         "hts": "2620.21.00.50",
-        "description": "Gold content",
-        "ancestorPath": [
-          "Slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds",
-          "Containing mainly lead",
-          "Leaded gasoline sludges and leaded anti-knock compound sludges"
-        ],
-        "searchText": "slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds containing mainly lead leaded gasoline sludges and leaded anti-knock compound sludges gold content 2620.21.00.50",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -5363,13 +4910,6 @@
       },
       {
         "hts": "2620.29.00.10",
-        "description": "Copper content",
-        "ancestorPath": [
-          "Slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds",
-          "Containing mainly lead",
-          "Other"
-        ],
-        "searchText": "slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds containing mainly lead other copper content 2620.29.00.10",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -5377,13 +4917,6 @@
       },
       {
         "hts": "2620.29.00.20",
-        "description": "Lead content",
-        "ancestorPath": [
-          "Slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds",
-          "Containing mainly lead",
-          "Other"
-        ],
-        "searchText": "slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds containing mainly lead other lead content 2620.29.00.20",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -5391,13 +4924,6 @@
       },
       {
         "hts": "2620.29.00.30",
-        "description": "Zinc content",
-        "ancestorPath": [
-          "Slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds",
-          "Containing mainly lead",
-          "Other"
-        ],
-        "searchText": "slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds containing mainly lead other zinc content 2620.29.00.30",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -5405,13 +4931,6 @@
       },
       {
         "hts": "2620.29.00.40",
-        "description": "Silver content",
-        "ancestorPath": [
-          "Slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds",
-          "Containing mainly lead",
-          "Other"
-        ],
-        "searchText": "slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds containing mainly lead other silver content 2620.29.00.40",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -5419,13 +4938,6 @@
       },
       {
         "hts": "2620.29.00.50",
-        "description": "Gold content",
-        "ancestorPath": [
-          "Slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds",
-          "Containing mainly lead",
-          "Other"
-        ],
-        "searchText": "slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds containing mainly lead other gold content 2620.29.00.50",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -5433,12 +4945,6 @@
       },
       {
         "hts": "2620.30.00.10",
-        "description": "Copper content",
-        "ancestorPath": [
-          "Slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds",
-          "Containing mainly copper"
-        ],
-        "searchText": "slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds containing mainly copper copper content 2620.30.00.10",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -5446,12 +4952,6 @@
       },
       {
         "hts": "2620.30.00.20",
-        "description": "Lead content",
-        "ancestorPath": [
-          "Slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds",
-          "Containing mainly copper"
-        ],
-        "searchText": "slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds containing mainly copper lead content 2620.30.00.20",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -5459,12 +4959,6 @@
       },
       {
         "hts": "2620.30.00.30",
-        "description": "Zinc content",
-        "ancestorPath": [
-          "Slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds",
-          "Containing mainly copper"
-        ],
-        "searchText": "slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds containing mainly copper zinc content 2620.30.00.30",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -5472,12 +4966,6 @@
       },
       {
         "hts": "2620.30.00.40",
-        "description": "Silver content",
-        "ancestorPath": [
-          "Slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds",
-          "Containing mainly copper"
-        ],
-        "searchText": "slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds containing mainly copper silver content 2620.30.00.40",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -5485,12 +4973,6 @@
       },
       {
         "hts": "2620.30.00.50",
-        "description": "Gold content",
-        "ancestorPath": [
-          "Slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds",
-          "Containing mainly copper"
-        ],
-        "searchText": "slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds containing mainly copper gold content 2620.30.00.50",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -5498,12 +4980,6 @@
       },
       {
         "hts": "2620.40.00.30",
-        "description": "Vanadium bearing materials",
-        "ancestorPath": [
-          "Slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds",
-          "Containing mainly aluminum"
-        ],
-        "searchText": "slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds containing mainly aluminum vanadium bearing materials 2620.40.00.30",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -5511,12 +4987,6 @@
       },
       {
         "hts": "2620.40.00.60",
-        "description": "Other",
-        "ancestorPath": [
-          "Slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds",
-          "Containing mainly aluminum"
-        ],
-        "searchText": "slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds containing mainly aluminum other 2620.40.00.60",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -5524,12 +4994,6 @@
       },
       {
         "hts": "2620.60.10.00",
-        "description": "Of a kind used only for the extraction of arsenic or the manufacture of its chemical compounds",
-        "ancestorPath": [
-          "Slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds",
-          "Containing arsenic, mercury, thallium or their mixtures, of a kind used for the extraction of arsenic or those metalsor for the manufacture of their chemical compounds"
-        ],
-        "searchText": "slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds containing arsenic, mercury, thallium or their mixtures, of a kind used for the extraction of arsenic or those metalsor for the manufacture of their chemical compounds of a kind used only for the extraction of arsenic or the manufacture of its chemical compounds 2620.60.10.00",
         "generalBefore": "5%",
         "generalNow": "5%",
         "status": "unchanged",
@@ -5537,12 +5001,6 @@
       },
       {
         "hts": "2620.60.90.00",
-        "description": "Other",
-        "ancestorPath": [
-          "Slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds",
-          "Containing arsenic, mercury, thallium or their mixtures, of a kind used for the extraction of arsenic or those metalsor for the manufacture of their chemical compounds"
-        ],
-        "searchText": "slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds containing arsenic, mercury, thallium or their mixtures, of a kind used for the extraction of arsenic or those metalsor for the manufacture of their chemical compounds other 2620.60.90.00",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -5550,9 +5008,6 @@
       },
       {
         "hts": "2620.91.00.00",
-        "description": "Containing antimony, beryllium, cadmium, chromium or their mixtures",
-        "ancestorPath": ["Slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds", "Other"],
-        "searchText": "slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds other containing antimony, beryllium, cadmium, chromium or their mixtures 2620.91.00.00",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -5560,13 +5015,6 @@
       },
       {
         "hts": "2620.99.10.00",
-        "description": "Containing mainly vanadium",
-        "ancestorPath": [
-          "Slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds",
-          "Other",
-          "Other"
-        ],
-        "searchText": "slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds other other containing mainly vanadium 2620.99.10.00",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -5574,13 +5022,6 @@
       },
       {
         "hts": "2620.99.20.00",
-        "description": "Containing mainly tungsten",
-        "ancestorPath": [
-          "Slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds",
-          "Other",
-          "Other"
-        ],
-        "searchText": "slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds other other containing mainly tungsten 2620.99.20.00",
         "generalBefore": "17.6¢/kg on tungsten content + 3.8%",
         "generalNow": "17.6¢/kg on tungsten content + 3.8%",
         "status": "unchanged",
@@ -5588,13 +5029,6 @@
       },
       {
         "hts": "2620.99.30.00",
-        "description": "Materials not provided for elsewhere in this heading containing by weight over 10 percent nickel",
-        "ancestorPath": [
-          "Slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds",
-          "Other",
-          "Other"
-        ],
-        "searchText": "slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds other other materials not provided for elsewhere in this heading containing by weight over 10 percent nickel 2620.99.30.00",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -5602,13 +5036,6 @@
       },
       {
         "hts": "2620.99.50.00",
-        "description": "Slag containing by weight over 40 percent titanium, and which if containing over 2 percent by weight of copper, lead, or zinc is not to be treated for the recovery thereof",
-        "ancestorPath": [
-          "Slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds",
-          "Other",
-          "Other"
-        ],
-        "searchText": "slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds other other slag containing by weight over 40 percent titanium, and which if containing over 2 percent by weight of copper, lead, or zinc is not to be treated for the recovery thereof 2620.99.50.00",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -5616,14 +5043,6 @@
       },
       {
         "hts": "2620.99.75.20",
-        "description": "Vanadium bearing materials",
-        "ancestorPath": [
-          "Slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds",
-          "Other",
-          "Other",
-          "Other materials which are residues not advanced in value or condition by any means, and which if containing over 2 percent by weight of copper, lead or zinc are not to be treated for the recovery thereof"
-        ],
-        "searchText": "slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds other other other materials which are residues not advanced in value or condition by any means, and which if containing over 2 percent by weight of copper, lead or zinc are not to be treated for the recovery thereof vanadium bearing materials 2620.99.75.20",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -5631,14 +5050,6 @@
       },
       {
         "hts": "2620.99.75.60",
-        "description": "Other materials containing silver",
-        "ancestorPath": [
-          "Slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds",
-          "Other",
-          "Other",
-          "Other materials which are residues not advanced in value or condition by any means, and which if containing over 2 percent by weight of copper, lead or zinc are not to be treated for the recovery thereof"
-        ],
-        "searchText": "slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds other other other materials which are residues not advanced in value or condition by any means, and which if containing over 2 percent by weight of copper, lead or zinc are not to be treated for the recovery thereof other materials containing silver 2620.99.75.60",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -5646,14 +5057,6 @@
       },
       {
         "hts": "2620.99.75.80",
-        "description": "Other materials containing gold",
-        "ancestorPath": [
-          "Slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds",
-          "Other",
-          "Other",
-          "Other materials which are residues not advanced in value or condition by any means, and which if containing over 2 percent by weight of copper, lead or zinc are not to be treated for the recovery thereof"
-        ],
-        "searchText": "slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds other other other materials which are residues not advanced in value or condition by any means, and which if containing over 2 percent by weight of copper, lead or zinc are not to be treated for the recovery thereof other materials containing gold 2620.99.75.80",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -5661,14 +5064,6 @@
       },
       {
         "hts": "2620.99.75.90",
-        "description": "Other materials that do not contain vanadium, silver or gold",
-        "ancestorPath": [
-          "Slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds",
-          "Other",
-          "Other",
-          "Other materials which are residues not advanced in value or condition by any means, and which if containing over 2 percent by weight of copper, lead or zinc are not to be treated for the recovery thereof"
-        ],
-        "searchText": "slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds other other other materials which are residues not advanced in value or condition by any means, and which if containing over 2 percent by weight of copper, lead or zinc are not to be treated for the recovery thereof other materials that do not contain vanadium, silver or gold 2620.99.75.90",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -5676,13 +5071,6 @@
       },
       {
         "hts": "2620.99.85.00",
-        "description": "Other",
-        "ancestorPath": [
-          "Slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds",
-          "Other",
-          "Other"
-        ],
-        "searchText": "slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds other other other 2620.99.85.00",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -5690,9 +5078,6 @@
       },
       {
         "hts": "2621.10.00.00",
-        "description": "Ash and residues from the incineration of municipal waste",
-        "ancestorPath": ["Other slag and ash, including seaweed ash (kelp); ash and residues from the incineration of municipal waste"],
-        "searchText": "other slag and ash, including seaweed ash (kelp); ash and residues from the incineration of municipal waste ash and residues from the incineration of municipal waste 2621.10.00.00",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -5700,9 +5085,6 @@
       },
       {
         "hts": "2621.90.00.00",
-        "description": "Other",
-        "ancestorPath": ["Other slag and ash, including seaweed ash (kelp); ash and residues from the incineration of municipal waste"],
-        "searchText": "other slag and ash, including seaweed ash (kelp); ash and residues from the incineration of municipal waste other 2621.90.00.00",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -21382,1190 +20764,511 @@
     "lines": [
       {
         "hts": "2601.11.00.30",
-        "description": "Concentrates",
-        "ancestorPath": [
-          "Iron ores and concentrates, including roasted iron pyrites",
-          "Iron ores and concentrates, other than roasted iron pyrites",
-          "Non-agglomerated"
-        ],
-        "searchText": "iron ores and concentrates, including roasted iron pyrites iron ores and concentrates, other than roasted iron pyrites non-agglomerated concentrates 2601.11.00.30",
-        "heading": "2601",
-        "general": "Free",
         "ruleIds": ["cbp-assay", "tsca"],
         "leverIds": ["drawback"]
       },
       {
         "hts": "2601.11.00.60",
-        "description": "Coarse",
-        "ancestorPath": [
-          "Iron ores and concentrates, including roasted iron pyrites",
-          "Iron ores and concentrates, other than roasted iron pyrites",
-          "Non-agglomerated",
-          "Ores"
-        ],
-        "searchText": "iron ores and concentrates, including roasted iron pyrites iron ores and concentrates, other than roasted iron pyrites non-agglomerated ores coarse 2601.11.00.60",
-        "heading": "2601",
-        "general": "Free",
         "ruleIds": ["cbp-assay", "tsca"],
         "leverIds": ["drawback"]
       },
       {
         "hts": "2601.11.00.90",
-        "description": "Other",
-        "ancestorPath": [
-          "Iron ores and concentrates, including roasted iron pyrites",
-          "Iron ores and concentrates, other than roasted iron pyrites",
-          "Non-agglomerated",
-          "Ores"
-        ],
-        "searchText": "iron ores and concentrates, including roasted iron pyrites iron ores and concentrates, other than roasted iron pyrites non-agglomerated ores other 2601.11.00.90",
-        "heading": "2601",
-        "general": "Free",
         "ruleIds": ["cbp-assay", "tsca"],
         "leverIds": ["drawback"]
       },
       {
         "hts": "2601.12.00.30",
-        "description": "Pellets",
-        "ancestorPath": [
-          "Iron ores and concentrates, including roasted iron pyrites",
-          "Iron ores and concentrates, other than roasted iron pyrites",
-          "Agglomerated"
-        ],
-        "searchText": "iron ores and concentrates, including roasted iron pyrites iron ores and concentrates, other than roasted iron pyrites agglomerated pellets 2601.12.00.30",
-        "heading": "2601",
-        "general": "Free",
         "ruleIds": ["cbp-assay", "tsca"],
         "leverIds": ["usmca", "origin-301", "drawback"]
       },
       {
         "hts": "2601.12.00.60",
-        "description": "Briquettes",
-        "ancestorPath": [
-          "Iron ores and concentrates, including roasted iron pyrites",
-          "Iron ores and concentrates, other than roasted iron pyrites",
-          "Agglomerated"
-        ],
-        "searchText": "iron ores and concentrates, including roasted iron pyrites iron ores and concentrates, other than roasted iron pyrites agglomerated briquettes 2601.12.00.60",
-        "heading": "2601",
-        "general": "Free",
         "ruleIds": ["cbp-assay", "tsca"],
         "leverIds": ["usmca", "origin-301", "drawback"]
       },
       {
         "hts": "2601.12.00.90",
-        "description": "Other",
-        "ancestorPath": [
-          "Iron ores and concentrates, including roasted iron pyrites",
-          "Iron ores and concentrates, other than roasted iron pyrites",
-          "Agglomerated"
-        ],
-        "searchText": "iron ores and concentrates, including roasted iron pyrites iron ores and concentrates, other than roasted iron pyrites agglomerated other 2601.12.00.90",
-        "heading": "2601",
-        "general": "Free",
         "ruleIds": ["cbp-assay", "tsca"],
         "leverIds": ["usmca", "origin-301", "drawback"]
       },
       {
         "hts": "2601.20.00.00",
-        "description": "Roasted iron pyrites",
-        "ancestorPath": ["Iron ores and concentrates, including roasted iron pyrites"],
-        "searchText": "iron ores and concentrates, including roasted iron pyrites roasted iron pyrites 2601.20.00.00",
-        "heading": "2601",
-        "general": "Free",
         "ruleIds": ["cbp-assay", "tsca"],
         "leverIds": ["drawback"]
       },
       {
         "hts": "2602.00.00.40",
-        "description": "Containing less than 47 percent by weight of manganese",
-        "ancestorPath": [
-          "Manganese ores and concentrates, including ferruginous manganese ores and concentrates with a manganese content of 20 percent or more, calculated on the dry weight"
-        ],
-        "searchText": "manganese ores and concentrates, including ferruginous manganese ores and concentrates with a manganese content of 20 percent or more, calculated on the dry weight containing less than 47 percent by weight of manganese 2602.00.00.40",
-        "heading": "2602",
-        "general": "Free",
         "ruleIds": ["cbp-assay", "tsca"],
         "leverIds": ["drawback"]
       },
       {
         "hts": "2602.00.00.60",
-        "description": "Containing 47 percent or more by weight of manganese",
-        "ancestorPath": [
-          "Manganese ores and concentrates, including ferruginous manganese ores and concentrates with a manganese content of 20 percent or more, calculated on the dry weight"
-        ],
-        "searchText": "manganese ores and concentrates, including ferruginous manganese ores and concentrates with a manganese content of 20 percent or more, calculated on the dry weight containing 47 percent or more by weight of manganese 2602.00.00.60",
-        "heading": "2602",
-        "general": "Free",
         "ruleIds": ["cbp-assay", "tsca"],
         "leverIds": ["drawback"]
       },
       {
         "hts": "2603.00.00.10",
-        "description": "Copper content",
-        "ancestorPath": ["Copper ores and concentrates"],
-        "searchText": "copper ores and concentrates copper content 2603.00.00.10",
-        "heading": "2603",
-        "general": "1.7¢/kg on lead content",
         "ruleIds": ["cbp-assay", "metal-content-report", "tsca"],
         "leverIds": ["fta-agoa", "usmca", "assay", "bonded-smelting", "drawback"]
       },
       {
         "hts": "2603.00.00.20",
-        "description": "Lead content",
-        "ancestorPath": ["Copper ores and concentrates"],
-        "searchText": "copper ores and concentrates lead content 2603.00.00.20",
-        "heading": "2603",
-        "general": "1.7¢/kg on lead content",
         "ruleIds": ["cbp-assay", "metal-content-report", "tsca"],
         "leverIds": ["fta-agoa", "usmca", "assay", "bonded-smelting", "drawback"]
       },
       {
         "hts": "2603.00.00.30",
-        "description": "Zinc content",
-        "ancestorPath": ["Copper ores and concentrates"],
-        "searchText": "copper ores and concentrates zinc content 2603.00.00.30",
-        "heading": "2603",
-        "general": "1.7¢/kg on lead content",
         "ruleIds": ["cbp-assay", "metal-content-report", "tsca"],
         "leverIds": ["fta-agoa", "usmca", "assay", "bonded-smelting", "drawback"]
       },
       {
         "hts": "2603.00.00.40",
-        "description": "Silver content",
-        "ancestorPath": ["Copper ores and concentrates"],
-        "searchText": "copper ores and concentrates silver content 2603.00.00.40",
-        "heading": "2603",
-        "general": "1.7¢/kg on lead content",
         "ruleIds": ["cbp-assay", "metal-content-report", "tsca"],
         "leverIds": ["fta-agoa", "usmca", "assay", "bonded-smelting", "drawback"]
       },
       {
         "hts": "2603.00.00.50",
-        "description": "Gold content",
-        "ancestorPath": ["Copper ores and concentrates"],
-        "searchText": "copper ores and concentrates gold content 2603.00.00.50",
-        "heading": "2603",
-        "general": "1.7¢/kg on lead content",
         "ruleIds": ["cbp-assay", "metal-content-report", "tsca"],
         "leverIds": ["fta-agoa", "usmca", "assay", "bonded-smelting", "drawback"]
       },
       {
         "hts": "2604.00.00.40",
-        "description": "Nickel content",
-        "ancestorPath": ["Nickel ores and concentrates"],
-        "searchText": "nickel ores and concentrates nickel content 2604.00.00.40",
-        "heading": "2604",
-        "general": "Free",
         "ruleIds": ["cbp-assay", "metal-content-report", "tsca"],
         "leverIds": ["drawback"]
       },
       {
         "hts": "2604.00.00.80",
-        "description": "Other metal content",
-        "ancestorPath": ["Nickel ores and concentrates"],
-        "searchText": "nickel ores and concentrates other metal content 2604.00.00.80",
-        "heading": "2604",
-        "general": "Free",
         "ruleIds": ["cbp-assay", "metal-content-report", "tsca"],
         "leverIds": ["drawback"]
       },
       {
         "hts": "2605.00.00.00",
-        "description": "Cobalt ores and concentrates",
-        "ancestorPath": [],
-        "searchText": "cobalt ores and concentrates 2605.00.00.00",
-        "heading": "2605",
-        "general": "Free",
         "ruleIds": ["cbp-assay", "tsca"],
         "leverIds": ["drawback"]
       },
       {
         "hts": "2606.00.00.30",
-        "description": "Refractory grade",
-        "ancestorPath": ["Aluminum ores and concentrates", "Bauxite, calcined"],
-        "searchText": "aluminum ores and concentrates bauxite, calcined refractory grade 2606.00.00.30",
-        "heading": "2606",
-        "general": "Free",
         "ruleIds": ["cbp-assay", "tsca"],
         "leverIds": ["drawback"]
       },
       {
         "hts": "2606.00.00.60",
-        "description": "Other",
-        "ancestorPath": ["Aluminum ores and concentrates", "Bauxite, calcined"],
-        "searchText": "aluminum ores and concentrates bauxite, calcined other 2606.00.00.60",
-        "heading": "2606",
-        "general": "Free",
         "ruleIds": ["cbp-assay", "tsca"],
         "leverIds": ["drawback"]
       },
       {
         "hts": "2606.00.00.90",
-        "description": "Other",
-        "ancestorPath": ["Aluminum ores and concentrates"],
-        "searchText": "aluminum ores and concentrates other 2606.00.00.90",
-        "heading": "2606",
-        "general": "Free",
         "ruleIds": ["cbp-assay", "tsca"],
         "leverIds": ["drawback"]
       },
       {
         "hts": "2607.00.00.10",
-        "description": "Copper content",
-        "ancestorPath": ["Lead ores and concentrates"],
-        "searchText": "lead ores and concentrates copper content 2607.00.00.10",
-        "heading": "2607",
-        "general": "1.1¢/kg on lead content",
         "ruleIds": ["cbp-assay", "metal-content-report", "tsca"],
         "leverIds": ["fta-agoa", "usmca", "assay", "bonded-smelting", "origin-301", "drawback"]
       },
       {
         "hts": "2607.00.00.20",
-        "description": "Lead content",
-        "ancestorPath": ["Lead ores and concentrates"],
-        "searchText": "lead ores and concentrates lead content 2607.00.00.20",
-        "heading": "2607",
-        "general": "1.1¢/kg on lead content",
         "ruleIds": ["cbp-assay", "metal-content-report", "tsca"],
         "leverIds": ["fta-agoa", "usmca", "assay", "bonded-smelting", "origin-301", "drawback"]
       },
       {
         "hts": "2607.00.00.30",
-        "description": "Zinc content",
-        "ancestorPath": ["Lead ores and concentrates"],
-        "searchText": "lead ores and concentrates zinc content 2607.00.00.30",
-        "heading": "2607",
-        "general": "1.1¢/kg on lead content",
         "ruleIds": ["cbp-assay", "metal-content-report", "tsca"],
         "leverIds": ["fta-agoa", "usmca", "assay", "bonded-smelting", "origin-301", "drawback"]
       },
       {
         "hts": "2607.00.00.40",
-        "description": "Silver content",
-        "ancestorPath": ["Lead ores and concentrates"],
-        "searchText": "lead ores and concentrates silver content 2607.00.00.40",
-        "heading": "2607",
-        "general": "1.1¢/kg on lead content",
         "ruleIds": ["cbp-assay", "metal-content-report", "tsca"],
         "leverIds": ["fta-agoa", "usmca", "assay", "bonded-smelting", "origin-301", "drawback"]
       },
       {
         "hts": "2607.00.00.50",
-        "description": "Gold content",
-        "ancestorPath": ["Lead ores and concentrates"],
-        "searchText": "lead ores and concentrates gold content 2607.00.00.50",
-        "heading": "2607",
-        "general": "1.1¢/kg on lead content",
         "ruleIds": ["cbp-assay", "metal-content-report", "tsca"],
         "leverIds": ["fta-agoa", "usmca", "assay", "bonded-smelting", "origin-301", "drawback"]
       },
       {
         "hts": "2608.00.00.10",
-        "description": "Copper content",
-        "ancestorPath": ["Zinc ores and concentrates"],
-        "searchText": "zinc ores and concentrates copper content 2608.00.00.10",
-        "heading": "2608",
-        "general": "Free",
         "ruleIds": ["cbp-assay", "metal-content-report", "tsca"],
         "leverIds": ["drawback"]
       },
       {
         "hts": "2608.00.00.20",
-        "description": "Lead content",
-        "ancestorPath": ["Zinc ores and concentrates"],
-        "searchText": "zinc ores and concentrates lead content 2608.00.00.20",
-        "heading": "2608",
-        "general": "Free",
         "ruleIds": ["cbp-assay", "metal-content-report", "tsca"],
         "leverIds": ["drawback"]
       },
       {
         "hts": "2608.00.00.30",
-        "description": "Zinc content",
-        "ancestorPath": ["Zinc ores and concentrates"],
-        "searchText": "zinc ores and concentrates zinc content 2608.00.00.30",
-        "heading": "2608",
-        "general": "Free",
         "ruleIds": ["cbp-assay", "metal-content-report", "tsca"],
         "leverIds": ["drawback"]
       },
       {
         "hts": "2608.00.00.40",
-        "description": "Silver content",
-        "ancestorPath": ["Zinc ores and concentrates"],
-        "searchText": "zinc ores and concentrates silver content 2608.00.00.40",
-        "heading": "2608",
-        "general": "Free",
         "ruleIds": ["cbp-assay", "metal-content-report", "tsca"],
         "leverIds": ["drawback"]
       },
       {
         "hts": "2608.00.00.50",
-        "description": "Gold content",
-        "ancestorPath": ["Zinc ores and concentrates"],
-        "searchText": "zinc ores and concentrates gold content 2608.00.00.50",
-        "heading": "2608",
-        "general": "Free",
         "ruleIds": ["cbp-assay", "metal-content-report", "tsca"],
         "leverIds": ["drawback"]
       },
       {
         "hts": "2609.00.00.00",
-        "description": "Tin ores and concentrates",
-        "ancestorPath": [],
-        "searchText": "tin ores and concentrates 2609.00.00.00",
-        "heading": "2609",
-        "general": "Free",
         "ruleIds": ["cbp-assay", "tsca"],
         "leverIds": ["drawback"]
       },
       {
         "hts": "2610.00.00.20",
-        "description": "Having a chromium content equivalent to not more than 40 percent chromic oxide (Cr2O3)",
-        "ancestorPath": ["Chromium ores and concentrates"],
-        "searchText": "chromium ores and concentrates having a chromium content equivalent to not more than 40 percent chromic oxide (cr2o3) 2610.00.00.20",
-        "heading": "2610",
-        "general": "Free",
         "ruleIds": ["cbp-assay", "tsca"],
         "leverIds": ["drawback"]
       },
       {
         "hts": "2610.00.00.40",
-        "description": "Having a chromium content equivalent to more than 40 percent but less than 46 percent chromic oxide (Cr2O3)",
-        "ancestorPath": ["Chromium ores and concentrates"],
-        "searchText": "chromium ores and concentrates having a chromium content equivalent to more than 40 percent but less than 46 percent chromic oxide (cr2o3) 2610.00.00.40",
-        "heading": "2610",
-        "general": "Free",
         "ruleIds": ["cbp-assay", "tsca"],
         "leverIds": ["drawback"]
       },
       {
         "hts": "2610.00.00.60",
-        "description": "Having a chromium content equivalent to 46 percent or more chromic oxide (Cr2O3)",
-        "ancestorPath": ["Chromium ores and concentrates"],
-        "searchText": "chromium ores and concentrates having a chromium content equivalent to 46 percent or more chromic oxide (cr2o3) 2610.00.00.60",
-        "heading": "2610",
-        "general": "Free",
         "ruleIds": ["cbp-assay", "tsca"],
         "leverIds": ["drawback"]
       },
       {
         "hts": "2611.00.30.00",
-        "description": "Ores",
-        "ancestorPath": ["Tungsten ores and concentrates"],
-        "searchText": "tungsten ores and concentrates ores 2611.00.30.00",
-        "heading": "2611",
-        "general": "Free",
         "ruleIds": ["cbp-assay", "tsca"],
         "leverIds": ["drawback"]
       },
       {
         "hts": "2611.00.60.00",
-        "description": "Concentrates",
-        "ancestorPath": ["Tungsten ores and concentrates"],
-        "searchText": "tungsten ores and concentrates concentrates 2611.00.60.00",
-        "heading": "2611",
-        "general": "37.5¢/kg on tungsten content",
         "ruleIds": ["cbp-assay", "tsca"],
         "leverIds": ["fta-agoa", "usmca", "assay", "bonded-smelting", "drawback"]
       },
       {
         "hts": "2612.10.00.00",
-        "description": "Uranium ores and concentrates",
-        "ancestorPath": ["Uranium or thorium ores and concentrates"],
-        "searchText": "uranium or thorium ores and concentrates uranium ores and concentrates 2612.10.00.00",
-        "heading": "2612",
-        "general": "Free",
         "ruleIds": ["cbp-assay", "tsca", "nrc-source", "dot-class7"],
         "leverIds": ["drawback"]
       },
       {
         "hts": "2612.20.00.00",
-        "description": "Thorium ores and concentrates",
-        "ancestorPath": ["Uranium or thorium ores and concentrates"],
-        "searchText": "uranium or thorium ores and concentrates thorium ores and concentrates 2612.20.00.00",
-        "heading": "2612",
-        "general": "Free",
         "ruleIds": ["cbp-assay", "tsca", "nrc-source", "dot-class7"],
         "leverIds": ["drawback"]
       },
       {
         "hts": "2613.10.00.00",
-        "description": "Roasted",
-        "ancestorPath": ["Molybdenum ores and concentrates"],
-        "searchText": "molybdenum ores and concentrates roasted 2613.10.00.00",
-        "heading": "2613",
-        "general": "12.8¢/kg on molybdenum content + 1.8%",
         "ruleIds": ["cbp-assay", "tsca"],
         "leverIds": ["fta-agoa", "usmca", "assay", "bonded-smelting", "origin-301", "drawback"]
       },
       {
         "hts": "2613.90.00.00",
-        "description": "Other",
-        "ancestorPath": ["Molybdenum ores and concentrates"],
-        "searchText": "molybdenum ores and concentrates other 2613.90.00.00",
-        "heading": "2613",
-        "general": "17.8¢/kg on molybdenum content",
         "ruleIds": ["cbp-assay", "tsca"],
         "leverIds": ["fta-agoa", "usmca", "assay", "bonded-smelting", "drawback"]
       },
       {
         "hts": "2614.00.30.00",
-        "description": "Synthetic rutile",
-        "ancestorPath": ["Titanium ores and concentrates"],
-        "searchText": "titanium ores and concentrates synthetic rutile 2614.00.30.00",
-        "heading": "2614",
-        "general": "Free",
         "ruleIds": ["cbp-assay", "tsca"],
         "leverIds": ["drawback"]
       },
       {
         "hts": "2614.00.60.20",
-        "description": "Ilmenite and ilmenite sand",
-        "ancestorPath": ["Titanium ores and concentrates", "Other"],
-        "searchText": "titanium ores and concentrates other ilmenite and ilmenite sand 2614.00.60.20",
-        "heading": "2614",
-        "general": "Free",
         "ruleIds": ["cbp-assay", "tsca"],
         "leverIds": ["drawback"]
       },
       {
         "hts": "2614.00.60.40",
-        "description": "Other (including rutile and rutile sand)",
-        "ancestorPath": ["Titanium ores and concentrates", "Other"],
-        "searchText": "titanium ores and concentrates other other (including rutile and rutile sand) 2614.00.60.40",
-        "heading": "2614",
-        "general": "Free",
         "ruleIds": ["cbp-assay", "tsca"],
         "leverIds": ["drawback"]
       },
       {
         "hts": "2615.10.00.00",
-        "description": "Zirconium ores and concentrates",
-        "ancestorPath": ["Niobium (columbium), tantalum, vanadium or zirconium ores and concentrates"],
-        "searchText": "niobium (columbium), tantalum, vanadium or zirconium ores and concentrates zirconium ores and concentrates 2615.10.00.00",
-        "heading": "2615",
-        "general": "Free",
         "ruleIds": ["cbp-assay", "tsca"],
         "leverIds": ["usmca", "origin-301", "drawback"]
       },
       {
         "hts": "2615.90.30.00",
-        "description": "Synthetic tantalum-niobium (columbium) concentrates",
-        "ancestorPath": ["Niobium (columbium), tantalum, vanadium or zirconium ores and concentrates", "Other"],
-        "searchText": "niobium (columbium), tantalum, vanadium or zirconium ores and concentrates other synthetic tantalum-niobium (columbium) concentrates 2615.90.30.00",
-        "heading": "2615",
-        "general": "Free",
         "ruleIds": ["cbp-assay", "tsca"],
         "leverIds": ["drawback"]
       },
       {
         "hts": "2615.90.60.30",
-        "description": "Niobium (columbium) ores and concentrates",
-        "ancestorPath": ["Niobium (columbium), tantalum, vanadium or zirconium ores and concentrates", "Other", "Other"],
-        "searchText": "niobium (columbium), tantalum, vanadium or zirconium ores and concentrates other other niobium (columbium) ores and concentrates 2615.90.60.30",
-        "heading": "2615",
-        "general": "Free",
         "ruleIds": ["cbp-assay", "tsca"],
         "leverIds": ["drawback"]
       },
       {
         "hts": "2615.90.60.60",
-        "description": "Tantalum ores and concentrates",
-        "ancestorPath": ["Niobium (columbium), tantalum, vanadium or zirconium ores and concentrates", "Other", "Other"],
-        "searchText": "niobium (columbium), tantalum, vanadium or zirconium ores and concentrates other other tantalum ores and concentrates 2615.90.60.60",
-        "heading": "2615",
-        "general": "Free",
         "ruleIds": ["cbp-assay", "tsca"],
         "leverIds": ["drawback"]
       },
       {
         "hts": "2615.90.60.90",
-        "description": "Vanadium ores and concentrates",
-        "ancestorPath": ["Niobium (columbium), tantalum, vanadium or zirconium ores and concentrates", "Other", "Other"],
-        "searchText": "niobium (columbium), tantalum, vanadium or zirconium ores and concentrates other other vanadium ores and concentrates 2615.90.60.90",
-        "heading": "2615",
-        "general": "Free",
         "ruleIds": ["cbp-assay", "tsca"],
         "leverIds": ["drawback"]
       },
       {
         "hts": "2616.10.00.10",
-        "description": "Copper content",
-        "ancestorPath": ["Precious metal ores and concentrates", "Silver ores and concentrates"],
-        "searchText": "precious metal ores and concentrates silver ores and concentrates copper content 2616.10.00.10",
-        "heading": "2616",
-        "general": "0.8¢/kg on lead content",
         "ruleIds": ["cbp-assay", "metal-content-report", "tsca"],
         "leverIds": ["fta-agoa", "usmca", "assay", "bonded-smelting", "drawback"]
       },
       {
         "hts": "2616.10.00.20",
-        "description": "Lead content",
-        "ancestorPath": ["Precious metal ores and concentrates", "Silver ores and concentrates"],
-        "searchText": "precious metal ores and concentrates silver ores and concentrates lead content 2616.10.00.20",
-        "heading": "2616",
-        "general": "0.8¢/kg on lead content",
         "ruleIds": ["cbp-assay", "metal-content-report", "tsca"],
         "leverIds": ["fta-agoa", "usmca", "assay", "bonded-smelting", "drawback"]
       },
       {
         "hts": "2616.10.00.30",
-        "description": "Zinc content",
-        "ancestorPath": ["Precious metal ores and concentrates", "Silver ores and concentrates"],
-        "searchText": "precious metal ores and concentrates silver ores and concentrates zinc content 2616.10.00.30",
-        "heading": "2616",
-        "general": "0.8¢/kg on lead content",
         "ruleIds": ["cbp-assay", "metal-content-report", "tsca"],
         "leverIds": ["fta-agoa", "usmca", "assay", "bonded-smelting", "drawback"]
       },
       {
         "hts": "2616.10.00.40",
-        "description": "Silver content",
-        "ancestorPath": ["Precious metal ores and concentrates", "Silver ores and concentrates"],
-        "searchText": "precious metal ores and concentrates silver ores and concentrates silver content 2616.10.00.40",
-        "heading": "2616",
-        "general": "0.8¢/kg on lead content",
         "ruleIds": ["cbp-assay", "metal-content-report", "tsca"],
         "leverIds": ["fta-agoa", "usmca", "assay", "bonded-smelting", "drawback"]
       },
       {
         "hts": "2616.10.00.80",
-        "description": "Gold content",
-        "ancestorPath": ["Precious metal ores and concentrates", "Silver ores and concentrates"],
-        "searchText": "precious metal ores and concentrates silver ores and concentrates gold content 2616.10.00.80",
-        "heading": "2616",
-        "general": "0.8¢/kg on lead content",
         "ruleIds": ["cbp-assay", "metal-content-report", "tsca"],
         "leverIds": ["fta-agoa", "usmca", "assay", "bonded-smelting", "drawback"]
       },
       {
         "hts": "2616.90.00.10",
-        "description": "Copper content",
-        "ancestorPath": ["Precious metal ores and concentrates", "Other"],
-        "searchText": "precious metal ores and concentrates other copper content 2616.90.00.10",
-        "heading": "2616",
-        "general": "1.7¢/kg on lead content",
         "ruleIds": ["cbp-assay", "metal-content-report", "tsca"],
         "leverIds": ["fta-agoa", "usmca", "assay", "bonded-smelting", "origin-301", "drawback"]
       },
       {
         "hts": "2616.90.00.20",
-        "description": "Lead content",
-        "ancestorPath": ["Precious metal ores and concentrates", "Other"],
-        "searchText": "precious metal ores and concentrates other lead content 2616.90.00.20",
-        "heading": "2616",
-        "general": "1.7¢/kg on lead content",
         "ruleIds": ["cbp-assay", "metal-content-report", "tsca"],
         "leverIds": ["fta-agoa", "usmca", "assay", "bonded-smelting", "origin-301", "drawback"]
       },
       {
         "hts": "2616.90.00.30",
-        "description": "Zinc content",
-        "ancestorPath": ["Precious metal ores and concentrates", "Other"],
-        "searchText": "precious metal ores and concentrates other zinc content 2616.90.00.30",
-        "heading": "2616",
-        "general": "1.7¢/kg on lead content",
         "ruleIds": ["cbp-assay", "metal-content-report", "tsca"],
         "leverIds": ["fta-agoa", "usmca", "assay", "bonded-smelting", "origin-301", "drawback"]
       },
       {
         "hts": "2616.90.00.40",
-        "description": "Gold content",
-        "ancestorPath": ["Precious metal ores and concentrates", "Other"],
-        "searchText": "precious metal ores and concentrates other gold content 2616.90.00.40",
-        "heading": "2616",
-        "general": "1.7¢/kg on lead content",
         "ruleIds": ["cbp-assay", "metal-content-report", "tsca"],
         "leverIds": ["fta-agoa", "usmca", "assay", "bonded-smelting", "origin-301", "drawback"]
       },
       {
         "hts": "2616.90.00.50",
-        "description": "Other precious metal content",
-        "ancestorPath": ["Precious metal ores and concentrates", "Other"],
-        "searchText": "precious metal ores and concentrates other other precious metal content 2616.90.00.50",
-        "heading": "2616",
-        "general": "1.7¢/kg on lead content",
         "ruleIds": ["cbp-assay", "metal-content-report", "tsca"],
         "leverIds": ["fta-agoa", "usmca", "assay", "bonded-smelting", "origin-301", "drawback"]
       },
       {
         "hts": "2617.10.00.00",
-        "description": "Antimony ores and concentrates",
-        "ancestorPath": ["Other ores and concentrates"],
-        "searchText": "other ores and concentrates antimony ores and concentrates 2617.10.00.00",
-        "heading": "2617",
-        "general": "Free",
         "ruleIds": ["cbp-assay", "tsca"],
         "leverIds": ["drawback"]
       },
       {
         "hts": "2617.90.00.30",
-        "description": "Beryllium ores and concentrates",
-        "ancestorPath": ["Other ores and concentrates", "Other"],
-        "searchText": "other ores and concentrates other beryllium ores and concentrates 2617.90.00.30",
-        "heading": "2617",
-        "general": "Free",
         "ruleIds": ["cbp-assay", "tsca"],
         "leverIds": ["usmca", "origin-301", "drawback"]
       },
       {
         "hts": "2617.90.00.60",
-        "description": "Other",
-        "ancestorPath": ["Other ores and concentrates", "Other"],
-        "searchText": "other ores and concentrates other other 2617.90.00.60",
-        "heading": "2617",
-        "general": "Free",
         "ruleIds": ["cbp-assay", "tsca"],
         "leverIds": ["usmca", "origin-301", "drawback"]
       },
       {
         "hts": "2618.00.00.00",
-        "description": "Granulated slag (slag sand) from the manufacture of iron or steel",
-        "ancestorPath": [],
-        "searchText": "granulated slag (slag sand) from the manufacture of iron or steel 2618.00.00.00",
-        "heading": "2618",
-        "general": "Free",
         "ruleIds": ["cbp-assay", "tsca"],
         "leverIds": ["usmca", "origin-301", "drawback"]
       },
       {
         "hts": "2619.00.30.00",
-        "description": "Ferrous scale",
-        "ancestorPath": ["Slag, dross (other than granulated slag), scalings and other waste from the manufacture of iron or steel"],
-        "searchText": "slag, dross (other than granulated slag), scalings and other waste from the manufacture of iron or steel ferrous scale 2619.00.30.00",
-        "heading": "2619",
-        "general": "Free",
         "ruleIds": ["cbp-assay", "tsca", "epa-hazwaste"],
         "leverIds": ["usmca", "origin-301", "drawback"]
       },
       {
         "hts": "2619.00.90.00",
-        "description": "Other",
-        "ancestorPath": ["Slag, dross (other than granulated slag), scalings and other waste from the manufacture of iron or steel"],
-        "searchText": "slag, dross (other than granulated slag), scalings and other waste from the manufacture of iron or steel other 2619.00.90.00",
-        "heading": "2619",
-        "general": "Free",
         "ruleIds": ["cbp-assay", "tsca", "epa-hazwaste"],
         "leverIds": ["usmca", "origin-301", "drawback"]
       },
       {
         "hts": "2620.11.00.00",
-        "description": "Hard zinc spelter",
-        "ancestorPath": [
-          "Slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds",
-          "Containing mainly zinc"
-        ],
-        "searchText": "slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds containing mainly zinc hard zinc spelter 2620.11.00.00",
-        "heading": "2620",
-        "general": "Free",
         "ruleIds": ["cbp-assay", "tsca", "epa-hazwaste"],
         "leverIds": ["usmca", "origin-301", "drawback"]
       },
       {
         "hts": "2620.19.30.00",
-        "description": "Zinc dross and zinc skimmings",
-        "ancestorPath": [
-          "Slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds",
-          "Containing mainly zinc",
-          "Other"
-        ],
-        "searchText": "slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds containing mainly zinc other zinc dross and zinc skimmings 2620.19.30.00",
-        "heading": "2620",
-        "general": "Free",
         "ruleIds": ["cbp-assay", "tsca", "epa-hazwaste"],
         "leverIds": ["usmca", "origin-301", "drawback"]
       },
       {
         "hts": "2620.19.60.10",
-        "description": "Copper content",
-        "ancestorPath": [
-          "Slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds",
-          "Containing mainly zinc",
-          "Other",
-          "Other"
-        ],
-        "searchText": "slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds containing mainly zinc other other copper content 2620.19.60.10",
-        "heading": "2620",
-        "general": "0.7¢/kg on copper content + 0.7¢/kg on lead content",
         "ruleIds": ["cbp-assay", "metal-content-report", "tsca", "epa-hazwaste"],
         "leverIds": ["fta-agoa", "usmca", "assay", "bonded-smelting", "origin-301", "drawback"]
       },
       {
         "hts": "2620.19.60.20",
-        "description": "Lead content",
-        "ancestorPath": [
-          "Slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds",
-          "Containing mainly zinc",
-          "Other",
-          "Other"
-        ],
-        "searchText": "slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds containing mainly zinc other other lead content 2620.19.60.20",
-        "heading": "2620",
-        "general": "0.7¢/kg on copper content + 0.7¢/kg on lead content",
         "ruleIds": ["cbp-assay", "metal-content-report", "tsca", "epa-hazwaste"],
         "leverIds": ["fta-agoa", "usmca", "assay", "bonded-smelting", "origin-301", "drawback"]
       },
       {
         "hts": "2620.19.60.30",
-        "description": "Zinc content",
-        "ancestorPath": [
-          "Slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds",
-          "Containing mainly zinc",
-          "Other",
-          "Other"
-        ],
-        "searchText": "slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds containing mainly zinc other other zinc content 2620.19.60.30",
-        "heading": "2620",
-        "general": "0.7¢/kg on copper content + 0.7¢/kg on lead content",
         "ruleIds": ["cbp-assay", "metal-content-report", "tsca", "epa-hazwaste"],
         "leverIds": ["fta-agoa", "usmca", "assay", "bonded-smelting", "origin-301", "drawback"]
       },
       {
         "hts": "2620.19.60.40",
-        "description": "Silver content",
-        "ancestorPath": [
-          "Slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds",
-          "Containing mainly zinc",
-          "Other",
-          "Other"
-        ],
-        "searchText": "slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds containing mainly zinc other other silver content 2620.19.60.40",
-        "heading": "2620",
-        "general": "0.7¢/kg on copper content + 0.7¢/kg on lead content",
         "ruleIds": ["cbp-assay", "metal-content-report", "tsca", "epa-hazwaste"],
         "leverIds": ["fta-agoa", "usmca", "assay", "bonded-smelting", "origin-301", "drawback"]
       },
       {
         "hts": "2620.19.60.50",
-        "description": "Gold content",
-        "ancestorPath": [
-          "Slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds",
-          "Containing mainly zinc",
-          "Other",
-          "Other"
-        ],
-        "searchText": "slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds containing mainly zinc other other gold content 2620.19.60.50",
-        "heading": "2620",
-        "general": "0.7¢/kg on copper content + 0.7¢/kg on lead content",
         "ruleIds": ["cbp-assay", "metal-content-report", "tsca", "epa-hazwaste"],
         "leverIds": ["fta-agoa", "usmca", "assay", "bonded-smelting", "origin-301", "drawback"]
       },
       {
         "hts": "2620.21.00.10",
-        "description": "Copper content",
-        "ancestorPath": [
-          "Slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds",
-          "Containing mainly lead",
-          "Leaded gasoline sludges and leaded anti-knock compound sludges"
-        ],
-        "searchText": "slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds containing mainly lead leaded gasoline sludges and leaded anti-knock compound sludges copper content 2620.21.00.10",
-        "heading": "2620",
-        "general": "Free",
         "ruleIds": ["cbp-assay", "metal-content-report", "tsca", "epa-hazwaste"],
         "leverIds": ["usmca", "origin-301", "drawback"]
       },
       {
         "hts": "2620.21.00.20",
-        "description": "Lead content",
-        "ancestorPath": [
-          "Slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds",
-          "Containing mainly lead",
-          "Leaded gasoline sludges and leaded anti-knock compound sludges"
-        ],
-        "searchText": "slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds containing mainly lead leaded gasoline sludges and leaded anti-knock compound sludges lead content 2620.21.00.20",
-        "heading": "2620",
-        "general": "Free",
         "ruleIds": ["cbp-assay", "metal-content-report", "tsca", "epa-hazwaste"],
         "leverIds": ["usmca", "origin-301", "drawback"]
       },
       {
         "hts": "2620.21.00.30",
-        "description": "Zinc content",
-        "ancestorPath": [
-          "Slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds",
-          "Containing mainly lead",
-          "Leaded gasoline sludges and leaded anti-knock compound sludges"
-        ],
-        "searchText": "slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds containing mainly lead leaded gasoline sludges and leaded anti-knock compound sludges zinc content 2620.21.00.30",
-        "heading": "2620",
-        "general": "Free",
         "ruleIds": ["cbp-assay", "metal-content-report", "tsca", "epa-hazwaste"],
         "leverIds": ["usmca", "origin-301", "drawback"]
       },
       {
         "hts": "2620.21.00.40",
-        "description": "Silver content",
-        "ancestorPath": [
-          "Slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds",
-          "Containing mainly lead",
-          "Leaded gasoline sludges and leaded anti-knock compound sludges"
-        ],
-        "searchText": "slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds containing mainly lead leaded gasoline sludges and leaded anti-knock compound sludges silver content 2620.21.00.40",
-        "heading": "2620",
-        "general": "Free",
         "ruleIds": ["cbp-assay", "metal-content-report", "tsca", "epa-hazwaste"],
         "leverIds": ["usmca", "origin-301", "drawback"]
       },
       {
         "hts": "2620.21.00.50",
-        "description": "Gold content",
-        "ancestorPath": [
-          "Slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds",
-          "Containing mainly lead",
-          "Leaded gasoline sludges and leaded anti-knock compound sludges"
-        ],
-        "searchText": "slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds containing mainly lead leaded gasoline sludges and leaded anti-knock compound sludges gold content 2620.21.00.50",
-        "heading": "2620",
-        "general": "Free",
         "ruleIds": ["cbp-assay", "metal-content-report", "tsca", "epa-hazwaste"],
         "leverIds": ["usmca", "origin-301", "drawback"]
       },
       {
         "hts": "2620.29.00.10",
-        "description": "Copper content",
-        "ancestorPath": [
-          "Slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds",
-          "Containing mainly lead",
-          "Other"
-        ],
-        "searchText": "slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds containing mainly lead other copper content 2620.29.00.10",
-        "heading": "2620",
-        "general": "Free",
         "ruleIds": ["cbp-assay", "metal-content-report", "tsca", "epa-hazwaste"],
         "leverIds": ["usmca", "origin-301", "drawback"]
       },
       {
         "hts": "2620.29.00.20",
-        "description": "Lead content",
-        "ancestorPath": [
-          "Slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds",
-          "Containing mainly lead",
-          "Other"
-        ],
-        "searchText": "slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds containing mainly lead other lead content 2620.29.00.20",
-        "heading": "2620",
-        "general": "Free",
         "ruleIds": ["cbp-assay", "metal-content-report", "tsca", "epa-hazwaste"],
         "leverIds": ["usmca", "origin-301", "drawback"]
       },
       {
         "hts": "2620.29.00.30",
-        "description": "Zinc content",
-        "ancestorPath": [
-          "Slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds",
-          "Containing mainly lead",
-          "Other"
-        ],
-        "searchText": "slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds containing mainly lead other zinc content 2620.29.00.30",
-        "heading": "2620",
-        "general": "Free",
         "ruleIds": ["cbp-assay", "metal-content-report", "tsca", "epa-hazwaste"],
         "leverIds": ["usmca", "origin-301", "drawback"]
       },
       {
         "hts": "2620.29.00.40",
-        "description": "Silver content",
-        "ancestorPath": [
-          "Slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds",
-          "Containing mainly lead",
-          "Other"
-        ],
-        "searchText": "slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds containing mainly lead other silver content 2620.29.00.40",
-        "heading": "2620",
-        "general": "Free",
         "ruleIds": ["cbp-assay", "metal-content-report", "tsca", "epa-hazwaste"],
         "leverIds": ["usmca", "origin-301", "drawback"]
       },
       {
         "hts": "2620.29.00.50",
-        "description": "Gold content",
-        "ancestorPath": [
-          "Slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds",
-          "Containing mainly lead",
-          "Other"
-        ],
-        "searchText": "slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds containing mainly lead other gold content 2620.29.00.50",
-        "heading": "2620",
-        "general": "Free",
         "ruleIds": ["cbp-assay", "metal-content-report", "tsca", "epa-hazwaste"],
         "leverIds": ["usmca", "origin-301", "drawback"]
       },
       {
         "hts": "2620.30.00.10",
-        "description": "Copper content",
-        "ancestorPath": [
-          "Slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds",
-          "Containing mainly copper"
-        ],
-        "searchText": "slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds containing mainly copper copper content 2620.30.00.10",
-        "heading": "2620",
-        "general": "Free",
         "ruleIds": ["cbp-assay", "metal-content-report", "tsca", "epa-hazwaste"],
         "leverIds": ["drawback"]
       },
       {
         "hts": "2620.30.00.20",
-        "description": "Lead content",
-        "ancestorPath": [
-          "Slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds",
-          "Containing mainly copper"
-        ],
-        "searchText": "slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds containing mainly copper lead content 2620.30.00.20",
-        "heading": "2620",
-        "general": "Free",
         "ruleIds": ["cbp-assay", "metal-content-report", "tsca", "epa-hazwaste"],
         "leverIds": ["drawback"]
       },
       {
         "hts": "2620.30.00.30",
-        "description": "Zinc content",
-        "ancestorPath": [
-          "Slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds",
-          "Containing mainly copper"
-        ],
-        "searchText": "slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds containing mainly copper zinc content 2620.30.00.30",
-        "heading": "2620",
-        "general": "Free",
         "ruleIds": ["cbp-assay", "metal-content-report", "tsca", "epa-hazwaste"],
         "leverIds": ["drawback"]
       },
       {
         "hts": "2620.30.00.40",
-        "description": "Silver content",
-        "ancestorPath": [
-          "Slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds",
-          "Containing mainly copper"
-        ],
-        "searchText": "slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds containing mainly copper silver content 2620.30.00.40",
-        "heading": "2620",
-        "general": "Free",
         "ruleIds": ["cbp-assay", "metal-content-report", "tsca", "epa-hazwaste"],
         "leverIds": ["drawback"]
       },
       {
         "hts": "2620.30.00.50",
-        "description": "Gold content",
-        "ancestorPath": [
-          "Slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds",
-          "Containing mainly copper"
-        ],
-        "searchText": "slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds containing mainly copper gold content 2620.30.00.50",
-        "heading": "2620",
-        "general": "Free",
         "ruleIds": ["cbp-assay", "metal-content-report", "tsca", "epa-hazwaste"],
         "leverIds": ["drawback"]
       },
       {
         "hts": "2620.40.00.30",
-        "description": "Vanadium bearing materials",
-        "ancestorPath": [
-          "Slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds",
-          "Containing mainly aluminum"
-        ],
-        "searchText": "slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds containing mainly aluminum vanadium bearing materials 2620.40.00.30",
-        "heading": "2620",
-        "general": "Free",
         "ruleIds": ["cbp-assay", "tsca", "epa-hazwaste"],
         "leverIds": ["usmca", "origin-301", "drawback"]
       },
       {
         "hts": "2620.40.00.60",
-        "description": "Other",
-        "ancestorPath": [
-          "Slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds",
-          "Containing mainly aluminum"
-        ],
-        "searchText": "slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds containing mainly aluminum other 2620.40.00.60",
-        "heading": "2620",
-        "general": "Free",
         "ruleIds": ["cbp-assay", "tsca", "epa-hazwaste"],
         "leverIds": ["usmca", "origin-301", "drawback"]
       },
       {
         "hts": "2620.60.10.00",
-        "description": "Of a kind used only for the extraction of arsenic or the manufacture of its chemical compounds",
-        "ancestorPath": [
-          "Slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds",
-          "Containing arsenic, mercury, thallium or their mixtures, of a kind used for the extraction of arsenic or those metalsor for the manufacture of their chemical compounds"
-        ],
-        "searchText": "slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds containing arsenic, mercury, thallium or their mixtures, of a kind used for the extraction of arsenic or those metalsor for the manufacture of their chemical compounds of a kind used only for the extraction of arsenic or the manufacture of its chemical compounds 2620.60.10.00",
-        "heading": "2620",
-        "general": "5%",
         "ruleIds": ["cbp-assay", "tsca", "epa-hazwaste"],
         "leverIds": ["fta-agoa", "usmca", "origin-301", "drawback"]
       },
       {
         "hts": "2620.60.90.00",
-        "description": "Other",
-        "ancestorPath": [
-          "Slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds",
-          "Containing arsenic, mercury, thallium or their mixtures, of a kind used for the extraction of arsenic or those metalsor for the manufacture of their chemical compounds"
-        ],
-        "searchText": "slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds containing arsenic, mercury, thallium or their mixtures, of a kind used for the extraction of arsenic or those metalsor for the manufacture of their chemical compounds other 2620.60.90.00",
-        "heading": "2620",
-        "general": "Free",
         "ruleIds": ["cbp-assay", "tsca", "epa-hazwaste"],
         "leverIds": ["usmca", "origin-301", "drawback"]
       },
       {
         "hts": "2620.91.00.00",
-        "description": "Containing antimony, beryllium, cadmium, chromium or their mixtures",
-        "ancestorPath": ["Slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds", "Other"],
-        "searchText": "slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds other containing antimony, beryllium, cadmium, chromium or their mixtures 2620.91.00.00",
-        "heading": "2620",
-        "general": "Free",
         "ruleIds": ["cbp-assay", "tsca", "epa-hazwaste"],
         "leverIds": ["usmca", "origin-301", "drawback"]
       },
       {
         "hts": "2620.99.10.00",
-        "description": "Containing mainly vanadium",
-        "ancestorPath": [
-          "Slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds",
-          "Other",
-          "Other"
-        ],
-        "searchText": "slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds other other containing mainly vanadium 2620.99.10.00",
-        "heading": "2620",
-        "general": "Free",
         "ruleIds": ["cbp-assay", "tsca", "epa-hazwaste"],
         "leverIds": ["usmca", "origin-301", "drawback"]
       },
       {
         "hts": "2620.99.20.00",
-        "description": "Containing mainly tungsten",
-        "ancestorPath": [
-          "Slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds",
-          "Other",
-          "Other"
-        ],
-        "searchText": "slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds other other containing mainly tungsten 2620.99.20.00",
-        "heading": "2620",
-        "general": "17.6¢/kg on tungsten content + 3.8%",
         "ruleIds": ["cbp-assay", "tsca", "epa-hazwaste"],
         "leverIds": ["fta-agoa", "usmca", "assay", "bonded-smelting", "origin-301", "drawback"]
       },
       {
         "hts": "2620.99.30.00",
-        "description": "Materials not provided for elsewhere in this heading containing by weight over 10 percent nickel",
-        "ancestorPath": [
-          "Slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds",
-          "Other",
-          "Other"
-        ],
-        "searchText": "slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds other other materials not provided for elsewhere in this heading containing by weight over 10 percent nickel 2620.99.30.00",
-        "heading": "2620",
-        "general": "Free",
         "ruleIds": ["cbp-assay", "tsca", "epa-hazwaste"],
         "leverIds": ["usmca", "origin-301", "drawback"]
       },
       {
         "hts": "2620.99.50.00",
-        "description": "Slag containing by weight over 40 percent titanium, and which if containing over 2 percent by weight of copper, lead, or zinc is not to be treated for the recovery thereof",
-        "ancestorPath": [
-          "Slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds",
-          "Other",
-          "Other"
-        ],
-        "searchText": "slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds other other slag containing by weight over 40 percent titanium, and which if containing over 2 percent by weight of copper, lead, or zinc is not to be treated for the recovery thereof 2620.99.50.00",
-        "heading": "2620",
-        "general": "Free",
         "ruleIds": ["cbp-assay", "tsca", "epa-hazwaste"],
         "leverIds": ["drawback"]
       },
       {
         "hts": "2620.99.75.20",
-        "description": "Vanadium bearing materials",
-        "ancestorPath": [
-          "Slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds",
-          "Other",
-          "Other",
-          "Other materials which are residues not advanced in value or condition by any means, and which if containing over 2 percent by weight of copper, lead or zinc are not to be treated for the recovery thereof"
-        ],
-        "searchText": "slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds other other other materials which are residues not advanced in value or condition by any means, and which if containing over 2 percent by weight of copper, lead or zinc are not to be treated for the recovery thereof vanadium bearing materials 2620.99.75.20",
-        "heading": "2620",
-        "general": "Free",
         "ruleIds": ["cbp-assay", "tsca", "epa-hazwaste"],
         "leverIds": ["usmca", "origin-301", "drawback"]
       },
       {
         "hts": "2620.99.75.60",
-        "description": "Other materials containing silver",
-        "ancestorPath": [
-          "Slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds",
-          "Other",
-          "Other",
-          "Other materials which are residues not advanced in value or condition by any means, and which if containing over 2 percent by weight of copper, lead or zinc are not to be treated for the recovery thereof"
-        ],
-        "searchText": "slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds other other other materials which are residues not advanced in value or condition by any means, and which if containing over 2 percent by weight of copper, lead or zinc are not to be treated for the recovery thereof other materials containing silver 2620.99.75.60",
-        "heading": "2620",
-        "general": "Free",
         "ruleIds": ["cbp-assay", "metal-content-report", "tsca", "epa-hazwaste"],
         "leverIds": ["usmca", "origin-301", "drawback"]
       },
       {
         "hts": "2620.99.75.80",
-        "description": "Other materials containing gold",
-        "ancestorPath": [
-          "Slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds",
-          "Other",
-          "Other",
-          "Other materials which are residues not advanced in value or condition by any means, and which if containing over 2 percent by weight of copper, lead or zinc are not to be treated for the recovery thereof"
-        ],
-        "searchText": "slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds other other other materials which are residues not advanced in value or condition by any means, and which if containing over 2 percent by weight of copper, lead or zinc are not to be treated for the recovery thereof other materials containing gold 2620.99.75.80",
-        "heading": "2620",
-        "general": "Free",
         "ruleIds": ["cbp-assay", "metal-content-report", "tsca", "epa-hazwaste"],
         "leverIds": ["usmca", "origin-301", "drawback"]
       },
       {
         "hts": "2620.99.75.90",
-        "description": "Other materials that do not contain vanadium, silver or gold",
-        "ancestorPath": [
-          "Slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds",
-          "Other",
-          "Other",
-          "Other materials which are residues not advanced in value or condition by any means, and which if containing over 2 percent by weight of copper, lead or zinc are not to be treated for the recovery thereof"
-        ],
-        "searchText": "slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds other other other materials which are residues not advanced in value or condition by any means, and which if containing over 2 percent by weight of copper, lead or zinc are not to be treated for the recovery thereof other materials that do not contain vanadium, silver or gold 2620.99.75.90",
-        "heading": "2620",
-        "general": "Free",
         "ruleIds": ["cbp-assay", "tsca", "epa-hazwaste"],
         "leverIds": ["usmca", "origin-301", "drawback"]
       },
       {
         "hts": "2620.99.85.00",
-        "description": "Other",
-        "ancestorPath": [
-          "Slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds",
-          "Other",
-          "Other"
-        ],
-        "searchText": "slag, ash and residues (other than from the manufacture of iron or steel), containing arsenic, metals or their compounds other other other 2620.99.85.00",
-        "heading": "2620",
-        "general": "Free",
         "ruleIds": ["cbp-assay", "tsca", "epa-hazwaste"],
         "leverIds": ["usmca", "origin-301", "drawback"]
       },
       {
         "hts": "2621.10.00.00",
-        "description": "Ash and residues from the incineration of municipal waste",
-        "ancestorPath": ["Other slag and ash, including seaweed ash (kelp); ash and residues from the incineration of municipal waste"],
-        "searchText": "other slag and ash, including seaweed ash (kelp); ash and residues from the incineration of municipal waste ash and residues from the incineration of municipal waste 2621.10.00.00",
-        "heading": "2621",
-        "general": "Free",
         "ruleIds": ["tsca", "epa-hazwaste"],
         "leverIds": ["usmca", "origin-301", "drawback"]
       },
       {
         "hts": "2621.90.00.00",
-        "description": "Other",
-        "ancestorPath": ["Other slag and ash, including seaweed ash (kelp); ash and residues from the incineration of municipal waste"],
-        "searchText": "other slag and ash, including seaweed ash (kelp); ash and residues from the incineration of municipal waste other 2621.90.00.00",
-        "heading": "2621",
-        "general": "Free",
         "ruleIds": ["tsca", "epa-hazwaste"],
         "leverIds": ["usmca", "origin-301", "drawback"]
       }

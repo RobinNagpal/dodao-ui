@@ -122,8 +122,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "1301",
-          "ancestorPath": [],
-          "searchText": "lac; natural gums, resins, gum-resins and oleoresins (for example, balsams): 1301"
+          "ancestorPath": []
         },
         {
           "id": "r1",
@@ -146,8 +145,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "1301",
-          "ancestorPath": ["Lac; natural gums, resins, gum-resins and oleoresins (for example, balsams)"],
-          "searchText": "lac; natural gums, resins, gum-resins and oleoresins (for example, balsams) gum arabic 1301.20.00.00"
+          "ancestorPath": ["Lac; natural gums, resins, gum-resins and oleoresins (for example, balsams)"]
         },
         {
           "id": "r2",
@@ -170,8 +168,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "1301",
-          "ancestorPath": ["Lac; natural gums, resins, gum-resins and oleoresins (for example, balsams)"],
-          "searchText": "lac; natural gums, resins, gum-resins and oleoresins (for example, balsams) other: 1301.90"
+          "ancestorPath": ["Lac; natural gums, resins, gum-resins and oleoresins (for example, balsams)"]
         },
         {
           "id": "r3",
@@ -194,8 +191,7 @@
           "column2InheritedFrom": null,
           "dutiable": true,
           "heading": "1301",
-          "ancestorPath": ["Lac; natural gums, resins, gum-resins and oleoresins (for example, balsams)", "Other"],
-          "searchText": "lac; natural gums, resins, gum-resins and oleoresins (for example, balsams) other turpentine gum (oleoresinous exudate from living trees) 1301.90.40.00"
+          "ancestorPath": ["Lac; natural gums, resins, gum-resins and oleoresins (for example, balsams)", "Other"]
         },
         {
           "id": "r4",
@@ -218,8 +214,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "1301",
-          "ancestorPath": ["Lac; natural gums, resins, gum-resins and oleoresins (for example, balsams)", "Other"],
-          "searchText": "lac; natural gums, resins, gum-resins and oleoresins (for example, balsams) other other 1301.90.91"
+          "ancestorPath": ["Lac; natural gums, resins, gum-resins and oleoresins (for example, balsams)", "Other"]
         },
         {
           "id": "r5",
@@ -242,8 +237,7 @@
           "column2InheritedFrom": "1301.90.91",
           "dutiable": false,
           "heading": "1301",
-          "ancestorPath": ["Lac; natural gums, resins, gum-resins and oleoresins (for example, balsams)", "Other", "Other"],
-          "searchText": "lac; natural gums, resins, gum-resins and oleoresins (for example, balsams) other other balsams 1301.90.91.05"
+          "ancestorPath": ["Lac; natural gums, resins, gum-resins and oleoresins (for example, balsams)", "Other", "Other"]
         },
         {
           "id": "r6",
@@ -266,8 +260,7 @@
           "column2InheritedFrom": "1301.90.91",
           "dutiable": false,
           "heading": "1301",
-          "ancestorPath": ["Lac; natural gums, resins, gum-resins and oleoresins (for example, balsams)", "Other", "Other"],
-          "searchText": "lac; natural gums, resins, gum-resins and oleoresins (for example, balsams) other other bleached shellac 1301.90.91.10"
+          "ancestorPath": ["Lac; natural gums, resins, gum-resins and oleoresins (for example, balsams)", "Other", "Other"]
         },
         {
           "id": "r7",
@@ -290,8 +283,7 @@
           "column2InheritedFrom": "1301.90.91",
           "dutiable": false,
           "heading": "1301",
-          "ancestorPath": ["Lac; natural gums, resins, gum-resins and oleoresins (for example, balsams)", "Other", "Other"],
-          "searchText": "lac; natural gums, resins, gum-resins and oleoresins (for example, balsams) other other seed lac 1301.90.91.20"
+          "ancestorPath": ["Lac; natural gums, resins, gum-resins and oleoresins (for example, balsams)", "Other", "Other"]
         },
         {
           "id": "r8",
@@ -314,8 +306,7 @@
           "column2InheritedFrom": "1301.90.91",
           "dutiable": false,
           "heading": "1301",
-          "ancestorPath": ["Lac; natural gums, resins, gum-resins and oleoresins (for example, balsams)", "Other", "Other"],
-          "searchText": "lac; natural gums, resins, gum-resins and oleoresins (for example, balsams) other other tragacanth 1301.90.91.30"
+          "ancestorPath": ["Lac; natural gums, resins, gum-resins and oleoresins (for example, balsams)", "Other", "Other"]
         },
         {
           "id": "r9",
@@ -338,8 +329,7 @@
           "column2InheritedFrom": "1301.90.91",
           "dutiable": false,
           "heading": "1301",
-          "ancestorPath": ["Lac; natural gums, resins, gum-resins and oleoresins (for example, balsams)", "Other", "Other"],
-          "searchText": "lac; natural gums, resins, gum-resins and oleoresins (for example, balsams) other other karaya 1301.90.91.40"
+          "ancestorPath": ["Lac; natural gums, resins, gum-resins and oleoresins (for example, balsams)", "Other", "Other"]
         },
         {
           "id": "r10",
@@ -362,8 +352,7 @@
           "column2InheritedFrom": "1301.90.91",
           "dutiable": false,
           "heading": "1301",
-          "ancestorPath": ["Lac; natural gums, resins, gum-resins and oleoresins (for example, balsams)", "Other", "Other"],
-          "searchText": "lac; natural gums, resins, gum-resins and oleoresins (for example, balsams) other other other 1301.90.91.90"
+          "ancestorPath": ["Lac; natural gums, resins, gum-resins and oleoresins (for example, balsams)", "Other", "Other"]
         },
         {
           "id": "r11",
@@ -386,8 +375,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "1302",
-          "ancestorPath": [],
-          "searchText": "vegetable saps and extracts; pectic substances, pectinates and pectates; agar-agar and other mucilages and thickeners, whether or not modified, derived from vegetable products: 1302"
+          "ancestorPath": []
         },
         {
           "id": "r12",
@@ -412,8 +400,7 @@
           "heading": "1302",
           "ancestorPath": [
             "Vegetable saps and extracts; pectic substances, pectinates and pectates; agar-agar and other mucilages and thickeners, whether or not modified, derived from vegetable products"
-          ],
-          "searchText": "vegetable saps and extracts; pectic substances, pectinates and pectates; agar-agar and other mucilages and thickeners, whether or not modified, derived from vegetable products vegetable saps and extracts: "
+          ]
         },
         {
           "id": "r13",
@@ -439,8 +426,7 @@
           "ancestorPath": [
             "Vegetable saps and extracts; pectic substances, pectinates and pectates; agar-agar and other mucilages and thickeners, whether or not modified, derived from vegetable products",
             "Vegetable saps and extracts"
-          ],
-          "searchText": "vegetable saps and extracts; pectic substances, pectinates and pectates; agar-agar and other mucilages and thickeners, whether or not modified, derived from vegetable products vegetable saps and extracts opium 1302.11.00.00"
+          ]
         },
         {
           "id": "r14",
@@ -466,8 +452,7 @@
           "ancestorPath": [
             "Vegetable saps and extracts; pectic substances, pectinates and pectates; agar-agar and other mucilages and thickeners, whether or not modified, derived from vegetable products",
             "Vegetable saps and extracts"
-          ],
-          "searchText": "vegetable saps and extracts; pectic substances, pectinates and pectates; agar-agar and other mucilages and thickeners, whether or not modified, derived from vegetable products vegetable saps and extracts of licorice 1302.12.00.00"
+          ]
         },
         {
           "id": "r15",
@@ -493,8 +478,7 @@
           "ancestorPath": [
             "Vegetable saps and extracts; pectic substances, pectinates and pectates; agar-agar and other mucilages and thickeners, whether or not modified, derived from vegetable products",
             "Vegetable saps and extracts"
-          ],
-          "searchText": "vegetable saps and extracts; pectic substances, pectinates and pectates; agar-agar and other mucilages and thickeners, whether or not modified, derived from vegetable products vegetable saps and extracts of hops 1302.13.00.00"
+          ]
         },
         {
           "id": "r16",
@@ -520,8 +504,7 @@
           "ancestorPath": [
             "Vegetable saps and extracts; pectic substances, pectinates and pectates; agar-agar and other mucilages and thickeners, whether or not modified, derived from vegetable products",
             "Vegetable saps and extracts"
-          ],
-          "searchText": "vegetable saps and extracts; pectic substances, pectinates and pectates; agar-agar and other mucilages and thickeners, whether or not modified, derived from vegetable products vegetable saps and extracts of ephedra 1302.14.01.00"
+          ]
         },
         {
           "id": "r17",
@@ -547,8 +530,7 @@
           "ancestorPath": [
             "Vegetable saps and extracts; pectic substances, pectinates and pectates; agar-agar and other mucilages and thickeners, whether or not modified, derived from vegetable products",
             "Vegetable saps and extracts"
-          ],
-          "searchText": "vegetable saps and extracts; pectic substances, pectinates and pectates; agar-agar and other mucilages and thickeners, whether or not modified, derived from vegetable products vegetable saps and extracts other: 1302.19"
+          ]
         },
         {
           "id": "r18",
@@ -575,8 +557,7 @@
             "Vegetable saps and extracts; pectic substances, pectinates and pectates; agar-agar and other mucilages and thickeners, whether or not modified, derived from vegetable products",
             "Vegetable saps and extracts",
             "Other"
-          ],
-          "searchText": "vegetable saps and extracts; pectic substances, pectinates and pectates; agar-agar and other mucilages and thickeners, whether or not modified, derived from vegetable products vegetable saps and extracts other ginseng; substances having anesthetic, prophylactic or therapeutic properties: "
+          ]
         },
         {
           "id": "r19",
@@ -604,8 +585,7 @@
             "Vegetable saps and extracts",
             "Other",
             "Ginseng; substances having anesthetic, prophylactic or therapeutic properties"
-          ],
-          "searchText": "vegetable saps and extracts; pectic substances, pectinates and pectates; agar-agar and other mucilages and thickeners, whether or not modified, derived from vegetable products vegetable saps and extracts other ginseng; substances having anesthetic, prophylactic or therapeutic properties poppy straw extract 1302.19.21.00"
+          ]
         },
         {
           "id": "r20",
@@ -633,8 +613,7 @@
             "Vegetable saps and extracts",
             "Other",
             "Ginseng; substances having anesthetic, prophylactic or therapeutic properties"
-          ],
-          "searchText": "vegetable saps and extracts; pectic substances, pectinates and pectates; agar-agar and other mucilages and thickeners, whether or not modified, derived from vegetable products vegetable saps and extracts other ginseng; substances having anesthetic, prophylactic or therapeutic properties other 1302.19.41"
+          ]
         },
         {
           "id": "r21",
@@ -663,8 +642,7 @@
             "Other",
             "Ginseng; substances having anesthetic, prophylactic or therapeutic properties",
             "Other"
-          ],
-          "searchText": "vegetable saps and extracts; pectic substances, pectinates and pectates; agar-agar and other mucilages and thickeners, whether or not modified, derived from vegetable products vegetable saps and extracts other ginseng; substances having anesthetic, prophylactic or therapeutic properties other ginseng 1302.19.41.20"
+          ]
         },
         {
           "id": "r22",
@@ -693,8 +671,7 @@
             "Other",
             "Ginseng; substances having anesthetic, prophylactic or therapeutic properties",
             "Other"
-          ],
-          "searchText": "vegetable saps and extracts; pectic substances, pectinates and pectates; agar-agar and other mucilages and thickeners, whether or not modified, derived from vegetable products vegetable saps and extracts other ginseng; substances having anesthetic, prophylactic or therapeutic properties other other 1302.19.41.40"
+          ]
         },
         {
           "id": "r23",
@@ -721,8 +698,7 @@
             "Vegetable saps and extracts; pectic substances, pectinates and pectates; agar-agar and other mucilages and thickeners, whether or not modified, derived from vegetable products",
             "Vegetable saps and extracts",
             "Other"
-          ],
-          "searchText": "vegetable saps and extracts; pectic substances, pectinates and pectates; agar-agar and other mucilages and thickeners, whether or not modified, derived from vegetable products vegetable saps and extracts other other 1302.19.91"
+          ]
         },
         {
           "id": "r24",
@@ -750,8 +726,7 @@
             "Vegetable saps and extracts",
             "Other",
             "Other"
-          ],
-          "searchText": "vegetable saps and extracts; pectic substances, pectinates and pectates; agar-agar and other mucilages and thickeners, whether or not modified, derived from vegetable products vegetable saps and extracts other other cashew nut shell liquid 1302.19.91.20"
+          ]
         },
         {
           "id": "r25",
@@ -779,8 +754,7 @@
             "Vegetable saps and extracts",
             "Other",
             "Other"
-          ],
-          "searchText": "vegetable saps and extracts; pectic substances, pectinates and pectates; agar-agar and other mucilages and thickeners, whether or not modified, derived from vegetable products vegetable saps and extracts other other other: "
+          ]
         },
         {
           "id": "r26",
@@ -809,8 +783,7 @@
             "Other",
             "Other",
             "Other"
-          ],
-          "searchText": "vegetable saps and extracts; pectic substances, pectinates and pectates; agar-agar and other mucilages and thickeners, whether or not modified, derived from vegetable products vegetable saps and extracts other other other certified organic 1302.19.91.45"
+          ]
         },
         {
           "id": "r27",
@@ -839,8 +812,7 @@
             "Other",
             "Other",
             "Other"
-          ],
-          "searchText": "vegetable saps and extracts; pectic substances, pectinates and pectates; agar-agar and other mucilages and thickeners, whether or not modified, derived from vegetable products vegetable saps and extracts other other other other 1302.19.91.55"
+          ]
         },
         {
           "id": "r28",
@@ -865,8 +837,7 @@
           "heading": "1302",
           "ancestorPath": [
             "Vegetable saps and extracts; pectic substances, pectinates and pectates; agar-agar and other mucilages and thickeners, whether or not modified, derived from vegetable products"
-          ],
-          "searchText": "vegetable saps and extracts; pectic substances, pectinates and pectates; agar-agar and other mucilages and thickeners, whether or not modified, derived from vegetable products pectic substances, pectinates and pectates 1302.20.00.00"
+          ]
         },
         {
           "id": "r29",
@@ -891,8 +862,7 @@
           "heading": "1302",
           "ancestorPath": [
             "Vegetable saps and extracts; pectic substances, pectinates and pectates; agar-agar and other mucilages and thickeners, whether or not modified, derived from vegetable products"
-          ],
-          "searchText": "vegetable saps and extracts; pectic substances, pectinates and pectates; agar-agar and other mucilages and thickeners, whether or not modified, derived from vegetable products mucilages and thickeners, whether or not modified, derived from vegetable products: "
+          ]
         },
         {
           "id": "r30",
@@ -918,8 +888,7 @@
           "ancestorPath": [
             "Vegetable saps and extracts; pectic substances, pectinates and pectates; agar-agar and other mucilages and thickeners, whether or not modified, derived from vegetable products",
             "Mucilages and thickeners, whether or not modified, derived from vegetable products"
-          ],
-          "searchText": "vegetable saps and extracts; pectic substances, pectinates and pectates; agar-agar and other mucilages and thickeners, whether or not modified, derived from vegetable products mucilages and thickeners, whether or not modified, derived from vegetable products agar-agar 1302.31.00.00"
+          ]
         },
         {
           "id": "r31",
@@ -945,8 +914,7 @@
           "ancestorPath": [
             "Vegetable saps and extracts; pectic substances, pectinates and pectates; agar-agar and other mucilages and thickeners, whether or not modified, derived from vegetable products",
             "Mucilages and thickeners, whether or not modified, derived from vegetable products"
-          ],
-          "searchText": "vegetable saps and extracts; pectic substances, pectinates and pectates; agar-agar and other mucilages and thickeners, whether or not modified, derived from vegetable products mucilages and thickeners, whether or not modified, derived from vegetable products mucilages and thickeners, whether or not modified, derived from locust beans, locust bean seeds or guar seeds 1302.32.00"
+          ]
         },
         {
           "id": "r32",
@@ -973,8 +941,7 @@
             "Vegetable saps and extracts; pectic substances, pectinates and pectates; agar-agar and other mucilages and thickeners, whether or not modified, derived from vegetable products",
             "Mucilages and thickeners, whether or not modified, derived from vegetable products",
             "Mucilages and thickeners, whether or not modified, derived from locust beans, locust bean seeds or guar seeds"
-          ],
-          "searchText": "vegetable saps and extracts; pectic substances, pectinates and pectates; agar-agar and other mucilages and thickeners, whether or not modified, derived from vegetable products mucilages and thickeners, whether or not modified, derived from vegetable products mucilages and thickeners, whether or not modified, derived from locust beans, locust bean seeds or guar seeds guar 1302.32.00.20"
+          ]
         },
         {
           "id": "r33",
@@ -1001,8 +968,7 @@
             "Vegetable saps and extracts; pectic substances, pectinates and pectates; agar-agar and other mucilages and thickeners, whether or not modified, derived from vegetable products",
             "Mucilages and thickeners, whether or not modified, derived from vegetable products",
             "Mucilages and thickeners, whether or not modified, derived from locust beans, locust bean seeds or guar seeds"
-          ],
-          "searchText": "vegetable saps and extracts; pectic substances, pectinates and pectates; agar-agar and other mucilages and thickeners, whether or not modified, derived from vegetable products mucilages and thickeners, whether or not modified, derived from vegetable products mucilages and thickeners, whether or not modified, derived from locust beans, locust bean seeds or guar seeds locust bean 1302.32.00.40"
+          ]
         },
         {
           "id": "r34",
@@ -1028,8 +994,7 @@
           "ancestorPath": [
             "Vegetable saps and extracts; pectic substances, pectinates and pectates; agar-agar and other mucilages and thickeners, whether or not modified, derived from vegetable products",
             "Mucilages and thickeners, whether or not modified, derived from vegetable products"
-          ],
-          "searchText": "vegetable saps and extracts; pectic substances, pectinates and pectates; agar-agar and other mucilages and thickeners, whether or not modified, derived from vegetable products mucilages and thickeners, whether or not modified, derived from vegetable products other 1302.39.00"
+          ]
         },
         {
           "id": "r35",
@@ -1056,8 +1021,7 @@
             "Vegetable saps and extracts; pectic substances, pectinates and pectates; agar-agar and other mucilages and thickeners, whether or not modified, derived from vegetable products",
             "Mucilages and thickeners, whether or not modified, derived from vegetable products",
             "Other"
-          ],
-          "searchText": "vegetable saps and extracts; pectic substances, pectinates and pectates; agar-agar and other mucilages and thickeners, whether or not modified, derived from vegetable products mucilages and thickeners, whether or not modified, derived from vegetable products other carrageenan 1302.39.00.10"
+          ]
         },
         {
           "id": "r36",
@@ -1084,8 +1048,7 @@
             "Vegetable saps and extracts; pectic substances, pectinates and pectates; agar-agar and other mucilages and thickeners, whether or not modified, derived from vegetable products",
             "Mucilages and thickeners, whether or not modified, derived from vegetable products",
             "Other"
-          ],
-          "searchText": "vegetable saps and extracts; pectic substances, pectinates and pectates; agar-agar and other mucilages and thickeners, whether or not modified, derived from vegetable products mucilages and thickeners, whether or not modified, derived from vegetable products other other 1302.39.00.90"
+          ]
         }
       ]
     },
@@ -1707,9 +1670,6 @@
     "lines": [
       {
         "hts": "1301.20.00.00",
-        "description": "Gum Arabic",
-        "ancestorPath": ["Lac; natural gums, resins, gum-resins and oleoresins (for example, balsams)"],
-        "searchText": "lac; natural gums, resins, gum-resins and oleoresins (for example, balsams) gum arabic 1301.20.00.00",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -1717,9 +1677,6 @@
       },
       {
         "hts": "1301.90.40.00",
-        "description": "Turpentine gum (oleoresinous exudate from living trees)",
-        "ancestorPath": ["Lac; natural gums, resins, gum-resins and oleoresins (for example, balsams)", "Other"],
-        "searchText": "lac; natural gums, resins, gum-resins and oleoresins (for example, balsams) other turpentine gum (oleoresinous exudate from living trees) 1301.90.40.00",
         "generalBefore": "1.3%",
         "generalNow": "1.3%",
         "status": "unchanged",
@@ -1727,9 +1684,6 @@
       },
       {
         "hts": "1301.90.91.05",
-        "description": "Balsams",
-        "ancestorPath": ["Lac; natural gums, resins, gum-resins and oleoresins (for example, balsams)", "Other", "Other"],
-        "searchText": "lac; natural gums, resins, gum-resins and oleoresins (for example, balsams) other other balsams 1301.90.91.05",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -1737,9 +1691,6 @@
       },
       {
         "hts": "1301.90.91.10",
-        "description": "Bleached shellac",
-        "ancestorPath": ["Lac; natural gums, resins, gum-resins and oleoresins (for example, balsams)", "Other", "Other"],
-        "searchText": "lac; natural gums, resins, gum-resins and oleoresins (for example, balsams) other other bleached shellac 1301.90.91.10",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -1747,9 +1698,6 @@
       },
       {
         "hts": "1301.90.91.20",
-        "description": "Seed lac",
-        "ancestorPath": ["Lac; natural gums, resins, gum-resins and oleoresins (for example, balsams)", "Other", "Other"],
-        "searchText": "lac; natural gums, resins, gum-resins and oleoresins (for example, balsams) other other seed lac 1301.90.91.20",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -1757,9 +1705,6 @@
       },
       {
         "hts": "1301.90.91.30",
-        "description": "Tragacanth",
-        "ancestorPath": ["Lac; natural gums, resins, gum-resins and oleoresins (for example, balsams)", "Other", "Other"],
-        "searchText": "lac; natural gums, resins, gum-resins and oleoresins (for example, balsams) other other tragacanth 1301.90.91.30",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -1767,9 +1712,6 @@
       },
       {
         "hts": "1301.90.91.40",
-        "description": "Karaya",
-        "ancestorPath": ["Lac; natural gums, resins, gum-resins and oleoresins (for example, balsams)", "Other", "Other"],
-        "searchText": "lac; natural gums, resins, gum-resins and oleoresins (for example, balsams) other other karaya 1301.90.91.40",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -1777,9 +1719,6 @@
       },
       {
         "hts": "1301.90.91.90",
-        "description": "Other",
-        "ancestorPath": ["Lac; natural gums, resins, gum-resins and oleoresins (for example, balsams)", "Other", "Other"],
-        "searchText": "lac; natural gums, resins, gum-resins and oleoresins (for example, balsams) other other other 1301.90.91.90",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -1787,12 +1726,6 @@
       },
       {
         "hts": "1302.11.00.00",
-        "description": "Opium",
-        "ancestorPath": [
-          "Vegetable saps and extracts; pectic substances, pectinates and pectates; agar-agar and other mucilages and thickeners, whether or not modified, derived from vegetable products",
-          "Vegetable saps and extracts"
-        ],
-        "searchText": "vegetable saps and extracts; pectic substances, pectinates and pectates; agar-agar and other mucilages and thickeners, whether or not modified, derived from vegetable products vegetable saps and extracts opium 1302.11.00.00",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -1800,12 +1733,6 @@
       },
       {
         "hts": "1302.12.00.00",
-        "description": "Of licorice",
-        "ancestorPath": [
-          "Vegetable saps and extracts; pectic substances, pectinates and pectates; agar-agar and other mucilages and thickeners, whether or not modified, derived from vegetable products",
-          "Vegetable saps and extracts"
-        ],
-        "searchText": "vegetable saps and extracts; pectic substances, pectinates and pectates; agar-agar and other mucilages and thickeners, whether or not modified, derived from vegetable products vegetable saps and extracts of licorice 1302.12.00.00",
         "generalBefore": "3.8%",
         "generalNow": "3.8%",
         "status": "unchanged",
@@ -1813,12 +1740,6 @@
       },
       {
         "hts": "1302.13.00.00",
-        "description": "Of hops",
-        "ancestorPath": [
-          "Vegetable saps and extracts; pectic substances, pectinates and pectates; agar-agar and other mucilages and thickeners, whether or not modified, derived from vegetable products",
-          "Vegetable saps and extracts"
-        ],
-        "searchText": "vegetable saps and extracts; pectic substances, pectinates and pectates; agar-agar and other mucilages and thickeners, whether or not modified, derived from vegetable products vegetable saps and extracts of hops 1302.13.00.00",
         "generalBefore": "89¢/kg",
         "generalNow": "89¢/kg",
         "status": "unchanged",
@@ -1826,12 +1747,6 @@
       },
       {
         "hts": "1302.14.01.00",
-        "description": "Of ephedra",
-        "ancestorPath": [
-          "Vegetable saps and extracts; pectic substances, pectinates and pectates; agar-agar and other mucilages and thickeners, whether or not modified, derived from vegetable products",
-          "Vegetable saps and extracts"
-        ],
-        "searchText": "vegetable saps and extracts; pectic substances, pectinates and pectates; agar-agar and other mucilages and thickeners, whether or not modified, derived from vegetable products vegetable saps and extracts of ephedra 1302.14.01.00",
         "generalBefore": "1%",
         "generalNow": "1%",
         "status": "unchanged",
@@ -1839,14 +1754,6 @@
       },
       {
         "hts": "1302.19.21.00",
-        "description": "Poppy straw extract",
-        "ancestorPath": [
-          "Vegetable saps and extracts; pectic substances, pectinates and pectates; agar-agar and other mucilages and thickeners, whether or not modified, derived from vegetable products",
-          "Vegetable saps and extracts",
-          "Other",
-          "Ginseng; substances having anesthetic, prophylactic or therapeutic properties"
-        ],
-        "searchText": "vegetable saps and extracts; pectic substances, pectinates and pectates; agar-agar and other mucilages and thickeners, whether or not modified, derived from vegetable products vegetable saps and extracts other ginseng; substances having anesthetic, prophylactic or therapeutic properties poppy straw extract 1302.19.21.00",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -1854,15 +1761,6 @@
       },
       {
         "hts": "1302.19.41.20",
-        "description": "Ginseng",
-        "ancestorPath": [
-          "Vegetable saps and extracts; pectic substances, pectinates and pectates; agar-agar and other mucilages and thickeners, whether or not modified, derived from vegetable products",
-          "Vegetable saps and extracts",
-          "Other",
-          "Ginseng; substances having anesthetic, prophylactic or therapeutic properties",
-          "Other"
-        ],
-        "searchText": "vegetable saps and extracts; pectic substances, pectinates and pectates; agar-agar and other mucilages and thickeners, whether or not modified, derived from vegetable products vegetable saps and extracts other ginseng; substances having anesthetic, prophylactic or therapeutic properties other ginseng 1302.19.41.20",
         "generalBefore": "1%",
         "generalNow": "1%",
         "status": "unchanged",
@@ -1870,15 +1768,6 @@
       },
       {
         "hts": "1302.19.41.40",
-        "description": "Other",
-        "ancestorPath": [
-          "Vegetable saps and extracts; pectic substances, pectinates and pectates; agar-agar and other mucilages and thickeners, whether or not modified, derived from vegetable products",
-          "Vegetable saps and extracts",
-          "Other",
-          "Ginseng; substances having anesthetic, prophylactic or therapeutic properties",
-          "Other"
-        ],
-        "searchText": "vegetable saps and extracts; pectic substances, pectinates and pectates; agar-agar and other mucilages and thickeners, whether or not modified, derived from vegetable products vegetable saps and extracts other ginseng; substances having anesthetic, prophylactic or therapeutic properties other other 1302.19.41.40",
         "generalBefore": "1%",
         "generalNow": "1%",
         "status": "unchanged",
@@ -1886,14 +1775,6 @@
       },
       {
         "hts": "1302.19.91.20",
-        "description": "Cashew nut shell liquid",
-        "ancestorPath": [
-          "Vegetable saps and extracts; pectic substances, pectinates and pectates; agar-agar and other mucilages and thickeners, whether or not modified, derived from vegetable products",
-          "Vegetable saps and extracts",
-          "Other",
-          "Other"
-        ],
-        "searchText": "vegetable saps and extracts; pectic substances, pectinates and pectates; agar-agar and other mucilages and thickeners, whether or not modified, derived from vegetable products vegetable saps and extracts other other cashew nut shell liquid 1302.19.91.20",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -1901,15 +1782,6 @@
       },
       {
         "hts": "1302.19.91.45",
-        "description": "Certified organic",
-        "ancestorPath": [
-          "Vegetable saps and extracts; pectic substances, pectinates and pectates; agar-agar and other mucilages and thickeners, whether or not modified, derived from vegetable products",
-          "Vegetable saps and extracts",
-          "Other",
-          "Other",
-          "Other"
-        ],
-        "searchText": "vegetable saps and extracts; pectic substances, pectinates and pectates; agar-agar and other mucilages and thickeners, whether or not modified, derived from vegetable products vegetable saps and extracts other other other certified organic 1302.19.91.45",
         "generalBefore": null,
         "generalNow": "Free",
         "status": "new",
@@ -1917,15 +1789,6 @@
       },
       {
         "hts": "1302.19.91.55",
-        "description": "Other",
-        "ancestorPath": [
-          "Vegetable saps and extracts; pectic substances, pectinates and pectates; agar-agar and other mucilages and thickeners, whether or not modified, derived from vegetable products",
-          "Vegetable saps and extracts",
-          "Other",
-          "Other",
-          "Other"
-        ],
-        "searchText": "vegetable saps and extracts; pectic substances, pectinates and pectates; agar-agar and other mucilages and thickeners, whether or not modified, derived from vegetable products vegetable saps and extracts other other other other 1302.19.91.55",
         "generalBefore": null,
         "generalNow": "Free",
         "status": "new",
@@ -1933,11 +1796,6 @@
       },
       {
         "hts": "1302.20.00.00",
-        "description": "Pectic substances, pectinates and pectates",
-        "ancestorPath": [
-          "Vegetable saps and extracts; pectic substances, pectinates and pectates; agar-agar and other mucilages and thickeners, whether or not modified, derived from vegetable products"
-        ],
-        "searchText": "vegetable saps and extracts; pectic substances, pectinates and pectates; agar-agar and other mucilages and thickeners, whether or not modified, derived from vegetable products pectic substances, pectinates and pectates 1302.20.00.00",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -1945,12 +1803,6 @@
       },
       {
         "hts": "1302.31.00.00",
-        "description": "Agar-agar",
-        "ancestorPath": [
-          "Vegetable saps and extracts; pectic substances, pectinates and pectates; agar-agar and other mucilages and thickeners, whether or not modified, derived from vegetable products",
-          "Mucilages and thickeners, whether or not modified, derived from vegetable products"
-        ],
-        "searchText": "vegetable saps and extracts; pectic substances, pectinates and pectates; agar-agar and other mucilages and thickeners, whether or not modified, derived from vegetable products mucilages and thickeners, whether or not modified, derived from vegetable products agar-agar 1302.31.00.00",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -1958,13 +1810,6 @@
       },
       {
         "hts": "1302.32.00.20",
-        "description": "Guar",
-        "ancestorPath": [
-          "Vegetable saps and extracts; pectic substances, pectinates and pectates; agar-agar and other mucilages and thickeners, whether or not modified, derived from vegetable products",
-          "Mucilages and thickeners, whether or not modified, derived from vegetable products",
-          "Mucilages and thickeners, whether or not modified, derived from locust beans, locust bean seeds or guar seeds"
-        ],
-        "searchText": "vegetable saps and extracts; pectic substances, pectinates and pectates; agar-agar and other mucilages and thickeners, whether or not modified, derived from vegetable products mucilages and thickeners, whether or not modified, derived from vegetable products mucilages and thickeners, whether or not modified, derived from locust beans, locust bean seeds or guar seeds guar 1302.32.00.20",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -1972,13 +1817,6 @@
       },
       {
         "hts": "1302.32.00.40",
-        "description": "Locust bean",
-        "ancestorPath": [
-          "Vegetable saps and extracts; pectic substances, pectinates and pectates; agar-agar and other mucilages and thickeners, whether or not modified, derived from vegetable products",
-          "Mucilages and thickeners, whether or not modified, derived from vegetable products",
-          "Mucilages and thickeners, whether or not modified, derived from locust beans, locust bean seeds or guar seeds"
-        ],
-        "searchText": "vegetable saps and extracts; pectic substances, pectinates and pectates; agar-agar and other mucilages and thickeners, whether or not modified, derived from vegetable products mucilages and thickeners, whether or not modified, derived from vegetable products mucilages and thickeners, whether or not modified, derived from locust beans, locust bean seeds or guar seeds locust bean 1302.32.00.40",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -1986,13 +1824,6 @@
       },
       {
         "hts": "1302.39.00.10",
-        "description": "Carrageenan",
-        "ancestorPath": [
-          "Vegetable saps and extracts; pectic substances, pectinates and pectates; agar-agar and other mucilages and thickeners, whether or not modified, derived from vegetable products",
-          "Mucilages and thickeners, whether or not modified, derived from vegetable products",
-          "Other"
-        ],
-        "searchText": "vegetable saps and extracts; pectic substances, pectinates and pectates; agar-agar and other mucilages and thickeners, whether or not modified, derived from vegetable products mucilages and thickeners, whether or not modified, derived from vegetable products other carrageenan 1302.39.00.10",
         "generalBefore": "3.2%",
         "generalNow": "3.2%",
         "status": "unchanged",
@@ -2000,13 +1831,6 @@
       },
       {
         "hts": "1302.39.00.90",
-        "description": "Other",
-        "ancestorPath": [
-          "Vegetable saps and extracts; pectic substances, pectinates and pectates; agar-agar and other mucilages and thickeners, whether or not modified, derived from vegetable products",
-          "Mucilages and thickeners, whether or not modified, derived from vegetable products",
-          "Other"
-        ],
-        "searchText": "vegetable saps and extracts; pectic substances, pectinates and pectates; agar-agar and other mucilages and thickeners, whether or not modified, derived from vegetable products mucilages and thickeners, whether or not modified, derived from vegetable products other other 1302.39.00.90",
         "generalBefore": "3.2%",
         "generalNow": "3.2%",
         "status": "unchanged",
@@ -6672,308 +6496,121 @@
     "lines": [
       {
         "hts": "1301.20.00.00",
-        "description": "Gum Arabic",
-        "ancestorPath": ["Lac; natural gums, resins, gum-resins and oleoresins (for example, balsams)"],
-        "searchText": "lac; natural gums, resins, gum-resins and oleoresins (for example, balsams) gum arabic 1301.20.00.00",
-        "heading": "1301",
-        "general": "Free",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "fda-labeling", "fda-ingredient", "aphis-packaging"],
         "leverIds": ["usmca", "origin", "drawback"]
       },
       {
         "hts": "1301.90.40.00",
-        "description": "Turpentine gum (oleoresinous exudate from living trees)",
-        "ancestorPath": ["Lac; natural gums, resins, gum-resins and oleoresins (for example, balsams)", "Other"],
-        "searchText": "lac; natural gums, resins, gum-resins and oleoresins (for example, balsams) other turpentine gum (oleoresinous exudate from living trees) 1301.90.40.00",
-        "heading": "1301",
-        "general": "1.3%",
         "ruleIds": ["tsca", "aphis-packaging"],
         "leverIds": ["usmca", "fta", "origin", "ruling", "drawback"]
       },
       {
         "hts": "1301.90.91.05",
-        "description": "Balsams",
-        "ancestorPath": ["Lac; natural gums, resins, gum-resins and oleoresins (for example, balsams)", "Other", "Other"],
-        "searchText": "lac; natural gums, resins, gum-resins and oleoresins (for example, balsams) other other balsams 1301.90.91.05",
-        "heading": "1301",
-        "general": "Free",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "fda-labeling", "tsca", "aphis-packaging"],
         "leverIds": ["usmca", "origin", "ruling", "drawback"]
       },
       {
         "hts": "1301.90.91.10",
-        "description": "Bleached shellac",
-        "ancestorPath": ["Lac; natural gums, resins, gum-resins and oleoresins (for example, balsams)", "Other", "Other"],
-        "searchText": "lac; natural gums, resins, gum-resins and oleoresins (for example, balsams) other other bleached shellac 1301.90.91.10",
-        "heading": "1301",
-        "general": "Free",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "fda-labeling", "tsca", "aphis-packaging"],
         "leverIds": ["usmca", "origin", "ruling", "drawback"]
       },
       {
         "hts": "1301.90.91.20",
-        "description": "Seed lac",
-        "ancestorPath": ["Lac; natural gums, resins, gum-resins and oleoresins (for example, balsams)", "Other", "Other"],
-        "searchText": "lac; natural gums, resins, gum-resins and oleoresins (for example, balsams) other other seed lac 1301.90.91.20",
-        "heading": "1301",
-        "general": "Free",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "fda-labeling", "tsca", "aphis-packaging"],
         "leverIds": ["usmca", "origin", "ruling", "drawback"]
       },
       {
         "hts": "1301.90.91.30",
-        "description": "Tragacanth",
-        "ancestorPath": ["Lac; natural gums, resins, gum-resins and oleoresins (for example, balsams)", "Other", "Other"],
-        "searchText": "lac; natural gums, resins, gum-resins and oleoresins (for example, balsams) other other tragacanth 1301.90.91.30",
-        "heading": "1301",
-        "general": "Free",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "fda-labeling", "fda-ingredient", "tsca", "aphis-packaging"],
         "leverIds": ["usmca", "origin", "ruling", "drawback"]
       },
       {
         "hts": "1301.90.91.40",
-        "description": "Karaya",
-        "ancestorPath": ["Lac; natural gums, resins, gum-resins and oleoresins (for example, balsams)", "Other", "Other"],
-        "searchText": "lac; natural gums, resins, gum-resins and oleoresins (for example, balsams) other other karaya 1301.90.91.40",
-        "heading": "1301",
-        "general": "Free",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "fda-labeling", "fda-ingredient", "tsca", "aphis-packaging"],
         "leverIds": ["usmca", "origin", "ruling", "drawback"]
       },
       {
         "hts": "1301.90.91.90",
-        "description": "Other",
-        "ancestorPath": ["Lac; natural gums, resins, gum-resins and oleoresins (for example, balsams)", "Other", "Other"],
-        "searchText": "lac; natural gums, resins, gum-resins and oleoresins (for example, balsams) other other other 1301.90.91.90",
-        "heading": "1301",
-        "general": "Free",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "fda-labeling", "tsca", "aphis-packaging"],
         "leverIds": ["usmca", "origin", "ruling", "drawback"]
       },
       {
         "hts": "1302.11.00.00",
-        "description": "Opium",
-        "ancestorPath": [
-          "Vegetable saps and extracts; pectic substances, pectinates and pectates; agar-agar and other mucilages and thickeners, whether or not modified, derived from vegetable products",
-          "Vegetable saps and extracts"
-        ],
-        "searchText": "vegetable saps and extracts; pectic substances, pectinates and pectates; agar-agar and other mucilages and thickeners, whether or not modified, derived from vegetable products vegetable saps and extracts opium 1302.11.00.00",
-        "heading": "1302",
-        "general": "Free",
         "ruleIds": ["dea-narcotic", "aphis-packaging"],
         "leverIds": ["usmca", "origin", "drawback"]
       },
       {
         "hts": "1302.12.00.00",
-        "description": "Of licorice",
-        "ancestorPath": [
-          "Vegetable saps and extracts; pectic substances, pectinates and pectates; agar-agar and other mucilages and thickeners, whether or not modified, derived from vegetable products",
-          "Vegetable saps and extracts"
-        ],
-        "searchText": "vegetable saps and extracts; pectic substances, pectinates and pectates; agar-agar and other mucilages and thickeners, whether or not modified, derived from vegetable products vegetable saps and extracts of licorice 1302.12.00.00",
-        "heading": "1302",
-        "general": "3.8%",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "fda-labeling", "fda-ingredient", "aphis-packaging"],
         "leverIds": ["usmca", "fta", "origin", "ruling", "drawback"]
       },
       {
         "hts": "1302.13.00.00",
-        "description": "Of hops",
-        "ancestorPath": [
-          "Vegetable saps and extracts; pectic substances, pectinates and pectates; agar-agar and other mucilages and thickeners, whether or not modified, derived from vegetable products",
-          "Vegetable saps and extracts"
-        ],
-        "searchText": "vegetable saps and extracts; pectic substances, pectinates and pectates; agar-agar and other mucilages and thickeners, whether or not modified, derived from vegetable products vegetable saps and extracts of hops 1302.13.00.00",
-        "heading": "1302",
-        "general": "89¢/kg",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "fda-labeling", "aphis-packaging"],
         "leverIds": ["usmca", "fta", "origin", "hops-concentrate", "drawback"]
       },
       {
         "hts": "1302.14.01.00",
-        "description": "Of ephedra",
-        "ancestorPath": [
-          "Vegetable saps and extracts; pectic substances, pectinates and pectates; agar-agar and other mucilages and thickeners, whether or not modified, derived from vegetable products",
-          "Vegetable saps and extracts"
-        ],
-        "searchText": "vegetable saps and extracts; pectic substances, pectinates and pectates; agar-agar and other mucilages and thickeners, whether or not modified, derived from vegetable products vegetable saps and extracts of ephedra 1302.14.01.00",
-        "heading": "1302",
-        "general": "1%",
         "ruleIds": ["ephedra", "aphis-packaging"],
         "leverIds": ["usmca", "fta", "origin", "drawback"]
       },
       {
         "hts": "1302.19.21.00",
-        "description": "Poppy straw extract",
-        "ancestorPath": [
-          "Vegetable saps and extracts; pectic substances, pectinates and pectates; agar-agar and other mucilages and thickeners, whether or not modified, derived from vegetable products",
-          "Vegetable saps and extracts",
-          "Other",
-          "Ginseng; substances having anesthetic, prophylactic or therapeutic properties"
-        ],
-        "searchText": "vegetable saps and extracts; pectic substances, pectinates and pectates; agar-agar and other mucilages and thickeners, whether or not modified, derived from vegetable products vegetable saps and extracts other ginseng; substances having anesthetic, prophylactic or therapeutic properties poppy straw extract 1302.19.21.00",
-        "heading": "1302",
-        "general": "Free",
         "ruleIds": ["dea-narcotic", "aphis-packaging"],
         "leverIds": ["usmca", "origin", "ruling", "drawback"]
       },
       {
         "hts": "1302.19.41.20",
-        "description": "Ginseng",
-        "ancestorPath": [
-          "Vegetable saps and extracts; pectic substances, pectinates and pectates; agar-agar and other mucilages and thickeners, whether or not modified, derived from vegetable products",
-          "Vegetable saps and extracts",
-          "Other",
-          "Ginseng; substances having anesthetic, prophylactic or therapeutic properties",
-          "Other"
-        ],
-        "searchText": "vegetable saps and extracts; pectic substances, pectinates and pectates; agar-agar and other mucilages and thickeners, whether or not modified, derived from vegetable products vegetable saps and extracts other ginseng; substances having anesthetic, prophylactic or therapeutic properties other ginseng 1302.19.41.20",
-        "heading": "1302",
-        "general": "1%",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "fda-labeling", "aphis-packaging"],
         "leverIds": ["usmca", "fta", "origin", "ruling", "drawback"]
       },
       {
         "hts": "1302.19.41.40",
-        "description": "Other",
-        "ancestorPath": [
-          "Vegetable saps and extracts; pectic substances, pectinates and pectates; agar-agar and other mucilages and thickeners, whether or not modified, derived from vegetable products",
-          "Vegetable saps and extracts",
-          "Other",
-          "Ginseng; substances having anesthetic, prophylactic or therapeutic properties",
-          "Other"
-        ],
-        "searchText": "vegetable saps and extracts; pectic substances, pectinates and pectates; agar-agar and other mucilages and thickeners, whether or not modified, derived from vegetable products vegetable saps and extracts other ginseng; substances having anesthetic, prophylactic or therapeutic properties other other 1302.19.41.40",
-        "heading": "1302",
-        "general": "1%",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "fda-labeling", "aphis-packaging"],
         "leverIds": ["usmca", "fta", "origin", "ruling", "drawback"]
       },
       {
         "hts": "1302.19.91.20",
-        "description": "Cashew nut shell liquid",
-        "ancestorPath": [
-          "Vegetable saps and extracts; pectic substances, pectinates and pectates; agar-agar and other mucilages and thickeners, whether or not modified, derived from vegetable products",
-          "Vegetable saps and extracts",
-          "Other",
-          "Other"
-        ],
-        "searchText": "vegetable saps and extracts; pectic substances, pectinates and pectates; agar-agar and other mucilages and thickeners, whether or not modified, derived from vegetable products vegetable saps and extracts other other cashew nut shell liquid 1302.19.91.20",
-        "heading": "1302",
-        "general": "Free",
         "ruleIds": ["tsca", "aphis-packaging"],
         "leverIds": ["usmca", "origin", "ruling", "drawback"]
       },
       {
         "hts": "1302.19.91.45",
-        "description": "Certified organic",
-        "ancestorPath": [
-          "Vegetable saps and extracts; pectic substances, pectinates and pectates; agar-agar and other mucilages and thickeners, whether or not modified, derived from vegetable products",
-          "Vegetable saps and extracts",
-          "Other",
-          "Other",
-          "Other"
-        ],
-        "searchText": "vegetable saps and extracts; pectic substances, pectinates and pectates; agar-agar and other mucilages and thickeners, whether or not modified, derived from vegetable products vegetable saps and extracts other other other certified organic 1302.19.91.45",
-        "heading": "1302",
-        "general": "Free",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "fda-labeling", "nop-organic", "aphis-packaging"],
         "leverIds": ["usmca", "origin", "ruling", "drawback"]
       },
       {
         "hts": "1302.19.91.55",
-        "description": "Other",
-        "ancestorPath": [
-          "Vegetable saps and extracts; pectic substances, pectinates and pectates; agar-agar and other mucilages and thickeners, whether or not modified, derived from vegetable products",
-          "Vegetable saps and extracts",
-          "Other",
-          "Other",
-          "Other"
-        ],
-        "searchText": "vegetable saps and extracts; pectic substances, pectinates and pectates; agar-agar and other mucilages and thickeners, whether or not modified, derived from vegetable products vegetable saps and extracts other other other other 1302.19.91.55",
-        "heading": "1302",
-        "general": "Free",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "fda-labeling", "epa-pesticide", "aphis-packaging"],
         "leverIds": ["usmca", "origin", "ruling", "drawback"]
       },
       {
         "hts": "1302.20.00.00",
-        "description": "Pectic substances, pectinates and pectates",
-        "ancestorPath": [
-          "Vegetable saps and extracts; pectic substances, pectinates and pectates; agar-agar and other mucilages and thickeners, whether or not modified, derived from vegetable products"
-        ],
-        "searchText": "vegetable saps and extracts; pectic substances, pectinates and pectates; agar-agar and other mucilages and thickeners, whether or not modified, derived from vegetable products pectic substances, pectinates and pectates 1302.20.00.00",
-        "heading": "1302",
-        "general": "Free",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "fda-labeling", "fda-ingredient", "aphis-packaging"],
         "leverIds": ["usmca", "origin", "drawback"]
       },
       {
         "hts": "1302.31.00.00",
-        "description": "Agar-agar",
-        "ancestorPath": [
-          "Vegetable saps and extracts; pectic substances, pectinates and pectates; agar-agar and other mucilages and thickeners, whether or not modified, derived from vegetable products",
-          "Mucilages and thickeners, whether or not modified, derived from vegetable products"
-        ],
-        "searchText": "vegetable saps and extracts; pectic substances, pectinates and pectates; agar-agar and other mucilages and thickeners, whether or not modified, derived from vegetable products mucilages and thickeners, whether or not modified, derived from vegetable products agar-agar 1302.31.00.00",
-        "heading": "1302",
-        "general": "Free",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "fda-labeling", "fda-ingredient", "aphis-packaging"],
         "leverIds": ["usmca", "origin", "drawback"]
       },
       {
         "hts": "1302.32.00.20",
-        "description": "Guar",
-        "ancestorPath": [
-          "Vegetable saps and extracts; pectic substances, pectinates and pectates; agar-agar and other mucilages and thickeners, whether or not modified, derived from vegetable products",
-          "Mucilages and thickeners, whether or not modified, derived from vegetable products",
-          "Mucilages and thickeners, whether or not modified, derived from locust beans, locust bean seeds or guar seeds"
-        ],
-        "searchText": "vegetable saps and extracts; pectic substances, pectinates and pectates; agar-agar and other mucilages and thickeners, whether or not modified, derived from vegetable products mucilages and thickeners, whether or not modified, derived from vegetable products mucilages and thickeners, whether or not modified, derived from locust beans, locust bean seeds or guar seeds guar 1302.32.00.20",
-        "heading": "1302",
-        "general": "Free",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "fda-labeling", "fda-ingredient", "aphis-packaging"],
         "leverIds": ["usmca", "origin", "drawback"]
       },
       {
         "hts": "1302.32.00.40",
-        "description": "Locust bean",
-        "ancestorPath": [
-          "Vegetable saps and extracts; pectic substances, pectinates and pectates; agar-agar and other mucilages and thickeners, whether or not modified, derived from vegetable products",
-          "Mucilages and thickeners, whether or not modified, derived from vegetable products",
-          "Mucilages and thickeners, whether or not modified, derived from locust beans, locust bean seeds or guar seeds"
-        ],
-        "searchText": "vegetable saps and extracts; pectic substances, pectinates and pectates; agar-agar and other mucilages and thickeners, whether or not modified, derived from vegetable products mucilages and thickeners, whether or not modified, derived from vegetable products mucilages and thickeners, whether or not modified, derived from locust beans, locust bean seeds or guar seeds locust bean 1302.32.00.40",
-        "heading": "1302",
-        "general": "Free",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "fda-labeling", "fda-ingredient", "aphis-packaging"],
         "leverIds": ["usmca", "origin", "drawback"]
       },
       {
         "hts": "1302.39.00.10",
-        "description": "Carrageenan",
-        "ancestorPath": [
-          "Vegetable saps and extracts; pectic substances, pectinates and pectates; agar-agar and other mucilages and thickeners, whether or not modified, derived from vegetable products",
-          "Mucilages and thickeners, whether or not modified, derived from vegetable products",
-          "Other"
-        ],
-        "searchText": "vegetable saps and extracts; pectic substances, pectinates and pectates; agar-agar and other mucilages and thickeners, whether or not modified, derived from vegetable products mucilages and thickeners, whether or not modified, derived from vegetable products other carrageenan 1302.39.00.10",
-        "heading": "1302",
-        "general": "3.2%",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "fda-labeling", "fda-ingredient", "aphis-packaging"],
         "leverIds": ["usmca", "fta", "origin", "ruling", "drawback"]
       },
       {
         "hts": "1302.39.00.90",
-        "description": "Other",
-        "ancestorPath": [
-          "Vegetable saps and extracts; pectic substances, pectinates and pectates; agar-agar and other mucilages and thickeners, whether or not modified, derived from vegetable products",
-          "Mucilages and thickeners, whether or not modified, derived from vegetable products",
-          "Other"
-        ],
-        "searchText": "vegetable saps and extracts; pectic substances, pectinates and pectates; agar-agar and other mucilages and thickeners, whether or not modified, derived from vegetable products mucilages and thickeners, whether or not modified, derived from vegetable products other other 1302.39.00.90",
-        "heading": "1302",
-        "general": "3.2%",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "fda-labeling", "aphis-packaging"],
         "leverIds": ["usmca", "fta", "origin", "ruling", "drawback"]
       }
