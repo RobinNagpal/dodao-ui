@@ -283,14 +283,31 @@ async function main(): Promise<void> {
   const charging = chapterMeasures.filter((m) => m.rateKind !== 'relief' && (m.ratePct ?? 0) > 0 && inEffectOn(m, asOf));
   const chargingLive = charging.filter((m) => lines.some((l) => measureChargesLine(m, l.htsCode10 as string, chapterMeasures, asOf)));
   const extraLines = lines.filter((l) => chargingLive.some((m) => measureChargesLine(m, l.htsCode10 as string, chapterMeasures, asOf)));
-  const usmcaRelief = chapterMeasures.some((m) => m.rateKind === 'relief' && m.conditions?.usmcaQualifying === true && inEffectOn(m, asOf));
+  // USMCA relief is worth mentioning only when it displaces a duty that actually charges lines here.
+  const usmcaRelief = chapterMeasures.some(
+    (r) =>
+      r.rateKind === 'relief' && r.conditions?.usmcaQualifying === true && inEffectOn(r, asOf) && chargingLive.some((m) => r.replacesCodes.includes(m.ch99Code))
+  );
+  // Per program, how many lines it charges ("Section 301: 163"), so a China-only list reaching every line
+  // doesn't hide a broad exemption from the newer duties.
+  const programLines = new Map<string, Set<string>>();
+  for (const m of chargingLive) {
+    const key = m.program;
+    const set = programLines.get(key) ?? new Set<string>();
+    for (const l of lines) if (measureChargesLine(m, l.htsCode10 as string, chapterMeasures, asOf)) set.add(l.htsCode10 as string);
+    programLines.set(key, set);
+  }
   const stats: TariffStat[] = [
     { label: 'Tariff lines', value: String(lines.length) },
     { label: 'Lines with a base-rate duty', value: `${lines.filter((l) => l.dutiable).length} of ${lines.length}` },
     {
       label: 'Lines with an extra duty for some origins',
       value: `${extraLines.length} of ${lines.length}`,
-      note: `${Array.from(new Set(chargingLive.map((m) => programShort(m.program)))).join(', ') || 'none'}${usmcaRelief ? '; USMCA goods exempt' : ''}`,
+      note: `${
+        Array.from(programLines.entries())
+          .map(([program, set]) => `${program}: ${set.size}`)
+          .join(', ') || 'none'
+      }${usmcaRelief ? '; USMCA goods exempt' : ''}`,
     },
   ];
   if (trade?.year && trade.totalUsd) {
