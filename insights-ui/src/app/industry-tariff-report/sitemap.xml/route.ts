@@ -40,7 +40,13 @@ async function generateTariffReportUrls(): Promise<SiteMapUrl[]> {
     // Delayed by 7 days: tariff section saves are tag-only at CloudFront now
     // (see tariff-report-cache-utils.ts), so the edge can serve up to 6-day-old
     // content — never advertise an update before every edge cache serves it.
-    const lastmod = delayedSitemapLastmod(row.updatedAt, row.createdAt);
+    // Approach-2 chapters (issue #1770) render from a content file, not the DB row, so the row's
+    // updatedAt goes stale. Their file's lastCheckedAt is safe to advertise as-is: shipping a
+    // content file is a deploy, and each migration flushes the chapter's CloudFront paths.
+    const prototype = getChapterPrototype(row.slug);
+    const dbLastmod = delayedSitemapLastmod(row.updatedAt, row.createdAt);
+    const fileLastmod = prototype?.tariffUpdates?.lastCheckedAt;
+    const lastmod = fileLastmod && (!dbLastmod || fileLastmod > dbLastmod) ? fileLastmod : dbLastmod;
     const chapterPath = `/industry-tariff-report/chapters/${row.slug}`;
     urls.push({ url: chapterPath, changefreq: 'weekly', priority: 0.8, lastmod });
     for (const section of REPORT_SECTIONS) {
@@ -49,7 +55,6 @@ async function generateTariffReportUrls(): Promise<SiteMapUrl[]> {
     // Tariff Engineering is only seeded for a subset of chapters — include the URL only when the
     // JSONB column has content so we don't advertise placeholder section pages in the sitemap.
     // Approach-2 chapters (issue #1770) render from a content file, which can carry a page the DB row lacks.
-    const prototype = getChapterPrototype(row.slug);
     if (row.tariffEngineering !== null || prototype?.tariffEngineering) {
       urls.push({ url: `${chapterPath}/tariff-engineering`, changefreq: 'weekly', priority: 0.7, lastmod });
     }
