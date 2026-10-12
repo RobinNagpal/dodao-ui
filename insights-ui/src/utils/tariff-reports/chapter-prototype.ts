@@ -54,8 +54,17 @@ const CHAPTER_FILES: Record<string, () => Promise<{ default: unknown }>> = {
   '25-salt-sulfur-and-cements': () => import('@/tariff-data/chapters/25-salt-sulfur-and-cements.json'),
   '26-ores-slag-and-ash': () => import('@/tariff-data/chapters/26-ores-slag-and-ash.json'),
   '27-mineral-fuels-and-oils': () => import('@/tariff-data/chapters/27-mineral-fuels-and-oils.json'),
+  '28-inorganic-and-metal-compounds': () => import('@/tariff-data/chapters/28-inorganic-and-metal-compounds.json'),
+  '29-organic-chemicals': () => import('@/tariff-data/chapters/29-organic-chemicals.json'),
   '30-pharmaceutical-products': () => import('@/tariff-data/chapters/30-pharmaceutical-products.json'),
   '31-fertilizers': () => import('@/tariff-data/chapters/31-fertilizers.json'),
+  '32-dyes-pigments-and-paints': () => import('@/tariff-data/chapters/32-dyes-pigments-and-paints.json'),
+  '33-essential-oils-and-cosmetics': () => import('@/tariff-data/chapters/33-essential-oils-and-cosmetics.json'),
+  '34-soaps-waxes-and-preparations': () => import('@/tariff-data/chapters/34-soaps-waxes-and-preparations.json'),
+  '35-albuminoidal-substances-and-glues': () => import('@/tariff-data/chapters/35-albuminoidal-substances-and-glues.json'),
+  '36-explosives-and-pyrotechnics': () => import('@/tariff-data/chapters/36-explosives-and-pyrotechnics.json'),
+  '38-misc-chemical-products': () => import('@/tariff-data/chapters/38-misc-chemical-products.json'),
+  '72-iron-and-steel': () => import('@/tariff-data/chapters/72-iron-and-steel.json'),
 };
 
 /**
