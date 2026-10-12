@@ -93,10 +93,13 @@ function rateText(ms: TariffMeasureRecord[], stacked: boolean): string {
 }
 
 /** Stacked measures differ by line (e.g. China List 3 and List 4A cover different subheadings): the per-line totals, most lines first. */
-function perLineRate(ms: TariffMeasureRecord[], lines: TariffRateTableRow[]): string {
+function perLineRate(ms: TariffMeasureRecord[], lines: TariffRateTableRow[], all: TariffMeasureRecord[], day: string): string {
   const counts = new Map<string, number>();
   for (const l of lines) {
-    const reached = ms.filter((m) => measureReachesLine(m, l.htsCode10 as string));
+    // Only measures that actually charge the line (unconditional reliefs applied), minus any displaced by
+    // another charging measure on the same line (e.g. the 2024 review rates replace the List 3 rate).
+    const charging = ms.filter((m) => measureChargesLine(m, l.htsCode10 as string, all, day));
+    const reached = charging.filter((m) => !charging.some((o) => o !== m && o.replacesCodes.includes(m.ch99Code)));
     if (reached.length === 0) continue;
     const t = rateText(reached, true);
     counts.set(t, (counts.get(t) ?? 0) + 1);
@@ -172,8 +175,8 @@ function inEffectEntries(input: TariffUpdatesInput): TariffExtraDutyInEffect[] {
         country,
         measure: Array.from(new Set(ms.map((m) => m.program))).join(' + '),
         ch99Code: codeList(ms.map((m) => m.ch99Code)),
-        before: stacked ? perLineRate(beforeMs, lines) : rateText(beforeMs, false),
-        now: stacked ? perLineRate(ms, lines) : rateText(ms, false),
+        before: stacked ? perLineRate(beforeMs, lines, measures, beforeDay) : rateText(beforeMs, false),
+        now: stacked ? perLineRate(ms, lines, measures, asOf) : rateText(ms, false),
         exemption: todo(`exemptions, exception lists and ended duties for this entry.${draft ? ` Data: ${draft}` : ''}`),
         whatItMeans: TODO,
         effectiveFrom: latest.effectiveFrom.slice(0, 10),

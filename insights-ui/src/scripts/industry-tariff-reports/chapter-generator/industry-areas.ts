@@ -201,7 +201,22 @@ function ruleFor(
   const claims = Array.from(claimsUsed).filter((c) => !USMCA_SPI_CODES.includes(c));
   const claimText = claims.length > 0 ? ` Preference applied where the line offers it: ${claims.join(', ')}.` : '';
   let label: string;
-  if (isUsmca) label = `USMCA-qualifying: no extra duty${relief ? ` (${relief.ch99Code})` : ''}. Otherwise ${otherwise}.`;
+  // Duties a USMCA claim does not remove (e.g. Section 338 on Canada applies to USMCA goods too).
+  const usmcaRelieves = (m: TariffMeasureRecord): boolean =>
+    m.conditions?.usmcaQualifying === false ||
+    measures.some(
+      (r) =>
+        r.rateKind === 'relief' &&
+        r.conditions?.usmcaQualifying === true &&
+        countryInScope(r, iso) &&
+        inEffectOn(r, asOf) &&
+        r.replacesCodes.includes(m.ch99Code)
+    );
+  const stillCharged = isUsmca ? charged.filter((m) => !usmcaRelieves(m)) : [];
+  if (isUsmca)
+    label = `USMCA-qualifying: ${stillCharged.length > 0 ? `base rate ${stillCharged.map(describe).join(' ')}` : 'no extra duty'}${
+      relief ? ` (${relief.ch99Code} removes ${main.ch99Code})` : ''
+    }. Otherwise ${otherwise}.`;
   else label = `${cap(otherwise)}.${claimText}`;
   return {
     kind: isUsmca ? 'usmca' : main && main.rateKind !== 'additive' ? 'eu15' : 'additive',
