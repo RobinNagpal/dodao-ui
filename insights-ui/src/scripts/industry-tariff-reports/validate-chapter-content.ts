@@ -66,6 +66,9 @@ export const OFFICIAL_SOURCE_DOMAINS: readonly string[] = [
   'fws.gov', // Fish and Wildlife Service
   'state.gov', // shrimp/sea-turtle certification (DS-2031)
   'treasury.gov', // OFAC sanctions and import bans
+  'irs.gov', // excise taxes collected at import (Form 720 / 6627)
+  'usgs.gov', // mineral commodity summaries
+  'nrc.gov', // import licensing for nuclear material
   'ttb.gov', // alcohol and tobacco permits
   'epa.gov',
   // U.S. courts
@@ -488,7 +491,13 @@ function checkCalculator(report: Report, slug: string, p: TariffChapterPrototype
                 ...(c.productType ? { productType: c.productType } : {}),
                 entryDate: ia.lastCheckedAt,
               };
-              const line: MeasureEngineLine = { hts10: row.htsCode10, general: row.effectiveGeneral, special: row.effectiveSpecial, units: row.units };
+              const line: MeasureEngineLine = {
+                hts10: row.htsCode10,
+                general: row.effectiveGeneral,
+                special: row.effectiveSpecial,
+                column2: row.effectiveColumn2,
+                units: row.units,
+              };
               stats.compared++;
               let actual: string;
               try {
