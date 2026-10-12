@@ -8,13 +8,22 @@ export interface HeaderWithAsideProps {
   aside?: React.ReactNode;
   /** Bottom border + padding under the header. Defaults to true. */
   bordered?: boolean;
+  /** Vertical alignment of the two sides on wider screens. Defaults to center. */
+  align?: 'center' | 'start';
   className?: string;
 }
 
 /** Page header with a prominent item (e.g. a balance) beside the title instead of on its own row. */
-export default function HeaderWithAside({ children, aside, bordered = true, className }: HeaderWithAsideProps): React.JSX.Element {
+export default function HeaderWithAside({ children, aside, bordered = true, align = 'center', className }: HeaderWithAsideProps): React.JSX.Element {
   return (
-    <header className={cn('flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between sm:gap-8', bordered && 'border-b border-border pb-6', className)}>
+    <header
+      className={cn(
+        'flex flex-col gap-4 sm:flex-row sm:justify-between sm:gap-8',
+        align === 'start' ? 'sm:items-start' : 'sm:items-center',
+        bordered && 'border-b border-border pb-6',
+        className
+      )}
+    >
       <div className="min-w-0 flex-1">{children}</div>
       {aside && <div className="shrink-0">{aside}</div>}
     </header>
