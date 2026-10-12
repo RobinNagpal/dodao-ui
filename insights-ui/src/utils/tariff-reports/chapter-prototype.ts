@@ -67,7 +67,11 @@ const CHAPTER_FILES: Record<string, () => Promise<{ default: unknown }>> = {
   '35-albuminoidal-substances-and-glues': () => import('@/tariff-data/chapters/35-albuminoidal-substances-and-glues.json'),
   '36-explosives-and-pyrotechnics': () => import('@/tariff-data/chapters/36-explosives-and-pyrotechnics.json'),
   '38-misc-chemical-products': () => import('@/tariff-data/chapters/38-misc-chemical-products.json'),
+  '44-wood-and-charcoal': () => import('@/tariff-data/chapters/44-wood-and-charcoal.json'),
   '72-iron-and-steel': () => import('@/tariff-data/chapters/72-iron-and-steel.json'),
+  '73-articles-of-iron-steel': () => import('@/tariff-data/chapters/73-articles-of-iron-steel.json'),
+  '76-aluminum-and-articles': () => import('@/tariff-data/chapters/76-aluminum-and-articles.json'),
+  '87-motor-vehicles-and-parts': () => import('@/tariff-data/chapters/87-motor-vehicles-and-parts.json'),
 };
 
 /**
