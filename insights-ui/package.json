@@ -27,6 +27,7 @@
     "logs:fetch": "tsx src/scripts/logs/fetch-grafana-logs.ts",
     "tariff:validate-chapters": "tsx src/scripts/industry-tariff-reports/validate-chapter-content.ts",
     "tariff:generate-chapter": "tsx src/scripts/industry-tariff-reports/chapter-generator/generate-chapter.ts",
+    "tariff:compact-chapters": "tsx src/scripts/industry-tariff-reports/compact-chapter-content.ts",
     "tariff:fetch-trade": "tsx src/scripts/industry-tariff-reports/chapter-generator/fetch-trade.ts",
     "tariff:build-ch99": "tsx src/scripts/tariff-calculator/build-ch99-headings.ts",
     "tariff:build-fta-quota": "tsx src/scripts/tariff-calculator/build-fta-quota-headings.ts",

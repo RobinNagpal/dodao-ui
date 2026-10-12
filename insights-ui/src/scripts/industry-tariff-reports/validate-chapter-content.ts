@@ -1,10 +1,15 @@
 import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs';
 import path from 'node:path';
 import type { MeasureEngineInput, MeasureEngineLine, TariffMeasuresFile, TariffProductType } from '@/types/tariff-calculator-measures';
-import type { TariffChapterPrototype, TariffEditionRef } from '@/types/tariff-chapter-prototype';
+import type { StoredTariffChapterPrototype, TariffChapterPrototype, TariffEditionRef } from '@/types/tariff-chapter-prototype';
 import type { TariffChapterExports } from '@/types/tariff-chapter-exports';
 import { getChapterExports, listChapterExportSlugs } from '@/utils/tariff-reports/chapter-exports';
-import { getChapterPrototype, listChapterPrototypeSlugs } from '@/utils/tariff-reports/chapter-prototype';
+import {
+  getStoredChapterPrototype,
+  listChapterPrototypeSlugs,
+  normalizeChapterPrototype,
+  storedDerivedFieldMismatches,
+} from '@/utils/tariff-reports/chapter-prototype';
 import { countryCodeForName, parseRateVariants, quantityUnits, rateDollars } from '@/utils/tariff-reports/shipment-duty';
 import { calculateWithMeasures, CONTENT_VALUE_REQUIRED, FACT_ANSWER_REQUIRED, normalizeUom, rateUoms } from '@/utils/tariff-calculator/measures-engine';
 import { computeCalcReadiness, enabledChapterProblems } from '../tariff-calculator/lib/calc-readiness';
@@ -659,7 +664,7 @@ async function main(): Promise<void> {
   const prototypeSlugs = listChapterPrototypeSlugs();
   const exportSlugs = listChapterExportSlugs();
   // --file: one content file from disk (registered or not), validated under its own chapter.slug.
-  const fromFile: TariffChapterPrototype | null = file ? (JSON.parse(readFileSync(path.resolve(file), 'utf8')) as TariffChapterPrototype) : null;
+  const fromFile: StoredTariffChapterPrototype | null = file ? (JSON.parse(readFileSync(path.resolve(file), 'utf8')) as StoredTariffChapterPrototype) : null;
   const slugs = fromFile ? [fromFile.chapter.slug] : [...new Set([...prototypeSlugs, ...exportSlugs])].filter((s) => !only || s === only);
   if (only && !fromFile && slugs.length === 0) {
     console.error(`No registered chapter "${only}". Registered: ${prototypeSlugs.join(', ')}`);
@@ -707,9 +712,13 @@ async function main(): Promise<void> {
 
   for (const slug of slugs) {
     const report = new Report();
-    const prototype = fromFile ?? getChapterPrototype(slug);
+    const stored = fromFile ?? (await getStoredChapterPrototype(slug));
     const exportsContent = fromFile ? null : getChapterExports(slug);
-    if (prototype) {
+    if (stored) {
+      // Files may still store the derived per-line fields (pre-split shape, accepted for one release);
+      // the page shows the derived value, so a stored copy that disagrees is an error.
+      for (const problem of storedDerivedFieldMismatches(stored)) report.error(slug, problem);
+      const prototype: TariffChapterPrototype = normalizeChapterPrototype(stored);
       checkPrototype(report, opts, slug, prototype);
       if (opts.checkHts) await checkHtsEdition(report, `${slug}.tariffUpdates.now`, prototype.tariffUpdates?.now);
       if (measures) printCalculatorStats(slug, checkCalculator(report, slug, prototype, measures));

@@ -32,7 +32,7 @@ export async function renderExportPage<K extends ExportPageKey>(
   const { number, title, slug } = content.chapter;
   const chapter = { number, title, slug };
   // Approach-2 chapters build the tool links from their content file; DB-backed chapters look the HTS chapter up.
-  const prototype = getChapterPrototype(chapterSlug);
+  const prototype = await getChapterPrototype(chapterSlug);
   const toolsCrossLinks = prototype ? <PrototypeChapterToolLinks chapter={prototype.chapter} /> : await renderChapterToolsCrossLinks(chapter);
 
   return (

@@ -173,8 +173,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "2301",
-          "ancestorPath": [],
-          "searchText": "flours, meals and pellets, of meat or meat offal, of fish or of crustaceans, molluscs or other aquatic invertebrates, unfit for human consumption; greaves (cracklings): 2301"
+          "ancestorPath": []
         },
         {
           "id": "r1",
@@ -199,8 +198,7 @@
           "heading": "2301",
           "ancestorPath": [
             "Flours, meals and pellets, of meat or meat offal, of fish or of crustaceans, molluscs or other aquatic invertebrates, unfit for human consumption; greaves (cracklings)"
-          ],
-          "searchText": "flours, meals and pellets, of meat or meat offal, of fish or of crustaceans, molluscs or other aquatic invertebrates, unfit for human consumption; greaves (cracklings) flours, meals and pellets, of meat or meat offal; greaves (cracklings) 2301.10.00.00"
+          ]
         },
         {
           "id": "r2",
@@ -225,8 +223,7 @@
           "heading": "2301",
           "ancestorPath": [
             "Flours, meals and pellets, of meat or meat offal, of fish or of crustaceans, molluscs or other aquatic invertebrates, unfit for human consumption; greaves (cracklings)"
-          ],
-          "searchText": "flours, meals and pellets, of meat or meat offal, of fish or of crustaceans, molluscs or other aquatic invertebrates, unfit for human consumption; greaves (cracklings) flours, meals and pellets, of fish or of crustaceans, molluscs or other aquatic invertebrates 2301.20.00"
+          ]
         },
         {
           "id": "r3",
@@ -252,8 +249,7 @@
           "ancestorPath": [
             "Flours, meals and pellets, of meat or meat offal, of fish or of crustaceans, molluscs or other aquatic invertebrates, unfit for human consumption; greaves (cracklings)",
             "Flours, meals and pellets, of fish or of crustaceans, molluscs or other aquatic invertebrates"
-          ],
-          "searchText": "flours, meals and pellets, of meat or meat offal, of fish or of crustaceans, molluscs or other aquatic invertebrates, unfit for human consumption; greaves (cracklings) flours, meals and pellets, of fish or of crustaceans, molluscs or other aquatic invertebrates herring meal; pilchard meal 2301.20.00.10"
+          ]
         },
         {
           "id": "r4",
@@ -279,8 +275,7 @@
           "ancestorPath": [
             "Flours, meals and pellets, of meat or meat offal, of fish or of crustaceans, molluscs or other aquatic invertebrates, unfit for human consumption; greaves (cracklings)",
             "Flours, meals and pellets, of fish or of crustaceans, molluscs or other aquatic invertebrates"
-          ],
-          "searchText": "flours, meals and pellets, of meat or meat offal, of fish or of crustaceans, molluscs or other aquatic invertebrates, unfit for human consumption; greaves (cracklings) flours, meals and pellets, of fish or of crustaceans, molluscs or other aquatic invertebrates other 2301.20.00.90"
+          ]
         },
         {
           "id": "r5",
@@ -303,8 +298,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "2302",
-          "ancestorPath": [],
-          "searchText": "bran, sharps (middlings) and other residues, whether or not in the form of pellets, derived from the sifting, milling or other working of cereals or of leguminous plants: 2302"
+          "ancestorPath": []
         },
         {
           "id": "r6",
@@ -329,8 +323,7 @@
           "heading": "2302",
           "ancestorPath": [
             "Bran, sharps (middlings) and other residues, whether or not in the form of pellets, derived from the sifting, milling or other working of cereals or of leguminous plants"
-          ],
-          "searchText": "bran, sharps (middlings) and other residues, whether or not in the form of pellets, derived from the sifting, milling or other working of cereals or of leguminous plants of corn (maize) 2302.10.00.00"
+          ]
         },
         {
           "id": "r7",
@@ -355,8 +348,7 @@
           "heading": "2302",
           "ancestorPath": [
             "Bran, sharps (middlings) and other residues, whether or not in the form of pellets, derived from the sifting, milling or other working of cereals or of leguminous plants"
-          ],
-          "searchText": "bran, sharps (middlings) and other residues, whether or not in the form of pellets, derived from the sifting, milling or other working of cereals or of leguminous plants of wheat 2302.30.00"
+          ]
         },
         {
           "id": "r8",
@@ -382,8 +374,7 @@
           "ancestorPath": [
             "Bran, sharps (middlings) and other residues, whether or not in the form of pellets, derived from the sifting, milling or other working of cereals or of leguminous plants",
             "Of wheat"
-          ],
-          "searchText": "bran, sharps (middlings) and other residues, whether or not in the form of pellets, derived from the sifting, milling or other working of cereals or of leguminous plants of wheat bran, shorts and middlings 2302.30.00.10"
+          ]
         },
         {
           "id": "r9",
@@ -409,8 +400,7 @@
           "ancestorPath": [
             "Bran, sharps (middlings) and other residues, whether or not in the form of pellets, derived from the sifting, milling or other working of cereals or of leguminous plants",
             "Of wheat"
-          ],
-          "searchText": "bran, sharps (middlings) and other residues, whether or not in the form of pellets, derived from the sifting, milling or other working of cereals or of leguminous plants of wheat other 2302.30.00.90"
+          ]
         },
         {
           "id": "r10",
@@ -435,8 +425,7 @@
           "heading": "2302",
           "ancestorPath": [
             "Bran, sharps (middlings) and other residues, whether or not in the form of pellets, derived from the sifting, milling or other working of cereals or of leguminous plants"
-          ],
-          "searchText": "bran, sharps (middlings) and other residues, whether or not in the form of pellets, derived from the sifting, milling or other working of cereals or of leguminous plants of other cereals 2302.40.01"
+          ]
         },
         {
           "id": "r11",
@@ -462,8 +451,7 @@
           "ancestorPath": [
             "Bran, sharps (middlings) and other residues, whether or not in the form of pellets, derived from the sifting, milling or other working of cereals or of leguminous plants",
             "Of other cereals"
-          ],
-          "searchText": "bran, sharps (middlings) and other residues, whether or not in the form of pellets, derived from the sifting, milling or other working of cereals or of leguminous plants of other cereals of rice 2302.40.01.05"
+          ]
         },
         {
           "id": "r12",
@@ -489,8 +477,7 @@
           "ancestorPath": [
             "Bran, sharps (middlings) and other residues, whether or not in the form of pellets, derived from the sifting, milling or other working of cereals or of leguminous plants",
             "Of other cereals"
-          ],
-          "searchText": "bran, sharps (middlings) and other residues, whether or not in the form of pellets, derived from the sifting, milling or other working of cereals or of leguminous plants of other cereals of other single cereal grains, chopped, crushed or ground 2302.40.01.10"
+          ]
         },
         {
           "id": "r13",
@@ -516,8 +503,7 @@
           "ancestorPath": [
             "Bran, sharps (middlings) and other residues, whether or not in the form of pellets, derived from the sifting, milling or other working of cereals or of leguminous plants",
             "Of other cereals"
-          ],
-          "searchText": "bran, sharps (middlings) and other residues, whether or not in the form of pellets, derived from the sifting, milling or other working of cereals or of leguminous plants of other cereals other: "
+          ]
         },
         {
           "id": "r14",
@@ -544,8 +530,7 @@
             "Bran, sharps (middlings) and other residues, whether or not in the form of pellets, derived from the sifting, milling or other working of cereals or of leguminous plants",
             "Of other cereals",
             "Other"
-          ],
-          "searchText": "bran, sharps (middlings) and other residues, whether or not in the form of pellets, derived from the sifting, milling or other working of cereals or of leguminous plants of other cereals other pelletized screenings (clearings) 2302.40.01.20"
+          ]
         },
         {
           "id": "r15",
@@ -572,8 +557,7 @@
             "Bran, sharps (middlings) and other residues, whether or not in the form of pellets, derived from the sifting, milling or other working of cereals or of leguminous plants",
             "Of other cereals",
             "Other"
-          ],
-          "searchText": "bran, sharps (middlings) and other residues, whether or not in the form of pellets, derived from the sifting, milling or other working of cereals or of leguminous plants of other cereals other other 2302.40.01.90"
+          ]
         },
         {
           "id": "r16",
@@ -598,8 +582,7 @@
           "heading": "2302",
           "ancestorPath": [
             "Bran, sharps (middlings) and other residues, whether or not in the form of pellets, derived from the sifting, milling or other working of cereals or of leguminous plants"
-          ],
-          "searchText": "bran, sharps (middlings) and other residues, whether or not in the form of pellets, derived from the sifting, milling or other working of cereals or of leguminous plants of leguminous plants 2302.50.00.00"
+          ]
         },
         {
           "id": "r17",
@@ -622,8 +605,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "2303",
-          "ancestorPath": [],
-          "searchText": "residues of starch manufacture and similar residues, beet-pulp, bagasse and other waste of sugar manufacture, brewing or distilling dregs and waste, whether or not in the form of pellets: 2303"
+          "ancestorPath": []
         },
         {
           "id": "r18",
@@ -648,8 +630,7 @@
           "heading": "2303",
           "ancestorPath": [
             "Residues of starch manufacture and similar residues, beet-pulp, bagasse and other waste of sugar manufacture, brewing or distilling dregs and waste, whether or not in the form of pellets"
-          ],
-          "searchText": "residues of starch manufacture and similar residues, beet-pulp, bagasse and other waste of sugar manufacture, brewing or distilling dregs and waste, whether or not in the form of pellets residues of starch manufacture and similar residues 2303.10.00"
+          ]
         },
         {
           "id": "r19",
@@ -675,8 +656,7 @@
           "ancestorPath": [
             "Residues of starch manufacture and similar residues, beet-pulp, bagasse and other waste of sugar manufacture, brewing or distilling dregs and waste, whether or not in the form of pellets",
             "Residues of starch manufacture and similar residues"
-          ],
-          "searchText": "residues of starch manufacture and similar residues, beet-pulp, bagasse and other waste of sugar manufacture, brewing or distilling dregs and waste, whether or not in the form of pellets residues of starch manufacture and similar residues corn gluten feed 2303.10.00.10"
+          ]
         },
         {
           "id": "r20",
@@ -702,8 +682,7 @@
           "ancestorPath": [
             "Residues of starch manufacture and similar residues, beet-pulp, bagasse and other waste of sugar manufacture, brewing or distilling dregs and waste, whether or not in the form of pellets",
             "Residues of starch manufacture and similar residues"
-          ],
-          "searchText": "residues of starch manufacture and similar residues, beet-pulp, bagasse and other waste of sugar manufacture, brewing or distilling dregs and waste, whether or not in the form of pellets residues of starch manufacture and similar residues corn gluten meal 2303.10.00.20"
+          ]
         },
         {
           "id": "r21",
@@ -729,8 +708,7 @@
           "ancestorPath": [
             "Residues of starch manufacture and similar residues, beet-pulp, bagasse and other waste of sugar manufacture, brewing or distilling dregs and waste, whether or not in the form of pellets",
             "Residues of starch manufacture and similar residues"
-          ],
-          "searchText": "residues of starch manufacture and similar residues, beet-pulp, bagasse and other waste of sugar manufacture, brewing or distilling dregs and waste, whether or not in the form of pellets residues of starch manufacture and similar residues other 2303.10.00.40"
+          ]
         },
         {
           "id": "r22",
@@ -755,8 +733,7 @@
           "heading": "2303",
           "ancestorPath": [
             "Residues of starch manufacture and similar residues, beet-pulp, bagasse and other waste of sugar manufacture, brewing or distilling dregs and waste, whether or not in the form of pellets"
-          ],
-          "searchText": "residues of starch manufacture and similar residues, beet-pulp, bagasse and other waste of sugar manufacture, brewing or distilling dregs and waste, whether or not in the form of pellets beet-pulp, bagasse and other waste of sugar manufacture 2303.20.00"
+          ]
         },
         {
           "id": "r23",
@@ -782,8 +759,7 @@
           "ancestorPath": [
             "Residues of starch manufacture and similar residues, beet-pulp, bagasse and other waste of sugar manufacture, brewing or distilling dregs and waste, whether or not in the form of pellets",
             "Beet-pulp, bagasse and other waste of sugar manufacture"
-          ],
-          "searchText": "residues of starch manufacture and similar residues, beet-pulp, bagasse and other waste of sugar manufacture, brewing or distilling dregs and waste, whether or not in the form of pellets beet-pulp, bagasse and other waste of sugar manufacture dried beet-pulp 2303.20.00.20"
+          ]
         },
         {
           "id": "r24",
@@ -809,8 +785,7 @@
           "ancestorPath": [
             "Residues of starch manufacture and similar residues, beet-pulp, bagasse and other waste of sugar manufacture, brewing or distilling dregs and waste, whether or not in the form of pellets",
             "Beet-pulp, bagasse and other waste of sugar manufacture"
-          ],
-          "searchText": "residues of starch manufacture and similar residues, beet-pulp, bagasse and other waste of sugar manufacture, brewing or distilling dregs and waste, whether or not in the form of pellets beet-pulp, bagasse and other waste of sugar manufacture other 2303.20.00.40"
+          ]
         },
         {
           "id": "r25",
@@ -835,8 +810,7 @@
           "heading": "2303",
           "ancestorPath": [
             "Residues of starch manufacture and similar residues, beet-pulp, bagasse and other waste of sugar manufacture, brewing or distilling dregs and waste, whether or not in the form of pellets"
-          ],
-          "searchText": "residues of starch manufacture and similar residues, beet-pulp, bagasse and other waste of sugar manufacture, brewing or distilling dregs and waste, whether or not in the form of pellets brewing or distilling dregs and waste 2303.30.00.00"
+          ]
         },
         {
           "id": "r26",
@@ -859,8 +833,7 @@
           "column2InheritedFrom": null,
           "dutiable": true,
           "heading": "2304",
-          "ancestorPath": [],
-          "searchText": "oilcake and other solid residues, whether or not ground or in the form of pellets, resulting from the extraction of soybean oil 2304.00.00"
+          "ancestorPath": []
         },
         {
           "id": "r27",
@@ -883,8 +856,7 @@
           "column2InheritedFrom": "2304.00.00",
           "dutiable": true,
           "heading": "2304",
-          "ancestorPath": ["Oilcake and other solid residues, whether or not ground or in the form of pellets, resulting from the extraction of soybean oil"],
-          "searchText": "oilcake and other solid residues, whether or not ground or in the form of pellets, resulting from the extraction of soybean oil certified organic 2304.00.00.10"
+          "ancestorPath": ["Oilcake and other solid residues, whether or not ground or in the form of pellets, resulting from the extraction of soybean oil"]
         },
         {
           "id": "r28",
@@ -907,8 +879,7 @@
           "column2InheritedFrom": "2304.00.00",
           "dutiable": true,
           "heading": "2304",
-          "ancestorPath": ["Oilcake and other solid residues, whether or not ground or in the form of pellets, resulting from the extraction of soybean oil"],
-          "searchText": "oilcake and other solid residues, whether or not ground or in the form of pellets, resulting from the extraction of soybean oil other 2304.00.00.90"
+          "ancestorPath": ["Oilcake and other solid residues, whether or not ground or in the form of pellets, resulting from the extraction of soybean oil"]
         },
         {
           "id": "r29",
@@ -931,8 +902,7 @@
           "column2InheritedFrom": null,
           "dutiable": true,
           "heading": "2305",
-          "ancestorPath": [],
-          "searchText": "oilcake and other solid residues, whether or not ground or in the form of pellets, resulting from the extraction of peanut (ground-nut) oil 2305.00.00.00"
+          "ancestorPath": []
         },
         {
           "id": "r30",
@@ -955,8 +925,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "2306",
-          "ancestorPath": [],
-          "searchText": "oilcake and other solid residues, whether or not ground or in the form of pellets, resulting from the extraction of vegetable or microbial fats or oils, other than those of heading 2304 or 2305: 2306"
+          "ancestorPath": []
         },
         {
           "id": "r31",
@@ -981,8 +950,7 @@
           "heading": "2306",
           "ancestorPath": [
             "Oilcake and other solid residues, whether or not ground or in the form of pellets, resulting from the extraction of vegetable or microbial fats or oils, other than those of heading 2304 or 2305"
-          ],
-          "searchText": "oilcake and other solid residues, whether or not ground or in the form of pellets, resulting from the extraction of vegetable or microbial fats or oils, other than those of heading 2304 or 2305 of cotton seeds 2306.10.00.00"
+          ]
         },
         {
           "id": "r32",
@@ -1007,8 +975,7 @@
           "heading": "2306",
           "ancestorPath": [
             "Oilcake and other solid residues, whether or not ground or in the form of pellets, resulting from the extraction of vegetable or microbial fats or oils, other than those of heading 2304 or 2305"
-          ],
-          "searchText": "oilcake and other solid residues, whether or not ground or in the form of pellets, resulting from the extraction of vegetable or microbial fats or oils, other than those of heading 2304 or 2305 of linseed 2306.20.00.00"
+          ]
         },
         {
           "id": "r33",
@@ -1033,8 +1000,7 @@
           "heading": "2306",
           "ancestorPath": [
             "Oilcake and other solid residues, whether or not ground or in the form of pellets, resulting from the extraction of vegetable or microbial fats or oils, other than those of heading 2304 or 2305"
-          ],
-          "searchText": "oilcake and other solid residues, whether or not ground or in the form of pellets, resulting from the extraction of vegetable or microbial fats or oils, other than those of heading 2304 or 2305 of sunflower seeds 2306.30.00.00"
+          ]
         },
         {
           "id": "r34",
@@ -1059,8 +1025,7 @@
           "heading": "2306",
           "ancestorPath": [
             "Oilcake and other solid residues, whether or not ground or in the form of pellets, resulting from the extraction of vegetable or microbial fats or oils, other than those of heading 2304 or 2305"
-          ],
-          "searchText": "oilcake and other solid residues, whether or not ground or in the form of pellets, resulting from the extraction of vegetable or microbial fats or oils, other than those of heading 2304 or 2305 of rape or colza seeds: "
+          ]
         },
         {
           "id": "r35",
@@ -1086,8 +1051,7 @@
           "ancestorPath": [
             "Oilcake and other solid residues, whether or not ground or in the form of pellets, resulting from the extraction of vegetable or microbial fats or oils, other than those of heading 2304 or 2305",
             "Of rape or colza seeds"
-          ],
-          "searchText": "oilcake and other solid residues, whether or not ground or in the form of pellets, resulting from the extraction of vegetable or microbial fats or oils, other than those of heading 2304 or 2305 of rape or colza seeds of low euricic acid rape or colza seeds 2306.41.00.00"
+          ]
         },
         {
           "id": "r36",
@@ -1113,8 +1077,7 @@
           "ancestorPath": [
             "Oilcake and other solid residues, whether or not ground or in the form of pellets, resulting from the extraction of vegetable or microbial fats or oils, other than those of heading 2304 or 2305",
             "Of rape or colza seeds"
-          ],
-          "searchText": "oilcake and other solid residues, whether or not ground or in the form of pellets, resulting from the extraction of vegetable or microbial fats or oils, other than those of heading 2304 or 2305 of rape or colza seeds other 2306.49.00.00"
+          ]
         },
         {
           "id": "r37",
@@ -1139,8 +1102,7 @@
           "heading": "2306",
           "ancestorPath": [
             "Oilcake and other solid residues, whether or not ground or in the form of pellets, resulting from the extraction of vegetable or microbial fats or oils, other than those of heading 2304 or 2305"
-          ],
-          "searchText": "oilcake and other solid residues, whether or not ground or in the form of pellets, resulting from the extraction of vegetable or microbial fats or oils, other than those of heading 2304 or 2305 of coconut or copra 2306.50.00.00"
+          ]
         },
         {
           "id": "r38",
@@ -1165,8 +1127,7 @@
           "heading": "2306",
           "ancestorPath": [
             "Oilcake and other solid residues, whether or not ground or in the form of pellets, resulting from the extraction of vegetable or microbial fats or oils, other than those of heading 2304 or 2305"
-          ],
-          "searchText": "oilcake and other solid residues, whether or not ground or in the form of pellets, resulting from the extraction of vegetable or microbial fats or oils, other than those of heading 2304 or 2305 of palm nuts or kernels 2306.60.00.00"
+          ]
         },
         {
           "id": "r39",
@@ -1191,8 +1152,7 @@
           "heading": "2306",
           "ancestorPath": [
             "Oilcake and other solid residues, whether or not ground or in the form of pellets, resulting from the extraction of vegetable or microbial fats or oils, other than those of heading 2304 or 2305"
-          ],
-          "searchText": "oilcake and other solid residues, whether or not ground or in the form of pellets, resulting from the extraction of vegetable or microbial fats or oils, other than those of heading 2304 or 2305 other 2306.90.01"
+          ]
         },
         {
           "id": "r40",
@@ -1218,8 +1178,7 @@
           "ancestorPath": [
             "Oilcake and other solid residues, whether or not ground or in the form of pellets, resulting from the extraction of vegetable or microbial fats or oils, other than those of heading 2304 or 2305",
             "Other"
-          ],
-          "searchText": "oilcake and other solid residues, whether or not ground or in the form of pellets, resulting from the extraction of vegetable or microbial fats or oils, other than those of heading 2304 or 2305 other of corn 2306.90.01.20"
+          ]
         },
         {
           "id": "r41",
@@ -1245,8 +1204,7 @@
           "ancestorPath": [
             "Oilcake and other solid residues, whether or not ground or in the form of pellets, resulting from the extraction of vegetable or microbial fats or oils, other than those of heading 2304 or 2305",
             "Other"
-          ],
-          "searchText": "oilcake and other solid residues, whether or not ground or in the form of pellets, resulting from the extraction of vegetable or microbial fats or oils, other than those of heading 2304 or 2305 other of hemp seeds 2306.90.01.30"
+          ]
         },
         {
           "id": "r42",
@@ -1272,8 +1230,7 @@
           "ancestorPath": [
             "Oilcake and other solid residues, whether or not ground or in the form of pellets, resulting from the extraction of vegetable or microbial fats or oils, other than those of heading 2304 or 2305",
             "Other"
-          ],
-          "searchText": "oilcake and other solid residues, whether or not ground or in the form of pellets, resulting from the extraction of vegetable or microbial fats or oils, other than those of heading 2304 or 2305 other other 2306.90.01.50"
+          ]
         },
         {
           "id": "r43",
@@ -1296,8 +1253,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "2307",
-          "ancestorPath": [],
-          "searchText": "wine lees; argol 2307.00.00.00"
+          "ancestorPath": []
         },
         {
           "id": "r44",
@@ -1320,8 +1276,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "2308",
-          "ancestorPath": [],
-          "searchText": "vegetable materials and vegetable waste, vegetable residues and byproducts, whether or not in the form of pellets, of a kind used in animal feeding, not elsewhere specified or included: 2308.00"
+          "ancestorPath": []
         },
         {
           "id": "r45",
@@ -1346,8 +1301,7 @@
           "heading": "2308",
           "ancestorPath": [
             "Vegetable materials and vegetable waste, vegetable residues and byproducts, whether or not in the form of pellets, of a kind used in animal feeding, not elsewhere specified or included"
-          ],
-          "searchText": "vegetable materials and vegetable waste, vegetable residues and byproducts, whether or not in the form of pellets, of a kind used in animal feeding, not elsewhere specified or included acorns and horse-chestnuts 2308.00.10.00"
+          ]
         },
         {
           "id": "r46",
@@ -1372,8 +1326,7 @@
           "heading": "2308",
           "ancestorPath": [
             "Vegetable materials and vegetable waste, vegetable residues and byproducts, whether or not in the form of pellets, of a kind used in animal feeding, not elsewhere specified or included"
-          ],
-          "searchText": "vegetable materials and vegetable waste, vegetable residues and byproducts, whether or not in the form of pellets, of a kind used in animal feeding, not elsewhere specified or included screenings, scalpings, chaff or scourings, ground, or not ground, of flaxseed (linseed) 2308.00.93.00"
+          ]
         },
         {
           "id": "r47",
@@ -1398,8 +1351,7 @@
           "heading": "2308",
           "ancestorPath": [
             "Vegetable materials and vegetable waste, vegetable residues and byproducts, whether or not in the form of pellets, of a kind used in animal feeding, not elsewhere specified or included"
-          ],
-          "searchText": "vegetable materials and vegetable waste, vegetable residues and byproducts, whether or not in the form of pellets, of a kind used in animal feeding, not elsewhere specified or included dehydrated marigolds 2308.00.95.00"
+          ]
         },
         {
           "id": "r48",
@@ -1424,8 +1376,7 @@
           "heading": "2308",
           "ancestorPath": [
             "Vegetable materials and vegetable waste, vegetable residues and byproducts, whether or not in the form of pellets, of a kind used in animal feeding, not elsewhere specified or included"
-          ],
-          "searchText": "vegetable materials and vegetable waste, vegetable residues and byproducts, whether or not in the form of pellets, of a kind used in animal feeding, not elsewhere specified or included other 2308.00.98"
+          ]
         },
         {
           "id": "r49",
@@ -1451,8 +1402,7 @@
           "ancestorPath": [
             "Vegetable materials and vegetable waste, vegetable residues and byproducts, whether or not in the form of pellets, of a kind used in animal feeding, not elsewhere specified or included",
             "Other"
-          ],
-          "searchText": "vegetable materials and vegetable waste, vegetable residues and byproducts, whether or not in the form of pellets, of a kind used in animal feeding, not elsewhere specified or included other citrus pulp pellets 2308.00.98.20"
+          ]
         },
         {
           "id": "r50",
@@ -1478,8 +1428,7 @@
           "ancestorPath": [
             "Vegetable materials and vegetable waste, vegetable residues and byproducts, whether or not in the form of pellets, of a kind used in animal feeding, not elsewhere specified or included",
             "Other"
-          ],
-          "searchText": "vegetable materials and vegetable waste, vegetable residues and byproducts, whether or not in the form of pellets, of a kind used in animal feeding, not elsewhere specified or included other other 2308.00.98.90"
+          ]
         },
         {
           "id": "r51",
@@ -1502,8 +1451,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "2309",
-          "ancestorPath": [],
-          "searchText": "preparations of a kind used in animal feeding: 2309"
+          "ancestorPath": []
         },
         {
           "id": "r52",
@@ -1526,8 +1474,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "2309",
-          "ancestorPath": ["Preparations of a kind used in animal feeding"],
-          "searchText": "preparations of a kind used in animal feeding dog or cat food, put up for retail sale 2309.10.00"
+          "ancestorPath": ["Preparations of a kind used in animal feeding"]
         },
         {
           "id": "r53",
@@ -1550,8 +1497,7 @@
           "column2InheritedFrom": "2309.10.00",
           "dutiable": false,
           "heading": "2309",
-          "ancestorPath": ["Preparations of a kind used in animal feeding", "Dog or cat food, put up for retail sale"],
-          "searchText": "preparations of a kind used in animal feeding dog or cat food, put up for retail sale in airtight containers 2309.10.00.10"
+          "ancestorPath": ["Preparations of a kind used in animal feeding", "Dog or cat food, put up for retail sale"]
         },
         {
           "id": "r54",
@@ -1574,8 +1520,7 @@
           "column2InheritedFrom": "2309.10.00",
           "dutiable": false,
           "heading": "2309",
-          "ancestorPath": ["Preparations of a kind used in animal feeding", "Dog or cat food, put up for retail sale"],
-          "searchText": "preparations of a kind used in animal feeding dog or cat food, put up for retail sale other 2309.10.00.90"
+          "ancestorPath": ["Preparations of a kind used in animal feeding", "Dog or cat food, put up for retail sale"]
         },
         {
           "id": "r55",
@@ -1598,8 +1543,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "2309",
-          "ancestorPath": ["Preparations of a kind used in animal feeding"],
-          "searchText": "preparations of a kind used in animal feeding other: 2309.90"
+          "ancestorPath": ["Preparations of a kind used in animal feeding"]
         },
         {
           "id": "r56",
@@ -1622,8 +1566,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "2309",
-          "ancestorPath": ["Preparations of a kind used in animal feeding", "Other"],
-          "searchText": "preparations of a kind used in animal feeding other mixed feeds or mixed feed ingredients 2309.90.10"
+          "ancestorPath": ["Preparations of a kind used in animal feeding", "Other"]
         },
         {
           "id": "r57",
@@ -1646,8 +1589,7 @@
           "column2InheritedFrom": "2309.90.10",
           "dutiable": false,
           "heading": "2309",
-          "ancestorPath": ["Preparations of a kind used in animal feeding", "Other", "Mixed feeds or mixed feed ingredients"],
-          "searchText": "preparations of a kind used in animal feeding other mixed feeds or mixed feed ingredients bird seed 2309.90.10.05"
+          "ancestorPath": ["Preparations of a kind used in animal feeding", "Other", "Mixed feeds or mixed feed ingredients"]
         },
         {
           "id": "r58",
@@ -1670,8 +1612,7 @@
           "column2InheritedFrom": "2309.90.10",
           "dutiable": false,
           "heading": "2309",
-          "ancestorPath": ["Preparations of a kind used in animal feeding", "Other", "Mixed feeds or mixed feed ingredients"],
-          "searchText": "preparations of a kind used in animal feeding other mixed feeds or mixed feed ingredients other pet food, put up for retail sale 2309.90.10.15"
+          "ancestorPath": ["Preparations of a kind used in animal feeding", "Other", "Mixed feeds or mixed feed ingredients"]
         },
         {
           "id": "r59",
@@ -1694,8 +1635,7 @@
           "column2InheritedFrom": "2309.90.10",
           "dutiable": false,
           "heading": "2309",
-          "ancestorPath": ["Preparations of a kind used in animal feeding", "Other", "Mixed feeds or mixed feed ingredients"],
-          "searchText": "preparations of a kind used in animal feeding other mixed feeds or mixed feed ingredients poultry feeds, prepared 2309.90.10.20"
+          "ancestorPath": ["Preparations of a kind used in animal feeding", "Other", "Mixed feeds or mixed feed ingredients"]
         },
         {
           "id": "r60",
@@ -1718,8 +1658,7 @@
           "column2InheritedFrom": "2309.90.10",
           "dutiable": false,
           "heading": "2309",
-          "ancestorPath": ["Preparations of a kind used in animal feeding", "Other", "Mixed feeds or mixed feed ingredients"],
-          "searchText": "preparations of a kind used in animal feeding other mixed feeds or mixed feed ingredients dairy cattle feed, prepared 2309.90.10.30"
+          "ancestorPath": ["Preparations of a kind used in animal feeding", "Other", "Mixed feeds or mixed feed ingredients"]
         },
         {
           "id": "r61",
@@ -1742,8 +1681,7 @@
           "column2InheritedFrom": "2309.90.10",
           "dutiable": false,
           "heading": "2309",
-          "ancestorPath": ["Preparations of a kind used in animal feeding", "Other", "Mixed feeds or mixed feed ingredients"],
-          "searchText": "preparations of a kind used in animal feeding other mixed feeds or mixed feed ingredients other cattle feed, prepared 2309.90.10.32"
+          "ancestorPath": ["Preparations of a kind used in animal feeding", "Other", "Mixed feeds or mixed feed ingredients"]
         },
         {
           "id": "r62",
@@ -1766,8 +1704,7 @@
           "column2InheritedFrom": "2309.90.10",
           "dutiable": false,
           "heading": "2309",
-          "ancestorPath": ["Preparations of a kind used in animal feeding", "Other", "Mixed feeds or mixed feed ingredients"],
-          "searchText": "preparations of a kind used in animal feeding other mixed feeds or mixed feed ingredients swine feed, prepared 2309.90.10.35"
+          "ancestorPath": ["Preparations of a kind used in animal feeding", "Other", "Mixed feeds or mixed feed ingredients"]
         },
         {
           "id": "r63",
@@ -1790,8 +1727,7 @@
           "column2InheritedFrom": "2309.90.10",
           "dutiable": false,
           "heading": "2309",
-          "ancestorPath": ["Preparations of a kind used in animal feeding", "Other", "Mixed feeds or mixed feed ingredients"],
-          "searchText": "preparations of a kind used in animal feeding other mixed feeds or mixed feed ingredients other livestock feed, prepared 2309.90.10.45"
+          "ancestorPath": ["Preparations of a kind used in animal feeding", "Other", "Mixed feeds or mixed feed ingredients"]
         },
         {
           "id": "r64",
@@ -1814,8 +1750,7 @@
           "column2InheritedFrom": "2309.90.10",
           "dutiable": false,
           "heading": "2309",
-          "ancestorPath": ["Preparations of a kind used in animal feeding", "Other", "Mixed feeds or mixed feed ingredients"],
-          "searchText": "preparations of a kind used in animal feeding other mixed feeds or mixed feed ingredients other 2309.90.10.50"
+          "ancestorPath": ["Preparations of a kind used in animal feeding", "Other", "Mixed feeds or mixed feed ingredients"]
         },
         {
           "id": "r65",
@@ -1838,8 +1773,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "2309",
-          "ancestorPath": ["Preparations of a kind used in animal feeding", "Other"],
-          "searchText": "preparations of a kind used in animal feeding other other: "
+          "ancestorPath": ["Preparations of a kind used in animal feeding", "Other"]
         },
         {
           "id": "r66",
@@ -1862,8 +1796,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "2309",
-          "ancestorPath": ["Preparations of a kind used in animal feeding", "Other", "Other"],
-          "searchText": "preparations of a kind used in animal feeding other other animal feeds containing milk or milk derivatives: "
+          "ancestorPath": ["Preparations of a kind used in animal feeding", "Other", "Other"]
         },
         {
           "id": "r67",
@@ -1886,8 +1819,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "2309",
-          "ancestorPath": ["Preparations of a kind used in animal feeding", "Other", "Other", "Animal feeds containing milk or milk derivatives"],
-          "searchText": "preparations of a kind used in animal feeding other other animal feeds containing milk or milk derivatives containing over 10 percent by weight of milk solids: "
+          "ancestorPath": ["Preparations of a kind used in animal feeding", "Other", "Other", "Animal feeds containing milk or milk derivatives"]
         },
         {
           "id": "r68",
@@ -1916,8 +1848,7 @@
             "Other",
             "Animal feeds containing milk or milk derivatives",
             "Containing over 10 percent by weight of milk solids"
-          ],
-          "searchText": "preparations of a kind used in animal feeding other other animal feeds containing milk or milk derivatives containing over 10 percent by weight of milk solids described in general note 15 of the tariff schedule and entered pursuant to its provisions 2309.90.22"
+          ]
         },
         {
           "id": "r69",
@@ -1947,8 +1878,7 @@
             "Animal feeds containing milk or milk derivatives",
             "Containing over 10 percent by weight of milk solids",
             "Described in general note 15 of the tariff schedule and entered pursuant to its provisions"
-          ],
-          "searchText": "preparations of a kind used in animal feeding other other animal feeds containing milk or milk derivatives containing over 10 percent by weight of milk solids described in general note 15 of the tariff schedule and entered pursuant to its provisions milk replacer 2309.90.22.10"
+          ]
         },
         {
           "id": "r70",
@@ -1978,8 +1908,7 @@
             "Animal feeds containing milk or milk derivatives",
             "Containing over 10 percent by weight of milk solids",
             "Described in general note 15 of the tariff schedule and entered pursuant to its provisions"
-          ],
-          "searchText": "preparations of a kind used in animal feeding other other animal feeds containing milk or milk derivatives containing over 10 percent by weight of milk solids described in general note 15 of the tariff schedule and entered pursuant to its provisions other 2309.90.22.90"
+          ]
         },
         {
           "id": "r71",
@@ -2008,8 +1937,7 @@
             "Other",
             "Animal feeds containing milk or milk derivatives",
             "Containing over 10 percent by weight of milk solids"
-          ],
-          "searchText": "preparations of a kind used in animal feeding other other animal feeds containing milk or milk derivatives containing over 10 percent by weight of milk solids described in additional u.s. note 2 to this chapter and entered pursuant to its provisions 2309.90.24"
+          ]
         },
         {
           "id": "r72",
@@ -2039,8 +1967,7 @@
             "Animal feeds containing milk or milk derivatives",
             "Containing over 10 percent by weight of milk solids",
             "Described in additional U.S. note 2 to this chapter and entered pursuant to its provisions"
-          ],
-          "searchText": "preparations of a kind used in animal feeding other other animal feeds containing milk or milk derivatives containing over 10 percent by weight of milk solids described in additional u.s. note 2 to this chapter and entered pursuant to its provisions milk replacer 2309.90.24.10"
+          ]
         },
         {
           "id": "r73",
@@ -2070,8 +1997,7 @@
             "Animal feeds containing milk or milk derivatives",
             "Containing over 10 percent by weight of milk solids",
             "Described in additional U.S. note 2 to this chapter and entered pursuant to its provisions"
-          ],
-          "searchText": "preparations of a kind used in animal feeding other other animal feeds containing milk or milk derivatives containing over 10 percent by weight of milk solids described in additional u.s. note 2 to this chapter and entered pursuant to its provisions other 2309.90.24.90"
+          ]
         },
         {
           "id": "r74",
@@ -2100,8 +2026,7 @@
             "Other",
             "Animal feeds containing milk or milk derivatives",
             "Containing over 10 percent by weight of milk solids"
-          ],
-          "searchText": "preparations of a kind used in animal feeding other other animal feeds containing milk or milk derivatives containing over 10 percent by weight of milk solids other 2309.90.28"
+          ]
         },
         {
           "id": "r75",
@@ -2131,8 +2056,7 @@
             "Animal feeds containing milk or milk derivatives",
             "Containing over 10 percent by weight of milk solids",
             "Other"
-          ],
-          "searchText": "preparations of a kind used in animal feeding other other animal feeds containing milk or milk derivatives containing over 10 percent by weight of milk solids other milk replacer 2309.90.28.10"
+          ]
         },
         {
           "id": "r76",
@@ -2162,8 +2086,7 @@
             "Animal feeds containing milk or milk derivatives",
             "Containing over 10 percent by weight of milk solids",
             "Other"
-          ],
-          "searchText": "preparations of a kind used in animal feeding other other animal feeds containing milk or milk derivatives containing over 10 percent by weight of milk solids other other 2309.90.28.90"
+          ]
         },
         {
           "id": "r77",
@@ -2186,8 +2109,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "2309",
-          "ancestorPath": ["Preparations of a kind used in animal feeding", "Other", "Other", "Animal feeds containing milk or milk derivatives"],
-          "searchText": "preparations of a kind used in animal feeding other other animal feeds containing milk or milk derivatives other: "
+          "ancestorPath": ["Preparations of a kind used in animal feeding", "Other", "Other", "Animal feeds containing milk or milk derivatives"]
         },
         {
           "id": "r78",
@@ -2210,8 +2132,7 @@
           "column2InheritedFrom": null,
           "dutiable": true,
           "heading": "2309",
-          "ancestorPath": ["Preparations of a kind used in animal feeding", "Other", "Other", "Animal feeds containing milk or milk derivatives", "Other"],
-          "searchText": "preparations of a kind used in animal feeding other other animal feeds containing milk or milk derivatives other described in general note 15 of the tariff schedule and entered pursuant to its provisions 2309.90.42"
+          "ancestorPath": ["Preparations of a kind used in animal feeding", "Other", "Other", "Animal feeds containing milk or milk derivatives", "Other"]
         },
         {
           "id": "r79",
@@ -2241,8 +2162,7 @@
             "Animal feeds containing milk or milk derivatives",
             "Other",
             "Described in general note 15 of the tariff schedule and entered pursuant to its provisions"
-          ],
-          "searchText": "preparations of a kind used in animal feeding other other animal feeds containing milk or milk derivatives other described in general note 15 of the tariff schedule and entered pursuant to its provisions milk replacer 2309.90.42.10"
+          ]
         },
         {
           "id": "r80",
@@ -2272,8 +2192,7 @@
             "Animal feeds containing milk or milk derivatives",
             "Other",
             "Described in general note 15 of the tariff schedule and entered pursuant to its provisions"
-          ],
-          "searchText": "preparations of a kind used in animal feeding other other animal feeds containing milk or milk derivatives other described in general note 15 of the tariff schedule and entered pursuant to its provisions other 2309.90.42.90"
+          ]
         },
         {
           "id": "r81",
@@ -2296,8 +2215,7 @@
           "column2InheritedFrom": null,
           "dutiable": true,
           "heading": "2309",
-          "ancestorPath": ["Preparations of a kind used in animal feeding", "Other", "Other", "Animal feeds containing milk or milk derivatives", "Other"],
-          "searchText": "preparations of a kind used in animal feeding other other animal feeds containing milk or milk derivatives other described in additional u.s. note 2 to this chapter and entered pursuant to its provisions 2309.90.44"
+          "ancestorPath": ["Preparations of a kind used in animal feeding", "Other", "Other", "Animal feeds containing milk or milk derivatives", "Other"]
         },
         {
           "id": "r82",
@@ -2327,8 +2245,7 @@
             "Animal feeds containing milk or milk derivatives",
             "Other",
             "Described in additional U.S. note 2 to this chapter and entered pursuant to its provisions"
-          ],
-          "searchText": "preparations of a kind used in animal feeding other other animal feeds containing milk or milk derivatives other described in additional u.s. note 2 to this chapter and entered pursuant to its provisions milk replacer 2309.90.44.10"
+          ]
         },
         {
           "id": "r83",
@@ -2358,8 +2275,7 @@
             "Animal feeds containing milk or milk derivatives",
             "Other",
             "Described in additional U.S. note 2 to this chapter and entered pursuant to its provisions"
-          ],
-          "searchText": "preparations of a kind used in animal feeding other other animal feeds containing milk or milk derivatives other described in additional u.s. note 2 to this chapter and entered pursuant to its provisions other 2309.90.44.90"
+          ]
         },
         {
           "id": "r84",
@@ -2382,8 +2298,7 @@
           "column2InheritedFrom": null,
           "dutiable": true,
           "heading": "2309",
-          "ancestorPath": ["Preparations of a kind used in animal feeding", "Other", "Other", "Animal feeds containing milk or milk derivatives", "Other"],
-          "searchText": "preparations of a kind used in animal feeding other other animal feeds containing milk or milk derivatives other other 2309.90.48"
+          "ancestorPath": ["Preparations of a kind used in animal feeding", "Other", "Other", "Animal feeds containing milk or milk derivatives", "Other"]
         },
         {
           "id": "r85",
@@ -2413,8 +2328,7 @@
             "Animal feeds containing milk or milk derivatives",
             "Other",
             "Other"
-          ],
-          "searchText": "preparations of a kind used in animal feeding other other animal feeds containing milk or milk derivatives other other milk replacer 2309.90.48.10"
+          ]
         },
         {
           "id": "r86",
@@ -2444,8 +2358,7 @@
             "Animal feeds containing milk or milk derivatives",
             "Other",
             "Other"
-          ],
-          "searchText": "preparations of a kind used in animal feeding other other animal feeds containing milk or milk derivatives other other other 2309.90.48.90"
+          ]
         },
         {
           "id": "r87",
@@ -2468,8 +2381,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "2309",
-          "ancestorPath": ["Preparations of a kind used in animal feeding", "Other", "Other"],
-          "searchText": "preparations of a kind used in animal feeding other other other: "
+          "ancestorPath": ["Preparations of a kind used in animal feeding", "Other", "Other"]
         },
         {
           "id": "r88",
@@ -2492,8 +2404,7 @@
           "column2InheritedFrom": null,
           "dutiable": true,
           "heading": "2309",
-          "ancestorPath": ["Preparations of a kind used in animal feeding", "Other", "Other", "Other"],
-          "searchText": "preparations of a kind used in animal feeding other other other animal feeds containing egg 2309.90.60.00"
+          "ancestorPath": ["Preparations of a kind used in animal feeding", "Other", "Other", "Other"]
         },
         {
           "id": "r89",
@@ -2516,8 +2427,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "2309",
-          "ancestorPath": ["Preparations of a kind used in animal feeding", "Other", "Other", "Other"],
-          "searchText": "preparations of a kind used in animal feeding other other other other: "
+          "ancestorPath": ["Preparations of a kind used in animal feeding", "Other", "Other", "Other"]
         },
         {
           "id": "r90",
@@ -2540,8 +2450,7 @@
           "column2InheritedFrom": null,
           "dutiable": true,
           "heading": "2309",
-          "ancestorPath": ["Preparations of a kind used in animal feeding", "Other", "Other", "Other", "Other"],
-          "searchText": "preparations of a kind used in animal feeding other other other other preparations, with a basis of vitamin b12, for supplementing animal feed 2309.90.70.00"
+          "ancestorPath": ["Preparations of a kind used in animal feeding", "Other", "Other", "Other", "Other"]
         },
         {
           "id": "r91",
@@ -2564,8 +2473,7 @@
           "column2InheritedFrom": null,
           "dutiable": true,
           "heading": "2309",
-          "ancestorPath": ["Preparations of a kind used in animal feeding", "Other", "Other", "Other", "Other"],
-          "searchText": "preparations of a kind used in animal feeding other other other other other 2309.90.95.00"
+          "ancestorPath": ["Preparations of a kind used in animal feeding", "Other", "Other", "Other", "Other"]
         }
       ]
     },
@@ -3142,11 +3050,6 @@
     "lines": [
       {
         "hts": "2301.10.00.00",
-        "description": "Flours, meals and pellets, of meat or meat offal; greaves (cracklings)",
-        "ancestorPath": [
-          "Flours, meals and pellets, of meat or meat offal, of fish or of crustaceans, molluscs or other aquatic invertebrates, unfit for human consumption; greaves (cracklings)"
-        ],
-        "searchText": "flours, meals and pellets, of meat or meat offal, of fish or of crustaceans, molluscs or other aquatic invertebrates, unfit for human consumption; greaves (cracklings) flours, meals and pellets, of meat or meat offal; greaves (cracklings) 2301.10.00.00",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -3154,12 +3057,6 @@
       },
       {
         "hts": "2301.20.00.10",
-        "description": "Herring meal; pilchard meal",
-        "ancestorPath": [
-          "Flours, meals and pellets, of meat or meat offal, of fish or of crustaceans, molluscs or other aquatic invertebrates, unfit for human consumption; greaves (cracklings)",
-          "Flours, meals and pellets, of fish or of crustaceans, molluscs or other aquatic invertebrates"
-        ],
-        "searchText": "flours, meals and pellets, of meat or meat offal, of fish or of crustaceans, molluscs or other aquatic invertebrates, unfit for human consumption; greaves (cracklings) flours, meals and pellets, of fish or of crustaceans, molluscs or other aquatic invertebrates herring meal; pilchard meal 2301.20.00.10",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -3167,12 +3064,6 @@
       },
       {
         "hts": "2301.20.00.90",
-        "description": "Other",
-        "ancestorPath": [
-          "Flours, meals and pellets, of meat or meat offal, of fish or of crustaceans, molluscs or other aquatic invertebrates, unfit for human consumption; greaves (cracklings)",
-          "Flours, meals and pellets, of fish or of crustaceans, molluscs or other aquatic invertebrates"
-        ],
-        "searchText": "flours, meals and pellets, of meat or meat offal, of fish or of crustaceans, molluscs or other aquatic invertebrates, unfit for human consumption; greaves (cracklings) flours, meals and pellets, of fish or of crustaceans, molluscs or other aquatic invertebrates other 2301.20.00.90",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -3180,11 +3071,6 @@
       },
       {
         "hts": "2302.10.00.00",
-        "description": "Of corn (maize)",
-        "ancestorPath": [
-          "Bran, sharps (middlings) and other residues, whether or not in the form of pellets, derived from the sifting, milling or other working of cereals or of leguminous plants"
-        ],
-        "searchText": "bran, sharps (middlings) and other residues, whether or not in the form of pellets, derived from the sifting, milling or other working of cereals or of leguminous plants of corn (maize) 2302.10.00.00",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -3192,12 +3078,6 @@
       },
       {
         "hts": "2302.30.00.10",
-        "description": "Bran, shorts and middlings",
-        "ancestorPath": [
-          "Bran, sharps (middlings) and other residues, whether or not in the form of pellets, derived from the sifting, milling or other working of cereals or of leguminous plants",
-          "Of wheat"
-        ],
-        "searchText": "bran, sharps (middlings) and other residues, whether or not in the form of pellets, derived from the sifting, milling or other working of cereals or of leguminous plants of wheat bran, shorts and middlings 2302.30.00.10",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -3205,12 +3085,6 @@
       },
       {
         "hts": "2302.30.00.90",
-        "description": "Other",
-        "ancestorPath": [
-          "Bran, sharps (middlings) and other residues, whether or not in the form of pellets, derived from the sifting, milling or other working of cereals or of leguminous plants",
-          "Of wheat"
-        ],
-        "searchText": "bran, sharps (middlings) and other residues, whether or not in the form of pellets, derived from the sifting, milling or other working of cereals or of leguminous plants of wheat other 2302.30.00.90",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -3218,12 +3092,6 @@
       },
       {
         "hts": "2302.40.01.05",
-        "description": "Of rice",
-        "ancestorPath": [
-          "Bran, sharps (middlings) and other residues, whether or not in the form of pellets, derived from the sifting, milling or other working of cereals or of leguminous plants",
-          "Of other cereals"
-        ],
-        "searchText": "bran, sharps (middlings) and other residues, whether or not in the form of pellets, derived from the sifting, milling or other working of cereals or of leguminous plants of other cereals of rice 2302.40.01.05",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -3231,12 +3099,6 @@
       },
       {
         "hts": "2302.40.01.10",
-        "description": "Of other single cereal grains, chopped, crushed or ground",
-        "ancestorPath": [
-          "Bran, sharps (middlings) and other residues, whether or not in the form of pellets, derived from the sifting, milling or other working of cereals or of leguminous plants",
-          "Of other cereals"
-        ],
-        "searchText": "bran, sharps (middlings) and other residues, whether or not in the form of pellets, derived from the sifting, milling or other working of cereals or of leguminous plants of other cereals of other single cereal grains, chopped, crushed or ground 2302.40.01.10",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -3244,13 +3106,6 @@
       },
       {
         "hts": "2302.40.01.20",
-        "description": "Pelletized screenings (clearings)",
-        "ancestorPath": [
-          "Bran, sharps (middlings) and other residues, whether or not in the form of pellets, derived from the sifting, milling or other working of cereals or of leguminous plants",
-          "Of other cereals",
-          "Other"
-        ],
-        "searchText": "bran, sharps (middlings) and other residues, whether or not in the form of pellets, derived from the sifting, milling or other working of cereals or of leguminous plants of other cereals other pelletized screenings (clearings) 2302.40.01.20",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -3258,13 +3113,6 @@
       },
       {
         "hts": "2302.40.01.90",
-        "description": "Other",
-        "ancestorPath": [
-          "Bran, sharps (middlings) and other residues, whether or not in the form of pellets, derived from the sifting, milling or other working of cereals or of leguminous plants",
-          "Of other cereals",
-          "Other"
-        ],
-        "searchText": "bran, sharps (middlings) and other residues, whether or not in the form of pellets, derived from the sifting, milling or other working of cereals or of leguminous plants of other cereals other other 2302.40.01.90",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -3272,11 +3120,6 @@
       },
       {
         "hts": "2302.50.00.00",
-        "description": "Of leguminous plants",
-        "ancestorPath": [
-          "Bran, sharps (middlings) and other residues, whether or not in the form of pellets, derived from the sifting, milling or other working of cereals or of leguminous plants"
-        ],
-        "searchText": "bran, sharps (middlings) and other residues, whether or not in the form of pellets, derived from the sifting, milling or other working of cereals or of leguminous plants of leguminous plants 2302.50.00.00",
         "generalBefore": "1.4%",
         "generalNow": "1.4%",
         "status": "unchanged",
@@ -3284,12 +3127,6 @@
       },
       {
         "hts": "2303.10.00.10",
-        "description": "Corn gluten feed",
-        "ancestorPath": [
-          "Residues of starch manufacture and similar residues, beet-pulp, bagasse and other waste of sugar manufacture, brewing or distilling dregs and waste, whether or not in the form of pellets",
-          "Residues of starch manufacture and similar residues"
-        ],
-        "searchText": "residues of starch manufacture and similar residues, beet-pulp, bagasse and other waste of sugar manufacture, brewing or distilling dregs and waste, whether or not in the form of pellets residues of starch manufacture and similar residues corn gluten feed 2303.10.00.10",
         "generalBefore": "1.4%",
         "generalNow": "1.4%",
         "status": "unchanged",
@@ -3297,12 +3134,6 @@
       },
       {
         "hts": "2303.10.00.20",
-        "description": "Corn gluten meal",
-        "ancestorPath": [
-          "Residues of starch manufacture and similar residues, beet-pulp, bagasse and other waste of sugar manufacture, brewing or distilling dregs and waste, whether or not in the form of pellets",
-          "Residues of starch manufacture and similar residues"
-        ],
-        "searchText": "residues of starch manufacture and similar residues, beet-pulp, bagasse and other waste of sugar manufacture, brewing or distilling dregs and waste, whether or not in the form of pellets residues of starch manufacture and similar residues corn gluten meal 2303.10.00.20",
         "generalBefore": "1.4%",
         "generalNow": "1.4%",
         "status": "unchanged",
@@ -3310,12 +3141,6 @@
       },
       {
         "hts": "2303.10.00.40",
-        "description": "Other",
-        "ancestorPath": [
-          "Residues of starch manufacture and similar residues, beet-pulp, bagasse and other waste of sugar manufacture, brewing or distilling dregs and waste, whether or not in the form of pellets",
-          "Residues of starch manufacture and similar residues"
-        ],
-        "searchText": "residues of starch manufacture and similar residues, beet-pulp, bagasse and other waste of sugar manufacture, brewing or distilling dregs and waste, whether or not in the form of pellets residues of starch manufacture and similar residues other 2303.10.00.40",
         "generalBefore": "1.4%",
         "generalNow": "1.4%",
         "status": "unchanged",
@@ -3323,12 +3148,6 @@
       },
       {
         "hts": "2303.20.00.20",
-        "description": "Dried beet-pulp",
-        "ancestorPath": [
-          "Residues of starch manufacture and similar residues, beet-pulp, bagasse and other waste of sugar manufacture, brewing or distilling dregs and waste, whether or not in the form of pellets",
-          "Beet-pulp, bagasse and other waste of sugar manufacture"
-        ],
-        "searchText": "residues of starch manufacture and similar residues, beet-pulp, bagasse and other waste of sugar manufacture, brewing or distilling dregs and waste, whether or not in the form of pellets beet-pulp, bagasse and other waste of sugar manufacture dried beet-pulp 2303.20.00.20",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -3336,12 +3155,6 @@
       },
       {
         "hts": "2303.20.00.40",
-        "description": "Other",
-        "ancestorPath": [
-          "Residues of starch manufacture and similar residues, beet-pulp, bagasse and other waste of sugar manufacture, brewing or distilling dregs and waste, whether or not in the form of pellets",
-          "Beet-pulp, bagasse and other waste of sugar manufacture"
-        ],
-        "searchText": "residues of starch manufacture and similar residues, beet-pulp, bagasse and other waste of sugar manufacture, brewing or distilling dregs and waste, whether or not in the form of pellets beet-pulp, bagasse and other waste of sugar manufacture other 2303.20.00.40",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -3349,11 +3162,6 @@
       },
       {
         "hts": "2303.30.00.00",
-        "description": "Brewing or distilling dregs and waste",
-        "ancestorPath": [
-          "Residues of starch manufacture and similar residues, beet-pulp, bagasse and other waste of sugar manufacture, brewing or distilling dregs and waste, whether or not in the form of pellets"
-        ],
-        "searchText": "residues of starch manufacture and similar residues, beet-pulp, bagasse and other waste of sugar manufacture, brewing or distilling dregs and waste, whether or not in the form of pellets brewing or distilling dregs and waste 2303.30.00.00",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -3361,9 +3169,6 @@
       },
       {
         "hts": "2304.00.00.10",
-        "description": "Certified organic",
-        "ancestorPath": ["Oilcake and other solid residues, whether or not ground or in the form of pellets, resulting from the extraction of soybean oil"],
-        "searchText": "oilcake and other solid residues, whether or not ground or in the form of pellets, resulting from the extraction of soybean oil certified organic 2304.00.00.10",
         "generalBefore": "0.45¢/kg",
         "generalNow": "0.45¢/kg",
         "status": "unchanged",
@@ -3371,9 +3176,6 @@
       },
       {
         "hts": "2304.00.00.90",
-        "description": "Other",
-        "ancestorPath": ["Oilcake and other solid residues, whether or not ground or in the form of pellets, resulting from the extraction of soybean oil"],
-        "searchText": "oilcake and other solid residues, whether or not ground or in the form of pellets, resulting from the extraction of soybean oil other 2304.00.00.90",
         "generalBefore": "0.45¢/kg",
         "generalNow": "0.45¢/kg",
         "status": "unchanged",
@@ -3381,9 +3183,6 @@
       },
       {
         "hts": "2305.00.00.00",
-        "description": "Oilcake and other solid residues, whether or not ground or in the form of pellets, resulting from the extraction of peanut (ground-nut) oil",
-        "ancestorPath": [],
-        "searchText": "oilcake and other solid residues, whether or not ground or in the form of pellets, resulting from the extraction of peanut (ground-nut) oil 2305.00.00.00",
         "generalBefore": "0.32¢/kg",
         "generalNow": "0.32¢/kg",
         "status": "unchanged",
@@ -3391,11 +3190,6 @@
       },
       {
         "hts": "2306.10.00.00",
-        "description": "Of cotton seeds",
-        "ancestorPath": [
-          "Oilcake and other solid residues, whether or not ground or in the form of pellets, resulting from the extraction of vegetable or microbial fats or oils, other than those of heading 2304 or 2305"
-        ],
-        "searchText": "oilcake and other solid residues, whether or not ground or in the form of pellets, resulting from the extraction of vegetable or microbial fats or oils, other than those of heading 2304 or 2305 of cotton seeds 2306.10.00.00",
         "generalBefore": "0.56¢/kg",
         "generalNow": "0.56¢/kg",
         "status": "unchanged",
@@ -3403,11 +3197,6 @@
       },
       {
         "hts": "2306.20.00.00",
-        "description": "Of linseed",
-        "ancestorPath": [
-          "Oilcake and other solid residues, whether or not ground or in the form of pellets, resulting from the extraction of vegetable or microbial fats or oils, other than those of heading 2304 or 2305"
-        ],
-        "searchText": "oilcake and other solid residues, whether or not ground or in the form of pellets, resulting from the extraction of vegetable or microbial fats or oils, other than those of heading 2304 or 2305 of linseed 2306.20.00.00",
         "generalBefore": "0.12¢/kg",
         "generalNow": "0.12¢/kg",
         "status": "unchanged",
@@ -3415,11 +3204,6 @@
       },
       {
         "hts": "2306.30.00.00",
-        "description": "Of sunflower seeds",
-        "ancestorPath": [
-          "Oilcake and other solid residues, whether or not ground or in the form of pellets, resulting from the extraction of vegetable or microbial fats or oils, other than those of heading 2304 or 2305"
-        ],
-        "searchText": "oilcake and other solid residues, whether or not ground or in the form of pellets, resulting from the extraction of vegetable or microbial fats or oils, other than those of heading 2304 or 2305 of sunflower seeds 2306.30.00.00",
         "generalBefore": "0.45¢/kg",
         "generalNow": "0.45¢/kg",
         "status": "unchanged",
@@ -3427,12 +3211,6 @@
       },
       {
         "hts": "2306.41.00.00",
-        "description": "Of low euricic acid rape or colza seeds",
-        "ancestorPath": [
-          "Oilcake and other solid residues, whether or not ground or in the form of pellets, resulting from the extraction of vegetable or microbial fats or oils, other than those of heading 2304 or 2305",
-          "Of rape or colza seeds"
-        ],
-        "searchText": "oilcake and other solid residues, whether or not ground or in the form of pellets, resulting from the extraction of vegetable or microbial fats or oils, other than those of heading 2304 or 2305 of rape or colza seeds of low euricic acid rape or colza seeds 2306.41.00.00",
         "generalBefore": "0.17¢/kg",
         "generalNow": "0.17¢/kg",
         "status": "unchanged",
@@ -3440,12 +3218,6 @@
       },
       {
         "hts": "2306.49.00.00",
-        "description": "Other",
-        "ancestorPath": [
-          "Oilcake and other solid residues, whether or not ground or in the form of pellets, resulting from the extraction of vegetable or microbial fats or oils, other than those of heading 2304 or 2305",
-          "Of rape or colza seeds"
-        ],
-        "searchText": "oilcake and other solid residues, whether or not ground or in the form of pellets, resulting from the extraction of vegetable or microbial fats or oils, other than those of heading 2304 or 2305 of rape or colza seeds other 2306.49.00.00",
         "generalBefore": "0.17¢/kg",
         "generalNow": "0.17¢/kg",
         "status": "unchanged",
@@ -3453,11 +3225,6 @@
       },
       {
         "hts": "2306.50.00.00",
-        "description": "Of coconut or copra",
-        "ancestorPath": [
-          "Oilcake and other solid residues, whether or not ground or in the form of pellets, resulting from the extraction of vegetable or microbial fats or oils, other than those of heading 2304 or 2305"
-        ],
-        "searchText": "oilcake and other solid residues, whether or not ground or in the form of pellets, resulting from the extraction of vegetable or microbial fats or oils, other than those of heading 2304 or 2305 of coconut or copra 2306.50.00.00",
         "generalBefore": "0.45¢/kg",
         "generalNow": "0.45¢/kg",
         "status": "unchanged",
@@ -3465,11 +3232,6 @@
       },
       {
         "hts": "2306.60.00.00",
-        "description": "Of palm nuts or kernels",
-        "ancestorPath": [
-          "Oilcake and other solid residues, whether or not ground or in the form of pellets, resulting from the extraction of vegetable or microbial fats or oils, other than those of heading 2304 or 2305"
-        ],
-        "searchText": "oilcake and other solid residues, whether or not ground or in the form of pellets, resulting from the extraction of vegetable or microbial fats or oils, other than those of heading 2304 or 2305 of palm nuts or kernels 2306.60.00.00",
         "generalBefore": "0.32¢/kg",
         "generalNow": "0.32¢/kg",
         "status": "unchanged",
@@ -3477,12 +3239,6 @@
       },
       {
         "hts": "2306.90.01.20",
-        "description": "Of corn",
-        "ancestorPath": [
-          "Oilcake and other solid residues, whether or not ground or in the form of pellets, resulting from the extraction of vegetable or microbial fats or oils, other than those of heading 2304 or 2305",
-          "Other"
-        ],
-        "searchText": "oilcake and other solid residues, whether or not ground or in the form of pellets, resulting from the extraction of vegetable or microbial fats or oils, other than those of heading 2304 or 2305 other of corn 2306.90.01.20",
         "generalBefore": "0.32¢/kg",
         "generalNow": "0.32¢/kg",
         "status": "unchanged",
@@ -3490,12 +3246,6 @@
       },
       {
         "hts": "2306.90.01.30",
-        "description": "Of hemp seeds",
-        "ancestorPath": [
-          "Oilcake and other solid residues, whether or not ground or in the form of pellets, resulting from the extraction of vegetable or microbial fats or oils, other than those of heading 2304 or 2305",
-          "Other"
-        ],
-        "searchText": "oilcake and other solid residues, whether or not ground or in the form of pellets, resulting from the extraction of vegetable or microbial fats or oils, other than those of heading 2304 or 2305 other of hemp seeds 2306.90.01.30",
         "generalBefore": "0.32¢/kg",
         "generalNow": "0.32¢/kg",
         "status": "unchanged",
@@ -3503,12 +3253,6 @@
       },
       {
         "hts": "2306.90.01.50",
-        "description": "Other",
-        "ancestorPath": [
-          "Oilcake and other solid residues, whether or not ground or in the form of pellets, resulting from the extraction of vegetable or microbial fats or oils, other than those of heading 2304 or 2305",
-          "Other"
-        ],
-        "searchText": "oilcake and other solid residues, whether or not ground or in the form of pellets, resulting from the extraction of vegetable or microbial fats or oils, other than those of heading 2304 or 2305 other other 2306.90.01.50",
         "generalBefore": "0.32¢/kg",
         "generalNow": "0.32¢/kg",
         "status": "unchanged",
@@ -3516,9 +3260,6 @@
       },
       {
         "hts": "2307.00.00.00",
-        "description": "Wine lees; argol",
-        "ancestorPath": [],
-        "searchText": "wine lees; argol 2307.00.00.00",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -3526,11 +3267,6 @@
       },
       {
         "hts": "2308.00.10.00",
-        "description": "Acorns and horse-chestnuts",
-        "ancestorPath": [
-          "Vegetable materials and vegetable waste, vegetable residues and byproducts, whether or not in the form of pellets, of a kind used in animal feeding, not elsewhere specified or included"
-        ],
-        "searchText": "vegetable materials and vegetable waste, vegetable residues and byproducts, whether or not in the form of pellets, of a kind used in animal feeding, not elsewhere specified or included acorns and horse-chestnuts 2308.00.10.00",
         "generalBefore": "1.4%",
         "generalNow": "1.4%",
         "status": "unchanged",
@@ -3538,11 +3274,6 @@
       },
       {
         "hts": "2308.00.93.00",
-        "description": "Screenings, scalpings, chaff or scourings, ground, or not ground, of flaxseed (linseed)",
-        "ancestorPath": [
-          "Vegetable materials and vegetable waste, vegetable residues and byproducts, whether or not in the form of pellets, of a kind used in animal feeding, not elsewhere specified or included"
-        ],
-        "searchText": "vegetable materials and vegetable waste, vegetable residues and byproducts, whether or not in the form of pellets, of a kind used in animal feeding, not elsewhere specified or included screenings, scalpings, chaff or scourings, ground, or not ground, of flaxseed (linseed) 2308.00.93.00",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -3550,11 +3281,6 @@
       },
       {
         "hts": "2308.00.95.00",
-        "description": "Dehydrated marigolds",
-        "ancestorPath": [
-          "Vegetable materials and vegetable waste, vegetable residues and byproducts, whether or not in the form of pellets, of a kind used in animal feeding, not elsewhere specified or included"
-        ],
-        "searchText": "vegetable materials and vegetable waste, vegetable residues and byproducts, whether or not in the form of pellets, of a kind used in animal feeding, not elsewhere specified or included dehydrated marigolds 2308.00.95.00",
         "generalBefore": "1.9%",
         "generalNow": "1.9%",
         "status": "unchanged",
@@ -3562,12 +3288,6 @@
       },
       {
         "hts": "2308.00.98.20",
-        "description": "Citrus pulp pellets",
-        "ancestorPath": [
-          "Vegetable materials and vegetable waste, vegetable residues and byproducts, whether or not in the form of pellets, of a kind used in animal feeding, not elsewhere specified or included",
-          "Other"
-        ],
-        "searchText": "vegetable materials and vegetable waste, vegetable residues and byproducts, whether or not in the form of pellets, of a kind used in animal feeding, not elsewhere specified or included other citrus pulp pellets 2308.00.98.20",
         "generalBefore": "1.4%",
         "generalNow": "1.4%",
         "status": "unchanged",
@@ -3575,12 +3295,6 @@
       },
       {
         "hts": "2308.00.98.90",
-        "description": "Other",
-        "ancestorPath": [
-          "Vegetable materials and vegetable waste, vegetable residues and byproducts, whether or not in the form of pellets, of a kind used in animal feeding, not elsewhere specified or included",
-          "Other"
-        ],
-        "searchText": "vegetable materials and vegetable waste, vegetable residues and byproducts, whether or not in the form of pellets, of a kind used in animal feeding, not elsewhere specified or included other other 2308.00.98.90",
         "generalBefore": "1.4%",
         "generalNow": "1.4%",
         "status": "unchanged",
@@ -3588,9 +3302,6 @@
       },
       {
         "hts": "2309.10.00.10",
-        "description": "In airtight containers",
-        "ancestorPath": ["Preparations of a kind used in animal feeding", "Dog or cat food, put up for retail sale"],
-        "searchText": "preparations of a kind used in animal feeding dog or cat food, put up for retail sale in airtight containers 2309.10.00.10",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -3598,9 +3309,6 @@
       },
       {
         "hts": "2309.10.00.90",
-        "description": "Other",
-        "ancestorPath": ["Preparations of a kind used in animal feeding", "Dog or cat food, put up for retail sale"],
-        "searchText": "preparations of a kind used in animal feeding dog or cat food, put up for retail sale other 2309.10.00.90",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -3608,9 +3316,6 @@
       },
       {
         "hts": "2309.90.10.05",
-        "description": "Bird seed",
-        "ancestorPath": ["Preparations of a kind used in animal feeding", "Other", "Mixed feeds or mixed feed ingredients"],
-        "searchText": "preparations of a kind used in animal feeding other mixed feeds or mixed feed ingredients bird seed 2309.90.10.05",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -3618,9 +3323,6 @@
       },
       {
         "hts": "2309.90.10.15",
-        "description": "Other pet food, put up for retail sale",
-        "ancestorPath": ["Preparations of a kind used in animal feeding", "Other", "Mixed feeds or mixed feed ingredients"],
-        "searchText": "preparations of a kind used in animal feeding other mixed feeds or mixed feed ingredients other pet food, put up for retail sale 2309.90.10.15",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -3628,9 +3330,6 @@
       },
       {
         "hts": "2309.90.10.20",
-        "description": "Poultry feeds, prepared",
-        "ancestorPath": ["Preparations of a kind used in animal feeding", "Other", "Mixed feeds or mixed feed ingredients"],
-        "searchText": "preparations of a kind used in animal feeding other mixed feeds or mixed feed ingredients poultry feeds, prepared 2309.90.10.20",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -3638,9 +3337,6 @@
       },
       {
         "hts": "2309.90.10.30",
-        "description": "Dairy cattle feed, prepared",
-        "ancestorPath": ["Preparations of a kind used in animal feeding", "Other", "Mixed feeds or mixed feed ingredients"],
-        "searchText": "preparations of a kind used in animal feeding other mixed feeds or mixed feed ingredients dairy cattle feed, prepared 2309.90.10.30",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -3648,9 +3344,6 @@
       },
       {
         "hts": "2309.90.10.32",
-        "description": "Other cattle feed, prepared",
-        "ancestorPath": ["Preparations of a kind used in animal feeding", "Other", "Mixed feeds or mixed feed ingredients"],
-        "searchText": "preparations of a kind used in animal feeding other mixed feeds or mixed feed ingredients other cattle feed, prepared 2309.90.10.32",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -3658,9 +3351,6 @@
       },
       {
         "hts": "2309.90.10.35",
-        "description": "Swine feed, prepared",
-        "ancestorPath": ["Preparations of a kind used in animal feeding", "Other", "Mixed feeds or mixed feed ingredients"],
-        "searchText": "preparations of a kind used in animal feeding other mixed feeds or mixed feed ingredients swine feed, prepared 2309.90.10.35",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -3668,9 +3358,6 @@
       },
       {
         "hts": "2309.90.10.45",
-        "description": "Other livestock feed, prepared",
-        "ancestorPath": ["Preparations of a kind used in animal feeding", "Other", "Mixed feeds or mixed feed ingredients"],
-        "searchText": "preparations of a kind used in animal feeding other mixed feeds or mixed feed ingredients other livestock feed, prepared 2309.90.10.45",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -3678,9 +3365,6 @@
       },
       {
         "hts": "2309.90.10.50",
-        "description": "Other",
-        "ancestorPath": ["Preparations of a kind used in animal feeding", "Other", "Mixed feeds or mixed feed ingredients"],
-        "searchText": "preparations of a kind used in animal feeding other mixed feeds or mixed feed ingredients other 2309.90.10.50",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -3688,16 +3372,6 @@
       },
       {
         "hts": "2309.90.22.10",
-        "description": "Milk replacer",
-        "ancestorPath": [
-          "Preparations of a kind used in animal feeding",
-          "Other",
-          "Other",
-          "Animal feeds containing milk or milk derivatives",
-          "Containing over 10 percent by weight of milk solids",
-          "Described in general note 15 of the tariff schedule and entered pursuant to its provisions"
-        ],
-        "searchText": "preparations of a kind used in animal feeding other other animal feeds containing milk or milk derivatives containing over 10 percent by weight of milk solids described in general note 15 of the tariff schedule and entered pursuant to its provisions milk replacer 2309.90.22.10",
         "generalBefore": "7.5%",
         "generalNow": "7.5%",
         "status": "unchanged",
@@ -3705,16 +3379,6 @@
       },
       {
         "hts": "2309.90.22.90",
-        "description": "Other",
-        "ancestorPath": [
-          "Preparations of a kind used in animal feeding",
-          "Other",
-          "Other",
-          "Animal feeds containing milk or milk derivatives",
-          "Containing over 10 percent by weight of milk solids",
-          "Described in general note 15 of the tariff schedule and entered pursuant to its provisions"
-        ],
-        "searchText": "preparations of a kind used in animal feeding other other animal feeds containing milk or milk derivatives containing over 10 percent by weight of milk solids described in general note 15 of the tariff schedule and entered pursuant to its provisions other 2309.90.22.90",
         "generalBefore": "7.5%",
         "generalNow": "7.5%",
         "status": "unchanged",
@@ -3722,16 +3386,6 @@
       },
       {
         "hts": "2309.90.24.10",
-        "description": "Milk replacer",
-        "ancestorPath": [
-          "Preparations of a kind used in animal feeding",
-          "Other",
-          "Other",
-          "Animal feeds containing milk or milk derivatives",
-          "Containing over 10 percent by weight of milk solids",
-          "Described in additional U.S. note 2 to this chapter and entered pursuant to its provisions"
-        ],
-        "searchText": "preparations of a kind used in animal feeding other other animal feeds containing milk or milk derivatives containing over 10 percent by weight of milk solids described in additional u.s. note 2 to this chapter and entered pursuant to its provisions milk replacer 2309.90.24.10",
         "generalBefore": "7.5%",
         "generalNow": "7.5%",
         "status": "unchanged",
@@ -3739,16 +3393,6 @@
       },
       {
         "hts": "2309.90.24.90",
-        "description": "Other",
-        "ancestorPath": [
-          "Preparations of a kind used in animal feeding",
-          "Other",
-          "Other",
-          "Animal feeds containing milk or milk derivatives",
-          "Containing over 10 percent by weight of milk solids",
-          "Described in additional U.S. note 2 to this chapter and entered pursuant to its provisions"
-        ],
-        "searchText": "preparations of a kind used in animal feeding other other animal feeds containing milk or milk derivatives containing over 10 percent by weight of milk solids described in additional u.s. note 2 to this chapter and entered pursuant to its provisions other 2309.90.24.90",
         "generalBefore": "7.5%",
         "generalNow": "7.5%",
         "status": "unchanged",
@@ -3756,16 +3400,6 @@
       },
       {
         "hts": "2309.90.28.10",
-        "description": "Milk replacer",
-        "ancestorPath": [
-          "Preparations of a kind used in animal feeding",
-          "Other",
-          "Other",
-          "Animal feeds containing milk or milk derivatives",
-          "Containing over 10 percent by weight of milk solids",
-          "Other"
-        ],
-        "searchText": "preparations of a kind used in animal feeding other other animal feeds containing milk or milk derivatives containing over 10 percent by weight of milk solids other milk replacer 2309.90.28.10",
         "generalBefore": "80.4¢/kg + 6.4%",
         "generalNow": "80.4¢/kg + 6.4%",
         "status": "unchanged",
@@ -3773,16 +3407,6 @@
       },
       {
         "hts": "2309.90.28.90",
-        "description": "Other",
-        "ancestorPath": [
-          "Preparations of a kind used in animal feeding",
-          "Other",
-          "Other",
-          "Animal feeds containing milk or milk derivatives",
-          "Containing over 10 percent by weight of milk solids",
-          "Other"
-        ],
-        "searchText": "preparations of a kind used in animal feeding other other animal feeds containing milk or milk derivatives containing over 10 percent by weight of milk solids other other 2309.90.28.90",
         "generalBefore": "80.4¢/kg + 6.4%",
         "generalNow": "80.4¢/kg + 6.4%",
         "status": "unchanged",
@@ -3790,16 +3414,6 @@
       },
       {
         "hts": "2309.90.42.10",
-        "description": "Milk replacer",
-        "ancestorPath": [
-          "Preparations of a kind used in animal feeding",
-          "Other",
-          "Other",
-          "Animal feeds containing milk or milk derivatives",
-          "Other",
-          "Described in general note 15 of the tariff schedule and entered pursuant to its provisions"
-        ],
-        "searchText": "preparations of a kind used in animal feeding other other animal feeds containing milk or milk derivatives other described in general note 15 of the tariff schedule and entered pursuant to its provisions milk replacer 2309.90.42.10",
         "generalBefore": "7.5%",
         "generalNow": "7.5%",
         "status": "unchanged",
@@ -3807,16 +3421,6 @@
       },
       {
         "hts": "2309.90.42.90",
-        "description": "Other",
-        "ancestorPath": [
-          "Preparations of a kind used in animal feeding",
-          "Other",
-          "Other",
-          "Animal feeds containing milk or milk derivatives",
-          "Other",
-          "Described in general note 15 of the tariff schedule and entered pursuant to its provisions"
-        ],
-        "searchText": "preparations of a kind used in animal feeding other other animal feeds containing milk or milk derivatives other described in general note 15 of the tariff schedule and entered pursuant to its provisions other 2309.90.42.90",
         "generalBefore": "7.5%",
         "generalNow": "7.5%",
         "status": "unchanged",
@@ -3824,16 +3428,6 @@
       },
       {
         "hts": "2309.90.44.10",
-        "description": "Milk replacer",
-        "ancestorPath": [
-          "Preparations of a kind used in animal feeding",
-          "Other",
-          "Other",
-          "Animal feeds containing milk or milk derivatives",
-          "Other",
-          "Described in additional U.S. note 2 to this chapter and entered pursuant to its provisions"
-        ],
-        "searchText": "preparations of a kind used in animal feeding other other animal feeds containing milk or milk derivatives other described in additional u.s. note 2 to this chapter and entered pursuant to its provisions milk replacer 2309.90.44.10",
         "generalBefore": "7.5%",
         "generalNow": "7.5%",
         "status": "unchanged",
@@ -3841,16 +3435,6 @@
       },
       {
         "hts": "2309.90.44.90",
-        "description": "Other",
-        "ancestorPath": [
-          "Preparations of a kind used in animal feeding",
-          "Other",
-          "Other",
-          "Animal feeds containing milk or milk derivatives",
-          "Other",
-          "Described in additional U.S. note 2 to this chapter and entered pursuant to its provisions"
-        ],
-        "searchText": "preparations of a kind used in animal feeding other other animal feeds containing milk or milk derivatives other described in additional u.s. note 2 to this chapter and entered pursuant to its provisions other 2309.90.44.90",
         "generalBefore": "7.5%",
         "generalNow": "7.5%",
         "status": "unchanged",
@@ -3858,16 +3442,6 @@
       },
       {
         "hts": "2309.90.48.10",
-        "description": "Milk replacer",
-        "ancestorPath": [
-          "Preparations of a kind used in animal feeding",
-          "Other",
-          "Other",
-          "Animal feeds containing milk or milk derivatives",
-          "Other",
-          "Other"
-        ],
-        "searchText": "preparations of a kind used in animal feeding other other animal feeds containing milk or milk derivatives other other milk replacer 2309.90.48.10",
         "generalBefore": "80.4¢/kg + 6.4%",
         "generalNow": "80.4¢/kg + 6.4%",
         "status": "unchanged",
@@ -3875,16 +3449,6 @@
       },
       {
         "hts": "2309.90.48.90",
-        "description": "Other",
-        "ancestorPath": [
-          "Preparations of a kind used in animal feeding",
-          "Other",
-          "Other",
-          "Animal feeds containing milk or milk derivatives",
-          "Other",
-          "Other"
-        ],
-        "searchText": "preparations of a kind used in animal feeding other other animal feeds containing milk or milk derivatives other other other 2309.90.48.90",
         "generalBefore": "80.4¢/kg + 6.4%",
         "generalNow": "80.4¢/kg + 6.4%",
         "status": "unchanged",
@@ -3892,9 +3456,6 @@
       },
       {
         "hts": "2309.90.60.00",
-        "description": "Animal feeds containing egg",
-        "ancestorPath": ["Preparations of a kind used in animal feeding", "Other", "Other", "Other"],
-        "searchText": "preparations of a kind used in animal feeding other other other animal feeds containing egg 2309.90.60.00",
         "generalBefore": "1.9%",
         "generalNow": "1.9%",
         "status": "unchanged",
@@ -3902,9 +3463,6 @@
       },
       {
         "hts": "2309.90.70.00",
-        "description": "Preparations, with a basis of vitamin B12, for supplementing animal feed",
-        "ancestorPath": ["Preparations of a kind used in animal feeding", "Other", "Other", "Other", "Other"],
-        "searchText": "preparations of a kind used in animal feeding other other other other preparations, with a basis of vitamin b12, for supplementing animal feed 2309.90.70.00",
         "generalBefore": "1.4%",
         "generalNow": "1.4%",
         "status": "unchanged",
@@ -3912,9 +3470,6 @@
       },
       {
         "hts": "2309.90.95.00",
-        "description": "Other",
-        "ancestorPath": ["Preparations of a kind used in animal feeding", "Other", "Other", "Other", "Other"],
-        "searchText": "preparations of a kind used in animal feeding other other other other other 2309.90.95.00",
         "generalBefore": "1.4%",
         "generalNow": "1.4%",
         "status": "unchanged",
@@ -14326,13 +13881,6 @@
     "lines": [
       {
         "hts": "2301.10.00.00",
-        "description": "Flours, meals and pellets, of meat or meat offal; greaves (cracklings)",
-        "ancestorPath": [
-          "Flours, meals and pellets, of meat or meat offal, of fish or of crustaceans, molluscs or other aquatic invertebrates, unfit for human consumption; greaves (cracklings)"
-        ],
-        "searchText": "flours, meals and pellets, of meat or meat offal, of fish or of crustaceans, molluscs or other aquatic invertebrates, unfit for human consumption; greaves (cracklings) flours, meals and pellets, of meat or meat offal; greaves (cracklings) 2301.10.00.00",
-        "heading": "2301",
-        "general": "Free",
         "ruleIds": [
           "fda-registration",
           "fda-prior-notice",
@@ -14348,14 +13896,6 @@
       },
       {
         "hts": "2301.20.00.10",
-        "description": "Herring meal; pilchard meal",
-        "ancestorPath": [
-          "Flours, meals and pellets, of meat or meat offal, of fish or of crustaceans, molluscs or other aquatic invertebrates, unfit for human consumption; greaves (cracklings)",
-          "Flours, meals and pellets, of fish or of crustaceans, molluscs or other aquatic invertebrates"
-        ],
-        "searchText": "flours, meals and pellets, of meat or meat offal, of fish or of crustaceans, molluscs or other aquatic invertebrates, unfit for human consumption; greaves (cracklings) flours, meals and pellets, of fish or of crustaceans, molluscs or other aquatic invertebrates herring meal; pilchard meal 2301.20.00.10",
-        "heading": "2301",
-        "general": "Free",
         "ruleIds": [
           "fda-registration",
           "fda-prior-notice",
@@ -14371,14 +13911,6 @@
       },
       {
         "hts": "2301.20.00.90",
-        "description": "Other",
-        "ancestorPath": [
-          "Flours, meals and pellets, of meat or meat offal, of fish or of crustaceans, molluscs or other aquatic invertebrates, unfit for human consumption; greaves (cracklings)",
-          "Flours, meals and pellets, of fish or of crustaceans, molluscs or other aquatic invertebrates"
-        ],
-        "searchText": "flours, meals and pellets, of meat or meat offal, of fish or of crustaceans, molluscs or other aquatic invertebrates, unfit for human consumption; greaves (cracklings) flours, meals and pellets, of fish or of crustaceans, molluscs or other aquatic invertebrates other 2301.20.00.90",
-        "heading": "2301",
-        "general": "Free",
         "ruleIds": [
           "fda-registration",
           "fda-prior-notice",
@@ -14394,419 +13926,171 @@
       },
       {
         "hts": "2302.10.00.00",
-        "description": "Of corn (maize)",
-        "ancestorPath": [
-          "Bran, sharps (middlings) and other residues, whether or not in the form of pellets, derived from the sifting, milling or other working of cereals or of leguminous plants"
-        ],
-        "searchText": "bran, sharps (middlings) and other residues, whether or not in the form of pellets, derived from the sifting, milling or other working of cereals or of leguminous plants of corn (maize) 2302.10.00.00",
-        "heading": "2302",
-        "general": "Free",
         "ruleIds": ["fda-registration", "fda-prior-notice", "fda-fsvp", "fda-pcaf", "fda-label"],
         "leverIds": ["usmca", "drawback"]
       },
       {
         "hts": "2302.30.00.10",
-        "description": "Bran, shorts and middlings",
-        "ancestorPath": [
-          "Bran, sharps (middlings) and other residues, whether or not in the form of pellets, derived from the sifting, milling or other working of cereals or of leguminous plants",
-          "Of wheat"
-        ],
-        "searchText": "bran, sharps (middlings) and other residues, whether or not in the form of pellets, derived from the sifting, milling or other working of cereals or of leguminous plants of wheat bran, shorts and middlings 2302.30.00.10",
-        "heading": "2302",
-        "general": "Free",
         "ruleIds": ["fda-registration", "fda-prior-notice", "fda-fsvp", "fda-pcaf", "fda-label"],
         "leverIds": ["usmca", "drawback"]
       },
       {
         "hts": "2302.30.00.90",
-        "description": "Other",
-        "ancestorPath": [
-          "Bran, sharps (middlings) and other residues, whether or not in the form of pellets, derived from the sifting, milling or other working of cereals or of leguminous plants",
-          "Of wheat"
-        ],
-        "searchText": "bran, sharps (middlings) and other residues, whether or not in the form of pellets, derived from the sifting, milling or other working of cereals or of leguminous plants of wheat other 2302.30.00.90",
-        "heading": "2302",
-        "general": "Free",
         "ruleIds": ["fda-registration", "fda-prior-notice", "fda-fsvp", "fda-pcaf", "fda-label"],
         "leverIds": ["usmca", "drawback"]
       },
       {
         "hts": "2302.40.01.05",
-        "description": "Of rice",
-        "ancestorPath": [
-          "Bran, sharps (middlings) and other residues, whether or not in the form of pellets, derived from the sifting, milling or other working of cereals or of leguminous plants",
-          "Of other cereals"
-        ],
-        "searchText": "bran, sharps (middlings) and other residues, whether or not in the form of pellets, derived from the sifting, milling or other working of cereals or of leguminous plants of other cereals of rice 2302.40.01.05",
-        "heading": "2302",
-        "general": "Free",
         "ruleIds": ["fda-registration", "fda-prior-notice", "fda-fsvp", "fda-pcaf", "fda-label"],
         "leverIds": ["usmca", "drawback"]
       },
       {
         "hts": "2302.40.01.10",
-        "description": "Of other single cereal grains, chopped, crushed or ground",
-        "ancestorPath": [
-          "Bran, sharps (middlings) and other residues, whether or not in the form of pellets, derived from the sifting, milling or other working of cereals or of leguminous plants",
-          "Of other cereals"
-        ],
-        "searchText": "bran, sharps (middlings) and other residues, whether or not in the form of pellets, derived from the sifting, milling or other working of cereals or of leguminous plants of other cereals of other single cereal grains, chopped, crushed or ground 2302.40.01.10",
-        "heading": "2302",
-        "general": "Free",
         "ruleIds": ["fda-registration", "fda-prior-notice", "fda-fsvp", "fda-pcaf", "fda-label"],
         "leverIds": ["usmca", "drawback"]
       },
       {
         "hts": "2302.40.01.20",
-        "description": "Pelletized screenings (clearings)",
-        "ancestorPath": [
-          "Bran, sharps (middlings) and other residues, whether or not in the form of pellets, derived from the sifting, milling or other working of cereals or of leguminous plants",
-          "Of other cereals",
-          "Other"
-        ],
-        "searchText": "bran, sharps (middlings) and other residues, whether or not in the form of pellets, derived from the sifting, milling or other working of cereals or of leguminous plants of other cereals other pelletized screenings (clearings) 2302.40.01.20",
-        "heading": "2302",
-        "general": "Free",
         "ruleIds": ["fda-registration", "fda-prior-notice", "fda-fsvp", "fda-pcaf", "fda-label"],
         "leverIds": ["usmca", "drawback"]
       },
       {
         "hts": "2302.40.01.90",
-        "description": "Other",
-        "ancestorPath": [
-          "Bran, sharps (middlings) and other residues, whether or not in the form of pellets, derived from the sifting, milling or other working of cereals or of leguminous plants",
-          "Of other cereals",
-          "Other"
-        ],
-        "searchText": "bran, sharps (middlings) and other residues, whether or not in the form of pellets, derived from the sifting, milling or other working of cereals or of leguminous plants of other cereals other other 2302.40.01.90",
-        "heading": "2302",
-        "general": "Free",
         "ruleIds": ["fda-registration", "fda-prior-notice", "fda-fsvp", "fda-pcaf", "fda-label"],
         "leverIds": ["usmca", "drawback"]
       },
       {
         "hts": "2302.50.00.00",
-        "description": "Of leguminous plants",
-        "ancestorPath": [
-          "Bran, sharps (middlings) and other residues, whether or not in the form of pellets, derived from the sifting, milling or other working of cereals or of leguminous plants"
-        ],
-        "searchText": "bran, sharps (middlings) and other residues, whether or not in the form of pellets, derived from the sifting, milling or other working of cereals or of leguminous plants of leguminous plants 2302.50.00.00",
-        "heading": "2302",
-        "general": "1.4%",
         "ruleIds": ["fda-registration", "fda-prior-notice", "fda-fsvp", "fda-pcaf", "fda-label"],
         "leverIds": ["usmca", "fta", "drawback"]
       },
       {
         "hts": "2303.10.00.10",
-        "description": "Corn gluten feed",
-        "ancestorPath": [
-          "Residues of starch manufacture and similar residues, beet-pulp, bagasse and other waste of sugar manufacture, brewing or distilling dregs and waste, whether or not in the form of pellets",
-          "Residues of starch manufacture and similar residues"
-        ],
-        "searchText": "residues of starch manufacture and similar residues, beet-pulp, bagasse and other waste of sugar manufacture, brewing or distilling dregs and waste, whether or not in the form of pellets residues of starch manufacture and similar residues corn gluten feed 2303.10.00.10",
-        "heading": "2303",
-        "general": "1.4%",
         "ruleIds": ["fda-registration", "fda-prior-notice", "fda-fsvp", "fda-pcaf", "fda-label", "fda-ia-melamine"],
         "leverIds": ["usmca", "fta", "drawback"]
       },
       {
         "hts": "2303.10.00.20",
-        "description": "Corn gluten meal",
-        "ancestorPath": [
-          "Residues of starch manufacture and similar residues, beet-pulp, bagasse and other waste of sugar manufacture, brewing or distilling dregs and waste, whether or not in the form of pellets",
-          "Residues of starch manufacture and similar residues"
-        ],
-        "searchText": "residues of starch manufacture and similar residues, beet-pulp, bagasse and other waste of sugar manufacture, brewing or distilling dregs and waste, whether or not in the form of pellets residues of starch manufacture and similar residues corn gluten meal 2303.10.00.20",
-        "heading": "2303",
-        "general": "1.4%",
         "ruleIds": ["fda-registration", "fda-prior-notice", "fda-fsvp", "fda-pcaf", "fda-label", "fda-ia-melamine"],
         "leverIds": ["usmca", "fta", "drawback"]
       },
       {
         "hts": "2303.10.00.40",
-        "description": "Other",
-        "ancestorPath": [
-          "Residues of starch manufacture and similar residues, beet-pulp, bagasse and other waste of sugar manufacture, brewing or distilling dregs and waste, whether or not in the form of pellets",
-          "Residues of starch manufacture and similar residues"
-        ],
-        "searchText": "residues of starch manufacture and similar residues, beet-pulp, bagasse and other waste of sugar manufacture, brewing or distilling dregs and waste, whether or not in the form of pellets residues of starch manufacture and similar residues other 2303.10.00.40",
-        "heading": "2303",
-        "general": "1.4%",
         "ruleIds": ["fda-registration", "fda-prior-notice", "fda-fsvp", "fda-pcaf", "fda-label", "fda-ia-melamine"],
         "leverIds": ["usmca", "fta", "drawback"]
       },
       {
         "hts": "2303.20.00.20",
-        "description": "Dried beet-pulp",
-        "ancestorPath": [
-          "Residues of starch manufacture and similar residues, beet-pulp, bagasse and other waste of sugar manufacture, brewing or distilling dregs and waste, whether or not in the form of pellets",
-          "Beet-pulp, bagasse and other waste of sugar manufacture"
-        ],
-        "searchText": "residues of starch manufacture and similar residues, beet-pulp, bagasse and other waste of sugar manufacture, brewing or distilling dregs and waste, whether or not in the form of pellets beet-pulp, bagasse and other waste of sugar manufacture dried beet-pulp 2303.20.00.20",
-        "heading": "2303",
-        "general": "Free",
         "ruleIds": ["fda-registration", "fda-prior-notice", "fda-fsvp", "fda-pcaf", "fda-label", "fda-ia-melamine"],
         "leverIds": ["usmca", "drawback"]
       },
       {
         "hts": "2303.20.00.40",
-        "description": "Other",
-        "ancestorPath": [
-          "Residues of starch manufacture and similar residues, beet-pulp, bagasse and other waste of sugar manufacture, brewing or distilling dregs and waste, whether or not in the form of pellets",
-          "Beet-pulp, bagasse and other waste of sugar manufacture"
-        ],
-        "searchText": "residues of starch manufacture and similar residues, beet-pulp, bagasse and other waste of sugar manufacture, brewing or distilling dregs and waste, whether or not in the form of pellets beet-pulp, bagasse and other waste of sugar manufacture other 2303.20.00.40",
-        "heading": "2303",
-        "general": "Free",
         "ruleIds": ["fda-registration", "fda-prior-notice", "fda-fsvp", "fda-pcaf", "fda-label", "fda-ia-melamine"],
         "leverIds": ["usmca", "drawback"]
       },
       {
         "hts": "2303.30.00.00",
-        "description": "Brewing or distilling dregs and waste",
-        "ancestorPath": [
-          "Residues of starch manufacture and similar residues, beet-pulp, bagasse and other waste of sugar manufacture, brewing or distilling dregs and waste, whether or not in the form of pellets"
-        ],
-        "searchText": "residues of starch manufacture and similar residues, beet-pulp, bagasse and other waste of sugar manufacture, brewing or distilling dregs and waste, whether or not in the form of pellets brewing or distilling dregs and waste 2303.30.00.00",
-        "heading": "2303",
-        "general": "Free",
         "ruleIds": ["fda-registration", "fda-prior-notice", "fda-fsvp", "fda-pcaf", "fda-label", "fda-ia-melamine"],
         "leverIds": ["usmca", "drawback"]
       },
       {
         "hts": "2304.00.00.10",
-        "description": "Certified organic",
-        "ancestorPath": ["Oilcake and other solid residues, whether or not ground or in the form of pellets, resulting from the extraction of soybean oil"],
-        "searchText": "oilcake and other solid residues, whether or not ground or in the form of pellets, resulting from the extraction of soybean oil certified organic 2304.00.00.10",
-        "heading": "2304",
-        "general": "0.45¢/kg",
         "ruleIds": ["fda-registration", "fda-prior-notice", "fda-fsvp", "fda-pcaf", "fda-label", "fda-ia-melamine"],
         "leverIds": ["usmca", "fta", "drawback"]
       },
       {
         "hts": "2304.00.00.90",
-        "description": "Other",
-        "ancestorPath": ["Oilcake and other solid residues, whether or not ground or in the form of pellets, resulting from the extraction of soybean oil"],
-        "searchText": "oilcake and other solid residues, whether or not ground or in the form of pellets, resulting from the extraction of soybean oil other 2304.00.00.90",
-        "heading": "2304",
-        "general": "0.45¢/kg",
         "ruleIds": ["fda-registration", "fda-prior-notice", "fda-fsvp", "fda-pcaf", "fda-label", "fda-ia-melamine"],
         "leverIds": ["usmca", "fta", "drawback"]
       },
       {
         "hts": "2305.00.00.00",
-        "description": "Oilcake and other solid residues, whether or not ground or in the form of pellets, resulting from the extraction of peanut (ground-nut) oil",
-        "ancestorPath": [],
-        "searchText": "oilcake and other solid residues, whether or not ground or in the form of pellets, resulting from the extraction of peanut (ground-nut) oil 2305.00.00.00",
-        "heading": "2305",
-        "general": "0.32¢/kg",
         "ruleIds": ["fda-registration", "fda-prior-notice", "fda-fsvp", "fda-pcaf", "fda-label"],
         "leverIds": ["usmca", "fta", "drawback"]
       },
       {
         "hts": "2306.10.00.00",
-        "description": "Of cotton seeds",
-        "ancestorPath": [
-          "Oilcake and other solid residues, whether or not ground or in the form of pellets, resulting from the extraction of vegetable or microbial fats or oils, other than those of heading 2304 or 2305"
-        ],
-        "searchText": "oilcake and other solid residues, whether or not ground or in the form of pellets, resulting from the extraction of vegetable or microbial fats or oils, other than those of heading 2304 or 2305 of cotton seeds 2306.10.00.00",
-        "heading": "2306",
-        "general": "0.56¢/kg",
         "ruleIds": ["fda-registration", "fda-prior-notice", "fda-fsvp", "fda-pcaf", "fda-label"],
         "leverIds": ["usmca", "fta", "drawback"]
       },
       {
         "hts": "2306.20.00.00",
-        "description": "Of linseed",
-        "ancestorPath": [
-          "Oilcake and other solid residues, whether or not ground or in the form of pellets, resulting from the extraction of vegetable or microbial fats or oils, other than those of heading 2304 or 2305"
-        ],
-        "searchText": "oilcake and other solid residues, whether or not ground or in the form of pellets, resulting from the extraction of vegetable or microbial fats or oils, other than those of heading 2304 or 2305 of linseed 2306.20.00.00",
-        "heading": "2306",
-        "general": "0.12¢/kg",
         "ruleIds": ["fda-registration", "fda-prior-notice", "fda-fsvp", "fda-pcaf", "fda-label"],
         "leverIds": ["usmca", "fta", "drawback"]
       },
       {
         "hts": "2306.30.00.00",
-        "description": "Of sunflower seeds",
-        "ancestorPath": [
-          "Oilcake and other solid residues, whether or not ground or in the form of pellets, resulting from the extraction of vegetable or microbial fats or oils, other than those of heading 2304 or 2305"
-        ],
-        "searchText": "oilcake and other solid residues, whether or not ground or in the form of pellets, resulting from the extraction of vegetable or microbial fats or oils, other than those of heading 2304 or 2305 of sunflower seeds 2306.30.00.00",
-        "heading": "2306",
-        "general": "0.45¢/kg",
         "ruleIds": ["fda-registration", "fda-prior-notice", "fda-fsvp", "fda-pcaf", "fda-label"],
         "leverIds": ["usmca", "fta", "drawback"]
       },
       {
         "hts": "2306.41.00.00",
-        "description": "Of low euricic acid rape or colza seeds",
-        "ancestorPath": [
-          "Oilcake and other solid residues, whether or not ground or in the form of pellets, resulting from the extraction of vegetable or microbial fats or oils, other than those of heading 2304 or 2305",
-          "Of rape or colza seeds"
-        ],
-        "searchText": "oilcake and other solid residues, whether or not ground or in the form of pellets, resulting from the extraction of vegetable or microbial fats or oils, other than those of heading 2304 or 2305 of rape or colza seeds of low euricic acid rape or colza seeds 2306.41.00.00",
-        "heading": "2306",
-        "general": "0.17¢/kg",
         "ruleIds": ["fda-registration", "fda-prior-notice", "fda-fsvp", "fda-pcaf", "fda-label"],
         "leverIds": ["usmca", "fta", "drawback"]
       },
       {
         "hts": "2306.49.00.00",
-        "description": "Other",
-        "ancestorPath": [
-          "Oilcake and other solid residues, whether or not ground or in the form of pellets, resulting from the extraction of vegetable or microbial fats or oils, other than those of heading 2304 or 2305",
-          "Of rape or colza seeds"
-        ],
-        "searchText": "oilcake and other solid residues, whether or not ground or in the form of pellets, resulting from the extraction of vegetable or microbial fats or oils, other than those of heading 2304 or 2305 of rape or colza seeds other 2306.49.00.00",
-        "heading": "2306",
-        "general": "0.17¢/kg",
         "ruleIds": ["fda-registration", "fda-prior-notice", "fda-fsvp", "fda-pcaf", "fda-label"],
         "leverIds": ["usmca", "fta", "drawback"]
       },
       {
         "hts": "2306.50.00.00",
-        "description": "Of coconut or copra",
-        "ancestorPath": [
-          "Oilcake and other solid residues, whether or not ground or in the form of pellets, resulting from the extraction of vegetable or microbial fats or oils, other than those of heading 2304 or 2305"
-        ],
-        "searchText": "oilcake and other solid residues, whether or not ground or in the form of pellets, resulting from the extraction of vegetable or microbial fats or oils, other than those of heading 2304 or 2305 of coconut or copra 2306.50.00.00",
-        "heading": "2306",
-        "general": "0.45¢/kg",
         "ruleIds": ["fda-registration", "fda-prior-notice", "fda-fsvp", "fda-pcaf", "fda-label"],
         "leverIds": ["usmca", "fta", "drawback"]
       },
       {
         "hts": "2306.60.00.00",
-        "description": "Of palm nuts or kernels",
-        "ancestorPath": [
-          "Oilcake and other solid residues, whether or not ground or in the form of pellets, resulting from the extraction of vegetable or microbial fats or oils, other than those of heading 2304 or 2305"
-        ],
-        "searchText": "oilcake and other solid residues, whether or not ground or in the form of pellets, resulting from the extraction of vegetable or microbial fats or oils, other than those of heading 2304 or 2305 of palm nuts or kernels 2306.60.00.00",
-        "heading": "2306",
-        "general": "0.32¢/kg",
         "ruleIds": ["fda-registration", "fda-prior-notice", "fda-fsvp", "fda-pcaf", "fda-label"],
         "leverIds": ["usmca", "fta", "drawback"]
       },
       {
         "hts": "2306.90.01.20",
-        "description": "Of corn",
-        "ancestorPath": [
-          "Oilcake and other solid residues, whether or not ground or in the form of pellets, resulting from the extraction of vegetable or microbial fats or oils, other than those of heading 2304 or 2305",
-          "Other"
-        ],
-        "searchText": "oilcake and other solid residues, whether or not ground or in the form of pellets, resulting from the extraction of vegetable or microbial fats or oils, other than those of heading 2304 or 2305 other of corn 2306.90.01.20",
-        "heading": "2306",
-        "general": "0.32¢/kg",
         "ruleIds": ["fda-registration", "fda-prior-notice", "fda-fsvp", "fda-pcaf", "fda-label"],
         "leverIds": ["usmca", "fta", "drawback"]
       },
       {
         "hts": "2306.90.01.30",
-        "description": "Of hemp seeds",
-        "ancestorPath": [
-          "Oilcake and other solid residues, whether or not ground or in the form of pellets, resulting from the extraction of vegetable or microbial fats or oils, other than those of heading 2304 or 2305",
-          "Other"
-        ],
-        "searchText": "oilcake and other solid residues, whether or not ground or in the form of pellets, resulting from the extraction of vegetable or microbial fats or oils, other than those of heading 2304 or 2305 other of hemp seeds 2306.90.01.30",
-        "heading": "2306",
-        "general": "0.32¢/kg",
         "ruleIds": ["fda-registration", "fda-prior-notice", "fda-fsvp", "fda-pcaf", "fda-label"],
         "leverIds": ["usmca", "fta", "drawback"]
       },
       {
         "hts": "2306.90.01.50",
-        "description": "Other",
-        "ancestorPath": [
-          "Oilcake and other solid residues, whether or not ground or in the form of pellets, resulting from the extraction of vegetable or microbial fats or oils, other than those of heading 2304 or 2305",
-          "Other"
-        ],
-        "searchText": "oilcake and other solid residues, whether or not ground or in the form of pellets, resulting from the extraction of vegetable or microbial fats or oils, other than those of heading 2304 or 2305 other other 2306.90.01.50",
-        "heading": "2306",
-        "general": "0.32¢/kg",
         "ruleIds": ["fda-registration", "fda-prior-notice", "fda-fsvp", "fda-pcaf", "fda-label"],
         "leverIds": ["usmca", "fta", "drawback"]
       },
       {
         "hts": "2307.00.00.00",
-        "description": "Wine lees; argol",
-        "ancestorPath": [],
-        "searchText": "wine lees; argol 2307.00.00.00",
-        "heading": "2307",
-        "general": "Free",
         "ruleIds": ["fda-registration", "fda-prior-notice", "fda-fsvp", "fda-pcaf", "fda-label"],
         "leverIds": ["usmca", "drawback"]
       },
       {
         "hts": "2308.00.10.00",
-        "description": "Acorns and horse-chestnuts",
-        "ancestorPath": [
-          "Vegetable materials and vegetable waste, vegetable residues and byproducts, whether or not in the form of pellets, of a kind used in animal feeding, not elsewhere specified or included"
-        ],
-        "searchText": "vegetable materials and vegetable waste, vegetable residues and byproducts, whether or not in the form of pellets, of a kind used in animal feeding, not elsewhere specified or included acorns and horse-chestnuts 2308.00.10.00",
-        "heading": "2308",
-        "general": "1.4%",
         "ruleIds": ["fda-registration", "fda-prior-notice", "fda-fsvp", "fda-pcaf", "fda-label"],
         "leverIds": ["usmca", "fta", "drawback"]
       },
       {
         "hts": "2308.00.93.00",
-        "description": "Screenings, scalpings, chaff or scourings, ground, or not ground, of flaxseed (linseed)",
-        "ancestorPath": [
-          "Vegetable materials and vegetable waste, vegetable residues and byproducts, whether or not in the form of pellets, of a kind used in animal feeding, not elsewhere specified or included"
-        ],
-        "searchText": "vegetable materials and vegetable waste, vegetable residues and byproducts, whether or not in the form of pellets, of a kind used in animal feeding, not elsewhere specified or included screenings, scalpings, chaff or scourings, ground, or not ground, of flaxseed (linseed) 2308.00.93.00",
-        "heading": "2308",
-        "general": "Free",
         "ruleIds": ["fda-registration", "fda-prior-notice", "fda-fsvp", "fda-pcaf", "fda-label"],
         "leverIds": ["usmca", "drawback"]
       },
       {
         "hts": "2308.00.95.00",
-        "description": "Dehydrated marigolds",
-        "ancestorPath": [
-          "Vegetable materials and vegetable waste, vegetable residues and byproducts, whether or not in the form of pellets, of a kind used in animal feeding, not elsewhere specified or included"
-        ],
-        "searchText": "vegetable materials and vegetable waste, vegetable residues and byproducts, whether or not in the form of pellets, of a kind used in animal feeding, not elsewhere specified or included dehydrated marigolds 2308.00.95.00",
-        "heading": "2308",
-        "general": "1.9%",
         "ruleIds": ["fda-registration", "fda-prior-notice", "fda-fsvp", "fda-pcaf", "fda-label"],
         "leverIds": ["usmca", "fta", "drawback"]
       },
       {
         "hts": "2308.00.98.20",
-        "description": "Citrus pulp pellets",
-        "ancestorPath": [
-          "Vegetable materials and vegetable waste, vegetable residues and byproducts, whether or not in the form of pellets, of a kind used in animal feeding, not elsewhere specified or included",
-          "Other"
-        ],
-        "searchText": "vegetable materials and vegetable waste, vegetable residues and byproducts, whether or not in the form of pellets, of a kind used in animal feeding, not elsewhere specified or included other citrus pulp pellets 2308.00.98.20",
-        "heading": "2308",
-        "general": "1.4%",
         "ruleIds": ["fda-registration", "fda-prior-notice", "fda-fsvp", "fda-pcaf", "fda-label"],
         "leverIds": ["usmca", "fta", "drawback"]
       },
       {
         "hts": "2308.00.98.90",
-        "description": "Other",
-        "ancestorPath": [
-          "Vegetable materials and vegetable waste, vegetable residues and byproducts, whether or not in the form of pellets, of a kind used in animal feeding, not elsewhere specified or included",
-          "Other"
-        ],
-        "searchText": "vegetable materials and vegetable waste, vegetable residues and byproducts, whether or not in the form of pellets, of a kind used in animal feeding, not elsewhere specified or included other other 2308.00.98.90",
-        "heading": "2308",
-        "general": "1.4%",
         "ruleIds": ["fda-registration", "fda-prior-notice", "fda-fsvp", "fda-pcaf", "fda-label"],
         "leverIds": ["usmca", "fta", "drawback"]
       },
       {
         "hts": "2309.10.00.10",
-        "description": "In airtight containers",
-        "ancestorPath": ["Preparations of a kind used in animal feeding", "Dog or cat food, put up for retail sale"],
-        "searchText": "preparations of a kind used in animal feeding dog or cat food, put up for retail sale in airtight containers 2309.10.00.10",
-        "heading": "2309",
-        "general": "Free",
         "ruleIds": [
           "fda-registration",
           "fda-prior-notice",
@@ -14823,11 +14107,6 @@
       },
       {
         "hts": "2309.10.00.90",
-        "description": "Other",
-        "ancestorPath": ["Preparations of a kind used in animal feeding", "Dog or cat food, put up for retail sale"],
-        "searchText": "preparations of a kind used in animal feeding dog or cat food, put up for retail sale other 2309.10.00.90",
-        "heading": "2309",
-        "general": "Free",
         "ruleIds": [
           "fda-registration",
           "fda-prior-notice",
@@ -14844,11 +14123,6 @@
       },
       {
         "hts": "2309.90.10.05",
-        "description": "Bird seed",
-        "ancestorPath": ["Preparations of a kind used in animal feeding", "Other", "Mixed feeds or mixed feed ingredients"],
-        "searchText": "preparations of a kind used in animal feeding other mixed feeds or mixed feed ingredients bird seed 2309.90.10.05",
-        "heading": "2309",
-        "general": "Free",
         "ruleIds": [
           "fda-registration",
           "fda-prior-notice",
@@ -14864,11 +14138,6 @@
       },
       {
         "hts": "2309.90.10.15",
-        "description": "Other pet food, put up for retail sale",
-        "ancestorPath": ["Preparations of a kind used in animal feeding", "Other", "Mixed feeds or mixed feed ingredients"],
-        "searchText": "preparations of a kind used in animal feeding other mixed feeds or mixed feed ingredients other pet food, put up for retail sale 2309.90.10.15",
-        "heading": "2309",
-        "general": "Free",
         "ruleIds": [
           "fda-registration",
           "fda-prior-notice",
@@ -14885,11 +14154,6 @@
       },
       {
         "hts": "2309.90.10.20",
-        "description": "Poultry feeds, prepared",
-        "ancestorPath": ["Preparations of a kind used in animal feeding", "Other", "Mixed feeds or mixed feed ingredients"],
-        "searchText": "preparations of a kind used in animal feeding other mixed feeds or mixed feed ingredients poultry feeds, prepared 2309.90.10.20",
-        "heading": "2309",
-        "general": "Free",
         "ruleIds": [
           "fda-registration",
           "fda-prior-notice",
@@ -14905,11 +14169,6 @@
       },
       {
         "hts": "2309.90.10.30",
-        "description": "Dairy cattle feed, prepared",
-        "ancestorPath": ["Preparations of a kind used in animal feeding", "Other", "Mixed feeds or mixed feed ingredients"],
-        "searchText": "preparations of a kind used in animal feeding other mixed feeds or mixed feed ingredients dairy cattle feed, prepared 2309.90.10.30",
-        "heading": "2309",
-        "general": "Free",
         "ruleIds": [
           "fda-registration",
           "fda-prior-notice",
@@ -14925,11 +14184,6 @@
       },
       {
         "hts": "2309.90.10.32",
-        "description": "Other cattle feed, prepared",
-        "ancestorPath": ["Preparations of a kind used in animal feeding", "Other", "Mixed feeds or mixed feed ingredients"],
-        "searchText": "preparations of a kind used in animal feeding other mixed feeds or mixed feed ingredients other cattle feed, prepared 2309.90.10.32",
-        "heading": "2309",
-        "general": "Free",
         "ruleIds": [
           "fda-registration",
           "fda-prior-notice",
@@ -14945,11 +14199,6 @@
       },
       {
         "hts": "2309.90.10.35",
-        "description": "Swine feed, prepared",
-        "ancestorPath": ["Preparations of a kind used in animal feeding", "Other", "Mixed feeds or mixed feed ingredients"],
-        "searchText": "preparations of a kind used in animal feeding other mixed feeds or mixed feed ingredients swine feed, prepared 2309.90.10.35",
-        "heading": "2309",
-        "general": "Free",
         "ruleIds": [
           "fda-registration",
           "fda-prior-notice",
@@ -14965,11 +14214,6 @@
       },
       {
         "hts": "2309.90.10.45",
-        "description": "Other livestock feed, prepared",
-        "ancestorPath": ["Preparations of a kind used in animal feeding", "Other", "Mixed feeds or mixed feed ingredients"],
-        "searchText": "preparations of a kind used in animal feeding other mixed feeds or mixed feed ingredients other livestock feed, prepared 2309.90.10.45",
-        "heading": "2309",
-        "general": "Free",
         "ruleIds": [
           "fda-registration",
           "fda-prior-notice",
@@ -14985,11 +14229,6 @@
       },
       {
         "hts": "2309.90.10.50",
-        "description": "Other",
-        "ancestorPath": ["Preparations of a kind used in animal feeding", "Other", "Mixed feeds or mixed feed ingredients"],
-        "searchText": "preparations of a kind used in animal feeding other mixed feeds or mixed feed ingredients other 2309.90.10.50",
-        "heading": "2309",
-        "general": "Free",
         "ruleIds": [
           "fda-registration",
           "fda-prior-notice",
@@ -15005,18 +14244,6 @@
       },
       {
         "hts": "2309.90.22.10",
-        "description": "Milk replacer",
-        "ancestorPath": [
-          "Preparations of a kind used in animal feeding",
-          "Other",
-          "Other",
-          "Animal feeds containing milk or milk derivatives",
-          "Containing over 10 percent by weight of milk solids",
-          "Described in general note 15 of the tariff schedule and entered pursuant to its provisions"
-        ],
-        "searchText": "preparations of a kind used in animal feeding other other animal feeds containing milk or milk derivatives containing over 10 percent by weight of milk solids described in general note 15 of the tariff schedule and entered pursuant to its provisions milk replacer 2309.90.22.10",
-        "heading": "2309",
-        "general": "7.5%",
         "ruleIds": [
           "fda-registration",
           "fda-prior-notice",
@@ -15033,18 +14260,6 @@
       },
       {
         "hts": "2309.90.22.90",
-        "description": "Other",
-        "ancestorPath": [
-          "Preparations of a kind used in animal feeding",
-          "Other",
-          "Other",
-          "Animal feeds containing milk or milk derivatives",
-          "Containing over 10 percent by weight of milk solids",
-          "Described in general note 15 of the tariff schedule and entered pursuant to its provisions"
-        ],
-        "searchText": "preparations of a kind used in animal feeding other other animal feeds containing milk or milk derivatives containing over 10 percent by weight of milk solids described in general note 15 of the tariff schedule and entered pursuant to its provisions other 2309.90.22.90",
-        "heading": "2309",
-        "general": "7.5%",
         "ruleIds": [
           "fda-registration",
           "fda-prior-notice",
@@ -15061,18 +14276,6 @@
       },
       {
         "hts": "2309.90.24.10",
-        "description": "Milk replacer",
-        "ancestorPath": [
-          "Preparations of a kind used in animal feeding",
-          "Other",
-          "Other",
-          "Animal feeds containing milk or milk derivatives",
-          "Containing over 10 percent by weight of milk solids",
-          "Described in additional U.S. note 2 to this chapter and entered pursuant to its provisions"
-        ],
-        "searchText": "preparations of a kind used in animal feeding other other animal feeds containing milk or milk derivatives containing over 10 percent by weight of milk solids described in additional u.s. note 2 to this chapter and entered pursuant to its provisions milk replacer 2309.90.24.10",
-        "heading": "2309",
-        "general": "7.5%",
         "ruleIds": [
           "fda-registration",
           "fda-prior-notice",
@@ -15089,18 +14292,6 @@
       },
       {
         "hts": "2309.90.24.90",
-        "description": "Other",
-        "ancestorPath": [
-          "Preparations of a kind used in animal feeding",
-          "Other",
-          "Other",
-          "Animal feeds containing milk or milk derivatives",
-          "Containing over 10 percent by weight of milk solids",
-          "Described in additional U.S. note 2 to this chapter and entered pursuant to its provisions"
-        ],
-        "searchText": "preparations of a kind used in animal feeding other other animal feeds containing milk or milk derivatives containing over 10 percent by weight of milk solids described in additional u.s. note 2 to this chapter and entered pursuant to its provisions other 2309.90.24.90",
-        "heading": "2309",
-        "general": "7.5%",
         "ruleIds": [
           "fda-registration",
           "fda-prior-notice",
@@ -15117,18 +14308,6 @@
       },
       {
         "hts": "2309.90.28.10",
-        "description": "Milk replacer",
-        "ancestorPath": [
-          "Preparations of a kind used in animal feeding",
-          "Other",
-          "Other",
-          "Animal feeds containing milk or milk derivatives",
-          "Containing over 10 percent by weight of milk solids",
-          "Other"
-        ],
-        "searchText": "preparations of a kind used in animal feeding other other animal feeds containing milk or milk derivatives containing over 10 percent by weight of milk solids other milk replacer 2309.90.28.10",
-        "heading": "2309",
-        "general": "80.4¢/kg + 6.4%",
         "ruleIds": [
           "fda-registration",
           "fda-prior-notice",
@@ -15145,18 +14324,6 @@
       },
       {
         "hts": "2309.90.28.90",
-        "description": "Other",
-        "ancestorPath": [
-          "Preparations of a kind used in animal feeding",
-          "Other",
-          "Other",
-          "Animal feeds containing milk or milk derivatives",
-          "Containing over 10 percent by weight of milk solids",
-          "Other"
-        ],
-        "searchText": "preparations of a kind used in animal feeding other other animal feeds containing milk or milk derivatives containing over 10 percent by weight of milk solids other other 2309.90.28.90",
-        "heading": "2309",
-        "general": "80.4¢/kg + 6.4%",
         "ruleIds": [
           "fda-registration",
           "fda-prior-notice",
@@ -15173,18 +14340,6 @@
       },
       {
         "hts": "2309.90.42.10",
-        "description": "Milk replacer",
-        "ancestorPath": [
-          "Preparations of a kind used in animal feeding",
-          "Other",
-          "Other",
-          "Animal feeds containing milk or milk derivatives",
-          "Other",
-          "Described in general note 15 of the tariff schedule and entered pursuant to its provisions"
-        ],
-        "searchText": "preparations of a kind used in animal feeding other other animal feeds containing milk or milk derivatives other described in general note 15 of the tariff schedule and entered pursuant to its provisions milk replacer 2309.90.42.10",
-        "heading": "2309",
-        "general": "7.5%",
         "ruleIds": [
           "fda-registration",
           "fda-prior-notice",
@@ -15201,18 +14356,6 @@
       },
       {
         "hts": "2309.90.42.90",
-        "description": "Other",
-        "ancestorPath": [
-          "Preparations of a kind used in animal feeding",
-          "Other",
-          "Other",
-          "Animal feeds containing milk or milk derivatives",
-          "Other",
-          "Described in general note 15 of the tariff schedule and entered pursuant to its provisions"
-        ],
-        "searchText": "preparations of a kind used in animal feeding other other animal feeds containing milk or milk derivatives other described in general note 15 of the tariff schedule and entered pursuant to its provisions other 2309.90.42.90",
-        "heading": "2309",
-        "general": "7.5%",
         "ruleIds": [
           "fda-registration",
           "fda-prior-notice",
@@ -15229,18 +14372,6 @@
       },
       {
         "hts": "2309.90.44.10",
-        "description": "Milk replacer",
-        "ancestorPath": [
-          "Preparations of a kind used in animal feeding",
-          "Other",
-          "Other",
-          "Animal feeds containing milk or milk derivatives",
-          "Other",
-          "Described in additional U.S. note 2 to this chapter and entered pursuant to its provisions"
-        ],
-        "searchText": "preparations of a kind used in animal feeding other other animal feeds containing milk or milk derivatives other described in additional u.s. note 2 to this chapter and entered pursuant to its provisions milk replacer 2309.90.44.10",
-        "heading": "2309",
-        "general": "7.5%",
         "ruleIds": [
           "fda-registration",
           "fda-prior-notice",
@@ -15257,18 +14388,6 @@
       },
       {
         "hts": "2309.90.44.90",
-        "description": "Other",
-        "ancestorPath": [
-          "Preparations of a kind used in animal feeding",
-          "Other",
-          "Other",
-          "Animal feeds containing milk or milk derivatives",
-          "Other",
-          "Described in additional U.S. note 2 to this chapter and entered pursuant to its provisions"
-        ],
-        "searchText": "preparations of a kind used in animal feeding other other animal feeds containing milk or milk derivatives other described in additional u.s. note 2 to this chapter and entered pursuant to its provisions other 2309.90.44.90",
-        "heading": "2309",
-        "general": "7.5%",
         "ruleIds": [
           "fda-registration",
           "fda-prior-notice",
@@ -15285,18 +14404,6 @@
       },
       {
         "hts": "2309.90.48.10",
-        "description": "Milk replacer",
-        "ancestorPath": [
-          "Preparations of a kind used in animal feeding",
-          "Other",
-          "Other",
-          "Animal feeds containing milk or milk derivatives",
-          "Other",
-          "Other"
-        ],
-        "searchText": "preparations of a kind used in animal feeding other other animal feeds containing milk or milk derivatives other other milk replacer 2309.90.48.10",
-        "heading": "2309",
-        "general": "80.4¢/kg + 6.4%",
         "ruleIds": [
           "fda-registration",
           "fda-prior-notice",
@@ -15313,18 +14420,6 @@
       },
       {
         "hts": "2309.90.48.90",
-        "description": "Other",
-        "ancestorPath": [
-          "Preparations of a kind used in animal feeding",
-          "Other",
-          "Other",
-          "Animal feeds containing milk or milk derivatives",
-          "Other",
-          "Other"
-        ],
-        "searchText": "preparations of a kind used in animal feeding other other animal feeds containing milk or milk derivatives other other other 2309.90.48.90",
-        "heading": "2309",
-        "general": "80.4¢/kg + 6.4%",
         "ruleIds": [
           "fda-registration",
           "fda-prior-notice",
@@ -15341,11 +14436,6 @@
       },
       {
         "hts": "2309.90.60.00",
-        "description": "Animal feeds containing egg",
-        "ancestorPath": ["Preparations of a kind used in animal feeding", "Other", "Other", "Other"],
-        "searchText": "preparations of a kind used in animal feeding other other other animal feeds containing egg 2309.90.60.00",
-        "heading": "2309",
-        "general": "1.9%",
         "ruleIds": [
           "fda-registration",
           "fda-prior-notice",
@@ -15361,11 +14451,6 @@
       },
       {
         "hts": "2309.90.70.00",
-        "description": "Preparations, with a basis of vitamin B12, for supplementing animal feed",
-        "ancestorPath": ["Preparations of a kind used in animal feeding", "Other", "Other", "Other", "Other"],
-        "searchText": "preparations of a kind used in animal feeding other other other other preparations, with a basis of vitamin b12, for supplementing animal feed 2309.90.70.00",
-        "heading": "2309",
-        "general": "1.4%",
         "ruleIds": [
           "fda-registration",
           "fda-prior-notice",
@@ -15382,11 +14467,6 @@
       },
       {
         "hts": "2309.90.95.00",
-        "description": "Other",
-        "ancestorPath": ["Preparations of a kind used in animal feeding", "Other", "Other", "Other", "Other"],
-        "searchText": "preparations of a kind used in animal feeding other other other other other 2309.90.95.00",
-        "heading": "2309",
-        "general": "1.4%",
         "ruleIds": [
           "fda-registration",
           "fda-prior-notice",

@@ -465,3 +465,44 @@ export interface TariffChapterPrototype {
   /** Present once the chapter's final-conclusion (FAQ) page has been built. */
   finalConclusion?: TariffFinalConclusionContent;
 }
+
+// ---------------------------------------------------------------------------
+// Stored (on-disk) shape
+// ---------------------------------------------------------------------------
+//
+// The types above are what the renderers receive. The JSON files store less:
+// every per-line field that only repeats the overview rate table is dropped
+// from the file and filled back in by `normalizeChapterPrototype`
+// (`src/utils/tariff-reports/chapter-prototype.ts`) from the rate-table row
+// with the same `hts`. Keeping one copy per line is what keeps large chapters
+// (800+ lines) small enough to ship one chunk per chapter.
+//
+// The derived fields are optional rather than absent so files written before
+// the split (and agents still producing that shape) still load and validate;
+// the loader ignores the stored copies and the validator flags any that
+// disagree with the rate table.
+
+/** Rate-table fields the loader derives (`searchText` = lowercased ancestorPath + description + hts). */
+export type TariffRateTableRowDerivedKey = 'searchText';
+/** Line-status fields the loader copies from the rate-table row with the same `hts`. */
+export type TariffLineStatusDerivedKey = 'description' | 'ancestorPath' | 'searchText';
+/** Engineering-line fields the loader copies from the rate-table row with the same `hts` (`general` = its effectiveGeneral). */
+export type TariffEngineeringLineDerivedKey = 'description' | 'ancestorPath' | 'searchText' | 'heading' | 'general';
+
+export type StoredTariffRateTableRow = Omit<TariffRateTableRow, TariffRateTableRowDerivedKey> & Partial<Pick<TariffRateTableRow, TariffRateTableRowDerivedKey>>;
+export type StoredTariffLineStatus = Omit<TariffLineStatus, TariffLineStatusDerivedKey> & Partial<Pick<TariffLineStatus, TariffLineStatusDerivedKey>>;
+export type StoredTariffEngineeringLine = Omit<TariffEngineeringLine, TariffEngineeringLineDerivedKey> &
+  Partial<Pick<TariffEngineeringLine, TariffEngineeringLineDerivedKey>>;
+
+export type StoredTariffChapterOverviewContent = Omit<TariffChapterOverviewContent, 'rateTable'> & {
+  rateTable: Omit<TariffChapterOverviewContent['rateTable'], 'rows'> & { rows: StoredTariffRateTableRow[] };
+};
+export type StoredTariffUpdatesContent = Omit<TariffUpdatesContent, 'lines'> & { lines: StoredTariffLineStatus[] };
+export type StoredTariffEngineeringContent = Omit<TariffEngineeringContent, 'lines'> & { lines: StoredTariffEngineeringLine[] };
+
+/** A chapter content file as stored in `src/tariff-data/chapters/<NN>-<slug>.json`. */
+export type StoredTariffChapterPrototype = Omit<TariffChapterPrototype, 'overview' | 'tariffUpdates' | 'tariffEngineering'> & {
+  overview: StoredTariffChapterOverviewContent;
+  tariffUpdates?: StoredTariffUpdatesContent;
+  tariffEngineering?: StoredTariffEngineeringContent;
+};

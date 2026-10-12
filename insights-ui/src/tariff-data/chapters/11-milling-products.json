@@ -173,8 +173,7 @@
           "column2InheritedFrom": null,
           "dutiable": true,
           "heading": "1101",
-          "ancestorPath": [],
-          "searchText": "wheat or meslin flour 1101.00.00"
+          "ancestorPath": []
         },
         {
           "id": "r1",
@@ -197,8 +196,7 @@
           "column2InheritedFrom": "1101.00.00",
           "dutiable": true,
           "heading": "1101",
-          "ancestorPath": ["Wheat or meslin flour"],
-          "searchText": "wheat or meslin flour hard spring wheat 1101.00.00.10"
+          "ancestorPath": ["Wheat or meslin flour"]
         },
         {
           "id": "r2",
@@ -221,8 +219,7 @@
           "column2InheritedFrom": "1101.00.00",
           "dutiable": true,
           "heading": "1101",
-          "ancestorPath": ["Wheat or meslin flour"],
-          "searchText": "wheat or meslin flour durum wheat 1101.00.00.20"
+          "ancestorPath": ["Wheat or meslin flour"]
         },
         {
           "id": "r3",
@@ -245,8 +242,7 @@
           "column2InheritedFrom": "1101.00.00",
           "dutiable": true,
           "heading": "1101",
-          "ancestorPath": ["Wheat or meslin flour"],
-          "searchText": "wheat or meslin flour white winter wheat 1101.00.00.30"
+          "ancestorPath": ["Wheat or meslin flour"]
         },
         {
           "id": "r4",
@@ -269,8 +265,7 @@
           "column2InheritedFrom": "1101.00.00",
           "dutiable": true,
           "heading": "1101",
-          "ancestorPath": ["Wheat or meslin flour"],
-          "searchText": "wheat or meslin flour other: "
+          "ancestorPath": ["Wheat or meslin flour"]
         },
         {
           "id": "r5",
@@ -293,8 +288,7 @@
           "column2InheritedFrom": "1101.00.00",
           "dutiable": true,
           "heading": "1101",
-          "ancestorPath": ["Wheat or meslin flour", "Other"],
-          "searchText": "wheat or meslin flour other certified organic 1101.00.00.50"
+          "ancestorPath": ["Wheat or meslin flour", "Other"]
         },
         {
           "id": "r6",
@@ -317,8 +311,7 @@
           "column2InheritedFrom": "1101.00.00",
           "dutiable": true,
           "heading": "1101",
-          "ancestorPath": ["Wheat or meslin flour", "Other"],
-          "searchText": "wheat or meslin flour other other 1101.00.00.60"
+          "ancestorPath": ["Wheat or meslin flour", "Other"]
         },
         {
           "id": "r7",
@@ -341,8 +334,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "1102",
-          "ancestorPath": [],
-          "searchText": "cereal flours other than of wheat or meslin: 1102"
+          "ancestorPath": []
         },
         {
           "id": "r8",
@@ -365,8 +357,7 @@
           "column2InheritedFrom": null,
           "dutiable": true,
           "heading": "1102",
-          "ancestorPath": ["Cereal flours other than of wheat or meslin"],
-          "searchText": "cereal flours other than of wheat or meslin corn (maize) flour 1102.20.00.00"
+          "ancestorPath": ["Cereal flours other than of wheat or meslin"]
         },
         {
           "id": "r9",
@@ -389,8 +380,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "1102",
-          "ancestorPath": ["Cereal flours other than of wheat or meslin"],
-          "searchText": "cereal flours other than of wheat or meslin other: 1102.90"
+          "ancestorPath": ["Cereal flours other than of wheat or meslin"]
         },
         {
           "id": "r10",
@@ -413,8 +403,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "1102",
-          "ancestorPath": ["Cereal flours other than of wheat or meslin", "Other"],
-          "searchText": "cereal flours other than of wheat or meslin other buckwheat flour 1102.90.20.00"
+          "ancestorPath": ["Cereal flours other than of wheat or meslin", "Other"]
         },
         {
           "id": "r11",
@@ -437,8 +426,7 @@
           "column2InheritedFrom": null,
           "dutiable": true,
           "heading": "1102",
-          "ancestorPath": ["Cereal flours other than of wheat or meslin", "Other"],
-          "searchText": "cereal flours other than of wheat or meslin other rice flour 1102.90.25.00"
+          "ancestorPath": ["Cereal flours other than of wheat or meslin", "Other"]
         },
         {
           "id": "r12",
@@ -461,8 +449,7 @@
           "column2InheritedFrom": null,
           "dutiable": true,
           "heading": "1102",
-          "ancestorPath": ["Cereal flours other than of wheat or meslin", "Other"],
-          "searchText": "cereal flours other than of wheat or meslin other rye flour 1102.90.27.00"
+          "ancestorPath": ["Cereal flours other than of wheat or meslin", "Other"]
         },
         {
           "id": "r13",
@@ -485,8 +472,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "1102",
-          "ancestorPath": ["Cereal flours other than of wheat or meslin", "Other"],
-          "searchText": "cereal flours other than of wheat or meslin other other: "
+          "ancestorPath": ["Cereal flours other than of wheat or meslin", "Other"]
         },
         {
           "id": "r14",
@@ -509,8 +495,7 @@
           "column2InheritedFrom": null,
           "dutiable": true,
           "heading": "1102",
-          "ancestorPath": ["Cereal flours other than of wheat or meslin", "Other", "Other"],
-          "searchText": "cereal flours other than of wheat or meslin other other mixtures 1102.90.30.00"
+          "ancestorPath": ["Cereal flours other than of wheat or meslin", "Other", "Other"]
         },
         {
           "id": "r15",
@@ -533,8 +518,7 @@
           "column2InheritedFrom": null,
           "dutiable": true,
           "heading": "1102",
-          "ancestorPath": ["Cereal flours other than of wheat or meslin", "Other", "Other"],
-          "searchText": "cereal flours other than of wheat or meslin other other other 1102.90.60.00"
+          "ancestorPath": ["Cereal flours other than of wheat or meslin", "Other", "Other"]
         },
         {
           "id": "r16",
@@ -557,8 +541,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "1103",
-          "ancestorPath": [],
-          "searchText": "cereal groats, meal and pellets: 1103"
+          "ancestorPath": []
         },
         {
           "id": "r17",
@@ -581,8 +564,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "1103",
-          "ancestorPath": ["Cereal groats, meal and pellets"],
-          "searchText": "cereal groats, meal and pellets groats and meal: "
+          "ancestorPath": ["Cereal groats, meal and pellets"]
         },
         {
           "id": "r18",
@@ -605,8 +587,7 @@
           "column2InheritedFrom": null,
           "dutiable": true,
           "heading": "1103",
-          "ancestorPath": ["Cereal groats, meal and pellets", "Groats and meal"],
-          "searchText": "cereal groats, meal and pellets groats and meal of wheat 1103.11.00"
+          "ancestorPath": ["Cereal groats, meal and pellets", "Groats and meal"]
         },
         {
           "id": "r19",
@@ -629,8 +610,7 @@
           "column2InheritedFrom": "1103.11.00",
           "dutiable": true,
           "heading": "1103",
-          "ancestorPath": ["Cereal groats, meal and pellets", "Groats and meal", "Of wheat"],
-          "searchText": "cereal groats, meal and pellets groats and meal of wheat semolina 1103.11.00.20"
+          "ancestorPath": ["Cereal groats, meal and pellets", "Groats and meal", "Of wheat"]
         },
         {
           "id": "r20",
@@ -653,8 +633,7 @@
           "column2InheritedFrom": "1103.11.00",
           "dutiable": true,
           "heading": "1103",
-          "ancestorPath": ["Cereal groats, meal and pellets", "Groats and meal", "Of wheat"],
-          "searchText": "cereal groats, meal and pellets groats and meal of wheat other 1103.11.00.40"
+          "ancestorPath": ["Cereal groats, meal and pellets", "Groats and meal", "Of wheat"]
         },
         {
           "id": "r21",
@@ -677,8 +656,7 @@
           "column2InheritedFrom": null,
           "dutiable": true,
           "heading": "1103",
-          "ancestorPath": ["Cereal groats, meal and pellets", "Groats and meal"],
-          "searchText": "cereal groats, meal and pellets groats and meal of corn (maize) 1103.13.00"
+          "ancestorPath": ["Cereal groats, meal and pellets", "Groats and meal"]
         },
         {
           "id": "r22",
@@ -701,8 +679,7 @@
           "column2InheritedFrom": "1103.13.00",
           "dutiable": true,
           "heading": "1103",
-          "ancestorPath": ["Cereal groats, meal and pellets", "Groats and meal", "Of corn (maize)"],
-          "searchText": "cereal groats, meal and pellets groats and meal of corn (maize) cornmeal 1103.13.00.20"
+          "ancestorPath": ["Cereal groats, meal and pellets", "Groats and meal", "Of corn (maize)"]
         },
         {
           "id": "r23",
@@ -725,8 +702,7 @@
           "column2InheritedFrom": "1103.13.00",
           "dutiable": true,
           "heading": "1103",
-          "ancestorPath": ["Cereal groats, meal and pellets", "Groats and meal", "Of corn (maize)"],
-          "searchText": "cereal groats, meal and pellets groats and meal of corn (maize) other 1103.13.00.60"
+          "ancestorPath": ["Cereal groats, meal and pellets", "Groats and meal", "Of corn (maize)"]
         },
         {
           "id": "r24",
@@ -749,8 +725,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "1103",
-          "ancestorPath": ["Cereal groats, meal and pellets", "Groats and meal"],
-          "searchText": "cereal groats, meal and pellets groats and meal of other cereals: 1103.19"
+          "ancestorPath": ["Cereal groats, meal and pellets", "Groats and meal"]
         },
         {
           "id": "r25",
@@ -773,8 +748,7 @@
           "column2InheritedFrom": null,
           "dutiable": true,
           "heading": "1103",
-          "ancestorPath": ["Cereal groats, meal and pellets", "Groats and meal", "Of other cereals"],
-          "searchText": "cereal groats, meal and pellets groats and meal of other cereals of oats 1103.19.12.00"
+          "ancestorPath": ["Cereal groats, meal and pellets", "Groats and meal", "Of other cereals"]
         },
         {
           "id": "r26",
@@ -797,8 +771,7 @@
           "column2InheritedFrom": null,
           "dutiable": true,
           "heading": "1103",
-          "ancestorPath": ["Cereal groats, meal and pellets", "Groats and meal", "Of other cereals"],
-          "searchText": "cereal groats, meal and pellets groats and meal of other cereals of rice 1103.19.14.00"
+          "ancestorPath": ["Cereal groats, meal and pellets", "Groats and meal", "Of other cereals"]
         },
         {
           "id": "r27",
@@ -821,8 +794,7 @@
           "column2InheritedFrom": null,
           "dutiable": true,
           "heading": "1103",
-          "ancestorPath": ["Cereal groats, meal and pellets", "Groats and meal", "Of other cereals"],
-          "searchText": "cereal groats, meal and pellets groats and meal of other cereals of other cereals 1103.19.90.00"
+          "ancestorPath": ["Cereal groats, meal and pellets", "Groats and meal", "Of other cereals"]
         },
         {
           "id": "r28",
@@ -845,8 +817,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "1103",
-          "ancestorPath": ["Cereal groats, meal and pellets"],
-          "searchText": "cereal groats, meal and pellets pellets 1103.20.00"
+          "ancestorPath": ["Cereal groats, meal and pellets"]
         },
         {
           "id": "r29",
@@ -869,8 +840,7 @@
           "column2InheritedFrom": "1103.20.00",
           "dutiable": false,
           "heading": "1103",
-          "ancestorPath": ["Cereal groats, meal and pellets", "Pellets"],
-          "searchText": "cereal groats, meal and pellets pellets of wheat 1103.20.00.10"
+          "ancestorPath": ["Cereal groats, meal and pellets", "Pellets"]
         },
         {
           "id": "r30",
@@ -893,8 +863,7 @@
           "column2InheritedFrom": "1103.20.00",
           "dutiable": false,
           "heading": "1103",
-          "ancestorPath": ["Cereal groats, meal and pellets", "Pellets"],
-          "searchText": "cereal groats, meal and pellets pellets of other cereals 1103.20.00.90"
+          "ancestorPath": ["Cereal groats, meal and pellets", "Pellets"]
         },
         {
           "id": "r31",
@@ -917,8 +886,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "1104",
-          "ancestorPath": [],
-          "searchText": "cereal grains otherwise worked (for example, hulled, rolled, flaked, pearled, sliced or kibbled), except rice of heading 1006; germ of cereals, whole, rolled, flaked or ground: 1104"
+          "ancestorPath": []
         },
         {
           "id": "r32",
@@ -943,8 +911,7 @@
           "heading": "1104",
           "ancestorPath": [
             "Cereal grains otherwise worked (for example, hulled, rolled, flaked, pearled, sliced or kibbled), except rice of heading 1006; germ of cereals, whole, rolled, flaked or ground"
-          ],
-          "searchText": "cereal grains otherwise worked (for example, hulled, rolled, flaked, pearled, sliced or kibbled), except rice of heading 1006; germ of cereals, whole, rolled, flaked or ground rolled or flaked grains: "
+          ]
         },
         {
           "id": "r33",
@@ -970,8 +937,7 @@
           "ancestorPath": [
             "Cereal grains otherwise worked (for example, hulled, rolled, flaked, pearled, sliced or kibbled), except rice of heading 1006; germ of cereals, whole, rolled, flaked or ground",
             "Rolled or flaked grains"
-          ],
-          "searchText": "cereal grains otherwise worked (for example, hulled, rolled, flaked, pearled, sliced or kibbled), except rice of heading 1006; germ of cereals, whole, rolled, flaked or ground rolled or flaked grains of oats 1104.12.00"
+          ]
         },
         {
           "id": "r34",
@@ -998,8 +964,7 @@
             "Cereal grains otherwise worked (for example, hulled, rolled, flaked, pearled, sliced or kibbled), except rice of heading 1006; germ of cereals, whole, rolled, flaked or ground",
             "Rolled or flaked grains",
             "Of oats"
-          ],
-          "searchText": "cereal grains otherwise worked (for example, hulled, rolled, flaked, pearled, sliced or kibbled), except rice of heading 1006; germ of cereals, whole, rolled, flaked or ground rolled or flaked grains of oats certified organic 1104.12.00.10"
+          ]
         },
         {
           "id": "r35",
@@ -1026,8 +991,7 @@
             "Cereal grains otherwise worked (for example, hulled, rolled, flaked, pearled, sliced or kibbled), except rice of heading 1006; germ of cereals, whole, rolled, flaked or ground",
             "Rolled or flaked grains",
             "Of oats"
-          ],
-          "searchText": "cereal grains otherwise worked (for example, hulled, rolled, flaked, pearled, sliced or kibbled), except rice of heading 1006; germ of cereals, whole, rolled, flaked or ground rolled or flaked grains of oats other 1104.12.00.90"
+          ]
         },
         {
           "id": "r36",
@@ -1053,8 +1017,7 @@
           "ancestorPath": [
             "Cereal grains otherwise worked (for example, hulled, rolled, flaked, pearled, sliced or kibbled), except rice of heading 1006; germ of cereals, whole, rolled, flaked or ground",
             "Rolled or flaked grains"
-          ],
-          "searchText": "cereal grains otherwise worked (for example, hulled, rolled, flaked, pearled, sliced or kibbled), except rice of heading 1006; germ of cereals, whole, rolled, flaked or ground rolled or flaked grains of other cereals: 1104.19"
+          ]
         },
         {
           "id": "r37",
@@ -1081,8 +1044,7 @@
             "Cereal grains otherwise worked (for example, hulled, rolled, flaked, pearled, sliced or kibbled), except rice of heading 1006; germ of cereals, whole, rolled, flaked or ground",
             "Rolled or flaked grains",
             "Of other cereals"
-          ],
-          "searchText": "cereal grains otherwise worked (for example, hulled, rolled, flaked, pearled, sliced or kibbled), except rice of heading 1006; germ of cereals, whole, rolled, flaked or ground rolled or flaked grains of other cereals of barley 1104.19.10.00"
+          ]
         },
         {
           "id": "r38",
@@ -1109,8 +1071,7 @@
             "Cereal grains otherwise worked (for example, hulled, rolled, flaked, pearled, sliced or kibbled), except rice of heading 1006; germ of cereals, whole, rolled, flaked or ground",
             "Rolled or flaked grains",
             "Of other cereals"
-          ],
-          "searchText": "cereal grains otherwise worked (for example, hulled, rolled, flaked, pearled, sliced or kibbled), except rice of heading 1006; germ of cereals, whole, rolled, flaked or ground rolled or flaked grains of other cereals other 1104.19.90.00"
+          ]
         },
         {
           "id": "r39",
@@ -1135,8 +1096,7 @@
           "heading": "1104",
           "ancestorPath": [
             "Cereal grains otherwise worked (for example, hulled, rolled, flaked, pearled, sliced or kibbled), except rice of heading 1006; germ of cereals, whole, rolled, flaked or ground"
-          ],
-          "searchText": "cereal grains otherwise worked (for example, hulled, rolled, flaked, pearled, sliced or kibbled), except rice of heading 1006; germ of cereals, whole, rolled, flaked or ground other worked grains (for example, hulled, pearled, sliced or kibbled): "
+          ]
         },
         {
           "id": "r40",
@@ -1162,8 +1122,7 @@
           "ancestorPath": [
             "Cereal grains otherwise worked (for example, hulled, rolled, flaked, pearled, sliced or kibbled), except rice of heading 1006; germ of cereals, whole, rolled, flaked or ground",
             "Other worked grains (for example, hulled, pearled, sliced or kibbled)"
-          ],
-          "searchText": "cereal grains otherwise worked (for example, hulled, rolled, flaked, pearled, sliced or kibbled), except rice of heading 1006; germ of cereals, whole, rolled, flaked or ground other worked grains (for example, hulled, pearled, sliced or kibbled) of oats 1104.22.00.00"
+          ]
         },
         {
           "id": "r41",
@@ -1189,8 +1148,7 @@
           "ancestorPath": [
             "Cereal grains otherwise worked (for example, hulled, rolled, flaked, pearled, sliced or kibbled), except rice of heading 1006; germ of cereals, whole, rolled, flaked or ground",
             "Other worked grains (for example, hulled, pearled, sliced or kibbled)"
-          ],
-          "searchText": "cereal grains otherwise worked (for example, hulled, rolled, flaked, pearled, sliced or kibbled), except rice of heading 1006; germ of cereals, whole, rolled, flaked or ground other worked grains (for example, hulled, pearled, sliced or kibbled) of corn (maize) 1104.23.00.00"
+          ]
         },
         {
           "id": "r42",
@@ -1216,8 +1174,7 @@
           "ancestorPath": [
             "Cereal grains otherwise worked (for example, hulled, rolled, flaked, pearled, sliced or kibbled), except rice of heading 1006; germ of cereals, whole, rolled, flaked or ground",
             "Other worked grains (for example, hulled, pearled, sliced or kibbled)"
-          ],
-          "searchText": "cereal grains otherwise worked (for example, hulled, rolled, flaked, pearled, sliced or kibbled), except rice of heading 1006; germ of cereals, whole, rolled, flaked or ground other worked grains (for example, hulled, pearled, sliced or kibbled) of other cereals: 1104.29"
+          ]
         },
         {
           "id": "r43",
@@ -1244,8 +1201,7 @@
             "Cereal grains otherwise worked (for example, hulled, rolled, flaked, pearled, sliced or kibbled), except rice of heading 1006; germ of cereals, whole, rolled, flaked or ground",
             "Other worked grains (for example, hulled, pearled, sliced or kibbled)",
             "Of other cereals"
-          ],
-          "searchText": "cereal grains otherwise worked (for example, hulled, rolled, flaked, pearled, sliced or kibbled), except rice of heading 1006; germ of cereals, whole, rolled, flaked or ground other worked grains (for example, hulled, pearled, sliced or kibbled) of other cereals of barley 1104.29.10.00"
+          ]
         },
         {
           "id": "r44",
@@ -1272,8 +1228,7 @@
             "Cereal grains otherwise worked (for example, hulled, rolled, flaked, pearled, sliced or kibbled), except rice of heading 1006; germ of cereals, whole, rolled, flaked or ground",
             "Other worked grains (for example, hulled, pearled, sliced or kibbled)",
             "Of other cereals"
-          ],
-          "searchText": "cereal grains otherwise worked (for example, hulled, rolled, flaked, pearled, sliced or kibbled), except rice of heading 1006; germ of cereals, whole, rolled, flaked or ground other worked grains (for example, hulled, pearled, sliced or kibbled) of other cereals other 1104.29.90.00"
+          ]
         },
         {
           "id": "r45",
@@ -1298,8 +1253,7 @@
           "heading": "1104",
           "ancestorPath": [
             "Cereal grains otherwise worked (for example, hulled, rolled, flaked, pearled, sliced or kibbled), except rice of heading 1006; germ of cereals, whole, rolled, flaked or ground"
-          ],
-          "searchText": "cereal grains otherwise worked (for example, hulled, rolled, flaked, pearled, sliced or kibbled), except rice of heading 1006; germ of cereals, whole, rolled, flaked or ground germ of cereals, whole, rolled, flaked or ground 1104.30.00.00"
+          ]
         },
         {
           "id": "r46",
@@ -1322,8 +1276,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "1105",
-          "ancestorPath": [],
-          "searchText": "flour, meal, powder, flakes, granules and pellets of potatoes: 1105"
+          "ancestorPath": []
         },
         {
           "id": "r47",
@@ -1346,8 +1299,7 @@
           "column2InheritedFrom": null,
           "dutiable": true,
           "heading": "1105",
-          "ancestorPath": ["Flour, meal, powder, flakes, granules and pellets of potatoes"],
-          "searchText": "flour, meal, powder, flakes, granules and pellets of potatoes flour, meal and powder 1105.10.00.00"
+          "ancestorPath": ["Flour, meal, powder, flakes, granules and pellets of potatoes"]
         },
         {
           "id": "r48",
@@ -1370,8 +1322,7 @@
           "column2InheritedFrom": null,
           "dutiable": true,
           "heading": "1105",
-          "ancestorPath": ["Flour, meal, powder, flakes, granules and pellets of potatoes"],
-          "searchText": "flour, meal, powder, flakes, granules and pellets of potatoes flakes, granules and pellets 1105.20.00.00"
+          "ancestorPath": ["Flour, meal, powder, flakes, granules and pellets of potatoes"]
         },
         {
           "id": "r49",
@@ -1394,8 +1345,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "1106",
-          "ancestorPath": [],
-          "searchText": "flour, meal and powder of the dried leguminous vegetables of heading 0713, of sago or of roots or tubers of heading 0714 or of the products of chapter 8: 1106"
+          "ancestorPath": []
         },
         {
           "id": "r50",
@@ -1420,8 +1370,7 @@
           "heading": "1106",
           "ancestorPath": [
             "Flour, meal and powder of the dried leguminous vegetables of heading 0713, of sago or of roots or tubers of heading 0714 or of the products of chapter 8"
-          ],
-          "searchText": "flour, meal and powder of the dried leguminous vegetables of heading 0713, of sago or of roots or tubers of heading 0714 or of the products of chapter 8 of the dried leguminous vegetables of heading 0713 1106.10.00.00"
+          ]
         },
         {
           "id": "r51",
@@ -1446,8 +1395,7 @@
           "heading": "1106",
           "ancestorPath": [
             "Flour, meal and powder of the dried leguminous vegetables of heading 0713, of sago or of roots or tubers of heading 0714 or of the products of chapter 8"
-          ],
-          "searchText": "flour, meal and powder of the dried leguminous vegetables of heading 0713, of sago or of roots or tubers of heading 0714 or of the products of chapter 8 of sago or of roots or tubers of heading 0714: 1106.20"
+          ]
         },
         {
           "id": "r52",
@@ -1473,8 +1421,7 @@
           "ancestorPath": [
             "Flour, meal and powder of the dried leguminous vegetables of heading 0713, of sago or of roots or tubers of heading 0714 or of the products of chapter 8",
             "Of sago or of roots or tubers of heading 0714"
-          ],
-          "searchText": "flour, meal and powder of the dried leguminous vegetables of heading 0713, of sago or of roots or tubers of heading 0714 or of the products of chapter 8 of sago or of roots or tubers of heading 0714 of chinese water chestnuts 1106.20.10.00"
+          ]
         },
         {
           "id": "r53",
@@ -1500,8 +1447,7 @@
           "ancestorPath": [
             "Flour, meal and powder of the dried leguminous vegetables of heading 0713, of sago or of roots or tubers of heading 0714 or of the products of chapter 8",
             "Of sago or of roots or tubers of heading 0714"
-          ],
-          "searchText": "flour, meal and powder of the dried leguminous vegetables of heading 0713, of sago or of roots or tubers of heading 0714 or of the products of chapter 8 of sago or of roots or tubers of heading 0714 other 1106.20.90.00"
+          ]
         },
         {
           "id": "r54",
@@ -1526,8 +1472,7 @@
           "heading": "1106",
           "ancestorPath": [
             "Flour, meal and powder of the dried leguminous vegetables of heading 0713, of sago or of roots or tubers of heading 0714 or of the products of chapter 8"
-          ],
-          "searchText": "flour, meal and powder of the dried leguminous vegetables of heading 0713, of sago or of roots or tubers of heading 0714 or of the products of chapter 8 of the products of chapter 8: 1106.30"
+          ]
         },
         {
           "id": "r55",
@@ -1553,8 +1498,7 @@
           "ancestorPath": [
             "Flour, meal and powder of the dried leguminous vegetables of heading 0713, of sago or of roots or tubers of heading 0714 or of the products of chapter 8",
             "Of the products of chapter 8"
-          ],
-          "searchText": "flour, meal and powder of the dried leguminous vegetables of heading 0713, of sago or of roots or tubers of heading 0714 or of the products of chapter 8 of the products of chapter 8 banana and plantain 1106.30.20.00"
+          ]
         },
         {
           "id": "r56",
@@ -1580,8 +1524,7 @@
           "ancestorPath": [
             "Flour, meal and powder of the dried leguminous vegetables of heading 0713, of sago or of roots or tubers of heading 0714 or of the products of chapter 8",
             "Of the products of chapter 8"
-          ],
-          "searchText": "flour, meal and powder of the dried leguminous vegetables of heading 0713, of sago or of roots or tubers of heading 0714 or of the products of chapter 8 of the products of chapter 8 other 1106.30.40.00"
+          ]
         },
         {
           "id": "r57",
@@ -1604,8 +1547,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "1107",
-          "ancestorPath": [],
-          "searchText": "malt, whether or not roasted: 1107"
+          "ancestorPath": []
         },
         {
           "id": "r58",
@@ -1628,8 +1570,7 @@
           "column2InheritedFrom": null,
           "dutiable": true,
           "heading": "1107",
-          "ancestorPath": ["Malt, whether or not roasted"],
-          "searchText": "malt, whether or not roasted not roasted 1107.10.00.00"
+          "ancestorPath": ["Malt, whether or not roasted"]
         },
         {
           "id": "r59",
@@ -1652,8 +1593,7 @@
           "column2InheritedFrom": null,
           "dutiable": true,
           "heading": "1107",
-          "ancestorPath": ["Malt, whether or not roasted"],
-          "searchText": "malt, whether or not roasted roasted 1107.20.00.00"
+          "ancestorPath": ["Malt, whether or not roasted"]
         },
         {
           "id": "r60",
@@ -1676,8 +1616,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "1108",
-          "ancestorPath": [],
-          "searchText": "starches; inulin: 1108"
+          "ancestorPath": []
         },
         {
           "id": "r61",
@@ -1700,8 +1639,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "1108",
-          "ancestorPath": ["Starches; inulin"],
-          "searchText": "starches; inulin starches: "
+          "ancestorPath": ["Starches; inulin"]
         },
         {
           "id": "r62",
@@ -1724,8 +1662,7 @@
           "column2InheritedFrom": null,
           "dutiable": true,
           "heading": "1108",
-          "ancestorPath": ["Starches; inulin", "Starches"],
-          "searchText": "starches; inulin starches wheat starch 1108.11.00"
+          "ancestorPath": ["Starches; inulin", "Starches"]
         },
         {
           "id": "r63",
@@ -1748,8 +1685,7 @@
           "column2InheritedFrom": "1108.11.00",
           "dutiable": true,
           "heading": "1108",
-          "ancestorPath": ["Starches; inulin", "Starches", "Wheat starch"],
-          "searchText": "starches; inulin starches wheat starch for food use 1108.11.00.10"
+          "ancestorPath": ["Starches; inulin", "Starches", "Wheat starch"]
         },
         {
           "id": "r64",
@@ -1772,8 +1708,7 @@
           "column2InheritedFrom": "1108.11.00",
           "dutiable": true,
           "heading": "1108",
-          "ancestorPath": ["Starches; inulin", "Starches", "Wheat starch"],
-          "searchText": "starches; inulin starches wheat starch other 1108.11.00.90"
+          "ancestorPath": ["Starches; inulin", "Starches", "Wheat starch"]
         },
         {
           "id": "r65",
@@ -1796,8 +1731,7 @@
           "column2InheritedFrom": null,
           "dutiable": true,
           "heading": "1108",
-          "ancestorPath": ["Starches; inulin", "Starches"],
-          "searchText": "starches; inulin starches corn (maize) starch 1108.12.00"
+          "ancestorPath": ["Starches; inulin", "Starches"]
         },
         {
           "id": "r66",
@@ -1820,8 +1754,7 @@
           "column2InheritedFrom": "1108.12.00",
           "dutiable": true,
           "heading": "1108",
-          "ancestorPath": ["Starches; inulin", "Starches", "Corn (maize) starch"],
-          "searchText": "starches; inulin starches corn (maize) starch for food use 1108.12.00.10"
+          "ancestorPath": ["Starches; inulin", "Starches", "Corn (maize) starch"]
         },
         {
           "id": "r67",
@@ -1844,8 +1777,7 @@
           "column2InheritedFrom": "1108.12.00",
           "dutiable": true,
           "heading": "1108",
-          "ancestorPath": ["Starches; inulin", "Starches", "Corn (maize) starch"],
-          "searchText": "starches; inulin starches corn (maize) starch other 1108.12.00.90"
+          "ancestorPath": ["Starches; inulin", "Starches", "Corn (maize) starch"]
         },
         {
           "id": "r68",
@@ -1868,8 +1800,7 @@
           "column2InheritedFrom": null,
           "dutiable": true,
           "heading": "1108",
-          "ancestorPath": ["Starches; inulin", "Starches"],
-          "searchText": "starches; inulin starches potato starch 1108.13.00"
+          "ancestorPath": ["Starches; inulin", "Starches"]
         },
         {
           "id": "r69",
@@ -1892,8 +1823,7 @@
           "column2InheritedFrom": "1108.13.00",
           "dutiable": true,
           "heading": "1108",
-          "ancestorPath": ["Starches; inulin", "Starches", "Potato starch"],
-          "searchText": "starches; inulin starches potato starch for human consumption 1108.13.00.10"
+          "ancestorPath": ["Starches; inulin", "Starches", "Potato starch"]
         },
         {
           "id": "r70",
@@ -1916,8 +1846,7 @@
           "column2InheritedFrom": "1108.13.00",
           "dutiable": true,
           "heading": "1108",
-          "ancestorPath": ["Starches; inulin", "Starches", "Potato starch"],
-          "searchText": "starches; inulin starches potato starch other 1108.13.00.90"
+          "ancestorPath": ["Starches; inulin", "Starches", "Potato starch"]
         },
         {
           "id": "r71",
@@ -1940,8 +1869,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "1108",
-          "ancestorPath": ["Starches; inulin", "Starches"],
-          "searchText": "starches; inulin starches cassava (manioc) starch 1108.14.00.00"
+          "ancestorPath": ["Starches; inulin", "Starches"]
         },
         {
           "id": "r72",
@@ -1964,8 +1892,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "1108",
-          "ancestorPath": ["Starches; inulin", "Starches"],
-          "searchText": "starches; inulin starches other starches 1108.19.00"
+          "ancestorPath": ["Starches; inulin", "Starches"]
         },
         {
           "id": "r73",
@@ -1988,8 +1915,7 @@
           "column2InheritedFrom": "1108.19.00",
           "dutiable": false,
           "heading": "1108",
-          "ancestorPath": ["Starches; inulin", "Starches", "Other starches"],
-          "searchText": "starches; inulin starches other starches cereal starches for non-food use 1108.19.00.10"
+          "ancestorPath": ["Starches; inulin", "Starches", "Other starches"]
         },
         {
           "id": "r74",
@@ -2012,8 +1938,7 @@
           "column2InheritedFrom": "1108.19.00",
           "dutiable": false,
           "heading": "1108",
-          "ancestorPath": ["Starches; inulin", "Starches", "Other starches"],
-          "searchText": "starches; inulin starches other starches other 1108.19.00.90"
+          "ancestorPath": ["Starches; inulin", "Starches", "Other starches"]
         },
         {
           "id": "r75",
@@ -2036,8 +1961,7 @@
           "column2InheritedFrom": null,
           "dutiable": true,
           "heading": "1108",
-          "ancestorPath": ["Starches; inulin"],
-          "searchText": "starches; inulin inulin 1108.20.00.00"
+          "ancestorPath": ["Starches; inulin"]
         },
         {
           "id": "r76",
@@ -2060,8 +1984,7 @@
           "column2InheritedFrom": null,
           "dutiable": false,
           "heading": "1109",
-          "ancestorPath": [],
-          "searchText": "wheat gluten, whether or not dried: 1109.00"
+          "ancestorPath": []
         },
         {
           "id": "r77",
@@ -2084,8 +2007,7 @@
           "column2InheritedFrom": null,
           "dutiable": true,
           "heading": "1109",
-          "ancestorPath": ["Wheat gluten, whether or not dried"],
-          "searchText": "wheat gluten, whether or not dried to be used as animal feed 1109.00.10.00"
+          "ancestorPath": ["Wheat gluten, whether or not dried"]
         },
         {
           "id": "r78",
@@ -2108,8 +2030,7 @@
           "column2InheritedFrom": null,
           "dutiable": true,
           "heading": "1109",
-          "ancestorPath": ["Wheat gluten, whether or not dried"],
-          "searchText": "wheat gluten, whether or not dried other 1109.00.90"
+          "ancestorPath": ["Wheat gluten, whether or not dried"]
         },
         {
           "id": "r79",
@@ -2132,8 +2053,7 @@
           "column2InheritedFrom": "1109.00.90",
           "dutiable": true,
           "heading": "1109",
-          "ancestorPath": ["Wheat gluten, whether or not dried", "Other"],
-          "searchText": "wheat gluten, whether or not dried other certified organic 1109.00.90.10"
+          "ancestorPath": ["Wheat gluten, whether or not dried", "Other"]
         },
         {
           "id": "r80",
@@ -2156,8 +2076,7 @@
           "column2InheritedFrom": "1109.00.90",
           "dutiable": true,
           "heading": "1109",
-          "ancestorPath": ["Wheat gluten, whether or not dried", "Other"],
-          "searchText": "wheat gluten, whether or not dried other other 1109.00.90.20"
+          "ancestorPath": ["Wheat gluten, whether or not dried", "Other"]
         }
       ]
     },
@@ -2718,9 +2637,6 @@
     "lines": [
       {
         "hts": "1101.00.00.10",
-        "description": "Hard spring wheat",
-        "ancestorPath": ["Wheat or meslin flour"],
-        "searchText": "wheat or meslin flour hard spring wheat 1101.00.00.10",
         "generalBefore": "0.7¢/kg",
         "generalNow": "0.7¢/kg",
         "status": "unchanged",
@@ -2728,9 +2644,6 @@
       },
       {
         "hts": "1101.00.00.20",
-        "description": "Durum wheat",
-        "ancestorPath": ["Wheat or meslin flour"],
-        "searchText": "wheat or meslin flour durum wheat 1101.00.00.20",
         "generalBefore": "0.7¢/kg",
         "generalNow": "0.7¢/kg",
         "status": "unchanged",
@@ -2738,9 +2651,6 @@
       },
       {
         "hts": "1101.00.00.30",
-        "description": "White winter wheat",
-        "ancestorPath": ["Wheat or meslin flour"],
-        "searchText": "wheat or meslin flour white winter wheat 1101.00.00.30",
         "generalBefore": "0.7¢/kg",
         "generalNow": "0.7¢/kg",
         "status": "unchanged",
@@ -2748,9 +2658,6 @@
       },
       {
         "hts": "1101.00.00.50",
-        "description": "Certified organic",
-        "ancestorPath": ["Wheat or meslin flour", "Other"],
-        "searchText": "wheat or meslin flour other certified organic 1101.00.00.50",
         "generalBefore": "0.7¢/kg",
         "generalNow": "0.7¢/kg",
         "status": "unchanged",
@@ -2758,9 +2665,6 @@
       },
       {
         "hts": "1101.00.00.60",
-        "description": "Other",
-        "ancestorPath": ["Wheat or meslin flour", "Other"],
-        "searchText": "wheat or meslin flour other other 1101.00.00.60",
         "generalBefore": "0.7¢/kg",
         "generalNow": "0.7¢/kg",
         "status": "unchanged",
@@ -2768,9 +2672,6 @@
       },
       {
         "hts": "1102.20.00.00",
-        "description": "Corn (maize) flour",
-        "ancestorPath": ["Cereal flours other than of wheat or meslin"],
-        "searchText": "cereal flours other than of wheat or meslin corn (maize) flour 1102.20.00.00",
         "generalBefore": "0.3¢/kg",
         "generalNow": "0.3¢/kg",
         "status": "unchanged",
@@ -2778,9 +2679,6 @@
       },
       {
         "hts": "1102.90.20.00",
-        "description": "Buckwheat flour",
-        "ancestorPath": ["Cereal flours other than of wheat or meslin", "Other"],
-        "searchText": "cereal flours other than of wheat or meslin other buckwheat flour 1102.90.20.00",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -2788,9 +2686,6 @@
       },
       {
         "hts": "1102.90.25.00",
-        "description": "Rice flour",
-        "ancestorPath": ["Cereal flours other than of wheat or meslin", "Other"],
-        "searchText": "cereal flours other than of wheat or meslin other rice flour 1102.90.25.00",
         "generalBefore": "0.09¢/kg",
         "generalNow": "0.09¢/kg",
         "status": "unchanged",
@@ -2798,9 +2693,6 @@
       },
       {
         "hts": "1102.90.27.00",
-        "description": "Rye flour",
-        "ancestorPath": ["Cereal flours other than of wheat or meslin", "Other"],
-        "searchText": "cereal flours other than of wheat or meslin other rye flour 1102.90.27.00",
         "generalBefore": "0.23¢/kg",
         "generalNow": "0.23¢/kg",
         "status": "unchanged",
@@ -2808,9 +2700,6 @@
       },
       {
         "hts": "1102.90.30.00",
-        "description": "Mixtures",
-        "ancestorPath": ["Cereal flours other than of wheat or meslin", "Other", "Other"],
-        "searchText": "cereal flours other than of wheat or meslin other other mixtures 1102.90.30.00",
         "generalBefore": "12.8%",
         "generalNow": "12.8%",
         "status": "unchanged",
@@ -2818,9 +2707,6 @@
       },
       {
         "hts": "1102.90.60.00",
-        "description": "Other",
-        "ancestorPath": ["Cereal flours other than of wheat or meslin", "Other", "Other"],
-        "searchText": "cereal flours other than of wheat or meslin other other other 1102.90.60.00",
         "generalBefore": "9%",
         "generalNow": "9%",
         "status": "unchanged",
@@ -2828,9 +2714,6 @@
       },
       {
         "hts": "1103.11.00.20",
-        "description": "Semolina",
-        "ancestorPath": ["Cereal groats, meal and pellets", "Groats and meal", "Of wheat"],
-        "searchText": "cereal groats, meal and pellets groats and meal of wheat semolina 1103.11.00.20",
         "generalBefore": "0.5¢/kg",
         "generalNow": "0.5¢/kg",
         "status": "unchanged",
@@ -2838,9 +2721,6 @@
       },
       {
         "hts": "1103.11.00.40",
-        "description": "Other",
-        "ancestorPath": ["Cereal groats, meal and pellets", "Groats and meal", "Of wheat"],
-        "searchText": "cereal groats, meal and pellets groats and meal of wheat other 1103.11.00.40",
         "generalBefore": "0.5¢/kg",
         "generalNow": "0.5¢/kg",
         "status": "unchanged",
@@ -2848,9 +2728,6 @@
       },
       {
         "hts": "1103.13.00.20",
-        "description": "Cornmeal",
-        "ancestorPath": ["Cereal groats, meal and pellets", "Groats and meal", "Of corn (maize)"],
-        "searchText": "cereal groats, meal and pellets groats and meal of corn (maize) cornmeal 1103.13.00.20",
         "generalBefore": "0.3¢/kg",
         "generalNow": "0.3¢/kg",
         "status": "unchanged",
@@ -2858,9 +2735,6 @@
       },
       {
         "hts": "1103.13.00.60",
-        "description": "Other",
-        "ancestorPath": ["Cereal groats, meal and pellets", "Groats and meal", "Of corn (maize)"],
-        "searchText": "cereal groats, meal and pellets groats and meal of corn (maize) other 1103.13.00.60",
         "generalBefore": "0.3¢/kg",
         "generalNow": "0.3¢/kg",
         "status": "unchanged",
@@ -2868,9 +2742,6 @@
       },
       {
         "hts": "1103.19.12.00",
-        "description": "Of oats",
-        "ancestorPath": ["Cereal groats, meal and pellets", "Groats and meal", "Of other cereals"],
-        "searchText": "cereal groats, meal and pellets groats and meal of other cereals of oats 1103.19.12.00",
         "generalBefore": "0.8¢/kg",
         "generalNow": "0.8¢/kg",
         "status": "unchanged",
@@ -2878,9 +2749,6 @@
       },
       {
         "hts": "1103.19.14.00",
-        "description": "Of rice",
-        "ancestorPath": ["Cereal groats, meal and pellets", "Groats and meal", "Of other cereals"],
-        "searchText": "cereal groats, meal and pellets groats and meal of other cereals of rice 1103.19.14.00",
         "generalBefore": "0.09¢/kg",
         "generalNow": "0.09¢/kg",
         "status": "unchanged",
@@ -2888,9 +2756,6 @@
       },
       {
         "hts": "1103.19.90.00",
-        "description": "Of other cereals",
-        "ancestorPath": ["Cereal groats, meal and pellets", "Groats and meal", "Of other cereals"],
-        "searchText": "cereal groats, meal and pellets groats and meal of other cereals of other cereals 1103.19.90.00",
         "generalBefore": "9%",
         "generalNow": "9%",
         "status": "unchanged",
@@ -2898,9 +2763,6 @@
       },
       {
         "hts": "1103.20.00.10",
-        "description": "Of wheat",
-        "ancestorPath": ["Cereal groats, meal and pellets", "Pellets"],
-        "searchText": "cereal groats, meal and pellets pellets of wheat 1103.20.00.10",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -2908,9 +2770,6 @@
       },
       {
         "hts": "1103.20.00.90",
-        "description": "Of other cereals",
-        "ancestorPath": ["Cereal groats, meal and pellets", "Pellets"],
-        "searchText": "cereal groats, meal and pellets pellets of other cereals 1103.20.00.90",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -2918,13 +2777,6 @@
       },
       {
         "hts": "1104.12.00.10",
-        "description": "Certified organic",
-        "ancestorPath": [
-          "Cereal grains otherwise worked (for example, hulled, rolled, flaked, pearled, sliced or kibbled), except rice of heading 1006; germ of cereals, whole, rolled, flaked or ground",
-          "Rolled or flaked grains",
-          "Of oats"
-        ],
-        "searchText": "cereal grains otherwise worked (for example, hulled, rolled, flaked, pearled, sliced or kibbled), except rice of heading 1006; germ of cereals, whole, rolled, flaked or ground rolled or flaked grains of oats certified organic 1104.12.00.10",
         "generalBefore": null,
         "generalNow": "1.2¢/kg",
         "status": "new",
@@ -2932,13 +2784,6 @@
       },
       {
         "hts": "1104.12.00.90",
-        "description": "Other",
-        "ancestorPath": [
-          "Cereal grains otherwise worked (for example, hulled, rolled, flaked, pearled, sliced or kibbled), except rice of heading 1006; germ of cereals, whole, rolled, flaked or ground",
-          "Rolled or flaked grains",
-          "Of oats"
-        ],
-        "searchText": "cereal grains otherwise worked (for example, hulled, rolled, flaked, pearled, sliced or kibbled), except rice of heading 1006; germ of cereals, whole, rolled, flaked or ground rolled or flaked grains of oats other 1104.12.00.90",
         "generalBefore": null,
         "generalNow": "1.2¢/kg",
         "status": "new",
@@ -2946,13 +2791,6 @@
       },
       {
         "hts": "1104.19.10.00",
-        "description": "Of barley",
-        "ancestorPath": [
-          "Cereal grains otherwise worked (for example, hulled, rolled, flaked, pearled, sliced or kibbled), except rice of heading 1006; germ of cereals, whole, rolled, flaked or ground",
-          "Rolled or flaked grains",
-          "Of other cereals"
-        ],
-        "searchText": "cereal grains otherwise worked (for example, hulled, rolled, flaked, pearled, sliced or kibbled), except rice of heading 1006; germ of cereals, whole, rolled, flaked or ground rolled or flaked grains of other cereals of barley 1104.19.10.00",
         "generalBefore": "2¢/kg",
         "generalNow": "2¢/kg",
         "status": "unchanged",
@@ -2960,13 +2798,6 @@
       },
       {
         "hts": "1104.19.90.00",
-        "description": "Other",
-        "ancestorPath": [
-          "Cereal grains otherwise worked (for example, hulled, rolled, flaked, pearled, sliced or kibbled), except rice of heading 1006; germ of cereals, whole, rolled, flaked or ground",
-          "Rolled or flaked grains",
-          "Of other cereals"
-        ],
-        "searchText": "cereal grains otherwise worked (for example, hulled, rolled, flaked, pearled, sliced or kibbled), except rice of heading 1006; germ of cereals, whole, rolled, flaked or ground rolled or flaked grains of other cereals other 1104.19.90.00",
         "generalBefore": "0.45¢/kg",
         "generalNow": "0.45¢/kg",
         "status": "unchanged",
@@ -2974,12 +2805,6 @@
       },
       {
         "hts": "1104.22.00.00",
-        "description": "Of oats",
-        "ancestorPath": [
-          "Cereal grains otherwise worked (for example, hulled, rolled, flaked, pearled, sliced or kibbled), except rice of heading 1006; germ of cereals, whole, rolled, flaked or ground",
-          "Other worked grains (for example, hulled, pearled, sliced or kibbled)"
-        ],
-        "searchText": "cereal grains otherwise worked (for example, hulled, rolled, flaked, pearled, sliced or kibbled), except rice of heading 1006; germ of cereals, whole, rolled, flaked or ground other worked grains (for example, hulled, pearled, sliced or kibbled) of oats 1104.22.00.00",
         "generalBefore": "0.5%",
         "generalNow": "0.5%",
         "status": "unchanged",
@@ -2987,12 +2812,6 @@
       },
       {
         "hts": "1104.23.00.00",
-        "description": "Of corn (maize)",
-        "ancestorPath": [
-          "Cereal grains otherwise worked (for example, hulled, rolled, flaked, pearled, sliced or kibbled), except rice of heading 1006; germ of cereals, whole, rolled, flaked or ground",
-          "Other worked grains (for example, hulled, pearled, sliced or kibbled)"
-        ],
-        "searchText": "cereal grains otherwise worked (for example, hulled, rolled, flaked, pearled, sliced or kibbled), except rice of heading 1006; germ of cereals, whole, rolled, flaked or ground other worked grains (for example, hulled, pearled, sliced or kibbled) of corn (maize) 1104.23.00.00",
         "generalBefore": "0.45¢/kg",
         "generalNow": "0.45¢/kg",
         "status": "unchanged",
@@ -3000,13 +2819,6 @@
       },
       {
         "hts": "1104.29.10.00",
-        "description": "Of barley",
-        "ancestorPath": [
-          "Cereal grains otherwise worked (for example, hulled, rolled, flaked, pearled, sliced or kibbled), except rice of heading 1006; germ of cereals, whole, rolled, flaked or ground",
-          "Other worked grains (for example, hulled, pearled, sliced or kibbled)",
-          "Of other cereals"
-        ],
-        "searchText": "cereal grains otherwise worked (for example, hulled, rolled, flaked, pearled, sliced or kibbled), except rice of heading 1006; germ of cereals, whole, rolled, flaked or ground other worked grains (for example, hulled, pearled, sliced or kibbled) of other cereals of barley 1104.29.10.00",
         "generalBefore": "1.2%",
         "generalNow": "1.2%",
         "status": "unchanged",
@@ -3014,13 +2826,6 @@
       },
       {
         "hts": "1104.29.90.00",
-        "description": "Other",
-        "ancestorPath": [
-          "Cereal grains otherwise worked (for example, hulled, rolled, flaked, pearled, sliced or kibbled), except rice of heading 1006; germ of cereals, whole, rolled, flaked or ground",
-          "Other worked grains (for example, hulled, pearled, sliced or kibbled)",
-          "Of other cereals"
-        ],
-        "searchText": "cereal grains otherwise worked (for example, hulled, rolled, flaked, pearled, sliced or kibbled), except rice of heading 1006; germ of cereals, whole, rolled, flaked or ground other worked grains (for example, hulled, pearled, sliced or kibbled) of other cereals other 1104.29.90.00",
         "generalBefore": "2.7%",
         "generalNow": "2.7%",
         "status": "unchanged",
@@ -3028,11 +2833,6 @@
       },
       {
         "hts": "1104.30.00.00",
-        "description": "Germ of cereals, whole, rolled, flaked or ground",
-        "ancestorPath": [
-          "Cereal grains otherwise worked (for example, hulled, rolled, flaked, pearled, sliced or kibbled), except rice of heading 1006; germ of cereals, whole, rolled, flaked or ground"
-        ],
-        "searchText": "cereal grains otherwise worked (for example, hulled, rolled, flaked, pearled, sliced or kibbled), except rice of heading 1006; germ of cereals, whole, rolled, flaked or ground germ of cereals, whole, rolled, flaked or ground 1104.30.00.00",
         "generalBefore": "4.5%",
         "generalNow": "4.5%",
         "status": "unchanged",
@@ -3040,9 +2840,6 @@
       },
       {
         "hts": "1105.10.00.00",
-        "description": "Flour, meal and powder",
-        "ancestorPath": ["Flour, meal, powder, flakes, granules and pellets of potatoes"],
-        "searchText": "flour, meal, powder, flakes, granules and pellets of potatoes flour, meal and powder 1105.10.00.00",
         "generalBefore": "1.7¢/kg",
         "generalNow": "1.7¢/kg",
         "status": "unchanged",
@@ -3050,9 +2847,6 @@
       },
       {
         "hts": "1105.20.00.00",
-        "description": "Flakes, granules and pellets",
-        "ancestorPath": ["Flour, meal, powder, flakes, granules and pellets of potatoes"],
-        "searchText": "flour, meal, powder, flakes, granules and pellets of potatoes flakes, granules and pellets 1105.20.00.00",
         "generalBefore": "1.3¢/kg",
         "generalNow": "1.3¢/kg",
         "status": "unchanged",
@@ -3060,11 +2854,6 @@
       },
       {
         "hts": "1106.10.00.00",
-        "description": "Of the dried leguminous vegetables of heading 0713",
-        "ancestorPath": [
-          "Flour, meal and powder of the dried leguminous vegetables of heading 0713, of sago or of roots or tubers of heading 0714 or of the products of chapter 8"
-        ],
-        "searchText": "flour, meal and powder of the dried leguminous vegetables of heading 0713, of sago or of roots or tubers of heading 0714 or of the products of chapter 8 of the dried leguminous vegetables of heading 0713 1106.10.00.00",
         "generalBefore": "8.3%",
         "generalNow": "8.3%",
         "status": "unchanged",
@@ -3072,12 +2861,6 @@
       },
       {
         "hts": "1106.20.10.00",
-        "description": "Of Chinese water chestnuts",
-        "ancestorPath": [
-          "Flour, meal and powder of the dried leguminous vegetables of heading 0713, of sago or of roots or tubers of heading 0714 or of the products of chapter 8",
-          "Of sago or of roots or tubers of heading 0714"
-        ],
-        "searchText": "flour, meal and powder of the dried leguminous vegetables of heading 0713, of sago or of roots or tubers of heading 0714 or of the products of chapter 8 of sago or of roots or tubers of heading 0714 of chinese water chestnuts 1106.20.10.00",
         "generalBefore": "8.3%",
         "generalNow": "8.3%",
         "status": "unchanged",
@@ -3085,12 +2868,6 @@
       },
       {
         "hts": "1106.20.90.00",
-        "description": "Other",
-        "ancestorPath": [
-          "Flour, meal and powder of the dried leguminous vegetables of heading 0713, of sago or of roots or tubers of heading 0714 or of the products of chapter 8",
-          "Of sago or of roots or tubers of heading 0714"
-        ],
-        "searchText": "flour, meal and powder of the dried leguminous vegetables of heading 0713, of sago or of roots or tubers of heading 0714 or of the products of chapter 8 of sago or of roots or tubers of heading 0714 other 1106.20.90.00",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -3098,12 +2875,6 @@
       },
       {
         "hts": "1106.30.20.00",
-        "description": "Banana and plantain",
-        "ancestorPath": [
-          "Flour, meal and powder of the dried leguminous vegetables of heading 0713, of sago or of roots or tubers of heading 0714 or of the products of chapter 8",
-          "Of the products of chapter 8"
-        ],
-        "searchText": "flour, meal and powder of the dried leguminous vegetables of heading 0713, of sago or of roots or tubers of heading 0714 or of the products of chapter 8 of the products of chapter 8 banana and plantain 1106.30.20.00",
         "generalBefore": "2.8%",
         "generalNow": "2.8%",
         "status": "unchanged",
@@ -3111,12 +2882,6 @@
       },
       {
         "hts": "1106.30.40.00",
-        "description": "Other",
-        "ancestorPath": [
-          "Flour, meal and powder of the dried leguminous vegetables of heading 0713, of sago or of roots or tubers of heading 0714 or of the products of chapter 8",
-          "Of the products of chapter 8"
-        ],
-        "searchText": "flour, meal and powder of the dried leguminous vegetables of heading 0713, of sago or of roots or tubers of heading 0714 or of the products of chapter 8 of the products of chapter 8 other 1106.30.40.00",
         "generalBefore": "9.6%",
         "generalNow": "9.6%",
         "status": "unchanged",
@@ -3124,9 +2889,6 @@
       },
       {
         "hts": "1107.10.00.00",
-        "description": "Not roasted",
-        "ancestorPath": ["Malt, whether or not roasted"],
-        "searchText": "malt, whether or not roasted not roasted 1107.10.00.00",
         "generalBefore": "0.3¢/kg",
         "generalNow": "0.3¢/kg",
         "status": "unchanged",
@@ -3134,9 +2896,6 @@
       },
       {
         "hts": "1107.20.00.00",
-        "description": "Roasted",
-        "ancestorPath": ["Malt, whether or not roasted"],
-        "searchText": "malt, whether or not roasted roasted 1107.20.00.00",
         "generalBefore": "0.42¢/kg",
         "generalNow": "0.42¢/kg",
         "status": "unchanged",
@@ -3144,9 +2903,6 @@
       },
       {
         "hts": "1108.11.00.10",
-        "description": "For food use",
-        "ancestorPath": ["Starches; inulin", "Starches", "Wheat starch"],
-        "searchText": "starches; inulin starches wheat starch for food use 1108.11.00.10",
         "generalBefore": "0.54¢/kg",
         "generalNow": "0.54¢/kg",
         "status": "unchanged",
@@ -3154,9 +2910,6 @@
       },
       {
         "hts": "1108.11.00.90",
-        "description": "Other",
-        "ancestorPath": ["Starches; inulin", "Starches", "Wheat starch"],
-        "searchText": "starches; inulin starches wheat starch other 1108.11.00.90",
         "generalBefore": "0.54¢/kg",
         "generalNow": "0.54¢/kg",
         "status": "unchanged",
@@ -3164,9 +2917,6 @@
       },
       {
         "hts": "1108.12.00.10",
-        "description": "For food use",
-        "ancestorPath": ["Starches; inulin", "Starches", "Corn (maize) starch"],
-        "searchText": "starches; inulin starches corn (maize) starch for food use 1108.12.00.10",
         "generalBefore": "0.54¢/kg",
         "generalNow": "0.54¢/kg",
         "status": "unchanged",
@@ -3174,9 +2924,6 @@
       },
       {
         "hts": "1108.12.00.90",
-        "description": "Other",
-        "ancestorPath": ["Starches; inulin", "Starches", "Corn (maize) starch"],
-        "searchText": "starches; inulin starches corn (maize) starch other 1108.12.00.90",
         "generalBefore": "0.54¢/kg",
         "generalNow": "0.54¢/kg",
         "status": "unchanged",
@@ -3184,9 +2931,6 @@
       },
       {
         "hts": "1108.13.00.10",
-        "description": "For human consumption",
-        "ancestorPath": ["Starches; inulin", "Starches", "Potato starch"],
-        "searchText": "starches; inulin starches potato starch for human consumption 1108.13.00.10",
         "generalBefore": "0.56¢/kg",
         "generalNow": "0.56¢/kg",
         "status": "unchanged",
@@ -3194,9 +2938,6 @@
       },
       {
         "hts": "1108.13.00.90",
-        "description": "Other",
-        "ancestorPath": ["Starches; inulin", "Starches", "Potato starch"],
-        "searchText": "starches; inulin starches potato starch other 1108.13.00.90",
         "generalBefore": "0.56¢/kg",
         "generalNow": "0.56¢/kg",
         "status": "unchanged",
@@ -3204,9 +2945,6 @@
       },
       {
         "hts": "1108.14.00.00",
-        "description": "Cassava (manioc) starch",
-        "ancestorPath": ["Starches; inulin", "Starches"],
-        "searchText": "starches; inulin starches cassava (manioc) starch 1108.14.00.00",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -3214,9 +2952,6 @@
       },
       {
         "hts": "1108.19.00.10",
-        "description": "Cereal starches for non-food use",
-        "ancestorPath": ["Starches; inulin", "Starches", "Other starches"],
-        "searchText": "starches; inulin starches other starches cereal starches for non-food use 1108.19.00.10",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -3224,9 +2959,6 @@
       },
       {
         "hts": "1108.19.00.90",
-        "description": "Other",
-        "ancestorPath": ["Starches; inulin", "Starches", "Other starches"],
-        "searchText": "starches; inulin starches other starches other 1108.19.00.90",
         "generalBefore": "Free",
         "generalNow": "Free",
         "status": "unchanged",
@@ -3234,9 +2966,6 @@
       },
       {
         "hts": "1108.20.00.00",
-        "description": "Inulin",
-        "ancestorPath": ["Starches; inulin"],
-        "searchText": "starches; inulin inulin 1108.20.00.00",
         "generalBefore": "2.6%",
         "generalNow": "2.6%",
         "status": "unchanged",
@@ -3244,9 +2973,6 @@
       },
       {
         "hts": "1109.00.10.00",
-        "description": "To be used as animal feed",
-        "ancestorPath": ["Wheat gluten, whether or not dried"],
-        "searchText": "wheat gluten, whether or not dried to be used as animal feed 1109.00.10.00",
         "generalBefore": "1.8%",
         "generalNow": "1.8%",
         "status": "unchanged",
@@ -3254,9 +2980,6 @@
       },
       {
         "hts": "1109.00.90.10",
-        "description": "Certified organic",
-        "ancestorPath": ["Wheat gluten, whether or not dried", "Other"],
-        "searchText": "wheat gluten, whether or not dried other certified organic 1109.00.90.10",
         "generalBefore": "6.8%",
         "generalNow": "6.8%",
         "status": "unchanged",
@@ -3264,9 +2987,6 @@
       },
       {
         "hts": "1109.00.90.20",
-        "description": "Other",
-        "ancestorPath": ["Wheat gluten, whether or not dried", "Other"],
-        "searchText": "wheat gluten, whether or not dried other other 1109.00.90.20",
         "generalBefore": "6.8%",
         "generalNow": "6.8%",
         "status": "unchanged",
@@ -17475,557 +17195,256 @@
     "lines": [
       {
         "hts": "1101.00.00.10",
-        "description": "Hard spring wheat",
-        "ancestorPath": ["Wheat or meslin flour"],
-        "searchText": "wheat or meslin flour hard spring wheat 1101.00.00.10",
-        "heading": "1101",
-        "general": "0.7¢/kg",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "fda-labeling", "fda-soi", "aphis-packaging"],
         "leverIds": ["usmca", "fta", "unmixed", "drawback", "ruling"]
       },
       {
         "hts": "1101.00.00.20",
-        "description": "Durum wheat",
-        "ancestorPath": ["Wheat or meslin flour"],
-        "searchText": "wheat or meslin flour durum wheat 1101.00.00.20",
-        "heading": "1101",
-        "general": "0.7¢/kg",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "fda-labeling", "fda-soi", "aphis-packaging"],
         "leverIds": ["usmca", "fta", "unmixed", "drawback", "ruling"]
       },
       {
         "hts": "1101.00.00.30",
-        "description": "White winter wheat",
-        "ancestorPath": ["Wheat or meslin flour"],
-        "searchText": "wheat or meslin flour white winter wheat 1101.00.00.30",
-        "heading": "1101",
-        "general": "0.7¢/kg",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "fda-labeling", "fda-soi", "aphis-packaging"],
         "leverIds": ["usmca", "fta", "unmixed", "drawback", "ruling"]
       },
       {
         "hts": "1101.00.00.50",
-        "description": "Certified organic",
-        "ancestorPath": ["Wheat or meslin flour", "Other"],
-        "searchText": "wheat or meslin flour other certified organic 1101.00.00.50",
-        "heading": "1101",
-        "general": "0.7¢/kg",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "fda-labeling", "fda-soi", "nop-organic", "aphis-packaging"],
         "leverIds": ["usmca", "fta", "unmixed", "drawback", "ruling"]
       },
       {
         "hts": "1101.00.00.60",
-        "description": "Other",
-        "ancestorPath": ["Wheat or meslin flour", "Other"],
-        "searchText": "wheat or meslin flour other other 1101.00.00.60",
-        "heading": "1101",
-        "general": "0.7¢/kg",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "fda-labeling", "fda-soi", "aphis-packaging"],
         "leverIds": ["usmca", "fta", "unmixed", "drawback", "ruling"]
       },
       {
         "hts": "1102.20.00.00",
-        "description": "Corn (maize) flour",
-        "ancestorPath": ["Cereal flours other than of wheat or meslin"],
-        "searchText": "cereal flours other than of wheat or meslin corn (maize) flour 1102.20.00.00",
-        "heading": "1102",
-        "general": "0.3¢/kg",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "fda-labeling", "fda-soi", "aphis-packaging"],
         "leverIds": ["usmca", "fta", "unmixed", "drawback", "ruling"]
       },
       {
         "hts": "1102.90.20.00",
-        "description": "Buckwheat flour",
-        "ancestorPath": ["Cereal flours other than of wheat or meslin", "Other"],
-        "searchText": "cereal flours other than of wheat or meslin other buckwheat flour 1102.90.20.00",
-        "heading": "1102",
-        "general": "Free",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "fda-labeling", "aphis-packaging"],
         "leverIds": ["usmca", "unmixed", "drawback", "ruling"]
       },
       {
         "hts": "1102.90.25.00",
-        "description": "Rice flour",
-        "ancestorPath": ["Cereal flours other than of wheat or meslin", "Other"],
-        "searchText": "cereal flours other than of wheat or meslin other rice flour 1102.90.25.00",
-        "heading": "1102",
-        "general": "0.09¢/kg",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "fda-labeling", "aphis-packaging"],
         "leverIds": ["usmca", "fta", "unmixed", "drawback", "ruling"]
       },
       {
         "hts": "1102.90.27.00",
-        "description": "Rye flour",
-        "ancestorPath": ["Cereal flours other than of wheat or meslin", "Other"],
-        "searchText": "cereal flours other than of wheat or meslin other rye flour 1102.90.27.00",
-        "heading": "1102",
-        "general": "0.23¢/kg",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "fda-labeling", "aphis-packaging"],
         "leverIds": ["usmca", "fta", "unmixed", "drawback", "ruling"]
       },
       {
         "hts": "1102.90.30.00",
-        "description": "Mixtures",
-        "ancestorPath": ["Cereal flours other than of wheat or meslin", "Other", "Other"],
-        "searchText": "cereal flours other than of wheat or meslin other other mixtures 1102.90.30.00",
-        "heading": "1102",
-        "general": "12.8%",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "fda-labeling", "aphis-packaging"],
         "leverIds": ["usmca", "fta", "drawback", "ruling"]
       },
       {
         "hts": "1102.90.60.00",
-        "description": "Other",
-        "ancestorPath": ["Cereal flours other than of wheat or meslin", "Other", "Other"],
-        "searchText": "cereal flours other than of wheat or meslin other other other 1102.90.60.00",
-        "heading": "1102",
-        "general": "9%",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "fda-labeling", "aphis-packaging"],
         "leverIds": ["usmca", "fta", "unmixed", "drawback", "ruling"]
       },
       {
         "hts": "1103.11.00.20",
-        "description": "Semolina",
-        "ancestorPath": ["Cereal groats, meal and pellets", "Groats and meal", "Of wheat"],
-        "searchText": "cereal groats, meal and pellets groats and meal of wheat semolina 1103.11.00.20",
-        "heading": "1103",
-        "general": "0.5¢/kg",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "fda-labeling", "fda-soi", "aphis-packaging"],
         "leverIds": ["usmca", "fta", "unmixed", "drawback", "ruling"]
       },
       {
         "hts": "1103.11.00.40",
-        "description": "Other",
-        "ancestorPath": ["Cereal groats, meal and pellets", "Groats and meal", "Of wheat"],
-        "searchText": "cereal groats, meal and pellets groats and meal of wheat other 1103.11.00.40",
-        "heading": "1103",
-        "general": "0.5¢/kg",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "fda-labeling", "fda-soi", "aphis-packaging"],
         "leverIds": ["usmca", "fta", "unmixed", "drawback", "ruling"]
       },
       {
         "hts": "1103.13.00.20",
-        "description": "Cornmeal",
-        "ancestorPath": ["Cereal groats, meal and pellets", "Groats and meal", "Of corn (maize)"],
-        "searchText": "cereal groats, meal and pellets groats and meal of corn (maize) cornmeal 1103.13.00.20",
-        "heading": "1103",
-        "general": "0.3¢/kg",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "fda-labeling", "fda-soi", "aphis-packaging"],
         "leverIds": ["usmca", "fta", "unmixed", "drawback", "ruling"]
       },
       {
         "hts": "1103.13.00.60",
-        "description": "Other",
-        "ancestorPath": ["Cereal groats, meal and pellets", "Groats and meal", "Of corn (maize)"],
-        "searchText": "cereal groats, meal and pellets groats and meal of corn (maize) other 1103.13.00.60",
-        "heading": "1103",
-        "general": "0.3¢/kg",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "fda-labeling", "fda-soi", "aphis-packaging"],
         "leverIds": ["usmca", "fta", "unmixed", "drawback", "ruling"]
       },
       {
         "hts": "1103.19.12.00",
-        "description": "Of oats",
-        "ancestorPath": ["Cereal groats, meal and pellets", "Groats and meal", "Of other cereals"],
-        "searchText": "cereal groats, meal and pellets groats and meal of other cereals of oats 1103.19.12.00",
-        "heading": "1103",
-        "general": "0.8¢/kg",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "fda-labeling", "aphis-packaging"],
         "leverIds": ["usmca", "fta", "unmixed", "drawback", "ruling"]
       },
       {
         "hts": "1103.19.14.00",
-        "description": "Of rice",
-        "ancestorPath": ["Cereal groats, meal and pellets", "Groats and meal", "Of other cereals"],
-        "searchText": "cereal groats, meal and pellets groats and meal of other cereals of rice 1103.19.14.00",
-        "heading": "1103",
-        "general": "0.09¢/kg",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "fda-labeling", "aphis-packaging"],
         "leverIds": ["usmca", "fta", "unmixed", "drawback", "ruling"]
       },
       {
         "hts": "1103.19.90.00",
-        "description": "Of other cereals",
-        "ancestorPath": ["Cereal groats, meal and pellets", "Groats and meal", "Of other cereals"],
-        "searchText": "cereal groats, meal and pellets groats and meal of other cereals of other cereals 1103.19.90.00",
-        "heading": "1103",
-        "general": "9%",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "fda-labeling", "aphis-packaging"],
         "leverIds": ["usmca", "fta", "unmixed", "drawback", "ruling"]
       },
       {
         "hts": "1103.20.00.10",
-        "description": "Of wheat",
-        "ancestorPath": ["Cereal groats, meal and pellets", "Pellets"],
-        "searchText": "cereal groats, meal and pellets pellets of wheat 1103.20.00.10",
-        "heading": "1103",
-        "general": "Free",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "fda-labeling", "fda-animal-food", "aphis-packaging"],
         "leverIds": ["usmca", "unmixed", "drawback", "ruling"]
       },
       {
         "hts": "1103.20.00.90",
-        "description": "Of other cereals",
-        "ancestorPath": ["Cereal groats, meal and pellets", "Pellets"],
-        "searchText": "cereal groats, meal and pellets pellets of other cereals 1103.20.00.90",
-        "heading": "1103",
-        "general": "Free",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "fda-labeling", "fda-animal-food", "aphis-packaging"],
         "leverIds": ["usmca", "unmixed", "drawback", "ruling"]
       },
       {
         "hts": "1104.12.00.10",
-        "description": "Certified organic",
-        "ancestorPath": [
-          "Cereal grains otherwise worked (for example, hulled, rolled, flaked, pearled, sliced or kibbled), except rice of heading 1006; germ of cereals, whole, rolled, flaked or ground",
-          "Rolled or flaked grains",
-          "Of oats"
-        ],
-        "searchText": "cereal grains otherwise worked (for example, hulled, rolled, flaked, pearled, sliced or kibbled), except rice of heading 1006; germ of cereals, whole, rolled, flaked or ground rolled or flaked grains of oats certified organic 1104.12.00.10",
-        "heading": "1104",
-        "general": "1.2¢/kg",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "fda-labeling", "nop-organic", "aphis-packaging"],
         "leverIds": ["usmca", "fta", "unmixed", "drawback", "ruling"]
       },
       {
         "hts": "1104.12.00.90",
-        "description": "Other",
-        "ancestorPath": [
-          "Cereal grains otherwise worked (for example, hulled, rolled, flaked, pearled, sliced or kibbled), except rice of heading 1006; germ of cereals, whole, rolled, flaked or ground",
-          "Rolled or flaked grains",
-          "Of oats"
-        ],
-        "searchText": "cereal grains otherwise worked (for example, hulled, rolled, flaked, pearled, sliced or kibbled), except rice of heading 1006; germ of cereals, whole, rolled, flaked or ground rolled or flaked grains of oats other 1104.12.00.90",
-        "heading": "1104",
-        "general": "1.2¢/kg",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "fda-labeling", "aphis-packaging"],
         "leverIds": ["usmca", "fta", "unmixed", "drawback", "ruling"]
       },
       {
         "hts": "1104.19.10.00",
-        "description": "Of barley",
-        "ancestorPath": [
-          "Cereal grains otherwise worked (for example, hulled, rolled, flaked, pearled, sliced or kibbled), except rice of heading 1006; germ of cereals, whole, rolled, flaked or ground",
-          "Rolled or flaked grains",
-          "Of other cereals"
-        ],
-        "searchText": "cereal grains otherwise worked (for example, hulled, rolled, flaked, pearled, sliced or kibbled), except rice of heading 1006; germ of cereals, whole, rolled, flaked or ground rolled or flaked grains of other cereals of barley 1104.19.10.00",
-        "heading": "1104",
-        "general": "2¢/kg",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "fda-labeling", "aphis-packaging"],
         "leverIds": ["usmca", "fta", "unmixed", "drawback", "ruling"]
       },
       {
         "hts": "1104.19.90.00",
-        "description": "Other",
-        "ancestorPath": [
-          "Cereal grains otherwise worked (for example, hulled, rolled, flaked, pearled, sliced or kibbled), except rice of heading 1006; germ of cereals, whole, rolled, flaked or ground",
-          "Rolled or flaked grains",
-          "Of other cereals"
-        ],
-        "searchText": "cereal grains otherwise worked (for example, hulled, rolled, flaked, pearled, sliced or kibbled), except rice of heading 1006; germ of cereals, whole, rolled, flaked or ground rolled or flaked grains of other cereals other 1104.19.90.00",
-        "heading": "1104",
-        "general": "0.45¢/kg",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "fda-labeling", "aphis-packaging"],
         "leverIds": ["usmca", "fta", "unmixed", "drawback", "ruling"]
       },
       {
         "hts": "1104.22.00.00",
-        "description": "Of oats",
-        "ancestorPath": [
-          "Cereal grains otherwise worked (for example, hulled, rolled, flaked, pearled, sliced or kibbled), except rice of heading 1006; germ of cereals, whole, rolled, flaked or ground",
-          "Other worked grains (for example, hulled, pearled, sliced or kibbled)"
-        ],
-        "searchText": "cereal grains otherwise worked (for example, hulled, rolled, flaked, pearled, sliced or kibbled), except rice of heading 1006; germ of cereals, whole, rolled, flaked or ground other worked grains (for example, hulled, pearled, sliced or kibbled) of oats 1104.22.00.00",
-        "heading": "1104",
-        "general": "0.5%",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "fda-labeling", "aphis-packaging"],
         "leverIds": ["usmca", "fta", "unmixed", "drawback", "ruling"]
       },
       {
         "hts": "1104.23.00.00",
-        "description": "Of corn (maize)",
-        "ancestorPath": [
-          "Cereal grains otherwise worked (for example, hulled, rolled, flaked, pearled, sliced or kibbled), except rice of heading 1006; germ of cereals, whole, rolled, flaked or ground",
-          "Other worked grains (for example, hulled, pearled, sliced or kibbled)"
-        ],
-        "searchText": "cereal grains otherwise worked (for example, hulled, rolled, flaked, pearled, sliced or kibbled), except rice of heading 1006; germ of cereals, whole, rolled, flaked or ground other worked grains (for example, hulled, pearled, sliced or kibbled) of corn (maize) 1104.23.00.00",
-        "heading": "1104",
-        "general": "0.45¢/kg",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "fda-labeling", "aphis-packaging"],
         "leverIds": ["usmca", "fta", "unmixed", "drawback", "ruling"]
       },
       {
         "hts": "1104.29.10.00",
-        "description": "Of barley",
-        "ancestorPath": [
-          "Cereal grains otherwise worked (for example, hulled, rolled, flaked, pearled, sliced or kibbled), except rice of heading 1006; germ of cereals, whole, rolled, flaked or ground",
-          "Other worked grains (for example, hulled, pearled, sliced or kibbled)",
-          "Of other cereals"
-        ],
-        "searchText": "cereal grains otherwise worked (for example, hulled, rolled, flaked, pearled, sliced or kibbled), except rice of heading 1006; germ of cereals, whole, rolled, flaked or ground other worked grains (for example, hulled, pearled, sliced or kibbled) of other cereals of barley 1104.29.10.00",
-        "heading": "1104",
-        "general": "1.2%",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "fda-labeling", "aphis-packaging"],
         "leverIds": ["usmca", "fta", "unmixed", "drawback", "ruling"]
       },
       {
         "hts": "1104.29.90.00",
-        "description": "Other",
-        "ancestorPath": [
-          "Cereal grains otherwise worked (for example, hulled, rolled, flaked, pearled, sliced or kibbled), except rice of heading 1006; germ of cereals, whole, rolled, flaked or ground",
-          "Other worked grains (for example, hulled, pearled, sliced or kibbled)",
-          "Of other cereals"
-        ],
-        "searchText": "cereal grains otherwise worked (for example, hulled, rolled, flaked, pearled, sliced or kibbled), except rice of heading 1006; germ of cereals, whole, rolled, flaked or ground other worked grains (for example, hulled, pearled, sliced or kibbled) of other cereals other 1104.29.90.00",
-        "heading": "1104",
-        "general": "2.7%",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "fda-labeling", "aphis-packaging"],
         "leverIds": ["usmca", "fta", "unmixed", "drawback", "ruling"]
       },
       {
         "hts": "1104.30.00.00",
-        "description": "Germ of cereals, whole, rolled, flaked or ground",
-        "ancestorPath": [
-          "Cereal grains otherwise worked (for example, hulled, rolled, flaked, pearled, sliced or kibbled), except rice of heading 1006; germ of cereals, whole, rolled, flaked or ground"
-        ],
-        "searchText": "cereal grains otherwise worked (for example, hulled, rolled, flaked, pearled, sliced or kibbled), except rice of heading 1006; germ of cereals, whole, rolled, flaked or ground germ of cereals, whole, rolled, flaked or ground 1104.30.00.00",
-        "heading": "1104",
-        "general": "4.5%",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "fda-labeling", "aphis-packaging"],
         "leverIds": ["usmca", "fta", "unmixed", "drawback", "ruling"]
       },
       {
         "hts": "1105.10.00.00",
-        "description": "Flour, meal and powder",
-        "ancestorPath": ["Flour, meal, powder, flakes, granules and pellets of potatoes"],
-        "searchText": "flour, meal, powder, flakes, granules and pellets of potatoes flour, meal and powder 1105.10.00.00",
-        "heading": "1105",
-        "general": "1.7¢/kg",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "fda-labeling", "aphis-packaging"],
         "leverIds": ["usmca", "fta", "drawback", "ruling"]
       },
       {
         "hts": "1105.20.00.00",
-        "description": "Flakes, granules and pellets",
-        "ancestorPath": ["Flour, meal, powder, flakes, granules and pellets of potatoes"],
-        "searchText": "flour, meal, powder, flakes, granules and pellets of potatoes flakes, granules and pellets 1105.20.00.00",
-        "heading": "1105",
-        "general": "1.3¢/kg",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "fda-labeling", "aphis-packaging"],
         "leverIds": ["usmca", "fta", "drawback", "ruling"]
       },
       {
         "hts": "1106.10.00.00",
-        "description": "Of the dried leguminous vegetables of heading 0713",
-        "ancestorPath": [
-          "Flour, meal and powder of the dried leguminous vegetables of heading 0713, of sago or of roots or tubers of heading 0714 or of the products of chapter 8"
-        ],
-        "searchText": "flour, meal and powder of the dried leguminous vegetables of heading 0713, of sago or of roots or tubers of heading 0714 or of the products of chapter 8 of the dried leguminous vegetables of heading 0713 1106.10.00.00",
-        "heading": "1106",
-        "general": "8.3%",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "fda-labeling", "aphis-packaging"],
         "leverIds": ["usmca", "fta", "drawback", "ruling"]
       },
       {
         "hts": "1106.20.10.00",
-        "description": "Of Chinese water chestnuts",
-        "ancestorPath": [
-          "Flour, meal and powder of the dried leguminous vegetables of heading 0713, of sago or of roots or tubers of heading 0714 or of the products of chapter 8",
-          "Of sago or of roots or tubers of heading 0714"
-        ],
-        "searchText": "flour, meal and powder of the dried leguminous vegetables of heading 0713, of sago or of roots or tubers of heading 0714 or of the products of chapter 8 of sago or of roots or tubers of heading 0714 of chinese water chestnuts 1106.20.10.00",
-        "heading": "1106",
-        "general": "8.3%",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "fda-labeling", "aphis-packaging"],
         "leverIds": ["usmca", "fta", "drawback", "ruling"]
       },
       {
         "hts": "1106.20.90.00",
-        "description": "Other",
-        "ancestorPath": [
-          "Flour, meal and powder of the dried leguminous vegetables of heading 0713, of sago or of roots or tubers of heading 0714 or of the products of chapter 8",
-          "Of sago or of roots or tubers of heading 0714"
-        ],
-        "searchText": "flour, meal and powder of the dried leguminous vegetables of heading 0713, of sago or of roots or tubers of heading 0714 or of the products of chapter 8 of sago or of roots or tubers of heading 0714 other 1106.20.90.00",
-        "heading": "1106",
-        "general": "Free",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "fda-labeling", "aphis-packaging"],
         "leverIds": ["usmca", "drawback", "ruling"]
       },
       {
         "hts": "1106.30.20.00",
-        "description": "Banana and plantain",
-        "ancestorPath": [
-          "Flour, meal and powder of the dried leguminous vegetables of heading 0713, of sago or of roots or tubers of heading 0714 or of the products of chapter 8",
-          "Of the products of chapter 8"
-        ],
-        "searchText": "flour, meal and powder of the dried leguminous vegetables of heading 0713, of sago or of roots or tubers of heading 0714 or of the products of chapter 8 of the products of chapter 8 banana and plantain 1106.30.20.00",
-        "heading": "1106",
-        "general": "2.8%",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "fda-labeling", "aphis-packaging"],
         "leverIds": ["usmca", "fta", "drawback", "ruling"]
       },
       {
         "hts": "1106.30.40.00",
-        "description": "Other",
-        "ancestorPath": [
-          "Flour, meal and powder of the dried leguminous vegetables of heading 0713, of sago or of roots or tubers of heading 0714 or of the products of chapter 8",
-          "Of the products of chapter 8"
-        ],
-        "searchText": "flour, meal and powder of the dried leguminous vegetables of heading 0713, of sago or of roots or tubers of heading 0714 or of the products of chapter 8 of the products of chapter 8 other 1106.30.40.00",
-        "heading": "1106",
-        "general": "9.6%",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "fda-labeling", "aphis-packaging"],
         "leverIds": ["usmca", "fta", "drawback", "ruling"]
       },
       {
         "hts": "1107.10.00.00",
-        "description": "Not roasted",
-        "ancestorPath": ["Malt, whether or not roasted"],
-        "searchText": "malt, whether or not roasted not roasted 1107.10.00.00",
-        "heading": "1107",
-        "general": "0.3¢/kg",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "fda-labeling", "aphis-packaging"],
         "leverIds": ["usmca", "fta", "drawback", "ruling"]
       },
       {
         "hts": "1107.20.00.00",
-        "description": "Roasted",
-        "ancestorPath": ["Malt, whether or not roasted"],
-        "searchText": "malt, whether or not roasted roasted 1107.20.00.00",
-        "heading": "1107",
-        "general": "0.42¢/kg",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "fda-labeling", "aphis-packaging"],
         "leverIds": ["usmca", "fta", "drawback", "ruling"]
       },
       {
         "hts": "1108.11.00.10",
-        "description": "For food use",
-        "ancestorPath": ["Starches; inulin", "Starches", "Wheat starch"],
-        "searchText": "starches; inulin starches wheat starch for food use 1108.11.00.10",
-        "heading": "1108",
-        "general": "0.54¢/kg",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "fda-labeling", "aphis-packaging"],
         "leverIds": ["usmca", "fta", "drawback", "ruling"]
       },
       {
         "hts": "1108.11.00.90",
-        "description": "Other",
-        "ancestorPath": ["Starches; inulin", "Starches", "Wheat starch"],
-        "searchText": "starches; inulin starches wheat starch other 1108.11.00.90",
-        "heading": "1108",
-        "general": "0.54¢/kg",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "fda-labeling", "aphis-packaging"],
         "leverIds": ["usmca", "fta", "drawback", "ruling"]
       },
       {
         "hts": "1108.12.00.10",
-        "description": "For food use",
-        "ancestorPath": ["Starches; inulin", "Starches", "Corn (maize) starch"],
-        "searchText": "starches; inulin starches corn (maize) starch for food use 1108.12.00.10",
-        "heading": "1108",
-        "general": "0.54¢/kg",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "fda-labeling", "aphis-packaging"],
         "leverIds": ["usmca", "fta", "drawback", "ruling"]
       },
       {
         "hts": "1108.12.00.90",
-        "description": "Other",
-        "ancestorPath": ["Starches; inulin", "Starches", "Corn (maize) starch"],
-        "searchText": "starches; inulin starches corn (maize) starch other 1108.12.00.90",
-        "heading": "1108",
-        "general": "0.54¢/kg",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "fda-labeling", "aphis-packaging"],
         "leverIds": ["usmca", "fta", "drawback", "ruling"]
       },
       {
         "hts": "1108.13.00.10",
-        "description": "For human consumption",
-        "ancestorPath": ["Starches; inulin", "Starches", "Potato starch"],
-        "searchText": "starches; inulin starches potato starch for human consumption 1108.13.00.10",
-        "heading": "1108",
-        "general": "0.56¢/kg",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "fda-labeling", "aphis-packaging"],
         "leverIds": ["usmca", "fta", "drawback", "ruling"]
       },
       {
         "hts": "1108.13.00.90",
-        "description": "Other",
-        "ancestorPath": ["Starches; inulin", "Starches", "Potato starch"],
-        "searchText": "starches; inulin starches potato starch other 1108.13.00.90",
-        "heading": "1108",
-        "general": "0.56¢/kg",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "fda-labeling", "aphis-packaging"],
         "leverIds": ["usmca", "fta", "drawback", "ruling"]
       },
       {
         "hts": "1108.14.00.00",
-        "description": "Cassava (manioc) starch",
-        "ancestorPath": ["Starches; inulin", "Starches"],
-        "searchText": "starches; inulin starches cassava (manioc) starch 1108.14.00.00",
-        "heading": "1108",
-        "general": "Free",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "fda-labeling", "aphis-packaging"],
         "leverIds": ["usmca", "drawback", "ruling"]
       },
       {
         "hts": "1108.19.00.10",
-        "description": "Cereal starches for non-food use",
-        "ancestorPath": ["Starches; inulin", "Starches", "Other starches"],
-        "searchText": "starches; inulin starches other starches cereal starches for non-food use 1108.19.00.10",
-        "heading": "1108",
-        "general": "Free",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "fda-labeling", "aphis-packaging"],
         "leverIds": ["usmca", "drawback", "ruling"]
       },
       {
         "hts": "1108.19.00.90",
-        "description": "Other",
-        "ancestorPath": ["Starches; inulin", "Starches", "Other starches"],
-        "searchText": "starches; inulin starches other starches other 1108.19.00.90",
-        "heading": "1108",
-        "general": "Free",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "fda-labeling", "aphis-packaging"],
         "leverIds": ["usmca", "drawback", "ruling"]
       },
       {
         "hts": "1108.20.00.00",
-        "description": "Inulin",
-        "ancestorPath": ["Starches; inulin"],
-        "searchText": "starches; inulin inulin 1108.20.00.00",
-        "heading": "1108",
-        "general": "2.6%",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "fda-labeling", "aphis-packaging"],
         "leverIds": ["usmca", "fta", "drawback", "ruling"]
       },
       {
         "hts": "1109.00.10.00",
-        "description": "To be used as animal feed",
-        "ancestorPath": ["Wheat gluten, whether or not dried"],
-        "searchText": "wheat gluten, whether or not dried to be used as animal feed 1109.00.10.00",
-        "heading": "1109",
-        "general": "1.8%",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "fda-labeling", "fda-ia-99-29", "fda-animal-food", "aphis-packaging"],
         "leverIds": ["usmca", "fta", "drawback", "ruling"]
       },
       {
         "hts": "1109.00.90.10",
-        "description": "Certified organic",
-        "ancestorPath": ["Wheat gluten, whether or not dried", "Other"],
-        "searchText": "wheat gluten, whether or not dried other certified organic 1109.00.90.10",
-        "heading": "1109",
-        "general": "6.8%",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "fda-labeling", "fda-ia-99-29", "nop-organic", "aphis-packaging"],
         "leverIds": ["usmca", "fta", "gluten-feed", "drawback", "ruling"]
       },
       {
         "hts": "1109.00.90.20",
-        "description": "Other",
-        "ancestorPath": ["Wheat gluten, whether or not dried", "Other"],
-        "searchText": "wheat gluten, whether or not dried other other 1109.00.90.20",
-        "heading": "1109",
-        "general": "6.8%",
         "ruleIds": ["fda-prior-notice", "fda-registration", "fda-fsvp", "fda-labeling", "fda-ia-99-29", "aphis-packaging"],
         "leverIds": ["usmca", "fta", "gluten-feed", "drawback", "ruling"]
       }

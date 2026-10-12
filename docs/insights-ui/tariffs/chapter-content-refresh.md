@@ -6,7 +6,7 @@ Approach-2 chapters are JSON content files, not DB rows:
 
 | File | Loader | Pages it feeds |
 | --- | --- | --- |
-| `insights-ui/src/tariff-data/chapters/<NN>-<slug>.json` (`TariffChapterPrototype`, `src/types/tariff-chapter-prototype.ts`) | `src/utils/tariff-reports/chapter-prototype.ts` (`PROTOTYPES_BY_SLUG`) | overview, `tariff-updates`, `understand-industry`, `industry-areas`, `tariff-engineering`, `final-conclusion` |
+| `insights-ui/src/tariff-data/chapters/<NN>-<slug>.json` (`TariffChapterPrototype`, `src/types/tariff-chapter-prototype.ts`) | `src/utils/tariff-reports/chapter-prototype.ts` (`CHAPTER_FILES` — one lazy `import()` per chapter, so each chapter is its own chunk) | overview, `tariff-updates`, `understand-industry`, `industry-areas`, `tariff-engineering`, `final-conclusion` |
 | `insights-ui/src/tariff-data/chapters/exports/<NN>-<slug>/{overview,tariff-updates,markets}.json` (`src/types/tariff-chapter-exports.ts`) | `src/utils/tariff-reports/chapter-exports.ts` (`EXPORTS_BY_SLUG`) | `exports`, `exports/tariff-updates`, `exports/markets` — only for chapters with meaningful U.S. exports |
 
 Reference implementations: Chapter 01 (`01-live-animals.json`, import side only) and Chapter 30 (`30-pharmaceutical-products.json` + exports).
@@ -114,9 +114,9 @@ A quick check: grep the chapter's JSON files for the old rate string and the Ch.
 ## 6. Build a new chapter in this pattern
 
 1. Copy the closest reference file (Chapter 01 for a chapter with no exports, Chapter 30 for one with exports) to `src/tariff-data/chapters/<NN>-<slug>.json`; the slug is `<chapterNumber>-<kebab-title>` without zero-padding (e.g. `1-live-animals`), the file name is zero-padded.
-2. Fill `chapter`, then build the overview rate table from the HTSUS JSON (resolve `effective*` rates from the 8-digit parent, `*InheritedFrom`, `ancestorPath`, `searchText`, `dutiable`).
+2. Fill `chapter`, then build the overview rate table from the HTSUS JSON (resolve `effective*` rates from the 8-digit parent, `*InheritedFrom`, `ancestorPath`, `dutiable`). Don't store derived copies: rate-table `searchText` and the `description` / `ancestorPath` / `searchText` (+ engineering `heading` / `general`) of `tariffUpdates.lines` / `tariffEngineering.lines` are filled in by the loader (`normalizeChapterPrototype`) from the rate-table row with the same `hts`; `pnpm tariff:compact-chapters <file>` strips them from an old-shape file.
 3. Work through §2 for every page: `tariffUpdates` (two-edition comparison + in-effect measures + change log), `understandIndustry` (Comtrade), `industryAreas` (country × heading matrix from the in-effect rules), `tariffEngineering` (eCFR rules + levers), `finalConclusion` (FAQs from real search suggestions, answered only from facts on the other pages). Optional page keys can be added incrementally — a missing key means that page has not been built.
-4. Register it in `PROTOTYPES_BY_SLUG` (`src/utils/tariff-reports/chapter-prototype.ts`) with a static import. For export pages, create `exports/<NN>-<slug>/{overview,tariff-updates,markets}.json` and register in `EXPORTS_BY_SLUG`.
+4. Register it in `CHAPTER_FILES` (`src/utils/tariff-reports/chapter-prototype.ts`) with one lazy-import line: `'<slug>': () => import('@/tariff-data/chapters/<NN>-<slug>.json'),`. For export pages, create `exports/<NN>-<slug>/{overview,tariff-updates,markets}.json` and register in `EXPORTS_BY_SLUG`.
 5. Run the validator (it also warns about content files that exist on disk but are not registered), quality checks, PR, deploy, flush.
 
 ---
@@ -148,6 +148,7 @@ Source: `insights-ui/src/scripts/industry-tariff-reports/validate-chapter-conten
 | `changes[]` not newest-first | ERROR |
 | Duplicate `id` in any array | ERROR |
 | `tariffEngineering` `ruleIds` / `leverIds` unresolved; matrix cell for an unknown heading; FAQ `link` to a missing section; `chapter.slug` ≠ registered slug | ERROR |
+| A derived field still stored in the file (old shape — accepted) whose value differs from the rate table; a `tariffUpdates` / `tariffEngineering` line whose `hts` has no rate-table row | ERROR |
 | `industryAreas.scheduleEdition` ≠ `tariffUpdates.now.edition`; content file on disk but not registered | WARN |
 
 Exit code is 1 on any error (or any warning with `--strict`). The validator is **not** wired into CI — run it before every content PR.

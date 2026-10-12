@@ -26,7 +26,7 @@ export default async function ChapterReportLayout({ children, params }: { childr
 
   // Approach-2 chapters (issue #1770) carry their chapter facts in a content
   // file, so their breadcrumbs resolve without the report API / tariff tables.
-  const prototype = getChapterPrototype(chapterSlug);
+  const prototype = await getChapterPrototype(chapterSlug);
   const data = prototype ? null : await fetchChapterTariffReport(chapterSlug);
   const chapterInfo = prototype
     ? prototypeChapterInfo(prototype)
