@@ -12,6 +12,7 @@
 
 import { COUNTRY_OPTIONS } from '@/utils/tariff-calculator/countries';
 import { entryFees, type TransportMode } from '@/utils/tariff-calculator/duty-engine';
+import { qualifiedKey, qualifierPhrase, splitQualifiedKey, splitUnitText } from '@/utils/tariff-calculator/rate-units';
 import type { TariffMatrixCountry, TariffRateBreakdownRow, TariffRateTableRow } from '@/types/tariff-chapter-prototype';
 
 // ---------------------------------------------------------------------------
@@ -20,13 +21,17 @@ import type { TariffMatrixCountry, TariffRateBreakdownRow, TariffRateTableRow } 
 
 /** A quantity a per-unit rate is charged on. `key` groups equivalent spellings ("head", "No.", "each"). */
 export interface QuantityUnit {
+  /**
+   * "kg", "count", "liter", … — plus the qualifier when the rate charges on a qualified quantity:
+   * "kg:molybdenum content", "kg:drained weight", "kg:gross weight" (see rate-units.ts).
+   */
   key: string;
-  /** How the unit reads in the rate text, e.g. "kg", "head". */
+  /** How the unit reads, e.g. "kg", "head", "kg of molybdenum content", "1,000 units". */
   label: string;
 }
 
 export interface PerUnitCharge {
-  /** Dollars per unit (cents are converted). */
+  /** Dollars per unit (cents are converted; a rate per 1,000 units is divided by 1,000). */
   amountUsd: number;
   unit: QuantityUnit;
 }
@@ -52,39 +57,70 @@ export interface RateVariant {
 }
 
 const UNIT_ALIASES: { pattern: RegExp; key: string }[] = [
+  { pattern: /^(clean\s?kg|clean\s?kilograms?)$/, key: 'clean kg' },
   { pattern: /^(kg|kgs|kilograms?)$/, key: 'kg' },
   { pattern: /^(g|grams?)$/, key: 'g' },
   { pattern: /^(t|tons?|tonnes?|metric tons?)$/, key: 't' },
-  { pattern: /^(pf\.?\s?l\.?|proof liters?|proof litres?)$/, key: 'proof liter' },
+  { pattern: /^(pf\.?\s?l\.?|pf\.?\s?lit(ers?|res?)|proof liters?|proof litres?)$/, key: 'proof liter' },
   { pattern: /^(l|liters?|litres?)$/, key: 'liter' },
-  { pattern: /^(head|each|no\.?|number|units?|pcs?\.?|pieces?|items?)$/, key: 'count' },
+  { pattern: /^(head|each|no\.?|number|units?|pcs?\.?|pieces?|items?|articles?)$/, key: 'count' },
   { pattern: /^(doz\.?|dozens?)$/, key: 'dozen' },
   { pattern: /^(pr\.?|prs\.?|pairs?)$/, key: 'pair' },
   { pattern: /^(gross)$/, key: 'gross' },
   { pattern: /^(m2|m²|sq\.?\s?m|square meters?)$/, key: 'm2' },
   { pattern: /^(m3|m³|cubic meters?)$/, key: 'm3' },
-  { pattern: /^(m|meters?|metres?)$/, key: 'm' },
+  { pattern: /^(m|meters?|metres?|lin\.?\s?m|linear meters?)$/, key: 'm' },
+  { pattern: /^(bbl|barrels?)$/, key: 'barrel' },
+  // Counted things that aren't the goods themselves: "/jewel", "/pack".
+  { pattern: /^(jewels?)$/, key: 'count:jewels' },
+  { pattern: /^(packs?)$/, key: 'count:packs' },
 ];
 
-function toUnit(raw: string): QuantityUnit {
-  const label = raw.trim();
-  const lower = label.toLowerCase();
-  const alias = UNIT_ALIASES.find((a) => a.pattern.test(lower));
-  return { key: alias ? alias.key : lower, label };
+/** Unit keys the parser understands (a qualified key is known when its base is). Others are kept as written, lower-cased. */
+export const KNOWN_UNIT_KEYS: readonly string[] = Array.from(new Set(UNIT_ALIASES.map((a) => a.key.split(':')[0])));
+
+/** True when a parsed unit key is one the calculator can ask a quantity for. */
+export function isKnownUnitKey(key: string): boolean {
+  return KNOWN_UNIT_KEYS.includes(splitQualifiedKey(key).base);
+}
+
+// "1000", "1,000", "thousand", "1,000 pins": a rate per 1,000 units, charged per unit (see rate-units.ts).
+const PER_THOUSAND = /^(?:1,?000|thousand)(?:\s+(.+))?$/;
+
+/** The unit a rate text names, and the factor its amount is multiplied by to price one such unit. */
+function toUnit(raw: string): { unit: QuantityUnit; factor: number } {
+  const label = raw.trim().replace(/\s+/g, ' ');
+  const thousand = label.toLowerCase().match(PER_THOUSAND);
+  if (thousand) {
+    const what = thousand[1]?.trim() ?? null;
+    return { unit: { key: what ? `count:${what}` : 'count', label: `1,000 ${what ?? 'units'}` }, factor: 1 / 1000 };
+  }
+  const { base, qualifier } = splitUnitText(label);
+  const alias = UNIT_ALIASES.find((a) => a.pattern.test(base));
+  if (!alias) return { unit: { key: label.toLowerCase(), label }, factor: 1 };
+  const aliasKey = splitQualifiedKey(alias.key);
+  if (!qualifier) return { unit: { key: alias.key, label }, factor: 1 };
+  return { unit: { key: qualifiedKey(aliasKey.base, qualifier), label: `${base}${qualifierPhrase(qualifier)}` }, factor: 1 };
 }
 
 const NUMBER = '(\\d+(?:\\.\\d+)?)';
-const PERCENT_RE = new RegExp(`^${NUMBER}\\s*%$`);
+// "10%", "33 1/3%", "6.5% on the entire set" (the set's value is the customs value)
+const PERCENT_RE = new RegExp(`^${NUMBER}(?:\\s+(\\d+)/(\\d+))?\\s*%(?:\\s+on the entire set)?$`, 'i');
 // "Free–37.5%", "6.8%–44.3%", "0–37.5%", "15–100%"
 const PERCENT_RANGE_RE = new RegExp(`^(free|${NUMBER}\\s*%?)\\s*[–—-]\\s*${NUMBER}\\s*%$`, 'i');
-// "1¢/kg", "68¢/head", "0.9¢ each", "$1.20/doz", "$1.20 per dozen", "1 cent/kg"
-const PER_UNIT_RE = new RegExp(`^(?:\\$\\s*${NUMBER}|${NUMBER}\\s*(?:¢|cents?\\b))\\s*(?:/\\s*|\\s+per\\s+|\\s+)([a-z][a-z.²³0-9 ]*)$`, 'i');
+// "1¢/kg", "68¢/head", "0.9¢ each", "$1.20/doz", "$1.20 per dozen", "1 cent/kg", "89.6¢/1000",
+// "$1.32/t, including weight of container", "12.8¢/kg on molybdenum content"
+const PER_UNIT_RE = new RegExp(`^(?:\\$\\s*${NUMBER}|${NUMBER}\\s*(?:¢|cents?\\b))\\s*(?:/\\s*|\\s+per\\s+|\\s+)([a-z0-9][a-z0-9.,²³ /]*)$`, 'i');
 
-/** Removes parenthetical notes ("(9903.05.39)", "(232 list)") and "in place of base" wording. */
+/**
+ * Removes parenthetical notes ("(9903.05.39)", "(232 list)"), "in place of base" wording and
+ * line-break hyphens from the published text ("thou- sand" → "thousand").
+ */
 function cleanRateText(text: string): string {
   return text
     .replace(/\([^)]*\)/g, ' ')
     .replace(/\bin place of (the )?base( rate)?\b/gi, ' ')
+    .replace(/([a-z])- ([a-z])/gi, '$1$2')
     .replace(/\s+/g, ' ')
     .trim();
 }
@@ -101,7 +137,8 @@ function parseTerm(term: string): TermRange | null {
 
   const pct = t.match(PERCENT_RE);
   if (pct) {
-    const rate = { adValoremPct: Number(pct[1]), perUnit: [] };
+    const fraction = pct[2] !== undefined && Number(pct[3]) > 0 ? Number(pct[2]) / Number(pct[3]) : 0;
+    const rate = { adValoremPct: Number(pct[1]) + fraction, perUnit: [] };
     return { low: rate, high: rate, exact: true };
   }
 
@@ -115,8 +152,10 @@ function parseTerm(term: string): TermRange | null {
 
   const perUnit = t.match(PER_UNIT_RE);
   if (perUnit) {
-    const amountUsd = perUnit[1] !== undefined ? Number(perUnit[1]) : Number(perUnit[2]) / 100;
-    const rate = { adValoremPct: 0, perUnit: [{ amountUsd, unit: toUnit(perUnit[3]) }] };
+    const { unit, factor } = toUnit(perUnit[3]);
+    // toPrecision drops float noise from the cents and per-1,000 conversions (89.6¢/1000 → 0.000896).
+    const amountUsd = Number(((perUnit[1] !== undefined ? Number(perUnit[1]) : Number(perUnit[2]) / 100) * factor).toPrecision(12));
+    const rate = { adValoremPct: 0, perUnit: [{ amountUsd, unit }] };
     return { low: rate, high: rate, exact: true };
   }
   return null;
@@ -130,7 +169,8 @@ function addRates(a: ParsedRate, b: ParsedRate): ParsedRate {
 export function parseRateRange(text: string): RateRange | null {
   const cleaned = cleanRateText(text);
   if (!cleaned) return null;
-  const terms = cleaned.split(/\s+\+\s+/);
+  // "15.4¢/kg +59%", "27.6¢/liter+ 17.5%": the HTS doesn't always space the "+".
+  const terms = cleaned.split(/\s*\+\s*/).filter((t, i) => i > 0 || t !== '');
   let low = zeroRate();
   let high = zeroRate();
   let exact = true;

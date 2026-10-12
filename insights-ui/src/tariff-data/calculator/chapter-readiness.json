@@ -19,7 +19,6 @@
     "14",
     "15",
     "16",
-    "17",
     "18",
     "19",
     "20",
@@ -43,6 +42,7 @@
     "72"
   ],
   "notReady": [
+    "17",
     "37",
     "39",
     "40",
@@ -940,7 +940,9 @@
         "Section 301 (China, 2018-2019 lists): 78 line(s)",
         "Section 301 (Nicaragua): 78 line(s)"
       ],
-      "acceptedConditions": []
+      "acceptedConditions": [],
+      "rateGaps": [],
+      "acceptedRateGaps": []
     },
     {
       "chapter": "02",
@@ -955,7 +957,12 @@
         "Section 301 (China, 2018-2019 lists): 166 line(s)",
         "Section 301 (Nicaragua): 166 line(s)"
       ],
-      "acceptedConditions": []
+      "acceptedConditions": [],
+      "rateGaps": [],
+      "acceptedRateGaps": [
+        "special (AU) \"See 9822.04.01-9822.04.03\": unreadable; 11 line(s), e.g. 0201105010 — accepted (special-rate-see-chapter-98-99)",
+        "special (PA) \"See 9919.02.01-9919.02.02\": unreadable; 11 line(s), e.g. 0201105010 — accepted (special-rate-see-chapter-98-99)"
+      ]
     },
     {
       "chapter": "03",
@@ -970,7 +977,9 @@
         "Section 301 (China, 2018-2019 lists): 549 line(s)",
         "Section 301 (Nicaragua): 562 line(s)"
       ],
-      "acceptedConditions": []
+      "acceptedConditions": [],
+      "rateGaps": [],
+      "acceptedRateGaps": []
     },
     {
       "chapter": "04",
@@ -987,7 +996,58 @@
         "Section 301 (Nicaragua): 272 line(s)",
         "Section 338 duties on Canada (U.S. note 51): 60 line(s)"
       ],
-      "acceptedConditions": ["s232-alu-russia-smelted-other-origin"]
+      "acceptedConditions": ["s232-alu-russia-smelted-other-origin"],
+      "rateGaps": [],
+      "acceptedRateGaps": [
+        "special (S+) \"See 9823.04.01-9823.04.54\": unreadable; 51 line(s), e.g. 0406100800 — accepted (special-rate-see-chapter-98-99)",
+        "special (IL) \"See 9908.04.05\": unreadable; 51 line(s), e.g. 0406100800 — accepted (special-rate-see-chapter-98-99)",
+        "special (AU) \"See 9822.04.40\": unreadable; 27 line(s), e.g. 0406101800 — accepted (special-rate-see-chapter-98-99)",
+        "special (S+) \"See 9823.03.01-9823.03.12\": unreadable; 9 line(s), e.g. 0401507500 — accepted (special-rate-see-chapter-98-99)",
+        "special (AU) \"See 9822.04.10\": unreadable; 8 line(s), e.g. 0401507500 — accepted (special-rate-see-chapter-98-99)",
+        "special (CO) \"See 9918.04.50, 9918.04.56\": unreadable; 8 line(s), e.g. 0406105800 — accepted (special-rate-see-chapter-98-99)",
+        "special (PA) \"See 9919.04.50, 9919.04.55, 9919.04.65\": unreadable; 8 line(s), e.g. 0406105800 — accepted (special-rate-see-chapter-98-99)",
+        "special (AU) \"See 9822.04.25\": unreadable; 7 line(s), e.g. 0402295000 — accepted (special-rate-see-chapter-98-99)",
+        "special (S+) \"See 9823.06.01-9823.06.09\": unreadable; 7 line(s), e.g. 0403205000 — accepted (special-rate-see-chapter-98-99)",
+        "special (CO) \"See 9918.04.50, 9918.04.52\": unreadable; 7 line(s), e.g. 0406101800 — accepted (special-rate-see-chapter-98-99)",
+        "special (PA) \"See 9919.04.50, 9919.04.51, 9919.04.61\": unreadable; 7 line(s), e.g. 0406101800 — accepted (special-rate-see-chapter-98-99)",
+        "special (AU) \"See 9822.04.45\": unreadable; 7 line(s), e.g. 0406102800 — accepted (special-rate-see-chapter-98-99)",
+        "special (CO) \"See 9918.04.50, 9918.04.53\": unreadable; 7 line(s), e.g. 0406102800 — accepted (special-rate-see-chapter-98-99)",
+        "special (PA) \"See 9919.04.50, 9919.04.52, 9919.04.62\": unreadable; 7 line(s), e.g. 0406102800 — accepted (special-rate-see-chapter-98-99)",
+        "special (AU) \"See 9822.04.50\": unreadable; 7 line(s), e.g. 0406103800 — accepted (special-rate-see-chapter-98-99)",
+        "special (CO) \"See 9918.04.50, 9918.04.54\": unreadable; 7 line(s), e.g. 0406103800 — accepted (special-rate-see-chapter-98-99)",
+        "special (PA) \"See 9919.04.50, 9919.04.53, 9919.04.63\": unreadable; 7 line(s), e.g. 0406103800 — accepted (special-rate-see-chapter-98-99)",
+        "special (CO) \"See 9918.04.50, 9918.04.55\": unreadable; 7 line(s), e.g. 0406104800 — accepted (special-rate-see-chapter-98-99)",
+        "special (PA) \"See 9919.04.50, 9919.04.54, 9919.04.64\": unreadable; 7 line(s), e.g. 0406104800 — accepted (special-rate-see-chapter-98-99)",
+        "special (S+) \"See 9823.07.01-9823.07.07\": unreadable; 5 line(s), e.g. 0402917000 — accepted (special-rate-see-chapter-98-99)",
+        "special (AU) \"See 9822.04.35\": unreadable; 5 line(s), e.g. 0406100800 — accepted (special-rate-see-chapter-98-99)",
+        "special (CO) \"See 9918.04.50, 9918.04.51\": unreadable; 5 line(s), e.g. 0406100800 — accepted (special-rate-see-chapter-98-99)",
+        "special (PA) \"See 9919.04.40, 9919.04.41-9919.04.42\": unreadable; 5 line(s), e.g. 0406100800 — accepted (special-rate-see-chapter-98-99)",
+        "special (CO) \"See 9918.04.50, 9918.04.57\": unreadable; 5 line(s), e.g. 0406106800 — accepted (special-rate-see-chapter-98-99)",
+        "special (PA) \"See 9919.04.50, 9919.04.56, 9919.04.66\": unreadable; 5 line(s), e.g. 0406106800 — accepted (special-rate-see-chapter-98-99)",
+        "special (AU) \"See 9822.04.20\": unreadable; 4 line(s), e.g. 0402215000 — accepted (special-rate-see-chapter-98-99)",
+        "special (AU) \"See 9822.04.30\": unreadable; 4 line(s), e.g. 0402917000 — accepted (special-rate-see-chapter-98-99)",
+        "special (CO) \"See 9918.04.50, 9918.04.58\": unreadable; 4 line(s), e.g. 0406107800 — accepted (special-rate-see-chapter-98-99)",
+        "special (PA) \"See 9919.04.50, 9919.04.57, 9919.04.67\": unreadable; 4 line(s), e.g. 0406107800 — accepted (special-rate-see-chapter-98-99)",
+        "special (AU) \"See 9822.04.05\": unreadable; 3 line(s), e.g. 0401402500 — accepted (special-rate-see-chapter-98-99)",
+        "special (S+) \"See 9823.01.01-9823.01.07\": unreadable; 3 line(s), e.g. 0401402500 — accepted (special-rate-see-chapter-98-99)",
+        "special (IL) \"See 9908.04.01\": unreadable; 3 line(s), e.g. 0401507500 — accepted (special-rate-see-chapter-98-99)",
+        "special (AU) \"See 9822.04.15\": unreadable; 2 line(s), e.g. 0402105000 — accepted (special-rate-see-chapter-98-99)",
+        "special (S+) \"See 9823.02.01-9823.02.04\": unreadable; 2 line(s), e.g. 0402105000 — accepted (special-rate-see-chapter-98-99)",
+        "special (IL) \"See 9908.04.03\": unreadable; 2 line(s), e.g. 0402105000 — accepted (special-rate-see-chapter-98-99)",
+        "special (S+) \"See 9823.05.01-9823.05.06\": unreadable; 2 line(s), e.g. 0402215000 — accepted (special-rate-see-chapter-98-99)",
+        "special (PA) \"See 9919.04.10, 9919.04.11, 9919.04.13\": unreadable; 2 line(s), e.g. 0402917000 — accepted (special-rate-see-chapter-98-99)",
+        "special (PA) \"See 9919.04.10, 9919.04.12, 99.19.04.14\": unreadable; 2 line(s), e.g. 0402994500 — accepted (special-rate-see-chapter-98-99)",
+        "special (CO) \"See 9918.04.60, 9918.04.61\": unreadable; 1 line(s), e.g. 0402295000 — accepted (special-rate-see-chapter-98-99)",
+        "special (CO) \"See 9918.04.60, 9918.04.62\": unreadable; 1 line(s), e.g. 0402999000 — accepted (special-rate-see-chapter-98-99)",
+        "special (CO) \"See 9918.04.60, 9918.04.63\": unreadable; 1 line(s), e.g. 0403205000 — accepted (special-rate-see-chapter-98-99)",
+        "special (CO) \"See 9918.04.60, 9918.04.64\": unreadable; 1 line(s), e.g. 0403909500 — accepted (special-rate-see-chapter-98-99)",
+        "special (CO) \"See 9918.04.60, 9918.04.65\": unreadable; 1 line(s), e.g. 0404101500 — accepted (special-rate-see-chapter-98-99)",
+        "special (CO) \"See 9918.04.60, 9918.04.66\": unreadable; 1 line(s), e.g. 0404905000 — accepted (special-rate-see-chapter-98-99)",
+        "special (CO) \"See 9918.04.60, 9918.04.67\": unreadable; 1 line(s), e.g. 0405207000 — accepted (special-rate-see-chapter-98-99)",
+        "special (AU) \"See 9822.04.65\": unreadable; 1 line(s), e.g. 0406904800 — accepted (special-rate-see-chapter-98-99)",
+        "special (CO) \"See 9918.04.50, 9918.04.59\": unreadable; 1 line(s), e.g. 0406904800 — accepted (special-rate-see-chapter-98-99)",
+        "special (PA) \"See 9919.04.50, 9919.04.58, 9919.04.68\": unreadable; 1 line(s), e.g. 0406904800 — accepted (special-rate-see-chapter-98-99)"
+      ]
     },
     {
       "chapter": "05",
@@ -1003,7 +1063,9 @@
         "Section 301 (Nicaragua): 38 line(s)",
         "Section 338 duties on Canada (U.S. note 51): 20 line(s)"
       ],
-      "acceptedConditions": []
+      "acceptedConditions": [],
+      "rateGaps": [],
+      "acceptedRateGaps": []
     },
     {
       "chapter": "06",
@@ -1019,7 +1081,9 @@
         "Section 301 (Nicaragua): 78 line(s)",
         "Section 338 duties on Canada (U.S. note 51): 48 line(s)"
       ],
-      "acceptedConditions": []
+      "acceptedConditions": [],
+      "rateGaps": [],
+      "acceptedRateGaps": []
     },
     {
       "chapter": "07",
@@ -1034,7 +1098,9 @@
         "Section 301 (China, 2018-2019 lists): 422 line(s)",
         "Section 301 (Nicaragua): 422 line(s)"
       ],
-      "acceptedConditions": []
+      "acceptedConditions": [],
+      "rateGaps": [],
+      "acceptedRateGaps": []
     },
     {
       "chapter": "08",
@@ -1049,7 +1115,9 @@
         "Section 301 (China, 2018-2019 lists): 237 line(s)",
         "Section 301 (Nicaragua): 240 line(s)"
       ],
-      "acceptedConditions": []
+      "acceptedConditions": [],
+      "rateGaps": [],
+      "acceptedRateGaps": []
     },
     {
       "chapter": "09",
@@ -1064,7 +1132,9 @@
         "Section 301 (China, 2018-2019 lists): 91 line(s)",
         "Section 301 (Nicaragua): 91 line(s)"
       ],
-      "acceptedConditions": []
+      "acceptedConditions": [],
+      "rateGaps": [],
+      "acceptedRateGaps": []
     },
     {
       "chapter": "10",
@@ -1079,7 +1149,9 @@
         "Section 301 (China, 2018-2019 lists): 66 line(s)",
         "Section 301 (Nicaragua): 66 line(s)"
       ],
-      "acceptedConditions": []
+      "acceptedConditions": [],
+      "rateGaps": [],
+      "acceptedRateGaps": []
     },
     {
       "chapter": "11",
@@ -1094,7 +1166,9 @@
         "Section 301 (China, 2018-2019 lists): 51 line(s)",
         "Section 301 (Nicaragua): 51 line(s)"
       ],
-      "acceptedConditions": []
+      "acceptedConditions": [],
+      "rateGaps": [],
+      "acceptedRateGaps": []
     },
     {
       "chapter": "12",
@@ -1110,7 +1184,9 @@
         "Section 301 (Nicaragua): 167 line(s)",
         "Section 338 duties on Canada (U.S. note 51): 42 line(s)"
       ],
-      "acceptedConditions": []
+      "acceptedConditions": [],
+      "rateGaps": [],
+      "acceptedRateGaps": ["special (IL) \"See 9908.12.01\": unreadable; 7 line(s), e.g. 1202308000 — accepted (special-rate-see-chapter-98-99)"]
     },
     {
       "chapter": "13",
@@ -1126,7 +1202,9 @@
         "Section 301 (Nicaragua): 24 line(s)",
         "Section 338 duties on Canada (U.S. note 51): 20 line(s)"
       ],
-      "acceptedConditions": []
+      "acceptedConditions": [],
+      "rateGaps": [],
+      "acceptedRateGaps": []
     },
     {
       "chapter": "14",
@@ -1142,7 +1220,9 @@
         "Section 301 (Nicaragua): 14 line(s)",
         "Section 338 duties on Canada (U.S. note 51): 8 line(s)"
       ],
-      "acceptedConditions": []
+      "acceptedConditions": [],
+      "rateGaps": [],
+      "acceptedRateGaps": []
     },
     {
       "chapter": "15",
@@ -1158,7 +1238,12 @@
         "Section 301 (Nicaragua): 114 line(s)",
         "Section 338 duties on Canada (U.S. note 51): 1 line(s)"
       ],
-      "acceptedConditions": []
+      "acceptedConditions": [],
+      "rateGaps": [],
+      "acceptedRateGaps": [
+        "special (AU) \"See 9822.04.25\": unreadable; 1 line(s), e.g. 1517906000 — accepted (special-rate-see-chapter-98-99)",
+        "special (CO) \"See 9918.04.60, 9918.04.68\": unreadable; 1 line(s), e.g. 1517906000 — accepted (special-rate-see-chapter-98-99)"
+      ]
     },
     {
       "chapter": "16",
@@ -1173,12 +1258,14 @@
         "Section 301 (China, 2018-2019 lists): 178 line(s)",
         "Section 301 (Nicaragua): 179 line(s)"
       ],
-      "acceptedConditions": []
+      "acceptedConditions": [],
+      "rateGaps": [],
+      "acceptedRateGaps": []
     },
     {
       "chapter": "17",
       "lines": 92,
-      "status": "READY",
+      "status": "NOT READY",
       "gaps": [],
       "upcoming": [],
       "accepted": [],
@@ -1189,7 +1276,78 @@
         "Section 301 (Nicaragua): 92 line(s)",
         "Section 338 duties on Canada (U.S. note 51): 12 line(s)"
       ],
-      "acceptedConditions": []
+      "acceptedConditions": [],
+      "rateGaps": [
+        {
+          "column": "general",
+          "rateText": "3.6606¢/kg less 0.020668¢/kg for each degree under 100 degrees (and fractions of a degree in proportion) but not less than 3.143854¢/kg",
+          "problem": "unreadable",
+          "lines": 9,
+          "exampleLine": "1701120500"
+        },
+        {
+          "column": "general",
+          "rateText": "1.4606¢/kg less 0.020668¢/kg for each degree under 100 degrees (and fractions of a degree in proportion) but not less than 0.943854¢/kg",
+          "problem": "unreadable",
+          "lines": 7,
+          "exampleLine": "1701130500"
+        },
+        {
+          "column": "column2",
+          "rateText": "6.58170¢/kg less 0.0622005¢ /kg for each degree under 100 degrees (and fractions of a degree in proportion) but not less than 5.031562¢ /kg",
+          "problem": "unreadable",
+          "lines": 8,
+          "exampleLine": "1701120500"
+        },
+        {
+          "column": "column2",
+          "rateText": "4.3817¢/kg less 0.0622005¢/kg for each degree under 100 degrees (and fractions of a degree in proportion) but not less than 2.831562¢/kg",
+          "problem": "unreadable",
+          "lines": 3,
+          "exampleLine": "1701140500"
+        },
+        {
+          "column": "column2",
+          "rateText": "4.3817¢/kg less 0.0622005¢/kg for each degree under 100 degrees (and fractions of a degree in proportion) but not less than 2.831562¢ /kg",
+          "problem": "unreadable",
+          "lines": 2,
+          "exampleLine": "1701132000"
+        },
+        {
+          "column": "column2",
+          "rateText": "4.3817¢/kg less 0.0622005¢ /kg for each degree under 100 degrees (and fractions of a degree in proportion) but not less than 2.831562¢ /kg",
+          "problem": "unreadable",
+          "lines": 1,
+          "exampleLine": "1701130500"
+        },
+        {
+          "column": "column2",
+          "rateText": "4.3817¢/kg less 0.0622005¢ /kg for each degree under 100 degrees (and fractions of a degree in proportion) but not less 2.831562¢ /kg",
+          "problem": "unreadable",
+          "lines": 1,
+          "exampleLine": "1701131000"
+        },
+        {
+          "column": "column2",
+          "rateText": "6.58170¢/kg less 0.0622005¢/kg for each degree under 100 degrees (and fractions of a degree in proportion) but not less than 5.031562¢ /kg",
+          "problem": "unreadable",
+          "lines": 1,
+          "exampleLine": "1701911000"
+        }
+      ],
+      "acceptedRateGaps": [
+        "special (P+) \"See 9822.05.20\": unreadable; 20 line(s), e.g. 1701125000 — accepted (special-rate-see-chapter-98-99)",
+        "special (PE) \"See 9822.06.10\": unreadable; 20 line(s), e.g. 1701125000 — accepted (special-rate-see-chapter-98-99)",
+        "special (CO) \"See 9822.08.01\": unreadable; 20 line(s), e.g. 1701125000 — accepted (special-rate-see-chapter-98-99)",
+        "special (PA) \"See 9822.09.17\": unreadable; 20 line(s), e.g. 1701125000 — accepted (special-rate-see-chapter-98-99)",
+        "special (MA) \"See 9822.03.01\": unreadable; 20 line(s), e.g. 1701125000 — accepted (special-rate-see-chapter-98-99)",
+        "special (S+) \"See 9823.10.01-9823.10.45\": unreadable; 11 line(s), e.g. 1701914800 — accepted (special-rate-see-chapter-98-99)",
+        "special (P+) \"See 9822.05.15\": unreadable; 10 line(s), e.g. 1701121000 — accepted (special-rate-see-chapter-98-99)",
+        "special (S+) \"See 9823.09.01-9823.09.09\": unreadable; 9 line(s), e.g. 1701125000 — accepted (special-rate-see-chapter-98-99)",
+        "special (AU) \"See 9822.04.25\": unreadable; 1 line(s), e.g. 1704905800 — accepted (special-rate-see-chapter-98-99)",
+        "special (S+) \"See 9823.08.01-9823.08.38\": unreadable; 1 line(s), e.g. 1704905800 — accepted (special-rate-see-chapter-98-99)",
+        "special (CO) \"See 9918.04.60, 9918.04.69\": unreadable; 1 line(s), e.g. 1704905800 — accepted (special-rate-see-chapter-98-99)"
+      ]
     },
     {
       "chapter": "18",
@@ -1204,7 +1362,19 @@
         "Section 301 (China, 2018-2019 lists): 91 line(s)",
         "Section 301 (Nicaragua): 91 line(s)"
       ],
-      "acceptedConditions": []
+      "acceptedConditions": [],
+      "rateGaps": [],
+      "acceptedRateGaps": [
+        "special (AU) \"See 9822.04.25\": unreadable; 20 line(s), e.g. 1806202600 — accepted (special-rate-see-chapter-98-99)",
+        "special (S+) \"See 9823.08.01-9823.08.38\": unreadable; 20 line(s), e.g. 1806202600 — accepted (special-rate-see-chapter-98-99)",
+        "special (P+) \"See 9822.05.20\": unreadable; 12 line(s), e.g. 1806101500 — accepted (special-rate-see-chapter-98-99)",
+        "special (PE) \"See 9822.06.10\": unreadable; 12 line(s), e.g. 1806101500 — accepted (special-rate-see-chapter-98-99)",
+        "special (CO) \"See 9822.08.01\": unreadable; 12 line(s), e.g. 1806101500 — accepted (special-rate-see-chapter-98-99)",
+        "special (PA) \"See 9822.09.17\": unreadable; 12 line(s), e.g. 1806101500 — accepted (special-rate-see-chapter-98-99)",
+        "special (S+) \"See 9823.10.01-9823.10.45\": unreadable; 12 line(s), e.g. 1806101500 — accepted (special-rate-see-chapter-98-99)",
+        "special (MA) \"See 9822.03.01\": unreadable; 12 line(s), e.g. 1806101500 — accepted (special-rate-see-chapter-98-99)",
+        "special (CO) \"See 9918.04.60-9918.04.80\": unreadable; 6 line(s), e.g. 1806208200 — accepted (special-rate-see-chapter-98-99)"
+      ]
     },
     {
       "chapter": "19",
@@ -1220,7 +1390,23 @@
         "Section 301 (Nicaragua): 111 line(s)",
         "Section 338 duties on Canada (U.S. note 51): 4 line(s)"
       ],
-      "acceptedConditions": []
+      "acceptedConditions": [],
+      "rateGaps": [],
+      "acceptedRateGaps": [
+        "special (AU) \"See 9822.04.25\": unreadable; 10 line(s), e.g. 1901101600 — accepted (special-rate-see-chapter-98-99)",
+        "special (S+) \"See 9823.08.01-9823.08.38\": unreadable; 10 line(s), e.g. 1901101600 — accepted (special-rate-see-chapter-98-99)",
+        "special (CO) \"See 9918.04.60-9918.04.80\": unreadable; 10 line(s), e.g. 1901101600 — accepted (special-rate-see-chapter-98-99)",
+        "special (MA) \"See 9822.03.01\": unreadable; 7 line(s), e.g. 1901107600 — accepted (special-rate-see-chapter-98-99)",
+        "special (P+) \"See 9822.05.20\": unreadable; 7 line(s), e.g. 1901107600 — accepted (special-rate-see-chapter-98-99)",
+        "special (PE) \"See 9822.06.10\": unreadable; 7 line(s), e.g. 1901107600 — accepted (special-rate-see-chapter-98-99)",
+        "special (CO) \"See 9822.08.01\": unreadable; 7 line(s), e.g. 1901107600 — accepted (special-rate-see-chapter-98-99)",
+        "special (PA) \"See 9822.09.17\": unreadable; 7 line(s), e.g. 1901107600 — accepted (special-rate-see-chapter-98-99)",
+        "special (S+) \"See 9823.10.01-9823.10.45\": unreadable; 7 line(s), e.g. 1901107600 — accepted (special-rate-see-chapter-98-99)",
+        "special (S+) \"See 9823.04.01-9823.04.54\": unreadable; 1 line(s), e.g. 1901903600 — accepted (special-rate-see-chapter-98-99)",
+        "special (IL) \"See 9908.04.05\": unreadable; 1 line(s), e.g. 1901903600 — accepted (special-rate-see-chapter-98-99)",
+        "special (CO) \"See 9918.04.50-9918.04.59\": unreadable; 1 line(s), e.g. 1901903600 — accepted (special-rate-see-chapter-98-99)",
+        "special (PA) \"See 9919.04.50, 9919.04.57, 9919.04.67\": unreadable; 1 line(s), e.g. 1901903600 — accepted (special-rate-see-chapter-98-99)"
+      ]
     },
     {
       "chapter": "20",
@@ -1235,7 +1421,9 @@
         "Section 301 (China, 2018-2019 lists): 285 line(s)",
         "Section 301 (Nicaragua): 285 line(s)"
       ],
-      "acceptedConditions": []
+      "acceptedConditions": [],
+      "rateGaps": [],
+      "acceptedRateGaps": ["special (IL) \"See 9908.12.01\": unreadable; 1 line(s), e.g. 2008116100 — accepted (special-rate-see-chapter-98-99)"]
     },
     {
       "chapter": "21",
@@ -1250,7 +1438,31 @@
         "Section 301 (China, 2018-2019 lists): 117 line(s)",
         "Section 301 (Nicaragua): 118 line(s)"
       ],
-      "acceptedConditions": []
+      "acceptedConditions": [],
+      "rateGaps": [],
+      "acceptedRateGaps": [
+        "general \"The rate applicable to the natural juice in heading 2009\": unreadable; 2 line(s), e.g. 2106905200 — accepted (rate-of-natural-juice-heading-2009)",
+        "column2 \"The rate applicable to the natural juice in heading 2009\": unreadable; 2 line(s), e.g. 2106905200 — accepted (rate-of-natural-juice-heading-2009)",
+        "special (P+) \"See 9822.05.20\": unreadable; 14 line(s), e.g. 2101123800 — accepted (special-rate-see-chapter-98-99)",
+        "special (PE) \"See 9822.06.10\": unreadable; 14 line(s), e.g. 2101123800 — accepted (special-rate-see-chapter-98-99)",
+        "special (CO) \"See 9822.08.01\": unreadable; 14 line(s), e.g. 2101123800 — accepted (special-rate-see-chapter-98-99)",
+        "special (PA) \"See 9822.09.17\": unreadable; 14 line(s), e.g. 2101123800 — accepted (special-rate-see-chapter-98-99)",
+        "special (S+) \"See 9823.10.01-9823.10.45\": unreadable; 14 line(s), e.g. 2101123800 — accepted (special-rate-see-chapter-98-99)",
+        "special (MA) \"See 9822.03.01\": unreadable; 14 line(s), e.g. 2101123800 — accepted (special-rate-see-chapter-98-99)",
+        "special (AU) \"See 9822.04.25\": unreadable; 4 line(s), e.g. 2105004000 — accepted (special-rate-see-chapter-98-99)",
+        "special (S+) \"See 9823.08.01-9823.08.38\": unreadable; 4 line(s), e.g. 2105004000 — accepted (special-rate-see-chapter-98-99)",
+        "special (CO) \"See 9918.04.60-9918.04.80\": unreadable; 2 line(s), e.g. 2105004000 — accepted (special-rate-see-chapter-98-99)",
+        "special (AU) \"See 9822.04.10\": unreadable; 2 line(s), e.g. 2106902600 — accepted (special-rate-see-chapter-98-99)",
+        "special (S+) \"See 9823.03.01-9823.03.12\": unreadable; 2 line(s), e.g. 2106902600 — accepted (special-rate-see-chapter-98-99)",
+        "special (D) \"The rate applicable to the natural juice in heading 2009\": unreadable; 2 line(s), e.g. 2106905200 — accepted (rate-of-natural-juice-heading-2009)",
+        "special (AU) \"See 9822.04.05\": unreadable; 1 line(s), e.g. 2105002000 — accepted (special-rate-see-chapter-98-99)",
+        "special (S+) \"See 9823.01.01-9823.01.07\": unreadable; 1 line(s), e.g. 2105002000 — accepted (special-rate-see-chapter-98-99)",
+        "special (IL) \"See 9908.21.01\": unreadable; 1 line(s), e.g. 2105002000 — accepted (special-rate-see-chapter-98-99)",
+        "special (PA) \"See 9919.21.10, 9919.21.11-9919.21.12\": unreadable; 1 line(s), e.g. 2105002000 — accepted (special-rate-see-chapter-98-99)",
+        "special (P+) \"See 9822.05.15\": unreadable; 1 line(s), e.g. 2106904400 — accepted (special-rate-see-chapter-98-99)",
+        "special (CO) \"See 9918.04.60, 9918.04.67\": unreadable; 1 line(s), e.g. 2106906600 — accepted (special-rate-see-chapter-98-99)",
+        "special (CO) \"See 9918.04.60, 9918.04.79\": unreadable; 1 line(s), e.g. 2106908700 — accepted (special-rate-see-chapter-98-99)"
+      ]
     },
     {
       "chapter": "22",
@@ -1267,7 +1479,16 @@
         "Section 301 (Nicaragua): 121 line(s)",
         "Section 338 duties on Canada (U.S. note 51): 84 line(s)"
       ],
-      "acceptedConditions": ["s232-alu-russia-smelted-other-origin"]
+      "acceptedConditions": ["s232-alu-russia-smelted-other-origin"],
+      "rateGaps": [],
+      "acceptedRateGaps": [
+        "general \"The rate applicable to the natural juice in heading 2009\": unreadable; 2 line(s), e.g. 2202993600 — accepted (rate-of-natural-juice-heading-2009)",
+        "column2 \"The rate applicable to the natural juice in heading 2009\": unreadable; 2 line(s), e.g. 2202993600 — accepted (rate-of-natural-juice-heading-2009)",
+        "special (PA) \"See 9822.09.22-9822.09.24\": unreadable; 4 line(s), e.g. 2207106010 — accepted (special-rate-see-chapter-98-99)",
+        "special (AU) \"See 9822.04.25\": unreadable; 1 line(s), e.g. 2202992800 — accepted (special-rate-see-chapter-98-99)",
+        "special (S+) \"See 9823.01.01-9823.01.07\": unreadable; 1 line(s), e.g. 2202992800 — accepted (special-rate-see-chapter-98-99)",
+        "special (CO) \"See 9918.04.60, 9918.04.80\": unreadable; 1 line(s), e.g. 2202992800 — accepted (special-rate-see-chapter-98-99)"
+      ]
     },
     {
       "chapter": "23",
@@ -1282,7 +1503,12 @@
         "Section 301 (China, 2018-2019 lists): 61 line(s)",
         "Section 301 (Nicaragua): 61 line(s)"
       ],
-      "acceptedConditions": []
+      "acceptedConditions": [],
+      "rateGaps": [],
+      "acceptedRateGaps": [
+        "special (AU) \"See 9822.04.20\": unreadable; 4 line(s), e.g. 2309902810 — accepted (special-rate-see-chapter-98-99)",
+        "special (S+) \"See 9823.05.01-9823.05.06\": unreadable; 4 line(s), e.g. 2309902810 — accepted (special-rate-see-chapter-98-99)"
+      ]
     },
     {
       "chapter": "24",
@@ -1297,7 +1523,9 @@
         "Section 301 (China, 2018-2019 lists): 205 line(s)",
         "Section 301 (Nicaragua): 205 line(s)"
       ],
-      "acceptedConditions": []
+      "acceptedConditions": [],
+      "rateGaps": [],
+      "acceptedRateGaps": ["special (CO) \"See 9918.24.10-9918.24.11\": unreadable; 36 line(s), e.g. 2401106530 — accepted (special-rate-see-chapter-98-99)"]
     },
     {
       "chapter": "25",
@@ -1314,7 +1542,9 @@
         "Section 301 (China, 2024 increases): 3 line(s)",
         "Section 301 (Nicaragua): 101 line(s)"
       ],
-      "acceptedConditions": []
+      "acceptedConditions": [],
+      "rateGaps": [],
+      "acceptedRateGaps": []
     },
     {
       "chapter": "26",
@@ -1331,7 +1561,9 @@
         "Section 301 (China, 2024 increases): 15 line(s)",
         "Section 301 (Nicaragua): 102 line(s)"
       ],
-      "acceptedConditions": []
+      "acceptedConditions": [],
+      "rateGaps": [],
+      "acceptedRateGaps": []
     },
     {
       "chapter": "27",
@@ -1348,7 +1580,9 @@
         "Section 301 (China, 2018-2019 lists): 137 line(s)",
         "Section 301 (Nicaragua): 141 line(s)"
       ],
-      "acceptedConditions": ["s232-alu-russia-smelted-other-origin"]
+      "acceptedConditions": ["s232-alu-russia-smelted-other-origin"],
+      "rateGaps": [],
+      "acceptedRateGaps": []
     },
     {
       "chapter": "28",
@@ -1365,7 +1599,9 @@
         "Section 301 (China, 2024 increases): 13 line(s)",
         "Section 301 (Nicaragua): 336 line(s)"
       ],
-      "acceptedConditions": []
+      "acceptedConditions": [],
+      "rateGaps": [],
+      "acceptedRateGaps": []
     },
     {
       "chapter": "29",
@@ -1384,7 +1620,9 @@
         "Section 301 (Nicaragua): 1227 line(s)",
         "Section 338 duties on Canada (U.S. note 51): 4 line(s)"
       ],
-      "acceptedConditions": ["s232-alu-russia-smelted-other-origin"]
+      "acceptedConditions": ["s232-alu-russia-smelted-other-origin"],
+      "rateGaps": [],
+      "acceptedRateGaps": []
     },
     {
       "chapter": "30",
@@ -1401,7 +1639,16 @@
         "Section 301 (China, 2018-2019 lists): 4 line(s)",
         "Section 301 (Nicaragua): 198 line(s)"
       ],
-      "acceptedConditions": ["s232-alu-russia-smelted-other-origin"]
+      "acceptedConditions": ["s232-alu-russia-smelted-other-origin"],
+      "rateGaps": [],
+      "acceptedRateGaps": [
+        "special (P+) \"See 9822.05.20\": unreadable; 1 line(s), e.g. 3006932000 — accepted (special-rate-see-chapter-98-99)",
+        "special (PE) \"See 9822.06.10\": unreadable; 1 line(s), e.g. 3006932000 — accepted (special-rate-see-chapter-98-99)",
+        "special (CO) \"See 9822.08.01\": unreadable; 1 line(s), e.g. 3006932000 — accepted (special-rate-see-chapter-98-99)",
+        "special (PA) \"See 9822.09.17\": unreadable; 1 line(s), e.g. 3006932000 — accepted (special-rate-see-chapter-98-99)",
+        "special (S+) \"See 9823.10.01-9823.10.45\": unreadable; 1 line(s), e.g. 3006932000 — accepted (special-rate-see-chapter-98-99)",
+        "special (MA) \"See 9822.03.01\": unreadable; 1 line(s), e.g. 3006932000 — accepted (special-rate-see-chapter-98-99)"
+      ]
     },
     {
       "chapter": "31",
@@ -1416,7 +1663,9 @@
         "Section 301 (China, 2018-2019 lists): 29 line(s)",
         "Section 301 (Nicaragua): 29 line(s)"
       ],
-      "acceptedConditions": []
+      "acceptedConditions": [],
+      "rateGaps": [],
+      "acceptedRateGaps": []
     },
     {
       "chapter": "32",
@@ -1434,7 +1683,9 @@
         "Section 301 (Nicaragua): 168 line(s)",
         "Section 338 duties on Canada (U.S. note 51): 8 line(s)"
       ],
-      "acceptedConditions": ["s232-alu-russia-smelted-other-origin"]
+      "acceptedConditions": ["s232-alu-russia-smelted-other-origin"],
+      "rateGaps": [],
+      "acceptedRateGaps": []
     },
     {
       "chapter": "33",
@@ -1451,7 +1702,9 @@
         "Section 301 (Nicaragua): 74 line(s)",
         "Section 338 duties on Canada (U.S. note 51): 50 line(s)"
       ],
-      "acceptedConditions": ["s232-alu-russia-smelted-other-origin"]
+      "acceptedConditions": ["s232-alu-russia-smelted-other-origin"],
+      "rateGaps": [],
+      "acceptedRateGaps": []
     },
     {
       "chapter": "34",
@@ -1469,7 +1722,9 @@
         "Section 301 (Nicaragua): 48 line(s)",
         "Section 338 duties on Canada (U.S. note 51): 1 line(s)"
       ],
-      "acceptedConditions": ["s232-alu-russia-smelted-other-origin"]
+      "acceptedConditions": ["s232-alu-russia-smelted-other-origin"],
+      "rateGaps": [],
+      "acceptedRateGaps": []
     },
     {
       "chapter": "35",
@@ -1487,7 +1742,9 @@
         "Section 301 (Nicaragua): 33 line(s)",
         "Section 338 duties on Canada (U.S. note 51): 21 line(s)"
       ],
-      "acceptedConditions": ["s232-alu-russia-smelted-other-origin"]
+      "acceptedConditions": ["s232-alu-russia-smelted-other-origin"],
+      "rateGaps": [],
+      "acceptedRateGaps": []
     },
     {
       "chapter": "36",
@@ -1503,7 +1760,9 @@
         "Section 301 (China, 2018-2019 lists): 15 line(s)",
         "Section 301 (Nicaragua): 19 line(s)"
       ],
-      "acceptedConditions": []
+      "acceptedConditions": [],
+      "rateGaps": [],
+      "acceptedRateGaps": []
     },
     {
       "chapter": "37",
@@ -1529,7 +1788,9 @@
         "Section 301 (China, 2018-2019 lists): 61 line(s)",
         "Section 301 (Nicaragua): 61 line(s)"
       ],
-      "acceptedConditions": ["s232-alu-russia-smelted-other-origin"]
+      "acceptedConditions": ["s232-alu-russia-smelted-other-origin"],
+      "rateGaps": [],
+      "acceptedRateGaps": []
     },
     {
       "chapter": "38",
@@ -1548,7 +1809,9 @@
         "Section 301 (Nicaragua): 217 line(s)",
         "Section 338 duties on Canada (U.S. note 51): 19 line(s)"
       ],
-      "acceptedConditions": ["s232-alu-russia-smelted-other-origin"]
+      "acceptedConditions": ["s232-alu-russia-smelted-other-origin"],
+      "rateGaps": [],
+      "acceptedRateGaps": []
     },
     {
       "chapter": "39",
@@ -1593,7 +1856,9 @@
         "Section 301 (Nicaragua): 319 line(s)",
         "Section 338 duties on Canada (U.S. note 51): 51 line(s)"
       ],
-      "acceptedConditions": []
+      "acceptedConditions": [],
+      "rateGaps": [],
+      "acceptedRateGaps": []
     },
     {
       "chapter": "40",
@@ -1652,7 +1917,9 @@
         "Section 301 (Nicaragua): 198 line(s)",
         "Section 338 duties on Canada (U.S. note 51): 6 line(s)"
       ],
-      "acceptedConditions": []
+      "acceptedConditions": [],
+      "rateGaps": [],
+      "acceptedRateGaps": []
     },
     {
       "chapter": "41",
@@ -1697,7 +1964,9 @@
         "Section 301 (Nicaragua): 176 line(s)",
         "Section 338 duties on Canada (U.S. note 51): 14 line(s)"
       ],
-      "acceptedConditions": []
+      "acceptedConditions": [],
+      "rateGaps": [],
+      "acceptedRateGaps": []
     },
     {
       "chapter": "42",
@@ -1742,7 +2011,9 @@
         "Section 301 (Nicaragua): 121 line(s)",
         "Section 338 duties on Canada (U.S. note 51): 22 line(s)"
       ],
-      "acceptedConditions": []
+      "acceptedConditions": [],
+      "rateGaps": [],
+      "acceptedRateGaps": []
     },
     {
       "chapter": "43",
@@ -1787,7 +2058,9 @@
         "Section 301 (Nicaragua): 39 line(s)",
         "Section 338 duties on Canada (U.S. note 51): 11 line(s)"
       ],
-      "acceptedConditions": []
+      "acceptedConditions": [],
+      "rateGaps": [],
+      "acceptedRateGaps": []
     },
     {
       "chapter": "44",
@@ -1833,7 +2106,9 @@
         "Section 301 (Nicaragua): 556 line(s)",
         "Section 338 duties on Canada (U.S. note 51): 154 line(s)"
       ],
-      "acceptedConditions": []
+      "acceptedConditions": [],
+      "rateGaps": [],
+      "acceptedRateGaps": []
     },
     {
       "chapter": "45",
@@ -1876,7 +2151,9 @@
         "Section 301 (China, 2018-2019 lists): 19 line(s)",
         "Section 301 (Nicaragua): 19 line(s)"
       ],
-      "acceptedConditions": []
+      "acceptedConditions": [],
+      "rateGaps": [],
+      "acceptedRateGaps": []
     },
     {
       "chapter": "46",
@@ -1920,7 +2197,9 @@
         "Section 301 (Nicaragua): 49 line(s)",
         "Section 338 duties on Canada (U.S. note 51): 1 line(s)"
       ],
-      "acceptedConditions": []
+      "acceptedConditions": [],
+      "rateGaps": [],
+      "acceptedRateGaps": []
     },
     {
       "chapter": "47",
@@ -1964,7 +2243,9 @@
         "Section 301 (Nicaragua): 26 line(s)",
         "Section 338 duties on Canada (U.S. note 51): 2 line(s)"
       ],
-      "acceptedConditions": []
+      "acceptedConditions": [],
+      "rateGaps": [],
+      "acceptedRateGaps": []
     },
     {
       "chapter": "48",
@@ -2009,7 +2290,9 @@
         "Section 301 (Nicaragua): 312 line(s)",
         "Section 338 duties on Canada (U.S. note 51): 62 line(s)"
       ],
-      "acceptedConditions": []
+      "acceptedConditions": [],
+      "rateGaps": [],
+      "acceptedRateGaps": []
     },
     {
       "chapter": "49",
@@ -2054,7 +2337,9 @@
         "Section 301 (Nicaragua): 50 line(s)",
         "Section 338 duties on Canada (U.S. note 51): 3 line(s)"
       ],
-      "acceptedConditions": []
+      "acceptedConditions": [],
+      "rateGaps": [],
+      "acceptedRateGaps": []
     },
     {
       "chapter": "50",
@@ -2098,7 +2383,9 @@
         "Section 301 (Nicaragua): 30 line(s)",
         "Section 338 duties on Canada (U.S. note 51): 2 line(s)"
       ],
-      "acceptedConditions": []
+      "acceptedConditions": [],
+      "rateGaps": [],
+      "acceptedRateGaps": []
     },
     {
       "chapter": "51",
@@ -2142,7 +2429,17 @@
         "Section 301 (Nicaragua): 124 line(s)",
         "Section 338 duties on Canada (U.S. note 51): 3 line(s)"
       ],
-      "acceptedConditions": []
+      "acceptedConditions": [],
+      "rateGaps": [
+        {
+          "column": "column2",
+          "rateText": "Free, under bond",
+          "problem": "unreadable",
+          "lines": 4,
+          "exampleLine": "5101111000"
+        }
+      ],
+      "acceptedRateGaps": []
     },
     {
       "chapter": "52",
@@ -2187,7 +2484,9 @@
         "Section 301 (Nicaragua): 525 line(s)",
         "Section 338 duties on Canada (U.S. note 51): 5 line(s)"
       ],
-      "acceptedConditions": []
+      "acceptedConditions": [],
+      "rateGaps": [],
+      "acceptedRateGaps": []
     },
     {
       "chapter": "53",
@@ -2230,7 +2529,9 @@
         "Section 301 (China, 2018-2019 lists): 62 line(s)",
         "Section 301 (Nicaragua): 62 line(s)"
       ],
-      "acceptedConditions": []
+      "acceptedConditions": [],
+      "rateGaps": [],
+      "acceptedRateGaps": []
     },
     {
       "chapter": "54",
@@ -2274,7 +2575,9 @@
         "Section 301 (Nicaragua): 265 line(s)",
         "Section 338 duties on Canada (U.S. note 51): 3 line(s)"
       ],
-      "acceptedConditions": []
+      "acceptedConditions": [],
+      "rateGaps": [],
+      "acceptedRateGaps": []
     },
     {
       "chapter": "55",
@@ -2318,7 +2621,9 @@
         "Section 301 (Nicaragua): 399 line(s)",
         "Section 338 duties on Canada (U.S. note 51): 13 line(s)"
       ],
-      "acceptedConditions": []
+      "acceptedConditions": [],
+      "rateGaps": [],
+      "acceptedRateGaps": []
     },
     {
       "chapter": "56",
@@ -2362,7 +2667,9 @@
         "Section 301 (Nicaragua): 81 line(s)",
         "Section 338 duties on Canada (U.S. note 51): 17 line(s)"
       ],
-      "acceptedConditions": []
+      "acceptedConditions": [],
+      "rateGaps": [],
+      "acceptedRateGaps": []
     },
     {
       "chapter": "57",
@@ -2406,7 +2713,9 @@
         "Section 301 (Nicaragua): 74 line(s)",
         "Section 338 duties on Canada (U.S. note 51): 2 line(s)"
       ],
-      "acceptedConditions": []
+      "acceptedConditions": [],
+      "rateGaps": [],
+      "acceptedRateGaps": []
     },
     {
       "chapter": "58",
@@ -2450,7 +2759,80 @@
         "Section 301 (Nicaragua): 111 line(s)",
         "Section 338 duties on Canada (U.S. note 51): 1 line(s)"
       ],
-      "acceptedConditions": []
+      "acceptedConditions": [],
+      "rateGaps": [
+        {
+          "column": "general",
+          "rateText": "See additional U.S. note 3",
+          "problem": "unreadable",
+          "lines": 3,
+          "exampleLine": "5810929030"
+        },
+        {
+          "column": "general",
+          "rateText": "See additional U.S. note 1",
+          "problem": "unreadable",
+          "lines": 2,
+          "exampleLine": "5810910010"
+        },
+        {
+          "column": "general",
+          "rateText": "See additional U.S. note 2",
+          "problem": "unreadable",
+          "lines": 1,
+          "exampleLine": "5810921000"
+        },
+        {
+          "column": "general",
+          "rateText": "See additional U.S. note 4",
+          "problem": "unreadable",
+          "lines": 1,
+          "exampleLine": "5810991000"
+        },
+        {
+          "column": "general",
+          "rateText": "See additional U.S. note 5",
+          "problem": "unreadable",
+          "lines": 1,
+          "exampleLine": "5810999000"
+        },
+        {
+          "column": "column2",
+          "rateText": "See additional U.S. note 3",
+          "problem": "unreadable",
+          "lines": 3,
+          "exampleLine": "5810929030"
+        },
+        {
+          "column": "column2",
+          "rateText": "See additional U.S. note 1",
+          "problem": "unreadable",
+          "lines": 2,
+          "exampleLine": "5810910010"
+        },
+        {
+          "column": "column2",
+          "rateText": "See additional U.S. note 2",
+          "problem": "unreadable",
+          "lines": 1,
+          "exampleLine": "5810921000"
+        },
+        {
+          "column": "column2",
+          "rateText": "See additional U.S. note 4",
+          "problem": "unreadable",
+          "lines": 1,
+          "exampleLine": "5810991000"
+        },
+        {
+          "column": "column2",
+          "rateText": "See additional U.S. note 5",
+          "problem": "unreadable",
+          "lines": 1,
+          "exampleLine": "5810999000"
+        }
+      ],
+      "acceptedRateGaps": []
     },
     {
       "chapter": "59",
@@ -2495,7 +2877,9 @@
         "Section 301 (Nicaragua): 75 line(s)",
         "Section 338 duties on Canada (U.S. note 51): 6 line(s)"
       ],
-      "acceptedConditions": []
+      "acceptedConditions": [],
+      "rateGaps": [],
+      "acceptedRateGaps": []
     },
     {
       "chapter": "60",
@@ -2539,7 +2923,9 @@
         "Section 301 (Nicaragua): 106 line(s)",
         "Section 338 duties on Canada (U.S. note 51): 12 line(s)"
       ],
-      "acceptedConditions": []
+      "acceptedConditions": [],
+      "rateGaps": [],
+      "acceptedRateGaps": []
     },
     {
       "chapter": "61",
@@ -2583,7 +2969,38 @@
         "Section 301 (Nicaragua): 838 line(s)",
         "Section 338 duties on Canada (U.S. note 51): 55 line(s)"
       ],
-      "acceptedConditions": []
+      "acceptedConditions": [],
+      "rateGaps": [
+        {
+          "column": "general",
+          "rateText": "The rate applicable to each garment in the ensemble if separately entered",
+          "problem": "unreadable",
+          "lines": 119,
+          "exampleLine": "6103220010"
+        },
+        {
+          "column": "general",
+          "rateText": "The rate applicable to each garment in the ensemble if entered separately",
+          "problem": "unreadable",
+          "lines": 7,
+          "exampleLine": "6104291010"
+        },
+        {
+          "column": "column2",
+          "rateText": "The rate applicable to each garment in the ensemble if separately entered",
+          "problem": "unreadable",
+          "lines": 119,
+          "exampleLine": "6103220010"
+        },
+        {
+          "column": "column2",
+          "rateText": "The rate applicable to each garment in the ensemble if entered separately",
+          "problem": "unreadable",
+          "lines": 7,
+          "exampleLine": "6104291010"
+        }
+      ],
+      "acceptedRateGaps": []
     },
     {
       "chapter": "62",
@@ -2628,7 +3045,31 @@
         "Section 301 (Nicaragua): 1247 line(s)",
         "Section 338 duties on Canada (U.S. note 51): 74 line(s)"
       ],
-      "acceptedConditions": []
+      "acceptedConditions": [],
+      "rateGaps": [
+        {
+          "column": "general",
+          "rateText": "The rate applicable to each garment in the ensemble if separately entered",
+          "problem": "unreadable",
+          "lines": 94,
+          "exampleLine": "6203223010"
+        },
+        {
+          "column": "general",
+          "rateText": "The rate applicable to each garment in the in the ensemble if separately entered",
+          "problem": "unreadable",
+          "lines": 11,
+          "exampleLine": "6203293010"
+        },
+        {
+          "column": "column2",
+          "rateText": "The rate applicable to each garment in the ensemble if separately entered",
+          "problem": "unreadable",
+          "lines": 105,
+          "exampleLine": "6203223010"
+        }
+      ],
+      "acceptedRateGaps": []
     },
     {
       "chapter": "63",
@@ -2674,7 +3115,9 @@
         "Section 301 (Nicaragua): 229 line(s)",
         "Section 338 duties on Canada (U.S. note 51): 22 line(s)"
       ],
-      "acceptedConditions": []
+      "acceptedConditions": [],
+      "rateGaps": [],
+      "acceptedRateGaps": []
     },
     {
       "chapter": "64",
@@ -2720,7 +3163,9 @@
         "Section 301 (Nicaragua): 391 line(s)",
         "Section 338 duties on Canada (U.S. note 51): 4 line(s)"
       ],
-      "acceptedConditions": []
+      "acceptedConditions": [],
+      "rateGaps": [],
+      "acceptedRateGaps": []
     },
     {
       "chapter": "65",
@@ -2765,7 +3210,9 @@
         "Section 301 (Nicaragua): 64 line(s)",
         "Section 338 duties on Canada (U.S. note 51): 7 line(s)"
       ],
-      "acceptedConditions": []
+      "acceptedConditions": [],
+      "rateGaps": [],
+      "acceptedRateGaps": []
     },
     {
       "chapter": "66",
@@ -2809,7 +3256,9 @@
         "Section 301 (China, 2018-2019 lists): 2 line(s)",
         "Section 301 (Nicaragua): 8 line(s)"
       ],
-      "acceptedConditions": ["s232-alu-russia-smelted-other-origin"]
+      "acceptedConditions": ["s232-alu-russia-smelted-other-origin"],
+      "rateGaps": [],
+      "acceptedRateGaps": []
     },
     {
       "chapter": "67",
@@ -2854,7 +3303,9 @@
         "Section 301 (Nicaragua): 13 line(s)",
         "Section 338 duties on Canada (U.S. note 51): 1 line(s)"
       ],
-      "acceptedConditions": []
+      "acceptedConditions": [],
+      "rateGaps": [],
+      "acceptedRateGaps": []
     },
     {
       "chapter": "68",
@@ -2900,7 +3351,9 @@
         "Section 301 (Nicaragua): 97 line(s)",
         "Section 338 duties on Canada (U.S. note 51): 5 line(s)"
       ],
-      "acceptedConditions": []
+      "acceptedConditions": [],
+      "rateGaps": [],
+      "acceptedRateGaps": []
     },
     {
       "chapter": "69",
@@ -2944,7 +3397,9 @@
         "Section 301 (China, 2018-2019 lists): 99 line(s)",
         "Section 301 (Nicaragua): 120 line(s)"
       ],
-      "acceptedConditions": []
+      "acceptedConditions": [],
+      "rateGaps": [],
+      "acceptedRateGaps": []
     },
     {
       "chapter": "70",
@@ -3003,7 +3458,9 @@
         "Section 301 (Nicaragua): 280 line(s)",
         "Section 338 duties on Canada (U.S. note 51): 13 line(s)"
       ],
-      "acceptedConditions": []
+      "acceptedConditions": [],
+      "rateGaps": [],
+      "acceptedRateGaps": []
     },
     {
       "chapter": "71",
@@ -3048,7 +3505,9 @@
         "Section 301 (Nicaragua): 140 line(s)",
         "Section 338 duties on Canada (U.S. note 51): 14 line(s)"
       ],
-      "acceptedConditions": []
+      "acceptedConditions": [],
+      "rateGaps": [],
+      "acceptedRateGaps": []
     },
     {
       "chapter": "72",
@@ -3067,7 +3526,9 @@
         "Section 301 (Nicaragua): 559 line(s)",
         "Section 338 duties on Canada (U.S. note 51): 1 line(s)"
       ],
-      "acceptedConditions": []
+      "acceptedConditions": [],
+      "rateGaps": [],
+      "acceptedRateGaps": []
     },
     {
       "chapter": "73",
@@ -3109,7 +3570,9 @@
         "Section 301 (Nicaragua): 573 line(s)",
         "Section 338 duties on Canada (U.S. note 51): 5 line(s)"
       ],
-      "acceptedConditions": ["s232-alu-russia-smelted-other-origin"]
+      "acceptedConditions": ["s232-alu-russia-smelted-other-origin"],
+      "rateGaps": [],
+      "acceptedRateGaps": []
     },
     {
       "chapter": "74",
@@ -3154,7 +3617,9 @@
         "Section 301 (China, 2018-2019 lists): 135 line(s)",
         "Section 301 (Nicaragua): 136 line(s)"
       ],
-      "acceptedConditions": []
+      "acceptedConditions": [],
+      "rateGaps": [],
+      "acceptedRateGaps": []
     },
     {
       "chapter": "75",
@@ -3198,7 +3663,9 @@
         "Section 301 (China, 2018-2019 lists): 29 line(s)",
         "Section 301 (Nicaragua): 29 line(s)"
       ],
-      "acceptedConditions": []
+      "acceptedConditions": [],
+      "rateGaps": [],
+      "acceptedRateGaps": []
     },
     {
       "chapter": "76",
@@ -3239,7 +3706,9 @@
         "Section 301 (Nicaragua): 124 line(s)",
         "Section 338 duties on Canada (U.S. note 51): 17 line(s)"
       ],
-      "acceptedConditions": ["s232-alu-russia-smelted-other-origin"]
+      "acceptedConditions": ["s232-alu-russia-smelted-other-origin"],
+      "rateGaps": [],
+      "acceptedRateGaps": []
     },
     {
       "chapter": "78",
@@ -3283,7 +3752,17 @@
         "Section 301 (China, 2018-2019 lists): 10 line(s)",
         "Section 301 (Nicaragua): 13 line(s)"
       ],
-      "acceptedConditions": []
+      "acceptedConditions": [],
+      "rateGaps": [
+        {
+          "column": "general",
+          "rateText": "2.5% on the value of the lead content",
+          "problem": "unreadable",
+          "lines": 5,
+          "exampleLine": "7801100000"
+        }
+      ],
+      "acceptedRateGaps": []
     },
     {
       "chapter": "79",
@@ -3327,7 +3806,9 @@
         "Section 301 (China, 2024 increases): 4 line(s)",
         "Section 301 (Nicaragua): 13 line(s)"
       ],
-      "acceptedConditions": []
+      "acceptedConditions": [],
+      "rateGaps": [],
+      "acceptedRateGaps": []
     },
     {
       "chapter": "80",
@@ -3371,7 +3852,9 @@
         "Section 301 (China, 2024 increases): 4 line(s)",
         "Section 301 (Nicaragua): 13 line(s)"
       ],
-      "acceptedConditions": []
+      "acceptedConditions": [],
+      "rateGaps": [],
+      "acceptedRateGaps": []
     },
     {
       "chapter": "81",
@@ -3417,7 +3900,9 @@
         "Section 301 (Nicaragua): 84 line(s)",
         "Section 338 duties on Canada (U.S. note 51): 1 line(s)"
       ],
-      "acceptedConditions": []
+      "acceptedConditions": [],
+      "rateGaps": [],
+      "acceptedRateGaps": []
     },
     {
       "chapter": "82",
@@ -3483,7 +3968,31 @@
         "Section 301 (Nicaragua): 189 line(s)",
         "Section 338 duties on Canada (U.S. note 51): 18 line(s)"
       ],
-      "acceptedConditions": []
+      "acceptedConditions": [],
+      "rateGaps": [
+        {
+          "column": "general",
+          "rateText": "The rate of duty applicable to that article in the set subject to the highest rate of duty",
+          "problem": "unreadable",
+          "lines": 5,
+          "exampleLine": "8205906000"
+        },
+        {
+          "column": "column2",
+          "rateText": "The rate of duty applicable to that article in the set subject to the highest rate of duty",
+          "problem": "unreadable",
+          "lines": 4,
+          "exampleLine": "8205906000"
+        },
+        {
+          "column": "column2",
+          "rateText": "The rate of duty appli- cable to that article in the set subject to the high- est rate of duty",
+          "problem": "unreadable",
+          "lines": 1,
+          "exampleLine": "8211100000"
+        }
+      ],
+      "acceptedRateGaps": []
     },
     {
       "chapter": "83",
@@ -3550,7 +4059,9 @@
         "Section 301 (Nicaragua): 89 line(s)",
         "Section 338 duties on Canada (U.S. note 51): 18 line(s)"
       ],
-      "acceptedConditions": ["s232-alu-russia-smelted-other-origin"]
+      "acceptedConditions": ["s232-alu-russia-smelted-other-origin"],
+      "rateGaps": [],
+      "acceptedRateGaps": []
     },
     {
       "chapter": "84",
@@ -3635,7 +4146,9 @@
         "Section 301 (Nicaragua): 1706 line(s)",
         "Section 338 duties on Canada (U.S. note 51): 56 line(s)"
       ],
-      "acceptedConditions": ["s232-alu-russia-smelted-other-origin"]
+      "acceptedConditions": ["s232-alu-russia-smelted-other-origin"],
+      "rateGaps": [],
+      "acceptedRateGaps": ["special (JP) \"See 9921.01.01, 9921.01.02\": unreadable; 6 line(s), e.g. 8415908010 — accepted (special-rate-see-chapter-98-99)"]
     },
     {
       "chapter": "85",
@@ -3717,7 +4230,9 @@
         "Section 301 (Nicaragua): 982 line(s)",
         "Section 338 duties on Canada (U.S. note 51): 62 line(s)"
       ],
-      "acceptedConditions": ["s232-alu-russia-smelted-other-origin"]
+      "acceptedConditions": ["s232-alu-russia-smelted-other-origin"],
+      "rateGaps": [],
+      "acceptedRateGaps": []
     },
     {
       "chapter": "86",
@@ -3770,7 +4285,9 @@
         "Section 301 (China, 2018-2019 lists): 36 line(s)",
         "Section 301 (Nicaragua): 37 line(s)"
       ],
-      "acceptedConditions": []
+      "acceptedConditions": [],
+      "rateGaps": [],
+      "acceptedRateGaps": []
     },
     {
       "chapter": "87",
@@ -3859,7 +4376,9 @@
         "Section 301 (Nicaragua): 402 line(s)",
         "Section 338 duties on Canada (U.S. note 51): 7 line(s)"
       ],
-      "acceptedConditions": ["s232-alu-russia-smelted-other-origin"]
+      "acceptedConditions": ["s232-alu-russia-smelted-other-origin"],
+      "rateGaps": [],
+      "acceptedRateGaps": []
     },
     {
       "chapter": "88",
@@ -3905,7 +4424,9 @@
         "Section 301 (China, 2018-2019 lists): 67 line(s)",
         "Section 301 (Nicaragua): 67 line(s)"
       ],
-      "acceptedConditions": ["s232-alu-russia-smelted-other-origin"]
+      "acceptedConditions": ["s232-alu-russia-smelted-other-origin"],
+      "rateGaps": [],
+      "acceptedRateGaps": []
     },
     {
       "chapter": "89",
@@ -3950,7 +4471,9 @@
         "Section 301 (Nicaragua): 58 line(s)",
         "Section 338 duties on Canada (U.S. note 51): 20 line(s)"
       ],
-      "acceptedConditions": []
+      "acceptedConditions": [],
+      "rateGaps": [],
+      "acceptedRateGaps": []
     },
     {
       "chapter": "90",
@@ -4010,7 +4533,24 @@
         "Section 301 (Nicaragua): 421 line(s)",
         "Section 338 duties on Canada (U.S. note 51): 1 line(s)"
       ],
-      "acceptedConditions": ["s232-alu-russia-smelted-other-origin"]
+      "acceptedConditions": ["s232-alu-russia-smelted-other-origin"],
+      "rateGaps": [
+        {
+          "column": "general",
+          "rateText": "The rate applicable to the article of which it is a part or accessory",
+          "problem": "unreadable",
+          "lines": 10,
+          "exampleLine": "9005904000"
+        },
+        {
+          "column": "column2",
+          "rateText": "The rate applicable to the article of which it is a part or accessory",
+          "problem": "unreadable",
+          "lines": 18,
+          "exampleLine": "9005904000"
+        }
+      ],
+      "acceptedRateGaps": []
     },
     {
       "chapter": "91",
@@ -4053,7 +4593,52 @@
         "Section 301 (China, 2018-2019 lists): 71 line(s)",
         "Section 301 (Nicaragua): 82 line(s)"
       ],
-      "acceptedConditions": []
+      "acceptedConditions": [],
+      "rateGaps": [
+        {
+          "column": "general",
+          "rateText": "The rate applicable to the complete, assembled movement",
+          "problem": "unreadable",
+          "lines": 2,
+          "exampleLine": "9110110000"
+        },
+        {
+          "column": "general",
+          "rateText": "4.3% + 1.7¢/jewel + 0.2¢ for each other piece or part, but if consisting in part of a plate or a set of plates the total duty shall not exceed the duty for the complete movement",
+          "problem": "unknown unit \"for each other piece or part, but if consisting in part of a plate or a set of plates the total duty shall not exceed the duty for the complete movement\"",
+          "lines": 1,
+          "exampleLine": "9110904000"
+        },
+        {
+          "column": "general",
+          "rateText": "6% + 2.3¢/jewel + 0.2¢ for each other piece or part, but if consisting in part of a plate or a set of plates the total duty shall not exceed the duty for the complete movement",
+          "problem": "unknown unit \"for each other piece or part, but if consisting in part of a plate or a set of plates the total duty shall not exceed the duty for the complete movement\"",
+          "lines": 1,
+          "exampleLine": "9114903000"
+        },
+        {
+          "column": "column2",
+          "rateText": "65% + 25¢/jewel + 3¢ for each other piece or part, but if consisting in part of a plate or a set of plates the total duty shall not exceed the duty for the complete movement",
+          "problem": "unknown unit \"for each other piece or part, but if consisting in part of a plate or a set of plates the total duty shall not exceed the duty for the complete movement\"",
+          "lines": 2,
+          "exampleLine": "9110904000"
+        },
+        {
+          "column": "column2",
+          "rateText": "The rate applicable to the complete, assembled",
+          "problem": "unreadable",
+          "lines": 1,
+          "exampleLine": "9110110000"
+        },
+        {
+          "column": "column2",
+          "rateText": "The rate applicable to the complete, assembled movement",
+          "problem": "unreadable",
+          "lines": 1,
+          "exampleLine": "9110902000"
+        }
+      ],
+      "acceptedRateGaps": []
     },
     {
       "chapter": "92",
@@ -4096,7 +4681,9 @@
         "Section 301 (China, 2018-2019 lists): 58 line(s)",
         "Section 301 (Nicaragua): 63 line(s)"
       ],
-      "acceptedConditions": []
+      "acceptedConditions": [],
+      "rateGaps": [],
+      "acceptedRateGaps": []
     },
     {
       "chapter": "93",
@@ -4140,7 +4727,31 @@
         "Section 301 (China, 2018-2019 lists): 66 line(s)",
         "Section 301 (Nicaragua): 67 line(s)"
       ],
-      "acceptedConditions": []
+      "acceptedConditions": [],
+      "rateGaps": [
+        {
+          "column": "general",
+          "rateText": "3.1% on the value of the rifle + 13% on the value of the telescopic sight, if any",
+          "problem": "unreadable",
+          "lines": 6,
+          "exampleLine": "9303308005"
+        },
+        {
+          "column": "general",
+          "rateText": "3.8% on the value of the rifle + 10% on the value of the telescopic sight, if any",
+          "problem": "unreadable",
+          "lines": 3,
+          "exampleLine": "9303304010"
+        },
+        {
+          "column": "general",
+          "rateText": "4.7% on the value of the rifle + 20% on the value of the telescopic sight, if any",
+          "problem": "unreadable",
+          "lines": 2,
+          "exampleLine": "9301903010"
+        }
+      ],
+      "acceptedRateGaps": []
     },
     {
       "chapter": "94",
@@ -4208,7 +4819,9 @@
         "Section 301 (Nicaragua): 275 line(s)",
         "Section 338 duties on Canada (U.S. note 51): 177 line(s)"
       ],
-      "acceptedConditions": ["s232-alu-russia-smelted-other-origin"]
+      "acceptedConditions": ["s232-alu-russia-smelted-other-origin"],
+      "rateGaps": [],
+      "acceptedRateGaps": []
     },
     {
       "chapter": "95",
@@ -4254,7 +4867,9 @@
         "Section 301 (Nicaragua): 118 line(s)",
         "Section 338 duties on Canada (U.S. note 51): 27 line(s)"
       ],
-      "acceptedConditions": ["s232-alu-russia-smelted-other-origin"]
+      "acceptedConditions": ["s232-alu-russia-smelted-other-origin"],
+      "rateGaps": [],
+      "acceptedRateGaps": []
     },
     {
       "chapter": "96",
@@ -4299,7 +4914,73 @@
         "Section 301 (China, 2018-2019 lists): 117 line(s)",
         "Section 301 (Nicaragua): 157 line(s)"
       ],
-      "acceptedConditions": ["s232-alu-russia-smelted-other-origin"]
+      "acceptedConditions": ["s232-alu-russia-smelted-other-origin"],
+      "rateGaps": [
+        {
+          "column": "general",
+          "rateText": "The rate applicable to the article of which it is an accessory",
+          "problem": "unreadable",
+          "lines": 8,
+          "exampleLine": "9620001500"
+        },
+        {
+          "column": "general",
+          "rateText": "0.3¢/line/ gross + 4.6%",
+          "problem": "unknown unit \"line/ gross\"",
+          "lines": 1,
+          "exampleLine": "9606214000"
+        },
+        {
+          "column": "general",
+          "rateText": "0.3¢/line/ gross + 4.5%",
+          "problem": "unknown unit \"line/ gross\"",
+          "lines": 1,
+          "exampleLine": "9606292000"
+        },
+        {
+          "column": "general",
+          "rateText": "0.18¢/line/ gross + 2.5%",
+          "problem": "unknown unit \"line/ gross\"",
+          "lines": 1,
+          "exampleLine": "9606294000"
+        },
+        {
+          "column": "general",
+          "rateText": "The rate applicable to each article in the absence of this subheading",
+          "problem": "unreadable",
+          "lines": 1,
+          "exampleLine": "9608500000"
+        },
+        {
+          "column": "column2",
+          "rateText": "The rate applicable to the article of which it is an accessory",
+          "problem": "unreadable",
+          "lines": 8,
+          "exampleLine": "9620001500"
+        },
+        {
+          "column": "column2",
+          "rateText": "1.5¢/line/ gross + 25%",
+          "problem": "unknown unit \"line/ gross\"",
+          "lines": 2,
+          "exampleLine": "9606214000"
+        },
+        {
+          "column": "column2",
+          "rateText": "1.75¢/line/ gross + 25%",
+          "problem": "unknown unit \"line/ gross\"",
+          "lines": 1,
+          "exampleLine": "9606294000"
+        },
+        {
+          "column": "column2",
+          "rateText": "The rate applicable, to each article in the absence of this subheading",
+          "problem": "unreadable",
+          "lines": 1,
+          "exampleLine": "9608500000"
+        }
+      ],
+      "acceptedRateGaps": []
     },
     {
       "chapter": "97",
@@ -4344,7 +5025,9 @@
         "Section 301 (Nicaragua): 30 line(s)",
         "Section 338 duties on Canada (U.S. note 51): 16 line(s)"
       ],
-      "acceptedConditions": []
+      "acceptedConditions": [],
+      "rateGaps": [],
+      "acceptedRateGaps": []
     }
   ]
 }

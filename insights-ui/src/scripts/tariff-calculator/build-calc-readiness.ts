@@ -7,15 +7,19 @@ import {
   describeGap,
   enabledChapterProblems,
   enabledChapterSources,
+  formatJson,
   type CalcReadinessReport,
   type ChapterReadiness,
 } from './lib/calc-readiness';
+import { describeRateGap } from './lib/rate-parse';
 
 /**
  * Which HTS chapters can be switched to the official-measures calculator engine (issue #1794).
  *
  * A chapter is READY when every Chapter 99 program that charges duty on any of its lines on the as-of date is modelled
- * in measures.json (a measure for that heading whose coverage reaches the line). Otherwise it is NOT READY and the
+ * in measures.json (a measure for that heading whose coverage reaches the line), and the engine can price every base
+ * rate of its lines — general, column 2 and each claimable special rate (rate-strings.json, lib/rate-parse.ts; listed
+ * as UNPRICED, see also `pnpm tariff:rate-parse`). Otherwise it is NOT READY and the
  * gaps are listed per program: headings, lines affected, modelled yes/partial/no. Programs that start later (e.g.
  * Nicaragua +10% from 2027) are listed as "upcoming" and don't block yet. Offline: reads only committed JSON.
  *
@@ -29,7 +33,7 @@ import {
  *
  * Reviewed, time-limited waivers live in src/tariff-data/calculator/accepted-gaps.json: "lines" waivers turn the listed
  * unmodelled lines into ACCEPTED (not blocking) until their reviewBy date; "condition" waivers only record a known
- * condition the line-level check can't see. An expired waiver stops applying (and the chapter may block again).
+ * condition the line-level check can't see; "rates" waivers accept unpriceable rate strings matching their ratePattern. An expired waiver stops applying (and the chapter may block again).
  *
  * The coverage inputs are note-coverage.json and program-coverage.json (extract-ch99-program-coverage.ts); the program
  * statuses and coverage overrides are reviewed in lib/calc-readiness.ts. See docs/insights-ui/tariffs/calculator-data-refresh.md,
@@ -70,23 +74,6 @@ function parseCli(argv: string[]): Cli {
   return cli;
 }
 
-/** JSON laid out the way prettier (printWidth 160) leaves it: objects expanded, primitive arrays on one line when they fit. */
-function formatJson(value: unknown, indent = '', prefixLength = 0): string {
-  if (value === null || typeof value !== 'object') return JSON.stringify(value);
-  const inner = `${indent}  `;
-  if (Array.isArray(value)) {
-    if (value.length === 0) return '[]';
-    if (value.every((v) => v === null || typeof v !== 'object')) {
-      const one = `[${value.map((v) => JSON.stringify(v)).join(', ')}]`;
-      if (indent.length + prefixLength + one.length + 1 <= 160) return one;
-    }
-    return `[\n${value.map((v) => `${inner}${formatJson(v, inner)}`).join(',\n')}\n${indent}]`;
-  }
-  const entries = Object.entries(value as Record<string, unknown>).filter(([, v]) => v !== undefined);
-  if (entries.length === 0) return '{}';
-  return `{\n${entries.map(([k, v]) => `${inner}${JSON.stringify(k)}: ${formatJson(v, inner, JSON.stringify(k).length + 2)}`).join(',\n')}\n${indent}}`;
-}
-
 function printChapter(c: ChapterReadiness): void {
   console.log(`\nChapter ${c.chapter} (${c.lines} lines): ${c.status}`);
   for (const g of c.gaps) {
@@ -97,6 +84,8 @@ function printChapter(c: ChapterReadiness): void {
   for (const g of c.accepted) console.log(`  ACCEPTED  ${describeGap(g)}`);
   for (const g of c.modelled) console.log(`  modelled  ${describeGap(g)}`);
   for (const id of c.acceptedConditions) console.log(`  ACCEPTED  condition not modelled: ${id} (accepted-gaps.json)`);
+  for (const g of c.rateGaps) console.log(`  UNPRICED  ${describeRateGap(g)}`);
+  for (const g of c.acceptedRateGaps) console.log(`  ACCEPTED  unpriced rate ${describeRateGap(g)}`);
 }
 
 function printSummary(report: CalcReadinessReport): void {
@@ -124,7 +113,11 @@ function main(): void {
     // Fully modelled programs are summarised as "program: n lines" to keep the committed file small.
     const compact = {
       ...report,
-      chapters: report.chapters.map((c) => ({ ...c, modelled: c.modelled.map((g) => `${g.program}: ${g.linesAffected} line(s)`) })),
+      chapters: report.chapters.map((c) => ({
+        ...c,
+        modelled: c.modelled.map((g) => `${g.program}: ${g.linesAffected} line(s)`),
+        acceptedRateGaps: c.acceptedRateGaps.map(describeRateGap),
+      })),
     };
     writeFileSync(CHAPTER_READINESS_FILE, formatJson(compact) + '\n');
   }

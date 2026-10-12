@@ -573,6 +573,11 @@ interface ShipmentFormProps {
   extraFields: React.ReactNode;
 }
 
+// A qualified unit key ("KG:molybdenum content", see rate-units.ts) has a colon and spaces; keep the element id plain.
+function quantityInputId(uom: string): string {
+  return `quantity-${uom.replace(/[^A-Za-z0-9.-]+/g, '-')}`;
+}
+
 function ShipmentForm({ form, updateForm, submitting, hideQuantityInputs, quantityUnits, onSubmit, error, extraFields }: ShipmentFormProps): JSX.Element {
   return (
     <form onSubmit={onSubmit} className="rounded-xl bg-bg border border-border p-4 sm:p-6 shadow-lg space-y-4">
@@ -657,9 +662,9 @@ function ShipmentForm({ form, updateForm, submitting, hideQuantityInputs, quanti
       ) : (
         <>
           {quantityUnits.map((u) => (
-            <Field key={u.uom} label={`Quantity in ${describeUom(u.uom)}`} htmlFor={`quantity-${u.uom}`}>
+            <Field key={u.uom} label={`Quantity in ${describeUom(u.uom)}`} htmlFor={quantityInputId(u.uom)}>
               <input
-                id={`quantity-${u.uom}`}
+                id={quantityInputId(u.uom)}
                 type="number"
                 min="0"
                 step="any"
@@ -674,7 +679,7 @@ function ShipmentForm({ form, updateForm, submitting, hideQuantityInputs, quanti
             {quantityUnits.length > 0
               ? `This code has a per-unit duty${
                   quantityUnits[0].rateDescription ? ` (${quantityUnits.map((u) => u.rateDescription).join(', ')})` : ''
-                }. Enter your quantity in ${quantityUnits.map((u) => u.uom).join(' and ')}.`
+                }. Enter your quantity in ${quantityUnits.map((u) => describeUom(u.uom)).join(' and ')}.`
               : 'Checking whether this code charges per unit (like per kg)…'}
           </p>
         </>

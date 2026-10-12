@@ -12,6 +12,42 @@
       "reviewedBy": "issue #1794 (coordinator decision)",
       "reviewedAt": "2026-10-10",
       "reviewBy": "2027-01-08"
+    },
+    {
+      "id": "special-rate-see-chapter-98-99",
+      "kind": "rates",
+      "ch99Codes": [],
+      "linePrefixes": [],
+      "chapters": [],
+      "ratePattern": "See [0-9].*",
+      "rateColumns": ["special"],
+      "conditionNotModelled": "Special-column entries that refer a trade program to a Chapter 98/99 provision instead of stating a rate (\"See 9822.04.01-9822.04.03 (AU)\", \"See 9823.08.01-9823.08.38 (S+)\", \"See 9918.04.60, 9918.04.64 (CO)\"): the FTA tariff-rate quotas and safeguards for dairy, sugar, beef, tobacco and similar goods. The in-quota rate depends on quota allocation and fill, which the calculator does not have.",
+      "reason": "The engine never prices these silently: claimablePrograms() does not offer the claim, and a request that claims the program anyway fails with \"Can't read the base rate\". Without the claim the general (over-quota) rate is charged, which is correct when the shipment has no in-quota allocation and can only overstate duty otherwise. Accepted until in-quota FTA rates are modelled.",
+      "sources": [
+        "https://hts.usitc.gov/reststop/file?release=2026HTSRev21&filename=Chapter%2098",
+        "https://hts.usitc.gov/reststop/file?release=2026HTSRev21&filename=Chapter%2099"
+      ],
+      "reviewedBy": "issue #1794 rate-parse gate (proposed by the calculator agent; confirm in PR review)",
+      "reviewedAt": "2026-10-11",
+      "reviewBy": "2027-01-08"
+    },
+    {
+      "id": "rate-of-natural-juice-heading-2009",
+      "kind": "rates",
+      "ch99Codes": [],
+      "linePrefixes": [],
+      "chapters": ["21", "22"],
+      "ratePattern": "The rate applicable to the natural juice in heading 2009",
+      "rateColumns": [],
+      "conditionNotModelled": "2106.90.52 / 2106.90.54 and 2202.99.36 / 2202.99.37 (juice concentrates and juice-based drinks) are dutiable at \"the rate applicable to the natural juice in heading 2009\" — which juice depends on the product, so the line has no rate of its own.",
+      "reason": "The engine returns an error naming the referenced rate for these lines (never a guessed amount); the importer prices the matching heading 2009 juice line instead. Four lines; accepted until the calculator can ask which juice the product is made from.",
+      "sources": [
+        "https://hts.usitc.gov/reststop/file?release=2026HTSRev21&filename=Chapter%2021",
+        "https://hts.usitc.gov/reststop/file?release=2026HTSRev21&filename=Chapter%2022"
+      ],
+      "reviewedBy": "issue #1794 rate-parse gate (proposed by the calculator agent; confirm in PR review)",
+      "reviewedAt": "2026-10-11",
+      "reviewBy": "2027-01-08"
     }
   ]
 }
