@@ -98,7 +98,7 @@ export interface TradeChapterInfo {
   /** How many partners to list in `byCountry` before "others" (default 10). */
   topCountries?: number;
   /** Duty actually paid, when an official figure is available. Without it `effectiveDuty` is a TODO placeholder. */
-  effectiveDuty?: { year: number; dutyPaidUsd: number; note: string };
+  effectiveDuty?: { year: number; dutyPaidUsd: number | null; note: string };
 }
 
 const USMCA_PARTNERS = new Set(['Canada', 'Mexico']);
@@ -260,8 +260,8 @@ export function buildUnderstandIndustry(summary: TradeSummary, info: TradeChapte
 
   const effectiveDuty = info.effectiveDuty ?? {
     year: latestYear,
-    dutyPaidUsd: 0,
-    note: `${TODO}: duty paid is not in UN Comtrade. Fill from an official duty-collected source before publishing.`,
+    dutyPaidUsd: null,
+    note: "Duty-collected figures aren't available from an official source yet.",
   };
 
   return {

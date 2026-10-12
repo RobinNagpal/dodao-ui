@@ -184,8 +184,8 @@ export function tradeSnapshot(summary: ComtradeSummaryLike, chapterPadded: strin
   return {
     year: summary.latestYear,
     totalImportsUsd: total,
-    totalDutyCollectedUsd: 0,
-    effectiveDutyRateNote: 'TODO: duty collected (USITC DataWeb calculated duties) — or say it is not available',
+    totalDutyCollectedUsd: null,
+    effectiveDutyRateNote: "Duty-collected figures aren't available from an official source yet.",
     topCountries: summary.byCountry.slice(0, 2).map((c) => ({ name: c.country, importsUsd: c.importsUsd })),
     biggestLines: summary.byHs6.slice(0, 2).map((h) => ({ hts: `${h.hs6.slice(0, 4)}.${h.hs6.slice(4)}`, label: h.description })),
     source: `UN Comtrade, United States imports, HS chapter ${chapterPadded} (${summary.latestYear})`,

@@ -159,7 +159,7 @@ function understandIndustryStub(chapterPadded: string, title: string, asOf: stri
     othersPriorImportsUsd: 0,
     byLine: [],
     byHeadingCountry: [],
-    effectiveDuty: { year: 0, dutyPaidUsd: 0, note: TODO },
+    effectiveDuty: { year: 0, dutyPaidUsd: null, note: TODO },
     why: todo('run the trade-statistics module (pnpm tariff:fetch-trade) and regenerate, or fill this page from UN Comtrade'),
     sources: [{ label: 'UN Comtrade', url: 'https://comtradeplus.un.org/' }],
     coverageNote: TODO,
@@ -362,7 +362,7 @@ async function main(): Promise<void> {
       tradeSnapshot: snapshot ?? {
         year: 0,
         totalImportsUsd: 0,
-        totalDutyCollectedUsd: 0,
+        totalDutyCollectedUsd: null,
         effectiveDutyRateNote: TODO,
         topCountries: [],
         biggestLines: [],

@@ -249,7 +249,9 @@ function changeEntries(input: TariffUpdatesInput, lineStats: { unchanged: number
   const countriesText = (ms: TariffMeasureRecord[]): string => {
     const isos = Array.from(new Set(ms.flatMap((m) => m.countriesInclude)));
     if (isos.length === 0) return 'All';
-    if (isos.length > 5) return `${isos.length} economies`;
+    // The EU counts as one economy, as in the proclamations ("60 economies").
+    const economies = EU27.every((c) => isos.includes(c)) ? isos.length - EU27.length + 1 : isos.length;
+    if (isos.length > 5) return `${economies} economies`;
     return isos.map(countryName).join(', ');
   };
   const reach = (ms: TariffMeasureRecord[]): number =>
@@ -260,21 +262,35 @@ function changeEntries(input: TariffUpdatesInput, lineStats: { unchanged: number
   for (const m of charging) {
     const day = m.effectiveFrom.slice(0, 10);
     if (day < since) continue;
-    const key = `${m.program}|${day}`;
+    // Scheduled (future) steps of one program are one pending entry, keyed below by its announcement date.
+    const key = day > asOf ? `${m.program}|pending` : `${m.program}|${day}`;
     starts.set(key, [...(starts.get(key) ?? []), m]);
   }
   starts.forEach((ms, key) => {
-    const [program, day] = key.split('|');
-    const pending = day > asOf;
+    const [program, keyDay] = key.split('|');
+    const pending = keyDay === 'pending';
+    // A pending entry is dated by its newest official notice on or before asOf (dates must not be in the future).
+    const announced = ms
+      .flatMap((m) => m.sources.map((src) => src.published.slice(0, 10)))
+      .filter((d) => d <= asOf)
+      .sort()
+      .pop();
+    const day = pending ? announced ?? asOf : keyDay;
+    const steps = Array.from(new Set(ms.map((m) => m.effectiveFrom.slice(0, 10)))).sort();
     const pcts = Array.from(new Set(ms.map((m) => m.ratePct ?? 0))).sort((a, b) => a - b);
     const rate = pcts.length > 1 ? `+${fmtPct(pcts[0])} to +${fmtPct(pcts[pcts.length - 1])}` : `+${fmtPct(pcts[0])}`;
+    const schedule = pending
+      ? `Scheduled: ${steps
+          .map((d) => `${ms.filter((m) => m.effectiveFrom.startsWith(d)).map((m) => `+${fmtPct(m.ratePct ?? 0)}`)[0]} from ${d}`)
+          .join(', ')}. `
+      : '';
     out.push({
-      id: `${slug(program)}-${day}`,
+      id: `${slug(program)}-${pending ? `scheduled-${steps[0]}` : day}`,
       type: pending ? 'pending' : 'extraDuty',
       date: day,
-      dateLabel: 'Effective',
+      dateLabel: pending ? 'Announced' : 'Effective',
       title: `${program}${pending ? ' scheduled' : ' takes effect'}`,
-      detail: `${rate} (${codeList(ms.map((m) => m.ch99Code))}); reaches ${reach(ms)} of ${lines.length} Chapter ${chapterPadded} lines. ${todo(
+      detail: `${schedule}${rate} (${codeList(ms.map((m) => m.ch99Code))}); reaches ${reach(ms)} of ${lines.length} Chapter ${chapterPadded} lines. ${todo(
         'explain what changed and for whom'
       )}`,
       before: null,

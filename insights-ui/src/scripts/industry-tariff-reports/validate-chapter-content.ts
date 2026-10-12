@@ -62,6 +62,12 @@ export const OFFICIAL_SOURCE_DOMAINS: readonly string[] = [
   'fda.gov',
   'dea.gov',
   'census.gov',
+  'noaa.gov', // fisheries.noaa.gov — NOAA Fisheries (SIMP, MMPA)
+  'fws.gov', // Fish and Wildlife Service
+  'state.gov', // shrimp/sea-turtle certification (DS-2031)
+  'treasury.gov', // OFAC sanctions and import bans
+  'ttb.gov', // alcohol and tobacco permits
+  'epa.gov',
   // U.S. courts
   'supremecourt.gov',
   'uscourts.gov', // includes cit.uscourts.gov, cafc.uscourts.gov
