@@ -7,6 +7,10 @@ import React from 'react';
  * the column's largest value (100 = the longest bar); the longest bar takes
  * three-quarters of the cell so its label still fits beside it.
  *
+ * Below `lg` only the label shows: on a phone the bar would make the column wider than the rest of
+ * the table, and the percentage alone carries the same information. Pair the column's header with
+ * `TableHeaderCell width="wideFromLg"` / `"quarterFromLg"` so it doesn't reserve room for the bar.
+ *
  * Tones match the series colors of the tariff import charts (ImportsByYearChart):
  * `sky` and `teal`. No brand purple — that is kept for links and HTS codes. Colors are inline so the bar never
  * depends on a utility class being generated.
@@ -29,7 +33,7 @@ export default function ShareBar({ widthPct, label, tone = 'sky', className }: S
   const width = Math.max(1, Math.min(100, widthPct)) * 0.75;
   return (
     <span className={cn('flex items-center gap-2', className)}>
-      <span className="block h-3 shrink-0 rounded" style={{ width: `${width}%`, backgroundColor: BAR_COLOR[tone] }} />
+      <span className="hidden h-3 shrink-0 rounded lg:block" style={{ width: `${width}%`, backgroundColor: BAR_COLOR[tone] }} />
       <span className="whitespace-nowrap text-xs text-body">{label}</span>
     </span>
   );

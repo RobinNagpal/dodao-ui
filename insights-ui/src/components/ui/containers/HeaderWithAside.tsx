@@ -25,7 +25,8 @@ export default function HeaderWithAside({ children, aside, bordered = true, alig
       )}
     >
       <div className="min-w-0 flex-1">{children}</div>
-      {aside && <div className="shrink-0">{aside}</div>}
+      {/* Capped at half the row beside the content, so a long aside (e.g. a multi-part rate) wraps instead of crowding it out. */}
+      {aside && <div className="shrink-0 sm:max-w-[50%] sm:text-right">{aside}</div>}
     </header>
   );
 }

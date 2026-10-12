@@ -1,10 +1,13 @@
 'use client';
 
 import { HIGH_RATE_PCT, rateEmphasis } from '@/components/industry-tariff/chapter/areas/rate-emphasis';
+import DefinitionList from '@/components/ui/DefinitionList';
 import Text from '@/components/ui/Text';
 import TextLink from '@/components/ui/TextLink';
 import ToggleSwitch from '@/components/ui/ToggleSwitch';
+import ShowAt from '@/components/ui/containers/ShowAt';
 import Stack from '@/components/ui/containers/Stack';
+import InlineCard from '@/components/ui/sections/InlineCard';
 import { DataTable, TableCell, TableHead, TableHeaderCell, TableRow, TableScroll } from '@/components/ui/tables/DataTable';
 import SelectableMatrix, { type MatrixCellValue, type MatrixGroup, type MatrixRow, type MatrixSelection } from '@/components/ui/tables/SelectableMatrix';
 import type { TariffIndustryAreasContent, TariffMatrixCellRates, TariffMatrixCountry, TariffUpdateSource } from '@/types/tariff-chapter-prototype';
@@ -106,44 +109,76 @@ export default function CountryRateMatrix({ areas, heading, breakdownLabels }: C
           {country.rule.label}
           {!country.rule.atLeast ? ` ${areas.tradeYear} imports: ${usd(cell.importsUsd)}.` : ''}
         </Text>
-        <TableScroll>
-          <DataTable>
-            <TableHead look="plain">
-              <TableRow>
-                {showProducts && <TableHeaderCell>Products</TableHeaderCell>}
-                <TableHeaderCell>Base rate</TableHeaderCell>
-                <TableHeaderCell>Lines</TableHeaderCell>
-                <TableHeaderCell>Extra duty</TableHeaderCell>
-                <TableHeaderCell>Preference</TableHeaderCell>
-                <TableHeaderCell>Total</TableHeaderCell>
-              </TableRow>
-            </TableHead>
-            <tbody>
-              {rates.breakdown.map((row, i) => (
-                <TableRow key={`${row.base}-${row.lines[0]}`}>
-                  {showProducts && <TableCell variant="note">{listNames(names?.[i] ?? [])}</TableCell>}
-                  <TableCell variant="rate" tone="emphasis">
-                    {row.base}
-                  </TableCell>
-                  <TableCell variant="code">
-                    {linesLabel(row.lines)} ({row.lineCount} {row.lineCount === 1 ? 'line' : 'lines'})
-                  </TableCell>
-                  <TableCell variant="note">{row.extra}</TableCell>
-                  <TableCell variant="rateWrap">{row.preference}</TableCell>
-                  <TableCell variant="rateWrap" tone="emphasis">
-                    {row.total}
-                  </TableCell>
+        <ShowAt range="lg-up">
+          <TableScroll>
+            <DataTable>
+              <TableHead look="plain">
+                <TableRow>
+                  {showProducts && <TableHeaderCell>Products</TableHeaderCell>}
+                  <TableHeaderCell>Base rate</TableHeaderCell>
+                  <TableHeaderCell>Lines</TableHeaderCell>
+                  <TableHeaderCell>Extra duty</TableHeaderCell>
+                  <TableHeaderCell>Preference</TableHeaderCell>
+                  <TableHeaderCell>Total</TableHeaderCell>
                 </TableRow>
-              ))}
-            </tbody>
-          </DataTable>
-        </TableScroll>
+              </TableHead>
+              <tbody>
+                {rates.breakdown.map((row, i) => (
+                  <TableRow key={`${row.base}-${row.lines[0]}`}>
+                    {showProducts && <TableCell variant="note">{listNames(names?.[i] ?? [])}</TableCell>}
+                    <TableCell variant="rate" tone="emphasis">
+                      {row.base}
+                    </TableCell>
+                    <TableCell variant="code">
+                      {linesLabel(row.lines)} ({row.lineCount} {row.lineCount === 1 ? 'line' : 'lines'})
+                    </TableCell>
+                    <TableCell variant="note">{row.extra}</TableCell>
+                    <TableCell variant="rateWrap">{row.preference}</TableCell>
+                    <TableCell variant="rateWrap" tone="emphasis">
+                      {row.total}
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </tbody>
+            </DataTable>
+          </TableScroll>
+        </ShowAt>
+        {/* Phones: six columns would show two at a time, so each breakdown row becomes a card — the
+            products and their total, then the other columns as labelled fields. */}
+        <ShowAt range="below-lg">
+          <Stack gap="sm">
+            {rates.breakdown.map((row, i) => (
+              <InlineCard key={`${row.base}-${row.lines[0]}`} padding="cozy">
+                <Stack gap="sm">
+                  <Stack direction="row" gap="md" align="baseline" justify="between">
+                    <Text as="span" size="sm" weight="semibold" tone="white">
+                      {showProducts ? listNames(names?.[i] ?? []) : `${row.lineCount} ${row.lineCount === 1 ? 'line' : 'lines'}`}
+                    </Text>
+                    <Text as="span" size="base" weight="bold" tone={rateEmphasis([row.total]) === 'high' ? 'warning' : 'white'}>
+                      {row.total}
+                    </Text>
+                  </Stack>
+                  <DefinitionList
+                    look="fields"
+                    columns="1"
+                    items={[
+                      { term: 'Base rate', definition: row.base },
+                      { term: 'Lines', definition: `${linesLabel(row.lines)} (${row.lineCount} ${row.lineCount === 1 ? 'line' : 'lines'})` },
+                      { term: 'Extra duty', definition: row.extra },
+                      { term: 'Preference', definition: row.preference },
+                    ]}
+                  />
+                </Stack>
+              </InlineCard>
+            ))}
+          </Stack>
+        </ShowAt>
         <Stack direction="row" gap="md" wrap>
           {country.rule.sourceIds.map((id) => {
             const source = sources.get(id);
             return source ? (
               <TextLink key={id} href={source.url} size="xs" wrap>
-                {source.citation} ↗
+                {source.citation}&nbsp;↗
               </TextLink>
             ) : null;
           })}

@@ -1,3 +1,4 @@
+import { ChevronRightIcon } from '@heroicons/react/20/solid';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '@/lib/utils';
 import React from 'react';
@@ -74,7 +75,15 @@ export function TableHead({ children, sticky, look, className }: TableHeadProps)
 
 const headerCell = cva('font-semibold px-3 py-3', {
   variants: {
-    width: { auto: 'whitespace-nowrap', wide: 'min-w-[280px]', narrow: 'whitespace-nowrap w-px', quarter: 'w-1/4 min-w-48' },
+    width: {
+      auto: 'whitespace-nowrap',
+      wide: 'min-w-[280px]',
+      narrow: 'whitespace-nowrap w-px',
+      quarter: 'w-1/4 min-w-48',
+      // A ShareBar column: the bar (and the room for it) only from `lg`; below that it holds just the percentage.
+      wideFromLg: 'lg:min-w-[280px]',
+      quarterFromLg: 'lg:w-1/4 lg:min-w-48',
+    },
     align: { left: 'text-left', right: 'text-right' },
     // Keeps a row-label column in view while a wide table scrolls sideways (pair with TableCell `pinned`).
     pinned: { true: 'sticky left-0 z-10 bg-bg', false: '' },
@@ -214,16 +223,16 @@ export function InheritedValue({ value, from }: { value: string; from: string })
 
 // Plain cells (no box per cell), so a large matrix reads as a table rather than a wall of buttons.
 // The phone min-width keeps a scrolled matrix readable instead of squeezing each rate onto several lines.
-const matrixCell = cva(
-  'flex min-h-11 w-full min-w-32 flex-col items-start justify-center gap-0.5 rounded-md px-2 py-1.5 text-left transition-colors lg:min-w-0',
-  {
-    variants: {
-      selected: { true: 'bg-primary/20 ring-1 ring-inset ring-primary', false: 'hover:bg-surface-2' },
-      dim: { true: 'opacity-60', false: '' },
-    },
-    defaultVariants: { selected: false, dim: false },
-  }
-);
+const matrixCell = cva('flex min-h-11 w-full min-w-32 rounded-md text-left transition-colors lg:min-w-0', {
+  variants: {
+    // `cell`: a value stacked in a table cell. `row`: a full-width row in a phone list, with a chevron
+    // on the right so it reads as tappable.
+    layout: { cell: 'flex-col items-start justify-center gap-0.5 px-2 py-1.5', row: 'items-center justify-between gap-3 px-3 py-3' },
+    selected: { true: 'bg-primary/20 ring-1 ring-inset ring-primary', false: 'hover:bg-surface-2' },
+    dim: { true: 'opacity-60', false: '' },
+  },
+  defaultVariants: { layout: 'cell', selected: false, dim: false },
+});
 
 // How loud the cell's main value is: `quiet` for the default (e.g. "Free"),
 // `high` (amber) for the values a reader should spot (e.g. a large extra duty).
@@ -249,12 +258,41 @@ export type MatrixCellButtonProps = VariantProps<typeof matrixCell> &
   };
 
 /** Selectable cell in a matrix table — opens a detail view for that cell. */
-export function MatrixCellButton({ name, primary, secondary, onSelect, label, selected, dim, emphasis, className }: MatrixCellButtonProps): React.JSX.Element {
-  return (
-    <button type="button" aria-pressed={Boolean(selected)} aria-label={label} onClick={onSelect} className={cn(matrixCell({ selected, dim }), className)}>
+export function MatrixCellButton({
+  name,
+  primary,
+  secondary,
+  onSelect,
+  label,
+  selected,
+  dim,
+  emphasis,
+  layout,
+  className,
+}: MatrixCellButtonProps): React.JSX.Element {
+  const content = (
+    <>
       {name && <span className="text-sm font-semibold text-heading">{name}</span>}
       <span className={matrixValue({ emphasis })}>{primary}</span>
       {secondary && <span className="text-xs text-muted">{secondary}</span>}
+    </>
+  );
+  return (
+    <button
+      type="button"
+      aria-pressed={Boolean(selected)}
+      aria-label={label}
+      onClick={onSelect}
+      className={cn(matrixCell({ layout, selected, dim }), className)}
+    >
+      {layout === 'row' ? (
+        <>
+          <span className="flex min-w-0 flex-col items-start gap-0.5">{content}</span>
+          <ChevronRightIcon className="h-5 w-5 shrink-0 text-muted" aria-hidden="true" />
+        </>
+      ) : (
+        content
+      )}
     </button>
   );
 }

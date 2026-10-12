@@ -146,7 +146,7 @@ export default function ChapterIndustryStatsApproach2({ content, industry }: Cha
                   <TableHeaderCell>Country</TableHeaderCell>
                   <TableHeaderCell align="right">{latestYear}</TableHeaderCell>
                   <TableHeaderCell align="right">vs {priorYear}</TableHeaderCell>
-                  <TableHeaderCell width="wide">Share of {latestYear} imports</TableHeaderCell>
+                  <TableHeaderCell width="wideFromLg">Share of {latestYear} imports</TableHeaderCell>
                   <TableHeaderCell>Biggest product group</TableHeaderCell>
                   {hasCountryDuty && <TableHeaderCell>Duty paid</TableHeaderCell>}
                 </TableRow>
@@ -221,7 +221,7 @@ export default function ChapterIndustryStatsApproach2({ content, industry }: Cha
                   <TableHeaderCell width="wide">Product</TableHeaderCell>
                   <TableHeaderCell align="right">{latestYear}</TableHeaderCell>
                   <TableHeaderCell align="right">vs {priorYear}</TableHeaderCell>
-                  <TableHeaderCell width="quarter">Share</TableHeaderCell>
+                  <TableHeaderCell width="quarterFromLg">Share</TableHeaderCell>
                   {hasLineDuty && <TableHeaderCell>Duty paid</TableHeaderCell>}
                 </TableRow>
               </TableHead>

@@ -94,7 +94,7 @@ export default function ChapterExportOverview({ overview }: { overview: TariffEx
                   <TableHeaderCell>Country</TableHeaderCell>
                   <TableHeaderCell align="right">{latestYear}</TableHeaderCell>
                   <TableHeaderCell align="right">vs {priorYear}</TableHeaderCell>
-                  <TableHeaderCell width="quarter">Share of {latestYear} exports</TableHeaderCell>
+                  <TableHeaderCell width="quarterFromLg">Share of {latestYear} exports</TableHeaderCell>
                   <TableHeaderCell>Tariff on U.S. goods now</TableHeaderCell>
                   <TableHeaderCell>Since Jan 2025</TableHeaderCell>
                 </TableRow>
@@ -170,7 +170,7 @@ export default function ChapterExportOverview({ overview }: { overview: TariffEx
                   <TableHeaderCell width="wide">Product group</TableHeaderCell>
                   <TableHeaderCell align="right">{latestYear}</TableHeaderCell>
                   <TableHeaderCell align="right">vs {priorYear}</TableHeaderCell>
-                  <TableHeaderCell width="quarter">Share</TableHeaderCell>
+                  <TableHeaderCell width="quarterFromLg">Share</TableHeaderCell>
                 </TableRow>
               </TableHead>
               <tbody>
@@ -204,7 +204,7 @@ export default function ChapterExportOverview({ overview }: { overview: TariffEx
                   <TableHeaderCell width="wide">Product</TableHeaderCell>
                   <TableHeaderCell align="right">{latestYear}</TableHeaderCell>
                   <TableHeaderCell align="right">vs {priorYear}</TableHeaderCell>
-                  <TableHeaderCell width="quarter">Share</TableHeaderCell>
+                  <TableHeaderCell width="quarterFromLg">Share</TableHeaderCell>
                 </TableRow>
               </TableHead>
               <tbody>

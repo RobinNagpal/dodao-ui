@@ -53,7 +53,7 @@ export default function DutyInEffectCard({
           bordered={false}
           align="start"
           aside={
-            <Stack gap="xs" align="end">
+            <Stack gap="xs" align="end-from-sm">
               <Text as="span" size="lg" weight="bold" tone="white">
                 {before} → {now}
               </Text>
@@ -63,7 +63,7 @@ export default function DutyInEffectCard({
                   <>
                     {' · '}
                     <TextLink href={effectiveSource.url} size="sm" wrap>
-                      {effectiveSource.citation} ↗
+                      {effectiveSource.citation}&nbsp;↗
                     </TextLink>
                   </>
                 )}

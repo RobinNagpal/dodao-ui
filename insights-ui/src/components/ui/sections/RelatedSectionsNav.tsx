@@ -1,3 +1,4 @@
+import { cva } from 'class-variance-authority';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
 import React from 'react';
@@ -7,6 +8,8 @@ export interface RelatedSectionsNavItem {
   href: string;
   /** Visible link content (the caller supplies any trailing arrow/decoration). */
   label: React.ReactNode;
+  /** The page being viewed: shown in place, highlighted, and not linked. */
+  active?: boolean;
 }
 
 export interface RelatedSectionsNavProps {
@@ -23,7 +26,21 @@ export interface RelatedSectionsNavProps {
  * responsive grid of pill links. Owns all chrome so report pages compose it
  * with zero Tailwind. Used for the ETF (and, eventually, stock) detail pages'
  * "More analyses" footer.
+ *
+ * Listing the current page too (`active`) keeps every link in the same spot on every page of a
+ * report and shows where the reader is; it gets the brand "you are here" treatment of the selected
+ * tab and is not a link.
  */
+
+const pill = cva('flex h-full items-center rounded-md px-3 py-2 text-sm', {
+  variants: {
+    active: {
+      true: 'bg-primary/15 font-semibold text-primary ring-1 ring-inset ring-primary/40',
+      false: 'bg-surface-2 text-body transition-colors hover:bg-surface-3 hover:text-heading',
+    },
+  },
+  defaultVariants: { active: false },
+});
 export default function RelatedSectionsNav({ ariaLabel, heading, items, className }: RelatedSectionsNavProps): React.JSX.Element {
   return (
     <nav aria-label={ariaLabel} className={cn('mt-10 pt-6 border-t border-border', className)}>
@@ -31,13 +48,15 @@ export default function RelatedSectionsNav({ ariaLabel, heading, items, classNam
       <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
         {items.map((item) => (
           <li key={item.href} className="h-full">
-            <Link
-              href={item.href}
-              prefetch={false}
-              className="flex h-full items-center rounded-md px-3 py-2 text-sm bg-surface-2 hover:bg-surface-3 text-body hover:text-heading transition-colors"
-            >
-              {item.label}
-            </Link>
+            {item.active ? (
+              <span aria-current="page" className={pill({ active: true })}>
+                {item.label}
+              </span>
+            ) : (
+              <Link href={item.href} prefetch={false} className={pill()}>
+                {item.label}
+              </Link>
+            )}
           </li>
         ))}
       </ul>

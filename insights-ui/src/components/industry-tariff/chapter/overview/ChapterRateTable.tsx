@@ -1,6 +1,8 @@
 'use client';
 
 import GlossaryTerm from '@/components/industry-tariff/chapter/GlossaryTerm';
+import DefinitionList from '@/components/ui/DefinitionList';
+import ShowAt from '@/components/ui/containers/ShowAt';
 import Stack from '@/components/ui/containers/Stack';
 import SearchField from '@/components/ui/SearchField';
 import Text from '@/components/ui/Text';
@@ -18,6 +20,7 @@ import {
   TableRow,
   TableScroll,
 } from '@/components/ui/tables/DataTable';
+import { StackedRow, StackedRowList, StackedRowListHeader } from '@/components/ui/tables/StackedRowList';
 import type { TariffRateTableRow } from '@/types/tariff-chapter-prototype';
 import React, { useMemo, useState } from 'react';
 
@@ -136,7 +139,55 @@ function RowDetail({ row }: { row: TariffRateTableRow }): React.JSX.Element {
             Preference rate: {row.effectiveSpecial}
           </Text>
         )}
-        <TextLink href={row.htsCode10 ? `/tariff-calculator?hts=${row.htsCode10}` : '/tariff-calculator'} size="xs">
+        <TextLink href={calculatorHref(row)} size="xs">
+          Work out the landed cost in the duty calculator →
+        </TextLink>
+      </Stack>
+    </InlineCard>
+  );
+}
+
+function calculatorHref(row: TariffRateTableRow): string {
+  return row.htsCode10 ? `/tariff-calculator?hts=${row.htsCode10}` : '/tariff-calculator';
+}
+
+/**
+ * Phone detail for a line: the columns the phone list leaves out (trade-deal rate, Column 2,
+ * unit) as labelled fields, plus quota, additional duties and the calculator link.
+ */
+function PhoneRowDetail({ row }: { row: TariffRateTableRow }): React.JSX.Element {
+  const fields = [
+    {
+      term: <GlossaryTerm id="special-rate">With a trade deal</GlossaryTerm>,
+      // A space after each comma lets "Free (A+,AU,BH,…)" wrap instead of running off a phone screen.
+      definition: <RateValue value={row.effectiveSpecial?.replace(/,(?=\S)/g, ', ') ?? null} inheritedFrom={row.specialInheritedFrom} />,
+    },
+    {
+      term: <GlossaryTerm id="column-2">Column 2</GlossaryTerm>,
+      definition: (
+        <Stack gap="xxs">
+          <RateValue value={row.effectiveColumn2} inheritedFrom={row.column2InheritedFrom} />
+          <Text as="span" size="xs" tone="muted">
+            Cuba, N. Korea, Russia, Belarus only
+          </Text>
+        </Stack>
+      ),
+    },
+    { term: 'Unit', definition: row.units.length > 0 ? row.units.join(', ') : <EmptyCellValue /> },
+    ...(row.quotaQuantity ? [{ term: 'Quota', definition: row.quotaQuantity }] : []),
+    ...(row.additionalDuties ? [{ term: 'Additional duties', definition: row.additionalDuties }] : []),
+  ];
+
+  return (
+    <InlineCard padding="cozy">
+      <Stack gap="md">
+        {row.ancestorPath.length > 0 && (
+          <Text size="xs" tone="muted">
+            {[...row.ancestorPath, row.description].join(' › ')}
+          </Text>
+        )}
+        <DefinitionList look="fields" columns="1" items={fields} />
+        <TextLink href={calculatorHref(row)} size="sm" wrap>
           Work out the landed cost in the duty calculator →
         </TextLink>
       </Stack>
@@ -192,87 +243,129 @@ export default function ChapterRateTable({ rows, note }: ChapterRateTableProps):
           </Text>
         </InlineCard>
       ) : (
-        <TableScroll pageSticky>
-          <DataTable>
-            <TableHead sticky look="plain">
-              <TableRow>
-                <TableHeaderCell>HTS code</TableHeaderCell>
-                <TableHeaderCell width="wide">Description</TableHeaderCell>
-                {/* Tap-to-explain labels (issue #1784): a `title=` tooltip doesn't open on phones. */}
-                <TableHeaderCell>
-                  <GlossaryTerm id="base-rate">Base rate</GlossaryTerm>
-                </TableHeaderCell>
-                <TableHeaderCell width="narrow">
-                  <GlossaryTerm id="special-rate">With a trade deal</GlossaryTerm>
-                </TableHeaderCell>
-                <TableHeaderCell>
-                  <Stack gap="xxs">
-                    <span>
-                      <GlossaryTerm id="column-2">Column 2</GlossaryTerm>
-                    </span>
-                    <Text as="span" size="xs" tone="muted" weight="normal">
-                      Cuba, N. Korea, Russia, Belarus only
-                    </Text>
-                  </Stack>
-                </TableHeaderCell>
-                <TableHeaderCell>Unit</TableHeaderCell>
-              </TableRow>
-            </TableHead>
-            <tbody>
+        <>
+          <ShowAt range="lg-up">
+            <TableScroll pageSticky>
+              <DataTable>
+                <TableHead sticky look="plain">
+                  <TableRow>
+                    <TableHeaderCell>HTS code</TableHeaderCell>
+                    <TableHeaderCell width="wide">Description</TableHeaderCell>
+                    {/* Tap-to-explain labels (issue #1784): a `title=` tooltip doesn't open on phones. */}
+                    <TableHeaderCell>
+                      <GlossaryTerm id="base-rate">Base rate</GlossaryTerm>
+                    </TableHeaderCell>
+                    <TableHeaderCell width="narrow">
+                      <GlossaryTerm id="special-rate">With a trade deal</GlossaryTerm>
+                    </TableHeaderCell>
+                    <TableHeaderCell>
+                      <Stack gap="xxs">
+                        <span>
+                          <GlossaryTerm id="column-2">Column 2</GlossaryTerm>
+                        </span>
+                        <Text as="span" size="xs" tone="muted" weight="normal">
+                          Cuba, N. Korea, Russia, Belarus only
+                        </Text>
+                      </Stack>
+                    </TableHeaderCell>
+                    <TableHeaderCell>Unit</TableHeaderCell>
+                  </TableRow>
+                </TableHead>
+                <tbody>
+                  {shown.map((row) => {
+                    const expandable = Boolean(row.htsCode10);
+                    const expanded = expandedId === row.id;
+                    return (
+                      <React.Fragment key={row.id}>
+                        <TableRow
+                          id={row.indent === 0 && row.hts ? row.hts : undefined}
+                          emphasis={row.isHeaderRow ? 'group' : 'normal'}
+                          interactive={expandable}
+                          onClick={expandable ? () => setExpandedId(expanded ? null : row.id) : undefined}
+                        >
+                          <TableCell variant="code" tone="primary">
+                            {row.hts ?? <EmptyCellValue />}
+                          </TableCell>
+                          <TableCell>
+                            <IndentedLabel indent={row.indent}>
+                              <Stack gap="xxs">
+                                {showBreadcrumb && row.ancestorPath.length > 0 && (
+                                  <Text size="xs" tone="muted">
+                                    {row.ancestorPath.join(' › ')}
+                                  </Text>
+                                )}
+                                <span>{row.description}</span>
+                              </Stack>
+                            </IndentedLabel>
+                          </TableCell>
+                          {/* Emphasize the dutiable lines, not the free ones: in most chapters
+                          "Free" is the default and the duty is the thing to spot. */}
+                          <TableCell variant="rate" tone={row.htsCode10 && row.dutiable ? 'emphasis' : 'body'}>
+                            <RateValue value={row.effectiveGeneral} inheritedFrom={row.generalInheritedFrom} />
+                          </TableCell>
+                          <TableCell variant="rateWrap">
+                            <PreferenceRateValue value={row.effectiveSpecial} inheritedFrom={row.specialInheritedFrom} />
+                          </TableCell>
+                          <TableCell variant="rate">
+                            <RateValue value={row.effectiveColumn2} inheritedFrom={row.column2InheritedFrom} />
+                          </TableCell>
+                          <TableCell variant="rate" tone="muted">
+                            {row.units.length > 0 ? row.units.join(', ') : <EmptyCellValue />}
+                          </TableCell>
+                        </TableRow>
+                        {expanded && (
+                          <TableRow>
+                            <TableCell colSpan={6} colSpanFull>
+                              <RowDetail row={row} />
+                            </TableCell>
+                          </TableRow>
+                        )}
+                      </React.Fragment>
+                    );
+                  })}
+                </tbody>
+              </DataTable>
+            </TableScroll>
+          </ShowAt>
+
+          {/* Phones: six columns would show two at a time, so each line becomes a list item with its
+              code, base rate and full description; the other columns open with a tap. */}
+          <ShowAt range="below-lg">
+            <StackedRowList header={<StackedRowListHeader label="HTS code and product" value={<GlossaryTerm id="base-rate">Base rate</GlossaryTerm>} />}>
               {shown.map((row) => {
-                const expandable = Boolean(row.htsCode10);
+                // Every line with a code and a rate opens, including 8-digit lines, since the list has
+                // no other place to show their trade-deal and Column 2 rates.
+                const expandable = Boolean(row.hts && row.effectiveGeneral);
                 const expanded = expandedId === row.id;
                 return (
-                  <React.Fragment key={row.id}>
-                    <TableRow
-                      id={row.indent === 0 && row.hts ? row.hts : undefined}
-                      emphasis={row.isHeaderRow ? 'group' : 'normal'}
-                      interactive={expandable}
-                      onClick={expandable ? () => setExpandedId(expanded ? null : row.id) : undefined}
-                    >
-                      <TableCell variant="code" tone="primary">
-                        {row.hts ?? <EmptyCellValue />}
-                      </TableCell>
-                      <TableCell>
-                        <IndentedLabel indent={row.indent}>
-                          <Stack gap="xxs">
-                            {showBreadcrumb && row.ancestorPath.length > 0 && (
-                              <Text size="xs" tone="muted">
-                                {row.ancestorPath.join(' › ')}
-                              </Text>
-                            )}
-                            <span>{row.description}</span>
-                          </Stack>
-                        </IndentedLabel>
-                      </TableCell>
-                      {/* Emphasize the dutiable lines, not the free ones: in most chapters
-                          "Free" is the default and the duty is the thing to spot. */}
-                      <TableCell variant="rate" tone={row.htsCode10 && row.dutiable ? 'emphasis' : 'body'}>
-                        <RateValue value={row.effectiveGeneral} inheritedFrom={row.generalInheritedFrom} />
-                      </TableCell>
-                      <TableCell variant="rateWrap">
-                        <PreferenceRateValue value={row.effectiveSpecial} inheritedFrom={row.specialInheritedFrom} />
-                      </TableCell>
-                      <TableCell variant="rate">
-                        <RateValue value={row.effectiveColumn2} inheritedFrom={row.column2InheritedFrom} />
-                      </TableCell>
-                      <TableCell variant="rate" tone="muted">
-                        {row.units.length > 0 ? row.units.join(', ') : <EmptyCellValue />}
-                      </TableCell>
-                    </TableRow>
-                    {expanded && (
-                      <TableRow>
-                        <TableCell colSpan={6} colSpanFull>
-                          <RowDetail row={row} />
-                        </TableCell>
-                      </TableRow>
-                    )}
-                  </React.Fragment>
+                  <StackedRow
+                    key={row.id}
+                    id={`phone-${row.id}`}
+                    code={row.hts}
+                    label={
+                      <Stack gap="xxs">
+                        {/* Only when the parent headings are filtered out; a search keeps them as rows above. */}
+                        {leafOnly && row.ancestorPath.length > 0 && (
+                          <Text as="span" size="xs" tone="muted">
+                            {row.ancestorPath.join(' › ')}
+                          </Text>
+                        )}
+                        <span>{row.description}</span>
+                      </Stack>
+                    }
+                    value={row.effectiveGeneral ? <RateValue value={row.effectiveGeneral} inheritedFrom={row.generalInheritedFrom} /> : undefined}
+                    tone={row.htsCode10 && row.dutiable ? 'emphasis' : 'body'}
+                    indent={row.indent}
+                    emphasis={row.isHeaderRow ? 'group' : 'normal'}
+                    expanded={expanded}
+                    onToggle={expandable ? () => setExpandedId(expanded ? null : row.id) : undefined}
+                    detail={<PhoneRowDetail row={row} />}
+                  />
                 );
               })}
-            </tbody>
-          </DataTable>
-        </TableScroll>
+            </StackedRowList>
+          </ShowAt>
+        </>
       )}
     </Stack>
   );
