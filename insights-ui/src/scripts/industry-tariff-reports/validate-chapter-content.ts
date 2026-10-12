@@ -553,6 +553,23 @@ async function urlExists(url: string): Promise<boolean | null> {
   return null;
 }
 
+/** The edition hts.usitc.gov's release list marks "current" ("2026HTSRev21" → 2026 Revision 21), or null if it can't be read. */
+async function currentHtsRelease(): Promise<{ year: number; rev: number; label: string } | null> {
+  try {
+    const res = await fetch('https://hts.usitc.gov/reststop/releaseList', { signal: AbortSignal.timeout(20_000) });
+    if (!res.ok) return null;
+    const releases = (await res.json()) as { name?: string; status?: string }[];
+    const name = releases.find((r) => r.status === 'current')?.name ?? '';
+    const m = /^(\d{4})HTS(?:Rev(\d+)|Basic)/i.exec(name);
+    if (!m) return null;
+    const year = Number(m[1]);
+    const rev = m[2] ? Number(m[2]) : 0;
+    return { year, rev, label: rev ? `${year} Revision ${rev}` : `${year} Basic Edition` };
+  } catch {
+    return null;
+  }
+}
+
 const newestEditionCache = new Map<string, Promise<string | null>>();
 
 /** Probe usitc.gov for revisions after the cited one; returns the newest found edition label, or null if the cited one is newest. */
@@ -565,6 +582,14 @@ function findNewerHtsEdition(edition: string): Promise<string | null> {
     let year = Number(m[1]);
     let rev = m[2] ? Number(m[2]) : 0;
     let newest: string | null = null;
+
+    // Preferred: the HTS release list (hts.usitc.gov) names the current edition directly.
+    // www.usitc.gov often rejects scripted requests, so the file probe below is the fallback.
+    const current = await currentHtsRelease();
+    if (current) {
+      const newer = current.year > year || (current.year === year && current.rev > rev);
+      return newer ? current.label : null;
+    }
 
     // Next year's basic edition supersedes every revision of this year.
     const nextBasic = await urlExists(`${HTS_BASE}/hts_${year + 1}_basic_edition_json.json`);
