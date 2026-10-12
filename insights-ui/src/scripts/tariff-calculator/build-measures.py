@@ -502,6 +502,18 @@ measures.append(rec(measureKey='s232-pharma-research-use', program=P232, ch99Cod
 from measures_named_products import named_product_measures  # noqa: E402
 measures += named_product_measures(cov, load_descriptions(ROOT), rec=rec, S=S, hts_note=hts_note, all_s301_codes=ALL_S301_CODES)
 
+# Section 232 materials / vehicles and country actions (issue #1796). program-coverage.json holds the note code
+# lists the readiness check extracted (notes 16, 19, 29, 30, 33, 37–41, 43, 51).
+from measures_s232_materials import s232_materials_measures  # noqa: E402
+from measures_s232_vehicles import s232_vehicles_measures  # noqa: E402
+from measures_country_actions import country_action_measures  # noqa: E402
+program_cov = json.load(open(ROOT + 'program-coverage.json'))['notes']
+measures += s232_materials_measures(cov, program_cov, rec=rec, S=S, hts_note=hts_note)
+measures += s232_vehicles_measures(cov, program_cov, rec=rec, S=S, hts_note=hts_note)
+measures += country_action_measures(cov, program_cov, rec=rec, S=S, hts_note=hts_note)
+# The vehicles module's note 52(f) relief (all countries, correctly conditioned) supersedes the earlier China-only record.
+measures = [m for m in measures if m['measureKey'] != 's301-2026-exempt-52f-cn-passenger-vehicles']
+
 out = {'htsEdition': ED, 'reviewedAt': '2026-10-09', 'measures': measures}
 json.dump(out, open(ROOT + 'measures.json', 'w'), ensure_ascii=False, indent=2)
 print(len(measures), 'measures')

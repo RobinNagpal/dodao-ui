@@ -1,0 +1,603 @@
+{
+  "facts": [
+    {
+      "id": "agIndustrialEquipmentParts",
+      "prompt": "Will these parts be used exclusively to manufacture agricultural equipment, fixed industrial equipment or mobile industrial equipment listed in U.S. note 16(c)(ix)–(xi)?",
+      "help": "U.S. note 16(k): such parts of the 16(c)(vi)–(viii) lists in chapters 84, 85 and 87 pay 15% in total (9903.82.25; 10% with ≥85% U.S.-melted metal, 9903.82.23) instead of base + 25%. An affirmative claim the importer must support, so unanswered = no. Not for products of Belarus, Cuba, North Korea or Russia.",
+      "defaultWhenUnanswered": false,
+      "sources": [
+        {
+          "citation": "91 FR 34085 (Proclamation 11032: Further Adjusting the Tariff Regimes for Imports of Aluminum, Steel, and Copper — from June 8, 2026)",
+          "url": "https://www.federalregister.gov/documents/2026/06/04/2026-11314/further-adjusting-the-tariff-regimes-for-imports-of-aluminum-steel-and-copper-into-the-united-states",
+          "published": "2026-06-04"
+        },
+        {
+          "citation": "HTSUS 2026 Revision 21, Chapter 99, subchapter III, U.S. note 16",
+          "url": "https://hts.usitc.gov/reststop/file?release=2026HTSRev21&filename=Chapter%2099",
+          "published": "2026-10-07"
+        }
+      ]
+    },
+    {
+      "id": "civilAircraftGn6",
+      "prompt": "Is this article for use in a civil aircraft (not military, not unmanned) and does it meet the general note 6 civil-aircraft criteria (engines, parts, components, subassemblies, ground flight simulators)?",
+      "help": "Section 338 duties on Canada are lifted for civil aircraft articles on the note 51(d) list (heading 9903.03.16). CBP may ask for the certification required by general note 6 / 19 CFR 10.183.",
+      "defaultWhenUnanswered": false,
+      "sources": [
+        {
+          "citation": "91 FR 46639 (Proclamation 11046: Section 338 duties on products of Canada — alcoholic beverages; 50%, heading 9903.03.12)",
+          "url": "https://www.federalregister.gov/documents/2026/07/23/2026-14991/imposing-additional-duties-to-offset-canadian-discrimination-against-the-commerce-of-the-united-states",
+          "published": "2026-07-23"
+        },
+        {
+          "citation": "HTSUS 2026 Revision 21, Chapter 99, subchapter III, U.S. note 51",
+          "url": "https://hts.usitc.gov/reststop/file?release=2026HTSRev21&filename=Chapter%2099",
+          "published": "2026-10-07"
+        }
+      ]
+    },
+    {
+      "id": "civilIndustrial",
+      "prompt": "Is this semiconductor article for use in non-data-center civil industrial applications in the United States (e.g. factory robotics, industrial machinery)?",
+      "help": "Heading 9903.79.08. Exempts a semiconductor article that meets the note 39(b) thresholds from the 25% duty of 9903.79.01 (note 39(d)); the 2026 Section 301 duties then apply as usual. CBP may require an end-use certification. Unanswered = no.",
+      "defaultWhenUnanswered": false,
+      "sources": [
+        {
+          "citation": "91 FR 2443 (Proclamation 11002: Adjusting Imports of Semiconductors — 25% from January 15, 2026, with end-use exemptions)",
+          "url": "https://www.federalregister.gov/documents/2026/01/20/2026-01052/adjusting-imports-of-semiconductors-semiconductor-manufacturing-equipment-and-their-derivative",
+          "published": "2026-01-20"
+        },
+        {
+          "citation": "HTSUS 2026 Revision 21, Chapter 99, subchapter III, U.S. note 39",
+          "url": "https://hts.usitc.gov/reststop/file?release=2026HTSRev21&filename=Chapter%2099",
+          "published": "2026-10-07"
+        }
+      ]
+    },
+    {
+      "id": "consumerElectronics",
+      "prompt": "Is this semiconductor article for use in non-data-center consumer applications in the United States (gaming, personal computing, professional visualization, workstations, automotive)?",
+      "help": "Heading 9903.79.07. Exempts a semiconductor article that meets the note 39(b) thresholds from the 25% duty of 9903.79.01 (note 39(d)); the 2026 Section 301 duties then apply as usual. CBP may require an end-use certification. Unanswered = no.",
+      "defaultWhenUnanswered": false,
+      "sources": [
+        {
+          "citation": "91 FR 2443 (Proclamation 11002: Adjusting Imports of Semiconductors — 25% from January 15, 2026, with end-use exemptions)",
+          "url": "https://www.federalregister.gov/documents/2026/01/20/2026-01052/adjusting-imports-of-semiconductors-semiconductor-manufacturing-equipment-and-their-derivative",
+          "published": "2026-01-20"
+        },
+        {
+          "citation": "HTSUS 2026 Revision 21, Chapter 99, subchapter III, U.S. note 39",
+          "url": "https://hts.usitc.gov/reststop/file?release=2026HTSRev21&filename=Chapter%2099",
+          "published": "2026-10-07"
+        }
+      ]
+    },
+    {
+      "id": "jpFootwearExcepted",
+      "prompt": "Is the footwear (a) slip-on footwear not suitable for outdoor use, without backs or backstraps, with an outer sole under 5 mm thick and less than 20 mm difference between ball and heel, or (b) sports footwear with (provision for) spikes, sprigs, stops, clips or bars, skating boots, ski boots, cross-country ski footwear, wrestling, boxing or cycling shoes?",
+      "help": "These are excepted from the 40% duty on Japanese leather footwear (heading 9903.41.10).",
+      "defaultWhenUnanswered": false,
+      "sources": [
+        {
+          "citation": "100 Stat. 4411 (Proclamation 5448 of March 16, 1986: Increase in the Rates of Duty on Certain Articles From Japan — 40% on leather and footwear, Section 301)",
+          "url": "https://www.govinfo.gov/content/pkg/STATUTE-100/pdf/STATUTE-100-Pg4411.pdf",
+          "published": "1986-03-16"
+        },
+        {
+          "citation": "HTSUS 2026 Revision 21, Chapter 99, subchapter III, U.S. note 3",
+          "url": "https://hts.usitc.gov/reststop/file?release=2026HTSRev21&filename=Chapter%2099",
+          "published": "2026-10-07"
+        }
+      ]
+    },
+    {
+      "id": "jpFootwearUpperPartlyLeather",
+      "prompt": "Is the upper of this footwear (outer sole of leather) wholly or partly of leather?",
+      "help": "Heading 9903.41.10 covers footwear with leather outer soles and uppers wholly or in part of leather; textile-upper footwear with some leather can classify in 6404.20.",
+      "defaultWhenUnanswered": false,
+      "sources": [
+        {
+          "citation": "100 Stat. 4411 (Proclamation 5448 of March 16, 1986: Increase in the Rates of Duty on Certain Articles From Japan — 40% on leather and footwear, Section 301)",
+          "url": "https://www.govinfo.gov/content/pkg/STATUTE-100/pdf/STATUTE-100-Pg4411.pdf",
+          "published": "1986-03-16"
+        },
+        {
+          "citation": "HTSUS 2026 Revision 21, Chapter 99, subchapter III, U.S. note 3",
+          "url": "https://hts.usitc.gov/reststop/file?release=2026HTSRev21&filename=Chapter%2099",
+          "published": "2026-10-07"
+        }
+      ]
+    },
+    {
+      "id": "jpLeatherDyedColoredStampedEmbossed",
+      "prompt": "Is this goat, kid, sheep or lamb leather dyed, colored, stamped or embossed?",
+      "help": "Only dyed, colored, stamped or embossed goat/kid/sheep/lamb leather of Japan pays the 40% duty of heading 9903.41.05.",
+      "defaultWhenUnanswered": null,
+      "sources": [
+        {
+          "citation": "100 Stat. 4411 (Proclamation 5448 of March 16, 1986: Increase in the Rates of Duty on Certain Articles From Japan — 40% on leather and footwear, Section 301)",
+          "url": "https://www.govinfo.gov/content/pkg/STATUTE-100/pdf/STATUTE-100-Pg4411.pdf",
+          "published": "1986-03-16"
+        },
+        {
+          "citation": "HTSUS 2026 Revision 21, Chapter 99, subchapter III, U.S. note 3",
+          "url": "https://hts.usitc.gov/reststop/file?release=2026HTSRev21&filename=Chapter%2099",
+          "published": "2026-10-07"
+        }
+      ]
+    },
+    {
+      "id": "logicIcWithinNote39bThresholds",
+      "prompt": "Is this product a logic integrated circuit (or does it contain one) with total processing performance (TPP) above 14,000 and below 17,500 and total DRAM bandwidth above 4,500 and below 5,000 GB/s — or TPP above 20,800 and below 21,100 and DRAM bandwidth above 5,800 and below 6,200 GB/s?",
+      "help": "U.S. note 39(b): only such products of 8471.50, 8471.80 and 8473.30 pay the 25% Section 232 semiconductor duty (9903.79.01); everything else on those lines enters under 9903.79.02 with no duty. TPP = 2 × MacTOPS × bit length, summed over the processing units, dense (no sparsity), at the highest value the maker claims. Must be answered: defaulting either way would mis-price most of these lines.",
+      "defaultWhenUnanswered": null,
+      "sources": [
+        {
+          "citation": "91 FR 2443 (Proclamation 11002: Adjusting Imports of Semiconductors — 25% from January 15, 2026, with end-use exemptions)",
+          "url": "https://www.federalregister.gov/documents/2026/01/20/2026-01052/adjusting-imports-of-semiconductors-semiconductor-manufacturing-equipment-and-their-derivative",
+          "published": "2026-01-20"
+        },
+        {
+          "citation": "HTSUS 2026 Revision 21, Chapter 99, subchapter III, U.S. note 39",
+          "url": "https://hts.usitc.gov/reststop/file?release=2026HTSRev21&filename=Chapter%2099",
+          "published": "2026-10-07"
+        }
+      ]
+    },
+    {
+      "id": "mediumHeavyVehiclePart",
+      "prompt": "Is this article a part of a medium- or heavy-duty vehicle (a truck, road tractor, bus or other vehicle covered by U.S. note 38)?",
+      "help": "Note 38(i) lists whole subheadings; the 25% Section 232 duty (9903.74.08) applies only to parts of medium- and heavy-duty vehicles, and the listed articles that are not such parts enter under 9903.74.11 with no Section 232 duty. Answer for the article itself (its design and use); CBP may ask for support. A part made for a passenger car or light truck is answered by the passenger-vehicle question instead.",
+      "defaultWhenUnanswered": null,
+      "sources": [
+        {
+          "citation": "HTSUS 2026 Revision 21, Chapter 99, subchapter III, U.S. note 38",
+          "url": "https://hts.usitc.gov/reststop/file?release=2026HTSRev21&filename=Chapter%2099",
+          "published": "2026-10-07"
+        },
+        {
+          "citation": "CBP CSMS # 66665333 (GUIDANCE: Import Duties on Medium- and Heavy-duty Trucks, Medium- and Heavy-duty Truck Parts and Buses)",
+          "url": "https://content.govdelivery.com/accounts/USDHSCBP/bulletins/3f93b75",
+          "published": "2025-10-29"
+        }
+      ]
+    },
+    {
+      "id": "metalWeightUnder15Pct",
+      "prompt": "Is the aluminum, steel and copper in this article (together, if it is on several metal lists) less than 15% of the article’s weight?",
+      "help": "U.S. note 16(c) / heading 9903.82.03: for articles outside chapters 72, 73, 74 and 76 the Section 232 metals duties apply only when the listed metal is at least 15% of the weight. The lists name goods that are mostly metal, and the exemption is a claim the importer must support, so unanswered = no (the duty is charged).",
+      "defaultWhenUnanswered": false,
+      "sources": [
+        {
+          "citation": "91 FR 18201 (Proclamation 11021: Strengthening Actions Taken To Adjust Imports of Aluminum, Steel, and Copper — full-value duties from April 6, 2026)",
+          "url": "https://www.federalregister.gov/documents/2026/04/09/2026-06960/strengthening-actions-taken-to-adjust-imports-of-aluminum-steel-and-copper-into-the-united-states",
+          "published": "2026-04-09"
+        },
+        {
+          "citation": "HTSUS 2026 Revision 21, Chapter 99, subchapter III, U.S. note 16",
+          "url": "https://hts.usitc.gov/reststop/file?release=2026HTSRev21&filename=Chapter%2099",
+          "published": "2026-10-07"
+        }
+      ]
+    },
+    {
+      "id": "motorcycleManufacturing",
+      "prompt": "Are these motorcycle parts (chapters 84, 85 or 87) for use in manufacturing motorcycles in the United States?",
+      "help": "U.S. note 16(g) / heading 9903.82.13: such parts of the 16(c)(vi)–(viii) and (xi) lists pay no Section 232 metals duty. An affirmative claim the importer must support, so unanswered = no.",
+      "defaultWhenUnanswered": false,
+      "sources": [
+        {
+          "citation": "91 FR 18201 (Proclamation 11021: Strengthening Actions Taken To Adjust Imports of Aluminum, Steel, and Copper — full-value duties from April 6, 2026)",
+          "url": "https://www.federalregister.gov/documents/2026/04/09/2026-06960/strengthening-actions-taken-to-adjust-imports-of-aluminum-steel-and-copper-into-the-united-states",
+          "published": "2026-04-09"
+        },
+        {
+          "citation": "HTSUS 2026 Revision 21, Chapter 99, subchapter III, U.S. note 16",
+          "url": "https://hts.usitc.gov/reststop/file?release=2026HTSRev21&filename=Chapter%2099",
+          "published": "2026-10-07"
+        }
+      ]
+    },
+    {
+      "id": "noMetalContent",
+      "prompt": "Does this article contain no aluminum, steel or copper at all?",
+      "help": "Heading 9903.82.01 (91 FR 23056): articles of the U.S. note 16(c) lists with no aluminum, steel or copper are not metal articles or derivatives and pay no Section 232 metals duty (the 2026 Section 301 duties still apply). The lists name metal goods, so unanswered = no (the duty is charged).",
+      "defaultWhenUnanswered": false,
+      "sources": [
+        {
+          "citation": "91 FR 23056 (Commerce: technical corrections to Proclamation 11021 — heading 9903.82.01; Tata Steel UK clarification)",
+          "url": "https://www.federalregister.gov/documents/2026/04/29/2026-08297/notice-of-technical-corrections-to-the-harmonized-tariff-schedule-of-the-united-states-for-duties",
+          "published": "2026-04-29"
+        },
+        {
+          "citation": "HTSUS 2026 Revision 21, Chapter 99, subchapter III, U.S. note 16",
+          "url": "https://hts.usitc.gov/reststop/file?release=2026HTSRev21&filename=Chapter%2099",
+          "published": "2026-10-07"
+        }
+      ]
+    },
+    {
+      "id": "notMediumHeavyVehicle",
+      "prompt": "Is this article something other than a medium- or heavy-duty vehicle (for example, not a complete truck, road tractor or chassis for one)?",
+      "help": "U.S. note 38(e) / heading 9903.74.05: articles of the note 38(b) provisions that are not medium- and heavy-duty vehicles pay no Section 232 duty. Answer yes only if the importer can support it to CBP.",
+      "defaultWhenUnanswered": false,
+      "sources": [
+        {
+          "citation": "HTSUS 2026 Revision 21, Chapter 99, subchapter III, U.S. note 38",
+          "url": "https://hts.usitc.gov/reststop/file?release=2026HTSRev21&filename=Chapter%2099",
+          "published": "2026-10-07"
+        },
+        {
+          "citation": "CBP CSMS # 66665333 (GUIDANCE: Import Duties on Medium- and Heavy-duty Trucks, Medium- and Heavy-duty Truck Parts and Buses)",
+          "url": "https://content.govdelivery.com/accounts/USDHSCBP/bulletins/3f93b75",
+          "published": "2025-10-29"
+        }
+      ]
+    },
+    {
+      "id": "notPassengerVehicleOrLightTruck",
+      "prompt": "Is this vehicle something other than a passenger vehicle (sedan, SUV, crossover, minivan, cargo van) or light truck?",
+      "help": "U.S. note 33(c)(i) / heading 9903.94.02: articles of the note 33(b) subheadings that are not passenger vehicles or light trucks pay no Section 232 automobile duty (they still pay the 2026 Section 301 duty). For electric trucks of 8704.60, answer yes for a medium- or heavy-duty truck (it then pays the note 38 duty, 9903.74.01).",
+      "defaultWhenUnanswered": false,
+      "sources": [
+        {
+          "citation": "HTSUS 2026 Revision 21, Chapter 99, subchapter III, U.S. note 33",
+          "url": "https://hts.usitc.gov/reststop/file?release=2026HTSRev21&filename=Chapter%2099",
+          "published": "2026-10-07"
+        },
+        {
+          "citation": "CBP CSMS # 65649652 (GUIDANCE: Applying Section 232 Import Duties on USMCA-Qualifying Passenger Vehicles and Light Trucks — 9903.94.03 non-U.S. content)",
+          "url": "https://content.govdelivery.com/bulletins/gd/USDHSCBP-3e9bbf4",
+          "published": "2025-07-16"
+        }
+      ]
+    },
+    {
+      "id": "packagedDirectToConsumer",
+      "prompt": "Is the alcohol packaged in bottles, cans, boxes, kegs or other similar direct-to-consumption containers (not shipped in bulk)?",
+      "help": "Proclamation 11061 bans such packaged Canadian alcohol products under the listed provisions from September 29, 2026; bulk goods are not banned (they still pay the 50% Section 338 duty). Must be answered: either default could wrongly allow or block the import.",
+      "defaultWhenUnanswered": null,
+      "sources": [
+        {
+          "citation": "91 FR 58311 (Proclamation 11061: import ban on certain Canadian alcoholic beverages from September 29, 2026)",
+          "url": "https://www.federalregister.gov/documents/2026/09/14/2026-18835/excluding-certain-canadian-products-from-importation-into-the-united-states-in-response-to-continued",
+          "published": "2026-09-14"
+        }
+      ]
+    },
+    {
+      "id": "passengerVehiclePart",
+      "prompt": "Is this article a part of a passenger vehicle (sedan, SUV, crossover, minivan, cargo van) or light truck?",
+      "help": "U.S. note 33(g) lists whole subheadings (for example computers of 8471, lithium-ion batteries of 8507.60, wiring sets of 8544.30). CBP: the 25% Section 232 duty (9903.94.05) applies to parts of passenger vehicles and light trucks classifiable there, and the listed articles that are not such parts enter under 9903.94.06 with no Section 232 duty (CSMS # 64916652). Answer for the article itself; CBP may ask for support.",
+      "defaultWhenUnanswered": null,
+      "sources": [
+        {
+          "citation": "HTSUS 2026 Revision 21, Chapter 99, subchapter III, U.S. note 33",
+          "url": "https://hts.usitc.gov/reststop/file?release=2026HTSRev21&filename=Chapter%2099",
+          "published": "2026-10-07"
+        },
+        {
+          "citation": "CBP CSMS # 64916652 (UPDATE to CSMS # 64913145: GUIDANCE: Import Duties on Certain Automobile Parts — 9903.94.06 for articles that are not parts of passenger vehicles)",
+          "url": "https://content.govdelivery.com/accounts/USDHSCBP/bulletins/3de8cac",
+          "published": "2025-05-01"
+        }
+      ]
+    },
+    {
+      "id": "publicSector",
+      "prompt": "Is this semiconductor article for use in United States public sector applications?",
+      "help": "Heading 9903.79.09. Exempts a semiconductor article that meets the note 39(b) thresholds from the 25% duty of 9903.79.01 (note 39(d)); the 2026 Section 301 duties then apply as usual. CBP may require an end-use certification. Unanswered = no.",
+      "defaultWhenUnanswered": false,
+      "sources": [
+        {
+          "citation": "91 FR 2443 (Proclamation 11002: Adjusting Imports of Semiconductors — 25% from January 15, 2026, with end-use exemptions)",
+          "url": "https://www.federalregister.gov/documents/2026/01/20/2026-01052/adjusting-imports-of-semiconductors-semiconductor-manufacturing-equipment-and-their-derivative",
+          "published": "2026-01-20"
+        },
+        {
+          "citation": "HTSUS 2026 Revision 21, Chapter 99, subchapter III, U.S. note 39",
+          "url": "https://hts.usitc.gov/reststop/file?release=2026HTSRev21&filename=Chapter%2099",
+          "published": "2026-10-07"
+        }
+      ]
+    },
+    {
+      "id": "quartzOverQuota",
+      "prompt": "Is this entry over the quarterly tariff-rate quota for quartz surface products (the in-quota quantity of U.S. note 41(d) is filled)?",
+      "help": "In-quota entries pay heading 9903.45.30 (25% in the first year), over-quota entries 9903.45.31 (50%). CBP publishes the quota fill status.",
+      "defaultWhenUnanswered": null,
+      "sources": [
+        {
+          "citation": "91 FR 50645 (Proclamation 11051: Section 201 safeguard on quartz surface products, tariff-rate quota from August 15, 2026)",
+          "url": "https://www.federalregister.gov/documents/2026/08/05/2026-15975/to-facilitate-positive-adjustment-to-competition-from-imports-of-quartz-surface-products",
+          "published": "2026-08-05"
+        },
+        {
+          "citation": "HTSUS 2026 Revision 21, Chapter 99, subchapter III, U.S. note 41",
+          "url": "https://hts.usitc.gov/reststop/file?release=2026HTSRev21&filename=Chapter%2099",
+          "published": "2026-10-07"
+        }
+      ]
+    },
+    {
+      "id": "quartzSurfaceProduct",
+      "prompt": "Is this a quartz surface product — a slab or other surface made predominantly of silica (quartz, quartz powder, cristobalite, glass powder) with a resin binder, silica being more than any other single material by weight?",
+      "help": "The Section 201 quartz safeguard covers 7020.00.60.00, 6810.99.00.20 and 6810.99.00.40 only for quartz surface products (U.S. note 41(a)); quarried stone (granite, marble, quartzite) is not covered.",
+      "defaultWhenUnanswered": null,
+      "sources": [
+        {
+          "citation": "91 FR 50645 (Proclamation 11051: Section 201 safeguard on quartz surface products, tariff-rate quota from August 15, 2026)",
+          "url": "https://www.federalregister.gov/documents/2026/08/05/2026-15975/to-facilitate-positive-adjustment-to-competition-from-imports-of-quartz-surface-products",
+          "published": "2026-08-05"
+        },
+        {
+          "citation": "HTSUS 2026 Revision 21, Chapter 99, subchapter III, U.S. note 41",
+          "url": "https://hts.usitc.gov/reststop/file?release=2026HTSRev21&filename=Chapter%2099",
+          "published": "2026-10-07"
+        }
+      ]
+    },
+    {
+      "id": "repairReplacement",
+      "prompt": "Is this semiconductor article for repairs or replacements performed in the United States?",
+      "help": "Heading 9903.79.04. Exempts a semiconductor article that meets the note 39(b) thresholds from the 25% duty of 9903.79.01 (note 39(d)); the 2026 Section 301 duties then apply as usual. CBP may require an end-use certification. Unanswered = no.",
+      "defaultWhenUnanswered": false,
+      "sources": [
+        {
+          "citation": "91 FR 2443 (Proclamation 11002: Adjusting Imports of Semiconductors — 25% from January 15, 2026, with end-use exemptions)",
+          "url": "https://www.federalregister.gov/documents/2026/01/20/2026-01052/adjusting-imports-of-semiconductors-semiconductor-manufacturing-equipment-and-their-derivative",
+          "published": "2026-01-20"
+        },
+        {
+          "citation": "HTSUS 2026 Revision 21, Chapter 99, subchapter III, U.S. note 39",
+          "url": "https://hts.usitc.gov/reststop/file?release=2026HTSRev21&filename=Chapter%2099",
+          "published": "2026-10-07"
+        }
+      ]
+    },
+    {
+      "id": "startup",
+      "prompt": "Is this semiconductor article for use by a U.S. startup (an \"emerging growth company\" under 15 U.S.C. 77b(a)(19))?",
+      "help": "Heading 9903.79.06. Exempts a semiconductor article that meets the note 39(b) thresholds from the 25% duty of 9903.79.01 (note 39(d)); the 2026 Section 301 duties then apply as usual. CBP may require an end-use certification. Unanswered = no.",
+      "defaultWhenUnanswered": false,
+      "sources": [
+        {
+          "citation": "91 FR 2443 (Proclamation 11002: Adjusting Imports of Semiconductors — 25% from January 15, 2026, with end-use exemptions)",
+          "url": "https://www.federalregister.gov/documents/2026/01/20/2026-01052/adjusting-imports-of-semiconductors-semiconductor-manufacturing-equipment-and-their-derivative",
+          "published": "2026-01-20"
+        },
+        {
+          "citation": "HTSUS 2026 Revision 21, Chapter 99, subchapter III, U.S. note 39",
+          "url": "https://hts.usitc.gov/reststop/file?release=2026HTSRev21&filename=Chapter%2099",
+          "published": "2026-10-07"
+        }
+      ]
+    },
+    {
+      "id": "uasBlueUasListed",
+      "prompt": "Was the product (or its maker) on the DoW Blue UAS Cleared List, the Blue UAS Framework or the FCC Conditional Approval List on September 2, 2026?",
+      "help": "For these products and their components the Section 232 drone duties start February 9, 2027 (Proclamation 11055 clause 7).",
+      "defaultWhenUnanswered": false,
+      "sources": [
+        {
+          "citation": "91 FR 53699 (Proclamation 11055: Section 232 duties on unmanned aircraft systems and components, from September 3, 2026)",
+          "url": "https://www.federalregister.gov/documents/2026/08/19/2026-16979/adjusting-imports-of-unmanned-aircraft-systems-and-unmanned-aircraft-systems-components-into-the-united-states",
+          "published": "2026-08-19"
+        }
+      ]
+    },
+    {
+      "id": "uasDockingStation",
+      "prompt": "Is this article a docking station for unmanned aircraft, or a part of such a docking station?",
+      "help": "Statistical numbers 8504.40.95.80 and 8537.10.91.70 pay the 100% Section 232 drone duty only for docking stations and their parts (U.S. note 43(c)(1)); other goods there use heading 9903.08.20.",
+      "defaultWhenUnanswered": false,
+      "sources": [
+        {
+          "citation": "91 FR 53699 (Proclamation 11055: Section 232 duties on unmanned aircraft systems and components, from September 3, 2026)",
+          "url": "https://www.federalregister.gov/documents/2026/08/19/2026-16979/adjusting-imports-of-unmanned-aircraft-systems-and-unmanned-aircraft-systems-components-into-the-united-states",
+          "published": "2026-08-19"
+        },
+        {
+          "citation": "HTSUS 2026 Revision 21, Chapter 99, subchapter III, U.S. note 43",
+          "url": "https://hts.usitc.gov/reststop/file?release=2026HTSRev21&filename=Chapter%2099",
+          "published": "2026-10-07"
+        }
+      ]
+    },
+    {
+      "id": "uasHeavyUasPart",
+      "prompt": "Is this part or component for an unmanned aircraft system with a maximum take-off weight over 25 kg, and not for retail-delivery, agricultural or Department of War systems?",
+      "help": "U.S. note 43(c)(2): such parts of 8807 pay the 100% Section 232 drone duty; parts for manned aircraft or other drones use heading 9903.08.20.",
+      "defaultWhenUnanswered": false,
+      "sources": [
+        {
+          "citation": "91 FR 53699 (Proclamation 11055: Section 232 duties on unmanned aircraft systems and components, from September 3, 2026)",
+          "url": "https://www.federalregister.gov/documents/2026/08/19/2026-16979/adjusting-imports-of-unmanned-aircraft-systems-and-unmanned-aircraft-systems-components-into-the-united-states",
+          "published": "2026-08-19"
+        },
+        {
+          "citation": "HTSUS 2026 Revision 21, Chapter 99, subchapter III, U.S. note 43",
+          "url": "https://hts.usitc.gov/reststop/file?release=2026HTSRev21&filename=Chapter%2099",
+          "published": "2026-10-07"
+        }
+      ]
+    },
+    {
+      "id": "uasOnshoringPlan",
+      "prompt": "Is this unmanned aircraft or part imported for a company with an onshoring plan approved by DHS, the Department of War or the Secretary of Commerce?",
+      "help": "Headings 9903.08.25 / 9903.08.26: no Section 232 drone duty, within the volume the approval allows.",
+      "defaultWhenUnanswered": false,
+      "sources": [
+        {
+          "citation": "91 FR 53699 (Proclamation 11055: Section 232 duties on unmanned aircraft systems and components, from September 3, 2026)",
+          "url": "https://www.federalregister.gov/documents/2026/08/19/2026-16979/adjusting-imports-of-unmanned-aircraft-systems-and-unmanned-aircraft-systems-components-into-the-united-states",
+          "published": "2026-08-19"
+        },
+        {
+          "citation": "HTSUS 2026 Revision 21, Chapter 99, subchapter III, U.S. note 43",
+          "url": "https://hts.usitc.gov/reststop/file?release=2026HTSRev21&filename=Chapter%2099",
+          "published": "2026-10-07"
+        }
+      ]
+    },
+    {
+      "id": "uasPartnerCriticalComponents",
+      "prompt": "Has the importer certified that substantially all the critical components and technology are products of the United States, Japan, South Korea, Taiwan, Switzerland, Liechtenstein, an EU member or the United Kingdom?",
+      "help": "U.S. note 43(d): then UK products pay +10% (9903.08.23) and Japan/Korea/Taiwan/Switzerland/Liechtenstein/EU products 15% in total (9903.08.24) instead of 25% or 100%.",
+      "defaultWhenUnanswered": false,
+      "sources": [
+        {
+          "citation": "91 FR 53699 (Proclamation 11055: Section 232 duties on unmanned aircraft systems and components, from September 3, 2026)",
+          "url": "https://www.federalregister.gov/documents/2026/08/19/2026-16979/adjusting-imports-of-unmanned-aircraft-systems-and-unmanned-aircraft-systems-components-into-the-united-states",
+          "published": "2026-08-19"
+        },
+        {
+          "citation": "HTSUS 2026 Revision 21, Chapter 99, subchapter III, U.S. note 43",
+          "url": "https://hts.usitc.gov/reststop/file?release=2026HTSRev21&filename=Chapter%2099",
+          "published": "2026-10-07"
+        }
+      ]
+    },
+    {
+      "id": "uasThermalImaging",
+      "prompt": "Does this unmanned aircraft have thermal imaging?",
+      "help": "Drones up to 25 kg pay +100% with thermal imaging (9903.08.21, note 43(c)(3)) and +25% without (9903.08.22, note 43(c)(4)).",
+      "defaultWhenUnanswered": null,
+      "sources": [
+        {
+          "citation": "91 FR 53699 (Proclamation 11055: Section 232 duties on unmanned aircraft systems and components, from September 3, 2026)",
+          "url": "https://www.federalregister.gov/documents/2026/08/19/2026-16979/adjusting-imports-of-unmanned-aircraft-systems-and-unmanned-aircraft-systems-components-into-the-united-states",
+          "published": "2026-08-19"
+        },
+        {
+          "citation": "HTSUS 2026 Revision 21, Chapter 99, subchapter III, U.S. note 43",
+          "url": "https://hts.usitc.gov/reststop/file?release=2026HTSRev21&filename=Chapter%2099",
+          "published": "2026-10-07"
+        }
+      ]
+    },
+    {
+      "id": "ukAutoQuotaAvailable",
+      "prompt": "Does this UK passenger vehicle enter within the open United Kingdom tariff-rate quota (100,000 vehicles a year, 25,000 a quarter plus carry-forward)?",
+      "help": "U.S. note 33(i) / heading 9903.94.31: inside the quota UK passenger vehicles of 8703 pay 7.5% on top of the 2.5% base (10% in all); once CBP reports the quota filled, entries pay the full 25% (9903.94.01).",
+      "defaultWhenUnanswered": true,
+      "sources": [
+        {
+          "citation": "HTSUS 2026 Revision 21, Chapter 99, subchapter III, U.S. note 33",
+          "url": "https://hts.usitc.gov/reststop/file?release=2026HTSRev21&filename=Chapter%2099",
+          "published": "2026-10-07"
+        },
+        {
+          "citation": "90 FR 27851 (Commerce/ITA: automobiles and automobile parts from the United Kingdom under Executive Order 14309 — 9903.94.31 / 9903.94.32 from June 30, 2025)",
+          "url": "https://www.federalregister.gov/documents/2025/06/30/2025-12060/imports-of-automobiles-automobile-parts-civil-aircraft-and-civil-aircraft-parts-from-the-united",
+          "published": "2025-06-30"
+        }
+      ]
+    },
+    {
+      "id": "ukMeltedMetal95Pct",
+      "prompt": "Is this a product of the United Kingdom in which at least 95% of the aluminum was smelted or most recently cast in the UK, or at least 95% of the steel was melted and poured in the UK?",
+      "help": "U.S. note 16(d): such UK goods pay 25% (9903.82.04, lists (i)–(iv)) or 15% (9903.82.05, lists (vi)–(vii)) instead of 50% / 25%. Until January 1, 2028, Tata Steel UK steel melted and poured in the Netherlands counts as UK (91 FR 23056). An affirmative claim the importer must support (CBP may ask for melt-and-pour / smelt-and-cast information), so unanswered = no.",
+      "defaultWhenUnanswered": false,
+      "sources": [
+        {
+          "citation": "91 FR 18201 (Proclamation 11021: Strengthening Actions Taken To Adjust Imports of Aluminum, Steel, and Copper — full-value duties from April 6, 2026)",
+          "url": "https://www.federalregister.gov/documents/2026/04/09/2026-06960/strengthening-actions-taken-to-adjust-imports-of-aluminum-steel-and-copper-into-the-united-states",
+          "published": "2026-04-09"
+        },
+        {
+          "citation": "91 FR 23056 (Commerce: technical corrections to Proclamation 11021 — heading 9903.82.01; Tata Steel UK clarification)",
+          "url": "https://www.federalregister.gov/documents/2026/04/29/2026-08297/notice-of-technical-corrections-to-the-harmonized-tariff-schedule-of-the-united-states-for-duties",
+          "published": "2026-04-29"
+        },
+        {
+          "citation": "HTSUS 2026 Revision 21, Chapter 99, subchapter III, U.S. note 16",
+          "url": "https://hts.usitc.gov/reststop/file?release=2026HTSRev21&filename=Chapter%2099",
+          "published": "2026-10-07"
+        }
+      ]
+    },
+    {
+      "id": "usDataCenter",
+      "prompt": "Is this semiconductor article for use in a U.S. data center (a facility requiring more than 100 MW of new load dedicated to AI inference, training, simulation or synthetic data generation)?",
+      "help": "Heading 9903.79.03. Exempts a semiconductor article that meets the note 39(b) thresholds from the 25% duty of 9903.79.01 (note 39(d)); the 2026 Section 301 duties then apply as usual. CBP may require an end-use certification. Unanswered = no.",
+      "defaultWhenUnanswered": false,
+      "sources": [
+        {
+          "citation": "91 FR 2443 (Proclamation 11002: Adjusting Imports of Semiconductors — 25% from January 15, 2026, with end-use exemptions)",
+          "url": "https://www.federalregister.gov/documents/2026/01/20/2026-01052/adjusting-imports-of-semiconductors-semiconductor-manufacturing-equipment-and-their-derivative",
+          "published": "2026-01-20"
+        },
+        {
+          "citation": "HTSUS 2026 Revision 21, Chapter 99, subchapter III, U.S. note 39",
+          "url": "https://hts.usitc.gov/reststop/file?release=2026HTSRev21&filename=Chapter%2099",
+          "published": "2026-10-07"
+        }
+      ]
+    },
+    {
+      "id": "usMeltedMetal85Pct",
+      "prompt": "Was at least 85% (by weight) of the aluminum, steel and copper in this article smelted and cast (aluminum, copper) or melted and poured (steel) in the United States?",
+      "help": "U.S. note 16(e) / Proclamation 11032 clause (4): derivative articles and copper articles meeting this pay 10% (9903.82.06; 10% in total for lists (ix)–(x), 9903.82.07) instead of 50%, 25% or 15%. An affirmative claim the importer must support, so unanswered = no.",
+      "defaultWhenUnanswered": false,
+      "sources": [
+        {
+          "citation": "91 FR 18201 (Proclamation 11021: Strengthening Actions Taken To Adjust Imports of Aluminum, Steel, and Copper — full-value duties from April 6, 2026)",
+          "url": "https://www.federalregister.gov/documents/2026/04/09/2026-06960/strengthening-actions-taken-to-adjust-imports-of-aluminum-steel-and-copper-into-the-united-states",
+          "published": "2026-04-09"
+        },
+        {
+          "citation": "91 FR 34085 (Proclamation 11032: Further Adjusting the Tariff Regimes for Imports of Aluminum, Steel, and Copper — from June 8, 2026)",
+          "url": "https://www.federalregister.gov/documents/2026/06/04/2026-11314/further-adjusting-the-tariff-regimes-for-imports-of-aluminum-steel-and-copper-into-the-united-states",
+          "published": "2026-06-04"
+        },
+        {
+          "citation": "HTSUS 2026 Revision 21, Chapter 99, subchapter III, U.S. note 16",
+          "url": "https://hts.usitc.gov/reststop/file?release=2026HTSRev21&filename=Chapter%2099",
+          "published": "2026-10-07"
+        }
+      ]
+    },
+    {
+      "id": "vehicle25YearsOld",
+      "prompt": "Was the vehicle manufactured in a year at least 25 years before the year of entry?",
+      "help": "U.S. notes 33(e) and 38(g) / headings 9903.94.04 and 9903.74.07: such vehicles pay no Section 232 vehicle duty (the 2026 Section 301 duty still applies).",
+      "defaultWhenUnanswered": false,
+      "sources": [
+        {
+          "citation": "HTSUS 2026 Revision 21, Chapter 99, subchapter III, U.S. note 33",
+          "url": "https://hts.usitc.gov/reststop/file?release=2026HTSRev21&filename=Chapter%2099",
+          "published": "2026-10-07"
+        },
+        {
+          "citation": "HTSUS 2026 Revision 21, Chapter 99, subchapter III, U.S. note 38",
+          "url": "https://hts.usitc.gov/reststop/file?release=2026HTSRev21&filename=Chapter%2099",
+          "published": "2026-10-07"
+        },
+        {
+          "citation": "CBP, Section 232 Additional FAQs - Automobiles and Auto Parts (last modified December 19, 2025)",
+          "url": "https://www.cbp.gov/trade/programs-administration/entry-summary/section-232-additional-faqs-autos",
+          "published": "2025-12-19"
+        }
+      ]
+    },
+    {
+      "id": "woodenCabinetsOrVanities",
+      "prompt": "Are these goods completed wooden kitchen cabinets or vanities, or parts of wooden kitchen cabinets or vanities?",
+      "help": "U.S. note 37(f)–(g): statistical lines 9403.40.9060, 9403.60.8093 and 9403.91.0080 also hold other wooden furniture and parts, which enter under 9903.76.04 with no Section 232 wood duty. Must be answered: the duty is 25% (50% from January 1, 2027) or 15% for the deal partners, so either default would mis-price many entries.",
+      "defaultWhenUnanswered": null,
+      "sources": [
+        {
+          "citation": "90 FR 48127 (Proclamation 10976: Adjusting Imports of Timber, Lumber, and Their Derivative Products)",
+          "url": "https://www.federalregister.gov/documents/2025/10/06/2025-19482/adjusting-imports-of-timber-lumber-and-their-derivative-products-into-the-united-states",
+          "published": "2025-10-06"
+        },
+        {
+          "citation": "HTSUS 2026 Revision 21, Chapter 99, subchapter III, U.S. note 37",
+          "url": "https://hts.usitc.gov/reststop/file?release=2026HTSRev21&filename=Chapter%2099",
+          "published": "2026-10-07"
+        }
+      ]
+    }
+  ]
+}

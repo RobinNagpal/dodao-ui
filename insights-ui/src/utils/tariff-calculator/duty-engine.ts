@@ -30,7 +30,7 @@
 
 import { TariffApplicabilityConditionKind, TariffCandidateCodeType, TariffCountryScopeType, TariffRelatedCodeKind } from '@prisma/client';
 import { CandidateCodeListItem } from '@/app/api/tariff-calculator/candidate-codes/[hts10]/route';
-import type { TariffMeasureSource, TariffProductType } from '@/types/tariff-calculator-measures';
+import type { TariffImportProhibition, TariffMeasureSource, TariffProductType } from '@/types/tariff-calculator-measures';
 
 export const TRANSPORT_MODES = ['OCEAN', 'AIR', 'RAIL', 'TRUCK'] as const;
 export type TransportMode = (typeof TRANSPORT_MODES)[number];
@@ -147,6 +147,8 @@ export interface CalculatorResponse extends CalculatorResult {
   engine?: CalculatorEngine;
   // Official-measures engine: extra duties in scope for this line and country that are not charged, and why.
   skippedMeasures?: { ch99Code: string; reason: string }[];
+  // Import ban matching the shipment (issue #1796): the goods can't be imported; the duty is for goods imported before the ban.
+  prohibited?: TariffImportProhibition;
 }
 
 // Units a per-unit duty for this HTS line can be charged in. Returned by the

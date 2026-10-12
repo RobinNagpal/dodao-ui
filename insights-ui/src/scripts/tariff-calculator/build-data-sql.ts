@@ -15,7 +15,8 @@
 
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
-import type { Ch99HeadingRecord, Ch99HeadingsFile, TariffMeasureRecord, TariffMeasuresFile } from '@/types/tariff-calculator-measures';
+import type { Ch99HeadingRecord, Ch99HeadingsFile, TariffContentBasis, TariffMeasureRecord, TariffMeasuresFile } from '@/types/tariff-calculator-measures';
+import { loadConfirmationFacts } from '@/utils/tariff-calculator/confirmation-facts';
 import { buildBaseRatesSql, extractBaseRateRows } from './lib/hts-base-rates';
 import { DATA_SQL_DIR, editionSlug, INSIGHTS_UI_ROOT, loadHtsSource, parseCliArgs, stringArg, yyyymmdd } from './lib/hts-source';
 import { chunk, compareCodes, sqlDate, sqlJsonb, sqlNumeric, sqlText, sqlTextArray } from './lib/sql';
@@ -24,6 +25,7 @@ const SPACE_ID = 'koala_gains';
 const CALCULATOR_DATA_DIR = path.join(INSIGHTS_UI_ROOT, 'src', 'tariff-data', 'calculator');
 const MEASURE_RATE_KINDS = new Set(['additive', 'inPlaceOfBase', 'floor', 'relief']);
 const HEADING_RATE_KINDS = new Set(['additive', 'flat', 'relief', 'unknown']);
+const CONTENT_BASES = new Set<string>(['steel', 'aluminum', 'copper', 'nonUsContent'] satisfies TariffContentBasis[]);
 
 function readJson<T>(file: string): T {
   return JSON.parse(readFileSync(file, 'utf-8')) as T;
@@ -41,7 +43,7 @@ function validateHeadings(file: Ch99HeadingsFile): string[] {
   return errors;
 }
 
-function validateMeasures(file: TariffMeasuresFile, headingCodes: Set<string>): { errors: string[]; warnings: string[] } {
+function validateMeasures(file: TariffMeasuresFile, headingCodes: Set<string>, factIds: Set<string>): { errors: string[]; warnings: string[] } {
   const errors: string[] = [];
   const warnings: string[] = [];
   const seen = new Set<string>();
@@ -64,6 +66,18 @@ function validateMeasures(file: TariffMeasuresFile, headingCodes: Set<string>): 
     if (!headingCodes.has(m.ch99Code)) warnings.push(`${where}: ch99Code ${m.ch99Code} is not in ch99-headings.json`);
     for (const code of m.replacesCodes ?? []) if (!headingCodes.has(code)) warnings.push(`${where}: replacesCodes ${code} is not in ch99-headings.json`);
     if (!m.sources?.length) warnings.push(`${where}: no sources`);
+    if (m.contentBasis !== undefined && m.contentBasis !== null) {
+      if (!CONTENT_BASES.has(m.contentBasis)) errors.push(`${where}: contentBasis "${m.contentBasis}"`);
+      if (m.rateKind === 'relief') errors.push(`${where}: contentBasis set on a relief measure (it has no rate to charge)`);
+    }
+    for (const id of [...(m.conditions?.factsTrue ?? []), ...(m.conditions?.factsFalse ?? [])]) {
+      if (!factIds.has(id)) errors.push(`${where}: condition fact "${id}" is not in confirmation-facts.json`);
+    }
+    if (m.usContentDeductionCapPct !== undefined && m.usContentDeductionCapPct !== null) {
+      const cap = m.usContentDeductionCapPct;
+      if (typeof cap !== 'number' || !Number.isFinite(cap) || cap < 0 || cap > 100) errors.push(`${where}: usContentDeductionCapPct "${cap}" is not 0–100`);
+      if (m.contentBasis !== 'nonUsContent') errors.push(`${where}: usContentDeductionCapPct needs contentBasis "nonUsContent"`);
+    }
   }
   return { errors, warnings };
 }
@@ -96,7 +110,7 @@ function measuresSql(measures: readonly TariffMeasureRecord[], fileReviewedAt: s
   const sorted = [...measures].sort((a, b) => compareCodes(a.measureKey, b.measureKey));
   for (const part of chunk(sorted, 200)) {
     out.push(
-      'INSERT INTO tariff_measures (id, measure_key, program, ch99_code, rate_kind, rate_pct, countries_include, countries_exclude, coverage_include, coverage_exclude, conditions, replaces_codes, effective_from, effective_to, sources, hts_edition, reviewed_at, notes, space_id, created_at, updated_at) VALUES'
+      'INSERT INTO tariff_measures (id, measure_key, program, ch99_code, rate_kind, rate_pct, countries_include, countries_exclude, coverage_include, coverage_exclude, conditions, replaces_codes, effective_from, effective_to, sources, hts_edition, reviewed_at, notes, content_basis, us_content_deduction_cap_pct, space_id, created_at, updated_at) VALUES'
     );
     out.push(
       part
@@ -120,6 +134,8 @@ function measuresSql(measures: readonly TariffMeasureRecord[], fileReviewedAt: s
             sqlText(m.htsEdition),
             sqlDate(m.reviewedAt ?? fileReviewedAt),
             sqlText(m.notes ?? null),
+            sqlText(m.contentBasis ?? null),
+            sqlNumeric(m.usContentDeductionCapPct ?? null),
             sqlText(SPACE_ID),
             'now()',
             'now()',
@@ -152,7 +168,7 @@ async function main(): Promise<void> {
     measures = measuresFile.measures ?? [];
     measuresEdition = measuresFile.htsEdition;
     measuresReviewedAt = measuresFile.reviewedAt;
-    const v = validateMeasures(measuresFile, new Set(headingsFile.headings.map((h) => h.code)));
+    const v = validateMeasures(measuresFile, new Set(headingsFile.headings.map((h) => h.code)), new Set(loadConfirmationFacts().map((f) => f.id)));
     errors.push(...v.errors);
     warnings.push(...v.warnings);
     if (measuresFile.htsEdition !== headingsFile.htsEdition) {

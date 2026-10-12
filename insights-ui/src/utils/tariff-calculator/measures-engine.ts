@@ -21,6 +21,17 @@
 //                        inPlaceOfBase: pct × value and the base is not charged
 //                        floor: max(base, pct × value), replacing the base
 //                        relief: no amount (it only cancels what it replaces)
+//                        where value = the full customs value, or — for a measure with a
+//                        `contentBasis` (issue #1796) — only the declared content value:
+//                        steel / aluminum / copper → `contentValuesUsd[basis]` (Section 232
+//                        derivatives, notes 16 / 19); nonUsContent → customs value − the
+//                        U.S.-content value, floored at 0 (Section 232 autos/parts for
+//                        USMCA-qualifying goods, note 33). A floor measure with a content basis
+//                        compares the base (on the full value) with pct × the content value.
+//                        Only the ad valorem part is re-based; the base line's per-unit parts
+//                        are unaffected. A missing content value is an `error` that names the
+//                        content and the measure; a content value above the customs value is
+//                        an `error` too.
 // In-scope measures that are not charged are returned in `skipped` with the reason.
 // A per-unit rate without a quantity for its unit, an unreadable rate, or a claim the
 // line does not offer is an `error` — never a silent $0.
@@ -30,6 +41,11 @@
 
 import type {
   CalculateWithMeasures,
+  TariffConfirmationFact,
+  TariffContentBasis,
+  TariffImportBan,
+  TariffImportProhibition,
+  TariffShipmentConfirmations,
   MeasureEngineDutyLine,
   MeasureEngineInput,
   MeasureEngineLine,
@@ -42,6 +58,8 @@ import type {
   TariffProductDescription,
   TariffProductType,
 } from '@/types/tariff-calculator-measures';
+import { loadConfirmationFacts } from '@/utils/tariff-calculator/confirmation-facts';
+import { loadImportBans } from '@/utils/tariff-calculator/import-bans';
 import { parseRate, type ParsedRate } from '@/utils/tariff-reports/shipment-duty';
 
 // ---------------------------------------------------------------------------
@@ -244,6 +262,106 @@ function isFree(text: string | null | undefined): boolean {
 }
 
 // ---------------------------------------------------------------------------
+// Content values (issue #1796)
+// ---------------------------------------------------------------------------
+
+/** A content value the importer declares: a metal content, or the U.S.-content value. */
+export type TariffContentInputKind = 'steel' | 'aluminum' | 'copper' | 'usContent';
+
+export const CONTENT_INPUT_KINDS: TariffContentInputKind[] = ['steel', 'aluminum', 'copper', 'usContent'];
+
+/** Plain labels for the calculator's content-value inputs. */
+export const CONTENT_INPUT_LABELS: Record<TariffContentInputKind, string> = {
+  steel: 'Value of the steel content (USD)',
+  aluminum: 'Value of the aluminum content (USD)',
+  copper: 'Value of the copper content (USD)',
+  usContent: 'U.S.-content value (USD) — USMCA-qualifying vehicles/parts only',
+};
+
+/** Which declared value a content basis is charged on. */
+export function contentInputKindFor(basis: TariffContentBasis): TariffContentInputKind {
+  return basis === 'nonUsContent' ? 'usContent' : basis;
+}
+
+/** "the value of the steel content" / "the non-U.S. content value" (completes "charged on …"). */
+const CONTENT_BASIS_PHRASES: Record<TariffContentBasis, string> = {
+  steel: 'the value of the steel content',
+  aluminum: 'the value of the aluminum content',
+  copper: 'the value of the copper content',
+  nonUsContent: 'the non-U.S. content value (customs value minus the U.S.-content value)',
+};
+
+/** What a content-based measure is charged on, e.g. "the value of the steel content"; a capped nonUsContent measure names the cap. */
+function basisPhrase(m: Pick<TariffMeasureRecord, 'contentBasis' | 'usContentDeductionCapPct'>): string {
+  if (!m.contentBasis) return 'the customs value';
+  if (m.contentBasis === 'nonUsContent' && m.usContentDeductionCapPct !== undefined && m.usContentDeductionCapPct !== null) {
+    return `the non-U.S. content value plus any U.S. content above ${m.usContentDeductionCapPct}% of the customs value`;
+  }
+  return CONTENT_BASIS_PHRASES[m.contentBasis];
+}
+
+/** U.S.-content input label when no USMCA-only measure asks for it (e.g. note 16(j) metals with U.S. content). */
+const US_CONTENT_GENERIC_LABEL = 'U.S.-content value (USD)';
+
+const CONTENT_INPUT_EXPLANATIONS: Record<TariffContentInputKind, string> = {
+  steel: 'Section 232 duties on steel derivative products are charged only on the value of the steel content, not on the full customs value.',
+  aluminum: 'Section 232 duties on aluminum derivative products are charged only on the value of the aluminum content, not on the full customs value.',
+  copper: 'Section 232 duties on copper derivative products are charged only on the value of the copper content, not on the full customs value.',
+  usContent:
+    'For USMCA-qualifying vehicles and parts, the Section 232 duty is charged only on the non-U.S. content: the customs value minus the value of the U.S. content.',
+};
+
+/** A content value the calculator should ask for on a line, and why. */
+export interface TariffContentInput {
+  kind: TariffContentInputKind;
+  /** Input label, e.g. "Value of the steel content (USD)". */
+  label: string;
+  /** One-sentence plain-language explanation. */
+  explanation: string;
+  /** Chapter 99 codes charged on this content value. */
+  ch99Codes: string[];
+  sources: TariffMeasureSource[];
+}
+
+function formatUsd(n: number): string {
+  return `$${n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+}
+
+/** Start of the engine error for an unanswered must-answer confirmation fact (scripts match on it). */
+export const FACT_ANSWER_REQUIRED = 'Answer required';
+
+/** Start of the engine error for a missing content value (scripts match on it). */
+export const CONTENT_VALUE_REQUIRED = 'Content value required';
+
+type ContentValue = { ok: true; value: number } | { ok: false; kind: TariffContentInputKind };
+
+/** The value a content-based measure is charged on, or which declared content value is missing. */
+function contentValueFor(basis: TariffContentBasis, input: MeasureEngineInput, capPct?: number): ContentValue {
+  const kind = contentInputKindFor(basis);
+  const declared = input.contentValuesUsd?.[kind];
+  if (declared === undefined || declared === null || !Number.isFinite(declared)) return { ok: false, kind };
+  if (basis !== 'nonUsContent') return { ok: true, value: declared };
+  return { ok: true, value: Math.max(0, input.customsValueUsd - usContentDeduction(declared, input.customsValueUsd, capPct)) };
+}
+
+/** The U.S.-content value deducted from the customs value: all of it, or at most `capPct`% of the customs value (note 16(j)). */
+function usContentDeduction(usContent: number, customsValueUsd: number, capPct: number | undefined): number {
+  return capPct === undefined || capPct === null ? usContent : Math.min(usContent, (capPct / 100) * customsValueUsd);
+}
+
+/** Error text for content values that are negative or above the customs value; null when they are all valid. */
+function contentValuesError(input: MeasureEngineInput): string | null {
+  for (const kind of CONTENT_INPUT_KINDS) {
+    const v = input.contentValuesUsd?.[kind];
+    if (v === undefined || v === null) continue;
+    const what = (kind === 'usContent' ? US_CONTENT_GENERIC_LABEL : CONTENT_INPUT_LABELS[kind]).replace(/ \(USD\).*$/, '');
+    if (!Number.isFinite(v) || v < 0) return `${what} must be a number of zero or more (got ${v}).`;
+    if (v > input.customsValueUsd + 1e-9) return `${what} (${formatUsd(v)}) can't be more than the customs value (${formatUsd(input.customsValueUsd)}).`;
+  }
+  return null;
+}
+
+// ---------------------------------------------------------------------------
 // Measure filters
 // ---------------------------------------------------------------------------
 
@@ -298,9 +416,61 @@ export const COMPANY_PROGRAM_LABELS: Record<TariffCompanyProgram, string> = {
 
 export const US_ORIGIN_INGREDIENT_LABEL = 'the active ingredient is of U.S. origin, made into dosage form abroad';
 
-type ConditionCheck = { ok: true } | { ok: false; reason: string } | { ok: false; needsProductType: TariffProductType[] };
+type ConditionCheck =
+  | { ok: true }
+  | { ok: false; reason: string }
+  | { ok: false; needsProductType: TariffProductType[] }
+  | { ok: false; needsFacts: string[] }
+  | { ok: false; unknownFacts: string[] };
 
-function conditionCheck(m: TariffMeasureRecord, input: MeasureEngineInput): ConditionCheck {
+/** Registry facts by id (see confirmation-facts.ts). */
+type FactRegistry = Map<string, TariffConfirmationFact>;
+
+function factRegistry(facts: TariffConfirmationFact[]): FactRegistry {
+  return new Map(facts.map((f) => [f.id, f]));
+}
+
+/** Fact ids a measure's conditions reference (factsTrue then factsFalse). */
+function measureFactIds(m: TariffMeasureRecord): string[] {
+  return [...(m.conditions?.factsTrue ?? []), ...(m.conditions?.factsFalse ?? [])];
+}
+
+/** The answer the engine uses for a fact: the importer's, else the registry default; undefined = must be answered and wasn't. */
+function factAnswer(fact: TariffConfirmationFact, input: MeasureEngineInput): boolean | undefined {
+  const answered = input.confirmations?.facts?.[fact.id];
+  if (answered === true || answered === false) return answered;
+  return fact.defaultWhenUnanswered === null ? undefined : fact.defaultWhenUnanswered;
+}
+
+/**
+ * Registry-fact conditions (issue #1796): `factsTrue` = applies only when every fact is answered yes, `factsFalse` = only
+ * when every fact is answered no. Unanswered facts take the registry default; a must-answer fact (default null) that is
+ * unanswered → needsFacts; a fact id missing from the registry → unknownFacts (an engine error, never silently skipped).
+ */
+function factsCheck(m: TariffMeasureRecord, input: MeasureEngineInput, registry: FactRegistry): ConditionCheck {
+  const c = m.conditions ?? {};
+  const unknown = measureFactIds(m).filter((id) => !registry.has(id));
+  if (unknown.length > 0) return { ok: false, unknownFacts: unknown };
+  const needs: string[] = [];
+  for (const [ids, wanted] of [
+    [c.factsTrue ?? [], true],
+    [c.factsFalse ?? [], false],
+  ] as const) {
+    for (const id of ids) {
+      const fact = registry.get(id) as TariffConfirmationFact;
+      const answer = factAnswer(fact, input);
+      if (answer === undefined) needs.push(id);
+      else if (answer !== wanted) {
+        const how =
+          input.confirmations?.facts?.[id] === undefined ? `not answered, so "${answer ? 'yes' : 'no'}" is assumed` : `answered "${answer ? 'yes' : 'no'}"`;
+        return { ok: false, reason: `Only when the answer is "${wanted ? 'yes' : 'no'}" to: ${fact.prompt} (${how})` };
+      }
+    }
+  }
+  return needs.length > 0 ? { ok: false, needsFacts: needs } : { ok: true };
+}
+
+function conditionCheck(m: TariffMeasureRecord, input: MeasureEngineInput, registry: FactRegistry): ConditionCheck {
   const c = m.conditions ?? {};
   const usmcaClaimed = !!input.claimedSpi && USMCA_SPI_CODES.includes(input.claimedSpi);
   if (c.usmcaQualifying === true && !usmcaClaimed) return { ok: false, reason: 'Only for USMCA-qualifying goods (USMCA not claimed)' };
@@ -337,6 +507,8 @@ function conditionCheck(m: TariffMeasureRecord, input: MeasureEngineInput): Cond
   if (c.usOriginIngredient === false && confirmed.usOriginIngredient === true) {
     return { ok: false, reason: `Not charged when ${US_ORIGIN_INGREDIENT_LABEL} (confirmed)` };
   }
+  const facts = factsCheck(m, input, registry);
+  if (!facts.ok) return facts;
   if (c.productTypes && c.productTypes.length > 0) {
     if (!input.productType) return { ok: false, needsProductType: c.productTypes };
     if (!c.productTypes.includes(input.productType)) {
@@ -372,15 +544,17 @@ export function conditionProgramsForLine(hts10: string, measures: TariffMeasureR
   return Array.from(codes);
 }
 
-function measureRateText(m: TariffMeasureRecord): string {
+function measureRateText(m: TariffMeasureRecord, contentValue?: number): string {
   const pct = m.ratePct ?? 0;
+  // "+50% of the value of the steel content ($40,000.00) on top of the base rate"
+  const of = m.contentBasis ? `of ${basisPhrase(m)}${contentValue !== undefined ? ` (${formatUsd(contentValue)})` : ''} ` : '';
   switch (m.rateKind) {
     case 'additive':
-      return `+${pct}% on top of the base rate`;
+      return `+${pct}% ${of}on top of the base rate`;
     case 'inPlaceOfBase':
-      return `${pct}% in place of the base rate`;
+      return `${pct}% ${of}in place of the base rate`;
     case 'floor':
-      return `${pct}% or the base rate, whichever is higher`;
+      return `${pct}% ${of}or the base rate, whichever is higher`;
     case 'relief':
       return m.replacesCodes.length > 0 ? `No extra duty (replaces ${m.replacesCodes.join(', ')})` : 'No extra duty';
   }
@@ -394,12 +568,25 @@ function fail(error: string, skipped: MeasureEngineResult['skipped'] = []): Meas
   return { lines: [], totalDutyUsd: 0, skipped, error };
 }
 
-export const calculateWithMeasures: CalculateWithMeasures = (input, line, measures) => {
+/** The engine with the bundled confirmation-facts registry (src/tariff-data/calculator/confirmation-facts.json). */
+export const calculateWithMeasures: CalculateWithMeasures = (input, line, measures) =>
+  calculateWithMeasuresAndFacts(input, line, measures, loadConfirmationFacts());
+
+/** The engine with an explicit confirmation-facts registry (tests and fixtures). */
+export function calculateWithMeasuresAndFacts(
+  input: MeasureEngineInput,
+  line: MeasureEngineLine,
+  measures: TariffMeasureRecord[],
+  facts: TariffConfirmationFact[]
+): MeasureEngineResult {
+  const registry = factRegistry(facts);
   const hts10 = digits(input.hts10);
   const entryDay = isoDay(input.entryDate);
   if (!/^\d{4}-\d{2}-\d{2}$/.test(entryDay)) return fail(`Invalid entry date: ${input.entryDate}`);
   const value = input.customsValueUsd;
   const quantities = normalizeQuantities(input.quantities);
+  const contentError = contentValuesError(input);
+  if (contentError) return fail(contentError);
 
   // 1. Base rate: column 2, a claimed special program, or general.
   let baseLabel = 'Base rate (HTS general rate)';
@@ -432,6 +619,8 @@ export const calculateWithMeasures: CalculateWithMeasures = (input, line, measur
   const skipped: MeasureEngineResult['skipped'] = [];
   const applicable: TariffMeasureRecord[] = [];
   const productTypesNeeded = new Set<TariffProductType>();
+  const factsNeeded = new Set<string>();
+  const unknownFacts = new Set<string>();
   for (const m of measures) {
     if (!measureCoversLine(m, hts10) || !countryMatches(m, input.countryOfOrigin)) continue;
     if (coverageMatches(m.coverageExclude, hts10)) {
@@ -443,13 +632,27 @@ export const calculateWithMeasures: CalculateWithMeasures = (input, line, measur
       skipped.push({ ch99Code: m.ch99Code, reason: dr });
       continue;
     }
-    const cond = conditionCheck(m, input);
+    const cond = conditionCheck(m, input, registry);
     if (!cond.ok) {
       if ('needsProductType' in cond) cond.needsProductType.forEach((t) => productTypesNeeded.add(t));
+      else if ('needsFacts' in cond) cond.needsFacts.forEach((id) => factsNeeded.add(id));
+      else if ('unknownFacts' in cond) cond.unknownFacts.forEach((id) => unknownFacts.add(`${id} (${m.measureKey})`));
       else skipped.push({ ch99Code: m.ch99Code, reason: cond.reason });
       continue;
     }
     applicable.push(m);
+  }
+  if (unknownFacts.size > 0) {
+    return fail(`Measure data error: unknown confirmation fact ${Array.from(unknownFacts).join(', ')} — not in confirmation-facts.json.`, skipped);
+  }
+  if (factsNeeded.size > 0) {
+    const prompts = Array.from(factsNeeded).map((id) => `"${(registry.get(id) as TariffConfirmationFact).prompt}"`);
+    return fail(
+      `${FACT_ANSWER_REQUIRED} — answer ${prompts.length > 1 ? 'these questions' : 'this question'} to calculate: ${prompts.join(
+        '; '
+      )}. An extra duty on this line depends on it.`,
+      skipped
+    );
   }
   if (productTypesNeeded.size > 0) {
     return fail(
@@ -484,6 +687,26 @@ export const calculateWithMeasures: CalculateWithMeasures = (input, line, measur
   }
   const baseAmount = basePriced.ok ? basePriced.amount : 0;
 
+  // Content-based measures (issue #1796): the value each one is charged on; a missing declared value is an error.
+  const chargedOn = new Map<TariffMeasureRecord, number>();
+  const missingKinds = new Set<TariffContentInputKind>();
+  const missingParts: string[] = [];
+  for (const m of charged) {
+    if (!m.contentBasis || m.rateKind === 'relief') continue;
+    const cv = contentValueFor(m.contentBasis, input, m.usContentDeductionCapPct);
+    if (cv.ok) chargedOn.set(m, cv.value);
+    else {
+      missingKinds.add(cv.kind);
+      missingParts.push(`${m.ch99Code} (${m.program}) is charged on ${basisPhrase(m)}`);
+    }
+  }
+  if (missingKinds.size > 0) {
+    const asks = Array.from(missingKinds).map(
+      (k) => `the ${(k === 'usContent' ? US_CONTENT_GENERIC_LABEL : CONTENT_INPUT_LABELS[k]).replace(/^Value/, 'value')}`
+    );
+    return fail(`${CONTENT_VALUE_REQUIRED}: ${missingParts.join('; ')}. Enter ${asks.join(' and ')}.`, skipped);
+  }
+
   const baseReplacedBy = charged.filter((m) => m.rateKind === 'inPlaceOfBase' || m.rateKind === 'floor').map((m) => m.ch99Code);
   const lines: MeasureEngineDutyLine[] = [
     {
@@ -495,18 +718,19 @@ export const calculateWithMeasures: CalculateWithMeasures = (input, line, measur
     },
   ];
   for (const m of charged) {
-    const pctAmount = ((m.ratePct ?? 0) / 100) * value;
+    const contentValue = chargedOn.get(m);
+    const pctAmount = ((m.ratePct ?? 0) / 100) * (contentValue ?? value);
     let amount = 0;
     if (m.rateKind === 'additive' || m.rateKind === 'inPlaceOfBase') amount = pctAmount;
     else if (m.rateKind === 'floor') amount = Math.max(baseAmount, pctAmount);
     if (m.rateKind !== 'relief' && (m.ratePct === null || !Number.isFinite(m.ratePct)))
       return fail(`Measure ${m.measureKey} (${m.ch99Code}) has no rate.`, skipped);
-    lines.push({ code: m.ch99Code, label: m.program, rateText: measureRateText(m), amountUsd: round2(amount), sources: m.sources });
+    lines.push({ code: m.ch99Code, label: m.program, rateText: measureRateText(m, contentValue), amountUsd: round2(amount), sources: m.sources });
   }
 
   const totalDutyUsd = round2(lines.reduce((sum, l) => sum + l.amountUsd, 0));
   return { lines, totalDutyUsd, skipped };
-};
+}
 
 /** Per-unit quantities one rate text needs, as normalized unit codes with the rate text that needs them; empty for an ad valorem rate. */
 export function rateQuantityRequirements(rateText: string | null | undefined): { uom: string; rateDescription: string }[] {
@@ -523,6 +747,7 @@ const QUESTION_CAVEATS: Record<TariffConfirmationQuestion['kind'], string> = {
   productDescription: 'The goods must match the description in the Chapter 99 note exactly; CBP can ask for product specifications to support the claim.',
   companyProgram: 'Self-declared here: CBP requires proof that the manufacturer is covered (for example, the Commerce approval or agreement) at entry.',
   usOriginIngredient: 'Answer yes only if the importer can document the U.S. origin of the active ingredient to CBP.',
+  fact: 'Answer only what the importer can support to CBP with records.',
 };
 
 function questionPrompt(kind: 'endUse' | 'companyProgram', value: string): string {
@@ -561,15 +786,16 @@ function questionEffect(m: TariffMeasureRecord, inScope: TariffMeasureRecord[]):
   const replaced = inScope.filter((o) => o !== m && m.replacesCodes.includes(o.ch99Code) && o.rateKind !== 'relief');
   const replacedText = Array.from(new Set(replaced.map(describeCharge))).join(' and ');
   const pct = m.ratePct ?? 0;
+  const of = m.contentBasis ? ` of ${basisPhrase(m)}` : '';
   switch (m.rateKind) {
     case 'relief':
       return replaced.length > 0 ? `Removes ${replacedText}.` : null;
     case 'additive':
-      return `Charged ${pct}% on top of the base rate (${m.ch99Code})${replaced.length > 0 ? ` instead of ${replacedText}` : ''}.`;
+      return `Charged ${pct}%${of} on top of the base rate (${m.ch99Code})${replaced.length > 0 ? ` instead of ${replacedText}` : ''}.`;
     case 'inPlaceOfBase':
-      return `Charged ${pct}% in place of the base rate (${m.ch99Code})${replaced.length > 0 ? ` instead of ${replacedText}` : ''}.`;
+      return `Charged ${pct}%${of} in place of the base rate (${m.ch99Code})${replaced.length > 0 ? ` instead of ${replacedText}` : ''}.`;
     case 'floor':
-      return `Charged ${pct}% or the base rate, whichever is higher (${m.ch99Code})${replaced.length > 0 ? `, instead of ${replacedText}` : ''}.`;
+      return `Charged ${pct}%${of} or the base rate, whichever is higher (${m.ch99Code})${replaced.length > 0 ? `, instead of ${replacedText}` : ''}.`;
   }
 }
 
@@ -579,20 +805,33 @@ interface QuestionDraft {
   sources: TariffMeasureSource[];
 }
 
-const KIND_ORDER: TariffConfirmationQuestion['kind'][] = ['endUse', 'usOriginIngredient', 'companyProgram', 'productDescription'];
+const KIND_ORDER: TariffConfirmationQuestion['kind'][] = ['fact', 'endUse', 'usOriginIngredient', 'companyProgram', 'productDescription'];
+
+/** What answering "yes" does to a measure that applies only when a fact is answered "no": it stops applying. */
+function factsFalseEffect(m: TariffMeasureRecord, inScope: TariffMeasureRecord[]): string | null {
+  if (m.rateKind !== 'relief') return `Not charged: ${describeCharge(m)}.`;
+  const replaced = inScope.filter((o) => o !== m && m.replacesCodes.includes(o.ch99Code) && o.rateKind !== 'relief');
+  return replaced.length > 0
+    ? `${m.program} (${m.ch99Code}) no longer applies, so ${Array.from(new Set(replaced.map(describeCharge))).join(' and ')} can apply.`
+    : null;
+}
 
 /**
  * The confirmation questions that matter for a line from one country on one date: one per end
- * use / company program / named product that a measure in scope (coverage, country, in effect)
- * is conditioned on, and only when confirming it changes the duty. `productDescriptions` supplies
- * the note text for named products (descriptions whose `codePrefix` doesn't match the line are
- * left out); a description id it doesn't list is asked about by id. Pure, like the engine.
+ * use / company program / named product / registry fact that a measure in scope (coverage, country,
+ * in effect) is conditioned on, and only when confirming it changes the duty — except must-answer
+ * facts (registry default null), which are always asked because the engine can't price without them.
+ * `productDescriptions` supplies the note text for named products (descriptions whose `codePrefix`
+ * doesn't match the line are left out); a description id it doesn't list is asked about by id.
+ * `facts` is the confirmation-facts registry (defaults to the bundled one). Pure, like the engine.
  */
 export function confirmationQuestionsForLine(
   line: { hts10: string; countryOfOrigin: string; entryDate: string },
   measures: TariffMeasureRecord[],
-  productDescriptions: TariffProductDescription[] = []
+  productDescriptions: TariffProductDescription[] = [],
+  facts: TariffConfirmationFact[] = loadConfirmationFacts()
 ): TariffConfirmationQuestion[] {
+  const registry = factRegistry(facts);
   const hts10 = digits(line.hts10);
   const entryDay = isoDay(line.entryDate);
   const inScope = measures.filter(
@@ -609,8 +848,26 @@ export function confirmationQuestionsForLine(
     drafts.set(key, draft);
   };
 
+  // Registry facts (issue #1796): a "yes" effect per measure (factsTrue → the measure applies; factsFalse → it stops applying).
+  const addFact = (id: string, effect: string | null, m: TariffMeasureRecord) => {
+    const fact = registry.get(id);
+    const mustAnswer = fact ? fact.defaultWhenUnanswered === null : false;
+    if (!effect && !mustAnswer) return;
+    const question: QuestionDraft['question'] = {
+      kind: 'fact',
+      value: id,
+      prompt: fact?.prompt ?? `Does this apply to your goods: ${id}?`,
+      caveat: fact?.help ?? QUESTION_CAVEATS.fact,
+      ...(mustAnswer ? { mustAnswer: true } : {}),
+      ...(fact && fact.defaultWhenUnanswered !== null ? { defaultAnswer: fact.defaultWhenUnanswered } : {}),
+    };
+    add(question, effect ?? `Changes which extra duties apply (${m.ch99Code}).`, [...(fact?.sources ?? []), ...m.sources]);
+  };
+
   for (const m of inScope) {
     const c = m.conditions ?? {};
+    for (const id of c.factsFalse ?? []) addFact(id, factsFalseEffect(m, inScope), m);
+    for (const id of c.factsTrue ?? []) addFact(id, questionEffect(m, inScope), m);
     if (!c.endUse && !c.companyProgram && c.usOriginIngredient !== true && !(c.productDescriptionIds && c.productDescriptionIds.length > 0)) continue;
     const effect = questionEffect(m, inScope);
     if (!effect) continue;
@@ -652,4 +909,142 @@ export function confirmationQuestionsForLine(
   return Array.from(drafts.values())
     .map((d) => ({ ...d.question, effect: d.effects.join(' '), sources: d.sources }))
     .sort((a, b) => KIND_ORDER.indexOf(a.kind) - KIND_ORDER.indexOf(b.kind));
+}
+
+// ---------------------------------------------------------------------------
+// Content-value inputs (issue #1796)
+// ---------------------------------------------------------------------------
+
+/**
+ * The content values the calculator should ask for on a line from one country on one date: one per content kind that a
+ * content-based measure in scope (coverage, not excluded, country — when given — and in effect) is charged on. The
+ * measure's other conditions (e.g. USMCA-qualifying) are not checked here, so the input is offered before the claim is
+ * made; its label says when it matters. Pure, like the engine.
+ */
+export function contentInputsForLine(
+  line: { hts10: string; countryOfOrigin?: string | null; entryDate: string },
+  measures: TariffMeasureRecord[]
+): TariffContentInput[] {
+  const hts10 = digits(line.hts10);
+  const entryDay = isoDay(line.entryDate);
+  const byKind = new Map<TariffContentInputKind, TariffContentInput>();
+  const measuresByKind = new Map<TariffContentInputKind, TariffMeasureRecord[]>();
+  for (const m of measures) {
+    if (!m.contentBasis || m.rateKind === 'relief') continue;
+    if (!measureCoversLine(m, hts10) || coverageMatches(m.coverageExclude, hts10) || dateReason(m, entryDay) !== null) continue;
+    if (line.countryOfOrigin && !countryMatches(m, line.countryOfOrigin)) continue;
+    const kind = contentInputKindFor(m.contentBasis);
+    const entry = byKind.get(kind) ?? { kind, label: CONTENT_INPUT_LABELS[kind], explanation: '', ch99Codes: [], sources: [] };
+    if (!entry.ch99Codes.includes(m.ch99Code)) entry.ch99Codes.push(m.ch99Code);
+    for (const s of m.sources) if (!entry.sources.some((x) => x.url === s.url)) entry.sources.push(s);
+    byKind.set(kind, entry);
+    measuresByKind.set(kind, [...(measuresByKind.get(kind) ?? []), m]);
+  }
+  for (const [kind, entry] of Array.from(byKind)) {
+    if (kind !== 'usContent') {
+      entry.explanation = CONTENT_INPUT_EXPLANATIONS[kind];
+      continue;
+    }
+    // U.S. content: the USMCA autos/parts wording when USMCA-only measures ask for it; capped measures (note 16(j)) say their cap.
+    const ms = measuresByKind.get(kind) ?? [];
+    const usmcaOnly = ms.filter((m) => m.conditions?.usmcaQualifying === true);
+    const others = ms.filter((m) => m.conditions?.usmcaQualifying !== true);
+    if (others.length > 0) entry.label = US_CONTENT_GENERIC_LABEL;
+    const sentences: string[] = [];
+    if (usmcaOnly.length > 0) sentences.push(CONTENT_INPUT_EXPLANATIONS.usContent);
+    const phrases = new Map<string, string[]>();
+    for (const m of others) phrases.set(basisPhrase(m), [...(phrases.get(basisPhrase(m)) ?? []), m.ch99Code]);
+    for (const [phrase, codes] of Array.from(phrases)) sentences.push(`${Array.from(new Set(codes)).join(', ')}: the duty is charged on ${phrase}.`);
+    entry.explanation = sentences.join(' ');
+  }
+  return CONTENT_INPUT_KINDS.filter((k) => byKind.has(k)).map((k) => byKind.get(k) as TariffContentInput);
+}
+
+// ---------------------------------------------------------------------------
+// Import bans (issue #1796)
+// ---------------------------------------------------------------------------
+
+/** Plain note for a duty shown on a line that is banned: it only applies to goods imported before the ban. */
+export function importBanDutyNote(p: TariffImportProhibition): string {
+  return `The duty shown applies only to goods imported before ${p.effectiveFrom} and entered later; goods imported on or after that date can't be imported.`;
+}
+
+/**
+ * The import ban that matches a shipment (line, country, date, fact answers), or null. A ban's fact conditions use the
+ * registry like measures do (unanswered = the fact's default). When a must-answer fact is unanswered the ban is returned
+ * with `unconfirmed`, so the calculator can say "prohibited if …" instead of guessing. A fact id missing from the registry
+ * counts as must-answer (never silently not banned). Pure, like the engine.
+ */
+export function importProhibitionFor(
+  shipment: { hts10: string; countryOfOrigin: string; entryDate: string; confirmations?: TariffShipmentConfirmations },
+  bans: TariffImportBan[] = loadImportBans(),
+  facts: TariffConfirmationFact[] = loadConfirmationFacts()
+): TariffImportProhibition | null {
+  const hts10 = digits(shipment.hts10);
+  const day = isoDay(shipment.entryDate);
+  const registry = factRegistry(facts);
+  let unconfirmedMatch: TariffImportProhibition | null = null;
+  for (const b of bans) {
+    if (!b.countries.includes(shipment.countryOfOrigin) || !coverageMatches(b.coveragePrefixes, hts10)) continue;
+    if (day < b.effectiveFrom || (b.effectiveTo && day > b.effectiveTo)) continue;
+    const unconfirmed: NonNullable<TariffImportProhibition['unconfirmed']> = [];
+    let excluded = false;
+    for (const [ids, wanted] of [
+      [b.conditions?.factsTrue ?? [], true],
+      [b.conditions?.factsFalse ?? [], false],
+    ] as const) {
+      for (const id of ids) {
+        const fact = registry.get(id);
+        const answered = shipment.confirmations?.facts?.[id];
+        const answer = answered === true || answered === false ? answered : fact?.defaultWhenUnanswered ?? undefined;
+        if (answer === undefined || answer === null) unconfirmed.push({ factId: id, prompt: fact?.prompt ?? id, bannedWhen: wanted });
+        else if (answer !== wanted) excluded = true;
+      }
+    }
+    if (excluded) continue;
+    const prohibition: TariffImportProhibition = { banId: b.id, reason: b.description, sources: b.sources, effectiveFrom: b.effectiveFrom };
+    if (unconfirmed.length === 0) return prohibition;
+    unconfirmedMatch = unconfirmedMatch ?? { ...prohibition, unconfirmed };
+  }
+  return unconfirmedMatch;
+}
+
+/** "Is the alcohol packaged …?" questions for the facts the import bans matching a line/country/date depend on. */
+export function importBanQuestionsForLine(
+  line: { hts10: string; countryOfOrigin: string; entryDate: string },
+  bans: TariffImportBan[] = loadImportBans(),
+  facts: TariffConfirmationFact[] = loadConfirmationFacts()
+): TariffConfirmationQuestion[] {
+  const hts10 = digits(line.hts10);
+  const day = isoDay(line.entryDate);
+  const registry = factRegistry(facts);
+  const out = new Map<string, TariffConfirmationQuestion>();
+  for (const b of bans) {
+    if (!b.countries.includes(line.countryOfOrigin) || !coverageMatches(b.coveragePrefixes, hts10)) continue;
+    if (day < b.effectiveFrom || (b.effectiveTo && day > b.effectiveTo)) continue;
+    for (const [ids, wanted] of [
+      [b.conditions?.factsTrue ?? [], true],
+      [b.conditions?.factsFalse ?? [], false],
+    ] as const) {
+      for (const id of ids) {
+        const fact = registry.get(id);
+        const effect = wanted ? `Import prohibited: ${b.description}` : `Not covered by the import ban (${b.id}).`;
+        const existing = out.get(id);
+        if (existing) {
+          if (!existing.effect.includes(effect)) existing.effect = `${existing.effect} ${effect}`;
+          continue;
+        }
+        out.set(id, {
+          kind: 'fact',
+          value: id,
+          prompt: fact?.prompt ?? `Does this apply to your goods: ${id}?`,
+          effect,
+          ...(fact?.help ? { caveat: fact.help } : {}),
+          ...(!fact || fact.defaultWhenUnanswered === null ? { mustAnswer: true } : { defaultAnswer: fact.defaultWhenUnanswered }),
+          sources: [...(fact?.sources ?? []), ...b.sources.filter((s) => !(fact?.sources ?? []).some((x) => x.url === s.url))],
+        });
+      }
+    }
+  }
+  return Array.from(out.values());
 }

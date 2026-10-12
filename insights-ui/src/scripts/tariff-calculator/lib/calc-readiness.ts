@@ -213,9 +213,10 @@ const PROGRAMS: ProgramDef[] = [
     name: 'Duties on products of Japan (9903.41)',
     from: '9903.41.00',
     to: '9903.41.99',
-    status: 'unknown',
+    status: 'inEffect',
+    effectiveFrom: '1986-03-31',
     basis:
-      'U.S. note 5 suspends 9903.41.25 and 9903.41.35–.45 and the PDF shades 9903.41.15–.45 as expired, but 9903.41.05 and 9903.41.10 (leather, footwear) are neither shaded nor suspended and no end date was found.',
+      '9903.41.05 / 9903.41.10 (leather, footwear; +40%, Proclamation 5448 of March 16, 1986) are neither shaded as expired nor suspended by U.S. note 5 (which covers only 9903.41.25 and .35–.45), and note 3 makes them cumulative; no terminating notice found (online Federal Register starts 1994). Modelled in measures_country_actions.py — confirm with CBP before relying on it.',
     sources: [HTS_CH99],
   },
   {

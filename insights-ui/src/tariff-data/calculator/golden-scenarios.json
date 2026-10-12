@@ -1263,9 +1263,9 @@
         "special": "Free (A,AU,B,BH,CL,CO,D,E,IL,JO,KR,MA,OM,P,PA,PE,S,SG)",
         "units": ["No."]
       },
-      "expectedTotalDutyUsd": 4120,
+      "expectedTotalDutyUsd": 4000,
       "toleranceUsd": 0.01,
-      "sourceNote": "HTS Rev 21: 8516.29.00 general 3.7% ($370). List 3: 8516.29.00 in note 20(f), 9903.88.03 +25% = $2,500. The note 20(vvv)(iii)(55) exclusion (9903.88.69, \"Electric fireplaces, weighing not more than 55 kg\") applies only to that product, so without the confirmation the 25% stays. Plus 9903.05.31, 12.5%, note 52(a): additive to the China list duties because note 52(a) keeps \"any additional duty provided for in this subchapter\" on top of 9903.05.20–9903.05.84; USTR 91 FR 47318 = $1,250. Total 41.2% = $4,120."
+      "sourceNote": "15% (9903.82.10 floor) + 25% (List 3, 9903.88.03) = $4,000 on $10,000. Since 2026-06-08 8516.29.00 is on the Section 232 metals derivative list U.S. note 16(c)(x) (Proclamation 11032): 9903.82.10 charges 15% or the base rate, whichever is higher (base 3.7% < 15%, so 15%), and note 52(f)(1) excludes goods under the Section 232 metals headings from the 12.5% 9903.05.31; the China List 3 duty still stacks."
     },
     {
       "id": "cn301-excluded-fireplace-cn-confirmed",
@@ -1289,9 +1289,9 @@
         "special": "Free (A,AU,B,BH,CL,CO,D,E,IL,JO,KR,MA,OM,P,PA,PE,S,SG)",
         "units": ["No."]
       },
-      "expectedTotalDutyUsd": 1620,
+      "expectedTotalDutyUsd": 1500,
       "toleranceUsd": 0.01,
-      "sourceNote": "Note 20(vvv)(iii)(55) via heading 9903.88.69 lifts the List 3 duty (9903.88.03) for \"Electric fireplaces, weighing not more than 55 kg\" (8516.29.0090), in effect June 15, 2024 through November 9, 2026 (extended by USTR, 90 FR 55232). The exclusion does not lift 9903.05.31 (note 52 has no such exception). Base 3.7% ($370) + 12.5% ($1,250) = $1,620."
+      "sourceNote": "Exclusion 9903.88.69 confirmed removes the List 3 25%; remaining 15% (9903.82.10 floor) = $1,500 on $10,000. Since 2026-06-08 8516.29.00 is on the Section 232 metals derivative list U.S. note 16(c)(x) (Proclamation 11032): 9903.82.10 charges 15% or the base rate, whichever is higher (base 3.7% < 15%, so 15%), and note 52(f)(1) excludes goods under the Section 232 metals headings from the 12.5% 9903.05.31; the China List 3 duty still stacks."
     },
     {
       "id": "cn301-excluded-viscose-cn-whole-line",
@@ -2800,6 +2800,959 @@
       "expectedTotalDutyUsd": 0,
       "toleranceUsd": 0.01,
       "sourceNote": "3104.20.00 general Free. Canada 9903.05.29 (+10%) does not apply even without a USMCA claim: 3104.20.00 is in note 52(b) (9903.05.86), which relieves all of 9903.05.20-.84. Total $0."
+    },
+    {
+      "id": "s232-steel-plate-de",
+      "description": "Hot-rolled universal mill plate of steel (7208.51.00.30) from Germany, $100,000",
+      "chapter": "72",
+      "input": {
+        "hts10": "7208510030",
+        "countryOfOrigin": "DE",
+        "customsValueUsd": 100000,
+        "quantities": {
+          "KG": 80000
+        },
+        "entryDate": "2026-10-11"
+      },
+      "line": {
+        "hts10": "7208510030",
+        "general": "Free",
+        "special": null,
+        "units": ["kg"]
+      },
+      "expectedTotalDutyUsd": 50000,
+      "toleranceUsd": 0.01,
+      "sourceNote": "Base Free + 50% on the full value (9903.82.02, note 16(c)(iii) lists heading 7208; Proclamation 11021 clause (2)(a), 91 FR 18201). The EU 10% floor of 9903.05.39 does not apply: note 52(f)(1) excludes goods under 9903.82.02. 50% x $100,000 = $50,000."
+    },
+    {
+      "id": "s232-steel-plate-gb-uk-melted",
+      "description": "Hot-rolled universal mill plate (7208.51.00.30) from the United Kingdom, steel melted and poured in the UK, $100,000",
+      "chapter": "72",
+      "input": {
+        "hts10": "7208510030",
+        "countryOfOrigin": "GB",
+        "customsValueUsd": 100000,
+        "quantities": {
+          "KG": 80000
+        },
+        "confirmations": {
+          "facts": {
+            "ukMeltedMetal95Pct": true
+          }
+        },
+        "entryDate": "2026-10-11"
+      },
+      "line": {
+        "hts10": "7208510030",
+        "general": "Free",
+        "special": null,
+        "units": ["kg"]
+      },
+      "expectedTotalDutyUsd": 25000,
+      "toleranceUsd": 0.01,
+      "sourceNote": "Note 16(d) / heading 9903.82.04: UK products of 16(c)(i)-(iv) with >=95% UK-melted steel pay base + 25% instead of 50% (Proclamation 11021 clause (2)(b)). UK 2026 Section 301 duty (9903.05.81) excluded by note 52(f)(1). 25% x $100,000."
+    },
+    {
+      "id": "s232-al-derivative-windows-mx",
+      "description": "Aluminum window frame (7610.10.00.10, derivative aluminum list 16(c)(ii)) from Mexico, no USMCA claim, $20,000",
+      "chapter": "76",
+      "input": {
+        "hts10": "7610100010",
+        "countryOfOrigin": "MX",
+        "customsValueUsd": 20000,
+        "quantities": {
+          "KG": 1500
+        },
+        "entryDate": "2026-10-11"
+      },
+      "line": {
+        "hts10": "7610100010",
+        "general": "5.7%",
+        "special": "Free (A,AU,BH,CL,CO,D,E,IL,JO,KR,MA,OM,P,PA,PE,S,SG)",
+        "units": ["kg"]
+      },
+      "expectedTotalDutyUsd": 11140,
+      "toleranceUsd": 0.01,
+      "sourceNote": "Base 5.7% + 50% on the FULL value (9903.82.02; since April 6, 2026 derivatives are no longer charged on metal content only: Proclamation 11021 clauses (1)-(2), note 16(c)). Mexico 10% Section 301 (9903.05.55) excluded by note 52(f)(1). (5.7% + 50%) x $20,000 = $11,140."
+    },
+    {
+      "id": "s232-al-steel-derivative-mountings-in",
+      "description": "Base-metal mountings for furniture (8302.41.60.45, lists 16(c)(vi) and (vii)) from India, $10,000",
+      "chapter": "83",
+      "input": {
+        "hts10": "8302416045",
+        "countryOfOrigin": "IN",
+        "customsValueUsd": 10000,
+        "quantities": {
+          "KG": 2000
+        },
+        "entryDate": "2026-10-11"
+      },
+      "line": {
+        "hts10": "8302416045",
+        "general": "3.9%",
+        "special": "Free (A,AU,BH,CL,CO,D,E,IL,JO,KR,MA,OM,P,PA,PE,S,SG)",
+        "units": ["kg"]
+      },
+      "expectedTotalDutyUsd": 2890,
+      "toleranceUsd": 0.01,
+      "sourceNote": "On both the derivative aluminum (vi) and derivative steel (vii) lists: charged once (Proclamation 11021 clause (9)) at base 3.9% + 25% (9903.82.09, clause (3)(a)); metal weight assumed >=15% (fact metalWeightUnder15Pct unanswered = no). India 10% Section 301 (9903.05.44) excluded by note 52(f)(1). 28.9% x $10,000 = $2,890."
+    },
+    {
+      "id": "s232-copper-tube-cl",
+      "description": "Seamless refined-copper tube (7411.10.10.30, list 16(c)(v)) from Chile, no FTA claim, $50,000",
+      "chapter": "74",
+      "input": {
+        "hts10": "7411101030",
+        "countryOfOrigin": "CL",
+        "customsValueUsd": 50000,
+        "quantities": {
+          "KG": 5000
+        },
+        "entryDate": "2026-10-11"
+      },
+      "line": {
+        "hts10": "7411101030",
+        "general": "1.5%",
+        "special": "Free (A,AU,BH,CL,CO,D,E,IL,JO,KR,MA,OM,P,PA,PE,S,SG)",
+        "units": ["kg"]
+      },
+      "expectedTotalDutyUsd": 25750,
+      "toleranceUsd": 0.01,
+      "sourceNote": "Copper articles of 16(c)(v): base 1.5% + 50% (9903.82.02; Proclamation 11021 clause (2)(a), 'most copper articles' in Annex I-A). Chile 12.5% Section 301 (9903.05.30) excluded by note 52(f)(1). 51.5% x $50,000 = $25,750."
+    },
+    {
+      "id": "s232-steel-nails-cn",
+      "description": "Steel nails (7317.00.65.60, list 16(c)(iv)) from China, $10,000",
+      "chapter": "73",
+      "input": {
+        "hts10": "7317006560",
+        "countryOfOrigin": "CN",
+        "customsValueUsd": 10000,
+        "quantities": {
+          "KG": 8000
+        },
+        "entryDate": "2026-10-11"
+      },
+      "line": {
+        "hts10": "7317006560",
+        "general": "Free",
+        "special": null,
+        "units": ["kg"]
+      },
+      "expectedTotalDutyUsd": 7500,
+      "toleranceUsd": 0.01,
+      "sourceNote": "Base Free + 50% (9903.82.02, derivative steel list 16(c)(iv)) + 25% List 3 (9903.88.03, note 20(f) lists 7317.00.65; note 16(b)/20(a) keep other subchapter III duties). The 12.5% China Section 301 duty (9903.05.31) is excluded by note 52(f)(1). Antidumping/countervailing duties on Chinese nails are not in the calculator. 75% x $10,000 = $7,500."
+    },
+    {
+      "id": "s232-forklift-mx-usmca",
+      "description": "Self-propelled work truck (8427.10.80.95, mobile industrial equipment 16(c)(xi)) from Mexico, USMCA claimed, U.S. content $50,000 of $100,000",
+      "chapter": "84",
+      "input": {
+        "hts10": "8427108095",
+        "countryOfOrigin": "MX",
+        "customsValueUsd": 100000,
+        "quantities": {
+          "NO": 1
+        },
+        "claimedSpi": "S",
+        "contentValuesUsd": {
+          "usContent": 50000
+        },
+        "entryDate": "2026-10-11"
+      },
+      "line": {
+        "hts10": "8427108095",
+        "general": "Free",
+        "special": null,
+        "units": ["No."]
+      },
+      "expectedTotalDutyUsd": 15000,
+      "toleranceUsd": 0.01,
+      "sourceNote": "Note 16(j) / 9903.82.20: USMCA mobile industrial equipment pays 25% on the non-U.S. content plus U.S. content above 40% of the value: U.S. content $50,000 > 40% ($40,000), so the deduction is capped at $40,000; 25% x $60,000 = $15,000 (Proclamation 11032 clause (2)(d): at least 15% in total). Base Free. Mexico Section 301 not charged (USMCA claim, note 52(h); and note 52(f)(1))."
+    },
+    {
+      "id": "s232-plow-de",
+      "description": "Disc plow (8432.10.00.40, agricultural equipment 16(c)(x)) from Germany, $20,000",
+      "chapter": "84",
+      "input": {
+        "hts10": "8432100040",
+        "countryOfOrigin": "DE",
+        "customsValueUsd": 20000,
+        "quantities": {
+          "NO": 2
+        },
+        "entryDate": "2026-10-11"
+      },
+      "line": {
+        "hts10": "8432100040",
+        "general": "Free",
+        "special": null,
+        "units": ["No."]
+      },
+      "expectedTotalDutyUsd": 3000,
+      "toleranceUsd": 0.01,
+      "sourceNote": "Note 16(f) / 9903.82.10: (x) articles with a column 1 rate under 15% pay 15% in total (Proclamation 11021 clause (5)(a); agricultural equipment moved to this list on June 8, 2026 by Proclamation 11032). Base Free, so 15% x $20,000 = $3,000. EU Section 301 floor (9903.05.39) excluded by note 52(f)(1)."
+    },
+    {
+      "id": "s232-kitchen-cabinets-vn",
+      "description": "Wooden kitchen cabinets for permanent installation (9403.40.90.60) from Vietnam, $40,000",
+      "chapter": "94",
+      "input": {
+        "hts10": "9403409060",
+        "countryOfOrigin": "VN",
+        "customsValueUsd": 40000,
+        "quantities": {
+          "NO": 100
+        },
+        "confirmations": {
+          "facts": {
+            "woodenCabinetsOrVanities": true
+          }
+        },
+        "entryDate": "2026-10-11"
+      },
+      "line": {
+        "hts10": "9403409060",
+        "general": "Free",
+        "special": null,
+        "units": ["No."]
+      },
+      "expectedTotalDutyUsd": 10000,
+      "toleranceUsd": 0.01,
+      "sourceNote": "Note 37(e)-(f) / 9903.76.03: completed kitchen cabinets, base + 25% (Proclamation 10976 clause (3); the step to 50% moved to January 1, 2027 by Proclamation 11000). Vietnam 12.5% Section 301 (9903.05.84) excluded by note 52(f)(4). 25% x $40,000 = $10,000."
+    },
+    {
+      "id": "s232-upholstered-sofa-it",
+      "description": "Upholstered wooden-frame household seat (9401.61.40.11) from Italy, $10,000",
+      "chapter": "94",
+      "input": {
+        "hts10": "9401614011",
+        "countryOfOrigin": "IT",
+        "customsValueUsd": 10000,
+        "quantities": {
+          "NO": 10
+        },
+        "entryDate": "2026-10-11"
+      },
+      "line": {
+        "hts10": "9401614011",
+        "general": "Free",
+        "special": null,
+        "units": ["No."]
+      },
+      "expectedTotalDutyUsd": 1500,
+      "toleranceUsd": 0.01,
+      "sourceNote": "Note 37(d), (j) / 9903.76.22: EU upholstered wooden furniture, total 15% when the column 1 rate is under 15% (Proclamation 10976 clause (7)). Base Free, so 15% x $10,000. EU Section 301 excluded by note 52(f)(4)."
+    },
+    {
+      "id": "s232-softwood-lumber-ca",
+      "description": "Rough pine lumber (4407.11.00.42) from Canada, no USMCA claim, $30,000",
+      "chapter": "44",
+      "input": {
+        "hts10": "4407110042",
+        "countryOfOrigin": "CA",
+        "customsValueUsd": 30000,
+        "quantities": {
+          "M3": 100
+        },
+        "entryDate": "2026-10-11"
+      },
+      "line": {
+        "hts10": "4407110042",
+        "general": "Free",
+        "special": null,
+        "units": ["m3"]
+      },
+      "expectedTotalDutyUsd": 3000,
+      "toleranceUsd": 0.01,
+      "sourceNote": "Note 37(a)-(b) / 9903.76.01: softwood lumber of 4407.11.00, every country, base + 10% (Proclamation 10976 clause (1)); also with a USMCA claim (note 37(a)). Canada 10% Section 301 (9903.05.29) excluded by note 52(f)(4). Antidumping/countervailing duties on Canadian softwood lumber are not in the calculator. 10% x $30,000 = $3,000."
+    },
+    {
+      "id": "s232-ai-accelerator-tw",
+      "description": "Processing unit (8471.50.01.50) containing a logic IC within the note 39(b) thresholds, from Taiwan, no exempt end use, not an auto part, $200,000",
+      "chapter": "84",
+      "input": {
+        "hts10": "8471500150",
+        "countryOfOrigin": "TW",
+        "customsValueUsd": 200000,
+        "quantities": {
+          "NO": 10
+        },
+        "confirmations": {
+          "facts": {
+            "logicIcWithinNote39bThresholds": true,
+            "passengerVehiclePart": false
+          }
+        },
+        "entryDate": "2026-10-11"
+      },
+      "line": {
+        "hts10": "8471500150",
+        "general": "Free",
+        "special": null,
+        "units": ["No."]
+      },
+      "expectedTotalDutyUsd": 50000,
+      "toleranceUsd": 0.01,
+      "sourceNote": "Note 39(a)-(b) / 9903.79.01: base Free + 25% (Proclamation 11002, from January 15, 2026). Taiwan Section 301 floor (9903.05.76) excluded by note 52(f)(7) (and 8471.50 is on the 52(b) list). 25% x $200,000 = $50,000."
+    },
+    {
+      "id": "s201-quartz-slab-in",
+      "description": "Quartz surface product slab (6810.99.00.20) from India, in-quota, $30,000",
+      "chapter": "68",
+      "input": {
+        "hts10": "6810990020",
+        "countryOfOrigin": "IN",
+        "customsValueUsd": 30000,
+        "quantities": {
+          "M2": 300
+        },
+        "confirmations": {
+          "facts": {
+            "quartzSurfaceProduct": true,
+            "quartzOverQuota": false
+          }
+        },
+        "entryDate": "2026-10-11"
+      },
+      "line": {
+        "hts10": "6810990020",
+        "general": "Free",
+        "special": null,
+        "units": ["m2"]
+      },
+      "expectedTotalDutyUsd": 10500,
+      "toleranceUsd": 0.01,
+      "sourceNote": "Note 41 / 9903.45.30: in-quota quartz surface products, base + 25% for August 15, 2026 - August 14, 2027 (Proclamation 11051); India is not exempt under note 41(c). Not in note 52(f), so India's 10% Section 301 duty (9903.05.44) stacks. 35% x $30,000 = $10,500. Antidumping/countervailing duties on Indian quartz surface products are not in the calculator."
+    },
+    {
+      "id": "ch87-ev-cn",
+      "description": "New battery-electric car (8703.80.00.20) from China, $40,000",
+      "chapter": "87",
+      "input": {
+        "hts10": "8703800020",
+        "countryOfOrigin": "CN",
+        "customsValueUsd": 40000,
+        "quantities": {
+          "NO": 1
+        },
+        "entryDate": "2026-10-11"
+      },
+      "line": {
+        "hts10": "8703800020",
+        "general": "2.5%",
+        "special": "Free (A+,AU,B,BH,CL,CO,D,E,IL,JO,KR,MA,OM,P,PA,PE,S,SG)",
+        "units": ["No."]
+      },
+      "expectedTotalDutyUsd": 51000,
+      "toleranceUsd": 0.01,
+      "sourceNote": "Issue #1796 required case: 127.5% = 2.5% base + 100% (9903.91.03, note 31(d)(7), 89 FR 76581) + 25% Section 232 automobiles (9903.94.01, note 33(a)-(b), 90 FR 14705; note 33(a): any other subchapter III duty is added); note 52(f)(2) (9903.05.90) removes the 2026 Section 301 duty for vehicles under 9903.94.01/.03/.31/.40/.41/.50/.51/.60/.61, so no 12.5% (9903.05.31)."
+    },
+    {
+      "id": "ch87-car-jp",
+      "description": "New gasoline car, 4-6 cylinders (8703.23.01.60) from Japan, $30,000",
+      "chapter": "87",
+      "input": {
+        "hts10": "8703230160",
+        "countryOfOrigin": "JP",
+        "customsValueUsd": 30000,
+        "quantities": {
+          "NO": 1
+        },
+        "entryDate": "2026-10-11"
+      },
+      "line": {
+        "hts10": "8703230160",
+        "general": "2.5%",
+        "special": "Free (A+,AU,B,BH,CL,CO,D,E,IL,JO,KR,MA,OM, P,PA,PE,S,SG)",
+        "units": ["No."]
+      },
+      "expectedTotalDutyUsd": 4500,
+      "toleranceUsd": 0.01,
+      "sourceNote": "Japan deal: column 1 rate 2.5% < 15%, so total 15% (9903.94.41, notes 33(k), 33(m); 90 FR 44638, from Sept 16, 2025); note 52(f)(2) (9903.05.90) removes the 2026 Section 301 duty for vehicles under 9903.94.01/.03/.31/.40/.41/.50/.51/.60/.61 (no 12.5% floor 9903.05.49)."
+    },
+    {
+      "id": "ch87-car-de",
+      "description": "New gasoline car, 4-6 cylinders (8703.23.01.60) from Germany, $30,000",
+      "chapter": "87",
+      "input": {
+        "hts10": "8703230160",
+        "countryOfOrigin": "DE",
+        "customsValueUsd": 30000,
+        "quantities": {
+          "NO": 1
+        },
+        "entryDate": "2026-10-11"
+      },
+      "line": {
+        "hts10": "8703230160",
+        "general": "2.5%",
+        "special": "Free (A+,AU,B,BH,CL,CO,D,E,IL,JO,KR,MA,OM, P,PA,PE,S,SG)",
+        "units": ["No."]
+      },
+      "expectedTotalDutyUsd": 4500,
+      "toleranceUsd": 0.01,
+      "sourceNote": "EU deal: column 1 rate 2.5% < 15%, so total 15% (9903.94.51, notes 33(n), 33(m); 90 FR 46136, from Aug 1, 2025); note 52(f)(2) (9903.05.90) removes the 2026 Section 301 duty for vehicles under 9903.94.01/.03/.31/.40/.41/.50/.51/.60/.61 (no EU 10% floor 9903.05.39)."
+    },
+    {
+      "id": "ch87-light-truck-jp",
+      "description": "Light truck, G.V.W. up to 2.5 t (8704.31.01.20) from Japan, $30,000",
+      "chapter": "87",
+      "input": {
+        "hts10": "8704310120",
+        "countryOfOrigin": "JP",
+        "customsValueUsd": 30000,
+        "quantities": {
+          "NO": 1
+        },
+        "entryDate": "2026-10-11"
+      },
+      "line": {
+        "hts10": "8704310120",
+        "general": "25%",
+        "special": "Free (A+,AU,B,BH,CL,CO,D,E,IL,JO,MA,OM,P,PA,PE,S,SG)25% (KR)",
+        "units": ["No."]
+      },
+      "expectedTotalDutyUsd": 7500,
+      "toleranceUsd": 0.01,
+      "sourceNote": "Japan deal: column 1 rate 25% >= 15%, so no additional Section 232 duty (9903.94.40, notes 33(k), 33(m)); total = the 25% base; note 52(f)(2) (9903.05.90) removes the 2026 Section 301 duty for vehicles under 9903.94.01/.03/.31/.40/.41/.50/.51/.60/.61."
+    },
+    {
+      "id": "ch87-car-kr-korus",
+      "description": "New gasoline car (8703.23.01.60) from South Korea, KORUS claimed, $30,000",
+      "chapter": "87",
+      "input": {
+        "hts10": "8703230160",
+        "countryOfOrigin": "KR",
+        "customsValueUsd": 30000,
+        "quantities": {
+          "NO": 1
+        },
+        "claimedSpi": "KR",
+        "entryDate": "2026-10-11"
+      },
+      "line": {
+        "hts10": "8703230160",
+        "general": "2.5%",
+        "special": "Free (A+,AU,B,BH,CL,CO,D,E,IL,JO,KR,MA,OM, P,PA,PE,S,SG)",
+        "units": ["No."]
+      },
+      "expectedTotalDutyUsd": 4500,
+      "toleranceUsd": 0.01,
+      "sourceNote": "South Korea deal: note 33(m)/(s) compares column 1-General or column 1-Special; KORUS (KR) rate Free < 15%, so total 15% (9903.94.61; 90 FR 55964, from Nov 1, 2025); note 52(f)(2) (9903.05.90) removes the 2026 Section 301 duty for vehicles under 9903.94.01/.03/.31/.40/.41/.50/.51/.60/.61."
+    },
+    {
+      "id": "ch87-car-gb-quota",
+      "description": "New gasoline car (8703.23.01.60) from the United Kingdom, within the quota, $30,000",
+      "chapter": "87",
+      "input": {
+        "hts10": "8703230160",
+        "countryOfOrigin": "GB",
+        "customsValueUsd": 30000,
+        "quantities": {
+          "NO": 1
+        },
+        "entryDate": "2026-10-11"
+      },
+      "line": {
+        "hts10": "8703230160",
+        "general": "2.5%",
+        "special": "Free (A+,AU,B,BH,CL,CO,D,E,IL,JO,KR,MA,OM, P,PA,PE,S,SG)",
+        "units": ["No."]
+      },
+      "expectedTotalDutyUsd": 3000,
+      "toleranceUsd": 0.01,
+      "sourceNote": "UK quota: 2.5% base + 7.5% (9903.94.31, note 33(i); 90 FR 27851) = 10% while the 100,000-vehicle quota is open (fact ukAutoQuotaAvailable default yes); note 52(f)(2) (9903.05.90) removes the 2026 Section 301 duty for vehicles under 9903.94.01/.03/.31/.40/.41/.50/.51/.60/.61 (no UK 10% 9903.05.81)."
+    },
+    {
+      "id": "ch87-car-mx-usmca",
+      "description": "New gasoline car (8703.23.01.60) from Mexico, USMCA claimed, $30,000 with $12,000 Commerce-approved U.S. content",
+      "chapter": "87",
+      "input": {
+        "hts10": "8703230160",
+        "countryOfOrigin": "MX",
+        "customsValueUsd": 30000,
+        "quantities": {
+          "NO": 1
+        },
+        "claimedSpi": "S",
+        "contentValuesUsd": {
+          "usContent": 12000
+        },
+        "entryDate": "2026-10-11"
+      },
+      "line": {
+        "hts10": "8703230160",
+        "general": "2.5%",
+        "special": "Free (A+,AU,B,BH,CL,CO,D,E,IL,JO,KR,MA,OM, P,PA,PE,S,SG)",
+        "units": ["No."]
+      },
+      "expectedTotalDutyUsd": 4500,
+      "toleranceUsd": 0.01,
+      "sourceNote": "USMCA: base Free (S); 25% only on the non-U.S. content $18,000 (9903.94.03, note 33(d); CSMS # 65649652); no 2026 Section 301 duty (notes 52(h), 52(f)(2))."
+    },
+    {
+      "id": "ch87-auto-part-mx",
+      "description": "Drive axles with differential for cars of 8703 (8708.50.51.10) from Mexico, no USMCA claim, $10,000, confirmed passenger-vehicle part",
+      "chapter": "87",
+      "input": {
+        "hts10": "8708505110",
+        "countryOfOrigin": "MX",
+        "customsValueUsd": 10000,
+        "quantities": {
+          "NO": 10,
+          "KG": 500
+        },
+        "confirmations": {
+          "facts": {
+            "passengerVehiclePart": true
+          }
+        },
+        "entryDate": "2026-10-11"
+      },
+      "line": {
+        "hts10": "8708505110",
+        "general": "2.5%",
+        "special": "Free (A*,AU,B,BH,CL,CO,D,E,IL,JO,KR,MA,OM,P,PA,PE,S,SG)",
+        "units": ["No.", "kg"]
+      },
+      "expectedTotalDutyUsd": 2750,
+      "toleranceUsd": 0.01,
+      "sourceNote": "2.5% base + 25% (9903.94.05, notes 33(f)-(g); 90 FR 14705, from May 3, 2025); no 2026 Section 301 duty (note 52(f)(3)), so no 10% (9903.05.55); not subject to 9903.01.01 (note 33(f)(3))."
+    },
+    {
+      "id": "ch87-auto-part-mx-usmca",
+      "description": "Drive axles with differential for cars of 8703 (8708.50.51.10) from Mexico, USMCA claimed, $10,000, confirmed passenger-vehicle part",
+      "chapter": "87",
+      "input": {
+        "hts10": "8708505110",
+        "countryOfOrigin": "MX",
+        "customsValueUsd": 10000,
+        "quantities": {
+          "NO": 10,
+          "KG": 500
+        },
+        "claimedSpi": "S",
+        "confirmations": {
+          "facts": {
+            "passengerVehiclePart": true
+          }
+        },
+        "entryDate": "2026-10-11"
+      },
+      "line": {
+        "hts10": "8708505110",
+        "general": "2.5%",
+        "special": "Free (A*,AU,B,BH,CL,CO,D,E,IL,JO,KR,MA,OM,P,PA,PE,S,SG)",
+        "units": ["No.", "kg"]
+      },
+      "expectedTotalDutyUsd": 0,
+      "toleranceUsd": 0.01,
+      "sourceNote": "USMCA: base Free (S); USMCA-eligible parts enter under 9903.94.06 with no Section 232 duty (note 33(h)(i); no non-U.S.-content charge for parts); no 2026 Section 301 duty (notes 52(h), 52(f)(3))."
+    },
+    {
+      "id": "ch87-heavy-truck-mx",
+      "description": "Diesel road tractor, G.V.W. over 36,287 kg (8701.21.00.45) from Mexico, no USMCA claim, $150,000",
+      "chapter": "87",
+      "input": {
+        "hts10": "8701210045",
+        "countryOfOrigin": "MX",
+        "customsValueUsd": 150000,
+        "quantities": {
+          "NO": 1
+        },
+        "entryDate": "2026-10-11"
+      },
+      "line": {
+        "hts10": "8701210045",
+        "general": "4%",
+        "special": "Free (A+,AU,B,BH,CL,CO,D,E,IL, JO,KR,MA, OM,P,PA,PE,S,SG)",
+        "units": ["No."]
+      },
+      "expectedTotalDutyUsd": 43500,
+      "toleranceUsd": 0.01,
+      "sourceNote": "4% base + 25% (9903.74.01, note 38(a)-(b); Proclamation 10984, 90 FR 48451, from Nov 1, 2025); no 2026 Section 301 duty (note 52(f)(5))."
+    },
+    {
+      "id": "ch87-heavy-truck-mx-usmca",
+      "description": "Diesel road tractor (8701.21.00.45) from Mexico, USMCA claimed, $150,000 with $50,000 Commerce-approved U.S. content",
+      "chapter": "87",
+      "input": {
+        "hts10": "8701210045",
+        "countryOfOrigin": "MX",
+        "customsValueUsd": 150000,
+        "quantities": {
+          "NO": 1
+        },
+        "claimedSpi": "S",
+        "contentValuesUsd": {
+          "usContent": 50000
+        },
+        "entryDate": "2026-10-11"
+      },
+      "line": {
+        "hts10": "8701210045",
+        "general": "4%",
+        "special": "Free (A+,AU,B,BH,CL,CO,D,E,IL, JO,KR,MA, OM,P,PA,PE,S,SG)",
+        "units": ["No."]
+      },
+      "expectedTotalDutyUsd": 25000,
+      "toleranceUsd": 0.01,
+      "sourceNote": "USMCA: base Free (S); 25% on the non-U.S. content $100,000 only (9903.74.03, note 38(d); CSMS # 68559236); no 2026 Section 301 duty (notes 52(h), 52(f)(5))."
+    },
+    {
+      "id": "ch87-bus-mx-usmca",
+      "description": "Diesel bus for 16+ persons (8702.10.31.00) from Mexico, USMCA claimed, $200,000",
+      "chapter": "87",
+      "input": {
+        "hts10": "8702103100",
+        "countryOfOrigin": "MX",
+        "customsValueUsd": 200000,
+        "quantities": {
+          "NO": 1
+        },
+        "claimedSpi": "S",
+        "entryDate": "2026-10-11"
+      },
+      "line": {
+        "hts10": "8702103100",
+        "general": "2%",
+        "special": "Free (A*,AU,B,BH,CL,CO,D,E,IL,JO,KR,MA,OM,P,PA,PE,S,SG)",
+        "units": ["No."]
+      },
+      "expectedTotalDutyUsd": 20000,
+      "toleranceUsd": 0.01,
+      "sourceNote": "Base Free (S) + 10% on the full value (9903.74.02, note 38(c)): buses have no non-U.S.-content option (Proclamation 10984 clause 2) and note 38(a) collects the duty on top of any special rate; no 2026 Section 301 duty (note 52(f)(5))."
+    },
+    {
+      "id": "ch85-li-ion-battery-cn-auto-part",
+      "description": "Lithium-ion battery (8507.60.00.90) from China, $10,000, confirmed part of a passenger vehicle",
+      "chapter": "85",
+      "input": {
+        "hts10": "8507600090",
+        "countryOfOrigin": "CN",
+        "customsValueUsd": 10000,
+        "quantities": {
+          "NO": 100,
+          "KG": 300
+        },
+        "confirmations": {
+          "facts": {
+            "passengerVehiclePart": true
+          }
+        },
+        "entryDate": "2026-10-11"
+      },
+      "line": {
+        "hts10": "8507600090",
+        "general": "3.4%",
+        "special": "Free (A,AU,B,BH,C,CL,CO,D,E,IL,JO,KR,MA,OM,P,PA,PE,S,SG)",
+        "units": ["No.", "kg"]
+      },
+      "expectedTotalDutyUsd": 5340,
+      "toleranceUsd": 0.01,
+      "sourceNote": "53.4% = 3.4% base + 25% (9903.91.06, note 31(g), from Jan 1, 2026) + 25% Section 232 auto parts (9903.94.05; 8507.60 is in note 33(g)); note 52(f)(3) removes the 12.5% (9903.05.31). CBP: 9903.94.05 applies to parts of passenger vehicles classifiable in 33(g), 9903.94.06 to listed articles that are not (CSMS # 64916652)."
+    },
+    {
+      "id": "ch85-li-ion-battery-cn-not-auto-part",
+      "description": "Lithium-ion battery (8507.60.00.90) from China, $10,000, not a part of a passenger vehicle or light truck",
+      "chapter": "85",
+      "input": {
+        "hts10": "8507600090",
+        "countryOfOrigin": "CN",
+        "customsValueUsd": 10000,
+        "quantities": {
+          "NO": 100,
+          "KG": 300
+        },
+        "confirmations": {
+          "facts": {
+            "passengerVehiclePart": false
+          }
+        },
+        "entryDate": "2026-10-11"
+      },
+      "line": {
+        "hts10": "8507600090",
+        "general": "3.4%",
+        "special": "Free (A,AU,B,BH,C,CL,CO,D,E,IL,JO,KR,MA,OM,P,PA,PE,S,SG)",
+        "units": ["No.", "kg"]
+      },
+      "expectedTotalDutyUsd": 4090,
+      "toleranceUsd": 0.01,
+      "sourceNote": "40.9% = 3.4% base + 25% (9903.91.06) + 12.5% (9903.05.31, note 52): an article of 33(g) that is not a part of a passenger vehicle or light truck enters under 9903.94.06 (note 33(h)(ii); CSMS # 64916652) with no Section 232 duty, and 9903.94.06 for such articles is not in note 52(f)(3)."
+    },
+    {
+      "id": "ca338-boat-no-usmca",
+      "description": "Motorboat (cabin cruiser, 8903.31.00.15) from Canada, no USMCA claim, $100,000",
+      "chapter": "89",
+      "input": {
+        "hts10": "8903310015",
+        "countryOfOrigin": "CA",
+        "customsValueUsd": 100000,
+        "quantities": {
+          "NO": 1
+        },
+        "entryDate": "2026-10-11"
+      },
+      "line": {
+        "hts10": "8903310015",
+        "general": "1.5%",
+        "special": "Free(A*,AU,BH,CL,CO,D,E,IL,JO,KR,MA,OM,P,PA,PE,S,SG)",
+        "column2": "30%",
+        "units": ["No."]
+      },
+      "expectedTotalDutyUsd": 61500,
+      "toleranceUsd": 0.01,
+      "sourceNote": "Base 1.5% ($1,500). 8903.31.00 was added to U.S. note 51(b)(1) by Proclamation 11064 Annex II (effective September 15, 2026; CSMS 69851916): heading 9903.03.12 adds 50% ($50,000), also over Section 232 (none here). 2026 Section 301 on Canada 9903.05.29 +10% ($10,000) — 8903.31 is not on note 52(b)/(c)/(e). Total $61,500."
+    },
+    {
+      "id": "ca338-boat-usmca",
+      "description": "Motorboat (cabin cruiser, 8903.31.00.15) from Canada, USMCA claimed (S), $100,000",
+      "chapter": "89",
+      "input": {
+        "hts10": "8903310015",
+        "countryOfOrigin": "CA",
+        "customsValueUsd": 100000,
+        "quantities": {
+          "NO": 1
+        },
+        "entryDate": "2026-10-11",
+        "claimedSpi": "S"
+      },
+      "line": {
+        "hts10": "8903310015",
+        "general": "1.5%",
+        "special": "Free(A*,AU,BH,CL,CO,D,E,IL,JO,KR,MA,OM,P,PA,PE,S,SG)",
+        "column2": "30%",
+        "units": ["No."]
+      },
+      "expectedTotalDutyUsd": 50000,
+      "toleranceUsd": 0.01,
+      "sourceNote": "USMCA special rate Free (S). Note 51(a): products eligible for special tariff treatment under general note 3(c)(i) still pay 9903.03.12 (heading Special column \"+ 50%\"): $50,000. The 10% 2026 Section 301 duty is lifted for USMCA goods (note 52(g), 9903.05.93). Total $50,000."
+    },
+    {
+      "id": "ca338-peppermint-oil-no-usmca",
+      "description": "Peppermint oil (3301.24.00.00) from Canada, no USMCA claim, 100 kg, $10,000",
+      "chapter": "33",
+      "input": {
+        "hts10": "3301240000",
+        "countryOfOrigin": "CA",
+        "customsValueUsd": 10000,
+        "quantities": {
+          "KG": 100
+        },
+        "entryDate": "2026-10-11"
+      },
+      "line": {
+        "hts10": "3301240000",
+        "general": "4.2%",
+        "special": "Free (A,AU,BH,CL,CO,D,E,IL,JO,KR,MA,OM,P,PA,PE,S,SG)",
+        "column2": "25%",
+        "units": ["kg"]
+      },
+      "expectedTotalDutyUsd": 6420,
+      "toleranceUsd": 0.01,
+      "sourceNote": "Base 4.2% ($420). 3301.24.00 is on U.S. note 51(b)(2) (heading 9903.03.13, Proclamation 11047, since August 22, 2026): +50% ($5,000). 2026 Section 301 on Canada +10% ($1,000). Total $6,420."
+    },
+    {
+      "id": "ca338-peppermint-oil-usmca",
+      "description": "Peppermint oil (3301.24.00.00) from Canada, USMCA claimed (S), 100 kg, $10,000",
+      "chapter": "33",
+      "input": {
+        "hts10": "3301240000",
+        "countryOfOrigin": "CA",
+        "customsValueUsd": 10000,
+        "quantities": {
+          "KG": 100
+        },
+        "entryDate": "2026-10-11",
+        "claimedSpi": "S"
+      },
+      "line": {
+        "hts10": "3301240000",
+        "general": "4.2%",
+        "special": "Free (A,AU,BH,CL,CO,D,E,IL,JO,KR,MA,OM,P,PA,PE,S,SG)",
+        "column2": "25%",
+        "units": ["kg"]
+      },
+      "expectedTotalDutyUsd": 5000,
+      "toleranceUsd": 0.01,
+      "sourceNote": "Special rate Free (S); 9903.03.13 +50% applies to USMCA goods too (note 51(a)) = $5,000; Section 301 lifted by 9903.05.93. Total $5,000."
+    },
+    {
+      "id": "ca338-console",
+      "description": "Video game console (9504.50.00.00) from Canada, no USMCA claim, $20,000",
+      "chapter": "95",
+      "input": {
+        "hts10": "9504500000",
+        "countryOfOrigin": "CA",
+        "customsValueUsd": 20000,
+        "quantities": {
+          "NO": 40
+        },
+        "entryDate": "2026-10-11"
+      },
+      "line": {
+        "hts10": "9504500000",
+        "general": "Free",
+        "special": null,
+        "column2": "35%",
+        "units": ["No."]
+      },
+      "expectedTotalDutyUsd": 12000,
+      "toleranceUsd": 0.01,
+      "sourceNote": "Base Free. 9504.50.00 is on U.S. note 51(b)(3) (heading 9903.03.14, Proclamation 11048): +50% ($10,000). 2026 Section 301 on Canada +10% ($2,000). Total $12,000."
+    },
+    {
+      "id": "ca338-civil-aircraft-modem",
+      "description": "Switching apparatus (8517.62.00.20) from Canada for a civil aircraft (general note 6), $10,000",
+      "chapter": "85",
+      "input": {
+        "hts10": "8517620020",
+        "countryOfOrigin": "CA",
+        "customsValueUsd": 10000,
+        "quantities": {
+          "NO": 10
+        },
+        "entryDate": "2026-10-11",
+        "confirmations": {
+          "facts": {
+            "civilAircraftGn6": true
+          }
+        }
+      },
+      "line": {
+        "hts10": "8517620020",
+        "general": "Free",
+        "special": null,
+        "column2": "35%",
+        "units": ["No."]
+      },
+      "expectedTotalDutyUsd": 0,
+      "toleranceUsd": 0.01,
+      "sourceNote": "8517.62.00 is on note 51(b)(3) (9903.03.14, +50%) and on note 51(d): civil-aircraft articles meeting general note 6 are exempt (9903.03.16). 8517.62.00 is also on note 52(b), so no 2026 Section 301 duty (9903.05.86). Base Free. Total $0."
+    },
+    {
+      "id": "ca338-civil-aircraft-modem-not-claimed",
+      "description": "Switching apparatus (8517.62.00.20) from Canada, not for civil aircraft, $10,000",
+      "chapter": "85",
+      "input": {
+        "hts10": "8517620020",
+        "countryOfOrigin": "CA",
+        "customsValueUsd": 10000,
+        "quantities": {
+          "NO": 10
+        },
+        "entryDate": "2026-10-11"
+      },
+      "line": {
+        "hts10": "8517620020",
+        "general": "Free",
+        "special": null,
+        "column2": "35%",
+        "units": ["No."]
+      },
+      "expectedTotalDutyUsd": 5000,
+      "toleranceUsd": 0.01,
+      "sourceNote": "Same line without the civil-aircraft claim: 9903.03.14 +50% ($5,000); note 52(b) lifts the 2026 Section 301 duty. Total $5,000."
+    },
+    {
+      "id": "ru-col2-35-iron-ore",
+      "description": "Iron ore pellets (2601.12.00.30) from Russia, 1,000 t, $100,000",
+      "chapter": "26",
+      "input": {
+        "hts10": "2601120030",
+        "countryOfOrigin": "RU",
+        "customsValueUsd": 100000,
+        "quantities": {
+          "T": 1000
+        },
+        "entryDate": "2026-10-11"
+      },
+      "line": {
+        "hts10": "2601120030",
+        "general": "Free",
+        "special": null,
+        "column2": "Free",
+        "units": ["t"]
+      },
+      "expectedTotalDutyUsd": 47500,
+      "toleranceUsd": 0.01,
+      "sourceNote": "Russia is a column 2 country (column 2 Free). 2601.12.00 is on U.S. note 30(b) (added by Proclamation 10523 from April 1, 2023): heading 9903.90.08 charges 35% in lieu of the column 2 rate ($35,000). 2026 Section 301 on Russia 9903.05.66 +12.5% ($12,500; 2601.12 not on note 52(b)). Total $47,500."
+    },
+    {
+      "id": "ru-col2-70-titanium",
+      "description": "Titanium sponge (8108.20.00.10) from Russia, 1,000 kg, $100,000",
+      "chapter": "81",
+      "input": {
+        "hts10": "8108200010",
+        "countryOfOrigin": "RU",
+        "customsValueUsd": 100000,
+        "quantities": {
+          "KG": 1000
+        },
+        "entryDate": "2026-10-11"
+      },
+      "line": {
+        "hts10": "8108200010",
+        "general": "15%",
+        "special": "Free (A+,AU,BH,CL,CO,D,E,IL,JO,KR,MA, OM,P,PA,PE,S,SG)",
+        "column2": "25%",
+        "units": ["kg"]
+      },
+      "expectedTotalDutyUsd": 70000,
+      "toleranceUsd": 0.01,
+      "sourceNote": "8108.20.00 is on U.S. note 30(d): heading 9903.90.09 charges 70% in lieu of the 25% column 2 rate ($70,000; Proclamation 10523, from April 1, 2023). 8108.20.00 is on note 52(b), so the 12.5% 2026 Section 301 duty on Russia is lifted (9903.05.86). Not a Section 232 steel/aluminum/copper article. Total $70,000."
+    },
+    {
+      "id": "jp-leather-upper",
+      "description": "Bovine grain-split upper leather (4107.12.10.20) from Japan, 100 m2, $10,000",
+      "chapter": "41",
+      "input": {
+        "hts10": "4107121020",
+        "countryOfOrigin": "JP",
+        "customsValueUsd": 10000,
+        "quantities": {
+          "M2": 100
+        },
+        "entryDate": "2026-10-11"
+      },
+      "line": {
+        "hts10": "4107121020",
+        "general": "Free",
+        "special": null,
+        "column2": "15%",
+        "units": ["m2"]
+      },
+      "expectedTotalDutyUsd": 5250,
+      "toleranceUsd": 0.01,
+      "sourceNote": "Base Free. 2026 Section 301 on Japan (9903.05.49, note 52(k)): total 12.5% when the column 1 rate is under 12.5% ($1,250). Heading 9903.41.05 (bovine leather of heading 4107, product of Japan; Proclamation 5448, U.S. note 3 cumulative): +40% ($4,000). Total $5,250."
+    },
+    {
+      "id": "jp-footwear-leather",
+      "description": "Leather-upper men's shoes (6403.99.90.31) from Japan, 100 pairs, $10,000",
+      "chapter": "64",
+      "input": {
+        "hts10": "6403999031",
+        "countryOfOrigin": "JP",
+        "customsValueUsd": 10000,
+        "quantities": {
+          "PRS": 100
+        },
+        "entryDate": "2026-10-11"
+      },
+      "line": {
+        "hts10": "6403999031",
+        "general": "10%",
+        "special": "Free (AU,BH, CL,CO,D,IL,JO, KR,MA,OM, P,PA,PE,R,S,SG)",
+        "column2": "20%",
+        "units": ["prs."]
+      },
+      "expectedTotalDutyUsd": 5250,
+      "toleranceUsd": 0.01,
+      "sourceNote": "Column 1 10% is under 12.5%, so the 2026 Section 301 duty on Japan brings the total to 12.5% ($1,250). Heading 9903.41.10 (footwear with rubber/plastics or leather outer soles and leather uppers, product of Japan, not an excepted slipper or sports type): +40% ($4,000). Total $5,250."
     }
   ]
 }

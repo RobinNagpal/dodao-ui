@@ -1,4 +1,10 @@
-import type { TariffCompanyProgram, TariffEndUse, TariffProductType, TariffShipmentConfirmations } from '@/types/tariff-calculator-measures';
+import type {
+  MeasureEngineInput,
+  TariffCompanyProgram,
+  TariffEndUse,
+  TariffProductType,
+  TariffShipmentConfirmations,
+} from '@/types/tariff-calculator-measures';
 import {
   calculateDuties,
   CalculatorInputs,
@@ -10,7 +16,15 @@ import {
 } from '@/utils/tariff-calculator/duty-engine';
 import { formatHts10, loadCandidates, loadDataFreshness } from '@/utils/tariff-calculator/load-candidates';
 import { isMeasuresEngineEnabledFor, loadMeasureEngineLine, loadMeasures } from '@/utils/tariff-calculator/load-measures';
-import { calculateWithMeasures, rateUoms, SPECIAL_PROGRAMS } from '@/utils/tariff-calculator/measures-engine';
+import { loadConfirmationFacts } from '@/utils/tariff-calculator/confirmation-facts';
+import {
+  calculateWithMeasures,
+  CONTENT_INPUT_KINDS,
+  importBanDutyNote,
+  importProhibitionFor,
+  rateUoms,
+  SPECIAL_PROGRAMS,
+} from '@/utils/tariff-calculator/measures-engine';
 import { TariffCandidateCodeType } from '@prisma/client';
 import { badRequestError } from '@dodao/web-core/api/errors/badRequestError';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
@@ -28,9 +42,16 @@ import { NextRequest } from 'next/server';
 // `hts_codes`, extra duties from the reviewed `tariff_measures`, with the optional
 // trade-deal claim (`claimedSpi`) and `productType`. The response keeps the same
 // shape and adds `engine: 'official-measures'`.
-// Optional `confirmations` ({ endUse, productDescriptionIds, companyProgram, usOriginIngredient }, issue #1790)
+// Optional `confirmations` ({ endUse, productDescriptionIds, companyProgram, usOriginIngredient }, issue #1790;
+// facts: { <registry fact id>: true/false } from confirmation-facts.json, issue #1796)
 // are the shipment facts the importer confirmed; measures conditioned on an unconfirmed
 // fact are skipped and listed in `skippedMeasures` with the reason.
+// Optional `contentValuesUsd` ({ steel, aluminum, copper, usContent }, issue #1796) are the
+// declared content values that content-based measures (Section 232 derivatives, USMCA autos/parts)
+// are charged on; each must be 0 – shipmentValueUsd.
+// When an import ban (import-bans.json, issue #1796) matches the line, country, entry date and
+// fact answers, the response carries `prohibited` next to the duty; the duty is labelled as applying
+// only to goods imported before the ban and entered later.
 
 function isObject(v: unknown): v is Record<string, unknown> {
   return typeof v === 'object' && v !== null && !Array.isArray(v);
@@ -124,6 +145,18 @@ function parseConfirmations(raw: unknown): TariffShipmentConfirmations | undefin
     if (typeof raw.usOriginIngredient !== 'boolean') throw badRequestError('confirmations.usOriginIngredient must be true or false');
     if (raw.usOriginIngredient) out.usOriginIngredient = true;
   }
+  if (raw.facts !== undefined && raw.facts !== null) {
+    if (!isObject(raw.facts)) throw badRequestError('confirmations.facts must be an object mapping fact id -> true/false');
+    const known = new Set(loadConfirmationFacts().map((f) => f.id));
+    const facts: Record<string, boolean> = {};
+    for (const [id, v] of Object.entries(raw.facts)) {
+      if (!known.has(id)) throw badRequestError(`confirmations.facts: unknown fact "${id}"`);
+      if (v === null || v === undefined) continue;
+      if (typeof v !== 'boolean') throw badRequestError(`confirmations.facts.${id} must be true or false`);
+      facts[id] = v;
+    }
+    if (Object.keys(facts).length > 0) out.facts = facts;
+  }
   if (raw.productDescriptionIds !== undefined && raw.productDescriptionIds !== null) {
     const ids = raw.productDescriptionIds;
     if (!Array.isArray(ids)) throw badRequestError('confirmations.productDescriptionIds must be an array of strings');
@@ -134,6 +167,23 @@ function parseConfirmations(raw: unknown): TariffShipmentConfirmations | undefin
       return id;
     });
     if (parsed.length > 0) out.productDescriptionIds = Array.from(new Set(parsed));
+  }
+  return Object.keys(out).length > 0 ? out : undefined;
+}
+
+type ContentValues = NonNullable<MeasureEngineInput['contentValuesUsd']>;
+
+function parseContentValues(raw: unknown, customsValueUsd: number): ContentValues | undefined {
+  if (raw === undefined || raw === null) return undefined;
+  if (!isObject(raw)) throw badRequestError('contentValuesUsd must be an object such as { "steel": 40000 }');
+  const out: ContentValues = {};
+  for (const [k, v] of Object.entries(raw)) {
+    if (!(CONTENT_INPUT_KINDS as string[]).includes(k)) throw badRequestError(`contentValuesUsd keys must be ${CONTENT_INPUT_KINDS.join(', ')} (got "${k}")`);
+    if (v === undefined || v === null || v === '') continue;
+    const n = typeof v === 'number' ? v : Number(v);
+    if (!Number.isFinite(n) || n < 0) throw badRequestError(`contentValuesUsd.${k} must be a non-negative number`);
+    if (n > customsValueUsd) throw badRequestError(`contentValuesUsd.${k} (${n}) can't be more than the shipment value (${customsValueUsd})`);
+    out[k as keyof ContentValues] = n;
   }
   return Object.keys(out).length > 0 ? out : undefined;
 }
@@ -161,7 +211,11 @@ function parseCalculatorInputs(body: unknown): CalculatorInputs {
   };
 }
 
-async function calculateWithOfficialMeasures(inputs: CalculatorInputs, confirmations: TariffShipmentConfirmations | undefined): Promise<CalculatorResponse> {
+async function calculateWithOfficialMeasures(
+  inputs: CalculatorInputs,
+  confirmations: TariffShipmentConfirmations | undefined,
+  contentValuesUsd: ContentValues | undefined
+): Promise<CalculatorResponse> {
   const program = inputs.claimedSpi ? SPECIAL_PROGRAMS[inputs.claimedSpi] : undefined;
   if (inputs.claimedSpi && program?.countries && !program.countries.includes(inputs.countryOfOrigin)) {
     throw badRequestError(`${program.name} can only be claimed for goods from ${program.countries.join(', ')}.`);
@@ -178,6 +232,7 @@ async function calculateWithOfficialMeasures(inputs: CalculatorInputs, confirmat
       claimedSpi: inputs.claimedSpi,
       productType: inputs.productType,
       confirmations,
+      ...(contentValuesUsd ? { contentValuesUsd } : {}),
       entryDate: inputs.entryDate,
     },
     line,
@@ -234,7 +289,15 @@ async function postHandler(req: NextRequest): Promise<CalculatorResponse> {
   const body: unknown = await req.json().catch(() => null);
   const inputs = parseCalculatorInputs(body);
   const confirmations = parseConfirmations(isObject(body) ? body.confirmations : undefined);
-  if (await isMeasuresEngineEnabledFor(inputs.hts10)) return calculateWithOfficialMeasures(inputs, confirmations);
+  const contentValuesUsd = parseContentValues(isObject(body) ? body.contentValuesUsd : undefined, inputs.shipmentValueUsd);
+  const response = (await isMeasuresEngineEnabledFor(inputs.hts10))
+    ? await calculateWithOfficialMeasures(inputs, confirmations, contentValuesUsd)
+    : await calculateWithCandidateCodes(inputs);
+  const ban = importProhibitionFor({ hts10: inputs.hts10, countryOfOrigin: inputs.countryOfOrigin, entryDate: inputs.entryDate, confirmations });
+  return ban ? { ...response, prohibited: { ...ban, dutyNote: importBanDutyNote(ban) } } : response;
+}
+
+async function calculateWithCandidateCodes(inputs: CalculatorInputs): Promise<CalculatorResponse> {
   const { candidates, lastFetchedAt } = await loadCandidates(inputs.hts10);
   const result = calculateDuties(candidates, inputs);
   return { ...result, dataFreshness: await loadDataFreshness(inputs.hts10, lastFetchedAt), engine: 'candidate-codes' };
