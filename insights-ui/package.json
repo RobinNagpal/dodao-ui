@@ -26,6 +26,7 @@
     "stocks:list-oldest": "tsx src/scripts/tickers/list-oldest.ts",
     "logs:fetch": "tsx src/scripts/logs/fetch-grafana-logs.ts",
     "tariff:validate-chapters": "tsx src/scripts/industry-tariff-reports/validate-chapter-content.ts",
+    "tariff:generate-chapter": "tsx src/scripts/industry-tariff-reports/chapter-generator/generate-chapter.ts",
     "tariff:build-ch99": "tsx src/scripts/tariff-calculator/build-ch99-headings.ts",
     "tariff:build-base-rates-sql": "tsx src/scripts/tariff-calculator/build-hts-base-rates-sql.ts",
     "tariff:build-data-sql": "tsx src/scripts/tariff-calculator/build-data-sql.ts",

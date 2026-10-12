@@ -6,7 +6,7 @@ import type { TariffChapterExports } from '@/types/tariff-chapter-exports';
 import { getChapterExports, listChapterExportSlugs } from '@/utils/tariff-reports/chapter-exports';
 import { getChapterPrototype, listChapterPrototypeSlugs } from '@/utils/tariff-reports/chapter-prototype';
 import { countryCodeForName, parseRateVariants, quantityUnits, rateDollars } from '@/utils/tariff-reports/shipment-duty';
-import { calculateWithMeasures, CONTENT_VALUE_REQUIRED, FACT_ANSWER_REQUIRED, normalizeUom } from '@/utils/tariff-calculator/measures-engine';
+import { calculateWithMeasures, CONTENT_VALUE_REQUIRED, FACT_ANSWER_REQUIRED, normalizeUom, rateUoms } from '@/utils/tariff-calculator/measures-engine';
 import { computeCalcReadiness, enabledChapterProblems } from '../tariff-calculator/lib/calc-readiness';
 import { parseArgs, parsePositiveInt } from '../tickers/lib';
 
@@ -19,11 +19,16 @@ import { parseArgs, parsePositiveInt } from '../tickers/lib';
  *   pnpm tariff:validate-chapters --max-age-days 14     # stricter freshness window (default 30)
  *   pnpm tariff:validate-chapters --check-hts           # also ask usitc.gov whether a newer HTS revision exists
  *   pnpm tariff:validate-chapters --strict              # treat warnings as errors
+ *   pnpm tariff:validate-chapters --file /tmp/02-meat-and-offal.json   # validate a content file that is not
+ *                                                       # registered yet (e.g. fresh from tariff:generate-chapter)
  *   pnpm tariff:validate-chapters --check-calculator    # run every matrix country x line through the measures
  *                                                       # engine and flag totals that differ from the cell (offline);
  *                                                       # also fails when appConfigDefaults.json or the runbook's
  *                                                       # documented TARIFF_CALC_MEASURES_ENABLED lists a chapter
  *                                                       # that `pnpm tariff:calc-readiness` reports NOT READY
+ *
+ * Any string that still contains "TODO" (a placeholder left by `pnpm tariff:generate-chapter` for the writer
+ * agents) is an ERROR, so a half-written chapter can't ship.
  *
  * Exits 1 when any ERROR is found. WARNINGs (unknown source hosts, stale
  * check dates, a newer HTS revision) are printed but don't fail the run unless
@@ -88,6 +93,8 @@ export const OFFICIAL_SOURCE_DOMAINS: readonly string[] = [
 
 /** Keys whose string value is a date. All must be ISO YYYY-MM-DD and not in the future. */
 const DATE_KEYS = new Set(['date', 'published', 'signed', 'released', 'inForceFrom', 'effectiveFrom', 'lastCheckedAt', 'asOf', 'regulationsAsOf']);
+/** Placeholder left by the chapter generator for a writer agent (`pnpm tariff:generate-chapter`). */
+const PLACEHOLDER_RE = /\bTODO\b/;
 /** Keys whose age drives the freshness warning. */
 const FRESHNESS_KEYS = new Set(['lastCheckedAt', 'asOf']);
 /** Section slugs a FAQ `link` may point at ('' = the chapter overview). */
@@ -190,6 +197,10 @@ function walk(report: Report, opts: Options, node: Json, where: string, scope: S
     for (const [id, count] of ids) if (count > 1) report.error(where, `duplicate id "${id}" (${count}×)`);
     return;
   }
+  if (typeof node === 'string') {
+    if (PLACEHOLDER_RE.test(node)) report.error(where, `unfinished placeholder: "${node.length > 120 ? `${node.slice(0, 117)}…` : node}"`);
+    return;
+  }
   if (!isObject(node)) return;
 
   const ownScope = sourceIdsOf(node);
@@ -219,7 +230,8 @@ function walk(report: Report, opts: Options, node: Json, where: string, scope: S
       continue;
     }
     if (DATE_KEYS.has(key) && typeof value === 'string') {
-      if (!isIsoDate(value)) report.error(w, `"${value}" is not an ISO date (YYYY-MM-DD)`);
+      if (PLACEHOLDER_RE.test(value)) report.error(w, `unfinished placeholder: "${value}"`);
+      else if (!isIsoDate(value)) report.error(w, `"${value}" is not an ISO date (YYYY-MM-DD)`);
       else if (value > opts.today) {
         if (futureOk || pendingChange) report.warn(w, `${value} is in the future (allowed for a pending change)`);
         else report.error(w, `${value} is in the future`);
@@ -371,13 +383,15 @@ function claimedSpiOf(preference: string): string | undefined {
   return preference.match(/\(([A-Z][A-Z0-9]?\+?)\)/)?.[1];
 }
 
-function calculatorQuantities(units: string[]): Record<string, number> {
+function calculatorQuantities(units: string[], rateTexts: (string | null | undefined)[] = []): Record<string, number> {
   const quantities: Record<string, number> = {};
   for (const u of CALC_DEFAULT_UOMS) quantities[u] = CALC_QUANTITY;
   for (const u of units) {
     const code = normalizeUom(u);
     if (code) quantities[code] = CALC_QUANTITY;
   }
+  // Qualified per-unit rates ("¢/kg on drained weight", "kg on molybdenum content") need their own keys.
+  for (const t of rateTexts) if (t) for (const u of rateUoms(t)) quantities[u] = CALC_QUANTITY;
   return quantities;
 }
 
@@ -456,7 +470,14 @@ function checkCalculator(report: Report, slug: string, p: TariffChapterPrototype
                 hts10: row.htsCode10,
                 countryOfOrigin: iso,
                 customsValueUsd: CALC_VALUE_USD,
-                quantities: calculatorQuantities(row.units),
+                quantities: calculatorQuantities(row.units, [
+                  row.general,
+                  row.effectiveGeneral,
+                  row.special,
+                  row.effectiveSpecial,
+                  row.column2,
+                  row.effectiveColumn2,
+                ]),
                 ...(claimedSpi ? { claimedSpi } : {}),
                 ...(c.productType ? { productType: c.productType } : {}),
                 entryDate: ia.lastCheckedAt,
@@ -594,10 +615,13 @@ async function main(): Promise<void> {
   const strict = Boolean(args.strict);
   const checkCalc = Boolean(args['check-calculator']);
 
+  const file = typeof args.file === 'string' ? args.file : null;
   const prototypeSlugs = listChapterPrototypeSlugs();
   const exportSlugs = listChapterExportSlugs();
-  const slugs = [...new Set([...prototypeSlugs, ...exportSlugs])].filter((s) => !only || s === only);
-  if (only && slugs.length === 0) {
+  // --file: one content file from disk (registered or not), validated under its own chapter.slug.
+  const fromFile: TariffChapterPrototype | null = file ? (JSON.parse(readFileSync(path.resolve(file), 'utf8')) as TariffChapterPrototype) : null;
+  const slugs = fromFile ? [fromFile.chapter.slug] : [...new Set([...prototypeSlugs, ...exportSlugs])].filter((s) => !only || s === only);
+  if (only && !fromFile && slugs.length === 0) {
     console.error(`No registered chapter "${only}". Registered: ${prototypeSlugs.join(', ')}`);
     process.exit(1);
   }
@@ -611,7 +635,7 @@ async function main(): Promise<void> {
   let errors = 0;
   let warnings = 0;
   const global = new Report();
-  if (!only) findUnregisteredFiles(global, prototypeSlugs, exportSlugs);
+  if (!only && !fromFile) findUnregisteredFiles(global, prototypeSlugs, exportSlugs);
   if (global.findings.length) printReport('tariff-data', global);
   errors += global.errorCount;
   warnings += global.warnCount;
@@ -643,8 +667,8 @@ async function main(): Promise<void> {
 
   for (const slug of slugs) {
     const report = new Report();
-    const prototype = getChapterPrototype(slug);
-    const exportsContent = getChapterExports(slug);
+    const prototype = fromFile ?? getChapterPrototype(slug);
+    const exportsContent = fromFile ? null : getChapterExports(slug);
     if (prototype) {
       checkPrototype(report, opts, slug, prototype);
       if (opts.checkHts) await checkHtsEdition(report, `${slug}.tariffUpdates.now`, prototype.tariffUpdates?.now);
