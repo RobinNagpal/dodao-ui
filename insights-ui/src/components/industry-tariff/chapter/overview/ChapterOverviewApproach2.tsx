@@ -19,6 +19,7 @@ import SectionHeading from '@/components/ui/sections/SectionHeading';
 import type { TariffChapterPrototype } from '@/types/tariff-chapter-prototype';
 import { parseChapterBodyMarkdown } from '@/util/parse-markdown';
 import { approach2SectionLabel, chapterSectionHref } from '@/utils/tariff-reports/chapter-route-helpers';
+import { shortRateSummary } from '@/utils/tariff-reports/rate-table-groups';
 import { shipmentLines } from '@/utils/tariff-reports/shipment-duty';
 import React from 'react';
 
@@ -34,16 +35,6 @@ import React from 'react';
 //
 // The rate table is the page's one boxed section, so it reads as the main
 // element; the supporting sections sit straight on the page.
-
-// A heading's rate summary lists every distinct rate ("Free · 5% · 4.2% · 40¢/kg + 10.4% · …"),
-// which turns into noise past a few. The tile shows the first three; the table has them all.
-const MAX_TILE_RATES = 3;
-
-function tileRateSummary(summary: string): string {
-  const rates = summary.split(' · ');
-  if (rates.length <= MAX_TILE_RATES) return summary;
-  return `${rates.slice(0, MAX_TILE_RATES).join(' · ')} · +${rates.length - MAX_TILE_RATES} more`;
-}
 
 interface ChapterOverviewApproach2Props {
   content: TariffChapterPrototype;
@@ -80,7 +71,7 @@ export default function ChapterOverviewApproach2({ content }: ChapterOverviewApp
               eyebrow={group.heading}
               aside={group.dutiableLineCount > 0 ? `${group.lineCount} lines · ${group.dutiableLineCount} with a base-rate duty` : `${group.lineCount} lines`}
               title={group.label}
-              meta={tileRateSummary(group.rateSummary)}
+              meta={shortRateSummary(group.rateSummary)}
             >
               {group.blurb}
             </LinkTile>
@@ -96,7 +87,8 @@ export default function ChapterOverviewApproach2({ content }: ChapterOverviewApp
             </SectionHeading>
             <Text size="sm" tone="muted">
               All {lineCount} tariff lines in the schedule, with the base (general / MFN) rate, the rate with a trade deal or preference program, the Column 2
-              rate and the reporting unit. Search by product name or HTS code; select a line for its full description and preference list.
+              rate and the reporting unit, grouped by 4-digit heading. Open a heading to see its lines, or search by product name or HTS code to open the
+              headings that match; select a line for its full description and preference list.
             </Text>
           </Stack>
           {tariffUpdates && (
@@ -106,7 +98,7 @@ export default function ChapterOverviewApproach2({ content }: ChapterOverviewApp
               ratesByCountryLabel={approach2SectionLabel('industry-areas')}
             />
           )}
-          <ChapterRateTable rows={overview.rateTable.rows} note={overview.rateTable.note} />
+          <ChapterRateTable rows={overview.rateTable.rows} productGroups={overview.productGroups} note={overview.rateTable.note} />
         </Stack>
       </CardSection>
 
