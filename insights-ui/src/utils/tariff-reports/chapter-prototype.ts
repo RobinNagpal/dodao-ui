@@ -12,17 +12,26 @@
 import liveAnimals from '@/tariff-data/chapters/01-live-animals.json';
 import meatAndOffal from '@/tariff-data/chapters/02-meat-and-offal.json';
 import fishAndCrustaceans from '@/tariff-data/chapters/03-fish-and-crustaceans.json';
+import animalProductsNes from '@/tariff-data/chapters/05-animal-products-nes.json';
+import livePlantsAndBulbs from '@/tariff-data/chapters/06-live-plants-and-bulbs.json';
 import vegetablesAndRoots from '@/tariff-data/chapters/07-vegetables-and-roots.json';
 import fruitAndNuts from '@/tariff-data/chapters/08-fruit-and-nuts.json';
 import coffeeTeaSpices from '@/tariff-data/chapters/09-coffee-tea-spices.json';
 import cereals from '@/tariff-data/chapters/10-cereals.json';
 import millingProducts from '@/tariff-data/chapters/11-milling-products.json';
+import oilSeedsAndGrains from '@/tariff-data/chapters/12-oil-seeds-and-grains.json';
+import lacGumsResins from '@/tariff-data/chapters/13-lac-gums-resins.json';
+import plaitingMaterialsNes from '@/tariff-data/chapters/14-plaiting-materials-nes.json';
+import fatsAndOils from '@/tariff-data/chapters/15-fats-and-oils.json';
 import preparedMeatAndFish from '@/tariff-data/chapters/16-prepared-meat-and-fish.json';
 import cocoaAndPreparations from '@/tariff-data/chapters/18-cocoa-and-preparations.json';
 import vegFruitPreparations from '@/tariff-data/chapters/20-veg-fruit-preparations.json';
 import miscEdiblePreparations from '@/tariff-data/chapters/21-misc-edible-preparations.json';
 import foodIndustryResiduesAndFeed from '@/tariff-data/chapters/23-food-industry-residues-and-feed.json';
 import tobaccoAndSubstitutes from '@/tariff-data/chapters/24-tobacco-and-substitutes.json';
+import saltSulfurAndCements from '@/tariff-data/chapters/25-salt-sulfur-and-cements.json';
+import oresSlagAndAsh from '@/tariff-data/chapters/26-ores-slag-and-ash.json';
+import mineralFuelsAndOils from '@/tariff-data/chapters/27-mineral-fuels-and-oils.json';
 import pharmaceuticalProducts from '@/tariff-data/chapters/30-pharmaceutical-products.json';
 import fertilizers from '@/tariff-data/chapters/31-fertilizers.json';
 import type { TariffChapterPrototype } from '@/types/tariff-chapter-prototype';
@@ -35,17 +44,26 @@ const PROTOTYPES_BY_SLUG: Record<string, TariffChapterPrototype> = {
   '1-live-animals': liveAnimals as TariffChapterPrototype,
   '2-meat-and-offal': meatAndOffal as TariffChapterPrototype,
   '3-fish-and-crustaceans': fishAndCrustaceans as TariffChapterPrototype,
+  '5-animal-products-nes': animalProductsNes as TariffChapterPrototype,
+  '6-live-plants-and-bulbs': livePlantsAndBulbs as TariffChapterPrototype,
   '7-vegetables-and-roots': vegetablesAndRoots as TariffChapterPrototype,
   '8-fruit-and-nuts': fruitAndNuts as TariffChapterPrototype,
   '9-coffee-tea-spices': coffeeTeaSpices as TariffChapterPrototype,
   '10-cereals': cereals as TariffChapterPrototype,
   '11-milling-products': millingProducts as TariffChapterPrototype,
+  '12-oil-seeds-and-grains': oilSeedsAndGrains as TariffChapterPrototype,
+  '13-lac-gums-resins': lacGumsResins as TariffChapterPrototype,
+  '14-plaiting-materials-nes': plaitingMaterialsNes as TariffChapterPrototype,
+  '15-fats-and-oils': fatsAndOils as TariffChapterPrototype,
   '16-prepared-meat-and-fish': preparedMeatAndFish as TariffChapterPrototype,
   '18-cocoa-and-preparations': cocoaAndPreparations as TariffChapterPrototype,
   '20-veg-fruit-preparations': vegFruitPreparations as TariffChapterPrototype,
   '21-misc-edible-preparations': miscEdiblePreparations as TariffChapterPrototype,
   '23-food-industry-residues-and-feed': foodIndustryResiduesAndFeed as TariffChapterPrototype,
   '24-tobacco-and-substitutes': tobaccoAndSubstitutes as TariffChapterPrototype,
+  '25-salt-sulfur-and-cements': saltSulfurAndCements as TariffChapterPrototype,
+  '26-ores-slag-and-ash': oresSlagAndAsh as TariffChapterPrototype,
+  '27-mineral-fuels-and-oils': mineralFuelsAndOils as TariffChapterPrototype,
   '30-pharmaceutical-products': pharmaceuticalProducts as TariffChapterPrototype,
   '31-fertilizers': fertilizers as TariffChapterPrototype,
 };
