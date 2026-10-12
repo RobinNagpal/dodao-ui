@@ -18,17 +18,17 @@
       "kind": "rates",
       "ch99Codes": [],
       "linePrefixes": [],
-      "chapters": [],
-      "ratePattern": "See [0-9].*",
+      "chapters": ["22", "84"],
+      "ratePattern": "See (9822\\.09\\.22-9822\\.09\\.24|9921\\.01\\.01, 9921\\.01\\.02)",
       "rateColumns": ["special"],
-      "conditionNotModelled": "Special-column entries that refer a trade program to a Chapter 98/99 provision instead of stating a rate (\"See 9822.04.01-9822.04.03 (AU)\", \"See 9823.08.01-9823.08.38 (S+)\", \"See 9918.04.60, 9918.04.64 (CO)\"): the FTA tariff-rate quotas and safeguards for dairy, sugar, beef, tobacco and similar goods. The in-quota rate depends on quota allocation and fill, which the calculator does not have.",
-      "reason": "The engine never prices these silently: claimablePrograms() does not offer the claim, and a request that claims the program anyway fails with \"Can't read the base rate\". Without the claim the general (over-quota) rate is charged, which is correct when the shipment has no in-quota allocation and can only overstate duty otherwise. Accepted until in-quota FTA rates are modelled.",
+      "conditionNotModelled": "Special-column entries that point a trade program to a Chapter 98/99 heading the calculator does not price: \"See 9822.09.22-9822.09.24 (PA)\" on 2207.10.60 / 2207.20.00 (fuel ethyl alcohol of Panama, whose rate is \"the rate provided for beneficiary countries in heading 9901.00.50\", itself set by U.S. note 3 to chapter 99 subchapter I) and \"See 9921.01.01, 9921.01.02 (JP)\" on 8415.90.80 (Japan: 1.4% for parts of automotive air conditioners, Free for other parts). Every other \"See 98xx/99xx\" entry (the FTA tariff-rate quotas and safeguards for beef, dairy, sugar, peanuts and tobacco) is priced from fta-quota-headings.json.",
+      "reason": "The engine never prices these silently: claimablePrograms() does not offer the claim, and a request that claims the program anyway fails with an error naming the heading. Without the claim the general rate is charged. Ten 10-digit lines in two chapters (4 in chapter 22, 6 in chapter 84); accepted until the calculator asks the fuel-use / automotive-part question.",
       "sources": [
         "https://hts.usitc.gov/reststop/file?release=2026HTSRev21&filename=Chapter%2098",
         "https://hts.usitc.gov/reststop/file?release=2026HTSRev21&filename=Chapter%2099"
       ],
-      "reviewedBy": "issue #1794 rate-parse gate (proposed by the calculator agent; confirm in PR review)",
-      "reviewedAt": "2026-10-11",
+      "reviewedBy": "tariff-calc-ch98-quota (FTA quota headings modelled; confirm in PR review)",
+      "reviewedAt": "2026-10-12",
       "reviewBy": "2027-01-08"
     },
     {

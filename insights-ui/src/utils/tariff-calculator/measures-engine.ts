@@ -59,6 +59,16 @@ import type {
   TariffProductType,
 } from '@/types/tariff-calculator-measures';
 import { loadConfirmationFacts } from '@/utils/tariff-calculator/confirmation-facts';
+import {
+  describeQuotaTiers,
+  isQuotaReference,
+  priceQuotaClaim,
+  quotaQuestionEffect,
+  quotaQuestionPrompt,
+  resolveQuotaClaim,
+  type QuotaAnswers,
+  type QuotaResolution,
+} from '@/utils/tariff-calculator/fta-quota';
 import { loadImportBans } from '@/utils/tariff-calculator/import-bans';
 import { describeUom, KNOWN_UOMS, qualifiedKey, splitQualifiedKey, splitUnitText } from '@/utils/tariff-calculator/rate-units';
 import { parseRate, type ParsedRate } from '@/utils/tariff-reports/shipment-duty';
@@ -223,10 +233,39 @@ export const SPECIAL_PROGRAMS: Record<string, SpecialProgramInfo> = {
 export interface ClaimableProgram {
   code: string;
   name: string;
-  /** Rate the line gives this program, e.g. "Free". */
+  /** Rate the line gives this program, e.g. "Free" — or, for a Chapter 98/99 quota reference, the tiers in words. */
   rateText: string;
+  /** Every rate text the claim can be charged at (one, or each quota tier's), for the quantities to ask for. */
+  rateTexts: string[];
   /** Empty = any country. */
   countries: string[];
+}
+
+/**
+ * A special-column entry that points to Chapter 98/99 FTA quota headings ("See 9823.01.01-9823.01.07 (S+)"), resolved
+ * per country of origin and grouped by the same tiers: e.g. USMCA → Mexico "Free (9823.01.01)", Canada "Free within the
+ * quota (9823.01.02); 77.2¢/liter above the quota (9823.01.03)". Countries the headings make no provision for are left out.
+ */
+function quotaClaimOffers(line: { hts10: string; general: string | null }, code: string, rateText: string): ClaimableProgram[] {
+  const info = SPECIAL_PROGRAMS[code];
+  const candidates = info?.countries ?? [];
+  const groups = new Map<string, ClaimableProgram>();
+  for (const country of candidates) {
+    const res = resolveQuotaClaim(line, code, rateText, country);
+    if (!res.ok) continue;
+    const text = describeQuotaTiers(res.resolution);
+    const existing = groups.get(text);
+    if (existing) existing.countries.push(country);
+    else
+      groups.set(text, {
+        code,
+        name: info?.name ?? `Program ${code}`,
+        rateText: text,
+        rateTexts: Array.from(new Set(res.resolution.tiers.map((t) => t.rateText))),
+        countries: [country],
+      });
+  }
+  return Array.from(groups.values());
 }
 
 /**
@@ -234,8 +273,14 @@ export interface ClaimableProgram {
  * out), one per program code. On a line whose general rate is already Free, `conditionPrograms`
  * (programs the line's extra duties depend on, see `conditionProgramsForLine`) are offered too,
  * at "Free": the claim changes no base rate but does change which extra duties apply.
+ * A program whose entry points to Chapter 98/99 FTA quota headings ("See 9822.04.01-9822.04.03 (AU)") is offered when
+ * the headings can be priced (`line.hts10` given), one entry per group of countries with the same tiers; rates the
+ * parser can't price and references it can't resolve are not offered.
  */
-export function claimablePrograms(line: Pick<MeasureEngineLine, 'special' | 'general'>, conditionPrograms: string[] = []): ClaimableProgram[] {
+export function claimablePrograms(
+  line: Pick<MeasureEngineLine, 'special' | 'general'> & { hts10?: string },
+  conditionPrograms: string[] = []
+): ClaimableProgram[] {
   const out: ClaimableProgram[] = [];
   const seen = new Set<string>();
   if (isFree(line.general)) {
@@ -243,16 +288,25 @@ export function claimablePrograms(line: Pick<MeasureEngineLine, 'special' | 'gen
       const info = SPECIAL_PROGRAMS[code];
       if (seen.has(code) || info?.lapsed || specialRateFor(line, code) !== null) continue;
       seen.add(code);
-      out.push({ code, name: info?.name ?? `Program ${code}`, rateText: 'Free', countries: info?.countries ?? [] });
+      out.push({ code, name: info?.name ?? `Program ${code}`, rateText: 'Free', rateTexts: ['Free'], countries: info?.countries ?? [] });
     }
   }
   for (const entry of parseSpecialRates(line.special)) {
     for (const code of entry.programs) {
       const info = SPECIAL_PROGRAMS[code];
-      // Lapsed programs and rates the parser can't price ("See 9823.xx") are not offered.
-      if (seen.has(code) || info?.lapsed || !parseRate(entry.rateText)) continue;
+      if (seen.has(code) || info?.lapsed) continue;
+      if (isQuotaReference(entry.rateText)) {
+        if (!line.hts10) continue;
+        const offers = quotaClaimOffers({ hts10: line.hts10, general: line.general }, code, entry.rateText);
+        if (offers.length === 0) continue;
+        seen.add(code);
+        out.push(...offers);
+        continue;
+      }
+      // Rates the parser can't price are not offered.
+      if (!parseRate(entry.rateText)) continue;
       seen.add(code);
-      out.push({ code, name: info?.name ?? `Program ${code}`, rateText: entry.rateText, countries: info?.countries ?? [] });
+      out.push({ code, name: info?.name ?? `Program ${code}`, rateText: entry.rateText, rateTexts: [entry.rateText], countries: info?.countries ?? [] });
     }
   }
   return out;
@@ -503,10 +557,23 @@ function factsCheck(m: TariffMeasureRecord, input: MeasureEngineInput, registry:
   return needs.length > 0 ? { ok: false, needsFacts: needs } : { ok: true };
 }
 
-function conditionCheck(m: TariffMeasureRecord, input: MeasureEngineInput, registry: FactRegistry): ConditionCheck {
+/**
+ * `usmcaDutiable`: USMCA is claimed but the goods enter above a USMCA quota at a dutiable rate (9823.xx over-quota
+ * headings). USMCA conditions then count as not met: the Canada / Mexico Section 301 reliefs cover only products
+ * "entered free of duty under the United States-Mexico-Canada Agreement, including any treatment set forth in
+ * subchapter XXIII of chapter 98" (U.S. notes 52(g) / 52(h) to subchapter III of chapter 99).
+ */
+function conditionCheck(m: TariffMeasureRecord, input: MeasureEngineInput, registry: FactRegistry, usmcaDutiable = false): ConditionCheck {
   const c = m.conditions ?? {};
-  const usmcaClaimed = !!input.claimedSpi && USMCA_SPI_CODES.includes(input.claimedSpi);
-  if (c.usmcaQualifying === true && !usmcaClaimed) return { ok: false, reason: 'Only for USMCA-qualifying goods (USMCA not claimed)' };
+  const usmcaClaimed = !!input.claimedSpi && USMCA_SPI_CODES.includes(input.claimedSpi) && !usmcaDutiable;
+  if (c.usmcaQualifying === true && !usmcaClaimed) {
+    return {
+      ok: false,
+      reason: usmcaDutiable
+        ? 'Only for goods entered free of duty under USMCA (claimed above the USMCA quota at a dutiable rate)'
+        : 'Only for USMCA-qualifying goods (USMCA not claimed)',
+    };
+  }
   if (c.usmcaQualifying === false && usmcaClaimed) return { ok: false, reason: 'Not charged on USMCA-qualifying goods (USMCA claimed)' };
   if (c.spiClaimed && c.spiClaimed.length > 0) {
     if (!input.claimedSpi || !c.spiClaimed.some((p) => samePrograms(p, input.claimedSpi as string))) {
@@ -597,6 +664,32 @@ function measureRateText(m: TariffMeasureRecord, contentValue?: number): string 
 // Engine
 // ---------------------------------------------------------------------------
 
+/**
+ * Answers to the quota facts a resolved FTA quota claim depends on: the importer's, else the registry default (a fact
+ * missing from the registry counts as "no"). A must-answer fact (registry default null) left unanswered is an error.
+ */
+function quotaAnswers(
+  resolution: QuotaResolution,
+  input: MeasureEngineInput,
+  registry: FactRegistry
+): { ok: true; answers: QuotaAnswers } | { ok: false; error: string } {
+  const answers: QuotaAnswers = {};
+  const missing: string[] = [];
+  for (const id of resolution.facts) {
+    const fact = registry.get(id);
+    const answer = fact ? factAnswer(fact, input) : input.confirmations?.facts?.[id] ?? false;
+    if (answer === undefined) missing.push(fact?.prompt ?? id);
+    else answers[id] = answer;
+  }
+  if (missing.length > 0) {
+    return {
+      ok: false,
+      error: `${FACT_ANSWER_REQUIRED} — answer to calculate: ${missing.map((p) => `"${p}"`).join('; ')}. The trade-deal rate depends on it.`,
+    };
+  }
+  return { ok: true, answers };
+}
+
 function fail(error: string, skipped: MeasureEngineResult['skipped'] = []): MeasureEngineResult {
   return { lines: [], totalDutyUsd: 0, skipped, error };
 }
@@ -628,11 +721,30 @@ export function calculateWithMeasuresAndFacts(
     baseLabel = 'Base rate (HTS column 2 rate)';
     baseText = line.column2;
   }
+  let baseNotes: string[] = [];
+  let baseSources: TariffMeasureSource[] = [];
+  // The claim as measure conditions see it: above an FTA quota with no over-quota rate the goods enter at the
+  // general rate, i.e. without the preference (e.g. Nicaragua's 9903.89.01 then applies, note 29(a)).
+  let conditionInput: MeasureEngineInput = input;
+  let usmcaDutiable = false;
   if (input.claimedSpi) {
     const special = specialRateFor(line, input.claimedSpi);
     const info = SPECIAL_PROGRAMS[input.claimedSpi];
     const programName = info?.name ?? input.claimedSpi;
-    if (special !== null) {
+    if (special !== null && isQuotaReference(special)) {
+      // "See 9822.04.01-9822.04.03 (AU)": the rate is the Chapter 98/99 FTA quota heading the shipment enters under.
+      const resolved = resolveQuotaClaim(line, input.claimedSpi, special, input.countryOfOrigin, entryDay);
+      if (!resolved.ok) return fail(resolved.error);
+      const answers = quotaAnswers(resolved.resolution, input, registry);
+      if (!answers.ok) return fail(answers.error);
+      const priced = priceQuotaClaim(resolved.resolution, programName, answers.answers, input.confirmations?.facts ?? {});
+      baseLabel = priced.usesGeneralRate ? `Base rate (HTS general rate; ${priced.labelSuffix})` : `Trade-deal rate (${programName}; ${priced.labelSuffix})`;
+      baseText = priced.tier.rateText;
+      baseNotes = priced.notes;
+      baseSources = priced.sources;
+      if (priced.usesGeneralRate) conditionInput = { ...input, claimedSpi: undefined };
+      usmcaDutiable = USMCA_SPI_CODES.includes(input.claimedSpi) && !isFree(priced.tier.rateText);
+    } else if (special !== null) {
       baseLabel = `Trade-deal rate (${programName})`;
       baseText = special;
     } else if (isFree(baseText)) {
@@ -665,7 +777,7 @@ export function calculateWithMeasuresAndFacts(
       skipped.push({ ch99Code: m.ch99Code, reason: dr });
       continue;
     }
-    const cond = conditionCheck(m, input, registry);
+    const cond = conditionCheck(m, conditionInput, registry, usmcaDutiable);
     if (!cond.ok) {
       if ('needsProductType' in cond) cond.needsProductType.forEach((t) => productTypesNeeded.add(t));
       else if ('needsFacts' in cond) cond.needsFacts.forEach((id) => factsNeeded.add(id));
@@ -750,7 +862,8 @@ export function calculateWithMeasuresAndFacts(
       label: baseLabel,
       rateText: baseReplacedBy.length > 0 && !isFree(baseText) ? `${baseText} (not charged: replaced by ${baseReplacedBy.join(', ')})` : baseText,
       amountUsd: baseReplacedBy.length > 0 ? 0 : round2(baseAmount),
-      sources: [],
+      sources: baseSources,
+      ...(baseNotes.length > 0 ? { notes: baseNotes } : {}),
     },
   ];
   for (const m of charged) {
@@ -945,6 +1058,54 @@ export function confirmationQuestionsForLine(
   return Array.from(drafts.values())
     .map((d) => ({ ...d.question, effect: d.effects.join(' '), sources: d.sources }))
     .sort((a, b) => KIND_ORDER.indexOf(a.kind) - KIND_ORDER.indexOf(b.kind));
+}
+
+// ---------------------------------------------------------------------------
+// FTA quota questions
+// ---------------------------------------------------------------------------
+
+/**
+ * Questions for the FTA quota claims a line offers a country ("See 9822.04.01-9822.04.03 (AU)"): whether the shipment
+ * is within the in-quota quantity, an additional quota, or under a safeguard — one per registry fact that changes the
+ * claim's rate. The effect says it only matters with the claim. Pure, like the engine.
+ */
+export function quotaQuestionsForLine(
+  line: Pick<MeasureEngineLine, 'hts10' | 'special' | 'general'>,
+  country: string,
+  facts: TariffConfirmationFact[] = loadConfirmationFacts()
+): TariffConfirmationQuestion[] {
+  const registry = factRegistry(facts);
+  const out = new Map<string, TariffConfirmationQuestion>();
+  for (const entry of parseSpecialRates(line.special)) {
+    if (!isQuotaReference(entry.rateText)) continue;
+    for (const code of entry.programs) {
+      const info = SPECIAL_PROGRAMS[code];
+      if (info?.lapsed || (info?.countries && !info.countries.includes(country))) continue;
+      const res = resolveQuotaClaim(line, code, entry.rateText, country);
+      if (!res.ok) continue;
+      const programName = info?.name ?? code;
+      for (const id of res.resolution.facts) {
+        const fact = registry.get(id);
+        const effect = `Only with the ${programName} claim. ${quotaQuestionEffect(id, res.resolution)}`;
+        const existing = out.get(id);
+        if (existing) {
+          if (!existing.effect.includes(effect)) existing.effect = `${existing.effect} ${effect}`;
+          continue;
+        }
+        const sources = priceQuotaClaim(res.resolution, programName, {}, {}).sources;
+        out.set(id, {
+          kind: 'fact',
+          value: id,
+          prompt: quotaQuestionPrompt(id, res.resolution, programName),
+          effect,
+          caveat: fact?.help ?? QUESTION_CAVEATS.fact,
+          ...(fact && fact.defaultWhenUnanswered !== null ? { defaultAnswer: fact.defaultWhenUnanswered } : { mustAnswer: true }),
+          sources: [...sources, ...(fact?.sources ?? []).filter((s) => !sources.some((x) => x.url === s.url))],
+        });
+      }
+    }
+  }
+  return Array.from(out.values());
 }
 
 // ---------------------------------------------------------------------------
