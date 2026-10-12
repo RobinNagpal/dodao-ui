@@ -6704,7 +6704,7 @@
         "ch99Code": "9903.05.29",
         "before": "None",
         "now": "+10%",
-        "exemption": "USMCA-qualifying goods entered free under USMCA pay no Section 301 duty (9903.05.93). Beef and veal (all of 0201 and 0202), bovine offal (0206.10–0206.29) and dried or salted beef (0210.20) are on the general exemption list (U.S. note 52(b), 9903.05.86): 73 of the 166 lines pay no Section 301 duty from any of the 60 economies. The 35% IEEPA duty on non-USMCA Canadian goods ended February 24, 2026. The 2026 Section 338 duties on Canadian alcoholic beverages, dairy and motor vehicles list no Chapter 02 line (U.S. note 51).",
+        "exemption": "USMCA-qualifying goods entered free under USMCA pay no Section 301 duty (9903.05.93). Beef and veal (all of 0201 and 0202), bovine offal (0206.10–0206.29) and dried or salted beef (0210.20) are on the general exemption list (U.S. note 52(b), 9903.05.86): 73 of the 166 lines pay no Section 301 duty from any of the 60 economies. The 35% IEEPA duty on non-USMCA Canadian goods ended February 24, 2026. The 2026 Section 338 duties on Canada (U.S. note 51, 9903.03.12–9903.03.14) cover several hundred provisions across dozens of chapters — from alcoholic beverages and dairy to wood, paper, metals, machinery and vehicles — but list no Chapter 02 line.",
         "whatItMeans": "USMCA-qualifying beef, pork and poultry from Canada pay $0. Non-qualifying pork pays its base rate plus 10% of value; non-qualifying beef pays only the base rate (4.4¢/kg in quota — Canada has no quota limit).",
         "effectiveFrom": "2026-07-24",
         "effectiveSourceId": "fr-2026-15181",
@@ -6919,7 +6919,7 @@
         "date": "2026-08-22",
         "dateLabel": "Effective",
         "title": "Canada Section 338 duties do not reach meat",
-        "detail": "50% duties on certain Canadian alcoholic beverages, dairy and motor vehicles (9903.03.12–9903.03.14) took effect. No Chapter 02 line is on the lists in U.S. note 51, so Canadian beef, pork and poultry are not affected.",
+        "detail": "50% Section 338 duties on Canadian goods (9903.03.12–9903.03.14) took effect, covering several hundred provisions across dozens of chapters — alcoholic beverages and dairy, but also wood, paper, metals, machinery and vehicles. No Chapter 02 line is on the lists in U.S. note 51, so Canadian beef, pork and poultry are not affected.",
         "before": null,
         "now": null,
         "countries": "Canada",
@@ -10296,7 +10296,7 @@
         "HTS Chapter 02 tariff rates by country"
       ]
     },
-    "intro": "The total rate on meat depends on **what it is and where it comes from**. Each cell below is the base rate for that product group plus the extra duty for that country, minus any preference — computed from the current tariff schedule with the same engine as the tariff calculator.\n\n**Beef and bovine offal pay no extra duty from any of the 60 Section 301 economies**, so for beef the base rate decides: 4.4¢/kg (or Free with an FTA or USMCA claim) inside the quota, 26.4% above it. Everything else from those economies pays the Section 301 duty since July 24, 2026: **10% in total for the EU**, **+10% for Canada, Mexico and Argentina**, **+12.5% for Australia, New Zealand, Uruguay, Chile and Nicaragua**, +37.5% for Brazil. USMCA-qualifying meat from Canada and Mexico enters free, and Paraguay — outside the 60 — pays only the base rate.",
+    "intro": "The total rate on meat depends on **what it is and where it comes from**. Each cell below is the base rate for that product group plus the extra duty for that country, minus any preference — computed from the current tariff schedule with the same engine as the tariff calculator.\n\n**Beef and bovine offal pay no extra duty from any of the 60 Section 301 economies**, so for beef the base rate decides: 4.4¢/kg (or Free with an FTA or USMCA claim) inside the quota, 26.4% above it — except Australian beef, which stays Free above its quota under the Australia FTA unless the 17.1% price-based safeguard applies. Everything else from those economies pays the Section 301 duty since July 24, 2026: **10% in total for the EU**, **+10% for Canada, Mexico and Argentina**, **+12.5% for Australia, New Zealand, Uruguay, Chile and Nicaragua**, +37.5% for Brazil. USMCA-qualifying meat from Canada and Mexico enters free, and Paraguay — outside the 60 — pays only the base rate.",
     "scheduleEdition": "2026 Revision 21",
     "tradeYear": 2025,
     "lastCheckedAt": "2026-10-11",
@@ -10369,7 +10369,7 @@
           "kind": "additive",
           "extraPct": 12.5,
           "ch99Code": "9903.05.23",
-          "label": "Beef and bovine offal: no Section 301 duty (9903.05.86) and Free under the Australia FTA in quota. Other meat: base rate (Free with an AU claim) + 12.5% Section 301 (9903.05.23). The 26.4% shown on six over-quota beef lines is the general rate the calculator applies; Australian beef entered under 9822.04.01–9822.04.03 is Free up to 71,695 t in 2026 and Free beyond unless the price-based safeguard (17.1%) applies.",
+          "label": "Beef and bovine offal: no Section 301 duty (9903.05.86) and Free under the Australia FTA in quota. Other meat: base rate (Free with an AU claim) + 12.5% Section 301 (9903.05.23). On the six over-quota beef lines (general rate 26.4%) the AU claim is priced under 9822.04.01–9822.04.03: Free within the 71,695 t FTA quota for 2026 (9822.04.01), 17.1% if the price-based safeguard applies (9822.04.02), Free otherwise (9822.04.03).",
           "sourceIds": ["fr-2026-15181", "fr-2026-15274", "hts-chapter-99", "ustr-ausfta-2026", "hts-ch2", "hts-now"]
         },
         "importsUsd": 5263380620,
@@ -10377,7 +10377,7 @@
           "0201": {
             "importsUsd": 1458096661,
             "withUsmca": {
-              "totals": ["Free", "26.4%"],
+              "totals": ["Free", "17.1% if safeguard applies"],
               "breakdown": [
                 {
                   "base": "4.4¢/kg",
@@ -10414,9 +10414,9 @@
                   "base": "26.4%",
                   "lines": ["0201.10.50.10", "0201.10.50.90", "0201.20.80.10", "0201.20.80.90", "0201.30.80.10", "0201.30.80.90"],
                   "lineCount": 6,
-                  "extra": "None: Section 301 does not apply (9903.05.86)",
-                  "preference": "Not priced here: Australia FTA beef under 9822.04.01–9822.04.03 is Free up to 71,695 t in 2026, then Free unless the price-based safeguard (17.1%) applies",
-                  "total": "26.4%"
+                  "extra": "Within quota or above quota: None: Section 301 does not apply (9903.05.86). Safeguard applies: None: Section 301 does not apply (9903.05.86)",
+                  "preference": "See 9822.04.01-9822.04.03 under US–Australia Free Trade Agreement (AU); Section 301 does not apply (9903.05.86)",
+                  "total": "Free within quota or above quota / 17.1% safeguard applies"
                 },
                 {
                   "base": "4%",
@@ -10437,7 +10437,7 @@
               ]
             },
             "withoutUsmca": {
-              "totals": ["Free", "26.4%"],
+              "totals": ["Free", "17.1% if safeguard applies"],
               "breakdown": [
                 {
                   "base": "4.4¢/kg",
@@ -10474,9 +10474,9 @@
                   "base": "26.4%",
                   "lines": ["0201.10.50.10", "0201.10.50.90", "0201.20.80.10", "0201.20.80.90", "0201.30.80.10", "0201.30.80.90"],
                   "lineCount": 6,
-                  "extra": "None: Section 301 does not apply (9903.05.86)",
-                  "preference": "Not priced here: Australia FTA beef under 9822.04.01–9822.04.03 is Free up to 71,695 t in 2026, then Free unless the price-based safeguard (17.1%) applies",
-                  "total": "26.4%"
+                  "extra": "Within quota or above quota: None: Section 301 does not apply (9903.05.86). Safeguard applies: None: Section 301 does not apply (9903.05.86)",
+                  "preference": "See 9822.04.01-9822.04.03 under US–Australia Free Trade Agreement (AU); Section 301 does not apply (9903.05.86)",
+                  "total": "Free within quota or above quota / 17.1% safeguard applies"
                 },
                 {
                   "base": "4%",
@@ -10500,7 +10500,7 @@
           "0202": {
             "importsUsd": 2297538984,
             "withUsmca": {
-              "totals": ["Free", "26.4%"],
+              "totals": ["Free", "17.1% if safeguard applies"],
               "breakdown": [
                 {
                   "base": "4.4¢/kg",
@@ -10534,9 +10534,9 @@
                   "base": "26.4%",
                   "lines": ["0202.10.50.10", "0202.10.50.90", "0202.20.80.00", "0202.30.80.15", "0202.30.80.25"],
                   "lineCount": 5,
-                  "extra": "None: Section 301 does not apply (9903.05.86)",
-                  "preference": "Not priced here: Australia FTA beef under 9822.04.01–9822.04.03 is Free up to 71,695 t in 2026, then Free unless the price-based safeguard (17.1%) applies",
-                  "total": "26.4%"
+                  "extra": "Within quota or above quota: None: Section 301 does not apply (9903.05.86). Safeguard applies: None: Section 301 does not apply (9903.05.86)",
+                  "preference": "See 9822.04.01-9822.04.03 under US–Australia Free Trade Agreement (AU); Section 301 does not apply (9903.05.86)",
+                  "total": "Free within quota or above quota / 17.1% safeguard applies"
                 },
                 {
                   "base": "4%",
@@ -10557,7 +10557,7 @@
               ]
             },
             "withoutUsmca": {
-              "totals": ["Free", "26.4%"],
+              "totals": ["Free", "17.1% if safeguard applies"],
               "breakdown": [
                 {
                   "base": "4.4¢/kg",
@@ -10591,9 +10591,9 @@
                   "base": "26.4%",
                   "lines": ["0202.10.50.10", "0202.10.50.90", "0202.20.80.00", "0202.30.80.15", "0202.30.80.25"],
                   "lineCount": 5,
-                  "extra": "None: Section 301 does not apply (9903.05.86)",
-                  "preference": "Not priced here: Australia FTA beef under 9822.04.01–9822.04.03 is Free up to 71,695 t in 2026, then Free unless the price-based safeguard (17.1%) applies",
-                  "total": "26.4%"
+                  "extra": "Within quota or above quota: None: Section 301 does not apply (9903.05.86). Safeguard applies: None: Section 301 does not apply (9903.05.86)",
+                  "preference": "See 9822.04.01-9822.04.03 under US–Australia Free Trade Agreement (AU); Section 301 does not apply (9903.05.86)",
+                  "total": "Free within quota or above quota / 17.1% safeguard applies"
                 },
                 {
                   "base": "4%",
@@ -21955,7 +21955,7 @@
         "country": "Australia",
         "heading": "0202",
         "importsUsd": 2297538984,
-        "totals": ["Free", "26.4%"]
+        "totals": ["Free", "17.1% if safeguard applies"]
       },
       {
         "country": "Mexico",
@@ -21967,7 +21967,7 @@
         "country": "Australia",
         "heading": "0201",
         "importsUsd": 1458096661,
-        "totals": ["Free", "26.4%"]
+        "totals": ["Free", "17.1% if safeguard applies"]
       },
       {
         "country": "Australia",
@@ -22001,7 +22001,7 @@
       "Preferences: USMCA (S) is applied for Canada and Mexico on the \"USMCA-qualifying\" side; AU for Australia; P (CAFTA-DR) for Nicaragua; CL for Chile. GSP (A, A+) has been expired since December 31, 2020 and is not applied. An FTA claim removes the base rate but not the Section 301 duty (U.S. note 52(a)).",
       "Any other country shows the range across every country not listed (column 2 countries — Cuba, North Korea, Russia, Belarus — aside), without preferences.",
       "Beef: each beef group mixes in-quota lines (4.4¢/kg; processed cuts 4% or 10%) and over-quota \"Other\" lines (26.4%). Which one applies depends on whether the country's quota under additional U.S. note 3 to Chapter 2 is still open on the entry date; select a cell to see the lines.",
-      "Australia's over-quota beef lines are shown at the 26.4% general rate because the Australia FTA rate for them sits in Chapter 98 (9822.04.01–9822.04.03) and the calculator does not price it. A qualifying Australian entry pays Free up to 71,695 t in 2026 (USTR, 91 FR 16080) and Free beyond unless the price-based safeguard (17.1%) applies.",
+      "Australia's over-quota beef lines (26.4% general rate) take their Australia FTA rate from Chapter 98, subchapter XXII, U.S. note 8, and are priced per quota tier: Free within the 2026 quantity of 71,695 t (9822.04.01; USTR, 91 FR 16080), 17.1% if the price-based safeguard of note 8(c) applies (9822.04.02), and Free otherwise (9822.04.03). The cell shows \"Free\" and \"17.1% if safeguard applies\"; select it to see the tiers.",
       "The IEEPA duties (9903.01.xx, 9903.02.xx) are still printed in the schedule but ended February 24, 2026, and the Section 122 surcharge (9903.03.01) expired July 23, 2026; neither is applied.",
       "The rate is not the only gate: the exporting country and plant must be eligible with USDA FSIS, and APHIS disease rules (foot-and-mouth disease, swine fevers, avian influenza) can bar meat from a region regardless of the tariff."
     ],
@@ -23538,7 +23538,7 @@
         "id": "beef-quota",
         "question": "How does the U.S. beef import quota work?",
         "searchedAs": ["us beef import quotas", "beef import quota"],
-        "answer": "It is a tariff-rate quota, not a ban. Each year a set quantity enters at the low in-quota rate (4.4¢/kg; 4% or 10% on processed cuts): Australia 378,214 t, New Zealand 213,402 t, Argentina and Uruguay 20,000 t each, the United Kingdom 13,000 t and all other countries 52,005 t together; Canada and Mexico have no limit. Beef entered after a quota fills pays 26.4% (additional U.S. note 3 to Chapter 2). For 2026, Argentina got 80,000 t more and lean trimmings from other countries 300,000 t more.",
+        "answer": "It is a tariff-rate quota, not a ban. Each year a set quantity enters at the low in-quota rate (4.4¢/kg; 4% or 10% on processed cuts): Australia 378,214 t, New Zealand 213,402 t, Argentina and Uruguay 20,000 t each, the United Kingdom 13,000 t and all other countries 52,005 t together; Canada and Mexico have no limit. Beef entered after a quota fills pays 26.4% (additional U.S. note 3 to Chapter 2) — except Australian beef with an FTA claim, which stays Free (71,695 t more in 2026, then Free unless the 17.1% price-based safeguard applies). For 2026, Argentina got 80,000 t more and lean trimmings from other countries 300,000 t more.",
         "link": "tariff-engineering"
       },
       {

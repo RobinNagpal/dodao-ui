@@ -79,7 +79,12 @@ function breakdownFields(r: LineRateResult): Omit<TariffRateBreakdownRow, 'lines
   return {
     base: r.base,
     extra: r.variants.map((v) => `${cap(v.label ?? '')}: ${v.extra}`).join('. '),
-    preference: r.variants[0].preference,
+    // Variants can differ in preference too (a quota tier above the quota loses the USMCA Section 301 relief):
+    // one text when they agree, otherwise per variant.
+    preference:
+      new Set(r.variants.map((v) => v.preference)).size === 1
+        ? r.variants[0].preference
+        : r.variants.map((v) => `${cap(v.label ?? '')}: ${v.preference}`).join('. '),
     total: r.variants.map((v) => `${v.total} ${v.label}`).join(' / '),
   };
 }

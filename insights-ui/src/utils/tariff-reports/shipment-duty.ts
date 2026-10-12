@@ -206,11 +206,18 @@ export function parseRateVariants(text: string): RateVariant[] | null {
   }
   const variants: RateVariant[] = [];
   for (const part of parts) {
-    const m = part.trim().match(/^(.*\S)\s+([a-z][a-z -]*)$/i);
-    if (!m) return null;
-    const range = parseRateRange(m[1]);
-    if (!range) return null;
-    variants.push({ label: m[2].trim(), range });
+    // "<rate> <label>": the shortest leading run of words that reads as a rate, the rest a lowercase label
+    // ("17.1% safeguard applies", "35.74¢/kg + 10% above quota", "Free within quota or above quota").
+    const words = part.trim().split(/\s+/);
+    let found: RateVariant | null = null;
+    for (let i = 1; i < words.length && !found; i++) {
+      const label = words.slice(i).join(' ');
+      if (!/^[a-z][a-z ,-]*$/.test(label)) continue;
+      const range = parseRateRange(words.slice(0, i).join(' '));
+      if (range) found = { label, range };
+    }
+    if (!found) return null;
+    variants.push(found);
   }
   return variants;
 }
