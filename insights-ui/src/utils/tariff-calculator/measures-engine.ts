@@ -73,6 +73,7 @@ import {
 import { loadImportBans } from '@/utils/tariff-calculator/import-bans';
 import { describeUom, KNOWN_UOMS, qualifiedKey, splitQualifiedKey, splitUnitText } from '@/utils/tariff-calculator/rate-units';
 import { resolveRateNote } from '@/utils/tariff-calculator/rate-notes';
+import { statisticalSuffixNote } from '@/utils/tariff-calculator/statistical-suffixes';
 import {
   chargeAmountUsd,
   componentLabel,
@@ -1283,6 +1284,9 @@ export function calculateWithMeasuresAndFacts(
   const baseLineNote = polarityNote(baseRate, input.polarityDegrees);
   if (baseLineNote) baseNotes = [...baseNotes, baseLineNote];
   baseNotes = [...baseNotes, ...basePriced.notes];
+  // Chapter 91 statistical note 1 numbers: the article is entered under one number per component, priced once.
+  const suffixNote = statisticalSuffixNote(hts10);
+  if (suffixNote) baseNotes = [...baseNotes, suffixNote];
   const baseAmount = basePriced.amount;
 
   // Content-based measures (issue #1796): the value each one is charged on; a missing declared value is an error.

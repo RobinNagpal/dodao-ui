@@ -7150,6 +7150,92 @@
       "expectedTotalDutyUsd": 25750,
       "toleranceUsd": 0.01,
       "sourceNote": "Russia is a column 2 country: base 45% ($4,500). 7616.99.51.30 is a note 19(j) derivative, so heading 9903.85.68 charges the 200% ($20,000) once; 9903.85.67 (note 19(g)(vii) castings and forgings) does not charge it again. Plus Russia 2026 Section 301 9903.05.66 12.5% ($1,250; note 52(f)(1) lifts it only for the 9903.82 headings). Total $25,750."
+    },
+    {
+      "id": "ch91-swiss-automatic-watch-ch",
+      "description": "Swiss automatic wrist watches with a stainless-steel case and a stainless-steel bracelet, over 17 jewels (9102.21.70), from Switzerland: 10 watches, $5,000, of which case $1,200, bracelet $300 (no battery: $0); entered under the case number 9102.21.70.20",
+      "chapter": "91",
+      "input": {
+        "hts10": "9102217020",
+        "countryOfOrigin": "CH",
+        "customsValueUsd": 5000,
+        "quantities": {
+          "NO": 10
+        },
+        "componentValuesUsd": {
+          "case": 1200,
+          "strap, band or bracelet": 300,
+          "battery": 0
+        },
+        "entryDate": "2026-10-13"
+      },
+      "line": {
+        "hts10": "9102217020",
+        "general": "$1.53 each + 4.2% on the case + 9.8% on the strap, band or bracelet",
+        "special": "Free (AU,BH, CL,CO,D,E,IL,JO,KR,MA,OM,P, PA,PE,R,S,SG)",
+        "column2": "$10.95 each + 45% on the case + 110% on the strap, band or bracelet",
+        "units": ["No."]
+      },
+      "expectedTotalDutyUsd": 625,
+      "toleranceUsd": 0.01,
+      "sourceNote": "HTSUS 2026 Revision 21: 9102.21.70 (statistical note 1(d): .10 movement, .20 case, .30 strap, band or bracelet; CBP ruling N362026 classifies Swiss automatic steel watches there) general rate \"$1.53 each + 4.2% on the case + 9.8% on the strap, band or bracelet\", priced once on the whole watch: 10 x $1.53 = $15.30 + 4.2% x $1,200 = $50.40 + 9.8% x $300 = $29.40 = $95.10. Switzerland's Section 301 (2026) heading 9903.05.74 is \"12.5% or the base rate, whichever is higher\" and replaces the base: 12.5% x $5,000 = $625.00 > $95.10. Total $625.00."
+    },
+    {
+      "id": "ch91-quartz-watch-cn",
+      "description": "Battery-powered quartz analog wrist watches, no jewels, base-metal case (not plated) and base-metal bracelet (9102.11.25), from China: 100 watches, $2,000, of which case $600, bracelet $300, battery $50; entered under the movement number 9102.11.25.10",
+      "chapter": "91",
+      "input": {
+        "hts10": "9102112510",
+        "countryOfOrigin": "CN",
+        "customsValueUsd": 2000,
+        "quantities": {
+          "NO": 100
+        },
+        "componentValuesUsd": {
+          "case": 600,
+          "strap, band or bracelet": 300,
+          "battery": 50
+        },
+        "entryDate": "2026-10-13"
+      },
+      "line": {
+        "hts10": "9102112510",
+        "general": "40¢ each + 8.5% on the case + 14% on the strap, band or bracelet + 5.3% on the battery",
+        "special": "Free (AU,BH, CL,CO,D,E,IL,JO,KR,MA,OM,P, PA,PE,R,S,SG)",
+        "column2": "$1.70 each + 45% on the case + 110% on the strap, band or bracelet + 35% on the battery",
+        "units": ["No."]
+      },
+      "expectedTotalDutyUsd": 535.65,
+      "toleranceUsd": 0.01,
+      "sourceNote": "HTSUS 2026 Revision 21: 9102.11.25 (statistical note 1(a): .10 movement, .20 case, .30 strap, band or bracelet, .40 battery) general rate \"40¢ each + 8.5% on the case + 14% on the strap, band or bracelet + 5.3% on the battery\", priced once on the whole watch: 100 x $0.40 = $40.00 + 8.5% x $600 = $51.00 + 14% x $300 = $42.00 + 5.3% x $50 = $2.65 = $135.65. Section 301 (2026) for China +12.5% of $2,000 (9903.05.31) = $250.00; Section 301 List 4A +7.5% (9903.88.15, U.S. note 20(s), lists 9102.11.25) = $150.00. Total $535.65."
+    },
+    {
+      "id": "ch91-battery-wall-clock-cn",
+      "description": "Battery-operated analog wall clocks (9105.21.80), from China: 200 clocks, $3,000, of which case $900, battery $100; entered under the other-clocks movement number 9105.21.80.30",
+      "chapter": "91",
+      "input": {
+        "hts10": "9105218030",
+        "countryOfOrigin": "CN",
+        "customsValueUsd": 3000,
+        "quantities": {
+          "NO": 200
+        },
+        "componentValuesUsd": {
+          "case": 900,
+          "battery": 100
+        },
+        "entryDate": "2026-10-13"
+      },
+      "line": {
+        "hts10": "9105218030",
+        "general": "30¢ each + 6.9% on the case + 5.3% on the battery",
+        "special": "Free (A+,AU,BH,CL,CO,D,E,IL,JO,KR,MA, OM,P,PA,PE,S,SG)",
+        "column2": "75¢ each + 45% on the case + 35% on the battery",
+        "units": ["No."]
+      },
+      "expectedTotalDutyUsd": 502.4,
+      "toleranceUsd": 0.01,
+      "sourceNote": "HTSUS 2026 Revision 21: 9105.21.80 (statistical note 1(n): other clocks .30 movement, .40 case, .50 battery) general rate \"30¢ each + 6.9% on the case + 5.3% on the battery\", priced once on the whole clock: 200 x $0.30 = $60.00 + 6.9% x $900 = $62.10 + 5.3% x $100 = $5.30 = $127.40. Section 301 (2026) for China +12.5% of $3,000 (9903.05.31) = $375.00; 9105.21.80 is on none of the China Section 301 lists 1-4A in effect. Total $502.40."
     }
   ]
 }
