@@ -113,6 +113,7 @@ const CHAPTER_FILES: Record<string, () => Promise<{ default: unknown }>> = {
   '81-other-base-metals-and-cermets': () => import('@/tariff-data/chapters/81-other-base-metals-and-cermets.json'),
   '82-base-metal-tools-and-implements': () => import('@/tariff-data/chapters/82-base-metal-tools-and-implements.json'),
   '83-misc-articles-of-base-metal': () => import('@/tariff-data/chapters/83-misc-articles-of-base-metal.json'),
+  '84-nuclear-reactors-and-machinery': () => import('@/tariff-data/chapters/84-nuclear-reactors-and-machinery.json'),
   '85-electrical-machinery-and-recorders': () => import('@/tariff-data/chapters/85-electrical-machinery-and-recorders.json'),
   '86-railway-locomotives-and-fixtures': () => import('@/tariff-data/chapters/86-railway-locomotives-and-fixtures.json'),
   '87-motor-vehicles-and-parts': () => import('@/tariff-data/chapters/87-motor-vehicles-and-parts.json'),
@@ -124,6 +125,7 @@ const CHAPTER_FILES: Record<string, () => Promise<{ default: unknown }>> = {
   '93-arms-and-ammunition': () => import('@/tariff-data/chapters/93-arms-and-ammunition.json'),
   '94-furniture-and-lighting-fittings': () => import('@/tariff-data/chapters/94-furniture-and-lighting-fittings.json'),
   '95-toys-games-and-sports-requisites': () => import('@/tariff-data/chapters/95-toys-games-and-sports-requisites.json'),
+  '96-misc-manufactured-articles': () => import('@/tariff-data/chapters/96-misc-manufactured-articles.json'),
   '97-works-of-art-and-antiques': () => import('@/tariff-data/chapters/97-works-of-art-and-antiques.json'),
 };
 
