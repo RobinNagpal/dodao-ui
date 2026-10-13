@@ -339,6 +339,12 @@ function checkPrototype(report: Report, opts: Options, slug: string, p: TariffCh
   if (p.chapter.slug !== slug) report.error(where, `chapter.slug "${p.chapter.slug}" does not match the registered slug`);
   walk(report, opts, p as unknown as Json, where, null, false);
 
+  // Heading blurbs render as plain text (the rate-table heading rows and tiles), so markdown shows literally.
+  p.overview?.productGroups?.forEach((g, i) => {
+    if (/\*\*|`/.test(g.blurb ?? ''))
+      report.error(`${where}.overview.productGroups[${i}].blurb`, 'plain-text field contains markdown (** or `); write it without formatting');
+  });
+
   const tu = p.tariffUpdates;
   if (tu) {
     checkSortedNewestFirst(report, `${where}.tariffUpdates.changes`, tu.changes);
