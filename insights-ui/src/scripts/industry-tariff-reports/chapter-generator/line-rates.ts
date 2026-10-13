@@ -14,7 +14,7 @@ import {
   specialRateFor,
   USMCA_SPI_CODES,
 } from '@/utils/tariff-calculator/measures-engine';
-import { parseRate, quantityUnits, rateDollars } from '@/utils/tariff-reports/shipment-duty';
+import { formatPolarityRate, parseRate, quantityUnits, rateDollars } from '@/utils/tariff-reports/shipment-duty';
 import {
   FTA_SAFEGUARD_FACT,
   FTA_WITHIN_QUOTA_FACT,
@@ -37,6 +37,11 @@ export const NOMINAL_QUANTITY = 1_000;
 const DEFAULT_UOMS = ['NO', 'KG', 'G', 'T', 'L', 'PF.L', 'CKG', 'DOZ', 'DPR', 'PRS', 'GROSS', 'M', 'M2', 'M3', 'THS', 'BBL'];
 const PRODUCT_TYPE_ORDER: TariffProductType[] = ['generic', 'other', 'specialty', 'patented'];
 const MAX_FACT_COMBOS = 3;
+/**
+ * Facts with a default answer that are still priced both ways ("if no" / "if yes"), because the answer is an importer
+ * claim that removes a duty for most goods it reaches: informational materials (headings 9903.05.92 and 9903.05.09).
+ */
+const VARIED_DEFAULTED_FACTS = new Set(['informationalMaterials']);
 
 function digits(code: string): string {
   return code.replace(/\D/g, '');
@@ -111,10 +116,16 @@ export function baseExpr(text: string | null): RateExpr | null {
     const p = parseRate(term);
     if (!p) return null;
     if (p.perUnit.length === 0) pct += p.adValoremPct;
-    else if (p.adValoremPct === 0) perUnit.push(term);
+    // A sugar polarity rate reads "3.6606¢/kg at 100° polarity, 0.020668¢/kg less per degree under 100 (min …)".
+    else if (p.adValoremPct === 0) perUnit.push(displayRate(term));
     else return null;
   }
   return { perUnit, pct };
+}
+
+/** A rate as the pages show it: the HTS text, with a sugar polarity term in plain words (formatPolarityRate). */
+export function displayRate(text: string): string {
+  return formatPolarityRate(text) ?? text;
 }
 
 export function exprString(e: RateExpr): string {
@@ -178,7 +189,7 @@ function factIdsInScope(measures: TariffMeasureRecord[], hts10: string, iso: str
     if (!measureReachesLine(m, hts10) || !countryInScope(m, iso) || !inEffectOn(m, day)) continue;
     for (const id of [...(m.conditions?.factsTrue ?? []), ...(m.conditions?.factsFalse ?? [])]) {
       const f = registry.get(id);
-      if (f && f.defaultWhenUnanswered === null) mustAnswer.add(id);
+      if (f && (f.defaultWhenUnanswered === null || VARIED_DEFAULTED_FACTS.has(id))) mustAnswer.add(id);
       else defaulted.add(id);
     }
   }
@@ -328,7 +339,14 @@ export function evaluateLine(
   const day = opts.entryDate;
   const line = engineLine(row);
   const generalBase = COLUMN2_COUNTRIES.includes(iso) && line.column2 ? line.column2 : line.general;
-  const out: LineRateResult & { claimRejected?: boolean } = { hts, base: generalBase ?? '—', variants: [], problems: [], notes: [], banned: null };
+  const out: LineRateResult & { claimRejected?: boolean } = {
+    hts,
+    base: generalBase ? displayRate(generalBase) : '—',
+    variants: [],
+    problems: [],
+    notes: [],
+    banned: null,
+  };
 
   const ban = importProhibitionFor({ hts10, countryOfOrigin: iso, entryDate: day });
   if (ban && !ban.unconfirmed) {

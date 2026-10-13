@@ -26,6 +26,7 @@ import {
   SPECIAL_PROGRAMS,
 } from '@/utils/tariff-calculator/measures-engine';
 import { TariffCandidateCodeType } from '@prisma/client';
+import { FULL_POLARITY_DEGREES, isValidPolarity } from '@/utils/tariff-reports/shipment-duty';
 import { badRequestError } from '@dodao/web-core/api/errors/badRequestError';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';
@@ -52,6 +53,9 @@ import { NextRequest } from 'next/server';
 // Optional `contentValuesUsd` ({ steel, aluminum, copper, usContent }, issue #1796) are the
 // declared content values that content-based measures (Section 232 derivatives, USMCA autos/parts)
 // are charged on; each must be 0 – shipmentValueUsd.
+// Optional `polarityDegrees` (above 0, at most 100) prices a base rate graded by sugar polarity (heading 1701:
+// "… less 0.020668¢/kg for each degree under 100 degrees …"); without it such a rate is priced at 100° and the base
+// line's notes say so.
 // When an import ban (import-bans.json, issue #1796) matches the line, country, entry date and
 // fact answers, the response carries `prohibited` next to the duty; the duty is labelled as applying
 // only to goods imported before the ban and entered later.
@@ -191,6 +195,13 @@ function parseContentValues(raw: unknown, customsValueUsd: number): ContentValue
   return Object.keys(out).length > 0 ? out : undefined;
 }
 
+function parsePolarity(raw: unknown): number | undefined {
+  if (raw === undefined || raw === null || raw === '') return undefined;
+  const n = typeof raw === 'number' ? raw : Number(raw);
+  if (!isValidPolarity(n)) throw badRequestError(`polarityDegrees must be a number above 0 and at most ${FULL_POLARITY_DEGREES}`);
+  return n;
+}
+
 /**
  * The trade-deal claim for the official-measures engine. `claimedSpi` is the field; `chosenSpis` (the candidate-codes
  * engine's list) is accepted as the claim when it names exactly one program, so a claim sent that way is never dropped.
@@ -231,7 +242,8 @@ function parseCalculatorInputs(body: unknown): CalculatorInputs {
 async function calculateWithOfficialMeasures(
   rawInputs: CalculatorInputs,
   confirmations: TariffShipmentConfirmations | undefined,
-  contentValuesUsd: ContentValues | undefined
+  contentValuesUsd: ContentValues | undefined,
+  polarityDegrees: number | undefined
 ): Promise<CalculatorResponse> {
   const inputs: CalculatorInputs = { ...rawInputs, claimedSpi: officialClaim(rawInputs.claimedSpi, rawInputs.chosenSpis) };
   const program = inputs.claimedSpi ? SPECIAL_PROGRAMS[inputs.claimedSpi] : undefined;
@@ -251,6 +263,7 @@ async function calculateWithOfficialMeasures(
       productType: inputs.productType,
       confirmations,
       ...(contentValuesUsd ? { contentValuesUsd } : {}),
+      ...(polarityDegrees !== undefined ? { polarityDegrees } : {}),
       entryDate: inputs.entryDate,
     },
     line,
@@ -308,8 +321,9 @@ async function postHandler(req: NextRequest): Promise<CalculatorResponse> {
   const inputs = parseCalculatorInputs(body);
   const confirmations = parseConfirmations(isObject(body) ? body.confirmations : undefined);
   const contentValuesUsd = parseContentValues(isObject(body) ? body.contentValuesUsd : undefined, inputs.shipmentValueUsd);
+  const polarityDegrees = parsePolarity(isObject(body) ? body.polarityDegrees : undefined);
   const response = (await isMeasuresEngineEnabledFor(inputs.hts10))
-    ? await calculateWithOfficialMeasures(inputs, confirmations, contentValuesUsd)
+    ? await calculateWithOfficialMeasures(inputs, confirmations, contentValuesUsd, polarityDegrees)
     : await calculateWithCandidateCodes(inputs);
   const ban = importProhibitionFor({ hts10: inputs.hts10, countryOfOrigin: inputs.countryOfOrigin, entryDate: inputs.entryDate, confirmations });
   return ban ? { ...response, prohibited: { ...ban, dutyNote: importBanDutyNote(ban) } } : response;

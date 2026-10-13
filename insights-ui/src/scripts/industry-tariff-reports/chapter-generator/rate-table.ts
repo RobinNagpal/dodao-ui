@@ -3,6 +3,7 @@ import type { MeasureEngineLine } from '@/types/tariff-calculator-measures';
 import { parseSpecialRates, SPECIAL_PROGRAMS } from '@/utils/tariff-calculator/measures-engine';
 import { rateRowSearchText } from '@/utils/tariff-reports/chapter-prototype';
 import { shortenDescription } from '@/utils/tariff-reports/line-labels';
+import { formatPolarityRate } from '@/utils/tariff-reports/shipment-duty';
 import type { HtsJsonRow } from '../../tariff-calculator/lib/hts-source';
 import { TODO } from './placeholders';
 
@@ -161,7 +162,7 @@ export function headingsOf(rows: TariffRateTableRow[]): HeadingInfo[] {
     }
     if (r.htsCode10) h.lines.push(r);
   }
-  for (const h of out) h.baseRates = distinct(h.lines.map((l) => l.effectiveGeneral ?? '—'));
+  for (const h of out) h.baseRates = distinct(h.lines.map((l) => (l.effectiveGeneral ? formatPolarityRate(l.effectiveGeneral) ?? l.effectiveGeneral : '—')));
   return out.filter((h) => h.lines.length > 0);
 }
 

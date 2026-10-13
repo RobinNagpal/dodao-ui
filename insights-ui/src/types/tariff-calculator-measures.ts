@@ -278,6 +278,12 @@ export interface MeasureEngineInput {
    * the engine return an error asking for it (never silently charge the full value or nothing).
    */
   contentValuesUsd?: Partial<Record<'steel' | 'aluminum' | 'copper' | 'usContent', number>>;
+  /**
+   * Sugar polarity in degrees (above 0, at most 100) for a base rate graded by polarity (raw cane / beet sugar of heading
+   * 1701: "3.6606¢/kg less 0.020668¢/kg for each degree under 100 degrees …"). Missing = priced at 100°, the rate's
+   * highest amount, and the base line's notes say so.
+   */
+  polarityDegrees?: number;
   /** ISO date. */
   entryDate: string;
 }

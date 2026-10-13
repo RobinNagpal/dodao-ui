@@ -71,7 +71,7 @@ import {
 } from '@/utils/tariff-calculator/fta-quota';
 import { loadImportBans } from '@/utils/tariff-calculator/import-bans';
 import { describeUom, KNOWN_UOMS, qualifiedKey, splitQualifiedKey, splitUnitText } from '@/utils/tariff-calculator/rate-units';
-import { parseRate, type ParsedRate } from '@/utils/tariff-reports/shipment-duty';
+import { chargeAmountUsd, FULL_POLARITY_DEGREES, isValidPolarity, parseRate, rateHasPolarity, type ParsedRate } from '@/utils/tariff-reports/shipment-duty';
 
 // ---------------------------------------------------------------------------
 // Units
@@ -326,16 +326,44 @@ function round2(n: number): number {
 
 type Priced = { ok: true; amount: number } | { ok: false; missingUoms: string[] };
 
-function priceRate(rate: ParsedRate, valueUsd: number, quantities: Record<string, number>): Priced {
+function priceRate(rate: ParsedRate, valueUsd: number, quantities: Record<string, number>, polarityDegrees?: number): Priced {
   let amount = (rate.adValoremPct / 100) * valueUsd;
   const missing: string[] = [];
   for (const charge of rate.perUnit) {
     const uom = normalizeUom(charge.unit.key);
     const qty = quantities[uom];
     if (qty === undefined || !Number.isFinite(qty) || qty < 0) missing.push(uom);
-    else amount += charge.amountUsd * qty;
+    else amount += chargeAmountUsd(charge, polarityDegrees) * qty;
   }
   return missing.length > 0 ? { ok: false, missingUoms: Array.from(new Set(missing)) } : { ok: true, amount };
+}
+
+/** True when a rate text has a part graded by sugar polarity (heading 1701), so the calculator should ask for the polarity. */
+export function rateNeedsPolarity(rateText: string | null | undefined): boolean {
+  return !!rateText && rateHasPolarity(parseRate(rateText));
+}
+
+/** Start of the base-line note when no polarity was given for a polarity-graded rate (scripts match on it). */
+export const POLARITY_ASSUMED = 'Polarity not given';
+
+function centsPerKg(usd: number): string {
+  return `${Number((usd * 100).toFixed(6))}¢/kg`;
+}
+
+/**
+ * The base line's note for a polarity-graded rate: which polarity it was priced at, and — when the importer gave none —
+ * that 100° (the rate's highest amount) was assumed.
+ */
+function polarityNote(rate: ParsedRate, polarityDegrees: number | undefined): string | null {
+  const charge = rate.perUnit.find((c) => c.polarity);
+  if (!charge) return null;
+  const perKg = centsPerKg(chargeAmountUsd(charge, polarityDegrees));
+  if (polarityDegrees === undefined) {
+    return `${POLARITY_ASSUMED}: priced at ${FULL_POLARITY_DEGREES}° (${perKg}), the highest this rate can be. The rate falls for each degree under 100, so enter the polarity from the sugar's polariscope test for the exact duty (CBP takes estimated duties on raw sugar at no less than 96° unless the invoice shows a lower grade, 19 CFR 151.22; the final duty uses the tested polarity).`;
+  }
+  const min = charge.polarity?.minUsd ?? null;
+  const atMin = min !== null && chargeAmountUsd(charge, polarityDegrees) <= min;
+  return `Priced at ${polarityDegrees}° polarity: ${perKg}${atMin ? ', the minimum this rate allows' : ''}.`;
 }
 
 /** Units the per-unit parts of a rate text are charged in (normalized codes); empty for an ad valorem or unreadable rate. */
@@ -713,6 +741,9 @@ export function calculateWithMeasuresAndFacts(
   const quantities = normalizeQuantities(input.quantities);
   const contentError = contentValuesError(input);
   if (contentError) return fail(contentError);
+  if (input.polarityDegrees !== undefined && !isValidPolarity(input.polarityDegrees)) {
+    return fail(`Polarity must be a number of degrees above 0 and at most ${FULL_POLARITY_DEGREES} (got ${input.polarityDegrees}).`);
+  }
 
   // 1. Base rate: column 2, a claimed special program, or general.
   let baseLabel = 'Base rate (HTS general rate)';
@@ -824,7 +855,9 @@ export function calculateWithMeasuresAndFacts(
 
   // 4. Price the base and each measure.
   const missingUoms = new Set<string>();
-  const basePriced = priceRate(baseRate, value, quantities);
+  const basePriced = priceRate(baseRate, value, quantities, input.polarityDegrees);
+  const baseLineNote = polarityNote(baseRate, input.polarityDegrees);
+  if (baseLineNote) baseNotes = [...baseNotes, baseLineNote];
   if (!basePriced.ok) basePriced.missingUoms.forEach((u) => missingUoms.add(u));
   if (missingUoms.size > 0) {
     const uoms = Array.from(missingUoms);

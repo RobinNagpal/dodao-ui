@@ -47,6 +47,7 @@ const CHAPTER_FILES: Record<string, () => Promise<{ default: unknown }>> = {
   '14-plaiting-materials-nes': () => import('@/tariff-data/chapters/14-plaiting-materials-nes.json'),
   '15-fats-and-oils': () => import('@/tariff-data/chapters/15-fats-and-oils.json'),
   '16-prepared-meat-and-fish': () => import('@/tariff-data/chapters/16-prepared-meat-and-fish.json'),
+  '17-sugars-and-confectionery': () => import('@/tariff-data/chapters/17-sugars-and-confectionery.json'),
   '18-cocoa-and-preparations': () => import('@/tariff-data/chapters/18-cocoa-and-preparations.json'),
   '19-cereal-and-bakers-goods': () => import('@/tariff-data/chapters/19-cereal-and-bakers-goods.json'),
   '20-veg-fruit-preparations': () => import('@/tariff-data/chapters/20-veg-fruit-preparations.json'),
@@ -67,6 +68,14 @@ const CHAPTER_FILES: Record<string, () => Promise<{ default: unknown }>> = {
   '35-albuminoidal-substances-and-glues': () => import('@/tariff-data/chapters/35-albuminoidal-substances-and-glues.json'),
   '36-explosives-and-pyrotechnics': () => import('@/tariff-data/chapters/36-explosives-and-pyrotechnics.json'),
   '38-misc-chemical-products': () => import('@/tariff-data/chapters/38-misc-chemical-products.json'),
+  '41-raw-hides-and-leather': () => import('@/tariff-data/chapters/41-raw-hides-and-leather.json'),
+  '42-leather-articles-and-saddlery': () => import('@/tariff-data/chapters/42-leather-articles-and-saddlery.json'),
+  '43-furskins-and-furs': () => import('@/tariff-data/chapters/43-furskins-and-furs.json'),
+  '45-cork-and-articles': () => import('@/tariff-data/chapters/45-cork-and-articles.json'),
+  '46-straw-and-wickerwork': () => import('@/tariff-data/chapters/46-straw-and-wickerwork.json'),
+  '47-wood-pulp-and-scrap': () => import('@/tariff-data/chapters/47-wood-pulp-and-scrap.json'),
+  '49-printing-industry-products': () => import('@/tariff-data/chapters/49-printing-industry-products.json'),
+  '50-silk': () => import('@/tariff-data/chapters/50-silk.json'),
   '72-iron-and-steel': () => import('@/tariff-data/chapters/72-iron-and-steel.json'),
 };
 

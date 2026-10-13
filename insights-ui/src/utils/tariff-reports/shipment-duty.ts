@@ -31,9 +31,49 @@ export interface QuantityUnit {
 }
 
 export interface PerUnitCharge {
-  /** Dollars per unit (cents are converted; a rate per 1,000 units is divided by 1,000). */
+  /**
+   * Dollars per unit (cents are converted; a rate per 1,000 units is divided by 1,000). For a sugar polarity rate
+   * (`polarity` set) this is the amount at 100 degrees, the highest it can be.
+   */
   amountUsd: number;
   unit: QuantityUnit;
+  /** Set for a rate that falls with the sugar's polarity (heading 1701); price it with `chargeAmountUsd`. */
+  polarity?: PolarityScale;
+}
+
+/**
+ * A raw-sugar rate graded by polarity (heading 1701): "3.6606¢/kg less 0.020668¢/kg for each degree under 100 degrees
+ * (and fractions of a degree in proportion) but not less than 3.143854¢/kg". The charge per kg is
+ * `amountUsd − lessPerDegreeUsd × (100 − degrees)`, never below `minUsd`.
+ */
+export interface PolarityScale {
+  /** Dollars per kg taken off for each degree (and fraction of a degree) under 100. */
+  lessPerDegreeUsd: number;
+  /** The rate's floor in dollars per kg; null when the HTS states none. */
+  minUsd: number | null;
+}
+
+/** Polarity in degrees a polarity rate is priced at when the importer doesn't give one: 100°, its highest amount. */
+export const FULL_POLARITY_DEGREES = 100;
+
+/** True when the polarity is a usable number of degrees (above 0, at most 100). */
+export function isValidPolarity(degrees: number): boolean {
+  return Number.isFinite(degrees) && degrees > 0 && degrees <= FULL_POLARITY_DEGREES;
+}
+
+/** Dollars one unit of a per-unit charge costs; a polarity rate is priced at `polarityDegrees` (default 100°). */
+export function chargeAmountUsd(charge: PerUnitCharge, polarityDegrees?: number): number {
+  if (!charge.polarity) return charge.amountUsd;
+  const degrees = polarityDegrees === undefined ? FULL_POLARITY_DEGREES : polarityDegrees;
+  const under = Math.max(0, FULL_POLARITY_DEGREES - degrees);
+  const amount = charge.amountUsd - charge.polarity.lessPerDegreeUsd * under;
+  const floored = charge.polarity.minUsd === null ? amount : Math.max(amount, charge.polarity.minUsd);
+  return Number(Math.max(0, floored).toPrecision(12));
+}
+
+/** True when any per-unit part of the rate is graded by sugar polarity. */
+export function rateHasPolarity(rate: ParsedRate | null | undefined): boolean {
+  return !!rate && rate.perUnit.some((c) => !!c.polarity);
 }
 
 /** One exact rate: an ad valorem part plus any number of per-unit parts. */
@@ -117,15 +157,75 @@ const PER_UNIT_RE = new RegExp(`^(?:\\$\\s*${NUMBER}|${NUMBER}\\s*(?:¢|cents?\\
  * line-break hyphens from the published text ("thou- sand" → "thousand").
  */
 function cleanRateText(text: string): string {
-  return text
-    .replace(/\([^)]*\)/g, ' ')
-    .replace(/\bin place of (the )?base( rate)?\b/gi, ' ')
-    .replace(/([a-z])- ([a-z])/gi, '$1$2')
-    .replace(/\s+/g, ' ')
-    .trim();
+  return (
+    text
+      // The polarity display form's floor, "(min 3.143854¢/kg)", is part of the rate.
+      .replace(/\(\s*(min(?:imum)?\s+[^)]*)\)/gi, ', $1')
+      .replace(/\([^)]*\)/g, ' ')
+      .replace(/\bin place of (the )?base( rate)?\b/gi, ' ')
+      .replace(/([a-z])- ([a-z])/gi, '$1$2')
+      .replace(/\s+/g, ' ')
+      .trim()
+  );
 }
 
 type TermRange = { low: ParsedRate; high: ParsedRate; exact: boolean };
+
+// A dollars-or-cents amount per kg: "3.6606¢/kg", "0.0622005¢ /kg", "$0.04/kg".
+const PER_KG_AMOUNT = `(\\$\\s*${NUMBER}|${NUMBER}\\s*(?:¢|cents?\\b))\\s*/\\s*kg`;
+// HTS wording (parentheticals already removed): "3.6606¢/kg less 0.020668¢/kg for each degree under 100 degrees but not
+// less than 3.143854¢/kg" (column 2 sometimes drops the "than").
+const POLARITY_HTS_RE = new RegExp(
+  `^${PER_KG_AMOUNT}\\s+less\\s+${PER_KG_AMOUNT}\\s+for\\s+each\\s+degree\\s+under\\s+100\\s+degrees(?:\\s*,?\\s*but\\s+not\\s+less(?:\\s+than)?\\s+${PER_KG_AMOUNT})?$`,
+  'i'
+);
+// Display wording (formatPolarityRate): "3.6606¢/kg at 100° polarity, 0.020668¢/kg less per degree under 100, min 3.143854¢/kg".
+const POLARITY_DISPLAY_RE = new RegExp(
+  `^${PER_KG_AMOUNT}\\s+at\\s+100\\s*°?\\s+polarity\\s*,\\s*${PER_KG_AMOUNT}\\s+less\\s+per\\s+degree\\s+under\\s+100\\s*°?(?:\\s*,\\s*min(?:imum)?\\s+${PER_KG_AMOUNT})?$`,
+  'i'
+);
+
+/** Dollars from a PER_KG_AMOUNT match's (dollars, cents) capture pair. */
+function perKgUsd(dollars: string | undefined, cents: string | undefined): number | null {
+  if (dollars !== undefined) return Number(dollars);
+  if (cents !== undefined) return Number((Number(cents) / 100).toPrecision(12));
+  return null;
+}
+
+/** A sugar polarity term ("… less …¢/kg for each degree under 100 degrees …"), in HTS or display wording; null otherwise. */
+function parsePolarityTerm(term: string): PerUnitCharge | null {
+  const m = term.match(POLARITY_HTS_RE) ?? term.match(POLARITY_DISPLAY_RE);
+  if (!m) return null;
+  // Each PER_KG_AMOUNT contributes 3 groups: the whole amount, its dollars, its cents.
+  const full = perKgUsd(m[2], m[3]);
+  const less = perKgUsd(m[5], m[6]);
+  const min = m[7] !== undefined ? perKgUsd(m[8], m[9]) : null;
+  if (full === null || less === null || !(less > 0)) return null;
+  return { amountUsd: full, unit: { key: 'kg', label: 'kg' }, polarity: { lessPerDegreeUsd: less, minUsd: min } };
+}
+
+function centsText(usd: number): string {
+  return `${Number((usd * 100).toPrecision(10))}¢/kg`;
+}
+
+/**
+ * The plain-English form of a sugar polarity rate: "3.6606¢/kg less 0.020668¢/kg for each degree under 100 degrees (and
+ * fractions of a degree in proportion) but not less than 3.143854¢/kg" → "3.6606¢/kg at 100° polarity, 0.020668¢/kg
+ * less per degree under 100 (min 3.143854¢/kg)". Other terms of the rate are kept; null when it has no polarity term.
+ * The result parses back to the same rate.
+ */
+export function formatPolarityRate(text: string): string | null {
+  let changed = false;
+  const terms = text.split(/\s*\+\s*/).map((raw) => {
+    const charge = parsePolarityTerm(cleanRateText(raw));
+    if (!charge?.polarity) return raw.trim();
+    changed = true;
+    const { lessPerDegreeUsd, minUsd } = charge.polarity;
+    const min = minUsd === null ? '' : ` (min ${centsText(minUsd)})`;
+    return `${centsText(charge.amountUsd)} at 100° polarity, ${centsText(lessPerDegreeUsd)} less per degree under 100${min}`;
+  });
+  return changed ? terms.join(' + ') : null;
+}
 
 function zeroRate(): ParsedRate {
   return { adValoremPct: 0, perUnit: [] };
@@ -148,6 +248,12 @@ function parseTerm(term: string): TermRange | null {
     const high = Number(range[3]);
     if (!(high >= low)) return null;
     return { low: { adValoremPct: low, perUnit: [] }, high: { adValoremPct: high, perUnit: [] }, exact: low === high };
+  }
+
+  const polarity = parsePolarityTerm(t);
+  if (polarity) {
+    const rate = { adValoremPct: 0, perUnit: [polarity] };
+    return { low: rate, high: rate, exact: true };
   }
 
   const perUnit = t.match(PER_UNIT_RE);
@@ -229,13 +335,21 @@ export function quantityUnits(rates: ParsedRate[]): QuantityUnit[] {
   return Array.from(seen.values());
 }
 
-/** Dollars a parsed rate costs on a shipment. Null when a per-unit quantity is missing. */
-export function rateDollars(rate: ParsedRate, customsValueUsd: number, quantities: Record<string, number | undefined>): number | null {
+/**
+ * Dollars a parsed rate costs on a shipment. Null when a per-unit quantity is missing. A sugar polarity rate is priced at
+ * `polarityDegrees` (default 100°, its highest amount).
+ */
+export function rateDollars(
+  rate: ParsedRate,
+  customsValueUsd: number,
+  quantities: Record<string, number | undefined>,
+  polarityDegrees?: number
+): number | null {
   let total = (rate.adValoremPct / 100) * customsValueUsd;
   for (const charge of rate.perUnit) {
     const qty = quantities[charge.unit.key];
     if (qty === undefined || !Number.isFinite(qty) || qty < 0) return null;
-    total += charge.amountUsd * qty;
+    total += chargeAmountUsd(charge, polarityDegrees) * qty;
   }
   return total;
 }

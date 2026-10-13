@@ -6,6 +6,7 @@ import ConfirmationQuestions, { confirmationsForQuestions, setConfirmed, setFact
 import ContentValueFields, { CONTENT_DEEP_LINK_PARAMS, ContentValueDrafts, contentValuesForInputs } from '@/components/tariff-calculator/ContentValueFields';
 import HtsCodeSearch from '@/components/tariff-calculator/HtsCodeSearch';
 import ImportProhibitedNotice from '@/components/tariff-calculator/ImportProhibitedNotice';
+import PolarityField, { polarityForInput } from '@/components/tariff-calculator/PolarityField';
 import {
   dealsForCountry,
   MeasureSources,
@@ -48,6 +49,8 @@ interface FormState {
   confirmations: TariffShipmentConfirmations;
   // Official-measures engine only: declared content values (metal content, U.S.-content value) as typed (issue #1796).
   contentValues: ContentValueDrafts;
+  // Official-measures engine only: sugar polarity in degrees as typed, for rates graded by polarity (heading 1701).
+  polarity: string;
 }
 
 interface SelectedCode {
@@ -71,6 +74,7 @@ const INITIAL_FORM: FormState = {
   productType: '',
   confirmations: {},
   contentValues: {},
+  polarity: '',
 };
 
 // Extra-duty data older than this gets a visible "may be missing recent tariffs" warning.
@@ -247,6 +251,8 @@ export default function CalculatorClient(): JSX.Element {
   const questionsRef = useRef<TariffConfirmationQuestion[] | null>(null);
   // Content values currently asked, so a calculation only sends those.
   const contentInputsRef = useRef<TariffContentInput[] | null>(null);
+  // Rates graded by sugar polarity on the picked line, so a calculation only sends a polarity when it is asked.
+  const polarityRatesRef = useRef<string[]>([]);
 
   const updateForm = useCallback(<K extends keyof FormState>(key: K, value: FormState[K]) => {
     setForm((prev) => ({ ...prev, [key]: value }));
@@ -278,6 +284,7 @@ export default function CalculatorClient(): JSX.Element {
         productType: currentForm.productType || undefined,
         confirmations: questionsRef.current ? confirmationsForQuestions(currentForm.confirmations, questionsRef.current) : currentForm.confirmations,
         contentValuesUsd: contentValuesForInputs(currentForm.contentValues, contentInputsRef.current ?? []),
+        polarityDegrees: polarityForInput(currentForm.polarity, polarityRatesRef.current),
       };
       const res = await fetch('/api/tariff-calculator/calculate', {
         method: 'POST',
@@ -310,7 +317,7 @@ export default function CalculatorClient(): JSX.Element {
     setError(null);
     setChosenExclusions(new Set());
     setRequirements(null);
-    setForm((prev) => ({ ...prev, quantities: {}, claimedSpi: '', productType: '', confirmations: {}, contentValues: {} }));
+    setForm((prev) => ({ ...prev, quantities: {}, claimedSpi: '', productType: '', confirmations: {}, contentValues: {}, polarity: '' }));
   }
 
   function handleManualSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -379,6 +386,7 @@ export default function CalculatorClient(): JSX.Element {
   const confirmationQuestions = requirements?.officialMeasures?.confirmationQuestions ?? null;
   questionsRef.current = confirmationQuestions;
   contentInputsRef.current = requirements?.officialMeasures?.contentInputs ?? null;
+  polarityRatesRef.current = requirements?.officialMeasures?.polarityRates ?? [];
 
   // Deep links: ?hts=&country=&value=&qty= pre-fill the form and calculate
   // once the requirements for the code are known.
@@ -471,6 +479,11 @@ export default function CalculatorClient(): JSX.Element {
                   inputs={requirements.officialMeasures.contentInputs ?? []}
                   values={form.contentValues}
                   onChange={(next) => updateForm('contentValues', next)}
+                />
+                <PolarityField
+                  polarityRates={requirements.officialMeasures.polarityRates ?? []}
+                  value={form.polarity}
+                  onChange={(next) => updateForm('polarity', next)}
                 />
               </>
             ) : null

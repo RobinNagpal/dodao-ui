@@ -57,7 +57,7 @@ export const OFFICIAL_SOURCE_DOMAINS: readonly string[] = [
   'usitc.gov', // includes hts.usitc.gov, dataweb.usitc.gov
   'ecfr.gov',
   'congress.gov',
-  'house.gov', // uscode.house.gov — U.S. Code
+  'house.gov', // uscode.house.gov — U.S. Code (but not its view.xhtml links; see checkUrl)
   // U.S. — agencies
   'cbp.gov',
   'content.govdelivery.com', // CBP CSMS messages
@@ -80,6 +80,8 @@ export const OFFICIAL_SOURCE_DOMAINS: readonly string[] = [
   'cpsc.gov', // consumer product safety rules and certificates
   'ttb.gov', // alcohol and tobacco permits
   'epa.gov',
+  'ftc.gov', // fur, textile and leather labeling rules
+  'dhs.gov', // UFLPA strategy and entity list
   // U.S. courts
   'supremecourt.gov',
   'uscourts.gov', // includes cit.uscourts.gov, cafc.uscourts.gov
@@ -186,6 +188,12 @@ function checkUrl(report: Report, where: string, url: string): void {
   }
   if (parsed.protocol !== 'https:') report.error(where, `URL must be https: "${url}"`);
   if (!isOfficialHost(parsed.hostname)) report.warn(where, `host "${parsed.hostname}" is not in OFFICIAL_SOURCE_DOMAINS (${url})`);
+  // uscode.house.gov's `view.xhtml?req=granuleid:…` links now answer "Page Not Found" (with HTTP 200). Cite the
+  // govinfo U.S. Code page instead: https://www.govinfo.gov/link/uscode/<title>/<section>?type=usc&year=mostrecent&link-type=html
+  // resolves to it.
+  if (parsed.hostname.toLowerCase() === 'uscode.house.gov' && parsed.pathname === '/view.xhtml') {
+    report.error(where, `uscode.house.gov view.xhtml links no longer resolve; cite the govinfo U.S. Code page instead (${url})`);
+  }
 }
 
 /** The `sources` array of a page, when it holds id-keyed source objects. */
