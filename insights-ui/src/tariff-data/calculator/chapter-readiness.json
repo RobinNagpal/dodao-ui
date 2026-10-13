@@ -19,6 +19,7 @@
     "14",
     "15",
     "16",
+    "17",
     "18",
     "19",
     "20",
@@ -52,14 +53,18 @@
     "48",
     "49",
     "50",
+    "51",
     "52",
     "53",
     "54",
     "55",
     "56",
     "57",
+    "58",
     "59",
     "60",
+    "61",
+    "62",
     "63",
     "64",
     "65",
@@ -74,9 +79,11 @@
     "74",
     "75",
     "76",
+    "78",
     "79",
     "80",
     "81",
+    "82",
     "83",
     "84",
     "85",
@@ -84,12 +91,16 @@
     "87",
     "88",
     "89",
+    "90",
+    "91",
     "92",
+    "93",
     "94",
     "95",
+    "96",
     "97"
   ],
-  "notReady": ["17", "51", "58", "61", "62", "78", "82", "90", "91", "93", "96"],
+  "notReady": [],
   "programs": [
     {
       "id": "ieepa",
@@ -1091,7 +1102,7 @@
     {
       "chapter": "17",
       "lines": 92,
-      "status": "NOT READY",
+      "status": "READY",
       "gaps": [],
       "upcoming": [],
       "accepted": [],
@@ -1103,64 +1114,7 @@
         "Section 338 duties on Canada (U.S. note 51): 12 line(s)"
       ],
       "acceptedConditions": [],
-      "rateGaps": [
-        {
-          "column": "general",
-          "rateText": "3.6606¢/kg less 0.020668¢/kg for each degree under 100 degrees (and fractions of a degree in proportion) but not less than 3.143854¢/kg",
-          "problem": "unreadable",
-          "lines": 9,
-          "exampleLine": "1701120500"
-        },
-        {
-          "column": "general",
-          "rateText": "1.4606¢/kg less 0.020668¢/kg for each degree under 100 degrees (and fractions of a degree in proportion) but not less than 0.943854¢/kg",
-          "problem": "unreadable",
-          "lines": 7,
-          "exampleLine": "1701130500"
-        },
-        {
-          "column": "column2",
-          "rateText": "6.58170¢/kg less 0.0622005¢ /kg for each degree under 100 degrees (and fractions of a degree in proportion) but not less than 5.031562¢ /kg",
-          "problem": "unreadable",
-          "lines": 8,
-          "exampleLine": "1701120500"
-        },
-        {
-          "column": "column2",
-          "rateText": "4.3817¢/kg less 0.0622005¢/kg for each degree under 100 degrees (and fractions of a degree in proportion) but not less than 2.831562¢/kg",
-          "problem": "unreadable",
-          "lines": 3,
-          "exampleLine": "1701140500"
-        },
-        {
-          "column": "column2",
-          "rateText": "4.3817¢/kg less 0.0622005¢/kg for each degree under 100 degrees (and fractions of a degree in proportion) but not less than 2.831562¢ /kg",
-          "problem": "unreadable",
-          "lines": 2,
-          "exampleLine": "1701132000"
-        },
-        {
-          "column": "column2",
-          "rateText": "4.3817¢/kg less 0.0622005¢ /kg for each degree under 100 degrees (and fractions of a degree in proportion) but not less than 2.831562¢ /kg",
-          "problem": "unreadable",
-          "lines": 1,
-          "exampleLine": "1701130500"
-        },
-        {
-          "column": "column2",
-          "rateText": "4.3817¢/kg less 0.0622005¢ /kg for each degree under 100 degrees (and fractions of a degree in proportion) but not less 2.831562¢ /kg",
-          "problem": "unreadable",
-          "lines": 1,
-          "exampleLine": "1701131000"
-        },
-        {
-          "column": "column2",
-          "rateText": "6.58170¢/kg less 0.0622005¢/kg for each degree under 100 degrees (and fractions of a degree in proportion) but not less than 5.031562¢ /kg",
-          "problem": "unreadable",
-          "lines": 1,
-          "exampleLine": "1701911000"
-        }
-      ],
+      "rateGaps": [],
       "acceptedRateGaps": []
     },
     {
@@ -1815,7 +1769,7 @@
     {
       "chapter": "51",
       "lines": 124,
-      "status": "NOT READY",
+      "status": "READY",
       "gaps": [],
       "upcoming": [],
       "accepted": [],
@@ -1829,15 +1783,7 @@
         "Section 338 duties on Canada (U.S. note 51): 3 line(s)"
       ],
       "acceptedConditions": [],
-      "rateGaps": [
-        {
-          "column": "column2",
-          "rateText": "Free, under bond",
-          "problem": "unreadable",
-          "lines": 4,
-          "exampleLine": "5101111000"
-        }
-      ],
+      "rateGaps": [],
       "acceptedRateGaps": []
     },
     {
@@ -1963,7 +1909,7 @@
     {
       "chapter": "58",
       "lines": 111,
-      "status": "NOT READY",
+      "status": "READY",
       "gaps": [],
       "upcoming": [],
       "accepted": [],
@@ -1977,78 +1923,7 @@
         "Section 338 duties on Canada (U.S. note 51): 1 line(s)"
       ],
       "acceptedConditions": [],
-      "rateGaps": [
-        {
-          "column": "general",
-          "rateText": "See additional U.S. note 3",
-          "problem": "unreadable",
-          "lines": 3,
-          "exampleLine": "5810929030"
-        },
-        {
-          "column": "general",
-          "rateText": "See additional U.S. note 1",
-          "problem": "unreadable",
-          "lines": 2,
-          "exampleLine": "5810910010"
-        },
-        {
-          "column": "general",
-          "rateText": "See additional U.S. note 2",
-          "problem": "unreadable",
-          "lines": 1,
-          "exampleLine": "5810921000"
-        },
-        {
-          "column": "general",
-          "rateText": "See additional U.S. note 4",
-          "problem": "unreadable",
-          "lines": 1,
-          "exampleLine": "5810991000"
-        },
-        {
-          "column": "general",
-          "rateText": "See additional U.S. note 5",
-          "problem": "unreadable",
-          "lines": 1,
-          "exampleLine": "5810999000"
-        },
-        {
-          "column": "column2",
-          "rateText": "See additional U.S. note 3",
-          "problem": "unreadable",
-          "lines": 3,
-          "exampleLine": "5810929030"
-        },
-        {
-          "column": "column2",
-          "rateText": "See additional U.S. note 1",
-          "problem": "unreadable",
-          "lines": 2,
-          "exampleLine": "5810910010"
-        },
-        {
-          "column": "column2",
-          "rateText": "See additional U.S. note 2",
-          "problem": "unreadable",
-          "lines": 1,
-          "exampleLine": "5810921000"
-        },
-        {
-          "column": "column2",
-          "rateText": "See additional U.S. note 4",
-          "problem": "unreadable",
-          "lines": 1,
-          "exampleLine": "5810991000"
-        },
-        {
-          "column": "column2",
-          "rateText": "See additional U.S. note 5",
-          "problem": "unreadable",
-          "lines": 1,
-          "exampleLine": "5810999000"
-        }
-      ],
+      "rateGaps": [],
       "acceptedRateGaps": []
     },
     {
@@ -2095,7 +1970,7 @@
     {
       "chapter": "61",
       "lines": 838,
-      "status": "NOT READY",
+      "status": "READY",
       "gaps": [],
       "upcoming": [],
       "accepted": [],
@@ -2109,42 +1984,13 @@
         "Section 338 duties on Canada (U.S. note 51): 55 line(s)"
       ],
       "acceptedConditions": [],
-      "rateGaps": [
-        {
-          "column": "general",
-          "rateText": "The rate applicable to each garment in the ensemble if separately entered",
-          "problem": "unreadable",
-          "lines": 119,
-          "exampleLine": "6103220010"
-        },
-        {
-          "column": "general",
-          "rateText": "The rate applicable to each garment in the ensemble if entered separately",
-          "problem": "unreadable",
-          "lines": 7,
-          "exampleLine": "6104291010"
-        },
-        {
-          "column": "column2",
-          "rateText": "The rate applicable to each garment in the ensemble if separately entered",
-          "problem": "unreadable",
-          "lines": 119,
-          "exampleLine": "6103220010"
-        },
-        {
-          "column": "column2",
-          "rateText": "The rate applicable to each garment in the ensemble if entered separately",
-          "problem": "unreadable",
-          "lines": 7,
-          "exampleLine": "6104291010"
-        }
-      ],
+      "rateGaps": [],
       "acceptedRateGaps": []
     },
     {
       "chapter": "62",
       "lines": 1247,
-      "status": "NOT READY",
+      "status": "READY",
       "gaps": [],
       "upcoming": [],
       "accepted": [],
@@ -2159,29 +2005,7 @@
         "Section 338 duties on Canada (U.S. note 51): 74 line(s)"
       ],
       "acceptedConditions": [],
-      "rateGaps": [
-        {
-          "column": "general",
-          "rateText": "The rate applicable to each garment in the ensemble if separately entered",
-          "problem": "unreadable",
-          "lines": 94,
-          "exampleLine": "6203223010"
-        },
-        {
-          "column": "general",
-          "rateText": "The rate applicable to each garment in the in the ensemble if separately entered",
-          "problem": "unreadable",
-          "lines": 11,
-          "exampleLine": "6203293010"
-        },
-        {
-          "column": "column2",
-          "rateText": "The rate applicable to each garment in the ensemble if separately entered",
-          "problem": "unreadable",
-          "lines": 105,
-          "exampleLine": "6203223010"
-        }
-      ],
+      "rateGaps": [],
       "acceptedRateGaps": []
     },
     {
@@ -2484,7 +2308,7 @@
     {
       "chapter": "78",
       "lines": 13,
-      "status": "NOT READY",
+      "status": "READY",
       "gaps": [],
       "upcoming": [],
       "accepted": [],
@@ -2498,15 +2322,7 @@
         "Section 301 (Nicaragua): 13 line(s)"
       ],
       "acceptedConditions": [],
-      "rateGaps": [
-        {
-          "column": "general",
-          "rateText": "2.5% on the value of the lead content",
-          "problem": "unreadable",
-          "lines": 5,
-          "exampleLine": "7801100000"
-        }
-      ],
+      "rateGaps": [],
       "acceptedRateGaps": []
     },
     {
@@ -2574,7 +2390,7 @@
     {
       "chapter": "82",
       "lines": 189,
-      "status": "NOT READY",
+      "status": "READY",
       "gaps": [],
       "upcoming": [],
       "accepted": [],
@@ -2590,29 +2406,7 @@
         "Section 338 duties on Canada (U.S. note 51): 18 line(s)"
       ],
       "acceptedConditions": [],
-      "rateGaps": [
-        {
-          "column": "general",
-          "rateText": "The rate of duty applicable to that article in the set subject to the highest rate of duty",
-          "problem": "unreadable",
-          "lines": 5,
-          "exampleLine": "8205906000"
-        },
-        {
-          "column": "column2",
-          "rateText": "The rate of duty applicable to that article in the set subject to the highest rate of duty",
-          "problem": "unreadable",
-          "lines": 4,
-          "exampleLine": "8205906000"
-        },
-        {
-          "column": "column2",
-          "rateText": "The rate of duty appli- cable to that article in the set subject to the high- est rate of duty",
-          "problem": "unreadable",
-          "lines": 1,
-          "exampleLine": "8211100000"
-        }
-      ],
+      "rateGaps": [],
       "acceptedRateGaps": []
     },
     {
@@ -2778,7 +2572,7 @@
     {
       "chapter": "90",
       "lines": 421,
-      "status": "NOT READY",
+      "status": "READY",
       "gaps": [],
       "upcoming": [],
       "accepted": [],
@@ -2795,28 +2589,13 @@
         "Section 338 duties on Canada (U.S. note 51): 1 line(s)"
       ],
       "acceptedConditions": ["s232-alu-russia-smelted-other-origin"],
-      "rateGaps": [
-        {
-          "column": "general",
-          "rateText": "The rate applicable to the article of which it is a part or accessory",
-          "problem": "unreadable",
-          "lines": 10,
-          "exampleLine": "9005904000"
-        },
-        {
-          "column": "column2",
-          "rateText": "The rate applicable to the article of which it is a part or accessory",
-          "problem": "unreadable",
-          "lines": 18,
-          "exampleLine": "9005904000"
-        }
-      ],
+      "rateGaps": [],
       "acceptedRateGaps": []
     },
     {
       "chapter": "91",
       "lines": 82,
-      "status": "NOT READY",
+      "status": "READY",
       "gaps": [],
       "upcoming": [],
       "accepted": [],
@@ -2829,50 +2608,7 @@
         "Section 301 (Nicaragua): 82 line(s)"
       ],
       "acceptedConditions": [],
-      "rateGaps": [
-        {
-          "column": "general",
-          "rateText": "The rate applicable to the complete, assembled movement",
-          "problem": "unreadable",
-          "lines": 2,
-          "exampleLine": "9110110000"
-        },
-        {
-          "column": "general",
-          "rateText": "4.3% + 1.7¢/jewel + 0.2¢ for each other piece or part, but if consisting in part of a plate or a set of plates the total duty shall not exceed the duty for the complete movement",
-          "problem": "unknown unit \"for each other piece or part, but if consisting in part of a plate or a set of plates the total duty shall not exceed the duty for the complete movement\"",
-          "lines": 1,
-          "exampleLine": "9110904000"
-        },
-        {
-          "column": "general",
-          "rateText": "6% + 2.3¢/jewel + 0.2¢ for each other piece or part, but if consisting in part of a plate or a set of plates the total duty shall not exceed the duty for the complete movement",
-          "problem": "unknown unit \"for each other piece or part, but if consisting in part of a plate or a set of plates the total duty shall not exceed the duty for the complete movement\"",
-          "lines": 1,
-          "exampleLine": "9114903000"
-        },
-        {
-          "column": "column2",
-          "rateText": "65% + 25¢/jewel + 3¢ for each other piece or part, but if consisting in part of a plate or a set of plates the total duty shall not exceed the duty for the complete movement",
-          "problem": "unknown unit \"for each other piece or part, but if consisting in part of a plate or a set of plates the total duty shall not exceed the duty for the complete movement\"",
-          "lines": 2,
-          "exampleLine": "9110904000"
-        },
-        {
-          "column": "column2",
-          "rateText": "The rate applicable to the complete, assembled",
-          "problem": "unreadable",
-          "lines": 1,
-          "exampleLine": "9110110000"
-        },
-        {
-          "column": "column2",
-          "rateText": "The rate applicable to the complete, assembled movement",
-          "problem": "unreadable",
-          "lines": 1,
-          "exampleLine": "9110902000"
-        }
-      ],
+      "rateGaps": [],
       "acceptedRateGaps": []
     },
     {
@@ -2897,7 +2633,7 @@
     {
       "chapter": "93",
       "lines": 67,
-      "status": "NOT READY",
+      "status": "READY",
       "gaps": [],
       "upcoming": [],
       "accepted": [],
@@ -2911,29 +2647,7 @@
         "Section 301 (Nicaragua): 67 line(s)"
       ],
       "acceptedConditions": [],
-      "rateGaps": [
-        {
-          "column": "general",
-          "rateText": "3.1% on the value of the rifle + 13% on the value of the telescopic sight, if any",
-          "problem": "unreadable",
-          "lines": 6,
-          "exampleLine": "9303308005"
-        },
-        {
-          "column": "general",
-          "rateText": "3.8% on the value of the rifle + 10% on the value of the telescopic sight, if any",
-          "problem": "unreadable",
-          "lines": 3,
-          "exampleLine": "9303304010"
-        },
-        {
-          "column": "general",
-          "rateText": "4.7% on the value of the rifle + 20% on the value of the telescopic sight, if any",
-          "problem": "unreadable",
-          "lines": 2,
-          "exampleLine": "9301903010"
-        }
-      ],
+      "rateGaps": [],
       "acceptedRateGaps": []
     },
     {
@@ -2984,7 +2698,7 @@
     {
       "chapter": "96",
       "lines": 157,
-      "status": "NOT READY",
+      "status": "READY",
       "gaps": [],
       "upcoming": [],
       "accepted": [],
@@ -2999,71 +2713,7 @@
         "Section 301 (Nicaragua): 157 line(s)"
       ],
       "acceptedConditions": ["s232-alu-russia-smelted-other-origin"],
-      "rateGaps": [
-        {
-          "column": "general",
-          "rateText": "The rate applicable to the article of which it is an accessory",
-          "problem": "unreadable",
-          "lines": 8,
-          "exampleLine": "9620001500"
-        },
-        {
-          "column": "general",
-          "rateText": "0.3¢/line/ gross + 4.6%",
-          "problem": "unknown unit \"line/ gross\"",
-          "lines": 1,
-          "exampleLine": "9606214000"
-        },
-        {
-          "column": "general",
-          "rateText": "0.3¢/line/ gross + 4.5%",
-          "problem": "unknown unit \"line/ gross\"",
-          "lines": 1,
-          "exampleLine": "9606292000"
-        },
-        {
-          "column": "general",
-          "rateText": "0.18¢/line/ gross + 2.5%",
-          "problem": "unknown unit \"line/ gross\"",
-          "lines": 1,
-          "exampleLine": "9606294000"
-        },
-        {
-          "column": "general",
-          "rateText": "The rate applicable to each article in the absence of this subheading",
-          "problem": "unreadable",
-          "lines": 1,
-          "exampleLine": "9608500000"
-        },
-        {
-          "column": "column2",
-          "rateText": "The rate applicable to the article of which it is an accessory",
-          "problem": "unreadable",
-          "lines": 8,
-          "exampleLine": "9620001500"
-        },
-        {
-          "column": "column2",
-          "rateText": "1.5¢/line/ gross + 25%",
-          "problem": "unknown unit \"line/ gross\"",
-          "lines": 2,
-          "exampleLine": "9606214000"
-        },
-        {
-          "column": "column2",
-          "rateText": "1.75¢/line/ gross + 25%",
-          "problem": "unknown unit \"line/ gross\"",
-          "lines": 1,
-          "exampleLine": "9606294000"
-        },
-        {
-          "column": "column2",
-          "rateText": "The rate applicable, to each article in the absence of this subheading",
-          "problem": "unreadable",
-          "lines": 1,
-          "exampleLine": "9608500000"
-        }
-      ],
+      "rateGaps": [],
       "acceptedRateGaps": []
     },
     {

@@ -41,6 +41,7 @@
 
 import type {
   CalculateWithMeasures,
+  MeasureEngineReferencedLine,
   TariffConfirmationFact,
   TariffContentBasis,
   TariffImportBan,
@@ -71,7 +72,19 @@ import {
 } from '@/utils/tariff-calculator/fta-quota';
 import { loadImportBans } from '@/utils/tariff-calculator/import-bans';
 import { describeUom, KNOWN_UOMS, qualifiedKey, splitQualifiedKey, splitUnitText } from '@/utils/tariff-calculator/rate-units';
-import { chargeAmountUsd, FULL_POLARITY_DEGREES, isValidPolarity, parseRate, rateHasPolarity, type ParsedRate } from '@/utils/tariff-reports/shipment-duty';
+import { resolveRateNote } from '@/utils/tariff-calculator/rate-notes';
+import {
+  chargeAmountUsd,
+  componentLabel,
+  FULL_POLARITY_DEGREES,
+  isValidPolarity,
+  parseExtendedRate,
+  rateHasPolarity,
+  type ExtendedRate,
+  type ParsedRate,
+  type RateReference,
+  type RateReferenceSubject,
+} from '@/utils/tariff-reports/shipment-duty';
 
 // ---------------------------------------------------------------------------
 // Units
@@ -122,6 +135,8 @@ function normalizePlainUom(raw: string): string {
  * "KG:gross weight". Unknown units are upper-cased.
  */
 export function normalizeUom(raw: string): string {
+  // Buttons: the HTS reporting unit "gr.lines" is the line-gross the "¢/line/ gross" rates charge on.
+  if (/^gr\.?\s?lines?$/i.test(raw.trim())) return qualifiedKey('GROSS', 'size in lines');
   // HTS reporting units for metal content ("Mo kg", "W kg", "Cu kg") are the qualified quantity the rate charges on.
   const metal = /^(mo|w|cu|pb|zn|mg|mn|si)\s?kg$/i.exec(raw.trim());
   if (metal) return qualifiedKey('KG', `${METAL_CONTENT[metal[1].toLowerCase()]} content`);
@@ -304,7 +319,7 @@ export function claimablePrograms(
         continue;
       }
       // Rates the parser can't price are not offered.
-      if (!parseRate(entry.rateText)) continue;
+      if (!parseExtendedRate(entry.rateText)) continue;
       seen.add(code);
       out.push({ code, name: info?.name ?? `Program ${code}`, rateText: entry.rateText, rateTexts: [entry.rateText], countries: info?.countries ?? [] });
     }
@@ -340,7 +355,7 @@ function priceRate(rate: ParsedRate, valueUsd: number, quantities: Record<string
 
 /** True when a rate text has a part graded by sugar polarity (heading 1701), so the calculator should ask for the polarity. */
 export function rateNeedsPolarity(rateText: string | null | undefined): boolean {
-  return !!rateText && rateHasPolarity(parseRate(rateText));
+  return !!rateText && rateHasPolarity(parseExtendedRate(rateText));
 }
 
 /** Start of the base-line note when no polarity was given for a polarity-graded rate (scripts match on it). */
@@ -368,7 +383,7 @@ function polarityNote(rate: ParsedRate, polarityDegrees: number | undefined): st
 
 /** Units the per-unit parts of a rate text are charged in (normalized codes); empty for an ad valorem or unreadable rate. */
 export function rateUoms(rateText: string | null | undefined): string[] {
-  const parsed = rateText ? parseRate(rateText) : null;
+  const parsed = rateText ? parseExtendedRate(rateText) : null;
   return parsed ? Array.from(new Set(parsed.perUnit.map((c) => normalizeUom(c.unit.key)))) : [];
 }
 
@@ -474,6 +489,401 @@ function contentValuesError(input: MeasureEngineInput): string | null {
     if (v > input.customsValueUsd + 1e-9) return `${what} (${formatUsd(v)}) can't be more than the customs value (${formatUsd(input.customsValueUsd)}).`;
   }
   return null;
+}
+
+// ---------------------------------------------------------------------------
+// Base rates that need component values or another line's rate (issue #1812)
+// ---------------------------------------------------------------------------
+
+/** Start of the engine error for a missing component value of a base rate (scripts match on it). */
+export const COMPONENT_VALUE_REQUIRED = 'Value required';
+
+/** Start of the engine error for a base rate that refers to another line the importer hasn't named (scripts match on it). */
+export const REFERENCED_LINE_REQUIRED = 'Referenced line required';
+
+/** Which column the base rate came from, so a referenced line is priced in the same column. */
+type BaseColumn = { kind: 'general' } | { kind: 'column2' } | { kind: 'special'; spi: string } | { kind: 'quota' };
+
+/** How the calculator asks for the line a reference points to. */
+export interface ReferencePrompt {
+  /** "the article of which it is a part or accessory" — completes "the rate of …". */
+  subject: string;
+  /** The question, e.g. "HTS code of the article this is a part or accessory of". */
+  prompt: string;
+  /** One sentence on what to enter. */
+  help: string;
+}
+
+export const REFERENCE_PROMPTS: Record<RateReferenceSubject, ReferencePrompt> = {
+  partOrAccessory: {
+    subject: 'the article of which it is a part or accessory',
+    prompt: 'HTS code of the article this is a part or accessory of',
+    help: 'The duty is the rate of that article, charged on the value of this shipment. Enter the 10-digit HTS code the complete article would be entered under.',
+  },
+  accessory: {
+    subject: 'the article of which it is an accessory',
+    prompt: 'HTS code of the article this is an accessory of',
+    help: 'The duty is the rate of that article, charged on the value of this shipment. Enter the 10-digit HTS code the article would be entered under.',
+  },
+  setHighestRate: {
+    subject: 'the article in the set subject to the highest rate of duty',
+    prompt: 'HTS code of the article in the set with the highest rate of duty',
+    help: 'The whole set pays the rate of the one article in it that has the highest rate of duty. Enter that article’s 10-digit HTS code.',
+  },
+  completeMovement: {
+    subject: 'the complete, assembled movement',
+    prompt: 'HTS code of the complete, assembled movement',
+    help: 'Enter the 10-digit HTS code the movement would be entered under complete and assembled (heading 9108 or 9109).',
+  },
+  garment: {
+    subject: 'each garment in the ensemble, if entered separately',
+    prompt: 'Each garment of the ensemble: its own HTS code and value',
+    help: 'Each garment pays the rate it would pay if entered separately, on its own value. Enter each garment’s 10-digit HTS code and value; the values must add up to the shipment value.',
+  },
+  setArticle: {
+    subject: 'each article of the set, in the absence of this subheading',
+    prompt: 'Each article of the set: its own HTS code and value',
+    help: 'Each article pays the rate it would pay if this subheading did not exist (its own heading 9608.10–9608.40 line), on its own value. The values must add up to the shipment value.',
+  },
+  notEmbroidered: {
+    subject: 'such product if not embroidered',
+    prompt: 'HTS code of the same fabric without the embroidery',
+    help: 'Embroidery in the piece pays at least the rate of the same fabric if not embroidered. Enter the 10-digit HTS code that fabric would be entered under.',
+  },
+};
+
+/** The prompt for a reference; a cap on movement parts reads "the complete movement". */
+export function referencePrompt(ref: Pick<RateReference, 'subject' | 'kind'>): ReferencePrompt {
+  const p = REFERENCE_PROMPTS[ref.subject];
+  if (ref.subject === 'completeMovement' && ref.kind === 'cap') {
+    return {
+      subject: 'the complete movement',
+      prompt: 'HTS code of the complete movement these parts belong to',
+      help: 'Parts that include a plate or a set of plates pay no more than the duty on the complete movement. Enter the 10-digit HTS code of that movement (heading 9108 or 9109).',
+    };
+  }
+  return p;
+}
+
+/** A value a line's base rate is charged on, for the calculator form ("Value of the lead content (USD)"). */
+export interface BaseRateComponentInput {
+  /** Key in `componentValuesUsd`, e.g. "lead content". */
+  component: string;
+  label: string;
+  ifAny: boolean;
+  /** The rate texts that charge on it. */
+  rateTexts: string[];
+}
+
+/** Another line a base rate refers to, for the calculator form. */
+export interface BaseRateReferenceInput extends ReferencePrompt {
+  kind: RateReference['kind'];
+  referenceSubject: RateReferenceSubject;
+  /** floor / cap: asked only when this fact is answered yes. */
+  conditionFact?: string;
+  rateTexts: string[];
+}
+
+/** The line's base rates (general, column 2 and the given trade-deal rates), with "See additional U.S. note n" resolved. */
+function lineBaseRates(line: Pick<MeasureEngineLine, 'hts10' | 'general' | 'column2'>, dealRateTexts: string[]): { text: string; rate: ExtendedRate }[] {
+  const out: { text: string; rate: ExtendedRate }[] = [];
+  const add = (raw: string | null | undefined, column: 'general' | 'column2' | null): void => {
+    if (!raw) return;
+    const note = column ? resolveRateNote(line.hts10, column, raw) : null;
+    const text = note && note.ok ? note.rateText : raw;
+    const rate = parseExtendedRate(text);
+    if (rate && !out.some((o) => o.text === text)) out.push({ text, rate });
+  };
+  add(line.general, 'general');
+  add(line.column2, 'column2');
+  for (const t of dealRateTexts) add(t, null);
+  return out;
+}
+
+/**
+ * What the calculator form should ask for a line's base rates beyond quantities (issue #1812): the component values
+ * ("2.5% on the value of the lead content") and the referenced line(s) ("The rate applicable to each garment in the
+ * ensemble if separately entered"). Pure, like the engine.
+ */
+export function baseRateInputsForLine(
+  line: Pick<MeasureEngineLine, 'hts10' | 'general' | 'column2'>,
+  dealRateTexts: string[] = []
+): { componentInputs: BaseRateComponentInput[]; referenceInputs: BaseRateReferenceInput[] } {
+  const componentInputs: BaseRateComponentInput[] = [];
+  const referenceInputs: BaseRateReferenceInput[] = [];
+  for (const { text, rate } of lineBaseRates(line, dealRateTexts)) {
+    for (const c of rate.components) {
+      const existing = componentInputs.find((x) => x.component === c.component);
+      if (existing) {
+        if (!existing.rateTexts.includes(text)) existing.rateTexts.push(text);
+        existing.ifAny = existing.ifAny && c.ifAny;
+        existing.label = componentLabel(existing);
+      } else componentInputs.push({ component: c.component, label: componentLabel(c), ifAny: c.ifAny, rateTexts: [text] });
+    }
+    const ref = rate.reference;
+    if (!ref) continue;
+    const existing = referenceInputs.find((x) => x.kind === ref.kind && x.referenceSubject === ref.subject);
+    if (existing) {
+      if (!existing.rateTexts.includes(text)) existing.rateTexts.push(text);
+    } else {
+      referenceInputs.push({
+        ...referencePrompt(ref),
+        kind: ref.kind,
+        referenceSubject: ref.subject,
+        ...(ref.conditionFact ? { conditionFact: ref.conditionFact } : {}),
+        rateTexts: [text],
+      });
+    }
+  }
+  return { componentInputs, referenceInputs };
+}
+
+/** Must-answer questions a line's base rates depend on: embroidery in the piece (chapter 58), movement parts with a plate (91). */
+export function baseRateQuestionsForLine(
+  line: Pick<MeasureEngineLine, 'hts10' | 'general' | 'column2'>,
+  facts: TariffConfirmationFact[] = loadConfirmationFacts()
+): TariffConfirmationQuestion[] {
+  const registry = factRegistry(facts);
+  const out: TariffConfirmationQuestion[] = [];
+  for (const ref of baseRateInputsForLine(line).referenceInputs) {
+    if (!ref.conditionFact || out.some((q) => q.value === ref.conditionFact)) continue;
+    const fact = registry.get(ref.conditionFact);
+    out.push({
+      kind: 'fact',
+      value: ref.conditionFact,
+      prompt: fact?.prompt ?? `Does this apply to your goods: ${ref.conditionFact}?`,
+      effect:
+        ref.kind === 'floor'
+          ? `Yes: the base duty is not less than the duty on ${ref.subject} (enter its HTS code below).`
+          : `Yes: the base duty is not more than the duty on ${ref.subject} (enter its HTS code below).`,
+      caveat: fact?.help ?? QUESTION_CAVEATS.fact,
+      mustAnswer: true,
+      sources: fact?.sources ?? [],
+    });
+  }
+  return out;
+}
+
+/** Error text for component values that are negative or above the customs value; null when they are all valid. */
+function componentValuesError(input: MeasureEngineInput): string | null {
+  for (const [k, v] of Object.entries(input.componentValuesUsd ?? {})) {
+    if (!Number.isFinite(v) || v < 0) return `The value of the ${k} must be a number of zero or more (got ${v}).`;
+    if (v > input.customsValueUsd + 1e-9)
+      return `The value of the ${k} (${formatUsd(v)}) can't be more than the customs value (${formatUsd(input.customsValueUsd)}).`;
+  }
+  return null;
+}
+
+/** The rate text a referenced line has in the same column as the base rate. */
+function referencedRateText(ref: MeasureEngineReferencedLine, column: BaseColumn): { ok: true; text: string } | { ok: false; error: string } {
+  const code = formatHts(ref.hts10);
+  if (column.kind === 'special') {
+    const special = specialRateFor(ref, column.spi);
+    if (special === null) return { ok: false, error: `${code} offers no special rate under program ${column.spi}, so its rate can't be used for this claim.` };
+    return { ok: true, text: special };
+  }
+  const text = column.kind === 'column2' && ref.column2 ? ref.column2 : ref.general;
+  if (!text || !text.trim()) return { ok: false, error: `The HTS does not state a rate for ${code}.` };
+  return { ok: true, text };
+}
+
+function formatHts(hts10: string): string {
+  const d = digits(hts10);
+  return d.length === 10 ? `${d.slice(0, 4)}.${d.slice(4, 6)}.${d.slice(6, 8)}.${d.slice(8)}` : hts10;
+}
+
+type BasePricing = { ok: true; amount: number; notes: string[] } | { ok: false; error: string };
+
+interface BaseContext {
+  input: MeasureEngineInput;
+  quantities: Record<string, number>;
+  column: BaseColumn;
+  registry: FactRegistry;
+}
+
+/** Ad valorem + per-unit + component parts of a rate on a value; an error names what is missing. */
+function priceOwnParts(
+  rate: ExtendedRate,
+  rateText: string,
+  valueUsd: number,
+  quantities: Record<string, number>,
+  ctx: BaseContext,
+  what: string
+): BasePricing {
+  const priced = priceRate(rate, valueUsd, quantities, ctx.input.polarityDegrees);
+  if (!priced.ok) {
+    return {
+      ok: false,
+      error: `Quantity required: ${what} "${rateText}" is charged per unit. Enter ${
+        what === 'the base rate' ? 'the shipment' : 'its'
+      } quantity in ${priced.missingUoms.map(describeUom).join(' and ')}.`,
+    };
+  }
+  let amount = priced.amount;
+  const notes: string[] = [];
+  const missing = rate.components.filter((c) => {
+    const v = ctx.input.componentValuesUsd?.[c.component];
+    return v === undefined || v === null || !Number.isFinite(v);
+  });
+  if (missing.length > 0) {
+    return {
+      ok: false,
+      error: `${COMPONENT_VALUE_REQUIRED}: ${what} "${rateText}" is charged on ${missing
+        .map((c) => `the value of the ${c.component}`)
+        .join(' and ')}. Enter ${missing.map((c) => componentLabel(c).replace(/^Value/, 'the value')).join(' and ')}.`,
+    };
+  }
+  if (rate.components.length > 0) {
+    const values = rate.components.map((c) => ctx.input.componentValuesUsd?.[c.component] as number);
+    const sum = values.reduce((a, b) => a + b, 0);
+    if (sum > valueUsd + 0.005) {
+      return {
+        ok: false,
+        error: `The declared values of the ${rate.components.map((c) => c.component).join(' and ')} (${formatUsd(
+          sum
+        )} together) can't be more than the value they're part of (${formatUsd(valueUsd)}).`,
+      };
+    }
+    rate.components.forEach((c, i) => {
+      const part = (c.pct / 100) * values[i];
+      amount += part;
+      notes.push(`${c.pct}% on the value of the ${c.component} (${formatUsd(values[i])}) = ${formatUsd(round2(part))}.`);
+    });
+  }
+  return { ok: true, amount, notes };
+}
+
+/** Prices a referenced line's rate (same column as the base) on a value; no chained references. */
+function priceReferencedLine(
+  ref: MeasureEngineReferencedLine,
+  valueUsd: number,
+  quantities: Record<string, number>,
+  ctx: BaseContext,
+  allowComponents: boolean
+): BasePricing {
+  const code = formatHts(ref.hts10);
+  if (!/^\d{10}$/.test(digits(ref.hts10))) return { ok: false, error: `Referenced HTS code "${ref.hts10}" must have 10 digits.` };
+  if (digits(ref.hts10) === digits(ctx.input.hts10))
+    return { ok: false, error: `The referenced line can't be ${code} itself: enter the line of the other article.` };
+  const t = referencedRateText(ref, ctx.column);
+  if (!t.ok) return t;
+  let text = t.text;
+  const notes: string[] = [];
+  if (ctx.column.kind === 'general' || ctx.column.kind === 'column2') {
+    const note = resolveRateNote(ref.hts10, ctx.column.kind, text);
+    if (note && !note.ok) return note;
+    if (note && note.ok) text = note.rateText;
+  }
+  const rate = parseExtendedRate(text);
+  if (!rate) return { ok: false, error: `Can't read the rate "${text}" of the referenced line ${code}.` };
+  if (rate.reference)
+    return {
+      ok: false,
+      error: `The referenced line ${code} has a rate that itself refers to another article ("${text}"); enter the line whose own rate applies.`,
+    };
+  if (rate.components.length > 0 && !allowComponents) {
+    return { ok: false, error: `The referenced line ${code} is charged on the value of a part ("${text}"), which can't be priced article by article here.` };
+  }
+  const own = priceOwnParts(rate, text, valueUsd, quantities, ctx, `the rate of ${code}`);
+  if (!own.ok) return own;
+  notes.push(`${code} at "${text}" on ${formatUsd(valueUsd)} = ${formatUsd(round2(own.amount))}.`, ...own.notes);
+  return { ok: true, amount: own.amount, notes };
+}
+
+/**
+ * The base duty of a rate that may have component parts, a bond, or a reference to another line's rate (issue #1812).
+ * Missing component values, referenced lines, condition answers and quantities are errors, never $0.
+ */
+function priceBase(rate: ExtendedRate, rateText: string, ctx: BaseContext): BasePricing {
+  const { input } = ctx;
+  const value = input.customsValueUsd;
+  const own = priceOwnParts(rate, rateText, value, ctx.quantities, ctx, 'the base rate');
+  if (!own.ok) return own;
+  const notes = [...own.notes];
+  if (rate.underBond) {
+    notes.push(
+      'Free, under bond: duty-free when entered under a bond that secures the use the HTS requires (wool for special uses: chapter 51 additional U.S. note 2(d)); if the goods are used otherwise, the regular duty becomes payable.'
+    );
+  }
+  const ref = rate.reference;
+  if (!ref) return { ok: true, amount: own.amount, notes };
+  const prompt = referencePrompt(ref);
+  const refs = input.referencedLines ?? [];
+
+  if (ref.kind === 'floor' || ref.kind === 'cap') {
+    const factId = ref.conditionFact as string;
+    const fact = ctx.registry.get(factId);
+    if (!fact) return { ok: false, error: `Rate data error: unknown confirmation fact ${factId} — not in confirmation-facts.json.` };
+    const answer = factAnswer(fact, input);
+    if (answer === undefined) {
+      return { ok: false, error: `${FACT_ANSWER_REQUIRED} — answer this question to calculate: "${fact.prompt}". The base rate "${rateText}" depends on it.` };
+    }
+    if (!answer) {
+      notes.push(`Answered no to "${fact.prompt}", so the rate's ${ref.kind === 'floor' ? 'minimum' : 'maximum'} (${prompt.subject}) does not apply.`);
+      return { ok: true, amount: own.amount, notes };
+    }
+    if (refs.length !== 1) {
+      return {
+        ok: false,
+        error: `${REFERENCED_LINE_REQUIRED}: the base rate "${rateText}" is ${ref.kind === 'floor' ? 'not less than' : 'not more than'} the duty on ${
+          prompt.subject
+        }. Enter the ${prompt.prompt}.`,
+      };
+    }
+    const priced = priceReferencedLine(refs[0], value, refs[0].quantities ? normalizeQuantities(refs[0].quantities) : ctx.quantities, ctx, true);
+    if (!priced.ok) return priced;
+    const amount = ref.kind === 'floor' ? Math.max(own.amount, priced.amount) : Math.min(own.amount, priced.amount);
+    const which = amount === own.amount ? 'the line’s own rate' : `the rate of ${formatHts(refs[0].hts10)}`;
+    notes.push(
+      ...priced.notes,
+      `${ref.kind === 'floor' ? 'Not less than' : 'Not more than'} the duty on ${prompt.subject}: ${formatUsd(
+        round2(own.amount)
+      )} at the line’s own rate vs ${formatUsd(round2(priced.amount))}, so ${which} applies.`
+    );
+    return { ok: true, amount, notes };
+  }
+
+  if (ref.kind === 'whole') {
+    if (refs.length !== 1) {
+      return { ok: false, error: `${REFERENCED_LINE_REQUIRED}: the base rate is the rate of ${prompt.subject} ("${rateText}"). Enter the ${prompt.prompt}.` };
+    }
+    if (refs[0].valueUsd !== undefined && Math.abs(refs[0].valueUsd - value) > 0.005) {
+      return { ok: false, error: `The referenced line's rate is charged on the whole shipment value (${formatUsd(value)}); don't give it a separate value.` };
+    }
+    const priced = priceReferencedLine(refs[0], value, refs[0].quantities ? normalizeQuantities(refs[0].quantities) : ctx.quantities, ctx, true);
+    if (!priced.ok) return priced;
+    notes.push(`Base rate = the rate of ${prompt.subject}: ${priced.notes.join(' ')}`);
+    return { ok: true, amount: own.amount + priced.amount, notes };
+  }
+
+  // each: every article at its own rate on its own value.
+  if (refs.length === 0) {
+    return {
+      ok: false,
+      error: `${REFERENCED_LINE_REQUIRED}: the base rate is the rate of ${prompt.subject} ("${rateText}"). Enter ${prompt.prompt.toLowerCase()}.`,
+    };
+  }
+  const missingValue = refs.find((r) => r.valueUsd === undefined || !Number.isFinite(r.valueUsd) || r.valueUsd <= 0);
+  if (missingValue)
+    return { ok: false, error: `${COMPONENT_VALUE_REQUIRED}: enter the value of the articles entered under ${formatHts(missingValue.hts10)} (more than $0).` };
+  const sum = refs.reduce((a, r) => a + (r.valueUsd as number), 0);
+  if (Math.abs(sum - value) > 0.01) {
+    return {
+      ok: false,
+      error: `The values of the articles (${formatUsd(sum)} together) must add up to the shipment value (${formatUsd(
+        value
+      )}): each one pays its own rate on its own value.`,
+    };
+  }
+  let amount = own.amount;
+  for (const r of refs) {
+    const priced = priceReferencedLine(r, r.valueUsd as number, r.quantities ? normalizeQuantities(r.quantities) : {}, ctx, false);
+    if (!priced.ok) return priced;
+    amount += priced.amount;
+    notes.push(...priced.notes);
+  }
+  notes.unshift(`Priced article by article: ${prompt.subject}.`);
+  return { ok: true, amount, notes };
 }
 
 // ---------------------------------------------------------------------------
@@ -739,7 +1149,7 @@ export function calculateWithMeasuresAndFacts(
   if (!/^\d{4}-\d{2}-\d{2}$/.test(entryDay)) return fail(`Invalid entry date: ${input.entryDate}`);
   const value = input.customsValueUsd;
   const quantities = normalizeQuantities(input.quantities);
-  const contentError = contentValuesError(input);
+  const contentError = contentValuesError(input) ?? componentValuesError(input);
   if (contentError) return fail(contentError);
   if (input.polarityDegrees !== undefined && !isValidPolarity(input.polarityDegrees)) {
     return fail(`Polarity must be a number of degrees above 0 and at most ${FULL_POLARITY_DEGREES} (got ${input.polarityDegrees}).`);
@@ -748,9 +1158,11 @@ export function calculateWithMeasuresAndFacts(
   // 1. Base rate: column 2, a claimed special program, or general.
   let baseLabel = 'Base rate (HTS general rate)';
   let baseText: string | null = line.general;
+  let baseColumn: BaseColumn = { kind: 'general' };
   if (COLUMN2_COUNTRIES.includes(input.countryOfOrigin) && line.column2) {
     baseLabel = 'Base rate (HTS column 2 rate)';
     baseText = line.column2;
+    baseColumn = { kind: 'column2' };
   }
   let baseNotes: string[] = [];
   let baseSources: TariffMeasureSource[] = [];
@@ -771,6 +1183,7 @@ export function calculateWithMeasuresAndFacts(
       const priced = priceQuotaClaim(resolved.resolution, programName, answers.answers, input.confirmations?.facts ?? {});
       baseLabel = priced.usesGeneralRate ? `Base rate (HTS general rate; ${priced.labelSuffix})` : `Trade-deal rate (${programName}; ${priced.labelSuffix})`;
       baseText = priced.tier.rateText;
+      baseColumn = { kind: 'quota' };
       baseNotes = priced.notes;
       baseSources = priced.sources;
       if (priced.usesGeneralRate) conditionInput = { ...input, claimedSpi: undefined };
@@ -778,6 +1191,7 @@ export function calculateWithMeasuresAndFacts(
     } else if (special !== null) {
       baseLabel = `Trade-deal rate (${programName})`;
       baseText = special;
+      baseColumn = { kind: 'special', spi: input.claimedSpi };
     } else if (isFree(baseText)) {
       // The base is already Free, so the claim costs nothing on the base line (the HTS lists no
       // special programs then). It still counts as made for measure conditions — e.g. a USMCA
@@ -788,7 +1202,17 @@ export function calculateWithMeasuresAndFacts(
     }
   }
   if (!baseText || !baseText.trim()) return fail(`The HTS does not state a base rate for ${hts10}.`);
-  const baseRate = parseRate(baseText);
+  // "See additional U.S. note 3" (chapter 58): the note states the rate for the column.
+  if (baseColumn.kind === 'general' || baseColumn.kind === 'column2') {
+    const note = resolveRateNote(hts10, baseColumn.kind, baseText);
+    if (note && !note.ok) return fail(note.error);
+    if (note && note.ok) {
+      baseText = note.rateText;
+      baseNotes = [...baseNotes, note.note];
+      baseSources = [...baseSources, ...note.entry.sources];
+    }
+  }
+  const baseRate = parseExtendedRate(baseText);
   if (!baseRate) return fail(`Can't read the base rate "${baseText}" for ${hts10}.`);
 
   // 2. Measures in scope (coverage + country), then applicable.
@@ -854,19 +1278,12 @@ export function calculateWithMeasuresAndFacts(
   }
 
   // 4. Price the base and each measure.
-  const missingUoms = new Set<string>();
-  const basePriced = priceRate(baseRate, value, quantities, input.polarityDegrees);
+  const basePriced = priceBase(baseRate, baseText, { input, quantities, column: baseColumn, registry });
+  if (!basePriced.ok) return fail(basePriced.error, skipped);
   const baseLineNote = polarityNote(baseRate, input.polarityDegrees);
   if (baseLineNote) baseNotes = [...baseNotes, baseLineNote];
-  if (!basePriced.ok) basePriced.missingUoms.forEach((u) => missingUoms.add(u));
-  if (missingUoms.size > 0) {
-    const uoms = Array.from(missingUoms);
-    return fail(
-      `Quantity required: the base rate "${baseText}" is charged per unit. Enter the shipment quantity in ${uoms.map(describeUom).join(' and ')}.`,
-      skipped
-    );
-  }
-  const baseAmount = basePriced.ok ? basePriced.amount : 0;
+  baseNotes = [...baseNotes, ...basePriced.notes];
+  const baseAmount = basePriced.amount;
 
   // Content-based measures (issue #1796): the value each one is charged on; a missing declared value is an error.
   const chargedOn = new Map<TariffMeasureRecord, number>();

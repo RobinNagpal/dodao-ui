@@ -10,10 +10,29 @@ import {
   normalizeChapterPrototype,
   storedDerivedFieldMismatches,
 } from '@/utils/tariff-reports/chapter-prototype';
-import { countryCodeForName, parseRateVariants, quantityUnits, rateDollars } from '@/utils/tariff-reports/shipment-duty';
+import {
+  countryCodeForName,
+  extendedRateDollars,
+  parseExtendedRate,
+  parseRateVariants,
+  quantityUnits,
+  rateDollars,
+  splitRateClause,
+  type ExtendedRate,
+} from '@/utils/tariff-reports/shipment-duty';
+import { resolveRateNote } from '@/utils/tariff-calculator/rate-notes';
 import { FTA_SAFEGUARD_FACT, FTA_WITHIN_QUOTA_FACT, FTA_WITHIN_SECOND_QUOTA_FACT } from '@/utils/tariff-calculator/fta-quota';
-import { usmcaClaimFor } from './chapter-generator/line-rates';
-import { calculateWithMeasures, CONTENT_VALUE_REQUIRED, FACT_ANSWER_REQUIRED, normalizeUom, rateUoms } from '@/utils/tariff-calculator/measures-engine';
+import { NOMINAL_COMPONENT_VALUE_USD, usmcaClaimFor } from './chapter-generator/line-rates';
+import {
+  calculateWithMeasures,
+  COMPONENT_VALUE_REQUIRED,
+  CONTENT_VALUE_REQUIRED,
+  FACT_ANSWER_REQUIRED,
+  normalizeUom,
+  parseSpecialRates,
+  rateUoms,
+  REFERENCED_LINE_REQUIRED,
+} from '@/utils/tariff-calculator/measures-engine';
 import { computeCalcReadiness, enabledChapterProblems } from '../tariff-calculator/lib/calc-readiness';
 import { compareEditions, fetchCurrentHtsRelease, parseEdition } from '../tariff-calculator/lib/hts-source';
 import { parseArgs, parsePositiveInt } from '../tickers/lib';
@@ -438,6 +457,52 @@ function calculatorQuantities(units: string[], rateTexts: (string | null | undef
   return quantities;
 }
 
+/**
+ * Base rates that need more than the value and quantities (issue #1812), as the chapter generator prices them: each
+ * value-of-part term at NOMINAL_COMPONENT_VALUE_USD, and a floor / cap condition (embroidery in the piece, movement parts
+ * with a plate) answered no — the cell keeps the clause as text. Taken from all of the row's rates (general, column 2,
+ * special; "See additional U.S. note n" resolved).
+ */
+function baseRateAssumptions(row: {
+  htsCode10: string | null;
+  effectiveGeneral: string | null;
+  effectiveColumn2?: string | null;
+  effectiveSpecial: string | null;
+}): {
+  componentValuesUsd?: Record<string, number>;
+  facts: Record<string, boolean>;
+} {
+  const hts10 = row.htsCode10 ?? '';
+  const texts: string[] = [];
+  for (const [column, raw] of [
+    ['general', row.effectiveGeneral],
+    ['column2', row.effectiveColumn2 ?? null],
+  ] as const) {
+    if (!raw) continue;
+    const note = resolveRateNote(hts10, column, raw);
+    texts.push(note && note.ok ? note.rateText : raw);
+  }
+  for (const e of parseSpecialRates(row.effectiveSpecial)) texts.push(e.rateText);
+  const components: Record<string, number> = {};
+  const facts: Record<string, boolean> = {};
+  for (const t of texts) {
+    const rate = parseExtendedRate(t);
+    for (const c of rate?.components ?? []) components[c.component] = NOMINAL_COMPONENT_VALUE_USD;
+    if (rate?.reference?.conditionFact) facts[rate.reference.conditionFact] = false;
+  }
+  return { ...(Object.keys(components).length > 0 ? { componentValuesUsd: components } : {}), facts };
+}
+
+/** A cell total the shipment box can't price but the cross-check can: value-of-part terms, or a floor / cap clause (answered no). */
+function extendedTotal(total: string): { rate: ExtendedRate; skip: string | null } | null {
+  const { body, clause } = splitRateClause(total);
+  const rate = parseExtendedRate(body);
+  if (!rate) return null;
+  // A floor / cap clause is kept as text; the rest is the total with its condition answered no.
+  if (rate.reference && !clause) return { rate, skip: 'total is another line’s rate (the importer names the line)' };
+  return { rate: clause ? { ...rate, reference: null } : rate, skip: null };
+}
+
 interface CalcCheckStats {
   compared: number;
   mismatched: number;
@@ -478,10 +543,25 @@ function checkCalculator(report: Report, slug: string, p: TariffChapterPrototype
     for (const [heading, cell] of Object.entries(country.cells)) {
       for (const side of sides) {
         for (const bRow of cell[side.key].breakdown) {
-          const variants = parseRateVariants(bRow.total);
+          let variants = parseRateVariants(bRow.total);
+          let extended: ExtendedRate | null = null;
           if (!variants) {
-            skip(stats, `unparseable total "${bRow.total}"`, bRow.lines.length);
-            continue;
+            const ext = extendedTotal(bRow.total);
+            if (ext?.skip) {
+              skip(stats, ext.skip, bRow.lines.length);
+              continue;
+            }
+            if (!ext && /^The higher of /.test(bRow.total)) {
+              // Chapter generator: a floor measure on a base the cell can't price alone (issue #1812).
+              skip(stats, 'total is the higher of a floor and a base rate that depends on importer input', bRow.lines.length);
+              continue;
+            }
+            if (!ext) {
+              skip(stats, `unparseable total "${bRow.total}"`, bRow.lines.length);
+              continue;
+            }
+            extended = ext.rate;
+            variants = [{ label: null, range: { low: ext.rate, high: ext.rate, exact: true } }];
           }
           // A single-rate row whose extra still distinguishes patented/generic: check both kinds against the one total.
           const cases: { productType?: TariffProductType; facts?: Record<string, boolean>; range: (typeof variants)[number]['range'] }[] = [];
@@ -520,7 +600,11 @@ function checkCalculator(report: Report, slug: string, p: TariffChapterPrototype
             }
             const unitQty: Record<string, number> = {};
             for (const u of quantityUnits([c.range.low])) unitQty[u.key] = CALC_QUANTITY;
-            const expected = rateDollars(c.range.low, CALC_VALUE_USD, unitQty);
+            const expected = extended
+              ? extendedRateDollars(extended, CALC_VALUE_USD, unitQty, {
+                  componentValuesUsd: Object.fromEntries(extended.components.map((x) => [x.component, NOMINAL_COMPONENT_VALUE_USD])),
+                })
+              : rateDollars(c.range.low, CALC_VALUE_USD, unitQty);
             if (expected === null) {
               skip(stats, `no quantity for total "${bRow.total}"`, bRow.lines.length);
               continue;
@@ -546,9 +630,11 @@ function checkCalculator(report: Report, slug: string, p: TariffChapterPrototype
                 ]),
                 ...(claimedSpi ? { claimedSpi } : {}),
                 ...(c.productType ? { productType: c.productType } : {}),
-                ...(c.facts ? { confirmations: { facts: c.facts } } : {}),
                 entryDate: ia.lastCheckedAt,
               };
+              const assumed = baseRateAssumptions(row);
+              if (assumed.componentValuesUsd) input.componentValuesUsd = assumed.componentValuesUsd;
+              if (c.facts || Object.keys(assumed.facts).length > 0) input.confirmations = { facts: { ...assumed.facts, ...(c.facts ?? {}) } };
               const line: MeasureEngineLine = {
                 hts10: row.htsCode10,
                 general: row.effectiveGeneral,
@@ -565,6 +651,12 @@ function checkCalculator(report: Report, slug: string, p: TariffChapterPrototype
                 if (result.error?.startsWith(CONTENT_VALUE_REQUIRED) || result.error?.startsWith(FACT_ANSWER_REQUIRED)) {
                   stats.compared--;
                   skip(stats, result.error.startsWith(CONTENT_VALUE_REQUIRED) ? 'needs a declared content value' : 'needs a confirmation-fact answer');
+                  continue;
+                }
+                // The base rate is another line's rate (issue #1812): the importer names that line, so the cell can't be checked.
+                if (result.error?.startsWith(REFERENCED_LINE_REQUIRED) || result.error?.startsWith(COMPONENT_VALUE_REQUIRED)) {
+                  stats.compared--;
+                  skip(stats, result.error.startsWith(REFERENCED_LINE_REQUIRED) ? 'base rate is another line’s rate' : 'needs a component value');
                   continue;
                 }
                 actual = result.error ? `error: ${result.error}` : `$${result.totalDutyUsd.toFixed(2)}`;

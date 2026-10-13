@@ -58,7 +58,7 @@ async function main(): Promise<void> {
   const clean: string[] = [];
   let failed = false;
   for (const ch of wanted) {
-    const gaps = chapterRateGaps(file.chapters[ch]).map((g) => ({ ...g, acceptedBy: rateWaiverFor(live, ch, g)?.id }));
+    const gaps = chapterRateGaps(file.chapters[ch], ch).map((g) => ({ ...g, acceptedBy: rateWaiverFor(live, ch, g)?.id }));
     if (gaps.length === 0) {
       clean.push(ch);
       continue;

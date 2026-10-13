@@ -284,8 +284,34 @@ export interface MeasureEngineInput {
    * highest amount, and the base line's notes say so.
    */
   polarityDegrees?: number;
+  /**
+   * Declared values in USD of the parts a base rate is charged on (issue #1812): "2.5% on the value of the lead content"
+   * → { "lead content": 9000 }; "4.7% on the value of the rifle + 20% on the value of the telescopic sight, if any" →
+   * { rifle: 800, "telescopic sight": 200 }. Keys are the component as the rate names it (lower case). A missing value
+   * is an engine error ("Value required"), never a silent $0.
+   */
+  componentValuesUsd?: Record<string, number>;
+  /**
+   * The other HTS lines a base rate refers to (issue #1812): "The rate applicable to the article of which it is a part
+   * or accessory" (one line), "… to each garment in the ensemble if separately entered" (one per garment, each with its
+   * value), embroidery in the piece "not less than the rate … if not embroidered" (one line). The caller loads each
+   * line's rates (the API route from `hts_codes`; golden scenarios state them).
+   */
+  referencedLines?: MeasureEngineReferencedLine[];
   /** ISO date. */
   entryDate: string;
+}
+
+/** A line another line's base rate refers to, with its HTS rates and — for article-by-article sets — its share of the shipment. */
+export interface MeasureEngineReferencedLine {
+  hts10: string;
+  general: string | null;
+  special: string | null;
+  column2?: string | null;
+  /** Ensembles / sets priced article by article: the value of the articles entered under this line (the values add up to the customs value). */
+  valueUsd?: number;
+  /** Quantities for this line's per-unit rate; default (whole / floor / cap references) = the shipment's quantities. */
+  quantities?: Record<string, number>;
 }
 
 export interface MeasureEngineDutyLine {
