@@ -223,7 +223,11 @@ jobs:
       - name: Insights UI - Run Prettier
         run: cd insights-ui && pnpm prettier-check
 
+      # tsc infers a type for every chapter content JSON (tens of MB across ~90 files), which no longer
+      # fits in Node's default ~4 GB heap. The runner has 16 GB.
       - name: Insights UI - TSC
+        env:
+          NODE_OPTIONS: --max-old-space-size=8192
         run: cd insights-ui && pnpm compile
 
       - name: Insights UI - Tariff calculator golden scenarios
@@ -238,6 +242,8 @@ jobs:
         run: cd insights-ui && pnpm tariff:validate-chapters --check-calculator
 
       - name: Insights UI - NEXT Build
+        env:
+          NODE_OPTIONS: --max-old-space-size=8192
         run: cd insights-ui && pnpm build
 
   # Proves insights-ui's Prisma migrations are safe to apply before they reach `main`, where

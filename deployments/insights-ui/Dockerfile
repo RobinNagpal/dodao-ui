@@ -41,6 +41,9 @@ ARG NEXT_PUBLIC_ASSET_PREFIX
 ENV NEXT_PUBLIC_VERCEL_URL=${NEXT_PUBLIC_VERCEL_URL}
 ENV NEXT_PUBLIC_VERCEL_ENV=${NEXT_PUBLIC_VERCEL_ENV}
 ENV NEXT_PUBLIC_ASSET_PREFIX=${NEXT_PUBLIC_ASSET_PREFIX}
+# `next build` type-checks the chapter content JSON files (tens of MB), which no longer fits in Node's
+# default ~4 GB heap. Build stage only; the runtime stage keeps the default.
+ENV NODE_OPTIONS=--max-old-space-size=8192
 # DATABASE_URL is needed at build time because `next build` prerenders "/" which reads top
 # industries from the DB. Mounted as a BuildKit secret so it never lands in an image layer;
 # the mount is optional so local builds without the secret still run (and fail only at the
