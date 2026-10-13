@@ -257,6 +257,33 @@ After `reviewBy` a waiver stops applying (the check prints `WAIVER EXPIRED`) and
 3. Check a few golden scenarios for the chapter on the live calculator.
 4. To switch the engine off for every chapter, set the value to `off` (the screen can't save an empty value); to drop one chapter, remove it from the list. Update the documented line above to match.
 
+## Weekly freshness check (`pnpm tariff:freshness`)
+
+A scheduled job tells you **when** to run this runbook. It only reports — it never edits data or touches the database; a person reviews each item and applies it through the steps above (and [chapter-content-refresh.md](chapter-content-refresh.md) for the chapter pages).
+
+- **Workflow:** `.github/workflows/insights-ui-tariff-freshness.yml` — Mondays 13:00 UTC, plus _Run workflow_ (inputs: `days` look-back, `create_issue`). The report is always in the run's job summary.
+- **Issue:** when there is something to report it opens one issue titled **"Tariff data freshness: updates to review"**. While that issue is open, later runs add a **comment** to it instead of opening another (matched by exact title among open issues). Close it once every item is applied or dismissed; the next finding opens a fresh issue. Nothing to report → no issue, no comment.
+- **Script:** `src/scripts/tariff-calculator/check-data-freshness.ts` (imports only Node built-ins + `lib/hts-source.ts`, so CI runs it with `npx tsx` without installing the workspace).
+
+```bash
+# from insights-ui/
+pnpm tariff:freshness                       # markdown report on stdout
+pnpm tariff:freshness --out /tmp/fresh.md   # also write it to a file
+pnpm tariff:freshness --json                # JSON (hasFindings, hts, federalRegister, upcomingMeasures, errors)
+pnpm tariff:freshness --days 30             # Federal Register look-back (default 8: weekly run + 1 day overlap)
+pnpm tariff:freshness --since 2026-10-01    # explicit start date
+pnpm tariff:freshness --horizon-days 30     # measure-date look-ahead (default 14)
+pnpm tariff:freshness --today 2026-11-01    # pretend today is this date
+```
+
+What it checks:
+
+1. **HTS revision** — the edition `https://hts.usitc.gov/reststop/releaseList` marks `current` (shared helper `fetchCurrentHtsRelease()` in `lib/hts-source.ts`, also used by `pnpm tariff:validate-chapters --check-hts`) against every edition the committed data records: the top-level `htsEdition` of each `src/tariff-data/calculator/*.json`, `tariffUpdates.now.edition` of the chapter files, and the edition in the newest `prisma/data-sql/tariff-calculator/*.sql` filename. Any file on an older edition is listed → regenerate per §1–4.
+2. **Federal Register** — documents published in the look-back window from the [Federal Register API](https://www.federalregister.gov/developers/documentation/api/v1) (no key): all USTR documents; presidential documents mentioning "Harmonized Tariff Schedule" / "Chapter 99" / "Section 301" / "Section 232"; BIS documents mentioning "Section 232"; CBP documents mentioning "Chapter 99" / "Section 301" / "Section 232"; and any agency's document mentioning both "Chapter 99" and "Harmonized Tariff Schedule". Each shows date, type, agency, document number + FR citation, link and title. Documents whose number already appears in a `federalregister.gov` URL in the calculator or chapter JSON are listed separately as "already cited". For the rest: does it add, change or end a duty on a covered chapter? If so, update the definitions in `build-measures.py` / the chapter files.
+3. **Scheduled dates** — measures in `measures.json` whose `effectiveFrom` or `effectiveTo` falls within the horizon, grouped by date / program / Chapter 99 heading. Check the step is still on schedule (no delay or extension published) and shows up on that date.
+
+A source that is down (timeout, HTTP error, bad JSON) becomes a line under **"Check errors"** and counts as a finding, so an outage shows up in the issue instead of failing silently. Network calls time out (20 s release list, 30 s per Federal Register page, one retry). The script exits 0 whenever it produced a report (1 only for bad arguments or unreadable data files).
+
 ## Gaps / things the scripts don't do
 
 - **Not in the overlay:** Section 232 metals, autos and parts, trucks, wood and semiconductors (issue #1796). Their goods wrongly pay the 12.5% (note 52(f)) and miss the Section 232 duty, so their chapters stay NOT READY. Russia 9903.85.67/.68 is modelled for products of Russia only; the "smelted or cast in Russia" reach for other origins is an accepted gap.
