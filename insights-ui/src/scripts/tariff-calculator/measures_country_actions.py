@@ -27,6 +27,7 @@
 # canada_import_bans()).
 
 REVIEWED = '2026-10-11'
+JP_REVIEWED = '2026-10-12'  # Japan 1986 duties re-reviewed for issue #1801
 
 SRC = {
     'procl-11046': {'citation': '91 FR 46639 (Proclamation 11046: Section 338 duties on products of Canada — alcoholic beverages; 50%, heading 9903.03.12)',
@@ -68,6 +69,12 @@ SRC = {
                     'published': '2023-03-02'},
     'procl-5448': {'citation': '100 Stat. 4411 (Proclamation 5448 of March 16, 1986: Increase in the Rates of Duty on Certain Articles From Japan — 40% on leather and footwear, Section 301)',
                    'url': 'https://www.govinfo.gov/content/pkg/STATUTE-100/pdf/STATUTE-100-Pg4411.pdf', 'published': '1986-03-16'},
+    'ustr-1986-footwear': {'citation': '51 FR 21036 (USTR notice of June 10, 1986: Modification of Increased Duties on Certain Footwear — rewrites the '
+                                       'footwear description of item 945.76 (today 9903.41.10), retroactive to March 31, 1986; the duty is not ended)',
+                           'url': 'https://www.govinfo.gov/content/pkg/FR-1986-06-10/pdf/FR-1986-06-10.pdf', 'published': '1986-06-10'},
+    'procl-5911': {'citation': '103 Stat. 2613 (Proclamation 5911 of November 19, 1988, item 125: U.S. note 3 to subchapter III of Chapter 99 '
+                               'names 9903.41.05 and 9903.41.10 as cumulative duties in the HTS)',
+                   'url': 'https://www.govinfo.gov/content/pkg/STATUTE-103/pdf/STATUTE-103-Pg2613.pdf', 'published': '1988-11-19'},
 }
 
 
@@ -298,15 +305,16 @@ def _russia(program_cov, rec, hts_note):
 # ---------------------------------------------------------------------------------------------------------------------
 PJP = 'Section 301 (Japan leather and footwear, 1986)'
 JP_COMMON = ('U.S. note 3 to subchapter III: cumulative — charged in addition to the duties otherwise imposed (the 12.5% 2026 Section 301 duty on '
-             'Japan, 9903.05.49, included). Status: in Revision 21 the two headings are neither shaded as expired nor suspended by note 5 (which '
-             'suspends only 9903.41.25 and 9903.41.35–.45; 9903.41.15–.45 are shaded). Proclamation 5448 (effective March 31, 1986, items 945.75 / '
-             '945.76 of the TSUS appendix) let USTR suspend or terminate the duties by Federal Register notice; no such notice was found, so the HTS '
-             'text governs. The Special column is blank (the heading text applies regardless of a special-rate claim; Japan has no special rate on '
-             'these lines).')
+             'Japan, 9903.05.49, included). Status: still in effect. Proclamation 5448 (effective March 31, 1986, items 945.75 / 945.76 of the TSUS '
+             'appendix) let USTR suspend or end the duties only by a Federal Register notice. The Federal Register annual indexes for 1986–1993 and '
+             'the Federal Register from 1994 on show only the June 1986 USTR notice that narrowed the footwear description (51 FR 21036), and no '
+             'notice suspending or ending the duty. Proclamation 5911 (1988) carried both headings into the HTS as cumulative duties. In Revision 21, '
+             'U.S. note 1 says the provisions are effective until suspended or terminated, and note 5 suspends only 9903.41.25 and 9903.41.35–.45. '
+             'The Special column is blank (the heading text applies regardless of a special-rate claim; Japan has no special rate on these lines).')
 
 
 def _japan(rec, hts_note):
-    src = _s('procl-5448') + [hts_note(3)]
+    src = _s('procl-5448', 'ustr-1986-footwear', 'procl-5911') + [hts_note(3)]
     # 4106 / 4113 include leather of other animals (swine, reptiles, other): listed in coverageExclude = known, not covered.
     other_animals = ['410631', '410632', '410640', '410691', '410692', '411320', '411330', '411390']
     # Chapter 64 outside 9903.41.10: only 6403 (leather uppers, rubber/plastics/leather soles) and 6404.20 (leather soles) can qualify;
@@ -314,17 +322,17 @@ def _japan(rec, hts_note):
     not_footwear_covered = ['6401', '6402', '640411', '640419', '6405', '6406', '640312']
     return [
         rec(measureKey='jp-leather-bovine', program=PJP, ch99Code='9903.41.05', rateKind='additive', ratePct=40, countriesInclude=['JP'],
-            coverageInclude=['4104', '4107'], effectiveFrom='1986-03-31', sources=src, reviewedAt=REVIEWED,
+            coverageInclude=['4104', '4107'], effectiveFrom='1986-03-31', sources=src, reviewedAt=JP_REVIEWED,
             notes='Heading 9903.41.05: bovine (including buffalo) and equine leather of headings 4104 and 4107, products of Japan: base + 40%. ' + JP_COMMON),
         rec(measureKey='jp-leather-goat-sheep', program=PJP, ch99Code='9903.41.05', rateKind='additive', ratePct=40, countriesInclude=['JP'],
             coverageInclude=['4105', '4106', '4112', '4113'], coverageExclude=other_animals,
-            conditions={'factsTrue': ['jpLeatherDyedColoredStampedEmbossed']}, effectiveFrom='1986-03-31', sources=src, reviewedAt=REVIEWED,
+            conditions={'factsTrue': ['jpLeatherDyedColoredStampedEmbossed']}, effectiveFrom='1986-03-31', sources=src, reviewedAt=JP_REVIEWED,
             notes='Heading 9903.41.05: goat, kid, sheep and lamb leather (headings 4105, 4106.21–.22, 4112, 4113.10) of Japan pays base + 40% only when '
                   'dyed, colored, stamped or embossed (fact jpLeatherDyedColoredStampedEmbossed, must be answered). Leather of swine, reptiles and other '
                   'animals (4106.31–.92, 4113.20–.90) is not covered. ' + JP_COMMON),
         rec(measureKey='jp-footwear', program=PJP, ch99Code='9903.41.10', rateKind='additive', ratePct=40, countriesInclude=['JP'],
             coverageInclude=['6403'], coverageExclude=not_footwear_covered, conditions={'factsFalse': ['jpFootwearExcepted']},
-            effectiveFrom='1986-03-31', sources=src, reviewedAt=REVIEWED,
+            effectiveFrom='1986-03-31', sources=src, reviewedAt=JP_REVIEWED,
             notes='Heading 9903.41.10: footwear of Japan with outer soles of leather (or of rubber/plastics) and uppers of leather (heading 6403, the '
                   'leather-upper footwear of chapter 64) pays base + 40%, except (a) slip-on footwear not for outdoor use without backs, outer sole under '
                   '5 mm with under 20 mm ball-to-heel difference, and (b) sports footwear with spikes, sprigs, cleats and the like, skating boots, ski '
@@ -332,7 +340,7 @@ def _japan(rec, hts_note):
                   'default no). Footwear with composition-leather outer soles is not described by the heading — not separated. ' + JP_COMMON),
         rec(measureKey='jp-footwear-textile-upper', program=PJP, ch99Code='9903.41.10', rateKind='additive', ratePct=40, countriesInclude=['JP'],
             coverageInclude=['640420'], conditions={'factsTrue': ['jpFootwearUpperPartlyLeather'], 'factsFalse': ['jpFootwearExcepted']},
-            effectiveFrom='1986-03-31', sources=src, reviewedAt=REVIEWED,
+            effectiveFrom='1986-03-31', sources=src, reviewedAt=JP_REVIEWED,
             notes='Heading 9903.41.10: footwear with outer soles of leather and uppers "wholly or in part of leather" can classify in 6404.20 (outer soles '
                   'of leather, uppers of textile) when leather is a minor part of the upper; it pays base + 40% only when the importer confirms the upper '
                   'is partly of leather (fact jpFootwearUpperPartlyLeather, default no). ' + JP_COMMON),

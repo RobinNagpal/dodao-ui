@@ -3728,7 +3728,7 @@
       },
       "expectedTotalDutyUsd": 5250,
       "toleranceUsd": 0.01,
-      "sourceNote": "Base Free. 2026 Section 301 on Japan (9903.05.49, note 52(k)): total 12.5% when the column 1 rate is under 12.5% ($1,250). Heading 9903.41.05 (bovine leather of heading 4107, product of Japan; Proclamation 5448, U.S. note 3 cumulative): +40% ($4,000). Total $5,250."
+      "sourceNote": "Base Free. 2026 Section 301 on Japan (9903.05.49, note 52(k)): total 12.5% when the column 1 rate is under 12.5% ($1,250). Heading 9903.41.05 (bovine leather of heading 4107, product of Japan; Proclamation 5448, U.S. note 3 cumulative; carried into the HTS by Proclamation 5911, 103 Stat. 2613, item 125, and never suspended or ended): +40% ($4,000). Total $5,250."
     },
     {
       "id": "jp-footwear-leather",
@@ -3752,7 +3752,7 @@
       },
       "expectedTotalDutyUsd": 5250,
       "toleranceUsd": 0.01,
-      "sourceNote": "Column 1 10% is under 12.5%, so the 2026 Section 301 duty on Japan brings the total to 12.5% ($1,250). Heading 9903.41.10 (footwear with rubber/plastics or leather outer soles and leather uppers, product of Japan, not an excepted slipper or sports type): +40% ($4,000). Total $5,250."
+      "sourceNote": "Column 1 10% is under 12.5%, so the 2026 Section 301 duty on Japan brings the total to 12.5% ($1,250). Heading 9903.41.10 (footwear with rubber/plastics or leather outer soles and leather uppers, product of Japan, not an excepted slipper or sports type; description as narrowed by USTR, 51 FR 21036, June 10, 1986; Proclamation 5448): +40% ($4,000). Total $5,250."
     },
     {
       "id": "ch04-wpc-cn",
