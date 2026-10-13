@@ -22,7 +22,14 @@ import {
 } from '@/utils/tariff-reports/shipment-duty';
 import { resolveRateNote } from '@/utils/tariff-calculator/rate-notes';
 import type { FactAnswers } from '@/utils/tariff-calculator/fact-labels';
-import { factAnswerSets, factIdsInScope, MAX_FACT_COMBOS, NOMINAL_COMPONENT_VALUE_USD, usmcaClaimFor } from './chapter-generator/line-rates';
+import {
+  factAnswerSets,
+  factIdsInScope,
+  MAX_FACT_COMBOS,
+  NOMINAL_COMPONENT_VALUE_USD,
+  setChapterVariedFacts,
+  usmcaClaimFor,
+} from './chapter-generator/line-rates';
 import { parseVariantLabel } from './chapter-generator/variant-labels';
 import {
   calculateWithMeasures,
@@ -536,6 +543,8 @@ function checkCalculator(report: Report, slug: string, p: TariffChapterPrototype
     skip(stats, 'chapter has no industryAreas matrix or rate table');
     return stats;
   }
+  // Price the same answers the generator varied for this chapter (`--vary-facts`).
+  setChapterVariedFacts(ia.variedFacts);
   const rowByHts = new Map(rows.filter((r) => r.hts && r.htsCode10).map((r) => [r.hts as string, r]));
 
   for (const country of ia.countries) {
