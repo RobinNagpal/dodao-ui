@@ -9,20 +9,10 @@ import Text from '@/components/ui/Text';
 import TextLink from '@/components/ui/TextLink';
 import ToggleChip from '@/components/ui/ToggleChip';
 import InlineCard from '@/components/ui/sections/InlineCard';
-import {
-  DataTable,
-  EmptyCellValue,
-  IndentedLabel,
-  InheritedValue,
-  TableCell,
-  TableHead,
-  TableHeaderCell,
-  TableRow,
-  TableScroll,
-} from '@/components/ui/tables/DataTable';
+import { DataTable, EmptyCellValue, IndentedLabel, InheritedValue, TableCell, TableHead, TableHeaderCell, TableRow } from '@/components/ui/tables/DataTable';
 import { StackedRow, StackedRowList, StackedRowListHeader } from '@/components/ui/tables/StackedRowList';
 import TextButton from '@/components/ui/TextButton';
-import { StackedRowGroup, TableRowGroup } from '@/components/ui/tables/RowGroup';
+import { RowGroupListHeader, StackedRowGroup, TableRowGroup } from '@/components/ui/tables/RowGroup';
 import type { TariffProductGroup, TariffRateTableRow } from '@/types/tariff-chapter-prototype';
 import { EXPAND_ALL_MAX_LINES, groupRowsByHeading, parseRateTableAnchor } from '@/utils/tariff-reports/rate-table-groups';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
@@ -204,6 +194,39 @@ function PhoneRowDetail({ row }: { row: TariffRateTableRow }): React.JSX.Element
 
 const COLUMN_COUNT = 6;
 
+/** Labels for the heading rows' columns: code, name (with official wording and blurb), base rates, line count. */
+const headingHeader = <RowGroupListHeader code="Heading" title="Product group" value={<GlossaryTerm id="base-rate">Base rates</GlossaryTerm>} aside="Lines" />;
+
+/** The line table's column header, repeated at the top of each open heading; sticky while that heading's lines scroll past. */
+function LineTableHead(): React.JSX.Element {
+  return (
+    <TableHead sticky look="plain">
+      <TableRow>
+        <TableHeaderCell width="fixedSm">HTS code</TableHeaderCell>
+        <TableHeaderCell width="fill">Description</TableHeaderCell>
+        {/* Tap-to-explain labels (issue #1784): a `title=` tooltip doesn't open on phones. */}
+        <TableHeaderCell width="fixedLg">
+          <GlossaryTerm id="base-rate">Base rate</GlossaryTerm>
+        </TableHeaderCell>
+        <TableHeaderCell width="fixedMd">
+          <GlossaryTerm id="special-rate">With a trade deal</GlossaryTerm>
+        </TableHeaderCell>
+        <TableHeaderCell width="fixedMd">
+          <Stack gap="xxs">
+            <span>
+              <GlossaryTerm id="column-2">Column 2</GlossaryTerm>
+            </span>
+            <Text as="span" size="xs" tone="muted" weight="normal">
+              Cuba, N. Korea, Russia, Belarus only
+            </Text>
+          </Stack>
+        </TableHeaderCell>
+        <TableHeaderCell width="fixedXs">Unit</TableHeaderCell>
+      </TableRow>
+    </TableHead>
+  );
+}
+
 function pluralize(count: number, one: string, many: string): string {
   return `${count} ${count === 1 ? one : many}`;
 }
@@ -251,16 +274,16 @@ function DesktopRow({ row, expanded, onToggle, showBreadcrumb }: RowProps): Reac
         </TableCell>
         {/* Emphasize the dutiable lines, not the free ones: in most chapters
         "Free" is the default and the duty is the thing to spot. */}
-        <TableCell variant="rate" tone={row.htsCode10 && row.dutiable ? 'emphasis' : 'body'}>
+        <TableCell variant="rateFluid" tone={row.htsCode10 && row.dutiable ? 'emphasis' : 'body'}>
           <RateValue value={row.effectiveGeneral} inheritedFrom={row.generalInheritedFrom} />
         </TableCell>
-        <TableCell variant="rateWrap">
+        <TableCell variant="rateFluid">
           <PreferenceRateValue value={row.effectiveSpecial} inheritedFrom={row.specialInheritedFrom} />
         </TableCell>
-        <TableCell variant="rate">
+        <TableCell variant="rateFluid">
           <RateValue value={row.effectiveColumn2} inheritedFrom={row.column2InheritedFrom} />
         </TableCell>
-        <TableCell variant="rate" tone="muted">
+        <TableCell variant="rateFluid" tone="muted">
           {row.units.length > 0 ? row.units.join(', ') : <EmptyCellValue />}
         </TableCell>
       </TableRow>
@@ -476,57 +499,43 @@ export default function ChapterRateTable({ rows, productGroups, note }: ChapterR
             </Stack>
           </Stack>
 
+          {/* Desktop: the headings are a list under labels for their columns; an open heading shows its
+              lines as a table with its own column header, so the line columns always match their labels.
+              Fixed column widths and wrapping rates keep the table inside the card at every width. */}
           <ShowAt range="lg-up">
-            <TableScroll pageSticky>
-              <DataTable>
-                <TableHead sticky look="plain">
-                  <TableRow>
-                    <TableHeaderCell>HTS code</TableHeaderCell>
-                    <TableHeaderCell width="wide">Description</TableHeaderCell>
-                    {/* Tap-to-explain labels (issue #1784): a `title=` tooltip doesn't open on phones. */}
-                    <TableHeaderCell>
-                      <GlossaryTerm id="base-rate">Base rate</GlossaryTerm>
-                    </TableHeaderCell>
-                    <TableHeaderCell width="narrow">
-                      <GlossaryTerm id="special-rate">With a trade deal</GlossaryTerm>
-                    </TableHeaderCell>
-                    <TableHeaderCell>
-                      <Stack gap="xxs">
-                        <span>
-                          <GlossaryTerm id="column-2">Column 2</GlossaryTerm>
-                        </span>
-                        <Text as="span" size="xs" tone="muted" weight="normal">
-                          Cuba, N. Korea, Russia, Belarus only
-                        </Text>
-                      </Stack>
-                    </TableHeaderCell>
-                    <TableHeaderCell>Unit</TableHeaderCell>
-                  </TableRow>
-                </TableHead>
-                {/* One group per 4-digit heading. Collapsed groups keep their rows in the HTML (hidden), so every line is crawlable. */}
-                {shownGroups.map((group) => (
-                  <TableRowGroup key={group.heading} id={group.heading} colSpan={COLUMN_COUNT} {...toggleProps(group)}>
-                    {group.rows.map((row) => (
-                      <DesktopRow
-                        key={row.id}
-                        row={row}
-                        expanded={expandedId === row.id}
-                        onToggle={rowToggle(row, Boolean(row.htsCode10))}
-                        showBreadcrumb={showBreadcrumb}
-                      />
-                    ))}
-                  </TableRowGroup>
-                ))}
-              </DataTable>
-            </TableScroll>
+            <StackedRowList header={headingHeader}>
+              {shownGroups.map((group) => (
+                <TableRowGroup key={group.heading} id={group.heading} {...toggleProps(group)}>
+                  <DataTable layout="fixed">
+                    <LineTableHead />
+                    <tbody>
+                      {group.rows.map((row) => (
+                        <DesktopRow
+                          key={row.id}
+                          row={row}
+                          expanded={expandedId === row.id}
+                          onToggle={rowToggle(row, Boolean(row.htsCode10))}
+                          showBreadcrumb={showBreadcrumb}
+                        />
+                      ))}
+                    </tbody>
+                  </DataTable>
+                </TableRowGroup>
+              ))}
+            </StackedRowList>
           </ShowAt>
 
           {/* Phones: six columns would show two at a time, so each line becomes a list item with its
               code, base rate and full description; the other columns open with a tap. */}
           <ShowAt range="below-lg">
-            <StackedRowList header={<StackedRowListHeader label="HTS code and product" value={<GlossaryTerm id="base-rate">Base rate</GlossaryTerm>} />}>
+            <StackedRowList header={headingHeader}>
               {shownGroups.map((group) => (
-                <StackedRowGroup key={group.heading} id={`phone-${group.heading}`} {...toggleProps(group)}>
+                <StackedRowGroup
+                  key={group.heading}
+                  id={`phone-${group.heading}`}
+                  header={<StackedRowListHeader placement="group" label="HTS code and product" value={<GlossaryTerm id="base-rate">Base rate</GlossaryTerm>} />}
+                  {...toggleProps(group)}
+                >
                   {group.rows.map((row) => (
                     <PhoneRow
                       key={row.id}

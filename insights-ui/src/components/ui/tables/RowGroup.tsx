@@ -9,21 +9,30 @@ import React from 'react';
  * description, an optional plain-language body, a key value with an optional note under it and an
  * aside such as the line count — that opens the group's rows.
  *
- * `TableRowGroup` is the desktop form: two `<tbody>`s inside a `DataTable` (the toggle row, then
- * the rows), so every group shares the table's one header and column widths. `StackedRowGroup` is
- * the phone form, a list item inside a `StackedRowList`.
+ * The groups are list items inside a `StackedRowList`, under a `RowGroupListHeader` that labels the
+ * toggle row's columns (it shares the toggle's grid, so the labels line up with every heading).
+ * An open group carries its own column header for its rows, so the row columns line up with the
+ * labels above them:
+ * - `TableRowGroup` (desktop): the body is a `DataTable` with its own `TableHead`; a sticky head
+ *   stays pinned while that group's rows scroll past and leaves with the group.
+ * - `StackedRowGroup` (phones): the body is a `StackedRowListHeader placement="group"` and a list
+ *   of `StackedRow`s.
  *
  * Collapsed rows are still rendered — the body only gets the `hidden` attribute — so every row stays
  * in the server HTML for search engines and a group opens without fetching anything.
  *
- * The toggle row's layout follows the heading summary row from PR #1822: it stacks on phones (code
- * and aside on one line, then title, description and value) and lines up in columns from `md`.
+ * The toggle row stacks on phones (code and aside on one line, then title, description and value)
+ * and lines up in columns from `md` (layout from PR #1822's summary row). Every text area may wrap,
+ * so a long blurb or rate summary never widens the page.
  */
 
+// One grid template for the toggle rows and the header that labels them, so their columns match.
+const GROUP_GRID =
+  'grid grid-cols-[auto_minmax(0,1fr)_auto] gap-x-3 px-3 md:grid-cols-[4.5rem_minmax(0,1fr)_14rem_6rem_1.25rem] md:gap-x-4 lg:grid-cols-[5rem_minmax(0,1fr)_16rem_7rem_1.25rem]';
+
 const toggle = cva(
-  'grid w-full scroll-mt-28 grid-cols-[auto_minmax(0,1fr)_auto] items-baseline gap-x-3 px-3 py-3 text-left transition-colors ' +
+  `${GROUP_GRID} w-full items-baseline py-3 text-left transition-colors ` +
     '[grid-template-areas:"code_aside_chev""title_title_title""desc_desc_desc""body_body_body""value_value_value"] ' +
-    'md:grid-cols-[4.5rem_minmax(0,1fr)_14rem_8rem_1.25rem] md:gap-x-4 ' +
     'md:[grid-template-areas:"code_title_value_aside_chev""code_desc_value_aside_chev""code_body_value_aside_chev"] ' +
     'hover:bg-surface-2 focus-visible:outline focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-primary',
   {
@@ -33,6 +42,10 @@ const toggle = cva(
     defaultVariants: { expanded: false },
   }
 );
+
+// Text areas of the toggle: `min-w-0` lets a grid item shrink below its longest word, and
+// `break-words` breaks a word that still doesn't fit (a long compound rate, a URL-like token).
+const TEXT = 'min-w-0 break-words';
 
 export interface RowGroupToggleProps {
   /** Monospace code, e.g. the HTS heading "0102". */
@@ -71,17 +84,21 @@ export function RowGroupToggle({
 }: RowGroupToggleProps): React.JSX.Element {
   return (
     <button type="button" aria-expanded={expanded} aria-controls={controls} onClick={onToggle} className={cn(toggle({ expanded }), className)}>
-      <span className="[grid-area:code] font-mono text-sm font-semibold tabular-nums text-primary">{code}</span>
-      <span className="[grid-area:title] mt-1 text-base font-semibold text-heading md:mt-0">{title}</span>
-      {description && <span className="[grid-area:desc] mt-0.5 text-xs text-muted">{description}</span>}
-      {body && <span className="[grid-area:body] mt-1.5 text-sm text-body">{body}</span>}
+      <span className="[grid-area:code] whitespace-nowrap font-mono text-sm font-semibold tabular-nums text-primary">{code}</span>
+      <span className={cn('[grid-area:title] mt-1 text-base font-semibold text-heading md:mt-0', TEXT)}>{title}</span>
+      {description && <span className={cn('[grid-area:desc] mt-0.5 text-xs text-muted', TEXT)}>{description}</span>}
+      {body && <span className={cn('[grid-area:body] mt-1.5 text-sm text-body', TEXT)}>{body}</span>}
       {(value || valueNote) && (
-        <span className="[grid-area:value] mt-1.5 flex flex-col gap-0.5 md:mt-0">
+        <span className={cn('[grid-area:value] mt-1.5 flex flex-col gap-0.5 md:mt-0', TEXT)}>
           {value && <span className="text-sm text-body">{value}</span>}
           {valueNote && <span className="text-xs text-muted">{valueNote}</span>}
         </span>
       )}
-      {aside && <span className="[grid-area:aside] justify-self-end whitespace-nowrap text-xs text-muted md:justify-self-start md:text-sm">{aside}</span>}
+      {aside && (
+        <span className={cn('[grid-area:aside] justify-self-end text-right text-xs text-muted md:justify-self-start md:text-left md:text-sm', TEXT)}>
+          {aside}
+        </span>
+      )}
       <ChevronDownIcon
         className={cn('[grid-area:chev] h-5 w-5 shrink-0 self-center text-muted transition-transform', expanded && 'rotate-180')}
         aria-hidden="true"
@@ -90,50 +107,70 @@ export function RowGroupToggle({
   );
 }
 
-export type TableRowGroupProps = Omit<RowGroupToggleProps, 'controls'> & {
-  /** Anchor id on the toggle row, e.g. "0102" so `#0102` lands on it. */
-  id: string;
-  /** Number of columns in the table, so the toggle row spans them all. */
-  colSpan: number;
-  /** The group's `TableRow`s. */
-  children: React.ReactNode;
-};
+export interface RowGroupListHeaderProps {
+  /** Label over the codes, e.g. "Heading". */
+  code: React.ReactNode;
+  /** Label over the titles, descriptions and bodies, e.g. "Product group". Shown from `md`. */
+  title: React.ReactNode;
+  /** Label over the values, e.g. "Base rates". Shown from `md`. */
+  value: React.ReactNode;
+  /** Label over the asides, e.g. "Lines". */
+  aside: React.ReactNode;
+}
 
-/** Desktop group inside a `DataTable`: the toggle row and the group's rows, hidden (not removed) while collapsed. */
-export function TableRowGroup({ id, colSpan, children, ...toggleProps }: TableRowGroupProps): React.JSX.Element {
-  const bodyId = `${id}-rows`;
+/**
+ * Column labels for a list of row groups — pass it as the `StackedRowList` `header`. It uses the
+ * toggle row's grid, so each label sits over its column; on phones, where the toggle stacks, it
+ * keeps only the code and aside labels.
+ */
+export function RowGroupListHeader({ code, title, value, aside }: RowGroupListHeaderProps): React.JSX.Element {
   return (
-    <>
-      <tbody>
-        <tr id={id} className="scroll-mt-28 border-t border-border">
-          <td colSpan={colSpan} className="p-0">
-            <RowGroupToggle {...toggleProps} controls={bodyId} />
-          </td>
-        </tr>
-      </tbody>
-      <tbody id={bodyId} hidden={!toggleProps.expanded}>
-        {children}
-      </tbody>
-    </>
+    <div className={cn(GROUP_GRID, 'items-baseline rounded-t-lg border-b border-border bg-bg py-2.5 text-sm font-semibold text-muted')}>
+      <span className="whitespace-nowrap">{code}</span>
+      <span className="hidden md:block">{title}</span>
+      <span className="hidden md:block">{value}</span>
+      <span className="col-start-2 justify-self-end md:col-start-auto md:justify-self-start">{aside}</span>
+    </div>
   );
 }
 
-export type StackedRowGroupProps = Omit<RowGroupToggleProps, 'controls'> & {
-  /** Anchor id on the group, e.g. "phone-0102". */
+type RowGroupShellProps = Omit<RowGroupToggleProps, 'controls'> & {
+  /** Anchor id on the group, e.g. "0102" so `#0102` lands on it. */
   id: string;
-  /** The group's `StackedRow`s. */
   children: React.ReactNode;
 };
 
-/** Phone group inside a `StackedRowList`: the toggle and a nested list, hidden (not removed) while collapsed. */
-export function StackedRowGroup({ id, children, ...toggleProps }: StackedRowGroupProps): React.JSX.Element {
+function RowGroupShell({ id, children, ...toggleProps }: RowGroupShellProps): React.JSX.Element {
   const bodyId = `${id}-rows`;
   return (
     <li id={id} className="scroll-mt-28 border-t border-border first:border-t-0">
       <RowGroupToggle {...toggleProps} controls={bodyId} />
-      <ul id={bodyId} hidden={!toggleProps.expanded} className="border-t border-border">
+      {/* The sticky column header inside is bounded by this element, so it leaves with the group. */}
+      <div id={bodyId} hidden={!toggleProps.expanded} className="border-t border-border">
         {children}
-      </ul>
+      </div>
     </li>
+  );
+}
+
+export type TableRowGroupProps = RowGroupShellProps;
+
+/** Desktop group: the toggle and the group's own `DataTable` (with its column header), hidden (not removed) while collapsed. */
+export function TableRowGroup(props: TableRowGroupProps): React.JSX.Element {
+  return <RowGroupShell {...props} />;
+}
+
+export type StackedRowGroupProps = RowGroupShellProps & {
+  /** Column labels at the top of the group's rows, e.g. a `StackedRowListHeader placement="group"`. */
+  header?: React.ReactNode;
+};
+
+/** Phone group: the toggle, an optional column header and the group's `StackedRow`s, hidden (not removed) while collapsed. */
+export function StackedRowGroup({ header, children, ...props }: StackedRowGroupProps): React.JSX.Element {
+  return (
+    <RowGroupShell {...props}>
+      {header}
+      <ul>{children}</ul>
+    </RowGroupShell>
   );
 }
