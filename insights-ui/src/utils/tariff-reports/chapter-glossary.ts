@@ -3,7 +3,7 @@
 // with no extra data. DB-backed chapters have no content file and get no terms.
 
 import { findGlossaryTerms, TARIFF_GLOSSARY, type GlossaryEntry } from '@/tariff-data/glossary';
-import { getChapterExports } from '@/utils/tariff-reports/chapter-exports';
+import { getExportPageContent } from '@/utils/tariff-reports/chapter-exports';
 import type { TariffChapterPrototype } from '@/types/tariff-chapter-prototype';
 import type { ChapterReportDirection } from '@/utils/tariff-reports/chapter-route-helpers';
 
@@ -27,8 +27,6 @@ const STATIC_TERM_IDS: Record<string, string[]> = {
   overview: ['base-rate', 'special-rate', 'column-2'],
 };
 
-const EXPORT_PAGE_KEYS = { exports: 'overview', 'exports/tariff-updates': 'tariffUpdates', 'exports/markets': 'markets' } as const;
-
 /** The content-file data rendered on an Approach-2 page, or null when the page has none. */
 function approach2PageContent(
   prototype: TariffChapterPrototype | null,
@@ -37,8 +35,7 @@ function approach2PageContent(
   direction: ChapterReportDirection
 ): unknown[] | null {
   if (direction === 'export') {
-    const key = EXPORT_PAGE_KEYS[currentSlug as keyof typeof EXPORT_PAGE_KEYS];
-    const content = key ? getChapterExports(chapterSlug)?.[key] : undefined;
+    const content = getExportPageContent(chapterSlug, currentSlug);
     return content ? [content] : null;
   }
   if (!prototype) return null;

@@ -12,9 +12,11 @@ import type {
 /**
  * Trade statistics for the Approach-2 chapter generator.
  *
- * `fetch-trade.ts` downloads U.S. imports for one HS chapter from the UN
- * Comtrade public API and writes a compact summary to
- * `src/tariff-data/trade/chapter-NN.json` (shape: {@link TradeSummary}).
+ * `fetch-trade.ts` downloads U.S. imports (or, with `--flow X`, exports) for one
+ * HS chapter from the UN Comtrade public API and writes a compact summary to
+ * `src/tariff-data/trade/chapter-NN.json` (exports: `trade/exports/chapter-NN.json`;
+ * shape: {@link TradeSummary}). The export summary feeds the export generator
+ * (`generate-exports.ts`).
  * {@link buildUnderstandIndustry} turns that summary into the
  * `understandIndustry` block of a chapter content file. Narrative fields
  * (`h1`, `seo`, `why`) are left as "TODO" for the writer agents.
@@ -23,6 +25,7 @@ import type {
 export const TRADE_DATA_DIR = path.join(process.cwd(), 'src', 'tariff-data', 'trade');
 
 export const COMTRADE_VALUE_BASIS = 'CIF value (customs value plus freight and insurance), as reported by the United States to UN Comtrade.';
+export const COMTRADE_EXPORT_VALUE_BASIS = 'FOB value of U.S. exports, as reported by the United States to UN Comtrade.';
 export const COMTRADE_COVERAGE_NOTE = 'Values are CIF (customs value plus freight and insurance), as reported by the United States to UN Comtrade.';
 
 /** Placeholder for narrative fields that a writer agent fills in. */
@@ -33,6 +36,7 @@ export interface TradeSummaryCountry {
   countryCode: number;
   /** Partner name exactly as Comtrade reports it. */
   country: string;
+  /** Value for the summary's `flow` — imports, or exports in an export summary (the field names predate exports). */
   importsUsd: number;
   priorImportsUsd: number;
   /** Imports per year, keyed by year ("2021"). Missing years mean no reported trade. */
@@ -71,7 +75,8 @@ export interface TradeSummary {
   /** ISO date (YYYY-MM-DD) the data was downloaded. */
   retrievedAt: string;
   reporter: { code: number; name: string };
-  flow: 'M';
+  /** M = U.S. imports, X = U.S. exports. Every `importsUsd` field holds the value for this flow. */
+  flow: TradeFlow;
   valueBasis: string;
   years: number[];
   latestYear: number;
@@ -86,6 +91,20 @@ export interface TradeSummary {
   byHeadingCountry: TariffImportsByHeadingCountry[];
   /** Sum checks: heading and HS6 totals vs the chapter total for the latest year. */
   checks: { label: string; expectedUsd: number; actualUsd: number; diffUsd: number }[];
+  /** The current year so far from monthly data (`--ytd`), against the same months a year earlier. */
+  yearToDate?: TradeYearToDate;
+}
+
+export type TradeFlow = 'M' | 'X';
+
+export interface TradeYearToDate {
+  year: number;
+  /** Last month with data, 1–12. */
+  throughMonth: number;
+  totalUsd: number;
+  priorTotalUsd: number;
+  /** Every partner with trade in either period, largest first. */
+  byCountry: { countryCode: number; country: string; valueUsd: number; priorValueUsd: number }[];
 }
 
 export interface TradeChapterInfo {
@@ -103,14 +122,15 @@ export interface TradeChapterInfo {
 
 const USMCA_PARTNERS = new Set(['Canada', 'Mexico']);
 
-export function tradeSummaryPath(chapter: number): string {
-  return path.join(TRADE_DATA_DIR, `chapter-${String(chapter).padStart(2, '0')}.json`);
+export function tradeSummaryPath(chapter: number, flow: TradeFlow = 'M'): string {
+  const file = `chapter-${String(chapter).padStart(2, '0')}.json`;
+  return flow === 'X' ? path.join(TRADE_DATA_DIR, 'exports', file) : path.join(TRADE_DATA_DIR, file);
 }
 
-export function loadTradeSummary(chapter: number): TradeSummary {
-  const file = tradeSummaryPath(chapter);
+export function loadTradeSummary(chapter: number, flow: TradeFlow = 'M'): TradeSummary {
+  const file = tradeSummaryPath(chapter, flow);
   if (!existsSync(file)) {
-    throw new Error(`No trade summary at ${file}. Run: pnpm tariff:fetch-trade --chapter ${chapter}`);
+    throw new Error(`No trade summary at ${file}. Run: pnpm tariff:fetch-trade --chapter ${chapter}${flow === 'X' ? ' --flow X --ytd' : ''}`);
   }
   return JSON.parse(readFileSync(file, 'utf8')) as TradeSummary;
 }

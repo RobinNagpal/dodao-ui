@@ -6,7 +6,13 @@ import ToolPills from '@/components/tariff-cross-links/ToolPills';
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
 import { hasChapterExports } from '@/utils/tariff-reports/chapter-exports';
 import { type ChapterPrototypeCard, getChapterPrototypeCard, hasChapterPrototype } from '@/utils/tariff-reports/chapter-prototype';
-import { approach2SectionLabel, CHAPTER_REPORT_SECTIONS, chapterCoverHref, chapterSectionHref } from '@/utils/tariff-reports/chapter-route-helpers';
+import {
+  approach2SectionLabel,
+  CHAPTER_REPORT_SECTIONS,
+  chapterCoverHref,
+  chapterExportHref,
+  chapterSectionHref,
+} from '@/utils/tariff-reports/chapter-route-helpers';
 import { TARIFF_REPORTS_LISTING_TAG } from '@/utils/tariff-report-tags';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
@@ -146,7 +152,7 @@ function ChapterCard({ chapterNumber, chapterTitle, chapterSlug, lastModified, h
         </Link>
         {hasExports && (
           <Link
-            href={chapterSectionHref(chapterSlug, 'exports')}
+            href={chapterExportHref(chapterSlug)}
             className="inline-flex items-center gap-1.5 text-sm font-medium text-muted transition-colors hover:text-link"
           >
             <Ship className="h-4 w-4" />

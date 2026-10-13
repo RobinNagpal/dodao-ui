@@ -3,7 +3,7 @@ import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { getCanonicalUrl } from '@/utils/getBaseUrlForServerSidePages';
 import { hasChapterExports } from '@/utils/tariff-reports/chapter-exports';
 import { getStoredChapterPrototype } from '@/utils/tariff-reports/chapter-prototype';
-import { CHAPTER_EXPORT_SECTIONS } from '@/utils/tariff-reports/chapter-route-helpers';
+import { CHAPTER_EXPORT_SECTIONS, chapterExportHref } from '@/utils/tariff-reports/chapter-route-helpers';
 import { delayedSitemapLastmod } from '@/utils/sitemap-lastmod-utils';
 import { Prisma } from '@prisma/client';
 import { NextResponse } from 'next/server';
@@ -58,10 +58,10 @@ async function generateTariffReportUrls(): Promise<SiteMapUrl[]> {
     if (row.tariffEngineering !== null || prototype?.tariffEngineering) {
       urls.push({ url: `${chapterPath}/tariff-engineering`, changefreq: 'weekly', priority: 0.7, lastmod });
     }
-    // The export half of the report (/exports, /exports/tariff-updates, /exports/markets) exists only for chapters with export content.
+    // The export half of the report (/industry-tariff-report/exports/chapters/<slug>/…) exists only for chapters with export content.
     if (hasChapterExports(row.slug)) {
       for (const section of CHAPTER_EXPORT_SECTIONS) {
-        urls.push({ url: `${chapterPath}/${section.slug}`, changefreq: 'weekly', priority: 0.7, lastmod });
+        urls.push({ url: chapterExportHref(row.slug, section.slug), changefreq: 'weekly', priority: 0.7, lastmod });
       }
     }
   }

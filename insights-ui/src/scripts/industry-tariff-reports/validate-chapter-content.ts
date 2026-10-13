@@ -2,8 +2,9 @@ import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs';
 import path from 'node:path';
 import type { MeasureEngineInput, MeasureEngineLine, TariffMeasuresFile, TariffProductType } from '@/types/tariff-calculator-measures';
 import type { StoredTariffChapterPrototype, TariffChapterPrototype, TariffEditionRef } from '@/types/tariff-chapter-prototype';
-import type { TariffChapterExports } from '@/types/tariff-chapter-exports';
-import { getChapterExports, listChapterExportSlugs } from '@/utils/tariff-reports/chapter-exports';
+import type { TariffChapterExports, TariffExportMarketLibrary, TariffExportStepsLibrary, TariffForeignMeasuresLibrary } from '@/types/tariff-chapter-exports';
+import { EXPORT_PAGE_SLUGS, getChapterExports, listChapterExportSlugs } from '@/utils/tariff-reports/chapter-exports';
+import { CHAPTER_EXPORT_SECTIONS, chapterExportHref } from '@/utils/tariff-reports/chapter-route-helpers';
 import {
   getStoredChapterPrototype,
   listChapterPrototypeSlugs,
@@ -69,7 +70,9 @@ export const OFFICIAL_SOURCE_DOMAINS: readonly string[] = [
   'usda.gov', // includes aphis.usda.gov, fas.usda.gov
   'fda.gov',
   'dea.gov',
+  'usdoj.gov', // deadiversion.usdoj.gov — DEA Diversion Control (import/export permits)
   'census.gov',
+  'uscensus.prod.3ceonline.com', // the Census Bureau's Schedule B search tool
   'noaa.gov', // fisheries.noaa.gov — NOAA Fisheries (SIMP, MMPA)
   'fws.gov', // Fish and Wildlife Service
   'state.gov', // shrimp/sea-turtle certification (DS-2031)
@@ -364,15 +367,106 @@ function camel(slug: string): string {
 }
 
 function checkExports(report: Report, opts: Options, slug: string, e: TariffChapterExports): void {
-  for (const [name, page] of Object.entries(e)) {
+  for (const [name, page] of Object.entries(e) as [keyof TariffChapterExports, TariffChapterExports[keyof TariffChapterExports]][]) {
     const where = `${slug}/exports/${name}`;
     if (page.chapter.slug !== slug) report.error(where, `chapter.slug "${page.chapter.slug}" does not match the registered slug`);
+    if (page.page.slug !== EXPORT_PAGE_SLUGS[name]) report.error(`${where}.page.slug`, `"${page.page.slug}" should be "${EXPORT_PAGE_SLUGS[name]}"`);
+    if (page.page.path !== chapterExportHref(slug, EXPORT_PAGE_SLUGS[name])) {
+      report.error(`${where}.page.path`, `"${page.page.path}" should be "${chapterExportHref(slug, EXPORT_PAGE_SLUGS[name])}"`);
+    }
     walk(report, opts, page as unknown as Json, where, null, false);
   }
   checkUniqueStrings(report, `${slug}/exports/overview.keyTakeaways`, e.overview.keyTakeaways);
   checkUniqueStrings(report, `${slug}/exports/markets.assumptions`, e.markets.assumptions);
+  checkUniqueStrings(report, `${slug}/exports/faq.keyTakeaways`, e.faq.keyTakeaways);
   checkSortedNewestFirst(report, `${slug}/exports/tariffUpdates.changes`, e.tariffUpdates.changes);
   checkInEffectDated(report, `${slug}/exports/tariffUpdates.inEffect`, e.tariffUpdates.inEffect);
+
+  const ytd = e.overview.yearToDate;
+  if (ytd && (ytd.throughMonth < 1 || ytd.throughMonth > 12))
+    report.error(`${slug}/exports/overview.yearToDate`, `throughMonth ${ytd.throughMonth} is not 1–12`);
+
+  // "What's coming": each event is still ahead and dated; soonest first. A passed event belongs in `changes`.
+  const upcoming = e.tariffUpdates.upcoming;
+  upcoming.forEach((u, i) => {
+    const w = `${slug}/exports/tariffUpdates.upcoming[${u.id}]`;
+    if (!isIsoDate(u.expectedOn)) report.error(w, `expectedOn "${u.expectedOn}" is not an ISO date (YYYY-MM-DD)`);
+    else if (u.expectedOn < opts.today) report.error(w, `${u.expectedOn} has passed — record what happened in \`changes\` and remove it from \`upcoming\``);
+    if (i > 0 && u.expectedOn < upcoming[i - 1].expectedOn)
+      report.error(w, `not sorted soonest-first (${u.expectedOn} comes after ${upcoming[i - 1].expectedOn})`);
+  });
+
+  const m = e.markets;
+  if (!(m.tariffYear >= 2000)) report.error(`${slug}/exports/markets.tariffYear`, `${m.tariffYear} — set the year of the tariff schedules the rates come from`);
+  const headings = new Set(m.groups.map((g) => g.heading));
+  const marketNames = new Set(m.markets.map((x) => x.name));
+  m.markets.forEach((x) => {
+    for (const h of Object.keys(x.cells)) if (!headings.has(h)) report.error(`${slug}/exports/markets.markets[${x.name}]`, `cell for unknown heading ${h}`);
+  });
+  m.biggestLanes.forEach((l) => {
+    if (!marketNames.has(l.market)) report.error(`${slug}/exports/markets.biggestLanes`, `unknown market "${l.market}"`);
+    if (!headings.has(l.heading)) report.error(`${slug}/exports/markets.biggestLanes`, `unknown heading ${l.heading}`);
+  });
+
+  const r = e.rules;
+  const ruleIds = new Set(r.rules.map((x) => x.id));
+  r.groups.forEach((g) => g.ruleIds.forEach((id) => !ruleIds.has(id) && report.error(`${slug}/exports/rules.groups[${g.heading}]`, `unknown rule id "${id}"`)));
+  [...r.steps, ...r.rules, ...r.savings].forEach((x) => {
+    if (x.citations.length === 0) report.warn(`${slug}/exports/rules[${x.id}]`, 'no citations');
+  });
+
+  if (e.faq.faqs.length === 0)
+    report.error(`${slug}/exports/faq.faqs`, 'no questions — the export FAQ needs real search questions answered from the other export pages');
+  const exportSlugs = new Set(CHAPTER_EXPORT_SECTIONS.map((s) => s.slug));
+  e.faq.faqs.forEach((f) => {
+    if (!exportSlugs.has(f.link))
+      report.error(`${slug}/exports/faq.faqs[${f.id}]`, `link "${f.link}" is not an export page slug (${[...exportSlugs].join(', ')})`);
+  });
+}
+
+/**
+ * The shared export library (`src/tariff-data/export-library/`) the export generator copies from: the
+ * same source, date and placeholder rules as a page, plus ordering and the in-force citation rule.
+ */
+function checkExportLibrary(report: Report, opts: Options): void {
+  const dir = path.resolve(process.cwd(), 'src/tariff-data/export-library');
+  const read = <T>(name: string): T | null => {
+    try {
+      return JSON.parse(readFileSync(path.join(dir, name), 'utf8')) as T;
+    } catch (err) {
+      report.error(`export-library/${name}`, `cannot read: ${(err as Error).message}`);
+      return null;
+    }
+  };
+  const steps = read<TariffExportStepsLibrary>('us-export-steps.json');
+  const markets = read<TariffExportMarketLibrary>('markets.json');
+  const foreign = read<TariffForeignMeasuresLibrary>('foreign-measures.json');
+  if (steps) walk(report, opts, steps as unknown as Json, 'export-library/us-export-steps', null, false);
+  if (markets) {
+    walk(report, opts, markets as unknown as Json, 'export-library/markets', null, false);
+    const seen = new Map<number, string>();
+    for (const m of markets.markets) {
+      for (const code of m.countryCodes) {
+        if (seen.has(code)) report.error(`export-library/markets[${m.name}]`, `country code ${code} is also in "${seen.get(code)}"`);
+        seen.set(code, m.name);
+      }
+    }
+  }
+  if (!foreign) return;
+  const where = 'export-library/foreign-measures';
+  walk(report, opts, foreign as unknown as Json, where, null, false);
+  checkSortedNewestFirst(report, `${where}.measures`, foreign.measures);
+  foreign.measures.forEach((m) => {
+    if (m.inForce && (!m.effectiveSourceId || !m.sourceIds.includes(m.effectiveSourceId))) {
+      report.error(`${where}.measures[${m.id}]`, 'an in-force measure needs `effectiveSourceId`, listed in its `sourceIds`');
+    }
+  });
+  foreign.upcoming.forEach((u, i) => {
+    const w = `${where}.upcoming[${u.id}]`;
+    if (!isIsoDate(u.expectedOn)) report.error(w, `expectedOn "${u.expectedOn}" is not an ISO date (YYYY-MM-DD)`);
+    else if (u.expectedOn < opts.today) report.error(w, `${u.expectedOn} has passed — move what happened into \`measures\``);
+    if (i > 0 && u.expectedOn < foreign.upcoming[i - 1].expectedOn) report.error(w, 'not sorted soonest-first');
+  });
 }
 
 /** Content files on disk that no loader registers — they never render. */
@@ -721,6 +815,7 @@ async function main(): Promise<void> {
   let warnings = 0;
   const global = new Report();
   if (!only && !fromFile) findUnregisteredFiles(global, prototypeSlugs, exportSlugs);
+  if (!fromFile) checkExportLibrary(global, opts);
   if (global.findings.length) printReport('tariff-data', global);
   errors += global.errorCount;
   warnings += global.warnCount;

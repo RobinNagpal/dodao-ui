@@ -22,6 +22,7 @@ import {
   ChapterReportDirection,
   ChapterRouteInfo,
   chapterEditHref,
+  chapterExportHref,
   chapterSectionHref,
   getChapterSectionCopy,
 } from '@/utils/tariff-reports/chapter-route-helpers';
@@ -175,7 +176,7 @@ function approach2LatestChange(
 ): { date: string; title: string; href: string } | undefined {
   if (direction === 'export') {
     const change = latestExportChange(chapterSlug);
-    return change ? { ...change, href: chapterSectionHref(chapterSlug, 'exports/tariff-updates') } : undefined;
+    return change ? { ...change, href: chapterExportHref(chapterSlug, 'exports/tariff-updates') } : undefined;
   }
   const change = prototype ? latestChapterChange(prototype) : null;
   return change ? { ...change, href: chapterSectionHref(chapterSlug, 'tariff-updates') } : undefined;

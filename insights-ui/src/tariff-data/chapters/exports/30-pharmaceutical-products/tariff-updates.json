@@ -9,7 +9,7 @@
   },
   "page": {
     "slug": "exports/tariff-updates",
-    "path": "/industry-tariff-report/chapters/30-pharmaceutical-products/exports/tariff-updates",
+    "path": "/industry-tariff-report/exports/chapters/30-pharmaceutical-products/tariff-updates",
     "h1": "HTS Chapter 30: Pharmaceutical Products — Foreign Tariff Changes on U.S. Exports",
     "seo": {
       "title": "Tariffs on U.S. Pharmaceutical Exports: What Changed Since 2025 (HTS Ch. 30) | KoalaGains",
@@ -23,34 +23,17 @@
         "US pharma export tariffs 2026"
       ]
     },
-    "lastCheckedAt": "2026-10-09"
+    "lastCheckedAt": "2026-10-13"
   },
-  "nav": [
-    {
-      "slug": "exports",
-      "label": "Export overview",
-      "path": "/industry-tariff-report/chapters/30-pharmaceutical-products/exports"
-    },
-    {
-      "slug": "exports/tariff-updates",
-      "label": "Export tariff updates",
-      "path": "/industry-tariff-report/chapters/30-pharmaceutical-products/exports/tariff-updates"
-    },
-    {
-      "slug": "exports/markets",
-      "label": "Export markets",
-      "path": "/industry-tariff-report/chapters/30-pharmaceutical-products/exports/markets"
-    }
-  ],
-  "intro": "This page tracks what **other countries** changed on U.S. pharmaceuticals since January 2025 — retaliation, trade deals and removals — newest first. Only one measure actually costs U.S. medicine exporters money today: **China's extra 10%** on all U.S. goods. Canada's counter-tariff lists left Chapter 30 out; the EU's list named only adhesive dressings and has never been applied. The 2025–26 deals with the UK, Japan, Switzerland and the EU did not need to cut tariffs that were already zero. For what the U.S. charges on imported medicines, see the import Tariff updates page.",
-  "scope": "The 12 largest buyers of U.S. Chapter 30 goods (76% of 2025 exports). Measures on other U.S. goods are listed only where a buyer might reasonably expect them to reach medicines.",
+  "intro": "What **other countries** changed on U.S. pharmaceuticals since January 2025, and what is coming. The only new measure that costs U.S. medicine exporters money is **China's extra 10%** on all U.S. goods — and it could rise to 34% if the suspension of the rest lapses on **January 10, 2027**. China's older 2019 counter-tariffs still reach some dressings and 3006 goods unless the buyer holds an exclusion, and the exclusions end on **December 31, 2026**.\n\nCanada's counter-tariff lists left Chapter 30 out; the EU's list named only adhesive dressings and has never been applied. The 2025–26 deals with the UK, Japan, Switzerland and the EU did not need to cut tariffs that were already zero. For what the U.S. charges on imported medicines, see the import Tariff updates page.",
+  "scope": "The 8 largest markets for U.S. Chapter 30 goods (85% of 2025 exports; the EU counts as one market). Actions on other U.S. goods are listed only where a buyer might reasonably expect them to reach medicines.",
   "stats": [
     {
-      "label": "Measures tracked",
-      "value": "14"
+      "label": "Actions tracked",
+      "value": "15"
     },
     {
-      "label": "In force & cost U.S. medicines",
+      "label": "New since 2025 & cost U.S. medicines",
       "value": "1",
       "note": "China +10%"
     },
@@ -60,9 +43,33 @@
       "note": "Canada 2025, Canada 2026 (the suspended EU list named adhesive dressings)"
     },
     {
-      "label": "Pending",
+      "label": "Coming up",
       "value": "2",
-      "note": "China Board of Trade list, Brazil–U.S. talks"
+      "note": "China exclusions (Dec 31), China suspension (Jan 10)"
+    }
+  ],
+  "upcoming": [
+    {
+      "id": "cn-exclusions-end",
+      "expectedOn": "2026-12-31",
+      "dateLabel": "Expires",
+      "countries": ["China"],
+      "title": "China's tariff exclusions for U.S. goods end",
+      "whatHappens": "China's exclusions from its 2019 counter-tariffs on U.S. goods are valid until December 31, 2026 under the November 2025 U.S.–China deal.",
+      "impact": "Any exclusion a buyer holds would end, so listed Chapter 30 goods — mainly dressings (3005) and 3006 goods such as reagents and dental cements — would pay China's 2019 counter-tariffs again. Vaccines, antibodies and most packaged medicines are not on those lists.",
+      "status": "No extension announced",
+      "sourceIds": ["wh-china-deal-2025"]
+    },
+    {
+      "id": "cn-24-suspension-end",
+      "expectedOn": "2027-01-10",
+      "dateLabel": "Expires",
+      "countries": ["China"],
+      "title": "China's suspension of 24 points of its extra tariff on U.S. goods ends",
+      "whatHappens": "China suspended 24 points of its extra tariff on all U.S. goods for one year from November 10, 2025, keeping 10%. In September 2026 the two sides agreed to extend the arrangement to January 10, 2027, with talks on a further extension expected before the end of the year.",
+      "impact": "If it lapses, China's extra tariff on U.S. Chapter 30 goods goes from 10% to 34% on top of its 0–3% normal rate: a $1M shipment of U.S. antibodies would pay about $370,000 instead of $130,000.",
+      "status": "Extension to Jan 10, 2027 announced by MOFCOM; China's Tariff Commission has not yet published its notice",
+      "sourceIds": ["cn-24-suspend", "cn-mofcom-2026-09"]
     }
   ],
   "inEffect": [
@@ -73,10 +80,10 @@
       "before": "0% (Jan 2025)",
       "now": "+10%",
       "appliesTo": "All Chapter 30 goods of U.S. origin, on top of China's 0–3% normal rate (5–10% on dressings and other 3006 goods).",
-      "whatItMeans": "A $1M shipment of U.S. antibodies pays about $130,000 instead of $30,000 at China's 3% normal rate. The extra rate peaked at 125% in April 2025; since November 10, 2025 a further 24 points are suspended for one year (Tariff Commission Announcement No. 10 of 2025).",
+      "whatItMeans": "A $1M shipment of U.S. antibodies pays about $130,000 instead of $30,000 at China's 3% normal rate. The extra rate peaked at 125% in April 2025; a further 24 points are suspended, now until January 10, 2027 — see What's coming.",
       "effectiveFrom": "2025-05-14",
       "effectiveSourceId": "cn-sctc-may2025",
-      "sourceIds": ["cn-sctc-125", "cn-sctc-may2025", "cn-24-suspend"]
+      "sourceIds": ["cn-sctc-125", "cn-sctc-may2025", "cn-24-suspend", "cn-mofcom-2026-09"]
     }
   ],
   "changes": [
@@ -111,12 +118,12 @@
       "date": "2026-07-27",
       "type": "reference",
       "countries": ["Brazil"],
-      "title": "Brazil challenges the new U.S. Section 301 tariffs at the WTO; no counter-tariff",
+      "title": "Brazil has imposed nothing on U.S. goods; it is challenging U.S. tariffs at the WTO",
       "before": null,
       "now": null,
       "coversChapter": "no",
       "status": "Nothing imposed on U.S. goods; talks ongoing",
-      "detail": "Brazil asked the United States for WTO consultations on July 27, 2026 over the 25% Brazil-specific and 12.5% forced-labor Section 301 tariffs. Brazil's Economic Reciprocity Law (Law 15,122 of April 11, 2025) allows countermeasures such as import restrictions and suspension of intellectual-property obligations, but no measure on U.S. goods has been published. Brazilian ministers met USTR on August 31 and September 30, 2026 and agreed to set up a working group on a possible agreement.",
+      "detail": "Brazil has published no countermeasure on U.S. goods. Its Economic Reciprocity Law (Law 15,122 of April 11, 2025) would allow them — such as import restrictions or suspending intellectual-property obligations — but none has been applied. On July 27, 2026 Brazil asked the United States for WTO consultations over U.S. tariffs on Brazilian goods, and Brazilian ministers met USTR on August 31 and September 30, 2026 to set up a working group on a possible agreement.",
       "sourceIds": ["br-wto-2026", "br-talks-2026", "br-law"]
     },
     {
@@ -124,25 +131,25 @@
       "date": "2026-07-01",
       "type": "tradeDeal",
       "countries": ["Mexico"],
-      "title": "USMCA joint review: U.S. declines to extend, annual reviews begin",
+      "title": "USMCA stays in force: Canada and Mexico keep 0% on qualifying U.S. goods",
       "before": null,
       "now": null,
       "coversChapter": "yes",
       "status": "USMCA still in force",
-      "detail": "At the first USMCA joint review on July 1, 2026 the United States did not agree to extend the agreement for a new 16-year term, so it is now reviewed every year; it stays in force until at least July 1, 2036. Preferences continue. USTR is taking comments for the 2027 review until January 12, 2027.",
+      "detail": "At the first USMCA joint review on July 1, 2026 the three countries did not agree to a new 16-year term, so the agreement is now reviewed every year; it stays in force until at least July 1, 2036. Canada and Mexico keep applying USMCA rates to qualifying U.S. goods.",
       "sourceIds": ["mx-usmca-review", "wits-mfn"]
     },
     {
       "id": "de-eu-framework",
       "date": "2026-06-25",
       "type": "tradeDeal",
-      "countries": ["EU (Germany, Netherlands, Belgium, Spain, Ireland)"],
+      "countries": ["European Union"],
       "title": "EU–U.S. framework tariff cuts adopted",
       "before": null,
       "now": null,
       "coversChapter": "no",
       "status": "In force (applies from July 1, 2026)",
-      "detail": "Regulation (EU) 2026/1455 cuts EU duties on listed U.S. goods to zero from July 1, 2026, and Regulation (EU) 2026/1461 sets aside duties on certain other goods. No Chapter 30 line is listed because EU duties on U.S. medicines were already zero. On the U.S. side, the August 2025 framework caps U.S. tariffs on EU pharmaceuticals at 15%.",
+      "detail": "Regulation (EU) 2026/1455 cuts EU duties on listed U.S. goods to zero from July 1, 2026, and Regulation (EU) 2026/1461 sets aside duties on certain other goods. No Chapter 30 line is listed because EU duties on U.S. medicines were already zero.",
       "sourceIds": ["eu-framework", "eu-joint-2025"]
     },
     {
@@ -181,7 +188,7 @@
       "now": null,
       "coversChapter": "yes",
       "status": "In force; full text agreed Apr 2, 2026",
-      "detail": "Not a tariff: the UK raises the net price it pays for new medicines by about 25% and lifts NICE’s cost-effectiveness threshold, which should help U.S. drug sales. In return the U.S. exempts UK medicines from its Section 232 drug tariffs, subject to conditions.",
+      "detail": "Not a tariff: the UK raises the net price it pays for new medicines by about 25% and lifts NICE’s cost-effectiveness threshold, which should help U.S. drug sales. UK tariffs on medicines stay at zero.",
       "sourceIds": ["uk-pharma", "uk-pharma-text"]
     },
     {
@@ -194,8 +201,21 @@
       "now": "0%",
       "coversChapter": "yes",
       "status": "Framework; full agreement under negotiation",
-      "detail": "Switzerland intends to apply zero duties on all U.S. industrial goods, including medicines. On the U.S. side, Swiss pharmaceuticals face at most 15% under the Section 232 drug tariffs.",
+      "detail": "Switzerland intends to apply zero duties on all U.S. industrial goods, including medicines.",
       "sourceIds": ["ch-framework", "ch-seco"]
+    },
+    {
+      "id": "cn-exclusions",
+      "date": "2025-11-01",
+      "type": "tradeDeal",
+      "countries": ["China"],
+      "title": "China extends its tariff exclusions for U.S. goods to December 31, 2026",
+      "before": null,
+      "now": null,
+      "coversChapter": "partly",
+      "status": "Exclusions valid until Dec 31, 2026",
+      "detail": "Under the November 2025 U.S.–China deal, China extended its market-based exclusion process for imports from the United States; exclusions stay valid until December 31, 2026. They lift China's 2019 counter-tariffs on U.S. goods (answering the U.S. Section 301 tariffs), which were never repealed. For Chapter 30 those lists still name mainly dressings (3005) and 3006 goods such as reagents, dental cements and first-aid kits — for example 10% on 3006.40, 3006.50 and 3006.70 — but not vaccines, antibodies or most packaged medicines.",
+      "sourceIds": ["wh-china-deal-2025", "cn-2019-annex3"]
     },
     {
       "id": "jp-deal",
@@ -207,14 +227,14 @@
       "now": null,
       "coversChapter": "no",
       "status": "In force",
-      "detail": "Executive Order 14345 implements the U.S.–Japan agreement: Japan works toward buying U.S. farm and other goods worth $8 billion a year and investing in the U.S.; Japanese tariffs on medicines did not change. On the U.S. side, Japanese pharmaceuticals face at most 15% under the U.S. Section 232 drug tariffs.",
+      "detail": "Executive Order 14345 implements the U.S.–Japan agreement: Japan works toward buying U.S. farm and other goods worth $8 billion a year and investing in the U.S.; Japanese tariffs on medicines did not change.",
       "sourceIds": ["jp-deal", "jp-tariff"]
     },
     {
       "id": "de-eu-rebalancing",
       "date": "2025-07-24",
       "type": "retaliation",
-      "countries": ["EU (Germany, Netherlands, Belgium, Spain, Ireland)"],
+      "countries": ["European Union"],
       "title": "EU countermeasures on about €93B of U.S. goods",
       "before": "0%",
       "now": "0% (suspended)",
@@ -232,9 +252,9 @@
       "before": "0% (Jan 2025)",
       "now": "10%",
       "coversChapter": "yes",
-      "status": "In force; 24-point suspension runs one year from Nov 10, 2025",
-      "detail": "Rose 34% → 84% → 125% in April 2025 (125% from April 12), then cut to 10% from May 14, 2025 with 24 points suspended for 90 days. The suspension was extended for 90 days from August 12, 2025 and for one year from November 10, 2025, with the 10% kept. Applies to medicines on top of China’s normal rate.",
-      "sourceIds": ["cn-sctc-125", "cn-sctc-may2025", "cn-sctc-aug2025", "cn-24-suspend", "wits-mfn"]
+      "status": "In force; 24-point suspension extended to Jan 10, 2027",
+      "detail": "Rose 34% → 84% → 125% in April 2025 (125% from April 12), then cut to 10% from May 14, 2025 with 24 points suspended for 90 days. The suspension was extended for 90 days from August 12, 2025 and for one year from November 10, 2025, with the 10% kept. In September 2026 the two sides agreed to extend the arrangement to January 10, 2027. Applies to medicines on top of China’s normal rate.",
+      "sourceIds": ["cn-sctc-125", "cn-sctc-may2025", "cn-sctc-aug2025", "cn-24-suspend", "wits-mfn", "cn-mofcom-2026-09"]
     },
     {
       "id": "uk-epd",
@@ -261,92 +281,6 @@
       "status": "Mostly removed Sept 1, 2025",
       "detail": "The list jumped from silica sand (2505) to perfumes (3303); no pharmaceuticals. Canada repealed most of it on Sept 1, 2025, keeping only steel, aluminum and auto surtaxes.",
       "sourceIds": ["ca-2025-list", "ca-sor-2025-181", "ca-cbsa-ch30"]
-    }
-  ],
-  "byCountry": [
-    {
-      "country": "Germany",
-      "tariffBefore": "Free (EU zero-for-zero)",
-      "tariffNow": "Free (EU zero-for-zero)",
-      "status": "unchanged",
-      "headline": "U.S. medicines enter Germany duty-free, as everywhere in the EU, and no EU measure since 2025 has changed that. The 33% jump in 2025 sales is supply-chain driven, not tariff driven."
-    },
-    {
-      "country": "Netherlands",
-      "tariffBefore": "Free (EU zero-for-zero)",
-      "tariffNow": "Free (EU zero-for-zero)",
-      "status": "unchanged",
-      "headline": "Duty-free. Much of what lands in the Netherlands is cleared there and then distributed across the EU, so this figure partly stands in for other EU buyers."
-    },
-    {
-      "country": "China",
-      "tariffBefore": "3% biologics · mostly 0% packaged medicines",
-      "tariffNow": "Same + 10% extra on all U.S. goods",
-      "status": "raised",
-      "headline": "China is the only big buyer charging U.S. medicines more than in January 2025: an extra 10% on top of its 0–3% normal rate. It peaked at 125% in April 2025; sales dipped only 4% in 2025."
-    },
-    {
-      "country": "Japan",
-      "tariffBefore": "Free (medicines)",
-      "tariffNow": "Free (medicines)",
-      "status": "unchanged",
-      "headline": "Japan charges nothing on U.S. medicines and did not retaliate. Only a few minor 3006 lines (e.g. lubricating gels, ostomy appliances) carry 2–4%. The 15% drop in 2025 sales is not tariff driven."
-    },
-    {
-      "country": "Canada",
-      "tariffBefore": "Free (CUSMA)",
-      "tariffNow": "Free (CUSMA)",
-      "status": "unchanged",
-      "headline": "U.S. medicines enter Canada duty-free, and neither the 2025 nor the 2026 Canadian counter-tariff list included a single Chapter 30 line."
-    },
-    {
-      "country": "Belgium",
-      "tariffBefore": "Free (EU zero-for-zero)",
-      "tariffNow": "Free (EU zero-for-zero)",
-      "status": "unchanged",
-      "headline": "Duty-free. Belgium is a European vaccine and biologics hub, and U.S. sales there rose 45% in 2025 with no tariff change."
-    },
-    {
-      "country": "Spain",
-      "tariffBefore": "Free (EU zero-for-zero)",
-      "tariffNow": "Free (EU zero-for-zero)",
-      "status": "unchanged",
-      "headline": "Duty-free. Unlike most EU buyers, Spain mainly takes finished packaged medicines from the U.S."
-    },
-    {
-      "country": "Ireland",
-      "tariffBefore": "Free (EU zero-for-zero)",
-      "tariffNow": "Free (EU zero-for-zero)",
-      "status": "unchanged",
-      "headline": "Duty-free. Ireland is also the largest supplier of U.S. pharmaceutical imports ($42.6B), so much of this trade is drug substance and biologics moving between plants of the same companies."
-    },
-    {
-      "country": "United Kingdom",
-      "tariffBefore": "Free",
-      "tariffNow": "Free",
-      "status": "unchanged",
-      "headline": "The UK charges nothing on U.S. medicines. The December 2025 pharma deal changed what the NHS pays for new medicines, not UK tariffs; the 36% drop in 2025 sales came before it."
-    },
-    {
-      "country": "Brazil",
-      "tariffBefore": "MFN 0–14% (≈10% avg packaged medicines)",
-      "tariffNow": "MFN 0–14% (≈10% avg packaged medicines)",
-      "status": "unchanged",
-      "headline": "U.S. medicines pay Brazil’s normal Mercosur rates — near zero for most biologics, around 10% on many packaged drugs. Brazil has imposed nothing on U.S. goods; it is challenging the 2026 U.S. Section 301 tariffs at the WTO, and its 2025 reciprocity law would allow countermeasures, including on intellectual property."
-    },
-    {
-      "country": "Switzerland",
-      "tariffBefore": "Free",
-      "tariffNow": "Free",
-      "status": "unchanged",
-      "headline": "Duty-free. Switzerland abolished tariffs on all industrial goods in January 2024, and the November 2025 framework only locked that in for U.S. goods."
-    },
-    {
-      "country": "Mexico",
-      "tariffBefore": "Free (USMCA)",
-      "tariffNow": "Free (USMCA)",
-      "status": "unchanged",
-      "headline": "No Mexican tariff change has touched U.S. medicines; they still enter free under USMCA. Without USMCA they would face Mexico’s MFN rates (about 5% on many biologics)."
     }
   ],
   "sources": [
@@ -639,6 +573,36 @@
       "signed": null,
       "published": "2026-10-09",
       "url": "https://wits.worldbank.org/tariff/trains/en/country/CHN/partner/WLD/product/300215"
+    },
+    {
+      "id": "cn-mofcom-2026-09",
+      "publisher": "State Council of the PRC (gov.cn)",
+      "citation": "MOFCOM, Sep 28, 2026",
+      "document": "Statement by the head of MOFCOM's Department of American and Oceanian Affairs",
+      "title": "商务部美大司负责人解读第八轮中美经贸磋商成果 (results of the eighth round of China–U.S. economic and trade talks)",
+      "signed": null,
+      "published": "2026-09-28",
+      "url": "https://www.gov.cn/lianbo/202609/content_7082235.htm"
+    },
+    {
+      "id": "wh-china-deal-2025",
+      "publisher": "The White House",
+      "citation": "Fact Sheet, Nov 1, 2025",
+      "document": "Fact sheet",
+      "title": "Fact Sheet: President Donald J. Trump Strikes Deal on Economic and Trade Relations with China",
+      "signed": null,
+      "published": "2025-11-01",
+      "url": "https://www.whitehouse.gov/fact-sheets/2025/11/fact-sheet-president-donald-j-trump-strikes-deal-on-economic-and-trade-relations-with-china/"
+    },
+    {
+      "id": "cn-2019-annex3",
+      "publisher": "State Council Tariff Commission (PRC)",
+      "citation": "Tariff Commission Announcement No. 3 of 2019, Annex 3",
+      "document": "Annex 3 (10% list)",
+      "title": "Additional tariffs on goods originating in the United States from June 1, 2019 — Annex 3",
+      "signed": null,
+      "published": "2019-05-13",
+      "url": "https://www.gov.cn/xinwen/2019-05/13/5391208/files/9ed295b6eef24a9fa64d661be67bc2ed.pdf"
     }
   ]
 }

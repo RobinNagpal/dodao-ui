@@ -10,7 +10,7 @@ the checklist.
 | | DB-backed chapter (today) | Migrated chapter |
 | --- | --- | --- |
 | Content | LLM-generated essays in `tariff_chapter_reports` | Facts as data in `insights-ui/src/tariff-data/chapters/<NN>-<slug>.json` (+ `exports/<NN>-<slug>/*.json`) |
-| Pages | 6 essay sections | Overview: searchable rate table. Tariff updates: dated change log. Import statistics, rates by country, duty-saving rules, FAQ. Optional U.S. exports section. |
+| Pages | 6 essay sections | Overview: searchable rate table. Tariff updates: dated change log. Import statistics, rates by country, duty-saving rules, FAQ. Optional U.S. exports section: five pages under `/industry-tariff-report/exports/chapters/<slug>` ([export-pages/](export-pages/README.md)). |
 | Sources | Mostly uncited | Every dated fact links to an official primary source with its date |
 | URLs | `/industry-tariff-report/chapters/<slug>/...` | **Same URLs**, so no SEO loss. Only the content source changes. |
 
@@ -26,7 +26,8 @@ a file are untouched.
    file name is zero-padded. A mismatched slug silently serves the old page at the real URL. That
    happened once.
 2. **Start from a reference file.** Copy Chapter 01 if the chapter has no export pages, or Chapter
-   30 if it does. Keep every field name; the shapes are in `src/types/tariff-chapter-prototype.ts`
+   30 if it does (export pages: generate them with `pnpm tariff:generate-exports`, see
+   [export-pages/README.md](export-pages/README.md)). Keep every field name; the shapes are in `src/types/tariff-chapter-prototype.ts`
    and `src/types/tariff-chapter-exports.ts`.
 3. **Rate table from the current HTS.** Build `overview.rateTable` from the newest HTSUS revision
    JSON on usitc.gov. Resolve the effective rates of 10-digit lines from their 8-digit parent.

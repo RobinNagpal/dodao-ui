@@ -6,7 +6,8 @@ import { TariffIndustryId } from '@/scripts/industry-tariff-reports/tariff-indus
 //     before they were renamed to kebab-case (`heavy-electrical-equipment`); search engines still
 //     request the camelCase URLs.
 //   - `/industry-tariff-report/chapters` (the parent of every chapter URL) has no page of its own;
-//     the chapter index lives at `/tariff-reports`.
+//     the chapter index lives at `/tariff-reports`. Same for `/industry-tariff-report/exports` and
+//     `/industry-tariff-report/exports/chapters`, the parents of every export page URL.
 // Both answer a permanent redirect instead of a 404, so the old links keep their ranking.
 
 const BASE = '/industry-tariff-report';
@@ -19,6 +20,9 @@ export function legacyTariffRedirectPath(pathname: string): string | null {
   if (!pathname.startsWith(`${BASE}/`)) return null;
   const [segment, ...rest] = pathname.slice(BASE.length + 1).split('/');
   if (segment === 'chapters' && rest.every((part) => part === '')) return '/tariff-reports';
+  if (segment === 'exports' && (rest.every((part) => part === '') || (rest[0] === 'chapters' && rest.slice(1).every((part) => part === '')))) {
+    return '/tariff-reports';
+  }
   const id = RENAMED_INDUSTRY_IDS.get(segment);
   return id ? [BASE, id, ...rest].join('/') : null;
 }

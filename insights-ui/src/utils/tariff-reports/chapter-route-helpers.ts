@@ -11,13 +11,23 @@ export const CHAPTER_REPORT_SECTIONS: readonly ChapterReportSection[] = [
   { slug: 'final-conclusion', label: 'Final Conclusion' },
 ] as const;
 
+export interface ChapterExportSection extends ChapterReportSection {
+  /** Path under the chapter's export URL ('' = the export overview). */
+  path: string;
+}
+
 // Export half of a chapter report (only for chapters with export content — see chapter-exports.ts).
-// Slugs are relative to the chapter cover, like CHAPTER_REPORT_SECTIONS; 'exports' is the export overview.
-// The labels skip "Export" because the Import | Export switch beside the tabs already says which side is open.
-export const CHAPTER_EXPORT_SECTIONS: readonly ChapterReportSection[] = [
-  { slug: 'exports', label: 'Overview' },
-  { slug: 'exports/tariff-updates', label: 'Tariff updates' },
-  { slug: 'exports/markets', label: 'Markets' },
+// The pages live under their own URL tree, /industry-tariff-report/exports/chapters/<slug>/<path>, so
+// "exports" sits up front in every export URL. `slug` is the page's id inside the app (tabs, glossary,
+// FAQ links, the content files' `page.slug`); it keeps the "exports" prefix so it never collides with
+// an import section slug. The labels skip "Export" because the Import | Export switch beside the tabs
+// already says which side is open.
+export const CHAPTER_EXPORT_SECTIONS: readonly ChapterExportSection[] = [
+  { slug: 'exports', path: '', label: 'Overview' },
+  { slug: 'exports/tariff-updates', path: 'tariff-updates', label: 'Tariff updates' },
+  { slug: 'exports/markets', path: 'markets', label: 'Markets' },
+  { slug: 'exports/rules', path: 'rules', label: 'Export rules' },
+  { slug: 'exports/faq', path: 'faq', label: 'FAQ' },
 ] as const;
 
 // Approach-2 chapters (issue #1770) name each page after what it holds, so the tab, the page H1,
@@ -51,6 +61,21 @@ export function chapterCoverHref(slug: string): string {
 
 export function chapterSectionHref(slug: string, sectionSlug: string): string {
   return `${chapterCoverHref(slug)}/${sectionSlug}`;
+}
+
+/** URL of an export page: `exportSlug` is a CHAPTER_EXPORT_SECTIONS slug ('exports' = the export overview). */
+export function chapterExportHref(slug: string, exportSlug = 'exports'): string {
+  const section = CHAPTER_EXPORT_SECTIONS.find((s) => s.slug === exportSlug);
+  if (!section) throw new Error(`unknown export page "${exportSlug}"`);
+  const base = `/industry-tariff-report/exports/chapters/${slug}`;
+  return section.path ? `${base}/${section.path}` : base;
+}
+
+/** URL of any page of a chapter report: '' / 'overview' = the cover, an import section slug, or an export page slug. */
+export function chapterPageHref(slug: string, pageSlug: string): string {
+  if (!pageSlug || pageSlug === 'overview') return chapterCoverHref(slug);
+  if (CHAPTER_EXPORT_SECTIONS.some((s) => s.slug === pageSlug)) return chapterExportHref(slug, pageSlug);
+  return chapterSectionHref(slug, pageSlug);
 }
 
 // Per-section copy used for page H1, meta description, and the placeholder body. Kept here so the
