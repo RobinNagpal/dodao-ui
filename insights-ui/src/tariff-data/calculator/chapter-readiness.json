@@ -2594,18 +2594,18 @@
     },
     {
       "chapter": "91",
-      "lines": 82,
+      "lines": 375,
       "status": "READY",
       "gaps": [],
       "upcoming": [],
       "accepted": [],
       "modelled": [
-        "Section 232 autos and auto parts (U.S. note 33): 82 line(s)",
-        "Section 232 medium/heavy trucks and parts (U.S. note 38): 82 line(s)",
-        "Section 301 (2026, 60 economies): 82 line(s)",
-        "Section 301 (Brazil): 82 line(s)",
-        "Section 301 (China, 2018-2019 lists): 71 line(s)",
-        "Section 301 (Nicaragua): 82 line(s)"
+        "Section 232 autos and auto parts (U.S. note 33): 375 line(s)",
+        "Section 232 medium/heavy trucks and parts (U.S. note 38): 375 line(s)",
+        "Section 301 (2026, 60 economies): 375 line(s)",
+        "Section 301 (Brazil): 375 line(s)",
+        "Section 301 (China, 2018-2019 lists): 303 line(s)",
+        "Section 301 (Nicaragua): 375 line(s)"
       ],
       "acceptedConditions": [],
       "rateGaps": [],

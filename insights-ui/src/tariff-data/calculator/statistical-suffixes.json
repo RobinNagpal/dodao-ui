@@ -1,0 +1,266 @@
+{
+  "description": "Statistical reporting numbers that the HTS JSON does not print. Chapter 91 statistical note 1 says the watch, clock and movement subheadings below are entered under their 8-digit number plus a component suffix, each component valued separately; their sum is the article's value. The duty is the subheading's rate, priced once on the whole article. Reviewed transcription; re-check it for each HTS revision.",
+  "htsEdition": "2026 Revision 21",
+  "reviewedAt": "2026-10-13",
+  "sources": [
+    {
+      "label": "HTSUS 2026 Revision 21, Chapter 91, statistical note 1",
+      "url": "https://hts.usitc.gov/reststop/file?release=2026HTSRev21&filename=Chapter%2091"
+    },
+    {
+      "label": "CBP ruling N362026 (June 16, 2026): Swiss automatic wrist watches entered under 9102.21.7010 / .7020 / .7030 (movement $1.53 each, case 4.2%, strap 9.8% or 2%)",
+      "url": "https://rulings.cbp.gov/ruling/N362026"
+    },
+    {
+      "label": "CBP ruling H326900 (October 9, 2025): duty is assessed on the component values that statistical note 1 requires, which must add up to the watch's value",
+      "url": "https://rulings.cbp.gov/ruling/H326900"
+    },
+    {
+      "label": "CBP ruling H305372 (January 17, 2020): note 1(c) components reported under suffixes 10 (movement) and 20 (case)",
+      "url": "https://rulings.cbp.gov/ruling/H305372"
+    }
+  ],
+  "schemes": [
+    {
+      "note": "1(a)",
+      "subheadings": [
+        "9101.11.40",
+        "9101.11.80",
+        "9101.19.40",
+        "9101.19.80",
+        "9102.11.10",
+        "9102.11.25",
+        "9102.11.30",
+        "9102.11.45",
+        "9102.11.50",
+        "9102.11.65",
+        "9102.11.70",
+        "9102.11.95",
+        "9102.19.20",
+        "9102.19.40",
+        "9102.19.60",
+        "9102.19.80"
+      ],
+      "rows": [
+        { "suffix": "10", "description": "Movement", "units": ["No."] },
+        { "suffix": "20", "description": "Case", "units": ["No."] },
+        { "suffix": "30", "description": "Strap, band or bracelet", "units": ["No."] },
+        { "suffix": "40", "description": "Battery", "units": ["No."] }
+      ]
+    },
+    {
+      "note": "1(b)",
+      "subheadings": ["9102.91.20", "9104.00.05", "9104.00.10", "9104.00.25", "9104.00.30", "9104.00.45"],
+      "rows": [
+        { "suffix": "10", "description": "Movement and case", "units": ["No. of movements"] },
+        { "suffix": "20", "description": "Battery", "units": ["No."] }
+      ]
+    },
+    {
+      "note": "1(c)",
+      "subheadings": [
+        "9101.21.50",
+        "9101.29.90",
+        "9101.99.20",
+        "9101.99.40",
+        "9101.99.60",
+        "9101.99.80",
+        "9102.29.04",
+        "9102.99.20",
+        "9102.99.40",
+        "9102.99.60",
+        "9102.99.80",
+        "9104.00.60",
+        "9105.29.10",
+        "9105.29.20",
+        "9105.99.20",
+        "9105.99.30"
+      ],
+      "rows": [
+        { "suffix": "10", "description": "Movement", "units": ["No."] },
+        { "suffix": "20", "description": "Case", "units": ["No."] }
+      ]
+    },
+    {
+      "note": "1(d)",
+      "subheadings": [
+        "9101.21.80",
+        "9101.29.10",
+        "9101.29.20",
+        "9101.29.30",
+        "9101.29.40",
+        "9101.29.50",
+        "9102.21.10",
+        "9102.21.25",
+        "9102.21.30",
+        "9102.21.50",
+        "9102.21.70",
+        "9102.21.90",
+        "9102.29.10",
+        "9102.29.15",
+        "9102.29.20",
+        "9102.29.25",
+        "9102.29.30",
+        "9102.29.35",
+        "9102.29.40",
+        "9102.29.45",
+        "9102.29.50",
+        "9102.29.55",
+        "9102.29.60"
+      ],
+      "rows": [
+        { "suffix": "10", "description": "Movement", "units": ["No."] },
+        { "suffix": "20", "description": "Case", "units": ["No."] },
+        { "suffix": "30", "description": "Strap, band or bracelet", "units": ["No."] }
+      ]
+    },
+    {
+      "note": "1(e)",
+      "subheadings": ["9101.91.40", "9101.91.80", "9102.91.40", "9102.91.80", "9104.00.50"],
+      "rows": [
+        { "suffix": "10", "description": "Movement", "units": ["No."] },
+        { "suffix": "20", "description": "Case", "units": ["No."] },
+        { "suffix": "30", "description": "Battery", "units": ["No."] }
+      ]
+    },
+    {
+      "note": "1(f)",
+      "subheadings": ["9103.10.20"],
+      "rows": [
+        { "description": "Travel clocks:" },
+        { "suffix": "10", "description": "Movement and case", "units": ["No. of movements"], "depth": 2 },
+        { "suffix": "20", "description": "Battery", "units": ["No."], "depth": 2 },
+        { "description": "Other clocks:" },
+        { "suffix": "30", "description": "Movement and case", "units": ["No. of movements"], "depth": 2 },
+        { "suffix": "40", "description": "Battery", "units": ["No."], "depth": 2 }
+      ]
+    },
+    {
+      "note": "1(g)",
+      "subheadings": ["9103.10.40", "9103.10.80"],
+      "rows": [
+        { "description": "Travel clocks:" },
+        { "suffix": "10", "description": "Movement", "units": ["No."], "depth": 2 },
+        { "suffix": "20", "description": "Case", "units": ["No."], "depth": 2 },
+        { "suffix": "30", "description": "Battery", "units": ["No."], "depth": 2 },
+        { "description": "Other clocks:" },
+        { "suffix": "40", "description": "Movement", "units": ["No."], "depth": 2 },
+        { "suffix": "50", "description": "Case", "units": ["No."], "depth": 2 },
+        { "suffix": "60", "description": "Battery", "units": ["No."], "depth": 2 }
+      ]
+    },
+    {
+      "note": "1(h)",
+      "subheadings": ["9103.90.00", "9105.19.10", "9105.19.20"],
+      "rows": [
+        { "description": "Travel clocks:" },
+        { "suffix": "10", "description": "Movement", "units": ["No."], "depth": 2 },
+        { "suffix": "20", "description": "Case", "units": ["No."], "depth": 2 },
+        { "description": "Other clocks:" },
+        { "suffix": "30", "description": "Movement", "units": ["No."], "depth": 2 },
+        { "suffix": "40", "description": "Case", "units": ["No."], "depth": 2 }
+      ]
+    },
+    {
+      "note": "1(ij)",
+      "subheadings": ["9105.11.40"],
+      "rows": [
+        { "suffix": "10", "description": "Clocks capable of operating only on AC power", "units": ["No."] },
+        { "description": "Other:" },
+        { "description": "Travel clocks:", "depth": 2 },
+        { "suffix": "20", "description": "Movement and case", "units": ["No. of movements"], "depth": 3 },
+        { "suffix": "30", "description": "Battery", "units": ["No."], "depth": 3 },
+        { "description": "Other clocks:", "depth": 2 },
+        { "suffix": "40", "description": "Movement and case", "units": ["No. of movements"], "depth": 3 },
+        { "suffix": "50", "description": "Battery", "units": ["No."], "depth": 3 }
+      ]
+    },
+    {
+      "note": "1(k)",
+      "subheadings": ["9105.11.80"],
+      "rows": [
+        { "description": "Clocks capable of operating only on AC power:" },
+        { "suffix": "05", "description": "Movement", "units": ["No."], "depth": 2 },
+        { "suffix": "15", "description": "Case", "units": ["No."], "depth": 2 },
+        { "description": "Other:" },
+        { "description": "Travel clocks:", "depth": 2 },
+        { "suffix": "20", "description": "Movement", "units": ["No."], "depth": 3 },
+        { "suffix": "30", "description": "Case", "units": ["No."], "depth": 3 },
+        { "suffix": "40", "description": "Battery", "units": ["No."], "depth": 3 },
+        { "description": "Other clocks:", "depth": 2 },
+        { "suffix": "50", "description": "Movement", "units": ["No."], "depth": 3 },
+        { "suffix": "60", "description": "Case", "units": ["No."], "depth": 3 },
+        { "suffix": "70", "description": "Battery", "units": ["No."], "depth": 3 }
+      ]
+    },
+    {
+      "note": "1(l)",
+      "subheadings": ["9105.19.30"],
+      "rows": [
+        { "description": "Travel clocks:" },
+        { "suffix": "10", "description": "Movement", "units": ["No.", "Jwls."], "depth": 2 },
+        { "suffix": "20", "description": "Case", "units": ["No."], "depth": 2 },
+        { "description": "Other clocks:" },
+        { "suffix": "30", "description": "Movement", "units": ["No.", "Jwls."], "depth": 2 },
+        { "suffix": "40", "description": "Case", "units": ["No."], "depth": 2 }
+      ]
+    },
+    {
+      "note": "1(m)",
+      "subheadings": ["9105.21.40", "9105.91.40"],
+      "rows": [
+        { "suffix": "10", "description": "Clocks capable of operating only on AC power", "units": ["No."] },
+        { "description": "Other clocks:" },
+        { "suffix": "20", "description": "Movement and case", "units": ["No. of movements"], "depth": 2 },
+        { "suffix": "30", "description": "Battery", "units": ["No."], "depth": 2 }
+      ]
+    },
+    {
+      "note": "1(n)",
+      "subheadings": ["9105.21.80", "9105.91.80"],
+      "rows": [
+        { "description": "Clocks capable of operating only on AC power" },
+        { "suffix": "10", "description": "Movement", "units": ["No."], "depth": 2 },
+        { "suffix": "20", "description": "Case", "units": ["No."], "depth": 2 },
+        { "description": "Other clocks:" },
+        { "suffix": "30", "description": "Movement", "units": ["No."], "depth": 2 },
+        { "suffix": "40", "description": "Case", "units": ["No."], "depth": 2 },
+        { "suffix": "50", "description": "Battery", "units": ["No."], "depth": 2 }
+      ]
+    },
+    {
+      "note": "1(o)",
+      "subheadings": ["9106.90.55"],
+      "rows": [
+        { "suffix": "10", "description": "Apparatus", "units": ["No."] },
+        { "suffix": "20", "description": "Battery", "units": ["No."] }
+      ]
+    },
+    {
+      "note": "1(p)",
+      "subheadings": ["9105.29.30", "9105.99.40"],
+      "rows": [
+        { "suffix": "10", "description": "Movement", "units": ["No.", "Jwls."] },
+        { "suffix": "20", "description": "Case", "units": ["No."] }
+      ]
+    },
+    {
+      "note": "1(q)",
+      "subheadings": ["9108.11.40", "9108.11.80", "9108.12.00", "9108.19.40", "9108.19.80"],
+      "rows": [
+        { "suffix": "10", "description": "Movement", "units": ["No."] },
+        { "suffix": "20", "description": "Battery", "units": ["No."] }
+      ]
+    },
+    {
+      "note": "1(r)",
+      "subheadings": ["9109.10.10", "9109.10.20", "9109.10.30", "9109.10.40", "9109.10.50", "9109.10.60", "9109.10.70", "9109.10.80"],
+      "rows": [
+        { "suffix": "10", "description": "Clocks movements capable of operating only on AC power", "units": ["No."] },
+        { "description": "Other clock movements:" },
+        { "suffix": "20", "description": "Movement", "units": ["No."], "depth": 2 },
+        { "suffix": "30", "description": "Battery", "units": ["No."], "depth": 2 }
+      ]
+    }
+  ]
+}

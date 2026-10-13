@@ -200,6 +200,46 @@ Before writing the SQL the generator simulates the post-sync state in memory and
 
 **Page impact.** `/hts-codes/us/[section]/[chapter]` lists a chapter's rows in `sort_order` (anchors are `#<hts_code_10>`; there are no per-line URLs, so nothing 404s). New lines appear and removed ones disappear once the chapter's cache is invalidated — the pages are cached by tag, so after the real run use **Invalidate Cache** in each affected chapter page's admin menu (or wait for the next deploy). Calculator search (`/api/tariff-calculator/hts-search`) reads `hts_codes` directly: removed codes are no longer found (correct — they are not valid for entry under this edition), new codes are found, and breadcrumbs follow the corrected `parent_id` chain. New lines have no candidate-code links until the candidate-code ingest runs for them.
 
+## Statistical numbers the HTS JSON doesn't print (Chapter 91 statistical note 1)
+
+**The gap.** The USITC HTS JSON prints 95 Chapter 91 subheadings as 8-digit lines with a rate, no units and no 10-digit rows. These are the compound-rate watch, clock and movement lines: 9101.11.40, 9102.11.10 to 9102.29.60, 9102.91.x, 9103.x, 9104.00.05 to .60, 9105.11 to 9105.99.40, 9106.90.55, 9108.11 to 9108.19 and 9109.10.x. Every 10-digit line in the HTS JSON is printed. A scan of 2026 Revision 21 finds no other rated 8-digit line without 10-digit rows in chapters 01–97. Chapters 98 and 99 have such lines, but they are special provisions, not calculator lines. Without their own rows:
+
+- the calculator answered "We couldn't find HTS code 9102.11.10.xx";
+- chapter generator lines and grids skipped them;
+- `rate-strings.json` and `program-coverage.json` skipped them, so readiness counted 82 of chapter 91's lines.
+
+**What the HTS says.** Chapter 91 statistical note 1 defines the 10-digit numbers ([2026 Revision 21, Chapter 91](https://hts.usitc.gov/reststop/file?release=2026HTSRev21&filename=Chapter%2091)):
+
+- Each article is "constructively separated into its component parts", and each component is valued separately. The values add up to the article's value.
+- The importer combines the 8-digit subheading with a component suffix. For example, 9102.11.10 + 10 is the movement, 20 the case, 30 the strap, band or bracelet and 40 the battery.
+- Every named component is reported, at zero quantity and value when it is not in the shipment.
+
+CBP rulings apply the subheading's rate across those numbers:
+
+- [N362026](https://rulings.cbp.gov/ruling/N362026) (Swiss automatic watches): 9102.21.7010 movement $1.53 each, .7020 case 4.2%, .7030 strap 9.8%.
+- [H326900](https://rulings.cbp.gov/ruling/H326900): duty is assessed on the component values the note requires.
+- [H305372](https://rulings.cbp.gov/ruling/H305372): note 1(c) suffixes.
+
+**Design.** These numbers are real statistical reporting numbers, so we use them and never invent a key such as `…00`:
+
+| Where                  | How                                                                                                                                                                                                                                                                                                                                                                                                                            |
+| ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Reviewed data          | `src/tariff-data/calculator/statistical-suffixes.json`: note 1(a)–(r) transcribed. Each scheme has its subheadings and rows (suffix, description, unit, depth for "Travel clocks:" / "Other clocks:" groups), plus the sources. Helpers are in `src/utils/tariff-calculator/statistical-suffixes.ts`.                                                                                                                          |
+| Edition rows (scripts) | `lib/statistical-suffix-rows.ts` `withStatisticalSuffixRows` adds the component rows after each listed subheading. They are one level deeper per group and have blank rates, inherited from the subheading like any statistical row. `editionByChapter` (the lines sync, `rate-strings.json`, `program-coverage.json`) and `extractBaseRateRows` (the base-rate SQL) use it. It throws when the edition and the JSON disagree. |
+| `hts_codes`            | `20261013-2026-revision-21-hts-lines-sync-ch91-statistical-suffixes.sql` (lines sync, chapter 91 only): +293 numbered rows (`hts_code_10` set) and +35 group rows, nothing deleted, chapter re-sequenced (314 → 642 rows). The `/hts-codes` chapter 91 page shows them under their subheading.                                                                                                                                 |
+| Calculator             | Every number of a subheading loads the subheading's rate: `loadMeasureEngineLine` walks up `parent_id`, and falls back to the 8-digit row until the SQL is applied. The rate is priced **once on the whole article**, with `componentValuesUsd` (case / strap, band or bracelet / battery / movement …). The base line carries a note naming the subheading's suffixes. Search finds the numbers once the SQL is applied.      |
+| Chapter generator      | `rate-table.ts` keys the 8-digit row as a line by its **first** statistical number (9102.11.10 → `9102111010`), so there is one line per subheading in the matrix, `tariffUpdates.lines` and `tariffEngineering.lines`. The chapter page shows `9102.11.10`; its calculator link opens `9102.11.10.10`.                                                                                                                        |
+
+Per HTS revision:
+
+1. Check statistical note 1 against `statistical-suffixes.json` and update `htsEdition` / `reviewedAt`. The scripts refuse an edition whose 8-digit leaves don't match the file.
+2. Rebuild:
+   - `rate-strings.json`: `pnpm tariff:rate-parse --hts-file …`;
+   - the program coverage lines: `pnpm tsx src/scripts/tariff-calculator/extract-ch99-program-coverage.ts --lines-only --hts-file …`.
+3. Regenerate the lines sync.
+
+"¢/jewel over 7" rates (chapter 91 clocks: the general rates of 9105.19.30 and 9105.29.30; the column 2 rate of those two and of 9105.99.40) are read by the shared parser as a per-jewel charge with a threshold (`PerUnitCharge.overThreshold`, `chargedQuantity` in `shipment-duty.ts`). The charge is the rate × (`NO:jewels` − 7 × `NO`), never below 0. `NO:jewels` is the total number of jewels in the shipment's movements and `NO` is the number of movements (the "each" quantity). This equals the per-movement count when every movement has the same number of jewels; enter one line per jewel count otherwise. A missing jewel or movement count is a "Quantity required" error. The base line note shows the arithmetic. The generator and `validate-chapters --check-calculator` price it at the nominal 1,000 movements with 17 jewels each (`thresholdNominalQuantities`: threshold + 10), so the jewel part is compared too. Golden scenario: `ch91-jeweled-travel-clock-cn`.
+
 ## Switching a chapter to the official-measures engine
 
 The App Setting **`TARIFF_CALC_MEASURES_ENABLED`** (Admin → App Settings, group "tariff-calculator") lists the HTS chapters whose calculator results come from the official-measures engine. The engine does not read chapter page content; it only knows the extra duties in `tariff_measures`. A chapter is safe to switch on only when **every Chapter 99 program that charges duty on any of its lines is modelled**. Otherwise the engine undercharges.
@@ -250,6 +290,7 @@ Units the parser understands (keys the engine's `quantities` take, see `src/util
 
 - Plain: `KG`, `CKG`, `G`, `T`, `L`, `PF.L`, `NO` (head / each / article), `DOZ`, `DPR`, `PRS`, `GROSS`, `M` (incl. "lin. m"), `M2`, `M3`, `BBL`, `THS`.
 - **Per 1,000** ("89.6¢/1000", "$2/1,000", "$2.50/thousand"): the amount is divided by 1,000 and charged per unit, so the quantity is the plain count in `NO` (500,000 bulbs → 500,000 × $0.000896 = $448), matching the lines' "No." reporting unit. "10¢/1,000 pins" → `NO:pins`.
+- Thresholds: "2.8¢/jewel over 7" → `NO:jewels` above 7 per movement (`NO`), see "Statistical numbers the HTS JSON doesn't print".
 - **Qualified quantities** get their own key — the base code plus the qualifier — because they are a different number from the plain weight: `KG:gross weight` ("on contents and container", ", including weight of container" — gross weight incl. the immediate container), `KG:drained weight`, `KG:entire contents` ("on entire contents of container"), `KG:total sugars`, `KG:<metal> content` ("on molybdenum / tungsten / copper / lead / zinc / … content"; the HTS reporting units "Mo kg", "W kg", "Cu kg" … map to these), `KG:anhydrous morphine content`, `M2:recording surface`, `GROSS:immediate containers`, `NO:jewels`, `NO:packs`. The rate text's own wording ("kg on molybdenum content") is accepted as a key too. A qualified rate never falls back to the plain key: missing it is a "Quantity required" error naming the qualified unit. "pf. liter on ethyl alcohol content" is plain `PF.L`.
 
 - Also read: "+" with or without spaces ("15.4¢/kg +59%"), "33 1/3%", "6.5% on the entire set", line-break hyphens ("thou- sand"), "0.2¢ for each other piece or part" (`NO:other pieces or parts`), buttons' "0.3¢/line/ gross" (`GROSS:size in lines` — the size in lines × the number of gross, the HTS reporting unit "gr.lines"), and the raw-sugar polarity formula (chapter 17; optional `polarityDegrees`, priced at 100° without it).

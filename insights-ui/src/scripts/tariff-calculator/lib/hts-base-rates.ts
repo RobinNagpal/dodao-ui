@@ -8,6 +8,7 @@
 
 import type { HtsJsonRow } from './hts-source';
 import { chunk, compareCodes, sqlText, sqlTextArray } from './sql';
+import { withStatisticalSuffixRows } from './statistical-suffix-rows';
 
 export interface HtsBaseRateRow {
   htsNumber: string;
@@ -22,8 +23,12 @@ function nullIfEmpty(raw: string | null | undefined): string | null {
   return trimmed.length === 0 ? null : trimmed;
 }
 
-/** Every numbered HTS row (4/6/8/10-digit), sorted by HTS number, first occurrence wins on duplicates. */
-export function extractBaseRateRows(rows: readonly HtsJsonRow[]): { rows: HtsBaseRateRow[]; duplicates: string[] } {
+/**
+ * Every numbered HTS row (4/6/8/10-digit), sorted by HTS number, first occurrence wins on duplicates. Includes the
+ * statistical reporting numbers the JSON leaves out (Chapter 91 statistical note 1; blank rates, their units).
+ */
+export function extractBaseRateRows(publishedRows: readonly HtsJsonRow[]): { rows: HtsBaseRateRow[]; duplicates: string[] } {
+  const rows = withStatisticalSuffixRows(publishedRows);
   const byNumber = new Map<string, HtsBaseRateRow>();
   const duplicates: string[] = [];
   for (const row of rows) {
