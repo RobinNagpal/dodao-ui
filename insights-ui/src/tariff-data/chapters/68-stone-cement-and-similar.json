@@ -6534,7 +6534,7 @@
         "changePct": -16.4,
         "sharePct": 10.8,
         "mainHeading": "6807",
-        "mainHeadingLabel": "Articles of asphalt or of similar material (for example…",
+        "mainHeadingLabel": "Articles of asphalt or of similar material (for example, petroleum bitumen or coal tar pitch)",
         "dutyPaidUsd": null
       },
       {
@@ -6545,7 +6545,7 @@
         "changePct": 9.9,
         "sharePct": 9.8,
         "mainHeading": "6802",
-        "mainHeadingLabel": "Worked monumental or building stone (except slate) and…",
+        "mainHeadingLabel": "Worked monumental or building stone (except slate) and articles thereof, other than goods of heading 6801; mosaic cubes and the like, of natural stone (including slate), whether or not on a backing; artificially colored granules, chippings and powder, of natural stone (including slate)",
         "dutyPaidUsd": null
       },
       {
@@ -6556,7 +6556,7 @@
         "changePct": -12.3,
         "sharePct": 9.5,
         "mainHeading": "6810",
-        "mainHeadingLabel": "Articles of cement, of concrete or of artificial stone…",
+        "mainHeadingLabel": "Articles of cement, of concrete or of artificial stone, whether or not reinforced",
         "dutyPaidUsd": null
       },
       {
@@ -6567,7 +6567,7 @@
         "changePct": 4.1,
         "sharePct": 8.1,
         "mainHeading": "6802",
-        "mainHeadingLabel": "Worked monumental or building stone (except slate) and…",
+        "mainHeadingLabel": "Worked monumental or building stone (except slate) and articles thereof, other than goods of heading 6801; mosaic cubes and the like, of natural stone (including slate), whether or not on a backing; artificially colored granules, chippings and powder, of natural stone (including slate)",
         "dutyPaidUsd": null
       },
       {
@@ -6578,7 +6578,7 @@
         "changePct": -25.2,
         "sharePct": 8,
         "mainHeading": "6802",
-        "mainHeadingLabel": "Worked monumental or building stone (except slate) and…",
+        "mainHeadingLabel": "Worked monumental or building stone (except slate) and articles thereof, other than goods of heading 6801; mosaic cubes and the like, of natural stone (including slate), whether or not on a backing; artificially colored granules, chippings and powder, of natural stone (including slate)",
         "dutyPaidUsd": null
       },
       {
@@ -6589,7 +6589,7 @@
         "changePct": 9.1,
         "sharePct": 6.9,
         "mainHeading": "6802",
-        "mainHeadingLabel": "Worked monumental or building stone (except slate) and…",
+        "mainHeadingLabel": "Worked monumental or building stone (except slate) and articles thereof, other than goods of heading 6801; mosaic cubes and the like, of natural stone (including slate), whether or not on a backing; artificially colored granules, chippings and powder, of natural stone (including slate)",
         "dutyPaidUsd": null
       },
       {
@@ -6600,7 +6600,7 @@
         "changePct": -7,
         "sharePct": 5.1,
         "mainHeading": "6810",
-        "mainHeadingLabel": "Articles of cement, of concrete or of artificial stone…",
+        "mainHeadingLabel": "Articles of cement, of concrete or of artificial stone, whether or not reinforced",
         "dutyPaidUsd": null
       },
       {
@@ -6611,7 +6611,7 @@
         "changePct": -5.9,
         "sharePct": 3.6,
         "mainHeading": "6815",
-        "mainHeadingLabel": "Articles of stone or of other mineral substances…",
+        "mainHeadingLabel": "Articles of stone or of other mineral substances (including carbon fibers, articles of carbon fibers and articles of peat), not elsewhere specified or included",
         "dutyPaidUsd": null
       },
       {
@@ -6622,7 +6622,7 @@
         "changePct": -12.1,
         "sharePct": 3.4,
         "mainHeading": "6815",
-        "mainHeadingLabel": "Articles of stone or of other mineral substances…",
+        "mainHeadingLabel": "Articles of stone or of other mineral substances (including carbon fibers, articles of carbon fibers and articles of peat), not elsewhere specified or included",
         "dutyPaidUsd": null
       }
     ],
@@ -6638,7 +6638,7 @@
         "changePct": -13.8,
         "sharePct": 23.7,
         "dutyPaidUsd": null,
-        "searchText": "681099 6810.99 cement, concrete or artificial stone; articles (other than prefabricated structural components for building or civil engineering), whether or not reinforced, n.e.c. in heading no. 6810 articles of cement, of concrete or of artificial stone…"
+        "searchText": "681099 6810.99 cement, concrete or artificial stone; articles (other than prefabricated structural components for building or civil engineering), whether or not reinforced, n.e.c. in heading no. 6810 articles of cement, of concrete or of artificial stone, whether or not reinforced"
       },
       {
         "hs6": "6802.91",
@@ -6649,7 +6649,7 @@
         "changePct": -2.8,
         "sharePct": 13,
         "dutyPaidUsd": null,
-        "searchText": "680291 6802.91 marble, travertine and alabaster; articles thereof, (other than simply cut or sawn, with a flat or even surface) worked monumental or building stone (except slate) and…"
+        "searchText": "680291 6802.91 marble, travertine and alabaster; articles thereof, (other than simply cut or sawn, with a flat or even surface) worked monumental or building stone (except slate) and articles thereof, other than goods of heading 6801; mosaic cubes and the like, of natural stone (including slate), whether or not on a backing; artificially colored granules, chippings and powder, of natural stone (including slate)"
       },
       {
         "hs6": "6802.99",
@@ -6660,7 +6660,7 @@
         "changePct": 32.8,
         "sharePct": 8.6,
         "dutyPaidUsd": null,
-        "searchText": "680299 6802.99 stone; natural (excluding marble, travertine, alabaster, other calcareous stone or granite), monumental or building stone, (other than simply cut or sawn, with a flat or even surface) worked monumental or building stone (except slate) and…"
+        "searchText": "680299 6802.99 stone; natural (excluding marble, travertine, alabaster, other calcareous stone or granite), monumental or building stone, (other than simply cut or sawn, with a flat or even surface) worked monumental or building stone (except slate) and articles thereof, other than goods of heading 6801; mosaic cubes and the like, of natural stone (including slate), whether or not on a backing; artificially colored granules, chippings and powder, of natural stone (including slate)"
       },
       {
         "hs6": "6802.93",
@@ -6671,7 +6671,7 @@
         "changePct": -21,
         "sharePct": 6,
         "dutyPaidUsd": null,
-        "searchText": "680293 6802.93 granite; articles thereof, (other than simply cut or sawn, with a flat or even surface) worked monumental or building stone (except slate) and…"
+        "searchText": "680293 6802.93 granite; articles thereof, (other than simply cut or sawn, with a flat or even surface) worked monumental or building stone (except slate) and articles thereof, other than goods of heading 6801; mosaic cubes and the like, of natural stone (including slate), whether or not on a backing; artificially colored granules, chippings and powder, of natural stone (including slate)"
       },
       {
         "hs6": "6809.11",
@@ -6693,7 +6693,7 @@
         "changePct": -24.7,
         "sharePct": 3,
         "dutyPaidUsd": null,
-        "searchText": "681511 6815.11 stone or other mineral substances not elsewhere specified or included; carbon fibres for non-electrical uses articles of stone or of other mineral substances…"
+        "searchText": "681511 6815.11 stone or other mineral substances not elsewhere specified or included; carbon fibres for non-electrical uses articles of stone or of other mineral substances (including carbon fibers, articles of carbon fibers and articles of peat), not elsewhere specified or included"
       },
       {
         "hs6": "6807.10",
@@ -6704,7 +6704,7 @@
         "changePct": 0,
         "sharePct": 2.9,
         "dutyPaidUsd": null,
-        "searchText": "680710 6807.10 asphalt or similar material; articles (e.g. petroleum bitumen or coal tar pitch) in rolls articles of asphalt or of similar material (for example…"
+        "searchText": "680710 6807.10 asphalt or similar material; articles (e.g. petroleum bitumen or coal tar pitch) in rolls articles of asphalt or of similar material (for example, petroleum bitumen or coal tar pitch)"
       },
       {
         "hs6": "6805.30",
@@ -6715,7 +6715,7 @@
         "changePct": -14.2,
         "sharePct": 2.9,
         "dutyPaidUsd": null,
-        "searchText": "680530 6805.30 abrasive powder or grain; natural or artificial, on a base of materials n.e.c. in heading no. 6805, whether or not cut to shape or sewn or otherwise made up natural or artificial abrasive powder or grain, on a base…"
+        "searchText": "680530 6805.30 abrasive powder or grain; natural or artificial, on a base of materials n.e.c. in heading no. 6805, whether or not cut to shape or sewn or otherwise made up natural or artificial abrasive powder or grain, on a base of textile material, of paper, of paperboard or of other materials, whether or not cut to shape or sewn or otherwise made up"
       },
       {
         "hs6": "6807.90",
@@ -6726,7 +6726,7 @@
         "changePct": -16,
         "sharePct": 2.7,
         "dutyPaidUsd": null,
-        "searchText": "680790 6807.90 asphalt or similar material; articles (e.g. petroleum bitumen or coal tar pitch) other than in rolls articles of asphalt or of similar material (for example…"
+        "searchText": "680790 6807.90 asphalt or similar material; articles (e.g. petroleum bitumen or coal tar pitch) other than in rolls articles of asphalt or of similar material (for example, petroleum bitumen or coal tar pitch)"
       },
       {
         "hs6": "6804.22",
@@ -6737,7 +6737,7 @@
         "changePct": -1.6,
         "sharePct": 2.6,
         "dutyPaidUsd": null,
-        "searchText": "680422 6804.22 millstones, grindstones, grinding wheels and the like; of other agglomerated abrasives or of ceramics millstones, grindstones, grinding wheels and the like…"
+        "searchText": "680422 6804.22 millstones, grindstones, grinding wheels and the like; of other agglomerated abrasives or of ceramics millstones, grindstones, grinding wheels and the like, without frameworks, for grinding, sharpening, polishing, trueing or cutting, hand sharpening or polishing stones, and parts thereof, of natural stone, of agglomerated natural or artificial abrasives, or of ceramics, with or without parts of other materials"
       },
       {
         "hs6": "6815.13",
@@ -6748,7 +6748,7 @@
         "changePct": 17.6,
         "sharePct": 2.6,
         "dutyPaidUsd": null,
-        "searchText": "681513 6815.13 stone or other mineral substances not elsewhere specified or included; articles of carbon fibres for non-electrical uses articles of stone or of other mineral substances…"
+        "searchText": "681513 6815.13 stone or other mineral substances not elsewhere specified or included; articles of carbon fibres for non-electrical uses articles of stone or of other mineral substances (including carbon fibers, articles of carbon fibers and articles of peat), not elsewhere specified or included"
       },
       {
         "hs6": "6804.21",
@@ -6759,7 +6759,7 @@
         "changePct": -8.9,
         "sharePct": 2.4,
         "dutyPaidUsd": null,
-        "searchText": "680421 6804.21 millstones, grindstones, grinding wheels and the like; of agglomerated synthetic or natural diamond millstones, grindstones, grinding wheels and the like…"
+        "searchText": "680421 6804.21 millstones, grindstones, grinding wheels and the like; of agglomerated synthetic or natural diamond millstones, grindstones, grinding wheels and the like, without frameworks, for grinding, sharpening, polishing, trueing or cutting, hand sharpening or polishing stones, and parts thereof, of natural stone, of agglomerated natural or artificial abrasives, or of ceramics, with or without parts of other materials"
       },
       {
         "hs6": "6815.99",
@@ -6770,7 +6770,7 @@
         "changePct": -7,
         "sharePct": 2.3,
         "dutyPaidUsd": null,
-        "searchText": "681599 6815.99 stone articles and articles of other mineral substances; n.e.c. or included in heading no. 6815 articles of stone or of other mineral substances…"
+        "searchText": "681599 6815.99 stone articles and articles of other mineral substances; n.e.c. or included in heading no. 6815 articles of stone or of other mineral substances (including carbon fibers, articles of carbon fibers and articles of peat), not elsewhere specified or included"
       },
       {
         "hs6": "6806.90",
@@ -6781,7 +6781,7 @@
         "changePct": -19.5,
         "sharePct": 2.2,
         "dutyPaidUsd": null,
-        "searchText": "680690 6806.90 minerals; mixtures and articles of heat-insulating, sound-insulating or sound-absorbing mineral materials, other than those of heading no. 6811 or 6812 or of chapter 69 slag wool, rock wool and similar mineral wools"
+        "searchText": "680690 6806.90 minerals; mixtures and articles of heat-insulating, sound-insulating or sound-absorbing mineral materials, other than those of heading no. 6811 or 6812 or of chapter 69 slag wool, rock wool and similar mineral wools; exfoliated vermiculite, expanded clays, foamed slag and similar expanded mineral materials; mixtures and articles of heat-insulating, sound-insulating or sound-absorbing mineral materials, other than those of heading 6811 or 6812, or of chapter 69"
       },
       {
         "hs6": "6815.19",
@@ -6792,7 +6792,7 @@
         "changePct": -18.6,
         "sharePct": 2,
         "dutyPaidUsd": null,
-        "searchText": "681519 6815.19 stone or other mineral substances not elsewhere specified or included; non-electrical articles of graphite or carbon n.e.c. in heading 6815 articles of stone or of other mineral substances…"
+        "searchText": "681519 6815.19 stone or other mineral substances not elsewhere specified or included; non-electrical articles of graphite or carbon n.e.c. in heading 6815 articles of stone or of other mineral substances (including carbon fibers, articles of carbon fibers and articles of peat), not elsewhere specified or included"
       },
       {
         "hs6": "6811.82",
@@ -6803,7 +6803,7 @@
         "changePct": -9.5,
         "sharePct": 1.7,
         "dutyPaidUsd": null,
-        "searchText": "681182 6811.82 cellulose fibre-cement; articles or the like, sheets, panels, tiles and similar articles (other than corrugated sheets), not containing asbestos articles of asbestos-cement, of cellulose fiber-cement or…"
+        "searchText": "681182 6811.82 cellulose fibre-cement; articles or the like, sheets, panels, tiles and similar articles (other than corrugated sheets), not containing asbestos articles of asbestos-cement, of cellulose fiber-cement or the like"
       },
       {
         "hs6": "6802.92",
@@ -6814,7 +6814,7 @@
         "changePct": 0.1,
         "sharePct": 1.5,
         "dutyPaidUsd": null,
-        "searchText": "680292 6802.92 stone; calcareous (excluding marble, travertine, alabaster) articles thereof, (other than simply cut or sawn, with a flat or even surface) worked monumental or building stone (except slate) and…"
+        "searchText": "680292 6802.92 stone; calcareous (excluding marble, travertine, alabaster) articles thereof, (other than simply cut or sawn, with a flat or even surface) worked monumental or building stone (except slate) and articles thereof, other than goods of heading 6801; mosaic cubes and the like, of natural stone (including slate), whether or not on a backing; artificially colored granules, chippings and powder, of natural stone (including slate)"
       },
       {
         "hs6": "6805.10",
@@ -6825,7 +6825,7 @@
         "changePct": -8.9,
         "sharePct": 1.5,
         "dutyPaidUsd": null,
-        "searchText": "680510 6805.10 abrasive powder or grain; natural or artificial, on a base of woven textile fabric only, whether or not cut to shape or sewn or otherwise made up natural or artificial abrasive powder or grain, on a base…"
+        "searchText": "680510 6805.10 abrasive powder or grain; natural or artificial, on a base of woven textile fabric only, whether or not cut to shape or sewn or otherwise made up natural or artificial abrasive powder or grain, on a base of textile material, of paper, of paperboard or of other materials, whether or not cut to shape or sewn or otherwise made up"
       },
       {
         "hs6": "6801.00",
@@ -6836,7 +6836,7 @@
         "changePct": 26.6,
         "sharePct": 1.5,
         "dutyPaidUsd": null,
-        "searchText": "680100 6801.00 stone; setts, curbstones and flagstones, of natural stone (except slate) setts, curbstones and flagstones, of natural stone (except…"
+        "searchText": "680100 6801.00 stone; setts, curbstones and flagstones, of natural stone (except slate) setts, curbstones and flagstones, of natural stone (except slate)"
       },
       {
         "hs6": "6813.81",
@@ -6847,7 +6847,7 @@
         "changePct": -21.4,
         "sharePct": 1.5,
         "dutyPaidUsd": null,
-        "searchText": "681381 6813.81 brake linings and pads; with a basis of mineral substances or cellulose (other than asbestos) friction material and articles thereof (for example…"
+        "searchText": "681381 6813.81 brake linings and pads; with a basis of mineral substances or cellulose (other than asbestos) friction material and articles thereof (for example, sheets, rolls, strips, segments, discs, washers, pads), not mounted, for brakes, for clutches or the like, with a basis of asbestos, of other mineral substances or of cellulose, whether or not combined with textile or other materials"
       },
       {
         "hs6": "6806.10",
@@ -6858,7 +6858,7 @@
         "changePct": -19.5,
         "sharePct": 1.4,
         "dutyPaidUsd": null,
-        "searchText": "680610 6806.10 slag wool, rock wool and similar mineral wools (including intermixtures thereof), in bulk, sheets or rolls slag wool, rock wool and similar mineral wools"
+        "searchText": "680610 6806.10 slag wool, rock wool and similar mineral wools (including intermixtures thereof), in bulk, sheets or rolls slag wool, rock wool and similar mineral wools; exfoliated vermiculite, expanded clays, foamed slag and similar expanded mineral materials; mixtures and articles of heat-insulating, sound-insulating or sound-absorbing mineral materials, other than those of heading 6811 or 6812, or of chapter 69"
       },
       {
         "hs6": "6805.20",
@@ -6869,7 +6869,7 @@
         "changePct": -13.5,
         "sharePct": 1.4,
         "dutyPaidUsd": null,
-        "searchText": "680520 6805.20 abrasive powder or grain; natural or artificial, on a base of paper or paperboard only, whether or not cut to shape or sewn or otherwise made up natural or artificial abrasive powder or grain, on a base…"
+        "searchText": "680520 6805.20 abrasive powder or grain; natural or artificial, on a base of paper or paperboard only, whether or not cut to shape or sewn or otherwise made up natural or artificial abrasive powder or grain, on a base of textile material, of paper, of paperboard or of other materials, whether or not cut to shape or sewn or otherwise made up"
       },
       {
         "hs6": "6802.10",
@@ -6880,7 +6880,7 @@
         "changePct": -5.7,
         "sharePct": 1.3,
         "dutyPaidUsd": null,
-        "searchText": "680210 6802.10 tiles, cubes and similar articles; whether or not rectangular (including square), largest face of which is capable of being enclosed in square, side less than 7cm, coloured granules, chippings, powder worked monumental or building stone (except slate) and…"
+        "searchText": "680210 6802.10 tiles, cubes and similar articles; whether or not rectangular (including square), largest face of which is capable of being enclosed in square, side less than 7cm, coloured granules, chippings, powder worked monumental or building stone (except slate) and articles thereof, other than goods of heading 6801; mosaic cubes and the like, of natural stone (including slate), whether or not on a backing; artificially colored granules, chippings and powder, of natural stone (including slate)"
       },
       {
         "hs6": "6802.21",
@@ -6891,7 +6891,7 @@
         "changePct": 1.8,
         "sharePct": 1.1,
         "dutyPaidUsd": null,
-        "searchText": "680221 6802.21 marble, travertine and alabaster; simply cut or sawn, with a flat or even surface worked monumental or building stone (except slate) and…"
+        "searchText": "680221 6802.21 marble, travertine and alabaster; simply cut or sawn, with a flat or even surface worked monumental or building stone (except slate) and articles thereof, other than goods of heading 6801; mosaic cubes and the like, of natural stone (including slate), whether or not on a backing; artificially colored granules, chippings and powder, of natural stone (including slate)"
       },
       {
         "hs6": "6810.19",
@@ -6902,7 +6902,7 @@
         "changePct": -9.6,
         "sharePct": 0.8,
         "dutyPaidUsd": null,
-        "searchText": "681019 6810.19 cement, concrete or artificial stone; tiles, flagstones and similar, (excluding building blocks and bricks) whether or not reinforced articles of cement, of concrete or of artificial stone…"
+        "searchText": "681019 6810.19 cement, concrete or artificial stone; tiles, flagstones and similar, (excluding building blocks and bricks) whether or not reinforced articles of cement, of concrete or of artificial stone, whether or not reinforced"
       },
       {
         "hs6": "6815.12",
@@ -6913,7 +6913,7 @@
         "changePct": 11.4,
         "sharePct": 0.7,
         "dutyPaidUsd": null,
-        "searchText": "681512 6815.12 stone or other mineral substances not elsewhere specified or included; fabrics of carbon fibres for non-electrical uses articles of stone or of other mineral substances…"
+        "searchText": "681512 6815.12 stone or other mineral substances not elsewhere specified or included; fabrics of carbon fibres for non-electrical uses articles of stone or of other mineral substances (including carbon fibers, articles of carbon fibers and articles of peat), not elsewhere specified or included"
       },
       {
         "hs6": "6810.91",
@@ -6924,7 +6924,7 @@
         "changePct": -4.1,
         "sharePct": 0.6,
         "dutyPaidUsd": null,
-        "searchText": "681091 6810.91 cement, concrete or artificial stone; prefabricated structural components for building or civil engineering, whether or not reinforced articles of cement, of concrete or of artificial stone…"
+        "searchText": "681091 6810.91 cement, concrete or artificial stone; prefabricated structural components for building or civil engineering, whether or not reinforced articles of cement, of concrete or of artificial stone, whether or not reinforced"
       },
       {
         "hs6": "6810.11",
@@ -6935,7 +6935,7 @@
         "changePct": -16.4,
         "sharePct": 0.6,
         "dutyPaidUsd": null,
-        "searchText": "681011 6810.11 cement, concrete or artificial stone; building blocks or bricks, whether or not reinforced articles of cement, of concrete or of artificial stone…"
+        "searchText": "681011 6810.11 cement, concrete or artificial stone; building blocks or bricks, whether or not reinforced articles of cement, of concrete or of artificial stone, whether or not reinforced"
       },
       {
         "hs6": "6803.00",
@@ -6957,7 +6957,7 @@
         "changePct": 7.9,
         "sharePct": 0.5,
         "dutyPaidUsd": null,
-        "searchText": "680223 6802.23 granite; articles thereof, simply cut or sawn, with a flat or even surface worked monumental or building stone (except slate) and…"
+        "searchText": "680223 6802.23 granite; articles thereof, simply cut or sawn, with a flat or even surface worked monumental or building stone (except slate) and articles thereof, other than goods of heading 6801; mosaic cubes and the like, of natural stone (including slate), whether or not on a backing; artificially colored granules, chippings and powder, of natural stone (including slate)"
       },
       {
         "hs6": "6815.91",
@@ -6968,7 +6968,7 @@
         "changePct": 236.6,
         "sharePct": 0.5,
         "dutyPaidUsd": null,
-        "searchText": "681591 6815.91 stone articles and articles of other mineral substances; containing magnesite, magnesia in the form of periclase, dolomite including in the form of dolime, or chromite articles of stone or of other mineral substances…"
+        "searchText": "681591 6815.91 stone articles and articles of other mineral substances; containing magnesite, magnesia in the form of periclase, dolomite including in the form of dolime, or chromite articles of stone or of other mineral substances (including carbon fibers, articles of carbon fibers and articles of peat), not elsewhere specified or included"
       },
       {
         "hs6": "6802.29",
@@ -6979,7 +6979,7 @@
         "changePct": 0.6,
         "sharePct": 0.4,
         "dutyPaidUsd": null,
-        "searchText": "680229 6802.29 stone; monumental or building stone, n.e.c. in item no. 6802.2, articles thereof, simply cut or sawn, with a flat or even surface worked monumental or building stone (except slate) and…"
+        "searchText": "680229 6802.29 stone; monumental or building stone, n.e.c. in item no. 6802.2, articles thereof, simply cut or sawn, with a flat or even surface worked monumental or building stone (except slate) and articles thereof, other than goods of heading 6801; mosaic cubes and the like, of natural stone (including slate), whether or not on a backing; artificially colored granules, chippings and powder, of natural stone (including slate)"
       },
       {
         "hs6": "6809.90",
@@ -7001,7 +7001,7 @@
         "changePct": -18,
         "sharePct": 0.3,
         "dutyPaidUsd": null,
-        "searchText": "681410 6814.10 mica; plates, sheets and strips of agglomerated or reconstituted mica, whether or not on a support of paper, paperboard or other materials worked mica and articles of mica, including agglomerated…"
+        "searchText": "681410 6814.10 mica; plates, sheets and strips of agglomerated or reconstituted mica, whether or not on a support of paper, paperboard or other materials worked mica and articles of mica, including agglomerated or reconstituted mica, whether or not on a support of paper, paperboard or other materials"
       },
       {
         "hs6": "6804.30",
@@ -7012,7 +7012,7 @@
         "changePct": 1.7,
         "sharePct": 0.3,
         "dutyPaidUsd": null,
-        "searchText": "680430 6804.30 stones; hand sharpening or polishing stones, of natural stone, agglomerated natural or artificial abrasives or ceramics, with or without parts of other materials millstones, grindstones, grinding wheels and the like…"
+        "searchText": "680430 6804.30 stones; hand sharpening or polishing stones, of natural stone, agglomerated natural or artificial abrasives or ceramics, with or without parts of other materials millstones, grindstones, grinding wheels and the like, without frameworks, for grinding, sharpening, polishing, trueing or cutting, hand sharpening or polishing stones, and parts thereof, of natural stone, of agglomerated natural or artificial abrasives, or of ceramics, with or without parts of other materials"
       },
       {
         "hs6": "6814.90",
@@ -7023,7 +7023,7 @@
         "changePct": 15.6,
         "sharePct": 0.3,
         "dutyPaidUsd": null,
-        "searchText": "681490 6814.90 mica; worked mica and articles of mica (excluding plates, sheets and strips) whether or not on a support of paper, paperboard or other materials worked mica and articles of mica, including agglomerated…"
+        "searchText": "681490 6814.90 mica; worked mica and articles of mica (excluding plates, sheets and strips) whether or not on a support of paper, paperboard or other materials worked mica and articles of mica, including agglomerated or reconstituted mica, whether or not on a support of paper, paperboard or other materials"
       },
       {
         "hs6": "6806.20",
@@ -7034,7 +7034,7 @@
         "changePct": -36.9,
         "sharePct": 0.2,
         "dutyPaidUsd": null,
-        "searchText": "680620 6806.20 exfoliated vermiculite, expanded clays, foamed slag and similar expanded mineral materials (including intermixtures thereof) slag wool, rock wool and similar mineral wools"
+        "searchText": "680620 6806.20 exfoliated vermiculite, expanded clays, foamed slag and similar expanded mineral materials (including intermixtures thereof) slag wool, rock wool and similar mineral wools; exfoliated vermiculite, expanded clays, foamed slag and similar expanded mineral materials; mixtures and articles of heat-insulating, sound-insulating or sound-absorbing mineral materials, other than those of heading 6811 or 6812, or of chapter 69"
       },
       {
         "hs6": "6813.89",
@@ -7045,7 +7045,7 @@
         "changePct": -22.3,
         "sharePct": 0.2,
         "dutyPaidUsd": null,
-        "searchText": "681389 6813.89 friction material and articles thereof (e.g. sheets, rolls, strips, segments, discs, washers, pads) not mounted; for clutches or the like (not brake linings and pads), with a basis of mineral substances or cellulose (other than asbestos) friction material and articles thereof (for example…"
+        "searchText": "681389 6813.89 friction material and articles thereof (e.g. sheets, rolls, strips, segments, discs, washers, pads) not mounted; for clutches or the like (not brake linings and pads), with a basis of mineral substances or cellulose (other than asbestos) friction material and articles thereof (for example, sheets, rolls, strips, segments, discs, washers, pads), not mounted, for brakes, for clutches or the like, with a basis of asbestos, of other mineral substances or of cellulose, whether or not combined with textile or other materials"
       },
       {
         "hs6": "6804.23",
@@ -7056,7 +7056,7 @@
         "changePct": -33,
         "sharePct": 0.2,
         "dutyPaidUsd": null,
-        "searchText": "680423 6804.23 millstones, grindstones, grinding wheels and the like; of natural stone millstones, grindstones, grinding wheels and the like…"
+        "searchText": "680423 6804.23 millstones, grindstones, grinding wheels and the like; of natural stone millstones, grindstones, grinding wheels and the like, without frameworks, for grinding, sharpening, polishing, trueing or cutting, hand sharpening or polishing stones, and parts thereof, of natural stone, of agglomerated natural or artificial abrasives, or of ceramics, with or without parts of other materials"
       },
       {
         "hs6": "6808.00",
@@ -7067,7 +7067,7 @@
         "changePct": 1,
         "sharePct": 0.2,
         "dutyPaidUsd": null,
-        "searchText": "680800 6808.00 panels, boards, tiles, blocks and the like; of vegetable fibre, of straw, shavings, chips, particles, sawdust or other waste, of wood, agglomerated with cement, plaster or other mineral binders panels, boards, tiles, blocks and similar articles of…"
+        "searchText": "680800 6808.00 panels, boards, tiles, blocks and the like; of vegetable fibre, of straw, shavings, chips, particles, sawdust or other waste, of wood, agglomerated with cement, plaster or other mineral binders panels, boards, tiles, blocks and similar articles of vegetable fiber, of straw or of shavings, chips, particles, sawdust or other waste, of wood, agglomerated with cement, plaster or other mineral binders"
       },
       {
         "hs6": "6809.19",
@@ -7089,7 +7089,7 @@
         "changePct": -9.9,
         "sharePct": 0.1,
         "dutyPaidUsd": null,
-        "searchText": "681189 6811.89 cellulose fibre-cement; articles or the like, other than corrugated sheets and other sheets, panels, tiles and similar articles, not containing asbestos articles of asbestos-cement, of cellulose fiber-cement or…"
+        "searchText": "681189 6811.89 cellulose fibre-cement; articles or the like, other than corrugated sheets and other sheets, panels, tiles and similar articles, not containing asbestos articles of asbestos-cement, of cellulose fiber-cement or the like"
       },
       {
         "hs6": "6815.20",
@@ -7100,7 +7100,7 @@
         "changePct": -16.3,
         "sharePct": 0.1,
         "dutyPaidUsd": null,
-        "searchText": "681520 6815.20 peat; articles of peat n.e.c. or included articles of stone or of other mineral substances…"
+        "searchText": "681520 6815.20 peat; articles of peat n.e.c. or included articles of stone or of other mineral substances (including carbon fibers, articles of carbon fibers and articles of peat), not elsewhere specified or included"
       },
       {
         "hs6": "6804.10",
@@ -7111,7 +7111,7 @@
         "changePct": -32.6,
         "sharePct": 0.1,
         "dutyPaidUsd": null,
-        "searchText": "680410 6804.10 millstones and grindstones; for milling, grinding or pulping millstones, grindstones, grinding wheels and the like…"
+        "searchText": "680410 6804.10 millstones and grindstones; for milling, grinding or pulping millstones, grindstones, grinding wheels and the like, without frameworks, for grinding, sharpening, polishing, trueing or cutting, hand sharpening or polishing stones, and parts thereof, of natural stone, of agglomerated natural or artificial abrasives, or of ceramics, with or without parts of other materials"
       },
       {
         "hs6": "6813.20",
@@ -7122,7 +7122,7 @@
         "changePct": -52.9,
         "sharePct": 0,
         "dutyPaidUsd": null,
-        "searchText": "681320 6813.20 friction material and articles thereof (e.g. sheets, rolls, strips, segments, discs, washers, pads) not mounted; for brakes, clutches or the like, with a basis of asbestos friction material and articles thereof (for example…"
+        "searchText": "681320 6813.20 friction material and articles thereof (e.g. sheets, rolls, strips, segments, discs, washers, pads) not mounted; for brakes, clutches or the like, with a basis of asbestos friction material and articles thereof (for example, sheets, rolls, strips, segments, discs, washers, pads), not mounted, for brakes, for clutches or the like, with a basis of asbestos, of other mineral substances or of cellulose, whether or not combined with textile or other materials"
       },
       {
         "hs6": "6811.81",
@@ -7133,7 +7133,7 @@
         "changePct": 137.4,
         "sharePct": 0,
         "dutyPaidUsd": null,
-        "searchText": "681181 6811.81 cellulose fibre-cement; articles or the like; corrugated sheets, not containing asbestos articles of asbestos-cement, of cellulose fiber-cement or…"
+        "searchText": "681181 6811.81 cellulose fibre-cement; articles or the like; corrugated sheets, not containing asbestos articles of asbestos-cement, of cellulose fiber-cement or the like"
       },
       {
         "hs6": "6812.99",
@@ -7144,7 +7144,7 @@
         "changePct": -47,
         "sharePct": 0,
         "dutyPaidUsd": null,
-        "searchText": "681299 6812.99 asbestos or mixtures with a basis of asbestos (other than crocidolite); fibres, mixtures or articles n.e.c. in heading no. 6812, whether or not reinforced, not goods of heading 6811 or 6813 fabricated asbestos fibers"
+        "searchText": "681299 6812.99 asbestos or mixtures with a basis of asbestos (other than crocidolite); fibres, mixtures or articles n.e.c. in heading no. 6812, whether or not reinforced, not goods of heading 6811 or 6813 fabricated asbestos fibers; mixtures with a basis of asbestos or with a basis of asbestos and magnesium carbonate; articles of such mixtures or of asbestos (for example, thread, woven fabric, clothing, headgear, footwear, gaskets), whether or not reinforced, other than goods of heading 6811 or 6813"
       },
       {
         "hs6": "6811.40",
@@ -7155,7 +7155,7 @@
         "changePct": null,
         "sharePct": 0,
         "dutyPaidUsd": null,
-        "searchText": "681140 6811.40 asbestos-cement; articles or the like, containing asbestos articles of asbestos-cement, of cellulose fiber-cement or…"
+        "searchText": "681140 6811.40 asbestos-cement; articles or the like, containing asbestos articles of asbestos-cement, of cellulose fiber-cement or the like"
       },
       {
         "hs6": "6812.91",
@@ -7166,7 +7166,7 @@
         "changePct": -22.6,
         "sharePct": 0,
         "dutyPaidUsd": null,
-        "searchText": "681291 6812.91 asbestos or mixtures with a basis of asbestos (other than crocidolite); clothing, clothing accessories, footwear and headgear, whether or not reinforced, not goods of heading 6811 or 6813 fabricated asbestos fibers"
+        "searchText": "681291 6812.91 asbestos or mixtures with a basis of asbestos (other than crocidolite); clothing, clothing accessories, footwear and headgear, whether or not reinforced, not goods of heading 6811 or 6813 fabricated asbestos fibers; mixtures with a basis of asbestos or with a basis of asbestos and magnesium carbonate; articles of such mixtures or of asbestos (for example, thread, woven fabric, clothing, headgear, footwear, gaskets), whether or not reinforced, other than goods of heading 6811 or 6813"
       },
       {
         "hs6": "6812.80",
@@ -7177,7 +7177,7 @@
         "changePct": -100,
         "sharePct": 0,
         "dutyPaidUsd": null,
-        "searchText": "681280 6812.80 fabricated crocidolite (blue asbestos) fibres, mixtures with a basis of crocidolite (blue asbestos), articles of crocidolite (blue asbestos), whether or not reinforced, not goods of heading 6811 or 6813 fabricated asbestos fibers"
+        "searchText": "681280 6812.80 fabricated crocidolite (blue asbestos) fibres, mixtures with a basis of crocidolite (blue asbestos), articles of crocidolite (blue asbestos), whether or not reinforced, not goods of heading 6811 or 6813 fabricated asbestos fibers; mixtures with a basis of asbestos or with a basis of asbestos and magnesium carbonate; articles of such mixtures or of asbestos (for example, thread, woven fabric, clothing, headgear, footwear, gaskets), whether or not reinforced, other than goods of heading 6811 or 6813"
       }
     ],
     "byHeadingCountry": [
@@ -14463,7 +14463,7 @@
           "6810": {
             "importsUsd": 476649534,
             "withUsmca": {
-              "totals": ["13.2%", "10%", "35% if quartz, in quota", "60% if quartz, over quota", "14.9%", "19%", "13.9%"],
+              "totals": ["13.2%", "10%", "35% if quartz surface product within quota", "60% if quartz surface product over quota", "14.9%", "19%", "13.9%"],
               "breakdown": [
                 {
                   "base": "3.2%",
@@ -14485,9 +14485,9 @@
                   "base": "Free",
                   "lines": ["6810.99.00.20", "6810.99.00.40"],
                   "lineCount": 2,
-                  "extra": "Not quartz surface: +10%. Quartz, in quota: +10% (9903.05.44) + 25% (9903.45.30). Quartz, over quota: +10% (9903.05.44) + 50% (9903.45.31)",
+                  "extra": "Not quartz surface: +10%. Quartz surface product within quota: +10% (9903.05.44) + 25% (9903.45.30). Quartz surface product over quota: +10% (9903.05.44) + 50% (9903.45.31)",
                   "preference": "None",
-                  "total": "10% if not quartz surface / 35% if quartz, in quota / 60% if quartz, over quota"
+                  "total": "10% not quartz surface / 35% quartz surface product within quota / 60% quartz surface product over quota"
                 },
                 {
                   "base": "4.9%",
@@ -14516,7 +14516,7 @@
               ]
             },
             "withoutUsmca": {
-              "totals": ["13.2%", "10%", "35% if quartz, in quota", "60% if quartz, over quota", "14.9%", "19%", "13.9%"],
+              "totals": ["13.2%", "10%", "35% if quartz surface product within quota", "60% if quartz surface product over quota", "14.9%", "19%", "13.9%"],
               "breakdown": [
                 {
                   "base": "3.2%",
@@ -14538,9 +14538,9 @@
                   "base": "Free",
                   "lines": ["6810.99.00.20", "6810.99.00.40"],
                   "lineCount": 2,
-                  "extra": "Not quartz surface: +10%. Quartz, in quota: +10% (9903.05.44) + 25% (9903.45.30). Quartz, over quota: +10% (9903.05.44) + 50% (9903.45.31)",
+                  "extra": "Not quartz surface: +10%. Quartz surface product within quota: +10% (9903.05.44) + 25% (9903.45.30). Quartz surface product over quota: +10% (9903.05.44) + 50% (9903.45.31)",
                   "preference": "None",
-                  "total": "10% if not quartz surface / 35% if quartz, in quota / 60% if quartz, over quota"
+                  "total": "10% not quartz surface / 35% quartz surface product within quota / 60% quartz surface product over quota"
                 },
                 {
                   "base": "4.9%",
@@ -15309,7 +15309,7 @@
           "6810": {
             "importsUsd": 41456488,
             "withUsmca": {
-              "totals": ["10%", "35% if quartz, in quota", "60% if quartz, over quota"],
+              "totals": ["10%", "35% if quartz surface product within quota", "60% if quartz surface product over quota"],
               "breakdown": [
                 {
                   "base": "3.2%",
@@ -15331,9 +15331,9 @@
                   "base": "Free",
                   "lines": ["6810.99.00.20", "6810.99.00.40"],
                   "lineCount": 2,
-                  "extra": "Not quartz surface: 10% in place of base. Quartz, in quota: 10% in place of base (9903.05.39) + 25% (9903.45.30). Quartz, over quota: 10% in place of base (9903.05.39) + 50% (9903.45.31)",
+                  "extra": "Not quartz surface: 10% in place of base. Quartz surface product within quota: 10% in place of base (9903.05.39) + 25% (9903.45.30). Quartz surface product over quota: 10% in place of base (9903.05.39) + 50% (9903.45.31)",
                   "preference": "None",
-                  "total": "10% if not quartz surface / 35% if quartz, in quota / 60% if quartz, over quota"
+                  "total": "10% not quartz surface / 35% quartz surface product within quota / 60% quartz surface product over quota"
                 },
                 {
                   "base": "4.9%",
@@ -15362,7 +15362,7 @@
               ]
             },
             "withoutUsmca": {
-              "totals": ["10%", "35% if quartz, in quota", "60% if quartz, over quota"],
+              "totals": ["10%", "35% if quartz surface product within quota", "60% if quartz surface product over quota"],
               "breakdown": [
                 {
                   "base": "3.2%",
@@ -15384,9 +15384,9 @@
                   "base": "Free",
                   "lines": ["6810.99.00.20", "6810.99.00.40"],
                   "lineCount": 2,
-                  "extra": "Not quartz surface: 10% in place of base. Quartz, in quota: 10% in place of base (9903.05.39) + 25% (9903.45.30). Quartz, over quota: 10% in place of base (9903.05.39) + 50% (9903.45.31)",
+                  "extra": "Not quartz surface: 10% in place of base. Quartz surface product within quota: 10% in place of base (9903.05.39) + 25% (9903.45.30). Quartz surface product over quota: 10% in place of base (9903.05.39) + 50% (9903.45.31)",
                   "preference": "None",
-                  "total": "10% if not quartz surface / 35% if quartz, in quota / 60% if quartz, over quota"
+                  "total": "10% not quartz surface / 35% quartz surface product within quota / 60% quartz surface product over quota"
                 },
                 {
                   "base": "4.9%",
@@ -16155,7 +16155,15 @@
           "6810": {
             "importsUsd": 184232827,
             "withUsmca": {
-              "totals": ["40.7%", "37.5%", "62.5% if quartz, in quota", "87.5% if quartz, over quota", "42.4%", "46.5%", "41.4%"],
+              "totals": [
+                "40.7%",
+                "37.5%",
+                "62.5% if quartz surface product within quota",
+                "87.5% if quartz surface product over quota",
+                "42.4%",
+                "46.5%",
+                "41.4%"
+              ],
               "breakdown": [
                 {
                   "base": "3.2%",
@@ -16177,9 +16185,9 @@
                   "base": "Free",
                   "lines": ["6810.99.00.20", "6810.99.00.40"],
                   "lineCount": 2,
-                  "extra": "Not quartz surface: +12.5% (9903.05.31) + 25% (9903.88.03). Quartz, in quota: +12.5% (9903.05.31) + 25% (9903.88.03) + 25% (9903.45.30). Quartz, over quota: +12.5% (9903.05.31) + 25% (9903.88.03) + 50% (9903.45.31)",
+                  "extra": "Not quartz surface: +12.5% (9903.05.31) + 25% (9903.88.03). Quartz surface product within quota: +12.5% (9903.05.31) + 25% (9903.88.03) + 25% (9903.45.30). Quartz surface product over quota: +12.5% (9903.05.31) + 25% (9903.88.03) + 50% (9903.45.31)",
                   "preference": "None",
-                  "total": "37.5% if not quartz surface / 62.5% if quartz, in quota / 87.5% if quartz, over quota"
+                  "total": "37.5% not quartz surface / 62.5% quartz surface product within quota / 87.5% quartz surface product over quota"
                 },
                 {
                   "base": "4.9%",
@@ -16208,7 +16216,15 @@
               ]
             },
             "withoutUsmca": {
-              "totals": ["40.7%", "37.5%", "62.5% if quartz, in quota", "87.5% if quartz, over quota", "42.4%", "46.5%", "41.4%"],
+              "totals": [
+                "40.7%",
+                "37.5%",
+                "62.5% if quartz surface product within quota",
+                "87.5% if quartz surface product over quota",
+                "42.4%",
+                "46.5%",
+                "41.4%"
+              ],
               "breakdown": [
                 {
                   "base": "3.2%",
@@ -16230,9 +16246,9 @@
                   "base": "Free",
                   "lines": ["6810.99.00.20", "6810.99.00.40"],
                   "lineCount": 2,
-                  "extra": "Not quartz surface: +12.5% (9903.05.31) + 25% (9903.88.03). Quartz, in quota: +12.5% (9903.05.31) + 25% (9903.88.03) + 25% (9903.45.30). Quartz, over quota: +12.5% (9903.05.31) + 25% (9903.88.03) + 50% (9903.45.31)",
+                  "extra": "Not quartz surface: +12.5% (9903.05.31) + 25% (9903.88.03). Quartz surface product within quota: +12.5% (9903.05.31) + 25% (9903.88.03) + 25% (9903.45.30). Quartz surface product over quota: +12.5% (9903.05.31) + 25% (9903.88.03) + 50% (9903.45.31)",
                   "preference": "None",
-                  "total": "37.5% if not quartz surface / 62.5% if quartz, in quota / 87.5% if quartz, over quota"
+                  "total": "37.5% not quartz surface / 62.5% quartz surface product within quota / 87.5% quartz surface product over quota"
                 },
                 {
                   "base": "4.9%",
@@ -17001,7 +17017,15 @@
           "6810": {
             "importsUsd": 90497967,
             "withUsmca": {
-              "totals": ["15.7%", "12.5%", "37.5% if quartz, in quota", "62.5% if quartz, over quota", "17.4%", "21.5%", "16.4%"],
+              "totals": [
+                "15.7%",
+                "12.5%",
+                "37.5% if quartz surface product within quota",
+                "62.5% if quartz surface product over quota",
+                "17.4%",
+                "21.5%",
+                "16.4%"
+              ],
               "breakdown": [
                 {
                   "base": "3.2%",
@@ -17023,9 +17047,9 @@
                   "base": "Free",
                   "lines": ["6810.99.00.20", "6810.99.00.40"],
                   "lineCount": 2,
-                  "extra": "Not quartz surface: +12.5%. Quartz, in quota: +12.5% (9903.05.79) + 25% (9903.45.30). Quartz, over quota: +12.5% (9903.05.79) + 50% (9903.45.31)",
+                  "extra": "Not quartz surface: +12.5%. Quartz surface product within quota: +12.5% (9903.05.79) + 25% (9903.45.30). Quartz surface product over quota: +12.5% (9903.05.79) + 50% (9903.45.31)",
                   "preference": "None",
-                  "total": "12.5% if not quartz surface / 37.5% if quartz, in quota / 62.5% if quartz, over quota"
+                  "total": "12.5% not quartz surface / 37.5% quartz surface product within quota / 62.5% quartz surface product over quota"
                 },
                 {
                   "base": "4.9%",
@@ -17054,7 +17078,15 @@
               ]
             },
             "withoutUsmca": {
-              "totals": ["15.7%", "12.5%", "37.5% if quartz, in quota", "62.5% if quartz, over quota", "17.4%", "21.5%", "16.4%"],
+              "totals": [
+                "15.7%",
+                "12.5%",
+                "37.5% if quartz surface product within quota",
+                "62.5% if quartz surface product over quota",
+                "17.4%",
+                "21.5%",
+                "16.4%"
+              ],
               "breakdown": [
                 {
                   "base": "3.2%",
@@ -17076,9 +17108,9 @@
                   "base": "Free",
                   "lines": ["6810.99.00.20", "6810.99.00.40"],
                   "lineCount": 2,
-                  "extra": "Not quartz surface: +12.5%. Quartz, in quota: +12.5% (9903.05.79) + 25% (9903.45.30). Quartz, over quota: +12.5% (9903.05.79) + 50% (9903.45.31)",
+                  "extra": "Not quartz surface: +12.5%. Quartz surface product within quota: +12.5% (9903.05.79) + 25% (9903.45.30). Quartz surface product over quota: +12.5% (9903.05.79) + 50% (9903.45.31)",
                   "preference": "None",
-                  "total": "12.5% if not quartz surface / 37.5% if quartz, in quota / 62.5% if quartz, over quota"
+                  "total": "12.5% not quartz surface / 37.5% quartz surface product within quota / 62.5% quartz surface product over quota"
                 },
                 {
                   "base": "4.9%",
@@ -17847,7 +17879,15 @@
           "6810": {
             "importsUsd": 400794424,
             "withUsmca": {
-              "totals": ["15.7%", "12.5%", "37.5% if quartz, in quota", "62.5% if quartz, over quota", "17.4%", "21.5%", "16.4%"],
+              "totals": [
+                "15.7%",
+                "12.5%",
+                "37.5% if quartz surface product within quota",
+                "62.5% if quartz surface product over quota",
+                "17.4%",
+                "21.5%",
+                "16.4%"
+              ],
               "breakdown": [
                 {
                   "base": "3.2%",
@@ -17869,9 +17909,9 @@
                   "base": "Free",
                   "lines": ["6810.99.00.20", "6810.99.00.40"],
                   "lineCount": 2,
-                  "extra": "Not quartz surface: +12.5%. Quartz, in quota: +12.5% (9903.05.84) + 25% (9903.45.30). Quartz, over quota: +12.5% (9903.05.84) + 50% (9903.45.31)",
+                  "extra": "Not quartz surface: +12.5%. Quartz surface product within quota: +12.5% (9903.05.84) + 25% (9903.45.30). Quartz surface product over quota: +12.5% (9903.05.84) + 50% (9903.45.31)",
                   "preference": "None",
-                  "total": "12.5% if not quartz surface / 37.5% if quartz, in quota / 62.5% if quartz, over quota"
+                  "total": "12.5% not quartz surface / 37.5% quartz surface product within quota / 62.5% quartz surface product over quota"
                 },
                 {
                   "base": "4.9%",
@@ -17900,7 +17940,15 @@
               ]
             },
             "withoutUsmca": {
-              "totals": ["15.7%", "12.5%", "37.5% if quartz, in quota", "62.5% if quartz, over quota", "17.4%", "21.5%", "16.4%"],
+              "totals": [
+                "15.7%",
+                "12.5%",
+                "37.5% if quartz surface product within quota",
+                "62.5% if quartz surface product over quota",
+                "17.4%",
+                "21.5%",
+                "16.4%"
+              ],
               "breakdown": [
                 {
                   "base": "3.2%",
@@ -17922,9 +17970,9 @@
                   "base": "Free",
                   "lines": ["6810.99.00.20", "6810.99.00.40"],
                   "lineCount": 2,
-                  "extra": "Not quartz surface: +12.5%. Quartz, in quota: +12.5% (9903.05.84) + 25% (9903.45.30). Quartz, over quota: +12.5% (9903.05.84) + 50% (9903.45.31)",
+                  "extra": "Not quartz surface: +12.5%. Quartz surface product within quota: +12.5% (9903.05.84) + 25% (9903.45.30). Quartz surface product over quota: +12.5% (9903.05.84) + 50% (9903.45.31)",
                   "preference": "None",
-                  "total": "12.5% if not quartz surface / 37.5% if quartz, in quota / 62.5% if quartz, over quota"
+                  "total": "12.5% not quartz surface / 37.5% quartz surface product within quota / 62.5% quartz surface product over quota"
                 },
                 {
                   "base": "4.9%",
@@ -18693,7 +18741,7 @@
           "6810": {
             "importsUsd": 15625106,
             "withUsmca": {
-              "totals": ["10%", "35% if quartz, in quota", "60% if quartz, over quota"],
+              "totals": ["10%", "35% if quartz surface product within quota", "60% if quartz surface product over quota"],
               "breakdown": [
                 {
                   "base": "3.2%",
@@ -18715,9 +18763,9 @@
                   "base": "Free",
                   "lines": ["6810.99.00.20", "6810.99.00.40"],
                   "lineCount": 2,
-                  "extra": "Not quartz surface: 10% in place of base. Quartz, in quota: 10% in place of base (9903.05.39) + 25% (9903.45.30). Quartz, over quota: 10% in place of base (9903.05.39) + 50% (9903.45.31)",
+                  "extra": "Not quartz surface: 10% in place of base. Quartz surface product within quota: 10% in place of base (9903.05.39) + 25% (9903.45.30). Quartz surface product over quota: 10% in place of base (9903.05.39) + 50% (9903.45.31)",
                   "preference": "None",
-                  "total": "10% if not quartz surface / 35% if quartz, in quota / 60% if quartz, over quota"
+                  "total": "10% not quartz surface / 35% quartz surface product within quota / 60% quartz surface product over quota"
                 },
                 {
                   "base": "4.9%",
@@ -18746,7 +18794,7 @@
               ]
             },
             "withoutUsmca": {
-              "totals": ["10%", "35% if quartz, in quota", "60% if quartz, over quota"],
+              "totals": ["10%", "35% if quartz surface product within quota", "60% if quartz surface product over quota"],
               "breakdown": [
                 {
                   "base": "3.2%",
@@ -18768,9 +18816,9 @@
                   "base": "Free",
                   "lines": ["6810.99.00.20", "6810.99.00.40"],
                   "lineCount": 2,
-                  "extra": "Not quartz surface: 10% in place of base. Quartz, in quota: 10% in place of base (9903.05.39) + 25% (9903.45.30). Quartz, over quota: 10% in place of base (9903.05.39) + 50% (9903.45.31)",
+                  "extra": "Not quartz surface: 10% in place of base. Quartz surface product within quota: 10% in place of base (9903.05.39) + 25% (9903.45.30). Quartz surface product over quota: 10% in place of base (9903.05.39) + 50% (9903.45.31)",
                   "preference": "None",
-                  "total": "10% if not quartz surface / 35% if quartz, in quota / 60% if quartz, over quota"
+                  "total": "10% not quartz surface / 35% quartz surface product within quota / 60% quartz surface product over quota"
                 },
                 {
                   "base": "4.9%",
@@ -19539,7 +19587,7 @@
           "6810": {
             "importsUsd": 177658,
             "withUsmca": {
-              "totals": ["12.5%", "37.5% if quartz, in quota", "62.5% if quartz, over quota"],
+              "totals": ["12.5%", "37.5% if quartz surface product within quota", "62.5% if quartz surface product over quota"],
               "breakdown": [
                 {
                   "base": "3.2%",
@@ -19561,9 +19609,9 @@
                   "base": "Free",
                   "lines": ["6810.99.00.20", "6810.99.00.40"],
                   "lineCount": 2,
-                  "extra": "Not quartz surface: 12.5% in place of base. Quartz, in quota: 12.5% in place of base (9903.05.49) + 25% (9903.45.30). Quartz, over quota: 12.5% in place of base (9903.05.49) + 50% (9903.45.31)",
+                  "extra": "Not quartz surface: 12.5% in place of base. Quartz surface product within quota: 12.5% in place of base (9903.05.49) + 25% (9903.45.30). Quartz surface product over quota: 12.5% in place of base (9903.05.49) + 50% (9903.45.31)",
                   "preference": "None",
-                  "total": "12.5% if not quartz surface / 37.5% if quartz, in quota / 62.5% if quartz, over quota"
+                  "total": "12.5% not quartz surface / 37.5% quartz surface product within quota / 62.5% quartz surface product over quota"
                 },
                 {
                   "base": "4.9%",
@@ -19592,7 +19640,7 @@
               ]
             },
             "withoutUsmca": {
-              "totals": ["12.5%", "37.5% if quartz, in quota", "62.5% if quartz, over quota"],
+              "totals": ["12.5%", "37.5% if quartz surface product within quota", "62.5% if quartz surface product over quota"],
               "breakdown": [
                 {
                   "base": "3.2%",
@@ -19614,9 +19662,9 @@
                   "base": "Free",
                   "lines": ["6810.99.00.20", "6810.99.00.40"],
                   "lineCount": 2,
-                  "extra": "Not quartz surface: 12.5% in place of base. Quartz, in quota: 12.5% in place of base (9903.05.49) + 25% (9903.45.30). Quartz, over quota: 12.5% in place of base (9903.05.49) + 50% (9903.45.31)",
+                  "extra": "Not quartz surface: 12.5% in place of base. Quartz surface product within quota: 12.5% in place of base (9903.05.49) + 25% (9903.45.30). Quartz surface product over quota: 12.5% in place of base (9903.05.49) + 50% (9903.45.31)",
                   "preference": "None",
-                  "total": "12.5% if not quartz surface / 37.5% if quartz, in quota / 62.5% if quartz, over quota"
+                  "total": "12.5% not quartz surface / 37.5% quartz surface product within quota / 62.5% quartz surface product over quota"
                 },
                 {
                   "base": "4.9%",
@@ -20385,7 +20433,15 @@
           "6810": {
             "importsUsd": 267378732,
             "withUsmca": {
-              "totals": ["15.7%", "12.5%", "37.5% if quartz, in quota", "62.5% if quartz, over quota", "17.4%", "21.5%", "16.4%"],
+              "totals": [
+                "15.7%",
+                "12.5%",
+                "37.5% if quartz surface product within quota",
+                "62.5% if quartz surface product over quota",
+                "17.4%",
+                "21.5%",
+                "16.4%"
+              ],
               "breakdown": [
                 {
                   "base": "3.2%",
@@ -20407,9 +20463,9 @@
                   "base": "Free",
                   "lines": ["6810.99.00.20", "6810.99.00.40"],
                   "lineCount": 2,
-                  "extra": "Not quartz surface: +12.5%. Quartz, in quota: +12.5% (9903.05.77) + 25% (9903.45.30). Quartz, over quota: +12.5% (9903.05.77) + 50% (9903.45.31)",
+                  "extra": "Not quartz surface: +12.5%. Quartz surface product within quota: +12.5% (9903.05.77) + 25% (9903.45.30). Quartz surface product over quota: +12.5% (9903.05.77) + 50% (9903.45.31)",
                   "preference": "None",
-                  "total": "12.5% if not quartz surface / 37.5% if quartz, in quota / 62.5% if quartz, over quota"
+                  "total": "12.5% not quartz surface / 37.5% quartz surface product within quota / 62.5% quartz surface product over quota"
                 },
                 {
                   "base": "4.9%",
@@ -20438,7 +20494,15 @@
               ]
             },
             "withoutUsmca": {
-              "totals": ["15.7%", "12.5%", "37.5% if quartz, in quota", "62.5% if quartz, over quota", "17.4%", "21.5%", "16.4%"],
+              "totals": [
+                "15.7%",
+                "12.5%",
+                "37.5% if quartz surface product within quota",
+                "62.5% if quartz surface product over quota",
+                "17.4%",
+                "21.5%",
+                "16.4%"
+              ],
               "breakdown": [
                 {
                   "base": "3.2%",
@@ -20460,9 +20524,9 @@
                   "base": "Free",
                   "lines": ["6810.99.00.20", "6810.99.00.40"],
                   "lineCount": 2,
-                  "extra": "Not quartz surface: +12.5%. Quartz, in quota: +12.5% (9903.05.77) + 25% (9903.45.30). Quartz, over quota: +12.5% (9903.05.77) + 50% (9903.45.31)",
+                  "extra": "Not quartz surface: +12.5%. Quartz surface product within quota: +12.5% (9903.05.77) + 25% (9903.45.30). Quartz surface product over quota: +12.5% (9903.05.77) + 50% (9903.45.31)",
                   "preference": "None",
-                  "total": "12.5% if not quartz surface / 37.5% if quartz, in quota / 62.5% if quartz, over quota"
+                  "total": "12.5% not quartz surface / 37.5% quartz surface product within quota / 62.5% quartz surface product over quota"
                 },
                 {
                   "base": "4.9%",
@@ -21231,7 +21295,7 @@
           "6810": {
             "importsUsd": 182519072,
             "withUsmca": {
-              "totals": ["10%", "35% if quartz, in quota", "60% if quartz, over quota"],
+              "totals": ["10%", "35% if quartz surface product within quota", "60% if quartz surface product over quota"],
               "breakdown": [
                 {
                   "base": "3.2%",
@@ -21253,9 +21317,9 @@
                   "base": "Free",
                   "lines": ["6810.99.00.20", "6810.99.00.40"],
                   "lineCount": 2,
-                  "extra": "Not quartz surface: 10% in place of base. Quartz, in quota: 10% in place of base (9903.05.39) + 25% (9903.45.30). Quartz, over quota: 10% in place of base (9903.05.39) + 50% (9903.45.31)",
+                  "extra": "Not quartz surface: 10% in place of base. Quartz surface product within quota: 10% in place of base (9903.05.39) + 25% (9903.45.30). Quartz surface product over quota: 10% in place of base (9903.05.39) + 50% (9903.45.31)",
                   "preference": "None",
-                  "total": "10% if not quartz surface / 35% if quartz, in quota / 60% if quartz, over quota"
+                  "total": "10% not quartz surface / 35% quartz surface product within quota / 60% quartz surface product over quota"
                 },
                 {
                   "base": "4.9%",
@@ -21284,7 +21348,7 @@
               ]
             },
             "withoutUsmca": {
-              "totals": ["10%", "35% if quartz, in quota", "60% if quartz, over quota"],
+              "totals": ["10%", "35% if quartz surface product within quota", "60% if quartz surface product over quota"],
               "breakdown": [
                 {
                   "base": "3.2%",
@@ -21306,9 +21370,9 @@
                   "base": "Free",
                   "lines": ["6810.99.00.20", "6810.99.00.40"],
                   "lineCount": 2,
-                  "extra": "Not quartz surface: 10% in place of base. Quartz, in quota: 10% in place of base (9903.05.39) + 25% (9903.45.30). Quartz, over quota: 10% in place of base (9903.05.39) + 50% (9903.45.31)",
+                  "extra": "Not quartz surface: 10% in place of base. Quartz surface product within quota: 10% in place of base (9903.05.39) + 25% (9903.45.30). Quartz surface product over quota: 10% in place of base (9903.05.39) + 50% (9903.45.31)",
                   "preference": "None",
-                  "total": "10% if not quartz surface / 35% if quartz, in quota / 60% if quartz, over quota"
+                  "total": "10% not quartz surface / 35% quartz surface product within quota / 60% quartz surface product over quota"
                 },
                 {
                   "base": "4.9%",
@@ -22911,8 +22975,8 @@
               "totals": [
                 "3.2%–15.7%",
                 "Free–12.5%",
-                "25%–37.5% if quartz, in quota",
-                "50%–62.5% if quartz, over quota",
+                "Free–37.5% if quartz surface product within quota",
+                "Free–62.5% if quartz surface product over quota",
                 "4.9%–17.4%",
                 "9%–21.5%",
                 "3.9%–16.4%"
@@ -22938,9 +23002,9 @@
                   "base": "Free",
                   "lines": ["6810.99.00.20", "6810.99.00.40"],
                   "lineCount": 2,
-                  "extra": "Not quartz surface: 0% to +12.5% by country, Section 301 (9903.05.22–9903.05.83). Quartz, in quota: +25% by country, Section 201 safeguard (9903.45.30); +10% to +12.5% by country, Section 301 (9903.05.22–9903.05.83). Quartz, over quota: +50% by country, Section 201 safeguard (9903.45.31); +10% to +12.5% by country, Section 301 (9903.05.22–9903.05.83)",
+                  "extra": "Not quartz surface: 0% to +12.5% by country, Section 301 (9903.05.20–9903.05.83). Quartz surface product within quota: 0% to +12.5% by country, Section 301 (9903.05.20–9903.05.83); +25% by country, Section 201 safeguard (9903.45.30). Quartz surface product over quota: 0% to +12.5% by country, Section 301 (9903.05.20–9903.05.83); +50% by country, Section 201 safeguard (9903.45.31)",
                   "preference": "None",
-                  "total": "Free–12.5% if not quartz surface / 25%–37.5% if quartz, in quota / 50%–62.5% if quartz, over quota"
+                  "total": "Free–12.5% not quartz surface / Free–37.5% quartz surface product within quota / Free–62.5% quartz surface product over quota"
                 },
                 {
                   "base": "4.9%",
@@ -22972,8 +23036,8 @@
               "totals": [
                 "3.2%–15.7%",
                 "Free–12.5%",
-                "25%–37.5% if quartz, in quota",
-                "50%–62.5% if quartz, over quota",
+                "Free–37.5% if quartz surface product within quota",
+                "Free–62.5% if quartz surface product over quota",
                 "4.9%–17.4%",
                 "9%–21.5%",
                 "3.9%–16.4%"
@@ -22999,9 +23063,9 @@
                   "base": "Free",
                   "lines": ["6810.99.00.20", "6810.99.00.40"],
                   "lineCount": 2,
-                  "extra": "Not quartz surface: 0% to +12.5% by country, Section 301 (9903.05.22–9903.05.83). Quartz, in quota: +25% by country, Section 201 safeguard (9903.45.30); +10% to +12.5% by country, Section 301 (9903.05.22–9903.05.83). Quartz, over quota: +50% by country, Section 201 safeguard (9903.45.31); +10% to +12.5% by country, Section 301 (9903.05.22–9903.05.83)",
+                  "extra": "Not quartz surface: 0% to +12.5% by country, Section 301 (9903.05.20–9903.05.83). Quartz surface product within quota: 0% to +12.5% by country, Section 301 (9903.05.20–9903.05.83); +25% by country, Section 201 safeguard (9903.45.30). Quartz surface product over quota: 0% to +12.5% by country, Section 301 (9903.05.20–9903.05.83); +50% by country, Section 201 safeguard (9903.45.31)",
                   "preference": "None",
-                  "total": "Free–12.5% if not quartz surface / 25%–37.5% if quartz, in quota / 50%–62.5% if quartz, over quota"
+                  "total": "Free–12.5% not quartz surface / Free–37.5% quartz surface product within quota / Free–62.5% quartz surface product over quota"
                 },
                 {
                   "base": "4.9%",
@@ -23267,7 +23331,7 @@
         "country": "India",
         "heading": "6810",
         "importsUsd": 476649534,
-        "totals": ["13.2%", "10%", "35% if quartz, in quota", "60% if quartz, over quota", "14.9%", "19%", "13.9%"]
+        "totals": ["13.2%", "10%", "35% if quartz surface product within quota", "60% if quartz surface product over quota", "14.9%", "19%", "13.9%"]
       },
       {
         "country": "Türkiye (Turkey)",
@@ -23279,7 +23343,7 @@
         "country": "Vietnam",
         "heading": "6810",
         "importsUsd": 400794424,
-        "totals": ["15.7%", "12.5%", "37.5% if quartz, in quota", "62.5% if quartz, over quota", "17.4%", "21.5%", "16.4%"]
+        "totals": ["15.7%", "12.5%", "37.5% if quartz surface product within quota", "62.5% if quartz surface product over quota", "17.4%", "21.5%", "16.4%"]
       },
       {
         "country": "Canada",
@@ -23307,7 +23371,7 @@
       "Preferences: USMCA (S) is applied for Canada and Mexico on the \"USMCA-qualifying\" side. GSP (A, A+) has lapsed and is not applied. Other preferences are not applied.",
       "Conditional relief is not applied (it needs the importer's confirmation): 9903.88.69 (Section 301).",
       "Any other country shows the range across every country not listed (column 2 countries — Cuba, North Korea, Russia, Belarus — aside), without preferences.",
-      "Engineered quartz (6810.99.00.20/.40): cells show three totals — not a quartz surface product, quartz entered in quota (+25%, 9903.45.30), and quartz entered over quota (+50%, 9903.45.31). Which applies depends on the goods and on the quarter's quota fill, so the importer has to answer; countries on the note 41(c) list (Canada, Mexico, Brazil, Israel, Korea and others) show one total.",
+      "Engineered quartz (6810.99.00.20/.40): cells show three totals — \"not quartz surface\", \"quartz surface product within quota\" (+25%, 9903.45.30) and \"quartz surface product over quota\" (+50%, 9903.45.31). Which applies depends on the goods and on the quarter's quota fill, so the importer has to answer; countries on the note 41(c) list (Canada, Mexico, Brazil, Israel, Korea and others) show one total.",
       "Canada, \"USMCA-qualifying\" side: the Section 301 duty is removed (9903.05.93), but the 50% Section 338 duty stays on 6809.11.00 and 6810.99.00 because U.S. note 51(a) applies it even when a special rate is claimed.",
       "The compound rate on 6804.22.10 (5¢/kg + 2%) is compared at the $10,000 / 1,000 kg test shipment ($10 per kg) for the EU and Japan \"in total\" rules, so it counts as 2.5%.",
       "Not in the cells: antidumping and countervailing duties — on quartz surface products from China, India and Turkey, diamond saw-blade segments and sol-gel abrasive grains from China, and magnesia carbon bricks from China and Mexico — whose company-specific cash deposits are set by Commerce; the China List 3 exclusion for certain sandstone pavers (6802.99.00.90); civil-aircraft relief for 6812–6813; FTA and AGOA preferences; and EPA's asbestos import bans.",
