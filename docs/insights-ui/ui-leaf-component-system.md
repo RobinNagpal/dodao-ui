@@ -164,6 +164,7 @@ Rules for leaves:
 | `CardSection` | Dark report-section surface (`bg-gray-900 rounded-lg shadow-sm`) with padding presets. |
 | `InlineCard` | Lightweight filled box (`bg-gray-800 rounded-md`); `padding` presets incl. `factor`; `as` for `li`. |
 | `RelatedSectionsNav` | Top-bordered "more analyses" nav: heading + responsive grid of pill links. An item with `active` is the current page: shown in place, highlighted, not linked. |
+| `IndexListGroup` / `IndexList` / `IndexListRow` | Numbered one-column index for a long catalogue, shaped like the HTS code browser: a group heading (e.g. "Section I Live Animals"), then a bordered list of rows — number, title linked over the whole row, right-aligned meta (date), two-line summary and small sub-page links, optionally in named groups (`linkGroups`, e.g. "U.S. imports" / "U.S. exports"). Used by `/tariff-reports`. |
 | `LinkTile` | Navigational tile with eyebrow, title, highlighted meta value, body and footer. |
 | `RuleList` | List separated by top rules instead of boxes, for sources and citations; optional `columns`. |
 | `TimelineRow` | One ruled list entry: a left column (date + status, or code + name) beside the entry body; stacks on phones. |
