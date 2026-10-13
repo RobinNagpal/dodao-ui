@@ -6459,6 +6459,137 @@
       "expectedTotalDutyUsd": 0,
       "toleranceUsd": 0.01,
       "sourceNote": "Heading 9903.96.02, U.S. note 35(b) (90 FR 44638): Japanese civil aircraft articles on the listed provisions do not pay 9903.82.02 / 9903.82.04–9903.82.17; note 52(d) (9903.05.88) lifts the 2026 Section 301 duty. Base Free. $0 (without the confirmation: 9903.82.02 +50% = $5,000)."
+    },
+    {
+      "id": "ch37-blank-film-gb-informational-claimed",
+      "description": "Unexposed photographic film in rolls, of a width not exceeding 35 mm (3702.97.00.00), from the United Kingdom, $10,000, importer answers yes to informational materials",
+      "chapter": "37",
+      "input": {
+        "hts10": "3702970000",
+        "countryOfOrigin": "GB",
+        "customsValueUsd": 10000,
+        "quantities": {
+          "M2": 1000
+        },
+        "confirmations": {
+          "facts": {
+            "informationalMaterials": true
+          }
+        },
+        "entryDate": "2026-10-13"
+      },
+      "line": {
+        "hts10": "3702970000",
+        "general": "Free",
+        "special": null,
+        "column2": "38¢/m2",
+        "units": ["m2"]
+      },
+      "expectedTotalDutyUsd": 1000,
+      "toleranceUsd": 0.01,
+      "sourceNote": "Blank (unexposed) film is not an informational material: heading 3702 is not on CBP's list of HTS provisions for the informational-materials exception (Chapter 49; 3704, 3705, 3706, 5807, 8310, 9701–9705; 6307.90.30, 6307.90.85, 8523.80.10, 8523.29, 8523.41, 8523.49, 9405.61, 9405.69), so 9903.05.92 does not apply even with the confirmation. Base Free + UK 9903.05.81 10% (note 52) = $1,000."
+    },
+    {
+      "id": "ch37-exposed-film-gb-informational-materials",
+      "description": "Exposed and developed cinematographic film (3706.90.00.60), from the United Kingdom, $10,000, confirmed informational materials",
+      "chapter": "37",
+      "input": {
+        "hts10": "3706900060",
+        "countryOfOrigin": "GB",
+        "customsValueUsd": 10000,
+        "quantities": {
+          "M": 3000
+        },
+        "confirmations": {
+          "facts": {
+            "informationalMaterials": true
+          }
+        },
+        "entryDate": "2026-10-13"
+      },
+      "line": {
+        "hts10": "3706900060",
+        "general": "Free",
+        "special": null,
+        "column2": "10¢/m",
+        "units": ["m"]
+      },
+      "expectedTotalDutyUsd": 0,
+      "toleranceUsd": 0.01,
+      "sourceNote": "Heading 3706 is on CBP's informational-materials list, so with the confirmation heading 9903.05.92 lifts the UK 2026 Section 301 duty (9903.05.81). Base Free. $0."
+    },
+    {
+      "id": "ch61-tshirt-hn-cafta",
+      "description": "Men's cotton knit T-shirts (6109.10.00.12) from Honduras, CAFTA-DR claimed (SPI P), $10,000",
+      "chapter": "61",
+      "input": {
+        "hts10": "6109100012",
+        "countryOfOrigin": "HN",
+        "customsValueUsd": 10000,
+        "quantities": {
+          "DOZ": 500,
+          "KG": 1000
+        },
+        "claimedSpi": "P",
+        "entryDate": "2026-10-13"
+      },
+      "line": {
+        "hts10": "6109100012",
+        "general": "16.5%",
+        "special": "Free (AU,BH,CL,CO,IL,JO,KR,MA,OM,P,PA,PE,S,SG)",
+        "units": ["doz.", "kg"]
+      },
+      "expectedTotalDutyUsd": 0,
+      "toleranceUsd": 0.01,
+      "sourceNote": "CAFTA-DR special rate (P) for 6109.10.00 = Free. A T-shirt of 6109 is a textile or apparel good (general note 29(d)(v): listed in the WTO Agreement on Textiles and Clothing Annex), so U.S. note 52(i) / heading 9903.05.95 removes the Honduras 10% duty (9903.05.42) for goods entered free under CAFTA-DR. Total $0."
+    },
+    {
+      "id": "ch61-tshirt-hn-no-claim",
+      "description": "Same men's cotton knit T-shirts (6109.10.00.12) from Honduras, no CAFTA-DR claim, $10,000",
+      "chapter": "61",
+      "input": {
+        "hts10": "6109100012",
+        "countryOfOrigin": "HN",
+        "customsValueUsd": 10000,
+        "quantities": {
+          "DOZ": 500,
+          "KG": 1000
+        },
+        "entryDate": "2026-10-13"
+      },
+      "line": {
+        "hts10": "6109100012",
+        "general": "16.5%",
+        "special": "Free (AU,BH,CL,CO,IL,JO,KR,MA,OM,P,PA,PE,S,SG)",
+        "units": ["doz.", "kg"]
+      },
+      "expectedTotalDutyUsd": 2650,
+      "toleranceUsd": 0.01,
+      "sourceNote": "Without the CAFTA-DR claim note 52(i) does not apply: general 16.5% ($1,650) + Honduras 2026 Section 301 9903.05.42 10% ($1,000) = $2,650."
+    },
+    {
+      "id": "ch76-ladder-ru-aluminum-once",
+      "description": "Aluminum ladders (7616.99.51.30) from Russia, $10,000",
+      "chapter": "76",
+      "input": {
+        "hts10": "7616995130",
+        "countryOfOrigin": "RU",
+        "customsValueUsd": 10000,
+        "quantities": {
+          "NO": 100
+        },
+        "entryDate": "2026-10-13"
+      },
+      "line": {
+        "hts10": "7616995130",
+        "general": "2.5%",
+        "special": "Free (A*,AU,B,BH,CL,CO,D,E,IL,JO,KR,MA,OM,P,PA,PE,S,SG)",
+        "column2": "45%",
+        "units": ["No."]
+      },
+      "expectedTotalDutyUsd": 25750,
+      "toleranceUsd": 0.01,
+      "sourceNote": "Russia is a column 2 country: base 45% ($4,500). 7616.99.51.30 is a note 19(j) derivative, so heading 9903.85.68 charges the 200% ($20,000) once; 9903.85.67 (note 19(g)(vii) castings and forgings) does not charge it again. Plus Russia 2026 Section 301 9903.05.66 12.5% ($1,250; note 52(f)(1) lifts it only for the 9903.82 headings). Total $25,750."
     }
   ]
 }
