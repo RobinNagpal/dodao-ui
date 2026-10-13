@@ -1,0 +1,6521 @@
+{
+  "chapter": 49,
+  "chapterPadded": "49",
+  "chapterDescription": "Printed books, newspapers, pictures and other products of the printing industry; manuscripts, typescripts and plans",
+  "source": "un-comtrade-public-preview",
+  "sourceLabel": "UN Comtrade public API (preview), United States imports, annual, HS",
+  "sourceUrls": [
+    "https://comtradeplus.un.org/",
+    "https://comtradeapi.un.org/public/v1/preview/C/A/HS?reporterCode=842&flowCode=M&period=YYYY&cmdCode=49",
+    "https://comtradeapi.un.org/files/v1/app/reference/H6.json"
+  ],
+  "retrievedAt": "2026-10-12",
+  "reporter": {
+    "code": 842,
+    "name": "United States"
+  },
+  "flow": "M",
+  "valueBasis": "CIF value (customs value plus freight and insurance), as reported by the United States to UN Comtrade.",
+  "years": [2020, 2021, 2022, 2023, 2024, 2025],
+  "latestYear": 2025,
+  "priorYear": 2024,
+  "totalsByYear": [
+    {
+      "year": 2020,
+      "totalUsd": 4026797387,
+      "partnerCount": 143
+    },
+    {
+      "year": 2021,
+      "totalUsd": 5088013587,
+      "partnerCount": 142
+    },
+    {
+      "year": 2022,
+      "totalUsd": 5827198287,
+      "partnerCount": 147
+    },
+    {
+      "year": 2023,
+      "totalUsd": 5067362239,
+      "partnerCount": 157
+    },
+    {
+      "year": 2024,
+      "totalUsd": 5587863586,
+      "partnerCount": 169
+    },
+    {
+      "year": 2025,
+      "totalUsd": 5160226030,
+      "partnerCount": 156
+    }
+  ],
+  "byCountry": [
+    {
+      "countryCode": 156,
+      "country": "China",
+      "importsUsd": 2161129960,
+      "priorImportsUsd": 2367145461,
+      "byYear": {
+        "2020": 1983267168,
+        "2021": 2532183693,
+        "2022": 2698295604,
+        "2023": 2004131648,
+        "2024": 2367145461,
+        "2025": 2161129960
+      }
+    },
+    {
+      "countryCode": 124,
+      "country": "Canada",
+      "importsUsd": 598012079,
+      "priorImportsUsd": 679319481,
+      "byYear": {
+        "2020": 485350873,
+        "2021": 607008481,
+        "2022": 706468845,
+        "2023": 679625791,
+        "2024": 679319481,
+        "2025": 598012079
+      }
+    },
+    {
+      "countryCode": 484,
+      "country": "Mexico",
+      "importsUsd": 459466665,
+      "priorImportsUsd": 509671966,
+      "byYear": {
+        "2020": 241698366,
+        "2021": 284821373,
+        "2022": 366167422,
+        "2023": 527955690,
+        "2024": 509671966,
+        "2025": 459466665
+      }
+    },
+    {
+      "countryCode": 826,
+      "country": "United Kingdom",
+      "importsUsd": 430141563,
+      "priorImportsUsd": 461102063,
+      "byYear": {
+        "2020": 313772088,
+        "2021": 375857586,
+        "2022": 506557517,
+        "2023": 452992321,
+        "2024": 461102063,
+        "2025": 430141563
+      }
+    },
+    {
+      "countryCode": 380,
+      "country": "Italy",
+      "importsUsd": 205906649,
+      "priorImportsUsd": 183235248,
+      "byYear": {
+        "2020": 91236146,
+        "2021": 143736270,
+        "2022": 249292358,
+        "2023": 176206444,
+        "2024": 183235248,
+        "2025": 205906649
+      }
+    },
+    {
+      "countryCode": 699,
+      "country": "India",
+      "importsUsd": 165483252,
+      "priorImportsUsd": 157321844,
+      "byYear": {
+        "2020": 66298803,
+        "2021": 95789157,
+        "2022": 135254267,
+        "2023": 147304461,
+        "2024": 157321844,
+        "2025": 165483252
+      }
+    },
+    {
+      "countryCode": 704,
+      "country": "Viet Nam",
+      "importsUsd": 149385606,
+      "priorImportsUsd": 174392157,
+      "byYear": {
+        "2020": 48002812,
+        "2021": 56627998,
+        "2022": 78943783,
+        "2023": 146256355,
+        "2024": 174392157,
+        "2025": 149385606
+      }
+    },
+    {
+      "countryCode": 276,
+      "country": "Germany",
+      "importsUsd": 133269610,
+      "priorImportsUsd": 136816439,
+      "byYear": {
+        "2020": 111376667,
+        "2021": 129472493,
+        "2022": 147281106,
+        "2023": 133964036,
+        "2024": 136816439,
+        "2025": 133269610
+      }
+    },
+    {
+      "countryCode": 410,
+      "country": "Rep. of Korea",
+      "importsUsd": 110424328,
+      "priorImportsUsd": 104193082,
+      "byYear": {
+        "2020": 102032424,
+        "2021": 122021023,
+        "2022": 153950741,
+        "2023": 102273725,
+        "2024": 104193082,
+        "2025": 110424328
+      }
+    },
+    {
+      "countryCode": 392,
+      "country": "Japan",
+      "importsUsd": 102833518,
+      "priorImportsUsd": 77238983,
+      "byYear": {
+        "2020": 43445978,
+        "2021": 60625409,
+        "2022": 73904716,
+        "2023": 73343315,
+        "2024": 77238983,
+        "2025": 102833518
+      }
+    },
+    {
+      "countryCode": 458,
+      "country": "Malaysia",
+      "importsUsd": 81142848,
+      "priorImportsUsd": 85706405,
+      "byYear": {
+        "2020": 98473345,
+        "2021": 134431443,
+        "2022": 125809471,
+        "2023": 74281415,
+        "2024": 85706405,
+        "2025": 81142848
+      }
+    },
+    {
+      "countryCode": 757,
+      "country": "Switzerland",
+      "importsUsd": 76631595,
+      "priorImportsUsd": 64498344,
+      "byYear": {
+        "2020": 17230045,
+        "2021": 22189085,
+        "2022": 26753627,
+        "2023": 45450441,
+        "2024": 64498344,
+        "2025": 76631595
+      }
+    },
+    {
+      "countryCode": 251,
+      "country": "France",
+      "importsUsd": 65265023,
+      "priorImportsUsd": 63468479,
+      "byYear": {
+        "2020": 48919188,
+        "2021": 66842307,
+        "2022": 84319456,
+        "2023": 58182657,
+        "2024": 63468479,
+        "2025": 65265023
+      }
+    },
+    {
+      "countryCode": 724,
+      "country": "Spain",
+      "importsUsd": 37959938,
+      "priorImportsUsd": 139785059,
+      "byYear": {
+        "2020": 18460363,
+        "2021": 29467069,
+        "2022": 32087347,
+        "2023": 35840810,
+        "2024": 139785059,
+        "2025": 37959938
+      }
+    },
+    {
+      "countryCode": 490,
+      "country": "Other Asia, nes",
+      "importsUsd": 34372041,
+      "priorImportsUsd": 27067253,
+      "byYear": {
+        "2020": 32302093,
+        "2021": 33863712,
+        "2022": 41396841,
+        "2023": 30326369,
+        "2024": 27067253,
+        "2025": 34372041
+      }
+    },
+    {
+      "countryCode": 56,
+      "country": "Belgium",
+      "importsUsd": 25244953,
+      "priorImportsUsd": 28769031,
+      "byYear": {
+        "2020": 28623142,
+        "2021": 27937644,
+        "2022": 31479979,
+        "2023": 33832786,
+        "2024": 28769031,
+        "2025": 25244953
+      }
+    },
+    {
+      "countryCode": 792,
+      "country": "Türkiye",
+      "importsUsd": 24788926,
+      "priorImportsUsd": 17932604,
+      "byYear": {
+        "2020": 5924603,
+        "2021": 11246234,
+        "2022": 20097008,
+        "2023": 18478196,
+        "2024": 17932604,
+        "2025": 24788926
+      }
+    },
+    {
+      "countryCode": 528,
+      "country": "Netherlands",
+      "importsUsd": 21545125,
+      "priorImportsUsd": 20034741,
+      "byYear": {
+        "2020": 14307365,
+        "2021": 18611375,
+        "2022": 24935614,
+        "2023": 22876376,
+        "2024": 20034741,
+        "2025": 21545125
+      }
+    },
+    {
+      "countryCode": 376,
+      "country": "Israel",
+      "importsUsd": 20241460,
+      "priorImportsUsd": 24005023,
+      "byYear": {
+        "2020": 20399044,
+        "2021": 26470097,
+        "2022": 26427325,
+        "2023": 36806158,
+        "2024": 24005023,
+        "2025": 20241460
+      }
+    },
+    {
+      "countryCode": 702,
+      "country": "Singapore",
+      "importsUsd": 20131715,
+      "priorImportsUsd": 19628853,
+      "byYear": {
+        "2020": 40635832,
+        "2021": 35411008,
+        "2022": 26158520,
+        "2023": 24577831,
+        "2024": 19628853,
+        "2025": 20131715
+      }
+    },
+    {
+      "countryCode": 170,
+      "country": "Colombia",
+      "importsUsd": 19721413,
+      "priorImportsUsd": 16829970,
+      "byYear": {
+        "2020": 8112163,
+        "2021": 9226867,
+        "2022": 12200965,
+        "2023": 15829389,
+        "2024": 16829970,
+        "2025": 19721413
+      }
+    },
+    {
+      "countryCode": 372,
+      "country": "Ireland",
+      "importsUsd": 14467636,
+      "priorImportsUsd": 10065380,
+      "byYear": {
+        "2020": 32307458,
+        "2021": 28048153,
+        "2022": 35906823,
+        "2023": 28265375,
+        "2024": 10065380,
+        "2025": 14467636
+      }
+    },
+    {
+      "countryCode": 764,
+      "country": "Thailand",
+      "importsUsd": 13964203,
+      "priorImportsUsd": 12023314,
+      "byYear": {
+        "2020": 7562494,
+        "2021": 10042548,
+        "2022": 12146072,
+        "2023": 9249459,
+        "2024": 12023314,
+        "2025": 13964203
+      }
+    },
+    {
+      "countryCode": 344,
+      "country": "China, Hong Kong SAR",
+      "importsUsd": 13782118,
+      "priorImportsUsd": 23219931,
+      "byYear": {
+        "2020": 39712072,
+        "2021": 43604630,
+        "2022": 44061208,
+        "2023": 26334225,
+        "2024": 23219931,
+        "2025": 13782118
+      }
+    },
+    {
+      "countryCode": 76,
+      "country": "Brazil",
+      "importsUsd": 11978074,
+      "priorImportsUsd": 7260085,
+      "byYear": {
+        "2020": 2571114,
+        "2021": 4014421,
+        "2022": 6385083,
+        "2023": 6131967,
+        "2024": 7260085,
+        "2025": 11978074
+      }
+    },
+    {
+      "countryCode": 705,
+      "country": "Slovenia",
+      "importsUsd": 11507202,
+      "priorImportsUsd": 13130259,
+      "byYear": {
+        "2020": 5732983,
+        "2021": 7411902,
+        "2022": 10609367,
+        "2023": 7171010,
+        "2024": 13130259,
+        "2025": 11507202
+      }
+    },
+    {
+      "countryCode": 440,
+      "country": "Lithuania",
+      "importsUsd": 11384247,
+      "priorImportsUsd": 7656913,
+      "byYear": {
+        "2020": 3303449,
+        "2021": 13263258,
+        "2022": 6500398,
+        "2023": 5055094,
+        "2024": 7656913,
+        "2025": 11384247
+      }
+    },
+    {
+      "countryCode": 616,
+      "country": "Poland",
+      "importsUsd": 11235146,
+      "priorImportsUsd": 10679822,
+      "byYear": {
+        "2020": 11060533,
+        "2021": 10152214,
+        "2022": 12124509,
+        "2023": 9884229,
+        "2024": 10679822,
+        "2025": 11235146
+      }
+    },
+    {
+      "countryCode": 36,
+      "country": "Australia",
+      "importsUsd": 8689831,
+      "priorImportsUsd": 11130793,
+      "byYear": {
+        "2020": 24689121,
+        "2021": 14876786,
+        "2022": 14405261,
+        "2023": 10955700,
+        "2024": 11130793,
+        "2025": 8689831
+      }
+    },
+    {
+      "countryCode": 784,
+      "country": "United Arab Emirates",
+      "importsUsd": 7461047,
+      "priorImportsUsd": 8502541,
+      "byYear": {
+        "2020": 14009290,
+        "2021": 19909032,
+        "2022": 8533133,
+        "2023": 8448786,
+        "2024": 8502541,
+        "2025": 7461047
+      }
+    },
+    {
+      "countryCode": 40,
+      "country": "Austria",
+      "importsUsd": 6625060,
+      "priorImportsUsd": 9105831,
+      "byYear": {
+        "2020": 5607871,
+        "2021": 4644171,
+        "2022": 7118268,
+        "2023": 10799496,
+        "2024": 9105831,
+        "2025": 6625060
+      }
+    },
+    {
+      "countryCode": 70,
+      "country": "Bosnia Herzegovina",
+      "importsUsd": 6189930,
+      "priorImportsUsd": 1020133,
+      "byYear": {
+        "2020": 187306,
+        "2021": 568743,
+        "2022": 575744,
+        "2023": 394323,
+        "2024": 1020133,
+        "2025": 6189930
+      }
+    },
+    {
+      "countryCode": 203,
+      "country": "Czechia",
+      "importsUsd": 5919294,
+      "priorImportsUsd": 5968496,
+      "byYear": {
+        "2020": 1671168,
+        "2021": 3333312,
+        "2022": 4711609,
+        "2023": 4996937,
+        "2024": 5968496,
+        "2025": 5919294
+      }
+    },
+    {
+      "countryCode": 368,
+      "country": "Iraq",
+      "importsUsd": 5735656,
+      "priorImportsUsd": 13328268,
+      "byYear": {
+        "2021": 2290615,
+        "2022": 3293229,
+        "2023": 7431192,
+        "2024": 13328268,
+        "2025": 5735656
+      }
+    },
+    {
+      "countryCode": 208,
+      "country": "Denmark",
+      "importsUsd": 5635792,
+      "priorImportsUsd": 5435160,
+      "byYear": {
+        "2020": 3673583,
+        "2021": 4029453,
+        "2022": 7516077,
+        "2023": 6631092,
+        "2024": 5435160,
+        "2025": 5635792
+      }
+    },
+    {
+      "countryCode": 703,
+      "country": "Slovakia",
+      "importsUsd": 5470144,
+      "priorImportsUsd": 5596920,
+      "byYear": {
+        "2020": 4057028,
+        "2021": 6203646,
+        "2022": 8065442,
+        "2023": 5808358,
+        "2024": 5596920,
+        "2025": 5470144
+      }
+    },
+    {
+      "countryCode": 222,
+      "country": "El Salvador",
+      "importsUsd": 5063927,
+      "priorImportsUsd": 4846556,
+      "byYear": {
+        "2020": 1252014,
+        "2021": 2372031,
+        "2022": 3327917,
+        "2023": 3041256,
+        "2024": 4846556,
+        "2025": 5063927
+      }
+    },
+    {
+      "countryCode": 144,
+      "country": "Sri Lanka",
+      "importsUsd": 4727066,
+      "priorImportsUsd": 4066920,
+      "byYear": {
+        "2020": 1659597,
+        "2021": 2028770,
+        "2022": 1591928,
+        "2023": 2168575,
+        "2024": 4066920,
+        "2025": 4727066
+      }
+    },
+    {
+      "countryCode": 116,
+      "country": "Cambodia",
+      "importsUsd": 4453598,
+      "priorImportsUsd": 203971,
+      "byYear": {
+        "2020": 215559,
+        "2021": 151965,
+        "2022": 177598,
+        "2023": 206545,
+        "2024": 203971,
+        "2025": 4453598
+      }
+    },
+    {
+      "countryCode": 50,
+      "country": "Bangladesh",
+      "importsUsd": 4331329,
+      "priorImportsUsd": 1251853,
+      "byYear": {
+        "2020": 113132,
+        "2021": 164788,
+        "2022": 313470,
+        "2023": 246489,
+        "2024": 1251853,
+        "2025": 4331329
+      }
+    },
+    {
+      "countryCode": 752,
+      "country": "Sweden",
+      "importsUsd": 3929287,
+      "priorImportsUsd": 8353236,
+      "byYear": {
+        "2020": 5046193,
+        "2021": 9327364,
+        "2022": 9372380,
+        "2023": 7121926,
+        "2024": 8353236,
+        "2025": 3929287
+      }
+    },
+    {
+      "countryCode": 710,
+      "country": "South Africa",
+      "importsUsd": 3542960,
+      "priorImportsUsd": 2662245,
+      "byYear": {
+        "2020": 2686102,
+        "2021": 3933854,
+        "2022": 3311393,
+        "2023": 2810348,
+        "2024": 2662245,
+        "2025": 3542960
+      }
+    },
+    {
+      "countryCode": 188,
+      "country": "Costa Rica",
+      "importsUsd": 3347513,
+      "priorImportsUsd": 4745675,
+      "byYear": {
+        "2020": 470131,
+        "2021": 549961,
+        "2022": 1081775,
+        "2023": 1959233,
+        "2024": 4745675,
+        "2025": 3347513
+      }
+    },
+    {
+      "countryCode": 428,
+      "country": "Latvia",
+      "importsUsd": 2849820,
+      "priorImportsUsd": 2596456,
+      "byYear": {
+        "2020": 2437134,
+        "2021": 3574028,
+        "2022": 4823931,
+        "2023": 2996604,
+        "2024": 2596456,
+        "2025": 2849820
+      }
+    },
+    {
+      "countryCode": 620,
+      "country": "Portugal",
+      "importsUsd": 2699191,
+      "priorImportsUsd": 1240914,
+      "byYear": {
+        "2020": 802769,
+        "2021": 1409887,
+        "2022": 2284453,
+        "2023": 1078307,
+        "2024": 1240914,
+        "2025": 2699191
+      }
+    },
+    {
+      "countryCode": 470,
+      "country": "Malta",
+      "importsUsd": 2674245,
+      "priorImportsUsd": 1308621,
+      "byYear": {
+        "2020": 550206,
+        "2021": 513043,
+        "2022": 465307,
+        "2023": 1087135,
+        "2024": 1308621,
+        "2025": 2674245
+      }
+    },
+    {
+      "countryCode": 360,
+      "country": "Indonesia",
+      "importsUsd": 2622589,
+      "priorImportsUsd": 7256318,
+      "byYear": {
+        "2020": 3659664,
+        "2021": 3133267,
+        "2022": 2995983,
+        "2023": 1629436,
+        "2024": 7256318,
+        "2025": 2622589
+      }
+    },
+    {
+      "countryCode": 862,
+      "country": "Venezuela",
+      "importsUsd": 2495047,
+      "priorImportsUsd": 3547274,
+      "byYear": {
+        "2020": 11770,
+        "2021": 33880,
+        "2022": 15934,
+        "2023": 2643220,
+        "2024": 3547274,
+        "2025": 2495047
+      }
+    },
+    {
+      "countryCode": 340,
+      "country": "Honduras",
+      "importsUsd": 2173837,
+      "priorImportsUsd": 1618399,
+      "byYear": {
+        "2020": 2401465,
+        "2021": 2694738,
+        "2022": 2829990,
+        "2023": 2544456,
+        "2024": 1618399,
+        "2025": 2173837
+      }
+    },
+    {
+      "countryCode": 100,
+      "country": "Bulgaria",
+      "importsUsd": 1966494,
+      "priorImportsUsd": 2022683,
+      "byYear": {
+        "2020": 1469433,
+        "2021": 2242155,
+        "2022": 2297896,
+        "2023": 2058483,
+        "2024": 2022683,
+        "2025": 1966494
+      }
+    },
+    {
+      "countryCode": 422,
+      "country": "Lebanon",
+      "importsUsd": 1956425,
+      "priorImportsUsd": 1442534,
+      "byYear": {
+        "2020": 939918,
+        "2021": 1553428,
+        "2022": 1578186,
+        "2023": 1667913,
+        "2024": 1442534,
+        "2025": 1956425
+      }
+    },
+    {
+      "countryCode": 246,
+      "country": "Finland",
+      "importsUsd": 1906658,
+      "priorImportsUsd": 2947660,
+      "byYear": {
+        "2020": 3627306,
+        "2021": 7635669,
+        "2022": 6643217,
+        "2023": 6782015,
+        "2024": 2947660,
+        "2025": 1906658
+      }
+    },
+    {
+      "countryCode": 504,
+      "country": "Morocco",
+      "importsUsd": 1774552,
+      "priorImportsUsd": 2149081,
+      "byYear": {
+        "2020": 29528,
+        "2021": 773849,
+        "2022": 2716195,
+        "2023": 1453948,
+        "2024": 2149081,
+        "2025": 1774552
+      }
+    },
+    {
+      "countryCode": 300,
+      "country": "Greece",
+      "importsUsd": 1399325,
+      "priorImportsUsd": 2108993,
+      "byYear": {
+        "2020": 501296,
+        "2021": 902906,
+        "2022": 2098349,
+        "2023": 3146294,
+        "2024": 2108993,
+        "2025": 1399325
+      }
+    },
+    {
+      "countryCode": 604,
+      "country": "Peru",
+      "importsUsd": 1334586,
+      "priorImportsUsd": 1041237,
+      "byYear": {
+        "2020": 815308,
+        "2021": 1320340,
+        "2022": 1521991,
+        "2023": 2103837,
+        "2024": 1041237,
+        "2025": 1334586
+      }
+    },
+    {
+      "countryCode": 608,
+      "country": "Philippines",
+      "importsUsd": 1314907,
+      "priorImportsUsd": 1212197,
+      "byYear": {
+        "2020": 1603529,
+        "2021": 1149012,
+        "2022": 826866,
+        "2023": 1055298,
+        "2024": 1212197,
+        "2025": 1314907
+      }
+    },
+    {
+      "countryCode": 579,
+      "country": "Norway",
+      "importsUsd": 1245233,
+      "priorImportsUsd": 1464487,
+      "byYear": {
+        "2020": 2709824,
+        "2021": 2681633,
+        "2022": 1808682,
+        "2023": 1205733,
+        "2024": 1464487,
+        "2025": 1245233
+      }
+    },
+    {
+      "countryCode": 214,
+      "country": "Dominican Rep.",
+      "importsUsd": 1209362,
+      "priorImportsUsd": 2252084,
+      "byYear": {
+        "2020": 1012490,
+        "2021": 1485322,
+        "2022": 1994040,
+        "2023": 2265543,
+        "2024": 2252084,
+        "2025": 1209362
+      }
+    },
+    {
+      "countryCode": 348,
+      "country": "Hungary",
+      "importsUsd": 1197006,
+      "priorImportsUsd": 1220271,
+      "byYear": {
+        "2020": 620964,
+        "2021": 3694772,
+        "2022": 3472906,
+        "2023": 1945805,
+        "2024": 1220271,
+        "2025": 1197006
+      }
+    },
+    {
+      "countryCode": 688,
+      "country": "Serbia",
+      "importsUsd": 1075280,
+      "priorImportsUsd": 901167,
+      "byYear": {
+        "2020": 165936,
+        "2021": 225626,
+        "2022": 443823,
+        "2023": 301141,
+        "2024": 901167,
+        "2025": 1075280
+      }
+    },
+    {
+      "countryCode": 32,
+      "country": "Argentina",
+      "importsUsd": 1065328,
+      "priorImportsUsd": 600727,
+      "byYear": {
+        "2020": 374494,
+        "2021": 1237632,
+        "2022": 1108919,
+        "2023": 911896,
+        "2024": 600727,
+        "2025": 1065328
+      }
+    },
+    {
+      "countryCode": 586,
+      "country": "Pakistan",
+      "importsUsd": 985203,
+      "priorImportsUsd": 1103308,
+      "byYear": {
+        "2020": 435181,
+        "2021": 727615,
+        "2022": 599634,
+        "2023": 815298,
+        "2024": 1103308,
+        "2025": 985203
+      }
+    },
+    {
+      "countryCode": 112,
+      "country": "Belarus",
+      "importsUsd": 964559,
+      "priorImportsUsd": 1641820,
+      "byYear": {
+        "2020": 2075861,
+        "2021": 2503257,
+        "2022": 2253359,
+        "2023": 2766578,
+        "2024": 1641820,
+        "2025": 964559
+      }
+    },
+    {
+      "countryCode": 191,
+      "country": "Croatia",
+      "importsUsd": 888231,
+      "priorImportsUsd": 765283,
+      "byYear": {
+        "2020": 127253,
+        "2021": 495722,
+        "2022": 1080301,
+        "2023": 1308549,
+        "2024": 765283,
+        "2025": 888231
+      }
+    },
+    {
+      "countryCode": 642,
+      "country": "Romania",
+      "importsUsd": 855646,
+      "priorImportsUsd": 2001170,
+      "byYear": {
+        "2020": 1364414,
+        "2021": 2267660,
+        "2022": 2020945,
+        "2023": 1678481,
+        "2024": 2001170,
+        "2025": 855646
+      }
+    },
+    {
+      "countryCode": 682,
+      "country": "Saudi Arabia",
+      "importsUsd": 757193,
+      "priorImportsUsd": 853851,
+      "byYear": {
+        "2020": 611349,
+        "2021": 1019317,
+        "2022": 715007,
+        "2023": 994133,
+        "2024": 853851,
+        "2025": 757193
+      }
+    },
+    {
+      "countryCode": 218,
+      "country": "Ecuador",
+      "importsUsd": 752608,
+      "priorImportsUsd": 2075575,
+      "byYear": {
+        "2020": 207893,
+        "2021": 893326,
+        "2022": 512326,
+        "2023": 1329324,
+        "2024": 2075575,
+        "2025": 752608
+      }
+    },
+    {
+      "countryCode": 554,
+      "country": "New Zealand",
+      "importsUsd": 742791,
+      "priorImportsUsd": 1185911,
+      "byYear": {
+        "2020": 1904869,
+        "2021": 2439400,
+        "2022": 2333190,
+        "2023": 1388538,
+        "2024": 1185911,
+        "2025": 742791
+      }
+    },
+    {
+      "countryCode": 804,
+      "country": "Ukraine",
+      "importsUsd": 718961,
+      "priorImportsUsd": 1638030,
+      "byYear": {
+        "2020": 610388,
+        "2021": 3516738,
+        "2022": 1008991,
+        "2023": 689228,
+        "2024": 1638030,
+        "2025": 718961
+      }
+    },
+    {
+      "countryCode": 233,
+      "country": "Estonia",
+      "importsUsd": 656549,
+      "priorImportsUsd": 510881,
+      "byYear": {
+        "2020": 193300,
+        "2021": 523962,
+        "2022": 545843,
+        "2023": 542198,
+        "2024": 510881,
+        "2025": 656549
+      }
+    },
+    {
+      "countryCode": 716,
+      "country": "Zimbabwe",
+      "importsUsd": 601954,
+      "priorImportsUsd": 446415,
+      "byYear": {
+        "2020": 32361,
+        "2021": 16459,
+        "2022": 35316,
+        "2023": 962963,
+        "2024": 446415,
+        "2025": 601954
+      }
+    },
+    {
+      "countryCode": 740,
+      "country": "Suriname",
+      "importsUsd": 556184,
+      "priorImportsUsd": 0,
+      "byYear": {
+        "2023": 9027,
+        "2025": 556184
+      }
+    },
+    {
+      "countryCode": 480,
+      "country": "Mauritius",
+      "importsUsd": 531356,
+      "priorImportsUsd": 225738,
+      "byYear": {
+        "2020": 3350,
+        "2022": 7056,
+        "2023": 18001,
+        "2024": 225738,
+        "2025": 531356
+      }
+    },
+    {
+      "countryCode": 328,
+      "country": "Guyana",
+      "importsUsd": 517742,
+      "priorImportsUsd": 2364,
+      "byYear": {
+        "2022": 2390,
+        "2024": 2364,
+        "2025": 517742
+      }
+    },
+    {
+      "countryCode": 152,
+      "country": "Chile",
+      "importsUsd": 496502,
+      "priorImportsUsd": 352796,
+      "byYear": {
+        "2020": 307146,
+        "2021": 600567,
+        "2022": 569018,
+        "2023": 617121,
+        "2024": 352796,
+        "2025": 496502
+      }
+    },
+    {
+      "countryCode": 643,
+      "country": "Russian Federation",
+      "importsUsd": 410157,
+      "priorImportsUsd": 495976,
+      "byYear": {
+        "2020": 3415018,
+        "2021": 3815707,
+        "2022": 2194284,
+        "2023": 507905,
+        "2024": 495976,
+        "2025": 410157
+      }
+    },
+    {
+      "countryCode": 242,
+      "country": "Fiji",
+      "importsUsd": 379897,
+      "priorImportsUsd": 12450,
+      "byYear": {
+        "2020": 9236,
+        "2021": 5179,
+        "2023": 14275,
+        "2024": 12450,
+        "2025": 379897
+      }
+    },
+    {
+      "countryCode": 364,
+      "country": "Iran",
+      "importsUsd": 355268,
+      "priorImportsUsd": 365181,
+      "byYear": {
+        "2020": 509577,
+        "2021": 434543,
+        "2022": 259980,
+        "2023": 505951,
+        "2024": 365181,
+        "2025": 355268
+      }
+    },
+    {
+      "countryCode": 320,
+      "country": "Guatemala",
+      "importsUsd": 302661,
+      "priorImportsUsd": 328974,
+      "byYear": {
+        "2020": 55115,
+        "2021": 80730,
+        "2022": 140270,
+        "2023": 244191,
+        "2024": 328974,
+        "2025": 302661
+      }
+    },
+    {
+      "countryCode": 268,
+      "country": "Georgia",
+      "importsUsd": 273998,
+      "priorImportsUsd": 24393,
+      "byYear": {
+        "2020": 33553,
+        "2022": 58474,
+        "2023": 40847,
+        "2024": 24393,
+        "2025": 273998
+      }
+    },
+    {
+      "countryCode": 818,
+      "country": "Egypt",
+      "importsUsd": 255958,
+      "priorImportsUsd": 1754607,
+      "byYear": {
+        "2020": 268988,
+        "2021": 297990,
+        "2022": 522987,
+        "2023": 1143548,
+        "2024": 1754607,
+        "2025": 255958
+      }
+    },
+    {
+      "countryCode": 858,
+      "country": "Uruguay",
+      "importsUsd": 196875,
+      "priorImportsUsd": 167793,
+      "byYear": {
+        "2020": 89017,
+        "2021": 485251,
+        "2022": 880481,
+        "2023": 491725,
+        "2024": 167793,
+        "2025": 196875
+      }
+    },
+    {
+      "countryCode": 400,
+      "country": "Jordan",
+      "importsUsd": 154051,
+      "priorImportsUsd": 845456,
+      "byYear": {
+        "2020": 521763,
+        "2021": 439224,
+        "2022": 74900,
+        "2023": 4719304,
+        "2024": 845456,
+        "2025": 154051
+      }
+    },
+    {
+      "countryCode": 591,
+      "country": "Panama",
+      "importsUsd": 121877,
+      "priorImportsUsd": 67975,
+      "byYear": {
+        "2020": 33783,
+        "2021": 33182,
+        "2022": 40749,
+        "2023": 131801,
+        "2024": 67975,
+        "2025": 121877
+      }
+    },
+    {
+      "countryCode": 566,
+      "country": "Nigeria",
+      "importsUsd": 116444,
+      "priorImportsUsd": 254326,
+      "byYear": {
+        "2020": 218830,
+        "2021": 277328,
+        "2022": 407442,
+        "2023": 309540,
+        "2024": 254326,
+        "2025": 116444
+      }
+    },
+    {
+      "countryCode": 288,
+      "country": "Ghana",
+      "importsUsd": 111796,
+      "priorImportsUsd": 36057,
+      "byYear": {
+        "2020": 15367,
+        "2021": 19256,
+        "2022": 10075,
+        "2023": 33310,
+        "2024": 36057,
+        "2025": 111796
+      }
+    },
+    {
+      "countryCode": 332,
+      "country": "Haiti",
+      "importsUsd": 105400,
+      "priorImportsUsd": 237502,
+      "byYear": {
+        "2020": 233850,
+        "2021": 250167,
+        "2022": 299107,
+        "2023": 299023,
+        "2024": 237502,
+        "2025": 105400
+      }
+    },
+    {
+      "countryCode": 807,
+      "country": "North Macedonia",
+      "importsUsd": 87412,
+      "priorImportsUsd": 23619,
+      "byYear": {
+        "2020": 339783,
+        "2021": 2462,
+        "2022": 26986,
+        "2023": 94037,
+        "2024": 23619,
+        "2025": 87412
+      }
+    },
+    {
+      "countryCode": 442,
+      "country": "Luxembourg",
+      "importsUsd": 80796,
+      "priorImportsUsd": 76892,
+      "byYear": {
+        "2020": 28560,
+        "2021": 7338504,
+        "2022": 77937,
+        "2023": 890718,
+        "2024": 76892,
+        "2025": 80796
+      }
+    },
+    {
+      "countryCode": 562,
+      "country": "Niger",
+      "importsUsd": 79912,
+      "priorImportsUsd": 17236,
+      "byYear": {
+        "2020": 3764,
+        "2022": 5518,
+        "2023": 52011,
+        "2024": 17236,
+        "2025": 79912
+      }
+    },
+    {
+      "countryCode": 660,
+      "country": "Anguilla",
+      "importsUsd": 76743,
+      "priorImportsUsd": 0,
+      "byYear": {
+        "2025": 76743
+      }
+    },
+    {
+      "countryCode": 20,
+      "country": "Andorra",
+      "importsUsd": 76542,
+      "priorImportsUsd": 227889,
+      "byYear": {
+        "2020": 22549,
+        "2021": 30815,
+        "2022": 76970,
+        "2023": 26955,
+        "2024": 227889,
+        "2025": 76542
+      }
+    },
+    {
+      "countryCode": 788,
+      "country": "Tunisia",
+      "importsUsd": 73006,
+      "priorImportsUsd": 498987,
+      "byYear": {
+        "2020": 60795,
+        "2021": 91355,
+        "2022": 76664,
+        "2023": 82715,
+        "2024": 498987,
+        "2025": 73006
+      }
+    },
+    {
+      "countryCode": 686,
+      "country": "Senegal",
+      "importsUsd": 69257,
+      "priorImportsUsd": 28280,
+      "byYear": {
+        "2020": 6983,
+        "2021": 19060,
+        "2022": 50891,
+        "2023": 88416,
+        "2024": 28280,
+        "2025": 69257
+      }
+    },
+    {
+      "countryCode": 352,
+      "country": "Iceland",
+      "importsUsd": 63281,
+      "priorImportsUsd": 69977,
+      "byYear": {
+        "2020": 144871,
+        "2021": 63228,
+        "2022": 94392,
+        "2023": 144820,
+        "2024": 69977,
+        "2025": 63281
+      }
+    },
+    {
+      "countryCode": 674,
+      "country": "San Marino",
+      "importsUsd": 62199,
+      "priorImportsUsd": 93262,
+      "byYear": {
+        "2020": 149730,
+        "2021": 131836,
+        "2022": 132725,
+        "2023": 88102,
+        "2024": 93262,
+        "2025": 62199
+      }
+    },
+    {
+      "countryCode": 104,
+      "country": "Myanmar",
+      "importsUsd": 57970,
+      "priorImportsUsd": 0,
+      "byYear": {
+        "2020": 35144,
+        "2021": 21757,
+        "2022": 7496,
+        "2023": 231158,
+        "2025": 57970
+      }
+    },
+    {
+      "countryCode": 414,
+      "country": "Kuwait",
+      "importsUsd": 56765,
+      "priorImportsUsd": 40470,
+      "byYear": {
+        "2020": 328288,
+        "2021": 242086,
+        "2022": 11164,
+        "2023": 18851,
+        "2024": 40470,
+        "2025": 56765
+      }
+    },
+    {
+      "countryCode": 498,
+      "country": "Rep. of Moldova",
+      "importsUsd": 55382,
+      "priorImportsUsd": 74214,
+      "byYear": {
+        "2020": 31373,
+        "2021": 6572,
+        "2022": 5097,
+        "2023": 28698,
+        "2024": 74214,
+        "2025": 55382
+      }
+    },
+    {
+      "countryCode": 51,
+      "country": "Armenia",
+      "importsUsd": 53042,
+      "priorImportsUsd": 13859,
+      "byYear": {
+        "2020": 55717,
+        "2021": 52386,
+        "2022": 75316,
+        "2023": 38128,
+        "2024": 13859,
+        "2025": 53042
+      }
+    },
+    {
+      "countryCode": 524,
+      "country": "Nepal",
+      "importsUsd": 47668,
+      "priorImportsUsd": 106164,
+      "byYear": {
+        "2020": 67963,
+        "2021": 95711,
+        "2022": 180704,
+        "2023": 192077,
+        "2024": 106164,
+        "2025": 47668
+      }
+    },
+    {
+      "countryCode": 659,
+      "country": "Saint Kitts and Nevis",
+      "importsUsd": 47166,
+      "priorImportsUsd": 41335,
+      "byYear": {
+        "2020": 6826,
+        "2021": 13383,
+        "2022": 7432,
+        "2024": 41335,
+        "2025": 47166
+      }
+    },
+    {
+      "countryCode": 466,
+      "country": "Mali",
+      "importsUsd": 46763,
+      "priorImportsUsd": 107054,
+      "byYear": {
+        "2020": 200561,
+        "2021": 26789,
+        "2022": 6206,
+        "2023": 9476,
+        "2024": 107054,
+        "2025": 46763
+      }
+    },
+    {
+      "countryCode": 418,
+      "country": "Lao People's Dem. Rep.",
+      "importsUsd": 46431,
+      "priorImportsUsd": 7546,
+      "byYear": {
+        "2024": 7546,
+        "2025": 46431
+      }
+    },
+    {
+      "countryCode": 800,
+      "country": "Uganda",
+      "importsUsd": 43956,
+      "priorImportsUsd": 51673,
+      "byYear": {
+        "2020": 23215,
+        "2021": 4632,
+        "2022": 14206,
+        "2023": 211540,
+        "2024": 51673,
+        "2025": 43956
+      }
+    },
+    {
+      "countryCode": 8,
+      "country": "Albania",
+      "importsUsd": 40881,
+      "priorImportsUsd": 36162,
+      "byYear": {
+        "2020": 18860,
+        "2021": 39300,
+        "2022": 22762,
+        "2023": 30387,
+        "2024": 36162,
+        "2025": 40881
+      }
+    },
+    {
+      "countryCode": 384,
+      "country": "Côte d'Ivoire",
+      "importsUsd": 39286,
+      "priorImportsUsd": 5885,
+      "byYear": {
+        "2021": 78045,
+        "2022": 6118,
+        "2023": 3343,
+        "2024": 5885,
+        "2025": 39286
+      }
+    },
+    {
+      "countryCode": 231,
+      "country": "Ethiopia",
+      "importsUsd": 34468,
+      "priorImportsUsd": 23302,
+      "byYear": {
+        "2020": 6474,
+        "2022": 21456,
+        "2023": 51639,
+        "2024": 23302,
+        "2025": 34468
+      }
+    },
+    {
+      "countryCode": 120,
+      "country": "Cameroon",
+      "importsUsd": 32691,
+      "priorImportsUsd": 30373,
+      "byYear": {
+        "2020": 31670,
+        "2021": 50295,
+        "2022": 44598,
+        "2023": 49217,
+        "2024": 30373,
+        "2025": 32691
+      }
+    },
+    {
+      "countryCode": 68,
+      "country": "Bolivia (Plurinational State of)",
+      "importsUsd": 30747,
+      "priorImportsUsd": 58988,
+      "byYear": {
+        "2020": 26609,
+        "2021": 29927,
+        "2022": 60542,
+        "2023": 47483,
+        "2024": 58988,
+        "2025": 30747
+      }
+    },
+    {
+      "countryCode": 516,
+      "country": "Namibia",
+      "importsUsd": 30328,
+      "priorImportsUsd": 10179,
+      "byYear": {
+        "2020": 4550,
+        "2022": 30307,
+        "2023": 3774,
+        "2024": 10179,
+        "2025": 30328
+      }
+    },
+    {
+      "countryCode": 531,
+      "country": "Curaçao",
+      "importsUsd": 28203,
+      "priorImportsUsd": 0,
+      "byYear": {
+        "2020": 109986,
+        "2023": 2320,
+        "2025": 28203
+      }
+    },
+    {
+      "countryCode": 398,
+      "country": "Kazakhstan",
+      "importsUsd": 26922,
+      "priorImportsUsd": 18743,
+      "byYear": {
+        "2020": 5058,
+        "2021": 15782,
+        "2022": 6857,
+        "2023": 19788,
+        "2024": 18743,
+        "2025": 26922
+      }
+    },
+    {
+      "countryCode": 60,
+      "country": "Bermuda",
+      "importsUsd": 25600,
+      "priorImportsUsd": 0,
+      "byYear": {
+        "2020": 41303,
+        "2021": 40414,
+        "2022": 17209,
+        "2023": 17560,
+        "2025": 25600
+      }
+    },
+    {
+      "countryCode": 634,
+      "country": "Qatar",
+      "importsUsd": 25139,
+      "priorImportsUsd": 15697,
+      "byYear": {
+        "2020": 32608,
+        "2021": 40080,
+        "2022": 84466,
+        "2023": 34716,
+        "2024": 15697,
+        "2025": 25139
+      }
+    },
+    {
+      "countryCode": 860,
+      "country": "Uzbekistan",
+      "importsUsd": 24457,
+      "priorImportsUsd": 97579,
+      "byYear": {
+        "2020": 7436,
+        "2021": 6877,
+        "2022": 37487,
+        "2023": 12134,
+        "2024": 97579,
+        "2025": 24457
+      }
+    },
+    {
+      "countryCode": 48,
+      "country": "Bahrain",
+      "importsUsd": 24358,
+      "priorImportsUsd": 9880,
+      "byYear": {
+        "2020": 2579,
+        "2021": 25871,
+        "2024": 9880,
+        "2025": 24358
+      }
+    },
+    {
+      "countryCode": 512,
+      "country": "Oman",
+      "importsUsd": 23819,
+      "priorImportsUsd": 28902,
+      "byYear": {
+        "2022": 2111,
+        "2023": 13213,
+        "2024": 28902,
+        "2025": 23819
+      }
+    },
+    {
+      "countryCode": 31,
+      "country": "Azerbaijan",
+      "importsUsd": 23451,
+      "priorImportsUsd": 500983,
+      "byYear": {
+        "2021": 8058,
+        "2023": 9814,
+        "2024": 500983,
+        "2025": 23451
+      }
+    },
+    {
+      "countryCode": 44,
+      "country": "Bahamas",
+      "importsUsd": 23199,
+      "priorImportsUsd": 51190,
+      "byYear": {
+        "2020": 50072,
+        "2021": 6749044,
+        "2022": 6843,
+        "2023": 40556,
+        "2024": 51190,
+        "2025": 23199
+      }
+    },
+    {
+      "countryCode": 12,
+      "country": "Algeria",
+      "importsUsd": 23102,
+      "priorImportsUsd": 50027,
+      "byYear": {
+        "2020": 18166,
+        "2021": 13514,
+        "2022": 10304,
+        "2023": 11635,
+        "2024": 50027,
+        "2025": 23102
+      }
+    },
+    {
+      "countryCode": 417,
+      "country": "Kyrgyzstan",
+      "importsUsd": 21957,
+      "priorImportsUsd": 118486,
+      "byYear": {
+        "2020": 19075,
+        "2021": 13666,
+        "2022": 16072,
+        "2023": 26531,
+        "2024": 118486,
+        "2025": 21957
+      }
+    },
+    {
+      "countryCode": 834,
+      "country": "United Rep. of Tanzania",
+      "importsUsd": 21105,
+      "priorImportsUsd": 65167,
+      "byYear": {
+        "2021": 17041,
+        "2022": 2093,
+        "2023": 52208,
+        "2024": 65167,
+        "2025": 21105
+      }
+    },
+    {
+      "countryCode": 52,
+      "country": "Barbados",
+      "importsUsd": 20685,
+      "priorImportsUsd": 21500,
+      "byYear": {
+        "2020": 9129,
+        "2021": 2926,
+        "2022": 58962,
+        "2023": 13751,
+        "2024": 21500,
+        "2025": 20685
+      }
+    },
+    {
+      "countryCode": 180,
+      "country": "Dem. Rep. of the Congo",
+      "importsUsd": 17778,
+      "priorImportsUsd": 8041,
+      "byYear": {
+        "2021": 9750,
+        "2023": 23531,
+        "2024": 8041,
+        "2025": 17778
+      }
+    },
+    {
+      "countryCode": 84,
+      "country": "Belize",
+      "importsUsd": 17648,
+      "priorImportsUsd": 3794,
+      "byYear": {
+        "2024": 3794,
+        "2025": 17648
+      }
+    },
+    {
+      "countryCode": 446,
+      "country": "China, Macao SAR",
+      "importsUsd": 16664,
+      "priorImportsUsd": 83732,
+      "byYear": {
+        "2020": 5018,
+        "2021": 7700,
+        "2023": 83041,
+        "2024": 83732,
+        "2025": 16664
+      }
+    },
+    {
+      "countryCode": 96,
+      "country": "Brunei Darussalam",
+      "importsUsd": 16428,
+      "priorImportsUsd": 0,
+      "byYear": {
+        "2025": 16428
+      }
+    },
+    {
+      "countryCode": 796,
+      "country": "Turks and Caicos Isds",
+      "importsUsd": 15282,
+      "priorImportsUsd": 0,
+      "byYear": {
+        "2025": 15282
+      }
+    },
+    {
+      "countryCode": 508,
+      "country": "Mozambique",
+      "importsUsd": 14768,
+      "priorImportsUsd": 676471,
+      "byYear": {
+        "2023": 8010,
+        "2024": 676471,
+        "2025": 14768
+      }
+    },
+    {
+      "countryCode": 178,
+      "country": "Congo",
+      "importsUsd": 13196,
+      "priorImportsUsd": 10413,
+      "byYear": {
+        "2020": 3193,
+        "2023": 19396,
+        "2024": 10413,
+        "2025": 13196
+      }
+    },
+    {
+      "countryCode": 748,
+      "country": "Eswatini",
+      "importsUsd": 13028,
+      "priorImportsUsd": 9175,
+      "byYear": {
+        "2020": 3489,
+        "2022": 2604,
+        "2023": 3057,
+        "2024": 9175,
+        "2025": 13028
+      }
+    },
+    {
+      "countryCode": 780,
+      "country": "Trinidad and Tobago",
+      "importsUsd": 12405,
+      "priorImportsUsd": 9922,
+      "byYear": {
+        "2020": 24860,
+        "2021": 19816,
+        "2022": 68397,
+        "2023": 47943,
+        "2024": 9922,
+        "2025": 12405
+      }
+    },
+    {
+      "countryCode": 108,
+      "country": "Burundi",
+      "importsUsd": 11552,
+      "priorImportsUsd": 16249,
+      "byYear": {
+        "2023": 10775,
+        "2024": 16249,
+        "2025": 11552
+      }
+    },
+    {
+      "countryCode": 768,
+      "country": "Togo",
+      "importsUsd": 11347,
+      "priorImportsUsd": 0,
+      "byYear": {
+        "2025": 11347
+      }
+    },
+    {
+      "countryCode": 454,
+      "country": "Malawi",
+      "importsUsd": 11291,
+      "priorImportsUsd": 0,
+      "byYear": {
+        "2022": 3200,
+        "2025": 11291
+      }
+    },
+    {
+      "countryCode": 762,
+      "country": "Tajikistan",
+      "importsUsd": 11185,
+      "priorImportsUsd": 13495,
+      "byYear": {
+        "2020": 2577,
+        "2024": 13495,
+        "2025": 11185
+      }
+    },
+    {
+      "countryCode": 894,
+      "country": "Zambia",
+      "importsUsd": 10535,
+      "priorImportsUsd": 5579,
+      "byYear": {
+        "2021": 2034,
+        "2022": 8299,
+        "2023": 23972,
+        "2024": 5579,
+        "2025": 10535
+      }
+    },
+    {
+      "countryCode": 204,
+      "country": "Benin",
+      "importsUsd": 10248,
+      "priorImportsUsd": 4667,
+      "byYear": {
+        "2021": 4695,
+        "2022": 10074,
+        "2023": 15737,
+        "2024": 4667,
+        "2025": 10248
+      }
+    },
+    {
+      "countryCode": 404,
+      "country": "Kenya",
+      "importsUsd": 9839,
+      "priorImportsUsd": 37579,
+      "byYear": {
+        "2020": 18629,
+        "2021": 2284,
+        "2022": 38673,
+        "2023": 50473,
+        "2024": 37579,
+        "2025": 9839
+      }
+    },
+    {
+      "countryCode": 462,
+      "country": "Maldives",
+      "importsUsd": 7733,
+      "priorImportsUsd": 0,
+      "byYear": {
+        "2025": 7733
+      }
+    },
+    {
+      "countryCode": 275,
+      "country": "State of Palestine",
+      "importsUsd": 6402,
+      "priorImportsUsd": 0,
+      "byYear": {
+        "2025": 6402
+      }
+    },
+    {
+      "countryCode": 450,
+      "country": "Madagascar",
+      "importsUsd": 5870,
+      "priorImportsUsd": 10413,
+      "byYear": {
+        "2023": 5364,
+        "2024": 10413,
+        "2025": 5870
+      }
+    },
+    {
+      "countryCode": 430,
+      "country": "Liberia",
+      "importsUsd": 5050,
+      "priorImportsUsd": 124664,
+      "byYear": {
+        "2022": 5116,
+        "2023": 5450,
+        "2024": 124664,
+        "2025": 5050
+      }
+    },
+    {
+      "countryCode": 584,
+      "country": "Marshall Isds",
+      "importsUsd": 4511,
+      "priorImportsUsd": 0,
+      "byYear": {
+        "2025": 4511
+      }
+    },
+    {
+      "countryCode": 646,
+      "country": "Rwanda",
+      "importsUsd": 3775,
+      "priorImportsUsd": 0,
+      "byYear": {
+        "2020": 40370,
+        "2021": 10365,
+        "2022": 19385,
+        "2023": 17378,
+        "2025": 3775
+      }
+    },
+    {
+      "countryCode": 434,
+      "country": "Libya",
+      "importsUsd": 3106,
+      "priorImportsUsd": 4040,
+      "byYear": {
+        "2023": 5259,
+        "2024": 4040,
+        "2025": 3106
+      }
+    },
+    {
+      "countryCode": 760,
+      "country": "Syria",
+      "importsUsd": 3061,
+      "priorImportsUsd": 0,
+      "byYear": {
+        "2021": 8249,
+        "2022": 3345,
+        "2023": 17775,
+        "2025": 3061
+      }
+    },
+    {
+      "countryCode": 600,
+      "country": "Paraguay",
+      "importsUsd": 2778,
+      "priorImportsUsd": 18175,
+      "byYear": {
+        "2021": 2833,
+        "2022": 8744,
+        "2024": 18175,
+        "2025": 2778
+      }
+    },
+    {
+      "countryCode": 388,
+      "country": "Jamaica",
+      "importsUsd": 2644,
+      "priorImportsUsd": 16134,
+      "byYear": {
+        "2020": 14842,
+        "2021": 14651,
+        "2022": 14069,
+        "2023": 20278,
+        "2024": 16134,
+        "2025": 2644
+      }
+    },
+    {
+      "countryCode": 690,
+      "country": "Seychelles",
+      "importsUsd": 2627,
+      "priorImportsUsd": 0,
+      "byYear": {
+        "2020": 3275,
+        "2025": 2627
+      }
+    },
+    {
+      "countryCode": 266,
+      "country": "Gabon",
+      "importsUsd": 2435,
+      "priorImportsUsd": 17751,
+      "byYear": {
+        "2021": 4293,
+        "2023": 5337,
+        "2024": 17751,
+        "2025": 2435
+      }
+    },
+    {
+      "countryCode": 324,
+      "country": "Guinea",
+      "importsUsd": 2419,
+      "priorImportsUsd": 8299,
+      "byYear": {
+        "2020": 4007,
+        "2021": 5828,
+        "2022": 16136,
+        "2024": 8299,
+        "2025": 2419
+      }
+    },
+    {
+      "countryCode": 72,
+      "country": "Botswana",
+      "importsUsd": 2307,
+      "priorImportsUsd": 20658,
+      "byYear": {
+        "2023": 6223,
+        "2024": 20658,
+        "2025": 2307
+      }
+    },
+    {
+      "countryCode": 196,
+      "country": "Cyprus",
+      "importsUsd": 2206,
+      "priorImportsUsd": 133631,
+      "byYear": {
+        "2020": 8172,
+        "2021": 21237,
+        "2022": 55964,
+        "2023": 21674,
+        "2024": 133631,
+        "2025": 2206
+      }
+    },
+    {
+      "countryCode": 132,
+      "country": "Cabo Verde",
+      "importsUsd": 2150,
+      "priorImportsUsd": 0,
+      "byYear": {
+        "2021": 6950,
+        "2023": 3685,
+        "2025": 2150
+      }
+    },
+    {
+      "countryCode": 478,
+      "country": "Mauritania",
+      "importsUsd": 0,
+      "priorImportsUsd": 715721,
+      "byYear": {
+        "2021": 4064,
+        "2023": 2978,
+        "2024": 715721
+      }
+    },
+    {
+      "countryCode": 28,
+      "country": "Antigua and Barbuda",
+      "importsUsd": 0,
+      "priorImportsUsd": 216832,
+      "byYear": {
+        "2020": 7982,
+        "2024": 216832
+      }
+    },
+    {
+      "countryCode": 776,
+      "country": "Tonga",
+      "importsUsd": 0,
+      "priorImportsUsd": 71181,
+      "byYear": {
+        "2024": 71181
+      }
+    },
+    {
+      "countryCode": 882,
+      "country": "Samoa",
+      "importsUsd": 0,
+      "priorImportsUsd": 42688,
+      "byYear": {
+        "2020": 5304,
+        "2021": 126145,
+        "2023": 9307,
+        "2024": 42688
+      }
+    },
+    {
+      "countryCode": 234,
+      "country": "Faroe Isds",
+      "importsUsd": 0,
+      "priorImportsUsd": 41565,
+      "byYear": {
+        "2022": 5406,
+        "2023": 12603,
+        "2024": 41565
+      }
+    },
+    {
+      "countryCode": 728,
+      "country": "South Sudan",
+      "importsUsd": 0,
+      "priorImportsUsd": 38201,
+      "byYear": {
+        "2024": 38201
+      }
+    },
+    {
+      "countryCode": 558,
+      "country": "Nicaragua",
+      "importsUsd": 0,
+      "priorImportsUsd": 20044,
+      "byYear": {
+        "2020": 65085,
+        "2021": 2776,
+        "2022": 56350,
+        "2023": 74657,
+        "2024": 20044
+      }
+    },
+    {
+      "countryCode": 162,
+      "country": "Christmas Isds",
+      "importsUsd": 0,
+      "priorImportsUsd": 10505,
+      "byYear": {
+        "2020": 2388,
+        "2022": 17889,
+        "2024": 10505
+      }
+    },
+    {
+      "countryCode": 148,
+      "country": "Chad",
+      "importsUsd": 0,
+      "priorImportsUsd": 10397,
+      "byYear": {
+        "2024": 10397
+      }
+    },
+    {
+      "countryCode": 184,
+      "country": "Cook Isds",
+      "importsUsd": 0,
+      "priorImportsUsd": 9708,
+      "byYear": {
+        "2021": 16708,
+        "2024": 9708
+      }
+    },
+    {
+      "countryCode": 92,
+      "country": "Br. Virgin Isds",
+      "importsUsd": 0,
+      "priorImportsUsd": 7359,
+      "byYear": {
+        "2022": 6928,
+        "2024": 7359
+      }
+    },
+    {
+      "countryCode": 533,
+      "country": "Aruba",
+      "importsUsd": 0,
+      "priorImportsUsd": 7241,
+      "byYear": {
+        "2020": 3750,
+        "2024": 7241
+      }
+    },
+    {
+      "countryCode": 496,
+      "country": "Mongolia",
+      "importsUsd": 0,
+      "priorImportsUsd": 7142,
+      "byYear": {
+        "2023": 11407,
+        "2024": 7142
+      }
+    },
+    {
+      "countryCode": 426,
+      "country": "Lesotho",
+      "importsUsd": 0,
+      "priorImportsUsd": 6463,
+      "byYear": {
+        "2023": 8616,
+        "2024": 6463
+      }
+    },
+    {
+      "countryCode": 854,
+      "country": "Burkina Faso",
+      "importsUsd": 0,
+      "priorImportsUsd": 5721,
+      "byYear": {
+        "2022": 10071,
+        "2023": 16043,
+        "2024": 5721
+      }
+    },
+    {
+      "countryCode": 670,
+      "country": "Saint Vincent and the Grenadines",
+      "importsUsd": 0,
+      "priorImportsUsd": 5650,
+      "byYear": {
+        "2022": 6710,
+        "2024": 5650
+      }
+    },
+    {
+      "countryCode": 166,
+      "country": "Cocos Isds",
+      "importsUsd": 0,
+      "priorImportsUsd": 5579,
+      "byYear": {
+        "2021": 24471,
+        "2024": 5579
+      }
+    },
+    {
+      "countryCode": 598,
+      "country": "Papua New Guinea",
+      "importsUsd": 0,
+      "priorImportsUsd": 5475,
+      "byYear": {
+        "2020": 2902,
+        "2022": 3585,
+        "2023": 8088,
+        "2024": 5475
+      }
+    },
+    {
+      "countryCode": 232,
+      "country": "Eritrea",
+      "importsUsd": 0,
+      "priorImportsUsd": 5460,
+      "byYear": {
+        "2021": 82482,
+        "2024": 5460
+      }
+    },
+    {
+      "countryCode": 678,
+      "country": "Sao Tome and Principe",
+      "importsUsd": 0,
+      "priorImportsUsd": 4502,
+      "byYear": {
+        "2024": 4502
+      }
+    },
+    {
+      "countryCode": 694,
+      "country": "Sierra Leone",
+      "importsUsd": 0,
+      "priorImportsUsd": 4470,
+      "byYear": {
+        "2020": 100773,
+        "2021": 5359,
+        "2022": 75973,
+        "2024": 4470
+      }
+    },
+    {
+      "countryCode": 258,
+      "country": "French Polynesia",
+      "importsUsd": 0,
+      "priorImportsUsd": 4202,
+      "byYear": {
+        "2024": 4202
+      }
+    },
+    {
+      "countryCode": 136,
+      "country": "Cayman Isds",
+      "importsUsd": 0,
+      "priorImportsUsd": 3913,
+      "byYear": {
+        "2020": 10564,
+        "2022": 8075,
+        "2023": 8225,
+        "2024": 3913
+      }
+    },
+    {
+      "countryCode": 24,
+      "country": "Angola",
+      "importsUsd": 0,
+      "priorImportsUsd": 3672,
+      "byYear": {
+        "2022": 12178,
+        "2024": 3672
+      }
+    },
+    {
+      "countryCode": 887,
+      "country": "Yemen",
+      "importsUsd": 0,
+      "priorImportsUsd": 3050,
+      "byYear": {
+        "2024": 3050
+      }
+    },
+    {
+      "countryCode": 706,
+      "country": "Somalia",
+      "importsUsd": 0,
+      "priorImportsUsd": 2908,
+      "byYear": {
+        "2020": 4174,
+        "2023": 4632,
+        "2024": 2908
+      }
+    },
+    {
+      "countryCode": 292,
+      "country": "Gibraltar",
+      "importsUsd": 0,
+      "priorImportsUsd": 2731,
+      "byYear": {
+        "2022": 3077,
+        "2024": 2731
+      }
+    },
+    {
+      "countryCode": 64,
+      "country": "Bhutan",
+      "importsUsd": 0,
+      "priorImportsUsd": 2576,
+      "byYear": {
+        "2022": 2203,
+        "2023": 2114,
+        "2024": 2576
+      }
+    },
+    {
+      "countryCode": 666,
+      "country": "Saint Pierre and Miquelon",
+      "importsUsd": 0,
+      "priorImportsUsd": 2525,
+      "byYear": {
+        "2020": 2662,
+        "2024": 2525
+      }
+    }
+  ],
+  "byHeading": [
+    {
+      "heading": "4901",
+      "description": "Printed books, brochures, leaflets and similar printed matter, whether or not in single sheets",
+      "byYear": {
+        "2024": 2279004969,
+        "2025": 2281327138
+      }
+    },
+    {
+      "heading": "4902",
+      "description": "Newspapers, journals and periodicals, whether or not illustrated or containing advertising material",
+      "byYear": {
+        "2024": 146357548,
+        "2025": 102303851
+      }
+    },
+    {
+      "heading": "4903",
+      "description": "Children's picture, drawing or colouring books",
+      "byYear": {
+        "2024": 584365624,
+        "2025": 505554007
+      }
+    },
+    {
+      "heading": "4904",
+      "description": "Music, printed or in manuscript, whether or not bound or illustrated",
+      "byYear": {
+        "2024": 5717579,
+        "2025": 5354343
+      }
+    },
+    {
+      "heading": "4905",
+      "description": "Maps and hydrographic or similar charts of all kinds, including atlases, wall maps, topographical plans and globes, printed",
+      "byYear": {
+        "2024": 12155270,
+        "2025": 10305935
+      }
+    },
+    {
+      "heading": "4906",
+      "description": "Plans and drawings; for architectural, engineering, industrial, commercial, topographical or similar, being originals drawn by hand; hand-written texts; photo- graphic reproductions; their carbon copies",
+      "byYear": {
+        "2024": 4804680,
+        "2025": 4834860
+      }
+    },
+    {
+      "heading": "4907",
+      "description": "Unused postage, revenue or similar stamps of current or new issue in the country in which they have, or will have, a recognised face value; stamp-impressed paper; cheque forms; banknotes, stock, share or bond certificates and the like of similar title",
+      "byYear": {
+        "2024": 82309007,
+        "2025": 45132455
+      }
+    },
+    {
+      "heading": "4908",
+      "description": "Transfers (decalcomanias)",
+      "byYear": {
+        "2024": 113300201,
+        "2025": 95811808
+      }
+    },
+    {
+      "heading": "4909",
+      "description": "Printed or illustrated postcards; printed cards bearing personal greetings, messages or announcements, whether or not illustrated, with or without envelopes or trimmings",
+      "byYear": {
+        "2024": 405856645,
+        "2025": 264833033
+      }
+    },
+    {
+      "heading": "4910",
+      "description": "Calendars of any kind, printed, including calendar blocks",
+      "byYear": {
+        "2024": 130199883,
+        "2025": 108327826
+      }
+    },
+    {
+      "heading": "4911",
+      "description": "Printed matter, n.e.c., including printed pictures and photographs",
+      "byYear": {
+        "2024": 1823792180,
+        "2025": 1736440774
+      }
+    }
+  ],
+  "byHs6": [
+    {
+      "hs6": "490199",
+      "heading": "4901",
+      "description": "Printed matter; books, brochures, leaflets and similar printed matter n.e.c. in item no. 4901.10 or 4901.91",
+      "importsUsd": 2141672517,
+      "priorImportsUsd": 2107987494
+    },
+    {
+      "hs6": "491199",
+      "heading": "4911",
+      "description": "Printed matter; n.e.c. in heading no. 4911",
+      "importsUsd": 738014932,
+      "priorImportsUsd": 798711072
+    },
+    {
+      "hs6": "491191",
+      "heading": "4911",
+      "description": "Printed matter; pictures, designs and photographs, n.e.c. in item no. 4911.10",
+      "importsUsd": 664201675,
+      "priorImportsUsd": 687423858
+    },
+    {
+      "hs6": "490300",
+      "heading": "4903",
+      "description": "Printed matter; children's picture, drawing or colouring books",
+      "importsUsd": 505554007,
+      "priorImportsUsd": 584365624
+    },
+    {
+      "hs6": "491110",
+      "heading": "4911",
+      "description": "Printed matter; trade advertising material, commercial catalogues and the like",
+      "importsUsd": 334224167,
+      "priorImportsUsd": 337657250
+    },
+    {
+      "hs6": "490900",
+      "heading": "4909",
+      "description": "Printed or illustrated postcards; printed cards bearing personal greetings, messages or announcements, whether or not illustrated, with or without envelopes or trimmings",
+      "importsUsd": 264833033,
+      "priorImportsUsd": 405856645
+    },
+    {
+      "hs6": "490110",
+      "heading": "4901",
+      "description": "Printed matter; in single sheets, whether or not folded",
+      "importsUsd": 137394759,
+      "priorImportsUsd": 168737179
+    },
+    {
+      "hs6": "491000",
+      "heading": "4910",
+      "description": "Calendars; printed, of any kind, including calendar blocks",
+      "importsUsd": 108327826,
+      "priorImportsUsd": 130199883
+    },
+    {
+      "hs6": "490290",
+      "heading": "4902",
+      "description": "Newspapers, journals and periodicals; whether or not illustrated or containing advertising material, appearing less frequently than four times a week",
+      "importsUsd": 101939302,
+      "priorImportsUsd": 145840486
+    },
+    {
+      "hs6": "490890",
+      "heading": "4908",
+      "description": "Printed matter; transfers (decalcomanias), other than vitrifiable",
+      "importsUsd": 91136995,
+      "priorImportsUsd": 107642352
+    },
+    {
+      "hs6": "490700",
+      "heading": "4907",
+      "description": "Unused postage, revenue or similar stamps of current or new issue in the country in which they have, or will have, a recognised face value; stamp-impressed paper; cheque forms; banknotes, stock, share or bond certificates and the like of similar title",
+      "importsUsd": 45132455,
+      "priorImportsUsd": 82309007
+    },
+    {
+      "hs6": "490590",
+      "heading": "4905",
+      "description": "Maps and hydrographic or similar charts; (printed other than in book form), including wall maps, topographical plans and similar",
+      "importsUsd": 8010383,
+      "priorImportsUsd": 10502213
+    },
+    {
+      "hs6": "490400",
+      "heading": "4904",
+      "description": "Music; printed or in manuscript, whether or not bound or illustrated",
+      "importsUsd": 5354343,
+      "priorImportsUsd": 5717579
+    },
+    {
+      "hs6": "490600",
+      "heading": "4906",
+      "description": "Plans and drawings; for architectural, engineering, industrial, commercial, topographical or similar, being originals drawn by hand; hand-written texts; photo- graphic reproductions; their carbon copies",
+      "importsUsd": 4834860,
+      "priorImportsUsd": 4804680
+    },
+    {
+      "hs6": "490810",
+      "heading": "4908",
+      "description": "Printed matter; transfers (decalcomanias), vitrifiable",
+      "importsUsd": 4674813,
+      "priorImportsUsd": 5657849
+    },
+    {
+      "hs6": "490520",
+      "heading": "4905",
+      "description": "Maps and hydrographic or similar charts; printed in book form, including atlases, topographical plans and similar",
+      "importsUsd": 2295552,
+      "priorImportsUsd": 1653057
+    },
+    {
+      "hs6": "490191",
+      "heading": "4901",
+      "description": "Printed matter; dictionaries, encyclopaedias and serial instalments thereof",
+      "importsUsd": 2259862,
+      "priorImportsUsd": 2280296
+    },
+    {
+      "hs6": "490210",
+      "heading": "4902",
+      "description": "Newspapers, journals and periodicals; whether or not illustrated or containing advertising material, appearing at least four times a week",
+      "importsUsd": 364549,
+      "priorImportsUsd": 517062
+    }
+  ],
+  "byHeadingCountry": [
+    {
+      "heading": "4901",
+      "countryCode": 156,
+      "country": "China",
+      "importsUsd": 833385235
+    },
+    {
+      "heading": "4901",
+      "countryCode": 826,
+      "country": "United Kingdom",
+      "importsUsd": 334633446
+    },
+    {
+      "heading": "4901",
+      "countryCode": 124,
+      "country": "Canada",
+      "importsUsd": 262116969
+    },
+    {
+      "heading": "4901",
+      "countryCode": 380,
+      "country": "Italy",
+      "importsUsd": 133869374
+    },
+    {
+      "heading": "4901",
+      "countryCode": 699,
+      "country": "India",
+      "importsUsd": 125994004
+    },
+    {
+      "heading": "4901",
+      "countryCode": 484,
+      "country": "Mexico",
+      "importsUsd": 109377193
+    },
+    {
+      "heading": "4901",
+      "countryCode": 410,
+      "country": "Rep. of Korea",
+      "importsUsd": 66355543
+    },
+    {
+      "heading": "4901",
+      "countryCode": 458,
+      "country": "Malaysia",
+      "importsUsd": 52530779
+    },
+    {
+      "heading": "4901",
+      "countryCode": 276,
+      "country": "Germany",
+      "importsUsd": 39077300
+    },
+    {
+      "heading": "4901",
+      "countryCode": 392,
+      "country": "Japan",
+      "importsUsd": 35338333
+    },
+    {
+      "heading": "4901",
+      "countryCode": 724,
+      "country": "Spain",
+      "importsUsd": 27593247
+    },
+    {
+      "heading": "4901",
+      "countryCode": 251,
+      "country": "France",
+      "importsUsd": 22292695
+    },
+    {
+      "heading": "4901",
+      "countryCode": 702,
+      "country": "Singapore",
+      "importsUsd": 18065250
+    },
+    {
+      "heading": "4901",
+      "countryCode": 376,
+      "country": "Israel",
+      "importsUsd": 17621004
+    },
+    {
+      "heading": "4901",
+      "countryCode": 170,
+      "country": "Colombia",
+      "importsUsd": 17241933
+    },
+    {
+      "heading": "4901",
+      "countryCode": 704,
+      "country": "Viet Nam",
+      "importsUsd": 14947456
+    },
+    {
+      "heading": "4901",
+      "countryCode": 490,
+      "country": "Other Asia, nes",
+      "importsUsd": 14674848
+    },
+    {
+      "heading": "4901",
+      "countryCode": 528,
+      "country": "Netherlands",
+      "importsUsd": 13048267
+    },
+    {
+      "heading": "4901",
+      "countryCode": 344,
+      "country": "China, Hong Kong SAR",
+      "importsUsd": 10953698
+    },
+    {
+      "heading": "4901",
+      "countryCode": 792,
+      "country": "Türkiye",
+      "importsUsd": 10590352
+    },
+    {
+      "heading": "4901",
+      "countryCode": 440,
+      "country": "Lithuania",
+      "importsUsd": 10540973
+    },
+    {
+      "heading": "4901",
+      "countryCode": 76,
+      "country": "Brazil",
+      "importsUsd": 10525879
+    },
+    {
+      "heading": "4901",
+      "countryCode": 705,
+      "country": "Slovenia",
+      "importsUsd": 9943256
+    },
+    {
+      "heading": "4901",
+      "countryCode": 757,
+      "country": "Switzerland",
+      "importsUsd": 8843199
+    },
+    {
+      "heading": "4901",
+      "countryCode": 764,
+      "country": "Thailand",
+      "importsUsd": 7377945
+    },
+    {
+      "heading": "4901",
+      "countryCode": 56,
+      "country": "Belgium",
+      "importsUsd": 6662219
+    },
+    {
+      "heading": "4901",
+      "countryCode": 784,
+      "country": "United Arab Emirates",
+      "importsUsd": 6263658
+    },
+    {
+      "heading": "4901",
+      "countryCode": 70,
+      "country": "Bosnia Herzegovina",
+      "importsUsd": 5737691
+    },
+    {
+      "heading": "4901",
+      "countryCode": 703,
+      "country": "Slovakia",
+      "importsUsd": 5107937
+    },
+    {
+      "heading": "4901",
+      "countryCode": 36,
+      "country": "Australia",
+      "importsUsd": 4878284
+    },
+    {
+      "heading": "4901",
+      "countryCode": 616,
+      "country": "Poland",
+      "importsUsd": 4460627
+    },
+    {
+      "heading": "4901",
+      "countryCode": 208,
+      "country": "Denmark",
+      "importsUsd": 3880250
+    },
+    {
+      "heading": "4901",
+      "countryCode": 203,
+      "country": "Czechia",
+      "importsUsd": 3610133
+    },
+    {
+      "heading": "4901",
+      "countryCode": 372,
+      "country": "Ireland",
+      "importsUsd": 3055886
+    },
+    {
+      "heading": "4901",
+      "countryCode": 40,
+      "country": "Austria",
+      "importsUsd": 2860588
+    },
+    {
+      "heading": "4901",
+      "countryCode": 428,
+      "country": "Latvia",
+      "importsUsd": 2662268
+    },
+    {
+      "heading": "4901",
+      "countryCode": 620,
+      "country": "Portugal",
+      "importsUsd": 2331169
+    },
+    {
+      "heading": "4901",
+      "countryCode": 188,
+      "country": "Costa Rica",
+      "importsUsd": 2153391
+    },
+    {
+      "heading": "4901",
+      "countryCode": 50,
+      "country": "Bangladesh",
+      "importsUsd": 2128553
+    },
+    {
+      "heading": "4901",
+      "countryCode": 752,
+      "country": "Sweden",
+      "importsUsd": 1457764
+    },
+    {
+      "heading": "4901",
+      "countryCode": 422,
+      "country": "Lebanon",
+      "importsUsd": 1395101
+    },
+    {
+      "heading": "4901",
+      "countryCode": 604,
+      "country": "Peru",
+      "importsUsd": 1264605
+    },
+    {
+      "heading": "4901",
+      "countryCode": 246,
+      "country": "Finland",
+      "importsUsd": 1146262
+    },
+    {
+      "heading": "4901",
+      "countryCode": 688,
+      "country": "Serbia",
+      "importsUsd": 966345
+    },
+    {
+      "heading": "4901",
+      "countryCode": 112,
+      "country": "Belarus",
+      "importsUsd": 958893
+    },
+    {
+      "heading": "4901",
+      "countryCode": 300,
+      "country": "Greece",
+      "importsUsd": 907311
+    },
+    {
+      "heading": "4901",
+      "countryCode": 191,
+      "country": "Croatia",
+      "importsUsd": 884415
+    },
+    {
+      "heading": "4901",
+      "countryCode": 222,
+      "country": "El Salvador",
+      "importsUsd": 712573
+    },
+    {
+      "heading": "4901",
+      "countryCode": 682,
+      "country": "Saudi Arabia",
+      "importsUsd": 600635
+    },
+    {
+      "heading": "4901",
+      "countryCode": 100,
+      "country": "Bulgaria",
+      "importsUsd": 591668
+    },
+    {
+      "heading": "4901",
+      "countryCode": 348,
+      "country": "Hungary",
+      "importsUsd": 560793
+    },
+    {
+      "heading": "4901",
+      "countryCode": 586,
+      "country": "Pakistan",
+      "importsUsd": 549532
+    },
+    {
+      "heading": "4901",
+      "countryCode": 710,
+      "country": "South Africa",
+      "importsUsd": 487037
+    },
+    {
+      "heading": "4901",
+      "countryCode": 32,
+      "country": "Argentina",
+      "importsUsd": 450634
+    },
+    {
+      "heading": "4901",
+      "countryCode": 233,
+      "country": "Estonia",
+      "importsUsd": 424830
+    },
+    {
+      "heading": "4901",
+      "countryCode": 643,
+      "country": "Russian Federation",
+      "importsUsd": 346447
+    },
+    {
+      "heading": "4901",
+      "countryCode": 218,
+      "country": "Ecuador",
+      "importsUsd": 344302
+    },
+    {
+      "heading": "4901",
+      "countryCode": 152,
+      "country": "Chile",
+      "importsUsd": 342063
+    },
+    {
+      "heading": "4901",
+      "countryCode": 364,
+      "country": "Iran",
+      "importsUsd": 320357
+    },
+    {
+      "heading": "4901",
+      "countryCode": 642,
+      "country": "Romania",
+      "importsUsd": 308125
+    },
+    {
+      "heading": "4901",
+      "countryCode": 554,
+      "country": "New Zealand",
+      "importsUsd": 286854
+    },
+    {
+      "heading": "4901",
+      "countryCode": 214,
+      "country": "Dominican Rep.",
+      "importsUsd": 246999
+    },
+    {
+      "heading": "4901",
+      "countryCode": 608,
+      "country": "Philippines",
+      "importsUsd": 224980
+    },
+    {
+      "heading": "4901",
+      "countryCode": 320,
+      "country": "Guatemala",
+      "importsUsd": 216947
+    },
+    {
+      "heading": "4901",
+      "countryCode": 804,
+      "country": "Ukraine",
+      "importsUsd": 212705
+    },
+    {
+      "heading": "4901",
+      "countryCode": 360,
+      "country": "Indonesia",
+      "importsUsd": 203109
+    },
+    {
+      "heading": "4901",
+      "countryCode": 858,
+      "country": "Uruguay",
+      "importsUsd": 173588
+    },
+    {
+      "heading": "4901",
+      "countryCode": 470,
+      "country": "Malta",
+      "importsUsd": 171650
+    },
+    {
+      "heading": "4901",
+      "countryCode": 818,
+      "country": "Egypt",
+      "importsUsd": 163322
+    },
+    {
+      "heading": "4901",
+      "countryCode": 504,
+      "country": "Morocco",
+      "importsUsd": 145513
+    },
+    {
+      "heading": "4901",
+      "countryCode": 400,
+      "country": "Jordan",
+      "importsUsd": 143955
+    },
+    {
+      "heading": "4901",
+      "countryCode": 579,
+      "country": "Norway",
+      "importsUsd": 117444
+    },
+    {
+      "heading": "4901",
+      "countryCode": 562,
+      "country": "Niger",
+      "importsUsd": 79912
+    },
+    {
+      "heading": "4901",
+      "countryCode": 591,
+      "country": "Panama",
+      "importsUsd": 70541
+    },
+    {
+      "heading": "4901",
+      "countryCode": 566,
+      "country": "Nigeria",
+      "importsUsd": 60372
+    },
+    {
+      "heading": "4901",
+      "countryCode": 442,
+      "country": "Luxembourg",
+      "importsUsd": 58569
+    },
+    {
+      "heading": "4901",
+      "countryCode": 116,
+      "country": "Cambodia",
+      "importsUsd": 57488
+    },
+    {
+      "heading": "4901",
+      "countryCode": 414,
+      "country": "Kuwait",
+      "importsUsd": 53720
+    },
+    {
+      "heading": "4901",
+      "countryCode": 498,
+      "country": "Rep. of Moldova",
+      "importsUsd": 50366
+    },
+    {
+      "heading": "4901",
+      "countryCode": 418,
+      "country": "Lao People's Dem. Rep.",
+      "importsUsd": 46431
+    },
+    {
+      "heading": "4901",
+      "countryCode": 788,
+      "country": "Tunisia",
+      "importsUsd": 46161
+    },
+    {
+      "heading": "4901",
+      "countryCode": 332,
+      "country": "Haiti",
+      "importsUsd": 45368
+    },
+    {
+      "heading": "4901",
+      "countryCode": 800,
+      "country": "Uganda",
+      "importsUsd": 43956
+    },
+    {
+      "heading": "4901",
+      "countryCode": 51,
+      "country": "Armenia",
+      "importsUsd": 40821
+    },
+    {
+      "heading": "4901",
+      "countryCode": 352,
+      "country": "Iceland",
+      "importsUsd": 39687
+    },
+    {
+      "heading": "4901",
+      "countryCode": 8,
+      "country": "Albania",
+      "importsUsd": 38245
+    },
+    {
+      "heading": "4901",
+      "countryCode": 384,
+      "country": "Côte d'Ivoire",
+      "importsUsd": 36486
+    },
+    {
+      "heading": "4901",
+      "countryCode": 288,
+      "country": "Ghana",
+      "importsUsd": 34377
+    },
+    {
+      "heading": "4901",
+      "countryCode": 120,
+      "country": "Cameroon",
+      "importsUsd": 32691
+    },
+    {
+      "heading": "4901",
+      "countryCode": 68,
+      "country": "Bolivia (Plurinational State of)",
+      "importsUsd": 30747
+    },
+    {
+      "heading": "4901",
+      "countryCode": 60,
+      "country": "Bermuda",
+      "importsUsd": 25600
+    },
+    {
+      "heading": "4901",
+      "countryCode": 686,
+      "country": "Senegal",
+      "importsUsd": 24910
+    },
+    {
+      "heading": "4901",
+      "countryCode": 674,
+      "country": "San Marino",
+      "importsUsd": 23811
+    },
+    {
+      "heading": "4901",
+      "countryCode": 31,
+      "country": "Azerbaijan",
+      "importsUsd": 23451
+    },
+    {
+      "heading": "4901",
+      "countryCode": 340,
+      "country": "Honduras",
+      "importsUsd": 21406
+    },
+    {
+      "heading": "4901",
+      "countryCode": 52,
+      "country": "Barbados",
+      "importsUsd": 20685
+    },
+    {
+      "heading": "4901",
+      "countryCode": 12,
+      "country": "Algeria",
+      "importsUsd": 18393
+    },
+    {
+      "heading": "4901",
+      "countryCode": 417,
+      "country": "Kyrgyzstan",
+      "importsUsd": 17475
+    },
+    {
+      "heading": "4901",
+      "countryCode": 834,
+      "country": "United Rep. of Tanzania",
+      "importsUsd": 17404
+    },
+    {
+      "heading": "4901",
+      "countryCode": 144,
+      "country": "Sri Lanka",
+      "importsUsd": 15303
+    },
+    {
+      "heading": "4901",
+      "countryCode": 398,
+      "country": "Kazakhstan",
+      "importsUsd": 14535
+    },
+    {
+      "heading": "4901",
+      "countryCode": 231,
+      "country": "Ethiopia",
+      "importsUsd": 14388
+    },
+    {
+      "heading": "4901",
+      "countryCode": 96,
+      "country": "Brunei Darussalam",
+      "importsUsd": 14189
+    },
+    {
+      "heading": "4901",
+      "countryCode": 178,
+      "country": "Congo",
+      "importsUsd": 13196
+    },
+    {
+      "heading": "4901",
+      "countryCode": 748,
+      "country": "Eswatini",
+      "importsUsd": 13028
+    },
+    {
+      "heading": "4901",
+      "countryCode": 508,
+      "country": "Mozambique",
+      "importsUsd": 12516
+    },
+    {
+      "heading": "4901",
+      "countryCode": 466,
+      "country": "Mali",
+      "importsUsd": 11779
+    },
+    {
+      "heading": "4901",
+      "countryCode": 768,
+      "country": "Togo",
+      "importsUsd": 11347
+    },
+    {
+      "heading": "4901",
+      "countryCode": 516,
+      "country": "Namibia",
+      "importsUsd": 8997
+    },
+    {
+      "heading": "4901",
+      "countryCode": 268,
+      "country": "Georgia",
+      "importsUsd": 7853
+    },
+    {
+      "heading": "4901",
+      "countryCode": 894,
+      "country": "Zambia",
+      "importsUsd": 7842
+    },
+    {
+      "heading": "4901",
+      "countryCode": 204,
+      "country": "Benin",
+      "importsUsd": 6588
+    },
+    {
+      "heading": "4901",
+      "countryCode": 454,
+      "country": "Malawi",
+      "importsUsd": 6306
+    },
+    {
+      "heading": "4901",
+      "countryCode": 780,
+      "country": "Trinidad and Tobago",
+      "importsUsd": 6050
+    },
+    {
+      "heading": "4901",
+      "countryCode": 450,
+      "country": "Madagascar",
+      "importsUsd": 5870
+    },
+    {
+      "heading": "4901",
+      "countryCode": 716,
+      "country": "Zimbabwe",
+      "importsUsd": 5342
+    },
+    {
+      "heading": "4901",
+      "countryCode": 404,
+      "country": "Kenya",
+      "importsUsd": 5164
+    },
+    {
+      "heading": "4901",
+      "countryCode": 584,
+      "country": "Marshall Isds",
+      "importsUsd": 4511
+    },
+    {
+      "heading": "4901",
+      "countryCode": 646,
+      "country": "Rwanda",
+      "importsUsd": 3775
+    },
+    {
+      "heading": "4901",
+      "countryCode": 760,
+      "country": "Syria",
+      "importsUsd": 3061
+    },
+    {
+      "heading": "4901",
+      "countryCode": 180,
+      "country": "Dem. Rep. of the Congo",
+      "importsUsd": 3001
+    },
+    {
+      "heading": "4901",
+      "countryCode": 266,
+      "country": "Gabon",
+      "importsUsd": 2435
+    },
+    {
+      "heading": "4901",
+      "countryCode": 446,
+      "country": "China, Macao SAR",
+      "importsUsd": 2398
+    },
+    {
+      "heading": "4901",
+      "countryCode": 72,
+      "country": "Botswana",
+      "importsUsd": 2307
+    },
+    {
+      "heading": "4901",
+      "countryCode": 524,
+      "country": "Nepal",
+      "importsUsd": 2300
+    },
+    {
+      "heading": "4901",
+      "countryCode": 196,
+      "country": "Cyprus",
+      "importsUsd": 2206
+    },
+    {
+      "heading": "4901",
+      "countryCode": 132,
+      "country": "Cabo Verde",
+      "importsUsd": 2150
+    },
+    {
+      "heading": "4901",
+      "countryCode": 430,
+      "country": "Liberia",
+      "importsUsd": 2038
+    },
+    {
+      "heading": "4902",
+      "countryCode": 826,
+      "country": "United Kingdom",
+      "importsUsd": 54137030
+    },
+    {
+      "heading": "4902",
+      "countryCode": 124,
+      "country": "Canada",
+      "importsUsd": 35877858
+    },
+    {
+      "heading": "4902",
+      "countryCode": 251,
+      "country": "France",
+      "importsUsd": 2063124
+    },
+    {
+      "heading": "4902",
+      "countryCode": 380,
+      "country": "Italy",
+      "importsUsd": 2002919
+    },
+    {
+      "heading": "4902",
+      "countryCode": 410,
+      "country": "Rep. of Korea",
+      "importsUsd": 1084121
+    },
+    {
+      "heading": "4902",
+      "countryCode": 484,
+      "country": "Mexico",
+      "importsUsd": 1049500
+    },
+    {
+      "heading": "4902",
+      "countryCode": 392,
+      "country": "Japan",
+      "importsUsd": 961913
+    },
+    {
+      "heading": "4902",
+      "countryCode": 276,
+      "country": "Germany",
+      "importsUsd": 900030
+    },
+    {
+      "heading": "4902",
+      "countryCode": 156,
+      "country": "China",
+      "importsUsd": 770566
+    },
+    {
+      "heading": "4902",
+      "countryCode": 440,
+      "country": "Lithuania",
+      "importsUsd": 556377
+    },
+    {
+      "heading": "4902",
+      "countryCode": 616,
+      "country": "Poland",
+      "importsUsd": 458102
+    },
+    {
+      "heading": "4902",
+      "countryCode": 724,
+      "country": "Spain",
+      "importsUsd": 455767
+    },
+    {
+      "heading": "4902",
+      "countryCode": 218,
+      "country": "Ecuador",
+      "importsUsd": 337878
+    },
+    {
+      "heading": "4902",
+      "countryCode": 376,
+      "country": "Israel",
+      "importsUsd": 225205
+    },
+    {
+      "heading": "4902",
+      "countryCode": 170,
+      "country": "Colombia",
+      "importsUsd": 157499
+    },
+    {
+      "heading": "4902",
+      "countryCode": 490,
+      "country": "Other Asia, nes",
+      "importsUsd": 120683
+    },
+    {
+      "heading": "4902",
+      "countryCode": 344,
+      "country": "China, Hong Kong SAR",
+      "importsUsd": 120177
+    },
+    {
+      "heading": "4902",
+      "countryCode": 682,
+      "country": "Saudi Arabia",
+      "importsUsd": 105026
+    },
+    {
+      "heading": "4902",
+      "countryCode": 76,
+      "country": "Brazil",
+      "importsUsd": 100186
+    },
+    {
+      "heading": "4902",
+      "countryCode": 56,
+      "country": "Belgium",
+      "importsUsd": 93532
+    },
+    {
+      "heading": "4902",
+      "countryCode": 710,
+      "country": "South Africa",
+      "importsUsd": 88397
+    },
+    {
+      "heading": "4902",
+      "countryCode": 208,
+      "country": "Denmark",
+      "importsUsd": 59602
+    },
+    {
+      "heading": "4902",
+      "countryCode": 699,
+      "country": "India",
+      "importsUsd": 57290
+    },
+    {
+      "heading": "4902",
+      "countryCode": 528,
+      "country": "Netherlands",
+      "importsUsd": 57095
+    },
+    {
+      "heading": "4902",
+      "countryCode": 757,
+      "country": "Switzerland",
+      "importsUsd": 53414
+    },
+    {
+      "heading": "4902",
+      "countryCode": 643,
+      "country": "Russian Federation",
+      "importsUsd": 45814
+    },
+    {
+      "heading": "4902",
+      "countryCode": 642,
+      "country": "Romania",
+      "importsUsd": 45087
+    },
+    {
+      "heading": "4902",
+      "countryCode": 233,
+      "country": "Estonia",
+      "importsUsd": 40035
+    },
+    {
+      "heading": "4902",
+      "countryCode": 364,
+      "country": "Iran",
+      "importsUsd": 34911
+    },
+    {
+      "heading": "4902",
+      "countryCode": 792,
+      "country": "Türkiye",
+      "importsUsd": 27626
+    },
+    {
+      "heading": "4902",
+      "countryCode": 428,
+      "country": "Latvia",
+      "importsUsd": 23297
+    },
+    {
+      "heading": "4902",
+      "countryCode": 203,
+      "country": "Czechia",
+      "importsUsd": 17800
+    },
+    {
+      "heading": "4902",
+      "countryCode": 702,
+      "country": "Singapore",
+      "importsUsd": 17728
+    },
+    {
+      "heading": "4902",
+      "countryCode": 40,
+      "country": "Austria",
+      "importsUsd": 17692
+    },
+    {
+      "heading": "4902",
+      "countryCode": 764,
+      "country": "Thailand",
+      "importsUsd": 17588
+    },
+    {
+      "heading": "4902",
+      "countryCode": 458,
+      "country": "Malaysia",
+      "importsUsd": 17406
+    },
+    {
+      "heading": "4902",
+      "countryCode": 620,
+      "country": "Portugal",
+      "importsUsd": 15402
+    },
+    {
+      "heading": "4902",
+      "countryCode": 152,
+      "country": "Chile",
+      "importsUsd": 14776
+    },
+    {
+      "heading": "4902",
+      "countryCode": 705,
+      "country": "Slovenia",
+      "importsUsd": 10741
+    },
+    {
+      "heading": "4902",
+      "countryCode": 348,
+      "country": "Hungary",
+      "importsUsd": 10650
+    },
+    {
+      "heading": "4902",
+      "countryCode": 372,
+      "country": "Ireland",
+      "importsUsd": 10603
+    },
+    {
+      "heading": "4902",
+      "countryCode": 688,
+      "country": "Serbia",
+      "importsUsd": 8775
+    },
+    {
+      "heading": "4902",
+      "countryCode": 300,
+      "country": "Greece",
+      "importsUsd": 8313
+    },
+    {
+      "heading": "4902",
+      "countryCode": 246,
+      "country": "Finland",
+      "importsUsd": 6405
+    },
+    {
+      "heading": "4902",
+      "countryCode": 780,
+      "country": "Trinidad and Tobago",
+      "importsUsd": 6355
+    },
+    {
+      "heading": "4902",
+      "countryCode": 752,
+      "country": "Sweden",
+      "importsUsd": 4638
+    },
+    {
+      "heading": "4902",
+      "countryCode": 686,
+      "country": "Senegal",
+      "importsUsd": 4550
+    },
+    {
+      "heading": "4902",
+      "countryCode": 36,
+      "country": "Australia",
+      "importsUsd": 4368
+    },
+    {
+      "heading": "4903",
+      "countryCode": 156,
+      "country": "China",
+      "importsUsd": 455121548
+    },
+    {
+      "heading": "4903",
+      "countryCode": 704,
+      "country": "Viet Nam",
+      "importsUsd": 19873240
+    },
+    {
+      "heading": "4903",
+      "countryCode": 458,
+      "country": "Malaysia",
+      "importsUsd": 8680849
+    },
+    {
+      "heading": "4903",
+      "countryCode": 699,
+      "country": "India",
+      "importsUsd": 5500941
+    },
+    {
+      "heading": "4903",
+      "countryCode": 380,
+      "country": "Italy",
+      "importsUsd": 3137557
+    },
+    {
+      "heading": "4903",
+      "countryCode": 826,
+      "country": "United Kingdom",
+      "importsUsd": 1995630
+    },
+    {
+      "heading": "4903",
+      "countryCode": 764,
+      "country": "Thailand",
+      "importsUsd": 1537433
+    },
+    {
+      "heading": "4903",
+      "countryCode": 344,
+      "country": "China, Hong Kong SAR",
+      "importsUsd": 1318743
+    },
+    {
+      "heading": "4903",
+      "countryCode": 702,
+      "country": "Singapore",
+      "importsUsd": 1094395
+    },
+    {
+      "heading": "4903",
+      "countryCode": 410,
+      "country": "Rep. of Korea",
+      "importsUsd": 1072977
+    },
+    {
+      "heading": "4903",
+      "countryCode": 124,
+      "country": "Canada",
+      "importsUsd": 967220
+    },
+    {
+      "heading": "4903",
+      "countryCode": 705,
+      "country": "Slovenia",
+      "importsUsd": 909550
+    },
+    {
+      "heading": "4903",
+      "countryCode": 724,
+      "country": "Spain",
+      "importsUsd": 876322
+    },
+    {
+      "heading": "4903",
+      "countryCode": 490,
+      "country": "Other Asia, nes",
+      "importsUsd": 471313
+    },
+    {
+      "heading": "4903",
+      "countryCode": 616,
+      "country": "Poland",
+      "importsUsd": 414191
+    },
+    {
+      "heading": "4903",
+      "countryCode": 70,
+      "country": "Bosnia Herzegovina",
+      "importsUsd": 378797
+    },
+    {
+      "heading": "4903",
+      "countryCode": 36,
+      "country": "Australia",
+      "importsUsd": 300731
+    },
+    {
+      "heading": "4903",
+      "countryCode": 792,
+      "country": "Türkiye",
+      "importsUsd": 277045
+    },
+    {
+      "heading": "4903",
+      "countryCode": 360,
+      "country": "Indonesia",
+      "importsUsd": 205655
+    },
+    {
+      "heading": "4903",
+      "countryCode": 170,
+      "country": "Colombia",
+      "importsUsd": 199693
+    },
+    {
+      "heading": "4903",
+      "countryCode": 251,
+      "country": "France",
+      "importsUsd": 196453
+    },
+    {
+      "heading": "4903",
+      "countryCode": 116,
+      "country": "Cambodia",
+      "importsUsd": 173511
+    },
+    {
+      "heading": "4903",
+      "countryCode": 484,
+      "country": "Mexico",
+      "importsUsd": 147846
+    },
+    {
+      "heading": "4903",
+      "countryCode": 50,
+      "country": "Bangladesh",
+      "importsUsd": 128804
+    },
+    {
+      "heading": "4903",
+      "countryCode": 428,
+      "country": "Latvia",
+      "importsUsd": 109338
+    },
+    {
+      "heading": "4903",
+      "countryCode": 392,
+      "country": "Japan",
+      "importsUsd": 84388
+    },
+    {
+      "heading": "4903",
+      "countryCode": 784,
+      "country": "United Arab Emirates",
+      "importsUsd": 68378
+    },
+    {
+      "heading": "4903",
+      "countryCode": 440,
+      "country": "Lithuania",
+      "importsUsd": 67578
+    },
+    {
+      "heading": "4903",
+      "countryCode": 276,
+      "country": "Germany",
+      "importsUsd": 32976
+    },
+    {
+      "heading": "4903",
+      "countryCode": 703,
+      "country": "Slovakia",
+      "importsUsd": 30183
+    },
+    {
+      "heading": "4903",
+      "countryCode": 620,
+      "country": "Portugal",
+      "importsUsd": 27650
+    },
+    {
+      "heading": "4903",
+      "countryCode": 376,
+      "country": "Israel",
+      "importsUsd": 22487
+    },
+    {
+      "heading": "4903",
+      "countryCode": 208,
+      "country": "Denmark",
+      "importsUsd": 19638
+    },
+    {
+      "heading": "4903",
+      "countryCode": 203,
+      "country": "Czechia",
+      "importsUsd": 15982
+    },
+    {
+      "heading": "4903",
+      "countryCode": 860,
+      "country": "Uzbekistan",
+      "importsUsd": 14500
+    },
+    {
+      "heading": "4903",
+      "countryCode": 152,
+      "country": "Chile",
+      "importsUsd": 14301
+    },
+    {
+      "heading": "4903",
+      "countryCode": 528,
+      "country": "Netherlands",
+      "importsUsd": 11733
+    },
+    {
+      "heading": "4903",
+      "countryCode": 554,
+      "country": "New Zealand",
+      "importsUsd": 10692
+    },
+    {
+      "heading": "4903",
+      "countryCode": 32,
+      "country": "Argentina",
+      "importsUsd": 8175
+    },
+    {
+      "heading": "4903",
+      "countryCode": 591,
+      "country": "Panama",
+      "importsUsd": 7017
+    },
+    {
+      "heading": "4903",
+      "countryCode": 504,
+      "country": "Morocco",
+      "importsUsd": 4959
+    },
+    {
+      "heading": "4903",
+      "countryCode": 233,
+      "country": "Estonia",
+      "importsUsd": 3835
+    },
+    {
+      "heading": "4903",
+      "countryCode": 188,
+      "country": "Costa Rica",
+      "importsUsd": 3299
+    },
+    {
+      "heading": "4903",
+      "countryCode": 56,
+      "country": "Belgium",
+      "importsUsd": 3207
+    },
+    {
+      "heading": "4903",
+      "countryCode": 400,
+      "country": "Jordan",
+      "importsUsd": 2861
+    },
+    {
+      "heading": "4903",
+      "countryCode": 804,
+      "country": "Ukraine",
+      "importsUsd": 2845
+    },
+    {
+      "heading": "4903",
+      "countryCode": 643,
+      "country": "Russian Federation",
+      "importsUsd": 2756
+    },
+    {
+      "heading": "4903",
+      "countryCode": 214,
+      "country": "Dominican Rep.",
+      "importsUsd": 2575
+    },
+    {
+      "heading": "4903",
+      "countryCode": 470,
+      "country": "Malta",
+      "importsUsd": 2210
+    },
+    {
+      "heading": "4904",
+      "countryCode": 276,
+      "country": "Germany",
+      "importsUsd": 2217340
+    },
+    {
+      "heading": "4904",
+      "countryCode": 826,
+      "country": "United Kingdom",
+      "importsUsd": 1425570
+    },
+    {
+      "heading": "4904",
+      "countryCode": 124,
+      "country": "Canada",
+      "importsUsd": 245911
+    },
+    {
+      "heading": "4904",
+      "countryCode": 528,
+      "country": "Netherlands",
+      "importsUsd": 231655
+    },
+    {
+      "heading": "4904",
+      "countryCode": 348,
+      "country": "Hungary",
+      "importsUsd": 212870
+    },
+    {
+      "heading": "4904",
+      "countryCode": 40,
+      "country": "Austria",
+      "importsUsd": 203015
+    },
+    {
+      "heading": "4904",
+      "countryCode": 757,
+      "country": "Switzerland",
+      "importsUsd": 158797
+    },
+    {
+      "heading": "4904",
+      "countryCode": 410,
+      "country": "Rep. of Korea",
+      "importsUsd": 157992
+    },
+    {
+      "heading": "4904",
+      "countryCode": 705,
+      "country": "Slovenia",
+      "importsUsd": 86794
+    },
+    {
+      "heading": "4904",
+      "countryCode": 156,
+      "country": "China",
+      "importsUsd": 84768
+    },
+    {
+      "heading": "4904",
+      "countryCode": 724,
+      "country": "Spain",
+      "importsUsd": 62661
+    },
+    {
+      "heading": "4904",
+      "countryCode": 490,
+      "country": "Other Asia, nes",
+      "importsUsd": 36611
+    },
+    {
+      "heading": "4904",
+      "countryCode": 392,
+      "country": "Japan",
+      "importsUsd": 36002
+    },
+    {
+      "heading": "4904",
+      "countryCode": 251,
+      "country": "France",
+      "importsUsd": 35741
+    },
+    {
+      "heading": "4904",
+      "countryCode": 616,
+      "country": "Poland",
+      "importsUsd": 29846
+    },
+    {
+      "heading": "4904",
+      "countryCode": 380,
+      "country": "Italy",
+      "importsUsd": 25888
+    },
+    {
+      "heading": "4904",
+      "countryCode": 458,
+      "country": "Malaysia",
+      "importsUsd": 23931
+    },
+    {
+      "heading": "4904",
+      "countryCode": 231,
+      "country": "Ethiopia",
+      "importsUsd": 20080
+    },
+    {
+      "heading": "4904",
+      "countryCode": 203,
+      "country": "Czechia",
+      "importsUsd": 10100
+    },
+    {
+      "heading": "4904",
+      "countryCode": 36,
+      "country": "Australia",
+      "importsUsd": 8336
+    },
+    {
+      "heading": "4904",
+      "countryCode": 792,
+      "country": "Türkiye",
+      "importsUsd": 8053
+    },
+    {
+      "heading": "4904",
+      "countryCode": 579,
+      "country": "Norway",
+      "importsUsd": 7054
+    },
+    {
+      "heading": "4904",
+      "countryCode": 699,
+      "country": "India",
+      "importsUsd": 5280
+    },
+    {
+      "heading": "4904",
+      "countryCode": 752,
+      "country": "Sweden",
+      "importsUsd": 4963
+    },
+    {
+      "heading": "4904",
+      "countryCode": 222,
+      "country": "El Salvador",
+      "importsUsd": 3849
+    },
+    {
+      "heading": "4904",
+      "countryCode": 208,
+      "country": "Denmark",
+      "importsUsd": 3604
+    },
+    {
+      "heading": "4904",
+      "countryCode": 484,
+      "country": "Mexico",
+      "importsUsd": 3075
+    },
+    {
+      "heading": "4904",
+      "countryCode": 344,
+      "country": "China, Hong Kong SAR",
+      "importsUsd": 2500
+    },
+    {
+      "heading": "4904",
+      "countryCode": 246,
+      "country": "Finland",
+      "importsUsd": 2057
+    },
+    {
+      "heading": "4905",
+      "countryCode": 699,
+      "country": "India",
+      "importsUsd": 2319669
+    },
+    {
+      "heading": "4905",
+      "countryCode": 124,
+      "country": "Canada",
+      "importsUsd": 2238828
+    },
+    {
+      "heading": "4905",
+      "countryCode": 156,
+      "country": "China",
+      "importsUsd": 2120594
+    },
+    {
+      "heading": "4905",
+      "countryCode": 826,
+      "country": "United Kingdom",
+      "importsUsd": 1093642
+    },
+    {
+      "heading": "4905",
+      "countryCode": 380,
+      "country": "Italy",
+      "importsUsd": 441550
+    },
+    {
+      "heading": "4905",
+      "countryCode": 251,
+      "country": "France",
+      "importsUsd": 400751
+    },
+    {
+      "heading": "4905",
+      "countryCode": 276,
+      "country": "Germany",
+      "importsUsd": 293217
+    },
+    {
+      "heading": "4905",
+      "countryCode": 490,
+      "country": "Other Asia, nes",
+      "importsUsd": 249758
+    },
+    {
+      "heading": "4905",
+      "countryCode": 528,
+      "country": "Netherlands",
+      "importsUsd": 247047
+    },
+    {
+      "heading": "4905",
+      "countryCode": 410,
+      "country": "Rep. of Korea",
+      "importsUsd": 174131
+    },
+    {
+      "heading": "4905",
+      "countryCode": 704,
+      "country": "Viet Nam",
+      "importsUsd": 119885
+    },
+    {
+      "heading": "4905",
+      "countryCode": 458,
+      "country": "Malaysia",
+      "importsUsd": 108439
+    },
+    {
+      "heading": "4905",
+      "countryCode": 56,
+      "country": "Belgium",
+      "importsUsd": 100499
+    },
+    {
+      "heading": "4905",
+      "countryCode": 392,
+      "country": "Japan",
+      "importsUsd": 89170
+    },
+    {
+      "heading": "4905",
+      "countryCode": 616,
+      "country": "Poland",
+      "importsUsd": 81631
+    },
+    {
+      "heading": "4905",
+      "countryCode": 40,
+      "country": "Austria",
+      "importsUsd": 62021
+    },
+    {
+      "heading": "4905",
+      "countryCode": 804,
+      "country": "Ukraine",
+      "importsUsd": 29766
+    },
+    {
+      "heading": "4905",
+      "countryCode": 428,
+      "country": "Latvia",
+      "importsUsd": 26245
+    },
+    {
+      "heading": "4905",
+      "countryCode": 659,
+      "country": "Saint Kitts and Nevis",
+      "importsUsd": 22075
+    },
+    {
+      "heading": "4905",
+      "countryCode": 702,
+      "country": "Singapore",
+      "importsUsd": 17654
+    },
+    {
+      "heading": "4905",
+      "countryCode": 757,
+      "country": "Switzerland",
+      "importsUsd": 12903
+    },
+    {
+      "heading": "4905",
+      "countryCode": 36,
+      "country": "Australia",
+      "importsUsd": 10572
+    },
+    {
+      "heading": "4905",
+      "countryCode": 642,
+      "country": "Romania",
+      "importsUsd": 8149
+    },
+    {
+      "heading": "4905",
+      "countryCode": 376,
+      "country": "Israel",
+      "importsUsd": 7898
+    },
+    {
+      "heading": "4905",
+      "countryCode": 466,
+      "country": "Mali",
+      "importsUsd": 6634
+    },
+    {
+      "heading": "4905",
+      "countryCode": 724,
+      "country": "Spain",
+      "importsUsd": 5079
+    },
+    {
+      "heading": "4905",
+      "countryCode": 703,
+      "country": "Slovakia",
+      "importsUsd": 4875
+    },
+    {
+      "heading": "4905",
+      "countryCode": 372,
+      "country": "Ireland",
+      "importsUsd": 4829
+    },
+    {
+      "heading": "4905",
+      "countryCode": 792,
+      "country": "Türkiye",
+      "importsUsd": 4744
+    },
+    {
+      "heading": "4905",
+      "countryCode": 752,
+      "country": "Sweden",
+      "importsUsd": 3680
+    },
+    {
+      "heading": "4906",
+      "countryCode": 251,
+      "country": "France",
+      "importsUsd": 1027052
+    },
+    {
+      "heading": "4906",
+      "countryCode": 380,
+      "country": "Italy",
+      "importsUsd": 823735
+    },
+    {
+      "heading": "4906",
+      "countryCode": 826,
+      "country": "United Kingdom",
+      "importsUsd": 581817
+    },
+    {
+      "heading": "4906",
+      "countryCode": 276,
+      "country": "Germany",
+      "importsUsd": 478381
+    },
+    {
+      "heading": "4906",
+      "countryCode": 156,
+      "country": "China",
+      "importsUsd": 385892
+    },
+    {
+      "heading": "4906",
+      "countryCode": 484,
+      "country": "Mexico",
+      "importsUsd": 310134
+    },
+    {
+      "heading": "4906",
+      "countryCode": 392,
+      "country": "Japan",
+      "importsUsd": 264536
+    },
+    {
+      "heading": "4906",
+      "countryCode": 792,
+      "country": "Türkiye",
+      "importsUsd": 258933
+    },
+    {
+      "heading": "4906",
+      "countryCode": 710,
+      "country": "South Africa",
+      "importsUsd": 167893
+    },
+    {
+      "heading": "4906",
+      "countryCode": 124,
+      "country": "Canada",
+      "importsUsd": 92367
+    },
+    {
+      "heading": "4906",
+      "countryCode": 757,
+      "country": "Switzerland",
+      "importsUsd": 62318
+    },
+    {
+      "heading": "4906",
+      "countryCode": 528,
+      "country": "Netherlands",
+      "importsUsd": 58295
+    },
+    {
+      "heading": "4906",
+      "countryCode": 76,
+      "country": "Brazil",
+      "importsUsd": 56575
+    },
+    {
+      "heading": "4906",
+      "countryCode": 372,
+      "country": "Ireland",
+      "importsUsd": 48344
+    },
+    {
+      "heading": "4906",
+      "countryCode": 579,
+      "country": "Norway",
+      "importsUsd": 48273
+    },
+    {
+      "heading": "4906",
+      "countryCode": 620,
+      "country": "Portugal",
+      "importsUsd": 33579
+    },
+    {
+      "heading": "4906",
+      "countryCode": 586,
+      "country": "Pakistan",
+      "importsUsd": 30002
+    },
+    {
+      "heading": "4906",
+      "countryCode": 376,
+      "country": "Israel",
+      "importsUsd": 19288
+    },
+    {
+      "heading": "4906",
+      "countryCode": 591,
+      "country": "Panama",
+      "importsUsd": 15250
+    },
+    {
+      "heading": "4906",
+      "countryCode": 752,
+      "country": "Sweden",
+      "importsUsd": 14733
+    },
+    {
+      "heading": "4906",
+      "countryCode": 40,
+      "country": "Austria",
+      "importsUsd": 11219
+    },
+    {
+      "heading": "4906",
+      "countryCode": 704,
+      "country": "Viet Nam",
+      "importsUsd": 10194
+    },
+    {
+      "heading": "4906",
+      "countryCode": 208,
+      "country": "Denmark",
+      "importsUsd": 9877
+    },
+    {
+      "heading": "4906",
+      "countryCode": 784,
+      "country": "United Arab Emirates",
+      "importsUsd": 8588
+    },
+    {
+      "heading": "4906",
+      "countryCode": 246,
+      "country": "Finland",
+      "importsUsd": 6546
+    },
+    {
+      "heading": "4906",
+      "countryCode": 152,
+      "country": "Chile",
+      "importsUsd": 3536
+    },
+    {
+      "heading": "4906",
+      "countryCode": 458,
+      "country": "Malaysia",
+      "importsUsd": 2607
+    },
+    {
+      "heading": "4906",
+      "countryCode": 699,
+      "country": "India",
+      "importsUsd": 2461
+    },
+    {
+      "heading": "4906",
+      "countryCode": 702,
+      "country": "Singapore",
+      "importsUsd": 2435
+    },
+    {
+      "heading": "4907",
+      "countryCode": 124,
+      "country": "Canada",
+      "importsUsd": 11760353
+    },
+    {
+      "heading": "4907",
+      "countryCode": 276,
+      "country": "Germany",
+      "importsUsd": 8412242
+    },
+    {
+      "heading": "4907",
+      "countryCode": 372,
+      "country": "Ireland",
+      "importsUsd": 6144283
+    },
+    {
+      "heading": "4907",
+      "countryCode": 368,
+      "country": "Iraq",
+      "importsUsd": 5735656
+    },
+    {
+      "heading": "4907",
+      "countryCode": 862,
+      "country": "Venezuela",
+      "importsUsd": 2356895
+    },
+    {
+      "heading": "4907",
+      "countryCode": 504,
+      "country": "Morocco",
+      "importsUsd": 1615395
+    },
+    {
+      "heading": "4907",
+      "countryCode": 704,
+      "country": "Viet Nam",
+      "importsUsd": 1597986
+    },
+    {
+      "heading": "4907",
+      "countryCode": 470,
+      "country": "Malta",
+      "importsUsd": 1547007
+    },
+    {
+      "heading": "4907",
+      "countryCode": 716,
+      "country": "Zimbabwe",
+      "importsUsd": 592005
+    },
+    {
+      "heading": "4907",
+      "countryCode": 740,
+      "country": "Suriname",
+      "importsUsd": 556184
+    },
+    {
+      "heading": "4907",
+      "countryCode": 528,
+      "country": "Netherlands",
+      "importsUsd": 538083
+    },
+    {
+      "heading": "4907",
+      "countryCode": 328,
+      "country": "Guyana",
+      "importsUsd": 517742
+    },
+    {
+      "heading": "4907",
+      "countryCode": 480,
+      "country": "Mauritius",
+      "importsUsd": 479845
+    },
+    {
+      "heading": "4907",
+      "countryCode": 410,
+      "country": "Rep. of Korea",
+      "importsUsd": 403759
+    },
+    {
+      "heading": "4907",
+      "countryCode": 242,
+      "country": "Fiji",
+      "importsUsd": 379897
+    },
+    {
+      "heading": "4907",
+      "countryCode": 392,
+      "country": "Japan",
+      "importsUsd": 278419
+    },
+    {
+      "heading": "4907",
+      "countryCode": 826,
+      "country": "United Kingdom",
+      "importsUsd": 220051
+    },
+    {
+      "heading": "4907",
+      "countryCode": 360,
+      "country": "Indonesia",
+      "importsUsd": 207891
+    },
+    {
+      "heading": "4907",
+      "countryCode": 156,
+      "country": "China",
+      "importsUsd": 179556
+    },
+    {
+      "heading": "4907",
+      "countryCode": 380,
+      "country": "Italy",
+      "importsUsd": 118675
+    },
+    {
+      "heading": "4907",
+      "countryCode": 608,
+      "country": "Philippines",
+      "importsUsd": 105892
+    },
+    {
+      "heading": "4907",
+      "countryCode": 484,
+      "country": "Mexico",
+      "importsUsd": 93119
+    },
+    {
+      "heading": "4907",
+      "countryCode": 36,
+      "country": "Australia",
+      "importsUsd": 92559
+    },
+    {
+      "heading": "4907",
+      "countryCode": 792,
+      "country": "Türkiye",
+      "importsUsd": 79602
+    },
+    {
+      "heading": "4907",
+      "countryCode": 660,
+      "country": "Anguilla",
+      "importsUsd": 76743
+    },
+    {
+      "heading": "4907",
+      "countryCode": 702,
+      "country": "Singapore",
+      "importsUsd": 70942
+    },
+    {
+      "heading": "4907",
+      "countryCode": 710,
+      "country": "South Africa",
+      "importsUsd": 67439
+    },
+    {
+      "heading": "4907",
+      "countryCode": 458,
+      "country": "Malaysia",
+      "importsUsd": 67404
+    },
+    {
+      "heading": "4907",
+      "countryCode": 699,
+      "country": "India",
+      "importsUsd": 66758
+    },
+    {
+      "heading": "4907",
+      "countryCode": 764,
+      "country": "Thailand",
+      "importsUsd": 44753
+    },
+    {
+      "heading": "4907",
+      "countryCode": 724,
+      "country": "Spain",
+      "importsUsd": 44325
+    },
+    {
+      "heading": "4907",
+      "countryCode": 422,
+      "country": "Lebanon",
+      "importsUsd": 42282
+    },
+    {
+      "heading": "4907",
+      "countryCode": 566,
+      "country": "Nigeria",
+      "importsUsd": 42070
+    },
+    {
+      "heading": "4907",
+      "countryCode": 344,
+      "country": "China, Hong Kong SAR",
+      "importsUsd": 39655
+    },
+    {
+      "heading": "4907",
+      "countryCode": 348,
+      "country": "Hungary",
+      "importsUsd": 37050
+    },
+    {
+      "heading": "4907",
+      "countryCode": 490,
+      "country": "Other Asia, nes",
+      "importsUsd": 35855
+    },
+    {
+      "heading": "4907",
+      "countryCode": 531,
+      "country": "Curaçao",
+      "importsUsd": 28203
+    },
+    {
+      "heading": "4907",
+      "countryCode": 659,
+      "country": "Saint Kitts and Nevis",
+      "importsUsd": 25091
+    },
+    {
+      "heading": "4907",
+      "countryCode": 752,
+      "country": "Sweden",
+      "importsUsd": 24937
+    },
+    {
+      "heading": "4907",
+      "countryCode": 48,
+      "country": "Bahrain",
+      "importsUsd": 24358
+    },
+    {
+      "heading": "4907",
+      "countryCode": 512,
+      "country": "Oman",
+      "importsUsd": 23819
+    },
+    {
+      "heading": "4907",
+      "countryCode": 44,
+      "country": "Bahamas",
+      "importsUsd": 23199
+    },
+    {
+      "heading": "4907",
+      "countryCode": 203,
+      "country": "Czechia",
+      "importsUsd": 19679
+    },
+    {
+      "heading": "4907",
+      "countryCode": 100,
+      "country": "Bulgaria",
+      "importsUsd": 18257
+    },
+    {
+      "heading": "4907",
+      "countryCode": 32,
+      "country": "Argentina",
+      "importsUsd": 18050
+    },
+    {
+      "heading": "4907",
+      "countryCode": 84,
+      "country": "Belize",
+      "importsUsd": 17648
+    },
+    {
+      "heading": "4907",
+      "countryCode": 818,
+      "country": "Egypt",
+      "importsUsd": 16791
+    },
+    {
+      "heading": "4907",
+      "countryCode": 376,
+      "country": "Israel",
+      "importsUsd": 14781
+    },
+    {
+      "heading": "4907",
+      "countryCode": 446,
+      "country": "China, Macao SAR",
+      "importsUsd": 14266
+    },
+    {
+      "heading": "4907",
+      "countryCode": 251,
+      "country": "France",
+      "importsUsd": 13671
+    },
+    {
+      "heading": "4907",
+      "countryCode": 50,
+      "country": "Bangladesh",
+      "importsUsd": 12262
+    },
+    {
+      "heading": "4907",
+      "countryCode": 108,
+      "country": "Burundi",
+      "importsUsd": 11552
+    },
+    {
+      "heading": "4907",
+      "countryCode": 762,
+      "country": "Tajikistan",
+      "importsUsd": 11185
+    },
+    {
+      "heading": "4907",
+      "countryCode": 208,
+      "country": "Denmark",
+      "importsUsd": 10919
+    },
+    {
+      "heading": "4907",
+      "countryCode": 757,
+      "country": "Switzerland",
+      "importsUsd": 10382
+    },
+    {
+      "heading": "4907",
+      "countryCode": 104,
+      "country": "Myanmar",
+      "importsUsd": 9970
+    },
+    {
+      "heading": "4907",
+      "countryCode": 860,
+      "country": "Uzbekistan",
+      "importsUsd": 9957
+    },
+    {
+      "heading": "4907",
+      "countryCode": 643,
+      "country": "Russian Federation",
+      "importsUsd": 8953
+    },
+    {
+      "heading": "4907",
+      "countryCode": 462,
+      "country": "Maldives",
+      "importsUsd": 7733
+    },
+    {
+      "heading": "4907",
+      "countryCode": 784,
+      "country": "United Arab Emirates",
+      "importsUsd": 6647
+    },
+    {
+      "heading": "4907",
+      "countryCode": 340,
+      "country": "Honduras",
+      "importsUsd": 6139
+    },
+    {
+      "heading": "4907",
+      "countryCode": 398,
+      "country": "Kazakhstan",
+      "importsUsd": 6134
+    },
+    {
+      "heading": "4907",
+      "countryCode": 112,
+      "country": "Belarus",
+      "importsUsd": 5666
+    },
+    {
+      "heading": "4907",
+      "countryCode": 188,
+      "country": "Costa Rica",
+      "importsUsd": 5517
+    },
+    {
+      "heading": "4907",
+      "countryCode": 498,
+      "country": "Rep. of Moldova",
+      "importsUsd": 5016
+    },
+    {
+      "heading": "4907",
+      "countryCode": 454,
+      "country": "Malawi",
+      "importsUsd": 4985
+    },
+    {
+      "heading": "4907",
+      "countryCode": 12,
+      "country": "Algeria",
+      "importsUsd": 4709
+    },
+    {
+      "heading": "4907",
+      "countryCode": 703,
+      "country": "Slovakia",
+      "importsUsd": 4649
+    },
+    {
+      "heading": "4907",
+      "countryCode": 76,
+      "country": "Brazil",
+      "importsUsd": 4579
+    },
+    {
+      "heading": "4907",
+      "countryCode": 417,
+      "country": "Kyrgyzstan",
+      "importsUsd": 4482
+    },
+    {
+      "heading": "4907",
+      "countryCode": 300,
+      "country": "Greece",
+      "importsUsd": 4323
+    },
+    {
+      "heading": "4907",
+      "countryCode": 152,
+      "country": "Chile",
+      "importsUsd": 4215
+    },
+    {
+      "heading": "4907",
+      "countryCode": 516,
+      "country": "Namibia",
+      "importsUsd": 3701
+    },
+    {
+      "heading": "4907",
+      "countryCode": 204,
+      "country": "Benin",
+      "importsUsd": 3660
+    },
+    {
+      "heading": "4907",
+      "countryCode": 434,
+      "country": "Libya",
+      "importsUsd": 3106
+    },
+    {
+      "heading": "4907",
+      "countryCode": 414,
+      "country": "Kuwait",
+      "importsUsd": 3045
+    },
+    {
+      "heading": "4907",
+      "countryCode": 430,
+      "country": "Liberia",
+      "importsUsd": 3012
+    },
+    {
+      "heading": "4907",
+      "countryCode": 688,
+      "country": "Serbia",
+      "importsUsd": 2726
+    },
+    {
+      "heading": "4907",
+      "countryCode": 894,
+      "country": "Zambia",
+      "importsUsd": 2693
+    },
+    {
+      "heading": "4907",
+      "countryCode": 8,
+      "country": "Albania",
+      "importsUsd": 2636
+    },
+    {
+      "heading": "4907",
+      "countryCode": 690,
+      "country": "Seychelles",
+      "importsUsd": 2627
+    },
+    {
+      "heading": "4907",
+      "countryCode": 320,
+      "country": "Guatemala",
+      "importsUsd": 2570
+    },
+    {
+      "heading": "4907",
+      "countryCode": 332,
+      "country": "Haiti",
+      "importsUsd": 2500
+    },
+    {
+      "heading": "4907",
+      "countryCode": 324,
+      "country": "Guinea",
+      "importsUsd": 2419
+    },
+    {
+      "heading": "4907",
+      "countryCode": 288,
+      "country": "Ghana",
+      "importsUsd": 2273
+    },
+    {
+      "heading": "4907",
+      "countryCode": 96,
+      "country": "Brunei Darussalam",
+      "importsUsd": 2239
+    },
+    {
+      "heading": "4907",
+      "countryCode": 682,
+      "country": "Saudi Arabia",
+      "importsUsd": 2152
+    },
+    {
+      "heading": "4908",
+      "countryCode": 156,
+      "country": "China",
+      "importsUsd": 18143556
+    },
+    {
+      "heading": "4908",
+      "countryCode": 484,
+      "country": "Mexico",
+      "importsUsd": 16638105
+    },
+    {
+      "heading": "4908",
+      "countryCode": 392,
+      "country": "Japan",
+      "importsUsd": 13680482
+    },
+    {
+      "heading": "4908",
+      "countryCode": 276,
+      "country": "Germany",
+      "importsUsd": 6993229
+    },
+    {
+      "heading": "4908",
+      "countryCode": 124,
+      "country": "Canada",
+      "importsUsd": 6809667
+    },
+    {
+      "heading": "4908",
+      "countryCode": 490,
+      "country": "Other Asia, nes",
+      "importsUsd": 5889021
+    },
+    {
+      "heading": "4908",
+      "countryCode": 380,
+      "country": "Italy",
+      "importsUsd": 4423318
+    },
+    {
+      "heading": "4908",
+      "countryCode": 222,
+      "country": "El Salvador",
+      "importsUsd": 3967633
+    },
+    {
+      "heading": "4908",
+      "countryCode": 757,
+      "country": "Switzerland",
+      "importsUsd": 3632093
+    },
+    {
+      "heading": "4908",
+      "countryCode": 724,
+      "country": "Spain",
+      "importsUsd": 3321934
+    },
+    {
+      "heading": "4908",
+      "countryCode": 826,
+      "country": "United Kingdom",
+      "importsUsd": 2271888
+    },
+    {
+      "heading": "4908",
+      "countryCode": 340,
+      "country": "Honduras",
+      "importsUsd": 2125672
+    },
+    {
+      "heading": "4908",
+      "countryCode": 528,
+      "country": "Netherlands",
+      "importsUsd": 1489822
+    },
+    {
+      "heading": "4908",
+      "countryCode": 410,
+      "country": "Rep. of Korea",
+      "importsUsd": 1087091
+    },
+    {
+      "heading": "4908",
+      "countryCode": 40,
+      "country": "Austria",
+      "importsUsd": 979342
+    },
+    {
+      "heading": "4908",
+      "countryCode": 251,
+      "country": "France",
+      "importsUsd": 773701
+    },
+    {
+      "heading": "4908",
+      "countryCode": 710,
+      "country": "South Africa",
+      "importsUsd": 674214
+    },
+    {
+      "heading": "4908",
+      "countryCode": 579,
+      "country": "Norway",
+      "importsUsd": 596811
+    },
+    {
+      "heading": "4908",
+      "countryCode": 705,
+      "country": "Slovenia",
+      "importsUsd": 523963
+    },
+    {
+      "heading": "4908",
+      "countryCode": 792,
+      "country": "Türkiye",
+      "importsUsd": 448897
+    },
+    {
+      "heading": "4908",
+      "countryCode": 704,
+      "country": "Viet Nam",
+      "importsUsd": 293445
+    },
+    {
+      "heading": "4908",
+      "countryCode": 372,
+      "country": "Ireland",
+      "importsUsd": 176388
+    },
+    {
+      "heading": "4908",
+      "countryCode": 554,
+      "country": "New Zealand",
+      "importsUsd": 161608
+    },
+    {
+      "heading": "4908",
+      "countryCode": 376,
+      "country": "Israel",
+      "importsUsd": 123571
+    },
+    {
+      "heading": "4908",
+      "countryCode": 764,
+      "country": "Thailand",
+      "importsUsd": 121966
+    },
+    {
+      "heading": "4908",
+      "countryCode": 616,
+      "country": "Poland",
+      "importsUsd": 82971
+    },
+    {
+      "heading": "4908",
+      "countryCode": 170,
+      "country": "Colombia",
+      "importsUsd": 61426
+    },
+    {
+      "heading": "4908",
+      "countryCode": 36,
+      "country": "Australia",
+      "importsUsd": 56817
+    },
+    {
+      "heading": "4908",
+      "countryCode": 344,
+      "country": "China, Hong Kong SAR",
+      "importsUsd": 51790
+    },
+    {
+      "heading": "4908",
+      "countryCode": 440,
+      "country": "Lithuania",
+      "importsUsd": 43697
+    },
+    {
+      "heading": "4908",
+      "countryCode": 699,
+      "country": "India",
+      "importsUsd": 35826
+    },
+    {
+      "heading": "4908",
+      "countryCode": 76,
+      "country": "Brazil",
+      "importsUsd": 21083
+    },
+    {
+      "heading": "4908",
+      "countryCode": 360,
+      "country": "Indonesia",
+      "importsUsd": 16963
+    },
+    {
+      "heading": "4908",
+      "countryCode": 458,
+      "country": "Malaysia",
+      "importsUsd": 15266
+    },
+    {
+      "heading": "4908",
+      "countryCode": 116,
+      "country": "Cambodia",
+      "importsUsd": 12346
+    },
+    {
+      "heading": "4908",
+      "countryCode": 348,
+      "country": "Hungary",
+      "importsUsd": 11227
+    },
+    {
+      "heading": "4908",
+      "countryCode": 752,
+      "country": "Sweden",
+      "importsUsd": 10377
+    },
+    {
+      "heading": "4908",
+      "countryCode": 642,
+      "country": "Romania",
+      "importsUsd": 7057
+    },
+    {
+      "heading": "4908",
+      "countryCode": 208,
+      "country": "Denmark",
+      "importsUsd": 6777
+    },
+    {
+      "heading": "4908",
+      "countryCode": 620,
+      "country": "Portugal",
+      "importsUsd": 6347
+    },
+    {
+      "heading": "4908",
+      "countryCode": 398,
+      "country": "Kazakhstan",
+      "importsUsd": 6253
+    },
+    {
+      "heading": "4908",
+      "countryCode": 56,
+      "country": "Belgium",
+      "importsUsd": 4600
+    },
+    {
+      "heading": "4908",
+      "countryCode": 246,
+      "country": "Finland",
+      "importsUsd": 4227
+    },
+    {
+      "heading": "4908",
+      "countryCode": 214,
+      "country": "Dominican Rep.",
+      "importsUsd": 4150
+    },
+    {
+      "heading": "4908",
+      "countryCode": 400,
+      "country": "Jordan",
+      "importsUsd": 2623
+    },
+    {
+      "heading": "4908",
+      "countryCode": 100,
+      "country": "Bulgaria",
+      "importsUsd": 2568
+    },
+    {
+      "heading": "4909",
+      "countryCode": 156,
+      "country": "China",
+      "importsUsd": 152178047
+    },
+    {
+      "heading": "4909",
+      "countryCode": 704,
+      "country": "Viet Nam",
+      "importsUsd": 82181186
+    },
+    {
+      "heading": "4909",
+      "countryCode": 826,
+      "country": "United Kingdom",
+      "importsUsd": 6293042
+    },
+    {
+      "heading": "4909",
+      "countryCode": 144,
+      "country": "Sri Lanka",
+      "importsUsd": 4651012
+    },
+    {
+      "heading": "4909",
+      "countryCode": 410,
+      "country": "Rep. of Korea",
+      "importsUsd": 3436531
+    },
+    {
+      "heading": "4909",
+      "countryCode": 124,
+      "country": "Canada",
+      "importsUsd": 3236596
+    },
+    {
+      "heading": "4909",
+      "countryCode": 50,
+      "country": "Bangladesh",
+      "importsUsd": 1797705
+    },
+    {
+      "heading": "4909",
+      "countryCode": 380,
+      "country": "Italy",
+      "importsUsd": 1356149
+    },
+    {
+      "heading": "4909",
+      "countryCode": 699,
+      "country": "India",
+      "importsUsd": 1281628
+    },
+    {
+      "heading": "4909",
+      "countryCode": 458,
+      "country": "Malaysia",
+      "importsUsd": 1266289
+    },
+    {
+      "heading": "4909",
+      "countryCode": 251,
+      "country": "France",
+      "importsUsd": 913686
+    },
+    {
+      "heading": "4909",
+      "countryCode": 608,
+      "country": "Philippines",
+      "importsUsd": 863674
+    },
+    {
+      "heading": "4909",
+      "countryCode": 116,
+      "country": "Cambodia",
+      "importsUsd": 793955
+    },
+    {
+      "heading": "4909",
+      "countryCode": 484,
+      "country": "Mexico",
+      "importsUsd": 744653
+    },
+    {
+      "heading": "4909",
+      "countryCode": 757,
+      "country": "Switzerland",
+      "importsUsd": 502630
+    },
+    {
+      "heading": "4909",
+      "countryCode": 276,
+      "country": "Germany",
+      "importsUsd": 365231
+    },
+    {
+      "heading": "4909",
+      "countryCode": 344,
+      "country": "China, Hong Kong SAR",
+      "importsUsd": 338122
+    },
+    {
+      "heading": "4909",
+      "countryCode": 392,
+      "country": "Japan",
+      "importsUsd": 291582
+    },
+    {
+      "heading": "4909",
+      "countryCode": 170,
+      "country": "Colombia",
+      "importsUsd": 279142
+    },
+    {
+      "heading": "4909",
+      "countryCode": 764,
+      "country": "Thailand",
+      "importsUsd": 279030
+    },
+    {
+      "heading": "4909",
+      "countryCode": 792,
+      "country": "Türkiye",
+      "importsUsd": 225990
+    },
+    {
+      "heading": "4909",
+      "countryCode": 490,
+      "country": "Other Asia, nes",
+      "importsUsd": 183695
+    },
+    {
+      "heading": "4909",
+      "countryCode": 616,
+      "country": "Poland",
+      "importsUsd": 169053
+    },
+    {
+      "heading": "4909",
+      "countryCode": 360,
+      "country": "Indonesia",
+      "importsUsd": 166648
+    },
+    {
+      "heading": "4909",
+      "countryCode": 528,
+      "country": "Netherlands",
+      "importsUsd": 158595
+    },
+    {
+      "heading": "4909",
+      "countryCode": 36,
+      "country": "Australia",
+      "importsUsd": 97642
+    },
+    {
+      "heading": "4909",
+      "countryCode": 554,
+      "country": "New Zealand",
+      "importsUsd": 92411
+    },
+    {
+      "heading": "4909",
+      "countryCode": 724,
+      "country": "Spain",
+      "importsUsd": 91788
+    },
+    {
+      "heading": "4909",
+      "countryCode": 703,
+      "country": "Slovakia",
+      "importsUsd": 80104
+    },
+    {
+      "heading": "4909",
+      "countryCode": 372,
+      "country": "Ireland",
+      "importsUsd": 69900
+    },
+    {
+      "heading": "4909",
+      "countryCode": 642,
+      "country": "Romania",
+      "importsUsd": 68847
+    },
+    {
+      "heading": "4909",
+      "countryCode": 332,
+      "country": "Haiti",
+      "importsUsd": 57532
+    },
+    {
+      "heading": "4909",
+      "countryCode": 376,
+      "country": "Israel",
+      "importsUsd": 49886
+    },
+    {
+      "heading": "4909",
+      "countryCode": 752,
+      "country": "Sweden",
+      "importsUsd": 49604
+    },
+    {
+      "heading": "4909",
+      "countryCode": 104,
+      "country": "Myanmar",
+      "importsUsd": 48000
+    },
+    {
+      "heading": "4909",
+      "countryCode": 203,
+      "country": "Czechia",
+      "importsUsd": 22603
+    },
+    {
+      "heading": "4909",
+      "countryCode": 40,
+      "country": "Austria",
+      "importsUsd": 22185
+    },
+    {
+      "heading": "4909",
+      "countryCode": 32,
+      "country": "Argentina",
+      "importsUsd": 16400
+    },
+    {
+      "heading": "4909",
+      "countryCode": 76,
+      "country": "Brazil",
+      "importsUsd": 15452
+    },
+    {
+      "heading": "4909",
+      "countryCode": 688,
+      "country": "Serbia",
+      "importsUsd": 14053
+    },
+    {
+      "heading": "4909",
+      "countryCode": 428,
+      "country": "Latvia",
+      "importsUsd": 13942
+    },
+    {
+      "heading": "4909",
+      "countryCode": 56,
+      "country": "Belgium",
+      "importsUsd": 13928
+    },
+    {
+      "heading": "4909",
+      "countryCode": 634,
+      "country": "Qatar",
+      "importsUsd": 8326
+    },
+    {
+      "heading": "4909",
+      "countryCode": 100,
+      "country": "Bulgaria",
+      "importsUsd": 6507
+    },
+    {
+      "heading": "4909",
+      "countryCode": 620,
+      "country": "Portugal",
+      "importsUsd": 6347
+    },
+    {
+      "heading": "4909",
+      "countryCode": 51,
+      "country": "Armenia",
+      "importsUsd": 4960
+    },
+    {
+      "heading": "4909",
+      "countryCode": 784,
+      "country": "United Arab Emirates",
+      "importsUsd": 4919
+    },
+    {
+      "heading": "4909",
+      "countryCode": 710,
+      "country": "South Africa",
+      "importsUsd": 4162
+    },
+    {
+      "heading": "4909",
+      "countryCode": 348,
+      "country": "Hungary",
+      "importsUsd": 4058
+    },
+    {
+      "heading": "4909",
+      "countryCode": 191,
+      "country": "Croatia",
+      "importsUsd": 3816
+    },
+    {
+      "heading": "4909",
+      "countryCode": 702,
+      "country": "Singapore",
+      "importsUsd": 3226
+    },
+    {
+      "heading": "4909",
+      "countryCode": 268,
+      "country": "Georgia",
+      "importsUsd": 3198
+    },
+    {
+      "heading": "4909",
+      "countryCode": 674,
+      "country": "San Marino",
+      "importsUsd": 3119
+    },
+    {
+      "heading": "4909",
+      "countryCode": 440,
+      "country": "Lithuania",
+      "importsUsd": 2247
+    },
+    {
+      "heading": "4910",
+      "countryCode": 156,
+      "country": "China",
+      "importsUsd": 55222482
+    },
+    {
+      "heading": "4910",
+      "countryCode": 410,
+      "country": "Rep. of Korea",
+      "importsUsd": 14041538
+    },
+    {
+      "heading": "4910",
+      "countryCode": 124,
+      "country": "Canada",
+      "importsUsd": 11268772
+    },
+    {
+      "heading": "4910",
+      "countryCode": 704,
+      "country": "Viet Nam",
+      "importsUsd": 10942839
+    },
+    {
+      "heading": "4910",
+      "countryCode": 699,
+      "country": "India",
+      "importsUsd": 5381934
+    },
+    {
+      "heading": "4910",
+      "countryCode": 764,
+      "country": "Thailand",
+      "importsUsd": 2483299
+    },
+    {
+      "heading": "4910",
+      "countryCode": 484,
+      "country": "Mexico",
+      "importsUsd": 1877105
+    },
+    {
+      "heading": "4910",
+      "countryCode": 276,
+      "country": "Germany",
+      "importsUsd": 1292239
+    },
+    {
+      "heading": "4910",
+      "countryCode": 392,
+      "country": "Japan",
+      "importsUsd": 1035339
+    },
+    {
+      "heading": "4910",
+      "countryCode": 490,
+      "country": "Other Asia, nes",
+      "importsUsd": 768642
+    },
+    {
+      "heading": "4910",
+      "countryCode": 380,
+      "country": "Italy",
+      "importsUsd": 715067
+    },
+    {
+      "heading": "4910",
+      "countryCode": 826,
+      "country": "United Kingdom",
+      "importsUsd": 647625
+    },
+    {
+      "heading": "4910",
+      "countryCode": 458,
+      "country": "Malaysia",
+      "importsUsd": 608824
+    },
+    {
+      "heading": "4910",
+      "countryCode": 116,
+      "country": "Cambodia",
+      "importsUsd": 484194
+    },
+    {
+      "heading": "4910",
+      "countryCode": 344,
+      "country": "China, Hong Kong SAR",
+      "importsUsd": 407145
+    },
+    {
+      "heading": "4910",
+      "countryCode": 616,
+      "country": "Poland",
+      "importsUsd": 176164
+    },
+    {
+      "heading": "4910",
+      "countryCode": 528,
+      "country": "Netherlands",
+      "importsUsd": 164525
+    },
+    {
+      "heading": "4910",
+      "countryCode": 376,
+      "country": "Israel",
+      "importsUsd": 161427
+    },
+    {
+      "heading": "4910",
+      "countryCode": 757,
+      "country": "Switzerland",
+      "importsUsd": 142836
+    },
+    {
+      "heading": "4910",
+      "countryCode": 70,
+      "country": "Bosnia Herzegovina",
+      "importsUsd": 73442
+    },
+    {
+      "heading": "4910",
+      "countryCode": 620,
+      "country": "Portugal",
+      "importsUsd": 60007
+    },
+    {
+      "heading": "4910",
+      "countryCode": 170,
+      "country": "Colombia",
+      "importsUsd": 47039
+    },
+    {
+      "heading": "4910",
+      "countryCode": 710,
+      "country": "South Africa",
+      "importsUsd": 45147
+    },
+    {
+      "heading": "4910",
+      "countryCode": 208,
+      "country": "Denmark",
+      "importsUsd": 36955
+    },
+    {
+      "heading": "4910",
+      "countryCode": 724,
+      "country": "Spain",
+      "importsUsd": 29316
+    },
+    {
+      "heading": "4910",
+      "countryCode": 203,
+      "country": "Czechia",
+      "importsUsd": 25322
+    },
+    {
+      "heading": "4910",
+      "countryCode": 792,
+      "country": "Türkiye",
+      "importsUsd": 25024
+    },
+    {
+      "heading": "4910",
+      "countryCode": 50,
+      "country": "Bangladesh",
+      "importsUsd": 23152
+    },
+    {
+      "heading": "4910",
+      "countryCode": 554,
+      "country": "New Zealand",
+      "importsUsd": 18559
+    },
+    {
+      "heading": "4910",
+      "countryCode": 36,
+      "country": "Australia",
+      "importsUsd": 16955
+    },
+    {
+      "heading": "4910",
+      "countryCode": 100,
+      "country": "Bulgaria",
+      "importsUsd": 16850
+    },
+    {
+      "heading": "4910",
+      "countryCode": 300,
+      "country": "Greece",
+      "importsUsd": 11170
+    },
+    {
+      "heading": "4910",
+      "countryCode": 188,
+      "country": "Costa Rica",
+      "importsUsd": 10690
+    },
+    {
+      "heading": "4910",
+      "countryCode": 40,
+      "country": "Austria",
+      "importsUsd": 10485
+    },
+    {
+      "heading": "4910",
+      "countryCode": 579,
+      "country": "Norway",
+      "importsUsd": 8274
+    },
+    {
+      "heading": "4910",
+      "countryCode": 214,
+      "country": "Dominican Rep.",
+      "importsUsd": 7823
+    },
+    {
+      "heading": "4910",
+      "countryCode": 688,
+      "country": "Serbia",
+      "importsUsd": 7495
+    },
+    {
+      "heading": "4910",
+      "countryCode": 222,
+      "country": "El Salvador",
+      "importsUsd": 6695
+    },
+    {
+      "heading": "4910",
+      "countryCode": 604,
+      "country": "Peru",
+      "importsUsd": 6414
+    },
+    {
+      "heading": "4910",
+      "countryCode": 372,
+      "country": "Ireland",
+      "importsUsd": 6173
+    },
+    {
+      "heading": "4910",
+      "countryCode": 360,
+      "country": "Indonesia",
+      "importsUsd": 5599
+    },
+    {
+      "heading": "4910",
+      "countryCode": 251,
+      "country": "France",
+      "importsUsd": 4719
+    },
+    {
+      "heading": "4910",
+      "countryCode": 428,
+      "country": "Latvia",
+      "importsUsd": 2525
+    },
+    {
+      "heading": "4911",
+      "countryCode": 156,
+      "country": "China",
+      "importsUsd": 643537716
+    },
+    {
+      "heading": "4911",
+      "countryCode": 484,
+      "country": "Mexico",
+      "importsUsd": 329225935
+    },
+    {
+      "heading": "4911",
+      "countryCode": 124,
+      "country": "Canada",
+      "importsUsd": 263397538
+    },
+    {
+      "heading": "4911",
+      "countryCode": 276,
+      "country": "Germany",
+      "importsUsd": 73207425
+    },
+    {
+      "heading": "4911",
+      "countryCode": 757,
+      "country": "Switzerland",
+      "importsUsd": 63213023
+    },
+    {
+      "heading": "4911",
+      "countryCode": 380,
+      "country": "Italy",
+      "importsUsd": 58992417
+    },
+    {
+      "heading": "4911",
+      "countryCode": 392,
+      "country": "Japan",
+      "importsUsd": 50773354
+    },
+    {
+      "heading": "4911",
+      "countryCode": 251,
+      "country": "France",
+      "importsUsd": 37543430
+    },
+    {
+      "heading": "4911",
+      "countryCode": 826,
+      "country": "United Kingdom",
+      "importsUsd": 26841822
+    },
+    {
+      "heading": "4911",
+      "countryCode": 699,
+      "country": "India",
+      "importsUsd": 24837461
+    },
+    {
+      "heading": "4911",
+      "countryCode": 410,
+      "country": "Rep. of Korea",
+      "importsUsd": 22610645
+    },
+    {
+      "heading": "4911",
+      "countryCode": 704,
+      "country": "Viet Nam",
+      "importsUsd": 19419375
+    },
+    {
+      "heading": "4911",
+      "countryCode": 56,
+      "country": "Belgium",
+      "importsUsd": 18366968
+    },
+    {
+      "heading": "4911",
+      "countryCode": 458,
+      "country": "Malaysia",
+      "importsUsd": 17821054
+    },
+    {
+      "heading": "4911",
+      "countryCode": 792,
+      "country": "Türkiye",
+      "importsUsd": 12842660
+    },
+    {
+      "heading": "4911",
+      "countryCode": 490,
+      "country": "Other Asia, nes",
+      "importsUsd": 11941615
+    },
+    {
+      "heading": "4911",
+      "countryCode": 528,
+      "country": "Netherlands",
+      "importsUsd": 5540008
+    },
+    {
+      "heading": "4911",
+      "countryCode": 724,
+      "country": "Spain",
+      "importsUsd": 5479499
+    },
+    {
+      "heading": "4911",
+      "countryCode": 616,
+      "country": "Poland",
+      "importsUsd": 5362561
+    },
+    {
+      "heading": "4911",
+      "countryCode": 372,
+      "country": "Ireland",
+      "importsUsd": 4951230
+    },
+    {
+      "heading": "4911",
+      "countryCode": 36,
+      "country": "Australia",
+      "importsUsd": 3223567
+    },
+    {
+      "heading": "4911",
+      "countryCode": 116,
+      "country": "Cambodia",
+      "importsUsd": 2932104
+    },
+    {
+      "heading": "4911",
+      "countryCode": 40,
+      "country": "Austria",
+      "importsUsd": 2458513
+    },
+    {
+      "heading": "4911",
+      "countryCode": 752,
+      "country": "Sweden",
+      "importsUsd": 2358591
+    },
+    {
+      "heading": "4911",
+      "countryCode": 203,
+      "country": "Czechia",
+      "importsUsd": 2197675
+    },
+    {
+      "heading": "4911",
+      "countryCode": 764,
+      "country": "Thailand",
+      "importsUsd": 2102189
+    },
+    {
+      "heading": "4911",
+      "countryCode": 710,
+      "country": "South Africa",
+      "importsUsd": 2008671
+    },
+    {
+      "heading": "4911",
+      "countryCode": 376,
+      "country": "Israel",
+      "importsUsd": 1995913
+    },
+    {
+      "heading": "4911",
+      "countryCode": 360,
+      "country": "Indonesia",
+      "importsUsd": 1816724
+    },
+    {
+      "heading": "4911",
+      "countryCode": 170,
+      "country": "Colombia",
+      "importsUsd": 1734681
+    },
+    {
+      "heading": "4911",
+      "countryCode": 208,
+      "country": "Denmark",
+      "importsUsd": 1608170
+    },
+    {
+      "heading": "4911",
+      "countryCode": 100,
+      "country": "Bulgaria",
+      "importsUsd": 1330644
+    },
+    {
+      "heading": "4911",
+      "countryCode": 76,
+      "country": "Brazil",
+      "importsUsd": 1254320
+    },
+    {
+      "heading": "4911",
+      "countryCode": 188,
+      "country": "Costa Rica",
+      "importsUsd": 1174616
+    },
+    {
+      "heading": "4911",
+      "countryCode": 784,
+      "country": "United Arab Emirates",
+      "importsUsd": 1108857
+    },
+    {
+      "heading": "4911",
+      "countryCode": 470,
+      "country": "Malta",
+      "importsUsd": 953378
+    },
+    {
+      "heading": "4911",
+      "countryCode": 214,
+      "country": "Dominican Rep.",
+      "importsUsd": 947815
+    },
+    {
+      "heading": "4911",
+      "countryCode": 702,
+      "country": "Singapore",
+      "importsUsd": 860085
+    },
+    {
+      "heading": "4911",
+      "countryCode": 246,
+      "country": "Finland",
+      "importsUsd": 741161
+    },
+    {
+      "heading": "4911",
+      "countryCode": 32,
+      "country": "Argentina",
+      "importsUsd": 572069
+    },
+    {
+      "heading": "4911",
+      "countryCode": 344,
+      "country": "China, Hong Kong SAR",
+      "importsUsd": 550288
+    },
+    {
+      "heading": "4911",
+      "countryCode": 422,
+      "country": "Lebanon",
+      "importsUsd": 519042
+    },
+    {
+      "heading": "4911",
+      "countryCode": 804,
+      "country": "Ukraine",
+      "importsUsd": 473645
+    },
+    {
+      "heading": "4911",
+      "countryCode": 300,
+      "country": "Greece",
+      "importsUsd": 468208
+    },
+    {
+      "heading": "4911",
+      "countryCode": 579,
+      "country": "Norway",
+      "importsUsd": 467377
+    },
+    {
+      "heading": "4911",
+      "countryCode": 642,
+      "country": "Romania",
+      "importsUsd": 418381
+    },
+    {
+      "heading": "4911",
+      "countryCode": 586,
+      "country": "Pakistan",
+      "importsUsd": 405669
+    },
+    {
+      "heading": "4911",
+      "countryCode": 222,
+      "country": "El Salvador",
+      "importsUsd": 373177
+    },
+    {
+      "heading": "4911",
+      "countryCode": 348,
+      "country": "Hungary",
+      "importsUsd": 360358
+    },
+    {
+      "heading": "4911",
+      "countryCode": 268,
+      "country": "Georgia",
+      "importsUsd": 262947
+    },
+    {
+      "heading": "4911",
+      "countryCode": 703,
+      "country": "Slovakia",
+      "importsUsd": 242396
+    },
+    {
+      "heading": "4911",
+      "countryCode": 50,
+      "country": "Bangladesh",
+      "importsUsd": 240853
+    },
+    {
+      "heading": "4911",
+      "countryCode": 620,
+      "country": "Portugal",
+      "importsUsd": 218690
+    },
+    {
+      "heading": "4911",
+      "countryCode": 233,
+      "country": "Estonia",
+      "importsUsd": 187849
+    },
+    {
+      "heading": "4911",
+      "countryCode": 440,
+      "country": "Lithuania",
+      "importsUsd": 173375
+    },
+    {
+      "heading": "4911",
+      "countryCode": 554,
+      "country": "New Zealand",
+      "importsUsd": 172667
+    },
+    {
+      "heading": "4911",
+      "countryCode": 862,
+      "country": "Venezuela",
+      "importsUsd": 138152
+    },
+    {
+      "heading": "4911",
+      "countryCode": 608,
+      "country": "Philippines",
+      "importsUsd": 120361
+    },
+    {
+      "heading": "4911",
+      "countryCode": 152,
+      "country": "Chile",
+      "importsUsd": 117611
+    },
+    {
+      "heading": "4911",
+      "countryCode": 807,
+      "country": "North Macedonia",
+      "importsUsd": 87412
+    },
+    {
+      "heading": "4911",
+      "countryCode": 320,
+      "country": "Guatemala",
+      "importsUsd": 83144
+    },
+    {
+      "heading": "4911",
+      "countryCode": 20,
+      "country": "Andorra",
+      "importsUsd": 76542
+    },
+    {
+      "heading": "4911",
+      "countryCode": 688,
+      "country": "Serbia",
+      "importsUsd": 75886
+    },
+    {
+      "heading": "4911",
+      "countryCode": 818,
+      "country": "Egypt",
+      "importsUsd": 75845
+    },
+    {
+      "heading": "4911",
+      "countryCode": 288,
+      "country": "Ghana",
+      "importsUsd": 75146
+    },
+    {
+      "heading": "4911",
+      "countryCode": 218,
+      "country": "Ecuador",
+      "importsUsd": 70428
+    },
+    {
+      "heading": "4911",
+      "countryCode": 604,
+      "country": "Peru",
+      "importsUsd": 63567
+    },
+    {
+      "heading": "4911",
+      "countryCode": 144,
+      "country": "Sri Lanka",
+      "importsUsd": 60751
+    },
+    {
+      "heading": "4911",
+      "countryCode": 480,
+      "country": "Mauritius",
+      "importsUsd": 51511
+    },
+    {
+      "heading": "4911",
+      "countryCode": 682,
+      "country": "Saudi Arabia",
+      "importsUsd": 49380
+    },
+    {
+      "heading": "4911",
+      "countryCode": 524,
+      "country": "Nepal",
+      "importsUsd": 45368
+    },
+    {
+      "heading": "4911",
+      "countryCode": 686,
+      "country": "Senegal",
+      "importsUsd": 39797
+    },
+    {
+      "heading": "4911",
+      "countryCode": 674,
+      "country": "San Marino",
+      "importsUsd": 35269
+    },
+    {
+      "heading": "4911",
+      "countryCode": 705,
+      "country": "Slovenia",
+      "importsUsd": 32898
+    },
+    {
+      "heading": "4911",
+      "countryCode": 591,
+      "country": "Panama",
+      "importsUsd": 29069
+    },
+    {
+      "heading": "4911",
+      "countryCode": 466,
+      "country": "Mali",
+      "importsUsd": 28350
+    },
+    {
+      "heading": "4911",
+      "countryCode": 788,
+      "country": "Tunisia",
+      "importsUsd": 26845
+    },
+    {
+      "heading": "4911",
+      "countryCode": 352,
+      "country": "Iceland",
+      "importsUsd": 23594
+    },
+    {
+      "heading": "4911",
+      "countryCode": 858,
+      "country": "Uruguay",
+      "importsUsd": 23287
+    },
+    {
+      "heading": "4911",
+      "countryCode": 442,
+      "country": "Luxembourg",
+      "importsUsd": 22227
+    },
+    {
+      "heading": "4911",
+      "countryCode": 340,
+      "country": "Honduras",
+      "importsUsd": 20620
+    },
+    {
+      "heading": "4911",
+      "countryCode": 516,
+      "country": "Namibia",
+      "importsUsd": 17630
+    },
+    {
+      "heading": "4911",
+      "countryCode": 634,
+      "country": "Qatar",
+      "importsUsd": 16813
+    },
+    {
+      "heading": "4911",
+      "countryCode": 796,
+      "country": "Turks and Caicos Isds",
+      "importsUsd": 15282
+    },
+    {
+      "heading": "4911",
+      "countryCode": 180,
+      "country": "Dem. Rep. of the Congo",
+      "importsUsd": 14777
+    },
+    {
+      "heading": "4911",
+      "countryCode": 566,
+      "country": "Nigeria",
+      "importsUsd": 14002
+    },
+    {
+      "heading": "4911",
+      "countryCode": 428,
+      "country": "Latvia",
+      "importsUsd": 12205
+    },
+    {
+      "heading": "4911",
+      "countryCode": 504,
+      "country": "Morocco",
+      "importsUsd": 8685
+    },
+    {
+      "heading": "4911",
+      "countryCode": 51,
+      "country": "Armenia",
+      "importsUsd": 7261
+    },
+    {
+      "heading": "4911",
+      "countryCode": 275,
+      "country": "State of Palestine",
+      "importsUsd": 6402
+    },
+    {
+      "heading": "4911",
+      "countryCode": 643,
+      "country": "Russian Federation",
+      "importsUsd": 6187
+    },
+    {
+      "heading": "4911",
+      "countryCode": 404,
+      "country": "Kenya",
+      "importsUsd": 4675
+    },
+    {
+      "heading": "4911",
+      "countryCode": 400,
+      "country": "Jordan",
+      "importsUsd": 4612
+    },
+    {
+      "heading": "4911",
+      "countryCode": 716,
+      "country": "Zimbabwe",
+      "importsUsd": 4607
+    },
+    {
+      "heading": "4911",
+      "countryCode": 834,
+      "country": "United Rep. of Tanzania",
+      "importsUsd": 3701
+    },
+    {
+      "heading": "4911",
+      "countryCode": 384,
+      "country": "Côte d'Ivoire",
+      "importsUsd": 2800
+    },
+    {
+      "heading": "4911",
+      "countryCode": 600,
+      "country": "Paraguay",
+      "importsUsd": 2778
+    },
+    {
+      "heading": "4911",
+      "countryCode": 388,
+      "country": "Jamaica",
+      "importsUsd": 2644
+    },
+    {
+      "heading": "4911",
+      "countryCode": 508,
+      "country": "Mozambique",
+      "importsUsd": 2252
+    }
+  ],
+  "checks": [
+    {
+      "label": "2025 partners sum",
+      "expectedUsd": 5160226030,
+      "actualUsd": 5160226030,
+      "diffUsd": 0
+    },
+    {
+      "label": "2025 headings sum",
+      "expectedUsd": 5160226030,
+      "actualUsd": 5160226030,
+      "diffUsd": 0
+    },
+    {
+      "label": "2025 HS6 lines sum",
+      "expectedUsd": 5160226030,
+      "actualUsd": 5160226030,
+      "diffUsd": 0
+    },
+    {
+      "label": "2025 heading x partner sum",
+      "expectedUsd": 5160226030,
+      "actualUsd": 5160226030,
+      "diffUsd": 0
+    }
+  ]
+}

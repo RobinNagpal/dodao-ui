@@ -21,6 +21,9 @@ import { SourceRegistry } from './sources';
 import { buildTariffUpdates, countryName, editionRef } from './tariff-updates';
 import { loadTradeInput, loadTradeStatsModule, tradeSnapshot, type TradeInput } from './trade-input';
 
+/** Facts that are importer elections, not facts about the goods: measures gated on them are opt-in. */
+const ELECTION_FACTS = new Set(['certifiedVehiclePartElection', 'certifiedUkAutoPartElection', 'certifiedMhdvPartElection']);
+
 /**
  * Approach-2 chapter content generator (issue #1803): builds the data parts of a chapter content file
  * (`src/tariff-data/chapters/<NN>-<slug>.json`) from official data, and leaves "TODO" placeholders for
@@ -55,6 +58,8 @@ import { loadTradeInput, loadTradeStatsModule, tradeSnapshot, type TradeInput } 
  *   --top-countries N        default 10
  *   --claim MU:D,…           extra preference claims per country (country-tied FTAs are applied automatically)
  *   --as-of YYYY-MM-DD       entry date for the engine and the check dates (default: today)
+ *   --include-elections      also list measures that charge only on an importer election (Section 232 certified
+ *                            vehicle parts); left out by default
  *   --out <path>             default src/tariff-data/chapters/<NN>-<slug>.json (won't overwrite without --force)
  *   --cache-dir <dir>        downloads cache (default: <os tmp>/koala-chapter-generator)
  *   --offline                no network (no slug/title check, no Federal Register enrichment, no downloads)
@@ -221,7 +226,16 @@ async function main(): Promise<void> {
   const beforeRows = beforeJson ? buildRateTableRows(beforeJson) : null;
 
   // --- measures ------------------------------------------------------------------------------------
-  const chapterMeasures: TariffMeasureRecord[] = measuresFile.measures.filter((m) => lines.some((l) => measureReachesLine(m, l.htsCode10 as string)));
+  // Section 232 certified-parts elections (notes 33(p)/(r), 38) reach every line in chapters 39–97 but charge only when
+  // the importer elects to certify the goods as vehicle parts (facts default to no). Listing them would show "Section 232
+  // vehicle parts" as in effect on books or furs, so they're left out unless --include-elections is passed (e.g. for
+  // chapters 84, 85 and 87, where the election is common). The rate grid is unaffected: it prices the default answers.
+  const includeElections = args['include-elections'] === true;
+  const chapterMeasures: TariffMeasureRecord[] = measuresFile.measures.filter(
+    (m) =>
+      (includeElections || !(m.conditions?.factsTrue ?? []).some((f) => ELECTION_FACTS.has(f))) &&
+      lines.some((l) => measureReachesLine(m, l.htsCode10 as string))
+  );
   const sources = new SourceRegistry(cacheDir, offline);
   await sources.prefetch(chapterMeasures.flatMap((m) => m.sources));
 

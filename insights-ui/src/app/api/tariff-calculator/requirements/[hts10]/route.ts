@@ -13,6 +13,7 @@ import {
   type TariffContentInput,
   productTypesForLine,
   quotaQuestionsForLine,
+  rateNeedsPolarity,
   rateQuantityRequirements,
 } from '@/utils/tariff-calculator/measures-engine';
 import { parseHts10Param } from '@/utils/tariff-reports/tariff-input-validation';
@@ -42,6 +43,7 @@ import { NextRequest } from 'next/server';
 // Trade deals whose special rate points to Chapter 98/99 FTA quota headings ("See 9822.04.01-9822.04.03 (AU)") are
 // offered per country with their tiers in words; with ?country= the quota questions (within the in-quota quantity,
 // additional quota, safeguard in effect) come first in the confirmation questions.
+// `polarityRates` lists the line's rates graded by sugar polarity (raw sugar of heading 1701), so the form asks for it.
 
 /** A trade deal (SPI program) the line's special column offers. */
 export interface ClaimableTradeDeal {
@@ -67,6 +69,11 @@ export interface OfficialMeasuresRequirements {
   confirmationQuestions: TariffConfirmationQuestion[];
   /** Content values to ask for (metal content, U.S.-content value); empty = none of the line's measures is charged on content. */
   contentInputs: TariffContentInput[];
+  /**
+   * Rates of the line (general, column 2, trade deals) graded by sugar polarity (heading 1701); non-empty = ask for the
+   * polarity in degrees. Without it the calculator prices at 100°, the rate's highest amount.
+   */
+  polarityRates: string[];
 }
 
 export interface CalculatorRequirementsResponse {
@@ -148,6 +155,11 @@ async function officialMeasuresRequirements(hts10: string, scope: QuestionScope)
           )
         : [],
       contentInputs: contentInputsForLine({ hts10, countryOfOrigin: scope.country, entryDate: scope.date }, loaded.measures),
+      polarityRates: Array.from(
+        new Set(
+          [line.general, line.column2 ?? null, ...Array.from(deals.values()).map((d) => d.rateText)].filter((t): t is string => !!t && rateNeedsPolarity(t))
+        )
+      ),
     },
     ...prohibitionFor(hts10, scope),
   };
