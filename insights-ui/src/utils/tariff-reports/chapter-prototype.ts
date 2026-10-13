@@ -94,7 +94,14 @@ const CHAPTER_FILES: Record<string, () => Promise<{ default: unknown }>> = {
   '65-headgear': () => import('@/tariff-data/chapters/65-headgear.json'),
   '66-umbrellas-and-accessories': () => import('@/tariff-data/chapters/66-umbrellas-and-accessories.json'),
   '67-feathers-and-artificial-flowers': () => import('@/tariff-data/chapters/67-feathers-and-artificial-flowers.json'),
+  '68-stone-cement-and-similar': () => import('@/tariff-data/chapters/68-stone-cement-and-similar.json'),
+  '69-ceramic-products': () => import('@/tariff-data/chapters/69-ceramic-products.json'),
+  '70-glass-and-glassware': () => import('@/tariff-data/chapters/70-glass-and-glassware.json'),
+  '71-pearls-stones-and-jewelry': () => import('@/tariff-data/chapters/71-pearls-stones-and-jewelry.json'),
   '72-iron-and-steel': () => import('@/tariff-data/chapters/72-iron-and-steel.json'),
+  '73-articles-of-iron-steel': () => import('@/tariff-data/chapters/73-articles-of-iron-steel.json'),
+  '74-copper-and-articles': () => import('@/tariff-data/chapters/74-copper-and-articles.json'),
+  '76-aluminum-and-articles': () => import('@/tariff-data/chapters/76-aluminum-and-articles.json'),
 };
 
 /**
