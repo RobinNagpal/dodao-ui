@@ -91,6 +91,7 @@ const CHAPTER_FILES: Record<string, () => Promise<{ default: unknown }>> = {
   '58-special-woven-fabrics': () => import('@/tariff-data/chapters/58-special-woven-fabrics.json'),
   '59-coated-textile-fabrics': () => import('@/tariff-data/chapters/59-coated-textile-fabrics.json'),
   '60-knitted-fabrics': () => import('@/tariff-data/chapters/60-knitted-fabrics.json'),
+  '61-apparel-and-accessories-knit': () => import('@/tariff-data/chapters/61-apparel-and-accessories-knit.json'),
   '62-apparel-and-accessories-woven': () => import('@/tariff-data/chapters/62-apparel-and-accessories-woven.json'),
   '63-made-up-textile-articles': () => import('@/tariff-data/chapters/63-made-up-textile-articles.json'),
   '64-footwear-and-gaiters': () => import('@/tariff-data/chapters/64-footwear-and-gaiters.json'),
@@ -112,9 +113,14 @@ const CHAPTER_FILES: Record<string, () => Promise<{ default: unknown }>> = {
   '82-base-metal-tools-and-implements': () => import('@/tariff-data/chapters/82-base-metal-tools-and-implements.json'),
   '83-misc-articles-of-base-metal': () => import('@/tariff-data/chapters/83-misc-articles-of-base-metal.json'),
   '86-railway-locomotives-and-fixtures': () => import('@/tariff-data/chapters/86-railway-locomotives-and-fixtures.json'),
+  '88-aircraft-and-spacecraft': () => import('@/tariff-data/chapters/88-aircraft-and-spacecraft.json'),
   '89-ships-and-floating-structures': () => import('@/tariff-data/chapters/89-ships-and-floating-structures.json'),
+  '90-optical-and-precision-instruments': () => import('@/tariff-data/chapters/90-optical-and-precision-instruments.json'),
   '92-musical-instruments': () => import('@/tariff-data/chapters/92-musical-instruments.json'),
   '93-arms-and-ammunition': () => import('@/tariff-data/chapters/93-arms-and-ammunition.json'),
+  '94-furniture-and-lighting-fittings': () => import('@/tariff-data/chapters/94-furniture-and-lighting-fittings.json'),
+  '95-toys-games-and-sports-requisites': () => import('@/tariff-data/chapters/95-toys-games-and-sports-requisites.json'),
+  '97-works-of-art-and-antiques': () => import('@/tariff-data/chapters/97-works-of-art-and-antiques.json'),
 };
 
 /**
