@@ -9334,7 +9334,7 @@
       ],
       "htsEdition": "2026 Revision 21",
       "reviewedAt": "2026-10-09",
-      "notes": "U.S. note 52(j)(6)(iii): articles the product of Guatemala for which entry is claimed under the Dominican Republic-Central America-United States Free Trade Agreement (CAFTA-DR) consistent with general note 29, classifiable in the 1737 listed provisions (textiles and apparel of Chapters 50–63, plus listed lines of Chapters 42, 65, 70 and 94), pay no Section 301 duty under 9903.05.40. Applies only when the CAFTA-DR special rate is claimed (SPI \"P\" or \"P+\", general note 29(a)(i)); without the claim the duty is charged. Note 52(i) (heading 9903.05.95: CAFTA-DR textile or apparel goods of Costa Rica, the Dominican Republic, El Salvador, Guatemala, Honduras and Nicaragua) is not modeled: it has no code list and defines its goods by the Annex to the WTO Agreement on Textiles and Clothing (general note 29(d)(v)), which the HTS does not reproduce."
+      "notes": "U.S. note 52(j)(6)(iii): articles the product of Guatemala for which entry is claimed under the Dominican Republic-Central America-United States Free Trade Agreement (CAFTA-DR) consistent with general note 29, classifiable in the 1737 listed provisions (textiles and apparel of Chapters 50–63, plus listed lines of Chapters 42, 65, 70 and 94), pay no Section 301 duty under 9903.05.40. Applies only when the CAFTA-DR special rate is claimed (SPI \"P\" or \"P+\", general note 29(a)(i)); without the claim the duty is charged. Note 52(i) (heading 9903.05.95) gives the same relief to CAFTA-DR textile or apparel goods of all six CAFTA-DR countries: see s301-2026-cafta-dr-textiles."
     },
     {
       "measureKey": "s301-2026-except-sv-cafta-dr",
@@ -11079,7 +11079,102 @@
       ],
       "htsEdition": "2026 Revision 21",
       "reviewedAt": "2026-10-09",
-      "notes": "U.S. note 52(j)(7)(iii): articles the product of El Salvador for which entry is claimed under the Dominican Republic-Central America-United States Free Trade Agreement (CAFTA-DR) consistent with general note 29, classifiable in the 1707 listed provisions (textiles and apparel of Chapters 50–63, plus listed lines of Chapters 42, 65, 70 and 94), pay no Section 301 duty under 9903.05.37. Applies only when the CAFTA-DR special rate is claimed (SPI \"P\" or \"P+\", general note 29(a)(i)); without the claim the duty is charged. Note 52(i) (heading 9903.05.95: CAFTA-DR textile or apparel goods of Costa Rica, the Dominican Republic, El Salvador, Guatemala, Honduras and Nicaragua) is not modeled: it has no code list and defines its goods by the Annex to the WTO Agreement on Textiles and Clothing (general note 29(d)(v)), which the HTS does not reproduce."
+      "notes": "U.S. note 52(j)(7)(iii): articles the product of El Salvador for which entry is claimed under the Dominican Republic-Central America-United States Free Trade Agreement (CAFTA-DR) consistent with general note 29, classifiable in the 1707 listed provisions (textiles and apparel of Chapters 50–63, plus listed lines of Chapters 42, 65, 70 and 94), pay no Section 301 duty under 9903.05.37. Applies only when the CAFTA-DR special rate is claimed (SPI \"P\" or \"P+\", general note 29(a)(i)); without the claim the duty is charged. Note 52(i) (heading 9903.05.95) gives the same relief to CAFTA-DR textile or apparel goods of all six CAFTA-DR countries: see s301-2026-cafta-dr-textiles."
+    },
+    {
+      "measureKey": "s301-2026-cafta-dr-textiles",
+      "program": "Section 301 (2026, 60 economies)",
+      "ch99Code": "9903.05.95",
+      "rateKind": "relief",
+      "ratePct": null,
+      "countriesInclude": ["CR", "DO", "GT", "HN", "NI", "SV"],
+      "countriesExclude": [],
+      "coverageInclude": [
+        "5004",
+        "5005",
+        "5006",
+        "5007",
+        "5105",
+        "5106",
+        "5107",
+        "5108",
+        "5109",
+        "5110",
+        "5111",
+        "5112",
+        "5113",
+        "5204",
+        "5205",
+        "5206",
+        "5207",
+        "5208",
+        "5209",
+        "5210",
+        "5211",
+        "5212",
+        "5306",
+        "5307",
+        "5308",
+        "5309",
+        "5310",
+        "5311",
+        "54",
+        "55",
+        "56",
+        "57",
+        "58",
+        "59",
+        "60",
+        "61",
+        "62",
+        "6301",
+        "6302",
+        "6303",
+        "6304",
+        "6305",
+        "6306",
+        "6307",
+        "6308",
+        "6309",
+        "6601"
+      ],
+      "coverageExclude": ["51054000", "53081000", "5308901000"],
+      "conditions": {
+        "spiClaimed": ["P", "P+"]
+      },
+      "replacesCodes": ["9903.05.33", "9903.05.34", "9903.05.37", "9903.05.40", "9903.05.42", "9903.05.58"],
+      "effectiveFrom": "2026-07-24",
+      "effectiveTo": null,
+      "sources": [
+        {
+          "citation": "91 FR 47318 (USTR notice of actions in the Section 301 forced-labor investigations of 60 economies)",
+          "url": "https://www.federalregister.gov/documents/2026/07/28/2026-15181/notice-of-actions-in-section-301-investigations-of-acts-policies-and-practices-of-various-economies",
+          "published": "2026-07-28"
+        },
+        {
+          "citation": "CBP CSMS # 69326983 (GUIDANCE: Section 301 Forced Labor Import Duties — headings 9903.05.92 and 9903.05.95)",
+          "url": "https://content.govdelivery.com/accounts/USDHSCBP/bulletins/421d887",
+          "published": "2026-07-23"
+        },
+        {
+          "citation": "HTSUS 2026 Revision 21, Chapter 99, subchapter III, U.S. note 52",
+          "url": "https://hts.usitc.gov/reststop/file?release=2026HTSRev21&filename=Chapter%2099",
+          "published": "2026-10-07"
+        },
+        {
+          "citation": "HTSUS 2026 Revision 21, General Note 29 (Dominican Republic-Central America-United States Free Trade Agreement; SPI \"P\" / \"P+\")",
+          "url": "https://hts.usitc.gov/reststop/file?release=2026HTSRev21&filename=General%20Notes",
+          "published": "2026-10-07"
+        },
+        {
+          "citation": "WTO Agreement on Textiles and Clothing, Annex (list of products covered, HS six-digit codes), referred to in 19 U.S.C. 3511(d)(4) and HTSUS general note 29(d)(v)",
+          "url": "https://www.wto.org/english/docs_e/legal_e/16-tex.pdf",
+          "published": "1994-04-15"
+        }
+      ],
+      "htsEdition": "2026 Revision 21",
+      "reviewedAt": "2026-10-13",
+      "notes": "U.S. note 52(i) (heading 9903.05.95): textile or apparel goods (general note 29(d)(v)) of Costa Rica, the Dominican Republic, El Salvador, Guatemala, Honduras or Nicaragua entered free of duty under CAFTA-DR pay no 2026 Section 301 duty (9903.05.33, .34, .37, .40, .42, .58). Applies only when the CAFTA-DR special rate is claimed (SPI \"P\" or \"P+\", general note 29(a)(i)); without the claim the duty is charged. Coverage: the WTO Agreement on Textiles and Clothing Annex lines general note 29(d)(v) keeps that map exactly to Revision 21 provisions — 5004–5007, 5105–5113 (not 5105.40), 5204–5212, 5306–5311 (not coir yarn 5308.10 or paper yarn 5308.90.10), chapters 54–62, 6301–6309 and umbrellas 6601. Raw fibres and waste (5001–5003, 5101–5104, 5201–5203, 5301–5305) and rags (6310) are not in the Annex. Not modelled: the Annex \"ex\" entries for textile luggage and handbags (4202), glass-fibre yarns and woven fabrics (7019) and textile quilts, comforters and cotton pillows (9404), which cannot be pinned to Revision 21 lines exactly; for those the duty is still charged (for Guatemala and El Salvador the 52(j)(6)(iii) / 52(j)(7)(iii) lists cover many of them). Goods entered under subchapter XXII of chapter 98 are not modelled. Nicaragua's separate Section 301 duty (9903.89.01, note 29) is not affected."
     },
     {
       "measureKey": "s301-brazil",
@@ -29424,7 +29519,7 @@
       "countriesInclude": ["RU"],
       "countriesExclude": [],
       "coverageInclude": ["7601", "7604", "7605", "7606", "7607", "7608", "7609", "76169951"],
-      "coverageExclude": [],
+      "coverageExclude": ["7616995130", "7616995140", "7616995190"],
       "conditions": {},
       "replacesCodes": [],
       "effectiveFrom": "2025-03-12",
@@ -29447,8 +29542,8 @@
         }
       ],
       "htsEdition": "2026 Revision 21",
-      "reviewedAt": "2026-10-10",
-      "notes": "Heading 9903.85.67, U.S. note 19(m)(A): aluminum articles of note 19(g) (unwrought aluminum 7601, bars/rods/profiles 7604, wire 7605, plates/sheets/strip 7606, foil 7607, tubes/pipes/fittings 7608–7609, castings and forgings 7616.99.51) that are products of Russia: base + 200% (since March 10, 2023, Proclamation 10522; the note 19(m) wording applies from March 12, 2025). Modelled for products of Russia (countriesInclude RU). Not modelled: the same 200% applies to articles of any origin when any primary aluminum used in them was smelted in Russia or the articles were cast in Russia (note 19(m)) — the calculator has no question for that yet. Collected on the full value, in addition to any special rate, and stacks with the 12.5% 2026 Section 301 duty on Russia (9903.05.66): note 52(f)(1) removes 9903.05.20–9903.05.84 only for the 9903.82 metals headings, not 9903.85.67/.68. Russia is a column 2 country, so the base is the column 2 rate."
+      "reviewedAt": "2026-10-13",
+      "notes": "Heading 9903.85.67, U.S. note 19(m)(A): aluminum articles of note 19(g) (unwrought aluminum 7601, bars/rods/profiles 7604, wire 7605, plates/sheets/strip 7606, foil 7607, tubes/pipes/fittings 7608–7609, castings and forgings 7616.99.51) that are products of Russia: base + 200% (since March 10, 2023, Proclamation 10522; the note 19(m) wording applies from March 12, 2025). Excludes 7616.99.51.30, .40 and .90, the note 19(j) derivative lines that 9903.85.68 charges (s232-aluminum-ru-derivatives), so the 200% is charged once. Modelled for products of Russia (countriesInclude RU). Not modelled: the same 200% applies to articles of any origin when any primary aluminum used in them was smelted in Russia or the articles were cast in Russia (note 19(m)) — the calculator has no question for that yet. Collected on the full value, in addition to any special rate, and stacks with the 12.5% 2026 Section 301 duty on Russia (9903.05.66): note 52(f)(1) removes 9903.05.20–9903.05.84 only for the 9903.82 metals headings, not 9903.85.67/.68. Russia is a column 2 country, so the base is the column 2 rate."
     },
     {
       "measureKey": "s232-aluminum-ru-derivatives",
@@ -67192,7 +67287,27 @@
       "ratePct": null,
       "countriesInclude": [],
       "countriesExclude": [],
-      "coverageInclude": ["37", "49", "8523", "97"],
+      "coverageInclude": [
+        "3704",
+        "3705",
+        "3706",
+        "49",
+        "5807",
+        "63079030",
+        "63079085",
+        "8310",
+        "852329",
+        "852341",
+        "852349",
+        "85238010",
+        "940561",
+        "940569",
+        "9701",
+        "9702",
+        "9703",
+        "9704",
+        "9705"
+      ],
       "coverageExclude": [],
       "conditions": {
         "factsTrue": ["informationalMaterials"]
@@ -67273,14 +67388,24 @@
           "published": "2026-07-28"
         },
         {
+          "citation": "CBP CSMS # 69326983 (GUIDANCE: Section 301 Forced Labor Import Duties — headings 9903.05.92 and 9903.05.95)",
+          "url": "https://content.govdelivery.com/accounts/USDHSCBP/bulletins/421d887",
+          "published": "2026-07-23"
+        },
+        {
+          "citation": "CBP, International Emergency Economic Powers Act (IEEPA) Frequently Asked Questions — \"What are informational materials described in 9903.01.22, 9903.01.12, 9903.01.03, and 9903.01.31?\" (HTS provisions that may qualify)",
+          "url": "https://www.cbp.gov/trade/programs-administration/trade-remedies/IEEPA-FAQ",
+          "published": "2026-04-14"
+        },
+        {
           "citation": "HTSUS 2026 Revision 21, Chapter 99, subchapter III, U.S. note 52",
           "url": "https://hts.usitc.gov/reststop/file?release=2026HTSRev21&filename=Chapter%2099",
           "published": "2026-10-07"
         }
       ],
       "htsEdition": "2026 Revision 21",
-      "reviewedAt": "2026-10-12",
-      "notes": "Heading 9903.05.92: the 2026 Section 301 duties 9903.05.20–9903.05.84 (whose headings except 9903.05.85–9903.05.99) do not apply to articles that are informational materials, \"including but not limited to publications, films, posters, phonograph records, photographs, microfilms, microfiche, tapes, compact disks, CD ROMs, artworks and news wire feeds\" (the heading text; the 50 U.S.C. 1702(b)(3) list). Applies only when the importer confirms the goods are informational materials (fact informationalMaterials, default no). Coverage: chapter 37 (photographic and cinematographic film), chapter 49 (books, newspapers, pictures and other printed matter), heading 8523 (recorded media) and chapter 97 (works of art) — where the listed kinds of goods classify. Exempted in the proposed and final actions (USTR notices). China List 4A (9903.88.15) and the Canada Section 338 duties (note 51) have no such exemption."
+      "reviewedAt": "2026-10-13",
+      "notes": "Heading 9903.05.92: the 2026 Section 301 duties 9903.05.20–9903.05.84 (whose headings except 9903.05.85–9903.05.99) do not apply to articles that are informational materials, \"including but not limited to publications, films, posters, phonograph records, photographs, microfilms, microfiche, tapes, compact disks, CD ROMs, artworks and news wire feeds\" (the heading text; the 50 U.S.C. 1702(b)(3) list). Applies only when the importer confirms the goods are informational materials (fact informationalMaterials, default no). Coverage: the HTS provisions CBP lists for the same informational-materials text (IEEPA FAQ): Chapter 49; headings 3704, 3705, 3706 (exposed photographic plates, film and paper; developed cinematographic film), 5807 (textile labels and badges), 8310 (sign plates), 9701–9705 (artworks, stamps, collections); subheadings 6307.90.30 (labels), 6307.90.85 (wall banners), 8523.29, 8523.41, 8523.49 (magnetic and optical media), 8523.80.10 (phonograph records), 9405.61 and 9405.69 (illuminated signs). Unexposed film, plates and paper (3701–3703), photographic chemicals (3707) and antiques (9706) are not informational materials. Exempted in the proposed and final actions (USTR notices). China List 4A (9903.88.15) and the Canada Section 338 duties (note 51) have no such exemption."
     },
     {
       "measureKey": "s301-brazil-exempt-informational-materials",
@@ -67290,7 +67415,27 @@
       "ratePct": null,
       "countriesInclude": ["BR"],
       "countriesExclude": [],
-      "coverageInclude": ["37", "49", "8523", "97"],
+      "coverageInclude": [
+        "3704",
+        "3705",
+        "3706",
+        "49",
+        "5807",
+        "63079030",
+        "63079085",
+        "8310",
+        "852329",
+        "852341",
+        "852349",
+        "85238010",
+        "940561",
+        "940569",
+        "9701",
+        "9702",
+        "9703",
+        "9704",
+        "9705"
+      ],
       "coverageExclude": [],
       "conditions": {
         "factsTrue": ["informationalMaterials"]
@@ -67305,14 +67450,19 @@
           "published": "2026-07-20"
         },
         {
+          "citation": "CBP, International Emergency Economic Powers Act (IEEPA) Frequently Asked Questions — \"What are informational materials described in 9903.01.22, 9903.01.12, 9903.01.03, and 9903.01.31?\" (HTS provisions that may qualify)",
+          "url": "https://www.cbp.gov/trade/programs-administration/trade-remedies/IEEPA-FAQ",
+          "published": "2026-04-14"
+        },
+        {
           "citation": "HTSUS 2026 Revision 21, Chapter 99, subchapter III, U.S. note 50",
           "url": "https://hts.usitc.gov/reststop/file?release=2026HTSRev21&filename=Chapter%2099",
           "published": "2026-10-07"
         }
       ],
       "htsEdition": "2026 Revision 21",
-      "reviewedAt": "2026-10-12",
-      "notes": "Heading 9903.05.09: the 25% Brazil Section 301 duty (9903.05.01, which excepts 9903.05.02–9903.05.09) does not apply to articles the product of Brazil that are informational materials, \"including but not limited to publications, films, posters, phonograph records, photographs, microfilms, microfiche, tapes, compact disks, CD ROMs, artworks and news wire feeds\" (the heading text; the 50 U.S.C. 1702(b)(3) list). Applies only when the importer confirms the goods are informational materials (fact informationalMaterials, default no). Coverage: chapter 37 (photographic and cinematographic film), chapter 49 (books, newspapers, pictures and other printed matter), heading 8523 (recorded media) and chapter 97 (works of art) — where the listed kinds of goods classify. Exempted in the proposed and final actions (USTR notices)."
+      "reviewedAt": "2026-10-13",
+      "notes": "Heading 9903.05.09: the 25% Brazil Section 301 duty (9903.05.01, which excepts 9903.05.02–9903.05.09) does not apply to articles the product of Brazil that are informational materials, \"including but not limited to publications, films, posters, phonograph records, photographs, microfilms, microfiche, tapes, compact disks, CD ROMs, artworks and news wire feeds\" (the heading text; the 50 U.S.C. 1702(b)(3) list). Applies only when the importer confirms the goods are informational materials (fact informationalMaterials, default no). Coverage: the HTS provisions CBP lists for the same informational-materials text (IEEPA FAQ): Chapter 49; headings 3704, 3705, 3706 (exposed photographic plates, film and paper; developed cinematographic film), 5807 (textile labels and badges), 8310 (sign plates), 9701–9705 (artworks, stamps, collections); subheadings 6307.90.30 (labels), 6307.90.85 (wall banners), 8523.29, 8523.41, 8523.49 (magnetic and optical media), 8523.80.10 (phonograph records), 9405.61 and 9405.69 (illuminated signs). Unexposed film, plates and paper (3701–3703), photographic chemicals (3707) and antiques (9706) are not informational materials. Exempted in the proposed and final actions (USTR notices)."
     },
     {
       "measureKey": "s301-2026-exempt-52d-civil-aircraft",
