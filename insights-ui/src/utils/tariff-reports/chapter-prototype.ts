@@ -81,6 +81,7 @@ const CHAPTER_FILES: Record<string, () => Promise<{ default: unknown }>> = {
   '48-paper-and-paperboard': () => import('@/tariff-data/chapters/48-paper-and-paperboard.json'),
   '49-printing-industry-products': () => import('@/tariff-data/chapters/49-printing-industry-products.json'),
   '50-silk': () => import('@/tariff-data/chapters/50-silk.json'),
+  '51-wool-and-horsehair': () => import('@/tariff-data/chapters/51-wool-and-horsehair.json'),
   '52-cotton': () => import('@/tariff-data/chapters/52-cotton.json'),
   '53-other-veg-textile-fibers': () => import('@/tariff-data/chapters/53-other-veg-textile-fibers.json'),
   '54-man-made-filaments': () => import('@/tariff-data/chapters/54-man-made-filaments.json'),

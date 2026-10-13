@@ -4539,7 +4539,7 @@
         "changePct": -1.8,
         "sharePct": 31.5,
         "dutyPaidUsd": null,
-        "searchText": "370790 3707.90 photographic goods; chemical preparations other than sensitised emulsions, put up in measured portions or put up for retail sale in a form ready for use chemical preparations for photographic uses (other than…"
+        "searchText": "370790 3707.90 photographic goods; chemical preparations other than sensitised emulsions, put up in measured portions or put up for retail sale in a form ready for use chemical preparations for photographic uses (other than varnishes, glues, adhesives and similar preparations); unmixed products for photographic uses, put up in measured portions or put up for retail sale in a form ready for use"
       },
       {
         "hs6": "3701.99",
@@ -4550,7 +4550,7 @@
         "changePct": 7.2,
         "sharePct": 20.1,
         "dutyPaidUsd": null,
-        "searchText": "370199 3701.99 photographic plates and film; (for other than colour photography), in the flat, sensitised, unexposed, with no side exceeding 255mm, of any material other than paper, paperboard or textiles photographic plates and film in the flat, sensitized…"
+        "searchText": "370199 3701.99 photographic plates and film; (for other than colour photography), in the flat, sensitised, unexposed, with no side exceeding 255mm, of any material other than paper, paperboard or textiles photographic plates and film in the flat, sensitized, unexposed, of any material other than paper, paperboard or textiles; instant print film in the flat, sensitized, unexposed, whether or not in packs"
       },
       {
         "hs6": "3705.00",
@@ -4561,7 +4561,7 @@
         "changePct": 5.3,
         "sharePct": 14.1,
         "dutyPaidUsd": null,
-        "searchText": "370500 3705.00 photographic plates and film; exposed and developed, other than cinematographic film photographic plates and film, exposed and developed, other…"
+        "searchText": "370500 3705.00 photographic plates and film; exposed and developed, other than cinematographic film photographic plates and film, exposed and developed, other than cinematographic film"
       },
       {
         "hs6": "3701.30",
@@ -4572,7 +4572,7 @@
         "changePct": -9.9,
         "sharePct": 10.9,
         "dutyPaidUsd": null,
-        "searchText": "370130 3701.30 photographic plates and film; in the flat, sensitised, unexposed, with any side exceeding 225mm, of any materials other than paper, paperboard or textiles photographic plates and film in the flat, sensitized…"
+        "searchText": "370130 3701.30 photographic plates and film; in the flat, sensitised, unexposed, with any side exceeding 225mm, of any materials other than paper, paperboard or textiles photographic plates and film in the flat, sensitized, unexposed, of any material other than paper, paperboard or textiles; instant print film in the flat, sensitized, unexposed, whether or not in packs"
       },
       {
         "hs6": "3701.20",
@@ -4583,7 +4583,7 @@
         "changePct": 0.2,
         "sharePct": 8.9,
         "dutyPaidUsd": null,
-        "searchText": "370120 3701.20 photographic plates and film; instant print film, in the flat, sensitised, unexposed, whether or not in packs photographic plates and film in the flat, sensitized…"
+        "searchText": "370120 3701.20 photographic plates and film; instant print film, in the flat, sensitised, unexposed, whether or not in packs photographic plates and film in the flat, sensitized, unexposed, of any material other than paper, paperboard or textiles; instant print film in the flat, sensitized, unexposed, whether or not in packs"
       },
       {
         "hs6": "3702.42",
@@ -4594,7 +4594,7 @@
         "changePct": -29,
         "sharePct": 4.3,
         "dutyPaidUsd": null,
-        "searchText": "370242 3702.42 photographic film; in rolls, (other than for colour photography), sensitised, unexposed, without sprocket holes, of a width exceeding 610mm and of a length exceeding 200m (other than of paper, paperboard or textiles) photographic film in rolls, sensitized, unexposed, of any…"
+        "searchText": "370242 3702.42 photographic film; in rolls, (other than for colour photography), sensitised, unexposed, without sprocket holes, of a width exceeding 610mm and of a length exceeding 200m (other than of paper, paperboard or textiles) photographic film in rolls, sensitized, unexposed, of any material other than paper, paperboard or textiles; instant print film in rolls, sensitized, unexposed"
       },
       {
         "hs6": "3701.10",
@@ -4605,7 +4605,7 @@
         "changePct": 63.8,
         "sharePct": 2.6,
         "dutyPaidUsd": null,
-        "searchText": "370110 3701.10 photographic plates and film; for x-ray, in the flat, sensitised, unexposed, of any material other than paper, paperboard or textiles photographic plates and film in the flat, sensitized…"
+        "searchText": "370110 3701.10 photographic plates and film; for x-ray, in the flat, sensitised, unexposed, of any material other than paper, paperboard or textiles photographic plates and film in the flat, sensitized, unexposed, of any material other than paper, paperboard or textiles; instant print film in the flat, sensitized, unexposed, whether or not in packs"
       },
       {
         "hs6": "3702.44",
@@ -4616,7 +4616,7 @@
         "changePct": -21.7,
         "sharePct": 1.8,
         "dutyPaidUsd": null,
-        "searchText": "370244 3702.44 photographic film; in rolls, sensitised, unexposed, without sprocket holes, of a width exceeding 105mm but not exceeding 610mm (other than of paper, paperboard or textiles) photographic film in rolls, sensitized, unexposed, of any…"
+        "searchText": "370244 3702.44 photographic film; in rolls, sensitised, unexposed, without sprocket holes, of a width exceeding 105mm but not exceeding 610mm (other than of paper, paperboard or textiles) photographic film in rolls, sensitized, unexposed, of any material other than paper, paperboard or textiles; instant print film in rolls, sensitized, unexposed"
       },
       {
         "hs6": "3703.20",
@@ -4627,7 +4627,7 @@
         "changePct": 45.5,
         "sharePct": 1.5,
         "dutyPaidUsd": null,
-        "searchText": "370320 3703.20 photographic paper, paperboard and textiles; for colour photography (polychrome), (other than in rolls of a width exceeding 610mm), sensitised, unexposed photographic paper, paperboard and textiles, sensitized…"
+        "searchText": "370320 3703.20 photographic paper, paperboard and textiles; for colour photography (polychrome), (other than in rolls of a width exceeding 610mm), sensitised, unexposed photographic paper, paperboard and textiles, sensitized, unexposed"
       },
       {
         "hs6": "3702.10",
@@ -4638,7 +4638,7 @@
         "changePct": -10.2,
         "sharePct": 1.5,
         "dutyPaidUsd": null,
-        "searchText": "370210 3702.10 photographic film; for x-rays, in rolls, sensitised and unexposed (other than of paper, paperboard or textiles) photographic film in rolls, sensitized, unexposed, of any…"
+        "searchText": "370210 3702.10 photographic film; for x-rays, in rolls, sensitised and unexposed (other than of paper, paperboard or textiles) photographic film in rolls, sensitized, unexposed, of any material other than paper, paperboard or textiles; instant print film in rolls, sensitized, unexposed"
       },
       {
         "hs6": "3703.90",
@@ -4649,7 +4649,7 @@
         "changePct": 14.5,
         "sharePct": 0.5,
         "dutyPaidUsd": null,
-        "searchText": "370390 3703.90 photographic paper, paperboard and textiles; (for other than colour photography, other than in rolls of a width exceeding 610mm), sensitised, unexposed photographic paper, paperboard and textiles, sensitized…"
+        "searchText": "370390 3703.90 photographic paper, paperboard and textiles; (for other than colour photography, other than in rolls of a width exceeding 610mm), sensitised, unexposed photographic paper, paperboard and textiles, sensitized, unexposed"
       },
       {
         "hs6": "3704.00",
@@ -4660,7 +4660,7 @@
         "changePct": -64.8,
         "sharePct": 0.4,
         "dutyPaidUsd": null,
-        "searchText": "370400 3704.00 photographic plates, film, paper, paperboard and textiles; exposed but not developed photographic plates, film, paper, paperboard and textiles…"
+        "searchText": "370400 3704.00 photographic plates, film, paper, paperboard and textiles; exposed but not developed photographic plates, film, paper, paperboard and textiles, exposed but not developed"
       },
       {
         "hs6": "3702.39",
@@ -4671,7 +4671,7 @@
         "changePct": 6.2,
         "sharePct": 0.4,
         "dutyPaidUsd": null,
-        "searchText": "370239 3702.39 photographic film; in rolls, (other than with silver halide emulsion and for colour photography), sensitised, unexposed, without sprocket holes, of a width not exceeding 105mm (other than of paper, paperboard or textiles) photographic film in rolls, sensitized, unexposed, of any…"
+        "searchText": "370239 3702.39 photographic film; in rolls, (other than with silver halide emulsion and for colour photography), sensitised, unexposed, without sprocket holes, of a width not exceeding 105mm (other than of paper, paperboard or textiles) photographic film in rolls, sensitized, unexposed, of any material other than paper, paperboard or textiles; instant print film in rolls, sensitized, unexposed"
       },
       {
         "hs6": "3702.98",
@@ -4682,7 +4682,7 @@
         "changePct": 2.5,
         "sharePct": 0.4,
         "dutyPaidUsd": null,
-        "searchText": "370298 3702.98 photographic film; other than for colour photography, in rolls, sensitised, unexposed, of a width exceeding 35mm (other than of paper, paperboard or textiles) photographic film in rolls, sensitized, unexposed, of any…"
+        "searchText": "370298 3702.98 photographic film; other than for colour photography, in rolls, sensitised, unexposed, of a width exceeding 35mm (other than of paper, paperboard or textiles) photographic film in rolls, sensitized, unexposed, of any material other than paper, paperboard or textiles; instant print film in rolls, sensitized, unexposed"
       },
       {
         "hs6": "3702.96",
@@ -4693,7 +4693,7 @@
         "changePct": 0.8,
         "sharePct": 0.3,
         "dutyPaidUsd": null,
-        "searchText": "370296 3702.96 photographic film; other than for colour photography, in rolls, sensitised, unexposed, of a width not exceeding 35mm and of a length not exceeding 30m (other than of paper, paperboard or textiles) photographic film in rolls, sensitized, unexposed, of any…"
+        "searchText": "370296 3702.96 photographic film; other than for colour photography, in rolls, sensitised, unexposed, of a width not exceeding 35mm and of a length not exceeding 30m (other than of paper, paperboard or textiles) photographic film in rolls, sensitized, unexposed, of any material other than paper, paperboard or textiles; instant print film in rolls, sensitized, unexposed"
       },
       {
         "hs6": "3702.32",
@@ -4704,7 +4704,7 @@
         "changePct": 25.6,
         "sharePct": 0.2,
         "dutyPaidUsd": null,
-        "searchText": "370232 3702.32 photographic film; in rolls, with silver halide emulsion, sensitised, unexposed, without sprocket holes, of a width not exceeding 105mm (other than of paper, paperboard or textiles) photographic film in rolls, sensitized, unexposed, of any…"
+        "searchText": "370232 3702.32 photographic film; in rolls, with silver halide emulsion, sensitised, unexposed, without sprocket holes, of a width not exceeding 105mm (other than of paper, paperboard or textiles) photographic film in rolls, sensitized, unexposed, of any material other than paper, paperboard or textiles; instant print film in rolls, sensitized, unexposed"
       },
       {
         "hs6": "3702.54",
@@ -4715,7 +4715,7 @@
         "changePct": -61.6,
         "sharePct": 0.1,
         "dutyPaidUsd": null,
-        "searchText": "370254 3702.54 photographic film; for colour photography (polychrome), in rolls, sensitised, unexposed, of a width exceeding 16mm but not 35mm and of a length not exceeding 30m, excluding film for slides (other than of paper, paperboard or textiles) photographic film in rolls, sensitized, unexposed, of any…"
+        "searchText": "370254 3702.54 photographic film; for colour photography (polychrome), in rolls, sensitised, unexposed, of a width exceeding 16mm but not 35mm and of a length not exceeding 30m, excluding film for slides (other than of paper, paperboard or textiles) photographic film in rolls, sensitized, unexposed, of any material other than paper, paperboard or textiles; instant print film in rolls, sensitized, unexposed"
       },
       {
         "hs6": "3707.10",
@@ -4726,7 +4726,7 @@
         "changePct": -16.2,
         "sharePct": 0.1,
         "dutyPaidUsd": null,
-        "searchText": "370710 3707.10 photographic goods; sensitised emulsions, put up in measured portions or put up for retail sale in a form ready for use chemical preparations for photographic uses (other than…"
+        "searchText": "370710 3707.10 photographic goods; sensitised emulsions, put up in measured portions or put up for retail sale in a form ready for use chemical preparations for photographic uses (other than varnishes, glues, adhesives and similar preparations); unmixed products for photographic uses, put up in measured portions or put up for retail sale in a form ready for use"
       },
       {
         "hs6": "3703.10",
@@ -4737,7 +4737,7 @@
         "changePct": 21.3,
         "sharePct": 0.1,
         "dutyPaidUsd": null,
-        "searchText": "370310 3703.10 photographic paper, paperboard and textiles; in rolls, sensitised, unexposed, of a width exceeding 610mm photographic paper, paperboard and textiles, sensitized…"
+        "searchText": "370310 3703.10 photographic paper, paperboard and textiles; in rolls, sensitised, unexposed, of a width exceeding 610mm photographic paper, paperboard and textiles, sensitized, unexposed"
       },
       {
         "hs6": "3702.43",
@@ -4748,7 +4748,7 @@
         "changePct": -76.6,
         "sharePct": 0,
         "dutyPaidUsd": null,
-        "searchText": "370243 3702.43 photographic film; in rolls, sensitised, unexposed, without sprocket holes, of a width exceeding 610mm and of a length not exceeding 200m (other than of paper, paperboard or textiles) photographic film in rolls, sensitized, unexposed, of any…"
+        "searchText": "370243 3702.43 photographic film; in rolls, sensitised, unexposed, without sprocket holes, of a width exceeding 610mm and of a length not exceeding 200m (other than of paper, paperboard or textiles) photographic film in rolls, sensitized, unexposed, of any material other than paper, paperboard or textiles; instant print film in rolls, sensitized, unexposed"
       },
       {
         "hs6": "3702.97",
@@ -4759,7 +4759,7 @@
         "changePct": -8.7,
         "sharePct": 0,
         "dutyPaidUsd": null,
-        "searchText": "370297 3702.97 photographic film; other than for colour photography, in rolls, sensitised, unexposed, of a width not exceeding 35mm and of a length exceeding 30m (other than paper, paperboard or textiles) photographic film in rolls, sensitized, unexposed, of any…"
+        "searchText": "370297 3702.97 photographic film; other than for colour photography, in rolls, sensitised, unexposed, of a width not exceeding 35mm and of a length exceeding 30m (other than paper, paperboard or textiles) photographic film in rolls, sensitized, unexposed, of any material other than paper, paperboard or textiles; instant print film in rolls, sensitized, unexposed"
       },
       {
         "hs6": "3706.90",
@@ -4770,7 +4770,7 @@
         "changePct": 127,
         "sharePct": 0,
         "dutyPaidUsd": null,
-        "searchText": "370690 3706.90 cinematographic film; exposed and developed, whether or not incorporating a sound track or consisting only of sound track, of a width less than 35mm motion-picture film, exposed and developed, whether or not…"
+        "searchText": "370690 3706.90 cinematographic film; exposed and developed, whether or not incorporating a sound track or consisting only of sound track, of a width less than 35mm motion-picture film, exposed and developed, whether or not incorporating sound track or consisting only of sound track"
       },
       {
         "hs6": "3702.53",
@@ -4781,7 +4781,7 @@
         "changePct": -0.6,
         "sharePct": 0,
         "dutyPaidUsd": null,
-        "searchText": "370253 3702.53 photographic film; for colour photography (polychrome) slides, in rolls, sensitised, unexposed, of a width exceeding 16mm but not exceeding 35mm and of a length not exceeding 30m (other than of paper, paperboard or textiles) photographic film in rolls, sensitized, unexposed, of any…"
+        "searchText": "370253 3702.53 photographic film; for colour photography (polychrome) slides, in rolls, sensitised, unexposed, of a width exceeding 16mm but not exceeding 35mm and of a length not exceeding 30m (other than of paper, paperboard or textiles) photographic film in rolls, sensitized, unexposed, of any material other than paper, paperboard or textiles; instant print film in rolls, sensitized, unexposed"
       },
       {
         "hs6": "3706.10",
@@ -4792,7 +4792,7 @@
         "changePct": -26.8,
         "sharePct": 0,
         "dutyPaidUsd": null,
-        "searchText": "370610 3706.10 cinematographic film; exposed and developed, whether or not incorporating sound track or consisting only of sound track, of a width of 35cm or more motion-picture film, exposed and developed, whether or not…"
+        "searchText": "370610 3706.10 cinematographic film; exposed and developed, whether or not incorporating sound track or consisting only of sound track, of a width of 35cm or more motion-picture film, exposed and developed, whether or not incorporating sound track or consisting only of sound track"
       },
       {
         "hs6": "3702.56",
@@ -4803,7 +4803,7 @@
         "changePct": -9.1,
         "sharePct": 0,
         "dutyPaidUsd": null,
-        "searchText": "370256 3702.56 photographic film; for colour photography (polychrome), in rolls, sensitised, unexposed, of a width exceeding 35mm (other than of paper, paperboard or textiles) photographic film in rolls, sensitized, unexposed, of any…"
+        "searchText": "370256 3702.56 photographic film; for colour photography (polychrome), in rolls, sensitised, unexposed, of a width exceeding 35mm (other than of paper, paperboard or textiles) photographic film in rolls, sensitized, unexposed, of any material other than paper, paperboard or textiles; instant print film in rolls, sensitized, unexposed"
       },
       {
         "hs6": "3701.91",
@@ -4814,7 +4814,7 @@
         "changePct": 83.2,
         "sharePct": 0,
         "dutyPaidUsd": null,
-        "searchText": "370191 3701.91 photographic plates and film; for colour photography (polychrome), in the flat, sensitised, unexposed, with no side exceeding 255mm, of any material other than paper, paperboard or textiles photographic plates and film in the flat, sensitized…"
+        "searchText": "370191 3701.91 photographic plates and film; for colour photography (polychrome), in the flat, sensitised, unexposed, with no side exceeding 255mm, of any material other than paper, paperboard or textiles photographic plates and film in the flat, sensitized, unexposed, of any material other than paper, paperboard or textiles; instant print film in the flat, sensitized, unexposed, whether or not in packs"
       },
       {
         "hs6": "3702.41",
@@ -4825,7 +4825,7 @@
         "changePct": null,
         "sharePct": 0,
         "dutyPaidUsd": null,
-        "searchText": "370241 3702.41 photographic film; for colour photography (polychrome), in rolls, sensitised, unexposed, without sprocket holes, of a width exceeding 610mm and of a length exceeding 200m (other than of paper, paperboard or textiles) photographic film in rolls, sensitized, unexposed, of any…"
+        "searchText": "370241 3702.41 photographic film; for colour photography (polychrome), in rolls, sensitised, unexposed, without sprocket holes, of a width exceeding 610mm and of a length exceeding 200m (other than of paper, paperboard or textiles) photographic film in rolls, sensitized, unexposed, of any material other than paper, paperboard or textiles; instant print film in rolls, sensitized, unexposed"
       },
       {
         "hs6": "3702.52",
@@ -4836,7 +4836,7 @@
         "changePct": -40.1,
         "sharePct": 0,
         "dutyPaidUsd": null,
-        "searchText": "370252 3702.52 photographic film; for colour photography (polychrome), in rolls, sensitised, unexposed, of a width not exceeding 16mm (other than of paper, paperboard or textiles) photographic film in rolls, sensitized, unexposed, of any…"
+        "searchText": "370252 3702.52 photographic film; for colour photography (polychrome), in rolls, sensitised, unexposed, of a width not exceeding 16mm (other than of paper, paperboard or textiles) photographic film in rolls, sensitized, unexposed, of any material other than paper, paperboard or textiles; instant print film in rolls, sensitized, unexposed"
       },
       {
         "hs6": "3702.31",
@@ -4847,7 +4847,7 @@
         "changePct": -28.2,
         "sharePct": 0,
         "dutyPaidUsd": null,
-        "searchText": "370231 3702.31 photographic film; for colour photography (polychrome), in rolls, sensitised, unexposed, without sprocket holes, of a width not exceeding 105mm (other than of paper, paperboard or textiles) photographic film in rolls, sensitized, unexposed, of any…"
+        "searchText": "370231 3702.31 photographic film; for colour photography (polychrome), in rolls, sensitised, unexposed, without sprocket holes, of a width not exceeding 105mm (other than of paper, paperboard or textiles) photographic film in rolls, sensitized, unexposed, of any material other than paper, paperboard or textiles; instant print film in rolls, sensitized, unexposed"
       },
       {
         "hs6": "3702.55",
@@ -4858,7 +4858,7 @@
         "changePct": -79.5,
         "sharePct": 0,
         "dutyPaidUsd": null,
-        "searchText": "370255 3702.55 photographic film; for colour photography (polychrome), in rolls, sensitised, unexposed, of a width exceeding 16mm but not 35mm and of a length exceeding 30m (other than of paper, paperboard or textiles) photographic film in rolls, sensitized, unexposed, of any…"
+        "searchText": "370255 3702.55 photographic film; for colour photography (polychrome), in rolls, sensitised, unexposed, of a width exceeding 16mm but not 35mm and of a length exceeding 30m (other than of paper, paperboard or textiles) photographic film in rolls, sensitized, unexposed, of any material other than paper, paperboard or textiles; instant print film in rolls, sensitized, unexposed"
       }
     ],
     "byHeadingCountry": [
@@ -5695,7 +5695,7 @@
         "polaroid film tariffs"
       ]
     },
-    "intro": "Each cell is the **total rate** for the product group from that country: base rate plus extra duties minus preferences, computed from the current tariff schedule with the same engine as the tariff calculator.\n\nCells for **exposed film** — headings **3704, 3705 and 3706**, such as developed microfilm, slides and motion-picture film — show two totals. **\"if yes\"** is the rate when the goods are entered as **informational materials** under **9903.05.92** (and 9903.05.09 for Brazil), which removes the 2026 Section 301 duty and Brazil's 25%; **\"if no\"** is the rate without that claim. These are the only Chapter 37 headings CBP lists as goods that may qualify. Unexposed plates, film and paper (3701-3703) and photographic chemicals (3707) carry no information, so their cells show one total with the Section 301 duty included. The claim never removes **China's 25% List 3** duty.\n\nPlates over 255 mm (**3701.30**, mostly aluminum printing plates) show **25%** from most countries: Section 232 on full value, which replaces the Section 301 duty. AD/CVD duties on aluminum lithographic printing plates from China and Japan are not in the grid; see Tariff updates.",
+    "intro": "Each cell is the **total rate** for the product group from that country: base rate plus extra duties minus preferences, computed from the current tariff schedule with the same engine as the tariff calculator.\n\nCells for **exposed film** — headings **3704, 3705 and 3706**, such as developed microfilm, slides and motion-picture film — show two totals. The plain total is the rate when the goods are entered as **informational materials** under **9903.05.92** (and 9903.05.09 for Brazil), which removes the 2026 Section 301 duty and Brazil's 25%; the total marked **\"if not informational materials\"** is the rate without that claim. These are the only Chapter 37 headings CBP lists as goods that may qualify. Unexposed plates, film and paper (3701-3703) and photographic chemicals (3707) carry no information, so their cells show one total with the Section 301 duty included. The claim never removes **China's 25% List 3** duty.\n\nPlates over 255 mm (**3701.30**, mostly aluminum printing plates) show **25%** from most countries: Section 232 on full value, which replaces the Section 301 duty. AD/CVD duties on aluminum lithographic printing plates from China and Japan are not in the grid; see Tariff updates.",
     "scheduleEdition": "2026 Revision 21",
     "tradeYear": 2025,
     "lastCheckedAt": "2026-10-13",
@@ -5994,28 +5994,28 @@
           "3704": {
             "importsUsd": 1737710,
             "withUsmca": {
-              "totals": ["Free", "12.5% if no"],
+              "totals": ["Free", "12.5% if not informational materials"],
               "breakdown": [
                 {
                   "base": "Free",
                   "lines": ["3704.00.00.00"],
                   "lineCount": 1,
-                  "extra": "If yes: None: Section 301 does not apply (9903.05.92). If no: 12.5% in place of base",
+                  "extra": "Informational materials: None: Section 301 does not apply (9903.05.92). Not informational materials: 12.5% in place of base",
                   "preference": "None",
-                  "total": "Free if yes / 12.5% if no"
+                  "total": "Free informational materials / 12.5% not informational materials"
                 }
               ]
             },
             "withoutUsmca": {
-              "totals": ["Free", "12.5% if no"],
+              "totals": ["Free", "12.5% if not informational materials"],
               "breakdown": [
                 {
                   "base": "Free",
                   "lines": ["3704.00.00.00"],
                   "lineCount": 1,
-                  "extra": "If yes: None: Section 301 does not apply (9903.05.92). If no: 12.5% in place of base",
+                  "extra": "Informational materials: None: Section 301 does not apply (9903.05.92). Not informational materials: 12.5% in place of base",
                   "preference": "None",
-                  "total": "Free if yes / 12.5% if no"
+                  "total": "Free informational materials / 12.5% not informational materials"
                 }
               ]
             }
@@ -6023,28 +6023,28 @@
           "3705": {
             "importsUsd": 46221772,
             "withUsmca": {
-              "totals": ["Free", "12.5% if no"],
+              "totals": ["Free", "12.5% if not informational materials"],
               "breakdown": [
                 {
                   "base": "Free",
                   "lines": ["3705.00.00.00"],
                   "lineCount": 1,
-                  "extra": "If yes: None: Section 301 does not apply (9903.05.92). If no: 12.5% in place of base",
+                  "extra": "Informational materials: None: Section 301 does not apply (9903.05.92). Not informational materials: 12.5% in place of base",
                   "preference": "None",
-                  "total": "Free if yes / 12.5% if no"
+                  "total": "Free informational materials / 12.5% not informational materials"
                 }
               ]
             },
             "withoutUsmca": {
-              "totals": ["Free", "12.5% if no"],
+              "totals": ["Free", "12.5% if not informational materials"],
               "breakdown": [
                 {
                   "base": "Free",
                   "lines": ["3705.00.00.00"],
                   "lineCount": 1,
-                  "extra": "If yes: None: Section 301 does not apply (9903.05.92). If no: 12.5% in place of base",
+                  "extra": "Informational materials: None: Section 301 does not apply (9903.05.92). Not informational materials: 12.5% in place of base",
                   "preference": "None",
-                  "total": "Free if yes / 12.5% if no"
+                  "total": "Free informational materials / 12.5% not informational materials"
                 }
               ]
             }
@@ -6052,44 +6052,44 @@
           "3706": {
             "importsUsd": 0,
             "withUsmca": {
-              "totals": ["Free", "12.5% if no", "1.4%"],
+              "totals": ["Free", "12.5% if not informational materials", "1.4%"],
               "breakdown": [
                 {
                   "base": "Free",
                   "lines": ["3706.10.60.30", "3706.10.60.60", "3706.10.60.90", "3706.90.00.30", "3706.90.00.60"],
                   "lineCount": 5,
-                  "extra": "If yes: None: Section 301 does not apply (9903.05.92). If no: 12.5% in place of base",
+                  "extra": "Informational materials: None: Section 301 does not apply (9903.05.92). Not informational materials: 12.5% in place of base",
                   "preference": "None",
-                  "total": "Free if yes / 12.5% if no"
+                  "total": "Free informational materials / 12.5% not informational materials"
                 },
                 {
                   "base": "1.4%",
                   "lines": ["3706.10.30.00"],
                   "lineCount": 1,
-                  "extra": "If yes: None: Section 301 does not apply (9903.05.92). If no: 12.5% in place of base",
+                  "extra": "Informational materials: None: Section 301 does not apply (9903.05.92). Not informational materials: 12.5% in place of base",
                   "preference": "None",
-                  "total": "1.4% if yes / 12.5% if no"
+                  "total": "1.4% informational materials / 12.5% not informational materials"
                 }
               ]
             },
             "withoutUsmca": {
-              "totals": ["Free", "12.5% if no", "1.4%"],
+              "totals": ["Free", "12.5% if not informational materials", "1.4%"],
               "breakdown": [
                 {
                   "base": "Free",
                   "lines": ["3706.10.60.30", "3706.10.60.60", "3706.10.60.90", "3706.90.00.30", "3706.90.00.60"],
                   "lineCount": 5,
-                  "extra": "If yes: None: Section 301 does not apply (9903.05.92). If no: 12.5% in place of base",
+                  "extra": "Informational materials: None: Section 301 does not apply (9903.05.92). Not informational materials: 12.5% in place of base",
                   "preference": "None",
-                  "total": "Free if yes / 12.5% if no"
+                  "total": "Free informational materials / 12.5% not informational materials"
                 },
                 {
                   "base": "1.4%",
                   "lines": ["3706.10.30.00"],
                   "lineCount": 1,
-                  "extra": "If yes: None: Section 301 does not apply (9903.05.92). If no: 12.5% in place of base",
+                  "extra": "Informational materials: None: Section 301 does not apply (9903.05.92). Not informational materials: 12.5% in place of base",
                   "preference": "None",
-                  "total": "1.4% if yes / 12.5% if no"
+                  "total": "1.4% informational materials / 12.5% not informational materials"
                 }
               ]
             }
@@ -6390,28 +6390,28 @@
           "3704": {
             "importsUsd": 0,
             "withUsmca": {
-              "totals": ["Free", "10% if no"],
+              "totals": ["Free", "10% if not informational materials"],
               "breakdown": [
                 {
                   "base": "Free",
                   "lines": ["3704.00.00.00"],
                   "lineCount": 1,
-                  "extra": "If yes: None: Section 301 does not apply (9903.05.92). If no: 10% in place of base",
+                  "extra": "Informational materials: None: Section 301 does not apply (9903.05.92). Not informational materials: 10% in place of base",
                   "preference": "None",
-                  "total": "Free if yes / 10% if no"
+                  "total": "Free informational materials / 10% not informational materials"
                 }
               ]
             },
             "withoutUsmca": {
-              "totals": ["Free", "10% if no"],
+              "totals": ["Free", "10% if not informational materials"],
               "breakdown": [
                 {
                   "base": "Free",
                   "lines": ["3704.00.00.00"],
                   "lineCount": 1,
-                  "extra": "If yes: None: Section 301 does not apply (9903.05.92). If no: 10% in place of base",
+                  "extra": "Informational materials: None: Section 301 does not apply (9903.05.92). Not informational materials: 10% in place of base",
                   "preference": "None",
-                  "total": "Free if yes / 10% if no"
+                  "total": "Free informational materials / 10% not informational materials"
                 }
               ]
             }
@@ -6419,28 +6419,28 @@
           "3705": {
             "importsUsd": 69880251,
             "withUsmca": {
-              "totals": ["Free", "10% if no"],
+              "totals": ["Free", "10% if not informational materials"],
               "breakdown": [
                 {
                   "base": "Free",
                   "lines": ["3705.00.00.00"],
                   "lineCount": 1,
-                  "extra": "If yes: None: Section 301 does not apply (9903.05.92). If no: 10% in place of base",
+                  "extra": "Informational materials: None: Section 301 does not apply (9903.05.92). Not informational materials: 10% in place of base",
                   "preference": "None",
-                  "total": "Free if yes / 10% if no"
+                  "total": "Free informational materials / 10% not informational materials"
                 }
               ]
             },
             "withoutUsmca": {
-              "totals": ["Free", "10% if no"],
+              "totals": ["Free", "10% if not informational materials"],
               "breakdown": [
                 {
                   "base": "Free",
                   "lines": ["3705.00.00.00"],
                   "lineCount": 1,
-                  "extra": "If yes: None: Section 301 does not apply (9903.05.92). If no: 10% in place of base",
+                  "extra": "Informational materials: None: Section 301 does not apply (9903.05.92). Not informational materials: 10% in place of base",
                   "preference": "None",
-                  "total": "Free if yes / 10% if no"
+                  "total": "Free informational materials / 10% not informational materials"
                 }
               ]
             }
@@ -6448,44 +6448,44 @@
           "3706": {
             "importsUsd": 58184,
             "withUsmca": {
-              "totals": ["Free", "10% if no", "1.4%"],
+              "totals": ["Free", "10% if not informational materials", "1.4%"],
               "breakdown": [
                 {
                   "base": "Free",
                   "lines": ["3706.10.60.30", "3706.10.60.60", "3706.10.60.90", "3706.90.00.30", "3706.90.00.60"],
                   "lineCount": 5,
-                  "extra": "If yes: None: Section 301 does not apply (9903.05.92). If no: 10% in place of base",
+                  "extra": "Informational materials: None: Section 301 does not apply (9903.05.92). Not informational materials: 10% in place of base",
                   "preference": "None",
-                  "total": "Free if yes / 10% if no"
+                  "total": "Free informational materials / 10% not informational materials"
                 },
                 {
                   "base": "1.4%",
                   "lines": ["3706.10.30.00"],
                   "lineCount": 1,
-                  "extra": "If yes: None: Section 301 does not apply (9903.05.92). If no: 10% in place of base",
+                  "extra": "Informational materials: None: Section 301 does not apply (9903.05.92). Not informational materials: 10% in place of base",
                   "preference": "None",
-                  "total": "1.4% if yes / 10% if no"
+                  "total": "1.4% informational materials / 10% not informational materials"
                 }
               ]
             },
             "withoutUsmca": {
-              "totals": ["Free", "10% if no", "1.4%"],
+              "totals": ["Free", "10% if not informational materials", "1.4%"],
               "breakdown": [
                 {
                   "base": "Free",
                   "lines": ["3706.10.60.30", "3706.10.60.60", "3706.10.60.90", "3706.90.00.30", "3706.90.00.60"],
                   "lineCount": 5,
-                  "extra": "If yes: None: Section 301 does not apply (9903.05.92). If no: 10% in place of base",
+                  "extra": "Informational materials: None: Section 301 does not apply (9903.05.92). Not informational materials: 10% in place of base",
                   "preference": "None",
-                  "total": "Free if yes / 10% if no"
+                  "total": "Free informational materials / 10% not informational materials"
                 },
                 {
                   "base": "1.4%",
                   "lines": ["3706.10.30.00"],
                   "lineCount": 1,
-                  "extra": "If yes: None: Section 301 does not apply (9903.05.92). If no: 10% in place of base",
+                  "extra": "Informational materials: None: Section 301 does not apply (9903.05.92). Not informational materials: 10% in place of base",
                   "preference": "None",
-                  "total": "1.4% if yes / 10% if no"
+                  "total": "1.4% informational materials / 10% not informational materials"
                 }
               ]
             }
@@ -6786,28 +6786,28 @@
           "3704": {
             "importsUsd": 0,
             "withUsmca": {
-              "totals": ["Free", "10% if no"],
+              "totals": ["Free", "10% if not informational materials"],
               "breakdown": [
                 {
                   "base": "Free",
                   "lines": ["3704.00.00.00"],
                   "lineCount": 1,
-                  "extra": "If yes: None: Section 301 does not apply (9903.05.92). If no: 10% in place of base",
+                  "extra": "Informational materials: None: Section 301 does not apply (9903.05.92). Not informational materials: 10% in place of base",
                   "preference": "None",
-                  "total": "Free if yes / 10% if no"
+                  "total": "Free informational materials / 10% not informational materials"
                 }
               ]
             },
             "withoutUsmca": {
-              "totals": ["Free", "10% if no"],
+              "totals": ["Free", "10% if not informational materials"],
               "breakdown": [
                 {
                   "base": "Free",
                   "lines": ["3704.00.00.00"],
                   "lineCount": 1,
-                  "extra": "If yes: None: Section 301 does not apply (9903.05.92). If no: 10% in place of base",
+                  "extra": "Informational materials: None: Section 301 does not apply (9903.05.92). Not informational materials: 10% in place of base",
                   "preference": "None",
-                  "total": "Free if yes / 10% if no"
+                  "total": "Free informational materials / 10% not informational materials"
                 }
               ]
             }
@@ -6815,28 +6815,28 @@
           "3705": {
             "importsUsd": 72731351,
             "withUsmca": {
-              "totals": ["Free", "10% if no"],
+              "totals": ["Free", "10% if not informational materials"],
               "breakdown": [
                 {
                   "base": "Free",
                   "lines": ["3705.00.00.00"],
                   "lineCount": 1,
-                  "extra": "If yes: None: Section 301 does not apply (9903.05.92). If no: 10% in place of base",
+                  "extra": "Informational materials: None: Section 301 does not apply (9903.05.92). Not informational materials: 10% in place of base",
                   "preference": "None",
-                  "total": "Free if yes / 10% if no"
+                  "total": "Free informational materials / 10% not informational materials"
                 }
               ]
             },
             "withoutUsmca": {
-              "totals": ["Free", "10% if no"],
+              "totals": ["Free", "10% if not informational materials"],
               "breakdown": [
                 {
                   "base": "Free",
                   "lines": ["3705.00.00.00"],
                   "lineCount": 1,
-                  "extra": "If yes: None: Section 301 does not apply (9903.05.92). If no: 10% in place of base",
+                  "extra": "Informational materials: None: Section 301 does not apply (9903.05.92). Not informational materials: 10% in place of base",
                   "preference": "None",
-                  "total": "Free if yes / 10% if no"
+                  "total": "Free informational materials / 10% not informational materials"
                 }
               ]
             }
@@ -6844,44 +6844,44 @@
           "3706": {
             "importsUsd": 5750,
             "withUsmca": {
-              "totals": ["Free", "10% if no", "1.4%"],
+              "totals": ["Free", "10% if not informational materials", "1.4%"],
               "breakdown": [
                 {
                   "base": "Free",
                   "lines": ["3706.10.60.30", "3706.10.60.60", "3706.10.60.90", "3706.90.00.30", "3706.90.00.60"],
                   "lineCount": 5,
-                  "extra": "If yes: None: Section 301 does not apply (9903.05.92). If no: 10% in place of base",
+                  "extra": "Informational materials: None: Section 301 does not apply (9903.05.92). Not informational materials: 10% in place of base",
                   "preference": "None",
-                  "total": "Free if yes / 10% if no"
+                  "total": "Free informational materials / 10% not informational materials"
                 },
                 {
                   "base": "1.4%",
                   "lines": ["3706.10.30.00"],
                   "lineCount": 1,
-                  "extra": "If yes: None: Section 301 does not apply (9903.05.92). If no: 10% in place of base",
+                  "extra": "Informational materials: None: Section 301 does not apply (9903.05.92). Not informational materials: 10% in place of base",
                   "preference": "None",
-                  "total": "1.4% if yes / 10% if no"
+                  "total": "1.4% informational materials / 10% not informational materials"
                 }
               ]
             },
             "withoutUsmca": {
-              "totals": ["Free", "10% if no", "1.4%"],
+              "totals": ["Free", "10% if not informational materials", "1.4%"],
               "breakdown": [
                 {
                   "base": "Free",
                   "lines": ["3706.10.60.30", "3706.10.60.60", "3706.10.60.90", "3706.90.00.30", "3706.90.00.60"],
                   "lineCount": 5,
-                  "extra": "If yes: None: Section 301 does not apply (9903.05.92). If no: 10% in place of base",
+                  "extra": "Informational materials: None: Section 301 does not apply (9903.05.92). Not informational materials: 10% in place of base",
                   "preference": "None",
-                  "total": "Free if yes / 10% if no"
+                  "total": "Free informational materials / 10% not informational materials"
                 },
                 {
                   "base": "1.4%",
                   "lines": ["3706.10.30.00"],
                   "lineCount": 1,
-                  "extra": "If yes: None: Section 301 does not apply (9903.05.92). If no: 10% in place of base",
+                  "extra": "Informational materials: None: Section 301 does not apply (9903.05.92). Not informational materials: 10% in place of base",
                   "preference": "None",
-                  "total": "1.4% if yes / 10% if no"
+                  "total": "1.4% informational materials / 10% not informational materials"
                 }
               ]
             }
@@ -7182,28 +7182,28 @@
           "3704": {
             "importsUsd": 50675,
             "withUsmca": {
-              "totals": ["Free", "10% if no"],
+              "totals": ["Free", "10% if not informational materials"],
               "breakdown": [
                 {
                   "base": "Free",
                   "lines": ["3704.00.00.00"],
                   "lineCount": 1,
-                  "extra": "If yes: None: Section 301 does not apply (9903.05.92). If no: 10% in place of base",
+                  "extra": "Informational materials: None: Section 301 does not apply (9903.05.92). Not informational materials: 10% in place of base",
                   "preference": "None",
-                  "total": "Free if yes / 10% if no"
+                  "total": "Free informational materials / 10% not informational materials"
                 }
               ]
             },
             "withoutUsmca": {
-              "totals": ["Free", "10% if no"],
+              "totals": ["Free", "10% if not informational materials"],
               "breakdown": [
                 {
                   "base": "Free",
                   "lines": ["3704.00.00.00"],
                   "lineCount": 1,
-                  "extra": "If yes: None: Section 301 does not apply (9903.05.92). If no: 10% in place of base",
+                  "extra": "Informational materials: None: Section 301 does not apply (9903.05.92). Not informational materials: 10% in place of base",
                   "preference": "None",
-                  "total": "Free if yes / 10% if no"
+                  "total": "Free informational materials / 10% not informational materials"
                 }
               ]
             }
@@ -7211,28 +7211,28 @@
           "3705": {
             "importsUsd": 1253498,
             "withUsmca": {
-              "totals": ["Free", "10% if no"],
+              "totals": ["Free", "10% if not informational materials"],
               "breakdown": [
                 {
                   "base": "Free",
                   "lines": ["3705.00.00.00"],
                   "lineCount": 1,
-                  "extra": "If yes: None: Section 301 does not apply (9903.05.92). If no: 10% in place of base",
+                  "extra": "Informational materials: None: Section 301 does not apply (9903.05.92). Not informational materials: 10% in place of base",
                   "preference": "None",
-                  "total": "Free if yes / 10% if no"
+                  "total": "Free informational materials / 10% not informational materials"
                 }
               ]
             },
             "withoutUsmca": {
-              "totals": ["Free", "10% if no"],
+              "totals": ["Free", "10% if not informational materials"],
               "breakdown": [
                 {
                   "base": "Free",
                   "lines": ["3705.00.00.00"],
                   "lineCount": 1,
-                  "extra": "If yes: None: Section 301 does not apply (9903.05.92). If no: 10% in place of base",
+                  "extra": "Informational materials: None: Section 301 does not apply (9903.05.92). Not informational materials: 10% in place of base",
                   "preference": "None",
-                  "total": "Free if yes / 10% if no"
+                  "total": "Free informational materials / 10% not informational materials"
                 }
               ]
             }
@@ -7240,44 +7240,44 @@
           "3706": {
             "importsUsd": 0,
             "withUsmca": {
-              "totals": ["Free", "10% if no", "1.4%"],
+              "totals": ["Free", "10% if not informational materials", "1.4%"],
               "breakdown": [
                 {
                   "base": "Free",
                   "lines": ["3706.10.60.30", "3706.10.60.60", "3706.10.60.90", "3706.90.00.30", "3706.90.00.60"],
                   "lineCount": 5,
-                  "extra": "If yes: None: Section 301 does not apply (9903.05.92). If no: 10% in place of base",
+                  "extra": "Informational materials: None: Section 301 does not apply (9903.05.92). Not informational materials: 10% in place of base",
                   "preference": "None",
-                  "total": "Free if yes / 10% if no"
+                  "total": "Free informational materials / 10% not informational materials"
                 },
                 {
                   "base": "1.4%",
                   "lines": ["3706.10.30.00"],
                   "lineCount": 1,
-                  "extra": "If yes: None: Section 301 does not apply (9903.05.92). If no: 10% in place of base",
+                  "extra": "Informational materials: None: Section 301 does not apply (9903.05.92). Not informational materials: 10% in place of base",
                   "preference": "None",
-                  "total": "1.4% if yes / 10% if no"
+                  "total": "1.4% informational materials / 10% not informational materials"
                 }
               ]
             },
             "withoutUsmca": {
-              "totals": ["Free", "10% if no", "1.4%"],
+              "totals": ["Free", "10% if not informational materials", "1.4%"],
               "breakdown": [
                 {
                   "base": "Free",
                   "lines": ["3706.10.60.30", "3706.10.60.60", "3706.10.60.90", "3706.90.00.30", "3706.90.00.60"],
                   "lineCount": 5,
-                  "extra": "If yes: None: Section 301 does not apply (9903.05.92). If no: 10% in place of base",
+                  "extra": "Informational materials: None: Section 301 does not apply (9903.05.92). Not informational materials: 10% in place of base",
                   "preference": "None",
-                  "total": "Free if yes / 10% if no"
+                  "total": "Free informational materials / 10% not informational materials"
                 },
                 {
                   "base": "1.4%",
                   "lines": ["3706.10.30.00"],
                   "lineCount": 1,
-                  "extra": "If yes: None: Section 301 does not apply (9903.05.92). If no: 10% in place of base",
+                  "extra": "Informational materials: None: Section 301 does not apply (9903.05.92). Not informational materials: 10% in place of base",
                   "preference": "None",
-                  "total": "1.4% if yes / 10% if no"
+                  "total": "1.4% informational materials / 10% not informational materials"
                 }
               ]
             }
@@ -7578,28 +7578,28 @@
           "3704": {
             "importsUsd": 4812735,
             "withUsmca": {
-              "totals": ["Free", "12.5% if no"],
+              "totals": ["Free", "12.5% if not informational materials"],
               "breakdown": [
                 {
                   "base": "Free",
                   "lines": ["3704.00.00.00"],
                   "lineCount": 1,
-                  "extra": "If yes: None: Section 301 does not apply (9903.05.92). If no: 12.5% in place of base",
+                  "extra": "Informational materials: None: Section 301 does not apply (9903.05.92). Not informational materials: 12.5% in place of base",
                   "preference": "None",
-                  "total": "Free if yes / 12.5% if no"
+                  "total": "Free informational materials / 12.5% not informational materials"
                 }
               ]
             },
             "withoutUsmca": {
-              "totals": ["Free", "12.5% if no"],
+              "totals": ["Free", "12.5% if not informational materials"],
               "breakdown": [
                 {
                   "base": "Free",
                   "lines": ["3704.00.00.00"],
                   "lineCount": 1,
-                  "extra": "If yes: None: Section 301 does not apply (9903.05.92). If no: 12.5% in place of base",
+                  "extra": "Informational materials: None: Section 301 does not apply (9903.05.92). Not informational materials: 12.5% in place of base",
                   "preference": "None",
-                  "total": "Free if yes / 12.5% if no"
+                  "total": "Free informational materials / 12.5% not informational materials"
                 }
               ]
             }
@@ -7607,28 +7607,28 @@
           "3705": {
             "importsUsd": 21164379,
             "withUsmca": {
-              "totals": ["Free", "12.5% if no"],
+              "totals": ["Free", "12.5% if not informational materials"],
               "breakdown": [
                 {
                   "base": "Free",
                   "lines": ["3705.00.00.00"],
                   "lineCount": 1,
-                  "extra": "If yes: None: Section 301 does not apply (9903.05.92). If no: 12.5% in place of base",
+                  "extra": "Informational materials: None: Section 301 does not apply (9903.05.92). Not informational materials: 12.5% in place of base",
                   "preference": "None",
-                  "total": "Free if yes / 12.5% if no"
+                  "total": "Free informational materials / 12.5% not informational materials"
                 }
               ]
             },
             "withoutUsmca": {
-              "totals": ["Free", "12.5% if no"],
+              "totals": ["Free", "12.5% if not informational materials"],
               "breakdown": [
                 {
                   "base": "Free",
                   "lines": ["3705.00.00.00"],
                   "lineCount": 1,
-                  "extra": "If yes: None: Section 301 does not apply (9903.05.92). If no: 12.5% in place of base",
+                  "extra": "Informational materials: None: Section 301 does not apply (9903.05.92). Not informational materials: 12.5% in place of base",
                   "preference": "None",
-                  "total": "Free if yes / 12.5% if no"
+                  "total": "Free informational materials / 12.5% not informational materials"
                 }
               ]
             }
@@ -7636,44 +7636,44 @@
           "3706": {
             "importsUsd": 0,
             "withUsmca": {
-              "totals": ["Free", "12.5% if no"],
+              "totals": ["Free", "12.5% if not informational materials"],
               "breakdown": [
                 {
                   "base": "Free",
                   "lines": ["3706.10.60.30", "3706.10.60.60", "3706.10.60.90", "3706.90.00.30", "3706.90.00.60"],
                   "lineCount": 5,
-                  "extra": "If yes: None: Section 301 does not apply (9903.05.92). If no: 12.5% in place of base",
+                  "extra": "Informational materials: None: Section 301 does not apply (9903.05.92). Not informational materials: 12.5% in place of base",
                   "preference": "None",
-                  "total": "Free if yes / 12.5% if no"
+                  "total": "Free informational materials / 12.5% not informational materials"
                 },
                 {
                   "base": "1.4%",
                   "lines": ["3706.10.30.00"],
                   "lineCount": 1,
-                  "extra": "If yes: None: Section 301 does not apply (9903.05.92). If no: 12.5% in place of base",
-                  "preference": "If yes: Free under US–Korea Free Trade Agreement (KR); Section 301 does not apply (9903.05.92). If no: Free under US–Korea Free Trade Agreement (KR)",
-                  "total": "Free if yes / 12.5% if no"
+                  "extra": "Informational materials: None: Section 301 does not apply (9903.05.92). Not informational materials: 12.5% in place of base",
+                  "preference": "Informational materials: Free under US–Korea Free Trade Agreement (KR); Section 301 does not apply (9903.05.92). Not informational materials: Free under US–Korea Free Trade Agreement (KR)",
+                  "total": "Free informational materials / 12.5% not informational materials"
                 }
               ]
             },
             "withoutUsmca": {
-              "totals": ["Free", "12.5% if no"],
+              "totals": ["Free", "12.5% if not informational materials"],
               "breakdown": [
                 {
                   "base": "Free",
                   "lines": ["3706.10.60.30", "3706.10.60.60", "3706.10.60.90", "3706.90.00.30", "3706.90.00.60"],
                   "lineCount": 5,
-                  "extra": "If yes: None: Section 301 does not apply (9903.05.92). If no: 12.5% in place of base",
+                  "extra": "Informational materials: None: Section 301 does not apply (9903.05.92). Not informational materials: 12.5% in place of base",
                   "preference": "None",
-                  "total": "Free if yes / 12.5% if no"
+                  "total": "Free informational materials / 12.5% not informational materials"
                 },
                 {
                   "base": "1.4%",
                   "lines": ["3706.10.30.00"],
                   "lineCount": 1,
-                  "extra": "If yes: None: Section 301 does not apply (9903.05.92). If no: 12.5% in place of base",
-                  "preference": "If yes: Free under US–Korea Free Trade Agreement (KR); Section 301 does not apply (9903.05.92). If no: Free under US–Korea Free Trade Agreement (KR)",
-                  "total": "Free if yes / 12.5% if no"
+                  "extra": "Informational materials: None: Section 301 does not apply (9903.05.92). Not informational materials: 12.5% in place of base",
+                  "preference": "Informational materials: Free under US–Korea Free Trade Agreement (KR); Section 301 does not apply (9903.05.92). Not informational materials: Free under US–Korea Free Trade Agreement (KR)",
+                  "total": "Free informational materials / 12.5% not informational materials"
                 }
               ]
             }
@@ -7974,28 +7974,28 @@
           "3704": {
             "importsUsd": 0,
             "withUsmca": {
-              "totals": ["Free", "10% if no"],
+              "totals": ["Free", "10% if not informational materials"],
               "breakdown": [
                 {
                   "base": "Free",
                   "lines": ["3704.00.00.00"],
                   "lineCount": 1,
-                  "extra": "If yes: None: Section 301 does not apply (9903.05.92). If no: 10% in place of base",
+                  "extra": "Informational materials: None: Section 301 does not apply (9903.05.92). Not informational materials: 10% in place of base",
                   "preference": "None",
-                  "total": "Free if yes / 10% if no"
+                  "total": "Free informational materials / 10% not informational materials"
                 }
               ]
             },
             "withoutUsmca": {
-              "totals": ["Free", "10% if no"],
+              "totals": ["Free", "10% if not informational materials"],
               "breakdown": [
                 {
                   "base": "Free",
                   "lines": ["3704.00.00.00"],
                   "lineCount": 1,
-                  "extra": "If yes: None: Section 301 does not apply (9903.05.92). If no: 10% in place of base",
+                  "extra": "Informational materials: None: Section 301 does not apply (9903.05.92). Not informational materials: 10% in place of base",
                   "preference": "None",
-                  "total": "Free if yes / 10% if no"
+                  "total": "Free informational materials / 10% not informational materials"
                 }
               ]
             }
@@ -8003,28 +8003,28 @@
           "3705": {
             "importsUsd": 120521,
             "withUsmca": {
-              "totals": ["Free", "10% if no"],
+              "totals": ["Free", "10% if not informational materials"],
               "breakdown": [
                 {
                   "base": "Free",
                   "lines": ["3705.00.00.00"],
                   "lineCount": 1,
-                  "extra": "If yes: None: Section 301 does not apply (9903.05.92). If no: 10% in place of base",
+                  "extra": "Informational materials: None: Section 301 does not apply (9903.05.92). Not informational materials: 10% in place of base",
                   "preference": "None",
-                  "total": "Free if yes / 10% if no"
+                  "total": "Free informational materials / 10% not informational materials"
                 }
               ]
             },
             "withoutUsmca": {
-              "totals": ["Free", "10% if no"],
+              "totals": ["Free", "10% if not informational materials"],
               "breakdown": [
                 {
                   "base": "Free",
                   "lines": ["3705.00.00.00"],
                   "lineCount": 1,
-                  "extra": "If yes: None: Section 301 does not apply (9903.05.92). If no: 10% in place of base",
+                  "extra": "Informational materials: None: Section 301 does not apply (9903.05.92). Not informational materials: 10% in place of base",
                   "preference": "None",
-                  "total": "Free if yes / 10% if no"
+                  "total": "Free informational materials / 10% not informational materials"
                 }
               ]
             }
@@ -8032,44 +8032,44 @@
           "3706": {
             "importsUsd": 0,
             "withUsmca": {
-              "totals": ["Free", "10% if no", "1.4%"],
+              "totals": ["Free", "10% if not informational materials", "1.4%"],
               "breakdown": [
                 {
                   "base": "Free",
                   "lines": ["3706.10.60.30", "3706.10.60.60", "3706.10.60.90", "3706.90.00.30", "3706.90.00.60"],
                   "lineCount": 5,
-                  "extra": "If yes: None: Section 301 does not apply (9903.05.92). If no: 10% in place of base",
+                  "extra": "Informational materials: None: Section 301 does not apply (9903.05.92). Not informational materials: 10% in place of base",
                   "preference": "None",
-                  "total": "Free if yes / 10% if no"
+                  "total": "Free informational materials / 10% not informational materials"
                 },
                 {
                   "base": "1.4%",
                   "lines": ["3706.10.30.00"],
                   "lineCount": 1,
-                  "extra": "If yes: None: Section 301 does not apply (9903.05.92). If no: 10% in place of base",
+                  "extra": "Informational materials: None: Section 301 does not apply (9903.05.92). Not informational materials: 10% in place of base",
                   "preference": "None",
-                  "total": "1.4% if yes / 10% if no"
+                  "total": "1.4% informational materials / 10% not informational materials"
                 }
               ]
             },
             "withoutUsmca": {
-              "totals": ["Free", "10% if no", "1.4%"],
+              "totals": ["Free", "10% if not informational materials", "1.4%"],
               "breakdown": [
                 {
                   "base": "Free",
                   "lines": ["3706.10.60.30", "3706.10.60.60", "3706.10.60.90", "3706.90.00.30", "3706.90.00.60"],
                   "lineCount": 5,
-                  "extra": "If yes: None: Section 301 does not apply (9903.05.92). If no: 10% in place of base",
+                  "extra": "Informational materials: None: Section 301 does not apply (9903.05.92). Not informational materials: 10% in place of base",
                   "preference": "None",
-                  "total": "Free if yes / 10% if no"
+                  "total": "Free informational materials / 10% not informational materials"
                 },
                 {
                   "base": "1.4%",
                   "lines": ["3706.10.30.00"],
                   "lineCount": 1,
-                  "extra": "If yes: None: Section 301 does not apply (9903.05.92). If no: 10% in place of base",
+                  "extra": "Informational materials: None: Section 301 does not apply (9903.05.92). Not informational materials: 10% in place of base",
                   "preference": "None",
-                  "total": "1.4% if yes / 10% if no"
+                  "total": "1.4% informational materials / 10% not informational materials"
                 }
               ]
             }
@@ -8370,28 +8370,28 @@
           "3704": {
             "importsUsd": 156694,
             "withUsmca": {
-              "totals": ["Free", "12.5% if no"],
+              "totals": ["Free", "12.5% if not informational materials"],
               "breakdown": [
                 {
                   "base": "Free",
                   "lines": ["3704.00.00.00"],
                   "lineCount": 1,
-                  "extra": "If yes: None: Section 301 does not apply (9903.05.92). If no: +12.5%",
+                  "extra": "Informational materials: None: Section 301 does not apply (9903.05.92). Not informational materials: +12.5%",
                   "preference": "None",
-                  "total": "Free if yes / 12.5% if no"
+                  "total": "Free informational materials / 12.5% not informational materials"
                 }
               ]
             },
             "withoutUsmca": {
-              "totals": ["Free", "12.5% if no"],
+              "totals": ["Free", "12.5% if not informational materials"],
               "breakdown": [
                 {
                   "base": "Free",
                   "lines": ["3704.00.00.00"],
                   "lineCount": 1,
-                  "extra": "If yes: None: Section 301 does not apply (9903.05.92). If no: +12.5%",
+                  "extra": "Informational materials: None: Section 301 does not apply (9903.05.92). Not informational materials: +12.5%",
                   "preference": "None",
-                  "total": "Free if yes / 12.5% if no"
+                  "total": "Free informational materials / 12.5% not informational materials"
                 }
               ]
             }
@@ -8399,28 +8399,28 @@
           "3705": {
             "importsUsd": 784916,
             "withUsmca": {
-              "totals": ["Free", "12.5% if no"],
+              "totals": ["Free", "12.5% if not informational materials"],
               "breakdown": [
                 {
                   "base": "Free",
                   "lines": ["3705.00.00.00"],
                   "lineCount": 1,
-                  "extra": "If yes: None: Section 301 does not apply (9903.05.92). If no: +12.5%",
+                  "extra": "Informational materials: None: Section 301 does not apply (9903.05.92). Not informational materials: +12.5%",
                   "preference": "None",
-                  "total": "Free if yes / 12.5% if no"
+                  "total": "Free informational materials / 12.5% not informational materials"
                 }
               ]
             },
             "withoutUsmca": {
-              "totals": ["Free", "12.5% if no"],
+              "totals": ["Free", "12.5% if not informational materials"],
               "breakdown": [
                 {
                   "base": "Free",
                   "lines": ["3705.00.00.00"],
                   "lineCount": 1,
-                  "extra": "If yes: None: Section 301 does not apply (9903.05.92). If no: +12.5%",
+                  "extra": "Informational materials: None: Section 301 does not apply (9903.05.92). Not informational materials: +12.5%",
                   "preference": "None",
-                  "total": "Free if yes / 12.5% if no"
+                  "total": "Free informational materials / 12.5% not informational materials"
                 }
               ]
             }
@@ -8428,44 +8428,44 @@
           "3706": {
             "importsUsd": 0,
             "withUsmca": {
-              "totals": ["Free", "12.5% if no"],
+              "totals": ["Free", "12.5% if not informational materials"],
               "breakdown": [
                 {
                   "base": "Free",
                   "lines": ["3706.10.60.30", "3706.10.60.60", "3706.10.60.90", "3706.90.00.30", "3706.90.00.60"],
                   "lineCount": 5,
-                  "extra": "If yes: None: Section 301 does not apply (9903.05.92). If no: +12.5%",
+                  "extra": "Informational materials: None: Section 301 does not apply (9903.05.92). Not informational materials: +12.5%",
                   "preference": "None",
-                  "total": "Free if yes / 12.5% if no"
+                  "total": "Free informational materials / 12.5% not informational materials"
                 },
                 {
                   "base": "1.4%",
                   "lines": ["3706.10.30.00"],
                   "lineCount": 1,
-                  "extra": "If yes: None: Section 301 does not apply (9903.05.92). If no: +12.5%",
-                  "preference": "If yes: Free under US–Singapore Free Trade Agreement (SG); Section 301 does not apply (9903.05.92). If no: Free under US–Singapore Free Trade Agreement (SG)",
-                  "total": "Free if yes / 12.5% if no"
+                  "extra": "Informational materials: None: Section 301 does not apply (9903.05.92). Not informational materials: +12.5%",
+                  "preference": "Informational materials: Free under US–Singapore Free Trade Agreement (SG); Section 301 does not apply (9903.05.92). Not informational materials: Free under US–Singapore Free Trade Agreement (SG)",
+                  "total": "Free informational materials / 12.5% not informational materials"
                 }
               ]
             },
             "withoutUsmca": {
-              "totals": ["Free", "12.5% if no"],
+              "totals": ["Free", "12.5% if not informational materials"],
               "breakdown": [
                 {
                   "base": "Free",
                   "lines": ["3706.10.60.30", "3706.10.60.60", "3706.10.60.90", "3706.90.00.30", "3706.90.00.60"],
                   "lineCount": 5,
-                  "extra": "If yes: None: Section 301 does not apply (9903.05.92). If no: +12.5%",
+                  "extra": "Informational materials: None: Section 301 does not apply (9903.05.92). Not informational materials: +12.5%",
                   "preference": "None",
-                  "total": "Free if yes / 12.5% if no"
+                  "total": "Free informational materials / 12.5% not informational materials"
                 },
                 {
                   "base": "1.4%",
                   "lines": ["3706.10.30.00"],
                   "lineCount": 1,
-                  "extra": "If yes: None: Section 301 does not apply (9903.05.92). If no: +12.5%",
-                  "preference": "If yes: Free under US–Singapore Free Trade Agreement (SG); Section 301 does not apply (9903.05.92). If no: Free under US–Singapore Free Trade Agreement (SG)",
-                  "total": "Free if yes / 12.5% if no"
+                  "extra": "Informational materials: None: Section 301 does not apply (9903.05.92). Not informational materials: +12.5%",
+                  "preference": "Informational materials: Free under US–Singapore Free Trade Agreement (SG); Section 301 does not apply (9903.05.92). Not informational materials: Free under US–Singapore Free Trade Agreement (SG)",
+                  "total": "Free informational materials / 12.5% not informational materials"
                 }
               ]
             }
@@ -8766,28 +8766,28 @@
           "3704": {
             "importsUsd": 52159,
             "withUsmca": {
-              "totals": ["Free", "10% if no"],
+              "totals": ["Free", "10% if not informational materials"],
               "breakdown": [
                 {
                   "base": "Free",
                   "lines": ["3704.00.00.00"],
                   "lineCount": 1,
-                  "extra": "If yes: None: Section 301 does not apply (9903.05.92). If no: +10%",
+                  "extra": "Informational materials: None: Section 301 does not apply (9903.05.92). Not informational materials: +10%",
                   "preference": "None",
-                  "total": "Free if yes / 10% if no"
+                  "total": "Free informational materials / 10% not informational materials"
                 }
               ]
             },
             "withoutUsmca": {
-              "totals": ["Free", "10% if no"],
+              "totals": ["Free", "10% if not informational materials"],
               "breakdown": [
                 {
                   "base": "Free",
                   "lines": ["3704.00.00.00"],
                   "lineCount": 1,
-                  "extra": "If yes: None: Section 301 does not apply (9903.05.92). If no: +10%",
+                  "extra": "Informational materials: None: Section 301 does not apply (9903.05.92). Not informational materials: +10%",
                   "preference": "None",
-                  "total": "Free if yes / 10% if no"
+                  "total": "Free informational materials / 10% not informational materials"
                 }
               ]
             }
@@ -8795,28 +8795,28 @@
           "3705": {
             "importsUsd": 3322829,
             "withUsmca": {
-              "totals": ["Free", "10% if no"],
+              "totals": ["Free", "10% if not informational materials"],
               "breakdown": [
                 {
                   "base": "Free",
                   "lines": ["3705.00.00.00"],
                   "lineCount": 1,
-                  "extra": "If yes: None: Section 301 does not apply (9903.05.92). If no: +10%",
+                  "extra": "Informational materials: None: Section 301 does not apply (9903.05.92). Not informational materials: +10%",
                   "preference": "None",
-                  "total": "Free if yes / 10% if no"
+                  "total": "Free informational materials / 10% not informational materials"
                 }
               ]
             },
             "withoutUsmca": {
-              "totals": ["Free", "10% if no"],
+              "totals": ["Free", "10% if not informational materials"],
               "breakdown": [
                 {
                   "base": "Free",
                   "lines": ["3705.00.00.00"],
                   "lineCount": 1,
-                  "extra": "If yes: None: Section 301 does not apply (9903.05.92). If no: +10%",
+                  "extra": "Informational materials: None: Section 301 does not apply (9903.05.92). Not informational materials: +10%",
                   "preference": "None",
-                  "total": "Free if yes / 10% if no"
+                  "total": "Free informational materials / 10% not informational materials"
                 }
               ]
             }
@@ -8824,44 +8824,44 @@
           "3706": {
             "importsUsd": 113664,
             "withUsmca": {
-              "totals": ["Free", "10% if no", "1.4%", "11.4% if no"],
+              "totals": ["Free", "10% if not informational materials", "1.4%", "11.4% if not informational materials"],
               "breakdown": [
                 {
                   "base": "Free",
                   "lines": ["3706.10.60.30", "3706.10.60.60", "3706.10.60.90", "3706.90.00.30", "3706.90.00.60"],
                   "lineCount": 5,
-                  "extra": "If yes: None: Section 301 does not apply (9903.05.92). If no: +10%",
+                  "extra": "Informational materials: None: Section 301 does not apply (9903.05.92). Not informational materials: +10%",
                   "preference": "None",
-                  "total": "Free if yes / 10% if no"
+                  "total": "Free informational materials / 10% not informational materials"
                 },
                 {
                   "base": "1.4%",
                   "lines": ["3706.10.30.00"],
                   "lineCount": 1,
-                  "extra": "If yes: None: Section 301 does not apply (9903.05.92). If no: +10%",
+                  "extra": "Informational materials: None: Section 301 does not apply (9903.05.92). Not informational materials: +10%",
                   "preference": "None",
-                  "total": "1.4% if yes / 11.4% if no"
+                  "total": "1.4% informational materials / 11.4% not informational materials"
                 }
               ]
             },
             "withoutUsmca": {
-              "totals": ["Free", "10% if no", "1.4%", "11.4% if no"],
+              "totals": ["Free", "10% if not informational materials", "1.4%", "11.4% if not informational materials"],
               "breakdown": [
                 {
                   "base": "Free",
                   "lines": ["3706.10.60.30", "3706.10.60.60", "3706.10.60.90", "3706.90.00.30", "3706.90.00.60"],
                   "lineCount": 5,
-                  "extra": "If yes: None: Section 301 does not apply (9903.05.92). If no: +10%",
+                  "extra": "Informational materials: None: Section 301 does not apply (9903.05.92). Not informational materials: +10%",
                   "preference": "None",
-                  "total": "Free if yes / 10% if no"
+                  "total": "Free informational materials / 10% not informational materials"
                 },
                 {
                   "base": "1.4%",
                   "lines": ["3706.10.30.00"],
                   "lineCount": 1,
-                  "extra": "If yes: None: Section 301 does not apply (9903.05.92). If no: +10%",
+                  "extra": "Informational materials: None: Section 301 does not apply (9903.05.92). Not informational materials: +10%",
                   "preference": "None",
-                  "total": "1.4% if yes / 11.4% if no"
+                  "total": "1.4% informational materials / 11.4% not informational materials"
                 }
               ]
             }
@@ -8919,7 +8919,7 @@
           "kind": "additive",
           "extraPct": 37.5,
           "ch99Code": "9903.05.01",
-          "label": "Base rate plus 25% (9903.05.01) and 12.5% (9903.05.27): 37.5% extra if no informational-materials claim; base rate only if yes (9903.05.09 and 9903.05.92), which fits exposed film (3704-3706) only. 3701.30 plates pay 25% Section 232 instead of both.",
+          "label": "Base rate plus 25% (9903.05.01) and 12.5% (9903.05.27): 37.5% extra; base rate only for informational materials (9903.05.09 and 9903.05.92), which fits exposed film (3704-3706) only. 3701.30 plates pay 25% Section 232 instead of both.",
           "sourceIds": [
             "fr-2026-14542",
             "hts-chapter-99",
@@ -9164,28 +9164,28 @@
           "3704": {
             "importsUsd": 0,
             "withUsmca": {
-              "totals": ["Free", "37.5% if no"],
+              "totals": ["Free", "37.5% if not informational materials"],
               "breakdown": [
                 {
                   "base": "Free",
                   "lines": ["3704.00.00.00"],
                   "lineCount": 1,
-                  "extra": "If yes: None: Section 301 does not apply (9903.05.92, 9903.05.09). If no: +12.5% (9903.05.27) + 25% (9903.05.01)",
+                  "extra": "Informational materials: None: Section 301 does not apply (9903.05.92, 9903.05.09). Not informational materials: +12.5% (9903.05.27) + 25% (9903.05.01)",
                   "preference": "None",
-                  "total": "Free if yes / 37.5% if no"
+                  "total": "Free informational materials / 37.5% not informational materials"
                 }
               ]
             },
             "withoutUsmca": {
-              "totals": ["Free", "37.5% if no"],
+              "totals": ["Free", "37.5% if not informational materials"],
               "breakdown": [
                 {
                   "base": "Free",
                   "lines": ["3704.00.00.00"],
                   "lineCount": 1,
-                  "extra": "If yes: None: Section 301 does not apply (9903.05.92, 9903.05.09). If no: +12.5% (9903.05.27) + 25% (9903.05.01)",
+                  "extra": "Informational materials: None: Section 301 does not apply (9903.05.92, 9903.05.09). Not informational materials: +12.5% (9903.05.27) + 25% (9903.05.01)",
                   "preference": "None",
-                  "total": "Free if yes / 37.5% if no"
+                  "total": "Free informational materials / 37.5% not informational materials"
                 }
               ]
             }
@@ -9193,28 +9193,28 @@
           "3705": {
             "importsUsd": 0,
             "withUsmca": {
-              "totals": ["Free", "37.5% if no"],
+              "totals": ["Free", "37.5% if not informational materials"],
               "breakdown": [
                 {
                   "base": "Free",
                   "lines": ["3705.00.00.00"],
                   "lineCount": 1,
-                  "extra": "If yes: None: Section 301 does not apply (9903.05.92, 9903.05.09). If no: +12.5% (9903.05.27) + 25% (9903.05.01)",
+                  "extra": "Informational materials: None: Section 301 does not apply (9903.05.92, 9903.05.09). Not informational materials: +12.5% (9903.05.27) + 25% (9903.05.01)",
                   "preference": "None",
-                  "total": "Free if yes / 37.5% if no"
+                  "total": "Free informational materials / 37.5% not informational materials"
                 }
               ]
             },
             "withoutUsmca": {
-              "totals": ["Free", "37.5% if no"],
+              "totals": ["Free", "37.5% if not informational materials"],
               "breakdown": [
                 {
                   "base": "Free",
                   "lines": ["3705.00.00.00"],
                   "lineCount": 1,
-                  "extra": "If yes: None: Section 301 does not apply (9903.05.92, 9903.05.09). If no: +12.5% (9903.05.27) + 25% (9903.05.01)",
+                  "extra": "Informational materials: None: Section 301 does not apply (9903.05.92, 9903.05.09). Not informational materials: +12.5% (9903.05.27) + 25% (9903.05.01)",
                   "preference": "None",
-                  "total": "Free if yes / 37.5% if no"
+                  "total": "Free informational materials / 37.5% not informational materials"
                 }
               ]
             }
@@ -9222,44 +9222,44 @@
           "3706": {
             "importsUsd": 0,
             "withUsmca": {
-              "totals": ["Free", "37.5% if no", "1.4%", "38.9% if no"],
+              "totals": ["Free", "37.5% if not informational materials", "1.4%", "38.9% if not informational materials"],
               "breakdown": [
                 {
                   "base": "Free",
                   "lines": ["3706.10.60.30", "3706.10.60.60", "3706.10.60.90", "3706.90.00.30", "3706.90.00.60"],
                   "lineCount": 5,
-                  "extra": "If yes: None: Section 301 does not apply (9903.05.92, 9903.05.09). If no: +12.5% (9903.05.27) + 25% (9903.05.01)",
+                  "extra": "Informational materials: None: Section 301 does not apply (9903.05.92, 9903.05.09). Not informational materials: +12.5% (9903.05.27) + 25% (9903.05.01)",
                   "preference": "None",
-                  "total": "Free if yes / 37.5% if no"
+                  "total": "Free informational materials / 37.5% not informational materials"
                 },
                 {
                   "base": "1.4%",
                   "lines": ["3706.10.30.00"],
                   "lineCount": 1,
-                  "extra": "If yes: None: Section 301 does not apply (9903.05.92, 9903.05.09). If no: +12.5% (9903.05.27) + 25% (9903.05.01)",
+                  "extra": "Informational materials: None: Section 301 does not apply (9903.05.92, 9903.05.09). Not informational materials: +12.5% (9903.05.27) + 25% (9903.05.01)",
                   "preference": "None",
-                  "total": "1.4% if yes / 38.9% if no"
+                  "total": "1.4% informational materials / 38.9% not informational materials"
                 }
               ]
             },
             "withoutUsmca": {
-              "totals": ["Free", "37.5% if no", "1.4%", "38.9% if no"],
+              "totals": ["Free", "37.5% if not informational materials", "1.4%", "38.9% if not informational materials"],
               "breakdown": [
                 {
                   "base": "Free",
                   "lines": ["3706.10.60.30", "3706.10.60.60", "3706.10.60.90", "3706.90.00.30", "3706.90.00.60"],
                   "lineCount": 5,
-                  "extra": "If yes: None: Section 301 does not apply (9903.05.92, 9903.05.09). If no: +12.5% (9903.05.27) + 25% (9903.05.01)",
+                  "extra": "Informational materials: None: Section 301 does not apply (9903.05.92, 9903.05.09). Not informational materials: +12.5% (9903.05.27) + 25% (9903.05.01)",
                   "preference": "None",
-                  "total": "Free if yes / 37.5% if no"
+                  "total": "Free informational materials / 37.5% not informational materials"
                 },
                 {
                   "base": "1.4%",
                   "lines": ["3706.10.30.00"],
                   "lineCount": 1,
-                  "extra": "If yes: None: Section 301 does not apply (9903.05.92, 9903.05.09). If no: +12.5% (9903.05.27) + 25% (9903.05.01)",
+                  "extra": "Informational materials: None: Section 301 does not apply (9903.05.92, 9903.05.09). Not informational materials: +12.5% (9903.05.27) + 25% (9903.05.01)",
                   "preference": "None",
-                  "total": "1.4% if yes / 38.9% if no"
+                  "total": "1.4% informational materials / 38.9% not informational materials"
                 }
               ]
             }
@@ -9564,28 +9564,28 @@
           "3704": {
             "importsUsd": 100559,
             "withUsmca": {
-              "totals": ["25%", "37.5% if no"],
+              "totals": ["25%", "37.5% if not informational materials"],
               "breakdown": [
                 {
                   "base": "Free",
                   "lines": ["3704.00.00.00"],
                   "lineCount": 1,
-                  "extra": "If yes: +25%. If no: +12.5% (9903.05.31) + 25% (9903.88.03)",
+                  "extra": "Informational materials: +25%. Not informational materials: +12.5% (9903.05.31) + 25% (9903.88.03)",
                   "preference": "None",
-                  "total": "25% if yes / 37.5% if no"
+                  "total": "25% informational materials / 37.5% not informational materials"
                 }
               ]
             },
             "withoutUsmca": {
-              "totals": ["25%", "37.5% if no"],
+              "totals": ["25%", "37.5% if not informational materials"],
               "breakdown": [
                 {
                   "base": "Free",
                   "lines": ["3704.00.00.00"],
                   "lineCount": 1,
-                  "extra": "If yes: +25%. If no: +12.5% (9903.05.31) + 25% (9903.88.03)",
+                  "extra": "Informational materials: +25%. Not informational materials: +12.5% (9903.05.31) + 25% (9903.88.03)",
                   "preference": "None",
-                  "total": "25% if yes / 37.5% if no"
+                  "total": "25% informational materials / 37.5% not informational materials"
                 }
               ]
             }
@@ -9593,28 +9593,28 @@
           "3705": {
             "importsUsd": 45213,
             "withUsmca": {
-              "totals": ["25%", "37.5% if no"],
+              "totals": ["25%", "37.5% if not informational materials"],
               "breakdown": [
                 {
                   "base": "Free",
                   "lines": ["3705.00.00.00"],
                   "lineCount": 1,
-                  "extra": "If yes: +25%. If no: +12.5% (9903.05.31) + 25% (9903.88.03)",
+                  "extra": "Informational materials: +25%. Not informational materials: +12.5% (9903.05.31) + 25% (9903.88.03)",
                   "preference": "None",
-                  "total": "25% if yes / 37.5% if no"
+                  "total": "25% informational materials / 37.5% not informational materials"
                 }
               ]
             },
             "withoutUsmca": {
-              "totals": ["25%", "37.5% if no"],
+              "totals": ["25%", "37.5% if not informational materials"],
               "breakdown": [
                 {
                   "base": "Free",
                   "lines": ["3705.00.00.00"],
                   "lineCount": 1,
-                  "extra": "If yes: +25%. If no: +12.5% (9903.05.31) + 25% (9903.88.03)",
+                  "extra": "Informational materials: +25%. Not informational materials: +12.5% (9903.05.31) + 25% (9903.88.03)",
                   "preference": "None",
-                  "total": "25% if yes / 37.5% if no"
+                  "total": "25% informational materials / 37.5% not informational materials"
                 }
               ]
             }
@@ -9622,44 +9622,44 @@
           "3706": {
             "importsUsd": 3180,
             "withUsmca": {
-              "totals": ["25%", "37.5% if no", "26.4%", "38.9% if no"],
+              "totals": ["25%", "37.5% if not informational materials", "26.4%", "38.9% if not informational materials"],
               "breakdown": [
                 {
                   "base": "Free",
                   "lines": ["3706.10.60.30", "3706.10.60.60", "3706.10.60.90", "3706.90.00.30", "3706.90.00.60"],
                   "lineCount": 5,
-                  "extra": "If yes: +25%. If no: +12.5% (9903.05.31) + 25% (9903.88.03)",
+                  "extra": "Informational materials: +25%. Not informational materials: +12.5% (9903.05.31) + 25% (9903.88.03)",
                   "preference": "None",
-                  "total": "25% if yes / 37.5% if no"
+                  "total": "25% informational materials / 37.5% not informational materials"
                 },
                 {
                   "base": "1.4%",
                   "lines": ["3706.10.30.00"],
                   "lineCount": 1,
-                  "extra": "If yes: +25%. If no: +12.5% (9903.05.31) + 25% (9903.88.03)",
+                  "extra": "Informational materials: +25%. Not informational materials: +12.5% (9903.05.31) + 25% (9903.88.03)",
                   "preference": "None",
-                  "total": "26.4% if yes / 38.9% if no"
+                  "total": "26.4% informational materials / 38.9% not informational materials"
                 }
               ]
             },
             "withoutUsmca": {
-              "totals": ["25%", "37.5% if no", "26.4%", "38.9% if no"],
+              "totals": ["25%", "37.5% if not informational materials", "26.4%", "38.9% if not informational materials"],
               "breakdown": [
                 {
                   "base": "Free",
                   "lines": ["3706.10.60.30", "3706.10.60.60", "3706.10.60.90", "3706.90.00.30", "3706.90.00.60"],
                   "lineCount": 5,
-                  "extra": "If yes: +25%. If no: +12.5% (9903.05.31) + 25% (9903.88.03)",
+                  "extra": "Informational materials: +25%. Not informational materials: +12.5% (9903.05.31) + 25% (9903.88.03)",
                   "preference": "None",
-                  "total": "25% if yes / 37.5% if no"
+                  "total": "25% informational materials / 37.5% not informational materials"
                 },
                 {
                   "base": "1.4%",
                   "lines": ["3706.10.30.00"],
                   "lineCount": 1,
-                  "extra": "If yes: +25%. If no: +12.5% (9903.05.31) + 25% (9903.88.03)",
+                  "extra": "Informational materials: +25%. Not informational materials: +12.5% (9903.05.31) + 25% (9903.88.03)",
                   "preference": "None",
-                  "total": "26.4% if yes / 38.9% if no"
+                  "total": "26.4% informational materials / 38.9% not informational materials"
                 }
               ]
             }
@@ -9974,15 +9974,15 @@
               ]
             },
             "withoutUsmca": {
-              "totals": ["Free", "10% if no"],
+              "totals": ["Free", "10% if not informational materials"],
               "breakdown": [
                 {
                   "base": "Free",
                   "lines": ["3704.00.00.00"],
                   "lineCount": 1,
-                  "extra": "If yes: None: Section 301 does not apply (9903.05.92). If no: +10%",
+                  "extra": "Informational materials: None: Section 301 does not apply (9903.05.92). Not informational materials: +10%",
                   "preference": "None",
-                  "total": "Free if yes / 10% if no"
+                  "total": "Free informational materials / 10% not informational materials"
                 }
               ]
             }
@@ -10003,15 +10003,15 @@
               ]
             },
             "withoutUsmca": {
-              "totals": ["Free", "10% if no"],
+              "totals": ["Free", "10% if not informational materials"],
               "breakdown": [
                 {
                   "base": "Free",
                   "lines": ["3705.00.00.00"],
                   "lineCount": 1,
-                  "extra": "If yes: None: Section 301 does not apply (9903.05.92). If no: +10%",
+                  "extra": "Informational materials: None: Section 301 does not apply (9903.05.92). Not informational materials: +10%",
                   "preference": "None",
-                  "total": "Free if yes / 10% if no"
+                  "total": "Free informational materials / 10% not informational materials"
                 }
               ]
             }
@@ -10040,23 +10040,23 @@
               ]
             },
             "withoutUsmca": {
-              "totals": ["Free", "10% if no", "1.4%", "11.4% if no"],
+              "totals": ["Free", "10% if not informational materials", "1.4%", "11.4% if not informational materials"],
               "breakdown": [
                 {
                   "base": "Free",
                   "lines": ["3706.10.60.30", "3706.10.60.60", "3706.10.60.90", "3706.90.00.30", "3706.90.00.60"],
                   "lineCount": 5,
-                  "extra": "If yes: None: Section 301 does not apply (9903.05.92). If no: +10%",
+                  "extra": "Informational materials: None: Section 301 does not apply (9903.05.92). Not informational materials: +10%",
                   "preference": "None",
-                  "total": "Free if yes / 10% if no"
+                  "total": "Free informational materials / 10% not informational materials"
                 },
                 {
                   "base": "1.4%",
                   "lines": ["3706.10.30.00"],
                   "lineCount": 1,
-                  "extra": "If yes: None: Section 301 does not apply (9903.05.92). If no: +10%",
+                  "extra": "Informational materials: None: Section 301 does not apply (9903.05.92). Not informational materials: +10%",
                   "preference": "None",
-                  "total": "1.4% if yes / 11.4% if no"
+                  "total": "1.4% informational materials / 11.4% not informational materials"
                 }
               ]
             }
@@ -10371,15 +10371,15 @@
               ]
             },
             "withoutUsmca": {
-              "totals": ["Free", "10% if no"],
+              "totals": ["Free", "10% if not informational materials"],
               "breakdown": [
                 {
                   "base": "Free",
                   "lines": ["3704.00.00.00"],
                   "lineCount": 1,
-                  "extra": "If yes: None: Section 301 does not apply (9903.05.92). If no: +10%",
+                  "extra": "Informational materials: None: Section 301 does not apply (9903.05.92). Not informational materials: +10%",
                   "preference": "None",
-                  "total": "Free if yes / 10% if no"
+                  "total": "Free informational materials / 10% not informational materials"
                 }
               ]
             }
@@ -10400,15 +10400,15 @@
               ]
             },
             "withoutUsmca": {
-              "totals": ["Free", "10% if no"],
+              "totals": ["Free", "10% if not informational materials"],
               "breakdown": [
                 {
                   "base": "Free",
                   "lines": ["3705.00.00.00"],
                   "lineCount": 1,
-                  "extra": "If yes: None: Section 301 does not apply (9903.05.92). If no: +10%",
+                  "extra": "Informational materials: None: Section 301 does not apply (9903.05.92). Not informational materials: +10%",
                   "preference": "None",
-                  "total": "Free if yes / 10% if no"
+                  "total": "Free informational materials / 10% not informational materials"
                 }
               ]
             }
@@ -10437,23 +10437,23 @@
               ]
             },
             "withoutUsmca": {
-              "totals": ["Free", "10% if no", "1.4%", "11.4% if no"],
+              "totals": ["Free", "10% if not informational materials", "1.4%", "11.4% if not informational materials"],
               "breakdown": [
                 {
                   "base": "Free",
                   "lines": ["3706.10.60.30", "3706.10.60.60", "3706.10.60.90", "3706.90.00.30", "3706.90.00.60"],
                   "lineCount": 5,
-                  "extra": "If yes: None: Section 301 does not apply (9903.05.92). If no: +10%",
+                  "extra": "Informational materials: None: Section 301 does not apply (9903.05.92). Not informational materials: +10%",
                   "preference": "None",
-                  "total": "Free if yes / 10% if no"
+                  "total": "Free informational materials / 10% not informational materials"
                 },
                 {
                   "base": "1.4%",
                   "lines": ["3706.10.30.00"],
                   "lineCount": 1,
-                  "extra": "If yes: None: Section 301 does not apply (9903.05.92). If no: +10%",
+                  "extra": "Informational materials: None: Section 301 does not apply (9903.05.92). Not informational materials: +10%",
                   "preference": "None",
-                  "total": "1.4% if yes / 11.4% if no"
+                  "total": "1.4% informational materials / 11.4% not informational materials"
                 }
               ]
             }
@@ -10754,28 +10754,28 @@
           "3704": {
             "importsUsd": 0,
             "withUsmca": {
-              "totals": ["Free", "10% if no"],
+              "totals": ["Free", "10% if not informational materials"],
               "breakdown": [
                 {
                   "base": "Free",
                   "lines": ["3704.00.00.00"],
                   "lineCount": 1,
-                  "extra": "If yes: None: Section 301 does not apply (9903.05.92). If no: 10% in place of base",
+                  "extra": "Informational materials: None: Section 301 does not apply (9903.05.92). Not informational materials: 10% in place of base",
                   "preference": "None",
-                  "total": "Free if yes / 10% if no"
+                  "total": "Free informational materials / 10% not informational materials"
                 }
               ]
             },
             "withoutUsmca": {
-              "totals": ["Free", "10% if no"],
+              "totals": ["Free", "10% if not informational materials"],
               "breakdown": [
                 {
                   "base": "Free",
                   "lines": ["3704.00.00.00"],
                   "lineCount": 1,
-                  "extra": "If yes: None: Section 301 does not apply (9903.05.92). If no: 10% in place of base",
+                  "extra": "Informational materials: None: Section 301 does not apply (9903.05.92). Not informational materials: 10% in place of base",
                   "preference": "None",
-                  "total": "Free if yes / 10% if no"
+                  "total": "Free informational materials / 10% not informational materials"
                 }
               ]
             }
@@ -10783,28 +10783,28 @@
           "3705": {
             "importsUsd": 796358,
             "withUsmca": {
-              "totals": ["Free", "10% if no"],
+              "totals": ["Free", "10% if not informational materials"],
               "breakdown": [
                 {
                   "base": "Free",
                   "lines": ["3705.00.00.00"],
                   "lineCount": 1,
-                  "extra": "If yes: None: Section 301 does not apply (9903.05.92). If no: 10% in place of base",
+                  "extra": "Informational materials: None: Section 301 does not apply (9903.05.92). Not informational materials: 10% in place of base",
                   "preference": "None",
-                  "total": "Free if yes / 10% if no"
+                  "total": "Free informational materials / 10% not informational materials"
                 }
               ]
             },
             "withoutUsmca": {
-              "totals": ["Free", "10% if no"],
+              "totals": ["Free", "10% if not informational materials"],
               "breakdown": [
                 {
                   "base": "Free",
                   "lines": ["3705.00.00.00"],
                   "lineCount": 1,
-                  "extra": "If yes: None: Section 301 does not apply (9903.05.92). If no: 10% in place of base",
+                  "extra": "Informational materials: None: Section 301 does not apply (9903.05.92). Not informational materials: 10% in place of base",
                   "preference": "None",
-                  "total": "Free if yes / 10% if no"
+                  "total": "Free informational materials / 10% not informational materials"
                 }
               ]
             }
@@ -10812,44 +10812,44 @@
           "3706": {
             "importsUsd": 112714,
             "withUsmca": {
-              "totals": ["Free", "10% if no", "1.4%"],
+              "totals": ["Free", "10% if not informational materials", "1.4%"],
               "breakdown": [
                 {
                   "base": "Free",
                   "lines": ["3706.10.60.30", "3706.10.60.60", "3706.10.60.90", "3706.90.00.30", "3706.90.00.60"],
                   "lineCount": 5,
-                  "extra": "If yes: None: Section 301 does not apply (9903.05.92). If no: 10% in place of base",
+                  "extra": "Informational materials: None: Section 301 does not apply (9903.05.92). Not informational materials: 10% in place of base",
                   "preference": "None",
-                  "total": "Free if yes / 10% if no"
+                  "total": "Free informational materials / 10% not informational materials"
                 },
                 {
                   "base": "1.4%",
                   "lines": ["3706.10.30.00"],
                   "lineCount": 1,
-                  "extra": "If yes: None: Section 301 does not apply (9903.05.92). If no: 10% in place of base",
+                  "extra": "Informational materials: None: Section 301 does not apply (9903.05.92). Not informational materials: 10% in place of base",
                   "preference": "None",
-                  "total": "1.4% if yes / 10% if no"
+                  "total": "1.4% informational materials / 10% not informational materials"
                 }
               ]
             },
             "withoutUsmca": {
-              "totals": ["Free", "10% if no", "1.4%"],
+              "totals": ["Free", "10% if not informational materials", "1.4%"],
               "breakdown": [
                 {
                   "base": "Free",
                   "lines": ["3706.10.60.30", "3706.10.60.60", "3706.10.60.90", "3706.90.00.30", "3706.90.00.60"],
                   "lineCount": 5,
-                  "extra": "If yes: None: Section 301 does not apply (9903.05.92). If no: 10% in place of base",
+                  "extra": "Informational materials: None: Section 301 does not apply (9903.05.92). Not informational materials: 10% in place of base",
                   "preference": "None",
-                  "total": "Free if yes / 10% if no"
+                  "total": "Free informational materials / 10% not informational materials"
                 },
                 {
                   "base": "1.4%",
                   "lines": ["3706.10.30.00"],
                   "lineCount": 1,
-                  "extra": "If yes: None: Section 301 does not apply (9903.05.92). If no: 10% in place of base",
+                  "extra": "Informational materials: None: Section 301 does not apply (9903.05.92). Not informational materials: 10% in place of base",
                   "preference": "None",
-                  "total": "1.4% if yes / 10% if no"
+                  "total": "1.4% informational materials / 10% not informational materials"
                 }
               ]
             }
@@ -11153,28 +11153,28 @@
           "3704": {
             "importsUsd": 88394,
             "withUsmca": {
-              "totals": ["Free", "Free–12.5% if no"],
+              "totals": ["Free–12.5%", "Free if informational materials"],
               "breakdown": [
                 {
                   "base": "Free",
                   "lines": ["3704.00.00.00"],
                   "lineCount": 1,
-                  "extra": "If yes: None. If no: 0% to +12.5% by country, Section 301 (9903.05.20–9903.05.84)",
+                  "extra": "Not informational materials: 0% to +12.5% by country, Section 301 (9903.05.20–9903.05.84). Informational materials: None",
                   "preference": "None",
-                  "total": "Free if yes / Free–12.5% if no"
+                  "total": "Free–12.5% not informational materials / Free informational materials"
                 }
               ]
             },
             "withoutUsmca": {
-              "totals": ["Free", "Free–12.5% if no"],
+              "totals": ["Free–12.5%", "Free if informational materials"],
               "breakdown": [
                 {
                   "base": "Free",
                   "lines": ["3704.00.00.00"],
                   "lineCount": 1,
-                  "extra": "If yes: None. If no: 0% to +12.5% by country, Section 301 (9903.05.20–9903.05.84)",
+                  "extra": "Not informational materials: 0% to +12.5% by country, Section 301 (9903.05.20–9903.05.84). Informational materials: None",
                   "preference": "None",
-                  "total": "Free if yes / Free–12.5% if no"
+                  "total": "Free–12.5% not informational materials / Free informational materials"
                 }
               ]
             }
@@ -11182,28 +11182,28 @@
           "3705": {
             "importsUsd": 388911,
             "withUsmca": {
-              "totals": ["Free", "Free–12.5% if no"],
+              "totals": ["Free–12.5%", "Free if informational materials"],
               "breakdown": [
                 {
                   "base": "Free",
                   "lines": ["3705.00.00.00"],
                   "lineCount": 1,
-                  "extra": "If yes: None. If no: 0% to +12.5% by country, Section 301 (9903.05.20–9903.05.84)",
+                  "extra": "Not informational materials: 0% to +12.5% by country, Section 301 (9903.05.20–9903.05.84). Informational materials: None",
                   "preference": "None",
-                  "total": "Free if yes / Free–12.5% if no"
+                  "total": "Free–12.5% not informational materials / Free informational materials"
                 }
               ]
             },
             "withoutUsmca": {
-              "totals": ["Free", "Free–12.5% if no"],
+              "totals": ["Free–12.5%", "Free if informational materials"],
               "breakdown": [
                 {
                   "base": "Free",
                   "lines": ["3705.00.00.00"],
                   "lineCount": 1,
-                  "extra": "If yes: None. If no: 0% to +12.5% by country, Section 301 (9903.05.20–9903.05.84)",
+                  "extra": "Not informational materials: 0% to +12.5% by country, Section 301 (9903.05.20–9903.05.84). Informational materials: None",
                   "preference": "None",
-                  "total": "Free if yes / Free–12.5% if no"
+                  "total": "Free–12.5% not informational materials / Free informational materials"
                 }
               ]
             }
@@ -11211,44 +11211,44 @@
           "3706": {
             "importsUsd": 332335,
             "withUsmca": {
-              "totals": ["Free", "Free–12.5% if no", "1.4%", "1.4%–13.9% if no"],
+              "totals": ["Free–12.5%", "Free if informational materials", "1.4%–13.9%", "1.4% if informational materials"],
               "breakdown": [
                 {
                   "base": "Free",
                   "lines": ["3706.10.60.30", "3706.10.60.60", "3706.10.60.90", "3706.90.00.30", "3706.90.00.60"],
                   "lineCount": 5,
-                  "extra": "If yes: None. If no: 0% to +12.5% by country, Section 301 (9903.05.20–9903.05.84)",
+                  "extra": "Not informational materials: 0% to +12.5% by country, Section 301 (9903.05.20–9903.05.84). Informational materials: None",
                   "preference": "None",
-                  "total": "Free if yes / Free–12.5% if no"
+                  "total": "Free–12.5% not informational materials / Free informational materials"
                 },
                 {
                   "base": "1.4%",
                   "lines": ["3706.10.30.00"],
                   "lineCount": 1,
-                  "extra": "If yes: None. If no: 0% to +12.5% by country, Section 301 (9903.05.20–9903.05.84)",
+                  "extra": "Not informational materials: 0% to +12.5% by country, Section 301 (9903.05.20–9903.05.84). Informational materials: None",
                   "preference": "None",
-                  "total": "1.4% if yes / 1.4%–13.9% if no"
+                  "total": "1.4%–13.9% not informational materials / 1.4% informational materials"
                 }
               ]
             },
             "withoutUsmca": {
-              "totals": ["Free", "Free–12.5% if no", "1.4%", "1.4%–13.9% if no"],
+              "totals": ["Free–12.5%", "Free if informational materials", "1.4%–13.9%", "1.4% if informational materials"],
               "breakdown": [
                 {
                   "base": "Free",
                   "lines": ["3706.10.60.30", "3706.10.60.60", "3706.10.60.90", "3706.90.00.30", "3706.90.00.60"],
                   "lineCount": 5,
-                  "extra": "If yes: None. If no: 0% to +12.5% by country, Section 301 (9903.05.20–9903.05.84)",
+                  "extra": "Not informational materials: 0% to +12.5% by country, Section 301 (9903.05.20–9903.05.84). Informational materials: None",
                   "preference": "None",
-                  "total": "Free if yes / Free–12.5% if no"
+                  "total": "Free–12.5% not informational materials / Free informational materials"
                 },
                 {
                   "base": "1.4%",
                   "lines": ["3706.10.30.00"],
                   "lineCount": 1,
-                  "extra": "If yes: None. If no: 0% to +12.5% by country, Section 301 (9903.05.20–9903.05.84)",
+                  "extra": "Not informational materials: 0% to +12.5% by country, Section 301 (9903.05.20–9903.05.84). Informational materials: None",
                   "preference": "None",
-                  "total": "1.4% if yes / 1.4%–13.9% if no"
+                  "total": "1.4%–13.9% not informational materials / 1.4% informational materials"
                 }
               ]
             }
@@ -11324,13 +11324,13 @@
         "country": "Taiwan",
         "heading": "3705",
         "importsUsd": 72731351,
-        "totals": ["Free", "10% if no"]
+        "totals": ["Free", "10% if not informational materials"]
       },
       {
         "country": "Germany",
         "heading": "3705",
         "importsUsd": 69880251,
-        "totals": ["Free", "10% if no"]
+        "totals": ["Free", "10% if not informational materials"]
       },
       {
         "country": "Japan",
@@ -11342,7 +11342,7 @@
         "country": "Japan",
         "heading": "3705",
         "importsUsd": 46221772,
-        "totals": ["Free", "12.5% if no"]
+        "totals": ["Free", "12.5% if not informational materials"]
       },
       {
         "country": "Singapore",
@@ -11356,7 +11356,7 @@
       "Ranges like \"Free · 11.8%\" mean the group has lines with different base rates; select a cell to see which lines carry which rate.",
       "Preferences: USMCA (S) is applied for Canada and Mexico on the \"USMCA-qualifying\" side; KR for South Korea; SG for Singapore. GSP (A, A+) has lapsed and is not applied. Other preferences are not applied.",
       "Any other country shows the range across every country not listed (column 2 countries — Cuba, North Korea, Russia, Belarus — aside), without preferences.",
-      "Informational materials: on headings 3704, 3705 and 3706 — the Chapter 37 headings CBP's guidance on the identically worded IEEPA exception lists — \"if yes\" totals assume the goods are entered under 9903.05.92 (and, for Brazil, 9903.05.09) and \"if no\" totals assume no claim. Unexposed plates, film and paper (3701-3703) and photographic chemicals (3707) are not treated as informational materials and show the Section 301 duty. CBP decides whether a product qualifies.",
+      "Informational materials: on headings 3704, 3705 and 3706 — the Chapter 37 headings CBP's guidance on the identically worded IEEPA exception lists — the \"informational materials\" totals assume the goods are entered under 9903.05.92 (and, for Brazil, 9903.05.09) and the \"not informational materials\" totals assume no claim. Unexposed plates, film and paper (3701-3703) and photographic chemicals (3707) are not treated as informational materials and show the Section 301 duty. CBP decides whether a product qualifies.",
       "Section 232 on 3701.30: the totals assume the plates contain aluminum at 15% or more of their weight, not made from U.S.-smelted aluminum (9903.82.09, 25%). Plates without aluminum, steel or copper (9903.82.01) or under 15% (9903.82.03) pay the Section 301 duty instead; the 10% U.S.-aluminum rate (9903.82.06) and the UK 15% rate (9903.82.05) need documentation and are not applied.",
       "AD/CVD cash deposits on aluminum lithographic printing plates from China and Japan (3701.30, 3701.99.60) are company-specific and not included; see Tariff updates.",
       "The IEEPA duties (9903.01.xx, 9903.02.xx) are still printed in the schedule but ended February 24, 2026, and the Section 122 surcharge (9903.03.01) expired July 23, 2026; neither is applied.",
