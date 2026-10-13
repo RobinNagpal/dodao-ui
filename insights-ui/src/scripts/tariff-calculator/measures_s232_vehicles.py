@@ -33,10 +33,15 @@
 # 38(b) and 38(i); 171 provisions are in both 33(g) and 38(i). One article is one kind of vehicle (part), so the note 38
 # measures on those lines carry the extra fact conditions below and the two programs never both charge.
 #
+#   certifiedVehiclePartElection (default false) — notes 33(p), (r) / 9903.94.07 and the EU / Japan / Korea / Taiwan
+#        headings 9903.94.44/.45, .54/.55, .64/.65, .68/.69: the importer of record certifies a part outside the 33(g) / 38(i)
+#        lists for automobile production or repair in the United States and declares it subject to the auto-parts duty
+#        (Proclamation 10984 clause 12: "An importer of record may declare …"). An election, so unanswered = no.
+#   certifiedUkAutoPartElection (default false) — note 33(q) / 9903.94.33: a UK part certified for UK automobiles.
+#   certifiedMhdvPartElection (default false) — note 38(j) / 9903.74.09: the same for medium- and heavy-duty vehicle parts.
+#
 # Not modelled (see each measure's notes): the import adjustment offsets (Proclamations 10925 / 10984 — company-specific
-# credits), the opt-in certified-parts headings 9903.94.07 / .33 / .44 / .45 / .54 / .55 / .64 / .65 / .68 / .69 and
-# 9903.74.09 (notes 33(p)–(r), 38(j): any non-listed part the importer elects to enter as an auto / MHDV part), knock-down
-# kits and parts compilations (no USMCA relief), Chapter 98 entries, and the UK quota fill.
+# credits), knock-down kits and parts compilations (no USMCA relief), Chapter 98 entries, and the UK quota fill.
 
 PROGRAM_AUTOS = 'Section 232 (passenger vehicles and light trucks)'
 PROGRAM_AUTO_PARTS = 'Section 232 (automobile parts)'
@@ -46,6 +51,7 @@ PROGRAM_301 = 'Section 301 (2026, 60 economies)'
 PROGRAM_301_BR = 'Section 301 (Brazil)'
 
 REVIEWED = '2026-10-11'
+REVIEWED_CERT = '2026-10-12'
 
 EU = ['AT', 'BE', 'BG', 'HR', 'CY', 'CZ', 'DK', 'EE', 'FI', 'FR', 'DE', 'GR', 'HU', 'IE', 'IT', 'LV', 'LT', 'LU', 'MT', 'NL', 'PL', 'PT',
       'RO', 'SK', 'SI', 'ES', 'SE']
@@ -92,6 +98,8 @@ SRC = {
                       'url': 'https://content.govdelivery.com/accounts/USDHSCBP/bulletins/3f93b75', 'published': '2025-10-29'},
     'csms-68559236': {'citation': 'CBP CSMS # 68559236 (GUIDANCE: Applying Section 232 Import Duties on USMCA-Qualifying Medium- and Heavy-Duty Vehicles — 9903.74.03 non-U.S. content)',
                       'url': 'https://content.govdelivery.com/accounts/USDHSCBP/bulletins/4162184', 'published': '2026-05-06'},
+    'csms-66665333-cert': {'citation': 'CBP CSMS # 66665333 (GUIDANCE: Import Duties on Medium- and Heavy-duty Trucks, Medium- and Heavy-duty Truck Parts and Buses — certified parts 9903.74.09, 9903.94.07, 9903.94.33–9903.94.55 from November 1, 2025)',
+                           'url': 'https://content.govdelivery.com/accounts/USDHSCBP/bulletins/3f93b75', 'published': '2025-10-29'},
     'cbp-auto-faq': {'citation': 'CBP, Section 232 Additional FAQs - Automobiles and Auto Parts (last modified December 19, 2025)',
                      'url': 'https://www.cbp.gov/trade/programs-administration/entry-summary/section-232-additional-faqs-autos', 'published': '2025-12-19'},
 }
@@ -382,12 +390,116 @@ def s232_vehicles_measures(cov, program_cov, *, rec, S, hts_note):
     ]:
         for tag in (None, 'autoPart'):
             inc, exc = p38[tag]
+            if tag is None:
+                # The 8706 chassis note 38(b) also lists are charged as vehicles (9903.74.01 / .03): listed here as excluded
+                # so the readiness check sees them as deliberately not charged (coverageInclude does not reach them).
+                exc = sorted(set(exc) | set(p38['chassis'][0]))
             measures.append(rec(
                 measureKey=key + ('' if tag is None else '-auto-part-overlap'), program=PROGRAM_MHDV_PARTS, ch99Code=code, rateKind=kind,
                 ratePct=rate, coverageInclude=inc, coverageExclude=exc,
                 conditions=_merge_conditions(base_cond, {} if tag is None else {'factsFalse': ['passengerVehiclePart']}),
                 effectiveFrom='2025-11-01', reviewedAt=REVIEWED, **extra_kw,
                 notes=text + parts38_cov + p38_tail[tag] + (f' {len(inc)} provisions here.' if tag else '')))
+
+    # ------------------------------------------------------------------------------------------------------------
+    # Certified (opt-in) parts: notes 33(p)–(u), 38(j)–(k); Proclamation 10984 clause 12; CSMS # 66665333
+    # ------------------------------------------------------------------------------------------------------------
+    # Coverage: chapters 39–97 except 72, 73, 76 (notes 33(p)(i), 38(j)(i)) and the listed provisions each heading
+    # excludes (33(g) / 38(i), or 33(j) / 38(i) for the UK), and not the vehicles themselves (33(b), 38(b), 38(c)).
+    # Chapters 1–38 hold materials, food and chemical products, not "automobile parts" (note 33(f): engines and engine
+    # parts, transmissions and powertrain parts, electrical components and parts of vehicles). Same rule as
+    # calc-readiness.ts (CERTIFIED_PARTS_CHAPTERS / exceptRefs).
+    CERT_CH = [str(c) for c in range(39, 98) if c not in (72, 73, 76)]
+    VEHICLES = sorted(set(B33) | set(B38) | set(C38))
+    AUTO_EXC = sorted(set(G33) | set(I38) | set(VEHICLES))
+    UK_EXC = sorted(set(J33) | set(I38) | set(VEHICLES))
+    MHDV_EXC = sorted(set(I38) | set(G33) | set(VEHICLES))
+    CERT_START = '2025-11-01'
+    AUTO_CERT = {'factsTrue': ['certifiedVehiclePartElection']}
+    UK_CERT = {'factsTrue': ['certifiedUkAutoPartElection']}
+    MHDV_CERT = {'factsTrue': ['certifiedMhdvPartElection']}
+    cert_src = _s('procl-10984', 'csms-66665333-cert')
+    cert_cov = ('Coverage: articles of chapters 39–97 other than chapters 72, 73 and 76, the parts provisions the heading excludes and the '
+                'vehicles of notes 33(b) / 38(b) / 38(c) (chapters 1–38 hold no automobile parts: note 33(f)).')
+    cert_why = ('An election: Proclamation 10984 clause 12 lets the importer of record "declare an automobile part or MHDVP as subject to" the '
+                'Section 232 parts tariff when the part is not already subject to it, is not classifiable in chapters 72, 73 or 76, and is certified '
+                'for automobile- or MHDV-related production or repair in the United States. The entry then pays this duty instead of the Section 232 '
+                'metals duties (9903.82.02, 9903.82.04–9903.82.26), the Canada / Mexico duties 9903.01.10 / 9903.01.01 and the wood duties '
+                '9903.76.01–9903.76.03, and no 2026 Section 301 or Brazil duty (notes 52(f)(3) / (6), 50(a)(vi)(3) / (6)). Unanswered = no: the '
+                'ordinary duties apply.')
+    measures.append(rec(
+        measureKey='s232-auto-parts-certified', program=PROGRAM_AUTO_PARTS, ch99Code='9903.94.07', rateKind='additive', ratePct=25,
+        countriesExclude=sorted(EU + ['JP', 'KR']), coverageInclude=CERT_CH, coverageExclude=AUTO_EXC,
+        conditions={'usmcaQualifying': False, **AUTO_CERT}, replacesCodes=METALS + IEEPA_CA_MX + WOOD, effectiveFrom=CERT_START,
+        sources=cert_src + [autos_n33], reviewedAt=REVIEWED_CERT,
+        notes='Heading 9903.94.07, U.S. notes 33(f) and 33(p): automobile parts (passenger vehicles and light trucks) the importer of record certifies '
+              'will be used for automobile production or repair in the United States: base + 25%, also when an FTA/GSP special rate is claimed. Applies '
+              'only when the importer elects it (fact certifiedVehiclePartElection). ' + cert_why + ' Products of the EU, Japan and South Korea use '
+              'their 15% headings (9903.94.44/.45, .54/.55, .64/.65); Taiwan uses 9903.94.68/.69 from May 1, 2026 (they replace this heading). UK parts '
+              'certified for UK automobiles use 9903.94.33 (10%, which replaces this heading); the heading text excepts only 9903.94.33, so a UK '
+              'part certified for U.S. production stays here (CSMS # 66665333 lists 9903.94.07 for "all countries except" the EU, Japan and the UK — '
+              'review point). USMCA-qualifying parts: 9903.94.06, no duty. ' + stack_cn + ' ' + cert_cov))
+    measures.append(rec(
+        measureKey='s232-auto-parts-certified-usmca', program=PROGRAM_AUTO_PARTS, ch99Code='9903.94.06', rateKind='relief', countriesInclude=USMCA,
+        coverageInclude=CERT_CH, coverageExclude=AUTO_EXC, conditions={'usmcaQualifying': True, **AUTO_CERT},
+        replacesCodes=['9903.94.07'] + METALS + IEEPA_CA_MX + WOOD, effectiveFrom=CERT_START, sources=cert_src + [autos_n33], reviewedAt=REVIEWED_CERT,
+        notes='Heading 9903.94.06, U.S. note 33(h)(i): articles "meeting the requirements of subdivision (p)" (certified automobile parts) that are '
+              'eligible for USMCA (SPI "S"/"S+"), other than knock-down kits or parts compilations, pay no Section 232 duty. Applies only with the '
+              'election (fact certifiedVehiclePartElection); like the other 9903.94.06 parts they do not pay the metals, Canada / Mexico or wood '
+              'duties, and note 52(f)(3) lists 9903.94.06 as applied to USMCA parts. ' + cert_cov))
+    measures.append(rec(
+        measureKey='s232-auto-parts-certified-uk', program=PROGRAM_AUTO_PARTS, ch99Code='9903.94.33', rateKind='inPlaceOfBase', ratePct=10,
+        countriesInclude=['GB'], coverageInclude=CERT_CH, coverageExclude=UK_EXC, conditions=UK_CERT,
+        replacesCodes=['9903.94.05', '9903.94.07'] + METALS + WOOD, effectiveFrom=CERT_START, sources=cert_src + _s('ita-uk') + [autos_n33],
+        reviewedAt=REVIEWED_CERT,
+        notes='Heading 9903.94.33 (rate "10%"), U.S. note 33(q): automobile parts of the United Kingdom the importer of record certifies will be used '
+              'in automobiles that are products of the United Kingdom pay a total of 10% (CSMS # 66665333: "10% is the combined Column 1 and '
+              'Section 232 tariff rate") — modelled in place of the base rate. Applies only when the importer elects it (fact '
+              'certifiedUkAutoPartElection). Note 33(q) excludes chapters 72, 73, 76 and the provisions of 33(j) (UK parts, 9903.94.32) and 38(i), '
+              'so a UK 33(g) line outside 33(j) may also be certified here (it replaces 9903.94.05). Not subject to the metals or wood duties '
+              '(note 33(q)(1)–(2)); no 2026 Section 301 duty (note 52(f)(3)). ' + cert_cov))
+    deal_cert = [
+        ('eu', EU, '9903.94.45', '9903.94.44', '33(r)', CERT_START, 'ita-eu', 'the European Union', WOOD),
+        ('jp', ['JP'], '9903.94.55', '9903.94.54', '33(r)', CERT_START, 'ita-jp', 'Japan', WOOD),
+        ('kr', ['KR'], '9903.94.65', '9903.94.64', '33(r), 33(t)', CERT_START, 'ustr-kr', 'South Korea', WOOD + ['9903.76.23']),
+        ('tw', ['TW'], '9903.94.69', '9903.94.68', '33(r), 33(u)', '2026-05-01', 'ita-tw', 'Taiwan', WOOD + ['9903.76.24']),
+    ]
+    for k, countries, low, high, sub, start, src, name, wood in deal_cert:
+        kr = k == 'kr'
+        measures.append(rec(
+            measureKey=f's232-auto-parts-certified-{k}-15', program=PROGRAM_AUTO_PARTS, ch99Code=low, rateKind='floor', ratePct=15,
+            countriesInclude=sorted(countries), coverageInclude=CERT_CH, coverageExclude=AUTO_EXC, conditions=AUTO_CERT,
+            replacesCodes=['9903.94.07'] + METALS + IEEPA_CA_MX + wood, effectiveFrom=start, sources=cert_src + _s(src) + [autos_n33],
+            reviewedAt=REVIEWED_CERT,
+            notes=f'Headings {high} / {low}, U.S. notes {sub} and 33(m): automobile parts of {name} the importer of record certifies will be used for '
+                  f'automobile production or repair in the United States. When the column 1{"-General or column 1-Special (KORUS)" if kr else "-General"} '
+                  f'rate (or its ad valorem equivalent) is under 15%, the total is 15% ({low}); at or above 15%, no additional duty ({high}). Modelled as '
+                  'a floor: max(base, 15%). Applies only when the importer elects it (fact certifiedVehiclePartElection). '
+                  + cert_why + f' Wood duties lifted: {", ".join(wood)}. In effect from {start}'
+                  + (' (before that, Taiwanese certified parts used 9903.94.07, which this heading replaces).' if k == 'tw' else '.') + ' ' + cert_cov))
+
+    # MHDV certified parts (note 38(j), 9903.74.09) and their USMCA relief (38(k), 9903.74.10). One part is certified for
+    # one use: with the automobile election answered yes, the MHDV heading does not also charge.
+    for ck, cond_extra, countries_kw, who in [
+        ('', {'factsFalse': ['certifiedVehiclePartElection']}, {'countriesExclude': ['GB']}, 'every country except the UK'),
+        ('-uk', {'factsFalse': ['certifiedVehiclePartElection', 'certifiedUkAutoPartElection']}, {'countriesInclude': ['GB']}, 'the United Kingdom'),
+    ]:
+        measures.append(rec(
+            measureKey=f's232-mhdv-parts-certified{ck}', program=PROGRAM_MHDV_PARTS, ch99Code='9903.74.09', rateKind='additive', ratePct=25,
+            coverageInclude=CERT_CH, coverageExclude=MHDV_EXC, conditions=_merge_conditions({'usmcaQualifying': False, **MHDV_CERT}, cond_extra),
+            replacesCodes=METALS + IEEPA_CA_MX + WOOD, effectiveFrom=CERT_START, sources=cert_src + [n38], reviewedAt=REVIEWED_CERT, **countries_kw,
+            notes=f'Heading 9903.74.09, U.S. notes 38(h) and 38(j): parts of medium- and heavy-duty vehicles ({who}) the importer of record certifies will '
+                  'be used for MHDV production or repair in the United States: base + 25%, also when an FTA/GSP special rate is claimed (no country '
+                  'deal rates). Applies only when the importer elects it (fact certifiedMhdvPartElection), and not when the same part is certified as '
+                  'an automobile part instead. ' + cert_why + ' USMCA-qualifying parts: 9903.74.10, no duty. ' + cert_cov))
+    measures.append(rec(
+        measureKey='s232-mhdv-parts-certified-usmca', program=PROGRAM_MHDV_PARTS, ch99Code='9903.74.10', rateKind='relief', countriesInclude=USMCA,
+        coverageInclude=CERT_CH, coverageExclude=MHDV_EXC, conditions={'usmcaQualifying': True, **MHDV_CERT},
+        replacesCodes=['9903.74.09'] + METALS + IEEPA_CA_MX + WOOD, effectiveFrom=CERT_START, sources=cert_src + [n38], reviewedAt=REVIEWED_CERT,
+        notes='Heading 9903.74.10, U.S. note 38(k): articles "meeting the requirements of subdivision (j)" (certified MHDV parts) that qualify for '
+              'USMCA (SPI "S"/"S+"), other than knock-down kits or parts compilations, pay no Section 232 duty. Applies only with the election (fact '
+              'certifiedMhdvPartElection); CSMS # 66665333: these parts do not pay the metals, Canada / Mexico or wood duties; note 52(f)(6) lists '
+              '9903.74.10. ' + cert_cov))
 
     # ------------------------------------------------------------------------------------------------------------
     # 2026 Section 301 (note 52(f), 9903.05.90) and Brazil Section 301 (note 50(a)(vi), 9903.05.07)
@@ -408,6 +520,31 @@ def s232_vehicles_measures(cov, program_cov, *, rec, S, hts_note):
          'medium- and heavy-duty vehicle parts under 9903.74.08, 9903.74.09 and 9903.74.10 — every 38(i) article confirmed to be such a part '
          '(fact mediumHeavyVehiclePart)'),
     ]
+    f_cert = [
+        ('certified-auto-parts', '3', {'coverageInclude': CERT_CH, 'coverageExclude': AUTO_EXC}, AUTO_CERT,
+         'automobile parts certified for U.S. automobile production or repair under 9903.94.07, the deal headings 9903.94.44/.45, .54/.55, .64/.65, '
+         '.68/.69 and 9903.94.06 (USMCA) — when the importer elects that treatment (fact certifiedVehiclePartElection)'),
+        ('certified-auto-parts-uk', '3', {'coverageInclude': CERT_CH, 'coverageExclude': UK_EXC, 'countriesInclude': ['GB']}, UK_CERT,
+         'United Kingdom automobile parts certified for UK automobiles under 9903.94.33 — when the importer elects that treatment (fact '
+         'certifiedUkAutoPartElection)'),
+        ('certified-mhdv-parts', '6', {'coverageInclude': CERT_CH, 'coverageExclude': MHDV_EXC}, MHDV_CERT,
+         'medium- and heavy-duty vehicle parts certified for U.S. MHDV production or repair under 9903.74.09 and 9903.74.10 (USMCA) — when the '
+         'importer elects that treatment (fact certifiedMhdvPartElection)'),
+    ]
+    for key, item, cov_kw, cond, what in f_cert:
+        measures.append(rec(
+            measureKey=f's301-2026-exempt-52f-{key}', program=PROGRAM_301, ch99Code='9903.05.90', rateKind='relief', conditions=cond,
+            replacesCodes=ALL_S301, effectiveFrom='2026-07-24', sources=S('ustr-301-fl') + cert_src + [hts_note(52), hts_note(33 if item == '3' else 38)],
+            reviewedAt=REVIEWED_CERT, **cov_kw,
+            notes=f'U.S. note 52(f)({item}) (heading 9903.05.90): the 2026 Section 301 duties 9903.05.20–9903.05.84 do not apply to {what}. ' + cert_cov))
+        if key.endswith('-uk'):
+            continue  # Brazil-only relief: the UK record has no Brazilian goods
+        measures.append(rec(
+            measureKey=f's301-brazil-exempt-50a-vi-{key}', program=PROGRAM_301_BR, ch99Code='9903.05.07', rateKind='relief', countriesInclude=['BR'],
+            coverageInclude=CERT_CH, coverageExclude=cov_kw['coverageExclude'], conditions=cond, replacesCodes=['9903.05.01'], effectiveFrom='2026-07-22',
+            sources=S('ustr-301-br') + cert_src + [hts_note(50), hts_note(33 if item == '3' else 38)], reviewedAt=REVIEWED_CERT,
+            notes=f'U.S. note 50(a)(vi)({item}) (heading 9903.05.07): the 25% Brazil Section 301 duty (9903.05.01) does not apply to {what}. ' + cert_cov))
+
     for key, item, codes, cond, what in f_items:
         measures.append(rec(
             measureKey=f's301-2026-exempt-52f-{key}', program=PROGRAM_301, ch99Code='9903.05.90', rateKind='relief', coverageInclude=codes,

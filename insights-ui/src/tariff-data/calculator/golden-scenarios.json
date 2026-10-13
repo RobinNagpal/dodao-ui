@@ -5887,6 +5887,400 @@
       "expectedTotalDutyUsd": 12500,
       "toleranceUsd": 0.01,
       "sourceNote": "HTSUS 2026 Revision 21: 0406.10.18 special \"See 9908.04.05 (IL)\"; chapter 99 subchapter VIII heading 9908.04.05 \"… subject to the quantitative limits specified in U.S. note 5\" = Free (IL) (subchapter VIII applies through 2026-12-31, note 1). Section 301 (2026) 9903.05.47 (+12.5%, Israel) applies also when an FTA rate is claimed (U.S. note 52(a)) → $12,500."
+    },
+    {
+      "id": "ch39-plastic-article-th-no-certified-election",
+      "description": "Other article of plastics (3926.90.99.89) from Thailand, $10,000, no certified-parts election (default)",
+      "chapter": "39",
+      "input": {
+        "hts10": "3926909989",
+        "countryOfOrigin": "TH",
+        "customsValueUsd": 10000,
+        "quantities": {
+          "NO": 10,
+          "KG": 10
+        },
+        "entryDate": "2026-10-12"
+      },
+      "line": {
+        "hts10": "3926909989",
+        "general": "5.3%",
+        "special": "Free (A,AU,B,BH,C,CL,CO,D,E,IL,JO,KR,MA,OM,P,PA,PE,S,SG)",
+        "units": ["No.", "kg"]
+      },
+      "expectedTotalDutyUsd": 1780,
+      "toleranceUsd": 0.01,
+      "sourceNote": "HTS Rev 21 3926.90.99 general 5.3%. 2026 Section 301 Thailand 9903.05.77 +12.5% (note 52). Not on the note 33(g) / 38(i) parts lists, so no Section 232 parts duty unless the importer elects 9903.94.07 (fact certifiedVehiclePartElection, default no). 17.8% x $10,000 = $1,780."
+    },
+    {
+      "id": "ch39-plastic-article-th-certified-auto-part",
+      "description": "Other article of plastics (3926.90.99.89) from Thailand, $10,000, certified by the importer for U.S. automobile production or repair (9903.94.07)",
+      "chapter": "39",
+      "input": {
+        "hts10": "3926909989",
+        "countryOfOrigin": "TH",
+        "customsValueUsd": 10000,
+        "quantities": {
+          "NO": 10,
+          "KG": 10
+        },
+        "confirmations": {
+          "facts": {
+            "certifiedVehiclePartElection": true
+          }
+        },
+        "entryDate": "2026-10-12"
+      },
+      "line": {
+        "hts10": "3926909989",
+        "general": "5.3%",
+        "special": "Free (A,AU,B,BH,C,CL,CO,D,E,IL,JO,KR,MA,OM,P,PA,PE,S,SG)",
+        "units": ["No.", "kg"]
+      },
+      "expectedTotalDutyUsd": 3030,
+      "toleranceUsd": 0.01,
+      "sourceNote": "Certified-parts election (U.S. note 33(p); Proclamation 10984 clause 12, 90 FR 48451; CBP CSMS # 66665333): 9903.94.07 base + 25%. Note 52(f)(3) (9903.05.90) lists 9903.94.07, so the 12.5% (9903.05.77) does not apply. 5.3% + 25% = 30.3% x $10,000 = $3,030."
+    },
+    {
+      "id": "ch84-hydraulic-cylinder-th-no-certified-election",
+      "description": "Hydraulic linear-acting cylinder (8412.21.00.75) from Thailand, $10,000, no certified-parts election (default)",
+      "chapter": "84",
+      "input": {
+        "hts10": "8412210075",
+        "countryOfOrigin": "TH",
+        "customsValueUsd": 10000,
+        "quantities": {
+          "NO": 10
+        },
+        "entryDate": "2026-10-12"
+      },
+      "line": {
+        "hts10": "8412210075",
+        "general": "Free",
+        "special": null,
+        "units": ["No."]
+      },
+      "expectedTotalDutyUsd": 2500,
+      "toleranceUsd": 0.01,
+      "sourceNote": "HTS Rev 21 8412.21.00 general Free. Derivative steel article of note 16(c)(vii): 9903.82.09 +25% on the full value (Proclamation 11021). Note 52(f)(1) removes the 2026 Section 301 duty. 25% x $10,000 = $2,500."
+    },
+    {
+      "id": "ch84-hydraulic-cylinder-de-certified-auto-part",
+      "description": "Hydraulic linear-acting cylinder (8412.21.00.75) from Germany, $10,000, certified for U.S. automobile production or repair",
+      "chapter": "84",
+      "input": {
+        "hts10": "8412210075",
+        "countryOfOrigin": "DE",
+        "customsValueUsd": 10000,
+        "quantities": {
+          "NO": 10
+        },
+        "confirmations": {
+          "facts": {
+            "certifiedVehiclePartElection": true
+          }
+        },
+        "entryDate": "2026-10-12"
+      },
+      "line": {
+        "hts10": "8412210075",
+        "general": "Free",
+        "special": null,
+        "units": ["No."]
+      },
+      "expectedTotalDutyUsd": 1500,
+      "toleranceUsd": 0.01,
+      "sourceNote": "EU certified automobile part: 9903.94.45 (note 33(r), 33(m)): column 1 rate Free is under 15%, so the total is 15%. Not subject to the Section 232 metals duty 9903.82.09 (note 33(r)(1)); no 2026 Section 301 duty (note 52(f)(3)). 15% x $10,000 = $1,500."
+    },
+    {
+      "id": "ch84-hydraulic-cylinder-th-certified-mhdv-part",
+      "description": "Hydraulic linear-acting cylinder (8412.21.00.75) from Thailand, $10,000, certified for U.S. medium- and heavy-duty vehicle production or repair",
+      "chapter": "84",
+      "input": {
+        "hts10": "8412210075",
+        "countryOfOrigin": "TH",
+        "customsValueUsd": 10000,
+        "quantities": {
+          "NO": 10
+        },
+        "confirmations": {
+          "facts": {
+            "certifiedMhdvPartElection": true
+          }
+        },
+        "entryDate": "2026-10-12"
+      },
+      "line": {
+        "hts10": "8412210075",
+        "general": "Free",
+        "special": null,
+        "units": ["No."]
+      },
+      "expectedTotalDutyUsd": 2500,
+      "toleranceUsd": 0.01,
+      "sourceNote": "Certified MHDV part (U.S. note 38(j), heading 9903.74.09): base + 25% instead of 9903.82.09 (note 38(h)(1)); no 2026 Section 301 duty (note 52(f)(6)). 25% x $10,000 = $2,500."
+    },
+    {
+      "id": "ch84-hydraulic-cylinder-gb-certified-uk-auto-part",
+      "description": "Hydraulic linear-acting cylinder (8412.21.00.75) from the United Kingdom, $10,000, certified for use in UK automobiles (9903.94.33)",
+      "chapter": "84",
+      "input": {
+        "hts10": "8412210075",
+        "countryOfOrigin": "GB",
+        "customsValueUsd": 10000,
+        "quantities": {
+          "NO": 10
+        },
+        "confirmations": {
+          "facts": {
+            "certifiedUkAutoPartElection": true
+          }
+        },
+        "entryDate": "2026-10-12"
+      },
+      "line": {
+        "hts10": "8412210075",
+        "general": "Free",
+        "special": null,
+        "units": ["No."]
+      },
+      "expectedTotalDutyUsd": 1000,
+      "toleranceUsd": 0.01,
+      "sourceNote": "U.S. note 33(q), heading 9903.94.33 (\"10%\"; CSMS # 66665333: the combined column 1 and Section 232 rate): 10% in place of the base rate, not subject to 9903.82.09 (note 33(q)(1)); no 2026 Section 301 duty (note 52(f)(3)). 10% x $10,000 = $1,000."
+    },
+    {
+      "id": "ch84-hydraulic-cylinder-mx-usmca-certified-auto-part",
+      "description": "Hydraulic linear-acting cylinder (8412.21.00.75) from Mexico, USMCA claim (SPI S), $10,000, certified automobile part",
+      "chapter": "84",
+      "input": {
+        "hts10": "8412210075",
+        "countryOfOrigin": "MX",
+        "customsValueUsd": 10000,
+        "quantities": {
+          "NO": 10
+        },
+        "claimedSpi": "S",
+        "confirmations": {
+          "facts": {
+            "certifiedVehiclePartElection": true
+          }
+        },
+        "entryDate": "2026-10-12"
+      },
+      "line": {
+        "hts10": "8412210075",
+        "general": "Free",
+        "special": null,
+        "units": ["No."]
+      },
+      "expectedTotalDutyUsd": 0,
+      "toleranceUsd": 0.01,
+      "sourceNote": "U.S. note 33(h)(i), heading 9903.94.06: articles meeting the requirements of 33(p) that qualify for USMCA pay no Section 232 duty and not the metals duty 9903.82.09; 9903.05.55 lifted by note 52(h) / 52(f)(3). Without the election the metals duty (25%) would apply. $0."
+    },
+    {
+      "id": "ch42-leather-handbag-it-no-certified-duty",
+      "description": "Handbag with outer surface of leather (4202.21.60.00) from Italy, $10,000, no certified-parts election (default)",
+      "chapter": "42",
+      "input": {
+        "hts10": "4202216000",
+        "countryOfOrigin": "IT",
+        "customsValueUsd": 10000,
+        "quantities": {
+          "NO": 500
+        },
+        "entryDate": "2026-10-12"
+      },
+      "line": {
+        "hts10": "4202216000",
+        "general": "10%",
+        "special": "Free (A,AU,BH,CL,CO,D,IL, JO,KR,MA,NP,OM,P,PA,PE,R,S,SG) 8% (E)",
+        "units": ["No."]
+      },
+      "expectedTotalDutyUsd": 1000,
+      "toleranceUsd": 0.01,
+      "sourceNote": "Chapter 42 is within the reach of the opt-in certified-parts headings (9903.94.07 / .45, 9903.74.09: chapters 39–97 except 72, 73, 76), but they apply only when the importer elects them (facts default no), so no Section 232 parts duty by default. EU 2026 Section 301: 9903.05.39, 10% floor (note 52(k)); base 10% -> total 10% x $10,000 = $1,000."
+    },
+    {
+      "id": "ch87-ev-cn-section-232-and-301",
+      "description": "New battery-electric passenger car (8703.80.00.20) from China, $40,000",
+      "chapter": "87",
+      "input": {
+        "hts10": "8703800020",
+        "countryOfOrigin": "CN",
+        "customsValueUsd": 40000,
+        "quantities": {
+          "NO": 1
+        },
+        "entryDate": "2026-10-12"
+      },
+      "line": {
+        "hts10": "8703800020",
+        "general": "2.5%",
+        "special": "Free (A+,AU,B,BH,CL,CO,D,E,IL,JO,KR,MA,OM,P,PA,PE,S,SG)",
+        "units": ["No."]
+      },
+      "expectedTotalDutyUsd": 51000,
+      "toleranceUsd": 0.01,
+      "sourceNote": "Issue #1796: base 2.5% + 100% (9903.91.03, note 31(d)(7), 89 FR 76581) + 25% Section 232 autos (9903.94.01, note 33(b), 90 FR 14705); no 12.5% (9903.05.31) because note 52(f)(2) removes it for 9903.94.01 vehicles. 127.5% x $40,000 = $51,000."
+    },
+    {
+      "id": "ch49-book-gb-no-informational-claim",
+      "description": "Printed book of 49 or more pages (4901.99.00.93) from the United Kingdom, $10,000, informational-materials exemption not claimed",
+      "chapter": "49",
+      "input": {
+        "hts10": "4901990093",
+        "countryOfOrigin": "GB",
+        "customsValueUsd": 10000,
+        "quantities": {
+          "NO": 500
+        },
+        "entryDate": "2026-10-12"
+      },
+      "line": {
+        "hts10": "4901990093",
+        "general": "Free",
+        "special": null,
+        "units": ["No."]
+      },
+      "expectedTotalDutyUsd": 1000,
+      "toleranceUsd": 0.01,
+      "sourceNote": "HTS Rev 21 4901.99.00 general Free. 2026 Section 301 UK 9903.05.81 +10% (note 52), unless the importer confirms the goods are informational materials (9903.05.92; fact informationalMaterials, default no). 10% x $10,000 = $1,000."
+    },
+    {
+      "id": "ch49-book-gb-informational-materials",
+      "description": "Printed book of 49 or more pages (4901.99.00.93) from the United Kingdom, $10,000, confirmed informational materials",
+      "chapter": "49",
+      "input": {
+        "hts10": "4901990093",
+        "countryOfOrigin": "GB",
+        "customsValueUsd": 10000,
+        "quantities": {
+          "NO": 500
+        },
+        "confirmations": {
+          "facts": {
+            "informationalMaterials": true
+          }
+        },
+        "entryDate": "2026-10-12"
+      },
+      "line": {
+        "hts10": "4901990093",
+        "general": "Free",
+        "special": null,
+        "units": ["No."]
+      },
+      "expectedTotalDutyUsd": 0,
+      "toleranceUsd": 0.01,
+      "sourceNote": "Heading 9903.05.92: informational materials (\"publications, films, posters, …\") are excepted from 9903.05.20–9903.05.84 (91 FR 47318). Base Free. $0."
+    },
+    {
+      "id": "ch49-book-br-no-informational-claim",
+      "description": "Printed book of 49 or more pages (4901.99.00.93) from Brazil, $10,000, informational-materials exemption not claimed",
+      "chapter": "49",
+      "input": {
+        "hts10": "4901990093",
+        "countryOfOrigin": "BR",
+        "customsValueUsd": 10000,
+        "quantities": {
+          "NO": 500
+        },
+        "entryDate": "2026-10-12"
+      },
+      "line": {
+        "hts10": "4901990093",
+        "general": "Free",
+        "special": null,
+        "units": ["No."]
+      },
+      "expectedTotalDutyUsd": 3750,
+      "toleranceUsd": 0.01,
+      "sourceNote": "Brazil Section 301 9903.05.01 +25% (note 50) and 2026 Section 301 Brazil 9903.05.27 +12.5% (note 52). 37.5% x $10,000 = $3,750."
+    },
+    {
+      "id": "ch49-book-br-informational-materials",
+      "description": "Printed book of 49 or more pages (4901.99.00.93) from Brazil, $10,000, confirmed informational materials",
+      "chapter": "49",
+      "input": {
+        "hts10": "4901990093",
+        "countryOfOrigin": "BR",
+        "customsValueUsd": 10000,
+        "quantities": {
+          "NO": 500
+        },
+        "confirmations": {
+          "facts": {
+            "informationalMaterials": true
+          }
+        },
+        "entryDate": "2026-10-12"
+      },
+      "line": {
+        "hts10": "4901990093",
+        "general": "Free",
+        "special": null,
+        "units": ["No."]
+      },
+      "expectedTotalDutyUsd": 0,
+      "toleranceUsd": 0.01,
+      "sourceNote": "Heading 9903.05.09 lifts the Brazil duty 9903.05.01 (91 FR 45516) and heading 9903.05.92 lifts 9903.05.27 (91 FR 47318) for informational materials. Base Free. $0."
+    },
+    {
+      "id": "ch72-steel-plate-mx-usmca-commerce-authorized",
+      "description": "Universal mill plate (7208.51.00.30) melted and poured in Mexico, USMCA claim (SPI S), $100,000, within a Commerce-authorized quantity (9903.82.18)",
+      "chapter": "72",
+      "input": {
+        "hts10": "7208510030",
+        "countryOfOrigin": "MX",
+        "customsValueUsd": 100000,
+        "quantities": {
+          "KG": 80000
+        },
+        "claimedSpi": "S",
+        "confirmations": {
+          "facts": {
+            "usmcaMetalCommerceAuthorized": true
+          }
+        },
+        "entryDate": "2026-10-12"
+      },
+      "line": {
+        "hts10": "7208510030",
+        "general": "Free",
+        "special": null,
+        "units": ["kg"]
+      },
+      "expectedTotalDutyUsd": 25000,
+      "toleranceUsd": 0.01,
+      "sourceNote": "U.S. note 16(h), heading 9903.82.18 (91 FR 21790, from April 23, 2026; Proclamation 10984 clause 13): Commerce-authorized USMCA quantities pay \"the duty provided in the applicable subheading + 25%\" instead of 9903.82.02 (50%). 9903.05.55 lifted (notes 52(h), 52(f)(1)). 25% x $100,000 = $25,000."
+    },
+    {
+      "id": "ch73-seamless-hollow-bar-jp-civil-aircraft",
+      "description": "Seamless hollow bars of iron or steel (7304.31.30.00) from Japan for civil aircraft (general note 6), $10,000",
+      "chapter": "73",
+      "input": {
+        "hts10": "7304313000",
+        "countryOfOrigin": "JP",
+        "customsValueUsd": 10000,
+        "quantities": {
+          "KG": 1000
+        },
+        "confirmations": {
+          "facts": {
+            "civilAircraftGn6": true
+          }
+        },
+        "entryDate": "2026-10-12"
+      },
+      "line": {
+        "hts10": "7304313000",
+        "general": "Free",
+        "special": null,
+        "units": ["kg"]
+      },
+      "expectedTotalDutyUsd": 0,
+      "toleranceUsd": 0.01,
+      "sourceNote": "Heading 9903.96.02, U.S. note 35(b) (90 FR 44638): Japanese civil aircraft articles on the listed provisions do not pay 9903.82.02 / 9903.82.04–9903.82.17; note 52(d) (9903.05.88) lifts the 2026 Section 301 duty. Base Free. $0 (without the confirmation: 9903.82.02 +50% = $5,000)."
     }
   ]
 }

@@ -111,7 +111,7 @@ const PROGRAMS: ProgramDef[] = [
     effectiveFrom: '2026-08-22',
     basis: '50% on listed Canadian alcoholic beverages, dairy and motor vehicles (Proclamations 11046–11048), in effect since August 22, 2026.',
     sources: [
-      'https://www.federalregister.gov/documents/2026/07/23/2026-14991/imposing-additional-duties-to-offset-canadian-discrimination-against-the-commerce-of-the-united-states',
+      'https://www.federalregister.gov/documents/2026/07/23/2026-14991/imposing-additional-duties-to-offset-canadian-discrimination-against-the-commerce-of-the-united',
     ],
   },
   {
@@ -392,17 +392,32 @@ function programOf(code: string): ProgramDef | null {
 // Coverage: which HTS lines a heading reaches
 // ---------------------------------------------------------------------------
 
-/** Chapters an "automobile/vehicle part certified for U.S. production or repair" can fall in: 39–97 except 72, 73, 76. */
+/**
+ * Chapters an opt-in "certified" vehicle part can fall in (U.S. notes 33(p)–(r), 38(j); Proclamation 10984 clause 12):
+ * chapters 39–97 except 72, 73 and 76. The notes exclude chapters 72, 73 and 76 and the listed parts provisions (the
+ * `exceptRefs` below); chapters 1–38 (animal, vegetable, food, mineral and chemical products) hold no automobile parts —
+ * note 33(f) defines them as engines and engine parts, transmissions and powertrain parts, electrical components and
+ * parts of vehicles, which classify in the article chapters.
+ */
 const CERTIFIED_PARTS_CHAPTERS: string[] = Array.from({ length: 59 }, (_, i) => String(39 + i)).filter((c) => !['72', '73', '76'].includes(c));
-const CERTIFIED_PARTS_NOTE = 'certified vehicle parts, approximated as chapters 39–97 except 72, 73, 76';
 
 interface CoverageOverride {
   refs?: string[];
   prefixes?: string[];
+  /** Note subdivisions whose lines the heading does not reach (e.g. the listed parts a certified-parts heading excludes). */
+  exceptRefs?: string[];
+  /** Keep only the covered lines in these chapters (e.g. note 16(k): parts in chapters 84, 85 or 87). */
+  chapters?: string[];
   countryWide?: boolean;
   approximate?: string;
   basis: string;
 }
+
+/** The vehicles themselves (notes 33(b), 38(b), 38(c)) are not parts. */
+const VEHICLE_REFS = ['33(b)', '38(b)', '38(c)'];
+const CERTIFIED_AUTO_EXCEPT = ['33(g)', '38(i)', ...VEHICLE_REFS];
+const CERTIFIED_AUTO_BASIS =
+  'automobile parts the importer certifies for U.S. production or repair, chapters 39–97 except 72, 73, 76 and the 33(g) / 38(i) provisions';
 
 const C16 = (...subs: string[]): string[] => subs.map((s) => `16(c)(${s})`);
 
@@ -429,7 +444,12 @@ const HEADING_COVERAGE: Record<string, CoverageOverride> = {
   '9903.74.02': { refs: ['38(c)'], basis: 'U.S. note 38(c)' },
   '9903.74.03': { refs: ['38(b)'], basis: 'U.S. note 38(d): vehicles of 38(b) with approved U.S. content' },
   '9903.74.08': { refs: ['38(i)'], basis: 'U.S. note 38(i)' },
-  '9903.74.09': { prefixes: CERTIFIED_PARTS_CHAPTERS, approximate: CERTIFIED_PARTS_NOTE, basis: 'U.S. note 38(j)' },
+  '9903.74.09': {
+    prefixes: CERTIFIED_PARTS_CHAPTERS,
+    exceptRefs: ['38(i)', '33(g)', ...VEHICLE_REFS],
+    basis:
+      'U.S. note 38(j): MHDV parts the importer certifies for U.S. production or repair, chapters 39–97 except 72, 73, 76 and the 38(i) / 33(g) provisions',
+  },
   '9903.76.01': { refs: ['37(b)'], basis: 'U.S. note 37(b)' },
   '9903.76.02': { refs: ['37(d)'], basis: 'U.S. note 37(d)' },
   '9903.76.03': { refs: ['37(f)'], basis: 'U.S. note 37(f)' },
@@ -453,9 +473,12 @@ const HEADING_COVERAGE: Record<string, CoverageOverride> = {
   '9903.82.17': { refs: C16('x'), basis: 'U.S. note 16(c)(x)' },
   '9903.82.20': { refs: C16('xi'), basis: 'U.S. note 16(j): derivative steel of 16(c)(xi)' },
   '9903.82.22': { refs: C16('xi'), basis: 'U.S. note 16(c)(xi)' },
-  '9903.82.23': { refs: C16('vi', 'vii', 'viii'), basis: 'U.S. note 16(k): parts of 16(c)(vi)–(viii)' },
-  '9903.82.25': { refs: C16('vi', 'vii', 'viii'), basis: 'U.S. note 16(k): parts of 16(c)(vi)–(viii)' },
-  '9903.85.67': { prefixes: ['76'], approximate: 'aluminum articles of U.S. note 19(a)(vii)(A)/(m)(A) — approximated as chapter 76', basis: 'U.S. note 19' },
+  '9903.82.23': { refs: C16('vi', 'vii', 'viii'), chapters: ['84', '85', '87'], basis: 'U.S. note 16(k): parts of 16(c)(vi)–(viii) in chapters 84, 85, 87' },
+  '9903.82.25': { refs: C16('vi', 'vii', 'viii'), chapters: ['84', '85', '87'], basis: 'U.S. note 16(k): parts of 16(c)(vi)–(viii) in chapters 84, 85, 87' },
+  '9903.85.67': {
+    prefixes: ['7601', '7604', '7605', '7606', '7607', '7608', '7609', '76169951'],
+    basis: 'U.S. note 19(m)(A): aluminum articles of note 19(g)(i)–(vii) (7601, 7604–7609, 7616.99.51)',
+  },
   '9903.85.68': { refs: ['19(a)(iii)', '19(i)', '19(j)', '19(k)'], basis: 'U.S. note 19(a)(iii), (i), (j), (k)' },
   '9903.88.01': { refs: ['20(b)'], basis: 'U.S. note 20(b) (list 1)' },
   '9903.88.02': { refs: ['20(d)'], basis: 'U.S. note 20(d) (list 2)' },
@@ -467,21 +490,25 @@ const HEADING_COVERAGE: Record<string, CoverageOverride> = {
   '9903.94.01': { refs: ['33(b)'], basis: 'U.S. note 33(b)' },
   '9903.94.03': { refs: ['33(b)'], basis: 'U.S. note 33(d): vehicles of 33(b) with approved U.S. content' },
   '9903.94.05': { refs: ['33(g)'], basis: 'U.S. note 33(g)' },
-  '9903.94.07': { prefixes: CERTIFIED_PARTS_CHAPTERS, approximate: CERTIFIED_PARTS_NOTE, basis: 'U.S. note 33(p)' },
+  '9903.94.07': { prefixes: CERTIFIED_PARTS_CHAPTERS, exceptRefs: CERTIFIED_AUTO_EXCEPT, basis: `U.S. note 33(p): ${CERTIFIED_AUTO_BASIS}` },
   '9903.94.31': { refs: ['33(i)'], basis: 'U.S. note 33(i)' },
   '9903.94.32': { refs: ['33(j)'], basis: 'U.S. note 33(j)' },
-  '9903.94.33': { prefixes: CERTIFIED_PARTS_CHAPTERS, approximate: CERTIFIED_PARTS_NOTE, basis: 'U.S. note 33(q)' },
+  '9903.94.33': {
+    prefixes: CERTIFIED_PARTS_CHAPTERS,
+    exceptRefs: ['33(j)', '38(i)', ...VEHICLE_REFS],
+    basis: 'U.S. note 33(q): UK automobile parts certified for UK automobiles, chapters 39–97 except 72, 73, 76 and the 33(j) / 38(i) provisions',
+  },
   '9903.94.41': { refs: ['33(b)'], basis: 'U.S. note 33(k): vehicles of 33(b)' },
   '9903.94.43': { refs: ['33(g)'], basis: 'U.S. note 33(l): parts of 33(g)' },
-  '9903.94.45': { prefixes: CERTIFIED_PARTS_CHAPTERS, approximate: CERTIFIED_PARTS_NOTE, basis: 'U.S. note 33(r)' },
+  '9903.94.45': { prefixes: CERTIFIED_PARTS_CHAPTERS, exceptRefs: CERTIFIED_AUTO_EXCEPT, basis: `U.S. note 33(r): ${CERTIFIED_AUTO_BASIS}` },
   '9903.94.51': { refs: ['33(b)'], basis: 'U.S. note 33(n): vehicles of 33(b)' },
   '9903.94.53': { refs: ['33(g)'], basis: 'U.S. note 33(o): parts of 33(g)' },
-  '9903.94.55': { prefixes: CERTIFIED_PARTS_CHAPTERS, approximate: CERTIFIED_PARTS_NOTE, basis: 'U.S. note 33(r)' },
+  '9903.94.55': { prefixes: CERTIFIED_PARTS_CHAPTERS, exceptRefs: CERTIFIED_AUTO_EXCEPT, basis: `U.S. note 33(r): ${CERTIFIED_AUTO_BASIS}` },
   '9903.94.61': { refs: ['33(b)'], basis: 'U.S. note 33(s): vehicles of 33(b)' },
   '9903.94.63': { refs: ['33(g)'], basis: 'U.S. note 33(t): parts of 33(g)' },
-  '9903.94.65': { prefixes: CERTIFIED_PARTS_CHAPTERS, approximate: CERTIFIED_PARTS_NOTE, basis: 'U.S. note 33(r), (t)' },
+  '9903.94.65': { prefixes: CERTIFIED_PARTS_CHAPTERS, exceptRefs: CERTIFIED_AUTO_EXCEPT, basis: `U.S. note 33(r), (t): ${CERTIFIED_AUTO_BASIS}` },
   '9903.94.67': { refs: ['33(g)'], basis: 'U.S. note 33(u): parts of 33(g)' },
-  '9903.94.69': { prefixes: CERTIFIED_PARTS_CHAPTERS, approximate: CERTIFIED_PARTS_NOTE, basis: 'U.S. note 33(r), (u)' },
+  '9903.94.69': { prefixes: CERTIFIED_PARTS_CHAPTERS, exceptRefs: CERTIFIED_AUTO_EXCEPT, basis: `U.S. note 33(r), (u): ${CERTIFIED_AUTO_BASIS}` },
 };
 
 const DOTTED_CODE = /\d{4}(?:\.\d{2}){1,3}/g;
@@ -497,7 +524,9 @@ export function extractListCodes(text: string): { codes: string[]; problems: str
   const add = (digits: string): void => {
     if (!digits.startsWith('98') && !digits.startsWith('99')) codes.push(digits);
   };
-  for (const raw of text.split('\n')) {
+  for (const line of text.split('\n')) {
+    // A comma printed for the first dot of a code in a list row ("7410.22.007217,10.907202.21.10" in note 30(d), Revision 21).
+    const raw = /^[\d.,\s]+$/.test(line) ? line.replace(/(\d{4}),(\d{2}\.\d{2})/g, '$1.$2') : line;
     const isList = /^[\d.\s]+$/.test(raw) && /\d{4}/.test(raw);
     for (const segment of raw.split(/\s+/).filter(Boolean)) {
       const matches = Array.from(segment.matchAll(DOTTED_CODE));
@@ -570,7 +599,7 @@ export function expandNoteRef(ref: string): string[] {
 
 export type HeadingCoverage =
   | { kind: 'all'; basis: string }
-  | { kind: 'prefixes'; prefixes: string[]; basis: string; approximate?: string }
+  | { kind: 'prefixes'; prefixes: string[]; basis: string; approximate?: string; excludePrefixes?: string[] }
   | { kind: 'unknown'; basis: string };
 
 function codesForRef(notes: Map<string, string[]>, ref: string): string[] {
@@ -583,9 +612,18 @@ export function resolveCoverage(h: Ch99HeadingRecord, notes: Map<string, string[
   const override = HEADING_COVERAGE[h.code];
   if (override) {
     if (override.countryWide) return { kind: 'all', basis: override.basis };
-    const prefixes = [...(override.prefixes ?? []), ...(override.refs ?? []).flatMap((r) => codesForRef(notes, r))];
+    const listed = [...(override.prefixes ?? []), ...(override.refs ?? []).flatMap((r) => codesForRef(notes, r))];
+    const prefixes = override.chapters ? listed.filter((p) => override.chapters!.includes(p.slice(0, 2))) : listed;
     if (prefixes.length === 0) return { kind: 'unknown', basis: `${override.basis}: no codes found in the note lists` };
-    return { kind: 'prefixes', prefixes: Array.from(new Set(prefixes)), basis: override.basis, approximate: override.approximate };
+    const except = (override.exceptRefs ?? []).flatMap((r) => codesForRef(notes, r));
+    if (override.exceptRefs && except.length === 0) return { kind: 'unknown', basis: `${override.basis}: no codes found in ${override.exceptRefs.join(', ')}` };
+    return {
+      kind: 'prefixes',
+      prefixes: Array.from(new Set(prefixes)),
+      basis: override.basis,
+      approximate: override.approximate,
+      ...(except.length > 0 ? { excludePrefixes: Array.from(new Set(except)) } : {}),
+    };
   }
   const subdivisionRefs = h.noteRefs.flatMap(expandNoteRef).filter((r) => r.includes('('));
   const fromRefs = subdivisionRefs.flatMap((r) => codesForRef(notes, r));
@@ -853,6 +891,7 @@ export function computeCalcReadiness(asOf: string, inputs: ReadinessInputs = {})
     status: HeadingStatus;
     coverage: HeadingCoverage;
     prefixSet: Set<string>;
+    excludeSet: Set<string>;
   }
   const active: ActiveHeading[] = [];
   const programHeadings = new Map<string, Partial<Record<HeadingState, string[]>>>();
@@ -867,7 +906,14 @@ export function computeCalcReadiness(asOf: string, inputs: ReadinessInputs = {})
     }
     if (status.state !== 'inEffect' && status.state !== 'unknown' && status.state !== 'upcoming') continue;
     const coverage = resolveCoverage(h, notes);
-    active.push({ code: h.code, program, status, coverage, prefixSet: new Set(coverage.kind === 'prefixes' ? coverage.prefixes : []) });
+    active.push({
+      code: h.code,
+      program,
+      status,
+      coverage,
+      prefixSet: new Set(coverage.kind === 'prefixes' ? coverage.prefixes : []),
+      excludeSet: new Set(coverage.kind === 'prefixes' ? coverage.excludePrefixes ?? [] : []),
+    });
   }
 
   const chapters: ChapterReadiness[] = [];
@@ -878,7 +924,7 @@ export function computeCalcReadiness(asOf: string, inputs: ReadinessInputs = {})
     const conditions = new Set<string>();
     const perProgram = new Map<string, { gap: ProgramGap; affected: Set<string>; unmodelled: Set<string>; accepted: Set<string>; by: Set<string> }>();
     for (const a of active) {
-      const affected = a.coverage.kind === 'prefixes' ? lines.filter((l) => hasPrefixIn(a.prefixSet, l)) : lines;
+      const affected = a.coverage.kind === 'prefixes' ? lines.filter((l) => hasPrefixIn(a.prefixSet, l) && !hasPrefixIn(a.excludeSet, l)) : lines;
       if (affected.length === 0) continue;
       for (const w of conditionWaivers) {
         if (w.ch99Codes.includes(a.code) && (w.chapters.length === 0 || w.chapters.includes(chapter))) {

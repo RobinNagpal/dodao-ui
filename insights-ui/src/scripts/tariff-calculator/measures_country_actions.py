@@ -31,7 +31,7 @@ JP_REVIEWED = '2026-10-12'  # Japan 1986 duties re-reviewed for issue #1801
 
 SRC = {
     'procl-11046': {'citation': '91 FR 46639 (Proclamation 11046: Section 338 duties on products of Canada — alcoholic beverages; 50%, heading 9903.03.12)',
-                    'url': 'https://www.federalregister.gov/documents/2026/07/23/2026-14991/imposing-additional-duties-to-offset-canadian-discrimination-against-the-commerce-of-the-united-states',
+                    'url': 'https://www.federalregister.gov/documents/2026/07/23/2026-14991/imposing-additional-duties-to-offset-canadian-discrimination-against-the-commerce-of-the-united',
                     'published': '2026-07-23'},
     'procl-11047': {'citation': '91 FR 46653 (Proclamation 11047: Section 338 duties on products of Canada — dairy; 50%, heading 9903.03.13)',
                     'url': 'https://www.federalregister.gov/documents/2026/07/23/2026-14992/imposing-additional-duties-to-offset-canadian-discrimination-against-the-commerce-of-the-united',
@@ -257,7 +257,8 @@ RU_B_INSERTED_0401 = [
     '7102.21.30', '7102.21.40', '7102.29.00', '7110.11.00', '7110.19.00', '7110.29.00', '7110.31.00', '7110.39.00', '7110.41.00', '7110.49.00',
     '7502.10.00', '7502.20.00', '7504.00.00', '8708.10.30',
 ]
-# The Revision 21 PDF prints 30(d)'s "7217.10.90" as "7217,10.90", which extract-ch99-program-coverage.ts misses.
+# The Revision 21 PDF prints 30(d)'s "7217.10.90" as "7217,10.90"; extractListCodes (lib/calc-readiness.ts) reads it since
+# issue #1796 — kept as a check that the list still holds it.
 RU_D_PDF_TYPOS = ['72171090']
 RU_COMMON = ('U.S. note 30: the rate replaces the column 2 rate of chapters 1–97 (Russia pays column 2 since April 9, 2022 under the Suspending '
              'Normal Trade Relations with Russia and Belarus Act; general note 3(b)), whether the column 2 rate is higher or lower. Cumulative with '
@@ -269,7 +270,8 @@ RU_COMMON = ('U.S. note 30: the rate replaces the column 2 rate of chapters 1–
 
 def _russia(program_cov, rec, hts_note):
     b = list(program_cov['30(b)'])
-    d = sorted(set(program_cov['30(d)']) | set(RU_D_PDF_TYPOS))
+    assert set(RU_D_PDF_TYPOS) <= set(program_cov['30(d)']), '30(d) lost 7217.10.90 — check extractListCodes'
+    d = sorted(program_cov['30(d)'])
     assert not set(b) & set(d), 'a subheading is on both note 30(b) and 30(d)'
     ins = [_p(c) for c in RU_B_INSERTED_0401]
     dele = [_p(c) for c in RU_B_DELETED_0401]

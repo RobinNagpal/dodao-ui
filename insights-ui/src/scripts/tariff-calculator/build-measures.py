@@ -514,6 +514,38 @@ measures += country_action_measures(cov, program_cov, rec=rec, S=S, hts_note=hts
 # The vehicles module's note 52(f) relief (all countries, correctly conditioned) supersedes the earlier China-only record.
 measures = [m for m in measures if m['measureKey'] != 's301-2026-exempt-52f-cn-passenger-vehicles']
 
+# Informational materials (headings 9903.05.92 / 9903.05.09) and civil aircraft (notes 52(d) / 50(a)(iv), headings
+# 9903.05.88 / 9903.05.05): reliefs from the 2026 Section 301 duties and the Brazil duty, each on the importer's
+# confirmation (registry facts informationalMaterials / civilAircraftGn6, default no).
+INFO_COV = ['37', '49', '8523', '97']
+INFO_WHAT = ('informational materials, "including but not limited to publications, films, posters, phonograph records, photographs, microfilms, '
+             'microfiche, tapes, compact disks, CD ROMs, artworks and news wire feeds" (the heading text; the 50 U.S.C. 1702(b)(3) list). Applies only '
+             'when the importer confirms the goods are informational materials (fact informationalMaterials, default no). Coverage: chapter 37 '
+             '(photographic and cinematographic film), chapter 49 (books, newspapers, pictures and other printed matter), heading 8523 (recorded '
+             'media) and chapter 97 (works of art) — where the listed kinds of goods classify. Exempted in the proposed and final actions (USTR '
+             'notices).')
+measures.append(rec(measureKey='s301-2026-exempt-informational-materials', program=P301, ch99Code='9903.05.92', rateKind='relief',
+    coverageInclude=INFO_COV, conditions={'factsTrue': ['informationalMaterials']}, replacesCodes=ALL_S301_CODES, effectiveFrom='2026-07-24',
+    sources=S('ustr-301-fl') + [hts_note(52)], reviewedAt='2026-10-12',
+    notes='Heading 9903.05.92: the 2026 Section 301 duties 9903.05.20–9903.05.84 (whose headings except 9903.05.85–9903.05.99) do not apply to articles that are '
+          + INFO_WHAT + ' China List 4A (9903.88.15) and the Canada Section 338 duties (note 51) have no such exemption.'))
+measures.append(rec(measureKey='s301-brazil-exempt-informational-materials', program=PBR, ch99Code='9903.05.09', rateKind='relief', countriesInclude=['BR'],
+    coverageInclude=INFO_COV, conditions={'factsTrue': ['informationalMaterials']}, replacesCodes=['9903.05.01'], effectiveFrom='2026-07-22',
+    sources=S('ustr-301-br') + [hts_note(50)], reviewedAt='2026-10-12',
+    notes='Heading 9903.05.09: the 25% Brazil Section 301 duty (9903.05.01, which excepts 9903.05.02–9903.05.09) does not apply to articles the product of Brazil that are '
+          + INFO_WHAT))
+for key, prog, code, sub, countries, repl, start, src, note_n in [
+        ('s301-2026-exempt-52d-civil-aircraft', P301, '9903.05.88', '52(d)', [], ALL_S301_CODES, '2026-07-24', 'ustr-301-fl', 52),
+        ('s301-brazil-exempt-50a-iv-civil-aircraft', PBR, '9903.05.05', '50(a)(iv)', ['BR'], ['9903.05.01'], '2026-07-22', 'ustr-301-br', 50)]:
+    lines = cov[sub]
+    assert len(lines) > 500, sub
+    measures.append(rec(measureKey=key, program=prog, ch99Code=code, rateKind='relief', countriesInclude=countries, coverageInclude=lines,
+        conditions={'factsTrue': ['civilAircraftGn6']}, replacesCodes=repl, effectiveFrom=start, sources=S(src) + [hts_note(note_n)], reviewedAt='2026-10-12',
+        notes=f'U.S. note {sub} (heading {code}): civil aircraft (all aircraft other than military aircraft), their engines, parts and components, other parts, '
+              f'subassemblies and ground flight simulators that meet the general note 6 criteria, on the {len(lines)} provisions listed, do not pay '
+              f'{"the 2026 Section 301 duties 9903.05.20–9903.05.84" if note_n == 52 else "the 25% Brazil duty 9903.05.01"}, whether or not "Free (C)" is '
+              'claimed. Applies only when the importer confirms civil-aircraft use (fact civilAircraftGn6, default no).'))
+
 out = {'htsEdition': ED, 'reviewedAt': '2026-10-09', 'measures': measures}
 json.dump(out, open(ROOT + 'measures.json', 'w'), ensure_ascii=False, indent=2)
 print(len(measures), 'measures')
