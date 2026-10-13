@@ -218,8 +218,13 @@ const PROGRAMS: ProgramDef[] = [
     status: 'inEffect',
     effectiveFrom: '1986-03-31',
     basis:
-      '9903.41.05 / 9903.41.10 (leather, footwear; +40%, Proclamation 5448 of March 16, 1986) are neither shaded as expired nor suspended by U.S. note 5 (which covers only 9903.41.25 and .35–.45), and note 3 makes them cumulative; no terminating notice found (online Federal Register starts 1994). Modelled in measures_country_actions.py — confirm with CBP before relying on it.',
-    sources: [HTS_CH99],
+      '9903.41.05 / 9903.41.10 (leather, footwear; +40%, Proclamation 5448 of March 16, 1986) remain in effect. Proclamation 5448 let USTR end them only by Federal Register notice; the 1986–1993 Federal Register annual indexes and the 1994+ Federal Register show only the June 1986 narrowing of the footwear description (51 FR 21036) and no suspension or termination. Proclamation 5911 (1988) carried both headings into the HTS as cumulative duties (note 3). U.S. note 1 makes the provisions effective until suspended or terminated; note 5 suspends only 9903.41.25 and .35–.45, and neither heading is shaded as expired. Modelled in measures_country_actions.py.',
+    sources: [
+      HTS_CH99,
+      'https://www.govinfo.gov/content/pkg/STATUTE-100/pdf/STATUTE-100-Pg4411.pdf',
+      'https://www.govinfo.gov/content/pkg/FR-1986-06-10/pdf/FR-1986-06-10.pdf',
+      'https://www.govinfo.gov/content/pkg/STATUTE-103/pdf/STATUTE-103-Pg2613.pdf',
+    ],
   },
   {
     id: 's201-washers-solar',
