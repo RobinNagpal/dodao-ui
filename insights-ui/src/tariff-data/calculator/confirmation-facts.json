@@ -193,6 +193,10 @@
     {
       "id": "informationalMaterials",
       "prompt": "Are the goods informational materials (publications, films, posters, phonograph records, photographs, microfilms, microfiche, tapes, compact disks, CD ROMs, artworks), as described in 50 U.S.C. 1702(b)(3)?",
+      "shortLabel": {
+        "yes": "informational materials",
+        "no": "not informational materials"
+      },
       "help": "Informational materials are exempt from the 2026 Section 301 duties (heading 9903.05.92) and the Brazil Section 301 duty (heading 9903.05.09). Not from the China Section 301 lists or the Canada Section 338 duties. Unanswered = no.",
       "defaultWhenUnanswered": false,
       "sources": [
@@ -216,6 +220,10 @@
     {
       "id": "jpFootwearExcepted",
       "prompt": "Is the footwear (a) slip-on footwear not suitable for outdoor use, without backs or backstraps, with an outer sole under 5 mm thick and less than 20 mm difference between ball and heel, or (b) sports footwear with (provision for) spikes, sprigs, stops, clips or bars, skating boots, ski boots, cross-country ski footwear, wrestling, boxing or cycling shoes?",
+      "shortLabel": {
+        "yes": "slip-on or sports footwear",
+        "no": "other footwear"
+      },
       "help": "These are excepted from the 40% duty on Japanese leather footwear (heading 9903.41.10).",
       "defaultWhenUnanswered": false,
       "sources": [
@@ -234,6 +242,10 @@
     {
       "id": "jpFootwearUpperPartlyLeather",
       "prompt": "Is the upper of this footwear (outer sole of leather) wholly or partly of leather?",
+      "shortLabel": {
+        "yes": "upper partly of leather",
+        "no": "upper with no leather"
+      },
       "help": "Heading 9903.41.10 covers footwear with leather outer soles and uppers wholly or in part of leather; textile-upper footwear with some leather can classify in 6404.20.",
       "defaultWhenUnanswered": false,
       "sources": [
@@ -252,6 +264,10 @@
     {
       "id": "jpLeatherDyedColoredStampedEmbossed",
       "prompt": "Is this goat, kid, sheep or lamb leather dyed, colored, stamped or embossed?",
+      "shortLabel": {
+        "yes": "dyed, colored, stamped or embossed",
+        "no": "not dyed, colored, stamped or embossed"
+      },
       "help": "Only dyed, colored, stamped or embossed goat/kid/sheep/lamb leather of Japan pays the 40% duty of heading 9903.41.05.",
       "defaultWhenUnanswered": null,
       "sources": [
@@ -270,6 +286,10 @@
     {
       "id": "logicIcWithinNote39bThresholds",
       "prompt": "Is this product a logic integrated circuit (or does it contain one) with total processing performance (TPP) above 14,000 and below 17,500 and total DRAM bandwidth above 4,500 and below 5,000 GB/s — or TPP above 20,800 and below 21,100 and DRAM bandwidth above 5,800 and below 6,200 GB/s?",
+      "shortLabel": {
+        "yes": "logic chip within the note thresholds",
+        "no": "not a logic chip within the note thresholds"
+      },
       "help": "U.S. note 39(b): only such products of 8471.50, 8471.80 and 8473.30 pay the 25% Section 232 semiconductor duty (9903.79.01); everything else on those lines enters under 9903.79.02 with no duty. TPP = 2 × MacTOPS × bit length, summed over the processing units, dense (no sparsity), at the highest value the maker claims. Must be answered: defaulting either way would mis-price most of these lines.",
       "defaultWhenUnanswered": null,
       "sources": [
@@ -288,6 +308,10 @@
     {
       "id": "mediumHeavyVehiclePart",
       "prompt": "Is this article a part of a medium- or heavy-duty vehicle (a truck, road tractor, bus or other vehicle covered by U.S. note 38)?",
+      "shortLabel": {
+        "yes": "truck or bus part",
+        "no": "not a truck or bus part"
+      },
       "help": "Note 38(i) lists whole subheadings; the 25% Section 232 duty (9903.74.08) applies only to parts of medium- and heavy-duty vehicles, and the listed articles that are not such parts enter under 9903.74.11 with no Section 232 duty. Answer for the article itself (its design and use); CBP may ask for support. A part made for a passenger car or light truck is answered by the passenger-vehicle question instead.",
       "defaultWhenUnanswered": null,
       "sources": [
@@ -396,6 +420,10 @@
     {
       "id": "packagedDirectToConsumer",
       "prompt": "Is the alcohol packaged in bottles, cans, boxes, kegs or other similar direct-to-consumption containers (not shipped in bulk)?",
+      "shortLabel": {
+        "yes": "packaged for consumers",
+        "no": "shipped in bulk"
+      },
       "help": "Proclamation 11061 bans such packaged Canadian alcohol products under the listed provisions from September 29, 2026; bulk goods are not banned (they still pay the 50% Section 338 duty). Must be answered: either default could wrongly allow or block the import.",
       "defaultWhenUnanswered": null,
       "sources": [
@@ -409,6 +437,10 @@
     {
       "id": "passengerVehiclePart",
       "prompt": "Is this article a part of a passenger vehicle (sedan, SUV, crossover, minivan, cargo van) or light truck?",
+      "shortLabel": {
+        "yes": "car or light-truck part",
+        "no": "not a car or light-truck part"
+      },
       "help": "U.S. note 33(g) lists whole subheadings (for example computers of 8471, lithium-ion batteries of 8507.60, wiring sets of 8544.30). CBP: the 25% Section 232 duty (9903.94.05) applies to parts of passenger vehicles and light trucks classifiable there, and the listed articles that are not such parts enter under 9903.94.06 with no Section 232 duty (CSMS # 64916652). Answer for the article itself; CBP may ask for support.",
       "defaultWhenUnanswered": null,
       "sources": [
@@ -445,6 +477,10 @@
     {
       "id": "quartzOverQuota",
       "prompt": "Is this entry over the quarterly tariff-rate quota for quartz surface products (the in-quota quantity of U.S. note 41(d) is filled)?",
+      "shortLabel": {
+        "yes": "over the quartz quota",
+        "no": "within the quartz quota"
+      },
       "help": "In-quota entries pay heading 9903.45.30 (25% in the first year), over-quota entries 9903.45.31 (50%). CBP publishes the quota fill status.",
       "defaultWhenUnanswered": null,
       "sources": [
@@ -463,6 +499,10 @@
     {
       "id": "quartzSurfaceProduct",
       "prompt": "Is this a quartz surface product — a slab or other surface made predominantly of silica (quartz, quartz powder, cristobalite, glass powder) with a resin binder, silica being more than any other single material by weight?",
+      "shortLabel": {
+        "yes": "quartz surface product",
+        "no": "not quartz surface"
+      },
       "help": "The Section 201 quartz safeguard covers 7020.00.60.00, 6810.99.00.20 and 6810.99.00.40 only for quartz surface products (U.S. note 41(a)); quarried stone (granite, marble, quartzite) is not covered.",
       "defaultWhenUnanswered": null,
       "sources": [
@@ -602,6 +642,10 @@
     {
       "id": "uasThermalImaging",
       "prompt": "Does this unmanned aircraft have thermal imaging?",
+      "shortLabel": {
+        "yes": "with thermal imaging",
+        "no": "without thermal imaging"
+      },
       "help": "Drones up to 25 kg pay +100% with thermal imaging (9903.08.21, note 43(c)(3)) and +25% without (9903.08.22, note 43(c)(4)).",
       "defaultWhenUnanswered": null,
       "sources": [
@@ -748,6 +792,10 @@
     {
       "id": "woodenCabinetsOrVanities",
       "prompt": "Are these goods completed wooden kitchen cabinets or vanities, or parts of wooden kitchen cabinets or vanities?",
+      "shortLabel": {
+        "yes": "kitchen cabinet or vanity",
+        "no": "not a kitchen cabinet or vanity"
+      },
       "help": "U.S. note 37(f)–(g): statistical lines 9403.40.9060, 9403.60.8093 and 9403.91.0080 also hold other wooden furniture and parts, which enter under 9903.76.04 with no Section 232 wood duty. Must be answered: the duty is 25% (50% from January 1, 2027) or 15% for the deal partners, so either default would mis-price many entries.",
       "defaultWhenUnanswered": null,
       "sources": [
@@ -766,6 +814,10 @@
     {
       "id": "embroideryInThePiece",
       "prompt": "Is this embroidery in the piece (a length of embroidered fabric), rather than embroidery in strips or in motifs?",
+      "shortLabel": {
+        "yes": "embroidery in the piece",
+        "no": "embroidery in strips or motifs"
+      },
       "help": "Chapter 58 additional U.S. notes 1–5: the rates of subheadings 5810.91.00–5810.99.90 apply, but for embroidery in the piece the duty is not less than the rate that would apply to the same fabric if not embroidered. Answer yes for embroidery in the piece; the calculator then asks for the HTS line of the fabric without embroidery and charges the higher of the two.",
       "defaultWhenUnanswered": null,
       "sources": [
@@ -779,6 +831,10 @@
     {
       "id": "movementPartsIncludePlate",
       "prompt": "Do these movement parts consist in part of a plate or a set of plates?",
+      "shortLabel": {
+        "yes": "with a plate",
+        "no": "without a plate"
+      },
       "help": "Subheadings 9110.90.40 and 9114.90.30: the duty is the ad valorem rate plus the per-jewel and per-piece amounts, \"but if consisting in part of a plate or a set of plates the total duty shall not exceed the duty for the complete movement\". Answer yes when the parts include a plate or set of plates; the calculator then asks for the HTS line of the complete movement and charges the lower of the two.",
       "defaultWhenUnanswered": null,
       "sources": [

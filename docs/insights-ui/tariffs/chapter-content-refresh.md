@@ -153,6 +153,8 @@ Source: `insights-ui/src/scripts/industry-tariff-reports/validate-chapter-conten
 
 Exit code is 1 on any error (or any warning with `--strict`). The validator is **not** wired into CI — run it before every content PR.
 
+**Matrix-cell variant labels (`--check-calculator`).** A cell that depends on an importer answer lists one total per answer, e.g. `16.5% not a vehicle part / 29% car or light-truck part or truck or bus part`. The labels are short lowercase phrases: FTA quota tiers (`within quota or above quota`), a product type (`patented`), and confirmation-fact answers in words, joined by ", ". Each fact's phrases are its `shortLabel` in `src/tariff-data/calculator/confirmation-facts.json`; phrases for two answers together (`not a vehicle part`, `quartz surface product within quota`) are in `src/utils/tariff-calculator/fact-labels.ts`. Answers with the same total share one variant, and its label names every answer (`… or …`), so no option is dropped. The generator writes the labels with `chapter-generator/variant-labels.ts` and the validator reads them back with the same module. It re-prices each label's answers, and every other fact the line varies both ways, with the engine. Older files' `if yes` / `if no` labels are still checked, as the answer to the line's only varied fact. Older camelCase labels (`passengerVehiclePart yes …`) can't be parsed by the "Your shipment" box: regenerate those chapters' matrices. A new must-answer fact needs a `shortLabel`, or its label falls back to the id in words.
+
 ## 8. Flush the CloudFront cache after deploy
 
 Chapter pages are cached at the CloudFront edge, so a merged content change is not visible until the cache is invalidated.

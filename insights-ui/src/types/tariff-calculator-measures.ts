@@ -119,6 +119,11 @@ export interface TariffConfirmationFact {
    * scope depends on it, the engine returns an error asking for it (use when either default would be badly wrong).
    */
   defaultWhenUnanswered: boolean | null;
+  /**
+   * Short lowercase phrases for each answer ("car or light-truck part" / "not a car or light-truck part"), used as the
+   * variant labels of chapter matrix cells ("25% car or light-truck part"); see utils/tariff-calculator/fact-labels.ts.
+   */
+  shortLabel?: { yes: string; no: string };
   sources: TariffMeasureSource[];
 }
 

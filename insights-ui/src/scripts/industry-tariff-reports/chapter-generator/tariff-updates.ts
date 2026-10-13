@@ -111,8 +111,13 @@ function perLineRate(ms: TariffMeasureRecord[], lines: TariffRateTableRow[], all
     .join(' or ');
 }
 
+/** True for an HTSUS edition / chapter file (hts.usitc.gov, usitc.gov/tata/hts) rather than the notice behind a measure. */
+function isHtsSource(url: string): boolean {
+  return /hts\.usitc\.gov|usitc\.gov\/sites\/default\/files\/tata\/hts/.test(url);
+}
+
 function primarySourceId(m: TariffMeasureRecord, sources: SourceRegistry): string {
-  const s = m.sources.find((x) => !/hts\.usitc\.gov/.test(x.url)) ?? m.sources[0];
+  const s = m.sources.find((x) => !isHtsSource(x.url)) ?? m.sources[0];
   return s ? sources.add(s) : 'hts-now';
 }
 
@@ -272,12 +277,15 @@ function changeEntries(input: TariffUpdatesInput, lineStats: { unchanged: number
   starts.forEach((ms, key) => {
     const [program, keyDay] = key.split('|');
     const pending = keyDay === 'pending';
-    // A pending entry is dated by its newest official notice on or before asOf (dates must not be in the future).
-    const announced = ms
-      .flatMap((m) => m.sources.map((src) => src.published.slice(0, 10)))
-      .filter((d) => d <= asOf)
-      .sort()
-      .pop();
+    // A pending entry is dated by the notice that announced it: the earliest of the measures' own sources on or before
+    // asOf (dates must not be in the future). The HTS edition that lists the heading is a source too, but its release
+    // date is not when the step was announced, so it only counts when there is no other source.
+    const published = (notice: boolean): string[] =>
+      ms
+        .flatMap((m) => m.sources.filter((src) => notice !== isHtsSource(src.url)).map((src) => src.published.slice(0, 10)))
+        .filter((d) => d <= asOf)
+        .sort();
+    const announced = published(true)[0] ?? published(false)[0];
     const day = pending ? announced ?? asOf : keyDay;
     const steps = Array.from(new Set(ms.map((m) => m.effectiveFrom.slice(0, 10)))).sort();
     const pcts = Array.from(new Set(ms.map((m) => m.ratePct ?? 0))).sort((a, b) => a - b);
