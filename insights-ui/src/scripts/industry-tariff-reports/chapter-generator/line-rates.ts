@@ -14,7 +14,18 @@ import {
   specialRateFor,
   USMCA_SPI_CODES,
 } from '@/utils/tariff-calculator/measures-engine';
-import { formatPolarityRate, parseRate, quantityUnits, rateDollars } from '@/utils/tariff-reports/shipment-duty';
+import { resolveRateNote } from '@/utils/tariff-calculator/rate-notes';
+import {
+  extendedRateDollars,
+  formatPolarityRate,
+  isExtendedRate,
+  parseExtendedRate,
+  parseRate,
+  quantityUnits,
+  rateDollars,
+  splitRateClause,
+  type ExtendedRate,
+} from '@/utils/tariff-reports/shipment-duty';
 import {
   FTA_SAFEGUARD_FACT,
   FTA_WITHIN_QUOTA_FACT,
@@ -34,6 +45,16 @@ import { engineLine } from './rate-table';
 
 export const NOMINAL_VALUE_USD = 10_000;
 export const NOMINAL_QUANTITY = 1_000;
+/**
+ * Rates charged on the value of a part ("2.5% on the value of the lead content", issue #1812): the value each part gets
+ * when the generator prices a cell, so a total that keeps the part's term can be re-priced the same way.
+ */
+export const NOMINAL_COMPONENT_VALUE_USD = 2_000;
+/**
+ * A rate that is another line's rate ("The rate applicable to each garment in the ensemble if separately entered") is
+ * priced with this stand-in line at Free, so the cell shows the reference text plus the extra duties the engine charges.
+ */
+const REFERENCE_PROBE_HTS10 = '0000000000';
 const DEFAULT_UOMS = ['NO', 'KG', 'G', 'T', 'L', 'PF.L', 'CKG', 'DOZ', 'DPR', 'PRS', 'GROSS', 'M', 'M2', 'M3', 'THS', 'BBL'];
 const PRODUCT_TYPE_ORDER: TariffProductType[] = ['generic', 'other', 'specialty', 'patented'];
 const MAX_FACT_COMBOS = 3;
@@ -102,25 +123,40 @@ export function fmtPct(pct: number): string {
 export interface RateExpr {
   perUnit: string[];
   pct: number;
+  /**
+   * Terms kept as the HTS words them because the cell can't price them alone (issue #1812): value-of-part terms ("2.5%
+   * on the value of the lead content") and references to another line's rate ("The rate applicable to …").
+   */
+  textTerms?: string[];
+  /** A floor / cap clause on the base rate ("but in the case of embroidery in the piece not less than …"). */
+  clause?: string;
 }
 
-/** Splits a base rate text ("40¢/kg + 10.4%", "Free", "6.8%") into per-unit terms and its ad valorem part. Null when unreadable. */
+/**
+ * Splits a base rate text ("40¢/kg + 10.4%", "Free", "6.8%") into per-unit terms and its ad valorem part; value-of-part
+ * terms, references and a floor / cap clause are kept as text (`textTerms`, `clause`). Null when unreadable.
+ */
 export function baseExpr(text: string | null): RateExpr | null {
   if (!text) return null;
-  if (!parseRate(text)) return null;
+  const full = parseExtendedRate(text);
+  if (!full) return null;
+  const { body, clause } = splitRateClause(text);
   const perUnit: string[] = [];
+  const textTerms: string[] = [];
   let pct = 0;
-  for (const raw of text.split(/\s*\+\s*/)) {
+  if (full.underBond) return { perUnit, pct };
+  for (const raw of body.split(/\s*\+\s*/)) {
     const term = raw.trim();
     if (!term || /^free$/i.test(term)) continue;
-    const p = parseRate(term);
+    const p = parseExtendedRate(term);
     if (!p) return null;
-    if (p.perUnit.length === 0) pct += p.adValoremPct;
+    if (p.reference || p.components.length > 0) textTerms.push(term);
+    else if (p.perUnit.length === 0) pct += p.adValoremPct;
     // A sugar polarity rate reads "3.6606¢/kg at 100° polarity, 0.020668¢/kg less per degree under 100 (min …)".
     else if (p.adValoremPct === 0) perUnit.push(displayRate(term));
     else return null;
   }
-  return { perUnit, pct };
+  return { perUnit, pct, ...(textTerms.length > 0 ? { textTerms } : {}), ...(clause ? { clause } : {}) };
 }
 
 /** A rate as the pages show it: the HTS text, with a sugar polarity term in plain words (formatPolarityRate). */
@@ -129,18 +165,44 @@ export function displayRate(text: string): string {
 }
 
 export function exprString(e: RateExpr): string {
-  const parts = [...e.perUnit];
+  const parts = [...(e.textTerms ?? []), ...e.perUnit];
   if (e.pct > 1e-9) parts.push(fmtPct(e.pct));
-  return parts.length > 0 ? parts.join(' + ') : 'Free';
+  const main = parts.length > 0 ? parts.join(' + ') : 'Free';
+  return e.clause ? `${main}, ${e.clause}` : main;
 }
 
-/** Dollars a rate string costs on the nominal shipment; null when unreadable. */
+/** The terms that make a rate expression's shape (everything but the ad valorem percentage). */
+export function exprShape(e: RateExpr): string {
+  return [...(e.textTerms ?? []), ...e.perUnit].join(' + ') + (e.clause ? ` | ${e.clause}` : '');
+}
+
+/** Component values the generator prices a value-of-part rate with (NOMINAL_COMPONENT_VALUE_USD each). */
+function nominalComponentValues(rate: ExtendedRate | null): Record<string, number> {
+  const out: Record<string, number> = {};
+  for (const c of rate?.components ?? []) out[c.component] = NOMINAL_COMPONENT_VALUE_USD;
+  return out;
+}
+
+/**
+ * Dollars a rate string costs on the nominal shipment; null when unreadable. Value-of-part terms are priced at
+ * NOMINAL_COMPONENT_VALUE_USD, a reference to another line's rate at $0 (the generator prices it with a Free stand-in
+ * line), and a floor / cap clause is left out (the generator prices the condition answered no).
+ */
 export function nominalDollars(total: string): number | null {
-  const rate = parseRate(total);
+  const strict = parseRate(total);
+  if (strict) {
+    const qty: Record<string, number> = {};
+    for (const u of quantityUnits([strict])) qty[u.key] = NOMINAL_QUANTITY;
+    return rateDollars(strict, NOMINAL_VALUE_USD, qty);
+  }
+  const rate = parseExtendedRate(splitRateClause(total).body);
   if (!rate) return null;
   const qty: Record<string, number> = {};
   for (const u of quantityUnits([rate])) qty[u.key] = NOMINAL_QUANTITY;
-  return rateDollars(rate, NOMINAL_VALUE_USD, qty);
+  return extendedRateDollars(rate, NOMINAL_VALUE_USD, qty, {
+    componentValuesUsd: nominalComponentValues(rate),
+    ...(rate.reference ? { referenceDutyUsd: 0 } : {}),
+  });
 }
 
 function nominalQuantities(line: TariffRateTableRow, extraRateTexts: (string | null)[]): Record<string, number> {
@@ -205,6 +267,11 @@ interface Priced {
   extra: string;
   chargedCodes: string[];
   contentAssumed: boolean;
+  /**
+   * The total in words when a floor measure ("12.5% or the base rate, whichever is higher") meets a base the cell can't
+   * price alone (issue #1812): "The higher of 12.5% and the base rate (The rate applicable to …)". Not re-priced.
+   */
+  totalText?: string;
 }
 
 function priceResult(
@@ -222,9 +289,18 @@ function priceResult(
     .map((l) => ({ line: l, m: chargedRecord(l.code, measures, hts10, iso, day) }))
     .filter((c) => c.m && c.m.rateKind !== 'relief') as { line: MeasureEngineResult['lines'][number]; m: TariffMeasureRecord }[];
   const replaced = charged.some((c) => c.m.rateKind === 'inPlaceOfBase' || c.m.rateKind === 'floor');
-  let expr: RateExpr | null = replaced ? { perUnit: [], pct: 0 } : base ? { perUnit: [...base.perUnit], pct: base.pct } : null;
+  const expr: RateExpr | null = replaced ? { perUnit: [], pct: 0 } : base ? { ...base, perUnit: [...base.perUnit], pct: base.pct } : null;
+  // A floor ("12.5% or the base rate, whichever is higher") on a base the cell can't price alone (a value-of-part or
+  // another line's rate, issue #1812) depends on that amount: the cell says so and isn't re-priced.
+  const baseUnpriced = !!base && ((base.textTerms?.length ?? 0) > 0 || !!base.clause);
+  // …unless the base can never exceed the floor: an ad valorem base charged on parts of the value ("2.5% on the value of
+  // the lead content") is at most its highest percentage of the customs value, since the parts can't be worth more.
+  const ext = parseExtendedRate(baseText);
+  const baseMaxPct =
+    ext && !ext.reference && ext.perUnit.length === 0 ? ext.adValoremPct + Math.max(0, ...ext.components.map((c) => c.pct)) : Number.POSITIVE_INFINITY;
   const parts: string[] = [];
   let contentAssumed = false;
+  let floorWords: string | null = null;
   for (const { line, m } of charged) {
     const pct = m.ratePct ?? 0;
     const on = m.contentBasis ? ` of the ${m.contentBasis === 'nonUsContent' ? 'non-U.S. content' : `${m.contentBasis} content`} value` : '';
@@ -238,7 +314,10 @@ function priceResult(
     } else {
       // floor: max(base, pct × value). The engine charges the larger one as this measure's amount.
       const floorAmount = (pct / 100) * NOMINAL_VALUE_USD;
-      if (line.amountUsd > floorAmount + 0.005 && base) {
+      if (baseUnpriced && base && pct < baseMaxPct) {
+        parts.push(`${fmtPct(pct)}${on} or the base rate, whichever is higher, in place of base`);
+        floorWords = `The higher of ${fmtPct(pct)}${on} and the base rate (${exprString(base)})`;
+      } else if (line.amountUsd > floorAmount + 0.005 && base) {
         parts.push(`${fmtPct(pct)} floor; the base rate is higher`);
         if (expr) {
           expr.perUnit.push(...base.perUnit);
@@ -256,6 +335,10 @@ function priceResult(
   if (parts.length === 0) extra = usmcaClaimed ? 'None (USMCA)' : relief.length > 0 ? `None: ${relief.join('; ')}` : 'None';
   else if (parts.length === 1) extra = parts[0];
   else extra = parts.map((p, i) => `${i > 0 ? p.replace(/^\+/, '') : p} (${codes[i]})`).join(' + ');
+  if (floorWords) {
+    const others = expr && expr.pct > 1e-9 ? `, + ${fmtPct(expr.pct)}` : '';
+    return { expr: null, extra, chargedCodes: codes, contentAssumed, totalText: `${floorWords}${others}` };
+  }
   return { expr, extra, chargedCodes: codes, contentAssumed };
 }
 
@@ -338,10 +421,14 @@ export function evaluateLine(
   const hts = row.hts as string;
   const day = opts.entryDate;
   const line = engineLine(row);
-  const generalBase = COLUMN2_COUNTRIES.includes(iso) && line.column2 ? line.column2 : line.general;
+  const column = COLUMN2_COUNTRIES.includes(iso) && line.column2 ? 'column2' : 'general';
+  const officialBase = column === 'column2' ? line.column2 ?? null : line.general;
+  // "See additional U.S. note 3" (chapter 58): the note's rate for the column, labelled with the note (issue #1812).
+  const note = officialBase ? resolveRateNote(hts10, column, officialBase) : null;
+  const generalBase = note && note.ok ? note.rateText : officialBase;
   const out: LineRateResult & { claimRejected?: boolean } = {
     hts,
-    base: generalBase ? displayRate(generalBase) : '—',
+    base: generalBase ? (note && note.ok ? `${displayRate(generalBase)} (additional U.S. note ${note.entry.note})` : displayRate(generalBase)) : '—',
     variants: [],
     problems: [],
     notes: [],
@@ -421,6 +508,41 @@ export function evaluateLine(
   );
   const usmcaClaimed = !!opts.claimedSpi && USMCA_SPI_CODES.includes(opts.claimedSpi);
   const quantities = nominalQuantities(row, [generalBase, claimRate]);
+  if (note && !note.ok) out.problems.push(`${hts}: ${note.error}`);
+
+  // Base rates that need more than the value and quantities (issue #1812). Value-of-part terms are priced at
+  // NOMINAL_COMPONENT_VALUE_USD each and kept as text in the cell; a reference to another line's rate is priced with a
+  // Free stand-in line (the cell shows the reference text + the extra duties); a floor / cap clause is priced with its
+  // condition answered no and kept as text.
+  const ext = !isQuotaReference(baseText) ? parseExtendedRate(baseText) : null;
+  const extInputs: Pick<MeasureEngineInput, 'componentValuesUsd' | 'referencedLines'> = {};
+  const baseFacts: Record<string, boolean> = {};
+  if (ext && isExtendedRate(ext)) {
+    if (ext.components.length > 0) extInputs.componentValuesUsd = nominalComponentValues(ext);
+    const ref = ext.reference;
+    if (ref?.conditionFact) baseFacts[ref.conditionFact] = false;
+    else if (ref) {
+      extInputs.referencedLines = [
+        {
+          hts10: REFERENCE_PROBE_HTS10,
+          general: 'Free',
+          special: opts.claimedSpi ? `Free (${opts.claimedSpi})` : null,
+          column2: 'Free',
+          ...(ref.kind === 'each' ? { valueUsd: NOMINAL_VALUE_USD } : {}),
+        },
+      ];
+    }
+    out.notes.push(
+      `${hts} (${iso}): base "${baseText}" needs ${[
+        ext.components.length > 0 ? 'component values' : null,
+        ref && !ref.conditionFact ? 'the referenced line' : null,
+        ref?.conditionFact ? `the ${ref.conditionFact} answer` : null,
+        ext.underBond ? 'a bond (free at entry)' : null,
+      ]
+        .filter(Boolean)
+        .join(', ')}; the cell keeps that part as text and prices the rest.`
+    );
+  }
 
   const raw: RateVariantResult[] = [];
   const quotaRuns = quotaTiers ?? [{ label: null, baseText, facts: {} as Record<string, boolean> }];
@@ -440,7 +562,8 @@ export function evaluateLine(
       quantities,
       ...(opts.claimedSpi ? { claimedSpi: opts.claimedSpi } : {}),
       ...(c.productType ? { productType: c.productType } : {}),
-      ...(c.facts ? { confirmations: { facts: c.facts } } : {}),
+      ...(c.facts || Object.keys(baseFacts).length > 0 ? { confirmations: { facts: { ...baseFacts, ...(c.facts ?? {}) } } } : {}),
+      ...extInputs,
       entryDate: day,
     };
     let result = calculateWithMeasures(input, line, measures);
@@ -465,9 +588,10 @@ export function evaluateLine(
     const priced = priceResult(result, c.baseText, measures, hts10, iso, day, usmcaClaimed);
     if (contentFallback || priced.contentAssumed)
       out.notes.push(`${hts} (${iso}): content-based duty priced on the full customs value (the cell can't know the content value).`);
-    const total = priced.expr ? exprString(priced.expr) : null;
-    const repriced = total ? nominalDollars(total) : null;
-    if (!total || repriced === null || Math.abs(repriced - result.totalDutyUsd) > 0.01) {
+    const total = priced.totalText ?? (priced.expr ? exprString(priced.expr) : null);
+    const repriced = total && !priced.totalText ? nominalDollars(total) : null;
+    if (priced.totalText) out.notes.push(`${hts} (${iso}): total "${priced.totalText}" depends on the base duty, so it isn't re-priced.`);
+    else if (!total || repriced === null || Math.abs(repriced - result.totalDutyUsd) > 0.01) {
       out.problems.push(
         `${hts} (${iso}${c.label ? `, ${c.label}` : ''}): total "${total ?? '?'}" re-prices to ${
           repriced ?? '?'
@@ -475,6 +599,7 @@ export function evaluateLine(
       );
       continue;
     }
+    if (!total) continue;
     raw.push({
       label: c.label,
       total,

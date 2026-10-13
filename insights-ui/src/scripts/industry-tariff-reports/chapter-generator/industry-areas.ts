@@ -14,6 +14,7 @@ import type { HeadingInfo } from './rate-table';
 import {
   countryInScope,
   evaluateLine,
+  exprShape,
   exprString,
   fmtPct,
   ftaClaimsFor,
@@ -274,11 +275,16 @@ function fmtNum(pct: number): string {
   return String(Number(pct.toFixed(4)));
 }
 
-/** "1¢/kg + 0–37.5%", "Free–37.5%", "6.8%–44.3%", or an exact rate when low = high. */
-function rangeString(perUnit: string[], lo: number, hi: number): string {
-  if (Math.abs(hi - lo) < 1e-9) return exprString({ perUnit, pct: lo });
-  if (perUnit.length > 0) return `${perUnit.join(' + ')} + ${fmtNum(lo)}–${fmtPct(hi)}`;
-  return lo < 1e-9 ? `Free–${fmtPct(hi)}` : `${fmtPct(lo)}–${fmtPct(hi)}`;
+/**
+ * "1¢/kg + 0–37.5%", "Free–37.5%", "6.8%–44.3%", or an exact rate when low = high. `shape` keeps the terms the cell
+ * can't price alone ("2.5% on the value of the lead content", "The rate applicable to …") and a floor / cap clause.
+ */
+function rangeString(shape: RateExpr, lo: number, hi: number): string {
+  if (Math.abs(hi - lo) < 1e-9) return exprString({ ...shape, pct: lo });
+  const terms = [...(shape.textTerms ?? []), ...shape.perUnit];
+  const clause = shape.clause ? `, ${shape.clause}` : '';
+  if (terms.length > 0) return `${terms.join(' + ')} + ${fmtNum(lo)}–${fmtPct(hi)}${clause}`;
+  return (lo < 1e-9 ? `Free–${fmtPct(hi)}` : `${fmtPct(lo)}–${fmtPct(hi)}`) + clause;
 }
 
 function anyOtherLine(row: TariffRateTableRow, reps: { iso: string }[], measures: TariffMeasureRecord[], asOf: string, problems: string[]): LineRateResult {
@@ -301,15 +307,15 @@ function anyOtherLine(row: TariffRateTableRow, reps: { iso: string }[], measures
   byLabel.forEach((list, label) => {
     // Most countries keep the base rate's per-unit part; floor / in-place countries may drop it. Range over the majority shape.
     const shapes = new Map<string, number>();
-    for (const x of list) shapes.set(x.expr.perUnit.join(' + '), (shapes.get(x.expr.perUnit.join(' + ')) ?? 0) + 1);
+    for (const x of list) shapes.set(exprShape(x.expr), (shapes.get(exprShape(x.expr)) ?? 0) + 1);
     const mainShape = Array.from(shapes.entries()).sort((a, b) => b[1] - a[1])[0][0];
-    const main = list.filter((x) => x.expr.perUnit.join(' + ') === mainShape);
+    const main = list.filter((x) => exprShape(x.expr) === mainShape);
     const lo = Math.min(...main.map((x) => x.expr.pct));
     const hi = Math.max(...main.map((x) => x.expr.pct));
     const loD = Math.min(...main.map((x) => x.dollars));
     const hiD = Math.max(...main.map((x) => x.dollars));
     for (const x of list) {
-      if (x.expr.perUnit.join(' + ') !== mainShape && (x.dollars < loD - 0.01 || x.dollars > hiD + 0.01)) {
+      if (exprShape(x.expr) !== mainShape && (x.dollars < loD - 0.01 || x.dollars > hiD + 0.01)) {
         problems.push(`[${ANY_OTHER_COUNTRY}] ${hts}: "${exprString(x.expr)}" for some countries falls outside the range shown.`);
       }
     }
@@ -351,7 +357,7 @@ function anyOtherLine(row: TariffRateTableRow, reps: { iso: string }[], measures
     const extraParts = [...spans, ...further];
     result.variants.push({
       label: label || null,
-      total: rangeString(mainShape ? mainShape.split(' + ') : [], lo, hi),
+      total: rangeString(main[0].expr, lo, hi),
       extra: extraParts.length > 0 ? extraParts.join('; ') : 'None',
       preference: 'None',
       dollars: loD,

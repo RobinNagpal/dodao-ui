@@ -12,7 +12,8 @@ import { existsSync, readFileSync } from 'node:fs';
 import path from 'node:path';
 import { expandQuotaReference, isQuotaReference } from '@/utils/tariff-calculator/fta-quota';
 import { parseSpecialRates, SPECIAL_PROGRAMS } from '@/utils/tariff-calculator/measures-engine';
-import { isKnownUnitKey, parseRate } from '@/utils/tariff-reports/shipment-duty';
+import { resolveRateNote } from '@/utils/tariff-calculator/rate-notes';
+import { isKnownUnitKey, parseExtendedRate } from '@/utils/tariff-reports/shipment-duty';
 import { stackParents, editionByChapter } from './hts-lines-sync';
 import type { HtsJsonRow } from './hts-source';
 import { INSIGHTS_UI_ROOT } from './hts-source';
@@ -86,9 +87,21 @@ export function buildRateStrings(
   return { file: { htsEdition: edition, htsJsonUrl, generatedAt: new Date().toISOString(), chapters }, prefixFallbackLines, noRateLines };
 }
 
-/** Why the engine can't price a rate text: null when it parses into units the calculator can ask a quantity for. */
-export function rateTextProblem(text: string): string | null {
-  const parsed = parseRate(text);
+/**
+ * Why the engine can't price a rate text: null when it parses into units the calculator can ask a quantity for. Rates
+ * the calculator prices from importer answers count as priceable (issue #1812): value-of-component parts ("2.5% on the
+ * value of the lead content" — asks for the value), references to another line's rate ("The rate applicable to each
+ * garment in the ensemble if separately entered" — asks for the line(s)), embroidery / movement-plate bounds (asks the
+ * condition, then the line) and "Free, under bond". With `note` (the chapter and column), "See additional U.S. note n"
+ * is read through rate-notes.json.
+ */
+export function rateTextProblem(text: string, note?: { chapter: string; column: 'general' | 'column2' }): string | null {
+  if (note) {
+    const resolved = resolveRateNote(note.chapter, note.column, text);
+    if (resolved && !resolved.ok) return resolved.error;
+    if (resolved && resolved.ok) return rateTextProblem(resolved.rateText);
+  }
+  const parsed = parseExtendedRate(text);
   if (!parsed) return 'unreadable';
   const unknown = parsed.perUnit.map((c) => c.unit.key).filter((k) => !isKnownUnitKey(k));
   return unknown.length > 0 ? `unknown unit ${unknown.map((k) => `"${k}"`).join(', ')}` : null;
@@ -128,7 +141,7 @@ export interface RateParseGap {
 }
 
 /** Every rate string of a chapter the engine can't price (special: only programs that aren't lapsed, i.e. claimable). */
-export function chapterRateGaps(columns: Record<RateColumn, RateStringCounts> | undefined): RateParseGap[] {
+export function chapterRateGaps(columns: Record<RateColumn, RateStringCounts> | undefined, chapter?: string): RateParseGap[] {
   if (!columns) return [];
   const gaps = new Map<string, RateParseGap>();
   const add = (gap: Omit<RateParseGap, 'lines' | 'exampleLine'>, lines: number, exampleLine: string): void => {
@@ -139,7 +152,7 @@ export function chapterRateGaps(columns: Record<RateColumn, RateStringCounts> | 
   };
   for (const column of ['general', 'column2'] as const) {
     for (const [text, [lines, example]] of Object.entries(columns[column] ?? {})) {
-      const problem = text === '(no general rate)' ? 'no general rate up the HTS hierarchy' : rateTextProblem(text);
+      const problem = text === '(no general rate)' ? 'no general rate up the HTS hierarchy' : rateTextProblem(text, chapter ? { chapter, column } : undefined);
       if (problem) add({ column, rateText: text, problem }, lines, example);
     }
   }
