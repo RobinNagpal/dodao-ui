@@ -25,9 +25,23 @@ export function truncateForLog(text: string): string {
 /**
  * Prefix on every log line for input rejected by a format check (route params, query params), so
  * they can be found together: `pnpm logs:fetch --level warn --grep input-rejected`. These are
- * warnings, not errors: the input is malformed, typically from scanners/bots.
+ * warnings, not errors. Pages log only plain-slug values (`isLoggableRejectedInput`); scanner
+ * payloads 404 silently.
  */
 export const INPUT_REJECTED_LOG_PREFIX = '[input-rejected]';
+
+/**
+ * A rejected value worth logging: a plain word or slug (`heavyElectricalEquipment`, `49-paper`) that
+ * could come from a real link, e.g. an old URL. Anything else — quotes, `%`, slashes, dots, spaces
+ * (SQL/XSS/template probes, `x.jsp`, `bxss.me`) — is a scanner payload: still a 404, but not logged.
+ * Seven days of production rejections (issue #1768): ~4,900 lines, ~94% scanner payloads.
+ */
+const LOGGABLE_REJECTED_INPUT_PATTERN = /^[A-Za-z0-9]+(?:[-_][A-Za-z0-9]+)*$/;
+
+/** True when a rejected value is a plain slug worth a log line (see LOGGABLE_REJECTED_INPUT_PATTERN). */
+export function isLoggableRejectedInput(value: string | null | undefined): boolean {
+  return typeof value === 'string' && value.length <= MAX_LOGGED_INPUT_LENGTH && LOGGABLE_REJECTED_INPUT_PATTERN.test(value);
+}
 
 /** Inputs longer than this are rejected before the pattern is even tried. */
 const MAX_VALIDATED_INPUT_LENGTH = 200;

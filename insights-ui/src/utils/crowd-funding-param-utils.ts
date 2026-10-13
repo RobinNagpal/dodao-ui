@@ -1,8 +1,8 @@
 // Format checks for crowd-funding route params. `projectId` and `reportType` are interpolated into
 // S3 keys (`crowd-fund-analysis/<projectId>/<reportType>.md`) and API fetch URLs, and scanners send
 // path traversal / XSS payloads through them. Reject anything that is not a plain slug before any
-// S3 or fetch work, and log it as an `[input-rejected]` warning (not an error).
-import { inputRejectedMessage, matchesInputPattern } from '@/utils/route-param-utils';
+// S3 or fetch work. Pages log a plain-slug rejection as an `[input-rejected]` warning (not an error).
+import { inputRejectedMessage, isLoggableRejectedInput, matchesInputPattern } from '@/utils/route-param-utils';
 import { notFoundError } from '@dodao/web-core/api/errors/notFoundError';
 import { notFound } from 'next/navigation';
 
@@ -40,11 +40,15 @@ export function assertValidCrowdFundingApiParams(params: CrowdFundingParams): vo
   if (rejection) throw notFoundError(rejection);
 }
 
-/** Pages / server components: warn and render the 404 page for an invalid param. */
+/**
+ * Pages / server components: render the 404 page for an invalid param, with a warn only when every
+ * given param is a plain slug (could be a real link); scanner payloads 404 silently (issue #1768).
+ */
 export function assertValidCrowdFundingPageParams(params: CrowdFundingParams): void {
   const rejection = getCrowdFundingParamRejection(params);
   if (rejection) {
-    console.warn(rejection);
+    const given = [params.projectId, params.reportType].filter((value) => value !== undefined);
+    if (given.every(isLoggableRejectedInput)) console.warn(rejection);
     notFound();
   }
 }
