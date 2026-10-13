@@ -72,7 +72,7 @@
       {
         "heading": "9503",
         "label": "Toys, dolls, puzzles, building sets, scale models, tricycles and toy scooters",
-        "blurb": "Toys of every kind — dolls and plush toys, building blocks and construction sets, puzzles, ride-on toys (tricycles, toy scooters, pedal cars), toy balls and balloons, scale models and hobby kits — and their parts. One 8-digit line, 9503.00.00, **Free**; the statistical suffix says whether it is an inflatable ball or balloon or another toy, and the youngest age it is labeled for (under 3, 3 to 12, or not a children's product). The extra duty by origin is what costs: 12.5% from China or Vietnam, 10% from the EU, 50% from Canada even under USMCA.",
+        "blurb": "Toys of every kind — dolls and plush toys, building blocks and construction sets, puzzles, ride-on toys (tricycles, toy scooters, pedal cars), toy balls and balloons, scale models and hobby kits — and their parts. One 8-digit line, 9503.00.00, Free; the statistical suffix says whether it is an inflatable ball or balloon or another toy, and the youngest age it is labeled for (under 3, 3 to 12, or not a children's product). The extra duty by origin is what costs: 12.5% from China or Vietnam, 10% from the EU, 50% from Canada even under USMCA.",
         "rateSummary": "Free",
         "lineCount": 5,
         "dutiableLineCount": 0,
@@ -94,7 +94,7 @@
       {
         "heading": "9504",
         "label": "Video game consoles, board and card games, billiards, arcade, casino and bowling equipment",
-        "blurb": "Video game consoles and handheld game machines with their controllers and parts (9504.50), coin- or card-operated arcade and pinball machines (9504.30), playing and trading cards (9504.40), chess, checkers, darts, dice, poker chips and other board games (9504.90.60), billiard tables and balls, bowling balls and equipment. Every line is **Free**; the extra duty depends on the country.",
+        "blurb": "Video game consoles and handheld game machines with their controllers and parts (9504.50), coin- or card-operated arcade and pinball machines (9504.30), playing and trading cards (9504.40), chess, checkers, darts, dice, poker chips and other board games (9504.90.60), billiard tables and balls, bowling balls and equipment. Every line is Free; the extra duty depends on the country.",
         "rateSummary": "Free",
         "lineCount": 15,
         "dutiableLineCount": 0,
@@ -116,7 +116,7 @@
       {
         "heading": "9505",
         "label": "Christmas ornaments, artificial Christmas trees, Halloween and party articles, magic tricks",
-        "blurb": "Christmas ornaments (of glass, wood or other materials), nativity scenes, artificial Christmas trees, wreaths and other Christmas decorations, Halloween and other holiday decorations, party favors, confetti and noisemakers, magic tricks and practical jokes. All **Free**. Christmas lighting strings are heading 9405, and utilitarian holiday articles (tableware, linens) are classified by material.",
+        "blurb": "Christmas ornaments (of glass, wood or other materials), nativity scenes, artificial Christmas trees, wreaths and other Christmas decorations, Halloween and other holiday decorations, party favors, confetti and noisemakers, magic tricks and practical jokes. All Free. Christmas lighting strings are heading 9405, and utilitarian holiday articles (tableware, linens) are classified by material.",
         "rateSummary": "Free",
         "lineCount": 11,
         "dutiableLineCount": 0,
@@ -177,7 +177,7 @@
       {
         "heading": "9508",
         "label": "Amusement park rides, carousels, water park and fairground amusements, traveling circuses and theaters",
-        "blurb": "Roller coasters, carousels and swings, bumper cars, motion simulators, water rides and water park amusements, fairground games, traveling circuses and theaters. All **Free**; home and playground equipment is not included.",
+        "blurb": "Roller coasters, carousels and swings, bumper cars, motion simulators, water rides and water park amusements, fairground games, traveling circuses and theaters. All Free; home and playground equipment is not included.",
         "rateSummary": "Free",
         "lineCount": 10,
         "dutiableLineCount": 0,
