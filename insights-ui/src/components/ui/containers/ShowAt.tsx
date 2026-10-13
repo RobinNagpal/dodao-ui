@@ -9,7 +9,7 @@ import React from 'react';
  */
 const showAt = cva('', {
   variants: {
-    range: { 'lg-up': 'hidden lg:block', 'below-lg': 'lg:hidden' },
+    range: { 'lg-up': 'hidden lg:block', 'below-lg': 'lg:hidden', 'md-up': 'hidden md:block', 'below-md': 'md:hidden' },
   },
 });
 
