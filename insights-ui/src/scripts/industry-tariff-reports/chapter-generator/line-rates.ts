@@ -26,15 +26,10 @@ import {
   splitRateClause,
   type ExtendedRate,
 } from '@/utils/tariff-reports/shipment-duty';
-import {
-  FTA_SAFEGUARD_FACT,
-  FTA_WITHIN_QUOTA_FACT,
-  FTA_WITHIN_SECOND_QUOTA_FACT,
-  isQuotaReference,
-  resolveQuotaClaim,
-  type QuotaTierKey,
-} from '@/utils/tariff-calculator/fta-quota';
+import { isQuotaReference, resolveQuotaClaim } from '@/utils/tariff-calculator/fta-quota';
+import { describeFactAnswers, describeFactCube, type FactAnswers } from '@/utils/tariff-calculator/fact-labels';
 import { engineLine } from './rate-table';
+import { QUOTA_TIERS, variantLabel } from './variant-labels';
 
 // Runs one HTS line from one country through the official-measures engine (the same function the live
 // calculator uses) and turns the result into the rate strings the "Rates by country" matrix shows:
@@ -56,13 +51,15 @@ export const NOMINAL_COMPONENT_VALUE_USD = 2_000;
  */
 const REFERENCE_PROBE_HTS10 = '0000000000';
 const DEFAULT_UOMS = ['NO', 'KG', 'G', 'T', 'L', 'PF.L', 'CKG', 'DOZ', 'DPR', 'PRS', 'GROSS', 'M', 'M2', 'M3', 'THS', 'BBL'];
-const PRODUCT_TYPE_ORDER: TariffProductType[] = ['generic', 'other', 'specialty', 'patented'];
-const MAX_FACT_COMBOS = 3;
+export const PRODUCT_TYPE_ORDER: TariffProductType[] = ['generic', 'other', 'specialty', 'patented'];
+export const MAX_FACT_COMBOS = 3;
 /**
- * Facts with a default answer that are still priced both ways ("if no" / "if yes"), because the answer is an importer
- * claim that removes a duty for most goods it reaches: informational materials (headings 9903.05.92 and 9903.05.09).
+ * Facts with a default answer that are still priced both ways, because the answer decides a duty for many of the goods
+ * it reaches: informational materials (an importer claim that removes headings 9903.05.92 / 9903.05.09), and the two
+ * questions that decide whether Japanese footwear pays the 40% of heading 9903.41.10 (excepted slip-on / sports
+ * footwear; an upper partly of leather).
  */
-const VARIED_DEFAULTED_FACTS = new Set(['informationalMaterials']);
+const VARIED_DEFAULTED_FACTS = new Set(['informationalMaterials', 'jpFootwearExcepted', 'jpFootwearUpperPartlyLeather']);
 
 function digits(code: string): string {
   return code.replace(/\D/g, '');
@@ -226,10 +223,24 @@ export interface RateVariantResult {
   chargedCodes: string[];
 }
 
+/** One priced answer combination, before variants with the same total are merged and labelled. */
+export interface PricedCombo {
+  /** FTA quota tier label ("within quota"); null without one. */
+  quota: string | null;
+  productType?: TariffProductType;
+  /** Answers to the varied facts ({} when none). */
+  facts: FactAnswers;
+  variant: RateVariantResult;
+}
+
 export interface LineRateResult {
   hts: string;
   base: string;
   variants: RateVariantResult[];
+  /** Facts priced both ways for this line and country (at most MAX_FACT_COMBOS), in the order they were varied. */
+  variedFacts?: string[];
+  /** Every priced combination (variants before merging). */
+  combos?: PricedCombo[];
   /** Problems the writer must look at (engine errors, totals that don't re-price to the engine's dollars). */
   problems: string[];
   /** Assumptions made (content value = customs value, fact defaults…). */
@@ -243,7 +254,11 @@ export interface EvalOptions {
   entryDate: string;
 }
 
-function factIdsInScope(measures: TariffMeasureRecord[], hts10: string, iso: string, day: string): { mustAnswer: string[]; defaulted: string[] } {
+/**
+ * Facts a measure reaching the line from `iso` depends on: `mustAnswer` are priced both ways (no default, or in
+ * VARIED_DEFAULTED_FACTS), `defaulted` take their default answer. The chapter validator uses the same split.
+ */
+export function factIdsInScope(measures: TariffMeasureRecord[], hts10: string, iso: string, day: string): { mustAnswer: string[]; defaulted: string[] } {
   const registry = new Map(loadConfirmationFacts().map((f) => [f.id, f]));
   const mustAnswer = new Set<string>();
   const defaulted = new Set<string>();
@@ -379,32 +394,82 @@ function preferenceText(result: MeasureEngineResult, claimed: string | undefined
 }
 
 interface Combo {
-  label: string | null;
   productType?: TariffProductType;
-  facts?: Record<string, boolean>;
+  facts?: FactAnswers;
 }
 
-function combos(productTypes: TariffProductType[], mustFacts: string[]): Combo[] {
-  const types: (TariffProductType | undefined)[] = productTypes.length > 0 ? PRODUCT_TYPE_ORDER.filter((t) => productTypes.includes(t)) : [undefined];
-  const facts = mustFacts.slice(0, MAX_FACT_COMBOS);
-  const answers: (Record<string, boolean> | undefined)[] = [];
-  if (facts.length === 0) answers.push(undefined);
-  else {
-    for (let mask = 0; mask < 1 << facts.length; mask++) {
-      const a: Record<string, boolean> = {};
-      facts.forEach((f, i) => (a[f] = Boolean(mask & (1 << i))));
-      answers.push(a);
-    }
-  }
-  const out: Combo[] = [];
-  for (const t of types) {
-    for (const a of answers) {
-      const factLabel = a ? (facts.length === 1 ? `if ${a[facts[0]] ? 'yes' : 'no'}` : facts.map((f) => `${f} ${a[f] ? 'yes' : 'no'}`).join(' ')) : null;
-      const label = [t ?? null, factLabel].filter(Boolean).join(' ') || null;
-      out.push({ label, productType: t, facts: a });
-    }
+/** Every answer set over `facts` (2^n, all "no" first). */
+export function factAnswerSets(facts: string[]): FactAnswers[] {
+  const out: FactAnswers[] = [];
+  for (let mask = 0; mask < 1 << facts.length; mask++) {
+    const a: FactAnswers = {};
+    facts.forEach((f, i) => (a[f] = Boolean(mask & (1 << i))));
+    out.push(a);
   }
   return out;
+}
+
+function combos(productTypes: TariffProductType[], facts: string[]): Combo[] {
+  const types: (TariffProductType | undefined)[] = productTypes.length > 0 ? PRODUCT_TYPE_ORDER.filter((t) => productTypes.includes(t)) : [undefined];
+  const answers: (FactAnswers | undefined)[] = facts.length === 0 ? [undefined] : factAnswerSets(facts);
+  const out: Combo[] = [];
+  for (const t of types) for (const a of answers) out.push({ productType: t, facts: a });
+  return out;
+}
+
+/**
+ * Merges priced combinations into the cell's variants and labels them. Within one quota tier and product type, answer
+ * sets with the same total and extra become one variant whose label names every answer set it stands for, in words
+ * (describeFactAnswers: "car or light-truck part or truck or bus part"), so no option is dropped. Across tiers, equal
+ * variants keep both tier labels ("within quota or above quota"); across product types the first type's label is kept.
+ */
+export function labelVariants(priced: PricedCombo[], facts: string[]): RateVariantResult[] {
+  const slices = new Map<string, PricedCombo[]>();
+  for (const c of priced) {
+    const key = `${c.quota ?? ''}|${c.productType ?? ''}`;
+    slices.set(key, [...(slices.get(key) ?? []), c]);
+  }
+  interface Item {
+    quotas: string[];
+    productType?: TariffProductType;
+    factLabel: string | null;
+    variant: RateVariantResult;
+  }
+  const items: Item[] = [];
+  slices.forEach((list) => {
+    const groups: PricedCombo[][] = [];
+    for (const c of list) {
+      const g = groups.find((x) => x[0].variant.total === c.variant.total && x[0].variant.extra === c.variant.extra);
+      if (g) g.push(c);
+      else groups.push([c]);
+    }
+    const universe = list.map((c) => c.facts);
+    for (const g of groups) {
+      items.push({
+        quotas: g[0].quota ? [g[0].quota] : [],
+        productType: g[0].productType,
+        factLabel:
+          groups.length > 1
+            ? describeFactAnswers(
+                g.map((c) => c.facts),
+                universe,
+                facts
+              )
+            : null,
+        variant: g[0].variant,
+      });
+    }
+  });
+  const merged: Item[] = [];
+  for (const it of items) {
+    const same = merged.find((m) => m.variant.total === it.variant.total && m.variant.extra === it.variant.extra && m.factLabel === it.factLabel);
+    if (!same) merged.push({ ...it, quotas: [...it.quotas] });
+    else for (const q of it.quotas) if (!same.quotas.includes(q)) same.quotas.push(q);
+  }
+  const out = merged.map((m) => ({ ...m.variant, label: variantLabel({ quotaLabels: m.quotas, productType: m.productType, factLabel: m.factLabel }) }));
+  // Cheapest first; a single variant needs no label.
+  out.sort((a, b) => a.dollars - b.dollars);
+  return out.length === 1 ? [{ ...out[0], label: null }] : out;
 }
 
 /**
@@ -461,7 +526,7 @@ export function evaluateLine(
   // A claimed program whose special rate points to Chapter 98/99 quota headings ("See 9822.04.01-9822.04.03 (AU)")
   // is priced per quota tier (within quota, additional quota, safeguard, above quota), the way the calculator asks.
   // Only a reference the calculator can't resolve stays text; the validator's cross-check skips non-numeric totals.
-  let quotaTiers: { label: string | null; baseText: string; facts: Record<string, boolean> }[] | null = null;
+  let quotaTiers: { label: string | null; baseText: string; facts: FactAnswers }[] | null = null;
   if (opts.claimedSpi && isQuotaReference(baseText)) {
     const res = resolveQuotaClaim(line, opts.claimedSpi, baseText, iso, day);
     if (!res.ok) {
@@ -477,28 +542,15 @@ export function evaluateLine(
       out.notes.push(`${hts} (${iso}, ${opts.claimedSpi}): ${res.error} — shown as text, not priced.`);
       return out;
     }
-    const answersFor: Record<QuotaTierKey, Record<string, boolean>> = {
-      unconditional: {},
-      inQuota: { [FTA_WITHIN_QUOTA_FACT]: true },
-      secondQuota: { [FTA_WITHIN_QUOTA_FACT]: false, [FTA_WITHIN_SECOND_QUOTA_FACT]: true },
-      safeguard: { [FTA_WITHIN_QUOTA_FACT]: false, [FTA_WITHIN_SECOND_QUOTA_FACT]: false, [FTA_SAFEGUARD_FACT]: true },
-      overQuota: { [FTA_WITHIN_QUOTA_FACT]: false, [FTA_WITHIN_SECOND_QUOTA_FACT]: false, [FTA_SAFEGUARD_FACT]: false },
-    };
-    const labelFor: Record<QuotaTierKey, string | null> = {
-      unconditional: null,
-      inQuota: 'within quota',
-      secondQuota: 'within additional quota',
-      safeguard: 'safeguard applies',
-      overQuota: 'above quota',
-    };
     const tiers = res.resolution.collapsed ? res.resolution.tiers.slice(0, 1) : res.resolution.tiers;
     quotaTiers = tiers.map((t) => ({
-      label: res.resolution.collapsed ? null : labelFor[t.key],
+      label: res.resolution.collapsed ? null : QUOTA_TIERS[t.key].label,
       baseText: t.rateText,
-      facts: res.resolution.collapsed ? {} : answersFor[t.key],
+      facts: res.resolution.collapsed ? {} : QUOTA_TIERS[t.key].facts,
     }));
   }
   const { mustAnswer, defaulted } = factIdsInScope(measures, hts10, iso, day);
+  const variedFacts = mustAnswer.slice(0, MAX_FACT_COMBOS);
   if (mustAnswer.length > MAX_FACT_COMBOS) out.problems.push(`${hts}: ${mustAnswer.length} must-answer facts; only the first ${MAX_FACT_COMBOS} are varied.`);
   if (defaulted.length > 0) out.notes.push(`${hts} (${iso}): fact defaults used for ${defaulted.join(', ')}.`);
   const types = productTypesForLine(
@@ -544,15 +596,20 @@ export function evaluateLine(
     );
   }
 
-  const raw: RateVariantResult[] = [];
-  const quotaRuns = quotaTiers ?? [{ label: null, baseText, facts: {} as Record<string, boolean> }];
+  const raw: PricedCombo[] = [];
+  const quotaRuns = quotaTiers ?? [{ label: null, baseText, facts: {} as FactAnswers }];
   const runs = quotaRuns.flatMap((q) =>
-    combos(types, mustAnswer).map((c) => ({
-      label: [q.label, c.label].filter(Boolean).join(', ') || null,
-      productType: c.productType,
-      facts: Object.keys(q.facts).length > 0 || c.facts ? { ...(c.facts ?? {}), ...q.facts } : undefined,
-      baseText: q.baseText,
-    }))
+    combos(types, variedFacts).map((c) => {
+      const answers = { ...(c.facts ?? {}), ...q.facts };
+      return {
+        label: [q.label, c.productType, c.facts ? describeFactCube(c.facts) : null].filter(Boolean).join(', ') || null,
+        quota: q.label,
+        productType: c.productType,
+        varied: c.facts ?? {},
+        facts: Object.keys(answers).length > 0 ? answers : undefined,
+        baseText: q.baseText,
+      };
+    })
   );
   for (const c of runs) {
     const input: MeasureEngineInput = {
@@ -601,25 +658,24 @@ export function evaluateLine(
     }
     if (!total) continue;
     raw.push({
-      label: c.label,
-      total,
-      extra: priced.extra,
-      preference: preferenceText(result, opts.claimedSpi, claimRate, measures),
-      dollars: result.totalDutyUsd,
-      expr: priced.expr,
-      chargedCodes: priced.chargedCodes,
+      quota: c.quota,
+      productType: c.productType,
+      facts: c.varied,
+      variant: {
+        label: null,
+        total,
+        extra: priced.extra,
+        preference: preferenceText(result, opts.claimedSpi, claimRate, measures),
+        dollars: result.totalDutyUsd,
+        expr: priced.expr,
+        chargedCodes: priced.chargedCodes,
+      },
     });
   }
-  // Collapse variants with the same total (e.g. generic = specialty = other) and order cheapest first.
-  const merged: RateVariantResult[] = [];
-  for (const v of raw) {
-    const same = merged.find((m) => m.total === v.total && m.extra === v.extra);
-    if (!same) merged.push(v);
-    // Quota tiers with the same total keep both labels ("within quota or above quota").
-    else if (same.label && v.label && quotaTiers && !same.label.split(' or ').includes(v.label)) same.label = `${same.label} or ${v.label}`;
-  }
-  merged.sort((a, b) => a.dollars - b.dollars);
-  out.variants = merged.length === 1 ? [{ ...merged[0], label: null }] : merged;
+  // Merge answer sets with the same total into labelled variants, cheapest first (labelVariants).
+  out.variedFacts = variedFacts;
+  out.combos = raw;
+  out.variants = labelVariants(raw, variedFacts);
   return out;
 }
 

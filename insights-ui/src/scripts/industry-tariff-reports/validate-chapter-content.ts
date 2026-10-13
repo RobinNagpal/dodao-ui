@@ -21,8 +21,9 @@ import {
   type ExtendedRate,
 } from '@/utils/tariff-reports/shipment-duty';
 import { resolveRateNote } from '@/utils/tariff-calculator/rate-notes';
-import { FTA_SAFEGUARD_FACT, FTA_WITHIN_QUOTA_FACT, FTA_WITHIN_SECOND_QUOTA_FACT } from '@/utils/tariff-calculator/fta-quota';
-import { NOMINAL_COMPONENT_VALUE_USD, usmcaClaimFor } from './chapter-generator/line-rates';
+import type { FactAnswers } from '@/utils/tariff-calculator/fact-labels';
+import { factAnswerSets, factIdsInScope, MAX_FACT_COMBOS, NOMINAL_COMPONENT_VALUE_USD, usmcaClaimFor } from './chapter-generator/line-rates';
+import { parseVariantLabel } from './chapter-generator/variant-labels';
 import {
   calculateWithMeasures,
   COMPONENT_VALUE_REQUIRED,
@@ -432,7 +433,6 @@ const CALC_VALUE_USD = 10_000;
 const CALC_QUANTITY = 1_000;
 /** Every quantity unit the engine might price a per-unit rate in; all get the same nominal quantity. */
 const CALC_DEFAULT_UOMS = ['NO', 'KG', 'G', 'T', 'L', 'PF.L', 'CKG', 'DOZ', 'DPR', 'PRS', 'GROSS', 'M', 'M2', 'M3', 'THS'];
-const PRODUCT_TYPES: readonly TariffProductType[] = ['patented', 'generic', 'specialty', 'other'];
 
 function loadMeasures(): TariffMeasuresFile {
   const file = path.resolve(process.cwd(), 'src/tariff-data/calculator/measures.json');
@@ -513,13 +513,20 @@ function skip(stats: CalcCheckStats, reason: string, n = 1): void {
   stats.skipped.set(reason, (stats.skipped.get(reason) ?? 0) + n);
 }
 
-/** Facts that pick each FTA quota tier, as the chapter generator labels the tiers (see fta-quota.ts). */
-const QUOTA_TIER_FACTS: Record<string, Record<string, boolean>> = {
-  'within quota': { [FTA_WITHIN_QUOTA_FACT]: true },
-  'within additional quota': { [FTA_WITHIN_QUOTA_FACT]: false, [FTA_WITHIN_SECOND_QUOTA_FACT]: true },
-  'safeguard applies': { [FTA_WITHIN_QUOTA_FACT]: false, [FTA_WITHIN_SECOND_QUOTA_FACT]: false, [FTA_SAFEGUARD_FACT]: true },
-  'above quota': { [FTA_WITHIN_QUOTA_FACT]: false, [FTA_WITHIN_SECOND_QUOTA_FACT]: false, [FTA_SAFEGUARD_FACT]: false },
-};
+/**
+ * The answer sets one line is re-priced with for a variant: the label's answers, completed both ways for every other
+ * fact the generator varies on the line (so a cell that doesn't depend on a fact is checked for each answer). A legacy
+ * "if yes" / "if no" label is the answer to the line's only varied fact; null when the line has another number of them.
+ */
+function lineAnswerSets(c: { facts?: FactAnswers; legacyAnswer?: boolean }, varied: string[]): FactAnswers[] | null {
+  const given: FactAnswers = { ...(c.facts ?? {}) };
+  if (c.legacyAnswer !== undefined) {
+    if (varied.length !== 1) return null;
+    given[varied[0]] = c.legacyAnswer;
+  }
+  const free = varied.filter((f) => !(f in given));
+  return factAnswerSets(free).map((a) => ({ ...a, ...given }));
+}
 
 function checkCalculator(report: Report, slug: string, p: TariffChapterPrototype, measures: TariffMeasuresFile): CalcCheckStats {
   const stats: CalcCheckStats = { compared: 0, mismatched: 0, skipped: new Map() };
@@ -564,25 +571,28 @@ function checkCalculator(report: Report, slug: string, p: TariffChapterPrototype
             variants = [{ label: null, range: { low: ext.rate, high: ext.rate, exact: true } }];
           }
           // A single-rate row whose extra still distinguishes patented/generic: check both kinds against the one total.
-          const cases: { productType?: TariffProductType; facts?: Record<string, boolean>; range: (typeof variants)[number]['range'] }[] = [];
+          const cases: { productType?: TariffProductType; facts?: FactAnswers; legacyAnswer?: boolean; range: (typeof variants)[number]['range'] }[] = [];
           if (variants.length > 1) {
             for (const v of variants) {
-              // Labels are "<quota tier>[ or <quota tier>]" and/or a product type, joined by ", " (chapter generator).
-              let productType: TariffProductType | undefined;
-              let tiers: string[] = [];
-              let unknown = false;
-              for (const part of (v.label ?? '').split(/,\s*/)) {
-                const type = PRODUCT_TYPES.find((t) => t === part);
-                if (type) productType = type;
-                else if (part.split(' or ').every((t) => t in QUOTA_TIER_FACTS)) tiers = part.split(' or ');
-                else unknown = true;
-              }
-              if (unknown || (!productType && tiers.length === 0)) {
+              // Quota tiers, a product type and fact answers in words, as the chapter generator writes them (variant-labels.ts).
+              const parsed = v.label ? parseVariantLabel(v.label) : null;
+              if (!parsed || (!parsed.productType && parsed.quotaTiers.length === 0 && parsed.factBlocks.length === 0 && parsed.legacyAnswer === undefined)) {
                 skip(stats, `unknown variant "${v.label}"`, bRow.lines.length);
                 continue;
               }
-              if (tiers.length === 0) cases.push({ productType, range: v.range });
-              for (const t of tiers) cases.push({ productType, facts: QUOTA_TIER_FACTS[t], range: v.range });
+              const tiers = parsed.quotaTiers.length > 0 ? parsed.quotaTiers : [{}];
+              const blocks = parsed.factBlocks.length > 0 ? parsed.factBlocks : [{}];
+              for (const t of tiers) {
+                for (const b of blocks) {
+                  const facts = { ...b, ...t };
+                  cases.push({
+                    productType: parsed.productType,
+                    ...(Object.keys(facts).length > 0 ? { facts } : {}),
+                    ...(parsed.legacyAnswer !== undefined ? { legacyAnswer: parsed.legacyAnswer } : {}),
+                    range: v.range,
+                  });
+                }
+              }
             }
           } else if (/patented/i.test(bRow.extra)) {
             cases.push({ productType: 'patented', range: variants[0].range }, { productType: 'generic', range: variants[0].range });
@@ -616,55 +626,66 @@ function checkCalculator(report: Report, slug: string, p: TariffChapterPrototype
                 skip(stats, 'breakdown line missing from the rate table');
                 continue;
               }
-              const input: MeasureEngineInput = {
-                hts10: row.htsCode10,
-                countryOfOrigin: iso,
-                customsValueUsd: CALC_VALUE_USD,
-                quantities: calculatorQuantities(row.units, [
-                  row.general,
-                  row.effectiveGeneral,
-                  row.special,
-                  row.effectiveSpecial,
-                  row.column2,
-                  row.effectiveColumn2,
-                ]),
-                ...(claimedSpi ? { claimedSpi } : {}),
-                ...(c.productType ? { productType: c.productType } : {}),
-                entryDate: ia.lastCheckedAt,
-              };
-              const assumed = baseRateAssumptions(row);
-              if (assumed.componentValuesUsd) input.componentValuesUsd = assumed.componentValuesUsd;
-              if (c.facts || Object.keys(assumed.facts).length > 0) input.confirmations = { facts: { ...assumed.facts, ...(c.facts ?? {}) } };
-              const line: MeasureEngineLine = {
-                hts10: row.htsCode10,
-                general: row.effectiveGeneral,
-                special: row.effectiveSpecial,
-                column2: row.effectiveColumn2,
-                units: row.units,
-              };
-              stats.compared++;
-              let actual: string;
-              try {
-                const result = calculateWithMeasures(input, line, measures.measures);
-                if (!result.error && Math.abs(result.totalDutyUsd - expected) <= 0.01) continue;
-                // A cell total can't say what content value or fact answer it assumed (issue #1796): not comparable.
-                if (result.error?.startsWith(CONTENT_VALUE_REQUIRED) || result.error?.startsWith(FACT_ANSWER_REQUIRED)) {
-                  stats.compared--;
-                  skip(stats, result.error.startsWith(CONTENT_VALUE_REQUIRED) ? 'needs a declared content value' : 'needs a confirmation-fact answer');
-                  continue;
-                }
-                // The base rate is another line's rate (issue #1812): the importer names that line, so the cell can't be checked.
-                if (result.error?.startsWith(REFERENCED_LINE_REQUIRED) || result.error?.startsWith(COMPONENT_VALUE_REQUIRED)) {
-                  stats.compared--;
-                  skip(stats, result.error.startsWith(REFERENCED_LINE_REQUIRED) ? 'base rate is another line’s rate' : 'needs a component value');
-                  continue;
-                }
-                actual = result.error ? `error: ${result.error}` : `$${result.totalDutyUsd.toFixed(2)}`;
-              } catch (err) {
-                actual = `threw: ${(err as Error).message}`;
+              const varied = factIdsInScope(measures.measures, row.htsCode10, iso, ia.lastCheckedAt).mustAnswer.slice(0, MAX_FACT_COMBOS);
+              const answerSets = lineAnswerSets(c, varied);
+              if (!answerSets) {
+                skip(stats, `"if yes" / "if no" on a line with ${varied.length} varied facts`);
+                continue;
               }
-              stats.mismatched++;
-              bad.push(`${hts} ${actual}`);
+              for (const answers of answerSets) {
+                const input: MeasureEngineInput = {
+                  hts10: row.htsCode10,
+                  countryOfOrigin: iso,
+                  customsValueUsd: CALC_VALUE_USD,
+                  quantities: calculatorQuantities(row.units, [
+                    row.general,
+                    row.effectiveGeneral,
+                    row.special,
+                    row.effectiveSpecial,
+                    row.column2,
+                    row.effectiveColumn2,
+                  ]),
+                  ...(claimedSpi ? { claimedSpi } : {}),
+                  ...(c.productType ? { productType: c.productType } : {}),
+                  entryDate: ia.lastCheckedAt,
+                };
+                const assumed = baseRateAssumptions(row);
+                if (assumed.componentValuesUsd) input.componentValuesUsd = assumed.componentValuesUsd;
+                if (Object.keys(answers).length > 0 || Object.keys(assumed.facts).length > 0) input.confirmations = { facts: { ...assumed.facts, ...answers } };
+                const line: MeasureEngineLine = {
+                  hts10: row.htsCode10,
+                  general: row.effectiveGeneral,
+                  special: row.effectiveSpecial,
+                  column2: row.effectiveColumn2,
+                  units: row.units,
+                };
+                stats.compared++;
+                let actual: string;
+                try {
+                  const result = calculateWithMeasures(input, line, measures.measures);
+                  if (!result.error && Math.abs(result.totalDutyUsd - expected) <= 0.01) continue;
+                  // A cell total can't say what content value or fact answer it assumed (issue #1796): not comparable.
+                  if (result.error?.startsWith(CONTENT_VALUE_REQUIRED) || result.error?.startsWith(FACT_ANSWER_REQUIRED)) {
+                    stats.compared--;
+                    skip(stats, result.error.startsWith(CONTENT_VALUE_REQUIRED) ? 'needs a declared content value' : 'needs a confirmation-fact answer');
+                    continue;
+                  }
+                  // The base rate is another line's rate (issue #1812): the importer names that line, so the cell can't be checked.
+                  if (result.error?.startsWith(REFERENCED_LINE_REQUIRED) || result.error?.startsWith(COMPONENT_VALUE_REQUIRED)) {
+                    stats.compared--;
+                    skip(stats, result.error.startsWith(REFERENCED_LINE_REQUIRED) ? 'base rate is another line’s rate' : 'needs a component value');
+                    continue;
+                  }
+                  actual = result.error ? `error: ${result.error}` : `$${result.totalDutyUsd.toFixed(2)}`;
+                } catch (err) {
+                  actual = `threw: ${(err as Error).message}`;
+                }
+                stats.mismatched++;
+                const said = Object.entries(answers)
+                  .map(([f, v]) => `${f}=${v ? 'yes' : 'no'}`)
+                  .join(' ');
+                bad.push(`${hts}${said ? ` (${said})` : ''} ${actual}`);
+              }
             }
             if (bad.length > 0) {
               const kind = [

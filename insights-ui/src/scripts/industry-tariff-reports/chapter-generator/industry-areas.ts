@@ -6,7 +6,8 @@ import type {
   TariffRateBreakdownRow,
   TariffRateTableRow,
 } from '@/types/tariff-chapter-prototype';
-import type { TariffMeasureRecord } from '@/types/tariff-calculator-measures';
+import type { TariffMeasureRecord, TariffProductType } from '@/types/tariff-calculator-measures';
+import type { FactAnswers } from '@/utils/tariff-calculator/fact-labels';
 import { COUNTRY_OPTIONS } from '@/utils/tariff-calculator/countries';
 import { COLUMN2_COUNTRIES, USMCA_SPI_CODES } from '@/utils/tariff-calculator/measures-engine';
 import { todo, TODO } from './placeholders';
@@ -16,15 +17,21 @@ import {
   evaluateLine,
   exprShape,
   exprString,
+  factAnswerSets,
   fmtPct,
   ftaClaimsFor,
   inEffectOn,
+  labelVariants,
   type LineRateResult,
+  MAX_FACT_COMBOS,
   measureReachesLine,
   NOMINAL_QUANTITY,
   NOMINAL_VALUE_USD,
+  type PricedCombo,
+  PRODUCT_TYPE_ORDER,
   programShort,
   type RateExpr,
+  type RateVariantResult,
   usmcaClaimFor,
 } from './line-rates';
 import type { SourceRegistry } from './sources';
@@ -288,86 +295,106 @@ function rangeString(shape: RateExpr, lo: number, hi: number): string {
 }
 
 function anyOtherLine(row: TariffRateTableRow, reps: { iso: string }[], measures: TariffMeasureRecord[], asOf: string, problems: string[]): LineRateResult {
-  const byLabel = new Map<string, { expr: RateExpr; dollars: number; codes: string[] }[]>();
+  const evals = reps.map((rep) => evaluateLine(row, rep.iso, measures, { entryDate: asOf }));
   let base = '—';
-  for (const rep of reps) {
-    const r = evaluateLine(row, rep.iso, measures, { entryDate: asOf });
+  for (const r of evals) {
     base = r.base;
     for (const p of r.problems) problems.push(`[${ANY_OTHER_COUNTRY}] ${p}`);
-    for (const v of r.variants) {
-      if (!v.expr) continue;
-      const key = v.label ?? '';
-      const list = byLabel.get(key) ?? [];
-      list.push({ expr: v.expr, dollars: v.dollars, codes: v.chargedCodes });
-      byLabel.set(key, list);
+  }
+  // Price every answer set over the facts any country varies, so a country a fact can't matter for (e.g. outside the
+  // quartz safeguard) counts in every answer's range rather than as a separate, unlabelled variant.
+  const facts = Array.from(new Set(evals.flatMap((r) => r.variedFacts ?? []))).slice(0, MAX_FACT_COMBOS);
+  const types = PRODUCT_TYPE_ORDER.filter((t) => evals.some((r) => (r.combos ?? []).some((c) => c.productType === t)));
+  const buckets: { productType?: TariffProductType; facts: FactAnswers; list: { expr: RateExpr; dollars: number; codes: string[] }[] }[] = [];
+  for (const t of types.length > 0 ? types : [undefined]) {
+    for (const answers of factAnswerSets(facts)) {
+      const list: { expr: RateExpr; dollars: number; codes: string[] }[] = [];
+      for (const r of evals) {
+        const hit = (r.combos ?? []).find(
+          (c) => (c.productType === undefined || c.productType === t) && Object.entries(c.facts).every(([f, v]) => !facts.includes(f) || answers[f] === v)
+        );
+        if (hit?.variant.expr) list.push({ expr: hit.variant.expr, dollars: hit.variant.dollars, codes: hit.variant.chargedCodes });
+      }
+      if (list.length > 0) buckets.push({ productType: t, facts: answers, list });
     }
   }
   const hts = row.hts as string;
-  const result: LineRateResult = { hts, base, variants: [], problems: [], notes: [], banned: null };
-  byLabel.forEach((list, label) => {
-    // Most countries keep the base rate's per-unit part; floor / in-place countries may drop it. Range over the majority shape.
-    const shapes = new Map<string, number>();
-    for (const x of list) shapes.set(exprShape(x.expr), (shapes.get(exprShape(x.expr)) ?? 0) + 1);
-    const mainShape = Array.from(shapes.entries()).sort((a, b) => b[1] - a[1])[0][0];
-    const main = list.filter((x) => exprShape(x.expr) === mainShape);
-    const lo = Math.min(...main.map((x) => x.expr.pct));
-    const hi = Math.max(...main.map((x) => x.expr.pct));
-    const loD = Math.min(...main.map((x) => x.dollars));
-    const hiD = Math.max(...main.map((x) => x.dollars));
-    for (const x of list) {
-      if (exprShape(x.expr) !== mainShape && (x.dollars < loD - 0.01 || x.dollars > hiD + 0.01)) {
-        problems.push(`[${ANY_OTHER_COUNTRY}] ${hts}: "${exprString(x.expr)}" for some countries falls outside the range shown.`);
-      }
+  const priced: PricedCombo[] = buckets.map((b) => ({
+    quota: null,
+    productType: b.productType,
+    facts: b.facts,
+    variant: rangeVariant(b.list, hts, measures, problems),
+  }));
+  return { hts, base, variants: labelVariants(priced, facts), problems: [], notes: [], banned: null };
+}
+
+/** One "Any other country" variant: the range of totals across the countries it stands for, and each program's span. */
+function rangeVariant(
+  list: { expr: RateExpr; dollars: number; codes: string[] }[],
+  hts: string,
+  measures: TariffMeasureRecord[],
+  problems: string[]
+): RateVariantResult {
+  // Most countries keep the base rate's per-unit part; floor / in-place countries may drop it. Range over the majority shape.
+  const shapes = new Map<string, number>();
+  for (const x of list) shapes.set(exprShape(x.expr), (shapes.get(exprShape(x.expr)) ?? 0) + 1);
+  const mainShape = Array.from(shapes.entries()).sort((a, b) => b[1] - a[1])[0][0];
+  const main = list.filter((x) => exprShape(x.expr) === mainShape);
+  const lo = Math.min(...main.map((x) => x.expr.pct));
+  const hi = Math.max(...main.map((x) => x.expr.pct));
+  const loD = Math.min(...main.map((x) => x.dollars));
+  const hiD = Math.max(...main.map((x) => x.dollars));
+  for (const x of list) {
+    if (exprShape(x.expr) !== mainShape && (x.dollars < loD - 0.01 || x.dollars > hiD + 0.01)) {
+      const msg = `[${ANY_OTHER_COUNTRY}] ${hts}: "${exprString(x.expr)}" for some countries falls outside the range shown.`;
+      if (!problems.includes(msg)) problems.push(msg);
     }
-    // Extra: each program's span of rates and Chapter 99 codes across the countries.
-    const programs = new Map<string, { pcts: Set<number>; codes: string[] }>();
-    let someNone = false;
-    for (const x of list) {
-      if (x.codes.length === 0) someNone = true;
-      for (const c of x.codes) {
-        const m = measureByCode(measures, c);
-        if (!m) continue;
-        const p = programs.get(m.program) ?? { pcts: new Set<number>(), codes: [] };
-        p.pcts.add(m.ratePct ?? 0);
-        p.codes.push(c);
-        programs.set(m.program, p);
-      }
+  }
+  // Extra: each program's span of rates and Chapter 99 codes across the countries.
+  const programs = new Map<string, { pcts: Set<number>; codes: string[] }>();
+  let someNone = false;
+  for (const x of list) {
+    if (x.codes.length === 0) someNone = true;
+    for (const c of x.codes) {
+      const m = measureByCode(measures, c);
+      if (!m) continue;
+      const p = programs.get(m.program) ?? { pcts: new Set<number>(), codes: [] };
+      p.pcts.add(m.ratePct ?? 0);
+      p.codes.push(c);
+      programs.set(m.program, p);
     }
-    // A program charged by one country only reads "China a further +7.5% (9903.88.15)"; the others as a span by country.
-    const spans: string[] = [];
-    const singles: { iso: string; pct: number; codes: string[] }[] = [];
-    for (const [program, p] of Array.from(programs.entries()).sort((a, b) => b[1].codes.length - a[1].codes.length)) {
-      const pcts = Array.from(p.pcts).sort((a, b) => a - b);
-      const ms = p.codes.map((c) => measureByCode(measures, c)).filter((m): m is TariffMeasureRecord => !!m);
-      const isos = Array.from(new Set(ms.flatMap((m) => m.countriesInclude)));
-      if (isos.length === 1) {
-        singles.push({ iso: isos[0], pct: pcts[pcts.length - 1], codes: p.codes });
-        continue;
-      }
-      const low = someNone && spans.length === 0 ? '0%' : `+${fmtPct(pcts[0])}`;
-      const span = low === `+${fmtPct(pcts[pcts.length - 1])}` ? low : `${low} to +${fmtPct(pcts[pcts.length - 1])}`;
-      spans.push(`${span} by country, ${programShort(program)} (${codeRange(p.codes)})`);
+  }
+  // A program charged by one country only reads "China a further +7.5% (9903.88.15)"; the others as a span by country.
+  const spans: string[] = [];
+  const singles: { iso: string; pct: number; codes: string[] }[] = [];
+  for (const [program, p] of Array.from(programs.entries()).sort((a, b) => b[1].codes.length - a[1].codes.length)) {
+    const pcts = Array.from(p.pcts).sort((a, b) => a - b);
+    const ms = p.codes.map((c) => measureByCode(measures, c)).filter((m): m is TariffMeasureRecord => !!m);
+    const isos = Array.from(new Set(ms.flatMap((m) => m.countriesInclude)));
+    if (isos.length === 1) {
+      singles.push({ iso: isos[0], pct: pcts[pcts.length - 1], codes: p.codes });
+      continue;
     }
-    const further = singles.map(
-      (x, i) =>
-        `${spans.length === 0 && i === 0 && someNone ? 'None, except ' : ''}${countryNameOf(x.iso)} ${spans.length > 0 ? 'a further ' : ''}+${fmtPct(
-          x.pct
-        )} (${codeRange(x.codes)})`
-    );
-    const extraParts = [...spans, ...further];
-    result.variants.push({
-      label: label || null,
-      total: rangeString(main[0].expr, lo, hi),
-      extra: extraParts.length > 0 ? extraParts.join('; ') : 'None',
-      preference: 'None',
-      dollars: loD,
-      expr: null,
-      chargedCodes: Array.from(new Set(list.flatMap((x) => x.codes))),
-    });
-  });
-  result.variants.sort((a, b) => a.dollars - b.dollars);
-  if (result.variants.length === 1) result.variants[0].label = null;
-  return result;
+    const low = someNone && spans.length === 0 ? '0%' : `+${fmtPct(pcts[0])}`;
+    const span = low === `+${fmtPct(pcts[pcts.length - 1])}` ? low : `${low} to +${fmtPct(pcts[pcts.length - 1])}`;
+    spans.push(`${span} by country, ${programShort(program)} (${codeRange(p.codes)})`);
+  }
+  const further = singles.map(
+    (x, i) =>
+      `${spans.length === 0 && i === 0 && someNone ? 'None, except ' : ''}${countryNameOf(x.iso)} ${spans.length > 0 ? 'a further ' : ''}+${fmtPct(
+        x.pct
+      )} (${codeRange(x.codes)})`
+  );
+  const extraParts = [...spans, ...further];
+  return {
+    label: null,
+    total: rangeString(main[0].expr, lo, hi),
+    extra: extraParts.length > 0 ? extraParts.join('; ') : 'None',
+    preference: 'None',
+    dollars: loD,
+    expr: null,
+    chargedCodes: Array.from(new Set(list.flatMap((x) => x.codes))),
+  };
 }
 
 export function buildIndustryAreas(input: IndustryAreasInput): IndustryAreasResult {
