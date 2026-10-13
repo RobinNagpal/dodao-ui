@@ -107,6 +107,7 @@ const CHAPTER_FILES: Record<string, () => Promise<{ default: unknown }>> = {
   '74-copper-and-articles': () => import('@/tariff-data/chapters/74-copper-and-articles.json'),
   '75-nickel-and-articles': () => import('@/tariff-data/chapters/75-nickel-and-articles.json'),
   '76-aluminum-and-articles': () => import('@/tariff-data/chapters/76-aluminum-and-articles.json'),
+  '78-lead-and-articles': () => import('@/tariff-data/chapters/78-lead-and-articles.json'),
   '79-zinc-and-articles': () => import('@/tariff-data/chapters/79-zinc-and-articles.json'),
   '80-tin-and-articles': () => import('@/tariff-data/chapters/80-tin-and-articles.json'),
   '81-other-base-metals-and-cermets': () => import('@/tariff-data/chapters/81-other-base-metals-and-cermets.json'),
