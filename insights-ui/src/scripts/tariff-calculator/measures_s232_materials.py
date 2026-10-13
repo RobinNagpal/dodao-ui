@@ -41,6 +41,18 @@ SRC = {
                     'url': 'https://www.federalregister.gov/documents/2026/06/04/2026-11314/further-adjusting-the-tariff-regimes-for-imports-of-aluminum-steel-and-copper-into-the-united-states', 'published': '2026-06-04'},
     'procl-10522': {'citation': '88 FR 13267 (Proclamation 10522: Adjusting Imports of Aluminum — 200% on Russian aluminum and derivatives)',
                     'url': 'https://www.federalregister.gov/documents/2023/03/02/2023-04470/adjusting-imports-of-aluminum-into-the-united-states', 'published': '2023-03-02'},
+    'procl-10984': {'citation': '90 FR 48451 (Proclamation 10984 of October 17, 2025, clause 13: reduced Section 232 steel / aluminum rates, not below 25%, for limited USMCA quantities of Canadian / Mexican producers supplying U.S. vehicle makers)',
+                    'url': 'https://www.federalregister.gov/documents/2025/10/22/2025-19639/adjusting-imports-of-medium--and-heavy-duty-vehicles-medium--and-heavy-duty-vehicle-parts-and-buses', 'published': '2025-10-22'},
+    'bis-usmca-qty': {'citation': '91 FR 21790 (Commerce: procedures for steel and aluminum producers committing to new U.S. production — headings 9903.82.18 / 9903.82.19 and U.S. note 16(h)–(i), from April 23, 2026)',
+                      'url': 'https://www.federalregister.gov/documents/2026/04/23/2026-07987/procedures-for-submissions-by-certain-steel-and-aluminum-producers-committing-to-new-us-steel-or', 'published': '2026-04-23'},
+    'ita-uk-aircraft': {'citation': '90 FR 27851 (Commerce/ITA: UK civil aircraft — heading 9903.96.01 and U.S. note 35(a) from June 30, 2025)',
+                        'url': 'https://www.federalregister.gov/documents/2025/06/30/2025-12060/imports-of-automobiles-automobile-parts-civil-aircraft-and-civil-aircraft-parts-from-the-united', 'published': '2025-06-30'},
+    'ita-jp-aircraft': {'citation': '90 FR 44638 (Commerce/ITA: implementing the United States-Japan Agreement — civil aircraft, heading 9903.96.02 and U.S. note 35(b) from September 16, 2025)',
+                        'url': 'https://www.federalregister.gov/documents/2025/09/16/2025-17908/implementing-certain-tariff-related-elements-of-the-united-states-japan-agreement', 'published': '2025-09-16'},
+    'ita-eu-aircraft': {'citation': '90 FR 46136 (Commerce/ITA: implementing the U.S.-EU Framework Agreement — civil aircraft, heading 9903.02.76 and U.S. note 2(v)(xxii) from September 1, 2025)',
+                        'url': 'https://www.federalregister.gov/documents/2025/09/25/2025-18660/implementing-certain-tariff-related-elements-of-the-us-eu-framework-on-an-agreement-on-reciprocal', 'published': '2025-09-25'},
+    'ita-kr-aircraft': {'citation': '90 FR 55964 (implementing the U.S.-Korea Strategic Trade and Investment Deal — civil aircraft, heading 9903.02.81 and U.S. note 2(v)(xxiv)(b) from November 14, 2025)',
+                        'url': 'https://www.federalregister.gov/documents/2025/12/04/2025-21940/implementing-certain-tariff-related-elements-of-the-us-korea-strategic-trade-and-investment-deal', 'published': '2025-12-04'},
     'procl-10976': {'citation': '90 FR 48127 (Proclamation 10976 of September 29, 2025: Adjusting Imports of Timber, Lumber, and Their Derivative Products)',
                     'url': 'https://www.federalregister.gov/documents/2025/10/06/2025-19482/adjusting-imports-of-timber-lumber-and-their-derivative-products-into-the-united-states', 'published': '2025-10-06'},
     'procl-11000': {'citation': '91 FR 1039 (Proclamation 11000 of December 31, 2025: the 30% / 50% wood steps moved to January 1, 2027)',
@@ -191,9 +203,15 @@ def s232_materials_measures(cov, program_cov, *, rec, S, hts_note, ch99_headings
         for i, (d, codes) in enumerate(groups):
             exc = []
             if ru_minus is not None:
-                codes, exc = _minus(codes, _union(ru_al, ru_minus))
-                if not codes:
+                remove = _union(ru_al, ru_minus)
+                kept, exc = _minus(codes, remove)
+                if not kept:
                     continue
+                # The listed provisions left out whole (9903.85.67 / .68 or the other RU record charge them) are kept in
+                # coverageExclude so the readiness check sees them as deliberately not charged here. The engine never
+                # reaches them: coverageInclude does not cover them.
+                exc = _union(exc, [c for c in codes if c not in kept])
+                codes = kept
             fields = dict(measureKey=key + ('-0608' if (start is None and d == JUN8 and len(groups) > 1) else ''), program=P, ch99Code=code,
                           rateKind=kind, ratePct=pct, countriesInclude=sorted(countries_include), countriesExclude=sorted(countries_exclude),
                           coverageInclude=codes, coverageExclude=exc, conditions=dict(conditions or {}), replacesCodes=list(replaces),
@@ -341,6 +359,46 @@ def s232_materials_measures(cov, program_cov, *, rec, S, hts_note, ch99_headings
                 'listed metal (aggregate, if the provision is on several lists) is at least 15% of the article\'s weight (Proclamation 11021 clause (9), Annex IV). '
                 'Below that: no Section 232 metals duty. Applies only when the importer confirms it (fact metalWeightUnder15Pct). 9903.82.03 is outside '
                 '9903.82.02 / 9903.82.04–9903.82.26, so the 2026 Section 301 and Brazil duties still apply.')
+
+    # 16(h)–(i): Commerce-authorized USMCA quantities (Proclamation 10984 clause 13; 91 FR 21790). The headings' general
+    # column reads "no change"; the special column (USMCA claim) "The duty provided in the applicable subheading + 25%".
+    for code in ['9903.82.18', '9903.82.19']:
+        heading(code, 'relief', None)
+    S_USMCA_Q = _src('procl-10984', 'bis-usmca-qty', S=S) + [hts_note(16)]
+    for key, code, sub, metal_txt, made in [
+            ('s232-metals-usmca-steel-25', '9903.82.18', 'iii', 'articles of steel (16(c)(iii))', 'melted and poured in Canada or Mexico'),
+            ('s232-metals-usmca-aluminum-25', '9903.82.19', 'i', 'articles of aluminum (16(c)(i))', 'smelted and cast in Canada or Mexico')]:
+        metal(key, code, 'additive', 25, [sub], countries_include=['CA', 'MX'], start='2026-04-23',
+              conditions={'usmcaQualifying': True, 'factsTrue': ['usmcaMetalCommerceAuthorized']}, replaces=['9903.82.02'] + REPL_301, sources=S_USMCA_Q,
+              notes=f'Heading {code}, note 16({"h" if sub == "iii" else "i"}): {metal_txt} {made}, claimed under USMCA (SPI S/S+), in the limited '
+                    'quantities the Secretary of Commerce authorizes for producers in Canada or Mexico that supply U.S. vehicle makers (Proclamation 10984 '
+                    'clause 13: up to half the rate, never below 25%): base + 25% (the heading\'s special-column rate) instead of 9903.82.02 (50%), from '
+                    'April 23, 2026 (91 FR 21790). Applies only when the importer confirms the shipment is within its Commerce-authorized quantity (fact '
+                    'usmcaMetalCommerceAuthorized). Within 9903.82.04–9903.82.26, so no 2026 Section 301 or Brazil duty (notes 52(f)(1), 50(a)(vi)(1)). '
+                    + FULL)
+
+    # Civil aircraft (general note 6 articles on the listed provisions) of the UK, Japan, the EU and South Korea: no
+    # 9903.82.02 / 9903.82.04–9903.82.17 duty (notes 35(a), 35(b), 2(v)(xxii), 2(v)(xxiv)(b)). The 2026-only headings
+    # 9903.82.18–9903.82.26 (USMCA quantities, mobile equipment, 16(k) parts) are not lifted.
+    AIRCRAFT_LIFTS = ['9903.82.02'] + [f'9903.82.{n:02d}' for n in range(4, 18)]
+    GN6 = ('Applies only when the importer confirms the article is for use in civil aircraft and meets the general note 6 criteria (fact '
+           'civilAircraftGn6, default no), regardless of whether "Free (C)" is claimed. Unmanned aircraft are excluded except under 9903.96.01.')
+    for key, code, ctry, sub, start, src in [
+            ('uk', '9903.96.01', ['GB'], '35(a)', '2025-06-30', 'ita-uk-aircraft'),
+            ('jp', '9903.96.02', ['JP'], '35(b)', '2025-09-16', 'ita-jp-aircraft'),
+            ('eu', '9903.02.76', EU, '2(v)(xxii)', '2025-09-01', 'ita-eu-aircraft'),
+            ('kr', '9903.02.81', ['KR'], '2(v)(xxiv)(b)', '2025-11-14', 'ita-kr-aircraft')]:
+        heading(code, 'relief', None)
+        lines = list(cov[sub])
+        assert len(lines) > 500, f'{sub}: civil aircraft list missing from note-coverage.json'
+        add(measureKey=f's232-metals-civil-aircraft-{key}', program=P, ch99Code=code, rateKind='relief', countriesInclude=sorted(ctry),
+            coverageInclude=lines, conditions={'factsTrue': ['civilAircraftGn6']}, replacesCodes=AIRCRAFT_LIFTS, effectiveFrom=start,
+            sources=_src(src, 'procl-11021', S=S) + [hts_note(35 if sub.startswith('35') else 2)],
+            notes=f'Heading {code}, U.S. note {sub}: civil aircraft (all aircraft other than military aircraft), their engines, parts and components, '
+                  f'other parts, subassemblies and ground flight simulators of {"the European Union" if key == "eu" else {"uk": "the United Kingdom", "jp": "Japan", "kr": "South Korea"}[key]} '
+                  f'on the {len(lines)} provisions listed do not pay the Section 232 metals duties 9903.82.02 and 9903.82.04–9903.82.17. ' + GN6
+                  + ' Because 9903.82.02 / .04–.17 then do not apply, neither does their 2026 Section 301 exemption (note 52(f)(1)); note 52(d) '
+                  '(9903.05.88) covers civil aircraft separately.')
 
     # ------------------------------------------------------------------ wood (note 37)
     PW = 'Section 232 (timber, lumber, wood products)'

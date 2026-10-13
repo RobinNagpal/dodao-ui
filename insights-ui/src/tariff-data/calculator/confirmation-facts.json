@@ -19,18 +19,92 @@
       ]
     },
     {
+      "id": "certifiedMhdvPartElection",
+      "prompt": "Will the importer of record certify that these parts will be used for medium- or heavy-duty vehicle production or repair in the United States, and enter them as Section 232 MHDV parts (heading 9903.74.09)?",
+      "help": "An election (U.S. note 38(j); Proclamation 10984 clause 12): a part that is not on the note 38(i) / 33(g) parts lists and not in chapters 72, 73 or 76 then pays 25% (no duty when USMCA-qualifying, 9903.74.10) instead of the Section 232 metals, wood and Canada/Mexico duties, and no 2026 Section 301 or Brazil duty. Not with the automobile-part election for the same goods. Unanswered = no.",
+      "defaultWhenUnanswered": false,
+      "sources": [
+        {
+          "citation": "90 FR 48451 (Proclamation 10984 of October 17, 2025, clause 12: an importer of record may declare a certified automobile or MHDV part subject to the Section 232 parts tariff)",
+          "url": "https://www.federalregister.gov/documents/2025/10/22/2025-19639/adjusting-imports-of-medium--and-heavy-duty-vehicles-medium--and-heavy-duty-vehicle-parts-and-buses",
+          "published": "2025-10-22"
+        },
+        {
+          "citation": "CBP CSMS # 66665333 (GUIDANCE: Import Duties on Medium- and Heavy-duty Trucks, Medium- and Heavy-duty Truck Parts and Buses — certified parts 9903.74.09, 9903.94.07, 9903.94.33–9903.94.55)",
+          "url": "https://content.govdelivery.com/accounts/USDHSCBP/bulletins/3f93b75",
+          "published": "2025-10-29"
+        },
+        {
+          "citation": "HTSUS 2026 Revision 21, Chapter 99, subchapter III, U.S. note 38",
+          "url": "https://hts.usitc.gov/reststop/file?release=2026HTSRev21&filename=Chapter%2099",
+          "published": "2026-10-07"
+        }
+      ]
+    },
+    {
+      "id": "certifiedUkAutoPartElection",
+      "prompt": "Will the importer of record certify that these parts of the United Kingdom will be used in automobiles that are products of the United Kingdom, and enter them under heading 9903.94.33 (10% in total)?",
+      "help": "An election (U.S. note 33(q)): a UK part that is not on the note 33(j) / 38(i) lists and not in chapters 72, 73 or 76 pays 10% in total instead of the base rate, the Section 232 metals and wood duties and the 2026 Section 301 duty. Unanswered = no.",
+      "defaultWhenUnanswered": false,
+      "sources": [
+        {
+          "citation": "CBP CSMS # 66665333 (GUIDANCE: Import Duties on Medium- and Heavy-duty Trucks, Medium- and Heavy-duty Truck Parts and Buses — certified parts 9903.74.09, 9903.94.07, 9903.94.33–9903.94.55)",
+          "url": "https://content.govdelivery.com/accounts/USDHSCBP/bulletins/3f93b75",
+          "published": "2025-10-29"
+        },
+        {
+          "citation": "HTSUS 2026 Revision 21, Chapter 99, subchapter III, U.S. note 33",
+          "url": "https://hts.usitc.gov/reststop/file?release=2026HTSRev21&filename=Chapter%2099",
+          "published": "2026-10-07"
+        }
+      ]
+    },
+    {
+      "id": "certifiedVehiclePartElection",
+      "prompt": "Will the importer of record certify that these parts will be used for automobile (passenger vehicle or light truck) production or repair in the United States, and enter them as Section 232 automobile parts (heading 9903.94.07, or the 15% headings for the EU, Japan, South Korea and Taiwan)?",
+      "help": "An election (U.S. notes 33(p) and 33(r); Proclamation 10984 clause 12): a part that is not on the note 33(g) / 38(i) parts lists and not in chapters 72, 73 or 76 may be declared an automobile part. It then pays 25% (15% total for the EU, Japan, South Korea and Taiwan; no duty when USMCA-qualifying) instead of the Section 232 metals, wood and Canada/Mexico duties, and no 2026 Section 301 or Brazil duty. Unanswered = no: the ordinary duties apply. CBP may ask for the certification.",
+      "defaultWhenUnanswered": false,
+      "sources": [
+        {
+          "citation": "90 FR 48451 (Proclamation 10984 of October 17, 2025, clause 12: an importer of record may declare a certified automobile or MHDV part subject to the Section 232 parts tariff)",
+          "url": "https://www.federalregister.gov/documents/2025/10/22/2025-19639/adjusting-imports-of-medium--and-heavy-duty-vehicles-medium--and-heavy-duty-vehicle-parts-and-buses",
+          "published": "2025-10-22"
+        },
+        {
+          "citation": "CBP CSMS # 66665333 (GUIDANCE: Import Duties on Medium- and Heavy-duty Trucks, Medium- and Heavy-duty Truck Parts and Buses — certified parts 9903.74.09, 9903.94.07, 9903.94.33–9903.94.55)",
+          "url": "https://content.govdelivery.com/accounts/USDHSCBP/bulletins/3f93b75",
+          "published": "2025-10-29"
+        },
+        {
+          "citation": "HTSUS 2026 Revision 21, Chapter 99, subchapter III, U.S. note 33",
+          "url": "https://hts.usitc.gov/reststop/file?release=2026HTSRev21&filename=Chapter%2099",
+          "published": "2026-10-07"
+        }
+      ]
+    },
+    {
       "id": "civilAircraftGn6",
       "prompt": "Is this article for use in a civil aircraft (not military, not unmanned) and does it meet the general note 6 civil-aircraft criteria (engines, parts, components, subassemblies, ground flight simulators)?",
-      "help": "Section 338 duties on Canada are lifted for civil aircraft articles on the note 51(d) list (heading 9903.03.16). CBP may ask for the certification required by general note 6 / 19 CFR 10.183.",
+      "help": "Lifts, for the listed provisions: the Section 338 duties on Canada (note 51(d), heading 9903.03.16); the 2026 Section 301 duties (note 52(d), heading 9903.05.88) and the Brazil duty (note 50(a)(iv), heading 9903.05.05); and the Section 232 metals duties 9903.82.02 / 9903.82.04–9903.82.17 for the UK, Japan, the EU and South Korea (headings 9903.96.01, 9903.96.02, 9903.02.76, 9903.02.81). CBP may ask for the certification required by general note 6 / 19 CFR 10.183.",
       "defaultWhenUnanswered": false,
       "sources": [
         {
           "citation": "91 FR 46639 (Proclamation 11046: Section 338 duties on products of Canada — alcoholic beverages; 50%, heading 9903.03.12)",
-          "url": "https://www.federalregister.gov/documents/2026/07/23/2026-14991/imposing-additional-duties-to-offset-canadian-discrimination-against-the-commerce-of-the-united-states",
+          "url": "https://www.federalregister.gov/documents/2026/07/23/2026-14991/imposing-additional-duties-to-offset-canadian-discrimination-against-the-commerce-of-the-united",
           "published": "2026-07-23"
         },
         {
           "citation": "HTSUS 2026 Revision 21, Chapter 99, subchapter III, U.S. note 51",
+          "url": "https://hts.usitc.gov/reststop/file?release=2026HTSRev21&filename=Chapter%2099",
+          "published": "2026-10-07"
+        },
+        {
+          "citation": "HTSUS 2026 Revision 21, Chapter 99, subchapter III, U.S. note 35",
+          "url": "https://hts.usitc.gov/reststop/file?release=2026HTSRev21&filename=Chapter%2099",
+          "published": "2026-10-07"
+        },
+        {
+          "citation": "HTSUS 2026 Revision 21, Chapter 99, subchapter III, U.S. note 52",
           "url": "https://hts.usitc.gov/reststop/file?release=2026HTSRev21&filename=Chapter%2099",
           "published": "2026-10-07"
         }
@@ -111,6 +185,29 @@
       "sources": [
         {
           "citation": "HTSUS 2026 Revision 21, Chapter 99, subchapters VIII (Israel), XVIII (Colombia), XIX (Panama)",
+          "url": "https://hts.usitc.gov/reststop/file?release=2026HTSRev21&filename=Chapter%2099",
+          "published": "2026-10-07"
+        }
+      ]
+    },
+    {
+      "id": "informationalMaterials",
+      "prompt": "Are the goods informational materials (publications, films, posters, phonograph records, photographs, microfilms, microfiche, tapes, compact disks, CD ROMs, artworks), as described in 50 U.S.C. 1702(b)(3)?",
+      "help": "Informational materials are exempt from the 2026 Section 301 duties (heading 9903.05.92) and the Brazil Section 301 duty (heading 9903.05.09). Not from the China Section 301 lists or the Canada Section 338 duties. Unanswered = no.",
+      "defaultWhenUnanswered": false,
+      "sources": [
+        {
+          "citation": "91 FR 47318 (USTR notice of actions in the Section 301 forced-labor investigations of 60 economies — exemption for informational materials, heading 9903.05.92)",
+          "url": "https://www.federalregister.gov/documents/2026/07/28/2026-15181/notice-of-actions-in-section-301-investigations-of-acts-policies-and-practices-of-various-economies",
+          "published": "2026-07-28"
+        },
+        {
+          "citation": "91 FR 45516 (USTR notice of action: Brazil Section 301 — exemption for informational materials, heading 9903.05.09)",
+          "url": "https://www.federalregister.gov/documents/2026/07/20/2026-14542/notice-of-action-brazils-acts-policies-and-practices-related-to-digital-trade-and-electronic-payment",
+          "published": "2026-07-20"
+        },
+        {
+          "citation": "HTSUS 2026 Revision 21, Chapter 99, subchapter III, U.S. note 52",
           "url": "https://hts.usitc.gov/reststop/file?release=2026HTSRev21&filename=Chapter%2099",
           "published": "2026-10-07"
         }
@@ -574,6 +671,29 @@
         },
         {
           "citation": "HTSUS 2026 Revision 21, Chapter 99, subchapter III, U.S. note 39",
+          "url": "https://hts.usitc.gov/reststop/file?release=2026HTSRev21&filename=Chapter%2099",
+          "published": "2026-10-07"
+        }
+      ]
+    },
+    {
+      "id": "usmcaMetalCommerceAuthorized",
+      "prompt": "Is this steel (melted and poured) or aluminum (smelted and cast) from Canada or Mexico within the quantity the Secretary of Commerce has authorized for its producer under Proclamation 10984 clause 13 (headings 9903.82.18 / 9903.82.19)?",
+      "help": "Commerce-authorized quantities for producers in Canada or Mexico that supply U.S. vehicle makers pay 25% instead of 50% (U.S. note 16(h)–(i), from April 23, 2026), only with a USMCA claim. Commerce notifies CBP of the authorized importer and quarterly quantity. Unanswered = no.",
+      "defaultWhenUnanswered": false,
+      "sources": [
+        {
+          "citation": "91 FR 21790 (Commerce: procedures for steel and aluminum producers committing to new U.S. production — headings 9903.82.18 / 9903.82.19)",
+          "url": "https://www.federalregister.gov/documents/2026/04/23/2026-07987/procedures-for-submissions-by-certain-steel-and-aluminum-producers-committing-to-new-us-steel-or",
+          "published": "2026-04-23"
+        },
+        {
+          "citation": "90 FR 48451 (Proclamation 10984 of October 17, 2025, clause 12: an importer of record may declare a certified automobile or MHDV part subject to the Section 232 parts tariff)",
+          "url": "https://www.federalregister.gov/documents/2025/10/22/2025-19639/adjusting-imports-of-medium--and-heavy-duty-vehicles-medium--and-heavy-duty-vehicle-parts-and-buses",
+          "published": "2025-10-22"
+        },
+        {
+          "citation": "HTSUS 2026 Revision 21, Chapter 99, subchapter III, U.S. note 16",
           "url": "https://hts.usitc.gov/reststop/file?release=2026HTSRev21&filename=Chapter%2099",
           "published": "2026-10-07"
         }

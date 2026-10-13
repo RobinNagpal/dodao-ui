@@ -3,6 +3,7 @@ import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { parseArgs } from '../tickers/lib';
+import { extractListCodes } from './lib/calc-readiness';
 
 /**
  * Extract the HTS subheadings listed in the Chapter 99 U.S. notes (subchapter III), per note subdivision,
@@ -11,7 +12,8 @@ import { parseArgs } from '../tickers/lib';
  * The HTS JSON has no product coverage for Chapter 99 headings: which lines a heading covers lives in the
  * U.S. notes as subheading lists (note 52(b)–(e), (j) for the 2026 Section 301 action, note 50 for Brazil,
  * note 40(c) for Section 232 pharmaceuticals, note 20 for the China Section 301 lists, note 31 for the 2024
- * China increases, note 33 for Section 232 autos, notes 16 and 19 for Section 232 steel and aluminum). This
+ * China increases, note 33 for Section 232 autos, notes 16 and 19 for Section 232 steel and aluminum, the civil-aircraft
+ * lists of note 2(v)(xxii) / (v)(xxiv)(b) and note 35). This
  * script writes them to `src/tariff-data/calculator/note-coverage.json` as digit prefixes ("0101", "30069360")
  * keyed by subdivision ("52(b)", "52(j)(4)(i)", "20(s)(i)") so that `measures.json` can be curated (and re-checked) against them.
  *
@@ -41,7 +43,8 @@ import { parseArgs } from '../tickers/lib';
 
 const DEFAULT_RELEASE = '2026HTSRev21';
 const DEFAULT_EDITION = '2026 Revision 21';
-const DEFAULT_NOTES = ['16', '19', '20', '31', '33', '40', '50', '52'];
+// Note 2 (v)(xxii) / (v)(xxiv)(b) and note 35 hold the civil-aircraft lists of 9903.02.76, 9903.02.81 and 9903.96.01 / .02.
+const DEFAULT_NOTES = ['2', '16', '19', '20', '31', '33', '35', '40', '50', '52'];
 const OUT_FILE = path.join(__dirname, '..', '..', 'tariff-data', 'calculator', 'note-coverage.json');
 const USER_AGENT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0 Safari/537.36';
 
@@ -185,6 +188,16 @@ const ROMAN: string[] = [
   'xviii',
   'xix',
   'xx',
+  'xxi',
+  'xxii',
+  'xxiii',
+  'xxiv',
+  'xxv',
+  'xxvi',
+  'xxvii',
+  'xxviii',
+  'xxix',
+  'xxx',
 ];
 
 /** Position of a label within its kind of list, or -1 when the label cannot be of that kind. */
@@ -199,7 +212,8 @@ function ordinal(type: LevelType, label: string): number {
 /** Largest jump between consecutive siblings that is still read as a sibling (deleted subdivisions, items run into a line). */
 const MAX_GAP: Record<LevelType, number> = { alpha: 8, roman: 2, num: 12 };
 
-const LABEL_AT_START = /^\(([a-z]{1,4}|\d{1,3})\)\s*/;
+// Up to six letters: roman labels run to (xxviii) in note 2.
+const LABEL_AT_START = /^\(([a-z]{1,6}|\d{1,3})\)\s*/;
 // A wrapped cross-reference ("(c) and (f) of U.S. note 40", "(l)(v) of this note") is not a subdivision start.
 const CROSS_REFERENCE_REST = /^(and|or|of|through|to|in|is|are|that)\b|^[,;.:–-]/;
 
@@ -209,6 +223,13 @@ const CODE_PATTERN = /(\d{4})\.(\d{2})(?:\.(\d{2})(?:\.(\d{2})|(\d{2})(?=\d{4}\.
 function extractCodes(text: string): string[] {
   const codes: string[] = [];
   for (const line of text.split('\n')) {
+    // A row made of codes alone (a note list) is read by the shared list reader, which also splits codes pypdf ran
+    // together after a dotted code ("7616.99.5160760976087607" → 7616.99.5160, 7609, 7608, 7607; "8707.10.002087078706.00.25"
+    // → 8707.10.0020, 8707, 8706.00.25) — the pattern below would stop at "7616.99.51" / "8707.10.00".
+    if (/^[\d.\s;,]+$/.test(line.trim()) && /\d{4}/.test(line)) {
+      codes.push(...extractListCodes(line.replace(/[;,](?=\s|$)/g, ' ')).codes);
+      continue;
+    }
     CODE_PATTERN.lastIndex = 0;
     let m: RegExpExecArray | null;
     while ((m = CODE_PATTERN.exec(line)) !== null) {
