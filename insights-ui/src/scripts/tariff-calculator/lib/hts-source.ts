@@ -52,11 +52,74 @@ export function editionFromName(name: string): string | null {
   return null;
 }
 
-/** "2026 Revision 21" → usitc.gov URL. */
-export function urlForEdition(edition: string): string {
+/** An HTS edition as numbers: "2026 Revision 21" → { year: 2026, rev: 21 }; a basic edition is rev 0. */
+export interface HtsEditionNumber {
+  year: number;
+  rev: number;
+}
+
+/** "2026 Revision 21" / "2026 Basic Edition" → { year, rev }. Throws on any other text. */
+export function parseEdition(edition: string): HtsEditionNumber {
   const m = /^(\d{4}) (?:Revision (\d+)|Basic Edition)$/i.exec(edition.trim());
   if (!m) throw new Error(`cannot parse HTS edition "${edition}" (expected "<year> Revision <n>" or "<year> Basic Edition")`);
-  return htsJsonUrl(Number(m[1]), m[2] ? Number(m[2]) : 0);
+  return { year: Number(m[1]), rev: m[2] ? Number(m[2]) : 0 };
+}
+
+/** { year, rev } → "2026 Revision 21" / "2026 Basic Edition". */
+export function editionLabel({ year, rev }: HtsEditionNumber): string {
+  return rev ? `${year} Revision ${rev}` : `${year} Basic Edition`;
+}
+
+/** Negative when a is older than b, 0 when equal, positive when a is newer. */
+export function compareEditions(a: HtsEditionNumber, b: HtsEditionNumber): number {
+  return a.year - b.year || a.rev - b.rev;
+}
+
+/** "2026 Revision 21" → usitc.gov URL. */
+export function urlForEdition(edition: string): string {
+  const { year, rev } = parseEdition(edition);
+  return htsJsonUrl(year, rev);
+}
+
+/** The HTS release list on hts.usitc.gov: one entry per edition, the one in force has status "current". */
+export const HTS_RELEASE_LIST_URL = 'https://hts.usitc.gov/reststop/releaseList';
+
+export interface HtsRelease extends HtsEditionNumber {
+  /** e.g. "2026 Revision 21". */
+  label: string;
+  /** Release name on hts.usitc.gov, e.g. "2026HTSRev21". */
+  name: string;
+  /** Publication / in-force dates as the release list gives them (MM/DD/YYYY), when present. */
+  date: string | null;
+  releaseStartDate: string | null;
+}
+
+/**
+ * The edition hts.usitc.gov's release list marks "current" ("2026HTSRev21" → 2026 Revision 21).
+ * Throws with a readable message when the list can't be fetched or parsed — callers that only want a
+ * best-effort answer catch it.
+ */
+export async function fetchCurrentHtsRelease(timeoutMs = 20_000): Promise<HtsRelease> {
+  let res: Response;
+  try {
+    res = await fetch(HTS_RELEASE_LIST_URL, { headers: { Accept: 'application/json' }, signal: AbortSignal.timeout(timeoutMs) });
+  } catch (err) {
+    throw new Error(`${HTS_RELEASE_LIST_URL} did not answer: ${(err as Error).message}`);
+  }
+  if (!res.ok) throw new Error(`${HTS_RELEASE_LIST_URL} answered HTTP ${res.status}`);
+  let releases: { name?: string; status?: string; date?: string | null; releaseStartDate?: string | null }[];
+  try {
+    releases = (await res.json()) as typeof releases;
+  } catch {
+    throw new Error(`${HTS_RELEASE_LIST_URL} did not return JSON`);
+  }
+  if (!Array.isArray(releases)) throw new Error(`${HTS_RELEASE_LIST_URL} did not return a list`);
+  const current = releases.find((r) => r.status === 'current');
+  const name = current?.name ?? '';
+  const m = /^(\d{4})HTS(?:Rev(\d+)|Basic)/i.exec(name);
+  if (!current || !m) throw new Error(`${HTS_RELEASE_LIST_URL} has no parseable "current" release (got "${name}")`);
+  const edition = { year: Number(m[1]), rev: m[2] ? Number(m[2]) : 0 };
+  return { ...edition, label: editionLabel(edition), name, date: current.date ?? null, releaseStartDate: current.releaseStartDate ?? null };
 }
 
 /** "2026 Revision 21" → "2026-revision-21". */
