@@ -51,8 +51,19 @@ export function TableScroll({ children, maxHeight, pageSticky, className }: Tabl
   );
 }
 
-export function DataTable({ children, className }: { children: React.ReactNode; className?: string }): React.JSX.Element {
-  return <table className={cn('w-full text-sm', className)}>{children}</table>;
+const dataTable = cva('w-full text-sm', {
+  variants: {
+    // `fixed`: column widths come from the header cells (`TableHeaderCell width="fixed*"`, the rest
+    // shares what's left), so no cell content can make the table wider than its container.
+    layout: { auto: '', fixed: 'table-fixed' },
+  },
+  defaultVariants: { layout: 'auto' },
+});
+
+export type DataTableProps = VariantProps<typeof dataTable> & { children: React.ReactNode; className?: string };
+
+export function DataTable({ children, layout, className }: DataTableProps): React.JSX.Element {
+  return <table className={cn(dataTable({ layout }), className)}>{children}</table>;
 }
 
 const tableHead = cva('text-muted', {
@@ -83,6 +94,13 @@ const headerCell = cva('font-semibold px-3 py-3', {
       // A ShareBar column: the bar (and the room for it) only from `lg`; below that it holds just the percentage.
       wideFromLg: 'lg:min-w-[280px]',
       quarterFromLg: 'lg:w-1/4 lg:min-w-48',
+      // Column widths for a `DataTable layout="fixed"`; header text wraps inside them.
+      fixedXs: 'w-24',
+      fixedSm: 'w-32',
+      fixedMd: 'w-36',
+      fixedLg: 'w-44',
+      /** The column that takes the width the fixed columns leave (fixed layout). */
+      fill: '',
     },
     align: { left: 'text-left', right: 'text-right' },
     // Keeps a row-label column in view while a wide table scrolls sideways (pair with TableCell `pinned`).
@@ -138,13 +156,15 @@ export function TableRow({ children, emphasis, interactive, id, onClick, classNa
 const tableCell = cva('px-3 py-2.5 align-top', {
   variants: {
     variant: {
-      text: '',
+      text: 'break-words',
       /** Codes and numbers: monospace + tabular figures. */
       code: 'font-mono tabular-nums text-xs whitespace-nowrap',
       /** Rates: keep "Free (A+,AU,…)" from exploding the column. */
       rate: 'text-xs whitespace-nowrap',
       /** Long preference lists that may wrap. */
       rateWrap: 'text-xs break-words max-w-[180px]',
+      /** Rates in a fixed-width column: one line when they fit, wrapped (mid-word if need be) when they don't. */
+      rateFluid: 'text-xs break-words',
       /** Small explanatory text that wraps freely, e.g. a rate breakdown note. */
       note: 'min-w-48 text-xs',
     },

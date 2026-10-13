@@ -16,7 +16,9 @@ import React from 'react';
  * `selected` on the list marks the one that was picked.
  */
 
-const list = cva('rounded-lg border', {
+// `overflow-x-clip` (not `auto`/`hidden`) keeps anything too wide from widening the page without
+// making the list a scroll container, so sticky headers inside still pin to the window.
+const list = cva('min-w-0 overflow-x-clip rounded-lg border', {
   variants: {
     selected: { true: 'border-primary bg-primary/10', false: 'border-border' },
   },
@@ -38,10 +40,21 @@ export function StackedRowList({ header, selected, children, className }: Stacke
   );
 }
 
-/** Column labels above the list, pinned to the top of the window while the list scrolls past. */
-export function StackedRowListHeader({ label, value }: { label: React.ReactNode; value: React.ReactNode }): React.JSX.Element {
+const listHeader = cva('sticky top-0 z-10 flex items-baseline justify-between gap-3 border-b border-border bg-bg px-3 font-semibold text-muted', {
+  variants: {
+    // `list`: the list's own header, at its top. `group`: the column labels at the top of an open
+    // row group's rows (`StackedRowGroup header`); it stays pinned only while that group scrolls past.
+    placement: { list: 'rounded-t-lg py-2.5 text-sm', group: 'py-2 text-xs' },
+  },
+  defaultVariants: { placement: 'list' },
+});
+
+export type StackedRowListHeaderProps = VariantProps<typeof listHeader> & { label: React.ReactNode; value: React.ReactNode };
+
+/** Column labels above the rows, pinned to the top of the window while the rows scroll past. */
+export function StackedRowListHeader({ label, value, placement }: StackedRowListHeaderProps): React.JSX.Element {
   return (
-    <div className="sticky top-0 z-10 flex items-baseline justify-between gap-3 rounded-t-lg border-b border-border bg-bg px-3 py-2.5 text-sm font-semibold text-muted">
+    <div className={listHeader({ placement })}>
       <span>{label}</span>
       <span className="text-right">{value}</span>
     </div>
@@ -67,7 +80,9 @@ const content = cva('flex w-full min-h-11 flex-col justify-center gap-0.5 py-2 p
   defaultVariants: { indent: 0, interactive: false },
 });
 
-const value = cva('shrink-0 whitespace-nowrap text-right text-sm', {
+// A short value ("Free", "6.5%") stays on one line; a long compound rate wraps at 60% of the row
+// instead of pushing the row past the screen edge.
+const value = cva('max-w-[60%] shrink-0 break-words text-right text-sm', {
   variants: {
     tone: { body: 'text-body', muted: 'text-muted', emphasis: 'font-semibold text-heading', primary: 'font-medium text-primary' },
   },
