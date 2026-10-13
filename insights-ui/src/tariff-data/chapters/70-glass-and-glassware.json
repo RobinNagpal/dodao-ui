@@ -16956,7 +16956,7 @@
       {
         "label": "Largest product",
         "value": "19%",
-        "note": "Glass bottles, jars and other containers for packing goods (7010.90)"
+        "note": "Glass; carboys, bottles, flasks, jars, pots, phials and other containers of glass, (not ampoules), used for the conveyance or packing of goods (7010.90)"
       }
     ],
     "byYear": [
@@ -17014,7 +17014,7 @@
         "changePct": -24.9,
         "sharePct": 24,
         "mainHeading": "7013",
-        "mainHeadingLabel": "Glassware: drinking glasses, tableware, kitchen & decor",
+        "mainHeadingLabel": "Glassware of a kind used for table, kitchen, toilet, office, indoor decoration or similar purposes (other than that of heading 7010 or 7018)",
         "dutyPaidUsd": null
       },
       {
@@ -17025,7 +17025,7 @@
         "changePct": -3.2,
         "sharePct": 20,
         "mainHeading": "7010",
-        "mainHeadingLabel": "Glass bottles, jars, vials & closures",
+        "mainHeadingLabel": "Carboys, bottles, flasks, jars, pots, vials, ampoules and other containers, of glass, of a kind used for the conveyance or packing of goods; preserving jars of glass; stoppers, lids and other closures, of glass",
         "dutyPaidUsd": null
       },
       {
@@ -17036,7 +17036,7 @@
         "changePct": -5.4,
         "sharePct": 6.7,
         "mainHeading": "7002",
-        "mainHeadingLabel": "Glass balls, rods & tubes, unworked (incl. fused quartz)",
+        "mainHeadingLabel": "Glass in balls (other than microspheres of heading 7018), rods or tubes, unworked",
         "dutyPaidUsd": null
       },
       {
@@ -17047,7 +17047,7 @@
         "changePct": -3.9,
         "sharePct": 6.1,
         "mainHeading": "7019",
-        "mainHeadingLabel": "Glass fibers: fiberglass yarn, rovings, mats, fabric & glass wool",
+        "mainHeadingLabel": "Glass fibers (including glass wool) and articles thereof (for example, yarn, rovings, woven fabrics)",
         "dutyPaidUsd": null
       },
       {
@@ -17058,7 +17058,7 @@
         "changePct": 139,
         "sharePct": 5.5,
         "mainHeading": "7007",
-        "mainHeadingLabel": "Safety glass: tempered & laminated, incl. windshields",
+        "mainHeadingLabel": "Safety glass, consisting of toughened (tempered) or laminated glass",
         "dutyPaidUsd": null
       },
       {
@@ -17069,7 +17069,7 @@
         "changePct": 113.8,
         "sharePct": 4.3,
         "mainHeading": "7007",
-        "mainHeadingLabel": "Safety glass: tempered & laminated, incl. windshields",
+        "mainHeadingLabel": "Safety glass, consisting of toughened (tempered) or laminated glass",
         "dutyPaidUsd": null
       },
       {
@@ -17080,7 +17080,7 @@
         "changePct": -0.3,
         "sharePct": 3.8,
         "mainHeading": "7010",
-        "mainHeadingLabel": "Glass bottles, jars, vials & closures",
+        "mainHeadingLabel": "Carboys, bottles, flasks, jars, pots, vials, ampoules and other containers, of glass, of a kind used for the conveyance or packing of goods; preserving jars of glass; stoppers, lids and other closures, of glass",
         "dutyPaidUsd": null
       },
       {
@@ -17091,7 +17091,7 @@
         "changePct": -12.1,
         "sharePct": 3.4,
         "mainHeading": "7010",
-        "mainHeadingLabel": "Glass bottles, jars, vials & closures",
+        "mainHeadingLabel": "Carboys, bottles, flasks, jars, pots, vials, ampoules and other containers, of glass, of a kind used for the conveyance or packing of goods; preserving jars of glass; stoppers, lids and other closures, of glass",
         "dutyPaidUsd": null
       },
       {
@@ -17102,7 +17102,7 @@
         "changePct": -2.7,
         "sharePct": 2.9,
         "mainHeading": "7020",
-        "mainHeadingLabel": "Other articles of glass (incl. vacuum flask inners, quartz tubes)",
+        "mainHeadingLabel": "Other articles of glass",
         "dutyPaidUsd": null
       },
       {
@@ -17113,7 +17113,7 @@
         "changePct": -6,
         "sharePct": 2.9,
         "mainHeading": "7010",
-        "mainHeadingLabel": "Glass bottles, jars, vials & closures",
+        "mainHeadingLabel": "Carboys, bottles, flasks, jars, pots, vials, ampoules and other containers, of glass, of a kind used for the conveyance or packing of goods; preserving jars of glass; stoppers, lids and other closures, of glass",
         "dutyPaidUsd": null
       }
     ],
@@ -17129,7 +17129,7 @@
         "changePct": -5.2,
         "sharePct": 18.7,
         "dutyPaidUsd": null,
-        "searchText": "701090 7010.90 glass; carboys, bottles, flasks, jars, pots, phials and other containers of glass, (not ampoules), used for the conveyance or packing of goods carboys, bottles, flasks, jars, pots, vials, ampoules and…"
+        "searchText": "701090 7010.90 glass; carboys, bottles, flasks, jars, pots, phials and other containers of glass, (not ampoules), used for the conveyance or packing of goods carboys, bottles, flasks, jars, pots, vials, ampoules and other containers, of glass, of a kind used for the conveyance or packing of goods; preserving jars of glass; stoppers, lids and other closures, of glass"
       },
       {
         "hs6": "7007.19",
@@ -17140,7 +17140,7 @@
         "changePct": 50.5,
         "sharePct": 10.7,
         "dutyPaidUsd": null,
-        "searchText": "700719 7007.19 glass; safety glass, toughened (tempered), (not of a size and shape suitable for incorporation in vehicles, aircraft, spacecraft or vessels) safety glass, consisting of toughened (tempered) or…"
+        "searchText": "700719 7007.19 glass; safety glass, toughened (tempered), (not of a size and shape suitable for incorporation in vehicles, aircraft, spacecraft or vessels) safety glass, consisting of toughened (tempered) or laminated glass"
       },
       {
         "hs6": "7013.99",
@@ -17151,7 +17151,7 @@
         "changePct": -14.4,
         "sharePct": 5.6,
         "dutyPaidUsd": null,
-        "searchText": "701399 7013.99 glassware; n.e.c. in heading no. 7013, other than of lead crystal glassware of a kind used for table, kitchen, toilet…"
+        "searchText": "701399 7013.99 glassware; n.e.c. in heading no. 7013, other than of lead crystal glassware of a kind used for table, kitchen, toilet, office, indoor decoration or similar purposes (other than that of heading 7010 or 7018)"
       },
       {
         "hs6": "7009.10",
@@ -17162,7 +17162,7 @@
         "changePct": -11,
         "sharePct": 4.9,
         "dutyPaidUsd": null,
-        "searchText": "700910 7009.10 glass; rear-view mirrors for vehicles glass mirrors, whether or not framed, including rear-view…"
+        "searchText": "700910 7009.10 glass; rear-view mirrors for vehicles glass mirrors, whether or not framed, including rear-view mirrors"
       },
       {
         "hs6": "7009.92",
@@ -17173,7 +17173,7 @@
         "changePct": -20.6,
         "sharePct": 4.6,
         "dutyPaidUsd": null,
-        "searchText": "700992 7009.92 glass mirrors; framed, excluding rear-view mirrors for vehicles glass mirrors, whether or not framed, including rear-view…"
+        "searchText": "700992 7009.92 glass mirrors; framed, excluding rear-view mirrors for vehicles glass mirrors, whether or not framed, including rear-view mirrors"
       },
       {
         "hs6": "7008.00",
@@ -17195,7 +17195,7 @@
         "changePct": -3.6,
         "sharePct": 3.7,
         "dutyPaidUsd": null,
-        "searchText": "701990 7019.90 glass fibres; n.e.c. in heading no. 7019 glass fibers (including glass wool) and articles thereof…"
+        "searchText": "701990 7019.90 glass fibres; n.e.c. in heading no. 7019 glass fibers (including glass wool) and articles thereof (for example, yarn, rovings, woven fabrics)"
       },
       {
         "hs6": "7019.80",
@@ -17206,7 +17206,7 @@
         "changePct": -2,
         "sharePct": 3.5,
         "dutyPaidUsd": null,
-        "searchText": "701980 7019.80 glass fibres; glass wool and articles thereof glass fibers (including glass wool) and articles thereof…"
+        "searchText": "701980 7019.80 glass fibres; glass wool and articles thereof glass fibers (including glass wool) and articles thereof (for example, yarn, rovings, woven fabrics)"
       },
       {
         "hs6": "7007.21",
@@ -17217,7 +17217,7 @@
         "changePct": -26.2,
         "sharePct": 3.1,
         "dutyPaidUsd": null,
-        "searchText": "700721 7007.21 glass; safety glass, laminated, of size and shape suitable for incorporation in vehicles, aircraft, spacecraft or vessels safety glass, consisting of toughened (tempered) or…"
+        "searchText": "700721 7007.21 glass; safety glass, laminated, of size and shape suitable for incorporation in vehicles, aircraft, spacecraft or vessels safety glass, consisting of toughened (tempered) or laminated glass"
       },
       {
         "hs6": "7013.37",
@@ -17228,7 +17228,7 @@
         "changePct": -7.6,
         "sharePct": 3.1,
         "dutyPaidUsd": null,
-        "searchText": "701337 7013.37 glassware; drinking glasses (not stemware), other than of lead crystal or glass-ceramics glassware of a kind used for table, kitchen, toilet…"
+        "searchText": "701337 7013.37 glassware; drinking glasses (not stemware), other than of lead crystal or glass-ceramics glassware of a kind used for table, kitchen, toilet, office, indoor decoration or similar purposes (other than that of heading 7010 or 7018)"
       },
       {
         "hs6": "7020.00",
@@ -17250,7 +17250,7 @@
         "changePct": -15.2,
         "sharePct": 2.8,
         "dutyPaidUsd": null,
-        "searchText": "701912 7019.12 glass fibres; (including glass wool), rovings glass fibers (including glass wool) and articles thereof…"
+        "searchText": "701912 7019.12 glass fibres; (including glass wool), rovings glass fibers (including glass wool) and articles thereof (for example, yarn, rovings, woven fabrics)"
       },
       {
         "hs6": "7013.49",
@@ -17261,7 +17261,7 @@
         "changePct": -5.4,
         "sharePct": 2.6,
         "dutyPaidUsd": null,
-        "searchText": "701349 7013.49 glassware of a kind used for table or kitchen purposes (not drinking glasses or of glass-ceramics), of glass n.e.c. in item no. 7013.4 glassware of a kind used for table, kitchen, toilet…"
+        "searchText": "701349 7013.49 glassware of a kind used for table or kitchen purposes (not drinking glasses or of glass-ceramics), of glass n.e.c. in item no. 7013.4 glassware of a kind used for table, kitchen, toilet, office, indoor decoration or similar purposes (other than that of heading 7010 or 7018)"
       },
       {
         "hs6": "7006.00",
@@ -17272,7 +17272,7 @@
         "changePct": -2.1,
         "sharePct": 2.5,
         "dutyPaidUsd": null,
-        "searchText": "700600 7006.00 glass of heading no. 7003, 7004 or 7005; bent, edge-worked, engraved, drilled, enamelled or otherwise worked, but not framed or fitted with other materials glass of heading 7003, 7004 or 7005, bent, edge-worked…"
+        "searchText": "700600 7006.00 glass of heading no. 7003, 7004 or 7005; bent, edge-worked, engraved, drilled, enamelled or otherwise worked, but not framed or fitted with other materials glass of heading 7003, 7004 or 7005, bent, edge-worked, engraved, drilled, enameled or otherwise worked, but not framed or fitted with other materials"
       },
       {
         "hs6": "7007.11",
@@ -17283,7 +17283,7 @@
         "changePct": -12.6,
         "sharePct": 2.1,
         "dutyPaidUsd": null,
-        "searchText": "700711 7007.11 glass; safety glass, toughened (tempered), of size and shape suitable for incorporation in vehicles, aircraft, spacecraft or vessels safety glass, consisting of toughened (tempered) or…"
+        "searchText": "700711 7007.11 glass; safety glass, toughened (tempered), of size and shape suitable for incorporation in vehicles, aircraft, spacecraft or vessels safety glass, consisting of toughened (tempered) or laminated glass"
       },
       {
         "hs6": "7007.29",
@@ -17294,7 +17294,7 @@
         "changePct": -9.7,
         "sharePct": 1.6,
         "dutyPaidUsd": null,
-        "searchText": "700729 7007.29 glass; safety glass, laminated, (not of a size and shape suitable for incorporation in vehicles, aircraft, spacecraft or vessels) safety glass, consisting of toughened (tempered) or…"
+        "searchText": "700729 7007.29 glass; safety glass, laminated, (not of a size and shape suitable for incorporation in vehicles, aircraft, spacecraft or vessels) safety glass, consisting of toughened (tempered) or laminated glass"
       },
       {
         "hs6": "7013.28",
@@ -17305,7 +17305,7 @@
         "changePct": -6.5,
         "sharePct": 1.6,
         "dutyPaidUsd": null,
-        "searchText": "701328 7013.28 stemware drinking glasses, other than of lead crystal or glass-ceramics glassware of a kind used for table, kitchen, toilet…"
+        "searchText": "701328 7013.28 stemware drinking glasses, other than of lead crystal or glass-ceramics glassware of a kind used for table, kitchen, toilet, office, indoor decoration or similar purposes (other than that of heading 7010 or 7018)"
       },
       {
         "hs6": "7005.29",
@@ -17316,7 +17316,7 @@
         "changePct": -9.7,
         "sharePct": 1.4,
         "dutyPaidUsd": null,
-        "searchText": "700529 7005.29 glass; float glass and surface ground or polished glass, in sheets, non-wired, (other than coloured throughout the mass (body tinted), opacified, flashed or merely surface ground) float glass and surface ground or polished glass, in…"
+        "searchText": "700529 7005.29 glass; float glass and surface ground or polished glass, in sheets, non-wired, (other than coloured throughout the mass (body tinted), opacified, flashed or merely surface ground) float glass and surface ground or polished glass, in sheets, whether or not having an absorbent, reflecting or non-reflecting layer, but not otherwise worked"
       },
       {
         "hs6": "7005.10",
@@ -17327,7 +17327,7 @@
         "changePct": 590.5,
         "sharePct": 1.3,
         "dutyPaidUsd": null,
-        "searchText": "700510 7005.10 glass; float glass and surface ground or polished glass, in sheets, non-wired, having an absorbent reflecting or non-reflecting layer float glass and surface ground or polished glass, in…"
+        "searchText": "700510 7005.10 glass; float glass and surface ground or polished glass, in sheets, non-wired, having an absorbent reflecting or non-reflecting layer float glass and surface ground or polished glass, in sheets, whether or not having an absorbent, reflecting or non-reflecting layer, but not otherwise worked"
       },
       {
         "hs6": "7019.13",
@@ -17338,7 +17338,7 @@
         "changePct": 8.1,
         "sharePct": 1.3,
         "dutyPaidUsd": null,
-        "searchText": "701913 7019.13 glass fibres; (including glass wool), yarns and slivers glass fibers (including glass wool) and articles thereof…"
+        "searchText": "701913 7019.13 glass fibres; (including glass wool), yarns and slivers glass fibers (including glass wool) and articles thereof (for example, yarn, rovings, woven fabrics)"
       },
       {
         "hs6": "7019.11",
@@ -17349,7 +17349,7 @@
         "changePct": -25.9,
         "sharePct": 1.2,
         "dutyPaidUsd": null,
-        "searchText": "701911 7019.11 glass fibres; (including glass wool), chopped strands, of a length of not more than 50mm glass fibers (including glass wool) and articles thereof…"
+        "searchText": "701911 7019.11 glass fibres; (including glass wool), chopped strands, of a length of not more than 50mm glass fibers (including glass wool) and articles thereof (for example, yarn, rovings, woven fabrics)"
       },
       {
         "hs6": "7009.91",
@@ -17360,7 +17360,7 @@
         "changePct": -18.4,
         "sharePct": 1.1,
         "dutyPaidUsd": null,
-        "searchText": "700991 7009.91 glass mirrors; unframed, excluding rear-view mirrors for vehicles glass mirrors, whether or not framed, including rear-view…"
+        "searchText": "700991 7009.91 glass mirrors; unframed, excluding rear-view mirrors for vehicles glass mirrors, whether or not framed, including rear-view mirrors"
       },
       {
         "hs6": "7017.90",
@@ -17371,7 +17371,7 @@
         "changePct": 2.6,
         "sharePct": 1.1,
         "dutyPaidUsd": null,
-        "searchText": "701790 7017.90 glassware; laboratory, hygienic or pharmaceutical, whether or not graduated or calibrated, of glass n.e.c. in heading no. 7017 laboratory, hygienic or pharmaceutical glassware, whether…"
+        "searchText": "701790 7017.90 glassware; laboratory, hygienic or pharmaceutical, whether or not graduated or calibrated, of glass n.e.c. in heading no. 7017 laboratory, hygienic or pharmaceutical glassware, whether or not graduated or calibrated"
       },
       {
         "hs6": "7002.31",
@@ -17382,7 +17382,7 @@
         "changePct": 15.8,
         "sharePct": 1,
         "dutyPaidUsd": null,
-        "searchText": "700231 7002.31 glass; unworked, in tubes, of fused quartz or other fused silica glass in balls (other than microspheres of heading 7018)…"
+        "searchText": "700231 7002.31 glass; unworked, in tubes, of fused quartz or other fused silica glass in balls (other than microspheres of heading 7018), rods or tubes, unworked"
       },
       {
         "hs6": "7003.19",
@@ -17393,7 +17393,7 @@
         "changePct": -16.3,
         "sharePct": 0.9,
         "dutyPaidUsd": null,
-        "searchText": "700319 7003.19 glass; cast glass and rolled glass, non-wired sheets, (excluding those coloured throughout the mass (body tinted) opacified, flashed or having an absorbent or reflecting layer) cast glass and rolled glass, in sheets or profiles…"
+        "searchText": "700319 7003.19 glass; cast glass and rolled glass, non-wired sheets, (excluding those coloured throughout the mass (body tinted) opacified, flashed or having an absorbent or reflecting layer) cast glass and rolled glass, in sheets or profiles, whether or not having an absorbent, reflecting or non-reflecting layer, but not otherwise worked"
       },
       {
         "hs6": "7019.15",
@@ -17404,7 +17404,7 @@
         "changePct": -7.4,
         "sharePct": 0.8,
         "dutyPaidUsd": null,
-        "searchText": "701915 7019.15 glass fibres; (including glass wool), chemically bonded mats glass fibers (including glass wool) and articles thereof…"
+        "searchText": "701915 7019.15 glass fibres; (including glass wool), chemically bonded mats glass fibers (including glass wool) and articles thereof (for example, yarn, rovings, woven fabrics)"
       },
       {
         "hs6": "7002.20",
@@ -17415,7 +17415,7 @@
         "changePct": 22.4,
         "sharePct": 0.8,
         "dutyPaidUsd": null,
-        "searchText": "700220 7002.20 glass; unworked, in rods glass in balls (other than microspheres of heading 7018)…"
+        "searchText": "700220 7002.20 glass; unworked, in rods glass in balls (other than microspheres of heading 7018), rods or tubes, unworked"
       },
       {
         "hs6": "7017.10",
@@ -17426,7 +17426,7 @@
         "changePct": -40.3,
         "sharePct": 0.8,
         "dutyPaidUsd": null,
-        "searchText": "701710 7017.10 glassware; laboratory, hygienic or pharmaceutical, whether or not graduated or calibrated, of fused quartz or other fused silica laboratory, hygienic or pharmaceutical glassware, whether…"
+        "searchText": "701710 7017.10 glassware; laboratory, hygienic or pharmaceutical, whether or not graduated or calibrated, of fused quartz or other fused silica laboratory, hygienic or pharmaceutical glassware, whether or not graduated or calibrated"
       },
       {
         "hs6": "7016.10",
@@ -17437,7 +17437,7 @@
         "changePct": -26.4,
         "sharePct": 0.7,
         "dutyPaidUsd": null,
-        "searchText": "701610 7016.10 glass cubes and other glass smallwares; whether or not on a backing, for mosaics or similar decorative purposes paving blocks, slabs, bricks, squares, tiles and other…"
+        "searchText": "701610 7016.10 glass cubes and other glass smallwares; whether or not on a backing, for mosaics or similar decorative purposes paving blocks, slabs, bricks, squares, tiles and other articles of pressed or molded glass, whether or not wired, of a kind used for building or construction purposes; glass cubes and other glass smallwares, whether or not on a backing, for mosaics or similar decorative purposes; leaded glass windows and the like; multicellular or foam glass in blocks, panels, plates, shells or similar forms"
       },
       {
         "hs6": "7013.42",
@@ -17448,7 +17448,7 @@
         "changePct": 9.5,
         "sharePct": 0.7,
         "dutyPaidUsd": null,
-        "searchText": "701342 7013.42 glassware of a kind used for table or kitchen purposes (not drinking glasses), of glass having a linear coefficient of expansion not exceeding 5 x 10 (to the minus 6), (or 0.000005) per kelvin within a temperature range of 0-300 degrees c glassware of a kind used for table, kitchen, toilet…"
+        "searchText": "701342 7013.42 glassware of a kind used for table or kitchen purposes (not drinking glasses), of glass having a linear coefficient of expansion not exceeding 5 x 10 (to the minus 6), (or 0.000005) per kelvin within a temperature range of 0-300 degrees c glassware of a kind used for table, kitchen, toilet, office, indoor decoration or similar purposes (other than that of heading 7010 or 7018)"
       },
       {
         "hs6": "7018.10",
@@ -17459,7 +17459,7 @@
         "changePct": -15.5,
         "sharePct": 0.7,
         "dutyPaidUsd": null,
-        "searchText": "701810 7018.10 glass; beads, imitation pearls, imitation precious or semi-precious stones and similar glass smallwares glass beads, imitation pearls, imitation precious or…"
+        "searchText": "701810 7018.10 glass; beads, imitation pearls, imitation precious or semi-precious stones and similar glass smallwares glass beads, imitation pearls, imitation precious or semiprecious stones and similar glass smallwares and articles thereof other than imitation jewelry; glass eyes other than prosthetic articles; statuettes and other ornaments of lamp-worked glass, other than imitation jewelry; glass microspheres not exceeding 1 mm in diameter"
       },
       {
         "hs6": "7016.90",
@@ -17470,7 +17470,7 @@
         "changePct": -7.9,
         "sharePct": 0.7,
         "dutyPaidUsd": null,
-        "searchText": "701690 7016.90 multicellular or foam glass; in blocks, panels, plates, shells or similar forms; paving blocks, slabs, bricks and other articles of pressed or moulded glass paving blocks, slabs, bricks, squares, tiles and other…"
+        "searchText": "701690 7016.90 multicellular or foam glass; in blocks, panels, plates, shells or similar forms; paving blocks, slabs, bricks and other articles of pressed or moulded glass paving blocks, slabs, bricks, squares, tiles and other articles of pressed or molded glass, whether or not wired, of a kind used for building or construction purposes; glass cubes and other glass smallwares, whether or not on a backing, for mosaics or similar decorative purposes; leaded glass windows and the like; multicellular or foam glass in blocks, panels, plates, shells or similar forms"
       },
       {
         "hs6": "7017.20",
@@ -17481,7 +17481,7 @@
         "changePct": 1.2,
         "sharePct": 0.7,
         "dutyPaidUsd": null,
-        "searchText": "701720 7017.20 glassware; laboratory, hygienic or pharmaceutical, whether or not graduated or calibrated, having a linear co-efficient of expansion not over 5 x 10 (to the minus 6), (or 0.000005)) per kelvin with a temperature of 0-300 degrees c laboratory, hygienic or pharmaceutical glassware, whether…"
+        "searchText": "701720 7017.20 glassware; laboratory, hygienic or pharmaceutical, whether or not graduated or calibrated, having a linear co-efficient of expansion not over 5 x 10 (to the minus 6), (or 0.000005)) per kelvin with a temperature of 0-300 degrees c laboratory, hygienic or pharmaceutical glassware, whether or not graduated or calibrated"
       },
       {
         "hs6": "7019.19",
@@ -17492,7 +17492,7 @@
         "changePct": -44.6,
         "sharePct": 0.6,
         "dutyPaidUsd": null,
-        "searchText": "701919 7019.19 glass fibres; (including glass wool), threads and mats, other than mechanically or chemically bonded mats glass fibers (including glass wool) and articles thereof…"
+        "searchText": "701919 7019.19 glass fibres; (including glass wool), threads and mats, other than mechanically or chemically bonded mats glass fibers (including glass wool) and articles thereof (for example, yarn, rovings, woven fabrics)"
       },
       {
         "hs6": "7001.00",
@@ -17503,7 +17503,7 @@
         "changePct": 11.2,
         "sharePct": 0.5,
         "dutyPaidUsd": null,
-        "searchText": "700100 7001.00 glass; cullet and other waste and scrap of glass, excluding glass from cathode ray tubes or other activated glass of heading 85.49, glass in the mass cullet and other waste and scrap of glass, excluding glass…"
+        "searchText": "700100 7001.00 glass; cullet and other waste and scrap of glass, excluding glass from cathode ray tubes or other activated glass of heading 85.49, glass in the mass cullet and other waste and scrap of glass, excluding glass from cathode-ray tubes or other activated glass of heading 8549; glass in the mass"
       },
       {
         "hs6": "7019.66",
@@ -17514,7 +17514,7 @@
         "changePct": 22.3,
         "sharePct": 0.5,
         "dutyPaidUsd": null,
-        "searchText": "701966 7019.66 glass fibres; open woven fabrics of a width exceeding 30cm glass fibers (including glass wool) and articles thereof…"
+        "searchText": "701966 7019.66 glass fibres; open woven fabrics of a width exceeding 30cm glass fibers (including glass wool) and articles thereof (for example, yarn, rovings, woven fabrics)"
       },
       {
         "hs6": "7018.90",
@@ -17525,7 +17525,7 @@
         "changePct": 11.6,
         "sharePct": 0.5,
         "dutyPaidUsd": null,
-        "searchText": "701890 7018.90 glass; articles thereof, statuettes and other ornaments of lamp worked glass, other than imitation jewellery glass beads, imitation pearls, imitation precious or…"
+        "searchText": "701890 7018.90 glass; articles thereof, statuettes and other ornaments of lamp worked glass, other than imitation jewellery glass beads, imitation pearls, imitation precious or semiprecious stones and similar glass smallwares and articles thereof other than imitation jewelry; glass eyes other than prosthetic articles; statuettes and other ornaments of lamp-worked glass, other than imitation jewelry; glass microspheres not exceeding 1 mm in diameter"
       },
       {
         "hs6": "7019.71",
@@ -17536,7 +17536,7 @@
         "changePct": -5.3,
         "sharePct": 0.5,
         "dutyPaidUsd": null,
-        "searchText": "701971 7019.71 glass fibres; chemically bonded fabrics glass fibers (including glass wool) and articles thereof…"
+        "searchText": "701971 7019.71 glass fibres; chemically bonded fabrics glass fibers (including glass wool) and articles thereof (for example, yarn, rovings, woven fabrics)"
       },
       {
         "hs6": "7019.69",
@@ -17547,7 +17547,7 @@
         "changePct": -8.7,
         "sharePct": 0.4,
         "dutyPaidUsd": null,
-        "searchText": "701969 7019.69 glass fibres; fabrics n.e.c. in item no. 7019.6 glass fibers (including glass wool) and articles thereof…"
+        "searchText": "701969 7019.69 glass fibres; fabrics n.e.c. in item no. 7019.6 glass fibers (including glass wool) and articles thereof (for example, yarn, rovings, woven fabrics)"
       },
       {
         "hs6": "7018.20",
@@ -17558,7 +17558,7 @@
         "changePct": 2.2,
         "sharePct": 0.3,
         "dutyPaidUsd": null,
-        "searchText": "701820 7018.20 glass microspheres; not exceeding 1mm in diameter glass beads, imitation pearls, imitation precious or…"
+        "searchText": "701820 7018.20 glass microspheres; not exceeding 1mm in diameter glass beads, imitation pearls, imitation precious or semiprecious stones and similar glass smallwares and articles thereof other than imitation jewelry; glass eyes other than prosthetic articles; statuettes and other ornaments of lamp-worked glass, other than imitation jewelry; glass microspheres not exceeding 1 mm in diameter"
       },
       {
         "hs6": "7005.21",
@@ -17569,7 +17569,7 @@
         "changePct": 95.5,
         "sharePct": 0.3,
         "dutyPaidUsd": null,
-        "searchText": "700521 7005.21 glass; float glass and surface ground or polished glass, in sheets, non-wired, coloured throughout the mass (body tinted), opacified, flashed or merely surface ground float glass and surface ground or polished glass, in…"
+        "searchText": "700521 7005.21 glass; float glass and surface ground or polished glass, in sheets, non-wired, coloured throughout the mass (body tinted), opacified, flashed or merely surface ground float glass and surface ground or polished glass, in sheets, whether or not having an absorbent, reflecting or non-reflecting layer, but not otherwise worked"
       },
       {
         "hs6": "7004.90",
@@ -17580,7 +17580,7 @@
         "changePct": -54.5,
         "sharePct": 0.3,
         "dutyPaidUsd": null,
-        "searchText": "700490 7004.90 glass; drawn and blown, in sheets, (other than glass coloured throughout the mass (body tinted), opacified, flashed or having an absorbent, reflecting or non-reflecting layer) drawn glass and blown glass, in sheets, whether or not…"
+        "searchText": "700490 7004.90 glass; drawn and blown, in sheets, (other than glass coloured throughout the mass (body tinted), opacified, flashed or having an absorbent, reflecting or non-reflecting layer) drawn glass and blown glass, in sheets, whether or not having an absorbent, reflecting or non-reflecting layer, but not otherwise worked"
       },
       {
         "hs6": "7013.91",
@@ -17591,7 +17591,7 @@
         "changePct": -7.7,
         "sharePct": 0.3,
         "dutyPaidUsd": null,
-        "searchText": "701391 7013.91 glassware; n.e.c. in heading no. 7013, of lead crystal glassware of a kind used for table, kitchen, toilet…"
+        "searchText": "701391 7013.91 glassware; n.e.c. in heading no. 7013, of lead crystal glassware of a kind used for table, kitchen, toilet, office, indoor decoration or similar purposes (other than that of heading 7010 or 7018)"
       },
       {
         "hs6": "7019.64",
@@ -17602,7 +17602,7 @@
         "changePct": 18.6,
         "sharePct": 0.3,
         "dutyPaidUsd": null,
-        "searchText": "701964 7019.64 glass fibres; closed woven fabrics, plain weave, of yarns, coated or laminated, (other than rovings) glass fibers (including glass wool) and articles thereof…"
+        "searchText": "701964 7019.64 glass fibres; closed woven fabrics, plain weave, of yarns, coated or laminated, (other than rovings) glass fibers (including glass wool) and articles thereof (for example, yarn, rovings, woven fabrics)"
       },
       {
         "hs6": "7014.00",
@@ -17613,7 +17613,7 @@
         "changePct": -10,
         "sharePct": 0.3,
         "dutyPaidUsd": null,
-        "searchText": "701400 7014.00 glassware; signalling, (not optically worked) signaling glassware and optical elements of glass (other…"
+        "searchText": "701400 7014.00 glassware; signalling, (not optically worked) signaling glassware and optical elements of glass (other than those of heading 7015), not optically worked"
       },
       {
         "hs6": "7019.14",
@@ -17624,7 +17624,7 @@
         "changePct": -21.1,
         "sharePct": 0.2,
         "dutyPaidUsd": null,
-        "searchText": "701914 7019.14 glass fibres; (including glass wool), mechanically bonded mats glass fibers (including glass wool) and articles thereof…"
+        "searchText": "701914 7019.14 glass fibres; (including glass wool), mechanically bonded mats glass fibers (including glass wool) and articles thereof (for example, yarn, rovings, woven fabrics)"
       },
       {
         "hs6": "7019.62",
@@ -17635,7 +17635,7 @@
         "changePct": -5.8,
         "sharePct": 0.2,
         "dutyPaidUsd": null,
-        "searchText": "701962 7019.62 glass fibres; non-woven mechanically bonded fabrics and closed fabrics of rovings glass fibers (including glass wool) and articles thereof…"
+        "searchText": "701962 7019.62 glass fibres; non-woven mechanically bonded fabrics and closed fabrics of rovings glass fibers (including glass wool) and articles thereof (for example, yarn, rovings, woven fabrics)"
       },
       {
         "hs6": "7019.61",
@@ -17646,7 +17646,7 @@
         "changePct": -27.4,
         "sharePct": 0.2,
         "dutyPaidUsd": null,
-        "searchText": "701961 7019.61 glass fibres; mechanically bonded fabrics and closed woven fabrics of rovings glass fibers (including glass wool) and articles thereof…"
+        "searchText": "701961 7019.61 glass fibres; mechanically bonded fabrics and closed woven fabrics of rovings glass fibers (including glass wool) and articles thereof (for example, yarn, rovings, woven fabrics)"
       },
       {
         "hs6": "7002.32",
@@ -17657,7 +17657,7 @@
         "changePct": 14.3,
         "sharePct": 0.2,
         "dutyPaidUsd": null,
-        "searchText": "700232 7002.32 glass; unworked, tubes, of glass having a linear coefficient of expansion not exceeding 5 x 10 (to the minus 6), (or 0.000005) per kelvin within a temperature range of 0-300 degrees c glass in balls (other than microspheres of heading 7018)…"
+        "searchText": "700232 7002.32 glass; unworked, tubes, of glass having a linear coefficient of expansion not exceeding 5 x 10 (to the minus 6), (or 0.000005) per kelvin within a temperature range of 0-300 degrees c glass in balls (other than microspheres of heading 7018), rods or tubes, unworked"
       },
       {
         "hs6": "7019.63",
@@ -17668,7 +17668,7 @@
         "changePct": -23.3,
         "sharePct": 0.1,
         "dutyPaidUsd": null,
-        "searchText": "701963 7019.63 glass fibres; mechanically bonded fabrics and closed woven fabrics, plain weave, of yarns, not coated or laminated (other than rovings) glass fibers (including glass wool) and articles thereof…"
+        "searchText": "701963 7019.63 glass fibres; mechanically bonded fabrics and closed woven fabrics, plain weave, of yarns, not coated or laminated (other than rovings) glass fibers (including glass wool) and articles thereof (for example, yarn, rovings, woven fabrics)"
       },
       {
         "hs6": "7010.20",
@@ -17679,7 +17679,7 @@
         "changePct": -14.7,
         "sharePct": 0.1,
         "dutyPaidUsd": null,
-        "searchText": "701020 7010.20 glass; stoppers, lids and other closures carboys, bottles, flasks, jars, pots, vials, ampoules and…"
+        "searchText": "701020 7010.20 glass; stoppers, lids and other closures carboys, bottles, flasks, jars, pots, vials, ampoules and other containers, of glass, of a kind used for the conveyance or packing of goods; preserving jars of glass; stoppers, lids and other closures, of glass"
       },
       {
         "hs6": "7013.33",
@@ -17690,7 +17690,7 @@
         "changePct": -6.8,
         "sharePct": 0.1,
         "dutyPaidUsd": null,
-        "searchText": "701333 7013.33 glassware; drinking glasses (not stemware), of lead crystal glassware of a kind used for table, kitchen, toilet…"
+        "searchText": "701333 7013.33 glassware; drinking glasses (not stemware), of lead crystal glassware of a kind used for table, kitchen, toilet, office, indoor decoration or similar purposes (other than that of heading 7010 or 7018)"
       },
       {
         "hs6": "7004.20",
@@ -17701,7 +17701,7 @@
         "changePct": -34.5,
         "sharePct": 0.1,
         "dutyPaidUsd": null,
-        "searchText": "700420 7004.20 glass; drawn and blown, in sheets, coloured throughout the mass (body tinted), opacified, flashed or having an absorbent, reflecting or non-reflecting layer, but not otherwise worked drawn glass and blown glass, in sheets, whether or not…"
+        "searchText": "700420 7004.20 glass; drawn and blown, in sheets, coloured throughout the mass (body tinted), opacified, flashed or having an absorbent, reflecting or non-reflecting layer, but not otherwise worked drawn glass and blown glass, in sheets, whether or not having an absorbent, reflecting or non-reflecting layer, but not otherwise worked"
       },
       {
         "hs6": "7010.10",
@@ -17712,7 +17712,7 @@
         "changePct": -1.9,
         "sharePct": 0.1,
         "dutyPaidUsd": null,
-        "searchText": "701010 7010.10 glass; ampoules, of a kind used for the conveyance or packing of goods carboys, bottles, flasks, jars, pots, vials, ampoules and…"
+        "searchText": "701010 7010.10 glass; ampoules, of a kind used for the conveyance or packing of goods carboys, bottles, flasks, jars, pots, vials, ampoules and other containers, of glass, of a kind used for the conveyance or packing of goods; preserving jars of glass; stoppers, lids and other closures, of glass"
       },
       {
         "hs6": "7003.12",
@@ -17723,7 +17723,7 @@
         "changePct": 12.3,
         "sharePct": 0.1,
         "dutyPaidUsd": null,
-        "searchText": "700312 7003.12 glass; cast glass and rolled glass, non-wired sheets, coloured through the mass (body tinted), opacified, flashed or having an absorbent, reflecting or non-reflecting layer cast glass and rolled glass, in sheets or profiles…"
+        "searchText": "700312 7003.12 glass; cast glass and rolled glass, non-wired sheets, coloured through the mass (body tinted), opacified, flashed or having an absorbent, reflecting or non-reflecting layer cast glass and rolled glass, in sheets or profiles, whether or not having an absorbent, reflecting or non-reflecting layer, but not otherwise worked"
       },
       {
         "hs6": "7002.10",
@@ -17734,7 +17734,7 @@
         "changePct": -5.3,
         "sharePct": 0.1,
         "dutyPaidUsd": null,
-        "searchText": "700210 7002.10 glass; unworked, in balls (other than microspheres of heading no. 7018) glass in balls (other than microspheres of heading 7018)…"
+        "searchText": "700210 7002.10 glass; unworked, in balls (other than microspheres of heading no. 7018) glass in balls (other than microspheres of heading 7018), rods or tubes, unworked"
       },
       {
         "hs6": "7015.90",
@@ -17745,7 +17745,7 @@
         "changePct": -22.5,
         "sharePct": 0.1,
         "dutyPaidUsd": null,
-        "searchText": "701590 7015.90 glasses; clock or watch and similar, glasses for non-corrective spectacles, curved, bent, hollowed etc, (not optically worked), hollow glass spheres and segments, for the manufacture of such glasses clock or watch glasses and similar glasses, glasses for…"
+        "searchText": "701590 7015.90 glasses; clock or watch and similar, glasses for non-corrective spectacles, curved, bent, hollowed etc, (not optically worked), hollow glass spheres and segments, for the manufacture of such glasses clock or watch glasses and similar glasses, glasses for noncorrective or corrective spectacles, curved, bent, hollowed or the like, not optically worked; hollow glass spheres and their segments, for the manufacture of such glasses"
       },
       {
         "hs6": "7013.22",
@@ -17756,7 +17756,7 @@
         "changePct": -30.4,
         "sharePct": 0.1,
         "dutyPaidUsd": null,
-        "searchText": "701322 7013.22 stemware drinking glasses, of lead crystal glassware of a kind used for table, kitchen, toilet…"
+        "searchText": "701322 7013.22 stemware drinking glasses, of lead crystal glassware of a kind used for table, kitchen, toilet, office, indoor decoration or similar purposes (other than that of heading 7010 or 7018)"
       },
       {
         "hs6": "7013.41",
@@ -17767,7 +17767,7 @@
         "changePct": -28.4,
         "sharePct": 0.1,
         "dutyPaidUsd": null,
-        "searchText": "701341 7013.41 glassware of a kind used for table or kitchen purposes (not drinking glasses), of lead crystal glassware of a kind used for table, kitchen, toilet…"
+        "searchText": "701341 7013.41 glassware of a kind used for table or kitchen purposes (not drinking glasses), of lead crystal glassware of a kind used for table, kitchen, toilet, office, indoor decoration or similar purposes (other than that of heading 7010 or 7018)"
       },
       {
         "hs6": "7013.10",
@@ -17778,7 +17778,7 @@
         "changePct": -44.2,
         "sharePct": 0.1,
         "dutyPaidUsd": null,
-        "searchText": "701310 7013.10 glassware; of a kind used for table, kitchen, toilet, office, indoor decoration or similar purposes (other than of heading no. 7010 or 7018), of glass-ceramics glassware of a kind used for table, kitchen, toilet…"
+        "searchText": "701310 7013.10 glassware; of a kind used for table, kitchen, toilet, office, indoor decoration or similar purposes (other than of heading no. 7010 or 7018), of glass-ceramics glassware of a kind used for table, kitchen, toilet, office, indoor decoration or similar purposes (other than that of heading 7010 or 7018)"
       },
       {
         "hs6": "7019.73",
@@ -17789,7 +17789,7 @@
         "changePct": -17.8,
         "sharePct": 0.1,
         "dutyPaidUsd": null,
-        "searchText": "701973 7019.73 glass fibres; chemically bonded fabrics, open fabrics n.e.c. in heading 7019 glass fibers (including glass wool) and articles thereof…"
+        "searchText": "701973 7019.73 glass fibres; chemically bonded fabrics, open fabrics n.e.c. in heading 7019 glass fibers (including glass wool) and articles thereof (for example, yarn, rovings, woven fabrics)"
       },
       {
         "hs6": "7002.39",
@@ -17800,7 +17800,7 @@
         "changePct": -2.7,
         "sharePct": 0.1,
         "dutyPaidUsd": null,
-        "searchText": "700239 7002.39 glass; unworked, in tubes, other than of glass having a linear coefficient of expansion not exceeding 5 x 10 (to the minus 6, (or 0.000005) ) per kelvin within a temperature range of 0-300 degrees c, not fused quartz or other fused silica glass in balls (other than microspheres of heading 7018)…"
+        "searchText": "700239 7002.39 glass; unworked, in tubes, other than of glass having a linear coefficient of expansion not exceeding 5 x 10 (to the minus 6, (or 0.000005) ) per kelvin within a temperature range of 0-300 degrees c, not fused quartz or other fused silica glass in balls (other than microspheres of heading 7018), rods or tubes, unworked"
       },
       {
         "hs6": "7005.30",
@@ -17811,7 +17811,7 @@
         "changePct": -8.2,
         "sharePct": 0,
         "dutyPaidUsd": null,
-        "searchText": "700530 7005.30 glass; float glass and surface ground or polished glass, in sheets, wired glass, whether or not having an absorbent or reflecting layer float glass and surface ground or polished glass, in…"
+        "searchText": "700530 7005.30 glass; float glass and surface ground or polished glass, in sheets, wired glass, whether or not having an absorbent or reflecting layer float glass and surface ground or polished glass, in sheets, whether or not having an absorbent, reflecting or non-reflecting layer, but not otherwise worked"
       },
       {
         "hs6": "7019.65",
@@ -17822,7 +17822,7 @@
         "changePct": -7.2,
         "sharePct": 0,
         "dutyPaidUsd": null,
-        "searchText": "701965 7019.65 glass fibres; open woven fabrics of a width not exceeding 30cm glass fibers (including glass wool) and articles thereof…"
+        "searchText": "701965 7019.65 glass fibres; open woven fabrics of a width not exceeding 30cm glass fibers (including glass wool) and articles thereof (for example, yarn, rovings, woven fabrics)"
       },
       {
         "hs6": "7003.30",
@@ -17833,7 +17833,7 @@
         "changePct": 67.8,
         "sharePct": 0,
         "dutyPaidUsd": null,
-        "searchText": "700330 7003.30 glass; cast glass and rolled glass, profiles, not otherwise worked cast glass and rolled glass, in sheets or profiles…"
+        "searchText": "700330 7003.30 glass; cast glass and rolled glass, profiles, not otherwise worked cast glass and rolled glass, in sheets or profiles, whether or not having an absorbent, reflecting or non-reflecting layer, but not otherwise worked"
       },
       {
         "hs6": "7011.10",
@@ -17844,7 +17844,7 @@
         "changePct": -19.4,
         "sharePct": 0,
         "dutyPaidUsd": null,
-        "searchText": "701110 7011.10 glass envelopes (including bulbs and tubes); open, and glass parts thereof, without fittings, for electric lighting glass envelopes (including bulbs and tubes), open, and…"
+        "searchText": "701110 7011.10 glass envelopes (including bulbs and tubes); open, and glass parts thereof, without fittings, for electric lighting glass envelopes (including bulbs and tubes), open, and glass parts thereof, without fittings, for electric lamps and light sources, cathode-ray tubes or the like"
       },
       {
         "hs6": "7011.90",
@@ -17855,7 +17855,7 @@
         "changePct": -49,
         "sharePct": 0,
         "dutyPaidUsd": null,
-        "searchText": "701190 7011.90 glass envelopes (including bulbs and tubes); open, and glass parts thereof, without fittings, other than for electric lighting and cathode-ray tubes glass envelopes (including bulbs and tubes), open, and…"
+        "searchText": "701190 7011.90 glass envelopes (including bulbs and tubes); open, and glass parts thereof, without fittings, other than for electric lighting and cathode-ray tubes glass envelopes (including bulbs and tubes), open, and glass parts thereof, without fittings, for electric lamps and light sources, cathode-ray tubes or the like"
       },
       {
         "hs6": "7019.72",
@@ -17866,7 +17866,7 @@
         "changePct": 221.9,
         "sharePct": 0,
         "dutyPaidUsd": null,
-        "searchText": "701972 7019.72 glass fibres; chemically bonded fabrics, closed fabrics n.e.c. in heading 7019 glass fibers (including glass wool) and articles thereof…"
+        "searchText": "701972 7019.72 glass fibres; chemically bonded fabrics, closed fabrics n.e.c. in heading 7019 glass fibers (including glass wool) and articles thereof (for example, yarn, rovings, woven fabrics)"
       },
       {
         "hs6": "7003.20",
@@ -17877,7 +17877,7 @@
         "changePct": 7.8,
         "sharePct": 0,
         "dutyPaidUsd": null,
-        "searchText": "700320 7003.20 glass; cast glass and rolled glass, wired sheets, whether or not having an absorbent or reflecting layer but not otherwise worked cast glass and rolled glass, in sheets or profiles…"
+        "searchText": "700320 7003.20 glass; cast glass and rolled glass, wired sheets, whether or not having an absorbent or reflecting layer but not otherwise worked cast glass and rolled glass, in sheets or profiles, whether or not having an absorbent, reflecting or non-reflecting layer, but not otherwise worked"
       },
       {
         "hs6": "7011.20",
@@ -17888,7 +17888,7 @@
         "changePct": 9.4,
         "sharePct": 0,
         "dutyPaidUsd": null,
-        "searchText": "701120 7011.20 glass envelopes (including bulbs and tubes); open, and glass parts thereof, without fittings, for cathode-ray tubes glass envelopes (including bulbs and tubes), open, and…"
+        "searchText": "701120 7011.20 glass envelopes (including bulbs and tubes); open, and glass parts thereof, without fittings, for cathode-ray tubes glass envelopes (including bulbs and tubes), open, and glass parts thereof, without fittings, for electric lamps and light sources, cathode-ray tubes or the like"
       },
       {
         "hs6": "7015.10",
@@ -17899,7 +17899,7 @@
         "changePct": -98.4,
         "sharePct": 0,
         "dutyPaidUsd": null,
-        "searchText": "701510 7015.10 glasses for corrective spectacles; curved, bent, hollowed or the like, not optically worked clock or watch glasses and similar glasses, glasses for…"
+        "searchText": "701510 7015.10 glasses for corrective spectacles; curved, bent, hollowed or the like, not optically worked clock or watch glasses and similar glasses, glasses for noncorrective or corrective spectacles, curved, bent, hollowed or the like, not optically worked; hollow glass spheres and their segments, for the manufacture of such glasses"
       }
     ],
     "byHeadingCountry": [
@@ -23962,7 +23962,7 @@
           "7007": {
             "importsUsd": 395846058,
             "withUsmca": {
-              "totals": ["43%", "42.4%", "42.5%", "54.9% if truck or bus part", "54.9% if car or light-truck part", "54.9% if truck or bus part"],
+              "totals": ["43%", "42.4%", "42.5%", "54.9% if truck or bus part", "54.9% if car or light-truck part"],
               "breakdown": [
                 {
                   "base": "5.5%",
@@ -23994,7 +23994,7 @@
                   "lineCount": 1,
                   "extra": "Not a truck or bus part: +12.5% (9903.05.31) + 25% (9903.88.03). Truck or bus part: +25% (9903.88.03) + 25% (9903.74.08)",
                   "preference": "None",
-                  "total": "42.4% if not a truck or bus part / 54.9% if truck or bus part"
+                  "total": "42.4% not a truck or bus part / 54.9% truck or bus part"
                 },
                 {
                   "base": "4.9%",
@@ -24007,7 +24007,7 @@
               ]
             },
             "withoutUsmca": {
-              "totals": ["43%", "42.4%", "42.5%", "54.9% if truck or bus part", "54.9% if car or light-truck part", "54.9% if truck or bus part"],
+              "totals": ["43%", "42.4%", "42.5%", "54.9% if truck or bus part", "54.9% if car or light-truck part"],
               "breakdown": [
                 {
                   "base": "5.5%",
@@ -24039,7 +24039,7 @@
                   "lineCount": 1,
                   "extra": "Not a truck or bus part: +12.5% (9903.05.31) + 25% (9903.88.03). Truck or bus part: +25% (9903.88.03) + 25% (9903.74.08)",
                   "preference": "None",
-                  "total": "42.4% if not a truck or bus part / 54.9% if truck or bus part"
+                  "total": "42.4% not a truck or bus part / 54.9% truck or bus part"
                 },
                 {
                   "base": "4.9%",
@@ -25434,9 +25434,9 @@
                   "base": "5%",
                   "lines": ["7020.00.60.00"],
                   "lineCount": 1,
-                  "extra": "Not a quartz surface product: +12.5% (9903.05.31) + 25% (9903.88.03). Quartz surface product within quota: +12.5% (9903.05.31) + 25% (9903.88.03) + 25% (9903.45.30). Quartz surface product over quota: +12.5% (9903.05.31) + 25% (9903.88.03) + 50% (9903.45.31)",
+                  "extra": "Not quartz surface: +12.5% (9903.05.31) + 25% (9903.88.03). Quartz surface product within quota: +12.5% (9903.05.31) + 25% (9903.88.03) + 25% (9903.45.30). Quartz surface product over quota: +12.5% (9903.05.31) + 25% (9903.88.03) + 50% (9903.45.31)",
                   "preference": "None",
-                  "total": "42.5% not a quartz surface product / 67.5% quartz surface product within quota / 92.5% quartz surface product over quota"
+                  "total": "42.5% not quartz surface / 67.5% quartz surface product within quota / 92.5% quartz surface product over quota"
                 }
               ]
             },
@@ -25463,9 +25463,9 @@
                   "base": "5%",
                   "lines": ["7020.00.60.00"],
                   "lineCount": 1,
-                  "extra": "Not a quartz surface product: +12.5% (9903.05.31) + 25% (9903.88.03). Quartz surface product within quota: +12.5% (9903.05.31) + 25% (9903.88.03) + 25% (9903.45.30). Quartz surface product over quota: +12.5% (9903.05.31) + 25% (9903.88.03) + 50% (9903.45.31)",
+                  "extra": "Not quartz surface: +12.5% (9903.05.31) + 25% (9903.88.03). Quartz surface product within quota: +12.5% (9903.05.31) + 25% (9903.88.03) + 25% (9903.45.30). Quartz surface product over quota: +12.5% (9903.05.31) + 25% (9903.88.03) + 50% (9903.45.31)",
                   "preference": "None",
-                  "total": "42.5% not a quartz surface product / 67.5% quartz surface product within quota / 92.5% quartz surface product over quota"
+                  "total": "42.5% not quartz surface / 67.5% quartz surface product within quota / 92.5% quartz surface product over quota"
                 }
               ]
             }
@@ -26034,7 +26034,7 @@
               ]
             },
             "withoutUsmca": {
-              "totals": ["15.5%", "14.9%", "15%", "29.9% if truck or bus part", "29.9% if car or light-truck part"],
+              "totals": ["15.5%", "14.9%", "15%", "29.9% if truck or bus part", "29.9% if car or light-truck part or truck or bus part"],
               "breakdown": [
                 {
                   "base": "5.5%",
@@ -26066,15 +26066,15 @@
                   "lineCount": 1,
                   "extra": "Not a truck or bus part: +10%. Truck or bus part: +25%",
                   "preference": "None",
-                  "total": "14.9% if not a truck or bus part / 29.9% if truck or bus part"
+                  "total": "14.9% not a truck or bus part / 29.9% truck or bus part"
                 },
                 {
                   "base": "4.9%",
                   "lines": ["7007.21.51.00"],
                   "lineCount": 1,
-                  "extra": "Not a vehicle part: +10%. Car or light-truck part: +25%",
+                  "extra": "Not a vehicle part: +10%. Car or light-truck part or truck or bus part: +25%",
                   "preference": "None",
-                  "total": "14.9% not a vehicle part / 29.9% car or light-truck part"
+                  "total": "14.9% not a vehicle part / 29.9% car or light-truck part or truck or bus part"
                 }
               ]
             }
@@ -26140,7 +26140,7 @@
               ]
             },
             "withoutUsmca": {
-              "totals": ["16.5%", "17.8%", "13.9%", "28.9% if car or light-truck part"],
+              "totals": ["16.5%", "17.8%", "13.9%", "28.9% if car or light-truck part or truck or bus part"],
               "breakdown": [
                 {
                   "base": "6.5%",
@@ -26162,9 +26162,9 @@
                   "base": "3.9%",
                   "lines": ["7009.10.00.00"],
                   "lineCount": 1,
-                  "extra": "Not a vehicle part: +10%. Car or light-truck part: +25%",
+                  "extra": "Not a vehicle part: +10%. Car or light-truck part or truck or bus part: +25%",
                   "preference": "None",
-                  "total": "13.9% not a vehicle part / 28.9% car or light-truck part"
+                  "total": "13.9% not a vehicle part / 28.9% car or light-truck part or truck or bus part"
                 }
               ]
             }
@@ -27892,7 +27892,7 @@
           "7007": {
             "importsUsd": 32685346,
             "withUsmca": {
-              "totals": ["10%", "29.9% if truck or bus part", "15% if car or light-truck part", "29.9% if truck or bus part"],
+              "totals": ["10%", "29.9% if truck or bus part", "15% if car or light-truck part"],
               "breakdown": [
                 {
                   "base": "5.5%",
@@ -27924,7 +27924,7 @@
                   "lineCount": 1,
                   "extra": "Not a truck or bus part: 10% in place of base. Truck or bus part: +25%",
                   "preference": "None",
-                  "total": "10% if not a truck or bus part / 29.9% if truck or bus part"
+                  "total": "10% not a truck or bus part / 29.9% truck or bus part"
                 },
                 {
                   "base": "4.9%",
@@ -27937,7 +27937,7 @@
               ]
             },
             "withoutUsmca": {
-              "totals": ["10%", "29.9% if truck or bus part", "15% if car or light-truck part", "29.9% if truck or bus part"],
+              "totals": ["10%", "29.9% if truck or bus part", "15% if car or light-truck part"],
               "breakdown": [
                 {
                   "base": "5.5%",
@@ -27969,7 +27969,7 @@
                   "lineCount": 1,
                   "extra": "Not a truck or bus part: 10% in place of base. Truck or bus part: +25%",
                   "preference": "None",
-                  "total": "10% if not a truck or bus part / 29.9% if truck or bus part"
+                  "total": "10% not a truck or bus part / 29.9% truck or bus part"
                 },
                 {
                   "base": "4.9%",
@@ -29224,9 +29224,9 @@
                   "base": "5%",
                   "lines": ["7020.00.60.00"],
                   "lineCount": 1,
-                  "extra": "Not a quartz surface product: 10% in place of base. Quartz surface product within quota: 10% in place of base (9903.05.39) + 25% (9903.45.30). Quartz surface product over quota: 10% in place of base (9903.05.39) + 50% (9903.45.31)",
+                  "extra": "Not quartz surface: 10% in place of base. Quartz surface product within quota: 10% in place of base (9903.05.39) + 25% (9903.45.30). Quartz surface product over quota: 10% in place of base (9903.05.39) + 50% (9903.45.31)",
                   "preference": "None",
-                  "total": "10% not a quartz surface product / 35% quartz surface product within quota / 60% quartz surface product over quota"
+                  "total": "10% not quartz surface / 35% quartz surface product within quota / 60% quartz surface product over quota"
                 }
               ]
             },
@@ -29253,9 +29253,9 @@
                   "base": "5%",
                   "lines": ["7020.00.60.00"],
                   "lineCount": 1,
-                  "extra": "Not a quartz surface product: 10% in place of base. Quartz surface product within quota: 10% in place of base (9903.05.39) + 25% (9903.45.30). Quartz surface product over quota: 10% in place of base (9903.05.39) + 50% (9903.45.31)",
+                  "extra": "Not quartz surface: 10% in place of base. Quartz surface product within quota: 10% in place of base (9903.05.39) + 25% (9903.45.30). Quartz surface product over quota: 10% in place of base (9903.05.39) + 50% (9903.45.31)",
                   "preference": "None",
-                  "total": "10% not a quartz surface product / 35% quartz surface product within quota / 60% quartz surface product over quota"
+                  "total": "10% not quartz surface / 35% quartz surface product within quota / 60% quartz surface product over quota"
                 }
               ]
             }
@@ -29829,7 +29829,7 @@
               ]
             },
             "withoutUsmca": {
-              "totals": ["15.5%", "14.9%", "15%", "29.9% if truck or bus part", "29.9% if car or light-truck part"],
+              "totals": ["15.5%", "14.9%", "15%", "29.9% if truck or bus part", "29.9% if car or light-truck part or truck or bus part"],
               "breakdown": [
                 {
                   "base": "5.5%",
@@ -29861,15 +29861,15 @@
                   "lineCount": 1,
                   "extra": "Not a truck or bus part: +10%. Truck or bus part: +25%",
                   "preference": "None",
-                  "total": "14.9% if not a truck or bus part / 29.9% if truck or bus part"
+                  "total": "14.9% not a truck or bus part / 29.9% truck or bus part"
                 },
                 {
                   "base": "4.9%",
                   "lines": ["7007.21.51.00"],
                   "lineCount": 1,
-                  "extra": "Not a vehicle part: +10%. Car or light-truck part: +25%",
+                  "extra": "Not a vehicle part: +10%. Car or light-truck part or truck or bus part: +25%",
                   "preference": "None",
-                  "total": "14.9% not a vehicle part / 29.9% car or light-truck part"
+                  "total": "14.9% not a vehicle part / 29.9% car or light-truck part or truck or bus part"
                 }
               ]
             }
@@ -29935,7 +29935,7 @@
               ]
             },
             "withoutUsmca": {
-              "totals": ["16.5%", "17.8%", "13.9%", "28.9% if car or light-truck part"],
+              "totals": ["16.5%", "17.8%", "13.9%", "28.9% if car or light-truck part or truck or bus part"],
               "breakdown": [
                 {
                   "base": "6.5%",
@@ -29957,9 +29957,9 @@
                   "base": "3.9%",
                   "lines": ["7009.10.00.00"],
                   "lineCount": 1,
-                  "extra": "Not a vehicle part: +10%. Car or light-truck part: +25%",
+                  "extra": "Not a vehicle part: +10%. Car or light-truck part or truck or bus part: +25%",
                   "preference": "None",
-                  "total": "13.9% not a vehicle part / 28.9% car or light-truck part"
+                  "total": "13.9% not a vehicle part / 28.9% car or light-truck part or truck or bus part"
                 }
               ]
             }
@@ -31722,7 +31722,7 @@
           "7007": {
             "importsUsd": 249037172,
             "withUsmca": {
-              "totals": ["18%", "17.4%", "17.5%", "29.9% if truck or bus part", "29.9% if car or light-truck part"],
+              "totals": ["18%", "17.4%", "17.5%", "29.9% if truck or bus part", "29.9% if car or light-truck part or truck or bus part"],
               "breakdown": [
                 {
                   "base": "5.5%",
@@ -31754,20 +31754,20 @@
                   "lineCount": 1,
                   "extra": "Not a truck or bus part: +12.5%. Truck or bus part: +25%",
                   "preference": "None",
-                  "total": "17.4% if not a truck or bus part / 29.9% if truck or bus part"
+                  "total": "17.4% not a truck or bus part / 29.9% truck or bus part"
                 },
                 {
                   "base": "4.9%",
                   "lines": ["7007.21.51.00"],
                   "lineCount": 1,
-                  "extra": "Not a vehicle part: +12.5%. Car or light-truck part: +25%",
+                  "extra": "Not a vehicle part: +12.5%. Car or light-truck part or truck or bus part: +25%",
                   "preference": "None",
-                  "total": "17.4% not a vehicle part / 29.9% car or light-truck part"
+                  "total": "17.4% not a vehicle part / 29.9% car or light-truck part or truck or bus part"
                 }
               ]
             },
             "withoutUsmca": {
-              "totals": ["18%", "17.4%", "17.5%", "29.9% if truck or bus part", "29.9% if car or light-truck part"],
+              "totals": ["18%", "17.4%", "17.5%", "29.9% if truck or bus part", "29.9% if car or light-truck part or truck or bus part"],
               "breakdown": [
                 {
                   "base": "5.5%",
@@ -31799,15 +31799,15 @@
                   "lineCount": 1,
                   "extra": "Not a truck or bus part: +12.5%. Truck or bus part: +25%",
                   "preference": "None",
-                  "total": "17.4% if not a truck or bus part / 29.9% if truck or bus part"
+                  "total": "17.4% not a truck or bus part / 29.9% truck or bus part"
                 },
                 {
                   "base": "4.9%",
                   "lines": ["7007.21.51.00"],
                   "lineCount": 1,
-                  "extra": "Not a vehicle part: +12.5%. Car or light-truck part: +25%",
+                  "extra": "Not a vehicle part: +12.5%. Car or light-truck part or truck or bus part: +25%",
                   "preference": "None",
-                  "total": "17.4% not a vehicle part / 29.9% car or light-truck part"
+                  "total": "17.4% not a vehicle part / 29.9% car or light-truck part or truck or bus part"
                 }
               ]
             }
@@ -31844,7 +31844,7 @@
           "7009": {
             "importsUsd": 96063233,
             "withUsmca": {
-              "totals": ["19%", "20.3%", "16.4%", "28.9% if car or light-truck part"],
+              "totals": ["19%", "20.3%", "16.4%", "28.9% if car or light-truck part or truck or bus part"],
               "breakdown": [
                 {
                   "base": "6.5%",
@@ -31866,14 +31866,14 @@
                   "base": "3.9%",
                   "lines": ["7009.10.00.00"],
                   "lineCount": 1,
-                  "extra": "Not a vehicle part: +12.5%. Car or light-truck part: +25%",
+                  "extra": "Not a vehicle part: +12.5%. Car or light-truck part or truck or bus part: +25%",
                   "preference": "None",
-                  "total": "16.4% not a vehicle part / 28.9% car or light-truck part"
+                  "total": "16.4% not a vehicle part / 28.9% car or light-truck part or truck or bus part"
                 }
               ]
             },
             "withoutUsmca": {
-              "totals": ["19%", "20.3%", "16.4%", "28.9% if car or light-truck part"],
+              "totals": ["19%", "20.3%", "16.4%", "28.9% if car or light-truck part or truck or bus part"],
               "breakdown": [
                 {
                   "base": "6.5%",
@@ -31895,9 +31895,9 @@
                   "base": "3.9%",
                   "lines": ["7009.10.00.00"],
                   "lineCount": 1,
-                  "extra": "Not a vehicle part: +12.5%. Car or light-truck part: +25%",
+                  "extra": "Not a vehicle part: +12.5%. Car or light-truck part or truck or bus part: +25%",
                   "preference": "None",
-                  "total": "16.4% not a vehicle part / 28.9% car or light-truck part"
+                  "total": "16.4% not a vehicle part / 28.9% car or light-truck part or truck or bus part"
                 }
               ]
             }
@@ -33096,9 +33096,9 @@
                   "base": "5%",
                   "lines": ["7020.00.60.00"],
                   "lineCount": 1,
-                  "extra": "Not a quartz surface product: +12.5%. Quartz surface product within quota: +12.5% (9903.05.84) + 25% (9903.45.30). Quartz surface product over quota: +12.5% (9903.05.84) + 50% (9903.45.31)",
+                  "extra": "Not quartz surface: +12.5%. Quartz surface product within quota: +12.5% (9903.05.84) + 25% (9903.45.30). Quartz surface product over quota: +12.5% (9903.05.84) + 50% (9903.45.31)",
                   "preference": "None",
-                  "total": "17.5% not a quartz surface product / 42.5% quartz surface product within quota / 67.5% quartz surface product over quota"
+                  "total": "17.5% not quartz surface / 42.5% quartz surface product within quota / 67.5% quartz surface product over quota"
                 }
               ]
             },
@@ -33125,9 +33125,9 @@
                   "base": "5%",
                   "lines": ["7020.00.60.00"],
                   "lineCount": 1,
-                  "extra": "Not a quartz surface product: +12.5%. Quartz surface product within quota: +12.5% (9903.05.84) + 25% (9903.45.30). Quartz surface product over quota: +12.5% (9903.05.84) + 50% (9903.45.31)",
+                  "extra": "Not quartz surface: +12.5%. Quartz surface product within quota: +12.5% (9903.05.84) + 25% (9903.45.30). Quartz surface product over quota: +12.5% (9903.05.84) + 50% (9903.45.31)",
                   "preference": "None",
-                  "total": "17.5% not a quartz surface product / 42.5% quartz surface product within quota / 67.5% quartz surface product over quota"
+                  "total": "17.5% not quartz surface / 42.5% quartz surface product within quota / 67.5% quartz surface product over quota"
                 }
               ]
             }
@@ -33658,7 +33658,7 @@
           "7007": {
             "importsUsd": 312884914,
             "withUsmca": {
-              "totals": ["15.5%", "14.9%", "15%", "29.9% if truck or bus part", "29.9% if car or light-truck part"],
+              "totals": ["15.5%", "14.9%", "15%", "29.9% if truck or bus part", "29.9% if car or light-truck part or truck or bus part"],
               "breakdown": [
                 {
                   "base": "5.5%",
@@ -33690,20 +33690,20 @@
                   "lineCount": 1,
                   "extra": "Not a truck or bus part: +10%. Truck or bus part: +25%",
                   "preference": "None",
-                  "total": "14.9% if not a truck or bus part / 29.9% if truck or bus part"
+                  "total": "14.9% not a truck or bus part / 29.9% truck or bus part"
                 },
                 {
                   "base": "4.9%",
                   "lines": ["7007.21.51.00"],
                   "lineCount": 1,
-                  "extra": "Not a vehicle part: +10%. Car or light-truck part: +25%",
+                  "extra": "Not a vehicle part: +10%. Car or light-truck part or truck or bus part: +25%",
                   "preference": "None",
-                  "total": "14.9% not a vehicle part / 29.9% car or light-truck part"
+                  "total": "14.9% not a vehicle part / 29.9% car or light-truck part or truck or bus part"
                 }
               ]
             },
             "withoutUsmca": {
-              "totals": ["15.5%", "14.9%", "15%", "29.9% if truck or bus part", "29.9% if car or light-truck part"],
+              "totals": ["15.5%", "14.9%", "15%", "29.9% if truck or bus part", "29.9% if car or light-truck part or truck or bus part"],
               "breakdown": [
                 {
                   "base": "5.5%",
@@ -33735,15 +33735,15 @@
                   "lineCount": 1,
                   "extra": "Not a truck or bus part: +10%. Truck or bus part: +25%",
                   "preference": "None",
-                  "total": "14.9% if not a truck or bus part / 29.9% if truck or bus part"
+                  "total": "14.9% not a truck or bus part / 29.9% truck or bus part"
                 },
                 {
                   "base": "4.9%",
                   "lines": ["7007.21.51.00"],
                   "lineCount": 1,
-                  "extra": "Not a vehicle part: +10%. Car or light-truck part: +25%",
+                  "extra": "Not a vehicle part: +10%. Car or light-truck part or truck or bus part: +25%",
                   "preference": "None",
-                  "total": "14.9% not a vehicle part / 29.9% car or light-truck part"
+                  "total": "14.9% not a vehicle part / 29.9% car or light-truck part or truck or bus part"
                 }
               ]
             }
@@ -33780,7 +33780,7 @@
           "7009": {
             "importsUsd": 6515830,
             "withUsmca": {
-              "totals": ["16.5%", "17.8%", "13.9%", "28.9% if car or light-truck part"],
+              "totals": ["16.5%", "17.8%", "13.9%", "28.9% if car or light-truck part or truck or bus part"],
               "breakdown": [
                 {
                   "base": "6.5%",
@@ -33802,14 +33802,14 @@
                   "base": "3.9%",
                   "lines": ["7009.10.00.00"],
                   "lineCount": 1,
-                  "extra": "Not a vehicle part: +10%. Car or light-truck part: +25%",
+                  "extra": "Not a vehicle part: +10%. Car or light-truck part or truck or bus part: +25%",
                   "preference": "None",
-                  "total": "13.9% not a vehicle part / 28.9% car or light-truck part"
+                  "total": "13.9% not a vehicle part / 28.9% car or light-truck part or truck or bus part"
                 }
               ]
             },
             "withoutUsmca": {
-              "totals": ["16.5%", "17.8%", "13.9%", "28.9% if car or light-truck part"],
+              "totals": ["16.5%", "17.8%", "13.9%", "28.9% if car or light-truck part or truck or bus part"],
               "breakdown": [
                 {
                   "base": "6.5%",
@@ -33831,9 +33831,9 @@
                   "base": "3.9%",
                   "lines": ["7009.10.00.00"],
                   "lineCount": 1,
-                  "extra": "Not a vehicle part: +10%. Car or light-truck part: +25%",
+                  "extra": "Not a vehicle part: +10%. Car or light-truck part or truck or bus part: +25%",
                   "preference": "None",
-                  "total": "13.9% not a vehicle part / 28.9% car or light-truck part"
+                  "total": "13.9% not a vehicle part / 28.9% car or light-truck part or truck or bus part"
                 }
               ]
             }
@@ -35032,9 +35032,9 @@
                   "base": "5%",
                   "lines": ["7020.00.60.00"],
                   "lineCount": 1,
-                  "extra": "Not a quartz surface product: +10%. Quartz surface product within quota: +10% (9903.05.54) + 25% (9903.45.30). Quartz surface product over quota: +10% (9903.05.54) + 50% (9903.45.31)",
+                  "extra": "Not quartz surface: +10%. Quartz surface product within quota: +10% (9903.05.54) + 25% (9903.45.30). Quartz surface product over quota: +10% (9903.05.54) + 50% (9903.45.31)",
                   "preference": "None",
-                  "total": "15% not a quartz surface product / 40% quartz surface product within quota / 65% quartz surface product over quota"
+                  "total": "15% not quartz surface / 40% quartz surface product within quota / 65% quartz surface product over quota"
                 }
               ]
             },
@@ -35061,9 +35061,9 @@
                   "base": "5%",
                   "lines": ["7020.00.60.00"],
                   "lineCount": 1,
-                  "extra": "Not a quartz surface product: +10%. Quartz surface product within quota: +10% (9903.05.54) + 25% (9903.45.30). Quartz surface product over quota: +10% (9903.05.54) + 50% (9903.45.31)",
+                  "extra": "Not quartz surface: +10%. Quartz surface product within quota: +10% (9903.05.54) + 25% (9903.45.30). Quartz surface product over quota: +10% (9903.05.54) + 50% (9903.45.31)",
                   "preference": "None",
-                  "total": "15% not a quartz surface product / 40% quartz surface product within quota / 65% quartz surface product over quota"
+                  "total": "15% not quartz surface / 40% quartz surface product within quota / 65% quartz surface product over quota"
                 }
               ]
             }
@@ -35594,7 +35594,7 @@
           "7007": {
             "importsUsd": 2339150,
             "withUsmca": {
-              "totals": ["15.5%", "14.9%", "15%", "29.9% if truck or bus part", "29.9% if car or light-truck part"],
+              "totals": ["15.5%", "14.9%", "15%", "29.9% if truck or bus part", "29.9% if car or light-truck part or truck or bus part"],
               "breakdown": [
                 {
                   "base": "5.5%",
@@ -35626,20 +35626,20 @@
                   "lineCount": 1,
                   "extra": "Not a truck or bus part: +10%. Truck or bus part: +25%",
                   "preference": "None",
-                  "total": "14.9% if not a truck or bus part / 29.9% if truck or bus part"
+                  "total": "14.9% not a truck or bus part / 29.9% truck or bus part"
                 },
                 {
                   "base": "4.9%",
                   "lines": ["7007.21.51.00"],
                   "lineCount": 1,
-                  "extra": "Not a vehicle part: +10%. Car or light-truck part: +25%",
+                  "extra": "Not a vehicle part: +10%. Car or light-truck part or truck or bus part: +25%",
                   "preference": "None",
-                  "total": "14.9% not a vehicle part / 29.9% car or light-truck part"
+                  "total": "14.9% not a vehicle part / 29.9% car or light-truck part or truck or bus part"
                 }
               ]
             },
             "withoutUsmca": {
-              "totals": ["15.5%", "14.9%", "15%", "29.9% if truck or bus part", "29.9% if car or light-truck part"],
+              "totals": ["15.5%", "14.9%", "15%", "29.9% if truck or bus part", "29.9% if car or light-truck part or truck or bus part"],
               "breakdown": [
                 {
                   "base": "5.5%",
@@ -35671,15 +35671,15 @@
                   "lineCount": 1,
                   "extra": "Not a truck or bus part: +10%. Truck or bus part: +25%",
                   "preference": "None",
-                  "total": "14.9% if not a truck or bus part / 29.9% if truck or bus part"
+                  "total": "14.9% not a truck or bus part / 29.9% truck or bus part"
                 },
                 {
                   "base": "4.9%",
                   "lines": ["7007.21.51.00"],
                   "lineCount": 1,
-                  "extra": "Not a vehicle part: +10%. Car or light-truck part: +25%",
+                  "extra": "Not a vehicle part: +10%. Car or light-truck part or truck or bus part: +25%",
                   "preference": "None",
-                  "total": "14.9% not a vehicle part / 29.9% car or light-truck part"
+                  "total": "14.9% not a vehicle part / 29.9% car or light-truck part or truck or bus part"
                 }
               ]
             }
@@ -35716,7 +35716,7 @@
           "7009": {
             "importsUsd": 44974384,
             "withUsmca": {
-              "totals": ["16.5%", "17.8%", "13.9%", "28.9% if car or light-truck part"],
+              "totals": ["16.5%", "17.8%", "13.9%", "28.9% if car or light-truck part or truck or bus part"],
               "breakdown": [
                 {
                   "base": "6.5%",
@@ -35738,14 +35738,14 @@
                   "base": "3.9%",
                   "lines": ["7009.10.00.00"],
                   "lineCount": 1,
-                  "extra": "Not a vehicle part: +10%. Car or light-truck part: +25%",
+                  "extra": "Not a vehicle part: +10%. Car or light-truck part or truck or bus part: +25%",
                   "preference": "None",
-                  "total": "13.9% not a vehicle part / 28.9% car or light-truck part"
+                  "total": "13.9% not a vehicle part / 28.9% car or light-truck part or truck or bus part"
                 }
               ]
             },
             "withoutUsmca": {
-              "totals": ["16.5%", "17.8%", "13.9%", "28.9% if car or light-truck part"],
+              "totals": ["16.5%", "17.8%", "13.9%", "28.9% if car or light-truck part or truck or bus part"],
               "breakdown": [
                 {
                   "base": "6.5%",
@@ -35767,9 +35767,9 @@
                   "base": "3.9%",
                   "lines": ["7009.10.00.00"],
                   "lineCount": 1,
-                  "extra": "Not a vehicle part: +10%. Car or light-truck part: +25%",
+                  "extra": "Not a vehicle part: +10%. Car or light-truck part or truck or bus part: +25%",
                   "preference": "None",
-                  "total": "13.9% not a vehicle part / 28.9% car or light-truck part"
+                  "total": "13.9% not a vehicle part / 28.9% car or light-truck part or truck or bus part"
                 }
               ]
             }
@@ -36968,9 +36968,9 @@
                   "base": "5%",
                   "lines": ["7020.00.60.00"],
                   "lineCount": 1,
-                  "extra": "Not a quartz surface product: +10%. Quartz surface product within quota: +10% (9903.05.44) + 25% (9903.45.30). Quartz surface product over quota: +10% (9903.05.44) + 50% (9903.45.31)",
+                  "extra": "Not quartz surface: +10%. Quartz surface product within quota: +10% (9903.05.44) + 25% (9903.45.30). Quartz surface product over quota: +10% (9903.05.44) + 50% (9903.45.31)",
                   "preference": "None",
-                  "total": "15% not a quartz surface product / 40% quartz surface product within quota / 65% quartz surface product over quota"
+                  "total": "15% not quartz surface / 40% quartz surface product within quota / 65% quartz surface product over quota"
                 }
               ]
             },
@@ -36997,9 +36997,9 @@
                   "base": "5%",
                   "lines": ["7020.00.60.00"],
                   "lineCount": 1,
-                  "extra": "Not a quartz surface product: +10%. Quartz surface product within quota: +10% (9903.05.44) + 25% (9903.45.30). Quartz surface product over quota: +10% (9903.05.44) + 50% (9903.45.31)",
+                  "extra": "Not quartz surface: +10%. Quartz surface product within quota: +10% (9903.05.44) + 25% (9903.45.30). Quartz surface product over quota: +10% (9903.05.44) + 50% (9903.45.31)",
                   "preference": "None",
-                  "total": "15% not a quartz surface product / 40% quartz surface product within quota / 65% quartz surface product over quota"
+                  "total": "15% not quartz surface / 40% quartz surface product within quota / 65% quartz surface product over quota"
                 }
               ]
             }
@@ -37518,7 +37518,7 @@
           "7007": {
             "importsUsd": 5896013,
             "withUsmca": {
-              "totals": ["10%", "29.9% if truck or bus part", "15% if car or light-truck part", "29.9% if truck or bus part"],
+              "totals": ["10%", "29.9% if truck or bus part", "15% if car or light-truck part"],
               "breakdown": [
                 {
                   "base": "5.5%",
@@ -37550,7 +37550,7 @@
                   "lineCount": 1,
                   "extra": "Not a truck or bus part: 10% in place of base. Truck or bus part: +25%",
                   "preference": "None",
-                  "total": "10% if not a truck or bus part / 29.9% if truck or bus part"
+                  "total": "10% not a truck or bus part / 29.9% truck or bus part"
                 },
                 {
                   "base": "4.9%",
@@ -37563,7 +37563,7 @@
               ]
             },
             "withoutUsmca": {
-              "totals": ["10%", "29.9% if truck or bus part", "15% if car or light-truck part", "29.9% if truck or bus part"],
+              "totals": ["10%", "29.9% if truck or bus part", "15% if car or light-truck part"],
               "breakdown": [
                 {
                   "base": "5.5%",
@@ -37595,7 +37595,7 @@
                   "lineCount": 1,
                   "extra": "Not a truck or bus part: 10% in place of base. Truck or bus part: +25%",
                   "preference": "None",
-                  "total": "10% if not a truck or bus part / 29.9% if truck or bus part"
+                  "total": "10% not a truck or bus part / 29.9% truck or bus part"
                 },
                 {
                   "base": "4.9%",
@@ -38850,9 +38850,9 @@
                   "base": "5%",
                   "lines": ["7020.00.60.00"],
                   "lineCount": 1,
-                  "extra": "Not a quartz surface product: 10% in place of base. Quartz surface product within quota: 10% in place of base (9903.05.76) + 25% (9903.45.30). Quartz surface product over quota: 10% in place of base (9903.05.76) + 50% (9903.45.31)",
+                  "extra": "Not quartz surface: 10% in place of base. Quartz surface product within quota: 10% in place of base (9903.05.76) + 25% (9903.45.30). Quartz surface product over quota: 10% in place of base (9903.05.76) + 50% (9903.45.31)",
                   "preference": "None",
-                  "total": "10% not a quartz surface product / 35% quartz surface product within quota / 60% quartz surface product over quota"
+                  "total": "10% not quartz surface / 35% quartz surface product within quota / 60% quartz surface product over quota"
                 }
               ]
             },
@@ -38879,9 +38879,9 @@
                   "base": "5%",
                   "lines": ["7020.00.60.00"],
                   "lineCount": 1,
-                  "extra": "Not a quartz surface product: 10% in place of base. Quartz surface product within quota: 10% in place of base (9903.05.76) + 25% (9903.45.30). Quartz surface product over quota: 10% in place of base (9903.05.76) + 50% (9903.45.31)",
+                  "extra": "Not quartz surface: 10% in place of base. Quartz surface product within quota: 10% in place of base (9903.05.76) + 25% (9903.45.30). Quartz surface product over quota: 10% in place of base (9903.05.76) + 50% (9903.45.31)",
                   "preference": "None",
-                  "total": "10% not a quartz surface product / 35% quartz surface product within quota / 60% quartz surface product over quota"
+                  "total": "10% not quartz surface / 35% quartz surface product within quota / 60% quartz surface product over quota"
                 }
               ]
             }
@@ -39400,7 +39400,7 @@
           "7007": {
             "importsUsd": 43411447,
             "withUsmca": {
-              "totals": ["12.5%", "29.9% if truck or bus part", "15% if car or light-truck part", "29.9% if truck or bus part"],
+              "totals": ["12.5%", "29.9% if truck or bus part", "15% if car or light-truck part"],
               "breakdown": [
                 {
                   "base": "5.5%",
@@ -39432,7 +39432,7 @@
                   "lineCount": 1,
                   "extra": "Not a truck or bus part: 12.5% in place of base. Truck or bus part: +25%",
                   "preference": "None",
-                  "total": "12.5% if not a truck or bus part / 29.9% if truck or bus part"
+                  "total": "12.5% not a truck or bus part / 29.9% truck or bus part"
                 },
                 {
                   "base": "4.9%",
@@ -39445,7 +39445,7 @@
               ]
             },
             "withoutUsmca": {
-              "totals": ["12.5%", "29.9% if truck or bus part", "15% if car or light-truck part", "29.9% if truck or bus part"],
+              "totals": ["12.5%", "29.9% if truck or bus part", "15% if car or light-truck part"],
               "breakdown": [
                 {
                   "base": "5.5%",
@@ -39477,7 +39477,7 @@
                   "lineCount": 1,
                   "extra": "Not a truck or bus part: 12.5% in place of base. Truck or bus part: +25%",
                   "preference": "None",
-                  "total": "12.5% if not a truck or bus part / 29.9% if truck or bus part"
+                  "total": "12.5% not a truck or bus part / 29.9% truck or bus part"
                 },
                 {
                   "base": "4.9%",
@@ -40732,9 +40732,9 @@
                   "base": "5%",
                   "lines": ["7020.00.60.00"],
                   "lineCount": 1,
-                  "extra": "Not a quartz surface product: 12.5% in place of base. Quartz surface product within quota: 12.5% in place of base (9903.05.49) + 25% (9903.45.30). Quartz surface product over quota: 12.5% in place of base (9903.05.49) + 50% (9903.45.31)",
+                  "extra": "Not quartz surface: 12.5% in place of base. Quartz surface product within quota: 12.5% in place of base (9903.05.49) + 25% (9903.45.30). Quartz surface product over quota: 12.5% in place of base (9903.05.49) + 50% (9903.45.31)",
                   "preference": "None",
-                  "total": "12.5% not a quartz surface product / 37.5% quartz surface product within quota / 62.5% quartz surface product over quota"
+                  "total": "12.5% not quartz surface / 37.5% quartz surface product within quota / 62.5% quartz surface product over quota"
                 }
               ]
             },
@@ -40761,9 +40761,9 @@
                   "base": "5%",
                   "lines": ["7020.00.60.00"],
                   "lineCount": 1,
-                  "extra": "Not a quartz surface product: 12.5% in place of base. Quartz surface product within quota: 12.5% in place of base (9903.05.49) + 25% (9903.45.30). Quartz surface product over quota: 12.5% in place of base (9903.05.49) + 50% (9903.45.31)",
+                  "extra": "Not quartz surface: 12.5% in place of base. Quartz surface product within quota: 12.5% in place of base (9903.05.49) + 25% (9903.45.30). Quartz surface product over quota: 12.5% in place of base (9903.05.49) + 50% (9903.45.31)",
                   "preference": "None",
-                  "total": "12.5% not a quartz surface product / 37.5% quartz surface product within quota / 62.5% quartz surface product over quota"
+                  "total": "12.5% not quartz surface / 37.5% quartz surface product within quota / 62.5% quartz surface product over quota"
                 }
               ]
             }
@@ -41282,7 +41282,7 @@
           "7007": {
             "importsUsd": 9899875,
             "withUsmca": {
-              "totals": ["10%", "29.9% if truck or bus part", "15% if car or light-truck part", "29.9% if truck or bus part"],
+              "totals": ["10%", "29.9% if truck or bus part", "15% if car or light-truck part"],
               "breakdown": [
                 {
                   "base": "5.5%",
@@ -41314,7 +41314,7 @@
                   "lineCount": 1,
                   "extra": "Not a truck or bus part: 10% in place of base. Truck or bus part: +25%",
                   "preference": "None",
-                  "total": "10% if not a truck or bus part / 29.9% if truck or bus part"
+                  "total": "10% not a truck or bus part / 29.9% truck or bus part"
                 },
                 {
                   "base": "4.9%",
@@ -41327,7 +41327,7 @@
               ]
             },
             "withoutUsmca": {
-              "totals": ["10%", "29.9% if truck or bus part", "15% if car or light-truck part", "29.9% if truck or bus part"],
+              "totals": ["10%", "29.9% if truck or bus part", "15% if car or light-truck part"],
               "breakdown": [
                 {
                   "base": "5.5%",
@@ -41359,7 +41359,7 @@
                   "lineCount": 1,
                   "extra": "Not a truck or bus part: 10% in place of base. Truck or bus part: +25%",
                   "preference": "None",
-                  "total": "10% if not a truck or bus part / 29.9% if truck or bus part"
+                  "total": "10% not a truck or bus part / 29.9% truck or bus part"
                 },
                 {
                   "base": "4.9%",
@@ -42614,9 +42614,9 @@
                   "base": "5%",
                   "lines": ["7020.00.60.00"],
                   "lineCount": 1,
-                  "extra": "Not a quartz surface product: 10% in place of base. Quartz surface product within quota: 10% in place of base (9903.05.39) + 25% (9903.45.30). Quartz surface product over quota: 10% in place of base (9903.05.39) + 50% (9903.45.31)",
+                  "extra": "Not quartz surface: 10% in place of base. Quartz surface product within quota: 10% in place of base (9903.05.39) + 25% (9903.45.30). Quartz surface product over quota: 10% in place of base (9903.05.39) + 50% (9903.45.31)",
                   "preference": "None",
-                  "total": "10% not a quartz surface product / 35% quartz surface product within quota / 60% quartz surface product over quota"
+                  "total": "10% not quartz surface / 35% quartz surface product within quota / 60% quartz surface product over quota"
                 }
               ]
             },
@@ -42643,9 +42643,9 @@
                   "base": "5%",
                   "lines": ["7020.00.60.00"],
                   "lineCount": 1,
-                  "extra": "Not a quartz surface product: 10% in place of base. Quartz surface product within quota: 10% in place of base (9903.05.39) + 25% (9903.45.30). Quartz surface product over quota: 10% in place of base (9903.05.39) + 50% (9903.45.31)",
+                  "extra": "Not quartz surface: 10% in place of base. Quartz surface product within quota: 10% in place of base (9903.05.39) + 25% (9903.45.30). Quartz surface product over quota: 10% in place of base (9903.05.39) + 50% (9903.45.31)",
                   "preference": "None",
-                  "total": "10% not a quartz surface product / 35% quartz surface product within quota / 60% quartz surface product over quota"
+                  "total": "10% not quartz surface / 35% quartz surface product within quota / 60% quartz surface product over quota"
                 }
               ]
             }
@@ -43164,7 +43164,7 @@
           "7007": {
             "importsUsd": 43236501,
             "withUsmca": {
-              "totals": ["10%", "29.9% if truck or bus part", "15% if car or light-truck part", "29.9% if truck or bus part"],
+              "totals": ["10%", "29.9% if truck or bus part", "15% if car or light-truck part"],
               "breakdown": [
                 {
                   "base": "5.5%",
@@ -43196,7 +43196,7 @@
                   "lineCount": 1,
                   "extra": "Not a truck or bus part: 10% in place of base. Truck or bus part: +25%",
                   "preference": "None",
-                  "total": "10% if not a truck or bus part / 29.9% if truck or bus part"
+                  "total": "10% not a truck or bus part / 29.9% truck or bus part"
                 },
                 {
                   "base": "4.9%",
@@ -43209,7 +43209,7 @@
               ]
             },
             "withoutUsmca": {
-              "totals": ["10%", "29.9% if truck or bus part", "15% if car or light-truck part", "29.9% if truck or bus part"],
+              "totals": ["10%", "29.9% if truck or bus part", "15% if car or light-truck part"],
               "breakdown": [
                 {
                   "base": "5.5%",
@@ -43241,7 +43241,7 @@
                   "lineCount": 1,
                   "extra": "Not a truck or bus part: 10% in place of base. Truck or bus part: +25%",
                   "preference": "None",
-                  "total": "10% if not a truck or bus part / 29.9% if truck or bus part"
+                  "total": "10% not a truck or bus part / 29.9% truck or bus part"
                 },
                 {
                   "base": "4.9%",
@@ -44496,9 +44496,9 @@
                   "base": "5%",
                   "lines": ["7020.00.60.00"],
                   "lineCount": 1,
-                  "extra": "Not a quartz surface product: 10% in place of base. Quartz surface product within quota: 10% in place of base (9903.05.39) + 25% (9903.45.30). Quartz surface product over quota: 10% in place of base (9903.05.39) + 50% (9903.45.31)",
+                  "extra": "Not quartz surface: 10% in place of base. Quartz surface product within quota: 10% in place of base (9903.05.39) + 25% (9903.45.30). Quartz surface product over quota: 10% in place of base (9903.05.39) + 50% (9903.45.31)",
                   "preference": "None",
-                  "total": "10% not a quartz surface product / 35% quartz surface product within quota / 60% quartz surface product over quota"
+                  "total": "10% not quartz surface / 35% quartz surface product within quota / 60% quartz surface product over quota"
                 }
               ]
             },
@@ -44525,9 +44525,9 @@
                   "base": "5%",
                   "lines": ["7020.00.60.00"],
                   "lineCount": 1,
-                  "extra": "Not a quartz surface product: 10% in place of base. Quartz surface product within quota: 10% in place of base (9903.05.39) + 25% (9903.45.30). Quartz surface product over quota: 10% in place of base (9903.05.39) + 50% (9903.45.31)",
+                  "extra": "Not quartz surface: 10% in place of base. Quartz surface product within quota: 10% in place of base (9903.05.39) + 25% (9903.45.30). Quartz surface product over quota: 10% in place of base (9903.05.39) + 50% (9903.45.31)",
                   "preference": "None",
-                  "total": "10% not a quartz surface product / 35% quartz surface product within quota / 60% quartz surface product over quota"
+                  "total": "10% not quartz surface / 35% quartz surface product within quota / 60% quartz surface product over quota"
                 }
               ]
             }
@@ -45046,7 +45046,7 @@
           "7007": {
             "importsUsd": 21862923,
             "withUsmca": {
-              "totals": ["12.5%", "29.9% if truck or bus part", "15% if car or light-truck part", "29.9% if truck or bus part"],
+              "totals": ["12.5%", "29.9% if truck or bus part", "15% if car or light-truck part"],
               "breakdown": [
                 {
                   "base": "5.5%",
@@ -45078,7 +45078,7 @@
                   "lineCount": 1,
                   "extra": "Not a truck or bus part: 12.5% in place of base. Truck or bus part: +25%",
                   "preference": "None",
-                  "total": "12.5% if not a truck or bus part / 29.9% if truck or bus part"
+                  "total": "12.5% not a truck or bus part / 29.9% truck or bus part"
                 },
                 {
                   "base": "4.9%",
@@ -45091,7 +45091,7 @@
               ]
             },
             "withoutUsmca": {
-              "totals": ["12.5%", "29.9% if truck or bus part", "15% if car or light-truck part", "29.9% if truck or bus part"],
+              "totals": ["12.5%", "29.9% if truck or bus part", "15% if car or light-truck part"],
               "breakdown": [
                 {
                   "base": "5.5%",
@@ -45123,7 +45123,7 @@
                   "lineCount": 1,
                   "extra": "Not a truck or bus part: 12.5% in place of base. Truck or bus part: +25%",
                   "preference": "None",
-                  "total": "12.5% if not a truck or bus part / 29.9% if truck or bus part"
+                  "total": "12.5% not a truck or bus part / 29.9% truck or bus part"
                 },
                 {
                   "base": "4.9%",
@@ -46940,7 +46940,7 @@
           "7007": {
             "importsUsd": 57980003,
             "withUsmca": {
-              "totals": ["18%", "17.4%", "17.5%", "29.9% if truck or bus part", "29.9% if car or light-truck part"],
+              "totals": ["18%", "17.4%", "17.5%", "29.9% if truck or bus part", "29.9% if car or light-truck part or truck or bus part"],
               "breakdown": [
                 {
                   "base": "5.5%",
@@ -46972,20 +46972,20 @@
                   "lineCount": 1,
                   "extra": "Not a truck or bus part: +12.5%. Truck or bus part: +25%",
                   "preference": "None",
-                  "total": "17.4% if not a truck or bus part / 29.9% if truck or bus part"
+                  "total": "17.4% not a truck or bus part / 29.9% truck or bus part"
                 },
                 {
                   "base": "4.9%",
                   "lines": ["7007.21.51.00"],
                   "lineCount": 1,
-                  "extra": "Not a vehicle part: +12.5%. Car or light-truck part: +25%",
+                  "extra": "Not a vehicle part: +12.5%. Car or light-truck part or truck or bus part: +25%",
                   "preference": "None",
-                  "total": "17.4% not a vehicle part / 29.9% car or light-truck part"
+                  "total": "17.4% not a vehicle part / 29.9% car or light-truck part or truck or bus part"
                 }
               ]
             },
             "withoutUsmca": {
-              "totals": ["18%", "17.4%", "17.5%", "29.9% if truck or bus part", "29.9% if car or light-truck part"],
+              "totals": ["18%", "17.4%", "17.5%", "29.9% if truck or bus part", "29.9% if car or light-truck part or truck or bus part"],
               "breakdown": [
                 {
                   "base": "5.5%",
@@ -47017,15 +47017,15 @@
                   "lineCount": 1,
                   "extra": "Not a truck or bus part: +12.5%. Truck or bus part: +25%",
                   "preference": "None",
-                  "total": "17.4% if not a truck or bus part / 29.9% if truck or bus part"
+                  "total": "17.4% not a truck or bus part / 29.9% truck or bus part"
                 },
                 {
                   "base": "4.9%",
                   "lines": ["7007.21.51.00"],
                   "lineCount": 1,
-                  "extra": "Not a vehicle part: +12.5%. Car or light-truck part: +25%",
+                  "extra": "Not a vehicle part: +12.5%. Car or light-truck part or truck or bus part: +25%",
                   "preference": "None",
-                  "total": "17.4% not a vehicle part / 29.9% car or light-truck part"
+                  "total": "17.4% not a vehicle part / 29.9% car or light-truck part or truck or bus part"
                 }
               ]
             }
@@ -47062,7 +47062,7 @@
           "7009": {
             "importsUsd": 1320736,
             "withUsmca": {
-              "totals": ["19%", "20.3%", "16.4%", "28.9% if car or light-truck part"],
+              "totals": ["19%", "20.3%", "16.4%", "28.9% if car or light-truck part or truck or bus part"],
               "breakdown": [
                 {
                   "base": "6.5%",
@@ -47084,14 +47084,14 @@
                   "base": "3.9%",
                   "lines": ["7009.10.00.00"],
                   "lineCount": 1,
-                  "extra": "Not a vehicle part: +12.5%. Car or light-truck part: +25%",
+                  "extra": "Not a vehicle part: +12.5%. Car or light-truck part or truck or bus part: +25%",
                   "preference": "None",
-                  "total": "16.4% not a vehicle part / 28.9% car or light-truck part"
+                  "total": "16.4% not a vehicle part / 28.9% car or light-truck part or truck or bus part"
                 }
               ]
             },
             "withoutUsmca": {
-              "totals": ["19%", "20.3%", "16.4%", "28.9% if car or light-truck part"],
+              "totals": ["19%", "20.3%", "16.4%", "28.9% if car or light-truck part or truck or bus part"],
               "breakdown": [
                 {
                   "base": "6.5%",
@@ -47113,9 +47113,9 @@
                   "base": "3.9%",
                   "lines": ["7009.10.00.00"],
                   "lineCount": 1,
-                  "extra": "Not a vehicle part: +12.5%. Car or light-truck part: +25%",
+                  "extra": "Not a vehicle part: +12.5%. Car or light-truck part or truck or bus part: +25%",
                   "preference": "None",
-                  "total": "16.4% not a vehicle part / 28.9% car or light-truck part"
+                  "total": "16.4% not a vehicle part / 28.9% car or light-truck part or truck or bus part"
                 }
               ]
             }
@@ -48314,9 +48314,9 @@
                   "base": "5%",
                   "lines": ["7020.00.60.00"],
                   "lineCount": 1,
-                  "extra": "Not a quartz surface product: +12.5%. Quartz surface product within quota: +12.5% (9903.05.79) + 25% (9903.45.30). Quartz surface product over quota: +12.5% (9903.05.79) + 50% (9903.45.31)",
+                  "extra": "Not quartz surface: +12.5%. Quartz surface product within quota: +12.5% (9903.05.79) + 25% (9903.45.30). Quartz surface product over quota: +12.5% (9903.05.79) + 50% (9903.45.31)",
                   "preference": "None",
-                  "total": "17.5% not a quartz surface product / 42.5% quartz surface product within quota / 67.5% quartz surface product over quota"
+                  "total": "17.5% not quartz surface / 42.5% quartz surface product within quota / 67.5% quartz surface product over quota"
                 }
               ]
             },
@@ -48343,9 +48343,9 @@
                   "base": "5%",
                   "lines": ["7020.00.60.00"],
                   "lineCount": 1,
-                  "extra": "Not a quartz surface product: +12.5%. Quartz surface product within quota: +12.5% (9903.05.79) + 25% (9903.45.30). Quartz surface product over quota: +12.5% (9903.05.79) + 50% (9903.45.31)",
+                  "extra": "Not quartz surface: +12.5%. Quartz surface product within quota: +12.5% (9903.05.79) + 25% (9903.45.30). Quartz surface product over quota: +12.5% (9903.05.79) + 50% (9903.45.31)",
                   "preference": "None",
-                  "total": "17.5% not a quartz surface product / 42.5% quartz surface product within quota / 67.5% quartz surface product over quota"
+                  "total": "17.5% not quartz surface / 42.5% quartz surface product within quota / 67.5% quartz surface product over quota"
                 }
               ]
             }
@@ -48864,7 +48864,7 @@
           "7007": {
             "importsUsd": 7264595,
             "withUsmca": {
-              "totals": ["15.5%", "14.9%", "15%", "29.9% if truck or bus part", "10%", "14.9% if not a vehicle part", "29.9% if truck or bus part"],
+              "totals": ["15.5%", "14.9%", "15%", "29.9% if truck or bus part", "10%", "14.9% if not a vehicle part"],
               "breakdown": [
                 {
                   "base": "5.5%",
@@ -48896,7 +48896,7 @@
                   "lineCount": 1,
                   "extra": "Not a truck or bus part: +10%. Truck or bus part: +25%",
                   "preference": "None",
-                  "total": "14.9% if not a truck or bus part / 29.9% if truck or bus part"
+                  "total": "14.9% not a truck or bus part / 29.9% truck or bus part"
                 },
                 {
                   "base": "4.9%",
@@ -48909,7 +48909,7 @@
               ]
             },
             "withoutUsmca": {
-              "totals": ["15.5%", "14.9%", "15%", "29.9% if truck or bus part", "10%", "14.9% if not a vehicle part", "29.9% if truck or bus part"],
+              "totals": ["15.5%", "14.9%", "15%", "29.9% if truck or bus part", "10%", "14.9% if not a vehicle part"],
               "breakdown": [
                 {
                   "base": "5.5%",
@@ -48941,7 +48941,7 @@
                   "lineCount": 1,
                   "extra": "Not a truck or bus part: +10%. Truck or bus part: +25%",
                   "preference": "None",
-                  "total": "14.9% if not a truck or bus part / 29.9% if truck or bus part"
+                  "total": "14.9% not a truck or bus part / 29.9% truck or bus part"
                 },
                 {
                   "base": "4.9%",
@@ -50238,9 +50238,9 @@
                   "base": "5%",
                   "lines": ["7020.00.60.00"],
                   "lineCount": 1,
-                  "extra": "Not a quartz surface product: +10%. Quartz surface product within quota: +10% (9903.05.81) + 25% (9903.45.30). Quartz surface product over quota: +10% (9903.05.81) + 50% (9903.45.31)",
+                  "extra": "Not quartz surface: +10%. Quartz surface product within quota: +10% (9903.05.81) + 25% (9903.45.30). Quartz surface product over quota: +10% (9903.05.81) + 50% (9903.45.31)",
                   "preference": "None",
-                  "total": "15% not a quartz surface product / 40% quartz surface product within quota / 65% quartz surface product over quota"
+                  "total": "15% not quartz surface / 40% quartz surface product within quota / 65% quartz surface product over quota"
                 }
               ]
             },
@@ -50267,9 +50267,9 @@
                   "base": "5%",
                   "lines": ["7020.00.60.00"],
                   "lineCount": 1,
-                  "extra": "Not a quartz surface product: +10%. Quartz surface product within quota: +10% (9903.05.81) + 25% (9903.45.30). Quartz surface product over quota: +10% (9903.05.81) + 50% (9903.45.31)",
+                  "extra": "Not quartz surface: +10%. Quartz surface product within quota: +10% (9903.05.81) + 25% (9903.45.30). Quartz surface product over quota: +10% (9903.05.81) + 50% (9903.45.31)",
                   "preference": "None",
-                  "total": "15% not a quartz surface product / 40% quartz surface product within quota / 65% quartz surface product over quota"
+                  "total": "15% not quartz surface / 40% quartz surface product within quota / 65% quartz surface product over quota"
                 }
               ]
             }
@@ -50800,7 +50800,7 @@
           "7007": {
             "importsUsd": 5649842,
             "withUsmca": {
-              "totals": ["18%", "17.4%", "17.5%", "29.9% if truck or bus part", "29.9% if car or light-truck part"],
+              "totals": ["18%", "17.4%", "17.5%", "29.9% if truck or bus part", "29.9% if car or light-truck part or truck or bus part"],
               "breakdown": [
                 {
                   "base": "5.5%",
@@ -50832,20 +50832,20 @@
                   "lineCount": 1,
                   "extra": "Not a truck or bus part: +12.5%. Truck or bus part: +25%",
                   "preference": "None",
-                  "total": "17.4% if not a truck or bus part / 29.9% if truck or bus part"
+                  "total": "17.4% not a truck or bus part / 29.9% truck or bus part"
                 },
                 {
                   "base": "4.9%",
                   "lines": ["7007.21.51.00"],
                   "lineCount": 1,
-                  "extra": "Not a vehicle part: +12.5%. Car or light-truck part: +25%",
+                  "extra": "Not a vehicle part: +12.5%. Car or light-truck part or truck or bus part: +25%",
                   "preference": "None",
-                  "total": "17.4% not a vehicle part / 29.9% car or light-truck part"
+                  "total": "17.4% not a vehicle part / 29.9% car or light-truck part or truck or bus part"
                 }
               ]
             },
             "withoutUsmca": {
-              "totals": ["18%", "17.4%", "17.5%", "29.9% if truck or bus part", "29.9% if car or light-truck part"],
+              "totals": ["18%", "17.4%", "17.5%", "29.9% if truck or bus part", "29.9% if car or light-truck part or truck or bus part"],
               "breakdown": [
                 {
                   "base": "5.5%",
@@ -50877,15 +50877,15 @@
                   "lineCount": 1,
                   "extra": "Not a truck or bus part: +12.5%. Truck or bus part: +25%",
                   "preference": "None",
-                  "total": "17.4% if not a truck or bus part / 29.9% if truck or bus part"
+                  "total": "17.4% not a truck or bus part / 29.9% truck or bus part"
                 },
                 {
                   "base": "4.9%",
                   "lines": ["7007.21.51.00"],
                   "lineCount": 1,
-                  "extra": "Not a vehicle part: +12.5%. Car or light-truck part: +25%",
+                  "extra": "Not a vehicle part: +12.5%. Car or light-truck part or truck or bus part: +25%",
                   "preference": "None",
-                  "total": "17.4% not a vehicle part / 29.9% car or light-truck part"
+                  "total": "17.4% not a vehicle part / 29.9% car or light-truck part or truck or bus part"
                 }
               ]
             }
@@ -50922,7 +50922,7 @@
           "7009": {
             "importsUsd": 29187268,
             "withUsmca": {
-              "totals": ["19%", "20.3%", "16.4%", "28.9% if car or light-truck part"],
+              "totals": ["19%", "20.3%", "16.4%", "28.9% if car or light-truck part or truck or bus part"],
               "breakdown": [
                 {
                   "base": "6.5%",
@@ -50944,14 +50944,14 @@
                   "base": "3.9%",
                   "lines": ["7009.10.00.00"],
                   "lineCount": 1,
-                  "extra": "Not a vehicle part: +12.5%. Car or light-truck part: +25%",
+                  "extra": "Not a vehicle part: +12.5%. Car or light-truck part or truck or bus part: +25%",
                   "preference": "None",
-                  "total": "16.4% not a vehicle part / 28.9% car or light-truck part"
+                  "total": "16.4% not a vehicle part / 28.9% car or light-truck part or truck or bus part"
                 }
               ]
             },
             "withoutUsmca": {
-              "totals": ["19%", "20.3%", "16.4%", "28.9% if car or light-truck part"],
+              "totals": ["19%", "20.3%", "16.4%", "28.9% if car or light-truck part or truck or bus part"],
               "breakdown": [
                 {
                   "base": "6.5%",
@@ -50973,9 +50973,9 @@
                   "base": "3.9%",
                   "lines": ["7009.10.00.00"],
                   "lineCount": 1,
-                  "extra": "Not a vehicle part: +12.5%. Car or light-truck part: +25%",
+                  "extra": "Not a vehicle part: +12.5%. Car or light-truck part or truck or bus part: +25%",
                   "preference": "None",
-                  "total": "16.4% not a vehicle part / 28.9% car or light-truck part"
+                  "total": "16.4% not a vehicle part / 28.9% car or light-truck part or truck or bus part"
                 }
               ]
             }
@@ -52174,9 +52174,9 @@
                   "base": "5%",
                   "lines": ["7020.00.60.00"],
                   "lineCount": 1,
-                  "extra": "Not a quartz surface product: +12.5%. Quartz surface product within quota: +12.5% (9903.05.77) + 25% (9903.45.30). Quartz surface product over quota: +12.5% (9903.05.77) + 50% (9903.45.31)",
+                  "extra": "Not quartz surface: +12.5%. Quartz surface product within quota: +12.5% (9903.05.77) + 25% (9903.45.30). Quartz surface product over quota: +12.5% (9903.05.77) + 50% (9903.45.31)",
                   "preference": "None",
-                  "total": "17.5% not a quartz surface product / 42.5% quartz surface product within quota / 67.5% quartz surface product over quota"
+                  "total": "17.5% not quartz surface / 42.5% quartz surface product within quota / 67.5% quartz surface product over quota"
                 }
               ]
             },
@@ -52203,9 +52203,9 @@
                   "base": "5%",
                   "lines": ["7020.00.60.00"],
                   "lineCount": 1,
-                  "extra": "Not a quartz surface product: +12.5%. Quartz surface product within quota: +12.5% (9903.05.77) + 25% (9903.45.30). Quartz surface product over quota: +12.5% (9903.05.77) + 50% (9903.45.31)",
+                  "extra": "Not quartz surface: +12.5%. Quartz surface product within quota: +12.5% (9903.05.77) + 25% (9903.45.30). Quartz surface product over quota: +12.5% (9903.05.77) + 50% (9903.45.31)",
                   "preference": "None",
-                  "total": "17.5% not a quartz surface product / 42.5% quartz surface product within quota / 67.5% quartz surface product over quota"
+                  "total": "17.5% not quartz surface / 42.5% quartz surface product within quota / 67.5% quartz surface product over quota"
                 }
               ]
             }
@@ -52768,15 +52768,15 @@
                   "lineCount": 1,
                   "extra": "Truck or bus part: +25%. Not a truck or bus part: +12.5% (9903.05.27) + 25% (9903.05.01)",
                   "preference": "None",
-                  "total": "29.9% if truck or bus part / 42.4% if not a truck or bus part"
+                  "total": "29.9% truck or bus part / 42.4% not a truck or bus part"
                 },
                 {
                   "base": "4.9%",
                   "lines": ["7007.21.51.00"],
                   "lineCount": 1,
-                  "extra": "Car or light-truck part: +25%. Not a vehicle part: +12.5% (9903.05.27) + 25% (9903.05.01)",
+                  "extra": "Car or light-truck part or truck or bus part: +25%. Not a vehicle part: +12.5% (9903.05.27) + 25% (9903.05.01)",
                   "preference": "None",
-                  "total": "29.9% car or light-truck part / 42.4% not a vehicle part"
+                  "total": "29.9% car or light-truck part or truck or bus part / 42.4% not a vehicle part"
                 }
               ]
             },
@@ -52813,15 +52813,15 @@
                   "lineCount": 1,
                   "extra": "Truck or bus part: +25%. Not a truck or bus part: +12.5% (9903.05.27) + 25% (9903.05.01)",
                   "preference": "None",
-                  "total": "29.9% if truck or bus part / 42.4% if not a truck or bus part"
+                  "total": "29.9% truck or bus part / 42.4% not a truck or bus part"
                 },
                 {
                   "base": "4.9%",
                   "lines": ["7007.21.51.00"],
                   "lineCount": 1,
-                  "extra": "Car or light-truck part: +25%. Not a vehicle part: +12.5% (9903.05.27) + 25% (9903.05.01)",
+                  "extra": "Car or light-truck part or truck or bus part: +25%. Not a vehicle part: +12.5% (9903.05.27) + 25% (9903.05.01)",
                   "preference": "None",
-                  "total": "29.9% car or light-truck part / 42.4% not a vehicle part"
+                  "total": "29.9% car or light-truck part or truck or bus part / 42.4% not a vehicle part"
                 }
               ]
             }
@@ -52880,9 +52880,9 @@
                   "base": "3.9%",
                   "lines": ["7009.10.00.00"],
                   "lineCount": 1,
-                  "extra": "Car or light-truck part: +25%. Not a vehicle part: +12.5% (9903.05.27) + 25% (9903.05.01)",
+                  "extra": "Car or light-truck part or truck or bus part: +25%. Not a vehicle part: +12.5% (9903.05.27) + 25% (9903.05.01)",
                   "preference": "None",
-                  "total": "28.9% car or light-truck part / 41.4% not a vehicle part"
+                  "total": "28.9% car or light-truck part or truck or bus part / 41.4% not a vehicle part"
                 }
               ]
             },
@@ -52909,9 +52909,9 @@
                   "base": "3.9%",
                   "lines": ["7009.10.00.00"],
                   "lineCount": 1,
-                  "extra": "Car or light-truck part: +25%. Not a vehicle part: +12.5% (9903.05.27) + 25% (9903.05.01)",
+                  "extra": "Car or light-truck part or truck or bus part: +25%. Not a vehicle part: +12.5% (9903.05.27) + 25% (9903.05.01)",
                   "preference": "None",
-                  "total": "28.9% car or light-truck part / 41.4% not a vehicle part"
+                  "total": "28.9% car or light-truck part or truck or bus part / 41.4% not a vehicle part"
                 }
               ]
             }
@@ -54692,14 +54692,7 @@
           "7007": {
             "importsUsd": 88838120,
             "withUsmca": {
-              "totals": [
-                "5.5%–18%",
-                "4.9%–17.4%",
-                "5%–17.5%",
-                "29.9% if truck or bus part",
-                "15%–29.9% if car or light-truck part",
-                "29.9% if truck or bus part"
-              ],
+              "totals": ["5.5%–18%", "4.9%–17.4%", "5%–17.5%", "29.9% if truck or bus part", "15%–29.9% if car or light-truck part"],
               "breakdown": [
                 {
                   "base": "5.5%",
@@ -54731,7 +54724,7 @@
                   "lineCount": 1,
                   "extra": "Not a truck or bus part: 0% to +12.5% by country, Section 301 (9903.05.20–9903.05.83). Truck or bus part: +25% by country, Section 232 (9903.74.08)",
                   "preference": "None",
-                  "total": "4.9%–17.4% if not a truck or bus part / 29.9% if truck or bus part"
+                  "total": "4.9%–17.4% not a truck or bus part / 29.9% truck or bus part"
                 },
                 {
                   "base": "4.9%",
@@ -54744,14 +54737,7 @@
               ]
             },
             "withoutUsmca": {
-              "totals": [
-                "5.5%–18%",
-                "4.9%–17.4%",
-                "5%–17.5%",
-                "29.9% if truck or bus part",
-                "15%–29.9% if car or light-truck part",
-                "29.9% if truck or bus part"
-              ],
+              "totals": ["5.5%–18%", "4.9%–17.4%", "5%–17.5%", "29.9% if truck or bus part", "15%–29.9% if car or light-truck part"],
               "breakdown": [
                 {
                   "base": "5.5%",
@@ -54783,7 +54769,7 @@
                   "lineCount": 1,
                   "extra": "Not a truck or bus part: 0% to +12.5% by country, Section 301 (9903.05.20–9903.05.83). Truck or bus part: +25% by country, Section 232 (9903.74.08)",
                   "preference": "None",
-                  "total": "4.9%–17.4% if not a truck or bus part / 29.9% if truck or bus part"
+                  "total": "4.9%–17.4% not a truck or bus part / 29.9% truck or bus part"
                 },
                 {
                   "base": "4.9%",
@@ -56062,9 +56048,8 @@
                 "Free–12.5%",
                 "6.6%–19.1%",
                 "5%–17.5%",
-                "5%–17.5% if if exempt from the safeguard",
-                "30%–42.5% if quartz surface product within quota",
-                "55%–67.5% if quartz surface product over quota"
+                "5%–42.5% if quartz surface product within quota",
+                "5%–67.5% if quartz surface product over quota"
               ],
               "breakdown": [
                 {
@@ -56087,9 +56072,9 @@
                   "base": "5%",
                   "lines": ["7020.00.60.00"],
                   "lineCount": 1,
-                  "extra": "Not a quartz surface product: 0% to +12.5% by country, Section 301 (9903.05.22–9903.05.83). Countries exempt from the safeguard: 0% to +12.5% by country, Section 301 (9903.05.20–9903.05.78). Quartz surface product within quota: +25% by country, Section 201 safeguard (9903.45.30); +10% to +12.5% by country, Section 301 (9903.05.22–9903.05.83). Quartz surface product over quota: +50% by country, Section 201 safeguard (9903.45.31); +10% to +12.5% by country, Section 301 (9903.05.22–9903.05.83)",
+                  "extra": "Not quartz surface: 0% to +12.5% by country, Section 301 (9903.05.20–9903.05.83). Quartz surface product within quota: 0% to +12.5% by country, Section 301 (9903.05.20–9903.05.83); +25% by country, Section 201 safeguard (9903.45.30). Quartz surface product over quota: 0% to +12.5% by country, Section 301 (9903.05.20–9903.05.83); +50% by country, Section 201 safeguard (9903.45.31)",
                   "preference": "None",
-                  "total": "5%–17.5% not a quartz surface product / 5%–17.5% if exempt from the safeguard / 30%–42.5% quartz surface product within quota / 55%–67.5% quartz surface product over quota"
+                  "total": "5%–17.5% not quartz surface / 5%–42.5% quartz surface product within quota / 5%–67.5% quartz surface product over quota"
                 }
               ]
             },
@@ -56098,9 +56083,8 @@
                 "Free–12.5%",
                 "6.6%–19.1%",
                 "5%–17.5%",
-                "5%–17.5% if if exempt from the safeguard",
-                "30%–42.5% if quartz surface product within quota",
-                "55%–67.5% if quartz surface product over quota"
+                "5%–42.5% if quartz surface product within quota",
+                "5%–67.5% if quartz surface product over quota"
               ],
               "breakdown": [
                 {
@@ -56123,9 +56107,9 @@
                   "base": "5%",
                   "lines": ["7020.00.60.00"],
                   "lineCount": 1,
-                  "extra": "Not a quartz surface product: 0% to +12.5% by country, Section 301 (9903.05.22–9903.05.83). Countries exempt from the safeguard: 0% to +12.5% by country, Section 301 (9903.05.20–9903.05.78). Quartz surface product within quota: +25% by country, Section 201 safeguard (9903.45.30); +10% to +12.5% by country, Section 301 (9903.05.22–9903.05.83). Quartz surface product over quota: +50% by country, Section 201 safeguard (9903.45.31); +10% to +12.5% by country, Section 301 (9903.05.22–9903.05.83)",
+                  "extra": "Not quartz surface: 0% to +12.5% by country, Section 301 (9903.05.20–9903.05.83). Quartz surface product within quota: 0% to +12.5% by country, Section 301 (9903.05.20–9903.05.83); +25% by country, Section 201 safeguard (9903.45.30). Quartz surface product over quota: 0% to +12.5% by country, Section 301 (9903.05.20–9903.05.83); +50% by country, Section 201 safeguard (9903.45.31)",
                   "preference": "None",
-                  "total": "5%–17.5% not a quartz surface product / 5%–17.5% if exempt from the safeguard / 30%–42.5% quartz surface product within quota / 55%–67.5% quartz surface product over quota"
+                  "total": "5%–17.5% not quartz surface / 5%–42.5% quartz surface product within quota / 5%–67.5% quartz surface product over quota"
                 }
               ]
             }
@@ -56177,13 +56161,13 @@
         "country": "China",
         "heading": "7007",
         "importsUsd": 395846058,
-        "totals": ["43%", "42.4%", "42.5%", "54.9% if truck or bus part", "54.9% if car or light-truck part", "54.9% if truck or bus part"]
+        "totals": ["43%", "42.4%", "42.5%", "54.9% if truck or bus part", "54.9% if car or light-truck part"]
       },
       {
         "country": "Malaysia",
         "heading": "7007",
         "importsUsd": 312884914,
-        "totals": ["15.5%", "14.9%", "15%", "29.9% if truck or bus part", "29.9% if car or light-truck part"]
+        "totals": ["15.5%", "14.9%", "15%", "29.9% if truck or bus part", "29.9% if car or light-truck part or truck or bus part"]
       },
       {
         "country": "China",
@@ -56211,7 +56195,7 @@
       "Preferences: USMCA (S) is applied for Canada and Mexico on the \"USMCA-qualifying\" side; KR for South Korea. GSP (A, A+) has lapsed and is not applied. Other preferences are not applied.",
       "Conditional relief is not applied (it needs the importer's confirmation): 9903.88.69 (Section 301).",
       "Any other country shows the range across every country not listed (column 2 countries — Cuba, North Korea, Russia, Belarus — aside), without preferences.",
-      "Multi-total cells: the Section 232 automobile-parts duty applies only to note 33(g) articles (7007.21.51, 7009.10) that are parts of passenger vehicles or light trucks, and the medium- and heavy-duty duty only to note 38(i) articles (7007.21.11.10, 7007.21.51, 7009.10) that are parts of trucks, tractors or buses. \"Not a vehicle part\" means neither — a listed article for other use enters under 9903.94.06 or 9903.74.11 and pays the base rate plus the Section 301 duty. The quartz surface products safeguard applies to 7020.00.60.00 only for products meeting U.S. note 41(a); \"within quota\" and \"over quota\" depend on the quarterly quota fill.",
+      "Multi-total cells: the Section 232 automobile-parts duty applies only to note 33(g) articles (7007.21.51, 7009.10) that are parts of passenger vehicles or light trucks, and the medium- and heavy-duty duty only to note 38(i) articles (7007.21.11.10, 7007.21.51, 7009.10) that are parts of trucks, tractors or buses; \"car or light-truck part or truck or bus part\" is one total for both. \"Not a vehicle part\" means neither — a listed article for other use enters under 9903.94.06 or 9903.74.11 and pays the base rate plus the Section 301 duty. The quartz surface products safeguard applies to 7020.00.60.00 only for products meeting U.S. note 41(a) (\"not quartz surface\" covers all other goods of that line); \"within quota\" and \"over quota\" depend on the quarterly quota fill.",
       "Canada, \"USMCA-qualifying\" side: the Section 301 and Section 232 duties are removed (9903.05.93, 9903.94.06, 9903.74.10), but the 50% Section 338 duty stays on 7010.90.50 and 7013.99.90 because U.S. note 51(a) applies it even when a special rate is claimed.",
       "The compound and per-unit rates on sheet and float glass (for example 14.5¢/m² or 1¢/kg + 1.6%) are priced at 1,000 units on a $10,000 shipment for the EU, Japan, Korea and Taiwan \"in total\" rules.",
       "Not in the cells: antidumping and countervailing duty deposits (float glass from China and Malaysia; fiberglass door panels and quartz surface products where they enter under Chapter 70), which are company-specific; the China product exclusions in note 20(vvv)(iii) and the civil-aircraft exemptions (they need the importer's confirmation); the note 52(j) exemptions for Jordan and for CAFTA-DR fiberglass from Guatemala and El Salvador (those countries are in \"Any other country\"); FTA preferences other than USMCA and KORUS; and NHTSA, CPSC or FDA compliance costs. The opt-in Section 232 certified-parts headings are not modeled.",
