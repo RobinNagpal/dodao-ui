@@ -44,7 +44,7 @@
         "belgian linen import duty"
       ]
     },
-    "intro": "Chapter 53 covers the vegetable textile fibres other than cotton, from the raw fibre to woven fabric: **flax** (5301) and **true hemp** (5302), **jute** and kenaf (5303), **coir, abaca, ramie and sisal** (5305), their yarns (5306–5308, including paper yarn) and woven **linen fabric** (5309), **jute fabric** such as burlap and hessian (5310) and fabrics of hemp, ramie and paper yarn (5311). Sacks, twine, rugs and made-up linens of these fibres are classified in chapters 56–63. Of its **62 tariff lines, 46 are Free**; the rest run from 0.2¢/kg to 14.5% (flax fabrics with more than 17% wool).\n\nThe extra duty by country decides the cost. Since **July 24, 2026** goods from 60 economies pay a **Section 301 tariff of 10% or 12.5%**: India, Bangladesh, Sri Lanka and the UK 10% on top of the base rate, the **EU 10% in total**, and Türkiye, Thailand, Vietnam and the Philippines 12.5%. **China pays 37.5%** extra on almost every line (25% List 3 plus 12.5%), and Brazil 37.5%. Only Jordan, Guatemala and El Salvador have exception lists that reach Chapter 53. **India** shipped 36% of the **$265.4M** imported in 2025, mostly heading 5305 fibre (coir, abaca, ramie, sisal) and jute fabric, and Belgium, Italy and the UK most of the linen fabric.",
+    "intro": "Chapter 53 covers the vegetable textile fibres other than cotton, from the raw fibre to woven fabric: **flax** (5301) and **true hemp** (5302), **jute** and kenaf (5303), **coir, abaca, ramie and sisal** (5305), their yarns (5306–5308, including paper yarn) and woven **linen fabric** (5309), **jute fabric** such as burlap and hessian (5310) and fabrics of hemp, ramie and paper yarn (5311). Sacks, twine, rugs and made-up linens of these fibres are classified in chapters 56–63. Of its **62 tariff lines, 46 are Free**; the rest run from 0.2¢/kg to 14.5% (flax fabrics with more than 17% wool).\n\nThe extra duty by country decides the cost. Since **July 24, 2026** goods from 60 economies pay a **Section 301 tariff of 10% or 12.5%**: India, Bangladesh, Sri Lanka and the UK 10% on top of the base rate, the **EU 10% in total**, and Türkiye, Thailand, Vietnam and the Philippines 12.5%. **China pays 37.5%** extra on almost every line (25% List 3 plus 12.5%), and Brazil 37.5%. Exemptions are narrow: Jordan's exception list covers every line, and CAFTA-DR yarn and fabric (5306–5311, except coir and paper yarn) entered with a CAFTA-DR claim pays no Section 301 duty. **India** shipped 36% of the **$265.4M** imported in 2025, mostly heading 5305 fibre (coir, abaca, ramie, sisal) and jute fabric, and Belgium, Italy and the UK most of the linen fabric.",
     "stats": [
       {
         "label": "Tariff lines",
@@ -2774,7 +2774,7 @@
         "jute import from bangladesh tariff"
       ]
     },
-    "intro": "This page compares two editions of the tariff schedule: the **2025 Basic Edition**, in force at the start of 2025, and the current **2026 Revision 21** (in force October 9, 2026). All 62 Chapter 53 lines carry the same base rates in both.\n\nWhat changed came on top of the base rate. The 2025 IEEPA duties — 50% on Indian jute and linen at their peak — **ended on February 24, 2026**, and the 10% Section 122 surcharge that replaced them expired on July 23, 2026. Since **July 24, 2026**, goods from 60 economies pay a **Section 301 tariff of 10% or 12.5%**, and only Jordan, Guatemala and El Salvador have exception lists that reach Chapter 53. China keeps its 25% List 3 duty (7.5% List 4A on ramie and other yarn), and Brazil pays another 25%.",
+    "intro": "This page compares two editions of the tariff schedule: the **2025 Basic Edition**, in force at the start of 2025, and the current **2026 Revision 21** (in force October 9, 2026). All 62 Chapter 53 lines carry the same base rates in both.\n\nWhat changed came on top of the base rate. The 2025 IEEPA duties — 50% on Indian jute and linen at their peak — **ended on February 24, 2026**, and the 10% Section 122 surcharge that replaced them expired on July 23, 2026. Since **July 24, 2026**, goods from 60 economies pay a **Section 301 tariff of 10% or 12.5%**, and the only exemptions that reach Chapter 53 are Jordan's exception list and the CAFTA-DR textile exemption for yarn and fabric (note 52(i)). China keeps its 25% List 3 duty (7.5% List 4A on ramie and other yarn), and Brazil pays another 25%.",
     "scope": "Measures that reach Chapter 53 from any country: the 2026 Section 301 tariffs on 60 economies and their exception lists, the Brazil Section 301 tariff, China Section 301 Lists 3 and 4A, the Nicaragua Section 301 phase-in, and the 2025–2026 IEEPA and Section 122 duties that have ended. No Section 232 action, no Canada Section 338 list entry and no antidumping or countervailing duty order covers a Chapter 53 line. For the rate each supplier pays, see Rates by country.",
     "before": {
       "edition": "2025 Basic Edition",
@@ -2991,8 +2991,8 @@
         "ch99Code": "9903.05.20–9903.05.83",
         "before": "None",
         "now": "+10% or 10% (in place of base) or +12.5% or 12.5% (in place of base)",
-        "exemption": "Exception lists in U.S. note 52(j) reach Chapter 53 for three economies: Jordan (every Chapter 53 subheading, 9903.06.20), and Guatemala and El Salvador (every subheading, when entered under CAFTA-DR, 9903.06.06 and 9903.06.09). CAFTA-DR textile goods of Costa Rica, the Dominican Republic, El Salvador, Guatemala, Honduras and Nicaragua entered duty-free under CAFTA-DR are also exempt (note 52(i), 9903.05.95). Japan, South Korea and Switzerland pay 12.5% and Taiwan 10% in total in place of a lower base rate (note 52(k)). The 2025 IEEPA duties ended February 24, 2026, and the 10% Section 122 surcharge expired July 23, 2026.",
-        "whatItMeans": "Most other suppliers pay the base rate plus 10% or 12.5% — Pakistan 10%, Egypt 12.5%; Jordanian goods and CAFTA-DR claims from Guatemala and El Salvador enter at the base rate.",
+        "exemption": "Exception lists in U.S. note 52(j) reach Chapter 53 for three economies: Jordan (every Chapter 53 subheading, 9903.06.20), and Guatemala and El Salvador (every subheading, when entered under CAFTA-DR, 9903.06.06 and 9903.06.09). Note 52(i) (9903.05.95) also exempts CAFTA-DR textile goods of Costa Rica, the Dominican Republic, El Salvador, Guatemala, Honduras and Nicaragua entered duty-free with a CAFTA-DR claim (SPI P or P+); in Chapter 53 that covers the yarns and fabrics of 5306–5311 except coir yarn (5308.10) and paper yarn (5308.90.10), not the raw fibres of 5301–5305. Japan, South Korea and Switzerland pay 12.5% and Taiwan 10% in total in place of a lower base rate (note 52(k)). The 2025 IEEPA duties ended February 24, 2026, and the 10% Section 122 surcharge expired July 23, 2026.",
+        "whatItMeans": "Most other suppliers pay the base rate plus 10% or 12.5% — Pakistan 10%, Egypt 12.5%; Jordanian goods, CAFTA-DR claims from Guatemala and El Salvador, and CAFTA-DR yarn and fabric from Costa Rica, the Dominican Republic, Honduras and Nicaragua enter at the base rate.",
         "effectiveFrom": "2026-07-24",
         "effectiveSourceId": "fr-2026-15181",
         "sourceIds": ["fr-2026-15181", "fr-2026-15274", "hts-chapter-99", "eo-14389", "hts-now"]
@@ -3041,7 +3041,7 @@
         "date": "2026-07-24",
         "dateLabel": "Effective",
         "title": "Section 301 tariffs on 60 economies reach every Chapter 53 line",
-        "detail": "10% or 12.5% on all products of 60 economies (9903.05.20–9903.05.84); no Chapter 53 subheading is on the general exemption list (note 52(b)). India, Bangladesh, Sri Lanka, the UK and Pakistan pay 10%; Türkiye, Thailand, Vietnam, the Philippines and Egypt 12.5%; EU goods 10% in total. Only Jordan's list, and Guatemala's and El Salvador's CAFTA-DR lists, exempt Chapter 53 goods. USMCA-qualifying goods are exempt (9903.05.93, 9903.05.94); other FTA claims remove the base rate but not this duty.",
+        "detail": "10% or 12.5% on all products of 60 economies (9903.05.20–9903.05.84); no Chapter 53 subheading is on the general exemption list (note 52(b)). India, Bangladesh, Sri Lanka, the UK and Pakistan pay 10%; Türkiye, Thailand, Vietnam, the Philippines and Egypt 12.5%; EU goods 10% in total. Jordan's list, Guatemala's and El Salvador's CAFTA-DR lists, and the CAFTA-DR textile exemption (note 52(i), 9903.05.95: yarn and fabric of 5306–5311 except 5308.10 and 5308.90.10, with a CAFTA-DR claim) exempt Chapter 53 goods. USMCA-qualifying goods are exempt (9903.05.93, 9903.05.94); other FTA claims remove the base rate but not this duty.",
         "before": null,
         "now": "+10% / +12.5%",
         "countries": "60 economies",
@@ -14775,7 +14775,7 @@
           "extraPct": 0,
           "ch99Code": "9903.05.20–9903.05.83",
           "atLeast": true,
-          "label": "From the base rate alone (countries outside the 60 Section 301 economies) to base rate plus 12.5% (9903.05.20–9903.05.83): Pakistan 10%, Egypt 12.5%, Japan, South Korea and Switzerland 12.5% in total. Jordan (every line, 9903.06.20) and CAFTA-DR claims from Guatemala and El Salvador (9903.06.06, 9903.06.09) are exempt.",
+          "label": "From the base rate alone (countries outside the 60 Section 301 economies) to base rate plus 12.5% (9903.05.20–9903.05.83): Pakistan 10%, Egypt 12.5%, Japan, South Korea and Switzerland 12.5% in total. Jordan (every line, 9903.06.20) and CAFTA-DR claims from Guatemala and El Salvador (9903.06.06, 9903.06.09) are exempt, as is CAFTA-DR yarn and fabric (5306–5311, not coir or paper yarn) of the other CAFTA-DR members (9903.05.95).",
           "sourceIds": ["fr-2026-15181", "fr-2026-15274", "hts-chapter-99", "hts-now"]
         },
         "importsUsd": 19052540,
@@ -15324,10 +15324,10 @@
       "The IEEPA duties (9903.01.xx, 9903.02.xx) are still printed in the schedule but ended February 24, 2026, and the Section 122 surcharge (9903.03.01) expired July 23, 2026; neither is applied.",
       "EU rates of \"10% in total\" replace the base rate when it is lower (U.S. note 52(k)); on the 14.5% flax–wool lines the base rate alone applies.",
       "Belarus is a Column 2 country, so its cells show Column 2 rates; it is not one of the 60 Section 301 economies.",
-      "Exception lists checked: only Jordan's (every line) and the Guatemala and El Salvador CAFTA-DR lists reach Chapter 53. No China product exclusion, Canada Section 338 entry, Section 232 heading or AD/CVD order covers a Chapter 53 line.",
+      "Exemptions checked: Jordan's list (every line), the Guatemala and El Salvador CAFTA-DR lists (every line), and the CAFTA-DR textile exemption (note 52(i): 5306–5311 except 5308.10 and 5308.90.10, with SPI P or P+) reach Chapter 53. No China product exclusion, Canada Section 338 entry, Section 232 heading or AD/CVD order covers a Chapter 53 line.",
       "Not in the grid: the UFLPA presumption against goods made in Xinjiang, APHIS port inspection of raw plant fibres, and textile entry rules (origin under 19 CFR 102.21, manufacturer identification) — see Import documents."
     ],
-    "exemptionCheck": "Read U.S. notes 2, 20, 30, 31, 50, 51 and 52 to Chapter 99 subchapter III in the 2026 Revision 21. Note 52(b) (9903.05.86) names no Chapter 53 code. Note 52(j) country lists name Chapter 53 codes only for Jordan (all 31 subheadings, 9903.06.20) and for CAFTA-DR claims from Guatemala and El Salvador (all 31, 9903.06.06 and 9903.06.09); the EU, UK, Swiss, Bangladesh and other lists name none. Note 52(i) exempts CAFTA-DR textile goods entered duty-free. Note 50(a)(ii) names no Chapter 53 code for Brazil, note 51(b) none for Canada, and the Russia list (note 30) none. Note 20 puts 30 subheadings on China List 3 and 5308.90.90 on List 4A; no note 20 product exclusion and no note 31 increase names a Chapter 53 line. No Section 232 heading and no antidumping or countervailing duty order covers a Chapter 53 line.",
+    "exemptionCheck": "Read U.S. notes 2, 20, 30, 31, 50, 51 and 52 to Chapter 99 subchapter III in the 2026 Revision 21. Note 52(b) (9903.05.86) names no Chapter 53 code. Note 52(j) country lists name Chapter 53 codes only for Jordan (all 31 subheadings, 9903.06.20) and for CAFTA-DR claims from Guatemala and El Salvador (all 31, 9903.06.06 and 9903.06.09); the EU, UK, Swiss, Bangladesh and other lists name none. Note 52(i) (9903.05.95) exempts CAFTA-DR textile goods entered duty-free with a CAFTA-DR claim; under the WTO textiles Annex that general note 29(d)(v) uses, that reaches 5306–5311 but not the raw fibres of 5301–5305, coir yarn (5308.10) or paper yarn (5308.90.10). Note 50(a)(ii) names no Chapter 53 code for Brazil, note 51(b) none for Canada, and the Russia list (note 30) none. Note 20 puts 30 subheadings on China List 3 and 5308.90.90 on List 4A; no note 20 product exclusion and no note 31 increase names a Chapter 53 line. No Section 232 heading and no antidumping or countervailing duty order covers a Chapter 53 line.",
     "sources": [
       {
         "id": "hts-now",
@@ -15497,7 +15497,7 @@
         "jute tariff engineering"
       ]
     },
-    "intro": "Chapter 53 goods are textiles, so **CBP's textile rules decide where they come from**: raw fibre is from where it was grown, yarn from where it was spun, and fabric from where it was woven — dyeing or printing alone does not move origin (19 CFR 102.21). Every entry names the manufacturer through a manufacturer identification code, and goods made in Xinjiang are presumed barred under the UFLPA. **Hemp fibre is not a controlled substance**: the Controlled Substances Act excludes mature stalks and fibre, and USDA's hemp rules (7 CFR 990) license U.S. growers, not importers. Raw fibres need no APHIS permit but can be held for inspection at the port.\n\nThe ways to pay less are in the schedule: claim **USMCA** on Canadian and Mexican goods, use the **Jordan or CAFTA-DR exception lists**, claim an **FTA rate** on the dutiable lines, get the **classification** right where flax content, bleaching or wool content moves the rate, enter **samples** under Chapter 98, and claim **drawback** on re-exports.",
+    "intro": "Chapter 53 goods are textiles, so **CBP's textile rules decide where they come from**: raw fibre is from where it was grown, yarn from where it was spun, and fabric from where it was woven — dyeing or printing alone does not move origin (19 CFR 102.21). Every entry names the manufacturer through a manufacturer identification code, and goods made in Xinjiang are presumed barred under the UFLPA. **Hemp fibre is not a controlled substance**: the Controlled Substances Act excludes mature stalks and fibre, and USDA's hemp rules (7 CFR 990) license U.S. growers, not importers. Raw fibres need no APHIS permit but can be held for inspection at the port.\n\nThe ways to pay less are in the schedule: claim **USMCA** on Canadian and Mexican goods, use the **Jordan list or the CAFTA-DR exemptions**, claim an **FTA rate** on the dutiable lines, get the **classification** right where flax content, bleaching or wool content moves the rate, enter **samples** under Chapter 98, and claim **drawback** on re-exports.",
     "lastCheckedAt": "2026-10-13",
     "regulationsAsOf": "2026-10-08",
     "levers": [
@@ -15525,9 +15525,9 @@
       },
       {
         "id": "exception-lists",
-        "title": "Source from Jordan, or claim CAFTA-DR on Guatemalan or Salvadoran goods",
+        "title": "Source from Jordan, or claim CAFTA-DR on Central American and Dominican goods",
         "saves": "The whole 10% Section 301 duty",
-        "appliesTo": "Every Chapter 53 line from Jordan (9903.06.20); every line from Guatemala or El Salvador entered under CAFTA-DR (9903.06.06, 9903.06.09); CAFTA-DR textile goods of any member entered duty-free (9903.05.95)",
+        "appliesTo": "Every Chapter 53 line from Jordan (9903.06.20); every line from Guatemala or El Salvador entered under CAFTA-DR (9903.06.06, 9903.06.09); yarn and fabric of 5306–5311 (not coir yarn 5308.10 or paper yarn 5308.90.10) from Costa Rica, the Dominican Republic, Honduras or Nicaragua entered duty-free under CAFTA-DR (note 52(i), 9903.05.95)",
         "document": "Proof of origin for the country claimed (commercial invoice, manufacturer ID, production records), the exemption heading on the entry line, and for CAFTA-DR the SPI \"P\" claim.",
         "caveat": "Origin follows 19 CFR 102.21: fabric is from where it was woven, so imported greige linen dyed and printed in another country usually keeps the weaving country's origin. No other economy's exception list names a Chapter 53 code.",
         "citations": [
@@ -15547,7 +15547,7 @@
         "saves": "The base rate: 14.5% (flax–wool fabric), 6.9% (unbleached or bleached flax blends), 3.8% (hackled flax), 2.7% (paper yarn and its fabric), 0.2¢/kg (scutched flax)",
         "appliesTo": "The 16 dutiable lines, for goods of Korea, Australia, Chile, Colombia, Peru, Panama, Israel, Jordan, Morocco, Bahrain, Oman, Singapore and CAFTA-DR countries; CBERA (E) on 5301.21, 5308.90.10, 5311.00.60 and (with exclusions) 5309.21.30; AGOA (D, through December 31, 2026) on 5301.21, 5308.90.10 and 5311.00.60",
         "document": "Proof of origin under the agreement and the SPI on the entry line (KR, AU, CL, CO, PE, PA, IL, JO, MA, BH, OM, SG, P, E, D).",
-        "caveat": "FTA claims do not remove the 2026 Section 301 duty (U.S. note 52(a)), except CAFTA-DR textile goods entered duty-free under CAFTA-DR (note 52(i)). GSP (A) has been expired since December 31, 2020.",
+        "caveat": "FTA claims do not remove the 2026 Section 301 duty (U.S. note 52(a)), except CAFTA-DR yarn and fabric of 5306–5311 entered duty-free under CAFTA-DR (note 52(i), 9903.05.95) — raw fibres, coir yarn and paper yarn still pay it. GSP (A) has been expired since December 31, 2020.",
         "citations": [
           {
             "label": "HTSUS General Note 3(c)",
@@ -16293,7 +16293,7 @@
         "id": "ch53-tariffs-2026",
         "question": "Are Chapter 53 imports subject to tariffs in 2026?",
         "searchedAs": ["hts chapter 53", "hts chapter 53 tariff updates", "linen tariff 2026", "hemp tariffs"],
-        "answer": "Yes, mostly through the extra duty by country. Since July 24, 2026 the Section 301 tariff on 60 economies adds 10% or 12.5% (EU 10% in total), with exception lists only for Jordan, Guatemala and El Salvador. China and Brazil pay 37.5%. The IEEPA tariffs ended February 24 and the Section 122 surcharge July 23, 2026.",
+        "answer": "Yes, mostly through the extra duty by country. Since July 24, 2026 the Section 301 tariff on 60 economies adds 10% or 12.5% (EU 10% in total), with exemptions only for Jordanian goods and CAFTA-DR claims (every line for Guatemala and El Salvador, yarn and fabric for the other CAFTA-DR members). China and Brazil pay 37.5%. The IEEPA tariffs ended February 24 and the Section 122 surcharge July 23, 2026.",
         "link": "tariff-updates"
       }
     ]
