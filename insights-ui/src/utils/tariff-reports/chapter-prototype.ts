@@ -88,8 +88,10 @@ const CHAPTER_FILES: Record<string, () => Promise<{ default: unknown }>> = {
   '55-man-made-staple-fibers': () => import('@/tariff-data/chapters/55-man-made-staple-fibers.json'),
   '56-wadding-felt-and-twine': () => import('@/tariff-data/chapters/56-wadding-felt-and-twine.json'),
   '57-carpets-and-floor-coverings': () => import('@/tariff-data/chapters/57-carpets-and-floor-coverings.json'),
+  '58-special-woven-fabrics': () => import('@/tariff-data/chapters/58-special-woven-fabrics.json'),
   '59-coated-textile-fabrics': () => import('@/tariff-data/chapters/59-coated-textile-fabrics.json'),
   '60-knitted-fabrics': () => import('@/tariff-data/chapters/60-knitted-fabrics.json'),
+  '62-apparel-and-accessories-woven': () => import('@/tariff-data/chapters/62-apparel-and-accessories-woven.json'),
   '63-made-up-textile-articles': () => import('@/tariff-data/chapters/63-made-up-textile-articles.json'),
   '64-footwear-and-gaiters': () => import('@/tariff-data/chapters/64-footwear-and-gaiters.json'),
   '65-headgear': () => import('@/tariff-data/chapters/65-headgear.json'),
@@ -102,7 +104,17 @@ const CHAPTER_FILES: Record<string, () => Promise<{ default: unknown }>> = {
   '72-iron-and-steel': () => import('@/tariff-data/chapters/72-iron-and-steel.json'),
   '73-articles-of-iron-steel': () => import('@/tariff-data/chapters/73-articles-of-iron-steel.json'),
   '74-copper-and-articles': () => import('@/tariff-data/chapters/74-copper-and-articles.json'),
+  '75-nickel-and-articles': () => import('@/tariff-data/chapters/75-nickel-and-articles.json'),
   '76-aluminum-and-articles': () => import('@/tariff-data/chapters/76-aluminum-and-articles.json'),
+  '79-zinc-and-articles': () => import('@/tariff-data/chapters/79-zinc-and-articles.json'),
+  '80-tin-and-articles': () => import('@/tariff-data/chapters/80-tin-and-articles.json'),
+  '81-other-base-metals-and-cermets': () => import('@/tariff-data/chapters/81-other-base-metals-and-cermets.json'),
+  '82-base-metal-tools-and-implements': () => import('@/tariff-data/chapters/82-base-metal-tools-and-implements.json'),
+  '83-misc-articles-of-base-metal': () => import('@/tariff-data/chapters/83-misc-articles-of-base-metal.json'),
+  '86-railway-locomotives-and-fixtures': () => import('@/tariff-data/chapters/86-railway-locomotives-and-fixtures.json'),
+  '89-ships-and-floating-structures': () => import('@/tariff-data/chapters/89-ships-and-floating-structures.json'),
+  '92-musical-instruments': () => import('@/tariff-data/chapters/92-musical-instruments.json'),
+  '93-arms-and-ammunition': () => import('@/tariff-data/chapters/93-arms-and-ammunition.json'),
 };
 
 /**
