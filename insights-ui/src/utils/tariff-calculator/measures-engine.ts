@@ -76,6 +76,8 @@ import { resolveRateNote } from '@/utils/tariff-calculator/rate-notes';
 import { statisticalSuffixNote } from '@/utils/tariff-calculator/statistical-suffixes';
 import {
   chargeAmountUsd,
+  chargedQuantity,
+  chargeUnits,
   componentLabel,
   FULL_POLARITY_DEGREES,
   isValidPolarity,
@@ -346,10 +348,13 @@ function priceRate(rate: ParsedRate, valueUsd: number, quantities: Record<string
   let amount = (rate.adValoremPct / 100) * valueUsd;
   const missing: string[] = [];
   for (const charge of rate.perUnit) {
-    const uom = normalizeUom(charge.unit.key);
-    const qty = quantities[uom];
-    if (qty === undefined || !Number.isFinite(qty) || qty < 0) missing.push(uom);
-    else amount += chargeAmountUsd(charge, polarityDegrees) * qty;
+    const qty = chargedQuantity(charge, (key) => quantities[normalizeUom(key)]);
+    if (qty === null) {
+      for (const unit of chargeUnits(charge)) {
+        const q = quantities[normalizeUom(unit.key)];
+        if (q === undefined || !Number.isFinite(q) || q < 0) missing.push(normalizeUom(unit.key));
+      }
+    } else amount += chargeAmountUsd(charge, polarityDegrees) * qty;
   }
   return missing.length > 0 ? { ok: false, missingUoms: Array.from(new Set(missing)) } : { ok: true, amount };
 }
@@ -385,7 +390,7 @@ function polarityNote(rate: ParsedRate, polarityDegrees: number | undefined): st
 /** Units the per-unit parts of a rate text are charged in (normalized codes); empty for an ad valorem or unreadable rate. */
 export function rateUoms(rateText: string | null | undefined): string[] {
   const parsed = rateText ? parseExtendedRate(rateText) : null;
-  return parsed ? Array.from(new Set(parsed.perUnit.map((c) => normalizeUom(c.unit.key)))) : [];
+  return parsed ? Array.from(new Set(parsed.perUnit.flatMap((c) => chargeUnits(c).map((u) => normalizeUom(u.key))))) : [];
 }
 
 function isFree(text: string | null | undefined): boolean {
@@ -722,6 +727,19 @@ function priceOwnParts(
   }
   let amount = priced.amount;
   const notes: string[] = [];
+  for (const c of rate.perUnit) {
+    if (!c.overThreshold) continue;
+    const jewels = quantities[normalizeUom(c.unit.key)];
+    const articles = quantities[normalizeUom(c.overThreshold.articleUnit.key)];
+    const charged = Math.max(0, jewels - c.overThreshold.perArticle * articles);
+    notes.push(
+      `${Number((c.amountUsd * 100).toPrecision(6))}¢ per ${c.unit.label} in each movement: ${jewels.toLocaleString('en-US')} jewels − ${
+        c.overThreshold.perArticle
+      } × ${articles.toLocaleString('en-US')} movements = ${charged.toLocaleString('en-US')} charged = ${formatUsd(
+        round2(c.amountUsd * charged)
+      )} (assumes the same number of jewels in every movement).`
+    );
+  }
   const missing = rate.components.filter((c) => {
     const v = ctx.input.componentValuesUsd?.[c.component];
     return v === undefined || v === null || !Number.isFinite(v);

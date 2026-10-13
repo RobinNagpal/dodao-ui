@@ -24,6 +24,7 @@ import {
   quantityUnits,
   rateDollars,
   splitRateClause,
+  thresholdNominalQuantities,
   type ExtendedRate,
 } from '@/utils/tariff-reports/shipment-duty';
 import { isQuotaReference, resolveQuotaClaim } from '@/utils/tariff-calculator/fta-quota';
@@ -190,12 +191,14 @@ export function nominalDollars(total: string): number | null {
   if (strict) {
     const qty: Record<string, number> = {};
     for (const u of quantityUnits([strict])) qty[u.key] = NOMINAL_QUANTITY;
+    Object.assign(qty, thresholdNominalQuantities(strict, NOMINAL_QUANTITY));
     return rateDollars(strict, NOMINAL_VALUE_USD, qty);
   }
   const rate = parseExtendedRate(splitRateClause(total).body);
   if (!rate) return null;
   const qty: Record<string, number> = {};
   for (const u of quantityUnits([rate])) qty[u.key] = NOMINAL_QUANTITY;
+  Object.assign(qty, thresholdNominalQuantities(rate, NOMINAL_QUANTITY));
   return extendedRateDollars(rate, NOMINAL_VALUE_USD, qty, {
     componentValuesUsd: nominalComponentValues(rate),
     ...(rate.reference ? { referenceDutyUsd: 0 } : {}),
@@ -207,6 +210,8 @@ function nominalQuantities(line: TariffRateTableRow, extraRateTexts: (string | n
   for (const u of DEFAULT_UOMS) q[u] = NOMINAL_QUANTITY;
   for (const u of line.units) q[normalizeUom(u)] = NOMINAL_QUANTITY;
   for (const t of extraRateTexts) for (const u of rateUoms(t)) q[u] = NOMINAL_QUANTITY;
+  // "2.8¢/jewel over 7": jewels above the threshold in each of the nominal movements, so that part is priced too.
+  for (const t of extraRateTexts) if (t) Object.assign(q, thresholdNominalQuantities(parseExtendedRate(t), NOMINAL_QUANTITY, normalizeUom));
   return q;
 }
 

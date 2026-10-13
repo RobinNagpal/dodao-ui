@@ -92,6 +92,7 @@
     "88",
     "89",
     "90",
+    "91",
     "92",
     "93",
     "94",
@@ -99,7 +100,7 @@
     "96",
     "97"
   ],
-  "notReady": ["91"],
+  "notReady": [],
   "programs": [
     {
       "id": "ieepa",
@@ -2594,7 +2595,7 @@
     {
       "chapter": "91",
       "lines": 375,
-      "status": "NOT READY",
+      "status": "READY",
       "gaps": [],
       "upcoming": [],
       "accepted": [],
@@ -2607,29 +2608,7 @@
         "Section 301 (Nicaragua): 375 line(s)"
       ],
       "acceptedConditions": [],
-      "rateGaps": [
-        {
-          "column": "general",
-          "rateText": "43¢ each + 2.8¢/jewel over 7 + 3.7% on the case",
-          "problem": "unknown unit \"jewel over 7\"",
-          "lines": 4,
-          "exampleLine": "9105193010"
-        },
-        {
-          "column": "general",
-          "rateText": "57¢ each + 3.7¢/jewel over 7 + 4.9% on the case",
-          "problem": "unknown unit \"jewel over 7\"",
-          "lines": 2,
-          "exampleLine": "9105293010"
-        },
-        {
-          "column": "column2",
-          "rateText": "$2.25 each + 15¢/jewel over 7 + 60% on the case",
-          "problem": "unknown unit \"jewel over 7\"",
-          "lines": 8,
-          "exampleLine": "9105193010"
-        }
-      ],
+      "rateGaps": [],
       "acceptedRateGaps": []
     },
     {

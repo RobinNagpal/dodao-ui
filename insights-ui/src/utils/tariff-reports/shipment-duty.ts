@@ -39,6 +39,59 @@ export interface PerUnitCharge {
   unit: QuantityUnit;
   /** Set for a rate that falls with the sugar's polarity (heading 1701); price it with `chargeAmountUsd`. */
   polarity?: PolarityScale;
+  /** Set for a rate charged only on the units above a per-article threshold ("2.8¢/jewel over 7"); see `chargedQuantity`. */
+  overThreshold?: ThresholdScale;
+}
+
+/**
+ * "43¢ each + 2.8¢/jewel over 7 + 3.7% on the case" (9105.19.30, 9105.29.30; column 2 of those and 9105.99.40): the
+ * jewel charge applies to the jewels above 7 in each movement. Priced from the shipment's total jewels (`unit`, the
+ * existing jewels key) and its number of articles (`articleUnit`, the "each" quantity): jewels − 7 × movements, never
+ * below 0. That equals the per-movement count when every movement has the same number of jewels (one entry line per
+ * jewel count otherwise).
+ */
+export interface ThresholdScale {
+  /** Units per article that are not charged, e.g. 7 jewels. */
+  perArticle: number;
+  /** The quantity that counts the articles (movements, clocks). */
+  articleUnit: QuantityUnit;
+}
+
+/**
+ * The quantity a per-unit charge applies to, from a lookup by unit key; null when a quantity it needs is missing.
+ * A threshold charge needs both its own unit and the article count.
+ */
+export function chargedQuantity(charge: PerUnitCharge, qtyOf: (unitKey: string) => number | undefined): number | null {
+  const valid = (q: number | undefined): q is number => q !== undefined && Number.isFinite(q) && q >= 0;
+  const qty = qtyOf(charge.unit.key);
+  if (!valid(qty)) return null;
+  if (!charge.overThreshold) return qty;
+  const articles = qtyOf(charge.overThreshold.articleUnit.key);
+  if (!valid(articles)) return null;
+  return Math.max(0, qty - charge.overThreshold.perArticle * articles);
+}
+
+/** Unit keys a charge needs a quantity for: its own, plus the article count of a threshold charge. */
+export function chargeUnits(charge: PerUnitCharge): QuantityUnit[] {
+  return charge.overThreshold ? [charge.unit, charge.overThreshold.articleUnit] : [charge.unit];
+}
+
+/** Units above the threshold per article on a nominal shipment (the generator and validator price "jewel over 7" at 7 + 10 per movement). */
+export const NOMINAL_UNITS_OVER_THRESHOLD = 10;
+
+/**
+ * Quantities for a nominal shipment of `articles` articles that make every threshold part of the rate count: the
+ * threshold unit gets articles × (threshold + NOMINAL_UNITS_OVER_THRESHOLD), the article unit gets `articles`. Keys go
+ * through `keyOf` (identity for parser keys, `normalizeUom` for the engine's). Empty when the rate has no threshold part.
+ */
+export function thresholdNominalQuantities(rate: ParsedRate | null, articles: number, keyOf: (unitKey: string) => string = (k) => k): Record<string, number> {
+  const out: Record<string, number> = {};
+  for (const c of rate?.perUnit ?? []) {
+    if (!c.overThreshold) continue;
+    out[keyOf(c.overThreshold.articleUnit.key)] = articles;
+    out[keyOf(c.unit.key)] = articles * (c.overThreshold.perArticle + NOMINAL_UNITS_OVER_THRESHOLD);
+  }
+  return out;
 }
 
 /**
@@ -161,6 +214,9 @@ const PER_UNIT_RE = new RegExp(
   'i'
 );
 
+// "2.8¢/jewel over 7", "15¢/jewel over 7" (chapter 91 clocks and clock movements).
+const OVER_THRESHOLD_RE = new RegExp(`^(?:\\$\\s*${NUMBER}|${NUMBER}\\s*(?:¢|cents?\\b))\\s*/\\s*(jewels?)\\s+over\\s+(\\d+)$`, 'i');
+
 /**
  * Removes parenthetical notes ("(9903.05.39)", "(232 list)"), "in place of base" wording and
  * line-break hyphens from the published text ("thou- sand" → "thousand").
@@ -262,6 +318,16 @@ function parseTerm(term: string): TermRange | null {
   const polarity = parsePolarityTerm(t);
   if (polarity) {
     const rate = { adValoremPct: 0, perUnit: [polarity] };
+    return { low: rate, high: rate, exact: true };
+  }
+
+  // "2.8¢/jewel over 7": per jewel above 7 in each movement (the "each" count is the movements).
+  const over = t.match(OVER_THRESHOLD_RE);
+  if (over) {
+    const amountUsd = Number((over[1] !== undefined ? Number(over[1]) : Number(over[2]) / 100).toPrecision(12));
+    const perArticle = Number(over[4]);
+    const unit = { key: 'count:jewels', label: `jewel over ${perArticle}` };
+    const rate = { adValoremPct: 0, perUnit: [{ amountUsd, unit, overThreshold: { perArticle, articleUnit: { key: 'count', label: 'each' } } }] };
     return { low: rate, high: rate, exact: true };
   }
 
@@ -539,7 +605,7 @@ export function parseRateVariants(text: string): RateVariant[] | null {
 /** Distinct per-unit quantities a set of rates needs, in first-seen order. */
 export function quantityUnits(rates: ParsedRate[]): QuantityUnit[] {
   const seen = new Map<string, QuantityUnit>();
-  for (const rate of rates) for (const charge of rate.perUnit) if (!seen.has(charge.unit.key)) seen.set(charge.unit.key, charge.unit);
+  for (const rate of rates) for (const charge of rate.perUnit) for (const unit of chargeUnits(charge)) if (!seen.has(unit.key)) seen.set(unit.key, unit);
   return Array.from(seen.values());
 }
 
@@ -555,8 +621,8 @@ export function rateDollars(
 ): number | null {
   let total = (rate.adValoremPct / 100) * customsValueUsd;
   for (const charge of rate.perUnit) {
-    const qty = quantities[charge.unit.key];
-    if (qty === undefined || !Number.isFinite(qty) || qty < 0) return null;
+    const qty = chargedQuantity(charge, (key) => quantities[key]);
+    if (qty === null) return null;
     total += chargeAmountUsd(charge, polarityDegrees) * qty;
   }
   return total;

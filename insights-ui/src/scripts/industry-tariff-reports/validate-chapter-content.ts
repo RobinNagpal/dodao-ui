@@ -18,6 +18,7 @@ import {
   quantityUnits,
   rateDollars,
   splitRateClause,
+  thresholdNominalQuantities,
   type ExtendedRate,
 } from '@/utils/tariff-reports/shipment-duty';
 import { resolveRateNote } from '@/utils/tariff-calculator/rate-notes';
@@ -454,6 +455,8 @@ function calculatorQuantities(units: string[], rateTexts: (string | null | undef
   }
   // Qualified per-unit rates ("¢/kg on drained weight", "kg on molybdenum content") need their own keys.
   for (const t of rateTexts) if (t) for (const u of rateUoms(t)) quantities[u] = CALC_QUANTITY;
+  // "2.8¢/jewel over 7": the same jewels-above-threshold quantity the generator prices the cell with.
+  for (const t of rateTexts) if (t) Object.assign(quantities, thresholdNominalQuantities(parseExtendedRate(t), CALC_QUANTITY, normalizeUom));
   return quantities;
 }
 
@@ -610,6 +613,7 @@ function checkCalculator(report: Report, slug: string, p: TariffChapterPrototype
             }
             const unitQty: Record<string, number> = {};
             for (const u of quantityUnits([c.range.low])) unitQty[u.key] = CALC_QUANTITY;
+            Object.assign(unitQty, thresholdNominalQuantities(c.range.low, CALC_QUANTITY));
             const expected = extended
               ? extendedRateDollars(extended, CALC_VALUE_USD, unitQty, {
                   componentValuesUsd: Object.fromEntries(extended.components.map((x) => [x.component, NOMINAL_COMPONENT_VALUE_USD])),

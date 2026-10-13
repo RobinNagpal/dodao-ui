@@ -7236,6 +7236,34 @@
       "expectedTotalDutyUsd": 502.4,
       "toleranceUsd": 0.01,
       "sourceNote": "HTSUS 2026 Revision 21: 9105.21.80 (statistical note 1(n): other clocks .30 movement, .40 case, .50 battery) general rate \"30¢ each + 6.9% on the case + 5.3% on the battery\", priced once on the whole clock: 200 x $0.30 = $60.00 + 6.9% x $900 = $62.10 + 5.3% x $100 = $5.30 = $127.40. Section 301 (2026) for China +12.5% of $3,000 (9903.05.31) = $375.00; 9105.21.80 is on none of the China Section 301 lists 1-4A in effect. Total $502.40."
+    },
+    {
+      "id": "ch91-jeweled-travel-clock-cn",
+      "description": "Mechanical travel clocks (other clocks of 9105.19, movement not over 50 mm, running over 47 hours, 15 jewels each; 9105.19.30), from China: 100 clocks, $4,000, of which case $1,000, 1,500 jewels in total; entered under the travel-clock movement number 9105.19.30.10",
+      "chapter": "91",
+      "input": {
+        "hts10": "9105193010",
+        "countryOfOrigin": "CN",
+        "customsValueUsd": 4000,
+        "quantities": {
+          "NO": 100,
+          "NO:jewels": 1500
+        },
+        "componentValuesUsd": {
+          "case": 1000
+        },
+        "entryDate": "2026-10-13"
+      },
+      "line": {
+        "hts10": "9105193010",
+        "general": "43¢ each + 2.8¢/jewel over 7 + 3.7% on the case",
+        "special": "Free (A+,AU,BH,CL,CO,D,E, IL,JO,KR, MA,OM,P, PA,PE,S,SG)",
+        "column2": "$2.25 each + 15¢/jewel over 7 + 60% on the case",
+        "units": []
+      },
+      "expectedTotalDutyUsd": 902.4,
+      "toleranceUsd": 0.01,
+      "sourceNote": "HTSUS 2026 Revision 21: 9105.19.30 (statistical note 1(l): travel clocks .10 movement, .20 case) general rate \"43¢ each + 2.8¢/jewel over 7 + 3.7% on the case\", priced once on the whole clock: 100 x $0.43 = $43.00 + 2.8¢ x (1,500 jewels - 7 x 100 movements = 800 jewels over 7) = $22.40 + 3.7% x $1,000 = $37.00 = $102.40. Section 301 (2026) for China +12.5% of $4,000 (9903.05.31) = $500.00; Section 301 List 4A +7.5% (9903.88.15) = $300.00. Total $902.40."
     }
   ]
 }
