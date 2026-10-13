@@ -13,13 +13,11 @@ import Stack from '@/components/ui/containers/Stack';
 import CardSection from '@/components/ui/sections/CardSection';
 import { DisclosureItem, DisclosureList } from '@/components/ui/sections/DisclosureList';
 import InlineCard from '@/components/ui/sections/InlineCard';
-import LinkTile from '@/components/ui/sections/LinkTile';
 import MarkdownContent from '@/components/ui/sections/MarkdownContent';
 import SectionHeading from '@/components/ui/sections/SectionHeading';
 import type { TariffChapterPrototype } from '@/types/tariff-chapter-prototype';
 import { parseChapterBodyMarkdown } from '@/util/parse-markdown';
 import { approach2SectionLabel, chapterSectionHref } from '@/utils/tariff-reports/chapter-route-helpers';
-import { shortRateSummary } from '@/utils/tariff-reports/rate-table-groups';
 import { shipmentLines } from '@/utils/tariff-reports/shipment-duty';
 import React from 'react';
 
@@ -28,8 +26,8 @@ import React from 'react';
 //
 // Reading order is deliberate: orient the reader (what this chapter is, and
 // whether the rate is even the thing that matters), give them the chapter's
-// numbers, let them jump to their product group, then the full table, then the
-// arithmetic worked through on real lines. Nothing here is hidden behind an
+// numbers, then the full table — grouped by heading, so it doubles as the map of
+// the chapter's product groups — then the arithmetic worked through on real lines. Nothing here is hidden behind an
 // interaction — the filters narrow content that is already rendered, and the
 // collapsed chapter notes stay in the HTML.
 //
@@ -59,36 +57,17 @@ export default function ChapterOverviewApproach2({ content }: ChapterOverviewApp
         </Text>
       </Stack>
 
-      <Stack as="section" gap="md">
-        <SectionHeading as="h2" size="lg" weight="bold" tone="heading">
-          The {overview.productGroups.length} headings in Chapter {chapter.padded}
-        </SectionHeading>
-        <MetricGrid columns={cardGridColumns(overview.productGroups.length)} gap="md">
-          {overview.productGroups.map((group) => (
-            <LinkTile
-              key={group.heading}
-              href={`#${group.heading}`}
-              eyebrow={group.heading}
-              aside={group.dutiableLineCount > 0 ? `${group.lineCount} lines · ${group.dutiableLineCount} with a base-rate duty` : `${group.lineCount} lines`}
-              title={group.label}
-              meta={shortRateSummary(group.rateSummary)}
-            >
-              {group.blurb}
-            </LinkTile>
-          ))}
-        </MetricGrid>
-      </Stack>
-
       <CardSection padding="roomy" bordered id="rate-table">
         <Stack gap="lg">
           <Stack gap="xs">
             <SectionHeading as="h2" size="lg" weight="bold" tone="heading">
-              Every HTS Chapter {chapter.padded} tariff line and its duty rate
+              {`HTS Chapter ${chapter.padded} duty rates: ${overview.productGroups.length} headings, ${lineCount} tariff lines`}
             </SectionHeading>
             <Text size="sm" tone="muted">
-              All {lineCount} tariff lines in the schedule, with the base (general / MFN) rate, the rate with a trade deal or preference program, the Column 2
-              rate and the reporting unit, grouped by 4-digit heading. Open a heading to see its lines, or search by product name or HTS code to open the
-              headings that match; select a line for its full description and preference list.
+              All {lineCount} tariff lines in the schedule, grouped by 4-digit heading, with the base (general / MFN) rate, the rate with a trade deal or
+              preference program, the Column 2 rate and the reporting unit. Each heading says what it covers, its rates and how many of its lines carry a
+              base-rate duty; open it to see its lines, or search by product name or HTS code to open the headings that match. Select a line for its full
+              description and preference list.
             </Text>
           </Stack>
           {tariffUpdates && (

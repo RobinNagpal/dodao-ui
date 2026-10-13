@@ -6,7 +6,8 @@ import React from 'react';
 /**
  * Collapsible groups of rows in a long reference table (e.g. the chapter rate table grouped by
  * 4-digit HTS heading). Each group has a full-width toggle row — code, title, an optional official
- * description, a key value and an aside such as the line count — that opens the group's rows.
+ * description, an optional plain-language body, a key value with an optional note under it and an
+ * aside such as the line count — that opens the group's rows.
  *
  * `TableRowGroup` is the desktop form: two `<tbody>`s inside a `DataTable` (the toggle row, then
  * the rows), so every group shares the table's one header and column widths. `StackedRowGroup` is
@@ -21,9 +22,9 @@ import React from 'react';
 
 const toggle = cva(
   'grid w-full scroll-mt-28 grid-cols-[auto_minmax(0,1fr)_auto] items-baseline gap-x-3 px-3 py-3 text-left transition-colors ' +
-    '[grid-template-areas:"code_aside_chev""title_title_title""desc_desc_desc""value_value_value"] ' +
+    '[grid-template-areas:"code_aside_chev""title_title_title""desc_desc_desc""body_body_body""value_value_value"] ' +
     'md:grid-cols-[4.5rem_minmax(0,1fr)_14rem_8rem_1.25rem] md:gap-x-4 ' +
-    'md:[grid-template-areas:"code_title_value_aside_chev""code_desc_value_aside_chev"] ' +
+    'md:[grid-template-areas:"code_title_value_aside_chev""code_desc_value_aside_chev""code_body_value_aside_chev"] ' +
     'hover:bg-surface-2 focus-visible:outline focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-primary',
   {
     variants: {
@@ -39,8 +40,12 @@ export interface RowGroupToggleProps {
   title: React.ReactNode;
   /** Muted second line under the title, e.g. the heading's official wording. */
   description?: React.ReactNode;
+  /** A short paragraph under the title and description, e.g. what the heading covers. */
+  body?: React.ReactNode;
   /** The group's key figure, e.g. its rate summary ("Free · 1¢/kg"). */
   value?: React.ReactNode;
+  /** Muted note under the value, e.g. "2 with a base-rate duty". */
+  valueNote?: React.ReactNode;
   /** Muted note on the right, e.g. "35 lines" or "3 matches". */
   aside?: React.ReactNode;
   expanded: boolean;
@@ -51,13 +56,31 @@ export interface RowGroupToggleProps {
 }
 
 /** The button that opens and closes a group. */
-export function RowGroupToggle({ code, title, description, value, aside, expanded, onToggle, controls, className }: RowGroupToggleProps): React.JSX.Element {
+export function RowGroupToggle({
+  code,
+  title,
+  description,
+  body,
+  value,
+  valueNote,
+  aside,
+  expanded,
+  onToggle,
+  controls,
+  className,
+}: RowGroupToggleProps): React.JSX.Element {
   return (
     <button type="button" aria-expanded={expanded} aria-controls={controls} onClick={onToggle} className={cn(toggle({ expanded }), className)}>
       <span className="[grid-area:code] font-mono text-sm font-semibold tabular-nums text-primary">{code}</span>
       <span className="[grid-area:title] mt-1 text-base font-semibold text-heading md:mt-0">{title}</span>
       {description && <span className="[grid-area:desc] mt-0.5 text-xs text-muted">{description}</span>}
-      {value && <span className="[grid-area:value] mt-1 text-sm text-body md:mt-0">{value}</span>}
+      {body && <span className="[grid-area:body] mt-1.5 text-sm text-body">{body}</span>}
+      {(value || valueNote) && (
+        <span className="[grid-area:value] mt-1.5 flex flex-col gap-0.5 md:mt-0">
+          {value && <span className="text-sm text-body">{value}</span>}
+          {valueNote && <span className="text-xs text-muted">{valueNote}</span>}
+        </span>
+      )}
       {aside && <span className="[grid-area:aside] justify-self-end whitespace-nowrap text-xs text-muted md:justify-self-start md:text-sm">{aside}</span>}
       <ChevronDownIcon
         className={cn('[grid-area:chev] h-5 w-5 shrink-0 self-center text-muted transition-transform', expanded && 'rotate-180')}

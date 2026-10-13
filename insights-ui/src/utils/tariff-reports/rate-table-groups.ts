@@ -1,7 +1,7 @@
 import type { TariffProductGroup, TariffRateTableRow } from '@/types/tariff-chapter-prototype';
 
-// The chapter rate table as an accordion of 4-digit headings (issue #1819). Pure helpers, shared by
-// the server-rendered overview (heading tiles) and the client rate table.
+// The chapter rate table as an accordion of 4-digit headings (issue #1819). Pure helpers for the
+// client rate table; kept apart so they need no React.
 
 // A heading's rate summary lists every distinct rate ("Free · 5% · 4.2% · 40¢/kg + 10.4% · …"),
 // which turns into noise past a few. Tiles and heading rows show the first three; the lines have them all.
@@ -24,10 +24,14 @@ export interface RateTableHeadingGroup {
   label: string;
   /** The heading's official wording, e.g. "Live bovine animals" (no trailing colon). */
   description: string;
+  /** A sentence or two on what the heading covers, from the product groups (empty if there is none). */
+  blurb: string;
   /** Short rate summary, e.g. "Free · 1¢/kg". */
   rateSummary: string;
   /** 10-digit lines in the heading. */
   lineCount: number;
+  /** 10-digit lines in the heading with a base-rate duty (not Free). */
+  dutiableLineCount: number;
   /**
    * The heading's rows for the table body. The heading's own grouping row is left out — the
    * group's toggle row shows its code and wording — unless it is itself a rated line
@@ -62,8 +66,10 @@ export function groupRowsByHeading(rows: TariffRateTableRow[], productGroups: Ta
       heading,
       label: info?.label ?? description,
       description,
+      blurb: info?.blurb ?? '',
       rateSummary: shortRateSummary(info?.rateSummary ?? rates.join(' · ')),
       lineCount: info?.lineCount ?? lineCount,
+      dutiableLineCount: info?.dutiableLineCount ?? headingRows.filter((row) => row.htsCode10 && row.dutiable).length,
       rows: headingRows.filter((row) => !(row === headingRow && row.isHeaderRow && !row.effectiveGeneral)),
     };
   });
