@@ -48,8 +48,8 @@ a file are untouched.
    `tariffEngineering.lines` (no `description` / `ancestorPath` / `searchText`, and no engineering
    `heading` / `general`) — the loader derives those from the rate table. `pnpm tariff:compact-chapters
    src/tariff-data/chapters/<NN>-<slug>.json` strips them from a file written in the old shape. If it has export pages, also register it in
-   `EXPORTS_BY_SLUG` in `chapter-exports.ts`. The sitemap and the `/tariff-reports` card pick it up
-   from there.
+   `EXPORTS_BY_SLUG` in `chapter-exports.ts`. The `/tariff-reports` card picks it up from there; the
+   sitemap leaves export pages out for now, while their content is being finalized.
 7. **Validate:** from `insights-ui/`, run `pnpm tariff:validate-chapters --chapter <slug> --check-hts`.
    It must report 0 errors and no non-official-source warnings. Then `pnpm lint && pnpm prettier-check && pnpm compile`.
 8. **Ship:** PR → merge → deploy, then flush only this chapter's cache:
