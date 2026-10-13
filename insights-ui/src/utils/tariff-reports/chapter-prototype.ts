@@ -76,6 +76,7 @@ const CHAPTER_FILES: Record<string, () => Promise<{ default: unknown }>> = {
   '47-wood-pulp-and-scrap': () => import('@/tariff-data/chapters/47-wood-pulp-and-scrap.json'),
   '49-printing-industry-products': () => import('@/tariff-data/chapters/49-printing-industry-products.json'),
   '50-silk': () => import('@/tariff-data/chapters/50-silk.json'),
+  '53-other-veg-textile-fibers': () => import('@/tariff-data/chapters/53-other-veg-textile-fibers.json'),
   '72-iron-and-steel': () => import('@/tariff-data/chapters/72-iron-and-steel.json'),
 };
 

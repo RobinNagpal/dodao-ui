@@ -762,6 +762,32 @@
           "published": "2026-10-07"
         }
       ]
+    },
+    {
+      "id": "embroideryInThePiece",
+      "prompt": "Is this embroidery in the piece (a length of embroidered fabric), rather than embroidery in strips or in motifs?",
+      "help": "Chapter 58 additional U.S. notes 1–5: the rates of subheadings 5810.91.00–5810.99.90 apply, but for embroidery in the piece the duty is not less than the rate that would apply to the same fabric if not embroidered. Answer yes for embroidery in the piece; the calculator then asks for the HTS line of the fabric without embroidery and charges the higher of the two.",
+      "defaultWhenUnanswered": null,
+      "sources": [
+        {
+          "citation": "HTSUS 2026 Revision 21, Chapter 58, additional U.S. notes 1–5",
+          "url": "https://hts.usitc.gov/reststop/file?release=2026HTSRev21&filename=Chapter%2058",
+          "published": "2026-10-07"
+        }
+      ]
+    },
+    {
+      "id": "movementPartsIncludePlate",
+      "prompt": "Do these movement parts consist in part of a plate or a set of plates?",
+      "help": "Subheadings 9110.90.40 and 9114.90.30: the duty is the ad valorem rate plus the per-jewel and per-piece amounts, \"but if consisting in part of a plate or a set of plates the total duty shall not exceed the duty for the complete movement\". Answer yes when the parts include a plate or set of plates; the calculator then asks for the HTS line of the complete movement and charges the lower of the two.",
+      "defaultWhenUnanswered": null,
+      "sources": [
+        {
+          "citation": "HTSUS 2026 Revision 21, Chapter 91, subheadings 9110.90.40 and 9114.90.30",
+          "url": "https://hts.usitc.gov/reststop/file?release=2026HTSRev21&filename=Chapter%2091",
+          "published": "2026-10-07"
+        }
+      ]
     }
   ]
 }
