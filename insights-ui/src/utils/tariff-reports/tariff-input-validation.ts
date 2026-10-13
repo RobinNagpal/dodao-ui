@@ -1,5 +1,5 @@
 import { TariffIndustries } from '@/scripts/industry-tariff-reports/tariff-industries';
-import { inputRejectedMessage, matchesInputPattern } from '@/utils/route-param-utils';
+import { inputRejectedMessage, isLoggableRejectedInput, matchesInputPattern } from '@/utils/route-param-utils';
 import { notFoundError } from '@dodao/web-core/api/errors/notFoundError';
 import { notFound } from 'next/navigation';
 
@@ -8,7 +8,8 @@ import { notFound } from 'next/navigation';
 // (template-injection / XSS / command-injection probes from scanners) is rejected BEFORE any work:
 //   - API routes call `validate*` / `parse*`, which throw `notFoundError(inputRejectedMessage(...))`;
 //     the error wrapper logs that as ONE warn line (no Discord) and answers 404.
-//   - Pages / layouts call `rejectTariffPageParam(...)` (one console.warn + `notFound()`). Only the
+//   - Pages / layouts call `rejectTariffPageParam(...)` (`notFound()`, plus one console.warn when the
+//     value is a plain slug — scanner payloads are not logged). Only the
 //     shared layouts log; pages and `generateMetadata` short-circuit silently with the `is*` checks
 //     so a rejected request still logs a single line.
 // A well-formed value that doesn't exist (e.g. an unknown chapter slug) is NOT an input rejection: it
@@ -99,8 +100,11 @@ export function parseHtsSearchLimitParam(value: string | null): number | null {
 
 // ---------- Pages / layouts ----------
 
-/** Logs the rejected param once (as a warn) and renders the 404 page. */
+/**
+ * Renders the 404 page for a rejected param, logging it once (as a warn) only when it is a plain
+ * slug that could come from a real link; scanner payloads 404 silently (issue #1768).
+ */
 export function rejectTariffPageParam(name: string, value: string | null | undefined): never {
-  console.warn(inputRejectedMessage(SCOPE, name, value));
+  if (isLoggableRejectedInput(value)) console.warn(inputRejectedMessage(SCOPE, name, value));
   notFound();
 }

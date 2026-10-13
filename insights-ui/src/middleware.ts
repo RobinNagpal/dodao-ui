@@ -1,7 +1,10 @@
 import { isBlockedCrawler } from '@/utils/blocked-crawlers';
+import { legacyTariffRedirectPath } from '@/utils/tariff-reports/legacy-tariff-redirects';
 import { NextRequest, NextResponse } from 'next/server';
 
 /**
+ * Permanently redirects old tariff URLs that moved (`utils/tariff-reports/legacy-tariff-redirects.ts`).
+ *
  * Rejects crawlers listed in `utils/blocked-crawlers.ts` before any page renders, so they
  * cost one cheap 403 instead of a full SSR fan-out. CloudFront forwards the viewer
  * User-Agent (AllViewer origin request policy), but its cache key ignores it — hence
@@ -13,6 +16,12 @@ export function middleware(request: NextRequest): NextResponse {
       status: 403,
       headers: { 'Cache-Control': 'no-store' },
     });
+  }
+  const redirectPath = legacyTariffRedirectPath(request.nextUrl.pathname);
+  if (redirectPath) {
+    const url = request.nextUrl.clone();
+    url.pathname = redirectPath;
+    return NextResponse.redirect(url, 308);
   }
   return NextResponse.next();
 }
