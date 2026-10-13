@@ -378,7 +378,7 @@ export default function ChapterRateTable({ rows, productGroups, note }: ChapterR
   useEffect(() => {
     openAnchor(window.location.hash);
     const onHashChange = (): void => openAnchor(window.location.hash);
-    // An in-page `<Link href="#0102">` (the heading tiles) updates the URL with pushState, which
+    // An in-page `<Link href="#0102">` (e.g. from the chapter's other sections) updates the URL with pushState, which
     // fires no hashchange, so same-page anchor clicks are handled here too.
     const onClick = (event: MouseEvent): void => {
       if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
@@ -410,7 +410,9 @@ export default function ChapterRateTable({ rows, productGroups, note }: ChapterR
     title: group.label,
     // The official wording, when the short label is a paraphrase of it.
     description: group.description.toLowerCase() === group.label.toLowerCase() ? undefined : group.description,
+    body: group.blurb || undefined,
     value: group.rateSummary,
+    valueNote: group.dutiableLineCount > 0 ? `${group.dutiableLineCount} with a base-rate duty` : undefined,
     aside: searching
       ? pluralize(group.shownLines, 'match', 'matches')
       : filtering
