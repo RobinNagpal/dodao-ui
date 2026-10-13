@@ -84,6 +84,10 @@
     },
     {
       "id": "civilAircraftGn6",
+      "shortLabel": {
+        "yes": "civil aircraft",
+        "no": "not civil aircraft"
+      },
       "prompt": "Is this article for use in a civil aircraft (not military, not unmanned) and does it meet the general note 6 civil-aircraft criteria (engines, parts, components, subassemblies, ground flight simulators)?",
       "help": "Lifts, for the listed provisions: the Section 338 duties on Canada (note 51(d), heading 9903.03.16); the 2026 Section 301 duties (note 52(d), heading 9903.05.88) and the Brazil duty (note 50(a)(iv), heading 9903.05.05); and the Section 232 metals duties 9903.82.02 / 9903.82.04–9903.82.17 for the UK, Japan, the EU and South Korea (headings 9903.96.01, 9903.96.02, 9903.02.76, 9903.02.81). CBP may ask for the certification required by general note 6 / 19 CFR 10.183.",
       "defaultWhenUnanswered": false,

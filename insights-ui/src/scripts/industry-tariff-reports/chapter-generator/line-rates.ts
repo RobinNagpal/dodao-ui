@@ -61,6 +61,18 @@ export const MAX_FACT_COMBOS = 3;
  */
 const VARIED_DEFAULTED_FACTS = new Set(['informationalMaterials', 'jpFootwearExcepted', 'jpFootwearUpperPartlyLeather']);
 
+/**
+ * Per-chapter additions to VARIED_DEFAULTED_FACTS (`--vary-facts`, stored in the file as `industryAreas.variedFacts`
+ * so the validator prices the same answers), e.g. `civilAircraftGn6` for chapter 88, where civil aircraft are most of
+ * the trade. Kept per chapter so other chapters' cells don't change.
+ */
+let chapterVariedFacts: ReadonlySet<string> = new Set();
+
+/** Sets the chapter's extra varied facts (generator: from `--vary-facts`; validator: from the file). */
+export function setChapterVariedFacts(ids: readonly string[] | undefined): void {
+  chapterVariedFacts = new Set(ids ?? []);
+}
+
 function digits(code: string): string {
   return code.replace(/\D/g, '');
 }
@@ -266,7 +278,7 @@ export function factIdsInScope(measures: TariffMeasureRecord[], hts10: string, i
     if (!measureReachesLine(m, hts10) || !countryInScope(m, iso) || !inEffectOn(m, day)) continue;
     for (const id of [...(m.conditions?.factsTrue ?? []), ...(m.conditions?.factsFalse ?? [])]) {
       const f = registry.get(id);
-      if (f && (f.defaultWhenUnanswered === null || VARIED_DEFAULTED_FACTS.has(id))) mustAnswer.add(id);
+      if (f && (f.defaultWhenUnanswered === null || VARIED_DEFAULTED_FACTS.has(id) || chapterVariedFacts.has(id))) mustAnswer.add(id);
       else defaulted.add(id);
     }
   }

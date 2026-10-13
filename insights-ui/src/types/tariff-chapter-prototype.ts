@@ -344,6 +344,8 @@ export interface TariffIndustryAreasContent {
   scheduleEdition: string;
   tradeYear: number;
   lastCheckedAt: string;
+  /** Confirmation facts this chapter's matrix prices both ways although they have a default (generator `--vary-facts`). */
+  variedFacts?: string[];
   /** `shortLabel` fits a matrix column header; `label` is the full name. */
   groups: { heading: string; label: string; shortLabel: string; baseRates: string[] }[];
   countries: TariffMatrixCountry[];

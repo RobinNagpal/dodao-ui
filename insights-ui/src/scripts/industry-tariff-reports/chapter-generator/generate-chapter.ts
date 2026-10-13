@@ -14,7 +14,7 @@ import { compactChapterPrototype } from '@/utils/tariff-reports/chapter-prototyp
 import { downloadHtsJson, editionFromName, type HtsJsonRow, parseCliArgs, stringArg, urlForEdition } from '../../tariff-calculator/lib/hts-source';
 import { contentFileName, liveChapterSlugs, liveChapterTitle, padChapter, sectionForChapter } from './chapter-info';
 import { ANY_OTHER_COUNTRY, buildIndustryAreas, type MatrixCountryInput } from './industry-areas';
-import { inEffectOn, measureChargesLine, measureReachesLine, programShort } from './line-rates';
+import { inEffectOn, measureChargesLine, measureReachesLine, programShort, setChapterVariedFacts } from './line-rates';
 import { countTodos, todo, TODO } from './placeholders';
 import { buildRateTableRows, chapterJsonRows, headingsOf, leafLines, productGroups, RATE_TABLE_NOTE, spiLegend } from './rate-table';
 import { SourceRegistry } from './sources';
@@ -58,6 +58,8 @@ const ELECTION_FACTS = new Set(['certifiedVehiclePartElection', 'certifiedUkAuto
  *   --top-countries N        default 10
  *   --claim MU:D,…           extra preference claims per country (country-tied FTAs are applied automatically)
  *   --as-of YYYY-MM-DD       entry date for the engine and the check dates (default: today)
+ *   --vary-facts id,…         confirmation facts priced both ways in this chapter's matrix even though they have a default
+ *                            (e.g. civilAircraftGn6 for chapter 88); saved as industryAreas.variedFacts for the validator
  *   --include-elections      also list measures that charge only on an importer election (Section 232 certified
  *                            vehicle parts); left out by default
  *   --out <path>             default src/tariff-data/chapters/<NN>-<slug>.json (won't overwrite without --force)
@@ -265,6 +267,11 @@ async function main(): Promise<void> {
     sources,
   });
 
+  const variedFacts = (stringArg(args, 'vary-facts') ?? '')
+    .split(',')
+    .map((x) => x.trim())
+    .filter(Boolean);
+  setChapterVariedFacts(variedFacts);
   const areas = buildIndustryAreas({
     chapterPadded: padded,
     title,
@@ -279,6 +286,7 @@ async function main(): Promise<void> {
     extraClaims: parseClaims(stringArg(args, 'claim')),
   });
   const industryAreas = areas.content;
+  if (variedFacts.length > 0) industryAreas.variedFacts = variedFacts;
   industryAreas.sources = sources.list(['hts-now', ...industryAreas.countries.flatMap((c) => c.rule.sourceIds)]);
 
   let understandIndustry: TariffUnderstandIndustryContent = understandIndustryStub(padded, title, asOf);
