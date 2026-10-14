@@ -572,6 +572,19 @@
       ]
     },
     {
+      "id": "uasCommerceOnshoringPlan",
+      "prompt": "Is this unmanned aircraft or part imported subject to an onshoring plan approved by the Secretary of Commerce?",
+      "help": "Heading 9903.08.26: no Section 232 drone duty, within the volume the approval allows. From February 9, 2027 plans approved only by DHS or the Department of War no longer count: Annex IV part B to Proclamation 11055 terminates heading 9903.08.25.",
+      "defaultWhenUnanswered": false,
+      "sources": [
+        {
+          "citation": "91 FR 53699 (Proclamation 11055: Section 232 duties on unmanned aircraft systems and components, from September 3, 2026)",
+          "url": "https://www.federalregister.gov/documents/2026/08/19/2026-16979/adjusting-imports-of-unmanned-aircraft-systems-and-unmanned-aircraft-systems-components-into-the-united-states",
+          "published": "2026-08-19"
+        }
+      ]
+    },
+    {
       "id": "uasDockingStation",
       "prompt": "Is this article a docking station for unmanned aircraft, or a part of such a docking station?",
       "help": "Statistical numbers 8504.40.95.80 and 8537.10.91.70 pay the 100% Section 232 drone duty only for docking stations and their parts (U.S. note 43(c)(1)); other goods there use heading 9903.08.20.",
@@ -622,6 +635,23 @@
           "citation": "HTSUS 2026 Revision 21, Chapter 99, subchapter III, U.S. note 43",
           "url": "https://hts.usitc.gov/reststop/file?release=2026HTSRev21&filename=Chapter%2099",
           "published": "2026-10-07"
+        }
+      ]
+    },
+    {
+      "id": "uasPart",
+      "prompt": "Is this part or component for use in or with an unmanned aircraft system (a drone)?",
+      "shortLabel": {
+        "yes": "drone part",
+        "no": "not a drone part"
+      },
+      "help": "From February 9, 2027, parts of 8807.10, 8807.20, 8807.30 and 8807.90.90 for use in or with unmanned aircraft systems pay +25% (heading 9903.08.22, new U.S. note 43(c)(5); Proclamation 11055 clause (2) and Annex III). Parts for systems over 25 kg covered by note 43(c)(2) pay +100% instead (uasHeavyUasPart); parts of manned aircraft use heading 9903.08.20.",
+      "defaultWhenUnanswered": false,
+      "sources": [
+        {
+          "citation": "91 FR 53699 (Proclamation 11055: Section 232 duties on unmanned aircraft systems and components, from September 3, 2026)",
+          "url": "https://www.federalregister.gov/documents/2026/08/19/2026-16979/adjusting-imports-of-unmanned-aircraft-systems-and-unmanned-aircraft-systems-components-into-the-united-states",
+          "published": "2026-08-19"
         }
       ]
     },

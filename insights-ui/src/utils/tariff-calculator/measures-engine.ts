@@ -208,6 +208,25 @@ export interface SpecialProgramInfo {
   countries?: string[];
   /** True when the program is no longer in force, so the calculator does not offer it. */
   lapsed?: boolean;
+  /**
+   * Last day the program is in force (ISO, inclusive) when the statute sets an end date. For an entry after it the
+   * program counts as lapsed: it is not offered and a claim is an error. Extend it when Congress renews the program.
+   */
+  effectiveTo?: string;
+}
+
+/** True when the program can't be claimed for an entry on `day` (ISO date): lapsed, or past its statutory end date. */
+export function programLapsedOn(info: SpecialProgramInfo | undefined, day: string): boolean {
+  if (!info) return false;
+  return !!info.lapsed || (!!info.effectiveTo && day > info.effectiveTo);
+}
+
+/** Why a claim of `code` can't be made for an entry on `day` (ISO date), or null when it can. */
+export function lapsedClaimError(code: string, day: string): string | null {
+  const info = SPECIAL_PROGRAMS[code];
+  if (!info || !programLapsedOn(info, day)) return null;
+  if (info.effectiveTo && !info.lapsed) return `${info.name} applies only through ${info.effectiveTo}, so it can't be claimed for an entry on ${day}.`;
+  return `${info.name} is no longer in force, so it can't be claimed.`;
 }
 
 // HTS General Note 3(c)(i) program codes.
@@ -222,7 +241,9 @@ export const SPECIAL_PROGRAMS: Record<string, SpecialProgramInfo> = {
   CA: { name: 'NAFTA (Canada), replaced by USMCA', countries: ['CA'], lapsed: true },
   CL: { name: 'US–Chile Free Trade Agreement', countries: ['CL'] },
   CO: { name: 'US–Colombia Trade Promotion Agreement', countries: ['CO'] },
-  D: { name: 'AGOA (African Growth and Opportunity Act)' },
+  // AGOA (19 U.S.C. 2466b, 3721): extended through December 31, 2028 by Public Law 119-103 section 2008 (H.R. 6500, signed
+  // September 2, 2026); before that it ran through December 31, 2026 (one-year renewal of February 2026).
+  D: { name: 'AGOA (African Growth and Opportunity Act)', effectiveTo: '2028-12-31' },
   E: { name: 'Caribbean Basin Initiative (CBERA)' },
   'E*': { name: 'Caribbean Basin Initiative (some countries excluded)' },
   IL: { name: 'US–Israel Free Trade Agreement', countries: ['IL'] },
@@ -297,14 +318,15 @@ function quotaClaimOffers(line: { hts10: string; general: string | null }, code:
  */
 export function claimablePrograms(
   line: Pick<MeasureEngineLine, 'special' | 'general'> & { hts10?: string },
-  conditionPrograms: string[] = []
+  conditionPrograms: string[] = [],
+  day: string = new Date().toISOString().slice(0, 10)
 ): ClaimableProgram[] {
   const out: ClaimableProgram[] = [];
   const seen = new Set<string>();
   if (isFree(line.general)) {
     for (const code of conditionPrograms) {
       const info = SPECIAL_PROGRAMS[code];
-      if (seen.has(code) || info?.lapsed || specialRateFor(line, code) !== null) continue;
+      if (seen.has(code) || programLapsedOn(info, day) || specialRateFor(line, code) !== null) continue;
       seen.add(code);
       out.push({ code, name: info?.name ?? `Program ${code}`, rateText: 'Free', rateTexts: ['Free'], countries: info?.countries ?? [] });
     }
@@ -312,7 +334,7 @@ export function claimablePrograms(
   for (const entry of parseSpecialRates(line.special)) {
     for (const code of entry.programs) {
       const info = SPECIAL_PROGRAMS[code];
-      if (seen.has(code) || info?.lapsed) continue;
+      if (seen.has(code) || programLapsedOn(info, day)) continue;
       if (isQuotaReference(entry.rateText)) {
         if (!line.hts10) continue;
         const offers = quotaClaimOffers({ hts10: line.hts10, general: line.general }, code, entry.rateText);
@@ -1193,6 +1215,8 @@ export function calculateWithMeasuresAndFacts(
     const special = specialRateFor(line, input.claimedSpi);
     const info = SPECIAL_PROGRAMS[input.claimedSpi];
     const programName = info?.name ?? input.claimedSpi;
+    const lapsedError = lapsedClaimError(input.claimedSpi, entryDay);
+    if (lapsedError) return fail(lapsedError);
     if (special !== null && isQuotaReference(special)) {
       // "See 9822.04.01-9822.04.03 (AU)": the rate is the Chapter 98/99 FTA quota heading the shipment enters under.
       const resolved = resolveQuotaClaim(line, input.claimedSpi, special, input.countryOfOrigin, entryDay);

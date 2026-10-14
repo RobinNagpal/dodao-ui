@@ -140,7 +140,7 @@ async function officialMeasuresRequirements(hts10: string, scope: QuestionScope)
   const [line, loaded] = await Promise.all([loadMeasureEngineLine(hts10), loadMeasures()]);
   // One choice per plain name (USMCA lists both "S" and "S+").
   const deals = new Map<string, ClaimableTradeDeal>();
-  for (const p of claimablePrograms(line, conditionProgramsForLine(hts10, loaded.measures))) {
+  for (const p of claimablePrograms(line, conditionProgramsForLine(hts10, loaded.measures), scope.date)) {
     const key = `${p.name}|${p.rateText}`;
     const existing = deals.get(key);
     if (existing) existing.codes.push(p.code);

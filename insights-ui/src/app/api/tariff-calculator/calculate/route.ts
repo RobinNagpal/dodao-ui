@@ -23,6 +23,7 @@ import {
   CONTENT_INPUT_KINDS,
   importBanDutyNote,
   importProhibitionFor,
+  lapsedClaimError,
   rateUoms,
   SPECIAL_PROGRAMS,
 } from '@/utils/tariff-calculator/measures-engine';
@@ -322,7 +323,8 @@ async function calculateWithOfficialMeasures(
   if (inputs.claimedSpi && program?.countries && !program.countries.includes(inputs.countryOfOrigin)) {
     throw badRequestError(`${program.name} can only be claimed for goods from ${program.countries.join(', ')}.`);
   }
-  if (program?.lapsed) throw badRequestError(`${program.name} is no longer in force, so it can't be claimed.`);
+  const lapsedError = inputs.claimedSpi ? lapsedClaimError(inputs.claimedSpi, inputs.entryDate.slice(0, 10)) : null;
+  if (lapsedError) throw badRequestError(lapsedError);
 
   const [line, loaded, referencedLines] = await Promise.all([loadMeasureEngineLine(inputs.hts10), loadMeasures(), loadReferencedLines(referencedLineRequests)]);
   const result = calculateWithMeasures(
