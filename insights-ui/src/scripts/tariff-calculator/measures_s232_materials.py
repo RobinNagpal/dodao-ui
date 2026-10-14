@@ -25,6 +25,7 @@ import os
 
 CH99_HEADINGS_FILE = 'ch99-headings.json'
 REVIEWED = '2026-10-11'
+REVIEWED_DATED = '2026-10-14'  # the dated-event review of issue #1858 (polysilicon, drone Annex III / IV part B)
 
 EU = ['AT', 'BE', 'BG', 'HR', 'CY', 'CZ', 'DK', 'EE', 'FI', 'FR', 'DE', 'GR', 'HU', 'IE', 'IT', 'LV', 'LT', 'LU', 'MT', 'NL', 'PL', 'PT',
       'RO', 'SK', 'SI', 'ES', 'SE']
@@ -65,8 +66,17 @@ SRC = {
                     'url': 'https://www.federalregister.gov/documents/2026/01/20/2026-01052/adjusting-imports-of-semiconductors-semiconductor-manufacturing-equipment-and-their-derivative', 'published': '2026-01-20'},
     'procl-11055': {'citation': '91 FR 53699 (Proclamation 11055 of August 13, 2026: Adjusting Imports of Unmanned Aircraft Systems and Components — from September 3, 2026)',
                     'url': 'https://www.federalregister.gov/documents/2026/08/19/2026-16979/adjusting-imports-of-unmanned-aircraft-systems-and-unmanned-aircraft-systems-components-into-the', 'published': '2026-08-19'},
+    'procl-11052': {'citation': '91 FR 51975 (Proclamation 11052 of August 6, 2026: Adjusting Imports of Polysilicon and Its Derivatives — 15% and minimum import prices from December 4, 2026; Annex II: U.S. note 42, headings 9903.45.30–9903.45.36)',
+                    'url': 'https://www.federalregister.gov/documents/2026/08/11/2026-16400/adjusting-imports-of-polysilicon-and-its-derivatives-into-the-united-states', 'published': '2026-08-11'},
     'procl-11051': {'citation': '91 FR 50645 (Proclamation 11051 of July 31, 2026: safeguard on quartz surface products, August 15, 2026 – August 14, 2030)',
                     'url': 'https://www.federalregister.gov/documents/2026/08/05/2026-15975/to-facilitate-positive-adjustment-to-competition-from-imports-of-quartz-surface-products', 'published': '2026-08-05'},
+}
+
+
+# Headings a proclamation annex inserts that the HTS edition doesn't print yet (measures may use them before the USITC does).
+# Remove an entry once ch99-headings.json has the heading.
+ANNOUNCED_HEADINGS = {
+    '9903.45.32': 'Proclamation 11052 Annex II (polysilicon, United Kingdom), from December 4, 2026',
 }
 
 
@@ -509,7 +519,13 @@ def s232_materials_measures(cov, program_cov, *, rec, S, hts_note, ch99_headings
     UAS = ('Proclamation 11055, from September 3, 2026; for products on the DoW Blue UAS Cleared List / Blue UAS Framework or the FCC Conditional Approval '
            'list on September 2, 2026 (and their components) from February 9, 2027 (clause (7); fact uasBlueUasListed — each duty has a -blue record from '
            'that date). Note 43(b): collected in addition to any special rate. Not in note 52(f): the 2026 Section 301 duties stack (the civil-aircraft '
-           'exemption of note 52(d), 9903.05.88, is not modelled). Annex III components (25% from February 9, 2027, clause (2)) have no HTS heading yet.')
+           'exemption of note 52(d), 9903.05.88, is not modelled). Annex III components: 25% under 9903.08.22 from February 9, 2027 (clause (2); Annex IV '
+           'part B adds note 43(c)(5), see s232-uas-parts-small).')
+    # Annex IV part B (from February 9, 2027): new note 43(c)(5) — parts or components of 8807.10.00, 8807.20.00, 8807.30.00, 8807.90.90 for use in
+    # or with an unmanned aircraft system, except those of (c)(2) — under 9903.08.22 (+25%, the Annex III components of clause (2)); heading
+    # 9903.08.25 (DHS / DoW onshoring plans) is terminated. Revision 21 doesn't print these changes yet.
+    ANNEX3_START = BLUE_START
+    c5 = list(c2)
 
     def uas(key, conditions, **kw):
         """A drone duty: one record for products not on the Blue UAS lists (from September 3, 2026) and one for listed products (from February 9, 2027)."""
@@ -536,6 +552,15 @@ def s232_materials_measures(cov, program_cov, *, rec, S, hts_note, ch99_headings
             notes=f'Heading {code}: {what}: base + {rate}%. Products of Japan, South Korea, Taiwan, Switzerland, Liechtenstein or the EU (15% total) and of the UK '
                   '(+10%) whose critical components and technology are substantially all from the U.S. or those partners use 9903.08.24 / 9903.08.23 (fact '
                   'uasPartnerCriticalComponents). ' + UAS)
+    C5_WHAT = ('parts and components (8807.10, 8807.20, 8807.30, 8807.90.90) for use in or with an unmanned aircraft system other than the note 43(c)(2) '
+               'parts (Annex III to Proclamation 11055; new note 43(c)(5) and heading 9903.08.22 as amended by Annex IV part B, from February 9, 2027) — only '
+               'when the importer confirms the goods are drone parts (fact uasPart) and not 43(c)(2) parts (fact uasHeavyUasPart answered no). Clause (7) '
+               'does not move this date, so there is no separate Blue UAS record')
+    add(measureKey='s232-uas-parts-small', reviewedAt=REVIEWED_DATED, program=PU, ch99Code='9903.08.22', rateKind='additive', ratePct=25, coverageInclude=sorted(c5),
+        conditions={'factsTrue': ['uasPart'], 'factsFalse': ['uasHeavyUasPart']}, effectiveFrom=ANNEX3_START, sources=S_U,
+        notes=f'Heading 9903.08.22: {C5_WHAT}: base + 25%. Products of Japan, South Korea, Taiwan, Switzerland, Liechtenstein or the EU (15% total) and of '
+              'the UK (+10%) whose critical components and technology are substantially all from the U.S. or those partners use 9903.08.24 / 9903.08.23 '
+              '(fact uasPartnerCriticalComponents). ' + UAS)
     deal_lines = [('uas', c1_uas, []), ('docking', c1_dual, ['uasDockingStation']), ('parts-over-25kg', c2, ['uasHeavyUasPart']), ('small', c3, [])]
     for key, code, ctry, kind, pct, what in [('deal', '9903.08.24', sorted(EU + ['CH', 'JP', 'KR', 'LI', 'TW']), 'floor', 15,
                                               'products of Japan, South Korea, Taiwan, Switzerland, Liechtenstein or the EU: total 15% when the column 1 rate is '
@@ -549,19 +574,67 @@ def s232_materials_measures(cov, program_cov, *, rec, S, hts_note, ch99_headings
                       'substantially all the critical components and technology are products of the U.S., Japan, South Korea, Taiwan, Switzerland, '
                       'Liechtenstein, the EU or the UK (fact uasPartnerCriticalComponents; Commerce determines qualifying products).'
                       + (f' Also requires fact {", ".join(facts)}.' if facts else '') + ' ' + UAS)
+        add(measureKey=f's232-uas-{key}-parts-small', reviewedAt=REVIEWED_DATED, program=PU, ch99Code=code, rateKind=kind, ratePct=pct, countriesInclude=ctry, coverageInclude=sorted(c5),
+            conditions={'factsTrue': ['uasPartnerCriticalComponents', 'uasPart'], 'factsFalse': ['uasHeavyUasPart']}, replacesCodes=['9903.08.22'],
+            effectiveFrom=ANNEX3_START, sources=S_U,
+            notes=f'Heading {code}: note 43(c)(5) drone parts (from February 9, 2027) that are {what}, when the importer certifies that substantially all the '
+                  'critical components and technology are products of the U.S., Japan, South Korea, Taiwan, Switzerland, Liechtenstein, the EU or the UK '
+                  '(fact uasPartnerCriticalComponents). Also requires fact uasPart (and uasHeavyUasPart answered no). ' + UAS)
     heading('9903.08.25', 'relief', None)
     heading('9903.08.26', 'relief', None)
     add(measureKey='s232-uas-onshoring', program=PU, ch99Code='9903.08.25', rateKind='relief', coverageInclude=_union(c1, c2, c3),
         conditions={'factsTrue': ['uasOnshoringPlan']}, replacesCodes=['9903.08.21', '9903.08.22', '9903.08.23', '9903.08.24'], effectiveFrom=UAS_START,
+        effectiveTo='2027-02-08', reviewedAt=REVIEWED_DATED,
         sources=S_U, notes='Headings 9903.08.25 (onshoring plan approved by DHS or the Department of War) / 9903.08.26 (approved by the Secretary of Commerce), '
                            'Proclamation 11055 clause (6): unmanned aircraft, parts and components of note 43(c) imported for such a company pay no Section 232 '
                            'drone duty, within the volumes the approval allows. Applies only when the importer confirms it (fact uasOnshoringPlan). Shown '
-                           'under 9903.08.25 for both headings.')
-    for part, lines, fact in [('docking', c1_dual, 'uasDockingStation'), ('parts', c2, 'uasHeavyUasPart')]:
+                           'under 9903.08.25 for both headings. Ends February 8, 2027: Annex IV part B terminates 9903.08.25 from February 9, 2027 '
+                           '(s232-uas-onshoring-commerce covers 9903.08.26 from then).')
+    add(measureKey='s232-uas-onshoring-commerce', reviewedAt=REVIEWED_DATED, program=PU, ch99Code='9903.08.26', rateKind='relief', coverageInclude=_union(c1, c2, c3, c5),
+        conditions={'factsTrue': ['uasCommerceOnshoringPlan']}, replacesCodes=['9903.08.21', '9903.08.22', '9903.08.23', '9903.08.24'],
+        effectiveFrom=ANNEX3_START, sources=S_U,
+        notes='Heading 9903.08.26, Proclamation 11055 clause (6): unmanned aircraft, parts and components of note 43(c) (incl. the (c)(5) parts) imported '
+              'subject to an onshoring plan approved by the Secretary of Commerce pay no Section 232 drone duty, within the volumes the approval allows. '
+              'From February 9, 2027, when Annex IV part B terminates 9903.08.25 (plans approved by DHS or the Department of War). Applies only when the '
+              'importer confirms it (fact uasCommerceOnshoringPlan).')
+    for part, lines, facts, start, end in [('docking', c1_dual, ['uasDockingStation'], UAS_START, None),
+                                           ('parts', c2, ['uasHeavyUasPart'], UAS_START, '2027-02-08'),
+                                           ('parts-2027', c5, ['uasHeavyUasPart', 'uasPart'], ANNEX3_START, None)]:
         add(measureKey=f's232-uas-not-covered-{part}', program=PU, ch99Code='9903.08.20', rateKind='relief', coverageInclude=sorted(lines),
-            conditions={'factsFalse': [fact]}, effectiveFrom=UAS_START, sources=S_U,
+            conditions={'factsFalse': list(facts)}, effectiveFrom=start, effectiveTo=end, sources=S_U, reviewedAt=REVIEWED_DATED if part != 'docking' else REVIEWED,
             notes='Heading 9903.08.20: articles of the note 43(c) provisions that are not for use in or with the products described there pay no Section 232 '
-                  f'unmanned-aircraft duty (shown when the importer answers no to {fact}).')
+                  f'unmanned-aircraft duty (shown when the importer answers no to {" and ".join(facts)}).'
+                  + (' Until February 8, 2027; from February 9, 2027 the other drone parts of note 43(c)(5) pay 9903.08.22 (s232-uas-parts-small).'
+                     if end else ''))
+
+    # ------------------------------------------------------------------ polysilicon and derivatives (Proclamation 11052, from December 4, 2026)
+    # Annex II inserts U.S. note 42 and headings 9903.45.30–9903.45.36 from December 4, 2026. HTS 2026 Revision 21 doesn't print them yet, and it
+    # already uses 9903.45.30 / .31 for the quartz safeguard (note 41, Proclamation 11051 of July 31, 2026) — so the numbers below are the ones
+    # Annex II gives and may be renumbered when the USITC prints note 42 (re-check then; ANNOUNCED_HEADINGS lets _check accept them until then).
+    # Modelled: the ad valorem part (clause (4) / headings .30–.32). Not modelled: the minimum-import-price specific duties (9903.45.33–.36: $21/kg
+    # polysilicon, $100/kg ingots and wafers, $0.22/W cells, $0.38/W modules), which apply only when the importer files no resale documentation or
+    # enters below the MIP (clause (2)(b)–(c)) — the engine has no per-watt quantity and no "MIP minus entered value" rate; see the runbook's gaps.
+    PP = 'Section 232 (polysilicon and derivatives)'
+    S_P = _src('procl-11052', S=S)
+    POLY_START = '2026-12-04'
+    poly = ['3818000020', '3818000040', '3818000045', '3818000050', '3818000091', '854142', '854143']
+    POLY_DEAL = sorted(EU + ['CH', 'JP', 'KR', 'LI', 'TW'])
+    PN = ('Proclamation 11052 clause (4) / Annex II (new U.S. note 42): polysilicon ingots and wafers (3818.00.0020, .0040, .0045, .0050, .0091), solar '
+          'cells (8541.42.00) and solar modules (8541.43.00), from December 4, 2026. Note 42(b): collected in addition to any FTA / preference special '
+          'rate. Not in note 52(f): the 2026 Section 301 duties and the China note 31 duties stack. The minimum-import-price duties of 9903.45.33–.36 '
+          '(e.g. $0.38/W on modules entered without resale documentation or below the MIP) are not modelled: this assumes the importer files the '
+          'documentation and the entered value is at or above the MIP. Heading numbers as printed in Annex II; HTS Revision 21 uses 9903.45.30 / .31 '
+          'for the quartz safeguard, so the USITC may renumber them.')
+    add(measureKey='s232-polysilicon', reviewedAt=REVIEWED_DATED, program=PP, ch99Code='9903.45.30', rateKind='additive', ratePct=15, countriesExclude=sorted(POLY_DEAL + ['GB']),
+        coverageInclude=poly, effectiveFrom=POLY_START, sources=S_P,
+        notes='Heading 9903.45.30 (Annex II): base + 15%, every country except those of 9903.45.31 / .32. ' + PN)
+    add(measureKey='s232-polysilicon-deal', reviewedAt=REVIEWED_DATED, program=PP, ch99Code='9903.45.31', rateKind='floor', ratePct=15, countriesInclude=POLY_DEAL,
+        coverageInclude=poly, effectiveFrom=POLY_START, sources=S_P,
+        notes='Heading 9903.45.31 (Annex II), note 42(c): products of Japan, South Korea, Taiwan, Switzerland, Liechtenstein or the EU — the column 1 rate plus '
+              'the additional duty total 15% (clause (5)(b)); modelled as a floor, max(base, 15%). No certification is required. ' + PN)
+    add(measureKey='s232-polysilicon-uk', reviewedAt=REVIEWED_DATED, program=PP, ch99Code='9903.45.32', rateKind='additive', ratePct=10, countriesInclude=['GB'],
+        coverageInclude=poly, effectiveFrom=POLY_START, sources=S_P,
+        notes='Heading 9903.45.32 (Annex II): products of the United Kingdom, base + 10% (clause (5)(c)). ' + PN)
 
     # ------------------------------------------------------------------ quartz surface products safeguard (note 41)
     PQ = 'Section 201 safeguard (quartz surface products)'
@@ -590,7 +663,7 @@ def _check(measures, ch99):
     keys = [m['measureKey'] for m in measures]
     assert len(keys) == len(set(keys)), 'duplicate measureKey'
     for m in measures:
-        assert m['ch99Code'] in ch99, f'{m["measureKey"]}: {m["ch99Code"]} not in ch99-headings.json'
+        assert m['ch99Code'] in ch99 or m['ch99Code'] in ANNOUNCED_HEADINGS, f'{m["measureKey"]}: {m["ch99Code"]} not in ch99-headings.json'
         for c in m['replacesCodes']:
             assert c in ch99, f'{m["measureKey"]}: replaced code {c} not in ch99-headings.json'
         assert m['coverageInclude'], f'{m["measureKey"]}: empty coverage'
