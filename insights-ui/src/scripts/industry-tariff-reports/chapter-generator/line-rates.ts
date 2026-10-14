@@ -301,7 +301,9 @@ interface Priced {
   contentAssumed: boolean;
   /**
    * The total in words when a floor measure ("12.5% or the base rate, whichever is higher") meets a base the cell can't
-   * price alone (issue #1812): "The higher of 12.5% and the base rate (The rate applicable to …)". Not re-priced.
+   * price alone (issue #1812), or a base with a per-unit part whose ad valorem part is below the floor (issue #1854):
+   * "The higher of 12.5% and the base rate (The rate applicable to …)", "The higher of 10% and the base rate (94¢/doz. +
+   * 4.6%)". Not re-priced.
    */
   totalText?: string;
 }
@@ -330,6 +332,11 @@ function priceResult(
   const ext = parseExtendedRate(baseText);
   const baseMaxPct =
     ext && !ext.reference && ext.perUnit.length === 0 ? ext.adValoremPct + Math.max(0, ...ext.components.map((c) => c.pct)) : Number.POSITIVE_INFINITY;
+  // A floor ("10% in total when the column 1 rate is below 10%") on a specific or compound base (issue #1854): the
+  // Chapter 99 notes compare the floor with the base's ad valorem equivalent — duty payable at the base rate ÷ customs
+  // value (U.S. note 52(k)) — which depends on the shipment's value per unit, so the nominal $10,000 / 1,000 units can't
+  // decide the cell. It says "the higher of" unless the base's ad valorem part alone already reaches the floor.
+  const basePerUnit = !!base && base.perUnit.length > 0;
   const parts: string[] = [];
   let contentAssumed = false;
   let floorWords: string | null = null;
@@ -346,7 +353,7 @@ function priceResult(
     } else {
       // floor: max(base, pct × value). The engine charges the larger one as this measure's amount.
       const floorAmount = (pct / 100) * NOMINAL_VALUE_USD;
-      if (baseUnpriced && base && pct < baseMaxPct) {
+      if (base && ((baseUnpriced && pct < baseMaxPct) || (basePerUnit && base.pct < pct))) {
         parts.push(`${fmtPct(pct)}${on} or the base rate, whichever is higher, in place of base`);
         floorWords = `The higher of ${fmtPct(pct)}${on} and the base rate (${exprString(base)})`;
       } else if (line.amountUsd > floorAmount + 0.005 && base) {

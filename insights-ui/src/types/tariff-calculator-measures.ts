@@ -74,6 +74,16 @@ export interface TariffMeasureConditions {
   factsTrue?: string[];
   /** Only when every listed fact is answered FALSE (an unanswered fact uses its registry default; a must-answer fact makes the engine ask). */
   factsFalse?: string[];
+  /**
+   * Only when the line's applied base rate is derived from another subheading (a base rate that is another line's rate:
+   * a set's highest-rated article, the article an accessory belongs to, each garment of an ensemble, or the ground
+   * fabric when embroidery in the piece is charged at its rate) and at least one of those subheadings is itself subject
+   * to one of these Chapter 99 headings for the shipment's country and entry date. China Section 301 notes 20(z)–(gg)
+   * (headings 9903.88.21–9903.88.28): e.g. ['9903.88.01'] for 9903.88.21. When such a relief applies, the engine charges
+   * the derived subheading's own duty under these headings on the value its rate is charged on (CBP HQ H299857;
+   * USTR 84 FR 49591: the entry "for this reason already is subject to the additional duties").
+   */
+  rateDerivedFromLineSubjectTo?: string[];
 }
 
 /**
@@ -313,9 +323,16 @@ export interface MeasureEngineReferencedLine {
   general: string | null;
   special: string | null;
   column2?: string | null;
-  /** Ensembles / sets priced article by article: the value of the articles entered under this line (the values add up to the customs value). */
+  /**
+   * Ensembles / sets priced article by article: the value of the articles entered under this line (the values add up to
+   * the customs value). Sets at the rate of the highest-rated article (chapter 82 additional U.S. note 3): the value of
+   * this article in the set, needed when its rate is specific or compound (converted to an ad valorem equivalent on it).
+   */
   valueUsd?: number;
-  /** Quantities for this line's per-unit rate; default (whole / floor / cap references) = the shipment's quantities. */
+  /**
+   * Quantities for this line's per-unit rate; default (whole / floor / cap references) = the shipment's quantities. A
+   * set's article (highest-rate sets) has no default: its own quantity is asked.
+   */
   quantities?: Record<string, number>;
 }
 
