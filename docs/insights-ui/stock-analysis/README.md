@@ -6,6 +6,7 @@ Runbooks and reference docs for the stock (ticker / equity) analysis pipeline �
 
 - **[generate-stock-reports.md](generate-stock-reports.md)** — How to enqueue stock analysis reports with `yarn stocks:trigger` (single ticker or batch, all reports or a subset), and how authentication works against the generation-requests endpoint.
 - **[add-stock.md](add-stock.md)** — How to add new stocks to the database with `yarn stocks:add`, including exchange validation against the predefined list, required fields, and the stockAnalyzeUrl auto-generation.
+- **[populate-stocks.md](populate-stocks.md)** — How to add the next N most valuable stocks of an exchange (e.g. more PSX or NSE stocks) with `yarn stocks:populate`: fetch ranked candidates we don't have yet, let Claude map each to an in-use industry / sub-industry, and generate a `.sql` file to run on production.
 - **[stock-fundamentals-scraper.md](stock-fundamentals-scraper.md)** — How `TickerV1StockAnalyzerScrapperInfo` is filled: the in-process scraper that replaced the Stock Analyzer Lambda (`STOCK_ANALYZER_LAMBDA_URL`), the 12 sections and the pages behind them, the parsing rules, and the write-validation / refetch / backoff rules that stop a source-site change from silently blanking the financial charts. Read this when the Financial Information card or the Quarterly Metrics chart goes missing.
 
 ## Previewing the automated (Claude) queue
@@ -38,3 +39,4 @@ Stock market scenarios live in the `StockScenario` Prisma model (see `insights-u
 - Fundamentals scraper: `src/utils/stock-analyzer/` (fetch + parse) and `src/utils/stock-analyzer-scraper-utils.ts` (freshness + persistence)
 - Trigger script: `src/scripts/tickers/trigger-generation.ts`
 - Add-stock script: `src/scripts/tickers/add-stock.ts`
+- Populate-stocks script (ranked candidates → SQL): `src/scripts/tickers/populate-stocks.ts`
