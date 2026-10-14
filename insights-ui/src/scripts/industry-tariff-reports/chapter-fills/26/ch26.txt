@@ -1,0 +1,554 @@
+CHAPTER 26
+ORES, SLAG AND ASH
+V
+26-1
+Notes
+1. This chapter does not cover:
+(a) Slag or similar industrial waste prepared as macadam (heading 2517);
+(b) Natural magnesium carbonate (magnesite), whether or not calcined (heading 2519);
+(c) Sludges from the storage tanks of petroleum oils, consisting mainly of such oils (heading 2710);
+(d) Basic slag of chapter 31;
+(e) Slag wool, rock wool or similar mineral wools (heading 6806);
+(f) Waste or scrap of precious metal or of metal clad with precious metal; other waste or scrap containing precious metal or
+precious metal compounds, of a kind used principally for the recovery of precious metal (heading 7112 or 8549); or
+(g) Copper, nickel or cobalt mattes produced by any process of smelting (section XV).
+2. For the purposes of headings 2601 to 2617, the term "ores" means minerals of mineralogical species actually used in the
+metallurgical industry for the extraction of mercury, of the metals of heading 2844 or of the metals of section XIV or XV, even if
+they are intended for non-metallurgical purposes. Headings 2601 to 2617 do not, however, include minerals which have been
+submitted to processes not normal to the metallurgical industry.
+3. Heading 2620 applies only to:
+(a) Slag, ash and residues of a kind used in industry either for the extraction of metals or as a basis for the manufacture of
+chemical compounds of metals, excluding ash and residues from the incineration of municipal waste (heading 2621); and
+(b) Slag, ash and residues containing arsenic, whether or not containing metals, of a kind used either for the extraction of arsenic
+or metals or for the manufacture of their chemical compounds.
+Subheading Notes
+1. For the purposes of subheading 2620.21.00, "leaded gasoline sludges and leaded anti-knock compound sludges" means sludges
+obtained from storage tanks of leaded gasoline and leaded anti-knock compounds (for example, tetraethyl lead), and consisting
+essentially of lead, lead compounds and iron oxide.
+2. Slag, ash and residues containing arsenic, mercury, thallium or their mixtures, of a kind used for the extraction of arsenic or
+those metals or for the manufacture of their chemical compounds, are to be classified in subheading 2620.60.
+Additional U.S. Notes
+1. The specific rates of duty imposed under the headings of this chapter on the metal content of ores and other materials shall
+apply to the assay quantity of metal contained therein, whether recovered as metals, as alloys or as chemical compounds or
+used directly in the manufacture of articles, except that with respect to ores or other materials provided for in this chapter which
+are subject to duty at specific rates on their copper, lead or zinc content, an absolute deduction for losses of 18 kg per dry metric
+ton from the respective quantities of each of such metal contents shall be allowed.
+2. When the classification of imported materials under any provision of this chapter is dependent on the percentage of metal content,
+such percentage shall be the ratio of the total quantity of the respective metal content to the total quantity of imported material
+when computed on a dry-weight basis; i.e., free of all uncombined moisture.
+Statistical Notes
+1. The quantity of metal content to be reported shall be the assay quantity without deductions.
+2. For the purposes of subheading 2601.11.0060, the term "coarse" refers to iron ores with a majority of individual particles having
+a diameter exceeding 4.75 mm.
+Harmonized Tariff Schedule of the United States Revision 21 (2026)
+Annotated for Statistical Reporting Purposes
+Statistical Notes (con.)
+3. For the purposes of any of the ten-digit statistical reporting numbers appearing under the eight-digit subheadings 2603.00.00,
+2604.00.00, 2607.00.00, 2608.00.00, 2616.10.00, 2616.90.00, 2620.19.60, 2620.21.00, 2620.29.00 or 2620.30.00, and the
+ten-digit statistical reporting numbers 2620.99.7560 and 2620.99.7580 for the eight-digit subheading specifying that a named
+metal content is to be reported, the weight and value of such metal contained in any shipment of the ores, concentrates, slag,
+ash or residues entered under such subheading shall be reported under each applicable statistical reporting number. If a product
+covered by one of these provisions includes more than one of the named metals, it would be necessary to enter multiple ten-digit
+subheadings with the weight and value of each metal indicated under the appropriate ten-digit subheading.
+Harmonized Tariff Schedule of the United States Revision 21 (2026)
+Annotated for Statistical Reporting Purposes
+V
+26-2
+Rates of DutyUnit
+of
+Quantity
+Article Description
+Stat.
+Suf-
+fix
+Heading/
+Subheading 21
+SpecialGeneral
+Iron ores and concentrates, including roasted iron pyrites:2601
+Iron ores and concentrates, other than roasted iron pyrites:
+Non-agglomerated ..........................................................2601.11.00 FreeFree..................
+Concentrates.............................................................30 t
+Ores:
+Coarse.................................................................60 t
+Other ...................................................................90 t
+Agglomerated ..................................................................2601.12.00 Free1/Free..................
+Pellets ........................................................................30 t
+Briquettes ..................................................................60 t
+Other ..........................................................................90 t
+Roasted iron pyrites...............................................................002601.20.00 FreeFreet .................
+Manganese ores and concentrates, including ferruginous
+manganese ores and concentrates with a manganese content
+of 20 percent or more, calculated on the dry weight.................
+2602.00.00
+2.2¢/kg on
+manganese
+content
+Free..................
+Containing less than 47 percent by weight of
+manganese .............................................................................
+40
+kg
+Mn kg
+Containing 47 percent or more by weight of manganese...60 kg
+Mn kg
+Copper ores and concentrates....................................................2603.00.00 8.8¢/kg on
+copper
+content +
+3.3¢/kg on
+lead content
++ 3.7¢/kg on
+zinc content
+Free (A, AU, BH, CL,
+CO, D, E, IL, JO,
+KR, MA, OM, P,
+PA, PE, S, SG)
+1.7¢/kg on lead
+content
+..................
+Copper content.......................................................................10 Cu kg2/
+Lead content...........................................................................20 Pb kg2/
+Zinc content............................................................................30 Zn kg2/
+Silver content..........................................................................40 Ag g2/
+Gold content...........................................................................50 Au g2/
+Nickel ores and concentrates......................................................2604.00.00 FreeFree..................
+Nickel content.........................................................................40 Ni kg2/
+Other metal content...............................................................80 kg2/
+Cobalt ores and concentrates.....................................................002605.00.00 FreeFreekg ..............
+Co kg
+Aluminum ores and concentrates...............................................2606.00.00 $1/tFree..................
+Bauxite, calcined:
+Refractory grade..............................................................30 t
+Other .................................................................................60 t
+Other........................................................................................90 t
+Rates of Duty
+1
+Harmonized Tariff Schedule of the United States Revision 21 (2026)
+Annotated for Statistical Reporting Purposes
+V
+26-3
+Rates of DutyUnit
+of
+Quantity
+Article Description
+Stat.
+Suf-
+fix
+Heading/
+Subheading 21
+SpecialGeneral
+Lead ores and concentrates........................................................2607.00.00 8.8¢/kg on
+copper
+content +
+3.3¢/kg on
+lead content
++ 3.7¢/kg on
+zinc content
+Free (A, AU, BH, CL,
+CO, D, E, IL, JO,
+KR, MA, OM, P,
+PA, PE, S, SG)
+1.1¢/kg on lead
+content
+..................
+Copper content.......................................................................10 Cu kg2/
+Lead content...........................................................................20 Pb kg2/
+Zinc content............................................................................30 Zn kg2/
+Silver content..........................................................................40 Ag g2/
+Gold content...........................................................................50 Au g2/
+Zinc ores and concentrates.........................................................2608.00.00 8.8¢/kg on
+copper
+content +
+3.3¢/kg on
+lead content
++ 3.7¢/kg on
+zinc content
+Free..................
+Copper content.......................................................................10 Cu kg2/
+Lead content...........................................................................20 Pb kg2/
+Zinc content............................................................................30 Zn kg2/
+Silver content..........................................................................40 Ag g2/
+Gold content...........................................................................50 Au g2/
+Tin ores and concentrates...........................................................002609.00.00 FreeFreet .................
+Sn t
+Chromium ores and concentrates...............................................2610.00.00 FreeFree..................
+Having a chromium content equivalent to not more than
+40 percent chromic oxide (Cr2O3)........................................
+20
+t
+Cr2O3 t
+Having a chromium content equivalent to more than 40
+percent but less than 46 percent chromic oxide (Cr2O3)....
+40
+t
+Cr2O3 t
+Having a chromium content equivalent to 46 percent or
+more chromic oxide (Cr2O3)..................................................
+60
+t
+Cr2O3 t
+Tungsten ores and concentrates:2611.00
+Ores .........................................................................................002611.00.30 $1.10/kg on
+tungsten
+content
+Freekg ..............
+W kg
+Concentrates ..........................................................................002611.00.60 $1.10/kg on
+tungsten
+content
+Free (A*, AU, BH,
+CL, CO, D, E, IL,
+JO, KR, MA, OM,
+P, PA, PE, S, SG)
+37.5¢/kg on
+tungsten
+content
+kg ..............
+W kg
+Uranium or thorium ores and concentrates:2612
+Uranium ores and concentrates...........................................002612.10.00 FreeFreekg ..............
+Thorium ores and concentrates............................................002612.20.00 FreeFreet .................
+Rates of Duty
+1
+Harmonized Tariff Schedule of the United States Revision 21 (2026)
+Annotated for Statistical Reporting Purposes
+V
+26-4
+Rates of DutyUnit
+of
+Quantity
+Article Description
+Stat.
+Suf-
+fix
+Heading/
+Subheading 21
+SpecialGeneral
+Molybdenum ores and concentrates:2613
+Roasted ...................................................................................002613.10.00 $1.10/kg on
+molybdenum
+content +
+15%
+Free (A+, AU, BH,
+CL, CO, D, E, IL,
+JO, KR, MA, OM,
+P, PA, PE, S, SG)
+12.8¢/kg on
+molybdenum
+content + 1.8%
+kg ..............
+Mo kg
+Other........................................................................................002613.90.00 77.2¢/kg on
+molybdenum
+content
+Free (A+, AU, BH,
+CL, CO, D, E, IL,
+JO, KR, MA, OM,
+P, PA, PE, S, SG)
+17.8¢/kg on
+molybdenum
+content
+kg ..............
+Mo kg
+Titanium ores and concentrates:2614.00
+Synthetic rutile........................................................................002614.00.30 30%Freekg ..............
+Other........................................................................................2614.00.60 FreeFree..................
+Ilmenite and ilmenite sand..............................................20 kg
+Other (including rutile and rutile sand)..........................40 kg
+Niobium (columbium), tantalum, vanadium or zirconium ores
+and concentrates:
+2615
+Zirconium ores and concentrates.........................................002615.10.00 Free1/Freekg ..............
+Other:2615.90
+Synthetic tantalum-niobium (columbium)
+concentrates ....................................................................
+002615.90.30
+30%Freekg ..............
+Other .................................................................................2615.90.60 FreeFree..................
+Niobium (columbium) ores and concentrates.......30 kg
+Tantalum ores and concentrates............................60 kg
+Vanadium ores and concentrates...........................90 kg
+V2O5 kg
+Rates of Duty
+1
+Harmonized Tariff Schedule of the United States Revision 21 (2026)
+Annotated for Statistical Reporting Purposes
+V
+26-5
+Rates of DutyUnit
+of
+Quantity
+Article Description
+Stat.
+Suf-
+fix
+Heading/
+Subheading 21
+SpecialGeneral
+Precious metal ores and concentrates:2616
+Silver ores and concentrates................................................2616.10.00 8.8¢/kg on
+copper
+content +
+3.3¢/kg on
+lead content
++ 3.7¢/kg on
+zinc content
+Free (A+, AU, BH,
+CL, CO, D, E, IL,
+JO, KR, MA, OM,
+P, PA, PE, S, SG)
+0.8¢/kg on lead
+content
+..................
+Copper content................................................................10 Cu kg2/
+Lead content....................................................................20 Pb kg2/
+Zinc content.....................................................................30 Zn kg2/
+Silver content...................................................................40 Ag g2/
+Gold content.....................................................................80 Au g2/
+Other........................................................................................2616.90.00 8.8¢/kg on
+copper
+content +
+3.3¢/kg on
+lead content
++ 3.7¢/kg on
+zinc content
+Free (A+, AU, BH,
+CL, CO, D, E, IL,
+JO, KR, MA, OM,
+P, PA, PE, S, SG)
+1.7¢/kg on lead
+content
+..................
+Copper content................................................................10 Cu kg2/
+Lead content....................................................................20 Pb kg2/
+Zinc content.....................................................................30 Zn kg2/
+Gold content.....................................................................40 Au g2/
+Other precious metal content.........................................50 g2/
+Other ores and concentrates:2617
+Antimony ores and concentrates..........................................002617.10.00 FreeFreekg ..............
+Sb kg
+Other........................................................................................2617.90.00 FreeFree..................
+Beryllium ores and concentrates...................................30 kg
+Other .................................................................................60 kg
+Granulated slag (slag sand) from the manufacture of iron or
+steel ................................................................................................
+002618.00.00
+10%Freet .................
+Slag, dross (other than granulated slag), scalings and other
+waste from the manufacture of iron or steel:
+2619.00
+Ferrous scale..........................................................................002619.00.30 73.8¢/tFreet .................
+Other........................................................................................002619.00.90 FreeFreekg ..............
+Rates of Duty
+1
+Harmonized Tariff Schedule of the United States Revision 21 (2026)
+Annotated for Statistical Reporting Purposes
+V
+26-6
+Rates of DutyUnit
+of
+Quantity
+Article Description
+Stat.
+Suf-
+fix
+Heading/
+Subheading 21
+SpecialGeneral
+Slag, ash and residues (other than from the manufacture of
+iron or steel), containing arsenic, metals or their compounds:
+2620
+Containing mainly zinc:
+Hard zinc spelter.............................................................002620.11.00 5%Freekg ..............
+Other:2620.19
+Zinc dross and zinc skimmings...............................002620.19.30 3.3¢/kgFreekg ..............
+Zn kg
+Other ..........................................................................2620.19.60 8.8¢/kg on
+copper
+content +
+3.3¢/kg on
+lead content
++ 3.7¢/kg on
+zinc content
+Free (A, AU, BH, CL,
+CO, D, E, IL, JO,
+KR, MA, OM, P,
+PA, PE, S, SG)
+0.7¢/kg on
+copper content
++ 0.7¢/kg on
+lead content
+..................
+Copper content...................................................10 Cu kg2/
+Lead content.......................................................20 Pb kg2/
+Zinc content........................................................30 Zn kg2/
+Silver content......................................................40 Ag g2/
+Gold content.......................................................50 Au g2/
+Containing mainly lead:
+Leaded gasoline sludges and leaded anti-knock
+compound sludges..........................................................
+2620.21.00
+8.8¢/kg on
+copper
+content +
+3.3¢/kg on
+lead content
++ 3.7¢/kg on
+zinc content
+Free..................
+Copper content.........................................................10 Cu kg2/
+Lead content.............................................................20 Pb kg2/
+Zinc content...............................................................30 Zn kg2/
+Silver content............................................................40 Ag g2/
+Gold content..............................................................50 Au g2/
+Other .................................................................................2620.29.00 8.8¢/kg on
+copper
+content +
+3.3¢/kg on
+lead content
++ 3.7¢/kg on
+zinc content
+Free..................
+Copper content.........................................................10 Cu kg2/
+Lead content.............................................................20 Pb kg2/
+Zinc content...............................................................30 Zn kg2/
+Silver content............................................................40 Ag g2/
+Gold content..............................................................50 Au g2/
+Rates of Duty
+1
+Harmonized Tariff Schedule of the United States Revision 21 (2026)
+Annotated for Statistical Reporting Purposes
+V
+26-7
+Rates of DutyUnit
+of
+Quantity
+Article Description
+Stat.
+Suf-
+fix
+Heading/
+Subheading 21
+SpecialGeneral
+Slag, ash and residues (other than from the manufacture of
+iron or steel), containing arsenic, metals or their compounds:
+(con.)
+2620 (con.)
+Containing mainly copper......................................................2620.30.00 8.8¢/kg on
+copper
+content +
+3.3¢/kg on
+lead content
++ 3.7¢/kg on
+zinc content
+Free..................
+Copper content................................................................10 Cu kg2/
+Lead content....................................................................20 Pb kg2/
+Zinc content.....................................................................30 Zn kg2/
+Silver content...................................................................40 Ag g2/
+Gold content.....................................................................50 Au g2/
+Containing mainly aluminum.................................................2620.40.00 FreeFree..................
+Vanadium bearing materials..........................................30 kg
+V2O5 kg
+Other .................................................................................60 kg
+Containing arsenic, mercury, thallium or their mixtures, of
+a kind used for the extraction of arsenic or those metalsor
+for the manufacture of their chemical compounds:
+2620.60
+Of a kind used only for the extraction of arsenic or the
+manufacture of its chemical compounds......................
+002620.60.10
+25%Free (A+, AU, BH,
+CL, CO, D, E, IL,
+JO, KR, MA, OM,
+P, PA, PE, S, SG)
+5%kg ..............
+Other .................................................................................002620.60.90 30%Freekg ..............
+Rates of Duty
+1
+Harmonized Tariff Schedule of the United States Revision 21 (2026)
+Annotated for Statistical Reporting Purposes
+V
+26-8
+Rates of DutyUnit
+of
+Quantity
+Article Description
+Stat.
+Suf-
+fix
+Heading/
+Subheading 21
+SpecialGeneral
+Slag, ash and residues (other than from the manufacture of
+iron or steel), containing arsenic, metals or their compounds:
+(con.)
+2620 (con.)
+Other:
+Containing antimony, beryllium, cadmium, chromium
+or their mixtures...............................................................
+002620.91.00
+30%Freekg ..............
+Other:2620.99
+Containing mainly vanadium...................................002620.99.10 FreeFreekg ..............
+V2O5 kg
+Containing mainly tungsten.....................................002620.99.20 $1.32/kg on
+tungsten
+content +
+40%
+Free (A, AU, BH, CL,
+CO, D, E, IL, JO,
+KR, MA, OM, P,
+PA, PE, S, SG)
+17.6¢/kg on
+tungsten
+content + 3.8%
+kg ..............
+W kg
+Materials not provided for elsewhere in this
+heading containing by weight over 10 percent
+nickel ..........................................................................
+002620.99.30
+FreeFreekg ..............
+Ni kg
+Slag containingby weight over 40 percent titanium,
+and which if containing over 2 percent by weight
+of copper, lead, or zinc is not to be treated for the
+recovery thereof........................................................
+002620.99.50
+FreeFreekg ..............
+Other materials which are residues not advanced
+in value or condition by any means, and which if
+containingover 2 percent by weight of copper, lead
+or zinc are not to be treated for the recovery
+thereof ........................................................................
+2620.99.75
+FreeFree..................
+Vanadium bearing materials......................20 kg
+V2O5 kg
+Other materials containing silver...............60 Au g2/
+Other materials containing gold................80 Au g2/
+Other materials that do not contain
+vanadium, silver or gold.............................
+90
+kg
+Other ..........................................................................002620.99.85 30%Freekg ..............
+Other slag and ash, including seaweed ash (kelp); ash and
+residues from the incineration of municipal waste:
+2621
+Ash and residues from the incineration of municipal
+waste .......................................................................................
+002621.10.00
+FreeFreet .................
+Other........................................................................................002621.90.00 FreeFreet .................
+Rates of Duty
+1
+Harmonized Tariff Schedule of the United States Revision 21 (2026)
+Annotated for Statistical Reporting Purposes
+V
+26-9
+1/ See 9903.90.08.
+2/ Report value only of stated metal content.
+Harmonized Tariff Schedule of the United States Revision 21 (2026)
+Annotated for Statistical Reporting Purposes
+V
+Endnotes--page 26 - 10

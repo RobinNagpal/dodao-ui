@@ -1,0 +1,2 @@
+#!/bin/bash
+curl -s "https://www.federalregister.gov/api/v1/documents.json?conditions%5Bterm%5D=$1&conditions%5Bpublication_date%5D%5Bgte%5D=$2&order=newest&per_page=12&fields%5B%5D=title&fields%5B%5D=publication_date&fields%5B%5D=type&fields%5B%5D=html_url&fields%5B%5D=citation&fields%5B%5D=executive_order_number" | python3 -c "import json,sys;[print(r['publication_date'],r['type'],r['citation'],r.get('executive_order_number'),'|',r['title'][:120],r['html_url']) for r in json.load(sys.stdin).get('results',[])]"; echo ====
