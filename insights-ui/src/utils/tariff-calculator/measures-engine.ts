@@ -556,7 +556,7 @@ export const REFERENCE_PROMPTS: Record<RateReferenceSubject, ReferencePrompt> = 
   setHighestRate: {
     subject: 'the article in the set subject to the highest rate of duty',
     prompt: 'HTS code of the article in the set with the highest rate of duty',
-    help: 'The whole set pays the rate of the one article in it that has the highest rate of duty. Enter that article’s 10-digit HTS code.',
+    help: 'The whole set pays, on its value, the rate of the article in it with the highest rate of duty. Enter that article’s 10-digit HTS code (or add each article to compare them). A per-unit or compound rate counts as a percentage of the article’s own value (chapter 82 additional U.S. note 3), so for such an article also enter its value and quantity.',
   },
   completeMovement: {
     subject: 'the complete, assembled movement',
@@ -720,13 +720,25 @@ function formatHts(hts10: string): string {
   return d.length === 10 ? `${d.slice(0, 4)}.${d.slice(4, 6)}.${d.slice(6, 8)}.${d.slice(8)}` : hts10;
 }
 
-type BasePricing = { ok: true; amount: number; notes: string[] } | { ok: false; error: string };
+/** A subheading the applied base rate was derived from, and the value its rate was charged on (notes 20(z)–(gg)). */
+interface DerivedFrom {
+  hts10: string;
+  valueUsd: number;
+}
+
+type BasePricing = { ok: true; amount: number; notes: string[]; derived?: DerivedFrom[] } | { ok: false; error: string };
 
 interface BaseContext {
   input: MeasureEngineInput;
   quantities: Record<string, number>;
   column: BaseColumn;
   registry: FactRegistry;
+  /**
+   * The Chapter 99 duty (percent) a referenced subheading carries on its own under the headings the line's derived-rate
+   * reliefs name (China Section 301 lists, notes 20(z)–(gg)); 0 when none. CBP compares a set's articles with these
+   * duties included (HQ H299857).
+   */
+  derivedDutyPct: (hts10: string) => number;
 }
 
 /** Ad valorem + per-unit + component parts of a rate on a value; an error names what is missing. */
@@ -794,14 +806,12 @@ function priceOwnParts(
   return { ok: true, amount, notes };
 }
 
-/** Prices a referenced line's rate (same column as the base) on a value; no chained references. */
-function priceReferencedLine(
+/** A referenced line's rate (same column as the base, "See additional U.S. note n" resolved); no chained references. */
+function referencedRate(
   ref: MeasureEngineReferencedLine,
-  valueUsd: number,
-  quantities: Record<string, number>,
   ctx: BaseContext,
   allowComponents: boolean
-): BasePricing {
+): { ok: true; code: string; text: string; rate: ExtendedRate } | { ok: false; error: string } {
   const code = formatHts(ref.hts10);
   if (!/^\d{10}$/.test(digits(ref.hts10))) return { ok: false, error: `Referenced HTS code "${ref.hts10}" must have 10 digits.` };
   if (digits(ref.hts10) === digits(ctx.input.hts10))
@@ -809,7 +819,6 @@ function priceReferencedLine(
   const t = referencedRateText(ref, ctx.column);
   if (!t.ok) return t;
   let text = t.text;
-  const notes: string[] = [];
   if (ctx.column.kind === 'general' || ctx.column.kind === 'column2') {
     const note = resolveRateNote(ref.hts10, ctx.column.kind, text);
     if (note && !note.ok) return note;
@@ -825,10 +834,93 @@ function priceReferencedLine(
   if (rate.components.length > 0 && !allowComponents) {
     return { ok: false, error: `The referenced line ${code} is charged on the value of a part ("${text}"), which can't be priced article by article here.` };
   }
-  const own = priceOwnParts(rate, text, valueUsd, quantities, ctx, `the rate of ${code}`);
+  return { ok: true, code, text, rate };
+}
+
+/** Prices a referenced line's rate (same column as the base) on a value; no chained references. */
+function priceReferencedLine(
+  ref: MeasureEngineReferencedLine,
+  valueUsd: number,
+  quantities: Record<string, number>,
+  ctx: BaseContext,
+  allowComponents: boolean
+): BasePricing {
+  const r = referencedRate(ref, ctx, allowComponents);
+  if (!r.ok) return r;
+  const own = priceOwnParts(r.rate, r.text, valueUsd, quantities, ctx, `the rate of ${r.code}`);
   if (!own.ok) return own;
-  notes.push(`${code} at "${text}" on ${formatUsd(valueUsd)} = ${formatUsd(round2(own.amount))}.`, ...own.notes);
-  return { ok: true, amount: own.amount, notes };
+  return { ok: true, amount: own.amount, notes: [`${r.code} at "${r.text}" on ${formatUsd(valueUsd)} = ${formatUsd(round2(own.amount))}.`, ...own.notes] };
+}
+
+function fmtPctNumber(pct: number): string {
+  return `${Number(pct.toFixed(4))}%`;
+}
+
+/**
+ * Sets of headings 8205, 8206, 8211 and 8215 at "the rate of duty applicable to that article in the set subject to the
+ * highest rate of duty". Chapter 82 additional U.S. note 3: "a specific rate of duty or a compound rate of duty for any
+ * article in the set shall be converted to its ad valorem equivalent rate, i.e., the ad valorem rate which, when applied
+ * to the full value of the article …, would provide the same amount of duties as the specific or compound rate." So each
+ * named article's rate is an ad valorem rate (a specific / compound one priced on the article's own value and quantity,
+ * then divided by that value), the highest wins, and the whole set pays that percentage of its value. Articles are
+ * compared with the Chapter 99 duties their own subheadings carry included (CBP HQ H299857, toolsets: "CBP cannot
+ * ignore the additional duty imposed by Chapter 99 in determining what is the highest duty rate"), as far as the
+ * engine knows them (`derivedDutyPct`).
+ */
+function priceSetHighestRate(ownAmount: number, ownNotes: string[], rateText: string, ctx: BaseContext): BasePricing {
+  const { input } = ctx;
+  const value = input.customsValueUsd;
+  const refs = input.referencedLines ?? [];
+  const prompt = REFERENCE_PROMPTS.setHighestRate;
+  if (refs.length === 0) {
+    return { ok: false, error: `${REFERENCED_LINE_REQUIRED}: the base rate is the rate of ${prompt.subject} ("${rateText}"). Enter the ${prompt.prompt}.` };
+  }
+  const notes = [...ownNotes];
+  let best: { hts10: string; avePct: number; comparePct: number } | null = null;
+  for (const ref of refs) {
+    const r = referencedRate(ref, ctx, false);
+    if (!r.ok) return r;
+    if (ref.valueUsd !== undefined && (!Number.isFinite(ref.valueUsd) || ref.valueUsd <= 0 || ref.valueUsd > value + 0.005)) {
+      return {
+        ok: false,
+        error: `The value of the article ${r.code} in the set (${formatUsd(ref.valueUsd)}) must be more than $0 and not more than the set's value (${formatUsd(
+          value
+        )}).`,
+      };
+    }
+    let avePct = r.rate.adValoremPct;
+    if (r.rate.perUnit.length > 0) {
+      if (ref.valueUsd === undefined) {
+        return {
+          ok: false,
+          error: `${COMPONENT_VALUE_REQUIRED}: ${r.code} has a specific or compound rate ("${r.text}"), which chapter 82 additional U.S. note 3 converts to an ad valorem equivalent on the article's own value. Enter the value of that article in the set.`,
+        };
+      }
+      const qty = ref.quantities ? normalizeQuantities(ref.quantities) : {};
+      const priced = priceOwnParts(r.rate, r.text, ref.valueUsd, qty, ctx, `the rate of ${r.code}`);
+      if (!priced.ok) return priced;
+      avePct = (priced.amount / ref.valueUsd) * 100;
+      notes.push(
+        `${r.code} at "${r.text}": ${formatUsd(round2(priced.amount))} on the article's own value of ${formatUsd(ref.valueUsd)} = ${fmtPctNumber(
+          avePct
+        )} ad valorem equivalent (chapter 82 additional U.S. note 3).`,
+        ...priced.notes
+      );
+    } else notes.push(`${r.code} at "${r.text}" = ${fmtPctNumber(avePct)}.`);
+    const extra = ctx.derivedDutyPct(ref.hts10);
+    const comparePct = avePct + extra;
+    if (extra > 0)
+      notes.push(`${r.code} also carries ${fmtPctNumber(extra)} in Chapter 99 duties of its own, counted when comparing the articles (CBP HQ H299857).`);
+    if (!best || comparePct > best.comparePct + 1e-9) best = { hts10: digits(ref.hts10), avePct, comparePct };
+  }
+  const chosen = best as { hts10: string; avePct: number; comparePct: number };
+  const amount = (chosen.avePct / 100) * value;
+  notes.push(
+    `${refs.length > 1 ? `Highest-rated article: ${formatHts(chosen.hts10)}. ` : ''}The set pays ${fmtPctNumber(chosen.avePct)} on its value of ${formatUsd(
+      value
+    )} = ${formatUsd(round2(amount))}.`
+  );
+  return { ok: true, amount: ownAmount + amount, notes, derived: [{ hts10: chosen.hts10, valueUsd: value }] };
 }
 
 /**
@@ -881,8 +973,12 @@ function priceBase(rate: ExtendedRate, rateText: string, ctx: BaseContext): Base
         round2(own.amount)
       )} at the line’s own rate vs ${formatUsd(round2(priced.amount))}, so ${which} applies.`
     );
-    return { ok: true, amount, notes };
+    // The applied rate is derived from the other subheading only when its bound decides the duty.
+    const derived = amount === own.amount ? [] : [{ hts10: digits(refs[0].hts10), valueUsd: value }];
+    return { ok: true, amount, notes, derived };
   }
+
+  if (ref.kind === 'whole' && ref.subject === 'setHighestRate') return priceSetHighestRate(own.amount, notes, rateText, ctx);
 
   if (ref.kind === 'whole') {
     if (refs.length !== 1) {
@@ -894,7 +990,7 @@ function priceBase(rate: ExtendedRate, rateText: string, ctx: BaseContext): Base
     const priced = priceReferencedLine(refs[0], value, refs[0].quantities ? normalizeQuantities(refs[0].quantities) : ctx.quantities, ctx, true);
     if (!priced.ok) return priced;
     notes.push(`Base rate = the rate of ${prompt.subject}: ${priced.notes.join(' ')}`);
-    return { ok: true, amount: own.amount + priced.amount, notes };
+    return { ok: true, amount: own.amount + priced.amount, notes, derived: [{ hts10: digits(refs[0].hts10), valueUsd: value }] };
   }
 
   // each: every article at its own rate on its own value.
@@ -924,7 +1020,7 @@ function priceBase(rate: ExtendedRate, rateText: string, ctx: BaseContext): Base
     notes.push(...priced.notes);
   }
   notes.unshift(`Priced article by article: ${prompt.subject}.`);
-  return { ok: true, amount, notes };
+  return { ok: true, amount, notes, derived: refs.map((r) => ({ hts10: digits(r.hts10), valueUsd: r.valueUsd as number })) };
 }
 
 // ---------------------------------------------------------------------------
@@ -1042,8 +1138,34 @@ function factsCheck(m: TariffMeasureRecord, input: MeasureEngineInput, registry:
  * "entered free of duty under the United States-Mexico-Canada Agreement, including any treatment set forth in
  * subchapter XXIII of chapter 98" (U.S. notes 52(g) / 52(h) to subchapter III of chapter 99).
  */
-function conditionCheck(m: TariffMeasureRecord, input: MeasureEngineInput, registry: FactRegistry, usmcaDutiable = false): ConditionCheck {
+/** What a derived-rate condition (notes 20(z)–(gg)) checks: the subheadings the base rate came from, and which headings reach one. */
+interface DerivedRateCheck {
+  derived: DerivedFrom[];
+  /** True when the line is subject to one of the Chapter 99 headings for the shipment's country and date. */
+  subjectTo: (hts10: string, codes: string[]) => boolean;
+}
+
+function conditionCheck(
+  m: TariffMeasureRecord,
+  input: MeasureEngineInput,
+  registry: FactRegistry,
+  usmcaDutiable = false,
+  derivedRate?: DerivedRateCheck
+): ConditionCheck {
   const c = m.conditions ?? {};
+  if (c.rateDerivedFromLineSubjectTo && c.rateDerivedFromLineSubjectTo.length > 0) {
+    const codes = c.rateDerivedFromLineSubjectTo;
+    const derived = derivedRate?.derived ?? [];
+    if (derived.length === 0) return { ok: false, reason: 'Only when the base rate is derived from another subheading (here the line’s own rate applies)' };
+    if (!derived.some((d) => derivedRate?.subjectTo(d.hts10, codes))) {
+      return {
+        ok: false,
+        reason: `Only when the base rate is derived from a subheading subject to ${codes.join(' or ')} (${derived.map((d) => formatHts(d.hts10)).join(', ')} ${
+          derived.length > 1 ? 'are' : 'is'
+        } not)`,
+      };
+    }
+  }
   const usmcaClaimed = !!input.claimedSpi && USMCA_SPI_CODES.includes(input.claimedSpi) && !usmcaDutiable;
   if (c.usmcaQualifying === true && !usmcaClaimed) {
     return {
@@ -1258,6 +1380,33 @@ export function calculateWithMeasuresAndFacts(
   const baseRate = parseExtendedRate(baseText);
   if (!baseRate) return fail(`Can't read the base rate "${baseText}" for ${hts10}.`);
 
+  // Headings a derived-rate relief (notes 20(z)–(gg)) names, for the measures in scope on this line: a referenced
+  // subheading subject to one of them carries that duty into the applied rate (CBP HQ H299857).
+  const inScopeHere = (m: TariffMeasureRecord, line10: string): boolean =>
+    measureCoversLine(m, line10) && !coverageMatches(m.coverageExclude, line10) && countryMatches(m, input.countryOfOrigin) && dateReason(m, entryDay) === null;
+  const derivedCodes = new Set<string>();
+  for (const m of measures) {
+    if (inScopeHere(m, hts10)) for (const code of m.conditions?.rateDerivedFromLineSubjectTo ?? []) derivedCodes.add(code);
+  }
+  /** Charging measures under `codes` that the subheading is subject to (one per Chapter 99 code). */
+  const chargesOn = (line10: string, codes: Set<string>): TariffMeasureRecord[] => {
+    const out: TariffMeasureRecord[] = [];
+    for (const m of measures) {
+      if (!codes.has(m.ch99Code) || m.rateKind === 'relief' || out.some((o) => o.ch99Code === m.ch99Code)) continue;
+      if (inScopeHere(m, digits(line10))) out.push(m);
+    }
+    return out;
+  };
+  const derivedDutyPct = (line10: string): number => chargesOn(line10, derivedCodes).reduce((sum, m) => sum + (m.ratePct ?? 0), 0);
+
+  // The base is priced before the measures so a derived-rate condition can see which subheading the rate came from;
+  // its error is returned after the measure checks, as before.
+  const basePriced = priceBase(baseRate, baseText, { input, quantities, column: baseColumn, registry, derivedDutyPct });
+  const derivedRate: DerivedRateCheck = {
+    derived: basePriced.ok ? basePriced.derived ?? [] : [],
+    subjectTo: (line10, codes) => chargesOn(line10, new Set(codes)).length > 0,
+  };
+
   // 2. Measures in scope (coverage + country), then applicable.
   const skipped: MeasureEngineResult['skipped'] = [];
   const applicable: TariffMeasureRecord[] = [];
@@ -1275,7 +1424,7 @@ export function calculateWithMeasuresAndFacts(
       skipped.push({ ch99Code: m.ch99Code, reason: dr });
       continue;
     }
-    const cond = conditionCheck(m, conditionInput, registry, usmcaDutiable);
+    const cond = conditionCheck(m, conditionInput, registry, usmcaDutiable, derivedRate);
     if (!cond.ok) {
       if ('needsProductType' in cond) cond.needsProductType.forEach((t) => productTypesNeeded.add(t));
       else if ('needsFacts' in cond) cond.needsFacts.forEach((id) => factsNeeded.add(id));
@@ -1321,7 +1470,6 @@ export function calculateWithMeasuresAndFacts(
   }
 
   // 4. Price the base and each measure.
-  const basePriced = priceBase(baseRate, baseText, { input, quantities, column: baseColumn, registry });
   if (!basePriced.ok) return fail(basePriced.error, skipped);
   const baseLineNote = polarityNote(baseRate, input.polarityDegrees);
   if (baseLineNote) baseNotes = [...baseNotes, baseLineNote];
@@ -1370,11 +1518,68 @@ export function calculateWithMeasuresAndFacts(
     else if (m.rateKind === 'floor') amount = Math.max(baseAmount, pctAmount);
     if (m.rateKind !== 'relief' && (m.ratePct === null || !Number.isFinite(m.ratePct)))
       return fail(`Measure ${m.measureKey} (${m.ch99Code}) has no rate.`, skipped);
-    lines.push({ code: m.ch99Code, label: m.program, rateText: measureRateText(m, contentValue), amountUsd: round2(amount), sources: m.sources });
+    lines.push({
+      code: m.ch99Code,
+      label: m.program,
+      rateText: measureRateText(m, contentValue),
+      amountUsd: round2(amount),
+      sources: m.sources,
+      ...(m.rateKind === 'floor' && !m.contentBasis ? floorEquivalentNotes(baseRate, baseAmount, value, m.ratePct ?? 0) : {}),
+    });
   }
+
+  // Notes 20(z)–(gg): a derived-rate relief lifts the line's own list duty because the entry, through its derived rate,
+  // already is subject to the duty of the subheading the rate came from (USTR 84 FR 49591; CBP HQ H299857). That duty
+  // is charged here on the value the derived rate was charged on.
+  const derivedLines = new Map<string, MeasureEngineDutyLine>();
+  for (const relief of charged) {
+    const codes = relief.conditions?.rateDerivedFromLineSubjectTo;
+    if (relief.rateKind !== 'relief' || !codes || codes.length === 0) continue;
+    for (const d of derivedRate.derived) {
+      for (const dm of chargesOn(d.hts10, new Set(codes))) {
+        const key = `${dm.ch99Code}|${d.hts10}`;
+        if (derivedLines.has(key)) continue;
+        derivedLines.set(key, {
+          code: dm.ch99Code,
+          label: `${dm.program}, carried by the rate of ${formatHts(d.hts10)}`,
+          rateText: `+${dm.ratePct ?? 0}% of ${formatUsd(d.valueUsd)} (the duty ${formatHts(d.hts10)} is subject to)`,
+          amountUsd: round2(((dm.ratePct ?? 0) / 100) * d.valueUsd),
+          sources: [...dm.sources, ...relief.sources.filter((s) => !dm.sources.some((x) => x.url === s.url))],
+          notes: [
+            `${relief.ch99Code}: the base rate of this line is derived from ${formatHts(d.hts10)}, which is subject to ${dm.ch99Code}, so the line's own ${
+              (relief.replacesCodes ?? []).join(' / ') || 'list'
+            } duty does not apply and the entry pays the ${dm.ratePct}% of ${formatHts(d.hts10)} instead (USTR 84 FR 49591; CBP HQ H299857).`,
+          ],
+        });
+      }
+    }
+  }
+  lines.push(...Array.from(derivedLines.values()));
 
   const totalDutyUsd = round2(lines.reduce((sum, l) => sum + l.amountUsd, 0));
   return { lines, totalDutyUsd, skipped };
+}
+
+/**
+ * The note on a floor measure ("X% in total when the column 1 rate is below X%") whose base has a specific or compound
+ * part: the base's ad valorem equivalent as the Chapter 99 notes define it — "the amount of duty payable under column
+ * 1-General [divided] by the customs value of the good" (U.S. notes 52(k), 33(m), 2(v)(xix) to subchapter III) — and
+ * which side of the floor it falls.
+ */
+function floorEquivalentNotes(baseRate: ExtendedRate, baseAmount: number, value: number, pct: number): { notes?: string[] } {
+  if (baseRate.perUnit.length === 0 || !(value > 0)) return {};
+  const ave = (baseAmount / value) * 100;
+  return {
+    notes: [
+      `Ad valorem equivalent of the base rate: ${formatUsd(round2(baseAmount))} ÷ ${formatUsd(value)} = ${fmtPctNumber(
+        ave
+      )} (duty payable at the base rate ÷ customs value, as the Chapter 99 note defines it, e.g. U.S. note 52(k)). ${
+        ave < pct
+          ? `Below ${pct}%, so the total is ${pct}% of the customs value.`
+          : `${pct}% or more, so the base rate is charged and no additional duty is due.`
+      }`,
+    ],
+  };
 }
 
 /** Per-unit quantities one rate text needs, as normalized unit codes with the rate text that needs them; empty for an ad valorem rate. */

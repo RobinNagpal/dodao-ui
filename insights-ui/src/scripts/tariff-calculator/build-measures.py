@@ -240,9 +240,9 @@ PCNM = 'Section 301 (China, maritime and cargo-handling equipment)'
 CN_CONT = S('ustr-cn-301-continue')
 CN_STACK = ('Stacks with the 12.5% 2026 Section 301 duty on China (9903.05.31): note 52(a) keeps "any additional duty provided for in this '
             'subchapter" on top of 9903.05.20–9903.05.84. Also charged when an FTA/GSP special rate is claimed (note 20(a)).')
-NOT_MODELLED_20 = ('Not modelled: 9903.88.09 (10% for List 3 goods exported before May 10, 2019, entered before June 15, 2019 — ended), '
-                   '9903.88.16 (List 4B, 15%, suspended — note 20(t)), and notes 20(z)–20(gg) (9903.88.21–9903.88.28: no list duty on '
-                   'certain subheadings whose rate is derived from another listed subheading; depends on how the rate was derived).')
+NOT_MODELLED_20 = ('Not modelled: 9903.88.09 (10% for List 3 goods exported before May 10, 2019, entered before June 15, 2019 — ended) and '
+                   '9903.88.16 (List 4B, 15%, suspended — note 20(t)). Notes 20(z)–20(gg) (9903.88.21–9903.88.28, derived rates) are '
+                   'modelled: see s301-china-derived-rate-*.')
 
 
 def split_described(sub):
@@ -296,6 +296,44 @@ measures.append(rec(measureKey='s301-china-list4a', program=PCN, ch99Code='9903.
           f"September 1, 2019, cut to 7.5% from February 14, 2020). Chapter 01/30 lines: all {sum(1 for c in l4a if c.startswith('01'))} Chapter 01 "
           "subheadings and 3006.93.20, 3006.93.50. Product exclusions in effect: note 20(vvv)(iv) (9903.88.69); the Chapter 01 exclusions in notes "
           "20(ddd) and 20(jjj) (research macaques) have expired. " + CN_STACK))
+
+# U.S. notes 20(z)–20(gg) (headings 9903.88.21–9903.88.28, added by USTR 84 FR 49591, effective with the List 3 and List 4A
+# actions): the List 3 duty (9903.88.03 / .09) on the 13 subheadings of 20(z)–(cc), and the List 4A duty (9903.88.15) on the 26
+# subheadings of 20(dd)–(gg), "shall not apply … if such entries are subject to an applied rate of duty under such enumerated
+# subheadings that is derived from another subheading that is subject to the additional duties imposed by heading" 9903.88.01
+# (List 1), .02 (List 2), .03 / .09 (List 3) or .15 (List 4A). Every one of those subheadings has a base rate that is another
+# subheading's rate (a set's highest-rated article, the article an accessory belongs to, each garment of an ensemble, the
+# complete movement, the natural juice; embroidery in the piece "not less than" the unembroidered fabric). USTR's reason: the
+# additional duties do not apply "if the applied rate of duty for an entry is derived from another subheading, and if the entry
+# for this reason already is subject to the additional duties" — CBP HQ H299857 (toolsets of 8206) prices a set at its
+# highest-rated article's rate including that article's Section 301 duty. So the engine (conditions.rateDerivedFromLineSubjectTo)
+# lifts the line's own list duty only when the importer names the subheading the rate comes from and that subheading is on the
+# named list, and then charges that subheading's list duty on the value its rate was charged on.
+P20_DERIVED = [('z', '9903.88.21', ['9903.88.01'], ['9903.88.03', '9903.88.09'], 'List 1'),
+               ('aa', '9903.88.22', ['9903.88.02'], ['9903.88.03', '9903.88.09'], 'List 2'),
+               ('bb', '9903.88.23', ['9903.88.03', '9903.88.09'], ['9903.88.03', '9903.88.09'], 'List 3'),
+               ('cc', '9903.88.24', ['9903.88.15'], ['9903.88.03', '9903.88.09'], 'List 4A'),
+               ('dd', '9903.88.25', ['9903.88.01'], ['9903.88.15'], 'List 1'),
+               ('ee', '9903.88.26', ['9903.88.02'], ['9903.88.15'], 'List 2'),
+               ('ff', '9903.88.27', ['9903.88.03', '9903.88.09'], ['9903.88.15'], 'List 3'),
+               ('gg', '9903.88.28', ['9903.88.15'], ['9903.88.15'], 'List 4A')]
+SRC['ustr-301-cn-derived'] = {'citation': '84 FR 49591 (USTR: product exclusions and technical amendments — headings 9903.88.21–9903.88.28 and U.S. notes 20(z)–20(gg), derived rates)',
+                              'url': 'https://www.federalregister.gov/documents/2019/09/20/2019-20442/notice-of-product-exclusions-amendment-to-the-exclusion-process-and-technical-amendments-chinas-acts', 'published': '2019-09-20'}
+SRC['cbp-h299857'] = {'citation': 'CBP HQ H299857 (September 6, 2018): Section 301 measures; toolsets of 8206.00.00 pay the highest-rated article\'s rate including its Chapter 99 duty',
+                      'url': 'https://rulings.cbp.gov/ruling/H299857', 'published': '2018-09-06'}
+for sub, code, derived_from, lifted, list_name in P20_DERIVED:
+    lines = cov[f'20({sub})']
+    lifted_list = 'List 3' if lifted[0] == '9903.88.03' else 'List 4A'
+    measures.append(rec(measureKey=f's301-china-derived-rate-20{sub}', program=PCN, ch99Code=code, rateKind='relief', countriesInclude=['CN'],
+        coverageInclude=lines, conditions={'rateDerivedFromLineSubjectTo': derived_from}, replacesCodes=lifted,
+        effectiveFrom='2018-09-24' if lifted_list == 'List 3' else '2019-09-01', sources=S('ustr-301-cn-derived', 'cbp-h299857') + [hts_note(20)],
+        reviewedAt='2026-10-14',
+        notes=f'U.S. note 20({sub}) (heading {code}): the {lifted_list} duty ({" / ".join(lifted)}) does not apply to entries under the {len(lines)} '
+              f'listed subheadings whose applied rate is derived from another subheading subject to the {list_name} duty ({" / ".join(derived_from)}). '
+              'Applies only when the importer names the subheading the rate comes from (referencedLines) and the rate is in fact derived from it '
+              '(for embroidery in the piece, only when the unembroidered fabric\'s duty is the higher one). The engine then charges that subheading\'s '
+              f'{list_name} duty on the value its rate was charged on, since the entry "for this reason already is subject to the additional duties" '
+              '(84 FR 49591; CBP HQ H299857). 9903.88.09 ended in 2019 and is not modelled.'))
 
 # Product exclusions in effect (note 20(vvv) via 9903.88.69, note 20(www) via 9903.88.70), through November 9, 2026.
 from measures_named_products import china_exclusion_measures, load_descriptions  # noqa: E402

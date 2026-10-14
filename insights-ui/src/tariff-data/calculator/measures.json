@@ -20015,7 +20015,7 @@
       ],
       "htsEdition": "2026 Revision 21",
       "reviewedAt": "2026-10-10",
-      "notes": "List 3, U.S. note 20(e)–(f): products of China in the 5906 subheadings of note 20(f) pay base rate + 25% (10% from September 24, 2018, 25% since May 10, 2019). Chapter 01/30 lines: 30069360, 30069380. Product exclusions in effect: note 20(vvv)(iii) (9903.88.69). Stacks with the 12.5% 2026 Section 301 duty on China (9903.05.31): note 52(a) keeps \"any additional duty provided for in this subchapter\" on top of 9903.05.20–9903.05.84. Also charged when an FTA/GSP special rate is claimed (note 20(a)). Not modelled: 9903.88.09 (10% for List 3 goods exported before May 10, 2019, entered before June 15, 2019 — ended), 9903.88.16 (List 4B, 15%, suspended — note 20(t)), and notes 20(z)–20(gg) (9903.88.21–9903.88.28: no list duty on certain subheadings whose rate is derived from another listed subheading; depends on how the rate was derived)."
+      "notes": "List 3, U.S. note 20(e)–(f): products of China in the 5906 subheadings of note 20(f) pay base rate + 25% (10% from September 24, 2018, 25% since May 10, 2019). Chapter 01/30 lines: 30069360, 30069380. Product exclusions in effect: note 20(vvv)(iii) (9903.88.69). Stacks with the 12.5% 2026 Section 301 duty on China (9903.05.31): note 52(a) keeps \"any additional duty provided for in this subchapter\" on top of 9903.05.20–9903.05.84. Also charged when an FTA/GSP special rate is claimed (note 20(a)). Not modelled: 9903.88.09 (10% for List 3 goods exported before May 10, 2019, entered before June 15, 2019 — ended) and 9903.88.16 (List 4B, 15%, suspended — note 20(t)). Notes 20(z)–20(gg) (9903.88.21–9903.88.28, derived rates) are modelled: see s301-china-derived-rate-*."
     },
     {
       "measureKey": "s301-china-list3-described",
@@ -23096,6 +23096,466 @@
       "htsEdition": "2026 Revision 21",
       "reviewedAt": "2026-10-10",
       "notes": "List 4A, U.S. note 20(r)–(s): products of China in the 2958 subheadings of note 20(s)(i) and the 5 subheadings described in note 20(s)(ii) (except the statistical numbers it carves out: 4901990040, 6307909842, 6307909844, 6307909850, 6307909870, 6307909875, 8517620010, 8517620020, 9401696011, 9401696031, 9401710001, 9401710005, 9401710006, 9401710008, 9401710011, 9401710031) pay base rate + 7.5% (15% from September 1, 2019, cut to 7.5% from February 14, 2020). Chapter 01/30 lines: all 37 Chapter 01 subheadings and 3006.93.20, 3006.93.50. Product exclusions in effect: note 20(vvv)(iv) (9903.88.69); the Chapter 01 exclusions in notes 20(ddd) and 20(jjj) (research macaques) have expired. Stacks with the 12.5% 2026 Section 301 duty on China (9903.05.31): note 52(a) keeps \"any additional duty provided for in this subchapter\" on top of 9903.05.20–9903.05.84. Also charged when an FTA/GSP special rate is claimed (note 20(a))."
+    },
+    {
+      "measureKey": "s301-china-derived-rate-20z",
+      "program": "Section 301 (China, 2018-2019 lists)",
+      "ch99Code": "9903.88.21",
+      "rateKind": "relief",
+      "ratePct": null,
+      "countriesInclude": ["CN"],
+      "countriesExclude": [],
+      "coverageInclude": [
+        "22029936",
+        "22029937",
+        "58109100",
+        "58109210",
+        "58109290",
+        "58109910",
+        "58109990",
+        "82059060",
+        "82060000",
+        "82152000",
+        "90179001",
+        "96200015",
+        "96200030"
+      ],
+      "coverageExclude": [],
+      "conditions": {
+        "rateDerivedFromLineSubjectTo": ["9903.88.01"]
+      },
+      "replacesCodes": ["9903.88.03", "9903.88.09"],
+      "effectiveFrom": "2018-09-24",
+      "effectiveTo": null,
+      "sources": [
+        {
+          "citation": "84 FR 49591 (USTR: product exclusions and technical amendments — headings 9903.88.21–9903.88.28 and U.S. notes 20(z)–20(gg), derived rates)",
+          "url": "https://www.federalregister.gov/documents/2019/09/20/2019-20442/notice-of-product-exclusions-amendment-to-the-exclusion-process-and-technical-amendments-chinas-acts",
+          "published": "2019-09-20"
+        },
+        {
+          "citation": "CBP HQ H299857 (September 6, 2018): Section 301 measures; toolsets of 8206.00.00 pay the highest-rated article's rate including its Chapter 99 duty",
+          "url": "https://rulings.cbp.gov/ruling/H299857",
+          "published": "2018-09-06"
+        },
+        {
+          "citation": "HTSUS 2026 Revision 21, Chapter 99, subchapter III, U.S. note 20",
+          "url": "https://hts.usitc.gov/reststop/file?release=2026HTSRev21&filename=Chapter%2099",
+          "published": "2026-10-07"
+        }
+      ],
+      "htsEdition": "2026 Revision 21",
+      "reviewedAt": "2026-10-14",
+      "notes": "U.S. note 20(z) (heading 9903.88.21): the List 3 duty (9903.88.03 / 9903.88.09) does not apply to entries under the 13 listed subheadings whose applied rate is derived from another subheading subject to the List 1 duty (9903.88.01). Applies only when the importer names the subheading the rate comes from (referencedLines) and the rate is in fact derived from it (for embroidery in the piece, only when the unembroidered fabric's duty is the higher one). The engine then charges that subheading's List 1 duty on the value its rate was charged on, since the entry \"for this reason already is subject to the additional duties\" (84 FR 49591; CBP HQ H299857). 9903.88.09 ended in 2019 and is not modelled."
+    },
+    {
+      "measureKey": "s301-china-derived-rate-20aa",
+      "program": "Section 301 (China, 2018-2019 lists)",
+      "ch99Code": "9903.88.22",
+      "rateKind": "relief",
+      "ratePct": null,
+      "countriesInclude": ["CN"],
+      "countriesExclude": [],
+      "coverageInclude": [
+        "22029936",
+        "22029937",
+        "58109100",
+        "58109210",
+        "58109290",
+        "58109910",
+        "58109990",
+        "82059060",
+        "82060000",
+        "82152000",
+        "90179001",
+        "96200015",
+        "96200030"
+      ],
+      "coverageExclude": [],
+      "conditions": {
+        "rateDerivedFromLineSubjectTo": ["9903.88.02"]
+      },
+      "replacesCodes": ["9903.88.03", "9903.88.09"],
+      "effectiveFrom": "2018-09-24",
+      "effectiveTo": null,
+      "sources": [
+        {
+          "citation": "84 FR 49591 (USTR: product exclusions and technical amendments — headings 9903.88.21–9903.88.28 and U.S. notes 20(z)–20(gg), derived rates)",
+          "url": "https://www.federalregister.gov/documents/2019/09/20/2019-20442/notice-of-product-exclusions-amendment-to-the-exclusion-process-and-technical-amendments-chinas-acts",
+          "published": "2019-09-20"
+        },
+        {
+          "citation": "CBP HQ H299857 (September 6, 2018): Section 301 measures; toolsets of 8206.00.00 pay the highest-rated article's rate including its Chapter 99 duty",
+          "url": "https://rulings.cbp.gov/ruling/H299857",
+          "published": "2018-09-06"
+        },
+        {
+          "citation": "HTSUS 2026 Revision 21, Chapter 99, subchapter III, U.S. note 20",
+          "url": "https://hts.usitc.gov/reststop/file?release=2026HTSRev21&filename=Chapter%2099",
+          "published": "2026-10-07"
+        }
+      ],
+      "htsEdition": "2026 Revision 21",
+      "reviewedAt": "2026-10-14",
+      "notes": "U.S. note 20(aa) (heading 9903.88.22): the List 3 duty (9903.88.03 / 9903.88.09) does not apply to entries under the 13 listed subheadings whose applied rate is derived from another subheading subject to the List 2 duty (9903.88.02). Applies only when the importer names the subheading the rate comes from (referencedLines) and the rate is in fact derived from it (for embroidery in the piece, only when the unembroidered fabric's duty is the higher one). The engine then charges that subheading's List 2 duty on the value its rate was charged on, since the entry \"for this reason already is subject to the additional duties\" (84 FR 49591; CBP HQ H299857). 9903.88.09 ended in 2019 and is not modelled."
+    },
+    {
+      "measureKey": "s301-china-derived-rate-20bb",
+      "program": "Section 301 (China, 2018-2019 lists)",
+      "ch99Code": "9903.88.23",
+      "rateKind": "relief",
+      "ratePct": null,
+      "countriesInclude": ["CN"],
+      "countriesExclude": [],
+      "coverageInclude": [
+        "22029936",
+        "22029937",
+        "58109100",
+        "58109210",
+        "58109290",
+        "58109910",
+        "58109990",
+        "82059060",
+        "82060000",
+        "82152000",
+        "90179001",
+        "96200015",
+        "96200030"
+      ],
+      "coverageExclude": [],
+      "conditions": {
+        "rateDerivedFromLineSubjectTo": ["9903.88.03", "9903.88.09"]
+      },
+      "replacesCodes": ["9903.88.03", "9903.88.09"],
+      "effectiveFrom": "2018-09-24",
+      "effectiveTo": null,
+      "sources": [
+        {
+          "citation": "84 FR 49591 (USTR: product exclusions and technical amendments — headings 9903.88.21–9903.88.28 and U.S. notes 20(z)–20(gg), derived rates)",
+          "url": "https://www.federalregister.gov/documents/2019/09/20/2019-20442/notice-of-product-exclusions-amendment-to-the-exclusion-process-and-technical-amendments-chinas-acts",
+          "published": "2019-09-20"
+        },
+        {
+          "citation": "CBP HQ H299857 (September 6, 2018): Section 301 measures; toolsets of 8206.00.00 pay the highest-rated article's rate including its Chapter 99 duty",
+          "url": "https://rulings.cbp.gov/ruling/H299857",
+          "published": "2018-09-06"
+        },
+        {
+          "citation": "HTSUS 2026 Revision 21, Chapter 99, subchapter III, U.S. note 20",
+          "url": "https://hts.usitc.gov/reststop/file?release=2026HTSRev21&filename=Chapter%2099",
+          "published": "2026-10-07"
+        }
+      ],
+      "htsEdition": "2026 Revision 21",
+      "reviewedAt": "2026-10-14",
+      "notes": "U.S. note 20(bb) (heading 9903.88.23): the List 3 duty (9903.88.03 / 9903.88.09) does not apply to entries under the 13 listed subheadings whose applied rate is derived from another subheading subject to the List 3 duty (9903.88.03 / 9903.88.09). Applies only when the importer names the subheading the rate comes from (referencedLines) and the rate is in fact derived from it (for embroidery in the piece, only when the unembroidered fabric's duty is the higher one). The engine then charges that subheading's List 3 duty on the value its rate was charged on, since the entry \"for this reason already is subject to the additional duties\" (84 FR 49591; CBP HQ H299857). 9903.88.09 ended in 2019 and is not modelled."
+    },
+    {
+      "measureKey": "s301-china-derived-rate-20cc",
+      "program": "Section 301 (China, 2018-2019 lists)",
+      "ch99Code": "9903.88.24",
+      "rateKind": "relief",
+      "ratePct": null,
+      "countriesInclude": ["CN"],
+      "countriesExclude": [],
+      "coverageInclude": [
+        "22029936",
+        "22029937",
+        "58109100",
+        "58109210",
+        "58109290",
+        "58109910",
+        "58109990",
+        "82059060",
+        "82060000",
+        "82152000",
+        "90179001",
+        "96200015",
+        "96200030"
+      ],
+      "coverageExclude": [],
+      "conditions": {
+        "rateDerivedFromLineSubjectTo": ["9903.88.15"]
+      },
+      "replacesCodes": ["9903.88.03", "9903.88.09"],
+      "effectiveFrom": "2018-09-24",
+      "effectiveTo": null,
+      "sources": [
+        {
+          "citation": "84 FR 49591 (USTR: product exclusions and technical amendments — headings 9903.88.21–9903.88.28 and U.S. notes 20(z)–20(gg), derived rates)",
+          "url": "https://www.federalregister.gov/documents/2019/09/20/2019-20442/notice-of-product-exclusions-amendment-to-the-exclusion-process-and-technical-amendments-chinas-acts",
+          "published": "2019-09-20"
+        },
+        {
+          "citation": "CBP HQ H299857 (September 6, 2018): Section 301 measures; toolsets of 8206.00.00 pay the highest-rated article's rate including its Chapter 99 duty",
+          "url": "https://rulings.cbp.gov/ruling/H299857",
+          "published": "2018-09-06"
+        },
+        {
+          "citation": "HTSUS 2026 Revision 21, Chapter 99, subchapter III, U.S. note 20",
+          "url": "https://hts.usitc.gov/reststop/file?release=2026HTSRev21&filename=Chapter%2099",
+          "published": "2026-10-07"
+        }
+      ],
+      "htsEdition": "2026 Revision 21",
+      "reviewedAt": "2026-10-14",
+      "notes": "U.S. note 20(cc) (heading 9903.88.24): the List 3 duty (9903.88.03 / 9903.88.09) does not apply to entries under the 13 listed subheadings whose applied rate is derived from another subheading subject to the List 4A duty (9903.88.15). Applies only when the importer names the subheading the rate comes from (referencedLines) and the rate is in fact derived from it (for embroidery in the piece, only when the unembroidered fabric's duty is the higher one). The engine then charges that subheading's List 4A duty on the value its rate was charged on, since the entry \"for this reason already is subject to the additional duties\" (84 FR 49591; CBP HQ H299857). 9903.88.09 ended in 2019 and is not modelled."
+    },
+    {
+      "measureKey": "s301-china-derived-rate-20dd",
+      "program": "Section 301 (China, 2018-2019 lists)",
+      "ch99Code": "9903.88.25",
+      "rateKind": "relief",
+      "ratePct": null,
+      "countriesInclude": ["CN"],
+      "countriesExclude": [],
+      "coverageInclude": [
+        "21069052",
+        "21069054",
+        "61032200",
+        "61032300",
+        "61032905",
+        "61032910",
+        "61032920",
+        "61042200",
+        "61042300",
+        "61042905",
+        "61042910",
+        "62032230",
+        "62032910",
+        "62032915",
+        "62032920",
+        "62032930",
+        "62042100",
+        "62042230",
+        "62042300",
+        "62042920",
+        "82151000",
+        "90059040",
+        "90059080",
+        "91101100",
+        "91109020",
+        "96085000"
+      ],
+      "coverageExclude": [],
+      "conditions": {
+        "rateDerivedFromLineSubjectTo": ["9903.88.01"]
+      },
+      "replacesCodes": ["9903.88.15"],
+      "effectiveFrom": "2019-09-01",
+      "effectiveTo": null,
+      "sources": [
+        {
+          "citation": "84 FR 49591 (USTR: product exclusions and technical amendments — headings 9903.88.21–9903.88.28 and U.S. notes 20(z)–20(gg), derived rates)",
+          "url": "https://www.federalregister.gov/documents/2019/09/20/2019-20442/notice-of-product-exclusions-amendment-to-the-exclusion-process-and-technical-amendments-chinas-acts",
+          "published": "2019-09-20"
+        },
+        {
+          "citation": "CBP HQ H299857 (September 6, 2018): Section 301 measures; toolsets of 8206.00.00 pay the highest-rated article's rate including its Chapter 99 duty",
+          "url": "https://rulings.cbp.gov/ruling/H299857",
+          "published": "2018-09-06"
+        },
+        {
+          "citation": "HTSUS 2026 Revision 21, Chapter 99, subchapter III, U.S. note 20",
+          "url": "https://hts.usitc.gov/reststop/file?release=2026HTSRev21&filename=Chapter%2099",
+          "published": "2026-10-07"
+        }
+      ],
+      "htsEdition": "2026 Revision 21",
+      "reviewedAt": "2026-10-14",
+      "notes": "U.S. note 20(dd) (heading 9903.88.25): the List 4A duty (9903.88.15) does not apply to entries under the 26 listed subheadings whose applied rate is derived from another subheading subject to the List 1 duty (9903.88.01). Applies only when the importer names the subheading the rate comes from (referencedLines) and the rate is in fact derived from it (for embroidery in the piece, only when the unembroidered fabric's duty is the higher one). The engine then charges that subheading's List 1 duty on the value its rate was charged on, since the entry \"for this reason already is subject to the additional duties\" (84 FR 49591; CBP HQ H299857). 9903.88.09 ended in 2019 and is not modelled."
+    },
+    {
+      "measureKey": "s301-china-derived-rate-20ee",
+      "program": "Section 301 (China, 2018-2019 lists)",
+      "ch99Code": "9903.88.26",
+      "rateKind": "relief",
+      "ratePct": null,
+      "countriesInclude": ["CN"],
+      "countriesExclude": [],
+      "coverageInclude": [
+        "21069052",
+        "21069054",
+        "61032200",
+        "61032300",
+        "61032905",
+        "61032910",
+        "61032920",
+        "61042200",
+        "61042300",
+        "61042905",
+        "61042910",
+        "62032230",
+        "62032910",
+        "62032915",
+        "62032920",
+        "62032930",
+        "62042100",
+        "62042230",
+        "62042300",
+        "62042920",
+        "82151000",
+        "90059040",
+        "90059080",
+        "91101100",
+        "91109020",
+        "96085000"
+      ],
+      "coverageExclude": [],
+      "conditions": {
+        "rateDerivedFromLineSubjectTo": ["9903.88.02"]
+      },
+      "replacesCodes": ["9903.88.15"],
+      "effectiveFrom": "2019-09-01",
+      "effectiveTo": null,
+      "sources": [
+        {
+          "citation": "84 FR 49591 (USTR: product exclusions and technical amendments — headings 9903.88.21–9903.88.28 and U.S. notes 20(z)–20(gg), derived rates)",
+          "url": "https://www.federalregister.gov/documents/2019/09/20/2019-20442/notice-of-product-exclusions-amendment-to-the-exclusion-process-and-technical-amendments-chinas-acts",
+          "published": "2019-09-20"
+        },
+        {
+          "citation": "CBP HQ H299857 (September 6, 2018): Section 301 measures; toolsets of 8206.00.00 pay the highest-rated article's rate including its Chapter 99 duty",
+          "url": "https://rulings.cbp.gov/ruling/H299857",
+          "published": "2018-09-06"
+        },
+        {
+          "citation": "HTSUS 2026 Revision 21, Chapter 99, subchapter III, U.S. note 20",
+          "url": "https://hts.usitc.gov/reststop/file?release=2026HTSRev21&filename=Chapter%2099",
+          "published": "2026-10-07"
+        }
+      ],
+      "htsEdition": "2026 Revision 21",
+      "reviewedAt": "2026-10-14",
+      "notes": "U.S. note 20(ee) (heading 9903.88.26): the List 4A duty (9903.88.15) does not apply to entries under the 26 listed subheadings whose applied rate is derived from another subheading subject to the List 2 duty (9903.88.02). Applies only when the importer names the subheading the rate comes from (referencedLines) and the rate is in fact derived from it (for embroidery in the piece, only when the unembroidered fabric's duty is the higher one). The engine then charges that subheading's List 2 duty on the value its rate was charged on, since the entry \"for this reason already is subject to the additional duties\" (84 FR 49591; CBP HQ H299857). 9903.88.09 ended in 2019 and is not modelled."
+    },
+    {
+      "measureKey": "s301-china-derived-rate-20ff",
+      "program": "Section 301 (China, 2018-2019 lists)",
+      "ch99Code": "9903.88.27",
+      "rateKind": "relief",
+      "ratePct": null,
+      "countriesInclude": ["CN"],
+      "countriesExclude": [],
+      "coverageInclude": [
+        "21069052",
+        "21069054",
+        "61032200",
+        "61032300",
+        "61032905",
+        "61032910",
+        "61032920",
+        "61042200",
+        "61042300",
+        "61042905",
+        "61042910",
+        "62032230",
+        "62032910",
+        "62032915",
+        "62032920",
+        "62032930",
+        "62042100",
+        "62042230",
+        "62042300",
+        "62042920",
+        "82151000",
+        "90059040",
+        "90059080",
+        "91101100",
+        "91109020",
+        "96085000"
+      ],
+      "coverageExclude": [],
+      "conditions": {
+        "rateDerivedFromLineSubjectTo": ["9903.88.03", "9903.88.09"]
+      },
+      "replacesCodes": ["9903.88.15"],
+      "effectiveFrom": "2019-09-01",
+      "effectiveTo": null,
+      "sources": [
+        {
+          "citation": "84 FR 49591 (USTR: product exclusions and technical amendments — headings 9903.88.21–9903.88.28 and U.S. notes 20(z)–20(gg), derived rates)",
+          "url": "https://www.federalregister.gov/documents/2019/09/20/2019-20442/notice-of-product-exclusions-amendment-to-the-exclusion-process-and-technical-amendments-chinas-acts",
+          "published": "2019-09-20"
+        },
+        {
+          "citation": "CBP HQ H299857 (September 6, 2018): Section 301 measures; toolsets of 8206.00.00 pay the highest-rated article's rate including its Chapter 99 duty",
+          "url": "https://rulings.cbp.gov/ruling/H299857",
+          "published": "2018-09-06"
+        },
+        {
+          "citation": "HTSUS 2026 Revision 21, Chapter 99, subchapter III, U.S. note 20",
+          "url": "https://hts.usitc.gov/reststop/file?release=2026HTSRev21&filename=Chapter%2099",
+          "published": "2026-10-07"
+        }
+      ],
+      "htsEdition": "2026 Revision 21",
+      "reviewedAt": "2026-10-14",
+      "notes": "U.S. note 20(ff) (heading 9903.88.27): the List 4A duty (9903.88.15) does not apply to entries under the 26 listed subheadings whose applied rate is derived from another subheading subject to the List 3 duty (9903.88.03 / 9903.88.09). Applies only when the importer names the subheading the rate comes from (referencedLines) and the rate is in fact derived from it (for embroidery in the piece, only when the unembroidered fabric's duty is the higher one). The engine then charges that subheading's List 3 duty on the value its rate was charged on, since the entry \"for this reason already is subject to the additional duties\" (84 FR 49591; CBP HQ H299857). 9903.88.09 ended in 2019 and is not modelled."
+    },
+    {
+      "measureKey": "s301-china-derived-rate-20gg",
+      "program": "Section 301 (China, 2018-2019 lists)",
+      "ch99Code": "9903.88.28",
+      "rateKind": "relief",
+      "ratePct": null,
+      "countriesInclude": ["CN"],
+      "countriesExclude": [],
+      "coverageInclude": [
+        "21069052",
+        "21069054",
+        "61032200",
+        "61032300",
+        "61032905",
+        "61032910",
+        "61032920",
+        "61042200",
+        "61042300",
+        "61042905",
+        "61042910",
+        "62032230",
+        "62032910",
+        "62032915",
+        "62032920",
+        "62032930",
+        "62042100",
+        "62042230",
+        "62042300",
+        "62042920",
+        "82151000",
+        "90059040",
+        "90059080",
+        "91101100",
+        "91109020",
+        "96085000"
+      ],
+      "coverageExclude": [],
+      "conditions": {
+        "rateDerivedFromLineSubjectTo": ["9903.88.15"]
+      },
+      "replacesCodes": ["9903.88.15"],
+      "effectiveFrom": "2019-09-01",
+      "effectiveTo": null,
+      "sources": [
+        {
+          "citation": "84 FR 49591 (USTR: product exclusions and technical amendments — headings 9903.88.21–9903.88.28 and U.S. notes 20(z)–20(gg), derived rates)",
+          "url": "https://www.federalregister.gov/documents/2019/09/20/2019-20442/notice-of-product-exclusions-amendment-to-the-exclusion-process-and-technical-amendments-chinas-acts",
+          "published": "2019-09-20"
+        },
+        {
+          "citation": "CBP HQ H299857 (September 6, 2018): Section 301 measures; toolsets of 8206.00.00 pay the highest-rated article's rate including its Chapter 99 duty",
+          "url": "https://rulings.cbp.gov/ruling/H299857",
+          "published": "2018-09-06"
+        },
+        {
+          "citation": "HTSUS 2026 Revision 21, Chapter 99, subchapter III, U.S. note 20",
+          "url": "https://hts.usitc.gov/reststop/file?release=2026HTSRev21&filename=Chapter%2099",
+          "published": "2026-10-07"
+        }
+      ],
+      "htsEdition": "2026 Revision 21",
+      "reviewedAt": "2026-10-14",
+      "notes": "U.S. note 20(gg) (heading 9903.88.28): the List 4A duty (9903.88.15) does not apply to entries under the 26 listed subheadings whose applied rate is derived from another subheading subject to the List 4A duty (9903.88.15). Applies only when the importer names the subheading the rate comes from (referencedLines) and the rate is in fact derived from it (for embroidery in the piece, only when the unembroidered fabric's duty is the higher one). The engine then charges that subheading's List 4A duty on the value its rate was charged on, since the entry \"for this reason already is subject to the additional duties\" (84 FR 49591; CBP HQ H299857). 9903.88.09 ended in 2019 and is not modelled."
     },
     {
       "measureKey": "s301-china-excl-20vvvi-lines",

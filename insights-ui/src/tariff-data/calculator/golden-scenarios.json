@@ -6499,7 +6499,7 @@
       },
       "expectedTotalDutyUsd": 345.4,
       "toleranceUsd": 0.01,
-      "sourceNote": "HTSUS 2026 Revision 21: 6103.22.00 general rate \"The rate applicable to each garment in the ensemble if separately entered\" (chapter 61 note 3(b) ensembles): jacket 6103.32.00.00 at 13.5% × $600 = $81.00 + trousers 6103.42.10 at 16.1% × $400 = $64.40 → base $145.40. Extra duties on the whole $1,000: Section 301 (2026) for China +12.5% (9903.05.31) = $125.00 and the China 2019 list 4A +7.5% (9903.88.15) = $75.00. Total $345.40."
+      "sourceNote": "HTSUS 2026 Revision 21: 6103.22.00 general rate \"The rate applicable to each garment in the ensemble if separately entered\" (chapter 61 note 3(b) ensembles): jacket 6103.32.00.00 at 13.5% × $600 = $81.00 + trousers 6103.42.10 at 16.1% × $400 = $64.40 → base $145.40. Section 301 (2026) for China +12.5% (9903.05.31) on $1,000 = $125.00. U.S. note 20(gg) (9903.88.28; 84 FR 49591): 6103.22.00's own List 4A duty does not apply because its rate is derived from 6103.32 and 6103.42.10, both on List 4A; each garment's 7.5% (9903.88.15) is charged on its own value instead (CBP HQ H299857): $45.00 + $30.00 = $75.00. Total $345.40."
     },
     {
       "id": "ch61-wool-blend-ensemble-ua-per-kg",
@@ -6911,7 +6911,7 @@
       },
       "expectedTotalDutyUsd": 1341,
       "toleranceUsd": 0.01,
-      "sourceNote": "HTSUS 2026 Revision 21: 8205.90.60 general rate \"The rate of duty applicable to that article in the set subject to the highest rate of duty\": the pipe tool (8205.59.10, 7.2%) × $3,000 = $216.00. Section 301 (2026) for China +12.5% (9903.05.31) = $375.00 and list 3 +25% (9903.88.03) = $750.00. Total $1,341.00."
+      "sourceNote": "HTSUS 2026 Revision 21: 8205.90.60 general rate \"The rate of duty applicable to that article in the set subject to the highest rate of duty\": the pipe tool (8205.59.10, 7.2%) × $3,000 = $216.00. Section 301 (2026) for China +12.5% (9903.05.31) = $375.00. U.S. note 20(bb) (9903.88.23; 84 FR 49591): 8205.90.60's own List 3 duty does not apply because its rate is derived from 8205.59.10, itself on List 3; the set pays that subheading's 25% instead (CBP HQ H299857) = $750.00. Total $1,341.00."
     },
     {
       "id": "ch90-telescope-part-ua",
@@ -7637,6 +7637,200 @@
       "expectedTotalDutyUsd": 25000,
       "toleranceUsd": 0.01,
       "sourceNote": "Proclamation 11055 clause (4), heading 9903.08.24: 15% in total (column 1 Free) instead of 9903.08.22, plus Taiwan 2026 Section 301 10%."
+    },
+    {
+      "id": "ch65-hats-not-sewn-it-52k-floor",
+      "description": "Hats of plaited strips, not sewn (6504.00.60.00) from Italy, $50,000, 1,000 dozen: compound base below 10% ad valorem equivalent",
+      "chapter": "65",
+      "input": {
+        "hts10": "6504006000",
+        "countryOfOrigin": "IT",
+        "customsValueUsd": 50000,
+        "quantities": {
+          "DOZ": 1000,
+          "KG": 300
+        },
+        "entryDate": "2026-10-13"
+      },
+      "line": {
+        "hts10": "6504006000",
+        "general": "94¢/doz. + 4.6%",
+        "special": "Free (A*,AU,BH,CL,CO,D,E,IL,JO,KR,MA,OM,P,PA,PE,S,SG)",
+        "column2": "$3.50/doz. + 50%",
+        "units": ["doz.", "kg"]
+      },
+      "expectedTotalDutyUsd": 5000,
+      "toleranceUsd": 0.01,
+      "sourceNote": "HTSUS 2026 Revision 21: 6504.00.60 general rate \"94¢/doz. + 4.6%\" = $940.00 + $2,300.00 = $3,240.00. U.S. note 52(k) to subchapter III of chapter 99: the ad valorem equivalent of a specific or compound column 1-General rate is \"the amount of duty payable under column 1-General [divided] by the customs value of the good\" = $3,240 ÷ $50,000 = 6.48%, under 10%, so 9903.05.39 makes the total 10% ad valorem = $5,000.00 (the base is not charged on its own). Total $5,000.00."
+    },
+    {
+      "id": "ch65-hats-not-sewn-it-52k-base-higher",
+      "description": "Hats of plaited strips, not sewn (6504.00.60.00) from Italy, $10,000, 1,000 dozen: compound base at or above 10% ad valorem equivalent",
+      "chapter": "65",
+      "input": {
+        "hts10": "6504006000",
+        "countryOfOrigin": "IT",
+        "customsValueUsd": 10000,
+        "quantities": {
+          "DOZ": 1000,
+          "KG": 300
+        },
+        "entryDate": "2026-10-13"
+      },
+      "line": {
+        "hts10": "6504006000",
+        "general": "94¢/doz. + 4.6%",
+        "special": "Free (A*,AU,BH,CL,CO,D,E,IL,JO,KR,MA,OM,P,PA,PE,S,SG)",
+        "column2": "$3.50/doz. + 50%",
+        "units": ["doz.", "kg"]
+      },
+      "expectedTotalDutyUsd": 1400,
+      "toleranceUsd": 0.01,
+      "sourceNote": "HTSUS 2026 Revision 21: 6504.00.60 general rate \"94¢/doz. + 4.6%\" = $940.00 + $460.00 = $1,400.00. U.S. note 52(k): ad valorem equivalent $1,400 ÷ $10,000 = 14%, at or above 10%, so 9903.05.38 applies (no additional duty) and the base rate is charged. Total $1,400.00."
+    },
+    {
+      "id": "ch82-tool-set-ua-note3-ave",
+      "description": "Set of hand tools (8205.90.60.00) from Ukraine, $2,000: an aluminum tool (8205.59.70, compound rate) worth $100 and weighing 400 kg vs a pipe tool (8205.59.10, 7.2%)",
+      "chapter": "82",
+      "input": {
+        "hts10": "8205906000",
+        "countryOfOrigin": "UA",
+        "customsValueUsd": 2000,
+        "quantities": {
+          "pcs": 12
+        },
+        "referencedLines": [
+          {
+            "hts10": "8205597000",
+            "general": "1.5¢/kg + 3.5%",
+            "special": "Free (A,AU,BH,CL,CO,D,E,IL,JO,KR,MA,OM,P,PA,PE,S,SG)",
+            "column2": "19¢/kg + 40%",
+            "valueUsd": 100,
+            "quantities": {
+              "KG": 400
+            }
+          },
+          {
+            "hts10": "8205591000",
+            "general": "7.2%",
+            "special": "Free (A,AU,BH,CL,CO,D,E,IL,JO,KR,MA,OM,P,PA,PE,S,SG) 3.6% (JP)",
+            "column2": "45%",
+            "valueUsd": 1900
+          }
+        ],
+        "entryDate": "2026-10-13"
+      },
+      "line": {
+        "hts10": "8205906000",
+        "general": "The rate of duty applicable to that article in the set subject to the highest rate of duty",
+        "special": "Free (A+,AU,BH,CL,CO,D,E,IL, JO,KR,MA, OM,P,PA,PE,S,SG)",
+        "column2": "The rate of duty applicable to that article in the set subject to the highest rate of duty",
+        "units": ["pcs"]
+      },
+      "expectedTotalDutyUsd": 190,
+      "toleranceUsd": 0.01,
+      "sourceNote": "HTSUS 2026 Revision 21: 8205.90.60 general rate \"The rate of duty applicable to that article in the set subject to the highest rate of duty\". Chapter 82 additional U.S. note 3 converts a specific or compound rate of an article in the set to its ad valorem equivalent on the article's own value: the aluminum tool 8205.59.70 at \"1.5¢/kg + 3.5%\" = $6.00 (400 kg) + $3.50 = $9.50 on $100 = 9.5%, above the pipe tool 8205.59.10 at 7.2%, so the set pays 9.5% × $2,000 = $190.00. No extra duty for Ukraine. Total $190.00."
+    },
+    {
+      "id": "ch58-embroidery-in-the-piece-cn-list3-ground",
+      "description": "Embroidery in the piece (5810.92.90.80) from China on a dyed polyester ground (5407.52.20.40, List 3), $10,000, 500 kg",
+      "chapter": "58",
+      "input": {
+        "hts10": "5810929080",
+        "countryOfOrigin": "CN",
+        "customsValueUsd": 10000,
+        "quantities": {
+          "KG": 500
+        },
+        "confirmations": {
+          "facts": {
+            "embroideryInThePiece": true
+          }
+        },
+        "referencedLines": [
+          {
+            "hts10": "5407522040",
+            "general": "14.9%",
+            "special": "Free (AU,BH,CL,CO,IL,JO,KR,MA,OM,P,PA,PE,S,SG)",
+            "column2": "81%"
+          }
+        ],
+        "entryDate": "2026-10-13"
+      },
+      "line": {
+        "hts10": "5810929080",
+        "general": "See additional U.S. note 3",
+        "special": "Free (AU,BH, CL,CO,IL,JO,KR, MA,OM, P,PA,PE,S,SG)",
+        "column2": "See additional U.S. note 3",
+        "units": ["kg"]
+      },
+      "expectedTotalDutyUsd": 5240,
+      "toleranceUsd": 0.01,
+      "sourceNote": "HTSUS 2026 Revision 21: 5810.92.90 \"See additional U.S. note 3\" = \"7.4%, but in the case of embroidery in the piece not less than the rate which would apply to such product if not embroidered\"; the ground fabric 5407.52.20 is 14.9%, so the base is 14.9% × $10,000 = $1,490.00, a rate derived from 5407.52.20. Section 301 (2026) for China +12.5% (9903.05.31) = $1,250.00. U.S. note 20(bb) (9903.88.23; 84 FR 49591): 5810.92.90's own List 3 duty (9903.88.03) does not apply because the rate is derived from 5407.52.20, itself on List 3; the entry pays that subheading's 25% instead (CBP HQ H299857) = $2,500.00. Total $5,240.00."
+    },
+    {
+      "id": "ch96-binocular-accessory-cn-20cc",
+      "description": "Accessory for binoculars (9620.00.15.00) from China, $1,000: binoculars 9005.10.00.40 (Free, List 4A)",
+      "chapter": "96",
+      "input": {
+        "hts10": "9620001500",
+        "countryOfOrigin": "CN",
+        "customsValueUsd": 1000,
+        "quantities": {
+          "NO": 20
+        },
+        "referencedLines": [
+          {
+            "hts10": "9005100040",
+            "general": "Free",
+            "special": null,
+            "column2": "60%"
+          }
+        ],
+        "entryDate": "2026-10-13"
+      },
+      "line": {
+        "hts10": "9620001500",
+        "general": "The rate applicable to the article of which it is an accessory",
+        "special": "Free (A*,AU,BH,CL,CO,D,E,IL,JO,KR,MA,OM,P,PA,PE,S,SG)",
+        "column2": "The rate applicable to the article of which it is an accessory",
+        "units": ["No."]
+      },
+      "expectedTotalDutyUsd": 200,
+      "toleranceUsd": 0.01,
+      "sourceNote": "HTSUS 2026 Revision 21: 9620.00.15 general rate \"The rate applicable to the article of which it is an accessory\": binoculars 9005.10.00 Free × $1,000 = $0.00. Section 301 (2026) for China +12.5% (9903.05.31) = $125.00. U.S. note 20(cc) (9903.88.24; 84 FR 49591): 9620.00.15's List 3 duty (9903.88.03, 25%) does not apply because its rate is derived from 9005.10.00, which is on List 4A; the entry pays the List 4A 7.5% of 9005.10.00 instead (9903.88.15; CBP HQ H299857) = $75.00. Total $200.00."
+    },
+    {
+      "id": "ch96-telescope-accessory-cn-not-listed",
+      "description": "Accessory for optical telescopes (9620.00.15.00) from China, $1,000: telescopes 9005.80.40.40 (8%, on no China list), so the List 3 duty stays",
+      "chapter": "96",
+      "input": {
+        "hts10": "9620001500",
+        "countryOfOrigin": "CN",
+        "customsValueUsd": 1000,
+        "quantities": {
+          "NO": 20
+        },
+        "referencedLines": [
+          {
+            "hts10": "9005804040",
+            "general": "8%",
+            "special": "Free (A*,AU,BH,CL,CO,D,E,IL,JO,KR,MA,OM,P,PA,PE,S,SG)",
+            "column2": "45%"
+          }
+        ],
+        "entryDate": "2026-10-13"
+      },
+      "line": {
+        "hts10": "9620001500",
+        "general": "The rate applicable to the article of which it is an accessory",
+        "special": "Free (A*,AU,BH,CL,CO,D,E,IL,JO,KR,MA,OM,P,PA,PE,S,SG)",
+        "column2": "The rate applicable to the article of which it is an accessory",
+        "units": ["No."]
+      },
+      "expectedTotalDutyUsd": 455,
+      "toleranceUsd": 0.01,
+      "sourceNote": "HTSUS 2026 Revision 21: 9620.00.15 at the rate of optical telescopes 9005.80.40 = 8% × $1,000 = $80.00. Section 301 (2026) for China +12.5% (9903.05.31) = $125.00. 9005.80.40 is on no China list, so notes 20(z)–(cc) do not apply and 9620.00.15's own List 3 duty is charged: +25% (9903.88.03) = $250.00. Total $455.00."
     }
   ]
 }

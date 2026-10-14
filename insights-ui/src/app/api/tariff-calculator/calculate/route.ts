@@ -62,8 +62,9 @@ import { NextRequest } from 'next/server';
 // is charged on ("2.5% on the value of the lead content", "… on the value of the rifle + … the telescopic sight, if
 // any"); each must be 0 – shipmentValueUsd. Optional `referencedLines` ([{ hts10, valueUsd?, unitsOfMeasure? }], at most
 // 10) are the lines a base rate refers to ("The rate applicable to the article of which it is a part or accessory": one
-// line; "… to each garment in the ensemble if separately entered": one per garment with its value); their rates are
-// loaded from `hts_codes`.
+// line; "… to each garment in the ensemble if separately entered": one per garment with its value; "… that article in
+// the set subject to the highest rate of duty": one or more articles of the set, each with its own value and quantity
+// when its rate is specific or compound, chapter 82 additional U.S. note 3); their rates are loaded from `hts_codes`.
 // When an import ban (import-bans.json, issue #1796) matches the line, country, entry date and
 // fact answers, the response carries `prohibited` next to the duty; the duty is labelled as applying
 // only to goods imported before the ban and entered later.

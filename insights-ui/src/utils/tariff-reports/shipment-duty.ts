@@ -399,7 +399,9 @@ export interface ComponentCharge {
 
 /**
  * How another article's rate enters a rate:
- *   whole — the rate IS that article's rate, on the full customs value (parts / accessories, sets, movement sets)
+ *   whole — the rate IS that article's rate, on the full customs value (parts / accessories, sets, movement sets); for
+ *           sets at the highest-rated article's rate a specific / compound rate counts as its ad valorem equivalent on
+ *           the article's own value (chapter 82 additional U.S. note 3)
  *   each  — every article of the set at its own rate on its own value (garment ensembles, sets of 9608.50)
  *   floor — the line's own rate, but not less than that article's (embroidery in the piece, chapter 58 notes 1–5)
  *   cap   — the line's own rate, but not more than that article's (movement parts with a plate, 9110.90.40 / 9114.90.30)

@@ -16,14 +16,16 @@ import React, { useEffect, useState } from 'react';
 // of which it is a part or accessory", "… to that article in the set subject to the highest rate of duty", "… to the
 // complete, assembled movement" (one line, charged on the whole shipment value), or "… to each garment in the ensemble
 // if separately entered" / "… to each article in the absence of this subheading" (one line per article, each on its own
-// value). Embroidery in the piece (chapter 58) and movement parts with a plate (9110.90.40 / 9114.90.30) are bounded
+// value). Sets at the rate of their highest-rated article take one or more articles, each with its own value and quantity
+// when its rate is specific or compound (chapter 82 additional U.S. note 3 converts it to an ad valorem equivalent on the
+// article's value). Embroidery in the piece (chapter 58) and movement parts with a plate (9110.90.40 / 9114.90.30) are bounded
 // by another line's duty only when the importer answers yes to the condition question. The importer names the line(s)
 // here; the form shows each line's rate and asks the quantities its per-unit rate needs. Composed from leaves only.
 
 /** One referenced line as typed. */
 export interface ReferencedLineDraft {
   hts: string;
-  /** Article-by-article sets only: the value of the articles under this line. */
+  /** Article-by-article sets: the value of the articles under this line; highest-rate sets: the value of this article. */
   value: string;
   quantities: Record<string, string>;
 }
@@ -49,6 +51,11 @@ export function activeReference(inputs: BaseRateReferenceInput[], confirmations:
   return ref;
 }
 
+/** True when the reference takes one row per article: article-by-article sets, and sets at their highest-rated article's rate. */
+function takesArticles(ref: BaseRateReferenceInput): boolean {
+  return ref.kind === 'each' || ref.referenceSubject === 'setHighestRate';
+}
+
 /** The typed rows as the calculate API takes them (rows without a 10-digit code left out); undefined when none is asked. */
 export function referencedLinesForInput(
   drafts: ReferencedLineDraft[],
@@ -63,7 +70,7 @@ export function referencedLinesForInput(
     if (hts10.length !== 10) continue;
     const line: ReferencedLineInput = { hts10 };
     const value = Number(d.value);
-    if (ref.kind === 'each' && d.value.trim() !== '' && Number.isFinite(value) && value > 0) line.valueUsd = value;
+    if (takesArticles(ref) && d.value.trim() !== '' && Number.isFinite(value) && value > 0) line.valueUsd = value;
     const units: Record<string, number> = {};
     for (const [uom, raw] of Object.entries(d.quantities)) {
       const n = Number(raw);
@@ -115,7 +122,8 @@ export default function ReferencedLinesFields({ inputs, confirmations, values, o
   const rows = values.length > 0 ? values : [EMPTY_ROW];
   const lookups = useReferencedLineRates(rows.map((r) => digits(r.hts)).filter((c) => c.length === 10));
   if (!ref) return null;
-  const multi = ref.kind === 'each';
+  const multi = takesArticles(ref);
+  const setArticles = ref.referenceSubject === 'setHighestRate';
   const setRow = (i: number, row: ReferencedLineDraft): void => onChange(rows.map((r, j) => (j === i ? row : r)));
 
   return (
@@ -155,9 +163,9 @@ export default function ReferencedLinesFields({ inputs, confirmations, values, o
               )}
               {lookup?.status === 'error' && <NoticeCallout tone="warning">{lookup.message}</NoticeCallout>}
             </Stack>
-            {multi && (
+            {multi && (!setArticles || (lookup?.status === 'ok' && lookup.data.perUnit.length > 0)) && (
               <Stack gap="xs">
-                <Label htmlFor={`referenced-value-${i}`}>Value of these articles (USD)</Label>
+                <Label htmlFor={`referenced-value-${i}`}>{setArticles ? 'Value of this article in the set (USD)' : 'Value of these articles (USD)'}</Label>
                 <Input
                   id={`referenced-value-${i}`}
                   type="number"
