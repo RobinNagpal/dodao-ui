@@ -9,12 +9,17 @@ import { getGTagIdByHost } from '@dodao/web-core/utils/analytics/getGTagId';
 import { PredefinedSpaces } from '@dodao/web-core/utils/constants/constants';
 import StyledComponentsRegistry from '@dodao/web-core/utils/StyledComponentsRegistry';
 import { Analytics } from '@vercel/analytics/react';
+import { Archivo } from 'next/font/google';
 import { getServerSession } from 'next-auth';
 import { headers } from 'next/headers';
 import Script from 'next/script';
 import { CSSProperties, ReactNode } from 'react';
 import 'tailwindcss/tailwind.css';
 import './globals.scss';
+
+// dodao.io typeface — the variable width axis gives the wide heading cut used
+// by `.font-display` in `styles/dodao-home-theme.scss`.
+const archivo = Archivo({ subsets: ['latin'], axes: ['wdth'], variable: '--font-archivo', display: 'swap' });
 
 interface RootLayoutProps {
   children: ReactNode;
@@ -59,7 +64,10 @@ export default async function RootLayout({ children }: RootLayoutProps) {
 
   return (
     <html lang="en" className="h-full">
-      <body className={isDodaoHome ? 'max-h-screen dodao-home-theme' : 'max-h-screen'} style={{ ...style, backgroundColor: 'var(--bg-color)' }}>
+      <body
+        className={isDodaoHome ? `max-h-screen dodao-home-theme ${archivo.variable}` : 'max-h-screen'}
+        style={{ ...style, backgroundColor: 'var(--bg-color)' }}
+      >
         {shouldLoadGA && (
           <>
             <Script src={`https://www.googletagmanager.com/gtag/js?id=${gtag}`} />

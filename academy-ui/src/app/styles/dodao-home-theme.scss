@@ -1,46 +1,27 @@
 /*
  * dodao.io (DoDAO Home) theme — the SINGLE place where every color of the
- * site is defined. The palette matches insights-ui (KoalaGains):
- * a dark surface ramp, white headings, brightened body text, and the indigo
- * brand primary.
+ * site is defined.
+ *
+ * Direction: a deep navy-blue base with the DoDAO logo blue as the primary
+ * and a cyan accent used sparingly for highlights. Sections that need
+ * contrast add the `dodao-light` class, which re-points the same variables
+ * at a light, blue-tinted palette — components never change their classes.
  *
  * `src/app/layout.tsx` puts the `dodao-home-theme` class on `<body>` when the
  * DODAO_HOME space is served, so every page on dodao.io — home, robotics,
  * products, services, education, research — picks these variables up. No
  * JavaScript is involved; theming is pure CSS.
  *
- * The palette is intentionally tiny: 7 base colors + 1 link accent +
- * 3 status tones = 11 colors total. Do not add more.
- *
  * Each color is an RGB triplet so the Tailwind tokens in `tailwind.config.js`
  * (`bg-bg`, `bg-surface`, `text-heading`, `text-primary/20`, …) can support
  * opacity modifiers. Components must use those tokens — never raw palette
  * classes like `bg-gray-900` or hex values.
  */
-body.dodao-home-theme {
-  /* ---- Base palette (7) ---- */
-  --bg-rgb: 17 24 39; /* #111827 — page background */
-  --surface-rgb: 31 41 55; /* #1f2937 — cards / sections */
-  --surface-2-rgb: 55 65 81; /* #374151 — inset elements; doubles as the border color */
-  --heading-rgb: 255 255 255; /* #ffffff — headings; doubles as text on primary buttons */
-  --text-rgb: 243 244 246; /* #f3f4f6 — body text */
-  --text-muted-rgb: 203 213 225; /* #cbd5e1 — secondary / muted text */
-  --primary-rgb: 127 120 255; /* #7f78ff — indigo, primary actions */
 
-  /* ---- Accent (1) ---- */
-  --link-rgb: 160 155 255; /* #a09bff — links, light end of brand gradients */
-
-  /* ---- Status tones (3) — chips, badges, indicators only ---- */
-  --success-rgb: 52 211 153; /* emerald */
-  --warning-rgb: 251 191 36; /* amber */
-  --danger-rgb: 248 113 113; /* red */
-
-  /* ---- Role aliases (no new colors) ---- */
+// Derived variables must be re-declared wherever the base triplets change,
+// because a custom property resolves `var()` where it is declared.
+@mixin dodao-derived-vars {
   --border-rgb: var(--surface-2-rgb);
-  --primary-text-rgb: var(--heading-rgb);
-
-  /* ---- Legacy var names used by shared web-core components, the
-     theme-styles.scss utility classes, markdown styles, and swiper ---- */
   --primary-color: rgb(var(--primary-rgb));
   --primary-text-color: rgb(var(--primary-text-rgb));
   --bg-color: rgb(var(--bg-rgb));
@@ -51,6 +32,109 @@ body.dodao-home-theme {
   --border-color: rgb(var(--border-rgb));
   --block-bg: rgb(var(--surface-rgb));
   --swiper-theme-color: rgb(var(--primary-rgb));
+}
+
+body.dodao-home-theme {
+  /* ---- Base palette (7) — deep navy ---- */
+  --bg-rgb: 7 14 36; /* #070e24 — page background */
+  --surface-rgb: 14 26 58; /* #0e1a3a — cards / raised sections */
+  --surface-2-rgb: 32 48 92; /* #20305c — inset elements; doubles as the border color */
+  --heading-rgb: 255 255 255; /* headings */
+  --text-rgb: 214 223 242; /* #d6dff2 — body text */
+  --text-muted-rgb: 150 165 199; /* #96a5c7 — secondary / muted text */
+  --primary-rgb: 67 97 245; /* #4361f5 — DoDAO logo blue, primary actions */
+
+  /* ---- Accents (2) ---- */
+  --link-rgb: 143 166 255; /* #8fa6ff — links */
+  --accent-rgb: 56 211 245; /* #38d3f5 — cyan highlights, used sparingly */
+
+  /* ---- Viewport (3) — darkest panels that frame robot media ---- */
+  --viewport-rgb: 4 9 24; /* #040918 */
+  --on-viewport-rgb: 231 236 245;
+  --on-viewport-muted-rgb: 154 166 192;
+
+  /* ---- Status tones (3) — chips, badges, and the X/Y axes of the
+     coordinate-frame marker (Z is the primary blue) ---- */
+  --success-rgb: 52 211 153;
+  --warning-rgb: 251 191 36;
+  --danger-rgb: 248 113 113;
+
+  --primary-text-rgb: 255 255 255; /* text on primary buttons */
+  @include dodao-derived-vars;
+
+  /* Archivo (loaded via next/font in layout.tsx) replaces Inter on dodao.io. */
+  font-family: var(--font-archivo), 'Inter', sans-serif;
+}
+
+/* Light, blue-tinted variant for contrast sections. */
+body.dodao-home-theme .dodao-light {
+  --bg-rgb: 238 242 251; /* #eef2fb */
+  --surface-rgb: 255 255 255;
+  --surface-2-rgb: 214 222 240; /* #d6def0 */
+  --heading-rgb: 9 20 52; /* #091434 */
+  --text-rgb: 40 52 84; /* #283454 */
+  --text-muted-rgb: 84 97 130; /* #546182 */
+  --primary-rgb: 54 81 240; /* #3651f0 — a touch deeper for contrast on light */
+  --link-rgb: 41 66 210; /* #2942d2 */
+  --accent-rgb: 8 145 178; /* #0891b2 — cyan, darkened for light backgrounds */
+  --success-rgb: 21 128 61;
+  --warning-rgb: 180 83 9;
+  --danger-rgb: 200 38 38;
+  @include dodao-derived-vars;
+  color: var(--text-color);
+}
+
+/* Wide Archivo cut for headings — the site's typographic signature. */
+body.dodao-home-theme .font-display {
+  font-family: var(--font-archivo), 'Inter', sans-serif;
+  font-stretch: 118%;
+  letter-spacing: -0.025em;
+}
+
+/* Blueprint grid used on dark sections and inside viewport panels. */
+body.dodao-home-theme .dodao-viewport-grid {
+  background-image: linear-gradient(rgb(var(--on-viewport-rgb) / 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(var(--on-viewport-rgb) / 0.05) 1px, transparent 1px);
+  background-size: 56px 56px;
+}
+
+/* Soft brand-blue light falling on a dark section from the top. */
+body.dodao-home-theme .dodao-glow {
+  background-image: radial-gradient(60% 50% at 50% 0%, rgb(var(--primary-rgb) / 0.22), transparent 70%);
+}
+
+/* Endless horizontal ticker (tools strip). Paused for reduced motion. */
+@keyframes dodao-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+body.dodao-home-theme .dodao-marquee {
+  animation: dodao-marquee 40s linear infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  body.dodao-home-theme .dodao-marquee {
+    animation: none;
+  }
+}
+
+/* Progress bar fill for the hero clip tabs (duration set inline). */
+@keyframes dodao-progress {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+body.dodao-home-theme .dodao-progress {
+  transform-origin: left;
+  animation-name: dodao-progress;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
 }
 
 /* Smooth anchor scrolling (CSS replacement for the old JS scroll handler). */

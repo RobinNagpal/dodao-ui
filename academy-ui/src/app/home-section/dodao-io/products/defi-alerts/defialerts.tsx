@@ -1,8 +1,6 @@
 import {
   BellIcon,
-  BoltIcon,
   ChartBarIcon,
-  CheckCircleIcon,
   ClockIcon,
   CurrencyDollarIcon,
   EnvelopeIcon,
@@ -10,10 +8,10 @@ import {
   LinkIcon,
   ScaleIcon,
   ShieldCheckIcon,
-  Squares2X2Icon,
   UserIcon,
   WalletIcon,
 } from '@heroicons/react/24/outline';
+import ProductPage, { ProductPageContent } from '@/components/home/DoDAOHome/products/ProductPage';
 import DefiGif from '@/images/DoDAOHomePage/defi_alerts.gif';
 
 const benefits = [
@@ -101,166 +99,38 @@ const useCases = [
   },
 ];
 
+const content: ProductPageContent = {
+  kind: 'DeFi tooling',
+  name: 'DeFi Alerts',
+  lead: 'Monitor Compound rates, compare them with Aave, Spark and Morpho, and get personalised alerts on every active position. Built first for Compound, it extends cleanly to the major DeFi lending protocols.',
+  highlights: ['Compound, Aave, Spark, Morpho', 'Real-time rate alerts', 'Email and webhook delivery'],
+  primaryCta: { label: 'Get started', href: 'mailto:info@dodao.com?subject=DeFi%20Alerts' },
+  secondaryCta: { label: 'Open DeFi Alerts', href: 'https://compound.defialerts.xyz/' },
+  preview: { image: DefiGif, alt: 'DeFi Alerts platform preview', url: 'compound.defialerts.xyz' },
+  story: {
+    title: 'From one protocol to a whole ecosystem',
+    lead: 'Compound is where DeFi Alerts started. Today it watches the largest lending protocols and surfaces the best rate at any moment.',
+    items: protocols,
+  },
+  features: {
+    title: 'Comprehensive DeFi monitoring',
+    lead: 'From rate monitoring to position management, everything you need to stay ahead of fast-moving lending markets.',
+    items: features,
+  },
+  audiences: {
+    title: 'Who it is for',
+    lead: 'Whether you are optimising yields, managing positions or building DeFi products, the alerts keep you ahead of the market.',
+    items: useCases.map((useCase) => ({ name: useCase.title, description: useCase.description, icon: useCase.icon })),
+  },
+  benefits: {
+    title: 'Stay ahead of DeFi markets',
+    lead: 'Rates change by the minute and positions can turn unhealthy quickly. Let the alerts keep watch instead of checking by hand.',
+    items: benefits,
+  },
+};
+
 function DeFiAlertsComponent() {
-  return (
-    <div>
-      <div className="relative overflow-hidden bg-bg">
-        <div className="relative pb-4 sm:pb-12 lg:pb-20">
-          <main className="mx-auto mt-8 max-w-7xl px-6 sm:mt-16 lg:mt-24">
-            <div className="lg:grid lg:grid-cols-12 lg:gap-8">
-              <div className="sm:text-center md:mx-auto md:max-w-2xl lg:col-span-6 lg:text-left">
-                <p className="text-xs uppercase tracking-widest font-semibold text-primary">DeFi Tool · Real-Time Intelligence</p>
-                <h1 className="mt-2 text-4xl font-bold tracking-tight text-primary sm:text-6xl">DeFi Alerts</h1>
-                <p className="mt-5 text-lg leading-8 text-body">
-                  Monitor Compound rates, compare them with Aave, Spark and Morpho and get personalised alerts on every active position. Originally built for
-                  Compound, the platform extends cleanly to all major DeFi lending protocols.
-                </p>
-
-                <div className="mt-6 flex flex-wrap gap-2 sm:flex-nowrap">
-                  <span className="inline-flex items-center gap-x-1.5 whitespace-nowrap rounded-full bg-success/15 px-3 py-1 text-sm font-medium text-success ring-1 ring-success/40">
-                    <CheckCircleIcon className="h-4 w-4" aria-hidden="true" />
-                    Compound · Aave · Morpho
-                  </span>
-                  <span className="inline-flex items-center gap-x-1.5 whitespace-nowrap rounded-full bg-primary/15 px-3 py-1 text-sm font-medium text-primary ring-1 ring-primary/40">
-                    <BoltIcon className="h-4 w-4" aria-hidden="true" />
-                    Real-time rate alerts
-                  </span>
-                  <span className="inline-flex items-center gap-x-1.5 whitespace-nowrap rounded-full bg-warning/15 px-3 py-1 text-sm font-medium text-warning ring-1 ring-warning/40">
-                    <EnvelopeIcon className="h-4 w-4" aria-hidden="true" />
-                    Email delivery
-                  </span>
-                </div>
-
-                <div className="mt-8 flex flex-wrap gap-3">
-                  <a
-                    href="mailto:info@dodao.com"
-                    className="inline-flex items-center justify-center rounded-md bg-primary px-5 py-2.5 text-sm font-semibold text-primary-text hover:bg-primary/85 transition-colors"
-                  >
-                    Get started
-                  </a>
-                  <a
-                    href="https://compound.defialerts.xyz/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center justify-center rounded-md bg-surface px-5 py-2.5 text-sm font-semibold text-primary ring-1 ring-border hover:bg-surface-2 transition-colors"
-                  >
-                    Live demo
-                  </a>
-                </div>
-              </div>
-
-              <div className="relative mt-12 sm:mx-auto sm:max-w-lg lg:col-span-6 lg:mx-0 lg:mt-0 lg:flex lg:max-w-none lg:items-center">
-                <div className="relative mx-auto w-full overflow-hidden rounded-lg shadow-lg">
-                  <img alt="DeFi Alerts platform preview" src={DefiGif.src} className="w-full" />
-                </div>
-              </div>
-            </div>
-          </main>
-        </div>
-      </div>
-
-      <div className="bg-surface py-20 sm:py-24">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="mx-auto max-w-3xl text-center">
-            <h2 className="text-3xl font-bold tracking-tight text-heading sm:text-4xl">From One Protocol to a Whole Ecosystem</h2>
-            <p className="mt-4 text-base text-body">
-              Compound is where DeFi Alerts started. Today the platform watches the largest lending protocols and surfaces the best rate at any moment.
-            </p>
-          </div>
-
-          <div className="mt-12 grid grid-cols-1 gap-6 lg:grid-cols-2">
-            {protocols.map((protocol) => (
-              <div key={protocol.name} className="rounded-2xl bg-bg p-6 ring-1 ring-border">
-                <div className="flex items-center gap-x-3">
-                  <span className="inline-flex h-10 w-10 items-center justify-center rounded-lg bg-primary/15 text-primary">
-                    <Squares2X2Icon className="h-5 w-5" aria-hidden="true" />
-                  </span>
-                  <h3 className="text-lg font-semibold text-heading">{protocol.name}</h3>
-                </div>
-                <p className="mt-4 text-base text-body">{protocol.description}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      <div className="bg-bg py-20 sm:py-24">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="mx-auto max-w-3xl text-center">
-            <h2 className="text-3xl font-bold tracking-tight text-heading sm:text-4xl">Comprehensive DeFi Monitoring</h2>
-            <p className="mt-4 text-base text-body">
-              From basic rate monitoring to advanced position management, DeFi Alerts has the pieces you need to stay ahead of fast-moving lending markets.
-            </p>
-          </div>
-
-          <div className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {features.map((feature) => (
-              <div key={feature.name} className="flex flex-col rounded-2xl bg-surface p-6 ring-1 ring-border">
-                <span className="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-primary text-primary-text shadow-lg">
-                  <feature.icon aria-hidden="true" className="h-6 w-6" />
-                </span>
-                <h3 className="mt-5 text-lg font-semibold tracking-tight text-heading">{feature.name}</h3>
-                <p className="mt-2 text-base text-body">{feature.description}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      <div className="bg-surface py-20">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="mx-auto max-w-2xl text-center">
-            <h2 className="text-3xl font-bold tracking-tight text-heading sm:text-4xl">Perfect for Every DeFi User</h2>
-            <p className="mt-4 text-lg leading-8 text-body">
-              Whether you’re optimising yields, managing positions, or building DeFi products, our alerts keep you informed and ahead of the market.
-            </p>
-          </div>
-          <div className="mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-8 sm:grid-cols-2 lg:max-w-none lg:grid-cols-4">
-            {useCases.map((useCase) => (
-              <div key={useCase.title} className="flex flex-col items-center text-center">
-                <div className="flex h-16 w-16 items-center justify-center rounded-lg bg-primary/15">
-                  <useCase.icon className="h-8 w-8 text-primary" aria-hidden="true" />
-                </div>
-                <h3 className="mt-6 text-lg font-semibold text-heading">{useCase.title}</h3>
-                <p className="mt-2 text-sm text-body">{useCase.description}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      <div className="bg-bg">
-        <div className="relative bg-surface pb-32">
-          <div className="absolute inset-0">
-            <img alt="" src="/defi_alerts.png" className="size-full object-cover object-[60%_center]" />
-            <div aria-hidden="true" className="absolute inset-0 bg-surface mix-blend-multiply" />
-          </div>
-          <div className="relative mx-auto max-w-7xl px-6 py-20 sm:py-28 lg:px-8">
-            <h1 className="text-3xl font-bold tracking-tight text-heading sm:text-5xl">Stay Ahead of DeFi Markets</h1>
-            <p className="mt-6 max-w-3xl text-base text-body">
-              DeFi moves fast. Rates change by the minute, positions can become unhealthy quickly, and opportunities disappear in seconds. Don’t rely on manual
-              checking — let our intelligent alerts keep you informed and your positions safe.
-            </p>
-          </div>
-        </div>
-        <section aria-labelledby="contact-heading" className="relative z-10 mx-auto -mt-32 max-w-7xl px-6 pb-32 lg:px-8">
-          <div className="grid grid-cols-1 gap-y-20 lg:grid-cols-3 lg:gap-x-8 lg:gap-y-0">
-            {benefits.map((benefit) => (
-              <div key={benefit.name} className="flex flex-col rounded-2xl bg-surface shadow-xl">
-                <div className="relative flex-1 px-6 pb-8 pt-16 md:px-8">
-                  <div className="absolute top-0 inline-block -translate-y-1/2 transform rounded-xl bg-primary p-5 shadow-lg">
-                    <benefit.icon aria-hidden="true" className="h-6 w-6 text-primary-text" />
-                  </div>
-                  <h3 className="text-lg font-semibold text-heading">{benefit.name}</h3>
-                  <p className="mt-4 text-base text-muted">{benefit.description}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
-      </div>
-    </div>
-  );
+  return <ProductPage content={content} />;
 }
 
 export default DeFiAlertsComponent;

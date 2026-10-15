@@ -2,6 +2,7 @@ import Image from 'next/image';
 import AAVE from '@/images/DAO/AAVE.png';
 import Balancer from '@/images/DAO/Balancer.png';
 import Compound from '@/images/DAO/Compound.png';
+import CompoundOnLight from '@/images/DAO/Compound2.png';
 import Harmony from '@/images/DAO/Harmony.png';
 import Near from '@/images/DAO/Near.png';
 import Uniswap from '@/images/DAO/Uniswap.png';
@@ -9,6 +10,20 @@ import Arbitrum from '@/images/DAO/Arbitrum.png';
 import Alchemix from '@/images/DAO/Alchemix.png';
 import Fuel from '@/images/DAO/Fuel.jpg';
 import Optimism from '@/images/DAO/Optimism.png';
+
+/** Teams DoDAO has built for, as logos that read on a white tile. Shared with the dodao.io "Earlier work" section. */
+export const partnerLogos = [
+  { name: 'Near', src: Near },
+  { name: 'Balancer', src: Balancer },
+  { name: 'Harmony', src: Harmony },
+  { name: 'Compound', src: CompoundOnLight },
+  { name: 'Aave', src: AAVE },
+  { name: 'Uniswap', src: Uniswap },
+  { name: 'Arbitrum', src: Arbitrum },
+  { name: 'Alchemix', src: Alchemix },
+  { name: 'Optimism', src: Optimism },
+  { name: 'Fuel', src: Fuel },
+];
 
 export function TrustedBy() {
   return (

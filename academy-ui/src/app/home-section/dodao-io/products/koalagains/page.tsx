@@ -1,4 +1,3 @@
-import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { Metadata } from 'next';
 import KoalaGainsComponent from './koalagains';
 
@@ -48,11 +47,7 @@ export const metadata: Metadata = {
 };
 
 function KoalaGainsPage() {
-  return (
-    <PageWrapper>
-      <KoalaGainsComponent />
-    </PageWrapper>
-  );
+  return <KoalaGainsComponent />;
 }
 
 export default KoalaGainsPage;

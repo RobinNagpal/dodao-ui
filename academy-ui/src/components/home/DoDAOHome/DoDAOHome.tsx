@@ -1,38 +1,31 @@
-import CoreOfferings from './components/CoreOfferings';
 import DoDAOHomeHero from './components/DoDAOHomeHero';
-import DoDAOProducts from './components/DoDAOProducts';
+import EarlierWork from './components/EarlierWork';
+import EngagementSteps from './components/EngagementSteps';
 import { Footer } from './components/Footer';
-import KetchupHplcWorkflowFeature from './components/KetchupHplcWorkflowFeature';
-import RoboticsServicesTwo from './components/RoboticsServicesTwo';
-import { TrustedBy } from './components/TrustedBy';
+import HowWeHelp from './components/HowWeHelp';
+import LearnInPublic from './components/LearnInPublic';
+import ModelOrCodeMap from './components/ModelOrCodeMap';
+import StartProject from './components/StartProject';
+import WhatWeBuild from './components/WhatWeBuild';
 
 export default function DoDAOHome() {
   return (
     <div>
-      {/* Hero — robotics-first */}
+      {/* Robotics first: what we do, how we help, and the model-vs-code call */}
       <DoDAOHomeHero />
+      <HowWeHelp />
+      <ModelOrCodeMap />
 
-      {/* Robotics — primary offering, the two services we run today */}
-      <RoboticsServicesTwo />
+      {/* The ten technical areas (linking to /robotics/[area]) and how a project runs */}
+      <WhatWeBuild />
+      <EngagementSteps />
+      <LearnInPublic />
 
-      {/* Featured robotics project — ketchup HPLC workflow simulation */}
-      <KetchupHplcWorkflowFeature />
+      {/* Earlier AI agent + DeFi work, linking out to each product page */}
+      <EarlierWork />
 
-      {/* AI Agents + DeFi — secondary offerings, kept for continuity */}
-      <CoreOfferings />
-
-      {/* Trusted By — moved to the bottom alongside Products */}
-      <div className="bg-bg">
-        <TrustedBy />
-      </div>
-
-      {/* Products section */}
-      <div className="bg-surface">
-        <DoDAOProducts />
-      </div>
-
-      {/* Footer */}
-      <Footer />
+      <StartProject />
+      <Footer showSiteLinks />
     </div>
   );
 }

@@ -2,7 +2,12 @@
 const { fontSize } = require('tailwindcss/defaultTheme');
 
 module.exports = {
-  content: ['./src/pages/**/*.{js,ts,jsx,tsx,mdx}', './src/components/**/*.{js,ts,jsx,tsx,mdx}', './src/app/**/*.{js,ts,jsx,tsx,mdx}', '../shared/web-core/src/components/**/*.{js,ts,jsx,tsx,mdx}'],
+  content: [
+    './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/components/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/app/**/*.{js,ts,jsx,tsx,mdx}',
+    '../shared/web-core/src/components/**/*.{js,ts,jsx,tsx,mdx}',
+  ],
   theme: {
     extend: {
       // Semantic color tokens for the dodao.io (DoDAO Home) pages, backed by
@@ -18,6 +23,7 @@ module.exports = {
         primary: 'rgb(var(--primary-rgb) / <alpha-value>)',
         'primary-text': 'rgb(var(--primary-text-rgb) / <alpha-value>)',
         link: 'rgb(var(--link-rgb) / <alpha-value>)',
+        accent: 'rgb(var(--accent-rgb) / <alpha-value>)',
 
         // Surfaces (3-tier ramp): bg (page) < surface (cards) < surface-2 (inset)
         bg: 'rgb(var(--bg-rgb) / <alpha-value>)',
@@ -31,6 +37,11 @@ module.exports = {
 
         // Lines — `border-border`
         border: 'rgb(var(--border-rgb) / <alpha-value>)',
+
+        // Viewport — dark simulator-style panels that frame robot media
+        viewport: 'rgb(var(--viewport-rgb) / <alpha-value>)',
+        'on-viewport': 'rgb(var(--on-viewport-rgb) / <alpha-value>)',
+        'on-viewport-muted': 'rgb(var(--on-viewport-muted-rgb) / <alpha-value>)',
 
         // Status tones — chips/badges/indicators only
         success: 'rgb(var(--success-rgb) / <alpha-value>)',
