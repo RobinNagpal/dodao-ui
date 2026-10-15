@@ -1,6 +1,5 @@
 import { authOptions } from '@/app/api/auth/[...nextauth]/authOptions';
 import DefaultHome from '@/components/home/DefaultHome/DefaultHome';
-import DoDAOHome from '@/components/home/DoDAOHome/DoDAOHome';
 import TidbitsHubHome from '@/components/home/TidbitsHub/TidbitsHubHome';
 import { getTidbitsSiteHomepageContents } from '@/components/home/TidbitsSite/getTidbitsSiteHomepageContents';
 import { SpaceTypes } from '@/types/space/SpaceDto';
@@ -31,10 +30,6 @@ async function Home() {
 
   if (space?.type === SpaceTypes.TidbitsSite) {
     return await getTidbitsSiteHomepageContents(space, session);
-  }
-
-  if (space?.id === PredefinedSpaces.DODAO_HOME) {
-    return <DoDAOHome />;
   }
 
   if (space?.id === PredefinedSpaces.TIDBITS_HUB) {
