@@ -1,0 +1,5 @@
+# Assembled bundles (build-bundle.sh) and local Terraform state/cache.
+dist/
+.terraform/
+*.tfstate
+*.tfstate.*
