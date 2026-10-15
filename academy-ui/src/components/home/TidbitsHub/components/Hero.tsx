@@ -2,7 +2,7 @@ import alchemix from '@/images/TidbitsHub/GIFs/tidbits-hub.gif';
 import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
 import Image from 'next/image';
 import { SetupNewSpaceButton } from '../../common/setupNewSpace';
-import ContactUsLink from '../../DoDAOHome/components/ContactUsLink';
+import ContactUsLink from '@/components/home/common/ContactUsLink';
 import { WatchVideoButton } from './../../common/WatchVideoButton';
 
 export function Hero({ space }: { space: SpaceWithIntegrationsDto | null }) {

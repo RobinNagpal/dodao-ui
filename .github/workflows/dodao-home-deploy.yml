@@ -1,0 +1,102 @@
+name: Deploy dodao-home (dodao.io → S3 + CloudFront)
+
+# Builds the fully static dodao.io site (dodao-home, `output: 'export'`) and publishes it to the
+# private S3 bucket behind the dodao.io CloudFront distribution. Infrastructure lives in
+# deployments/dodao-home (Terraform, applied by hand — this workflow never runs terraform).
+#
+# Required repository configuration (values come from `terraform output` — see
+# deployments/dodao-home/README.md):
+#   secrets.DODAO_HOME_AWS_ACCESS_KEY_ID          deployer_access_key_id
+#   secrets.DODAO_HOME_AWS_SECRET_ACCESS_KEY      deployer_secret_access_key
+#   vars.DODAO_HOME_S3_BUCKET                     web_bucket
+#   vars.DODAO_HOME_CLOUDFRONT_DISTRIBUTION_ID    cloudfront_distribution_id
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "dodao-home/**"
+      - "shared/web-core/**"
+      - ".github/workflows/dodao-home-deploy.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: dodao-home-deploy
+  cancel-in-progress: false
+
+env:
+  AWS_REGION: us-east-1
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 23.11.0
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
+      - name: Shared Web Core - Install dependencies
+        run: cd shared/web-core && pnpm install --filter @dodao/web-core
+
+      - name: dodao-home - Install dependencies
+        run: cd dodao-home && pnpm install --filter dodao-home
+
+      - name: dodao-home - Build static export
+        run: cd dodao-home && pnpm build
+
+      - name: Check export
+        run: |
+          test -f dodao-home/out/index.html
+          test -f dodao-home/out/404.html
+          test -f dodao-home/out/sitemap.xml
+          test -f dodao-home/out/robots.txt
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.DODAO_HOME_AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.DODAO_HOME_AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      # Two passes so each object gets the right Cache-Control:
+      #  1. /_next/static is content-hashed → cache for a year, immutable. No --delete here, so
+      #     pages still open in a browser keep finding the chunks they reference.
+      #  2. Everything else (HTML, RSC .txt payloads, sitemap, robots, images in public/) → short
+      #     cache, and --delete removes pages that no longer exist. The CloudFront invalidation
+      #     below makes the new HTML visible immediately.
+      - name: Upload hashed assets
+        env:
+          BUCKET: ${{ vars.DODAO_HOME_S3_BUCKET }}
+        run: |
+          aws s3 sync dodao-home/out/_next/static "s3://$BUCKET/_next/static" \
+            --cache-control "public,max-age=31536000,immutable" --only-show-errors
+
+      - name: Upload pages and public files
+        env:
+          BUCKET: ${{ vars.DODAO_HOME_S3_BUCKET }}
+        run: |
+          aws s3 sync dodao-home/out "s3://$BUCKET" --delete \
+            --exclude "_next/static/*" \
+            --cache-control "public,max-age=300,must-revalidate" --only-show-errors
+
+      - name: Invalidate CloudFront
+        env:
+          DISTRIBUTION_ID: ${{ vars.DODAO_HOME_CLOUDFRONT_DISTRIBUTION_ID }}
+        run: |
+          id=$(aws cloudfront create-invalidation --distribution-id "$DISTRIBUTION_ID" \
+            --paths "/*" --query 'Invalidation.Id' --output text)
+          aws cloudfront wait invalidation-completed --distribution-id "$DISTRIBUTION_ID" --id "$id"
+          echo "Invalidation $id completed."

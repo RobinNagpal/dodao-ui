@@ -1,5 +1,6 @@
 packages:
   - 'academy-ui'
+  - 'dodao-home'
   - 'base-ui'
   - 'defi-alerts'
   - 'x-news-ui'
