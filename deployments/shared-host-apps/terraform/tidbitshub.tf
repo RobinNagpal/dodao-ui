@@ -1,14 +1,11 @@
-# tidbitshub.org moves from Vercel DNS (ns1/ns2.vercel-dns.com) to this new Route 53 zone. It
-# takes effect only when the registrar's nameservers are changed to the ones in the
-# `tidbitshub_name_servers` output — until then this zone answers nobody.
-#
-# What the Vercel zone held, from dig on 2026-10-15: A records for the apex, www and a wildcard
-# (every name, so mail./em./bounce. all resolve to Vercel too), and CAA at the apex
-# (letsencrypt.org, pki.goog, sectigo.com). No MX, no TXT (no SPF/DMARC/verification) at the
-# apex or _dmarc. DKIM CNAMEs cannot be enumerated — see var.tidbitshub_ses_dkim_tokens.
-resource "aws_route53_zone" "tidbitshub" {
-  name    = var.tidbitshub_domain
-  comment = "academy-ui (TidbitsHub) on the shared Lightsail host. Managed by dodao-ui deployments/shared-host-apps."
+# tidbitshub.org's Route 53 zone already exists (created by hand earlier; it holds the Google
+# Workspace MX, the site-verification TXT, DMARC and the three SES Easy DKIM CNAMEs). The domain is
+# still delegated to Vercel DNS (ns1/ns2.vercel-dns.com), so this zone answers nobody until the
+# registrar's nameservers are switched to the ones in the `tidbitshub_name_servers` output.
+# This stack only adds the web records and CAA; the mail records stay as they are, unmanaged.
+data "aws_route53_zone" "tidbitshub" {
+  name         = var.tidbitshub_domain
+  private_zone = false
 }
 
 # Apex, www and every <space> subdomain go to the shared host. Caddy serves the apex, redirects
@@ -16,7 +13,7 @@ resource "aws_route53_zone" "tidbitshub" {
 resource "aws_route53_record" "tidbitshub" {
   for_each = toset(["", "www.", "*."])
 
-  zone_id = aws_route53_zone.tidbitshub.zone_id
+  zone_id = data.aws_route53_zone.tidbitshub.zone_id
   name    = "${each.key}${var.tidbitshub_domain}"
   type    = "A"
   ttl     = 300
@@ -26,7 +23,7 @@ resource "aws_route53_record" "tidbitshub" {
 # Caddy's issuers: Let's Encrypt, falling back to ZeroSSL (whose certificates Sectigo issues).
 # CAA is inherited by every subdomain, wildcard included.
 resource "aws_route53_record" "tidbitshub_caa" {
-  zone_id = aws_route53_zone.tidbitshub.zone_id
+  zone_id = data.aws_route53_zone.tidbitshub.zone_id
   name    = var.tidbitshub_domain
   type    = "CAA"
   ttl     = 3600
@@ -34,14 +31,4 @@ resource "aws_route53_record" "tidbitshub_caa" {
     "0 issue \"letsencrypt.org\"",
     "0 issue \"sectigo.com\"",
   ]
-}
-
-resource "aws_route53_record" "tidbitshub_ses_dkim" {
-  for_each = toset(var.tidbitshub_ses_dkim_tokens)
-
-  zone_id = aws_route53_zone.tidbitshub.zone_id
-  name    = "${each.value}._domainkey.${var.tidbitshub_domain}"
-  type    = "CNAME"
-  ttl     = 1800
-  records = ["${each.value}.dkim.amazonses.com"]
 }

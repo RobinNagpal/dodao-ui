@@ -184,10 +184,7 @@ aws route53 change-resource-record-sets --hosted-zone-id "$ZONE" \
 ```sh
 cd deployments/shared-host-apps/terraform
 terraform init
-# Fill in the SES DKIM tokens for tidbitshub.org first if that identity exists (see below).
-terraform apply \
-  -var shared_host_state_bucket=shared-host-tfstate-<account-id> \
-  -var 'tidbitshub_ses_dkim_tokens=["<t1>","<t2>","<t3>"]'
+terraform apply -var shared_host_state_bucket=shared-host-tfstate-<account-id>
 terraform output tidbitshub_name_servers
 ```
 
@@ -195,17 +192,13 @@ If the shared-host state bucket is in an account these credentials cannot read, 
 `-var static_ip=<ip>` instead of `shared_host_state_bucket`.
 
 This creates the simulations A record (live immediately — Caddy gets its certificate on the next
-request) and a **new** `tidbitshub.org` hosted zone with apex, `www` and `*` A records plus CAA
-(`letsencrypt.org`, `sectigo.com`). The new zone answers nobody until step 8.
+request) and adds apex, `www` and `*` A records plus CAA (`letsencrypt.org`, `sectigo.com`) to the
+**existing** `tidbitshub.org` hosted zone. That zone was created earlier by hand and already holds
+the Google Workspace MX, the site-verification TXT, `_dmarc` and the three SES Easy DKIM CNAMEs, so
+nothing needs copying from Vercel. It answers nobody until step 8.
 
-What the old Vercel zone had (dig, 2026-10-15): A for apex/www/wildcard, CAA at the apex; **no MX,
-no TXT** (no SPF, DMARC or site verification) at the apex, `_dmarc` or common subdomains, so there
-is nothing else to copy — except possibly **SES DKIM CNAMEs**, which dig cannot enumerate. Logins
-are mailed from `support@tidbitshub.org`; if SES has a *domain* identity for tidbitshub.org, get its
-tokens (`aws sesv2 get-email-identity --email-identity tidbitshub.org --query DkimAttributes.Tokens`)
-and pass them as above **before** step 8, or SES will mark the domain unverified and login emails
-stop. If you can still open Vercel's dashboard, its DNS records list for tidbitshub.org is the
-authoritative check that nothing else needs copying.
+The Vercel DNS zone (dig, 2026-10-15) had only A records (apex/www/wildcard) and CAA: **no MX**, so
+mail to `@tidbitshub.org` is not being delivered today. Switching the nameservers restores it.
 
 **8. Registrar: switch tidbitshub.org's nameservers** from `ns1/ns2.vercel-dns.com` to the four in
 `tidbitshub_name_servers`. Propagation can take up to the parent zone's NS TTL (often 1–2 days for

@@ -5,7 +5,7 @@ output "static_ip" {
 
 output "tidbitshub_name_servers" {
   description = "Set these as tidbitshub.org's nameservers at the registrar (replacing ns1/ns2.vercel-dns.com)."
-  value       = aws_route53_zone.tidbitshub.name_servers
+  value       = data.aws_route53_zone.tidbitshub.name_servers
 }
 
 output "records" {

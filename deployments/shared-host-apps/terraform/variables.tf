@@ -41,16 +41,3 @@ variable "tidbitshub_domain" {
   type        = string
   default     = "tidbitshub.org"
 }
-
-variable "tidbitshub_ses_dkim_tokens" {
-  description = <<-EOT
-    Easy DKIM tokens of the SES identity for tidbitshub.org, if there is one — logins send from
-    support@tidbitshub.org. Each becomes <token>._domainkey CNAME <token>.dkim.amazonses.com.
-    The records cannot be discovered with dig, and they must exist in the new zone BEFORE the
-    nameservers move, or SES marks the domain unverified and login emails stop. Find them with:
-      aws sesv2 get-email-identity --email-identity tidbitshub.org --query DkimAttributes.Tokens
-    Leave empty if that identity does not exist (e.g. only the address is verified).
-  EOT
-  type        = list(string)
-  default     = []
-}
