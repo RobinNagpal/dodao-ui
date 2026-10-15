@@ -1,7 +1,15 @@
 import createMDX from '@next/mdx';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+// Monorepo root, so the standalone build traces @dodao/web-core and the hoisted node_modules.
+const monorepoRoot = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // Self-contained server build for the shared Lightsail host (deployments/shared-host-apps). Inert on Vercel.
+  output: 'standalone',
+  outputFileTracingRoot: monorepoRoot,
   pageExtensions: ['js', 'jsx', 'md', 'mdx', 'ts', 'tsx'],
   compiler: {
     // Enables the styled-components SWC transform

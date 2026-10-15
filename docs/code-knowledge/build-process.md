@@ -149,7 +149,9 @@ Most projects are Next.js applications with similar build processes:
 ## 🚀 Deployment Strategies
 
 ### Platform-Specific Deployments
-- **Vercel**: Primary deployment platform for most Next.js apps
+- **insights-ui (KoalaGains)**: Lightsail container service + CloudFront — `deployments/insights-ui/`, workflow `insights-ui-deploy-aws.yml`
+- **academy-ui (tidbitshub.org) and simulations (simulations.koalagains.com)**: Next.js standalone servers on the shared Lightsail host (Caddy + systemd, ports 7073/7074), built in GitHub Actions and rsynced over SSH — no migrations, no CloudFront. Runbook, secrets list and DNS: [`deployments/shared-host-apps/README.md`](../../deployments/shared-host-apps/README.md)
+- **Vercel**: The remaining Next.js apps
 - **AWS**: Lambda functions and S3 for backend services
 - **Static Sites**: Some projects deploy as static sites
 

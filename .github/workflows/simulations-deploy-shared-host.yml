@@ -1,0 +1,117 @@
+name: Deploy simulations (shared Lightsail host)
+
+# Builds simulations (simulations.koalagains.com) as a Next.js standalone server in this
+# runner and ships it to the shared Lightsail host, where it runs as the `simulations-api` systemd
+# service on 127.0.0.1:7074 behind Caddy. See deployments/shared-host-apps/README.md.
+#
+# No database access of any kind: no migrations, and the build does not need DATABASE_URL. The
+# runtime DATABASE_URL arrives on the host through the env file, from Secrets Manager.
+#
+# Needs:
+#   secrets: AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY (may read secret simulations/app-env)
+#            SSH_PRIVATE_KEY                           (the shared host's `deploy` user)
+#   vars:    DEPLOY_HOST, SSH_HOST_KEY
+# The job is skipped until DEPLOY_HOST is set, so merges before setup stay green.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "simulations/**"
+      - "shared/web-core/**"
+      - "deployments/shared-host-apps/*.sh"
+      - ".github/workflows/simulations-deploy-shared-host.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: simulations-shared-host-deploy
+  cancel-in-progress: false
+
+env:
+  AWS_REGION: us-east-1
+  APP: simulations
+  APP_PORT: "7074"
+  PUBLIC_HOST: simulations.koalagains.com
+  APP_SECRETS_ID: simulations/app-env
+  # Beyond NEXT_PUBLIC_*, nothing in the secret is inlined at build time.
+  BUILD_ENV_KEYS: ""
+  # Appended to /etc/simulations-api.env after the secret's keys, so they always win.
+  #  - VERCEL_ENV: web-core's auth options turn on the secure session cookie, scoped to
+  #    COOKIE_DOMAIN (from the secret), only when this is "production".
+  #  - AUTH_TRUST_HOST: next-auth derives its URL from the forwarded Host (Caddy sends it), as
+  #    it did on Vercel through VERCEL=1.
+  RUNTIME_ENV: |-
+    VERCEL_ENV=production
+    NEXT_PUBLIC_VERCEL_ENV=production
+    NEXT_PUBLIC_VERCEL_URL=simulations.koalagains.com
+    AUTH_TRUST_HOST=true
+    NEXT_TELEMETRY_DISABLED=1
+
+jobs:
+  deploy:
+    if: vars.DEPLOY_HOST != ''
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      DEPLOY_HOST: ${{ vars.DEPLOY_HOST }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 11
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile --filter "${APP}..."
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Fetch app environment from Secrets Manager
+        run: |
+          umask 077
+          aws secretsmanager get-secret-value --secret-id "$APP_SECRETS_ID" \
+            --query SecretString --output text > "$RUNNER_TEMP/app-env.json"
+          # Mask every value (line by line, so multi-line values are covered too).
+          jq -r '.[] | tostring' "$RUNNER_TEMP/app-env.json" | while IFS= read -r line; do
+            [ -n "$line" ] && echo "::add-mask::$line"
+          done
+          echo "APP_ENV_JSON=$RUNNER_TEMP/app-env.json" >> "$GITHUB_ENV"
+          echo "Keys: $(jq -r 'keys | join(", ")' "$RUNNER_TEMP/app-env.json")"
+
+      - name: Build and assemble the bundle
+        run: bash deployments/shared-host-apps/build-app.sh "$APP"
+
+      - name: Authorise SSH to the shared host
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          SSH_HOST_KEY: ${{ vars.SSH_HOST_KEY }}
+        run: |
+          install -d -m 700 ~/.ssh
+          printf '%s\n' "$SSH_PRIVATE_KEY" > ~/.ssh/id_deploy
+          chmod 600 ~/.ssh/id_deploy
+          # Pinned, not accepted on first use. Recreating the instance changes it — re-read it with
+          # `ssh-keyscan` and update SSH_HOST_KEY when that happens.
+          printf '%s\n' "$SSH_HOST_KEY" > ~/.ssh/known_hosts
+
+      - name: Ship to the shared host, restart, verify
+        run: bash deployments/shared-host-apps/ship.sh
+
+      - name: Remove local copies of the app environment
+        if: always()
+        run: rm -f "$RUNNER_TEMP/app-env.json" ~/.ssh/id_deploy

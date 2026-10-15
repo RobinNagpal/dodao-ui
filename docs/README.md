@@ -13,6 +13,9 @@ KoalaGains (Insights-UI) topical knowledge — ETF + stock pipelines, prompts, t
 ### [projects/](projects/)
 Per-project documentation and task lists for the other apps in the monorepo: `simulations/`, `defi-alerts/`, `x-news/`. See [projects/README.md](projects/README.md).
 
+### Deployments
+Hosting for each app is summarised in [code-knowledge/build-process.md](code-knowledge/build-process.md#-deployment-strategies). academy-ui and simulations run on the shared Lightsail host — see [`deployments/shared-host-apps/README.md`](../deployments/shared-host-apps/README.md) (env keys per app, DNS, one-time setup, rollback).
+
 ---
 
 ## File Descriptions

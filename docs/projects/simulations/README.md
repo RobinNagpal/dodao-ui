@@ -65,6 +65,10 @@ The platform covers five core business disciplines:
 - **Authentication**: NextAuth.js with Prisma adapter
 - **AI**: Google GenAI for tutoring + content generation
 
+## Hosting
+
+Production is https://simulations.koalagains.com, served from the shared Lightsail host (port 7074, `simulations-api` systemd service behind Caddy) — not Vercel. Deploys run from `.github/workflows/simulations-deploy-shared-host.yml` on pushes to `main`; runtime env comes from the Secrets Manager secret `simulations/app-env` (`COOKIE_DOMAIN` must be `simulations.koalagains.com`). Deploys never run migrations. See [`deployments/shared-host-apps/README.md`](../../../deployments/shared-host-apps/README.md).
+
 ## Folders & Files
 
 ### Features
