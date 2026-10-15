@@ -137,6 +137,26 @@ body.dodao-home-theme .dodao-progress {
   animation-fill-mode: forwards;
 }
 
+/* Short fade-in for content that swaps in place (hero badge, stage panel). */
+@keyframes dodao-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+body.dodao-home-theme .dodao-fade-in {
+  animation: dodao-fade-in 0.5s ease-out both;
+}
+@media (prefers-reduced-motion: reduce) {
+  body.dodao-home-theme .dodao-fade-in {
+    animation: none;
+  }
+}
+
 /* Smooth anchor scrolling (CSS replacement for the old JS scroll handler). */
 html:has(body.dodao-home-theme) {
   scroll-behavior: smooth;
