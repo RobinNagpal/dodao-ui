@@ -913,6 +913,76 @@ importers:
         specifier: 3.4.17
         version: 3.4.17
 
+  dodao-home:
+    dependencies:
+      '@dodao/web-core':
+        specifier: workspace:*
+        version: link:../shared/web-core
+      '@heroicons/react':
+        specifier: 2.1.5
+        version: 2.1.5(react@18.3.1)
+      '@mdx-js/loader':
+        specifier: ^3.1.0
+        version: 3.1.1(supports-color@8.1.1)
+      '@mdx-js/react':
+        specifier: ^3.1.0
+        version: 3.1.1(@types/react@18.3.12)(react@18.3.1)
+      '@next/mdx':
+        specifier: ^15.0.1
+        version: 15.5.12(@mdx-js/loader@3.1.1(supports-color@8.1.1))(@mdx-js/react@3.1.1(@types/react@18.3.12)(react@18.3.1))
+      '@tailwindcss/forms':
+        specifier: ^0.5.3
+        version: 0.5.11(tailwindcss@3.4.17)
+      '@types/mdx':
+        specifier: ^2.0.13
+        version: 2.0.13
+      autoprefixer:
+        specifier: 10.4.14
+        version: 10.4.14(postcss@8.4.35)
+      clsx:
+        specifier: ^2.1.1
+        version: 2.1.1
+      next:
+        specifier: 15.5.27
+        version: 15.5.27(@babel/core@7.29.0(supports-color@8.1.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.97.3)
+      postcss:
+        specifier: 8.4.35
+        version: 8.4.35
+      react:
+        specifier: 18.3.1
+        version: 18.3.1
+      react-dom:
+        specifier: 18.3.1
+        version: 18.3.1(react@18.3.1)
+      sass:
+        specifier: ^1.62.1
+        version: 1.97.3
+      tailwindcss:
+        specifier: 3.4.17
+        version: 3.4.17
+      typescript:
+        specifier: 5.0.4
+        version: 5.0.4
+    devDependencies:
+      '@types/node':
+        specifier: 18.16.3
+        version: 18.16.3
+      '@types/react':
+        specifier: 18.3.12
+        version: 18.3.12
+      '@types/react-dom':
+        specifier: 18.3.1
+        version: 18.3.1
+      eslint:
+        specifier: 8.39.0
+        version: 8.39.0(supports-color@8.1.1)
+      eslint-config-next:
+        specifier: 13.3.4
+        version: 13.3.4(eslint@8.39.0(supports-color@8.1.1))(supports-color@8.1.1)(typescript@5.0.4)
+      prettier:
+        specifier: ^2.8.8
+        version: 2.8.8
+
   insights-ui:
     dependencies:
       '@apidevtools/json-schema-ref-parser':
