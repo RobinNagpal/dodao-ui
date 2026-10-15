@@ -12,6 +12,18 @@ export enum LLMProvider {
 export enum GeminiModel {
   GEMINI_2_5_PRO = 'gemini-2.5-pro',
   GEMINI_3_1_PRO_PREVIEW = 'gemini-3.1-pro-preview',
+  GEMINI_4_ARGON = 'gemini-4-argon',
+  GEMINI_3_8_FLASH = 'gemini-3.8-flash',
+}
+
+/**
+ * Gemini models that support Google Search grounding and structured JSON output in the
+ * same call, so grounded runs can try the single-call path before the 2-step fallback.
+ */
+const GEMINI_MODELS_WITH_GROUNDED_STRUCTURED_OUTPUT: string[] = [GeminiModel.GEMINI_3_1_PRO_PREVIEW, GeminiModel.GEMINI_4_ARGON, GeminiModel.GEMINI_3_8_FLASH];
+
+export function supportsGroundedStructuredOutput(model: string): boolean {
+  return GEMINI_MODELS_WITH_GROUNDED_STRUCTURED_OUTPUT.includes(model);
 }
 
 /**
@@ -86,6 +98,8 @@ export function getModelSelectItemsForProvider(provider: LLMProvider): LlmSelect
   return [
     { id: GeminiModel.GEMINI_2_5_PRO, label: 'Gemini 2.5 Pro' },
     { id: GeminiModel.GEMINI_3_1_PRO_PREVIEW, label: 'Gemini 3.1 Pro Preview' },
+    { id: GeminiModel.GEMINI_4_ARGON, label: 'Gemini 4 Argon' },
+    { id: GeminiModel.GEMINI_3_8_FLASH, label: 'Gemini 3.8 Flash' },
   ];
 }
 
