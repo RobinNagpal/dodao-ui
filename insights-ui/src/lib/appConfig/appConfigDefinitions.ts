@@ -249,6 +249,8 @@ export const APP_CONFIG_DEFINITIONS: AppConfigDefinition[] = [
     options: [
       { value: GeminiModel.GEMINI_2_5_PRO, label: 'gemini-2.5-pro' },
       { value: GeminiModel.GEMINI_3_1_PRO_PREVIEW, label: 'gemini-3.1-pro-preview' },
+      { value: GeminiModel.GEMINI_4_ARGON, label: 'gemini-4-argon' },
+      { value: GeminiModel.GEMINI_3_8_FLASH, label: 'gemini-3.8-flash' },
     ],
   },
   {

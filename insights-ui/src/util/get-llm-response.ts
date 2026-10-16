@@ -1,7 +1,7 @@
 import { getAppConfigValue } from '@/lib/appConfig/appConfig';
 import { prisma } from '@/prisma';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
-import { GeminiModel, LLMProvider } from '@/types/llmConstants';
+import { GeminiModel, LLMProvider, supportsGroundedStructuredOutput } from '@/types/llmConstants';
 import { getConfiguredDefaultModelForProvider, getConfiguredDefaultProvider } from '@/util/llm-default-config';
 import { getClaudeStructuredResult } from '@/util/claude/get-claude-structured-response';
 import $RefParser from '@apidevtools/json-schema-ref-parser';
@@ -253,9 +253,9 @@ export async function getLLMResponse<Output>({
 
       // Handle Gemini with grounding
       if (llmProvider === LLMProvider.GEMINI_WITH_GROUNDING) {
-        // Only use single-call grounded structured output for GEMINI_3_1_PRO_PREVIEW
-        if (resolvedModel === GeminiModel.GEMINI_3_1_PRO_PREVIEW) {
-          console.log('Using Gemini 3.1 Pro Preview with grounding - trying single-call grounded structured output...');
+        // Only use single-call grounded structured output for models that support it
+        if (supportsGroundedStructuredOutput(resolvedModel)) {
+          console.log(`Using ${resolvedModel} with grounding - trying single-call grounded structured output...`);
 
           try {
             const groundedStructured = await getGroundedStructuredResponse<Output>(prompt, resolvedModel as GeminiModel, outputSchema);

@@ -2,7 +2,7 @@ import 'dotenv/config';
 import { ChatGoogleGenerativeAI } from '@langchain/google-genai';
 import { ZodObject } from 'zod';
 import { zodToJsonSchema } from 'zod-to-json-schema';
-import { GeminiModel, LLMProvider, getDefaultGeminiModel, getDefaultLLMProvider } from '@/types/llmConstants';
+import { GeminiModel, LLMProvider, getDefaultGeminiModel, getDefaultLLMProvider, supportsGroundedStructuredOutput } from '@/types/llmConstants';
 import { getGroundedResponse, getGroundedStructuredResponse } from '@/util/llm-grounding-utils';
 
 // Lazily construct the client. Building it at module load throws when GOOGLE_API_KEY is unset,
@@ -53,9 +53,9 @@ export async function getLlmResponse<T extends Record<string, any>>(
   for (let i = 1; i <= maxRetries; i++) {
     try {
       if (provider === LLMProvider.GEMINI_WITH_GROUNDING) {
-        // For Gemini 3.1 Pro Preview, try single-call grounded structured output first
-        if (model === GeminiModel.GEMINI_3_1_PRO_PREVIEW) {
-          console.log('Using Gemini 3.1 Pro Preview with grounding - trying single-call grounded structured output...');
+        // For models that support it, try single-call grounded structured output first
+        if (supportsGroundedStructuredOutput(model)) {
+          console.log(`Using ${model} with grounding - trying single-call grounded structured output...`);
 
           try {
             const jsonSchema = zodToJsonSchema(schema, { $refStrategy: 'none' });

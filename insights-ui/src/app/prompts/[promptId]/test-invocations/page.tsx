@@ -88,6 +88,8 @@ export default function CreateTestPromptInvocationPage(): JSX.Element {
   const modelItems: StyledSelectItem[] = [
     { id: GeminiModel.GEMINI_2_5_PRO, label: 'Gemini 2.5 Pro' },
     { id: GeminiModel.GEMINI_3_1_PRO_PREVIEW, label: 'Gemini 3.1 Pro Preview' },
+    { id: GeminiModel.GEMINI_4_ARGON, label: 'Gemini 4 Argon' },
+    { id: GeminiModel.GEMINI_3_8_FLASH, label: 'Gemini 3.8 Flash' },
   ];
 
   // When the parent prompt data loads, update our form state.
