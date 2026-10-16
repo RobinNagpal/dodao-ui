@@ -1561,7 +1561,7 @@
       "inForceFrom": "2026-10-09",
       "url": "https://www.usitc.gov/sites/default/files/tata/hts/hts_2026_revision_21_json.json"
     },
-    "lastCheckedAt": "2026-10-12",
+    "lastCheckedAt": "2026-10-13",
     "stats": [
       {
         "label": "Base rates unchanged",
@@ -1764,8 +1764,8 @@
         "ch99Code": "9903.05.20–9903.05.83",
         "before": "None",
         "now": "+10% or 10% (in place of base) or +12.5%",
-        "exemption": "Exception lists in U.S. note 52(j) cover silk for several of these economies: Taiwan, Indonesia and Cambodia (every Chapter 50 subheading except 5007.90.60), Jordan (every subheading), and Malaysia, Guatemala, El Salvador, Argentina, Bangladesh and Ecuador (silk yarn and fabric: 5004, 5005, 5006, 5007.10.30, 5007.10.60, 5007.20 and 5007.90.30). CAFTA-DR textile goods of Costa Rica, the Dominican Republic, El Salvador, Guatemala, Honduras and Nicaragua entered duty-free under CAFTA-DR are exempt (note 52(i), 9903.05.95). The 2025 IEEPA duties ended February 24, 2026, and the 10% Section 122 surcharge expired July 23, 2026.",
-        "whatItMeans": "Most other suppliers pay the base rate plus 10% or 12.5%; Taiwanese, Indonesian, Cambodian and Jordanian silk enters at the base rate on the listed subheadings.",
+        "exemption": "Exception lists in U.S. note 52(j) cover silk for several of these economies: Taiwan, Indonesia and Cambodia (every Chapter 50 subheading except 5007.90.60), Jordan (every subheading), and Malaysia, Guatemala, El Salvador, Argentina, Bangladesh and Ecuador (silk yarn and fabric: 5004, 5005, 5006, 5007.10.30, 5007.10.60, 5007.20 and 5007.90.30); Guatemala and El Salvador add 5007.90.60 when CAFTA-DR is claimed (9903.06.06, 9903.06.09). Note 52(i) (9903.05.95) exempts CAFTA-DR textile goods of Costa Rica, the Dominican Republic, El Salvador, Guatemala, Honduras and Nicaragua entered duty-free with a CAFTA-DR claim (SPI P or P+); in Chapter 50 that is silk yarn and fabric (5004–5007), not cocoons, raw silk or silk waste (5001–5003). The schedule prints a CAFTA-DR rate only on the dutiable fabric lines (5007.10.30, 5007.10.60, 5007.90.30, 5007.90.60), so the calculator applies the exemption there; silk yarn and 5007.20 fabric are Free at the general rate, print no CAFTA-DR rate, and the calculator charges the duty on them. The 2025 IEEPA duties ended February 24, 2026, and the 10% Section 122 surcharge expired July 23, 2026.",
+        "whatItMeans": "Most other suppliers pay the base rate plus 10% or 12.5%; Taiwanese, Indonesian, Cambodian and Jordanian silk enters at the base rate on the listed subheadings. Nicaragua's only Chapter 50 shipment in 2025 was $37,764 of silk yarn (5004), which the calculator charges 12.5%.",
         "effectiveFrom": "2026-07-24",
         "effectiveSourceId": "fr-2026-15181",
         "sourceIds": ["fr-2026-15181", "fr-2026-15274", "hts-chapter-99", "eo-14389", "hts-now"]
@@ -1775,7 +1775,7 @@
       {
         "id": "base-rates",
         "type": "baseRate",
-        "date": "2026-10-12",
+        "date": "2026-10-13",
         "dateLabel": "Checked",
         "title": "No Chapter 50 base-rate changes",
         "detail": "All 30 Chapter 50 lines carry the same General, FTA and Column 2 rates in the 2026 Revision 21 as in the 2025 Basic Edition; no line was added, split or renumbered.",
@@ -1838,7 +1838,7 @@
         "date": "2026-07-24",
         "dateLabel": "Effective",
         "title": "Section 301 tariffs on 60 economies reach every Chapter 50 line",
-        "detail": "10% or 12.5% on all products of 60 economies (9903.05.20–9903.05.84); no Chapter 50 subheading is on the general exemption list (note 52(b)). Country lists in note 52(j) exempt silk yarn and most silk fabric of the EU, Switzerland, Taiwan, Indonesia, Cambodia, Jordan, Malaysia, Guatemala, El Salvador, Argentina, Bangladesh and Ecuador. EU goods pay 10% in total and Japanese and Korean goods 12.5% in total; USMCA-qualifying goods are exempt (9903.05.93, 9903.05.94). FTA claims remove the base rate but not this duty.",
+        "detail": "10% or 12.5% on all products of 60 economies (9903.05.20–9903.05.84); no Chapter 50 subheading is on the general exemption list (note 52(b)). Country lists in note 52(j) exempt silk yarn and most silk fabric of the EU, Switzerland, Taiwan, Indonesia, Cambodia, Jordan, Malaysia, Guatemala, El Salvador, Argentina, Bangladesh and Ecuador. EU goods pay 10% in total and Japanese and Korean goods 12.5% in total; USMCA-qualifying goods are exempt (9903.05.93, 9903.05.94). FTA claims remove the base rate but not this duty, except that note 52(i) (9903.05.95) exempts silk yarn and fabric (5004–5007) of the six CAFTA-DR countries entered duty-free with a CAFTA-DR claim; cocoons, raw silk and silk waste are not covered.",
         "before": null,
         "now": "+10% / +12.5%",
         "countries": "60 economies",
@@ -3684,7 +3684,7 @@
     "intro": "The total rate on silk depends far more on **where it comes from** than on what it is. Each cell below is the base rate for that product group plus the extra duty for that country, minus any preference — computed from the current tariff schedule with the same engine as the tariff calculator.\n\nSince the IEEPA duties ended on February 24, 2026, the extra duty is mainly the **Section 301 tariff on 60 economies** (from July 24, 2026). **Italian and French silk yarn and fabric are exempt** under the EU exception list, Swiss silk nearly all, while **South Korea and Japan pay 12.5% in total** and **India 10%** on top of the base rate. **China and Brazil pay 37.5% more** on every line, and **Canada pays 50%** on raw silk and carded silk waste even with USMCA.",
     "scheduleEdition": "2026 Revision 21",
     "tradeYear": 2025,
-    "lastCheckedAt": "2026-10-12",
+    "lastCheckedAt": "2026-10-13",
     "groups": [
       {
         "heading": "5001",
@@ -7702,7 +7702,7 @@
           "extraPct": 0,
           "ch99Code": "9903.05.20–9903.05.83",
           "atLeast": true,
-          "label": "From the base rate alone (countries outside the 60 Section 301 economies) to base rate plus 12.5% (9903.05.20–9903.05.84). Exception lists exempt silk of Taiwan, Indonesia and Cambodia (all but 5007.90.60), Jordan (all), and silk yarn and fabric of Malaysia, Guatemala, El Salvador, Argentina, Bangladesh and Ecuador.",
+          "label": "From the base rate alone (countries outside the 60 Section 301 economies) to base rate plus 12.5% (9903.05.20–9903.05.84). Exception lists exempt silk of Taiwan, Indonesia and Cambodia (all but 5007.90.60), Jordan (all), and silk yarn and fabric of Malaysia, Guatemala, El Salvador, Argentina, Bangladesh and Ecuador. CAFTA-DR silk fabric entered with a CAFTA-DR claim is exempt too (note 52(i), 9903.05.95); the range is shown without preferences.",
           "sourceIds": ["fr-2026-15181", "fr-2026-15274", "hts-chapter-99", "hts-now"]
         },
         "importsUsd": 1475929,
@@ -8030,7 +8030,7 @@
       }
     ],
     "assumptions": [
-      "Each total was computed by the official-measures calculator engine (the same data as the tariff calculator: measures.json, HTSUS 2026 Revision 21) for goods entered on 2026-10-12, priced on a $10,000 shipment and 1,000 units for per-unit rates.",
+      "Each total was computed by the official-measures calculator engine (the same data as the tariff calculator: measures.json, HTSUS 2026 Revision 21) for goods entered on 2026-10-13, priced on a $10,000 shipment and 1,000 units for per-unit rates.",
       "Ranges like \"Free · 11.8%\" mean the group has lines with different base rates; select a cell to see which lines carry which rate.",
       "Preferences: USMCA (S) is applied for Canada and Mexico on the \"USMCA-qualifying\" side. GSP (A, A+) has lapsed and is not applied. Other preferences are not applied.",
       "Conditional relief is not applied (it needs the importer's confirmation): 9903.88.69 (Section 301).",
@@ -8039,9 +8039,10 @@
       "EU, Japanese, Korean and Swiss rates of \"10% / 12.5% in total\" replace the base rate when it is lower (U.S. note 52(k)); every Chapter 50 base rate is below 10%.",
       "China's two silk-fabric exclusions (5007.20.00.65, and 107–127 cm fabric within 5007.20.00.85) depend on the goods matching the description and expire November 9, 2026, so the China cells show the full 37.5%.",
       "Canada: the 50% Section 338 duty (U.S. note 51) applies whether or not USMCA is claimed; no Chapter 50 line is on the September 29, 2026 import-ban annexes.",
+      "CAFTA-DR (note 52(i), 9903.05.95): silk yarn and fabric (5004–5007) of Costa Rica, the Dominican Republic, El Salvador, Guatemala, Honduras and Nicaragua entered duty-free with a CAFTA-DR claim (SPI P or P+) pay no Section 301 duty; cocoons, raw silk and silk waste (5001–5003) are not covered. The calculator applies it only on the dutiable fabric lines that print a CAFTA-DR rate (5007.10.30, 5007.10.60, 5007.90.30, 5007.90.60); silk yarn and 5007.20 fabric are Free at the general rate and print none. No CAFTA-DR country is in the grid: together they shipped about $42,000 of Chapter 50 goods in 2025.",
       "Not in the grid: the UFLPA presumption against goods made in Xinjiang or by listed entities, and textile entry rules (origin under 19 CFR 102.21, manufacturer identification) — see Import documents."
     ],
-    "exemptionCheck": "Read U.S. notes 2, 20, 50, 51 and 52 to Chapter 99 subchapter III in the 2026 Revision 21. Note 52(b) (9903.05.86) names no Chapter 50 code. Note 52(j) country lists name Chapter 50 codes for the EU (eight: 5004, 5005, 5006, 5007.10.30, 5007.10.60, 5007.20 and 5007.90.30), Switzerland, Taiwan, Indonesia and Cambodia (all 12 subheadings but 5007.90.60), Jordan (all 13), and Malaysia, Guatemala, El Salvador, Argentina, Bangladesh and Ecuador (the same eight as the EU); Guatemala and El Salvador add 5007.90.60 for CAFTA-DR claims (9903.06.06, 9903.06.09). The UK list names none. Note 50(a)(ii) names no Chapter 50 code for Brazil. Note 51(b)(3) puts 5002.00.00 and 5003.00.90 on the Canada Section 338 list. Note 20 puts all 13 Chapter 50 subheadings on China List 3; note 20(vvv)(iii)(30)–(31) excludes two silk fabrics through November 9, 2026. No Section 232 heading and no antidumping or countervailing duty order covers a Chapter 50 line.",
+    "exemptionCheck": "Read U.S. notes 2, 20, 50, 51 and 52 to Chapter 99 subchapter III in the 2026 Revision 21. Note 52(b) (9903.05.86) names no Chapter 50 code. Note 52(j) country lists name Chapter 50 codes for the EU (eight: 5004, 5005, 5006, 5007.10.30, 5007.10.60, 5007.20 and 5007.90.30), Switzerland, Taiwan, Indonesia and Cambodia (all 12 subheadings but 5007.90.60), Jordan (all 13), and Malaysia, Guatemala, El Salvador, Argentina, Bangladesh and Ecuador (the same eight as the EU); Guatemala and El Salvador add 5007.90.60 for CAFTA-DR claims (9903.06.06, 9903.06.09). The UK list names none. Note 52(i) (9903.05.95) exempts CAFTA-DR textile goods of the six CAFTA-DR countries entered duty-free with a CAFTA-DR claim; under the WTO textiles Annex that general note 29(d)(v) uses, that reaches silk yarn and fabric (5004–5007) but not cocoons, raw silk or silk waste (5001–5003). Note 50(a)(ii) names no Chapter 50 code for Brazil. Note 51(b)(3) puts 5002.00.00 and 5003.00.90 on the Canada Section 338 list. Note 20 puts all 13 Chapter 50 subheadings on China List 3; note 20(vvv)(iii)(30)–(31) excludes two silk fabrics through November 9, 2026. No Section 232 heading and no antidumping or countervailing duty order covers a Chapter 50 line.",
     "sources": [
       {
         "id": "hts-now",
@@ -8241,14 +8242,14 @@
       ]
     },
     "intro": "Silk is a textile, so **CBP's textile rules decide where it comes from**: raw silk keeps the origin of the cocoons, spun silk yarn is from where it was spun, and fabric from where it was woven — dyeing or printing alone does not move origin (19 CFR 102.21). Every entry must name the manufacturer through a manufacturer identification code; the old textile declaration was dropped in 2011. Goods made wholly or in part in Xinjiang are presumed barred under the UFLPA.\n\nThe ways to pay less are in the schedule: source from a **country whose Section 301 exception list covers the line** (the EU and Switzerland for yarn and most fabric), claim **China's silk-fabric exclusion** where the fabric fits it, claim **USMCA** on Mexican and Canadian silk, enter **samples** under Chapter 98, and claim **drawback** on re-exports. Each depends on a document, listed below with its regulation.",
-    "lastCheckedAt": "2026-10-12",
+    "lastCheckedAt": "2026-10-13",
     "regulationsAsOf": "2026-10-08",
     "levers": [
       {
         "id": "exception-lists",
         "title": "Source from a country whose exception list covers the line",
         "saves": "The whole 10%–12.5% Section 301 duty",
-        "appliesTo": "Silk yarn (5004–5006) and silk fabric (5007 except 5007.90.60) of the EU, Malaysia, Guatemala, El Salvador, Argentina, Bangladesh and Ecuador; nearly every line of Switzerland, Taiwan, Indonesia and Cambodia; every line of Jordan (U.S. note 52(j))",
+        "appliesTo": "Silk yarn (5004–5006) and silk fabric (5007 except 5007.90.60) of the EU, Malaysia, Guatemala, El Salvador, Argentina, Bangladesh and Ecuador; nearly every line of Switzerland, Taiwan, Indonesia and Cambodia; every line of Jordan (U.S. note 52(j)); silk yarn and fabric (5004–5007) of the six CAFTA-DR countries entered under CAFTA-DR (note 52(i))",
         "document": "Proof of origin for the country claimed (commercial invoice, manufacturer ID, production records) and the exemption heading (for example 9903.05.97 for the EU) on the entry line.",
         "caveat": "Origin follows 19 CFR 102.21: fabric is from where it was woven, so Chinese greige fabric dyed and printed in Italy is usually still Chinese unless it is also finished as the rule describes. China is on no exception list.",
         "citations": [
@@ -8305,10 +8306,10 @@
       {
         "id": "fta",
         "title": "Claim an FTA, CAFTA-DR or AGOA rate where the base rate is the cost",
-        "saves": "The base rate: 3.9% (blends below 85% silk), 2.5% (carded silk waste), 0.8% (85% silk noil and other fabrics); for CAFTA-DR textile goods, also the Section 301 duty",
+        "saves": "The base rate: 3.9% (blends below 85% silk), 2.5% (carded silk waste), 0.8% (85% silk noil and other fabrics); for CAFTA-DR silk fabric, also the 10%–12.5% Section 301 duty",
         "appliesTo": "The 15 dutiable lines, for goods of Korea, Australia, Chile, Colombia, Peru, Panama, Israel, Jordan, Morocco, Bahrain, Oman, Singapore and CAFTA-DR countries; AGOA countries (through December 31, 2026) only on 5003.00.90, 5007.10.30 and 5007.90.30",
         "document": "Proof of origin under the agreement and the SPI on the entry line (KR, AU, CL, CO, PE, PA, IL, JO, MA, BH, OM, SG, P, D).",
-        "caveat": "FTA claims do not remove the 2026 Section 301 duty (U.S. note 52(a)), except CAFTA-DR textile goods entered duty-free under CAFTA-DR (note 52(i), 9903.05.95). Korea's 12.5% applies in total whatever the KORUS rate. GSP (A) has been expired since December 31, 2020. Haiti's HOPE/HELP preferences cover apparel and a few made-up articles (Chapter 98, subchapter XX), not silk yarn or fabric.",
+        "caveat": "FTA claims do not remove the 2026 Section 301 duty (U.S. note 52(a)), except for CAFTA-DR textile goods entered duty-free under CAFTA-DR (note 52(i), 9903.05.95): in Chapter 50, silk yarn and fabric (5004–5007), not cocoons, raw silk or silk waste — carded silk waste (5003.00.90) from a CAFTA-DR country still pays the 10%–12.5%. Silk yarn and 5007.20 fabric are Free at the general rate and print no CAFTA-DR rate, so the calculator charges the duty on them. Korea's 12.5% applies in total whatever the KORUS rate. GSP (A) has been expired since December 31, 2020. Haiti's HOPE/HELP preferences cover apparel and a few made-up articles (Chapter 98, subchapter XX), not silk yarn or fabric.",
         "citations": [
           {
             "label": "HTSUS General Note 3(c)",
@@ -8709,7 +8710,7 @@
       "The IEEPA tariffs ended February 24, 2026 and the Section 122 surcharge expired July 23, 2026.",
       "Silk is a textile: origin follows 19 CFR 102.21 (fabric is from where it was woven), every entry needs a manufacturer ID, and the UFLPA presumption bars goods made in Xinjiang."
     ],
-    "lastCheckedAt": "2026-10-12",
+    "lastCheckedAt": "2026-10-13",
     "questionSource": "Google search suggestions, collected October 12, 2026",
     "faqs": [
       {
@@ -8794,7 +8795,7 @@
         "id": "silk-tariffs-2026",
         "question": "Are silk imports subject to tariffs in 2026?",
         "searchedAs": ["silk tariffs", "silk tariff", "silk fabric tariff code"],
-        "answer": "Yes, mostly through the extra duty by country. Since July 24, 2026 the Section 301 tariff on 60 economies adds 10% or 12.5% (EU 10% and Japan and Korea 12.5% in total), but EU and Swiss silk yarn and most silk fabric are exempt. China and Brazil pay 37.5%, Canada 50% on raw silk and silk waste. The IEEPA tariffs ended February 24 and the Section 122 surcharge July 23, 2026.",
+        "answer": "Yes, mostly through the extra duty by country. Since July 24, 2026 the Section 301 tariff on 60 economies adds 10% or 12.5% (EU 10% and Japan and Korea 12.5% in total), but EU and Swiss silk yarn and most silk fabric are exempt, and so is silk yarn and fabric from the six CAFTA-DR countries entered under CAFTA-DR (note 52(i)). China and Brazil pay 37.5%, Canada 50% on raw silk and silk waste. The IEEPA tariffs ended February 24 and the Section 122 surcharge July 23, 2026.",
         "link": "tariff-updates"
       },
       {

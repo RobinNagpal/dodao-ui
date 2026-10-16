@@ -18,7 +18,11 @@ export interface TariffRateTableRow {
   id: string;
   /** Dotted HTS number, e.g. "0104.20.00.00". Null on grouping rows. */
   hts: string | null;
-  /** 10-digit form with no separators; null for 4/6/8-digit and grouping rows. */
+  /**
+   * The line's 10-digit key with no separators (its calculator code); null for 4/6/8-digit and grouping rows. An 8-digit
+   * subheading that Chapter 91 statistical note 1 splits into component numbers (the HTS JSON prints no 10-digit row for
+   * it) is a line keyed by its first statistical reporting number, e.g. 9102.11.10 → "9102111010".
+   */
   htsCode10: string | null;
   /** HTSUS indent (0..6) — drives the display hierarchy. */
   indent: number;
@@ -344,6 +348,8 @@ export interface TariffIndustryAreasContent {
   scheduleEdition: string;
   tradeYear: number;
   lastCheckedAt: string;
+  /** Confirmation facts this chapter's matrix prices both ways although they have a default (generator `--vary-facts`). */
+  variedFacts?: string[];
   /** `shortLabel` fits a matrix column header; `label` is the full name. */
   groups: { heading: string; label: string; shortLabel: string; baseRates: string[] }[];
   countries: TariffMatrixCountry[];

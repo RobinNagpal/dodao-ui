@@ -1011,7 +1011,7 @@ export function computeCalcReadiness(asOf: string, inputs: ReadinessInputs = {})
     accepted.sort((x, y) => x.program.localeCompare(y.program));
     const rateGaps: RateParseGap[] = [];
     const acceptedRateGaps: RateParseGap[] = [];
-    for (const g of chapterRateGaps(rateStrings.chapters[chapter])) {
+    for (const g of chapterRateGaps(rateStrings.chapters[chapter], chapter)) {
       const w = rateWaiverFor(rateWaivers, chapter, g);
       if (w) {
         usedWaivers.add(w.id);

@@ -1,4 +1,4 @@
-import ReachOut from '../../DoDAOHome/components/ReachOut';
+import ReachOut from '@/components/home/common/ReachOut';
 import { Container } from './Container';
 
 const faqs = [

@@ -13,6 +13,7 @@ import type {
   TariffProductDescription,
 } from '@/types/tariff-calculator-measures';
 import { formatHts10, HtsLookupError } from '@/utils/tariff-calculator/load-candidates';
+import { statisticalReportingNumbers } from '@/utils/tariff-calculator/statistical-suffixes';
 
 // Read-only loaders for the official-measures engine (issue #1785): the HTS line's own
 // rates from `hts_codes` and the reviewed extra-duty measures from `tariff_measures`.
@@ -52,6 +53,12 @@ const MAX_ANCESTORS = 8;
 export async function loadMeasureEngineLine(hts10: string): Promise<MeasureEngineLine> {
   const select = { parentId: true, generalRateOfDuty: true, specialRateOfDuty: true, column2RateOfDuty: true, unitOfQuantity: true } as const;
   let row = await prisma.htsCode.findUnique({ where: { spaceId_htsCode10: { spaceId: KoalaGainsSpaceId, htsCode10: hts10 } }, select });
+  // Chapter 91 statistical note 1 numbers (9102.11.10.10–.40, …) are rows under their 8-digit subheading once the
+  // statistical-suffix lines sync is applied; until then the subheading row itself states the rate.
+  if (!row && statisticalReportingNumbers(hts10).includes(hts10)) {
+    const subheading = `${hts10.slice(0, 4)}.${hts10.slice(4, 6)}.${hts10.slice(6, 8)}`;
+    row = await prisma.htsCode.findUnique({ where: { spaceId_htsNumber: { spaceId: KoalaGainsSpaceId, htsNumber: subheading } }, select });
+  }
   if (!row) {
     throw new HtsLookupError(`We couldn't find HTS code ${formatHts10(hts10)} in the US tariff schedule. Double-check the 10-digit code and try again.`);
   }

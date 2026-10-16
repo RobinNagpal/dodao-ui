@@ -44,6 +44,9 @@ SRC = {
   'bis-uk': {'citation': '91 FR 49406 (Commerce/BIS: UK patented pharmaceuticals reduced to 0%)', 'url': 'https://www.federalregister.gov/documents/2026/08/04/2026-15799/notice-of-reduction-of-tariffs-on-patented-pharmaceuticals-and-pharmaceutical-ingredients-for', 'published': '2026-08-04'},
   'csms-69415934': {'citation': 'CBP CSMS # 69415934 (UK patented pharmaceuticals: reduction to 0%)', 'url': 'https://content.govdelivery.com/accounts/USDHSCBP/bulletins/42333fe', 'published': '2026-08-01'},
   'bis-specialty': {'citation': '91 FR 60360 (Commerce/BIS: specialty pharmaceuticals, eligible jurisdictions and technical corrections)', 'url': 'https://www.federalregister.gov/documents/2026/09/23/2026-19498/guidance-and-procedures-for-implementing-tariff-adjustments-for-specialty-pharmaceuticals-and', 'published': '2026-09-23'},
+  'csms-69326983': {'citation': 'CBP CSMS # 69326983 (GUIDANCE: Section 301 Forced Labor Import Duties — headings 9903.05.92 and 9903.05.95)', 'url': 'https://content.govdelivery.com/accounts/USDHSCBP/bulletins/421d887', 'published': '2026-07-23'},
+  'cbp-ieepa-faq': {'citation': 'CBP, International Emergency Economic Powers Act (IEEPA) Frequently Asked Questions — "What are informational materials described in 9903.01.22, 9903.01.12, 9903.01.03, and 9903.01.31?" (HTS provisions that may qualify)', 'url': 'https://www.cbp.gov/trade/programs-administration/trade-remedies/IEEPA-FAQ', 'published': '2026-04-14'},
+  'wto-atc': {'citation': 'WTO Agreement on Textiles and Clothing, Annex (list of products covered, HS six-digit codes), referred to in 19 U.S.C. 3511(d)(4) and HTSUS general note 29(d)(v)', 'url': 'https://www.wto.org/english/docs_e/legal_e/16-tex.pdf', 'published': '1994-04-15'},
 }
 def S(*ids): return [SRC[i] for i in ids]
 GN29 = {'citation': 'HTSUS 2026 Revision 21, General Note 29 (Dominican Republic-Central America-United States Free Trade Agreement; SPI "P" / "P+")', 'url': 'https://hts.usitc.gov/reststop/file?release=2026HTSRev21&filename=General%20Notes', 'published': '2026-10-07'}
@@ -161,9 +164,43 @@ for sub, code, k, countries, repl, name in [('52(j)(6)(iii)', '9903.06.06', 'gt'
               f'Agreement (CAFTA-DR) consistent with general note 29, classifiable in the {len(codes)} listed provisions (textiles and apparel of Chapters 50–63, '
               f'plus listed lines of Chapters 42, 65, 70 and 94), pay no Section 301 duty under {", ".join(repl)}. Applies only when the CAFTA-DR special rate is '
               'claimed (SPI "P" or "P+", general note 29(a)(i)); without the claim the duty is charged. '
-              'Note 52(i) (heading 9903.05.95: CAFTA-DR textile or apparel goods of Costa Rica, the Dominican Republic, El Salvador, Guatemala, Honduras and Nicaragua) '
-              'is not modeled: it has no code list and defines its goods by the Annex to the WTO Agreement on Textiles and Clothing (general note 29(d)(v)), '
-              'which the HTS does not reproduce.'))
+              'Note 52(i) (heading 9903.05.95) gives the same relief to CAFTA-DR textile or apparel goods of all six CAFTA-DR countries: see s301-2026-cafta-dr-textiles.'))
+
+# U.S. note 52(i) (heading 9903.05.95): headings 9903.05.33 (CR), .34 (DO), .37 (SV), .40 (GT), .42 (HN) and .58 (NI) "shall not
+# apply to a textile or apparel good as defined in subdivision (d)(v) of general note 29 of the HTSUS which is the product of
+# Costa Rica, the Dominican Republic, El Salvador, Guatemala, Honduras or Nicaragua, entered free of duty under the Dominican
+# Republic-Central America-United States Free Trade Agreement". General note 29(d)(v): "textile or apparel good" means a good
+# listed in the Annex to the WTO Agreement on Textiles and Clothing (19 U.S.C. 3511(d)(4)), minus the Annex 3.29 goods it names
+# (3005.90, 3921.12/.13/.90, 6405.20, 6406.10, 6406.99, 6501–6504, 6505.90, 8708.21, 8804, 9113.90, 9502.91, 9612.10).
+# The ATC Annex lists HS (1992) six-digit codes. Coverage below = the Annex lines that map to Revision 21 provisions exactly:
+#   Section XI: 5004–5007, 5105–5113, 5204–5212, 5306–5311, chapters 54–62 and 6301–6309 (every subheading of these headings
+#   is listed), minus the Section XI lines the Annex omits: 5105.40 (coarse animal hair, carded or combed), 5308.10 (coir yarn)
+#   and paper yarn (HS 1992 5308.30, now statistical line 5308.90.10). Not listed, so not covered: 5001–5003, 5101–5104,
+#   5201–5203, 5301–5305 (raw fibres, waste, carded or combed fibre) and 6310 (rags).
+#   Outside Section XI: 6601 (umbrellas; all of 6601.10, 6601.91, 6601.99 are listed).
+# Not modelled (duty still charged): the Annex's "ex" entries 4202.12/.22/.32/.92 (luggage and handbags with an outer surface
+# predominantly of textile materials), 7019.10/7019.20 (glass-fibre yarns and woven fabrics) and 9404.90 (cotton pillows and
+# cushions; quilts, eiderdowns, comforters and similar articles of textile). They are parts of HS 1992 subheadings that the
+# HS 2007 / 2022 revisions restructured (7019, 9404) or that need a material test the line does not settle (4202), so they
+# cannot be pinned to Revision 21 provisions exactly.
+CAFTA_TEX_INCLUDE = (['5004', '5005', '5006', '5007'] + [f'51{n:02d}' for n in range(5, 14)] + [f'52{n:02d}' for n in range(4, 13)]
+                     + [f'53{n:02d}' for n in range(6, 12)] + [str(c) for c in range(54, 63)] + [f'63{n:02d}' for n in range(1, 10)] + ['6601'])
+CAFTA_TEX_EXCLUDE = ['51054000', '53081000', '5308901000']
+CAFTA_301 = [('9903.05.33', 'CR'), ('9903.05.34', 'DO'), ('9903.05.37', 'SV'), ('9903.05.40', 'GT'), ('9903.05.42', 'HN'), ('9903.05.58', 'NI')]
+measures.append(rec(measureKey='s301-2026-cafta-dr-textiles', program=P301, ch99Code='9903.05.95', rateKind='relief',
+    countriesInclude=sorted(c for _, c in CAFTA_301), coverageInclude=CAFTA_TEX_INCLUDE, coverageExclude=CAFTA_TEX_EXCLUDE,
+    conditions={'spiClaimed': CAFTA_SPI}, replacesCodes=[code for code, _ in CAFTA_301], effectiveFrom='2026-07-24',
+    sources=S('ustr-301-fl', 'csms-69326983') + [hts_note(52), GN29] + S('wto-atc'), reviewedAt='2026-10-13',
+    notes='U.S. note 52(i) (heading 9903.05.95): textile or apparel goods (general note 29(d)(v)) of Costa Rica, the Dominican Republic, El Salvador, '
+          'Guatemala, Honduras or Nicaragua entered free of duty under CAFTA-DR pay no 2026 Section 301 duty (9903.05.33, .34, .37, .40, .42, .58). '
+          'Applies only when the CAFTA-DR special rate is claimed (SPI "P" or "P+", general note 29(a)(i)); without the claim the duty is charged. '
+          'Coverage: the WTO Agreement on Textiles and Clothing Annex lines general note 29(d)(v) keeps that map exactly to Revision 21 provisions — '
+          '5004–5007, 5105–5113 (not 5105.40), 5204–5212, 5306–5311 (not coir yarn 5308.10 or paper yarn 5308.90.10), chapters 54–62, 6301–6309 '
+          'and umbrellas 6601. Raw fibres and waste (5001–5003, 5101–5104, 5201–5203, 5301–5305) and rags (6310) are not in the Annex. Not '
+          'modelled: the Annex "ex" entries for textile luggage and handbags (4202), glass-fibre yarns and woven fabrics (7019) and textile '
+          'quilts, comforters and cotton pillows (9404), which cannot be pinned to Revision 21 lines exactly; for those the duty is still charged '
+          '(for Guatemala and El Salvador the 52(j)(6)(iii) / 52(j)(7)(iii) lists cover many of them). Goods entered under subchapter XXII of '
+          'chapter 98 are not modelled. Nicaragua\'s separate Section 301 duty (9903.89.01, note 29) is not affected.'))
 
 # Brazil Section 301 (U.S. note 50)
 PBR = 'Section 301 (Brazil)'
@@ -203,9 +240,9 @@ PCNM = 'Section 301 (China, maritime and cargo-handling equipment)'
 CN_CONT = S('ustr-cn-301-continue')
 CN_STACK = ('Stacks with the 12.5% 2026 Section 301 duty on China (9903.05.31): note 52(a) keeps "any additional duty provided for in this '
             'subchapter" on top of 9903.05.20–9903.05.84. Also charged when an FTA/GSP special rate is claimed (note 20(a)).')
-NOT_MODELLED_20 = ('Not modelled: 9903.88.09 (10% for List 3 goods exported before May 10, 2019, entered before June 15, 2019 — ended), '
-                   '9903.88.16 (List 4B, 15%, suspended — note 20(t)), and notes 20(z)–20(gg) (9903.88.21–9903.88.28: no list duty on '
-                   'certain subheadings whose rate is derived from another listed subheading; depends on how the rate was derived).')
+NOT_MODELLED_20 = ('Not modelled: 9903.88.09 (10% for List 3 goods exported before May 10, 2019, entered before June 15, 2019 — ended) and '
+                   '9903.88.16 (List 4B, 15%, suspended — note 20(t)). Notes 20(z)–20(gg) (9903.88.21–9903.88.28, derived rates) are '
+                   'modelled: see s301-china-derived-rate-*.')
 
 
 def split_described(sub):
@@ -259,6 +296,44 @@ measures.append(rec(measureKey='s301-china-list4a', program=PCN, ch99Code='9903.
           f"September 1, 2019, cut to 7.5% from February 14, 2020). Chapter 01/30 lines: all {sum(1 for c in l4a if c.startswith('01'))} Chapter 01 "
           "subheadings and 3006.93.20, 3006.93.50. Product exclusions in effect: note 20(vvv)(iv) (9903.88.69); the Chapter 01 exclusions in notes "
           "20(ddd) and 20(jjj) (research macaques) have expired. " + CN_STACK))
+
+# U.S. notes 20(z)–20(gg) (headings 9903.88.21–9903.88.28, added by USTR 84 FR 49591, effective with the List 3 and List 4A
+# actions): the List 3 duty (9903.88.03 / .09) on the 13 subheadings of 20(z)–(cc), and the List 4A duty (9903.88.15) on the 26
+# subheadings of 20(dd)–(gg), "shall not apply … if such entries are subject to an applied rate of duty under such enumerated
+# subheadings that is derived from another subheading that is subject to the additional duties imposed by heading" 9903.88.01
+# (List 1), .02 (List 2), .03 / .09 (List 3) or .15 (List 4A). Every one of those subheadings has a base rate that is another
+# subheading's rate (a set's highest-rated article, the article an accessory belongs to, each garment of an ensemble, the
+# complete movement, the natural juice; embroidery in the piece "not less than" the unembroidered fabric). USTR's reason: the
+# additional duties do not apply "if the applied rate of duty for an entry is derived from another subheading, and if the entry
+# for this reason already is subject to the additional duties" — CBP HQ H299857 (toolsets of 8206) prices a set at its
+# highest-rated article's rate including that article's Section 301 duty. So the engine (conditions.rateDerivedFromLineSubjectTo)
+# lifts the line's own list duty only when the importer names the subheading the rate comes from and that subheading is on the
+# named list, and then charges that subheading's list duty on the value its rate was charged on.
+P20_DERIVED = [('z', '9903.88.21', ['9903.88.01'], ['9903.88.03', '9903.88.09'], 'List 1'),
+               ('aa', '9903.88.22', ['9903.88.02'], ['9903.88.03', '9903.88.09'], 'List 2'),
+               ('bb', '9903.88.23', ['9903.88.03', '9903.88.09'], ['9903.88.03', '9903.88.09'], 'List 3'),
+               ('cc', '9903.88.24', ['9903.88.15'], ['9903.88.03', '9903.88.09'], 'List 4A'),
+               ('dd', '9903.88.25', ['9903.88.01'], ['9903.88.15'], 'List 1'),
+               ('ee', '9903.88.26', ['9903.88.02'], ['9903.88.15'], 'List 2'),
+               ('ff', '9903.88.27', ['9903.88.03', '9903.88.09'], ['9903.88.15'], 'List 3'),
+               ('gg', '9903.88.28', ['9903.88.15'], ['9903.88.15'], 'List 4A')]
+SRC['ustr-301-cn-derived'] = {'citation': '84 FR 49591 (USTR: product exclusions and technical amendments — headings 9903.88.21–9903.88.28 and U.S. notes 20(z)–20(gg), derived rates)',
+                              'url': 'https://www.federalregister.gov/documents/2019/09/20/2019-20442/notice-of-product-exclusions-amendment-to-the-exclusion-process-and-technical-amendments-chinas-acts', 'published': '2019-09-20'}
+SRC['cbp-h299857'] = {'citation': 'CBP HQ H299857 (September 6, 2018): Section 301 measures; toolsets of 8206.00.00 pay the highest-rated article\'s rate including its Chapter 99 duty',
+                      'url': 'https://rulings.cbp.gov/ruling/H299857', 'published': '2018-09-06'}
+for sub, code, derived_from, lifted, list_name in P20_DERIVED:
+    lines = cov[f'20({sub})']
+    lifted_list = 'List 3' if lifted[0] == '9903.88.03' else 'List 4A'
+    measures.append(rec(measureKey=f's301-china-derived-rate-20{sub}', program=PCN, ch99Code=code, rateKind='relief', countriesInclude=['CN'],
+        coverageInclude=lines, conditions={'rateDerivedFromLineSubjectTo': derived_from}, replacesCodes=lifted,
+        effectiveFrom='2018-09-24' if lifted_list == 'List 3' else '2019-09-01', sources=S('ustr-301-cn-derived', 'cbp-h299857') + [hts_note(20)],
+        reviewedAt='2026-10-14',
+        notes=f'U.S. note 20({sub}) (heading {code}): the {lifted_list} duty ({" / ".join(lifted)}) does not apply to entries under the {len(lines)} '
+              f'listed subheadings whose applied rate is derived from another subheading subject to the {list_name} duty ({" / ".join(derived_from)}). '
+              'Applies only when the importer names the subheading the rate comes from (referencedLines) and the rate is in fact derived from it '
+              '(for embroidery in the piece, only when the unembroidered fabric\'s duty is the higher one). The engine then charges that subheading\'s '
+              f'{list_name} duty on the value its rate was charged on, since the entry "for this reason already is subject to the additional duties" '
+              '(84 FR 49591; CBP HQ H299857). 9903.88.09 ended in 2019 and is not modelled.'))
 
 # Product exclusions in effect (note 20(vvv) via 9903.88.69, note 20(www) via 9903.88.70), through November 9, 2026.
 from measures_named_products import china_exclusion_measures, load_descriptions  # noqa: E402
@@ -370,11 +445,18 @@ AL_INCLUSIONS_0818 = [
 ]
 al_primary = ['7601', '7604', '7605', '7606', '7607', '7608', '7609', '76169951']  # note 19(g)(i)–(vii): headings 7601, 7604–7609 and 7616.99.51
 assert '76169951' in cov['19(g)(vii)']
+# 7616.99.51.30 (ladders), .40 (venetian blinds) and .90 (other) are derivative aluminum articles of note 19(j), so heading
+# 9903.85.68 (note 19(m)(B)) charges them; 9903.85.67 (note 19(m)(A), the note 19(g)(vii) castings and forgings) must not
+# charge them a second time. An entry takes one of the two headings, so the 200% applies once.
+al_primary_derivative_lines = sorted(c for c in cov['19(j)'] if c.startswith('76169951'))
+assert al_primary_derivative_lines == ['7616995130', '7616995140', '7616995190'], al_primary_derivative_lines
 measures.append(rec(measureKey='s232-aluminum-ru', program=P232AL, ch99Code='9903.85.67', rateKind='additive', ratePct=200, countriesInclude=['RU'],
-    coverageInclude=al_primary, effectiveFrom='2025-03-12', sources=S('procl-10522', 'procl-10895') + [hts_note(19)], reviewedAt='2026-10-10',
+    coverageInclude=al_primary, coverageExclude=al_primary_derivative_lines, effectiveFrom='2025-03-12', sources=S('procl-10522', 'procl-10895') + [hts_note(19)],
+    reviewedAt='2026-10-13',
     notes='Heading 9903.85.67, U.S. note 19(m)(A): aluminum articles of note 19(g) (unwrought aluminum 7601, bars/rods/profiles 7604, wire 7605, plates/sheets/strip '
           '7606, foil 7607, tubes/pipes/fittings 7608–7609, castings and forgings 7616.99.51) that are products of Russia: base + 200% (since March 10, 2023, '
-          'Proclamation 10522; the note 19(m) wording applies from March 12, 2025). ' + RU_ORIGIN))
+          'Proclamation 10522; the note 19(m) wording applies from March 12, 2025). Excludes 7616.99.51.30, .40 and .90, the note 19(j) derivative lines '
+          'that 9903.85.68 charges (s232-aluminum-ru-derivatives), so the 200% is charged once. ' + RU_ORIGIN))
 k_aug = set(cov['19(k)']) & set(AL_INCLUSIONS_0818)
 k_early = [c for c in cov['19(k)'] if c not in k_aug]
 ij = sorted(set(cov['19(i)']) | set(cov['19(j)']))
@@ -517,21 +599,31 @@ measures = [m for m in measures if m['measureKey'] != 's301-2026-exempt-52f-cn-p
 # Informational materials (headings 9903.05.92 / 9903.05.09) and civil aircraft (notes 52(d) / 50(a)(iv), headings
 # 9903.05.88 / 9903.05.05): reliefs from the 2026 Section 301 duties and the Brazil duty, each on the importer's
 # confirmation (registry facts informationalMaterials / civilAircraftGn6, default no).
-INFO_COV = ['37', '49', '8523', '97']
+# Coverage: the HTS provisions CBP lists for the identical informational-materials exception text (50 U.S.C. 1702(b)(3)) in
+# its IEEPA FAQ ("What are informational materials described in 9903.01.22, ...?"): Chapter 49; headings 3704, 3705, 3706,
+# 5807, 8310 and 9701–9705; subheadings 6307.90.30, 6307.90.85, 8523.80.10, 8523.29, 8523.41, 8523.49, 9405.61 and 9405.69.
+# Headings 9903.05.92 / 9903.05.09 and notes 52 / 50 give no code list, so this is the official list for the same words.
+# Not covered: unexposed / blank photographic film, plates and paper (3701–3703), photographic chemicals (3707), other
+# chapter 37 goods, the 8523 media CBP does not list (8523.21, 8523.51–8523.59, 8523.80.20) and antiques (9706).
+INFO_COV = ['3704', '3705', '3706', '49', '5807', '630790.30', '630790.85', '8310', '852329', '852341', '852349', '8523.80.10',
+            '940561', '940569', '9701', '9702', '9703', '9704', '9705']
+INFO_COV = [c.replace('.', '') for c in INFO_COV]
 INFO_WHAT = ('informational materials, "including but not limited to publications, films, posters, phonograph records, photographs, microfilms, '
              'microfiche, tapes, compact disks, CD ROMs, artworks and news wire feeds" (the heading text; the 50 U.S.C. 1702(b)(3) list). Applies only '
-             'when the importer confirms the goods are informational materials (fact informationalMaterials, default no). Coverage: chapter 37 '
-             '(photographic and cinematographic film), chapter 49 (books, newspapers, pictures and other printed matter), heading 8523 (recorded '
-             'media) and chapter 97 (works of art) — where the listed kinds of goods classify. Exempted in the proposed and final actions (USTR '
-             'notices).')
+             'when the importer confirms the goods are informational materials (fact informationalMaterials, default no). Coverage: the HTS provisions '
+             'CBP lists for the same informational-materials text (IEEPA FAQ): Chapter 49; headings 3704, 3705, 3706 (exposed photographic plates, film '
+             'and paper; developed cinematographic film), 5807 (textile labels and badges), 8310 (sign plates), 9701–9705 (artworks, stamps, '
+             'collections); subheadings 6307.90.30 (labels), 6307.90.85 (wall banners), 8523.29, 8523.41, 8523.49 (magnetic and optical media), '
+             '8523.80.10 (phonograph records), 9405.61 and 9405.69 (illuminated signs). Unexposed film, plates and paper (3701–3703), photographic '
+             'chemicals (3707) and antiques (9706) are not informational materials. Exempted in the proposed and final actions (USTR notices).')
 measures.append(rec(measureKey='s301-2026-exempt-informational-materials', program=P301, ch99Code='9903.05.92', rateKind='relief',
     coverageInclude=INFO_COV, conditions={'factsTrue': ['informationalMaterials']}, replacesCodes=ALL_S301_CODES, effectiveFrom='2026-07-24',
-    sources=S('ustr-301-fl') + [hts_note(52)], reviewedAt='2026-10-12',
+    sources=S('ustr-301-fl', 'csms-69326983', 'cbp-ieepa-faq') + [hts_note(52)], reviewedAt='2026-10-13',
     notes='Heading 9903.05.92: the 2026 Section 301 duties 9903.05.20–9903.05.84 (whose headings except 9903.05.85–9903.05.99) do not apply to articles that are '
           + INFO_WHAT + ' China List 4A (9903.88.15) and the Canada Section 338 duties (note 51) have no such exemption.'))
 measures.append(rec(measureKey='s301-brazil-exempt-informational-materials', program=PBR, ch99Code='9903.05.09', rateKind='relief', countriesInclude=['BR'],
     coverageInclude=INFO_COV, conditions={'factsTrue': ['informationalMaterials']}, replacesCodes=['9903.05.01'], effectiveFrom='2026-07-22',
-    sources=S('ustr-301-br') + [hts_note(50)], reviewedAt='2026-10-12',
+    sources=S('ustr-301-br', 'cbp-ieepa-faq') + [hts_note(50)], reviewedAt='2026-10-13',
     notes='Heading 9903.05.09: the 25% Brazil Section 301 duty (9903.05.01, which excepts 9903.05.02–9903.05.09) does not apply to articles the product of Brazil that are '
           + INFO_WHAT))
 for key, prog, code, sub, countries, repl, start, src, note_n in [

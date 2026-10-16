@@ -6459,6 +6459,1378 @@
       "expectedTotalDutyUsd": 0,
       "toleranceUsd": 0.01,
       "sourceNote": "Heading 9903.96.02, U.S. note 35(b) (90 FR 44638): Japanese civil aircraft articles on the listed provisions do not pay 9903.82.02 / 9903.82.04–9903.82.17; note 52(d) (9903.05.88) lifts the 2026 Section 301 duty. Base Free. $0 (without the confirmation: 9903.82.02 +50% = $5,000)."
+    },
+    {
+      "id": "ch61-knit-ensemble-cn",
+      "description": "Men's cotton knit ensemble (6103.22.00.30) from China, $1,000: jacket $600 (6103.32.00.00) + trousers $400 (6103.42.10.40)",
+      "chapter": "61",
+      "input": {
+        "hts10": "6103220030",
+        "countryOfOrigin": "CN",
+        "customsValueUsd": 1000,
+        "quantities": {
+          "DOZ": 10,
+          "KG": 50
+        },
+        "referencedLines": [
+          {
+            "hts10": "6103320000",
+            "general": "13.5%",
+            "special": "Free (AU,BH, CL,CO,IL,JO,KR, MA,OM,P, PA,PE,S,SG)",
+            "column2": "90%",
+            "valueUsd": 600
+          },
+          {
+            "hts10": "6103421040",
+            "general": "16.1%",
+            "special": "Free (AU,BH, CL,CO,IL,JO,KR, MA,OM,P, PA,PE,S,SG)",
+            "column2": "45%",
+            "valueUsd": 400
+          }
+        ],
+        "entryDate": "2026-10-13"
+      },
+      "line": {
+        "hts10": "6103220030",
+        "general": "The rate applicable to each garment in the ensemble if separately entered",
+        "special": "Free (AU,BH, CL,CO,IL,JO,KR, MA,OM,P, PA,PE,S,SG)",
+        "column2": "The rate applicable to each garment in the ensemble if separately entered",
+        "units": ["doz.", "kg"]
+      },
+      "expectedTotalDutyUsd": 345.4,
+      "toleranceUsd": 0.01,
+      "sourceNote": "HTSUS 2026 Revision 21: 6103.22.00 general rate \"The rate applicable to each garment in the ensemble if separately entered\" (chapter 61 note 3(b) ensembles): jacket 6103.32.00.00 at 13.5% × $600 = $81.00 + trousers 6103.42.10 at 16.1% × $400 = $64.40 → base $145.40. Section 301 (2026) for China +12.5% (9903.05.31) on $1,000 = $125.00. U.S. note 20(gg) (9903.88.28; 84 FR 49591): 6103.22.00's own List 4A duty does not apply because its rate is derived from 6103.32 and 6103.42.10, both on List 4A; each garment's 7.5% (9903.88.15) is charged on its own value instead (CBP HQ H299857): $45.00 + $30.00 = $75.00. Total $345.40."
+    },
+    {
+      "id": "ch61-wool-blend-ensemble-ua-per-kg",
+      "description": "Synthetic-fiber ensemble with ≥23% wool (6103.23.00.07) from Ukraine, $1,000: jacket $700 / 20 kg (6103.33.10.00) + trousers $300 / 10 kg (6103.43.10.10)",
+      "chapter": "61",
+      "input": {
+        "hts10": "6103230007",
+        "countryOfOrigin": "UA",
+        "customsValueUsd": 1000,
+        "quantities": {
+          "DOZ": 10,
+          "KG": 30
+        },
+        "referencedLines": [
+          {
+            "hts10": "6103331000",
+            "general": "38.6¢/kg + 10%",
+            "special": "Free (AU,BH, CL,CO,IL,JO,KR, MA,OM,P, PA,PE,S,SG)",
+            "column2": "77.2¢/kg + 54.5%",
+            "valueUsd": 700,
+            "quantities": {
+              "KG": 20
+            }
+          },
+          {
+            "hts10": "6103431010",
+            "general": "58.5¢/kg + 15.2%",
+            "special": "Free (AU,BH, CL,CO,IL,JO,KR, MA,OM,P, PA,PE,S,SG)",
+            "column2": "77.2¢/kg + 54.5%",
+            "valueUsd": 300,
+            "quantities": {
+              "KG": 10
+            }
+          }
+        ],
+        "entryDate": "2026-10-13"
+      },
+      "line": {
+        "hts10": "6103230007",
+        "general": "The rate applicable to each garment in the ensemble if separately entered",
+        "special": "Free (AU,BH, CL,CO,IL,JO,KR, MA,OM,P, PA,PE,S,SG)",
+        "column2": "The rate applicable to each garment in the ensemble if separately entered",
+        "units": ["doz.", "kg"]
+      },
+      "expectedTotalDutyUsd": 129.17,
+      "toleranceUsd": 0.01,
+      "sourceNote": "HTSUS 2026 Revision 21: 6103.23.00 \"The rate applicable to each garment in the ensemble if separately entered\". Jacket 6103.33.10.00 \"38.6¢/kg + 10%\": 20 kg × $0.386 + 10% × $700 = $7.72 + $70.00; trousers 6103.43.10 \"58.5¢/kg + 15.2%\": 10 kg × $0.585 + 15.2% × $300 = $5.85 + $45.60. Base $129.17. Ukraine is not among the Section 301 (2026) economies; no other extra duty reaches the line."
+    },
+    {
+      "id": "ch78-refined-lead-kz",
+      "description": "Refined lead (7801.10.00.00) from Kazakhstan, $10,000 with $9,000 of lead content, 5,000 kg",
+      "chapter": "78",
+      "input": {
+        "hts10": "7801100000",
+        "countryOfOrigin": "KZ",
+        "customsValueUsd": 10000,
+        "quantities": {
+          "KG": 5000
+        },
+        "componentValuesUsd": {
+          "lead content": 9000
+        },
+        "entryDate": "2026-10-13"
+      },
+      "line": {
+        "hts10": "7801100000",
+        "general": "2.5% on the value of the lead content",
+        "special": "Free (A*,AU,BH,CL,CO,D,E,IL,JO,KR,MA,OM,P,PA,PE,S,SG)",
+        "column2": "10%",
+        "units": ["kg"]
+      },
+      "expectedTotalDutyUsd": 1475,
+      "toleranceUsd": 0.01,
+      "sourceNote": "HTSUS 2026 Revision 21: 7801.10.00 general rate \"2.5% on the value of the lead content\": 2.5% × $9,000 = $225.00 (charged on the declared lead-content value, not the $10,000 customs value). Section 301 (2026) for Kazakhstan +12.5% of the customs value (9903.05.51) = $1,250.00. Total $1,475.00."
+    },
+    {
+      "id": "ch93-rifle-with-scope-ua",
+      "description": "Centerfire rifle with a telescopic sight (9303.30.80.17) from Ukraine: rifle $800 + sight $200",
+      "chapter": "93",
+      "input": {
+        "hts10": "9303308017",
+        "countryOfOrigin": "UA",
+        "customsValueUsd": 1000,
+        "quantities": {
+          "NO": 1
+        },
+        "componentValuesUsd": {
+          "rifle": 800,
+          "telescopic sight": 200
+        },
+        "entryDate": "2026-10-13"
+      },
+      "line": {
+        "hts10": "9303308017",
+        "general": "3.1% on the value of the rifle + 13% on the value of the telescopic sight, if any",
+        "special": "Free (A,AU,BH,CL,CO,D,E,IL,JO,KR,MA,OM,P,PA,PE,S,SG)",
+        "column2": "65%",
+        "units": ["No."]
+      },
+      "expectedTotalDutyUsd": 50.8,
+      "toleranceUsd": 0.01,
+      "sourceNote": "HTSUS 2026 Revision 21: 9303.30.80 general rate \"3.1% on the value of the rifle + 13% on the value of the telescopic sight, if any\": 3.1% × $800 = $24.80 + 13% × $200 = $26.00 = $50.80. No extra duty for Ukraine."
+    },
+    {
+      "id": "ch93-rifle-with-scope-de-301-floor",
+      "description": "Centerfire rifle with a telescopic sight (9303.30.80.17) from Germany: rifle $800 + sight $200",
+      "chapter": "93",
+      "input": {
+        "hts10": "9303308017",
+        "countryOfOrigin": "DE",
+        "customsValueUsd": 1000,
+        "quantities": {
+          "NO": 1
+        },
+        "componentValuesUsd": {
+          "rifle": 800,
+          "telescopic sight": 200
+        },
+        "entryDate": "2026-10-13"
+      },
+      "line": {
+        "hts10": "9303308017",
+        "general": "3.1% on the value of the rifle + 13% on the value of the telescopic sight, if any",
+        "special": "Free (A,AU,BH,CL,CO,D,E,IL,JO,KR,MA,OM,P,PA,PE,S,SG)",
+        "column2": "65%",
+        "units": ["No."]
+      },
+      "expectedTotalDutyUsd": 100,
+      "toleranceUsd": 0.01,
+      "sourceNote": "HTSUS 2026 Revision 21: base 3.1% × $800 + 13% × $200 = $50.80. Section 301 (2026) for the EU (9903.05.39) is 10% of the customs value or the base rate, whichever is higher, in place of the base: max($50.80, 10% × $1,000) = $100.00."
+    },
+    {
+      "id": "ch91-watch-movement-set-ua",
+      "description": "Watch movement sets, unassembled (9110.11.00.00) from Ukraine, 100 sets, $5,000; the complete movement is 9108.90.10.00",
+      "chapter": "91",
+      "input": {
+        "hts10": "9110110000",
+        "countryOfOrigin": "UA",
+        "customsValueUsd": 5000,
+        "quantities": {
+          "NO": 100
+        },
+        "referencedLines": [
+          {
+            "hts10": "9108901000",
+            "general": "29¢ each",
+            "special": "Free (AU,BH, CL,CO,D,E,IL,JO,KR,MA,OM,P, PA,PE,R,S,SG)",
+            "column2": "$1.50 each"
+          }
+        ],
+        "entryDate": "2026-10-13"
+      },
+      "line": {
+        "hts10": "9110110000",
+        "general": "The rate applicable to the complete, assembled movement",
+        "special": "Free (AU,BH, CL,CO,D,E,IL,JO,KR,MA,OM,P, PA,PE,R,S,SG)",
+        "column2": "The rate applicable to the complete, assembled",
+        "units": ["No."]
+      },
+      "expectedTotalDutyUsd": 29,
+      "toleranceUsd": 0.01,
+      "sourceNote": "HTSUS 2026 Revision 21: 9110.11.00 general rate \"The rate applicable to the complete, assembled movement\"; the complete movement (9108.90.10, measuring 33.8 mm or less) is \"29¢ each\": 100 × $0.29 = $29.00. No extra duty for Ukraine."
+    },
+    {
+      "id": "ch91-watch-movement-set-ch-301-floor",
+      "description": "Watch movement sets, unassembled (9110.11.00.00) from Switzerland, 100 sets, $5,000; complete movement 9108.90.10.00",
+      "chapter": "91",
+      "input": {
+        "hts10": "9110110000",
+        "countryOfOrigin": "CH",
+        "customsValueUsd": 5000,
+        "quantities": {
+          "NO": 100
+        },
+        "referencedLines": [
+          {
+            "hts10": "9108901000",
+            "general": "29¢ each",
+            "special": "Free (AU,BH, CL,CO,D,E,IL,JO,KR,MA,OM,P, PA,PE,R,S,SG)",
+            "column2": "$1.50 each"
+          }
+        ],
+        "entryDate": "2026-10-13"
+      },
+      "line": {
+        "hts10": "9110110000",
+        "general": "The rate applicable to the complete, assembled movement",
+        "special": "Free (AU,BH, CL,CO,D,E,IL,JO,KR,MA,OM,P, PA,PE,R,S,SG)",
+        "column2": "The rate applicable to the complete, assembled",
+        "units": ["No."]
+      },
+      "expectedTotalDutyUsd": 625,
+      "toleranceUsd": 0.01,
+      "sourceNote": "HTSUS 2026 Revision 21: base = 9108.90.10 \"29¢ each\" × 100 = $29.00. Section 301 (2026) for Switzerland (9903.05.74) is 12.5% of the customs value or the base rate, whichever is higher, in place of the base: max($29.00, 12.5% × $5,000) = $625.00."
+    },
+    {
+      "id": "ch91-movement-parts-with-plate-ua",
+      "description": "Incomplete watch movement parts fastened together (9110.90.40.00) from Ukraine, $2,000: 100 movements’ worth, 1,700 jewels, 5,000 other pieces; consisting in part of plates; complete movement 9108.90.10.00",
+      "chapter": "91",
+      "input": {
+        "hts10": "9110904000",
+        "countryOfOrigin": "UA",
+        "customsValueUsd": 2000,
+        "quantities": {
+          "NO": 100,
+          "NO:jewels": 1700,
+          "NO:other pieces or parts": 5000
+        },
+        "confirmations": {
+          "facts": {
+            "movementPartsIncludePlate": true
+          }
+        },
+        "referencedLines": [
+          {
+            "hts10": "9108901000",
+            "general": "29¢ each",
+            "special": "Free (AU,BH, CL,CO,D,E,IL,JO,KR,MA,OM,P, PA,PE,R,S,SG)",
+            "column2": "$1.50 each"
+          }
+        ],
+        "entryDate": "2026-10-13"
+      },
+      "line": {
+        "hts10": "9110904000",
+        "general": "4.3% + 1.7¢/jewel + 0.2¢ for each other piece or part, but if consisting in part of a plate or a set of plates the total duty shall not exceed the duty for the complete movement",
+        "special": "Free (A+,AU,B,BH,CL,CO,D,E,IL,JO,KR,MA, OM,P,PA,PE,S,SG)",
+        "column2": "65% + 25¢/jewel + 3¢ for each other piece or part, but if consisting in part of a plate or a set of plates the total duty shall not exceed the duty for the complete movement",
+        "units": ["No."]
+      },
+      "expectedTotalDutyUsd": 29,
+      "toleranceUsd": 0.01,
+      "sourceNote": "HTSUS 2026 Revision 21: 9110.90.40 general rate \"4.3% + 1.7¢/jewel + 0.2¢ for each other piece or part, but if consisting in part of a plate or a set of plates the total duty shall not exceed the duty for the complete movement\": 4.3% × $2,000 + 1,700 × $0.017 + 5,000 × $0.002 = $86.00 + $28.90 + $10.00 = $124.90; the parts include plates, so the duty is capped at the complete movement's (9108.90.10 \"29¢ each\" × 100 = $29.00). No extra duty for Ukraine."
+    },
+    {
+      "id": "ch91-movement-parts-no-plate-ua",
+      "description": "Incomplete watch movement parts fastened together (9110.90.40.00) from Ukraine, $2,000, 1,700 jewels, 5,000 other pieces; no plate",
+      "chapter": "91",
+      "input": {
+        "hts10": "9110904000",
+        "countryOfOrigin": "UA",
+        "customsValueUsd": 2000,
+        "quantities": {
+          "NO": 100,
+          "NO:jewels": 1700,
+          "NO:other pieces or parts": 5000
+        },
+        "confirmations": {
+          "facts": {
+            "movementPartsIncludePlate": false
+          }
+        },
+        "entryDate": "2026-10-13"
+      },
+      "line": {
+        "hts10": "9110904000",
+        "general": "4.3% + 1.7¢/jewel + 0.2¢ for each other piece or part, but if consisting in part of a plate or a set of plates the total duty shall not exceed the duty for the complete movement",
+        "special": "Free (A+,AU,B,BH,CL,CO,D,E,IL,JO,KR,MA, OM,P,PA,PE,S,SG)",
+        "column2": "65% + 25¢/jewel + 3¢ for each other piece or part, but if consisting in part of a plate or a set of plates the total duty shall not exceed the duty for the complete movement",
+        "units": ["No."]
+      },
+      "expectedTotalDutyUsd": 124.9,
+      "toleranceUsd": 0.01,
+      "sourceNote": "HTSUS 2026 Revision 21: 9110.90.40 general rate: 4.3% × $2,000 + 1,700 jewels × 1.7¢ + 5,000 other pieces × 0.2¢ = $86.00 + $28.90 + $10.00 = $124.90; no plate, so the complete-movement cap does not apply. No extra duty for Ukraine."
+    },
+    {
+      "id": "ch58-embroidery-in-the-piece-in",
+      "description": "Man-made-fiber embroidery in the piece (5810.92.90.80) from India, $10,000 / 500 kg; the fabric not embroidered is 5407.52.20.40 (14.9%)",
+      "chapter": "58",
+      "input": {
+        "hts10": "5810929080",
+        "countryOfOrigin": "IN",
+        "customsValueUsd": 10000,
+        "quantities": {
+          "KG": 500
+        },
+        "confirmations": {
+          "facts": {
+            "embroideryInThePiece": true
+          }
+        },
+        "referencedLines": [
+          {
+            "hts10": "5407522040",
+            "general": "14.9%",
+            "special": "Free (AU,BH,CL,CO,IL,JO,KR,MA,OM,P,PA,PE,S,SG)",
+            "column2": "81%"
+          }
+        ],
+        "entryDate": "2026-10-13"
+      },
+      "line": {
+        "hts10": "5810929080",
+        "general": "See additional U.S. note 3",
+        "special": "Free (AU,BH, CL,CO,IL,JO,KR, MA,OM, P,PA,PE,S,SG)",
+        "column2": "See additional U.S. note 3",
+        "units": ["kg"]
+      },
+      "expectedTotalDutyUsd": 2490,
+      "toleranceUsd": 0.01,
+      "sourceNote": "HTSUS 2026 Revision 21: 5810.92.90 \"See additional U.S. note 3\"; chapter 58 additional U.S. note 3 gives column 1 \"7.4%, but in the case of embroidery in the piece not less than the rate which would apply to such product if not embroidered\". The dyed polyester fabric (5407.52.20) is 14.9%, so the base is max(7.4%, 14.9%) × $10,000 = $1,490.00. Section 301 (2026) for India +10% (9903.05.44) = $1,000.00. Total $2,490.00."
+    },
+    {
+      "id": "ch58-embroidered-motifs-ua",
+      "description": "Man-made-fiber embroidered motifs (5810.92.90.80) from Ukraine, $10,000 / 500 kg — not embroidery in the piece",
+      "chapter": "58",
+      "input": {
+        "hts10": "5810929080",
+        "countryOfOrigin": "UA",
+        "customsValueUsd": 10000,
+        "quantities": {
+          "KG": 500
+        },
+        "confirmations": {
+          "facts": {
+            "embroideryInThePiece": false
+          }
+        },
+        "entryDate": "2026-10-13"
+      },
+      "line": {
+        "hts10": "5810929080",
+        "general": "See additional U.S. note 3",
+        "special": "Free (AU,BH, CL,CO,IL,JO,KR, MA,OM, P,PA,PE,S,SG)",
+        "column2": "See additional U.S. note 3",
+        "units": ["kg"]
+      },
+      "expectedTotalDutyUsd": 740,
+      "toleranceUsd": 0.01,
+      "sourceNote": "HTSUS 2026 Revision 21: chapter 58 additional U.S. note 3: 7.4% (the not-less-than-the-unembroidered-fabric rule is for embroidery in the piece only) × $10,000 = $740.00. No extra duty for Ukraine."
+    },
+    {
+      "id": "ch51-wool-special-uses-ru-column2",
+      "description": "Shorn greasy wool for special uses (5101.11.10.00) from Russia, $10,000 / 5,000 kg, entered under bond",
+      "chapter": "51",
+      "input": {
+        "hts10": "5101111000",
+        "countryOfOrigin": "RU",
+        "customsValueUsd": 10000,
+        "quantities": {
+          "KG": 5000,
+          "CKG": 3000
+        },
+        "entryDate": "2026-10-13"
+      },
+      "line": {
+        "hts10": "5101111000",
+        "general": "Free",
+        "special": null,
+        "column2": "Free, under bond",
+        "units": ["cy kg", "kg"]
+      },
+      "expectedTotalDutyUsd": 1250,
+      "toleranceUsd": 0.01,
+      "sourceNote": "HTSUS 2026 Revision 21: Russia pays column 2; 5101.11.10 column 2 is \"Free, under bond\" (chapter 51 additional U.S. note 2(d): wool for special uses is released only under a bond securing its use; duty-free at entry) → $0.00 base. Section 301 (2026) for Russia +12.5% (9903.05.66) = $1,250.00."
+    },
+    {
+      "id": "ch96-acrylic-buttons-line-gross-cn",
+      "description": "Acrylic resin buttons (9606.21.40.00) from China: 100 gross of 24-line buttons (2,400 line-gross), $2,000",
+      "chapter": "96",
+      "input": {
+        "hts10": "9606214000",
+        "countryOfOrigin": "CN",
+        "customsValueUsd": 2000,
+        "quantities": {
+          "GROSS": 100,
+          "GR.LINES": 2400
+        },
+        "entryDate": "2026-10-13"
+      },
+      "line": {
+        "hts10": "9606214000",
+        "general": "0.3¢/line/ gross + 4.6%",
+        "special": "Free (A,AU,B,BH,CL,CO,D,E,IL,JO,KR,MA,OM,P,PA,PE,S,SG)",
+        "column2": "1.5¢/line/ gross + 25%",
+        "units": ["gross", "gr.lines"]
+      },
+      "expectedTotalDutyUsd": 849.2,
+      "toleranceUsd": 0.01,
+      "sourceNote": "HTSUS 2026 Revision 21: 9606.21.40 general rate \"0.3¢/line/ gross + 4.6%\": 0.3¢ per line of button size per gross, so 24 lines × 100 gross = 2,400 line-gross (the reporting unit \"gr.lines\") × $0.003 = $7.20 + 4.6% × $2,000 = $92.00 → $99.20. Section 301 (2026) for China +12.5% (9903.05.31) = $250.00 and list 3 +25% (9903.88.03) = $500.00. Total $849.20."
+    },
+    {
+      "id": "ch82-tool-set-cn",
+      "description": "Set of hand tools of two or more 8205 subheadings (8205.90.60.00) from China, $3,000; the highest-rate article is a pipe tool (8205.59.10.00, 7.2%)",
+      "chapter": "82",
+      "input": {
+        "hts10": "8205906000",
+        "countryOfOrigin": "CN",
+        "customsValueUsd": 3000,
+        "quantities": {
+          "NO": 200
+        },
+        "referencedLines": [
+          {
+            "hts10": "8205591000",
+            "general": "7.2%",
+            "special": "Free (A,AU,BH,CL,CO,D,E,IL,JO,KR,MA,OM,P,PA,PE,S,SG) 3.6% (JP)",
+            "column2": "45%"
+          }
+        ],
+        "entryDate": "2026-10-13"
+      },
+      "line": {
+        "hts10": "8205906000",
+        "general": "The rate of duty applicable to that article in the set subject to the highest rate of duty",
+        "special": "Free (A+,AU,BH,CL,CO,D,E,IL, JO,KR,MA, OM,P,PA,PE,S,SG)",
+        "column2": "The rate of duty applicable to that article in the set subject to the highest rate of duty",
+        "units": ["pcs"]
+      },
+      "expectedTotalDutyUsd": 1341,
+      "toleranceUsd": 0.01,
+      "sourceNote": "HTSUS 2026 Revision 21: 8205.90.60 general rate \"The rate of duty applicable to that article in the set subject to the highest rate of duty\": the pipe tool (8205.59.10, 7.2%) × $3,000 = $216.00. Section 301 (2026) for China +12.5% (9903.05.31) = $375.00. U.S. note 20(bb) (9903.88.23; 84 FR 49591): 8205.90.60's own List 3 duty does not apply because its rate is derived from 8205.59.10, itself on List 3; the set pays that subheading's 25% instead (CBP HQ H299857) = $750.00. Total $1,341.00."
+    },
+    {
+      "id": "ch90-telescope-part-ua",
+      "description": "Parts of an optical telescope incorporating lenses (9005.90.40.00) from Ukraine, $4,000; the telescope is 9005.80.40.40 (8%)",
+      "chapter": "90",
+      "input": {
+        "hts10": "9005904000",
+        "countryOfOrigin": "UA",
+        "customsValueUsd": 4000,
+        "quantities": {
+          "NO": 50
+        },
+        "referencedLines": [
+          {
+            "hts10": "9005804040",
+            "general": "8%",
+            "special": "Free (A*,AU,BH,CL,CO,D,E,IL,JO,KR,MA,OM,P,PA,PE,S,SG)",
+            "column2": "45%"
+          }
+        ],
+        "entryDate": "2026-10-13"
+      },
+      "line": {
+        "hts10": "9005904000",
+        "general": "The rate applicable to the article of which it is a part or accessory",
+        "special": "Free (A,AU,BH,CL,CO,D,E,IL,JO,KR,MA,OM,P,PA,PE,S,SG)",
+        "column2": "The rate applicable to the article of which it is a part or accessory",
+        "units": ["No."]
+      },
+      "expectedTotalDutyUsd": 320,
+      "toleranceUsd": 0.01,
+      "sourceNote": "HTSUS 2026 Revision 21: 9005.90.40 general rate \"The rate applicable to the article of which it is a part or accessory\": optical telescopes 9005.80.40 at 8% × $4,000 = $320.00. No extra duty for Ukraine."
+    },
+    {
+      "id": "ch96-telescope-tripod-ua",
+      "description": "Tripod for a telescope (9620.00.15.00, accessory of heading 9005) from Ukraine, $1,000; the telescope is 9005.80.40.40 (8%)",
+      "chapter": "96",
+      "input": {
+        "hts10": "9620001500",
+        "countryOfOrigin": "UA",
+        "customsValueUsd": 1000,
+        "quantities": {
+          "NO": 20
+        },
+        "referencedLines": [
+          {
+            "hts10": "9005804040",
+            "general": "8%",
+            "special": "Free (A*,AU,BH,CL,CO,D,E,IL,JO,KR,MA,OM,P,PA,PE,S,SG)",
+            "column2": "45%"
+          }
+        ],
+        "entryDate": "2026-10-13"
+      },
+      "line": {
+        "hts10": "9620001500",
+        "general": "The rate applicable to the article of which it is an accessory",
+        "special": "Free (A*,AU,BH,CL,CO,D,E,IL,JO,KR,MA,OM,P,PA,PE,S,SG)",
+        "column2": "The rate applicable to the article of which it is an accessory",
+        "units": ["No."]
+      },
+      "expectedTotalDutyUsd": 80,
+      "toleranceUsd": 0.01,
+      "sourceNote": "HTSUS 2026 Revision 21: 9620.00.15 general rate \"The rate applicable to the article of which it is an accessory\": optical telescopes 9005.80.40 at 8% × $1,000 = $80.00. No extra duty for Ukraine."
+    },
+    {
+      "id": "ch96-pen-pencil-set-ua",
+      "description": "Set of ball point pens and mechanical pencils (9608.50.00.00) from Ukraine, $500: 100 ball pens $300 (9608.10.00.00) + pencils $200 (9608.40.40.00)",
+      "chapter": "96",
+      "input": {
+        "hts10": "9608500000",
+        "countryOfOrigin": "UA",
+        "customsValueUsd": 500,
+        "quantities": {
+          "NO": 100
+        },
+        "referencedLines": [
+          {
+            "hts10": "9608100000",
+            "general": "0.8¢ each + 5.4%",
+            "special": "Free (A,AU,BH,CL,CO,D,E,IL,JO,KR,MA,OM,P,PA,PE,S,SG)",
+            "column2": "6¢ each + 40%",
+            "valueUsd": 300,
+            "quantities": {
+              "NO": 100
+            }
+          },
+          {
+            "hts10": "9608404000",
+            "general": "6.6%",
+            "special": "Free (A,AU,BH,CL,CO,D,E,IL,JO,KR,MA,OM,P,PA,PE,S,SG) 3.3% (JP)",
+            "column2": "41.5%",
+            "valueUsd": 200
+          }
+        ],
+        "entryDate": "2026-10-13"
+      },
+      "line": {
+        "hts10": "9608500000",
+        "general": "The rate applicable to each article in the absence of this subheading",
+        "special": "Free (A+,AU,BH,CL,CO,D,E,IL, JO,KR,MA, OM,P,PA,PE,S,SG)",
+        "column2": "The rate applicable, to each article in the absence of this subheading",
+        "units": ["No."]
+      },
+      "expectedTotalDutyUsd": 30.2,
+      "toleranceUsd": 0.01,
+      "sourceNote": "HTSUS 2026 Revision 21: 9608.50.00 general rate \"The rate applicable to each article in the absence of this subheading\": ball point pens 9608.10.00 \"0.8¢ each + 5.4%\": 100 × $0.008 + 5.4% × $300 = $0.80 + $16.20; mechanical pencils 9608.40.40 6.6% × $200 = $13.20. Total $30.20. No extra duty for Ukraine."
+    },
+    {
+      "id": "ch37-blank-film-gb-informational-claimed",
+      "description": "Unexposed photographic film in rolls, of a width not exceeding 35 mm (3702.97.00.00), from the United Kingdom, $10,000, importer answers yes to informational materials",
+      "chapter": "37",
+      "input": {
+        "hts10": "3702970000",
+        "countryOfOrigin": "GB",
+        "customsValueUsd": 10000,
+        "quantities": {
+          "M2": 1000
+        },
+        "confirmations": {
+          "facts": {
+            "informationalMaterials": true
+          }
+        },
+        "entryDate": "2026-10-13"
+      },
+      "line": {
+        "hts10": "3702970000",
+        "general": "Free",
+        "special": null,
+        "column2": "38¢/m2",
+        "units": ["m2"]
+      },
+      "expectedTotalDutyUsd": 1000,
+      "toleranceUsd": 0.01,
+      "sourceNote": "Blank (unexposed) film is not an informational material: heading 3702 is not on CBP's list of HTS provisions for the informational-materials exception (Chapter 49; 3704, 3705, 3706, 5807, 8310, 9701–9705; 6307.90.30, 6307.90.85, 8523.80.10, 8523.29, 8523.41, 8523.49, 9405.61, 9405.69), so 9903.05.92 does not apply even with the confirmation. Base Free + UK 9903.05.81 10% (note 52) = $1,000."
+    },
+    {
+      "id": "ch37-exposed-film-gb-informational-materials",
+      "description": "Exposed and developed cinematographic film (3706.90.00.60), from the United Kingdom, $10,000, confirmed informational materials",
+      "chapter": "37",
+      "input": {
+        "hts10": "3706900060",
+        "countryOfOrigin": "GB",
+        "customsValueUsd": 10000,
+        "quantities": {
+          "M": 3000
+        },
+        "confirmations": {
+          "facts": {
+            "informationalMaterials": true
+          }
+        },
+        "entryDate": "2026-10-13"
+      },
+      "line": {
+        "hts10": "3706900060",
+        "general": "Free",
+        "special": null,
+        "column2": "10¢/m",
+        "units": ["m"]
+      },
+      "expectedTotalDutyUsd": 0,
+      "toleranceUsd": 0.01,
+      "sourceNote": "Heading 3706 is on CBP's informational-materials list, so with the confirmation heading 9903.05.92 lifts the UK 2026 Section 301 duty (9903.05.81). Base Free. $0."
+    },
+    {
+      "id": "ch61-tshirt-hn-cafta",
+      "description": "Men's cotton knit T-shirts (6109.10.00.12) from Honduras, CAFTA-DR claimed (SPI P), $10,000",
+      "chapter": "61",
+      "input": {
+        "hts10": "6109100012",
+        "countryOfOrigin": "HN",
+        "customsValueUsd": 10000,
+        "quantities": {
+          "DOZ": 500,
+          "KG": 1000
+        },
+        "claimedSpi": "P",
+        "entryDate": "2026-10-13"
+      },
+      "line": {
+        "hts10": "6109100012",
+        "general": "16.5%",
+        "special": "Free (AU,BH,CL,CO,IL,JO,KR,MA,OM,P,PA,PE,S,SG)",
+        "units": ["doz.", "kg"]
+      },
+      "expectedTotalDutyUsd": 0,
+      "toleranceUsd": 0.01,
+      "sourceNote": "CAFTA-DR special rate (P) for 6109.10.00 = Free. A T-shirt of 6109 is a textile or apparel good (general note 29(d)(v): listed in the WTO Agreement on Textiles and Clothing Annex), so U.S. note 52(i) / heading 9903.05.95 removes the Honduras 10% duty (9903.05.42) for goods entered free under CAFTA-DR. Total $0."
+    },
+    {
+      "id": "ch61-tshirt-hn-no-claim",
+      "description": "Same men's cotton knit T-shirts (6109.10.00.12) from Honduras, no CAFTA-DR claim, $10,000",
+      "chapter": "61",
+      "input": {
+        "hts10": "6109100012",
+        "countryOfOrigin": "HN",
+        "customsValueUsd": 10000,
+        "quantities": {
+          "DOZ": 500,
+          "KG": 1000
+        },
+        "entryDate": "2026-10-13"
+      },
+      "line": {
+        "hts10": "6109100012",
+        "general": "16.5%",
+        "special": "Free (AU,BH,CL,CO,IL,JO,KR,MA,OM,P,PA,PE,S,SG)",
+        "units": ["doz.", "kg"]
+      },
+      "expectedTotalDutyUsd": 2650,
+      "toleranceUsd": 0.01,
+      "sourceNote": "Without the CAFTA-DR claim note 52(i) does not apply: general 16.5% ($1,650) + Honduras 2026 Section 301 9903.05.42 10% ($1,000) = $2,650."
+    },
+    {
+      "id": "ch76-ladder-ru-aluminum-once",
+      "description": "Aluminum ladders (7616.99.51.30) from Russia, $10,000",
+      "chapter": "76",
+      "input": {
+        "hts10": "7616995130",
+        "countryOfOrigin": "RU",
+        "customsValueUsd": 10000,
+        "quantities": {
+          "NO": 100
+        },
+        "entryDate": "2026-10-13"
+      },
+      "line": {
+        "hts10": "7616995130",
+        "general": "2.5%",
+        "special": "Free (A*,AU,B,BH,CL,CO,D,E,IL,JO,KR,MA,OM,P,PA,PE,S,SG)",
+        "column2": "45%",
+        "units": ["No."]
+      },
+      "expectedTotalDutyUsd": 25750,
+      "toleranceUsd": 0.01,
+      "sourceNote": "Russia is a column 2 country: base 45% ($4,500). 7616.99.51.30 is a note 19(j) derivative, so heading 9903.85.68 charges the 200% ($20,000) once; 9903.85.67 (note 19(g)(vii) castings and forgings) does not charge it again. Plus Russia 2026 Section 301 9903.05.66 12.5% ($1,250; note 52(f)(1) lifts it only for the 9903.82 headings). Total $25,750."
+    },
+    {
+      "id": "ch91-swiss-automatic-watch-ch",
+      "description": "Swiss automatic wrist watches with a stainless-steel case and a stainless-steel bracelet, over 17 jewels (9102.21.70), from Switzerland: 10 watches, $5,000, of which case $1,200, bracelet $300 (no battery: $0); entered under the case number 9102.21.70.20",
+      "chapter": "91",
+      "input": {
+        "hts10": "9102217020",
+        "countryOfOrigin": "CH",
+        "customsValueUsd": 5000,
+        "quantities": {
+          "NO": 10
+        },
+        "componentValuesUsd": {
+          "case": 1200,
+          "strap, band or bracelet": 300,
+          "battery": 0
+        },
+        "entryDate": "2026-10-13"
+      },
+      "line": {
+        "hts10": "9102217020",
+        "general": "$1.53 each + 4.2% on the case + 9.8% on the strap, band or bracelet",
+        "special": "Free (AU,BH, CL,CO,D,E,IL,JO,KR,MA,OM,P, PA,PE,R,S,SG)",
+        "column2": "$10.95 each + 45% on the case + 110% on the strap, band or bracelet",
+        "units": ["No."]
+      },
+      "expectedTotalDutyUsd": 625,
+      "toleranceUsd": 0.01,
+      "sourceNote": "HTSUS 2026 Revision 21: 9102.21.70 (statistical note 1(d): .10 movement, .20 case, .30 strap, band or bracelet; CBP ruling N362026 classifies Swiss automatic steel watches there) general rate \"$1.53 each + 4.2% on the case + 9.8% on the strap, band or bracelet\", priced once on the whole watch: 10 x $1.53 = $15.30 + 4.2% x $1,200 = $50.40 + 9.8% x $300 = $29.40 = $95.10. Switzerland's Section 301 (2026) heading 9903.05.74 is \"12.5% or the base rate, whichever is higher\" and replaces the base: 12.5% x $5,000 = $625.00 > $95.10. Total $625.00."
+    },
+    {
+      "id": "ch91-quartz-watch-cn",
+      "description": "Battery-powered quartz analog wrist watches, no jewels, base-metal case (not plated) and base-metal bracelet (9102.11.25), from China: 100 watches, $2,000, of which case $600, bracelet $300, battery $50; entered under the movement number 9102.11.25.10",
+      "chapter": "91",
+      "input": {
+        "hts10": "9102112510",
+        "countryOfOrigin": "CN",
+        "customsValueUsd": 2000,
+        "quantities": {
+          "NO": 100
+        },
+        "componentValuesUsd": {
+          "case": 600,
+          "strap, band or bracelet": 300,
+          "battery": 50
+        },
+        "entryDate": "2026-10-13"
+      },
+      "line": {
+        "hts10": "9102112510",
+        "general": "40¢ each + 8.5% on the case + 14% on the strap, band or bracelet + 5.3% on the battery",
+        "special": "Free (AU,BH, CL,CO,D,E,IL,JO,KR,MA,OM,P, PA,PE,R,S,SG)",
+        "column2": "$1.70 each + 45% on the case + 110% on the strap, band or bracelet + 35% on the battery",
+        "units": ["No."]
+      },
+      "expectedTotalDutyUsd": 535.65,
+      "toleranceUsd": 0.01,
+      "sourceNote": "HTSUS 2026 Revision 21: 9102.11.25 (statistical note 1(a): .10 movement, .20 case, .30 strap, band or bracelet, .40 battery) general rate \"40¢ each + 8.5% on the case + 14% on the strap, band or bracelet + 5.3% on the battery\", priced once on the whole watch: 100 x $0.40 = $40.00 + 8.5% x $600 = $51.00 + 14% x $300 = $42.00 + 5.3% x $50 = $2.65 = $135.65. Section 301 (2026) for China +12.5% of $2,000 (9903.05.31) = $250.00; Section 301 List 4A +7.5% (9903.88.15, U.S. note 20(s), lists 9102.11.25) = $150.00. Total $535.65."
+    },
+    {
+      "id": "ch91-battery-wall-clock-cn",
+      "description": "Battery-operated analog wall clocks (9105.21.80), from China: 200 clocks, $3,000, of which case $900, battery $100; entered under the other-clocks movement number 9105.21.80.30",
+      "chapter": "91",
+      "input": {
+        "hts10": "9105218030",
+        "countryOfOrigin": "CN",
+        "customsValueUsd": 3000,
+        "quantities": {
+          "NO": 200
+        },
+        "componentValuesUsd": {
+          "case": 900,
+          "battery": 100
+        },
+        "entryDate": "2026-10-13"
+      },
+      "line": {
+        "hts10": "9105218030",
+        "general": "30¢ each + 6.9% on the case + 5.3% on the battery",
+        "special": "Free (A+,AU,BH,CL,CO,D,E,IL,JO,KR,MA, OM,P,PA,PE,S,SG)",
+        "column2": "75¢ each + 45% on the case + 35% on the battery",
+        "units": ["No."]
+      },
+      "expectedTotalDutyUsd": 502.4,
+      "toleranceUsd": 0.01,
+      "sourceNote": "HTSUS 2026 Revision 21: 9105.21.80 (statistical note 1(n): other clocks .30 movement, .40 case, .50 battery) general rate \"30¢ each + 6.9% on the case + 5.3% on the battery\", priced once on the whole clock: 200 x $0.30 = $60.00 + 6.9% x $900 = $62.10 + 5.3% x $100 = $5.30 = $127.40. Section 301 (2026) for China +12.5% of $3,000 (9903.05.31) = $375.00; 9105.21.80 is on none of the China Section 301 lists 1-4A in effect. Total $502.40."
+    },
+    {
+      "id": "ch91-jeweled-travel-clock-cn",
+      "description": "Mechanical travel clocks (other clocks of 9105.19, movement not over 50 mm, running over 47 hours, 15 jewels each; 9105.19.30), from China: 100 clocks, $4,000, of which case $1,000, 1,500 jewels in total; entered under the travel-clock movement number 9105.19.30.10",
+      "chapter": "91",
+      "input": {
+        "hts10": "9105193010",
+        "countryOfOrigin": "CN",
+        "customsValueUsd": 4000,
+        "quantities": {
+          "NO": 100,
+          "NO:jewels": 1500
+        },
+        "componentValuesUsd": {
+          "case": 1000
+        },
+        "entryDate": "2026-10-13"
+      },
+      "line": {
+        "hts10": "9105193010",
+        "general": "43¢ each + 2.8¢/jewel over 7 + 3.7% on the case",
+        "special": "Free (A+,AU,BH,CL,CO,D,E, IL,JO,KR, MA,OM,P, PA,PE,S,SG)",
+        "column2": "$2.25 each + 15¢/jewel over 7 + 60% on the case",
+        "units": []
+      },
+      "expectedTotalDutyUsd": 902.4,
+      "toleranceUsd": 0.01,
+      "sourceNote": "HTSUS 2026 Revision 21: 9105.19.30 (statistical note 1(l): travel clocks .10 movement, .20 case) general rate \"43¢ each + 2.8¢/jewel over 7 + 3.7% on the case\", priced once on the whole clock: 100 x $0.43 = $43.00 + 2.8¢ x (1,500 jewels - 7 x 100 movements = 800 jewels over 7) = $22.40 + 3.7% x $1,000 = $37.00 = $102.40. Section 301 (2026) for China +12.5% of $4,000 (9903.05.31) = $500.00; Section 301 List 4A +7.5% (9903.88.15) = $300.00. Total $902.40."
+    },
+    {
+      "id": "ch84-pulley-cn-excl-last-day",
+      "description": "Grooved pulleys 8483.50.9040 from China, 1,000 pcs, $100,000, entered 2026-11-09 — the last day of the note 20(vvv)(i) exclusion (9903.88.69)",
+      "chapter": "84",
+      "input": {
+        "hts10": "8483509040",
+        "countryOfOrigin": "CN",
+        "customsValueUsd": 100000,
+        "quantities": {
+          "NO": 1000
+        },
+        "entryDate": "2026-11-09"
+      },
+      "line": {
+        "hts10": "8483509040",
+        "general": "2.8%",
+        "special": "Free (A*,AU,B,BH,C,CL,CO,D,E,IL,JO,KR,MA,OM,P,PA,PE,S,SG)",
+        "units": ["No."]
+      },
+      "expectedTotalDutyUsd": 27800,
+      "toleranceUsd": 0.01,
+      "sourceNote": "USTR 90 FR 55232: the 178 China Section 301 exclusions run through 11:59 p.m. on November 9, 2026. Base 2.8% + Section 232 steel derivative 25%; List 1 (9903.88.01) lifted by 9903.88.69."
+    },
+    {
+      "id": "ch84-pulley-cn-excl-ended",
+      "description": "Same pulleys from China entered 2026-11-10, after the exclusions expired: the List 1 duty applies again",
+      "chapter": "84",
+      "input": {
+        "hts10": "8483509040",
+        "countryOfOrigin": "CN",
+        "customsValueUsd": 100000,
+        "quantities": {
+          "NO": 1000
+        },
+        "entryDate": "2026-11-10"
+      },
+      "line": {
+        "hts10": "8483509040",
+        "general": "2.8%",
+        "special": "Free (A*,AU,B,BH,C,CL,CO,D,E,IL,JO,KR,MA,OM,P,PA,PE,S,SG)",
+        "units": ["No."]
+      },
+      "expectedTotalDutyUsd": 52800,
+      "toleranceUsd": 0.01,
+      "sourceNote": "USTR 90 FR 55232 (exclusions end November 9, 2026; no further extension published as of 2026-10-14): base 2.8% + List 1 25% (9903.88.01) + Section 232 25%."
+    },
+    {
+      "id": "ch55-viscose-cn-excl-ended",
+      "description": "Viscose staple fibre 5504.10.0000 from China, 50,000 kg, $100,000, entered 2026-11-10 (note 20(vvv)(iv) exclusion expired)",
+      "chapter": "55",
+      "input": {
+        "hts10": "5504100000",
+        "countryOfOrigin": "CN",
+        "customsValueUsd": 100000,
+        "quantities": {
+          "KG": 50000
+        },
+        "entryDate": "2026-11-10"
+      },
+      "line": {
+        "hts10": "5504100000",
+        "general": "4.3%",
+        "special": "Free (AU,BH, CL,CO,IL,JO,KR, MA,OM,P, PA,PE,S,SG)",
+        "units": ["kg"]
+      },
+      "expectedTotalDutyUsd": 24300,
+      "toleranceUsd": 0.01,
+      "sourceNote": "USTR 90 FR 55232: exclusions through November 9, 2026. Base 4.3% + List 4A 7.5% (9903.88.15) + 2026 Section 301 12.5% (9903.05.31)."
+    },
+    {
+      "id": "ch87-chassis-cn-maritime",
+      "description": "Intermodal chassis 8716.39.0090 from China (described product confirmed), 10 units, $100,000, entered 2026-11-10 when the maritime Section 301 suspension ends",
+      "chapter": "87",
+      "input": {
+        "hts10": "8716390090",
+        "countryOfOrigin": "CN",
+        "customsValueUsd": 100000,
+        "quantities": {
+          "NO": 10
+        },
+        "confirmations": {
+          "productDescriptionIds": ["31ki-8716.39.0090-1"]
+        },
+        "entryDate": "2026-11-10"
+      },
+      "line": {
+        "hts10": "8716390090",
+        "general": "Free",
+        "special": null,
+        "units": ["No."]
+      },
+      "expectedTotalDutyUsd": 150000,
+      "toleranceUsd": 0.01,
+      "sourceNote": "USTR 90 FR 48320 / 90 FR 50947 (suspension through November 9, 2026): 9903.91.12 +100% from November 10, 2026, plus List 3 25% and Section 232 steel 25%."
+    },
+    {
+      "id": "ch84-sts-crane-cn-maritime",
+      "description": "Ship-to-shore gantry crane 8426.19.0000 from China (described product confirmed), $100,000, entered 2026-11-10",
+      "chapter": "84",
+      "input": {
+        "hts10": "8426190000",
+        "countryOfOrigin": "CN",
+        "customsValueUsd": 100000,
+        "quantities": {
+          "NO": 1
+        },
+        "confirmations": {
+          "productDescriptionIds": ["31li-8426.19.00-1"]
+        },
+        "entryDate": "2026-11-10"
+      },
+      "line": {
+        "hts10": "8426190000",
+        "general": "Free",
+        "special": null,
+        "units": ["No."]
+      },
+      "expectedTotalDutyUsd": 137500,
+      "toleranceUsd": 0.01,
+      "sourceNote": "USTR 90 FR 48320 / 90 FR 50947: 9903.91.14 +100% from November 10, 2026, plus 9903.92.10 25% (89 FR 76581) and 2026 Section 301 12.5%."
+    },
+    {
+      "id": "ch85-module-vn-polysilicon",
+      "description": "Crystalline silicon solar modules 8541.43.0010 from Vietnam, 1,000 modules (400 kW), $100,000, entered 2026-12-05",
+      "chapter": "85",
+      "input": {
+        "hts10": "8541430010",
+        "countryOfOrigin": "VN",
+        "customsValueUsd": 100000,
+        "quantities": {
+          "NO": 1000,
+          "W": 400000
+        },
+        "entryDate": "2026-12-05"
+      },
+      "line": {
+        "hts10": "8541430010",
+        "general": "Free",
+        "special": null,
+        "units": ["No.", "W"]
+      },
+      "expectedTotalDutyUsd": 27500,
+      "toleranceUsd": 0.01,
+      "sourceNote": "Proclamation 11052 (91 FR 51975) clause (4), Annex II heading 9903.45.30: +15% from December 4, 2026, plus 2026 Section 301 12.5%. MIP duty (9903.45.36) not modelled: assumes resale documentation at or above $0.38/W."
+    },
+    {
+      "id": "ch85-module-de-polysilicon",
+      "description": "Same solar modules from Germany entered 2026-12-05",
+      "chapter": "85",
+      "input": {
+        "hts10": "8541430010",
+        "countryOfOrigin": "DE",
+        "customsValueUsd": 100000,
+        "quantities": {
+          "NO": 1000,
+          "W": 400000
+        },
+        "entryDate": "2026-12-05"
+      },
+      "line": {
+        "hts10": "8541430010",
+        "general": "Free",
+        "special": null,
+        "units": ["No.", "W"]
+      },
+      "expectedTotalDutyUsd": 25000,
+      "toleranceUsd": 0.01,
+      "sourceNote": "Proclamation 11052 clause (5)(b), Annex II heading 9903.45.31: EU products 15% in total with the column 1 rate (Free), plus the EU 2026 Section 301 10%."
+    },
+    {
+      "id": "ch85-cell-gb-polysilicon",
+      "description": "Solar cells 8541.42.0010 from the United Kingdom, $100,000, entered 2026-12-05",
+      "chapter": "85",
+      "input": {
+        "hts10": "8541420010",
+        "countryOfOrigin": "GB",
+        "customsValueUsd": 100000,
+        "quantities": {
+          "NO": 1000,
+          "W": 400000
+        },
+        "entryDate": "2026-12-05"
+      },
+      "line": {
+        "hts10": "8541420010",
+        "general": "Free",
+        "special": null,
+        "units": ["No.", "W"]
+      },
+      "expectedTotalDutyUsd": 20000,
+      "toleranceUsd": 0.01,
+      "sourceNote": "Proclamation 11052 clause (5)(c), Annex II heading 9903.45.32: UK +10%, plus the UK 2026 Section 301 10%."
+    },
+    {
+      "id": "ch38-wafer-kr-polysilicon",
+      "description": "Doped monocrystalline silicon wafers 3818.00.0040 from South Korea, 100 kg, $100,000, entered 2026-12-05",
+      "chapter": "38",
+      "input": {
+        "hts10": "3818000040",
+        "countryOfOrigin": "KR",
+        "customsValueUsd": 100000,
+        "quantities": {
+          "KG": 100
+        },
+        "entryDate": "2026-12-05"
+      },
+      "line": {
+        "hts10": "3818000040",
+        "general": "Free",
+        "special": null,
+        "units": ["kg"]
+      },
+      "expectedTotalDutyUsd": 15000,
+      "toleranceUsd": 0.01,
+      "sourceNote": "Proclamation 11052 clause (5)(b), Annex II heading 9903.45.31: Korean products 15% in total (column 1 Free)."
+    },
+    {
+      "id": "ch94-upholstered-vn-2027",
+      "description": "Upholstered wooden household chairs 9401.61.4011 from Vietnam, 100 units, $100,000, entered 2027-01-02",
+      "chapter": "94",
+      "input": {
+        "hts10": "9401614011",
+        "countryOfOrigin": "VN",
+        "customsValueUsd": 100000,
+        "quantities": {
+          "NO": 100
+        },
+        "entryDate": "2027-01-02"
+      },
+      "line": {
+        "hts10": "9401614011",
+        "general": "Free",
+        "special": null,
+        "units": ["No."]
+      },
+      "expectedTotalDutyUsd": 30000,
+      "toleranceUsd": 0.01,
+      "sourceNote": "Proclamation 11000 (91 FR 1039): the 9903.76.02 rate rises from 25% to 30% on January 1, 2027."
+    },
+    {
+      "id": "ch94-cabinets-cn-2027",
+      "description": "Wooden kitchen cabinets 9403.40.9060 from China (confirmed cabinets), 100 units, $100,000, entered 2027-01-02",
+      "chapter": "94",
+      "input": {
+        "hts10": "9403409060",
+        "countryOfOrigin": "CN",
+        "customsValueUsd": 100000,
+        "quantities": {
+          "NO": 100
+        },
+        "confirmations": {
+          "facts": {
+            "woodenCabinetsOrVanities": true
+          }
+        },
+        "entryDate": "2027-01-02"
+      },
+      "line": {
+        "hts10": "9403409060",
+        "general": "Free",
+        "special": null,
+        "units": ["No."]
+      },
+      "expectedTotalDutyUsd": 75000,
+      "toleranceUsd": 0.01,
+      "sourceNote": "Proclamation 11000 (91 FR 1039): 9903.76.03 rises from 25% to 50% on January 1, 2027; plus List 3 25%. No 2026 Section 301 duty (note 52(f)(4))."
+    },
+    {
+      "id": "ch61-tshirts-ni-2027",
+      "description": "Men's cotton T-shirts 6109.10.0012 from Nicaragua, no CAFTA-DR claim, $100,000, entered 2027-01-02",
+      "chapter": "61",
+      "input": {
+        "hts10": "6109100012",
+        "countryOfOrigin": "NI",
+        "customsValueUsd": 100000,
+        "quantities": {
+          "DOZ": 1000,
+          "KG": 2000
+        },
+        "entryDate": "2027-01-02"
+      },
+      "line": {
+        "hts10": "6109100012",
+        "general": "16.5%",
+        "special": "Free (AU,BH,CL,CO,IL,JO,KR,MA,OM,P,PA,PE,S,SG)",
+        "units": ["doz.", "kg"]
+      },
+      "expectedTotalDutyUsd": 39000,
+      "toleranceUsd": 0.01,
+      "sourceNote": "USTR 90 FR 57807 / 90 FR 60850: 9903.89.01 +10% from January 1, 2027 (0% in 2026), plus base 16.5% and 2026 Section 301 12.5%."
+    },
+    {
+      "id": "ch01-steers-mu-agoa-2027",
+      "description": "60 steers from Mauritius, AGOA claim (SPI D), entered 2027-01-15 — after the old December 31, 2026 expiry",
+      "chapter": "01",
+      "input": {
+        "hts10": "0102294062",
+        "countryOfOrigin": "MU",
+        "customsValueUsd": 100000,
+        "quantities": {
+          "NO": 60,
+          "KG": 21000
+        },
+        "claimedSpi": "D",
+        "entryDate": "2027-01-15"
+      },
+      "line": {
+        "hts10": "0102294062",
+        "general": "1¢/kg",
+        "special": "Free (A+,AU,BH,CL,CO,D,E,IL,JO,KR,MA,OM,P,PA,PE,S,SG)",
+        "units": ["No.", "kg"]
+      },
+      "expectedTotalDutyUsd": 0,
+      "toleranceUsd": 0.01,
+      "sourceNote": "Public Law 119-103 section 2008 (H.R. 6500, September 2, 2026) extends AGOA through December 31, 2028, so the claim still applies in 2027."
+    },
+    {
+      "id": "ch88-uas-part-cn-annex3",
+      "description": "Undercarriage parts 8807.20.0030 from China confirmed as drone parts (not 43(c)(2) parts), 100 kg, $100,000, entered 2027-02-09",
+      "chapter": "88",
+      "input": {
+        "hts10": "8807200030",
+        "countryOfOrigin": "CN",
+        "customsValueUsd": 100000,
+        "quantities": {
+          "KG": 100
+        },
+        "confirmations": {
+          "facts": {
+            "uasPart": true
+          }
+        },
+        "entryDate": "2027-02-09"
+      },
+      "line": {
+        "hts10": "8807200030",
+        "general": "Free",
+        "special": null,
+        "units": ["kg"]
+      },
+      "expectedTotalDutyUsd": 62500,
+      "toleranceUsd": 0.01,
+      "sourceNote": "Proclamation 11055 clause (2) and Annex IV part B (note 43(c)(5), heading 9903.08.22): +25% from February 9, 2027, plus List 1 25% and 2026 Section 301 12.5%."
+    },
+    {
+      "id": "ch88-uas-part-tw-annex3-deal",
+      "description": "Other drone parts 8807.30.0030 from Taiwan with the partner critical-components certification, entered 2027-02-09",
+      "chapter": "88",
+      "input": {
+        "hts10": "8807300030",
+        "countryOfOrigin": "TW",
+        "customsValueUsd": 100000,
+        "quantities": {
+          "KG": 100
+        },
+        "confirmations": {
+          "facts": {
+            "uasPart": true,
+            "uasPartnerCriticalComponents": true
+          }
+        },
+        "entryDate": "2027-02-09"
+      },
+      "line": {
+        "hts10": "8807300030",
+        "general": "Free",
+        "special": null,
+        "units": ["kg"]
+      },
+      "expectedTotalDutyUsd": 25000,
+      "toleranceUsd": 0.01,
+      "sourceNote": "Proclamation 11055 clause (4), heading 9903.08.24: 15% in total (column 1 Free) instead of 9903.08.22, plus Taiwan 2026 Section 301 10%."
+    },
+    {
+      "id": "ch65-hats-not-sewn-it-52k-floor",
+      "description": "Hats of plaited strips, not sewn (6504.00.60.00) from Italy, $50,000, 1,000 dozen: compound base below 10% ad valorem equivalent",
+      "chapter": "65",
+      "input": {
+        "hts10": "6504006000",
+        "countryOfOrigin": "IT",
+        "customsValueUsd": 50000,
+        "quantities": {
+          "DOZ": 1000,
+          "KG": 300
+        },
+        "entryDate": "2026-10-13"
+      },
+      "line": {
+        "hts10": "6504006000",
+        "general": "94¢/doz. + 4.6%",
+        "special": "Free (A*,AU,BH,CL,CO,D,E,IL,JO,KR,MA,OM,P,PA,PE,S,SG)",
+        "column2": "$3.50/doz. + 50%",
+        "units": ["doz.", "kg"]
+      },
+      "expectedTotalDutyUsd": 5000,
+      "toleranceUsd": 0.01,
+      "sourceNote": "HTSUS 2026 Revision 21: 6504.00.60 general rate \"94¢/doz. + 4.6%\" = $940.00 + $2,300.00 = $3,240.00. U.S. note 52(k) to subchapter III of chapter 99: the ad valorem equivalent of a specific or compound column 1-General rate is \"the amount of duty payable under column 1-General [divided] by the customs value of the good\" = $3,240 ÷ $50,000 = 6.48%, under 10%, so 9903.05.39 makes the total 10% ad valorem = $5,000.00 (the base is not charged on its own). Total $5,000.00."
+    },
+    {
+      "id": "ch65-hats-not-sewn-it-52k-base-higher",
+      "description": "Hats of plaited strips, not sewn (6504.00.60.00) from Italy, $10,000, 1,000 dozen: compound base at or above 10% ad valorem equivalent",
+      "chapter": "65",
+      "input": {
+        "hts10": "6504006000",
+        "countryOfOrigin": "IT",
+        "customsValueUsd": 10000,
+        "quantities": {
+          "DOZ": 1000,
+          "KG": 300
+        },
+        "entryDate": "2026-10-13"
+      },
+      "line": {
+        "hts10": "6504006000",
+        "general": "94¢/doz. + 4.6%",
+        "special": "Free (A*,AU,BH,CL,CO,D,E,IL,JO,KR,MA,OM,P,PA,PE,S,SG)",
+        "column2": "$3.50/doz. + 50%",
+        "units": ["doz.", "kg"]
+      },
+      "expectedTotalDutyUsd": 1400,
+      "toleranceUsd": 0.01,
+      "sourceNote": "HTSUS 2026 Revision 21: 6504.00.60 general rate \"94¢/doz. + 4.6%\" = $940.00 + $460.00 = $1,400.00. U.S. note 52(k): ad valorem equivalent $1,400 ÷ $10,000 = 14%, at or above 10%, so 9903.05.38 applies (no additional duty) and the base rate is charged. Total $1,400.00."
+    },
+    {
+      "id": "ch82-tool-set-ua-note3-ave",
+      "description": "Set of hand tools (8205.90.60.00) from Ukraine, $2,000: an aluminum tool (8205.59.70, compound rate) worth $100 and weighing 400 kg vs a pipe tool (8205.59.10, 7.2%)",
+      "chapter": "82",
+      "input": {
+        "hts10": "8205906000",
+        "countryOfOrigin": "UA",
+        "customsValueUsd": 2000,
+        "quantities": {
+          "pcs": 12
+        },
+        "referencedLines": [
+          {
+            "hts10": "8205597000",
+            "general": "1.5¢/kg + 3.5%",
+            "special": "Free (A,AU,BH,CL,CO,D,E,IL,JO,KR,MA,OM,P,PA,PE,S,SG)",
+            "column2": "19¢/kg + 40%",
+            "valueUsd": 100,
+            "quantities": {
+              "KG": 400
+            }
+          },
+          {
+            "hts10": "8205591000",
+            "general": "7.2%",
+            "special": "Free (A,AU,BH,CL,CO,D,E,IL,JO,KR,MA,OM,P,PA,PE,S,SG) 3.6% (JP)",
+            "column2": "45%",
+            "valueUsd": 1900
+          }
+        ],
+        "entryDate": "2026-10-13"
+      },
+      "line": {
+        "hts10": "8205906000",
+        "general": "The rate of duty applicable to that article in the set subject to the highest rate of duty",
+        "special": "Free (A+,AU,BH,CL,CO,D,E,IL, JO,KR,MA, OM,P,PA,PE,S,SG)",
+        "column2": "The rate of duty applicable to that article in the set subject to the highest rate of duty",
+        "units": ["pcs"]
+      },
+      "expectedTotalDutyUsd": 190,
+      "toleranceUsd": 0.01,
+      "sourceNote": "HTSUS 2026 Revision 21: 8205.90.60 general rate \"The rate of duty applicable to that article in the set subject to the highest rate of duty\". Chapter 82 additional U.S. note 3 converts a specific or compound rate of an article in the set to its ad valorem equivalent on the article's own value: the aluminum tool 8205.59.70 at \"1.5¢/kg + 3.5%\" = $6.00 (400 kg) + $3.50 = $9.50 on $100 = 9.5%, above the pipe tool 8205.59.10 at 7.2%, so the set pays 9.5% × $2,000 = $190.00. No extra duty for Ukraine. Total $190.00."
+    },
+    {
+      "id": "ch58-embroidery-in-the-piece-cn-list3-ground",
+      "description": "Embroidery in the piece (5810.92.90.80) from China on a dyed polyester ground (5407.52.20.40, List 3), $10,000, 500 kg",
+      "chapter": "58",
+      "input": {
+        "hts10": "5810929080",
+        "countryOfOrigin": "CN",
+        "customsValueUsd": 10000,
+        "quantities": {
+          "KG": 500
+        },
+        "confirmations": {
+          "facts": {
+            "embroideryInThePiece": true
+          }
+        },
+        "referencedLines": [
+          {
+            "hts10": "5407522040",
+            "general": "14.9%",
+            "special": "Free (AU,BH,CL,CO,IL,JO,KR,MA,OM,P,PA,PE,S,SG)",
+            "column2": "81%"
+          }
+        ],
+        "entryDate": "2026-10-13"
+      },
+      "line": {
+        "hts10": "5810929080",
+        "general": "See additional U.S. note 3",
+        "special": "Free (AU,BH, CL,CO,IL,JO,KR, MA,OM, P,PA,PE,S,SG)",
+        "column2": "See additional U.S. note 3",
+        "units": ["kg"]
+      },
+      "expectedTotalDutyUsd": 5240,
+      "toleranceUsd": 0.01,
+      "sourceNote": "HTSUS 2026 Revision 21: 5810.92.90 \"See additional U.S. note 3\" = \"7.4%, but in the case of embroidery in the piece not less than the rate which would apply to such product if not embroidered\"; the ground fabric 5407.52.20 is 14.9%, so the base is 14.9% × $10,000 = $1,490.00, a rate derived from 5407.52.20. Section 301 (2026) for China +12.5% (9903.05.31) = $1,250.00. U.S. note 20(bb) (9903.88.23; 84 FR 49591): 5810.92.90's own List 3 duty (9903.88.03) does not apply because the rate is derived from 5407.52.20, itself on List 3; the entry pays that subheading's 25% instead (CBP HQ H299857) = $2,500.00. Total $5,240.00."
+    },
+    {
+      "id": "ch96-binocular-accessory-cn-20cc",
+      "description": "Accessory for binoculars (9620.00.15.00) from China, $1,000: binoculars 9005.10.00.40 (Free, List 4A)",
+      "chapter": "96",
+      "input": {
+        "hts10": "9620001500",
+        "countryOfOrigin": "CN",
+        "customsValueUsd": 1000,
+        "quantities": {
+          "NO": 20
+        },
+        "referencedLines": [
+          {
+            "hts10": "9005100040",
+            "general": "Free",
+            "special": null,
+            "column2": "60%"
+          }
+        ],
+        "entryDate": "2026-10-13"
+      },
+      "line": {
+        "hts10": "9620001500",
+        "general": "The rate applicable to the article of which it is an accessory",
+        "special": "Free (A*,AU,BH,CL,CO,D,E,IL,JO,KR,MA,OM,P,PA,PE,S,SG)",
+        "column2": "The rate applicable to the article of which it is an accessory",
+        "units": ["No."]
+      },
+      "expectedTotalDutyUsd": 200,
+      "toleranceUsd": 0.01,
+      "sourceNote": "HTSUS 2026 Revision 21: 9620.00.15 general rate \"The rate applicable to the article of which it is an accessory\": binoculars 9005.10.00 Free × $1,000 = $0.00. Section 301 (2026) for China +12.5% (9903.05.31) = $125.00. U.S. note 20(cc) (9903.88.24; 84 FR 49591): 9620.00.15's List 3 duty (9903.88.03, 25%) does not apply because its rate is derived from 9005.10.00, which is on List 4A; the entry pays the List 4A 7.5% of 9005.10.00 instead (9903.88.15; CBP HQ H299857) = $75.00. Total $200.00."
+    },
+    {
+      "id": "ch96-telescope-accessory-cn-not-listed",
+      "description": "Accessory for optical telescopes (9620.00.15.00) from China, $1,000: telescopes 9005.80.40.40 (8%, on no China list), so the List 3 duty stays",
+      "chapter": "96",
+      "input": {
+        "hts10": "9620001500",
+        "countryOfOrigin": "CN",
+        "customsValueUsd": 1000,
+        "quantities": {
+          "NO": 20
+        },
+        "referencedLines": [
+          {
+            "hts10": "9005804040",
+            "general": "8%",
+            "special": "Free (A*,AU,BH,CL,CO,D,E,IL,JO,KR,MA,OM,P,PA,PE,S,SG)",
+            "column2": "45%"
+          }
+        ],
+        "entryDate": "2026-10-13"
+      },
+      "line": {
+        "hts10": "9620001500",
+        "general": "The rate applicable to the article of which it is an accessory",
+        "special": "Free (A*,AU,BH,CL,CO,D,E,IL,JO,KR,MA,OM,P,PA,PE,S,SG)",
+        "column2": "The rate applicable to the article of which it is an accessory",
+        "units": ["No."]
+      },
+      "expectedTotalDutyUsd": 455,
+      "toleranceUsd": 0.01,
+      "sourceNote": "HTSUS 2026 Revision 21: 9620.00.15 at the rate of optical telescopes 9005.80.40 = 8% × $1,000 = $80.00. Section 301 (2026) for China +12.5% (9903.05.31) = $125.00. 9005.80.40 is on no China list, so notes 20(z)–(cc) do not apply and 9620.00.15's own List 3 duty is charged: +25% (9903.88.03) = $250.00. Total $455.00."
     }
   ]
 }

@@ -1,0 +1,90 @@
+# FAQ part of fill97 (exec'd).
+# flake8: noqa
+fc = d['finalConclusion']
+fc['h1'] = 'HTS Chapter 97: Art & Antiques Tariff FAQ'
+fc['seo'] = {
+    'title': 'Art & Antiques Tariffs FAQ: Is Art Exempt? UK, Europe, Canada, China, HS Codes (HTS Ch. 97) | KoalaGains',
+    'shortDescription': ('Answers to what people search about tariffs on art and antiques: is art exempt from tariffs, tariffs on antiques from the UK, '
+                         'France and Europe, tariffs on art from Canada and China, import duty on paintings, HS codes for paintings, sculptures, antiques, '
+                         'coins and stamps, and importing antiquities and ivory.'),
+    'keywords': ['is art exempt from tariffs', 'are there tariffs on art', 'are antiques subject to tariffs', 'tariffs on antiques from uk',
+                 'tariffs on antiques from europe', 'tariffs on art from canada', 'import duty on artwork to usa', 'hs code for paintings',
+                 'hs code for antiques', 'hs code for sculpture', 'hs code for coins', 'hs code for stamps', 'can you import ivory into the us', 'hts chapter 97'],
+}
+fc['intro'] = 'Straight answers to the most common questions about U.S. tariffs and entry rules for art, antiques, coins and stamps, by country and by HS code. Each answer links to the page with the full detail.'
+fc['keyTakeaways'] = [
+    'All 30 Chapter 97 lines are Free, and the 2026 Section 301 and Brazil duties exempt the whole chapter, so art and antiques from the UK, the EU, Switzerland, Japan, Hong Kong, India and Brazil enter duty-free; only the merchandise processing fee (up to $670.86 per entry) applies.',
+    'Three origins pay: China 7.5% (Section 301 List 4A) on every line, Canada 50% (Section 338) on 16 lines even with USMCA, Russia 35%. The IEEPA and Section 122 duties, which charged antiques but not art, have ended.',
+    'Entry rules matter more than duty: cultural property restrictions on designated archaeological and ethnological material, Iraq and Syria, pre-Columbian sculpture, and the ivory and endangered-species rules for antiques.',
+]
+fc['lastCheckedAt'] = TODAY
+fc['questionSource'] = 'Google search suggestions (United States, English), collected October 13, 2026'
+uk = cty('United Kingdom')
+fr_ = cty('France')
+fc['faqs'] = [
+    {'id': 'exempt', 'question': 'Is art exempt from tariffs?',
+     'searchedAs': ['is art exempt from tariffs', 'is art exempt from trump tariffs', 'is art exempt from us tariffs', 'is fine art exempt from tariffs',
+                    'is original art exempt from us tariffs', 'are there tariffs on fine art', 'are there tariffs on art'],
+     'answer': 'Mostly yes. Every Chapter 97 line has a Free base rate, and the 2026 Section 301 duties on 60 economies exempt the whole chapter (U.S. note 52(b)), as does Brazil\'s 25% duty. In 2025–2026 the IEEPA tariffs and the Section 122 surcharge excepted paintings, prints, sculptures, stamps and collectors\' pieces as informational materials (50 U.S.C. 1702(b)(3)); both have ended. Exceptions today: Chinese art pays 7.5%, many Canadian works 50% and Russian works 35%.',
+     'link': 'tariff-updates'},
+    {'id': 'antiques', 'question': 'Are antiques subject to U.S. tariffs?',
+     'searchedAs': ['are antiques subject to tariffs', 'are antiques subject to us tariffs', 'tariffs on antiques', 'us tariffs on antiques',
+                    'trump tariffs on antiques', 'are there tariffs on antiques'],
+     'answer': 'Antiques over 100 years old (9706) are Free and, since July 24, 2026, exempt from the 2026 Section 301 duties. They were not exempt before: antiques are not informational materials, so they paid the IEEPA reciprocal duties from April 5, 2025 to February 24, 2026 and the 10% Section 122 surcharge to July 23, 2026. Today only Chinese (7.5%), Russian (35%) and Canadian antiques 100–250 years old (50%) pay extra.',
+     'link': 'tariff-updates'},
+    {'id': 'uk', 'question': 'Are there tariffs on art and antiques from the UK?',
+     'searchedAs': ['tariffs on art from uk', 'tariffs on art from uk to us', 'tariffs on antiques from uk', 'import duty on art from uk to usa', 'customs duty on artwork uk'],
+     'answer': 'No duty today. British paintings, sculptures, prints and antiques are Free: the UK\'s 10% 2026 Section 301 duty does not apply to Chapter 97 (note 52(b), report 9903.05.86). British antiques paid 10% from April 5, 2025 until July 23, 2026 (IEEPA, then Section 122); art did not. Expect the merchandise processing fee on formal entries, and UK export licensing for some cultural goods is a separate UK matter.',
+     'link': 'industry-areas'},
+    {'id': 'europe', 'question': 'Are there tariffs on art and antiques from France and Europe?',
+     'searchedAs': ['tariffs on antiques from europe', 'tariffs on antiques from france', 'tariffs on french antiques', 'tariffs on art from europe',
+                    'are there tariffs on antiques from europe'],
+     'answer': 'No. EU art and antiques are Free: the EU\'s 10% floor under the 2026 Section 301 action (9903.05.39) does not apply to Chapter 97. French, Italian and German antiques paid the EU\'s IEEPA rate (10%, then 15% all-in from August 7, 2025) until February 24, 2026 and the 10% Section 122 surcharge until July 23, 2026. Italian archaeological material and coins of Italian types need Italian export documents.',
+     'link': 'industry-areas'},
+    {'id': 'canada', 'question': 'Are there tariffs on art from Canada?',
+     'searchedAs': ['tariffs on art from canada', 'tariffs on art from canada to us', 'are there tariffs on art from canada', 'are there tariffs on artwork from canada',
+                    'tariffs on antiques from canada'],
+     'answer': 'Yes, on many works. Since August 22, 2026, Canadian paintings and drawings (9701.21, 9701.91, 9701.99), recent original prints, all original sculptures, stamps, most collectors\' pieces and antiques 100–250 years old pay a 50% Section 338 duty (9903.03.14), even with USMCA. Mosaics, prints over 100 years old, coins over 100 years old and antiques over 250 years old stay Free. Personal-use items in accompanied baggage and Chapter 98 temporary entries are not charged.',
+     'link': 'industry-areas'},
+    {'id': 'china', 'question': 'What is the tariff on art and antiques from China?',
+     'searchedAs': ['tariff on art from china', 'tariffs on chinese antiques', 'china antiques import duty'],
+     'answer': '7.5% on every Chapter 97 line: the Section 301 List 4A duty (9903.88.15), which has no informational-materials exception; the product exclusions once granted for art and antiques have expired. The 2026 Section 301 duty does not apply. Chinese archaeological material through the Tang period and monumental sculpture and wall art at least 250 years old also need a Chinese export permit under the U.S.–China cultural property agreement.',
+     'link': 'industry-areas'},
+    {'id': 'import-duty', 'question': 'How much is U.S. import duty on artwork?',
+     'searchedAs': ['import duty on artwork to usa', 'us customs duty on artwork', 'customs duty on artwork', 'import duty on paintings', 'customs duty on paintings',
+                    'import duty art usa', 'is there customs duty on artwork'],
+     'answer': 'Zero for most origins: original paintings, drawings, prints and sculptures are Free (9701–9703). Formal entries (over $2,500) pay the merchandise processing fee, 0.3464% of value with a $34.58 minimum and $670.86 maximum from October 1, 2026. Chinese works pay 7.5%, Russian 35% and listed Canadian works 50%. Reproductions, posters and decorative articles are not Chapter 97 and pay their own rates plus the 2026 Section 301 duty.',
+     'link': ''},
+    {'id': 'hs-painting', 'question': 'What is the HS code for paintings and artwork?',
+     'searchedAs': ['hs code for paintings', 'hs code for painting artwork', 'hts code for artwork', 'harmonized tariff code for artwork', 'hs code for artwork on canvas',
+                    'hs code for painting with frame', 'hs code 9701.91', '9701 hts code', 'hts 9701'],
+     'answer': 'Paintings, drawings and pastels executed entirely by hand are 9701: 9701.21 if over 100 years old, 9701.91 otherwise (mosaics 9701.22 / 9701.92, collages and similar 9701.29 / 9701.99). A frame of a normal kind and value is classified with the painting (note 6). Printed reproductions and art prints made photomechanically are 4911.91; original hand-pulled prints are 9702.',
+     'link': ''},
+    {'id': 'hs-sculpture', 'question': 'What is the HS code for a sculpture?',
+     'searchedAs': ['hs code for sculpture', 'hs code for bronze sculpture', 'hs code for original sculpture', 'hs code for stone sculpture', 'hs code for wooden sculpture',
+                    'hs code for ceramic sculpture', 'hs code for artwork sculpture'],
+     'answer': 'Original sculptures and statuary in any material are 9703: 9703.10 if over 100 years old, 9703.90 otherwise, Free. Heading 9703 includes the first 12 castings made from the sculptor\'s model (additional U.S. note 1). Mass-produced statuettes and works of conventional craftsmanship are classified by material, for example ceramic statuettes in 6913, wooden ones in 4420 and base-metal ones in 8306.',
+     'link': ''},
+    {'id': 'hs-antiques', 'question': 'What is the HS code for antiques and antique furniture?',
+     'searchedAs': ['hs code for antiques', 'hs code for antique furniture', 'hs code for antique jewellery', 'hs code for antique clock', 'hts 9706', 'hts code 9706',
+                    'hs tariff code for antiques'],
+     'answer': 'Antiques over 100 years old are 9706: 9706.10 if over 250 years old, 9706.90 if 100–250 years, each with statistical suffixes for silverware (.20), furniture (.40) and other (.60), Free. Antique paintings, prints, sculptures, stamps and collectors\' pieces stay in 9701–9705 (note 5(b)). Loose pearls and precious or semiprecious stones are never Chapter 97 (note 1(c)), and an article under 100 years old takes its normal heading.',
+     'link': ''},
+    {'id': 'hs-coins-stamps', 'question': 'What is the HS code for collectible coins and stamps?',
+     'searchedAs': ['hs code for coins', 'hs code for numismatic coins', 'hs code for coin collection', 'coins tariff code', 'ancient coins tariffs', 'hs code for stamps',
+                    'hs code postage stamps', 'tariffs on stamps'],
+     'answer': 'Coins of numismatic interest are 9705.31 (over 100 years old, with suffixes by age and gold or other) or 9705.39; non-legal-tender coins that are not collectors\' pieces are 7118. Used stamps, first-day covers and unused stamps not of current issue are 9704.00.00; unused current-issue stamps are 4907. All are Free except from China (7.5%), Canada (50% on 9704 and 9705.39) and Russia (35%).',
+     'link': ''},
+    {'id': 'antiquities', 'question': 'Can I import antiquities and archaeological objects into the U.S.?',
+     'searchedAs': ['importing antiquities to us', 'cultural property import restrictions', 'importing art into the us', 'importing antiques to usa'],
+     'answer': 'Yes, if the object is not restricted. Designated archaeological and ethnological material of the more than 30 countries with U.S. cultural property agreements or emergency actions (19 CFR 12.104g) needs the country\'s export certificate or proof it left before the designation or at least 10 years before entry. Material removed from Iraq since 1990 or Syria since 2011, stolen museum inventory and pre-Columbian monumental sculpture are restricted. CBP seizes restricted items.',
+     'link': 'tariff-engineering'},
+    {'id': 'ivory', 'question': 'Can you import ivory antiques into the U.S.?',
+     'searchedAs': ['can you import ivory into the us', 'ivory antique import', 'esa antique ivory'],
+     'answer': 'Only as a qualifying antique, or in narrow non-commercial cases. Commercial imports of African elephant worked ivory are banned (50 CFR 17.40(e)), but an antique at least 100 years old, not repaired with endangered species parts since December 28, 1973, may enter through one of 13 antique ports (such as New York, Boston, Los Angeles or Chicago O\'Hare) with FWS Form 3-177 and its CITES documents. Scrimshaw does not qualify.',
+     'link': 'tariff-engineering'},
+    {'id': 'imports', 'question': 'Where does the U.S. import art and antiques from?',
+     'searchedAs': ['hts chapter 97', 'us art imports by country', 'art imports united states'],
+     'answer': IMPORTS_FAQ,
+     'link': 'understand-industry'},
+]

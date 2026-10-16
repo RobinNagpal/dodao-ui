@@ -113,6 +113,18 @@ const COMTRADE_ALIASES: Record<string, string> = {
   falklandislandsmalvinas: 'FK',
   sintmaarten: 'SX',
   holysee: 'VA',
+  holyseevaticancitystate: 'VA',
+  myanmar: 'MM',
+  brvirginislands: 'VG',
+  cocosislands: 'CC',
+  christmasislands: 'CX',
+  norfolkislands: 'NF',
+  naoero: 'NR',
+  brindianoceanterr: 'IO',
+  wallisandfutunaislands: 'WF',
+  sainthelena: 'SH',
+  pitcairn: 'PN',
+  frsouthantarcticterr: 'TF',
 };
 
 export function isoForCountryName(name: string): string | null {

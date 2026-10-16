@@ -26,7 +26,8 @@ import { extractListCodes, PROGRAM_COVERAGE_FILE, type ProgramCoverageFile } fro
  *
  * Needs a Python with `pypdf` (text) and `pdfplumber` (shading): `python3 -m venv v && v/bin/pip install pypdf pdfplumber`.
  * `--text <file>` reuses an already extracted text; `--keep-shading` keeps the committed `expiredHeadings` instead of
- * reading the PDF drawing (then pdfplumber isn't needed).
+ * reading the PDF drawing (then pdfplumber isn't needed). `--lines-only --hts-file <json>` rebuilds just `chapterLines`
+ * (no PDF, no Python), e.g. after a change to statistical-suffixes.json.
  */
 
 const DEFAULT_RELEASE = '2026HTSRev21';
@@ -213,6 +214,20 @@ function formatFile(file: ProgramCoverageFile): string {
   return lines.join('\n') + '\n';
 }
 
+/**
+ * Every 10-digit line per chapter (01–97), as `editionByChapter` sees the edition — including the statistical
+ * reporting numbers the JSON leaves out (Chapter 91 statistical note 1, see lib/statistical-suffix-rows.ts).
+ */
+function chapterLinesOf(rows: Parameters<typeof editionByChapter>[0]): Record<string, string> {
+  const chapterLines: Record<string, string> = {};
+  for (const [chapter, lines] of Array.from(editionByChapter(rows)).sort((a, b) => a[0] - b[0])) {
+    if (chapter > 97) continue;
+    const codes = Array.from(new Set(lines.map((l) => l.htsCode10).filter((c): c is string => c !== null))).sort();
+    if (codes.length > 0) chapterLines[String(chapter).padStart(2, '0')] = codes.join(' ');
+  }
+  return chapterLines;
+}
+
 async function main(): Promise<void> {
   const args = parseCliArgs(process.argv.slice(2));
   const release = stringArg(args, 'release') ?? DEFAULT_RELEASE;
@@ -221,6 +236,20 @@ async function main(): Promise<void> {
   const out = path.resolve(stringArg(args, 'out') ?? PROGRAM_COVERAGE_FILE);
   const keepShading = args['keep-shading'] === true;
   const sourceUrl = chapter99PdfUrl(release);
+
+  // --lines-only: rebuild just `chapterLines` from the HTS JSON; the note lists and the shading stay as committed.
+  if (args['lines-only'] === true) {
+    if (!existsSync(out)) throw new Error(`--lines-only needs an existing ${out}`);
+    const current = JSON.parse(readFileSync(out, 'utf8')) as ProgramCoverageFile;
+    const hts = await loadHtsSource({ file: stringArg(args, 'hts-file'), edition: stringArg(args, 'edition') ?? current.htsEdition });
+    if (hts.edition !== current.htsEdition)
+      throw new Error(`HTS JSON edition ${hts.edition} differs from the file's ${current.htsEdition} — regenerate everything`);
+    const chapterLines = chapterLinesOf(hts.rows);
+    writeFileSync(out, formatFile({ ...current, generatedAt: new Date().toISOString(), chapterLines }));
+    const count = Object.values(chapterLines).reduce((n, joined) => n + joined.split(' ').length, 0);
+    console.log(`Wrote ${path.relative(process.cwd(), out)}: chapterLines only (${count} lines in ${Object.keys(chapterLines).length} chapters)`);
+    return;
+  }
 
   let pdfPath = stringArg(args, 'pdf');
   const textPath = stringArg(args, 'text');
@@ -270,12 +299,7 @@ async function main(): Promise<void> {
   // 3. HTS lines per chapter.
   const hts = await loadHtsSource({ file: stringArg(args, 'hts-file'), edition });
   if (hts.edition !== edition) console.warn(`WARNING: HTS JSON edition ${hts.edition} differs from --edition ${edition}`);
-  const chapterLines: Record<string, string> = {};
-  for (const [chapter, lines] of Array.from(editionByChapter(hts.rows)).sort((a, b) => a[0] - b[0])) {
-    if (chapter > 97) continue;
-    const codes = Array.from(new Set(lines.map((l) => l.htsCode10).filter((c): c is string => c !== null))).sort();
-    if (codes.length > 0) chapterLines[String(chapter).padStart(2, '0')] = codes.join(' ');
-  }
+  const chapterLines = chapterLinesOf(hts.rows);
 
   const file: ProgramCoverageFile = {
     htsEdition: edition,

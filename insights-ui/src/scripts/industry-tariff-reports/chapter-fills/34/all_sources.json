@@ -1,0 +1,1652 @@
+{
+  "hts-now": {
+    "id": "hts-now",
+    "publisher": "USITC",
+    "citation": "HTSUS 2026 Revision 21",
+    "document": "Harmonized Tariff Schedule",
+    "title": "Harmonized Tariff Schedule of the United States, 2026 Revision 21",
+    "signed": null,
+    "published": "2026-10-07",
+    "url": "https://www.usitc.gov/sites/default/files/tata/hts/hts_2026_revision_21_json.json"
+  },
+  "hts-now-cr": {
+    "id": "hts-now-cr",
+    "publisher": "USITC",
+    "citation": "HTSUS 2026 Revision 21 Change Record",
+    "document": "Change Record",
+    "title": "Harmonized Tariff Schedule of the United States (2026 Revision 21), Change Record",
+    "signed": null,
+    "published": "2026-10-07",
+    "url": "https://hts.usitc.gov/reststop/file?release=2026HTSRev21&filename=Change%20Record"
+  },
+  "hts-before": {
+    "id": "hts-before",
+    "publisher": "USITC",
+    "citation": "HTSUS 2025 Basic Edition",
+    "document": "Harmonized Tariff Schedule",
+    "title": "Harmonized Tariff Schedule of the United States, 2025 Basic Edition",
+    "signed": null,
+    "published": "2024-12-10",
+    "url": "https://www.usitc.gov/sites/default/files/tata/hts/hts_2025_basic_edition_json.json"
+  },
+  "fr-2026-15181": {
+    "id": "fr-2026-15181",
+    "publisher": "Federal Register",
+    "citation": "91 FR 47318",
+    "document": "Notice (USTR)",
+    "title": "Notice of Actions in Section 301 Investigations of Acts, Policies, and Practices of Various Economies Related to the Failure of Each Economy To Impose and Effectively Enforce a Prohibition on the Importation of Goods Produced With Forced Labor",
+    "signed": null,
+    "published": "2026-07-28",
+    "url": "https://www.federalregister.gov/documents/2026/07/28/2026-15181/notice-of-actions-in-section-301-investigations-of-acts-policies-and-practices-of-various-economies"
+  },
+  "fr-2026-15274": {
+    "id": "fr-2026-15274",
+    "publisher": "Federal Register",
+    "citation": "91 FR 47717",
+    "document": "Presidential Memorandum",
+    "title": "Actions by the United States in the Investigations Under Section 301 of the Trade Act of 1974 of the Acts, Policies, and Practices of 60 Economies Related to the Failure of Each Economy To Impose and Effectively Enforce a Prohibition on the Importation of Goods Produced With Forced Labor",
+    "signed": "2026-07-23",
+    "published": "2026-07-28",
+    "url": "https://www.federalregister.gov/documents/2026/07/28/2026-15274/actions-by-the-united-states-in-the-investigations-under-section-301-of-the-trade-act-of-1974-of-the"
+  },
+  "hts-chapter-99": {
+    "id": "hts-chapter-99",
+    "publisher": "USITC",
+    "citation": "HTSUS 2026 Revision 21, Chapter 99",
+    "document": "Harmonized Tariff Schedule",
+    "title": "Harmonized Tariff Schedule of the United States (2026 Revision 21), Chapter 99",
+    "signed": null,
+    "published": "2026-10-07",
+    "url": "https://hts.usitc.gov/reststop/file?release=2026HTSRev21&filename=Chapter%2099"
+  },
+  "fr-2026-14542": {
+    "id": "fr-2026-14542",
+    "publisher": "Federal Register",
+    "citation": "91 FR 45516",
+    "document": "Notice (USTR)",
+    "title": "Notice of Action: Brazil's Acts, Policies, and Practices Related to Digital Trade and Electronic Payment Services; Unfair, Preferential Tariffs; Anti-Corruption Enforcement; Intellectual Property Protection; Ethanol Market Access; and Illegal Deforestation",
+    "signed": null,
+    "published": "2026-07-20",
+    "url": "https://www.federalregister.gov/documents/2026/07/20/2026-14542/notice-of-action-brazils-acts-policies-and-practices-related-to-digital-trade-and-electronic-payment"
+  },
+  "fr-2018-20610": {
+    "id": "fr-2018-20610",
+    "publisher": "Federal Register",
+    "citation": "83 FR 47974",
+    "document": "Notice (USTR)",
+    "title": "Notice of Modification of Section 301 Action: China's Acts, Policies, and Practices Related to Technology Transfer, Intellectual Property, and Innovation",
+    "signed": null,
+    "published": "2018-09-21",
+    "url": "https://www.federalregister.gov/documents/2018/09/21/2018-20610/notice-of-modification-of-section-301-action-chinas-acts-policies-and-practices-related-to"
+  },
+  "fr-2019-09681": {
+    "id": "fr-2019-09681",
+    "publisher": "Federal Register",
+    "citation": "84 FR 20459",
+    "document": "Notice (USTR)",
+    "title": "Notice of Modification of Section 301 Action: China's Acts, Policies, and Practices Related to Technology Transfer, Intellectual Property, and Innovation",
+    "signed": null,
+    "published": "2019-05-09",
+    "url": "https://www.federalregister.gov/documents/2019/05/09/2019-09681/notice-of-modification-of-section-301-action-chinas-acts-policies-and-practices-related-to"
+  },
+  "fr-2026-20510": {
+    "id": "fr-2026-20510",
+    "publisher": "Federal Register",
+    "citation": "91 FR 64212",
+    "document": "Notice (USTR)",
+    "title": "Continuation of Actions: China's Acts, Policies, and Practices Related to Technology Transfer, Intellectual Property, and Innovation",
+    "signed": null,
+    "published": "2026-10-07",
+    "url": "https://www.federalregister.gov/documents/2026/10/07/2026-20510/continuation-of-actions-chinas-acts-policies-and-practices-related-to-technology-transfer"
+  },
+  "fr-2019-17865": {
+    "id": "fr-2019-17865",
+    "publisher": "Federal Register",
+    "citation": "84 FR 43304",
+    "document": "Notice (USTR)",
+    "title": "Notice of Modification of Section 301 Action: China's Acts, Policies, and Practices Related to Technology Transfer, Intellectual Property, and Innovation",
+    "signed": null,
+    "published": "2019-08-20",
+    "url": "https://www.federalregister.gov/documents/2019/08/20/2019-17865/notice-of-modification-of-section-301-action-chinas-acts-policies-and-practices-related-to"
+  },
+  "fr-2020-00904": {
+    "id": "fr-2020-00904",
+    "publisher": "Federal Register",
+    "citation": "85 FR 3741",
+    "document": "Notice (USTR)",
+    "title": "Notice of Modification of Section 301 Action: China's Acts, Policies, and Practices Related to Technology Transfer, Intellectual Property, and Innovation",
+    "signed": null,
+    "published": "2020-01-22",
+    "url": "https://www.federalregister.gov/documents/2020/01/22/2020-00904/notice-of-modification-of-section-301-action-chinas-acts-policies-and-practices-related-to"
+  },
+  "fr-2025-22690": {
+    "id": "fr-2025-22690",
+    "publisher": "Federal Register",
+    "citation": "90 FR 57807",
+    "document": "Notice (USTR)",
+    "title": "Notice of Action: Nicaragua's Acts, Policies, and Practices Related to Labor Rights, Human Rights and Fundamental Freedoms, and the Rule of Law",
+    "signed": null,
+    "published": "2025-12-12",
+    "url": "https://www.federalregister.gov/documents/2025/12/12/2025-22690/notice-of-action-nicaraguas-acts-policies-and-practices-related-to-labor-rights-human-rights-and"
+  },
+  "fr-2025-23892": {
+    "id": "fr-2025-23892",
+    "publisher": "Federal Register",
+    "citation": "90 FR 60850",
+    "document": "Notice (USTR)",
+    "title": "Notice of Implementation of Action: Nicaragua's Acts, Policies, and Practices Related to Labor Rights, Human Rights and Fundamental Freedoms, and the Rule of Law",
+    "signed": null,
+    "published": "2025-12-29",
+    "url": "https://www.federalregister.gov/documents/2025/12/29/2025-23892/notice-of-implementation-of-action-nicaraguas-acts-policies-and-practices-related-to-labor-rights"
+  },
+  "hts-ch20": {
+    "id": "hts-ch20",
+    "publisher": "USITC",
+    "citation": "HTSUS 2026 Revision 21, Chapter 20",
+    "document": "Harmonized Tariff Schedule",
+    "title": "Harmonized Tariff Schedule of the United States (2026 Revision 21), Chapter 20: Preparations of Vegetables, Fruit, Nuts or Other Parts of Plants",
+    "signed": null,
+    "published": "2026-10-07",
+    "url": "https://hts.usitc.gov/reststop/file?release=2026HTSRev21&filename=Chapter%2020"
+  },
+  "fda-oj-2026": {
+    "id": "fda-oj-2026",
+    "publisher": "Federal Register",
+    "citation": "91 FR 45190",
+    "document": "Final rule (FDA)",
+    "title": "Food Standards of Identity Modernization; Pasteurized Orange Juice",
+    "signed": null,
+    "published": "2026-07-20",
+    "url": "https://www.federalregister.gov/documents/2026/07/20/2026-14573/food-standards-of-identity-modernization-pasteurized-orange-juice"
+  },
+  "fda-std-11": {
+    "id": "fda-std-11",
+    "publisher": "Federal Register",
+    "citation": "90 FR 33268",
+    "document": "Direct final rule (FDA)",
+    "title": "Revocation of Food Standards for 11 Products Not Currently Sold",
+    "signed": null,
+    "published": "2025-07-17",
+    "url": "https://www.federalregister.gov/documents/2025/07/17/2025-13421/revocation-of-food-standards-for-11-products-not-currently-sold"
+  },
+  "fda-std-11-confirm": {
+    "id": "fda-std-11-confirm",
+    "publisher": "Federal Register",
+    "citation": "90 FR 46348",
+    "document": "Rule (FDA)",
+    "title": "Revocation of Food Standards for 11 Products Not Currently Sold; Confirmation of Effective Date",
+    "signed": null,
+    "published": "2025-09-26",
+    "url": "https://www.federalregister.gov/documents/2025/09/26/2025-18730/revocation-of-food-standards-for-11-products-not-currently-sold-confirmation-of-effective-date"
+  },
+  "ita-mush-cont": {
+    "id": "ita-mush-cont",
+    "publisher": "Federal Register",
+    "citation": "91 FR 48372",
+    "document": "Notice (Commerce, ITA)",
+    "title": "Certain Preserved Mushrooms From Chile, the People's Republic of China, India, and Indonesia: Continuation of Antidumping Duty Orders",
+    "signed": null,
+    "published": "2026-07-31",
+    "url": "https://www.federalregister.gov/documents/2026/07/31/2026-15472/certain-preserved-mushrooms-from-chile-the-peoples-republic-of-china-india-and-indonesia"
+  },
+  "ita-mush-fr": {
+    "id": "ita-mush-fr",
+    "publisher": "Federal Register",
+    "citation": "88 FR 3382",
+    "document": "Notice (Commerce, ITA)",
+    "title": "Certain Preserved Mushrooms From France: Antidumping Duty Order",
+    "signed": null,
+    "published": "2023-01-19",
+    "url": "https://www.federalregister.gov/documents/2023/01/19/2023-00931/certain-preserved-mushrooms-from-france-antidumping-duty-order"
+  },
+  "ita-mush-nl-pl-es": {
+    "id": "ita-mush-nl-pl-es",
+    "publisher": "Federal Register",
+    "citation": "88 FR 33096",
+    "document": "Notice (Commerce, ITA)",
+    "title": "Certain Preserved Mushrooms From the Netherlands, Poland, and Spain: Antidumping Duty Orders",
+    "signed": null,
+    "published": "2023-05-23",
+    "url": "https://www.federalregister.gov/documents/2023/05/23/2023-10939/certain-preserved-mushrooms-from-the-netherlands-poland-and-spain-antidumping-duty-orders"
+  },
+  "procl-11012": {
+    "id": "procl-11012",
+    "publisher": "Federal Register",
+    "citation": "91 FR 9339",
+    "document": "Proclamation 11012",
+    "title": "Imposing a Temporary Import Surcharge To Address Fundamental International Payments Problems",
+    "signed": "2026-02-20",
+    "published": "2026-02-25",
+    "url": "https://www.federalregister.gov/documents/2026/02/25/2026-03824/imposing-a-temporary-import-surcharge-to-address-fundamental-international-payments-problems"
+  },
+  "eo-14389": {
+    "id": "eo-14389",
+    "publisher": "Federal Register",
+    "citation": "91 FR 9437",
+    "document": "Executive Order 14389",
+    "title": "Ending Certain Tariff Actions",
+    "signed": "2026-02-20",
+    "published": "2026-02-25",
+    "url": "https://www.federalregister.gov/documents/2026/02/25/2026-03832/ending-certain-tariff-actions"
+  },
+  "csms-67834313": {
+    "id": "csms-67834313",
+    "publisher": "CBP",
+    "citation": "CSMS # 67834313",
+    "document": "CBP CSMS message",
+    "title": "Ending Collection of International Emergency Economic Powers Act Duties",
+    "signed": null,
+    "published": "2026-02-22",
+    "url": "https://content.govdelivery.com/bulletins/gd/USDHSCBP-40b11c9"
+  },
+  "scotus-24-1287": {
+    "id": "scotus-24-1287",
+    "publisher": "Supreme Court of the United States",
+    "citation": "607 U.S. 229",
+    "document": "Opinion, No. 24-1287",
+    "title": "Learning Resources, Inc. v. Trump",
+    "signed": null,
+    "published": "2026-02-20",
+    "url": "https://www.supremecourt.gov/opinions/25pdf/607us2r12_8nj9.pdf"
+  },
+  "eo-14193": {
+    "id": "eo-14193",
+    "publisher": "Federal Register",
+    "citation": "90 FR 9113",
+    "document": "Executive Order 14193",
+    "title": "Imposing Duties To Address the Flow of Illicit Drugs Across Our Northern Border",
+    "signed": "2025-02-01",
+    "published": "2025-02-07",
+    "url": "https://www.federalregister.gov/documents/2025/02/07/2025-02406/imposing-duties-to-address-the-flow-of-illicit-drugs-across-our-northern-border"
+  },
+  "eo-14194": {
+    "id": "eo-14194",
+    "publisher": "Federal Register",
+    "citation": "90 FR 9117",
+    "document": "Executive Order 14194",
+    "title": "Imposing Duties To Address the Situation at Our Southern Border",
+    "signed": "2025-02-01",
+    "published": "2025-02-07",
+    "url": "https://www.federalregister.gov/documents/2025/02/07/2025-02407/imposing-duties-to-address-the-situation-at-our-southern-border"
+  },
+  "eo-14325": {
+    "id": "eo-14325",
+    "publisher": "Federal Register",
+    "citation": "90 FR 37957",
+    "document": "Executive Order 14325",
+    "title": "Amendment to Duties To Address the Flow of Illicit Drugs Across Our Northern Border",
+    "signed": "2025-07-31",
+    "published": "2025-08-06",
+    "url": "https://www.federalregister.gov/documents/2025/08/06/2025-14999/amendment-to-duties-to-address-the-flow-of-illicit-drugs-across-our-northern-border"
+  },
+  "eo-14257": {
+    "id": "eo-14257",
+    "publisher": "Federal Register",
+    "citation": "90 FR 15041",
+    "document": "Executive Order 14257",
+    "title": "Regulating Imports With a Reciprocal Tariff To Rectify Trade Practices That Contribute to Large and Persistent Annual United States Goods Trade Deficits",
+    "signed": "2025-04-02",
+    "published": "2025-04-07",
+    "url": "https://www.federalregister.gov/documents/2025/04/07/2025-06063/regulating-imports-with-a-reciprocal-tariff-to-rectify-trade-practices-that-contribute-to-large-and"
+  },
+  "eo-14360": {
+    "id": "eo-14360",
+    "publisher": "Federal Register",
+    "citation": "90 FR 54091",
+    "document": "Executive Order 14360",
+    "title": "Modifying the Scope of the Reciprocal Tariffs With Respect to Certain Agricultural Products",
+    "signed": "2025-11-14",
+    "published": "2025-11-25",
+    "url": "https://www.federalregister.gov/documents/2025/11/25/2025-21203/modifying-the-scope-of-the-reciprocal-tariffs-with-respect-to-certain-agricultural-products"
+  },
+  "eo-14361": {
+    "id": "eo-14361",
+    "publisher": "Federal Register",
+    "citation": "90 FR 54467",
+    "document": "Executive Order 14361",
+    "title": "Modifying the Scope of Tariffs on the Government of Brazil",
+    "signed": "2025-11-20",
+    "published": "2025-11-26",
+    "url": "https://www.federalregister.gov/documents/2025/11/26/2025-21417/modifying-the-scope-of-tariffs-on-the-government-of-brazil"
+  },
+  "eo-14323": {
+    "id": "eo-14323",
+    "publisher": "Federal Register",
+    "citation": "90 FR 37739",
+    "document": "Executive Order 14323",
+    "title": "Addressing Threats to the United States by the Government of Brazil",
+    "signed": "2025-07-30",
+    "published": "2025-08-05",
+    "url": "https://www.federalregister.gov/documents/2025/08/05/2025-14896/addressing-threats-to-the-united-states-by-the-government-of-brazil"
+  },
+  "ustr-usmca-review": {
+    "id": "ustr-usmca-review",
+    "publisher": "USTR",
+    "citation": "USTR press release",
+    "document": "Statement",
+    "title": "Ambassador Greer Issues Statement on the USMCA Joint Review",
+    "signed": null,
+    "published": "2026-07-01",
+    "url": "https://ustr.gov/about/policy-offices/press-office/press-releases/2026/july/ambassador-greer-issues-statement-usmca-joint-review"
+  },
+  "procl-11046": {
+    "id": "procl-11046",
+    "publisher": "Federal Register",
+    "citation": "91 FR 46639",
+    "document": "Proclamation 11046",
+    "title": "Imposing Additional Duties To Offset Canadian Discrimination Against the Commerce of the United States With Respect to Alcoholic Beverages",
+    "signed": "2026-07-20",
+    "published": "2026-07-23",
+    "url": "https://www.federalregister.gov/documents/2026/07/23/2026-14991/imposing-additional-duties-to-offset-canadian-discrimination-against-the-commerce-of-the-united-states"
+  },
+  "procl-11047": {
+    "id": "procl-11047",
+    "publisher": "Federal Register",
+    "citation": "91 FR 46653",
+    "document": "Proclamation 11047",
+    "title": "Imposing Additional Duties To Offset Canadian Discrimination Against the Commerce of the United States With Respect to Dairy",
+    "signed": "2026-07-20",
+    "published": "2026-07-23",
+    "url": "https://www.federalregister.gov/documents/2026/07/23/2026-14992/imposing-additional-duties-to-offset-canadian-discrimination-against-the-commerce-of-the-united-states"
+  },
+  "procl-11048": {
+    "id": "procl-11048",
+    "publisher": "Federal Register",
+    "citation": "91 FR 46663",
+    "document": "Proclamation 11048",
+    "title": "Imposing Additional Duties To Offset Canadian Discrimination Against the Commerce of the United States With Respect to Motor Vehicles",
+    "signed": "2026-07-20",
+    "published": "2026-07-23",
+    "url": "https://www.federalregister.gov/documents/2026/07/23/2026-14997/imposing-additional-duties-to-offset-canadian-discrimination-against-the-commerce-of-the-united-states"
+  },
+  "procl-11062": {
+    "id": "procl-11062",
+    "publisher": "Federal Register",
+    "citation": "91 FR 58319",
+    "document": "Proclamation 11062",
+    "title": "Excluding Certain Canadian Products From Importation Into the United States in Response to Continued Discrimination Against the Commerce of the United States With Respect to Dairy",
+    "signed": "2026-09-08",
+    "published": "2026-09-14",
+    "url": "https://www.federalregister.gov/documents/2026/09/14/2026-18836/excluding-certain-canadian-products-from-importation-into-the-united-states-in-response-to-continued"
+  },
+  "ustr-agoa-2026": {
+    "id": "ustr-agoa-2026",
+    "publisher": "USTR",
+    "citation": "USTR press release",
+    "document": "Statement",
+    "title": "Statement from Ambassador Jamieson Greer on the Reauthorization of the African Growth and Opportunity Act",
+    "signed": null,
+    "published": "2026-02-03",
+    "url": "https://ustr.gov/about/policy-offices/press-office/press-releases/2026/february/statement-ambassador-jamieson-greer-reauthorization-african-growth-and-opportunity-act"
+  },
+  "crs-agoa": {
+    "id": "crs-agoa",
+    "publisher": "Congressional Research Service",
+    "citation": "CRS IF10149 (P.L. 119-75, Div. I, sec. 5019)",
+    "document": "CRS In Focus",
+    "title": "African Growth and Opportunity Act (AGOA)",
+    "signed": null,
+    "published": "2026-02-17",
+    "url": "https://www.congress.gov/crs_external_products/IF/PDF/IF10149/IF10149.26.pdf"
+  },
+  "procl-11030": {
+    "id": "procl-11030",
+    "publisher": "Federal Register",
+    "citation": "91 FR 30469",
+    "document": "Proclamation 11030",
+    "title": "To Implement Certain Provisions in the Consolidated Appropriations Act, 2026, and for Other Purposes",
+    "signed": "2026-05-19",
+    "published": "2026-05-22",
+    "url": "https://www.federalregister.gov/documents/2026/05/22/2026-10398/to-implement-certain-provisions-in-the-consolidated-appropriations-act-2026-and-for-other-purposes"
+  },
+  "cbp-gsp": {
+    "id": "cbp-gsp",
+    "publisher": "CBP",
+    "citation": "CBP web page (modified August 6, 2026)",
+    "document": "Web page",
+    "title": "Generalized System of Preferences (GSP)",
+    "signed": null,
+    "published": "2026-08-06",
+    "url": "https://www.cbp.gov/trade/priority-issues/trade-agreements/special-trade-legislation/generalized-system-preferences"
+  },
+  "hts-ch98-usmca": {
+    "id": "hts-ch98-usmca",
+    "publisher": "USITC",
+    "citation": "HTSUS 2026 Revision 21, Chapter 98, subchapter XXIII",
+    "document": "Harmonized Tariff Schedule",
+    "title": "Harmonized Tariff Schedule of the United States (2026 Revision 21), Chapter 98, subchapter XXIII: provisions established pursuant to the USMCA",
+    "signed": null,
+    "published": "2026-10-07",
+    "url": "https://hts.usitc.gov/reststop/file?release=currentRelease&filename=Chapter%2098"
+  },
+  "hts-2025-rev16-cr": {
+    "id": "hts-2025-rev16-cr",
+    "publisher": "USITC",
+    "citation": "HTSUS 2025 Revision 16 Change Record",
+    "document": "Change Record",
+    "title": "Harmonized Tariff Schedule of the United States (2025 Revision 16), Change Record",
+    "signed": null,
+    "published": "2025-06-20",
+    "url": "https://hts.usitc.gov/reststop/file?release=2025HTSRev16&filename=Change%20Record"
+  },
+  "eo-14384": {
+    "id": "eo-14384",
+    "publisher": "Federal Register",
+    "citation": "91 FR 6501",
+    "document": "Executive Order 14384",
+    "title": "Modifying Duties To Address Threats to the United States by the Government of the Russian Federation",
+    "signed": "2026-02-06",
+    "published": "2026-02-11",
+    "url": "https://www.federalregister.gov/documents/2026/02/11/2026-02818/modifying-duties-to-address-threats-to-the-united-states-by-the-government-of-the-russian-federation"
+  },
+  "eo-14329": {
+    "id": "eo-14329",
+    "publisher": "Federal Register",
+    "citation": "90 FR 38701",
+    "document": "Executive Order 14329",
+    "title": "Addressing Threats to the United States by the Government of the Russian Federation",
+    "signed": "2025-08-06",
+    "published": "2025-08-11",
+    "url": "https://www.federalregister.gov/documents/2025/08/11/2025-15267/addressing-threats-to-the-united-states-by-the-government-of-the-russian-federation"
+  },
+  "eo-14326": {
+    "id": "eo-14326",
+    "publisher": "Federal Register",
+    "citation": "90 FR 37963",
+    "document": "Executive Order 14326",
+    "title": "Further Modifying the Reciprocal Tariff Rates",
+    "signed": "2025-07-31",
+    "published": "2025-08-06",
+    "url": "https://www.federalregister.gov/documents/2025/08/06/2025-15010/further-modifying-the-reciprocal-tariff-rates"
+  },
+  "eo-14195": {
+    "id": "eo-14195",
+    "publisher": "Federal Register",
+    "citation": "90 FR 9121",
+    "document": "Executive Order 14195",
+    "title": "Imposing Duties To Address the Synthetic Opioid Supply Chain in the People's Republic of China",
+    "signed": "2025-02-01",
+    "published": "2025-02-07",
+    "url": "https://www.federalregister.gov/documents/2025/02/07/2025-02408/imposing-duties-to-address-the-synthetic-opioid-supply-chain-in-the-peoples-republic-of-china"
+  },
+  "eo-14228": {
+    "id": "eo-14228",
+    "publisher": "Federal Register",
+    "citation": "90 FR 11463",
+    "document": "Executive Order 14228",
+    "title": "Further Amendment to Duties Addressing the Synthetic Opioid Supply Chain in the People's Republic of China",
+    "signed": "2025-03-03",
+    "published": "2025-03-07",
+    "url": "https://www.federalregister.gov/documents/2025/03/07/2025-03775/further-amendment-to-duties-addressing-the-synthetic-opioid-supply-chain-in-the-peoples-republic-of"
+  },
+  "eo-14357": {
+    "id": "eo-14357",
+    "publisher": "Federal Register",
+    "citation": "90 FR 50725",
+    "document": "Executive Order 14357",
+    "title": "Modifying Duties Addressing the Synthetic Opioid Supply Chain in the People's Republic of China",
+    "signed": "2025-11-04",
+    "published": "2025-11-07",
+    "url": "https://www.federalregister.gov/documents/2025/11/07/2025-19825/modifying-duties-addressing-the-synthetic-opioid-supply-chain-in-the-peoples-republic-of-china"
+  },
+  "eo-14231": {
+    "id": "eo-14231",
+    "publisher": "Federal Register",
+    "citation": "90 FR 11785",
+    "document": "Executive Order 14231",
+    "title": "Amendment to Duties To Address the Flow of Illicit Drugs Across Our Northern Border",
+    "signed": "2025-03-06",
+    "published": "2025-03-11",
+    "url": "https://www.federalregister.gov/documents/2025/03/11/2025-03990/amendment-to-duties-to-address-the-flow-of-illicit-drugs-across-our-northern-border"
+  },
+  "eo-14232": {
+    "id": "eo-14232",
+    "publisher": "Federal Register",
+    "citation": "90 FR 11787",
+    "document": "Executive Order 14232",
+    "title": "Amendment to Duties To Address the Flow of Illicit Drugs Across Our Southern Border",
+    "signed": "2025-03-06",
+    "published": "2025-03-11",
+    "url": "https://www.federalregister.gov/documents/2025/03/11/2025-03991/amendment-to-duties-to-address-the-flow-of-illicit-drugs-across-our-southern-border"
+  },
+  "fr-2021-07170": {
+    "id": "fr-2021-07170",
+    "publisher": "Federal Register",
+    "citation": "86 FR 18037",
+    "document": "Notice (Commerce)",
+    "title": "Phosphate Fertilizers From the Kingdom of Morocco and the Russian Federation: Countervailing Duty Orders",
+    "signed": null,
+    "published": "2021-04-07",
+    "url": "https://www.federalregister.gov/documents/2021/04/07/2021-07170/phosphate-fertilizers-from-the-kingdom-of-morocco-and-the-russian-federation-countervailing-duty"
+  },
+  "fr-2024-30693": {
+    "id": "fr-2024-30693",
+    "publisher": "Federal Register",
+    "citation": "89 FR 104979",
+    "document": "Notice (Commerce)",
+    "title": "Phosphate Fertilizers From the Kingdom of Morocco: Notice of Amended Final Results of Countervailing Duty Administrative Review; 2022",
+    "signed": null,
+    "published": "2024-12-26",
+    "url": "https://www.federalregister.gov/documents/2024/12/26/2024-30693/phosphate-fertilizers-from-the-kingdom-of-morocco-notice-of-amended-final-results-of-countervailing"
+  },
+  "fr-2026-00385": {
+    "id": "fr-2026-00385",
+    "publisher": "Federal Register",
+    "citation": "91 FR 1134",
+    "document": "Notice (Commerce)",
+    "title": "Phosphate Fertilizers From the Kingdom of Morocco: Notice of Court Decision Not in Harmony With the Results of Countervailing Duty Administrative Review",
+    "signed": null,
+    "published": "2026-01-12",
+    "url": "https://www.federalregister.gov/documents/2026/01/12/2026-00385/phosphate-fertilizers-from-the-kingdom-of-morocco-notice-of-court-decision-not-in-harmony-with-the"
+  },
+  "fr-2026-04068": {
+    "id": "fr-2026-04068",
+    "publisher": "Federal Register",
+    "citation": "91 FR 10142",
+    "document": "Notice (USITC)",
+    "title": "Phosphate Fertilizers From Morocco and Russia; Institution of Five-Year Reviews",
+    "signed": null,
+    "published": "2026-03-02",
+    "url": "https://www.federalregister.gov/documents/2026/03/02/2026-04068/phosphate-fertilizers-from-morocco-and-russia-institution-of-five-year-reviews"
+  },
+  "fr-2026-07503": {
+    "id": "fr-2026-07503",
+    "publisher": "Federal Register",
+    "citation": "91 FR 20639",
+    "document": "Notice (Commerce)",
+    "title": "Phosphate Fertilizers From the Russian Federation: Final Results of Countervailing Duty Administrative Review; 2023",
+    "signed": null,
+    "published": "2026-04-17",
+    "url": "https://www.federalregister.gov/documents/2026/04/17/2026-07503/phosphate-fertilizers-from-the-russian-federation-final-results-of-countervailing-duty"
+  },
+  "fr-2026-12207": {
+    "id": "fr-2026-12207",
+    "publisher": "Federal Register",
+    "citation": "91 FR 36612",
+    "document": "Notice (USITC)",
+    "title": "Phosphate Fertilizers From Morocco and Russia; Notice of Commission Determination To Conduct Full Five-Year Reviews",
+    "signed": null,
+    "published": "2026-06-17",
+    "url": "https://www.federalregister.gov/documents/2026/06/17/2026-12207/phosphate-fertilizers-from-morocco-and-russia-notice-of-commission-determination-to-conduct-full"
+  },
+  "fr-2026-13106": {
+    "id": "fr-2026-13106",
+    "publisher": "Federal Register",
+    "citation": "91 FR 39600",
+    "document": "Notice (Commerce)",
+    "title": "Phosphate Fertilizers From the Russian Federation: Final Results of the Expedited First Sunset Review of the Countervailing Duty Order",
+    "signed": null,
+    "published": "2026-06-30",
+    "url": "https://www.federalregister.gov/documents/2026/06/30/2026-13106/phosphate-fertilizers-from-the-russian-federation-final-results-of-the-expedited-first-sunset-review"
+  },
+  "procl-11038": {
+    "id": "procl-11038",
+    "publisher": "Federal Register",
+    "citation": "91 FR 40855",
+    "document": "Proclamation 11038",
+    "title": "Declaration of Emergency and Authorization for Temporary Duty-Free Importation of Phosphate Fertilizer From Morocco",
+    "signed": "2026-06-29",
+    "published": "2026-07-02",
+    "url": "https://www.federalregister.gov/documents/2026/07/02/2026-13588/declaration-of-emergency-and-authorization-for-temporary-duty-free-importation-of-phosphate"
+  },
+  "fr-2026-13796": {
+    "id": "fr-2026-13796",
+    "publisher": "Federal Register",
+    "citation": "91 FR 42180",
+    "document": "Notice (Commerce)",
+    "title": "Countervailing Duty Order of Phosphate Fertilizers From the Kingdom of Morocco: Temporary Duty Free Importation",
+    "signed": null,
+    "published": "2026-07-08",
+    "url": "https://www.federalregister.gov/documents/2026/07/08/2026-13796/countervailing-duty-order-of-phosphate-fertilizers-from-the-kingdom-of-morocco-temporary-duty-free"
+  },
+  "fr-2026-14971": {
+    "id": "fr-2026-14971",
+    "publisher": "Federal Register",
+    "citation": "91 FR 46772",
+    "document": "Notice (Commerce)",
+    "title": "Phosphate Fertilizers From the Kingdom of Morocco: Preliminary Results of First Full Sunset Review of the Countervailing Duty Order",
+    "signed": null,
+    "published": "2026-07-24",
+    "url": "https://www.federalregister.gov/documents/2026/07/24/2026-14971/phosphate-fertilizers-from-the-kingdom-of-morocco-preliminary-results-of-first-full-sunset-review-of"
+  },
+  "fr-2026-20715": {
+    "id": "fr-2026-20715",
+    "publisher": "Federal Register",
+    "citation": "91 FR 64676",
+    "document": "Notice (USITC)",
+    "title": "Phosphate Fertilizers From Morocco and Russia; Scheduling of Full Five-Year Reviews",
+    "signed": null,
+    "published": "2026-10-09",
+    "url": "https://www.federalregister.gov/documents/2026/10/09/2026-20715/phosphate-fertilizers-from-morocco-and-russia-scheduling-of-full-five-year-reviews"
+  },
+  "fr-2017-04753": {
+    "id": "fr-2017-04753",
+    "publisher": "Federal Register",
+    "citation": "82 FR 13094",
+    "document": "Notice (Commerce)",
+    "title": "Ammonium Sulfate From the People's Republic of China: Antidumping Duty and Countervailing Duty Orders",
+    "signed": null,
+    "published": "2017-03-09",
+    "url": "https://www.federalregister.gov/documents/2017/03/09/2017-04753/ammonium-sulfate-from-the-peoples-republic-of-china-antidumping-duty-and-countervailing-duty-orders"
+  },
+  "fr-2023-07042": {
+    "id": "fr-2023-07042",
+    "publisher": "Federal Register",
+    "citation": "88 FR 20124",
+    "document": "Notice (Commerce)",
+    "title": "Ammonium Sulfate From the People's Republic of China: Continuation of Antidumping and Countervailing Duty Orders",
+    "signed": null,
+    "published": "2023-04-05",
+    "url": "https://www.federalregister.gov/documents/2023/04/05/2023-07042/ammonium-sulfate-from-the-peoples-republic-of-china-continuation-of-antidumping-and-countervailing"
+  },
+  "fr-2022-17195": {
+    "id": "fr-2022-17195",
+    "publisher": "Federal Register",
+    "citation": "87 FR 48689",
+    "document": "Notice (USITC)",
+    "title": "Urea Ammonium Nitrate Solutions From Russia and Trinidad and Tobago (final determinations)",
+    "signed": null,
+    "published": "2022-08-10",
+    "url": "https://www.federalregister.gov/documents/2022/08/10/2022-17195/urea-ammonium-nitrate-solutions-from-russia-and-trinidad-and-tobago"
+  },
+  "ofac-2026-03-26": {
+    "id": "ofac-2026-03-26",
+    "publisher": "U.S. Treasury (OFAC)",
+    "citation": "OFAC recent actions, March 26, 2026",
+    "document": "Recent action",
+    "title": "Belarus Designations Removals; Issuance of Belarus General License; Rescission of Belarus Directive 1",
+    "signed": null,
+    "published": "2026-03-26",
+    "url": "https://ofac.treasury.gov/recent-actions/20260326"
+  },
+  "hts-ch23": {
+    "id": "hts-ch23",
+    "publisher": "USITC",
+    "citation": "HTSUS 2026 Revision 21, Chapter 23",
+    "document": "Harmonized Tariff Schedule",
+    "title": "Harmonized Tariff Schedule of the United States (2026 Revision 21), Chapter 23: Residues and Waste from the Food Industries; Prepared Animal Feed",
+    "signed": null,
+    "published": "2026-10-07",
+    "url": "https://hts.usitc.gov/reststop/file?release=2026HTSRev21&filename=Chapter%2023"
+  },
+  "hts-ch98": {
+    "id": "hts-ch98",
+    "publisher": "USITC",
+    "citation": "HTSUS 2026 Revision 21, Chapter 98",
+    "document": "Harmonized Tariff Schedule",
+    "title": "Harmonized Tariff Schedule of the United States (2026 Revision 21), Chapter 98",
+    "signed": null,
+    "published": "2026-10-07",
+    "url": "https://hts.usitc.gov/reststop/file?release=2026HTSRev21&filename=Chapter%2098"
+  },
+  "fr-2026-18924": {
+    "id": "fr-2026-18924",
+    "publisher": "Federal Register",
+    "citation": "91 FR 58627",
+    "document": "Notice (Commerce, ITA)",
+    "title": "L-lysine From the People's Republic of China: Antidumping Duty Order and Countervailing Duty Order",
+    "signed": null,
+    "published": "2026-09-16",
+    "url": "https://www.federalregister.gov/documents/2026/09/16/2026-18924/l-lysine-from-the-peoples-republic-of-china-antidumping-duty-order-and-countervailing-duty-order"
+  },
+  "fr-2025-18655": {
+    "id": "fr-2025-18655",
+    "publisher": "Federal Register",
+    "citation": "90 FR 46045",
+    "document": "Final rule (FDA)",
+    "title": "Prior Notice: Adding Requirement To Submit Mail Tracking Number for Articles of Food Arriving by International Mail and Timeframe for Post-Refusal and Post-Hold Submissions",
+    "signed": null,
+    "published": "2025-09-25",
+    "url": "https://www.federalregister.gov/documents/2025/09/25/2025-18655/prior-notice-adding-requirement-to-submit-mail-tracking-number-for-articles-of-food-arriving-by"
+  },
+  "fda-ia-71-04": {
+    "id": "fda-ia-71-04",
+    "publisher": "FDA",
+    "citation": "FDA Import Alert 71-04",
+    "document": "Import alert",
+    "title": "Detention Without Physical Examination of Food for Animals Due to the Presence of Salmonella",
+    "signed": null,
+    "published": "2026-08-31",
+    "url": "https://www.accessdata.fda.gov/cms_ia/importalert_217.html"
+  },
+  "fr-2025-13453": {
+    "id": "fr-2025-13453",
+    "publisher": "Federal Register",
+    "citation": "90 FR 33363",
+    "document": "Notice (Commerce, ITA)",
+    "title": "Fresh Tomatoes From Mexico: Termination of Suspension Agreement, Rescission of Administrative Reviews, and Imposition of an Antidumping Duty Order",
+    "signed": null,
+    "published": "2025-07-17",
+    "url": "https://www.federalregister.gov/documents/2025/07/17/2025-13453/fresh-tomatoes-from-mexico-termination-of-suspension-agreement-rescission-of-administrative-reviews"
+  },
+  "fr-2026-03195": {
+    "id": "fr-2026-03195",
+    "publisher": "Federal Register",
+    "citation": "91 FR 7439",
+    "document": "Notice (Commerce, ITA)",
+    "title": "Fresh Tomatoes From Mexico: Final Clarification of the Scope of the Antidumping Duty Order",
+    "signed": null,
+    "published": "2026-02-18",
+    "url": "https://www.federalregister.gov/documents/2026/02/18/2026-03195/fresh-tomatoes-from-mexico-final-clarification-of-the-scope-of-the-antidumping-duty-order"
+  },
+  "fr-2026-14884": {
+    "id": "fr-2026-14884",
+    "publisher": "Federal Register",
+    "citation": "91 FR 46455",
+    "document": "Notice (USITC)",
+    "title": "Fresh Tomatoes From Mexico; Determination (Investigation No. 751-TA-30, Changed Circumstances Review)",
+    "signed": null,
+    "published": "2026-07-23",
+    "url": "https://www.federalregister.gov/documents/2026/07/23/2026-14884/fresh-tomatoes-from-mexico-determination"
+  },
+  "fr-2023-11061": {
+    "id": "fr-2023-11061",
+    "publisher": "Federal Register",
+    "citation": "88 FR 33570",
+    "document": "Notice (Commerce, ITA)",
+    "title": "Fresh Garlic From the People's Republic of China: Continuation of Antidumping Duty Order",
+    "signed": null,
+    "published": "2023-05-24",
+    "url": "https://www.federalregister.gov/documents/2023/05/24/2023-11061/fresh-garlic-from-the-peoples-republic-of-china-continuation-of-antidumping-duty-order"
+  },
+  "fr-2024-12351": {
+    "id": "fr-2024-12351",
+    "publisher": "Federal Register",
+    "citation": "89 FR 48373",
+    "document": "Notice (Commerce, ITA)",
+    "title": "Fresh Garlic From the People's Republic of China: Final Results and Rescission of Antidumping Duty Administrative Review; 2021-2022",
+    "signed": null,
+    "published": "2024-06-06",
+    "url": "https://www.federalregister.gov/documents/2024/06/06/2024-12351/fresh-garlic-from-the-peoples-republic-of-china-final-results-and-rescission-of-antidumping-duty-administrative-review-2021-2022"
+  },
+  "fr-2026-07748": {
+    "id": "fr-2026-07748",
+    "publisher": "Federal Register",
+    "citation": "91 FR 21276",
+    "document": "Notice (USDA APHIS)",
+    "title": "Importation of Fresh Leaves and Stems of Glasswort From Israel Into the United States",
+    "signed": null,
+    "published": "2026-04-21",
+    "url": "https://www.federalregister.gov/documents/2026/04/21/2026-07748/importation-of-fresh-leaves-and-stems-of-glasswort-from-israel-into-the-united-states"
+  },
+  "fr-2026-04922": {
+    "id": "fr-2026-04922",
+    "publisher": "Federal Register",
+    "citation": "91 FR 12339",
+    "document": "Notice (USDA APHIS)",
+    "title": "Notice of Availability of a Pest Risk Analysis for the Importation of Fresh Sweet Potato (Ipomoea batatas (L.)) Roots From the Republic of Korea Into the United States",
+    "signed": null,
+    "published": "2026-03-13",
+    "url": "https://www.federalregister.gov/documents/2026/03/13/2026-04922/notice-of-availability-of-a-pest-risk-analysis-for-the-importation-of-fresh-sweet-potato-ipomoea"
+  },
+  "fr-2026-04205": {
+    "id": "fr-2026-04205",
+    "publisher": "Federal Register",
+    "citation": "91 FR 10365",
+    "document": "Notice (USDA APHIS)",
+    "title": "Notice of Availability of a Pest Risk Analysis for the Importation of Globe Artichoke From Sardinia, Italy Into the United States",
+    "signed": null,
+    "published": "2026-03-03",
+    "url": "https://www.federalregister.gov/documents/2026/03/03/2026-04205/notice-of-availability-of-a-pest-risk-analysis-for-the-importation-of-globe-artichoke-from-sardinia"
+  },
+  "hts-2026-rev2": {
+    "id": "hts-2026-rev2",
+    "publisher": "USITC",
+    "citation": "HTSUS 2026 Revision 2",
+    "document": "Harmonized Tariff Schedule",
+    "title": "Harmonized Tariff Schedule of the United States, 2026 Revision 2",
+    "signed": null,
+    "published": "2026-01-26",
+    "url": "https://www.usitc.gov/sites/default/files/tata/hts/hts_2026_revision_2_json.json"
+  },
+  "hts-2026-rev11": {
+    "id": "hts-2026-rev11",
+    "publisher": "USITC",
+    "citation": "HTSUS 2026 Revision 11",
+    "document": "Harmonized Tariff Schedule",
+    "title": "Harmonized Tariff Schedule of the United States, 2026 Revision 11",
+    "signed": null,
+    "published": "2026-06-22",
+    "url": "https://www.usitc.gov/sites/default/files/tata/hts/hts_2026_revision_11_json.json"
+  },
+  "procl-11020": {
+    "id": "procl-11020",
+    "publisher": "Federal Register",
+    "citation": "91 FR 18183",
+    "document": "Proclamation 11020",
+    "title": "Adjusting Imports of Pharmaceuticals and Pharmaceutical Ingredients Into the United States",
+    "signed": "2026-04-02",
+    "published": "2026-04-09",
+    "url": "https://www.federalregister.gov/documents/2026/04/09/2026-06956/adjusting-imports-of-pharmaceuticals-and-pharmaceutical-ingredients-into-the-united-states"
+  },
+  "csms-70054007": {
+    "id": "csms-70054007",
+    "publisher": "CBP",
+    "citation": "CSMS # 70054007",
+    "document": "CBP CSMS message",
+    "title": "UPDATED GUIDANCE: Section 232 Duties on Imports of Pharmaceutical Articles and Ingredients",
+    "signed": null,
+    "published": "2026-09-28",
+    "url": "https://content.govdelivery.com/accounts/USDHSCBP/bulletins/42cf077"
+  },
+  "csms-69395344": {
+    "id": "csms-69395344",
+    "publisher": "CBP",
+    "citation": "CSMS # 69395344",
+    "document": "CBP CSMS message",
+    "title": "GUIDANCE: Section 232 Duties on Imports of Patented Pharmaceutical Articles and Ingredients",
+    "signed": null,
+    "published": "2026-07-30",
+    "url": "https://content.govdelivery.com/accounts/USDHSCBP/bulletins/422e390"
+  },
+  "bis-uk": {
+    "id": "bis-uk",
+    "publisher": "Federal Register",
+    "citation": "91 FR 49406",
+    "document": "Notice (Commerce / BIS)",
+    "title": "Notice of Reduction of Tariffs on Patented Pharmaceuticals and Pharmaceutical Ingredients for Products of the United Kingdom Implemented by Presidential Proclamation 11020",
+    "signed": null,
+    "published": "2026-08-04",
+    "url": "https://www.federalregister.gov/documents/2026/08/04/2026-15799/notice-of-reduction-of-tariffs-on-patented-pharmaceuticals-and-pharmaceutical-ingredients-for"
+  },
+  "csms-69415934": {
+    "id": "csms-69415934",
+    "publisher": "CBP",
+    "citation": "CSMS # 69415934",
+    "document": "CBP CSMS message",
+    "title": "GUIDANCE: Reduction of Tariffs on Patented Pharmaceuticals and Pharmaceutical Ingredients for Products of the United Kingdom Implemented by Presidential Proclamation 11020",
+    "signed": null,
+    "published": "2026-08-01",
+    "url": "https://content.govdelivery.com/accounts/USDHSCBP/bulletins/42333fe"
+  },
+  "bis-specialty": {
+    "id": "bis-specialty",
+    "publisher": "Federal Register",
+    "citation": "91 FR 60360",
+    "document": "Notice (Commerce / BIS)",
+    "title": "Guidance and Procedures for Implementing Tariff Adjustments for Specialty Pharmaceuticals and Technical Corrections",
+    "signed": null,
+    "published": "2026-09-23",
+    "url": "https://www.federalregister.gov/documents/2026/09/23/2026-19498/guidance-and-procedures-for-implementing-tariff-adjustments-for-specialty-pharmaceuticals-and"
+  },
+  "bis-onshoring": {
+    "id": "bis-onshoring",
+    "publisher": "Federal Register",
+    "citation": "91 FR 26989",
+    "document": "Notice (Commerce / BIS)",
+    "title": "Procedures To Apply for Company-Specific Onshoring Agreements To Obtain Tariff Adjustments for Pharmaceuticals",
+    "signed": null,
+    "published": "2026-05-13",
+    "url": "https://www.federalregister.gov/documents/2026/05/13/2026-09489/procedures-to-apply-for-company-specific-onshoring-agreements-to-obtain-tariff-adjustments-for"
+  },
+  "bis-232-init": {
+    "id": "bis-232-init",
+    "publisher": "Federal Register",
+    "citation": "90 FR 15951",
+    "document": "Notice (Commerce / BIS)",
+    "title": "Notice of Request for Public Comments on Section 232 National Security Investigation of Imports of Pharmaceuticals and Pharmaceutical Ingredients",
+    "signed": null,
+    "published": "2025-04-16",
+    "url": "https://www.federalregister.gov/documents/2025/04/16/2025-06587/notice-of-request-for-public-comments-on-section-232-national-security-investigation-of-imports-of"
+  },
+  "ustr-301-fl": {
+    "id": "ustr-301-fl",
+    "publisher": "Federal Register",
+    "citation": "91 FR 47318",
+    "document": "Notice (USTR)",
+    "title": "Notice of Actions in Section 301 Investigations of Acts, Policies, and Practices of Various Economies",
+    "signed": null,
+    "published": "2026-07-28",
+    "url": "https://www.federalregister.gov/documents/2026/07/28/2026-15181/notice-of-actions-in-section-301-investigations-of-acts-policies-and-practices-of-various-economies"
+  },
+  "ustr-br-301": {
+    "id": "ustr-br-301",
+    "publisher": "Federal Register",
+    "citation": "91 FR 45516",
+    "document": "Notice (USTR)",
+    "title": "Notice of Action: Brazil's Acts, Policies, and Practices Related to Digital Trade and Electronic Payment Services; Unfair, Preferential Tariffs; Anti-Corruption Enforcement; Intellectual Property Protection; Ethanol Market Access; and Illegal Deforestation",
+    "signed": null,
+    "published": "2026-07-20",
+    "url": "https://www.federalregister.gov/documents/2026/07/20/2026-14542/notice-of-action-brazils-acts-policies-and-practices-related-to-digital-trade-and-electronic-payment"
+  },
+  "ustr-cn-301-continue": {
+    "id": "ustr-cn-301-continue",
+    "publisher": "Federal Register",
+    "citation": "91 FR 64212",
+    "document": "Notice (USTR)",
+    "title": "Continuation of Actions: China's Acts, Policies, and Practices Related to Technology Transfer, Intellectual Property, and Innovation",
+    "signed": null,
+    "published": "2026-10-07",
+    "url": "https://www.federalregister.gov/documents/2026/10/07/2026-20510/continuation-of-actions-chinas-acts-policies-and-practices-related-to-technology-transfer"
+  },
+  "ustr-301-cn-3-increase": {
+    "id": "ustr-301-cn-3-increase",
+    "publisher": "Federal Register",
+    "citation": "84 FR 20459",
+    "document": "Notice (USTR)",
+    "title": "Notice of Modification of Section 301 Action: China's Acts, Policies, and Practices Related to Technology Transfer, Intellectual Property, and Innovation",
+    "signed": null,
+    "published": "2019-05-09",
+    "url": "https://www.federalregister.gov/documents/2019/05/09/2019-09681/notice-of-modification-of-section-301-action-chinas-acts-policies-and-practices-related-to"
+  },
+  "ustr-301-cn-4a-cut": {
+    "id": "ustr-301-cn-4a-cut",
+    "publisher": "Federal Register",
+    "citation": "85 FR 3741",
+    "document": "Notice (USTR)",
+    "title": "Notice of Modification of Section 301 Action: China's Acts, Policies, and Practices Related to Technology Transfer, Intellectual Property, and Innovation",
+    "signed": null,
+    "published": "2020-01-22",
+    "url": "https://www.federalregister.gov/documents/2020/01/22/2020-00904/notice-of-modification-of-section-301-action-chinas-acts-policies-and-practices-related-to"
+  },
+  "fda-traceability": {
+    "id": "fda-traceability",
+    "publisher": "FDA",
+    "citation": "FDA web page (content current as of October 8, 2026)",
+    "document": "Web page",
+    "title": "FSMA Final Rule on Requirements for Additional Traceability Records for Certain Foods",
+    "signed": null,
+    "published": "2026-10-08",
+    "url": "https://www.fda.gov/food/food-safety-modernization-act-fsma/fsma-final-rule-requirements-additional-traceability-records-certain-foods"
+  },
+  "fr-2024-31144": {
+    "id": "fr-2024-31144",
+    "publisher": "Federal Register",
+    "citation": "89 FR 106231",
+    "document": "Final rule (USDA AMS)",
+    "title": "Section 8e Import Inspection Fee Structure",
+    "signed": null,
+    "published": "2024-12-30",
+    "url": "https://www.federalregister.gov/documents/2024/12/30/2024-31144/section-8e-import-inspection-fee-structure"
+  },
+  "fr-2025-01903": {
+    "id": "fr-2025-01903",
+    "publisher": "Federal Register",
+    "citation": "90 FR 8367",
+    "document": "Final rule; delay of effective date (USDA AMS)",
+    "title": "Section 8e Import Inspection Fee Structure",
+    "signed": null,
+    "published": "2025-01-29",
+    "url": "https://www.federalregister.gov/documents/2025/01/29/2025-01903/section-8e-import-inspection-fee-structure"
+  },
+  "fr-2025-09657": {
+    "id": "fr-2025-09657",
+    "publisher": "Federal Register",
+    "citation": "90 FR 22679",
+    "document": "Notice (USDA APHIS)",
+    "title": "Notice of Decision To Authorize the Importation of Fresh Pineapple (Ananas comosus) Fruit From Indonesia Into the United States",
+    "signed": null,
+    "published": "2025-05-29",
+    "url": "https://www.federalregister.gov/documents/2025/05/29/2025-09657/notice-of-decision-to-authorize-the-importation-of-fresh-pineapple-ananas-comosus-fruit-from"
+  },
+  "fr-2025-14091": {
+    "id": "fr-2025-14091",
+    "publisher": "Federal Register",
+    "citation": "90 FR 35265",
+    "document": "Notice (USDA APHIS)",
+    "title": "Notice of Decision To Deregulate Light Brown Apple Moth for Fruit Imported From New Zealand Into the United States",
+    "signed": null,
+    "published": "2025-07-25",
+    "url": "https://www.federalregister.gov/documents/2025/07/25/2025-14091/notice-of-decision-to-deregulate-light-brown-apple-moth-for-fruit-imported-from-new-zealand-into-the"
+  },
+  "fr-2025-18267": {
+    "id": "fr-2025-18267",
+    "publisher": "Federal Register",
+    "citation": "90 FR 45315",
+    "document": "Direct final rule (USDA AMS)",
+    "title": "Imported Walnuts; Suspension of Handling Regulations",
+    "signed": null,
+    "published": "2025-09-22",
+    "url": "https://www.federalregister.gov/documents/2025/09/22/2025-18267/imported-walnuts-suspension-of-handling-regulations"
+  },
+  "fr-2026-02372": {
+    "id": "fr-2026-02372",
+    "publisher": "Federal Register",
+    "citation": "91 FR 5365",
+    "document": "Proposed rule (USDA AMS)",
+    "title": "Kiwifruit Grown in California and Imported Kiwifruit; Modification of Handling Regulations",
+    "signed": null,
+    "published": "2026-02-06",
+    "url": "https://www.federalregister.gov/documents/2026/02/06/2026-02372/kiwifruit-grown-in-california-and-imported-kiwifruit-modification-of-handling-regulations"
+  },
+  "fr-2026-04206": {
+    "id": "fr-2026-04206",
+    "publisher": "Federal Register",
+    "citation": "91 FR 10364",
+    "document": "Notice (USDA APHIS)",
+    "title": "Notice of Proposed Revision to Requirements for the Importation of Pineapples From Taiwan Into the United States",
+    "signed": null,
+    "published": "2026-03-03",
+    "url": "https://www.federalregister.gov/documents/2026/03/03/2026-04206/notice-of-proposed-revision-to-requirements-for-the-importation-of-pineapples-from-taiwan-into-the"
+  },
+  "fr-2026-04584": {
+    "id": "fr-2026-04584",
+    "publisher": "Federal Register",
+    "citation": "91 FR 11131",
+    "document": "Final rule (USDA AMS)",
+    "title": "Avocados Grown in South Florida and Imported Avocados; Change in Maturity Requirements",
+    "signed": null,
+    "published": "2026-03-09",
+    "url": "https://www.federalregister.gov/documents/2026/03/09/2026-04584/avocados-grown-in-south-florida-and-imported-avocados-change-in-maturity-requirements"
+  },
+  "fr-2026-11636": {
+    "id": "fr-2026-11636",
+    "publisher": "Federal Register",
+    "citation": "91 FR 35176",
+    "document": "Notice (USDA APHIS)",
+    "title": "Notice of Proposed Revision to Requirements for the Importation of Fresh Pineapple (Ananas comosus (L.)) From the Philippines and Thailand Into the United States",
+    "signed": null,
+    "published": "2026-06-10",
+    "url": "https://www.federalregister.gov/documents/2026/06/10/2026-11636/notice-of-proposed-revision-to-requirements-for-the-importation-of-fresh-pineapple-ananas-comosus-l"
+  },
+  "fr-2026-19044": {
+    "id": "fr-2026-19044",
+    "publisher": "Federal Register",
+    "citation": "91 FR 58838",
+    "document": "Notice (USDA APHIS)",
+    "title": "Notice of Availability of a Pest Risk Analysis for the Importation of Fresh Coconut Fruit From Belize Into the United States",
+    "signed": null,
+    "published": "2026-09-17",
+    "url": "https://www.federalregister.gov/documents/2026/09/17/2026-19044/notice-of-availability-of-a-pest-risk-analysis-for-the-importation-of-fresh-coconut-fruit-from"
+  },
+  "pl-119-37": {
+    "id": "pl-119-37",
+    "publisher": "GovInfo",
+    "citation": "Pub. L. 119-37",
+    "document": "Public law",
+    "title": "Continuing Appropriations, Agriculture, Legislative Branch, Military Construction and Veterans Affairs, and Extensions Act, 2026",
+    "signed": "2025-11-12",
+    "published": "2025-11-12",
+    "url": "https://www.govinfo.gov/content/pkg/PLAW-119publ37/pdf/PLAW-119publ37.pdf"
+  },
+  "eo-14276": {
+    "id": "eo-14276",
+    "publisher": "Federal Register",
+    "citation": "90 FR 16993",
+    "document": "Executive Order 14276",
+    "title": "Restoring American Seafood Competitiveness",
+    "signed": "2025-04-17",
+    "published": "2025-04-22",
+    "url": "https://www.federalregister.gov/documents/2025/04/22/2025-07062/restoring-american-seafood-competitiveness"
+  },
+  "fr-2025-21671": {
+    "id": "fr-2025-21671",
+    "publisher": "Federal Register",
+    "citation": "90 FR 55232",
+    "document": "Notice (USTR)",
+    "title": "Notice of Product Exclusion Extensions: China's Acts, Policies, and Practices Related to Technology Transfer, Intellectual Property, and Innovation",
+    "signed": null,
+    "published": "2025-12-01",
+    "url": "https://www.federalregister.gov/documents/2025/12/01/2025-21671/notice-of-product-exclusion-extensions-chinas-acts-policies-and-practices-related-to-technology"
+  },
+  "mmpa-2025": {
+    "id": "mmpa-2025",
+    "publisher": "Federal Register",
+    "citation": "90 FR 42395",
+    "document": "Notice (NOAA Fisheries)",
+    "title": "Implementation of Fish and Fish Product Import Provisions of the Marine Mammal Protection Act \u2014 Notification of Comparability Findings and Implementation of Import Restrictions; Certification of Admissibility for Certain Fish Products",
+    "signed": null,
+    "published": "2025-09-02",
+    "url": "https://www.federalregister.gov/documents/2025/09/02/2025-16776/implementation-of-fish-and-fish-product-import-provisions-of-the-marine-mammal-protection"
+  },
+  "mmpa-nz-2026": {
+    "id": "mmpa-nz-2026",
+    "publisher": "Federal Register",
+    "citation": "91 FR 11962",
+    "document": "Notice (NOAA Fisheries)",
+    "title": "Implementation of Fish and Fish Product Import Provisions of the Marine Mammal Protection Act \u2014 Notification of Comparability Findings",
+    "signed": null,
+    "published": "2026-03-11",
+    "url": "https://www.federalregister.gov/documents/2026/03/11/2026-04747/implementation-of-fish-and-fish-product-import-provisions-of-the-marine-mammal-protection"
+  },
+  "mmpa-nc-gd-ie-2026": {
+    "id": "mmpa-nc-gd-ie-2026",
+    "publisher": "Federal Register",
+    "citation": "91 FR 12510",
+    "document": "Rule (NOAA Fisheries)",
+    "title": "Notification of Comparability Findings for New Caledonia, Grenada, and Ireland Under the Import Provisions of the Marine Mammal Protection Act",
+    "signed": null,
+    "published": "2026-03-16",
+    "url": "https://www.federalregister.gov/documents/2026/03/16/2026-05115/notification-of-comparability-findings-for-new-caledonia-grenada-and-ireland-under-the-import"
+  },
+  "mmpa-crab-2026": {
+    "id": "mmpa-crab-2026",
+    "publisher": "Federal Register",
+    "citation": "91 FR 25867",
+    "document": "Notice (NOAA Fisheries)",
+    "title": "Implementation of Fish and Fish Product Import Provisions of the Marine Mammal Protection Act \u2014 Notification of Comparability Findings",
+    "signed": null,
+    "published": "2026-05-12",
+    "url": "https://www.federalregister.gov/documents/2026/05/12/2026-09429/implementation-of-fish-and-fish-product-import-provisions-of-the-marine-mammal-protection"
+  },
+  "mmpa-anprm-2026": {
+    "id": "mmpa-anprm-2026",
+    "publisher": "Federal Register",
+    "citation": "91 FR 47798",
+    "document": "Advance notice of proposed rulemaking (NOAA Fisheries)",
+    "title": "Implementation of Fish and Fish Product Import Provisions of the Marine Mammal Protection Act",
+    "signed": null,
+    "published": "2026-07-29",
+    "url": "https://www.federalregister.gov/documents/2026/07/29/2026-15294/implementation-of-fish-and-fish-product-import-provisions-of-the-marine-mammal-protection-act"
+  },
+  "eo-14068": {
+    "id": "eo-14068",
+    "publisher": "Federal Register",
+    "citation": "87 FR 14381",
+    "document": "Executive Order 14068",
+    "title": "Prohibiting Certain Imports, Exports, and New Investment With Respect to Continued Russian Federation Aggression",
+    "signed": "2022-03-11",
+    "published": "2022-03-15",
+    "url": "https://www.federalregister.gov/documents/2022/03/15/2022-05554/prohibiting-certain-imports-exports-and-new-investment-with-respect-to-continued-russian-federation"
+  },
+  "eo-14114": {
+    "id": "eo-14114",
+    "publisher": "Federal Register",
+    "citation": "88 FR 89271",
+    "document": "Executive Order 14114",
+    "title": "Taking Additional Steps With Respect to the Russian Federation's Harmful Activities",
+    "signed": "2023-12-22",
+    "published": "2023-12-26",
+    "url": "https://www.federalregister.gov/documents/2023/12/26/2023-28662/taking-additional-steps-with-respect-to-the-russian-federations-harmful-activities"
+  },
+  "ofac-ru-seafood": {
+    "id": "ofac-ru-seafood",
+    "publisher": "Federal Register",
+    "citation": "89 FR 78245",
+    "document": "Rule (Treasury OFAC)",
+    "title": "Publication of Russian Harmful Foreign Activities Sanctions Regulations Determinations",
+    "signed": null,
+    "published": "2024-09-25",
+    "url": "https://www.federalregister.gov/documents/2024/09/25/2024-21798/publication-of-russian-harmful-foreign-activities-sanctions-regulations-determinations"
+  },
+  "adcvd-shrimp-2024": {
+    "id": "adcvd-shrimp-2024",
+    "publisher": "Federal Register",
+    "citation": "89 FR 104982",
+    "document": "Notice (Commerce ITA)",
+    "title": "Frozen Warmwater Shrimp From Indonesia: Antidumping Duty Order; Frozen Warmwater Shrimp From Ecuador, India, and the Socialist Republic of Vietnam: Countervailing Duty Orders",
+    "signed": null,
+    "published": "2024-12-26",
+    "url": "https://www.federalregister.gov/documents/2024/12/26/2024-30694/frozen-warmwater-shrimp-from-indonesia-antidumping-duty-order-frozen-warmwater-shrimp-from-ecuador"
+  },
+  "ad-shrimp-continued": {
+    "id": "ad-shrimp-continued",
+    "publisher": "Federal Register",
+    "citation": "88 FR 42914",
+    "document": "Notice (Commerce ITA)",
+    "title": "Certain Frozen Warmwater Shrimp From the People's Republic of China, India, Thailand, and the Socialist Republic of Vietnam: Continuation of Antidumping Duty Orders",
+    "signed": null,
+    "published": "2023-07-05",
+    "url": "https://www.federalregister.gov/documents/2023/07/05/2023-14181/certain-frozen-warmwater-shrimp-from-the-peoples-republic-of-china-india-thailand-and-the-socialist"
+  },
+  "ad-shrimp-in-2026": {
+    "id": "ad-shrimp-in-2026",
+    "publisher": "Federal Register",
+    "citation": "91 FR 56861",
+    "document": "Notice (Commerce ITA)",
+    "title": "Certain Frozen Warmwater Shrimp from India: Final Results of Antidumping Duty Administrative Review; 2024-2025",
+    "signed": null,
+    "published": "2026-09-04",
+    "url": "https://www.federalregister.gov/documents/2026/09/04/2026-18184/certain-frozen-warmwater-shrimp-from-india-final-results-of-antidumping-duty-administrative-review"
+  },
+  "cvd-shrimp-ec-2026": {
+    "id": "cvd-shrimp-ec-2026",
+    "publisher": "Federal Register",
+    "citation": "91 FR 58086",
+    "document": "Notice (Commerce ITA)",
+    "title": "Frozen Warmwater Shrimp From Ecuador: Amended Final Results of Countervailing Duty Expedited Review",
+    "signed": null,
+    "published": "2026-09-14",
+    "url": "https://www.federalregister.gov/documents/2026/09/14/2026-18697/frozen-warmwater-shrimp-from-ecuador-amended-final-results-of-countervailing-duty-expedited-review"
+  },
+  "ad-shrimp-th-2026": {
+    "id": "ad-shrimp-th-2026",
+    "publisher": "Federal Register",
+    "citation": "91 FR 63527",
+    "document": "Notice (Commerce ITA)",
+    "title": "Certain Frozen Warmwater Shrimp From Thailand: Final Results of Antidumping Duty Administrative Review and Final Determination of No Shipments; 2024-2025",
+    "signed": null,
+    "published": "2026-10-06",
+    "url": "https://www.federalregister.gov/documents/2026/10/06/2026-20488/certain-frozen-warmwater-shrimp-from-thailand-final-results-of-antidumping-duty-administrative"
+  },
+  "state-609-2026": {
+    "id": "state-609-2026",
+    "publisher": "Federal Register",
+    "citation": "91 FR 21364",
+    "document": "Notice (Department of State)",
+    "title": "Annual Determination and Certification of Shrimp-Harvesting Nations",
+    "signed": null,
+    "published": "2026-04-21",
+    "url": "https://www.federalregister.gov/documents/2026/04/21/2026-07676/annual-determination-and-certification-of-shrimp-harvesting-nations"
+  },
+  "fda-ia-99-52": {
+    "id": "fda-ia-99-52",
+    "publisher": "FDA",
+    "citation": "Import Alert 99-52 (revised July 7, 2026)",
+    "document": "Import alert",
+    "title": "Import Alert 99-52: certification required for shrimp and spices from Java and Lampung, Indonesia (cesium-137)",
+    "signed": null,
+    "published": "2026-07-07",
+    "url": "https://www.accessdata.fda.gov/cms_ia/importalert_1188.html"
+  },
+  "fda-cs137-2025": {
+    "id": "fda-cs137-2025",
+    "publisher": "FDA",
+    "citation": "FDA constituent update",
+    "document": "Announcement",
+    "title": "FDA Announces First Use of Import Certification Authority for Certain Shrimp and Spices Potentially Contaminated With Cesium-137",
+    "signed": null,
+    "published": "2025-10-03",
+    "url": "https://www.fda.gov/food/hfp-constituent-updates/fda-announces-first-use-import-certification-authority-certain-shrimp-and-spices-potentially"
+  },
+  "fda-cs137-page": {
+    "id": "fda-cs137-page",
+    "publisher": "FDA",
+    "citation": "FDA web page (content current as of October 5, 2026)",
+    "document": "Web page",
+    "title": "FDA Response to Imported Foods Potentially Contaminated with Cesium-137",
+    "signed": null,
+    "published": "2026-10-05",
+    "url": "https://www.fda.gov/food/environmental-contaminants-food/fda-response-imported-foods-potentially-contaminated-cesium-137"
+  },
+  "cbp-tuna-trq-2026": {
+    "id": "cbp-tuna-trq-2026",
+    "publisher": "Federal Register",
+    "citation": "91 FR 33186",
+    "document": "Notice (CBP Dec. 26-10)",
+    "title": "Tuna Tariff-Rate Quota for Calendar Year 2026 for Tuna Classifiable Under Subheading 1604.14.22, Harmonized Tariff Schedule of the United States (HTSUS)",
+    "signed": null,
+    "published": "2026-06-03",
+    "url": "https://www.federalregister.gov/documents/2026/06/03/2026-11113/tuna-tariff-rate-quota-for-calendar-year-2026-for-tuna-classifiable-under-subheading-16041422"
+  },
+  "fr-mmpa-2025": {
+    "id": "fr-mmpa-2025",
+    "publisher": "Federal Register",
+    "citation": "90 FR 42395",
+    "document": "Notice (NOAA Fisheries)",
+    "title": "Implementation of Fish and Fish Product Import Provisions of the Marine Mammal Protection Act--Notification of Comparability Findings and Implementation of Import Restrictions; Certification of Admissibility for Certain Fish Products",
+    "signed": null,
+    "published": "2025-09-02",
+    "url": "https://www.federalregister.gov/documents/2025/09/02/2025-16776/implementation-of-fish-and-fish-product-import-provisions-of-the-marine-mammal-protection"
+  },
+  "fr-mmpa-crab-2026": {
+    "id": "fr-mmpa-crab-2026",
+    "publisher": "Federal Register",
+    "citation": "91 FR 25867",
+    "document": "Notice (NOAA Fisheries)",
+    "title": "Implementation of Fish and Fish Product Import Provisions of the Marine Mammal Protection Action-Notification of Comparability Findings",
+    "signed": null,
+    "published": "2026-05-12",
+    "url": "https://www.federalregister.gov/documents/2026/05/12/2026-09429/implementation-of-fish-and-fish-product-import-provisions-of-the-marine-mammal-protection"
+  },
+  "fr-mmpa-anpr-2026": {
+    "id": "fr-mmpa-anpr-2026",
+    "publisher": "Federal Register",
+    "citation": "91 FR 47798",
+    "document": "Advance notice of proposed rulemaking (NOAA Fisheries)",
+    "title": "Implementation of Fish and Fish Product Import Provisions of the Marine Mammal Protection Act",
+    "signed": null,
+    "published": "2026-07-29",
+    "url": "https://www.federalregister.gov/documents/2026/07/29/2026-15294/implementation-of-fish-and-fish-product-import-provisions-of-the-marine-mammal-protection-act"
+  },
+  "fr-shrimp-609-2026": {
+    "id": "fr-shrimp-609-2026",
+    "publisher": "Federal Register",
+    "citation": "91 FR 21364",
+    "document": "Notice (Department of State)",
+    "title": "Annual Determination and Certification of Shrimp-Harvesting Nations",
+    "signed": null,
+    "published": "2026-04-21",
+    "url": "https://www.federalregister.gov/documents/2026/04/21/2026-07676/annual-determination-and-certification-of-shrimp-harvesting-nations"
+  },
+  "fr-shrimp-orders-2024": {
+    "id": "fr-shrimp-orders-2024",
+    "publisher": "Federal Register",
+    "citation": "89 FR 104982",
+    "document": "Notice (Commerce ITA)",
+    "title": "Frozen Warmwater Shrimp From Indonesia: Antidumping Duty Order; Frozen Warmwater Shrimp From Ecuador, India, and the Socialist Republic of Vietnam: Countervailing Duty Orders",
+    "signed": null,
+    "published": "2024-12-26",
+    "url": "https://www.federalregister.gov/documents/2024/12/26/2024-30694/frozen-warmwater-shrimp-from-indonesia-antidumping-duty-order-frozen-warmwater-shrimp-from-ecuador"
+  },
+  "fr-301-excl-ext": {
+    "id": "fr-301-excl-ext",
+    "publisher": "Federal Register",
+    "citation": "90 FR 55232",
+    "document": "Notice (USTR)",
+    "title": "Notice of Product Exclusion Extensions: China's Acts, Policies, and Practices Related to Technology Transfer, Intellectual Property, and Innovation",
+    "signed": null,
+    "published": "2025-12-01",
+    "url": "https://www.federalregister.gov/documents/2025/12/01/2025-21671/notice-of-product-exclusion-extensions-chinas-acts-policies-and-practices-related-to-technology"
+  },
+  "hts-ch16": {
+    "id": "hts-ch16",
+    "publisher": "USITC",
+    "citation": "HTSUS 2026 Revision 21, Chapter 16",
+    "document": "Harmonized Tariff Schedule",
+    "title": "Harmonized Tariff Schedule of the United States (2026 Revision 21), Chapter 16 (notes and additional U.S. notes)",
+    "signed": null,
+    "published": "2026-10-07",
+    "url": "https://hts.usitc.gov/reststop/file?release=2026HTSRev21&filename=Chapter%2016"
+  },
+  "hts-ch2": {
+    "id": "hts-ch2",
+    "publisher": "USITC",
+    "citation": "HTSUS 2026 Revision 21, Chapter 2",
+    "document": "Harmonized Tariff Schedule",
+    "title": "Harmonized Tariff Schedule of the United States (2026 Revision 21), Chapter 2: Meat and Edible Meat Offal",
+    "signed": null,
+    "published": "2026-10-07",
+    "url": "https://hts.usitc.gov/reststop/file?release=2026HTSRev21&filename=Chapter%202"
+  },
+  "proc-11010": {
+    "id": "proc-11010",
+    "publisher": "Federal Register",
+    "citation": "91 FR 7107",
+    "document": "Proclamation 11010",
+    "title": "Ensuring Affordable Beef for the American Consumer",
+    "signed": "2026-02-06",
+    "published": "2026-02-13",
+    "url": "https://www.federalregister.gov/documents/2026/02/13/2026-03050/ensuring-affordable-beef-for-the-american-consumer"
+  },
+  "proc-11059": {
+    "id": "proc-11059",
+    "publisher": "Federal Register",
+    "citation": "91 FR 55989",
+    "document": "Proclamation 11059",
+    "title": "Further Ensuring Affordable Beef for the American Consumer",
+    "signed": "2026-08-26",
+    "published": "2026-08-31",
+    "url": "https://www.federalregister.gov/documents/2026/08/31/2026-17842/further-ensuring-affordable-beef-for-the-american-consumer"
+  },
+  "ustr-beef-trq-uk": {
+    "id": "ustr-beef-trq-uk",
+    "publisher": "Federal Register",
+    "citation": "90 FR 61497",
+    "document": "Notice (USTR)",
+    "title": "Modification of the Allocation of the WTO Tariff-Rate Quota Volumes for Beef",
+    "signed": null,
+    "published": "2025-12-31",
+    "url": "https://www.federalregister.gov/documents/2025/12/31/2025-24120/modification-of-the-allocation-of-the-wto-tariff-rate-quota-volumes-for-beef"
+  },
+  "ustr-ausfta-2026": {
+    "id": "ustr-ausfta-2026",
+    "publisher": "Federal Register",
+    "citation": "91 FR 16080",
+    "document": "Notice (USTR)",
+    "title": "Publication of 2026 Tariff-Rate Quota Quantitative Limits Under the United States-Australia Free Trade Agreement",
+    "signed": null,
+    "published": "2026-03-31",
+    "url": "https://www.federalregister.gov/documents/2026/03/31/2026-06207/publication-of-2026-tariff-rate-quota-quantitative-limits-under-the-united-states-australia-free"
+  },
+  "eo-14425": {
+    "id": "eo-14425",
+    "publisher": "Federal Register",
+    "citation": "91 FR 57765",
+    "document": "Executive Order 14425",
+    "title": "Supporting America's Ranchers",
+    "signed": "2026-09-04",
+    "published": "2026-09-10",
+    "url": "https://www.federalregister.gov/documents/2026/09/10/2026-18571/supporting-americas-ranchers"
+  },
+  "fsis-usa-label": {
+    "id": "fsis-usa-label",
+    "publisher": "Federal Register",
+    "citation": "89 FR 19470",
+    "document": "Final rule (USDA FSIS)",
+    "title": "Voluntary Labeling of FSIS-Regulated Products With U.S.-Origin Claims",
+    "signed": null,
+    "published": "2024-03-18",
+    "url": "https://www.federalregister.gov/documents/2024/03/18/2024-05479/voluntary-labeling-of-fsis-regulated-products-with-us-origin-claims"
+  },
+  "aphis-fmd-hu-sk": {
+    "id": "aphis-fmd-hu-sk",
+    "publisher": "USDA APHIS",
+    "citation": "APHIS import alert (March 27, 2025)",
+    "document": "Import alert",
+    "title": "UPDATE: Import Alert: Foot-and-Mouth Disease Restrictions for Animal Commodities Originating from or Transiting Hungary, Slovakia, and/or Austria",
+    "signed": null,
+    "published": "2025-03-27",
+    "url": "https://content.govdelivery.com/accounts/USDAAPHIS/bulletins/3d92d28"
+  },
+  "fr-hpai-28day": {
+    "id": "fr-hpai-28day",
+    "publisher": "Federal Register",
+    "citation": "91 FR 60521",
+    "document": "Proposed rule (USDA APHIS)",
+    "title": "Amendments To Import Requirements for Highly Pathogenic Avian Influenza",
+    "signed": null,
+    "published": "2026-09-24",
+    "url": "https://www.federalregister.gov/documents/2026/09/24/2026-19532/amendments-to-import-requirements-for-highly-pathogenic-avian-influenza"
+  },
+  "hts-ch24": {
+    "id": "hts-ch24",
+    "publisher": "USITC",
+    "citation": "HTSUS 2026 Revision 21, Chapter 24",
+    "document": "Harmonized Tariff Schedule",
+    "title": "Harmonized Tariff Schedule of the United States (2026 Revision 21), Chapter 24",
+    "signed": null,
+    "published": "2026-10-07",
+    "url": "https://hts.usitc.gov/reststop/file?release=2026HTSRev21&filename=Chapter%2024"
+  },
+  "cbp-qb-26-502": {
+    "id": "cbp-qb-26-502",
+    "publisher": "CBP",
+    "citation": "Quota Bulletin 26-502",
+    "document": "CBP Quota Bulletin",
+    "title": "Quota Bulletin 26-502: 2027 Tobacco",
+    "signed": null,
+    "published": "2026-08-14",
+    "url": "https://www.cbp.gov/trade/quota/bulletins/qb-26-502-2027"
+  },
+  "eo-14266": {
+    "id": "eo-14266",
+    "publisher": "Federal Register",
+    "citation": "90 FR 15625",
+    "document": "Executive Order 14266",
+    "title": "Modifying Reciprocal Tariff Rates To Reflect Trading Partner Retaliation and Alignment",
+    "signed": "2025-04-09",
+    "published": "2025-04-15",
+    "url": "https://www.federalregister.gov/documents/2025/04/15/2025-06462/modifying-reciprocal-tariff-rates-to-reflect-trading-partner-retaliation-and-alignment"
+  },
+  "eo-14298": {
+    "id": "eo-14298",
+    "publisher": "Federal Register",
+    "citation": "90 FR 21831",
+    "document": "Executive Order 14298",
+    "title": "Modifying Reciprocal Tariff Rates To Reflect Discussions With the People's Republic of China",
+    "signed": "2025-05-12",
+    "published": "2025-05-21",
+    "url": "https://www.federalregister.gov/documents/2025/05/21/2025-09297/modifying-reciprocal-tariff-rates-to-reflect-discussions-with-the-peoples-republic-of-china"
+  },
+  "fr-2025-00397": {
+    "id": "fr-2025-00397",
+    "publisher": "Federal Register",
+    "citation": "90 FR 5032",
+    "document": "Proposed Rule (FDA)",
+    "title": "Tobacco Product Standard for Nicotine Yield of Cigarettes and Certain Other Combusted Tobacco Products",
+    "signed": null,
+    "published": "2025-01-16",
+    "url": "https://www.federalregister.gov/documents/2025/01/16/2025-00397/tobacco-product-standard-for-nicotine-yield-of-cigarettes-and-certain-other-combusted-tobacco"
+  },
+  "fr-2026-09368": {
+    "id": "fr-2026-09368",
+    "publisher": "Federal Register",
+    "citation": "91 FR 25892",
+    "document": "Notice (FDA)",
+    "title": "Enforcement Priorities for Certain New Tobacco Products Marketed Without Premarket Authorization; Guidance for Industry; Availability",
+    "signed": null,
+    "published": "2026-05-12",
+    "url": "https://www.federalregister.gov/documents/2026/05/12/2026-09368/enforcement-priorities-for-certain-new-tobacco-products-marketed-without-premarket-authorization"
+  },
+  "fr-2026-13047": {
+    "id": "fr-2026-13047",
+    "publisher": "Federal Register",
+    "citation": "91 FR 39168",
+    "document": "Proposed Rule (FDA)",
+    "title": "Establishment Registration and Product Listing for Tobacco Products",
+    "signed": null,
+    "published": "2026-06-29",
+    "url": "https://www.federalregister.gov/documents/2026/06/29/2026-13047/establishment-registration-and-product-listing-for-tobacco-products"
+  },
+  "fda-ia-2025": {
+    "id": "fda-ia-2025",
+    "publisher": "FDA",
+    "citation": "FDA CTP Newsroom",
+    "document": "Announcement",
+    "title": "FDA Updates Import Alerts to Reinforce that All Unauthorized E-Cigarettes May Be Detained Without Physical Examination",
+    "signed": null,
+    "published": "2025-01-03",
+    "url": "https://www.fda.gov/tobacco-products/ctp-newsroom/fda-updates-import-alerts-reinforce-all-unauthorized-e-cigarettes-may-be-detained-without-physical"
+  },
+  "fda-seizure-2025": {
+    "id": "fda-seizure-2025",
+    "publisher": "FDA",
+    "citation": "FDA press announcement",
+    "document": "Press release",
+    "title": "HHS, CBP Seize $86.5 Million Worth of Illegal E-Cigarettes in Largest-Ever Operation",
+    "signed": null,
+    "published": "2025-09-10",
+    "url": "https://www.fda.gov/news-events/press-announcements/hhs-cbp-seize-865-million-worth-illegal-e-cigarettes-largest-ever-operation"
+  },
+  "cbp-red-mist": {
+    "id": "cbp-red-mist",
+    "publisher": "CBP",
+    "citation": "CBP national media release",
+    "document": "Press release",
+    "title": "Operation Red Mist: CBP, federal partners seize millions of illegal e-cigarettes in maritime cargo",
+    "signed": null,
+    "published": "2026-05-13",
+    "url": "https://www.cbp.gov/newsroom/national-media-release/operation-red-mist-cbp-federal-partners-seize-millions-illegal-e"
+  },
+  "fr-2026-18838": {
+    "id": "fr-2026-18838",
+    "publisher": "Federal Register",
+    "citation": "91 FR 58331",
+    "document": "Proclamation 11064",
+    "title": "Modifying the Scope of Products of Canada Subject to the Additional Duties Imposed To Offset Canadian Discrimination Against the Commerce of the United States With Respect to Alcoholic Beverages",
+    "signed": "2026-09-08",
+    "published": "2026-09-14",
+    "url": "https://www.federalregister.gov/documents/2026/09/14/2026-18838/modifying-the-scope-of-products-of-canada-subject-to-the-additional-duties-imposed-to-offset"
+  },
+  "fr-2026-18839": {
+    "id": "fr-2026-18839",
+    "publisher": "Federal Register",
+    "citation": "91 FR 58339",
+    "document": "Proclamation 11065",
+    "title": "Modifying the Scope of Products of Canada Subject to the Additional Duties Imposed To Offset Canadian Discrimination Against the Commerce of the United States With Respect to Motor Vehicles",
+    "signed": "2026-09-08",
+    "published": "2026-09-14",
+    "url": "https://www.federalregister.gov/documents/2026/09/14/2026-18839/modifying-the-scope-of-products-of-canada-subject-to-the-additional-duties-imposed-to-offset"
+  },
+  "hts-rev21-cr": {
+    "id": "hts-rev21-cr",
+    "publisher": "USITC",
+    "citation": "HTSUS 2026 Revision 21 Change Record",
+    "document": "Change Record",
+    "title": "Harmonized Tariff Schedule of the United States (2026 Revision 21), Change Record",
+    "signed": null,
+    "published": "2026-10-09",
+    "url": "https://hts.usitc.gov/reststop/file?release=2026HTSRev21&filename=Change%20Record"
+  },
+  "pm-301-fl": {
+    "id": "pm-301-fl",
+    "publisher": "Federal Register",
+    "citation": "91 FR 47717",
+    "document": "Presidential Memorandum",
+    "title": "Actions by the United States in the Investigations Under Section 301 of the Trade Act of 1974 of the Acts, Policies, and Practices of 60 Economies Related to the Failure of Each Economy To Impose and Effectively Enforce a Prohibition on the Importation of Goods Produced With Forced Labor",
+    "signed": "2026-07-23",
+    "published": "2026-07-28",
+    "url": "https://www.federalregister.gov/documents/2026/07/28/2026-15274/actions-by-the-united-states-in-the-investigations-under-section-301-of-the-trade-act-of-1974-of-the"
+  },
+  "ustr-301-br": {
+    "id": "ustr-301-br",
+    "publisher": "Federal Register",
+    "citation": "91 FR 45516",
+    "document": "Notice (USTR)",
+    "title": "Notice of Action: Brazil's Acts, Policies, and Practices Related to Digital Trade and Electronic Payment Services; Unfair, Preferential Tariffs; Anti-Corruption Enforcement; Intellectual Property Protection; Ethanol Market Access; and Illegal Deforestation",
+    "signed": null,
+    "published": "2026-07-20",
+    "url": "https://www.federalregister.gov/documents/2026/07/20/2026-14542/notice-of-action-brazils-acts-policies-and-practices-related-to-digital-trade-and-electronic-payment"
+  },
+  "ustr-301-cn-4a": {
+    "id": "ustr-301-cn-4a",
+    "publisher": "Federal Register",
+    "citation": "84 FR 43304",
+    "document": "Notice (USTR)",
+    "title": "Notice of Modification of Section 301 Action: China's Acts, Policies, and Practices Related to Technology Transfer, Intellectual Property, and Innovation",
+    "signed": null,
+    "published": "2019-08-20",
+    "url": "https://www.federalregister.gov/documents/2019/08/20/2019-17865/notice-of-modification-of-section-301-action-chinas-acts-policies-and-practices-related-to"
+  },
+  "aphis-nws-2025-07": {
+    "id": "aphis-nws-2025-07",
+    "publisher": "USDA APHIS",
+    "citation": "APHIS announcement",
+    "document": "Announcement",
+    "title": "Secretary Rollins Takes Decisive Action and Shuts Down U.S. Southern Border Ports to Livestock Trade Due to Further Northward Spread of New World Screwworm in Mexico",
+    "signed": null,
+    "published": "2025-07-09",
+    "url": "https://www.aphis.usda.gov/news/agency-announcements/secretary-rollins-takes-decisive-action-shuts-down-us-southern-border"
+  },
+  "aphis-ports-2026-07": {
+    "id": "aphis-ports-2026-07",
+    "publisher": "USDA APHIS",
+    "citation": "APHIS announcement",
+    "document": "Announcement",
+    "title": "USDA Announces Phased Reopening of Southern Ports for Livestock Trade",
+    "signed": null,
+    "published": "2026-07-24",
+    "url": "https://www.aphis.usda.gov/news/agency-announcements/usda-announces-phased-reopening-southern-ports-livestock-trade-0"
+  },
+  "aphis-nws-status": {
+    "id": "aphis-nws-status",
+    "publisher": "USDA APHIS",
+    "citation": "APHIS web page (updated October 7, 2026)",
+    "document": "Web page",
+    "title": "Current Status of New World Screwworm",
+    "signed": null,
+    "published": "2026-10-07",
+    "url": "https://www.aphis.usda.gov/animals/animal-health/livestock-and-poultry-disease/stop-screwworm/current-status"
+  },
+  "aphis-hpai-canada": {
+    "id": "aphis-hpai-canada",
+    "publisher": "USDA APHIS",
+    "citation": "APHIS import alert",
+    "document": "Import alert",
+    "title": "Import Restrictions on Canada due to Highly Pathogenic Avian Influenza",
+    "signed": null,
+    "published": "2026-09-15",
+    "url": "https://www.aphis.usda.gov/sites/default/files/import-alert-avian-canada.pdf"
+  },
+  "aphis-hpai-eu-2025": {
+    "id": "aphis-hpai-eu-2025",
+    "publisher": "USDA APHIS",
+    "citation": "APHIS announcement",
+    "document": "Announcement",
+    "title": "USDA Reduces HPAI Restrictions on Poultry from France and the European Union",
+    "signed": null,
+    "published": "2025-01-16",
+    "url": "https://www.aphis.usda.gov/news/agency-announcements/usda-reduces-hpai-restrictions-poultry-france-european-union"
+  },
+  "aphis-live-poultry": {
+    "id": "aphis-live-poultry",
+    "publisher": "USDA APHIS",
+    "citation": "APHIS web page (modified June 15, 2026)",
+    "document": "Web page",
+    "title": "Importing Live Poultry into the United States",
+    "signed": null,
+    "published": "2026-06-15",
+    "url": "https://www.aphis.usda.gov/live-animal-import/live-poultry"
+  },
+  "ecfr-93-101": {
+    "id": "ecfr-93-101",
+    "publisher": "eCFR",
+    "citation": "9 CFR 93.101(c), 93.201(c)",
+    "document": "Regulation",
+    "title": "Birds and poultry: general prohibitions (HPAI- and Newcastle-affected regions, H5/H7-vaccinated birds)",
+    "signed": null,
+    "published": "2026-10-07",
+    "url": "https://www.ecfr.gov/current/title-9/section-93.101"
+  }
+}

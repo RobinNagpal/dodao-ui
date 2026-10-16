@@ -112,6 +112,58 @@ A quick check: grep the chapter's JSON files for the old rate string and the Ch.
 10. **Quality checks + PR:** `pnpm lint && pnpm prettier-check && pnpm compile`, commit, push, open the PR.
 11. **After deploy: flush the cache** (§8).
 
+## 5a. Re-run a chapter's scripts (`pnpm tariff:refresh-chapter`)
+
+Every Approach-2 chapter from #1803 / #1810–#1812 was written by a per-chapter script that wraps the generator. They live in `insights-ui/src/scripts/industry-tariff-reports/chapter-fills/<NN>/` (#1863). One command re-runs a chapter's whole pipeline:
+
+```bash
+cd insights-ui
+pnpm tariff:refresh-chapter 45                           # rewrites src/tariff-data/chapters/45-cork-and-articles.json
+pnpm tariff:refresh-chapter 45 --as-of 2026-11-15        # engine entry date + every asOf / lastCheckedAt stamp
+pnpm tariff:refresh-chapter 45 --dry-run --compare       # write to the cache instead; diff with the committed file
+pnpm tariff:refresh-chapter --all --dry-run --compare    # every chapter with scripts, summary table at the end
+```
+
+The steps are **generate → fill → stamp dates → compact → prettier → validate**:
+
+1. `chapter-fills/<NN>/run.sh` runs `pnpm tariff:generate-chapter` with the chapter's flags (title, matrix countries, `--claim`, `--vary-facts`, `--include-elections`). It then runs the chapter's `fill*.py` on the output. The fill writes the hand-written parts (intros, SEO, FAQ, change log, exemption text, tariff-engineering) around the generated data.
+2. The runner sets `asOf` and every page's `lastCheckedAt` to `--as-of`, which defaults to today. Some fill scripts hard-code the date they were written; this step overrides it.
+3. `pnpm tariff:compact-chapters`, then `prettier --write` with the repo config.
+4. `pnpm tariff:validate-chapters --file <out> --check-calculator --check-hts`.
+
+Options and environment:
+
+| | |
+| --- | --- |
+| `--as-of YYYY-MM-DD` / `--as-of committed` | Generator entry date and the date stamps. `committed` reuses the committed file's `asOf`, for reproducibility checks. |
+| `--dry-run` / `--out <file>` | Write to `$CHAPTER_FILL_CACHE/<NN>/out/<slug>.json` (or `<file>`). `src/tariff-data/chapters/` is left alone. |
+| `--compare` | Report whether the output equals the committed file, apart from `asOf` / `lastCheckedAt`. |
+| `--hts-file <path>` | HTS JSON for the generator. By default the generator downloads it from usitc.gov once and caches it in `$CHAPTER_FILL_CACHE/generator/`. |
+| `--offline` | Pass `--offline` to the generator, so it uses cached HTS and Federal Register data only. |
+| `--reuse-gen` | Skip the generator and fill the existing `$CHAPTER_FILL_CACHE/<NN>/gen.json` again. Use it to test a fill script against an older generator output. |
+| `--no-validate` | Skip the validator. |
+| `CHAPTER_FILL_CACHE` | Cache and scratch root. Default `<os tmp>/koala-chapter-fills`. Holds the generator cache (HTS JSON, FR API records, sitemap), each chapter's `gen.json`, dry-run output and `--all` logs. |
+
+Needs `bash` and `python3`, standard library only. The runner also sets `PYTHONHASHSEED=0`: several fills sort sources by date only, so same-date sources would otherwise come out in random order.
+
+**Folder layout.** `chapter-fills/fillenv.py` gives the Python scripts their paths: `IU`, `FILLS`, `CACHE`, `HTS_FILE`, `GEN` and `OUT`, plus `FORBIDDEN_SOURCE`, the banned data-site name, built from parts so it isn't written out. `chapter-fills/lib.sh` does the same for `run.sh` and defines `generate` and `expand_gen`. Each `<NN>/` folder keeps:
+
+- the fill script(s) and their small hand-written or cached inputs: source pools, `frmeta.json` / `fr_meta.json` Federal Register metadata, `reuse-sources.json`, chapter-text extracts and country lists;
+- the research helpers the writer agents used (`fr*.py`, `sugg.py`, `ecfr*`, link checkers). The runner doesn't run these, and they may need network access.
+
+`batch2-instructions.md` holds the writer instructions, and `ship-chapters.sh` is the batch ship script. Both are archived for context.
+
+**Older fill scripts.** Batch-1 scripts expect the per-line fields the generator no longer stores (`heading`, `general`, `description`, …). For them `run.sh` calls `expand_gen`, which runs `tsx src/scripts/industry-tariff-reports/expand-chapter-content.ts "$GEN"`, the reverse of compact. The compact step strips the fields again. Chapters 02–09 and 11–41 (except 13, 14, 37, 39, 40) and chapter 72 had no `run.sh`. Their generator flags were rebuilt from the committed file: matrix countries in order, plus the explicit SPI claims from the "Preferences" assumption.
+
+**Reproducibility (checked 2026-10-14).** See the PR for #1863 for the per-chapter table. In short:
+
+- Re-filling each chapter's original generator output gives the committed file byte for byte, apart from dates. This holds for most chapters.
+- With today's generator, most chapters differ only in generator-owned data that changed since they shipped: readable fact labels, untruncated trade labels, re-dated pending Section 301 entries, and FR URLs. A refresh is expected to update those.
+- Chapters 01, 10, 16, 20, 22 and 30 have no scripts (01 has only small `update*.py` patches for the hand-built file).
+- Chapters 02, 18, 21 and 23 were hand-refreshed in `35f3d1f87` (priced FTA quota tiers) after their scripts ran. Re-running them drops those edits until the scripts are updated.
+
+**Writing a new chapter's scripts.** Copy a recent folder (e.g. `87/`), set `SLUG` and the `generate` flags in `run.sh`, write the fill as `python3 "$HERE/fill.py" "$GEN" "$OUT"` (read the generated file, write the output), and keep inputs inside the folder.
+
 ## 6. Build a new chapter in this pattern
 
 1. Copy the closest reference file (Chapter 01 for a chapter with no exports, Chapter 30 for one with exports) to `src/tariff-data/chapters/<NN>-<slug>.json`; the slug is `<chapterNumber>-<kebab-title>` without zero-padding (e.g. `1-live-animals`), the file name is zero-padded.
@@ -155,6 +207,8 @@ Source: `insights-ui/src/scripts/industry-tariff-reports/validate-chapter-conten
 | `industryAreas.scheduleEdition` ≠ `tariffUpdates.now.edition`; content file on disk but not registered | WARN |
 
 Exit code is 1 on any error (or any warning with `--strict`). The validator is **not** wired into CI — run it before every content PR.
+
+**Matrix-cell variant labels (`--check-calculator`).** A cell that depends on an importer answer lists one total per answer, e.g. `16.5% not a vehicle part / 29% car or light-truck part or truck or bus part`. The labels are short lowercase phrases: FTA quota tiers (`within quota or above quota`), a product type (`patented`), and confirmation-fact answers in words, joined by ", ". Each fact's phrases are its `shortLabel` in `src/tariff-data/calculator/confirmation-facts.json`; phrases for two answers together (`not a vehicle part`, `quartz surface product within quota`) are in `src/utils/tariff-calculator/fact-labels.ts`. Answers with the same total share one variant, and its label names every answer (`… or …`), so no option is dropped. The generator writes the labels with `chapter-generator/variant-labels.ts` and the validator reads them back with the same module. It re-prices each label's answers, and every other fact the line varies both ways, with the engine. Older files' `if yes` / `if no` labels are still checked, as the answer to the line's only varied fact. Older camelCase labels (`passengerVehiclePart yes …`) can't be parsed by the "Your shipment" box: regenerate those chapters' matrices. A new must-answer fact needs a `shortLabel`, or its label falls back to the id in words.
 
 ## 8. Flush the CloudFront cache after deploy
 

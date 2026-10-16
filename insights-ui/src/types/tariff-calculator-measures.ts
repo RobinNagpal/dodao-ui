@@ -74,6 +74,16 @@ export interface TariffMeasureConditions {
   factsTrue?: string[];
   /** Only when every listed fact is answered FALSE (an unanswered fact uses its registry default; a must-answer fact makes the engine ask). */
   factsFalse?: string[];
+  /**
+   * Only when the line's applied base rate is derived from another subheading (a base rate that is another line's rate:
+   * a set's highest-rated article, the article an accessory belongs to, each garment of an ensemble, or the ground
+   * fabric when embroidery in the piece is charged at its rate) and at least one of those subheadings is itself subject
+   * to one of these Chapter 99 headings for the shipment's country and entry date. China Section 301 notes 20(z)–(gg)
+   * (headings 9903.88.21–9903.88.28): e.g. ['9903.88.01'] for 9903.88.21. When such a relief applies, the engine charges
+   * the derived subheading's own duty under these headings on the value its rate is charged on (CBP HQ H299857;
+   * USTR 84 FR 49591: the entry "for this reason already is subject to the additional duties").
+   */
+  rateDerivedFromLineSubjectTo?: string[];
 }
 
 /**
@@ -119,6 +129,11 @@ export interface TariffConfirmationFact {
    * scope depends on it, the engine returns an error asking for it (use when either default would be badly wrong).
    */
   defaultWhenUnanswered: boolean | null;
+  /**
+   * Short lowercase phrases for each answer ("car or light-truck part" / "not a car or light-truck part"), used as the
+   * variant labels of chapter matrix cells ("25% car or light-truck part"); see utils/tariff-calculator/fact-labels.ts.
+   */
+  shortLabel?: { yes: string; no: string };
   sources: TariffMeasureSource[];
 }
 
@@ -284,8 +299,41 @@ export interface MeasureEngineInput {
    * highest amount, and the base line's notes say so.
    */
   polarityDegrees?: number;
+  /**
+   * Declared values in USD of the parts a base rate is charged on (issue #1812): "2.5% on the value of the lead content"
+   * → { "lead content": 9000 }; "4.7% on the value of the rifle + 20% on the value of the telescopic sight, if any" →
+   * { rifle: 800, "telescopic sight": 200 }. Keys are the component as the rate names it (lower case). A missing value
+   * is an engine error ("Value required"), never a silent $0.
+   */
+  componentValuesUsd?: Record<string, number>;
+  /**
+   * The other HTS lines a base rate refers to (issue #1812): "The rate applicable to the article of which it is a part
+   * or accessory" (one line), "… to each garment in the ensemble if separately entered" (one per garment, each with its
+   * value), embroidery in the piece "not less than the rate … if not embroidered" (one line). The caller loads each
+   * line's rates (the API route from `hts_codes`; golden scenarios state them).
+   */
+  referencedLines?: MeasureEngineReferencedLine[];
   /** ISO date. */
   entryDate: string;
+}
+
+/** A line another line's base rate refers to, with its HTS rates and — for article-by-article sets — its share of the shipment. */
+export interface MeasureEngineReferencedLine {
+  hts10: string;
+  general: string | null;
+  special: string | null;
+  column2?: string | null;
+  /**
+   * Ensembles / sets priced article by article: the value of the articles entered under this line (the values add up to
+   * the customs value). Sets at the rate of the highest-rated article (chapter 82 additional U.S. note 3): the value of
+   * this article in the set, needed when its rate is specific or compound (converted to an ad valorem equivalent on it).
+   */
+  valueUsd?: number;
+  /**
+   * Quantities for this line's per-unit rate; default (whole / floor / cap references) = the shipment's quantities. A
+   * set's article (highest-rate sets) has no default: its own quantity is asked.
+   */
+  quantities?: Record<string, number>;
 }
 
 export interface MeasureEngineDutyLine {
