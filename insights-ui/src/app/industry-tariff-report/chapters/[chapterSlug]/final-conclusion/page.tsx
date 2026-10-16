@@ -35,7 +35,12 @@ export default async function Page({ params }: { params: Promise<{ chapterSlug: 
         asOfLabel="Updated"
         sectionLabel={approach2SectionLabel(SECTION_SLUG)}
       >
-        <ChapterFaqApproach2 content={prototype} conclusion={prototype.finalConclusion} />
+        <ChapterFaqApproach2
+          chapterSlug={prototype.chapter.slug}
+          intro={prototype.finalConclusion.intro}
+          keyTakeaways={prototype.finalConclusion.keyTakeaways}
+          faqs={prototype.finalConclusion.faqs}
+        />
       </ChapterArticle>
     );
   }

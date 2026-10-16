@@ -4,15 +4,24 @@ import os from 'node:os';
 import path from 'node:path';
 import type { TariffImportsByHeadingCountry } from '@/types/tariff-chapter-prototype';
 import { parseArgs, parsePositiveInt, sleep } from '../../tickers/lib';
-import { COMTRADE_VALUE_BASIS, TRADE_DATA_DIR, type TradeSummary, type TradeSummaryCountry, tradeSummaryPath } from './trade-stats';
+import {
+  COMTRADE_EXPORT_VALUE_BASIS,
+  COMTRADE_VALUE_BASIS,
+  type TradeFlow,
+  type TradeSummary,
+  type TradeSummaryCountry,
+  type TradeYearToDate,
+  tradeSummaryPath,
+} from './trade-stats';
 
 /**
- * Download U.S. imports for one HS chapter from the UN Comtrade public
- * (preview) API and write a compact summary to
- * `src/tariff-data/trade/chapter-NN.json`.
+ * Download U.S. imports (default) or exports (`--flow X`) for one HS chapter
+ * from the UN Comtrade public (preview) API and write a compact summary to
+ * `src/tariff-data/trade/chapter-NN.json` (exports: `trade/exports/chapter-NN.json`).
  *
  *   pnpm tariff:fetch-trade --chapter 1
  *   pnpm tariff:fetch-trade --chapter 30 --years 2020-2025
+ *   pnpm tariff:fetch-trade --chapter 30 --flow X --ytd                    # U.S. exports + this year so far (monthly)
  *   pnpm tariff:fetch-trade --chapter 3 --cache-dir /tmp/comtrade-cache   # raw responses (re-runs are offline)
  *   pnpm tariff:fetch-trade --chapter 3 --refresh                         # ignore cached raw responses
  *
@@ -26,9 +35,15 @@ import { COMTRADE_VALUE_BASIS, TRADE_DATA_DIR, type TradeSummary, type TradeSumm
  * latest and prior year, headings + HS6 lines x World; for the latest year,
  * headings x every partner (grouped under the record cap). HS codes and
  * descriptions come from Comtrade's HS 2022 (H6) reference list.
+ *
+ * `--ytd` adds the current year so far from Comtrade's monthly data: it finds the
+ * latest month reported, then fetches chapter x every partner for each month of
+ * this year and the same months of last year (two calls per month). The U.S.
+ * reports monthly trade to Comtrade about two months after the month ends.
  */
 
 const PREVIEW_BASE = 'https://comtradeapi.un.org/public/v1/preview/C/A/HS';
+const PREVIEW_MONTHLY_BASE = 'https://comtradeapi.un.org/public/v1/preview/C/M/HS';
 const H6_REFERENCE_URL = 'https://comtradeapi.un.org/files/v1/app/reference/H6.json';
 const US_REPORTER = 842;
 const MAX_RECORDS = 500;
@@ -124,16 +139,84 @@ async function getJson<T>(url: string, cacheDir: string, refresh: boolean): Prom
   throw new Error('unreachable');
 }
 
-async function comtrade(params: Record<string, string>, cacheDir: string, refresh: boolean): Promise<{ url: string; rows: ComtradeRow[] }> {
-  const qs = new URLSearchParams({ reporterCode: String(US_REPORTER), flowCode: 'M', includeDesc: 'true', ...params });
-  const url = `${PREVIEW_BASE}?${qs.toString().replace(/%2C/g, ',')}`;
+/** Trade flow of this run (`--flow`): M = U.S. imports, X = U.S. exports. */
+let flow: TradeFlow = 'M';
+
+async function comtrade(
+  params: Record<string, string>,
+  cacheDir: string,
+  refresh: boolean,
+  base: string = PREVIEW_BASE
+): Promise<{ url: string; rows: ComtradeRow[] }> {
+  const qs = new URLSearchParams({ reporterCode: String(US_REPORTER), flowCode: flow, includeDesc: 'true', ...params });
+  const url = `${base}?${qs.toString().replace(/%2C/g, ',')}`;
   const body = await getJson<ComtradeResponse>(url, cacheDir, refresh);
   if (body.error) throw new Error(`Comtrade error for ${url}: ${body.error}`);
   const data = body.data ?? [];
   if (data.length >= MAX_RECORDS) throw new Error(`Comtrade returned ${data.length} rows (preview cap ${MAX_RECORDS}) for ${url}; narrow the query`);
   // Keep only plain totals: all customs procedures, all transport modes, no second partner.
-  const rows = data.filter((r) => r.reporterCode === US_REPORTER && r.flowCode === 'M' && r.customsCode === 'C00' && r.motCode === 0 && r.partner2Code === 0);
+  const rows = data.filter((r) => r.reporterCode === US_REPORTER && r.flowCode === flow && r.customsCode === 'C00' && r.motCode === 0 && r.partner2Code === 0);
   return { url, rows };
+}
+
+/**
+ * The current year so far from monthly data: the latest month the U.S. has reported for `year`
+ * (probing back from December, or from the current month for the current year), then chapter x
+ * every partner for months 1..that month of `year` and of `year - 1`.
+ */
+async function fetchYearToDate(ch: string, year: number, cacheDir: string, refresh: boolean): Promise<TradeYearToDate | null> {
+  const now = new Date();
+  const startMonth = year === now.getFullYear() ? now.getMonth() + 1 : 12;
+  let throughMonth = 0;
+  for (let month = startMonth; month >= 1; month--) {
+    // Probe with refresh so a month reported since the last run is picked up.
+    const { rows } = await comtrade(
+      { period: `${year}${String(month).padStart(2, '0')}`, cmdCode: ch, partnerCode: '0' },
+      cacheDir,
+      true,
+      PREVIEW_MONTHLY_BASE
+    );
+    if (rows.some((r) => r.partnerCode === 0 && r.primaryValue > 0)) {
+      throughMonth = month;
+      break;
+    }
+  }
+  if (throughMonth === 0) {
+    console.warn(`  year to date: no monthly data for ${year} yet`);
+    return null;
+  }
+
+  const sumMonths = async (y: number): Promise<{ total: number; byPartner: Map<number, { name: string; value: number }> }> => {
+    let total = 0;
+    const byPartner = new Map<number, { name: string; value: number }>();
+    for (let month = 1; month <= throughMonth; month++) {
+      const { rows } = await comtrade({ period: `${y}${String(month).padStart(2, '0')}`, cmdCode: ch }, cacheDir, refresh, PREVIEW_MONTHLY_BASE);
+      for (const r of rows) {
+        if (r.partnerCode === 0) total += r.primaryValue;
+        else {
+          const entry = byPartner.get(r.partnerCode) ?? { name: r.partnerDesc ?? String(r.partnerCode), value: 0 };
+          entry.value += r.primaryValue;
+          byPartner.set(r.partnerCode, entry);
+        }
+      }
+    }
+    return { total, byPartner };
+  };
+
+  const current = await sumMonths(year);
+  const prior = await sumMonths(year - 1);
+  const codes = new Set([...current.byPartner.keys(), ...prior.byPartner.keys()]);
+  const byCountry = [...codes]
+    .map((code) => ({
+      countryCode: code,
+      country: current.byPartner.get(code)?.name ?? prior.byPartner.get(code)?.name ?? String(code),
+      valueUsd: current.byPartner.get(code)?.value ?? 0,
+      priorValueUsd: prior.byPartner.get(code)?.value ?? 0,
+    }))
+    .filter((c) => c.valueUsd > 0 || c.priorValueUsd > 0)
+    .sort((a, b) => b.valueUsd - a.valueUsd || b.priorValueUsd - a.priorValueUsd);
+  console.log(`  year to date: Jan-${throughMonth} ${year} ${current.total.toLocaleString()} vs ${year - 1} ${prior.total.toLocaleString()}`);
+  return { year, throughMonth, totalUsd: current.total, priorTotalUsd: prior.total, byCountry };
 }
 
 function sumBy<K>(rows: ComtradeRow[], key: (r: ComtradeRow) => K): Map<K, number> {
@@ -276,12 +359,12 @@ async function fetchChapter(chapter: number, years: number[], cacheDir: string, 
     chapterPadded: ch,
     chapterDescription: descFromReference(chapterRef.text, ch),
     source: 'un-comtrade-public-preview',
-    sourceLabel: 'UN Comtrade public API (preview), United States imports, annual, HS',
-    sourceUrls: ['https://comtradeplus.un.org/', `${PREVIEW_BASE}?reporterCode=${US_REPORTER}&flowCode=M&period=YYYY&cmdCode=${ch}`, H6_REFERENCE_URL],
+    sourceLabel: `UN Comtrade public API (preview), United States ${flow === 'X' ? 'exports' : 'imports'}, annual, HS`,
+    sourceUrls: ['https://comtradeplus.un.org/', `${PREVIEW_BASE}?reporterCode=${US_REPORTER}&flowCode=${flow}&period=YYYY&cmdCode=${ch}`, H6_REFERENCE_URL],
     retrievedAt: new Date(latestRetrievedAt).toLocaleDateString('en-CA'), // local YYYY-MM-DD
     reporter: { code: US_REPORTER, name: 'United States' },
-    flow: 'M',
-    valueBasis: COMTRADE_VALUE_BASIS,
+    flow,
+    valueBasis: flow === 'X' ? COMTRADE_EXPORT_VALUE_BASIS : COMTRADE_VALUE_BASIS,
     years: totalsByYear.map((t) => t.year),
     latestYear,
     priorYear,
@@ -297,18 +380,27 @@ async function fetchChapter(chapter: number, years: number[], cacheDir: string, 
 async function main(): Promise<void> {
   const args = parseArgs(process.argv.slice(2));
   const chapter = parsePositiveInt(args.chapter);
-  if (!chapter || chapter > 99) throw new Error('Usage: pnpm tariff:fetch-trade --chapter N [--years 2020-2025] [--cache-dir DIR] [--refresh]');
+  if (!chapter || chapter > 99) {
+    throw new Error('Usage: pnpm tariff:fetch-trade --chapter N [--flow M|X] [--ytd] [--years 2020-2025] [--cache-dir DIR] [--refresh]');
+  }
+  const flowArg = typeof args.flow === 'string' ? args.flow.toUpperCase() : 'M';
+  if (flowArg !== 'M' && flowArg !== 'X') throw new Error(`--flow must be M (imports) or X (exports), got "${flowArg}"`);
+  flow = flowArg;
   const years = parseYears(args.years);
   const cacheDir = typeof args['cache-dir'] === 'string' ? args['cache-dir'] : path.join(os.tmpdir(), 'koalagains-comtrade-cache');
   mkdirSync(cacheDir, { recursive: true });
-  mkdirSync(TRADE_DATA_DIR, { recursive: true });
+  const out = tradeSummaryPath(chapter, flow);
+  mkdirSync(path.dirname(out), { recursive: true });
 
   const summary = await fetchChapter(chapter, years, cacheDir, args.refresh === true);
+  if (args.ytd === true) {
+    const ytd = await fetchYearToDate(summary.chapterPadded, summary.latestYear + 1, cacheDir, args.refresh === true);
+    if (ytd) summary.yearToDate = ytd;
+  }
   for (const c of summary.checks) {
     const flag = c.diffUsd === 0 ? 'ok' : `diff ${c.diffUsd.toLocaleString()}`;
     console.log(`  check ${c.label}: ${c.actualUsd.toLocaleString()} vs ${c.expectedUsd.toLocaleString()} (${flag})`);
   }
-  const out = tradeSummaryPath(chapter);
   // Format with the repo's prettier config so the committed file passes `pnpm prettier-check` as generated.
   const prettier = await loadPrettier();
   const prettierOptions = (await prettier.resolveConfig(out)) ?? {};

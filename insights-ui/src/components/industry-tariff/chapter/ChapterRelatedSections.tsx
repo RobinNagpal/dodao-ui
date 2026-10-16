@@ -3,6 +3,7 @@ import {
   CHAPTER_EXPORT_SECTIONS,
   CHAPTER_REPORT_SECTIONS,
   chapterCoverHref,
+  chapterExportHref,
   chapterSectionHref,
   type ChapterReportDirection,
   type ChapterRouteInfo,
@@ -14,7 +15,7 @@ interface ChapterRelatedSectionsProps {
   // Slug of the current sub-section, or 'overview' on the chapter cover page. The matching link is
   // highlighted (link color + aria-current) so the user can see which page they're on.
   currentSlug: string;
-  // Import pages list Overview + the five import sections; export pages list the three export pages.
+  // Import pages list Overview + the five import sections; export pages list the five export pages.
   direction?: ChapterReportDirection;
 }
 
@@ -36,7 +37,7 @@ export function chapterReportNavItems(
 ): Array<{ slug: string; href: string; label: string }> {
   const items =
     direction === 'export'
-      ? CHAPTER_EXPORT_SECTIONS.map((section) => ({ slug: section.slug, href: chapterSectionHref(chapter.slug, section.slug), label: section.label }))
+      ? CHAPTER_EXPORT_SECTIONS.map((section) => ({ slug: section.slug, href: chapterExportHref(chapter.slug, section.slug), label: section.label }))
       : [
           { slug: 'overview', href: chapterCoverHref(chapter.slug), label: 'Overview' },
           ...CHAPTER_REPORT_SECTIONS.map((section) => ({ slug: section.slug, href: chapterSectionHref(chapter.slug, section.slug), label: section.label })),

@@ -1,0 +1,107 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 30,
+    "padded": "30",
+    "slug": "30-pharmaceutical-products",
+    "title": "Pharmaceutical Products"
+  },
+  "page": {
+    "slug": "exports/faq",
+    "path": "/industry-tariff-report/exports/chapters/30-pharmaceutical-products/faq",
+    "h1": "HTS Chapter 30: Pharmaceutical Products — U.S. Export FAQ",
+    "seo": {
+      "title": "U.S. Pharmaceutical Export FAQ: Foreign Tariffs, Schedule B, Licences & EEI (HTS Ch. 30) | KoalaGains",
+      "shortDescription": "Does China tariff U.S. medicines? Does the EU? Do you need an export licence or an EEI filing? Short answers on exporting U.S. pharmaceuticals, with the dates that matter.",
+      "keywords": [
+        "does china have tariffs on us medicines",
+        "eu tariff on us pharmaceuticals",
+        "us pharmaceutical exports by country",
+        "export license pharmaceuticals",
+        "certificate of pharmaceutical product",
+        "eei filing medicine"
+      ]
+    },
+    "lastCheckedAt": "2026-10-13"
+  },
+  "intro": "Questions people search about exporting U.S. pharmaceuticals, answered from the other export pages of this report.",
+  "keyTakeaways": [
+    "Most U.S. medicines enter their main markets duty-free; China is the exception, at an extra 10% on all U.S. goods.",
+    "Watch January 10, 2027: China's extra tariff could rise to 34% if its suspension is not extended again.",
+    "Most finished medicines need no export licence, but shipments over $2,500 per Schedule B number need an EEI filing, and controlled drugs need DEA paperwork every time."
+  ],
+  "questionSource": "Google search suggestions (suggestqueries.google.com) for queries such as \"us pharmaceutical exports\", \"does china have tariffs on us\", \"does the eu have tariffs on us goods\", \"export license for pharmaceuticals\", \"certificate of pharmaceutical product\" and \"eei filing\", collected on October 13, 2026.",
+  "faqs": [
+    {
+      "id": "china-tariff",
+      "question": "Does China have tariffs on U.S. medicines?",
+      "searchedAs": ["does china have tariffs on us goods", "china tariff on us products", "pharmaceutical tariffs china"],
+      "answer": "Yes. China adds an extra 10% to every U.S. good on top of its normal rate of 0–3% on most medicines, so U.S. antibodies pay about 13% instead of 3%. A further 24 points are suspended until January 10, 2027; if the suspension lapses, the extra tariff goes to 34%. China's 2019 counter-tariffs also still reach some dressings and 3006 goods unless the buyer holds an exclusion.",
+      "link": "exports/tariff-updates"
+    },
+    {
+      "id": "china-deadline",
+      "question": "When does China's tariff suspension on U.S. goods end?",
+      "searchedAs": ["does china still have tariffs on the us", "china tariff on us percentage"],
+      "answer": "The suspension of 24 points of China's extra tariff on U.S. goods now runs to January 10, 2027, after the two sides agreed in September 2026 to extend it; China's Tariff Commission had not published its own notice by October 13, 2026. Separately, China's exclusions from its 2019 counter-tariffs are valid until December 31, 2026.",
+      "link": "exports/tariff-updates"
+    },
+    {
+      "id": "eu-tariff",
+      "question": "Does the EU have tariffs on U.S. pharmaceuticals?",
+      "searchedAs": ["does the eu have tariffs on us goods", "eu tariff on us pharmaceuticals", "what does the eu tariff on us goods"],
+      "answer": "No. The EU charges 0% on U.S. medicines under the WTO zero-for-zero pharmaceutical agreement. Its 2025 countermeasures against U.S. goods named only adhesive dressings from Chapter 30, were never applied, and have been suspended with no end date since August 2026.",
+      "link": "exports/markets"
+    },
+    {
+      "id": "canada-tariff",
+      "question": "Does Canada have counter-tariffs on U.S. pharmaceuticals?",
+      "searchedAs": ["canada counter tariffs list", "canada retaliatory tariffs on us goods"],
+      "answer": "No. Neither Canada's March 2025 list nor its September 2026 counter-tariff list includes any Chapter 30 product, and U.S. medicines enter Canada duty-free under USMCA (CUSMA).",
+      "link": "exports/tariff-updates"
+    },
+    {
+      "id": "brazil-tariff",
+      "question": "Does Brazil have tariffs on U.S. medicines?",
+      "searchedAs": ["brazil tariffs on us goods", "brazil retaliatory tariffs on us"],
+      "answer": "Brazil charges its normal Mercosur rates on U.S. medicines: near zero on most biologics, but around 10% on many packaged medicines and up to 14%. It has imposed no counter-tariff on U.S. goods; it challenged the 2026 U.S. Section 301 tariffs at the WTO in July 2026 and is in talks with the U.S.",
+      "link": "exports/markets"
+    },
+    {
+      "id": "exports-by-country",
+      "question": "How much pharmaceuticals does the U.S. export, and to which countries?",
+      "searchedAs": ["us pharmaceutical exports", "us pharmaceutical exports by country", "us drug exports"],
+      "answer": "The U.S. exported $97.82B of pharmaceuticals in 2025, up 3.6% on 2024; January–July 2026 was $55.21B, 2.5% below the same months of 2025. The largest buyers in 2025 were Germany ($10.21B), the Netherlands ($9.63B), China ($9.10B), Japan ($7.12B) and Canada ($6.98B), and the EU as a whole took 48%.",
+      "link": "exports"
+    },
+    {
+      "id": "schedule-b",
+      "question": "What is the Schedule B number for medicines?",
+      "searchedAs": ["schedule b", "export medicine from usa"],
+      "answer": "Schedule B numbers have 10 digits and start with the same six digits as the HS code: 3004.90 for most packaged medicines, 3002.15 for packaged immunological products such as antibodies, and 3002.41 for vaccines for human medicine. Look up the exact number with the Census Bureau's free Schedule B search tool.",
+      "link": "exports/rules"
+    },
+    {
+      "id": "export-licence",
+      "question": "Do I need an export license for pharmaceuticals?",
+      "searchedAs": ["export license for pharmaceuticals", "how to get medicine export license"],
+      "answer": "Usually not. Most finished medicines are EAR99 and need no Commerce licence except for embargoed countries or restricted buyers. Vaccines against listed agents and products containing listed toxins (ECCN 1C991 or 1C351) can need one, and controlled substances need a DEA export permit or declaration for every shipment.",
+      "link": "exports/rules"
+    },
+    {
+      "id": "cpp",
+      "question": "What is an FDA Certificate of Pharmaceutical Product (CPP)?",
+      "searchedAs": ["certificate of pharmaceutical product fda", "certificate of pharmaceutical product (cpp)"],
+      "answer": "A CPP is a WHO-format certificate about a drug's U.S. status that foreign regulators often ask for. FDA does not require one to export. CDER issues CPPs electronically through CDER eCATS; each is valid for 24 months and the first costs $175.",
+      "link": "exports/rules"
+    },
+    {
+      "id": "eei",
+      "question": "Do I need to file EEI when exporting medicine?",
+      "searchedAs": ["eei filing requirements", "when do you need to file eei", "do i need to file eei"],
+      "answer": "Yes, when one Schedule B number in a shipment is worth over $2,500, and at any value if the drug needs a DEA permit or declaration or a Commerce licence. File in AES (free through ACE AESDirect) at least 2 hours before a flight departs or 24 hours before ocean cargo is loaded.",
+      "link": "exports/rules"
+    }
+  ]
+}

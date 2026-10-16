@@ -1,25 +1,30 @@
-import { EXPORT_STATUS_BADGE } from '@/components/industry-tariff/chapter/exports/export-shared';
+import { formatIsoDate } from '@/components/industry-tariff/chapter/exports/export-shared';
 import ChapterChangeLog, { type ChangeLogEntry } from '@/components/industry-tariff/chapter/updates/ChapterChangeLog';
 import DutyInEffectCard from '@/components/industry-tariff/chapter/updates/DutyInEffectCard';
 import { SourceLinks } from '@/components/industry-tariff/chapter/updates/SourceLinks';
 import SourcesCard, { documentSourceItems } from '@/components/industry-tariff/chapter/updates/SourcesCard';
+import Heading from '@/components/ui/Heading';
 import StatusBadge, { type StatusBadgeVariant } from '@/components/ui/StatusBadge';
 import Text from '@/components/ui/Text';
 import TextLink from '@/components/ui/TextLink';
 import Stack from '@/components/ui/containers/Stack';
 import StatCardGrid from '@/components/ui/containers/StatCardGrid';
 import CardSection from '@/components/ui/sections/CardSection';
+import { DisclosureItem } from '@/components/ui/sections/DisclosureList';
 import MarkdownContent from '@/components/ui/sections/MarkdownContent';
 import SectionHeading from '@/components/ui/sections/SectionHeading';
-import { DataTable, TableCell, TableHead, TableHeaderCell, TableRow, TableScroll } from '@/components/ui/tables/DataTable';
-import type { TariffExportChange, TariffExportChangeType, TariffExportUpdatesContent } from '@/types/tariff-chapter-exports';
+import TimelineRow from '@/components/ui/sections/TimelineRow';
+import type { TariffUpdateSource } from '@/types/tariff-chapter-prototype';
+import type { TariffExportChange, TariffExportChangeType, TariffExportUpcoming, TariffExportUpdatesContent } from '@/types/tariff-chapter-exports';
 import { parseChapterBodyMarkdown } from '@/util/parse-markdown';
-import { chapterSectionHref } from '@/utils/tariff-reports/chapter-route-helpers';
+import { chapterExportHref } from '@/utils/tariff-reports/chapter-route-helpers';
 import React from 'react';
 
-// Export tariff updates: what other countries changed on U.S. goods in this chapter since
-// January 2025 — the measures in force today, a dated change log, and each buyer's status. Laid
-// out like the import tariff-updates page.
+// Export tariff updates: what other countries changed on U.S. goods in this chapter since January
+// 2025, and what is coming. Dated events ahead first (the thing an exporter must plan for), then the
+// foreign measures in force today, then the change log — measures that reach this chapter, with the
+// ones that only touch other U.S. goods folded away as context. Each buyer's current rate by product
+// group is on the markets page, not repeated here.
 
 const TYPE_LABEL: Record<TariffExportChangeType, string> = {
   retaliation: 'Retaliation',
@@ -55,21 +60,85 @@ function toChangeLogEntry(change: TariffExportChange): ChangeLogEntry {
   };
 }
 
+function UpcomingList({
+  upcoming,
+  sources,
+  chapterPadded,
+}: {
+  upcoming: TariffExportUpcoming[];
+  sources: Map<string, TariffUpdateSource>;
+  chapterPadded: string;
+}): React.JSX.Element {
+  return (
+    <div>
+      {upcoming.map((event) => (
+        <TimelineRow
+          key={event.id}
+          asideWidth="wide"
+          aside={
+            <>
+              <Text as="span" size="base" weight="semibold" tone="white">
+                {formatIsoDate(event.expectedOn)}
+              </Text>
+              <StatusBadge variant="warning" size="sm" label={event.dateLabel} />
+            </>
+          }
+        >
+          <Stack gap="sm">
+            <Heading as="h3" size="md" tone="white">
+              {event.title}
+            </Heading>
+            <Text size="sm">{event.whatHappens}</Text>
+            <Text size="sm">
+              <Text as="span" size="sm" weight="semibold" tone="white">
+                For Chapter {chapterPadded} goods:{' '}
+              </Text>
+              {event.impact}
+            </Text>
+            <Text size="xs" tone="muted">
+              {event.countries.join(', ')} · {event.status}
+            </Text>
+            <SourceLinks ids={event.sourceIds} sources={sources} />
+          </Stack>
+        </TimelineRow>
+      ))}
+    </div>
+  );
+}
+
 export default function ChapterExportTariffUpdates({ updates }: { updates: TariffExportUpdatesContent }): React.JSX.Element {
   const { chapter } = updates;
   const sources = new Map(updates.sources.map((s) => [s.id, s]));
+  const reaching = updates.changes.filter((c) => c.coversChapter !== 'no');
+  const context = updates.changes.filter((c) => c.coversChapter === 'no');
 
   return (
     <Stack gap="2xl">
       {/* The page H1 and the "Rates as of" date are rendered by the ChapterArticle shell. */}
       <Stack gap="md">
         <Text size="xs" tone="muted">
-          Foreign tariff actions on U.S. goods since January 2025
+          Foreign tariff actions on U.S. goods since January 2025, and what is coming
         </Text>
         <MarkdownContent variant="body" html={parseChapterBodyMarkdown(updates.intro)} />
       </Stack>
 
       <StatCardGrid stats={updates.stats} />
+
+      {updates.upcoming.length > 0 && (
+        <CardSection padding="roomy" bordered>
+          <Stack gap="lg">
+            <Stack gap="xs">
+              <SectionHeading as="h2" size="lg" weight="bold" tone="heading">
+                What&apos;s coming
+              </SectionHeading>
+              <Text size="sm" tone="muted">
+                Dated events ahead that could change what buyers charge on U.S. Chapter {chapter.padded} goods, soonest first.
+              </Text>
+            </Stack>
+            <UpcomingList upcoming={updates.upcoming} sources={sources} chapterPadded={chapter.padded} />
+          </Stack>
+        </CardSection>
+      )}
 
       <Stack as="section" gap="lg">
         <Stack gap="xs">
@@ -99,63 +168,25 @@ export default function ChapterExportTariffUpdates({ updates }: { updates: Tarif
         </Stack>
       </Stack>
 
-      <CardSection padding="roomy" bordered>
-        <Stack gap="lg">
-          <Stack gap="xs">
-            <SectionHeading as="h2" size="lg" weight="bold" tone="heading">
-              Every change since January 2025
-            </SectionHeading>
-            <Text size="sm" tone="muted">
-              Newest first, grouped by year. Measures on other U.S. goods are listed where a buyer might expect them to reach Chapter {chapter.padded}, and
-              marked when they don&apos;t.
-            </Text>
-          </Stack>
-          <ChapterChangeLog changes={updates.changes.map(toChangeLogEntry)} typeLabels={TYPE_LABEL} sources={updates.sources} />
-        </Stack>
-      </CardSection>
-
       <Stack as="section" gap="lg">
-        <Stack gap="lg">
-          <Stack gap="xs">
-            <SectionHeading as="h2" size="lg" weight="bold" tone="heading">
-              Where each buyer stands
-            </SectionHeading>
-            <Text size="sm" tone="muted">
-              The tariff each buyer charges on U.S. goods, January 2025 vs today. Rates by product group are on{' '}
-              <TextLink href={chapterSectionHref(chapter.slug, 'exports/markets')}>Export markets</TextLink>.
-            </Text>
-          </Stack>
-          <TableScroll>
-            <DataTable>
-              <TableHead look="plain">
-                <TableRow>
-                  <TableHeaderCell>Country</TableHeaderCell>
-                  <TableHeaderCell>Jan 2025</TableHeaderCell>
-                  <TableHeaderCell>Now</TableHeaderCell>
-                  <TableHeaderCell>Status</TableHeaderCell>
-                  <TableHeaderCell width="wide">What it means</TableHeaderCell>
-                </TableRow>
-              </TableHead>
-              <tbody>
-                {updates.byCountry.map((c) => (
-                  <TableRow key={c.country}>
-                    <TableCell tone="emphasis">{c.country}</TableCell>
-                    <TableCell variant="rateWrap" tone="muted">
-                      {c.tariffBefore}
-                    </TableCell>
-                    <TableCell variant="rateWrap" tone="emphasis">
-                      {c.tariffNow}
-                    </TableCell>
-                    <TableCell variant="rate">
-                      <StatusBadge variant={EXPORT_STATUS_BADGE[c.status].variant} size="sm" label={EXPORT_STATUS_BADGE[c.status].label} />
-                    </TableCell>
-                    <TableCell>{c.headline}</TableCell>
-                  </TableRow>
-                ))}
-              </tbody>
-            </DataTable>
-          </TableScroll>
+        <Stack gap="xs">
+          <SectionHeading as="h2" size="lg" weight="bold" tone="heading">
+            Every change since January 2025
+          </SectionHeading>
+          <Text size="sm" tone="muted">
+            Foreign tariff actions that reach Chapter {chapter.padded} goods, newest first. Each buyer&apos;s rate today, by product group, is on{' '}
+            <TextLink href={chapterExportHref(chapter.slug, 'exports/markets')}>Markets</TextLink>.
+          </Text>
         </Stack>
+        <ChapterChangeLog changes={reaching.map(toChangeLogEntry)} typeLabels={TYPE_LABEL} sources={updates.sources} />
+        {context.length > 0 && (
+          <DisclosureItem
+            look="inline"
+            summary={`Actions on other U.S. goods only (${context.length}) — listed because a buyer might expect them to reach this chapter`}
+          >
+            <ChapterChangeLog changes={context.map(toChangeLogEntry)} typeLabels={TYPE_LABEL} sources={updates.sources} />
+          </DisclosureItem>
+        )}
       </Stack>
 
       <SourcesCard items={documentSourceItems(updates.sources)} />

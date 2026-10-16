@@ -8,40 +8,42 @@ import SelectableMatrix, { type MatrixGroup, type MatrixRow, type MatrixSelectio
 import type { TariffExportMarketsContent } from '@/types/tariff-chapter-exports';
 import React, { useMemo, useState } from 'react';
 
-// Destination × product-group matrix of the tariff each buyer charges on U.S. goods (export
-// markets page). Works like the import rates-by-country matrix: select a cell and its detail —
-// where the rate comes from and the buyer's rule — opens in a modal (a list on phones).
-// Every cell is rendered on the server; selection only changes which detail is open.
+// Market × product-group matrix of the tariff each buyer charges on U.S. goods (export markets
+// page). Works like the import rates-by-country matrix: select a cell and its detail — where the
+// rate comes from, the normal rate when a trade agreement or extra duty changes it, and the buyer's
+// rule — opens in a modal (a list on phones). Every cell is rendered on the server; selection only
+// changes which detail is open.
 
 export default function ExportRateMatrix({ markets }: { markets: TariffExportMarketsContent }): React.JSX.Element {
-  const countryByName = useMemo(() => new Map(markets.countries.map((c) => [c.country, c])), [markets.countries]);
+  const marketByName = useMemo(() => new Map(markets.markets.map((m) => [m.name, m])), [markets.markets]);
   // Open on the biggest lane, like the import matrix.
   const firstLane = markets.biggestLanes[0];
   const [selected, setSelected] = useState<MatrixSelection>({
-    row: firstLane?.country ?? markets.countries[0]?.country ?? '',
+    row: firstLane?.market ?? markets.markets[0]?.name ?? '',
     group: firstLane?.heading ?? markets.groups[0]?.heading ?? '',
   });
 
   const groups: MatrixGroup[] = markets.groups.map((g) => ({ key: g.heading, label: g.label, shortLabel: g.shortLabel }));
-  const rows: MatrixRow[] = markets.countries.map((c) => ({ key: c.country, name: c.country, sub: `${usd(c.exportsUsd)} in ${markets.tradeYear}` }));
+  const rows: MatrixRow[] = markets.markets.map((m) => ({ key: m.name, name: m.name, sub: `${usd(m.exportsUsd)} in ${markets.tradeYear}` }));
 
-  const country = countryByName.get(selected.row);
+  const market = marketByName.get(selected.row);
   const group = markets.groups.find((g) => g.heading === selected.group);
-  const cell = country?.cells[selected.group];
+  const cell = market?.cells[selected.group];
 
-  const detailTitle = country && group ? `${country.country} · ${group.heading} ${group.label}` : '';
+  const detailTitle = market && group ? `${market.name} · ${group.heading} ${group.label}` : '';
 
   const detail =
-    country && cell ? (
+    market && cell ? (
       <Stack gap="sm">
         <Text as="span" size="lg" weight="bold" tone={rateEmphasis([cell.rate]) === 'high' ? 'warning' : 'white'}>
           {cell.rate}
         </Text>
+        {cell.normalRate && <Text size="sm">Normal (MFN) rate for other countries: {cell.normalRate}.</Text>}
         <Text size="sm">
           Where the rate comes from: {cell.basis}. {markets.tradeYear} U.S. exports: {usd(cell.exportsUsd)}.
         </Text>
         <Text size="xs" tone="muted">
-          {country.rule}
+          {market.rule}
         </Text>
       </Stack>
     ) : null;
@@ -56,11 +58,11 @@ export default function ExportRateMatrix({ markets }: { markets: TariffExportMar
         include a duty of {HIGH_RATE_PCT}% or more; grey rates are Free.
       </Text>
       <SelectableMatrix
-        rowHeader="Destination"
+        rowHeader="Market"
         groups={groups}
         rows={rows}
         cell={(row, g) => {
-          const c = countryByName.get(row.key)?.cells[g.key];
+          const c = marketByName.get(row.key)?.cells[g.key];
           if (!c) return { value: '—', emphasis: 'quiet' };
           return { value: c.rate, emphasis: rateEmphasis([c.rate]), secondary: usd(c.exportsUsd), dim: c.exportsUsd === 0 };
         }}

@@ -7,7 +7,8 @@ Approach-2 chapters are JSON content files, not DB rows:
 | File | Loader | Pages it feeds |
 | --- | --- | --- |
 | `insights-ui/src/tariff-data/chapters/<NN>-<slug>.json` (`TariffChapterPrototype`, `src/types/tariff-chapter-prototype.ts`) | `src/utils/tariff-reports/chapter-prototype.ts` (`CHAPTER_FILES` — one lazy `import()` per chapter, so each chapter is its own chunk) | overview, `tariff-updates`, `understand-industry`, `industry-areas`, `tariff-engineering`, `final-conclusion` |
-| `insights-ui/src/tariff-data/chapters/exports/<NN>-<slug>/{overview,tariff-updates,markets}.json` (`src/types/tariff-chapter-exports.ts`) | `src/utils/tariff-reports/chapter-exports.ts` (`EXPORTS_BY_SLUG`) | `exports`, `exports/tariff-updates`, `exports/markets` — only for chapters with meaningful U.S. exports |
+| `insights-ui/src/tariff-data/chapters/exports/<NN>-<slug>/{overview,tariff-updates,markets,rules,faq}.json` (`src/types/tariff-chapter-exports.ts`) | `src/utils/tariff-reports/chapter-exports.ts` (`EXPORTS_BY_SLUG`) | the five export pages under `/industry-tariff-report/exports/chapters/<slug>` (overview, `tariff-updates`, `markets`, `rules`, `faq`) — only for chapters with meaningful U.S. exports. What each page must contain: [export-pages/](export-pages/README.md) |
+| `insights-ui/src/tariff-data/export-library/{us-export-steps,markets,foreign-measures}.json` (library types in `tariff-chapter-exports.ts`) | read by `pnpm tariff:generate-exports` | facts shared by every chapter's export pages: the steps every exporter takes, market facts, foreign tariff actions on U.S. goods with per-chapter coverage |
 
 Reference implementations: Chapter 01 (`01-live-animals.json`, import side only) and Chapter 30 (`30-pharmaceutical-products.json` + exports).
 
@@ -91,7 +92,7 @@ A single tariff change usually touches several pages. When you add or change an 
 3. **Overview** — `rateTable.rows[].additionalDuties` / `stats` / `workedExamples` that quote a total rate, and `notes` if the chapter notes changed.
 4. **`finalConclusion`** — `keyTakeaways` and every FAQ `answer` quoting a rate or date (search the file for the old percentage and Ch. 99 code). FAQ `link` must be a section that exists.
 5. **`tariffEngineering`** — levers whose savings depend on the duty (e.g. USMCA qualification, Chapter 98, drawback).
-6. **Export side** (if registered) — `exports/tariff-updates` `inEffect`/`changes`/`byCountry`, and `exports/markets` `cells[].rate` + `profile.tariffNow`, `exports/overview` `topMarkets[].tariffNow`/`status`.
+6. **Export side** (if registered) — first the shared `export-library/foreign-measures.json` entry (and its `coverage` per chapter), then each chapter's `exports/tariff-updates` `upcoming`/`inEffect`/`changes`, `exports/markets` `cells[].rate` + `profile.tariffNow` + `status`, `exports/overview` `topMarkets[].tariffNow`/`status`, and any `exports/faq` answer quoting the rate.
 
 A quick check: grep the chapter's JSON files for the old rate string and the Ch. 99 code; every hit must be updated or deliberately historical (a `before` value).
 
@@ -104,8 +105,8 @@ A quick check: grep the chapter's JSON files for the old rate string and the Ch.
 3. **HTS edition:** if a newer revision exists, download it, diff the chapter's rows (General/Special/Column 2/units/new or removed lines) against the cited `now`, and read the revision's change record. Update `overview.rateTable`, `tariffUpdates.lines`, `tariffUpdates.now` (+ `hts-now` source), `industryAreas.scheduleEdition`, and the Ch. 99 lines that reference this chapter.
 4. **New measures since `lastCheckedAt`:** run the Federal Register searches from §2 filtered to `publication_date[gte]=<lastCheckedAt>`; check CSMS, USTR 301 and BIS 232 pages for the same window; check courts for rulings on the duties in `inEffect`. For each hit that reaches the chapter, record it per §3 and propagate per §4.
 5. **Pending items:** re-check every `pending` change (investigation concluded? proclamation signed?) and convert it to `extraDuty` / remove it.
-6. **Export side:** re-check each foreign measure in `exports/tariff-updates` against the foreign official source; replace news-wire sources with the government text when it is out.
-7. **Trade data:** when a new full year is available in Comtrade/Census, update `understandIndustry`, the matrix `importsUsd`, overview `tradeSnapshot` and export `overview`/`markets`.
+6. **Export side:** re-check each foreign measure and each "What's coming" event in `export-library/foreign-measures.json` against the foreign official source (the validator fails once an `expectedOn` date has passed — record the outcome as a measure); replace news-wire sources with the government text when it is out; then carry the changes into each chapter's export pages (§4).
+7. **Trade data:** when a new full year is available in Comtrade/Census, update `understandIndustry`, the matrix `importsUsd` and overview `tradeSnapshot`. Export side: `pnpm tariff:fetch-trade --chapter <N> --flow X --ytd` (also refreshes "This year so far" from monthly data, about two months behind), then update export `overview`/`markets` from `src/tariff-data/trade/exports/chapter-NN.json`.
 8. **Bump the dates** you re-checked (§3).
 9. **Validate:** `pnpm tariff:validate-chapters --chapter <slug> --check-hts` → 0 errors; resolve or consciously accept each warning.
 10. **Quality checks + PR:** `pnpm lint && pnpm prettier-check && pnpm compile`, commit, push, open the PR.
@@ -168,7 +169,7 @@ Needs `bash` and `python3`, standard library only. The runner also sets `PYTHONH
 1. Copy the closest reference file (Chapter 01 for a chapter with no exports, Chapter 30 for one with exports) to `src/tariff-data/chapters/<NN>-<slug>.json`; the slug is `<chapterNumber>-<kebab-title>` without zero-padding (e.g. `1-live-animals`), the file name is zero-padded.
 2. Fill `chapter`, then build the overview rate table from the HTSUS JSON (resolve `effective*` rates from the 8-digit parent, `*InheritedFrom`, `ancestorPath`, `dutiable`). Don't store derived copies: rate-table `searchText` and the `description` / `ancestorPath` / `searchText` (+ engineering `heading` / `general`) of `tariffUpdates.lines` / `tariffEngineering.lines` are filled in by the loader (`normalizeChapterPrototype`) from the rate-table row with the same `hts`; `pnpm tariff:compact-chapters <file>` strips them from an old-shape file.
 3. Work through §2 for every page: `tariffUpdates` (two-edition comparison + in-effect measures + change log), `understandIndustry` (Comtrade), `industryAreas` (country × heading matrix from the in-effect rules), `tariffEngineering` (eCFR rules + levers), `finalConclusion` (FAQs from real search suggestions, answered only from facts on the other pages). Optional page keys can be added incrementally — a missing key means that page has not been built.
-4. Register it in `CHAPTER_FILES` (`src/utils/tariff-reports/chapter-prototype.ts`) with one lazy-import line: `'<slug>': () => import('@/tariff-data/chapters/<NN>-<slug>.json'),`. For export pages, create `exports/<NN>-<slug>/{overview,tariff-updates,markets}.json` and register in `EXPORTS_BY_SLUG`.
+4. Register it in `CHAPTER_FILES` (`src/utils/tariff-reports/chapter-prototype.ts`) with one lazy-import line: `'<slug>': () => import('@/tariff-data/chapters/<NN>-<slug>.json'),`. For export pages, follow [export-pages/README.md](export-pages/README.md): `pnpm tariff:fetch-trade --chapter <N> --flow X --ytd`, check the export library, `pnpm tariff:generate-exports --chapter <N>`, fill every `TODO` per the page specs, and register the five files in `EXPORTS_BY_SLUG`.
 5. Run the validator (it also warns about content files that exist on disk but are not registered), quality checks, PR, deploy, flush.
 
 ---
@@ -198,6 +199,8 @@ Source: `insights-ui/src/scripts/industry-tariff-reports/validate-chapter-conten
 | `lastCheckedAt` / `asOf` older than `--max-age-days` | WARN |
 | Cited HTS edition superseded (`--check-hts`) | WARN |
 | `changes[]` not newest-first | ERROR |
+| Export side: `page.slug` / `page.path` not the page's slug / URL; a "What's coming" `expectedOn` that has passed or is out of order; markets `tariffYear` unset; a markets cell or lane for an unknown heading/market; an export-rules group naming an unknown rule; an empty export FAQ or a FAQ `link` that is not an export page | ERROR |
+| Export library (`src/tariff-data/export-library/`): the same source/date/placeholder checks; `measures` not newest-first; an in-force measure without `effectiveSourceId`; a past or unsorted `upcoming` event; a country code in two markets | ERROR |
 | Duplicate `id` in any array | ERROR |
 | `tariffEngineering` `ruleIds` / `leverIds` unresolved; matrix cell for an unknown heading; FAQ `link` to a missing section; `chapter.slug` ≠ registered slug | ERROR |
 | A derived field still stored in the file (old shape — accepted) whose value differs from the rate table; a `tariffUpdates` / `tariffEngineering` line whose `hts` has no rate-table row | ERROR |
@@ -218,7 +221,7 @@ Chapter pages are cached at the CloudFront edge, so a merged content change is n
     --paths "/industry-tariff-report/chapters/<slug>" "/industry-tariff-report/chapters/<slug>/*"
   ```
 
-  The `/*` path covers the sub-pages (`tariff-updates`, `understand-industry`, `industry-areas`, `tariff-engineering`, `final-conclusion`, `exports`, `exports/tariff-updates`, `exports/markets`); the bare path covers the overview.
+  The `/*` path covers the sub-pages (`tariff-updates`, `understand-industry`, `industry-areas`, `tariff-engineering`, `final-conclusion`); the bare path covers the overview. Export pages live under their own URL tree — for a chapter with exports, also invalidate `"/industry-tariff-report/exports/chapters/<slug>" "/industry-tariff-report/exports/chapters/<slug>/*"`.
 
 - **Everything tariff-related** — run the **Flush CloudFront cache** GitHub workflow (`.github/workflows/flush-cloudfront-cache.yml`) with `flush_tariffs` ticked. Note it has no per-chapter option: it invalidates all of `/industry-tariff-report/*` and `/tariff-reports*`.
 

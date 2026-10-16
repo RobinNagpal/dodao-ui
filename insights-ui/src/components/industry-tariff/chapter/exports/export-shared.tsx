@@ -1,7 +1,21 @@
 import { type StatusBadgeVariant } from '@/components/ui/StatusBadge';
 import type { TariffExportMarketStatus } from '@/types/tariff-chapter-exports';
 
-// Formatting shared by the three export pages of a chapter report.
+// Formatting shared by the export pages of a chapter report.
+
+const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+/** "Nov 10, 2026" for an ISO date. */
+export function formatIsoDate(iso: string): string {
+  const date = new Date(`${iso}T00:00:00Z`);
+  return Number.isNaN(date.getTime()) ? iso : date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric', timeZone: 'UTC' });
+}
+
+/** "Jan–Jul" for a year-to-date period ending in month `throughMonth` (1–12); "Jan" when it is January only. */
+export function monthRange(throughMonth: number): string {
+  const last = MONTHS[Math.min(Math.max(throughMonth, 1), 12) - 1];
+  return throughMonth <= 1 ? 'Jan' : `Jan–${last}`;
+}
 
 export function usd(value: number): string {
   if (value >= 1e9) return `$${(value / 1e9).toFixed(2)}B`;

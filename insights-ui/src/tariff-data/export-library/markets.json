@@ -1,0 +1,96 @@
+{
+  "lastCheckedAt": "2026-10-13",
+  "markets": [
+    {
+      "countryCodes": [40, 56, 100, 191, 196, 203, 208, 233, 246, 251, 276, 300, 348, 372, 380, 428, 440, 442, 470, 528, 616, 620, 642, 703, 705, 724, 752],
+      "marketCode": 97,
+      "name": "European Union",
+      "usTradeAgreement": null,
+      "countryGuide": {
+        "label": "Country Commercial Guide: EU import requirements",
+        "url": "https://www.trade.gov/country-commercial-guides/eu-import-requirements-and-documentation"
+      }
+    },
+    {
+      "countryCodes": [156],
+      "name": "China",
+      "usTradeAgreement": null,
+      "countryGuide": {
+        "label": "Country Commercial Guide: China import requirements",
+        "url": "https://www.trade.gov/country-commercial-guides/china-import-requirements-and-documentation"
+      }
+    },
+    {
+      "countryCodes": [392],
+      "name": "Japan",
+      "usTradeAgreement": null,
+      "countryGuide": {
+        "label": "Country Commercial Guide: Japan import requirements",
+        "url": "https://www.trade.gov/country-commercial-guides/japan-import-requirements-and-documentation"
+      }
+    },
+    {
+      "countryCodes": [124],
+      "name": "Canada",
+      "usTradeAgreement": "USMCA (CUSMA in Canada)",
+      "countryGuide": {
+        "label": "Country Commercial Guide: Canada import requirements",
+        "url": "https://www.trade.gov/country-commercial-guides/canada-import-requirements-and-documentation"
+      }
+    },
+    {
+      "countryCodes": [826],
+      "name": "United Kingdom",
+      "usTradeAgreement": null,
+      "countryGuide": {
+        "label": "Country Commercial Guide: UK import requirements",
+        "url": "https://www.trade.gov/country-commercial-guides/united-kingdom-import-requirements-and-documentation"
+      }
+    },
+    {
+      "countryCodes": [76],
+      "name": "Brazil",
+      "usTradeAgreement": null,
+      "countryGuide": {
+        "label": "Country Commercial Guide: Brazil import requirements",
+        "url": "https://www.trade.gov/country-commercial-guides/brazil-import-requirements-and-documentation"
+      }
+    },
+    {
+      "countryCodes": [757],
+      "name": "Switzerland",
+      "usTradeAgreement": null,
+      "countryGuide": {
+        "label": "Country Commercial Guide: Switzerland import requirements",
+        "url": "https://www.trade.gov/country-commercial-guides/switzerland-import-requirements-and-documentation"
+      }
+    },
+    {
+      "countryCodes": [484],
+      "name": "Mexico",
+      "usTradeAgreement": "USMCA (T-MEC in Mexico)",
+      "countryGuide": {
+        "label": "Country Commercial Guide: Mexico import requirements",
+        "url": "https://www.trade.gov/country-commercial-guides/mexico-import-requirements-and-documentation"
+      }
+    },
+    {
+      "countryCodes": [36],
+      "name": "Australia",
+      "usTradeAgreement": "U.S.–Australia FTA",
+      "countryGuide": {
+        "label": "Country Commercial Guide: Australia import requirements",
+        "url": "https://www.trade.gov/country-commercial-guides/australia-import-requirements-and-documentation"
+      }
+    },
+    {
+      "countryCodes": [410],
+      "name": "South Korea",
+      "usTradeAgreement": "U.S.–Korea FTA (KORUS)",
+      "countryGuide": {
+        "label": "Country Commercial Guide: South Korea import requirements",
+        "url": "https://www.trade.gov/country-commercial-guides/south-korea-import-requirements-and-documentation"
+      }
+    }
+  ]
+}

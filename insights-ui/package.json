@@ -31,6 +31,7 @@
     "tariff:compact-chapters": "tsx src/scripts/industry-tariff-reports/compact-chapter-content.ts",
     "tariff:refresh-chapter": "tsx src/scripts/industry-tariff-reports/refresh-chapter.ts",
     "tariff:fetch-trade": "tsx src/scripts/industry-tariff-reports/chapter-generator/fetch-trade.ts",
+    "tariff:generate-exports": "tsx src/scripts/industry-tariff-reports/chapter-generator/generate-exports.ts",
     "tariff:build-ch99": "tsx src/scripts/tariff-calculator/build-ch99-headings.ts",
     "tariff:build-fta-quota": "tsx src/scripts/tariff-calculator/build-fta-quota-headings.ts",
     "tariff:build-base-rates-sql": "tsx src/scripts/tariff-calculator/build-hts-base-rates-sql.ts",
