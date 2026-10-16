@@ -71,7 +71,7 @@ INSERT INTO "tickers_v1" ("id", "name", "symbol", "exchange", "industry_key", "s
   "website_url", "stock_analyze_url", "space_id", "created_by", "updated_by", "created_at", "updated_at")
 VALUES
   ('<uuid>', 'Reliance Industries Limited', 'RELIANCE', 'NSE', '…', '…', 'https://www.ril.com',
-   'https://stockanalysis.com/quote/nse/RELIANCE/', 'koala_gains', 'stocks-populate-script', 'stocks-populate-script', NOW(), NOW()),
+   '<stock-analyze-base>/quote/nse/RELIANCE/', 'koala_gains', 'stocks-populate-script', 'stocks-populate-script', NOW(), NOW()),
   …
 ON CONFLICT ("space_id", "symbol", "exchange") DO NOTHING;
 COMMIT;
