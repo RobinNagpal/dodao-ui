@@ -1,4 +1,3 @@
-import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { Metadata } from 'next';
 import TidbitsHubComponent from './tidbitshub';
 
@@ -46,11 +45,7 @@ export const metadata: Metadata = {
 };
 
 function TidbitsHubPage() {
-  return (
-    <PageWrapper>
-      <TidbitsHubComponent />
-    </PageWrapper>
-  );
+  return <TidbitsHubComponent />;
 }
 
 export default TidbitsHubPage;
