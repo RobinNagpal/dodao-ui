@@ -30,14 +30,29 @@ export async function fetchPerformanceByExchange(
     // history, scraper refresh, competition save, ...) and explode ISR
     // writes — see knowledge/cache-invalidation.md if added.
     const res = await fetch(url, { next: { tags: [tickerCategoryReportTag(ticker, exchange, category)] } });
+    if (res.status >= 500) {
+      // A 5xx (e.g. the DB is momentarily down) must NOT be collapsed into an
+      // empty response. Doing so renders a soft "ticker not found" page that
+      // still carries HTTP 200/404, which CloudFront then pins at the edge for
+      // its 6-day TTL — a transient outage would de-index a live ticker.
+      // Re-throw so the page returns a genuine 500 (uncached, refetched on the
+      // next request). See docs/insights-ui/cloudfront-error-caching.md.
+      throw new Error(`fetchPerformanceByExchange ${res.status} for ${url}`);
+    }
     if (!res.ok) {
-      console.warn(`fetchPerformanceByExchange failed (${res.status}): ${url}`);
+      // 404 / other non-OK = genuine "no such ticker on this exchange". Return
+      // soft-empty so the caller can fall back to the any-exchange lookup and
+      // ultimately notFound() (a real, legitimately-cacheable 404).
+      console.warn(`fetchPerformanceByExchange not-ok (${res.status}): ${url}`);
       return EMPTY_RESPONSE;
     }
     return (await res.json()) as PerformanceResponse;
   } catch (err) {
-    console.warn('fetchPerformanceByExchange error:', err);
-    return EMPTY_RESPONSE;
+    // Network/transport failure talking to our own API is transient, not a
+    // not-found — propagate so the page returns 500 rather than a cacheable
+    // soft error.
+    console.error('fetchPerformanceByExchange error:', err);
+    throw err;
   }
 }
 
@@ -46,14 +61,19 @@ export async function fetchPerformanceAnyExchange(ticker: string, dataSlug: stri
   const url = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/tickers-v1/${ticker.toUpperCase()}/${dataSlug}`;
   try {
     const res = await fetch(url, { cache: 'no-store' });
+    if (res.status >= 500) {
+      // See fetchPerformanceByExchange: a transient 5xx must surface as a real
+      // 500, not a cacheable soft not-found.
+      throw new Error(`fetchPerformanceAnyExchange ${res.status} for ${url}`);
+    }
     if (!res.ok) {
-      console.warn(`fetchPerformanceAnyExchange failed (${res.status}): ${url}`);
+      console.warn(`fetchPerformanceAnyExchange not-ok (${res.status}): ${url}`);
       return EMPTY_RESPONSE;
     }
     return (await res.json()) as PerformanceResponse;
   } catch (err) {
-    console.warn('fetchPerformanceAnyExchange error:', err);
-    return EMPTY_RESPONSE;
+    console.error('fetchPerformanceAnyExchange error:', err);
+    throw err;
   }
 }
 
