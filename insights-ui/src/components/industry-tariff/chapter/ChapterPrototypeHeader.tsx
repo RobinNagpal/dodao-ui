@@ -2,17 +2,15 @@ import { chapterReportNavItems } from '@/components/industry-tariff/chapter/Chap
 import Heading from '@/components/ui/Heading';
 import SegmentedLinks from '@/components/ui/SegmentedLinks';
 import Text from '@/components/ui/Text';
-import TextLink from '@/components/ui/TextLink';
 import HeaderWithAside from '@/components/ui/containers/HeaderWithAside';
 import Stack from '@/components/ui/containers/Stack';
-import TabsWithAside from '@/components/ui/containers/TabsWithAside';
 import type { ChapterReportDirection, ChapterRouteInfo } from '@/utils/tariff-reports/chapter-route-helpers';
 import type { ReactNode } from 'react';
 
 // Page header for Approach-2 chapters (issue #1770), shared by all report pages: the H1, a
-// "Rates checked …" (or "Updated …") line with the chapter's tool links beside it, an optional
-// "Latest change" line linking to the tariff-updates page, then the report pages as a tab row,
-// named with the Approach-2 page labels.
+// "Rates checked …" (or "Updated …") line with the chapter's tool links beside it, then the report
+// pages as a tab row, named with the Approach-2 page labels. Chapters with export content also get the import/export
+// "you are here" line above the H1 (its link to the other half floats at the bottom of the page).
 
 interface ChapterPrototypeHeaderProps {
   chapter: ChapterRouteInfo;
@@ -21,8 +19,6 @@ interface ChapterPrototypeHeaderProps {
   ratesAsOf: string;
   // Wording before the date: "Rates checked" on the rate pages, "Updated" on pages that hold no rates.
   asOfLabel?: string;
-  // The newest dated tariff change, linked to the page that lists it.
-  latestChange?: { date: string; title: string; href: string };
   // Inline "Tools for this chapter" links (PrototypeChapterToolLinks).
   toolLinks: ReactNode;
   currentSlug: string;
@@ -30,7 +26,7 @@ interface ChapterPrototypeHeaderProps {
   direction?: ChapterReportDirection;
   // Admin regenerate/edit actions, pinned beside the title.
   adminActions?: ReactNode;
-  // Import | Export switch, for chapters with export content.
+  // Import / export indicator (ChapterDirectionSwitch), for chapters with export content.
   directionSwitch?: ReactNode;
 }
 
@@ -46,7 +42,6 @@ export default function ChapterPrototypeHeader({
   pageTitle,
   ratesAsOf,
   asOfLabel = 'Rates checked',
-  latestChange,
   toolLinks,
   currentSlug,
   direction = 'import',
@@ -64,6 +59,7 @@ export default function ChapterPrototypeHeader({
     <Stack gap="lg" mb="lg">
       <HeaderWithAside bordered={false} aside={adminActions}>
         <Stack gap="sm">
+          {directionSwitch}
           <Heading as="h1" size="page" weight="bold" tone="white">
             {pageTitle}
           </Heading>
@@ -73,15 +69,9 @@ export default function ChapterPrototypeHeader({
             </Text>
             {toolLinks}
           </Stack>
-          {latestChange && (
-            <Text size="sm" tone="muted">
-              Latest change: {formatRatesAsOf(latestChange.date)} · {latestChange.title} · <TextLink href={latestChange.href}>Details →</TextLink>
-            </Text>
-          )}
         </Stack>
       </HeaderWithAside>
-      {/* The Import | Export switch sits with the section tabs: one navigation bar for side and page. */}
-      <TabsWithAside tabs={<SegmentedLinks variant="tabs" ariaLabel="Chapter report sections" items={tabs} />} aside={directionSwitch} />
+      <SegmentedLinks variant="tabs" ariaLabel="Chapter report sections" items={tabs} />
     </Stack>
   );
 }

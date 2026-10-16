@@ -26,7 +26,8 @@ export default async function ChapterExportsLayout({ children, params }: { child
 
   return (
     <PageWrapper>
-      <BreadcrumbsWithJsonLd breadcrumbs={breadcrumbs} />
+      {/* Phones: one back link to the parent instead of the full chain, which repeats the H1 below. */}
+      <BreadcrumbsWithJsonLd breadcrumbs={breadcrumbs} mobileBackOnly />
       <div className="text-color">{children}</div>
     </PageWrapper>
   );

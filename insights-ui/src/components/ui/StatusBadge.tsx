@@ -13,6 +13,8 @@ interface StatusBadgeProps {
   size?: StatusBadgeSize;
   /** Shows a rotating icon before the label, for something still in progress. */
   spinning?: boolean;
+  /** Keeps the label on one line and stops the badge shrinking, beside text that wraps. */
+  nowrap?: boolean;
   className?: string;
 }
 
@@ -26,6 +28,8 @@ const statusBadge = cva('inline-flex items-center gap-1 text-xs', {
   defaultVariants: { size: 'xs' },
 });
 
+const NOWRAP_CLASSES = 'shrink-0 whitespace-nowrap';
+
 const VARIANT_TONE: Record<StatusBadgeVariant, BadgeTone> = {
   success: 'success',
   danger: 'danger',
@@ -36,9 +40,9 @@ const VARIANT_TONE: Record<StatusBadgeVariant, BadgeTone> = {
   archived: 'neutral',
 };
 
-export default function StatusBadge({ variant, label, size = 'xs', spinning = false, className }: StatusBadgeProps): React.JSX.Element {
+export default function StatusBadge({ variant, label, size = 'xs', spinning = false, nowrap = false, className }: StatusBadgeProps): React.JSX.Element {
   return (
-    <span className={cn(statusBadge({ size }), badgeTone({ tone: VARIANT_TONE[variant] }), className)}>
+    <span className={cn(statusBadge({ size }), badgeTone({ tone: VARIANT_TONE[variant] }), nowrap && NOWRAP_CLASSES, className)}>
       {spinning && <ArrowPathIcon className="h-3 w-3 shrink-0 animate-spin" aria-hidden="true" />}
       {label}
     </span>

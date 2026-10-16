@@ -3,7 +3,7 @@
 import { useCheckoutReturn } from '@/hooks/useCheckoutReturn';
 import { publishCreditBalance, useCreditBalance, useCreditBalanceProvider } from '@/hooks/useCreditBalance';
 import { usePurchasesEnabled } from '@/hooks/usePurchasesEnabled';
-import FloatingReportCta from '@/components/ui/credits/FloatingReportCta';
+import FloatingReportCta from '@/components/ui/FloatingReportCta';
 import ReportFreshnessBar from '@/components/ui/credits/ReportFreshnessBar';
 import RegenerateButton from '@/components/ui/credits/RegenerateButton';
 import StatusBadge from '@/components/ui/StatusBadge';

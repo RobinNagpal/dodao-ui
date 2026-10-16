@@ -153,10 +153,9 @@ Rules for leaves:
 | `Stack` | Flex container; owns `gap` + optional block margins (`mt`/`mb`); `as` for `ul`/`section`/etc. `align="end-from-sm"` is left on phones, right from `sm` up. |
 | `MetricGrid` | Responsive grid for metric cells; `columns` presets + `gap`. |
 | `StatCardGrid` | Row of headline stat cards (`MetricCell size="lg"`): two per row below desktop, all in one row on desktop; an odd last card spans the row. |
-| `TabsWithAside` | Tab row with a control beside it (e.g. section tabs + Import/Export switch); the aside drops below on narrow screens. |
 | `ChartFrame` | Full-width, fixed-height (`height` sm/md/lg) box for a chart.js canvas, with an accessible label; the square radar charts use `RadarChartFrame`. |
 | `SplitColumns` | Two-column responsive split (`lg:w-1/2` halves) with a `gap` variant. |
-| `ShowAt` | Renders children only on one side of the `lg` breakpoint (`lg-up` / `below-lg`), for a different phone layout. |
+| `ShowAt` | Renders children only on one side of a breakpoint (`lg-up` / `below-lg`, or `md-up` / `below-md` to split phones from tablets and up), for a different phone layout. |
 
 **Sections (`ui/sections/`) — surfaces & report chrome**
 
@@ -165,6 +164,7 @@ Rules for leaves:
 | `CardSection` | Dark report-section surface (`bg-gray-900 rounded-lg shadow-sm`) with padding presets. |
 | `InlineCard` | Lightweight filled box (`bg-gray-800 rounded-md`); `padding` presets incl. `factor`; `as` for `li`. |
 | `RelatedSectionsNav` | Top-bordered "more analyses" nav: heading + responsive grid of pill links. An item with `active` is the current page: shown in place, highlighted, not linked. |
+| `IndexListGroup` / `IndexList` / `IndexListRow` | Numbered one-column index for a long catalogue, shaped like the HTS code browser: a group heading (e.g. "Section I Live Animals"), then a bordered list of rows — number, title linked over the whole row, right-aligned meta (date), two-line summary and small sub-page links, optionally in named groups (`linkGroups`, e.g. "U.S. imports" / "U.S. exports"). Used by `/tariff-reports`. |
 | `LinkTile` | Navigational tile with eyebrow, title, highlighted meta value, body and footer. |
 | `RuleList` | List separated by top rules instead of boxes, for sources and citations; optional `columns`. |
 | `TimelineRow` | One ruled list entry: a left column (date + status, or code + name) beside the entry body; stacks on phones. |
@@ -190,12 +190,14 @@ Rules for leaves:
 | Component | Responsibility |
 |---|---|
 | `MetricCell` | Label + value box; `sentiment` colors the value; `size`/`loading`. |
-| `StatusBadge` | Status pill (`success`/`danger`/`warning`/`info`/`accent`/`neutral`/`archived`). |
+| `StatusBadge` | Status pill (`success`/`danger`/`warning`/`info`/`accent`/`neutral`/`archived`); `nowrap` keeps it on one line beside text that wraps. |
 | `PassFailBadge` | Green/red pass-fail pill. |
 | `NoticeCallout` | Boxed short notice in a badge tone (`warning`/`info`/`neutral`), e.g. the tariff calculator's "extra-duty data last updated" warning. |
 | `ScenarioOutlookBadge` | Probability / Direction / Timeframe scenario pills. |
 | `AppliedFilterChip` | Removable filter chip. |
 | `ToggleChip` | On/off filter chip (`aria-pressed`) with an optional count. |
+| `FloatingReportCta` | Pill pinned to the bottom centre of the viewport (portaled to `<body>`, tablet and up only, `z-[9]` under modals). A button (`onClick`, the stock/ETF "Get the latest analysis") or a link (`href`, the tariff chapter's import ↔ export switch); `icon` is `sparkles` / `forward` / `back`. Give phones an inline control instead. |
+| `LinkMenu` | Labelled button (e.g. "Tools") that opens a short list of real links; Headless UI `Menu`, portaled. Keep an inline copy in the HTML where the links must be crawlable. |
 | `TextButton` | A `<button>` styled like `TextLink` for a small in-page action that isn't navigation (e.g. "Expand all" / "Collapse all"); dims when `disabled`. |
 | `ToggleSwitch` | Track-and-knob on/off switch with its label, for one setting that changes a whole table (e.g. "USMCA claimed"). The label wraps on narrow screens. |
 | `ActiveTabScroller` | Horizontally scrolling tab row that scrolls the current tab (`aria-current="page"`) into view on load, and fades whichever edge still has tabs hidden past it. |
@@ -214,7 +216,7 @@ Rules for leaves:
 | `InheritedValue` / `EmptyCellValue` | Muted "inherited from <parent>" value, and the em-dash empty cell. |
 | `MatrixCellButton` | Selectable matrix cell (primary value + muted second line, `selected`/`dim`) that opens a detail view. |
 | `SelectableMatrix` | Row × group matrix of `MatrixCellButton`s: a table on desktop, a group picker + a divided list of tappable rows (`MatrixCellButton layout="row"`, with a chevron) on phones; the selected cell's detail opens in a `DetailModal`. |
-| `StackedRowList` + `StackedRowListHeader`/`StackedRow` | Phone layout for a wide reference table: one list item per row (code + key value on top, full label below, indented as a tree), tap to open the other columns. A long value (e.g. a compound rate) wraps at 60% of the row; a short one stays on one line. Rows can instead be picked (`onSelect`, e.g. search results in a line picker), and `selected` on the list marks the picked one. Pair with `ShowAt` so the table shows from `lg` up. The list clips sideways overflow (`overflow-x: clip`, which keeps sticky headers working) so it never widens the page. `StackedRowListHeader placement="group"` is the smaller column header at the top of an open `StackedRowGroup`. The list is also the container for desktop row groups (below). |
+| `StackedRowList` + `StackedRowListHeader`/`StackedRow` | Phone layout for a wide reference table: one list item per row (code + key value on top, full label below, indented as a tree), tap to open the other columns. A long value (e.g. a compound rate) wraps at 60% of the row; a short one stays on one line. Rows can instead be picked (`onSelect`, e.g. search results in a line picker), and `selected` on the list marks the picked one. A row with only a few short values shows them all in an always-visible `meta` line instead of behind a tap (the export overview's buyers and products). `collapseAfter` folds a long list's tail behind a native `<details>` "Show all" toggle (no JS; every row stays in the HTML). Pair with `ShowAt` so the table shows from `lg` up. The list clips sideways overflow (`overflow-x: clip`, which keeps sticky headers working) so it never widens the page. `StackedRowListHeader placement="group"` is the smaller column header at the top of an open `StackedRowGroup`. The list is also the container for desktop row groups (below). |
 | `TableRowGroup` / `StackedRowGroup` + `RowGroupToggle` + `RowGroupListHeader` | Collapsible row groups for a long reference table (the chapter rate table grouped by 4-digit heading, issues #1819/#1827). Groups are list items in a `StackedRowList` whose `header` is a `RowGroupListHeader` (e.g. Heading / Product group / Base rates / Lines); it shares the toggle's grid, so each label sits over its column (phones keep only the code and aside labels). The toggle is a full-width button (`aria-expanded`/`aria-controls`, visible focus ring) with code, title, optional official description, optional body paragraph, key value with an optional note under it, and aside (e.g. line or match count); it stacks on phones and lines up in columns from `md`, and every text area wraps. An open group shows its rows under their own column header: `TableRowGroup` (desktop) wraps a `DataTable` with its own sticky `TableHead`, and `StackedRowGroup` (phones) takes a `header` (a `StackedRowListHeader placement="group"`) above its `StackedRow`s; either header stays pinned only while that group scrolls past. Collapsed rows keep rendering with `hidden`, so every row stays in the server HTML. |
 
 Plus the shadcn-style `Card`, `Input`, `Label`, `Tabs` already in

@@ -6,12 +6,14 @@ import ShareBar from '@/components/ui/ShareBar';
 import StatusBadge from '@/components/ui/StatusBadge';
 import Text from '@/components/ui/Text';
 import TextLink from '@/components/ui/TextLink';
+import ShowAt from '@/components/ui/containers/ShowAt';
 import Stack from '@/components/ui/containers/Stack';
 import StatCardGrid from '@/components/ui/containers/StatCardGrid';
 import CardSection from '@/components/ui/sections/CardSection';
 import MarkdownContent from '@/components/ui/sections/MarkdownContent';
 import SectionHeading from '@/components/ui/sections/SectionHeading';
 import { DataTable, EmptyCellValue, TableCell, TableHead, TableHeaderCell, TableRow, TableScroll } from '@/components/ui/tables/DataTable';
+import { StackedRow, StackedRowList, StackedRowListHeader } from '@/components/ui/tables/StackedRowList';
 import type { TariffExportOverviewContent, TariffExportsYearToDate } from '@/types/tariff-chapter-exports';
 import { parseChapterBodyMarkdown } from '@/util/parse-markdown';
 import { chapterExportHref } from '@/utils/tariff-reports/chapter-route-helpers';
@@ -22,6 +24,20 @@ import React from 'react';
 // are on the markets page and what changed is on the export tariff-updates page. Laid out like the
 // import pages: stat cards, numbered takeaways, then the sections — the buyers table is the one
 // boxed section, the rest sits on the page.
+//
+// Below `lg` the buyers and product tables become lists (one item per row, every value visible)
+// instead of tables that hide their right-hand columns off screen. The year-to-date table stays a
+// table: four short columns that nearly fit.
+
+// Product groups shown on phones before the "Show all" toggle; chapters can have 80+ headings.
+const PHONE_GROUPS_SHOWN = 10;
+
+// "+33.0% vs 2024 · 10.4% share" — the secondary numbers on a phone list row.
+function changeAndShare(changePct: number | null, priorYear: number, sharePct: number | null, shareLabel: string): string {
+  const parts = [`${change(changePct) ?? 'n/a'} vs ${priorYear}`];
+  if (sharePct !== null) parts.push(`${sharePct.toFixed(1)}% ${shareLabel}`);
+  return parts.join(' · ');
+}
 
 function YearToDate({ ytd }: { ytd: TariffExportsYearToDate }): React.JSX.Element {
   const months = monthRange(ytd.throughMonth);
@@ -119,66 +135,109 @@ export default function ChapterExportOverview({ overview }: { overview: TariffEx
               <TextLink href={chapterExportHref(chapter.slug, 'exports/tariff-updates')}>Tariff updates</TextLink>.
             </Text>
           </Stack>
-          <TableScroll>
-            <DataTable>
-              <TableHead look="plain">
-                <TableRow>
-                  <TableHeaderCell>Country</TableHeaderCell>
-                  <TableHeaderCell align="right">{latestYear}</TableHeaderCell>
-                  <TableHeaderCell align="right">vs {priorYear}</TableHeaderCell>
-                  <TableHeaderCell width="quarterFromLg">Share of {latestYear} exports</TableHeaderCell>
-                  <TableHeaderCell>Tariff on U.S. goods now</TableHeaderCell>
-                  <TableHeaderCell>Since Jan 2025</TableHeaderCell>
-                </TableRow>
-              </TableHead>
-              <tbody>
-                {overview.topMarkets.map((m) => (
-                  <TableRow key={m.countryCode}>
-                    <TableCell tone="emphasis">{m.country}</TableCell>
-                    <TableCell variant="rate" align="right" tone="emphasis">
-                      {usd(m.exportsUsd)}
+          <ShowAt range="lg-up">
+            <TableScroll>
+              <DataTable>
+                <TableHead look="plain">
+                  <TableRow>
+                    <TableHeaderCell>Country</TableHeaderCell>
+                    <TableHeaderCell align="right">{latestYear}</TableHeaderCell>
+                    <TableHeaderCell align="right">vs {priorYear}</TableHeaderCell>
+                    <TableHeaderCell width="quarterFromLg">Share of {latestYear} exports</TableHeaderCell>
+                    <TableHeaderCell>Tariff on U.S. goods now</TableHeaderCell>
+                    <TableHeaderCell>Since Jan 2025</TableHeaderCell>
+                  </TableRow>
+                </TableHead>
+                <tbody>
+                  {overview.topMarkets.map((m) => (
+                    <TableRow key={m.countryCode}>
+                      <TableCell tone="emphasis">{m.country}</TableCell>
+                      <TableCell variant="rate" align="right" tone="emphasis">
+                        {usd(m.exportsUsd)}
+                      </TableCell>
+                      <TableCell variant="rate" align="right">
+                        {change(m.changePct) ?? <EmptyCellValue />}
+                      </TableCell>
+                      <TableCell>
+                        <ShareBar tone="sky" widthPct={barWidth(m.sharePct, maxMarketShare)} label={`${m.sharePct.toFixed(1)}%`} />
+                      </TableCell>
+                      <TableCell variant="rateWrap">{m.tariffNow}</TableCell>
+                      <TableCell variant="rate">
+                        <StatusBadge variant={EXPORT_STATUS_BADGE[m.status].variant} size="sm" label={EXPORT_STATUS_BADGE[m.status].label} />
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                  <TableRow emphasis="group">
+                    <TableCell>All other countries</TableCell>
+                    <TableCell variant="rate" align="right">
+                      {usd(overview.othersExportsUsd)}
                     </TableCell>
                     <TableCell variant="rate" align="right">
-                      {change(m.changePct) ?? <EmptyCellValue />}
+                      {overview.othersPriorExportsUsd ? (
+                        change(((overview.othersExportsUsd - overview.othersPriorExportsUsd) / overview.othersPriorExportsUsd) * 100)
+                      ) : (
+                        <EmptyCellValue />
+                      )}
                     </TableCell>
                     <TableCell>
-                      <ShareBar tone="sky" widthPct={barWidth(m.sharePct, maxMarketShare)} label={`${m.sharePct.toFixed(1)}%`} />
+                      {othersSharePct !== null ? (
+                        <ShareBar tone="sky" widthPct={barWidth(othersSharePct, maxMarketShare)} label={`${othersSharePct.toFixed(1)}%`} />
+                      ) : (
+                        <EmptyCellValue />
+                      )}
                     </TableCell>
-                    <TableCell variant="rateWrap">{m.tariffNow}</TableCell>
                     <TableCell variant="rate">
-                      <StatusBadge variant={EXPORT_STATUS_BADGE[m.status].variant} size="sm" label={EXPORT_STATUS_BADGE[m.status].label} />
+                      <EmptyCellValue />
+                    </TableCell>
+                    <TableCell variant="rate">
+                      <EmptyCellValue />
                     </TableCell>
                   </TableRow>
-                ))}
-                <TableRow emphasis="group">
-                  <TableCell>All other countries</TableCell>
-                  <TableCell variant="rate" align="right">
-                    {usd(overview.othersExportsUsd)}
-                  </TableCell>
-                  <TableCell variant="rate" align="right">
-                    {overview.othersPriorExportsUsd ? (
-                      change(((overview.othersExportsUsd - overview.othersPriorExportsUsd) / overview.othersPriorExportsUsd) * 100)
-                    ) : (
-                      <EmptyCellValue />
-                    )}
-                  </TableCell>
-                  <TableCell>
-                    {othersSharePct !== null ? (
-                      <ShareBar tone="sky" widthPct={barWidth(othersSharePct, maxMarketShare)} label={`${othersSharePct.toFixed(1)}%`} />
-                    ) : (
-                      <EmptyCellValue />
-                    )}
-                  </TableCell>
-                  <TableCell variant="rate">
-                    <EmptyCellValue />
-                  </TableCell>
-                  <TableCell variant="rate">
-                    <EmptyCellValue />
-                  </TableCell>
-                </TableRow>
-              </tbody>
-            </DataTable>
-          </TableScroll>
+                </tbody>
+              </DataTable>
+            </TableScroll>
+          </ShowAt>
+          <ShowAt range="below-lg">
+            <StackedRowList header={<StackedRowListHeader label="Country and tariff now" value={latestYear} />}>
+              {overview.topMarkets.map((m) => (
+                <StackedRow
+                  key={m.countryCode}
+                  label={
+                    <Text as="span" weight="semibold" tone="white">
+                      {m.country}
+                    </Text>
+                  }
+                  value={usd(m.exportsUsd)}
+                  tone="emphasis"
+                  meta={
+                    <Stack gap="xs">
+                      <span>{changeAndShare(m.changePct, priorYear, m.sharePct, 'of exports')}</span>
+                      <Stack direction="row" gap="md" align="start" justify="between">
+                        <Text as="span" size="sm">
+                          {m.tariffNow}
+                        </Text>
+                        {/* Phones flag only a change: a "No change" badge on nearly every row is noise. */}
+                        {m.status !== 'unchanged' && (
+                          <StatusBadge variant={EXPORT_STATUS_BADGE[m.status].variant} size="sm" label={EXPORT_STATUS_BADGE[m.status].label} nowrap />
+                        )}
+                      </Stack>
+                    </Stack>
+                  }
+                />
+              ))}
+              <StackedRow
+                emphasis="group"
+                label="All other countries"
+                value={usd(overview.othersExportsUsd)}
+                meta={changeAndShare(
+                  overview.othersPriorExportsUsd ? ((overview.othersExportsUsd - overview.othersPriorExportsUsd) / overview.othersPriorExportsUsd) * 100 : null,
+                  priorYear,
+                  othersSharePct,
+                  'of exports'
+                )}
+              />
+            </StackedRowList>
+          </ShowAt>
           <Text size="xs" tone="muted">
             {overview.coverageNote}
           </Text>
@@ -195,71 +254,117 @@ export default function ChapterExportOverview({ overview }: { overview: TariffEx
             number used on the export filing — see <TextLink href={chapterExportHref(chapter.slug, 'exports/rules')}>Export rules</TextLink>.
           </Text>
         </Stack>
-        <TableScroll>
-          <DataTable>
-            <TableHead look="plain">
-              <TableRow>
-                <TableHeaderCell width="wide">Product group</TableHeaderCell>
-                <TableHeaderCell align="right">{latestYear}</TableHeaderCell>
-                <TableHeaderCell align="right">vs {priorYear}</TableHeaderCell>
-                <TableHeaderCell width="quarterFromLg">Share</TableHeaderCell>
-              </TableRow>
-            </TableHead>
-            <tbody>
-              {overview.byHeading.map((h) => (
-                <TableRow key={h.heading}>
-                  <TableCell>
-                    <Text as="span" tone="primary" font="mono">
-                      {h.heading}
-                    </Text>{' '}
-                    {h.label}
-                  </TableCell>
-                  <TableCell variant="rate" align="right" tone="emphasis">
-                    {usd(h.exportsUsd)}
-                  </TableCell>
-                  <TableCell variant="rate" align="right">
-                    {change(h.changePct) ?? <EmptyCellValue />}
-                  </TableCell>
-                  <TableCell>
-                    <ShareBar tone="teal" widthPct={barWidth(h.sharePct, maxHeadingShare)} label={`${h.sharePct.toFixed(1)}%`} />
-                  </TableCell>
+        <ShowAt range="lg-up">
+          <TableScroll>
+            <DataTable>
+              <TableHead look="plain">
+                <TableRow>
+                  <TableHeaderCell width="wide">Product group</TableHeaderCell>
+                  <TableHeaderCell align="right">{latestYear}</TableHeaderCell>
+                  <TableHeaderCell align="right">vs {priorYear}</TableHeaderCell>
+                  <TableHeaderCell width="quarterFromLg">Share</TableHeaderCell>
                 </TableRow>
+              </TableHead>
+              <tbody>
+                {overview.byHeading.map((h) => (
+                  <TableRow key={h.heading}>
+                    <TableCell>
+                      <Text as="span" tone="primary" font="mono">
+                        {h.heading}
+                      </Text>{' '}
+                      {h.label}
+                    </TableCell>
+                    <TableCell variant="rate" align="right" tone="emphasis">
+                      {usd(h.exportsUsd)}
+                    </TableCell>
+                    <TableCell variant="rate" align="right">
+                      {change(h.changePct) ?? <EmptyCellValue />}
+                    </TableCell>
+                    <TableCell>
+                      <ShareBar tone="teal" widthPct={barWidth(h.sharePct, maxHeadingShare)} label={`${h.sharePct.toFixed(1)}%`} />
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </tbody>
+            </DataTable>
+          </TableScroll>
+        </ShowAt>
+        <ShowAt range="below-lg">
+          {/* Largest first, so folding a long list keeps the groups that matter in view. */}
+          <StackedRowList
+            header={<StackedRowListHeader label="Product group, largest first" value={latestYear} />}
+            collapseAfter={PHONE_GROUPS_SHOWN}
+            showAllLabel={`Show all ${overview.byHeading.length} product groups`}
+            showFewerLabel="Show fewer product groups"
+          >
+            {[...overview.byHeading]
+              .sort((a, b) => b.exportsUsd - a.exportsUsd)
+              .map((h) => (
+                <StackedRow
+                  key={h.heading}
+                  label={
+                    <>
+                      <Text as="span" tone="primary" font="mono">
+                        {h.heading}
+                      </Text>{' '}
+                      {h.label}
+                    </>
+                  }
+                  value={usd(h.exportsUsd)}
+                  tone="emphasis"
+                  meta={changeAndShare(h.changePct, priorYear, h.sharePct, 'share')}
+                />
               ))}
-            </tbody>
-          </DataTable>
-        </TableScroll>
-        <TableScroll>
-          <DataTable>
-            <TableHead look="plain">
-              <TableRow>
-                <TableHeaderCell>HS / Schedule B</TableHeaderCell>
-                <TableHeaderCell width="wide">Product</TableHeaderCell>
-                <TableHeaderCell align="right">{latestYear}</TableHeaderCell>
-                <TableHeaderCell align="right">vs {priorYear}</TableHeaderCell>
-                <TableHeaderCell width="quarterFromLg">Share</TableHeaderCell>
-              </TableRow>
-            </TableHead>
-            <tbody>
-              {overview.byLine.map((line) => (
-                <TableRow key={line.hs6}>
-                  <TableCell variant="code" tone="primary">
-                    {line.hs6}
-                  </TableCell>
-                  <TableCell>{line.description}</TableCell>
-                  <TableCell variant="rate" align="right" tone="emphasis">
-                    {usd(line.exportsUsd)}
-                  </TableCell>
-                  <TableCell variant="rate" align="right">
-                    {change(line.changePct) ?? <EmptyCellValue />}
-                  </TableCell>
-                  <TableCell>
-                    <ShareBar tone="teal" widthPct={barWidth(line.sharePct, maxLineShare)} label={`${line.sharePct.toFixed(1)}%`} />
-                  </TableCell>
+          </StackedRowList>
+        </ShowAt>
+        <ShowAt range="lg-up">
+          <TableScroll>
+            <DataTable>
+              <TableHead look="plain">
+                <TableRow>
+                  <TableHeaderCell>HS / Schedule B</TableHeaderCell>
+                  <TableHeaderCell width="wide">Product</TableHeaderCell>
+                  <TableHeaderCell align="right">{latestYear}</TableHeaderCell>
+                  <TableHeaderCell align="right">vs {priorYear}</TableHeaderCell>
+                  <TableHeaderCell width="quarterFromLg">Share</TableHeaderCell>
                 </TableRow>
-              ))}
-            </tbody>
-          </DataTable>
-        </TableScroll>
+              </TableHead>
+              <tbody>
+                {overview.byLine.map((line) => (
+                  <TableRow key={line.hs6}>
+                    <TableCell variant="code" tone="primary">
+                      {line.hs6}
+                    </TableCell>
+                    <TableCell>{line.description}</TableCell>
+                    <TableCell variant="rate" align="right" tone="emphasis">
+                      {usd(line.exportsUsd)}
+                    </TableCell>
+                    <TableCell variant="rate" align="right">
+                      {change(line.changePct) ?? <EmptyCellValue />}
+                    </TableCell>
+                    <TableCell>
+                      <ShareBar tone="teal" widthPct={barWidth(line.sharePct, maxLineShare)} label={`${line.sharePct.toFixed(1)}%`} />
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </tbody>
+            </DataTable>
+          </TableScroll>
+        </ShowAt>
+        <ShowAt range="below-lg">
+          <StackedRowList header={<StackedRowListHeader label="HS / Schedule B and product" value={latestYear} />}>
+            {overview.byLine.map((line) => (
+              <StackedRow
+                key={line.hs6}
+                code={line.hs6}
+                label={line.description}
+                value={usd(line.exportsUsd)}
+                tone="emphasis"
+                meta={changeAndShare(line.changePct, priorYear, line.sharePct, 'share')}
+              />
+            ))}
+          </StackedRowList>
+        </ShowAt>
       </Stack>
 
       <SourcesCard items={documentSourceItems(overview.sources)} />
