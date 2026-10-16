@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "approach": 2,
   "generatedBy": "src/scripts/industry-tariff-reports/chapter-generator/generate-chapter.ts",
-  "asOf": "2026-10-12",
+  "asOf": "2026-10-13",
   "chapter": {
     "number": 41,
     "padded": "41",
@@ -71,7 +71,7 @@
     "productGroups": [
       {
         "heading": "4101",
-        "label": "Raw hides and skins of bovine (including buffalo) or…",
+        "label": "Raw hides and skins of bovine (including buffalo) or equine animals (fresh, or salted, dried, limed, pickled or otherwise preserved, but not tanned, parchment-dressed or further prepared), whether or not dehaired or split",
         "blurb": "Raw cattle, buffalo and horse hides. Hides that are not pretanned are Free; most pretanned hides pay 2.4% to 5%. Canadian hides that are not pretanned (4101.20.10, 4101.50.10, 4101.90.10) and some pretanned lines pay the 50% Section 338 duty even with a USMCA claim. Untanned hides must meet USDA APHIS entry rules (9 CFR 95.16).",
         "rateSummary": "Free · 2.4% · 5% · 3.3%",
         "lineCount": 25,
@@ -80,7 +80,7 @@
       },
       {
         "heading": "4102",
-        "label": "Raw skins of sheep or lambs (fresh, or salted, dried…",
+        "label": "Raw skins of sheep or lambs (fresh, or salted, dried, limed, pickled or otherwise preserved, but not tanned, parchment- dressed or further prepared), whether or not with wool on or split, other than those excluded by note 1(c) to this chapter",
         "blurb": "Raw sheep and lamb skins, with or without wool, are Free except pretanned skins in 4102.10.30 and 4102.29.30 (2%). Raw sheepskins with the wool on stay here (note 1(c)); Astrakhan, Caracul, Persian and similar lambskins go to Chapter 43 as furskins.",
         "rateSummary": "Free · 2%",
         "lineCount": 9,
@@ -89,7 +89,7 @@
       },
       {
         "heading": "4103",
-        "label": "Other raw hides and skins (fresh, or salted, dried, limed…",
+        "label": "Other raw hides and skins (fresh, or salted, dried, limed, pickled or otherwise preserved, but not tanned, parchment-dressed or further prepared), whether or not dehaired or split, other than those excluded by note 1(b) or 1(c) to this chapter",
         "blurb": "Other raw skins: reptiles (4103.20), swine (4103.30), goats and kids, deer and other animals (4103.90). Raw skins that are not pretanned are Free. Reptile and deer skins are wildlife: they need an FWS declaration and, for CITES species, CITES permits.",
         "rateSummary": "Free · 5% · 4.2% · 3.7% · 3.3%",
         "lineCount": 11,
@@ -98,7 +98,7 @@
       },
       {
         "heading": "4104",
-        "label": "Tanned or crust hides and skins of bovine (including…",
+        "label": "Tanned or crust hides and skins of bovine (including buffalo) or equine animals, without hair on, whether or not split, but not further prepared",
         "blurb": "Tanned (wet-blue) and crust cattle, buffalo and horse hides, not further prepared: Free to 5%. Japanese goods of this heading pay 40% more (9903.41.05). Five 4104 lines (4104.11.20, 4104.41.50, 4104.49.10, 4104.49.50) are exempt from Brazil's 25% Section 301 duty.",
         "rateSummary": "Free · 2.4% · 5% · 3.3%",
         "lineCount": 37,
@@ -107,7 +107,7 @@
       },
       {
         "heading": "4105",
-        "label": "Tanned or crust skins of sheep or lambs, without wool on…",
+        "label": "Tanned or crust skins of sheep or lambs, without wool on, whether or not split, but not further prepared",
         "blurb": "Tanned and crust sheep and lamb skins pay 2%. Nigeria supplied most of the $1.9M imported in 2025. Japanese skins of this heading pay 40% more if dyed, colored, stamped or embossed.",
         "rateSummary": "2%",
         "lineCount": 3,
@@ -116,7 +116,7 @@
       },
       {
         "heading": "4106",
-        "label": "Tanned or crust skins of other animals, without wool or…",
+        "label": "Tanned or crust skins of other animals, without wool or hair on, whether or not split, but not further prepared",
         "blurb": "Tanned and crust goat (2.4%), swine (4.2%), reptile (Free) and other skins (3.3%). Reptile skins need CITES and FWS clearance; crocodilian skins must carry CITES tags.",
         "rateSummary": "2.4% · 4.2% · Free · 3.3%",
         "lineCount": 9,
@@ -125,7 +125,7 @@
       },
       {
         "heading": "4107",
-        "label": "Leather further prepared after tanning or crusting…",
+        "label": "Leather further prepared after tanning or crusting, including parchment-dressed leather, of bovine (including buffalo) or equine animals, without hair on, whether or not split, other than leather of heading 4114",
         "blurb": "Finished cattle, buffalo and horse leather: 82% of Chapter 41 imports in 2025. Rates run from Free (upper and lining leather of up to 28 sq ft) to 5%; upholstery leather is 2.8%. Italian leather pays a flat 10%, Brazilian 37.5% plus the base rate, and Mexican is Free with USMCA. Japanese finished bovine leather pays 52.5%.",
         "rateSummary": "Free · 2.4% · 3.6% · 2.5% · 2.8% · 3.3% · 5%",
         "lineCount": 66,
@@ -143,7 +143,7 @@
       },
       {
         "heading": "4112",
-        "label": "Leather further prepared after tanning or crusting…",
+        "label": "Leather further prepared after tanning or crusting, including parchment-dressed leather, of sheep or lamb, without wool on, whether or not split, other than leather of heading 4114",
         "blurb": "Finished sheep and lamb leather pays 2% (fancy or not). Italy, Türkiye and France are the main suppliers. Japanese leather of this heading pays 40% more if dyed, colored, stamped or embossed.",
         "rateSummary": "2%",
         "lineCount": 3,
@@ -152,7 +152,7 @@
       },
       {
         "heading": "4113",
-        "label": "Leather further prepared after tanning or crusting…",
+        "label": "Leather further prepared after tanning or crusting, including parchment-dressed leather, of other animals, without wool or hair on, whether or not split, other than leather of heading 4114",
         "blurb": "Finished goat and kid leather (2.4% or 2.8%), pigskin (4.2%), reptile leather (Free) and leather of other animals (3.3% or 1.6%). Reptile and other-animal leather (4113.30, 4113.90) is exempt from the 2026 Section 301 duties of every country, but not from Brazil's 25% or China's 25%.",
         "rateSummary": "2.4% · 2.8% · 4.2% · Free · 3.3% · 1.6%",
         "lineCount": 7,
@@ -170,7 +170,7 @@
       },
       {
         "heading": "4114",
-        "label": "Chamois (including combination chamois) leather",
+        "label": "Chamois (including combination chamois) leather; patent leather and patent laminated leather; metallized leather",
         "blurb": "Chamois leather (3.2%), patent leather (2.3%) and patent laminated or metallized leather (3.6% for calf and kip, 1.6% other). Patent-look plastic or PU sheeting is not leather and is classified outside Chapter 41.",
         "rateSummary": "3.2% · 2.3% · 3.6% · 1.6%",
         "lineCount": 4,
@@ -179,7 +179,7 @@
       },
       {
         "heading": "4115",
-        "label": "Composition leather with a basis of leather or leather…",
+        "label": "Composition leather with a basis of leather or leather fiber, in slabs, sheets or strip, whether or not in rolls; parings and other waste of leather or of composition leather, not suitable for the manufacture of leather articles; leather dust, powder and flour",
         "blurb": "Composition (bonded) leather with a basis of leather or leather fiber, and leather parings, waste, dust and powder not suitable for making leather articles: both Free. Parings of raw hides are not here (heading 0511).",
         "rateSummary": "Free",
         "lineCount": 2,
@@ -8982,7 +8982,7 @@
       {
         "title": "Finished bovine leather from Japan",
         "line": "4107.11.60.10",
-        "body": "Japanese goods pay 12.5% in place of the 3.3% base rate (9903.05.49) plus the 1986 Section 301 duty of 40% (9903.41.05), which U.S. note 3 makes cumulative: 52.5%, or **$52,500** on $100,000. Goat or sheep leather from Japan pays the 40% only when dyed, colored, stamped or embossed: 12.5% if not, 52.5% if so."
+        "body": "Japanese goods pay 12.5% in place of the 3.3% base rate (9903.05.49) plus the 1986 Section 301 duty of 40% (9903.41.05), which U.S. note 3 makes cumulative: 52.5%, or **$52,500** on $100,000. Goat or sheep leather from Japan pays the 40% only when dyed, colored, stamped or embossed: 12.5% when not dyed, colored, stamped or embossed, 52.5% when it is."
       },
       {
         "title": "Raw cattle hides from Canada",
@@ -9058,7 +9058,7 @@
       "inForceFrom": "2026-10-09",
       "url": "https://www.usitc.gov/sites/default/files/tata/hts/hts_2026_revision_21_json.json"
     },
-    "lastCheckedAt": "2026-10-12",
+    "lastCheckedAt": "2026-10-13",
     "stats": [
       {
         "label": "Base rates unchanged",
@@ -9268,7 +9268,7 @@
       {
         "id": "base-rates",
         "type": "baseRate",
-        "date": "2026-10-12",
+        "date": "2026-10-13",
         "dateLabel": "Checked",
         "title": "No Chapter 41 base-rate changes",
         "detail": "All 176 Chapter 41 lines carry the same general rate and the same statistical suffix in the 2026 Revision 21 as in the 2025 Basic Edition. No line was added, removed or renumbered.",
@@ -11305,7 +11305,7 @@
         "changePct": -4,
         "sharePct": 36.9,
         "mainHeading": "4107",
-        "mainHeadingLabel": "Leather further prepared after tanning or crusting…",
+        "mainHeadingLabel": "Leather further prepared after tanning or crusting, including parchment-dressed leather, of bovine (including buffalo) or equine animals, without hair on, whether or not split, other than leather of heading 4114",
         "dutyPaidUsd": null
       },
       {
@@ -11316,7 +11316,7 @@
         "changePct": 26.1,
         "sharePct": 21,
         "mainHeading": "4107",
-        "mainHeadingLabel": "Leather further prepared after tanning or crusting…",
+        "mainHeadingLabel": "Leather further prepared after tanning or crusting, including parchment-dressed leather, of bovine (including buffalo) or equine animals, without hair on, whether or not split, other than leather of heading 4114",
         "dutyPaidUsd": null
       },
       {
@@ -11327,7 +11327,7 @@
         "changePct": -8,
         "sharePct": 13.9,
         "mainHeading": "4107",
-        "mainHeadingLabel": "Leather further prepared after tanning or crusting…",
+        "mainHeadingLabel": "Leather further prepared after tanning or crusting, including parchment-dressed leather, of bovine (including buffalo) or equine animals, without hair on, whether or not split, other than leather of heading 4114",
         "dutyPaidUsd": null
       },
       {
@@ -11338,7 +11338,7 @@
         "changePct": 4.2,
         "sharePct": 4.8,
         "mainHeading": "4107",
-        "mainHeadingLabel": "Leather further prepared after tanning or crusting…",
+        "mainHeadingLabel": "Leather further prepared after tanning or crusting, including parchment-dressed leather, of bovine (including buffalo) or equine animals, without hair on, whether or not split, other than leather of heading 4114",
         "dutyPaidUsd": null
       },
       {
@@ -11349,7 +11349,7 @@
         "changePct": -24.1,
         "sharePct": 3.2,
         "mainHeading": "4107",
-        "mainHeadingLabel": "Leather further prepared after tanning or crusting…",
+        "mainHeadingLabel": "Leather further prepared after tanning or crusting, including parchment-dressed leather, of bovine (including buffalo) or equine animals, without hair on, whether or not split, other than leather of heading 4114",
         "dutyPaidUsd": null
       },
       {
@@ -11360,7 +11360,7 @@
         "changePct": 33.8,
         "sharePct": 2.6,
         "mainHeading": "4107",
-        "mainHeadingLabel": "Leather further prepared after tanning or crusting…",
+        "mainHeadingLabel": "Leather further prepared after tanning or crusting, including parchment-dressed leather, of bovine (including buffalo) or equine animals, without hair on, whether or not split, other than leather of heading 4114",
         "dutyPaidUsd": null
       },
       {
@@ -11371,7 +11371,7 @@
         "changePct": -39.1,
         "sharePct": 1.9,
         "mainHeading": "4113",
-        "mainHeadingLabel": "Leather further prepared after tanning or crusting…",
+        "mainHeadingLabel": "Leather further prepared after tanning or crusting, including parchment-dressed leather, of other animals, without wool or hair on, whether or not split, other than leather of heading 4114",
         "dutyPaidUsd": null
       },
       {
@@ -11382,7 +11382,7 @@
         "changePct": 14.2,
         "sharePct": 1.9,
         "mainHeading": "4101",
-        "mainHeadingLabel": "Raw hides and skins of bovine (including buffalo) or…",
+        "mainHeadingLabel": "Raw hides and skins of bovine (including buffalo) or equine animals (fresh, or salted, dried, limed, pickled or otherwise preserved, but not tanned, parchment-dressed or further prepared), whether or not dehaired or split",
         "dutyPaidUsd": null
       },
       {
@@ -11393,7 +11393,7 @@
         "changePct": -7.7,
         "sharePct": 1.4,
         "mainHeading": "4107",
-        "mainHeadingLabel": "Leather further prepared after tanning or crusting…",
+        "mainHeadingLabel": "Leather further prepared after tanning or crusting, including parchment-dressed leather, of bovine (including buffalo) or equine animals, without hair on, whether or not split, other than leather of heading 4114",
         "dutyPaidUsd": null
       },
       {
@@ -11404,7 +11404,7 @@
         "changePct": -22.5,
         "sharePct": 1.2,
         "mainHeading": "4107",
-        "mainHeadingLabel": "Leather further prepared after tanning or crusting…",
+        "mainHeadingLabel": "Leather further prepared after tanning or crusting, including parchment-dressed leather, of bovine (including buffalo) or equine animals, without hair on, whether or not split, other than leather of heading 4114",
         "dutyPaidUsd": null
       }
     ],
@@ -11420,7 +11420,7 @@
         "changePct": 24.3,
         "sharePct": 32.3,
         "dutyPaidUsd": null,
-        "searchText": "410712 4107.12 leather; further prepared after tanning or crusting, including parchment-dressed leather, of bovine (including buffalo) or equine animals, without hair on, other than leather of heading 41.14, whole hides and skins, grain splits leather further prepared after tanning or crusting…"
+        "searchText": "410712 4107.12 leather; further prepared after tanning or crusting, including parchment-dressed leather, of bovine (including buffalo) or equine animals, without hair on, other than leather of heading 41.14, whole hides and skins, grain splits leather further prepared after tanning or crusting, including parchment-dressed leather, of bovine (including buffalo) or equine animals, without hair on, whether or not split, other than leather of heading 4114"
       },
       {
         "hs6": "4107.11",
@@ -11431,7 +11431,7 @@
         "changePct": -13.4,
         "sharePct": 17.4,
         "dutyPaidUsd": null,
-        "searchText": "410711 4107.11 leather; further prepared after tanning or crusting, including parchment-dressed leather, of bovine (including buffalo) or equine animals, without hair on, other than leather of heading 41.14, whole hides and skins, full grain, unsplit leather further prepared after tanning or crusting…"
+        "searchText": "410711 4107.11 leather; further prepared after tanning or crusting, including parchment-dressed leather, of bovine (including buffalo) or equine animals, without hair on, other than leather of heading 41.14, whole hides and skins, full grain, unsplit leather further prepared after tanning or crusting, including parchment-dressed leather, of bovine (including buffalo) or equine animals, without hair on, whether or not split, other than leather of heading 4114"
       },
       {
         "hs6": "4107.19",
@@ -11442,7 +11442,7 @@
         "changePct": -14,
         "sharePct": 15.4,
         "dutyPaidUsd": null,
-        "searchText": "410719 4107.19 leather; further prepared after tanning or crusting, including parchment-dressed, of bovine (including buffalo) or equine animals, without hair on, split or not, other than leather of heading 41.14, (other than grain splits and full grains, unsplit) leather further prepared after tanning or crusting…"
+        "searchText": "410719 4107.19 leather; further prepared after tanning or crusting, including parchment-dressed, of bovine (including buffalo) or equine animals, without hair on, split or not, other than leather of heading 41.14, (other than grain splits and full grains, unsplit) leather further prepared after tanning or crusting, including parchment-dressed leather, of bovine (including buffalo) or equine animals, without hair on, whether or not split, other than leather of heading 4114"
       },
       {
         "hs6": "4107.92",
@@ -11453,7 +11453,7 @@
         "changePct": -7.6,
         "sharePct": 8.9,
         "dutyPaidUsd": null,
-        "searchText": "410792 4107.92 leather; further prepared after tanning or crusting, including parchment-dressed, of bovine (including buffalo) or equine animals, without hair on, other than leather of heading 41.14, not whole hides and skins, but including sides, grain splits leather further prepared after tanning or crusting…"
+        "searchText": "410792 4107.92 leather; further prepared after tanning or crusting, including parchment-dressed, of bovine (including buffalo) or equine animals, without hair on, other than leather of heading 41.14, not whole hides and skins, but including sides, grain splits leather further prepared after tanning or crusting, including parchment-dressed leather, of bovine (including buffalo) or equine animals, without hair on, whether or not split, other than leather of heading 4114"
       },
       {
         "hs6": "4107.91",
@@ -11464,7 +11464,7 @@
         "changePct": 8.4,
         "sharePct": 6.5,
         "dutyPaidUsd": null,
-        "searchText": "410791 4107.91 leather; further prepared after tanning or crusting, including parchment-dressed, of bovine (including buffalo) or equine animals, without hair on, other than leather of heading 41.14, not whole hides and skins, but including sides, full grain, unsplit leather further prepared after tanning or crusting…"
+        "searchText": "410791 4107.91 leather; further prepared after tanning or crusting, including parchment-dressed, of bovine (including buffalo) or equine animals, without hair on, other than leather of heading 41.14, not whole hides and skins, but including sides, full grain, unsplit leather further prepared after tanning or crusting, including parchment-dressed leather, of bovine (including buffalo) or equine animals, without hair on, whether or not split, other than leather of heading 4114"
       },
       {
         "hs6": "4113.90",
@@ -11475,7 +11475,7 @@
         "changePct": -32.5,
         "sharePct": 2.6,
         "dutyPaidUsd": null,
-        "searchText": "411390 4113.90 leather; further prepared after tanning or crusting, including parchment-dressed leather, of animals (other than sheep and lambs, goats and kids, swine and reptiles), without wool or hair on, whether or not split, other than leather of heading 41.14 leather further prepared after tanning or crusting…"
+        "searchText": "411390 4113.90 leather; further prepared after tanning or crusting, including parchment-dressed leather, of animals (other than sheep and lambs, goats and kids, swine and reptiles), without wool or hair on, whether or not split, other than leather of heading 41.14 leather further prepared after tanning or crusting, including parchment-dressed leather, of other animals, without wool or hair on, whether or not split, other than leather of heading 4114"
       },
       {
         "hs6": "4115.10",
@@ -11486,7 +11486,7 @@
         "changePct": -11.7,
         "sharePct": 2.2,
         "dutyPaidUsd": null,
-        "searchText": "411510 4115.10 leather; composition leather with a basis of leather or leather fibre, in slabs, sheets or strip, whether or not in rolls composition leather with a basis of leather or leather…"
+        "searchText": "411510 4115.10 leather; composition leather with a basis of leather or leather fibre, in slabs, sheets or strip, whether or not in rolls composition leather with a basis of leather or leather fiber, in slabs, sheets or strip, whether or not in rolls; parings and other waste of leather or of composition leather, not suitable for the manufacture of leather articles; leather dust, powder and flour"
       },
       {
         "hs6": "4104.41",
@@ -11497,7 +11497,7 @@
         "changePct": -14,
         "sharePct": 2,
         "dutyPaidUsd": null,
-        "searchText": "410441 4104.41 tanned or crust hides and skins; bovine or equine, without hair on, in the dry state (crust), full grains, unsplit; grain splits tanned or crust hides and skins of bovine (including…"
+        "searchText": "410441 4104.41 tanned or crust hides and skins; bovine or equine, without hair on, in the dry state (crust), full grains, unsplit; grain splits tanned or crust hides and skins of bovine (including buffalo) or equine animals, without hair on, whether or not split, but not further prepared"
       },
       {
         "hs6": "4107.99",
@@ -11508,7 +11508,7 @@
         "changePct": -22.7,
         "sharePct": 1.8,
         "dutyPaidUsd": null,
-        "searchText": "410799 4107.99 leather; further prepared after tanning or crusting, incl. parchment-dressed, of bovine (including buffalo) or equine animals, no hair, excluding leather of heading 41.14, and whole hides and skins, and sides, (full grains, unsplit and grain splits) leather further prepared after tanning or crusting…"
+        "searchText": "410799 4107.99 leather; further prepared after tanning or crusting, incl. parchment-dressed, of bovine (including buffalo) or equine animals, no hair, excluding leather of heading 41.14, and whole hides and skins, and sides, (full grains, unsplit and grain splits) leather further prepared after tanning or crusting, including parchment-dressed leather, of bovine (including buffalo) or equine animals, without hair on, whether or not split, other than leather of heading 4114"
       },
       {
         "hs6": "4101.50",
@@ -11519,7 +11519,7 @@
         "changePct": 4.2,
         "sharePct": 1.5,
         "dutyPaidUsd": null,
-        "searchText": "410150 4101.50 hides and skins; raw, whole, of bovine or equine animals, of a weight per skin exceeding 16 kg raw hides and skins of bovine (including buffalo) or…"
+        "searchText": "410150 4101.50 hides and skins; raw, whole, of bovine or equine animals, of a weight per skin exceeding 16 kg raw hides and skins of bovine (including buffalo) or equine animals (fresh, or salted, dried, limed, pickled or otherwise preserved, but not tanned, parchment-dressed or further prepared), whether or not dehaired or split"
       },
       {
         "hs6": "4104.49",
@@ -11530,7 +11530,7 @@
         "changePct": -32.3,
         "sharePct": 1.4,
         "dutyPaidUsd": null,
-        "searchText": "410449 4104.49 tanned or crust hides and skins; bovine or equine, without hair on, in the dry state (crust), (other than full grains, unsplit; grain splits) tanned or crust hides and skins of bovine (including…"
+        "searchText": "410449 4104.49 tanned or crust hides and skins; bovine or equine, without hair on, in the dry state (crust), (other than full grains, unsplit; grain splits) tanned or crust hides and skins of bovine (including buffalo) or equine animals, without hair on, whether or not split, but not further prepared"
       },
       {
         "hs6": "4113.30",
@@ -11541,7 +11541,7 @@
         "changePct": -0.1,
         "sharePct": 1.3,
         "dutyPaidUsd": null,
-        "searchText": "411330 4113.30 leather; further prepared after tanning or crusting, including parchment-dressed leather, of reptiles, whether or not split, other than leather of heading 41.14 leather further prepared after tanning or crusting…"
+        "searchText": "411330 4113.30 leather; further prepared after tanning or crusting, including parchment-dressed leather, of reptiles, whether or not split, other than leather of heading 41.14 leather further prepared after tanning or crusting, including parchment-dressed leather, of other animals, without wool or hair on, whether or not split, other than leather of heading 4114"
       },
       {
         "hs6": "4114.10",
@@ -11552,7 +11552,7 @@
         "changePct": -2.5,
         "sharePct": 1.2,
         "dutyPaidUsd": null,
-        "searchText": "411410 4114.10 leather; chamois (including combination chamois) chamois (including combination chamois) leather"
+        "searchText": "411410 4114.10 leather; chamois (including combination chamois) chamois (including combination chamois) leather; patent leather and patent laminated leather; metallized leather"
       },
       {
         "hs6": "4112.00",
@@ -11563,7 +11563,7 @@
         "changePct": 5.5,
         "sharePct": 1.1,
         "dutyPaidUsd": null,
-        "searchText": "411200 4112.00 leather; further prepared after tanning or crusting, including parchment dressed leather, of sheep or lamb, without wool on, whether or not split, other than leather of heading 41.14 leather further prepared after tanning or crusting…"
+        "searchText": "411200 4112.00 leather; further prepared after tanning or crusting, including parchment dressed leather, of sheep or lamb, without wool on, whether or not split, other than leather of heading 41.14 leather further prepared after tanning or crusting, including parchment-dressed leather, of sheep or lamb, without wool on, whether or not split, other than leather of heading 4114"
       },
       {
         "hs6": "4113.10",
@@ -11574,7 +11574,7 @@
         "changePct": 8.2,
         "sharePct": 1.1,
         "dutyPaidUsd": null,
-        "searchText": "411310 4113.10 leather; further prepared after tanning or crusting, including parchment-dressed leather, without hair on, whether or not split, other than leather of heading 41.14, of goats and kids leather further prepared after tanning or crusting…"
+        "searchText": "411310 4113.10 leather; further prepared after tanning or crusting, including parchment-dressed leather, without hair on, whether or not split, other than leather of heading 41.14, of goats and kids leather further prepared after tanning or crusting, including parchment-dressed leather, of other animals, without wool or hair on, whether or not split, other than leather of heading 4114"
       },
       {
         "hs6": "4101.90",
@@ -11585,7 +11585,7 @@
         "changePct": -17.1,
         "sharePct": 0.7,
         "dutyPaidUsd": null,
-        "searchText": "410190 4101.90 hides and skins; other than whole, but including butts, bends and bellies, of bovine (including. buffalo) and equine animals, fresh, salted or preserved, but not tanned, parchment dressed or further prepared, whether or not dehaired or split raw hides and skins of bovine (including buffalo) or…"
+        "searchText": "410190 4101.90 hides and skins; other than whole, but including butts, bends and bellies, of bovine (including. buffalo) and equine animals, fresh, salted or preserved, but not tanned, parchment dressed or further prepared, whether or not dehaired or split raw hides and skins of bovine (including buffalo) or equine animals (fresh, or salted, dried, limed, pickled or otherwise preserved, but not tanned, parchment-dressed or further prepared), whether or not dehaired or split"
       },
       {
         "hs6": "4104.11",
@@ -11596,7 +11596,7 @@
         "changePct": -40.5,
         "sharePct": 0.5,
         "dutyPaidUsd": null,
-        "searchText": "410411 4104.11 tanned or crust hides and skins; without hair on, bovine or equine, in the wet state (including wet-blue), full grains, unsplit; grain splits tanned or crust hides and skins of bovine (including…"
+        "searchText": "410411 4104.11 tanned or crust hides and skins; without hair on, bovine or equine, in the wet state (including wet-blue), full grains, unsplit; grain splits tanned or crust hides and skins of bovine (including buffalo) or equine animals, without hair on, whether or not split, but not further prepared"
       },
       {
         "hs6": "4113.20",
@@ -11607,7 +11607,7 @@
         "changePct": -5.5,
         "sharePct": 0.5,
         "dutyPaidUsd": null,
-        "searchText": "411320 4113.20 leather; further prepared after tanning or crusting, including parchment-dressed leather, without hair on, whether or not split, other than leather of heading 41.14, of swine leather further prepared after tanning or crusting…"
+        "searchText": "411320 4113.20 leather; further prepared after tanning or crusting, including parchment-dressed leather, without hair on, whether or not split, other than leather of heading 41.14, of swine leather further prepared after tanning or crusting, including parchment-dressed leather, of other animals, without wool or hair on, whether or not split, other than leather of heading 4114"
       },
       {
         "hs6": "4114.20",
@@ -11618,7 +11618,7 @@
         "changePct": 20,
         "sharePct": 0.3,
         "dutyPaidUsd": null,
-        "searchText": "411420 4114.20 leather; patent leather and laminated patent leather; metallised leather chamois (including combination chamois) leather"
+        "searchText": "411420 4114.20 leather; patent leather and laminated patent leather; metallised leather chamois (including combination chamois) leather; patent leather and patent laminated leather; metallized leather"
       },
       {
         "hs6": "4104.19",
@@ -11629,7 +11629,7 @@
         "changePct": 116.6,
         "sharePct": 0.3,
         "dutyPaidUsd": null,
-        "searchText": "410419 4104.19 tanned or crust hides and skins; bovine or equine, without hair on, in the wet state (including wet-blue), excluding full grains, unsplit; grain splits tanned or crust hides and skins of bovine (including…"
+        "searchText": "410419 4104.19 tanned or crust hides and skins; bovine or equine, without hair on, in the wet state (including wet-blue), excluding full grains, unsplit; grain splits tanned or crust hides and skins of bovine (including buffalo) or equine animals, without hair on, whether or not split, but not further prepared"
       },
       {
         "hs6": "4105.30",
@@ -11640,7 +11640,7 @@
         "changePct": 120.3,
         "sharePct": 0.3,
         "dutyPaidUsd": null,
-        "searchText": "410530 4105.30 tanned or crust skins; of sheep or lambs, without wool on, whether or not split, but not further prepared, in the dry state (crust) tanned or crust skins of sheep or lambs, without wool on…"
+        "searchText": "410530 4105.30 tanned or crust skins; of sheep or lambs, without wool on, whether or not split, but not further prepared, in the dry state (crust) tanned or crust skins of sheep or lambs, without wool on, whether or not split, but not further prepared"
       },
       {
         "hs6": "4115.20",
@@ -11651,7 +11651,7 @@
         "changePct": 59.7,
         "sharePct": 0.2,
         "dutyPaidUsd": null,
-        "searchText": "411520 4115.20 leather; parings and other waste, of leather or composition leather; not suitable for the manufacture of leather articles; leather dust, powder and flour composition leather with a basis of leather or leather…"
+        "searchText": "411520 4115.20 leather; parings and other waste, of leather or composition leather; not suitable for the manufacture of leather articles; leather dust, powder and flour composition leather with a basis of leather or leather fiber, in slabs, sheets or strip, whether or not in rolls; parings and other waste of leather or of composition leather, not suitable for the manufacture of leather articles; leather dust, powder and flour"
       },
       {
         "hs6": "4105.10",
@@ -11662,7 +11662,7 @@
         "changePct": 12.6,
         "sharePct": 0.1,
         "dutyPaidUsd": null,
-        "searchText": "410510 4105.10 tanned or crust skins of sheep or lambs, without wool on, whether or not split, but not further prepared, in the wet state (including wet-blue) tanned or crust skins of sheep or lambs, without wool on…"
+        "searchText": "410510 4105.10 tanned or crust skins of sheep or lambs, without wool on, whether or not split, but not further prepared, in the wet state (including wet-blue) tanned or crust skins of sheep or lambs, without wool on, whether or not split, but not further prepared"
       },
       {
         "hs6": "4106.22",
@@ -11673,7 +11673,7 @@
         "changePct": -23.7,
         "sharePct": 0.1,
         "dutyPaidUsd": null,
-        "searchText": "410622 4106.22 tanned or crust hides and skins; of goats or kids, without hair on, whether or not split, but not further prepared, in the dry state (crust) tanned or crust skins of other animals, without wool or…"
+        "searchText": "410622 4106.22 tanned or crust hides and skins; of goats or kids, without hair on, whether or not split, but not further prepared, in the dry state (crust) tanned or crust skins of other animals, without wool or hair on, whether or not split, but not further prepared"
       },
       {
         "hs6": "4106.92",
@@ -11684,7 +11684,7 @@
         "changePct": 22,
         "sharePct": 0.1,
         "dutyPaidUsd": null,
-        "searchText": "410692 4106.92 tanned or crust hides and skins; of animals other than equine, ovine, bovine, goats or kids, swine and reptiles, without wool or hair on, whether or not split, but not further prepared, in the dry state (crust) tanned or crust skins of other animals, without wool or…"
+        "searchText": "410692 4106.92 tanned or crust hides and skins; of animals other than equine, ovine, bovine, goats or kids, swine and reptiles, without wool or hair on, whether or not split, but not further prepared, in the dry state (crust) tanned or crust skins of other animals, without wool or hair on, whether or not split, but not further prepared"
       },
       {
         "hs6": "4106.32",
@@ -11695,7 +11695,7 @@
         "changePct": 167.3,
         "sharePct": 0.1,
         "dutyPaidUsd": null,
-        "searchText": "410632 4106.32 tanned or crust hides and skins; of swine, without hair on, whether or not split, but not further prepared, in the dry state (crust) tanned or crust skins of other animals, without wool or…"
+        "searchText": "410632 4106.32 tanned or crust hides and skins; of swine, without hair on, whether or not split, but not further prepared, in the dry state (crust) tanned or crust skins of other animals, without wool or hair on, whether or not split, but not further prepared"
       },
       {
         "hs6": "4101.20",
@@ -11706,7 +11706,7 @@
         "changePct": -15.4,
         "sharePct": 0.1,
         "dutyPaidUsd": null,
-        "searchText": "410120 4101.20 raw hides and skins; whole, unsplit, of bovine or equine animals, of a weight per skin not exceeding 8kg when simply dried, 10kg when dry-salted or 16kg when fresh, wet-salted or otherwise preserved raw hides and skins of bovine (including buffalo) or…"
+        "searchText": "410120 4101.20 raw hides and skins; whole, unsplit, of bovine or equine animals, of a weight per skin not exceeding 8kg when simply dried, 10kg when dry-salted or 16kg when fresh, wet-salted or otherwise preserved raw hides and skins of bovine (including buffalo) or equine animals (fresh, or salted, dried, limed, pickled or otherwise preserved, but not tanned, parchment-dressed or further prepared), whether or not dehaired or split"
       },
       {
         "hs6": "4103.90",
@@ -11717,7 +11717,7 @@
         "changePct": 9.7,
         "sharePct": 0.1,
         "dutyPaidUsd": null,
-        "searchText": "410390 4103.90 hides and skins; raw, of animals n.e.c. in this chapter, fresh, salted, dried, limed, pickled or otherwise preserved, (but not tanned, parchment-dressed or further prepared), whether or not dehaired or split other raw hides and skins (fresh, or salted, dried, limed…"
+        "searchText": "410390 4103.90 hides and skins; raw, of animals n.e.c. in this chapter, fresh, salted, dried, limed, pickled or otherwise preserved, (but not tanned, parchment-dressed or further prepared), whether or not dehaired or split other raw hides and skins (fresh, or salted, dried, limed, pickled or otherwise preserved, but not tanned, parchment-dressed or further prepared), whether or not dehaired or split, other than those excluded by note 1(b) or 1(c) to this chapter"
       },
       {
         "hs6": "4106.40",
@@ -11728,7 +11728,7 @@
         "changePct": 47.5,
         "sharePct": 0.1,
         "dutyPaidUsd": null,
-        "searchText": "410640 4106.40 tanned or crust hides and skins; of reptiles, whether or not split, but not further prepared tanned or crust skins of other animals, without wool or…"
+        "searchText": "410640 4106.40 tanned or crust hides and skins; of reptiles, whether or not split, but not further prepared tanned or crust skins of other animals, without wool or hair on, whether or not split, but not further prepared"
       },
       {
         "hs6": "4102.21",
@@ -11739,7 +11739,7 @@
         "changePct": -12.9,
         "sharePct": 0,
         "dutyPaidUsd": null,
-        "searchText": "410221 4102.21 skins; raw, of sheep or lambs, pickled (but not tanned, parchment-dressed or further preserved), without wool on raw skins of sheep or lambs (fresh, or salted, dried…"
+        "searchText": "410221 4102.21 skins; raw, of sheep or lambs, pickled (but not tanned, parchment-dressed or further preserved), without wool on raw skins of sheep or lambs (fresh, or salted, dried, limed, pickled or otherwise preserved, but not tanned, parchment- dressed or further prepared), whether or not with wool on or split, other than those excluded by note 1(c) to this chapter"
       },
       {
         "hs6": "4106.21",
@@ -11750,7 +11750,7 @@
         "changePct": 373,
         "sharePct": 0,
         "dutyPaidUsd": null,
-        "searchText": "410621 4106.21 tanned or crust hides and skins; of goats or kids, without wool or hair on, whether or not split, but not further prepared, in the wet state (including wet-blue) tanned or crust skins of other animals, without wool or…"
+        "searchText": "410621 4106.21 tanned or crust hides and skins; of goats or kids, without wool or hair on, whether or not split, but not further prepared, in the wet state (including wet-blue) tanned or crust skins of other animals, without wool or hair on, whether or not split, but not further prepared"
       },
       {
         "hs6": "4102.10",
@@ -11761,7 +11761,7 @@
         "changePct": 28.1,
         "sharePct": 0,
         "dutyPaidUsd": null,
-        "searchText": "410210 4102.10 skins; raw, of sheep or lambs, fresh, or salted, dried, limed, pickled or otherwise preserved, (but not tanned, parchment-dressed or further prepared), with wool on raw skins of sheep or lambs (fresh, or salted, dried…"
+        "searchText": "410210 4102.10 skins; raw, of sheep or lambs, fresh, or salted, dried, limed, pickled or otherwise preserved, (but not tanned, parchment-dressed or further prepared), with wool on raw skins of sheep or lambs (fresh, or salted, dried, limed, pickled or otherwise preserved, but not tanned, parchment- dressed or further prepared), whether or not with wool on or split, other than those excluded by note 1(c) to this chapter"
       },
       {
         "hs6": "4103.20",
@@ -11772,7 +11772,7 @@
         "changePct": null,
         "sharePct": 0,
         "dutyPaidUsd": null,
-        "searchText": "410320 4103.20 hides and skins; raw, of reptiles (fresh or salted, dried, limed, pickled or otherwise preserved, but not tanned, parchment-dressed or further prepared), whether or not dehaired or split other raw hides and skins (fresh, or salted, dried, limed…"
+        "searchText": "410320 4103.20 hides and skins; raw, of reptiles (fresh or salted, dried, limed, pickled or otherwise preserved, but not tanned, parchment-dressed or further prepared), whether or not dehaired or split other raw hides and skins (fresh, or salted, dried, limed, pickled or otherwise preserved, but not tanned, parchment-dressed or further prepared), whether or not dehaired or split, other than those excluded by note 1(b) or 1(c) to this chapter"
       },
       {
         "hs6": "4106.91",
@@ -11783,7 +11783,7 @@
         "changePct": -36.7,
         "sharePct": 0,
         "dutyPaidUsd": null,
-        "searchText": "410691 4106.91 tanned or crust hides and skins; of animals other than equine, ovine, bovine, goats or kids, swine and reptiles, without wool or hair on, whether or not split, but not further prepared, in the wet state (including wet-blue) tanned or crust skins of other animals, without wool or…"
+        "searchText": "410691 4106.91 tanned or crust hides and skins; of animals other than equine, ovine, bovine, goats or kids, swine and reptiles, without wool or hair on, whether or not split, but not further prepared, in the wet state (including wet-blue) tanned or crust skins of other animals, without wool or hair on, whether or not split, but not further prepared"
       },
       {
         "hs6": "4106.31",
@@ -11794,7 +11794,7 @@
         "changePct": -56.2,
         "sharePct": 0,
         "dutyPaidUsd": null,
-        "searchText": "410631 4106.31 tanned or crust hides and skins; of swine, without hair on, whether or not split, but not further prepared, in the wet state (including wet-blue) tanned or crust skins of other animals, without wool or…"
+        "searchText": "410631 4106.31 tanned or crust hides and skins; of swine, without hair on, whether or not split, but not further prepared, in the wet state (including wet-blue) tanned or crust skins of other animals, without wool or hair on, whether or not split, but not further prepared"
       },
       {
         "hs6": "4102.29",
@@ -11805,7 +11805,7 @@
         "changePct": 786.8,
         "sharePct": 0,
         "dutyPaidUsd": null,
-        "searchText": "410229 4102.29 hides and skins; raw, of animals n.e.c. in this chapter, fresh, salted, dried, limed, pickled or otherwise preserved, (but not tanned, parchment-dressed or further prepared), whether or not dehaired or split raw skins of sheep or lambs (fresh, or salted, dried…"
+        "searchText": "410229 4102.29 hides and skins; raw, of animals n.e.c. in this chapter, fresh, salted, dried, limed, pickled or otherwise preserved, (but not tanned, parchment-dressed or further prepared), whether or not dehaired or split raw skins of sheep or lambs (fresh, or salted, dried, limed, pickled or otherwise preserved, but not tanned, parchment- dressed or further prepared), whether or not with wool on or split, other than those excluded by note 1(c) to this chapter"
       },
       {
         "hs6": "4103.30",
@@ -11816,7 +11816,7 @@
         "changePct": null,
         "sharePct": 0,
         "dutyPaidUsd": null,
-        "searchText": "410330 4103.30 hides and skins; raw, of swine, (fresh or salted, dried, limed, pickled or otherwise preserved, but not tanned, parchment-dressed or further prepared), whether or not dehaired or split other raw hides and skins (fresh, or salted, dried, limed…"
+        "searchText": "410330 4103.30 hides and skins; raw, of swine, (fresh or salted, dried, limed, pickled or otherwise preserved, but not tanned, parchment-dressed or further prepared), whether or not dehaired or split other raw hides and skins (fresh, or salted, dried, limed, pickled or otherwise preserved, but not tanned, parchment-dressed or further prepared), whether or not dehaired or split, other than those excluded by note 1(b) or 1(c) to this chapter"
       }
     ],
     "byHeadingCountry": [
@@ -13706,71 +13706,71 @@
     "intro": "Each cell below is the base rate for that product group plus the extra duty for that country, minus any preference, from the current tariff schedule. Chapter 41 base rates are Free to 5%, so the country decides most of the total.\n\nThe 2026 Section 301 tariffs add **10% or 12.5%** on 172 of 176 lines for most suppliers; reptile and other-animal leather (4113.30, 4113.90) is exempt. **Italy** and the rest of the EU pay a flat **10%** in place of the base rate. **Brazil** pays 37.5% plus the base rate on most lines, and **China** 37.5% (leather) or 20% (raw hides). **Japan** pays 12.5% plus the 1986 duty of **40%** on bovine leather. **Mexico** is Free with USMCA; **Canada** is too, except the 14 lines with the **50% Section 338 duty**, mostly raw hides.",
     "scheduleEdition": "2026 Revision 21",
     "tradeYear": 2025,
-    "lastCheckedAt": "2026-10-12",
+    "lastCheckedAt": "2026-10-13",
     "groups": [
       {
         "heading": "4101",
-        "label": "Raw hides and skins of bovine (including buffalo) or…",
+        "label": "Raw hides and skins of bovine (including buffalo) or equine animals (fresh, or salted, dried, limed, pickled or otherwise preserved, but not tanned, parchment-dressed or further prepared), whether or not dehaired or split",
         "shortLabel": "Raw cattle & horse hides",
         "baseRates": ["Free", "2.4%", "5%", "3.3%"]
       },
       {
         "heading": "4102",
-        "label": "Raw skins of sheep or lambs (fresh, or salted, dried…",
+        "label": "Raw skins of sheep or lambs (fresh, or salted, dried, limed, pickled or otherwise preserved, but not tanned, parchment- dressed or further prepared), whether or not with wool on or split, other than those excluded by note 1(c) to this chapter",
         "shortLabel": "Raw sheepskins",
         "baseRates": ["Free", "2%"]
       },
       {
         "heading": "4103",
-        "label": "Other raw hides and skins (fresh, or salted, dried, limed…",
+        "label": "Other raw hides and skins (fresh, or salted, dried, limed, pickled or otherwise preserved, but not tanned, parchment-dressed or further prepared), whether or not dehaired or split, other than those excluded by note 1(b) or 1(c) to this chapter",
         "shortLabel": "Other raw skins",
         "baseRates": ["Free", "5%", "4.2%", "3.7%", "3.3%"]
       },
       {
         "heading": "4104",
-        "label": "Tanned or crust hides and skins of bovine (including…",
+        "label": "Tanned or crust hides and skins of bovine (including buffalo) or equine animals, without hair on, whether or not split, but not further prepared",
         "shortLabel": "Wet-blue & crust cattle",
         "baseRates": ["Free", "2.4%", "5%", "3.3%"]
       },
       {
         "heading": "4105",
-        "label": "Tanned or crust skins of sheep or lambs, without wool on…",
+        "label": "Tanned or crust skins of sheep or lambs, without wool on, whether or not split, but not further prepared",
         "shortLabel": "Sheep crust",
         "baseRates": ["2%"]
       },
       {
         "heading": "4106",
-        "label": "Tanned or crust skins of other animals, without wool or…",
+        "label": "Tanned or crust skins of other animals, without wool or hair on, whether or not split, but not further prepared",
         "shortLabel": "Goat, pig, reptile crust",
         "baseRates": ["2.4%", "4.2%", "Free", "3.3%"]
       },
       {
         "heading": "4107",
-        "label": "Leather further prepared after tanning or crusting…",
+        "label": "Leather further prepared after tanning or crusting, including parchment-dressed leather, of bovine (including buffalo) or equine animals, without hair on, whether or not split, other than leather of heading 4114",
         "shortLabel": "Finished cattle leather",
         "baseRates": ["Free", "2.4%", "3.6%", "2.5%", "2.8%", "3.3%", "5%"]
       },
       {
         "heading": "4112",
-        "label": "Leather further prepared after tanning or crusting…",
+        "label": "Leather further prepared after tanning or crusting, including parchment-dressed leather, of sheep or lamb, without wool on, whether or not split, other than leather of heading 4114",
         "shortLabel": "Finished sheep leather",
         "baseRates": ["2%"]
       },
       {
         "heading": "4113",
-        "label": "Leather further prepared after tanning or crusting…",
+        "label": "Leather further prepared after tanning or crusting, including parchment-dressed leather, of other animals, without wool or hair on, whether or not split, other than leather of heading 4114",
         "shortLabel": "Goat, pig, exotic leather",
         "baseRates": ["2.4%", "2.8%", "4.2%", "Free", "3.3%", "1.6%"]
       },
       {
         "heading": "4114",
-        "label": "Chamois (including combination chamois) leather",
+        "label": "Chamois (including combination chamois) leather; patent leather and patent laminated leather; metallized leather",
         "shortLabel": "Chamois & patent",
         "baseRates": ["3.2%", "2.3%", "3.6%", "1.6%"]
       },
       {
         "heading": "4115",
-        "label": "Composition leather with a basis of leather or leather…",
+        "label": "Composition leather with a basis of leather or leather fiber, in slabs, sheets or strip, whether or not in rolls; parings and other waste of leather or of composition leather, not suitable for the manufacture of leather articles; leather dust, powder and flour",
         "shortLabel": "Composition leather",
         "baseRates": ["Free"]
       }
@@ -23680,7 +23680,7 @@
           "kind": "eu15",
           "extraPct": 52.5,
           "ch99Code": "9903.05.49",
-          "label": "12.5% in place of the base rate (9903.05.49) on 172 of 176 lines, plus +40% (9903.41.05, 1986) on bovine and equine leather (4104, 4107) and on goat and sheep leather if dyed, colored, stamped or embossed. Cells for goat and sheep leather show both answers.",
+          "label": "12.5% in place of the base rate (9903.05.49) on 172 of 176 lines, plus +40% (9903.41.05, 1986) on bovine and equine leather (4104, 4107) and on goat and sheep leather if dyed, colored, stamped or embossed. Goat and sheep leather cells show two totals: 12.5% when not dyed, colored, stamped or embossed and 52.5% when it is.",
           "sourceIds": [
             "fr-2026-15181",
             "fr-2026-15274",
@@ -24094,28 +24094,28 @@
           "4105": {
             "importsUsd": 0,
             "withUsmca": {
-              "totals": ["12.5%", "52.5% if yes"],
+              "totals": ["12.5%", "52.5% if dyed, colored, stamped or embossed"],
               "breakdown": [
                 {
                   "base": "2%",
                   "lines": ["4105.10.10.00", "4105.10.90.00", "4105.30.00.00"],
                   "lineCount": 3,
-                  "extra": "If no: 12.5% in place of base. If yes: 12.5% in place of base (9903.05.49) + 40% (9903.41.05)",
+                  "extra": "Not dyed, colored, stamped or embossed: 12.5% in place of base. Dyed, colored, stamped or embossed: 12.5% in place of base (9903.05.49) + 40% (9903.41.05)",
                   "preference": "None",
-                  "total": "12.5% if no / 52.5% if yes"
+                  "total": "12.5% not dyed, colored, stamped or embossed / 52.5% dyed, colored, stamped or embossed"
                 }
               ]
             },
             "withoutUsmca": {
-              "totals": ["12.5%", "52.5% if yes"],
+              "totals": ["12.5%", "52.5% if dyed, colored, stamped or embossed"],
               "breakdown": [
                 {
                   "base": "2%",
                   "lines": ["4105.10.10.00", "4105.10.90.00", "4105.30.00.00"],
                   "lineCount": 3,
-                  "extra": "If no: 12.5% in place of base. If yes: 12.5% in place of base (9903.05.49) + 40% (9903.41.05)",
+                  "extra": "Not dyed, colored, stamped or embossed: 12.5% in place of base. Dyed, colored, stamped or embossed: 12.5% in place of base (9903.05.49) + 40% (9903.41.05)",
                   "preference": "None",
-                  "total": "12.5% if no / 52.5% if yes"
+                  "total": "12.5% not dyed, colored, stamped or embossed / 52.5% dyed, colored, stamped or embossed"
                 }
               ]
             }
@@ -24123,15 +24123,15 @@
           "4106": {
             "importsUsd": 0,
             "withUsmca": {
-              "totals": ["12.5%", "52.5% if yes"],
+              "totals": ["12.5%", "52.5% if dyed, colored, stamped or embossed"],
               "breakdown": [
                 {
                   "base": "2.4%",
                   "lines": ["4106.21.10.00", "4106.21.90.00", "4106.22.00.00"],
                   "lineCount": 3,
-                  "extra": "If no: 12.5% in place of base. If yes: 12.5% in place of base (9903.05.49) + 40% (9903.41.05)",
+                  "extra": "Not dyed, colored, stamped or embossed: 12.5% in place of base. Dyed, colored, stamped or embossed: 12.5% in place of base (9903.05.49) + 40% (9903.41.05)",
                   "preference": "None",
-                  "total": "12.5% if no / 52.5% if yes"
+                  "total": "12.5% not dyed, colored, stamped or embossed / 52.5% dyed, colored, stamped or embossed"
                 },
                 {
                   "base": "4.2%",
@@ -24160,15 +24160,15 @@
               ]
             },
             "withoutUsmca": {
-              "totals": ["12.5%", "52.5% if yes"],
+              "totals": ["12.5%", "52.5% if dyed, colored, stamped or embossed"],
               "breakdown": [
                 {
                   "base": "2.4%",
                   "lines": ["4106.21.10.00", "4106.21.90.00", "4106.22.00.00"],
                   "lineCount": 3,
-                  "extra": "If no: 12.5% in place of base. If yes: 12.5% in place of base (9903.05.49) + 40% (9903.41.05)",
+                  "extra": "Not dyed, colored, stamped or embossed: 12.5% in place of base. Dyed, colored, stamped or embossed: 12.5% in place of base (9903.05.49) + 40% (9903.41.05)",
                   "preference": "None",
-                  "total": "12.5% if no / 52.5% if yes"
+                  "total": "12.5% not dyed, colored, stamped or embossed / 52.5% dyed, colored, stamped or embossed"
                 },
                 {
                   "base": "4.2%",
@@ -24421,28 +24421,28 @@
           "4112": {
             "importsUsd": 2592,
             "withUsmca": {
-              "totals": ["12.5%", "52.5% if yes"],
+              "totals": ["12.5%", "52.5% if dyed, colored, stamped or embossed"],
               "breakdown": [
                 {
                   "base": "2%",
                   "lines": ["4112.00.30.30", "4112.00.30.60", "4112.00.60.00"],
                   "lineCount": 3,
-                  "extra": "If no: 12.5% in place of base. If yes: 12.5% in place of base (9903.05.49) + 40% (9903.41.05)",
+                  "extra": "Not dyed, colored, stamped or embossed: 12.5% in place of base. Dyed, colored, stamped or embossed: 12.5% in place of base (9903.05.49) + 40% (9903.41.05)",
                   "preference": "None",
-                  "total": "12.5% if no / 52.5% if yes"
+                  "total": "12.5% not dyed, colored, stamped or embossed / 52.5% dyed, colored, stamped or embossed"
                 }
               ]
             },
             "withoutUsmca": {
-              "totals": ["12.5%", "52.5% if yes"],
+              "totals": ["12.5%", "52.5% if dyed, colored, stamped or embossed"],
               "breakdown": [
                 {
                   "base": "2%",
                   "lines": ["4112.00.30.30", "4112.00.30.60", "4112.00.60.00"],
                   "lineCount": 3,
-                  "extra": "If no: 12.5% in place of base. If yes: 12.5% in place of base (9903.05.49) + 40% (9903.41.05)",
+                  "extra": "Not dyed, colored, stamped or embossed: 12.5% in place of base. Dyed, colored, stamped or embossed: 12.5% in place of base (9903.05.49) + 40% (9903.41.05)",
                   "preference": "None",
-                  "total": "12.5% if no / 52.5% if yes"
+                  "total": "12.5% not dyed, colored, stamped or embossed / 52.5% dyed, colored, stamped or embossed"
                 }
               ]
             }
@@ -24450,7 +24450,7 @@
           "4113": {
             "importsUsd": 14987,
             "withUsmca": {
-              "totals": ["Free", "12.5%", "52.5% if yes", "3.3%", "1.6%"],
+              "totals": ["Free", "12.5%", "52.5% if dyed, colored, stamped or embossed", "3.3%", "1.6%"],
               "breakdown": [
                 {
                   "base": "Free",
@@ -24464,17 +24464,17 @@
                   "base": "2.4%",
                   "lines": ["4113.10.30.00"],
                   "lineCount": 1,
-                  "extra": "If no: 12.5% in place of base. If yes: 12.5% in place of base (9903.05.49) + 40% (9903.41.05)",
+                  "extra": "Not dyed, colored, stamped or embossed: 12.5% in place of base. Dyed, colored, stamped or embossed: 12.5% in place of base (9903.05.49) + 40% (9903.41.05)",
                   "preference": "None",
-                  "total": "12.5% if no / 52.5% if yes"
+                  "total": "12.5% not dyed, colored, stamped or embossed / 52.5% dyed, colored, stamped or embossed"
                 },
                 {
                   "base": "2.8%",
                   "lines": ["4113.10.60.00"],
                   "lineCount": 1,
-                  "extra": "If no: 12.5% in place of base. If yes: 12.5% in place of base (9903.05.49) + 40% (9903.41.05)",
+                  "extra": "Not dyed, colored, stamped or embossed: 12.5% in place of base. Dyed, colored, stamped or embossed: 12.5% in place of base (9903.05.49) + 40% (9903.41.05)",
                   "preference": "None",
-                  "total": "12.5% if no / 52.5% if yes"
+                  "total": "12.5% not dyed, colored, stamped or embossed / 52.5% dyed, colored, stamped or embossed"
                 },
                 {
                   "base": "4.2%",
@@ -24503,7 +24503,7 @@
               ]
             },
             "withoutUsmca": {
-              "totals": ["Free", "12.5%", "52.5% if yes", "3.3%", "1.6%"],
+              "totals": ["Free", "12.5%", "52.5% if dyed, colored, stamped or embossed", "3.3%", "1.6%"],
               "breakdown": [
                 {
                   "base": "Free",
@@ -24517,17 +24517,17 @@
                   "base": "2.4%",
                   "lines": ["4113.10.30.00"],
                   "lineCount": 1,
-                  "extra": "If no: 12.5% in place of base. If yes: 12.5% in place of base (9903.05.49) + 40% (9903.41.05)",
+                  "extra": "Not dyed, colored, stamped or embossed: 12.5% in place of base. Dyed, colored, stamped or embossed: 12.5% in place of base (9903.05.49) + 40% (9903.41.05)",
                   "preference": "None",
-                  "total": "12.5% if no / 52.5% if yes"
+                  "total": "12.5% not dyed, colored, stamped or embossed / 52.5% dyed, colored, stamped or embossed"
                 },
                 {
                   "base": "2.8%",
                   "lines": ["4113.10.60.00"],
                   "lineCount": 1,
-                  "extra": "If no: 12.5% in place of base. If yes: 12.5% in place of base (9903.05.49) + 40% (9903.41.05)",
+                  "extra": "Not dyed, colored, stamped or embossed: 12.5% in place of base. Dyed, colored, stamped or embossed: 12.5% in place of base (9903.05.49) + 40% (9903.41.05)",
                   "preference": "None",
-                  "total": "12.5% if no / 52.5% if yes"
+                  "total": "12.5% not dyed, colored, stamped or embossed / 52.5% dyed, colored, stamped or embossed"
                 },
                 {
                   "base": "4.2%",
@@ -26723,13 +26723,13 @@
       }
     ],
     "assumptions": [
-      "Each total was computed by the official-measures calculator engine (the same data as the tariff calculator: measures.json, HTSUS 2026 Revision 21) for goods entered on 2026-10-12, priced on a $10,000 shipment and 1,000 units for per-unit rates.",
+      "Each total was computed by the official-measures calculator engine (the same data as the tariff calculator: measures.json, HTSUS 2026 Revision 21) for goods entered on 2026-10-13, priced on a $10,000 shipment and 1,000 units for per-unit rates.",
       "Ranges like \"Free · 11.8%\" mean the group has lines with different base rates; select a cell to see which lines carry which rate.",
       "Preferences: USMCA (S) is applied for Canada and Mexico on the \"USMCA-qualifying\" side. GSP (A, A+) has lapsed and is not applied. Other preferences are not applied.",
       "Any other country shows the range across every country not listed (column 2 countries — Cuba, North Korea, Russia, Belarus — aside), without preferences.",
       "Canada's Section 338 duty (U.S. note 51) is applied on both sides of the Canada row: note 51(a) charges it even when USMCA or another special rate is claimed.",
       "U.S. note 52(b) (9903.05.86) is applied: reptile leather (4113.30) and leather of other animals (4113.90) pay no 2026 Section 301 duty from any country. It does not lift Brazil's 25% or China's 25% List 3 duty.",
-      "Japan's 1986 duty (9903.41.05) is applied to all of headings 4104 and 4107. For goat, kid, sheep and lamb leather (4105, 4106.21–.22, 4112, 4113.10) it applies only when the leather is dyed, colored, stamped or embossed, so those cells show both answers.",
+      "Japan's 1986 duty (9903.41.05) is applied to all of headings 4104 and 4107. For goat, kid, sheep and lamb leather (4105, 4106.21–.22, 4112, 4113.10) it applies only when the leather is dyed, colored, stamped or embossed, so those cells show two totals: one for leather that is not dyed, colored, stamped or embossed and one for leather that is.",
       "The IEEPA duties (9903.01.xx, 9903.02.xx) are still printed in the schedule but ended February 24, 2026, and the Section 122 surcharge (9903.03.01) expired July 23, 2026; neither is applied.",
       "The Nicaragua duty under 9903.89.01 starts January 1, 2027 and is not applied; it does not reach goods entered under CAFTA-DR.",
       "No antidumping or countervailing duty order covers a Chapter 41 product, and no Chapter 41 line is on the Section 232 auto-parts list (U.S. note 33(g)), so the grid has none.",
@@ -26966,7 +26966,7 @@
       ]
     },
     "intro": "For Chapter 41 the agency rules depend on how far the hide is processed and which animal it came from. **USDA APHIS** controls **untanned** hides and skins (4101–4103) to keep out foot-and-mouth disease, African swine fever and anthrax: they enter freely from disease-free regions or with a certificate or treatment (hard-dried, pickled, limed), and otherwise go to an approved establishment. Tanned, crust and finished leather of cattle, sheep, goats, pigs and horses has no APHIS or FWS gate. **FWS** rules apply to skins and leather of wild animals: reptiles, deer, ostrich and other non-domesticated species need an FWS declaration, a designated port and, for CITES species, CITES permits; crocodilian skins must carry CITES tags.\n\nTo pay less: claim **USMCA** for Canadian and Mexican goods (it does not lift Canada's 50% Section 338 duty), report the **Section 301 exemption** heading for reptile and other-animal leather and for Brazil's listed bovine lines, claim an FTA or AGOA on the 132 dutiable lines, document whether Japanese goat or sheep leather is dyed or embossed, and claim drawback on re-exported leather.",
-    "lastCheckedAt": "2026-10-12",
+    "lastCheckedAt": "2026-10-13",
     "regulationsAsOf": "2026-10-08",
     "levers": [
       {
@@ -27233,67 +27233,67 @@
     "groups": [
       {
         "heading": "4101",
-        "label": "Raw hides and skins of bovine (including buffalo) or…",
+        "label": "Raw hides and skins of bovine (including buffalo) or equine animals (fresh, or salted, dried, limed, pickled or otherwise preserved, but not tanned, parchment-dressed or further prepared), whether or not dehaired or split",
         "ruleIds": ["cbp-marking", "cbp-forced-labor", "aphis-hides", "aphis-restricted", "aphis-diseased"],
         "note": "Untanned cattle, buffalo and horse hides follow the APHIS rules; hard-dried, acid-pickled or limed and dehaired hides enter freely from any region."
       },
       {
         "heading": "4102",
-        "label": "Raw skins of sheep or lambs (fresh, or salted, dried…",
+        "label": "Raw skins of sheep or lambs (fresh, or salted, dried, limed, pickled or otherwise preserved, but not tanned, parchment- dressed or further prepared), whether or not with wool on or split, other than those excluded by note 1(c) to this chapter",
         "ruleIds": ["cbp-marking", "cbp-forced-labor", "aphis-hides", "aphis-restricted", "aphis-diseased"],
         "note": "Raw sheepskins are ruminant skins: APHIS rules apply until they are tanned."
       },
       {
         "heading": "4103",
-        "label": "Other raw hides and skins (fresh, or salted, dried, limed…",
+        "label": "Other raw hides and skins (fresh, or salted, dried, limed, pickled or otherwise preserved, but not tanned, parchment-dressed or further prepared), whether or not dehaired or split, other than those excluded by note 1(b) or 1(c) to this chapter",
         "ruleIds": ["cbp-marking", "cbp-forced-labor", "aphis-hides", "aphis-restricted", "aphis-diseased", "fws-wildlife", "fws-cites", "fws-crocodilian"],
         "note": "Raw goat and pig skins follow APHIS; raw reptile and deer skins also need FWS clearance and, for CITES species, CITES permits."
       },
       {
         "heading": "4104",
-        "label": "Tanned or crust hides and skins of bovine (including…",
+        "label": "Tanned or crust hides and skins of bovine (including buffalo) or equine animals, without hair on, whether or not split, but not further prepared",
         "ruleIds": ["cbp-marking", "cbp-forced-labor"],
         "note": "Tanned (wet-blue) and crust cattle leather is no longer untanned: no APHIS or FWS gate."
       },
       {
         "heading": "4105",
-        "label": "Tanned or crust skins of sheep or lambs, without wool on…",
+        "label": "Tanned or crust skins of sheep or lambs, without wool on, whether or not split, but not further prepared",
         "ruleIds": ["cbp-marking", "cbp-forced-labor"],
         "note": "Tanned sheepskins have no agency permit."
       },
       {
         "heading": "4106",
-        "label": "Tanned or crust skins of other animals, without wool or…",
+        "label": "Tanned or crust skins of other animals, without wool or hair on, whether or not split, but not further prepared",
         "ruleIds": ["cbp-marking", "cbp-forced-labor", "fws-wildlife", "fws-cites", "fws-crocodilian"],
         "note": "Goat and pig crust have no agency permit; reptile and other wild-animal crust needs FWS and CITES clearance."
       },
       {
         "heading": "4107",
-        "label": "Leather further prepared after tanning or crusting…",
+        "label": "Leather further prepared after tanning or crusting, including parchment-dressed leather, of bovine (including buffalo) or equine animals, without hair on, whether or not split, other than leather of heading 4114",
         "ruleIds": ["cbp-marking", "cbp-forced-labor"],
         "note": "Finished cattle, buffalo and horse leather has no agency permit."
       },
       {
         "heading": "4112",
-        "label": "Leather further prepared after tanning or crusting…",
+        "label": "Leather further prepared after tanning or crusting, including parchment-dressed leather, of sheep or lamb, without wool on, whether or not split, other than leather of heading 4114",
         "ruleIds": ["cbp-marking", "cbp-forced-labor"],
         "note": "Finished sheep leather has no agency permit."
       },
       {
         "heading": "4113",
-        "label": "Leather further prepared after tanning or crusting…",
+        "label": "Leather further prepared after tanning or crusting, including parchment-dressed leather, of other animals, without wool or hair on, whether or not split, other than leather of heading 4114",
         "ruleIds": ["cbp-marking", "cbp-forced-labor", "fws-wildlife", "fws-cites", "fws-crocodilian"],
         "note": "Goat and pig leather have no agency permit; reptile leather and leather of ostrich, deer and other wild animals need FWS and CITES clearance."
       },
       {
         "heading": "4114",
-        "label": "Chamois (including combination chamois) leather",
+        "label": "Chamois (including combination chamois) leather; patent leather and patent laminated leather; metallized leather",
         "ruleIds": ["cbp-marking", "cbp-forced-labor"],
         "note": "Chamois, patent and metallized leather have no agency permit."
       },
       {
         "heading": "4115",
-        "label": "Composition leather with a basis of leather or leather…",
+        "label": "Composition leather with a basis of leather or leather fiber, in slabs, sheets or strip, whether or not in rolls; parings and other waste of leather or of composition leather, not suitable for the manufacture of leather articles; leather dust, powder and flour",
         "ruleIds": ["cbp-marking", "cbp-forced-labor"],
         "note": "Composition leather and leather waste have no agency permit."
       }
@@ -28210,7 +28210,7 @@
       "Japanese bovine leather still pays the 1986 Section 301 duty of 40% on top: 52.5% in all.",
       "Canada pays a 50% Section 338 duty on 14 lines, mostly raw hides, even with a USMCA claim; Mexican leather is Free with USMCA."
     ],
-    "lastCheckedAt": "2026-10-12",
+    "lastCheckedAt": "2026-10-13",
     "questionSource": "Google search suggestions, collected October 12, 2026",
     "faqs": [
       {

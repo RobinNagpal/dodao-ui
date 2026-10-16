@@ -73,6 +73,11 @@ function validateMeasures(file: TariffMeasuresFile, headingCodes: Set<string>, f
     for (const id of [...(m.conditions?.factsTrue ?? []), ...(m.conditions?.factsFalse ?? [])]) {
       if (!factIds.has(id)) errors.push(`${where}: condition fact "${id}" is not in confirmation-facts.json`);
     }
+    for (const code of m.conditions?.rateDerivedFromLineSubjectTo ?? []) {
+      if (!headingCodes.has(code)) warnings.push(`${where}: conditions.rateDerivedFromLineSubjectTo ${code} is not in ch99-headings.json`);
+    }
+    if (m.conditions?.rateDerivedFromLineSubjectTo?.length && m.rateKind !== 'relief')
+      errors.push(`${where}: conditions.rateDerivedFromLineSubjectTo is only for relief measures (notes 20(z)–(gg))`);
     if (m.usContentDeductionCapPct !== undefined && m.usContentDeductionCapPct !== null) {
       const cap = m.usContentDeductionCapPct;
       if (typeof cap !== 'number' || !Number.isFinite(cap) || cap < 0 || cap > 100) errors.push(`${where}: usContentDeductionCapPct "${cap}" is not 0–100`);

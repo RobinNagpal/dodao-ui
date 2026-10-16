@@ -38,28 +38,22 @@ export default async function RootLayout({ children }: RootLayoutProps) {
 
   const themeValue = space?.themeColors || GlobalThemeColors;
 
-  // dodao.io's palette is defined entirely in CSS — see
-  // `src/app/styles/dodao-home-theme.scss`, activated by the
-  // `dodao-home-theme` class below — so no inline style vars are set for it.
-  // All other spaces keep their configured/default theme.
-  const isDodaoHome = space?.id === PredefinedSpaces.DODAO_HOME;
-  const style = isDodaoHome
-    ? undefined
-    : ({
-        '--primary-color': themeValue.primaryColor,
-        '--primary-text-color': themeValue.primaryTextColor,
-        '--bg-color': themeValue.bgColor,
-        '--text-color': themeValue.textColor,
-        '--link-color': themeValue.linkColor,
-        '--heading-color': themeValue.headingColor,
-        '--border-color': themeValue.borderColor,
-        '--block-bg': themeValue.blockBg,
-        '--swiper-theme-color': themeValue.primaryColor,
-      } as CSSProperties);
+  // dodao.io is no longer served from academy-ui — it is the static `dodao-home` app.
+  const style = {
+    '--primary-color': themeValue.primaryColor,
+    '--primary-text-color': themeValue.primaryTextColor,
+    '--bg-color': themeValue.bgColor,
+    '--text-color': themeValue.textColor,
+    '--link-color': themeValue.linkColor,
+    '--heading-color': themeValue.headingColor,
+    '--border-color': themeValue.borderColor,
+    '--block-bg': themeValue.blockBg,
+    '--swiper-theme-color': themeValue.primaryColor,
+  } as CSSProperties;
 
   return (
     <html lang="en" className="h-full">
-      <body className={isDodaoHome ? 'max-h-screen dodao-home-theme' : 'max-h-screen'} style={{ ...style, backgroundColor: 'var(--bg-color)' }}>
+      <body className="max-h-screen" style={{ ...style, backgroundColor: 'var(--bg-color)' }}>
         {shouldLoadGA && (
           <>
             <Script src={`https://www.googletagmanager.com/gtag/js?id=${gtag}`} />

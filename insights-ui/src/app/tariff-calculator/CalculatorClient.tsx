@@ -7,6 +7,8 @@ import ContentValueFields, { CONTENT_DEEP_LINK_PARAMS, ContentValueDrafts, conte
 import HtsCodeSearch from '@/components/tariff-calculator/HtsCodeSearch';
 import ImportProhibitedNotice from '@/components/tariff-calculator/ImportProhibitedNotice';
 import PolarityField, { polarityForInput } from '@/components/tariff-calculator/PolarityField';
+import RateComponentFields, { componentValuesForInputs, RateComponentDrafts } from '@/components/tariff-calculator/RateComponentFields';
+import ReferencedLinesFields, { ReferencedLineDraft, referencedLinesForInput } from '@/components/tariff-calculator/ReferencedLinesFields';
 import {
   dealsForCountry,
   MeasureSources,
@@ -27,7 +29,7 @@ import {
   TransportMode,
 } from '@/utils/tariff-calculator/duty-engine';
 import { isKnownCountryCode, OTHER_COUNTRY_OPTIONS, PINNED_COUNTRY_OPTIONS } from '@/utils/tariff-calculator/countries';
-import type { TariffContentInput, TariffContentInputKind } from '@/utils/tariff-calculator/measures-engine';
+import type { BaseRateComponentInput, BaseRateReferenceInput, TariffContentInput, TariffContentInputKind } from '@/utils/tariff-calculator/measures-engine';
 import { TariffCandidateCodeType } from '@prisma/client';
 import { ArrowPathIcon, CheckCircleIcon } from '@heroicons/react/24/outline';
 import { useSearchParams } from 'next/navigation';
@@ -51,6 +53,10 @@ interface FormState {
   contentValues: ContentValueDrafts;
   // Official-measures engine only: sugar polarity in degrees as typed, for rates graded by polarity (heading 1701).
   polarity: string;
+  // Official-measures engine only (issue #1812): values of the parts a base rate is charged on ("lead content"), as typed.
+  componentValues: RateComponentDrafts;
+  // Official-measures engine only (issue #1812): the line(s) a base rate refers to (ensemble garments, the article of a part).
+  referencedLines: ReferencedLineDraft[];
 }
 
 interface SelectedCode {
@@ -75,6 +81,8 @@ const INITIAL_FORM: FormState = {
   confirmations: {},
   contentValues: {},
   polarity: '',
+  componentValues: {},
+  referencedLines: [],
 };
 
 // Extra-duty data older than this gets a visible "may be missing recent tariffs" warning.
@@ -253,6 +261,9 @@ export default function CalculatorClient(): JSX.Element {
   const contentInputsRef = useRef<TariffContentInput[] | null>(null);
   // Rates graded by sugar polarity on the picked line, so a calculation only sends a polarity when it is asked.
   const polarityRatesRef = useRef<string[]>([]);
+  // Base-rate component values and referenced lines currently asked, so a calculation only sends those.
+  const componentInputsRef = useRef<BaseRateComponentInput[]>([]);
+  const referenceInputsRef = useRef<BaseRateReferenceInput[]>([]);
 
   const updateForm = useCallback(<K extends keyof FormState>(key: K, value: FormState[K]) => {
     setForm((prev) => ({ ...prev, [key]: value }));
@@ -285,6 +296,8 @@ export default function CalculatorClient(): JSX.Element {
         confirmations: questionsRef.current ? confirmationsForQuestions(currentForm.confirmations, questionsRef.current) : currentForm.confirmations,
         contentValuesUsd: contentValuesForInputs(currentForm.contentValues, contentInputsRef.current ?? []),
         polarityDegrees: polarityForInput(currentForm.polarity, polarityRatesRef.current),
+        componentValuesUsd: componentValuesForInputs(currentForm.componentValues, componentInputsRef.current),
+        referencedLines: referencedLinesForInput(currentForm.referencedLines, referenceInputsRef.current, currentForm.confirmations),
       };
       const res = await fetch('/api/tariff-calculator/calculate', {
         method: 'POST',
@@ -317,7 +330,17 @@ export default function CalculatorClient(): JSX.Element {
     setError(null);
     setChosenExclusions(new Set());
     setRequirements(null);
-    setForm((prev) => ({ ...prev, quantities: {}, claimedSpi: '', productType: '', confirmations: {}, contentValues: {}, polarity: '' }));
+    setForm((prev) => ({
+      ...prev,
+      quantities: {},
+      claimedSpi: '',
+      productType: '',
+      confirmations: {},
+      contentValues: {},
+      polarity: '',
+      componentValues: {},
+      referencedLines: [],
+    }));
   }
 
   function handleManualSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -387,6 +410,8 @@ export default function CalculatorClient(): JSX.Element {
   questionsRef.current = confirmationQuestions;
   contentInputsRef.current = requirements?.officialMeasures?.contentInputs ?? null;
   polarityRatesRef.current = requirements?.officialMeasures?.polarityRates ?? [];
+  componentInputsRef.current = requirements?.officialMeasures?.componentInputs ?? [];
+  referenceInputsRef.current = requirements?.officialMeasures?.referenceInputs ?? [];
 
   // Deep links: ?hts=&country=&value=&qty= pre-fill the form and calculate
   // once the requirements for the code are known.
@@ -484,6 +509,17 @@ export default function CalculatorClient(): JSX.Element {
                   polarityRates={requirements.officialMeasures.polarityRates ?? []}
                   value={form.polarity}
                   onChange={(next) => updateForm('polarity', next)}
+                />
+                <RateComponentFields
+                  inputs={requirements.officialMeasures.componentInputs ?? []}
+                  values={form.componentValues}
+                  onChange={(next) => updateForm('componentValues', next)}
+                />
+                <ReferencedLinesFields
+                  inputs={requirements.officialMeasures.referenceInputs ?? []}
+                  confirmations={form.confirmations}
+                  values={form.referencedLines}
+                  onChange={(next) => updateForm('referencedLines', next)}
                 />
               </>
             ) : null

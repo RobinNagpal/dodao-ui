@@ -14,16 +14,23 @@ import {
   specialRateFor,
   USMCA_SPI_CODES,
 } from '@/utils/tariff-calculator/measures-engine';
-import { formatPolarityRate, parseRate, quantityUnits, rateDollars } from '@/utils/tariff-reports/shipment-duty';
+import { resolveRateNote } from '@/utils/tariff-calculator/rate-notes';
 import {
-  FTA_SAFEGUARD_FACT,
-  FTA_WITHIN_QUOTA_FACT,
-  FTA_WITHIN_SECOND_QUOTA_FACT,
-  isQuotaReference,
-  resolveQuotaClaim,
-  type QuotaTierKey,
-} from '@/utils/tariff-calculator/fta-quota';
+  extendedRateDollars,
+  formatPolarityRate,
+  isExtendedRate,
+  parseExtendedRate,
+  parseRate,
+  quantityUnits,
+  rateDollars,
+  splitRateClause,
+  thresholdNominalQuantities,
+  type ExtendedRate,
+} from '@/utils/tariff-reports/shipment-duty';
+import { isQuotaReference, resolveQuotaClaim } from '@/utils/tariff-calculator/fta-quota';
+import { describeFactAnswers, describeFactCube, type FactAnswers } from '@/utils/tariff-calculator/fact-labels';
 import { engineLine } from './rate-table';
+import { QUOTA_TIERS, variantLabel } from './variant-labels';
 
 // Runs one HTS line from one country through the official-measures engine (the same function the live
 // calculator uses) and turns the result into the rate strings the "Rates by country" matrix shows:
@@ -34,14 +41,38 @@ import { engineLine } from './rate-table';
 
 export const NOMINAL_VALUE_USD = 10_000;
 export const NOMINAL_QUANTITY = 1_000;
-const DEFAULT_UOMS = ['NO', 'KG', 'G', 'T', 'L', 'PF.L', 'CKG', 'DOZ', 'DPR', 'PRS', 'GROSS', 'M', 'M2', 'M3', 'THS', 'BBL'];
-const PRODUCT_TYPE_ORDER: TariffProductType[] = ['generic', 'other', 'specialty', 'patented'];
-const MAX_FACT_COMBOS = 3;
 /**
- * Facts with a default answer that are still priced both ways ("if no" / "if yes"), because the answer is an importer
- * claim that removes a duty for most goods it reaches: informational materials (headings 9903.05.92 and 9903.05.09).
+ * Rates charged on the value of a part ("2.5% on the value of the lead content", issue #1812): the value each part gets
+ * when the generator prices a cell, so a total that keeps the part's term can be re-priced the same way.
  */
-const VARIED_DEFAULTED_FACTS = new Set(['informationalMaterials']);
+export const NOMINAL_COMPONENT_VALUE_USD = 2_000;
+/**
+ * A rate that is another line's rate ("The rate applicable to each garment in the ensemble if separately entered") is
+ * priced with this stand-in line at Free, so the cell shows the reference text plus the extra duties the engine charges.
+ */
+const REFERENCE_PROBE_HTS10 = '0000000000';
+const DEFAULT_UOMS = ['NO', 'KG', 'G', 'T', 'L', 'PF.L', 'CKG', 'DOZ', 'DPR', 'PRS', 'GROSS', 'M', 'M2', 'M3', 'THS', 'BBL'];
+export const PRODUCT_TYPE_ORDER: TariffProductType[] = ['generic', 'other', 'specialty', 'patented'];
+export const MAX_FACT_COMBOS = 3;
+/**
+ * Facts with a default answer that are still priced both ways, because the answer decides a duty for many of the goods
+ * it reaches: informational materials (an importer claim that removes headings 9903.05.92 / 9903.05.09), and the two
+ * questions that decide whether Japanese footwear pays the 40% of heading 9903.41.10 (excepted slip-on / sports
+ * footwear; an upper partly of leather).
+ */
+const VARIED_DEFAULTED_FACTS = new Set(['informationalMaterials', 'jpFootwearExcepted', 'jpFootwearUpperPartlyLeather']);
+
+/**
+ * Per-chapter additions to VARIED_DEFAULTED_FACTS (`--vary-facts`, stored in the file as `industryAreas.variedFacts`
+ * so the validator prices the same answers), e.g. `civilAircraftGn6` for chapter 88, where civil aircraft are most of
+ * the trade. Kept per chapter so other chapters' cells don't change.
+ */
+let chapterVariedFacts: ReadonlySet<string> = new Set();
+
+/** Sets the chapter's extra varied facts (generator: from `--vary-facts`; validator: from the file). */
+export function setChapterVariedFacts(ids: readonly string[] | undefined): void {
+  chapterVariedFacts = new Set(ids ?? []);
+}
 
 function digits(code: string): string {
   return code.replace(/\D/g, '');
@@ -102,25 +133,40 @@ export function fmtPct(pct: number): string {
 export interface RateExpr {
   perUnit: string[];
   pct: number;
+  /**
+   * Terms kept as the HTS words them because the cell can't price them alone (issue #1812): value-of-part terms ("2.5%
+   * on the value of the lead content") and references to another line's rate ("The rate applicable to …").
+   */
+  textTerms?: string[];
+  /** A floor / cap clause on the base rate ("but in the case of embroidery in the piece not less than …"). */
+  clause?: string;
 }
 
-/** Splits a base rate text ("40¢/kg + 10.4%", "Free", "6.8%") into per-unit terms and its ad valorem part. Null when unreadable. */
+/**
+ * Splits a base rate text ("40¢/kg + 10.4%", "Free", "6.8%") into per-unit terms and its ad valorem part; value-of-part
+ * terms, references and a floor / cap clause are kept as text (`textTerms`, `clause`). Null when unreadable.
+ */
 export function baseExpr(text: string | null): RateExpr | null {
   if (!text) return null;
-  if (!parseRate(text)) return null;
+  const full = parseExtendedRate(text);
+  if (!full) return null;
+  const { body, clause } = splitRateClause(text);
   const perUnit: string[] = [];
+  const textTerms: string[] = [];
   let pct = 0;
-  for (const raw of text.split(/\s*\+\s*/)) {
+  if (full.underBond) return { perUnit, pct };
+  for (const raw of body.split(/\s*\+\s*/)) {
     const term = raw.trim();
     if (!term || /^free$/i.test(term)) continue;
-    const p = parseRate(term);
+    const p = parseExtendedRate(term);
     if (!p) return null;
-    if (p.perUnit.length === 0) pct += p.adValoremPct;
+    if (p.reference || p.components.length > 0) textTerms.push(term);
+    else if (p.perUnit.length === 0) pct += p.adValoremPct;
     // A sugar polarity rate reads "3.6606¢/kg at 100° polarity, 0.020668¢/kg less per degree under 100 (min …)".
     else if (p.adValoremPct === 0) perUnit.push(displayRate(term));
     else return null;
   }
-  return { perUnit, pct };
+  return { perUnit, pct, ...(textTerms.length > 0 ? { textTerms } : {}), ...(clause ? { clause } : {}) };
 }
 
 /** A rate as the pages show it: the HTS text, with a sugar polarity term in plain words (formatPolarityRate). */
@@ -129,18 +175,46 @@ export function displayRate(text: string): string {
 }
 
 export function exprString(e: RateExpr): string {
-  const parts = [...e.perUnit];
+  const parts = [...(e.textTerms ?? []), ...e.perUnit];
   if (e.pct > 1e-9) parts.push(fmtPct(e.pct));
-  return parts.length > 0 ? parts.join(' + ') : 'Free';
+  const main = parts.length > 0 ? parts.join(' + ') : 'Free';
+  return e.clause ? `${main}, ${e.clause}` : main;
 }
 
-/** Dollars a rate string costs on the nominal shipment; null when unreadable. */
+/** The terms that make a rate expression's shape (everything but the ad valorem percentage). */
+export function exprShape(e: RateExpr): string {
+  return [...(e.textTerms ?? []), ...e.perUnit].join(' + ') + (e.clause ? ` | ${e.clause}` : '');
+}
+
+/** Component values the generator prices a value-of-part rate with (NOMINAL_COMPONENT_VALUE_USD each). */
+function nominalComponentValues(rate: ExtendedRate | null): Record<string, number> {
+  const out: Record<string, number> = {};
+  for (const c of rate?.components ?? []) out[c.component] = NOMINAL_COMPONENT_VALUE_USD;
+  return out;
+}
+
+/**
+ * Dollars a rate string costs on the nominal shipment; null when unreadable. Value-of-part terms are priced at
+ * NOMINAL_COMPONENT_VALUE_USD, a reference to another line's rate at $0 (the generator prices it with a Free stand-in
+ * line), and a floor / cap clause is left out (the generator prices the condition answered no).
+ */
 export function nominalDollars(total: string): number | null {
-  const rate = parseRate(total);
+  const strict = parseRate(total);
+  if (strict) {
+    const qty: Record<string, number> = {};
+    for (const u of quantityUnits([strict])) qty[u.key] = NOMINAL_QUANTITY;
+    Object.assign(qty, thresholdNominalQuantities(strict, NOMINAL_QUANTITY));
+    return rateDollars(strict, NOMINAL_VALUE_USD, qty);
+  }
+  const rate = parseExtendedRate(splitRateClause(total).body);
   if (!rate) return null;
   const qty: Record<string, number> = {};
   for (const u of quantityUnits([rate])) qty[u.key] = NOMINAL_QUANTITY;
-  return rateDollars(rate, NOMINAL_VALUE_USD, qty);
+  Object.assign(qty, thresholdNominalQuantities(rate, NOMINAL_QUANTITY));
+  return extendedRateDollars(rate, NOMINAL_VALUE_USD, qty, {
+    componentValuesUsd: nominalComponentValues(rate),
+    ...(rate.reference ? { referenceDutyUsd: 0 } : {}),
+  });
 }
 
 function nominalQuantities(line: TariffRateTableRow, extraRateTexts: (string | null)[]): Record<string, number> {
@@ -148,6 +222,8 @@ function nominalQuantities(line: TariffRateTableRow, extraRateTexts: (string | n
   for (const u of DEFAULT_UOMS) q[u] = NOMINAL_QUANTITY;
   for (const u of line.units) q[normalizeUom(u)] = NOMINAL_QUANTITY;
   for (const t of extraRateTexts) for (const u of rateUoms(t)) q[u] = NOMINAL_QUANTITY;
+  // "2.8¢/jewel over 7": jewels above the threshold in each of the nominal movements, so that part is priced too.
+  for (const t of extraRateTexts) if (t) Object.assign(q, thresholdNominalQuantities(parseExtendedRate(t), NOMINAL_QUANTITY, normalizeUom));
   return q;
 }
 
@@ -164,10 +240,24 @@ export interface RateVariantResult {
   chargedCodes: string[];
 }
 
+/** One priced answer combination, before variants with the same total are merged and labelled. */
+export interface PricedCombo {
+  /** FTA quota tier label ("within quota"); null without one. */
+  quota: string | null;
+  productType?: TariffProductType;
+  /** Answers to the varied facts ({} when none). */
+  facts: FactAnswers;
+  variant: RateVariantResult;
+}
+
 export interface LineRateResult {
   hts: string;
   base: string;
   variants: RateVariantResult[];
+  /** Facts priced both ways for this line and country (at most MAX_FACT_COMBOS), in the order they were varied. */
+  variedFacts?: string[];
+  /** Every priced combination (variants before merging). */
+  combos?: PricedCombo[];
   /** Problems the writer must look at (engine errors, totals that don't re-price to the engine's dollars). */
   problems: string[];
   /** Assumptions made (content value = customs value, fact defaults…). */
@@ -181,7 +271,11 @@ export interface EvalOptions {
   entryDate: string;
 }
 
-function factIdsInScope(measures: TariffMeasureRecord[], hts10: string, iso: string, day: string): { mustAnswer: string[]; defaulted: string[] } {
+/**
+ * Facts a measure reaching the line from `iso` depends on: `mustAnswer` are priced both ways (no default, or in
+ * VARIED_DEFAULTED_FACTS), `defaulted` take their default answer. The chapter validator uses the same split.
+ */
+export function factIdsInScope(measures: TariffMeasureRecord[], hts10: string, iso: string, day: string): { mustAnswer: string[]; defaulted: string[] } {
   const registry = new Map(loadConfirmationFacts().map((f) => [f.id, f]));
   const mustAnswer = new Set<string>();
   const defaulted = new Set<string>();
@@ -189,7 +283,7 @@ function factIdsInScope(measures: TariffMeasureRecord[], hts10: string, iso: str
     if (!measureReachesLine(m, hts10) || !countryInScope(m, iso) || !inEffectOn(m, day)) continue;
     for (const id of [...(m.conditions?.factsTrue ?? []), ...(m.conditions?.factsFalse ?? [])]) {
       const f = registry.get(id);
-      if (f && (f.defaultWhenUnanswered === null || VARIED_DEFAULTED_FACTS.has(id))) mustAnswer.add(id);
+      if (f && (f.defaultWhenUnanswered === null || VARIED_DEFAULTED_FACTS.has(id) || chapterVariedFacts.has(id))) mustAnswer.add(id);
       else defaulted.add(id);
     }
   }
@@ -205,6 +299,13 @@ interface Priced {
   extra: string;
   chargedCodes: string[];
   contentAssumed: boolean;
+  /**
+   * The total in words when a floor measure ("12.5% or the base rate, whichever is higher") meets a base the cell can't
+   * price alone (issue #1812), or a base with a per-unit part whose ad valorem part is below the floor (issue #1854):
+   * "The higher of 12.5% and the base rate (The rate applicable to …)", "The higher of 10% and the base rate (94¢/doz. +
+   * 4.6%)". Not re-priced.
+   */
+  totalText?: string;
 }
 
 function priceResult(
@@ -222,9 +323,23 @@ function priceResult(
     .map((l) => ({ line: l, m: chargedRecord(l.code, measures, hts10, iso, day) }))
     .filter((c) => c.m && c.m.rateKind !== 'relief') as { line: MeasureEngineResult['lines'][number]; m: TariffMeasureRecord }[];
   const replaced = charged.some((c) => c.m.rateKind === 'inPlaceOfBase' || c.m.rateKind === 'floor');
-  let expr: RateExpr | null = replaced ? { perUnit: [], pct: 0 } : base ? { perUnit: [...base.perUnit], pct: base.pct } : null;
+  const expr: RateExpr | null = replaced ? { perUnit: [], pct: 0 } : base ? { ...base, perUnit: [...base.perUnit], pct: base.pct } : null;
+  // A floor ("12.5% or the base rate, whichever is higher") on a base the cell can't price alone (a value-of-part or
+  // another line's rate, issue #1812) depends on that amount: the cell says so and isn't re-priced.
+  const baseUnpriced = !!base && ((base.textTerms?.length ?? 0) > 0 || !!base.clause);
+  // …unless the base can never exceed the floor: an ad valorem base charged on parts of the value ("2.5% on the value of
+  // the lead content") is at most its highest percentage of the customs value, since the parts can't be worth more.
+  const ext = parseExtendedRate(baseText);
+  const baseMaxPct =
+    ext && !ext.reference && ext.perUnit.length === 0 ? ext.adValoremPct + Math.max(0, ...ext.components.map((c) => c.pct)) : Number.POSITIVE_INFINITY;
+  // A floor ("10% in total when the column 1 rate is below 10%") on a specific or compound base (issue #1854): the
+  // Chapter 99 notes compare the floor with the base's ad valorem equivalent — duty payable at the base rate ÷ customs
+  // value (U.S. note 52(k)) — which depends on the shipment's value per unit, so the nominal $10,000 / 1,000 units can't
+  // decide the cell. It says "the higher of" unless the base's ad valorem part alone already reaches the floor.
+  const basePerUnit = !!base && base.perUnit.length > 0;
   const parts: string[] = [];
   let contentAssumed = false;
+  let floorWords: string | null = null;
   for (const { line, m } of charged) {
     const pct = m.ratePct ?? 0;
     const on = m.contentBasis ? ` of the ${m.contentBasis === 'nonUsContent' ? 'non-U.S. content' : `${m.contentBasis} content`} value` : '';
@@ -238,7 +353,10 @@ function priceResult(
     } else {
       // floor: max(base, pct × value). The engine charges the larger one as this measure's amount.
       const floorAmount = (pct / 100) * NOMINAL_VALUE_USD;
-      if (line.amountUsd > floorAmount + 0.005 && base) {
+      if (base && ((baseUnpriced && pct < baseMaxPct) || (basePerUnit && base.pct < pct))) {
+        parts.push(`${fmtPct(pct)}${on} or the base rate, whichever is higher, in place of base`);
+        floorWords = `The higher of ${fmtPct(pct)}${on} and the base rate (${exprString(base)})`;
+      } else if (line.amountUsd > floorAmount + 0.005 && base) {
         parts.push(`${fmtPct(pct)} floor; the base rate is higher`);
         if (expr) {
           expr.perUnit.push(...base.perUnit);
@@ -256,6 +374,10 @@ function priceResult(
   if (parts.length === 0) extra = usmcaClaimed ? 'None (USMCA)' : relief.length > 0 ? `None: ${relief.join('; ')}` : 'None';
   else if (parts.length === 1) extra = parts[0];
   else extra = parts.map((p, i) => `${i > 0 ? p.replace(/^\+/, '') : p} (${codes[i]})`).join(' + ');
+  if (floorWords) {
+    const others = expr && expr.pct > 1e-9 ? `, + ${fmtPct(expr.pct)}` : '';
+    return { expr: null, extra, chargedCodes: codes, contentAssumed, totalText: `${floorWords}${others}` };
+  }
   return { expr, extra, chargedCodes: codes, contentAssumed };
 }
 
@@ -296,32 +418,82 @@ function preferenceText(result: MeasureEngineResult, claimed: string | undefined
 }
 
 interface Combo {
-  label: string | null;
   productType?: TariffProductType;
-  facts?: Record<string, boolean>;
+  facts?: FactAnswers;
 }
 
-function combos(productTypes: TariffProductType[], mustFacts: string[]): Combo[] {
-  const types: (TariffProductType | undefined)[] = productTypes.length > 0 ? PRODUCT_TYPE_ORDER.filter((t) => productTypes.includes(t)) : [undefined];
-  const facts = mustFacts.slice(0, MAX_FACT_COMBOS);
-  const answers: (Record<string, boolean> | undefined)[] = [];
-  if (facts.length === 0) answers.push(undefined);
-  else {
-    for (let mask = 0; mask < 1 << facts.length; mask++) {
-      const a: Record<string, boolean> = {};
-      facts.forEach((f, i) => (a[f] = Boolean(mask & (1 << i))));
-      answers.push(a);
-    }
-  }
-  const out: Combo[] = [];
-  for (const t of types) {
-    for (const a of answers) {
-      const factLabel = a ? (facts.length === 1 ? `if ${a[facts[0]] ? 'yes' : 'no'}` : facts.map((f) => `${f} ${a[f] ? 'yes' : 'no'}`).join(' ')) : null;
-      const label = [t ?? null, factLabel].filter(Boolean).join(' ') || null;
-      out.push({ label, productType: t, facts: a });
-    }
+/** Every answer set over `facts` (2^n, all "no" first). */
+export function factAnswerSets(facts: string[]): FactAnswers[] {
+  const out: FactAnswers[] = [];
+  for (let mask = 0; mask < 1 << facts.length; mask++) {
+    const a: FactAnswers = {};
+    facts.forEach((f, i) => (a[f] = Boolean(mask & (1 << i))));
+    out.push(a);
   }
   return out;
+}
+
+function combos(productTypes: TariffProductType[], facts: string[]): Combo[] {
+  const types: (TariffProductType | undefined)[] = productTypes.length > 0 ? PRODUCT_TYPE_ORDER.filter((t) => productTypes.includes(t)) : [undefined];
+  const answers: (FactAnswers | undefined)[] = facts.length === 0 ? [undefined] : factAnswerSets(facts);
+  const out: Combo[] = [];
+  for (const t of types) for (const a of answers) out.push({ productType: t, facts: a });
+  return out;
+}
+
+/**
+ * Merges priced combinations into the cell's variants and labels them. Within one quota tier and product type, answer
+ * sets with the same total and extra become one variant whose label names every answer set it stands for, in words
+ * (describeFactAnswers: "car or light-truck part or truck or bus part"), so no option is dropped. Across tiers, equal
+ * variants keep both tier labels ("within quota or above quota"); across product types the first type's label is kept.
+ */
+export function labelVariants(priced: PricedCombo[], facts: string[]): RateVariantResult[] {
+  const slices = new Map<string, PricedCombo[]>();
+  for (const c of priced) {
+    const key = `${c.quota ?? ''}|${c.productType ?? ''}`;
+    slices.set(key, [...(slices.get(key) ?? []), c]);
+  }
+  interface Item {
+    quotas: string[];
+    productType?: TariffProductType;
+    factLabel: string | null;
+    variant: RateVariantResult;
+  }
+  const items: Item[] = [];
+  slices.forEach((list) => {
+    const groups: PricedCombo[][] = [];
+    for (const c of list) {
+      const g = groups.find((x) => x[0].variant.total === c.variant.total && x[0].variant.extra === c.variant.extra);
+      if (g) g.push(c);
+      else groups.push([c]);
+    }
+    const universe = list.map((c) => c.facts);
+    for (const g of groups) {
+      items.push({
+        quotas: g[0].quota ? [g[0].quota] : [],
+        productType: g[0].productType,
+        factLabel:
+          groups.length > 1
+            ? describeFactAnswers(
+                g.map((c) => c.facts),
+                universe,
+                facts
+              )
+            : null,
+        variant: g[0].variant,
+      });
+    }
+  });
+  const merged: Item[] = [];
+  for (const it of items) {
+    const same = merged.find((m) => m.variant.total === it.variant.total && m.variant.extra === it.variant.extra && m.factLabel === it.factLabel);
+    if (!same) merged.push({ ...it, quotas: [...it.quotas] });
+    else for (const q of it.quotas) if (!same.quotas.includes(q)) same.quotas.push(q);
+  }
+  const out = merged.map((m) => ({ ...m.variant, label: variantLabel({ quotaLabels: m.quotas, productType: m.productType, factLabel: m.factLabel }) }));
+  // Cheapest first; a single variant needs no label.
+  out.sort((a, b) => a.dollars - b.dollars);
+  return out.length === 1 ? [{ ...out[0], label: null }] : out;
 }
 
 /**
@@ -338,10 +510,14 @@ export function evaluateLine(
   const hts = row.hts as string;
   const day = opts.entryDate;
   const line = engineLine(row);
-  const generalBase = COLUMN2_COUNTRIES.includes(iso) && line.column2 ? line.column2 : line.general;
+  const column = COLUMN2_COUNTRIES.includes(iso) && line.column2 ? 'column2' : 'general';
+  const officialBase = column === 'column2' ? line.column2 ?? null : line.general;
+  // "See additional U.S. note 3" (chapter 58): the note's rate for the column, labelled with the note (issue #1812).
+  const note = officialBase ? resolveRateNote(hts10, column, officialBase) : null;
+  const generalBase = note && note.ok ? note.rateText : officialBase;
   const out: LineRateResult & { claimRejected?: boolean } = {
     hts,
-    base: generalBase ? displayRate(generalBase) : '—',
+    base: generalBase ? (note && note.ok ? `${displayRate(generalBase)} (additional U.S. note ${note.entry.note})` : displayRate(generalBase)) : '—',
     variants: [],
     problems: [],
     notes: [],
@@ -374,7 +550,7 @@ export function evaluateLine(
   // A claimed program whose special rate points to Chapter 98/99 quota headings ("See 9822.04.01-9822.04.03 (AU)")
   // is priced per quota tier (within quota, additional quota, safeguard, above quota), the way the calculator asks.
   // Only a reference the calculator can't resolve stays text; the validator's cross-check skips non-numeric totals.
-  let quotaTiers: { label: string | null; baseText: string; facts: Record<string, boolean> }[] | null = null;
+  let quotaTiers: { label: string | null; baseText: string; facts: FactAnswers }[] | null = null;
   if (opts.claimedSpi && isQuotaReference(baseText)) {
     const res = resolveQuotaClaim(line, opts.claimedSpi, baseText, iso, day);
     if (!res.ok) {
@@ -390,28 +566,15 @@ export function evaluateLine(
       out.notes.push(`${hts} (${iso}, ${opts.claimedSpi}): ${res.error} — shown as text, not priced.`);
       return out;
     }
-    const answersFor: Record<QuotaTierKey, Record<string, boolean>> = {
-      unconditional: {},
-      inQuota: { [FTA_WITHIN_QUOTA_FACT]: true },
-      secondQuota: { [FTA_WITHIN_QUOTA_FACT]: false, [FTA_WITHIN_SECOND_QUOTA_FACT]: true },
-      safeguard: { [FTA_WITHIN_QUOTA_FACT]: false, [FTA_WITHIN_SECOND_QUOTA_FACT]: false, [FTA_SAFEGUARD_FACT]: true },
-      overQuota: { [FTA_WITHIN_QUOTA_FACT]: false, [FTA_WITHIN_SECOND_QUOTA_FACT]: false, [FTA_SAFEGUARD_FACT]: false },
-    };
-    const labelFor: Record<QuotaTierKey, string | null> = {
-      unconditional: null,
-      inQuota: 'within quota',
-      secondQuota: 'within additional quota',
-      safeguard: 'safeguard applies',
-      overQuota: 'above quota',
-    };
     const tiers = res.resolution.collapsed ? res.resolution.tiers.slice(0, 1) : res.resolution.tiers;
     quotaTiers = tiers.map((t) => ({
-      label: res.resolution.collapsed ? null : labelFor[t.key],
+      label: res.resolution.collapsed ? null : QUOTA_TIERS[t.key].label,
       baseText: t.rateText,
-      facts: res.resolution.collapsed ? {} : answersFor[t.key],
+      facts: res.resolution.collapsed ? {} : QUOTA_TIERS[t.key].facts,
     }));
   }
   const { mustAnswer, defaulted } = factIdsInScope(measures, hts10, iso, day);
+  const variedFacts = mustAnswer.slice(0, MAX_FACT_COMBOS);
   if (mustAnswer.length > MAX_FACT_COMBOS) out.problems.push(`${hts}: ${mustAnswer.length} must-answer facts; only the first ${MAX_FACT_COMBOS} are varied.`);
   if (defaulted.length > 0) out.notes.push(`${hts} (${iso}): fact defaults used for ${defaulted.join(', ')}.`);
   const types = productTypesForLine(
@@ -421,16 +584,56 @@ export function evaluateLine(
   );
   const usmcaClaimed = !!opts.claimedSpi && USMCA_SPI_CODES.includes(opts.claimedSpi);
   const quantities = nominalQuantities(row, [generalBase, claimRate]);
+  if (note && !note.ok) out.problems.push(`${hts}: ${note.error}`);
 
-  const raw: RateVariantResult[] = [];
-  const quotaRuns = quotaTiers ?? [{ label: null, baseText, facts: {} as Record<string, boolean> }];
+  // Base rates that need more than the value and quantities (issue #1812). Value-of-part terms are priced at
+  // NOMINAL_COMPONENT_VALUE_USD each and kept as text in the cell; a reference to another line's rate is priced with a
+  // Free stand-in line (the cell shows the reference text + the extra duties); a floor / cap clause is priced with its
+  // condition answered no and kept as text.
+  const ext = !isQuotaReference(baseText) ? parseExtendedRate(baseText) : null;
+  const extInputs: Pick<MeasureEngineInput, 'componentValuesUsd' | 'referencedLines'> = {};
+  const baseFacts: Record<string, boolean> = {};
+  if (ext && isExtendedRate(ext)) {
+    if (ext.components.length > 0) extInputs.componentValuesUsd = nominalComponentValues(ext);
+    const ref = ext.reference;
+    if (ref?.conditionFact) baseFacts[ref.conditionFact] = false;
+    else if (ref) {
+      extInputs.referencedLines = [
+        {
+          hts10: REFERENCE_PROBE_HTS10,
+          general: 'Free',
+          special: opts.claimedSpi ? `Free (${opts.claimedSpi})` : null,
+          column2: 'Free',
+          ...(ref.kind === 'each' ? { valueUsd: NOMINAL_VALUE_USD } : {}),
+        },
+      ];
+    }
+    out.notes.push(
+      `${hts} (${iso}): base "${baseText}" needs ${[
+        ext.components.length > 0 ? 'component values' : null,
+        ref && !ref.conditionFact ? 'the referenced line' : null,
+        ref?.conditionFact ? `the ${ref.conditionFact} answer` : null,
+        ext.underBond ? 'a bond (free at entry)' : null,
+      ]
+        .filter(Boolean)
+        .join(', ')}; the cell keeps that part as text and prices the rest.`
+    );
+  }
+
+  const raw: PricedCombo[] = [];
+  const quotaRuns = quotaTiers ?? [{ label: null, baseText, facts: {} as FactAnswers }];
   const runs = quotaRuns.flatMap((q) =>
-    combos(types, mustAnswer).map((c) => ({
-      label: [q.label, c.label].filter(Boolean).join(', ') || null,
-      productType: c.productType,
-      facts: Object.keys(q.facts).length > 0 || c.facts ? { ...(c.facts ?? {}), ...q.facts } : undefined,
-      baseText: q.baseText,
-    }))
+    combos(types, variedFacts).map((c) => {
+      const answers = { ...(c.facts ?? {}), ...q.facts };
+      return {
+        label: [q.label, c.productType, c.facts ? describeFactCube(c.facts) : null].filter(Boolean).join(', ') || null,
+        quota: q.label,
+        productType: c.productType,
+        varied: c.facts ?? {},
+        facts: Object.keys(answers).length > 0 ? answers : undefined,
+        baseText: q.baseText,
+      };
+    })
   );
   for (const c of runs) {
     const input: MeasureEngineInput = {
@@ -440,7 +643,8 @@ export function evaluateLine(
       quantities,
       ...(opts.claimedSpi ? { claimedSpi: opts.claimedSpi } : {}),
       ...(c.productType ? { productType: c.productType } : {}),
-      ...(c.facts ? { confirmations: { facts: c.facts } } : {}),
+      ...(c.facts || Object.keys(baseFacts).length > 0 ? { confirmations: { facts: { ...baseFacts, ...(c.facts ?? {}) } } } : {}),
+      ...extInputs,
       entryDate: day,
     };
     let result = calculateWithMeasures(input, line, measures);
@@ -465,9 +669,10 @@ export function evaluateLine(
     const priced = priceResult(result, c.baseText, measures, hts10, iso, day, usmcaClaimed);
     if (contentFallback || priced.contentAssumed)
       out.notes.push(`${hts} (${iso}): content-based duty priced on the full customs value (the cell can't know the content value).`);
-    const total = priced.expr ? exprString(priced.expr) : null;
-    const repriced = total ? nominalDollars(total) : null;
-    if (!total || repriced === null || Math.abs(repriced - result.totalDutyUsd) > 0.01) {
+    const total = priced.totalText ?? (priced.expr ? exprString(priced.expr) : null);
+    const repriced = total && !priced.totalText ? nominalDollars(total) : null;
+    if (priced.totalText) out.notes.push(`${hts} (${iso}): total "${priced.totalText}" depends on the base duty, so it isn't re-priced.`);
+    else if (!total || repriced === null || Math.abs(repriced - result.totalDutyUsd) > 0.01) {
       out.problems.push(
         `${hts} (${iso}${c.label ? `, ${c.label}` : ''}): total "${total ?? '?'}" re-prices to ${
           repriced ?? '?'
@@ -475,26 +680,26 @@ export function evaluateLine(
       );
       continue;
     }
+    if (!total) continue;
     raw.push({
-      label: c.label,
-      total,
-      extra: priced.extra,
-      preference: preferenceText(result, opts.claimedSpi, claimRate, measures),
-      dollars: result.totalDutyUsd,
-      expr: priced.expr,
-      chargedCodes: priced.chargedCodes,
+      quota: c.quota,
+      productType: c.productType,
+      facts: c.varied,
+      variant: {
+        label: null,
+        total,
+        extra: priced.extra,
+        preference: preferenceText(result, opts.claimedSpi, claimRate, measures),
+        dollars: result.totalDutyUsd,
+        expr: priced.expr,
+        chargedCodes: priced.chargedCodes,
+      },
     });
   }
-  // Collapse variants with the same total (e.g. generic = specialty = other) and order cheapest first.
-  const merged: RateVariantResult[] = [];
-  for (const v of raw) {
-    const same = merged.find((m) => m.total === v.total && m.extra === v.extra);
-    if (!same) merged.push(v);
-    // Quota tiers with the same total keep both labels ("within quota or above quota").
-    else if (same.label && v.label && quotaTiers && !same.label.split(' or ').includes(v.label)) same.label = `${same.label} or ${v.label}`;
-  }
-  merged.sort((a, b) => a.dollars - b.dollars);
-  out.variants = merged.length === 1 ? [{ ...merged[0], label: null }] : merged;
+  // Merge answer sets with the same total into labelled variants, cheapest first (labelVariants).
+  out.variedFacts = variedFacts;
+  out.combos = raw;
+  out.variants = labelVariants(raw, variedFacts);
   return out;
 }
 

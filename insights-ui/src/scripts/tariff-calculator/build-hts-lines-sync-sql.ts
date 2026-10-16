@@ -20,6 +20,7 @@ import 'dotenv/config';
 import { mkdirSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { prisma } from '@/prisma';
+import { STATISTICAL_SUFFIXES, statisticalReportingNumbers } from '@/utils/tariff-calculator/statistical-suffixes';
 import { DATA_SQL_DIR, editionSlug, INSIGHTS_UI_ROOT, loadHtsSource, parseCliArgs, stringArg, yyyymmdd } from './lib/hts-source';
 import {
   buildRollbackSql,
@@ -120,6 +121,8 @@ async function main(): Promise<void> {
     reindented: sum((p) => p.reindented),
     redescribed: sum((p) => p.redescribed),
   };
+  // Rows that come from the statistical notes, not from the JSON (Chapter 91 statistical note 1).
+  const statisticalNew = affected.flatMap((p) => p.newNumbered).filter((n) => statisticalReportingNumbers(n).includes(n.replace(/\./g, '')));
   const summary = chapterSummary(plans);
   console.log(`\n${affected.length} affected chapters:\n${summary.join('\n')}`);
   console.log(
@@ -151,6 +154,13 @@ async function main(): Promise<void> {
     `--      ${totals.redescribed} re-described) for every row of those chapters — only differing rows are written;`,
     `--   5. SELECTs integrity checks and aborts if any fails (counts per chapter, unique sort_order, parent one`,
     `--      indent up in the same chapter, no line outside the edition, overall numbered diff = 0 / 0).`,
+    ...(statisticalNew.length > 0
+      ? [
+          `-- ${statisticalNew.length} of the new numbered rows (and their group rows) are statistical reporting numbers the HTS JSON does not`,
+          `-- print: Chapter 91 statistical note 1 (8-digit subheading + component suffix), from`,
+          `-- src/tariff-data/calculator/statistical-suffixes.json (${STATISTICAL_SUFFIXES.htsEdition}). Rates blank: inherited from the subheading.`,
+        ]
+      : []),
     `-- Other chapters are untouched. Removed lines disappear from the /hts-codes/us/[section]/[chapter] pages and`,
     `-- from calculator search.`,
     `--`,

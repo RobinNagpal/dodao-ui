@@ -1,0 +1,77 @@
+{
+  "description": "Rates the HTS states in a chapter's additional U.S. notes instead of the rate columns (\"See additional U.S. note 3\"). The calculator prices the note's rate for the line's column; the rate text is the note's own wording. Reviewed against the official chapter text; re-check per HTS revision (pnpm tariff:rate-parse fails when a column says \"See additional U.S. note n\" and no entry here matches).",
+  "htsEdition": "2026 Revision 21",
+  "reviewedAt": "2026-10-13",
+  "notes": [
+    {
+      "chapter": "58",
+      "note": 1,
+      "subheading": "5810.91.00",
+      "general": "Free, but in the case of embroidery in the piece not less than the rate which would apply to such product if not embroidered",
+      "column2": "90%, but in the case of embroidery in the piece not less than the rate which would apply to such product if not embroidered",
+      "sources": [
+        {
+          "citation": "HTSUS 2026 Revision 21, Chapter 58, additional U.S. notes 1–5",
+          "url": "https://hts.usitc.gov/reststop/file?release=2026HTSRev21&filename=Chapter%2058",
+          "published": "2026-10-07"
+        }
+      ]
+    },
+    {
+      "chapter": "58",
+      "note": 2,
+      "subheading": "5810.92.10",
+      "general": "4.2%, but in the case of embroidery in the piece not less than the rate which would apply to such product if not embroidered",
+      "column2": "90%, but in the case of embroidery in the piece not less than the rate which would apply to such product if not embroidered",
+      "sources": [
+        {
+          "citation": "HTSUS 2026 Revision 21, Chapter 58, additional U.S. notes 1–5",
+          "url": "https://hts.usitc.gov/reststop/file?release=2026HTSRev21&filename=Chapter%2058",
+          "published": "2026-10-07"
+        }
+      ]
+    },
+    {
+      "chapter": "58",
+      "note": 3,
+      "subheading": "5810.92.90",
+      "general": "7.4%, but in the case of embroidery in the piece not less than the rate which would apply to such product if not embroidered",
+      "column2": "90%, but in the case of embroidery in the piece not less than the rate which would apply to such product if not embroidered",
+      "sources": [
+        {
+          "citation": "HTSUS 2026 Revision 21, Chapter 58, additional U.S. notes 1–5",
+          "url": "https://hts.usitc.gov/reststop/file?release=2026HTSRev21&filename=Chapter%2058",
+          "published": "2026-10-07"
+        }
+      ]
+    },
+    {
+      "chapter": "58",
+      "note": 4,
+      "subheading": "5810.99.10",
+      "general": "7.4%, but in the case of embroidery in the piece not less than the rate which would apply to such product if not embroidered",
+      "column2": "90%, but in the case of embroidery in the piece not less than the rate which would apply to such product if not embroidered",
+      "sources": [
+        {
+          "citation": "HTSUS 2026 Revision 21, Chapter 58, additional U.S. notes 1–5",
+          "url": "https://hts.usitc.gov/reststop/file?release=2026HTSRev21&filename=Chapter%2058",
+          "published": "2026-10-07"
+        }
+      ]
+    },
+    {
+      "chapter": "58",
+      "note": 5,
+      "subheading": "5810.99.90",
+      "general": "4.2%, but in the case of embroidery in the piece not less than the rate which would apply to such product if not embroidered",
+      "column2": "90%, but in the case of embroidery in the piece not less than the rate which would apply to such product if not embroidered",
+      "sources": [
+        {
+          "citation": "HTSUS 2026 Revision 21, Chapter 58, additional U.S. notes 1–5",
+          "url": "https://hts.usitc.gov/reststop/file?release=2026HTSRev21&filename=Chapter%2058",
+          "published": "2026-10-07"
+        }
+      ]
+    }
+  ]
+}

@@ -3,6 +3,10 @@ import { CalculatorEngine, DataFreshness, perUnitRequirements, PerUnitRequiremen
 import { loadCandidates, loadDataFreshness } from '@/utils/tariff-calculator/load-candidates';
 import { isMeasuresEngineEnabledFor, loadMeasureEngineLine, loadMeasures, loadProductDescriptions } from '@/utils/tariff-calculator/load-measures';
 import {
+  baseRateInputsForLine,
+  baseRateQuestionsForLine,
+  type BaseRateComponentInput,
+  type BaseRateReferenceInput,
   claimablePrograms,
   COLUMN2_COUNTRIES,
   conditionProgramsForLine,
@@ -44,6 +48,10 @@ import { NextRequest } from 'next/server';
 // offered per country with their tiers in words; with ?country= the quota questions (within the in-quota quantity,
 // additional quota, safeguard in effect) come first in the confirmation questions.
 // `polarityRates` lists the line's rates graded by sugar polarity (raw sugar of heading 1701), so the form asks for it.
+// `componentInputs` / `referenceInputs` (issue #1812) are what the line's base rates need beyond quantities: the value of a
+// part the rate is charged on ("2.5% on the value of the lead content") and the other line(s) a rate refers to ("The
+// rate applicable to each garment in the ensemble if separately entered"). A bound that applies only on a condition
+// (embroidery in the piece, movement parts with a plate) adds a must-answer confirmation question.
 
 /** A trade deal (SPI program) the line's special column offers. */
 export interface ClaimableTradeDeal {
@@ -74,6 +82,10 @@ export interface OfficialMeasuresRequirements {
    * polarity in degrees. Without it the calculator prices at 100°, the rate's highest amount.
    */
   polarityRates: string[];
+  /** Values of parts the line's base rates are charged on; empty = none. */
+  componentInputs: BaseRateComponentInput[];
+  /** Other lines the base rates refer to (usually one); empty = none. */
+  referenceInputs: BaseRateReferenceInput[];
 }
 
 export interface CalculatorRequirementsResponse {
@@ -128,7 +140,7 @@ async function officialMeasuresRequirements(hts10: string, scope: QuestionScope)
   const [line, loaded] = await Promise.all([loadMeasureEngineLine(hts10), loadMeasures()]);
   // One choice per plain name (USMCA lists both "S" and "S+").
   const deals = new Map<string, ClaimableTradeDeal>();
-  for (const p of claimablePrograms(line, conditionProgramsForLine(hts10, loaded.measures))) {
+  for (const p of claimablePrograms(line, conditionProgramsForLine(hts10, loaded.measures), scope.date)) {
     const key = `${p.name}|${p.rateText}`;
     const existing = deals.get(key);
     if (existing) existing.codes.push(p.code);
@@ -148,17 +160,22 @@ async function officialMeasuresRequirements(hts10: string, scope: QuestionScope)
       confirmationQuestions: scope.country
         ? withBanQuestions(
             [
+              ...baseRateQuestionsForLine(line),
               ...quotaQuestionsForLine(line, scope.country),
               ...confirmationQuestionsForLine({ hts10, countryOfOrigin: scope.country, entryDate: scope.date }, loaded.measures, loadProductDescriptions()),
             ],
             importBanQuestionsForLine({ hts10, countryOfOrigin: scope.country, entryDate: scope.date })
           )
-        : [],
+        : baseRateQuestionsForLine(line),
       contentInputs: contentInputsForLine({ hts10, countryOfOrigin: scope.country, entryDate: scope.date }, loaded.measures),
       polarityRates: Array.from(
         new Set(
           [line.general, line.column2 ?? null, ...Array.from(deals.values()).map((d) => d.rateText)].filter((t): t is string => !!t && rateNeedsPolarity(t))
         )
+      ),
+      ...baseRateInputsForLine(
+        line,
+        Array.from(deals.values()).flatMap((d) => [d.rateText])
       ),
     },
     ...prohibitionFor(hts10, scope),

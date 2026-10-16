@@ -1,11 +1,12 @@
 import type { TariffProductGroup, TariffRateTableRow, TariffSpiLegendEntry } from '@/types/tariff-chapter-prototype';
 import type { MeasureEngineLine } from '@/types/tariff-calculator-measures';
 import { parseSpecialRates, SPECIAL_PROGRAMS } from '@/utils/tariff-calculator/measures-engine';
+import { primaryStatisticalNumber } from '@/utils/tariff-calculator/statistical-suffixes';
 import { rateRowSearchText } from '@/utils/tariff-reports/chapter-prototype';
 import { shortenDescription } from '@/utils/tariff-reports/line-labels';
 import { formatPolarityRate } from '@/utils/tariff-reports/shipment-duty';
 import type { HtsJsonRow } from '../../tariff-calculator/lib/hts-source';
-import { TODO } from './placeholders';
+import { TODO, todo } from './placeholders';
 
 // overview.rateTable from the USITC HTS JSON, exactly like the Chapter 01 / 30 reference files:
 // HTSUS states a duty once (usually on the 8-digit line) and leaves the 10-digit statistical lines
@@ -52,7 +53,25 @@ export function htsDigits(hts: string): string {
   return hts.replace(/\D/g, '');
 }
 
+/**
+ * The line key of a row: its digits for a 10-digit line; for an 8-digit subheading that Chapter 91 statistical note 1
+ * splits into component numbers the JSON doesn't print (no 10-digit row below it), its first statistical reporting
+ * number (9102.11.10 → "9102111010", the movement). The calculator accepts every number of the subheading and prices
+ * the subheading's rate once on the whole article, so one line per subheading (src/utils/tariff-calculator/statistical-suffixes.ts).
+ */
+function lineKey(digits: string, hasGeneral: boolean, tenDigitParents: ReadonlySet<string>): string | null {
+  if (digits.length === 10) return digits;
+  if (digits.length === 8 && hasGeneral && !tenDigitParents.has(digits)) return primaryStatisticalNumber(digits);
+  return null;
+}
+
 export function buildRateTableRows(jsonRows: readonly HtsJsonRow[]): TariffRateTableRow[] {
+  const tenDigitParents = new Set(
+    jsonRows
+      .map((r) => htsDigits(r.htsno ?? ''))
+      .filter((d) => d.length === 10)
+      .map((d) => d.slice(0, 8))
+  );
   const stack: { indent: number; row: TariffRateTableRow }[] = [];
   const out: TariffRateTableRow[] = [];
   let heading: string | null = null;
@@ -84,7 +103,7 @@ export function buildRateTableRows(jsonRows: readonly HtsJsonRow[]): TariffRateT
     const row: TariffRateTableRow = {
       id: `r${i}`,
       hts,
-      htsCode10: digits.length === 10 ? digits : null,
+      htsCode10: lineKey(digits, !!general, tenDigitParents),
       indent,
       description,
       isHeaderRow: !hts || (!general && units.length === 0),
@@ -115,7 +134,7 @@ export function isDutiable(general: string | null): boolean {
   return !!general && !/^\s*free\s*$/i.test(general);
 }
 
-/** The 10-digit lines (the rows a shipment is entered under). */
+/** The lines a shipment is entered under: 10-digit rows, plus the statistical-note subheadings keyed by their first number. */
 export function leafLines(rows: TariffRateTableRow[]): TariffRateTableRow[] {
   return rows.filter((r) => r.htsCode10);
 }
@@ -139,14 +158,12 @@ export interface HeadingInfo {
   baseRates: string[];
 }
 
-/** First clause of a heading description, ≤ 60 characters at a word boundary. A draft label: writers shorten it. */
+/**
+ * The heading's full HTS wording, without the trailing colon (product groups, matrix groups, understandIndustry's
+ * "main heading" and search text). Never cut short: a label ending in "…" hides what the heading covers (issue #1812).
+ */
 export function headingLabel(description: string): string {
-  let t = stripColon(description).split(/;\s/)[0].trim();
-  if (t.length > 60) {
-    const cut = t.slice(0, 59);
-    t = `${cut.slice(0, Math.max(cut.lastIndexOf(' '), 30)).replace(/[\s,;:-]+$/, '')}…`;
-  }
-  return t;
+  return stripColon(description).replace(/\s+/g, ' ').trim();
 }
 
 export function headingsOf(rows: TariffRateTableRow[]): HeadingInfo[] {
@@ -178,7 +195,7 @@ export function productGroups(headings: HeadingInfo[]): TariffProductGroup[] {
   }));
 }
 
-/** Names per HTSUS General Note 3(c)(i), as the reference chapters print them. */
+/** Names per HTSUS General Note 3(c)(i) (every code it lists in 2026 Revision 21), as the reference chapters print them. */
 const SPI_NAMES: Record<string, string> = {
   A: 'Generalized System of Preferences (GSP)',
   'A*': 'GSP — some beneficiary countries excluded',
@@ -204,7 +221,7 @@ const SPI_NAMES: Record<string, string> = {
   L: 'Uruguay Round Concessions on Intermediate Chemicals for Dyes',
   MA: 'United States–Morocco FTA',
   MX: 'NAFTA (Mexico) — superseded by USMCA',
-  N: 'Nepal Preference Program',
+  NP: 'Nepal Preference Program',
   OM: 'United States–Oman FTA',
   P: 'Dominican Republic–Central America FTA (CAFTA-DR)',
   'P+': 'CAFTA-DR — additional originating goods',
@@ -217,10 +234,13 @@ const SPI_NAMES: Record<string, string> = {
   W: 'Haiti Hope / Help programs',
 };
 
+/** SPI codes look like "A", "A*", "S+", "NP"; the special column also holds note references ("see U.S. note 3"). */
+const SPI_CODE = /^[A-Z]{1,2}[*+]?$/;
+
 export function spiLegend(rows: TariffRateTableRow[]): TariffSpiLegendEntry[] {
   const codes = new Set<string>();
-  for (const r of rows) for (const e of parseSpecialRates(r.special)) for (const p of e.programs) codes.add(p);
+  for (const r of rows) for (const e of parseSpecialRates(r.special)) for (const p of e.programs) if (SPI_CODE.test(p)) codes.add(p);
   return Array.from(codes)
     .sort((a, b) => (a < b ? -1 : a > b ? 1 : 0))
-    .map((code) => ({ code, name: SPI_NAMES[code] ?? SPECIAL_PROGRAMS[code]?.name ?? `Program ${code}` }));
+    .map((code) => ({ code, name: SPI_NAMES[code] ?? SPECIAL_PROGRAMS[code]?.name ?? todo(`name of SPI code ${code} (HTSUS General Note 3(c)(i))`) }));
 }

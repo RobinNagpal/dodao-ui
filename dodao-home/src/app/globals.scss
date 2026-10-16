@@ -1,0 +1,14 @@
+@import 'styles/variables';
+@import 'styles/markdown';
+@import 'styles/scrollbar';
+@import 'styles/fonts';
+@import 'styles/theme-styles';
+@import 'styles/dodao-home-theme';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  font-family: 'Inter', sans-serif;
+}

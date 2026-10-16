@@ -15,6 +15,7 @@
 import { createHash } from 'node:crypto';
 import type { HtsJsonRow } from './hts-source';
 import { chunk, compareCodes, sqlText, sqlTextArray } from './sql';
+import { withStatisticalSuffixRows } from './statistical-suffix-rows';
 
 export interface EditionLine {
   chapter: number;
@@ -98,8 +99,13 @@ export function toHtsCode10(htsNumber: string | null): string | null {
   return digits.length === 10 ? digits : null;
 }
 
-/** Edition rows grouped by chapter, in published order. Header rows go to the chapter of the next numbered line. */
-export function editionByChapter(rows: readonly HtsJsonRow[]): Map<number, EditionLine[]> {
+/**
+ * Edition rows grouped by chapter, in published order. Header rows go to the chapter of the next numbered line.
+ * Includes the statistical reporting numbers the JSON leaves out (Chapter 91 statistical note 1, see
+ * statistical-suffix-rows.ts) below their 8-digit subheadings.
+ */
+export function editionByChapter(publishedRows: readonly HtsJsonRow[]): Map<number, EditionLine[]> {
+  const rows = withStatisticalSuffixRows(publishedRows);
   const out = new Map<number, EditionLine[]>();
   let pendingHeaders: HtsJsonRow[] = [];
   const push = (chapter: number, row: HtsJsonRow) => {

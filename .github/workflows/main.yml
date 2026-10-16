@@ -22,6 +22,7 @@ jobs:
     outputs:
       shared_web_core_changed: ${{ steps.filter.outputs.shared_web_core }}
       academy_ui_changed: ${{ steps.filter.outputs.academy_ui }}
+      dodao_home_changed: ${{ steps.filter.outputs.dodao_home }}
       base_ui_changed: ${{ steps.filter.outputs.base_ui }}
       defi_alerts_changed: ${{ steps.filter.outputs.defi_alerts }}
       insights_ui_changed: ${{ steps.filter.outputs.insights_ui }}
@@ -38,6 +39,8 @@ jobs:
               - 'shared/web-core/**'
             academy_ui:
               - 'academy-ui/**'
+            dodao_home:
+              - 'dodao-home/**'
             base_ui:
               - 'base-ui/**'
             defi_alerts:
@@ -90,6 +93,42 @@ jobs:
 
       - name: Academy - NEXT Build
         run: cd academy-ui && pnpm build
+
+  dodao_home_job:
+    runs-on: ubuntu-latest
+    needs: determine-changed-paths
+    if: ${{ needs.determine-changed-paths.outputs.dodao_home_changed == 'true' || needs.determine-changed-paths.outputs.shared_web_core_changed == 'true' }}
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 23.11.0
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
+      - name: Shared Web Core - Install dependencies
+        run: cd shared/web-core && pnpm install --filter @dodao/web-core
+
+      - name: dodao-home - Install dependencies
+        run: cd dodao-home && pnpm install --filter dodao-home
+
+      - name: dodao-home - Run ESLint
+        run: cd dodao-home && pnpm lint
+
+      - name: dodao-home - Run Prettier
+        run: cd dodao-home && pnpm prettier-check
+
+      - name: dodao-home - TSC (includes web-core)
+        run: cd dodao-home && pnpm compile
+
+      - name: dodao-home - Static export build
+        run: cd dodao-home && pnpm build && test -f out/index.html && test -f out/404.html && test -f out/sitemap.xml
 
   base_ui_job:
     runs-on: ubuntu-latest
@@ -223,7 +262,11 @@ jobs:
       - name: Insights UI - Run Prettier
         run: cd insights-ui && pnpm prettier-check
 
+      # tsc infers a type for every chapter content JSON (tens of MB across ~90 files), which no longer
+      # fits in Node's default ~4 GB heap. The runner has 16 GB.
       - name: Insights UI - TSC
+        env:
+          NODE_OPTIONS: --max-old-space-size=8192
         run: cd insights-ui && pnpm compile
 
       - name: Insights UI - Tariff calculator golden scenarios
@@ -238,6 +281,8 @@ jobs:
         run: cd insights-ui && pnpm tariff:validate-chapters --check-calculator
 
       - name: Insights UI - NEXT Build
+        env:
+          NODE_OPTIONS: --max-old-space-size=8192
         run: cd insights-ui && pnpm build
 
   # Proves insights-ui's Prisma migrations are safe to apply before they reach `main`, where

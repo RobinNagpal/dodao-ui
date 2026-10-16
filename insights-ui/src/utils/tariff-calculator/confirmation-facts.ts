@@ -13,6 +13,12 @@ function isSource(v: unknown): v is TariffMeasureSource {
   return typeof s.citation === 'string' && typeof s.url === 'string' && typeof s.published === 'string';
 }
 
+function isShortLabel(v: unknown): boolean {
+  if (typeof v !== 'object' || v === null) return false;
+  const l = v as Record<string, unknown>;
+  return typeof l.yes === 'string' && typeof l.no === 'string';
+}
+
 function isFact(v: unknown): v is TariffConfirmationFact {
   if (typeof v !== 'object' || v === null) return false;
   const f = v as Record<string, unknown>;
@@ -22,6 +28,7 @@ function isFact(v: unknown): v is TariffConfirmationFact {
     typeof f.prompt === 'string' &&
     (f.help === undefined || typeof f.help === 'string') &&
     (f.defaultWhenUnanswered === true || f.defaultWhenUnanswered === false || f.defaultWhenUnanswered === null) &&
+    (f.shortLabel === undefined || isShortLabel(f.shortLabel)) &&
     (f.sources === undefined || (Array.isArray(f.sources) && f.sources.every(isSource)))
   );
 }

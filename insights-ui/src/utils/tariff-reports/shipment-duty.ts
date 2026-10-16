@@ -39,6 +39,59 @@ export interface PerUnitCharge {
   unit: QuantityUnit;
   /** Set for a rate that falls with the sugar's polarity (heading 1701); price it with `chargeAmountUsd`. */
   polarity?: PolarityScale;
+  /** Set for a rate charged only on the units above a per-article threshold ("2.8¢/jewel over 7"); see `chargedQuantity`. */
+  overThreshold?: ThresholdScale;
+}
+
+/**
+ * "43¢ each + 2.8¢/jewel over 7 + 3.7% on the case" (9105.19.30, 9105.29.30; column 2 of those and 9105.99.40): the
+ * jewel charge applies to the jewels above 7 in each movement. Priced from the shipment's total jewels (`unit`, the
+ * existing jewels key) and its number of articles (`articleUnit`, the "each" quantity): jewels − 7 × movements, never
+ * below 0. That equals the per-movement count when every movement has the same number of jewels (one entry line per
+ * jewel count otherwise).
+ */
+export interface ThresholdScale {
+  /** Units per article that are not charged, e.g. 7 jewels. */
+  perArticle: number;
+  /** The quantity that counts the articles (movements, clocks). */
+  articleUnit: QuantityUnit;
+}
+
+/**
+ * The quantity a per-unit charge applies to, from a lookup by unit key; null when a quantity it needs is missing.
+ * A threshold charge needs both its own unit and the article count.
+ */
+export function chargedQuantity(charge: PerUnitCharge, qtyOf: (unitKey: string) => number | undefined): number | null {
+  const valid = (q: number | undefined): q is number => q !== undefined && Number.isFinite(q) && q >= 0;
+  const qty = qtyOf(charge.unit.key);
+  if (!valid(qty)) return null;
+  if (!charge.overThreshold) return qty;
+  const articles = qtyOf(charge.overThreshold.articleUnit.key);
+  if (!valid(articles)) return null;
+  return Math.max(0, qty - charge.overThreshold.perArticle * articles);
+}
+
+/** Unit keys a charge needs a quantity for: its own, plus the article count of a threshold charge. */
+export function chargeUnits(charge: PerUnitCharge): QuantityUnit[] {
+  return charge.overThreshold ? [charge.unit, charge.overThreshold.articleUnit] : [charge.unit];
+}
+
+/** Units above the threshold per article on a nominal shipment (the generator and validator price "jewel over 7" at 7 + 10 per movement). */
+export const NOMINAL_UNITS_OVER_THRESHOLD = 10;
+
+/**
+ * Quantities for a nominal shipment of `articles` articles that make every threshold part of the rate count: the
+ * threshold unit gets articles × (threshold + NOMINAL_UNITS_OVER_THRESHOLD), the article unit gets `articles`. Keys go
+ * through `keyOf` (identity for parser keys, `normalizeUom` for the engine's). Empty when the rate has no threshold part.
+ */
+export function thresholdNominalQuantities(rate: ParsedRate | null, articles: number, keyOf: (unitKey: string) => string = (k) => k): Record<string, number> {
+  const out: Record<string, number> = {};
+  for (const c of rate?.perUnit ?? []) {
+    if (!c.overThreshold) continue;
+    out[keyOf(c.overThreshold.articleUnit.key)] = articles;
+    out[keyOf(c.unit.key)] = articles * (c.overThreshold.perArticle + NOMINAL_UNITS_OVER_THRESHOLD);
+  }
+  return out;
 }
 
 /**
@@ -111,9 +164,14 @@ const UNIT_ALIASES: { pattern: RegExp; key: string }[] = [
   { pattern: /^(m3|m³|cubic meters?)$/, key: 'm3' },
   { pattern: /^(m|meters?|metres?|lin\.?\s?m|linear meters?)$/, key: 'm' },
   { pattern: /^(bbl|barrels?)$/, key: 'barrel' },
-  // Counted things that aren't the goods themselves: "/jewel", "/pack".
+  // Counted things that aren't the goods themselves: "/jewel", "/pack", "for each other piece or part" (watch and clock
+  // movements of 9110.90.40 / 9114.90.30: every piece or part other than the jewels).
   { pattern: /^(jewels?)$/, key: 'count:jewels' },
   { pattern: /^(packs?)$/, key: 'count:packs' },
+  { pattern: /^(other pieces? or parts?)$/, key: 'count:other pieces or parts' },
+  // Buttons of 9606.21.40 / 9606.29.20 / 9606.29.40: "0.3¢/line/ gross" is 0.3¢ per line of button size per gross, so the
+  // quantity is the size in lines (1 line = 1/40 inch) × the number of gross — the HTS reporting unit "gr.lines".
+  { pattern: /^(lines?\s*\/\s*gross|gr\.?\s?lines?)$/, key: 'gross:size in lines' },
 ];
 
 /** Unit keys the parser understands (a qualified key is known when its base is). Others are kept as written, lower-cased. */
@@ -150,7 +208,14 @@ const PERCENT_RE = new RegExp(`^${NUMBER}(?:\\s+(\\d+)/(\\d+))?\\s*%(?:\\s+on th
 const PERCENT_RANGE_RE = new RegExp(`^(free|${NUMBER}\\s*%?)\\s*[–—-]\\s*${NUMBER}\\s*%$`, 'i');
 // "1¢/kg", "68¢/head", "0.9¢ each", "$1.20/doz", "$1.20 per dozen", "1 cent/kg", "89.6¢/1000",
 // "$1.32/t, including weight of container", "12.8¢/kg on molybdenum content"
-const PER_UNIT_RE = new RegExp(`^(?:\\$\\s*${NUMBER}|${NUMBER}\\s*(?:¢|cents?\\b))\\s*(?:/\\s*|\\s+per\\s+|\\s+)([a-z0-9][a-z0-9.,²³ /]*)$`, 'i');
+// "0.2¢ for each other piece or part" (9110.90.40) reads like "0.2¢ per other piece or part".
+const PER_UNIT_RE = new RegExp(
+  `^(?:\\$\\s*${NUMBER}|${NUMBER}\\s*(?:¢|cents?\\b))\\s*(?:/\\s*|\\s+per\\s+|\\s+for\\s+each\\s+|\\s+)([a-z0-9][a-z0-9.,²³ /]*)$`,
+  'i'
+);
+
+// "2.8¢/jewel over 7", "15¢/jewel over 7" (chapter 91 clocks and clock movements).
+const OVER_THRESHOLD_RE = new RegExp(`^(?:\\$\\s*${NUMBER}|${NUMBER}\\s*(?:¢|cents?\\b))\\s*/\\s*(jewels?)\\s+over\\s+(\\d+)$`, 'i');
 
 /**
  * Removes parenthetical notes ("(9903.05.39)", "(232 list)"), "in place of base" wording and
@@ -256,6 +321,16 @@ function parseTerm(term: string): TermRange | null {
     return { low: rate, high: rate, exact: true };
   }
 
+  // "2.8¢/jewel over 7": per jewel above 7 in each movement (the "each" count is the movements).
+  const over = t.match(OVER_THRESHOLD_RE);
+  if (over) {
+    const amountUsd = Number((over[1] !== undefined ? Number(over[1]) : Number(over[2]) / 100).toPrecision(12));
+    const perArticle = Number(over[4]);
+    const unit = { key: 'count:jewels', label: `jewel over ${perArticle}` };
+    const rate = { adValoremPct: 0, perUnit: [{ amountUsd, unit, overThreshold: { perArticle, articleUnit: { key: 'count', label: 'each' } } }] };
+    return { low: rate, high: rate, exact: true };
+  }
+
   const perUnit = t.match(PER_UNIT_RE);
   if (perUnit) {
     const { unit, factor } = toUnit(perUnit[3]);
@@ -300,6 +375,207 @@ export function parseRate(text: string): ParsedRate | null {
   return range && range.exact ? range.low : null;
 }
 
+// ---------------------------------------------------------------------------
+// Rates that need more than the customs value and quantities (issue #1812)
+// ---------------------------------------------------------------------------
+//
+// Some HTS base rates are charged on the value of a named part of the goods ("2.5% on the value of the lead content",
+// "4.7% on the value of the rifle + 20% on the value of the telescopic sight, if any", "5.3% on the battery"), point to
+// the rate of another article ("The rate applicable to each garment in the ensemble if separately entered", "… the
+// article of which it is a part or accessory"), bound the rate by another article's ("…, but in the case of embroidery
+// in the piece not less than the rate which would apply to such product if not embroidered"), or are free only under a
+// bond ("Free, under bond", wool for special uses, chapter 51 additional U.S. note 2(d)). `parseExtendedRate` reads
+// them; `parseRate` / `parseRateRange` / `parseRateVariants` stay strict (null for these), so nothing that prices from
+// the customs value and quantities alone — the chapter pages' "Your shipment" box — can price them by mistake.
+
+/** An ad valorem part charged on the declared value of a named part of the goods, e.g. "2.5% on the value of the lead content". */
+export interface ComponentCharge {
+  pct: number;
+  /** Lower-case component as the HTS names it: "lead content", "rifle", "telescopic sight", "battery", "strap, band or bracelet". */
+  component: string;
+  /** "…, if any": the part may be absent, so its value can be 0. */
+  ifAny: boolean;
+}
+
+/**
+ * How another article's rate enters a rate:
+ *   whole — the rate IS that article's rate, on the full customs value (parts / accessories, sets, movement sets); for
+ *           sets at the highest-rated article's rate a specific / compound rate counts as its ad valorem equivalent on
+ *           the article's own value (chapter 82 additional U.S. note 3)
+ *   each  — every article of the set at its own rate on its own value (garment ensembles, sets of 9608.50)
+ *   floor — the line's own rate, but not less than that article's (embroidery in the piece, chapter 58 notes 1–5)
+ *   cap   — the line's own rate, but not more than that article's (movement parts with a plate, 9110.90.40 / 9114.90.30)
+ * A floor / cap applies only when its `conditionFact` (confirmation-facts.json) is answered yes.
+ */
+export type RateReferenceKind = 'whole' | 'each' | 'floor' | 'cap';
+
+/** What the referenced article is; the calculator words its question from this. */
+export type RateReferenceSubject = 'partOrAccessory' | 'accessory' | 'setHighestRate' | 'completeMovement' | 'garment' | 'setArticle' | 'notEmbroidered';
+
+export interface RateReference {
+  kind: RateReferenceKind;
+  subject: RateReferenceSubject;
+  /** The HTS wording, e.g. "The rate applicable to each garment in the ensemble if separately entered". */
+  text: string;
+  /** floor / cap: the confirmation fact that decides whether the bound applies. */
+  conditionFact?: string;
+}
+
+/** A rate as `parseRate` reads it, plus value-of-component parts, a reference to another article's rate, or a bond. */
+export interface ExtendedRate extends ParsedRate {
+  components: ComponentCharge[];
+  reference: RateReference | null;
+  /** "Free, under bond": free at entry; the bond secures the regular duty if the goods aren't used as the note requires. */
+  underBond: boolean;
+}
+
+/** Fact ids of the floor / cap clauses (confirmation-facts.json). */
+export const EMBROIDERY_IN_THE_PIECE_FACT = 'embroideryInThePiece';
+export const MOVEMENT_PARTS_INCLUDE_PLATE_FACT = 'movementPartsIncludePlate';
+
+// Whole-rate references, matched against one "+"-separated term (line-break hyphens already joined by cleanRateText).
+const REFERENCE_TERMS: { pattern: RegExp; kind: RateReferenceKind; subject: RateReferenceSubject }[] = [
+  { pattern: /^the rate applicable to the article of which it is a part or accessory$/i, kind: 'whole', subject: 'partOrAccessory' },
+  { pattern: /^the rate applicable to the article of which it is an accessory$/i, kind: 'whole', subject: 'accessory' },
+  { pattern: /^the rate of duty applicable to that article in the set subject to the highest rate of duty$/i, kind: 'whole', subject: 'setHighestRate' },
+  // 9110.11.00's column 2 cell is cut after "assembled" in the published HTS (PDF and JSON); the general rate of the same
+  // line and 9110.90.20 read "… the complete, assembled movement", so both spellings are the same reference.
+  { pattern: /^the rate applicable to the complete, assembled(?: movement)?$/i, kind: 'whole', subject: 'completeMovement' },
+  // "in the in the ensemble" (6203.29.30 general) is a typo in the HTS for the same wording.
+  {
+    pattern: /^the rate applicable to each garment in the (?:in the )?ensemble if (?:separately entered|entered separately)$/i,
+    kind: 'each',
+    subject: 'garment',
+  },
+  { pattern: /^the rate applicable,? to each article in the absence of this subheading$/i, kind: 'each', subject: 'setArticle' },
+];
+
+// Bounds written after the line's own rate ("7.4%, but in the case of …"); removed from the text before the rest is read.
+const REFERENCE_CLAUSES: { pattern: RegExp; kind: RateReferenceKind; subject: RateReferenceSubject; conditionFact: string }[] = [
+  {
+    pattern: /,?\s*but in the case of embroidery in the piece not less than the rate which would apply to such product if not embroidered/i,
+    kind: 'floor',
+    subject: 'notEmbroidered',
+    conditionFact: EMBROIDERY_IN_THE_PIECE_FACT,
+  },
+  {
+    pattern: /,?\s*but if consisting in part of a plate or a set of plates the total duty shall not exceed the duty for the complete movement/i,
+    kind: 'cap',
+    subject: 'completeMovement',
+    conditionFact: MOVEMENT_PARTS_INCLUDE_PLATE_FACT,
+  },
+];
+
+const UNDER_BOND_RE = /^free,?\s+under bond$/i;
+// "2.5% on the value of the lead content", "20% on the value of the telescopic sight, if any", "5.3% on the battery",
+// "6% on the strap, band or bracelet". ("6.5% on the entire set" is the customs value; PERCENT_RE reads it first.)
+const COMPONENT_RE = new RegExp(
+  `^${NUMBER}(?:\\s+(\\d+)/(\\d+))?\\s*%\\s+on\\s+(?:the\\s+)?(?:value\\s+of\\s+(?:the\\s+)?)?([a-z][a-z ,]*?)(\\s*,?\\s*if\\s+any)?$`,
+  'i'
+);
+
+function parseComponentTerm(term: string): ComponentCharge | null {
+  const m = term.match(COMPONENT_RE);
+  if (!m) return null;
+  const component = m[4].trim().toLowerCase().replace(/\s+/g, ' ');
+  if (!component || /^(entire set|full value\b)/.test(component)) return null;
+  const fraction = m[2] !== undefined && Number(m[3]) > 0 ? Number(m[2]) / Number(m[3]) : 0;
+  return { pct: Number(m[1]) + fraction, component, ifAny: m[5] !== undefined };
+}
+
+/**
+ * Parses a base rate, including value-of-component parts, references to another article's rate and "Free, under bond"
+ * (see above). Null when any part is unreadable, a part is a range, or the text holds two references.
+ */
+export function parseExtendedRate(text: string): ExtendedRate | null {
+  let cleaned = cleanRateText(text);
+  if (!cleaned) return null;
+  if (UNDER_BOND_RE.test(cleaned)) return { ...zeroRate(), components: [], reference: null, underBond: true };
+  let reference: RateReference | null = null;
+  for (const clause of REFERENCE_CLAUSES) {
+    const m = cleaned.match(clause.pattern);
+    if (!m) continue;
+    cleaned = cleaned.replace(clause.pattern, '').trim();
+    reference = { kind: clause.kind, subject: clause.subject, text: m[0].replace(/^,?\s*/, ''), conditionFact: clause.conditionFact };
+    break;
+  }
+  if (!cleaned) return null;
+  let rate = zeroRate();
+  const components: ComponentCharge[] = [];
+  for (const term of cleaned.split(/\s*\+\s*/).filter((t, i) => i > 0 || t !== '')) {
+    const ref = REFERENCE_TERMS.find((r) => r.pattern.test(term));
+    if (ref) {
+      if (reference) return null;
+      reference = { kind: ref.kind, subject: ref.subject, text: term };
+      continue;
+    }
+    const component = parseComponentTerm(term);
+    if (component) {
+      components.push(component);
+      continue;
+    }
+    const parsed = parseTerm(term);
+    if (!parsed || !parsed.exact) return null;
+    rate = addRates(rate, parsed.low);
+  }
+  return { ...rate, components, reference, underBond: false };
+}
+
+/**
+ * Splits a floor / cap clause off a rate text: "7.4%, but in the case of embroidery in the piece …" → body "7.4%" and
+ * clause "but in the case of embroidery in the piece …"; clause null when there is none.
+ */
+export function splitRateClause(text: string): { body: string; clause: string | null } {
+  for (const c of REFERENCE_CLAUSES) {
+    const m = text.match(c.pattern);
+    if (m) return { body: text.replace(c.pattern, '').trim(), clause: m[0].replace(/^,?\s*/, '') };
+  }
+  return { body: text, clause: null };
+}
+
+/** True when a rate needs more than the customs value and quantities: component values, another article's rate, or a bond. */
+export function isExtendedRate(rate: ExtendedRate): boolean {
+  return rate.components.length > 0 || rate.reference !== null || rate.underBond;
+}
+
+/** "the lead content" → "Value of the lead content (USD)"; "telescopic sight" (if any) → "… (USD, 0 if none)". */
+export function componentLabel(c: Pick<ComponentCharge, 'component' | 'ifAny'>): string {
+  return `Value of the ${c.component} (USD${c.ifAny ? ', 0 if none' : ''})`;
+}
+
+/**
+ * Dollars an extended rate costs, given the component values and the referenced article's duty in dollars (whole / each:
+ * that duty is the base; floor / cap: the bound, applied as given — the caller decides whether the condition holds and
+ * passes `referenceDutyUsd` only then). Null when a component value, the referenced duty or a quantity is missing.
+ */
+export function extendedRateDollars(
+  rate: ExtendedRate,
+  customsValueUsd: number,
+  quantities: Record<string, number | undefined>,
+  opts: { componentValuesUsd?: Record<string, number | undefined>; referenceDutyUsd?: number; polarityDegrees?: number } = {}
+): number | null {
+  const own = rateDollars(rate, customsValueUsd, quantities, opts.polarityDegrees);
+  if (own === null) return null;
+  let total = own;
+  for (const c of rate.components) {
+    const v = opts.componentValuesUsd?.[c.component];
+    if (v === undefined || !Number.isFinite(v) || v < 0) return null;
+    total += (c.pct / 100) * v;
+  }
+  if (!rate.reference) return total;
+  const ref = opts.referenceDutyUsd;
+  if (ref === undefined || !Number.isFinite(ref)) return null;
+  switch (rate.reference.kind) {
+    case 'whole':
+    case 'each':
+      return total + ref;
+    case 'floor':
+      return Math.max(total, ref);
+    case 'cap':
+      return Math.min(total, ref);
+  }
+}
+
 /**
  * Parses a total that may be stated per product kind ("Free generic / 100% patented",
  * "Free generic / 15–100% patented"); a plain rate gives one unlabelled variant.
@@ -331,7 +607,7 @@ export function parseRateVariants(text: string): RateVariant[] | null {
 /** Distinct per-unit quantities a set of rates needs, in first-seen order. */
 export function quantityUnits(rates: ParsedRate[]): QuantityUnit[] {
   const seen = new Map<string, QuantityUnit>();
-  for (const rate of rates) for (const charge of rate.perUnit) if (!seen.has(charge.unit.key)) seen.set(charge.unit.key, charge.unit);
+  for (const rate of rates) for (const charge of rate.perUnit) for (const unit of chargeUnits(charge)) if (!seen.has(unit.key)) seen.set(unit.key, unit);
   return Array.from(seen.values());
 }
 
@@ -347,8 +623,8 @@ export function rateDollars(
 ): number | null {
   let total = (rate.adValoremPct / 100) * customsValueUsd;
   for (const charge of rate.perUnit) {
-    const qty = quantities[charge.unit.key];
-    if (qty === undefined || !Number.isFinite(qty) || qty < 0) return null;
+    const qty = chargedQuantity(charge, (key) => quantities[key]);
+    if (qty === null) return null;
     total += chargeAmountUsd(charge, polarityDegrees) * qty;
   }
   return total;

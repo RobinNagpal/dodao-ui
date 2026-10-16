@@ -1,5 +1,6 @@
 import type {
   MeasureEngineInput,
+  MeasureEngineReferencedLine,
   TariffCompanyProgram,
   TariffEndUse,
   TariffProductType,
@@ -22,6 +23,7 @@ import {
   CONTENT_INPUT_KINDS,
   importBanDutyNote,
   importProhibitionFor,
+  lapsedClaimError,
   rateUoms,
   SPECIAL_PROGRAMS,
 } from '@/utils/tariff-calculator/measures-engine';
@@ -56,6 +58,13 @@ import { NextRequest } from 'next/server';
 // Optional `polarityDegrees` (above 0, at most 100) prices a base rate graded by sugar polarity (heading 1701:
 // "… less 0.020668¢/kg for each degree under 100 degrees …"); without it such a rate is priced at 100° and the base
 // line's notes say so.
+// Optional `componentValuesUsd` ({ "lead content": 9000 }, issue #1812) are the declared values of the parts a base rate
+// is charged on ("2.5% on the value of the lead content", "… on the value of the rifle + … the telescopic sight, if
+// any"); each must be 0 – shipmentValueUsd. Optional `referencedLines` ([{ hts10, valueUsd?, unitsOfMeasure? }], at most
+// 10) are the lines a base rate refers to ("The rate applicable to the article of which it is a part or accessory": one
+// line; "… to each garment in the ensemble if separately entered": one per garment with its value; "… that article in
+// the set subject to the highest rate of duty": one or more articles of the set, each with its own value and quantity
+// when its rate is specific or compound, chapter 82 additional U.S. note 3); their rates are loaded from `hts_codes`.
 // When an import ban (import-bans.json, issue #1796) matches the line, country, entry date and
 // fact answers, the response carries `prohibited` next to the duty; the duty is labelled as applying
 // only to goods imported before the ban and entered later.
@@ -195,6 +204,69 @@ function parseContentValues(raw: unknown, customsValueUsd: number): ContentValue
   return Object.keys(out).length > 0 ? out : undefined;
 }
 
+function parseComponentValues(raw: unknown, customsValueUsd: number): Record<string, number> | undefined {
+  if (raw === undefined || raw === null) return undefined;
+  if (!isObject(raw)) throw badRequestError('componentValuesUsd must be an object such as { "lead content": 9000 }');
+  const out: Record<string, number> = {};
+  for (const [k, v] of Object.entries(raw)) {
+    const key = k.trim().toLowerCase().replace(/\s+/g, ' ');
+    if (!/^[a-z][a-z ,]{0,60}$/.test(key)) throw badRequestError(`componentValuesUsd key "${k}" is not a component name`);
+    if (v === undefined || v === null || v === '') continue;
+    const n = typeof v === 'number' ? v : Number(v);
+    if (!Number.isFinite(n) || n < 0) throw badRequestError(`componentValuesUsd["${k}"] must be a non-negative number`);
+    if (n > customsValueUsd) throw badRequestError(`componentValuesUsd["${k}"] (${n}) can't be more than the shipment value (${customsValueUsd})`);
+    out[key] = n;
+  }
+  return Object.keys(out).length > 0 ? out : undefined;
+}
+
+const MAX_REFERENCED_LINES = 10;
+
+interface ReferencedLineRequest {
+  hts10: string;
+  valueUsd?: number;
+  quantities?: Record<string, number>;
+}
+
+function parseReferencedLines(raw: unknown): ReferencedLineRequest[] | undefined {
+  if (raw === undefined || raw === null) return undefined;
+  if (!Array.isArray(raw)) throw badRequestError('referencedLines must be an array of { hts10, valueUsd?, unitsOfMeasure? }');
+  if (raw.length > MAX_REFERENCED_LINES) throw badRequestError(`referencedLines accepts at most ${MAX_REFERENCED_LINES} lines`);
+  const out = raw.map((r, i): ReferencedLineRequest => {
+    if (!isObject(r)) throw badRequestError(`referencedLines[${i}] must be an object`);
+    const hts10 = typeof r.hts10 === 'string' ? r.hts10.replace(/[.\s-]/g, '') : '';
+    if (!/^\d{10}$/.test(hts10)) throw badRequestError(`referencedLines[${i}].hts10 must be 10 digits`);
+    const line: ReferencedLineRequest = { hts10 };
+    if (r.valueUsd !== undefined && r.valueUsd !== null && r.valueUsd !== '') {
+      const n = typeof r.valueUsd === 'number' ? r.valueUsd : Number(r.valueUsd);
+      if (!Number.isFinite(n) || n <= 0) throw badRequestError(`referencedLines[${i}].valueUsd must be a positive number`);
+      line.valueUsd = n;
+    }
+    const quantities = parseUnitsOfMeasure(r.unitsOfMeasure);
+    if (Object.keys(quantities).length > 0) line.quantities = quantities;
+    return line;
+  });
+  return out.length > 0 ? out : undefined;
+}
+
+/** The referenced lines with their HTS rates from `hts_codes` (an unknown code is a 404, like the line itself). */
+async function loadReferencedLines(requests: ReferencedLineRequest[] | undefined): Promise<MeasureEngineReferencedLine[] | undefined> {
+  if (!requests) return undefined;
+  return Promise.all(
+    requests.map(async (r) => {
+      const line = await loadMeasureEngineLine(r.hts10);
+      return {
+        hts10: r.hts10,
+        general: line.general,
+        special: line.special,
+        column2: line.column2 ?? null,
+        ...(r.valueUsd !== undefined ? { valueUsd: r.valueUsd } : {}),
+        ...(r.quantities ? { quantities: r.quantities } : {}),
+      };
+    })
+  );
+}
+
 function parsePolarity(raw: unknown): number | undefined {
   if (raw === undefined || raw === null || raw === '') return undefined;
   const n = typeof raw === 'number' ? raw : Number(raw);
@@ -243,16 +315,19 @@ async function calculateWithOfficialMeasures(
   rawInputs: CalculatorInputs,
   confirmations: TariffShipmentConfirmations | undefined,
   contentValuesUsd: ContentValues | undefined,
-  polarityDegrees: number | undefined
+  polarityDegrees: number | undefined,
+  componentValuesUsd: Record<string, number> | undefined,
+  referencedLineRequests: ReferencedLineRequest[] | undefined
 ): Promise<CalculatorResponse> {
   const inputs: CalculatorInputs = { ...rawInputs, claimedSpi: officialClaim(rawInputs.claimedSpi, rawInputs.chosenSpis) };
   const program = inputs.claimedSpi ? SPECIAL_PROGRAMS[inputs.claimedSpi] : undefined;
   if (inputs.claimedSpi && program?.countries && !program.countries.includes(inputs.countryOfOrigin)) {
     throw badRequestError(`${program.name} can only be claimed for goods from ${program.countries.join(', ')}.`);
   }
-  if (program?.lapsed) throw badRequestError(`${program.name} is no longer in force, so it can't be claimed.`);
+  const lapsedError = inputs.claimedSpi ? lapsedClaimError(inputs.claimedSpi, inputs.entryDate.slice(0, 10)) : null;
+  if (lapsedError) throw badRequestError(lapsedError);
 
-  const [line, loaded] = await Promise.all([loadMeasureEngineLine(inputs.hts10), loadMeasures()]);
+  const [line, loaded, referencedLines] = await Promise.all([loadMeasureEngineLine(inputs.hts10), loadMeasures(), loadReferencedLines(referencedLineRequests)]);
   const result = calculateWithMeasures(
     {
       hts10: inputs.hts10,
@@ -264,6 +339,8 @@ async function calculateWithOfficialMeasures(
       confirmations,
       ...(contentValuesUsd ? { contentValuesUsd } : {}),
       ...(polarityDegrees !== undefined ? { polarityDegrees } : {}),
+      ...(componentValuesUsd ? { componentValuesUsd } : {}),
+      ...(referencedLines ? { referencedLines } : {}),
       entryDate: inputs.entryDate,
     },
     line,
@@ -322,8 +399,10 @@ async function postHandler(req: NextRequest): Promise<CalculatorResponse> {
   const confirmations = parseConfirmations(isObject(body) ? body.confirmations : undefined);
   const contentValuesUsd = parseContentValues(isObject(body) ? body.contentValuesUsd : undefined, inputs.shipmentValueUsd);
   const polarityDegrees = parsePolarity(isObject(body) ? body.polarityDegrees : undefined);
+  const componentValuesUsd = parseComponentValues(isObject(body) ? body.componentValuesUsd : undefined, inputs.shipmentValueUsd);
+  const referencedLines = parseReferencedLines(isObject(body) ? body.referencedLines : undefined);
   const response = (await isMeasuresEngineEnabledFor(inputs.hts10))
-    ? await calculateWithOfficialMeasures(inputs, confirmations, contentValuesUsd, polarityDegrees)
+    ? await calculateWithOfficialMeasures(inputs, confirmations, contentValuesUsd, polarityDegrees, componentValuesUsd, referencedLines)
     : await calculateWithCandidateCodes(inputs);
   const ban = importProhibitionFor({ hts10: inputs.hts10, countryOfOrigin: inputs.countryOfOrigin, entryDate: inputs.entryDate, confirmations });
   return ban ? { ...response, prohibited: { ...ban, dutyNote: importBanDutyNote(ban) } } : response;
