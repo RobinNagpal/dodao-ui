@@ -24,6 +24,7 @@
     "stocks:prompt": "tsx src/scripts/tickers/get-report-prompt.ts",
     "stocks:save": "tsx src/scripts/tickers/save-report.ts",
     "stocks:list-oldest": "tsx src/scripts/tickers/list-oldest.ts",
+    "stocks:populate": "tsx src/scripts/tickers/populate-stocks.ts",
     "logs:fetch": "tsx src/scripts/logs/fetch-grafana-logs.ts",
     "tariff:validate-chapters": "tsx src/scripts/industry-tariff-reports/validate-chapter-content.ts",
     "tariff:generate-chapter": "tsx src/scripts/industry-tariff-reports/chapter-generator/generate-chapter.ts",

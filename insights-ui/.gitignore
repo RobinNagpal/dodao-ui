@@ -41,3 +41,6 @@ yarn-error.log*
 next-env.d.ts
 # local dummy data for testing (never commit)
 /local-seed/
+
+# stocks:populate working files (candidates JSON + generated SQL)
+/stock-population/
