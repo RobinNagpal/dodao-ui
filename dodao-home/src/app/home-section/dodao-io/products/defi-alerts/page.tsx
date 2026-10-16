@@ -1,4 +1,3 @@
-import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { Metadata } from 'next';
 import DeFiAlertsComponent from './defialerts';
 
@@ -50,11 +49,7 @@ export const metadata: Metadata = {
 };
 
 function DeFiAlertsPage() {
-  return (
-    <PageWrapper>
-      <DeFiAlertsComponent />
-    </PageWrapper>
-  );
+  return <DeFiAlertsComponent />;
 }
 
 export default DeFiAlertsPage;

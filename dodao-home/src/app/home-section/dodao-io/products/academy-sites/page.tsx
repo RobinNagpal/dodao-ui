@@ -1,4 +1,3 @@
-import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { Metadata } from 'next';
 import AcademySitesComponent from './academysites';
 
@@ -47,11 +46,7 @@ export const metadata: Metadata = {
 };
 
 function AcademySitesPage() {
-  return (
-    <PageWrapper>
-      <AcademySitesComponent />
-    </PageWrapper>
-  );
+  return <AcademySitesComponent />;
 }
 
 export default AcademySitesPage;
