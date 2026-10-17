@@ -103,9 +103,18 @@ export function getModelSelectItemsForProvider(provider: LLMProvider): LlmSelect
   ];
 }
 
-/** First/default model id offered for a provider in the UI. */
+/**
+ * Model the report-generation UI pre-selects for a provider. Gemini providers
+ * default to Gemini 3.8 Flash — in a side-by-side test it matched Gemini 4 Argon
+ * and beat Gemini 3.1 Pro on full stock reports at roughly a quarter of the cost.
+ * Claude keeps its first listed model. UI-only: requests with no stored model
+ * still fall back to `getDefaultGeminiModel()` server-side.
+ */
 export function getDefaultModelSelectionForProvider(provider: LLMProvider): string {
-  return getModelSelectItemsForProvider(provider)[0].id;
+  if (provider === LLMProvider.CLAUDE) {
+    return getModelSelectItemsForProvider(provider)[0].id;
+  }
+  return GeminiModel.GEMINI_3_8_FLASH;
 }
 
 /**

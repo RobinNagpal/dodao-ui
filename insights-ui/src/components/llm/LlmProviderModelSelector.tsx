@@ -50,7 +50,7 @@ export default function LlmProviderModelSelector({ selection, onChange, classNam
   );
 }
 
-/** Default selection the UI pre-selects: Gemini + Gemini 2.5 Pro (see llmConstants). */
+/** Default selection the UI pre-selects: Gemini + Gemini 3.8 Flash (see llmConstants). */
 export function getDefaultLlmProviderModelSelection(): LlmProviderModelSelection {
   return { llmProvider: LLMProvider.GEMINI, model: getDefaultModelSelectionForProvider(LLMProvider.GEMINI) };
 }
