@@ -1,9 +1,11 @@
 import { withAdminOrToken } from '@/app/api/helpers/withAdminOrToken';
 import { prisma } from '@/prisma';
 import { KoalaGainsJwtTokenPayload } from '@/types/auth';
+import { isExchange } from '@/utils/countryExchangeUtils';
 import { revalidateEtfAndExchangeTag } from '@/utils/etf-cache-utils';
 import { isEtfSummaryUsable, ScrapeEtfSummaryResult, scrapeEtfSummary } from '@/utils/stock-analyzer';
 import { EtfSummaryStats } from '@/utils/stock-analyzer/stock-analysis-section-parsers';
+import { generateEtfStockAnalyzeUrl } from '@/utils/stockAnalyzeUrlValidation';
 import { NextRequest } from 'next/server';
 
 type Num = number | null;
@@ -13,8 +15,6 @@ export interface FetchEtfFinancialInfoResponse {
   etfUrl: string;
   errors: unknown[];
 }
-
-const STOCK_ANALYZE_BASE_URL = process.env.NEXT_PUBLIC_STOCK_ANALYZE_BASE_URL || '';
 
 function normalizeUpperTrim(v: string | null | undefined): string {
   return (v ?? '').toUpperCase().trim();
@@ -36,12 +36,18 @@ async function postHandler(
   const symbol = normalizeUpperTrim(etf);
   const ex = normalizeUpperTrim(exchange);
 
+  if (!isExchange(ex)) {
+    throw new Error(`Unsupported exchange: ${ex}`);
+  }
+
   const etfRecord = await prisma.etf.findFirstOrThrow({
     where: { spaceId, symbol, exchange: ex },
     select: { id: true, symbol: true },
   });
 
-  const etfUrl = `${STOCK_ANALYZE_BASE_URL}/etf/${etfRecord.symbol.toLowerCase()}/`;
+  // Exchange-aware: a symbol-only `/etf/{symbol}/` URL would scrape a US fund
+  // that shares the ticker of an LSE/TSX/ASX listing and overwrite its data.
+  const etfUrl = generateEtfStockAnalyzeUrl(etfRecord.symbol, ex);
 
   const scraped: ScrapeEtfSummaryResult = await scrapeEtfSummary(etfUrl);
   const data: EtfSummaryStats = scraped.data;
