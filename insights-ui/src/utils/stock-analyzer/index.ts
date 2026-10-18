@@ -1,5 +1,19 @@
 import * as cheerio from 'cheerio';
-import { buildStockAnalyzerSubPageUrl, fetchStockAnalyzerPage, StockAnalyzerFetchError } from '@/utils/stock-analyzer/stock-analyzer-fetcher';
+import {
+  buildStockAnalyzerApiUrl,
+  buildStockAnalyzerSubPageUrl,
+  fetchStockAnalyzerPage,
+  StockAnalyzerFetchError,
+} from '@/utils/stock-analyzer/stock-analyzer-fetcher';
+import {
+  ETF_ANALYZER_INFO_COLUMNS,
+  EtfAnalyzerInfoFields,
+  EtfScreenerRow,
+  etfScreenerCountryCode,
+  etfScreenerRowKey,
+  parseEtfScreenerRow,
+} from '@/utils/stock-analyzer/etf-analyzer-info-parser';
+import { AllExchanges } from '@/utils/countryExchangeUtils';
 import { findNoDataNotice, parseFinancialTables } from '@/utils/stock-analyzer/stock-analysis-table-parser';
 import {
   EtfSummaryStats,
@@ -458,4 +472,142 @@ export async function scrapeEtfSummary(etfUrl: string): Promise<ScrapeEtfSummary
     : [{ where: 'parse:etf-summary', message: `Parsed no usable data from ${url} — the source page layout may have changed` }];
 
   return { url, data, errors };
+}
+
+/* =============================================================================
+   ETF analyzer info (screener data API)
+============================================================================= */
+
+/**
+ * Columns per `data-points` request. The endpoint returns every fund in the
+ * country (~5,800 in the US) for each requested column, ~110 KB per column, so
+ * all ~95 columns at once is a ~12 MB response — over the Lambda proxy's 6 MB
+ * response limit when `SCRAPER_FETCH_VIA_LAMBDA` is on. 16 columns keeps each
+ * response near 2 MB.
+ */
+const SCREENER_COLUMNS_PER_REQUEST = 16;
+
+/**
+ * How long a fetched country universe stays memoized. Refreshing many ETFs in
+ * a row (one endpoint call each) then costs one download per country rather
+ * than one per ETF; prices in it are end-of-day for most of the day anyway.
+ */
+const SCREENER_UNIVERSE_CACHE_TTL_MS = 15 * 60 * 1000;
+
+interface EtfScreenerUniverse {
+  rows: Map<string, EtfScreenerRow>;
+  names: Map<string, string>;
+}
+
+/** Single-flight per country, like `quotePageCache`. */
+const screenerUniverseCache: Map<string, { lookup: Promise<EtfScreenerUniverse>; startedAtMs: number }> = new Map();
+
+function screenerResponseData(body: string, url: string): unknown {
+  let parsed: { status?: number; data?: { data?: unknown; columns?: unknown; rows?: unknown } };
+  try {
+    parsed = JSON.parse(body);
+  } catch {
+    throw new Error(`Stock analyzer screener response is not JSON: ${url}`);
+  }
+  if (parsed?.status !== 200 || !parsed.data) {
+    throw new Error(`Stock analyzer screener returned status ${String(parsed?.status)}: ${url}`);
+  }
+  return parsed.data;
+}
+
+async function fetchScreenerUniverse(countryCode: string): Promise<EtfScreenerUniverse> {
+  const rows: Map<string, EtfScreenerRow> = new Map();
+  const sourceIds: string[] = ETF_ANALYZER_INFO_COLUMNS.map((c) => c.sourceId);
+
+  // Sequential: the fetcher paces requests anyway, and firing all chunks at
+  // once would just queue them (and could trip its queue-length guard).
+  for (let start = 0; start < sourceIds.length; start += SCREENER_COLUMNS_PER_REQUEST) {
+    const ids: string[] = sourceIds.slice(start, start + SCREENER_COLUMNS_PER_REQUEST);
+    // `+` is the source's own id separator; URLSearchParams would encode it.
+    const url: string = `${buildStockAnalyzerApiUrl('/_api/endpoints/screener/data-points', {
+      type: 'etf',
+      ...(countryCode ? { c: countryCode } : {}),
+    })}&ids=${ids.map(encodeURIComponent).join('+')}`;
+    const data = screenerResponseData(await fetchStockAnalyzerPage(url), url) as { data?: unknown };
+    if (!data.data || typeof data.data !== 'object' || Array.isArray(data.data)) {
+      throw new Error(`Unexpected stock analyzer screener data-points shape: ${url}`);
+    }
+    for (const [key, values] of Object.entries(data.data as Record<string, unknown>)) {
+      if (!values || typeof values !== 'object') continue;
+      rows.set(key, { ...(rows.get(key) ?? {}), ...(values as EtfScreenerRow) });
+    }
+  }
+
+  // Fund names only come back from the screener's initial (compact) payload.
+  const names: Map<string, string> = new Map();
+  const initialUrl: string = buildStockAnalyzerApiUrl('/_api/endpoints/screener/initial', { type: 'etf', countryCode, format: 'compact' });
+  const initial = screenerResponseData(await fetchStockAnalyzerPage(initialUrl), initialUrl) as { columns?: unknown; rows?: unknown };
+  if (Array.isArray(initial.columns) && Array.isArray(initial.rows)) {
+    const symbolIndex: number = initial.columns.indexOf('s');
+    const nameIndex: number = initial.columns.indexOf('n');
+    if (symbolIndex >= 0 && nameIndex >= 0) {
+      for (const row of initial.rows as unknown[][]) {
+        const key: unknown = row?.[symbolIndex];
+        const name: unknown = row?.[nameIndex];
+        if (typeof key === 'string' && typeof name === 'string') names.set(key, name);
+      }
+    }
+  }
+
+  return { rows, names };
+}
+
+function getScreenerUniverse(countryCode: string): Promise<EtfScreenerUniverse> {
+  const cached = screenerUniverseCache.get(countryCode);
+  if (cached && Date.now() - cached.startedAtMs < SCREENER_UNIVERSE_CACHE_TTL_MS) {
+    return cached.lookup;
+  }
+  const lookup: Promise<EtfScreenerUniverse> = fetchScreenerUniverse(countryCode).catch((error: unknown) => {
+    screenerUniverseCache.delete(countryCode);
+    throw error;
+  });
+  screenerUniverseCache.set(countryCode, { lookup, startedAtMs: Date.now() });
+  return lookup;
+}
+
+export interface ScrapeEtfAnalyzerInfoResult {
+  /** The ETF's row key in the source's screener data (`SPY`, `tsx/ZLC`). */
+  sourceKey: string;
+  data: EtfAnalyzerInfoFields;
+  errors: ScrapeSectionError[];
+}
+
+/** Whether a parse produced anything worth persisting. */
+export function isEtfAnalyzerInfoUsable(data: EtfAnalyzerInfoFields): boolean {
+  return Object.keys(data).length > 0;
+}
+
+/**
+ * Fetch an ETF's `EtfStockAnalyzerInfo` fields from the stock-data source's
+ * screener data API (see `etf-analyzer-info-parser.ts`).
+ *
+ * Throws when the data cannot be fetched or has an unexpected shape. An ETF
+ * the screener does not list comes back empty with `errors` populated and
+ * `isEtfAnalyzerInfoUsable(...) === false`, so the caller keeps what is stored.
+ */
+export async function scrapeEtfAnalyzerInfo(symbol: string, exchange: AllExchanges): Promise<ScrapeEtfAnalyzerInfoResult> {
+  const countryCode: string = etfScreenerCountryCode(exchange);
+  const sourceKey: string = etfScreenerRowKey(symbol, exchange);
+  const universe: EtfScreenerUniverse = await getScreenerUniverse(countryCode);
+
+  const errors: ScrapeSectionError[] = [];
+  if (universe.rows.size === 0) {
+    errors.push({ where: 'parse:etf-analyzer-info', message: `Stock analyzer screener returned no ETFs for country "${countryCode || 'US'}"` });
+    return { sourceKey, data: {}, errors };
+  }
+
+  const row: EtfScreenerRow | undefined = universe.rows.get(sourceKey);
+  const data: EtfAnalyzerInfoFields = row ? parseEtfScreenerRow(row, universe.names.get(sourceKey)) : {};
+  if (!isEtfAnalyzerInfoUsable(data)) {
+    errors.push({
+      where: 'parse:etf-analyzer-info',
+      message: `${sourceKey} is not in the stock analyzer ETF screener data for country "${countryCode || 'US'}" (or has no values)`,
+    });
+  }
+  return { sourceKey, data, errors };
 }

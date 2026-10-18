@@ -175,3 +175,9 @@ export const validateStockAnalyzeUrlsBatch = (
 
   return errors;
 };
+
+/**
+ * The source's URL / data-key segment for a non-US exchange (`TSX` => `tsx`,
+ * `LSE` => `lon`). Its screener data keys non-US rows as `{segment}/{SYMBOL}`.
+ */
+export const getStockAnalyzeExchangeSegment = (exchange: AllExchanges): string => EXCHANGE_TO_URL_SEGMENT[exchange];
