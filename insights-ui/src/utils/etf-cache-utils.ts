@@ -93,13 +93,22 @@ export const revalidateEtfHoldingsTag = (symbol: string, exchange: string) => {
  * endpoints) so it counts as 2 billable paths against the monthly free quota.
  */
 export const revalidateAllEtfTags = (symbol: string, exchange: string) => {
+  revalidateAllEtfPageTagsOnly(symbol, exchange);
+  purgeEtfEdgeCache(symbol, exchange);
+};
+
+/**
+ * Tag-only variant of `revalidateAllEtfTags` (no CloudFront purge), for
+ * per-ETF-volume refreshes of data that every one of the 7 pages reads, such
+ * as `EtfStockAnalyzerInfo`. See the file header for why no edge purge.
+ */
+export const revalidateAllEtfPageTagsOnly = (symbol: string, exchange: string) => {
   revalidateTag(etfAndExchangeTag(symbol, exchange));
   revalidateTag(etfCompetitionTag(symbol, exchange));
   revalidateTag(etfHoldingsTag(symbol, exchange));
   for (const category of Object.values(EtfAnalysisCategory)) {
     revalidateTag(etfCategoryReportTag(symbol, exchange, category));
   }
-  purgeEtfEdgeCache(symbol, exchange);
 };
 
 /**

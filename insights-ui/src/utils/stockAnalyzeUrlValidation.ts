@@ -85,6 +85,20 @@ export const generateExpectedStockAnalyzeUrl = (symbol: string, exchange: AllExc
 };
 
 /**
+ * Source page URL for an ETF. Every US-listed ETF lives under `/etf/{symbol}/`
+ * whatever its venue (NYSEARCA, NASDAQ, BATS, NYSE…), unlike stocks, which split
+ * by venue; every other exchange uses `/quote/{segment}/{SYMBOL}/`. Building a
+ * non-US ETF's URL from the symbol alone would load a different (US) fund that
+ * shares the ticker, or a 404.
+ */
+export const generateEtfStockAnalyzeUrl = (symbol: string, exchange: AllExchanges): string => {
+  if ((Object.values(USExchanges) as string[]).includes(exchange)) {
+    return `${STOCK_ANALYZE_BASE_URL}/etf/${symbol.toLowerCase().trim()}/`;
+  }
+  return `${STOCK_ANALYZE_BASE_URL}/quote/${EXCHANGE_TO_URL_SEGMENT[exchange]}/${symbol.toUpperCase().trim()}/`;
+};
+
+/**
  * Generates all acceptable variations of the stockAnalyzeUrl for a given symbol and exchange
  * accepts both uppercase and lowercase symbols
  */
@@ -161,3 +175,9 @@ export const validateStockAnalyzeUrlsBatch = (
 
   return errors;
 };
+
+/**
+ * The source's URL / data-key segment for a non-US exchange (`TSX` => `tsx`,
+ * `LSE` => `lon`). Its screener data keys non-US rows as `{segment}/{SYMBOL}`.
+ */
+export const getStockAnalyzeExchangeSegment = (exchange: AllExchanges): string => EXCHANGE_TO_URL_SEGMENT[exchange];

@@ -306,3 +306,22 @@ export function buildStockAnalyzerSubPageUrl(stockAnalyzeUrl: string, subPath: s
 
   return url.toString();
 }
+
+/**
+ * Build a URL on the stock-data source's own JSON data API (`/_api/...`), the
+ * endpoints its screener pages load their columns from.
+ *
+ * Like {@link buildStockAnalyzerSubPageUrl}, the origin comes from
+ * `NEXT_PUBLIC_STOCK_ANALYZE_BASE_URL`; there is no stored per-ticker URL to fall
+ * back to, so an unset variable is an error.
+ */
+export function buildStockAnalyzerApiUrl(path: string, searchParams: Record<string, string>): string {
+  if (!STOCK_ANALYZE_BASE_URL) {
+    throw new Error('NEXT_PUBLIC_STOCK_ANALYZE_BASE_URL is not set; cannot build a stock analyzer API URL');
+  }
+  const url: URL = new URL(`${new URL(STOCK_ANALYZE_BASE_URL).origin}/${path.replace(/^\/+/, '')}`);
+  for (const [key, value] of Object.entries(searchParams)) {
+    url.searchParams.set(key, value);
+  }
+  return url.toString();
+}
