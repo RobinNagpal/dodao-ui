@@ -4,10 +4,8 @@ import UpsertSpaceBasicSettingsModal from '@/components/spaces/Edit/Basic/Upsert
 import { ManageSpaceSubviews } from '@/components/spaces/manageSpaceSubviews';
 import { SpaceSummaryFragment } from '@/graphql/generated/generated-types';
 import { SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
-import DeleteConfirmationModal from '@dodao/web-core/components/app/Modal/DeleteConfirmationModal';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import { Table, TableActions, TableRow } from '@dodao/web-core/components/core/table/Table';
-import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { useRouter } from 'next/navigation';
@@ -33,9 +31,7 @@ export default function ListSpaces() {
   const { data } = useFetchData<SpaceWithIntegrationsDto[]>(`${getBaseUrl()}/api/spaces`, {}, 'Failed to fetch spaces');
   const [showSpaceAddModal, setShowSpaceAddModal] = useState(false);
   const router = useRouter();
-  const { showNotification } = useNotificationContext();
 
-  const [deletePineconeSpace, setDeletePineconeSpace] = useState<SpaceSummaryFragment | null>(null);
   const tableActions: TableActions = useMemo(() => {
     return {
       items: [
@@ -43,17 +39,10 @@ export default function ListSpaces() {
           key: 'view',
           label: 'View',
         },
-        {
-          key: 'deletePineConeIndex',
-          label: 'Delete PineCone Index',
-        },
       ],
       onSelect: async (key: string, space: SpaceSummaryFragment) => {
         if (key === 'view') {
           router.push(`/space/manage/${ManageSpaceSubviews.ViewSpace}/${space.id}`);
-        }
-        if (key === 'deletePineConeIndex') {
-          setDeletePineconeSpace(space);
         }
       },
     };
@@ -76,21 +65,6 @@ export default function ListSpaces() {
         <Table data={getSpaceTableRows(data || [])} columnsHeadings={['Name', 'Id', 'Type']} columnsWidthPercents={[20, 20, 20]} actions={tableActions} />
         <UpsertSpaceBasicSettingsModal open={showSpaceAddModal} onClose={() => setShowSpaceAddModal(false)} />
       </MainDiv>
-      {deletePineconeSpace && (
-        <DeleteConfirmationModal
-          title={`Delete Index - ${deletePineconeSpace.name}`}
-          deleteButtonText="Delete Index"
-          open={!!deletePineconeSpace}
-          onClose={() => setDeletePineconeSpace(null)}
-          onDelete={async () => {
-            showNotification({
-              message: 'PineCone Index Deleted',
-              type: 'success',
-            });
-            setDeletePineconeSpace(null);
-          }}
-        />
-      )}
     </>
   );
 }
