@@ -1,9 +1,4 @@
-import {
-  EtfProvidersPreview,
-  EtfUncategorizedPreview,
-  fetchEtfProvidersForCountry,
-  fetchEtfsWithoutIssuer,
-} from '@/app/api/[spaceId]/etfs-v1/listings/listings-prisma';
+import { EtfProvidersPreview, EtfUncategorizedPreview, getEtfProvidersIndexData } from '@/app/api/[spaceId]/etfs-v1/listings/listings-prisma';
 import { shouldIncludeUnpopulatedForRequest } from '@/utils/etf-listing-visibility';
 import { isEtfSupportedCountry } from '@/utils/etfCountryExchangeUtils';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
@@ -19,12 +14,7 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
   const country = countryParam && isEtfSupportedCountry(countryParam) ? countryParam : undefined;
   const includeUnpopulated = await shouldIncludeUnpopulatedForRequest(req);
 
-  const [providers, others] = await Promise.all([
-    fetchEtfProvidersForCountry(spaceId, country, includeUnpopulated),
-    fetchEtfsWithoutIssuer(spaceId, country, includeUnpopulated),
-  ]);
-
-  return { ...providers, others };
+  return getEtfProvidersIndexData(spaceId, country, includeUnpopulated);
 }
 
 export const GET = withErrorHandlingV2<EtfProvidersIndexResponse>(getHandler);

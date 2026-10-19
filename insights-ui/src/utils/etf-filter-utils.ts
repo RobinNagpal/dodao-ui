@@ -1184,7 +1184,11 @@ export function buildEtfDbOrderBy(sort: AppliedEtfSort | null): Prisma.EtfOrderB
 /** ----- Server-side Helpers ----- */
 
 export function parseEtfFilterParams(req: NextRequest): EtfFilterParams {
-  const { searchParams } = new URL(req.url);
+  return parseEtfFilterSearchParams(new URL(req.url).searchParams);
+}
+
+/** {@link parseEtfFilterParams} for callers that already hold the query string (in-process SSR loaders). */
+export function parseEtfFilterSearchParams(searchParams: URLSearchParams): EtfFilterParams {
   const params: EtfFilterParams = {};
   for (const key of ALL_ETF_PARAM_KEYS) {
     const val = searchParams.get(key);

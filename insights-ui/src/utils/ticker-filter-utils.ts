@@ -841,8 +841,11 @@ export function toInt(v?: string): number | undefined {
  * Parse filter parameters from the request
  */
 export function parseFilterParams(req: NextRequest): FilterParams {
-  const { searchParams } = new URL(req.url);
+  return parseFilterParamsFromSearchParams(new URL(req.url).searchParams);
+}
 
+/** Same as {@link parseFilterParams}, from a `URLSearchParams` (used by Server Components that query in-process). */
+export function parseFilterParamsFromSearchParams(searchParams: URLSearchParams): FilterParams {
   return {
     [FilterParamKey.BUSINESS_AND_MOAT]: searchParams.get(FilterParamKey.BUSINESS_AND_MOAT) || undefined,
     [FilterParamKey.FINANCIAL_STATEMENT_ANALYSIS]: searchParams.get(FilterParamKey.FINANCIAL_STATEMENT_ANALYSIS) || undefined,

@@ -109,6 +109,13 @@ sites across 7 apps):
   `https://prod.koalagains.com` (direct CNAME, **not** CloudFront → always fresh), Vercel →
   `getBaseUrl()` is `''` server-side → falls back to `https://koalagains.com`. Provably identical
   to the old behavior on Vercel and local; only AWS changed.
+  **Hot pages no longer self-fetch at all** (2026-10): the `/stocks/*` report pages + subpages, the
+  `/etfs/*` report pages + subpages, and the stock/ETF listing pages call the shared loaders
+  (`src/utils/ticker-v1-page-data.ts`, the ETF equivalents) in-process via
+  `src/utils/ssr-data-cache.ts`. A self-fetch on the single Lightsail container went out through
+  the load balancer and back into the same busy process, which turned crawler bursts into 504s →
+  failed health check → container replacement. New SSR code should do the same: call the data
+  function, not the API.
 - **`getCanonicalUrl()`** — always `https://koalagains.com`. Used by the **14 sitemap routes**
   (and any canonical/OG URL). NEVER use the self-fetch base for sitemaps — on AWS it would emit
   `prod.koalagains.com` into the sitemap (SEO leak).

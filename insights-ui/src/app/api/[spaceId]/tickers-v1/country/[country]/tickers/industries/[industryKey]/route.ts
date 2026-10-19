@@ -1,7 +1,7 @@
-import { prisma } from '@/prisma';
-import { SubIndustriesResponse, SubIndustryWithAllTickers, TickerMinimal } from '@/types/api/ticker-industries';
-import { EXCHANGE_TO_COUNTRY, getExchangeFilterClause, isExchange, SupportedCountries, toSupportedCountry } from '@/utils/countryExchangeUtils';
-import { createCacheFilter, createTickerFilter, hasFiltersAppliedServer, parseFilterParams } from '@/utils/ticker-filter-utils';
+import { SubIndustriesResponse } from '@/types/api/ticker-industries';
+import { toSupportedCountry } from '@/utils/countryExchangeUtils';
+import { parseFilterParams } from '@/utils/ticker-filter-utils';
+import { getCountryIndustryStocks } from '@/utils/ticker-v1-page-data';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';
 
@@ -10,116 +10,7 @@ async function getHandler(
   context: { params: Promise<{ spaceId: string; country: string; industryKey: string }> }
 ): Promise<SubIndustriesResponse | null> {
   const { spaceId, country: countryParam, industryKey } = await context.params;
-  const country = toSupportedCountry(countryParam);
-
-  // Parse filter parameters
-  const filters = parseFilterParams(req);
-
-  // Create the exchange filter clause for the country
-  const exchangeFilter = getExchangeFilterClause(country);
-
-  // Create cached score filter
-  const cacheFilter = createCacheFilter(filters);
-
-  // Create ticker filter
-  const tickerFilter = createTickerFilter(spaceId, exchangeFilter, filters, cacheFilter);
-
-  // Get all sub-industries with their tickers for the specified industry
-  const subIndustries = await prisma.tickerV1SubIndustry.findMany({
-    where: {
-      industryKey,
-    },
-    include: {
-      industry: true,
-      // Include all tickers for each sub-industry with filtering and ordering
-      // The where clause filters by country exchanges, so tickers.length gives us the country-specific count
-      tickers: {
-        where: tickerFilter,
-        select: {
-          id: true,
-          name: true,
-          symbol: true,
-          exchange: true,
-          cachedScoreEntry: true,
-          financialInfo: {
-            select: {
-              marketCap: true,
-              pe: true,
-            },
-          },
-        },
-        orderBy: [{ cachedScoreEntry: { finalScore: 'desc' } }, { name: 'asc' }, { symbol: 'asc' }],
-      },
-    },
-    orderBy: [{ industryKey: 'asc' }, { name: 'asc' }],
-  });
-
-  // Transform the data to match the expected response format
-  const formattedSubIndustries: SubIndustryWithAllTickers[] = [];
-
-  for (const subIndustry of subIndustries) {
-    // Skip sub-industries with no tickers (after filters)
-    if (!subIndustry.tickers.length) continue;
-
-    const tickerCount = subIndustry.tickers.length; // Use filtered tickers count (country-specific)
-
-    // Convert tickers to include industry and sub-industry names
-    const tickersWithNames: TickerMinimal[] = subIndustry.tickers.map((t) => ({
-      ...t,
-    }));
-
-    // Add formatted sub-industry
-    formattedSubIndustries.push({
-      ...subIndustry,
-      industryName: subIndustry.industry.name,
-      tickerCount,
-      tickers: tickersWithNames,
-    });
-  }
-
-  // Check if any filters are applied
-  const filtersApplied = hasFiltersAppliedServer(cacheFilter, filters);
-  const industry = await prisma.tickerV1Industry.findUnique({
-    where: {
-      industryKey,
-    },
-    include: {
-      _count: {
-        select: {
-          industryAnalyses: true,
-        },
-      },
-    },
-  });
-
-  // Return null if industry not found (UI handles gracefully)
-  if (!industry) {
-    return null;
-  }
-
-  // Countries with at least one ticker in this industry (same rule as the sitemap and the empty-listing
-  // 404), so the "Also view" country switcher only links to populated industry pages.
-  const exchangesWithStocks = await prisma.tickerV1.findMany({
-    where: { spaceId, industryKey },
-    select: { exchange: true },
-    distinct: ['exchange'],
-  });
-  const countriesWithStocks = Array.from(
-    new Set(
-      exchangesWithStocks
-        .map((t) => t.exchange)
-        .filter(isExchange)
-        .map((e) => EXCHANGE_TO_COUNTRY[e])
-    )
-  );
-
-  return {
-    ...industry,
-    subIndustries: formattedSubIndustries,
-    filtersApplied,
-    hasAnalysis: industry._count.industryAnalyses > 0,
-    countriesWithStocks,
-  };
+  return getCountryIndustryStocks(spaceId, toSupportedCountry(countryParam), industryKey, parseFilterParams(req));
 }
 
 export const GET = withErrorHandlingV2<SubIndustriesResponse | null>(getHandler);

@@ -1,13 +1,20 @@
 /**
- * Prisma helpers shared by every /api/[spaceId]/etfs-v1/listings/* route.
- * Lives alongside the routes (not in src/utils) so UI pages can't import it —
- * listing data must always be fetched through the HTTP API so it benefits from
- * the per-listing cache tag + 2-week TTL configured on the page fetch.
+ * Prisma helpers shared by every /api/[spaceId]/etfs-v1/listings/* route, plus the
+ * per-route loaders (`getEtf*IndexData` / `getEtfGroupDetailData`) that both the
+ * routes and the listing pages call. Pages call the loaders in-process via
+ * `src/utils/etf-listing-fetchers.ts`, which wraps them in `unstable_cache` with the
+ * same per-listing cache tag + TTL the page fetch used — they must not call these
+ * directly without that wrapper.
  */
+import type { EtfAssetClassesIndexResponse } from '@/app/api/[spaceId]/etfs-v1/listings/asset-classes-index/route';
+import type { EtfGroupDetailResponse } from '@/app/api/[spaceId]/etfs-v1/listings/group/route';
+import type { EtfGroupsIndexResponse } from '@/app/api/[spaceId]/etfs-v1/listings/groups-index/route';
+import type { EtfProvidersIndexResponse } from '@/app/api/[spaceId]/etfs-v1/listings/providers-index/route';
 import { prisma } from '@/prisma';
 import type { EtfGroupingPreview, EtfGroupingPreviewItem, EtfProvidersPreview, EtfUncategorizedPreview } from '@/types/etf/etf-listings-types';
 import { canonicalizeCategory, expandCategoryAliases } from '@/utils/etf-category-aliases';
-import { parseNumericStringValue } from '@/utils/etf-filter-utils';
+import { ETF_OTHERS_GROUP_KEY, getAllEtfGroups, getCategoriesForGroupKey, getEtfGroupByKey } from '@/utils/etf-categorization-utils';
+import { ETF_ASSET_CLASS_OPTIONS, parseNumericStringValue } from '@/utils/etf-filter-utils';
 import { EtfSupportedCountry, getEtfExchangesByCountry } from '@/utils/etfCountryExchangeUtils';
 
 export type { EtfGroupingPreview, EtfGroupingPreviewItem, EtfProvidersPreview, EtfUncategorizedPreview };
@@ -356,4 +363,100 @@ export async function fetchEtfProvidersForCountry(spaceId: string, country?: Etf
   });
 
   return { providers, values, counts };
+}
+
+/* ------------------------------------------------------------------ */
+/*  Per-route loaders (route handlers + listing pages)                 */
+/* ------------------------------------------------------------------ */
+
+/** `/listings/groups-index`: per-category + per-group previews and the "Others" bucket. */
+export async function getEtfGroupsIndexData(
+  spaceId: string,
+  country: EtfSupportedCountry | undefined,
+  includeUnpopulated: boolean
+): Promise<EtfGroupsIndexResponse> {
+  const groups = getAllEtfGroups();
+
+  const categoryValueToKey = new Map<string, string>();
+  const groupValueToKey = new Map<string, string>();
+  for (const group of groups) {
+    for (const cat of getCategoriesForGroupKey(group.key)) {
+      categoryValueToKey.set(cat.name, cat.name);
+      groupValueToKey.set(cat.name, group.key);
+    }
+  }
+
+  const [byCategory, byGroup, others] = await Promise.all([
+    fetchEtfsForGroupings(spaceId, 'category', categoryValueToKey, country, includeUnpopulated),
+    fetchEtfsForGroupings(spaceId, 'category', groupValueToKey, country, includeUnpopulated),
+    fetchUncategorizedEtfPreview(spaceId, country, includeUnpopulated),
+  ]);
+
+  return {
+    categoryValues: byCategory.values,
+    categoryCounts: byCategory.counts,
+    groupCounts: byGroup.counts,
+    others,
+  };
+}
+
+/** `/listings/asset-classes-index`: per-asset-class previews and the "Others" bucket. */
+export async function getEtfAssetClassesIndexData(
+  spaceId: string,
+  country: EtfSupportedCountry | undefined,
+  includeUnpopulated: boolean
+): Promise<EtfAssetClassesIndexResponse> {
+  const valueToKey = new Map<string, string>();
+  for (const opt of ETF_ASSET_CLASS_OPTIONS) {
+    if (opt.value !== '') valueToKey.set(opt.value, opt.value);
+  }
+
+  const [grouped, others] = await Promise.all([
+    fetchEtfsForGroupings(spaceId, 'assetClass', valueToKey, country, includeUnpopulated),
+    fetchEtfsWithoutAssetClass(spaceId, country, includeUnpopulated),
+  ]);
+
+  return { values: grouped.values, counts: grouped.counts, others };
+}
+
+/** `/listings/providers-index`: provider buckets plus the "Others" (no issuer) bucket. */
+export async function getEtfProvidersIndexData(
+  spaceId: string,
+  country: EtfSupportedCountry | undefined,
+  includeUnpopulated: boolean
+): Promise<EtfProvidersIndexResponse> {
+  const [providers, others] = await Promise.all([
+    fetchEtfProvidersForCountry(spaceId, country, includeUnpopulated),
+    fetchEtfsWithoutIssuer(spaceId, country, includeUnpopulated),
+  ]);
+
+  return { ...providers, others };
+}
+
+/** `/listings/group`: one group's per-category previews (or the "Others" bucket). */
+export async function getEtfGroupDetailData(
+  spaceId: string,
+  country: EtfSupportedCountry | undefined,
+  groupKey: string | undefined,
+  includeUnpopulated: boolean
+): Promise<EtfGroupDetailResponse> {
+  if (!groupKey) {
+    return { found: false, values: {}, counts: {}, others: null };
+  }
+
+  const groupObj = getEtfGroupByKey(groupKey);
+  if (!groupObj) {
+    return { found: false, values: {}, counts: {}, others: null };
+  }
+
+  if (groupObj.key === ETF_OTHERS_GROUP_KEY) {
+    const others = await fetchUncategorizedEtfPreview(spaceId, country, includeUnpopulated);
+    return { found: true, values: {}, counts: {}, others };
+  }
+
+  const categories = getCategoriesForGroupKey(groupObj.key);
+  const categoryNames = categories.map((c) => c.name);
+  const { values, counts } = await fetchAllEtfsByCategory(spaceId, categoryNames, country, includeUnpopulated);
+
+  return { found: true, values, counts, others: null };
 }

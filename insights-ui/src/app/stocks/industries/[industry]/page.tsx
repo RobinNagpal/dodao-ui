@@ -1,12 +1,9 @@
 import IndustryStocksGrid from '@/components/stocks/IndustryStocksGrid';
 import IndustryWithStocksPageLayout from '@/components/stocks/IndustryWithStocksPageLayout';
 import { SubIndustriesResponse } from '@/types/api/ticker-industries';
-import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { SupportedCountries } from '@/utils/countryExchangeUtils';
-import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
 import { commonViewport, generateCountryIndustryStocksMetadata } from '@/utils/metadata-generators';
-import { isIndustryStocksResponseEmpty } from '@/utils/stocks-data-utils';
-import { getIndustryPageTag } from '@/utils/ticker-v1-cache-utils';
+import { getCachedCountryIndustryStocks, isIndustryStocksResponseEmpty } from '@/utils/stocks-data-utils';
 import type { Metadata } from 'next';
 import { notFound, permanentRedirect } from 'next/navigation';
 
@@ -47,18 +44,20 @@ export default async function IndustryStocksPage({ params }: PageProps) {
     permanentRedirect(`/stocks/industries/${industryKey}`);
   }
 
-  const baseUrl = getBaseUrlForServerSidePages();
-  const baseUrlPath = `${baseUrl}/api/${KoalaGainsSpaceId}/tickers-v1/country/${SupportedCountries.US}/tickers/industries/${industryKey}`;
+  // In-process + Data-Cached (same tag + 1-week TTL as the old self-fetch). A DB error is not cached
+  // and renders the "try again later" body, as a failed fetch did.
+  let data: SubIndustriesResponse | null = null;
+  let loaded = false;
+  try {
+    data = await getCachedCountryIndustryStocks(SupportedCountries.US, industryKey, WEEK);
+    loaded = true;
+  } catch (error) {
+    console.error(`industry stocks load failed for ${industryKey}:`, error);
+  }
 
-  const res = await fetch(baseUrlPath, {
-    next: { revalidate: WEEK, tags: [getIndustryPageTag(SupportedCountries.US, industryKey)] },
-  });
-
-  const data = (await res.json()) as SubIndustriesResponse | null;
-
-  // Confirmed-empty listing (or unknown industry: HTTP 200 with a null body) → real 404 (sibling
-  // not-found.tsx) instead of a soft 404. A failed fetch (!res.ok) renders as before.
-  if (res.ok && (!data || isIndustryStocksResponseEmpty(data))) notFound();
+  // Confirmed-empty listing (or unknown industry: null) → real 404 (sibling not-found.tsx) instead
+  // of a soft 404. A failed load renders as before.
+  if (loaded && (!data || isIndustryStocksResponseEmpty(data))) notFound();
 
   return (
     <IndustryWithStocksPageLayout

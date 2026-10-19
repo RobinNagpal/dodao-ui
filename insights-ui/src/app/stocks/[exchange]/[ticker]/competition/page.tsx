@@ -4,8 +4,8 @@ import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { CompetitionResponse } from '@/types/ticker-typesv1';
 import { getCountryByExchange, USExchanges, CanadaExchanges, IndiaExchanges, UKExchanges, SupportedCountries } from '@/utils/countryExchangeUtils';
-import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
-import { tickerCompetitionTag } from '@/utils/ticker-v1-cache-utils';
+import { ssrRequestData } from '@/utils/ssr-data-cache';
+import { getTickerCompetition } from '@/utils/ticker-v1-page-data';
 import { enforceMovedRedirect } from '@/utils/ticker-moved-redirect';
 import { enforceDeletedTicker } from '@/utils/ticker-deleted-handler';
 import { generateCompetitionArticleSchema, generateCompetitionBreadcrumbSchema } from '@/utils/metadata-generators';
@@ -13,6 +13,7 @@ import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/B
 import SimilarTickersSection from '@/components/ticker-reportsv1/SimilarTickersSection';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { Metadata } from 'next';
+import { cache } from 'react';
 import { unstable_noStore as noStore } from 'next/cache';
 import { notFound, permanentRedirect } from 'next/navigation';
 
@@ -31,37 +32,20 @@ function truncateForMeta(text: string, maxLength: number = 155): string {
 }
 
 /**
- * Self-fetch with a single retry on 5xx. The server render fetches this app's own API over the
- * public host, so a busy container/LB can return a transient 502/503/504. One short retry absorbs
- * that; a persistent failure still throws (never caches or renders an empty page). Next's data
- * cache only stores OK responses, so a 5xx is never cached. The retry passes a `signal` because
- * Next memoizes identical GETs within a render and would otherwise hand back the same 5xx.
+ * Competition data for a specific exchange+ticker — the `competition-tickers` API query, called
+ * in-process (no self-fetch, so the old 5xx retry is gone; see `src/utils/ssr-data-cache.ts`). The
+ * old `fetch()` carried only `next: { tags: [tickerCompetitionTag(...)] }`, which `force-dynamic`
+ * never stored in the Data Cache, so this stays per-request; React `cache()` keeps the dedupe
+ * between `generateMetadata` and the page. A DB error throws (error.tsx), as the failed fetch did.
  */
-async function fetchWithRetryOn5xx(url: string, init: RequestInit): Promise<Response> {
-  const res: Response = await fetch(url, init);
-  if (res.status < 500) return res;
-  await new Promise((resolve) => setTimeout(resolve, 500));
-  return fetch(url, { ...init, signal: AbortSignal.timeout(30_000) });
-}
+const fetchCompetitionByExchange = cache(
+  async (exchange: string, ticker: string): Promise<CompetitionResponse> =>
+    ssrRequestData(() => getTickerCompetition(KoalaGainsSpaceId, exchange.toUpperCase(), ticker.toUpperCase()))
+);
 
-/** Fetch competition data for a specific exchange+ticker (cached). Returns null ticker if exchange mismatch. */
-async function fetchCompetitionByExchange(exchange: string, ticker: string): Promise<CompetitionResponse> {
-  const url: string = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/tickers-v1/exchange/${exchange.toUpperCase()}/${ticker.toUpperCase()}/competition-tickers`;
-  const res: Response = await fetchWithRetryOn5xx(url, { next: { tags: [tickerCompetitionTag(ticker, exchange)] } });
-  if (!res.ok) {
-    throw new Error(`fetchCompetitionByExchange failed (${res.status}): ${url}`);
-  }
-  return (await res.json()) as CompetitionResponse;
-}
-
-/** Fetch competition data for any exchange (uncached — used only as fallback). */
+/** Competition data for any exchange (uncached — used only as fallback). */
 async function fetchCompetitionAnyExchange(ticker: string): Promise<CompetitionResponse> {
-  const url: string = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/tickers-v1/${ticker.toUpperCase()}/competition-tickers`;
-  const res: Response = await fetchWithRetryOn5xx(url, { cache: 'no-store' });
-  if (!res.ok) {
-    throw new Error(`fetchCompetitionAnyExchange failed (${res.status}): ${url}`);
-  }
-  return (await res.json()) as CompetitionResponse;
+  return ssrRequestData(() => getTickerCompetition(KoalaGainsSpaceId, null, ticker.toUpperCase()));
 }
 
 /**

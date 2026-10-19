@@ -2,7 +2,8 @@ import { getEtfWhereClause } from '@/app/api/[spaceId]/etfs-v1/etfApiUtils';
 import { prisma } from '@/prisma';
 import type { SimilarEtf } from '@/types/etf/etf-detail-response-types';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
-import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
+import { ssrRequestData } from '@/utils/ssr-data-cache';
+import { cache } from 'react';
 
 /** Max number of similar ETFs surfaced anywhere (matches the main detail page). */
 export const SIMILAR_ETFS_LIMIT = 6;
@@ -92,21 +93,18 @@ export async function getSimilarEtfsForEtf(spaceId: string, exchange: string, et
 }
 
 /**
- * Server-component fetcher for the category sub-report pages. Hits the
- * `/similar-etfs` API over HTTP (same style as the pages' `fetchCategoryData` /
- * `fetchMorInfo`) so the response rides Next's Data Cache. Pass the page's own
- * cache tag(s) so the peer slice invalidates in lockstep with the rest of the
- * subpage — keeping the "one cache tag per subpage" topology intact. Returns an
- * empty list (never throws) so a peer-lookup hiccup can't fail the whole page.
+ * Server-component loader for the ETF sub-report pages: {@link getSimilarEtfsForEtf}
+ * called in-process (the `/similar-etfs` route calls the same function), never
+ * over HTTP. The sub-pages are `force-dynamic` and this slice used a tags-only
+ * fetch, which Next never stored in the Data Cache, so it is loaded fresh per
+ * request exactly as before. Wrapped in React `cache()` so repeat calls within one
+ * render share a single load. Returns an empty list (never throws) so a
+ * peer-lookup hiccup can't fail the whole page.
  */
-export async function fetchEtfSimilarEtfs(exchange: string, symbol: string, cacheTags: string[]): Promise<SimilarEtf[]> {
-  const url = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/etfs-v1/exchange/${exchange.toUpperCase()}/${symbol.toUpperCase()}/similar-etfs`;
+export const fetchEtfSimilarEtfs = cache(async (exchange: string, symbol: string): Promise<SimilarEtf[]> => {
   try {
-    const res = await fetch(url, { next: { tags: cacheTags } });
-    if (!res.ok) return [];
-    const json = (await res.json()) as EtfSimilarEtfsResponse;
-    return json.similarEtfs ?? [];
+    return await ssrRequestData(() => getSimilarEtfsForEtf(KoalaGainsSpaceId, exchange.toUpperCase(), symbol.toUpperCase()));
   } catch {
     return [];
   }
-}
+});

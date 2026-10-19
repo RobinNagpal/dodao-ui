@@ -1,19 +1,15 @@
 import CompactSubIndustriesGrid from '@/components/stocks/CompactSubIndustriesGrid';
 import ListingNotFoundShell from '@/components/ui/sections/ListingNotFoundShell';
 import { IndustriesResponse } from '@/types/api/ticker-industries';
-import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { SupportedCountries } from '@/utils/countryExchangeUtils';
-import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
-import { getStocksPageTag } from '@/utils/ticker-v1-cache-utils';
+import { getCachedCountryIndustries } from '@/utils/stocks-data-utils';
 
 const TWO_WEEKS_IN_SECONDS = 14 * 24 * 60 * 60;
 
+/** US industries grid data, in-process + Data-Cached (same tag + 2-week TTL as the old self-fetch). */
 async function fetchIndustries(): Promise<IndustriesResponse | null> {
-  const url = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/tickers-v1/country/${SupportedCountries.US}/tickers/industries`;
   try {
-    const res = await fetch(url, { next: { revalidate: TWO_WEEKS_IN_SECONDS, tags: [getStocksPageTag(SupportedCountries.US)] } });
-    if (!res.ok) return null;
-    return (await res.json()) as IndustriesResponse;
+    return await getCachedCountryIndustries(SupportedCountries.US, TWO_WEEKS_IN_SECONDS);
   } catch {
     return null;
   }

@@ -2,11 +2,18 @@ import type { EtfAssetClassesIndexResponse } from '@/app/api/[spaceId]/etfs-v1/l
 import type { EtfGroupDetailResponse } from '@/app/api/[spaceId]/etfs-v1/listings/group/route';
 import type { EtfGroupsIndexResponse } from '@/app/api/[spaceId]/etfs-v1/listings/groups-index/route';
 import type { EtfProvidersIndexResponse } from '@/app/api/[spaceId]/etfs-v1/listings/providers-index/route';
+import {
+  getEtfAssetClassesIndexData,
+  getEtfGroupDetailData,
+  getEtfGroupsIndexData,
+  getEtfProvidersIndexData,
+} from '@/app/api/[spaceId]/etfs-v1/listings/listings-prisma';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
-import { getEtfAssetClassesIndexTag, getEtfGroupDetailTag, getEtfGroupsIndexTag, getEtfProvidersIndexTag } from '@/utils/etf-cache-utils';
-import { fetchEtfListingsIndex } from '@/utils/etf-listing-visibility';
+import { getEtfAssetClassesIndexTag, getEtfGroupDetailTag, getEtfGroupsIndexTag, getEtfProvidersIndexTag, ONE_WEEK_IN_SECONDS } from '@/utils/etf-cache-utils';
+import { isEtfAdminViewer } from '@/utils/etf-listing-visibility';
 import { ETF_SUPPORTED_COUNTRIES, EtfSupportedCountry } from '@/utils/etfCountryExchangeUtils';
-import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
+import { ssrCachedData, ssrRequestData } from '@/utils/ssr-data-cache';
+import { cache } from 'react';
 
 /**
  * Server-only fetchers for the ETF listings index/detail API routes, shared by
@@ -20,8 +27,15 @@ import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePag
  * never deindex a populated, ranking page. A genuine HTTP-200 empty response is
  * the only thing that yields `noindex`.
  *
- * `generateMetadata` and the page component each call the same fetcher; Next.js
- * request memoization collapses that into a single upstream request per render.
+ * Data is loaded in-process (the shared loaders in `listings-prisma.ts`, which the
+ * API routes also call) instead of `fetch()`ing the routes over the public host:
+ * - Non-admin: `unstable_cache` with the same 1-week TTL + per-listing cache tag the
+ *   page fetch used, returning populated-only data.
+ * - Admin: uncached, `includeUnpopulated = true` (admin-ness checked here from the
+ *   session, as before), so the full set is never cached under the public key.
+ *
+ * `generateMetadata` and the page component each call the same fetcher; React
+ * `cache()` collapses that into a single load per render (as fetch memoization did).
  */
 
 export const EMPTY_ETF_GROUPS_INDEX: EtfGroupsIndexResponse = {
@@ -37,41 +51,43 @@ export const EMPTY_ETF_PROVIDERS_INDEX: EtfProvidersIndexResponse = { providers:
 
 export const EMPTY_ETF_GROUP_DETAIL: EtfGroupDetailResponse = { found: false, values: {}, counts: {}, others: null };
 
-async function fetchListingJson<T>(url: string, tag: string, label: string): Promise<T | null> {
+async function loadListing<T>(label: string, keyParts: string[], tag: string, load: (includeUnpopulated: boolean) => Promise<T>): Promise<T | null> {
   try {
-    const res = await fetchEtfListingsIndex(url, tag);
-    if (!res.ok) {
-      console.error(`${label} failed (${res.status}): ${url}`);
-      return null;
+    if (await isEtfAdminViewer()) {
+      return await ssrRequestData(() => load(true));
     }
-    return (await res.json()) as T;
+    return await ssrCachedData(keyParts, { tags: [tag], revalidate: ONE_WEEK_IN_SECONDS }, () => load(false));
   } catch (e) {
     console.error(`${label} error:`, e);
     return null;
   }
 }
 
-export async function fetchEtfGroupsIndex(country: EtfSupportedCountry): Promise<EtfGroupsIndexResponse | null> {
-  const url = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/etfs-v1/listings/groups-index?country=${encodeURIComponent(country)}`;
-  return fetchListingJson<EtfGroupsIndexResponse>(url, getEtfGroupsIndexTag(country), 'fetchEtfGroupsIndex');
-}
+export const fetchEtfGroupsIndex = cache(async (country: EtfSupportedCountry): Promise<EtfGroupsIndexResponse | null> => {
+  return loadListing('fetchEtfGroupsIndex', ['etf-listings-groups-index', country], getEtfGroupsIndexTag(country), (includeUnpopulated) =>
+    getEtfGroupsIndexData(KoalaGainsSpaceId, country, includeUnpopulated)
+  );
+});
 
-export async function fetchEtfAssetClassesIndex(country: EtfSupportedCountry): Promise<EtfAssetClassesIndexResponse | null> {
-  const url = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/etfs-v1/listings/asset-classes-index?country=${encodeURIComponent(country)}`;
-  return fetchListingJson<EtfAssetClassesIndexResponse>(url, getEtfAssetClassesIndexTag(country), 'fetchEtfAssetClassesIndex');
-}
+export const fetchEtfAssetClassesIndex = cache(async (country: EtfSupportedCountry): Promise<EtfAssetClassesIndexResponse | null> => {
+  return loadListing('fetchEtfAssetClassesIndex', ['etf-listings-asset-classes-index', country], getEtfAssetClassesIndexTag(country), (includeUnpopulated) =>
+    getEtfAssetClassesIndexData(KoalaGainsSpaceId, country, includeUnpopulated)
+  );
+});
 
-export async function fetchEtfProvidersIndex(country: EtfSupportedCountry): Promise<EtfProvidersIndexResponse | null> {
-  const url = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/etfs-v1/listings/providers-index?country=${encodeURIComponent(country)}`;
-  return fetchListingJson<EtfProvidersIndexResponse>(url, getEtfProvidersIndexTag(country), 'fetchEtfProvidersIndex');
-}
+export const fetchEtfProvidersIndex = cache(async (country: EtfSupportedCountry): Promise<EtfProvidersIndexResponse | null> => {
+  return loadListing('fetchEtfProvidersIndex', ['etf-listings-providers-index', country], getEtfProvidersIndexTag(country), (includeUnpopulated) =>
+    getEtfProvidersIndexData(KoalaGainsSpaceId, country, includeUnpopulated)
+  );
+});
 
-export async function fetchEtfGroupDetail(country: EtfSupportedCountry, groupKey: string): Promise<EtfGroupDetailResponse | null> {
-  const url = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/etfs-v1/listings/group?country=${encodeURIComponent(
-    country
-  )}&groupKey=${encodeURIComponent(groupKey)}`;
-  return fetchListingJson<EtfGroupDetailResponse>(url, getEtfGroupDetailTag(country, groupKey), 'fetchEtfGroupDetail');
-}
+export const fetchEtfGroupDetail = cache(async (country: EtfSupportedCountry, groupKey: string): Promise<EtfGroupDetailResponse | null> => {
+  // The route trimmed the `groupKey` query param; mirror that.
+  const trimmedGroupKey = groupKey.trim();
+  return loadListing('fetchEtfGroupDetail', ['etf-listings-group', country, trimmedGroupKey], getEtfGroupDetailTag(country, groupKey), (includeUnpopulated) =>
+    getEtfGroupDetailData(KoalaGainsSpaceId, country, trimmedGroupKey || undefined, includeUnpopulated)
+  );
+});
 
 /**
  * ETF countries whose version of a listing has ETFs, for the "Also view" country switcher on detail

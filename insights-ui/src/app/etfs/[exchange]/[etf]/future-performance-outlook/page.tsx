@@ -6,35 +6,32 @@ import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { EtfAnalysisCategory } from '@/types/etf/etf-analysis-types';
 import { generateEtfCategoryMetadata, generateEtfCategoryArticleJsonLd, generateEtfCategoryBreadcrumbJsonLd } from '@/utils/etf-metadata-generators';
-import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
-import { etfCategoryReportTag } from '@/utils/etf-cache-utils';
-import { EtfCategoryDataResponse } from '@/utils/etf-category-api-utils';
+import { EtfCategoryDataResponse, fetchEtfCategoryByExchange } from '@/utils/etf-category-api-utils';
 import { buildEtfReportSubpageBreadcrumbs } from '@/utils/etf-breadcrumbs-utils';
 import { getEtfFundCategoryHierarchy } from '@/utils/etf-categorization-utils';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
+import { ssrRequestData } from '@/utils/ssr-data-cache';
+import { cache } from 'react';
 
 const CATEGORY_KEY = EtfAnalysisCategory.FuturePerformanceOutlook;
 const CATEGORY_NAME = 'Future Performance Outlook';
 const CATEGORY_SLUG = 'future-performance-outlook';
-const DATA_SLUG = 'future-performance-outlook-data';
 const BADGE_CLASS = 'bg-sky-500/15 text-sky-300 border border-sky-500/40';
 
 export const dynamic = 'force-dynamic';
 
 type RouteParams = Promise<Readonly<{ exchange: string; etf: string }>>;
 
-async function fetchCategoryData(exchange: string, etf: string): Promise<EtfCategoryDataResponse> {
-  const url = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/etfs-v1/exchange/${exchange}/${etf}/${DATA_SLUG}`;
+/** In-process load of the `/future-performance-outlook-data` route's data (no HTTP self-fetch); fresh per request, deduped per render. */
+const fetchCategoryData = cache(async (exchange: string, etf: string): Promise<EtfCategoryDataResponse> => {
   try {
-    const res = await fetch(url, { next: { tags: [etfCategoryReportTag(etf, exchange, CATEGORY_KEY)] } });
-    if (!res.ok) return { categoryResult: null, etf: null };
-    return (await res.json()) as EtfCategoryDataResponse;
+    return await ssrRequestData(() => fetchEtfCategoryByExchange(KoalaGainsSpaceId, etf, exchange, CATEGORY_KEY));
   } catch {
     return { categoryResult: null, etf: null };
   }
-}
+});
 
 export async function generateMetadata({ params }: { params: RouteParams }): Promise<Metadata> {
   const { exchange: rawExchange, etf: rawEtf } = await params;
@@ -74,10 +71,7 @@ export default async function FuturePerformanceOutlookPage({ params }: { params:
   const exchange = rawExchange.toUpperCase();
   const symbol = rawEtf.toUpperCase();
 
-  const [{ categoryResult, etf }, similarEtfs] = await Promise.all([
-    fetchCategoryData(exchange, symbol),
-    fetchEtfSimilarEtfs(exchange, symbol, [etfCategoryReportTag(symbol, exchange, CATEGORY_KEY)]),
-  ]);
+  const [{ categoryResult, etf }, similarEtfs] = await Promise.all([fetchCategoryData(exchange, symbol), fetchEtfSimilarEtfs(exchange, symbol)]);
   if (!etf) notFound();
   if (!categoryResult) notFound();
 

@@ -4,15 +4,16 @@ import Stability from '@/components/ticker-reportsv1/Stability';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { CanadaExchanges, getCountryByExchange, IndiaExchanges, SupportedCountries, UKExchanges, USExchanges } from '@/utils/countryExchangeUtils';
-import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
+import { ssrRequestData } from '@/utils/ssr-data-cache';
 import { generateStabilityArticleSchema, generateStabilityBreadcrumbSchema } from '@/utils/metadata-generators';
 import { enforceDeletedTicker } from '@/utils/ticker-deleted-handler';
 import { enforceMovedRedirect } from '@/utils/ticker-moved-redirect';
-import { tickerStabilityTag } from '@/utils/ticker-v1-cache-utils';
+import { getTickerV1WithMissingReports } from '@/utils/ticker-v1-page-data';
 import { TickerV1FastResponse } from '@/utils/ticker-v1-model-utils';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { Metadata } from 'next';
+import { cache } from 'react';
 import { unstable_noStore as noStore } from 'next/cache';
 import { notFound, permanentRedirect } from 'next/navigation';
 
@@ -30,22 +31,21 @@ function truncateForMeta(text: string, maxLength: number = 155): string {
   return text.slice(0, maxLength).replace(/\s+\S*$/, '') + '…';
 }
 
-async function fetchTickerByExchange(exchange: string, ticker: string): Promise<TickerV1FastResponse | null> {
-  const url: string = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/tickers-v1/exchange/${exchange.toUpperCase()}/${ticker.toUpperCase()}?allowNull=true`;
-  const res: Response = await fetch(url, { next: { tags: [tickerStabilityTag(ticker, exchange)] } });
-  if (!res.ok) {
-    throw new Error(`fetchTickerByExchange failed (${res.status}): ${url}`);
-  }
-  return (await res.json()) as TickerV1FastResponse | null;
-}
+/**
+ * Ticker row — the `tickers-v1/exchange/[exchange]/[ticker]` API query, called in-process (no
+ * self-fetch; see `src/utils/ssr-data-cache.ts`). The old `fetch()` carried only
+ * `next: { tags: [tickerStabilityTag(...)] }`, which `force-dynamic` never stored in the Data Cache, so
+ * this stays per-request; React `cache()` keeps the dedupe between `generateMetadata` and the
+ * page. A DB error throws (error.tsx), as the failed fetch did.
+ */
+const fetchTickerByExchange = cache(
+  async (exchange: string, ticker: string): Promise<TickerV1FastResponse | null> =>
+    ssrRequestData(() => getTickerV1WithMissingReports(KoalaGainsSpaceId, exchange.toUpperCase(), ticker.toUpperCase(), true))
+);
 
+/** Ticker row on any exchange (uncached fallback). */
 async function fetchTickerAnyExchange(ticker: string): Promise<TickerV1FastResponse | null> {
-  const url: string = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/tickers-v1/${ticker.toUpperCase()}?allowNull=true`;
-  const res: Response = await fetch(url, { cache: 'no-store' });
-  if (!res.ok) {
-    throw new Error(`fetchTickerAnyExchange failed (${res.status}): ${url}`);
-  }
-  return (await res.json()) as TickerV1FastResponse | null;
+  return ssrRequestData(() => getTickerV1WithMissingReports(KoalaGainsSpaceId, null, ticker.toUpperCase(), true));
 }
 
 async function getTickerOrRedirect(exchange: string, ticker: string): Promise<TickerV1FastResponse> {

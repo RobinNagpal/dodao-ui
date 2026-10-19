@@ -6,37 +6,41 @@ import SimilarEtfs from '@/components/etf-reportsv1/SimilarEtfs';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import type { EtfCompetitionResponse } from '@/types/etf/etf-analysis-types';
-import { etfCompetitionTag } from '@/utils/etf-cache-utils';
 import { fetchEtfSimilarEtfs } from '@/utils/etf-similar-etfs-utils';
-import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
 import { buildEtfReportSubpageBreadcrumbs } from '@/utils/etf-breadcrumbs-utils';
 import { generateBreadcrumbJsonLdFromCrumbs, generateEtfCompetitionArticleJsonLd, generateEtfCompetitionMetadata } from '@/utils/etf-metadata-generators';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
+import { getEtfCompetitionData, getEtfFastData } from '@/utils/etf-page-data';
+import { ssrRequestData } from '@/utils/ssr-data-cache';
+import { cache } from 'react';
 
 /** Static-by-default with on-demand invalidation (matches the ETF detail page). */
 export const dynamic = 'force-dynamic';
 
 export type RouteParams = Promise<Readonly<{ exchange: string; etf: string }>>;
 
-async function fetchEtfCompetition(exchange: string, etf: string): Promise<EtfCompetitionResponse | null> {
-  const url = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/etfs-v1/exchange/${exchange.toUpperCase()}/${etf.toUpperCase()}/competition`;
-  const res = await fetch(url, { next: { tags: [etfCompetitionTag(etf, exchange)] } });
-  if (!res.ok) return null;
-  return (await res.json()) as EtfCompetitionResponse | null;
-}
-
-async function fetchEtfFast(exchange: string, etf: string): Promise<EtfFastResponse | null> {
-  const url = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/etfs-v1/exchange/${exchange.toUpperCase()}/${etf.toUpperCase()}?allowNull=true`;
+/**
+ * In-process loads of the `/competition` and ETF routes' data (no HTTP self-fetch). Both were
+ * tags-only fetches, which `force-dynamic` never stored in the Data Cache, so they stay fresh per
+ * request; React `cache()` dedupes the `generateMetadata` + page calls. `null` on failure, as before.
+ */
+const fetchEtfCompetition = cache(async (exchange: string, etf: string): Promise<EtfCompetitionResponse | null> => {
   try {
-    const res = await fetch(url, { next: { tags: [etfCompetitionTag(etf, exchange)] } });
-    if (!res.ok) return null;
-    return (await res.json()) as EtfFastResponse | null;
+    return await ssrRequestData(() => getEtfCompetitionData(KoalaGainsSpaceId, exchange, etf));
   } catch {
     return null;
   }
-}
+});
+
+const fetchEtfFast = cache(async (exchange: string, etf: string): Promise<EtfFastResponse | null> => {
+  try {
+    return await ssrRequestData(() => getEtfFastData(KoalaGainsSpaceId, exchange, etf, true));
+  } catch {
+    return null;
+  }
+});
 
 export async function generateMetadata({ params }: { params: RouteParams }): Promise<Metadata> {
   const { exchange, etf } = await params;
@@ -66,7 +70,7 @@ export default async function EtfCompetitionPage({ params }: { params: RoutePara
   const [data, etfFast, similarEtfs] = await Promise.all([
     fetchEtfCompetition(exchangeUpper, etfUpper),
     fetchEtfFast(exchangeUpper, etfUpper),
-    fetchEtfSimilarEtfs(exchangeUpper, etfUpper, [etfCompetitionTag(etfUpper, exchangeUpper)]),
+    fetchEtfSimilarEtfs(exchangeUpper, etfUpper),
   ]);
   if (!data || !data.etf) {
     notFound();

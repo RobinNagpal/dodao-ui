@@ -1,11 +1,9 @@
 import CompactSubIndustriesGrid from '@/components/stocks/CompactSubIndustriesGrid';
 import IndustryWithStocksPageLayout from '@/components/stocks/IndustryWithStocksPageLayout';
 import { IndustriesResponse } from '@/types/api/ticker-industries';
-import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { SupportedCountries } from '@/utils/countryExchangeUtils';
-import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
 import { generateCountryStocksMetadata } from '@/utils/metadata-generators';
-import { getStocksPageTag } from '@/utils/ticker-v1-cache-utils';
+import { getCachedCountryIndustries } from '@/utils/stocks-data-utils';
 
 export const dynamic = 'force-dynamic';
 
@@ -17,13 +15,8 @@ export const metadata = generateCountryStocksMetadata('US');
 // ────────────────────────────────────────────────────────────────────────────────
 
 export default async function StocksPage() {
-  const baseUrl = getBaseUrlForServerSidePages();
-  // Fetch data using the cached function (no filters on static pages)
-  const res = await fetch(`${baseUrl}/api/${KoalaGainsSpaceId}/tickers-v1/country/${SupportedCountries.US}/tickers/industries`, {
-    next: { revalidate: WEEK, tags: [getStocksPageTag(SupportedCountries.US)] },
-  });
-
-  const data = (await res.json()) as IndustriesResponse;
+  // In-process + Data-Cached (same tag + 1-week TTL as the old self-fetch); no filters on static pages.
+  const data: IndustriesResponse = await getCachedCountryIndustries(SupportedCountries.US, WEEK);
 
   return (
     <IndustryWithStocksPageLayout

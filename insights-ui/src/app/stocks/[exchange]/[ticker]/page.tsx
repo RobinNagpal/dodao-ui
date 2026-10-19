@@ -47,8 +47,15 @@ import {
   SupportedCountries,
   formatExchangeWithCountry,
 } from '@/utils/countryExchangeUtils';
-import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
+import { ssrCachedData, ssrRequestData } from '@/utils/ssr-data-cache';
 import { tickerAndExchangeTag } from '@/utils/ticker-v1-cache-utils';
+import {
+  getTickerCompetition,
+  getTickerFinancialInfo,
+  getTickerPriceHistory,
+  getTickerQuarterlyChartData,
+  getTickerV1WithMissingReports,
+} from '@/utils/ticker-v1-page-data';
 import { generateStockReportArticleSchema, generateStockReportBreadcrumbSchema } from '@/utils/metadata-generators';
 import { enforceMovedRedirect } from '@/utils/ticker-moved-redirect';
 import { enforceDeletedTicker } from '@/utils/ticker-deleted-handler';
@@ -60,7 +67,7 @@ import { Metadata } from 'next';
 import { unstable_noStore as noStore } from 'next/cache';
 import { notFound, permanentRedirect } from 'next/navigation';
 import Link from 'next/link';
-import { Suspense, use } from 'react';
+import { cache, Suspense, use } from 'react';
 
 import TickerRadarChartSvg from '@/components/visualizations/TickerRadarChartSvg';
 
@@ -86,28 +93,23 @@ function truncateForMeta(text: string, maxLength: number = 155): string {
   return text.slice(0, maxLength).replace(/\s+\S*$/, '') + '…';
 }
 
-/** Data fetchers */
-async function fetchTickerByExchange(exchange: string, ticker: string): Promise<TickerV1FastResponse | null> {
-  const url: string = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/tickers-v1/exchange/${exchange.toUpperCase()}/${ticker.toUpperCase()}?allowNull=true`;
-  const res: Response = await fetch(url, { next: { tags: [tickerAndExchangeTag(ticker, exchange)] } });
-  if (!res.ok) {
-    // Server error (DB down, etc.) - throw to show error.tsx
-    throw new Error(`fetchTickerByExchange failed (${res.status}): ${url}`);
-  }
-  const data: TickerV1FastResponse | null = (await res.json()) as TickerV1FastResponse | null;
-  return data;
-}
+/**
+ * Data loaders. These call the shared `tickers-v1` loaders in-process instead of fetching this
+ * app's own API over the public host (see `src/utils/ssr-data-cache.ts`). The ticker row was a
+ * `next: { tags }`-only fetch, which `force-dynamic` never stored in the Data Cache, so it stays
+ * per-request; React `cache()` keeps the dedupe between `generateMetadata` and the page body that
+ * fetch memoization used to give.
+ */
+const fetchTickerByExchange = cache(
+  async (exchange: string, ticker: string): Promise<TickerV1FastResponse | null> =>
+    // Throws on a DB error → error.tsx (same as the old `!res.ok` throw).
+    ssrRequestData(() => getTickerV1WithMissingReports(KoalaGainsSpaceId, exchange.toUpperCase(), ticker.toUpperCase(), true))
+);
 
-async function fetchTickerAnyExchange(ticker: string): Promise<TickerV1FastResponse | null> {
-  const url: string = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/tickers-v1/${ticker.toUpperCase()}?allowNull=true`;
-  const res: Response = await fetch(url, { cache: 'no-store' });
-  if (!res.ok) {
-    // Server error (DB down, etc.) - throw to show error.tsx
-    throw new Error(`fetchTickerAnyExchange failed (${res.status}): ${url}`);
-  }
-  const data: TickerV1FastResponse | null = (await res.json()) as TickerV1FastResponse | null;
-  return data;
-}
+const fetchTickerAnyExchange = cache(
+  async (ticker: string): Promise<TickerV1FastResponse | null> =>
+    ssrRequestData(() => getTickerV1WithMissingReports(KoalaGainsSpaceId, null, ticker.toUpperCase(), true))
+);
 
 /** Exchange-aware fetch with uncached fallback + canonical redirect */
 async function getTickerOrRedirect(params: RouteParams): Promise<TickerV1FastResponse> {
@@ -163,18 +165,23 @@ async function getTickerOrRedirect(params: RouteParams): Promise<TickerV1FastRes
  */
 const EIGHT_DAYS_IN_SECONDS = 8 * 24 * 60 * 60;
 
-/** Similar + financial fetchers (promise-based for Suspense) */
+/**
+ * Similar + financial loaders (promise-based for Suspense). The three external-freshness slices
+ * keep their Data Cache entry: same umbrella tag + 8-day revalidate as the old `fetch()`, now via
+ * `unstable_cache`. The loaders never throw (they resolve to `{ x: null }` on failure, which the
+ * old API route answered with HTTP 200, so the null was cached the same way).
+ */
+function tickerSliceCache(slice: string, exchange: string, ticker: string): { keyParts: string[]; options: { tags: string[]; revalidate: number } } {
+  return {
+    keyParts: ['ticker-v1', slice, exchange.toUpperCase(), ticker.toUpperCase()],
+    options: { tags: [tickerAndExchangeTag(ticker, exchange)], revalidate: EIGHT_DAYS_IN_SECONDS },
+  };
+}
+
 async function fetchFinancialInfo(exchange: string, ticker: string): Promise<FinancialInfoResponse | null> {
-  const url: string = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/tickers-v1/exchange/${exchange.toUpperCase()}/${ticker.toUpperCase()}/financial-info`;
-
   try {
-    const res: Response = await fetch(url, { next: { tags: [tickerAndExchangeTag(ticker, exchange)], revalidate: EIGHT_DAYS_IN_SECONDS } });
-    if (!res.ok) {
-      console.error(`fetchFinancialInfo failed (${res.status}): ${url}`);
-      return null;
-    }
-
-    const wrapper = (await res.json()) as { financialInfo: FinancialInfoResponse | null };
+    const { keyParts, options } = tickerSliceCache('financial-info', exchange, ticker);
+    const wrapper = await ssrCachedData(keyParts, options, () => getTickerFinancialInfo(KoalaGainsSpaceId, exchange, ticker));
     return wrapper.financialInfo;
   } catch (error) {
     console.error(`fetchFinancialInfo error for ${ticker}:`, error);
@@ -183,16 +190,9 @@ async function fetchFinancialInfo(exchange: string, ticker: string): Promise<Fin
 }
 
 async function fetchQuarterlyChartData(exchange: string, ticker: string): Promise<QuarterlyChartDataResponse | null> {
-  const url: string = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/tickers-v1/exchange/${exchange.toUpperCase()}/${ticker.toUpperCase()}/quarterly-chart-data`;
-
   try {
-    const res: Response = await fetch(url, { next: { tags: [tickerAndExchangeTag(ticker, exchange)], revalidate: EIGHT_DAYS_IN_SECONDS } });
-    if (!res.ok) {
-      console.error(`fetchQuarterlyChartData failed (${res.status}): ${url}`);
-      return null;
-    }
-
-    const wrapper = (await res.json()) as { chartData: QuarterlyChartDataResponse | null };
+    const { keyParts, options } = tickerSliceCache('quarterly-chart-data', exchange, ticker);
+    const wrapper = await ssrCachedData(keyParts, options, () => getTickerQuarterlyChartData(KoalaGainsSpaceId, exchange, ticker));
     return wrapper.chartData;
   } catch (error) {
     console.error(`fetchQuarterlyChartData error for ${ticker}:`, error);
@@ -201,16 +201,9 @@ async function fetchQuarterlyChartData(exchange: string, ticker: string): Promis
 }
 
 async function fetchPriceHistory(exchange: string, ticker: string): Promise<PriceHistoryResponse | null> {
-  const url: string = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/tickers-v1/exchange/${exchange.toUpperCase()}/${ticker.toUpperCase()}/price-history`;
-
   try {
-    const res: Response = await fetch(url, { next: { tags: [tickerAndExchangeTag(ticker, exchange)], revalidate: EIGHT_DAYS_IN_SECONDS } });
-    if (!res.ok) {
-      console.error(`fetchPriceHistory failed (${res.status}): ${url}`);
-      return null;
-    }
-
-    const wrapper = (await res.json()) as { priceHistory: PriceHistoryResponse | null };
+    const { keyParts, options } = tickerSliceCache('price-history', exchange, ticker);
+    const wrapper = await ssrCachedData(keyParts, options, () => getTickerPriceHistory(KoalaGainsSpaceId, exchange, ticker));
     return wrapper.priceHistory;
   } catch (error) {
     console.error(`fetchPriceHistory error for ${ticker}:`, error);
@@ -218,17 +211,10 @@ async function fetchPriceHistory(exchange: string, ticker: string): Promise<Pric
   }
 }
 
+/** Was a `next: { tags }`-only fetch (not Data-Cached under `force-dynamic`), so it stays per-request. */
 async function fetchCompetitionData(exchange: string, ticker: string): Promise<CompetitionResponse | null> {
-  const url: string = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/tickers-v1/exchange/${exchange.toUpperCase()}/${ticker.toUpperCase()}/competition-tickers`;
-
   try {
-    const res: Response = await fetch(url, { next: { tags: [tickerAndExchangeTag(ticker, exchange)] } });
-    if (!res.ok) {
-      console.error(`fetchCompetitionData failed (${res.status}): ${url}`);
-      return null;
-    }
-
-    return (await res.json()) as CompetitionResponse;
+    return await ssrRequestData(() => getTickerCompetition(KoalaGainsSpaceId, exchange, ticker));
   } catch (error) {
     console.error(`fetchCompetitionData error for ${ticker}:`, error);
     return null;

@@ -1,13 +1,10 @@
 import IndustryStocksGrid from '@/components/stocks/IndustryStocksGrid';
 import IndustryWithStocksPageLayout from '@/components/stocks/IndustryWithStocksPageLayout';
 import { SubIndustriesResponse } from '@/types/api/ticker-industries';
-import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { SupportedCountries } from '@/utils/countryExchangeUtils';
-import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
 import { commonViewport, generateCountryIndustryStocksMetadata } from '@/utils/metadata-generators';
-import { fetchIndustryStocksData, isIndustryStocksResponseEmpty } from '@/utils/stocks-data-utils';
+import { fetchIndustryStocksData, getCachedCountryIndustryStocks, isIndustryStocksResponseEmpty } from '@/utils/stocks-data-utils';
 import { parseStockCountryParam, resolveStockCountryParam } from '@/utils/stock-country-route-utils';
-import { getIndustryPageTag } from '@/utils/ticker-v1-cache-utils';
 import { Metadata } from 'next';
 import { notFound, permanentRedirect } from 'next/navigation';
 import { truncateForLog } from '@/utils/route-param-utils';
@@ -46,20 +43,9 @@ export default async function CountryIndustryStocksPage({ params }: PageProps) {
   }
   const industryKey = rawIndustryKey.toUpperCase();
 
-  const baseUrl = getBaseUrlForServerSidePages();
-  const url = `${baseUrl}/api/${KoalaGainsSpaceId}/tickers-v1/country/${encodeURIComponent(country)}/tickers/industries/${encodeURIComponent(industryKey)}`;
-
-  const res = await fetch(url, {
-    next: { revalidate: WEEK, tags: [getIndustryPageTag(country, industryKey)] },
-  });
-
-  if (!res.ok) {
-    // Real upstream failure (5xx / LB error page): stay an error. Next's data cache only stores OK
-    // responses, so this is never cached as a page.
-    throw new Error(`industry stocks fetch failed (${res.status}): ${url}`);
-  }
-
-  const data = (await res.json()) as SubIndustriesResponse | null;
+  // In-process + Data-Cached (same tag + 1-week TTL as the old self-fetch). A DB error throws
+  // (error.tsx) and is never cached.
+  const data: SubIndustriesResponse | null = await getCachedCountryIndustryStocks(country, industryKey, WEEK);
 
   // Unknown industry: the API answers HTTP 200 with a null body → real 404 (sibling not-found.tsx).
   if (!data) {

@@ -24,6 +24,16 @@ CloudFront forwards the viewer User-Agent (AllViewer origin request policy) but 
 cache on it, which is why the 403 is `no-store`. Pages already in CloudFront's cache are still
 served to blocked bots — that's fine, it costs the origin nothing.
 
+## SSR no longer self-fetches (2026-10)
+
+The fan-out above was HTTP: each server render `fetch()`ed this app's own `/api` routes through
+`prod.koalagains.com`, i.e. through the Lightsail load balancer back into the same saturated
+container (up to 6 self-fetches on a stock page). On 2026-10-19 a burst produced hundreds of
+`... failed (504)` self-fetch errors, a failed health check and two container replacements. The
+hot stock/ETF report pages, their subpages and the listing pages now call the shared loaders
+in-process (`src/utils/ssr-data-cache.ts` documents the cache-semantics mapping), so a render is
+DB work only. Crawler blocking is still the first line of defense.
+
 ## Diagnosing an overload
 
 1. `curl -w '%{http_code} %{time_total}\n' -o /dev/null https://prod.koalagains.com/api/health`

@@ -9,42 +9,38 @@ import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { EtfAnalysisCategory } from '@/types/etf/etf-analysis-types';
 import { EtfMorReturnsRow } from '@/types/prismaTypes';
 import { generateEtfCategoryMetadata, generateEtfCategoryArticleJsonLd, generateEtfCategoryBreadcrumbJsonLd } from '@/utils/etf-metadata-generators';
-import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
-import { etfCategoryReportTag } from '@/utils/etf-cache-utils';
-import { EtfCategoryDataResponse } from '@/utils/etf-category-api-utils';
+import { EtfCategoryDataResponse, fetchEtfCategoryByExchange } from '@/utils/etf-category-api-utils';
 import { buildEtfReportSubpageBreadcrumbs } from '@/utils/etf-breadcrumbs-utils';
 import { getEtfFundCategoryHierarchy } from '@/utils/etf-categorization-utils';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
+import { ssrRequestData } from '@/utils/ssr-data-cache';
+import { cache } from 'react';
+import { getEtfMorInfoData } from '@/utils/etf-page-data';
 
 const CATEGORY_KEY = EtfAnalysisCategory.PerformanceAndReturns;
 const CATEGORY_NAME = 'Performance & Returns';
 const CATEGORY_SLUG = 'performance-returns';
-const DATA_SLUG = 'performance-returns-data';
 const BADGE_CLASS = 'bg-emerald-500/15 text-emerald-300 border border-emerald-500/40';
 
 export const dynamic = 'force-dynamic';
 
 type RouteParams = Promise<Readonly<{ exchange: string; etf: string }>>;
 
-async function fetchCategoryData(exchange: string, etf: string): Promise<EtfCategoryDataResponse> {
-  const url = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/etfs-v1/exchange/${exchange}/${etf}/${DATA_SLUG}`;
+/** In-process load of the `/performance-returns-data` route's data (no HTTP self-fetch); fresh per request, deduped per render. */
+const fetchCategoryData = cache(async (exchange: string, etf: string): Promise<EtfCategoryDataResponse> => {
   try {
-    const res = await fetch(url, { next: { tags: [etfCategoryReportTag(etf, exchange, CATEGORY_KEY)] } });
-    if (!res.ok) return { categoryResult: null, etf: null };
-    return (await res.json()) as EtfCategoryDataResponse;
+    return await ssrRequestData(() => fetchEtfCategoryByExchange(KoalaGainsSpaceId, etf, exchange, CATEGORY_KEY));
   } catch {
     return { categoryResult: null, etf: null };
   }
-}
+});
 
+/** In-process load of the `/mor-info` route's data; `null` on any failure (the route 404s for an unknown ETF). */
 async function fetchMorInfo(exchange: string, etf: string): Promise<EtfMorInfoOptionalWrapper | null> {
-  const url = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/etfs-v1/exchange/${exchange}/${etf}/mor-info`;
   try {
-    const res = await fetch(url, { next: { tags: [etfCategoryReportTag(etf, exchange, CATEGORY_KEY)] } });
-    if (!res.ok) return null;
-    return (await res.json()) as EtfMorInfoOptionalWrapper;
+    return await ssrRequestData(() => getEtfMorInfoData(KoalaGainsSpaceId, exchange, etf));
   } catch {
     return null;
   }
@@ -91,7 +87,7 @@ export default async function PerformanceReturnsPage({ params }: { params: Route
   const [{ categoryResult, etf }, morInfo, similarEtfs] = await Promise.all([
     fetchCategoryData(exchange, symbol),
     fetchMorInfo(exchange, symbol),
-    fetchEtfSimilarEtfs(exchange, symbol, [etfCategoryReportTag(symbol, exchange, CATEGORY_KEY)]),
+    fetchEtfSimilarEtfs(exchange, symbol),
   ]);
   if (!etf) notFound();
   if (!categoryResult) notFound();

@@ -1,10 +1,4 @@
-import {
-  EtfGroupingPreview,
-  EtfUncategorizedPreview,
-  fetchAllEtfsByCategory,
-  fetchUncategorizedEtfPreview,
-} from '@/app/api/[spaceId]/etfs-v1/listings/listings-prisma';
-import { ETF_OTHERS_GROUP_KEY, getCategoriesForGroupKey, getEtfGroupByKey } from '@/utils/etf-categorization-utils';
+import { EtfGroupingPreview, EtfUncategorizedPreview, getEtfGroupDetailData } from '@/app/api/[spaceId]/etfs-v1/listings/listings-prisma';
 import { shouldIncludeUnpopulatedForRequest } from '@/utils/etf-listing-visibility';
 import { isEtfSupportedCountry } from '@/utils/etfCountryExchangeUtils';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
@@ -27,25 +21,7 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
   const groupKey = searchParams.get('groupKey')?.trim();
   const includeUnpopulated = await shouldIncludeUnpopulatedForRequest(req);
 
-  if (!groupKey) {
-    return { found: false, values: {}, counts: {}, others: null };
-  }
-
-  const groupObj = getEtfGroupByKey(groupKey);
-  if (!groupObj) {
-    return { found: false, values: {}, counts: {}, others: null };
-  }
-
-  if (groupObj.key === ETF_OTHERS_GROUP_KEY) {
-    const others = await fetchUncategorizedEtfPreview(spaceId, country, includeUnpopulated);
-    return { found: true, values: {}, counts: {}, others };
-  }
-
-  const categories = getCategoriesForGroupKey(groupObj.key);
-  const categoryNames = categories.map((c) => c.name);
-  const { values, counts } = await fetchAllEtfsByCategory(spaceId, categoryNames, country, includeUnpopulated);
-
-  return { found: true, values, counts, others: null };
+  return getEtfGroupDetailData(spaceId, country, groupKey, includeUnpopulated);
 }
 
 export const GET = withErrorHandlingV2<EtfGroupDetailResponse>(getHandler);
