@@ -19,7 +19,7 @@ import {
   EtfMorPortfolioStyleMeasures,
 } from '@/types/prismaTypes';
 import { revalidateEtfAndExchangeTag, revalidateEtfHoldingsTag } from '@/utils/etf-cache-utils';
-import { jsonArrayIsEmpty, rowsContainerIsEmpty } from '@/utils/etf-analysis-reports/mor-scrape-utils';
+import { jsonArrayIsEmpty, riskPeriodIsEmpty, rowsContainerIsEmpty } from '@/utils/etf-analysis-reports/mor-scrape-utils';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';
 
@@ -114,21 +114,6 @@ function quoteHoldingsIsEmpty(v: EtfMorHoldings | null | undefined): boolean {
 /** Half-rendered quote page: no overview metrics and no returns tables at all. */
 function quotePayloadIsEmpty(d: QuoteData): boolean {
   return Object.keys(d.overview?.overviewMetrics ?? {}).length === 0 && jsonArrayIsEmpty(d.returns?.annual) && jsonArrayIsEmpty(d.returns?.trailing);
-}
-
-function riskPeriodIsEmpty(p: EtfMorRiskPeriodData | null | undefined): boolean {
-  if (p == null) return true;
-  const mvm = p.marketVolatilityMeasures;
-  return (
-    isBlank(p.portfolioRiskScore?.riskScore) &&
-    isBlank(p.portfolioRiskScore?.riskLevel) &&
-    isBlank(p.morAnalyzerRiskReturn?.riskVsCategory) &&
-    isBlank(p.morAnalyzerRiskReturn?.returnVsCategory) &&
-    rowsContainerIsEmpty(p.riskAndVolatilityMeasures) &&
-    rowsContainerIsEmpty(mvm?.captureRatios) &&
-    rowsContainerIsEmpty(mvm?.drawdown) &&
-    rowsContainerIsEmpty(mvm?.drawdownDates)
-  );
 }
 
 /** Merge per period: an empty incoming period keeps the previously stored one. */
