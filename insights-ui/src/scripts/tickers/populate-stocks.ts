@@ -10,6 +10,7 @@ import {
   EXCHANGES,
   getCountryByExchange,
   getExchangesByCountry,
+  GermanyExchanges,
   IndiaExchanges,
   isExchange,
   PakistanExchanges,
@@ -44,6 +45,7 @@ const EXCHANGE_LIST_PATHS: Partial<Record<AllExchanges, string>> = {
   [PakistanExchanges.PSX]: '/list/pakistan-stock-exchange/',
   [IndiaExchanges.NSE]: '/list/nse-india/',
   [IndiaExchanges.BSE]: '/list/bse-india/',
+  [GermanyExchanges.XETRA]: '/list/deutsche-boerse-xetra/',
 };
 
 /**
@@ -130,7 +132,10 @@ function requireExchange(raw: string | boolean | undefined): AllExchanges {
 /** All live tickers in the exchange's country — the API excludes deleted / moved rows; the SQL's ON CONFLICT covers those. */
 async function fetchExistingTickers(exchange: AllExchanges): Promise<ExistingTicker[]> {
   const country = getCountryByExchange(exchange);
-  return fetchJson<ExistingTicker[]>(`/api/${SPACE_ID}/tickers-v1?country=${encodeURIComponent(country)}`);
+  const tickers = await fetchJson<ExistingTicker[]>(`/api/${SPACE_ID}/tickers-v1?country=${encodeURIComponent(country)}`);
+  // A country production doesn't support yet is ignored by the API, which then returns every ticker.
+  const countryExchanges: string[] = getExchangesByCountry(country);
+  return tickers.filter((t) => countryExchanges.includes(t.exchange));
 }
 
 /** Non-archived sub-industries that already have at least one stock — the only ones new stocks may be mapped to. */
@@ -261,7 +266,19 @@ function parseCompanyProfile(html: string): CompanyProfile {
 async function runFetch(args: Record<string, string | boolean>): Promise<void> {
   if (!STOCK_ANALYZE_BASE_URL) throw new Error('NEXT_PUBLIC_STOCK_ANALYZE_BASE_URL is not set — add it to insights-ui/.env');
   const exchange = requireExchange(args['exchange']);
-  const count = parsePositiveInt(args['count']);
+  // --symbols limits the run to a hand-picked batch (e.g. home-country companies on an exchange that also lists
+  // foreign secondary lines, like XETRA). --isin-prefix drops any candidate whose profile ISIN is from another country.
+  const onlySymbols =
+    typeof args['symbols'] === 'string'
+      ? new Set(
+          args['symbols']
+            .split(',')
+            .map((s) => s.trim().toUpperCase())
+            .filter(Boolean)
+        )
+      : null;
+  const isinPrefix = typeof args['isin-prefix'] === 'string' ? args['isin-prefix'].trim().toUpperCase() : null;
+  const count = parsePositiveInt(args['count']) ?? onlySymbols?.size;
   if (!count) throw new Error('Missing required arg --count (number of NEW stocks to collect)');
   if (count > MAX_COUNT) throw new Error(`--count is capped at ${MAX_COUNT}`);
   const delayMs = parsePositiveInt(args['delay-ms']) ?? DEFAULT_DELAY_MS;
@@ -287,6 +304,7 @@ async function runFetch(args: Record<string, string | boolean>): Promise<void> {
 
   const candidates: PopulateCandidate[] = [];
   const skipped: Array<{ symbol: string; name: string; reason: string }> = [];
+  const seenSymbols = new Set<string>();
   let page = 1;
   let totalRows: number | null = null;
   let scanned = 0;
@@ -306,6 +324,8 @@ async function runFetch(args: Record<string, string | boolean>): Promise<void> {
       scanned++;
       if (row.subtype !== 'stock') continue;
       if (expectedSegment && row.segment !== expectedSegment) continue;
+      seenSymbols.add(row.symbol);
+      if (onlySymbols && !onlySymbols.has(row.symbol)) continue;
       if (existingKeys.has(existingKey(row.symbol, exchange))) continue;
 
       const nameTokens = normalizeCompanyName(row.name);
@@ -334,6 +354,10 @@ async function runFetch(args: Record<string, string | boolean>): Promise<void> {
       }
       if (!profile.websiteUrl) {
         skipped.push({ symbol: row.symbol, name: row.name, reason: 'no website on profile page' });
+        continue;
+      }
+      if (isinPrefix && !profile.isin?.startsWith(isinPrefix)) {
+        skipped.push({ symbol: row.symbol, name: row.name, reason: `ISIN ${profile.isin ?? '(none)'} does not start with ${isinPrefix}` });
         continue;
       }
 
@@ -376,6 +400,8 @@ async function runFetch(args: Record<string, string | boolean>): Promise<void> {
   await mkdir(path.dirname(outPath), { recursive: true });
   await writeFile(outPath, JSON.stringify(file, null, 2), 'utf-8');
 
+  const notInList = onlySymbols ? [...onlySymbols].filter((s) => !seenSymbols.has(s)) : [];
+  if (notInList.length > 0) console.warn(`\n--symbols not found in the list: ${notInList.join(', ')}`);
   if (skipped.length > 0) {
     console.log(`\nSkipped ${skipped.length} ranked stock(s):`);
     for (const s of skipped) console.log(`  - ${s.symbol} (${s.name}): ${s.reason}`);
@@ -509,6 +535,49 @@ async function runSql(args: Record<string, string | boolean>): Promise<void> {
   if (alreadyExists > 0) console.log(`  ${alreadyExists} candidate(s) already exist on production — left out`);
 }
 
+/** ---------- industries ---------- */
+
+const DEFAULT_INDUSTRIES_OUT = '../docs/insights-ui/stock-analysis/industries-in-use.md';
+
+function markdownCell(text: string): string {
+  return text.replace(/\|/g, '\\|').replace(/\s+/g, ' ').trim();
+}
+
+/**
+ * Writes the in-use sub-industries (non-archived, at least one stock) to a markdown file, so industry mapping for a
+ * hand-picked list of stocks can be done from the file instead of calling the API each time.
+ */
+async function runIndustries(args: Record<string, string | boolean>): Promise<void> {
+  const outPath = typeof args['out'] === 'string' ? args['out'] : DEFAULT_INDUSTRIES_OUT;
+  console.log(`Reading industries from ${API_BASE} …`);
+  const allowed = await fetchAllowedSubIndustries();
+
+  const byIndustry = new Map<string, AllowedSubIndustry[]>();
+  for (const sub of allowed) byIndustry.set(sub.industryKey, [...(byIndustry.get(sub.industryKey) ?? []), sub]);
+
+  const lines = [
+    '# Industries in use',
+    '',
+    `Generated ${new Date().toISOString().slice(0, 10)} from ${API_BASE}/api/industries by \`yarn stocks:populate industries\` — re-run it to refresh.`,
+    '',
+    `The ${allowed.length} non-archived sub-industries that already have at least one stock, across ${byIndustry.size} industries.`,
+    'New stocks must be mapped to one `industryKey` + `subIndustryKey` pair from this list (see [populate-stocks.md](populate-stocks.md)).',
+    'Counts are a snapshot; `yarn stocks:populate sql` re-checks every pair against production before writing the SQL.',
+    '',
+  ];
+  for (const [industryKey, subs] of byIndustry) {
+    lines.push(`## ${subs[0].industryName} — \`${industryKey}\``, '', '| subIndustryKey | Name | Stocks | What it covers |', '| --- | --- | --- | --- |');
+    for (const sub of subs) {
+      lines.push(`| \`${sub.subIndustryKey}\` | ${markdownCell(sub.subIndustryName)} | ${sub.tickerCount} | ${markdownCell(sub.summary)} |`);
+    }
+    lines.push('');
+  }
+
+  await mkdir(path.dirname(outPath), { recursive: true });
+  await writeFile(outPath, lines.join('\n'), 'utf-8');
+  console.log(`Wrote ${allowed.length} sub-industries in ${byIndustry.size} industries → ${outPath}`);
+}
+
 /** ---------- main ---------- */
 
 async function main() {
@@ -516,10 +585,13 @@ async function main() {
   const args = parseArgs(rest);
   if (command === 'fetch') return runFetch(args);
   if (command === 'sql') return runSql(args);
+  if (command === 'industries') return runIndustries(args);
   throw new Error(
     'Usage:\n' +
       '  yarn stocks:populate fetch --exchange <PSX|NSE|BSE|…> --count <n> [--out file.json] [--list-path /list/…/] [--delay-ms 1500]\n' +
-      '  yarn stocks:populate sql --in <candidates.json> [--out file.sql]'
+      '                            [--symbols SAP,SIE,…] [--isin-prefix DE]\n' +
+      '  yarn stocks:populate sql --in <candidates.json> [--out file.sql]\n' +
+      '  yarn stocks:populate industries [--out file.md]'
   );
 }
 

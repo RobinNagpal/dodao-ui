@@ -10,6 +10,7 @@ import {
   HongKongExchanges,
   KoreaExchanges,
   AustraliaExchanges,
+  GermanyExchanges,
 } from './countryExchangeUtils';
 
 /** ---------- URL Pattern Mappings ---------- */
@@ -58,6 +59,9 @@ const EXCHANGE_TO_URL_SEGMENT: Record<AllExchanges, string> = {
 
   // Australia Exchanges
   [AustraliaExchanges.ASX]: 'asx',
+
+  // Germany Exchanges
+  [GermanyExchanges.XETRA]: 'etr',
 } as const;
 
 /**

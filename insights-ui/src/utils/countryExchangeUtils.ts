@@ -15,6 +15,7 @@ export enum SupportedCountries {
   HongKong = 'HongKong',
   Korea = 'Korea',
   Australia = 'Australia',
+  Germany = 'Germany',
 }
 
 export enum USExchanges {
@@ -68,6 +69,10 @@ export enum AustraliaExchanges {
   ASX = 'ASX',
 }
 
+export enum GermanyExchanges {
+  XETRA = 'XETRA',
+}
+
 export type AllExchanges =
   | USExchanges
   | CanadaExchanges
@@ -78,7 +83,8 @@ export type AllExchanges =
   | TaiwanExchanges
   | HongKongExchanges
   | KoreaExchanges
-  | AustraliaExchanges;
+  | AustraliaExchanges
+  | GermanyExchanges;
 
 /** ---------- Constants ---------- */
 
@@ -104,6 +110,7 @@ export const EXCHANGES: ReadonlyArray<AllExchanges> = [
   KoreaExchanges.KOSDAQ,
   KoreaExchanges.KONEX,
   AustraliaExchanges.ASX,
+  GermanyExchanges.XETRA,
 ] as const;
 
 export const exchangeItems: StyledSelectItem[] = EXCHANGES.map((e) => ({ id: e, label: e }));
@@ -119,6 +126,7 @@ export const COUNTRY_TO_EXCHANGES: Record<SupportedCountries, AllExchanges[]> = 
   [SupportedCountries.HongKong]: Object.values(HongKongExchanges),
   [SupportedCountries.Korea]: Object.values(KoreaExchanges),
   [SupportedCountries.Australia]: Object.values(AustraliaExchanges),
+  [SupportedCountries.Germany]: Object.values(GermanyExchanges),
 };
 
 export const EXCHANGE_TO_COUNTRY: Record<AllExchanges, SupportedCountries> = {
@@ -143,6 +151,7 @@ export const EXCHANGE_TO_COUNTRY: Record<AllExchanges, SupportedCountries> = {
   [KoreaExchanges.KOSDAQ]: SupportedCountries.Korea,
   [KoreaExchanges.KONEX]: SupportedCountries.Korea,
   [AustraliaExchanges.ASX]: SupportedCountries.Australia,
+  [GermanyExchanges.XETRA]: SupportedCountries.Germany,
 };
 
 export type CountryCode = keyof typeof SupportedCountries;
@@ -219,6 +228,7 @@ export const getCountryCodeForSearchBarDisplay = (country: SupportedCountries): 
     [SupportedCountries.HongKong]: 'HKG',
     [SupportedCountries.Korea]: 'KOR',
     [SupportedCountries.Australia]: 'AUS',
+    [SupportedCountries.Germany]: 'DEU',
   };
   return countryCodeMap[country] || country;
 };

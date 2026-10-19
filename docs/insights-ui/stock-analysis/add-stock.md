@@ -42,11 +42,11 @@ The CLI and POST handler both enforce presence *and* format for these two fields
 ## Exchange validation
 
 The `exchange` value is validated against the predefined `EXCHANGES` array in
-`src/utils/countryExchangeUtils.ts`. The full list (20 exchanges across 10
+`src/utils/countryExchangeUtils.ts`. The full list (22 exchanges across 11
 countries):
 
 - **US:** `BATS`, `NASDAQ`, `NYSE`, `NYSEARCA`, `NYSEAMERICAN`, `OTCMKTS`
-- **Canada:** `TSX`, `TSXV`
+- **Canada:** `TSX`, `TSXV`, `NEO`
 - **India:** `BSE`, `NSE`
 - **UK:** `LSE`, `AIM`
 - **Pakistan:** `PSX`
@@ -55,6 +55,7 @@ countries):
 - **Hong Kong:** `HKEX`
 - **Korea:** `KOSPI`, `KOSDAQ`, `KONEX`
 - **Australia:** `ASX`
+- **Germany:** `XETRA`
 
 Any value not in the list is rejected with an error that lists the allowed
 values — both on the client side (CLI) and the server side (POST handler).
