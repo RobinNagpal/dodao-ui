@@ -111,8 +111,7 @@ values from the Vercel project settings (Environment Variables, Production). Do 
 | `DODAO_DEFAULT_SPACE_ID` | Space for `localhost` / `*.vercel.app` hosts (fallback). |
 | `GOOGLE_CLIENT_ID`/`_SECRET`, `DISCORD_CLIENT_ID`/`_SECRET`, `TWITTER_CLIENT_ID`/`_SECRET` | OAuth providers (web-core). |
 | `COOKIE_DOMAIN` *(optional)* | Defaults to `.tidbitshub.org` — one session across the apex and every space subdomain. Leave unset. |
-| `OPENAI_API_KEY`, `PINECONE_API_KEY`, `PINECONE_ENVIRONMENT`, `PINECONE_INDEX_NAME` | AI features. |
-| `GITHUB_TOKEN`, `MAIN_GIT_FOLDER_PATH` | Git-backed academy/course repos. The unit can only write under `/srv` (`ProtectSystem=full`, `ProtectHome=yes`, private `/tmp`), so use e.g. `/srv/academy-ui/git-repos` — outside `current/`, which each deploy replaces. |
+| `OPENAI_API_KEY` | AI features. |
 | `SERVER_ERRORS_WEBHOOK`, `ALL_GUIDE_SUBMISSIONS_WEBHOOK`, `SNAPSHOT_URI`, `VITE_DISCORD_CLIENT_ID` | Discord notifications. |
 | `NEXT_PUBLIC_UNSPLASH_API_KEY`, `NEXT_PUBLIC_DODAO_ACCESS_TOKEN_KEY_SUFFIX` | **Build-time** (any `NEXT_PUBLIC_*` in the secret is passed to the build). |
 
