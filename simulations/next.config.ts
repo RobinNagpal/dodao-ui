@@ -1,6 +1,11 @@
 import type { NextConfig } from 'next';
+import path from 'path';
 
 const nextConfig: NextConfig = {
+  // Self-contained server build for the shared Lightsail host (deployments/shared-host-apps). Inert on Vercel.
+  output: 'standalone',
+  // Monorepo root, so the standalone build traces @dodao/web-core and the hoisted node_modules.
+  outputFileTracingRoot: path.join(__dirname, '..'),
   compiler: {
     // Enables the styled-components SWC transform so components from @dodao/web-core work correctly
     styledComponents: true,
