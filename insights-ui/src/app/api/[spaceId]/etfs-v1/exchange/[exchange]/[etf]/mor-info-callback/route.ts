@@ -6,6 +6,8 @@ import {
   EtfMorOverview,
   EtfMorPeopleSummary,
   EtfMorReturnsRows,
+  EtfMorRiskPeriod,
+  EtfMorRiskPeriodData,
   EtfMorRiskPeriods,
   EtfMorStrategy,
   EtfMorPortfolioAssetAllocation,
@@ -17,6 +19,7 @@ import {
   EtfMorPortfolioStyleMeasures,
 } from '@/types/prismaTypes';
 import { revalidateEtfAndExchangeTag, revalidateEtfHoldingsTag } from '@/utils/etf-cache-utils';
+import { jsonArrayIsEmpty, rowsContainerIsEmpty } from '@/utils/etf-analysis-reports/mor-scrape-utils';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';
 
@@ -69,11 +72,6 @@ function sectorExposureIsEmpty(s: EtfMorPortfolioSectorExposure | null | undefin
   return (s.vsCategoryPct?.length ?? 0) === 0 && (s.vsIndexPct?.length ?? 0) === 0;
 }
 
-function rowsContainerIsEmpty(v: { rows?: unknown[] } | null | undefined): boolean {
-  if (v == null) return true;
-  return (v.rows?.length ?? 0) === 0;
-}
-
 function bondBreakdownIsEmpty(v: EtfMorPortfolioBondBreakdown | null | undefined): boolean {
   if (v == null) return true;
   return (v.vsCategoryPct?.length ?? 0) === 0 && (v.vsIndexPct?.length ?? 0) === 0;
@@ -84,6 +82,62 @@ function holdingsIsEmpty(v: EtfMorPortfolioHoldings | null | undefined): boolean
   const listEmpty = !Array.isArray(v.holdings) || v.holdings.length === 0;
   const summaryEmpty = !v.summary || Object.values(v.summary).every((x) => x == null || String(x).trim() === '');
   return listEmpty && summaryEmpty;
+}
+
+function isBlank(v: string | null | undefined): boolean {
+  return v == null || v.trim() === '';
+}
+
+/** Never replace an existing non-blank string column with null/blank. */
+function keepPrevString(incoming: string | null | undefined, prev: string | null | undefined): string | null {
+  return !isBlank(incoming) ? (incoming as string) : prev ?? null;
+}
+
+/**
+ * Never replace an existing non-empty JSON column with an empty one. Returns `undefined` (leave the
+ * column untouched) when the payload omitted the key.
+ */
+function keepPrevJson<T>(incoming: T | null | undefined, prev: unknown, isEmpty: (v: T) => boolean): T | undefined {
+  if (incoming != null && !isEmpty(incoming)) return incoming;
+  if (prev != null && !isEmpty(prev as T)) return prev as T;
+  return incoming ?? undefined;
+}
+
+function analysisIsEmpty(v: EtfMorAnalysis | null | undefined): boolean {
+  return v == null || jsonArrayIsEmpty(v.sections);
+}
+
+function quoteHoldingsIsEmpty(v: EtfMorHoldings | null | undefined): boolean {
+  return v == null || jsonArrayIsEmpty(v.topHoldings);
+}
+
+/** Half-rendered quote page: no overview metrics and no returns tables at all. */
+function quotePayloadIsEmpty(d: QuoteData): boolean {
+  return Object.keys(d.overview?.overviewMetrics ?? {}).length === 0 && jsonArrayIsEmpty(d.returns?.annual) && jsonArrayIsEmpty(d.returns?.trailing);
+}
+
+function riskPeriodIsEmpty(p: EtfMorRiskPeriodData | null | undefined): boolean {
+  if (p == null) return true;
+  const mvm = p.marketVolatilityMeasures;
+  return (
+    isBlank(p.portfolioRiskScore?.riskScore) &&
+    isBlank(p.portfolioRiskScore?.riskLevel) &&
+    isBlank(p.morAnalyzerRiskReturn?.riskVsCategory) &&
+    isBlank(p.morAnalyzerRiskReturn?.returnVsCategory) &&
+    rowsContainerIsEmpty(p.riskAndVolatilityMeasures) &&
+    rowsContainerIsEmpty(mvm?.captureRatios) &&
+    rowsContainerIsEmpty(mvm?.drawdown) &&
+    rowsContainerIsEmpty(mvm?.drawdownDates)
+  );
+}
+
+/** Merge per period: an empty incoming period keeps the previously stored one. */
+function mergeRiskPeriods(incoming: EtfMorRiskPeriods | null | undefined, prev: EtfMorRiskPeriods | null | undefined): EtfMorRiskPeriods {
+  const merged: Record<string, EtfMorRiskPeriodData> = { ...(prev ?? {}) };
+  for (const [period, data] of Object.entries(incoming ?? {}) as Array<[EtfMorRiskPeriod, EtfMorRiskPeriodData]>) {
+    if (!riskPeriodIsEmpty(data) || riskPeriodIsEmpty(prev?.[period])) merged[period] = data;
+  }
+  return merged as EtfMorRiskPeriods;
 }
 
 const DASH_PLACEHOLDERS = new Set(['—', '–', '−', '-', 'N/A', 'n/a']);
@@ -213,43 +267,52 @@ async function postHandler(
 
   if (kind === 'quote') {
     const d = data as QuoteData;
+
+    if (quotePayloadIsEmpty(d)) {
+      return {
+        success: false,
+        kind,
+        errors: [...lambdaErrors, 'Incomplete quote scrape: overview metrics and returns are empty; existing data left untouched'],
+      };
+    }
+
     const overview = d.overview ?? {};
     const overviewMetrics = overview.overviewMetrics ?? {};
     const marketData = overview.marketData ?? {};
-    const analysis = d.analysis;
     const returns = d.returns ?? {};
-    const holdings = d.holdings;
     const strategy = d.strategy ?? {};
 
+    const prev = await prisma.etfMorAnalyzerInfo.findUnique({ where: { etfId: etfRecord.id } });
+
     const analyzerData = {
-      overviewNav: overviewMetrics['NAV'] ?? null,
-      overviewOneDayReturn: overviewMetrics['1-Day Return'] ?? null,
-      overviewTotalAssets: overviewMetrics['Total Assets'] ?? null,
-      overviewInvestmentSize: overviewMetrics['Investment Size'] ?? null,
-      overviewAdjExpenseRatio: overviewMetrics['Adj. Expense Ratio'] ?? null,
-      overviewProspectusNetExpenseRatio: overviewMetrics['Prospectus Net Expense Ratio'] ?? null,
-      overviewMer: overviewMetrics['MER'] ?? null,
-      overviewCategory: overviewMetrics['Category'] ?? null,
-      overviewStyleBox: overviewMetrics['Style Box'] ?? overviewMetrics['Equity Style Box'] ?? null,
-      overviewSecYield: overviewMetrics['SEC Yield'] ?? null,
-      overviewTtmYield: overviewMetrics['TTM Yield'] ?? null,
-      overviewTurnover: overviewMetrics['Turnover'] ?? null,
-      overviewRiskLevel: overviewMetrics['Risk Level'] ?? null,
-      overviewStatus: overviewMetrics['Status'] ?? null,
-      marketNav: marketData['NAV'] ?? null,
-      marketOpenPrice: marketData['Open Price'] ?? null,
-      marketBidAskSpread: marketData['Bid / Ask / Spread'] ?? null,
-      marketVolumeAvg: marketData['Volume / Avg'] ?? null,
-      marketDayRange: marketData['Day Range'] ?? null,
-      marketYearRange: marketData['Year Range'] ?? null,
-      marketProspectusBenchmark: marketData['Prospectus Benchmark'] ?? null,
-      marketDiscount: marketData['Discount'] ?? null,
-      marketPremium: marketData['Premium'] ?? null,
-      analysis: analysis as any,
-      returnsAnnual: (returns.annual ?? []) as any,
-      returnsTrailing: (returns.trailing ?? []) as any,
-      holdings: holdings as any,
-      strategyText: strategy.text ?? null,
+      overviewNav: keepPrevString(overviewMetrics['NAV'], prev?.overviewNav),
+      overviewOneDayReturn: keepPrevString(overviewMetrics['1-Day Return'], prev?.overviewOneDayReturn),
+      overviewTotalAssets: keepPrevString(overviewMetrics['Total Assets'], prev?.overviewTotalAssets),
+      overviewInvestmentSize: keepPrevString(overviewMetrics['Investment Size'], prev?.overviewInvestmentSize),
+      overviewAdjExpenseRatio: keepPrevString(overviewMetrics['Adj. Expense Ratio'], prev?.overviewAdjExpenseRatio),
+      overviewProspectusNetExpenseRatio: keepPrevString(overviewMetrics['Prospectus Net Expense Ratio'], prev?.overviewProspectusNetExpenseRatio),
+      overviewMer: keepPrevString(overviewMetrics['MER'], prev?.overviewMer),
+      overviewCategory: keepPrevString(overviewMetrics['Category'], prev?.overviewCategory),
+      overviewStyleBox: keepPrevString(overviewMetrics['Style Box'] ?? overviewMetrics['Equity Style Box'], prev?.overviewStyleBox),
+      overviewSecYield: keepPrevString(overviewMetrics['SEC Yield'], prev?.overviewSecYield),
+      overviewTtmYield: keepPrevString(overviewMetrics['TTM Yield'], prev?.overviewTtmYield),
+      overviewTurnover: keepPrevString(overviewMetrics['Turnover'], prev?.overviewTurnover),
+      overviewRiskLevel: keepPrevString(overviewMetrics['Risk Level'], prev?.overviewRiskLevel),
+      overviewStatus: keepPrevString(overviewMetrics['Status'], prev?.overviewStatus),
+      marketNav: keepPrevString(marketData['NAV'], prev?.marketNav),
+      marketOpenPrice: keepPrevString(marketData['Open Price'], prev?.marketOpenPrice),
+      marketBidAskSpread: keepPrevString(marketData['Bid / Ask / Spread'], prev?.marketBidAskSpread),
+      marketVolumeAvg: keepPrevString(marketData['Volume / Avg'], prev?.marketVolumeAvg),
+      marketDayRange: keepPrevString(marketData['Day Range'], prev?.marketDayRange),
+      marketYearRange: keepPrevString(marketData['Year Range'], prev?.marketYearRange),
+      marketProspectusBenchmark: keepPrevString(marketData['Prospectus Benchmark'], prev?.marketProspectusBenchmark),
+      marketDiscount: keepPrevString(marketData['Discount'], prev?.marketDiscount),
+      marketPremium: keepPrevString(marketData['Premium'], prev?.marketPremium),
+      analysis: keepPrevJson(d.analysis, prev?.analysis, analysisIsEmpty) as any,
+      returnsAnnual: (keepPrevJson(returns.annual, prev?.returnsAnnual, jsonArrayIsEmpty) ?? []) as any,
+      returnsTrailing: (keepPrevJson(returns.trailing, prev?.returnsTrailing, jsonArrayIsEmpty) ?? []) as any,
+      holdings: keepPrevJson(d.holdings, prev?.holdings, quoteHoldingsIsEmpty) as any,
+      strategyText: keepPrevString(strategy.text, prev?.strategyText),
     };
 
     await prisma.etfMorAnalyzerInfo.upsert({
@@ -262,25 +325,27 @@ async function postHandler(
     });
   } else if (kind === 'risk') {
     const d = data as EtfMorRiskPeriods;
+    const prev = await prisma.etfMorRiskInfo.findUnique({ where: { etfId: etfRecord.id }, select: { riskPeriods: true } });
+    const riskPeriods = mergeRiskPeriods(d, prev?.riskPeriods as EtfMorRiskPeriods | null | undefined);
 
     await prisma.etfMorRiskInfo.upsert({
       where: { etfId: etfRecord.id },
-      update: { riskPeriods: d as any },
-      create: { etf: { connect: { id: etfRecord.id } }, riskPeriods: d as any },
+      update: { riskPeriods: riskPeriods as any },
+      create: { etf: { connect: { id: etfRecord.id } }, riskPeriods: riskPeriods as any },
     });
   } else if (kind === 'people') {
     const d = data as PeopleData;
     const people = d.people ?? {};
-    const managementTeam = d.managementTeam ?? [];
+    const prev = await prisma.etfMorPeopleInfo.findUnique({ where: { etfId: etfRecord.id } });
 
     const peopleData = {
-      inceptionDate: people.inceptionDate ?? null,
-      numberOfManagers: people.numberOfManagers ?? null,
-      longestTenure: people.longestTenure ?? null,
-      advisors: people.advisors ?? null,
-      subAdvisors: people.subAdvisors ?? null,
-      averageTenure: people.averageTenure ?? null,
-      currentManagers: managementTeam as any,
+      inceptionDate: keepPrevString(people.inceptionDate, prev?.inceptionDate),
+      numberOfManagers: keepPrevString(people.numberOfManagers, prev?.numberOfManagers),
+      longestTenure: keepPrevString(people.longestTenure, prev?.longestTenure),
+      advisors: keepPrevString(people.advisors, prev?.advisors),
+      subAdvisors: keepPrevString(people.subAdvisors, prev?.subAdvisors),
+      averageTenure: keepPrevString(people.averageTenure, prev?.averageTenure),
+      currentManagers: (keepPrevJson(d.managementTeam, prev?.currentManagers, jsonArrayIsEmpty) ?? []) as any,
     };
 
     await prisma.etfMorPeopleInfo.upsert({

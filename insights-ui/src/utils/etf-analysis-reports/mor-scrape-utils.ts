@@ -105,26 +105,42 @@ export interface EnsureMorDataParams {
   symbol: string;
 }
 
+/** True when a `{ rows: [...] }` JSON container (asset allocation, risk tables, …) has no rows. */
+export function rowsContainerIsEmpty(v: { rows?: unknown[] } | null | undefined): boolean {
+  if (v == null) return true;
+  return (v.rows?.length ?? 0) === 0;
+}
+
+/** True when a stored/scraped JSON value is not a non-empty array (e.g. returns rows, current managers). */
+export function jsonArrayIsEmpty(v: unknown): boolean {
+  return !Array.isArray(v) || v.length === 0;
+}
+
 /**
- * Fire-and-forget: for any of the 4 MOR tables that does not yet have a row for this ETF,
- * trigger the scraping lambda to populate it. Lambda callbacks arrive asynchronously and
- * upsert the tables, so by the time a worker picks up the generation request the data
- * should be present. Failures to trigger any individual kind are logged but do not throw,
- * so request creation is never blocked by a transient lambda outage.
+ * Fire-and-forget: for any of the 4 MOR tables that does not yet have usable data for this ETF,
+ * trigger the scraping lambda to populate it. A quote row with neither a category nor annual
+ * returns, or a portfolio row without an asset allocation, is a half-rendered scrape and counts
+ * as missing. Lambda callbacks arrive asynchronously and upsert the tables, so by the time a
+ * worker picks up the generation request the data should be present. Failures to trigger any
+ * individual kind are logged but do not throw, so request creation is never blocked by a
+ * transient lambda outage.
  */
 export async function ensureMorDataForAnalysis(params: EnsureMorDataParams): Promise<MorKind[]> {
-  const [analyzerCount, riskCount, peopleCount, portfolioCount] = await Promise.all([
-    prisma.etfMorAnalyzerInfo.count({ where: { etfId: params.etfId } }),
+  const [analyzerRow, riskCount, peopleCount, portfolioRow] = await Promise.all([
+    prisma.etfMorAnalyzerInfo.findUnique({ where: { etfId: params.etfId }, select: { overviewCategory: true, returnsAnnual: true } }),
     prisma.etfMorRiskInfo.count({ where: { etfId: params.etfId } }),
     prisma.etfMorPeopleInfo.count({ where: { etfId: params.etfId } }),
-    prisma.etfMorPortfolioInfo.count({ where: { etfId: params.etfId } }),
+    prisma.etfMorPortfolioInfo.findUnique({ where: { etfId: params.etfId }, select: { assetAllocation: true } }),
   ]);
 
+  const quoteMissing = !analyzerRow || ((analyzerRow.overviewCategory ?? '').trim() === '' && jsonArrayIsEmpty(analyzerRow.returnsAnnual));
+  const portfolioMissing = !portfolioRow || rowsContainerIsEmpty(portfolioRow.assetAllocation);
+
   const missingKinds: MorKind[] = [];
-  if (analyzerCount === 0) missingKinds.push('quote');
+  if (quoteMissing) missingKinds.push('quote');
   if (riskCount === 0) missingKinds.push('risk');
   if (peopleCount === 0) missingKinds.push('people');
-  if (portfolioCount === 0) missingKinds.push('portfolio');
+  if (portfolioMissing) missingKinds.push('portfolio');
 
   if (missingKinds.length === 0) return [];
 
