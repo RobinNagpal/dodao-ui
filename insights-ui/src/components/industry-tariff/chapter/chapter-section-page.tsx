@@ -27,9 +27,8 @@ import {
   getChapterSectionCopy,
 } from '@/utils/tariff-reports/chapter-route-helpers';
 import { tariffReportTag } from '@/utils/tariff-report-tags';
-import { hasChapterExports, latestExportChange } from '@/utils/tariff-reports/chapter-exports';
+import { hasChapterExports } from '@/utils/tariff-reports/chapter-exports';
 import { approach2PageGlossaryTerms } from '@/utils/tariff-reports/chapter-glossary';
-import { latestChapterChange } from '@/utils/tariff-reports/chapter-prototype';
 import type { TariffChapterPrototype } from '@/types/tariff-chapter-prototype';
 import { isValidTariffChapterSlug } from '@/utils/tariff-reports/tariff-input-validation';
 import type { Metadata } from 'next';
@@ -162,24 +161,9 @@ interface ChapterArticleProps {
   ratesAsOf?: string;
   // Approach-2 pages that hold no rates (import statistics, FAQ) say "Updated" instead of "Rates checked".
   asOfLabel?: string;
-  // Approach-2 pages pass the chapter's loaded content (`getChapterPrototype`) so the header's latest
-  // change and the key-terms box read from it without loading the content file again.
+  // Approach-2 pages pass the chapter's loaded content (`getChapterPrototype`) so the key-terms box
+  // reads from it without loading the content file again.
   prototype?: TariffChapterPrototype | null;
-}
-
-// The header's "Latest change" line for an Approach-2 page: the newest change on the tariff-updates
-// page of the same direction (import or export), linked to that page.
-function approach2LatestChange(
-  chapterSlug: string,
-  direction: ChapterReportDirection,
-  prototype: TariffChapterPrototype | null
-): { date: string; title: string; href: string } | undefined {
-  if (direction === 'export') {
-    const change = latestExportChange(chapterSlug);
-    return change ? { ...change, href: chapterExportHref(chapterSlug, 'exports/tariff-updates') } : undefined;
-  }
-  const change = prototype ? latestChapterChange(prototype) : null;
-  return change ? { ...change, href: chapterSectionHref(chapterSlug, 'tariff-updates') } : undefined;
 }
 
 function toValidDate(value: string | undefined): Date | null {
@@ -224,7 +208,6 @@ export function ChapterArticle({
             pageTitle={pageTitle}
             ratesAsOf={ratesAsOf}
             asOfLabel={asOfLabel}
-            latestChange={approach2LatestChange(chapter.slug, direction, prototype)}
             toolLinks={toolsCrossLinks}
             currentSlug={currentSlug}
             direction={direction}
@@ -236,7 +219,7 @@ export function ChapterArticle({
                 </PrivateWrapper>
               ) : undefined
             }
-            directionSwitch={hasChapterExports(chapter.slug) ? <ChapterDirectionSwitch chapter={chapter} direction={direction} layout="parts" /> : undefined}
+            directionSwitch={hasChapterExports(chapter.slug) ? <ChapterDirectionSwitch chapter={chapter} direction={direction} layout="header" /> : undefined}
           />
         ) : (
           <>

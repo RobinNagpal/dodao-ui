@@ -1,24 +1,21 @@
+import type { TariffSectionListItem } from '@/app/api/tariff-calculator/sections/route';
 import type { TariffReportListingItem } from '@/app/api/tariff-reports/listing/route';
+import { chapterReportNavItems } from '@/components/industry-tariff/chapter/ChapterRelatedSections';
 import BreadcrumbsWithJsonLd from '@/components/ui/BreadcrumbsWithJsonLd';
-import TariffChapterCardGrid from '@/components/industry-tariff/TariffChapterCardGrid';
+import TariffChapterList, { type TariffChapterListGroup, type TariffChapterListItem } from '@/components/industry-tariff/TariffChapterList';
 import TariffReportsPageActions from '@/components/industry-tariff/TariffReportsPageActions';
 import ToolPills from '@/components/tariff-cross-links/ToolPills';
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
 import { hasChapterExports } from '@/utils/tariff-reports/chapter-exports';
 import { type ChapterPrototypeCard, getChapterPrototypeCard, hasChapterPrototype } from '@/utils/tariff-reports/chapter-prototype';
-import {
-  approach2SectionLabel,
-  CHAPTER_REPORT_SECTIONS,
-  chapterCoverHref,
-  chapterExportHref,
-  chapterSectionHref,
-} from '@/utils/tariff-reports/chapter-route-helpers';
+import { IndexListRow, type IndexListLink, type IndexListLinkGroup } from '@/components/ui/sections/IndexList';
+import { TARIFF_SECTIONS_LISTING_TAG } from '@/utils/tariff-calculator/cache-tags';
+import { chapterCoverHref } from '@/utils/tariff-reports/chapter-route-helpers';
 import { TARIFF_REPORTS_LISTING_TAG } from '@/utils/tariff-report-tags';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
-import { ArrowRight, Calculator, FileText, Layers, ListTree, Ship } from 'lucide-react';
+import { Calculator, FileText, ListTree } from 'lucide-react';
 import { Metadata } from 'next';
-import Link from 'next/link';
 
 async function fetchTariffReportsListing(): Promise<TariffReportListingItem[]> {
   const url = `${getBaseUrlForServerSidePages()}/api/tariff-reports/listing`;
@@ -79,94 +76,110 @@ function formatDate(value: string, utc = false): string {
   return new Date(value).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric', ...(utc ? { timeZone: 'UTC' } : {}) });
 }
 
-interface ChapterCardProps {
-  chapterNumber: number;
-  chapterTitle: string;
-  chapterSlug: string;
-  lastModified?: string;
-  // Chapters with export pages get a second "U.S. exports" link next to "Open report".
-  hasExports: boolean;
-  /** Set for Approach-2 chapters (content file); null for DB-backed chapters. */
-  approach2: ChapterPrototypeCard | null;
+// Same section index as the HTS code browser, so the two pages group chapters the same way.
+async function fetchSections(): Promise<TariffSectionListItem[]> {
+  const url = `${getBaseUrlForServerSidePages()}/api/tariff-calculator/sections`;
+  try {
+    const res = await fetch(url, { next: { tags: [TARIFF_SECTIONS_LISTING_TAG] } });
+    if (!res.ok) {
+      console.error(`Failed to fetch tariff sections: HTTP ${res.status}`);
+      return [];
+    }
+    return (await res.json()) as TariffSectionListItem[];
+  } catch (e) {
+    console.error('Failed to fetch tariff sections:', e);
+    return [];
+  }
 }
 
-// Card-only ordering: shorter labels first so the 5 section pills fit in two rows
-// instead of three. The canonical reading order lives in CHAPTER_REPORT_SECTIONS.
-const CARD_SECTION_DISPLAY_ORDER = ['tariff-updates', 'industry-areas', 'tariff-engineering', 'understand-industry', 'final-conclusion'];
+function chapterRange(chapters: TariffSectionListItem['chapters']): string | undefined {
+  if (chapters.length === 0) return undefined;
+  const numbers = chapters.map((c) => c.number);
+  const min = Math.min(...numbers);
+  const max = Math.max(...numbers);
+  return min === max ? `Chapter ${min}` : `Chapters ${min} – ${max}`;
+}
 
-function ChapterCard({ chapterNumber, chapterTitle, chapterSlug, lastModified, hasExports, approach2 }: ChapterCardProps) {
-  const padded = chapterNumber.toString().padStart(2, '0');
-  const href = chapterCoverHref(chapterSlug);
-  const title = `${chapterTitle}`;
-  // Approach-2 chapters name their pages differently (see approach2SectionLabel); the pills match their tabs.
-  // Their card also takes its date and summary from the content file: the DB row's updatedAt does not
-  // move when the file is refreshed, and the first key takeaway says more than the boilerplate.
-  const isApproach2 = Boolean(approach2);
-  const description = approach2
-    ? approach2.summary
-    : `Tariff and trade-policy analysis for HTS Chapter ${padded} (${chapterTitle}). Browse tariff updates, country-level breakdowns, industry structure, and forward-looking conclusions.`;
-  const updatedLabel = approach2 ? formatDate(approach2.asOf, true) : lastModified ? formatDate(lastModified) : null;
-  const orderedSections = CARD_SECTION_DISPLAY_ORDER.map((slug) => CHAPTER_REPORT_SECTIONS.find((s) => s.slug === slug)).filter(
-    (s): s is (typeof CHAPTER_REPORT_SECTIONS)[number] => Boolean(s)
-  );
+// One chapter as a list row: number, title, updated date, summary, then a link per report page
+// (same pages and order as the report's tabs); chapters with export pages add their export pages
+// as a second, named group.
+// Approach-2 chapters (content file) name their pages like their tabs and take their date and
+// summary from the file; DB-backed chapters show no summary rather than boilerplate.
+function chapterListItem(row: TariffReportListingItem, sectionTitle: string, approach2: ChapterPrototypeCard | null): TariffChapterListItem {
+  const { number, title } = row.chapter;
+  const padded = number.toString().padStart(2, '0');
+  const hasExports = hasChapterExports(row.slug);
+  const updatedLabel = approach2 ? formatDate(approach2.asOf, true) : row.updatedAt ? formatDate(row.updatedAt) : null;
+  const chapter = { number, title, slug: row.slug };
+  const toLinks = (items: Array<{ href: string; label: string }>): IndexListLink[] => items.map((item) => ({ href: item.href, label: item.label }));
+  const importLinks = toLinks(chapterReportNavItems(chapter, 'import', Boolean(approach2)));
+  // Chapters with export pages list both halves, each under its own name, like the report's own switch.
+  const linkGroups: IndexListLinkGroup[] = hasExports
+    ? [
+        { label: 'U.S. imports', links: importLinks },
+        { label: 'U.S. exports', links: toLinks(chapterReportNavItems(chapter, 'export', true)) },
+      ]
+    : [{ links: importLinks }];
 
-  return (
-    // The whole card opens the report: the title link stretches over it (::after), and the
-    // section pills and "Open report" sit above that overlay (relative z-10) so they keep their own targets.
-    <article className="group relative flex flex-col rounded-2xl bg-bg border border-border transition-all hover:border-primary p-6">
-      <div className="mb-4 flex items-center justify-between text-xs">
-        <span className="inline-flex items-center gap-1.5 rounded-full bg-blue-500/10 px-2.5 py-1 font-medium text-blue-400 ring-1 ring-inset ring-blue-500/20">
-          <Layers className="h-3 w-3" />
-          HTS Chapter {padded}
-        </span>
-        {updatedLabel && <span className="text-muted">Updated {updatedLabel}</span>}
-      </div>
+  return {
+    key: row.slug,
+    chapterNumber: number,
+    searchText: [`chapter ${padded} ${number}`, title, approach2?.summary ?? '', sectionTitle].join(' ').toLowerCase(),
+    hasExports,
+    row: (
+      <IndexListRow
+        number={padded}
+        title={title}
+        href={chapterCoverHref(row.slug)}
+        meta={updatedLabel ? `Updated ${updatedLabel}` : undefined}
+        summary={approach2?.summary}
+        linkGroups={linkGroups}
+        linksLabel={`Chapter ${padded} report pages`}
+      />
+    ),
+  };
+}
 
-      <h3 className="mb-2 text-xl font-semibold leading-snug text-heading">
-        <Link
-          href={href}
-          className="transition-colors after:absolute after:inset-0 after:rounded-2xl after:content-[''] group-hover:text-link focus-visible:text-link focus-visible:outline-none focus-visible:after:ring-2 focus-visible:after:ring-primary"
-        >
-          {title}
-        </Link>
-      </h3>
+// Groups the chapters under their HTS sections, in section order; chapters the section index does
+// not list (or every chapter, if it failed to load) go in a final ungrouped list.
+function groupChapters(
+  rows: TariffReportListingItem[],
+  sections: TariffSectionListItem[],
+  approach2Cards: Map<string, ChapterPrototypeCard | null>
+): TariffChapterListGroup[] {
+  const byNumber = new Map(rows.map((row) => [row.chapter.number, row]));
+  const placed = new Set<number>();
+  const groups: TariffChapterListGroup[] = [];
 
-      <p className="mb-5 line-clamp-3 flex-1 text-sm text-muted">{description}</p>
+  for (const section of sections) {
+    const sectionRows = section.chapters
+      .map((c) => byNumber.get(c.number))
+      .filter((row): row is TariffReportListingItem => Boolean(row))
+      .sort((a, b) => a.chapter.number - b.chapter.number);
+    if (sectionRows.length === 0) continue;
+    sectionRows.forEach((row) => placed.add(row.chapter.number));
+    groups.push({
+      key: `section-${section.number}`,
+      label: `Section ${section.romanNumeral}`,
+      title: section.title,
+      subtitle: chapterRange(section.chapters),
+      items: sectionRows.map((row) => chapterListItem(row, section.title, approach2Cards.get(row.slug) ?? null)),
+    });
+  }
 
-      <div className="relative z-10 mb-5 flex flex-wrap gap-1.5">
-        {orderedSections.map((section) => (
-          <Link
-            key={section.slug}
-            href={chapterSectionHref(chapterSlug, section.slug)}
-            className="inline-flex items-center rounded-md border border-border px-2 py-1 text-xs font-medium text-muted transition-colors hover:border-primary hover:bg-blue-500/5 hover:text-primary"
-          >
-            {isApproach2 ? approach2SectionLabel(section.slug) : section.label}
-          </Link>
-        ))}
-      </div>
-
-      <div className="relative z-10 mt-auto flex flex-wrap items-center gap-x-5 gap-y-2">
-        <Link href={href} className="inline-flex items-center gap-1.5 text-sm font-medium text-link transition-colors group-hover:text-link">
-          Open report
-          <ArrowRight className="h-4 w-4" />
-        </Link>
-        {hasExports && (
-          <Link
-            href={chapterExportHref(chapterSlug)}
-            className="inline-flex items-center gap-1.5 text-sm font-medium text-muted transition-colors hover:text-link"
-          >
-            <Ship className="h-4 w-4" />
-            U.S. exports
-            <ArrowRight className="h-4 w-4" />
-          </Link>
-        )}
-      </div>
-    </article>
-  );
+  const rest = rows.filter((row) => !placed.has(row.chapter.number)).sort((a, b) => a.chapter.number - b.chapter.number);
+  if (rest.length > 0) {
+    groups.push({
+      key: 'other',
+      title: groups.length > 0 ? 'Other chapters' : 'All chapters',
+      items: rest.map((row) => chapterListItem(row, '', approach2Cards.get(row.slug) ?? null)),
+    });
+  }
+  return groups;
 }
 
 export default async function TariffReportsPage() {
-  const rows = await fetchTariffReportsListing();
+  const [rows, sections] = await Promise.all([fetchTariffReportsListing(), fetchSections()]);
   // Approach-2 chapters' card facts come from their content files (one lazily loaded chunk each).
   const approach2Cards = new Map(
     await Promise.all(rows.filter((row) => hasChapterPrototype(row.slug)).map(async (row) => [row.slug, await getChapterPrototypeCard(row.slug)] as const))
@@ -208,8 +221,8 @@ export default async function TariffReportsPage() {
             </div>
           </div>
           <p className="mt-3 max-w-3xl text-muted-foreground">
-            Tariff and trade-policy analysis for chapters of the U.S. Harmonized Tariff Schedule (HTS). Each report covers tariff updates, country breakdowns,
-            industry structure, sub-areas, and forward-looking conclusions.
+            What the U.S. charges on each chapter of the Harmonized Tariff Schedule (HTS): today&apos;s rates, recent changes, rates by country and ways to
+            lower the duty. Search by chapter number or product, or browse by section below.
           </p>
         </header>
 
@@ -221,26 +234,7 @@ export default async function TariffReportsPage() {
           </div>
         ) : (
           <section className="mb-14">
-            <div className="mb-6 flex items-baseline justify-between border-b border-border pb-2">
-              <h2 className="text-2xl font-semibold text-heading">All Chapters</h2>
-              <span className="text-sm text-muted">{rows.length} chapters</span>
-            </div>
-            <TariffChapterCardGrid
-              items={rows.map((row) => ({
-                key: row.slug,
-                hasExports: hasChapterExports(row.slug),
-                card: (
-                  <ChapterCard
-                    chapterNumber={row.chapter.number}
-                    chapterTitle={row.chapter.title}
-                    chapterSlug={row.slug}
-                    lastModified={row.updatedAt}
-                    hasExports={hasChapterExports(row.slug)}
-                    approach2={approach2Cards.get(row.slug) ?? null}
-                  />
-                ),
-              }))}
-            />
+            <TariffChapterList groups={groupChapters(rows, sections, approach2Cards)} />
           </section>
         )}
       </div>

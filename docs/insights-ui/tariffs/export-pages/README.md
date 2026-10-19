@@ -29,7 +29,7 @@ Each fact has one home. Other pages link to it instead of repeating it.
 | --- | --- | --- |
 | Export values by year, buyer, product | Overview | — |
 | A buyer's tariff by product group, and why | Markets | Overview: one short line per buyer |
-| What changed since January 2025, and what is coming | Tariff updates | Header "Latest change" line |
+| What changed since January 2025, and what is coming | Tariff updates | — |
 | What the U.S. requires before export; ways to pay less abroad | Export rules | — |
 | Short answers to real search questions | FAQ | — (answers link to the page with the detail) |
 

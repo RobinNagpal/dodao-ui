@@ -8,9 +8,11 @@ interface BreadcrumbsWithJsonLdProps {
   breadcrumbs: BreadcrumbsOjbect[];
   rightButton?: ReactNode;
   hideHomeIcon?: boolean;
+  /** Phones show a single back link to the parent crumb instead of the full chain (see BreadcrumbsWithChevrons). */
+  mobileBackOnly?: boolean;
 }
 
-export default function BreadcrumbsWithJsonLd({ breadcrumbs, rightButton, hideHomeIcon }: BreadcrumbsWithJsonLdProps) {
+export default function BreadcrumbsWithJsonLd({ breadcrumbs, rightButton, hideHomeIcon, mobileBackOnly }: BreadcrumbsWithJsonLdProps) {
   const itemListElement = [
     { '@type': 'ListItem' as const, position: 1, name: 'Home', item: `${BASE_URL}/` },
     ...breadcrumbs.map((b, i) => ({
@@ -30,7 +32,7 @@ export default function BreadcrumbsWithJsonLd({ breadcrumbs, rightButton, hideHo
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(ld) }} />
-      <Breadcrumbs breadcrumbs={breadcrumbs} rightButton={rightButton} hideHomeIcon={hideHomeIcon} />
+      <Breadcrumbs breadcrumbs={breadcrumbs} rightButton={rightButton} hideHomeIcon={hideHomeIcon} mobileBackOnly={mobileBackOnly} />
     </>
   );
 }

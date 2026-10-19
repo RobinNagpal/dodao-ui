@@ -14,6 +14,12 @@ import React from 'react';
  *
  * Rows can also be picked rather than expanded (`onSelect`), e.g. search results in a line picker;
  * `selected` on the list marks the one that was picked.
+ *
+ * A row with only a few short values can show them all instead of hiding them behind a tap:
+ * `meta` is a line under the first one (e.g. "+33.0% vs 2024 · 10.4% share").
+ *
+ * A long list can fold its tail away with `collapseAfter`: the first rows show, then a "Show all"
+ * toggle opens the rest below it. Native `<details>`, so no client JS and every row stays in the HTML.
  */
 
 // `overflow-x-clip` (not `auto`/`hidden`) keeps anything too wide from widening the page without
@@ -28,14 +34,43 @@ const list = cva('min-w-0 overflow-x-clip rounded-lg border', {
 export type StackedRowListProps = VariantProps<typeof list> & {
   header?: React.ReactNode;
   children: React.ReactNode;
+  /** Rows shown before the "Show all" toggle. The list only folds when that hides at least 3 rows. */
+  collapseAfter?: number;
+  /** Toggle text while folded, e.g. "Show all 42 groups". */
+  showAllLabel?: React.ReactNode;
+  /** Toggle text while open. */
+  showFewerLabel?: React.ReactNode;
   className?: string;
 };
 
-export function StackedRowList({ header, selected, children, className }: StackedRowListProps): React.JSX.Element {
+const MIN_FOLDED_ROWS = 3;
+
+export function StackedRowList({
+  header,
+  selected,
+  children,
+  collapseAfter,
+  showAllLabel = 'Show all',
+  showFewerLabel = 'Show fewer',
+  className,
+}: StackedRowListProps): React.JSX.Element {
+  const rows = React.Children.toArray(children);
+  const folds = collapseAfter !== undefined && rows.length - collapseAfter >= MIN_FOLDED_ROWS;
+
   return (
     <div className={cn(list({ selected }), className)}>
       {header}
-      <ul>{children}</ul>
+      <ul>{folds ? rows.slice(0, collapseAfter) : rows}</ul>
+      {folds && (
+        <details className="group border-t border-border">
+          <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between gap-3 px-3 text-sm font-medium link-color group-open:border-b group-open:border-border [&::-webkit-details-marker]:hidden">
+            <span className="group-open:hidden">{showAllLabel}</span>
+            <span className="hidden group-open:inline">{showFewerLabel}</span>
+            <ChevronDownIcon className="h-4 w-4 shrink-0 transition-transform group-open:rotate-180" aria-hidden="true" />
+          </summary>
+          <ul>{rows.slice(collapseAfter)}</ul>
+        </details>
+      )}
     </div>
   );
 }
@@ -97,6 +132,8 @@ export type StackedRowProps = VariantProps<typeof item> &
     label: React.ReactNode;
     /** Key value, right-aligned on the first line (e.g. the base rate). */
     value?: React.ReactNode;
+    /** Secondary values, always visible, in a small muted line under the first line. */
+    meta?: React.ReactNode;
     /** Hierarchy depth, 0..6. Values above 6 clamp to 6. */
     indent?: number;
     /** Shown under the row while `expanded`. Rows without `onToggle` never expand. */
@@ -112,6 +149,7 @@ export function StackedRow({
   code,
   label,
   value: rowValue,
+  meta,
   tone,
   indent = 0,
   emphasis,
@@ -133,6 +171,7 @@ export function StackedRow({
         {code ? <span className="font-mono text-xs tabular-nums text-primary">{code}</span> : labelText}
         {rowValue && <span className={value({ tone })}>{rowValue}</span>}
       </span>
+      {meta && <span className="block text-xs text-muted">{meta}</span>}
       {code && (
         <span className="flex items-start justify-between gap-3">
           {labelText}
