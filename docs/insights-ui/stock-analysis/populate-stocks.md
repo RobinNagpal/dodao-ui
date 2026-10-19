@@ -12,7 +12,7 @@ Claude runs step 1, does the industry mapping in step 2, runs step 3 and hands b
 | Step                 | Who     | Command / action                                                                          | Output                                                    |
 | -------------------- | ------- | ----------------------------------------------------------------------------------------- | --------------------------------------------------------- |
 | 1. Fetch candidates  | Claude  | `yarn stocks:populate fetch --exchange PSX --count 100`                                   | `insights-ui/stock-population/psx-<date>-candidates.json` |
-| 2. Map industries    | Claude  | Fill `industryKey` + `subIndustryKey` for every candidate                                 | same file                                                 |
+| 2. Map industries    | Claude  | Fill `industryKey` + `subIndustryKey` from [industries-in-use.md](industries-in-use.md)   | same file                                                 |
 | 3. Generate SQL      | Claude  | `yarn stocks:populate sql --in stock-population/psx-<date>-candidates.json`               | `insights-ui/stock-population/psx-<date>.sql`             |
 | 4. Run on production | Manager | `psql "$PROD_DATABASE_URL" -f psx-<date>.sql`                                             | rows in `tickers_v1`                                      |
 | 5. Generate reports  | Anyone  | `yarn stocks:trigger --in …` (see [generate-stock-reports.md](generate-stock-reports.md)) | reports                                                   |
@@ -40,11 +40,27 @@ What it does:
 
 `stockAnalyzeUrl` is generated from symbol + exchange (`generateExpectedStockAnalyzeUrl`), never scraped.
 
-Flags: `--out <file>`, `--delay-ms <ms>` (default 1500), `--list-path /list/…/` for an exchange without a built-in list page. Built-in list pages: **PSX** (`/list/pakistan-stock-exchange/`), **NSE** (`/list/nse-india/`), **BSE** (`/list/bse-india/`).
+Flags: `--out <file>`, `--delay-ms <ms>` (default 1500), `--list-path /list/…/` for an exchange without a built-in list page, `--symbols A,B,C` (only consider these symbols from the list — `--count` defaults to how many you pass), `--isin-prefix DE` (skip a candidate whose profile ISIN is from another country). Built-in list pages: **PSX** (`/list/pakistan-stock-exchange/`), **NSE** (`/list/nse-india/`), **BSE** (`/list/bse-india/`), **XETRA** (`/list/deutsche-boerse-xetra/`).
 
 **India:** use **NSE** as the exchange for new Indian stocks. Most large companies trade on both NSE and BSE; the name check above skips companies we already hold on BSE.
 
+**Germany (XETRA):** the Xetra list also carries hundreds of foreign secondary lines (NVIDIA, Walmart, Roche, …) ranked among the German companies — SAP is #51, Siemens #61. Don't take the top N. Pick a batch of German companies from the list and pass them with `--symbols … --isin-prefix DE`; the ISIN check drops anything incorporated elsewhere. Where a company has two share classes (Henkel `HEN`/`HEN3`, Volkswagen `VOW`/`VOW3`, Sartorius, Fuchs, Delivery Hero `DHE1`/`DHER`), pass the one the DAX uses. Never use Frankfurt (`FRA`): it is ~10,000 secondary listings of foreign stocks. The first batch (DAX 40 + large MDAX, 69 stocks) was generated on 2026-10-19 — exclude those symbols from the next batch.
+
+```bash
+yarn stocks:populate fetch --exchange XETRA --isin-prefix DE --symbols SAP,SIE,ALV,…
+```
+
+**A brand-new exchange** must be deployed (in `countryExchangeUtils.ts` + `stockAnalyzeUrlValidation.ts`) **before** its SQL is run on production. The insert itself succeeds either way — `exchange` is a plain string column — but production code that does not know the exchange cannot place those stocks in a country or build their source URLs.
+
 ## Step 2 — industry mapping (Claude)
+
+The in-use sub-industries are kept in **[industries-in-use.md](industries-in-use.md)** — every non-archived sub-industry with at least one stock, with its key, name, stock count and a short summary. Use it whenever stocks have to be mapped (including a list someone pastes in, outside `fetch`). Refresh it first if it is more than a few weeks old:
+
+```bash
+yarn stocks:populate industries   # rewrites docs/insights-ui/stock-analysis/industries-in-use.md
+```
+
+The candidates file written by `fetch` carries the same list as `allowedSubIndustries`.
 
 For every entry in `candidates`:
 

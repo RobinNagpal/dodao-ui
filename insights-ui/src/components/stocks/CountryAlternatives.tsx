@@ -25,6 +25,7 @@ const COUNTRY_DISPLAY_CONFIG: Record<SupportedCountries, { name: string; path: s
   [SupportedCountries.HongKong]: { name: 'Hong Kongese', path: '/countries/HongKong', isActive: false },
   [SupportedCountries.Korea]: { name: 'Korean', path: '/countries/Korea', isActive: true },
   [SupportedCountries.Australia]: { name: 'Australian', path: '/countries/Australia', isActive: true },
+  [SupportedCountries.Germany]: { name: 'German', path: '/countries/Germany', isActive: false },
 };
 
 export default function CountryAlternatives({

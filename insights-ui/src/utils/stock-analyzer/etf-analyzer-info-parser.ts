@@ -187,6 +187,7 @@ const COUNTRY_TO_SCREENER_CODE: Readonly<Record<SupportedCountries, string>> = {
   [SupportedCountries.Korea]: 'KR',
   [SupportedCountries.Taiwan]: 'TW',
   [SupportedCountries.Pakistan]: 'PK',
+  [SupportedCountries.Germany]: 'DE',
 };
 
 export function etfScreenerCountryCode(exchange: AllExchanges): string {

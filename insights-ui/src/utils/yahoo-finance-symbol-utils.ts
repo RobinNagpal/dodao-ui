@@ -84,4 +84,6 @@ const EXCHANGE_TO_YAHOO_SUFFIX: Record<string, string> = {
   KONEX: '.KN',
   // Taiwan
   TWSE: '.TW',
+  // Germany (Xetra)
+  XETRA: '.DE',
 };
