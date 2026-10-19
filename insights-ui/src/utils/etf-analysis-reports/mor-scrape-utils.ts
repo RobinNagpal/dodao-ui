@@ -1,4 +1,5 @@
 import { prisma } from '@/prisma';
+import { EtfMorRiskPeriodData } from '@/types/prismaTypes';
 import { AllExchanges, AustraliaExchanges, CanadaExchanges, GermanyExchanges, toExchange, UKExchanges, USExchanges } from '@/utils/countryExchangeUtils';
 
 export type MorKind = 'quote' | 'risk' | 'people' | 'portfolio';
@@ -108,10 +109,53 @@ export interface EnsureMorDataParams {
   symbol: string;
 }
 
-/** True when a `{ rows: [...] }` JSON container (asset allocation, risk tables, …) has no rows. */
+/** Keys that only name a row (asset class, measure, risk-table label) rather than carry a value. */
+const ROW_LABEL_KEYS = new Set(['assetClass', 'measure', 'label']);
+
+/** Scraper placeholder row names on half-rendered pages, e.g. `allocation-0`, `error-allocation-0`. */
+const PLACEHOLDER_ROW_NAME = /(^|-)allocation-\d+$/;
+
+/** True when a value (or any nested value, e.g. a risk row's `values` map) is a non-blank string or a number. */
+function hasValue(v: unknown): boolean {
+  if (typeof v === 'number') return true;
+  if (typeof v === 'string') return v.trim() !== '';
+  if (v != null && typeof v === 'object') return Object.values(v).some(hasValue);
+  return false;
+}
+
+function rowHasValues(row: unknown): boolean {
+  if (row == null || typeof row !== 'object') return false;
+  const r = row as Record<string, unknown>;
+  if (typeof r.assetClass === 'string' && PLACEHOLDER_ROW_NAME.test(r.assetClass)) return false;
+  return Object.entries(r).some(([k, v]) => !ROW_LABEL_KEYS.has(k) && hasValue(v));
+}
+
+/**
+ * True when a `{ rows: [...] }` JSON container (asset allocation, risk tables, …) has no usable rows:
+ * no rows at all, or only placeholder rows that carry a label but no values (e.g.
+ * `{"columns":["Risk (%)"],"rows":[{"assetClass":"allocation-0"}]}` from a half-rendered page).
+ */
 export function rowsContainerIsEmpty(v: { rows?: unknown[] } | null | undefined): boolean {
   if (v == null) return true;
-  return (v.rows?.length ?? 0) === 0;
+  return !Array.isArray(v.rows) || !v.rows.some(rowHasValues);
+}
+
+/** True when a risk period has none of its measure tables populated (risk score alone is not enough). */
+export function riskPeriodIsEmpty(p: EtfMorRiskPeriodData | null | undefined): boolean {
+  if (p == null) return true;
+  const mvm = p.marketVolatilityMeasures;
+  return (
+    rowsContainerIsEmpty(p.riskAndVolatilityMeasures) &&
+    rowsContainerIsEmpty(mvm?.captureRatios) &&
+    rowsContainerIsEmpty(mvm?.drawdown) &&
+    rowsContainerIsEmpty(mvm?.drawdownDates)
+  );
+}
+
+/** True when no stored risk period (3/5/10-Yr) has any populated measure table. */
+export function riskPeriodsAreEmpty(v: unknown): boolean {
+  if (v == null || typeof v !== 'object') return true;
+  return Object.values(v as Record<string, EtfMorRiskPeriodData>).every(riskPeriodIsEmpty);
 }
 
 /** True when a stored/scraped JSON value is not a non-empty array (e.g. returns rows, current managers). */
@@ -122,26 +166,28 @@ export function jsonArrayIsEmpty(v: unknown): boolean {
 /**
  * Fire-and-forget: for any of the 4 MOR tables that does not yet have usable data for this ETF,
  * trigger the scraping lambda to populate it. A quote row with neither a category nor annual
- * returns, or a portfolio row without an asset allocation, is a half-rendered scrape and counts
- * as missing. Lambda callbacks arrive asynchronously and upsert the tables, so by the time a
- * worker picks up the generation request the data should be present. Failures to trigger any
+ * returns, a risk row with no populated measure table in any period, or a portfolio row whose
+ * asset allocation is empty or placeholder-only (`allocation-N` rows with no values), is a
+ * half-rendered scrape and counts as missing. Lambda callbacks arrive asynchronously and upsert
+ * the tables, so by the time a worker picks up the generation request the data should be present. Failures to trigger any
  * individual kind are logged but do not throw, so request creation is never blocked by a
  * transient lambda outage.
  */
 export async function ensureMorDataForAnalysis(params: EnsureMorDataParams): Promise<MorKind[]> {
-  const [analyzerRow, riskCount, peopleCount, portfolioRow] = await Promise.all([
+  const [analyzerRow, riskRow, peopleCount, portfolioRow] = await Promise.all([
     prisma.etfMorAnalyzerInfo.findUnique({ where: { etfId: params.etfId }, select: { overviewCategory: true, returnsAnnual: true } }),
-    prisma.etfMorRiskInfo.count({ where: { etfId: params.etfId } }),
+    prisma.etfMorRiskInfo.findUnique({ where: { etfId: params.etfId }, select: { riskPeriods: true } }),
     prisma.etfMorPeopleInfo.count({ where: { etfId: params.etfId } }),
     prisma.etfMorPortfolioInfo.findUnique({ where: { etfId: params.etfId }, select: { assetAllocation: true } }),
   ]);
 
   const quoteMissing = !analyzerRow || ((analyzerRow.overviewCategory ?? '').trim() === '' && jsonArrayIsEmpty(analyzerRow.returnsAnnual));
+  const riskMissing = !riskRow || riskPeriodsAreEmpty(riskRow.riskPeriods);
   const portfolioMissing = !portfolioRow || rowsContainerIsEmpty(portfolioRow.assetAllocation);
 
   const missingKinds: MorKind[] = [];
   if (quoteMissing) missingKinds.push('quote');
-  if (riskCount === 0) missingKinds.push('risk');
+  if (riskMissing) missingKinds.push('risk');
   if (peopleCount === 0) missingKinds.push('people');
   if (portfolioMissing) missingKinds.push('portfolio');
 
