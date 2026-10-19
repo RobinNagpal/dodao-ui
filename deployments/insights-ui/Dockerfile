@@ -9,7 +9,11 @@
 #
 # Requires `output: 'standalone'` in insights-ui/next.config.ts.
 
-FROM node:22-bookworm-slim AS base
+# Node 24 (>= 24.15.0), not 22: Node 22's web-streams TransformStream throws an internal
+# `TypeError: controller[kState].transformAlgorithm is not a function` when a client disconnects
+# mid-stream (write racing reader.cancel), which Next.js logs as a render error. Fixed upstream
+# in nodejs/node#62040 (24.15.0 / 25.8.1) and never backported to 22.x. Keep both stages in sync.
+FROM node:24-bookworm-slim AS base
 ENV PNPM_HOME=/pnpm
 ENV PATH="$PNPM_HOME:$PATH"
 # Don't download puppeteer's bundled Chromium during install/build — the runtime stage uses
@@ -55,7 +59,7 @@ RUN --mount=type=secret,id=database_url \
 
 # ---- Runtime -----------------------------------------------------------------------------
 # Chromium is installed so Puppeteer can launch a headless browser inside the container.
-FROM node:22-bookworm-slim AS runtime
+FROM node:24-bookworm-slim AS runtime
 WORKDIR /app
 ENV NODE_ENV=production
 ENV PORT=3000
