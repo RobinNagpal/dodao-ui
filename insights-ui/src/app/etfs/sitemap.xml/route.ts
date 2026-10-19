@@ -5,8 +5,7 @@ import { getAllEtfGroups, getCategoriesForGroupKey } from '@/utils/etf-categoriz
 import { etfBrowseDetailPath, etfBrowsePath, etfGroupCategoryPath, etfSectionIndexPath } from '@/utils/etf-country-route-utils';
 import { ETF_ASSET_CLASS_OPTIONS } from '@/utils/etf-filter-utils';
 import { slugifyEtfTag } from '@/utils/etf-tag-slug-utils';
-import { SupportedCountries } from '@/utils/countryExchangeUtils';
-import { ETF_SUPPORTED_COUNTRIES } from '@/utils/etfCountryExchangeUtils';
+import { ETF_COUNTRIES_HIDDEN_FROM_DISCOVERY, ETF_SUPPORTED_COUNTRIES } from '@/utils/etfCountryExchangeUtils';
 import { buildEtfSitemapResponse, SITEMAP_EXCLUDED_ETF_EXCHANGES, SiteMapUrl } from '@/utils/etfSitemapUtils';
 import { delayedSitemapLastmod } from '@/utils/sitemap-lastmod-utils';
 import { NextResponse } from 'next/server';
@@ -36,9 +35,9 @@ async function generateEtfUrls(): Promise<SiteMapUrl[]> {
     if (option.value !== '') assetClassValueToKey.set(option.value, option.value);
   }
 
-  // UK ETF pages stay live but are kept out of the sitemap so Google stops rediscovering them
-  // (see SITEMAP_EXCLUDED_ETF_EXCHANGES) — skip the UK listing/browse section here.
-  const sitemapCountries = ETF_SUPPORTED_COUNTRIES.filter((country) => country !== SupportedCountries.UK);
+  // UK and Germany ETF pages stay live but are kept out of the sitemap (see
+  // ETF_COUNTRIES_HIDDEN_FROM_DISCOVERY / SITEMAP_EXCLUDED_ETF_EXCHANGES) — skip their listing/browse sections here.
+  const sitemapCountries = ETF_SUPPORTED_COUNTRIES.filter((country) => !ETF_COUNTRIES_HIDDEN_FROM_DISCOVERY.includes(country));
 
   for (const country of sitemapCountries) {
     // Section index pages. The groups index collapses onto the country root (/etfs for US,

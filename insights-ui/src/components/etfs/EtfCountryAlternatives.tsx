@@ -1,16 +1,15 @@
 import Link from 'next/link';
 import { GlobeAltIcon } from '@heroicons/react/24/outline';
-import { SupportedCountries } from '@/utils/countryExchangeUtils';
-import { EtfSupportedCountry } from '@/utils/etfCountryExchangeUtils';
+import { ETF_COUNTRIES_HIDDEN_FROM_DISCOVERY, EtfSupportedCountry } from '@/utils/etfCountryExchangeUtils';
 import { ALL_ETF_COUNTRIES, EtfBrowseSection, etfBasePath, etfCountryDisplayName, etfSectionIndexPath } from '@/utils/etf-country-route-utils';
 
 /**
- * Countries we still cross-link to from the "Also view" switcher. UK is intentionally excluded:
- * the UK ETF pages stay live (they don't 404), but we no longer surface them from other listing
- * pages or the home page, so Google stops rediscovering them via internal links. The UK pages are
- * also dropped from the sitemaps (see `etfSitemapUtils.ts` / `etfs/sitemap.xml`).
+ * Countries we still cross-link to from the "Also view" switcher. `ETF_COUNTRIES_HIDDEN_FROM_DISCOVERY`
+ * (UK, Germany) is intentionally excluded: those ETF pages stay live (they don't 404), but we don't
+ * surface them from other listing pages or the home page, so Google doesn't (re)discover them via
+ * internal links. They are also dropped from the sitemaps (see `etfSitemapUtils.ts` / `etfs/sitemap.xml`).
  */
-const SWITCHER_ETF_COUNTRIES = ALL_ETF_COUNTRIES.filter((c) => c !== SupportedCountries.UK);
+const SWITCHER_ETF_COUNTRIES = ALL_ETF_COUNTRIES.filter((c) => !ETF_COUNTRIES_HIDDEN_FROM_DISCOVERY.includes(c));
 
 interface EtfCountryAlternativesProps {
   currentCountry: EtfSupportedCountry;

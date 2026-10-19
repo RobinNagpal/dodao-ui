@@ -1,25 +1,40 @@
 /**
  * ETF-specific country & exchange constants — kept separate from
  * `countryExchangeUtils.ts` (stocks) because:
- *  - ETF coverage is currently US + Canada + UK + Australia only; reusing the
+ *  - ETF coverage is currently US + Canada + UK + Australia + Germany only; reusing the
  *    10-country stock list would let admins create scenarios in markets we have
  *    no ETF data for.
- *  - ETF venues (NYSEARCA, BATS, NEO, LSE, ASX) don't all overlap with the
+ *  - ETF venues (NYSEARCA, BATS, NEO, LSE, ASX, XETRA) don't all overlap with the
  *    stock exchange list.
  *
  * Country code values are reused from `SupportedCountries` so the strings
- * stored in the DB match the stock side ("US", "Canada", "UK", "Australia").
+ * stored in the DB match the stock side ("US", "Canada", "UK", "Australia", "Germany").
  */
 import { SupportedCountries } from '@/utils/countryExchangeUtils';
 
-export type EtfSupportedCountry = SupportedCountries.US | SupportedCountries.Canada | SupportedCountries.UK | SupportedCountries.Australia;
+export type EtfSupportedCountry =
+  | SupportedCountries.US
+  | SupportedCountries.Canada
+  | SupportedCountries.UK
+  | SupportedCountries.Australia
+  | SupportedCountries.Germany;
 
 export const ETF_SUPPORTED_COUNTRIES: EtfSupportedCountry[] = [
   SupportedCountries.US,
   SupportedCountries.Canada,
   SupportedCountries.UK,
   SupportedCountries.Australia,
+  SupportedCountries.Germany,
 ];
+
+/**
+ * Countries whose ETF pages are live but kept out of discovery — every ETF sitemap and the
+ * "Also view" country switcher skip them.
+ *  - UK: being retired from search; the pages stay live (HTTP 200) so already-indexed URLs don't 404.
+ *  - Germany: newly imported (XETRA); hidden until its ETFs have generated reports, so Google isn't
+ *    pointed at thousands of thin pages. Remove it from this list once the reports are in.
+ */
+export const ETF_COUNTRIES_HIDDEN_FROM_DISCOVERY: ReadonlyArray<EtfSupportedCountry> = [SupportedCountries.UK, SupportedCountries.Germany];
 
 export const isEtfSupportedCountry = (val: string): val is EtfSupportedCountry => {
   return (ETF_SUPPORTED_COUNTRIES as readonly string[]).includes(val);
@@ -46,7 +61,11 @@ export enum EtfAustraliaExchanges {
   ASX = 'ASX',
 }
 
-export type AllEtfExchanges = EtfUSExchanges | EtfCanadaExchanges | EtfUKExchanges | EtfAustraliaExchanges;
+export enum EtfGermanyExchanges {
+  XETRA = 'XETRA',
+}
+
+export type AllEtfExchanges = EtfUSExchanges | EtfCanadaExchanges | EtfUKExchanges | EtfAustraliaExchanges | EtfGermanyExchanges;
 
 export const ETF_EXCHANGES: ReadonlyArray<AllEtfExchanges> = [
   EtfUSExchanges.NYSEARCA,
@@ -58,6 +77,7 @@ export const ETF_EXCHANGES: ReadonlyArray<AllEtfExchanges> = [
   EtfCanadaExchanges.NEO,
   EtfUKExchanges.LSE,
   EtfAustraliaExchanges.ASX,
+  EtfGermanyExchanges.XETRA,
 ] as const;
 
 export const ETF_EXCHANGE_TO_COUNTRY: Record<AllEtfExchanges, EtfSupportedCountry> = {
@@ -70,6 +90,7 @@ export const ETF_EXCHANGE_TO_COUNTRY: Record<AllEtfExchanges, EtfSupportedCountr
   [EtfCanadaExchanges.NEO]: SupportedCountries.Canada,
   [EtfUKExchanges.LSE]: SupportedCountries.UK,
   [EtfAustraliaExchanges.ASX]: SupportedCountries.Australia,
+  [EtfGermanyExchanges.XETRA]: SupportedCountries.Germany,
 };
 
 export const isEtfExchange = (val: string): val is AllEtfExchanges => {

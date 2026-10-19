@@ -1,5 +1,5 @@
 import { prisma } from '@/prisma';
-import { AllExchanges, AustraliaExchanges, CanadaExchanges, toExchange, UKExchanges, USExchanges } from '@/utils/countryExchangeUtils';
+import { AllExchanges, AustraliaExchanges, CanadaExchanges, GermanyExchanges, toExchange, UKExchanges, USExchanges } from '@/utils/countryExchangeUtils';
 
 export type MorKind = 'quote' | 'risk' | 'people' | 'portfolio';
 
@@ -17,7 +17,7 @@ export interface TriggerMorScrapeResult {
   kind: MorKind;
 }
 
-type MorEtfExchangeSegment = 'xnys' | 'xnas' | 'arcx' | 'bats' | 'xtse' | 'neoe' | 'xasx' | 'xlon';
+type MorEtfExchangeSegment = 'xnys' | 'xnas' | 'arcx' | 'bats' | 'xtse' | 'neoe' | 'xasx' | 'xlon' | 'xetr';
 
 function toMorEtfExchangeSegment(exchange: AllExchanges): MorEtfExchangeSegment {
   switch (exchange) {
@@ -39,6 +39,9 @@ function toMorEtfExchangeSegment(exchange: AllExchanges): MorEtfExchangeSegment 
     // UK — the provider uses the LSE MIC code segment (e.g. /etfs/xlon/3dgl/quote).
     case UKExchanges.LSE:
       return 'xlon';
+    // Germany — the provider uses the Xetra MIC code segment (e.g. /etfs/xetr/sxr8/quote).
+    case GermanyExchanges.XETRA:
+      return 'xetr';
     default:
       throw new Error(`Unsupported exchange: ${exchange}`);
   }

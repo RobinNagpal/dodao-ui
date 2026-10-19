@@ -1,8 +1,7 @@
 import { prisma } from '@/prisma';
 import { EtfAnalysisCategory } from '@/types/etf/etf-analysis-types';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
-import { SupportedCountries } from '@/utils/countryExchangeUtils';
-import { getEtfExchangesByCountry } from '@/utils/etfCountryExchangeUtils';
+import { ETF_COUNTRIES_HIDDEN_FROM_DISCOVERY, getEtfExchangesByCountry } from '@/utils/etfCountryExchangeUtils';
 import { getCanonicalUrl } from '@/utils/getBaseUrlForServerSidePages';
 import { delayedSitemapLastmod } from '@/utils/sitemap-lastmod-utils';
 import { Prisma } from '@prisma/client';
@@ -17,12 +16,13 @@ export interface SiteMapUrl {
 }
 
 /**
- * ETF exchanges excluded from every sitemap. UK ETFs (LSE) are being retired from search: the UK
- * pages stay live (HTTP 200) so already-indexed URLs don't 404, but we no longer want Google to
- * (re)discover them via the sitemaps. Used as a Prisma `exchange notIn` filter across every ETF
- * sitemap query. The main sitemap (`etfs/sitemap.xml`) additionally drops the UK listing/browse pages.
+ * ETF exchanges excluded from every sitemap — the exchanges of `ETF_COUNTRIES_HIDDEN_FROM_DISCOVERY`
+ * (UK: retired from search; Germany: hidden until its reports are generated). The pages stay live
+ * (HTTP 200); we just don't want Google to (re)discover them via the sitemaps. Used as a Prisma
+ * `exchange notIn` filter across every ETF sitemap query. The main sitemap (`etfs/sitemap.xml`)
+ * additionally drops those countries' listing/browse pages.
  */
-export const SITEMAP_EXCLUDED_ETF_EXCHANGES: string[] = getEtfExchangesByCountry(SupportedCountries.UK);
+export const SITEMAP_EXCLUDED_ETF_EXCHANGES: string[] = ETF_COUNTRIES_HIDDEN_FROM_DISCOVERY.flatMap((country) => getEtfExchangesByCountry(country));
 
 /** Stream a list of URLs into an XML sitemap response — shared by every ETF sitemap route. */
 export async function buildEtfSitemapResponse(urls: SiteMapUrl[]): Promise<NextResponse<Buffer>> {
