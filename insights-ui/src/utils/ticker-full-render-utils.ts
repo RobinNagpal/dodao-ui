@@ -68,7 +68,7 @@ function parsePercentage(v: string | undefined | null): Num {
   return num(cleaned);
 }
 
-function buildFinancialInfoFromSummary(summary: StockFundamentalsSummary | null | undefined, symbol: string): FinancialInfoResponse | null {
+export function buildFinancialInfoFromSummary(summary: StockFundamentalsSummary | null | undefined, symbol: string): FinancialInfoResponse | null {
   if (!summary || Object.keys(summary).length === 0) return null;
 
   return {
@@ -155,7 +155,7 @@ function buildChartResponse(
   };
 }
 
-function buildQuarterlyChartFromScraperInfo(scraperInfo: TickerV1StockAnalyzerScrapperInfo | null): QuarterlyChartDataResponse | null {
+export function buildQuarterlyChartFromScraperInfo(scraperInfo: TickerV1StockAnalyzerScrapperInfo | null): QuarterlyChartDataResponse | null {
   if (!scraperInfo) return null;
 
   const incomeQuarterly = scraperInfo.incomeStatementQuarter as IncomeQuarterlyData | null;
@@ -191,7 +191,7 @@ function buildQuarterlyChartFromScraperInfo(scraperInfo: TickerV1StockAnalyzerSc
   return null;
 }
 
-function buildPriceHistoryFromPriceInfo(priceInfo: TickerV1PriceHistory | null, symbol: string): PriceHistoryResponse | null {
+export function buildPriceHistoryFromPriceInfo(priceInfo: TickerV1PriceHistory | null, symbol: string): PriceHistoryResponse | null {
   if (!priceInfo) return null;
   const daily = (priceInfo.dailyData as unknown as PriceHistoryPoint[] | null) ?? [];
   const weekly = (priceInfo.weeklyData as unknown as PriceHistoryPoint[] | null) ?? [];

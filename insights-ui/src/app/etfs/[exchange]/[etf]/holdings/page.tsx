@@ -6,33 +6,35 @@ import EtfRelatedSections, { fetchEtfAvailableSlugs } from '@/components/etf-rep
 import SimilarEtfs from '@/components/etf-reportsv1/SimilarEtfs';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
-import { etfHoldingsTag } from '@/utils/etf-cache-utils';
 import { fetchEtfSimilarEtfs } from '@/utils/etf-similar-etfs-utils';
-import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
 import { buildEtfReportSubpageBreadcrumbs } from '@/utils/etf-breadcrumbs-utils';
 import { generateBreadcrumbJsonLdFromCrumbs, generateEtfHoldingsMetadata } from '@/utils/etf-metadata-generators';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { Suspense } from 'react';
+import { cache, Suspense } from 'react';
+import { getEtfFastData, getEtfPortfolioHoldingsData } from '@/utils/etf-page-data';
+import { ssrRequestData } from '@/utils/ssr-data-cache';
 
 export const dynamic = 'force-dynamic';
 
 type RouteParams = Promise<Readonly<{ exchange: string; etf: string }>>;
 
-async function fetchEtf(exchange: string, etf: string): Promise<EtfFastResponse | null> {
-  const url = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/etfs-v1/exchange/${exchange}/${etf}?allowNull=true`;
-  const res = await fetch(url, { next: { tags: [etfHoldingsTag(etf, exchange)] } });
-  if (!res.ok) return null;
-  return (await res.json()) as EtfFastResponse | null;
-}
+/**
+ * In-process loads of the ETF + `/portfolio-holdings` routes' data (no HTTP self-fetch); fresh per
+ * request, with React `cache()` deduping the `generateMetadata` + page calls.
+ */
+const fetchEtf = cache(async (exchange: string, etf: string): Promise<EtfFastResponse | null> => {
+  try {
+    return await ssrRequestData(() => getEtfFastData(KoalaGainsSpaceId, exchange, etf, true));
+  } catch {
+    return null;
+  }
+});
 
 async function fetchHoldings(exchange: string, etf: string): Promise<EtfPortfolioHoldingsResponse> {
-  const url = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/etfs-v1/exchange/${exchange}/${etf}/portfolio-holdings`;
   try {
-    const res = await fetch(url, { next: { tags: [etfHoldingsTag(etf, exchange)] } });
-    if (!res.ok) return { holdings: null, updatedAt: null };
-    return (await res.json()) as EtfPortfolioHoldingsResponse;
+    return await ssrRequestData(() => getEtfPortfolioHoldingsData(KoalaGainsSpaceId, exchange, etf));
   } catch {
     return { holdings: null, updatedAt: null };
   }
@@ -68,7 +70,7 @@ export default async function EtfHoldingsPage({ params }: { params: RouteParams 
   const [etfData, holdingsResponse, similarEtfs] = await Promise.all([
     fetchEtf(exchange, symbol),
     fetchHoldings(exchange, symbol),
-    fetchEtfSimilarEtfs(exchange, symbol, [etfHoldingsTag(symbol, exchange)]),
+    fetchEtfSimilarEtfs(exchange, symbol),
   ]);
   if (!etfData) notFound();
 

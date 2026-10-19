@@ -2,13 +2,11 @@ import AllStocksGridForCountry from '@/components/stocks/AllStocksGridForCountry
 import CountryIndustriesGrid from '@/components/stocks/CountryIndustriesGrid';
 import IndustryWithStocksPageLayout from '@/components/stocks/IndustryWithStocksPageLayout';
 import { IndustriesResponse } from '@/types/api/ticker-industries';
-import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { TickerWithIndustryNames } from '@/types/ticker-typesv1';
 import { SupportedCountries } from '@/utils/countryExchangeUtils';
-import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
 import { generateCountryStocksMetadata } from '@/utils/metadata-generators';
 import { parseStockCountryParam, resolveStockCountryParam } from '@/utils/stock-country-route-utils';
-import { getStocksPageTag } from '@/utils/ticker-v1-cache-utils';
+import { getCachedCountryIndustries } from '@/utils/stocks-data-utils';
 import type { Metadata } from 'next';
 
 export async function generateMetadata(props: { params: Promise<{ country: string }> }): Promise<Metadata> {
@@ -28,24 +26,12 @@ const WEEK = 60 * 60 * 24 * 7;
 
 export default async function CountryStocksPage({ params: paramsPromise }: PageProps) {
   const params = await paramsPromise;
-  const baseUrl = getBaseUrlForServerSidePages();
   const country: SupportedCountries = resolveStockCountryParam(params.country, 'stocks/countries/[country]');
 
-  // Fetch data using the cached function (no filters on static pages)
-  const url = `${baseUrl}/api/${KoalaGainsSpaceId}/tickers-v1/country/${country}/tickers/industries`;
-  const res = await fetch(url, {
-    next: { revalidate: WEEK, tags: [getStocksPageTag(country)] },
-  });
-
-  // The country param was validated above, and that is the only source of not-found here: the
-  // industries API answers 200 for every supported country. Any non-OK status (5xx, an LB error page,
-  // or a 404 from deploy skew / a bad base URL) is a real failure and stays an error. Next's data
-  // cache only stores OK responses, so this is never cached as a page.
-  if (!res.ok) {
-    throw new Error(`industries fetch failed (${res.status}): ${url}`);
-  }
-
-  const data = (await res.json()) as IndustriesResponse;
+  // In-process + Data-Cached (same tag + 1-week TTL as the old self-fetch); no filters on static pages.
+  // The country param was validated above, and that is the only source of not-found here. A DB
+  // error throws (error.tsx) and is never cached.
+  const data: IndustriesResponse = await getCachedCountryIndustries(country, WEEK);
 
   // For Pakistan, show all stocks in a flat list instead of organized by industries
   if (country === SupportedCountries.Pakistan) {

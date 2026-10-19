@@ -1,13 +1,14 @@
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { PerformanceResponse, TickerAnalysisCategory } from '@/types/ticker-typesv1';
 import { getCountryByExchange, USExchanges, CanadaExchanges, IndiaExchanges, UKExchanges, SupportedCountries } from '@/utils/countryExchangeUtils';
-import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
-import { tickerCategoryReportTag } from '@/utils/ticker-v1-cache-utils';
+import { fetchPerformanceCategoryByExchange, fetchPerformanceCategoryByTicker } from '@/utils/performance-api-utils';
+import { ssrRequestData } from '@/utils/ssr-data-cache';
 import { enforceMovedRedirect } from '@/utils/ticker-moved-redirect';
 import { enforceDeletedTicker } from '@/utils/ticker-deleted-handler';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import { unstable_noStore as noStore } from 'next/cache';
 import { notFound, permanentRedirect } from 'next/navigation';
+import { cache } from 'react';
 
 const EMPTY_RESPONSE: PerformanceResponse = { categoryResult: null, ticker: undefined };
 
@@ -16,43 +17,32 @@ export function truncateForMeta(text: string, maxLength: number = 155): string {
   return text.slice(0, maxLength).replace(/\s+\S*$/, '') + '…';
 }
 
-/** Fetch performance data for a specific exchange+ticker (cached). */
-export async function fetchPerformanceByExchange(
-  exchange: string,
-  ticker: string,
-  dataSlug: string,
-  category: TickerAnalysisCategory
-): Promise<PerformanceResponse> {
-  const url = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/tickers-v1/exchange/${exchange.toUpperCase()}/${ticker.toUpperCase()}/${dataSlug}`;
-  try {
-    // Subscribe to the narrow per-category tag only. The umbrella tag would
-    // pull this page into every unrelated ticker-data invalidation (price
-    // history, scraper refresh, competition save, ...) and explode ISR
-    // writes — see knowledge/cache-invalidation.md if added.
-    const res = await fetch(url, { next: { tags: [tickerCategoryReportTag(ticker, exchange, category)] } });
-    if (!res.ok) {
-      console.warn(`fetchPerformanceByExchange failed (${res.status}): ${url}`);
+/**
+ * Performance data for a specific exchange+ticker — the same query the `{dataSlug}` API route
+ * serves, called in-process (no self-fetch; see `src/utils/ssr-data-cache.ts`).
+ *
+ * The old `fetch()` carried only `next: { tags: [tickerCategoryReportTag(...)] }`, which
+ * `force-dynamic` never stored in the Data Cache, so this stays per-request. React `cache()` keeps
+ * the dedupe between `generateMetadata` and the page body. Errors degrade to an empty response,
+ * as before. `dataSlug` is kept in the signature for the callers; `category` selects the query.
+ */
+export const fetchPerformanceByExchange = cache(
+  async (exchange: string, ticker: string, dataSlug: string, category: TickerAnalysisCategory): Promise<PerformanceResponse> => {
+    try {
+      return await ssrRequestData(() => fetchPerformanceCategoryByExchange(KoalaGainsSpaceId, ticker, exchange, category));
+    } catch (err) {
+      console.warn(`fetchPerformanceByExchange error (${dataSlug}):`, err);
       return EMPTY_RESPONSE;
     }
-    return (await res.json()) as PerformanceResponse;
-  } catch (err) {
-    console.warn('fetchPerformanceByExchange error:', err);
-    return EMPTY_RESPONSE;
   }
-}
+);
 
-/** Fetch performance data for any exchange (uncached fallback). */
-export async function fetchPerformanceAnyExchange(ticker: string, dataSlug: string): Promise<PerformanceResponse> {
-  const url = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/tickers-v1/${ticker.toUpperCase()}/${dataSlug}`;
+/** Performance data for any exchange (uncached fallback), in-process. */
+export async function fetchPerformanceAnyExchange(ticker: string, dataSlug: string, category: TickerAnalysisCategory): Promise<PerformanceResponse> {
   try {
-    const res = await fetch(url, { cache: 'no-store' });
-    if (!res.ok) {
-      console.warn(`fetchPerformanceAnyExchange failed (${res.status}): ${url}`);
-      return EMPTY_RESPONSE;
-    }
-    return (await res.json()) as PerformanceResponse;
+    return await ssrRequestData(() => fetchPerformanceCategoryByTicker(KoalaGainsSpaceId, ticker, category));
   } catch (err) {
-    console.warn('fetchPerformanceAnyExchange error:', err);
+    console.warn(`fetchPerformanceAnyExchange error (${dataSlug}):`, err);
     return EMPTY_RESPONSE;
   }
 }
@@ -79,7 +69,7 @@ export async function getPerformanceOrRedirect(
   }
 
   noStore();
-  const fallback = await fetchPerformanceAnyExchange(ticker, dataSlug);
+  const fallback = await fetchPerformanceAnyExchange(ticker, dataSlug, category);
 
   if (!fallback.ticker) {
     notFound();

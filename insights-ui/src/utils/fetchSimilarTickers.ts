@@ -1,20 +1,20 @@
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
-import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
-import { tickerAndExchangeTag } from '@/utils/ticker-v1-cache-utils';
+import { ssrRequestData } from '@/utils/ssr-data-cache';
+import { getSimilarTickers } from '@/utils/ticker-v1-page-data';
 import type { SimilarTicker } from '@/utils/ticker-v1-model-utils';
 
 /**
- * Fetches the top similar companies for a ticker from the shared
- * `similar-tickers` API (same endpoint the main stock report page uses).
+ * Loads the top similar companies for a ticker — the same query the `similar-tickers` API serves,
+ * called in-process (no self-fetch; see `src/utils/ssr-data-cache.ts`). Used by the main stock
+ * report page and every stock sub-page.
+ *
+ * Was a `next: { tags }`-only fetch, which `force-dynamic` never stored in the Data Cache, so it
+ * stays per-request. Throws when the ticker doesn't exist (the API answered 404/500 and the old
+ * helper threw), which callers rely on to retry with the canonical exchange/symbol.
  *
  * Promise-based so callers can hand it to <SimilarTickers> via `use()` and keep
  * the Suspense boundary at the call site.
  */
 export async function fetchSimilarTickers(exchange: string, ticker: string): Promise<SimilarTicker[]> {
-  const url: string = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/tickers-v1/exchange/${exchange.toUpperCase()}/${ticker.toUpperCase()}/similar-tickers`;
-
-  const res: Response = await fetch(url, { next: { tags: [tickerAndExchangeTag(ticker, exchange)] } });
-  if (!res.ok) throw new Error(`fetchSimilarTickers failed (${res.status}): ${url}`);
-
-  return (await res.json()) as SimilarTicker[];
+  return ssrRequestData(() => getSimilarTickers(KoalaGainsSpaceId, exchange.toUpperCase(), ticker.toUpperCase()));
 }

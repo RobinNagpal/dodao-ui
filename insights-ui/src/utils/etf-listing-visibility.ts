@@ -1,8 +1,6 @@
 import { authOptions } from '@/app/api/auth/[...nextauth]/authOptions';
 import { KoalaGainsSession } from '@/types/auth';
-import { ONE_WEEK_IN_SECONDS } from '@/utils/etf-cache-utils';
 import { getServerSession } from 'next-auth/next';
-import { headers } from 'next/headers';
 import { NextRequest } from 'next/server';
 
 /**
@@ -19,11 +17,12 @@ import { NextRequest } from 'next/server';
  *
  * Unpopulated ETFs stay reachable by direct URL; this only filters the listings.
  *
- * The `includeUnpopulated=true` request flag is honored ONLY for admins. The page
- * (a Server Component that can read the session cookie) decides admin-ness and
- * forwards the cookie so the API route can independently re-verify. If that
- * re-verification ever fails, admins simply fall back to the populated-only view —
- * a safe default that never leaks unpopulated ETFs to non-admins.
+ * The `includeUnpopulated=true` request flag is honored ONLY for admins: the API
+ * routes re-verify the session via {@link shouldIncludeUnpopulatedForRequest}. The
+ * listing pages load in-process and pass `includeUnpopulated` only after
+ * {@link isEtfAdminViewer} confirms the session is an admin (see
+ * `etf-listing-fetchers.ts` / `etf-data-utils.ts`), uncached so the full set is never
+ * cached under the public key.
  */
 export const INCLUDE_UNPOPULATED_PARAM = 'includeUnpopulated';
 
@@ -32,25 +31,6 @@ export const INCLUDE_UNPOPULATED_PARAM = 'includeUnpopulated';
 export async function isEtfAdminViewer(): Promise<boolean> {
   const session = (await getServerSession(authOptions)) as KoalaGainsSession | null;
   return session?.role === 'Admin';
-}
-
-/**
- * Admin-aware fetch for the cached ETF listings index/grouping endpoints.
- * - Non-admin: the existing cached fetch (1-week revalidate + cache tag), which
- *   returns populated-only data.
- * - Admin: an uncached, cookie-authenticated fetch with `includeUnpopulated=true`
- *   so the full set is never cached under the public key.
- */
-export async function fetchEtfListingsIndex(url: string, tag: string): Promise<Response> {
-  if (await isEtfAdminViewer()) {
-    const cookieHeader = (await headers()).get('cookie');
-    const sep = url.includes('?') ? '&' : '?';
-    return fetch(`${url}${sep}${INCLUDE_UNPOPULATED_PARAM}=true`, {
-      cache: 'no-store',
-      headers: cookieHeader ? { cookie: cookieHeader } : {},
-    });
-  }
-  return fetch(url, { next: { revalidate: ONE_WEEK_IN_SECONDS, tags: [tag] } });
 }
 
 /**

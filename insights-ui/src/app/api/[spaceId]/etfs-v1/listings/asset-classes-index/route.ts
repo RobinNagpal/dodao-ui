@@ -1,10 +1,4 @@
-import {
-  EtfGroupingPreview,
-  EtfUncategorizedPreview,
-  fetchEtfsForGroupings,
-  fetchEtfsWithoutAssetClass,
-} from '@/app/api/[spaceId]/etfs-v1/listings/listings-prisma';
-import { ETF_ASSET_CLASS_OPTIONS } from '@/utils/etf-filter-utils';
+import { EtfGroupingPreview, EtfUncategorizedPreview, getEtfAssetClassesIndexData } from '@/app/api/[spaceId]/etfs-v1/listings/listings-prisma';
 import { shouldIncludeUnpopulatedForRequest } from '@/utils/etf-listing-visibility';
 import { isEtfSupportedCountry } from '@/utils/etfCountryExchangeUtils';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
@@ -24,17 +18,7 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
   const country = countryParam && isEtfSupportedCountry(countryParam) ? countryParam : undefined;
   const includeUnpopulated = await shouldIncludeUnpopulatedForRequest(req);
 
-  const valueToKey = new Map<string, string>();
-  for (const opt of ETF_ASSET_CLASS_OPTIONS) {
-    if (opt.value !== '') valueToKey.set(opt.value, opt.value);
-  }
-
-  const [grouped, others] = await Promise.all([
-    fetchEtfsForGroupings(spaceId, 'assetClass', valueToKey, country, includeUnpopulated),
-    fetchEtfsWithoutAssetClass(spaceId, country, includeUnpopulated),
-  ]);
-
-  return { values: grouped.values, counts: grouped.counts, others };
+  return getEtfAssetClassesIndexData(spaceId, country, includeUnpopulated);
 }
 
 export const GET = withErrorHandlingV2<EtfAssetClassesIndexResponse>(getHandler);

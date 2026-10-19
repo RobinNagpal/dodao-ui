@@ -25,8 +25,8 @@ import type { EtfFinancialInfoResponse } from '@/types/etf/etf-detail-response-t
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { getCountryByExchange, SupportedCountries, formatExchangeWithCountry, toExchange } from '@/utils/countryExchangeUtils';
 import { generateEtfDetailMetadata, generateEtfDetailArticleJsonLd, generateEtfDetailBreadcrumbJsonLd } from '@/utils/etf-metadata-generators';
-import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
-import { etfAndExchangeTag } from '@/utils/etf-cache-utils';
+import { getEtfChartData, getEtfFastData, getEtfFullRenderData } from '@/utils/etf-page-data';
+import { ssrRequestData } from '@/utils/ssr-data-cache';
 import { splitMarkdownAtParagraph } from '@/utils/etf-display-format-utils';
 import { RadarSkeleton } from '@/app/stocks/[exchange]/[ticker]/RadarSkeleton';
 import { parseMarkdown } from '@/util/parse-markdown';
@@ -34,7 +34,7 @@ import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/B
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { Suspense, use } from 'react';
+import { cache, Suspense, use } from 'react';
 
 /**
  * Render dynamically per request — ISR is off across the ETF tree, CloudFront
@@ -60,33 +60,32 @@ export const dynamic = 'force-dynamic';
 
 export type RouteParams = Promise<Readonly<{ exchange: string; etf: string }>>;
 
-async function fetchEtfFast(exchange: string, etf: string): Promise<EtfFastResponse | null> {
-  const url = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/etfs-v1/exchange/${exchange.toUpperCase()}/${etf.toUpperCase()}?allowNull=true`;
-  const res = await fetch(url, { next: { tags: [etfAndExchangeTag(etf, exchange)] } });
-  if (!res.ok) return null;
-  return (await res.json()) as EtfFastResponse | null;
-}
-
-async function fetchEtfFullRender(exchange: string, etf: string): Promise<EtfFullRenderResponse> {
-  const url = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/etfs-v1/exchange/${exchange.toUpperCase()}/${etf.toUpperCase()}/full-render`;
-  const res = await fetch(url, { next: { tags: [etfAndExchangeTag(etf, exchange)] } });
-  if (!res.ok) {
-    throw new Error(`fetchEtfFullRender failed (${res.status}): ${url}`);
+/*
+ * Data loads run in-process (the same loaders the `/etfs-v1/exchange/...` API routes call) instead
+ * of `fetch()`ing those routes over the public host, so a render never loops back through the load
+ * balancer into this same container. All three were tags-only fetches, which `force-dynamic` never
+ * stored in the Data Cache, so they stay fresh per request; React `cache()` keeps the per-render
+ * dedupe between `generateMetadata` and the page that fetch memoization used to give.
+ */
+const fetchEtfFast = cache(async (exchange: string, etf: string): Promise<EtfFastResponse | null> => {
+  try {
+    return await ssrRequestData(() => getEtfFastData(KoalaGainsSpaceId, exchange, etf, true));
+  } catch {
+    return null;
   }
-  return (await res.json()) as EtfFullRenderResponse;
-}
+});
 
-// Price chart + performance metrics are fetched separately so the report body
+// Errors propagate (error.tsx), same as the old `!res.ok` throw.
+const fetchEtfFullRender = cache(
+  (exchange: string, etf: string): Promise<EtfFullRenderResponse> => ssrRequestData(() => getEtfFullRenderData(KoalaGainsSpaceId, exchange, etf))
+);
+
+// Price chart + performance metrics are loaded separately so the report body
 // (analysis, holdings, competition) doesn't wait on the price-history refresh,
-// which can hit Yahoo over the network. Same umbrella cache tag as /full-render.
-async function fetchEtfChartData(exchange: string, etf: string): Promise<EtfChartDataResponse> {
-  const url = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/etfs-v1/exchange/${exchange.toUpperCase()}/${etf.toUpperCase()}/chart-data`;
-  const res = await fetch(url, { next: { tags: [etfAndExchangeTag(etf, exchange)] } });
-  if (!res.ok) {
-    throw new Error(`fetchEtfChartData failed (${res.status}): ${url}`);
-  }
-  return (await res.json()) as EtfChartDataResponse;
-}
+// which can hit Yahoo over the network.
+const fetchEtfChartData = cache(
+  (exchange: string, etf: string): Promise<EtfChartDataResponse> => ssrRequestData(() => getEtfChartData(KoalaGainsSpaceId, exchange, etf))
+);
 
 export async function generateMetadata({ params }: { params: RouteParams }): Promise<Metadata> {
   const routeParams = await params;

@@ -1,15 +1,15 @@
 import { prisma } from '@/prisma';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
-import { getMissingReportsForTicker } from '@/utils/missing-reports-utils';
-import { tickerV1IncludeWithRelations, TickerV1FastResponse, TickerV1WithRelations } from '@/utils/ticker-v1-model-utils';
+import { TickerV1FastResponse } from '@/utils/ticker-v1-model-utils';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { withAdminOrToken } from '@/app/api/helpers/withAdminOrToken';
 import { KoalaGainsJwtTokenPayload } from '@/types/auth';
-import { Prisma, TickerV1Industry, TickerV1SubIndustry, TickerV1 } from '@prisma/client';
+import { Prisma, TickerV1 } from '@prisma/client';
 import { NextRequest } from 'next/server';
 import { generateExpectedStockAnalyzeUrl, validateStockAnalyzeUrl } from '@/utils/stockAnalyzeUrlValidation';
 import { AllExchanges, isExchange } from '@/utils/countryExchangeUtils';
 import { revalidateAllTickerTags } from '@/utils/ticker-v1-cache-utils';
+import { getTickerV1WithMissingReports } from '@/utils/ticker-v1-page-data';
 
 async function getHandler(
   req: NextRequest,
@@ -17,31 +17,7 @@ async function getHandler(
 ): Promise<TickerV1FastResponse | null> {
   const { spaceId, ticker, exchange } = await context.params;
   const allowNull = req.nextUrl.searchParams.get('allowNull') === 'true';
-
-  // Get ticker from DB with all related data
-  const whereClause: Prisma.TickerV1WhereInput = {
-    spaceId: spaceId || KoalaGainsSpaceId,
-    symbol: ticker.toUpperCase(),
-    exchange: exchange.toUpperCase(),
-  };
-
-  const tickerRecord: (TickerV1WithRelations & { industry: TickerV1Industry; subIndustry: TickerV1SubIndustry }) | null = allowNull
-    ? await prisma.tickerV1.findFirst({ where: whereClause, include: tickerV1IncludeWithRelations })
-    : await prisma.tickerV1.findFirstOrThrow({ where: whereClause, include: tickerV1IncludeWithRelations });
-
-  // Return null if ticker not found and allowNull is true
-  if (!tickerRecord) {
-    return null;
-  }
-
-  // Get missing reports for this ticker
-  const missingReports = await getMissingReportsForTicker(spaceId, tickerRecord.id);
-
-  if (!missingReports) {
-    throw new Error(`Failed to get missing reports for ticker ${ticker}`);
-  }
-
-  return { ...tickerRecord, ...missingReports };
+  return getTickerV1WithMissingReports(spaceId, exchange, ticker, allowNull);
 }
 
 export interface UpdateStockAnalyzeUrlRequest {
