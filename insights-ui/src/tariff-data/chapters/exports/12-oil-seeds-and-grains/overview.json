@@ -1,0 +1,508 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 12,
+    "padded": "12",
+    "slug": "12-oil-seeds-and-grains",
+    "title": "Oil Seeds and Oleaginous Fruits; Miscellaneous Grains, Seeds and Fruit; Industrial or Medicinal Plants; Straw and Fodder"
+  },
+  "page": {
+    "slug": "exports",
+    "path": "/industry-tariff-report/exports/chapters/12-oil-seeds-and-grains",
+    "h1": "HTS Chapter 12: Oil Seeds and Oleaginous Fruits; Miscellaneous Grains, Seeds and Fruit; Industrial or Medicinal Plants; Straw and Fodder — U.S. Exports & Foreign Tariffs",
+    "seo": {
+      "title": "TODO",
+      "shortDescription": "TODO",
+      "keywords": ["TODO"]
+    },
+    "lastCheckedAt": "2026-10-19"
+  },
+  "intro": "TODO: 2 short paragraphs: how much the U.S. exports and what; where tariffs matter and where they do not",
+  "latestYear": 2025,
+  "priorYear": 2024,
+  "valueBasis": "FOB value of U.S. exports, as reported by the United States to UN Comtrade.",
+  "stats": [
+    {
+      "label": "2025 U.S. exports",
+      "value": "$21.36B"
+    },
+    {
+      "label": "Change vs 2024",
+      "value": "-28.8%"
+    },
+    {
+      "label": "Largest product group (1201)",
+      "value": "77%",
+      "note": "Soybeans"
+    },
+    {
+      "label": "Two largest buyers",
+      "value": "31%",
+      "note": "China, Mexico"
+    },
+    {
+      "label": "TODO",
+      "value": "TODO",
+      "note": "TODO: a tariff stat, e.g. \"Top buyers charging 0%\" or \"Buyers that raised tariffs\""
+    }
+  ],
+  "keyTakeaways": ["TODO"],
+  "byYear": [
+    {
+      "year": 2020,
+      "totalUsd": 31104237586,
+      "partnerAUsd": 15030173341,
+      "partnerBUsd": 2295202416,
+      "restUsd": 13778861829
+    },
+    {
+      "year": 2021,
+      "totalUsd": 33061730203,
+      "partnerAUsd": 15040948583,
+      "partnerBUsd": 3101157491,
+      "restUsd": 14919624129
+    },
+    {
+      "year": 2022,
+      "totalUsd": 40194577024,
+      "partnerAUsd": 18878726582,
+      "partnerBUsd": 4109201887,
+      "restUsd": 17206648555
+    },
+    {
+      "year": 2023,
+      "totalUsd": 33904016099,
+      "partnerAUsd": 15850178844,
+      "partnerBUsd": 3338941012,
+      "restUsd": 14714896243
+    },
+    {
+      "year": 2024,
+      "totalUsd": 29984981166,
+      "partnerAUsd": 13352430718,
+      "partnerBUsd": 2892046327,
+      "restUsd": 13740504121
+    },
+    {
+      "year": 2025,
+      "totalUsd": 21361654520,
+      "partnerAUsd": 3515187382,
+      "partnerBUsd": 3022008092,
+      "restUsd": 14824459046
+    }
+  ],
+  "byYearPartners": ["China", "Mexico"],
+  "byYearCaption": "U.S. exports of Chapter 12 goods each year, split into the two largest 2025 buyers (China and Mexico) and everyone else.",
+  "yearToDate": {
+    "year": 2026,
+    "throughMonth": 7,
+    "exportsUsd": 13608353120,
+    "priorExportsUsd": 10887734647,
+    "changePct": 25,
+    "topBuyers": [
+      {
+        "countryCode": 156,
+        "country": "China",
+        "exportsUsd": 5226995040,
+        "priorExportsUsd": 2722301262,
+        "changePct": 92
+      },
+      {
+        "countryCode": 484,
+        "country": "Mexico",
+        "exportsUsd": 1458497095,
+        "priorExportsUsd": 1468828192,
+        "changePct": -0.7
+      },
+      {
+        "countryCode": 818,
+        "country": "Egypt",
+        "exportsUsd": 1193687775,
+        "priorExportsUsd": 746255086,
+        "changePct": 60
+      },
+      {
+        "countryCode": 392,
+        "country": "Japan",
+        "exportsUsd": 1005773845,
+        "priorExportsUsd": 946916506,
+        "changePct": 6.2
+      },
+      {
+        "countryCode": 360,
+        "country": "Indonesia",
+        "exportsUsd": 720811221,
+        "priorExportsUsd": 527738908,
+        "changePct": 36.6
+      },
+      {
+        "countryCode": 124,
+        "country": "Canada",
+        "exportsUsd": 541101620,
+        "priorExportsUsd": 476601479,
+        "changePct": 13.5
+      },
+      {
+        "countryCode": 608,
+        "country": "Philippines",
+        "exportsUsd": 478455426,
+        "priorExportsUsd": 372649470,
+        "changePct": 28.4
+      },
+      {
+        "countryCode": 410,
+        "country": "Rep. of Korea",
+        "exportsUsd": 344883910,
+        "priorExportsUsd": 330966044,
+        "changePct": 4.2
+      }
+    ],
+    "note": "Monthly figures as reported by the United States to UN Comtrade; the latest months can still be revised."
+  },
+  "topMarkets": [
+    {
+      "countryCode": 156,
+      "country": "China",
+      "exportsUsd": 3515187382,
+      "priorExportsUsd": 13352430718,
+      "sharePct": 16.5,
+      "changePct": -73.7,
+      "tariffNow": "TODO",
+      "status": "TODO"
+    },
+    {
+      "countryCode": 484,
+      "country": "Mexico",
+      "exportsUsd": 3022008092,
+      "priorExportsUsd": 2892046327,
+      "sharePct": 14.1,
+      "changePct": 4.5,
+      "tariffNow": "TODO",
+      "status": "TODO"
+    },
+    {
+      "countryCode": 818,
+      "country": "Egypt",
+      "exportsUsd": 1704869900,
+      "priorExportsUsd": 1017586974,
+      "sharePct": 8,
+      "changePct": 67.5,
+      "tariffNow": "TODO",
+      "status": "TODO"
+    },
+    {
+      "countryCode": 392,
+      "country": "Japan",
+      "exportsUsd": 1624241733,
+      "priorExportsUsd": 1590442049,
+      "sharePct": 7.6,
+      "changePct": 2.1,
+      "tariffNow": "TODO",
+      "status": "TODO"
+    },
+    {
+      "countryCode": 360,
+      "country": "Indonesia",
+      "exportsUsd": 1064954461,
+      "priorExportsUsd": 1261001436,
+      "sharePct": 5,
+      "changePct": -15.5,
+      "tariffNow": "TODO",
+      "status": "TODO"
+    },
+    {
+      "countryCode": 276,
+      "country": "Germany",
+      "exportsUsd": 1034730788,
+      "priorExportsUsd": 1129693385,
+      "sharePct": 4.8,
+      "changePct": -8.4,
+      "tariffNow": "TODO",
+      "status": "TODO"
+    },
+    {
+      "countryCode": 124,
+      "country": "Canada",
+      "exportsUsd": 842832253,
+      "priorExportsUsd": 898200463,
+      "sharePct": 3.9,
+      "changePct": -6.2,
+      "tariffNow": "TODO",
+      "status": "TODO"
+    },
+    {
+      "countryCode": 490,
+      "country": "Other Asia, nes",
+      "exportsUsd": 747756862,
+      "priorExportsUsd": 665924522,
+      "sharePct": 3.5,
+      "changePct": 12.3,
+      "tariffNow": "TODO",
+      "status": "TODO"
+    },
+    {
+      "countryCode": 586,
+      "country": "Pakistan",
+      "exportsUsd": 727512177,
+      "priorExportsUsd": 6794453,
+      "sharePct": 3.4,
+      "changePct": 10607.4,
+      "tariffNow": "TODO",
+      "status": "TODO"
+    },
+    {
+      "countryCode": 704,
+      "country": "Viet Nam",
+      "exportsUsd": 665969394,
+      "priorExportsUsd": 689687867,
+      "sharePct": 3.1,
+      "changePct": -3.4,
+      "tariffNow": "TODO",
+      "status": "TODO"
+    },
+    {
+      "countryCode": 380,
+      "country": "Italy",
+      "exportsUsd": 660058095,
+      "priorExportsUsd": 680342811,
+      "sharePct": 3.1,
+      "changePct": -3,
+      "tariffNow": "TODO",
+      "status": "TODO"
+    },
+    {
+      "countryCode": 608,
+      "country": "Philippines",
+      "exportsUsd": 646225316,
+      "priorExportsUsd": 863339673,
+      "sharePct": 3,
+      "changePct": -25.1,
+      "tariffNow": "TODO",
+      "status": "TODO"
+    },
+    {
+      "countryCode": 50,
+      "country": "Bangladesh",
+      "exportsUsd": 638477350,
+      "priorExportsUsd": 351025313,
+      "sharePct": 3,
+      "changePct": 81.9,
+      "tariffNow": "TODO",
+      "status": "TODO"
+    }
+  ],
+  "othersExportsUsd": 4466830717,
+  "othersPriorExportsUsd": 4586465175,
+  "byHeading": [
+    {
+      "heading": "1201",
+      "label": "Soybeans",
+      "exportsUsd": 16459153793,
+      "priorExportsUsd": 24570058895,
+      "changePct": -33,
+      "sharePct": 77
+    },
+    {
+      "heading": "1202",
+      "label": "Peanuts (groundnuts), raw",
+      "exportsUsd": 513796358,
+      "priorExportsUsd": 634028514,
+      "changePct": -19,
+      "sharePct": 2.4
+    },
+    {
+      "heading": "1204",
+      "label": "Flaxseed (linseed)",
+      "exportsUsd": 8476595,
+      "priorExportsUsd": 12375355,
+      "changePct": -31.5,
+      "sharePct": 0
+    },
+    {
+      "heading": "1205",
+      "label": "Rapeseed & canola",
+      "exportsUsd": 229192487,
+      "priorExportsUsd": 201981877,
+      "changePct": 13.5,
+      "sharePct": 1.1
+    },
+    {
+      "heading": "1206",
+      "label": "Sunflower seeds",
+      "exportsUsd": 72333131,
+      "priorExportsUsd": 153350417,
+      "changePct": -52.8,
+      "sharePct": 0.3
+    },
+    {
+      "heading": "1207",
+      "label": "Sesame, mustard, hemp, cotton, melon, poppy & other oil seeds",
+      "exportsUsd": 212914726,
+      "priorExportsUsd": 213237046,
+      "changePct": -0.2,
+      "sharePct": 1
+    },
+    {
+      "heading": "1208",
+      "label": "Flours & meals of oil seeds",
+      "exportsUsd": 1054021670,
+      "priorExportsUsd": 1321183342,
+      "changePct": -20.2,
+      "sharePct": 4.9
+    },
+    {
+      "heading": "1209",
+      "label": "Seeds for sowing (vegetable, flower, grass & forage)",
+      "exportsUsd": 1136045092,
+      "priorExportsUsd": 1068279298,
+      "changePct": 6.3,
+      "sharePct": 5.3
+    },
+    {
+      "heading": "1210",
+      "label": "Hop cones, hop pellets & lupulin",
+      "exportsUsd": 263658169,
+      "priorExportsUsd": 250488704,
+      "changePct": 5.3,
+      "sharePct": 1.2
+    },
+    {
+      "heading": "1211",
+      "label": "Medicinal & herbal plants (ginseng, psyllium, mint)",
+      "exportsUsd": 165268989,
+      "priorExportsUsd": 160708711,
+      "changePct": 2.8,
+      "sharePct": 0.8
+    },
+    {
+      "heading": "1212",
+      "label": "Seaweed, carob, sugar beet & cane, fruit kernels",
+      "exportsUsd": 20821688,
+      "priorExportsUsd": 22952877,
+      "changePct": -9.3,
+      "sharePct": 0.1
+    },
+    {
+      "heading": "1213",
+      "label": "Cereal straw & husks",
+      "exportsUsd": 8712045,
+      "priorExportsUsd": 9353362,
+      "changePct": -6.9,
+      "sharePct": 0
+    },
+    {
+      "heading": "1214",
+      "label": "Hay, alfalfa & forage",
+      "exportsUsd": 1217259777,
+      "priorExportsUsd": 1366982768,
+      "changePct": -11,
+      "sharePct": 5.7
+    }
+  ],
+  "byLine": [
+    {
+      "hs6": "1201.90",
+      "heading": "1201",
+      "description": "Soya beans; other than seed, whether or not broken",
+      "exportsUsd": 16429471757,
+      "priorExportsUsd": 24502628814,
+      "changePct": -32.9,
+      "sharePct": 76.9
+    },
+    {
+      "hs6": "1214.90",
+      "heading": "1214",
+      "description": "Forage products including swedes, mangolds, fodder roots, hay, sainfoin, clover, forage kale, lupines, vetches etc., pelletised or otherwise",
+      "exportsUsd": 1187520737,
+      "priorExportsUsd": 1329191573,
+      "changePct": -10.7,
+      "sharePct": 5.6
+    },
+    {
+      "hs6": "1208.10",
+      "heading": "1208",
+      "description": "Flours and meals; of soya beans",
+      "exportsUsd": 1048154369,
+      "priorExportsUsd": 1313139392,
+      "changePct": -20.2,
+      "sharePct": 4.9
+    },
+    {
+      "hs6": "1209.91",
+      "heading": "1209",
+      "description": "Seeds; vegetable seeds, of a kind used for sowing",
+      "exportsUsd": 649934084,
+      "priorExportsUsd": 609217321,
+      "changePct": 6.7,
+      "sharePct": 3
+    },
+    {
+      "hs6": "1202.42",
+      "heading": "1202",
+      "description": "Ground-nuts; other than seed, not roasted or otherwise cooked, shelled, whether or not broken,",
+      "exportsUsd": 360910990,
+      "priorExportsUsd": 392156661,
+      "changePct": -8,
+      "sharePct": 1.7
+    },
+    {
+      "hs6": "1210.20",
+      "heading": "1210",
+      "description": "Hop cones; ground, powdered or in the form of pellets; lupulin",
+      "exportsUsd": 253049090,
+      "priorExportsUsd": 244946252,
+      "changePct": 3.3,
+      "sharePct": 1.2
+    },
+    {
+      "hs6": "1205.10",
+      "heading": "1205",
+      "description": "Oil seeds; low erucic acid rape or colza seeds, whether or not broken",
+      "exportsUsd": 226775707,
+      "priorExportsUsd": 200443483,
+      "changePct": 13.1,
+      "sharePct": 1.1
+    },
+    {
+      "hs6": "1202.41",
+      "heading": "1202",
+      "description": "Ground-nuts; other than seed, not roasted or otherwise cooked, in shell",
+      "exportsUsd": 129463153,
+      "priorExportsUsd": 215247786,
+      "changePct": -39.9,
+      "sharePct": 0.6
+    },
+    {
+      "hs6": "1211.90",
+      "heading": "1211",
+      "description": "Plants and parts (including seeds and fruits) n.e.c. in heading no. 1211, of a kind used primarily in perfumery, in pharmacy or for insecticidal, fungicidal or similar purposes, fresh, chilled, frozen or dried, whether or not cut, crushed or powdered",
+      "exportsUsd": 128351397,
+      "priorExportsUsd": 121696320,
+      "changePct": 5.5,
+      "sharePct": 0.6
+    },
+    {
+      "hs6": "1209.29",
+      "heading": "1209",
+      "description": "Seeds of forage plants; other than lucerne, clover, fescue, Kentucky blue grass, and rye grass seeds, of a kind used for sowing",
+      "exportsUsd": 94104622,
+      "priorExportsUsd": 89600351,
+      "changePct": 5,
+      "sharePct": 0.4
+    }
+  ],
+  "sources": [
+    {
+      "id": "comtrade-exports",
+      "publisher": "UN Comtrade",
+      "citation": "UN Comtrade, U.S. exports 2020–2025",
+      "document": "UN Comtrade public API (preview), United States exports, annual, HS",
+      "title": "United States exports, HS chapter 12, by partner, heading and subheading",
+      "signed": null,
+      "published": "2026-10-19",
+      "url": "https://comtradeplus.un.org/"
+    }
+  ],
+  "coverageNote": "The 13 buyers listed take 79% of 2025 U.S. Chapter 12 exports. FOB value of U.S. exports, as reported by the United States to UN Comtrade. They can differ from what the destination country reports as imports."
+}

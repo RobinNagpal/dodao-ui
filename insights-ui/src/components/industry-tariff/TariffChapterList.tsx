@@ -2,6 +2,7 @@
 
 import EmptyStateCard from '@/components/ui/EmptyStateCard';
 import SearchField from '@/components/ui/SearchField';
+import Text from '@/components/ui/Text';
 import ToggleChip from '@/components/ui/ToggleChip';
 import Stack from '@/components/ui/containers/Stack';
 import { IndexList, IndexListGroup } from '@/components/ui/sections/IndexList';
@@ -63,7 +64,15 @@ export default function TariffChapterList({ groups }: { groups: TariffChapterLis
         />
         {exportCount > 0 && (
           <Stack direction="row" gap="sm" align="center" wrap>
-            <ToggleChip label="Has U.S. export report" active={onlyExports} onToggle={() => setOnlyExports(!onlyExports)} count={exportCount} />
+            <ToggleChip
+              label="Also has a U.S. exports report"
+              active={onlyExports}
+              onToggle={() => setOnlyExports(!onlyExports)}
+              count={exportCount}
+            />
+            <Text as="span" size="xs" tone="muted">
+              what other countries charge on these goods when the U.S. sells them abroad
+            </Text>
           </Stack>
         )}
       </Stack>

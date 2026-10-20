@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 12,
+    "padded": "12",
+    "slug": "12-oil-seeds-and-grains",
+    "title": "Oil Seeds and Oleaginous Fruits; Miscellaneous Grains, Seeds and Fruit; Industrial or Medicinal Plants; Straw and Fodder"
+  },
+  "page": {
+    "slug": "exports/faq",
+    "path": "/industry-tariff-report/exports/chapters/12-oil-seeds-and-grains/faq",
+    "h1": "HTS Chapter 12: Oil Seeds and Oleaginous Fruits; Miscellaneous Grains, Seeds and Fruit; Industrial or Medicinal Plants; Straw and Fodder — U.S. Export FAQ",
+    "seo": {
+      "title": "TODO",
+      "shortDescription": "TODO",
+      "keywords": ["TODO"]
+    },
+    "lastCheckedAt": "2026-10-19"
+  },
+  "intro": "TODO: one sentence: what the questions cover and where the answers come from",
+  "keyTakeaways": ["TODO"],
+  "questionSource": "TODO: where the questions came from, e.g. Google search suggestions for \"<product> export tariff\"",
+  "faqs": []
+}

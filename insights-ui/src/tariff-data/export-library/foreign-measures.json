@@ -1,6 +1,25 @@
 {
-  "lastCheckedAt": "2026-10-13",
+  "lastCheckedAt": "2026-10-19",
   "measures": [
+    {
+      "id": "eu-aircraft-truce",
+      "date": "2026-07-06",
+      "type": "tradeDeal",
+      "countries": ["European Union"],
+      "title": "EU extends suspension of its Boeing/Airbus-dispute retaliatory tariffs on U.S. goods",
+      "before": "0% (suspended since 2021)",
+      "now": "0% (suspension extended)",
+      "status": "Suspended since July 11, 2021; extended by Implementing Regulation (EU) 2026/1549 from July 11, 2026",
+      "detail": "The U.S. and EU suspended, for five years from July 11, 2021, the tariffs each had imposed or threatened in their 17-year WTO dispute over Boeing and Airbus subsidies (the EU's WTO-authorized countermeasures covered up to $4 billion of U.S. goods, large civil aircraft among them, under the Cooperative Framework for Large Civil Aircraft). Implementing Regulation (EU) 2026/1549 of July 6, 2026 extends the EU's suspension past its July 10, 2026 expiry; the U.S. has not reactivated its Section 301 tariffs from the same dispute either.",
+      "sourceIds": ["eu-aircraft-truce-2021", "eu-aircraft-truce-2026"],
+      "allGoods": false,
+      "coverage": {
+        "12": "no",
+        "85": "no",
+        "88": "yes"
+      },
+      "inForce": false
+    },
     {
       "id": "cn-bot",
       "date": "2026-09-27",
@@ -14,7 +33,10 @@
       "sourceIds": ["cn-bot-list", "cn-board-of-trade"],
       "allGoods": false,
       "coverage": {
-        "30": "partly"
+        "30": "partly",
+        "12": "partly",
+        "85": "partly",
+        "88": "partly"
       },
       "inForce": false
     },
@@ -31,7 +53,10 @@
       "sourceIds": ["ca-2026-list"],
       "allGoods": false,
       "coverage": {
-        "30": "no"
+        "30": "no",
+        "12": "no",
+        "85": "partly",
+        "88": "no"
       },
       "inForce": true,
       "effectiveSourceId": "ca-2026-list"
@@ -49,7 +74,10 @@
       "sourceIds": ["br-wto-2026", "br-talks-2026", "br-law"],
       "allGoods": false,
       "coverage": {
-        "30": "no"
+        "30": "no",
+        "12": "no",
+        "85": "no",
+        "88": "no"
       },
       "inForce": false
     },
@@ -81,7 +109,10 @@
       "sourceIds": ["eu-framework", "eu-joint-2025"],
       "allGoods": false,
       "coverage": {
-        "30": "no"
+        "30": "no",
+        "12": "no",
+        "85": "yes",
+        "88": "no"
       },
       "inForce": false
     },
@@ -98,7 +129,10 @@
       "sourceIds": ["mx-dof-2025"],
       "allGoods": false,
       "coverage": {
-        "30": "no"
+        "30": "no",
+        "12": "no",
+        "85": "no",
+        "88": "no"
       },
       "inForce": false
     },
@@ -115,7 +149,10 @@
       "sourceIds": ["br-2025"],
       "allGoods": false,
       "coverage": {
-        "30": "no"
+        "30": "no",
+        "12": "no",
+        "85": "no",
+        "88": "no"
       },
       "inForce": false
     },
@@ -132,7 +169,10 @@
       "sourceIds": ["uk-pharma", "uk-pharma-text"],
       "allGoods": false,
       "coverage": {
-        "30": "yes"
+        "30": "yes",
+        "12": "no",
+        "85": "no",
+        "88": "no"
       },
       "inForce": false
     },
@@ -149,7 +189,10 @@
       "sourceIds": ["ch-framework", "ch-seco"],
       "allGoods": false,
       "coverage": {
-        "30": "yes"
+        "30": "yes",
+        "12": "no",
+        "85": "yes",
+        "88": "yes"
       },
       "inForce": false
     },
@@ -166,7 +209,10 @@
       "sourceIds": ["wh-china-deal-2025", "cn-2019-annex3"],
       "allGoods": false,
       "coverage": {
-        "30": "partly"
+        "30": "partly",
+        "12": "yes",
+        "85": "partly",
+        "88": "no"
       },
       "inForce": false
     },
@@ -183,7 +229,10 @@
       "sourceIds": ["jp-deal"],
       "allGoods": false,
       "coverage": {
-        "30": "no"
+        "30": "no",
+        "12": "partly",
+        "85": "no",
+        "88": "no"
       },
       "inForce": false
     },
@@ -200,7 +249,10 @@
       "sourceIds": ["eu-rebalancing", "eu-rebalancing-pharma"],
       "allGoods": false,
       "coverage": {
-        "30": "partly"
+        "30": "partly",
+        "12": "no",
+        "85": "no",
+        "88": "no"
       },
       "inForce": false
     },
@@ -233,7 +285,10 @@
       "sourceIds": ["uk-epd"],
       "allGoods": false,
       "coverage": {
-        "30": "no"
+        "30": "no",
+        "12": "no",
+        "85": "no",
+        "88": "no"
       },
       "inForce": false
     },
@@ -250,7 +305,10 @@
       "sourceIds": ["ca-2025-list", "ca-sor-2025-181"],
       "allGoods": false,
       "coverage": {
-        "30": "no"
+        "30": "no",
+        "12": "no",
+        "85": "partly",
+        "88": "no"
       },
       "inForce": false
     }
@@ -267,7 +325,10 @@
       "sourceIds": ["wh-china-deal-2025"],
       "allGoods": false,
       "coverage": {
-        "30": "partly"
+        "30": "partly",
+        "12": "yes",
+        "85": "partly",
+        "88": "no"
       }
     },
     {
@@ -563,6 +624,26 @@
       "signed": null,
       "published": "2019-05-13",
       "url": "https://www.gov.cn/xinwen/2019-05/13/5391208/files/9ed295b6eef24a9fa64d661be67bc2ed.pdf"
+    },
+    {
+      "id": "eu-aircraft-truce-2021",
+      "publisher": "USTR",
+      "citation": "USTR press release, Jun 15, 2021",
+      "document": "Press release",
+      "title": "USTR Announces Joint U.S.-EU Cooperative Framework for Large Civil Aircraft",
+      "signed": null,
+      "published": "2021-06-15",
+      "url": "https://ustr.gov/about-us/policy-offices/press-office/press-releases/2021/june/ustr-announces-joint-us-eu-cooperative-framework-large-civil-aircraft"
+    },
+    {
+      "id": "eu-aircraft-truce-2026",
+      "publisher": "EUR-Lex",
+      "citation": "Implementing Regulation (EU) 2026/1549",
+      "document": "Implementing regulation",
+      "title": "Commission Implementing Regulation (EU) 2026/1549 continuing the suspension of countermeasures concerning the large civil aircraft dispute",
+      "signed": "2026-07-06",
+      "published": "2026-07-07",
+      "url": "https://eur-lex.europa.eu/eli/reg_impl/2026/1549/oj"
     }
   ]
 }

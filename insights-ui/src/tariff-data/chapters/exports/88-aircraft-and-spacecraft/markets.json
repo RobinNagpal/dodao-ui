@@ -1,0 +1,727 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 88,
+    "padded": "88",
+    "slug": "88-aircraft-and-spacecraft",
+    "title": "Aircraft, Spacecraft, and Parts Thereof"
+  },
+  "page": {
+    "slug": "exports/markets",
+    "path": "/industry-tariff-report/exports/chapters/88-aircraft-and-spacecraft/markets",
+    "h1": "HTS Chapter 88: Aircraft, Spacecraft, and Parts Thereof — Export Markets & Foreign Tariffs on U.S. Goods",
+    "seo": {
+      "title": "TODO",
+      "shortDescription": "TODO",
+      "keywords": ["TODO"]
+    },
+    "lastCheckedAt": "2026-10-19"
+  },
+  "intro": "TODO: what the matrix shows and what usually decides access for this chapter (tariff vs regulator)",
+  "tradeYear": 2025,
+  "tariffYear": 0,
+  "valueBasis": "FOB value of U.S. exports, as reported by the United States to UN Comtrade.",
+  "groups": [
+    {
+      "heading": "8801",
+      "label": "Balloons and dirigibles; gliders, hang gliders and other non-powered aircraft",
+      "shortLabel": "Balloons and dirigibles"
+    },
+    {
+      "heading": "8802",
+      "label": "Other aircraft (for example, helicopters, airplanes, except unmanned aircraft of heading 8806); spacecraft (including satellites) and suborbital and spacecraft launch vehicles",
+      "shortLabel": "Other aircraft"
+    },
+    {
+      "heading": "8804",
+      "label": "Parachutes (including dirigible parachutes and paragliders) and rotochutes; parts thereof and accessories thereto",
+      "shortLabel": "Parachutes and…"
+    },
+    {
+      "heading": "8805",
+      "label": "Aircraft launching gear; deck-arrestor or similar gear; ground flying trainers; parts of the foregoing articles",
+      "shortLabel": "Aircraft launching gear"
+    },
+    {
+      "heading": "8806",
+      "label": "Unmanned aircraft",
+      "shortLabel": "Unmanned aircraft"
+    },
+    {
+      "heading": "8807",
+      "label": "Parts of goods of heading 8801, 8802 or 8806",
+      "shortLabel": "Parts of goods of…"
+    }
+  ],
+  "markets": [
+    {
+      "countryCode": 97,
+      "name": "European Union",
+      "rule": "TODO: the tariff rule that applies to U.S. goods, e.g. \"EU common external tariff (MFN)\"",
+      "usTradeAgreement": null,
+      "exportsUsd": 44647636076,
+      "priorExportsUsd": 35086537441,
+      "sharePct": 27.2,
+      "changePct": 27.3,
+      "status": "TODO",
+      "members": [
+        {
+          "countryCode": 251,
+          "country": "France",
+          "exportsUsd": 15329323170,
+          "priorExportsUsd": 11252211041,
+          "changePct": 36.2
+        },
+        {
+          "countryCode": 276,
+          "country": "Germany",
+          "exportsUsd": 12038498352,
+          "priorExportsUsd": 9576226556,
+          "changePct": 25.7
+        },
+        {
+          "countryCode": 616,
+          "country": "Poland",
+          "exportsUsd": 3186366387,
+          "priorExportsUsd": 2374057459,
+          "changePct": 34.2
+        },
+        {
+          "countryCode": 528,
+          "country": "Netherlands",
+          "exportsUsd": 2120140567,
+          "priorExportsUsd": 1818332622,
+          "changePct": 16.6
+        },
+        {
+          "countryCode": 724,
+          "country": "Spain",
+          "exportsUsd": 1856815060,
+          "priorExportsUsd": 1805273970,
+          "changePct": 2.9
+        }
+      ],
+      "cells": {
+        "8801": {
+          "exportsUsd": 737063,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8802": {
+          "exportsUsd": 1294500801,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8804": {
+          "exportsUsd": 37734612,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8805": {
+          "exportsUsd": 80396721,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8806": {
+          "exportsUsd": 287507367,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8807": {
+          "exportsUsd": 1854549724,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        }
+      },
+      "profile": {
+        "headline": "TODO: one or two sentences: what matters for a U.S. exporter in this market",
+        "mainProducts": "Parts of goods of heading 8801, 8802 or 8806 (8807) · Other aircraft (for example, helicopters, airplanes, except unmanned aircraft of heading 8806); spacecraft (including satellites) and suborbital and spacecraft launch vehicles (8802)",
+        "tariffNow": "TODO",
+        "regulator": {
+          "name": "TODO",
+          "url": "TODO",
+          "requirement": "TODO: whose approval or registration is needed to sell this chapter’s goods there"
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: EU import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/eu-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 156,
+      "name": "China",
+      "rule": "TODO: the tariff rule that applies to U.S. goods, e.g. \"EU common external tariff (MFN)\"",
+      "usTradeAgreement": null,
+      "exportsUsd": 15888282021,
+      "priorExportsUsd": 11535268522,
+      "sharePct": 9.7,
+      "changePct": 37.7,
+      "status": "TODO",
+      "cells": {
+        "8801": {
+          "exportsUsd": 38800,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8802": {
+          "exportsUsd": 0,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8804": {
+          "exportsUsd": 639869,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8805": {
+          "exportsUsd": 196104,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8806": {
+          "exportsUsd": 1592431,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8807": {
+          "exportsUsd": 895244,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        }
+      },
+      "profile": {
+        "headline": "TODO: one or two sentences: what matters for a U.S. exporter in this market",
+        "mainProducts": "Unmanned aircraft (8806) · Parts of goods of heading 8801, 8802 or 8806 (8807)",
+        "tariffNow": "TODO",
+        "regulator": {
+          "name": "TODO",
+          "url": "TODO",
+          "requirement": "TODO: whose approval or registration is needed to sell this chapter’s goods there"
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: China import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/china-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 826,
+      "name": "United Kingdom",
+      "rule": "TODO: the tariff rule that applies to U.S. goods, e.g. \"EU common external tariff (MFN)\"",
+      "usTradeAgreement": null,
+      "exportsUsd": 11735646543,
+      "priorExportsUsd": 10522841361,
+      "sharePct": 7.1,
+      "changePct": 11.5,
+      "status": "TODO",
+      "cells": {
+        "8801": {
+          "exportsUsd": 208116,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8802": {
+          "exportsUsd": 22380745,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8804": {
+          "exportsUsd": 5701196,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8805": {
+          "exportsUsd": 16802307,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8806": {
+          "exportsUsd": 92746982,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8807": {
+          "exportsUsd": 459109176,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        }
+      },
+      "profile": {
+        "headline": "TODO: one or two sentences: what matters for a U.S. exporter in this market",
+        "mainProducts": "Parts of goods of heading 8801, 8802 or 8806 (8807) · Unmanned aircraft (8806)",
+        "tariffNow": "TODO",
+        "regulator": {
+          "name": "TODO",
+          "url": "TODO",
+          "requirement": "TODO: whose approval or registration is needed to sell this chapter’s goods there"
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: UK import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/united-kingdom-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 76,
+      "name": "Brazil",
+      "rule": "TODO: the tariff rule that applies to U.S. goods, e.g. \"EU common external tariff (MFN)\"",
+      "usTradeAgreement": null,
+      "exportsUsd": 10679942016,
+      "priorExportsUsd": 9999303850,
+      "sharePct": 6.5,
+      "changePct": 6.8,
+      "status": "TODO",
+      "cells": {
+        "8801": {
+          "exportsUsd": 21218,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8802": {
+          "exportsUsd": 0,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8804": {
+          "exportsUsd": 1293517,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8805": {
+          "exportsUsd": 343666,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8806": {
+          "exportsUsd": 5454512,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8807": {
+          "exportsUsd": 151787915,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        }
+      },
+      "profile": {
+        "headline": "TODO: one or two sentences: what matters for a U.S. exporter in this market",
+        "mainProducts": "Parts of goods of heading 8801, 8802 or 8806 (8807) · Unmanned aircraft (8806)",
+        "tariffNow": "TODO",
+        "regulator": {
+          "name": "TODO",
+          "url": "TODO",
+          "requirement": "TODO: whose approval or registration is needed to sell this chapter’s goods there"
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Brazil import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/brazil-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 124,
+      "name": "Canada",
+      "rule": "TODO: the tariff rule that applies to U.S. goods, e.g. \"EU common external tariff (MFN)\"",
+      "usTradeAgreement": "USMCA (CUSMA in Canada)",
+      "exportsUsd": 9192951415,
+      "priorExportsUsd": 8260134956,
+      "sharePct": 5.6,
+      "changePct": 11.3,
+      "status": "TODO",
+      "cells": {
+        "8801": {
+          "exportsUsd": 0,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8802": {
+          "exportsUsd": 17630345,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8804": {
+          "exportsUsd": 7175263,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8805": {
+          "exportsUsd": 8907014,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8806": {
+          "exportsUsd": 14140141,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8807": {
+          "exportsUsd": 0,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        }
+      },
+      "profile": {
+        "headline": "TODO: one or two sentences: what matters for a U.S. exporter in this market",
+        "mainProducts": "Other aircraft (for example, helicopters, airplanes, except unmanned aircraft of heading 8806); spacecraft (including satellites) and suborbital and spacecraft launch vehicles (8802) · Unmanned aircraft (8806)",
+        "tariffNow": "TODO",
+        "regulator": {
+          "name": "TODO",
+          "url": "TODO",
+          "requirement": "TODO: whose approval or registration is needed to sell this chapter’s goods there"
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Canada import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/canada-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 484,
+      "name": "Mexico",
+      "rule": "TODO: the tariff rule that applies to U.S. goods, e.g. \"EU common external tariff (MFN)\"",
+      "usTradeAgreement": "USMCA (T-MEC in Mexico)",
+      "exportsUsd": 8694394727,
+      "priorExportsUsd": 6307661397,
+      "sharePct": 5.3,
+      "changePct": 37.8,
+      "status": "TODO",
+      "cells": {
+        "8801": {
+          "exportsUsd": 99394,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8802": {
+          "exportsUsd": 0,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8804": {
+          "exportsUsd": 4347143,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8805": {
+          "exportsUsd": 974934,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8806": {
+          "exportsUsd": 8121333,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8807": {
+          "exportsUsd": 71299326,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        }
+      },
+      "profile": {
+        "headline": "TODO: one or two sentences: what matters for a U.S. exporter in this market",
+        "mainProducts": "Parts of goods of heading 8801, 8802 or 8806 (8807) · Unmanned aircraft (8806)",
+        "tariffNow": "TODO",
+        "regulator": {
+          "name": "TODO",
+          "url": "TODO",
+          "requirement": "TODO: whose approval or registration is needed to sell this chapter’s goods there"
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Mexico import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/mexico-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 702,
+      "name": "Singapore",
+      "rule": "TODO: the tariff rule that applies to U.S. goods, e.g. \"EU common external tariff (MFN)\"",
+      "usTradeAgreement": "U.S.–Singapore FTA",
+      "exportsUsd": 6928889925,
+      "priorExportsUsd": 6132956892,
+      "sharePct": 4.2,
+      "changePct": 13,
+      "status": "TODO",
+      "cells": {
+        "8801": {
+          "exportsUsd": 0,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8802": {
+          "exportsUsd": 0,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8804": {
+          "exportsUsd": 1804957,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8805": {
+          "exportsUsd": 30818139,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8806": {
+          "exportsUsd": 1653208,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8807": {
+          "exportsUsd": 124295171,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        }
+      },
+      "profile": {
+        "headline": "TODO: one or two sentences: what matters for a U.S. exporter in this market",
+        "mainProducts": "Parts of goods of heading 8801, 8802 or 8806 (8807) · Aircraft launching gear; deck-arrestor or similar gear; ground flying trainers; parts of the foregoing articles (8805)",
+        "tariffNow": "TODO",
+        "regulator": {
+          "name": "TODO",
+          "url": "TODO",
+          "requirement": "TODO: whose approval or registration is needed to sell this chapter’s goods there"
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Singapore import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/singapore-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 392,
+      "name": "Japan",
+      "rule": "TODO: the tariff rule that applies to U.S. goods, e.g. \"EU common external tariff (MFN)\"",
+      "usTradeAgreement": null,
+      "exportsUsd": 6477864300,
+      "priorExportsUsd": 6100511946,
+      "sharePct": 3.9,
+      "changePct": 6.2,
+      "status": "TODO",
+      "cells": {
+        "8801": {
+          "exportsUsd": 115096,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8802": {
+          "exportsUsd": 341648542,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8804": {
+          "exportsUsd": 12126728,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8805": {
+          "exportsUsd": 76948101,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8806": {
+          "exportsUsd": 81693246,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8807": {
+          "exportsUsd": 1015424165,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        }
+      },
+      "profile": {
+        "headline": "TODO: one or two sentences: what matters for a U.S. exporter in this market",
+        "mainProducts": "Parts of goods of heading 8801, 8802 or 8806 (8807) · Other aircraft (for example, helicopters, airplanes, except unmanned aircraft of heading 8806); spacecraft (including satellites) and suborbital and spacecraft launch vehicles (8802)",
+        "tariffNow": "TODO",
+        "regulator": {
+          "name": "TODO",
+          "url": "TODO",
+          "requirement": "TODO: whose approval or registration is needed to sell this chapter’s goods there"
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Japan import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/japan-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 784,
+      "name": "United Arab Emirates",
+      "rule": "TODO: the tariff rule that applies to U.S. goods, e.g. \"EU common external tariff (MFN)\"",
+      "usTradeAgreement": null,
+      "exportsUsd": 5666104996,
+      "priorExportsUsd": 3932102504,
+      "sharePct": 3.4,
+      "changePct": 44.1,
+      "status": "TODO",
+      "cells": {
+        "8801": {
+          "exportsUsd": 0,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8802": {
+          "exportsUsd": 1618385,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8804": {
+          "exportsUsd": 73405630,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8805": {
+          "exportsUsd": 2039412,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8806": {
+          "exportsUsd": 10795635,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8807": {
+          "exportsUsd": 160360629,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        }
+      },
+      "profile": {
+        "headline": "TODO: one or two sentences: what matters for a U.S. exporter in this market",
+        "mainProducts": "Parts of goods of heading 8801, 8802 or 8806 (8807) · Parachutes (including dirigible parachutes and paragliders) and rotochutes; parts thereof and accessories thereto (8804)",
+        "tariffNow": "TODO",
+        "regulator": {
+          "name": "TODO",
+          "url": "TODO",
+          "requirement": "TODO: whose approval or registration is needed to sell this chapter’s goods there"
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: United Arab Emirates import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/united-arab-emirates-import-requirements-and-documentation"
+        }
+      }
+    }
+  ],
+  "biggestLanes": [
+    {
+      "market": "European Union",
+      "heading": "8807",
+      "exportsUsd": 1854549724,
+      "rate": "TODO"
+    },
+    {
+      "market": "European Union",
+      "heading": "8802",
+      "exportsUsd": 1294500801,
+      "rate": "TODO"
+    },
+    {
+      "market": "Japan",
+      "heading": "8807",
+      "exportsUsd": 1015424165,
+      "rate": "TODO"
+    },
+    {
+      "market": "United Kingdom",
+      "heading": "8807",
+      "exportsUsd": 459109176,
+      "rate": "TODO"
+    },
+    {
+      "market": "Japan",
+      "heading": "8802",
+      "exportsUsd": 341648542,
+      "rate": "TODO"
+    },
+    {
+      "market": "European Union",
+      "heading": "8806",
+      "exportsUsd": 287507367,
+      "rate": "TODO"
+    },
+    {
+      "market": "United Arab Emirates",
+      "heading": "8807",
+      "exportsUsd": 160360629,
+      "rate": "TODO"
+    },
+    {
+      "market": "Brazil",
+      "heading": "8807",
+      "exportsUsd": 151787915,
+      "rate": "TODO"
+    }
+  ],
+  "assumptions": ["TODO: where the rates come from (schedule, year, one subheading per group) and how trade agreements and extra duties are applied"],
+  "sources": [
+    {
+      "id": "comtrade-exports",
+      "publisher": "UN Comtrade",
+      "citation": "UN Comtrade, U.S. exports 2020–2025",
+      "document": "UN Comtrade public API (preview), United States exports, annual, HS",
+      "title": "United States exports, HS chapter 88, by partner, heading and subheading",
+      "signed": null,
+      "published": "2026-10-19",
+      "url": "https://comtradeplus.un.org/"
+    }
+  ],
+  "coverageNote": "The 9 markets shown take 73% of 2025 U.S. Chapter 88 exports. A customs union (the EU) is one market: its members share one tariff."
+}

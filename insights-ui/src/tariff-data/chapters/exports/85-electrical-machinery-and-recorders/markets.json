@@ -1,0 +1,3205 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 85,
+    "padded": "85",
+    "slug": "85-electrical-machinery-and-recorders",
+    "title": "Electrical Machinery and Equipment and Parts Thereof; Sound Recorders and Reproducers, Television Image and Sound Recorders and Reproducers, and Parts and Accessories of Such Articles"
+  },
+  "page": {
+    "slug": "exports/markets",
+    "path": "/industry-tariff-report/exports/chapters/85-electrical-machinery-and-recorders/markets",
+    "h1": "HTS Chapter 85: Electrical Machinery and Equipment and Parts Thereof; Sound Recorders and Reproducers, Television Image and Sound Recorders and Reproducers, and Parts and Accessories of Such Articles — Export Markets & Foreign Tariffs on U.S. Goods",
+    "seo": {
+      "title": "TODO",
+      "shortDescription": "TODO",
+      "keywords": ["TODO"]
+    },
+    "lastCheckedAt": "2026-10-19"
+  },
+  "intro": "TODO: what the matrix shows and what usually decides access for this chapter (tariff vs regulator)",
+  "tradeYear": 2025,
+  "tariffYear": 0,
+  "valueBasis": "FOB value of U.S. exports, as reported by the United States to UN Comtrade.",
+  "groups": [
+    {
+      "heading": "8501",
+      "label": "Electric motors and generators",
+      "shortLabel": "Motors"
+    },
+    {
+      "heading": "8502",
+      "label": "Generating sets and rotary converters",
+      "shortLabel": "Generator sets"
+    },
+    {
+      "heading": "8503",
+      "label": "Parts of motors and generators",
+      "shortLabel": "Motor parts"
+    },
+    {
+      "heading": "8504",
+      "label": "Transformers, power supplies and inductors",
+      "shortLabel": "Transformers"
+    },
+    {
+      "heading": "8505",
+      "label": "Magnets and electromagnetic devices",
+      "shortLabel": "Magnets"
+    },
+    {
+      "heading": "8506",
+      "label": "Primary cells and batteries",
+      "shortLabel": "Primary batteries"
+    },
+    {
+      "heading": "8507",
+      "label": "Storage batteries (lithium-ion, lead-acid)",
+      "shortLabel": "Batteries"
+    },
+    {
+      "heading": "8508",
+      "label": "Vacuum cleaners",
+      "shortLabel": "Vacuums"
+    },
+    {
+      "heading": "8509",
+      "label": "Domestic appliances with motor",
+      "shortLabel": "Small appliances"
+    },
+    {
+      "heading": "8510",
+      "label": "Shavers and hair clippers",
+      "shortLabel": "Shavers"
+    },
+    {
+      "heading": "8511",
+      "label": "Ignition and starting equipment",
+      "shortLabel": "Ignition"
+    },
+    {
+      "heading": "8512",
+      "label": "Vehicle lighting and signaling",
+      "shortLabel": "Vehicle lights"
+    },
+    {
+      "heading": "8513",
+      "label": "Portable electric lamps",
+      "shortLabel": "Flashlights"
+    },
+    {
+      "heading": "8514",
+      "label": "Industrial electric furnaces",
+      "shortLabel": "Furnaces"
+    },
+    {
+      "heading": "8515",
+      "label": "Welding and soldering equipment",
+      "shortLabel": "Welding"
+    },
+    {
+      "heading": "8516",
+      "label": "Water heaters, space heaters and household heating appliances",
+      "shortLabel": "Heating appliances"
+    },
+    {
+      "heading": "8517",
+      "label": "Smartphones and network equipment",
+      "shortLabel": "Phones & network"
+    },
+    {
+      "heading": "8518",
+      "label": "Microphones, speakers and headphones",
+      "shortLabel": "Audio"
+    },
+    {
+      "heading": "8519",
+      "label": "Sound recording and reproducing apparatus",
+      "shortLabel": "Sound recorders"
+    },
+    {
+      "heading": "8521",
+      "label": "Video recorders and players",
+      "shortLabel": "Video players"
+    },
+    {
+      "heading": "8522",
+      "label": "Parts of sound and video apparatus",
+      "shortLabel": "AV parts"
+    },
+    {
+      "heading": "8523",
+      "label": "Storage media: SSDs, cards, discs and tapes",
+      "shortLabel": "Storage media"
+    },
+    {
+      "heading": "8524",
+      "label": "Flat panel display modules",
+      "shortLabel": "Display modules"
+    },
+    {
+      "heading": "8525",
+      "label": "Cameras and transmitters",
+      "shortLabel": "Cameras & transmitters"
+    },
+    {
+      "heading": "8526",
+      "label": "Radar and navigation apparatus",
+      "shortLabel": "Radar & GPS"
+    },
+    {
+      "heading": "8527",
+      "label": "Radio receivers",
+      "shortLabel": "Radios"
+    },
+    {
+      "heading": "8528",
+      "label": "Monitors, projectors and televisions",
+      "shortLabel": "TVs & monitors"
+    },
+    {
+      "heading": "8529",
+      "label": "Parts of TVs, radios, cameras and radar",
+      "shortLabel": "TV & radio parts"
+    },
+    {
+      "heading": "8530",
+      "label": "Railway and traffic signaling equipment",
+      "shortLabel": "Traffic signals"
+    },
+    {
+      "heading": "8531",
+      "label": "Alarms, bells and indicator panels",
+      "shortLabel": "Alarms & displays"
+    },
+    {
+      "heading": "8532",
+      "label": "Capacitors",
+      "shortLabel": "Capacitors"
+    },
+    {
+      "heading": "8533",
+      "label": "Resistors",
+      "shortLabel": "Resistors"
+    },
+    {
+      "heading": "8534",
+      "label": "Printed circuits",
+      "shortLabel": "PCBs"
+    },
+    {
+      "heading": "8535",
+      "label": "High-voltage switchgear (over 1,000 V)",
+      "shortLabel": "HV switchgear"
+    },
+    {
+      "heading": "8536",
+      "label": "Switches, breakers, relays and connectors (1,000 V or less)",
+      "shortLabel": "Switches & connectors"
+    },
+    {
+      "heading": "8537",
+      "label": "Control panels and switchboards",
+      "shortLabel": "Control panels"
+    },
+    {
+      "heading": "8538",
+      "label": "Parts of switching apparatus",
+      "shortLabel": "Switchgear parts"
+    },
+    {
+      "heading": "8539",
+      "label": "Lamps and LED light sources",
+      "shortLabel": "Lamps & LEDs"
+    },
+    {
+      "heading": "8540",
+      "label": "Electron tubes",
+      "shortLabel": "Tubes"
+    },
+    {
+      "heading": "8541",
+      "label": "Semiconductor devices and solar cells",
+      "shortLabel": "Semiconductors & solar"
+    },
+    {
+      "heading": "8542",
+      "label": "Integrated circuits (chips)",
+      "shortLabel": "Chips"
+    },
+    {
+      "heading": "8543",
+      "label": "Other electrical machines and apparatus",
+      "shortLabel": "Other machines"
+    },
+    {
+      "heading": "8544",
+      "label": "Insulated wire and cable, fiber-optic cable",
+      "shortLabel": "Wire & cable"
+    },
+    {
+      "heading": "8545",
+      "label": "Carbon and graphite electrodes and brushes",
+      "shortLabel": "Carbon electrodes"
+    },
+    {
+      "heading": "8546",
+      "label": "Electrical insulators",
+      "shortLabel": "Insulators"
+    },
+    {
+      "heading": "8547",
+      "label": "Insulating fittings and conduit",
+      "shortLabel": "Insulating fittings"
+    },
+    {
+      "heading": "8548",
+      "label": "Electrical parts not elsewhere specified",
+      "shortLabel": "Other parts"
+    },
+    {
+      "heading": "8549",
+      "label": "Electrical and electronic waste and scrap",
+      "shortLabel": "E-waste"
+    }
+  ],
+  "markets": [
+    {
+      "countryCode": 484,
+      "name": "Mexico",
+      "rule": "TODO: the tariff rule that applies to U.S. goods, e.g. \"EU common external tariff (MFN)\"",
+      "usTradeAgreement": "USMCA (T-MEC in Mexico)",
+      "exportsUsd": 57245353156,
+      "priorExportsUsd": 55684043464,
+      "sharePct": 25.3,
+      "changePct": 2.8,
+      "status": "TODO",
+      "cells": {
+        "8501": {
+          "exportsUsd": 1127502248,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8502": {
+          "exportsUsd": 254260974,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8503": {
+          "exportsUsd": 451965677,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8504": {
+          "exportsUsd": 2542562020,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8505": {
+          "exportsUsd": 166676929,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8506": {
+          "exportsUsd": 112851427,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8507": {
+          "exportsUsd": 2718732861,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8508": {
+          "exportsUsd": 99343908,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8509": {
+          "exportsUsd": 94933286,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8510": {
+          "exportsUsd": 29777379,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8511": {
+          "exportsUsd": 700161646,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8512": {
+          "exportsUsd": 667460379,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8513": {
+          "exportsUsd": 8368726,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8514": {
+          "exportsUsd": 74961651,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8515": {
+          "exportsUsd": 260679521,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8516": {
+          "exportsUsd": 396109594,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8517": {
+          "exportsUsd": 6528012591,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8518": {
+          "exportsUsd": 842938373,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8519": {
+          "exportsUsd": 10750603,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8521": {
+          "exportsUsd": 31292453,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8522": {
+          "exportsUsd": 1521349,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8523": {
+          "exportsUsd": 5400641272,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8524": {
+          "exportsUsd": 186550682,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8525": {
+          "exportsUsd": 558828244,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8526": {
+          "exportsUsd": 391326634,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8527": {
+          "exportsUsd": 483114219,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8528": {
+          "exportsUsd": 320568325,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8529": {
+          "exportsUsd": 331779781,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8530": {
+          "exportsUsd": 33105640,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8531": {
+          "exportsUsd": 329559238,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8532": {
+          "exportsUsd": 926220687,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8533": {
+          "exportsUsd": 441625638,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8534": {
+          "exportsUsd": 508427990,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8535": {
+          "exportsUsd": 251300937,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8536": {
+          "exportsUsd": 4476547888,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8537": {
+          "exportsUsd": 1684993625,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8538": {
+          "exportsUsd": 2835630714,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8539": {
+          "exportsUsd": 97812232,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8540": {
+          "exportsUsd": 8953363,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8541": {
+          "exportsUsd": 877228684,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8542": {
+          "exportsUsd": 12350615437,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8543": {
+          "exportsUsd": 1853594584,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8544": {
+          "exportsUsd": 4981294584,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8545": {
+          "exportsUsd": 16849843,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8546": {
+          "exportsUsd": 65195986,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8547": {
+          "exportsUsd": 158900027,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8548": {
+          "exportsUsd": 90318994,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8549": {
+          "exportsUsd": 463504313,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        }
+      },
+      "profile": {
+        "headline": "TODO: one or two sentences: what matters for a U.S. exporter in this market",
+        "mainProducts": "Integrated circuits (chips) (8542) · Smartphones and network equipment (8517)",
+        "tariffNow": "TODO",
+        "regulator": {
+          "name": "TODO",
+          "url": "TODO",
+          "requirement": "TODO: whose approval or registration is needed to sell this chapter’s goods there"
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Mexico import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/mexico-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 124,
+      "name": "Canada",
+      "rule": "TODO: the tariff rule that applies to U.S. goods, e.g. \"EU common external tariff (MFN)\"",
+      "usTradeAgreement": "USMCA (CUSMA in Canada)",
+      "exportsUsd": 27643722342,
+      "priorExportsUsd": 28303632389,
+      "sharePct": 12.2,
+      "changePct": -2.3,
+      "status": "TODO",
+      "cells": {
+        "8501": {
+          "exportsUsd": 945473163,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8502": {
+          "exportsUsd": 687672980,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8503": {
+          "exportsUsd": 185893388,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8504": {
+          "exportsUsd": 1658614878,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8505": {
+          "exportsUsd": 85803705,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8506": {
+          "exportsUsd": 136587319,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8507": {
+          "exportsUsd": 1768250545,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8508": {
+          "exportsUsd": 92896708,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8509": {
+          "exportsUsd": 211525342,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8510": {
+          "exportsUsd": 44300878,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8511": {
+          "exportsUsd": 440011315,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8512": {
+          "exportsUsd": 1001433821,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8513": {
+          "exportsUsd": 60916777,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8514": {
+          "exportsUsd": 71513794,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8515": {
+          "exportsUsd": 277833716,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8516": {
+          "exportsUsd": 725380555,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8517": {
+          "exportsUsd": 4924346530,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8518": {
+          "exportsUsd": 908461389,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8519": {
+          "exportsUsd": 30052769,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8521": {
+          "exportsUsd": 53551161,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8522": {
+          "exportsUsd": 4309986,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8523": {
+          "exportsUsd": 697694860,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8524": {
+          "exportsUsd": 32674311,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8525": {
+          "exportsUsd": 1126187627,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8526": {
+          "exportsUsd": 307824902,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8527": {
+          "exportsUsd": 141724700,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8528": {
+          "exportsUsd": 628851769,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8529": {
+          "exportsUsd": 313841374,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8530": {
+          "exportsUsd": 88323152,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8531": {
+          "exportsUsd": 338426664,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8532": {
+          "exportsUsd": 104235193,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8533": {
+          "exportsUsd": 75852262,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8534": {
+          "exportsUsd": 90688081,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8535": {
+          "exportsUsd": 380423867,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8536": {
+          "exportsUsd": 1879439761,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8537": {
+          "exportsUsd": 1756676549,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8538": {
+          "exportsUsd": 416392533,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8539": {
+          "exportsUsd": 180391583,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8540": {
+          "exportsUsd": 25077513,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8541": {
+          "exportsUsd": 225761992,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8542": {
+          "exportsUsd": 833687535,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8543": {
+          "exportsUsd": 675908411,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8544": {
+          "exportsUsd": 2680923442,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8545": {
+          "exportsUsd": 42217755,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8546": {
+          "exportsUsd": 56990932,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8547": {
+          "exportsUsd": 29384696,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8548": {
+          "exportsUsd": 11095735,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8549": {
+          "exportsUsd": 188194424,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        }
+      },
+      "profile": {
+        "headline": "TODO: one or two sentences: what matters for a U.S. exporter in this market",
+        "mainProducts": "Smartphones and network equipment (8517) · Insulated wire and cable, fiber-optic cable (8544)",
+        "tariffNow": "TODO",
+        "regulator": {
+          "name": "TODO",
+          "url": "TODO",
+          "requirement": "TODO: whose approval or registration is needed to sell this chapter’s goods there"
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Canada import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/canada-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 97,
+      "name": "European Union",
+      "rule": "TODO: the tariff rule that applies to U.S. goods, e.g. \"EU common external tariff (MFN)\"",
+      "usTradeAgreement": null,
+      "exportsUsd": 26732484181,
+      "priorExportsUsd": 24844859718,
+      "sharePct": 11.8,
+      "changePct": 7.6,
+      "status": "TODO",
+      "members": [
+        {
+          "countryCode": 276,
+          "country": "Germany",
+          "exportsUsd": 6177172340,
+          "priorExportsUsd": 6175140725,
+          "changePct": 0
+        },
+        {
+          "countryCode": 528,
+          "country": "Netherlands",
+          "exportsUsd": 6156819280,
+          "priorExportsUsd": 5473909265,
+          "changePct": 12.5
+        },
+        {
+          "countryCode": 251,
+          "country": "France",
+          "exportsUsd": 2464704727,
+          "priorExportsUsd": 2731758829,
+          "changePct": -9.8
+        },
+        {
+          "countryCode": 372,
+          "country": "Ireland",
+          "exportsUsd": 1939367194,
+          "priorExportsUsd": 1545374187,
+          "changePct": 25.5
+        },
+        {
+          "countryCode": 380,
+          "country": "Italy",
+          "exportsUsd": 1761227204,
+          "priorExportsUsd": 1530171741,
+          "changePct": 15.1
+        }
+      ],
+      "cells": {
+        "8501": {
+          "exportsUsd": 843663001,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8502": {
+          "exportsUsd": 209418273,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8503": {
+          "exportsUsd": 169909378,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8504": {
+          "exportsUsd": 1264922823,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8505": {
+          "exportsUsd": 68063582,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8506": {
+          "exportsUsd": 191581115,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8507": {
+          "exportsUsd": 844310511,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8508": {
+          "exportsUsd": 27890542,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8509": {
+          "exportsUsd": 127086861,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8510": {
+          "exportsUsd": 27377547,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8511": {
+          "exportsUsd": 229914147,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8512": {
+          "exportsUsd": 127848517,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8513": {
+          "exportsUsd": 25061802,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8514": {
+          "exportsUsd": 80616669,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8515": {
+          "exportsUsd": 103391834,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8516": {
+          "exportsUsd": 180347999,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8517": {
+          "exportsUsd": 6899376086,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8518": {
+          "exportsUsd": 333947768,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8519": {
+          "exportsUsd": 34941779,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8521": {
+          "exportsUsd": 21821624,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8522": {
+          "exportsUsd": 5509061,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8523": {
+          "exportsUsd": 1608794690,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8524": {
+          "exportsUsd": 39418573,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8525": {
+          "exportsUsd": 594639472,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8526": {
+          "exportsUsd": 511609093,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8527": {
+          "exportsUsd": 70152189,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8528": {
+          "exportsUsd": 222298261,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8529": {
+          "exportsUsd": 669319131,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8530": {
+          "exportsUsd": 20681924,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8531": {
+          "exportsUsd": 391719808,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8532": {
+          "exportsUsd": 183961788,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8533": {
+          "exportsUsd": 129219311,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8534": {
+          "exportsUsd": 132721142,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8535": {
+          "exportsUsd": 84414545,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8536": {
+          "exportsUsd": 1437917802,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8537": {
+          "exportsUsd": 1632752891,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8538": {
+          "exportsUsd": 399223833,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8539": {
+          "exportsUsd": 76119228,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8540": {
+          "exportsUsd": 108852764,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8541": {
+          "exportsUsd": 835564890,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8542": {
+          "exportsUsd": 2904230272,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8543": {
+          "exportsUsd": 993378680,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8544": {
+          "exportsUsd": 1711567052,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8545": {
+          "exportsUsd": 37104687,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8546": {
+          "exportsUsd": 16485452,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8547": {
+          "exportsUsd": 58257165,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8548": {
+          "exportsUsd": 24897637,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8549": {
+          "exportsUsd": 20180982,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        }
+      },
+      "profile": {
+        "headline": "TODO: one or two sentences: what matters for a U.S. exporter in this market",
+        "mainProducts": "Smartphones and network equipment (8517) · Integrated circuits (chips) (8542)",
+        "tariffNow": "TODO",
+        "regulator": {
+          "name": "TODO",
+          "url": "TODO",
+          "requirement": "TODO: whose approval or registration is needed to sell this chapter’s goods there"
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: EU import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/eu-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 156,
+      "name": "China",
+      "rule": "TODO: the tariff rule that applies to U.S. goods, e.g. \"EU common external tariff (MFN)\"",
+      "usTradeAgreement": null,
+      "exportsUsd": 16364291757,
+      "priorExportsUsd": 15279780707,
+      "sharePct": 7.2,
+      "changePct": 7.1,
+      "status": "TODO",
+      "cells": {
+        "8501": {
+          "exportsUsd": 233969233,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8502": {
+          "exportsUsd": 43247801,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8503": {
+          "exportsUsd": 50220886,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8504": {
+          "exportsUsd": 443643025,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8505": {
+          "exportsUsd": 70615141,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8506": {
+          "exportsUsd": 12923840,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8507": {
+          "exportsUsd": 57911962,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8508": {
+          "exportsUsd": 2088541,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8509": {
+          "exportsUsd": 9019402,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8510": {
+          "exportsUsd": 1793628,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8511": {
+          "exportsUsd": 72121639,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8512": {
+          "exportsUsd": 36024306,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8513": {
+          "exportsUsd": 1080623,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8514": {
+          "exportsUsd": 36666755,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8515": {
+          "exportsUsd": 38057980,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8516": {
+          "exportsUsd": 76011941,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8517": {
+          "exportsUsd": 984996665,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8518": {
+          "exportsUsd": 90229790,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8519": {
+          "exportsUsd": 10745819,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8521": {
+          "exportsUsd": 2848858,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8522": {
+          "exportsUsd": 2628753,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8523": {
+          "exportsUsd": 300081199,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8524": {
+          "exportsUsd": 16729339,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8525": {
+          "exportsUsd": 199847153,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8526": {
+          "exportsUsd": 69124550,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8527": {
+          "exportsUsd": 4596299,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8528": {
+          "exportsUsd": 43029739,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8529": {
+          "exportsUsd": 119091943,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8530": {
+          "exportsUsd": 1962002,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8531": {
+          "exportsUsd": 107147269,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8532": {
+          "exportsUsd": 44114323,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8533": {
+          "exportsUsd": 55166645,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8534": {
+          "exportsUsd": 37165526,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8535": {
+          "exportsUsd": 40231459,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8536": {
+          "exportsUsd": 634063311,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8537": {
+          "exportsUsd": 453177924,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8538": {
+          "exportsUsd": 225363785,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8539": {
+          "exportsUsd": 62133885,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8540": {
+          "exportsUsd": 74836374,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8541": {
+          "exportsUsd": 783326162,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8542": {
+          "exportsUsd": 9962293050,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8543": {
+          "exportsUsd": 317589334,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8544": {
+          "exportsUsd": 502774694,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8545": {
+          "exportsUsd": 6011917,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8546": {
+          "exportsUsd": 6546862,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8547": {
+          "exportsUsd": 13392801,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8548": {
+          "exportsUsd": 5830499,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8549": {
+          "exportsUsd": 1817125,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        }
+      },
+      "profile": {
+        "headline": "TODO: one or two sentences: what matters for a U.S. exporter in this market",
+        "mainProducts": "Integrated circuits (chips) (8542) · Smartphones and network equipment (8517)",
+        "tariffNow": "TODO",
+        "regulator": {
+          "name": "TODO",
+          "url": "TODO",
+          "requirement": "TODO: whose approval or registration is needed to sell this chapter’s goods there"
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: China import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/china-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 490,
+      "name": "Other Asia, nes",
+      "rule": "TODO: the tariff rule that applies to U.S. goods, e.g. \"EU common external tariff (MFN)\"",
+      "usTradeAgreement": "TODO",
+      "exportsUsd": 10810206248,
+      "priorExportsUsd": 7265059505,
+      "sharePct": 4.8,
+      "changePct": 48.8,
+      "status": "TODO",
+      "cells": {
+        "8501": {
+          "exportsUsd": 42483918,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8502": {
+          "exportsUsd": 5367451,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8503": {
+          "exportsUsd": 7894669,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8504": {
+          "exportsUsd": 181955808,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8505": {
+          "exportsUsd": 4606140,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8506": {
+          "exportsUsd": 1746236,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8507": {
+          "exportsUsd": 95233369,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8508": {
+          "exportsUsd": 1414388,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8509": {
+          "exportsUsd": 1873592,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8510": {
+          "exportsUsd": 95988,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8511": {
+          "exportsUsd": 8270217,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8512": {
+          "exportsUsd": 4113947,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8513": {
+          "exportsUsd": 876974,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8514": {
+          "exportsUsd": 50486052,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8515": {
+          "exportsUsd": 8581366,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8516": {
+          "exportsUsd": 48395842,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8517": {
+          "exportsUsd": 916666579,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8518": {
+          "exportsUsd": 10290802,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8519": {
+          "exportsUsd": 1156655,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8521": {
+          "exportsUsd": 432486,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8522": {
+          "exportsUsd": 423186,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8523": {
+          "exportsUsd": 553688776,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8524": {
+          "exportsUsd": 3011803,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8525": {
+          "exportsUsd": 51420141,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8526": {
+          "exportsUsd": 18466004,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8527": {
+          "exportsUsd": 156542,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8528": {
+          "exportsUsd": 7103389,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8529": {
+          "exportsUsd": 52122499,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8530": {
+          "exportsUsd": 3004062,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8531": {
+          "exportsUsd": 22087133,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8532": {
+          "exportsUsd": 45903264,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8533": {
+          "exportsUsd": 18283180,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8534": {
+          "exportsUsd": 50762189,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8535": {
+          "exportsUsd": 20489080,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8536": {
+          "exportsUsd": 263480552,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8537": {
+          "exportsUsd": 135150557,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8538": {
+          "exportsUsd": 28193757,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8539": {
+          "exportsUsd": 44443262,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8540": {
+          "exportsUsd": 15767165,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8541": {
+          "exportsUsd": 1065014797,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8542": {
+          "exportsUsd": 6722155109,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8543": {
+          "exportsUsd": 176837771,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8544": {
+          "exportsUsd": 88333761,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8545": {
+          "exportsUsd": 862578,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8546": {
+          "exportsUsd": 12325149,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8547": {
+          "exportsUsd": 16808250,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8548": {
+          "exportsUsd": 1300466,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8549": {
+          "exportsUsd": 669347,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        }
+      },
+      "profile": {
+        "headline": "TODO: one or two sentences: what matters for a U.S. exporter in this market",
+        "mainProducts": "Integrated circuits (chips) (8542) · Semiconductor devices and solar cells (8541)",
+        "tariffNow": "TODO",
+        "regulator": {
+          "name": "TODO",
+          "url": "TODO",
+          "requirement": "TODO: whose approval or registration is needed to sell this chapter’s goods there"
+        },
+        "countryGuide": {
+          "label": "TODO",
+          "url": "TODO"
+        }
+      }
+    },
+    {
+      "countryCode": 458,
+      "name": "Malaysia",
+      "rule": "TODO: the tariff rule that applies to U.S. goods, e.g. \"EU common external tariff (MFN)\"",
+      "usTradeAgreement": null,
+      "exportsUsd": 10631307208,
+      "priorExportsUsd": 9741468491,
+      "sharePct": 4.7,
+      "changePct": 9.1,
+      "status": "TODO",
+      "cells": {
+        "8501": {
+          "exportsUsd": 77139533,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8502": {
+          "exportsUsd": 19304574,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8503": {
+          "exportsUsd": 6931669,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8504": {
+          "exportsUsd": 293614472,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8505": {
+          "exportsUsd": 3389595,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8506": {
+          "exportsUsd": 28186927,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8507": {
+          "exportsUsd": 5322748,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8508": {
+          "exportsUsd": 452408,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8509": {
+          "exportsUsd": 168729,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8510": {
+          "exportsUsd": 255790,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8511": {
+          "exportsUsd": 36543281,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8512": {
+          "exportsUsd": 4229373,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8513": {
+          "exportsUsd": 337752,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8514": {
+          "exportsUsd": 26711625,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8515": {
+          "exportsUsd": 6694659,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8516": {
+          "exportsUsd": 17009128,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8517": {
+          "exportsUsd": 699899025,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8518": {
+          "exportsUsd": 13030776,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8519": {
+          "exportsUsd": 454730,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8521": {
+          "exportsUsd": 436035,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8522": {
+          "exportsUsd": 41616,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8523": {
+          "exportsUsd": 339049760,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8524": {
+          "exportsUsd": 1496822,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8525": {
+          "exportsUsd": 10772402,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8526": {
+          "exportsUsd": 5074012,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8527": {
+          "exportsUsd": 1580925,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8528": {
+          "exportsUsd": 12317478,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8529": {
+          "exportsUsd": 20661182,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8530": {
+          "exportsUsd": 1602545,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8531": {
+          "exportsUsd": 16802429,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8532": {
+          "exportsUsd": 77216420,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8533": {
+          "exportsUsd": 28820861,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8534": {
+          "exportsUsd": 128761287,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8535": {
+          "exportsUsd": 4951739,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8536": {
+          "exportsUsd": 225883432,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8537": {
+          "exportsUsd": 95423824,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8538": {
+          "exportsUsd": 81330137,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8539": {
+          "exportsUsd": 7715247,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8540": {
+          "exportsUsd": 1913479,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8541": {
+          "exportsUsd": 833603073,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8542": {
+          "exportsUsd": 7156625442,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8543": {
+          "exportsUsd": 75977047,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8544": {
+          "exportsUsd": 222148750,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8545": {
+          "exportsUsd": 1796616,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8546": {
+          "exportsUsd": 15710825,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8547": {
+          "exportsUsd": 9133086,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8548": {
+          "exportsUsd": 13558064,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8549": {
+          "exportsUsd": 1225879,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        }
+      },
+      "profile": {
+        "headline": "TODO: one or two sentences: what matters for a U.S. exporter in this market",
+        "mainProducts": "Integrated circuits (chips) (8542) · Semiconductor devices and solar cells (8541)",
+        "tariffNow": "TODO",
+        "regulator": {
+          "name": "TODO",
+          "url": "TODO",
+          "requirement": "TODO: whose approval or registration is needed to sell this chapter’s goods there"
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Malaysia import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/malaysia-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 344,
+      "name": "Hong Kong",
+      "rule": "TODO: the tariff rule that applies to U.S. goods, e.g. \"EU common external tariff (MFN)\"",
+      "usTradeAgreement": null,
+      "exportsUsd": 8872639425,
+      "priorExportsUsd": 8717220112,
+      "sharePct": 3.9,
+      "changePct": 1.8,
+      "status": "TODO",
+      "cells": {
+        "8501": {
+          "exportsUsd": 14835898,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8502": {
+          "exportsUsd": 22105852,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8503": {
+          "exportsUsd": 4169636,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8504": {
+          "exportsUsd": 140349757,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8505": {
+          "exportsUsd": 3737813,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8506": {
+          "exportsUsd": 6070921,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8507": {
+          "exportsUsd": 10279021,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8508": {
+          "exportsUsd": 1423115,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8509": {
+          "exportsUsd": 2505385,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8510": {
+          "exportsUsd": 300739,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8511": {
+          "exportsUsd": 7457418,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8512": {
+          "exportsUsd": 3514784,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8513": {
+          "exportsUsd": 574750,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8514": {
+          "exportsUsd": 1441387,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8515": {
+          "exportsUsd": 3595072,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8516": {
+          "exportsUsd": 4017918,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8517": {
+          "exportsUsd": 5523895706,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8518": {
+          "exportsUsd": 88527119,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8519": {
+          "exportsUsd": 2877921,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8521": {
+          "exportsUsd": 2362893,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8522": {
+          "exportsUsd": 263870984,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8523": {
+          "exportsUsd": 174254098,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8524": {
+          "exportsUsd": 2141164,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8525": {
+          "exportsUsd": 89555076,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8526": {
+          "exportsUsd": 7449381,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8527": {
+          "exportsUsd": 655000,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8528": {
+          "exportsUsd": 15532614,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8529": {
+          "exportsUsd": 48782811,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8530": {
+          "exportsUsd": 184037,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8531": {
+          "exportsUsd": 29583491,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8532": {
+          "exportsUsd": 40097611,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8533": {
+          "exportsUsd": 62122530,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8534": {
+          "exportsUsd": 16221973,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8535": {
+          "exportsUsd": 4154373,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8536": {
+          "exportsUsd": 253090741,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8537": {
+          "exportsUsd": 72176721,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8538": {
+          "exportsUsd": 50332950,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8539": {
+          "exportsUsd": 4890368,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8540": {
+          "exportsUsd": 1247866,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8541": {
+          "exportsUsd": 208194006,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8542": {
+          "exportsUsd": 1484238261,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8543": {
+          "exportsUsd": 25395305,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8544": {
+          "exportsUsd": 160791473,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8545": {
+          "exportsUsd": 347213,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8546": {
+          "exportsUsd": 1556298,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8547": {
+          "exportsUsd": 2603988,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8548": {
+          "exportsUsd": 8801552,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8549": {
+          "exportsUsd": 324435,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        }
+      },
+      "profile": {
+        "headline": "TODO: one or two sentences: what matters for a U.S. exporter in this market",
+        "mainProducts": "Smartphones and network equipment (8517) · Integrated circuits (chips) (8542)",
+        "tariffNow": "TODO",
+        "regulator": {
+          "name": "TODO",
+          "url": "TODO",
+          "requirement": "TODO: whose approval or registration is needed to sell this chapter’s goods there"
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Hong Kong import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/import-requirements-and-documentation-hong-kong-macau"
+        }
+      }
+    },
+    {
+      "countryCode": 410,
+      "name": "South Korea",
+      "rule": "TODO: the tariff rule that applies to U.S. goods, e.g. \"EU common external tariff (MFN)\"",
+      "usTradeAgreement": "U.S.–Korea FTA (KORUS)",
+      "exportsUsd": 5604995145,
+      "priorExportsUsd": 5884211820,
+      "sharePct": 2.5,
+      "changePct": -4.7,
+      "status": "TODO",
+      "cells": {
+        "8501": {
+          "exportsUsd": 267946820,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8502": {
+          "exportsUsd": 44717497,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8503": {
+          "exportsUsd": 28305908,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8504": {
+          "exportsUsd": 219834515,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8505": {
+          "exportsUsd": 6116399,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8506": {
+          "exportsUsd": 9038401,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8507": {
+          "exportsUsd": 257833797,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8508": {
+          "exportsUsd": 1823832,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8509": {
+          "exportsUsd": 10417190,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8510": {
+          "exportsUsd": 1676826,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8511": {
+          "exportsUsd": 10233197,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8512": {
+          "exportsUsd": 10714193,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8513": {
+          "exportsUsd": 882774,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8514": {
+          "exportsUsd": 64692807,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8515": {
+          "exportsUsd": 33392677,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8516": {
+          "exportsUsd": 49130673,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8517": {
+          "exportsUsd": 280622892,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8518": {
+          "exportsUsd": 196654146,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8519": {
+          "exportsUsd": 1384849,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8521": {
+          "exportsUsd": 705630,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8522": {
+          "exportsUsd": 543252,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8523": {
+          "exportsUsd": 99238202,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8524": {
+          "exportsUsd": 3180449,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8525": {
+          "exportsUsd": 92435524,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8526": {
+          "exportsUsd": 83298785,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8527": {
+          "exportsUsd": 1706035,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8528": {
+          "exportsUsd": 94977467,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8529": {
+          "exportsUsd": 91236314,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8530": {
+          "exportsUsd": 6589973,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8531": {
+          "exportsUsd": 38860314,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8532": {
+          "exportsUsd": 27224496,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8533": {
+          "exportsUsd": 38119483,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8534": {
+          "exportsUsd": 17154829,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8535": {
+          "exportsUsd": 64186005,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8536": {
+          "exportsUsd": 342797455,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8537": {
+          "exportsUsd": 162229821,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8538": {
+          "exportsUsd": 54791942,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8539": {
+          "exportsUsd": 31163658,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8540": {
+          "exportsUsd": 41473227,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8541": {
+          "exportsUsd": 255666004,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8542": {
+          "exportsUsd": 1812211900,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8543": {
+          "exportsUsd": 229696134,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8544": {
+          "exportsUsd": 137033870,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8545": {
+          "exportsUsd": 17649630,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8546": {
+          "exportsUsd": 5177590,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8547": {
+          "exportsUsd": 27685978,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8548": {
+          "exportsUsd": 4995125,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8549": {
+          "exportsUsd": 327546660,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        }
+      },
+      "profile": {
+        "headline": "TODO: one or two sentences: what matters for a U.S. exporter in this market",
+        "mainProducts": "Integrated circuits (chips) (8542) · Switches, breakers, relays and connectors (1,000 V or less) (8536)",
+        "tariffNow": "TODO",
+        "regulator": {
+          "name": "TODO",
+          "url": "TODO",
+          "requirement": "TODO: whose approval or registration is needed to sell this chapter’s goods there"
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: South Korea import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/south-korea-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 826,
+      "name": "United Kingdom",
+      "rule": "TODO: the tariff rule that applies to U.S. goods, e.g. \"EU common external tariff (MFN)\"",
+      "usTradeAgreement": null,
+      "exportsUsd": 5497342033,
+      "priorExportsUsd": 4908863678,
+      "sharePct": 2.4,
+      "changePct": 12,
+      "status": "TODO",
+      "cells": {
+        "8501": {
+          "exportsUsd": 224087846,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8502": {
+          "exportsUsd": 38773490,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8503": {
+          "exportsUsd": 39896854,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8504": {
+          "exportsUsd": 214129429,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8505": {
+          "exportsUsd": 18895571,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8506": {
+          "exportsUsd": 28415224,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8507": {
+          "exportsUsd": 196714861,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8508": {
+          "exportsUsd": 3249026,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8509": {
+          "exportsUsd": 9266976,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8510": {
+          "exportsUsd": 7129878,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8511": {
+          "exportsUsd": 194484705,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8512": {
+          "exportsUsd": 9586477,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8513": {
+          "exportsUsd": 2448303,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8514": {
+          "exportsUsd": 15588527,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8515": {
+          "exportsUsd": 14426305,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8516": {
+          "exportsUsd": 26784113,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8517": {
+          "exportsUsd": 1483164489,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8518": {
+          "exportsUsd": 62756107,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8519": {
+          "exportsUsd": 8940445,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8521": {
+          "exportsUsd": 22258979,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8522": {
+          "exportsUsd": 3570973,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8523": {
+          "exportsUsd": 126163319,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8524": {
+          "exportsUsd": 10393087,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8525": {
+          "exportsUsd": 152784937,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8526": {
+          "exportsUsd": 116980340,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8527": {
+          "exportsUsd": 12631416,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8528": {
+          "exportsUsd": 51991299,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8529": {
+          "exportsUsd": 135737087,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8530": {
+          "exportsUsd": 8388844,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8531": {
+          "exportsUsd": 124992230,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8532": {
+          "exportsUsd": 20531924,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8533": {
+          "exportsUsd": 31751578,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8534": {
+          "exportsUsd": 29174387,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8535": {
+          "exportsUsd": 29727283,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8536": {
+          "exportsUsd": 421755172,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8537": {
+          "exportsUsd": 428175650,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8538": {
+          "exportsUsd": 61093742,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8539": {
+          "exportsUsd": 10915247,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8540": {
+          "exportsUsd": 28759365,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8541": {
+          "exportsUsd": 77630809,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8542": {
+          "exportsUsd": 377849603,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8543": {
+          "exportsUsd": 209895402,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8544": {
+          "exportsUsd": 378405583,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8545": {
+          "exportsUsd": 8588835,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8546": {
+          "exportsUsd": 3359421,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8547": {
+          "exportsUsd": 10350361,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8548": {
+          "exportsUsd": 3745662,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        },
+        "8549": {
+          "exportsUsd": 1000872,
+          "rate": "TODO",
+          "normalRate": null,
+          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+        }
+      },
+      "profile": {
+        "headline": "TODO: one or two sentences: what matters for a U.S. exporter in this market",
+        "mainProducts": "Smartphones and network equipment (8517) · Control panels and switchboards (8537)",
+        "tariffNow": "TODO",
+        "regulator": {
+          "name": "TODO",
+          "url": "TODO",
+          "requirement": "TODO: whose approval or registration is needed to sell this chapter’s goods there"
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: UK import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/united-kingdom-import-requirements-and-documentation"
+        }
+      }
+    }
+  ],
+  "biggestLanes": [
+    {
+      "market": "Mexico",
+      "heading": "8542",
+      "exportsUsd": 12350615437,
+      "rate": "TODO"
+    },
+    {
+      "market": "China",
+      "heading": "8542",
+      "exportsUsd": 9962293050,
+      "rate": "TODO"
+    },
+    {
+      "market": "Malaysia",
+      "heading": "8542",
+      "exportsUsd": 7156625442,
+      "rate": "TODO"
+    },
+    {
+      "market": "European Union",
+      "heading": "8517",
+      "exportsUsd": 6899376086,
+      "rate": "TODO"
+    },
+    {
+      "market": "Other Asia, nes",
+      "heading": "8542",
+      "exportsUsd": 6722155109,
+      "rate": "TODO"
+    },
+    {
+      "market": "Mexico",
+      "heading": "8517",
+      "exportsUsd": 6528012591,
+      "rate": "TODO"
+    },
+    {
+      "market": "Hong Kong",
+      "heading": "8517",
+      "exportsUsd": 5523895706,
+      "rate": "TODO"
+    },
+    {
+      "market": "Mexico",
+      "heading": "8523",
+      "exportsUsd": 5400641272,
+      "rate": "TODO"
+    }
+  ],
+  "assumptions": ["TODO: where the rates come from (schedule, year, one subheading per group) and how trade agreements and extra duties are applied"],
+  "sources": [
+    {
+      "id": "comtrade-exports",
+      "publisher": "UN Comtrade",
+      "citation": "UN Comtrade, U.S. exports 2020–2025",
+      "document": "UN Comtrade public API (preview), United States exports, annual, HS",
+      "title": "United States exports, HS chapter 85, by partner, heading and subheading",
+      "signed": null,
+      "published": "2026-10-19",
+      "url": "https://comtradeplus.un.org/"
+    }
+  ],
+  "coverageNote": "The 9 markets shown take 75% of 2025 U.S. Chapter 85 exports. A customs union (the EU) is one market: its members share one tariff."
+}

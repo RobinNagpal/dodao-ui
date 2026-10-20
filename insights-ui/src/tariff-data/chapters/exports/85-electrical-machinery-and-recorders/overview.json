@@ -1,0 +1,788 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 85,
+    "padded": "85",
+    "slug": "85-electrical-machinery-and-recorders",
+    "title": "Electrical Machinery and Equipment and Parts Thereof; Sound Recorders and Reproducers, Television Image and Sound Recorders and Reproducers, and Parts and Accessories of Such Articles"
+  },
+  "page": {
+    "slug": "exports",
+    "path": "/industry-tariff-report/exports/chapters/85-electrical-machinery-and-recorders",
+    "h1": "HTS Chapter 85: Electrical Machinery and Equipment and Parts Thereof; Sound Recorders and Reproducers, Television Image and Sound Recorders and Reproducers, and Parts and Accessories of Such Articles — U.S. Exports & Foreign Tariffs",
+    "seo": {
+      "title": "TODO",
+      "shortDescription": "TODO",
+      "keywords": ["TODO"]
+    },
+    "lastCheckedAt": "2026-10-19"
+  },
+  "intro": "TODO: 2 short paragraphs: how much the U.S. exports and what; where tariffs matter and where they do not",
+  "latestYear": 2025,
+  "priorYear": 2024,
+  "valueBasis": "FOB value of U.S. exports, as reported by the United States to UN Comtrade.",
+  "stats": [
+    {
+      "label": "2025 U.S. exports",
+      "value": "$226.05B"
+    },
+    {
+      "label": "Change vs 2024",
+      "value": "+5.7%"
+    },
+    {
+      "label": "Largest product group (8542)",
+      "value": "23%",
+      "note": "Integrated circuits (chips)"
+    },
+    {
+      "label": "Two largest buyers",
+      "value": "38%",
+      "note": "Mexico, Canada"
+    },
+    {
+      "label": "TODO",
+      "value": "TODO",
+      "note": "TODO: a tariff stat, e.g. \"Top buyers charging 0%\" or \"Buyers that raised tariffs\""
+    }
+  ],
+  "keyTakeaways": ["TODO"],
+  "byYear": [
+    {
+      "year": 2020,
+      "totalUsd": 162884379108,
+      "partnerAUsd": 38118343033,
+      "partnerBUsd": 21510551266,
+      "restUsd": 103255484809
+    },
+    {
+      "year": 2021,
+      "totalUsd": 185404506941,
+      "partnerAUsd": 43443226737,
+      "partnerBUsd": 23955013551,
+      "restUsd": 118006266653
+    },
+    {
+      "year": 2022,
+      "totalUsd": 197748996567,
+      "partnerAUsd": 50147577965,
+      "partnerBUsd": 27871541320,
+      "restUsd": 119729877282
+    },
+    {
+      "year": 2023,
+      "totalUsd": 200654688507,
+      "partnerAUsd": 51602367153,
+      "partnerBUsd": 29410624518,
+      "restUsd": 119641696836
+    },
+    {
+      "year": 2024,
+      "totalUsd": 213920377535,
+      "partnerAUsd": 55684043464,
+      "partnerBUsd": 28303632389,
+      "restUsd": 129932701682
+    },
+    {
+      "year": 2025,
+      "totalUsd": 226048612478,
+      "partnerAUsd": 57245353156,
+      "partnerBUsd": 27643722342,
+      "restUsd": 141159536980
+    }
+  ],
+  "byYearPartners": ["Mexico", "Canada"],
+  "byYearCaption": "U.S. exports of Chapter 85 goods each year, split into the two largest 2025 buyers (Mexico and Canada) and everyone else.",
+  "yearToDate": {
+    "year": 2026,
+    "throughMonth": 7,
+    "exportsUsd": 148838498577,
+    "priorExportsUsd": 130220064216,
+    "changePct": 14.3,
+    "topBuyers": [
+      {
+        "countryCode": 484,
+        "country": "Mexico",
+        "exportsUsd": 40150037124,
+        "priorExportsUsd": 33919396522,
+        "changePct": 18.4
+      },
+      {
+        "countryCode": 124,
+        "country": "Canada",
+        "exportsUsd": 15646484309,
+        "priorExportsUsd": 16233058472,
+        "changePct": -3.6
+      },
+      {
+        "countryCode": 156,
+        "country": "China",
+        "exportsUsd": 10978499639,
+        "priorExportsUsd": 9729196255,
+        "changePct": 12.8
+      },
+      {
+        "countryCode": 490,
+        "country": "Other Asia, nes",
+        "exportsUsd": 7776212321,
+        "priorExportsUsd": 5824293107,
+        "changePct": 33.5
+      },
+      {
+        "countryCode": 458,
+        "country": "Malaysia",
+        "exportsUsd": 7255238339,
+        "priorExportsUsd": 5784657215,
+        "changePct": 25.4
+      },
+      {
+        "countryCode": 344,
+        "country": "China, Hong Kong SAR",
+        "exportsUsd": 5830705906,
+        "priorExportsUsd": 4969513924,
+        "changePct": 17.3
+      },
+      {
+        "countryCode": 528,
+        "country": "Netherlands",
+        "exportsUsd": 4553429379,
+        "priorExportsUsd": 3436803264,
+        "changePct": 32.5
+      },
+      {
+        "countryCode": 276,
+        "country": "Germany",
+        "exportsUsd": 4045657832,
+        "priorExportsUsd": 3481061132,
+        "changePct": 16.2
+      }
+    ],
+    "note": "Monthly figures as reported by the United States to UN Comtrade; the latest months can still be revised."
+  },
+  "topMarkets": [
+    {
+      "countryCode": 484,
+      "country": "Mexico",
+      "exportsUsd": 57245353156,
+      "priorExportsUsd": 55684043464,
+      "sharePct": 25.3,
+      "changePct": 2.8,
+      "tariffNow": "TODO",
+      "status": "TODO"
+    },
+    {
+      "countryCode": 124,
+      "country": "Canada",
+      "exportsUsd": 27643722342,
+      "priorExportsUsd": 28303632389,
+      "sharePct": 12.2,
+      "changePct": -2.3,
+      "tariffNow": "TODO",
+      "status": "TODO"
+    },
+    {
+      "countryCode": 156,
+      "country": "China",
+      "exportsUsd": 16364291757,
+      "priorExportsUsd": 15279780707,
+      "sharePct": 7.2,
+      "changePct": 7.1,
+      "tariffNow": "TODO",
+      "status": "TODO"
+    },
+    {
+      "countryCode": 490,
+      "country": "Other Asia, nes",
+      "exportsUsd": 10810206248,
+      "priorExportsUsd": 7265059505,
+      "sharePct": 4.8,
+      "changePct": 48.8,
+      "tariffNow": "TODO",
+      "status": "TODO"
+    },
+    {
+      "countryCode": 458,
+      "country": "Malaysia",
+      "exportsUsd": 10631307208,
+      "priorExportsUsd": 9741468491,
+      "sharePct": 4.7,
+      "changePct": 9.1,
+      "tariffNow": "TODO",
+      "status": "TODO"
+    },
+    {
+      "countryCode": 344,
+      "country": "China, Hong Kong SAR",
+      "exportsUsd": 8872639425,
+      "priorExportsUsd": 8717220112,
+      "sharePct": 3.9,
+      "changePct": 1.8,
+      "tariffNow": "TODO",
+      "status": "TODO"
+    },
+    {
+      "countryCode": 276,
+      "country": "Germany",
+      "exportsUsd": 6177172340,
+      "priorExportsUsd": 6175140725,
+      "sharePct": 2.7,
+      "changePct": 0,
+      "tariffNow": "TODO",
+      "status": "TODO"
+    },
+    {
+      "countryCode": 528,
+      "country": "Netherlands",
+      "exportsUsd": 6156819280,
+      "priorExportsUsd": 5473909265,
+      "sharePct": 2.7,
+      "changePct": 12.5,
+      "tariffNow": "TODO",
+      "status": "TODO"
+    },
+    {
+      "countryCode": 410,
+      "country": "Rep. of Korea",
+      "exportsUsd": 5604995145,
+      "priorExportsUsd": 5884211820,
+      "sharePct": 2.5,
+      "changePct": -4.7,
+      "tariffNow": "TODO",
+      "status": "TODO"
+    },
+    {
+      "countryCode": 826,
+      "country": "United Kingdom",
+      "exportsUsd": 5497342033,
+      "priorExportsUsd": 4908863678,
+      "sharePct": 2.4,
+      "changePct": 12,
+      "tariffNow": "TODO",
+      "status": "TODO"
+    },
+    {
+      "countryCode": 702,
+      "country": "Singapore",
+      "exportsUsd": 5023143794,
+      "priorExportsUsd": 4523136417,
+      "sharePct": 2.2,
+      "changePct": 11.1,
+      "tariffNow": "TODO",
+      "status": "TODO"
+    },
+    {
+      "countryCode": 392,
+      "country": "Japan",
+      "exportsUsd": 4897232847,
+      "priorExportsUsd": 4488391776,
+      "sharePct": 2.2,
+      "changePct": 9.1,
+      "tariffNow": "TODO",
+      "status": "TODO"
+    },
+    {
+      "countryCode": 76,
+      "country": "Brazil",
+      "exportsUsd": 4668860605,
+      "priorExportsUsd": 4415965887,
+      "sharePct": 2.1,
+      "changePct": 5.7,
+      "tariffNow": "TODO",
+      "status": "TODO"
+    }
+  ],
+  "othersExportsUsd": 56455526298,
+  "othersPriorExportsUsd": 53059553299,
+  "byHeading": [
+    {
+      "heading": "8501",
+      "label": "Electric motors and generators",
+      "exportsUsd": 5055345649,
+      "priorExportsUsd": 5168626786,
+      "changePct": -2.2,
+      "sharePct": 2.2
+    },
+    {
+      "heading": "8502",
+      "label": "Generating sets and rotary converters",
+      "exportsUsd": 2108234577,
+      "priorExportsUsd": 2308036088,
+      "changePct": -8.7,
+      "sharePct": 0.9
+    },
+    {
+      "heading": "8503",
+      "label": "Parts of motors and generators",
+      "exportsUsd": 1457131036,
+      "priorExportsUsd": 1282364571,
+      "changePct": 13.6,
+      "sharePct": 0.6
+    },
+    {
+      "heading": "8504",
+      "label": "Transformers, power supplies and inductors",
+      "exportsUsd": 8733334704,
+      "priorExportsUsd": 8085472442,
+      "changePct": 8,
+      "sharePct": 3.9
+    },
+    {
+      "heading": "8505",
+      "label": "Magnets and electromagnetic devices",
+      "exportsUsd": 522983232,
+      "priorExportsUsd": 544749652,
+      "changePct": -4,
+      "sharePct": 0.2
+    },
+    {
+      "heading": "8506",
+      "label": "Primary cells and batteries",
+      "exportsUsd": 935322750,
+      "priorExportsUsd": 920526246,
+      "changePct": 1.6,
+      "sharePct": 0.4
+    },
+    {
+      "heading": "8507",
+      "label": "Storage batteries (lithium-ion, lead-acid)",
+      "exportsUsd": 7083298162,
+      "priorExportsUsd": 8784462911,
+      "changePct": -19.4,
+      "sharePct": 3.1
+    },
+    {
+      "heading": "8508",
+      "label": "Vacuum cleaners",
+      "exportsUsd": 272581598,
+      "priorExportsUsd": 329577936,
+      "changePct": -17.3,
+      "sharePct": 0.1
+    },
+    {
+      "heading": "8509",
+      "label": "Domestic appliances with motor",
+      "exportsUsd": 632897154,
+      "priorExportsUsd": 757018685,
+      "changePct": -16.4,
+      "sharePct": 0.3
+    },
+    {
+      "heading": "8510",
+      "label": "Shavers and hair clippers",
+      "exportsUsd": 159447043,
+      "priorExportsUsd": 175637450,
+      "changePct": -9.2,
+      "sharePct": 0.1
+    },
+    {
+      "heading": "8511",
+      "label": "Ignition and starting equipment",
+      "exportsUsd": 2181111193,
+      "priorExportsUsd": 2354412503,
+      "changePct": -7.4,
+      "sharePct": 1
+    },
+    {
+      "heading": "8512",
+      "label": "Vehicle lighting and signaling",
+      "exportsUsd": 2111232073,
+      "priorExportsUsd": 2389751863,
+      "changePct": -11.7,
+      "sharePct": 0.9
+    },
+    {
+      "heading": "8513",
+      "label": "Portable electric lamps",
+      "exportsUsd": 138464026,
+      "priorExportsUsd": 157893356,
+      "changePct": -12.3,
+      "sharePct": 0.1
+    },
+    {
+      "heading": "8514",
+      "label": "Industrial electric furnaces",
+      "exportsUsd": 758427306,
+      "priorExportsUsd": 809959682,
+      "changePct": -6.4,
+      "sharePct": 0.3
+    },
+    {
+      "heading": "8515",
+      "label": "Welding and soldering equipment",
+      "exportsUsd": 1000668790,
+      "priorExportsUsd": 1195135838,
+      "changePct": -16.3,
+      "sharePct": 0.4
+    },
+    {
+      "heading": "8516",
+      "label": "Water heaters, space heaters and household heating appliances",
+      "exportsUsd": 1876662825,
+      "priorExportsUsd": 1845945134,
+      "changePct": 1.7,
+      "sharePct": 0.8
+    },
+    {
+      "heading": "8517",
+      "label": "Smartphones and network equipment",
+      "exportsUsd": 47125051413,
+      "priorExportsUsd": 39021346559,
+      "changePct": 20.8,
+      "sharePct": 20.8
+    },
+    {
+      "heading": "8518",
+      "label": "Microphones, speakers and headphones",
+      "exportsUsd": 3520610467,
+      "priorExportsUsd": 3558193954,
+      "changePct": -1.1,
+      "sharePct": 1.6
+    },
+    {
+      "heading": "8519",
+      "label": "Sound recording and reproducing apparatus",
+      "exportsUsd": 180134678,
+      "priorExportsUsd": 212364385,
+      "changePct": -15.2,
+      "sharePct": 0.1
+    },
+    {
+      "heading": "8521",
+      "label": "Video recorders and players",
+      "exportsUsd": 203031036,
+      "priorExportsUsd": 201370481,
+      "changePct": 0.8,
+      "sharePct": 0.1
+    },
+    {
+      "heading": "8522",
+      "label": "Parts of sound and video apparatus",
+      "exportsUsd": 290989424,
+      "priorExportsUsd": 162750740,
+      "changePct": 78.8,
+      "sharePct": 0.1
+    },
+    {
+      "heading": "8523",
+      "label": "Storage media: SSDs, cards, discs and tapes",
+      "exportsUsd": 10703881927,
+      "priorExportsUsd": 8876243524,
+      "changePct": 20.6,
+      "sharePct": 4.7
+    },
+    {
+      "heading": "8524",
+      "label": "Flat panel display modules",
+      "exportsUsd": 379651312,
+      "priorExportsUsd": 384860639,
+      "changePct": -1.4,
+      "sharePct": 0.2
+    },
+    {
+      "heading": "8525",
+      "label": "Cameras and transmitters",
+      "exportsUsd": 3852489191,
+      "priorExportsUsd": 3592318010,
+      "changePct": 7.2,
+      "sharePct": 1.7
+    },
+    {
+      "heading": "8526",
+      "label": "Radar and navigation apparatus",
+      "exportsUsd": 2268950276,
+      "priorExportsUsd": 2446719867,
+      "changePct": -7.3,
+      "sharePct": 1
+    },
+    {
+      "heading": "8527",
+      "label": "Radio receivers",
+      "exportsUsd": 797989688,
+      "priorExportsUsd": 1045984764,
+      "changePct": -23.7,
+      "sharePct": 0.4
+    },
+    {
+      "heading": "8528",
+      "label": "Monitors, projectors and televisions",
+      "exportsUsd": 1900518155,
+      "priorExportsUsd": 2261849735,
+      "changePct": -16,
+      "sharePct": 0.8
+    },
+    {
+      "heading": "8529",
+      "label": "Parts of TVs, radios, cameras and radar",
+      "exportsUsd": 3347907875,
+      "priorExportsUsd": 2836123268,
+      "changePct": 18,
+      "sharePct": 1.5
+    },
+    {
+      "heading": "8530",
+      "label": "Railway and traffic signaling equipment",
+      "exportsUsd": 224548140,
+      "priorExportsUsd": 249867658,
+      "changePct": -10.1,
+      "sharePct": 0.1
+    },
+    {
+      "heading": "8531",
+      "label": "Alarms, bells and indicator panels",
+      "exportsUsd": 2073132767,
+      "priorExportsUsd": 2062695649,
+      "changePct": 0.5,
+      "sharePct": 0.9
+    },
+    {
+      "heading": "8532",
+      "label": "Capacitors",
+      "exportsUsd": 1787131935,
+      "priorExportsUsd": 1902452927,
+      "changePct": -6.1,
+      "sharePct": 0.8
+    },
+    {
+      "heading": "8533",
+      "label": "Resistors",
+      "exportsUsd": 1087079776,
+      "priorExportsUsd": 1048033002,
+      "changePct": 3.7,
+      "sharePct": 0.5
+    },
+    {
+      "heading": "8534",
+      "label": "Printed circuits",
+      "exportsUsd": 1226121302,
+      "priorExportsUsd": 1081739163,
+      "changePct": 13.3,
+      "sharePct": 0.5
+    },
+    {
+      "heading": "8535",
+      "label": "High-voltage switchgear (over 1,000 V)",
+      "exportsUsd": 1242586017,
+      "priorExportsUsd": 1201139044,
+      "changePct": 3.5,
+      "sharePct": 0.5
+    },
+    {
+      "heading": "8536",
+      "label": "Switches, breakers, relays and connectors (1,000 V or less)",
+      "exportsUsd": 12889639180,
+      "priorExportsUsd": 12374433465,
+      "changePct": 4.2,
+      "sharePct": 5.7
+    },
+    {
+      "heading": "8537",
+      "label": "Control panels and switchboards",
+      "exportsUsd": 8628487953,
+      "priorExportsUsd": 8124399458,
+      "changePct": 6.2,
+      "sharePct": 3.8
+    },
+    {
+      "heading": "8538",
+      "label": "Parts of switching apparatus",
+      "exportsUsd": 5091023470,
+      "priorExportsUsd": 4824973929,
+      "changePct": 5.5,
+      "sharePct": 2.3
+    },
+    {
+      "heading": "8539",
+      "label": "Lamps and LED light sources",
+      "exportsUsd": 641494178,
+      "priorExportsUsd": 655712723,
+      "changePct": -2.2,
+      "sharePct": 0.3
+    },
+    {
+      "heading": "8540",
+      "label": "Electron tubes",
+      "exportsUsd": 473965239,
+      "priorExportsUsd": 468873052,
+      "changePct": 1.1,
+      "sharePct": 0.2
+    },
+    {
+      "heading": "8541",
+      "label": "Semiconductor devices and solar cells",
+      "exportsUsd": 6942786231,
+      "priorExportsUsd": 6912867779,
+      "changePct": 0.4,
+      "sharePct": 3.1
+    },
+    {
+      "heading": "8542",
+      "label": "Integrated circuits (chips)",
+      "exportsUsd": 51502401898,
+      "priorExportsUsd": 50634521686,
+      "changePct": 1.7,
+      "sharePct": 22.8
+    },
+    {
+      "heading": "8543",
+      "label": "Other electrical machines and apparatus",
+      "exportsUsd": 6404105830,
+      "priorExportsUsd": 5934241572,
+      "changePct": 7.9,
+      "sharePct": 2.8
+    },
+    {
+      "heading": "8544",
+      "label": "Insulated wire and cable, fiber-optic cable",
+      "exportsUsd": 13922813767,
+      "priorExportsUsd": 12564328543,
+      "changePct": 10.8,
+      "sharePct": 6.2
+    },
+    {
+      "heading": "8545",
+      "label": "Carbon and graphite electrodes and brushes",
+      "exportsUsd": 228581600,
+      "priorExportsUsd": 317652175,
+      "changePct": -28,
+      "sharePct": 0.1
+    },
+    {
+      "heading": "8546",
+      "label": "Electrical insulators",
+      "exportsUsd": 241803231,
+      "priorExportsUsd": 210759377,
+      "changePct": 14.7,
+      "sharePct": 0.1
+    },
+    {
+      "heading": "8547",
+      "label": "Insulating fittings and conduit",
+      "exportsUsd": 427924614,
+      "priorExportsUsd": 491981366,
+      "changePct": -13,
+      "sharePct": 0.2
+    },
+    {
+      "heading": "8548",
+      "label": "Electrical parts not elsewhere specified",
+      "exportsUsd": 224426845,
+      "priorExportsUsd": 238026393,
+      "changePct": -5.7,
+      "sharePct": 0.1
+    },
+    {
+      "heading": "8549",
+      "label": "Electrical and electronic waste and scrap",
+      "exportsUsd": 1190210945,
+      "priorExportsUsd": 911981505,
+      "changePct": 30.5,
+      "sharePct": 0.5
+    }
+  ],
+  "byLine": [
+    {
+      "hs6": "8542.31",
+      "heading": "8542",
+      "description": "Electronic integrated circuits; processors and controllers, whether or not combined with memories, converters, logic circuits, amplifiers, clock and timing circuits, or other circuits",
+      "exportsUsd": 34581190715,
+      "priorExportsUsd": 32380543789,
+      "changePct": 6.8,
+      "sharePct": 15.3
+    },
+    {
+      "hs6": "8517.62",
+      "heading": "8517",
+      "description": "Communication apparatus (excluding telephone sets or base stations); machines for the reception, conversion and transmission or regeneration of voice, images or other data, including switching and routing apparatus",
+      "exportsUsd": 26382656068,
+      "priorExportsUsd": 22535630183,
+      "changePct": 17.1,
+      "sharePct": 11.7
+    },
+    {
+      "hs6": "8517.13",
+      "heading": "8517",
+      "description": "Telephone sets; smartphones for cellular or other wireless networks",
+      "exportsUsd": 13377331911,
+      "priorExportsUsd": 9616666520,
+      "changePct": 39.1,
+      "sharePct": 5.9
+    },
+    {
+      "hs6": "8542.39",
+      "heading": "8542",
+      "description": "Electronic integrated circuits; n.e.c. in heading no. 8542",
+      "exportsUsd": 12238927641,
+      "priorExportsUsd": 13391550211,
+      "changePct": -8.6,
+      "sharePct": 5.4
+    },
+    {
+      "hs6": "8523.51",
+      "heading": "8523",
+      "description": "Semiconductor media; solid-state non-volatile storage devices, whether or not recorded, excluding products of Chapter 37",
+      "exportsUsd": 9069810337,
+      "priorExportsUsd": 7076653387,
+      "changePct": 28.2,
+      "sharePct": 4
+    },
+    {
+      "hs6": "8537.10",
+      "heading": "8537",
+      "description": "Boards, panels, consoles, desks and other bases; for electric control or the distribution of electricity, (other than switching apparatus of heading no. 8517), for a voltage not exceeding 1000 volts",
+      "exportsUsd": 8330261259,
+      "priorExportsUsd": 7926362877,
+      "changePct": 5.1,
+      "sharePct": 3.7
+    },
+    {
+      "hs6": "8504.40",
+      "heading": "8504",
+      "description": "Electrical static converters",
+      "exportsUsd": 6194513028,
+      "priorExportsUsd": 5693727930,
+      "changePct": 8.8,
+      "sharePct": 2.7
+    },
+    {
+      "hs6": "8538.90",
+      "heading": "8538",
+      "description": "Electrical apparatus; parts suitable for use solely or principally with the apparatus of heading no. 8535, 8536 or 8537",
+      "exportsUsd": 4861772951,
+      "priorExportsUsd": 4636804084,
+      "changePct": 4.9,
+      "sharePct": 2.2
+    },
+    {
+      "hs6": "8543.70",
+      "heading": "8543",
+      "description": "Electrical machines and apparatus; having individual functions, not specified or included elsewhere in this chapter, n.e.c. in heading no. 8543",
+      "exportsUsd": 4705391472,
+      "priorExportsUsd": 4381442707,
+      "changePct": 7.4,
+      "sharePct": 2.1
+    },
+    {
+      "hs6": "8507.60",
+      "heading": "8507",
+      "description": "Electric accumulators; lithium-ion, including separators, whether or not rectangular (including square)",
+      "exportsUsd": 4233556805,
+      "priorExportsUsd": 4755793399,
+      "changePct": -11,
+      "sharePct": 1.9
+    }
+  ],
+  "sources": [
+    {
+      "id": "comtrade-exports",
+      "publisher": "UN Comtrade",
+      "citation": "UN Comtrade, U.S. exports 2020–2025",
+      "document": "UN Comtrade public API (preview), United States exports, annual, HS",
+      "title": "United States exports, HS chapter 85, by partner, heading and subheading",
+      "signed": null,
+      "published": "2026-10-19",
+      "url": "https://comtradeplus.un.org/"
+    }
+  ],
+  "coverageNote": "The 13 buyers listed take 75% of 2025 U.S. Chapter 85 exports. FOB value of U.S. exports, as reported by the United States to UN Comtrade. They can differ from what the destination country reports as imports."
+}

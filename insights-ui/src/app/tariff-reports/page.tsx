@@ -221,8 +221,12 @@ export default async function TariffReportsPage() {
             </div>
           </div>
           <p className="mt-3 max-w-3xl text-muted-foreground">
-            What the U.S. charges on each chapter of the Harmonized Tariff Schedule (HTS): today&apos;s rates, recent changes, rates by country and ways to
-            lower the duty. Search by chapter number or product, or browse by section below.
+            Every chapter report covers <strong className="font-semibold text-heading">U.S. imports</strong>: what the U.S. charges on that chapter&apos;s
+            goods coming in — today&apos;s rates, recent changes, rates by country of origin and ways to lower the duty. A growing number of chapters also
+            have a <strong className="font-semibold text-heading">U.S. exports</strong> report: the reverse direction, covering what other countries charge
+            on those same goods when U.S. companies sell them abroad. Look for the &quot;Also has a U.S. exports report&quot; filter below, or the{' '}
+            <span className="font-medium text-heading">U.S. imports</span> / <span className="font-medium text-heading">U.S. exports</span> link groups on
+            a chapter&apos;s row. Search by chapter number or product, or browse by section below.
           </p>
         </header>
 

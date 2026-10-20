@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 88,
+    "padded": "88",
+    "slug": "88-aircraft-and-spacecraft",
+    "title": "Aircraft, Spacecraft, and Parts Thereof"
+  },
+  "page": {
+    "slug": "exports/faq",
+    "path": "/industry-tariff-report/exports/chapters/88-aircraft-and-spacecraft/faq",
+    "h1": "HTS Chapter 88: Aircraft, Spacecraft, and Parts Thereof — U.S. Export FAQ",
+    "seo": {
+      "title": "TODO",
+      "shortDescription": "TODO",
+      "keywords": ["TODO"]
+    },
+    "lastCheckedAt": "2026-10-19"
+  },
+  "intro": "TODO: one sentence: what the questions cover and where the answers come from",
+  "keyTakeaways": ["TODO"],
+  "questionSource": "TODO: where the questions came from, e.g. Google search suggestions for \"<product> export tariff\"",
+  "faqs": []
+}
