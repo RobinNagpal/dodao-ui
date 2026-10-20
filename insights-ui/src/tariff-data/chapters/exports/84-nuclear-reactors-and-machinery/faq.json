@@ -1,0 +1,106 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 84,
+    "padded": "84",
+    "slug": "84-nuclear-reactors-and-machinery",
+    "title": "Nuclear Reactors, Boilers, Machinery and Mechanical Appliances; Parts Thereof"
+  },
+  "page": {
+    "slug": "exports/faq",
+    "path": "/industry-tariff-report/exports/chapters/84-nuclear-reactors-and-machinery/faq",
+    "h1": "HTS Chapter 84: Nuclear Reactors, Boilers, Machinery and Mechanical Appliances; Parts Thereof — U.S. Export FAQ",
+    "seo": {
+      "title": "U.S. Machinery Export FAQ (HTS Ch. 84) | KoalaGains",
+      "shortDescription": "Short answers on foreign tariffs on U.S. machinery, Canada's appliance surtax, China's farm-machinery duty, machine-tool and chip-equipment export licences and NRC reactor licences.",
+      "keywords": [
+        "china tariff on us machinery",
+        "canada tariff on us appliances",
+        "export license machine tools",
+        "semiconductor equipment export license",
+        "nrc export license"
+      ]
+    },
+    "lastCheckedAt": "2026-10-20"
+  },
+  "intro": "Short answers to real questions people search about exporting U.S. machinery and mechanical equipment, each with a link to the page that has the detail.",
+  "keyTakeaways": [
+    "Mexico, the free-trade partners and (since July 1, 2026) the EU charge nothing on qualifying U.S. machinery; Canada surtaxes about 50 listed items and China adds a 10% extra duty.",
+    "Machine tools, chip-making equipment, advanced computers, gas turbines and chemical-process equipment can need a Commerce licence, and reactors need an NRC licence.",
+    "Nearly every heading in this chapter has lines on the Russia and Belarus licence lists."
+  ],
+  "questionSource": "Google search-suggestion queries for \"china tariff on us machinery\", \"canada tariff on us appliances\" and \"schedule b code machinery\"; the other questions follow the Overview, Markets, Tariff updates and Export rules pages.",
+  "faqs": [
+    {
+      "id": "china-machinery-tariff",
+      "question": "Does China charge extra tariffs on U.S. machinery?",
+      "searchedAs": ["china tariff on us machinery"],
+      "answer": "Yes. China charges its MFN rate plus a 10% extra duty on all U.S. goods (since May 2025), and a further 10% on agricultural machinery in Annex 2 of Announcement 2025 No. 1 (since February 2025), so listed farm machinery pays 20% on top of MFN. China's Board of Trade list names 12 U.S. machinery lines for possible lower tariffs, but no cut has been published.",
+      "link": "exports/markets"
+    },
+    {
+      "id": "canada-appliance-surtax",
+      "question": "Does Canada have tariffs on U.S. appliances and machinery?",
+      "searchedAs": ["canada tariff on us appliances", "canada tariffs on us appliances"],
+      "answer": "Most machinery enters free under CUSMA, but since September 8, 2026 about 50 tariff items carry a surtax: 15% on air conditioners, lifting equipment, parts, harvesting machinery and moulds; 25% on pumps, refrigerators, washers, dryers and hand tools; 50% on refrigerated display units. CUSMA qualification does not remove it.",
+      "link": "exports/tariff-updates"
+    },
+    {
+      "id": "eu-machinery-tariff",
+      "question": "What tariff does the EU charge on U.S. machinery?",
+      "searchedAs": [],
+      "answer": "None since July 1, 2026. Regulation (EU) 2026/1455 lists Chapter 84 in full in Annex I and zeroes the EU's tariffs on U.S.-origin machinery until December 31, 2029; the Commission can suspend the cut.",
+      "link": "exports/markets"
+    },
+    {
+      "id": "who-buys-machinery",
+      "question": "Who buys the most U.S. machinery?",
+      "searchedAs": [],
+      "answer": "Mexico ($65.94B) and Canada ($51.25B) are the two largest of the $283.61B exported in 2025, followed by Taiwan ($16.78B).",
+      "link": "exports"
+    },
+    {
+      "id": "machine-tool-licence",
+      "question": "Do I need an export licence for machine tools?",
+      "searchedAs": [],
+      "answer": "Only for high-end ones: ECCN 2B001 covers machine tools meeting specific accuracy and axis specifications, and 2B004, 2B006 and 2B007 cover hot isostatic presses, inspection systems and robots. Most machine tools are EAR99. Check the specification against the Commerce Control List and the Country Chart.",
+      "link": "exports/rules"
+    },
+    {
+      "id": "chip-equipment-licence",
+      "question": "Do I need a licence to export semiconductor manufacturing equipment?",
+      "searchedAs": [],
+      "answer": "Very often. Machines in heading 8486 are controlled under Category 3 of the Commerce Control List (ECCN 3B001 and related entries), and 15 CFR 744.23 adds end-use controls on advanced chip production, so a licence is needed for many destinations including China.",
+      "link": "exports/rules"
+    },
+    {
+      "id": "reactor-export",
+      "question": "Who licenses the export of nuclear reactor parts?",
+      "searchedAs": [],
+      "answer": "The Nuclear Regulatory Commission licenses reactors and especially designed components (heading 8401) under 10 CFR Part 110, with a general licence for listed components to listed countries; the Department of Energy authorizes transfers of nuclear technology under 10 CFR Part 810. An EEI filing is required at any value.",
+      "link": "exports/rules"
+    },
+    {
+      "id": "engine-epa-label",
+      "question": "Do engines made for export need to meet EPA emission rules?",
+      "searchedAs": [],
+      "answer": "Not if they go to a country whose emission standards are not identical to ours and are labeled as solely for export (40 CFR 1068.230). For countries with identical standards they need a certificate of conformity, or an export-only certificate based on the destination country's approval.",
+      "link": "exports/rules"
+    },
+    {
+      "id": "russia-machinery",
+      "question": "Can I export machinery to Russia?",
+      "searchedAs": [],
+      "answer": "Not without a Commerce licence for the items on the HS-code lists in Supplements No. 4 and 5 to Part 746, which cover 538 six-digit Chapter 84 codes — nearly every heading from 8401 to 8487. Belarus is covered by the same rules (15 CFR 746.8).",
+      "link": "exports/rules"
+    },
+    {
+      "id": "schedule-b-machinery",
+      "question": "What is the Schedule B code for machinery?",
+      "searchedAs": ["schedule b code machinery"],
+      "answer": "Chapter 84 Schedule B numbers start with the same four digits as the headings on the Overview; the 10-digit number depends on the exact machine. Look it up in the Census Bureau's Schedule B search and use its first six digits to find the buyer's tariff line.",
+      "link": "exports/rules"
+    }
+  ]
+}

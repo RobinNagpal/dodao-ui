@@ -23,7 +23,7 @@
   "stats": [
     {
       "label": "Actions tracked",
-      "value": "16"
+      "value": "23"
     },
     {
       "label": "In force & cost these goods",
@@ -32,7 +32,7 @@
     },
     {
       "label": "Reach this chapter",
-      "value": "5"
+      "value": "6"
     },
     {
       "label": "Coming up",
@@ -101,8 +101,8 @@
       "now": "15% / 25% / 50%",
       "coversChapter": "no",
       "status": "In force",
-      "detail": "Counter-tariffs of 15%, 25% and 50% on listed U.S. products, mostly steel, aluminum, dairy, appliances, furniture and clothing.",
-      "sourceIds": ["ca-2026-list"]
+      "detail": "Counter-tariffs of 15%, 25% and 50% on listed U.S. products — steel, aluminum, dairy, furniture and clothing, but also machinery, household appliances and electronics such as smartphones, routers and monitors (50%). The order applies to goods of U.S. origin and has no exemption for goods that qualify for CUSMA.",
+      "sourceIds": ["ca-2026-list", "ca-sor-2026-186"]
     },
     {
       "id": "br-2026",
@@ -155,6 +155,45 @@
       "status": "In force (applies from July 1, 2026)",
       "detail": "Regulation (EU) 2026/1455 cuts EU duties on listed U.S. goods to zero from July 1, 2026, and Regulation (EU) 2026/1461 sets aside duties on certain other goods.",
       "sourceIds": ["eu-framework", "eu-joint-2025"]
+    },
+    {
+      "id": "tw-art-2026",
+      "date": "2026-02-12",
+      "type": "tradeDeal",
+      "countries": ["Taiwan"],
+      "title": "U.S.–Taiwan Agreement on Reciprocal Trade: Taiwan cuts tariffs on U.S. goods",
+      "before": null,
+      "now": null,
+      "coversChapter": "no",
+      "status": "Signed Feb. 12, 2026; Taiwan's legislature must still approve it",
+      "detail": "Taiwan agrees to eliminate or reduce 99% of its tariff barriers on U.S. goods, with preferential access for wheat, beef, pork, lamb, dairy, tree nuts and other farm goods, and plans to buy $44.4 billion of U.S. LNG and crude oil from 2025 through 2029. The USTR fact sheet gives no entry-into-force date or phase-in schedule: Taiwan must first submit the agreement to its legislature.",
+      "sourceIds": ["tw-art-fact", "tw-art-text"]
+    },
+    {
+      "id": "bd-art-2026",
+      "date": "2026-02-09",
+      "type": "tradeDeal",
+      "countries": ["Bangladesh"],
+      "title": "U.S.–Bangladesh Agreement on Reciprocal Trade: Bangladesh sets purchase goals for U.S. wheat, soy, cotton and LNG",
+      "before": null,
+      "now": null,
+      "coversChapter": "partly",
+      "status": "Signed Feb. 9, 2026",
+      "detail": "Bangladesh endeavors to buy about $3.5 billion of U.S. farm goods, including wheat (at least 700,000 tonnes a year for five years), soy and cotton, and about $15 billion of U.S. energy over 15 years, including long-term LNG contracts, and agrees to accept U.S. sanitary and phytosanitary certificates. The U.S. keeps a 19% rate on most Bangladeshi goods. The agreement sets purchase goals and does not itself change Bangladesh's tariffs on U.S. goods.",
+      "sourceIds": ["bd-art-fact", "bd-art-text"]
+    },
+    {
+      "id": "in-framework-2026",
+      "date": "2026-02-06",
+      "type": "tradeDeal",
+      "countries": ["India"],
+      "title": "U.S.–India interim trade framework: India to cut tariffs on U.S. industrial and farm goods",
+      "before": null,
+      "now": null,
+      "coversChapter": "no",
+      "status": "Framework announced Feb. 6, 2026; interim agreement not yet confirmed signed",
+      "detail": "India will eliminate or reduce tariffs on all U.S. industrial goods and a wide range of U.S. food and farm products, including dried distillers' grains, red sorghum for animal feed, tree nuts, fruit, soybean oil and wine and spirits. India also intends to buy $500 billion of U.S. energy, aircraft and parts, precious metals, technology products and coking coal over five years. It is a framework for an interim agreement: no rates or start dates are published.",
+      "sourceIds": ["in-framework-ws"]
     },
     {
       "id": "mx-ligie-2026",
@@ -248,6 +287,19 @@
       "sourceIds": ["eu-rebalancing", "eu-rebalancing-pharma"]
     },
     {
+      "id": "cn-pom-ad",
+      "date": "2025-05-18",
+      "type": "retaliation",
+      "countries": ["China"],
+      "title": "China imposes anti-dumping duties of up to 74.9% on U.S. polyoxymethylene (POM) copolymer",
+      "before": "0% extra (Jan 2025)",
+      "now": "74.9% anti-dumping duty",
+      "coversChapter": "no",
+      "status": "In force from 2025-05-19 for five years (deposits from 2025-01-24)",
+      "detail": "MOFCOM Announcement No. 25 of 2025 (final ruling of 2025-05-18): anti-dumping duties on POM copolymer (HS 3907.1010 and 3907.1090) from the U.S., EU, Taiwan and Japan. The rate for all U.S. companies, including Ticona Polymers, is 74.9%. It is a trade-remedy case, not a general counter-tariff, and covers only this one resin.",
+      "sourceIds": ["cn-mofcom-pom-2025"]
+    },
+    {
       "id": "cn-all",
       "date": "2025-05-14",
       "type": "retaliation",
@@ -274,6 +326,32 @@
       "sourceIds": ["uk-epd"]
     },
     {
+      "id": "ca-2025-autos",
+      "date": "2025-04-09",
+      "type": "retaliation",
+      "countries": ["Canada"],
+      "title": "25% surtax on U.S. passenger vehicles and light trucks (non-U.S. content for CUSMA-compliant vehicles)",
+      "before": "0% (CUSMA)",
+      "now": "25% on non-U.S. content (full value if not CUSMA-compliant)",
+      "coversChapter": "no",
+      "status": "In force; kept when Canada removed most 2025 counter-tariffs on Sept 1, 2025",
+      "detail": "Canada's United States Surtax Order (Motor Vehicles 2025), SOR/2025-118: a 25% surtax on U.S. passenger vehicles and light trucks (8703, 8704). A CUSMA-compliant vehicle pays it only on its non-U.S. content; a non-compliant vehicle pays on its full value. Auto parts are not covered.",
+      "sourceIds": ["ca-sor-2025-118"]
+    },
+    {
+      "id": "cn-farm-mar2025",
+      "date": "2025-03-10",
+      "type": "retaliation",
+      "countries": ["China"],
+      "title": "China's extra tariffs of 10% and 15% on U.S. farm goods, lifted November 10, 2025",
+      "before": "0%",
+      "now": "Lifted Nov. 10, 2025",
+      "coversChapter": "yes",
+      "status": "Lifted on November 10, 2025",
+      "detail": "Tariff Commission Announcement No. 2 of 2025 (March 4) added 15% on U.S. chicken, wheat, corn and cotton and 10% on sorghum, soybeans, pork, beef, aquatic products, fruits, vegetables and dairy from March 10, 2025, answering the U.S. fentanyl tariffs. Announcement No. 9 of 2025 (November 5) stopped them from November 10, 2025, under the U.S.–China deal. China's separate extra tariff on all U.S. goods stays.",
+      "sourceIds": ["cn-sctc-mar2025", "cn-sctc-nov2025"]
+    },
+    {
       "id": "ca-2025",
       "date": "2025-03-04",
       "type": "retaliation",
@@ -285,6 +363,19 @@
       "status": "Mostly removed Sept 1, 2025",
       "detail": "25% counter-tariff on C$30B of U.S. goods. Canada repealed most of it on Sept 1, 2025, keeping only the steel, aluminum and auto surtaxes.",
       "sourceIds": ["ca-2025-list", "ca-sor-2025-181"]
+    },
+    {
+      "id": "cn-feb2025-energy",
+      "date": "2025-02-10",
+      "type": "retaliation",
+      "countries": ["China"],
+      "title": "China's extra tariffs on U.S. coal and LNG (15%) and on crude oil, farm machinery, large cars and pickups (10%)",
+      "before": "0%",
+      "now": "15% / 10%",
+      "coversChapter": "no",
+      "status": "In force",
+      "detail": "Tariff Commission Announcement No. 1 of 2025 (February 4) added 15% on U.S. coal and liquefied natural gas and 10% on crude oil, agricultural machinery, large-engine cars and pickup trucks from February 10, 2025, answering the U.S. fentanyl tariffs. Announcement No. 9 of 2025 ended only the March 2025 farm-goods tariffs, so these remain.",
+      "sourceIds": ["cn-sctc-feb2025", "cn-sctc-nov2025"]
     }
   ],
   "sources": [
@@ -587,6 +678,116 @@
       "signed": "2026-07-06",
       "published": "2026-07-07",
       "url": "https://eur-lex.europa.eu/eli/reg_impl/2026/1549/oj"
+    },
+    {
+      "id": "ca-sor-2026-186",
+      "publisher": "Government of Canada (Canada Gazette, Part II)",
+      "citation": "SOR/2026-186",
+      "document": "Order",
+      "title": "United States Surtax Order (2026)",
+      "signed": null,
+      "published": "2026-09-23",
+      "url": "https://gazette.gc.ca/rp-pr/p2/2026/2026-09-23/html/sor-dors186-eng.html"
+    },
+    {
+      "id": "tw-art-fact",
+      "publisher": "USTR",
+      "citation": "USTR fact sheet, February 2026",
+      "document": "Fact Sheet on U.S.-Taiwan Agreement on Reciprocal Trade",
+      "title": "Fact Sheet on U.S.-Taiwan Agreement on Reciprocal Trade",
+      "signed": null,
+      "published": "2026-02-12",
+      "url": "https://ustr.gov/about/policy-offices/press-office/fact-sheets/2026/february/fact-sheet-us-taiwan-agreement-reciprocal-trade"
+    },
+    {
+      "id": "tw-art-text",
+      "publisher": "USTR",
+      "citation": "AIT-TECRO Agreement on Reciprocal Trade",
+      "document": "Agreement between the American Institute in Taiwan and the Taipei Economic and Cultural Representative Office on Reciprocal Trade",
+      "title": "Agreement on Reciprocal Trade between AIT and TECRO",
+      "signed": "2026-02-12",
+      "published": "2026-02-12",
+      "url": "https://ustr.gov/sites/default/files/files/Press/Releases/2026/AIT-TECRO%20ART%20sanitized.pdf"
+    },
+    {
+      "id": "bd-art-fact",
+      "publisher": "USTR",
+      "citation": "USTR fact sheet, February 2026",
+      "document": "Fact Sheet: The United States and Bangladesh Reach an Agreement on Reciprocal Trade",
+      "title": "Fact Sheet: The United States and Bangladesh Reach an Agreement on Reciprocal Trade",
+      "signed": null,
+      "published": "2026-02-09",
+      "url": "https://ustr.gov/about/policy-offices/press-office/fact-sheets/2026/february/fact-sheet-united-states-and-bangladesh-reach-agreement-reciprocal-trade"
+    },
+    {
+      "id": "bd-art-text",
+      "publisher": "USTR",
+      "citation": "U.S.–Bangladesh Agreement on Reciprocal Trade",
+      "document": "Agreement on Reciprocal Trade between the United States and Bangladesh",
+      "title": "Agreement on Reciprocal Trade between the United States of America and the People's Republic of Bangladesh",
+      "signed": "2026-02-09",
+      "published": "2026-02-09",
+      "url": "https://ustr.gov/sites/default/files/files/Press/Releases/2026/U.S.%20BGD%20Agreement%20on%20Reciprocal%20Trade%20Final%2009FEB2026%20LETTER.pdf"
+    },
+    {
+      "id": "in-framework-ws",
+      "publisher": "The White House",
+      "citation": "United States-India Joint Statement, Feb. 6, 2026",
+      "document": "United States-India Joint Statement",
+      "title": "United States-India Joint Statement on a framework for an Interim Agreement on reciprocal and mutually beneficial trade",
+      "signed": null,
+      "published": "2026-02-06",
+      "url": "https://www.whitehouse.gov/briefings-statements/2026/02/united-states-india-joint-statement/"
+    },
+    {
+      "id": "cn-mofcom-pom-2025",
+      "publisher": "Ministry of Commerce (PRC)",
+      "citation": "MOFCOM Announcement No. 25 of 2025",
+      "document": "Announcement",
+      "title": "Final ruling on the anti-dumping investigation of polyformaldehyde (POM) copolymer originating in the United States, the EU, Taiwan and Japan",
+      "signed": "2025-05-18",
+      "published": "2025-05-18",
+      "url": "https://www.mofcom.gov.cn/zcfb/zgdwjjmywg/art/2025/art_09eb6be1f50f4cdaa6a36dfbb09bb529.html"
+    },
+    {
+      "id": "ca-sor-2025-118",
+      "publisher": "Government of Canada (Canada Gazette, Part II)",
+      "citation": "SOR/2025-118",
+      "document": "Order",
+      "title": "United States Surtax Order (Motor Vehicles 2025)",
+      "signed": "2025-04-07",
+      "published": "2025-04-23",
+      "url": "https://gazette.gc.ca/rp-pr/p2/2025/2025-04-23/html/sor-dors118-eng.html"
+    },
+    {
+      "id": "cn-sctc-mar2025",
+      "publisher": "State Council Tariff Commission (PRC)",
+      "citation": "Tariff Commission Announcement No. 2 of 2025",
+      "document": "Announcement on imposing additional tariffs on certain imports originating in the United States",
+      "title": "国务院关税税则委员会关于对原产于美国的部分进口商品加征关税的公告",
+      "signed": null,
+      "published": "2025-03-04",
+      "url": "https://gss.mof.gov.cn/gzdt/zhengcefabu/202503/t20250304_3959228.htm"
+    },
+    {
+      "id": "cn-sctc-nov2025",
+      "publisher": "State Council Tariff Commission (PRC)",
+      "citation": "Tariff Commission Announcement No. 9 of 2025",
+      "document": "Announcement on ending the additional tariff measures on certain imports originating in the United States",
+      "title": "国务院关税税则委员会关于停止实施对原产于美国的部分进口商品加征关税措施的公告",
+      "signed": null,
+      "published": "2025-11-05",
+      "url": "https://gss.mof.gov.cn/gzdt/zhengcefabu/202511/t20251105_3975755.htm"
+    },
+    {
+      "id": "cn-sctc-feb2025",
+      "publisher": "State Council Tariff Commission (PRC)",
+      "citation": "Tariff Commission Announcement No. 1 of 2025",
+      "document": "Announcement on imposing additional tariffs on certain imports originating in the United States",
+      "title": "国务院关税税则委员会关于对原产于美国的部分进口商品加征关税的公告",
+      "signed": null,
+      "published": "2025-02-04",
+      "url": "https://www.mof.gov.cn/zhengwuxinxi/caizhengxinwen/202502/t20250204_3955222.htm"
     }
   ]
 }

@@ -127,12 +127,25 @@ export function tradeSummaryPath(chapter: number, flow: TradeFlow = 'M'): string
   return flow === 'X' ? path.join(TRADE_DATA_DIR, 'exports', file) : path.join(TRADE_DATA_DIR, file);
 }
 
+// UN Comtrade reports Taiwan as partner 490 "Other Asia, nes". Left as-is it reads like an aggregate and
+// gets pruned from tables, which silently drops a top-five buyer for some chapters.
+const PARTNER_NAME_OVERRIDES: Record<number, string> = { 490: 'Taiwan' };
+
+export function comtradePartnerName(code: number, desc: string | null | undefined): string {
+  return PARTNER_NAME_OVERRIDES[code] ?? desc ?? String(code);
+}
+
 export function loadTradeSummary(chapter: number, flow: TradeFlow = 'M'): TradeSummary {
   const file = tradeSummaryPath(chapter, flow);
   if (!existsSync(file)) {
     throw new Error(`No trade summary at ${file}. Run: pnpm tariff:fetch-trade --chapter ${chapter}${flow === 'X' ? ' --flow X --ytd' : ''}`);
   }
-  return JSON.parse(readFileSync(file, 'utf8')) as TradeSummary;
+  const summary = JSON.parse(readFileSync(file, 'utf8')) as TradeSummary;
+  // Caches fetched before the override still carry Comtrade's names.
+  for (const row of [...summary.byCountry, ...summary.byHeadingCountry, ...(summary.yearToDate?.byCountry ?? [])]) {
+    row.country = comtradePartnerName(row.countryCode, row.country);
+  }
+  return summary;
 }
 
 function round1(n: number): number {

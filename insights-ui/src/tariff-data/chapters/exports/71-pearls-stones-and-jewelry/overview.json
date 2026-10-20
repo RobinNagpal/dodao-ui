@@ -1,0 +1,488 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 71,
+    "padded": "71",
+    "slug": "71-pearls-stones-and-jewelry",
+    "title": "Natural or Cultured Pearls, Precious or Semiprecious Stones, Precious Metals, Metals Clad With Precious Metal, and Articles Thereof; Imitation Jewelry; Coin"
+  },
+  "page": {
+    "slug": "exports",
+    "path": "/industry-tariff-report/exports/chapters/71-pearls-stones-and-jewelry",
+    "h1": "HTS Chapter 71: Natural or Cultured Pearls, Precious or Semiprecious Stones, Precious Metals, Metals Clad With Precious Metal, and Articles Thereof; Imitation Jewelry; Coin — U.S. Exports & Foreign Tariffs",
+    "seo": {
+      "title": "Chapter 71 U.S. Gold & Jewelry Exports: Who Buys & Tariffs",
+      "shortDescription": "How much gold, silver, diamonds and jewelry the U.S. exports, who buys it, and what each top buyer charges, from 2020–2025 UN Comtrade data.",
+      "keywords": ["us gold exports", "us silver exports", "us diamond exports", "us jewelry exports", "hts chapter 71 exports", "gold export tariffs"]
+    },
+    "lastCheckedAt": "2026-10-20"
+  },
+  "intro": "The U.S. exported **$147.97 billion** of Chapter 71 goods in 2025, up **102.5%** from 2024. Almost all of the jump is bullion: **gold (heading 7108) rose 172% to $80.6 billion, 54.5% of the chapter**, and \"other precious-metal articles\" (7115) rose from $1.2 billion to **$21.5 billion**. Silver (7106) is 5.5%, jewelry (7113) 8.2% and diamonds (7102) 5.3%. **Switzerland (39.4%) and the United Kingdom (21.3%) buy 61%**, and each took far more than a year earlier (+364% and +145%).\n\nTariffs barely matter in this chapter. Gold, silver and platinum bullion and diamonds are duty-free in Switzerland, the UK, Hong Kong, the EU, Canada, Singapore and Australia. The tariffs that exist fall on jewelry (about 2.5% in the EU, about 5% in the UAE) and on gold in India (about 6%, with one report of 15% from May 2026). China's extra 10% on all U.S. goods applies, but China bought only 0.7% of the chapter. The rules that matter are compliance rules: Kimberley Process certificates for rough diamonds, anti-money-laundering programs for dealers, and the ban on exporting luxury goods to Russia and Belarus.",
+  "latestYear": 2025,
+  "priorYear": 2024,
+  "valueBasis": "FOB value of U.S. exports, as reported by the United States to UN Comtrade.",
+  "stats": [
+    {
+      "label": "2025 U.S. exports",
+      "value": "$147.97B"
+    },
+    {
+      "label": "Change vs 2024",
+      "value": "+102.5%"
+    },
+    {
+      "label": "Largest product group (7108)",
+      "value": "55%",
+      "note": "Gold — bullion, doré, bars, powder, leaf, monetary gold"
+    },
+    {
+      "label": "Two largest buyers",
+      "value": "61%",
+      "note": "Switzerland, United Kingdom"
+    },
+    {
+      "label": "Top markets with no tariff on gold bullion",
+      "value": "8 of 9",
+      "note": "Switzerland, UK, Hong Kong, EU, Canada, Singapore, UAE, Australia"
+    }
+  ],
+  "keyTakeaways": [
+    "Bullion drives the chapter: gold (7108) is 54.5%, other precious-metal articles (7115) 14.5% and silver (7106) 5.5%. Jewelry (7113) is 8.2% and diamonds (7102) 5.3%.",
+    "Switzerland (39.4%) and the UK (21.3%) buy 61% of the chapter, and both bought far more in 2025 (+364% and +145%). Hong Kong takes 8.5%.",
+    "Tariffs hardly matter for the largest buyers: bullion and diamonds are duty-free in Switzerland, the UK, Hong Kong, the EU, Canada, Singapore and Australia. India's gold duty is the main exception.",
+    "The U.S. side is compliance, not tariffs: a Kimberley Process certificate for rough diamonds, an anti-money-laundering program for dealers, and the ban on exporting luxury goods to Russia and Belarus."
+  ],
+  "byYear": [
+    {
+      "year": 2020,
+      "totalUsd": 58810543095,
+      "partnerAUsd": 8851323352,
+      "partnerBUsd": 14251344789,
+      "restUsd": 35707874954
+    },
+    {
+      "year": 2021,
+      "totalUsd": 81452116491,
+      "partnerAUsd": 13386168240,
+      "partnerBUsd": 13057576364,
+      "restUsd": 55008371887
+    },
+    {
+      "year": 2022,
+      "totalUsd": 91623447599,
+      "partnerAUsd": 24556291841,
+      "partnerBUsd": 10491095798,
+      "restUsd": 56576059960
+    },
+    {
+      "year": 2023,
+      "totalUsd": 76055266695,
+      "partnerAUsd": 14419576607,
+      "partnerBUsd": 9917117803,
+      "restUsd": 51718572285
+    },
+    {
+      "year": 2024,
+      "totalUsd": 73069294025,
+      "partnerAUsd": 12567175836,
+      "partnerBUsd": 12899534465,
+      "restUsd": 47602583724
+    },
+    {
+      "year": 2025,
+      "totalUsd": 147973032271,
+      "partnerAUsd": 58304281931,
+      "partnerBUsd": 31589941848,
+      "restUsd": 58078808492
+    }
+  ],
+  "byYearPartners": ["Switzerland", "United Kingdom"],
+  "byYearCaption": "U.S. exports of Chapter 71 goods each year, split into the two largest 2025 buyers (Switzerland and United Kingdom) and everyone else.",
+  "yearToDate": null,
+  "topMarkets": [
+    {
+      "countryCode": 757,
+      "country": "Switzerland",
+      "exportsUsd": 58304281931,
+      "priorExportsUsd": 12567175836,
+      "sharePct": 39.4,
+      "changePct": 363.9,
+      "tariffNow": "Free (industrial tariffs abolished 2024)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 826,
+      "country": "United Kingdom",
+      "exportsUsd": 31589941848,
+      "priorExportsUsd": 12899534465,
+      "sharePct": 21.3,
+      "changePct": 144.9,
+      "tariffNow": "Bullion and diamonds free; jewelry rate not verified",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 344,
+      "country": "China, Hong Kong SAR",
+      "exportsUsd": 12594078566,
+      "priorExportsUsd": 7036288310,
+      "sharePct": 8.5,
+      "changePct": 79,
+      "tariffNow": "Free (no tariff)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 124,
+      "country": "Canada",
+      "exportsUsd": 8554583891,
+      "priorExportsUsd": 7380800054,
+      "sharePct": 5.8,
+      "changePct": 15.9,
+      "tariffNow": "Free (CUSMA)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 699,
+      "country": "India",
+      "exportsUsd": 4744176363,
+      "priorExportsUsd": 5314105107,
+      "sharePct": 3.2,
+      "changePct": -10.7,
+      "tariffNow": "Gold about 6% (one report says 15% from May 2026)",
+      "status": "pending"
+    },
+    {
+      "countryCode": 702,
+      "country": "Singapore",
+      "exportsUsd": 4109200081,
+      "priorExportsUsd": 3654786237,
+      "sharePct": 2.8,
+      "changePct": 12.4,
+      "tariffNow": "Free (no tariff; U.S.–Singapore FTA)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 784,
+      "country": "United Arab Emirates",
+      "exportsUsd": 3645790369,
+      "priorExportsUsd": 2527792494,
+      "sharePct": 2.5,
+      "changePct": 44.2,
+      "tariffNow": "Bullion free; jewelry about 5%",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 380,
+      "country": "Italy",
+      "exportsUsd": 3536454782,
+      "priorExportsUsd": 2475679420,
+      "sharePct": 2.4,
+      "changePct": 42.8,
+      "tariffNow": "EU rate: bullion and diamonds free; jewelry about 2.5%",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 251,
+      "country": "France",
+      "exportsUsd": 3282023776,
+      "priorExportsUsd": 1397065117,
+      "sharePct": 2.2,
+      "changePct": 134.9,
+      "tariffNow": "EU rate: bullion and diamonds free; jewelry about 2.5%",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 276,
+      "country": "Germany",
+      "exportsUsd": 2307885872,
+      "priorExportsUsd": 1597641443,
+      "sharePct": 1.6,
+      "changePct": 44.5,
+      "tariffNow": "EU rate: bullion and diamonds free; jewelry about 2.5%",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 36,
+      "country": "Australia",
+      "exportsUsd": 2245720437,
+      "priorExportsUsd": 1261544106,
+      "sharePct": 1.5,
+      "changePct": 78,
+      "tariffNow": "Free (U.S.–Australia FTA)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 392,
+      "country": "Japan",
+      "exportsUsd": 1737948607,
+      "priorExportsUsd": 1636646822,
+      "sharePct": 1.2,
+      "changePct": 6.2,
+      "tariffNow": "Normal tariff (no U.S. trade agreement); rates not verified",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 376,
+      "country": "Israel",
+      "exportsUsd": 1332721722,
+      "priorExportsUsd": 2780416139,
+      "sharePct": 0.9,
+      "changePct": -52.1,
+      "tariffNow": "Free (U.S.–Israel FTA)",
+      "status": "unchanged"
+    }
+  ],
+  "othersExportsUsd": 9988224026,
+  "othersPriorExportsUsd": 10539818475,
+  "byHeading": [
+    {
+      "heading": "7101",
+      "label": "Pearls, natural or cultured (loose or temporarily strung)",
+      "exportsUsd": 46144015,
+      "priorExportsUsd": 83459684,
+      "changePct": -44.7,
+      "sharePct": 0
+    },
+    {
+      "heading": "7102",
+      "label": "Diamonds, unmounted — rough, polished and industrial",
+      "exportsUsd": 7784078421,
+      "priorExportsUsd": 12428104722,
+      "changePct": -37.4,
+      "sharePct": 5.3
+    },
+    {
+      "heading": "7103",
+      "label": "Rubies, sapphires, emeralds & other gemstones (unmounted)",
+      "exportsUsd": 3049593469,
+      "priorExportsUsd": 3203955001,
+      "changePct": -4.8,
+      "sharePct": 2.1
+    },
+    {
+      "heading": "7104",
+      "label": "Lab-grown diamonds & other synthetic stones",
+      "exportsUsd": 318826420,
+      "priorExportsUsd": 431646290,
+      "changePct": -26.1,
+      "sharePct": 0.2
+    },
+    {
+      "heading": "7105",
+      "label": "Diamond and gemstone dust & powder",
+      "exportsUsd": 52566405,
+      "priorExportsUsd": 54092313,
+      "changePct": -2.8,
+      "sharePct": 0
+    },
+    {
+      "heading": "7106",
+      "label": "Silver — bullion, doré, bars, powder",
+      "exportsUsd": 8104991618,
+      "priorExportsUsd": 1348557088,
+      "changePct": 501,
+      "sharePct": 5.5
+    },
+    {
+      "heading": "7107",
+      "label": "Base metals clad with silver",
+      "exportsUsd": 29152859,
+      "priorExportsUsd": 20032668,
+      "changePct": 45.5,
+      "sharePct": 0
+    },
+    {
+      "heading": "7108",
+      "label": "Gold — bullion, doré, bars, powder, leaf, monetary gold",
+      "exportsUsd": 80582976776,
+      "priorExportsUsd": 29678941764,
+      "changePct": 171.5,
+      "sharePct": 54.5
+    },
+    {
+      "heading": "7109",
+      "label": "Base metals or silver clad with gold",
+      "exportsUsd": 18784614,
+      "priorExportsUsd": 18900639,
+      "changePct": -0.6,
+      "sharePct": 0
+    },
+    {
+      "heading": "7110",
+      "label": "Platinum, palladium, rhodium, iridium, osmium & ruthenium",
+      "exportsUsd": 6357784883,
+      "priorExportsUsd": 5073905129,
+      "changePct": 25.3,
+      "sharePct": 4.3
+    },
+    {
+      "heading": "7111",
+      "label": "Metals clad with platinum",
+      "exportsUsd": 3616336,
+      "priorExportsUsd": 1310564,
+      "changePct": 175.9,
+      "sharePct": 0
+    },
+    {
+      "heading": "7112",
+      "label": "Precious-metal waste, scrap & ash",
+      "exportsUsd": 7217158727,
+      "priorExportsUsd": 7613490904,
+      "changePct": -5.2,
+      "sharePct": 4.9
+    },
+    {
+      "heading": "7113",
+      "label": "Jewelry of gold, silver, platinum or clad metal",
+      "exportsUsd": 12095858915,
+      "priorExportsUsd": 11217804607,
+      "changePct": 7.8,
+      "sharePct": 8.2
+    },
+    {
+      "heading": "7114",
+      "label": "Silverware & goldsmiths' wares (tableware, flatware)",
+      "exportsUsd": 15736764,
+      "priorExportsUsd": 8566304,
+      "changePct": 83.7,
+      "sharePct": 0
+    },
+    {
+      "heading": "7115",
+      "label": "Other precious-metal articles — minted bars, platinum gauze",
+      "exportsUsd": 21501279938,
+      "priorExportsUsd": 1151096923,
+      "changePct": 1767.9,
+      "sharePct": 14.5
+    },
+    {
+      "heading": "7116",
+      "label": "Articles of pearls & gemstones (strands, gemstone jewelry, carvings)",
+      "exportsUsd": 371788123,
+      "priorExportsUsd": 371155182,
+      "changePct": 0.2,
+      "sharePct": 0.3
+    },
+    {
+      "heading": "7117",
+      "label": "Imitation (costume) jewelry",
+      "exportsUsd": 201904373,
+      "priorExportsUsd": 255313947,
+      "changePct": -20.9,
+      "sharePct": 0.1
+    },
+    {
+      "heading": "7118",
+      "label": "Coins — bullion coins and other coin",
+      "exportsUsd": 220789615,
+      "priorExportsUsd": 108960296,
+      "changePct": 102.6,
+      "sharePct": 0.1
+    }
+  ],
+  "byLine": [
+    {
+      "hs6": "7108.12",
+      "heading": "7108",
+      "description": "Metals; gold, non-monetary, unwrought (but not powder)",
+      "exportsUsd": 71626825019,
+      "priorExportsUsd": 29032661911,
+      "changePct": 146.7,
+      "sharePct": 48.4
+    },
+    {
+      "hs6": "7115.90",
+      "heading": "7115",
+      "description": "Metal; precious or metal clad with precious metal, other than that of item no. 7115.10",
+      "exportsUsd": 21491752293,
+      "priorExportsUsd": 1144123578,
+      "changePct": 1778.4,
+      "sharePct": 14.5
+    },
+    {
+      "hs6": "7113.19",
+      "heading": "7113",
+      "description": "Jewellery; of precious metal (excluding silver) whether or not plated or clad with precious metal, and parts thereof",
+      "exportsUsd": 11186494222,
+      "priorExportsUsd": 10575005225,
+      "changePct": 5.8,
+      "sharePct": 7.6
+    },
+    {
+      "hs6": "7108.13",
+      "heading": "7108",
+      "description": "Metals; gold, semi-manufactured",
+      "exportsUsd": 8548009122,
+      "priorExportsUsd": 595760072,
+      "changePct": 1334.8,
+      "sharePct": 5.8
+    },
+    {
+      "hs6": "7102.39",
+      "heading": "7102",
+      "description": "Diamonds; non-industrial, (other than unworked or simply sawn, cleaved or bruted), but not mounted or set",
+      "exportsUsd": 7709483763,
+      "priorExportsUsd": 12247135167,
+      "changePct": -37.1,
+      "sharePct": 5.2
+    },
+    {
+      "hs6": "7106.91",
+      "heading": "7106",
+      "description": "Metals; silver, unwrought, (but not powder)",
+      "exportsUsd": 6892487914,
+      "priorExportsUsd": 442718755,
+      "changePct": 1456.9,
+      "sharePct": 4.7
+    },
+    {
+      "hs6": "7112.99",
+      "heading": "7112",
+      "description": "Waste and scrap of precious metals; waste and scrap of precious metals including metal clad with precious metals, other than that of gold and platinum and excluding ash which contains precious metal or precious metal compounds",
+      "exportsUsd": 3109029428,
+      "priorExportsUsd": 3035788508,
+      "changePct": 2.4,
+      "sharePct": 2.1
+    },
+    {
+      "hs6": "7112.91",
+      "heading": "7112",
+      "description": "Waste and scrap of precious metals; of gold, including metal clad with gold but excluding sweepings containing other precious metals",
+      "exportsUsd": 2896472642,
+      "priorExportsUsd": 3971961154,
+      "changePct": -27.1,
+      "sharePct": 2
+    },
+    {
+      "hs6": "7103.91",
+      "heading": "7103",
+      "description": "Stones; rubies, sapphires and emeralds, worked (other than simply sawn or roughly shaped), not strung, mounted or set",
+      "exportsUsd": 2677632580,
+      "priorExportsUsd": 2855473734,
+      "changePct": -6.2,
+      "sharePct": 1.8
+    },
+    {
+      "hs6": "7110.21",
+      "heading": "7110",
+      "description": "Metals; palladium, unwrought or in powder form",
+      "exportsUsd": 2067558620,
+      "priorExportsUsd": 2390142233,
+      "changePct": -13.5,
+      "sharePct": 1.4
+    }
+  ],
+  "sources": [
+    {
+      "id": "comtrade-exports",
+      "publisher": "UN Comtrade",
+      "citation": "UN Comtrade, U.S. exports 2020–2025",
+      "document": "UN Comtrade public API (preview), United States exports, annual, HS",
+      "title": "United States exports, HS chapter 71, by partner, heading and subheading",
+      "signed": null,
+      "published": "2026-10-20",
+      "url": "https://comtradeplus.un.org/"
+    }
+  ],
+  "coverageNote": "The 13 buyers listed take 93% of 2025 U.S. Chapter 71 exports. FOB value of U.S. exports, as reported by the United States to UN Comtrade. They can differ from what the destination country reports as imports."
+}

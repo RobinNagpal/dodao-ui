@@ -1,0 +1,401 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 39,
+    "padded": "39",
+    "slug": "39-plastics-and-articles",
+    "title": "Plastics and Articles Thereof"
+  },
+  "page": {
+    "slug": "exports/rules",
+    "path": "/industry-tariff-report/exports/chapters/39-plastics-and-articles/rules",
+    "h1": "HTS Chapter 39: Plastics and Articles Thereof — U.S. Export Rules & Ways to Pay Less Abroad",
+    "seo": {
+      "title": "U.S. Plastics Export Rules: TSCA, Controls & Scrap (HTS Ch. 39) | KoalaGains",
+      "shortDescription": "What U.S. exporters of plastic resins and articles must do before shipping: EPA TSCA 12(b) notices, export controls on high-performance polymers, plastic-scrap rules and Russia licences.",
+      "keywords": ["TSCA 12(b) export notification", "export plastic scrap", "schedule b polyethylene", "ECCN 1C008 polymers", "export plastics license"]
+    },
+    "lastCheckedAt": "2026-10-20"
+  },
+  "intro": "A U.S. exporter of plastics takes the same five steps as every exporter. Most resins and articles are EAR99 and need no export licence, so the extra rules are narrow: a **TSCA section 12(b)** notice to EPA when the polymer is subject to certain EPA actions, a Commerce licence for a few high-performance polymers (ECCN 1C008 and 1C009), the importing country's consent for **plastic scrap** (3915), and a licence for many resins and articles shipped to Russia or Belarus.",
+  "regulationsAsOf": "2026-10-16",
+  "steps": [
+    {
+      "id": "schedule-b",
+      "title": "Find the Schedule B number",
+      "whatToDo": "Look up the 10-digit Schedule B number for each product with the Census Bureau's free search tool. Its first six digits are the same as the HS code every country uses, so it also tells you which line of the buyer's tariff applies. The U.S. import (HTS) number and the Schedule B number match only to six digits.",
+      "when": "Every export. It goes on the export filing (the last step) and on the commercial invoice.",
+      "citations": [
+        {
+          "label": "Census: Schedule B",
+          "url": "https://www.census.gov/foreign-trade/schedules/b/index.html"
+        },
+        {
+          "label": "Schedule B search tool",
+          "url": "https://uscensus.prod.3ceonline.com/"
+        },
+        {
+          "label": "Schedule B introduction (2026)",
+          "url": "https://www.census.gov/foreign-trade/schedules/b/2026/introduction.pdf"
+        }
+      ],
+      "chapterNote": "Polyethylene in primary forms (3901) was 21% of 2025 exports; the Schedule B number depends on density and form, for example 3901.10 (specific gravity below 0.94), 3901.20 (0.94 or more) and 3901.40 (ethylene-alpha-olefin copolymers). Other articles (3926.90) was the largest single line at $8.83B."
+    },
+    {
+      "id": "screen",
+      "title": "Screen the buyer and everyone in the deal",
+      "whatToDo": "Check the buyer, the end user and any agent against the Consolidated Screening List. It combines the Commerce lists (Entity List, Denied Persons, Unverified, Military End-User), the State Department lists and the Treasury (OFAC) sanctions lists of parties you may not deal with, or may deal with only under a licence.",
+      "when": "Every export, before you accept the order.",
+      "citations": [
+        {
+          "label": "trade.gov: Consolidated Screening List",
+          "url": "https://www.trade.gov/consolidated-screening-list"
+        },
+        {
+          "label": "CSL search",
+          "url": "https://www.trade.gov/data-visualization/csl-search"
+        }
+      ],
+      "chapterNote": null
+    },
+    {
+      "id": "licence",
+      "title": "Check whether you need an export licence",
+      "whatToDo": "Find the product's Export Control Classification Number (ECCN) on the Commerce Control List. Most goods are not listed and are EAR99. For a listed ECCN, look up the destination on the Commerce Country Chart under each reason for control: an X means a licence is needed unless a licence exception applies. Even EAR99 goods need a licence for embargoed countries and for restricted end users or end uses.",
+      "when": "Every export of goods subject to the Export Administration Regulations (EAR).",
+      "citations": [
+        {
+          "label": "15 CFR 732.3",
+          "url": "https://www.ecfr.gov/current/title-15/section-732.3"
+        },
+        {
+          "label": "15 CFR 738.4",
+          "url": "https://www.ecfr.gov/current/title-15/section-738.4"
+        },
+        {
+          "label": "Commerce Control List (15 CFR 774 Supp. 1)",
+          "url": "https://www.ecfr.gov/current/title-15/part-774/appendix-Supplement%20No.%201%20to%20Part%20774"
+        },
+        {
+          "label": "BIS: classify your item",
+          "url": "https://www.bis.gov/licensing/classify-your-item"
+        }
+      ],
+      "chapterNote": "Commodity resins and articles are EAR99. A few high-performance polymers are controlled: ECCN 1C008 covers certain non-fluorinated polymeric substances (such as polyimides, thermoplastic liquid-crystal copolymers and polyarylene ketones and sulphides) and ECCN 1C009 certain fluorinated compounds. Classify by the product's technical specification, not its heading."
+    },
+    {
+      "id": "sanctions",
+      "title": "Check sanctions on the destination",
+      "whatToDo": "Check the destination against OFAC's sanctions programs and the EAR's embargo rules. Cuba, Iran and North Korea have country-wide rules, and Syria still needs a Commerce licence for most items; Russia and Belarus need a licence for any item with an ECCN. Several programs have special permissions for food and medicine.",
+      "when": "Exports to a sanctioned or embargoed country, or to a listed person anywhere.",
+      "citations": [
+        {
+          "label": "OFAC: sanctions programs",
+          "url": "https://ofac.treasury.gov/sanctions-programs-and-country-information"
+        },
+        {
+          "label": "15 CFR Part 746 (embargoes)",
+          "url": "https://www.ecfr.gov/current/title-15/part-746"
+        }
+      ],
+      "chapterNote": "Russia and Belarus: a Commerce licence is required for the items on the HS-code lists in Supplements No. 4 and 5 to 15 CFR Part 746, which include 44 six-digit Chapter 39 codes in Supplement 4 (resins in 3901–3909, 3912, films and pipes in 3917, 3920–3922, 3925) and 4 in Supplement 5 (3916, 3926). Cuba, Iran, North Korea and Syria are covered by country-wide rules."
+    },
+    {
+      "id": "eei",
+      "title": "File the export in AES (Electronic Export Information)",
+      "whatToDo": "You (the U.S. principal party in interest) or your freight forwarder file the EEI in the Automated Export System — free through ACE AESDirect — and put the confirmation number (ITN) on the shipping documents. File at least 24 hours before an ocean shipment is loaded, 2 hours before a flight departs, or 1 hour before a truck reaches the border. Not filing can cost a civil penalty of up to $17,412 per violation.",
+      "when": "When one Schedule B number in one shipment to one buyer is worth over $2,500, and at any value when the shipment needs a Commerce licence or a DEA permit or declaration, or ships an EAR item to Cuba, Iran, North Korea or Syria, or a Commerce Control List item to China, Russia or Venezuela.",
+      "citations": [
+        {
+          "label": "15 CFR 30.2",
+          "url": "https://www.ecfr.gov/current/title-15/section-30.2"
+        },
+        {
+          "label": "15 CFR 30.4 (when to file)",
+          "url": "https://www.ecfr.gov/current/title-15/section-30.4"
+        },
+        {
+          "label": "15 CFR 30.37 ($2,500 exemption)",
+          "url": "https://www.ecfr.gov/current/title-15/section-30.37"
+        },
+        {
+          "label": "15 CFR 758.1",
+          "url": "https://www.ecfr.gov/current/title-15/section-758.1"
+        },
+        {
+          "label": "Census: AES",
+          "url": "https://www.census.gov/foreign-trade/aes/index.html"
+        }
+      ],
+      "chapterNote": "A single container or railcar of resin, film or finished articles is usually worth far more than $2,500 per Schedule B number, so an EEI filing is the norm for this chapter."
+    }
+  ],
+  "rules": [
+    {
+      "id": "epa-tsca-12b",
+      "agency": "Environmental Protection Agency (EPA)",
+      "title": "TSCA section 12(b): notify EPA of the export of a polymer or chemical that is subject to certain EPA data requirements, rules or orders, within seven days of forming the intent to export or on the date of export, whichever is earlier",
+      "citations": [
+        {
+          "label": "40 CFR 707.65 (submission to the agency)",
+          "url": "https://www.ecfr.gov/current/title-40/section-707.65"
+        },
+        {
+          "label": "40 CFR Part 707, Subpart D (export notification)",
+          "url": "https://www.ecfr.gov/current/title-40/part-707/subpart-D"
+        },
+        {
+          "label": "EPA: TSCA requirements for exporting chemicals",
+          "url": "https://www.epa.gov/tsca-import-export-requirements/tsca-requirements-exporting-chemicals"
+        }
+      ]
+    },
+    {
+      "id": "bis-high-performance-polymers",
+      "agency": "Bureau of Industry and Security (BIS)",
+      "title": "High-performance polymers: ECCN 1C008 (certain non-fluorinated polymeric substances) and ECCN 1C009 (certain fluorinated compounds) need a licence for the destinations on the Country Chart",
+      "citations": [
+        {
+          "label": "Commerce Control List (15 CFR 774 Supp. 1), Category 1",
+          "url": "https://www.ecfr.gov/current/title-15/part-774/appendix-Supplement%20No.%201%20to%20Part%20774"
+        },
+        {
+          "label": "BIS: classify your item",
+          "url": "https://www.bis.gov/licensing/classify-your-item"
+        }
+      ]
+    },
+    {
+      "id": "epa-plastic-scrap",
+      "agency": "Environmental Protection Agency (EPA)",
+      "title": "Plastic scrap (3915): since January 1, 2021 most scrap needs the written consent of the importing country when that country is a Party to the Basel Convention; the U.S. is not a Party, so the importer's rules and any bilateral arrangement govern",
+      "citations": [
+        {
+          "label": "EPA: new international requirements for the export and import of plastic recyclables and waste",
+          "url": "https://www.epa.gov/hwgenerators/new-international-requirements-export-and-import-plastic-recyclables-and-waste"
+        }
+      ]
+    },
+    {
+      "id": "bis-russia-belarus",
+      "agency": "Bureau of Industry and Security (BIS)",
+      "title": "Russia and Belarus: a licence is required for the plastics on the HS-code lists in Supplements No. 4 and 5 to Part 746 (15 CFR 746.8)",
+      "citations": [
+        {
+          "label": "15 CFR 746.8 (sanctions against Russia and Belarus)",
+          "url": "https://www.ecfr.gov/current/title-15/section-746.8"
+        }
+      ]
+    }
+  ],
+  "groups": [
+    {
+      "heading": "3901",
+      "label": "Polyethylene & other ethylene polymers, in primary forms",
+      "ruleIds": ["epa-tsca-12b", "bis-russia-belarus"],
+      "note": "Polymers in primary forms can be subject to TSCA actions (significant new use rules, consent orders) that trigger the section 12(b) export notice; check the polymer against EPA's list of chemicals subject to export notification."
+    },
+    {
+      "heading": "3902",
+      "label": "Polypropylene & other olefin polymers, in primary forms",
+      "ruleIds": ["epa-tsca-12b", "bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "3903",
+      "label": "Polystyrene, SAN & ABS, in primary forms",
+      "ruleIds": ["epa-tsca-12b", "bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "3904",
+      "label": "PVC, PTFE & other halogenated polymers, in primary forms",
+      "ruleIds": ["epa-tsca-12b", "bis-high-performance-polymers", "bis-russia-belarus"],
+      "note": "Certain fluorinated compounds are controlled under ECCN 1C009; commodity PVC and PTFE are not."
+    },
+    {
+      "heading": "3905",
+      "label": "Polyvinyl acetate, polyvinyl alcohol & other vinyl polymers",
+      "ruleIds": ["epa-tsca-12b", "bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "3906",
+      "label": "Acrylic polymers, in primary forms",
+      "ruleIds": ["epa-tsca-12b", "bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "3907",
+      "label": "PET, polycarbonates, epoxy resins, polyethers & other polyesters",
+      "ruleIds": ["epa-tsca-12b", "bis-high-performance-polymers", "bis-russia-belarus"],
+      "note": "Some polyesters, polycarbonates and polyacetals are high-performance grades; check ECCN 1C008 by specification. Polyacetal (POM) copolymer also pays an anti-dumping duty in China (see Markets)."
+    },
+    {
+      "heading": "3908",
+      "label": "Polyamides (nylon), in primary forms",
+      "ruleIds": ["epa-tsca-12b", "bis-high-performance-polymers", "bis-russia-belarus"],
+      "note": "Certain polyimides and polyamide-imides are controlled under ECCN 1C008; commodity nylon is not."
+    },
+    {
+      "heading": "3909",
+      "label": "Amino resins, phenolic resins & polyurethanes",
+      "ruleIds": ["epa-tsca-12b", "bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "3910",
+      "label": "Silicones, in primary forms",
+      "ruleIds": ["epa-tsca-12b"],
+      "note": null
+    },
+    {
+      "heading": "3911",
+      "label": "Petroleum resins, polyterpenes & other resins",
+      "ruleIds": ["epa-tsca-12b", "bis-high-performance-polymers"],
+      "note": "Polyarylene ketones and sulphides (for example PEEK and PPS) are classified here and can be controlled under ECCN 1C008."
+    },
+    {
+      "heading": "3912",
+      "label": "Cellulose & its chemical derivatives",
+      "ruleIds": ["epa-tsca-12b", "bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "3913",
+      "label": "Natural polymers (alginates) & modified natural polymers",
+      "ruleIds": ["epa-tsca-12b"],
+      "note": null
+    },
+    {
+      "heading": "3914",
+      "label": "Ion-exchange resins",
+      "ruleIds": ["epa-tsca-12b"],
+      "note": null
+    },
+    {
+      "heading": "3915",
+      "label": "Plastic waste, parings & scrap",
+      "ruleIds": ["epa-plastic-scrap", "bis-russia-belarus"],
+      "note": "Plastic waste, parings and scrap: the importing country's consent is usually required before shipment (see the rule above)."
+    },
+    {
+      "heading": "3916",
+      "label": "Monofilament, rods, sticks & profile shapes",
+      "ruleIds": ["bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "3917",
+      "label": "Tubes, pipes, hoses & their fittings",
+      "ruleIds": ["bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "3918",
+      "label": "Floor, wall & ceiling coverings, incl. vinyl flooring",
+      "ruleIds": [],
+      "note": null
+    },
+    {
+      "heading": "3919",
+      "label": "Self-adhesive tape, film, labels & other flat shapes",
+      "ruleIds": [],
+      "note": null
+    },
+    {
+      "heading": "3920",
+      "label": "Film, sheet & strip, non-cellular and not reinforced",
+      "ruleIds": ["bis-high-performance-polymers", "bis-russia-belarus"],
+      "note": "Films of certain polyimides and other high-performance polymers can be controlled under ECCN 1C008."
+    },
+    {
+      "heading": "3921",
+      "label": "Foam & other plastic sheet, film & strip",
+      "ruleIds": ["bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "3922",
+      "label": "Baths, sinks, toilet seats & other sanitary ware",
+      "ruleIds": ["bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "3923",
+      "label": "Packaging: boxes, bags, bottles, caps & closures",
+      "ruleIds": [],
+      "note": null
+    },
+    {
+      "heading": "3924",
+      "label": "Tableware, kitchenware & household articles",
+      "ruleIds": [],
+      "note": null
+    },
+    {
+      "heading": "3925",
+      "label": "Builders' ware: tanks, doors, windows, shutters",
+      "ruleIds": ["bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "3926",
+      "label": "Other articles: office supplies, gloves, fittings, gaskets",
+      "ruleIds": ["bis-russia-belarus"],
+      "note": null
+    }
+  ],
+  "savings": [
+    {
+      "id": "fta-rate",
+      "title": "Claim the free-trade-agreement rate abroad",
+      "saves": "The partner country's tariff on qualifying U.S. goods — often 0% instead of its normal rate.",
+      "appliesTo": "Goods that meet the agreement's rules of origin, shipped to one of the 20 U.S. free-trade-agreement partners: Australia, Bahrain, Canada, Chile, Colombia, Costa Rica, Dominican Republic, El Salvador, Guatemala, Honduras, Israel, Jordan, Korea, Mexico, Morocco, Nicaragua, Oman, Panama, Peru and Singapore.",
+      "document": "A certification of origin from the exporter, producer or importer, which the buyer uses to claim the rate at import. For USMCA there is no set form, but it must contain the nine data elements in Annex 5-A.",
+      "caveat": "Whoever certifies must be able to back it up: for USMCA, a U.S. exporter or producer keeps origin records for at least 5 years, gives CBP a copy on request and tells buyers promptly about errors. Check the product's rule of origin and the partner's rate in the FTA Tariff Tool first.",
+      "citations": [
+        {
+          "label": "trade.gov: FTA Tariff Tool",
+          "url": "https://www.trade.gov/fta-tariff-tool-home"
+        },
+        {
+          "label": "trade.gov: U.S. free trade agreements",
+          "url": "https://www.trade.gov/free-trade-agreements"
+        },
+        {
+          "label": "19 CFR Part 182 (USMCA; 182.21 for exporters)",
+          "url": "https://www.ecfr.gov/current/title-19/part-182"
+        },
+        {
+          "label": "USMCA Chapter 5: origin procedures",
+          "url": "https://ustr.gov/sites/default/files/files/agreements/FTA/USMCA/Text/05_Origin_Procedures.pdf"
+        }
+      ]
+    },
+    {
+      "id": "drawback",
+      "title": "Get U.S. duty back on imported inputs (drawback)",
+      "saves": "99% of the U.S. import duties, taxes and fees paid on goods or materials that are exported, or used to make the goods you export.",
+      "appliesTo": "Imported goods exported unused, and imported materials used to make an exported product (or, under the substitution rules, goods of the same kind).",
+      "document": "An electronic drawback claim in ACE, filed within 5 years of the import date, with the import and export records that tie the two together.",
+      "caveat": "Antidumping and countervailing duties are not refunded, and CBP takes no paper claims. The refund is on U.S. duties only; it does not lower the buyer's tariff.",
+      "citations": [
+        {
+          "label": "19 CFR Part 190",
+          "url": "https://www.ecfr.gov/current/title-19/part-190"
+        },
+        {
+          "label": "CBP: drawback overview",
+          "url": "https://www.cbp.gov/trade/programs-administration/entry-summary/drawback-overview"
+        },
+        {
+          "label": "19 U.S.C. 1313",
+          "url": "https://www.govinfo.gov/content/pkg/USCODE-2024-title19/html/USCODE-2024-title19-chap4-subtitleII-partI-sec1313.htm"
+        }
+      ]
+    }
+  ],
+  "disclaimer": "This page summarizes U.S. export rules to help you find the right regulation; it is not legal advice. Rules change and depend on the exact product, buyer and destination — check the cited regulation and the agency before you ship."
+}

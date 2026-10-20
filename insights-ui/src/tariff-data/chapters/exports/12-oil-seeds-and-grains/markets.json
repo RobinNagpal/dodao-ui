@@ -863,6 +863,111 @@
       }
     },
     {
+      "countryCode": 490,
+      "name": "Taiwan",
+      "rule": "Taiwan's customs tariff (no U.S. free-trade agreement); bulk soybeans reportedly enter duty-free (unconfirmed)",
+      "usTradeAgreement": null,
+      "exportsUsd": 747756862,
+      "priorExportsUsd": 665924522,
+      "sharePct": 3.5,
+      "changePct": 12.3,
+      "status": "unchanged",
+      "profile": {
+        "headline": "Taiwan, which UN Comtrade reports as \"Other Asia, nes\", bought $0.75B in 2025 (up 12.3%), almost all soybeans (1201) for crushing and food use. It has no U.S. free-trade agreement; bulk soybeans are reported to enter duty-free and Taiwan waives its 5% business tax on them, but the tariff rate is not confirmed against its current schedule.",
+        "mainProducts": "Soybeans (1201) · Hay, alfalfa & forage (1214)",
+        "tariffNow": "Reportedly free (unconfirmed against Taiwan's current tariff schedule)",
+        "regulator": {
+          "name": "Taiwan Food and Drug Administration (TFDA) and BAPHIQ",
+          "url": "https://www.fda.gov.tw/ENG/",
+          "requirement": "A phytosanitary certificate and a BAPHIQ quarantine inspection for each shipment; TFDA approval for genetically modified varieties."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Taiwan import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/taiwan-import-requirements-and-documentation"
+        }
+      },
+      "cells": {
+        "1201": {
+          "exportsUsd": 683429106,
+          "rate": "Reportedly free (unconfirmed against Taiwan's current tariff schedule)",
+          "normalRate": null,
+          "basis": "Not confirmed against Taiwan's current customs tariff (Customs Administration, Ministry of Finance); USDA FAS reporting describes bulk soybean imports as duty-free and Taiwan waives its 5% business tax on imported soybeans"
+        },
+        "1202": {
+          "exportsUsd": 0,
+          "rate": "Not individually verified (Taiwan's customs tariff)",
+          "normalRate": null,
+          "basis": "Taiwan's customs tariff (Customs Administration, Ministry of Finance), not checked for this heading"
+        },
+        "1204": {
+          "exportsUsd": 0,
+          "rate": "Not individually verified (Taiwan's customs tariff)",
+          "normalRate": null,
+          "basis": "Taiwan's customs tariff (Customs Administration, Ministry of Finance), not checked for this heading"
+        },
+        "1205": {
+          "exportsUsd": 0,
+          "rate": "Not individually verified (Taiwan's customs tariff)",
+          "normalRate": null,
+          "basis": "Taiwan's customs tariff (Customs Administration, Ministry of Finance), not checked for this heading"
+        },
+        "1206": {
+          "exportsUsd": 0,
+          "rate": "Not individually verified (Taiwan's customs tariff)",
+          "normalRate": null,
+          "basis": "Taiwan's customs tariff (Customs Administration, Ministry of Finance), not checked for this heading"
+        },
+        "1207": {
+          "exportsUsd": 56396,
+          "rate": "Not individually verified (Taiwan's customs tariff)",
+          "normalRate": null,
+          "basis": "Taiwan's customs tariff (Customs Administration, Ministry of Finance), not checked for this heading"
+        },
+        "1208": {
+          "exportsUsd": 123417,
+          "rate": "Not individually verified (Taiwan's customs tariff)",
+          "normalRate": null,
+          "basis": "Taiwan's customs tariff (Customs Administration, Ministry of Finance), not checked for this heading"
+        },
+        "1209": {
+          "exportsUsd": 3367025,
+          "rate": "Not individually verified (Taiwan's customs tariff)",
+          "normalRate": null,
+          "basis": "Taiwan's customs tariff (Customs Administration, Ministry of Finance), not checked for this heading"
+        },
+        "1210": {
+          "exportsUsd": 67021,
+          "rate": "Not individually verified (Taiwan's customs tariff)",
+          "normalRate": null,
+          "basis": "Taiwan's customs tariff (Customs Administration, Ministry of Finance), not checked for this heading"
+        },
+        "1211": {
+          "exportsUsd": 1541895,
+          "rate": "Not individually verified (Taiwan's customs tariff)",
+          "normalRate": null,
+          "basis": "Taiwan's customs tariff (Customs Administration, Ministry of Finance), not checked for this heading"
+        },
+        "1212": {
+          "exportsUsd": 875941,
+          "rate": "Not individually verified (Taiwan's customs tariff)",
+          "normalRate": null,
+          "basis": "Taiwan's customs tariff (Customs Administration, Ministry of Finance), not checked for this heading"
+        },
+        "1213": {
+          "exportsUsd": 22490,
+          "rate": "Not individually verified (Taiwan's customs tariff)",
+          "normalRate": null,
+          "basis": "Taiwan's customs tariff (Customs Administration, Ministry of Finance), not checked for this heading"
+        },
+        "1214": {
+          "exportsUsd": 58273571,
+          "rate": "Not individually verified (Taiwan's customs tariff)",
+          "normalRate": null,
+          "basis": "Taiwan's customs tariff (Customs Administration, Ministry of Finance), not checked for this heading"
+        }
+      }
+    },
+    {
       "countryCode": 586,
       "name": "Pakistan",
       "rule": "Reportedly near-zero import duty for crushing-grade soybeans (unconfirmed)",
@@ -1012,10 +1117,10 @@
       "rate": "Reportedly near 0% (unconfirmed against Pakistan's current tariff schedule)"
     },
     {
-      "market": "Japan",
-      "heading": "1214",
-      "exportsUsd": 374754648,
-      "rate": "Free–low (avg across this chapter's other headings; most raw oilseeds and seeds for sowing enter duty-free)"
+      "market": "Taiwan",
+      "heading": "1201",
+      "exportsUsd": 683429106,
+      "rate": "Reportedly free (unconfirmed against Taiwan's current tariff schedule)"
     }
   ],
   "assumptions": [
@@ -1036,5 +1141,5 @@
       "url": "https://comtradeplus.un.org/"
     }
   ],
-  "coverageNote": "The 8 markets shown take 71% of 2025 U.S. Chapter 12 exports. A customs union (the EU) is one market: its members share one tariff."
+  "coverageNote": "The 9 markets shown take 75% of 2025 U.S. Chapter 12 exports. A customs union (the EU) is one market: its members share one tariff."
 }

@@ -1,0 +1,424 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 2,
+    "padded": "02",
+    "slug": "2-meat-and-offal",
+    "title": "Meat and Edible Meat Offal"
+  },
+  "page": {
+    "slug": "exports",
+    "path": "/industry-tariff-report/exports/chapters/2-meat-and-offal",
+    "h1": "HTS Chapter 02: Meat and Edible Meat Offal — U.S. Exports & Foreign Tariffs",
+    "seo": {
+      "title": "Chapter 02 U.S. Meat Exports: Who Buys & Foreign Tariffs",
+      "shortDescription": "How much beef, pork and poultry the U.S. exports, who buys it, and what each top buyer charges, from 2020–2025 UN Comtrade data.",
+      "keywords": ["us meat exports", "us pork exports", "us beef exports", "us poultry exports", "hts chapter 02 exports", "meat export tariffs"]
+    },
+    "lastCheckedAt": "2026-10-20"
+  },
+  "intro": "The U.S. exported **$21.31 billion** of Chapter 02 goods in 2025, down **6.0%** from 2024. **Pork (heading 0203) is 30%** of that, **poultry (0207) 22%** and **beef (0201 and 0202 together) 38%**. Mexico, South Korea and Japan buy **51%** of the chapter. The drop is mostly China, whose purchases fell **52.5%** to $1.34 billion.\n\nTariffs matter in two places. China charges its normal rate on meat plus an extra 10% on every U.S. good. Japan still charges about 21% on U.S. beef even under the trade agreement, falling to 9% by 2033. Almost everywhere else, U.S. meat is free or phasing to free under a U.S. trade agreement (Mexico, Canada, South Korea, Colombia, the Dominican Republic) or under a free-port regime (Hong Kong). Taiwan, a mid-sized buyer, agreed in February 2026 to cut its tariffs on U.S. beef and pork, but the cuts are not yet confirmed in force. What usually decides access is health approval, such as plant eligibility and certificates, not a tariff.",
+  "latestYear": 2025,
+  "priorYear": 2024,
+  "valueBasis": "FOB value of U.S. exports, as reported by the United States to UN Comtrade.",
+  "stats": [
+    {
+      "label": "2025 U.S. exports",
+      "value": "$21.31B"
+    },
+    {
+      "label": "Change vs 2024",
+      "value": "-6%"
+    },
+    {
+      "label": "Largest product group (0203)",
+      "value": "30%",
+      "note": "Meat of swine, fresh, chilled, or frozen"
+    },
+    {
+      "label": "Two largest buyers",
+      "value": "38%",
+      "note": "Mexico, Rep. of Korea"
+    },
+    {
+      "label": "Top markets with no tariff on most goods",
+      "value": "4 of 9",
+      "note": "Mexico, Canada, South Korea, Hong Kong"
+    }
+  ],
+  "keyTakeaways": [
+    "Pork, poultry and beef are about 90% of this chapter: pork (0203) 30%, poultry (0207) 22% and beef (0201 and 0202) 38%.",
+    "Most large buyers charge little or nothing: Mexico, Canada, South Korea and Hong Kong are essentially duty-free, and Colombia and the Dominican Republic are free within quotas. Japan is the exception on beef, at about 21%.",
+    "China is the one top buyer that raised tariffs. It lifted its 10–15% tariffs on U.S. pork, beef and chicken on November 10, 2025, but its extra 10% on all U.S. goods stays, and purchases fell 52.5% in 2025.",
+    "The U.S. side is routine: a Schedule B number, an USDA FSIS export certificate from an eligible plant, buyer screening and an AES filing. No export licence applies in the ordinary case."
+  ],
+  "byYear": [
+    {
+      "year": 2020,
+      "totalUsd": 18165205474,
+      "partnerAUsd": 2725314471,
+      "partnerBUsd": 2165581579,
+      "restUsd": 13274309424
+    },
+    {
+      "year": 2021,
+      "totalUsd": 22205464794,
+      "partnerAUsd": 3707921826,
+      "partnerBUsd": 2923093896,
+      "restUsd": 15574449072
+    },
+    {
+      "year": 2022,
+      "totalUsd": 23344301559,
+      "partnerAUsd": 3877981148,
+      "partnerBUsd": 3288004079,
+      "restUsd": 16178316332
+    },
+    {
+      "year": 2023,
+      "totalUsd": 21807420973,
+      "partnerAUsd": 4341979388,
+      "partnerBUsd": 2731189468,
+      "restUsd": 14734252117
+    },
+    {
+      "year": 2024,
+      "totalUsd": 22660477494,
+      "partnerAUsd": 4915011238,
+      "partnerBUsd": 2928130631,
+      "restUsd": 14817335625
+    },
+    {
+      "year": 2025,
+      "totalUsd": 21308165939,
+      "partnerAUsd": 5174225468,
+      "partnerBUsd": 2896993640,
+      "restUsd": 13236946831
+    }
+  ],
+  "byYearPartners": ["Mexico", "Rep. of Korea"],
+  "byYearCaption": "U.S. exports of Chapter 02 goods each year, split into the two largest 2025 buyers (Mexico and Rep. of Korea) and everyone else.",
+  "yearToDate": null,
+  "topMarkets": [
+    {
+      "countryCode": 484,
+      "country": "Mexico",
+      "exportsUsd": 5174225468,
+      "priorExportsUsd": 4915011238,
+      "sharePct": 24.3,
+      "changePct": 5.3,
+      "tariffNow": "Free (USMCA)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 410,
+      "country": "Rep. of Korea",
+      "exportsUsd": 2896993640,
+      "priorExportsUsd": 2928130631,
+      "sharePct": 13.6,
+      "changePct": -1.1,
+      "tariffNow": "Free on beef since Jan. 2026; pork mostly free (KORUS)",
+      "status": "lowered"
+    },
+    {
+      "countryCode": 392,
+      "country": "Japan",
+      "exportsUsd": 2877033615,
+      "priorExportsUsd": 3128753358,
+      "sharePct": 13.5,
+      "changePct": -8,
+      "tariffNow": "Beef about 21% (falling to 9% by 2033); pork low-duty",
+      "status": "lowered"
+    },
+    {
+      "countryCode": 124,
+      "country": "Canada",
+      "exportsUsd": 1613083997,
+      "priorExportsUsd": 1683729705,
+      "sharePct": 7.6,
+      "changePct": -4.2,
+      "tariffNow": "Free (CUSMA); poultry quota-limited",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 156,
+      "country": "China",
+      "exportsUsd": 1342291748,
+      "priorExportsUsd": 2825556874,
+      "sharePct": 6.3,
+      "changePct": -52.5,
+      "tariffNow": "Normal rate + 10% on all U.S. goods",
+      "status": "raised"
+    },
+    {
+      "countryCode": 490,
+      "country": "Taiwan",
+      "exportsUsd": 1032698470,
+      "priorExportsUsd": 994710907,
+      "sharePct": 4.8,
+      "changePct": 3.8,
+      "tariffNow": "Cuts agreed Feb. 2026 (not yet confirmed in force)",
+      "status": "pending"
+    },
+    {
+      "countryCode": 344,
+      "country": "China, Hong Kong SAR",
+      "exportsUsd": 546384096,
+      "priorExportsUsd": 532885702,
+      "sharePct": 2.6,
+      "changePct": 2.5,
+      "tariffNow": "Free (no tariff)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 214,
+      "country": "Dominican Republic",
+      "exportsUsd": 537875044,
+      "priorExportsUsd": 513463528,
+      "sharePct": 2.5,
+      "changePct": 4.8,
+      "tariffNow": "Free in quota (CAFTA-DR phase-out)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 170,
+      "country": "Colombia",
+      "exportsUsd": 481775008,
+      "priorExportsUsd": 445139013,
+      "sharePct": 2.3,
+      "changePct": 8.2,
+      "tariffNow": "Free in quota (U.S.–Colombia TPA)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 608,
+      "country": "Philippines",
+      "exportsUsd": 465688350,
+      "priorExportsUsd": 417324716,
+      "sharePct": 2.2,
+      "changePct": 11.6,
+      "tariffNow": "Normal tariff (no U.S. trade agreement)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 320,
+      "country": "Guatemala",
+      "exportsUsd": 420305886,
+      "priorExportsUsd": 364041159,
+      "sharePct": 2,
+      "changePct": 15.5,
+      "tariffNow": "Free in quota (CAFTA-DR phase-out)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 192,
+      "country": "Cuba",
+      "exportsUsd": 339880378,
+      "priorExportsUsd": 331514658,
+      "sharePct": 1.6,
+      "changePct": 2.5,
+      "tariffNow": "Special U.S. sanctions rules apply; see Export rules",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 36,
+      "country": "Australia",
+      "exportsUsd": 251858127,
+      "priorExportsUsd": 298623057,
+      "sharePct": 1.2,
+      "changePct": -15.7,
+      "tariffNow": "Free (U.S.–Australia FTA)",
+      "status": "unchanged"
+    }
+  ],
+  "othersExportsUsd": 3328072112,
+  "othersPriorExportsUsd": 3281592948,
+  "byHeading": [
+    {
+      "heading": "0201",
+      "label": "Meat of bovine animals, fresh or chilled",
+      "exportsUsd": 4039607565,
+      "priorExportsUsd": 4450466762,
+      "changePct": -9.2,
+      "sharePct": 19
+    },
+    {
+      "heading": "0202",
+      "label": "Meat of bovine animals, frozen",
+      "exportsUsd": 3987882254,
+      "priorExportsUsd": 4674128059,
+      "changePct": -14.7,
+      "sharePct": 18.7
+    },
+    {
+      "heading": "0203",
+      "label": "Meat of swine, fresh, chilled, or frozen",
+      "exportsUsd": 6375053605,
+      "priorExportsUsd": 6545779408,
+      "changePct": -2.6,
+      "sharePct": 29.9
+    },
+    {
+      "heading": "0204",
+      "label": "Meat of sheep or goats, fresh, chilled or frozen",
+      "exportsUsd": 19916190,
+      "priorExportsUsd": 15479281,
+      "changePct": 28.7,
+      "sharePct": 0.1
+    },
+    {
+      "heading": "0205",
+      "label": "Meat of horses, asses, mules or hinnies, fresh, chilled or…",
+      "exportsUsd": 87636,
+      "priorExportsUsd": 24459,
+      "changePct": 258.3,
+      "sharePct": 0
+    },
+    {
+      "heading": "0206",
+      "label": "Edible offal of bovine animals, swine, sheep, goats…",
+      "exportsUsd": 1794222551,
+      "priorExportsUsd": 1857411543,
+      "changePct": -3.4,
+      "sharePct": 8.4
+    },
+    {
+      "heading": "0207",
+      "label": "Meat and edible offal, of the poultry of heading 0105…",
+      "exportsUsd": 4747801772,
+      "priorExportsUsd": 4766297796,
+      "changePct": -0.4,
+      "sharePct": 22.3
+    },
+    {
+      "heading": "0208",
+      "label": "Other meat and edible meat offal, fresh, chilled or frozen",
+      "exportsUsd": 17831691,
+      "priorExportsUsd": 22101832,
+      "changePct": -19.3,
+      "sharePct": 0.1
+    },
+    {
+      "heading": "0209",
+      "label": "Pig fat, free of lean meat, and poultry fat, not rendered…",
+      "exportsUsd": 41490612,
+      "priorExportsUsd": 29602145,
+      "changePct": 40.2,
+      "sharePct": 0.2
+    },
+    {
+      "heading": "0210",
+      "label": "Meat and edible meat offal, salted, in brine, dried or…",
+      "exportsUsd": 284272063,
+      "priorExportsUsd": 299186209,
+      "changePct": -5,
+      "sharePct": 1.3
+    }
+  ],
+  "byLine": [
+    {
+      "hs6": "0201.30",
+      "heading": "0201",
+      "description": "Meat; of bovine animals, boneless cuts, fresh or chilled",
+      "exportsUsd": 3777860998,
+      "priorExportsUsd": 4137818814,
+      "changePct": -8.7,
+      "sharePct": 17.7
+    },
+    {
+      "hs6": "0207.14",
+      "heading": "0207",
+      "description": "Meat and edible offal; of fowls of the species Gallus domesticus, cuts and offal, frozen",
+      "exportsUsd": 3194936943,
+      "priorExportsUsd": 3266937708,
+      "changePct": -2.2,
+      "sharePct": 15
+    },
+    {
+      "hs6": "0203.29",
+      "heading": "0203",
+      "description": "Meat; of swine, n.e.c. in item no. 0203.2, frozen",
+      "exportsUsd": 2938917267,
+      "priorExportsUsd": 3130488861,
+      "changePct": -6.1,
+      "sharePct": 13.8
+    },
+    {
+      "hs6": "0202.30",
+      "heading": "0202",
+      "description": "Meat; of bovine animals, boneless cuts, frozen",
+      "exportsUsd": 2882755962,
+      "priorExportsUsd": 3699794976,
+      "changePct": -22.1,
+      "sharePct": 13.5
+    },
+    {
+      "hs6": "0203.12",
+      "heading": "0203",
+      "description": "Meat; of swine, hams, shoulders and cuts thereof, with bone in, fresh or chilled",
+      "exportsUsd": 1871590548,
+      "priorExportsUsd": 1670536860,
+      "changePct": 12,
+      "sharePct": 8.8
+    },
+    {
+      "hs6": "0203.19",
+      "heading": "0203",
+      "description": "Meat; of swine, n.e.c. in item no. 0203.1, fresh or chilled",
+      "exportsUsd": 1348697890,
+      "priorExportsUsd": 1525936321,
+      "changePct": -11.6,
+      "sharePct": 6.3
+    },
+    {
+      "hs6": "0202.20",
+      "heading": "0202",
+      "description": "Meat; of bovine animals, cuts with bone in (excluding carcasses and half-carcasses), frozen",
+      "exportsUsd": 1100074702,
+      "priorExportsUsd": 968994305,
+      "changePct": 13.5,
+      "sharePct": 5.2
+    },
+    {
+      "hs6": "0207.13",
+      "heading": "0207",
+      "description": "Meat and edible offal; of fowls of the species Gallus domesticus, cuts and offal, fresh or chilled",
+      "exportsUsd": 987504417,
+      "priorExportsUsd": 1014993613,
+      "changePct": -2.7,
+      "sharePct": 4.6
+    },
+    {
+      "hs6": "0206.49",
+      "heading": "0206",
+      "description": "Offal, edible; of swine, (other than livers), frozen",
+      "exportsUsd": 714217666,
+      "priorExportsUsd": 815023657,
+      "changePct": -12.4,
+      "sharePct": 3.4
+    },
+    {
+      "hs6": "0206.29",
+      "heading": "0206",
+      "description": "Offal, edible; of bovine animals, (other than tongues and livers), frozen",
+      "exportsUsd": 406305435,
+      "priorExportsUsd": 391313674,
+      "changePct": 3.8,
+      "sharePct": 1.9
+    }
+  ],
+  "sources": [
+    {
+      "id": "comtrade-exports",
+      "publisher": "UN Comtrade",
+      "citation": "UN Comtrade, U.S. exports 2020–2025",
+      "document": "UN Comtrade public API (preview), United States exports, annual, HS",
+      "title": "United States exports, HS chapter 02, by partner, heading and subheading",
+      "signed": null,
+      "published": "2026-10-20",
+      "url": "https://comtradeplus.un.org/"
+    }
+  ],
+  "coverageNote": "The 13 buyers listed take 84% of 2025 U.S. Chapter 02 exports. FOB value of U.S. exports, as reported by the United States to UN Comtrade. They can differ from what the destination country reports as imports. UN Comtrade reports Taiwan as \"Other Asia, nes\"."
+}

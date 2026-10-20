@@ -1,0 +1,100 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 10,
+    "padded": "10",
+    "slug": "10-cereals",
+    "title": "Cereals"
+  },
+  "page": {
+    "slug": "exports/faq",
+    "path": "/industry-tariff-report/exports/chapters/10-cereals/faq",
+    "h1": "HTS Chapter 10: Cereals — U.S. Export FAQ",
+    "seo": {
+      "title": "Chapter 10 Export FAQ: Grain Tariffs, FGIS & Schedule B",
+      "shortDescription": "Common questions on exporting U.S. corn, wheat, rice and sorghum, answered from the export tariff report.",
+      "keywords": ["us corn export faq", "china tariff us corn", "us wheat exports", "fgis inspection grain export", "schedule b corn"]
+    },
+    "lastCheckedAt": "2026-10-20"
+  },
+  "intro": "Common questions about exporting U.S. corn, wheat, rice and sorghum, answered from the rest of this export report.",
+  "keyTakeaways": [
+    "Mexico, Canada, South Korea and Colombia take U.S. grain duty-free, and Japan admits feed corn and sorghum free; wheat and rice there move through quotas.",
+    "China's purchases fell 95% in 2025 and it lifted its 15% tariffs on U.S. corn and wheat on November 10, 2025; only its extra 10% on all U.S. goods remains.",
+    "To ship grain you need a Schedule B number, official FGIS inspection and weighing and an AES filing; no export licence applies in the ordinary case."
+  ],
+  "questionSource": "Google search suggestions for queries such as \"us corn exports\", \"us corn exports to china\", \"china tariff on us corn\", \"us wheat exports\" and \"us rice exports\" (October 2026).",
+  "faqs": [
+    {
+      "id": "how-much-grain",
+      "question": "How much corn and wheat does the U.S. export?",
+      "answer": "The U.S. exported $27.81 billion of Chapter 10 goods in 2025, up 14.1% from 2024. Corn (heading 1005) is 68% and wheat (1001) 23%; rice is 6.8% and grain sorghum 1.9%.",
+      "link": "exports",
+      "searchedAs": ["us corn exports", "us wheat exports", "us corn exports by country"]
+    },
+    {
+      "id": "top-buyers",
+      "question": "Who buys the most U.S. corn?",
+      "answer": "Mexico takes 27.2% of Chapter 10 exports and Japan 15.7%, so the two buy 43%. South Korea takes 9.2% (up 83.5%), Colombia 7.2% and Taiwan 4.0%.",
+      "link": "exports",
+      "searchedAs": ["us corn exports by country", "us corn exports to mexico", "does the us export corn"]
+    },
+    {
+      "id": "china-corn",
+      "question": "Does China tariff U.S. corn?",
+      "answer": "Yes, but less than in 2025. China charges its normal rate (1% inside its quota and 65% above it) plus an extra 10% on every U.S. good. Its separate 15% tariff on U.S. wheat and corn was lifted on November 10, 2025. China bought only $109 million of this chapter in 2025, down 95%.",
+      "link": "exports/tariff-updates",
+      "searchedAs": ["china tariff on us corn", "us corn exports to china", "us corn exports collapse"]
+    },
+    {
+      "id": "china-lifted",
+      "question": "Did China remove its extra tariffs on U.S. wheat, corn and sorghum?",
+      "answer": "Partly. The 15% on wheat and corn and the 10% on sorghum, imposed in March 2025, were lifted on November 10, 2025. The extra 10% on all U.S. goods stays and was extended to January 10, 2027.",
+      "link": "exports/tariff-updates",
+      "searchedAs": ["china tariff on us corn", "us grain exports to china"]
+    },
+    {
+      "id": "eu-countermeasures",
+      "question": "Does the EU tariff U.S. corn and rice?",
+      "answer": "Not at present. The EU listed extra duties of 10% and 25% on U.S. maize and rice in 2025, but suspended them with no end date. Its normal duty on maize and sorghum follows a world-price formula and is often zero.",
+      "link": "exports/tariff-updates",
+      "searchedAs": ["us wheat exports to europe"]
+    },
+    {
+      "id": "japan-grain",
+      "question": "What does Japan charge on U.S. wheat, corn and rice?",
+      "answer": "Feed corn and sorghum enter free. Wheat enters free inside a state-run quota but pays a government mark-up, and rice is quota-limited with 341 yen/kg above the minimum-access quota.",
+      "link": "exports/markets",
+      "searchedAs": ["us rice exports to japan", "us wheat exports by country"]
+    },
+    {
+      "id": "mexico-corn",
+      "question": "Is U.S. corn duty-free in Mexico?",
+      "answer": "Yes. Originating U.S. corn enters Mexico duty-free under USMCA, and Mexico is the largest buyer at 27.2% of this chapter. Biotech approvals, not tariffs, are what have tested the market.",
+      "link": "exports/markets",
+      "searchedAs": ["us corn exports to mexico", "how much corn does mexico import from us"]
+    },
+    {
+      "id": "schedule-b-corn",
+      "question": "What is the Schedule B code for corn and wheat?",
+      "answer": "Look up the 10-digit number in the Census Schedule B search tool. Corn other than seed is in 1005.90, wheat other than durum and seed in 1001.99, milled rice in 1006.30 and sorghum in 1007.90. The first six digits match the HS code every country uses.",
+      "link": "exports/rules",
+      "searchedAs": ["us corn exports"]
+    },
+    {
+      "id": "fgis-required",
+      "question": "Does grain need an inspection or certificate to be exported?",
+      "answer": "Yes. Export shipments of grain are officially inspected and weighed by USDA's Federal Grain Inspection Service. Many buyers also want a phytosanitary certificate, especially for rice and seed. No Commerce export licence applies in the ordinary case.",
+      "link": "exports/rules",
+      "searchedAs": ["us corn exports"]
+    },
+    {
+      "id": "exclusions-end",
+      "question": "When do China's tariff exclusions for U.S. goods end?",
+      "answer": "December 31, 2026, with no extension announced. For Chapter 10 they matter mainly for sorghum. China's separate 24-point suspension is extended to January 10, 2027.",
+      "link": "exports/tariff-updates",
+      "searchedAs": ["china tariff on us corn"]
+    }
+  ]
+}

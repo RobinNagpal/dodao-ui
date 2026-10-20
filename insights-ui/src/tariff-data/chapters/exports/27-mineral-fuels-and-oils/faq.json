@@ -1,0 +1,100 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 27,
+    "padded": "27",
+    "slug": "27-mineral-fuels-and-oils",
+    "title": "Mineral Fuels, Mineral Oils and Products of Their Distillation; Bituminous Substances; Mineral Waxes"
+  },
+  "page": {
+    "slug": "exports/faq",
+    "path": "/industry-tariff-report/exports/chapters/27-mineral-fuels-and-oils/faq",
+    "h1": "HTS Chapter 27: Mineral Fuels, Mineral Oils and Products of Their Distillation; Bituminous Substances; Mineral Waxes — U.S. Export FAQ",
+    "seo": {
+      "title": "Chapter 27 Export FAQ: Energy Tariffs, LNG Licences & Schedule B",
+      "shortDescription": "Common questions on exporting U.S. crude oil, refined fuels, LNG and coal, answered from the export tariff report.",
+      "keywords": ["us lng exports faq", "china tariff us lng", "us crude oil export ban", "lng export license", "us coal exports to china"]
+    },
+    "lastCheckedAt": "2026-10-20"
+  },
+  "intro": "Common questions about exporting U.S. crude oil, refined fuels, LNG and coal, answered from the rest of this export report.",
+  "keyTakeaways": [
+    "China taxes U.S. energy heavily, about 25% on LNG, 20% on crude and 28–31% on coal; the EU, Mexico and Canada charge nothing on crude oil.",
+    "Crude oil needs no Commerce licence for most destinations, but LNG needs Department of Energy authorization.",
+    "To ship energy you need a Schedule B number, a sanctions check and an AES filing; Cuba, Iran and other embargoed destinations are closed."
+  ],
+  "questionSource": "Google search suggestions for queries such as \"us crude oil exports\", \"us lng exports\", \"us lng exports to china\", \"china tariff on us lng\", \"us crude oil export ban\" and \"lng export license\" (October 2026).",
+  "faqs": [
+    {
+      "id": "how-much-energy",
+      "question": "How much crude oil, LNG and coal does the U.S. export?",
+      "answer": "The U.S. exported $308.91 billion of Chapter 27 goods in 2025, down 3.5% from 2024. Refined fuels (2710) are 36%, crude oil (2709) 32.5%, natural gas and LNG (2711) 26.5% and coal (2701) 3.2%.",
+      "link": "exports",
+      "searchedAs": ["us crude oil exports", "how much crude oil does the us export", "how much lng does the us export", "us lng exports by year"]
+    },
+    {
+      "id": "top-buyers",
+      "question": "Who buys the most U.S. energy?",
+      "answer": "The EU takes 26.3% of Chapter 27 exports, Mexico 12.1% and Canada 8.7%, followed by South Korea (5.6%) and India (4.6%). The Netherlands is the biggest single EU buyer as a trading hub.",
+      "link": "exports",
+      "searchedAs": ["us lng exports by country", "us crude oil exports by country", "us lng exports to europe"]
+    },
+    {
+      "id": "china-lng",
+      "question": "Does China tariff U.S. LNG?",
+      "answer": "Yes. China adds 15% to U.S. LNG (February 2025) on top of its normal rate and its extra 10% on every U.S. good, so a cargo pays about 25%. Its purchases of this chapter fell 65% in 2025.",
+      "link": "exports/tariff-updates",
+      "searchedAs": ["china tariff on us lng", "us lng exports to china", "does us export lng to china"]
+    },
+    {
+      "id": "china-crude-coal",
+      "question": "Does China tariff U.S. crude oil and coal?",
+      "answer": "Yes. China adds 10% to U.S. crude oil and 15% to U.S. coal on top of its normal rate and its extra 10% on all U.S. goods, so crude pays about 20% and coal about 28–31%.",
+      "link": "exports/tariff-updates",
+      "searchedAs": ["us coal exports to china", "china tariff on us lng"]
+    },
+    {
+      "id": "deal-energy",
+      "question": "Did the November 2025 U.S.–China deal remove China's energy tariffs?",
+      "answer": "No. It lifted China's March 2025 farm-goods tariffs, but the February 2025 tariffs on U.S. coal, LNG and crude oil remain, and the announcement says they cannot be waived.",
+      "link": "exports/tariff-updates",
+      "searchedAs": ["chinese tariffs on us lng"]
+    },
+    {
+      "id": "eu-mexico-canada",
+      "question": "What tariff do the EU, Mexico and Canada charge on U.S. energy?",
+      "answer": "The EU charges nothing on crude oil, LNG and coal and about 3.5–4.7% on most refined fuels. Mexico and Canada charge nothing under USMCA.",
+      "link": "exports/markets",
+      "searchedAs": ["us lng exports to europe", "us crude oil exports"]
+    },
+    {
+      "id": "crude-licence",
+      "question": "Do I need a licence to export crude oil from the U.S.?",
+      "answer": "Not for most destinations. Congress lifted the export ban in December 2015 and BIS removed the crude-oil licence requirement in May 2016, so crude is EAR99. Embargoed or sanctioned destinations still need authorization.",
+      "link": "exports/rules",
+      "searchedAs": ["us crude oil export ban", "us crude oil export ban lifted", "does us export crude oil"]
+    },
+    {
+      "id": "lng-licence",
+      "question": "Do I need a licence to export LNG?",
+      "answer": "Yes. Natural gas exports need Department of Energy authorization under the Natural Gas Act. It is automatic for free-trade-agreement countries and requires a public-interest review for the rest.",
+      "link": "exports/rules",
+      "searchedAs": ["lng export license", "lng export licenses", "lng export permit"]
+    },
+    {
+      "id": "schedule-b-energy",
+      "question": "What is the Schedule B code for crude oil and LNG?",
+      "answer": "Crude oil is 2709.00 and LNG is 2711.11; propane is 2711.12 and bituminous coal 2701.12. Look up the 10-digit number in the Census Schedule B search tool.",
+      "link": "exports/rules",
+      "searchedAs": ["us crude oil exports"]
+    },
+    {
+      "id": "exclusions-end",
+      "question": "When do China's tariff exclusions for U.S. goods end?",
+      "answer": "December 31, 2026, with no extension announced. They do not reach China's February 2025 energy tariffs, which stay either way. China's separate 24-point suspension is extended to January 10, 2027.",
+      "link": "exports/tariff-updates",
+      "searchedAs": ["china tariff on us lng"]
+    }
+  ]
+}

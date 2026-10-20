@@ -1,0 +1,962 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 2,
+    "padded": "02",
+    "slug": "2-meat-and-offal",
+    "title": "Meat and Edible Meat Offal"
+  },
+  "page": {
+    "slug": "exports/markets",
+    "path": "/industry-tariff-report/exports/chapters/2-meat-and-offal/markets",
+    "h1": "HTS Chapter 02: Meat and Edible Meat Offal — Export Markets & Foreign Tariffs on U.S. Goods",
+    "seo": {
+      "title": "Chapter 02 Export Markets: Tariffs on U.S. Meat by Country",
+      "shortDescription": "The tariff each top buyer charges on U.S. beef, pork and poultry, with the trade agreement and food-safety regulator for each.",
+      "keywords": ["japan tariff us beef", "korea tariff us beef", "canada tariff us pork", "mexico usmca meat", "china tariff us meat"]
+    },
+    "lastCheckedAt": "2026-10-20"
+  },
+  "intro": "Tariffs are low for most of this chapter. Mexico, Canada, South Korea and Hong Kong charge essentially nothing, and Colombia and the Dominican Republic charge nothing within their quotas. Two buyers cost real money: Japan, where beef still pays about 21% under the U.S.–Japan agreement, and China, which adds 10% to its normal rate on every U.S. good. In every market, the approval that matters most is a food-safety one: the plant must be on the buyer's eligible list and the shipment must carry a USDA FSIS export certificate.",
+  "tradeYear": 2025,
+  "tariffYear": 2026,
+  "valueBasis": "FOB value of U.S. exports, as reported by the United States to UN Comtrade.",
+  "groups": [
+    {
+      "heading": "0201",
+      "label": "Meat of bovine animals, fresh or chilled",
+      "shortLabel": "Meat of bovine animals"
+    },
+    {
+      "heading": "0202",
+      "label": "Meat of bovine animals, frozen",
+      "shortLabel": "Meat of bovine animals"
+    },
+    {
+      "heading": "0203",
+      "label": "Meat of swine, fresh, chilled, or frozen",
+      "shortLabel": "Meat of swine"
+    },
+    {
+      "heading": "0204",
+      "label": "Meat of sheep or goats, fresh, chilled or frozen",
+      "shortLabel": "Meat of sheep or goats"
+    },
+    {
+      "heading": "0205",
+      "label": "Meat of horses, asses, mules or hinnies, fresh, chilled or…",
+      "shortLabel": "Meat of horses"
+    },
+    {
+      "heading": "0206",
+      "label": "Edible offal of bovine animals, swine, sheep, goats…",
+      "shortLabel": "Edible offal of bovine…"
+    },
+    {
+      "heading": "0207",
+      "label": "Meat and edible offal, of the poultry of heading 0105…",
+      "shortLabel": "Meat and edible offal"
+    },
+    {
+      "heading": "0208",
+      "label": "Other meat and edible meat offal, fresh, chilled or frozen",
+      "shortLabel": "Other meat and edible…"
+    },
+    {
+      "heading": "0209",
+      "label": "Pig fat, free of lean meat, and poultry fat, not rendered…",
+      "shortLabel": "Pig fat"
+    },
+    {
+      "heading": "0210",
+      "label": "Meat and edible meat offal, salted, in brine, dried or…",
+      "shortLabel": "Meat and edible meat…"
+    }
+  ],
+  "markets": [
+    {
+      "countryCode": 484,
+      "name": "Mexico",
+      "rule": "USMCA tariff elimination on originating U.S. goods (Mexico's schedule)",
+      "usTradeAgreement": "USMCA (T-MEC in Mexico)",
+      "exportsUsd": 5174225468,
+      "priorExportsUsd": 4915011238,
+      "sharePct": 24.3,
+      "changePct": 5.3,
+      "status": "unchanged",
+      "cells": {
+        "0201": {
+          "exportsUsd": 886129127,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Annex 2-B, Mexico's tariff schedule, 2026: originating U.S. meat and poultry enter duty-free. Mexico's normal tariff applies only to goods that do not qualify."
+        },
+        "0202": {
+          "exportsUsd": 103181686,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Annex 2-B, Mexico's tariff schedule, 2026: originating U.S. meat and poultry enter duty-free. Mexico's normal tariff applies only to goods that do not qualify."
+        },
+        "0203": {
+          "exportsUsd": 2419010996,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Annex 2-B, Mexico's tariff schedule, 2026: originating U.S. meat and poultry enter duty-free. Mexico's normal tariff applies only to goods that do not qualify."
+        },
+        "0204": {
+          "exportsUsd": 4320845,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Annex 2-B, Mexico's tariff schedule, 2026: originating U.S. meat and poultry enter duty-free. Mexico's normal tariff applies only to goods that do not qualify."
+        },
+        "0205": {
+          "exportsUsd": 87636,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Annex 2-B, Mexico's tariff schedule, 2026: originating U.S. meat and poultry enter duty-free. Mexico's normal tariff applies only to goods that do not qualify."
+        },
+        "0206": {
+          "exportsUsd": 460567810,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Annex 2-B, Mexico's tariff schedule, 2026: originating U.S. meat and poultry enter duty-free. Mexico's normal tariff applies only to goods that do not qualify."
+        },
+        "0207": {
+          "exportsUsd": 1192700877,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Annex 2-B, Mexico's tariff schedule, 2026: originating U.S. meat and poultry enter duty-free. Mexico's normal tariff applies only to goods that do not qualify."
+        },
+        "0208": {
+          "exportsUsd": 318683,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Annex 2-B, Mexico's tariff schedule, 2026: originating U.S. meat and poultry enter duty-free. Mexico's normal tariff applies only to goods that do not qualify."
+        },
+        "0209": {
+          "exportsUsd": 26492358,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Annex 2-B, Mexico's tariff schedule, 2026: originating U.S. meat and poultry enter duty-free. Mexico's normal tariff applies only to goods that do not qualify."
+        },
+        "0210": {
+          "exportsUsd": 81415450,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Annex 2-B, Mexico's tariff schedule, 2026: originating U.S. meat and poultry enter duty-free. Mexico's normal tariff applies only to goods that do not qualify."
+        }
+      },
+      "profile": {
+        "headline": "Mexico is the largest buyer, taking pork, poultry and beef duty-free, and it has put no counter-tariff on U.S. goods. Access here depends on sanitary paperwork, not on a tariff.",
+        "mainProducts": "Meat of swine, fresh, chilled, or frozen (0203) · Meat and edible offal, of the poultry of heading 0105… (0207)",
+        "tariffNow": "Free (USMCA)",
+        "regulator": {
+          "name": "SENASICA (National Agri-Food Health, Safety and Quality Service)",
+          "url": "https://www.gob.mx/senasica",
+          "requirement": "A zoosanitary import certificate from SENASICA for each shipment of meat or poultry, plus a USDA FSIS export certificate from an eligible plant."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Mexico import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/mexico-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 410,
+      "name": "South Korea",
+      "rule": "KORUS staged tariff elimination (Korea's schedule)",
+      "usTradeAgreement": "U.S.–Korea FTA (KORUS)",
+      "exportsUsd": 2896993640,
+      "priorExportsUsd": 2928130631,
+      "sharePct": 13.6,
+      "changePct": -1.1,
+      "status": "lowered",
+      "cells": {
+        "0201": {
+          "exportsUsd": 920148470,
+          "rate": "Free (KORUS)",
+          "normalRate": null,
+          "basis": "KORUS Annex 2-B, Korea's schedule: staged elimination. U.S. beef reached 0% on Jan. 1, 2026 (from 40% in 2012) and most pork reached 0% years earlier. Confirm the national line for the exact stage."
+        },
+        "0202": {
+          "exportsUsd": 1269126255,
+          "rate": "Free (KORUS)",
+          "normalRate": null,
+          "basis": "KORUS Annex 2-B, Korea's schedule: staged elimination. U.S. beef reached 0% on Jan. 1, 2026 (from 40% in 2012) and most pork reached 0% years earlier. Confirm the national line for the exact stage."
+        },
+        "0203": {
+          "exportsUsd": 636095386,
+          "rate": "Free (KORUS)",
+          "normalRate": null,
+          "basis": "KORUS Annex 2-B, Korea's schedule: staged elimination. U.S. beef reached 0% on Jan. 1, 2026 (from 40% in 2012) and most pork reached 0% years earlier. Confirm the national line for the exact stage."
+        },
+        "0204": {
+          "exportsUsd": 126897,
+          "rate": "Free (KORUS)",
+          "normalRate": null,
+          "basis": "KORUS Annex 2-B, Korea's schedule: staged elimination. U.S. beef reached 0% on Jan. 1, 2026 (from 40% in 2012) and most pork reached 0% years earlier. Confirm the national line for the exact stage."
+        },
+        "0205": {
+          "exportsUsd": 0,
+          "rate": "Free (KORUS)",
+          "normalRate": null,
+          "basis": "KORUS Annex 2-B, Korea's schedule: staged elimination. U.S. beef reached 0% on Jan. 1, 2026 (from 40% in 2012) and most pork reached 0% years earlier. Confirm the national line for the exact stage."
+        },
+        "0206": {
+          "exportsUsd": 50223627,
+          "rate": "Free (KORUS)",
+          "normalRate": null,
+          "basis": "KORUS Annex 2-B, Korea's schedule: staged elimination. U.S. beef reached 0% on Jan. 1, 2026 (from 40% in 2012) and most pork reached 0% years earlier. Confirm the national line for the exact stage."
+        },
+        "0207": {
+          "exportsUsd": 13924006,
+          "rate": "Free for most cuts; some still phasing out (KORUS)",
+          "normalRate": null,
+          "basis": "KORUS Annex 2-B, Korea's schedule: poultry cuts phase out over up to 18 years; frozen chicken leg quarters reach 0% in 2029. Check the national line for the 2026 rate."
+        },
+        "0208": {
+          "exportsUsd": 0,
+          "rate": "Free (KORUS)",
+          "normalRate": null,
+          "basis": "KORUS Annex 2-B, Korea's schedule: staged elimination. U.S. beef reached 0% on Jan. 1, 2026 (from 40% in 2012) and most pork reached 0% years earlier. Confirm the national line for the exact stage."
+        },
+        "0209": {
+          "exportsUsd": 38465,
+          "rate": "Free (KORUS)",
+          "normalRate": null,
+          "basis": "KORUS Annex 2-B, Korea's schedule: staged elimination. U.S. beef reached 0% on Jan. 1, 2026 (from 40% in 2012) and most pork reached 0% years earlier. Confirm the national line for the exact stage."
+        },
+        "0210": {
+          "exportsUsd": 7310534,
+          "rate": "Free (KORUS)",
+          "normalRate": null,
+          "basis": "KORUS Annex 2-B, Korea's schedule: staged elimination. U.S. beef reached 0% on Jan. 1, 2026 (from 40% in 2012) and most pork reached 0% years earlier. Confirm the national line for the exact stage."
+        }
+      },
+      "profile": {
+        "headline": "South Korea's tariff on U.S. beef fell to zero on January 1, 2026, the last step of the 2012 free-trade agreement. Pork is also mostly duty-free; beef still has to come from cattle under 30 months old.",
+        "mainProducts": "Meat of bovine animals, frozen (0202) · Meat of bovine animals, fresh or chilled (0201)",
+        "tariffNow": "Free on beef since Jan. 2026; pork mostly free (KORUS)",
+        "regulator": {
+          "name": "Animal and Plant Quarantine Agency (APQA)",
+          "url": "https://www.qia.go.kr/eng/",
+          "requirement": "Import quarantine inspection by APQA. The U.S. plant must be on FSIS's list of plants eligible for Korea, the shipment carries an FSIS export certificate, and beef must come from cattle under 30 months old."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: South Korea import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/south-korea-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 392,
+      "name": "Japan",
+      "rule": "U.S.–Japan Trade Agreement tariff schedule (same terms as the CPTPP for beef and pork)",
+      "usTradeAgreement": null,
+      "exportsUsd": 2877033615,
+      "priorExportsUsd": 3128753358,
+      "sharePct": 13.5,
+      "changePct": -8,
+      "status": "lowered",
+      "cells": {
+        "0201": {
+          "exportsUsd": 693256914,
+          "rate": "About 21% in 2026, falling to 9% by 2033 (U.S.–Japan agreement)",
+          "normalRate": "38.5% (normal rate)",
+          "basis": "U.S.–Japan Trade Agreement Annex I (in force Jan. 1, 2020): beef 38.5% normal rate, cut on the CPTPP schedule to 9% by 2033. USDA FAS reports 21.6% for 2025 (April 2025 to March 2026) and about a point less each year after. A safeguard can raise it to 38.5% for 30 days."
+        },
+        "0202": {
+          "exportsUsd": 613263807,
+          "rate": "About 21% in 2026, falling to 9% by 2033 (U.S.–Japan agreement)",
+          "normalRate": "38.5% (normal rate)",
+          "basis": "U.S.–Japan Trade Agreement Annex I (in force Jan. 1, 2020): beef 38.5% normal rate, cut on the CPTPP schedule to 9% by 2033. USDA FAS reports 21.6% for 2025 (April 2025 to March 2026) and about a point less each year after. A safeguard can raise it to 38.5% for 30 days."
+        },
+        "0203": {
+          "exportsUsd": 1081556638,
+          "rate": "Near zero on higher-priced cuts; lower-priced cuts pay a gate-price duty",
+          "normalRate": "4.3% or 482 yen/kg (normal rate)",
+          "basis": "U.S.–Japan Trade Agreement Annex I (CPTPP-equivalent pork schedule): the 4.3% rate on higher-priced cuts has fallen to about 0.2% and is free from 2027; lower-priced cuts pay a gate-price duty capped at 482 yen/kg and falling to 50 yen/kg by about 2027."
+        },
+        "0204": {
+          "exportsUsd": 532887,
+          "rate": "Not individually verified — see Japan's tariff schedule",
+          "normalRate": null,
+          "basis": "Japan Customs Tariff 2026 (Statistical Code for Import). A small group (under 2% of the chapter) with no verified agreement rate; check the national line."
+        },
+        "0205": {
+          "exportsUsd": 0,
+          "rate": "Not individually verified — see Japan's tariff schedule",
+          "normalRate": null,
+          "basis": "Japan Customs Tariff 2026 (Statistical Code for Import). A small group (under 2% of the chapter) with no verified agreement rate; check the national line."
+        },
+        "0206": {
+          "exportsUsd": 458730977,
+          "rate": "About 2–6% on beef tongue, organs and liver, falling to free by 2028–2033",
+          "normalRate": "12.8% (normal rate)",
+          "basis": "USDA FAS, USJTA Treatment for Beef and Beef Products (JA2023-0044), the 2025 column: tongue 1.9%, internal organs 2.6%, frozen liver 6.4%, from a 12.8% normal rate. Pork offal is not individually verified."
+        },
+        "0207": {
+          "exportsUsd": 15246161,
+          "rate": "About 8.5–11.9% (normal rate; agreement rate not verified)",
+          "normalRate": null,
+          "basis": "Japan Customs Tariff 2026 for chicken cuts (HS 0207.13 and 0207.14). The U.S.–Japan agreement's poultry terms were not individually verified; check the national line."
+        },
+        "0208": {
+          "exportsUsd": 2651662,
+          "rate": "Not individually verified — see Japan's tariff schedule",
+          "normalRate": null,
+          "basis": "Japan Customs Tariff 2026 (Statistical Code for Import). A small group (under 2% of the chapter) with no verified agreement rate; check the national line."
+        },
+        "0209": {
+          "exportsUsd": 1378492,
+          "rate": "Not individually verified — see Japan's tariff schedule",
+          "normalRate": null,
+          "basis": "Japan Customs Tariff 2026 (Statistical Code for Import). A small group (under 2% of the chapter) with no verified agreement rate; check the national line."
+        },
+        "0210": {
+          "exportsUsd": 10416077,
+          "rate": "Not individually verified — see Japan's tariff schedule",
+          "normalRate": null,
+          "basis": "Japan Customs Tariff 2026 (Statistical Code for Import). A small group (under 2% of the chapter) with no verified agreement rate; check the national line."
+        }
+      },
+      "profile": {
+        "headline": "Japan is the one big buyer still charging a real tariff on beef, about 21% this year, falling by about a point a year to 9% in 2033. A volume safeguard can lift it back to 38.5% for a month if U.S. shipments jump. Higher-priced pork cuts pay almost nothing.",
+        "mainProducts": "Meat of swine, fresh, chilled, or frozen (0203) · Meat of bovine animals, fresh or chilled (0201)",
+        "tariffNow": "Beef about 21% (falling to 9% by 2033); pork low-duty",
+        "regulator": {
+          "name": "Ministry of Health, Labour and Welfare (MHLW), quarantine stations",
+          "url": "https://www.mhlw.go.jp/english/",
+          "requirement": "The importer notifies a quarantine station under the Food Sanitation Act. U.S. beef and pork need a USDA FSIS export certificate from an eligible plant; the Ministry of Agriculture's Animal Quarantine Service handles animal-disease certification."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Japan import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/japan-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 124,
+      "name": "Canada",
+      "rule": "CUSMA (USMCA) tariff elimination; supply-managed poultry sold under tariff-rate quotas",
+      "usTradeAgreement": "USMCA (CUSMA in Canada)",
+      "exportsUsd": 1613083997,
+      "priorExportsUsd": 1683729705,
+      "sharePct": 7.6,
+      "changePct": -4.2,
+      "status": "unchanged",
+      "cells": {
+        "0201": {
+          "exportsUsd": 612563541,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA (USMCA) Annex 2-B, Canada's schedule, 2026: qualifying U.S. beef, pork, offal and other meat enter duty-free."
+        },
+        "0202": {
+          "exportsUsd": 46219309,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA (USMCA) Annex 2-B, Canada's schedule, 2026: qualifying U.S. beef, pork, offal and other meat enter duty-free."
+        },
+        "0203": {
+          "exportsUsd": 345756324,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA (USMCA) Annex 2-B, Canada's schedule, 2026: qualifying U.S. beef, pork, offal and other meat enter duty-free."
+        },
+        "0204": {
+          "exportsUsd": 768795,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA (USMCA) Annex 2-B, Canada's schedule, 2026: qualifying U.S. beef, pork, offal and other meat enter duty-free."
+        },
+        "0205": {
+          "exportsUsd": 0,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA (USMCA) Annex 2-B, Canada's schedule, 2026: qualifying U.S. beef, pork, offal and other meat enter duty-free."
+        },
+        "0206": {
+          "exportsUsd": 43494988,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA (USMCA) Annex 2-B, Canada's schedule, 2026: qualifying U.S. beef, pork, offal and other meat enter duty-free."
+        },
+        "0207": {
+          "exportsUsd": 468527139,
+          "rate": "Free inside the CUSMA poultry quota; very high duty above it",
+          "normalRate": null,
+          "basis": "CUSMA tariff-rate quotas for chicken and turkey (Canada's Customs Tariff, 2026): in-quota imports of U.S. poultry are duty-free; above the quota Canada's supply-management over-quota duty applies, in the hundreds of percent."
+        },
+        "0208": {
+          "exportsUsd": 455571,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA (USMCA) Annex 2-B, Canada's schedule, 2026: qualifying U.S. beef, pork, offal and other meat enter duty-free."
+        },
+        "0209": {
+          "exportsUsd": 79432,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA (USMCA) Annex 2-B, Canada's schedule, 2026: qualifying U.S. beef, pork, offal and other meat enter duty-free."
+        },
+        "0210": {
+          "exportsUsd": 95218898,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA (USMCA) Annex 2-B, Canada's schedule, 2026: qualifying U.S. beef, pork, offal and other meat enter duty-free."
+        }
+      },
+      "profile": {
+        "headline": "Canada takes beef, pork and offal duty-free under CUSMA. Chicken and turkey are the exception: they move only inside quotas. Canada's September 2026 counter-tariffs name steel, aluminum and dairy rather than meat.",
+        "mainProducts": "Meat of bovine animals, fresh or chilled (0201) · Meat and edible offal, of the poultry of heading 0105… (0207)",
+        "tariffNow": "Free (CUSMA); poultry quota-limited",
+        "regulator": {
+          "name": "Canadian Food Inspection Agency (CFIA)",
+          "url": "https://inspection.canada.ca/",
+          "requirement": "The importer needs a Safe Food for Canadians licence. U.S. meat travels with a USDA FSIS export certificate from an FSIS-eligible plant, which Canada accepts under its meat-inspection equivalence with the U.S."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Canada import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/canada-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 156,
+      "name": "China",
+      "rule": "China's normal (MFN) tariff plus an extra 10% on all U.S. goods (2025)",
+      "usTradeAgreement": null,
+      "exportsUsd": 1342291748,
+      "priorExportsUsd": 2825556874,
+      "sharePct": 6.3,
+      "changePct": -52.5,
+      "status": "raised",
+      "cells": {
+        "0201": {
+          "exportsUsd": 76322856,
+          "rate": "Normal rate (about 12–20%) + 10% on all U.S. goods",
+          "normalRate": null,
+          "basis": "China Customs Tariff 2026 (MFN rates about 12% on frozen beef and pork, up to about 20% on fresh pork and on chicken cuts) plus the extra 10% on all U.S. goods (Tariff Commission Announcements No. 7 and No. 10 of 2025). Verify the national line."
+        },
+        "0202": {
+          "exportsUsd": 392053845,
+          "rate": "Normal rate (about 12–20%) + 10% on all U.S. goods",
+          "normalRate": null,
+          "basis": "China Customs Tariff 2026 (MFN rates about 12% on frozen beef and pork, up to about 20% on fresh pork and on chicken cuts) plus the extra 10% on all U.S. goods (Tariff Commission Announcements No. 7 and No. 10 of 2025). Verify the national line."
+        },
+        "0203": {
+          "exportsUsd": 247628594,
+          "rate": "Normal rate (about 12–20%) + 10% on all U.S. goods",
+          "normalRate": null,
+          "basis": "China Customs Tariff 2026 (MFN rates about 12% on frozen beef and pork, up to about 20% on fresh pork and on chicken cuts) plus the extra 10% on all U.S. goods (Tariff Commission Announcements No. 7 and No. 10 of 2025). Verify the national line."
+        },
+        "0204": {
+          "exportsUsd": 0,
+          "rate": "Not individually verified — see China's tariff schedule",
+          "normalRate": null,
+          "basis": "China Customs Tariff 2026 plus the extra 10% on all U.S. goods. A small group (under 1% of the chapter); check the national line."
+        },
+        "0205": {
+          "exportsUsd": 0,
+          "rate": "Not individually verified — see China's tariff schedule",
+          "normalRate": null,
+          "basis": "China Customs Tariff 2026 plus the extra 10% on all U.S. goods. A very small group; check the national line."
+        },
+        "0206": {
+          "exportsUsd": 477299892,
+          "rate": "Normal rate (about 12–20%) + 10% on all U.S. goods",
+          "normalRate": null,
+          "basis": "China Customs Tariff 2026 (MFN rates about 12% on frozen beef and pork, up to about 20% on fresh pork and on chicken cuts) plus the extra 10% on all U.S. goods (Tariff Commission Announcements No. 7 and No. 10 of 2025). Verify the national line."
+        },
+        "0207": {
+          "exportsUsd": 148142551,
+          "rate": "Normal rate (about 12–20%) + 10% on all U.S. goods",
+          "normalRate": null,
+          "basis": "China Customs Tariff 2026 (MFN rates about 12% on frozen beef and pork, up to about 20% on fresh pork and on chicken cuts) plus the extra 10% on all U.S. goods (Tariff Commission Announcements No. 7 and No. 10 of 2025). Verify the national line."
+        },
+        "0208": {
+          "exportsUsd": 0,
+          "rate": "Not individually verified — see China's tariff schedule",
+          "normalRate": null,
+          "basis": "China Customs Tariff 2026 plus the extra 10% on all U.S. goods. A very small group; check the national line."
+        },
+        "0209": {
+          "exportsUsd": 513165,
+          "rate": "Not individually verified — see China's tariff schedule",
+          "normalRate": null,
+          "basis": "China Customs Tariff 2026 plus the extra 10% on all U.S. goods. A small group (under 1% of the chapter); check the national line."
+        },
+        "0210": {
+          "exportsUsd": 330845,
+          "rate": "Not individually verified — see China's tariff schedule",
+          "normalRate": null,
+          "basis": "China Customs Tariff 2026 plus the extra 10% on all U.S. goods. A small group (about 1% of the chapter); check the national line."
+        }
+      },
+      "profile": {
+        "headline": "China is the market that moved most: purchases fell by half in 2025 to $1.34 billion. Its separate 10–15% tariffs on U.S. pork, beef and chicken were lifted on November 10, 2025, but the extra 10% on every U.S. good remains, and plant registration at China's customs agency decides who can ship at all.",
+        "mainProducts": "Edible offal of bovine animals, swine, sheep, goats… (0206) · Meat of bovine animals, frozen (0202)",
+        "tariffNow": "Normal rate + 10% on all U.S. goods",
+        "regulator": {
+          "name": "General Administration of Customs of China (GACC)",
+          "url": "https://english.customs.gov.cn/",
+          "requirement": "Each U.S. plant must be registered with GACC. Pork must come from hogs raised without ractopamine, and beef from cattle under 30 months old."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: China import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/china-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 490,
+      "name": "Taiwan",
+      "rule": "Taiwan's customs tariff, with cuts agreed in the 2026 U.S.–Taiwan trade agreement",
+      "usTradeAgreement": null,
+      "exportsUsd": 1032698470,
+      "priorExportsUsd": 994710907,
+      "sharePct": 4.8,
+      "changePct": 3.8,
+      "status": "pending",
+      "cells": {
+        "0201": {
+          "exportsUsd": 352531632,
+          "rate": "Normal tariff now; cuts agreed Feb. 2026, not yet confirmed in force",
+          "normalRate": null,
+          "basis": "Taiwan Customs Import Tariff 2026; the U.S.–Taiwan Agreement on Reciprocal Trade (USTR fact sheet, Feb. 2026) promises preferential access for beef, pork and lamb with no published rate or start date. Check Taiwan's tariff for the current rate."
+        },
+        "0202": {
+          "exportsUsd": 306696207,
+          "rate": "Normal tariff now; cuts agreed Feb. 2026, not yet confirmed in force",
+          "normalRate": null,
+          "basis": "Taiwan Customs Import Tariff 2026; the U.S.–Taiwan Agreement on Reciprocal Trade (USTR fact sheet, Feb. 2026) promises preferential access for beef, pork and lamb with no published rate or start date. Check Taiwan's tariff for the current rate."
+        },
+        "0203": {
+          "exportsUsd": 14080015,
+          "rate": "Normal tariff now; cuts agreed Feb. 2026, not yet confirmed in force",
+          "normalRate": null,
+          "basis": "Taiwan Customs Import Tariff 2026; the U.S.–Taiwan Agreement on Reciprocal Trade (USTR fact sheet, Feb. 2026) promises preferential access for beef, pork and lamb with no published rate or start date. Check Taiwan's tariff for the current rate."
+        },
+        "0204": {
+          "exportsUsd": 15221,
+          "rate": "Preferential access agreed Feb. 2026 (lamb); rate not published",
+          "normalRate": null,
+          "basis": "U.S.–Taiwan Agreement on Reciprocal Trade (USTR fact sheet, Feb. 2026) names lamb and sheep meat; Taiwan has not published the rate or a start date. Check Taiwan's tariff for the current rate."
+        },
+        "0205": {
+          "exportsUsd": 0,
+          "rate": "Normal tariff now; cuts agreed Feb. 2026, not yet confirmed in force",
+          "normalRate": null,
+          "basis": "Taiwan Customs Import Tariff 2026; the U.S.–Taiwan Agreement on Reciprocal Trade (USTR fact sheet, Feb. 2026) promises preferential access for beef, pork and lamb with no published rate or start date. Check Taiwan's tariff for the current rate."
+        },
+        "0206": {
+          "exportsUsd": 12990254,
+          "rate": "Normal tariff now; cuts agreed Feb. 2026, not yet confirmed in force",
+          "normalRate": null,
+          "basis": "Taiwan Customs Import Tariff 2026; the U.S.–Taiwan Agreement on Reciprocal Trade (USTR fact sheet, Feb. 2026) promises preferential access for beef, pork and lamb with no published rate or start date. Check Taiwan's tariff for the current rate."
+        },
+        "0207": {
+          "exportsUsd": 345680920,
+          "rate": "Normal tariff now; cuts agreed Feb. 2026, not yet confirmed in force",
+          "normalRate": null,
+          "basis": "Taiwan Customs Import Tariff 2026; the U.S.–Taiwan Agreement on Reciprocal Trade (USTR fact sheet, Feb. 2026) promises preferential access for beef, pork and lamb with no published rate or start date. Check Taiwan's tariff for the current rate."
+        },
+        "0208": {
+          "exportsUsd": 0,
+          "rate": "Normal tariff now; cuts agreed Feb. 2026, not yet confirmed in force",
+          "normalRate": null,
+          "basis": "Taiwan Customs Import Tariff 2026; the U.S.–Taiwan Agreement on Reciprocal Trade (USTR fact sheet, Feb. 2026) promises preferential access for beef, pork and lamb with no published rate or start date. Check Taiwan's tariff for the current rate."
+        },
+        "0209": {
+          "exportsUsd": 0,
+          "rate": "Normal tariff now; cuts agreed Feb. 2026, not yet confirmed in force",
+          "normalRate": null,
+          "basis": "Taiwan Customs Import Tariff 2026; the U.S.–Taiwan Agreement on Reciprocal Trade (USTR fact sheet, Feb. 2026) promises preferential access for beef, pork and lamb with no published rate or start date. Check Taiwan's tariff for the current rate."
+        },
+        "0210": {
+          "exportsUsd": 704221,
+          "rate": "Normal tariff now; cuts agreed Feb. 2026, not yet confirmed in force",
+          "normalRate": null,
+          "basis": "Taiwan Customs Import Tariff 2026; the U.S.–Taiwan Agreement on Reciprocal Trade (USTR fact sheet, Feb. 2026) promises preferential access for beef, pork and lamb with no published rate or start date. Check Taiwan's tariff for the current rate."
+        }
+      },
+      "profile": {
+        "headline": "Taiwan, which UN Comtrade reports as \"Other Asia, nes\", is the sixth-largest buyer. In February 2026 it agreed to give U.S. beef, pork and lamb preferential access, but Taiwan's legislature must still approve the agreement and no phase-in schedule is published.",
+        "mainProducts": "Meat of bovine animals, fresh or chilled (0201) · Meat and edible offal, of the poultry of heading 0105… (0207)",
+        "tariffNow": "Cuts agreed Feb. 2026 (not yet confirmed in force)",
+        "regulator": {
+          "name": "Taiwan Food and Drug Administration (TFDA) and BAPHIQ",
+          "url": "https://www.fda.gov.tw/ENG/",
+          "requirement": "A border food-safety inspection by TFDA and a quarantine inspection by BAPHIQ (Ministry of Agriculture) for each shipment. U.S. plants must be on Taiwan's approved list and ship with a USDA FSIS export certificate."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Taiwan import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/taiwan-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 344,
+      "name": "Hong Kong",
+      "rule": "Hong Kong free port: no customs tariff on meat",
+      "usTradeAgreement": null,
+      "exportsUsd": 546384096,
+      "priorExportsUsd": 532885702,
+      "sharePct": 2.6,
+      "changePct": 2.5,
+      "status": "unchanged",
+      "cells": {
+        "0201": {
+          "exportsUsd": 39386592,
+          "rate": "Free (no tariff)",
+          "normalRate": null,
+          "basis": "Hong Kong is a free port: it levies no import duty on meat. It charges duty only on liquor, tobacco, hydrocarbon oil and methyl alcohol."
+        },
+        "0202": {
+          "exportsUsd": 356172677,
+          "rate": "Free (no tariff)",
+          "normalRate": null,
+          "basis": "Hong Kong is a free port: it levies no import duty on meat. It charges duty only on liquor, tobacco, hydrocarbon oil and methyl alcohol."
+        },
+        "0203": {
+          "exportsUsd": 25455812,
+          "rate": "Free (no tariff)",
+          "normalRate": null,
+          "basis": "Hong Kong is a free port: it levies no import duty on meat. It charges duty only on liquor, tobacco, hydrocarbon oil and methyl alcohol."
+        },
+        "0204": {
+          "exportsUsd": 171164,
+          "rate": "Free (no tariff)",
+          "normalRate": null,
+          "basis": "Hong Kong is a free port: it levies no import duty on meat. It charges duty only on liquor, tobacco, hydrocarbon oil and methyl alcohol."
+        },
+        "0205": {
+          "exportsUsd": 0,
+          "rate": "Free (no tariff)",
+          "normalRate": null,
+          "basis": "Hong Kong is a free port: it levies no import duty on meat. It charges duty only on liquor, tobacco, hydrocarbon oil and methyl alcohol."
+        },
+        "0206": {
+          "exportsUsd": 47024458,
+          "rate": "Free (no tariff)",
+          "normalRate": null,
+          "basis": "Hong Kong is a free port: it levies no import duty on meat. It charges duty only on liquor, tobacco, hydrocarbon oil and methyl alcohol."
+        },
+        "0207": {
+          "exportsUsd": 75913021,
+          "rate": "Free (no tariff)",
+          "normalRate": null,
+          "basis": "Hong Kong is a free port: it levies no import duty on meat. It charges duty only on liquor, tobacco, hydrocarbon oil and methyl alcohol."
+        },
+        "0208": {
+          "exportsUsd": 0,
+          "rate": "Free (no tariff)",
+          "normalRate": null,
+          "basis": "Hong Kong is a free port: it levies no import duty on meat. It charges duty only on liquor, tobacco, hydrocarbon oil and methyl alcohol."
+        },
+        "0209": {
+          "exportsUsd": 0,
+          "rate": "Free (no tariff)",
+          "normalRate": null,
+          "basis": "Hong Kong is a free port: it levies no import duty on meat. It charges duty only on liquor, tobacco, hydrocarbon oil and methyl alcohol."
+        },
+        "0210": {
+          "exportsUsd": 2260372,
+          "rate": "Free (no tariff)",
+          "normalRate": null,
+          "basis": "Hong Kong is a free port: it levies no import duty on meat. It charges duty only on liquor, tobacco, hydrocarbon oil and methyl alcohol."
+        }
+      },
+      "profile": {
+        "headline": "Hong Kong charges no tariff on any meat, so the questions are licensing and health certificates, not duty.",
+        "mainProducts": "Meat of bovine animals, frozen (0202) · Meat and edible offal, of the poultry of heading 0105… (0207)",
+        "tariffNow": "Free (no tariff)",
+        "regulator": {
+          "name": "Centre for Food Safety and Food and Environmental Hygiene Department",
+          "url": "https://www.cfs.gov.hk/english/index.html",
+          "requirement": "An import licence for chilled or frozen meat and poultry, and a health certificate for each shipment issued on the basis of USDA FSIS inspection."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Hong Kong import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/import-requirements-and-documentation-hong-kong-macau"
+        }
+      }
+    },
+    {
+      "countryCode": 214,
+      "name": "Dominican Republic",
+      "rule": "CAFTA-DR staged elimination with tariff-rate quotas (Dominican Republic's schedule)",
+      "usTradeAgreement": "U.S.–Dominican Republic–Central America FTA (CAFTA-DR)",
+      "exportsUsd": 537875044,
+      "priorExportsUsd": 513463528,
+      "sharePct": 2.5,
+      "changePct": 4.8,
+      "status": "unchanged",
+      "cells": {
+        "0201": {
+          "exportsUsd": 12256260,
+          "rate": "Free in quota; above-quota duty phasing out (CAFTA-DR)",
+          "normalRate": null,
+          "basis": "CAFTA-DR Annex 3.3, Dominican Republic's schedule: staged elimination with tariff-rate quotas for beef, pork and poultry. Check the 2026 stage for the exact line in the trade.gov FTA Tariff Tool."
+        },
+        "0202": {
+          "exportsUsd": 113463599,
+          "rate": "Free in quota; above-quota duty phasing out (CAFTA-DR)",
+          "normalRate": null,
+          "basis": "CAFTA-DR Annex 3.3, Dominican Republic's schedule: staged elimination with tariff-rate quotas for beef, pork and poultry. Check the 2026 stage for the exact line in the trade.gov FTA Tariff Tool."
+        },
+        "0203": {
+          "exportsUsd": 269649381,
+          "rate": "Free in quota; above-quota duty phasing out (CAFTA-DR)",
+          "normalRate": null,
+          "basis": "CAFTA-DR Annex 3.3, Dominican Republic's schedule: staged elimination with tariff-rate quotas for beef, pork and poultry. Check the 2026 stage for the exact line in the trade.gov FTA Tariff Tool."
+        },
+        "0204": {
+          "exportsUsd": 1371584,
+          "rate": "Free in quota; above-quota duty phasing out (CAFTA-DR)",
+          "normalRate": null,
+          "basis": "CAFTA-DR Annex 3.3, Dominican Republic's schedule: staged elimination with tariff-rate quotas for beef, pork and poultry. Check the 2026 stage for the exact line in the trade.gov FTA Tariff Tool."
+        },
+        "0205": {
+          "exportsUsd": 0,
+          "rate": "Free in quota; above-quota duty phasing out (CAFTA-DR)",
+          "normalRate": null,
+          "basis": "CAFTA-DR Annex 3.3, Dominican Republic's schedule: staged elimination with tariff-rate quotas for beef, pork and poultry. Check the 2026 stage for the exact line in the trade.gov FTA Tariff Tool."
+        },
+        "0206": {
+          "exportsUsd": 10195614,
+          "rate": "Free in quota; above-quota duty phasing out (CAFTA-DR)",
+          "normalRate": null,
+          "basis": "CAFTA-DR Annex 3.3, Dominican Republic's schedule: staged elimination with tariff-rate quotas for beef, pork and poultry. Check the 2026 stage for the exact line in the trade.gov FTA Tariff Tool."
+        },
+        "0207": {
+          "exportsUsd": 112572366,
+          "rate": "Free in quota; above-quota duty phasing out (CAFTA-DR)",
+          "normalRate": null,
+          "basis": "CAFTA-DR Annex 3.3, Dominican Republic's schedule: staged elimination with tariff-rate quotas for beef, pork and poultry. Check the 2026 stage for the exact line in the trade.gov FTA Tariff Tool."
+        },
+        "0208": {
+          "exportsUsd": 3712783,
+          "rate": "Free in quota; above-quota duty phasing out (CAFTA-DR)",
+          "normalRate": null,
+          "basis": "CAFTA-DR Annex 3.3, Dominican Republic's schedule: staged elimination with tariff-rate quotas for beef, pork and poultry. Check the 2026 stage for the exact line in the trade.gov FTA Tariff Tool."
+        },
+        "0209": {
+          "exportsUsd": 5774235,
+          "rate": "Free in quota; above-quota duty phasing out (CAFTA-DR)",
+          "normalRate": null,
+          "basis": "CAFTA-DR Annex 3.3, Dominican Republic's schedule: staged elimination with tariff-rate quotas for beef, pork and poultry. Check the 2026 stage for the exact line in the trade.gov FTA Tariff Tool."
+        },
+        "0210": {
+          "exportsUsd": 8879222,
+          "rate": "Free in quota; above-quota duty phasing out (CAFTA-DR)",
+          "normalRate": null,
+          "basis": "CAFTA-DR Annex 3.3, Dominican Republic's schedule: staged elimination with tariff-rate quotas for beef, pork and poultry. Check the 2026 stage for the exact line in the trade.gov FTA Tariff Tool."
+        }
+      },
+      "profile": {
+        "headline": "The Dominican Republic buys pork, frozen beef and chicken mostly inside CAFTA-DR quotas, with above-quota duties still phasing out. Check the quota before pricing a shipment.",
+        "mainProducts": "Meat of swine, fresh, chilled, or frozen (0203) · Meat of bovine animals, frozen (0202)",
+        "tariffNow": "Free in quota (CAFTA-DR phase-out)",
+        "regulator": {
+          "name": "Ministry of Agriculture (Dirección General de Ganadería)",
+          "url": "https://agricultura.gob.do/",
+          "requirement": "An import authorization from the Ministry of Agriculture for each shipment, with a USDA FSIS health certificate from an approved plant."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Dominican Republic import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/dominican-republic-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 170,
+      "name": "Colombia",
+      "rule": "U.S.–Colombia TPA staged elimination with tariff-rate quotas (Colombia's schedule)",
+      "usTradeAgreement": "U.S.–Colombia Trade Promotion Agreement (TPA)",
+      "exportsUsd": 481775008,
+      "priorExportsUsd": 445139013,
+      "sharePct": 2.3,
+      "changePct": 8.2,
+      "status": "unchanged",
+      "cells": {
+        "0201": {
+          "exportsUsd": 11202266,
+          "rate": "Free in quota; above-quota duty phasing out (U.S.–Colombia TPA)",
+          "normalRate": null,
+          "basis": "U.S.–Colombia TPA Annex 2.3, Colombia's schedule: staged elimination with tariff-rate quotas for beef, pork and chicken. Check the 2026 stage for the exact line in the trade.gov FTA Tariff Tool."
+        },
+        "0202": {
+          "exportsUsd": 27427699,
+          "rate": "Free in quota; above-quota duty phasing out (U.S.–Colombia TPA)",
+          "normalRate": null,
+          "basis": "U.S.–Colombia TPA Annex 2.3, Colombia's schedule: staged elimination with tariff-rate quotas for beef, pork and chicken. Check the 2026 stage for the exact line in the trade.gov FTA Tariff Tool."
+        },
+        "0203": {
+          "exportsUsd": 339480723,
+          "rate": "Free in quota; above-quota duty phasing out (U.S.–Colombia TPA)",
+          "normalRate": null,
+          "basis": "U.S.–Colombia TPA Annex 2.3, Colombia's schedule: staged elimination with tariff-rate quotas for beef, pork and chicken. Check the 2026 stage for the exact line in the trade.gov FTA Tariff Tool."
+        },
+        "0204": {
+          "exportsUsd": 0,
+          "rate": "Free in quota; above-quota duty phasing out (U.S.–Colombia TPA)",
+          "normalRate": null,
+          "basis": "U.S.–Colombia TPA Annex 2.3, Colombia's schedule: staged elimination with tariff-rate quotas for beef, pork and chicken. Check the 2026 stage for the exact line in the trade.gov FTA Tariff Tool."
+        },
+        "0205": {
+          "exportsUsd": 0,
+          "rate": "Free in quota; above-quota duty phasing out (U.S.–Colombia TPA)",
+          "normalRate": null,
+          "basis": "U.S.–Colombia TPA Annex 2.3, Colombia's schedule: staged elimination with tariff-rate quotas for beef, pork and chicken. Check the 2026 stage for the exact line in the trade.gov FTA Tariff Tool."
+        },
+        "0206": {
+          "exportsUsd": 15987229,
+          "rate": "Free in quota; above-quota duty phasing out (U.S.–Colombia TPA)",
+          "normalRate": null,
+          "basis": "U.S.–Colombia TPA Annex 2.3, Colombia's schedule: staged elimination with tariff-rate quotas for beef, pork and chicken. Check the 2026 stage for the exact line in the trade.gov FTA Tariff Tool."
+        },
+        "0207": {
+          "exportsUsd": 82300662,
+          "rate": "Free in quota; above-quota duty phasing out (U.S.–Colombia TPA)",
+          "normalRate": null,
+          "basis": "U.S.–Colombia TPA Annex 2.3, Colombia's schedule: staged elimination with tariff-rate quotas for beef, pork and chicken. Check the 2026 stage for the exact line in the trade.gov FTA Tariff Tool."
+        },
+        "0208": {
+          "exportsUsd": 100126,
+          "rate": "Free in quota; above-quota duty phasing out (U.S.–Colombia TPA)",
+          "normalRate": null,
+          "basis": "U.S.–Colombia TPA Annex 2.3, Colombia's schedule: staged elimination with tariff-rate quotas for beef, pork and chicken. Check the 2026 stage for the exact line in the trade.gov FTA Tariff Tool."
+        },
+        "0209": {
+          "exportsUsd": 114940,
+          "rate": "Free in quota; above-quota duty phasing out (U.S.–Colombia TPA)",
+          "normalRate": null,
+          "basis": "U.S.–Colombia TPA Annex 2.3, Colombia's schedule: staged elimination with tariff-rate quotas for beef, pork and chicken. Check the 2026 stage for the exact line in the trade.gov FTA Tariff Tool."
+        },
+        "0210": {
+          "exportsUsd": 5161363,
+          "rate": "Free in quota; above-quota duty phasing out (U.S.–Colombia TPA)",
+          "normalRate": null,
+          "basis": "U.S.–Colombia TPA Annex 2.3, Colombia's schedule: staged elimination with tariff-rate quotas for beef, pork and chicken. Check the 2026 stage for the exact line in the trade.gov FTA Tariff Tool."
+        }
+      },
+      "profile": {
+        "headline": "Colombia takes pork, chicken parts and beef inside the quotas set in the 2012 trade agreement; in-quota is duty-free, and above-quota duties keep falling.",
+        "mainProducts": "Meat of swine, fresh, chilled, or frozen (0203) · Meat and edible offal, of the poultry of heading 0105… (0207)",
+        "tariffNow": "Free in quota (U.S.–Colombia TPA)",
+        "regulator": {
+          "name": "Colombian Agricultural Institute (ICA) and INVIMA",
+          "url": "https://www.ica.gov.co/",
+          "requirement": "An import authorization from ICA and a sanitary inspection by INVIMA for each shipment, with a USDA FSIS export certificate from an ICA-approved U.S. plant."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Colombia import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/colombia-import-requirements-and-documentation"
+        }
+      }
+    }
+  ],
+  "biggestLanes": [
+    {
+      "market": "Mexico",
+      "heading": "0203",
+      "exportsUsd": 2419010996,
+      "rate": "Free (USMCA)"
+    },
+    {
+      "market": "South Korea",
+      "heading": "0202",
+      "exportsUsd": 1269126255,
+      "rate": "Free (KORUS)"
+    },
+    {
+      "market": "Mexico",
+      "heading": "0207",
+      "exportsUsd": 1192700877,
+      "rate": "Free (USMCA)"
+    },
+    {
+      "market": "Japan",
+      "heading": "0203",
+      "exportsUsd": 1081556638,
+      "rate": "Near zero on higher-priced cuts; lower-priced cuts pay a gate-price duty"
+    },
+    {
+      "market": "South Korea",
+      "heading": "0201",
+      "exportsUsd": 920148470,
+      "rate": "Free (KORUS)"
+    },
+    {
+      "market": "Mexico",
+      "heading": "0201",
+      "exportsUsd": 886129127,
+      "rate": "Free (USMCA)"
+    },
+    {
+      "market": "Japan",
+      "heading": "0201",
+      "exportsUsd": 693256914,
+      "rate": "About 21% in 2026, falling to 9% by 2033 (U.S.–Japan agreement)"
+    },
+    {
+      "market": "South Korea",
+      "heading": "0203",
+      "exportsUsd": 636095386,
+      "rate": "Free (KORUS)"
+    }
+  ],
+  "assumptions": [
+    "Rates come from each market's trade agreement schedule (USMCA, KORUS, U.S.–Japan Trade Agreement, CAFTA-DR, U.S.–Colombia TPA) or its own 2026 customs tariff; Hong Kong has no customs tariff.",
+    "One representative subheading stands in for each four-digit group. Rates for China and Japan on the smaller groups (sheep, horse, other meat, fats, salted or dried meat — together under 2% of the chapter) are not individually verified and are marked that way.",
+    "China's normal rates are stated as approximate ranges (about 12% on frozen beef and pork, up to about 20% on fresh pork and on chicken cuts and paws) because the exact rate depends on the national tariff line; its extra 10% is added on top.",
+    "Dominican Republic and Colombia phase their tariffs out in stages with tariff-rate quotas; the rate shown is the in-quota rate and the direction of travel. Check the exact 2026 stage for a line in the trade.gov FTA Tariff Tool.",
+    "National 8–10-digit tariff lines can set a different rate than the six-digit subheading shown here — check the market's own schedule before relying on this page for a transaction."
+  ],
+  "sources": [
+    {
+      "id": "comtrade-exports",
+      "publisher": "UN Comtrade",
+      "citation": "UN Comtrade, U.S. exports 2020–2025",
+      "document": "UN Comtrade public API (preview), United States exports, annual, HS",
+      "title": "United States exports, HS chapter 02, by partner, heading and subheading",
+      "signed": null,
+      "published": "2026-10-20",
+      "url": "https://comtradeplus.un.org/"
+    },
+    {
+      "id": "usjta-beef-fas",
+      "publisher": "USDA Foreign Agricultural Service",
+      "citation": "GAIN report JA2023-0044",
+      "document": "USJTA Treatment for Beef and Beef Products 2023",
+      "title": "USJTA Treatment for Beef and Beef Products 2023 (Japan)",
+      "signed": null,
+      "published": "2023-06-02",
+      "url": "https://apps.fas.usda.gov/newgainapi/api/Report/DownloadReportByFileName?fileName=USJTA+Treatment+for+Beef+and+Beef+Products+2023_Tokyo_Japan_JA2023-0044"
+    },
+    {
+      "id": "usjta-pork-ustr",
+      "publisher": "USTR",
+      "citation": "USTR fact sheet, October 2019",
+      "document": "Provisions of the U.S.–Japan Trade Agreement: pork",
+      "title": "Fact Sheet on Provisions of the U.S.-Japan Trade Agreement: Pork and Pork Products",
+      "signed": null,
+      "published": "2019-10-07",
+      "url": "https://ustr.gov/about-us/policy-offices/press-office/fact-sheets/2019/october/provisions-of-the-us-japan-trade-agreement-pork"
+    },
+    {
+      "id": "korus-ustr",
+      "publisher": "USTR",
+      "citation": "KORUS FTA",
+      "document": "U.S.–Korea Free Trade Agreement",
+      "title": "Korea-U.S. Free Trade Agreement (KORUS)",
+      "signed": null,
+      "published": "2012-03-15",
+      "url": "https://ustr.gov/trade-agreements/free-trade-agreements/korus-fta"
+    }
+  ],
+  "coverageNote": "The 9 markets shown take 77% of 2025 U.S. Chapter 02 exports. A customs union (the EU) is one market: its members share one tariff. UN Comtrade reports Taiwan as \"Other Asia, nes\"."
+}

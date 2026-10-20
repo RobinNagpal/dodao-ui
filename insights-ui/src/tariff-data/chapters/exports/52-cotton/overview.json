@@ -1,0 +1,440 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 52,
+    "padded": "52",
+    "slug": "52-cotton",
+    "title": "Cotton"
+  },
+  "page": {
+    "slug": "exports",
+    "path": "/industry-tariff-report/exports/chapters/52-cotton",
+    "h1": "HTS Chapter 52: Cotton — U.S. Exports & Foreign Tariffs",
+    "seo": {
+      "title": "Chapter 52 U.S. Cotton Exports: Who Buys & Foreign Tariffs",
+      "shortDescription": "How much raw cotton, yarn and fabric the U.S. exports, who buys it, and what each top buyer charges, from 2020–2025 UN Comtrade data.",
+      "keywords": ["us cotton exports", "us cotton exports by country", "us cotton exports to vietnam", "hts chapter 52 exports", "cotton export tariffs"]
+    },
+    "lastCheckedAt": "2026-10-20"
+  },
+  "intro": "The U.S. exported **$5.88 billion** of Chapter 52 goods in 2025, down **4.8%** from 2024. **Raw cotton (heading 5201) is 82%** of that and cotton yarn (5204–5207) another **13%**; woven cotton fabric is under 5%. **Viet Nam (22%) and Pakistan (12.7%)** are the two largest buyers, and Viet Nam's purchases more than doubled (**+122%**). The big loss is China, whose purchases fell **85%** to $221 million.\n\nTariffs are low where the volume is. Viet Nam charges nothing on raw cotton, Mexico, Honduras, the Dominican Republic and Guatemala are free under trade agreements, and the rates for Pakistan, Türkiye and Bangladesh were not confirmed from an official source. China is the exception: it charges a 1% rate inside its import quota and 40% above it, plus an extra 10% on every U.S. good, after lifting its 15% tariff on U.S. cotton on November 10, 2025. India is the swing buyer: its normal 11% duty on cotton was waived from August 2025 and, according to press reports, again in mid-2026, which helped lift its purchases 85%.",
+  "latestYear": 2025,
+  "priorYear": 2024,
+  "valueBasis": "FOB value of U.S. exports, as reported by the United States to UN Comtrade.",
+  "stats": [
+    {
+      "label": "2025 U.S. exports",
+      "value": "$5.88B"
+    },
+    {
+      "label": "Change vs 2024",
+      "value": "-4.8%"
+    },
+    {
+      "label": "Largest product group (5201)",
+      "value": "82%",
+      "note": "Raw cotton, not carded or combed"
+    },
+    {
+      "label": "Two largest buyers",
+      "value": "35%",
+      "note": "Viet Nam, Pakistan"
+    },
+    {
+      "label": "Top markets with a confirmed zero tariff on raw cotton",
+      "value": "4 of 9",
+      "note": "Viet Nam, Mexico, Honduras, Dominican Republic"
+    }
+  ],
+  "keyTakeaways": [
+    "Raw cotton is 82% of this chapter, yarn 13% and fabric under 5%. Viet Nam (22%) and Pakistan (12.7%) take 35%, with Türkiye (11.3%) and Honduras (9.4%) next.",
+    "Most large buyers charge little or nothing on raw cotton: Viet Nam 0% (yarn 5%), and Mexico, Honduras and the Dominican Republic duty-free under trade agreements.",
+    "China is the outlier: it charges 1% inside its 894,000-tonne quota and 40% above, plus an extra 10% on all U.S. goods, and its purchases of U.S. cotton fell 85% in 2025.",
+    "India's cotton import duty (normally about 11%) was waived from August 2025 and, per press reports, again from June to October 2026, so a lapse is the main tariff event for U.S. cotton to watch."
+  ],
+  "byYear": [
+    {
+      "year": 2020,
+      "totalUsd": 7013425487,
+      "partnerAUsd": 1166067255,
+      "partnerBUsd": 788538701,
+      "restUsd": 5058819531
+    },
+    {
+      "year": 2021,
+      "totalUsd": 7157498312,
+      "partnerAUsd": 1030583962,
+      "partnerBUsd": 709931880,
+      "restUsd": 5416982470
+    },
+    {
+      "year": 2022,
+      "totalUsd": 10744033450,
+      "partnerAUsd": 1084372578,
+      "partnerBUsd": 1016873915,
+      "restUsd": 8642786957
+    },
+    {
+      "year": 2023,
+      "totalUsd": 7296980317,
+      "partnerAUsd": 751287692,
+      "partnerBUsd": 809257323,
+      "restUsd": 5736435302
+    },
+    {
+      "year": 2024,
+      "totalUsd": 6177245495,
+      "partnerAUsd": 582006028,
+      "partnerBUsd": 771993413,
+      "restUsd": 4823246054
+    },
+    {
+      "year": 2025,
+      "totalUsd": 5881164246,
+      "partnerAUsd": 1292614223,
+      "partnerBUsd": 746169389,
+      "restUsd": 3842380634
+    }
+  ],
+  "byYearPartners": ["Viet Nam", "Pakistan"],
+  "byYearCaption": "U.S. exports of Chapter 52 goods each year, split into the two largest 2025 buyers (Viet Nam and Pakistan) and everyone else.",
+  "yearToDate": null,
+  "topMarkets": [
+    {
+      "countryCode": 704,
+      "country": "Viet Nam",
+      "exportsUsd": 1292614223,
+      "priorExportsUsd": 582006028,
+      "sharePct": 22,
+      "changePct": 122.1,
+      "tariffNow": "Raw cotton 0%; yarn 5%",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 586,
+      "country": "Pakistan",
+      "exportsUsd": 746169389,
+      "priorExportsUsd": 771993413,
+      "sharePct": 12.7,
+      "changePct": -3.3,
+      "tariffNow": "Normal tariff (no U.S. trade agreement)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 792,
+      "country": "Türkiye",
+      "exportsUsd": 666529982,
+      "priorExportsUsd": 372709647,
+      "sharePct": 11.3,
+      "changePct": 78.8,
+      "tariffNow": "Normal tariff (no U.S. trade agreement)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 340,
+      "country": "Honduras",
+      "exportsUsd": 550524390,
+      "priorExportsUsd": 633262768,
+      "sharePct": 9.4,
+      "changePct": -13.1,
+      "tariffNow": "Free (CAFTA-DR)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 699,
+      "country": "India",
+      "exportsUsd": 392464593,
+      "priorExportsUsd": 211957388,
+      "sharePct": 6.7,
+      "changePct": 85.2,
+      "tariffNow": "Normally about 11%; waived since Aug. 2025 (2026 waiver reported)",
+      "status": "lowered"
+    },
+    {
+      "countryCode": 484,
+      "country": "Mexico",
+      "exportsUsd": 372515854,
+      "priorExportsUsd": 424366083,
+      "sharePct": 6.3,
+      "changePct": -12.2,
+      "tariffNow": "Free (USMCA)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 50,
+      "country": "Bangladesh",
+      "exportsUsd": 287417068,
+      "priorExportsUsd": 251681182,
+      "sharePct": 4.9,
+      "changePct": 14.2,
+      "tariffNow": "Raw cotton 0% in USDA's last duty table (2020)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 156,
+      "country": "China",
+      "exportsUsd": 220555598,
+      "priorExportsUsd": 1490842045,
+      "sharePct": 3.8,
+      "changePct": -85.2,
+      "tariffNow": "1% in quota, 40% above, plus 10% on all U.S. goods",
+      "status": "raised"
+    },
+    {
+      "countryCode": 214,
+      "country": "Dominican Republic",
+      "exportsUsd": 202426218,
+      "priorExportsUsd": 245803985,
+      "sharePct": 3.4,
+      "changePct": -17.6,
+      "tariffNow": "Free (CAFTA-DR)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 360,
+      "country": "Indonesia",
+      "exportsUsd": 151617248,
+      "priorExportsUsd": 138542768,
+      "sharePct": 2.6,
+      "changePct": 9.4,
+      "tariffNow": "Normal tariff (no U.S. trade agreement)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 320,
+      "country": "Guatemala",
+      "exportsUsd": 129659442,
+      "priorExportsUsd": 157603190,
+      "sharePct": 2.2,
+      "changePct": -17.7,
+      "tariffNow": "Free (CAFTA-DR)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 604,
+      "country": "Peru",
+      "exportsUsd": 119156430,
+      "priorExportsUsd": 102494713,
+      "sharePct": 2,
+      "changePct": 16.3,
+      "tariffNow": "Free (U.S.–Peru TPA)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 764,
+      "country": "Thailand",
+      "exportsUsd": 99965232,
+      "priorExportsUsd": 75565507,
+      "sharePct": 1.7,
+      "changePct": 32.3,
+      "tariffNow": "Normal tariff (no U.S. trade agreement)",
+      "status": "unchanged"
+    }
+  ],
+  "othersExportsUsd": 649548579,
+  "othersPriorExportsUsd": 718416778,
+  "byHeading": [
+    {
+      "heading": "5201",
+      "label": "Raw cotton, not carded or combed",
+      "exportsUsd": 4828785513,
+      "priorExportsUsd": 5007819006,
+      "changePct": -3.6,
+      "sharePct": 82.1
+    },
+    {
+      "heading": "5202",
+      "label": "Cotton waste (yarn waste, garnetted stock, card strips)",
+      "exportsUsd": 7018732,
+      "priorExportsUsd": 8964063,
+      "changePct": -21.7,
+      "sharePct": 0.1
+    },
+    {
+      "heading": "5203",
+      "label": "Cotton, carded or combed",
+      "exportsUsd": 6290761,
+      "priorExportsUsd": 8503930,
+      "changePct": -26,
+      "sharePct": 0.1
+    },
+    {
+      "heading": "5204",
+      "label": "Cotton sewing thread",
+      "exportsUsd": 1854218,
+      "priorExportsUsd": 2101190,
+      "changePct": -11.8,
+      "sharePct": 0
+    },
+    {
+      "heading": "5205",
+      "label": "Cotton yarn, 85% or more cotton, not for retail sale",
+      "exportsUsd": 706978500,
+      "priorExportsUsd": 826849028,
+      "changePct": -14.5,
+      "sharePct": 12
+    },
+    {
+      "heading": "5206",
+      "label": "Cotton yarn, under 85% cotton, not for retail sale",
+      "exportsUsd": 44273037,
+      "priorExportsUsd": 44964456,
+      "changePct": -1.5,
+      "sharePct": 0.8
+    },
+    {
+      "heading": "5207",
+      "label": "Cotton yarn put up for retail sale",
+      "exportsUsd": 20948255,
+      "priorExportsUsd": 5128471,
+      "changePct": 308.5,
+      "sharePct": 0.4
+    },
+    {
+      "heading": "5208",
+      "label": "Woven cotton fabric, 85%+ cotton, up to 200 g/m²",
+      "exportsUsd": 40079735,
+      "priorExportsUsd": 35645305,
+      "changePct": 12.4,
+      "sharePct": 0.7
+    },
+    {
+      "heading": "5209",
+      "label": "Woven cotton fabric, 85%+ cotton, over 200 g/m² (incl. denim)",
+      "exportsUsd": 171355222,
+      "priorExportsUsd": 191158828,
+      "changePct": -10.4,
+      "sharePct": 2.9
+    },
+    {
+      "heading": "5210",
+      "label": "Woven cotton blends with man-made fibre, up to 200 g/m²",
+      "exportsUsd": 4534573,
+      "priorExportsUsd": 4370512,
+      "changePct": 3.8,
+      "sharePct": 0.1
+    },
+    {
+      "heading": "5211",
+      "label": "Woven cotton blends with man-made fibre, over 200 g/m²",
+      "exportsUsd": 40144953,
+      "priorExportsUsd": 36210020,
+      "changePct": 10.9,
+      "sharePct": 0.7
+    },
+    {
+      "heading": "5212",
+      "label": "Other woven cotton fabrics (incl. cotton–wool blends)",
+      "exportsUsd": 8900747,
+      "priorExportsUsd": 5530686,
+      "changePct": 60.9,
+      "sharePct": 0.2
+    }
+  ],
+  "byLine": [
+    {
+      "hs6": "5201.00",
+      "heading": "5201",
+      "description": "Cotton; not carded or combed",
+      "exportsUsd": 4828785513,
+      "priorExportsUsd": 5007819006,
+      "changePct": -3.6,
+      "sharePct": 82.1
+    },
+    {
+      "hs6": "5205.12",
+      "heading": "5205",
+      "description": "Cotton yarn; (not sewing thread), single, of uncombed fibres, 85% or more by weight of cotton, less than 714.29 but not less than 232.56 decitex (exceeding 14 but not exceeding 43 metric number), not for retail sale",
+      "exportsUsd": 499020670,
+      "priorExportsUsd": 550947687,
+      "changePct": -9.4,
+      "sharePct": 8.5
+    },
+    {
+      "hs6": "5205.13",
+      "heading": "5205",
+      "description": "Cotton yarn; (not sewing thread), single, of uncombed fibres, 85% or more by weight of cotton, less than 232.56 but not less than 192.31 decitex (exceeding 43 but not exceeding 52 metric number), not for retail sale",
+      "exportsUsd": 106665379,
+      "priorExportsUsd": 168370104,
+      "changePct": -36.6,
+      "sharePct": 1.8
+    },
+    {
+      "hs6": "5209.42",
+      "heading": "5209",
+      "description": "Fabrics, woven; containing 85% or more by weight of cotton, of yarns of different colours, weighing more than 200g/m2, denim",
+      "exportsUsd": 59590108,
+      "priorExportsUsd": 60541935,
+      "changePct": -1.6,
+      "sharePct": 1
+    },
+    {
+      "hs6": "5209.32",
+      "heading": "5209",
+      "description": "Fabrics, woven; containing 85% or more by weight of cotton, dyed, 3-thread or 4-thread twill, including cross twill, weighing more than 200g/m2",
+      "exportsUsd": 58454215,
+      "priorExportsUsd": 67195335,
+      "changePct": -13,
+      "sharePct": 1
+    },
+    {
+      "hs6": "5209.39",
+      "heading": "5209",
+      "description": "Fabrics, woven; containing 85% or more by weight of cotton, dyed, of weaves n.e.c. in item no. 5209.3, weighing more than 200g/m2",
+      "exportsUsd": 35544316,
+      "priorExportsUsd": 44596972,
+      "changePct": -20.3,
+      "sharePct": 0.6
+    },
+    {
+      "hs6": "5205.23",
+      "heading": "5205",
+      "description": "Cotton yarn; (not sewing thread), single, of combed fibres, 85% or more by weight of cotton, less than 232.56 but not less than 192.31 decitex (exceeding 43 but not exceeding 52 metric number), not for retail sale",
+      "exportsUsd": 33120448,
+      "priorExportsUsd": 39827823,
+      "changePct": -16.8,
+      "sharePct": 0.6
+    },
+    {
+      "hs6": "5205.35",
+      "heading": "5205",
+      "description": "Cotton yarn; (not sewing thread), multiple or cabled, of uncombed fibres, 85% or more by weight of cotton, less than 125 decitex (exceeding 80 metric number), per single yarn, not for retail sale",
+      "exportsUsd": 29681907,
+      "priorExportsUsd": 900419,
+      "changePct": 3196.5,
+      "sharePct": 0.5
+    },
+    {
+      "hs6": "5206.12",
+      "heading": "5206",
+      "description": "Cotton yarn; (not sewing thread), single, of uncombed fibres, less than 85% by weight of cotton, less than 714.29 but not less than 232.56 decitex (exceeding 14 but not exceeding 43 metric number), not for retail sale",
+      "exportsUsd": 21229886,
+      "priorExportsUsd": 34892806,
+      "changePct": -39.2,
+      "sharePct": 0.4
+    },
+    {
+      "hs6": "5207.10",
+      "heading": "5207",
+      "description": "Cotton yarn; (not sewing thread), containing 85% or more by weight of cotton, put up for retail sale",
+      "exportsUsd": 19375329,
+      "priorExportsUsd": 3717969,
+      "changePct": 421.1,
+      "sharePct": 0.3
+    }
+  ],
+  "sources": [
+    {
+      "id": "comtrade-exports",
+      "publisher": "UN Comtrade",
+      "citation": "UN Comtrade, U.S. exports 2020–2025",
+      "document": "UN Comtrade public API (preview), United States exports, annual, HS",
+      "title": "United States exports, HS chapter 52, by partner, heading and subheading",
+      "signed": null,
+      "published": "2026-10-20",
+      "url": "https://comtradeplus.un.org/"
+    }
+  ],
+  "coverageNote": "The 13 buyers listed take 89% of 2025 U.S. Chapter 52 exports. FOB value of U.S. exports, as reported by the United States to UN Comtrade. They can differ from what the destination country reports as imports."
+}

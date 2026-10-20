@@ -2,7 +2,14 @@ import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs';
 import path from 'node:path';
 import type { MeasureEngineInput, MeasureEngineLine, TariffMeasuresFile, TariffProductType } from '@/types/tariff-calculator-measures';
 import type { StoredTariffChapterPrototype, TariffChapterPrototype, TariffEditionRef } from '@/types/tariff-chapter-prototype';
-import type { TariffChapterExports, TariffExportMarketLibrary, TariffExportStepsLibrary, TariffForeignMeasuresLibrary } from '@/types/tariff-chapter-exports';
+import type {
+  TariffChapterExports,
+  TariffExportChange,
+  TariffExportMarketLibrary,
+  TariffExportStepsLibrary,
+  TariffForeignMeasure,
+  TariffForeignMeasuresLibrary,
+} from '@/types/tariff-chapter-exports';
 import { EXPORT_PAGE_SLUGS, getChapterExports, listChapterExportSlugs } from '@/utils/tariff-reports/chapter-exports';
 import { CHAPTER_EXPORT_SECTIONS, chapterExportHref } from '@/utils/tariff-reports/chapter-route-helpers';
 import {
@@ -144,12 +151,24 @@ export const OFFICIAL_SOURCE_DOMAINS: readonly string[] = [
   'plantprotection.gov.pk', // Pakistan Department of Plant Protection
   'nyce.org.mx', // Mexico — NYCE (NOM product-certification body)
   'mcmc.gov.my', // Malaysia Communications and Multimedia Commission
-  'ofca.gov.hk', // Hong Kong Office of the Communications Authority
-  'rra.go.kr', // Korea Radio Research Agency
   'caa.co.uk', // UK Civil Aviation Authority
-  'caas.gov.sg', // Singapore Civil Aviation Authority
-  'gcaa.gov.ae', // UAE General Civil Aviation Authority
   'faa.gov', // U.S. Federal Aviation Administration (export airworthiness approval)
+  'fincen.gov', // Treasury FinCEN (anti-money-laundering rules for precious-metal dealers)
+  'gov.au', // Australian government sites (Australian Border Force)
+  'gov.ae', // UAE government sites (Ministry of Economy)
+  'gov.sg', // Singapore government sites (Singapore Customs)
+  'gob.hn', // Honduras government sites (SENASA)
+  'gov.tr', // Türkiye government sites (Ministry of Agriculture and Forestry)
+  'gov.bd', // Bangladesh government sites (Department of Agricultural Extension)
+  'gov.in', // India government sites (Ministry of Petroleum and Natural Gas)
+  'energy.gov', // U.S. Department of Energy (LNG export authorization)
+  'gov.vn', // Viet Nam government sites (Plant Protection Department)
+  'gov.ph', // Philippines government sites (Department of Agriculture)
+  'gov.tw', // Taiwan government sites (TFDA, BAPHIQ)
+  'gov.co', // Colombia government sites (ICA, INVIMA)
+  'gob.do', // Dominican Republic government sites (Ministry of Agriculture)
+  'gov.hk', // Hong Kong government sites (Centre for Food Safety)
+  'go.kr', // Korea government sites (APQA, MAFRA)
 ];
 
 /** Keys whose string value is a date. All must be ISO YYYY-MM-DD and not in the future. */
@@ -469,10 +488,50 @@ function checkExports(report: Report, opts: Options, slug: string, e: TariffChap
 }
 
 /**
+ * A chapter's tariff-updates page lists every library measure, flagged with the library's coverage for the
+ * chapter (the generator's rule). Checked here so a library edit can't silently leave a chapter behind.
+ */
+function checkExportsMatchLibrary(report: Report, slug: string, e: TariffChapterExports, foreign: TariffForeignMeasuresLibrary): void {
+  const w = `${slug}/exports/tariffUpdates`;
+  const n = String(e.overview.chapter.number);
+  const library = new Map(foreign.measures.map((m) => [m.id, m]));
+  const coverageOf = (m: TariffForeignMeasure): TariffExportChange['coversChapter'] | undefined => (m.allGoods ? 'yes' : m.coverage[n]);
+
+  const changes = new Map(e.tariffUpdates.changes.map((c) => [c.id, c]));
+  for (const m of foreign.measures) {
+    const coverage = coverageOf(m);
+    const change = changes.get(m.id);
+    if (!coverage) report.error(`export-library/foreign-measures.measures[${m.id}]`, `no coverage["${n}"] for ${slug}`);
+    if (!change) report.error(`${w}.changes`, `library measure "${m.id}" is missing`);
+    else if (coverage && change.coversChapter !== coverage) {
+      report.error(`${w}.changes[${m.id}]`, `coversChapter "${change.coversChapter}" but the library's coverage["${n}"] is "${coverage}"`);
+    }
+  }
+  for (const c of e.tariffUpdates.changes)
+    if (!library.has(c.id)) report.error(`${w}.changes[${c.id}]`, 'not a measure in export-library/foreign-measures.json');
+
+  const inEffect = new Set(e.tariffUpdates.inEffect.map((x) => x.id));
+  for (const m of foreign.measures) {
+    const coverage = coverageOf(m);
+    const reaches = m.inForce && coverage !== undefined && coverage !== 'no';
+    if (reaches && !inEffect.has(m.id)) report.error(`${w}.inEffect`, `in-force library measure "${m.id}" reaches this chapter but is not listed`);
+    if (!reaches && inEffect.has(m.id)) report.error(`${w}.inEffect[${m.id}]`, 'listed, but the library has it out of force or not reaching this chapter');
+  }
+  for (const id of inEffect) if (!library.has(id)) report.error(`${w}.inEffect[${id}]`, 'not a measure in export-library/foreign-measures.json');
+
+  const libraryIdByUrl = new Map(foreign.sources.map((s) => [s.url, s.id]));
+  for (const s of e.tariffUpdates.sources) {
+    const libraryId = libraryIdByUrl.get(s.url);
+    if (libraryId && libraryId !== s.id) report.error(`${w}.sources[${s.id}]`, `same document as library source "${libraryId}" — cite that id`);
+  }
+}
+
+/**
  * The shared export library (`src/tariff-data/export-library/`) the export generator copies from: the
  * same source, date and placeholder rules as a page, plus ordering and the in-force citation rule.
+ * Returns the foreign-measures library so each chapter can be checked against it.
  */
-function checkExportLibrary(report: Report, opts: Options): void {
+function checkExportLibrary(report: Report, opts: Options): TariffForeignMeasuresLibrary | null {
   const dir = path.resolve(process.cwd(), 'src/tariff-data/export-library');
   const read = <T>(name: string): T | null => {
     try {
@@ -496,7 +555,7 @@ function checkExportLibrary(report: Report, opts: Options): void {
       }
     }
   }
-  if (!foreign) return;
+  if (!foreign) return null;
   const where = 'export-library/foreign-measures';
   walk(report, opts, foreign as unknown as Json, where, null, false);
   checkSortedNewestFirst(report, `${where}.measures`, foreign.measures);
@@ -511,6 +570,16 @@ function checkExportLibrary(report: Report, opts: Options): void {
     else if (u.expectedOn < opts.today) report.error(w, `${u.expectedOn} has passed — move what happened into \`measures\``);
     if (i > 0 && u.expectedOn < foreign.upcoming[i - 1].expectedOn) report.error(w, 'not sorted soonest-first');
   });
+
+  const cited = new Set([...foreign.measures, ...foreign.upcoming].flatMap((x) => x.sourceIds));
+  const idByUrl = new Map<string, string>();
+  for (const s of foreign.sources) {
+    if (!cited.has(s.id)) report.warn(`${where}.sources[${s.id}]`, 'not cited by any measure');
+    const other = idByUrl.get(s.url);
+    if (other) report.error(`${where}.sources[${s.id}]`, `same URL as source "${other}"`);
+    idByUrl.set(s.url, s.id);
+  }
+  return foreign;
 }
 
 /** Content files on disk that no loader registers — they never render. */
@@ -957,7 +1026,7 @@ async function main(): Promise<void> {
   let warnings = 0;
   const global = new Report();
   if (!only && !fromFile) findUnregisteredFiles(global, prototypeSlugs, exportSlugs);
-  if (!fromFile) checkExportLibrary(global, opts);
+  const foreignLibrary = fromFile ? null : checkExportLibrary(global, opts);
   if (global.findings.length) printReport('tariff-data', global);
   errors += global.errorCount;
   warnings += global.warnCount;
@@ -1002,7 +1071,10 @@ async function main(): Promise<void> {
     } else {
       report.error(slug, 'export content is registered but the chapter has no import content file');
     }
-    if (exportsContent) checkExports(report, opts, slug, exportsContent);
+    if (exportsContent) {
+      checkExports(report, opts, slug, exportsContent);
+      if (foreignLibrary) checkExportsMatchLibrary(report, slug, exportsContent, foreignLibrary);
+    }
     printReport(slug, report);
     errors += report.errorCount;
     warnings += report.warnCount;

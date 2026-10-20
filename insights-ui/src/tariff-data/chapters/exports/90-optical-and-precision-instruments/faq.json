@@ -1,0 +1,106 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 90,
+    "padded": "90",
+    "slug": "90-optical-and-precision-instruments",
+    "title": "Optical, Photographic, Cinematographic, Measuring, Checking, Precision, Medical or Surgical Instruments and Apparatus; Parts and Accessories Thereof"
+  },
+  "page": {
+    "slug": "exports/faq",
+    "path": "/industry-tariff-report/exports/chapters/90-optical-and-precision-instruments/faq",
+    "h1": "HTS Chapter 90: Optical, Photographic, Cinematographic, Measuring, Checking, Precision, Medical or Surgical Instruments and Apparatus; Parts and Accessories Thereof — U.S. Export FAQ",
+    "seo": {
+      "title": "U.S. Medical Device & Instrument Export FAQ (HTS Ch. 90) | KoalaGains",
+      "shortDescription": "Short answers on foreign tariffs on U.S. medical devices, FDA export certificates, exporting unapproved devices, export licences and which countries buy the most.",
+      "keywords": [
+        "fda export certificate medical device",
+        "export license for medical devices",
+        "china tariff on us medical devices",
+        "eu tariff on us medical devices",
+        "export unapproved medical device"
+      ]
+    },
+    "lastCheckedAt": "2026-10-20"
+  },
+  "intro": "Short answers to real questions people search about exporting U.S. medical devices and precision instruments, each with a link to the page that has the detail.",
+  "keyTakeaways": [
+    "Canada, Mexico, South Korea, Singapore and Australia charge no tariff on qualifying U.S. instruments, and the EU cut its remaining tariffs to zero on July 1, 2026; China adds a 10% extra duty.",
+    "For medical devices the FDA, not a tariff, sets what can be exported: a legally marketed device can go anywhere, an unapproved one only under FD&C Act section 801(e)(1) or 802, and FDA issues export certificates on request.",
+    "Most instruments need no export licence, but lasers, thermal imagers, navigation equipment and some inspection tools do, and Russia and Belarus licences cover nearly every heading."
+  ],
+  "questionSource": "Google search-suggestion queries for \"fda medical device export certificate\", \"export licence medical devices\", \"export medical device fda\" and \"medical device export certificate\".",
+  "faqs": [
+    {
+      "id": "china-device-tariff",
+      "question": "Does China charge extra tariffs on U.S. medical devices?",
+      "searchedAs": [],
+      "answer": "Yes. China charges its MFN rate plus a 10% extra duty on all U.S. goods, in force since May 2025; U.S. exports of instruments to China fell 11.7% to $9.91B in 2025. China's Board of Trade list names 43 U.S. medical-device lines for possible lower tariffs, but no cut has been published.",
+      "link": "exports/markets"
+    },
+    {
+      "id": "eu-device-tariff",
+      "question": "What tariff does the EU charge on U.S. medical devices and instruments?",
+      "searchedAs": [],
+      "answer": "None since July 1, 2026. Regulation (EU) 2026/1455 cut the EU's remaining tariffs on instruments to zero for U.S.-origin goods; it applies until December 31, 2029 and the Commission can suspend it. Most medical instruments already entered at low or zero rates. A CE mark under the Medical Device Regulation is still required.",
+      "link": "exports/markets"
+    },
+    {
+      "id": "north-america-instruments",
+      "question": "Do Canada and Mexico charge tariffs on U.S. instruments?",
+      "searchedAs": [],
+      "answer": "Not on qualifying goods under USMCA, and none of Canada's counter-tariff lists reaches this chapter. Canada ($10.77B) and Mexico ($10.63B) together took 20% of the $106.33B exported in 2025.",
+      "link": "exports/markets"
+    },
+    {
+      "id": "who-buys-instruments",
+      "question": "Who buys the most U.S. medical devices and instruments?",
+      "searchedAs": [],
+      "answer": "The EU is the largest market ($30.81B, 29%), led by the Netherlands ($12.12B) and Germany ($6.51B), followed by Canada ($10.77B), Mexico ($10.63B), China ($9.91B) and Japan ($7.15B).",
+      "link": "exports"
+    },
+    {
+      "id": "fda-export-certificate",
+      "question": "How do I get an FDA export certificate for a medical device?",
+      "searchedAs": ["fda medical device export certificate", "medical device export certificate"],
+      "answer": "Apply to FDA for a Certificate to Foreign Government (CFG) for a device that is legally marketed in the U.S. and exported from the U.S.; many importing countries ask for it. Export permit letters and simple notifications carry no fee. FDA reviews and issues certificates electronically.",
+      "link": "exports/rules"
+    },
+    {
+      "id": "unapproved-device-export",
+      "question": "Can I export a medical device that FDA has not cleared?",
+      "searchedAs": ["fda medical device export requirements"],
+      "answer": "Only under the FD&C Act: section 801(e)(1) allows export of a device that is labeled for export, not sold in the U.S. and meets the importing country's requirements; section 802 allows export of certain Class II or III devices to listed countries after a notification to FDA. Investigational devices need FDA's prior approval of the export or compliance with section 802.",
+      "link": "exports/rules"
+    },
+    {
+      "id": "device-export-licence",
+      "question": "Do I need an export licence for medical devices?",
+      "searchedAs": ["export license for medical devices", "export licence medical devices"],
+      "answer": "Usually not from Commerce: most medical devices are EAR99. A licence can be needed for controlled items such as lasers, thermal imagers and navigation equipment, for devices shipped to embargoed countries, and for the many instruments on the Russia and Belarus lists. The FDA rules are separate.",
+      "link": "exports/rules"
+    },
+    {
+      "id": "controlled-instruments",
+      "question": "Which instruments need a Commerce export licence?",
+      "searchedAs": [],
+      "answer": "Lasers (ECCN 6A005), thermal-imaging cameras and image sensors (6A002, 6A003), gyroscopes (7A002), satellite-navigation receivers (7A005) and dimensional-inspection machines (2B006), depending on their specifications; military night-vision and weapon optics fall under the State Department's ITAR instead.",
+      "link": "exports/rules"
+    },
+    {
+      "id": "schedule-b-medical",
+      "question": "What is the Schedule B code for medical instruments?",
+      "searchedAs": [],
+      "answer": "Medical, surgical and dental instruments are in 9018, and implants and orthopedic devices in 9021. The largest 2025 export lines were 9018.90 ($18.57B) and 9018.39 ($7.96B). Look up the full 10-digit number in the Census Bureau's Schedule B search.",
+      "link": "exports/rules"
+    },
+    {
+      "id": "taiwan-fda",
+      "question": "Will Taiwan accept U.S. FDA approvals for medical devices?",
+      "searchedAs": [],
+      "answer": "Under the U.S.–Taiwan Agreement on Reciprocal Trade signed in February 2026, Taiwan will accept U.S. FDA marketing authorizations for medical devices without additional entry requirements, but the agreement takes effect only after Taiwan's legislature reviews it, and we found no notice that it has.",
+      "link": "exports/tariff-updates"
+    }
+  ]
+}

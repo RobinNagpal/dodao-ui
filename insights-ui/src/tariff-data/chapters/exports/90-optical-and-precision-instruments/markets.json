@@ -1,0 +1,2273 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 90,
+    "padded": "90",
+    "slug": "90-optical-and-precision-instruments",
+    "title": "Optical, Photographic, Cinematographic, Measuring, Checking, Precision, Medical or Surgical Instruments and Apparatus; Parts and Accessories Thereof"
+  },
+  "page": {
+    "slug": "exports/markets",
+    "path": "/industry-tariff-report/exports/chapters/90-optical-and-precision-instruments/markets",
+    "h1": "HTS Chapter 90: Optical, Photographic, Cinematographic, Measuring, Checking, Precision, Medical or Surgical Instruments and Apparatus; Parts and Accessories Thereof — Export Markets & Foreign Tariffs on U.S. Goods",
+    "seo": {
+      "title": "Tariffs on U.S. Medical & Precision Instruments by Market (HTS Ch. 90) | KoalaGains",
+      "shortDescription": "What the EU, Canada, Mexico, China, Japan and Korea charge on U.S. medical devices, lab instruments and measuring equipment, by market and product, with each market's device-approval rules.",
+      "keywords": [
+        "tariff on US medical devices",
+        "China tariff on US medical devices",
+        "EU tariff on US medical devices",
+        "US instruments export markets",
+        "HS 90 export markets"
+      ]
+    },
+    "lastCheckedAt": "2026-10-20"
+  },
+  "intro": "Tariffs are a small obstacle for this chapter: Canada, Mexico, South Korea, Singapore and (since July 1, 2026) the EU charge nothing on U.S. instruments, and Japan, Taiwan and the UK charge low MFN rates. China is the exception, adding a flat 10% on top of its own rates. What decides whether a U.S. device can be sold is regulatory approval — a CE mark under the EU's Medical Device Regulation, a Health Canada licence, NMPA registration in China, PMDA approval in Japan — and, for lasers, thermal-imaging, navigation and some inspection equipment, U.S. export controls (see Export rules). Each market's regulator is listed below.",
+  "tradeYear": 2025,
+  "tariffYear": 2026,
+  "valueBasis": "FOB value of U.S. exports, as reported by the United States to UN Comtrade.",
+  "groups": [
+    {
+      "heading": "9001",
+      "label": "Optical fibers, contact lenses, spectacle lenses & unmounted optics",
+      "shortLabel": "Fibers & lenses"
+    },
+    {
+      "heading": "9002",
+      "label": "Mounted lenses, filters, prisms & mirrors for instruments",
+      "shortLabel": "Mounted optics"
+    },
+    {
+      "heading": "9003",
+      "label": "Eyeglass frames & parts",
+      "shortLabel": "Eyeglass frames"
+    },
+    {
+      "heading": "9004",
+      "label": "Sunglasses, safety glasses & goggles",
+      "shortLabel": "Sunglasses & goggles"
+    },
+    {
+      "heading": "9005",
+      "label": "Binoculars, telescopes & astronomical instruments",
+      "shortLabel": "Binoculars & telescopes"
+    },
+    {
+      "heading": "9006",
+      "label": "Still cameras, flash units & parts",
+      "shortLabel": "Cameras"
+    },
+    {
+      "heading": "9007",
+      "label": "Cinematographic cameras & projectors",
+      "shortLabel": "Cine cameras"
+    },
+    {
+      "heading": "9008",
+      "label": "Image projectors, enlargers & reducers",
+      "shortLabel": "Projectors"
+    },
+    {
+      "heading": "9010",
+      "label": "Photo lab equipment, negatoscopes & projection screens",
+      "shortLabel": "Photo lab & screens"
+    },
+    {
+      "heading": "9011",
+      "label": "Optical microscopes",
+      "shortLabel": "Optical microscopes"
+    },
+    {
+      "heading": "9012",
+      "label": "Electron microscopes & diffraction apparatus",
+      "shortLabel": "Electron microscopes"
+    },
+    {
+      "heading": "9013",
+      "label": "Lasers, rifle scopes, magnifiers & other optical devices",
+      "shortLabel": "Lasers & optical devices"
+    },
+    {
+      "heading": "9014",
+      "label": "Compasses, autopilots & navigational instruments",
+      "shortLabel": "Navigation instruments"
+    },
+    {
+      "heading": "9015",
+      "label": "Surveying, rangefinders, weather & geophysical instruments",
+      "shortLabel": "Surveying & weather"
+    },
+    {
+      "heading": "9016",
+      "label": "Precision balances (5 cg or better)",
+      "shortLabel": "Precision balances"
+    },
+    {
+      "heading": "9017",
+      "label": "Drafting instruments, calipers, micrometers & measuring tapes",
+      "shortLabel": "Drafting & hand measuring"
+    },
+    {
+      "heading": "9018",
+      "label": "Medical, surgical, dental & veterinary instruments (incl. syringes, catheters, ECG, ultrasound, MRI)",
+      "shortLabel": "Medical instruments"
+    },
+    {
+      "heading": "9019",
+      "label": "Massage & mechano-therapy apparatus, oxygen therapy, ventilators & CPAP",
+      "shortLabel": "Therapy & respiratory"
+    },
+    {
+      "heading": "9020",
+      "label": "Breathing appliances & gas masks",
+      "shortLabel": "Breathing appliances"
+    },
+    {
+      "heading": "9021",
+      "label": "Orthopedic devices, implants, artificial joints, hearing aids & pacemakers",
+      "shortLabel": "Orthopedics & implants"
+    },
+    {
+      "heading": "9022",
+      "label": "X-ray, CT & radiotherapy apparatus and X-ray tubes",
+      "shortLabel": "X-ray & CT"
+    },
+    {
+      "heading": "9023",
+      "label": "Demonstration instruments & models",
+      "shortLabel": "Demonstration models"
+    },
+    {
+      "heading": "9024",
+      "label": "Materials-testing machines (hardness, strength)",
+      "shortLabel": "Materials testing"
+    },
+    {
+      "heading": "9025",
+      "label": "Thermometers, pyrometers, barometers, hydrometers & hygrometers",
+      "shortLabel": "Thermometers & gauges"
+    },
+    {
+      "heading": "9026",
+      "label": "Flow meters, level gauges & pressure instruments",
+      "shortLabel": "Flow & pressure"
+    },
+    {
+      "heading": "9027",
+      "label": "Laboratory analysis instruments: spectrometers, chromatographs, analyzers",
+      "shortLabel": "Lab analyzers"
+    },
+    {
+      "heading": "9028",
+      "label": "Gas, liquid & electricity supply meters",
+      "shortLabel": "Utility meters"
+    },
+    {
+      "heading": "9029",
+      "label": "Counters, taximeters, speedometers & tachometers",
+      "shortLabel": "Counters & speedometers"
+    },
+    {
+      "heading": "9030",
+      "label": "Oscilloscopes, multimeters, electrical test & radiation-measuring instruments",
+      "shortLabel": "Electrical test"
+    },
+    {
+      "heading": "9031",
+      "label": "Measuring & inspection machines: CMMs, wafer and mask inspection, test benches",
+      "shortLabel": "Measuring & inspection"
+    },
+    {
+      "heading": "9032",
+      "label": "Thermostats, manostats & automatic regulating instruments",
+      "shortLabel": "Thermostats & controls"
+    },
+    {
+      "heading": "9033",
+      "label": "Parts & accessories not specified elsewhere in Chapter 90",
+      "shortLabel": "Other parts"
+    }
+  ],
+  "markets": [
+    {
+      "countryCode": 97,
+      "name": "European Union",
+      "rule": "EU–U.S. framework zero tariff (Regulation (EU) 2026/1455, Annex I lists chapters 39 to 97 in full) from July 1, 2026 to December 31, 2029, replacing the EU common external tariff",
+      "usTradeAgreement": null,
+      "exportsUsd": 30807110980,
+      "priorExportsUsd": 30791228606,
+      "sharePct": 29,
+      "changePct": 0.1,
+      "status": "lowered",
+      "members": [
+        {
+          "countryCode": 528,
+          "country": "Netherlands",
+          "exportsUsd": 12116424796,
+          "priorExportsUsd": 11743147324,
+          "changePct": 3.2
+        },
+        {
+          "countryCode": 276,
+          "country": "Germany",
+          "exportsUsd": 6505812173,
+          "priorExportsUsd": 6780240784,
+          "changePct": -4
+        },
+        {
+          "countryCode": 56,
+          "country": "Belgium",
+          "exportsUsd": 3388411846,
+          "priorExportsUsd": 3496870606,
+          "changePct": -3.1
+        },
+        {
+          "countryCode": 251,
+          "country": "France",
+          "exportsUsd": 2287149513,
+          "priorExportsUsd": 2345164192,
+          "changePct": -2.5
+        },
+        {
+          "countryCode": 372,
+          "country": "Ireland",
+          "exportsUsd": 1691193641,
+          "priorExportsUsd": 1588766753,
+          "changePct": 6.4
+        }
+      ],
+      "cells": {
+        "9001": {
+          "exportsUsd": 583392673,
+          "rate": "Free (EU–US framework)",
+          "normalRate": "2.9% MFN (EU rate before July 2026)",
+          "basis": "Regulation (EU) 2026/1455, Annex I (chapters 39 to 97 listed in full), from July 1, 2026; WITS/TRAINS simple-average MFN 2.9% for HS 900130 (2023) before that date"
+        },
+        "9002": {
+          "exportsUsd": 217303944,
+          "rate": "Free (EU–US framework)",
+          "normalRate": "0.8% MFN (EU rate before July 2026)",
+          "basis": "Regulation (EU) 2026/1455, Annex I (chapters 39 to 97 listed in full), from July 1, 2026; WITS/TRAINS simple-average MFN 0.8% for HS 900290 (2023) before that date"
+        },
+        "9003": {
+          "exportsUsd": 28695990,
+          "rate": "Free (EU–US framework)",
+          "normalRate": "2.2% MFN (EU rate before July 2026)",
+          "basis": "Regulation (EU) 2026/1455, Annex I (chapters 39 to 97 listed in full), from July 1, 2026; WITS/TRAINS simple-average MFN 2.2% for HS 900311 (2023) before that date"
+        },
+        "9004": {
+          "exportsUsd": 202047826,
+          "rate": "Free (EU–US framework)",
+          "normalRate": "2.9% MFN (EU rate before July 2026)",
+          "basis": "Regulation (EU) 2026/1455, Annex I (chapters 39 to 97 listed in full), from July 1, 2026; WITS/TRAINS simple-average MFN 2.9% for HS 900410 (2023) before that date"
+        },
+        "9005": {
+          "exportsUsd": 68286594,
+          "rate": "Free (EU–US framework)",
+          "normalRate": "4.2% MFN (EU rate before July 2026)",
+          "basis": "Regulation (EU) 2026/1455, Annex I (chapters 39 to 97 listed in full), from July 1, 2026; WITS/TRAINS simple-average MFN 4.2% for HS 900510 (2023) before that date"
+        },
+        "9006": {
+          "exportsUsd": 85913068,
+          "rate": "Free (EU–US framework)",
+          "normalRate": "4.2% MFN (EU rate before July 2026)",
+          "basis": "Regulation (EU) 2026/1455, Annex I (chapters 39 to 97 listed in full), from July 1, 2026; WITS/TRAINS simple-average MFN 4.2% for HS 900630 (2023) before that date"
+        },
+        "9007": {
+          "exportsUsd": 13540690,
+          "rate": "Free (EU–US framework)",
+          "normalRate": "3.7% MFN (EU rate before July 2026)",
+          "basis": "Regulation (EU) 2026/1455, Annex I (chapters 39 to 97 listed in full), from July 1, 2026; WITS/TRAINS simple-average MFN 3.7% for HS 900791 (2023) before that date"
+        },
+        "9008": {
+          "exportsUsd": 3846709,
+          "rate": "Free (EU–US framework)",
+          "normalRate": "3.7% MFN (EU rate before July 2026)",
+          "basis": "Regulation (EU) 2026/1455, Annex I (chapters 39 to 97 listed in full), from July 1, 2026; WITS/TRAINS simple-average MFN 3.7% for HS 900850 (2023) before that date"
+        },
+        "9010": {
+          "exportsUsd": 6595132,
+          "rate": "Free (EU–US framework)",
+          "normalRate": null,
+          "basis": "Regulation (EU) 2026/1455, Annex I (chapters 39 to 97 listed in full), from July 1, 2026; WITS/TRAINS simple-average MFN 0% for HS 901050 (2023) before that date"
+        },
+        "9011": {
+          "exportsUsd": 108782874,
+          "rate": "Free (EU–US framework)",
+          "normalRate": null,
+          "basis": "Regulation (EU) 2026/1455, Annex I (chapters 39 to 97 listed in full), from July 1, 2026; WITS/TRAINS simple-average MFN 0% for HS 901180 (2023) before that date"
+        },
+        "9012": {
+          "exportsUsd": 137117102,
+          "rate": "Free (EU–US framework)",
+          "normalRate": null,
+          "basis": "Regulation (EU) 2026/1455, Annex I (chapters 39 to 97 listed in full), from July 1, 2026; WITS/TRAINS simple-average MFN 0% for HS 901290 (2023) before that date"
+        },
+        "9013": {
+          "exportsUsd": 1137932905,
+          "rate": "Free (EU–US framework)",
+          "normalRate": null,
+          "basis": "Regulation (EU) 2026/1455, Annex I (chapters 39 to 97 listed in full), from July 1, 2026; WITS/TRAINS simple-average MFN 0% for HS 901320 (2023) before that date"
+        },
+        "9014": {
+          "exportsUsd": 343119371,
+          "rate": "Free (EU–US framework)",
+          "normalRate": null,
+          "basis": "Regulation (EU) 2026/1455, Annex I (chapters 39 to 97 listed in full), from July 1, 2026; WITS/TRAINS simple-average MFN 0% for HS 901490 (2023) before that date"
+        },
+        "9015": {
+          "exportsUsd": 244992912,
+          "rate": "Free (EU–US framework)",
+          "normalRate": null,
+          "basis": "Regulation (EU) 2026/1455, Annex I (chapters 39 to 97 listed in full), from July 1, 2026; WITS/TRAINS simple-average MFN 0% for HS 901580 (2023) before that date"
+        },
+        "9016": {
+          "exportsUsd": 4180552,
+          "rate": "Free (EU–US framework)",
+          "normalRate": "3.7% MFN (EU rate before July 2026)",
+          "basis": "Regulation (EU) 2026/1455, Annex I (chapters 39 to 97 listed in full), from July 1, 2026; WITS/TRAINS simple-average MFN 3.7% for HS 901600 (2023) before that date"
+        },
+        "9017": {
+          "exportsUsd": 28843522,
+          "rate": "Free (EU–US framework)",
+          "normalRate": "2% MFN (EU rate before July 2026)",
+          "basis": "Regulation (EU) 2026/1455, Annex I (chapters 39 to 97 listed in full), from July 1, 2026; WITS/TRAINS simple-average MFN 2% for HS 901720 (2023) before that date"
+        },
+        "9018": {
+          "exportsUsd": 12231457605,
+          "rate": "Free (EU–US framework)",
+          "normalRate": null,
+          "basis": "Regulation (EU) 2026/1455, Annex I (chapters 39 to 97 listed in full), from July 1, 2026; WITS/TRAINS simple-average MFN 0% for HS 901890 (2023) before that date"
+        },
+        "9019": {
+          "exportsUsd": 375609447,
+          "rate": "Free (EU–US framework)",
+          "normalRate": null,
+          "basis": "Regulation (EU) 2026/1455, Annex I (chapters 39 to 97 listed in full), from July 1, 2026; WITS/TRAINS simple-average MFN 0% for HS 901920 (2023) before that date"
+        },
+        "9020": {
+          "exportsUsd": 128904281,
+          "rate": "Free (EU–US framework)",
+          "normalRate": "1.7% MFN (EU rate before July 2026)",
+          "basis": "Regulation (EU) 2026/1455, Annex I (chapters 39 to 97 listed in full), from July 1, 2026; WITS/TRAINS simple-average MFN 1.7% for HS 902000 (2023) before that date"
+        },
+        "9021": {
+          "exportsUsd": 6056124394,
+          "rate": "Free (EU–US framework)",
+          "normalRate": null,
+          "basis": "Regulation (EU) 2026/1455, Annex I (chapters 39 to 97 listed in full), from July 1, 2026; WITS/TRAINS simple-average MFN 0% for HS 902139 (2023) before that date"
+        },
+        "9022": {
+          "exportsUsd": 950585703,
+          "rate": "Free (EU–US framework)",
+          "normalRate": "1% MFN (EU rate before July 2026)",
+          "basis": "Regulation (EU) 2026/1455, Annex I (chapters 39 to 97 listed in full), from July 1, 2026; WITS/TRAINS simple-average MFN 1% for HS 902290 (2023) before that date"
+        },
+        "9023": {
+          "exportsUsd": 211117236,
+          "rate": "Free (EU–US framework)",
+          "normalRate": null,
+          "basis": "Regulation (EU) 2026/1455, Annex I (chapters 39 to 97 listed in full), from July 1, 2026; WITS/TRAINS simple-average MFN 0% for HS 902300 (2023) before that date"
+        },
+        "9024": {
+          "exportsUsd": 108480514,
+          "rate": "Free (EU–US framework)",
+          "normalRate": null,
+          "basis": "Regulation (EU) 2026/1455, Annex I (chapters 39 to 97 listed in full), from July 1, 2026; WITS/TRAINS simple-average MFN 0% for HS 902480 (2023) before that date"
+        },
+        "9025": {
+          "exportsUsd": 246093975,
+          "rate": "Free (EU–US framework)",
+          "normalRate": null,
+          "basis": "Regulation (EU) 2026/1455, Annex I (chapters 39 to 97 listed in full), from July 1, 2026; WITS/TRAINS simple-average MFN 0% for HS 902519 (2023) before that date"
+        },
+        "9026": {
+          "exportsUsd": 765679039,
+          "rate": "Free (EU–US framework)",
+          "normalRate": null,
+          "basis": "Regulation (EU) 2026/1455, Annex I (chapters 39 to 97 listed in full), from July 1, 2026; WITS/TRAINS simple-average MFN 0% for HS 902620 (2023) before that date"
+        },
+        "9027": {
+          "exportsUsd": 3360793342,
+          "rate": "Free (EU–US framework)",
+          "normalRate": null,
+          "basis": "Regulation (EU) 2026/1455, Annex I (chapters 39 to 97 listed in full), from July 1, 2026; WITS/TRAINS simple-average MFN 0% for HS 902790 (2023) before that date"
+        },
+        "9028": {
+          "exportsUsd": 19131389,
+          "rate": "Free (EU–US framework)",
+          "normalRate": null,
+          "basis": "Regulation (EU) 2026/1455, Annex I (chapters 39 to 97 listed in full), from July 1, 2026; WITS/TRAINS simple-average MFN 0% for HS 902890 (2023) before that date"
+        },
+        "9029": {
+          "exportsUsd": 29163632,
+          "rate": "Free (EU–US framework)",
+          "normalRate": "2.6% MFN (EU rate before July 2026)",
+          "basis": "Regulation (EU) 2026/1455, Annex I (chapters 39 to 97 listed in full), from July 1, 2026; WITS/TRAINS simple-average MFN 2.6% for HS 902920 (2023) before that date"
+        },
+        "9030": {
+          "exportsUsd": 944823219,
+          "rate": "Free (EU–US framework)",
+          "normalRate": null,
+          "basis": "Regulation (EU) 2026/1455, Annex I (chapters 39 to 97 listed in full), from July 1, 2026; WITS/TRAINS simple-average MFN 0% for HS 903090 (2023) before that date"
+        },
+        "9031": {
+          "exportsUsd": 1267974861,
+          "rate": "Free (EU–US framework)",
+          "normalRate": null,
+          "basis": "Regulation (EU) 2026/1455, Annex I (chapters 39 to 97 listed in full), from July 1, 2026; WITS/TRAINS simple-average MFN 0% for HS 903180 (2023) before that date"
+        },
+        "9032": {
+          "exportsUsd": 702473291,
+          "rate": "Free (EU–US framework)",
+          "normalRate": "2.8% MFN (EU rate before July 2026)",
+          "basis": "Regulation (EU) 2026/1455, Annex I (chapters 39 to 97 listed in full), from July 1, 2026; WITS/TRAINS simple-average MFN 2.8% for HS 903289 (2023) before that date"
+        },
+        "9033": {
+          "exportsUsd": 194107188,
+          "rate": "Free (EU–US framework)",
+          "normalRate": "1.9% MFN (EU rate before July 2026)",
+          "basis": "Regulation (EU) 2026/1455, Annex I (chapters 39 to 97 listed in full), from July 1, 2026; WITS/TRAINS simple-average MFN 1.9% for HS 903300 (2023) before that date"
+        }
+      },
+      "profile": {
+        "headline": "The EU is the largest market ($30.81B, 29% of the chapter), and the Netherlands alone buys $12.12B — the largest single buyer — followed by Germany ($6.51B). Most medical instruments already entered at 0–4.2%; the 2026 framework removes the rest. The real gate is the Medical Device Regulation: a CE mark, and an EU authorised representative for a non-EU manufacturer.",
+        "mainProducts": "Medical, surgical, dental & veterinary instruments (incl. syringes, catheters, ECG, ultrasound, MRI) (9018) · Orthopedic devices, implants, artificial joints, hearing aids & pacemakers (9021)",
+        "tariffNow": "Free (EU–US framework)",
+        "regulator": {
+          "name": "EU Medical Device Regulation (Regulation (EU) 2017/745) and notified bodies",
+          "url": "https://health.ec.europa.eu/medical-devices-sector/overview_en",
+          "requirement": "Medical devices need a CE mark under the MDR (self-declared for the lowest-risk class, notified-body assessment for others) and a non-EU manufacturer must appoint an EU authorised representative"
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: EU import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/eu-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 124,
+      "name": "Canada",
+      "rule": "CUSMA preferential tariff: 0% for U.S.-origin goods that meet the agreement's rules of origin. Canada's September 2026 counter-tariff list has no Chapter 90 item",
+      "usTradeAgreement": "USMCA (CUSMA in Canada)",
+      "exportsUsd": 10773621295,
+      "priorExportsUsd": 10782927320,
+      "sharePct": 10.1,
+      "changePct": -0.1,
+      "status": "unchanged",
+      "cells": {
+        "9001": {
+          "exportsUsd": 361343284,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada; WITS/TRAINS simple-average MFN 0% for HS 900130 (2023); certificate of origin required. Canada's September 2026 counter-tariff list has no Chapter 90 item"
+        },
+        "9002": {
+          "exportsUsd": 86172892,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada; WITS/TRAINS simple-average MFN 0% for HS 900290 (2023); certificate of origin required. Canada's September 2026 counter-tariff list has no Chapter 90 item"
+        },
+        "9003": {
+          "exportsUsd": 103346844,
+          "rate": "Free (CUSMA)",
+          "normalRate": "1.2% MFN",
+          "basis": "CUSMA Tariff Schedule of Canada; WITS/TRAINS simple-average MFN 1.2% for HS 900311 (2023); certificate of origin required. Canada's September 2026 counter-tariff list has no Chapter 90 item"
+        },
+        "9004": {
+          "exportsUsd": 214564314,
+          "rate": "Free (CUSMA)",
+          "normalRate": "5% MFN",
+          "basis": "CUSMA Tariff Schedule of Canada; WITS/TRAINS simple-average MFN 5% for HS 900410 (2023); certificate of origin required. Canada's September 2026 counter-tariff list has no Chapter 90 item"
+        },
+        "9005": {
+          "exportsUsd": 25820732,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada; WITS/TRAINS simple-average MFN 0% for HS 900510 (2023); certificate of origin required. Canada's September 2026 counter-tariff list has no Chapter 90 item"
+        },
+        "9006": {
+          "exportsUsd": 14835785,
+          "rate": "Free (CUSMA)",
+          "normalRate": "2.5% MFN",
+          "basis": "CUSMA Tariff Schedule of Canada; WITS/TRAINS simple-average MFN 2.5% for HS 900630 (2023); certificate of origin required. Canada's September 2026 counter-tariff list has no Chapter 90 item"
+        },
+        "9007": {
+          "exportsUsd": 11984335,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada; WITS/TRAINS simple-average MFN 0% for HS 900791 (2023); certificate of origin required. Canada's September 2026 counter-tariff list has no Chapter 90 item"
+        },
+        "9008": {
+          "exportsUsd": 2184381,
+          "rate": "Free (CUSMA)",
+          "normalRate": "3.5% MFN",
+          "basis": "CUSMA Tariff Schedule of Canada; WITS/TRAINS simple-average MFN 3.5% for HS 900850 (2023); certificate of origin required. Canada's September 2026 counter-tariff list has no Chapter 90 item"
+        },
+        "9010": {
+          "exportsUsd": 12404378,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada; WITS/TRAINS simple-average MFN 0% for HS 901050 (2023); certificate of origin required. Canada's September 2026 counter-tariff list has no Chapter 90 item"
+        },
+        "9011": {
+          "exportsUsd": 23132706,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada; WITS/TRAINS simple-average MFN 0% for HS 901180 (2023); certificate of origin required. Canada's September 2026 counter-tariff list has no Chapter 90 item"
+        },
+        "9012": {
+          "exportsUsd": 8353575,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada; WITS/TRAINS simple-average MFN 0% for HS 901290 (2023); certificate of origin required. Canada's September 2026 counter-tariff list has no Chapter 90 item"
+        },
+        "9013": {
+          "exportsUsd": 173417112,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada; WITS/TRAINS simple-average MFN 0% for HS 901320 (2023); certificate of origin required. Canada's September 2026 counter-tariff list has no Chapter 90 item"
+        },
+        "9014": {
+          "exportsUsd": 214003847,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada; WITS/TRAINS simple-average MFN 0% for HS 901490 (2023); certificate of origin required. Canada's September 2026 counter-tariff list has no Chapter 90 item"
+        },
+        "9015": {
+          "exportsUsd": 210086830,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada; WITS/TRAINS simple-average MFN 0% for HS 901580 (2023); certificate of origin required. Canada's September 2026 counter-tariff list has no Chapter 90 item"
+        },
+        "9016": {
+          "exportsUsd": 10119009,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada; WITS/TRAINS simple-average MFN 0% for HS 901600 (2023); certificate of origin required. Canada's September 2026 counter-tariff list has no Chapter 90 item"
+        },
+        "9017": {
+          "exportsUsd": 51860004,
+          "rate": "Free (CUSMA)",
+          "normalRate": "1.2% MFN",
+          "basis": "CUSMA Tariff Schedule of Canada; WITS/TRAINS simple-average MFN 1.2% for HS 901720 (2023); certificate of origin required. Canada's September 2026 counter-tariff list has no Chapter 90 item"
+        },
+        "9018": {
+          "exportsUsd": 3284472586,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada; WITS/TRAINS simple-average MFN 0% for HS 901890 (2023); certificate of origin required. Canada's September 2026 counter-tariff list has no Chapter 90 item"
+        },
+        "9019": {
+          "exportsUsd": 454839289,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada; WITS/TRAINS simple-average MFN 0% for HS 901920 (2023); certificate of origin required. Canada's September 2026 counter-tariff list has no Chapter 90 item"
+        },
+        "9020": {
+          "exportsUsd": 127857007,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada; WITS/TRAINS simple-average MFN 0% for HS 902000 (2023); certificate of origin required. Canada's September 2026 counter-tariff list has no Chapter 90 item"
+        },
+        "9021": {
+          "exportsUsd": 1206332964,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada; WITS/TRAINS simple-average MFN 0% for HS 902139 (2023); certificate of origin required. Canada's September 2026 counter-tariff list has no Chapter 90 item"
+        },
+        "9022": {
+          "exportsUsd": 331384478,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada; WITS/TRAINS simple-average MFN 0% for HS 902290 (2023); certificate of origin required. Canada's September 2026 counter-tariff list has no Chapter 90 item"
+        },
+        "9023": {
+          "exportsUsd": 79507498,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada; WITS/TRAINS simple-average MFN 0% for HS 902300 (2023); certificate of origin required. Canada's September 2026 counter-tariff list has no Chapter 90 item"
+        },
+        "9024": {
+          "exportsUsd": 42020594,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada; WITS/TRAINS simple-average MFN 0% for HS 902480 (2023); certificate of origin required. Canada's September 2026 counter-tariff list has no Chapter 90 item"
+        },
+        "9025": {
+          "exportsUsd": 133388484,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada; WITS/TRAINS simple-average MFN 0% for HS 902519 (2023); certificate of origin required. Canada's September 2026 counter-tariff list has no Chapter 90 item"
+        },
+        "9026": {
+          "exportsUsd": 648515630,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada; WITS/TRAINS simple-average MFN 0% for HS 902620 (2023); certificate of origin required. Canada's September 2026 counter-tariff list has no Chapter 90 item"
+        },
+        "9027": {
+          "exportsUsd": 771430542,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada; WITS/TRAINS simple-average MFN 0% for HS 902790 (2023); certificate of origin required. Canada's September 2026 counter-tariff list has no Chapter 90 item"
+        },
+        "9028": {
+          "exportsUsd": 373806682,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada; WITS/TRAINS simple-average MFN 0% for HS 902890 (2023); certificate of origin required. Canada's September 2026 counter-tariff list has no Chapter 90 item"
+        },
+        "9029": {
+          "exportsUsd": 203582895,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada; WITS/TRAINS simple-average MFN 0% for HS 902920 (2023); certificate of origin required. Canada's September 2026 counter-tariff list has no Chapter 90 item"
+        },
+        "9030": {
+          "exportsUsd": 370512506,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada; WITS/TRAINS simple-average MFN 0% for HS 903090 (2023); certificate of origin required. Canada's September 2026 counter-tariff list has no Chapter 90 item"
+        },
+        "9031": {
+          "exportsUsd": 609299298,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada; WITS/TRAINS simple-average MFN 0% for HS 903180 (2023); certificate of origin required. Canada's September 2026 counter-tariff list has no Chapter 90 item"
+        },
+        "9032": {
+          "exportsUsd": 590904176,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada; WITS/TRAINS simple-average MFN 0% for HS 903289 (2023); certificate of origin required. Canada's September 2026 counter-tariff list has no Chapter 90 item"
+        },
+        "9033": {
+          "exportsUsd": 22136638,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada; WITS/TRAINS simple-average MFN 0% for HS 903300 (2023); certificate of origin required. Canada's September 2026 counter-tariff list has no Chapter 90 item"
+        }
+      },
+      "profile": {
+        "headline": "Canada ($10.77B, flat) takes mostly medical instruments (9018, $3.28B) and implants. Everything qualifying enters free, and none of Canada's surtax lists reach this chapter. Class II–IV devices need a Health Canada medical device licence before they can be sold.",
+        "mainProducts": "Medical, surgical, dental & veterinary instruments (incl. syringes, catheters, ECG, ultrasound, MRI) (9018) · Orthopedic devices, implants, artificial joints, hearing aids & pacemakers (9021)",
+        "tariffNow": "Free (CUSMA)",
+        "regulator": {
+          "name": "Health Canada (medical device licence and establishment licence)",
+          "url": "https://www.canada.ca/en/health-canada/services/drugs-health-products/compliance-enforcement/importation-exportation/regulatory-importing-medical-devices.html",
+          "requirement": "Class II, III and IV devices cannot be sold or imported without a Medical Device Licence; importers and distributors need a Medical Device Establishment Licence"
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Canada import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/canada-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 484,
+      "name": "Mexico",
+      "rule": "USMCA preferential tariff: 0% for U.S.-origin goods that meet the agreement's rules of origin",
+      "usTradeAgreement": "USMCA (T-MEC in Mexico)",
+      "exportsUsd": 10630385345,
+      "priorExportsUsd": 11307619029,
+      "sharePct": 10,
+      "changePct": -6,
+      "status": "unchanged",
+      "cells": {
+        "9001": {
+          "exportsUsd": 488554623,
+          "rate": "Free (USMCA)",
+          "normalRate": "5% MFN",
+          "basis": "USMCA Annex 2-B / Mexico's tariff schedule (TIGIE); WITS/TRAINS simple-average MFN 5% for HS 900130 (2023); certificate of origin required"
+        },
+        "9002": {
+          "exportsUsd": 31877626,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Annex 2-B / Mexico's tariff schedule (TIGIE); WITS/TRAINS simple-average MFN 0% for HS 900290 (2023); certificate of origin required"
+        },
+        "9003": {
+          "exportsUsd": 178090085,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Annex 2-B / Mexico's tariff schedule (TIGIE); WITS/TRAINS simple-average MFN 0% for HS 900311 (2023); certificate of origin required"
+        },
+        "9004": {
+          "exportsUsd": 180793791,
+          "rate": "Free (USMCA)",
+          "normalRate": "10% MFN",
+          "basis": "USMCA Annex 2-B / Mexico's tariff schedule (TIGIE); WITS/TRAINS simple-average MFN 10% for HS 900410 (2023); certificate of origin required"
+        },
+        "9005": {
+          "exportsUsd": 2505061,
+          "rate": "Free (USMCA)",
+          "normalRate": "10% MFN",
+          "basis": "USMCA Annex 2-B / Mexico's tariff schedule (TIGIE); WITS/TRAINS simple-average MFN 10% for HS 900510 (2023); certificate of origin required"
+        },
+        "9006": {
+          "exportsUsd": 11594343,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Annex 2-B / Mexico's tariff schedule (TIGIE); WITS/TRAINS simple-average MFN 0% for HS 900630 (2023); certificate of origin required"
+        },
+        "9007": {
+          "exportsUsd": 1487281,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Annex 2-B / Mexico's tariff schedule (TIGIE); WITS/TRAINS simple-average MFN 0% for HS 900791 (2023); certificate of origin required"
+        },
+        "9008": {
+          "exportsUsd": 869888,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Annex 2-B / Mexico's tariff schedule (TIGIE); WITS/TRAINS simple-average MFN 0% for HS 900850 (2023); certificate of origin required"
+        },
+        "9010": {
+          "exportsUsd": 1899493,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Annex 2-B / Mexico's tariff schedule (TIGIE); WITS/TRAINS simple-average MFN 0% for HS 901050 (2023); certificate of origin required"
+        },
+        "9011": {
+          "exportsUsd": 15930944,
+          "rate": "Free (USMCA)",
+          "normalRate": "15% MFN",
+          "basis": "USMCA Annex 2-B / Mexico's tariff schedule (TIGIE); WITS/TRAINS simple-average MFN 15% for HS 901180 (2023); certificate of origin required"
+        },
+        "9012": {
+          "exportsUsd": 3638755,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Annex 2-B / Mexico's tariff schedule (TIGIE); WITS/TRAINS simple-average MFN 0% for HS 901290 (2023); certificate of origin required"
+        },
+        "9013": {
+          "exportsUsd": 81708864,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Annex 2-B / Mexico's tariff schedule (TIGIE); WITS/TRAINS simple-average MFN 0% for HS 901320 (2023); certificate of origin required"
+        },
+        "9014": {
+          "exportsUsd": 52972308,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Annex 2-B / Mexico's tariff schedule (TIGIE); WITS/TRAINS simple-average MFN 0% for HS 901490 (2023); certificate of origin required"
+        },
+        "9015": {
+          "exportsUsd": 57368298,
+          "rate": "Free (USMCA)",
+          "normalRate": "1% MFN",
+          "basis": "USMCA Annex 2-B / Mexico's tariff schedule (TIGIE); WITS/TRAINS simple-average MFN 1% for HS 901580 (2023); certificate of origin required"
+        },
+        "9016": {
+          "exportsUsd": 4681624,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Annex 2-B / Mexico's tariff schedule (TIGIE); WITS/TRAINS simple-average MFN 0% for HS 901600 (2023); certificate of origin required"
+        },
+        "9017": {
+          "exportsUsd": 23110764,
+          "rate": "Free (USMCA)",
+          "normalRate": "7.5% MFN",
+          "basis": "USMCA Annex 2-B / Mexico's tariff schedule (TIGIE); WITS/TRAINS simple-average MFN 7.5% for HS 901720 (2023); certificate of origin required"
+        },
+        "9018": {
+          "exportsUsd": 4613463666,
+          "rate": "Free (USMCA)",
+          "normalRate": "7.2% MFN",
+          "basis": "USMCA Annex 2-B / Mexico's tariff schedule (TIGIE); WITS/TRAINS simple-average MFN 7.2% for HS 901890 (2023); certificate of origin required"
+        },
+        "9019": {
+          "exportsUsd": 159824120,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Annex 2-B / Mexico's tariff schedule (TIGIE); WITS/TRAINS simple-average MFN 0% for HS 901920 (2023); certificate of origin required"
+        },
+        "9020": {
+          "exportsUsd": 20958291,
+          "rate": "Free (USMCA)",
+          "normalRate": "5% MFN",
+          "basis": "USMCA Annex 2-B / Mexico's tariff schedule (TIGIE); WITS/TRAINS simple-average MFN 5% for HS 902000 (2023); certificate of origin required"
+        },
+        "9021": {
+          "exportsUsd": 776880558,
+          "rate": "Free (USMCA)",
+          "normalRate": "3.8% MFN",
+          "basis": "USMCA Annex 2-B / Mexico's tariff schedule (TIGIE); WITS/TRAINS simple-average MFN 3.8% for HS 902139 (2023); certificate of origin required"
+        },
+        "9022": {
+          "exportsUsd": 264418418,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Annex 2-B / Mexico's tariff schedule (TIGIE); WITS/TRAINS simple-average MFN 0% for HS 902290 (2023); certificate of origin required"
+        },
+        "9023": {
+          "exportsUsd": 22922140,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Annex 2-B / Mexico's tariff schedule (TIGIE); WITS/TRAINS simple-average MFN 0% for HS 902300 (2023); certificate of origin required"
+        },
+        "9024": {
+          "exportsUsd": 37683986,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Annex 2-B / Mexico's tariff schedule (TIGIE); WITS/TRAINS simple-average MFN 0% for HS 902480 (2023); certificate of origin required"
+        },
+        "9025": {
+          "exportsUsd": 124167217,
+          "rate": "Free (USMCA)",
+          "normalRate": "3% MFN",
+          "basis": "USMCA Annex 2-B / Mexico's tariff schedule (TIGIE); WITS/TRAINS simple-average MFN 3% for HS 902519 (2023); certificate of origin required"
+        },
+        "9026": {
+          "exportsUsd": 658935688,
+          "rate": "Free (USMCA)",
+          "normalRate": "6.7% MFN",
+          "basis": "USMCA Annex 2-B / Mexico's tariff schedule (TIGIE); WITS/TRAINS simple-average MFN 6.7% for HS 902620 (2023); certificate of origin required"
+        },
+        "9027": {
+          "exportsUsd": 497863887,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Annex 2-B / Mexico's tariff schedule (TIGIE); WITS/TRAINS simple-average MFN 0% for HS 902790 (2023); certificate of origin required"
+        },
+        "9028": {
+          "exportsUsd": 263089127,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Annex 2-B / Mexico's tariff schedule (TIGIE); WITS/TRAINS simple-average MFN 0% for HS 902890 (2023); certificate of origin required"
+        },
+        "9029": {
+          "exportsUsd": 140083463,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Annex 2-B / Mexico's tariff schedule (TIGIE); WITS/TRAINS simple-average MFN 0% for HS 902920 (2023); certificate of origin required"
+        },
+        "9030": {
+          "exportsUsd": 366869655,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Annex 2-B / Mexico's tariff schedule (TIGIE); WITS/TRAINS simple-average MFN 0% for HS 903090 (2023); certificate of origin required"
+        },
+        "9031": {
+          "exportsUsd": 739480795,
+          "rate": "Free (USMCA)",
+          "normalRate": "5% MFN",
+          "basis": "USMCA Annex 2-B / Mexico's tariff schedule (TIGIE); WITS/TRAINS simple-average MFN 5% for HS 903180 (2023); certificate of origin required"
+        },
+        "9032": {
+          "exportsUsd": 742756069,
+          "rate": "Free (USMCA)",
+          "normalRate": "5% MFN",
+          "basis": "USMCA Annex 2-B / Mexico's tariff schedule (TIGIE); WITS/TRAINS simple-average MFN 5% for HS 903289 (2023); certificate of origin required"
+        },
+        "9033": {
+          "exportsUsd": 63904517,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Annex 2-B / Mexico's tariff schedule (TIGIE); WITS/TRAINS simple-average MFN 0% for HS 903300 (2023); certificate of origin required"
+        }
+      },
+      "profile": {
+        "headline": "Mexico ($10.63B, down 6%) buys medical instruments (9018, $4.61B) and a wide range of industrial controls and instruments (9032, 9030, 9026) for its plants. Qualifying goods enter free; devices need a COFEPRIS sanitary registration and a Mexican legal representative, with a faster route for FDA-cleared devices.",
+        "mainProducts": "Medical, surgical, dental & veterinary instruments (incl. syringes, catheters, ECG, ultrasound, MRI) (9018) · Orthopedic devices, implants, artificial joints, hearing aids & pacemakers (9021)",
+        "tariffNow": "Free (USMCA)",
+        "regulator": {
+          "name": "COFEPRIS (sanitary registration of medical devices)",
+          "url": "https://www.gob.mx/cofepris/documentos/registros-dispositivos-medicos",
+          "requirement": "Foreign-made medical devices need a COFEPRIS sanitary registration through a Mexican legal representative, with a free-sale certificate from the origin country; FDA-cleared devices can use an abbreviated route"
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Mexico import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/mexico-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 156,
+      "name": "China",
+      "rule": "China's MFN tariff schedule plus the 10% extra duty on all U.S.-origin goods (in force since May 2025)",
+      "usTradeAgreement": null,
+      "exportsUsd": 9913402027,
+      "priorExportsUsd": 11222672511,
+      "sharePct": 9.3,
+      "changePct": -11.7,
+      "status": "raised",
+      "cells": {
+        "9001": {
+          "exportsUsd": 431563795,
+          "rate": "17% (7% MFN + 10% extra)",
+          "normalRate": "7% (MFN)",
+          "basis": "China customs tariff, 2026 schedule; WITS/TRAINS simple-average MFN 7% for HS 900130 (2023); plus the 10% extra duty on all U.S. goods (Tariff Commission Announcement 2025 No. 7, as extended)"
+        },
+        "9002": {
+          "exportsUsd": 61907623,
+          "rate": "13.8% (3.8% MFN + 10% extra)",
+          "normalRate": "3.8% (MFN)",
+          "basis": "China customs tariff, 2026 schedule; WITS/TRAINS simple-average MFN 3.8% for HS 900290 (2023); plus the 10% extra duty on all U.S. goods (Tariff Commission Announcement 2025 No. 7, as extended)"
+        },
+        "9003": {
+          "exportsUsd": 2944554,
+          "rate": "17% (7% MFN + 10% extra)",
+          "normalRate": "7% (MFN)",
+          "basis": "China customs tariff, 2026 schedule; WITS/TRAINS simple-average MFN 7% for HS 900311 (2023); plus the 10% extra duty on all U.S. goods (Tariff Commission Announcement 2025 No. 7, as extended)"
+        },
+        "9004": {
+          "exportsUsd": 25192355,
+          "rate": "17% (7% MFN + 10% extra)",
+          "normalRate": "7% (MFN)",
+          "basis": "China customs tariff, 2026 schedule; WITS/TRAINS simple-average MFN 7% for HS 900410 (2023); plus the 10% extra duty on all U.S. goods (Tariff Commission Announcement 2025 No. 7, as extended)"
+        },
+        "9005": {
+          "exportsUsd": 1546666,
+          "rate": "20% (10% MFN + 10% extra)",
+          "normalRate": "10% (MFN)",
+          "basis": "China customs tariff, 2026 schedule; WITS/TRAINS simple-average MFN 10% for HS 900510 (2023); plus the 10% extra duty on all U.S. goods (Tariff Commission Announcement 2025 No. 7, as extended)"
+        },
+        "9006": {
+          "exportsUsd": 2884722,
+          "rate": "19% (9% MFN + 10% extra)",
+          "normalRate": "9% (MFN)",
+          "basis": "China customs tariff, 2026 schedule; WITS/TRAINS simple-average MFN 9% for HS 900630 (2023); plus the 10% extra duty on all U.S. goods (Tariff Commission Announcement 2025 No. 7, as extended)"
+        },
+        "9007": {
+          "exportsUsd": 617067,
+          "rate": "18% (8% MFN + 10% extra)",
+          "normalRate": "8% (MFN)",
+          "basis": "China customs tariff, 2026 schedule; WITS/TRAINS simple-average MFN 8% for HS 900791 (2023); plus the 10% extra duty on all U.S. goods (Tariff Commission Announcement 2025 No. 7, as extended)"
+        },
+        "9008": {
+          "exportsUsd": 1844381,
+          "rate": "21.2% (11.2% MFN + 10% extra)",
+          "normalRate": "11.2% (MFN)",
+          "basis": "China customs tariff, 2026 schedule; WITS/TRAINS simple-average MFN 11.2% for HS 900850 (2023); plus the 10% extra duty on all U.S. goods (Tariff Commission Announcement 2025 No. 7, as extended)"
+        },
+        "9010": {
+          "exportsUsd": 5405881,
+          "rate": "10% (0% MFN + 10% extra)",
+          "normalRate": "0% (MFN)",
+          "basis": "China customs tariff, 2026 schedule; WITS/TRAINS simple-average MFN 0% for HS 901050 (2023); plus the 10% extra duty on all U.S. goods (Tariff Commission Announcement 2025 No. 7, as extended)"
+        },
+        "9011": {
+          "exportsUsd": 21439079,
+          "rate": "10% (0% MFN + 10% extra)",
+          "normalRate": "0% (MFN)",
+          "basis": "China customs tariff, 2026 schedule; WITS/TRAINS simple-average MFN 0% for HS 901180 (2023); plus the 10% extra duty on all U.S. goods (Tariff Commission Announcement 2025 No. 7, as extended)"
+        },
+        "9012": {
+          "exportsUsd": 47727976,
+          "rate": "10% (0% MFN + 10% extra)",
+          "normalRate": "0% (MFN)",
+          "basis": "China customs tariff, 2026 schedule; WITS/TRAINS simple-average MFN 0% for HS 901290 (2023); plus the 10% extra duty on all U.S. goods (Tariff Commission Announcement 2025 No. 7, as extended)"
+        },
+        "9013": {
+          "exportsUsd": 231693100,
+          "rate": "10% (0% MFN + 10% extra)",
+          "normalRate": "0% (MFN)",
+          "basis": "China customs tariff, 2026 schedule; WITS/TRAINS simple-average MFN 0% for HS 901320 (2023); plus the 10% extra duty on all U.S. goods (Tariff Commission Announcement 2025 No. 7, as extended)"
+        },
+        "9014": {
+          "exportsUsd": 23643841,
+          "rate": "10% (0% MFN + 10% extra)",
+          "normalRate": "0% (MFN)",
+          "basis": "China customs tariff, 2026 schedule; WITS/TRAINS simple-average MFN 0% for HS 901490 (2023); plus the 10% extra duty on all U.S. goods (Tariff Commission Announcement 2025 No. 7, as extended)"
+        },
+        "9015": {
+          "exportsUsd": 96714048,
+          "rate": "10% (0% MFN + 10% extra)",
+          "normalRate": "0% (MFN)",
+          "basis": "China customs tariff, 2026 schedule; WITS/TRAINS simple-average MFN 0% for HS 901580 (2023); plus the 10% extra duty on all U.S. goods (Tariff Commission Announcement 2025 No. 7, as extended)"
+        },
+        "9016": {
+          "exportsUsd": 1745358,
+          "rate": "19% (9% MFN + 10% extra)",
+          "normalRate": "9% (MFN)",
+          "basis": "China customs tariff, 2026 schedule; WITS/TRAINS simple-average MFN 9% for HS 901600 (2023); plus the 10% extra duty on all U.S. goods (Tariff Commission Announcement 2025 No. 7, as extended)"
+        },
+        "9017": {
+          "exportsUsd": 7911880,
+          "rate": "10% (0% MFN + 10% extra)",
+          "normalRate": "0% (MFN)",
+          "basis": "China customs tariff, 2026 schedule; WITS/TRAINS simple-average MFN 0% for HS 901720 (2023); plus the 10% extra duty on all U.S. goods (Tariff Commission Announcement 2025 No. 7, as extended)"
+        },
+        "9018": {
+          "exportsUsd": 3468876779,
+          "rate": "12% (2% MFN + 10% extra)",
+          "normalRate": "2% (MFN)",
+          "basis": "China customs tariff, 2026 schedule; WITS/TRAINS simple-average MFN 2% for HS 901890 (2023); plus the 10% extra duty on all U.S. goods (Tariff Commission Announcement 2025 No. 7, as extended)"
+        },
+        "9019": {
+          "exportsUsd": 46186495,
+          "rate": "14% (4% MFN + 10% extra)",
+          "normalRate": "4% (MFN)",
+          "basis": "China customs tariff, 2026 schedule; WITS/TRAINS simple-average MFN 4% for HS 901920 (2023); plus the 10% extra duty on all U.S. goods (Tariff Commission Announcement 2025 No. 7, as extended)"
+        },
+        "9020": {
+          "exportsUsd": 26930325,
+          "rate": "18% (8% MFN + 10% extra)",
+          "normalRate": "8% (MFN)",
+          "basis": "China customs tariff, 2026 schedule; WITS/TRAINS simple-average MFN 8% for HS 902000 (2023); plus the 10% extra duty on all U.S. goods (Tariff Commission Announcement 2025 No. 7, as extended)"
+        },
+        "9021": {
+          "exportsUsd": 831201371,
+          "rate": "14% (4% MFN + 10% extra)",
+          "normalRate": "4% (MFN)",
+          "basis": "China customs tariff, 2026 schedule; WITS/TRAINS simple-average MFN 4% for HS 902139 (2023); plus the 10% extra duty on all U.S. goods (Tariff Commission Announcement 2025 No. 7, as extended)"
+        },
+        "9022": {
+          "exportsUsd": 546900910,
+          "rate": "13.4% (3.4% MFN + 10% extra)",
+          "normalRate": "3.4% (MFN)",
+          "basis": "China customs tariff, 2026 schedule; WITS/TRAINS simple-average MFN 3.4% for HS 902290 (2023); plus the 10% extra duty on all U.S. goods (Tariff Commission Announcement 2025 No. 7, as extended)"
+        },
+        "9023": {
+          "exportsUsd": 20781148,
+          "rate": "10% (0% MFN + 10% extra)",
+          "normalRate": "0% (MFN)",
+          "basis": "China customs tariff, 2026 schedule; WITS/TRAINS simple-average MFN 0% for HS 902300 (2023); plus the 10% extra duty on all U.S. goods (Tariff Commission Announcement 2025 No. 7, as extended)"
+        },
+        "9024": {
+          "exportsUsd": 133425072,
+          "rate": "11.3% (1.3% MFN + 10% extra)",
+          "normalRate": "1.3% (MFN)",
+          "basis": "China customs tariff, 2026 schedule; WITS/TRAINS simple-average MFN 1.3% for HS 902480 (2023); plus the 10% extra duty on all U.S. goods (Tariff Commission Announcement 2025 No. 7, as extended)"
+        },
+        "9025": {
+          "exportsUsd": 90946567,
+          "rate": "10% (0% MFN + 10% extra)",
+          "normalRate": "0% (MFN)",
+          "basis": "China customs tariff, 2026 schedule; WITS/TRAINS simple-average MFN 0% for HS 902519 (2023); plus the 10% extra duty on all U.S. goods (Tariff Commission Announcement 2025 No. 7, as extended)"
+        },
+        "9026": {
+          "exportsUsd": 355498013,
+          "rate": "10% (0% MFN + 10% extra)",
+          "normalRate": "0% (MFN)",
+          "basis": "China customs tariff, 2026 schedule; WITS/TRAINS simple-average MFN 0% for HS 902620 (2023); plus the 10% extra duty on all U.S. goods (Tariff Commission Announcement 2025 No. 7, as extended)"
+        },
+        "9027": {
+          "exportsUsd": 1174383371,
+          "rate": "10% (0% MFN + 10% extra)",
+          "normalRate": "0% (MFN)",
+          "basis": "China customs tariff, 2026 schedule; WITS/TRAINS simple-average MFN 0% for HS 902790 (2023); plus the 10% extra duty on all U.S. goods (Tariff Commission Announcement 2025 No. 7, as extended)"
+        },
+        "9028": {
+          "exportsUsd": 5562769,
+          "rate": "10% (0% MFN + 10% extra)",
+          "normalRate": "0% (MFN)",
+          "basis": "China customs tariff, 2026 schedule; WITS/TRAINS simple-average MFN 0% for HS 902890 (2023); plus the 10% extra duty on all U.S. goods (Tariff Commission Announcement 2025 No. 7, as extended)"
+        },
+        "9029": {
+          "exportsUsd": 6895265,
+          "rate": "20% (10% MFN + 10% extra)",
+          "normalRate": "10% (MFN)",
+          "basis": "China customs tariff, 2026 schedule; WITS/TRAINS simple-average MFN 10% for HS 902920 (2023); plus the 10% extra duty on all U.S. goods (Tariff Commission Announcement 2025 No. 7, as extended)"
+        },
+        "9030": {
+          "exportsUsd": 625449910,
+          "rate": "10% (0% MFN + 10% extra)",
+          "normalRate": "0% (MFN)",
+          "basis": "China customs tariff, 2026 schedule; WITS/TRAINS simple-average MFN 0% for HS 903090 (2023); plus the 10% extra duty on all U.S. goods (Tariff Commission Announcement 2025 No. 7, as extended)"
+        },
+        "9031": {
+          "exportsUsd": 1388631174,
+          "rate": "12% (2% MFN + 10% extra)",
+          "normalRate": "2% (MFN)",
+          "basis": "China customs tariff, 2026 schedule; WITS/TRAINS simple-average MFN 2% for HS 903180 (2023); plus the 10% extra duty on all U.S. goods (Tariff Commission Announcement 2025 No. 7, as extended)"
+        },
+        "9032": {
+          "exportsUsd": 200929413,
+          "rate": "17% (7% MFN + 10% extra)",
+          "normalRate": "7% (MFN)",
+          "basis": "China customs tariff, 2026 schedule; WITS/TRAINS simple-average MFN 7% for HS 903289 (2023); plus the 10% extra duty on all U.S. goods (Tariff Commission Announcement 2025 No. 7, as extended)"
+        },
+        "9033": {
+          "exportsUsd": 26021119,
+          "rate": "16% (6% MFN + 10% extra)",
+          "normalRate": "6% (MFN)",
+          "basis": "China customs tariff, 2026 schedule; WITS/TRAINS simple-average MFN 6% for HS 903300 (2023); plus the 10% extra duty on all U.S. goods (Tariff Commission Announcement 2025 No. 7, as extended)"
+        }
+      },
+      "profile": {
+        "headline": "China is the fourth-largest market ($9.91B, down 11.7% from $11.22B). Its MFN rates on instruments run 0%–11.2% in the sample, and every line pays the 10% extra duty on top. China's Board of Trade list names 43 U.S. medical-device lines (ultrasound, MRI, CT, X-ray, ventilators, implants) for possible lower tariffs, but no cut has been published.",
+        "mainProducts": "Medical, surgical, dental & veterinary instruments (incl. syringes, catheters, ECG, ultrasound, MRI) (9018) · Measuring & inspection machines: CMMs, wafer and mask inspection, test benches (9031)",
+        "tariffNow": "MFN + 10% extra on all U.S. goods",
+        "regulator": {
+          "name": "National Medical Products Administration (NMPA)",
+          "url": "https://english.nmpa.gov.cn/2024-06/05/c_1049323.htm",
+          "requirement": "Imported Class II and III devices need NMPA registration (Class I a filing) through a China-based agent, with documents in Chinese and a marketing certificate from the home country"
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: China import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/china-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 392,
+      "name": "Japan",
+      "rule": "Japan's MFN tariff schedule; no U.S. free-trade agreement",
+      "usTradeAgreement": null,
+      "exportsUsd": 7154979032,
+      "priorExportsUsd": 7065183879,
+      "sharePct": 6.7,
+      "changePct": 1.3,
+      "status": "unchanged",
+      "cells": {
+        "9001": {
+          "exportsUsd": 434671601,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Japan Customs tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 0% for HS 900130 (2023)"
+        },
+        "9002": {
+          "exportsUsd": 64732342,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Japan Customs tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 0% for HS 900290 (2023)"
+        },
+        "9003": {
+          "exportsUsd": 3352196,
+          "rate": "4.7%",
+          "normalRate": null,
+          "basis": "Japan Customs tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 4.7% for HS 900311 (2023)"
+        },
+        "9004": {
+          "exportsUsd": 7389902,
+          "rate": "5.3%",
+          "normalRate": null,
+          "basis": "Japan Customs tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 5.3% for HS 900410 (2023)"
+        },
+        "9005": {
+          "exportsUsd": 8899097,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Japan Customs tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 0% for HS 900510 (2023)"
+        },
+        "9006": {
+          "exportsUsd": 22262151,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Japan Customs tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 0% for HS 900630 (2023)"
+        },
+        "9007": {
+          "exportsUsd": 5386087,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Japan Customs tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 0% for HS 900791 (2023)"
+        },
+        "9008": {
+          "exportsUsd": 644918,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Japan Customs tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 0% for HS 900850 (2023)"
+        },
+        "9010": {
+          "exportsUsd": 10394686,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Japan Customs tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 0% for HS 901050 (2023)"
+        },
+        "9011": {
+          "exportsUsd": 15609021,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Japan Customs tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 0% for HS 901180 (2023)"
+        },
+        "9012": {
+          "exportsUsd": 44587660,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Japan Customs tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 0% for HS 901290 (2023)"
+        },
+        "9013": {
+          "exportsUsd": 335026219,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Japan Customs tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 0% for HS 901320 (2023)"
+        },
+        "9014": {
+          "exportsUsd": 47264068,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Japan Customs tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 0% for HS 901490 (2023)"
+        },
+        "9015": {
+          "exportsUsd": 59157031,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Japan Customs tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 0% for HS 901580 (2023)"
+        },
+        "9016": {
+          "exportsUsd": 676433,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Japan Customs tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 0% for HS 901600 (2023)"
+        },
+        "9017": {
+          "exportsUsd": 5494925,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Japan Customs tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 0% for HS 901720 (2023)"
+        },
+        "9018": {
+          "exportsUsd": 2790513714,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Japan Customs tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 0% for HS 901890 (2023)"
+        },
+        "9019": {
+          "exportsUsd": 104665003,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Japan Customs tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 0% for HS 901920 (2023)"
+        },
+        "9020": {
+          "exportsUsd": 15183772,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Japan Customs tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 0% for HS 902000 (2023)"
+        },
+        "9021": {
+          "exportsUsd": 985593976,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Japan Customs tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 0% for HS 902139 (2023)"
+        },
+        "9022": {
+          "exportsUsd": 359702645,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Japan Customs tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 0% for HS 902290 (2023)"
+        },
+        "9023": {
+          "exportsUsd": 25314982,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Japan Customs tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 0% for HS 902300 (2023)"
+        },
+        "9024": {
+          "exportsUsd": 26398129,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Japan Customs tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 0% for HS 902480 (2023)"
+        },
+        "9025": {
+          "exportsUsd": 49732402,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Japan Customs tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 0% for HS 902519 (2023)"
+        },
+        "9026": {
+          "exportsUsd": 155612710,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Japan Customs tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 0% for HS 902620 (2023)"
+        },
+        "9027": {
+          "exportsUsd": 527710499,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Japan Customs tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 0% for HS 902790 (2023)"
+        },
+        "9028": {
+          "exportsUsd": 1299247,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Japan Customs tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 0% for HS 902890 (2023)"
+        },
+        "9029": {
+          "exportsUsd": 8140928,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Japan Customs tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 0% for HS 902920 (2023)"
+        },
+        "9030": {
+          "exportsUsd": 331919272,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Japan Customs tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 0% for HS 903090 (2023)"
+        },
+        "9031": {
+          "exportsUsd": 574024740,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Japan Customs tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 0% for HS 903180 (2023)"
+        },
+        "9032": {
+          "exportsUsd": 81739640,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Japan Customs tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 0% for HS 903289 (2023)"
+        },
+        "9033": {
+          "exportsUsd": 51879036,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Japan Customs tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 0% for HS 903300 (2023)"
+        }
+      },
+      "profile": {
+        "headline": "Japan ($7.15B, up 1.3%) charges 0%–5.3% across the headings sampled, and none of it changed. Approval is the cost: devices need approval, certification or notification under the PMD Act, and foreign manufacturers need a Japanese marketing authorization holder.",
+        "mainProducts": "Medical, surgical, dental & veterinary instruments (incl. syringes, catheters, ECG, ultrasound, MRI) (9018) · Orthopedic devices, implants, artificial joints, hearing aids & pacemakers (9021)",
+        "tariffNow": "MFN 0%–5.3% (no U.S. FTA)",
+        "regulator": {
+          "name": "PMDA and the Ministry of Health, Labour and Welfare (PMD Act)",
+          "url": "https://www.pmda.go.jp/english/",
+          "requirement": "Medical devices need approval, certification or notification under the Pharmaceuticals and Medical Devices Act, with a Japanese marketing authorization holder for a foreign manufacturer"
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Japan import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/japan-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 410,
+      "name": "South Korea",
+      "rule": "KORUS preferential tariff: 0% for U.S.-origin goods that meet the agreement's rules of origin",
+      "usTradeAgreement": "U.S.–Korea FTA (KORUS)",
+      "exportsUsd": 4348025737,
+      "priorExportsUsd": 3857706662,
+      "sharePct": 4.1,
+      "changePct": 12.7,
+      "status": "unchanged",
+      "cells": {
+        "9001": {
+          "exportsUsd": 179766371,
+          "rate": "Free (KORUS)",
+          "normalRate": "8% MFN",
+          "basis": "KORUS preferential tariff, Korea's schedule; most industrial tariffs eliminated; WITS/TRAINS simple-average MFN 8% for HS 900130 (2023)"
+        },
+        "9002": {
+          "exportsUsd": 27625163,
+          "rate": "Free (KORUS)",
+          "normalRate": null,
+          "basis": "KORUS preferential tariff, Korea's schedule; most industrial tariffs eliminated; WITS/TRAINS simple-average MFN 0% for HS 900290 (2023)"
+        },
+        "9003": {
+          "exportsUsd": 2413966,
+          "rate": "Free (KORUS)",
+          "normalRate": "8% MFN",
+          "basis": "KORUS preferential tariff, Korea's schedule; most industrial tariffs eliminated; WITS/TRAINS simple-average MFN 8% for HS 900311 (2023)"
+        },
+        "9004": {
+          "exportsUsd": 6892487,
+          "rate": "Free (KORUS)",
+          "normalRate": "8% MFN",
+          "basis": "KORUS preferential tariff, Korea's schedule; most industrial tariffs eliminated; WITS/TRAINS simple-average MFN 8% for HS 900410 (2023)"
+        },
+        "9005": {
+          "exportsUsd": 6392523,
+          "rate": "Free (KORUS)",
+          "normalRate": "8% MFN",
+          "basis": "KORUS preferential tariff, Korea's schedule; most industrial tariffs eliminated; WITS/TRAINS simple-average MFN 8% for HS 900510 (2023)"
+        },
+        "9006": {
+          "exportsUsd": 3822497,
+          "rate": "Free (KORUS)",
+          "normalRate": "8% MFN",
+          "basis": "KORUS preferential tariff, Korea's schedule; most industrial tariffs eliminated; WITS/TRAINS simple-average MFN 8% for HS 900630 (2023)"
+        },
+        "9007": {
+          "exportsUsd": 389840,
+          "rate": "Free (KORUS)",
+          "normalRate": "8% MFN",
+          "basis": "KORUS preferential tariff, Korea's schedule; most industrial tariffs eliminated; WITS/TRAINS simple-average MFN 8% for HS 900791 (2023)"
+        },
+        "9008": {
+          "exportsUsd": 310968,
+          "rate": "Free (KORUS)",
+          "normalRate": "8% MFN",
+          "basis": "KORUS preferential tariff, Korea's schedule; most industrial tariffs eliminated; WITS/TRAINS simple-average MFN 8% for HS 900850 (2023)"
+        },
+        "9010": {
+          "exportsUsd": 233428,
+          "rate": "Free (KORUS)",
+          "normalRate": null,
+          "basis": "KORUS preferential tariff, Korea's schedule; most industrial tariffs eliminated; WITS/TRAINS simple-average MFN 0% for HS 901050 (2023)"
+        },
+        "9011": {
+          "exportsUsd": 6804685,
+          "rate": "Free (KORUS)",
+          "normalRate": null,
+          "basis": "KORUS preferential tariff, Korea's schedule; most industrial tariffs eliminated; WITS/TRAINS simple-average MFN 0% for HS 901180 (2023)"
+        },
+        "9012": {
+          "exportsUsd": 25294318,
+          "rate": "Free (KORUS)",
+          "normalRate": null,
+          "basis": "KORUS preferential tariff, Korea's schedule; most industrial tariffs eliminated; WITS/TRAINS simple-average MFN 0% for HS 901290 (2023)"
+        },
+        "9013": {
+          "exportsUsd": 298411817,
+          "rate": "Free (KORUS)",
+          "normalRate": null,
+          "basis": "KORUS preferential tariff, Korea's schedule; most industrial tariffs eliminated; WITS/TRAINS simple-average MFN 0% for HS 901320 (2023)"
+        },
+        "9014": {
+          "exportsUsd": 120622285,
+          "rate": "Free (KORUS)",
+          "normalRate": null,
+          "basis": "KORUS preferential tariff, Korea's schedule; most industrial tariffs eliminated; WITS/TRAINS simple-average MFN 0% for HS 901490 (2023)"
+        },
+        "9015": {
+          "exportsUsd": 27417771,
+          "rate": "Free (KORUS)",
+          "normalRate": null,
+          "basis": "KORUS preferential tariff, Korea's schedule; most industrial tariffs eliminated; WITS/TRAINS simple-average MFN 0% for HS 901580 (2023)"
+        },
+        "9016": {
+          "exportsUsd": 114658,
+          "rate": "Free (KORUS)",
+          "normalRate": "8% MFN",
+          "basis": "KORUS preferential tariff, Korea's schedule; most industrial tariffs eliminated; WITS/TRAINS simple-average MFN 8% for HS 901600 (2023)"
+        },
+        "9017": {
+          "exportsUsd": 4265086,
+          "rate": "Free (KORUS)",
+          "normalRate": "5.3% MFN",
+          "basis": "KORUS preferential tariff, Korea's schedule; most industrial tariffs eliminated; WITS/TRAINS simple-average MFN 5.3% for HS 901720 (2023)"
+        },
+        "9018": {
+          "exportsUsd": 1098350401,
+          "rate": "Free (KORUS)",
+          "normalRate": "3.3% MFN",
+          "basis": "KORUS preferential tariff, Korea's schedule; most industrial tariffs eliminated; WITS/TRAINS simple-average MFN 3.3% for HS 901890 (2023)"
+        },
+        "9019": {
+          "exportsUsd": 14126536,
+          "rate": "Free (KORUS)",
+          "normalRate": null,
+          "basis": "KORUS preferential tariff, Korea's schedule; most industrial tariffs eliminated; WITS/TRAINS simple-average MFN 0% for HS 901920 (2023)"
+        },
+        "9020": {
+          "exportsUsd": 21659882,
+          "rate": "Free (KORUS)",
+          "normalRate": "8% MFN",
+          "basis": "KORUS preferential tariff, Korea's schedule; most industrial tariffs eliminated; WITS/TRAINS simple-average MFN 8% for HS 902000 (2023)"
+        },
+        "9021": {
+          "exportsUsd": 169970496,
+          "rate": "Free (KORUS)",
+          "normalRate": null,
+          "basis": "KORUS preferential tariff, Korea's schedule; most industrial tariffs eliminated; WITS/TRAINS simple-average MFN 0% for HS 902139 (2023)"
+        },
+        "9022": {
+          "exportsUsd": 120697810,
+          "rate": "Free (KORUS)",
+          "normalRate": "6.7% MFN",
+          "basis": "KORUS preferential tariff, Korea's schedule; most industrial tariffs eliminated; WITS/TRAINS simple-average MFN 6.7% for HS 902290 (2023)"
+        },
+        "9023": {
+          "exportsUsd": 18012300,
+          "rate": "Free (KORUS)",
+          "normalRate": null,
+          "basis": "KORUS preferential tariff, Korea's schedule; most industrial tariffs eliminated; WITS/TRAINS simple-average MFN 0% for HS 902300 (2023)"
+        },
+        "9024": {
+          "exportsUsd": 41069737,
+          "rate": "Free (KORUS)",
+          "normalRate": null,
+          "basis": "KORUS preferential tariff, Korea's schedule; most industrial tariffs eliminated; WITS/TRAINS simple-average MFN 0% for HS 902480 (2023)"
+        },
+        "9025": {
+          "exportsUsd": 53196270,
+          "rate": "Free (KORUS)",
+          "normalRate": null,
+          "basis": "KORUS preferential tariff, Korea's schedule; most industrial tariffs eliminated; WITS/TRAINS simple-average MFN 0% for HS 902519 (2023)"
+        },
+        "9026": {
+          "exportsUsd": 168265557,
+          "rate": "Free (KORUS)",
+          "normalRate": null,
+          "basis": "KORUS preferential tariff, Korea's schedule; most industrial tariffs eliminated; WITS/TRAINS simple-average MFN 0% for HS 902620 (2023)"
+        },
+        "9027": {
+          "exportsUsd": 383279758,
+          "rate": "Free (KORUS)",
+          "normalRate": null,
+          "basis": "KORUS preferential tariff, Korea's schedule; most industrial tariffs eliminated; WITS/TRAINS simple-average MFN 0% for HS 902790 (2023)"
+        },
+        "9028": {
+          "exportsUsd": 4447304,
+          "rate": "Free (KORUS)",
+          "normalRate": "1.1% MFN",
+          "basis": "KORUS preferential tariff, Korea's schedule; most industrial tariffs eliminated; WITS/TRAINS simple-average MFN 1.1% for HS 902890 (2023)"
+        },
+        "9029": {
+          "exportsUsd": 3671756,
+          "rate": "Free (KORUS)",
+          "normalRate": "8% MFN",
+          "basis": "KORUS preferential tariff, Korea's schedule; most industrial tariffs eliminated; WITS/TRAINS simple-average MFN 8% for HS 902920 (2023)"
+        },
+        "9030": {
+          "exportsUsd": 606579794,
+          "rate": "Free (KORUS)",
+          "normalRate": null,
+          "basis": "KORUS preferential tariff, Korea's schedule; most industrial tariffs eliminated; WITS/TRAINS simple-average MFN 0% for HS 903090 (2023)"
+        },
+        "9031": {
+          "exportsUsd": 780478775,
+          "rate": "Free (KORUS)",
+          "normalRate": null,
+          "basis": "KORUS preferential tariff, Korea's schedule; most industrial tariffs eliminated; WITS/TRAINS simple-average MFN 0% for HS 903180 (2023)"
+        },
+        "9032": {
+          "exportsUsd": 137626705,
+          "rate": "Free (KORUS)",
+          "normalRate": "6.2% MFN",
+          "basis": "KORUS preferential tariff, Korea's schedule; most industrial tariffs eliminated; WITS/TRAINS simple-average MFN 6.2% for HS 903289 (2023)"
+        },
+        "9033": {
+          "exportsUsd": 15814793,
+          "rate": "Free (KORUS)",
+          "normalRate": "8% MFN",
+          "basis": "KORUS preferential tariff, Korea's schedule; most industrial tariffs eliminated; WITS/TRAINS simple-average MFN 8% for HS 903300 (2023)"
+        }
+      },
+      "profile": {
+        "headline": "South Korea ($4.35B, up 12.7%) is one of the faster-growing markets, led by medical instruments (9018) and measuring machines (9031, 9030). Qualifying goods enter free under KORUS; devices need Ministry of Food and Drug Safety approval, certification or notification.",
+        "mainProducts": "Medical, surgical, dental & veterinary instruments (incl. syringes, catheters, ECG, ultrasound, MRI) (9018) · Measuring & inspection machines: CMMs, wafer and mask inspection, test benches (9031)",
+        "tariffNow": "Free (KORUS)",
+        "regulator": {
+          "name": "Ministry of Food and Drug Safety (MFDS)",
+          "url": "https://www.trade.gov/country-commercial-guides/south-korea-standards-trade",
+          "requirement": "Medical devices need MFDS approval, certification or notification by risk class, typically through a Korean licence holder; see the Country Commercial Guide for the current procedure"
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: South Korea import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/south-korea-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 490,
+      "name": "Taiwan",
+      "rule": "Taiwan's MFN tariff schedule; no U.S. free-trade agreement. The February 2026 U.S.–Taiwan Agreement on Reciprocal Trade would cut tariffs and accept FDA authorizations for medical devices, but it has not entered into force",
+      "usTradeAgreement": null,
+      "exportsUsd": 3532736945,
+      "priorExportsUsd": 2892645555,
+      "sharePct": 3.3,
+      "changePct": 22.1,
+      "status": "pending",
+      "cells": {
+        "9001": {
+          "exportsUsd": 111511139,
+          "rate": "5%",
+          "normalRate": null,
+          "basis": "Taiwan customs import tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 5% for HS 900130 (2023). The February 2026 U.S.–Taiwan Agreement on Reciprocal Trade would cut tariffs but has not entered into force"
+        },
+        "9002": {
+          "exportsUsd": 60205161,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Taiwan customs import tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 0% for HS 900290 (2023). The February 2026 U.S.–Taiwan Agreement on Reciprocal Trade would cut tariffs but has not entered into force"
+        },
+        "9003": {
+          "exportsUsd": 1902109,
+          "rate": "5%",
+          "normalRate": null,
+          "basis": "Taiwan customs import tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 5% for HS 900311 (2023). The February 2026 U.S.–Taiwan Agreement on Reciprocal Trade would cut tariffs but has not entered into force"
+        },
+        "9004": {
+          "exportsUsd": 2100677,
+          "rate": "5%",
+          "normalRate": null,
+          "basis": "Taiwan customs import tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 5% for HS 900410 (2023). The February 2026 U.S.–Taiwan Agreement on Reciprocal Trade would cut tariffs but has not entered into force"
+        },
+        "9005": {
+          "exportsUsd": 1812083,
+          "rate": "5%",
+          "normalRate": null,
+          "basis": "Taiwan customs import tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 5% for HS 900510 (2023). The February 2026 U.S.–Taiwan Agreement on Reciprocal Trade would cut tariffs but has not entered into force"
+        },
+        "9006": {
+          "exportsUsd": 1854439,
+          "rate": "4.5%",
+          "normalRate": null,
+          "basis": "Taiwan customs import tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 4.5% for HS 900630 (2023). The February 2026 U.S.–Taiwan Agreement on Reciprocal Trade would cut tariffs but has not entered into force"
+        },
+        "9007": {
+          "exportsUsd": 113287,
+          "rate": "2.5%",
+          "normalRate": null,
+          "basis": "Taiwan customs import tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 2.5% for HS 900791 (2023). The February 2026 U.S.–Taiwan Agreement on Reciprocal Trade would cut tariffs but has not entered into force"
+        },
+        "9008": {
+          "exportsUsd": 174165,
+          "rate": "3.9%",
+          "normalRate": null,
+          "basis": "Taiwan customs import tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 3.9% for HS 900850 (2023). The February 2026 U.S.–Taiwan Agreement on Reciprocal Trade would cut tariffs but has not entered into force"
+        },
+        "9010": {
+          "exportsUsd": 589622,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Taiwan customs import tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 0% for HS 901050 (2023). The February 2026 U.S.–Taiwan Agreement on Reciprocal Trade would cut tariffs but has not entered into force"
+        },
+        "9011": {
+          "exportsUsd": 5178709,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Taiwan customs import tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 0% for HS 901180 (2023). The February 2026 U.S.–Taiwan Agreement on Reciprocal Trade would cut tariffs but has not entered into force"
+        },
+        "9012": {
+          "exportsUsd": 27445138,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Taiwan customs import tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 0% for HS 901290 (2023). The February 2026 U.S.–Taiwan Agreement on Reciprocal Trade would cut tariffs but has not entered into force"
+        },
+        "9013": {
+          "exportsUsd": 259216648,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Taiwan customs import tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 0% for HS 901320 (2023). The February 2026 U.S.–Taiwan Agreement on Reciprocal Trade would cut tariffs but has not entered into force"
+        },
+        "9014": {
+          "exportsUsd": 46421399,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Taiwan customs import tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 0% for HS 901490 (2023). The February 2026 U.S.–Taiwan Agreement on Reciprocal Trade would cut tariffs but has not entered into force"
+        },
+        "9015": {
+          "exportsUsd": 13883605,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Taiwan customs import tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 0% for HS 901580 (2023). The February 2026 U.S.–Taiwan Agreement on Reciprocal Trade would cut tariffs but has not entered into force"
+        },
+        "9016": {
+          "exportsUsd": 17664,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Taiwan customs import tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 0% for HS 901600 (2023). The February 2026 U.S.–Taiwan Agreement on Reciprocal Trade would cut tariffs but has not entered into force"
+        },
+        "9017": {
+          "exportsUsd": 5294047,
+          "rate": "2.5%",
+          "normalRate": null,
+          "basis": "Taiwan customs import tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 2.5% for HS 901720 (2023). The February 2026 U.S.–Taiwan Agreement on Reciprocal Trade would cut tariffs but has not entered into force"
+        },
+        "9018": {
+          "exportsUsd": 484166004,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Taiwan customs import tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 0% for HS 901890 (2023). The February 2026 U.S.–Taiwan Agreement on Reciprocal Trade would cut tariffs but has not entered into force"
+        },
+        "9019": {
+          "exportsUsd": 10968822,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Taiwan customs import tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 0% for HS 901920 (2023). The February 2026 U.S.–Taiwan Agreement on Reciprocal Trade would cut tariffs but has not entered into force"
+        },
+        "9020": {
+          "exportsUsd": 5520998,
+          "rate": "3%",
+          "normalRate": null,
+          "basis": "Taiwan customs import tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 3% for HS 902000 (2023). The February 2026 U.S.–Taiwan Agreement on Reciprocal Trade would cut tariffs but has not entered into force"
+        },
+        "9021": {
+          "exportsUsd": 150822641,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Taiwan customs import tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 0% for HS 902139 (2023). The February 2026 U.S.–Taiwan Agreement on Reciprocal Trade would cut tariffs but has not entered into force"
+        },
+        "9022": {
+          "exportsUsd": 53794482,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Taiwan customs import tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 0% for HS 902290 (2023). The February 2026 U.S.–Taiwan Agreement on Reciprocal Trade would cut tariffs but has not entered into force"
+        },
+        "9023": {
+          "exportsUsd": 6770952,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Taiwan customs import tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 0% for HS 902300 (2023). The February 2026 U.S.–Taiwan Agreement on Reciprocal Trade would cut tariffs but has not entered into force"
+        },
+        "9024": {
+          "exportsUsd": 15553528,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Taiwan customs import tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 0% for HS 902480 (2023). The February 2026 U.S.–Taiwan Agreement on Reciprocal Trade would cut tariffs but has not entered into force"
+        },
+        "9025": {
+          "exportsUsd": 42985053,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Taiwan customs import tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 0% for HS 902519 (2023). The February 2026 U.S.–Taiwan Agreement on Reciprocal Trade would cut tariffs but has not entered into force"
+        },
+        "9026": {
+          "exportsUsd": 74067631,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Taiwan customs import tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 0% for HS 902620 (2023). The February 2026 U.S.–Taiwan Agreement on Reciprocal Trade would cut tariffs but has not entered into force"
+        },
+        "9027": {
+          "exportsUsd": 316689474,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Taiwan customs import tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 0% for HS 902790 (2023). The February 2026 U.S.–Taiwan Agreement on Reciprocal Trade would cut tariffs but has not entered into force"
+        },
+        "9028": {
+          "exportsUsd": 1862664,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Taiwan customs import tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 0% for HS 902890 (2023). The February 2026 U.S.–Taiwan Agreement on Reciprocal Trade would cut tariffs but has not entered into force"
+        },
+        "9029": {
+          "exportsUsd": 1693665,
+          "rate": "7.5%",
+          "normalRate": null,
+          "basis": "Taiwan customs import tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 7.5% for HS 902920 (2023). The February 2026 U.S.–Taiwan Agreement on Reciprocal Trade would cut tariffs but has not entered into force"
+        },
+        "9030": {
+          "exportsUsd": 608170048,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Taiwan customs import tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 0% for HS 903090 (2023). The February 2026 U.S.–Taiwan Agreement on Reciprocal Trade would cut tariffs but has not entered into force"
+        },
+        "9031": {
+          "exportsUsd": 1119395728,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Taiwan customs import tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 0% for HS 903180 (2023). The February 2026 U.S.–Taiwan Agreement on Reciprocal Trade would cut tariffs but has not entered into force"
+        },
+        "9032": {
+          "exportsUsd": 86703153,
+          "rate": "5%",
+          "normalRate": null,
+          "basis": "Taiwan customs import tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 5% for HS 903289 (2023). The February 2026 U.S.–Taiwan Agreement on Reciprocal Trade would cut tariffs but has not entered into force"
+        },
+        "9033": {
+          "exportsUsd": 15852210,
+          "rate": "5.8%",
+          "normalRate": null,
+          "basis": "Taiwan customs import tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 5.8% for HS 903300 (2023). The February 2026 U.S.–Taiwan Agreement on Reciprocal Trade would cut tariffs but has not entered into force"
+        }
+      },
+      "profile": {
+        "headline": "Taiwan ($3.53B, up 22.1%) is the fastest-growing large buyer, led by chip-related measuring and inspection tools (9031, $1.12B, 9030). Today it charges its MFN rates (0%–7.5% in the sample); under the signed but unratified agreement it would remove or reduce most tariffs and accept U.S. FDA authorizations for medical devices.",
+        "mainProducts": "Measuring & inspection machines: CMMs, wafer and mask inspection, test benches (9031) · Oscilloscopes, multimeters, electrical test & radiation-measuring instruments (9030)",
+        "tariffNow": "MFN 0%–7.5% (US–Taiwan agreement not yet in force)",
+        "regulator": {
+          "name": "Taiwan Food and Drug Administration (medical device registration)",
+          "url": "https://www.trade.gov/country-commercial-guides/taiwan-standards-trade",
+          "requirement": "Medical devices need a TFDA market approval through a local license holder; the 2026 agreement would accept U.S. FDA authorizations once in force"
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Taiwan import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/taiwan-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 702,
+      "name": "Singapore",
+      "rule": "U.S.–Singapore FTA; Singapore charges no customs duty on instruments",
+      "usTradeAgreement": "U.S.–Singapore FTA",
+      "exportsUsd": 3455564077,
+      "priorExportsUsd": 3220741572,
+      "sharePct": 3.2,
+      "changePct": 7.3,
+      "status": "unchanged",
+      "cells": {
+        "9001": {
+          "exportsUsd": 89057262,
+          "rate": "Free (U.S.–Singapore FTA)",
+          "normalRate": null,
+          "basis": "Singapore charges no customs duty on instruments and apparatus; U.S.–Singapore FTA tariff schedule"
+        },
+        "9002": {
+          "exportsUsd": 76232169,
+          "rate": "Free (U.S.–Singapore FTA)",
+          "normalRate": null,
+          "basis": "Singapore charges no customs duty on instruments and apparatus; U.S.–Singapore FTA tariff schedule"
+        },
+        "9003": {
+          "exportsUsd": 910866,
+          "rate": "Free (U.S.–Singapore FTA)",
+          "normalRate": null,
+          "basis": "Singapore charges no customs duty on instruments and apparatus; U.S.–Singapore FTA tariff schedule"
+        },
+        "9004": {
+          "exportsUsd": 1714747,
+          "rate": "Free (U.S.–Singapore FTA)",
+          "normalRate": null,
+          "basis": "Singapore charges no customs duty on instruments and apparatus; U.S.–Singapore FTA tariff schedule"
+        },
+        "9005": {
+          "exportsUsd": 2534650,
+          "rate": "Free (U.S.–Singapore FTA)",
+          "normalRate": null,
+          "basis": "Singapore charges no customs duty on instruments and apparatus; U.S.–Singapore FTA tariff schedule"
+        },
+        "9006": {
+          "exportsUsd": 1149796,
+          "rate": "Free (U.S.–Singapore FTA)",
+          "normalRate": null,
+          "basis": "Singapore charges no customs duty on instruments and apparatus; U.S.–Singapore FTA tariff schedule"
+        },
+        "9007": {
+          "exportsUsd": 189003,
+          "rate": "Free (U.S.–Singapore FTA)",
+          "normalRate": null,
+          "basis": "Singapore charges no customs duty on instruments and apparatus; U.S.–Singapore FTA tariff schedule"
+        },
+        "9008": {
+          "exportsUsd": 280723,
+          "rate": "Free (U.S.–Singapore FTA)",
+          "normalRate": null,
+          "basis": "Singapore charges no customs duty on instruments and apparatus; U.S.–Singapore FTA tariff schedule"
+        },
+        "9010": {
+          "exportsUsd": 1296510,
+          "rate": "Free (U.S.–Singapore FTA)",
+          "normalRate": null,
+          "basis": "Singapore charges no customs duty on instruments and apparatus; U.S.–Singapore FTA tariff schedule"
+        },
+        "9011": {
+          "exportsUsd": 13011158,
+          "rate": "Free (U.S.–Singapore FTA)",
+          "normalRate": null,
+          "basis": "Singapore charges no customs duty on instruments and apparatus; U.S.–Singapore FTA tariff schedule"
+        },
+        "9012": {
+          "exportsUsd": 7247527,
+          "rate": "Free (U.S.–Singapore FTA)",
+          "normalRate": null,
+          "basis": "Singapore charges no customs duty on instruments and apparatus; U.S.–Singapore FTA tariff schedule"
+        },
+        "9013": {
+          "exportsUsd": 145652089,
+          "rate": "Free (U.S.–Singapore FTA)",
+          "normalRate": null,
+          "basis": "Singapore charges no customs duty on instruments and apparatus; U.S.–Singapore FTA tariff schedule"
+        },
+        "9014": {
+          "exportsUsd": 28469179,
+          "rate": "Free (U.S.–Singapore FTA)",
+          "normalRate": null,
+          "basis": "Singapore charges no customs duty on instruments and apparatus; U.S.–Singapore FTA tariff schedule"
+        },
+        "9015": {
+          "exportsUsd": 47945927,
+          "rate": "Free (U.S.–Singapore FTA)",
+          "normalRate": null,
+          "basis": "Singapore charges no customs duty on instruments and apparatus; U.S.–Singapore FTA tariff schedule"
+        },
+        "9016": {
+          "exportsUsd": 1084830,
+          "rate": "Free (U.S.–Singapore FTA)",
+          "normalRate": null,
+          "basis": "Singapore charges no customs duty on instruments and apparatus; U.S.–Singapore FTA tariff schedule"
+        },
+        "9017": {
+          "exportsUsd": 10744818,
+          "rate": "Free (U.S.–Singapore FTA)",
+          "normalRate": null,
+          "basis": "Singapore charges no customs duty on instruments and apparatus; U.S.–Singapore FTA tariff schedule"
+        },
+        "9018": {
+          "exportsUsd": 838541937,
+          "rate": "Free (U.S.–Singapore FTA)",
+          "normalRate": null,
+          "basis": "Singapore charges no customs duty on instruments and apparatus; U.S.–Singapore FTA tariff schedule"
+        },
+        "9019": {
+          "exportsUsd": 19406708,
+          "rate": "Free (U.S.–Singapore FTA)",
+          "normalRate": null,
+          "basis": "Singapore charges no customs duty on instruments and apparatus; U.S.–Singapore FTA tariff schedule"
+        },
+        "9020": {
+          "exportsUsd": 22259231,
+          "rate": "Free (U.S.–Singapore FTA)",
+          "normalRate": null,
+          "basis": "Singapore charges no customs duty on instruments and apparatus; U.S.–Singapore FTA tariff schedule"
+        },
+        "9021": {
+          "exportsUsd": 391343457,
+          "rate": "Free (U.S.–Singapore FTA)",
+          "normalRate": null,
+          "basis": "Singapore charges no customs duty on instruments and apparatus; U.S.–Singapore FTA tariff schedule"
+        },
+        "9022": {
+          "exportsUsd": 68958358,
+          "rate": "Free (U.S.–Singapore FTA)",
+          "normalRate": null,
+          "basis": "Singapore charges no customs duty on instruments and apparatus; U.S.–Singapore FTA tariff schedule"
+        },
+        "9023": {
+          "exportsUsd": 5075554,
+          "rate": "Free (U.S.–Singapore FTA)",
+          "normalRate": null,
+          "basis": "Singapore charges no customs duty on instruments and apparatus; U.S.–Singapore FTA tariff schedule"
+        },
+        "9024": {
+          "exportsUsd": 6892778,
+          "rate": "Free (U.S.–Singapore FTA)",
+          "normalRate": null,
+          "basis": "Singapore charges no customs duty on instruments and apparatus; U.S.–Singapore FTA tariff schedule"
+        },
+        "9025": {
+          "exportsUsd": 50719983,
+          "rate": "Free (U.S.–Singapore FTA)",
+          "normalRate": null,
+          "basis": "Singapore charges no customs duty on instruments and apparatus; U.S.–Singapore FTA tariff schedule"
+        },
+        "9026": {
+          "exportsUsd": 163787565,
+          "rate": "Free (U.S.–Singapore FTA)",
+          "normalRate": null,
+          "basis": "Singapore charges no customs duty on instruments and apparatus; U.S.–Singapore FTA tariff schedule"
+        },
+        "9027": {
+          "exportsUsd": 713336302,
+          "rate": "Free (U.S.–Singapore FTA)",
+          "normalRate": null,
+          "basis": "Singapore charges no customs duty on instruments and apparatus; U.S.–Singapore FTA tariff schedule"
+        },
+        "9028": {
+          "exportsUsd": 3736844,
+          "rate": "Free (U.S.–Singapore FTA)",
+          "normalRate": null,
+          "basis": "Singapore charges no customs duty on instruments and apparatus; U.S.–Singapore FTA tariff schedule"
+        },
+        "9029": {
+          "exportsUsd": 1683084,
+          "rate": "Free (U.S.–Singapore FTA)",
+          "normalRate": null,
+          "basis": "Singapore charges no customs duty on instruments and apparatus; U.S.–Singapore FTA tariff schedule"
+        },
+        "9030": {
+          "exportsUsd": 193603284,
+          "rate": "Free (U.S.–Singapore FTA)",
+          "normalRate": null,
+          "basis": "Singapore charges no customs duty on instruments and apparatus; U.S.–Singapore FTA tariff schedule"
+        },
+        "9031": {
+          "exportsUsd": 379538921,
+          "rate": "Free (U.S.–Singapore FTA)",
+          "normalRate": null,
+          "basis": "Singapore charges no customs duty on instruments and apparatus; U.S.–Singapore FTA tariff schedule"
+        },
+        "9032": {
+          "exportsUsd": 158975928,
+          "rate": "Free (U.S.–Singapore FTA)",
+          "normalRate": null,
+          "basis": "Singapore charges no customs duty on instruments and apparatus; U.S.–Singapore FTA tariff schedule"
+        },
+        "9033": {
+          "exportsUsd": 10182889,
+          "rate": "Free (U.S.–Singapore FTA)",
+          "normalRate": null,
+          "basis": "Singapore charges no customs duty on instruments and apparatus; U.S.–Singapore FTA tariff schedule"
+        }
+      },
+      "profile": {
+        "headline": "Singapore ($3.46B, up 7.3%) buys medical instruments and laboratory and semiconductor-related measuring equipment. There is no duty; medical devices must be registered with the Health Sciences Authority.",
+        "mainProducts": "Medical, surgical, dental & veterinary instruments (incl. syringes, catheters, ECG, ultrasound, MRI) (9018) · Laboratory analysis instruments: spectrometers, chromatographs, analyzers (9027)",
+        "tariffNow": "Free (U.S.–Singapore FTA)",
+        "regulator": {
+          "name": "Health Sciences Authority (HSA)",
+          "url": "https://www.trade.gov/country-commercial-guides/singapore-standards-trade",
+          "requirement": "Medical devices must be registered with HSA before supply, by risk class, through a local registrant"
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Singapore import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/singapore-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 826,
+      "name": "United Kingdom",
+      "rule": "UK Global Tariff (MFN); no comprehensive U.S.–UK trade agreement covers this chapter",
+      "usTradeAgreement": null,
+      "exportsUsd": 2899952481,
+      "priorExportsUsd": 2863547384,
+      "sharePct": 2.7,
+      "changePct": 1.3,
+      "status": "unchanged",
+      "cells": {
+        "9001": {
+          "exportsUsd": 192379303,
+          "rate": "2%",
+          "normalRate": null,
+          "basis": "UK Global Tariff (MFN); no comprehensive U.S.–UK trade agreement covers this chapter; WITS/TRAINS simple-average MFN 2% for HS 900130 (2023)"
+        },
+        "9002": {
+          "exportsUsd": 23513525,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "UK Global Tariff (MFN); no comprehensive U.S.–UK trade agreement covers this chapter; WITS/TRAINS simple-average MFN 0% for HS 900290 (2023)"
+        },
+        "9003": {
+          "exportsUsd": 2356339,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "UK Global Tariff (MFN); no comprehensive U.S.–UK trade agreement covers this chapter; WITS/TRAINS simple-average MFN 0% for HS 900311 (2023)"
+        },
+        "9004": {
+          "exportsUsd": 17921338,
+          "rate": "2%",
+          "normalRate": null,
+          "basis": "UK Global Tariff (MFN); no comprehensive U.S.–UK trade agreement covers this chapter; WITS/TRAINS simple-average MFN 2% for HS 900410 (2023)"
+        },
+        "9005": {
+          "exportsUsd": 11756475,
+          "rate": "4%",
+          "normalRate": null,
+          "basis": "UK Global Tariff (MFN); no comprehensive U.S.–UK trade agreement covers this chapter; WITS/TRAINS simple-average MFN 4% for HS 900510 (2023)"
+        },
+        "9006": {
+          "exportsUsd": 14350924,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "UK Global Tariff (MFN); no comprehensive U.S.–UK trade agreement covers this chapter; WITS/TRAINS simple-average MFN 0% for HS 900630 (2023)"
+        },
+        "9007": {
+          "exportsUsd": 12388413,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "UK Global Tariff (MFN); no comprehensive U.S.–UK trade agreement covers this chapter; WITS/TRAINS simple-average MFN 0% for HS 900791 (2023)"
+        },
+        "9008": {
+          "exportsUsd": 1020067,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "UK Global Tariff (MFN); no comprehensive U.S.–UK trade agreement covers this chapter; WITS/TRAINS simple-average MFN 0% for HS 900850 (2023)"
+        },
+        "9010": {
+          "exportsUsd": 2722203,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "UK Global Tariff (MFN); no comprehensive U.S.–UK trade agreement covers this chapter; WITS/TRAINS simple-average MFN 0% for HS 901050 (2023)"
+        },
+        "9011": {
+          "exportsUsd": 12306585,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "UK Global Tariff (MFN); no comprehensive U.S.–UK trade agreement covers this chapter; WITS/TRAINS simple-average MFN 0% for HS 901180 (2023)"
+        },
+        "9012": {
+          "exportsUsd": 11047816,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "UK Global Tariff (MFN); no comprehensive U.S.–UK trade agreement covers this chapter; WITS/TRAINS simple-average MFN 0% for HS 901290 (2023)"
+        },
+        "9013": {
+          "exportsUsd": 153750077,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "UK Global Tariff (MFN); no comprehensive U.S.–UK trade agreement covers this chapter; WITS/TRAINS simple-average MFN 0% for HS 901320 (2023)"
+        },
+        "9014": {
+          "exportsUsd": 119409238,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "UK Global Tariff (MFN); no comprehensive U.S.–UK trade agreement covers this chapter; WITS/TRAINS simple-average MFN 0% for HS 901490 (2023)"
+        },
+        "9015": {
+          "exportsUsd": 94280255,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "UK Global Tariff (MFN); no comprehensive U.S.–UK trade agreement covers this chapter; WITS/TRAINS simple-average MFN 0% for HS 901580 (2023)"
+        },
+        "9016": {
+          "exportsUsd": 215583,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "UK Global Tariff (MFN); no comprehensive U.S.–UK trade agreement covers this chapter; WITS/TRAINS simple-average MFN 0% for HS 901600 (2023)"
+        },
+        "9017": {
+          "exportsUsd": 7379903,
+          "rate": "1.5%",
+          "normalRate": null,
+          "basis": "UK Global Tariff (MFN); no comprehensive U.S.–UK trade agreement covers this chapter; WITS/TRAINS simple-average MFN 1.5% for HS 901720 (2023)"
+        },
+        "9018": {
+          "exportsUsd": 593842881,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "UK Global Tariff (MFN); no comprehensive U.S.–UK trade agreement covers this chapter; WITS/TRAINS simple-average MFN 0% for HS 901890 (2023)"
+        },
+        "9019": {
+          "exportsUsd": 43950496,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "UK Global Tariff (MFN); no comprehensive U.S.–UK trade agreement covers this chapter; WITS/TRAINS simple-average MFN 0% for HS 901920 (2023)"
+        },
+        "9020": {
+          "exportsUsd": 35590688,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "UK Global Tariff (MFN); no comprehensive U.S.–UK trade agreement covers this chapter; WITS/TRAINS simple-average MFN 0% for HS 902000 (2023)"
+        },
+        "9021": {
+          "exportsUsd": 171745870,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "UK Global Tariff (MFN); no comprehensive U.S.–UK trade agreement covers this chapter; WITS/TRAINS simple-average MFN 0% for HS 902139 (2023)"
+        },
+        "9022": {
+          "exportsUsd": 148270211,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "UK Global Tariff (MFN); no comprehensive U.S.–UK trade agreement covers this chapter; WITS/TRAINS simple-average MFN 0% for HS 902290 (2023)"
+        },
+        "9023": {
+          "exportsUsd": 27775621,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "UK Global Tariff (MFN); no comprehensive U.S.–UK trade agreement covers this chapter; WITS/TRAINS simple-average MFN 0% for HS 902300 (2023)"
+        },
+        "9024": {
+          "exportsUsd": 22792151,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "UK Global Tariff (MFN); no comprehensive U.S.–UK trade agreement covers this chapter; WITS/TRAINS simple-average MFN 0% for HS 902480 (2023)"
+        },
+        "9025": {
+          "exportsUsd": 58935922,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "UK Global Tariff (MFN); no comprehensive U.S.–UK trade agreement covers this chapter; WITS/TRAINS simple-average MFN 0% for HS 902519 (2023)"
+        },
+        "9026": {
+          "exportsUsd": 187889629,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "UK Global Tariff (MFN); no comprehensive U.S.–UK trade agreement covers this chapter; WITS/TRAINS simple-average MFN 0% for HS 902620 (2023)"
+        },
+        "9027": {
+          "exportsUsd": 352023829,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "UK Global Tariff (MFN); no comprehensive U.S.–UK trade agreement covers this chapter; WITS/TRAINS simple-average MFN 0% for HS 902790 (2023)"
+        },
+        "9028": {
+          "exportsUsd": 4835074,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "UK Global Tariff (MFN); no comprehensive U.S.–UK trade agreement covers this chapter; WITS/TRAINS simple-average MFN 0% for HS 902890 (2023)"
+        },
+        "9029": {
+          "exportsUsd": 4280586,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "UK Global Tariff (MFN); no comprehensive U.S.–UK trade agreement covers this chapter; WITS/TRAINS simple-average MFN 0% for HS 902920 (2023)"
+        },
+        "9030": {
+          "exportsUsd": 246195647,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "UK Global Tariff (MFN); no comprehensive U.S.–UK trade agreement covers this chapter; WITS/TRAINS simple-average MFN 0% for HS 903090 (2023)"
+        },
+        "9031": {
+          "exportsUsd": 192553304,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "UK Global Tariff (MFN); no comprehensive U.S.–UK trade agreement covers this chapter; WITS/TRAINS simple-average MFN 0% for HS 903180 (2023)"
+        },
+        "9032": {
+          "exportsUsd": 120403585,
+          "rate": "1.6%",
+          "normalRate": null,
+          "basis": "UK Global Tariff (MFN); no comprehensive U.S.–UK trade agreement covers this chapter; WITS/TRAINS simple-average MFN 1.6% for HS 903289 (2023)"
+        },
+        "9033": {
+          "exportsUsd": 12068943,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "UK Global Tariff (MFN); no comprehensive U.S.–UK trade agreement covers this chapter; WITS/TRAINS simple-average MFN 0% for HS 903300 (2023)"
+        }
+      },
+      "profile": {
+        "headline": "The UK ($2.90B, up 1.3%) charges its Global Tariff, 0%–4% on the headings sampled. Devices need a UKCA or recognised CE marking and MHRA registration, with a UK Responsible Person for a non-UK manufacturer.",
+        "mainProducts": "Medical, surgical, dental & veterinary instruments (incl. syringes, catheters, ECG, ultrasound, MRI) (9018) · Laboratory analysis instruments: spectrometers, chromatographs, analyzers (9027)",
+        "tariffNow": "UK MFN 0%–4%",
+        "regulator": {
+          "name": "Medicines and Healthcare products Regulatory Agency (MHRA)",
+          "url": "https://www.gov.uk/guidance/regulating-medical-devices-in-the-uk",
+          "requirement": "Medical devices need a UKCA marking, or a CE marking where it is still recognised, and must be registered with MHRA; CE recognition runs to June 30, 2028 or 2030 depending on the legislation"
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: UK import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/united-kingdom-import-requirements-and-documentation"
+        }
+      }
+    }
+  ],
+  "biggestLanes": [
+    {
+      "market": "European Union",
+      "heading": "9018",
+      "exportsUsd": 12231457605,
+      "rate": "Free (EU–US framework)"
+    },
+    {
+      "market": "European Union",
+      "heading": "9021",
+      "exportsUsd": 6056124394,
+      "rate": "Free (EU–US framework)"
+    },
+    {
+      "market": "Mexico",
+      "heading": "9018",
+      "exportsUsd": 4613463666,
+      "rate": "Free (USMCA)"
+    },
+    {
+      "market": "China",
+      "heading": "9018",
+      "exportsUsd": 3468876779,
+      "rate": "12% (2% MFN + 10% extra)"
+    },
+    {
+      "market": "European Union",
+      "heading": "9027",
+      "exportsUsd": 3360793342,
+      "rate": "Free (EU–US framework)"
+    },
+    {
+      "market": "Canada",
+      "heading": "9018",
+      "exportsUsd": 3284472586,
+      "rate": "Free (CUSMA)"
+    },
+    {
+      "market": "Japan",
+      "heading": "9018",
+      "exportsUsd": 2790513714,
+      "rate": "Free"
+    },
+    {
+      "market": "China",
+      "heading": "9031",
+      "exportsUsd": 1388631174,
+      "rate": "12% (2% MFN + 10% extra)"
+    }
+  ],
+  "assumptions": [
+    "MFN rates are the World Bank/UNCTAD WITS (TRAINS) simple-average applied rates for one representative six-digit subheading per heading — the subheading with the largest 2025 U.S. exports in that heading (for example 9018.90 for medical instruments) — for the most recent year WITS holds (2019–2023). National 8–10-digit lines can differ, and many medical devices carry lower rates than the sample.",
+    "USMCA (Mexico, Canada), KORUS (South Korea) and the U.S.–Singapore FTA apply 0% to qualifying U.S.-origin goods; the normal-rate column shows each market's MFN rate for goods that do not qualify.",
+    "For the EU, Regulation (EU) 2026/1455 zeroes out Chapter 90 from July 1, 2026 to December 31, 2029; the normal-rate column shows the rate the EU charged before then.",
+    "China's cells add the 10% extra duty on all U.S. goods to its MFN rate. China's 2019 counter-tariffs on U.S. goods, valid unless a line is covered by an exclusion until December 31, 2026, are not added because exclusions are granted line by line. The 43 medical-device lines on China's Board of Trade list have no published tariff cut yet.",
+    "Taiwan shows its MFN rates: the U.S.–Taiwan Agreement on Reciprocal Trade (signed February 2026) has not entered into force. UK and Japan show MFN rates."
+  ],
+  "sources": [
+    {
+      "id": "comtrade-exports",
+      "publisher": "UN Comtrade",
+      "citation": "UN Comtrade, U.S. exports 2020–2025",
+      "document": "UN Comtrade public API (preview), United States exports, annual, HS",
+      "title": "United States exports, HS chapter 90, by partner, heading and subheading",
+      "signed": null,
+      "published": "2026-10-20",
+      "url": "https://comtradeplus.un.org/"
+    }
+  ],
+  "coverageNote": "The 9 markets shown take 79% of 2025 U.S. Chapter 90 exports. A customs union (the EU) is one market: its members share one tariff. UN Comtrade reports Taiwan as \"Other Asia, nes\" (code 490); it is shown here as Taiwan."
+}

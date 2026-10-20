@@ -7,6 +7,7 @@ import { parseArgs, parsePositiveInt, sleep } from '../../tickers/lib';
 import {
   COMTRADE_EXPORT_VALUE_BASIS,
   COMTRADE_VALUE_BASIS,
+  comtradePartnerName,
   type TradeFlow,
   type TradeSummary,
   type TradeSummaryCountry,
@@ -194,7 +195,7 @@ async function fetchYearToDate(ch: string, year: number, cacheDir: string, refre
       for (const r of rows) {
         if (r.partnerCode === 0) total += r.primaryValue;
         else {
-          const entry = byPartner.get(r.partnerCode) ?? { name: r.partnerDesc ?? String(r.partnerCode), value: 0 };
+          const entry = byPartner.get(r.partnerCode) ?? { name: comtradePartnerName(r.partnerCode, r.partnerDesc), value: 0 };
           entry.value += r.primaryValue;
           byPartner.set(r.partnerCode, entry);
         }
@@ -265,7 +266,7 @@ async function fetchChapter(chapter: number, years: number[], cacheDir: string, 
     }
     totalsByYear.push({ year, totalUsd: world.primaryValue, partnerCount: partners.filter((r) => r.primaryValue > 0).length });
     for (const r of partners) {
-      const entry = countryByYear.get(r.partnerCode) ?? { name: r.partnerDesc ?? String(r.partnerCode), byYear: {} };
+      const entry = countryByYear.get(r.partnerCode) ?? { name: comtradePartnerName(r.partnerCode, r.partnerDesc), byYear: {} };
       entry.byYear[String(year)] = (entry.byYear[String(year)] ?? 0) + r.primaryValue;
       countryByYear.set(r.partnerCode, entry);
     }
@@ -306,7 +307,12 @@ async function fetchChapter(chapter: number, years: number[], cacheDir: string, 
     const { rows } = await comtrade({ period: String(latestYear), cmdCode: headingCodes.slice(i, i + perCall).join(',') }, cacheDir, refresh);
     for (const r of rows) {
       if (r.partnerCode === 0 || r.primaryValue <= 0) continue;
-      byHeadingCountry.push({ heading: r.cmdCode, countryCode: r.partnerCode, country: r.partnerDesc ?? String(r.partnerCode), importsUsd: r.primaryValue });
+      byHeadingCountry.push({
+        heading: r.cmdCode,
+        countryCode: r.partnerCode,
+        country: comtradePartnerName(r.partnerCode, r.partnerDesc),
+        importsUsd: r.primaryValue,
+      });
     }
   }
   byHeadingCountry.sort((a, b) => a.heading.localeCompare(b.heading) || b.importsUsd - a.importsUsd);

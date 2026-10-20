@@ -1,0 +1,1080 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 52,
+    "padded": "52",
+    "slug": "52-cotton",
+    "title": "Cotton"
+  },
+  "page": {
+    "slug": "exports/markets",
+    "path": "/industry-tariff-report/exports/chapters/52-cotton/markets",
+    "h1": "HTS Chapter 52: Cotton — Export Markets & Foreign Tariffs on U.S. Goods",
+    "seo": {
+      "title": "Chapter 52 Export Markets: Tariffs on U.S. Cotton by Country",
+      "shortDescription": "The tariff each top buyer charges on U.S. raw cotton, yarn and fabric, with the trade agreement and plant-health regulator for each.",
+      "keywords": ["vietnam tariff us cotton", "china tariff us cotton", "india cotton import duty", "cafta-dr cotton", "pakistan cotton import duty"]
+    },
+    "lastCheckedAt": "2026-10-20"
+  },
+  "intro": "For raw cotton, tariffs are close to zero in most markets: Viet Nam charges 0% on cotton fiber (USDA, April 2026), and Mexico, Honduras, the Dominican Republic and Guatemala are duty-free under USMCA or CAFTA-DR. China is the one buyer that costs real money, at a 1% in-quota or 40% out-of-quota rate plus 10% on every U.S. good. India's normal 11% duty has been waived on and off. For Pakistan, Türkiye and Bangladesh an official 2026 duty rate was not confirmed, so those cells say so rather than guess.",
+  "tradeYear": 2025,
+  "tariffYear": 2026,
+  "valueBasis": "FOB value of U.S. exports, as reported by the United States to UN Comtrade.",
+  "groups": [
+    {
+      "heading": "5201",
+      "label": "Raw cotton, not carded or combed",
+      "shortLabel": "Raw cotton"
+    },
+    {
+      "heading": "5202",
+      "label": "Cotton waste (yarn waste, garnetted stock, card strips)",
+      "shortLabel": "Cotton waste"
+    },
+    {
+      "heading": "5203",
+      "label": "Cotton, carded or combed",
+      "shortLabel": "Carded cotton"
+    },
+    {
+      "heading": "5204",
+      "label": "Cotton sewing thread",
+      "shortLabel": "Sewing thread"
+    },
+    {
+      "heading": "5205",
+      "label": "Cotton yarn, 85% or more cotton, not for retail sale",
+      "shortLabel": "Cotton yarn 85%+"
+    },
+    {
+      "heading": "5206",
+      "label": "Cotton yarn, under 85% cotton, not for retail sale",
+      "shortLabel": "Cotton blend yarn"
+    },
+    {
+      "heading": "5207",
+      "label": "Cotton yarn put up for retail sale",
+      "shortLabel": "Retail cotton yarn"
+    },
+    {
+      "heading": "5208",
+      "label": "Woven cotton fabric, 85%+ cotton, up to 200 g/m²",
+      "shortLabel": "Light cotton fabric"
+    },
+    {
+      "heading": "5209",
+      "label": "Woven cotton fabric, 85%+ cotton, over 200 g/m² (incl. denim)",
+      "shortLabel": "Heavy cotton fabric"
+    },
+    {
+      "heading": "5210",
+      "label": "Woven cotton blends with man-made fibre, up to 200 g/m²",
+      "shortLabel": "Light cotton blends"
+    },
+    {
+      "heading": "5211",
+      "label": "Woven cotton blends with man-made fibre, over 200 g/m²",
+      "shortLabel": "Heavy cotton blends"
+    },
+    {
+      "heading": "5212",
+      "label": "Other woven cotton fabrics (incl. cotton–wool blends)",
+      "shortLabel": "Other cotton fabric"
+    }
+  ],
+  "markets": [
+    {
+      "countryCode": 704,
+      "name": "Viet Nam",
+      "rule": "Viet Nam's MFN tariff (no U.S. trade agreement)",
+      "usTradeAgreement": null,
+      "exportsUsd": 1292614223,
+      "priorExportsUsd": 582006028,
+      "sharePct": 22,
+      "changePct": 122.1,
+      "status": "unchanged",
+      "cells": {
+        "5201": {
+          "exportsUsd": 1283350790,
+          "rate": "0%",
+          "normalRate": null,
+          "basis": "USDA FAS, Cotton and Products Annual (Ho Chi Minh City, VM2026-0009, April 2026): cotton fiber (HS 5201, 5203) has a 0% tariff; no quota applies."
+        },
+        "5202": {
+          "exportsUsd": 0,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "USDA FAS, Cotton and Products Annual (Ho Chi Minh City, VM2026-0009); the line was not listed in the report."
+        },
+        "5203": {
+          "exportsUsd": 569223,
+          "rate": "0%",
+          "normalRate": null,
+          "basis": "USDA FAS, Cotton and Products Annual (Ho Chi Minh City, VM2026-0009, April 2026): cotton fiber (HS 5201, 5203) has a 0% tariff; no quota applies."
+        },
+        "5204": {
+          "exportsUsd": 0,
+          "rate": "5%",
+          "normalRate": null,
+          "basis": "USDA FAS, Cotton and Products Annual (Ho Chi Minh City, VM2026-0009, April 2026): cotton yarn (HS 5204, 5205, 5207) has a 5% tariff."
+        },
+        "5205": {
+          "exportsUsd": 3659598,
+          "rate": "5%",
+          "normalRate": null,
+          "basis": "USDA FAS, Cotton and Products Annual (Ho Chi Minh City, VM2026-0009, April 2026): cotton yarn (HS 5204, 5205, 5207) has a 5% tariff."
+        },
+        "5206": {
+          "exportsUsd": 3508252,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "USDA FAS, Cotton and Products Annual (Ho Chi Minh City, VM2026-0009); the line was not listed in the report."
+        },
+        "5207": {
+          "exportsUsd": 0,
+          "rate": "5%",
+          "normalRate": null,
+          "basis": "USDA FAS, Cotton and Products Annual (Ho Chi Minh City, VM2026-0009, April 2026): cotton yarn (HS 5204, 5205, 5207) has a 5% tariff."
+        },
+        "5208": {
+          "exportsUsd": 86907,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "USDA FAS, Cotton and Products Annual (Ho Chi Minh City, VM2026-0009); the line was not listed in the report."
+        },
+        "5209": {
+          "exportsUsd": 976379,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "USDA FAS, Cotton and Products Annual (Ho Chi Minh City, VM2026-0009); the line was not listed in the report."
+        },
+        "5210": {
+          "exportsUsd": 94536,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "USDA FAS, Cotton and Products Annual (Ho Chi Minh City, VM2026-0009); the line was not listed in the report."
+        },
+        "5211": {
+          "exportsUsd": 289582,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "USDA FAS, Cotton and Products Annual (Ho Chi Minh City, VM2026-0009); the line was not listed in the report."
+        },
+        "5212": {
+          "exportsUsd": 78956,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "USDA FAS, Cotton and Products Annual (Ho Chi Minh City, VM2026-0009); the line was not listed in the report."
+        }
+      },
+      "profile": {
+        "headline": "Viet Nam is the largest buyer and bought 122% more U.S. cotton in 2025, feeding its yarn-spinning mills. Cotton fiber enters at 0% with no quota.",
+        "mainProducts": "Raw cotton, not carded or combed (5201) · Cotton yarn, 85% or more cotton, not for retail sale (5205)",
+        "tariffNow": "Raw cotton 0%; yarn 5%",
+        "regulator": {
+          "name": "Plant Protection Department, Ministry of Agriculture",
+          "url": "https://ppd.gov.vn/",
+          "requirement": "A phytosanitary certificate for raw cotton, plus a plant-quarantine registration for each shipment."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Vietnam import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/vietnam-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 586,
+      "name": "Pakistan",
+      "rule": "Pakistan's customs tariff (no U.S. trade agreement)",
+      "usTradeAgreement": null,
+      "exportsUsd": 746169389,
+      "priorExportsUsd": 771993413,
+      "sharePct": 12.7,
+      "changePct": -3.3,
+      "status": "unchanged",
+      "cells": {
+        "5201": {
+          "exportsUsd": 745543542,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "Pakistan Customs Tariff 2026; an official duty rate for this line was not confirmed. The last USDA FAS report found (2019) listed raw cotton at 0%."
+        },
+        "5202": {
+          "exportsUsd": 304500,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "Pakistan Customs Tariff 2026; an official duty rate for this line was not confirmed. The last USDA FAS report found (2019) listed raw cotton at 0%."
+        },
+        "5203": {
+          "exportsUsd": 0,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "Pakistan Customs Tariff 2026; an official duty rate for this line was not confirmed. The last USDA FAS report found (2019) listed raw cotton at 0%."
+        },
+        "5204": {
+          "exportsUsd": 0,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "Pakistan Customs Tariff 2026; an official duty rate for this line was not confirmed. The last USDA FAS report found (2019) listed raw cotton at 0%."
+        },
+        "5205": {
+          "exportsUsd": 69715,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "Pakistan Customs Tariff 2026; an official duty rate for this line was not confirmed. The last USDA FAS report found (2019) listed raw cotton at 0%."
+        },
+        "5206": {
+          "exportsUsd": 0,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "Pakistan Customs Tariff 2026; an official duty rate for this line was not confirmed. The last USDA FAS report found (2019) listed raw cotton at 0%."
+        },
+        "5207": {
+          "exportsUsd": 0,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "Pakistan Customs Tariff 2026; an official duty rate for this line was not confirmed. The last USDA FAS report found (2019) listed raw cotton at 0%."
+        },
+        "5208": {
+          "exportsUsd": 4493,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "Pakistan Customs Tariff 2026; an official duty rate for this line was not confirmed. The last USDA FAS report found (2019) listed raw cotton at 0%."
+        },
+        "5209": {
+          "exportsUsd": 162953,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "Pakistan Customs Tariff 2026; an official duty rate for this line was not confirmed. The last USDA FAS report found (2019) listed raw cotton at 0%."
+        },
+        "5210": {
+          "exportsUsd": 84186,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "Pakistan Customs Tariff 2026; an official duty rate for this line was not confirmed. The last USDA FAS report found (2019) listed raw cotton at 0%."
+        },
+        "5211": {
+          "exportsUsd": 0,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "Pakistan Customs Tariff 2026; an official duty rate for this line was not confirmed. The last USDA FAS report found (2019) listed raw cotton at 0%."
+        },
+        "5212": {
+          "exportsUsd": 0,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "Pakistan Customs Tariff 2026; an official duty rate for this line was not confirmed. The last USDA FAS report found (2019) listed raw cotton at 0%."
+        }
+      },
+      "profile": {
+        "headline": "Pakistan is the second-largest buyer, almost all raw cotton for its spinning mills. An official 2026 customs-duty rate for raw cotton was not confirmed.",
+        "mainProducts": "Raw cotton, not carded or combed (5201) · Cotton waste (yarn waste, garnetted stock, card strips) (5202)",
+        "tariffNow": "Normal tariff (no U.S. trade agreement)",
+        "regulator": {
+          "name": "Department of Plant Protection",
+          "url": "https://plantprotection.gov.pk/",
+          "requirement": "A phytosanitary certificate for each shipment of raw cotton, inspected on arrival by the Department of Plant Protection."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Pakistan market overview",
+          "url": "https://www.trade.gov/country-commercial-guides/Pakistan-market-overview"
+        }
+      }
+    },
+    {
+      "countryCode": 792,
+      "name": "Türkiye",
+      "rule": "Türkiye's customs tariff (no U.S. trade agreement)",
+      "usTradeAgreement": null,
+      "exportsUsd": 666529982,
+      "priorExportsUsd": 372709647,
+      "sharePct": 11.3,
+      "changePct": 78.8,
+      "status": "unchanged",
+      "cells": {
+        "5201": {
+          "exportsUsd": 665140425,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "Türkiye's 2026 import tariff schedule (published Dec. 31, 2025); the cotton line was not confirmed. Türkiye added extra duties on some Chapter 51–63 textile goods in 2023."
+        },
+        "5202": {
+          "exportsUsd": 24268,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "Türkiye's 2026 import tariff schedule (published Dec. 31, 2025); the cotton line was not confirmed. Türkiye added extra duties on some Chapter 51–63 textile goods in 2023."
+        },
+        "5203": {
+          "exportsUsd": 49171,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "Türkiye's 2026 import tariff schedule (published Dec. 31, 2025); the cotton line was not confirmed. Türkiye added extra duties on some Chapter 51–63 textile goods in 2023."
+        },
+        "5204": {
+          "exportsUsd": 0,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "Türkiye's 2026 import tariff schedule (published Dec. 31, 2025); the cotton line was not confirmed. Türkiye added extra duties on some Chapter 51–63 textile goods in 2023."
+        },
+        "5205": {
+          "exportsUsd": 992656,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "Türkiye's 2026 import tariff schedule (published Dec. 31, 2025); the cotton line was not confirmed. Türkiye added extra duties on some Chapter 51–63 textile goods in 2023."
+        },
+        "5206": {
+          "exportsUsd": 0,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "Türkiye's 2026 import tariff schedule (published Dec. 31, 2025); the cotton line was not confirmed. Türkiye added extra duties on some Chapter 51–63 textile goods in 2023."
+        },
+        "5207": {
+          "exportsUsd": 9751,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "Türkiye's 2026 import tariff schedule (published Dec. 31, 2025); the cotton line was not confirmed. Türkiye added extra duties on some Chapter 51–63 textile goods in 2023."
+        },
+        "5208": {
+          "exportsUsd": 19464,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "Türkiye's 2026 import tariff schedule (published Dec. 31, 2025); the cotton line was not confirmed. Türkiye added extra duties on some Chapter 51–63 textile goods in 2023."
+        },
+        "5209": {
+          "exportsUsd": 288126,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "Türkiye's 2026 import tariff schedule (published Dec. 31, 2025); the cotton line was not confirmed. Türkiye added extra duties on some Chapter 51–63 textile goods in 2023."
+        },
+        "5210": {
+          "exportsUsd": 0,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "Türkiye's 2026 import tariff schedule (published Dec. 31, 2025); the cotton line was not confirmed. Türkiye added extra duties on some Chapter 51–63 textile goods in 2023."
+        },
+        "5211": {
+          "exportsUsd": 0,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "Türkiye's 2026 import tariff schedule (published Dec. 31, 2025); the cotton line was not confirmed. Türkiye added extra duties on some Chapter 51–63 textile goods in 2023."
+        },
+        "5212": {
+          "exportsUsd": 6121,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "Türkiye's 2026 import tariff schedule (published Dec. 31, 2025); the cotton line was not confirmed. Türkiye added extra duties on some Chapter 51–63 textile goods in 2023."
+        }
+      },
+      "profile": {
+        "headline": "Türkiye bought 79% more U.S. cotton in 2025, though USDA reports Brazil is taking share as prices fall. An official 2026 duty rate for raw cotton was not confirmed.",
+        "mainProducts": "Raw cotton, not carded or combed (5201) · Cotton yarn, 85% or more cotton, not for retail sale (5205)",
+        "tariffNow": "Normal tariff (no U.S. trade agreement)",
+        "regulator": {
+          "name": "Ministry of Agriculture and Forestry",
+          "url": "https://www.tarimorman.gov.tr/",
+          "requirement": "A phytosanitary certificate for each shipment of raw cotton, with plant-health inspection at the port of entry."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Türkiye import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/turkey-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 340,
+      "name": "Honduras",
+      "rule": "CAFTA-DR staged elimination (Honduras's schedule)",
+      "usTradeAgreement": "U.S.–Dominican Republic–Central America FTA (CAFTA-DR)",
+      "exportsUsd": 550524390,
+      "priorExportsUsd": 633262768,
+      "sharePct": 9.4,
+      "changePct": -13.1,
+      "status": "unchanged",
+      "cells": {
+        "5201": {
+          "exportsUsd": 115701782,
+          "rate": "Free (CAFTA-DR)",
+          "normalRate": null,
+          "basis": "CAFTA-DR Annex 3.3, Honduras's schedule: originating U.S. cotton, yarn and fabric enter duty-free."
+        },
+        "5202": {
+          "exportsUsd": 52018,
+          "rate": "Free (CAFTA-DR)",
+          "normalRate": null,
+          "basis": "CAFTA-DR Annex 3.3, Honduras's schedule: originating U.S. cotton, yarn and fabric enter duty-free."
+        },
+        "5203": {
+          "exportsUsd": 58544,
+          "rate": "Free (CAFTA-DR)",
+          "normalRate": null,
+          "basis": "CAFTA-DR Annex 3.3, Honduras's schedule: originating U.S. cotton, yarn and fabric enter duty-free."
+        },
+        "5204": {
+          "exportsUsd": 66561,
+          "rate": "Free (CAFTA-DR)",
+          "normalRate": null,
+          "basis": "CAFTA-DR Annex 3.3, Honduras's schedule: originating U.S. cotton, yarn and fabric enter duty-free."
+        },
+        "5205": {
+          "exportsUsd": 400019832,
+          "rate": "Free (CAFTA-DR)",
+          "normalRate": null,
+          "basis": "CAFTA-DR Annex 3.3, Honduras's schedule: originating U.S. cotton, yarn and fabric enter duty-free."
+        },
+        "5206": {
+          "exportsUsd": 10296141,
+          "rate": "Free (CAFTA-DR)",
+          "normalRate": null,
+          "basis": "CAFTA-DR Annex 3.3, Honduras's schedule: originating U.S. cotton, yarn and fabric enter duty-free."
+        },
+        "5207": {
+          "exportsUsd": 0,
+          "rate": "Free (CAFTA-DR)",
+          "normalRate": null,
+          "basis": "CAFTA-DR Annex 3.3, Honduras's schedule: originating U.S. cotton, yarn and fabric enter duty-free."
+        },
+        "5208": {
+          "exportsUsd": 7074,
+          "rate": "Free (CAFTA-DR)",
+          "normalRate": null,
+          "basis": "CAFTA-DR Annex 3.3, Honduras's schedule: originating U.S. cotton, yarn and fabric enter duty-free."
+        },
+        "5209": {
+          "exportsUsd": 21609547,
+          "rate": "Free (CAFTA-DR)",
+          "normalRate": null,
+          "basis": "CAFTA-DR Annex 3.3, Honduras's schedule: originating U.S. cotton, yarn and fabric enter duty-free."
+        },
+        "5210": {
+          "exportsUsd": 286955,
+          "rate": "Free (CAFTA-DR)",
+          "normalRate": null,
+          "basis": "CAFTA-DR Annex 3.3, Honduras's schedule: originating U.S. cotton, yarn and fabric enter duty-free."
+        },
+        "5211": {
+          "exportsUsd": 2425936,
+          "rate": "Free (CAFTA-DR)",
+          "normalRate": null,
+          "basis": "CAFTA-DR Annex 3.3, Honduras's schedule: originating U.S. cotton, yarn and fabric enter duty-free."
+        },
+        "5212": {
+          "exportsUsd": 0,
+          "rate": "Free (CAFTA-DR)",
+          "normalRate": null,
+          "basis": "CAFTA-DR Annex 3.3, Honduras's schedule: originating U.S. cotton, yarn and fabric enter duty-free."
+        }
+      },
+      "profile": {
+        "headline": "Honduras buys U.S. cotton, yarn and fabric duty-free to make apparel for the U.S. market. Its textile mills are the heart of the CAFTA-DR yarn-forward rule.",
+        "mainProducts": "Cotton yarn, 85% or more cotton, not for retail sale (5205) · Raw cotton, not carded or combed (5201)",
+        "tariffNow": "Free (CAFTA-DR)",
+        "regulator": {
+          "name": "National Service of Agricultural Health (SENASA)",
+          "url": "https://www.senasa.gob.hn/",
+          "requirement": "A phytosanitary import permit and a U.S. phytosanitary certificate for raw cotton."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Honduras import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/honduras-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 699,
+      "name": "India",
+      "rule": "India's customs tariff (no U.S. trade agreement); temporary duty waivers",
+      "usTradeAgreement": null,
+      "exportsUsd": 392464593,
+      "priorExportsUsd": 211957388,
+      "sharePct": 6.7,
+      "changePct": 85.2,
+      "status": "lowered",
+      "cells": {
+        "5201": {
+          "exportsUsd": 389323857,
+          "rate": "Normally about 11%; waived since Aug. 2025 (2026 waiver reported)",
+          "normalRate": "About 11% (without a waiver)",
+          "basis": "India Customs Tariff, cotton of staple above 32 mm: 5% basic duty and 5% AIDC cess, plus a 10% surcharge on both, together 11%. The Ministry of Textiles waived all of it from Aug. 19, 2025 (PIB, Aug. 19, 2025), and it was waived again, per press reports, from June 1 to Oct. 31, 2026. Check CBIC for the current notification."
+        },
+        "5202": {
+          "exportsUsd": 595113,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "India Customs Tariff 2026; the line was not individually verified."
+        },
+        "5203": {
+          "exportsUsd": 919550,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "India Customs Tariff 2026; the line was not individually verified."
+        },
+        "5204": {
+          "exportsUsd": 17158,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "India Customs Tariff 2026; the line was not individually verified."
+        },
+        "5205": {
+          "exportsUsd": 1363266,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "India Customs Tariff 2026; the line was not individually verified."
+        },
+        "5206": {
+          "exportsUsd": 0,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "India Customs Tariff 2026; the line was not individually verified."
+        },
+        "5207": {
+          "exportsUsd": 0,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "India Customs Tariff 2026; the line was not individually verified."
+        },
+        "5208": {
+          "exportsUsd": 112509,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "India Customs Tariff 2026; the line was not individually verified."
+        },
+        "5209": {
+          "exportsUsd": 13791,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "India Customs Tariff 2026; the line was not individually verified."
+        },
+        "5210": {
+          "exportsUsd": 110982,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "India Customs Tariff 2026; the line was not individually verified."
+        },
+        "5211": {
+          "exportsUsd": 8367,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "India Customs Tariff 2026; the line was not individually verified."
+        },
+        "5212": {
+          "exportsUsd": 0,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "India Customs Tariff 2026; the line was not individually verified."
+        }
+      },
+      "profile": {
+        "headline": "India bought 85% more U.S. cotton in 2025, helped by a waiver of its 11% cotton import duty that began in August 2025. Waivers have been granted in short windows, so a lapse changes the price of U.S. cotton overnight.",
+        "mainProducts": "Raw cotton, not carded or combed (5201) · Cotton yarn, 85% or more cotton, not for retail sale (5205)",
+        "tariffNow": "Normally about 11%; waived since Aug. 2025 (2026 waiver reported)",
+        "regulator": {
+          "name": "Directorate of Plant Protection, Quarantine & Storage",
+          "url": "https://ppqs.gov.in/",
+          "requirement": "A phytosanitary certificate and, where India's Plant Quarantine Order requires, a fumigation certificate for each shipment of raw cotton."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: India import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/india-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 484,
+      "name": "Mexico",
+      "rule": "USMCA tariff elimination on originating U.S. goods (Mexico's schedule)",
+      "usTradeAgreement": "USMCA (T-MEC in Mexico)",
+      "exportsUsd": 372515854,
+      "priorExportsUsd": 424366083,
+      "sharePct": 6.3,
+      "changePct": -12.2,
+      "status": "unchanged",
+      "cells": {
+        "5201": {
+          "exportsUsd": 213220559,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Annex 2-B, Mexico's tariff schedule, 2026: originating U.S. cotton, yarn and fabric enter duty-free. Mexico's higher normal tariff on many textile lines (December 2025 decree) applies only to goods that do not qualify."
+        },
+        "5202": {
+          "exportsUsd": 3042180,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Annex 2-B, Mexico's tariff schedule, 2026: originating U.S. cotton, yarn and fabric enter duty-free. Mexico's higher normal tariff on many textile lines (December 2025 decree) applies only to goods that do not qualify."
+        },
+        "5203": {
+          "exportsUsd": 1957721,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Annex 2-B, Mexico's tariff schedule, 2026: originating U.S. cotton, yarn and fabric enter duty-free. Mexico's higher normal tariff on many textile lines (December 2025 decree) applies only to goods that do not qualify."
+        },
+        "5204": {
+          "exportsUsd": 865750,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Annex 2-B, Mexico's tariff schedule, 2026: originating U.S. cotton, yarn and fabric enter duty-free. Mexico's higher normal tariff on many textile lines (December 2025 decree) applies only to goods that do not qualify."
+        },
+        "5205": {
+          "exportsUsd": 1509276,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Annex 2-B, Mexico's tariff schedule, 2026: originating U.S. cotton, yarn and fabric enter duty-free. Mexico's higher normal tariff on many textile lines (December 2025 decree) applies only to goods that do not qualify."
+        },
+        "5206": {
+          "exportsUsd": 9162043,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Annex 2-B, Mexico's tariff schedule, 2026: originating U.S. cotton, yarn and fabric enter duty-free. Mexico's higher normal tariff on many textile lines (December 2025 decree) applies only to goods that do not qualify."
+        },
+        "5207": {
+          "exportsUsd": 432936,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Annex 2-B, Mexico's tariff schedule, 2026: originating U.S. cotton, yarn and fabric enter duty-free. Mexico's higher normal tariff on many textile lines (December 2025 decree) applies only to goods that do not qualify."
+        },
+        "5208": {
+          "exportsUsd": 5379278,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Annex 2-B, Mexico's tariff schedule, 2026: originating U.S. cotton, yarn and fabric enter duty-free. Mexico's higher normal tariff on many textile lines (December 2025 decree) applies only to goods that do not qualify."
+        },
+        "5209": {
+          "exportsUsd": 105113389,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Annex 2-B, Mexico's tariff schedule, 2026: originating U.S. cotton, yarn and fabric enter duty-free. Mexico's higher normal tariff on many textile lines (December 2025 decree) applies only to goods that do not qualify."
+        },
+        "5210": {
+          "exportsUsd": 1128898,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Annex 2-B, Mexico's tariff schedule, 2026: originating U.S. cotton, yarn and fabric enter duty-free. Mexico's higher normal tariff on many textile lines (December 2025 decree) applies only to goods that do not qualify."
+        },
+        "5211": {
+          "exportsUsd": 30077938,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Annex 2-B, Mexico's tariff schedule, 2026: originating U.S. cotton, yarn and fabric enter duty-free. Mexico's higher normal tariff on many textile lines (December 2025 decree) applies only to goods that do not qualify."
+        },
+        "5212": {
+          "exportsUsd": 625886,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Annex 2-B, Mexico's tariff schedule, 2026: originating U.S. cotton, yarn and fabric enter duty-free. Mexico's higher normal tariff on many textile lines (December 2025 decree) applies only to goods that do not qualify."
+        }
+      },
+      "profile": {
+        "headline": "Mexico buys U.S. cotton and yarn duty-free for its textile and apparel plants. Mexico raised its normal tariff on many textile lines in 2026, but U.S. goods that qualify for USMCA keep 0%.",
+        "mainProducts": "Raw cotton, not carded or combed (5201) · Woven cotton fabric, 85%+ cotton, over 200 g/m² (incl. denim) (5209)",
+        "tariffNow": "Free (USMCA)",
+        "regulator": {
+          "name": "SENASICA (National Agri-Food Health, Safety and Quality Service)",
+          "url": "https://www.gob.mx/senasica",
+          "requirement": "A phytosanitary import certificate for raw cotton from SENASICA, with a U.S. phytosanitary certificate."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Mexico import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/mexico-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 50,
+      "name": "Bangladesh",
+      "rule": "Bangladesh's customs tariff (no U.S. trade agreement); purchase goals in the 2026 agreement",
+      "usTradeAgreement": null,
+      "exportsUsd": 287417068,
+      "priorExportsUsd": 251681182,
+      "sharePct": 4.9,
+      "changePct": 14.2,
+      "status": "unchanged",
+      "cells": {
+        "5201": {
+          "exportsUsd": 234576081,
+          "rate": "0% in USDA's last duty table (2020); not re-verified for 2026",
+          "normalRate": null,
+          "basis": "USDA FAS, Cotton and Products Update (Dhaka, 2020): raw cotton (HS 5201) at 0% tariff. The 2026 USDA annual was not readable for its duty table. The U.S.–Bangladesh Agreement on Reciprocal Trade (Feb. 9, 2026) sets purchase goals and does not change Bangladesh's tariffs."
+        },
+        "5202": {
+          "exportsUsd": 0,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "Bangladesh Customs Tariff 2026; the line was not individually verified."
+        },
+        "5203": {
+          "exportsUsd": 139095,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "Bangladesh Customs Tariff 2026; the line was not individually verified."
+        },
+        "5204": {
+          "exportsUsd": 0,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "Bangladesh Customs Tariff 2026; the line was not individually verified."
+        },
+        "5205": {
+          "exportsUsd": 31068816,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "Bangladesh Customs Tariff 2026; the line was not individually verified."
+        },
+        "5206": {
+          "exportsUsd": 6975958,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "Bangladesh Customs Tariff 2026; the line was not individually verified."
+        },
+        "5207": {
+          "exportsUsd": 14629119,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "Bangladesh Customs Tariff 2026; the line was not individually verified."
+        },
+        "5208": {
+          "exportsUsd": 0,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "Bangladesh Customs Tariff 2026; the line was not individually verified."
+        },
+        "5209": {
+          "exportsUsd": 27999,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "Bangladesh Customs Tariff 2026; the line was not individually verified."
+        },
+        "5210": {
+          "exportsUsd": 0,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "Bangladesh Customs Tariff 2026; the line was not individually verified."
+        },
+        "5211": {
+          "exportsUsd": 0,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "Bangladesh Customs Tariff 2026; the line was not individually verified."
+        },
+        "5212": {
+          "exportsUsd": 0,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "Bangladesh Customs Tariff 2026; the line was not individually verified."
+        }
+      },
+      "profile": {
+        "headline": "Bangladesh is a garment exporter that buys U.S. cotton for its mills. In February 2026 it set a purchase goal for U.S. cotton, wheat and soy in a trade agreement, though the agreement does not change its tariffs.",
+        "mainProducts": "Raw cotton, not carded or combed (5201) · Cotton yarn, 85% or more cotton, not for retail sale (5205)",
+        "tariffNow": "Raw cotton 0% in USDA's last duty table (2020)",
+        "regulator": {
+          "name": "Plant Quarantine Wing, Department of Agricultural Extension",
+          "url": "https://dae.gov.bd/",
+          "requirement": "A phytosanitary certificate for each shipment of raw cotton, with quarantine inspection on arrival."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Bangladesh import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/bangladesh-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 156,
+      "name": "China",
+      "rule": "China's normal tariff-rate quota for cotton plus an extra 10% on all U.S. goods (2025)",
+      "usTradeAgreement": null,
+      "exportsUsd": 220555598,
+      "priorExportsUsd": 1490842045,
+      "sharePct": 3.8,
+      "changePct": -85.2,
+      "status": "raised",
+      "cells": {
+        "5201": {
+          "exportsUsd": 218950382,
+          "rate": "1% in quota (894,000 t), 40% above, plus 10% on all U.S. goods",
+          "normalRate": "1% in quota; 40% above",
+          "basis": "USDA FAS, Cotton and Products Annual (Beijing, CH2026-0054, April 2026): the 894,000-tonne quota is 1% and out-of-quota cotton pays 40%, with a sliding-scale quota at 5–40% for processing trade; U.S. cotton also pays the extra 10% on all U.S. goods."
+        },
+        "5202": {
+          "exportsUsd": 7920,
+          "rate": "Normal rate + 10% on all U.S. goods",
+          "normalRate": null,
+          "basis": "China Customs Tariff 2026 plus the extra 10% on all U.S. goods (Tariff Commission Announcements No. 7 and No. 10 of 2025). The normal rate for this line was not individually verified."
+        },
+        "5203": {
+          "exportsUsd": 104641,
+          "rate": "Normal rate + 10% on all U.S. goods",
+          "normalRate": null,
+          "basis": "China Customs Tariff 2026 plus the extra 10% on all U.S. goods (Tariff Commission Announcements No. 7 and No. 10 of 2025). The normal rate for this line was not individually verified."
+        },
+        "5204": {
+          "exportsUsd": 0,
+          "rate": "Normal rate + 10% on all U.S. goods",
+          "normalRate": null,
+          "basis": "China Customs Tariff 2026 plus the extra 10% on all U.S. goods (Tariff Commission Announcements No. 7 and No. 10 of 2025). The normal rate for this line was not individually verified."
+        },
+        "5205": {
+          "exportsUsd": 8419,
+          "rate": "Normal rate + 10% on all U.S. goods",
+          "normalRate": null,
+          "basis": "China Customs Tariff 2026 plus the extra 10% on all U.S. goods (Tariff Commission Announcements No. 7 and No. 10 of 2025). The normal rate for this line was not individually verified."
+        },
+        "5206": {
+          "exportsUsd": 0,
+          "rate": "Normal rate + 10% on all U.S. goods",
+          "normalRate": null,
+          "basis": "China Customs Tariff 2026 plus the extra 10% on all U.S. goods (Tariff Commission Announcements No. 7 and No. 10 of 2025). The normal rate for this line was not individually verified."
+        },
+        "5207": {
+          "exportsUsd": 6722,
+          "rate": "Normal rate + 10% on all U.S. goods",
+          "normalRate": null,
+          "basis": "China Customs Tariff 2026 plus the extra 10% on all U.S. goods (Tariff Commission Announcements No. 7 and No. 10 of 2025). The normal rate for this line was not individually verified."
+        },
+        "5208": {
+          "exportsUsd": 145552,
+          "rate": "Normal rate + 10% on all U.S. goods",
+          "normalRate": null,
+          "basis": "China Customs Tariff 2026 plus the extra 10% on all U.S. goods (Tariff Commission Announcements No. 7 and No. 10 of 2025). The normal rate for this line was not individually verified."
+        },
+        "5209": {
+          "exportsUsd": 934070,
+          "rate": "Normal rate + 10% on all U.S. goods",
+          "normalRate": null,
+          "basis": "China Customs Tariff 2026 plus the extra 10% on all U.S. goods (Tariff Commission Announcements No. 7 and No. 10 of 2025). The normal rate for this line was not individually verified."
+        },
+        "5210": {
+          "exportsUsd": 16803,
+          "rate": "Normal rate + 10% on all U.S. goods",
+          "normalRate": null,
+          "basis": "China Customs Tariff 2026 plus the extra 10% on all U.S. goods (Tariff Commission Announcements No. 7 and No. 10 of 2025). The normal rate for this line was not individually verified."
+        },
+        "5211": {
+          "exportsUsd": 181645,
+          "rate": "Normal rate + 10% on all U.S. goods",
+          "normalRate": null,
+          "basis": "China Customs Tariff 2026 plus the extra 10% on all U.S. goods (Tariff Commission Announcements No. 7 and No. 10 of 2025). The normal rate for this line was not individually verified."
+        },
+        "5212": {
+          "exportsUsd": 199444,
+          "rate": "Normal rate + 10% on all U.S. goods",
+          "normalRate": null,
+          "basis": "China Customs Tariff 2026 plus the extra 10% on all U.S. goods (Tariff Commission Announcements No. 7 and No. 10 of 2025). The normal rate for this line was not individually verified."
+        }
+      },
+      "profile": {
+        "headline": "China's purchases of U.S. cotton fell 85% in 2025, from $1.49 billion to $221 million, as Beijing bought more from other suppliers during the tariff fight. Its separate 15% tariff on U.S. cotton was lifted on November 10, 2025; the extra 10% on all U.S. goods stays.",
+        "mainProducts": "Raw cotton, not carded or combed (5201) · Woven cotton fabric, 85%+ cotton, over 200 g/m² (incl. denim) (5209)",
+        "tariffNow": "1% in quota, 40% above, plus 10% on all U.S. goods",
+        "regulator": {
+          "name": "General Administration of Customs of China (GACC)",
+          "url": "https://english.customs.gov.cn/",
+          "requirement": "A U.S. phytosanitary certificate and a GACC quarantine inspection for each shipment. Imports in the quota need a quota certificate held by the buyer."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: China import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/china-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 214,
+      "name": "Dominican Republic",
+      "rule": "CAFTA-DR staged elimination (Dominican Republic's schedule)",
+      "usTradeAgreement": "U.S.–Dominican Republic–Central America FTA (CAFTA-DR)",
+      "exportsUsd": 202426218,
+      "priorExportsUsd": 245803985,
+      "sharePct": 3.4,
+      "changePct": -17.6,
+      "status": "unchanged",
+      "cells": {
+        "5201": {
+          "exportsUsd": 1128948,
+          "rate": "Free (CAFTA-DR)",
+          "normalRate": null,
+          "basis": "CAFTA-DR Annex 3.3, Dominican Republic's schedule: originating U.S. cotton, yarn and fabric enter duty-free."
+        },
+        "5202": {
+          "exportsUsd": 19703,
+          "rate": "Free (CAFTA-DR)",
+          "normalRate": null,
+          "basis": "CAFTA-DR Annex 3.3, Dominican Republic's schedule: originating U.S. cotton, yarn and fabric enter duty-free."
+        },
+        "5203": {
+          "exportsUsd": 25000,
+          "rate": "Free (CAFTA-DR)",
+          "normalRate": null,
+          "basis": "CAFTA-DR Annex 3.3, Dominican Republic's schedule: originating U.S. cotton, yarn and fabric enter duty-free."
+        },
+        "5204": {
+          "exportsUsd": 150360,
+          "rate": "Free (CAFTA-DR)",
+          "normalRate": null,
+          "basis": "CAFTA-DR Annex 3.3, Dominican Republic's schedule: originating U.S. cotton, yarn and fabric enter duty-free."
+        },
+        "5205": {
+          "exportsUsd": 186507443,
+          "rate": "Free (CAFTA-DR)",
+          "normalRate": null,
+          "basis": "CAFTA-DR Annex 3.3, Dominican Republic's schedule: originating U.S. cotton, yarn and fabric enter duty-free."
+        },
+        "5206": {
+          "exportsUsd": 2891006,
+          "rate": "Free (CAFTA-DR)",
+          "normalRate": null,
+          "basis": "CAFTA-DR Annex 3.3, Dominican Republic's schedule: originating U.S. cotton, yarn and fabric enter duty-free."
+        },
+        "5207": {
+          "exportsUsd": 41604,
+          "rate": "Free (CAFTA-DR)",
+          "normalRate": null,
+          "basis": "CAFTA-DR Annex 3.3, Dominican Republic's schedule: originating U.S. cotton, yarn and fabric enter duty-free."
+        },
+        "5208": {
+          "exportsUsd": 87771,
+          "rate": "Free (CAFTA-DR)",
+          "normalRate": null,
+          "basis": "CAFTA-DR Annex 3.3, Dominican Republic's schedule: originating U.S. cotton, yarn and fabric enter duty-free."
+        },
+        "5209": {
+          "exportsUsd": 5501830,
+          "rate": "Free (CAFTA-DR)",
+          "normalRate": null,
+          "basis": "CAFTA-DR Annex 3.3, Dominican Republic's schedule: originating U.S. cotton, yarn and fabric enter duty-free."
+        },
+        "5210": {
+          "exportsUsd": 206909,
+          "rate": "Free (CAFTA-DR)",
+          "normalRate": null,
+          "basis": "CAFTA-DR Annex 3.3, Dominican Republic's schedule: originating U.S. cotton, yarn and fabric enter duty-free."
+        },
+        "5211": {
+          "exportsUsd": 56593,
+          "rate": "Free (CAFTA-DR)",
+          "normalRate": null,
+          "basis": "CAFTA-DR Annex 3.3, Dominican Republic's schedule: originating U.S. cotton, yarn and fabric enter duty-free."
+        },
+        "5212": {
+          "exportsUsd": 5809051,
+          "rate": "Free (CAFTA-DR)",
+          "normalRate": null,
+          "basis": "CAFTA-DR Annex 3.3, Dominican Republic's schedule: originating U.S. cotton, yarn and fabric enter duty-free."
+        }
+      },
+      "profile": {
+        "headline": "The Dominican Republic buys mostly U.S. yarn and fabric duty-free for its free-zone apparel plants.",
+        "mainProducts": "Cotton yarn, 85% or more cotton, not for retail sale (5205) · Other woven cotton fabrics (incl. cotton–wool blends) (5212)",
+        "tariffNow": "Free (CAFTA-DR)",
+        "regulator": {
+          "name": "Ministry of Agriculture",
+          "url": "https://agricultura.gob.do/",
+          "requirement": "A phytosanitary import authorization for raw cotton, with a U.S. phytosanitary certificate."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Dominican Republic import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/dominican-republic-import-requirements-and-documentation"
+        }
+      }
+    }
+  ],
+  "biggestLanes": [
+    {
+      "market": "Viet Nam",
+      "heading": "5201",
+      "exportsUsd": 1283350790,
+      "rate": "0%"
+    },
+    {
+      "market": "Pakistan",
+      "heading": "5201",
+      "exportsUsd": 745543542,
+      "rate": "Not individually verified — see the market's tariff schedule"
+    },
+    {
+      "market": "Türkiye",
+      "heading": "5201",
+      "exportsUsd": 665140425,
+      "rate": "Not individually verified — see the market's tariff schedule"
+    },
+    {
+      "market": "Honduras",
+      "heading": "5205",
+      "exportsUsd": 400019832,
+      "rate": "Free (CAFTA-DR)"
+    },
+    {
+      "market": "India",
+      "heading": "5201",
+      "exportsUsd": 389323857,
+      "rate": "Normally about 11%; waived since Aug. 2025 (2026 waiver reported)"
+    },
+    {
+      "market": "Bangladesh",
+      "heading": "5201",
+      "exportsUsd": 234576081,
+      "rate": "0% in USDA's last duty table (2020); not re-verified for 2026"
+    },
+    {
+      "market": "China",
+      "heading": "5201",
+      "exportsUsd": 218950382,
+      "rate": "1% in quota (894,000 t), 40% above, plus 10% on all U.S. goods"
+    },
+    {
+      "market": "Mexico",
+      "heading": "5201",
+      "exportsUsd": 213220559,
+      "rate": "Free (USMCA)"
+    }
+  ],
+  "assumptions": [
+    "Rates come from USDA Foreign Agricultural Service cotton reports (Viet Nam, China, April 2026), the trade agreements (USMCA, CAFTA-DR) and India's Ministry of Textiles release of August 2025. Where no official 2026 figure was found, the cell says 'not individually verified'.",
+    "One representative group stands in for each of the three kinds of goods: raw cotton (5201–5203), yarn (5204–5207) and woven fabric (5208–5212). Yarn and fabric are 18% of the chapter, so their rates matter less than raw cotton's.",
+    "India's duty is shown as 11% (5% basic duty plus 5% AIDC cess, plus a 10% surcharge on both) with the waiver periods the Ministry of Textiles announced; the 2026 waiver is reported in the press and was not confirmed from the official notification.",
+    "Taxes that are not tariffs, such as value-added and sales taxes, are the buyer's business and are not shown.",
+    "National 8–10-digit tariff lines can set a different rate than the group shown here — check the market's own schedule before relying on this page for a transaction."
+  ],
+  "sources": [
+    {
+      "id": "comtrade-exports",
+      "publisher": "UN Comtrade",
+      "citation": "UN Comtrade, U.S. exports 2020–2025",
+      "document": "UN Comtrade public API (preview), United States exports, annual, HS",
+      "title": "United States exports, HS chapter 52, by partner, heading and subheading",
+      "signed": null,
+      "published": "2026-10-20",
+      "url": "https://comtradeplus.un.org/"
+    },
+    {
+      "id": "vietnam-cotton-fas",
+      "publisher": "USDA Foreign Agricultural Service",
+      "citation": "GAIN report VM2026-0009",
+      "document": "Cotton and Products Annual (Ho Chi Minh City, Vietnam)",
+      "title": "Cotton and Products Annual, Vietnam, April 2026",
+      "signed": null,
+      "published": "2026-04-13",
+      "url": "https://apps.fas.usda.gov/newgainapi/api/Report/DownloadReportByFileName?fileName=Cotton+and+Products+Annual_Ho+Chi+Minh+City_Vietnam_VM2026-0009.pdf"
+    },
+    {
+      "id": "china-cotton-fas",
+      "publisher": "USDA Foreign Agricultural Service",
+      "citation": "GAIN report CH2026-0054",
+      "document": "Cotton and Products Annual (Beijing, China)",
+      "title": "Cotton and Products Annual, China, April 2026",
+      "signed": null,
+      "published": "2026-04-22",
+      "url": "https://apps.fas.usda.gov/newgainapi/api/Report/DownloadReportByFileName?fileName=Cotton+and+Products+Annual_Beijing_China+-+People's+Republic+of_CH2026-0054.pdf"
+    },
+    {
+      "id": "india-cotton-pib",
+      "publisher": "Press Information Bureau (India), Ministry of Textiles",
+      "citation": "PIB press release, Aug. 19, 2025",
+      "document": "Government Exempts Customs Duty on Cotton Imports Until 30th September 2025",
+      "title": "Government Exempts Customs Duty on Cotton Imports Until 30th September 2025",
+      "signed": null,
+      "published": "2025-08-19",
+      "url": "https://www.pib.gov.in/PressReleasePage.aspx?PRID=2158055&reg=48&lang=2"
+    }
+  ],
+  "coverageNote": "The 9 markets shown take 80% of 2025 U.S. Chapter 52 exports. A customs union (the EU) is one market: its members share one tariff."
+}

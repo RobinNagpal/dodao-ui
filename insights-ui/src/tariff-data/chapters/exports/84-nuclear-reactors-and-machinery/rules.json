@@ -1,0 +1,823 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 84,
+    "padded": "84",
+    "slug": "84-nuclear-reactors-and-machinery",
+    "title": "Nuclear Reactors, Boilers, Machinery and Mechanical Appliances; Parts Thereof"
+  },
+  "page": {
+    "slug": "exports/rules",
+    "path": "/industry-tariff-report/exports/chapters/84-nuclear-reactors-and-machinery/rules",
+    "h1": "HTS Chapter 84: Nuclear Reactors, Boilers, Machinery and Mechanical Appliances; Parts Thereof — U.S. Export Rules & Ways to Pay Less Abroad",
+    "seo": {
+      "title": "U.S. Machinery Export Rules: Machine Tools, Chip Equipment & NRC (HTS Ch. 84) | KoalaGains",
+      "shortDescription": "What U.S. exporters of machinery, engines, pumps and computers must do before shipping: Commerce controls on machine tools and chip-making equipment, NRC licences for reactors, EPA engine labeling and Russia licences.",
+      "keywords": [
+        "export machine tools license",
+        "semiconductor equipment export controls",
+        "NRC export license reactor components",
+        "schedule b code machinery",
+        "export engines EPA"
+      ]
+    },
+    "lastCheckedAt": "2026-10-20"
+  },
+  "intro": "A U.S. exporter of machinery takes the same five steps as every exporter. Most machinery is EAR99 and needs no export licence, but this chapter has more controlled categories than most: high-end machine tools, robots and bearings, chemical-process equipment, gas turbines, advanced computers and semiconductor-manufacturing equipment need a Commerce licence for some destinations; nuclear reactors and their components need a Nuclear Regulatory Commission licence; and nearly every heading has lines on the Russia and Belarus licence lists.",
+  "regulationsAsOf": "2026-10-16",
+  "steps": [
+    {
+      "id": "schedule-b",
+      "title": "Find the Schedule B number",
+      "whatToDo": "Look up the 10-digit Schedule B number for each product with the Census Bureau's free search tool. Its first six digits are the same as the HS code every country uses, so it also tells you which line of the buyer's tariff applies. The U.S. import (HTS) number and the Schedule B number match only to six digits.",
+      "when": "Every export. It goes on the export filing (the last step) and on the commercial invoice.",
+      "citations": [
+        {
+          "label": "Census: Schedule B",
+          "url": "https://www.census.gov/foreign-trade/schedules/b/index.html"
+        },
+        {
+          "label": "Schedule B search tool",
+          "url": "https://uscensus.prod.3ceonline.com/"
+        },
+        {
+          "label": "Schedule B introduction (2026)",
+          "url": "https://www.census.gov/foreign-trade/schedules/b/2026/introduction.pdf"
+        }
+      ],
+      "chapterNote": "The largest heading, 8471 (computers and computer units), was 22% of 2025 exports; Schedule B numbers run to 10 digits and match the HTS only to six."
+    },
+    {
+      "id": "screen",
+      "title": "Screen the buyer and everyone in the deal",
+      "whatToDo": "Check the buyer, the end user and any agent against the Consolidated Screening List. It combines the Commerce lists (Entity List, Denied Persons, Unverified, Military End-User), the State Department lists and the Treasury (OFAC) sanctions lists of parties you may not deal with, or may deal with only under a licence.",
+      "when": "Every export, before you accept the order.",
+      "citations": [
+        {
+          "label": "trade.gov: Consolidated Screening List",
+          "url": "https://www.trade.gov/consolidated-screening-list"
+        },
+        {
+          "label": "CSL search",
+          "url": "https://www.trade.gov/data-visualization/csl-search"
+        }
+      ],
+      "chapterNote": "Machinery often ships through distributors; screen the end user, especially for machine tools, chip-making equipment and computers."
+    },
+    {
+      "id": "licence",
+      "title": "Check whether you need an export licence",
+      "whatToDo": "Find the product's Export Control Classification Number (ECCN) on the Commerce Control List. Most goods are not listed and are EAR99. For a listed ECCN, look up the destination on the Commerce Country Chart under each reason for control: an X means a licence is needed unless a licence exception applies. Even EAR99 goods need a licence for embargoed countries and for restricted end users or end uses.",
+      "when": "Every export of goods subject to the Export Administration Regulations (EAR).",
+      "citations": [
+        {
+          "label": "15 CFR 732.3",
+          "url": "https://www.ecfr.gov/current/title-15/section-732.3"
+        },
+        {
+          "label": "15 CFR 738.4",
+          "url": "https://www.ecfr.gov/current/title-15/section-738.4"
+        },
+        {
+          "label": "Commerce Control List (15 CFR 774 Supp. 1)",
+          "url": "https://www.ecfr.gov/current/title-15/part-774/appendix-Supplement%20No.%201%20to%20Part%20774"
+        },
+        {
+          "label": "BIS: classify your item",
+          "url": "https://www.bis.gov/licensing/classify-your-item"
+        }
+      ],
+      "chapterNote": "Most machinery is EAR99. Controlled items include machine tools (ECCN 2B001), hot isostatic presses (2B004), dimensional-inspection systems (2B006), robots (2B007), chemical-process equipment (2B350–2B352), precision bearings (2A001), aero gas turbine engines (9A001), digital computers (4A003, 4A090) and semiconductor-manufacturing equipment (3B001 and related entries); Category 2 and 3 items need a licence for some destinations, and 15 CFR 744.23 adds end-use controls on advanced chip production."
+    },
+    {
+      "id": "sanctions",
+      "title": "Check sanctions on the destination",
+      "whatToDo": "Check the destination against OFAC's sanctions programs and the EAR's embargo rules. Cuba, Iran and North Korea have country-wide rules, and Syria still needs a Commerce licence for most items; Russia and Belarus need a licence for any item with an ECCN. Several programs have special permissions for food and medicine.",
+      "when": "Exports to a sanctioned or embargoed country, or to a listed person anywhere.",
+      "citations": [
+        {
+          "label": "OFAC: sanctions programs",
+          "url": "https://ofac.treasury.gov/sanctions-programs-and-country-information"
+        },
+        {
+          "label": "15 CFR Part 746 (embargoes)",
+          "url": "https://www.ecfr.gov/current/title-15/part-746"
+        }
+      ],
+      "chapterNote": "Russia and Belarus: a Commerce licence is required for 538 six-digit Chapter 84 codes in Supplement No. 4 to 15 CFR Part 746 — nearly every heading from 8401 to 8487 — and 68 more in Supplement 5. Cuba, Iran, North Korea and Syria are covered by country-wide rules."
+    },
+    {
+      "id": "eei",
+      "title": "File the export in AES (Electronic Export Information)",
+      "whatToDo": "You (the U.S. principal party in interest) or your freight forwarder file the EEI in the Automated Export System — free through ACE AESDirect — and put the confirmation number (ITN) on the shipping documents. File at least 24 hours before an ocean shipment is loaded, 2 hours before a flight departs, or 1 hour before a truck reaches the border. Not filing can cost a civil penalty of up to $17,412 per violation.",
+      "when": "When one Schedule B number in one shipment to one buyer is worth over $2,500, and at any value when the shipment needs a Commerce licence or a DEA permit or declaration, or ships an EAR item to Cuba, Iran, North Korea or Syria, or a Commerce Control List item to China, Russia or Venezuela.",
+      "citations": [
+        {
+          "label": "15 CFR 30.2",
+          "url": "https://www.ecfr.gov/current/title-15/section-30.2"
+        },
+        {
+          "label": "15 CFR 30.4 (when to file)",
+          "url": "https://www.ecfr.gov/current/title-15/section-30.4"
+        },
+        {
+          "label": "15 CFR 30.37 ($2,500 exemption)",
+          "url": "https://www.ecfr.gov/current/title-15/section-30.37"
+        },
+        {
+          "label": "15 CFR 758.1",
+          "url": "https://www.ecfr.gov/current/title-15/section-758.1"
+        },
+        {
+          "label": "Census: AES",
+          "url": "https://www.census.gov/foreign-trade/aes/index.html"
+        }
+      ],
+      "chapterNote": "Machinery is high-value, so most shipments exceed $2,500 per Schedule B number and need an EEI filing; reactors and components that need an NRC licence require a filing at any value (15 CFR 30.2(a)(1)(iv)(E))."
+    }
+  ],
+  "rules": [
+    {
+      "id": "bis-machine-tools",
+      "agency": "Bureau of Industry and Security (BIS)",
+      "title": "Machine tools, robots, isostatic presses, dimensional-inspection systems and precision bearings: ECCNs 2B001, 2B004, 2B006, 2B007 and 2A001 need a licence for the destinations on the Country Chart",
+      "citations": [
+        {
+          "label": "Commerce Control List (15 CFR 774 Supp. 1), Category 2",
+          "url": "https://www.ecfr.gov/current/title-15/part-774/appendix-Supplement%20No.%201%20to%20Part%20774"
+        },
+        {
+          "label": "BIS: classify your item",
+          "url": "https://www.bis.gov/licensing/classify-your-item"
+        }
+      ]
+    },
+    {
+      "id": "bis-chemical-equipment",
+      "agency": "Bureau of Industry and Security (BIS)",
+      "title": "Chemical-manufacturing and biological-handling equipment — reactors, heat exchangers, pumps, valves, centrifuges and fermenters meeting corrosion-resistance or containment specifications: ECCNs 2B350 and 2B352, and toxic-gas monitors 2B351",
+      "citations": [
+        {
+          "label": "Commerce Control List (15 CFR 774 Supp. 1), Category 2",
+          "url": "https://www.ecfr.gov/current/title-15/part-774/appendix-Supplement%20No.%201%20to%20Part%20774"
+        },
+        {
+          "label": "15 CFR 742.2 (chemical and biological weapons controls)",
+          "url": "https://www.ecfr.gov/current/title-15/section-742.2"
+        }
+      ]
+    },
+    {
+      "id": "bis-engines",
+      "agency": "Bureau of Industry and Security (BIS)",
+      "title": "Gas turbines and engines for aircraft and missiles: aero gas turbine engines are ECCN 9A001, and engines and parts for military aircraft are ECCN 9A610; check the specification of any turbine or engine above the commodity level",
+      "citations": [
+        {
+          "label": "Commerce Control List (15 CFR 774 Supp. 1), Category 9",
+          "url": "https://www.ecfr.gov/current/title-15/part-774/appendix-Supplement%20No.%201%20to%20Part%20774"
+        }
+      ]
+    },
+    {
+      "id": "bis-computers",
+      "agency": "Bureau of Industry and Security (BIS)",
+      "title": "Computers: digital computers (ECCN 4A003) and advanced-computing items (ECCN 4A090) need a licence for some destinations; mass-market encryption equipment is usually ECCN 5A992",
+      "citations": [
+        {
+          "label": "Commerce Control List (15 CFR 774 Supp. 1), Categories 4 and 5",
+          "url": "https://www.ecfr.gov/current/title-15/part-774/appendix-Supplement%20No.%201%20to%20Part%20774"
+        },
+        {
+          "label": "15 CFR 744.23 (advanced-computing end-use controls)",
+          "url": "https://www.ecfr.gov/current/title-15/section-744.23"
+        }
+      ]
+    },
+    {
+      "id": "bis-semiconductor-equipment",
+      "agency": "Bureau of Industry and Security (BIS)",
+      "title": "Machines for making semiconductors and flat-panel displays (8486): Category 3 controls (ECCN 3B001 and related entries) and the end-use controls on advanced chip production in 15 CFR 744.23",
+      "citations": [
+        {
+          "label": "87 FR 62186 (Oct. 13, 2022 interim final rule)",
+          "url": "https://www.federalregister.gov/documents/2022/10/13/2022-21658/implementation-of-additional-export-controls-certain-advanced-computing-and-semiconductor"
+        },
+        {
+          "label": "15 CFR 744.23",
+          "url": "https://www.ecfr.gov/current/title-15/section-744.23"
+        }
+      ]
+    },
+    {
+      "id": "nrc-part-110",
+      "agency": "Nuclear Regulatory Commission (NRC)",
+      "title": "Nuclear reactors and their especially designed components (8401): an NRC export licence under 10 CFR Part 110, with a general licence for listed reactor components to listed countries (10 CFR 110.26); transfers of nuclear technology and assistance are authorized separately by the Department of Energy under 10 CFR Part 810",
+      "citations": [
+        {
+          "label": "10 CFR Part 110 (export and import of nuclear equipment and material)",
+          "url": "https://www.ecfr.gov/current/title-10/part-110"
+        },
+        {
+          "label": "10 CFR Part 810 (assistance to foreign atomic energy activities)",
+          "url": "https://www.ecfr.gov/current/title-10/part-810"
+        },
+        {
+          "label": "NRC: general licenses for export",
+          "url": "https://www.nrc.gov/about-nrc/ip/export-import/general-licenses"
+        }
+      ]
+    },
+    {
+      "id": "epa-engine-export",
+      "agency": "Environmental Protection Agency (EPA)",
+      "title": "Engines and engine-powered equipment built only for export: exempt from U.S. emission rules if sent to a country whose standards are not identical to ours and labeled \"solely for export\"; engines for countries with identical standards need a certificate of conformity or export-only certification (40 CFR 1068.230)",
+      "citations": [
+        {
+          "label": "40 CFR 1068.230 (exempting engines and equipment for export)",
+          "url": "https://www.ecfr.gov/current/title-40/section-1068.230"
+        }
+      ]
+    },
+    {
+      "id": "bis-russia-belarus",
+      "agency": "Bureau of Industry and Security (BIS)",
+      "title": "Russia and Belarus: a licence is required for the machinery on the HS-code lists in Supplements No. 4 and 5 to Part 746 (15 CFR 746.8)",
+      "citations": [
+        {
+          "label": "15 CFR 746.8 (sanctions against Russia and Belarus)",
+          "url": "https://www.ecfr.gov/current/title-15/section-746.8"
+        }
+      ]
+    }
+  ],
+  "groups": [
+    {
+      "heading": "8401",
+      "label": "Nuclear reactors, fuel elements and isotope separation machinery",
+      "ruleIds": ["nrc-part-110", "bis-russia-belarus"],
+      "note": "Reactors, fuel elements and especially designed components need an NRC licence; the general licence covers only listed components to listed countries."
+    },
+    {
+      "heading": "8402",
+      "label": "Steam and vapor generating boilers; super-heated water boilers",
+      "ruleIds": ["bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "8403",
+      "label": "Central heating boilers",
+      "ruleIds": ["bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "8404",
+      "label": "Boiler auxiliary plant; steam condensers",
+      "ruleIds": ["bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "8405",
+      "label": "Producer gas, water gas and acetylene generators",
+      "ruleIds": ["bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "8406",
+      "label": "Steam turbines and parts",
+      "ruleIds": ["bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "8407",
+      "label": "Spark-ignition engines (gasoline engines)",
+      "ruleIds": ["epa-engine-export", "bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "8408",
+      "label": "Diesel engines",
+      "ruleIds": ["epa-engine-export", "bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "8409",
+      "label": "Engine parts",
+      "ruleIds": ["epa-engine-export", "bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "8410",
+      "label": "Hydraulic turbines and water wheels",
+      "ruleIds": ["bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "8411",
+      "label": "Turbojets, turboprops and gas turbines",
+      "ruleIds": ["bis-engines", "bis-russia-belarus"],
+      "note": "Turbojets, turboprops and other gas turbines are commodity items unless they meet the ECCN 9A001 or 9A610 specifications; parts follow the engine."
+    },
+    {
+      "heading": "8412",
+      "label": "Other engines and motors (hydraulic, pneumatic)",
+      "ruleIds": ["bis-engines", "bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "8413",
+      "label": "Pumps for liquids",
+      "ruleIds": ["bis-chemical-equipment", "bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "8414",
+      "label": "Air and vacuum pumps, compressors and fans",
+      "ruleIds": ["bis-chemical-equipment", "bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "8415",
+      "label": "Air conditioners",
+      "ruleIds": ["bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "8416",
+      "label": "Furnace burners and mechanical stokers",
+      "ruleIds": ["bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "8417",
+      "label": "Industrial and laboratory furnaces and ovens (non-electric)",
+      "ruleIds": ["bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "8418",
+      "label": "Refrigerators, freezers and heat pumps",
+      "ruleIds": ["bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "8419",
+      "label": "Heating, cooling and drying machinery; water heaters",
+      "ruleIds": ["bis-chemical-equipment", "bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "8420",
+      "label": "Calendering and rolling machines",
+      "ruleIds": ["bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "8421",
+      "label": "Centrifuges and filtering or purifying machinery",
+      "ruleIds": ["bis-chemical-equipment", "bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "8422",
+      "label": "Dishwashers and packaging machinery",
+      "ruleIds": ["bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "8423",
+      "label": "Weighing machinery",
+      "ruleIds": ["bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "8424",
+      "label": "Sprayers, fire extinguishers and pressure washers",
+      "ruleIds": ["bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "8425",
+      "label": "Hoists, winches and jacks",
+      "ruleIds": ["bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "8426",
+      "label": "Cranes and derricks",
+      "ruleIds": ["bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "8427",
+      "label": "Forklifts and other works trucks",
+      "ruleIds": ["bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "8428",
+      "label": "Elevators, conveyors and other handling machinery",
+      "ruleIds": ["bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "8429",
+      "label": "Bulldozers, excavators and other earthmoving machinery",
+      "ruleIds": ["bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "8430",
+      "label": "Other earthmoving, boring and snow-clearing machinery",
+      "ruleIds": ["bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "8431",
+      "label": "Parts of hoists, cranes, forklifts and construction machinery",
+      "ruleIds": ["bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "8432",
+      "label": "Soil preparation and cultivation machinery",
+      "ruleIds": ["bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "8433",
+      "label": "Harvesting machinery and lawn mowers",
+      "ruleIds": ["bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "8434",
+      "label": "Milking machines and dairy machinery",
+      "ruleIds": ["bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "8435",
+      "label": "Wine and juice presses",
+      "ruleIds": ["bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "8436",
+      "label": "Poultry, bee-keeping and other agricultural machinery",
+      "ruleIds": ["bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "8437",
+      "label": "Grain cleaning and milling machinery",
+      "ruleIds": ["bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "8438",
+      "label": "Food processing machinery",
+      "ruleIds": ["bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "8439",
+      "label": "Pulp and papermaking machinery",
+      "ruleIds": ["bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "8440",
+      "label": "Bookbinding machinery",
+      "ruleIds": ["bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "8441",
+      "label": "Paper converting machinery",
+      "ruleIds": ["bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "8442",
+      "label": "Platemaking machinery and printing plates",
+      "ruleIds": ["bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "8443",
+      "label": "Printing machinery, printers and copiers",
+      "ruleIds": ["bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "8444",
+      "label": "Machines for extruding man-made textile materials",
+      "ruleIds": ["bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "8445",
+      "label": "Spinning and textile preparation machinery",
+      "ruleIds": ["bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "8446",
+      "label": "Weaving machines (looms)",
+      "ruleIds": ["bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "8447",
+      "label": "Knitting and embroidery machines",
+      "ruleIds": ["bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "8448",
+      "label": "Auxiliary textile machinery and parts",
+      "ruleIds": ["bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "8449",
+      "label": "Felt and nonwovens machinery",
+      "ruleIds": ["bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "8450",
+      "label": "Household and laundry-type washing machines",
+      "ruleIds": ["bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "8451",
+      "label": "Dryers and other laundry and textile finishing machinery",
+      "ruleIds": ["bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "8452",
+      "label": "Sewing machines",
+      "ruleIds": ["bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "8453",
+      "label": "Leather and footwear machinery",
+      "ruleIds": ["bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "8454",
+      "label": "Converters, ladles, ingot molds and casting machines",
+      "ruleIds": ["bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "8455",
+      "label": "Metal-rolling mills and rolls",
+      "ruleIds": ["bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "8456",
+      "label": "Laser, plasma, waterjet and EDM machine tools",
+      "ruleIds": ["bis-machine-tools", "bis-russia-belarus"],
+      "note": "Laser, plasma, waterjet and EDM machines fall under the machine-tool controls when they meet the ECCN 2B001 accuracy or axis specifications."
+    },
+    {
+      "heading": "8457",
+      "label": "Machining centers and transfer machines",
+      "ruleIds": ["bis-machine-tools", "bis-russia-belarus"],
+      "note": "Machining centres are the clearest example of ECCN 2B001: five-axis and high-accuracy machines need a licence for some destinations."
+    },
+    {
+      "heading": "8458",
+      "label": "Lathes for metal",
+      "ruleIds": ["bis-machine-tools", "bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "8459",
+      "label": "Drilling, boring, milling and threading machines",
+      "ruleIds": ["bis-machine-tools", "bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "8460",
+      "label": "Grinding, honing and polishing machines",
+      "ruleIds": ["bis-machine-tools", "bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "8461",
+      "label": "Planing, broaching, gear-cutting and sawing machines",
+      "ruleIds": ["bis-machine-tools", "bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "8462",
+      "label": "Metal forming presses, bending, punching and shearing machines",
+      "ruleIds": ["bis-machine-tools", "bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "8463",
+      "label": "Other metal working machine tools",
+      "ruleIds": ["bis-machine-tools", "bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "8464",
+      "label": "Machine tools for stone, ceramics, concrete and glass",
+      "ruleIds": ["bis-machine-tools", "bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "8465",
+      "label": "Woodworking and plastics-working machine tools",
+      "ruleIds": ["bis-machine-tools", "bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "8466",
+      "label": "Parts and accessories of machine tools",
+      "ruleIds": ["bis-machine-tools", "bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "8467",
+      "label": "Power hand tools (pneumatic, hydraulic, motorized)",
+      "ruleIds": ["bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "8468",
+      "label": "Gas welding and soldering machinery",
+      "ruleIds": ["bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "8470",
+      "label": "Calculators, cash registers and postage machines",
+      "ruleIds": ["bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "8471",
+      "label": "Computers and computer units",
+      "ruleIds": ["bis-computers", "bis-russia-belarus"],
+      "note": "Most computers are EAR99 or mass-market encryption items; advanced-computing systems are ECCN 4A090 and need a licence for many destinations."
+    },
+    {
+      "heading": "8472",
+      "label": "Other office machines (ATMs, coin sorters)",
+      "ruleIds": ["bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "8473",
+      "label": "Parts of computers and office machines",
+      "ruleIds": ["bis-computers", "bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "8474",
+      "label": "Mineral, stone and concrete processing machinery",
+      "ruleIds": ["bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "8475",
+      "label": "Glass and lamp making machinery",
+      "ruleIds": ["bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "8476",
+      "label": "Vending machines",
+      "ruleIds": ["bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "8477",
+      "label": "Plastics and rubber working machinery",
+      "ruleIds": ["bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "8478",
+      "label": "Tobacco machinery",
+      "ruleIds": ["bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "8479",
+      "label": "Machines with individual functions, n.e.s. (incl. robots)",
+      "ruleIds": ["bis-machine-tools", "bis-chemical-equipment", "bis-russia-belarus"],
+      "note": "Robots (ECCN 2B007) and some process-equipment lines in this catch-all heading are controlled; check the specification."
+    },
+    {
+      "heading": "8480",
+      "label": "Molds and mold bases",
+      "ruleIds": ["bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "8481",
+      "label": "Valves, taps and cocks",
+      "ruleIds": ["bis-chemical-equipment", "bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "8482",
+      "label": "Ball and roller bearings",
+      "ruleIds": ["bis-machine-tools", "bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "8483",
+      "label": "Transmission shafts, gears, gearboxes and couplings",
+      "ruleIds": ["bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "8484",
+      "label": "Gaskets and mechanical seals",
+      "ruleIds": ["bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "8485",
+      "label": "Additive manufacturing (3D printing) machines",
+      "ruleIds": ["bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "8486",
+      "label": "Semiconductor and flat-panel manufacturing machines",
+      "ruleIds": ["bis-semiconductor-equipment", "bis-russia-belarus"],
+      "note": "Semiconductor-manufacturing equipment is among the most tightly controlled U.S. exports: classify against ECCN 3B001 and related entries and check 15 CFR 744.23 for the destination."
+    },
+    {
+      "heading": "8487",
+      "label": "Non-electrical machinery parts n.e.s.",
+      "ruleIds": ["bis-russia-belarus"],
+      "note": null
+    }
+  ],
+  "savings": [
+    {
+      "id": "fta-rate",
+      "title": "Claim the free-trade-agreement rate abroad",
+      "saves": "The partner country's tariff on qualifying U.S. goods — often 0% instead of its normal rate.",
+      "appliesTo": "Goods that meet the agreement's rules of origin, shipped to one of the 20 U.S. free-trade-agreement partners: Australia, Bahrain, Canada, Chile, Colombia, Costa Rica, Dominican Republic, El Salvador, Guatemala, Honduras, Israel, Jordan, Korea, Mexico, Morocco, Nicaragua, Oman, Panama, Peru and Singapore.",
+      "document": "A certification of origin from the exporter, producer or importer, which the buyer uses to claim the rate at import. For USMCA there is no set form, but it must contain the nine data elements in Annex 5-A.",
+      "caveat": "Whoever certifies must be able to back it up: for USMCA, a U.S. exporter or producer keeps origin records for at least 5 years, gives CBP a copy on request and tells buyers promptly about errors. Check the product's rule of origin and the partner's rate in the FTA Tariff Tool first.",
+      "citations": [
+        {
+          "label": "trade.gov: FTA Tariff Tool",
+          "url": "https://www.trade.gov/fta-tariff-tool-home"
+        },
+        {
+          "label": "trade.gov: U.S. free trade agreements",
+          "url": "https://www.trade.gov/free-trade-agreements"
+        },
+        {
+          "label": "19 CFR Part 182 (USMCA; 182.21 for exporters)",
+          "url": "https://www.ecfr.gov/current/title-19/part-182"
+        },
+        {
+          "label": "USMCA Chapter 5: origin procedures",
+          "url": "https://ustr.gov/sites/default/files/files/agreements/FTA/USMCA/Text/05_Origin_Procedures.pdf"
+        }
+      ]
+    },
+    {
+      "id": "drawback",
+      "title": "Get U.S. duty back on imported inputs (drawback)",
+      "saves": "99% of the U.S. import duties, taxes and fees paid on goods or materials that are exported, or used to make the goods you export.",
+      "appliesTo": "Imported goods exported unused, and imported materials used to make an exported product (or, under the substitution rules, goods of the same kind).",
+      "document": "An electronic drawback claim in ACE, filed within 5 years of the import date, with the import and export records that tie the two together.",
+      "caveat": "Antidumping and countervailing duties are not refunded, and CBP takes no paper claims. The refund is on U.S. duties only; it does not lower the buyer's tariff.",
+      "citations": [
+        {
+          "label": "19 CFR Part 190",
+          "url": "https://www.ecfr.gov/current/title-19/part-190"
+        },
+        {
+          "label": "CBP: drawback overview",
+          "url": "https://www.cbp.gov/trade/programs-administration/entry-summary/drawback-overview"
+        },
+        {
+          "label": "19 U.S.C. 1313",
+          "url": "https://www.govinfo.gov/content/pkg/USCODE-2024-title19/html/USCODE-2024-title19-chap4-subtitleII-partI-sec1313.htm"
+        }
+      ]
+    }
+  ],
+  "disclaimer": "This page summarizes U.S. export rules to help you find the right regulation; it is not legal advice. Rules change and depend on the exact product, buyer and destination — check the cited regulation and the agency before you ship."
+}

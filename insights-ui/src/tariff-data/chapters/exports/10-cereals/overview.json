@@ -1,0 +1,408 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 10,
+    "padded": "10",
+    "slug": "10-cereals",
+    "title": "Cereals"
+  },
+  "page": {
+    "slug": "exports",
+    "path": "/industry-tariff-report/exports/chapters/10-cereals",
+    "h1": "HTS Chapter 10: Cereals — U.S. Exports & Foreign Tariffs",
+    "seo": {
+      "title": "Chapter 10 U.S. Grain Exports: Corn, Wheat & Rice Buyers",
+      "shortDescription": "How much corn, wheat, rice and sorghum the U.S. exports, who buys it, and what each top buyer charges, from 2020–2025 UN Comtrade data.",
+      "keywords": ["us corn exports", "us wheat exports", "us rice exports", "us sorghum exports", "hts chapter 10 exports", "grain export tariffs"]
+    },
+    "lastCheckedAt": "2026-10-20"
+  },
+  "intro": "The U.S. exported **$27.81 billion** of Chapter 10 goods in 2025, up **14.1%** from 2024. **Corn (heading 1005) is 68%** of that, **wheat (1001) 23%**, **rice (1006) 7%** and **grain sorghum (1007) 2%**. Mexico and Japan buy **43%** of the chapter. South Korea's purchases rose **83.5%**, the EU's **142%**, and Viet Nam's more than quadrupled, while China's collapsed **95%** to $109 million.\n\nTariffs are close to invisible for most large buyers. Mexico, Canada, South Korea and Colombia take U.S. grain duty-free under U.S. trade agreements, and Japan lets feed corn and sorghum in free. Japan's wheat comes through a state-run quota with a government mark-up, and its rice through a small quota. What usually decides sales is the size of the crop, price, biotech approvals and quotas, not a tariff. China is the exception: it still adds an extra 10% to its normal rate, after lifting its 15% tariffs on U.S. corn and wheat on November 10, 2025.",
+  "latestYear": 2025,
+  "priorYear": 2024,
+  "valueBasis": "FOB value of U.S. exports, as reported by the United States to UN Comtrade.",
+  "stats": [
+    {
+      "label": "2025 U.S. exports",
+      "value": "$27.81B"
+    },
+    {
+      "label": "Change vs 2024",
+      "value": "+14.1%"
+    },
+    {
+      "label": "Largest product group (1005)",
+      "value": "68%",
+      "note": "Corn (maize)"
+    },
+    {
+      "label": "Two largest buyers",
+      "value": "43%",
+      "note": "Mexico, Japan"
+    },
+    {
+      "label": "Top markets charging no tariff on most goods",
+      "value": "5 of 9",
+      "note": "Mexico, Canada, South Korea, Colombia, Japan (on feed grain)"
+    }
+  ],
+  "keyTakeaways": [
+    "Corn and wheat are 91% of this chapter: corn (1005) 68% and wheat (1001) 23%. Rice (6.8%) and grain sorghum (1.9%) are the next largest.",
+    "Mexico, Canada, South Korea and Colombia take U.S. grain duty-free under free-trade agreements, and Japan admits feed corn and sorghum free; wheat and rice there move through quotas.",
+    "China is the outlier. Its purchases of this chapter fell 95% in 2025, to $109 million, while South Korea (+83.5%), the EU (+142%) and Viet Nam (more than four times higher) bought far more.",
+    "The U.S. side is routine: a Schedule B number, official FGIS inspection and weighing, a phytosanitary certificate when the buyer wants one, and an AES filing. No export licence applies in the ordinary case."
+  ],
+  "byYear": [
+    {
+      "year": 2020,
+      "totalUsd": 19342931350,
+      "partnerAUsd": 3853391138,
+      "partnerBUsd": 2822917942,
+      "restUsd": 12666622270
+    },
+    {
+      "year": 2021,
+      "totalUsd": 30546208516,
+      "partnerAUsd": 6459075203,
+      "partnerBUsd": 4215072102,
+      "restUsd": 19872061211
+    },
+    {
+      "year": 2022,
+      "totalUsd": 31578971813,
+      "partnerAUsd": 6942161845,
+      "partnerBUsd": 4250421324,
+      "restUsd": 20386388644
+    },
+    {
+      "year": 2023,
+      "totalUsd": 23343580193,
+      "partnerAUsd": 6903595226,
+      "partnerBUsd": 3234974238,
+      "restUsd": 13205010729
+    },
+    {
+      "year": 2024,
+      "totalUsd": 24368454846,
+      "partnerAUsd": 7259780155,
+      "partnerBUsd": 3708474723,
+      "restUsd": 13400199968
+    },
+    {
+      "year": 2025,
+      "totalUsd": 27805921989,
+      "partnerAUsd": 7574432652,
+      "partnerBUsd": 4366254827,
+      "restUsd": 15865234510
+    }
+  ],
+  "byYearPartners": ["Mexico", "Japan"],
+  "byYearCaption": "U.S. exports of Chapter 10 goods each year, split into the two largest 2025 buyers (Mexico and Japan) and everyone else.",
+  "yearToDate": null,
+  "topMarkets": [
+    {
+      "countryCode": 484,
+      "country": "Mexico",
+      "exportsUsd": 7574432652,
+      "priorExportsUsd": 7259780155,
+      "sharePct": 27.2,
+      "changePct": 4.3,
+      "tariffNow": "Free (USMCA)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 392,
+      "country": "Japan",
+      "exportsUsd": 4366254827,
+      "priorExportsUsd": 3708474723,
+      "sharePct": 15.7,
+      "changePct": 17.7,
+      "tariffNow": "Feed corn and sorghum free; wheat and rice through quotas",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 410,
+      "country": "Rep. of Korea",
+      "exportsUsd": 2558084069,
+      "priorExportsUsd": 1394277596,
+      "sharePct": 9.2,
+      "changePct": 83.5,
+      "tariffNow": "Free on corn, wheat and sorghum (KORUS)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 170,
+      "country": "Colombia",
+      "exportsUsd": 2015142501,
+      "priorExportsUsd": 1773397716,
+      "sharePct": 7.2,
+      "changePct": 13.6,
+      "tariffNow": "Free on corn and wheat (U.S.–Colombia TPA)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 490,
+      "country": "Taiwan",
+      "exportsUsd": 1118471143,
+      "priorExportsUsd": 765078015,
+      "sharePct": 4,
+      "changePct": 46.2,
+      "tariffNow": "Wheat tariff waived to Mar. 2027; corn rate not verified",
+      "status": "pending"
+    },
+    {
+      "countryCode": 724,
+      "country": "Spain",
+      "exportsUsd": 903437115,
+      "priorExportsUsd": 264597632,
+      "sharePct": 3.2,
+      "changePct": 241.4,
+      "tariffNow": "Variable duty set by formula, often zero (EU)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 124,
+      "country": "Canada",
+      "exportsUsd": 717447801,
+      "priorExportsUsd": 883561508,
+      "sharePct": 2.6,
+      "changePct": -18.8,
+      "tariffNow": "Free (CUSMA)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 608,
+      "country": "Philippines",
+      "exportsUsd": 658254716,
+      "priorExportsUsd": 773803840,
+      "sharePct": 2.4,
+      "changePct": -14.9,
+      "tariffNow": "Corn 5% in quota, 15% above; wheat low",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 704,
+      "country": "Viet Nam",
+      "exportsUsd": 628408530,
+      "priorExportsUsd": 144696792,
+      "sharePct": 2.3,
+      "changePct": 334.3,
+      "tariffNow": "Corn 0% (cut in 2025); no U.S. trade agreement",
+      "status": "lowered"
+    },
+    {
+      "countryCode": 320,
+      "country": "Guatemala",
+      "exportsUsd": 513298529,
+      "priorExportsUsd": 422897987,
+      "sharePct": 1.8,
+      "changePct": 21.4,
+      "tariffNow": "Free in quota (CAFTA-DR phase-out)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 566,
+      "country": "Nigeria",
+      "exportsUsd": 494522390,
+      "priorExportsUsd": 150583149,
+      "sharePct": 1.8,
+      "changePct": 228.4,
+      "tariffNow": "Normal tariff (no U.S. trade agreement)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 340,
+      "country": "Honduras",
+      "exportsUsd": 429049149,
+      "priorExportsUsd": 381645052,
+      "sharePct": 1.5,
+      "changePct": 12.4,
+      "tariffNow": "Free in quota (CAFTA-DR phase-out)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 360,
+      "country": "Indonesia",
+      "exportsUsd": 362707410,
+      "priorExportsUsd": 165543774,
+      "sharePct": 1.3,
+      "changePct": 119.1,
+      "tariffNow": "Normal tariff (no U.S. trade agreement)",
+      "status": "unchanged"
+    }
+  ],
+  "othersExportsUsd": 5466411157,
+  "othersPriorExportsUsd": 6280116907,
+  "byHeading": [
+    {
+      "heading": "1001",
+      "label": "Wheat & meslin",
+      "exportsUsd": 6356704427,
+      "priorExportsUsd": 5971624367,
+      "changePct": 6.4,
+      "sharePct": 22.9
+    },
+    {
+      "heading": "1002",
+      "label": "Rye",
+      "exportsUsd": 3941063,
+      "priorExportsUsd": 5086645,
+      "changePct": -22.5,
+      "sharePct": 0
+    },
+    {
+      "heading": "1003",
+      "label": "Barley",
+      "exportsUsd": 48574893,
+      "priorExportsUsd": 42493754,
+      "changePct": 14.3,
+      "sharePct": 0.2
+    },
+    {
+      "heading": "1004",
+      "label": "Oats",
+      "exportsUsd": 14315342,
+      "priorExportsUsd": 14585073,
+      "changePct": -1.8,
+      "sharePct": 0.1
+    },
+    {
+      "heading": "1005",
+      "label": "Corn (maize)",
+      "exportsUsd": 18878400950,
+      "priorExportsUsd": 14342041436,
+      "changePct": 31.6,
+      "sharePct": 67.9
+    },
+    {
+      "heading": "1006",
+      "label": "Rice",
+      "exportsUsd": 1903361417,
+      "priorExportsUsd": 2439625999,
+      "changePct": -22,
+      "sharePct": 6.8
+    },
+    {
+      "heading": "1007",
+      "label": "Grain sorghum",
+      "exportsUsd": 521055391,
+      "priorExportsUsd": 1458806217,
+      "changePct": -64.3,
+      "sharePct": 1.9
+    },
+    {
+      "heading": "1008",
+      "label": "Buckwheat, millet, quinoa & other cereals",
+      "exportsUsd": 79568506,
+      "priorExportsUsd": 94191355,
+      "changePct": -15.5,
+      "sharePct": 0.3
+    }
+  ],
+  "byLine": [
+    {
+      "hs6": "1005.90",
+      "heading": "1005",
+      "description": "Cereals; maize (corn), other than seed",
+      "exportsUsd": 18576857651,
+      "priorExportsUsd": 14056057078,
+      "changePct": 32.2,
+      "sharePct": 66.8
+    },
+    {
+      "hs6": "1001.99",
+      "heading": "1001",
+      "description": "Cereals; wheat and meslin, other than durum wheat, other than seed",
+      "exportsUsd": 6156613493,
+      "priorExportsUsd": 5751330478,
+      "changePct": 7,
+      "sharePct": 22.1
+    },
+    {
+      "hs6": "1006.30",
+      "heading": "1006",
+      "description": "Cereals; rice, semi-milled or wholly milled, whether or not polished or glazed",
+      "exportsUsd": 1427862952,
+      "priorExportsUsd": 1368593930,
+      "changePct": 4.3,
+      "sharePct": 5.1
+    },
+    {
+      "hs6": "1007.90",
+      "heading": "1007",
+      "description": "Cereals; grain sorghum, other than seed",
+      "exportsUsd": 474845626,
+      "priorExportsUsd": 1413451226,
+      "changePct": -66.4,
+      "sharePct": 1.7
+    },
+    {
+      "hs6": "1006.10",
+      "heading": "1006",
+      "description": "Cereals; rice in the husk (paddy or rough)",
+      "exportsUsd": 303128648,
+      "priorExportsUsd": 820816268,
+      "changePct": -63.1,
+      "sharePct": 1.1
+    },
+    {
+      "hs6": "1005.10",
+      "heading": "1005",
+      "description": "Cereals; maize (corn), seed",
+      "exportsUsd": 301543299,
+      "priorExportsUsd": 285984358,
+      "changePct": 5.4,
+      "sharePct": 1.1
+    },
+    {
+      "hs6": "1001.19",
+      "heading": "1001",
+      "description": "Cereals; wheat and meslin, durum wheat, other than seed",
+      "exportsUsd": 177161899,
+      "priorExportsUsd": 207548535,
+      "changePct": -14.6,
+      "sharePct": 0.6
+    },
+    {
+      "hs6": "1006.20",
+      "heading": "1006",
+      "description": "Cereals; husked (brown) rice",
+      "exportsUsd": 128629196,
+      "priorExportsUsd": 218223542,
+      "changePct": -41.1,
+      "sharePct": 0.5
+    },
+    {
+      "hs6": "1003.90",
+      "heading": "1003",
+      "description": "Cereals; barley, other than seed",
+      "exportsUsd": 48188456,
+      "priorExportsUsd": 41607843,
+      "changePct": 15.8,
+      "sharePct": 0.2
+    },
+    {
+      "hs6": "1007.10",
+      "heading": "1007",
+      "description": "Cereals; grain sorghum, seed",
+      "exportsUsd": 46209765,
+      "priorExportsUsd": 45354991,
+      "changePct": 1.9,
+      "sharePct": 0.2
+    }
+  ],
+  "sources": [
+    {
+      "id": "comtrade-exports",
+      "publisher": "UN Comtrade",
+      "citation": "UN Comtrade, U.S. exports 2020–2025",
+      "document": "UN Comtrade public API (preview), United States exports, annual, HS",
+      "title": "United States exports, HS chapter 10, by partner, heading and subheading",
+      "signed": null,
+      "published": "2026-10-20",
+      "url": "https://comtradeplus.un.org/"
+    }
+  ],
+  "coverageNote": "The 13 buyers listed take 80% of 2025 U.S. Chapter 10 exports. FOB value of U.S. exports, as reported by the United States to UN Comtrade. They can differ from what the destination country reports as imports. UN Comtrade reports Taiwan as \"Other Asia, nes\"."
+}

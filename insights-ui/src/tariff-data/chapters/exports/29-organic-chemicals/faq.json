@@ -1,0 +1,106 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 29,
+    "padded": "29",
+    "slug": "29-organic-chemicals",
+    "title": "Organic Chemicals"
+  },
+  "page": {
+    "slug": "exports/faq",
+    "path": "/industry-tariff-report/exports/chapters/29-organic-chemicals/faq",
+    "h1": "HTS Chapter 29: Organic Chemicals — U.S. Export FAQ",
+    "seo": {
+      "title": "U.S. Organic Chemicals Export FAQ (HTS Ch. 29) | KoalaGains",
+      "shortDescription": "Short answers on foreign tariffs on U.S. chemicals, why exports to Italy jumped, TSCA 12(b) export notices, DEA listed chemicals, export licences and Schedule B codes.",
+      "keywords": [
+        "china tariff on us chemicals",
+        "tsca 12b export notification",
+        "dea form 486 export",
+        "export chemicals license",
+        "schedule b code methanol"
+      ]
+    },
+    "lastCheckedAt": "2026-10-20"
+  },
+  "intro": "Short answers to real questions people search about exporting U.S. organic chemicals and drug ingredients, each with a link to the page that has the detail.",
+  "keyTakeaways": [
+    "The EU has charged nothing on U.S. organic chemicals since July 1, 2026 (mannitol and sorbitol excepted), and Mexico, Canada and South Korea charge nothing on qualifying goods; China adds a 10% extra duty.",
+    "Exports jumped 14.1% to $59.18B in 2025 because of hormones and steroids (2937), with Italy alone buying $16.04B.",
+    "Before shipping, check TSCA 12(b) export notices, DEA Form 486 for listed chemicals, and Chemical Weapons Convention licences; most commodity chemicals are otherwise EAR99."
+  ],
+  "questionSource": "Google search-suggestion queries for \"china tariff on us chemicals\" and \"tsca 12b export notification\"; the other questions follow the Overview, Markets, Tariff updates and Export rules pages.",
+  "faqs": [
+    {
+      "id": "china-chemicals-tariff",
+      "question": "Does China charge extra tariffs on U.S. chemicals?",
+      "searchedAs": ["china tariff on us chemicals"],
+      "answer": "Yes. China charges its MFN rate plus a 10% extra duty on all U.S. goods, in force since May 2025, and U.S. exports to China fell 13.3% to $3.45B in 2025. China's Board of Trade list names three U.S. Chapter 29 lines (mannitol, sorbitol, glycerol) for possible lower tariffs, but no cut has been published.",
+      "link": "exports/markets"
+    },
+    {
+      "id": "eu-chemicals-tariff",
+      "question": "What tariff does the EU charge on U.S. chemicals?",
+      "searchedAs": [],
+      "answer": "None since July 1, 2026, except mannitol and sorbitol. Regulation (EU) 2026/1455 lists Chapter 29 as 'ex 29' and zeroes the EU's duties on U.S.-origin organic chemicals until December 31, 2029; most pharmaceutical ingredients were already free, and the Commission can suspend the cut.",
+      "link": "exports/markets"
+    },
+    {
+      "id": "italy-hormones",
+      "question": "Why did U.S. chemical exports to Italy jump?",
+      "searchedAs": [],
+      "answer": "Exports to Italy rose 128.5% to $16.04B in 2025, almost all in hormones and steroids (2937), which include insulin and other peptide hormones; that heading was $19.09B of the chapter's $59.18B. The trade data do not say which products or companies.",
+      "link": "exports"
+    },
+    {
+      "id": "who-buys-chemicals",
+      "question": "Who buys the most U.S. organic chemicals?",
+      "searchedAs": [],
+      "answer": "The EU takes 49% ($28.94B), led by Italy ($16.04B), Belgium ($3.88B) and Germany ($3.09B), followed by Mexico ($5.82B), Canada ($3.54B) and China ($3.45B).",
+      "link": "exports"
+    },
+    {
+      "id": "north-america-chemicals",
+      "question": "Do Mexico and Canada charge tariffs on U.S. chemicals?",
+      "searchedAs": [],
+      "answer": "Not on qualifying goods under USMCA, and none of Canada's counter-tariff lists reaches this chapter. Mexico ($5.82B) and Canada ($3.54B) together took 16% of the $59.18B exported in 2025.",
+      "link": "exports/markets"
+    },
+    {
+      "id": "tsca-12b",
+      "question": "Do I have to notify EPA before exporting a chemical?",
+      "searchedAs": ["tsca 12b export notification", "tsca 12b export notification requirements"],
+      "answer": "Only if the chemical is subject to certain TSCA actions (data requirements, orders, rules or pending actions under sections 4, 5, 6 or 7). Then you must notify EPA through CDX within seven days of forming the intent to export or on the date of export, whichever is earlier — for the first export to each country (renewed each calendar year for some kinds of EPA action). Drugs are outside TSCA.",
+      "link": "exports/rules"
+    },
+    {
+      "id": "dea-listed-export",
+      "question": "Do I need a DEA form to export chemicals?",
+      "searchedAs": [],
+      "answer": "Yes for DEA List I and List II chemicals (for example acetic anhydride, phenylacetic acid, ephedrine, acetone and toluene) when the quantity meets the threshold: file DEA Form 486 at least 15 calendar days before export, unless a waiver applies. Controlled substances need a DEA export permit instead.",
+      "link": "exports/rules"
+    },
+    {
+      "id": "chemical-export-licence",
+      "question": "Do I need an export licence for chemicals?",
+      "searchedAs": ["export chemicals license"],
+      "answer": "Usually not: most commodity chemicals are EAR99. Chemicals on the Commerce Control List need one for some destinations — precursors under ECCN 1C350, and Chemical Weapons Convention Schedule 2 and 3 chemicals under ECCN 1C355 and 1C395 — and Schedule 1 chemicals need one for every destination.",
+      "link": "exports/rules"
+    },
+    {
+      "id": "schedule-b-chemicals",
+      "question": "What are the Schedule B codes for the biggest U.S. chemical exports?",
+      "searchedAs": [],
+      "answer": "The largest 2025 lines were 2937.19 (polypeptide, protein and glycoprotein hormones, $18.47B), 2901.10 (saturated acyclic hydrocarbons, $7.05B), 2909.19 (acyclic ethers, $2.89B), 2902.50 (styrene, $1.62B) and 2905.31 (ethylene glycol, $1.58B). Look up the full 10-digit number in the Census Bureau's Schedule B search.",
+      "link": "exports/rules"
+    },
+    {
+      "id": "india-chemicals",
+      "question": "Will India cut tariffs on U.S. chemicals?",
+      "searchedAs": [],
+      "answer": "India has said it will eliminate or reduce tariffs on all U.S. industrial goods under the February 6, 2026 framework, but no effective date or Indian tariff notification has been published, so India still charges its basic duty on organic chemicals. Exports to India rose 36.2% to $1.51B in 2025.",
+      "link": "exports/tariff-updates"
+    }
+  ]
+}

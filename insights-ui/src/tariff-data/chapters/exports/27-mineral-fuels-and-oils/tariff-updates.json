@@ -1,0 +1,805 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 27,
+    "padded": "27",
+    "slug": "27-mineral-fuels-and-oils",
+    "title": "Mineral Fuels, Mineral Oils and Products of Their Distillation; Bituminous Substances; Mineral Waxes"
+  },
+  "page": {
+    "slug": "exports/tariff-updates",
+    "path": "/industry-tariff-report/exports/chapters/27-mineral-fuels-and-oils/tariff-updates",
+    "h1": "HTS Chapter 27: Mineral Fuels, Mineral Oils and Products of Their Distillation; Bituminous Substances; Mineral Waxes — Foreign Tariff Changes on U.S. Exports",
+    "seo": {
+      "title": "Chapter 27 Export Tariff Updates: Foreign Tariffs on U.S. Energy",
+      "shortDescription": "What China and others changed on U.S. LNG, crude oil and coal since January 2025, what is in force today, and what is coming.",
+      "keywords": ["china tariff us lng", "china tariff us crude oil", "china tariff us coal", "us energy export tariffs 2026", "us lng exports to china"]
+    },
+    "lastCheckedAt": "2026-10-20"
+  },
+  "intro": "China is the only foreign action that costs Chapter 27 exporters real money today. Its February 2025 tariffs add 15% to U.S. coal and LNG and 10% to crude oil, and they stack on its normal rate and on its extra 10% on every U.S. good (extended to January 10, 2027). The November 2025 deal lifted China's farm-goods tariffs but not these, and the announcement says they cannot be waived. Several buyers, including India, Taiwan and Bangladesh, have since announced purchase goals for U.S. energy in 2026 trade agreements; none of them changes a tariff.",
+  "scope": "The 9 largest markets for U.S. Chapter 27 goods (71% of 2025 exports).",
+  "stats": [
+    {
+      "label": "Actions tracked",
+      "value": "23"
+    },
+    {
+      "label": "In force & cost these goods",
+      "value": "2",
+      "note": "China"
+    },
+    {
+      "label": "Reach this chapter",
+      "value": "10"
+    },
+    {
+      "label": "Coming up",
+      "value": "2"
+    }
+  ],
+  "upcoming": [
+    {
+      "id": "cn-exclusions-end",
+      "expectedOn": "2026-12-31",
+      "dateLabel": "Expires",
+      "countries": ["China"],
+      "title": "China's tariff exclusions for U.S. goods end",
+      "whatHappens": "China's exclusions from its 2019 counter-tariffs on U.S. goods are valid until December 31, 2026 under the November 2025 U.S.–China deal.",
+      "impact": "For Chapter 27 the exclusions matter for crude oil, LNG and coal that relied on one to avoid China's older 2018–19 counter-tariffs. If they lapse without renewal, those counter-tariffs could again apply; the February 2025 energy tariffs are separate and stay either way.",
+      "status": "No extension announced",
+      "sourceIds": ["wh-china-deal-2025"]
+    },
+    {
+      "id": "cn-24-suspension-end",
+      "expectedOn": "2027-01-10",
+      "dateLabel": "Expires",
+      "countries": ["China"],
+      "title": "China's suspension of 24 points of its extra tariff on U.S. goods ends",
+      "whatHappens": "China suspended 24 points of its extra tariff on all U.S. goods for one year from November 10, 2025, keeping 10%. In September 2026 the two sides agreed to extend the arrangement to January 10, 2027, with talks on a further extension expected before the end of the year.",
+      "impact": "China's extra duty on all U.S. goods would go from 10% to 34%. A $1 million LNG cargo would pay about $490,000 (15% plus 34%) instead of about $250,000, and crude oil about $440,000 instead of about $200,000.",
+      "status": "Extension to Jan 10, 2027 announced by MOFCOM; China's Tariff Commission has not yet published its notice",
+      "sourceIds": ["cn-24-suspend", "cn-mofcom-2026-09"]
+    }
+  ],
+  "inEffect": [
+    {
+      "id": "cn-all",
+      "country": "China",
+      "measure": "Extra tariff on all U.S. goods cut to 10%",
+      "before": "0% (Jan 2025)",
+      "now": "10%",
+      "appliesTo": "Every Chapter 27 good sold to China, on top of its normal rate and, for coal, LNG and crude oil, on top of the February 2025 energy tariff below.",
+      "whatItMeans": "A $1 million cargo of refined fuel pays $100,000 under this measure on top of China's normal rate, versus nothing extra before 2025.",
+      "effectiveFrom": "2025-05-14",
+      "effectiveSourceId": "cn-sctc-may2025",
+      "sourceIds": ["cn-sctc-125", "cn-sctc-may2025", "cn-sctc-aug2025", "cn-24-suspend", "cn-mofcom-2026-09"]
+    },
+    {
+      "id": "cn-feb2025-energy",
+      "country": "China",
+      "measure": "China's extra tariffs on U.S. coal and LNG (15%) and on crude oil, farm machinery, large cars and pickups (10%)",
+      "before": "0%",
+      "now": "15% / 10%",
+      "appliesTo": "Coal (2701) and LNG (2711.11) at 15%, and crude oil (2709) at 10%, on top of China's normal rate. China's normal rate on crude oil and LNG is reported as zero and on coal as 3–6%.",
+      "whatItMeans": "A $1 million LNG cargo pays $150,000 under this measure plus $100,000 under China's extra 10% on all U.S. goods, about $250,000; crude oil pays about $200,000 (10% plus 10%); coal pays its normal 3–6% plus 25%. Before February 2025 none of these paid anything extra.",
+      "effectiveFrom": "2025-02-10",
+      "effectiveSourceId": "cn-sctc-feb2025",
+      "sourceIds": ["cn-sctc-feb2025", "cn-sctc-nov2025"]
+    }
+  ],
+  "changes": [
+    {
+      "id": "cn-bot",
+      "date": "2026-09-27",
+      "type": "tradeDeal",
+      "countries": ["China"],
+      "title": "U.S.–China Board of Trade product lists",
+      "before": null,
+      "now": null,
+      "coversChapter": "partly",
+      "status": "Recommended for reduced tariffs; no Chinese tariff cut published yet",
+      "detail": "China's import list under the U.S.–China Board of Trade “30-for-30” framework names 1,619 Chinese tariff lines that could get lower tariffs on U.S. goods. No Chinese tariff cut has been published yet. Non-seed soybeans (Chapter 12's dominant export) were explicitly excluded from this list; the 10% extra tariff stays on them. Press reports differ on whether coal is on China's list or only in a separate purchase commitment; they agree U.S. crude oil and LNG were left out, and no rate or start date is set.",
+      "sourceIds": ["cn-bot-list", "cn-board-of-trade"]
+    },
+    {
+      "id": "ca-2026",
+      "date": "2026-09-08",
+      "type": "retaliation",
+      "countries": ["Canada"],
+      "title": "Counter-tariffs on U.S. products (answering U.S. Section 338 tariffs)",
+      "before": "0%",
+      "now": "15% / 25% / 50%",
+      "coversChapter": "no",
+      "status": "In force",
+      "detail": "Counter-tariffs of 15%, 25% and 50% on listed U.S. products — steel, aluminum, dairy, furniture and clothing, but also machinery, household appliances and electronics such as smartphones, routers and monitors (50%). The order applies to goods of U.S. origin and has no exemption for goods that qualify for CUSMA.",
+      "sourceIds": ["ca-2026-list", "ca-sor-2026-186"]
+    },
+    {
+      "id": "br-2026",
+      "date": "2026-07-27",
+      "type": "reference",
+      "countries": ["Brazil"],
+      "title": "Brazil has imposed nothing on U.S. goods; it is challenging U.S. tariffs at the WTO",
+      "before": null,
+      "now": null,
+      "coversChapter": "no",
+      "status": "Nothing imposed on U.S. goods; talks ongoing",
+      "detail": "Brazil has published no countermeasure on U.S. goods. Its Economic Reciprocity Law (Law 15,122 of April 11, 2025) would allow them — such as import restrictions or suspending intellectual-property obligations — but none has been applied. On July 27, 2026 Brazil asked the United States for WTO consultations over U.S. tariffs on Brazilian goods, and Brazilian ministers met USTR on August 31 and September 30, 2026 to set up a working group on a possible agreement.",
+      "sourceIds": ["br-wto-2026", "br-talks-2026", "br-law"]
+    },
+    {
+      "id": "eu-aircraft-truce",
+      "date": "2026-07-06",
+      "type": "tradeDeal",
+      "countries": ["European Union"],
+      "title": "EU extends suspension of its Boeing/Airbus-dispute retaliatory tariffs on U.S. goods",
+      "before": "0% (suspended since 2021)",
+      "now": "0% (suspension extended)",
+      "coversChapter": "no",
+      "status": "Suspended since July 11, 2021; extended by Implementing Regulation (EU) 2026/1549 from July 11, 2026",
+      "detail": "The U.S. and EU suspended, for five years from July 11, 2021, the tariffs each had imposed or threatened in their 17-year WTO dispute over Boeing and Airbus subsidies (the EU's WTO-authorized countermeasures covered up to $4 billion of U.S. goods, large civil aircraft among them, under the Cooperative Framework for Large Civil Aircraft). Implementing Regulation (EU) 2026/1549 of July 6, 2026 extends the EU's suspension past its July 10, 2026 expiry; the U.S. has not reactivated its Section 301 tariffs from the same dispute either.",
+      "sourceIds": ["eu-aircraft-truce-2021", "eu-aircraft-truce-2026"]
+    },
+    {
+      "id": "mx-usmca",
+      "date": "2026-07-01",
+      "type": "tradeDeal",
+      "countries": ["Mexico"],
+      "title": "USMCA stays in force: Canada and Mexico keep 0% on qualifying U.S. goods",
+      "before": null,
+      "now": null,
+      "coversChapter": "yes",
+      "status": "USMCA still in force",
+      "detail": "At the first USMCA joint review on July 1, 2026 the three countries did not agree to a new 16-year term, so the agreement is now reviewed every year; it stays in force until at least July 1, 2036. Canada and Mexico keep applying USMCA rates to qualifying U.S. goods.",
+      "sourceIds": ["mx-usmca-review"]
+    },
+    {
+      "id": "de-eu-framework",
+      "date": "2026-06-25",
+      "type": "tradeDeal",
+      "countries": ["European Union"],
+      "title": "EU–U.S. framework tariff cuts adopted",
+      "before": null,
+      "now": null,
+      "coversChapter": "partly",
+      "status": "In force (applies from July 1, 2026)",
+      "detail": "Regulation (EU) 2026/1455 cuts EU duties on listed U.S. goods to zero from July 1, 2026, and Regulation (EU) 2026/1461 sets aside duties on certain other goods. Whether Chapter 27 lines are on the EU's zero-duty list was not individually checked; crude oil, LNG and coal already enter the EU duty-free.",
+      "sourceIds": ["eu-framework", "eu-joint-2025"]
+    },
+    {
+      "id": "tw-art-2026",
+      "date": "2026-02-12",
+      "type": "tradeDeal",
+      "countries": ["Taiwan"],
+      "title": "U.S.–Taiwan Agreement on Reciprocal Trade: Taiwan cuts tariffs on U.S. goods",
+      "before": null,
+      "now": null,
+      "coversChapter": "partly",
+      "status": "Signed Feb. 12, 2026; Taiwan's legislature must still approve it",
+      "detail": "Taiwan agrees to eliminate or reduce 99% of its tariff barriers on U.S. goods, with preferential access for wheat, beef, pork, lamb, dairy, tree nuts and other farm goods, and plans to buy $44.4 billion of U.S. LNG and crude oil from 2025 through 2029. The USTR fact sheet gives no entry-into-force date or phase-in schedule: Taiwan must first submit the agreement to its legislature. For Chapter 27 the relevant part is Taiwan's plan to buy $44.4 billion of U.S. LNG and crude oil from 2025 through 2029; it does not itself change Taiwan's tariffs.",
+      "sourceIds": ["tw-art-fact", "tw-art-text"]
+    },
+    {
+      "id": "bd-art-2026",
+      "date": "2026-02-09",
+      "type": "tradeDeal",
+      "countries": ["Bangladesh"],
+      "title": "U.S.–Bangladesh Agreement on Reciprocal Trade: Bangladesh sets purchase goals for U.S. wheat, soy, cotton and LNG",
+      "before": null,
+      "now": null,
+      "coversChapter": "partly",
+      "status": "Signed Feb. 9, 2026",
+      "detail": "Bangladesh endeavors to buy about $3.5 billion of U.S. farm goods, including wheat (at least 700,000 tonnes a year for five years), soy and cotton, and about $15 billion of U.S. energy over 15 years, including long-term LNG contracts, and agrees to accept U.S. sanitary and phytosanitary certificates. The U.S. keeps a 19% rate on most Bangladeshi goods. The agreement sets purchase goals and does not itself change Bangladesh's tariffs on U.S. goods. For Chapter 27 the relevant part is the goal to buy about $15 billion of U.S. energy, including long-term LNG contracts, over 15 years.",
+      "sourceIds": ["bd-art-fact", "bd-art-text"]
+    },
+    {
+      "id": "in-framework-2026",
+      "date": "2026-02-06",
+      "type": "tradeDeal",
+      "countries": ["India"],
+      "title": "U.S.–India interim trade framework: India to cut tariffs on U.S. industrial and farm goods",
+      "before": null,
+      "now": null,
+      "coversChapter": "yes",
+      "status": "Framework announced Feb. 6, 2026; interim agreement not yet confirmed signed",
+      "detail": "India will eliminate or reduce tariffs on all U.S. industrial goods and a wide range of U.S. food and farm products, including dried distillers' grains, red sorghum for animal feed, tree nuts, fruit, soybean oil and wine and spirits. India also intends to buy $500 billion of U.S. energy, aircraft and parts, precious metals, technology products and coking coal over five years. It is a framework for an interim agreement: no rates or start dates are published. For Chapter 27 the relevant part is India's intent to buy U.S. energy products and coking coal, within the $500 billion total.",
+      "sourceIds": ["in-framework-ws"]
+    },
+    {
+      "id": "mx-ligie-2026",
+      "date": "2025-12-29",
+      "type": "reference",
+      "countries": ["Mexico"],
+      "title": "Mexico raises its general tariffs on goods from countries without a trade agreement",
+      "before": null,
+      "now": null,
+      "coversChapter": "no",
+      "status": "In force since Jan 1, 2026; U.S. goods still enter under USMCA",
+      "detail": "The decree raises Mexico's general (MFN) rates on more than 1,400 tariff lines, mostly cars, textiles, clothing, steel, plastics and footwear. U.S. goods that qualify for USMCA keep their preferential rate. Mexico has published no counter-tariff on U.S. goods.",
+      "sourceIds": ["mx-dof-2025"]
+    },
+    {
+      "id": "br-2025",
+      "date": "2025-12-18",
+      "type": "retaliation",
+      "countries": ["Brazil"],
+      "title": "Reciprocity petition against the 2025 U.S. tariffs: framing approved, action deferred",
+      "before": null,
+      "now": null,
+      "coversChapter": "no",
+      "status": "Never applied",
+      "detail": "Camex's executive committee (Gecex) approved the Foreign Ministry's petition as falling under the Economic Reciprocity Law and chose to await diplomatic consultations before forming the working group that would propose countermeasures. Nothing was imposed.",
+      "sourceIds": ["br-2025"]
+    },
+    {
+      "id": "uk-pharma",
+      "date": "2025-12-01",
+      "type": "tradeDeal",
+      "countries": ["United Kingdom"],
+      "title": "U.S.–UK pharmaceutical pricing arrangement",
+      "before": null,
+      "now": null,
+      "coversChapter": "no",
+      "status": "In force; full text agreed Apr 2, 2026",
+      "detail": "Not a tariff: the UK raises the net price it pays for new medicines by about 25% and lifts NICE’s cost-effectiveness threshold. UK tariffs on medicines stay at zero.",
+      "sourceIds": ["uk-pharma", "uk-pharma-text"]
+    },
+    {
+      "id": "ch-framework",
+      "date": "2025-11-14",
+      "type": "tradeDeal",
+      "countries": ["Switzerland"],
+      "title": "U.S.–Switzerland–Liechtenstein trade framework",
+      "before": "0%",
+      "now": "0%",
+      "coversChapter": "partly",
+      "status": "Framework; full agreement under negotiation",
+      "detail": "Switzerland intends to apply zero duties on all U.S. industrial goods. Switzerland already applies no industrial customs duties to any origin.",
+      "sourceIds": ["ch-framework", "ch-seco"]
+    },
+    {
+      "id": "cn-exclusions",
+      "date": "2025-11-01",
+      "type": "tradeDeal",
+      "countries": ["China"],
+      "title": "China extends its tariff exclusions for U.S. goods to December 31, 2026",
+      "before": null,
+      "now": null,
+      "coversChapter": "partly",
+      "status": "Exclusions valid until Dec 31, 2026",
+      "detail": "Under the November 2025 U.S.–China deal, China extended its market-based exclusion process for imports from the United States; exclusions stay valid until December 31, 2026. They lift China's 2019 counter-tariffs on U.S. goods (answering the U.S. Section 301 tariffs), which were never repealed. For Chapter 27 the exclusions matter for crude oil, LNG and coal, which China's 2018–19 counter-tariffs covered; they do not reach China's February 2025 energy tariffs, which its announcement says cannot be waived.",
+      "sourceIds": ["wh-china-deal-2025", "cn-2019-annex3"]
+    },
+    {
+      "id": "jp-deal",
+      "date": "2025-09-04",
+      "type": "tradeDeal",
+      "countries": ["Japan"],
+      "title": "U.S.–Japan agreement",
+      "before": null,
+      "now": null,
+      "coversChapter": "no",
+      "status": "In force",
+      "detail": "Executive Order 14345 implements the U.S.–Japan agreement: Japan works toward buying U.S. farm and other goods worth $8 billion a year and investing in the U.S.",
+      "sourceIds": ["jp-deal"]
+    },
+    {
+      "id": "de-eu-rebalancing",
+      "date": "2025-07-24",
+      "type": "retaliation",
+      "countries": ["European Union"],
+      "title": "EU countermeasures on about €93B of U.S. goods",
+      "before": "0%",
+      "now": "0% (suspended)",
+      "coversChapter": "no",
+      "status": "Suspended, never applied",
+      "detail": "Implementing Regulation (EU) 2025/1564 listed about €93B of U.S. goods for extra duties from September 7, 2025. The measures were suspended from August 6, 2025, again from February 7, 2026, and from August 7, 2026 with no end date (Implementing Regulation (EU) 2026/1893). Energy products were not found among the annex product groups described in public summaries; the measures are suspended with no end date, so nothing is charged.",
+      "sourceIds": ["eu-rebalancing", "eu-rebalancing-pharma"]
+    },
+    {
+      "id": "cn-pom-ad",
+      "date": "2025-05-18",
+      "type": "retaliation",
+      "countries": ["China"],
+      "title": "China imposes anti-dumping duties of up to 74.9% on U.S. polyoxymethylene (POM) copolymer",
+      "before": "0% extra (Jan 2025)",
+      "now": "74.9% anti-dumping duty",
+      "coversChapter": "no",
+      "status": "In force from 2025-05-19 for five years (deposits from 2025-01-24)",
+      "detail": "MOFCOM Announcement No. 25 of 2025 (final ruling of 2025-05-18): anti-dumping duties on POM copolymer (HS 3907.1010 and 3907.1090) from the U.S., EU, Taiwan and Japan. The rate for all U.S. companies, including Ticona Polymers, is 74.9%. It is a trade-remedy case, not a general counter-tariff, and covers only this one resin.",
+      "sourceIds": ["cn-mofcom-pom-2025"]
+    },
+    {
+      "id": "cn-all",
+      "date": "2025-05-14",
+      "type": "retaliation",
+      "countries": ["China"],
+      "title": "Extra tariff on all U.S. goods cut to 10%",
+      "before": "0% (Jan 2025)",
+      "now": "10%",
+      "coversChapter": "yes",
+      "status": "In force; 24-point suspension extended to Jan 10, 2027",
+      "detail": "Rose 34% → 84% → 125% in April 2025 (125% from April 12), then cut to 10% from May 14, 2025 with 24 points suspended for 90 days. The suspension was extended for 90 days from August 12, 2025 and for one year from November 10, 2025, with the 10% kept. In September 2026 the two sides agreed to extend the arrangement to January 10, 2027. Applies to every U.S.-origin good on top of China’s normal rate.",
+      "sourceIds": ["cn-sctc-125", "cn-sctc-may2025", "cn-sctc-aug2025", "cn-24-suspend", "cn-mofcom-2026-09"]
+    },
+    {
+      "id": "uk-epd",
+      "date": "2025-05-08",
+      "type": "tradeDeal",
+      "countries": ["United Kingdom"],
+      "title": "U.S.–UK Economic Prosperity Deal",
+      "before": null,
+      "now": null,
+      "coversChapter": "no",
+      "status": "In force",
+      "detail": "UK concessions were a beef quota and a duty-free ethanol quota.",
+      "sourceIds": ["uk-epd"]
+    },
+    {
+      "id": "ca-2025-autos",
+      "date": "2025-04-09",
+      "type": "retaliation",
+      "countries": ["Canada"],
+      "title": "25% surtax on U.S. passenger vehicles and light trucks (non-U.S. content for CUSMA-compliant vehicles)",
+      "before": "0% (CUSMA)",
+      "now": "25% on non-U.S. content (full value if not CUSMA-compliant)",
+      "coversChapter": "no",
+      "status": "In force; kept when Canada removed most 2025 counter-tariffs on Sept 1, 2025",
+      "detail": "Canada's United States Surtax Order (Motor Vehicles 2025), SOR/2025-118: a 25% surtax on U.S. passenger vehicles and light trucks (8703, 8704). A CUSMA-compliant vehicle pays it only on its non-U.S. content; a non-compliant vehicle pays on its full value. Auto parts are not covered.",
+      "sourceIds": ["ca-sor-2025-118"]
+    },
+    {
+      "id": "cn-farm-mar2025",
+      "date": "2025-03-10",
+      "type": "retaliation",
+      "countries": ["China"],
+      "title": "China's extra tariffs of 10% and 15% on U.S. farm goods, lifted November 10, 2025",
+      "before": "0%",
+      "now": "Lifted Nov. 10, 2025",
+      "coversChapter": "no",
+      "status": "Lifted on November 10, 2025",
+      "detail": "Tariff Commission Announcement No. 2 of 2025 (March 4) added 15% on U.S. chicken, wheat, corn and cotton and 10% on sorghum, soybeans, pork, beef, aquatic products, fruits, vegetables and dairy from March 10, 2025, answering the U.S. fentanyl tariffs. Announcement No. 9 of 2025 (November 5) stopped them from November 10, 2025, under the U.S.–China deal. China's separate extra tariff on all U.S. goods stays.",
+      "sourceIds": ["cn-sctc-mar2025", "cn-sctc-nov2025"]
+    },
+    {
+      "id": "ca-2025",
+      "date": "2025-03-04",
+      "type": "retaliation",
+      "countries": ["Canada"],
+      "title": "25% counter-tariff on C$30B of U.S. goods",
+      "before": "0%",
+      "now": "25%",
+      "coversChapter": "no",
+      "status": "Mostly removed Sept 1, 2025",
+      "detail": "25% counter-tariff on C$30B of U.S. goods. Canada repealed most of it on Sept 1, 2025, keeping only the steel, aluminum and auto surtaxes.",
+      "sourceIds": ["ca-2025-list", "ca-sor-2025-181"]
+    },
+    {
+      "id": "cn-feb2025-energy",
+      "date": "2025-02-10",
+      "type": "retaliation",
+      "countries": ["China"],
+      "title": "China's extra tariffs on U.S. coal and LNG (15%) and on crude oil, farm machinery, large cars and pickups (10%)",
+      "before": "0%",
+      "now": "15% / 10%",
+      "coversChapter": "partly",
+      "status": "In force",
+      "detail": "Tariff Commission Announcement No. 1 of 2025 (February 4) added 15% on U.S. coal and liquefied natural gas and 10% on crude oil, agricultural machinery, large-engine cars and pickup trucks from February 10, 2025, answering the U.S. fentanyl tariffs. Announcement No. 9 of 2025 ended only the March 2025 farm-goods tariffs, so these remain. This is the main foreign tariff on Chapter 27 goods: it stacks on China's normal rate and on its extra 10% on all U.S. goods, and the announcement says it cannot be waived.",
+      "sourceIds": ["cn-sctc-feb2025", "cn-sctc-nov2025"]
+    }
+  ],
+  "sources": [
+    {
+      "id": "br-2025",
+      "publisher": "Ministry of Development, Industry, Trade and Services (Brazil)",
+      "citation": "Gecex, 232nd meeting",
+      "document": "Deliberations",
+      "title": "Deliberações da 232ª Reunião Ordinária do Comitê-Executivo de Gestão (Gecex)",
+      "signed": null,
+      "published": "2025-12-18",
+      "url": "https://www.gov.br/mdic/pt-br/assuntos/camex/outros-documentos/deliberacoes/deliberacoes-da-232a-reuniao-ordinaria-do-comite-executivo-de-gestao-gecex"
+    },
+    {
+      "id": "br-law",
+      "publisher": "Presidência da República (Brazil)",
+      "citation": "Lei nº 15.122/2025",
+      "document": "Law",
+      "title": "Lei nº 15.122, de 11 de abril de 2025 (Economic Reciprocity Law)",
+      "signed": "2025-04-11",
+      "published": "2025-04-14",
+      "url": "https://www.planalto.gov.br/ccivil_03/_ato2023-2026/2025/lei/l15122.htm"
+    },
+    {
+      "id": "br-talks-2026",
+      "publisher": "Ministry of Development, Industry, Trade and Services (Brazil)",
+      "citation": "MDIC, Sep 30, 2026",
+      "document": "Press release",
+      "title": "Reunião presencial Brasil-EUA sobre temas comerciais",
+      "signed": null,
+      "published": "2026-09-30",
+      "url": "https://www.gov.br/mdic/pt-br/assuntos/noticias/2026-periodo-eleitoral/setembro/reuniao-presencial-brasil-eua-sobre-temas-comerciais"
+    },
+    {
+      "id": "br-wto-2026",
+      "publisher": "Ministry of Foreign Affairs (Brazil)",
+      "citation": "MRE press note, Jul 27, 2026",
+      "document": "Press note",
+      "title": "Pedido de consultas aos Estados Unidos na Organização Mundial do Comércio",
+      "signed": null,
+      "published": "2026-07-27",
+      "url": "https://www.gov.br/mre/pt-br/canais_atendimento/imprensa/notas-a-imprensa/pedido-de-consultas-aos-estados-unidos-na-organizacao-mundial-do-comercio"
+    },
+    {
+      "id": "ca-2025-list",
+      "publisher": "Department of Finance Canada",
+      "citation": "Finance Canada, Mar 2025",
+      "document": "Notice",
+      "title": "List of products from the United States subject to 25 per cent tariffs effective March 4, 2025",
+      "signed": null,
+      "published": "2025-03-04",
+      "url": "https://www.canada.ca/en/department-finance/news/2025/03/list-of-products-from-the-united-states-subject-to-25-per-cent-tariffs-effective-march-4-2025.html"
+    },
+    {
+      "id": "ca-2026-list",
+      "publisher": "Department of Finance Canada",
+      "citation": "Finance Canada, Aug 2026",
+      "document": "Notice",
+      "title": "List of products from the United States subject to counter-tariffs effective September 8, 2026",
+      "signed": null,
+      "published": "2026-08-26",
+      "url": "https://www.canada.ca/en/department-finance/news/2026/08/list-of-products-from-the-united-states-subject-to-counter-tariffs-effective-september-8-2026.html"
+    },
+    {
+      "id": "ca-sor-2025-181",
+      "publisher": "Canada Gazette",
+      "citation": "SOR/2025-181",
+      "document": "Order",
+      "title": "Removal of the 2025 counter-tariffs on most U.S. goods",
+      "signed": null,
+      "published": "2025-09-10",
+      "url": "https://gazette.gc.ca/rp-pr/p2/2025/2025-09-10/html/sor-dors181-eng.html"
+    },
+    {
+      "id": "ch-framework",
+      "publisher": "The White House",
+      "citation": "Joint Statement, Nov 2025",
+      "document": "Joint statement",
+      "title": "Framework for a United States–Switzerland–Liechtenstein Agreement on Fair, Balanced, and Reciprocal Trade",
+      "signed": null,
+      "published": "2025-11-14",
+      "url": "https://www.whitehouse.gov/briefings-statements/2025/11/joint-statement-on-a-framework-for-a-united-states-switzerland-liechtenstein-agreement-on-fair-balanced-and-reciprocal-trade/"
+    },
+    {
+      "id": "ch-seco",
+      "publisher": "SECO",
+      "citation": "SECO",
+      "document": "Web page",
+      "title": "Swiss–US trade relations",
+      "signed": null,
+      "published": "2026-08-01",
+      "url": "https://www.seco.admin.ch/en/swiss-us-trade-relations"
+    },
+    {
+      "id": "cn-24-suspend",
+      "publisher": "State Council Tariff Commission (PRC)",
+      "citation": "Tariff Commission Announcement No. 10 of 2025",
+      "document": "Announcement",
+      "title": "Adjusting the additional tariffs on imports originating in the United States (24-point suspension continued for one year from November 10, 2025; 10% kept)",
+      "signed": null,
+      "published": "2025-11-05",
+      "url": "https://gss.mof.gov.cn/gzdt/zhengcefabu/202511/t20251105_3975756.htm"
+    },
+    {
+      "id": "cn-board-of-trade",
+      "publisher": "USTR",
+      "citation": "USTR press release, Sep 27, 2026",
+      "document": "Press release",
+      "title": "Ambassador Greer Issues a Statement on Announcement of Recommendations from the U.S.-China Board of Trade",
+      "signed": null,
+      "published": "2026-09-27",
+      "url": "https://ustr.gov/about/policy-offices/press-office/press-releases/2026/september/ambassador-greer-issues-statement-announcement-recommendations-us-china-board-trade"
+    },
+    {
+      "id": "cn-bot-list",
+      "publisher": "The White House",
+      "citation": "30-for-30 China Import List",
+      "document": "Product list",
+      "title": "China import list (U.S. products recommended for reduced Chinese tariffs), U.S.–China Board of Trade",
+      "signed": null,
+      "published": "2026-09-27",
+      "url": "https://www.whitehouse.gov/wp-content/uploads/2026/09/China-Import-List.pdf"
+    },
+    {
+      "id": "cn-sctc-125",
+      "publisher": "State Council Tariff Commission (PRC)",
+      "citation": "Tariff Commission Announcement No. 6 of 2025",
+      "document": "Announcement",
+      "title": "Adjusting the additional tariffs on imports originating in the United States (84% raised to 125% from April 12, 2025)",
+      "signed": null,
+      "published": "2025-04-11",
+      "url": "https://gss.mof.gov.cn/gzdt/zhengcefabu/202504/t20250411_3961823.htm"
+    },
+    {
+      "id": "cn-sctc-aug2025",
+      "publisher": "State Council Tariff Commission (PRC)",
+      "citation": "Tariff Commission Announcement No. 8 of 2025",
+      "document": "Announcement",
+      "title": "Adjusting the additional tariffs on imports originating in the United States (24-point suspension extended 90 days from August 12, 2025)",
+      "signed": null,
+      "published": "2025-08-12",
+      "url": "https://gss.mof.gov.cn/gzdt/zhengcefabu/202508/t20250812_3969806.htm"
+    },
+    {
+      "id": "cn-sctc-may2025",
+      "publisher": "State Council Tariff Commission (PRC)",
+      "citation": "Tariff Commission Announcement No. 7 of 2025",
+      "document": "Announcement",
+      "title": "Adjusting the additional tariffs on imports originating in the United States (cut to 10% with 24 points suspended for 90 days from May 14, 2025)",
+      "signed": null,
+      "published": "2025-05-13",
+      "url": "https://gss.mof.gov.cn/gzdt/zhengcefabu/202505/t20250513_3963684.htm"
+    },
+    {
+      "id": "eu-framework",
+      "publisher": "EUR-Lex",
+      "citation": "Regulation (EU) 2026/1455",
+      "document": "Regulation",
+      "title": "Regulation (EU) 2026/1455 on the adjustment of customs duties on imports of certain goods originating in the United States of America",
+      "signed": "2026-06-25",
+      "published": "2026-06-30",
+      "url": "https://eur-lex.europa.eu/eli/reg/2026/1455/oj"
+    },
+    {
+      "id": "eu-joint-2025",
+      "publisher": "The White House",
+      "citation": "Joint Statement, Aug 2025",
+      "document": "Joint statement",
+      "title": "Joint Statement on a United States–European Union Framework on an Agreement on Reciprocal, Fair, and Balanced Trade",
+      "signed": null,
+      "published": "2025-08-21",
+      "url": "https://www.whitehouse.gov/briefings-statements/2025/08/joint-statement-on-a-united-states-european-union-framework-on-an-agreement-on-reciprocal-fair-and-balanced-trade/"
+    },
+    {
+      "id": "eu-rebalancing",
+      "publisher": "EUR-Lex",
+      "citation": "Implementing Regulation (EU) 2026/1893",
+      "document": "Implementing regulation",
+      "title": "Commission Implementing Regulation (EU) 2026/1893 suspending commercial rebalancing measures concerning certain products originating in the United States",
+      "signed": "2026-07-30",
+      "published": "2026-07-31",
+      "url": "https://eur-lex.europa.eu/eli/reg_impl/2026/1893/oj"
+    },
+    {
+      "id": "eu-rebalancing-pharma",
+      "publisher": "EUR-Lex",
+      "citation": "Implementing Regulation (EU) 2025/1564",
+      "document": "Implementing regulation",
+      "title": "Commission Implementing Regulation (EU) 2025/1564 on commercial rebalancing measures concerning certain products originating in the United States of America",
+      "signed": "2025-07-24",
+      "published": "2025-07-24",
+      "url": "https://eur-lex.europa.eu/eli/reg_impl/2025/1564/oj/eng"
+    },
+    {
+      "id": "jp-deal",
+      "publisher": "Federal Register",
+      "citation": "90 FR 43535",
+      "document": "Executive Order 14345",
+      "title": "Implementing the United States-Japan Agreement",
+      "signed": "2025-09-04",
+      "published": "2025-09-09",
+      "url": "https://www.federalregister.gov/documents/2025/09/09/2025-17389/implementing-the-united-states-japan-agreement"
+    },
+    {
+      "id": "mx-dof-2025",
+      "publisher": "Diario Oficial de la Federación (Mexico)",
+      "citation": "DOF, Dec 29, 2025",
+      "document": "Decree",
+      "title": "Decreto por el que se reforman diversas fracciones arancelarias de la Tarifa de la Ley de los Impuestos Generales de Importación y de Exportación",
+      "signed": null,
+      "published": "2025-12-29",
+      "url": "https://dof.gob.mx/nota_detalle.php?codigo=5777376&fecha=29%2F12%2F2025"
+    },
+    {
+      "id": "mx-usmca-review",
+      "publisher": "Federal Register",
+      "citation": "91 FR 63379",
+      "document": "Notice (USTR)",
+      "title": "Request for Public Comments and Notice of Public Hearing Relating to the Operation of the Agreement Between the United States of America, the United Mexican States, and Canada",
+      "signed": null,
+      "published": "2026-10-05",
+      "url": "https://www.federalregister.gov/documents/2026/10/05/2026-20341/request-for-public-comments-and-notice-of-public-hearing-relating-to-the-operation-of-the-agreement-between-the-united-states-of-america-the-united-mexican-states-and-canada"
+    },
+    {
+      "id": "uk-epd",
+      "publisher": "HM Government",
+      "citation": "US–UK EPD",
+      "document": "Policy paper",
+      "title": "US–UK Economic Prosperity Deal",
+      "signed": null,
+      "published": "2025-05-08",
+      "url": "https://www.gov.uk/government/publications/us-uk-economic-prosperity-deal-epd"
+    },
+    {
+      "id": "uk-pharma",
+      "publisher": "HM Government",
+      "citation": "GOV.UK, Dec 2025",
+      "document": "Press release",
+      "title": "Landmark UK–US pharmaceuticals deal to safeguard medicines access and drive vital investment for UK patients and businesses",
+      "signed": null,
+      "published": "2025-12-01",
+      "url": "https://www.gov.uk/government/news/landmark-uk-us-pharmaceuticals-deal-to-safeguard-medicines-access-and-drive-vital-investmentfor-uk-patients-and-businesses"
+    },
+    {
+      "id": "uk-pharma-text",
+      "publisher": "USTR",
+      "citation": "US–UK Pharma Pricing Arrangement",
+      "document": "Arrangement text",
+      "title": "Arrangement between the United States and the United Kingdom on pharmaceutical pricing",
+      "signed": null,
+      "published": "2026-04-02",
+      "url": "https://ustr.gov/sites/default/files/files/Press/Releases/2026/U.S.-UK%20Pharma%20Pricing%20Arrangement%20-%204.2.2026.pdf"
+    },
+    {
+      "id": "cn-mofcom-2026-09",
+      "publisher": "State Council of the PRC (gov.cn)",
+      "citation": "MOFCOM, Sep 28, 2026",
+      "document": "Statement by the head of MOFCOM's Department of American and Oceanian Affairs",
+      "title": "商务部美大司负责人解读第八轮中美经贸磋商成果 (results of the eighth round of China–U.S. economic and trade talks)",
+      "signed": null,
+      "published": "2026-09-28",
+      "url": "https://www.gov.cn/lianbo/202609/content_7082235.htm"
+    },
+    {
+      "id": "wh-china-deal-2025",
+      "publisher": "The White House",
+      "citation": "Fact Sheet, Nov 1, 2025",
+      "document": "Fact sheet",
+      "title": "Fact Sheet: President Donald J. Trump Strikes Deal on Economic and Trade Relations with China",
+      "signed": null,
+      "published": "2025-11-01",
+      "url": "https://www.whitehouse.gov/fact-sheets/2025/11/fact-sheet-president-donald-j-trump-strikes-deal-on-economic-and-trade-relations-with-china/"
+    },
+    {
+      "id": "cn-2019-annex3",
+      "publisher": "State Council Tariff Commission (PRC)",
+      "citation": "Tariff Commission Announcement No. 3 of 2019, Annex 3",
+      "document": "Annex 3 (10% list)",
+      "title": "Additional tariffs on goods originating in the United States from June 1, 2019 — Annex 3",
+      "signed": null,
+      "published": "2019-05-13",
+      "url": "https://www.gov.cn/xinwen/2019-05/13/5391208/files/9ed295b6eef24a9fa64d661be67bc2ed.pdf"
+    },
+    {
+      "id": "eu-aircraft-truce-2021",
+      "publisher": "USTR",
+      "citation": "USTR press release, Jun 15, 2021",
+      "document": "Press release",
+      "title": "USTR Announces Joint U.S.-EU Cooperative Framework for Large Civil Aircraft",
+      "signed": null,
+      "published": "2021-06-15",
+      "url": "https://ustr.gov/about-us/policy-offices/press-office/press-releases/2021/june/ustr-announces-joint-us-eu-cooperative-framework-large-civil-aircraft"
+    },
+    {
+      "id": "eu-aircraft-truce-2026",
+      "publisher": "EUR-Lex",
+      "citation": "Implementing Regulation (EU) 2026/1549",
+      "document": "Implementing regulation",
+      "title": "Commission Implementing Regulation (EU) 2026/1549 continuing the suspension of countermeasures concerning the large civil aircraft dispute",
+      "signed": "2026-07-06",
+      "published": "2026-07-07",
+      "url": "https://eur-lex.europa.eu/eli/reg_impl/2026/1549/oj"
+    },
+    {
+      "id": "cn-sctc-mar2025",
+      "publisher": "State Council Tariff Commission (PRC)",
+      "citation": "Tariff Commission Announcement No. 2 of 2025",
+      "document": "Announcement on imposing additional tariffs on certain imports originating in the United States",
+      "title": "国务院关税税则委员会关于对原产于美国的部分进口商品加征关税的公告",
+      "signed": null,
+      "published": "2025-03-04",
+      "url": "https://gss.mof.gov.cn/gzdt/zhengcefabu/202503/t20250304_3959228.htm"
+    },
+    {
+      "id": "cn-sctc-nov2025",
+      "publisher": "State Council Tariff Commission (PRC)",
+      "citation": "Tariff Commission Announcement No. 9 of 2025",
+      "document": "Announcement on ending the additional tariff measures on certain imports originating in the United States",
+      "title": "国务院关税税则委员会关于停止实施对原产于美国的部分进口商品加征关税措施的公告",
+      "signed": null,
+      "published": "2025-11-05",
+      "url": "https://gss.mof.gov.cn/gzdt/zhengcefabu/202511/t20251105_3975755.htm"
+    },
+    {
+      "id": "cn-sctc-feb2025",
+      "publisher": "State Council Tariff Commission (PRC)",
+      "citation": "Tariff Commission Announcement No. 1 of 2025",
+      "document": "Announcement on imposing additional tariffs on certain imports originating in the United States",
+      "title": "国务院关税税则委员会关于对原产于美国的部分进口商品加征关税的公告",
+      "signed": null,
+      "published": "2025-02-04",
+      "url": "https://www.mof.gov.cn/zhengwuxinxi/caizhengxinwen/202502/t20250204_3955222.htm"
+    },
+    {
+      "id": "tw-art-fact",
+      "publisher": "USTR",
+      "citation": "USTR fact sheet, February 2026",
+      "document": "Fact Sheet on U.S.-Taiwan Agreement on Reciprocal Trade",
+      "title": "Fact Sheet on U.S.-Taiwan Agreement on Reciprocal Trade",
+      "signed": null,
+      "published": "2026-02-12",
+      "url": "https://ustr.gov/about/policy-offices/press-office/fact-sheets/2026/february/fact-sheet-us-taiwan-agreement-reciprocal-trade"
+    },
+    {
+      "id": "tw-art-text",
+      "publisher": "USTR",
+      "citation": "AIT-TECRO Agreement on Reciprocal Trade",
+      "document": "Agreement between the American Institute in Taiwan and the Taipei Economic and Cultural Representative Office on Reciprocal Trade",
+      "title": "Agreement on Reciprocal Trade between AIT and TECRO",
+      "signed": "2026-02-12",
+      "published": "2026-02-12",
+      "url": "https://ustr.gov/sites/default/files/files/Press/Releases/2026/AIT-TECRO%20ART%20sanitized.pdf"
+    },
+    {
+      "id": "bd-art-fact",
+      "publisher": "USTR",
+      "citation": "USTR fact sheet, February 2026",
+      "document": "Fact Sheet: The United States and Bangladesh Reach an Agreement on Reciprocal Trade",
+      "title": "Fact Sheet: The United States and Bangladesh Reach an Agreement on Reciprocal Trade",
+      "signed": null,
+      "published": "2026-02-09",
+      "url": "https://ustr.gov/about/policy-offices/press-office/fact-sheets/2026/february/fact-sheet-united-states-and-bangladesh-reach-agreement-reciprocal-trade"
+    },
+    {
+      "id": "bd-art-text",
+      "publisher": "USTR",
+      "citation": "U.S.–Bangladesh Agreement on Reciprocal Trade",
+      "document": "Agreement on Reciprocal Trade between the United States and Bangladesh",
+      "title": "Agreement on Reciprocal Trade between the United States of America and the People's Republic of Bangladesh",
+      "signed": "2026-02-09",
+      "published": "2026-02-09",
+      "url": "https://ustr.gov/sites/default/files/files/Press/Releases/2026/U.S.%20BGD%20Agreement%20on%20Reciprocal%20Trade%20Final%2009FEB2026%20LETTER.pdf"
+    },
+    {
+      "id": "in-framework-ws",
+      "publisher": "The White House",
+      "citation": "United States-India Joint Statement, Feb. 6, 2026",
+      "document": "United States-India Joint Statement",
+      "title": "United States-India Joint Statement on a framework for an Interim Agreement on reciprocal and mutually beneficial trade",
+      "signed": null,
+      "published": "2026-02-06",
+      "url": "https://www.whitehouse.gov/briefings-statements/2026/02/united-states-india-joint-statement/"
+    },
+    {
+      "id": "cn-mofcom-pom-2025",
+      "publisher": "Ministry of Commerce (PRC)",
+      "citation": "MOFCOM Announcement No. 25 of 2025",
+      "document": "Announcement",
+      "title": "Final ruling on the anti-dumping investigation of polyformaldehyde (POM) copolymer originating in the United States, the EU, Taiwan and Japan",
+      "signed": "2025-05-18",
+      "published": "2025-05-18",
+      "url": "https://www.mofcom.gov.cn/zcfb/zgdwjjmywg/art/2025/art_09eb6be1f50f4cdaa6a36dfbb09bb529.html"
+    },
+    {
+      "id": "ca-sor-2025-118",
+      "publisher": "Government of Canada (Canada Gazette, Part II)",
+      "citation": "SOR/2025-118",
+      "document": "Order",
+      "title": "United States Surtax Order (Motor Vehicles 2025)",
+      "signed": "2025-04-07",
+      "published": "2025-04-23",
+      "url": "https://gazette.gc.ca/rp-pr/p2/2025/2025-04-23/html/sor-dors118-eng.html"
+    },
+    {
+      "id": "ca-sor-2026-186",
+      "publisher": "Government of Canada (Canada Gazette, Part II)",
+      "citation": "SOR/2026-186",
+      "document": "Order",
+      "title": "United States Surtax Order (2026)",
+      "signed": null,
+      "published": "2026-09-23",
+      "url": "https://gazette.gc.ca/rp-pr/p2/2026/2026-09-23/html/sor-dors186-eng.html"
+    }
+  ]
+}

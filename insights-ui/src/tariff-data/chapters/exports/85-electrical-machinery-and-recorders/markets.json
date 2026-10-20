@@ -18,7 +18,7 @@
     },
     "lastCheckedAt": "2026-10-19"
   },
-  "intro": "Tariffs decide very little of where this chapter's goods can go: five of the eight largest markets charge nothing, and China's own underlying rate on most electronics is already zero under the WTO Information Technology Agreement — only its flat 10% extra duty on all U.S. goods adds cost there. What usually decides access instead is a safety or radio-equipment approval (CE marking, CCC, KC, UKCA and similar schemes below) and, for the chapter's most advanced chips and chipmaking tools, U.S. export-control licensing rather than any foreign tariff — covered on the Export rules page.",
+  "intro": "Tariffs decide very little of where this chapter's goods can go: four of the nine largest markets (Mexico, the EU, Hong Kong and South Korea) charge nothing, Malaysia and Taiwan charge 0% on chips and most electronics, Canada charges nothing on most goods but 25%–50% on a list of U.S. phones, network gear, monitors, appliances, parts and cable since September 2026, and China's own underlying rate on most electronics is already zero under the WTO Information Technology Agreement — only its flat 10% extra duty on all U.S. goods adds cost there. What usually decides access instead is a safety or radio-equipment approval (CE marking, CCC, KC, UKCA and similar schemes below) and, for the chapter's most advanced chips and chipmaking tools, U.S. export-control licensing rather than any foreign tariff — covered on the Export rules page.",
   "tradeYear": 2025,
   "tariffYear": 2026,
   "valueBasis": "FOB value of U.S. exports, as reported by the United States to UN Comtrade.",
@@ -583,13 +583,13 @@
     {
       "countryCode": 124,
       "name": "Canada",
-      "rule": "CUSMA preferential tariff: 0% for U.S.-origin goods that meet the agreement's rules of origin. Canada's September 2026 counter-tariff list adds a surtax on a narrower set of consumer appliances and electronics that do not claim CUSMA treatment",
+      "rule": "CUSMA preferential tariff: 0% for U.S.-origin goods that meet the agreement's rules of origin, except the lines on Canada's September 8, 2026 counter-tariff list (25% or 50%), which apply to U.S.-origin goods whether or not they qualify for CUSMA",
       "usTradeAgreement": "USMCA (CUSMA in Canada)",
       "exportsUsd": 27643722342,
       "priorExportsUsd": 28303632389,
       "sharePct": 12.2,
       "changePct": -2.3,
-      "status": "unchanged",
+      "status": "raised",
       "cells": {
         "8501": {
           "exportsUsd": 945473163,
@@ -641,9 +641,9 @@
         },
         "8509": {
           "exportsUsd": 211525342,
-          "rate": "Free (CUSMA)",
+          "rate": "Free (CUSMA) except 25% on other domestic appliances (8509.80)",
           "normalRate": null,
-          "basis": "HS 8501–8549, CUSMA Tariff Schedule of Canada (2026); certificate of origin required"
+          "basis": "Canada's Customs Tariff (CUSMA rate 0%) plus Finance Canada's list of U.S. products subject to counter-tariffs from September 8, 2026, which applies to U.S.-origin goods with no exemption for CUSMA-qualifying goods"
         },
         "8510": {
           "exportsUsd": 44300878,
@@ -683,15 +683,15 @@
         },
         "8516": {
           "exportsUsd": 725380555,
-          "rate": "Free (CUSMA)",
+          "rate": "Free (CUSMA) except 25% on domestic cooking appliances: ovens, ranges, rice cookers and similar (8516.60)",
           "normalRate": null,
-          "basis": "HS 8501–8549, CUSMA Tariff Schedule of Canada (2026); certificate of origin required"
+          "basis": "Canada's Customs Tariff (CUSMA rate 0%) plus Finance Canada's list of U.S. products subject to counter-tariffs from September 8, 2026, which applies to U.S.-origin goods with no exemption for CUSMA-qualifying goods"
         },
         "8517": {
           "exportsUsd": 4924346530,
-          "rate": "Free (CUSMA)",
+          "rate": "Free (CUSMA) except 50% on smartphones (8517.13) and routers, switches and other data-transmission apparatus (8517.62)",
           "normalRate": null,
-          "basis": "HS 8501–8549, CUSMA Tariff Schedule of Canada (2026); certificate of origin required"
+          "basis": "Canada's Customs Tariff (CUSMA rate 0%) plus Finance Canada's list of U.S. products subject to counter-tariffs from September 8, 2026, which applies to U.S.-origin goods with no exemption for CUSMA-qualifying goods"
         },
         "8518": {
           "exportsUsd": 908461389,
@@ -749,15 +749,15 @@
         },
         "8528": {
           "exportsUsd": 628851769,
-          "rate": "Free (CUSMA)",
+          "rate": "Free (CUSMA) except 50% on other monitors (8528.59.90)",
           "normalRate": null,
-          "basis": "HS 8501–8549, CUSMA Tariff Schedule of Canada (2026); certificate of origin required"
+          "basis": "Canada's Customs Tariff (CUSMA rate 0%) plus Finance Canada's list of U.S. products subject to counter-tariffs from September 8, 2026, which applies to U.S.-origin goods with no exemption for CUSMA-qualifying goods"
         },
         "8529": {
           "exportsUsd": 313841374,
-          "rate": "Free (CUSMA)",
+          "rate": "Free (CUSMA) except 25% on parts for TV, radio and monitor apparatus (8529.90)",
           "normalRate": null,
-          "basis": "HS 8501–8549, CUSMA Tariff Schedule of Canada (2026); certificate of origin required"
+          "basis": "Canada's Customs Tariff (CUSMA rate 0%) plus Finance Canada's list of U.S. products subject to counter-tariffs from September 8, 2026, which applies to U.S.-origin goods with no exemption for CUSMA-qualifying goods"
         },
         "8530": {
           "exportsUsd": 88323152,
@@ -845,9 +845,9 @@
         },
         "8544": {
           "exportsUsd": 2680923442,
-          "rate": "Free (CUSMA)",
+          "rate": "Free (CUSMA) except 25% on insulated conductors for 1,000 V or less without connectors (8544.49)",
           "normalRate": null,
-          "basis": "HS 8501–8549, CUSMA Tariff Schedule of Canada (2026); certificate of origin required"
+          "basis": "Canada's Customs Tariff (CUSMA rate 0%) plus Finance Canada's list of U.S. products subject to counter-tariffs from September 8, 2026, which applies to U.S.-origin goods with no exemption for CUSMA-qualifying goods"
         },
         "8545": {
           "exportsUsd": 42217755,
@@ -881,9 +881,9 @@
         }
       },
       "profile": {
-        "headline": "Canada is the chapter's second-largest market — chips, phones, network gear and cable, almost all CUSMA-qualifying. A narrower list of household appliances and consumer electronics also faces Canada's September 2026 counter-tariff if it does not claim CUSMA treatment (see Tariff updates).",
+        "headline": "Canada is the chapter's second-largest market: chips, phones, network gear and cable. Most of it still enters duty-free under CUSMA, but since September 8, 2026 Canada charges 50% on U.S. smartphones, routers and switches and some monitors, and 25% on some household appliances, TV and monitor parts and low-voltage cable. Qualifying for CUSMA does not exempt them (see Tariff updates).",
         "mainProducts": "Smartphones and network equipment (8517) · Insulated wire and cable, fiber-optic cable (8544)",
-        "tariffNow": "Free (CUSMA) for most goods",
+        "tariffNow": "Free (CUSMA) except surtax lines: 50% on smartphones, routers/switches and some monitors; 25% on some appliances, parts and cable",
         "regulator": {
           "name": "Innovation, Science and Economic Development Canada (ISED)",
           "url": "https://ised-isde.canada.ca/site/radio-equipment-certification-and-broadcasting-certification/en",
@@ -1559,6 +1559,321 @@
         "countryGuide": {
           "label": "Country Commercial Guide: China import requirements",
           "url": "https://www.trade.gov/country-commercial-guides/china-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 490,
+      "name": "Taiwan",
+      "rule": "Taiwan's MFN tariff schedule (no U.S. free-trade agreement); 0% on chips, phones and most electronics under its WTO Information Technology Agreement commitments. The February 2026 U.S.–Taiwan Agreement on Reciprocal Trade would cut tariffs but has not entered into force",
+      "usTradeAgreement": null,
+      "exportsUsd": 10810206248,
+      "priorExportsUsd": 7265059505,
+      "sharePct": 4.8,
+      "changePct": 48.8,
+      "status": "pending",
+      "profile": {
+        "headline": "Taiwan, which UN Comtrade reports as \"Other Asia, nes\", is the chapter's fourth-largest buyer ($10.81B, up 48.8%), mostly chips (8542, $6.72B) and semiconductor devices (8541, $1.07B). It charges 0% on chips and most electronics under the WTO Information Technology Agreement; the signed but unratified February 2026 U.S.–Taiwan agreement would cut its remaining tariffs.",
+        "mainProducts": "Integrated circuits (chips) (8542) · Semiconductor devices and solar cells (8541)",
+        "tariffNow": "MFN (no U.S. FTA); 0% on electronics (ITA)",
+        "regulator": {
+          "name": "Bureau of Standards, Metrology and Inspection (BSMI) and National Communications Commission (NCC)",
+          "url": "https://www.bsmi.gov.tw/",
+          "requirement": "BSMI inspection or registration for regulated electrical products; NCC type approval for radio and telecom equipment."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Taiwan import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/taiwan-import-requirements-and-documentation"
+        }
+      },
+      "cells": {
+        "8501": {
+          "exportsUsd": 42483918,
+          "rate": "Not individually verified (Taiwan MFN)",
+          "normalRate": null,
+          "basis": "Taiwan's customs tariff (Customs Administration, Ministry of Finance), not checked for this heading; trade.gov's Taiwan Country Commercial Guide gives a 4.8% average nominal rate for industrial products (2023)"
+        },
+        "8502": {
+          "exportsUsd": 5367451,
+          "rate": "Not individually verified (Taiwan MFN)",
+          "normalRate": null,
+          "basis": "Taiwan's customs tariff (Customs Administration, Ministry of Finance), not checked for this heading; trade.gov's Taiwan Country Commercial Guide gives a 4.8% average nominal rate for industrial products (2023)"
+        },
+        "8503": {
+          "exportsUsd": 7894669,
+          "rate": "Not individually verified (Taiwan MFN)",
+          "normalRate": null,
+          "basis": "Taiwan's customs tariff (Customs Administration, Ministry of Finance), not checked for this heading; trade.gov's Taiwan Country Commercial Guide gives a 4.8% average nominal rate for industrial products (2023)"
+        },
+        "8504": {
+          "exportsUsd": 181955808,
+          "rate": "Not individually verified (Taiwan MFN)",
+          "normalRate": null,
+          "basis": "Taiwan's customs tariff (Customs Administration, Ministry of Finance), not checked for this heading; trade.gov's Taiwan Country Commercial Guide gives a 4.8% average nominal rate for industrial products (2023)"
+        },
+        "8505": {
+          "exportsUsd": 4606140,
+          "rate": "Not individually verified (Taiwan MFN)",
+          "normalRate": null,
+          "basis": "Taiwan's customs tariff (Customs Administration, Ministry of Finance), not checked for this heading; trade.gov's Taiwan Country Commercial Guide gives a 4.8% average nominal rate for industrial products (2023)"
+        },
+        "8506": {
+          "exportsUsd": 1746236,
+          "rate": "Not individually verified (Taiwan MFN)",
+          "normalRate": null,
+          "basis": "Taiwan's customs tariff (Customs Administration, Ministry of Finance), not checked for this heading; trade.gov's Taiwan Country Commercial Guide gives a 4.8% average nominal rate for industrial products (2023)"
+        },
+        "8507": {
+          "exportsUsd": 95233369,
+          "rate": "Not individually verified (Taiwan MFN)",
+          "normalRate": null,
+          "basis": "Taiwan's customs tariff (Customs Administration, Ministry of Finance), not checked for this heading; trade.gov's Taiwan Country Commercial Guide gives a 4.8% average nominal rate for industrial products (2023)"
+        },
+        "8508": {
+          "exportsUsd": 1414388,
+          "rate": "Not individually verified (Taiwan MFN)",
+          "normalRate": null,
+          "basis": "Taiwan's customs tariff (Customs Administration, Ministry of Finance), not checked for this heading; trade.gov's Taiwan Country Commercial Guide gives a 4.8% average nominal rate for industrial products (2023)"
+        },
+        "8509": {
+          "exportsUsd": 1873592,
+          "rate": "Not individually verified (Taiwan MFN)",
+          "normalRate": null,
+          "basis": "Taiwan's customs tariff (Customs Administration, Ministry of Finance), not checked for this heading; trade.gov's Taiwan Country Commercial Guide gives a 4.8% average nominal rate for industrial products (2023)"
+        },
+        "8510": {
+          "exportsUsd": 95988,
+          "rate": "Not individually verified (Taiwan MFN)",
+          "normalRate": null,
+          "basis": "Taiwan's customs tariff (Customs Administration, Ministry of Finance), not checked for this heading; trade.gov's Taiwan Country Commercial Guide gives a 4.8% average nominal rate for industrial products (2023)"
+        },
+        "8511": {
+          "exportsUsd": 8270217,
+          "rate": "Not individually verified (Taiwan MFN)",
+          "normalRate": null,
+          "basis": "Taiwan's customs tariff (Customs Administration, Ministry of Finance), not checked for this heading; trade.gov's Taiwan Country Commercial Guide gives a 4.8% average nominal rate for industrial products (2023)"
+        },
+        "8512": {
+          "exportsUsd": 4113947,
+          "rate": "Not individually verified (Taiwan MFN)",
+          "normalRate": null,
+          "basis": "Taiwan's customs tariff (Customs Administration, Ministry of Finance), not checked for this heading; trade.gov's Taiwan Country Commercial Guide gives a 4.8% average nominal rate for industrial products (2023)"
+        },
+        "8513": {
+          "exportsUsd": 876974,
+          "rate": "Not individually verified (Taiwan MFN)",
+          "normalRate": null,
+          "basis": "Taiwan's customs tariff (Customs Administration, Ministry of Finance), not checked for this heading; trade.gov's Taiwan Country Commercial Guide gives a 4.8% average nominal rate for industrial products (2023)"
+        },
+        "8514": {
+          "exportsUsd": 50486052,
+          "rate": "Not individually verified (Taiwan MFN)",
+          "normalRate": null,
+          "basis": "Taiwan's customs tariff (Customs Administration, Ministry of Finance), not checked for this heading; trade.gov's Taiwan Country Commercial Guide gives a 4.8% average nominal rate for industrial products (2023)"
+        },
+        "8515": {
+          "exportsUsd": 8581366,
+          "rate": "Not individually verified (Taiwan MFN)",
+          "normalRate": null,
+          "basis": "Taiwan's customs tariff (Customs Administration, Ministry of Finance), not checked for this heading; trade.gov's Taiwan Country Commercial Guide gives a 4.8% average nominal rate for industrial products (2023)"
+        },
+        "8516": {
+          "exportsUsd": 48395842,
+          "rate": "Not individually verified (Taiwan MFN)",
+          "normalRate": null,
+          "basis": "Taiwan's customs tariff (Customs Administration, Ministry of Finance), not checked for this heading; trade.gov's Taiwan Country Commercial Guide gives a 4.8% average nominal rate for industrial products (2023)"
+        },
+        "8517": {
+          "exportsUsd": 916666579,
+          "rate": "Free (ITA)",
+          "normalRate": null,
+          "basis": "Taiwan (Chinese Taipei) is a participant in the WTO Information Technology Agreement, which binds ITA-covered electronics (HS 8517, 8541, 8542 and similar lines) duty-free"
+        },
+        "8518": {
+          "exportsUsd": 10290802,
+          "rate": "Free (ITA)",
+          "normalRate": null,
+          "basis": "Taiwan (Chinese Taipei) is a participant in the WTO Information Technology Agreement, which binds ITA-covered electronics (HS 8517, 8541, 8542 and similar lines) duty-free"
+        },
+        "8519": {
+          "exportsUsd": 1156655,
+          "rate": "Free (ITA)",
+          "normalRate": null,
+          "basis": "Taiwan (Chinese Taipei) is a participant in the WTO Information Technology Agreement, which binds ITA-covered electronics (HS 8517, 8541, 8542 and similar lines) duty-free"
+        },
+        "8521": {
+          "exportsUsd": 432486,
+          "rate": "Free (ITA)",
+          "normalRate": null,
+          "basis": "Taiwan (Chinese Taipei) is a participant in the WTO Information Technology Agreement, which binds ITA-covered electronics (HS 8517, 8541, 8542 and similar lines) duty-free"
+        },
+        "8522": {
+          "exportsUsd": 423186,
+          "rate": "Free (ITA)",
+          "normalRate": null,
+          "basis": "Taiwan (Chinese Taipei) is a participant in the WTO Information Technology Agreement, which binds ITA-covered electronics (HS 8517, 8541, 8542 and similar lines) duty-free"
+        },
+        "8523": {
+          "exportsUsd": 553688776,
+          "rate": "Free (ITA)",
+          "normalRate": null,
+          "basis": "Taiwan (Chinese Taipei) is a participant in the WTO Information Technology Agreement, which binds ITA-covered electronics (HS 8517, 8541, 8542 and similar lines) duty-free"
+        },
+        "8524": {
+          "exportsUsd": 3011803,
+          "rate": "Free (ITA)",
+          "normalRate": null,
+          "basis": "Taiwan (Chinese Taipei) is a participant in the WTO Information Technology Agreement, which binds ITA-covered electronics (HS 8517, 8541, 8542 and similar lines) duty-free"
+        },
+        "8525": {
+          "exportsUsd": 51420141,
+          "rate": "Free (ITA)",
+          "normalRate": null,
+          "basis": "Taiwan (Chinese Taipei) is a participant in the WTO Information Technology Agreement, which binds ITA-covered electronics (HS 8517, 8541, 8542 and similar lines) duty-free"
+        },
+        "8526": {
+          "exportsUsd": 18466004,
+          "rate": "Free (ITA)",
+          "normalRate": null,
+          "basis": "Taiwan (Chinese Taipei) is a participant in the WTO Information Technology Agreement, which binds ITA-covered electronics (HS 8517, 8541, 8542 and similar lines) duty-free"
+        },
+        "8527": {
+          "exportsUsd": 156542,
+          "rate": "Free (ITA)",
+          "normalRate": null,
+          "basis": "Taiwan (Chinese Taipei) is a participant in the WTO Information Technology Agreement, which binds ITA-covered electronics (HS 8517, 8541, 8542 and similar lines) duty-free"
+        },
+        "8528": {
+          "exportsUsd": 7103389,
+          "rate": "Free (ITA)",
+          "normalRate": null,
+          "basis": "Taiwan (Chinese Taipei) is a participant in the WTO Information Technology Agreement, which binds ITA-covered electronics (HS 8517, 8541, 8542 and similar lines) duty-free"
+        },
+        "8529": {
+          "exportsUsd": 52122499,
+          "rate": "Free (ITA)",
+          "normalRate": null,
+          "basis": "Taiwan (Chinese Taipei) is a participant in the WTO Information Technology Agreement, which binds ITA-covered electronics (HS 8517, 8541, 8542 and similar lines) duty-free"
+        },
+        "8530": {
+          "exportsUsd": 3004062,
+          "rate": "Not individually verified (Taiwan MFN)",
+          "normalRate": null,
+          "basis": "Taiwan's customs tariff (Customs Administration, Ministry of Finance), not checked for this heading; trade.gov's Taiwan Country Commercial Guide gives a 4.8% average nominal rate for industrial products (2023)"
+        },
+        "8531": {
+          "exportsUsd": 22087133,
+          "rate": "Not individually verified (Taiwan MFN)",
+          "normalRate": null,
+          "basis": "Taiwan's customs tariff (Customs Administration, Ministry of Finance), not checked for this heading; trade.gov's Taiwan Country Commercial Guide gives a 4.8% average nominal rate for industrial products (2023)"
+        },
+        "8532": {
+          "exportsUsd": 45903264,
+          "rate": "Not individually verified (Taiwan MFN)",
+          "normalRate": null,
+          "basis": "Taiwan's customs tariff (Customs Administration, Ministry of Finance), not checked for this heading; trade.gov's Taiwan Country Commercial Guide gives a 4.8% average nominal rate for industrial products (2023)"
+        },
+        "8533": {
+          "exportsUsd": 18283180,
+          "rate": "Not individually verified (Taiwan MFN)",
+          "normalRate": null,
+          "basis": "Taiwan's customs tariff (Customs Administration, Ministry of Finance), not checked for this heading; trade.gov's Taiwan Country Commercial Guide gives a 4.8% average nominal rate for industrial products (2023)"
+        },
+        "8534": {
+          "exportsUsd": 50762189,
+          "rate": "Free (ITA)",
+          "normalRate": null,
+          "basis": "Taiwan (Chinese Taipei) is a participant in the WTO Information Technology Agreement, which binds ITA-covered electronics (HS 8517, 8541, 8542 and similar lines) duty-free"
+        },
+        "8535": {
+          "exportsUsd": 20489080,
+          "rate": "Not individually verified (Taiwan MFN)",
+          "normalRate": null,
+          "basis": "Taiwan's customs tariff (Customs Administration, Ministry of Finance), not checked for this heading; trade.gov's Taiwan Country Commercial Guide gives a 4.8% average nominal rate for industrial products (2023)"
+        },
+        "8536": {
+          "exportsUsd": 263480552,
+          "rate": "Not individually verified (Taiwan MFN)",
+          "normalRate": null,
+          "basis": "Taiwan's customs tariff (Customs Administration, Ministry of Finance), not checked for this heading; trade.gov's Taiwan Country Commercial Guide gives a 4.8% average nominal rate for industrial products (2023)"
+        },
+        "8537": {
+          "exportsUsd": 135150557,
+          "rate": "Not individually verified (Taiwan MFN)",
+          "normalRate": null,
+          "basis": "Taiwan's customs tariff (Customs Administration, Ministry of Finance), not checked for this heading; trade.gov's Taiwan Country Commercial Guide gives a 4.8% average nominal rate for industrial products (2023)"
+        },
+        "8538": {
+          "exportsUsd": 28193757,
+          "rate": "Not individually verified (Taiwan MFN)",
+          "normalRate": null,
+          "basis": "Taiwan's customs tariff (Customs Administration, Ministry of Finance), not checked for this heading; trade.gov's Taiwan Country Commercial Guide gives a 4.8% average nominal rate for industrial products (2023)"
+        },
+        "8539": {
+          "exportsUsd": 44443262,
+          "rate": "Not individually verified (Taiwan MFN)",
+          "normalRate": null,
+          "basis": "Taiwan's customs tariff (Customs Administration, Ministry of Finance), not checked for this heading; trade.gov's Taiwan Country Commercial Guide gives a 4.8% average nominal rate for industrial products (2023)"
+        },
+        "8540": {
+          "exportsUsd": 15767165,
+          "rate": "Free (ITA)",
+          "normalRate": null,
+          "basis": "Taiwan (Chinese Taipei) is a participant in the WTO Information Technology Agreement, which binds ITA-covered electronics (HS 8517, 8541, 8542 and similar lines) duty-free"
+        },
+        "8541": {
+          "exportsUsd": 1065014797,
+          "rate": "Free (ITA)",
+          "normalRate": null,
+          "basis": "Taiwan (Chinese Taipei) is a participant in the WTO Information Technology Agreement, which binds ITA-covered electronics (HS 8517, 8541, 8542 and similar lines) duty-free"
+        },
+        "8542": {
+          "exportsUsd": 6722155109,
+          "rate": "Free (ITA)",
+          "normalRate": null,
+          "basis": "Taiwan (Chinese Taipei) is a participant in the WTO Information Technology Agreement, which binds ITA-covered electronics (HS 8517, 8541, 8542 and similar lines) duty-free"
+        },
+        "8543": {
+          "exportsUsd": 176837771,
+          "rate": "Not individually verified (Taiwan MFN)",
+          "normalRate": null,
+          "basis": "Taiwan's customs tariff (Customs Administration, Ministry of Finance), not checked for this heading; trade.gov's Taiwan Country Commercial Guide gives a 4.8% average nominal rate for industrial products (2023)"
+        },
+        "8544": {
+          "exportsUsd": 88333761,
+          "rate": "Not individually verified (Taiwan MFN)",
+          "normalRate": null,
+          "basis": "Taiwan's customs tariff (Customs Administration, Ministry of Finance), not checked for this heading; trade.gov's Taiwan Country Commercial Guide gives a 4.8% average nominal rate for industrial products (2023)"
+        },
+        "8545": {
+          "exportsUsd": 862578,
+          "rate": "Not individually verified (Taiwan MFN)",
+          "normalRate": null,
+          "basis": "Taiwan's customs tariff (Customs Administration, Ministry of Finance), not checked for this heading; trade.gov's Taiwan Country Commercial Guide gives a 4.8% average nominal rate for industrial products (2023)"
+        },
+        "8546": {
+          "exportsUsd": 12325149,
+          "rate": "Not individually verified (Taiwan MFN)",
+          "normalRate": null,
+          "basis": "Taiwan's customs tariff (Customs Administration, Ministry of Finance), not checked for this heading; trade.gov's Taiwan Country Commercial Guide gives a 4.8% average nominal rate for industrial products (2023)"
+        },
+        "8547": {
+          "exportsUsd": 16808250,
+          "rate": "Not individually verified (Taiwan MFN)",
+          "normalRate": null,
+          "basis": "Taiwan's customs tariff (Customs Administration, Ministry of Finance), not checked for this heading; trade.gov's Taiwan Country Commercial Guide gives a 4.8% average nominal rate for industrial products (2023)"
+        },
+        "8548": {
+          "exportsUsd": 1300466,
+          "rate": "Not individually verified (Taiwan MFN)",
+          "normalRate": null,
+          "basis": "Taiwan's customs tariff (Customs Administration, Ministry of Finance), not checked for this heading; trade.gov's Taiwan Country Commercial Guide gives a 4.8% average nominal rate for industrial products (2023)"
+        },
+        "8549": {
+          "exportsUsd": 669347,
+          "rate": "Not individually verified (Taiwan MFN)",
+          "normalRate": null,
+          "basis": "Taiwan's customs tariff (Customs Administration, Ministry of Finance), not checked for this heading; trade.gov's Taiwan Country Commercial Guide gives a 4.8% average nominal rate for industrial products (2023)"
         }
       }
     },
@@ -2849,6 +3164,12 @@
       "rate": "Free (EU–US framework)"
     },
     {
+      "market": "Taiwan",
+      "heading": "8542",
+      "exportsUsd": 6722155109,
+      "rate": "Free (ITA)"
+    },
+    {
       "market": "Mexico",
       "heading": "8517",
       "exportsUsd": 6528012591,
@@ -2859,19 +3180,14 @@
       "heading": "8517",
       "exportsUsd": 5523895706,
       "rate": "Free (duty-free port)"
-    },
-    {
-      "market": "Mexico",
-      "heading": "8523",
-      "exportsUsd": 5400641272,
-      "rate": "Free (USMCA)"
     }
   ],
   "assumptions": [
     "Rates are grouped into two clusters per market rather than priced line by line: an \"electronics\" cluster (headings 8517–8542 covering phones, network gear, storage media, displays, cameras and semiconductors) that is largely covered by the WTO Information Technology Agreement and typically duty-free even outside a U.S. free-trade agreement, and an \"electromechanical\" cluster (motors, generators, batteries, appliances, switchgear and cable) that sees each market's ordinary, non-zero MFN rate. One representative subheading per cluster was checked for each non-FTA market; national 8–10-digit lines can differ from the representative rate.",
-    "For USMCA, CUSMA and KORUS partners (Mexico, Canada, South Korea), and for Hong Kong's duty-free port, the rate shown applies uniformly across the whole chapter.",
+    "For USMCA and KORUS partners (Mexico, Canada, South Korea), and for Hong Kong's duty-free port, the rate shown applies across the whole chapter, except for the lines on Canada's September 2026 counter-tariff list, which are named in the affected headings.",
     "For the EU, Regulation (EU) 2026/1455 zeroes out the chapter from July 1, 2026; before that date the EU's own MFN rate was already 0% on the electronics cluster and a low single-digit rate on the rest.",
-    "China's 10% extra duty on all U.S. goods (in force since May 2025) is added on top of China's own MFN rate for every heading in this chapter; it is not specific to electronics."
+    "China's 10% extra duty on all U.S. goods (in force since May 2025) is added on top of China's own MFN rate for every heading in this chapter; it is not specific to electronics.",
+    "For Taiwan, only the electronics cluster rests on a confirmed basis (its WTO Information Technology Agreement commitments); its rates on the other headings were not checked line by line and are marked as not individually verified."
   ],
   "sources": [
     {
@@ -2885,5 +3201,5 @@
       "url": "https://comtradeplus.un.org/"
     }
   ],
-  "coverageNote": "The 8 markets shown take 70% of 2025 U.S. Chapter 85 exports. A customs union (the EU) is one market: its members share one tariff."
+  "coverageNote": "The 9 markets shown take 75% of 2025 U.S. Chapter 85 exports. A customs union (the EU) is one market: its members share one tariff."
 }
