@@ -146,6 +146,11 @@ export interface CreditBalanceSummaryResponse {
   stripeUnavailable?: boolean;
 }
 
+/** Whether credits can be bought right now (App Settings → Payments kill switch). */
+export interface PurchasesEnabledResponse {
+  enabled: boolean;
+}
+
 export interface CreateCheckoutSessionRequest {
   packKey: string;
   /**
