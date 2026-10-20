@@ -2,6 +2,7 @@ import TopNav from '@/components/core/TopNav/TopNav';
 import ReportResultNotifier from '@/components/credits/ReportResultNotifier';
 import { LoginPopupAutoPrompt } from '@/components/login/login-popup-auto-prompt';
 import ThemeProvider from '@/components/theme/ThemeProvider';
+import { getAppConfigBoolean } from '@/lib/appConfig/appConfig';
 import { themeColors } from '@/util/theme-colors';
 import './globals.scss';
 import type { Metadata } from 'next';
@@ -59,6 +60,9 @@ export const metadata: Metadata = {
 };
 
 export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+  // Admin switch (App Settings → Analytics), off by default.
+  const umamiEnabled = await getAppConfigBoolean('UMAMI_ANALYTICS_ENABLED');
+
   return (
     <html lang="en">
       <body className="antialiased text-color dark" style={{ ...themeColors, backgroundColor: 'var(--bg-color)' }}>
@@ -74,7 +78,7 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
         {/* --- Analytics / Monitoring (non-blocking) --- */}
 
         {/* Umami */}
-        <Script src="https://cloud.umami.is/script.js" strategy="afterInteractive" data-website-id="626f3994-7682-4573-a943-4987796f3eaf" />
+        {umamiEnabled && <Script src="https://cloud.umami.is/script.js" strategy="afterInteractive" data-website-id="626f3994-7682-4573-a943-4987796f3eaf" />}
 
         {/* Google Analytics */}
         <Script src="https://www.googletagmanager.com/gtag/js?id=G-18CB8K6SLR" strategy="afterInteractive" />

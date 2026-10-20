@@ -40,6 +40,7 @@ export type AppConfigGroupId =
   | 'tariff-calculator'
   | 'scraping'
   | 'logging'
+  | 'analytics'
   | 'claude-endpoints';
 
 /** One choice for a setting that has a fixed set of allowed values (rendered as a dropdown). */
@@ -139,6 +140,12 @@ export const APP_CONFIG_GROUPS: AppConfigGroup[] = [
     label: 'Log Shipping (Grafana Cloud Loki)',
     description:
       'Where server errors and warnings are pushed. Shipping is on only when URL, user and token are all set, and is read once at server start — redeploy (or restart) after changing these.',
+  },
+  {
+    id: 'analytics',
+    label: 'Analytics',
+    description:
+      'Third-party analytics scripts loaded on every page. Pages are rendered with the value at render time, and CloudFront keeps /stocks and /etfs pages for up to 6 days — a change reaches those pages as they are re-rendered (or after a CloudFront invalidation).',
   },
   {
     id: 'claude-endpoints',
@@ -412,6 +419,14 @@ export const APP_CONFIG_DEFINITIONS: AppConfigDefinition[] = [
       'Function URL of the stock-page-fetcher Lambda (lambdas/stock-page-fetcher, https://<id>.lambda-url.us-east-1.on.aws). Used only when fetching via the Lambda is ON.',
     type: 'string',
     group: 'scraping',
+  },
+  {
+    key: 'UMAMI_ANALYTICS_ENABLED',
+    label: 'Enable Umami analytics',
+    description:
+      'ON: every page loads the Umami tracking script (cloud.umami.is). OFF (default): the script is not loaded. Google Analytics, Clarity and LogRocket are not affected.',
+    type: 'boolean',
+    group: 'analytics',
   },
   {
     key: 'LOKI_URL',
