@@ -1,15 +1,9 @@
 import { prisma } from '@/prisma';
 import { getReportHrefs } from '@/utils/credits/report-target';
+import { escapeHtml, KOALAGAINS_FROM_ADDRESS } from '@/utils/email/koalagains-email';
 import { getCanonicalUrl } from '@/utils/getBaseUrlForServerSidePages';
 import { sendEmail } from '@dodao/web-core/api/email/sendEmail';
 import { ReportSpend } from '@prisma/client';
-
-/** Same sender as the KoalaGains login emails. */
-const FROM_ADDRESS = 'contact@koalagains.com';
-
-function escapeHtml(text: string): string {
-  return text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
-}
 
 /** Plain, inline-styled layout so it renders the same in every mail client. */
 function emailHtml({ heading, body, buttonLabel, buttonUrl }: { heading: string; body: string; buttonLabel: string; buttonUrl: string }): string {
@@ -65,7 +59,7 @@ export async function sendReportResultEmail(spend: ReportSpend, succeeded: boole
           }),
         };
 
-    await sendEmail({ to: user.email, from: FROM_ADDRESS, ...email });
+    await sendEmail({ to: user.email, from: KOALAGAINS_FROM_ADDRESS, ...email });
   } catch (error) {
     // Message only: locally SES isn't set up, and a full AWS stack trace per email is just noise.
     console.error('[report-result-email] Failed to send', spend.id, error instanceof Error ? error.message : error);
