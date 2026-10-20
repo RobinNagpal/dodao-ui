@@ -1,0 +1,1040 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 12,
+    "padded": "12",
+    "slug": "12-oil-seeds-and-grains",
+    "title": "Oil Seeds and Oleaginous Fruits; Miscellaneous Grains, Seeds and Fruit; Industrial or Medicinal Plants; Straw and Fodder"
+  },
+  "page": {
+    "slug": "exports/markets",
+    "path": "/industry-tariff-report/exports/chapters/12-oil-seeds-and-grains/markets",
+    "h1": "HTS Chapter 12: Oil Seeds and Oleaginous Fruits; Miscellaneous Grains, Seeds and Fruit; Industrial or Medicinal Plants; Straw and Fodder — Export Markets & Foreign Tariffs on U.S. Goods",
+    "seo": {
+      "title": "Chapter 12 Export Markets: Foreign Tariffs on U.S. Soybeans & Oilseeds",
+      "shortDescription": "What China, Mexico, the EU, Japan and other buyers charge on U.S. Chapter 12 exports, by product group.",
+      "keywords": ["soybean export markets tariff", "China soybean tariff", "chapter 12 export markets", "EU soybean tariff", "USMCA soybean tariff"]
+    },
+    "lastCheckedAt": "2026-10-19"
+  },
+  "intro": "For almost every market in this chapter, access is decided by import demand and crushing capacity, not by a tariff — Mexico, Canada, the EU, Japan and Egypt all buy this chapter's goods duty-free. China is the one exception: it still charges the 10% extra tariff from the 2025 U.S.–China tariff fight on top of its normal rate, and its own 2018–19 retaliation tariff, though waived for soybeans through an exclusion process, remains on the books.",
+  "tradeYear": 2025,
+  "tariffYear": 2026,
+  "valueBasis": "FOB value of U.S. exports, as reported by the United States to UN Comtrade.",
+  "groups": [
+    {
+      "heading": "1201",
+      "label": "Soybeans",
+      "shortLabel": "Soybeans"
+    },
+    {
+      "heading": "1202",
+      "label": "Peanuts (groundnuts), raw",
+      "shortLabel": "Peanuts"
+    },
+    {
+      "heading": "1204",
+      "label": "Flaxseed (linseed)",
+      "shortLabel": "Flaxseed"
+    },
+    {
+      "heading": "1205",
+      "label": "Rapeseed & canola",
+      "shortLabel": "Canola"
+    },
+    {
+      "heading": "1206",
+      "label": "Sunflower seeds",
+      "shortLabel": "Sunflower"
+    },
+    {
+      "heading": "1207",
+      "label": "Sesame, mustard, hemp, cotton, melon, poppy & other oil seeds",
+      "shortLabel": "Other oil seeds"
+    },
+    {
+      "heading": "1208",
+      "label": "Flours & meals of oil seeds",
+      "shortLabel": "Oilseed flours"
+    },
+    {
+      "heading": "1209",
+      "label": "Seeds for sowing (vegetable, flower, grass & forage)",
+      "shortLabel": "Seeds for sowing"
+    },
+    {
+      "heading": "1210",
+      "label": "Hop cones, hop pellets & lupulin",
+      "shortLabel": "Hops"
+    },
+    {
+      "heading": "1211",
+      "label": "Medicinal & herbal plants (ginseng, psyllium, mint)",
+      "shortLabel": "Herbs & medicinal plants"
+    },
+    {
+      "heading": "1212",
+      "label": "Seaweed, carob, sugar beet & cane, fruit kernels",
+      "shortLabel": "Seaweed & other"
+    },
+    {
+      "heading": "1213",
+      "label": "Cereal straw & husks",
+      "shortLabel": "Straw"
+    },
+    {
+      "heading": "1214",
+      "label": "Hay, alfalfa & forage",
+      "shortLabel": "Hay & forage"
+    }
+  ],
+  "markets": [
+    {
+      "countryCode": 156,
+      "name": "China",
+      "rule": "China's MFN tariff plus its 2025 reciprocal tariff on all U.S. goods; the 2018–19 retaliation tariff is separately waived for soybeans through an exclusion process",
+      "usTradeAgreement": null,
+      "exportsUsd": 3515187382,
+      "priorExportsUsd": 13352430718,
+      "sharePct": 16.5,
+      "changePct": -73.7,
+      "status": "lowered",
+      "cells": {
+        "1201": {
+          "exportsUsd": 3078630378,
+          "rate": "3% MFN + 10% (2025 reciprocal tariff); 25% legacy tariff waived for soybeans through Dec. 2026",
+          "normalRate": "Adds the 25% legacy retaliation tariff when a shipment is not covered by China's exclusion process",
+          "basis": "China Customs Tariff 2026, HS 1201.90 (non-seed); Tariff Commission Announcement No. 7 of 2025 (10% reciprocal duty); the Nov. 2025 U.S.–China deal's exclusion process waives the 2018–19 retaliation duty for soybeans through Dec. 31, 2026"
+        },
+        "1202": {
+          "exportsUsd": 19587894,
+          "rate": "~3–10% MFN + 10% reciprocal tariff (avg across this chapter's other headings)",
+          "normalRate": null,
+          "basis": "China Customs Tariff 2026, HS Chapter 12 lines; Tariff Commission Announcement No. 7 of 2025"
+        },
+        "1204": {
+          "exportsUsd": 24518,
+          "rate": "~3–10% MFN + 10% reciprocal tariff (avg across this chapter's other headings)",
+          "normalRate": null,
+          "basis": "China Customs Tariff 2026, HS Chapter 12 lines; Tariff Commission Announcement No. 7 of 2025"
+        },
+        "1205": {
+          "exportsUsd": 0,
+          "rate": "~3–10% MFN + 10% reciprocal tariff (avg across this chapter's other headings)",
+          "normalRate": null,
+          "basis": "China Customs Tariff 2026, HS Chapter 12 lines; Tariff Commission Announcement No. 7 of 2025"
+        },
+        "1206": {
+          "exportsUsd": 0,
+          "rate": "~3–10% MFN + 10% reciprocal tariff (avg across this chapter's other headings)",
+          "normalRate": null,
+          "basis": "China Customs Tariff 2026, HS Chapter 12 lines; Tariff Commission Announcement No. 7 of 2025"
+        },
+        "1207": {
+          "exportsUsd": 850352,
+          "rate": "~3–10% MFN + 10% reciprocal tariff (avg across this chapter's other headings)",
+          "normalRate": null,
+          "basis": "China Customs Tariff 2026, HS Chapter 12 lines; Tariff Commission Announcement No. 7 of 2025"
+        },
+        "1208": {
+          "exportsUsd": 190296,
+          "rate": "~3–10% MFN + 10% reciprocal tariff (avg across this chapter's other headings)",
+          "normalRate": null,
+          "basis": "China Customs Tariff 2026, HS Chapter 12 lines; Tariff Commission Announcement No. 7 of 2025"
+        },
+        "1209": {
+          "exportsUsd": 81610381,
+          "rate": "~3–10% MFN + 10% reciprocal tariff (avg across this chapter's other headings)",
+          "normalRate": null,
+          "basis": "China Customs Tariff 2026, HS Chapter 12 lines; Tariff Commission Announcement No. 7 of 2025"
+        },
+        "1210": {
+          "exportsUsd": 20119594,
+          "rate": "~3–10% MFN + 10% reciprocal tariff (avg across this chapter's other headings)",
+          "normalRate": null,
+          "basis": "China Customs Tariff 2026, HS Chapter 12 lines; Tariff Commission Announcement No. 7 of 2025"
+        },
+        "1211": {
+          "exportsUsd": 20400824,
+          "rate": "~3–10% MFN + 10% reciprocal tariff (avg across this chapter's other headings)",
+          "normalRate": null,
+          "basis": "China Customs Tariff 2026, HS Chapter 12 lines; Tariff Commission Announcement No. 7 of 2025"
+        },
+        "1212": {
+          "exportsUsd": 484915,
+          "rate": "~3–10% MFN + 10% reciprocal tariff (avg across this chapter's other headings)",
+          "normalRate": null,
+          "basis": "China Customs Tariff 2026, HS Chapter 12 lines; Tariff Commission Announcement No. 7 of 2025"
+        },
+        "1213": {
+          "exportsUsd": 0,
+          "rate": "~3–10% MFN + 10% reciprocal tariff (avg across this chapter's other headings)",
+          "normalRate": null,
+          "basis": "China Customs Tariff 2026, HS Chapter 12 lines; Tariff Commission Announcement No. 7 of 2025"
+        },
+        "1214": {
+          "exportsUsd": 293288230,
+          "rate": "~3–10% MFN + 10% reciprocal tariff (avg across this chapter's other headings)",
+          "normalRate": null,
+          "basis": "China Customs Tariff 2026, HS Chapter 12 lines; Tariff Commission Announcement No. 7 of 2025"
+        }
+      },
+      "profile": {
+        "headline": "China is the top buyer of this chapter's goods, almost entirely soybeans — but 2025 purchases plunged as Beijing bought more from Brazil and Argentina during the tariff fight, before a 2026 rebound on fresh state-directed buying commitments.",
+        "mainProducts": "Soybeans (1201) · Hay, alfalfa & forage (1214)",
+        "tariffNow": "3% MFN + 10% (2025 reciprocal tariff); 25% legacy tariff waived for soybeans through Dec. 2026",
+        "regulator": {
+          "name": "Ministry of Agriculture and Rural Affairs — GMO biosafety certificate",
+          "url": "https://www.moa.gov.cn/",
+          "requirement": "An Agricultural GMO Safety Certificate for each approved GM soybean variety and exporting company before customs clearance."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: China import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/china-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 484,
+      "name": "Mexico",
+      "rule": "USMCA — free on qualifying U.S. goods",
+      "usTradeAgreement": "USMCA (T-MEC in Mexico)",
+      "exportsUsd": 3022008092,
+      "priorExportsUsd": 2892046327,
+      "sharePct": 14.1,
+      "changePct": 4.5,
+      "status": "unchanged",
+      "cells": {
+        "1201": {
+          "exportsUsd": 2341101363,
+          "rate": "Free (USMCA)",
+          "normalRate": "15–20% (non-USMCA MFN rate; USMCA eliminates it for qualifying U.S. goods)",
+          "basis": "USMCA (T-MEC) Chapter 2 tariff elimination schedule; Mexico's TIGIE tariff schedule, 2026"
+        },
+        "1202": {
+          "exportsUsd": 209030657,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA (T-MEC) Chapter 2 tariff elimination schedule"
+        },
+        "1204": {
+          "exportsUsd": 473169,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA (T-MEC) Chapter 2 tariff elimination schedule"
+        },
+        "1205": {
+          "exportsUsd": 97813384,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA (T-MEC) Chapter 2 tariff elimination schedule"
+        },
+        "1206": {
+          "exportsUsd": 8582378,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA (T-MEC) Chapter 2 tariff elimination schedule"
+        },
+        "1207": {
+          "exportsUsd": 37451152,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA (T-MEC) Chapter 2 tariff elimination schedule"
+        },
+        "1208": {
+          "exportsUsd": 7219426,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA (T-MEC) Chapter 2 tariff elimination schedule"
+        },
+        "1209": {
+          "exportsUsd": 309310540,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA (T-MEC) Chapter 2 tariff elimination schedule"
+        },
+        "1210": {
+          "exportsUsd": 4302280,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA (T-MEC) Chapter 2 tariff elimination schedule"
+        },
+        "1211": {
+          "exportsUsd": 2010114,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA (T-MEC) Chapter 2 tariff elimination schedule"
+        },
+        "1212": {
+          "exportsUsd": 3512637,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA (T-MEC) Chapter 2 tariff elimination schedule"
+        },
+        "1213": {
+          "exportsUsd": 31516,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA (T-MEC) Chapter 2 tariff elimination schedule"
+        },
+        "1214": {
+          "exportsUsd": 1169476,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA (T-MEC) Chapter 2 tariff elimination schedule"
+        }
+      },
+      "profile": {
+        "headline": "Mexico is a steady, diversified buyer across almost every heading in this chapter, not only soybeans — it is the largest market for U.S. seeds for sowing.",
+        "mainProducts": "Soybeans (1201) · Seeds for sowing (vegetable, flower, grass & forage) (1209)",
+        "tariffNow": "Free (USMCA)",
+        "regulator": {
+          "name": "SENASICA (phytosanitary import permit)",
+          "url": "https://www.gob.mx/senasica",
+          "requirement": "A phytosanitary import permit for seeds and grains, obtained before the shipment leaves the U.S."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Mexico import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/mexico-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 97,
+      "name": "European Union",
+      "rule": "EU Common Customs Tariff — duty-free for soybeans and soybean oilcake under a 1960s GATT binding",
+      "usTradeAgreement": null,
+      "exportsUsd": 2686601791,
+      "priorExportsUsd": 3081187957,
+      "sharePct": 12.6,
+      "changePct": -12.8,
+      "status": "unchanged",
+      "members": [
+        {
+          "countryCode": 276,
+          "country": "Germany",
+          "exportsUsd": 1034730788,
+          "priorExportsUsd": 1129693385,
+          "changePct": -8.4
+        },
+        {
+          "countryCode": 380,
+          "country": "Italy",
+          "exportsUsd": 660058095,
+          "priorExportsUsd": 680342811,
+          "changePct": -3
+        },
+        {
+          "countryCode": 528,
+          "country": "Netherlands",
+          "exportsUsd": 360574664,
+          "priorExportsUsd": 403066499,
+          "changePct": -10.5
+        },
+        {
+          "countryCode": 724,
+          "country": "Spain",
+          "exportsUsd": 292434050,
+          "priorExportsUsd": 378397302,
+          "changePct": -22.7
+        },
+        {
+          "countryCode": 251,
+          "country": "France",
+          "exportsUsd": 131293242,
+          "priorExportsUsd": 140864941,
+          "changePct": -6.8
+        }
+      ],
+      "cells": {
+        "1201": {
+          "exportsUsd": 2158729213,
+          "rate": "Free (EU tariff binding on soybeans)",
+          "normalRate": null,
+          "basis": "EU Combined Nomenclature 2026; GATT 1962 soybean-and-oilcake tariff binding"
+        },
+        "1202": {
+          "exportsUsd": 74571773,
+          "rate": "Free–low (avg across this chapter's other headings; most raw oilseeds and seeds for sowing are duty-free or close to it)",
+          "normalRate": null,
+          "basis": "EU Combined Nomenclature 2026"
+        },
+        "1204": {
+          "exportsUsd": 465534,
+          "rate": "Free–low (avg across this chapter's other headings; most raw oilseeds and seeds for sowing are duty-free or close to it)",
+          "normalRate": null,
+          "basis": "EU Combined Nomenclature 2026"
+        },
+        "1205": {
+          "exportsUsd": 7330,
+          "rate": "Free–low (avg across this chapter's other headings; most raw oilseeds and seeds for sowing are duty-free or close to it)",
+          "normalRate": null,
+          "basis": "EU Combined Nomenclature 2026"
+        },
+        "1206": {
+          "exportsUsd": 30939578,
+          "rate": "Free–low (avg across this chapter's other headings; most raw oilseeds and seeds for sowing are duty-free or close to it)",
+          "normalRate": null,
+          "basis": "EU Combined Nomenclature 2026"
+        },
+        "1207": {
+          "exportsUsd": 19142304,
+          "rate": "Free–low (avg across this chapter's other headings; most raw oilseeds and seeds for sowing are duty-free or close to it)",
+          "normalRate": null,
+          "basis": "EU Combined Nomenclature 2026"
+        },
+        "1208": {
+          "exportsUsd": 628059,
+          "rate": "Free–low (avg across this chapter's other headings; most raw oilseeds and seeds for sowing are duty-free or close to it)",
+          "normalRate": null,
+          "basis": "EU Combined Nomenclature 2026"
+        },
+        "1209": {
+          "exportsUsd": 209796680,
+          "rate": "Free–low (avg across this chapter's other headings; most raw oilseeds and seeds for sowing are duty-free or close to it)",
+          "normalRate": null,
+          "basis": "EU Combined Nomenclature 2026"
+        },
+        "1210": {
+          "exportsUsd": 116059718,
+          "rate": "Free–low (avg across this chapter's other headings; most raw oilseeds and seeds for sowing are duty-free or close to it)",
+          "normalRate": null,
+          "basis": "EU Combined Nomenclature 2026"
+        },
+        "1211": {
+          "exportsUsd": 70476428,
+          "rate": "Free–low (avg across this chapter's other headings; most raw oilseeds and seeds for sowing are duty-free or close to it)",
+          "normalRate": null,
+          "basis": "EU Combined Nomenclature 2026"
+        },
+        "1212": {
+          "exportsUsd": 3350107,
+          "rate": "Free–low (avg across this chapter's other headings; most raw oilseeds and seeds for sowing are duty-free or close to it)",
+          "normalRate": null,
+          "basis": "EU Combined Nomenclature 2026"
+        },
+        "1213": {
+          "exportsUsd": 0,
+          "rate": "Free–low (avg across this chapter's other headings; most raw oilseeds and seeds for sowing are duty-free or close to it)",
+          "normalRate": null,
+          "basis": "EU Combined Nomenclature 2026"
+        },
+        "1214": {
+          "exportsUsd": 2435067,
+          "rate": "Free–low (avg across this chapter's other headings; most raw oilseeds and seeds for sowing are duty-free or close to it)",
+          "normalRate": null,
+          "basis": "EU Combined Nomenclature 2026"
+        }
+      },
+      "profile": {
+        "headline": "The EU buys this chapter's goods almost entirely tariff-free, under one of the oldest trade concessions still in force for any U.S. export: a GATT binding on soybeans and soybean oilcake dating to the 1960s.",
+        "mainProducts": "Soybeans (1201) · Seeds for sowing (vegetable, flower, grass & forage) (1209)",
+        "tariffNow": "Free (EU tariff binding on soybeans)",
+        "regulator": {
+          "name": "European Commission / EFSA — GM variety authorization",
+          "url": "https://food.ec.europa.eu/plants/genetically-modified-organisms_en",
+          "requirement": "Each GM soybean event needs EU authorization under Regulation (EC) No 1829/2003 before it can be imported and used in feed."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: EU import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/eu-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 818,
+      "name": "Egypt",
+      "rule": "No import duty on raw oilseeds",
+      "usTradeAgreement": null,
+      "exportsUsd": 1704869900,
+      "priorExportsUsd": 1017586974,
+      "sharePct": 8,
+      "changePct": 67.5,
+      "status": "unchanged",
+      "cells": {
+        "1201": {
+          "exportsUsd": 1697613686,
+          "rate": "Free (no duty on raw oilseeds)",
+          "normalRate": null,
+          "basis": "Egypt's Customs Tariff; USDA FAS reporting that Egypt applies no import duty on raw oilseeds"
+        },
+        "1202": {
+          "exportsUsd": 0,
+          "rate": "Free (no duty on raw oilseeds and seeds; avg across this chapter's other headings)",
+          "normalRate": null,
+          "basis": "Egypt's Customs Tariff; USDA FAS reporting on oilseed import duties"
+        },
+        "1204": {
+          "exportsUsd": 0,
+          "rate": "Free (no duty on raw oilseeds and seeds; avg across this chapter's other headings)",
+          "normalRate": null,
+          "basis": "Egypt's Customs Tariff; USDA FAS reporting on oilseed import duties"
+        },
+        "1205": {
+          "exportsUsd": 0,
+          "rate": "Free (no duty on raw oilseeds and seeds; avg across this chapter's other headings)",
+          "normalRate": null,
+          "basis": "Egypt's Customs Tariff; USDA FAS reporting on oilseed import duties"
+        },
+        "1206": {
+          "exportsUsd": 0,
+          "rate": "Free (no duty on raw oilseeds and seeds; avg across this chapter's other headings)",
+          "normalRate": null,
+          "basis": "Egypt's Customs Tariff; USDA FAS reporting on oilseed import duties"
+        },
+        "1207": {
+          "exportsUsd": 497061,
+          "rate": "Free (no duty on raw oilseeds and seeds; avg across this chapter's other headings)",
+          "normalRate": null,
+          "basis": "Egypt's Customs Tariff; USDA FAS reporting on oilseed import duties"
+        },
+        "1208": {
+          "exportsUsd": 280748,
+          "rate": "Free (no duty on raw oilseeds and seeds; avg across this chapter's other headings)",
+          "normalRate": null,
+          "basis": "Egypt's Customs Tariff; USDA FAS reporting on oilseed import duties"
+        },
+        "1209": {
+          "exportsUsd": 6398291,
+          "rate": "Free (no duty on raw oilseeds and seeds; avg across this chapter's other headings)",
+          "normalRate": null,
+          "basis": "Egypt's Customs Tariff; USDA FAS reporting on oilseed import duties"
+        },
+        "1210": {
+          "exportsUsd": 0,
+          "rate": "Free (no duty on raw oilseeds and seeds; avg across this chapter's other headings)",
+          "normalRate": null,
+          "basis": "Egypt's Customs Tariff; USDA FAS reporting on oilseed import duties"
+        },
+        "1211": {
+          "exportsUsd": 0,
+          "rate": "Free (no duty on raw oilseeds and seeds; avg across this chapter's other headings)",
+          "normalRate": null,
+          "basis": "Egypt's Customs Tariff; USDA FAS reporting on oilseed import duties"
+        },
+        "1212": {
+          "exportsUsd": 80114,
+          "rate": "Free (no duty on raw oilseeds and seeds; avg across this chapter's other headings)",
+          "normalRate": null,
+          "basis": "Egypt's Customs Tariff; USDA FAS reporting on oilseed import duties"
+        },
+        "1213": {
+          "exportsUsd": 0,
+          "rate": "Free (no duty on raw oilseeds and seeds; avg across this chapter's other headings)",
+          "normalRate": null,
+          "basis": "Egypt's Customs Tariff; USDA FAS reporting on oilseed import duties"
+        },
+        "1214": {
+          "exportsUsd": 0,
+          "rate": "Free (no duty on raw oilseeds and seeds; avg across this chapter's other headings)",
+          "normalRate": null,
+          "basis": "Egypt's Customs Tariff; USDA FAS reporting on oilseed import duties"
+        }
+      },
+      "profile": {
+        "headline": "Egypt is one of the few markets buying more from the U.S. in this chapter: it charges no duty on raw soybeans and depends on imports for most of its animal-feed and crushing needs.",
+        "mainProducts": "Soybeans (1201) · Seeds for sowing (vegetable, flower, grass & forage) (1209)",
+        "tariffNow": "Free (no duty on raw oilseeds)",
+        "regulator": {
+          "name": "General Organization for Export & Import Control (GOEIC)",
+          "url": "https://www.trade.gov/knowledge-product/egypt-import-requirements-documentation",
+          "requirement": "An ACID (Advance Cargo Information Document) before the shipment leaves the U.S., and GOEIC inspection on arrival."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Egypt import requirements",
+          "url": "https://www.trade.gov/knowledge-product/egypt-import-requirements-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 392,
+      "name": "Japan",
+      "rule": "Duty-free under Japan's WTO goods schedule",
+      "usTradeAgreement": null,
+      "exportsUsd": 1624241733,
+      "priorExportsUsd": 1590442049,
+      "sharePct": 7.6,
+      "changePct": 2.1,
+      "status": "unchanged",
+      "cells": {
+        "1201": {
+          "exportsUsd": 1068094595,
+          "rate": "Free (WTO binding)",
+          "normalRate": null,
+          "basis": "Japan's Tariff Schedule (Statistical Code for Import), 2026; Japan's WTO goods schedule (duty-free binding on soybeans and soybean oilcake)"
+        },
+        "1202": {
+          "exportsUsd": 19925319,
+          "rate": "Free–low (avg across this chapter's other headings; most raw oilseeds and seeds for sowing enter duty-free)",
+          "normalRate": null,
+          "basis": "Japan's Tariff Schedule (Statistical Code for Import), 2026"
+        },
+        "1204": {
+          "exportsUsd": 0,
+          "rate": "Free–low (avg across this chapter's other headings; most raw oilseeds and seeds for sowing enter duty-free)",
+          "normalRate": null,
+          "basis": "Japan's Tariff Schedule (Statistical Code for Import), 2026"
+        },
+        "1205": {
+          "exportsUsd": 0,
+          "rate": "Free–low (avg across this chapter's other headings; most raw oilseeds and seeds for sowing enter duty-free)",
+          "normalRate": null,
+          "basis": "Japan's Tariff Schedule (Statistical Code for Import), 2026"
+        },
+        "1206": {
+          "exportsUsd": 9011896,
+          "rate": "Free–low (avg across this chapter's other headings; most raw oilseeds and seeds for sowing enter duty-free)",
+          "normalRate": null,
+          "basis": "Japan's Tariff Schedule (Statistical Code for Import), 2026"
+        },
+        "1207": {
+          "exportsUsd": 20022672,
+          "rate": "Free–low (avg across this chapter's other headings; most raw oilseeds and seeds for sowing enter duty-free)",
+          "normalRate": null,
+          "basis": "Japan's Tariff Schedule (Statistical Code for Import), 2026"
+        },
+        "1208": {
+          "exportsUsd": 76456165,
+          "rate": "Free–low (avg across this chapter's other headings; most raw oilseeds and seeds for sowing enter duty-free)",
+          "normalRate": null,
+          "basis": "Japan's Tariff Schedule (Statistical Code for Import), 2026"
+        },
+        "1209": {
+          "exportsUsd": 39882933,
+          "rate": "Free–low (avg across this chapter's other headings; most raw oilseeds and seeds for sowing enter duty-free)",
+          "normalRate": null,
+          "basis": "Japan's Tariff Schedule (Statistical Code for Import), 2026"
+        },
+        "1210": {
+          "exportsUsd": 11441335,
+          "rate": "Free–low (avg across this chapter's other headings; most raw oilseeds and seeds for sowing enter duty-free)",
+          "normalRate": null,
+          "basis": "Japan's Tariff Schedule (Statistical Code for Import), 2026"
+        },
+        "1211": {
+          "exportsUsd": 2764844,
+          "rate": "Free–low (avg across this chapter's other headings; most raw oilseeds and seeds for sowing enter duty-free)",
+          "normalRate": null,
+          "basis": "Japan's Tariff Schedule (Statistical Code for Import), 2026"
+        },
+        "1212": {
+          "exportsUsd": 366950,
+          "rate": "Free–low (avg across this chapter's other headings; most raw oilseeds and seeds for sowing enter duty-free)",
+          "normalRate": null,
+          "basis": "Japan's Tariff Schedule (Statistical Code for Import), 2026"
+        },
+        "1213": {
+          "exportsUsd": 1520376,
+          "rate": "Free–low (avg across this chapter's other headings; most raw oilseeds and seeds for sowing enter duty-free)",
+          "normalRate": null,
+          "basis": "Japan's Tariff Schedule (Statistical Code for Import), 2026"
+        },
+        "1214": {
+          "exportsUsd": 374754648,
+          "rate": "Free–low (avg across this chapter's other headings; most raw oilseeds and seeds for sowing enter duty-free)",
+          "normalRate": null,
+          "basis": "Japan's Tariff Schedule (Statistical Code for Import), 2026"
+        }
+      },
+      "profile": {
+        "headline": "Japan buys soybeans and hay/forage largely duty-free under its WTO goods schedule — one of the chapter's oldest and most stable foreign markets, with almost no tariff-dispute history.",
+        "mainProducts": "Soybeans (1201) · Hay, alfalfa & forage (1214)",
+        "tariffNow": "Free (WTO binding)",
+        "regulator": {
+          "name": "Ministry of Agriculture, Forestry and Fisheries (MAFF) — plant quarantine",
+          "url": "https://www.maff.go.jp/",
+          "requirement": "A phytosanitary certificate and plant quarantine inspection for seeds; feed- and crush-grade soybeans need no safety approval beyond standard import clearance."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Japan import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/japan-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 360,
+      "name": "Indonesia",
+      "rule": "Reportedly no import duty on raw soybeans (unconfirmed)",
+      "usTradeAgreement": null,
+      "exportsUsd": 1064954461,
+      "priorExportsUsd": 1261001436,
+      "sharePct": 5,
+      "changePct": -15.5,
+      "status": "unchanged",
+      "cells": {
+        "1201": {
+          "exportsUsd": 1058558746,
+          "rate": "Reportedly free (unconfirmed against Indonesia's current tariff book)",
+          "normalRate": null,
+          "basis": "Reported as duty-free by tariff aggregators; not confirmed against Indonesia's current BTKI tariff book (Ministry of Finance)"
+        },
+        "1202": {
+          "exportsUsd": 994105,
+          "rate": "Reportedly free or low (avg across this chapter's other headings; unconfirmed)",
+          "normalRate": null,
+          "basis": "Reported by tariff aggregators; not confirmed against the current BTKI tariff book"
+        },
+        "1204": {
+          "exportsUsd": 0,
+          "rate": "Reportedly free or low (avg across this chapter's other headings; unconfirmed)",
+          "normalRate": null,
+          "basis": "Reported by tariff aggregators; not confirmed against the current BTKI tariff book"
+        },
+        "1205": {
+          "exportsUsd": 0,
+          "rate": "Reportedly free or low (avg across this chapter's other headings; unconfirmed)",
+          "normalRate": null,
+          "basis": "Reported by tariff aggregators; not confirmed against the current BTKI tariff book"
+        },
+        "1206": {
+          "exportsUsd": 0,
+          "rate": "Reportedly free or low (avg across this chapter's other headings; unconfirmed)",
+          "normalRate": null,
+          "basis": "Reported by tariff aggregators; not confirmed against the current BTKI tariff book"
+        },
+        "1207": {
+          "exportsUsd": 30345,
+          "rate": "Reportedly free or low (avg across this chapter's other headings; unconfirmed)",
+          "normalRate": null,
+          "basis": "Reported by tariff aggregators; not confirmed against the current BTKI tariff book"
+        },
+        "1208": {
+          "exportsUsd": 1893345,
+          "rate": "Reportedly free or low (avg across this chapter's other headings; unconfirmed)",
+          "normalRate": null,
+          "basis": "Reported by tariff aggregators; not confirmed against the current BTKI tariff book"
+        },
+        "1209": {
+          "exportsUsd": 0,
+          "rate": "Reportedly free or low (avg across this chapter's other headings; unconfirmed)",
+          "normalRate": null,
+          "basis": "Reported by tariff aggregators; not confirmed against the current BTKI tariff book"
+        },
+        "1210": {
+          "exportsUsd": 80309,
+          "rate": "Reportedly free or low (avg across this chapter's other headings; unconfirmed)",
+          "normalRate": null,
+          "basis": "Reported by tariff aggregators; not confirmed against the current BTKI tariff book"
+        },
+        "1211": {
+          "exportsUsd": 0,
+          "rate": "Reportedly free or low (avg across this chapter's other headings; unconfirmed)",
+          "normalRate": null,
+          "basis": "Reported by tariff aggregators; not confirmed against the current BTKI tariff book"
+        },
+        "1212": {
+          "exportsUsd": 10560,
+          "rate": "Reportedly free or low (avg across this chapter's other headings; unconfirmed)",
+          "normalRate": null,
+          "basis": "Reported by tariff aggregators; not confirmed against the current BTKI tariff book"
+        },
+        "1213": {
+          "exportsUsd": 0,
+          "rate": "Reportedly free or low (avg across this chapter's other headings; unconfirmed)",
+          "normalRate": null,
+          "basis": "Reported by tariff aggregators; not confirmed against the current BTKI tariff book"
+        },
+        "1214": {
+          "exportsUsd": 3387051,
+          "rate": "Reportedly free or low (avg across this chapter's other headings; unconfirmed)",
+          "normalRate": null,
+          "basis": "Reported by tariff aggregators; not confirmed against the current BTKI tariff book"
+        }
+      },
+      "profile": {
+        "headline": "Indonesia depends on imports for most of its soybean supply and has historically kept the duty on raw soybeans at zero, though new 2026 restrictions target soybean byproducts rather than whole beans.",
+        "mainProducts": "Soybeans (1201) · Hay, alfalfa & forage (1214)",
+        "tariffNow": "Reportedly free (unconfirmed against Indonesia's current tariff book)",
+        "regulator": {
+          "name": "Ministry of Trade (import licence) and Barantin (quarantine)",
+          "url": "https://www.kemendag.go.id/",
+          "requirement": "An importer identification number (API) and a quarantine certificate from Barantin, Indonesia's quarantine agency, for each shipment."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Indonesia import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/indonesia-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 124,
+      "name": "Canada",
+      "rule": "USMCA — free on qualifying U.S. goods",
+      "usTradeAgreement": "USMCA (CUSMA in Canada)",
+      "exportsUsd": 842832253,
+      "priorExportsUsd": 898200463,
+      "sharePct": 3.9,
+      "changePct": -6.2,
+      "status": "unchanged",
+      "cells": {
+        "1201": {
+          "exportsUsd": 75178595,
+          "rate": "Free (USMCA)",
+          "normalRate": "15–20% (non-USMCA MFN rate; USMCA eliminates it for qualifying U.S. goods)",
+          "basis": "USMCA (CUSMA) Chapter 2 tariff elimination schedule; Canada's Customs Tariff, 2026"
+        },
+        "1202": {
+          "exportsUsd": 163383671,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA (CUSMA) Chapter 2 tariff elimination schedule"
+        },
+        "1204": {
+          "exportsUsd": 6666212,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA (CUSMA) Chapter 2 tariff elimination schedule"
+        },
+        "1205": {
+          "exportsUsd": 130504157,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA (CUSMA) Chapter 2 tariff elimination schedule"
+        },
+        "1206": {
+          "exportsUsd": 19544660,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA (CUSMA) Chapter 2 tariff elimination schedule"
+        },
+        "1207": {
+          "exportsUsd": 36913733,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA (CUSMA) Chapter 2 tariff elimination schedule"
+        },
+        "1208": {
+          "exportsUsd": 130959019,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA (CUSMA) Chapter 2 tariff elimination schedule"
+        },
+        "1209": {
+          "exportsUsd": 173920018,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA (CUSMA) Chapter 2 tariff elimination schedule"
+        },
+        "1210": {
+          "exportsUsd": 35893170,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA (CUSMA) Chapter 2 tariff elimination schedule"
+        },
+        "1211": {
+          "exportsUsd": 37260584,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA (CUSMA) Chapter 2 tariff elimination schedule"
+        },
+        "1212": {
+          "exportsUsd": 4745052,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA (CUSMA) Chapter 2 tariff elimination schedule"
+        },
+        "1213": {
+          "exportsUsd": 6188524,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA (CUSMA) Chapter 2 tariff elimination schedule"
+        },
+        "1214": {
+          "exportsUsd": 21674858,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA (CUSMA) Chapter 2 tariff elimination schedule"
+        }
+      },
+      "profile": {
+        "headline": "Canada is a smaller, steady buyer concentrated in seeds for sowing and oilseed flours rather than soybeans — it grows most of its own soybeans.",
+        "mainProducts": "Seeds for sowing (vegetable, flower, grass & forage) (1209) · Peanuts (groundnuts), raw (1202)",
+        "tariffNow": "Free (USMCA)",
+        "regulator": {
+          "name": "Canadian Food Inspection Agency (CFIA)",
+          "url": "https://inspection.canada.ca/",
+          "requirement": "A phytosanitary certificate for seeds for sowing; feed- and crush-grade soybeans need no special CFIA approval."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Canada import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/canada-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 586,
+      "name": "Pakistan",
+      "rule": "Reportedly near-zero import duty for crushing-grade soybeans (unconfirmed)",
+      "usTradeAgreement": null,
+      "exportsUsd": 727512177,
+      "priorExportsUsd": 6794453,
+      "sharePct": 3.4,
+      "changePct": 10607.4,
+      "status": "unchanged",
+      "cells": {
+        "1201": {
+          "exportsUsd": 721241986,
+          "rate": "Reportedly near 0% (unconfirmed against Pakistan's current tariff schedule)",
+          "normalRate": null,
+          "basis": "Not confirmed against Pakistan's current Customs Tariff (Fifth Schedule, FY2026-27); reported near-zero for crushing-grade soybeans by trade data aggregators"
+        },
+        "1202": {
+          "exportsUsd": 0,
+          "rate": "Reportedly near 0% (avg across this chapter's other headings; unconfirmed)",
+          "normalRate": null,
+          "basis": "Not confirmed against Pakistan's current Customs Tariff (Fifth Schedule, FY2026-27)"
+        },
+        "1204": {
+          "exportsUsd": 4540,
+          "rate": "Reportedly near 0% (avg across this chapter's other headings; unconfirmed)",
+          "normalRate": null,
+          "basis": "Not confirmed against Pakistan's current Customs Tariff (Fifth Schedule, FY2026-27)"
+        },
+        "1205": {
+          "exportsUsd": 0,
+          "rate": "Reportedly near 0% (avg across this chapter's other headings; unconfirmed)",
+          "normalRate": null,
+          "basis": "Not confirmed against Pakistan's current Customs Tariff (Fifth Schedule, FY2026-27)"
+        },
+        "1206": {
+          "exportsUsd": 0,
+          "rate": "Reportedly near 0% (avg across this chapter's other headings; unconfirmed)",
+          "normalRate": null,
+          "basis": "Not confirmed against Pakistan's current Customs Tariff (Fifth Schedule, FY2026-27)"
+        },
+        "1207": {
+          "exportsUsd": 40815,
+          "rate": "Reportedly near 0% (avg across this chapter's other headings; unconfirmed)",
+          "normalRate": null,
+          "basis": "Not confirmed against Pakistan's current Customs Tariff (Fifth Schedule, FY2026-27)"
+        },
+        "1208": {
+          "exportsUsd": 0,
+          "rate": "Reportedly near 0% (avg across this chapter's other headings; unconfirmed)",
+          "normalRate": null,
+          "basis": "Not confirmed against Pakistan's current Customs Tariff (Fifth Schedule, FY2026-27)"
+        },
+        "1209": {
+          "exportsUsd": 6173937,
+          "rate": "Reportedly near 0% (avg across this chapter's other headings; unconfirmed)",
+          "normalRate": null,
+          "basis": "Not confirmed against Pakistan's current Customs Tariff (Fifth Schedule, FY2026-27)"
+        },
+        "1210": {
+          "exportsUsd": 0,
+          "rate": "Reportedly near 0% (avg across this chapter's other headings; unconfirmed)",
+          "normalRate": null,
+          "basis": "Not confirmed against Pakistan's current Customs Tariff (Fifth Schedule, FY2026-27)"
+        },
+        "1211": {
+          "exportsUsd": 50899,
+          "rate": "Reportedly near 0% (avg across this chapter's other headings; unconfirmed)",
+          "normalRate": null,
+          "basis": "Not confirmed against Pakistan's current Customs Tariff (Fifth Schedule, FY2026-27)"
+        },
+        "1212": {
+          "exportsUsd": 0,
+          "rate": "Reportedly near 0% (avg across this chapter's other headings; unconfirmed)",
+          "normalRate": null,
+          "basis": "Not confirmed against Pakistan's current Customs Tariff (Fifth Schedule, FY2026-27)"
+        },
+        "1213": {
+          "exportsUsd": 0,
+          "rate": "Reportedly near 0% (avg across this chapter's other headings; unconfirmed)",
+          "normalRate": null,
+          "basis": "Not confirmed against Pakistan's current Customs Tariff (Fifth Schedule, FY2026-27)"
+        },
+        "1214": {
+          "exportsUsd": 0,
+          "rate": "Reportedly near 0% (avg across this chapter's other headings; unconfirmed)",
+          "normalRate": null,
+          "basis": "Not confirmed against Pakistan's current Customs Tariff (Fifth Schedule, FY2026-27)"
+        }
+      },
+      "profile": {
+        "headline": "Pakistan's purchases surged from a very small base in 2025 as its edible-oil crushing industry bought far more U.S. soybeans than the year before.",
+        "mainProducts": "Soybeans (1201) · Seeds for sowing (vegetable, flower, grass & forage) (1209)",
+        "tariffNow": "Reportedly near 0% (unconfirmed against Pakistan's current tariff schedule)",
+        "regulator": {
+          "name": "Department of Plant Protection (DPP)",
+          "url": "https://plantprotection.gov.pk/",
+          "requirement": "A phytosanitary import permit for seeds and grains, issued before the shipment leaves the U.S."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Pakistan market overview",
+          "url": "https://www.trade.gov/country-commercial-guides/Pakistan-market-overview"
+        }
+      }
+    }
+  ],
+  "biggestLanes": [
+    {
+      "market": "China",
+      "heading": "1201",
+      "exportsUsd": 3078630378,
+      "rate": "3% MFN + 10% (2025 reciprocal tariff); 25% legacy tariff waived for soybeans through Dec. 2026"
+    },
+    {
+      "market": "Mexico",
+      "heading": "1201",
+      "exportsUsd": 2341101363,
+      "rate": "Free (USMCA)"
+    },
+    {
+      "market": "European Union",
+      "heading": "1201",
+      "exportsUsd": 2158729213,
+      "rate": "Free (EU tariff binding on soybeans)"
+    },
+    {
+      "market": "Egypt",
+      "heading": "1201",
+      "exportsUsd": 1697613686,
+      "rate": "Free (no duty on raw oilseeds)"
+    },
+    {
+      "market": "Japan",
+      "heading": "1201",
+      "exportsUsd": 1068094595,
+      "rate": "Free (WTO binding)"
+    },
+    {
+      "market": "Indonesia",
+      "heading": "1201",
+      "exportsUsd": 1058558746,
+      "rate": "Reportedly free (unconfirmed against Indonesia's current tariff book)"
+    },
+    {
+      "market": "Pakistan",
+      "heading": "1201",
+      "exportsUsd": 721241986,
+      "rate": "Reportedly near 0% (unconfirmed against Pakistan's current tariff schedule)"
+    },
+    {
+      "market": "Japan",
+      "heading": "1214",
+      "exportsUsd": 374754648,
+      "rate": "Free–low (avg across this chapter's other headings; most raw oilseeds and seeds for sowing enter duty-free)"
+    }
+  ],
+  "assumptions": [
+    "Rates come from each market's own 2026 tariff schedule (EU Combined Nomenclature, Japan's Statistical Code for Import, Mexico's TIGIE, Canada's Customs Tariff, China's Customs Tariff) or, for Egypt, Indonesia and Pakistan, the best available secondary reporting where the official schedule could not be confirmed — flagged above as unconfirmed.",
+    "One subheading (1201.90, non-seed soybeans) stands in for each market's whole-chapter rate; a few markets charge a different rate on seed soybeans (1201.10) or on the chapter's smaller headings, which this page averages rather than lists individually.",
+    "Trade agreement rates apply only to goods that meet the agreement's rule of origin; China's 10% reciprocal tariff and its separate, soybean-specific exclusion process are explained on Tariff updates.",
+    "National 8–10-digit tariff lines can set a different rate than the 6-digit HS subheading shown here — check the market's own schedule before relying on this page for a transaction."
+  ],
+  "sources": [
+    {
+      "id": "comtrade-exports",
+      "publisher": "UN Comtrade",
+      "citation": "UN Comtrade, U.S. exports 2020–2025",
+      "document": "UN Comtrade public API (preview), United States exports, annual, HS",
+      "title": "United States exports, HS chapter 12, by partner, heading and subheading",
+      "signed": null,
+      "published": "2026-10-19",
+      "url": "https://comtradeplus.un.org/"
+    }
+  ],
+  "coverageNote": "The 8 markets shown take 71% of 2025 U.S. Chapter 12 exports. A customs union (the EU) is one market: its members share one tariff."
+}

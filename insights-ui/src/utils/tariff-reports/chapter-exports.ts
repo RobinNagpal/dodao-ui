@@ -10,6 +10,21 @@ import pharmaMarkets from '@/tariff-data/chapters/exports/30-pharmaceutical-prod
 import pharmaOverview from '@/tariff-data/chapters/exports/30-pharmaceutical-products/overview.json';
 import pharmaRules from '@/tariff-data/chapters/exports/30-pharmaceutical-products/rules.json';
 import pharmaUpdates from '@/tariff-data/chapters/exports/30-pharmaceutical-products/tariff-updates.json';
+import oilseedsFaq from '@/tariff-data/chapters/exports/12-oil-seeds-and-grains/faq.json';
+import oilseedsMarkets from '@/tariff-data/chapters/exports/12-oil-seeds-and-grains/markets.json';
+import oilseedsOverview from '@/tariff-data/chapters/exports/12-oil-seeds-and-grains/overview.json';
+import oilseedsRules from '@/tariff-data/chapters/exports/12-oil-seeds-and-grains/rules.json';
+import oilseedsUpdates from '@/tariff-data/chapters/exports/12-oil-seeds-and-grains/tariff-updates.json';
+import electricalFaq from '@/tariff-data/chapters/exports/85-electrical-machinery-and-recorders/faq.json';
+import electricalMarkets from '@/tariff-data/chapters/exports/85-electrical-machinery-and-recorders/markets.json';
+import electricalOverview from '@/tariff-data/chapters/exports/85-electrical-machinery-and-recorders/overview.json';
+import electricalRules from '@/tariff-data/chapters/exports/85-electrical-machinery-and-recorders/rules.json';
+import electricalUpdates from '@/tariff-data/chapters/exports/85-electrical-machinery-and-recorders/tariff-updates.json';
+import aircraftFaq from '@/tariff-data/chapters/exports/88-aircraft-and-spacecraft/faq.json';
+import aircraftMarkets from '@/tariff-data/chapters/exports/88-aircraft-and-spacecraft/markets.json';
+import aircraftOverview from '@/tariff-data/chapters/exports/88-aircraft-and-spacecraft/overview.json';
+import aircraftRules from '@/tariff-data/chapters/exports/88-aircraft-and-spacecraft/rules.json';
+import aircraftUpdates from '@/tariff-data/chapters/exports/88-aircraft-and-spacecraft/tariff-updates.json';
 import type {
   TariffChapterExports,
   TariffExportFaqContent,
@@ -44,6 +59,27 @@ const EXPORTS_BY_SLUG: Record<string, TariffChapterExports> = {
     markets: pharmaMarkets as TariffExportMarketsContent,
     rules: pharmaRules as TariffExportRulesContent,
     faq: pharmaFaq as TariffExportFaqContent,
+  },
+  '12-oil-seeds-and-grains': {
+    overview: oilseedsOverview as TariffExportOverviewContent,
+    tariffUpdates: oilseedsUpdates as TariffExportUpdatesContent,
+    markets: oilseedsMarkets as TariffExportMarketsContent,
+    rules: oilseedsRules as TariffExportRulesContent,
+    faq: oilseedsFaq as TariffExportFaqContent,
+  },
+  '85-electrical-machinery-and-recorders': {
+    overview: electricalOverview as TariffExportOverviewContent,
+    tariffUpdates: electricalUpdates as TariffExportUpdatesContent,
+    markets: electricalMarkets as TariffExportMarketsContent,
+    rules: electricalRules as TariffExportRulesContent,
+    faq: electricalFaq as TariffExportFaqContent,
+  },
+  '88-aircraft-and-spacecraft': {
+    overview: aircraftOverview as TariffExportOverviewContent,
+    tariffUpdates: aircraftUpdates as TariffExportUpdatesContent,
+    markets: aircraftMarkets as TariffExportMarketsContent,
+    rules: aircraftRules as TariffExportRulesContent,
+    faq: aircraftFaq as TariffExportFaqContent,
   },
 };
 

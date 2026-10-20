@@ -1,0 +1,307 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 12,
+    "padded": "12",
+    "slug": "12-oil-seeds-and-grains",
+    "title": "Oil Seeds and Oleaginous Fruits; Miscellaneous Grains, Seeds and Fruit; Industrial or Medicinal Plants; Straw and Fodder"
+  },
+  "page": {
+    "slug": "exports/rules",
+    "path": "/industry-tariff-report/exports/chapters/12-oil-seeds-and-grains/rules",
+    "h1": "HTS Chapter 12: Oil Seeds and Oleaginous Fruits; Miscellaneous Grains, Seeds and Fruit; Industrial or Medicinal Plants; Straw and Fodder — U.S. Export Rules & Ways to Pay Less Abroad",
+    "seo": {
+      "title": "Chapter 12 Export Rules: Schedule B, FGIS Grain Inspection & Phytosanitary Certificates",
+      "shortDescription": "What U.S. exporters of soybeans, oilseeds and grains must do before shipping, and how to pay less abroad.",
+      "keywords": [
+        "soybean export requirements",
+        "FGIS grain inspection",
+        "phytosanitary certificate soybean",
+        "schedule b soybeans",
+        "chapter 12 export rules"
+      ]
+    },
+    "lastCheckedAt": "2026-10-19"
+  },
+  "intro": "For most of this chapter the U.S. side is routine: find the Schedule B number, screen the buyer and file the export in AES. Bulk soybeans and other grains add one more near-universal step — official USDA inspection and weighing before export — and seeds for sowing or plants headed to a country with strict import rules may need a phytosanitary certificate. None of this chapter's goods need a Commerce export licence in the ordinary case.",
+  "regulationsAsOf": "2026-10-08",
+  "steps": [
+    {
+      "id": "schedule-b",
+      "title": "Find the Schedule B number",
+      "whatToDo": "Look up the 10-digit Schedule B number for each product with the Census Bureau's free search tool. Its first six digits are the same as the HS code every country uses, so it also tells you which line of the buyer's tariff applies. The U.S. import (HTS) number and the Schedule B number match only to six digits.",
+      "when": "Every export. It goes on the export filing (the last step) and on the commercial invoice.",
+      "citations": [
+        {
+          "label": "Census: Schedule B",
+          "url": "https://www.census.gov/foreign-trade/schedules/b/index.html"
+        },
+        {
+          "label": "Schedule B search tool",
+          "url": "https://uscensus.prod.3ceonline.com/"
+        },
+        {
+          "label": "Schedule B introduction (2026)",
+          "url": "https://www.census.gov/foreign-trade/schedules/b/2026/introduction.pdf"
+        }
+      ],
+      "chapterNote": "Most of this chapter's trade is one line: Schedule B 1201.90.5000 for soybeans other than seed. Seeds for sowing (1209), hay and forage (1214) and the other headings each have their own six-digit codes matching the HS headings on the Overview."
+    },
+    {
+      "id": "screen",
+      "title": "Screen the buyer and everyone in the deal",
+      "whatToDo": "Check the buyer, the end user and any agent against the Consolidated Screening List. It combines the Commerce lists (Entity List, Denied Persons, Unverified, Military End-User), the State Department lists and the Treasury (OFAC) sanctions lists of parties you may not deal with, or may deal with only under a licence.",
+      "when": "Every export, before you accept the order.",
+      "citations": [
+        {
+          "label": "trade.gov: Consolidated Screening List",
+          "url": "https://www.trade.gov/consolidated-screening-list"
+        },
+        {
+          "label": "CSL search",
+          "url": "https://www.trade.gov/data-visualization/csl-search"
+        }
+      ],
+      "chapterNote": null
+    },
+    {
+      "id": "licence",
+      "title": "Check whether you need an export licence",
+      "whatToDo": "Find the product's Export Control Classification Number (ECCN) on the Commerce Control List. Most goods are not listed and are EAR99. For a listed ECCN, look up the destination on the Commerce Country Chart under each reason for control: an X means a licence is needed unless a licence exception applies. Even EAR99 goods need a licence for embargoed countries and for restricted end users or end uses.",
+      "when": "Every export of goods subject to the Export Administration Regulations (EAR).",
+      "citations": [
+        {
+          "label": "15 CFR 732.3",
+          "url": "https://www.ecfr.gov/current/title-15/section-732.3"
+        },
+        {
+          "label": "15 CFR 738.4",
+          "url": "https://www.ecfr.gov/current/title-15/section-738.4"
+        },
+        {
+          "label": "Commerce Control List (15 CFR 774 Supp. 1)",
+          "url": "https://www.ecfr.gov/current/title-15/part-774/appendix-Supplement%20No.%201%20to%20Part%20774"
+        },
+        {
+          "label": "BIS: classify your item",
+          "url": "https://www.bis.gov/licensing/classify-your-item"
+        }
+      ],
+      "chapterNote": "Almost all of this chapter is EAR99 — no Export Control Classification Number applies to ordinary soybeans, other oilseeds, grains or hay. A licence can still be required for the destination (see \"Check sanctions\") or an unusual end use."
+    },
+    {
+      "id": "sanctions",
+      "title": "Check sanctions on the destination",
+      "whatToDo": "Check the destination against OFAC's sanctions programs and the EAR's embargo rules. Cuba, Iran and North Korea have country-wide rules, and Syria still needs a Commerce licence for most items; Russia and Belarus need a licence for any item with an ECCN. Several programs have special permissions for food and medicine.",
+      "when": "Exports to a sanctioned or embargoed country, or to a listed person anywhere.",
+      "citations": [
+        {
+          "label": "OFAC: sanctions programs",
+          "url": "https://ofac.treasury.gov/sanctions-programs-and-country-information"
+        },
+        {
+          "label": "15 CFR Part 746 (embargoes)",
+          "url": "https://www.ecfr.gov/current/title-15/part-746"
+        }
+      ],
+      "chapterNote": null
+    },
+    {
+      "id": "eei",
+      "title": "File the export in AES (Electronic Export Information)",
+      "whatToDo": "You (the U.S. principal party in interest) or your freight forwarder file the EEI in the Automated Export System — free through ACE AESDirect — and put the confirmation number (ITN) on the shipping documents. File at least 24 hours before an ocean shipment is loaded, 2 hours before a flight departs, or 1 hour before a truck reaches the border. Not filing can cost a civil penalty of up to $17,412 per violation.",
+      "when": "When one Schedule B number in one shipment to one buyer is worth over $2,500, and at any value when the shipment needs a Commerce licence or a DEA permit or declaration, or ships an EAR item to Cuba, Iran, North Korea or Syria, or a Commerce Control List item to China, Russia or Venezuela.",
+      "citations": [
+        {
+          "label": "15 CFR 30.2",
+          "url": "https://www.ecfr.gov/current/title-15/section-30.2"
+        },
+        {
+          "label": "15 CFR 30.4 (when to file)",
+          "url": "https://www.ecfr.gov/current/title-15/section-30.4"
+        },
+        {
+          "label": "15 CFR 30.37 ($2,500 exemption)",
+          "url": "https://www.ecfr.gov/current/title-15/section-30.37"
+        },
+        {
+          "label": "15 CFR 758.1",
+          "url": "https://www.ecfr.gov/current/title-15/section-758.1"
+        },
+        {
+          "label": "Census: AES",
+          "url": "https://www.census.gov/foreign-trade/aes/index.html"
+        }
+      ],
+      "chapterNote": "Bulk shipments of soybeans and other grains routinely exceed the $2,500-per-Schedule-B-number threshold, so filing in AES is the norm rather than the exception for this chapter."
+    }
+  ],
+  "rules": [
+    {
+      "id": "fgis-inspection",
+      "agency": "USDA AMS (Federal Grain Inspection Service)",
+      "title": "Official inspection and weighing before export: the U.S. Grain Standards Act requires FGIS (or a delegated state agency) to officially inspect and weigh export shipments of soybeans and the chapter's other covered grains and oilseeds at the export elevator, and bars deceptive grading.",
+      "citations": [
+        {
+          "label": "USDA AMS: Federal Grain Inspection Service",
+          "url": "https://www.ams.usda.gov/about-ams/programs-offices/federal-grain-inspection-service"
+        },
+        {
+          "label": "U.S. Grain Standards Act, 7 U.S.C. 71 et seq.",
+          "url": "https://www.ecfr.gov/current/title-7/subtitle-B/chapter-VIII/part-800"
+        },
+        {
+          "label": "7 CFR Part 800 (official inspection and weighing)",
+          "url": "https://www.ecfr.gov/current/title-7/part-800"
+        }
+      ]
+    },
+    {
+      "id": "aphis-phyto",
+      "agency": "USDA APHIS",
+      "title": "Phytosanitary certificate: not required by the U.S. for most grain and oilseed exports, but many buyers' plant-quarantine authorities require one — especially for seeds for sowing (1209) and live or dried medicinal/herbal plants (1211). An authorized certification official inspects the shipment and issues the certificate through APHIS's PCIT system.",
+      "citations": [
+        {
+          "label": "APHIS: Plant and Plant Product Export Certificates",
+          "url": "https://www.aphis.usda.gov/plant-export/certification"
+        },
+        {
+          "label": "PCIT (Phytosanitary Certificate Issuance & Tracking System)",
+          "url": "https://pcit.aphis.usda.gov/"
+        }
+      ]
+    }
+  ],
+  "groups": [
+    {
+      "heading": "1201",
+      "label": "Soybeans",
+      "ruleIds": ["fgis-inspection"],
+      "note": "Routine: Schedule B, buyer screening, FGIS inspection and weighing, and AES filing cover almost every shipment."
+    },
+    {
+      "heading": "1202",
+      "label": "Peanuts (groundnuts), raw",
+      "ruleIds": ["fgis-inspection"],
+      "note": "Same as soybeans — FGIS inspects and weighs peanuts for export, and no licence is needed in the ordinary case."
+    },
+    {
+      "heading": "1204",
+      "label": "Flaxseed (linseed)",
+      "ruleIds": [],
+      "note": null
+    },
+    {
+      "heading": "1205",
+      "label": "Rapeseed & canola",
+      "ruleIds": [],
+      "note": null
+    },
+    {
+      "heading": "1206",
+      "label": "Sunflower seeds",
+      "ruleIds": [],
+      "note": null
+    },
+    {
+      "heading": "1207",
+      "label": "Sesame, mustard, hemp, cotton, melon, poppy & other oil seeds",
+      "ruleIds": [],
+      "note": null
+    },
+    {
+      "heading": "1208",
+      "label": "Flours & meals of oil seeds",
+      "ruleIds": [],
+      "note": "Flours and meals (processed, not whole seed) do not go through FGIS's whole-grain inspection; otherwise routine."
+    },
+    {
+      "heading": "1209",
+      "label": "Seeds for sowing (vegetable, flower, grass & forage)",
+      "ruleIds": ["aphis-phyto"],
+      "note": "Seeds for sowing most often need the buyer-side phytosanitary certificate (see \"Agency rules by product group\" above) because the destination's plant-quarantine authority, not the U.S., usually requires one for propagative material."
+    },
+    {
+      "heading": "1210",
+      "label": "Hop cones, hop pellets & lupulin",
+      "ruleIds": [],
+      "note": null
+    },
+    {
+      "heading": "1211",
+      "label": "Medicinal & herbal plants (ginseng, psyllium, mint)",
+      "ruleIds": ["aphis-phyto"],
+      "note": "Live or dried medicinal and herbal plants are the other group most likely to need a phytosanitary certificate for the buyer's plant-quarantine clearance."
+    },
+    {
+      "heading": "1212",
+      "label": "Seaweed, carob, sugar beet & cane, fruit kernels",
+      "ruleIds": [],
+      "note": null
+    },
+    {
+      "heading": "1213",
+      "label": "Cereal straw & husks",
+      "ruleIds": [],
+      "note": null
+    },
+    {
+      "heading": "1214",
+      "label": "Hay, alfalfa & forage",
+      "ruleIds": [],
+      "note": "FGIS does not officially grade hay and forage the way it does grain; otherwise routine."
+    }
+  ],
+  "savings": [
+    {
+      "id": "fta-rate",
+      "title": "Claim the free-trade-agreement rate abroad",
+      "saves": "The partner country's tariff on qualifying U.S. goods — often 0% instead of its normal rate.",
+      "appliesTo": "Goods that meet the agreement's rules of origin, shipped to one of the 20 U.S. free-trade-agreement partners: Australia, Bahrain, Canada, Chile, Colombia, Costa Rica, Dominican Republic, El Salvador, Guatemala, Honduras, Israel, Jordan, Korea, Mexico, Morocco, Nicaragua, Oman, Panama, Peru and Singapore.",
+      "document": "A certification of origin from the exporter, producer or importer, which the buyer uses to claim the rate at import. For USMCA there is no set form, but it must contain the nine data elements in Annex 5-A.",
+      "caveat": "Whoever certifies must be able to back it up: for USMCA, a U.S. exporter or producer keeps origin records for at least 5 years, gives CBP a copy on request and tells buyers promptly about errors. Check the product's rule of origin and the partner's rate in the FTA Tariff Tool first.",
+      "citations": [
+        {
+          "label": "trade.gov: FTA Tariff Tool",
+          "url": "https://www.trade.gov/fta-tariff-tool-home"
+        },
+        {
+          "label": "trade.gov: U.S. free trade agreements",
+          "url": "https://www.trade.gov/free-trade-agreements"
+        },
+        {
+          "label": "19 CFR Part 182 (USMCA; 182.21 for exporters)",
+          "url": "https://www.ecfr.gov/current/title-19/part-182"
+        },
+        {
+          "label": "USMCA Chapter 5: origin procedures",
+          "url": "https://ustr.gov/sites/default/files/files/agreements/FTA/USMCA/Text/05_Origin_Procedures.pdf"
+        }
+      ]
+    },
+    {
+      "id": "drawback",
+      "title": "Get U.S. duty back on imported inputs (drawback)",
+      "saves": "99% of the U.S. import duties, taxes and fees paid on goods or materials that are exported, or used to make the goods you export.",
+      "appliesTo": "Imported goods exported unused, and imported materials used to make an exported product (or, under the substitution rules, goods of the same kind).",
+      "document": "An electronic drawback claim in ACE, filed within 5 years of the import date, with the import and export records that tie the two together.",
+      "caveat": "Antidumping and countervailing duties are not refunded, and CBP takes no paper claims. The refund is on U.S. duties only; it does not lower the buyer's tariff.",
+      "citations": [
+        {
+          "label": "19 CFR Part 190",
+          "url": "https://www.ecfr.gov/current/title-19/part-190"
+        },
+        {
+          "label": "CBP: drawback overview",
+          "url": "https://www.cbp.gov/trade/programs-administration/entry-summary/drawback-overview"
+        },
+        {
+          "label": "19 U.S.C. 1313",
+          "url": "https://www.govinfo.gov/content/pkg/USCODE-2024-title19/html/USCODE-2024-title19-chap4-subtitleII-partI-sec1313.htm"
+        }
+      ]
+    }
+  ],
+  "disclaimer": "This page summarizes U.S. export rules to help you find the right regulation; it is not legal advice. Rules change and depend on the exact product, buyer and destination — check the cited regulation and the agency before you ship."
+}

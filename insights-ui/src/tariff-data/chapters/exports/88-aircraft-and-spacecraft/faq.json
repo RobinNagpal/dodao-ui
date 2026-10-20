@@ -1,0 +1,100 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 88,
+    "padded": "88",
+    "slug": "88-aircraft-and-spacecraft",
+    "title": "Aircraft, Spacecraft, and Parts Thereof"
+  },
+  "page": {
+    "slug": "exports/faq",
+    "path": "/industry-tariff-report/exports/chapters/88-aircraft-and-spacecraft/faq",
+    "h1": "HTS Chapter 88: Aircraft, Spacecraft, and Parts Thereof — U.S. Export FAQ",
+    "seo": {
+      "title": "U.S. Aircraft Export FAQ: Tariffs, Licences & Schedule B (HTS Ch. 88) | KoalaGains",
+      "shortDescription": "Common questions about exporting U.S. aircraft, spacecraft and parts: foreign tariffs, the Boeing/Airbus dispute, export licences and the FAA export certificate.",
+      "keywords": ["aircraft export FAQ", "schedule b aircraft parts", "export license aircraft parts"]
+    },
+    "lastCheckedAt": "2026-10-19"
+  },
+  "intro": "Questions people search about exporting U.S. aircraft, spacecraft and parts, answered from the other export pages of this report.",
+  "keyTakeaways": [
+    "Seven of the nine largest buyers of U.S. aircraft and parts charge 0%; China is the one large market charging more than it did in January 2025.",
+    "The EU's and the U.S.'s retaliatory tariffs from the Boeing/Airbus dispute have stayed suspended since 2021, most recently extended in July 2026.",
+    "Most aircraft parts need no export licence, but a finished aircraft needs an FAA export airworthiness approval, and some parts fall under ITAR instead of Commerce rules."
+  ],
+  "questionSource": "Google search suggestions (suggestqueries.google.com) for queries such as \"us aircraft exports\", \"does china have tariffs on us aircraft\", \"boeing airbus tariff dispute\", \"schedule b code for aircraft parts\", \"export license for aircraft parts\" and \"faa export certificate of airworthiness\", collected on October 19, 2026.",
+  "faqs": [
+    {
+      "id": "china-tariff",
+      "question": "Does China have a tariff on U.S. aircraft?",
+      "searchedAs": ["does china have tariffs on us aircraft", "china tariff on boeing", "china tariff on us goods aircraft"],
+      "answer": "Yes. China adds an extra 10% to all U.S. goods on top of its own low ordinary rate, and that extra tariff reaches finished aircraft and most aircraft parts. A further 24 points are suspended until January 10, 2027; if the suspension lapses, the extra tariff could rise back toward the 34% it started at in April 2025. Some imported aviation-maintenance parts may still qualify for a separate Chinese duty exemption, but China has not confirmed that this covers the new tariff specifically.",
+      "link": "exports/tariff-updates"
+    },
+    {
+      "id": "eu-tariff",
+      "question": "Does the EU charge a tariff on U.S. aircraft or parts?",
+      "searchedAs": ["does the eu have tariffs on us aircraft", "eu tariff on us aircraft parts", "eu boeing tariff"],
+      "answer": "No. The EU charges 0% on U.S. aircraft and parts under the WTO Agreement on Trade in Civil Aircraft, and it has kept its own Boeing/Airbus-dispute retaliatory tariffs suspended since 2021 — most recently extended by Implementing Regulation (EU) 2026/1549 in July 2026. EASA certification, not the tariff, decides whether a specific aircraft or part can be sold in the EU.",
+      "link": "exports/markets"
+    },
+    {
+      "id": "boeing-airbus-truce",
+      "question": "Is the Boeing-Airbus tariff dispute still suspended?",
+      "searchedAs": ["boeing airbus tariff dispute status", "is the boeing airbus truce still in effect", "us eu aircraft tariff truce 2026"],
+      "answer": "Yes, as of this report. The U.S. and EU suspended their mutual tariffs from the 17-year WTO dispute over Boeing and Airbus subsidies for five years starting July 11, 2021, and the EU extended its side of the suspension again from July 11, 2026. Neither side has reactivated its tariffs, but the EU has said it will keep monitoring the dispute and could reactivate them if circumstances change.",
+      "link": "exports/tariff-updates"
+    },
+    {
+      "id": "top-buyer",
+      "question": "Who buys the most U.S. aircraft and spacecraft?",
+      "searchedAs": ["who buys the most us aircraft", "biggest buyer of us aircraft exports", "us aircraft exports by country"],
+      "answer": "China and France were the two largest buyers in 2025, each close to 10% of the $164.33B total, followed by Germany, the UK and Brazil. France's share is mostly engines and other parts moving through the CFM International (GE/Safran) supply chain that feeds Airbus's own final-assembly lines, not finished aircraft.",
+      "link": "exports"
+    },
+    {
+      "id": "us-aircraft-exports-total",
+      "question": "How much does the U.S. export in aircraft and spacecraft?",
+      "searchedAs": ["us aircraft exports total", "how much does the us export in aircraft", "us aerospace exports value"],
+      "answer": "$164.33B in 2025, up 22.4% from 2024 — the fastest-growing chapter in this report so far. Official trade statistics redact the value of most individual aircraft and large-engine sales for confidentiality, so the total and the figures by country are reliable, but the published split by specific product (finished aircraft vs. parts) is not.",
+      "link": "exports"
+    },
+    {
+      "id": "schedule-b-aircraft",
+      "question": "What is the Schedule B code for aircraft parts?",
+      "searchedAs": ["schedule b code aircraft parts", "schedule b number for airplane parts", "hs code aircraft parts export"],
+      "answer": "Schedule B codes for this chapter start with 8807 for parts of aircraft, spacecraft or unmanned aircraft, matching the HS heading used worldwide; the exact 10-digit Schedule B number depends on the specific part (e.g., undercarriages, propellers, or \"other\" parts). Look it up with the Census Bureau's Schedule B search tool rather than guessing from the HS heading alone.",
+      "link": "exports/rules"
+    },
+    {
+      "id": "export-license-aircraft-parts",
+      "question": "Do I need an export license for aircraft parts?",
+      "searchedAs": ["do i need an export license for aircraft parts", "export license aircraft components", "eccn aircraft parts"],
+      "answer": "Usually not: most civil aircraft parts are EAR99 or ECCN 9A991 and can ship under a licence exception or no licence at all, as long as the buyer and destination clear screening. Parts built for or used on a military aircraft can instead fall under the State Department's ITAR (USML Category VIII), which needs a DDTC licence regardless of value or destination.",
+      "link": "exports/rules"
+    },
+    {
+      "id": "faa-export-cofa",
+      "question": "Do I need an FAA export certificate of airworthiness to export an aircraft?",
+      "searchedAs": ["faa export certificate of airworthiness", "do i need an export airworthiness certificate", "form 8130-4 export aircraft"],
+      "answer": "Yes, for most finished aircraft: the FAA issues an export certificate of airworthiness (Form 8130-4) or an authorized release certificate (Form 8130-3) under 14 CFR Part 21 Subpart L before a U.S.-registered aircraft or many parts can leave the country, and you must also meet the importing country's own requirements. This is separate from, and in addition to, any Commerce or State Department export licence the item needs.",
+      "link": "exports/rules"
+    },
+    {
+      "id": "drone-export",
+      "question": "Do I need a license to export a drone (unmanned aircraft)?",
+      "searchedAs": ["do i need a license to export a drone", "drone export license usa", "uav export control eccn"],
+      "answer": "It depends on the drone. Most civilian unmanned aircraft fall under ECCN 9A012 on the Commerce Control List, and a 2026 BIS rule eased controls for lower-endurance models, so many ship under a licence exception. A drone with a range of 300 km or more, certain thermal-imaging or navigation equipment, or any military end use needs a Commerce licence — or, if it is a military model, a State Department licence instead.",
+      "link": "exports/rules"
+    },
+    {
+      "id": "military-aircraft-itar",
+      "question": "Are military aircraft exports regulated differently from civil aircraft?",
+      "searchedAs": ["military aircraft export regulations", "itar aircraft export", "usml category viii aircraft"],
+      "answer": "Yes. Military aircraft, military aero-engines and many weapons-related parts are controlled under USML Category VIII and the State Department's ITAR rather than Commerce's EAR, which this report's steps otherwise cover. That means DDTC registration and licensing, not the BIS classification and Schedule B process used for civil goods, and — for larger deals — Congressional notification.",
+      "link": "exports/rules"
+    }
+  ]
+}

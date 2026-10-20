@@ -1,0 +1,548 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 85,
+    "padded": "85",
+    "slug": "85-electrical-machinery-and-recorders",
+    "title": "Electrical Machinery and Equipment and Parts Thereof; Sound Recorders and Reproducers, Television Image and Sound Recorders and Reproducers, and Parts and Accessories of Such Articles"
+  },
+  "page": {
+    "slug": "exports/rules",
+    "path": "/industry-tariff-report/exports/chapters/85-electrical-machinery-and-recorders/rules",
+    "h1": "HTS Chapter 85: Electrical Machinery and Equipment and Parts Thereof; Sound Recorders and Reproducers, Television Image and Sound Recorders and Reproducers, and Parts and Accessories of Such Articles — U.S. Export Rules & Ways to Pay Less Abroad",
+    "seo": {
+      "title": "U.S. Export Rules for Electrical Machinery & Semiconductors (HTS Ch. 85) | KoalaGains",
+      "shortDescription": "What U.S. exporters of electrical machinery, electronics and semiconductors must do before shipping, including BIS export-control licensing for advanced chips.",
+      "keywords": ["export semiconductor license", "BIS advanced computing export controls", "schedule b electronics", "export electrical machinery rules"]
+    },
+    "lastCheckedAt": "2026-10-19"
+  },
+  "intro": "A U.S. exporter of electrical machinery and electronics follows the same five steps every exporter does. For most of this chapter — motors, appliances, cable, switchgear — that is the whole story: the goods are EAR99 and need no export license. For advanced computing chips and the equipment that makes them, it is not: a U.S. export license, not any foreign tariff, decides where the chapter's most valuable goods can go.",
+  "regulationsAsOf": "2026-10-08",
+  "steps": [
+    {
+      "id": "schedule-b",
+      "title": "Find the Schedule B number",
+      "whatToDo": "Look up the 10-digit Schedule B number for each product with the Census Bureau's free search tool. Its first six digits are the same as the HS code every country uses, so it also tells you which line of the buyer's tariff applies. The U.S. import (HTS) number and the Schedule B number match only to six digits.",
+      "when": "Every export. It goes on the export filing (the last step) and on the commercial invoice.",
+      "citations": [
+        {
+          "label": "Census: Schedule B",
+          "url": "https://www.census.gov/foreign-trade/schedules/b/index.html"
+        },
+        {
+          "label": "Schedule B search tool",
+          "url": "https://uscensus.prod.3ceonline.com/"
+        },
+        {
+          "label": "Schedule B introduction (2026)",
+          "url": "https://www.census.gov/foreign-trade/schedules/b/2026/introduction.pdf"
+        }
+      ],
+      "chapterNote": "Most of this chapter's trade runs through a handful of Schedule B numbers: integrated circuits (8542), smartphones and network equipment (8517) and insulated wire and cable (8544) together were more than 55% of 2025 exports."
+    },
+    {
+      "id": "screen",
+      "title": "Screen the buyer and everyone in the deal",
+      "whatToDo": "Check the buyer, the end user and any agent against the Consolidated Screening List. It combines the Commerce lists (Entity List, Denied Persons, Unverified, Military End-User), the State Department lists and the Treasury (OFAC) sanctions lists of parties you may not deal with, or may deal with only under a licence.",
+      "when": "Every export, before you accept the order.",
+      "citations": [
+        {
+          "label": "trade.gov: Consolidated Screening List",
+          "url": "https://www.trade.gov/consolidated-screening-list"
+        },
+        {
+          "label": "CSL search",
+          "url": "https://www.trade.gov/data-visualization/csl-search"
+        }
+      ],
+      "chapterNote": null
+    },
+    {
+      "id": "licence",
+      "title": "Check whether you need an export licence",
+      "whatToDo": "Find the product's Export Control Classification Number (ECCN) on the Commerce Control List. Most goods are not listed and are EAR99. For a listed ECCN, look up the destination on the Commerce Country Chart under each reason for control: an X means a licence is needed unless a licence exception applies. Even EAR99 goods need a licence for embargoed countries and for restricted end users or end uses.",
+      "when": "Every export of goods subject to the Export Administration Regulations (EAR).",
+      "citations": [
+        {
+          "label": "15 CFR 732.3",
+          "url": "https://www.ecfr.gov/current/title-15/section-732.3"
+        },
+        {
+          "label": "15 CFR 738.4",
+          "url": "https://www.ecfr.gov/current/title-15/section-738.4"
+        },
+        {
+          "label": "Commerce Control List (15 CFR 774 Supp. 1)",
+          "url": "https://www.ecfr.gov/current/title-15/part-774/appendix-Supplement%20No.%201%20to%20Part%20774"
+        },
+        {
+          "label": "BIS: classify your item",
+          "url": "https://www.bis.gov/licensing/classify-your-item"
+        }
+      ],
+      "chapterNote": "This is the step that matters most for this chapter. Certain high-performance computing chips and the equipment that makes them carry ECCNs 3A090, 4A090 and 3B090 — created by BIS's October 2022 rule and tightened several times since — and need a licence for China and dozens of other destinations regardless of value. Most consumer electronics, by contrast, are EAR99 and need no licence at all."
+    },
+    {
+      "id": "sanctions",
+      "title": "Check sanctions on the destination",
+      "whatToDo": "Check the destination against OFAC's sanctions programs and the EAR's embargo rules. Cuba, Iran and North Korea have country-wide rules, and Syria still needs a Commerce licence for most items; Russia and Belarus need a licence for any item with an ECCN. Several programs have special permissions for food and medicine.",
+      "when": "Exports to a sanctioned or embargoed country, or to a listed person anywhere.",
+      "citations": [
+        {
+          "label": "OFAC: sanctions programs",
+          "url": "https://ofac.treasury.gov/sanctions-programs-and-country-information"
+        },
+        {
+          "label": "15 CFR Part 746 (embargoes)",
+          "url": "https://www.ecfr.gov/current/title-15/part-746"
+        }
+      ],
+      "chapterNote": null
+    },
+    {
+      "id": "eei",
+      "title": "File the export in AES (Electronic Export Information)",
+      "whatToDo": "You (the U.S. principal party in interest) or your freight forwarder file the EEI in the Automated Export System — free through ACE AESDirect — and put the confirmation number (ITN) on the shipping documents. File at least 24 hours before an ocean shipment is loaded, 2 hours before a flight departs, or 1 hour before a truck reaches the border. Not filing can cost a civil penalty of up to $17,412 per violation.",
+      "when": "When one Schedule B number in one shipment to one buyer is worth over $2,500, and at any value when the shipment needs a Commerce licence or a DEA permit or declaration, or ships an EAR item to Cuba, Iran, North Korea or Syria, or a Commerce Control List item to China, Russia or Venezuela.",
+      "citations": [
+        {
+          "label": "15 CFR 30.2",
+          "url": "https://www.ecfr.gov/current/title-15/section-30.2"
+        },
+        {
+          "label": "15 CFR 30.4 (when to file)",
+          "url": "https://www.ecfr.gov/current/title-15/section-30.4"
+        },
+        {
+          "label": "15 CFR 30.37 ($2,500 exemption)",
+          "url": "https://www.ecfr.gov/current/title-15/section-30.37"
+        },
+        {
+          "label": "15 CFR 758.1",
+          "url": "https://www.ecfr.gov/current/title-15/section-758.1"
+        },
+        {
+          "label": "Census: AES",
+          "url": "https://www.census.gov/foreign-trade/aes/index.html"
+        }
+      ],
+      "chapterNote": "Because many 8541/8542 shipments need a BIS licence, EEI filing is required for those at any value — not only above the $2,500 Schedule B threshold that covers most of this chapter's other goods."
+    }
+  ],
+  "rules": [
+    {
+      "id": "bis-advanced-computing",
+      "agency": "Bureau of Industry and Security (BIS)",
+      "title": "Advanced computing and semiconductor-manufacturing controls (ECCNs 3A090, 3B090, 4A090 and related software/technology entries)",
+      "citations": [
+        {
+          "label": "87 FR 62186 (Oct. 13, 2022 interim final rule)",
+          "url": "https://www.federalregister.gov/documents/2022/10/13/2022-21658/implementation-of-additional-export-controls-certain-advanced-computing-and-semiconductor"
+        },
+        {
+          "label": "15 CFR 744.23 (advanced-computing licence requirement)",
+          "url": "https://www.ecfr.gov/current/title-15/section-744.23"
+        },
+        {
+          "label": "BIS: Entity List (15 CFR 744 Supp. 4)",
+          "url": "https://www.bis.gov/entity-list"
+        }
+      ]
+    },
+    {
+      "id": "bis-encryption",
+      "agency": "Bureau of Industry and Security (BIS)",
+      "title": "Encryption-item classification for phones and network equipment (ECCN 5A002 and related entries)",
+      "citations": [
+        {
+          "label": "15 CFR 740.17 (License Exception ENC)",
+          "url": "https://www.ecfr.gov/current/title-15/section-740.17"
+        },
+        {
+          "label": "BIS: classify your item",
+          "url": "https://www.bis.gov/licensing/classify-your-item"
+        }
+      ]
+    },
+    {
+      "id": "bis-dual-use-radar",
+      "agency": "Bureau of Industry and Security (BIS) / Department of State (DDTC)",
+      "title": "Dual-use and military radar, sonar and navigation controls (Commerce Control List Category 6; ITAR)",
+      "citations": [
+        {
+          "label": "15 CFR 774 Supp. 1, Category 6",
+          "url": "https://www.ecfr.gov/current/title-15/part-774/appendix-Supplement%20No.%201%20to%20Part%20774"
+        },
+        {
+          "label": "22 CFR 121.1 (U.S. Munitions List)",
+          "url": "https://www.ecfr.gov/current/title-22/section-121.1"
+        }
+      ]
+    },
+    {
+      "id": "dot-battery",
+      "agency": "Department of Transportation (PHMSA)",
+      "title": "Lithium-battery hazmat transport rules (packaging, marking and documentation)",
+      "citations": [
+        {
+          "label": "49 CFR 173.185 (lithium batteries)",
+          "url": "https://www.ecfr.gov/current/title-49/section-173.185"
+        }
+      ]
+    },
+    {
+      "id": "epa-ewaste",
+      "agency": "Environmental Protection Agency (EPA)",
+      "title": "Hazardous electronic-waste export notification",
+      "citations": [
+        {
+          "label": "40 CFR Part 262 Subpart H (export of hazardous waste)",
+          "url": "https://www.ecfr.gov/current/title-40/part-262/subpart-H"
+        }
+      ]
+    }
+  ],
+  "groups": [
+    {
+      "heading": "8501",
+      "label": "Electric motors and generators",
+      "ruleIds": [],
+      "note": null
+    },
+    {
+      "heading": "8502",
+      "label": "Generating sets and rotary converters",
+      "ruleIds": [],
+      "note": null
+    },
+    {
+      "heading": "8503",
+      "label": "Parts of motors and generators",
+      "ruleIds": [],
+      "note": null
+    },
+    {
+      "heading": "8504",
+      "label": "Transformers, power supplies and inductors",
+      "ruleIds": [],
+      "note": null
+    },
+    {
+      "heading": "8505",
+      "label": "Magnets and electromagnetic devices",
+      "ruleIds": [],
+      "note": null
+    },
+    {
+      "heading": "8506",
+      "label": "Primary cells and batteries",
+      "ruleIds": [],
+      "note": null
+    },
+    {
+      "heading": "8507",
+      "label": "Storage batteries (lithium-ion, lead-acid)",
+      "ruleIds": ["dot-battery"],
+      "note": "Lithium-ion and lithium-metal batteries are regulated as hazardous materials in transport (UN 3480/3481, Class 9), which requires specific packaging, marking and documentation under DOT/PHMSA rules, separate from the steps above."
+    },
+    {
+      "heading": "8508",
+      "label": "Vacuum cleaners",
+      "ruleIds": [],
+      "note": null
+    },
+    {
+      "heading": "8509",
+      "label": "Domestic appliances with motor",
+      "ruleIds": [],
+      "note": null
+    },
+    {
+      "heading": "8510",
+      "label": "Shavers and hair clippers",
+      "ruleIds": [],
+      "note": null
+    },
+    {
+      "heading": "8511",
+      "label": "Ignition and starting equipment",
+      "ruleIds": [],
+      "note": null
+    },
+    {
+      "heading": "8512",
+      "label": "Vehicle lighting and signaling",
+      "ruleIds": [],
+      "note": null
+    },
+    {
+      "heading": "8513",
+      "label": "Portable electric lamps",
+      "ruleIds": [],
+      "note": null
+    },
+    {
+      "heading": "8514",
+      "label": "Industrial electric furnaces",
+      "ruleIds": [],
+      "note": null
+    },
+    {
+      "heading": "8515",
+      "label": "Welding and soldering equipment",
+      "ruleIds": [],
+      "note": null
+    },
+    {
+      "heading": "8516",
+      "label": "Water heaters, space heaters and household heating appliances",
+      "ruleIds": [],
+      "note": null
+    },
+    {
+      "heading": "8517",
+      "label": "Smartphones and network equipment",
+      "ruleIds": ["bis-encryption"],
+      "note": "Phones and network equipment with strong encryption can carry an ECCN in the 5A002 family rather than being EAR99; check the Commerce Control List before assuming a phone or router is unregulated."
+    },
+    {
+      "heading": "8518",
+      "label": "Microphones, speakers and headphones",
+      "ruleIds": [],
+      "note": null
+    },
+    {
+      "heading": "8519",
+      "label": "Sound recording and reproducing apparatus",
+      "ruleIds": [],
+      "note": null
+    },
+    {
+      "heading": "8521",
+      "label": "Video recorders and players",
+      "ruleIds": [],
+      "note": null
+    },
+    {
+      "heading": "8522",
+      "label": "Parts of sound and video apparatus",
+      "ruleIds": [],
+      "note": null
+    },
+    {
+      "heading": "8523",
+      "label": "Storage media: SSDs, cards, discs and tapes",
+      "ruleIds": [],
+      "note": null
+    },
+    {
+      "heading": "8524",
+      "label": "Flat panel display modules",
+      "ruleIds": [],
+      "note": null
+    },
+    {
+      "heading": "8525",
+      "label": "Cameras and transmitters",
+      "ruleIds": [],
+      "note": null
+    },
+    {
+      "heading": "8526",
+      "label": "Radar and navigation apparatus",
+      "ruleIds": ["bis-dual-use-radar"],
+      "note": "Some radar, sonar and GPS-guidance items are controlled for military or dual-use reasons under Commerce Control List Category 6 or the ITAR, not just the generic licence step."
+    },
+    {
+      "heading": "8527",
+      "label": "Radio receivers",
+      "ruleIds": [],
+      "note": null
+    },
+    {
+      "heading": "8528",
+      "label": "Monitors, projectors and televisions",
+      "ruleIds": [],
+      "note": null
+    },
+    {
+      "heading": "8529",
+      "label": "Parts of TVs, radios, cameras and radar",
+      "ruleIds": [],
+      "note": null
+    },
+    {
+      "heading": "8530",
+      "label": "Railway and traffic signaling equipment",
+      "ruleIds": [],
+      "note": null
+    },
+    {
+      "heading": "8531",
+      "label": "Alarms, bells and indicator panels",
+      "ruleIds": [],
+      "note": null
+    },
+    {
+      "heading": "8532",
+      "label": "Capacitors",
+      "ruleIds": [],
+      "note": null
+    },
+    {
+      "heading": "8533",
+      "label": "Resistors",
+      "ruleIds": [],
+      "note": null
+    },
+    {
+      "heading": "8534",
+      "label": "Printed circuits",
+      "ruleIds": [],
+      "note": null
+    },
+    {
+      "heading": "8535",
+      "label": "High-voltage switchgear (over 1,000 V)",
+      "ruleIds": [],
+      "note": null
+    },
+    {
+      "heading": "8536",
+      "label": "Switches, breakers, relays and connectors (1,000 V or less)",
+      "ruleIds": [],
+      "note": null
+    },
+    {
+      "heading": "8537",
+      "label": "Control panels and switchboards",
+      "ruleIds": [],
+      "note": null
+    },
+    {
+      "heading": "8538",
+      "label": "Parts of switching apparatus",
+      "ruleIds": [],
+      "note": null
+    },
+    {
+      "heading": "8539",
+      "label": "Lamps and LED light sources",
+      "ruleIds": [],
+      "note": null
+    },
+    {
+      "heading": "8540",
+      "label": "Electron tubes",
+      "ruleIds": [],
+      "note": null
+    },
+    {
+      "heading": "8541",
+      "label": "Semiconductor devices and solar cells",
+      "ruleIds": ["bis-advanced-computing"],
+      "note": "Certain high-performance GPUs, accelerators and other advanced computing chips carry ECCN 3A090 (and related 4A090/3D001/3E001 entries); see the licence step above."
+    },
+    {
+      "heading": "8542",
+      "label": "Integrated circuits (chips)",
+      "ruleIds": ["bis-advanced-computing"],
+      "note": "Certain high-performance GPUs, accelerators and other advanced computing chips carry ECCN 3A090 (and related 4A090/3D001/3E001 entries); the equipment and materials that make them carry ECCN 3B090 and related 4D090/4E001 entries. See the licence step above."
+    },
+    {
+      "heading": "8543",
+      "label": "Other electrical machines and apparatus",
+      "ruleIds": [],
+      "note": null
+    },
+    {
+      "heading": "8544",
+      "label": "Insulated wire and cable, fiber-optic cable",
+      "ruleIds": [],
+      "note": null
+    },
+    {
+      "heading": "8545",
+      "label": "Carbon and graphite electrodes and brushes",
+      "ruleIds": [],
+      "note": null
+    },
+    {
+      "heading": "8546",
+      "label": "Electrical insulators",
+      "ruleIds": [],
+      "note": null
+    },
+    {
+      "heading": "8547",
+      "label": "Insulating fittings and conduit",
+      "ruleIds": [],
+      "note": null
+    },
+    {
+      "heading": "8548",
+      "label": "Electrical parts not elsewhere specified",
+      "ruleIds": [],
+      "note": null
+    },
+    {
+      "heading": "8549",
+      "label": "Electrical and electronic waste and scrap",
+      "ruleIds": ["epa-ewaste"],
+      "note": "Exporting electronic waste and scrap can trigger EPA hazardous-waste export notification depending on what the scrap contains, separate from the steps above."
+    }
+  ],
+  "savings": [
+    {
+      "id": "fta-rate",
+      "title": "Claim the free-trade-agreement rate abroad",
+      "saves": "The partner country's tariff on qualifying U.S. goods — often 0% instead of its normal rate.",
+      "appliesTo": "Goods that meet the agreement's rules of origin, shipped to one of the 20 U.S. free-trade-agreement partners: Australia, Bahrain, Canada, Chile, Colombia, Costa Rica, Dominican Republic, El Salvador, Guatemala, Honduras, Israel, Jordan, Korea, Mexico, Morocco, Nicaragua, Oman, Panama, Peru and Singapore.",
+      "document": "A certification of origin from the exporter, producer or importer, which the buyer uses to claim the rate at import. For USMCA there is no set form, but it must contain the nine data elements in Annex 5-A.",
+      "caveat": "Whoever certifies must be able to back it up: for USMCA, a U.S. exporter or producer keeps origin records for at least 5 years, gives CBP a copy on request and tells buyers promptly about errors. Check the product's rule of origin and the partner's rate in the FTA Tariff Tool first.",
+      "citations": [
+        {
+          "label": "trade.gov: FTA Tariff Tool",
+          "url": "https://www.trade.gov/fta-tariff-tool-home"
+        },
+        {
+          "label": "trade.gov: U.S. free trade agreements",
+          "url": "https://www.trade.gov/free-trade-agreements"
+        },
+        {
+          "label": "19 CFR Part 182 (USMCA; 182.21 for exporters)",
+          "url": "https://www.ecfr.gov/current/title-19/part-182"
+        },
+        {
+          "label": "USMCA Chapter 5: origin procedures",
+          "url": "https://ustr.gov/sites/default/files/files/agreements/FTA/USMCA/Text/05_Origin_Procedures.pdf"
+        }
+      ]
+    },
+    {
+      "id": "drawback",
+      "title": "Get U.S. duty back on imported inputs (drawback)",
+      "saves": "99% of the U.S. import duties, taxes and fees paid on goods or materials that are exported, or used to make the goods you export.",
+      "appliesTo": "Imported goods exported unused, and imported materials used to make an exported product (or, under the substitution rules, goods of the same kind).",
+      "document": "An electronic drawback claim in ACE, filed within 5 years of the import date, with the import and export records that tie the two together.",
+      "caveat": "Antidumping and countervailing duties are not refunded, and CBP takes no paper claims. The refund is on U.S. duties only; it does not lower the buyer's tariff.",
+      "citations": [
+        {
+          "label": "19 CFR Part 190",
+          "url": "https://www.ecfr.gov/current/title-19/part-190"
+        },
+        {
+          "label": "CBP: drawback overview",
+          "url": "https://www.cbp.gov/trade/programs-administration/entry-summary/drawback-overview"
+        },
+        {
+          "label": "19 U.S.C. 1313",
+          "url": "https://www.govinfo.gov/content/pkg/USCODE-2024-title19/html/USCODE-2024-title19-chap4-subtitleII-partI-sec1313.htm"
+        }
+      ]
+    }
+  ],
+  "disclaimer": "This page summarizes U.S. export rules to help you find the right regulation; it is not legal advice. Rules change and depend on the exact product, buyer and destination — check the cited regulation and the agency before you ship."
+}

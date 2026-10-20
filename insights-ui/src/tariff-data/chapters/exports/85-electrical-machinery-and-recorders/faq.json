@@ -1,0 +1,100 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 85,
+    "padded": "85",
+    "slug": "85-electrical-machinery-and-recorders",
+    "title": "Electrical Machinery and Equipment and Parts Thereof; Sound Recorders and Reproducers, Television Image and Sound Recorders and Reproducers, and Parts and Accessories of Such Articles"
+  },
+  "page": {
+    "slug": "exports/faq",
+    "path": "/industry-tariff-report/exports/chapters/85-electrical-machinery-and-recorders/faq",
+    "h1": "HTS Chapter 85: Electrical Machinery and Equipment and Parts Thereof; Sound Recorders and Reproducers, Television Image and Sound Recorders and Reproducers, and Parts and Accessories of Such Articles — U.S. Export FAQ",
+    "seo": {
+      "title": "U.S. Electrical Machinery Export FAQ (HTS Ch. 85) | KoalaGains",
+      "shortDescription": "Common questions about exporting electrical machinery, electronics and semiconductors: foreign tariffs, export licenses and Schedule B codes.",
+      "keywords": ["semiconductor export FAQ", "china tariff on us chips", "export license semiconductor", "schedule b code integrated circuits"]
+    },
+    "lastCheckedAt": "2026-10-19"
+  },
+  "intro": "Short answers to real questions people search about exporting U.S. electrical machinery and electronics, with a link to the page that has the detail.",
+  "keyTakeaways": [
+    "China is the only one of this chapter's major buyers charging more than in January 2025: a flat 10% extra on all U.S. goods.",
+    "For advanced semiconductors, a U.S. export licence — not a foreign tariff — is usually the real obstacle.",
+    "Mexico, Canada, the EU, South Korea and Hong Kong all charge nothing on U.S. goods in this chapter."
+  ],
+  "questionSource": "Google search-suggestion queries for \"china tariff on us chips\", \"export license semiconductor\", \"schedule b code integrated circuits\", \"tariff on us electronics to eu\", \"do i need eei for electronics export\", and \"canada tariff on us appliances\".",
+  "faqs": [
+    {
+      "id": "china-chip-tariff",
+      "question": "Does China charge extra tariffs on U.S. semiconductors?",
+      "searchedAs": ["china tariff on us chips", "china tariff semiconductors 2026"],
+      "answer": "Yes. China's own MFN rate on most chips is already 0% under the WTO Information Technology Agreement, but China adds a flat 10% extra duty on all U.S.-origin goods, in force since May 2025. That 10% is the entire increase since January 2025 for semiconductors.",
+      "link": "exports/markets"
+    },
+    {
+      "id": "eu-electronics-tariff",
+      "question": "What tariff does the EU charge on U.S. electronics?",
+      "searchedAs": ["eu tariff on us electronics", "eu tariff us chips 2026"],
+      "answer": "Nothing, from July 1, 2026. Regulation (EU) 2026/1455 zeroed out the EU's remaining tariffs on this chapter under the EU–U.S. framework; most chips, phones and storage media were already at 0% before that under the WTO Information Technology Agreement.",
+      "link": "exports/markets"
+    },
+    {
+      "id": "semiconductor-export-license",
+      "question": "Do I need an export license to ship semiconductors?",
+      "searchedAs": ["export license semiconductor", "do i need a license to export chips"],
+      "answer": "It depends on the chip. Most commercial semiconductors are EAR99 and need no licence. Certain high-performance computing chips carry ECCN 3A090 and need a BIS licence for China and dozens of other destinations regardless of value — check the Commerce Control List before you ship.",
+      "link": "exports/rules"
+    },
+    {
+      "id": "schedule-b-integrated-circuits",
+      "question": "What is the Schedule B code for integrated circuits?",
+      "searchedAs": ["schedule b code integrated circuits", "schedule b code for chips"],
+      "answer": "Integrated circuits fall under Schedule B heading 8542, the same first four digits as the HS/HTS code. Look up the exact 10-digit Schedule B number for your specific chip with the Census Bureau's free search tool; it also tells you which line of the buyer's tariff schedule applies.",
+      "link": "exports/rules"
+    },
+    {
+      "id": "canada-appliance-tariff",
+      "question": "Did Canada add new tariffs on U.S. electronics or appliances?",
+      "searchedAs": ["canada tariff on us appliances", "canada counter tariff electronics 2026"],
+      "answer": "Canada's September 2026 counter-tariff list reaches a narrow slice of this chapter — household appliances with a motor and water/space heaters that do not claim CUSMA treatment — not chips, phones or industrial electrical machinery. Goods claimed under CUSMA with a valid certificate of origin still enter duty-free.",
+      "link": "exports/tariff-updates"
+    },
+    {
+      "id": "how-much-us-exports",
+      "question": "How much electrical machinery and electronics does the U.S. export?",
+      "searchedAs": ["us electronics exports by value", "how much does the us export in electrical machinery"],
+      "answer": "$226.05B in 2025, up 5.7% on 2024 — this chapter's largest total of any HTS chapter. Integrated circuits (23% of the total) and smartphones and network equipment (21%) are the two biggest categories.",
+      "link": "exports"
+    },
+    {
+      "id": "biggest-buyer-chips",
+      "question": "Who buys the most U.S. semiconductors?",
+      "searchedAs": ["who buys the most us chips", "biggest buyer of us semiconductors"],
+      "answer": "Mexico and Canada, the two USMCA partners, together took 38% of all U.S. Chapter 85 exports in 2025 — much of it feeding integrated North American electronics supply chains. China is the third-largest single-country buyer.",
+      "link": "exports"
+    },
+    {
+      "id": "eei-chip-shipment",
+      "question": "Do I need to file EEI for a chip shipment?",
+      "searchedAs": ["do i need to file eei for chips", "eei filing semiconductor export"],
+      "answer": "File EEI once a Schedule B number in a shipment to one buyer exceeds $2,500 — the normal export threshold — and at any value if the chip needs a BIS export licence, which many advanced computing chips do.",
+      "link": "exports/rules"
+    },
+    {
+      "id": "mexico-electronics-tariff",
+      "question": "Is Mexico's tariff on U.S. electronics 0%?",
+      "searchedAs": ["mexico tariff on us electronics", "mexico tariff on us chips"],
+      "answer": "Yes, for goods that meet USMCA's rules of origin and travel with a valid certificate of origin. Mexico is this chapter's largest single market, and almost all of that trade enters duty-free.",
+      "link": "exports/markets"
+    },
+    {
+      "id": "china-suspension-end",
+      "question": "What happens when China's tariff suspension on U.S. goods ends?",
+      "searchedAs": ["china tariff suspension end date", "china 10 percent tariff expire"],
+      "answer": "China's current 10% blanket extra duty on U.S. goods runs through a one-year suspension of 24 points that China and the U.S. agreed to extend to January 10, 2027. If it is not extended again, the rate would jump back to 34% on top of each heading's normal MFN rate.",
+      "link": "exports/tariff-updates"
+    }
+  ]
+}

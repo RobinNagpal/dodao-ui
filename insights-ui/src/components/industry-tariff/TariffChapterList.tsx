@@ -2,13 +2,14 @@
 
 import EmptyStateCard from '@/components/ui/EmptyStateCard';
 import SearchField from '@/components/ui/SearchField';
+import Text from '@/components/ui/Text';
 import ToggleChip from '@/components/ui/ToggleChip';
 import Stack from '@/components/ui/containers/Stack';
 import { IndexList, IndexListGroup } from '@/components/ui/sections/IndexList';
 import React, { useState } from 'react';
 
 // Chapter list on /tariff-reports: one row per chapter, grouped by HTS section like the HTS code
-// browser, with a search box and a "Has U.S. export report" filter. The rows are rendered on the
+// browser, with a search box and an "Also has a U.S. exports report" filter. The rows are rendered on the
 // server and passed in; this only decides which ones show. Every row stays in the server HTML.
 
 export interface TariffChapterListItem {
@@ -63,7 +64,10 @@ export default function TariffChapterList({ groups }: { groups: TariffChapterLis
         />
         {exportCount > 0 && (
           <Stack direction="row" gap="sm" align="center" wrap>
-            <ToggleChip label="Has U.S. export report" active={onlyExports} onToggle={() => setOnlyExports(!onlyExports)} count={exportCount} />
+            <ToggleChip label="Also has a U.S. exports report" active={onlyExports} onToggle={() => setOnlyExports(!onlyExports)} count={exportCount} />
+            <Text as="span" size="xs" tone="muted">
+              what other countries charge on these goods when the U.S. sells them abroad
+            </Text>
           </Stack>
         )}
       </Stack>

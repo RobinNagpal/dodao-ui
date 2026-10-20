@@ -4,6 +4,7 @@ import { chapterReportNavItems } from '@/components/industry-tariff/chapter/Chap
 import BreadcrumbsWithJsonLd from '@/components/ui/BreadcrumbsWithJsonLd';
 import TariffChapterList, { type TariffChapterListGroup, type TariffChapterListItem } from '@/components/industry-tariff/TariffChapterList';
 import TariffReportsPageActions from '@/components/industry-tariff/TariffReportsPageActions';
+import Text from '@/components/ui/Text';
 import ToolPills from '@/components/tariff-cross-links/ToolPills';
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
 import { hasChapterExports } from '@/utils/tariff-reports/chapter-exports';
@@ -221,8 +222,25 @@ export default async function TariffReportsPage() {
             </div>
           </div>
           <p className="mt-3 max-w-3xl text-muted-foreground">
-            What the U.S. charges on each chapter of the Harmonized Tariff Schedule (HTS): today&apos;s rates, recent changes, rates by country and ways to
-            lower the duty. Search by chapter number or product, or browse by section below.
+            Every chapter report covers{' '}
+            <Text as="span" weight="semibold" tone="white">
+              U.S. imports
+            </Text>
+            : what the U.S. charges on that chapter&apos;s goods coming in — today&apos;s rates, recent changes, rates by country of origin and ways to lower
+            the duty. A growing number of chapters also have a{' '}
+            <Text as="span" weight="semibold" tone="white">
+              U.S. exports
+            </Text>{' '}
+            report: the reverse direction, covering what other countries charge on those same goods when U.S. companies sell them abroad. Look for the
+            &quot;Also has a U.S. exports report&quot; filter below, or the{' '}
+            <Text as="span" weight="medium" tone="white">
+              U.S. imports
+            </Text>{' '}
+            /{' '}
+            <Text as="span" weight="medium" tone="white">
+              U.S. exports
+            </Text>{' '}
+            link groups on a chapter&apos;s row. Search by chapter number or product, or browse by section below.
           </p>
         </header>
 

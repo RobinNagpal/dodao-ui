@@ -1,0 +1,399 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 88,
+    "padded": "88",
+    "slug": "88-aircraft-and-spacecraft",
+    "title": "Aircraft, Spacecraft, and Parts Thereof"
+  },
+  "page": {
+    "slug": "exports",
+    "path": "/industry-tariff-report/exports/chapters/88-aircraft-and-spacecraft",
+    "h1": "HTS Chapter 88: Aircraft, Spacecraft, and Parts Thereof — U.S. Exports & Foreign Tariffs",
+    "seo": {
+      "title": "U.S. Aircraft & Spacecraft Exports and Foreign Tariffs (HTS Ch. 88) | KoalaGains",
+      "shortDescription": "U.S. aircraft and spacecraft exports were $164.33B in 2025, up 22.4%. Where they go, what each country charges on U.S. aircraft and parts, and which tariffs changed since January 2025.",
+      "keywords": [
+        "US aircraft exports",
+        "tariffs on US aircraft",
+        "China tariff on US aircraft",
+        "Boeing Airbus tariff dispute",
+        "HS 88 exports",
+        "US aircraft parts exports"
+      ]
+    },
+    "lastCheckedAt": "2026-10-19"
+  },
+  "intro": "The U.S. exported **$164.33B** of aircraft, spacecraft and parts in 2025, up **22.4%** on 2024 — the fastest-growing of this report's chapters so far and one of the largest single U.S. export categories. China and France were the two largest buyers, each close to 10% of the total; France's share is mostly engines and other parts (heading 8807) moving through the CFM International (GE/Safran) supply chain that feeds Airbus's own assembly lines, not finished aircraft. Published trade statistics heavily redact individual aircraft and engine sales for confidentiality, so only about **7%** of this chapter's 2025 exports can be matched to a specific HS heading or to a buyer-and-heading pair in official data (see the note under \"What the U.S. sells\" below); the totals by country and by year are complete and reliable.\n\nFor most of the largest buyers, tariffs are not the obstacle: the EU, UK, Canada, Japan, Mexico, Singapore and Brazil all charge **0%** on U.S. aircraft and parts, either under the 1979 WTO Agreement on Trade in Civil Aircraft, a free-trade agreement, or their own exemption. **China** is the one exception — its extra 10% tariff on all U.S. goods reaches finished aircraft and most parts, on top of a low ordinary rate. What usually decides access instead is FAA/EASA-style airworthiness certification, not the tariff schedule.",
+  "latestYear": 2025,
+  "priorYear": 2024,
+  "valueBasis": "FOB value of U.S. exports, as reported by the United States to UN Comtrade.",
+  "stats": [
+    {
+      "label": "2025 U.S. exports",
+      "value": "$164.33B"
+    },
+    {
+      "label": "Change vs 2024",
+      "value": "+22.4%"
+    },
+    {
+      "label": "Largest product group (8807)",
+      "value": "5%",
+      "note": "Parts of goods of heading 8801, 8802 or 8806"
+    },
+    {
+      "label": "Two largest buyers",
+      "value": "19%",
+      "note": "China, France"
+    },
+    {
+      "label": "Top buyers charging 0%",
+      "value": "7 of 9",
+      "note": "EU, UK, Canada, Japan, Mexico, Singapore, Brazil — only China charges more"
+    }
+  ],
+  "keyTakeaways": [
+    "U.S. aircraft and spacecraft exports reached $164.33B in 2025, up 22.4% — the fastest growth of any chapter in this report so far.",
+    "Seven of the nine largest buyers (the EU, UK, Canada, Japan, Mexico, Singapore and Brazil) charge 0% on U.S. aircraft and parts, under the WTO Civil Aircraft Agreement, an FTA, or their own exemption; access there turns on airworthiness certification, not tariffs.",
+    "China is the exception: its 10% extra tariff on all U.S. goods reaches finished aircraft and most parts, though some imported aviation-maintenance parts may still qualify for China's own duty exemption.",
+    "Watch January 10, 2027, when China's 24-point tariff suspension is due to end, and the EU's Boeing/Airbus tariff truce, repeatedly extended since 2021 and due for its next review after July 2026."
+  ],
+  "byYear": [
+    {
+      "year": 2020,
+      "totalUsd": 80936266187,
+      "partnerAUsd": 4399225916,
+      "partnerBUsd": 8053248950,
+      "restUsd": 68483791321
+    },
+    {
+      "year": 2021,
+      "totalUsd": 89136498850,
+      "partnerAUsd": 4717192311,
+      "partnerBUsd": 7215080288,
+      "restUsd": 77204226251
+    },
+    {
+      "year": 2022,
+      "totalUsd": 102849539866,
+      "partnerAUsd": 5528305888,
+      "partnerBUsd": 9027368751,
+      "restUsd": 88293865227
+    },
+    {
+      "year": 2023,
+      "totalUsd": 124909470220,
+      "partnerAUsd": 6813624702,
+      "partnerBUsd": 10836785366,
+      "restUsd": 107259060152
+    },
+    {
+      "year": 2024,
+      "totalUsd": 134237060573,
+      "partnerAUsd": 11535268522,
+      "partnerBUsd": 11252211041,
+      "restUsd": 111449581010
+    },
+    {
+      "year": 2025,
+      "totalUsd": 164326493268,
+      "partnerAUsd": 15888282021,
+      "partnerBUsd": 15329323170,
+      "restUsd": 133108888077
+    }
+  ],
+  "byYearPartners": ["China", "France"],
+  "byYearCaption": "U.S. exports of Chapter 88 goods each year, split into the two largest 2025 buyers (China and France) and everyone else.",
+  "yearToDate": null,
+  "topMarkets": [
+    {
+      "countryCode": 156,
+      "country": "China",
+      "exportsUsd": 15888282021,
+      "priorExportsUsd": 11535268522,
+      "sharePct": 9.7,
+      "changePct": 37.7,
+      "tariffNow": "10% extra (on a low 0–4% normal rate; some maintenance parts may be exempt)",
+      "status": "raised"
+    },
+    {
+      "countryCode": 251,
+      "country": "France",
+      "exportsUsd": 15329323170,
+      "priorExportsUsd": 11252211041,
+      "sharePct": 9.3,
+      "changePct": 36.2,
+      "tariffNow": "Free (Civil Aircraft Agreement / EU common external tariff)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 276,
+      "country": "Germany",
+      "exportsUsd": 12038498352,
+      "priorExportsUsd": 9576226556,
+      "sharePct": 7.3,
+      "changePct": 25.7,
+      "tariffNow": "Free (Civil Aircraft Agreement / EU common external tariff)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 826,
+      "country": "United Kingdom",
+      "exportsUsd": 11735646543,
+      "priorExportsUsd": 10522841361,
+      "sharePct": 7.1,
+      "changePct": 11.5,
+      "tariffNow": "Free (Civil Aircraft Agreement)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 76,
+      "country": "Brazil",
+      "exportsUsd": 10679942016,
+      "priorExportsUsd": 9999303850,
+      "sharePct": 6.5,
+      "changePct": 6.8,
+      "tariffNow": "Free (domestic exemption, Gecex Resolution 310/2022)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 124,
+      "country": "Canada",
+      "exportsUsd": 9192951415,
+      "priorExportsUsd": 8260134956,
+      "sharePct": 5.6,
+      "changePct": 11.3,
+      "tariffNow": "Free (Civil Aircraft Agreement; USMCA)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 484,
+      "country": "Mexico",
+      "exportsUsd": 8694394727,
+      "priorExportsUsd": 6307661397,
+      "sharePct": 5.3,
+      "changePct": 37.8,
+      "tariffNow": "Free (USMCA)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 702,
+      "country": "Singapore",
+      "exportsUsd": 6928889925,
+      "priorExportsUsd": 6132956892,
+      "sharePct": 4.2,
+      "changePct": 13,
+      "tariffNow": "Free (U.S.–Singapore FTA; Singapore applies near-zero tariffs generally)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 392,
+      "country": "Japan",
+      "exportsUsd": 6477864300,
+      "priorExportsUsd": 6100511946,
+      "sharePct": 3.9,
+      "changePct": 6.2,
+      "tariffNow": "Free (Civil Aircraft Agreement)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 784,
+      "country": "United Arab Emirates",
+      "exportsUsd": 5666104996,
+      "priorExportsUsd": 3932102504,
+      "sharePct": 3.4,
+      "changePct": 44.1,
+      "tariffNow": "Up to 5% (GCC Common Customs Tariff; this report could not independently confirm the published rate for this exact HS line)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 410,
+      "country": "Rep. of Korea",
+      "exportsUsd": 4553081416,
+      "priorExportsUsd": 3357796442,
+      "sharePct": 2.8,
+      "changePct": 35.6,
+      "tariffNow": "Free (KORUS, for qualifying goods)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 792,
+      "country": "Türkiye",
+      "exportsUsd": 3666070376,
+      "priorExportsUsd": 2042117632,
+      "sharePct": 2.2,
+      "changePct": 79.5,
+      "tariffNow": "Likely free (Turkey aligns its external tariff with the EU's under their customs union; not independently confirmed for this exact HS line)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 458,
+      "country": "Malaysia",
+      "exportsUsd": 3276367996,
+      "priorExportsUsd": 2209707532,
+      "sharePct": 2,
+      "changePct": 48.3,
+      "tariffNow": "Free (MFN)",
+      "status": "unchanged"
+    }
+  ],
+  "othersExportsUsd": 50199076015,
+  "othersPriorExportsUsd": 43008219942,
+  "byHeading": [
+    {
+      "heading": "8801",
+      "label": "Balloons and dirigibles; gliders, hang gliders and other non-powered aircraft",
+      "exportsUsd": 4516096,
+      "priorExportsUsd": 8077202,
+      "changePct": -44.1,
+      "sharePct": 0
+    },
+    {
+      "heading": "8802",
+      "label": "Other aircraft (for example, helicopters, airplanes, except unmanned aircraft of heading 8806); spacecraft (including satellites) and suborbital and spacecraft launch vehicles",
+      "exportsUsd": 2633304896,
+      "priorExportsUsd": 2923593246,
+      "changePct": -9.9,
+      "sharePct": 1.6
+    },
+    {
+      "heading": "8804",
+      "label": "Parachutes (including dirigible parachutes and paragliders) and rotochutes; parts thereof and accessories thereto",
+      "exportsUsd": 211756326,
+      "priorExportsUsd": 179003143,
+      "changePct": 18.3,
+      "sharePct": 0.1
+    },
+    {
+      "heading": "8805",
+      "label": "Aircraft launching gear; deck-arrestor or similar gear; ground flying trainers; parts of the foregoing articles",
+      "exportsUsd": 372857952,
+      "priorExportsUsd": 238894374,
+      "changePct": 56.1,
+      "sharePct": 0.2
+    },
+    {
+      "heading": "8806",
+      "label": "Unmanned aircraft",
+      "exportsUsd": 634414982,
+      "priorExportsUsd": 308752450,
+      "changePct": 105.5,
+      "sharePct": 0.4
+    },
+    {
+      "heading": "8807",
+      "label": "Parts of goods of heading 8801, 8802 or 8806",
+      "exportsUsd": 7714404805,
+      "priorExportsUsd": 7271706889,
+      "changePct": 6.1,
+      "sharePct": 4.7
+    }
+  ],
+  "byLine": [
+    {
+      "hs6": "8807.30",
+      "heading": "8807",
+      "description": "Aircraft and spacecraft; parts of aeroplanes, helicopters or unmanned aircraft n.e.c. in heading no. 8807",
+      "exportsUsd": 6354813008,
+      "priorExportsUsd": 6200385258,
+      "changePct": 2.5,
+      "sharePct": 3.9
+    },
+    {
+      "hs6": "8802.40",
+      "heading": "8802",
+      "description": "Aeroplanes and other aircraft, except unmanned; of an unladen weight exceeding 15,000kg",
+      "exportsUsd": 1594890617,
+      "priorExportsUsd": 1376936124,
+      "changePct": 15.8,
+      "sharePct": 1
+    },
+    {
+      "hs6": "8807.90",
+      "heading": "8807",
+      "description": "Aircraft and spacecraft; parts thereof n.e.c. in chapter 88",
+      "exportsUsd": 698054951,
+      "priorExportsUsd": 476945844,
+      "changePct": 46.4,
+      "sharePct": 0.4
+    },
+    {
+      "hs6": "8802.12",
+      "heading": "8802",
+      "description": "Helicopters, except unmanned; of an unladen weight exceeding 2000kg",
+      "exportsUsd": 691733666,
+      "priorExportsUsd": 707176068,
+      "changePct": -2.2,
+      "sharePct": 0.4
+    },
+    {
+      "hs6": "8807.10",
+      "heading": "8807",
+      "description": "Aircraft and spacecraft; propellers and rotors and parts thereof",
+      "exportsUsd": 367347188,
+      "priorExportsUsd": 333134960,
+      "changePct": 10.3,
+      "sharePct": 0.2
+    },
+    {
+      "hs6": "8802.60",
+      "heading": "8802",
+      "description": "Spacecraft; (including satellites) and suborbital and spacecraft launch vehicles",
+      "exportsUsd": 308123116,
+      "priorExportsUsd": 447508492,
+      "changePct": -31.1,
+      "sharePct": 0.2
+    },
+    {
+      "hs6": "8807.20",
+      "heading": "8807",
+      "description": "Aircraft and spacecraft; under-carriages and parts thereof",
+      "exportsUsd": 294189658,
+      "priorExportsUsd": 261240827,
+      "changePct": 12.6,
+      "sharePct": 0.2
+    },
+    {
+      "hs6": "8806.29",
+      "heading": "8806",
+      "description": "Unmanned aircraft; for remote-controlled flight only, for other than for carriage of passengers, with the maximum take-off weight of more than 150kg",
+      "exportsUsd": 285554034,
+      "priorExportsUsd": 60336247,
+      "changePct": 373.3,
+      "sharePct": 0.2
+    },
+    {
+      "hs6": "8804.00",
+      "heading": "8804",
+      "description": "Parachutes (including dirigible parachutes and paragliders) and rotochutes; parts thereof and accessories thereto",
+      "exportsUsd": 211756326,
+      "priorExportsUsd": 179003143,
+      "changePct": 18.3,
+      "sharePct": 0.1
+    },
+    {
+      "hs6": "8805.21",
+      "heading": "8805",
+      "description": "Ground flying trainers and parts thereof; air combat simulators and parts thereof",
+      "exportsUsd": 198489268,
+      "priorExportsUsd": 74889110,
+      "changePct": 165,
+      "sharePct": 0.1
+    }
+  ],
+  "sources": [
+    {
+      "id": "comtrade-exports",
+      "publisher": "UN Comtrade",
+      "citation": "UN Comtrade, U.S. exports 2020–2025",
+      "document": "UN Comtrade public API (preview), United States exports, annual, HS",
+      "title": "United States exports, HS chapter 88, by partner, heading and subheading",
+      "signed": null,
+      "published": "2026-10-19",
+      "url": "https://comtradeplus.un.org/"
+    }
+  ],
+  "coverageNote": "The 13 buyers listed take 70% of 2025 U.S. Chapter 88 exports. FOB value of U.S. exports, as reported by the United States to UN Comtrade. They can differ from what the destination country reports as imports. Chapter and country totals reconcile fully with Comtrade's partner data; the heading and subheading breakdown below is far less complete, because official statistics redact the value of individual aircraft and engine sales for confidentiality — see \"What the U.S. sells\"."
+}

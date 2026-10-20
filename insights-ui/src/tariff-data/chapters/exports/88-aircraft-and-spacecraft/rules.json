@@ -1,0 +1,270 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 88,
+    "padded": "88",
+    "slug": "88-aircraft-and-spacecraft",
+    "title": "Aircraft, Spacecraft, and Parts Thereof"
+  },
+  "page": {
+    "slug": "exports/rules",
+    "path": "/industry-tariff-report/exports/chapters/88-aircraft-and-spacecraft/rules",
+    "h1": "HTS Chapter 88: Aircraft, Spacecraft, and Parts Thereof — U.S. Export Rules & Ways to Pay Less Abroad",
+    "seo": {
+      "title": "U.S. Export Rules for Aircraft & Spacecraft (HTS Ch. 88) | KoalaGains",
+      "shortDescription": "What the FAA, BIS and DDTC require before you export an aircraft, spacecraft or aircraft part, and how to pay less abroad.",
+      "keywords": ["FAA export airworthiness certificate", "export aircraft parts license", "Schedule B aircraft parts", "ITAR aircraft"]
+    },
+    "lastCheckedAt": "2026-10-19"
+  },
+  "intro": "Most aircraft parts ship like any other EAR99 good: classify, screen, file in AES if the shipment is over $2,500. Finished aircraft and many parts need one more document before they can leave — an **FAA export airworthiness approval** — and a small slice (military aircraft and some weapons-related equipment) falls under the State Department's ITAR instead of Commerce's EAR. This page covers the civil side; a company exporting military aircraft or defense articles should start with DDTC, not the FAA or BIS steps below.",
+  "regulationsAsOf": "2026-10-19",
+  "steps": [
+    {
+      "id": "schedule-b",
+      "title": "Find the Schedule B number",
+      "whatToDo": "Look up the 10-digit Schedule B number for each product with the Census Bureau's free search tool. Its first six digits are the same as the HS code every country uses, so it also tells you which line of the buyer's tariff applies. The U.S. import (HTS) number and the Schedule B number match only to six digits.",
+      "when": "Every export. It goes on the export filing (the last step) and on the commercial invoice.",
+      "citations": [
+        {
+          "label": "Census: Schedule B",
+          "url": "https://www.census.gov/foreign-trade/schedules/b/index.html"
+        },
+        {
+          "label": "Schedule B search tool",
+          "url": "https://uscensus.prod.3ceonline.com/"
+        },
+        {
+          "label": "Schedule B introduction (2026)",
+          "url": "https://www.census.gov/foreign-trade/schedules/b/2026/introduction.pdf"
+        }
+      ],
+      "chapterNote": "The Schedule B number for a finished aircraft (8802) matches the U.S. import HTS number to six digits; the U.S. uses a fairly broad weight-based split (helicopters, aeroplanes by unladen weight) rather than a model-by-model code."
+    },
+    {
+      "id": "screen",
+      "title": "Screen the buyer and everyone in the deal",
+      "whatToDo": "Check the buyer, the end user and any agent against the Consolidated Screening List. It combines the Commerce lists (Entity List, Denied Persons, Unverified, Military End-User), the State Department lists and the Treasury (OFAC) sanctions lists of parties you may not deal with, or may deal with only under a licence.",
+      "when": "Every export, before you accept the order.",
+      "citations": [
+        {
+          "label": "trade.gov: Consolidated Screening List",
+          "url": "https://www.trade.gov/consolidated-screening-list"
+        },
+        {
+          "label": "CSL search",
+          "url": "https://www.trade.gov/data-visualization/csl-search"
+        }
+      ],
+      "chapterNote": "Screen the end user even on a straightforward parts order: a disproportionate share of Entity List and military end-user designations fall on aerospace and aviation buyers, and a part destined for a listed buyer needs a licence even if it would otherwise be EAR99."
+    },
+    {
+      "id": "licence",
+      "title": "Check whether you need an export licence",
+      "whatToDo": "Find the product's Export Control Classification Number (ECCN) on the Commerce Control List. Most goods are not listed and are EAR99. For a listed ECCN, look up the destination on the Commerce Country Chart under each reason for control: an X means a licence is needed unless a licence exception applies. Even EAR99 goods need a licence for embargoed countries and for restricted end users or end uses.",
+      "when": "Every export of goods subject to the Export Administration Regulations (EAR).",
+      "citations": [
+        {
+          "label": "15 CFR 732.3",
+          "url": "https://www.ecfr.gov/current/title-15/section-732.3"
+        },
+        {
+          "label": "15 CFR 738.4",
+          "url": "https://www.ecfr.gov/current/title-15/section-738.4"
+        },
+        {
+          "label": "Commerce Control List (15 CFR 774 Supp. 1)",
+          "url": "https://www.ecfr.gov/current/title-15/part-774/appendix-Supplement%20No.%201%20to%20Part%20774"
+        },
+        {
+          "label": "BIS: classify your item",
+          "url": "https://www.bis.gov/licensing/classify-your-item"
+        }
+      ],
+      "chapterNote": "Most civil aircraft and parts are EAR99 or classified under ECCN 9A991 (not listed for national-security reasons); military aircraft and many weapons-related parts and components are on the United States Munitions List (USML Category VIII) and fall under the State Department's ITAR instead of the Commerce Control List — see the DDTC note below. Unmanned aircraft (8806) have their own, separately controlled ECCNs; see the drone-specific rule below."
+    },
+    {
+      "id": "sanctions",
+      "title": "Check sanctions on the destination",
+      "whatToDo": "Check the destination against OFAC's sanctions programs and the EAR's embargo rules. Cuba, Iran and North Korea have country-wide rules, and Syria still needs a Commerce licence for most items; Russia and Belarus need a licence for any item with an ECCN. Several programs have special permissions for food and medicine.",
+      "when": "Exports to a sanctioned or embargoed country, or to a listed person anywhere.",
+      "citations": [
+        {
+          "label": "OFAC: sanctions programs",
+          "url": "https://ofac.treasury.gov/sanctions-programs-and-country-information"
+        },
+        {
+          "label": "15 CFR Part 746 (embargoes)",
+          "url": "https://www.ecfr.gov/current/title-15/part-746"
+        }
+      ],
+      "chapterNote": "Aircraft, engines and most parts are not covered by the food/medicine carve-outs in OFAC's sanctions programs, so the general embargo and licensing rules apply in full to this chapter's goods."
+    },
+    {
+      "id": "eei",
+      "title": "File the export in AES (Electronic Export Information)",
+      "whatToDo": "You (the U.S. principal party in interest) or your freight forwarder file the EEI in the Automated Export System — free through ACE AESDirect — and put the confirmation number (ITN) on the shipping documents. File at least 24 hours before an ocean shipment is loaded, 2 hours before a flight departs, or 1 hour before a truck reaches the border. Not filing can cost a civil penalty of up to $17,412 per violation.",
+      "when": "When one Schedule B number in one shipment to one buyer is worth over $2,500, and at any value when the shipment needs a Commerce licence or a DEA permit or declaration, or ships an EAR item to Cuba, Iran, North Korea or Syria, or a Commerce Control List item to China, Russia or Venezuela.",
+      "citations": [
+        {
+          "label": "15 CFR 30.2",
+          "url": "https://www.ecfr.gov/current/title-15/section-30.2"
+        },
+        {
+          "label": "15 CFR 30.4 (when to file)",
+          "url": "https://www.ecfr.gov/current/title-15/section-30.4"
+        },
+        {
+          "label": "15 CFR 30.37 ($2,500 exemption)",
+          "url": "https://www.ecfr.gov/current/title-15/section-30.37"
+        },
+        {
+          "label": "15 CFR 758.1",
+          "url": "https://www.ecfr.gov/current/title-15/section-758.1"
+        },
+        {
+          "label": "Census: AES",
+          "url": "https://www.census.gov/foreign-trade/aes/index.html"
+        }
+      ],
+      "chapterNote": "Because a single aircraft or engine routinely exceeds the $2,500 per-Schedule-B-number threshold, almost every shipment in this chapter needs an AES filing regardless of destination."
+    }
+  ],
+  "rules": [
+    {
+      "id": "faa-export-cofa",
+      "agency": "FAA",
+      "title": "Export airworthiness approval: most finished aircraft (8802, 8806) and many parts (8807) need FAA Form 8130-3 (an authorized release certificate / airworthiness approval tag) or, for a complete aircraft, Form 8130-4 (export certificate of airworthiness) before they can leave the U.S., issued under 14 CFR Part 21 Subpart L. The exporter must also meet the importing country's own requirements, not just the FAA's.",
+      "citations": [
+        {
+          "label": "FAA: Export Airworthiness Approval Regulations & Policy",
+          "url": "https://www.faa.gov/aircraft/air_cert/international/export_aw_approval/export_aw_regs"
+        },
+        {
+          "label": "14 CFR Part 21, Subpart L",
+          "url": "https://www.ecfr.gov/current/title-14/part-21/subpart-L"
+        }
+      ]
+    },
+    {
+      "id": "ddtc-usml-viii",
+      "agency": "State Department (DDTC)",
+      "title": "Military aircraft, military aero-engines and many weapons-related aircraft parts and components are controlled under USML Category VIII (22 CFR 121.1), not the Commerce Control List; exporting them needs a DDTC licence or other ITAR authorization, registration as a manufacturer/exporter, and — for most defense articles — a Congressional notification above value thresholds. This chapter's ordinary commercial-aircraft exporter rarely needs this rule, but check it before assuming an item is EAR99 if it has any military variant or application.",
+      "citations": [
+        {
+          "label": "22 CFR 121.1 (USML Category VIII)",
+          "url": "https://www.ecfr.gov/current/title-22/chapter-I/subchapter-M/part-121"
+        },
+        {
+          "label": "DDTC: ITAR and the USML",
+          "url": "https://www.pmddtc.state.gov/ddtc_public?id=ddtc_kb_article_page&sys_id=24d528fddbfc930044f9ff621f961987"
+        }
+      ]
+    },
+    {
+      "id": "bis-uas-eccn",
+      "agency": "BIS",
+      "title": "Unmanned aircraft (heading 8806) have their own Commerce Control List entries — mainly ECCN 9A012 for non-military UAVs (with 9A120 for some other complete systems) — separate from the general aircraft classifications. A 2026 BIS rule eased controls for lower-endurance UAVs, but a drone with a range of 300 km or more, or carrying certain thermal-imaging, laser or inertial-navigation equipment, stays controlled for national-security or missile-technology reasons; a military UAV not on the USML falls under ECCN 9A610 instead. Confirm the ECCN with BIS before shipping, since it drives which destinations need a licence.",
+      "citations": [
+        {
+          "label": "ECCN 9A012 (Commerce Control List, Category 9)",
+          "url": "https://www.ecfr.gov/current/title-15/part-774/appendix-Supplement%20No.%201%20to%20Part%20774"
+        },
+        {
+          "label": "BIS: classify your item",
+          "url": "https://www.bis.gov/licensing/classify-your-item"
+        }
+      ]
+    }
+  ],
+  "groups": [
+    {
+      "heading": "8801",
+      "label": "Balloons and dirigibles; gliders, hang gliders and other non-powered aircraft",
+      "ruleIds": ["faa-export-cofa"],
+      "note": "Non-powered aircraft (balloons, gliders) generally need the same FAA export airworthiness approval as a powered aircraft if they are certificated; most are EAR99."
+    },
+    {
+      "heading": "8802",
+      "label": "Other aircraft (for example, helicopters, airplanes, except unmanned aircraft of heading 8806); spacecraft (including satellites) and suborbital and spacecraft launch vehicles",
+      "ruleIds": ["faa-export-cofa", "ddtc-usml-viii"],
+      "note": "The FAA export airworthiness step applies in full here. Check whether the specific model or variant has a military version controlled under USML Category VIII before relying on an EAR99/9A991 classification."
+    },
+    {
+      "heading": "8804",
+      "label": "Parachutes (including dirigible parachutes and paragliders) and rotochutes; parts thereof and accessories thereto",
+      "ruleIds": [],
+      "note": null
+    },
+    {
+      "heading": "8805",
+      "label": "Aircraft launching gear; deck-arrestor or similar gear; ground flying trainers; parts of the foregoing articles",
+      "ruleIds": [],
+      "note": null
+    },
+    {
+      "heading": "8806",
+      "label": "Unmanned aircraft",
+      "ruleIds": ["bis-uas-eccn"],
+      "note": "See the BIS unmanned-aircraft rule above: most commercial drones are ECCN 9A012, but range, sensors or a military end use can move a specific model to a more controlled classification."
+    },
+    {
+      "heading": "8807",
+      "label": "Parts of goods of heading 8801, 8802 or 8806",
+      "ruleIds": ["faa-export-cofa", "ddtc-usml-viii"],
+      "note": "Parts and components get the same FAA release (Form 8130-3) as the finished aircraft; a part built specifically for a military aircraft can fall under USML Category VIII even when the civil version of the same part is EAR99."
+    }
+  ],
+  "savings": [
+    {
+      "id": "fta-rate",
+      "title": "Claim the free-trade-agreement rate abroad",
+      "saves": "The partner country's tariff on qualifying U.S. goods — often 0% instead of its normal rate.",
+      "appliesTo": "Goods that meet the agreement's rules of origin, shipped to one of the 20 U.S. free-trade-agreement partners: Australia, Bahrain, Canada, Chile, Colombia, Costa Rica, Dominican Republic, El Salvador, Guatemala, Honduras, Israel, Jordan, Korea, Mexico, Morocco, Nicaragua, Oman, Panama, Peru and Singapore.",
+      "document": "A certification of origin from the exporter, producer or importer, which the buyer uses to claim the rate at import. For USMCA there is no set form, but it must contain the nine data elements in Annex 5-A.",
+      "caveat": "Whoever certifies must be able to back it up: for USMCA, a U.S. exporter or producer keeps origin records for at least 5 years, gives CBP a copy on request and tells buyers promptly about errors. Check the product's rule of origin and the partner's rate in the FTA Tariff Tool first.",
+      "citations": [
+        {
+          "label": "trade.gov: FTA Tariff Tool",
+          "url": "https://www.trade.gov/fta-tariff-tool-home"
+        },
+        {
+          "label": "trade.gov: U.S. free trade agreements",
+          "url": "https://www.trade.gov/free-trade-agreements"
+        },
+        {
+          "label": "19 CFR Part 182 (USMCA; 182.21 for exporters)",
+          "url": "https://www.ecfr.gov/current/title-19/part-182"
+        },
+        {
+          "label": "USMCA Chapter 5: origin procedures",
+          "url": "https://ustr.gov/sites/default/files/files/agreements/FTA/USMCA/Text/05_Origin_Procedures.pdf"
+        }
+      ]
+    },
+    {
+      "id": "drawback",
+      "title": "Get U.S. duty back on imported inputs (drawback)",
+      "saves": "99% of the U.S. import duties, taxes and fees paid on goods or materials that are exported, or used to make the goods you export.",
+      "appliesTo": "Imported goods exported unused, and imported materials used to make an exported product (or, under the substitution rules, goods of the same kind).",
+      "document": "An electronic drawback claim in ACE, filed within 5 years of the import date, with the import and export records that tie the two together.",
+      "caveat": "Antidumping and countervailing duties are not refunded, and CBP takes no paper claims. The refund is on U.S. duties only; it does not lower the buyer's tariff.",
+      "citations": [
+        {
+          "label": "19 CFR Part 190",
+          "url": "https://www.ecfr.gov/current/title-19/part-190"
+        },
+        {
+          "label": "CBP: drawback overview",
+          "url": "https://www.cbp.gov/trade/programs-administration/entry-summary/drawback-overview"
+        },
+        {
+          "label": "19 U.S.C. 1313",
+          "url": "https://www.govinfo.gov/content/pkg/USCODE-2024-title19/html/USCODE-2024-title19-chap4-subtitleII-partI-sec1313.htm"
+        }
+      ]
+    }
+  ],
+  "disclaimer": "This page summarizes U.S. export rules to help you find the right regulation; it is not legal advice. Rules change and depend on the exact product, buyer and destination — check the cited regulation and the agency before you ship."
+}

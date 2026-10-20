@@ -1,0 +1,100 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 12,
+    "padded": "12",
+    "slug": "12-oil-seeds-and-grains",
+    "title": "Oil Seeds and Oleaginous Fruits; Miscellaneous Grains, Seeds and Fruit; Industrial or Medicinal Plants; Straw and Fodder"
+  },
+  "page": {
+    "slug": "exports/faq",
+    "path": "/industry-tariff-report/exports/chapters/12-oil-seeds-and-grains/faq",
+    "h1": "HTS Chapter 12: Oil Seeds and Oleaginous Fruits; Miscellaneous Grains, Seeds and Fruit; Industrial or Medicinal Plants; Straw and Fodder — U.S. Export FAQ",
+    "seo": {
+      "title": "Chapter 12 Export FAQ: Soybean Tariffs, Schedule B & Export Rules",
+      "shortDescription": "Common questions on exporting soybeans and other Chapter 12 goods, answered from the export tariff report.",
+      "keywords": ["soybean export faq", "china soybean tariff faq", "schedule b soybeans", "soybean export license", "phytosanitary certificate soybean"]
+    },
+    "lastCheckedAt": "2026-10-19"
+  },
+  "intro": "Common questions about exporting soybeans and other Chapter 12 goods, answered from the rest of this export report.",
+  "keyTakeaways": [
+    "China is the only major buyer that taxes this chapter's goods — 10% on top of its normal rate — and its September 2026 goodwill list left soybeans out of the relief it gave other U.S. farm goods.",
+    "Every other top buyer — Mexico, Canada, the EU, Japan and Egypt — charges no tariff on this chapter's goods.",
+    "The U.S. side of exporting soybeans and grain is routine: a Schedule B number, buyer screening, FGIS inspection and weighing, and an AES filing; no export licence applies in the ordinary case."
+  ],
+  "questionSource": "Google search suggestions for queries like \"soybean export tariff\", \"china tariff on us soybeans\", \"schedule b code for soybeans\", \"export license soybeans\", \"do i need phytosanitary certificate soybeans\".",
+  "faqs": [
+    {
+      "id": "china-soybean-tariff",
+      "question": "Does China still tariff U.S. soybeans?",
+      "answer": "Yes. On top of its 3% normal rate, China charges an extra 10% on U.S. soybeans and every other U.S. good, under the tariff fight that began in 2025. China's older, soybean-specific 25% retaliation tariff from 2018–19 is still on the books, but it is waived for soybeans through an exclusion process that currently runs to December 31, 2026, so soybeans effectively pay 3% plus 10%, not 3% plus 10% plus 25%.",
+      "link": "exports/tariff-updates",
+      "searchedAs": ["does china tariff us soybeans", "china soybean tariff 2026", "china us soybean tariff rate"]
+    },
+    {
+      "id": "china-excluded-soybeans",
+      "question": "Did China exclude soybeans from its 2026 tariff cuts?",
+      "answer": "Yes. China's September 2026 goodwill list under the U.S.–China Board of Trade offered lower tariffs on corn, wheat, meat, dairy and other U.S. farm goods, but it explicitly left out non-seed soybeans — the single largest U.S. export in this chapter. The 10% tariff on soybeans stays in place.",
+      "link": "exports/tariff-updates",
+      "searchedAs": ["china soybean tariff exclusion 2026", "china board of trade soybeans"]
+    },
+    {
+      "id": "eu-soybean-tariff",
+      "question": "What tariff does the EU charge on U.S. soybeans?",
+      "answer": "None. The EU has applied a zero tariff on soybeans and soybean oilcake since a GATT commitment dating to the 1960s, one of the oldest trade concessions still in force for any U.S. export. That has not changed in the current tariff dispute.",
+      "link": "exports/markets",
+      "searchedAs": ["eu tariff on us soybeans", "does the eu tax soybean imports"]
+    },
+    {
+      "id": "mexico-soybean-tariff",
+      "question": "Does Mexico charge a tariff on U.S. soybeans?",
+      "answer": "No, as long as the shipment qualifies under USMCA — which almost all U.S. soybean exports to Mexico do. Mexico's own general (non-USMCA) tariff on soybeans runs 15–20%, but that rate does not apply to qualifying U.S. goods.",
+      "link": "exports/markets",
+      "searchedAs": ["mexico tariff on us soybeans", "usmca soybean tariff"]
+    },
+    {
+      "id": "how-much-us-exports",
+      "question": "How much does the U.S. export in Chapter 12 (soybeans and oilseeds)?",
+      "answer": "$21.36 billion in 2025, down 28.8% from 2024 as China pulled back sharply during the tariff fight. Soybeans alone are 77% of that total. Exports of this chapter were up 25% in the first seven months of 2026 as Chinese buying picked back up.",
+      "link": "exports",
+      "searchedAs": ["us soybean exports total", "how much soybeans does the us export"]
+    },
+    {
+      "id": "who-buys-most-soybeans",
+      "question": "Who buys the most U.S. soybeans?",
+      "answer": "China and Mexico are the two largest buyers of this chapter's goods, together taking about 31% of 2025 exports, followed by Egypt, Japan and Indonesia. China's share fell sharply in 2025 as it bought more from Brazil and Argentina during the tariff dispute.",
+      "link": "exports",
+      "searchedAs": ["who buys the most us soybeans", "biggest buyer of us soybeans"]
+    },
+    {
+      "id": "schedule-b-soybeans",
+      "question": "What is the Schedule B code for soybeans?",
+      "answer": "1201.90.5000 for soybeans other than seed, the line behind almost all of this chapter's trade. Soybeans for seed use a different code (1201.10), and each of the chapter's other headings — seeds for sowing, hay and forage and the rest — has its own six-digit code matching the HS headings on the Overview page. Look up the exact 10-digit number with the Census Bureau's Schedule B search tool.",
+      "link": "exports/rules",
+      "searchedAs": ["schedule b code for soybeans", "soybean export hs code", "1201.90 schedule b"]
+    },
+    {
+      "id": "export-license-soybeans",
+      "question": "Do I need an export license to ship soybeans?",
+      "answer": "No, in the ordinary case. Soybeans and almost everything else in this chapter are EAR99 — not on the Commerce Control List — so no Export Control Classification Number or licence applies. You still need to screen the buyer and destination, and a licence can be required for an embargoed country or a restricted end use.",
+      "link": "exports/rules",
+      "searchedAs": ["do i need an export license for soybeans", "soybean export license required"]
+    },
+    {
+      "id": "phytosanitary-certificate-soybeans",
+      "question": "Do I need a phytosanitary certificate to export soybeans or seeds?",
+      "answer": "The U.S. does not require one to export bulk soybeans, but many buyers' plant-quarantine authorities do, and it is close to standard for seeds for sowing (1209) and for live or dried medicinal and herbal plants (1211). An APHIS-authorized certification official inspects the shipment and issues the certificate through the PCIT system.",
+      "link": "exports/rules",
+      "searchedAs": ["phytosanitary certificate soybean export", "do i need phytosanitary certificate for seeds"]
+    },
+    {
+      "id": "china-suspension-end-date",
+      "question": "When does China's extra tariff on U.S. soybeans end?",
+      "answer": "There is no announced end date for removing it. China's suspension of 24 of the 34 points of its original reciprocal tariff — which keeps the current rate at 10% instead of a much higher one — has been extended to January 10, 2027, with further talks expected before then. Separately, the waiver of the older 2018–19 retaliation tariff on soybeans runs through December 31, 2026.",
+      "link": "exports/tariff-updates",
+      "searchedAs": ["when does china soybean tariff end", "china tariff suspension soybeans 2027"]
+    }
+  ]
+}

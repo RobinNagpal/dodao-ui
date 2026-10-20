@@ -1,5 +1,5 @@
 {
-  "lastCheckedAt": "2026-10-13",
+  "lastCheckedAt": "2026-10-19",
   "markets": [
     {
       "countryCodes": [40, 56, 100, 191, 196, 203, 208, 233, 246, 251, 276, 300, 348, 372, 380, 428, 440, 442, 470, 528, 616, 620, 642, 703, 705, 724, 752],
@@ -90,6 +90,69 @@
       "countryGuide": {
         "label": "Country Commercial Guide: South Korea import requirements",
         "url": "https://www.trade.gov/country-commercial-guides/south-korea-import-requirements-and-documentation"
+      }
+    },
+    {
+      "countryCodes": [818],
+      "name": "Egypt",
+      "usTradeAgreement": null,
+      "countryGuide": {
+        "label": "Country Commercial Guide: Egypt import requirements",
+        "url": "https://www.trade.gov/knowledge-product/egypt-import-requirements-documentation"
+      }
+    },
+    {
+      "countryCodes": [360],
+      "name": "Indonesia",
+      "usTradeAgreement": null,
+      "countryGuide": {
+        "label": "Country Commercial Guide: Indonesia import requirements",
+        "url": "https://www.trade.gov/country-commercial-guides/indonesia-import-requirements-and-documentation"
+      }
+    },
+    {
+      "countryCodes": [458],
+      "name": "Malaysia",
+      "usTradeAgreement": null,
+      "countryGuide": {
+        "label": "Country Commercial Guide: Malaysia import requirements",
+        "url": "https://www.trade.gov/country-commercial-guides/malaysia-import-requirements-and-documentation"
+      }
+    },
+    {
+      "countryCodes": [344],
+      "name": "Hong Kong",
+      "usTradeAgreement": null,
+      "countryGuide": {
+        "label": "Country Commercial Guide: Hong Kong import requirements",
+        "url": "https://www.trade.gov/country-commercial-guides/import-requirements-and-documentation-hong-kong-macau"
+      }
+    },
+    {
+      "countryCodes": [586],
+      "name": "Pakistan",
+      "usTradeAgreement": null,
+      "countryGuide": {
+        "label": "Country Commercial Guide: Pakistan market overview",
+        "url": "https://www.trade.gov/country-commercial-guides/Pakistan-market-overview"
+      }
+    },
+    {
+      "countryCodes": [702],
+      "name": "Singapore",
+      "usTradeAgreement": "U.S.–Singapore FTA",
+      "countryGuide": {
+        "label": "Country Commercial Guide: Singapore import requirements",
+        "url": "https://www.trade.gov/country-commercial-guides/singapore-import-requirements-and-documentation"
+      }
+    },
+    {
+      "countryCodes": [784],
+      "name": "United Arab Emirates",
+      "usTradeAgreement": null,
+      "countryGuide": {
+        "label": "Country Commercial Guide: United Arab Emirates import requirements",
+        "url": "https://www.trade.gov/country-commercial-guides/united-arab-emirates-import-requirements-and-documentation"
       }
     }
   ]
