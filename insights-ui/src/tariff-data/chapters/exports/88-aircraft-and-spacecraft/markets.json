@@ -206,7 +206,7 @@
       "profile": {
         "headline": "China is the only large buyer charging more than it did in January 2025: a 10% extra tariff on all U.S. goods, which reaches finished aircraft and most parts on top of China's already-low ordinary rate. Deliveries of finished Boeing aircraft were paused for several weeks in 2025 amid the tariff dispute and resumed after the May 2025 Geneva truce; CAAC type-validation of the specific aircraft model is the other gate.",
         "mainProducts": "Unmanned aircraft (8806) · Parts of goods of heading 8801, 8802 or 8806 (8807)",
-        "tariffNow": "+10% extra (on a low 0–4% normal rate; some maintenance parts may be exempt)",
+        "tariffNow": "10% extra (on a low 0–4% normal rate; some maintenance parts may be exempt)",
         "regulator": {
           "name": "Civil Aviation Administration of China (CAAC)",
           "url": "https://www.caac.gov.cn/en/",
@@ -332,7 +332,7 @@
       "profile": {
         "headline": "Brazil is not a Civil Aircraft Agreement signatory, but Camex/Gecex Resolution 310/2022 zero-rates imports of civil aircraft (8802, 8806) and their parts (8807) that domestic industry — mainly Embraer's own supply chain — cannot supply. ANAC validation of the FAA or EASA type certificate is the other requirement.",
         "mainProducts": "Parts of goods of heading 8801, 8802 or 8806 (8807) · Unmanned aircraft (8806)",
-        "tariffNow": "Free (domestic exemption)",
+        "tariffNow": "Free (domestic exemption, Gecex Resolution 310/2022)",
         "regulator": {
           "name": "Agência Nacional de Aviação Civil (ANAC)",
           "url": "https://www.gov.br/anac/pt-br/assuntos/certificacao",
@@ -395,7 +395,7 @@
       "profile": {
         "headline": "Canada is both a Civil Aircraft Agreement signatory and a USMCA partner, so U.S. aircraft and parts enter duty-free either way. Transport Canada's validation of the FAA type certificate under the U.S.–Canada bilateral aviation safety agreement is the real gate.",
         "mainProducts": "Other aircraft (for example, helicopters, airplanes, except unmanned aircraft of heading 8806); spacecraft (including satellites) and suborbital and spacecraft launch vehicles (8802) · Unmanned aircraft (8806)",
-        "tariffNow": "Free (Civil Aircraft Agreement / USMCA)",
+        "tariffNow": "Free (Civil Aircraft Agreement; USMCA)",
         "regulator": {
           "name": "Transport Canada Civil Aviation",
           "url": "https://tc.canada.ca/en/aviation/aircraft-airworthiness/aircraft-certification",
@@ -521,7 +521,7 @@
       "profile": {
         "headline": "Singapore keeps tariffs at or near zero on almost everything, aircraft and parts included, and the U.S.–Singapore FTA locks that in for qualifying goods. It is also a major MRO (maintenance, repair and overhaul) hub, which is why parts volumes here are large relative to finished aircraft.",
         "mainProducts": "Parts of goods of heading 8801, 8802 or 8806 (8807) · Aircraft launching gear; deck-arrestor or similar gear; ground flying trainers; parts of the foregoing articles (8805)",
-        "tariffNow": "Free (FTA)",
+        "tariffNow": "Free (U.S.–Singapore FTA; Singapore applies near-zero tariffs generally)",
         "regulator": {
           "name": "Civil Aviation Authority of Singapore (CAAS)",
           "url": "https://www.caas.gov.sg/",
@@ -647,7 +647,7 @@
       "profile": {
         "headline": "The UAE applies the GCC Common Customs Tariff, whose standard rate is up to 5% of CIF value; this report could not independently confirm the published rate for the specific HS 8802/8807 lines, so check the UAE Federal Customs Authority's tariff lookup for the exact figure. The GCAA's acceptance of FAA or EASA certification, not the tariff, is what usually governs whether a given aircraft can register and fly here.",
         "mainProducts": "Parts of goods of heading 8801, 8802 or 8806 (8807) · Parachutes (including dirigible parachutes and paragliders) and rotochutes; parts thereof and accessories thereto (8804)",
-        "tariffNow": "Up to 5% (not independently confirmed for this exact line)",
+        "tariffNow": "Up to 5% (GCC Common Customs Tariff; this report could not independently confirm the published rate for this exact HS line)",
         "regulator": {
           "name": "General Civil Aviation Authority (GCAA), UAE",
           "url": "https://www.gcaa.gov.ae/en/pages/default.aspx",

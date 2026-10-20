@@ -9,7 +9,7 @@ import { IndexList, IndexListGroup } from '@/components/ui/sections/IndexList';
 import React, { useState } from 'react';
 
 // Chapter list on /tariff-reports: one row per chapter, grouped by HTS section like the HTS code
-// browser, with a search box and a "Has U.S. export report" filter. The rows are rendered on the
+// browser, with a search box and an "Also has a U.S. exports report" filter. The rows are rendered on the
 // server and passed in; this only decides which ones show. Every row stays in the server HTML.
 
 export interface TariffChapterListItem {

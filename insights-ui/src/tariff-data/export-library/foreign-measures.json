@@ -63,6 +63,26 @@
       "inForce": false
     },
     {
+      "id": "eu-aircraft-truce",
+      "date": "2026-07-06",
+      "type": "tradeDeal",
+      "countries": ["European Union"],
+      "title": "EU extends suspension of its Boeing/Airbus-dispute retaliatory tariffs on U.S. goods",
+      "before": "0% (suspended since 2021)",
+      "now": "0% (suspension extended)",
+      "status": "Suspended since July 11, 2021; extended by Implementing Regulation (EU) 2026/1549 from July 11, 2026",
+      "detail": "The U.S. and EU suspended, for five years from July 11, 2021, the tariffs each had imposed or threatened in their 17-year WTO dispute over Boeing and Airbus subsidies (the EU's WTO-authorized countermeasures covered up to $4 billion of U.S. goods, large civil aircraft among them, under the Cooperative Framework for Large Civil Aircraft). Implementing Regulation (EU) 2026/1549 of July 6, 2026 extends the EU's suspension past its July 10, 2026 expiry; the U.S. has not reactivated its Section 301 tariffs from the same dispute either.",
+      "sourceIds": ["eu-aircraft-truce-2021", "eu-aircraft-truce-2026"],
+      "allGoods": false,
+      "coverage": {
+        "30": "no",
+        "12": "no",
+        "85": "no",
+        "88": "yes"
+      },
+      "inForce": false
+    },
+    {
       "id": "mx-usmca",
       "date": "2026-07-01",
       "type": "tradeDeal",
